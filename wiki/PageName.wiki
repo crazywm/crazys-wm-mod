@@ -77,4 +77,4 @@ Things Ive been thinking about adding
 
 = Bugs =
 
-1. When you have more then one brothel hitting next girl in other building doesn't work but it does when you only have 1 brothel..  Akia posted a fix for this but when I merged it broke a few things.  U can find the fix posted here http://www.pinkpetal.org/index.php?topic=1031.105   Maybe u can get it working right
+1. ~~When you have more then one brothel hitting next girl in other building doesn't work but it does when you only have 1 brothel..  Akia posted a fix for this but when I merged it broke a few things.  U can find the fix posted here http://www.pinkpetal.org/index.php?topic=1031.105   Maybe u can get it working right~~. *Done*
