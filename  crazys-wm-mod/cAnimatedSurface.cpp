@@ -130,7 +130,7 @@ bool CAnimatedSprite::LoadAnimations(string imgFilename, string animationData)
 	int numFrames, speed, xPos, yPos, width, height;
 	ifstream ifile(animationData.c_str());
 
-	if(ifile == 0)
+	if(ifile.bad())
 		return false;
 
 	m_Image = new CSurface(imgFilename);
