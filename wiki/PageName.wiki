@@ -2,15 +2,16 @@
 #Future work.
 
 = To Do =
-1. A are you sure message when you hit quit.  People ask for this one a lot and it isn't as easy as I thought it would be to add. *Done*.
+
+1. ~~A are you sure message when you hit quit.  People ask for this one a lot and it isn't as easy as I thought it would be to add.~~ *Done*.
 
 = Things laying around that should get to the game at some point =
 
 === Smaller changes ===
 
-1- Sec lvl means nothing you have just as mean problems when your in the negative as you do when you have 2500 this is something that makes no sense we should make it mean something to have high lvl or low lvl.  Also gangs on guard should show up to help more when sec fails.  Another problem with it is the number of people the girl has to fight can be just stuiped.
+1- Sec lvl means nothing you have just as mean problems when your in the negative as you do when you have 2500 this is something that makes no sense we should make it mean something to have high lvl or low lvl.  Also gangs on guard should show up to help more when sec fails.  Another problem with it is the number of people the girl has to fight can be just stupid.
 
-2- accomadation effect very little it should mean more.
+2- Accomodation effect very little it should mean more.
 
 3. Feel the game needs more and different ways to aquire girls http://www.pinkpetal.org/index.php?topic=429.0 is a pretty good ideal fits with one of the bigger changes.
 
