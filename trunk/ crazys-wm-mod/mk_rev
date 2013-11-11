@@ -1,0 +1,12 @@
+
+fonky()
+{
+	svn info | awk '/Revision/ {
+		print "#pragma once"
+		print ""
+		printf("static char svn_revision[] = \"%s\";\n", $2);
+	}
+	' 
+}
+
+fonky > Revision.h

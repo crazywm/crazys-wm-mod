@@ -1,0 +1,239 @@
+<Screen>
+
+	<Window	Name= "Town Screen Window"
+		XPos	= "15"
+		YPos	= "12"
+		Width	= "770"
+		Height	= "578"
+		Border	= "1"
+	/>
+
+  <Image Name	= "TownMap"
+    File		= "townmap.png"
+    XPos		= "1"
+    YPos		= "1"
+    Width		= "768"
+    Height		= "536"
+	/>
+
+  <Button	Name	= "BackButton"
+		Image		= "Back"
+		XPos		= "8"
+		YPos		= "540"
+		Width		= "160"
+		Height		= "32"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+
+  <Button	Name	= "WalkButton"
+		Image		= "WalkAround"
+		XPos		= "176"
+		YPos		= "540"
+		Width		= "160"
+		Height		= "32"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+
+  <Text	Name	= "CurrentBrothel"
+		Text	= ""
+		XPos	= "376"
+		YPos	= "544"
+		Width	= "384"
+		Height	= "32"
+		FontSize= "16"
+	/>
+
+  
+  <Button	Name	= "SlaveMarket"
+		Image		= "SlaveMarket"
+		Disabled	= ""
+		XPos		= "392"
+		YPos		= "300"
+		Width		= "48"
+		Height		= "48"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+
+  <Button	Name	= "Shop"
+		Image		= "Shop"
+		Disabled	= ""
+		XPos		= "525"
+		YPos		= "254"
+		Width		= "48"
+		Height		= "48"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+
+  <Button	Name	= "MayorsOffice"
+		Image		= "MayorsOffice"
+		Disabled	= ""
+		XPos		= "508"
+		YPos		= "16"
+		Width		= "48"
+		Height		= "48"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+
+  <Button	Name	= "Bank"
+		Image		= "Bank"
+		Disabled	= ""
+		XPos		= "608"
+		YPos		= "56"
+		Width		= "48"
+		Height		= "48"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+
+  <Button	Name	= "House"
+		Image		= "House"
+		Disabled	= ""
+		XPos		= "368"
+		YPos		= "64"
+		Width		= "48"
+		Height		= "48"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+
+  <Button	Name	= "Prison"
+		Image		= "Prison"
+		Disabled	= ""
+		XPos		= "620"
+		YPos		= "130"
+		Width		= "48"
+		Height		= "48"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+	
+  <Button	Name	= "Brothel0"
+		Image		= "Brothel"
+		Disabled	= ""
+		XPos		= "352"
+		YPos		= "208"
+		Width		= "48"
+		Height		= "48"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+
+  <Button	Name	= "Brothel1"
+		Image		= "Brothel2"
+		Disabled	= ""
+		XPos		= "504"
+		YPos		= "332"
+		Width		= "48"
+		Height		= "48"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+	
+  <Button	Name	= "Brothel2"
+		Image		= "Brothel3"
+		Disabled	= ""
+		XPos		= "368"
+		YPos		= "144"
+		Width		= "48"
+		Height		= "48"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+	
+	
+	<Button	Name	= "Clinic"
+		Image		= "Clinic"
+		Disabled	= ""
+		XPos		= "448"
+		YPos		= "158"
+		Width		= "48"
+		Height		= "48"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+	
+	<Button	Name	= "Studio"
+		Image		= "Studio"
+		Disabled	= ""
+		XPos		= "100"
+		YPos		= "158"
+		Width		= "48"
+		Height		= "48"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+
+	<Button	Name	= "Arena"
+		Image		= "Arena"
+		Disabled	= ""
+		XPos		= "200"
+		YPos		= "200"
+		Width		= "48"
+		Height		= "48"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+
+	<Button	Name	= "Centre"
+		Image		= "Centre"
+		Disabled	= ""
+		XPos		= "200"
+		YPos		= "400"
+		Width		= "48"
+		Height		= "48"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+
+  <Button	Name	= "Brothel3"
+		Image		= "Brothel4"
+		Disabled	= ""
+		XPos		= "448"
+		YPos		= "88"
+		Width		= "48"
+		Height		= "48"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+	
+  <Button	Name	= "Brothel4"
+		Image		= "Brothel5"
+		Disabled	= ""
+		XPos		= "544"
+		YPos		= "168"
+		Width		= "48"
+		Height		= "48"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+
+  <Button	Name	= "Brothel5"
+		Image		= "Brothel6"
+		Disabled	= ""
+		XPos		= "698"
+		YPos		= "40"
+		Width		= "48"
+		Height		= "48"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+
+  <Button	
+		Name	= "Brothel6"
+		Image		= "Brothel7"
+		Disabled	= ""
+		XPos		= "698"
+		YPos		= "140"
+		Width		= "48"
+		Height		= "48"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+
+</Screen>
+

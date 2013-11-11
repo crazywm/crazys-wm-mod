@@ -1,0 +1,77 @@
+Updated: 1st Feb 2011
+
+### r596 - Depreciated ###
+
+### 599 - docclox ###
+* Some tweaks to get this to build under Linux once again.
+
+### 600 - Dagoth ###
+* Updated VC++ 2008 project files
+
+### 612 - WD ###
+- cPlayer
+* Added function cPlayer::Scale200 to change behaviour for player stats: m_Suspicion,  m_Disposition and m_CustomerFear
+* Added function cPlayer::SetToZero() to reset player stats
+* Checked all reference to cPlayer:: functions and stats and changed to inline getter/setters as needed
+
+- cEvents
+* Moved cEvent::CONSTANTS to Constants.h
+* Added new events EVENT_GANG, EVENT_BROTHEL
+* Added LISTBOX_COLOURs to Constants.h
+* Added variable in CEvent::m_Ordinal to use for sorting event order
+* Updated IsUrgent(), IsDanger(), IsWarning() in CEvent
+* Added new getter functions in CEvent:: TitleText() and ListBoxColour() to simplify Turnsummary() code
+* Added new functions in cEvents::IsEmpty() to simplify Turnsummary() code
+* Added functions cEvents::DoSort(), cEvents::MakeOrdinal() and CEvent::CmpEventPredicate() to allow sorting of the event vector
+* checked all calls to CEvents:: and replaced magic numbers with event CONSTANTS
+
+-InterfaceProcesses::TurnSummary()
+* myrikhan code for girls applied to all catorgories
+* Simplified code by using new Event getters. 
+	NOTE: Message Title text is set in CEvent::TitleText() and Listbox Colours in CEvent::ListBoxColour()
+* Used new function cEvents::DoSort() to sort events so that the correct event details are displayed on selection.
+* Added Dungeon Girls goto button code.
+* Added new warning messages for girls in cBrothel:: and cDungeon:: for health and tiredness to take advantage of myrikhan's display code.
+
+- New Torture Class 
+* Split CBrothel class ->> cPlayer, cBrothel, cDungeon
+* Added cGirlTorture adn cGirlGangFight from doclox branch
+* Updated VC++ project files only 2010 tested
+* Moved all torture code to cGirlTorture, same code for both player torture and girl job torture
+
+- new Config Options
+* added TortureTraitWeekMod to Inital and LogTorture to debug in config.xml
+
+- Bugfix
+* cBrothelManager::suss_text() to use Susipicion not Disposition
+	
+### r613 - WD ###
+- Bugfix
+* Update return values in cJobManager::WorkExploreCatacombs() so summary messages for job refusal is not generated incorrectly.
+
+### r614 - WD ###
+* added this changlist
+
+### r625 - WD ###
+- Code cleanup / bughunting
+* Consolidate all Stats, Skills and Statuses strings to sGirl:: using defined constants not magic numbers
+* Added missing Status Map code
+* Moved map code to existing unused function sGirl::setup_maps()
+
+* Remove code from sEffect:: to reference sGirl::
+
+* Replaced all enum GIRL_ to const unsigned int STATUS_
+
+### r626 - WD ###
+* added this changlist
+
+### r628 - WD ###
+- bugfix
+* Bugfix cGirls::child_is_grown() as reported by chronos in http://pinkpetal.co.cc/index.php?topic=416.msg11968#msg11968
+
+### r631 - WD ###
+- bugfix
+* fixed error in sGirl::max_statuses giving size of skills not status (copy paste error)
+
+### r634 - WD ###
+* Tidy double if in cGirlTorture::DoTorture()

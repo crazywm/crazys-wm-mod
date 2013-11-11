@@ -1,0 +1,1596 @@
+Loading configration variables from '.\Resources\Data\config.xml'
+[sGirl::setup_maps] Setting up Stats, Skills and Status codes.
+calling init
+Initializing Graphics
+Reading Screen Mode
+Initializing SDL
+Setting Window Icon
+Determining Fullscreen or Windowed Mode
+Setting Window Caption
+Initializing TTF
+Graphics Initialized
+Background Image Set
+Loading InterfaceColors
+Loading Main Menu Screen
+Loading MainMenu
+Loading Load Game Screen
+Adding listbox...
+initializing listbox
+creating listbox
+enabling events
+getting scrollbar ID
+adding scrollbar
+initializing scrollbar
+creating scrollbar
+storing scrollbar
+pushing listbox onto stack
+Loading Get String Screen
+Loading Get Int Screen
+Loading Brothel Management Screen
+Loading Girl Management Screen
+Startup: checking for variant config: argc = 1.
+registering ID 0 to name 'CurrentBrothel'
+Adding listbox...
+initializing listbox
+creating listbox
+enabling events
+getting scrollbar ID
+adding scrollbar
+initializing scrollbar
+creating scrollbar
+storing scrollbar
+pushing listbox onto stack
+registering ID 0 to name 'GirlList'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+registering ID 0 to name 'GirlImage'
+registering ID 1 to name 'GirlDescription'
+registering ID 2 to name 'JobTypeHeader'
+Adding listbox...
+initializing listbox
+creating listbox
+enabling events
+getting scrollbar ID
+adding scrollbar
+initializing scrollbar
+creating scrollbar
+storing scrollbar
+pushing listbox onto stack
+registering ID 1 to name 'JobTypeList'
+registering ID 3 to name 'JobHeader'
+Adding listbox...
+initializing listbox
+creating listbox
+enabling events
+getting scrollbar ID
+adding scrollbar
+initializing scrollbar
+creating scrollbar
+storing scrollbar
+pushing listbox onto stack
+registering ID 2 to name 'JobList'
+registering ID 0 to name 'DayButton'
+registering ID 1 to name 'NightButton'
+registering ID 4 to name 'JobTypeDescription'
+registering ID 5 to name 'JobDescription'
+registering ID 2 to name 'ViewDetailsButton'
+registering ID 3 to name 'TransferButton'
+registering ID 4 to name 'FreeSlaveButton'
+registering ID 5 to name 'SellSlaveButton'
+registering ID 6 to name 'FireButton'
+registering ID 7 to name 'BackButton'
+Loading Clinic Management Screen
+registering ID 0 to name 'Clinic'
+Adding listbox...
+initializing listbox
+creating listbox
+enabling events
+getting scrollbar ID
+adding scrollbar
+initializing scrollbar
+creating scrollbar
+storing scrollbar
+pushing listbox onto stack
+registering ID 0 to name 'GirlList'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+registering ID 0 to name 'GirlImage'
+registering ID 1 to name 'GirlDescription'
+registering ID 2 to name 'JobTypeHeader'
+Adding listbox...
+initializing listbox
+creating listbox
+enabling events
+getting scrollbar ID
+adding scrollbar
+initializing scrollbar
+creating scrollbar
+storing scrollbar
+pushing listbox onto stack
+registering ID 1 to name 'JobTypeList'
+registering ID 3 to name 'JobHeader'
+Adding listbox...
+initializing listbox
+creating listbox
+enabling events
+getting scrollbar ID
+adding scrollbar
+initializing scrollbar
+creating scrollbar
+storing scrollbar
+pushing listbox onto stack
+registering ID 2 to name 'JobList'
+registering ID 0 to name 'DayButton'
+registering ID 1 to name 'NightButton'
+registering ID 4 to name 'JobTypeDescription'
+registering ID 5 to name 'JobDescription'
+registering ID 2 to name 'ViewDetailsButton'
+registering ID 3 to name 'TransferButton'
+registering ID 4 to name 'FreeSlaveButton'
+registering ID 5 to name 'BackButton'
+Loading Studio Management Screen
+registering ID 0 to name 'Studio'
+Adding listbox...
+initializing listbox
+creating listbox
+enabling events
+getting scrollbar ID
+adding scrollbar
+initializing scrollbar
+creating scrollbar
+storing scrollbar
+pushing listbox onto stack
+registering ID 0 to name 'GirlList'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+registering ID 0 to name 'GirlImage'
+registering ID 1 to name 'GirlDescription'
+registering ID 2 to name 'JobTypeHeader'
+Adding listbox...
+initializing listbox
+creating listbox
+enabling events
+getting scrollbar ID
+adding scrollbar
+initializing scrollbar
+creating scrollbar
+storing scrollbar
+pushing listbox onto stack
+registering ID 1 to name 'JobTypeList'
+registering ID 3 to name 'JobHeader'
+Adding listbox...
+initializing listbox
+creating listbox
+enabling events
+getting scrollbar ID
+adding scrollbar
+initializing scrollbar
+creating scrollbar
+storing scrollbar
+pushing listbox onto stack
+registering ID 2 to name 'JobList'
+registering ID 0 to name 'DayButton'
+registering ID 1 to name 'NightButton'
+registering ID 4 to name 'JobTypeDescription'
+registering ID 5 to name 'JobDescription'
+registering ID 2 to name 'ViewDetailsButton'
+registering ID 3 to name 'TransferButton'
+registering ID 4 to name 'CreateMovieButton'
+registering ID 5 to name 'BackButton'
+Loading Movie Maker Screen
+registering ID 0 to name 'Studio'
+Adding listbox...
+initializing listbox
+creating listbox
+enabling events
+getting scrollbar ID
+adding scrollbar
+initializing scrollbar
+creating scrollbar
+storing scrollbar
+pushing listbox onto stack
+registering ID 0 to name 'ScenesList'
+define listbox element: 'Column'
+define listbox element: 'Column'
+registering ID 0 to name 'ReleaseMovieButton'
+registering ID 1 to name 'BackButton'
+Loading Arena Management Screen
+registering ID 0 to name 'Arena'
+Adding listbox...
+initializing listbox
+creating listbox
+enabling events
+getting scrollbar ID
+adding scrollbar
+initializing scrollbar
+creating scrollbar
+storing scrollbar
+pushing listbox onto stack
+registering ID 0 to name 'GirlList'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+registering ID 0 to name 'GirlImage'
+registering ID 1 to name 'GirlDescription'
+registering ID 2 to name 'JobTypeHeader'
+Adding listbox...
+initializing listbox
+creating listbox
+enabling events
+getting scrollbar ID
+adding scrollbar
+initializing scrollbar
+creating scrollbar
+storing scrollbar
+pushing listbox onto stack
+registering ID 1 to name 'JobTypeList'
+registering ID 3 to name 'JobHeader'
+Adding listbox...
+initializing listbox
+creating listbox
+enabling events
+getting scrollbar ID
+adding scrollbar
+initializing scrollbar
+creating scrollbar
+storing scrollbar
+pushing listbox onto stack
+registering ID 2 to name 'JobList'
+registering ID 0 to name 'DayButton'
+registering ID 1 to name 'NightButton'
+registering ID 4 to name 'JobTypeDescription'
+registering ID 5 to name 'JobDescription'
+registering ID 2 to name 'ViewDetailsButton'
+registering ID 3 to name 'TransferButton'
+registering ID 4 to name 'FreeSlaveButton'
+registering ID 5 to name 'BackButton'
+Loading Centre Management Screen
+registering ID 0 to name 'Centre'
+Adding listbox...
+initializing listbox
+creating listbox
+enabling events
+getting scrollbar ID
+adding scrollbar
+initializing scrollbar
+creating scrollbar
+storing scrollbar
+pushing listbox onto stack
+registering ID 0 to name 'GirlList'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+registering ID 0 to name 'GirlImage'
+registering ID 1 to name 'GirlDescription'
+registering ID 2 to name 'JobTypeHeader'
+Adding listbox...
+initializing listbox
+creating listbox
+enabling events
+getting scrollbar ID
+adding scrollbar
+initializing scrollbar
+creating scrollbar
+storing scrollbar
+pushing listbox onto stack
+registering ID 1 to name 'JobTypeList'
+registering ID 3 to name 'JobHeader'
+Adding listbox...
+initializing listbox
+creating listbox
+enabling events
+getting scrollbar ID
+adding scrollbar
+initializing scrollbar
+creating scrollbar
+storing scrollbar
+pushing listbox onto stack
+registering ID 2 to name 'JobList'
+registering ID 0 to name 'DayButton'
+registering ID 1 to name 'NightButton'
+registering ID 4 to name 'JobTypeDescription'
+registering ID 5 to name 'JobDescription'
+registering ID 2 to name 'ViewDetailsButton'
+registering ID 3 to name 'TransferButton'
+registering ID 4 to name 'FreeSlaveButton'
+registering ID 5 to name 'BackButton'
+Loading House Management Screen
+registering ID 0 to name 'House'
+Adding listbox...
+initializing listbox
+creating listbox
+enabling events
+getting scrollbar ID
+adding scrollbar
+initializing scrollbar
+creating scrollbar
+storing scrollbar
+pushing listbox onto stack
+registering ID 0 to name 'GirlList'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+registering ID 0 to name 'GirlImage'
+registering ID 1 to name 'GirlDescription'
+registering ID 2 to name 'JobTypeHeader'
+Adding listbox...
+initializing listbox
+creating listbox
+enabling events
+getting scrollbar ID
+adding scrollbar
+initializing scrollbar
+creating scrollbar
+storing scrollbar
+pushing listbox onto stack
+registering ID 1 to name 'JobTypeList'
+registering ID 3 to name 'JobHeader'
+Adding listbox...
+initializing listbox
+creating listbox
+enabling events
+getting scrollbar ID
+adding scrollbar
+initializing scrollbar
+creating scrollbar
+storing scrollbar
+pushing listbox onto stack
+registering ID 2 to name 'JobList'
+registering ID 0 to name 'DayButton'
+registering ID 1 to name 'NightButton'
+registering ID 4 to name 'JobTypeDescription'
+registering ID 5 to name 'JobDescription'
+registering ID 2 to name 'ViewDetailsButton'
+registering ID 3 to name 'TransferButton'
+registering ID 4 to name 'FreeSlaveButton'
+registering ID 5 to name 'BackButton'
+Loading Girl Details Screen
+registering ID 0 to name 'GirlName'
+registering ID 1 to name 'GirlDescription'
+registering ID 0 to name 'GirlImage'
+registering ID 0 to name 'MoreButton'
+registering ID 0 to name 'UseAntiPregToggle'
+registering ID 1 to name 'PrevButton'
+registering ID 2 to name 'NextButton'
+registering ID 3 to name 'AccomUpButton'
+registering ID 4 to name 'AccomDownButton'
+registering ID 5 to name 'InventoryButton'
+registering ID 6 to name 'SendDungeonButton'
+registering ID 7 to name 'ReleaseDungeonButton'
+registering ID 8 to name 'InteractButton'
+registering ID 9 to name 'TakeGoldButton'
+registering ID 0 to name 'HousePercSlider'
+registering ID 2 to name 'HousePercValue'
+registering ID 10 to name 'GalleryButton'
+registering ID 11 to name 'BackButton'
+registering ID 3 to name 'JobTypeHeader'
+Adding listbox...
+initializing listbox
+creating listbox
+enabling events
+getting scrollbar ID
+adding scrollbar
+initializing scrollbar
+creating scrollbar
+storing scrollbar
+pushing listbox onto stack
+registering ID 0 to name 'JobTypeList'
+registering ID 4 to name 'JobHeader'
+Adding listbox...
+initializing listbox
+creating listbox
+enabling events
+getting scrollbar ID
+adding scrollbar
+initializing scrollbar
+creating scrollbar
+storing scrollbar
+pushing listbox onto stack
+registering ID 1 to name 'JobList'
+registering ID 12 to name 'DayButton'
+registering ID 13 to name 'NightButton'
+registering ID 5 to name 'TraitHeader'
+Adding listbox...
+initializing listbox
+creating listbox
+enabling events
+getting scrollbar ID
+adding scrollbar
+initializing scrollbar
+creating scrollbar
+storing scrollbar
+pushing listbox onto stack
+registering ID 2 to name 'TraitList'
+registering ID 6 to name 'TraitDescription'
+Loading Change Jobs Screen
+Adding listbox...
+initializing listbox
+creating listbox
+enabling events
+getting scrollbar ID
+adding scrollbar
+initializing scrollbar
+creating scrollbar
+storing scrollbar
+pushing listbox onto stack
+Adding listbox...
+initializing listbox
+creating listbox
+enabling events
+getting scrollbar ID
+adding scrollbar
+initializing scrollbar
+creating scrollbar
+storing scrollbar
+pushing listbox onto stack
+Loading Gang Management Screen
+registering ID 0 to name 'txtControlledGangs'
+registering ID 1 to name 'TotalCost'
+registering ID 2 to name 'txtMissions'
+registering ID 0 to name 'FireArrow'
+Adding listbox...
+initializing listbox
+creating listbox
+enabling events
+getting scrollbar ID
+adding scrollbar
+initializing scrollbar
+creating scrollbar
+storing scrollbar
+pushing listbox onto stack
+registering ID 0 to name 'GangList'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+Adding listbox...
+initializing listbox
+creating listbox
+enabling events
+getting scrollbar ID
+adding scrollbar
+initializing scrollbar
+creating scrollbar
+storing scrollbar
+pushing listbox onto stack
+registering ID 1 to name 'MissionList'
+registering ID 0 to name 'GangFireButton'
+registering ID 3 to name 'MissionDescription'
+registering ID 1 to name 'HireArrow'
+registering ID 1 to name 'GangHireButton'
+Adding listbox...
+initializing listbox
+creating listbox
+enabling events
+getting scrollbar ID
+adding scrollbar
+initializing scrollbar
+creating scrollbar
+storing scrollbar
+pushing listbox onto stack
+registering ID 2 to name 'RecruitList'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+registering ID 4 to name 'WeaponDescription'
+registering ID 2 to name 'WeaponUpButton'
+registering ID 5 to name 'HealPotDescription'
+registering ID 3 to name 'BuyHealPotButton'
+registering ID 0 to name 'AutoBuyHealToggle'
+registering ID 6 to name 'NetDescription'
+registering ID 4 to name 'BuyNetsButton'
+registering ID 1 to name 'AutoBuyNetsToggle'
+registering ID 5 to name 'BackButton'
+Loading Turn Summary Screen
+Adding listbox...
+initializing listbox
+creating listbox
+enabling events
+getting scrollbar ID
+adding scrollbar
+initializing scrollbar
+creating scrollbar
+storing scrollbar
+pushing listbox onto stack
+Adding listbox...
+initializing listbox
+creating listbox
+enabling events
+getting scrollbar ID
+adding scrollbar
+initializing scrollbar
+creating scrollbar
+storing scrollbar
+pushing listbox onto stack
+Adding listbox...
+initializing listbox
+creating listbox
+enabling events
+getting scrollbar ID
+adding scrollbar
+initializing scrollbar
+creating scrollbar
+storing scrollbar
+pushing listbox onto stack
+Loading Dungeon Screen
+registering ID 0 to name 'DungeonHeader'
+Adding listbox...
+initializing listbox
+creating listbox
+enabling events
+getting scrollbar ID
+adding scrollbar
+initializing scrollbar
+creating scrollbar
+storing scrollbar
+pushing listbox onto stack
+registering ID 0 to name 'GirlList'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+define listbox element: 'Column'
+registering ID 0 to name 'GirlImage'
+registering ID 0 to name 'DetailsButton'
+registering ID 1 to name 'StopFeedingButton'
+registering ID 2 to name 'AllowFoodButton'
+registering ID 3 to name 'BrandSlaveButton'
+registering ID 4 to name 'SellButton'
+registering ID 5 to name 'TortureButton'
+registering ID 6 to name 'InteractButton'
+registering ID 7 to name 'ReleaseButton'
+registering ID 8 to name 'ReleaseAllButton'
+registering ID 9 to name 'ReleaseCustButton'
+registering ID 10 to name 'BackButton'
+Loading Town Screen
+registering ID 0 to name 'TownMap'
+registering ID 0 to name 'BackButton'
+registering ID 1 to name 'WalkButton'
+registering ID 0 to name 'CurrentBrothel'
+registering ID 2 to name 'SlaveMarket'
+registering ID 3 to name 'Shop'
+registering ID 4 to name 'MayorsOffice'
+registering ID 5 to name 'Bank'
+registering ID 6 to name 'House'
+registering ID 7 to name 'Prison'
+registering ID 8 to name 'Brothel0'
+registering ID 9 to name 'Brothel1'
+registering ID 10 to name 'Brothel2'
+registering ID 11 to name 'Clinic'
+registering ID 12 to name 'Studio'
+registering ID 13 to name 'Arena'
+registering ID 14 to name 'Centre'
+registering ID 15 to name 'Brothel3'
+registering ID 16 to name 'Brothel4'
+registering ID 17 to name 'Brothel5'
+registering ID 18 to name 'Brothel6'
+Loading Clinic Screen
+registering ID 0 to name 'Clinic'
+registering ID 0 to name 'ClinicDetails'
+registering ID 0 to name 'BackButton'
+registering ID 1 to name 'WalkButton'
+registering ID 2 to name 'Girls'
+registering ID 3 to name 'Staff'
+registering ID 4 to name 'Dungeon'
+registering ID 5 to name 'Turn'
+registering ID 6 to name 'Weeks'
+registering ID 7 to name 'SetUp'
+Loading Centre Screen
+registering ID 0 to name 'Centre'
+registering ID 0 to name 'CentreDetails'
+registering ID 0 to name 'BackButton'
+registering ID 1 to name 'WalkButton'
+registering ID 2 to name 'Girls'
+registering ID 3 to name 'Staff'
+registering ID 4 to name 'Dungeon'
+registering ID 5 to name 'Turn'
+registering ID 6 to name 'Weeks'
+registering ID 7 to name 'SetUp'
+registering ID 8 to name 'Next'
+registering ID 9 to name 'Prev'
+Loading Movie Screen
+registering ID 0 to name 'Movies'
+registering ID 0 to name 'MovieDetails'
+registering ID 0 to name 'BackButton'
+registering ID 1 to name 'WalkButton'
+registering ID 2 to name 'Girls'
+registering ID 3 to name 'Staff'
+registering ID 4 to name 'Dungeon'
+registering ID 5 to name 'Turn'
+registering ID 6 to name 'Weeks'
+registering ID 7 to name 'SetUp'
+registering ID 8 to name 'Next'
+registering ID 9 to name 'Prev'
+Loading Auction Screen
+registering ID 0 to name 'Arena'
+registering ID 0 to name 'ArenaDetails'
+registering ID 0 to name 'BackButton'
+registering ID 1 to name 'WalkButton'
+registering ID 2 to name 'Girls'
+registering ID 3 to name 'Staff'
+registering ID 4 to name 'Dungeon'
+registering ID 5 to name 'Turn'
+registering ID 6 to name 'Weeks'
+registering ID 7 to name 'SetUp'
+Loading Arena Screen
+registering ID 0 to name 'Arena'
+registering ID 0 to name 'ArenaDetails'
+registering ID 0 to name 'BackButton'
+registering ID 1 to name 'WalkButton'
+registering ID 2 to name 'Girls'
+registering ID 3 to name 'Staff'
+registering ID 4 to name 'Dungeon'
+registering ID 5 to name 'Turn'
+registering ID 6 to name 'Weeks'
+registering ID 7 to name 'SetUp'
+registering ID 8 to name 'Next'
+registering ID 9 to name 'Prev'
+Loading Arena Try Screen
+registering ID 0 to name 'Arena'
+registering ID 0 to name 'BackButton'
+registering ID 1 to name 'WalkButton'
+Loading Clinic Try Screen
+registering ID 0 to name 'Clinic2'
+registering ID 0 to name 'BackButton'
+registering ID 1 to name 'WalkButton'
+Loading Casting Try Screen
+registering ID 0 to name 'Casting'
+registering ID 0 to name 'BackButton'
+registering ID 1 to name 'WalkButton'
+Loading Slave Market Screen
+registering ID 0 to name 'BackButton'
+registering ID 1 to name 'ShowMoreButton'
+registering ID 2 to name 'BuySlaveButton'
+registering ID 0 to name 'CurrentBrothel'
+registering ID 1 to name 'ScreenHeader'
+Adding listbox...
+initializing listbox
+creating listbox
+enabling events
+getting scrollbar ID
+adding scrollbar
+initializing scrollbar
+creating scrollbar
+storing scrollbar
+pushing listbox onto stack
+registering ID 0 to name 'SlaveList'
+Adding listbox...
+initializing listbox
+creating listbox
+enabling events
+getting scrollbar ID
+adding scrollbar
+initializing scrollbar
+creating scrollbar
+storing scrollbar
+pushing listbox onto stack
+registering ID 1 to name 'TraitList'
+registering ID 2 to name 'SlaveDetails'
+registering ID 3 to name 'TraitDesc'
+registering ID 0 to name 'SlaveImage'
+Loading Gallery Screen
+Loading Gallery 2 Screen
+Loading Building Setup Screen
+registering ID 0 to name 'CurrentBrothel'
+registering ID 1 to name 'PotionCost'
+registering ID 0 to name '10PotionsButton'
+registering ID 1 to name '20PotionsButton'
+registering ID 0 to name 'AutoBuyPotionToggle'
+registering ID 2 to name 'AvailablePotions'
+registering ID 0 to name 'AdvertisingSlider'
+registering ID 3 to name 'AdvertisingValue'
+registering ID 4 to name 'RoomAddCost'
+registering ID 2 to name 'BuildRoomsButton'
+define widget: 'Checkbox'
+define widget: 'Checkbox'
+define widget: 'Checkbox'
+define widget: 'Checkbox'
+define widget: 'Checkbox'
+define widget: 'Checkbox'
+define widget: 'Checkbox'
+define widget: 'Checkbox'
+registering ID 5 to name 'SexRestrictions'
+Placing Widget 'Restrictions'
+add_widget: x = 16, xw.x = 43, y = 195, xw.y = 9
+registering ID 1 to name 'ProhibitAnalToggleRes'
+add_widget: x = 16, xw.x = 214, y = 195, xw.y = 9
+registering ID 2 to name 'ProhibitBDSMToggleRes'
+add_widget: x = 16, xw.x = 393, y = 195, xw.y = 9
+registering ID 3 to name 'ProhibitLesbianToggleRes'
+add_widget: x = 16, xw.x = 14, y = 195, xw.y = 35
+registering ID 4 to name 'ProhibitBeastToggleRes'
+add_widget: x = 16, xw.x = 190, y = 195, xw.y = 35
+registering ID 5 to name 'ProhibitGroupToggleRes'
+add_widget: x = 16, xw.x = 371, y = 195, xw.y = 35
+registering ID 6 to name 'ProhibitNormalToggleRes'
+add_widget: x = 16, xw.x = 21, y = 195, xw.y = 60
+registering ID 7 to name 'ProhibitOralToggleRes'
+add_widget: x = 16, xw.x = 190, y = 195, xw.y = 60
+registering ID 8 to name 'ProhibitTittyToggleRes'
+registering ID 3 to name 'BackButton'
+Loading Mayor Screen
+registering ID 0 to name 'MayorIcon'
+registering ID 0 to name 'ScreenHeader'
+registering ID 1 to name 'MayorDetails'
+registering ID 0 to name 'BribeButton'
+registering ID 1 to name 'BackButton'
+Loading Bank Screen
+registering ID 0 to name 'BankIcon'
+registering ID 0 to name 'ScreenHeader'
+registering ID 1 to name 'BankDetails'
+registering ID 0 to name 'DepositButton'
+registering ID 1 to name 'WithdrawButton'
+registering ID 2 to name 'DepositAllButton'
+registering ID 3 to name 'WithdrawAllButton'
+registering ID 4 to name 'BackButton'
+Loading Player House Screen
+registering ID 0 to name 'Your House'
+registering ID 0 to name 'House'
+registering ID 1 to name 'HouseDetails'
+registering ID 0 to name 'BackButton'
+registering ID 1 to name 'SetUp'
+registering ID 2 to name 'Girls'
+registering ID 3 to name 'Staff'
+registering ID 4 to name 'Dungeon'
+registering ID 5 to name 'Turn'
+registering ID 6 to name 'Weeks'
+registering ID 7 to name 'House'
+Loading House Screen
+registering ID 0 to name 'HouseIcon'
+registering ID 0 to name 'ScreenHeader'
+registering ID 1 to name 'HouseDetails'
+registering ID 0 to name 'BackButton'
+Loading Transfer Girls Screen
+Adding listbox...
+initializing listbox
+creating listbox
+enabling events
+getting scrollbar ID
+adding scrollbar
+initializing scrollbar
+creating scrollbar
+storing scrollbar
+pushing listbox onto stack
+Adding listbox...
+initializing listbox
+creating listbox
+enabling events
+getting scrollbar ID
+adding scrollbar
+initializing scrollbar
+creating scrollbar
+storing scrollbar
+pushing listbox onto stack
+Adding listbox...
+initializing listbox
+creating listbox
+enabling events
+getting scrollbar ID
+adding scrollbar
+initializing scrollbar
+creating scrollbar
+storing scrollbar
+pushing listbox onto stack
+Adding listbox...
+initializing listbox
+creating listbox
+enabling events
+getting scrollbar ID
+adding scrollbar
+initializing scrollbar
+creating scrollbar
+storing scrollbar
+pushing listbox onto stack
+Loading Item Management Screen
+registering ID 0 to name 'OwnersLeftHeader'
+Adding listbox...
+initializing listbox
+creating listbox
+enabling events
+getting scrollbar ID
+adding scrollbar
+initializing scrollbar
+creating scrollbar
+storing scrollbar
+pushing listbox onto stack
+registering ID 0 to name 'OwnersLeftList'
+registering ID 1 to name 'ItemsLeftHeader'
+Adding listbox...
+initializing listbox
+creating listbox
+enabling events
+getting scrollbar ID
+adding scrollbar
+initializing scrollbar
+creating scrollbar
+storing scrollbar
+pushing listbox onto stack
+registering ID 1 to name 'ItemsLeftList'
+registering ID 2 to name 'OwnersRightHeader'
+Adding listbox...
+initializing listbox
+creating listbox
+enabling events
+getting scrollbar ID
+adding scrollbar
+initializing scrollbar
+creating scrollbar
+storing scrollbar
+pushing listbox onto stack
+registering ID 2 to name 'OwnersRightList'
+registering ID 3 to name 'ItemsRightHeader'
+Adding listbox...
+initializing listbox
+creating listbox
+enabling events
+getting scrollbar ID
+adding scrollbar
+initializing scrollbar
+creating scrollbar
+storing scrollbar
+pushing listbox onto stack
+registering ID 3 to name 'ItemsRightList'
+registering ID 4 to name 'CurrentBrothel'
+registering ID 5 to name 'FilterHeader'
+Adding listbox...
+initializing listbox
+creating listbox
+enabling events
+getting scrollbar ID
+adding scrollbar
+initializing scrollbar
+creating scrollbar
+storing scrollbar
+pushing listbox onto stack
+registering ID 4 to name 'FilterList'
+registering ID 6 to name 'PlayerGold'
+registering ID 7 to name 'ShiftHeader'
+registering ID 0 to name 'ShiftLeftButton'
+registering ID 1 to name 'ShiftRightButton'
+registering ID 8 to name 'ItemDesc'
+registering ID 0 to name 'IndicateLeft'
+registering ID 2 to name 'EquipLeftButton'
+registering ID 3 to name 'UnequipLeftButton'
+registering ID 1 to name 'IndicateRight'
+registering ID 4 to name 'EquipRightButton'
+registering ID 5 to name 'UnequipRightButton'
+registering ID 6 to name 'BackButton'
+Loading Prison Screen
+registering ID 0 to name 'BackButton'
+registering ID 1 to name 'ShowMoreButton'
+registering ID 2 to name 'ReleaseButton'
+Adding listbox...
+initializing listbox
+creating listbox
+enabling events
+getting scrollbar ID
+adding scrollbar
+initializing scrollbar
+creating scrollbar
+storing scrollbar
+pushing listbox onto stack
+registering ID 0 to name 'PrisonList'
+registering ID 0 to name 'GirlDescription'
+registering ID 1 to name 'ScreenHeader'
+registering ID 0 to name 'PrisonIcon'
+Loading Building Management Screen
+registering ID 0 to name 'Background'
+registering ID 0 to name 'ScreenHeader'
+registering ID 1 to name 'Capacity'
+registering ID 2 to name 'Gold'
+registering ID 3 to name 'TotalCost'
+Adding listbox...
+initializing listbox
+creating listbox
+enabling events
+getting scrollbar ID
+adding scrollbar
+initializing scrollbar
+creating scrollbar
+storing scrollbar
+pushing listbox onto stack
+registering ID 0 to name 'FacilityList'
+registering ID 4 to name 'Narrative'
+define widget: 'Text'
+define widget: 'Button'
+define widget: 'Text'
+define widget: 'Button'
+define widget: 'Image'
+define widget: 'Text'
+define widget: 'Button'
+define widget: 'Text'
+define widget: 'Text'
+define widget: 'Text'
+define widget: 'Text'
+define widget: 'Button'
+define widget: 'Image'
+define widget: 'Widget'
+define widget: 'Widget'
+define widget: 'Widget'
+define widget: 'Widget'
+Placing Widget 'Facility'
+add_widget: x = 10, xw.x = 0, y = 80, xw.y = 0
+registering ID 1 to name 'Shader0'
+add_widget: x = 10, xw.x = 4, y = 80, xw.y = -2
+registering ID 5 to name 'Unit0'
+add_widget: x = 10, xw.x = 20, y = 80, xw.y = 2
+registering ID 0 to name 'RenameButton0'
+add_widget: x = 10, xw.x = 44, y = 80, xw.y = -2
+registering ID 6 to name 'Name0'
+add_widget: x = 10, xw.x = 210, y = 80, xw.y = -2
+registering ID 7 to name 'Type0'
+add_widget: x = 10, xw.x = 405, y = 80, xw.y = 14
+registering ID 8 to name 'Spaces0'
+add_widget: x = 10, xw.x = 405, y = 80, xw.y = -2
+registering ID 9 to name 'Cost0'
+add_widget: x = 10, xw.x = 500, y = 80, xw.y = 4
+registering ID 1 to name 'DeleteButton0'
+add_widget: x = 10, xw.x = 481, y = 80, xw.y = 40
+registering ID 2 to name 'NewSplash0'
+add_widget: x = 10, xw.x = 8, y = 80, xw.y = 13
+Placing nested widget at 18, 93
+add_widget: x = 18, xw.x = 1, y = 93, xw.y = 0
+registering ID 10 to name 'CaptionProvides0'
+add_widget: x = 18, xw.x = 0, y = 93, xw.y = 24
+registering ID 2 to name 'DownProvides0'
+add_widget: x = 18, xw.x = 22, y = 93, xw.y = 22
+registering ID 11 to name 'LevelProvides0'
+add_widget: x = 18, xw.x = 40, y = 93, xw.y = 24
+registering ID 3 to name 'UpProvides0'
+add_widget: x = 10, xw.x = 80, y = 80, xw.y = 13
+Placing nested widget at 90, 93
+add_widget: x = 90, xw.x = 1, y = 93, xw.y = 0
+registering ID 12 to name 'CaptionGlitz0'
+add_widget: x = 90, xw.x = 0, y = 93, xw.y = 24
+registering ID 4 to name 'DownGlitz0'
+add_widget: x = 90, xw.x = 22, y = 93, xw.y = 22
+registering ID 13 to name 'LevelGlitz0'
+add_widget: x = 90, xw.x = 40, y = 93, xw.y = 24
+registering ID 5 to name 'UpGlitz0'
+add_widget: x = 10, xw.x = 150, y = 80, xw.y = 13
+Placing nested widget at 160, 93
+add_widget: x = 160, xw.x = 1, y = 93, xw.y = 0
+registering ID 14 to name 'CaptionSecure0'
+add_widget: x = 160, xw.x = 0, y = 93, xw.y = 24
+registering ID 6 to name 'DownSecure0'
+add_widget: x = 160, xw.x = 22, y = 93, xw.y = 22
+registering ID 15 to name 'LevelSecure0'
+add_widget: x = 160, xw.x = 40, y = 93, xw.y = 24
+registering ID 7 to name 'UpSecure0'
+add_widget: x = 10, xw.x = 220, y = 80, xw.y = 13
+Placing nested widget at 230, 93
+add_widget: x = 230, xw.x = 1, y = 93, xw.y = 0
+registering ID 16 to name 'CaptionStealth0'
+add_widget: x = 230, xw.x = 0, y = 93, xw.y = 24
+registering ID 8 to name 'DownStealth0'
+add_widget: x = 230, xw.x = 22, y = 93, xw.y = 22
+registering ID 17 to name 'LevelStealth0'
+add_widget: x = 230, xw.x = 40, y = 93, xw.y = 24
+registering ID 9 to name 'UpStealth0'
+Placing Widget 'Facility'
+add_widget: x = 10, xw.x = 0, y = 150, xw.y = 0
+registering ID 3 to name 'Shader1'
+add_widget: x = 10, xw.x = 4, y = 150, xw.y = -2
+registering ID 18 to name 'Unit1'
+add_widget: x = 10, xw.x = 20, y = 150, xw.y = 2
+registering ID 10 to name 'RenameButton1'
+add_widget: x = 10, xw.x = 44, y = 150, xw.y = -2
+registering ID 19 to name 'Name1'
+add_widget: x = 10, xw.x = 210, y = 150, xw.y = -2
+registering ID 20 to name 'Type1'
+add_widget: x = 10, xw.x = 405, y = 150, xw.y = 14
+registering ID 21 to name 'Spaces1'
+add_widget: x = 10, xw.x = 405, y = 150, xw.y = -2
+registering ID 22 to name 'Cost1'
+add_widget: x = 10, xw.x = 500, y = 150, xw.y = 4
+registering ID 11 to name 'DeleteButton1'
+add_widget: x = 10, xw.x = 481, y = 150, xw.y = 40
+registering ID 4 to name 'NewSplash1'
+add_widget: x = 10, xw.x = 8, y = 150, xw.y = 13
+Placing nested widget at 18, 163
+add_widget: x = 18, xw.x = 1, y = 163, xw.y = 0
+registering ID 23 to name 'CaptionProvides1'
+add_widget: x = 18, xw.x = 0, y = 163, xw.y = 24
+registering ID 12 to name 'DownProvides1'
+add_widget: x = 18, xw.x = 22, y = 163, xw.y = 22
+registering ID 24 to name 'LevelProvides1'
+add_widget: x = 18, xw.x = 40, y = 163, xw.y = 24
+registering ID 13 to name 'UpProvides1'
+add_widget: x = 10, xw.x = 80, y = 150, xw.y = 13
+Placing nested widget at 90, 163
+add_widget: x = 90, xw.x = 1, y = 163, xw.y = 0
+registering ID 25 to name 'CaptionGlitz1'
+add_widget: x = 90, xw.x = 0, y = 163, xw.y = 24
+registering ID 14 to name 'DownGlitz1'
+add_widget: x = 90, xw.x = 22, y = 163, xw.y = 22
+registering ID 26 to name 'LevelGlitz1'
+add_widget: x = 90, xw.x = 40, y = 163, xw.y = 24
+registering ID 15 to name 'UpGlitz1'
+add_widget: x = 10, xw.x = 150, y = 150, xw.y = 13
+Placing nested widget at 160, 163
+add_widget: x = 160, xw.x = 1, y = 163, xw.y = 0
+registering ID 27 to name 'CaptionSecure1'
+add_widget: x = 160, xw.x = 0, y = 163, xw.y = 24
+registering ID 16 to name 'DownSecure1'
+add_widget: x = 160, xw.x = 22, y = 163, xw.y = 22
+registering ID 28 to name 'LevelSecure1'
+add_widget: x = 160, xw.x = 40, y = 163, xw.y = 24
+registering ID 17 to name 'UpSecure1'
+add_widget: x = 10, xw.x = 220, y = 150, xw.y = 13
+Placing nested widget at 230, 163
+add_widget: x = 230, xw.x = 1, y = 163, xw.y = 0
+registering ID 29 to name 'CaptionStealth1'
+add_widget: x = 230, xw.x = 0, y = 163, xw.y = 24
+registering ID 18 to name 'DownStealth1'
+add_widget: x = 230, xw.x = 22, y = 163, xw.y = 22
+registering ID 30 to name 'LevelStealth1'
+add_widget: x = 230, xw.x = 40, y = 163, xw.y = 24
+registering ID 19 to name 'UpStealth1'
+Placing Widget 'Facility'
+add_widget: x = 10, xw.x = 0, y = 220, xw.y = 0
+registering ID 5 to name 'Shader2'
+add_widget: x = 10, xw.x = 4, y = 220, xw.y = -2
+registering ID 31 to name 'Unit2'
+add_widget: x = 10, xw.x = 20, y = 220, xw.y = 2
+registering ID 20 to name 'RenameButton2'
+add_widget: x = 10, xw.x = 44, y = 220, xw.y = -2
+registering ID 32 to name 'Name2'
+add_widget: x = 10, xw.x = 210, y = 220, xw.y = -2
+registering ID 33 to name 'Type2'
+add_widget: x = 10, xw.x = 405, y = 220, xw.y = 14
+registering ID 34 to name 'Spaces2'
+add_widget: x = 10, xw.x = 405, y = 220, xw.y = -2
+registering ID 35 to name 'Cost2'
+add_widget: x = 10, xw.x = 500, y = 220, xw.y = 4
+registering ID 21 to name 'DeleteButton2'
+add_widget: x = 10, xw.x = 481, y = 220, xw.y = 40
+registering ID 6 to name 'NewSplash2'
+add_widget: x = 10, xw.x = 8, y = 220, xw.y = 13
+Placing nested widget at 18, 233
+add_widget: x = 18, xw.x = 1, y = 233, xw.y = 0
+registering ID 36 to name 'CaptionProvides2'
+add_widget: x = 18, xw.x = 0, y = 233, xw.y = 24
+registering ID 22 to name 'DownProvides2'
+add_widget: x = 18, xw.x = 22, y = 233, xw.y = 22
+registering ID 37 to name 'LevelProvides2'
+add_widget: x = 18, xw.x = 40, y = 233, xw.y = 24
+registering ID 23 to name 'UpProvides2'
+add_widget: x = 10, xw.x = 80, y = 220, xw.y = 13
+Placing nested widget at 90, 233
+add_widget: x = 90, xw.x = 1, y = 233, xw.y = 0
+registering ID 38 to name 'CaptionGlitz2'
+add_widget: x = 90, xw.x = 0, y = 233, xw.y = 24
+registering ID 24 to name 'DownGlitz2'
+add_widget: x = 90, xw.x = 22, y = 233, xw.y = 22
+registering ID 39 to name 'LevelGlitz2'
+add_widget: x = 90, xw.x = 40, y = 233, xw.y = 24
+registering ID 25 to name 'UpGlitz2'
+add_widget: x = 10, xw.x = 150, y = 220, xw.y = 13
+Placing nested widget at 160, 233
+add_widget: x = 160, xw.x = 1, y = 233, xw.y = 0
+registering ID 40 to name 'CaptionSecure2'
+add_widget: x = 160, xw.x = 0, y = 233, xw.y = 24
+registering ID 26 to name 'DownSecure2'
+add_widget: x = 160, xw.x = 22, y = 233, xw.y = 22
+registering ID 41 to name 'LevelSecure2'
+add_widget: x = 160, xw.x = 40, y = 233, xw.y = 24
+registering ID 27 to name 'UpSecure2'
+add_widget: x = 10, xw.x = 220, y = 220, xw.y = 13
+Placing nested widget at 230, 233
+add_widget: x = 230, xw.x = 1, y = 233, xw.y = 0
+registering ID 42 to name 'CaptionStealth2'
+add_widget: x = 230, xw.x = 0, y = 233, xw.y = 24
+registering ID 28 to name 'DownStealth2'
+add_widget: x = 230, xw.x = 22, y = 233, xw.y = 22
+registering ID 43 to name 'LevelStealth2'
+add_widget: x = 230, xw.x = 40, y = 233, xw.y = 24
+registering ID 29 to name 'UpStealth2'
+Placing Widget 'Facility'
+add_widget: x = 10, xw.x = 0, y = 290, xw.y = 0
+registering ID 7 to name 'Shader3'
+add_widget: x = 10, xw.x = 4, y = 290, xw.y = -2
+registering ID 44 to name 'Unit3'
+add_widget: x = 10, xw.x = 20, y = 290, xw.y = 2
+registering ID 30 to name 'RenameButton3'
+add_widget: x = 10, xw.x = 44, y = 290, xw.y = -2
+registering ID 45 to name 'Name3'
+add_widget: x = 10, xw.x = 210, y = 290, xw.y = -2
+registering ID 46 to name 'Type3'
+add_widget: x = 10, xw.x = 405, y = 290, xw.y = 14
+registering ID 47 to name 'Spaces3'
+add_widget: x = 10, xw.x = 405, y = 290, xw.y = -2
+registering ID 48 to name 'Cost3'
+add_widget: x = 10, xw.x = 500, y = 290, xw.y = 4
+registering ID 31 to name 'DeleteButton3'
+add_widget: x = 10, xw.x = 481, y = 290, xw.y = 40
+registering ID 8 to name 'NewSplash3'
+add_widget: x = 10, xw.x = 8, y = 290, xw.y = 13
+Placing nested widget at 18, 303
+add_widget: x = 18, xw.x = 1, y = 303, xw.y = 0
+registering ID 49 to name 'CaptionProvides3'
+add_widget: x = 18, xw.x = 0, y = 303, xw.y = 24
+registering ID 32 to name 'DownProvides3'
+add_widget: x = 18, xw.x = 22, y = 303, xw.y = 22
+registering ID 50 to name 'LevelProvides3'
+add_widget: x = 18, xw.x = 40, y = 303, xw.y = 24
+registering ID 33 to name 'UpProvides3'
+add_widget: x = 10, xw.x = 80, y = 290, xw.y = 13
+Placing nested widget at 90, 303
+add_widget: x = 90, xw.x = 1, y = 303, xw.y = 0
+registering ID 51 to name 'CaptionGlitz3'
+add_widget: x = 90, xw.x = 0, y = 303, xw.y = 24
+registering ID 34 to name 'DownGlitz3'
+add_widget: x = 90, xw.x = 22, y = 303, xw.y = 22
+registering ID 52 to name 'LevelGlitz3'
+add_widget: x = 90, xw.x = 40, y = 303, xw.y = 24
+registering ID 35 to name 'UpGlitz3'
+add_widget: x = 10, xw.x = 150, y = 290, xw.y = 13
+Placing nested widget at 160, 303
+add_widget: x = 160, xw.x = 1, y = 303, xw.y = 0
+registering ID 53 to name 'CaptionSecure3'
+add_widget: x = 160, xw.x = 0, y = 303, xw.y = 24
+registering ID 36 to name 'DownSecure3'
+add_widget: x = 160, xw.x = 22, y = 303, xw.y = 22
+registering ID 54 to name 'LevelSecure3'
+add_widget: x = 160, xw.x = 40, y = 303, xw.y = 24
+registering ID 37 to name 'UpSecure3'
+add_widget: x = 10, xw.x = 220, y = 290, xw.y = 13
+Placing nested widget at 230, 303
+add_widget: x = 230, xw.x = 1, y = 303, xw.y = 0
+registering ID 55 to name 'CaptionStealth3'
+add_widget: x = 230, xw.x = 0, y = 303, xw.y = 24
+registering ID 38 to name 'DownStealth3'
+add_widget: x = 230, xw.x = 22, y = 303, xw.y = 22
+registering ID 56 to name 'LevelStealth3'
+add_widget: x = 230, xw.x = 40, y = 303, xw.y = 24
+registering ID 39 to name 'UpStealth3'
+Placing Widget 'Facility'
+add_widget: x = 10, xw.x = 0, y = 360, xw.y = 0
+registering ID 9 to name 'Shader4'
+add_widget: x = 10, xw.x = 4, y = 360, xw.y = -2
+registering ID 57 to name 'Unit4'
+add_widget: x = 10, xw.x = 20, y = 360, xw.y = 2
+registering ID 40 to name 'RenameButton4'
+add_widget: x = 10, xw.x = 44, y = 360, xw.y = -2
+registering ID 58 to name 'Name4'
+add_widget: x = 10, xw.x = 210, y = 360, xw.y = -2
+registering ID 59 to name 'Type4'
+add_widget: x = 10, xw.x = 405, y = 360, xw.y = 14
+registering ID 60 to name 'Spaces4'
+add_widget: x = 10, xw.x = 405, y = 360, xw.y = -2
+registering ID 61 to name 'Cost4'
+add_widget: x = 10, xw.x = 500, y = 360, xw.y = 4
+registering ID 41 to name 'DeleteButton4'
+add_widget: x = 10, xw.x = 481, y = 360, xw.y = 40
+registering ID 10 to name 'NewSplash4'
+add_widget: x = 10, xw.x = 8, y = 360, xw.y = 13
+Placing nested widget at 18, 373
+add_widget: x = 18, xw.x = 1, y = 373, xw.y = 0
+registering ID 62 to name 'CaptionProvides4'
+add_widget: x = 18, xw.x = 0, y = 373, xw.y = 24
+registering ID 42 to name 'DownProvides4'
+add_widget: x = 18, xw.x = 22, y = 373, xw.y = 22
+registering ID 63 to name 'LevelProvides4'
+add_widget: x = 18, xw.x = 40, y = 373, xw.y = 24
+registering ID 43 to name 'UpProvides4'
+add_widget: x = 10, xw.x = 80, y = 360, xw.y = 13
+Placing nested widget at 90, 373
+add_widget: x = 90, xw.x = 1, y = 373, xw.y = 0
+registering ID 64 to name 'CaptionGlitz4'
+add_widget: x = 90, xw.x = 0, y = 373, xw.y = 24
+registering ID 44 to name 'DownGlitz4'
+add_widget: x = 90, xw.x = 22, y = 373, xw.y = 22
+registering ID 65 to name 'LevelGlitz4'
+add_widget: x = 90, xw.x = 40, y = 373, xw.y = 24
+registering ID 45 to name 'UpGlitz4'
+add_widget: x = 10, xw.x = 150, y = 360, xw.y = 13
+Placing nested widget at 160, 373
+add_widget: x = 160, xw.x = 1, y = 373, xw.y = 0
+registering ID 66 to name 'CaptionSecure4'
+add_widget: x = 160, xw.x = 0, y = 373, xw.y = 24
+registering ID 46 to name 'DownSecure4'
+add_widget: x = 160, xw.x = 22, y = 373, xw.y = 22
+registering ID 67 to name 'LevelSecure4'
+add_widget: x = 160, xw.x = 40, y = 373, xw.y = 24
+registering ID 47 to name 'UpSecure4'
+add_widget: x = 10, xw.x = 220, y = 360, xw.y = 13
+Placing nested widget at 230, 373
+add_widget: x = 230, xw.x = 1, y = 373, xw.y = 0
+registering ID 68 to name 'CaptionStealth4'
+add_widget: x = 230, xw.x = 0, y = 373, xw.y = 24
+registering ID 48 to name 'DownStealth4'
+add_widget: x = 230, xw.x = 22, y = 373, xw.y = 22
+registering ID 69 to name 'LevelStealth4'
+add_widget: x = 230, xw.x = 40, y = 373, xw.y = 24
+registering ID 49 to name 'UpStealth4'
+Placing Widget 'Facility'
+add_widget: x = 10, xw.x = 0, y = 430, xw.y = 0
+registering ID 11 to name 'Shader5'
+add_widget: x = 10, xw.x = 4, y = 430, xw.y = -2
+registering ID 70 to name 'Unit5'
+add_widget: x = 10, xw.x = 20, y = 430, xw.y = 2
+registering ID 50 to name 'RenameButton5'
+add_widget: x = 10, xw.x = 44, y = 430, xw.y = -2
+registering ID 71 to name 'Name5'
+add_widget: x = 10, xw.x = 210, y = 430, xw.y = -2
+registering ID 72 to name 'Type5'
+add_widget: x = 10, xw.x = 405, y = 430, xw.y = 14
+registering ID 73 to name 'Spaces5'
+add_widget: x = 10, xw.x = 405, y = 430, xw.y = -2
+registering ID 74 to name 'Cost5'
+add_widget: x = 10, xw.x = 500, y = 430, xw.y = 4
+registering ID 51 to name 'DeleteButton5'
+add_widget: x = 10, xw.x = 481, y = 430, xw.y = 40
+registering ID 12 to name 'NewSplash5'
+add_widget: x = 10, xw.x = 8, y = 430, xw.y = 13
+Placing nested widget at 18, 443
+add_widget: x = 18, xw.x = 1, y = 443, xw.y = 0
+registering ID 75 to name 'CaptionProvides5'
+add_widget: x = 18, xw.x = 0, y = 443, xw.y = 24
+registering ID 52 to name 'DownProvides5'
+add_widget: x = 18, xw.x = 22, y = 443, xw.y = 22
+registering ID 76 to name 'LevelProvides5'
+add_widget: x = 18, xw.x = 40, y = 443, xw.y = 24
+registering ID 53 to name 'UpProvides5'
+add_widget: x = 10, xw.x = 80, y = 430, xw.y = 13
+Placing nested widget at 90, 443
+add_widget: x = 90, xw.x = 1, y = 443, xw.y = 0
+registering ID 77 to name 'CaptionGlitz5'
+add_widget: x = 90, xw.x = 0, y = 443, xw.y = 24
+registering ID 54 to name 'DownGlitz5'
+add_widget: x = 90, xw.x = 22, y = 443, xw.y = 22
+registering ID 78 to name 'LevelGlitz5'
+add_widget: x = 90, xw.x = 40, y = 443, xw.y = 24
+registering ID 55 to name 'UpGlitz5'
+add_widget: x = 10, xw.x = 150, y = 430, xw.y = 13
+Placing nested widget at 160, 443
+add_widget: x = 160, xw.x = 1, y = 443, xw.y = 0
+registering ID 79 to name 'CaptionSecure5'
+add_widget: x = 160, xw.x = 0, y = 443, xw.y = 24
+registering ID 56 to name 'DownSecure5'
+add_widget: x = 160, xw.x = 22, y = 443, xw.y = 22
+registering ID 80 to name 'LevelSecure5'
+add_widget: x = 160, xw.x = 40, y = 443, xw.y = 24
+registering ID 57 to name 'UpSecure5'
+add_widget: x = 10, xw.x = 220, y = 430, xw.y = 13
+Placing nested widget at 230, 443
+add_widget: x = 230, xw.x = 1, y = 443, xw.y = 0
+registering ID 81 to name 'CaptionStealth5'
+add_widget: x = 230, xw.x = 0, y = 443, xw.y = 24
+registering ID 58 to name 'DownStealth5'
+add_widget: x = 230, xw.x = 22, y = 443, xw.y = 22
+registering ID 82 to name 'LevelStealth5'
+add_widget: x = 230, xw.x = 40, y = 443, xw.y = 24
+registering ID 59 to name 'UpStealth5'
+registering ID 60 to name 'NewButton'
+registering ID 61 to name 'BuyButton'
+registering ID 62 to name 'RevertButton'
+registering ID 63 to name 'BackButton'
+Setting up MessageBox
+Interface Loaded
+Game Flags Initialized
+Brothel Images Set
+itemsx files:
+clobber_extension: s = .\Resources\Data\Items.itemsx
+clobber_extension: pos = 22
+clobber_extension: s = .\Resources\Data\Items.itemsx
+clobber_extension: base = .\Resources\Data\Items
+	adding .\Resources\Data\Items.itemsx
+	under .\Resources\Data\Items
+	result .\Resources\Data\Items.itemsx
+items files:
+walking map...
+	key = .\Resources\Data\Items
+	path = .\Resources\Data\Items.itemsx
+		loading xml
+Loading China Dress
+	min money = 0
+	max money = 200
+Loading 9-5'ers
+	min money = 0
+	max money = 10
+Loading Aggressive Girl
+	min money = 0
+	max money = 10
+Loading Archer Elf
+	min money = 0
+	max money = 10
+Loading ArinKoohGirl
+	min money = 0
+	max money = 200
+Loading Asari
+	min money = 0
+	max money = 10
+Loading Bather
+	min money = 0
+	max money = 10
+Loading Blood Elf
+	min money = 0
+	max money = 10
+Loading Blue Haired Girl
+	min money = 0
+	max money = 10
+Loading Book Worms
+	min money = 0
+	max money = 10
+Loading Bunny Girl
+	min money = 0
+	max money = 200
+Loading Cat Girl
+	min money = 0
+	max money = 400
+Loading Cat Girl 3
+	min money = 0
+	max money = 10
+Loading Convicts
+	min money = 0
+	max money = 10
+Loading Cowgirl
+	min money = 0
+	max money = 10
+Loading Dangerous Girl
+	min money = 0
+	max money = 400
+Loading DCAmazon
+	min money = 0
+	max money = 10
+Loading DCSorceress
+	min money = 0
+	max money = 10
+Loading Demon G2
+	min money = 0
+	max money = 400
+Loading Demon Girl3
+	min money = 0
+	max money = 400
+Loading Demon Girl4
+	min money = 0
+	max money = 400
+Loading Draenei
+	min money = 0
+	max money = 10
+Loading Elf Girl
+	min money = 0
+	max money = 10
+Loading Elf Girl2
+	min money = 0
+	max money = 10
+Loading Elf Harem Blonde
+	min money = 0
+	max money = 10
+Loading Elf Harem Blonde Princess
+	min money = 0
+	max money = 10
+Loading Elf Harem Blue
+	min money = 0
+	max money = 10
+Loading Elf Harem Brunette
+	min money = 0
+	max money = 10
+Loading Elf Harem Dark
+	min money = 0
+	max money = 10
+Loading Elf Harem Red
+	min money = 0
+	max money = 10
+Loading Elf Harem Silver
+	min money = 0
+	max money = 10
+Loading Fairy
+	min money = 0
+	max money = 10
+Loading Goth
+	min money = 0
+	max money = 10
+Loading Goth2
+	min money = 0
+	max money = 10
+Loading Hadaka Apron
+	min money = 0
+	max money = 10
+Loading Horny Girl
+	min money = 0
+	max money = 200
+Loading Kimono Girl
+	min money = 0
+	max money = 10
+Loading Lady-in-Waiting
+	min money = 100
+	max money = 1000
+Loading Loney Girl
+	min money = 0
+	max money = 10
+Loading Magic Knight
+	min money = 50
+	max money = 1000
+Loading Maid
+	min money = 0
+	max money = 10
+Loading MILF2
+	min money = 0
+	max money = 10
+Loading Mithra
+	min money = 0
+	max money = 10
+Loading Night Elf
+	min money = 0
+	max money = 10
+Loading nun
+	min money = 0
+	max money = 10
+Loading nun2
+	min money = 0
+	max money = 10
+Loading Nurses
+	min money = 0
+	max money = 10
+Loading Orc Girl
+	min money = 0
+	max money = 10
+Loading Pirate Girl
+	min money = 0
+	max money = 10
+Loading Princess
+	min money = 0
+	max money = 10
+Loading Quiet Girl
+	min money = 0
+	max money = 200
+Loading random student
+	min money = 0
+	max money = 10
+Loading Rocker
+	min money = 0
+	max money = 10
+Loading Royal Guard1
+	min money = 0
+	max money = 10
+Loading Royal Guard2
+	min money = 0
+	max money = 10
+Loading Royal Guard3
+	min money = 0
+	max money = 10
+Loading School Girl
+	min money = 0
+	max money = 10
+Loading Sex Priest
+	min money = 0
+	max money = 200
+Loading Slime
+	min money = 0
+	max money = 10
+Loading Teachers
+	min money = 0
+	max money = 10
+Loading Togruta
+	min money = 0
+	max money = 10
+Loading Troll Girl
+	min money = 0
+	max money = 10
+Loading Troubadour
+	min money = 0
+	max money = 10
+Loading Twi'lek
+	min money = 0
+	max money = 10
+Loading Vampire
+	min money = 0
+	max money = 10
+Loading waitresses
+	min money = 0
+	max money = 10
+Loading Warrior Elf
+	min money = 0
+	max money = 10
+Loading Were Girl
+	min money = 0
+	max money = 10
+Loading Werewolf
+	min money = 0
+	max money = 10
+Loading White Mage
+	min money = 0
+	max money = 10
+Loading Witch Girl
+	min money = 0
+	max money = 200
+Loading Young Elf2
+	min money = 0
+	max money = 10
+Loading Young Woman
+	min money = 0
+	max money = 10
+Loading girls
+Loading gang Data
+Loading brothel Data
+***************** loading Player ******************
+***************** loading dungeon *****************
+Loading customers
+***************** Loading rivals *****************
+loaded rival: West Coast Mafia
+loaded rival: Scarred Assassins
+loaded rival: Rage Vigilantes
+loaded rival: East Coast Family
+************ Loading players inventory ************
+***************** Loading brothels ****************
+Loading brothel: Test
+Loading clinic Data
+***************** Loading clinic ****************
+Loading studio Data
+***************** Loading studio ****************
+Loading studio: Studio
+Loading arena Data
+***************** Loading arena ****************
+Loading arena: Arena
+Loading centre Data
+***************** Loading centre ****************
+Loading centre: Centre
+Loading house Data
+***************** Loading house ****************
+Loading house: House
+Loading global triggers
+Loading default images
+Brothel 1 not found in list!
+Brothel 2 not found in list!
+Brothel 3 not found in list!
+Brothel 4 not found in list!
+Brothel 5 not found in list!
+Brothel 1 not found in list!
+Brothel 2 not found in list!
+Brothel 3 not found in list!
+Brothel 4 not found in list!
+Brothel 5 not found in list!
+Brothel 1 not found in list!
+Brothel 2 not found in list!
+Brothel 3 not found in list!
+Brothel 4 not found in list!
+Brothel 5 not found in list!
+Shutting Down

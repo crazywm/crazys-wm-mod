@@ -1,0 +1,177 @@
+﻿<Girls>
+	<Girl
+		Name="China Dress"
+		Desc="This girl can always be found wearing a China Dress."
+		Human="Yes"
+		Catacomb="No">
+		
+		<Gold Min = '0' Max = '200' />
+		<Stat  Name   = 'Charisma'
+		       Min    = '5'
+		       Max    = '55'
+		/>
+		<Stat  Name   = 'Happiness'
+		       Min    = '100'
+		       Max    = '100'
+		/>
+		<Stat  Name   = 'Libido'
+		       Min    = '0'
+		       Max    = '50'
+		/>
+		<Stat  Name   = 'Constitution'
+		       Min    = '5'
+		       Max    = '50'
+		/>
+		<Stat  Name   = 'Intelligence'
+		       Min    = '0'
+		       Max    = '100'
+		/>
+		<Stat  Name   = 'Confidence'
+		       Min    = '0'
+		       Max    = '50'
+		/>
+		<Stat  Name   = 'Mana'
+		       Min    = '0'
+		       Max    = '30'
+		/>
+		<Stat  Name   = 'Agility'
+		       Min    = '5'
+		       Max    = '50'
+		/>
+		<Stat  Name   = 'Fame'
+		       Min    = '0'
+		       Max    = '0'
+		/>
+		<Stat  Name   = 'Level'
+		       Min    = '0'
+		       Max    = '0'
+		/>
+		<Stat  Name   = 'AskPrice'
+		       Min    = '0'
+		       Max    = '0'
+		/>
+		<Stat  Name   = 'House'
+		       Min    = '0'
+		       Max    = '0'
+		/>
+		<Stat  Name   = 'Exp'
+		       Min    = '0'
+		       Max    = '0'
+		/>
+		<Stat  Name   = 'Age'
+		       Min    = '15'
+		       Max    = '30'
+		/>
+		<Stat  Name   = 'Obedience'
+		       Min    = '0'
+		       Max    = '20'
+		/>
+		<Stat  Name   = 'Spirit'
+		       Min    = '5'
+		       Max    = '50'
+		/>
+		<Stat  Name   = 'Beauty'
+		       Min    = '30'
+		       Max    = '70'
+		/>
+		<Stat  Name   = 'Tiredness'
+		       Min    = '0'
+		       Max    = '0'
+		/>
+		<Stat  Name   = 'Health'
+		       Min    = '100'
+		       Max    = '100'
+		/>
+		<Stat  Name   = 'PCFear'
+		       Min    = '0'
+		       Max    = '0'
+		/>
+		<Stat  Name   = 'PCLove'
+		       Min    = '0'
+		       Max    = '0'
+		/>
+		<Stat  Name   = 'PCHate'
+		       Min    = '0'
+		       Max    = '0'
+		/>
+		<Skill Name   = 'Anal'
+		       Min    = '0'
+		       Max    = '0'
+		/>
+		<Skill Name   = 'Magic'
+		       Min    = '0'
+		       Max    = '30'
+		/>
+		<Skill Name   = 'BDSM'
+		       Min    = '0'
+		       Max    = '0'
+		/>
+		<Skill Name   = 'NormalSex'
+		       Min    = '10'
+		       Max    = '40'
+		/>
+		<Skill Name   = 'Beastiality'
+		       Min    = '0'
+		       Max    = '0'
+		/>
+		<Skill Name   = 'Group'
+		       Min    = '0'
+		       Max    = '0'
+		/>
+		<Skill Name   = 'Lesbian'
+		       Min    = '0'
+		       Max    = '0'
+		/>
+		<Skill Name   = 'Service'
+		       Min    = '20'
+		       Max    = '40'
+		/>
+		<Skill Name   = 'Strip'
+		       Min    = '0'
+		       Max    = '5'
+		/>
+		<Skill Name   = 'Combat'
+		       Min    = '0'
+		       Max    = '10'
+		/>
+		<Trait Name    = 'Lesbian'
+		       Percent = '15'
+		/>
+		<Trait Name    = 'Cool Person'
+		       Percent = '15'
+		/>
+		<Trait Name    = 'Good Kisser'
+		       Percent = '15'
+		/>
+		<Trait Name    = 'Big Boobs'
+		       Percent = '15'
+		/>
+		<Trait Name    = 'Nervous'
+		       Percent = '15'
+		/>
+		<Trait Name    = 'Nymphomaniac'
+		       Percent = '15'
+		/>
+		<Trait Name    = 'Cute'
+		       Percent = '15'
+		/>
+		<Trait Name    = 'Strong Magic'
+		       Percent = '15'
+		/>
+		<Trait Name    = 'Nerd'
+		       Percent = '15'
+		/>
+		<Trait Name    = 'Fast orgasms'
+		       Percent = '15'
+		/>
+		<Trait Name    = 'Clumsy'
+		       Percent = '15'
+		/>
+		<Trait Name    = 'Quick Learner'
+		       Percent = '15'
+		/>
+		<Trait Name    = 'Psychic'
+		       Percent = '15'
+		/>
+	</Girl>
+</Girls>

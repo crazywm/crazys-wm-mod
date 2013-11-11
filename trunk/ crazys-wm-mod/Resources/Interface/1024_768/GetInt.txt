@@ -1,0 +1,6 @@
+224 127 352 160 1	WINDOW - XPos, YPos, WIDTH, HEIGHT, BORDERSIZE
+32 104 128 32		OK BUTTON - XPos, YPos, WIDTH, HEIGHT
+192 104 128 32		CANCEL BUTTON - XPos, YPos, WIDTH, HEIGHT
+32 32 128 32 16		Enter number text - xpos, ypos, width, height, fontsize
+160 32 160 28 1		Editbox - xpos, ypos, width, height, bordersize
+
