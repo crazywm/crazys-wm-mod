@@ -1,0 +1,180 @@
+/*
+ * Copyright 2009, 2010, The Pink Petal Development Team.
+ * The Pink Petal Devloment Team are defined as the game's coders 
+ * who meet on http://pinkpetal.co.cc
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+#include "cJobManager.h"
+#include "cBrothel.h"
+#include "cCustomers.h"
+#include "cRng.h"
+#include "cInventory.h"
+#include "sConfig.h"
+#include "cRival.h"
+#include <sstream>
+#include "CLog.h"
+#include "cTrainable.h"
+#include "cTariff.h"
+#include "cGold.h"
+#include "cGangs.h"
+#include "cMessageBox.h"
+#include <algorithm>
+
+extern cRng g_Dice;
+extern CLog g_LogFile;
+extern cCustomers g_Customers;
+extern cInventory g_InvManager;
+extern cBrothelManager g_Brothels;
+extern cGangManager g_Gangs;
+extern cMessageQue g_MessageQue;
+extern cGold g_Gold;
+
+bool cJobManager::WorkCustService(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+{
+	int numCusts = 0; // The number of customers she can handle
+	int serviced = 0;
+	sCustomer Cust;
+	
+	string message = "";
+	if(Preprocessing(ACTION_WORKCUSTSERV, girl, brothel, DayNight, summary, message))	// they refuse to work in customer service
+		return true;
+
+	// put that shit away, you'll scare off the customers!
+	g_Girls.UnequipCombat(girl);
+
+	// Note: Customer service needs to be done last, after all the whores have worked.
+	
+	
+	message += "She worked as Customer Service.";
+	// Complications
+	int roll = g_Dice%100;
+	if (roll <= 5)
+	{
+		message += " Some of the patrons abused her during the shift.";
+		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCUSTSERV, -1, true);
+	}
+
+	else if (roll >= 75) {
+		message += " She had a pleasant time working.";
+		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCUSTSERV, +3, true);
+	}
+	else
+	{
+		message += " The shift passed uneventfully.";
+	}
+	// Decide how many customers the girl can handle
+	if (g_Girls.GetStat(girl, STAT_CONFIDENCE) > 0) 
+		numCusts += g_Girls.GetStat(girl, STAT_CONFIDENCE) / 10; // 0-10 customers for confidence
+	if (g_Girls.GetStat(girl, STAT_SPIRIT) > 0) 
+		numCusts += g_Girls.GetStat(girl, STAT_SPIRIT) / 20; // 0-5 customers for spirit
+	if (g_Girls.GetSkill(girl, SKILL_SERVICE) > 0)
+		numCusts += g_Girls.GetSkill(girl, SKILL_SERVICE) / 25; // 0-4 customers for service
+	numCusts++;
+	// A single girl working customer service can take care of 1-20 customers in a week.
+	// So she can take care of lots of customers. It's not like she's fucking them.
+
+	// Add a small amount of happiness to each serviced customer
+	// First, let's find out what her happiness bonus is
+	int bonus = 0;
+	if (g_Girls.GetStat(girl, STAT_CHARISMA) > 0)
+		bonus += g_Girls.GetStat(girl, STAT_CHARISMA) / 20;
+	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 0)
+		bonus += g_Girls.GetStat(girl, STAT_BEAUTY) / 20;
+	// Beauty and charisma will only take you so far, if you don't know how to do service.
+	if (g_Girls.GetSkill(girl, SKILL_SERVICE) > 0)
+		bonus += g_Girls.GetSkill(girl, SKILL_SERVICE) / 10;
+	// So this means a maximum of 20 extra points of happiness to each
+	// customer serviced by customer service, if a girl has 100 charisma,
+	// beauty, and service.
+	
+	// Let's make customers angry if the girl sucks at customer service.
+	if (bonus < 5)
+	{
+		bonus = -20;
+		message += "\n\nHer efforts only made the customers angrier.";
+		//And she's REALLY not going to like this job if she's failing at it, so...
+		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCUSTSERV, -5, true);
+	}
+
+	// Now let's take care of our neglected customers.
+	for (int i=0; i<numCusts; i++)
+	{
+		if (g_Customers.GetNumCustomers() > 0)
+		{
+			g_Customers.GetCustomer(Cust, brothel);
+			// Let's find out how much happiness they started with.
+			// They're not going to start out very happy. They're seeing customer service, after all.
+			Cust.m_Stats[STAT_HAPPINESS] = 22 + g_Dice%10 + g_Dice%10; // average 31 range 22 to 40
+			// Now apply her happiness bonus.
+			Cust.m_Stats[STAT_HAPPINESS] += bonus;
+			// update how happy the customers are on average
+			brothel->m_Happiness += Cust.m_Stats[STAT_HAPPINESS];
+			// And decrement the number of customers to be taken care of
+			g_Customers.AdjustNumCustomers(-1);
+			serviced++;
+		}
+		else
+		{
+			//If there aren't enough customers to take care of, time to quit.
+			girl->m_Events.AddMessage(girl->m_Realname + " ran out of customers to take care of.", IMGTYPE_PROFILE, DayNight);
+			break;
+		}
+	}
+	// So in the end, customer service can take care of lots of customers, but won't do it 
+	// as well as good service from a whore. This is acceptable to me.
+	message += ("\n\n" + girl->m_Realname + " took care of " + intstring(serviced) + " customers this shift.");
+	
+	/* Note that any customers that aren't handled by either customer service or a whore count as a 0 in the
+	 * average for the brothel's customer happiness. So customer service leaving customers with 27-60 in their
+	 * happiness stat is going to be a huge impact. Again, not as good as if the whores do their job, but better
+	 * than nothing. */
+
+	// Bad customer service reps will leave the customer with 2-20 happiness. Bad customer service is at least better than no customer service.
+#if 0
+	string debug = "";
+	debug += ("There were " + intstring(g_Customers.GetNumCustomers()) + " customers.\n");
+	debug += ("She could have handled " + intstring(numCusts) + " customers.\n");
+	girl->m_Events.AddMessage(debug, IMGTYPE_PROFILE, EVENT_DEBUG);
+#endif
+	// Now pay the girl.
+	girl->m_Pay += 50;
+	g_Gold.staff_wages(50);  // wages come from you
+	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
+	
+	// Raise skills
+	int xp = 5, libido = 1, skill = 3;
+
+	if (g_Girls.HasTrait(girl, "Quick Learner"))
+	{
+		skill += 1;
+		xp += 3;
+	}
+	else if (g_Girls.HasTrait(girl, "Slow Learner"))
+	{
+		skill -= 1;
+		xp -= 3;
+	}
+
+	if (g_Girls.HasTrait(girl, "Nymphomaniac"))
+		libido += 2;
+
+	g_Girls.UpdateStat(girl, STAT_FAME, 1);
+	g_Girls.UpdateStat(girl, STAT_EXP, xp);
+	g_Girls.UpdateSkill(girl, SKILL_SERVICE, skill);
+	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	
+	return false;
+}
+	

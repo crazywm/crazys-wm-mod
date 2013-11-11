@@ -1,0 +1,6 @@
+<Triggers>
+	<Trigger	Type	= "Meet"
+				Where	= "Arena"
+				File	= "MeetArena.script"
+	/>
+</Triggers>

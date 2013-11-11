@@ -1,0 +1,192 @@
+<Screen>
+
+	<Window	Name= "Dungeon Window"
+		XPos	= "0"
+		YPos	= "0"
+		Width	= "800"
+		Height	= "600"
+		Border	= "1"
+	/>
+
+
+  <Text	Name	= "DungeonHeader"
+		Text	= "Dungeon Screen"
+		XPos	= "500"
+		YPos	= "2"
+		Width	= "380"
+		Height	= "32"
+		FontSize= "12"
+	/>
+
+  <ListBox
+		Name	= "GirlList"
+		XPos	= "410"
+		YPos	= "20"
+		Width	= "380"
+		Height	= "451"
+		Border	= "1"
+		Events	= "true"
+		Multi	= "true"
+		ShowHeaders = "true"
+		HeaderDiv = "true"
+		HeaderClicksSort = "true"
+	>
+		<Column
+			Name	= "Name"
+			Header	= "Girl Name"
+			Offset	= "0"
+		/>
+		<Column
+			Name	= "Health"
+			Header	= "HP"
+			Offset	= "140"
+		/>
+		<Column
+			Name	= "Rebelliousness"
+			Header	= "Rbl"
+			Offset	= "170"
+		/>
+		<Column
+			Name	= "Happiness"
+			Header	= "Hpy"
+			Offset	= "200"
+		/>
+		<Column
+			Name	= "Duration"
+			Header	= "Wks"
+			Offset	= "230"
+		/>
+		<Column
+			Name	= "Feeding"
+			Header	= "Fed"
+			Offset	= "260"
+		/>
+		<Column
+			Name	= "Tortured"
+			Header	= "Tort"
+			Offset	= "290"
+		/>
+		<Column
+			Name	= "Reason"
+			Header	= "Reason"
+			Offset	= "320"
+		/>
+	</ListBox>
+
+  <Image Name	= "GirlImage"
+    File		= "blank.png"
+    XPos		= "8"
+    YPos		= "20"
+    Width		= "394"
+    Height		= "574"
+	/>
+
+  <Button	Name	= "DetailsButton"
+		Image		= "ViewDetails"
+		XPos		= "670"
+		YPos		= "480"
+		Width		= "120"
+		Height		= "24"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+
+  <Button	Name	= "StopFeedingButton"
+		Image		= "NoFeed"
+		XPos		= "410"
+		YPos		= "480"
+		Width		= "120"
+		Height		= "24"
+		Transparency    = "true"
+		Scale		= "true"
+	/>
+  <Button	Name	= "AllowFoodButton"
+		Image		= "Feed"
+		XPos		= "410"
+		YPos		= "510"
+		Width		= "120"
+		Height		= "24"
+		Transparency    = "true"
+		Scale		= "true"
+	/>
+
+  <Button	Name	= "BrandSlaveButton"
+		Image		= "ForceSlave"
+		XPos		= "410"
+		YPos		= "570"
+		Width		= "120"
+		Height		= "24"
+		Transparency    = "true"
+		Scale		= "true"
+	/>
+
+  <Button	Name	= "SellButton"
+		Image		= "SellSlave"
+		XPos		= "540"
+		YPos		= "570"
+		Width		= "120"
+		Height		= "24"
+		Transparency    = "true"
+		Scale		= "true"
+	/>
+
+  <Button	Name	= "TortureButton"
+		Image		= "Torture"
+		XPos		= "410"
+		YPos		= "540"
+		Width		= "120"
+		Height		= "24"
+		Transparency    = "true"
+		Scale		= "true"
+	/>
+
+  <Button	Name	= "InteractButton"
+		Image		= "Talk"
+		XPos		= "670"
+		YPos		= "510"
+		Width		= "120"
+		Height		= "24"
+		Transparency    = "true"
+		Scale		= "true"
+	/>
+
+  <Button	Name	= "ReleaseButton"
+		Image		= "Release"
+		XPos		= "540"
+		YPos		= "480"
+		Width		= "120"
+		Height		= "24"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+
+  <Button	Name	= "ReleaseAllButton"
+		Image		= "ReleaseAllGirls"
+		XPos		= "540"
+		YPos		= "510"
+		Width		= "120"
+		Height		= "24"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+  <Button	Name	= "ReleaseCustButton"
+		Image		= "ReleaseAllCustomers"
+		XPos		= "540"
+		YPos		= "540"
+		Width		= "120"
+		Height		= "24"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+
+  <Button	Name	= "BackButton"
+		Image		= "Back"
+		XPos		= "670"
+		YPos		= "570"
+		Width		= "120"
+		Height		= "24"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+
+</Screen>

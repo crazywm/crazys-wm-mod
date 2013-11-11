@@ -1,0 +1,795 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Interface">
+      <UniqueIdentifier>{45e1fadb-59fa-4b5f-a234-0196eb8c5552}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Misc">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Graphics main">
+      <UniqueIdentifier>{53ecb81b-8f38-4e3b-ad8c-fdc8c9b9bcc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObjects">
+      <UniqueIdentifier>{7c4e353f-fa80-4bab-a00f-2ebdf9856414}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Logic">
+      <UniqueIdentifier>{1a7330c5-5700-4581-a2af-2223dd338822}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics Rendering">
+      <UniqueIdentifier>{d307b9e8-4294-4b64-9f84-00c3d504b101}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Screens">
+      <UniqueIdentifier>{3f92ab86-39c3-4d6b-accd-b2328d1176c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{24f0caec-6a77-4138-b5ac-b6b737b85aed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Jobs">
+      <UniqueIdentifier>{42157a68-2793-4e61-a3a1-4cf4b2701301}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lua">
+      <UniqueIdentifier>{c850385d-3f3b-4997-917b-f0c51e12733d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lua\src">
+      <UniqueIdentifier>{526b1f4c-881d-4ddf-8cc7-9f9245dbe807}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="cButton.cpp">
+      <Filter>Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="cCheckBox.cpp">
+      <Filter>Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="cChoiceMessage.cpp">
+      <Filter>Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="cEditBox.cpp">
+      <Filter>Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="cImageItem.cpp">
+      <Filter>Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="cInterfaceWindow.cpp">
+      <Filter>Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="cListBox.cpp">
+      <Filter>Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="cMessageBox.cpp">
+      <Filter>Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="cSlider.cpp">
+      <Filter>Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="cWindowManager.cpp">
+      <Filter>Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="InterfaceGlobals.cpp">
+      <Filter>Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="InterfaceProcesses.cpp">
+      <Filter>Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="cGetStringScreenManager.cpp">
+      <Filter>Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="cGold.cpp">
+      <Filter>Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="cNameList.cpp">
+      <Filter>Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="cRng.cpp">
+      <Filter>Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="cTariff.cpp">
+      <Filter>Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="cTrainable.cpp">
+      <Filter>Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="cTraits.cpp">
+      <Filter>Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="DirPath.cpp">
+      <Filter>Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="FileList.cpp">
+      <Filter>Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="GameFlags.cpp">
+      <Filter>Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="sConfig.cpp">
+      <Filter>Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="sFacility.cpp">
+      <Filter>Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="sFacilityList.cpp">
+      <Filter>Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="strnatcmp.cpp">
+      <Filter>Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="tinystr.cpp">
+      <Filter>Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxml.cpp">
+      <Filter>Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxmlerror.cpp">
+      <Filter>Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxmlparser.cpp">
+      <Filter>Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="XmlUtil.cpp">
+      <Filter>Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="cColor.cpp">
+      <Filter>Graphics main</Filter>
+    </ClCompile>
+    <ClCompile Include="CGameObject.cpp">
+      <Filter>Graphics main</Filter>
+    </ClCompile>
+    <ClCompile Include="CGraphics.cpp">
+      <Filter>Graphics main</Filter>
+    </ClCompile>
+    <ClCompile Include="CResourceManager.cpp">
+      <Filter>Graphics main</Filter>
+    </ClCompile>
+    <ClCompile Include="cBrothel.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="cClinic.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="cMovieStudio.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="cBuilding.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="cCustomers.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="cGangs.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="cGirls.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="cInventory.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="cRival.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="cEvents.cpp">
+      <Filter>Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="cGameScript.cpp">
+      <Filter>Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="CLog.cpp">
+      <Filter>Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="cScriptManager.cpp">
+      <Filter>Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="cScripts.cpp">
+      <Filter>Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="cTriggers.cpp">
+      <Filter>Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="cAnimatedSurface.cpp">
+      <Filter>Graphics Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="CFont.cpp">
+      <Filter>Graphics Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="CRenderQue.cpp">
+      <Filter>Graphics Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="CSurface.cpp">
+      <Filter>Graphics Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="cScreenBank.cpp">
+      <Filter>Game Screens</Filter>
+    </ClCompile>
+    <ClCompile Include="cScreenBuildingManagement.cpp">
+      <Filter>Game Screens</Filter>
+    </ClCompile>
+    <ClCompile Include="cScreenBuildingSetup.cpp">
+      <Filter>Game Screens</Filter>
+    </ClCompile>
+    <ClCompile Include="cScreenDungeon.cpp">
+      <Filter>Game Screens</Filter>
+    </ClCompile>
+    <ClCompile Include="cScreenGangs.cpp">
+      <Filter>Game Screens</Filter>
+    </ClCompile>
+    <ClCompile Include="cScreenGirlDetails.cpp">
+      <Filter>Game Screens</Filter>
+    </ClCompile>
+    <ClCompile Include="cScreenGirlManagement.cpp">
+      <Filter>Game Screens</Filter>
+    </ClCompile>
+    <ClCompile Include="cScreenClinicManagement.cpp">
+      <Filter>Game Screens</Filter>
+    </ClCompile>
+    <ClCompile Include="cScreenStudioManagement.cpp">
+      <Filter>Game Screens</Filter>
+    </ClCompile>
+    <ClCompile Include="cScreenMovieMaker.cpp">
+      <Filter>Game Screens</Filter>
+    </ClCompile>
+    <ClCompile Include="cScreenHouse.cpp">
+      <Filter>Game Screens</Filter>
+    </ClCompile>
+    <ClCompile Include="cScreenItemManagement.cpp">
+      <Filter>Game Screens</Filter>
+    </ClCompile>
+    <ClCompile Include="cScreenMayor.cpp">
+      <Filter>Game Screens</Filter>
+    </ClCompile>
+    <ClCompile Include="cScreenPrison.cpp">
+      <Filter>Game Screens</Filter>
+    </ClCompile>
+    <ClCompile Include="cScreenSlaveMarket.cpp">
+      <Filter>Game Screens</Filter>
+    </ClCompile>
+    <ClCompile Include="cScreenTown.cpp">
+      <Filter>Game Screens</Filter>
+    </ClCompile>
+    <ClCompile Include="cJobManager.cpp">
+      <Filter>Jobs</Filter>
+    </ClCompile>
+    <ClCompile Include="cWorkCleaning.cpp">
+      <Filter>Jobs</Filter>
+    </ClCompile>
+    <ClCompile Include="WorkAdvertising.cpp">
+      <Filter>Jobs</Filter>
+    </ClCompile>
+    <ClCompile Include="WorkBar.cpp">
+      <Filter>Jobs</Filter>
+    </ClCompile>
+    <ClCompile Include="WorkBeastCapture.cpp">
+      <Filter>Jobs</Filter>
+    </ClCompile>
+    <ClCompile Include="WorkBeastCare.cpp">
+      <Filter>Jobs</Filter>
+    </ClCompile>
+    <ClCompile Include="WorkBrothelMassusse.cpp">
+      <Filter>Jobs</Filter>
+    </ClCompile>
+    <ClCompile Include="WorkExploreCatacombs.cpp">
+      <Filter>Jobs</Filter>
+    </ClCompile>
+    <ClCompile Include="WorkFluffer.cpp">
+      <Filter>Jobs</Filter>
+    </ClCompile>
+    <ClCompile Include="WorkFreetime.cpp">
+      <Filter>Jobs</Filter>
+    </ClCompile>
+    <ClCompile Include="WorkHall.cpp">
+      <Filter>Jobs</Filter>
+    </ClCompile>
+    <ClCompile Include="WorkMatron.cpp">
+      <Filter>Jobs</Filter>
+    </ClCompile>
+    <ClCompile Include="WorkSecurity.cpp">
+      <Filter>Jobs</Filter>
+    </ClCompile>
+    <ClCompile Include="WorkStripper.cpp">
+      <Filter>Jobs</Filter>
+    </ClCompile>
+    <ClCompile Include="WorkTorturer.cpp">
+      <Filter>Jobs</Filter>
+    </ClCompile>
+    <ClCompile Include="WorkWhore.cpp">
+      <Filter>Jobs</Filter>
+    </ClCompile>
+    <ClCompile Include="WorkDoctor.cpp">
+      <Filter>Jobs</Filter>
+    </ClCompile>
+    <ClCompile Include="WorkHealing.cpp">
+      <Filter>Jobs</Filter>
+    </ClCompile>
+    <ClCompile Include="WorkFilmAnal.cpp">
+      <Filter>Jobs</Filter>
+    </ClCompile>
+    <ClCompile Include="WorkFilmLesbian.cpp">
+      <Filter>Jobs</Filter>
+    </ClCompile>
+    <ClCompile Include="WorkFilmBondage.cpp">
+      <Filter>Jobs</Filter>
+    </ClCompile>
+    <ClCompile Include="WorkFilmBeast.cpp">
+      <Filter>Jobs</Filter>
+    </ClCompile>
+    <ClCompile Include="WorkCameraMage.cpp">
+      <Filter>Jobs</Filter>
+    </ClCompile>
+    <ClCompile Include="WorkCrystalPurifier.cpp">
+      <Filter>Jobs</Filter>
+    </ClCompile>
+    <ClCompile Include="cLuaMenu.cpp">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="cLuaScript.cpp">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="cScriptUtils.cpp">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\lapi.c">
+      <Filter>Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\lauxlib.c">
+      <Filter>Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\lbaselib.c">
+      <Filter>Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\lcode.c">
+      <Filter>Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\ldblib.c">
+      <Filter>Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\ldebug.c">
+      <Filter>Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\ldo.c">
+      <Filter>Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\ldump.c">
+      <Filter>Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\lfunc.c">
+      <Filter>Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\lgc.c">
+      <Filter>Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\linit.c">
+      <Filter>Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\liolib.c">
+      <Filter>Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\llex.c">
+      <Filter>Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\lmathlib.c">
+      <Filter>Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\lmem.c">
+      <Filter>Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\loadlib.c">
+      <Filter>Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\lobject.c">
+      <Filter>Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\lopcodes.c">
+      <Filter>Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\loslib.c">
+      <Filter>Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\lparser.c">
+      <Filter>Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\lstate.c">
+      <Filter>Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\lstring.c">
+      <Filter>Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\lstrlib.c">
+      <Filter>Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\ltable.c">
+      <Filter>Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\ltablib.c">
+      <Filter>Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\ltm.c">
+      <Filter>Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\lundump.c">
+      <Filter>Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\lvm.c">
+      <Filter>Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="lua\src\lzio.c">
+      <Filter>Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="cScrollBar.cpp">
+      <Filter>Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="cGirlTorture.cpp">
+      <Filter>Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="cGirlGangFight.cpp">
+      <Filter>Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="cDungeon.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="cPlayer.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="XmlMisc.cpp">
+      <Filter>Misc</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="cButton.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="cCheckBox.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="cChoiceMessage.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="cEditBox.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="cImageItem.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="cInterfaceEvent.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="cInterfaceObject.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="cInterfaceWindow.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="cListBox.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="cMessageBox.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="cSlider.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="cTextItem.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="cWindowManager.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="InterfaceGlobals.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="InterfaceIDs.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="InterfaceProcesses.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="cGetStringScreenManager.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="cGold.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="cNameList.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Constants.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="cRng.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="cTariff.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="cTrainable.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="cTraits.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="cXmlWidget.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="DirPath.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="FileList.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="GameFlags.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="main.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="MasterFile.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Revision.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="sConfig.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="sFacility.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="sFacilityList.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="strnatcmp.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="tinystr.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="tinyxml.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="XmlUtil.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="cColor.h">
+      <Filter>Graphics main</Filter>
+    </ClInclude>
+    <ClInclude Include="CGameObject.h">
+      <Filter>Graphics main</Filter>
+    </ClInclude>
+    <ClInclude Include="CGraphics.h">
+      <Filter>Graphics main</Filter>
+    </ClInclude>
+    <ClInclude Include="CResourceManager.h">
+      <Filter>Graphics main</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSystem.h">
+      <Filter>Graphics main</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsSystem.h">
+      <Filter>Graphics main</Filter>
+    </ClInclude>
+    <ClInclude Include="SDLStuff.h">
+      <Filter>Graphics main</Filter>
+    </ClInclude>
+    <ClInclude Include="cBrothel.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="cClinic.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="cMovieStudio.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="cBuilding.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="cCustomers.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="cGangs.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="cGirls.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="cInventory.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="cRival.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="cEvents.h">
+      <Filter>Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="cGameScript.h">
+      <Filter>Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="CLog.h">
+      <Filter>Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="cScriptManager.h">
+      <Filter>Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="cScripts.h">
+      <Filter>Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="CTimer.h">
+      <Filter>Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="cTriggers.h">
+      <Filter>Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="cAnimatedSurface.h">
+      <Filter>Graphics Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="CFont.h">
+      <Filter>Graphics Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="CRenderQue.h">
+      <Filter>Graphics Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="CResource.h">
+      <Filter>Graphics Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="CSurface.h">
+      <Filter>Graphics Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="cScreenBank.h">
+      <Filter>Game Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="cScreenBuildingManagement.h">
+      <Filter>Game Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="cScreenBuildingSetup.h">
+      <Filter>Game Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="cScreenDungeon.h">
+      <Filter>Game Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="cScreenGangs.h">
+      <Filter>Game Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="cScreenGirlDetails.h">
+      <Filter>Game Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="cScreenGirlManagement.h">
+      <Filter>Game Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="cScreenClinicManagement.h">
+      <Filter>Game Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="cScreenStudioManagement.h">
+      <Filter>Game Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="cScreenMovieMaker.h">
+      <Filter>Game Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="cScreenHouse.h">
+      <Filter>Game Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="cScreenItemManagement.h">
+      <Filter>Game Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="cScreenMayor.h">
+      <Filter>Game Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="cScreenPrison.h">
+      <Filter>Game Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="cScreenSlaveMarket.h">
+      <Filter>Game Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="cScreenTown.h">
+      <Filter>Game Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="cJobManager.h">
+      <Filter>Jobs</Filter>
+    </ClInclude>
+    <ClInclude Include="cLuaMenu.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="cLuaScript.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="cScriptUtils.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\src\lapi.h">
+      <Filter>Lua\src</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\src\lauxlib.h">
+      <Filter>Lua\src</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\src\lcode.h">
+      <Filter>Lua\src</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\src\ldebug.h">
+      <Filter>Lua\src</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\src\ldo.h">
+      <Filter>Lua\src</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\src\lfunc.h">
+      <Filter>Lua\src</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\src\lgc.h">
+      <Filter>Lua\src</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\src\llex.h">
+      <Filter>Lua\src</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\src\llimits.h">
+      <Filter>Lua\src</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\src\lmem.h">
+      <Filter>Lua\src</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\src\lobject.h">
+      <Filter>Lua\src</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\src\lopcodes.h">
+      <Filter>Lua\src</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\src\lparser.h">
+      <Filter>Lua\src</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\src\lstate.h">
+      <Filter>Lua\src</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\src\lstring.h">
+      <Filter>Lua\src</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\src\ltable.h">
+      <Filter>Lua\src</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\src\ltm.h">
+      <Filter>Lua\src</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\src\lua.h">
+      <Filter>Lua\src</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\src\luaconf.h">
+      <Filter>Lua\src</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\src\lualib.h">
+      <Filter>Lua\src</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\src\lundump.h">
+      <Filter>Lua\src</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\src\lvm.h">
+      <Filter>Lua\src</Filter>
+    </ClInclude>
+    <ClInclude Include="lua\src\lzio.h">
+      <Filter>Lua\src</Filter>
+    </ClInclude>
+    <ClInclude Include="cScrollBar.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="cGirlTorture.h">
+      <Filter>Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="cGirlGangFight.h">
+      <Filter>Logic</Filter>
+    </ClInclude>
+    <ClInclude Include="cDungeon.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="cPlayer.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="XmlMisc.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="libintl.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="EXE_icon.res">
+      <Filter>Resources</Filter>
+    </Resource>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,229 @@
+"Dialog ~"
+TEXT
+"INIT"
+"ENDINIT"
+"ENDSCRIPT"
+"Restart"
+"CHOICEBOX ~ ~"
+INT 0 65535
+INT 0 65535
+"TEXT ~"
+TEXT
+"SetVar ~ ~"
+INT 0 19
+INT 0 65535
+"SetVarRandom ~ ~ ~"
+INT 0 19
+INT 0 65535
+INT 0 65535
+"IfVar ~ ~ ~"
+INT 0 19
+CHOICE 6
+"EqualTo"
+"LessThan"
+"LessOrEqualTo"
+"GreaterThan"
+"GreaterOrEqualTo"
+"NotEqualTo"
+INT 0 65535
+"Else"
+"EndIf"
+"ActivateChoice ~"
+INT 0 65535
+"If Choice from ChoiceBox ~ is ~"
+INT 0 65535
+INT 0 65535
+"SetPlayerSuspicion ~"
+INT -100 100
+"SetPlayerDisposition ~"
+INT -100 100
+"ClearGlobalFlag ~"
+INT 0 4
+"AddCustomerToDungeon ~ ~ ~"
+CHOICE 2
+"for not paying"
+"beating a girl"
+INT 0 65535
+BOOL
+"AddRandomGirlToDungeon ~ ~ ~ ~ ~"
+CHOICE 2
+"Kidnaped"
+"Captured"
+INT 0 65535
+INT 0 65535
+BOOL
+BOOL
+"Set Global ~ ~"
+INT 0 4
+INT 0 65535
+"SetGirlFlag ~ ~"
+INT 0 29
+INT 0 254
+"AddRandomValueToGold ~ ~"
+INT 0 65535
+INT 0 65535
+"AddManyRandomGirlsToDungeon ~ ~ ~ ~ ~ ~"
+INT 0 65535
+CHOICE 2
+"Kidnaped"
+"Captured"
+INT 0 65535
+INT 0 65535
+BOOL
+BOOL
+"Add Target Girl"
+"AdjustTargetGirlStat ~ ~"
+CHOICE 32
+"CHARISMA"
+"HAPPINESS"
+"LIBEDO"
+"CONSTITUTION"
+"INTELLIGENCE"
+"CONFIDENCE"
+"MANA"
+"AGILITY"
+"FAME"
+"LEVEL"
+"ASKPRICE"
+"HOUSE"
+"EXP"
+"AGE"
+"OBEDIENCE"
+"SPIRIT"
+"BEAUTY"
+"TIREDNESS"
+"HEALTH"
+"PCFEAR"
+"PCLOVE"
+"PCHATE"
+"ANAL"
+"MAGIC"
+"BDSM"
+"NORMALSEX"
+"BEASTIALITY"
+"GROUP"
+"LESBIAN"
+"SERVICE"
+"STRIP"
+"COMBAT"
+INT -100 100
+"PlayerRapeTargetGirl"
+"GivePlayerRandomSpecialItem"
+"IfPassSkillCheck ~"
+CHOICE 10
+"ANAL"
+"MAGIC"
+"BDSM"
+"NORMALSEX"
+"BEASTIALITY"
+"GROUP"
+"LESBIAN"
+"SERVICE"
+"STRIP"
+"COMBAT"
+"IfPassStatCheck ~"
+CHOICE 22
+"CHARISMA"
+"HAPPINESS"
+"LIBEDO"
+"CONSTITUTION"
+"INTELLIGENCE"
+"CONFIDENCE"
+"MANA"
+"AGILITY"
+"FAME"
+"LEVEL"
+"ASKPRICE"
+"HOUSE"
+"EXP"
+"AGE"
+"OBEDIENCE"
+"SPIRIT"
+"BEAUTY"
+"TIREDNESS"
+"HEALTH"
+"PCFEAR"
+"PCLOVE"
+"PCHATE"
+"IfGirlFlag ~ ~ ~"
+INT 0 29
+CHOICE 6
+"EqualTo"
+"LessThan"
+"LessOrEqualTo"
+"GreaterThan"
+"GreaterOrEqualTo"
+"NotEqualTo"
+INT 0 254
+"GameOver"
+"IfStat ~ ~ ~"
+CHOICE 22
+"CHARISMA"
+"HAPPINESS"
+"LIBEDO"
+"CONSTITUTION"
+"INTELLIGENCE"
+"CONFIDENCE"
+"MANA"
+"AGILITY"
+"FAME"
+"LEVEL"
+"ASKPRICE"
+"HOUSE"
+"EXP"
+"AGE"
+"OBEDIENCE"
+"SPIRIT"
+"BEAUTY"
+"TIREDNESS"
+"HEALTH"
+"PCFEAR"
+"PCLOVE"
+"PCHATE"
+CHOICE 6
+"EqualTo"
+"LessThan"
+"LessOrEqualTo"
+"GreaterThan"
+"GreaterOrEqualTo"
+"NotEqualTo"
+INT 0 255
+"IfSkill ~ ~ ~"
+CHOICE 10
+"ANAL"
+"MAGIC"
+"BDSM"
+"NORMALSEX"
+"BEASTIALITY"
+"GROUP"
+"LESBIAN"
+"SERVICE"
+"STRIP"
+"COMBAT"
+CHOICE 6
+"EqualTo"
+"LessThan"
+"LessOrEqualTo"
+"GreaterThan"
+"GreaterOrEqualTo"
+"NotEqualTo"
+INT 0 255
+"IfHasTrait ~"
+TEXT
+"Torture Target Girl"
+"Scold Target Girl"
+"Have Normal Sex"
+"Have Beast Sex"
+"Have Anal Sex"
+"Have Bondage Sex"
+"If Not Disobey"
+"Have Group Sex"
+"Have Lesbian Sex"
+"Have Oral Sex"
+"Have Strip"
+"Have Clean"
+"Have Nude"
+"Have Mast"
+"Have Combat"
+"Have Titty"
+"Have Death"

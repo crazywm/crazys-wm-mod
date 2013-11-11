@@ -1,0 +1,91 @@
+<Screen>
+
+	<Window	Name= "Bank Window"
+		XPos	= "280"
+		YPos	= "152"
+		Width	= "240"
+		Height	= "296"
+		Border	= "1"
+	/>
+
+<!--
+ !	This image just added as an extra "flourish"
+ !-->
+  <Image Name	= "BankIcon"
+		File	= "Bank.png"
+		XPos	= "6"
+		YPos	= "6"
+		Width	= "32"
+		Height	= "32"
+	/>
+
+  <Text	Name	= "ScreenHeader"
+		Text	= "Town Bank"
+		XPos	= "70"
+		YPos	= "8"
+		Width	= "100"
+		Height	= "32"
+		FontSize= "22"
+	/>
+
+  <Text	Name	= "BankDetails"
+		Text	= ""
+		XPos	= "16"
+		YPos	= "48"
+		Width	= "216"
+		Height	= "56"
+		FontSize= "11"
+	/>
+
+  <Button	Name	= "DepositButton"
+		Image		= "Deposit"
+		XPos		= "40"
+		YPos		= "85"
+		Width		= "160"
+		Height		= "32"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+
+  <Button	Name	= "WithdrawButton"
+		Image		= "Withdraw"
+		XPos		= "40"
+		YPos		= "125"
+		Width		= "160"
+		Height		= "32"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+
+  <Button	Name	= "DepositAllButton"
+		Image		= "DepositAll"
+		XPos		= "40"
+		YPos		= "165"
+		Width		= "160"
+		Height		= "32"
+		Transparency    = "true"
+		Scale		= "true"
+	/>
+
+
+	<Button	Name	= "WithdrawAllButton"
+		Image		= "WithdrawAll"
+		XPos		= "40"
+		YPos		= "205"
+		Width		= "160"
+		Height		= "32"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+
+  <Button	Name	= "BackButton"
+		Image		= "Back"
+		XPos		= "40"
+		YPos		= "245"
+		Width		= "160"
+		Height		= "32"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+
+</Screen>

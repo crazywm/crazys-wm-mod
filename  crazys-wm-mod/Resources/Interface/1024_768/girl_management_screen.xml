@@ -1,0 +1,225 @@
+<Screen>
+
+
+	<Window	Name= "Girl Management Window"
+		XPos	= "10"
+		YPos	= "10"
+		Width	= "780"
+		Height	= "580"
+		Border	= "1"
+	/>
+
+
+  <Text	Name	= "CurrentBrothel"
+		Text	= ""
+		XPos	= "470"
+		YPos	= "2"
+		Width	= "232"
+		Height	= "30"
+		FontSize= "16"
+	/>
+
+
+  <ListBox
+		Name	= "GirlList"
+		XPos	= "300"
+		YPos	= "15"
+		Width	= "470"
+		Height	= "411"
+		Border	= "1"
+		Events	= "true"
+		Multi	= "true"
+		ShowHeaders = "true"
+		HeaderDiv = "true"
+		HeaderClicksSort = "true"
+	>
+		<Column
+			Name	= "Name"
+			Header	= "Girl Name"
+			Offset	= "0"
+		/>
+		<Column
+			Name	= "Age"
+			Header	= "Age"
+			Offset	= "150"
+		/>
+		<Column
+			Name	= "Looks"
+			Header	= "Looks"
+			Offset	= "185"
+		/>
+		<Column
+			Name	= "Health"
+			Header	= "HP"
+			Offset	= "225"
+		/>
+		<Column
+			Name	= "Happiness"
+			Header	= "Mood"
+			Offset	= "265"
+		/>
+		<Column
+			Name	= "Tiredness"
+			Header	= "Tired"
+			Offset	= "305"
+		/>
+		<Column
+			Name	= "DayJob"
+			Header	= "Day Job"
+			Offset	= "345"
+		/>
+		<Column
+			Name	= "NightJob"
+			Header	= "Night Job"
+			Offset	= "465"
+		/>
+	</ListBox>
+
+
+  <Image Name	= "GirlImage"
+    File		= "blank.png"
+    XPos		= "8"
+    YPos		= "8"
+    Width		= "284"
+    Height		= "328"
+	/>
+  <Text	Name	= "GirlDescription"
+		Text	= ""
+		XPos	= "8"
+		YPos	= "467"
+		Width	= "282"
+		Height	= "102"
+		FontSize= "12"
+	/>
+
+
+  <Text	Name	= "JobTypeHeader"
+		Text	= "Job Types"
+		XPos	= "295"
+		YPos	= "440"
+		Width	= "100"
+		Height	= "32"
+		FontSize= "16"
+	/>
+  <ListBox
+		Name	= "JobTypeList"
+		XPos	= "295"
+		YPos	= "467"
+		Width	= "100"
+		Height	= "107"
+		Border	= "1"
+		Events	= "true"
+	/>
+
+  <Text	Name	= "JobHeader"
+		Text	= "Jobs"
+		XPos	= "400"
+		YPos	= "440"
+		Width	= "100"
+		Height	= "32"
+		FontSize= "16"
+	/>
+  <ListBox
+		Name	= "JobList"
+		XPos	= "400"
+		YPos	= "467"
+		Width	= "100"
+		Height	= "107"
+		Border	= "1"
+		Events	= "true"
+	/>
+  <Button	Name	= "DayButton"
+		Image		= "DayToggle"
+		XPos		= "400"
+		YPos		= "450"
+		Width		= "30"
+		Height		= "24"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+  <Button	Name	= "NightButton"
+		Image		= "NightToggle"
+		XPos		= "430"
+		YPos		= "450"
+		Width		= "38"
+		Height		= "24"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+
+  <Text	Name	= "JobTypeDescription"
+		Text	= ""
+		XPos	= "500"
+		YPos	= "467"
+		Width	= "140"
+		Height	= "36"
+		FontSize= "12"
+	/>
+  <Text	Name	= "JobDescription"
+		Text	= ""
+		XPos	= "500"
+		YPos	= "511"
+		Width	= "140"
+		Height	= "63"
+		FontSize= "12"
+	/>
+
+
+  <Button	Name	= "ViewDetailsButton"
+		Image		= "ViewDetails"
+		XPos		= "650"
+		YPos		= "427"
+		Width		= "120"
+		Height		= "24"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+  <Button	Name	= "TransferButton"
+		Image		= "TransferGirls"
+		XPos		= "650"
+		YPos		= "452"
+		Width		= "120"
+		Height		= "24"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+  <Button	Name	= "FreeSlaveButton"
+		Image		= "FreeSlave"
+		XPos		= "650"
+		YPos		= "477"
+		Width		= "120"
+		Height		= "24"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+  <Button	Name	= "SellSlaveButton"
+		Image		= "SellSlave"
+		XPos		= "650"
+		YPos		= "503"
+		Width		= "120"
+		Height		= "24"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+  <Button	Name	= "FireButton"
+		Image		= "FireGirl"
+		XPos		= "650"
+		YPos		= "528"
+		Width		= "120"
+		Height		= "24"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+  <Button	Name	= "BackButton"
+		Image		= "Back"
+		XPos		= "650"
+		YPos		= "553"
+		Width		= "120"
+		Height		= "24"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+
+
+</Screen>
+
