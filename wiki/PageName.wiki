@@ -4,7 +4,7 @@
 = To Do =
 1. A are you sure message when you hit quit.  People ask for this one a lot and it isn't as easy as I thought it would be to add. *Done*.
 
-Things laying around that should get to the game at some point.
+= Things laying around that should get to the game at some point =
 
 === Smaller changes ===
 
