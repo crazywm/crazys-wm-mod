@@ -7,73 +7,45 @@
 
 = Things laying around that should get to the game at some point =
 
-=== Smaller changes ===
-
-1- Sec lvl means nothing you have just as mean problems when your in the negative as you do when you have 2500 this is something that makes no sense we should make it mean something to have high lvl or low lvl.  Also gangs on guard should show up to help more when sec fails.  Another problem with it is the number of people the girl has to fight can be just stupid.
-
-2- Accomodation effect very little it should mean more.
-
-3. Feel the game needs more and different ways to aquire girls http://www.pinkpetal.org/index.php?topic=429.0 is a pretty good ideal fits with one of the bigger changes.
-
-4. Money sinks. Some of the bigger changes will help but you need things to spend money on badly.
-
-5. Gang mission need balance and maybe even a few more missions if there going be in the game they need more reason then what they have I think.
-
-6. Script functions.  Having a good script can really really help the game.
-
-7. http://www.pinkpetal.org/index.php?topic=673.0 hell its supose to be in the code somewhere but I've looked and can't find it but it would help.
-
-8. Libido needs some work.
-
-9. If you know how to play the game jail is almost never used.  I would like to see girls randomly show up in jail that you can bail out and have them come work for you.
-
-10. custmoer happiness and fame need fixed as they change to much.
-
-11. I see no reason why when you burn down a rivals brothel you shouldn't be reward with a few girls that worked there.
-
-12. Anon did a new way to sort girls in the char folder I think there was a few problems with it so I never merged it.  But something like that would be nice.
-
-13. A trait lvling system.
-
-=== Bigger ===
-
-1- Building managment http://www.pinkpetal.org/index.php?topic=215.0 there is a bit of it already coded up don't know how much but some.
-2- Building upgrades.  Stuff like sec camarea, fence (reduce chance of run aways), better beds, etc.
-
-3- http://www.pinkpetal.org/index.php?topic=665.0 I feel this would be a nice thing to have.  Just the marriage and lineage tracking not the sql
-
-4. http://www.pinkpetal.org/index.php?topic=455.0 this makes sense all girls shouldn't be good at everything and beening able to set what kinda sex acts they do by girl rather then brothel would help make girls feel different.
-
-5. The poltical side of the game could use some work.  I feel as you gain more areas and buy more buildings it should be harder to please the mayor and the police.
-
-6. the dungeon is alittle boring would like to see new ways to break girls.  More hardcore to nicer ways.
-
-7. Would really like to see other building feel different then the brothels.  Movies is a good start but it could be pushed futher and arena could be so much more.  Some don't really need to be any different but I feel some should be.
-
-8.  Get rid of gangs make them henchmen instead.  So u could have like or goku or guts been ur guards.  This seem like a huge change though.
-
+  # Sec lvl means nothing you have just as mean problems when your in the negative as you do when you have 2500 this is something that makes no sense we should make it mean something to have high lvl or low lvl.  Also gangs on guard should show up to help more when sec fails.  Another problem with it is the number of people the girl has to fight can be just stupid.
+  # Accomodation effect very little it should mean more.
+  # Feel the game needs more and different ways to aquire girls http://www.pinkpetal.org/index.php?topic=429.0 is a pretty good ideal fits with one of the bigger changes.
+  # Money sinks. Some of the bigger changes will help but you need things to spend money on badly.
+  # Gang mission need balance and maybe even a few more missions if there going be in the game they need more reason then what they have I think.
+  # Script functions.  Having a good script can really really help the game.
+  # http://www.pinkpetal.org/index.php?topic=673.0 hell its supose to be in the code somewhere but I've looked and can't find it but it would help.
+  # Libido needs some work.
+  # If you know how to play the game jail is almost never used.  I would like to see girls randomly show up in jail that you can bail out and have them come work for you.
+    * Here i would like to see something like a private prison. You are trusted a few prisoners that you have to "fix" them. It could be a new way to get girls as well.
+  # Customer happiness and fame need fixed as they change to much.
+  # I see no reason why when you burn down a rivals brothel you shouldn't be reward with a few girls that worked there.
+  # Anon did a new way to sort girls in the char folder I think there was a few problems with it so I never merged it.  But something like that would be nice.
+  # A trait lvling system.
+  # Building managment http://www.pinkpetal.org/index.php?topic=215.0 there is a bit of it already coded up don't know how much but some.
+  # Building upgrades.  Stuff like sec camarea, fence (reduce chance of run aways), better beds, etc.
+  # http://www.pinkpetal.org/index.php?topic=665.0 I feel this would be a nice thing to have.  Just the marriage and lineage tracking not the sql
+  # http://www.pinkpetal.org/index.php?topic=455.0 this makes sense all girls shouldn't be good at everything and beening able to set what kinda sex acts they do by girl rather then brothel would help make girls feel different.
+  # The poltical side of the game could use some work.  I feel as you gain more areas and buy more buildings it should be harder to please the mayor and the police.
+  # The dungeon is a little boring would like to see new ways to break girls.  More hardcore to nicer ways.
+  # Would really like to see other building feel different then the brothels.  Movies is a good start but it could be pushed futher and arena could be so much more.  Some don't really need to be any different but I feel some should be.
+  # Get rid of gangs make them henchmen instead.  So u could have like or goku or guts been ur guards.  This seem like a huge change though.
 
 = Things to think about =
 
-1. job flavor text.. One reason ex is so popular is all the different things that can pop up on jobs.
-
-2. New ways to aquire unique girls.
-
-3. Making jobs better.  Before there was things like buy achool and gambling %.  Buying different lvls of achool for the bartender or been able to set a odds for card dealer might make them more intresting that kinda thing..  Having strippers sell lap dances vip dance and such u get the ideal.  
-
-4. New cool jobs and buildings.  Would love to know what if any jobs or buildings u might want to add.
-
-5. Girl personality system.  Be based of traits would make girls do things differently in jobs and such.
-
-6. Ways to make current buildings better.  Make the player want to use them.
-
-7. New skills.  Could add hand job, foot job that kinda thing rather easy but should we?
-
-Things Ive been thinking about adding
-1.  An Onsen building.
-2.  An auction.  Place to acquire new unique girls, sell girls and sell a girls virginty.. If u look at the code I added a screens for this already on reason its not there is I havent full figured out how I want to do it.
-3. A maid cafe type building with a "special menu"...  Only reason I havent done this is it just seems like a mix of the bar and sleezy bar to me.  So thought of maybe have be themed based and making the player pick the theme.. Like big boobs or nice legs or cosplay u get the ideal but not sure on this yet.
-4. Escort job.  Would require like a high lvl girl or something.  Would only see few people week with high pay.  Havent figured it all out yet.
+  # Job flavor text.. One reason ex is so popular is all the different things that can pop up on jobs.
+  # New ways to aquire unique girls.
+  # Making jobs better.  Before there was things like buy achool and gambling %.  Buying different lvls of achool for the bartender or been able to set a odds for card dealer might make them more intresting that kinda thing..  Having strippers sell lap dances vip dance and such u get the ideal.  
+  # New cool jobs and buildings.  Would love to know what if any jobs or buildings u might want to add.
+    * I would like to see something like a contract system. Perhaps change the "Call to Office" dialogue to missions.
+  # Girl personality system.  Be based of traits would make girls do things differently in jobs and such.
+  # Ways to make current buildings better.  Make the player want to use them.
+  # New skills.  Could add hand job, foot job that kinda thing rather easy but should we?
+  # An Onsen building.
+    * I would postpone this one. We already have too many building without proper use.
+  # An auction.  Place to acquire new unique girls, sell girls and sell a girls virginty.. If u look at the code I added a screens for this already on reason its not there is I havent full figured out how I want to do it.
+  # A maid cafe type building with a "special menu"...  Only reason I havent done this is it just seems like a mix of the bar and sleezy bar to me.  So thought of maybe have be themed based and making the player pick the theme.. Like big boobs or nice legs or cosplay u get the ideal but not sure on this yet.
+  # Escort job.  Would require like a high lvl girl or something.  Would only see few people week with high pay.  Havent figured it all out yet.
+    * Perhaps as a mission/contract?
 
 = Bugs =
 
