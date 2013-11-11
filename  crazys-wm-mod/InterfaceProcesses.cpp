@@ -91,6 +91,8 @@ extern	int		g_CurrentScreen;
 //used to store what files we have loaded
 MasterFile loadedGirlsFiles;
 
+void confirm_exit();
+
 void LoadGameScreen()
 {
 	DirPath location = DirPath() << "Saves";
@@ -481,9 +483,9 @@ void BrothelScreen()
 		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_QUIT))
 		{
 			g_CurrentScreen = SCREEN_MAINMENU;
-			g_WinManager.Pop();
 			g_InitWin = true;
-			ResetInterface();
+			g_WinManager.Push(confirm_exit, &g_GetString);
+			
 			return;
 		}
 		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_NEXTBROTHEL))
@@ -3959,3 +3961,42 @@ static void TransferGirlsRightToLeft(int rightBrothel, int leftBrothel)
 		g_TransferGirls.SetSelectedItemInList(g_interfaceid.LIST_TRANSGRIGHTBROTHEL, rightBrothel);
 	}
 }
+
+void confirm_exit()
+{
+	if (g_InitWin)
+	{
+		g_GetString.Focused();
+		g_InitWin = false;
+	}
+
+	if (g_InterfaceEvents.GetNumEvents() == 0 && !g_EnterKey) {
+		return;
+	}
+
+	if (g_InterfaceEvents.CheckButton(g_interfaceid.BUTTON_CANCEL)) {
+		g_ReturnText = "";
+		g_InitWin = true;
+		g_WinManager.Pop();
+		return;
+	}
+
+	if (g_InterfaceEvents.CheckButton(g_interfaceid.BUTTON_OK) || g_EnterKey) {
+		g_EnterKey = false;
+		g_ReturnText = "";
+
+		g_InitWin = true;
+		g_WinManager.Pop();
+		g_WinManager.Pop();
+
+		ResetInterface();
+
+		// Schedule New Quit Event -- To check if user confirmed.
+		//SDL_Event * ev = new SDL_Event();
+		//ev->type = SDL_QUIT;
+		//ev->quit.type = SDL_QUIT;
+		//if (!SDL_PushEvent(ev))
+		//	g_LogFile.write("SDL Quit Re-Scheduled!");
+	}
+}
+

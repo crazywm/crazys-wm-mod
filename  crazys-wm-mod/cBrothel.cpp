@@ -4011,9 +4011,8 @@ void cBrothelManager::UpdateAllGirlsStat(sBrothel* brothel, int stat, int amount
 // ----- Get / Set
 sGirl* cBrothelManager::GetGirl(int brothelID, int num)
 {
-	if(num < 0)
-		return 0;
 	sBrothel* current = m_Parent;
+
 	if(current == 0)
 		return 0;
 
@@ -4024,8 +4023,19 @@ sGirl* cBrothelManager::GetGirl(int brothelID, int num)
 		current = current->m_Next;
 	}
 
-	if(num > current->m_NumGirls)
+	if (current->m_NumGirls == 0)
 		return 0;
+
+	// Makes num reset when it is >= m_NumGirls
+	if (num >= current->m_NumGirls)
+	{
+		num = num % current->m_NumGirls;
+	}
+
+	if (num < 0)
+	{
+		num = current->m_NumGirls + (num % current->m_NumGirls);
+	}
 
 	if(current)
 	{
