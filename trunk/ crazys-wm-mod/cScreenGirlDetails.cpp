@@ -750,45 +750,46 @@ sGirl *cScreenGirlDetails::get_prev_girl()
 {
 	sGirl *prev_girl = 0;
 
-	if (cycle_girls.size() == 0)					// Myr: Found this case from an exception. Will test to see if this 
-		return prev_girl;							//      is a good fix. 
+	g_LogFile.write("Where is the girl??");
 
-	if(cycle_pos <= 0)
-		cycle_pos = cycle_girls.size() - 1;
-	else if (unsigned(cycle_pos) >= cycle_girls.size() - 1)  // Myr: Deals with an exception encountered when there were 3 dead and 1 live
-		cycle_pos = cycle_girls.size() - 2;        //      girls in the dungeon.
-	else
-		cycle_pos--;
-
-	if (selected_girl->m_InClinic)
-   {
-      prev_girl = g_Clinic.GetGirl(0, cycle_girls[cycle_pos]);
-   } 
-   else if (selected_girl->m_InMovieStudio)
-   {
-      prev_girl = g_Studios.GetGirl(0, cycle_girls[cycle_pos]);
-   } 
-   else if (selected_girl->m_InArena)
-   {
-      prev_girl = g_Arena.GetGirl(0, cycle_girls[cycle_pos]);
-   } 
-   else if (selected_girl->m_InCentre)
-   {
-      prev_girl = g_Centre.GetGirl(0, cycle_girls[cycle_pos]);
-   } 
-   else if (selected_girl->m_InHouse)
-   {
-      prev_girl = g_House.GetGirl(0, cycle_girls[cycle_pos]);
-   } 
+	if (g_Clinic.GetGirlsCurrentBrothel(selected_girl) != -1)
+	{
+		g_LogFile.write("She is in the Clinic");
+		prev_girl = g_Clinic.GetGirl(0, g_Clinic.GetGirlPos(0, selected_girl) - 1);
+	}
+	else if (g_Studios.GetGirlsCurrentBrothel(selected_girl) != -1)
+	{
+		g_LogFile.write("She is in the Studio");
+		prev_girl = g_Studios.GetGirl(0, g_Studios.GetGirlPos(0, selected_girl) - 1);
+	}
+	else if (g_Arena.GetGirlsCurrentBrothel(selected_girl) != -1)
+	{
+		g_LogFile.write("She is in the Arena");
+		prev_girl = g_Arena.GetGirl(0, g_Arena.GetGirlPos(0, selected_girl) - 1);
+	}
+	else if (g_Centre.GetGirlsCurrentBrothel(selected_girl) != -1)
+	{
+		g_LogFile.write("She is in the Centre");
+		prev_girl = g_Centre.GetGirl(0, g_Centre.GetGirlPos(0, selected_girl) - 1);
+	}
+	else if (g_House.GetGirlsCurrentBrothel(selected_girl) != -1)
+	{
+		g_LogFile.write("She is in the House");
+		prev_girl = g_House.GetGirl(0, g_House.GetGirlPos(0, selected_girl) - 1);
+	}
 	else
 	{
-		if(selected_girl->m_DayJob == JOB_INDUNGEON)
+		if (selected_girl->m_DayJob == JOB_INDUNGEON)
+		{
+			g_LogFile.write("She is in the Dungeon");
 			prev_girl = g_Brothels.GetDungeon()->GetGirl(cycle_girls[cycle_pos])->m_Girl;
+		}
 		else
-			prev_girl = g_Brothels.GetGirl(g_CurrBrothel, cycle_girls[cycle_pos]);
+		{
+			g_LogFile.write("She is in a Brothel");
+			prev_girl = g_Brothels.GetGirl(0, g_Brothels.GetGirlPos(0, selected_girl) - 1);
+		}
 	}
-
-
 
 	return prev_girl;
 }
@@ -800,42 +801,45 @@ sGirl *cScreenGirlDetails::get_next_girl()
 {
 	sGirl *next_girl = 0;
 
-	if (cycle_girls.size() == 0) // Myr: Found this case from an exception.
-		return next_girl;
-
-	if (cycle_pos <= 0) // Myr: Just in case
-		cycle_pos = 0;
-	if(cycle_pos >= (int)cycle_girls.size() - 1) 
-		cycle_pos = 0;
-	else
-		cycle_pos++;
-
-	if (selected_girl->m_InClinic)
+	g_LogFile.write("Where is the girl??");
+	
+	if (g_Clinic.GetGirlsCurrentBrothel(selected_girl) != -1)
 	{
-		next_girl = g_Clinic.GetGirl(0, cycle_girls[cycle_pos]);
+		g_LogFile.write("She is in the Clinic");
+		next_girl = g_Clinic.GetGirl(0, g_Clinic.GetGirlPos(0, selected_girl) + 1);
 	} 
-	else if (selected_girl->m_InMovieStudio)
+	else if (g_Studios.GetGirlsCurrentBrothel(selected_girl) != -1)
 	{
-		next_girl = g_Studios.GetGirl(0, cycle_girls[cycle_pos]);
+		g_LogFile.write("She is in the Studio");
+		next_girl = g_Studios.GetGirl(0, g_Studios.GetGirlPos(0, selected_girl) + 1);
 	} 
-	else if (selected_girl->m_InArena)
+	else if (g_Arena.GetGirlsCurrentBrothel(selected_girl) != -1)
 	{
-		next_girl = g_Arena.GetGirl(0, cycle_girls[cycle_pos]);
+		g_LogFile.write("She is in the Arena");
+		next_girl = g_Arena.GetGirl(0, g_Arena.GetGirlPos(0, selected_girl) + 1);
 	}
-	else if (selected_girl->m_InCentre)
+	else if (g_Centre.GetGirlsCurrentBrothel(selected_girl) != -1)
 	{
-		next_girl = g_Centre.GetGirl(0, cycle_girls[cycle_pos]);
+		g_LogFile.write("She is in the Centre");
+		next_girl = g_Centre.GetGirl(0, g_Centre.GetGirlPos(0, selected_girl) + 1);
 	} 
-	else if (selected_girl->m_InHouse)
+	else if (g_House.GetGirlsCurrentBrothel(selected_girl) != -1)
 	{
-		next_girl = g_House.GetGirl(0, cycle_girls[cycle_pos]);
+		g_LogFile.write("She is in the House");
+		next_girl = g_House.GetGirl(0, g_House.GetGirlPos(0, selected_girl) + 1);
 	} 
 	else
 	{
-		if(selected_girl->m_DayJob == JOB_INDUNGEON)
+		if (selected_girl->m_DayJob == JOB_INDUNGEON)
+		{
+			g_LogFile.write("She is in the Dungeon");
 			next_girl = g_Brothels.GetDungeon()->GetGirl(cycle_girls[cycle_pos])->m_Girl;
+		}
 		else
-			next_girl = g_Brothels.GetGirl(g_CurrBrothel, cycle_girls[cycle_pos]);
+		{
+			g_LogFile.write("She is in a Brothel");
+			next_girl = g_Brothels.GetGirl(0, g_Brothels.GetGirlPos(0, selected_girl) + 1);
+		}
 	}
 
 	return next_girl;
