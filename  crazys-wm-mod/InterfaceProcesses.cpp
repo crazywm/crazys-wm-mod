@@ -169,44 +169,157 @@ void LoadGameScreen()
 	}
 }
 
-void MainMenu()
+void NewGame()
 {
-	g_CurrentScreen = SCREEN_MAINMENU;
-	if(g_InitWin)
+	cConfig cfg;
+	cScriptManager sm;
+
+	g_Cheats = false;
+	g_GenGirls = g_Cheats = g_WalkAround = false;	// for keeping track of weather have walked around town today
+	g_GenGirls = g_Cheats = g_TryOuts = false;
+	g_GenGirls = g_Cheats = g_TryEr = false;
+	g_GenGirls = g_Cheats = g_TryCast = false;
+	g_TalkCount = 10;
+	g_Brothels.Free();
+	g_Clinic.Free();
+	g_Studios.Free();
+	g_Arena.Free();
+	g_Centre.Free();
+	g_House.Free();
+	g_Gangs.Free();
+	g_Customers.Free();
+	g_Girls.Free();
+	g_Traits.Free();
+	g_GlobalTriggers.Free();
+	g_Customers.Free();
+	sm.Release();
+	g_InvManager.Free();
+
+	string d = g_ReturnText;
+	if (g_ReturnText == "Test")
+		g_Cheats = true;
+	else
+		g_Cheats = false;
+	d += ".gam";
+
+	// Load all the data
+	LoadGameInfoFiles();
+	loadedGirlsFiles.LoadXML(TiXmlHandle(0));
+	LoadGirlsFiles();
+
+	g_Girls.LoadDefaultImages();	// load the default girl images
+
+	// load the global triggers
+	g_GlobalTriggers.LoadList(
+		DirPath() << "Resources" << "Scripts" << "GlobalTriggers.xml"
+		);
+
+	g_CurrBrothel = 0;
+
+	g_Gold.reset();
+
+	g_Year = 1209;
+	g_Month = 1;
+	g_Day = 1;
+
+	selected_girl = 0;
+	for (int i = 0; i<8; i++)
 	{
-		g_MainMenu.Focused();
-		g_InitWin = false;
-		g_Girls.GetImgManager()->LoadList("Default");
+		MarketSlaveGirls[i] = 0;
+		MarketSlaveGirlsDel[i] = -1;
 	}
 
-	if(g_InterfaceEvents.GetNumEvents() != 0)
+	g_Brothels.NewBrothel(20);
+	g_Brothels.SetName(0, g_ReturnText);
+	for (int i = 0; i<NUM_STATS; i++)
+		g_Brothels.GetPlayer()->m_Stats[i] = 60;
+	for (u_int i = 0; i<NUM_SKILLS; i++)
+		g_Brothels.GetPlayer()->m_Skills[i] = 10;
+	g_Brothels.GetPlayer()->SetToZero();
+	//g_Brothels.GetPlayer()->m_CustomerFear = 0;
+	//g_Brothels.GetPlayer()->m_Disposition = 0;
+	//g_Brothels.GetPlayer()->m_Suspicion = 0;
+	//g_Brothels.GetPlayer()->m_WinGame = false;
+
+	g_Studios.NewBrothel(20);
+	g_Studios.SetName(0, "Studio");
+
+	g_Arena.NewBrothel(20);
+	g_Arena.SetName(0, "Arena");
+
+	g_Centre.NewBrothel(20);
+	g_Centre.SetName(0, "Centre");
+
+	g_House.NewBrothel(20);
+	g_House.SetName(0, "House");
+
+	u_int start_random_gangs = cfg.gangs.start_random();
+	u_int start_boosted_gangs = cfg.gangs.start_boosted();
+	for (u_int i = 0; i<start_random_gangs; i++)
+		g_Gangs.AddNewGang(false);
+	for (u_int i = 0; i<start_boosted_gangs; i++)
+		g_Gangs.AddNewGang(true);
+
+	// update the shop inventory
+	g_InvManager.UpdateShop();
+
+	/*
+	*	two strings speparated only by white space are concatenated
+	*	by the compiler. Which means you can split up long text
+	*	passages, making them easier to read:
+	*/
+#if 0
+	stringstream ss;
+	ss << gettext("Welcome to Crossgate, a city in the realm of Mundiga, ")
+		<< gettext("where criminals rule and space and time overlap with ")
+		<< gettext("other worlds and dimensions. Once a powerful crime lord ")
+		<< gettext("in the city, your father was recently assassinated and ")
+		<< gettext("his assets looted by rivals. All that remains is the ")
+		<< gettext("fire-gutted shell of an old brothel that served as your ")
+		<< gettext("father's headquarters.\n")
+		<< gettext("However this building hides some interesting secrets. ")
+		<< gettext("Still concealed in the cellars is the dungeon where ")
+		<< gettext("your father conducted the less savory aspects of ")
+		<< gettext("his business. Underneath, endless catacombs extend, ")
+		<< gettext("constantly shifting in the dimensional flux, drawing ")
+		<< gettext("in beings and plunder from a thousand different worlds.\n")
+		<< gettext("Your job now is to return the brothel to its former ")
+		<< gettext("glories of exotic women and carnal pleasures. That will ")
+		<< gettext("give you the income you need to avenge your father, ")
+		<< gettext("and resume your rightful place as his successor.\n")
+		<< gettext("It is up to you if you will be as evil as your father ")
+		<< gettext("or not, but in any case you start with very little gold ")
+		<< gettext("and your first order of business should be to purchase ")
+		<< gettext("some girls from the slave market, and to hire some goons ")
+		<< gettext("to guard your headquarters.");
+
+	g_MessageQue.AddToQue(
+		ss.str(),
+		0
+		);
+#endif
+	// Add the begining rivals
+	g_Brothels.GetRivalManager()->CreateRival(200, 5, 10000, 2, 0, 26, 2, 2);
+	g_Brothels.GetRivalManager()->CreateRival(400, 10, 15000, 2, 1, 30, 2, 3);
+	g_Brothels.GetRivalManager()->CreateRival(600, 15, 20000, 3, 1, 56, 3, 5);
+	g_Brothels.GetRivalManager()->CreateRival(800, 20, 25000, 4, 2, 74, 4, 8);
+
+	if (g_Cheats)
 	{
-		if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_NEWGAME))
-		{
-			cGetStringScreenManager gssm;
-			gssm.empty_allowed(false);
-			gssm.set_handler(NewGame);
-			g_WinManager.Push(GetString, &g_GetString);
-			g_MessageQue.AddToQue("Enter a name for your first brothel.", 0);
-			g_InitWin = true;
-			return;
-		}
-		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_LOADGAME))
-		{
-			g_WinManager.Push(LoadGameScreen, &g_LoadGame);
-			g_InitWin = true;
-			return;
-		}
-		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_EXITGAME))
-		{
-			SDL_Event evn;
-			evn.type = SDL_QUIT;
-			SDL_PushEvent(&evn);
-		}
+		g_Gold.cheat();
+		g_InvManager.GivePlayerAllItems();
+		//g_Brothels.AddGirl(0, g_Girls.GetGirl(23));  // Adding girl to brothel (Ayanami Rei as it happens) for some reason?
 	}
+
+	g_WinManager.Push(BrothelScreen, &g_BrothelManagement);
+
+	DirPath text = DirPath()
+		<< "Saves"
+		<< (g_Brothels.GetBrothel(0)->m_Name + ".gam").c_str()
+		;
+	sm.Load(ScriptPath("Intro.lua"), 0);
+	SaveGameXML(text);
 }
-
-
 
 void GetString()
 {
@@ -240,158 +353,6 @@ void GetInt()
 		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_CANCEL))
 			g_WinManager.Pop();
 	}
-}
-
-void NewGame()
-{
-	cConfig cfg;
-	cScriptManager sm;
-
-	g_Cheats = false;
-	g_GenGirls = g_Cheats = g_WalkAround = false;	// for keeping track of weather have walked around town today
-	g_GenGirls = g_Cheats = g_TryOuts = false;
-	g_GenGirls = g_Cheats = g_TryEr = false;
-	g_GenGirls = g_Cheats = g_TryCast = false;
-	g_TalkCount = 10;
-	g_Brothels.Free();
-	g_Clinic.Free();
-	g_Studios.Free();
-	g_Arena.Free();
-	g_Centre.Free();
-	g_House.Free();
-	g_Gangs.Free();
-	g_Customers.Free();
-	g_Girls.Free();
-	g_Traits.Free();
-	g_GlobalTriggers.Free();
-	g_Customers.Free();
-	sm.Release();
-	g_InvManager.Free();
-
-	string d = g_ReturnText;
-	if(g_ReturnText == "Test")
-		g_Cheats = true;
-	else
-		g_Cheats = false;
-	d += ".gam";
-
-	// Load all the data
-	LoadGameInfoFiles();
-	loadedGirlsFiles.LoadXML(TiXmlHandle(0));
-	LoadGirlsFiles();
-
-	g_Girls.LoadDefaultImages();	// load the default girl images
-
-	// load the global triggers
-	g_GlobalTriggers.LoadList(
-		DirPath() << "Resources" << "Scripts" << "GlobalTriggers.xml"
-	);
-
-	g_CurrBrothel = 0;
-
-	g_Gold.reset();
-
-	g_Year = 1209;
-	g_Month = 1;
-	g_Day = 1;
-
-	selected_girl = 0;
-	for(int i=0; i<8; i++)
-	{
-		MarketSlaveGirls[i] = 0;
-		MarketSlaveGirlsDel[i] = -1;
-	}
-
-	g_Brothels.NewBrothel(20);
-	g_Brothels.SetName(0, g_ReturnText);
-	for(int i=0; i<NUM_STATS; i++)
-		g_Brothels.GetPlayer()->m_Stats[i] = 60;
-	for(u_int i=0; i<NUM_SKILLS; i++)
-		g_Brothels.GetPlayer()->m_Skills[i] = 10;
-	g_Brothels.GetPlayer()->SetToZero();
-	//g_Brothels.GetPlayer()->m_CustomerFear = 0;
-	//g_Brothels.GetPlayer()->m_Disposition = 0;
-	//g_Brothels.GetPlayer()->m_Suspicion = 0;
-	//g_Brothels.GetPlayer()->m_WinGame = false;
-
-	g_Studios.NewBrothel(20);
-	g_Studios.SetName(0, "Studio");
-
-	g_Arena.NewBrothel(20);
-	g_Arena.SetName(0, "Arena");
-
-	g_Centre.NewBrothel(20);
-	g_Centre.SetName(0, "Centre");
-
-	g_House.NewBrothel(20);
-	g_House.SetName(0, "House");
-
-	u_int start_random_gangs = cfg.gangs.start_random();
-	u_int start_boosted_gangs = cfg.gangs.start_boosted();
-	for(u_int i=0; i<start_random_gangs; i++)
-		g_Gangs.AddNewGang(false);
-	for(u_int i=0; i<start_boosted_gangs; i++)
-		g_Gangs.AddNewGang(true);
-
-	// update the shop inventory
-	g_InvManager.UpdateShop();
-
-/*
- *	two strings speparated only by white space are concatenated
- *	by the compiler. Which means you can split up long text
- *	passages, making them easier to read:
- */
-#if 0
-	stringstream ss;
-	ss << gettext("Welcome to Crossgate, a city in the realm of Mundiga, ")
-		<< gettext("where criminals rule and space and time overlap with ")
-		<< gettext("other worlds and dimensions. Once a powerful crime lord ")
-		<< gettext("in the city, your father was recently assassinated and ")
-		<< gettext("his assets looted by rivals. All that remains is the ")
-		<< gettext("fire-gutted shell of an old brothel that served as your ")
-		<< gettext("father's headquarters.\n")
-		<< gettext("However this building hides some interesting secrets. ")
-		<< gettext("Still concealed in the cellars is the dungeon where ")
-		<< gettext("your father conducted the less savory aspects of ")
-		<< gettext("his business. Underneath, endless catacombs extend, ")
-		<< gettext("constantly shifting in the dimensional flux, drawing ")
-		<< gettext("in beings and plunder from a thousand different worlds.\n")
-		<< gettext("Your job now is to return the brothel to its former ")
-		<< gettext("glories of exotic women and carnal pleasures. That will ")
-		<< gettext("give you the income you need to avenge your father, ")
-		<< gettext("and resume your rightful place as his successor.\n")
-		<< gettext("It is up to you if you will be as evil as your father ")
-		<< gettext("or not, but in any case you start with very little gold ")
-		<< gettext("and your first order of business should be to purchase ")
-		<< gettext("some girls from the slave market, and to hire some goons ")
-		<< gettext("to guard your headquarters.");
-	
-	g_MessageQue.AddToQue(
-		ss.str(),
-		0
-	);
-#endif
-	// Add the begining rivals
-	g_Brothels.GetRivalManager()->CreateRival(200, 5, 10000, 2, 0, 26, 2, 2);
-	g_Brothels.GetRivalManager()->CreateRival(400, 10, 15000, 2, 1, 30, 2, 3);
-	g_Brothels.GetRivalManager()->CreateRival(600, 15, 20000, 3, 1, 56, 3, 5);
-	g_Brothels.GetRivalManager()->CreateRival(800, 20, 25000, 4, 2, 74, 4, 8);
-
-	if(g_Cheats)
-	{
-		g_Gold.cheat();
-		g_InvManager.GivePlayerAllItems();
-		//g_Brothels.AddGirl(0, g_Girls.GetGirl(23));  // Adding girl to brothel (Ayanami Rei as it happens) for some reason?
-	}
-
-	g_WinManager.Push(BrothelScreen, &g_BrothelManagement);
-
-	DirPath text = DirPath()
-		<< "Saves"
-		<< (g_Brothels.GetBrothel(0)->m_Name + ".gam").c_str()
-	;
-	sm.Load(ScriptPath("Intro.lua"), 0);
-	SaveGameXML(text);
 }
 
 void BrothelScreen()
