@@ -123,21 +123,21 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, int DayNigh
 
 	//try and add randomness here
 	if (g_Girls.GetStat(girl, STAT_BEAUTY) >85)
-		if(roll <= 20)
+		if((g_Dice%100) < 20)
 		{
 			message += " Stunned by her beauty a customer left her a great tip.\n";
 			wages += 25;
 		}
 
 	if (g_Girls.HasTrait(girl, "Clumsy"))
-		if(roll <= 15)
+		if((g_Dice%100) < 15)
 		{
 			message += " Her clumsy nature cause her to spill food on a custmoer resulting in them storming off without paying.\n";
 			wages -= 25;
 		}
 
 	if (g_Girls.HasTrait(girl, "Pessimist"))
-		if(roll <= 5)
+		if((g_Dice%100) < 5)
 		{
 			if(jobperformance < 125)
 			{
@@ -152,7 +152,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, int DayNigh
 		}
 
 	if (g_Girls.HasTrait(girl, "Optimist"))
-		if(roll <= 5)
+		if((g_Dice%100) < 5)
 		{
 			if(jobperformance < 125)
 			{
@@ -167,7 +167,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, int DayNigh
 		}
 
 	if (g_Girls.HasTrait(girl, "Great Arse"))
-		if(roll <= 15)
+		if((g_Dice%100) < 15)
 		{
 			if(jobperformance < 50)
 			message += " A patron reached out and grabed her ass. She was startled and ended up dropping a whole order\n";
@@ -201,6 +201,9 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, int DayNigh
 			wages += 10;
 			}
 
+
+		if(wages < 0)
+			wages = 0;
 
 
 	//enjoyed the work or not
