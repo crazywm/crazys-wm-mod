@@ -3952,10 +3952,9 @@ void confirm_exit()
 
 		ResetInterface();
 
-		// Schedule New Quit Event -- To check if user confirmed.
-		//SDL_Event * ev = new SDL_Event();
+		// Schedule Quit Event -- To quit
+		//SDL_Event ev;
 		//ev->type = SDL_QUIT;
-		//ev->quit.type = SDL_QUIT;
 		//if (!SDL_PushEvent(ev))
 		//	g_LogFile.write("SDL Quit Re-Scheduled!");
 	}
