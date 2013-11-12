@@ -1,4 +1,4 @@
-#labels Phase-Design,Phase-Implementation
+#labels ,Phase-Implementation
 #Future work.
 
 = To Do =
@@ -7,7 +7,7 @@
 
 = Things laying around that should get to the game at some point =
 
-  # Sec lvl means nothing you have just as mean problems when your in the negative as you do when you have 2500 this is something that makes no sense we should make it mean something to have high lvl or low lvl.  Also gangs on guard should show up to help more when sec fails.  Another problem with it is the number of people the girl has to fight can be just stupid.
+  # Sec lvl means nothing you have just as many problems when your in the negative as you do when you have 2500 this is something that makes no sense we should make it mean something to have high lvl or low lvl.  Also gangs on guard should show up to help more when sec fails.  Another problem with it is the number of people the girl has to fight can be just stupid.
   # Accomodation effect very little it should mean more.
   # Feel the game needs more and different ways to aquire girls http://www.pinkpetal.org/index.php?topic=429.0 is a pretty good ideal fits with one of the bigger changes.
   # Money sinks. Some of the bigger changes will help but you need things to spend money on badly.
@@ -40,12 +40,13 @@
   # Girl personality system.  Be based of traits would make girls do things differently in jobs and such.
   # Ways to make current buildings better.  Make the player want to use them.
   # New skills.  Could add hand job, foot job that kinda thing rather easy but should we?
+    * Whats ur thoughts on this more skills or not?
   # An Onsen building.
     * I would postpone this one. We already have too many building without proper use.
   # An auction.  Place to acquire new unique girls, sell girls and sell a girls virginty.. If u look at the code I added a screens for this already on reason its not there is I havent full figured out how I want to do it.
   # A maid cafe type building with a "special menu"...  Only reason I havent done this is it just seems like a mix of the bar and sleezy bar to me.  So thought of maybe have be themed based and making the player pick the theme.. Like big boobs or nice legs or cosplay u get the ideal but not sure on this yet.
   # Escort job.  Would require like a high lvl girl or something.  Would only see few people week with high pay.  Havent figured it all out yet.
-    * Perhaps as a mission/contract?
+    * Perhaps as a mission/contract?  // That could be a good ideal have someone asking for a certain type girl and you gotta pick one to match what they want
 
 = Bugs =
 
