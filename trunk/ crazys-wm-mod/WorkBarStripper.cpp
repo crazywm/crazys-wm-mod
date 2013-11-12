@@ -121,21 +121,21 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, int DayNight, 
 
 	//try and add randomness here
 	if (g_Girls.GetStat(girl, STAT_BEAUTY) >85)
-		if(roll <= 15)
+		if((g_Dice%100) < 15)
 		{
 			message += " Stunned by her beauty a customer left her a great tip.\n";
 			wages += 15;
 		}
 
 	if (g_Girls.HasTrait(girl, "Clumsy"))
-		if(roll <= 5)
+		if((g_Dice%100) < 5)
 		{
 			message += " Her clumsy nature caused her to slide off the pole causing her to have to stop stripping for a few hours.\n";
 			wages -= 15;
 		}
 
 	if (g_Girls.HasTrait(girl, "Pessimist"))
-		if(roll <= 5)
+		if((g_Dice%100) < 5)
 		{
 			if(jobperformance < 125)
 			{
@@ -150,7 +150,7 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, int DayNight, 
 		}
 
 	if (g_Girls.HasTrait(girl, "Optimist"))
-		if(roll <= 5)
+		if((g_Dice%100) < 5)
 		{
 			if(jobperformance < 125)
 			{
@@ -165,7 +165,7 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, int DayNight, 
 		}
 
 	if (g_Girls.HasTrait(girl, "Great Figure"))
-		if(roll <= 20)
+		if((g_Dice%100) < 20)
 		{
 			if(jobperformance < 125)
 			{

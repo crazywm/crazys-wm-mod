@@ -116,23 +116,23 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, int DayNight, s
 
 	//try and add randomness here
 	if (g_Girls.GetStat(girl, STAT_BEAUTY) >85)
-		if(roll <= 20)
+		if((g_Dice%100) < 20)
 		{
 			message += " Stunned by her beauty a customer was to distracted to notice he was losing.\n";
 			wages += 25;
 		}
 
 	if (g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Abnormally Large Boobs"))
-		if(roll <= 15)
+		if((g_Dice%100) < 15)
 		{
 			if(jobperformance < 150)
 			{
-			message += " A patron was staring obviously at her large breasts. So she used the chance to cheat him out of all his gold.\n";
-			wages += 15;
+			message += " A patron was staring obviously at her large breasts. But she had no ideal how to take advantage of it.\n";
 			}
 			else
 			{
-			message += " A patron was staring obviously at her large breasts. But she had no ideal how to take advantage of it.\n";
+			message += " A patron was staring obviously at her large breasts. So she used the chance to cheat him out of all his gold.\n";
+			wages += 15;
 			}
 		}
 

@@ -117,21 +117,21 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 
 	//try and add randomness here
 	if (g_Girls.GetStat(girl, STAT_BEAUTY) >85)
-		if(roll <= 15)
+		if((g_Dice%100) < 15)
 		{
 			message += " Stunned by her beauty a customer left her a great tip.\n";
 			wages += 15;
 		}
 
 	if (g_Girls.HasTrait(girl, "Clumsy"))
-		if(roll <= 5)
+		if((g_Dice%100) < 5)
 		{
 			message += " Her clumsy nature caused her to trip coming on stage causing the crowed to go wild with laughter. She went to the back and hide refusing to take the stage for her song set.\n";
 			wages -= 15;
 		}
 
 	if (g_Girls.HasTrait(girl, "Pessimist"))
-		if(roll <= 5)
+		if((g_Dice%100) < 5)
 		{
 			if(jobperformance < 125)
 			{
@@ -146,7 +146,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 		}
 
 	if (g_Girls.HasTrait(girl, "Optimist"))
-		if(roll <= 5)
+		if((g_Dice%100) < 5)
 		{
 			if(jobperformance < 125)
 			{
@@ -161,7 +161,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 		}
 
 		if (g_Brothels.GetNumGirlsOnJob(0,JOB_PIANO,false) == 1)
-		if(roll <= 25)
+		if((g_Dice%100) < 25)
 		{
 			if(jobperformance < 125)
 			{
