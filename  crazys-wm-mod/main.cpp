@@ -927,28 +927,7 @@ int main(int ac, char* av[])
 		{
 			if (vent.type == SDL_QUIT)
 			{
-				if (!quitPending)
-				{
-					quitPending = true;
-
-					g_InitWin = true;
-					g_WinManager.Push(confirmExit, &g_GetString);
-
-					g_LogFile.write("Confirm Quit?");
-				}
-				else
-				{
-					g_LogFile.write("Quit Confirmation check");
-
-					if (quitAccepted)
-					{
-						running = false;
-					}
-					else
-					{
-						quitPending = false;
-					}
-				}
+				running = false;
 			}
 			else if (vent.type == SDL_MOUSEBUTTONUP)
 			{
@@ -1258,42 +1237,6 @@ bool Init()
 	g_LogFile.write("Brothel Images Set");
 
 	return true;
-}
-
-void confirmExit()
-{
-	if (g_InitWin)
-	{
-		g_GetString.Focused();
-		g_InitWin = false;
-	}
-
-	if (g_InterfaceEvents.GetNumEvents() == 0 && !g_EnterKey) {
-		return;
-	}
-
-	if (g_InterfaceEvents.CheckButton(g_interfaceid.BUTTON_CANCEL)) {
-		g_ReturnText = "";
-		g_InitWin = true;
-		g_WinManager.Pop();
-		return;
-	}
-
-	if (g_InterfaceEvents.CheckButton(g_interfaceid.BUTTON_OK) || g_EnterKey) {
-		g_EnterKey = false;
-
-		g_InitWin = true;
-		g_WinManager.Pop();
-
-		quitAccepted = true;
-
-		// Schedule New Quit Event -- To check if user confirmed.
-		SDL_Event * ev = new SDL_Event();
-		ev->type = SDL_QUIT;
-		ev->quit.type = SDL_QUIT;
-		if (!SDL_PushEvent(ev))
-			g_LogFile.write("SDL Quit Re-Scheduled!");
-	}
 }
 
 // trivial change to test Revision.h
