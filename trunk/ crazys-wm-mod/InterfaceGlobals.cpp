@@ -55,13 +55,16 @@
 #include "cScreenCentreManagement.h"
 #include "cScreenGirlDetails.h"
 #include "cScreenDungeon.h"
+#include "cScreenMainMenu.h"
 #include "sConfig.h"
+
 using namespace std;
+
 extern sInterfaceIDs g_interfaceid;
 extern cWindowManager g_WinManager;
 
 cInterfaceEventManager g_InterfaceEvents;
-cInterfaceWindow g_MainMenu;
+cScreenMainMenu g_MainMenu;
 cInterfaceWindow g_GetString;
 cInterfaceWindow g_BrothelManagement;
 cScreenGirlManagement g_GirlManagement;
@@ -425,26 +428,9 @@ void LoadInterface()
 
 
 	// Main Menu
-	g_LogFile.write("Loading Main Menu Screen");
-	g_MainMenu.AddTextItem(g_interfaceid.STATIC_STATIC, 0, 0, 600, 32, "Please read the readme.html");
-	
-	// load main menu stuff
-	// WD: Typecast to resolve ambiguous call in VS 2010
 	g_LogFile.write("Loading MainMenu");
-	dp = DirPath() << "Resources" << "Interface"<< cfg.resolution.resolution() << "MainMenu.txt";
-	incol.open(dp.c_str());
-	//incol.open(DirPath() << "Resources" << "Interface" << "MainMenu.txt");
-	incol.seekg(0);
-	incol>>a>>b>>c>>d>>e;incol.ignore(1000, '\n');
-	g_MainMenu.CreateWindow(a,b,c,d,e);
-	incol>>a>>b>>c>>d;incol.ignore(1000, '\n');
-
-	g_MainMenu.AddButtonND("NewGame", g_interfaceid.BUTTON_NEWGAME, a, b, c, d, true);
-	incol>>a>>b>>c>>d;incol.ignore(1000, '\n');
-	g_MainMenu.AddButtonND("LoadGame", g_interfaceid.BUTTON_LOADGAME, a, b, c, d, true);
-	incol>>a>>b>>c>>d;incol.ignore(1000, '\n');
-	g_MainMenu.AddButtonND("QuitGame", g_interfaceid.BUTTON_EXITGAME, a, b, c, d, true);
-	incol.close();
+	g_MainMenu.load();
+	g_WinManager.add_window("Main Menu", &g_MainMenu);
 
 	// Load game screen
 	g_LogFile.write("Loading Load Game Screen");

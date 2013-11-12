@@ -31,7 +31,6 @@
 
 // Globals
 extern cInterfaceEventManager g_InterfaceEvents;
-extern cInterfaceWindow g_MainMenu;
 extern cInterfaceWindow g_GetString;
 extern cInterfaceWindow g_BrothelManagement;
 extern cInterfaceWindow g_ChangeJobs;

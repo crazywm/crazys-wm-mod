@@ -17,6 +17,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "main.h"
+#include "cScreenMainMenu.h"
 #include "InterfaceGlobals.h"
 #include "GameFlags.h"
 #include "InterfaceProcesses.h"
@@ -44,6 +45,7 @@
 
 #include "IconSurface.h"
 
+extern cScreenMainMenu g_MainMenu;
 extern int g_ScreenWidth, g_ScreenHeight;
 extern bool g_Fullscreen;
 sInterfaceIDs g_interfaceid;
@@ -917,7 +919,7 @@ int main(int ac, char* av[])
 	if (!Init())
 		return 1;
 
-	g_WinManager.Push(MainMenu, &g_MainMenu);
+	g_WinManager.push("Main Menu");
 
 	while (running)
 	{
