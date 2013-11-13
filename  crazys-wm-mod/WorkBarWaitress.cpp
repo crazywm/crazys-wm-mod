@@ -42,6 +42,7 @@ extern cMessageQue g_MessageQue;
 bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	string message = "";
+	string girlName = girl->m_Realname;
 	int tex = g_Dice%4;
 
 	if(Preprocessing(ACTION_WORKBAR, girl, brothel, DayNight, summary, message))	// they refuse to have work in the bar
@@ -67,6 +68,12 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 		jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Charming"))  //people like charming people
 		jobperformance += 25;
+	if (g_Girls.HasTrait(girl, "Quick Learner"))  //people like charming people
+		jobperformance += 5;
+	if (g_Girls.HasTrait(girl, "Psychic"))
+		jobperformance += 10;
+	if (g_Girls.HasTrait(girl, "Fleet of Foot")) //faster at taking orders and wont drop as much stuff
+		jobperformance += 5;
 
 	//bad traits
 	if (g_Girls.HasTrait(girl, "Dependant"))  //needs others to do the job
@@ -81,29 +88,56 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 		jobperformance -= 20;
 	if (g_Girls.HasTrait(girl, "Meek"))
 		jobperformance -= 20;
+	if (g_Girls.HasTrait(girl, "Slow Learner"))
+		jobperformance -= 10;
 
 
-	if(jobperformance < 35)
+	if(jobperformance < 45)
 		{
 			message += " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
 			wages -= 15;
+		if (roll <= 50)
+			{
+				message += girlName + " was taking orders to the wrong tables and letting a lot people walk out without paying there tab.\n";
+			}
+			else
+			{
+				message += girlName + " spilled food all over the place and mixed orders up constantly.\n";
+			}
 		}
-	else if(jobperformance < 65)
+	else if(jobperformance < 70)
 		{
 			message += " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
 			wages -= 5;
+		if (roll <= 50)
+			{
+				message += girlName + " wrote down the wrong orders for a few patrons resulting in them leaving.\n";
+			}
+			else
+			{
+				message += girlName + " sneezed in an order she had just sat down on a table.  Needless to say the patron was mad and left.\n";
+			}
 
-			if (g_Girls.HasTrait(girl, "Great Arse"))
+		if (g_Girls.HasTrait(girl, "Great Arse"))
 			if(roll <= 15)
 		{
 			message += " A patron reached out and grabed her ass. She was startled and ended up dropping a whole order\n";
 			wages -= 15;
 		}
 		}
-	else if(jobperformance < 85)
+	else if(jobperformance < 95)
 		{
 			message += " She made a few mistakes but overall she is okay at this.\n\n";
 			wages += 15;
+
+		if (roll <= 50)
+			{
+				message += girlName + " forgot to take an order to a table for over a hour.  But they were in a forgiving mood and stuck around.\n";
+			}
+			else
+			{
+				message += girlName + " sneezed in an order she had just sat down on a table.  Needless to say the patron was mad and left.\n";
+			}
 
 			if (g_Girls.HasTrait(girl, "Great Arse"))
 			if(roll <= 15)
@@ -117,6 +151,15 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 			message += " She's good at this job and gets praised by the customers often.\n\n";
 			wages += 55;
 
+		if (roll <= 50)
+			{
+				message += girlName + " didn't mess up any order this shift.  Keeping the patrons happy.\n";
+			}
+			else
+			{
+				message += girlName + " had some regulars come in.  She knows there order by heart and put it in as soon as she seen them walk in making them happy.\n";
+			}
+
 			if (g_Girls.HasTrait(girl, "Great Arse"))
 			if(roll <= 15)
 		{
@@ -127,6 +170,15 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 		{
 			message += " She's unbelievable at this and is always getting praised by the customers for her work.\n\n";
 			wages += 95;
+
+		if (roll <= 50)
+			{
+				message += girlName + " bounced from table to table taking orders and recommending items to help you make more money.\n";
+			}
+			else
+			{
+				message += girlName + " is a town favriote and knows most of the patrons by name and what they order.\n";
+			}
 
 			if (g_Girls.HasTrait(girl, "Great Arse"))
 			if(roll <= 15)
@@ -140,6 +192,15 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 			message += " She must be the perfect waitress customers go on and on about her and always come to see her when she works.\n\n";
 			wages += 155;
 
+		if (roll <= 50)
+			{
+				message += girlName + " danced around the bar dropping orders off as if she dosen't even have to think to do this anymore.\n";
+			}
+			else
+			{
+				message += "People came in from everywhere to see " + girl->m_Realname + " work.  She bounces around all the bar laughing and keeping the patrons happy without messing anything up.\n";
+			}
+
 			if (g_Girls.HasTrait(girl, "Great Arse"))
 			if(roll <= 15)
 		{
@@ -147,7 +208,6 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 			wages += 15;
 		}
 		}
-
 
 	//try and add randomness here
 	if (g_Girls.GetStat(girl, STAT_BEAUTY) >85)
@@ -194,7 +254,42 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 			}
 		}
 
-		if (g_Brothels.GetNumGirlsOnJob(0,JOB_BARMAID,false) == 1)
+	if (g_Girls.HasTrait(girl, "Psychic"))
+		if((g_Dice%101) < 20)
+		{
+			message += "She used her Psychic skills to know excatally what the patrons wanted to order making them happy and increasing her tips.\n";
+			wages += 15;
+		}
+
+	if (g_Girls.HasTrait(girl, "Assassin"))
+		if((g_Dice%101) < 5)
+		{
+			if(jobperformance < 150)
+			{
+				message += " A patron pissed her off and using her Assassin skills she killed him before even thinking about it resulting in patrons storming out without paying.\n";
+				wages -= 50;
+			}
+			else
+			{
+				message += " A patron pissed her off but she just gave them a death stare and walked away.\n";
+			}
+		}
+
+	if (g_Girls.HasTrait(girl, "Horrific Scars"))
+		if((g_Dice%101) < 15)
+		{
+			if(jobperformance < 150)
+			{
+				message += " A patron gasped at her Horrific Scars making her uneasy.  But they didn't feel sorry for her.\n";
+			}
+			else
+			{
+				message += " A patron gasped at her Horrific Scars making her sad.  Feeling bad about it as she did a wonderful job they left a good tip.\n";
+				wages += 15;
+			}
+		}
+
+	if (g_Brothels.GetNumGirlsOnJob(0,JOB_BARMAID,false) == 1)
 		if((g_Dice%100) < 25)
 		{
 			if(jobperformance < 125)
