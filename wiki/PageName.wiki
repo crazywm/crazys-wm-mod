@@ -53,4 +53,6 @@
 
 = Bugs =
 
-1. ~~When you have more then one brothel hitting next girl in other building doesn't work but it does when you only have 1 brothel..  Akia posted a fix for this but when I merged it broke a few things.  U can find the fix posted here http://www.pinkpetal.org/index.php?topic=1031.105   Maybe u can get it working right~~. *Done*
+  # ~~When you have more then one brothel hitting next girl in other building doesn't work but it does when you only have 1 brothel..  Akia posted a fix for this but when I merged it broke a few things.  U can find the fix posted here http://www.pinkpetal.org/index.php?topic=1031.105   Maybe u can get it working right~~. *Done*
+  # Prev/Next dont iterate over dungeon girls.
+    * IMO this fix require changing how the girls in dungeon are handled. For some strange reason it is not just a list but a completely new structure is created for girls there.
