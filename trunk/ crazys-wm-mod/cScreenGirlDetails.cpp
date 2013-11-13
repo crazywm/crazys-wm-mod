@@ -787,7 +787,7 @@ sGirl *cScreenGirlDetails::get_prev_girl()
 		else
 		{
 			g_LogFile.write("She is in a Brothel");
-			prev_girl = g_Brothels.GetGirl(0, g_Brothels.GetGirlPos(0, selected_girl) - 1);
+			prev_girl = g_Brothels.GetGirl(g_CurrBrothel, g_Brothels.GetGirlPos(g_CurrBrothel, selected_girl) - 1);
 		}
 	}
 
@@ -838,7 +838,7 @@ sGirl *cScreenGirlDetails::get_next_girl()
 		else
 		{
 			g_LogFile.write("She is in a Brothel");
-			next_girl = g_Brothels.GetGirl(0, g_Brothels.GetGirlPos(0, selected_girl) + 1);
+			next_girl = g_Brothels.GetGirl(g_CurrBrothel, g_Brothels.GetGirlPos(g_CurrBrothel, selected_girl) + 1);
 		}
 	}
 

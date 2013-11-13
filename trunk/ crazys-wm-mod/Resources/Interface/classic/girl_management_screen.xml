@@ -1,7 +1,7 @@
 <Screen>
 
 
-	<Window	Name= "Girl Management Window"
+  <Window	Name= "Girl Management Window"
 		XPos	= "10"
 		YPos	= "10"
 		Width	= "880"
@@ -33,53 +33,71 @@
 		HeaderDiv = "true"
 		HeaderClicksSort = "true"
 	>
-		<Column
+    <Column
 			Name	= "Name"
 			Header	= "Girl Name"
 			Offset	= "0"
 		/>
-		<Column
+    <Column
 			Name	= "Age"
 			Header	= "Age"
-			Offset	= "130"
+			Offset	= "110"
 		/>
-		<Column
+    <Column
 			Name	= "Health"
 			Header	= "Health"
-			Offset	= "170"
+			Offset	= "150"
 		/>
-		<Column
+    <Column
 			Name	= "Happiness"
 			Header	= "Happy"
-			Offset	= "220"
+			Offset	= "200"
 		/>
-		<Column
+    <Column
 			Name	= "Tiredness"
 			Header	= "Tired"
-			Offset	= "275"
+			Offset	= "255"
 		/>
-<!--		<Column
-			Name	= "Rebelliousness"
-			Header	= "Rebel"
-			Offset	= "320"
-		/>
--->
-		<Column
+
+    <Column
 			Name	= "DayJob"
 			Header	= "Day Job"
-			Offset	= "320"
+			Offset	= "300"
 		/>
-		<Column
+    <Column
 			Name	= "NightJob"
 			Header	= "Night Job"
-			Offset	= "410"
+			Offset	= "390"
 		/>
-		<Column
+    <Column
 			Name	= "is_pregnant"
 			Header	= "Pregnant"
-			Offset	= "520"
+			Offset	= "480"
 		/>
-	</ListBox>
+    <Column
+		Name	= "Pay"
+		Header	= "Gold"
+		Offset	= "535"
+	/>
+	
+	<Column
+		Name	= "Rebel"
+		Header	= "Rebel"
+		Offset	= "570"
+	/>
+	
+	<Column
+		Name	= "Libido"
+		Header	= "Libido"
+		Offset	= "610"
+	/>
+	
+	<Column
+		Name	= "Accomodation"
+		Header	= "Acc"
+		Offset	= "650"
+	/>
+  </ListBox>
 
 
   <Image Name	= "GirlImage"

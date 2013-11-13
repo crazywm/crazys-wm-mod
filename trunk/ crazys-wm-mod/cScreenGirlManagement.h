@@ -62,7 +62,9 @@ private:
 	void RefreshJobList();
 	void GetSelectedGirls(vector<int> *girl_array);
 	void ViewSelectedGirl();
+
 public:
+
 	cScreenGirlManagement()
 	{
 		cConfig cfg;
@@ -70,10 +72,11 @@ public:
 			<< "Resources"
 			<< "Interface"
 			<< cfg.resolution.resolution()
-			<< "girl_management_screen.xml"
-		;
+			<< "girl_management_screen.xml";
+
 		m_filename = dp.c_str();
 	}
+
 	~cScreenGirlManagement() {}
 
 	void init();
