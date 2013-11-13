@@ -7,6 +7,9 @@
   # Finish porting the game ui from legacy data to XML. Started ...
   # Merging all those globals in a single global object.
   # Code clean up.
+  # cDungeon implementation. 
+    * Derive from cBrothels? 
+    * Shouldn't have a different structure for girls there.
 
 = Things laying around that should get to the game at some point =
 
