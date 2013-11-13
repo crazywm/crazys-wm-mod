@@ -782,7 +782,7 @@ sGirl *cScreenGirlDetails::get_prev_girl()
 		if (selected_girl->m_DayJob == JOB_INDUNGEON)
 		{
 			g_LogFile.write("She is in the Dungeon");
-			prev_girl = g_Brothels.GetDungeon()->GetGirl(cycle_girls[cycle_pos])->m_Girl;
+			prev_girl = g_Brothels.GetDungeon()->GetGirl(g_Brothels.GetDungeon()->GetGirlPos(selected_girl) - 1)->m_Girl;
 		}
 		else
 		{
@@ -833,7 +833,7 @@ sGirl *cScreenGirlDetails::get_next_girl()
 		if (selected_girl->m_DayJob == JOB_INDUNGEON)
 		{
 			g_LogFile.write("She is in the Dungeon");
-			next_girl = g_Brothels.GetDungeon()->GetGirl(cycle_girls[cycle_pos])->m_Girl;
+			next_girl = g_Brothels.GetDungeon()->GetGirl(g_Brothels.GetDungeon()->GetGirlPos(selected_girl) + 1)->m_Girl;
 		}
 		else
 		{
