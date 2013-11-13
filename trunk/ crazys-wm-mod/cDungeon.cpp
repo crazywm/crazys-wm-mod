@@ -626,7 +626,15 @@ void sDungeonCust::OutputCustDetailString(string& Data, const string& detailName
 sDungeonGirl* cDungeon::GetGirl(int i)
 {
 	if (i < 0)
-		return 0;
+	{
+		i = i + m_NumGirls;
+	}
+
+	if (i >= m_NumGirls)
+	{
+		i = i - m_NumGirls;
+	}
+
 	sDungeonGirl* girl = m_Girls;
 	int tmp = 0;
 	while(girl)
@@ -651,6 +659,7 @@ sDungeonGirl* cDungeon::GetGirlByName(string name)
 	}
 	return 0;
 }
+
 int cDungeon::GetDungeonPos(sGirl* girl)
 {
 	sDungeonGirl* tgirl = m_Girls;
