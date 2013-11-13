@@ -608,6 +608,8 @@ struct sGirl
 	int pclove(int n)	{ return upd_stat(STAT_PCLOVE, n); }
 	int pchate()		{ return get_stat(STAT_PCHATE); }
 	int pchate(int n)	{ return upd_stat(STAT_PCHATE, n); }
+
+	int rebel();
 /*
  *	notice that if we do tweak get_stat to reference the stats array
  *	direct, the above still work.

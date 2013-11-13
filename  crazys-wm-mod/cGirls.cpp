@@ -54,6 +54,8 @@ extern bool g_GenGirls;
 extern cGold g_Gold;
 extern cGangManager g_Gangs;
 extern int g_Building;
+extern cGirls g_Girls;
+
 /*
  * MOD: DocClox: Stuff for the XML loader code
  *
@@ -12773,6 +12775,14 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 		else
 			ss << get_stat(STAT_HEALTH) << "%";
 	}
+	else if (detailName == "Libido")
+	{
+		ss << libido();
+	}
+	else if (detailName == "Rebel")
+	{
+		ss << rebel();
+	}
 	else if (detailName == "Looks")
 	{
 		ss << ((get_stat(STAT_BEAUTY)+get_stat(STAT_CHARISMA))/2);
@@ -13002,3 +13012,10 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 	}
 	Data = ss.str();
 }
+
+int sGirl::rebel()
+{
+	return g_Girls.GetRebelValue(this, this->m_DayJob == JOB_MATRON);
+}
+
+
