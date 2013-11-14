@@ -72,7 +72,7 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 		jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Psychic"))
 		jobperformance += 10;
-	if (g_Girls.HasTrait(girl, "Fleet of Foot")) //faster at taking orders and wont drop as much stuff
+	if (g_Girls.HasTrait(girl, "Fleet of Foot")) //faster at taking orders and droping them off
 		jobperformance += 5;
 
 	//bad traits
@@ -125,7 +125,7 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 			wages -= 15;
 		}
 		}
-	else if(jobperformance < 95)
+	else if(jobperformance < 100)
 		{
 			message += " She made a few mistakes but overall she is okay at this.\n\n";
 			wages += 15;
@@ -146,14 +146,21 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 			wages -= 10;
 		}
 		}
-	else if(jobperformance < 135)
+	else if(jobperformance < 145)
 		{
 			message += " She's good at this job and gets praised by the customers often.\n\n";
 			wages += 55;
 
 		if (roll <= 50)
 			{
+				if (g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Abnormally Large Boobs"))
+				{
+					message += "The patron love been served by " + girl->m_Realname + ".  Due to the fact she's good at her job and they love staring at her Big Boobs.\n";
+				}
+				else
+				{
 				message += girlName + " didn't mess up any order this shift.  Keeping the patrons happy.\n";
+				}
 			}
 			else
 			{

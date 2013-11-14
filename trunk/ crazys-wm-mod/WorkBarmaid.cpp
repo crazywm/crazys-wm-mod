@@ -115,7 +115,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, int DayNight, stri
 				message += girlName + " gave someone a drink she mixed that made them sick.  It was nothing but coke and ice so who knows how she did it.\n";
 			}
 		}
-	else if(jobperformance < 95)
+	else if(jobperformance < 100)
 		{
 			message += " She made a few mistakes but overall she is okay at this.\n\n";
 			wages += 15;
@@ -128,7 +128,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, int DayNight, stri
 				message += girlName + " wasted a few drinks by forgetting to ice them but wasn't major.\n";
 			}
 		}
-	else if(jobperformance < 135)
+	else if(jobperformance < 145)
 		{
 			message += " She's good at this job and gets praised by the customers often.\n\n";
 			wages += 55;
@@ -151,7 +151,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, int DayNight, stri
 			}
 			else
 			{
-				message += "People love seeing " + girl->m_Realname + " work and pour into the bar during her shift.  She mixes wonderful drinks and doesn't mess orders up so they couldn't be happier.\n";
+				message += "People love seeing " + girl->m_Realname + " work and they pour into the bar during her shift.  She mixes wonderful drinks and doesn't mess orders up so they couldn't be happier.\n";
 			}
 		}
 	else if(jobperformance < 245)

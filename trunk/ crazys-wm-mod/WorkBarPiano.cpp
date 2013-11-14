@@ -69,6 +69,10 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, int DayNight, str
 		jobperformance += 10;
 	if (g_Girls.HasTrait(girl, "Elegant"))  //Elegant people usally know how to play the piano lol
 		jobperformance += 15;
+	if (g_Girls.HasTrait(girl, "Quick Learner"))  //people like charming people
+		jobperformance += 5;
+	if (g_Girls.HasTrait(girl, "Psychic"))  //knows what people want to hear
+		jobperformance += 10;
 
 	//bad traits
 	if (g_Girls.HasTrait(girl, "Dependant"))  //needs others to do the job
@@ -79,24 +83,26 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, int DayNight, str
 		jobperformance -= 30;
 	if (g_Girls.HasTrait(girl, "Meek"))
 		jobperformance -= 20;
+	if (g_Girls.HasTrait(girl, "Slow Learner"))
+		jobperformance -= 10;
 
 
-	if(jobperformance < 25)
+	if(jobperformance < 45)
 		{
 			message += " She didn't play the piano so much as banged on it.\n\n";
 			wages -= 15;
 		}
-	else if(jobperformance < 50)
+	else if(jobperformance < 70)
 		{
 			message += " She almost never hits a right note. Luck for you most of your customers are drunks.\n\n";
 			wages -= 5;
 		}
-	else if(jobperformance < 85)
+	else if(jobperformance < 100)
 		{
 			message += " She hits a few right notes but she still has room to improve.\n\n";
 			wages += 15;
 		}
-	else if(jobperformance < 135)
+	else if(jobperformance < 145)
 		{
 			message += " Her playing is really good and gets praised by the customers often.\n\n";
 			wages += 55;
@@ -155,6 +161,41 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, int DayNight, str
 			{
 			message += " Her optimistic mood made patrons cheer up increasing the amount they tip.\n\n";
 			wages += 10;
+			}
+		}
+
+	if (g_Girls.HasTrait(girl, "Psychic"))
+		if((g_Dice%101) < 20)
+		{
+			message += "She used her Psychic skills to know excatally what the patrons wanted to hear her play.\n";
+			wages += 15;
+		}
+
+	if (g_Girls.HasTrait(girl, "Assassin"))
+		if((g_Dice%101) < 5)
+		{
+			if(jobperformance < 150)
+			{
+				message += " A patron bumped into the piano causing her to miss a note.  This pissed her off and using her Assassin skills she killed him before even thinking about it resulting in patrons storming out without paying.\n";
+				wages -= 50;
+			}
+			else
+			{
+				message += " A patron bumped into the piano.  But with her skill she didn't miss a note.  The patron was luck to leave with his life.\n";
+			}
+		}
+
+	if (g_Girls.HasTrait(girl, "Horrific Scars"))
+		if((g_Dice%101) < 15)
+		{
+			if(jobperformance < 150)
+			{
+				message += " A patron gasped at her Horrific Scars making her uneasy.  But they didn't feel sorry for her.\n";
+			}
+			else
+			{
+				message += " A patron gasped at her Horrific Scars making her sad.  Feeling bad about it as she did a wonderful job they left a good tip.\n";
+				wages += 15;
 			}
 		}
 

@@ -69,6 +69,10 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 		jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Elegant"))  //
 		jobperformance += 5;
+	if (g_Girls.HasTrait(girl, "Quick Learner"))  //
+		jobperformance += 5;
+	if (g_Girls.HasTrait(girl, "Psychic"))  //knows what people want to hear
+		jobperformance += 10;
 
 	//bad traits
 	if (g_Girls.HasTrait(girl, "Dependant"))  //needs others to do the job
@@ -81,24 +85,28 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 		jobperformance -= 20;
 	if (g_Girls.HasTrait(girl, "Broken Will"))
 		jobperformance -= 50;
+	if (g_Girls.HasTrait(girl, "Clumsy"))  //might trip on stage
+		jobperformance -= 10;
+	if (g_Girls.HasTrait(girl, "Slow Learner"))
+		jobperformance -= 10;
 
 
-	if(jobperformance < 35)
+	if(jobperformance < 45)
 		{
 			message += " Her voice sounds like nails on a chalk board.  She could be the worst singer ever.\n\n";
 			wages -= 15;
 		}
-	else if(jobperformance < 60)
+	else if(jobperformance < 70)
 		{
 			message += " She almost never hits a right note. Luck for you most of your customers are drunks.\n\n";
 			wages -= 5;
 		}
-	else if(jobperformance < 95)
+	else if(jobperformance < 100)
 		{
 			message += " She hits a few right notes but she still has room to improve.\n\n";
 			wages += 15;
 		}
-	else if(jobperformance < 135)
+	else if(jobperformance < 145)
 		{
 			message += " Her voice is really good and gets praised by the customers often.\n\n";
 			wages += 55;
@@ -160,7 +168,42 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 			}
 		}
 
-		if (g_Brothels.GetNumGirlsOnJob(0,JOB_PIANO,false) == 1)
+	if (g_Girls.HasTrait(girl, "Psychic"))
+		if((g_Dice%101) < 20)
+		{
+			message += "She knew just what songs to sing to get better tips by using her Psychic powers.\n";
+			wages += 15;
+		}
+
+	if (g_Girls.HasTrait(girl, "Assassin"))
+		if((g_Dice%101) < 5)
+		{
+			if(jobperformance < 150)
+			{
+				message += " A patron booed her making her mad and using her Assassin skills she killed him before even thinking about it resulting in patrons storming out without paying.\n";
+				wages -= 50;
+			}
+			else
+			{
+				message += " A patron booed her.  But was drunk and started crying a moment later so she ignored them.\n";
+			}
+		}
+
+	if (g_Girls.HasTrait(girl, "Horrific Scars"))
+		if((g_Dice%101) < 15)
+		{
+			if(jobperformance < 150)
+			{
+				message += " A patron gasped at her Horrific Scars making her uneasy.  But they didn't feel sorry for her.\n";
+			}
+			else
+			{
+				message += " A patron gasped at her Horrific Scars making her sad.  Feeling bad about it as she sang wonderful they left her a good tip.\n";
+				wages += 15;
+			}
+		}
+
+	if (g_Brothels.GetNumGirlsOnJob(0,JOB_PIANO,false) == 1)
 		if((g_Dice%100) < 25)
 		{
 			if(jobperformance < 125)
