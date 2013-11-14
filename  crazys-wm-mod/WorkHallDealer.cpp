@@ -43,6 +43,7 @@ extern cGold g_Gold;
 bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	string message = "";
+	string girlName = girl->m_Realname;
 	if(Preprocessing(ACTION_WORKHALL, girl, brothel, DayNight, summary, message))	// they refuse to have work in the hall
 		return true;
 
@@ -59,15 +60,19 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, int DayNight, s
 
 	//good traits
 	if (g_Girls.HasTrait(girl, "Charismatic"))  //
-		jobperformance += 10;
+		jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Sexy Air"))  //
-		jobperformance += 10;
+		jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Cool Person"))  //people love to be around her
-		jobperformance += 10;
+		jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Cute"))  //
 		jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Charming"))  //people like charming people
 		jobperformance += 10;
+	if (g_Girls.HasTrait(girl, "Quick Learner"))  //
+		jobperformance += 5;
+	if (g_Girls.HasTrait(girl, "Psychic"))
+		jobperformance += 15;
 
 	//bad traits
 	if (g_Girls.HasTrait(girl, "Dependant"))  //needs others to do the job
@@ -80,37 +85,187 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, int DayNight, s
 		jobperformance -= 30;
 	if (g_Girls.HasTrait(girl, "Meek"))
 		jobperformance -= 20;
+	if (g_Girls.HasTrait(girl, "Slow Learner"))
+		jobperformance -= 15;
 
 
-	if(jobperformance < 35)
+	if(jobperformance < 45)
 		{
 			message += " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
 			wages -= 15;
+		if (roll <= 20)
+			{
+				message += girlName + " dropped the deck on the floor, spraying cards everywhere.\n";
+			}
+		else if (roll <= 40)
+			{
+				message += girlName + " managed, against all probability, to lose every single game.\n";
+			}
+		else if (roll <= 60)
+			{
+				message += girlName + " shrugged with a degree of embarrasment as a chortling patron walked away with a fat moneybag.\n";
+			}
+		else if (roll <= 80)
+			{
+				message += girlName + " is really, really, bad at this job.\n";
+			}
+		else
+			{
+				message += "You can almost see the profits slipping away as " + girlName + "loses yet another hand of poker.\n";
+			}
 		}
-	else if(jobperformance < 65)
+	else if(jobperformance < 70)
 		{
 			message += " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
 			wages -= 5;
+		if (roll <= 20)
+			{
+				message += girlName + " struggles valiently against the forces of chance, and wins! A. Single. Game.\n";
+			}
+		else if (roll <= 40)
+			{
+				message += "While " + girlName + "isn't completely incompetent as a card dealer, the dividing line is thin.\n";
+			}
+		else if (roll <= 60)
+			{
+				message += "As you watch " + girlName + "fold like a house of cards on a royal flush, you idly wonder if she could be replaced with a shaved ape.\n";
+			}
+		else if (roll <= 80)
+			{
+				message += "The cards are not in her favor today - the highest hand you saw her with was two pair.\n";
+			}
+		else
+			{
+				message += "As " + girlName + "'s shift ends, you struggle mightily against the urge to sigh in relief.\n";
+			}
 		}
-	else if(jobperformance < 85)
+	else if(jobperformance < 100)
 		{
 			message += " She made a few mistakes but overall she is okay at this.\n\n";
 			wages += 15;
+		if (roll <= 20)
+			{
+				if (g_Girls.HasTrait(girl, "Nervous") || g_Girls.HasTrait(girl, "Meek"))
+					{
+					message += "Despite her uncertain nature, " + girl->m_Realname + " is holding her own at the card-table.\n";
+					}
+				else
+					{
+				message += "She's no cardsharp, but " + girlName + " can hold her own against the patrons.\n";
+				}
+			}
+		else if (roll <= 40)
+			{
+				message += girlName + "broke even today, thank the Lady.\n";
+			}
+		else if (roll <= 60)
+			{
+				message += "Pasteboard isn't her friend as the cards seemed to taunt her.\n";
+			}
+		else if (roll <= 80)
+			{
+				message += "Almost all the patrons managed to preserve most of their initial stake.\n";
+			}
+		else
+			{
+				if (g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Abnormally Large Boobs"))
+					{
+					message += "She turned a slight profit, with the help of her not inconsiderable breasts' distraction factor.\n";
+					}
+				else
+				{
+				message += "She's clocked in and clocked out, but nothing spectacular has happened in between.\n";
+				}
+			}
 		}
-	else if(jobperformance < 135)
+	else if(jobperformance < 145)
 		{
 			message += " She's good at this job and knows a few tricks to win.\n\n";
 			wages += 55;
+		if (roll <= 20)
+			{
+				message += girlName + "'s a fairly good card dealer, and turned a profit today.\n";
+			}
+		else if (roll <= 40)
+			{
+				if (g_Girls.HasTrait(girl, "Lolita"))
+					{
+					message += "Nobody expected such a sweet little girl to win anything!\n";
+					}
+				else if (g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Abnormally Large Boobs"))
+					{
+					message += "While she's a good card dealer, " + girl->m_Realname + " big tits helped weigh the odds in her favor.\n";
+					}
+				else
+					{
+					message += "Her professional smile and pleasing form reinforced her acceptable skill level.\n";
+				}
+			}
+		else if (roll <= 60)
+			{
+				message += " Lady Luck seems to be smiling on " + girlName + " today - she won more games then she lost.\n";
+			}
+		else if (roll <= 80)
+			{
+				message += "Most of the patrons that sat down at " + girlName + "'s table today rose just a bit lighter.\n";
+			}
+		else
+			{
+				message += girlName + " shows real promise as a dealer.\n";
+			}
 		}
 	else if(jobperformance < 185)
 		{
 			message += " She's unbelievable at this and is always finding new ways to beat the customer.\n\n";
 			wages += 95;
+		if (roll <= 20)
+			{
+				message += girlName + "'s a skilled card dealer, and turned a substantial profit today.\n";
+			}
+		else if (roll <= 40)
+			{
+				message += "She won all of her games bar one or two today!.\n";
+			}
+		else if (roll <= 60)
+			{
+				message += girlName + " could find a place in any gambling institution with her skills with cards.\n";
+			}
+		else if (roll <= 80)
+			{
+				message += "A fat merchant nearly had a heart attack after losing this month's profits to " + girlName + ".\n";
+			}
+		else
+			{
+				message +=  "You flash a congratulatory smile at " + girlName + " on her way out the door at the end of shift.\n";
+			}
 		}
 	else if(jobperformance < 245)
 		{
 			message += " She must be the perfect dealer she never losses and customers hate to see her at the tables cause they know they won't win.\n\n";
 			wages += 155;
+		if (roll <= 33)
+			{
+				if (g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Abnormally Large Boobs"))
+					{
+					message += "Between her exceptional card skills and her massive tits, " + girl->m_Realname + " raked the money in this shift.\n";
+					}
+				else if (g_Girls.HasTrait(girl, "Lolita"))
+					{
+					message += "Behind her small frame and innocent face lurks a true card-shark.\n";
+					}
+				else
+					{
+					message += girlName + " is as near to perfect as any being could get.  She made a pile of money today.\n";
+				}
+			}
+		else if (roll <= 66)
+			{
+				message += girlName + " managed to win every game she played in today.\n";
+			}
+		else 
+			{
+				message += "A master of card-counting, the other players had no chance when " + girlName + " joined them this shift.\n";
+			}
 		}
 
 
@@ -136,7 +291,14 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, int DayNight, s
 			}
 		}
 
-		if (g_Brothels.GetNumGirlsOnJob(0,JOB_ENTERTAINMENT,false) == 1)
+	if (g_Girls.HasTrait(girl, "Psychic"))
+		if((g_Dice%100) < 20)
+		{
+			message += "She used her Psychic skills to know excatally what cards was coming up and won a big hand.\n";
+			wages += 15;
+		}
+
+	if (g_Brothels.GetNumGirlsOnJob(0,JOB_ENTERTAINMENT,false) == 1)
 		if(roll <= 25)
 		{
 			if(jobperformance < 125)
