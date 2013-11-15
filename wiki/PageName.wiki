@@ -53,6 +53,7 @@
   # A maid cafe type building with a "special menu"...  Only reason I havent done this is it just seems like a mix of the bar and sleezy bar to me.  So thought of maybe have be themed based and making the player pick the theme.. Like big boobs or nice legs or cosplay u get the ideal but not sure on this yet.
   # Escort job.  Would require like a high lvl girl or something.  Would only see few people week with high pay.  Havent figured it all out yet.
     * Perhaps as a mission/contract?  // That could be a good ideal have someone asking for a certain type girl and you gotta pick one to match what they want
+12. unquie items..  scripts to give items to girls or player.  Honestly items in general are something to think on
 
 = Bugs =
 
