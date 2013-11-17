@@ -12966,11 +12966,16 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 	{
 		if(is_pregnant())
 		{
-			ss << gettext("Yes");
+			cConfig cfg;
+			int to_go = cfg.pregnancy.weeks_pregnant() - m_WeeksPreg;
+			ss << gettext("Yes") << "(" << to_go << ")";
 		}
 		else
 		{
-			ss << gettext("No");
+			if (m_PregCooldown == 0)
+				ss << gettext("No");
+			else
+				ss << gettext("No") << "(" << (int)m_PregCooldown << ")";
 		}
 	}
 	else if (detailName == "is_addict")
