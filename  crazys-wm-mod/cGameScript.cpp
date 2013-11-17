@@ -29,6 +29,7 @@
 #include "cGirlGangFight.h"
 #include "cGirlTorture.h"
 #include "cScreenGirlDetails.h"
+#include "cScreenBrothelManagement.h"
 
 extern bool g_InitWin;
 extern cWindowManager g_WinManager;
@@ -37,7 +38,7 @@ extern cChoiceManager g_ChoiceManager;
 extern cBrothelManager g_Brothels;
 extern cGirls g_Girls;
 extern cInventory g_InvManager;
-extern cInterfaceWindow g_BrothelManagement;
+extern cScreenBrothelManagement g_BrothelManagement;
 extern bool g_Cheats;
 extern int g_CurrBrothel;
 extern int g_TalkCount;

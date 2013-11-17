@@ -18,6 +18,7 @@
 */
 #include "main.h"
 #include "cScreenMainMenu.h"
+#include "cScreenBrothelManagement.h"
 #include "InterfaceGlobals.h"
 #include "GameFlags.h"
 #include "InterfaceProcesses.h"
@@ -46,6 +47,7 @@
 #include "IconSurface.h"
 
 extern cScreenMainMenu g_MainMenu;
+extern cScreenBrothelManagement g_BrothelManagement;
 extern int g_ScreenWidth, g_ScreenHeight;
 extern bool g_Fullscreen;
 sInterfaceIDs g_interfaceid;
@@ -1139,8 +1141,12 @@ int main(int ac, char* av[])
 void Shutdown()
 {
 	g_LogFile.write("Shutting Down");
+
+	g_LogFile.write("Releasing Graphics");
 	g_Graphics.Free();
 
+	
+	g_LogFile.write("Releasing Images");
 	delete g_BackgroundImage;
 
 	for (int i = 0; i<6; i++)
@@ -1152,32 +1158,46 @@ void Shutdown()
 		}
 	}
 
+	g_LogFile.write("Releasing Girls");
 	for (int i = 0; i<8; i++)
 	{
 		if (MarketSlaveGirls[i] && MarketSlaveGirlsDel[i] == -1)
 			delete MarketSlaveGirls[i];
 		MarketSlaveGirls[i] = 0;
 	}
-
-	g_Brothels.Free();
-	g_Customers.Free();
+	
 	g_Girls.Free();
+
+	g_LogFile.write("Releasing Customers");
+	g_Customers.Free();
+
+	
+	
+	
 	g_Traits.Free();
 	g_InvManager.Free();
+
+	g_LogFile.write("Releasing Buildings");
+	g_Brothels.Free();
 	g_Clinic.Free();
 	g_Studios.Free();
 	g_Arena.Free();
 	g_Centre.Free();
 	g_House.Free();
 
+	g_LogFile.write("Releasing Interface");
 	FreeInterface();
 
+	g_LogFile.write("Releasing Resource Manager");
 	rmanager.Free();
+
+	g_LogFile.write("Releasing Jobs");
 #ifdef _DEBUG
 	cJobManager::freeJobs();
 #else
 	cJobManager::free();
 #endif
+	g_LogFile.write("Shutdown Complete");
 }
 
 bool Init()

@@ -86,8 +86,8 @@ CSurface::~CSurface()
 
 	//I'm commenting this out so I can find the debug messages
 	//I need right now. Feel free to reinstate it if need be -- doc
-	//g_LogFile.ss() << "'" << m_Filename << "' Freed";
-	//g_LogFile.ssend();
+	g_LogFile.ss() << "'" << m_Filename << "' Freed";
+	g_LogFile.ssend();
 }
 
 void CSurface::Free()

@@ -243,7 +243,28 @@
 		Transparency= "true"
 		Scale		= "true"
 	/>
-
+	
+	<Button	
+		Name	    = "Prev"
+		Image		= "Prev"
+		XPos		= "600"
+		YPos		= "274"
+		Width		= "72"
+		Height		= "32"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+	
+	<Button	
+		Name	    = "Next"
+		Image		= "Next"
+		XPos		= "688"
+		YPos		= "274"
+		Width		= "72"
+		Height		= "32"
+		Transparency= "true"
+		Scale		= "true"
+	/>
 
 </Screen>
 

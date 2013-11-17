@@ -30,7 +30,7 @@
 #include "cInterfaceWindow.h"
 #include "cWindowManager.h"
 #include "cScriptManager.h"
-
+#include "cScreenBrothelManagement.h"
 
 extern CGraphics g_Graphics;
 extern cChoiceManager g_ChoiceManager;
@@ -38,7 +38,7 @@ extern cMessageQue g_MessageQue;
 extern cBrothelManager g_Brothels;
 extern int g_CurrBrothel;
 extern cWindowManager g_WinManager;
-extern cInterfaceWindow g_BrothelManagement;
+extern cScreenBrothelManagement g_BrothelManagement;
 extern bool g_InitWin;
 
 

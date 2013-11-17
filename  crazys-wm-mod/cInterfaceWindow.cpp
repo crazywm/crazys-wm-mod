@@ -68,19 +68,13 @@ void cInterfaceWindow::Free()
 	{
 		if (m_Images[i])
 		{
-			if (m_Images[i]->m_Image && 
-				*(m_Images[i]->m_Image->GetSurface()) == (SDL_Surface*)0xfeeefeee)
-			{
-				//error, it's been deleted, do nothing
-			}
-			else
-			{
+			// If this is NULL then the deconstructor has been called already.
+			if (m_Images[i]->m_AnimatedImage != 0)
 				delete m_Images[i];
-			}
 		}
 	}
 	m_Images.clear();
-	
+
 	for(unsigned int i=0;i<m_CheckBoxes.size();i++)
 		delete m_CheckBoxes[i];
 	m_CheckBoxes.clear();

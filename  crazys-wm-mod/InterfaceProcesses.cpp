@@ -25,6 +25,12 @@
 #include "cScriptManager.h"
 #include "Revision.h"
 #include "libintl.h"
+#include "cScreenBrothelManagement.h"
+#include "FileList.h"
+#include "MasterFile.h"
+#include "DirPath.h"
+#include "cScreenGirlDetails.h"
+
 #undef bool
 
 #ifdef LINUX
@@ -34,15 +40,10 @@
 #endif
 #undef GetMessage
 
-#include "DirPath.h"
-//#include "cDungeonScreenManager.h"
-
-#include "cScreenGirlDetails.h"
 extern cScreenGirlDetails g_GirlDetails;
-
-#include "FileList.h"
-#include "MasterFile.h"
+extern cScreenBrothelManagement g_BrothelManagement;
 extern sInterfaceIDs g_interfaceid;
+
 // globals used for the interface
 string g_ReturnText = "";
 bool g_InitWin = true;
@@ -159,7 +160,7 @@ void LoadGameScreen()
 	if(LoadGame(location, fl[selection].leaf()))
 	{
 		g_WinManager.Pop();
-		g_WinManager.Push(BrothelScreen, &g_BrothelManagement);
+		g_WinManager.push("Brothel Management");
 		g_InitWin = true;
 	}
 	else
@@ -311,7 +312,7 @@ void NewGame()
 		//g_Brothels.AddGirl(0, g_Girls.GetGirl(23));  // Adding girl to brothel (Ayanami Rei as it happens) for some reason?
 	}
 
-	g_WinManager.Push(BrothelScreen, &g_BrothelManagement);
+	g_WinManager.push("Brothel Management");
 
 	DirPath text = DirPath()
 		<< "Saves"
@@ -353,140 +354,6 @@ void GetInt()
 		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_CANCEL))
 			g_WinManager.Pop();
 	}
-}
-
-void BrothelScreen()
-{
-	g_CurrentScreen = SCREEN_BROTHEL;
-	if(g_InitWin)
-	{
-		string brothel = gettext("Current Brothel: ");
-		brothel = g_Brothels.GetName(g_CurrBrothel);
-		g_BrothelManagement.EditTextItem(brothel, g_interfaceid.TEXT_CURRENTBROTHEL);
-		g_BrothelManagement.Focused();
-
-		stringstream ss;
-		ss << gettext("Day: ") << g_Day << gettext(" Month: ") << g_Month << gettext(" Year: ") << g_Year << gettext(", Brothel: ") << brothel;
-		g_BrothelManagement.EditTextItem(ss.str(), g_interfaceid.TEXT_BROTHELNAME);
-		g_BrothelManagement.EditTextItem(
-			g_Brothels.GetBrothelString(g_CurrBrothel),
-			g_interfaceid.TEXT_BMDETAILS
-		);
-		g_InitWin = false;
-		selected_girl = 0;
-	}
-
-	if(g_InterfaceEvents.GetNumEvents() != 0)
-	{
-		if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_MANAGEGIRLS))
-		{
-			g_InitWin = true;
-			g_CurrentScreen = SCREEN_GIRLMANAGEMENT;
-			g_WinManager.push("Girl Management");
-			return;
-		}
-		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_MANAGESTAFF))
-		{
-			g_InitWin = true;
-			g_CurrentScreen = SCREEN_GANGMANAGEMENT;
-			g_WinManager.push("Gangs");
-			return;
-		}
-		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_MANAGEBUILDING))
-		{
-			g_InitWin = true;
-			g_CurrentScreen = SCREEN_BROTHELMANAGEMENT;
-			g_WinManager.push("Building Setup");
-			return;
-		}
-		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_VISITDUNGEON))
-		{
-			g_InitWin = true;
-			g_CurrentScreen = SCREEN_DUNGEON;
-			g_WinManager.push("Dungeon");
-			return;
-		}
-		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_VISITTOWN))
-		{
-			g_InitWin = true;
-			g_CurrentScreen = SCREEN_TOWN;
-			g_WinManager.push("Town");
-			return;
-		}
-		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_SAVEGAME))
-		{
-			g_MessageQue.AddToQue("Game Saved", 2);
-			SaveGameXML(DirPath()
-				<< "Saves"
-				<< (g_Brothels.GetBrothel(0)->m_Name + ".gam").c_str()
-			);
-			return;
-		}
-		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_NEWWEEK))
-		{
-			g_InitWin = true;
-			g_CurrentScreen = SCREEN_TURNSUMMARY;
-			SaveGameXML(DirPath()
-				<< "Saves"
-				<< "autosave.gam"
-			);
-			NextWeek();
-			g_WinManager.Push(Turnsummary, &g_Turnsummary);
-			return;
-		}
-		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_TURNSUMMARY))
-		{
-			g_InitWin = true;
-			g_CurrentScreen = SCREEN_TURNSUMMARY;
-			g_WinManager.Push(Turnsummary, &g_Turnsummary);
-			return;
-		}
-		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_QUIT))
-		{
-			g_CurrentScreen = SCREEN_MAINMENU;
-			g_InitWin = true;
-			g_WinManager.Push(confirm_exit, &g_GetString);
-			
-			return;
-		}
-		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_NEXTBROTHEL))
-		{
-			g_CurrBrothel++;
-			if(g_CurrBrothel >= g_Brothels.GetNumBrothels())
-				g_CurrBrothel=0;
-			g_InitWin = true;
-			return;
-		}
-		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_PREVBROTHEL))
-		{
-			g_CurrBrothel--;
-			if(g_CurrBrothel < 0)
-				g_CurrBrothel =  g_Brothels.GetNumBrothels()-1;
-			g_InitWin = true;
-			return;
-		}
-	}
-
-	if(g_LeftArrow)
-	{
-		g_CurrBrothel--;
-		if(g_CurrBrothel < 0)
-			g_CurrBrothel =  g_Brothels.GetNumBrothels()-1;
-		g_InitWin = true;
-		g_LeftArrow = false;
-		return;
-	}
-	else if(g_RightArrow)
-	{
-		g_CurrBrothel++;
-		if(g_CurrBrothel >= g_Brothels.GetNumBrothels())
-			g_CurrBrothel=0;
-		g_InitWin = true;
-		g_RightArrow = false;
-		return;
-	}
-
-	g_BrothelManagement.SetImage(g_interfaceid.IMAGE_BIMAGE, g_BrothelImages[g_CurrBrothel]);
 }
 
 static string clobber_extension(string s)
