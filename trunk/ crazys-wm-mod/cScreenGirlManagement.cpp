@@ -92,6 +92,8 @@ void cScreenGirlManagement::set_ids()
 	jobdesc_id = get_id("JobDescription");
 	day_id = get_id("DayButton");
 	night_id = get_id("NightButton");
+	prev_id = get_id("Prev");
+	next_id = get_id("Next");
 
 	//Set the default sort order for columns, so listbox knows the order in which data will be sent
 	SortColumns(girllist_id, m_ListBoxes[girllist_id]->m_ColumnName, m_ListBoxes[girllist_id]->m_ColumnCount);
@@ -477,6 +479,20 @@ void cScreenGirlManagement::check_events()
 		g_InitWin = true;
 		g_WinManager.Pop();
 		return;
+	}
+	if (g_InterfaceEvents.CheckButton(prev_id))
+	{
+		g_CurrBrothel--;
+		if (g_CurrBrothel < 0)
+			g_CurrBrothel = g_Brothels.GetNumBrothels() - 1;
+		g_InitWin = true;
+	}
+	if (g_InterfaceEvents.CheckButton(next_id))
+	{
+		g_CurrBrothel++;
+		if (g_CurrBrothel >= g_Brothels.GetNumBrothels())
+			g_CurrBrothel = 0;
+		g_InitWin = true;
 	}
 	if(g_InterfaceEvents.CheckButton(viewdetails_id))
 	{

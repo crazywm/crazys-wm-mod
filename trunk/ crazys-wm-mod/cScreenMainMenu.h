@@ -33,4 +33,5 @@ public:
 	void check_events();
 	bool check_keys();
 
+	void Free() { cInterfaceWindow::Free(); }
 };

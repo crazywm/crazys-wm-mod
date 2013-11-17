@@ -32,7 +32,6 @@
 // Globals
 extern cInterfaceEventManager g_InterfaceEvents;
 extern cInterfaceWindow g_GetString;
-extern cInterfaceWindow g_BrothelManagement;
 extern cInterfaceWindow g_ChangeJobs;
 extern cInterfaceWindow g_Turnsummary;
 extern cInterfaceWindow g_Gallery;

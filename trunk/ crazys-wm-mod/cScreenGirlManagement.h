@@ -55,6 +55,8 @@ private:
 	int jobdesc_id;		// Job Description text
 	int day_id;			// Day button
 	int night_id;		// Night button
+	int prev_id;
+	int next_id;
 
 	void set_ids();
 	bool GirlDead(sGirl *dgirl);

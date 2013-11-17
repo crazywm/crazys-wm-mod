@@ -56,6 +56,7 @@
 #include "cScreenGirlDetails.h"
 #include "cScreenDungeon.h"
 #include "cScreenMainMenu.h"
+#include "cScreenBrothelManagement.h"
 #include "sConfig.h"
 
 using namespace std;
@@ -66,7 +67,7 @@ extern cWindowManager g_WinManager;
 cInterfaceEventManager g_InterfaceEvents;
 cScreenMainMenu g_MainMenu;
 cInterfaceWindow g_GetString;
-cInterfaceWindow g_BrothelManagement;
+cScreenBrothelManagement g_BrothelManagement;
 cScreenGirlManagement g_GirlManagement;
 cScreenClinicManagement g_ClinicManagement;
 cScreenStudioManagement g_StudioManagement;
@@ -490,43 +491,8 @@ void LoadInterface()
 
 	// Brothel management screen
 	g_LogFile.write("Loading Brothel Management Screen");
-	g_BrothelManagement.AddTextItem(g_interfaceid.TEXT_CURRENTBROTHEL, 0, 0, 900, 32, "", 10);
-	// WD: Typecast to resolve ambiguous call in VS 2010
-	dp = DirPath() <<	"Resources" << "Interface"<< cfg.resolution.resolution() << "BrothelScreen.txt";
-	incol.open(dp.c_str());
-	//incol.open(DirPath() << "Resources" << "Interface" << "BrothelScreen.txt");
-	incol.seekg(0);
-	incol>>a>>b>>c>>d>>e;incol.ignore(1000, '\n');
-	g_BrothelManagement.CreateWindow(a,b,c,d,e);
-	incol>>a>>b>>c>>d;incol.ignore(1000, '\n');
-	g_BrothelManagement.AddButton("Girls", g_interfaceid.BUTTON_MANAGEGIRLS, a, b, c, d, true);
-	incol>>a>>b>>c>>d;incol.ignore(1000, '\n');
-	g_BrothelManagement.AddButton("Staff", g_interfaceid.BUTTON_MANAGESTAFF, a, b, c, d, true);
-	incol>>a>>b>>c>>d;incol.ignore(1000, '\n');
-	g_BrothelManagement.AddButton("Building", g_interfaceid.BUTTON_MANAGEBUILDING, a, b, c, d, true);
-	incol>>a>>b>>c>>d;incol.ignore(1000, '\n');
-	g_BrothelManagement.AddButton("Dungeon", g_interfaceid.BUTTON_VISITDUNGEON, a, b, c, d, true);
-	incol>>a>>b>>c>>d;incol.ignore(1000, '\n');
-	g_BrothelManagement.AddButton("VisitTown", g_interfaceid.BUTTON_VISITTOWN, a, b, c, d, true);
-	incol>>a>>b>>c>>d;incol.ignore(1000, '\n');
-	g_BrothelManagement.AddButton("Save", g_interfaceid.BUTTON_SAVEGAME, a, b, c, d, true);
-	incol>>a>>b>>c>>d;incol.ignore(1000, '\n');
-	g_BrothelManagement.AddButton("NextWeek", g_interfaceid.BUTTON_NEWWEEK, a, b, c, d, true);
-	incol>>a>>b>>c>>d;incol.ignore(1000, '\n');
-	g_BrothelManagement.AddButton("TurnSum", g_interfaceid.BUTTON_TURNSUMMARY, a, b, c, d, true);
-	incol>>a>>b>>c>>d;incol.ignore(1000, '\n');
-	g_BrothelManagement.AddButton("Quit", g_interfaceid.BUTTON_QUIT, a, b, c, d, true);
-	incol>>a>>b>>c>>d;incol.ignore(1000, '\n');
-	g_BrothelManagement.AddButton("Prev", g_interfaceid.BUTTON_PREVBROTHEL, a, b, c, d, true);
-	incol>>a>>b>>c>>d;incol.ignore(1000, '\n');
-	g_BrothelManagement.AddButton("Next", g_interfaceid.BUTTON_NEXTBROTHEL, a, b, c, d, true);
-	incol>>a>>b>>c>>d;incol.ignore(1000, '\n');
-	g_BrothelManagement.AddImage(g_interfaceid.IMAGE_BIMAGE, "", a, b, c, d);
-	incol>>a>>b>>c>>d>>e;incol.ignore(1000, '\n');
-	g_BrothelManagement.AddTextItem(g_interfaceid.TEXT_BMDETAILS, a, b, c, d, "", e);
-	incol>>a>>b>>c>>d>>e;incol.ignore(1000, '\n');
-	g_BrothelManagement.AddTextItem(g_interfaceid.TEXT_BROTHELNAME, a, b, c, d, "", e);
-	incol.close();
+	g_BrothelManagement.load();
+	g_WinManager.add_window("Brothel Management", &g_BrothelManagement);
 
 	// GIRL MANAGEMENT SCREEN
 	g_LogFile.write("Loading Girl Management Screen");
