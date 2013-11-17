@@ -8,7 +8,7 @@
     * ~~Main Menu~~. *Done*.
     * Load Menu
     * GetInt/GetStr
-    * Brothel Screen. *Started*.
+    * ~~Brothel Screen~~. *Done*.
   # Merging all those globals in a single global object.
   # Code clean up.
   # cDungeon implementation. 
