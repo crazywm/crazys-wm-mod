@@ -4,7 +4,11 @@
 = To Do =
 
   # ~~A are you sure message when you hit quit.  People ask for this one a lot and it isn't as easy as I thought it would be to add.~~ *Done*.
-  # Finish porting the game ui from legacy data to XML. Started ...
+  # Finish porting the game ui from legacy data to XML.
+    * ~~Main Menu~~. *Done*.
+    * Load Menu
+    * GetInt/GetStr
+    * Brothel Screen. *Started*.
   # Merging all those globals in a single global object.
   # Code clean up.
   # cDungeon implementation. 
