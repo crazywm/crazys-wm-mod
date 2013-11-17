@@ -94,7 +94,7 @@
 	
 	<Column
 		Name	= "Accomodation"
-		Header	= "Acc"
+		Header	= "Accomodation"
 		Offset	= "650"
 	/>
   </ListBox>
@@ -112,7 +112,7 @@
 		XPos	= "604"
 		YPos	= "152"
 		Width	= "160"
-		Height	= "156"
+		Height	= "130"
 		FontSize= "9"
 	/>
 
@@ -192,7 +192,7 @@
   <Button	Name	= "ViewDetailsButton"
 		Image		= "ViewDetails"
 		XPos		= "604"
-		YPos		= "316"
+		YPos		= "324"
 		Width		= "160"
 		Height		= "32"
 		Transparency= "true"
@@ -248,7 +248,7 @@
 		Name	    = "Prev"
 		Image		= "Prev"
 		XPos		= "600"
-		YPos		= "274"
+		YPos		= "284"
 		Width		= "72"
 		Height		= "32"
 		Transparency= "true"
@@ -259,7 +259,7 @@
 		Name	    = "Next"
 		Image		= "Next"
 		XPos		= "688"
-		YPos		= "274"
+		YPos		= "284"
 		Width		= "72"
 		Height		= "32"
 		Transparency= "true"
