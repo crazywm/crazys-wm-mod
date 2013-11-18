@@ -43,6 +43,10 @@
 = Things to think about =
 
   # Job flavor text.. One reason ex is so popular is all the different things that can pop up on jobs.
+    * Bar - Working on it
+    * Hall - One job left
+    * Club - 
+    * Brothel -
   # New ways to aquire unique girls.
   # Making jobs better.  Before there was things like buy achool and gambling %.  Buying different lvls of achool for the bartender or been able to set a odds for card dealer might make them more intresting that kinda thing..  Having strippers sell lap dances vip dance and such u get the ideal.  
   # New cool jobs and buildings.  Would love to know what if any jobs or buildings u might want to add.
