@@ -2,6 +2,8 @@
 
 Something we should fix is that the game has too many jobs that are too similar to each other. As a gamer i have no idea why i should send a girl to whore on the Gambling Hall or on the Brothel (the street thing is fine though).
 
+Another point is that we need a better description for jobs. Something like the traits description with flavor text and an objective desc "(+looks)" or something similar.
+
 = Bar =
   * Barmaid-  Actually add drinks to the game.  Maybe link it up with the get milked job.
   * Waitress-
