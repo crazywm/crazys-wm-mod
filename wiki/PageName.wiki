@@ -32,7 +32,7 @@
   # Anon did a new way to sort girls in the char folder I think there was a few problems with it so I never merged it.  But something like that would be nice.
   # A trait lvling system.
   # Building managment http://www.pinkpetal.org/index.php?topic=215.0 there is a bit of it already coded up don't know how much but some.
-  # Building upgrades.  Stuff like sec camarea, fence (reduce chance of run aways), better beds, etc.
+    * Building upgrades.  Stuff like sec camarea, fence (reduce chance of run aways), better beds, etc.
   # http://www.pinkpetal.org/index.php?topic=665.0 I feel this would be a nice thing to have.  Just the marriage and lineage tracking not the sql
   # http://www.pinkpetal.org/index.php?topic=455.0 this makes sense all girls shouldn't be good at everything and beening able to set what kinda sex acts they do by girl rather then brothel would help make girls feel different.
   # The poltical side of the game could use some work.  I feel as you gain more areas and buy more buildings it should be harder to please the mayor and the police.
