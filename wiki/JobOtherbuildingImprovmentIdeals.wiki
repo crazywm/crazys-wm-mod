@@ -22,6 +22,7 @@ Another point is that we need a better description for jobs. Something like the 
   * Peep show
   * Stripper
     * Perhaps a way to increase the libido? In my games i use the Game Dealer as a way to rest the girl and increase her libido in the same time.
+    * I think a rework of libido would be better.. Its imposable for a girl to keep it up even been a nympho idk I just think it should be worked on in fact its on the list
 = Stables =
   * Milked- Link it to barmaid as a type of drink to serve
 = Clinic =
