@@ -23,6 +23,7 @@ Another point is that we need a better description for jobs. Something like the 
   * Stripper
     * Perhaps a way to increase the libido? In my games i use the Game Dealer as a way to rest the girl and increase her libido in the same time.
     * I think a rework of libido would be better.. Its imposable for a girl to keep it up even been a nympho idk I just think it should be worked on in fact its on the list
+    * I am not sure how it is working but if you use sinspice + silken dress (+34 libido) girls can go all the way to 100 (Free Time + Game Dealer). That is the only way i managed to workaround this .... but a reworking would be welcome :).
 = Stables =
   * Milked- Link it to barmaid as a type of drink to serve
 = Clinic =
