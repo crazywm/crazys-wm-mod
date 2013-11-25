@@ -42,6 +42,7 @@ extern cMessageQue g_MessageQue;
 bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	string message = "";
+	string girlName = girl->m_Realname;
 	int tex = g_Dice%4;
 
 	if(Preprocessing(ACTION_WORKBAR, girl, brothel, DayNight, summary, message))	// they refuse to have work in the bar
@@ -58,7 +59,7 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, int DayNight, str
 
 	//good traits
 	if (g_Girls.HasTrait(girl, "Charismatic"))  //
-		jobperformance += 15;
+		jobperformance += 10;
 	if (g_Girls.HasTrait(girl, "Sexy Air"))  //
 		jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Cool Person"))  //people love to be around her
@@ -66,7 +67,7 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, int DayNight, str
 	if (g_Girls.HasTrait(girl, "Cute"))  //
 		jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Charming"))  //people like charming people
-		jobperformance += 10;
+		jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Elegant"))  //Elegant people usally know how to play the piano lol
 		jobperformance += 15;
 	if (g_Girls.HasTrait(girl, "Quick Learner"))  //people like charming people
@@ -83,6 +84,8 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, int DayNight, str
 		jobperformance -= 30;
 	if (g_Girls.HasTrait(girl, "Meek"))
 		jobperformance -= 20;
+	if (g_Girls.HasTrait(girl, "Broken Will"))
+		jobperformance -= 50;
 	if (g_Girls.HasTrait(girl, "Slow Learner"))
 		jobperformance -= 10;
 
@@ -91,31 +94,79 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, int DayNight, str
 		{
 			message += " She didn't play the piano so much as banged on it.\n\n";
 			wages -= 15;
+		if (roll <= 50)
+			{
+				message += "Her audience seems paralyzed, as if they couldn't believe that a piano was capable of making such noise.\n";
+			}
+			else
+			{
+				message += girlName + " banged on the piano clearly having no clue what a note was.\n";
+			}
 		}
 	else if(jobperformance < 70)
 		{
 			message += " She almost never hits a right note. Luck for you most of your customers are drunks.\n\n";
 			wages -= 5;
+		if (roll <= 50)
+			{
+				message += "Her playing is barely acceptable, but fortunately the bustling of the bar drowns " + girlName + " out for the most part.\n";
+			}
+			else
+			{
+				message += girlName + " knows a note.  To bad its the only one she knows and plays it over and over.\n";
+			}
 		}
 	else if(jobperformance < 100)
 		{
 			message += " She hits a few right notes but she still has room to improve.\n\n";
 			wages += 15;
+		if (roll <= 50)
+			{
+				message += "While she won't win any contests, " + girlName + " isn't a terrible pianist.\n";
+			}
+			else
+			{
+				message += "The slow song " + girlName + " sang at the end of shift really had her full emotion and heart.  A pity that she felt so bored and tired.\n";
+			}
 		}
 	else if(jobperformance < 145)
 		{
 			message += " Her playing is really good and gets praised by the customers often.\n\n";
 			wages += 55;
+		if (roll <= 50)
+			{
+				message += "Her playing was pleasing, if bland.  Her rythem was nice, if slightly untrained.\n";
+			}
+			else
+			{
+				message += "The slow song " + girlName + " sang at the end of shift really had her full emotion and heart.\n";
+			}
 		}
 	else if(jobperformance < 185)
 		{
 			message += " She's unbelievable at this and is always getting praised by the customers for her playing skills.\n\n";
 			wages += 95;
+		if (roll <= 50)
+			{
+				message += girlName + " begun to acquire her own following - a small crowd of people came in just to listen to her and buy drinks\n";
+			}
+			else
+			{
+				message += girlName + "'s soothing playing seems to glide over the noise and bustling of the bar.\n";
+			}
 		}
 	else if(jobperformance < 245)
 		{
 			message += " She plays with the grace of an angel the customers go on and on about her and always come to listen to her when she works.\n\n";
 			wages += 155;
+		if (roll <= 50)
+			{
+				message += girlName + "'s playing brought many patron's to tears as she played a song full of sadness.\n";
+			}
+			else
+			{
+				message += girlName + "'s soothing playing seems to glide over the noise and bustling of the bar.\n";
+			}
 		}
 
 
@@ -264,10 +315,10 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, int DayNight, str
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
 	//gain traits
-	g_Girls.PossiblyGainNewTrait(girl, "Elegant", 60, ACTION_WORKBAR, "Playing the piano has given " + girl->m_Realname + " an Elegant nature.", DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Elegant", 75, ACTION_WORKBAR, "Playing the piano has given " + girl->m_Realname + " an Elegant nature.", DayNight != 0);
 
 	//lose traits
-	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 20, ACTION_WORKBAR, girl->m_Realname + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", DayNight != 0);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 30, ACTION_WORKBAR, girl->m_Realname + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", DayNight != 0);
 
 	return false;
 }

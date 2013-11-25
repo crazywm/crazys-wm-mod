@@ -74,7 +74,7 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, int DayNight, s
 	else
 	{
 		g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, +1, true);
-		message += girlName + " had a pleasant fighting beats today.\n\n";
+		message += girlName + " had a pleasant time fighting beats today.\n\n";
 	}
 
 
