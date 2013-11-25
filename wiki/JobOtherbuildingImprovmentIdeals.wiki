@@ -1,6 +1,7 @@
 #summary This is page for ideal on how to improve jobs and buildings.
 
 Something we should fix is that the game has too many jobs that are too similar to each other. As a gamer i have no idea why i should send a girl to whore on the Gambling Hall or on the Brothel (the street thing is fine though).
+  * Maybe we should get rid of hall and bar whore and just have whores in the brothel.  Never really seen the point in having them anywhere else but in the brothel.
 
 Another point is that we need a better description for jobs. Something like the traits description with flavor text and an objective desc "(+looks)" or something similar.
 
