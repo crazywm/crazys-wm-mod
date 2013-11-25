@@ -60,16 +60,16 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, int DayNight, stri
 
 	//good traits
 	if (g_Girls.HasTrait(girl, "Charismatic"))  //
-		jobperformance += 20;
+		jobperformance += 15;
 	if (g_Girls.HasTrait(girl, "Sexy Air"))  //
-		jobperformance += 10;
+		jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Cool Person"))  //people love to be around her
 		jobperformance += 10;
 	if (g_Girls.HasTrait(girl, "Cute"))  //
 		jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Charming"))  //people like charming people
 		jobperformance += 15;
-	if (g_Girls.HasTrait(girl, "Quick Learner"))  //people like charming people
+	if (g_Girls.HasTrait(girl, "Quick Learner"))  
 		jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Psychic"))
 		jobperformance += 10;
@@ -342,6 +342,6 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, int DayNight, stri
 	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, ACTION_WORKBAR, "Dealing with customers at the bar and talking with them about their problems has made " + girl->m_Realname + " more Charismatic.", DayNight != 0);
 
 	//lose traits
-	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 20, ACTION_WORKBAR, girl->m_Realname + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", DayNight != 0);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 40, ACTION_WORKBAR, girl->m_Realname + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", DayNight != 0);
 	return false;
 }

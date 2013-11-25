@@ -229,31 +229,31 @@ void cJobManager::Setup()
 	JobDescription[JOB_ENTERTAINMENT] = "She will provide entertainment to the customers.";
 	JobName[JOB_XXXENTERTAINMENT] = "XXX Entertainer";
 	JobDescription[JOB_XXXENTERTAINMENT] = "She will provide sexual entertainment to the customers.";
-	JobName[JOB_WHOREGAMBHALL] = "Whore for Gamblers";
+	JobName[JOB_WHOREGAMBHALL] = "Hall Whore";
 	JobDescription[JOB_WHOREGAMBHALL] = "She will give her sexual favors to the customers.";
 
 	// - Sleazy Bar Jobs		// Changing all references to Strip Club, just sounds better to me and more realistic. -PP
 	JobFilterName[JOBFILTER_SLEAZYBAR] = "Strip Club";
 	JobFilterDescription[JOBFILTER_SLEAZYBAR] = "These are jobs for running a Strip Club.";
 	JobFilterIndex[JOBFILTER_SLEAZYBAR] = JOB_SLEAZYBARMAID;
-	JobName[JOB_SLEAZYBARMAID] = "Barmaid in Strip Club";
+	JobName[JOB_SLEAZYBARMAID] = "Strip Club Barmaid";
 	JobDescription[JOB_SLEAZYBARMAID] = "She will staff the bar and serve drinks while dressed in lingerie or fetish costumes.";
-	JobName[JOB_SLEAZYWAITRESS] = "Waitress in Strip Club";
+	JobName[JOB_SLEAZYWAITRESS] = "Strip Club Waitress";
 	JobDescription[JOB_SLEAZYWAITRESS] = "She will bring drinks and food to the customers at the tables while dressed in lingerie or fetish costumes.";
-	JobName[JOB_BARSTRIPPER] = "Stripper in Strip Club";
+	JobName[JOB_BARSTRIPPER] = "Strip Club Stripper";
 	JobDescription[JOB_BARSTRIPPER] = "She will strip on the tables and stage for the customers.";
-	JobName[JOB_BARWHORE] = "Whore in Strip Club";
+	JobName[JOB_BARWHORE] = "Strip Club Whore";
 	JobDescription[JOB_BARWHORE] = "She will provide sex to the customers.";
 
 	// - Brothel Jobs
 	JobFilterName[JOBFILTER_BROTHEL] = "Brothel";
 	JobFilterDescription[JOBFILTER_BROTHEL] = "These are jobs for running a brothel.";
 	JobFilterIndex[JOBFILTER_BROTHEL] = JOB_MASSEUSE;
-	JobName[JOB_MASSEUSE] = "Masseuse in Brothel";
+	JobName[JOB_MASSEUSE] = "Masseuse";
 	JobDescription[JOB_MASSEUSE] = "She will give massages to the customers.";
-	JobName[JOB_BROTHELSTRIPPER] = "Stripper in Brothel";
+	JobName[JOB_BROTHELSTRIPPER] = "Brothel Stripper";
 	JobDescription[JOB_BROTHELSTRIPPER] = "She will strip for the customers.";
-	JobName[JOB_WHOREBROTHEL] = "Whore in Brothel";
+	JobName[JOB_WHOREBROTHEL] = "Brothel Whore";
 	JobDescription[JOB_WHOREBROTHEL] = "She will whore herself to customers within the building's walls. This is safer but a little less profitable.";
 	JobName[JOB_WHORESTREETS] = "Whore on Streets";
 	JobDescription[JOB_WHORESTREETS] = "She will whore herself on the streets. It is more dangerous than whoring inside but more profitable.";

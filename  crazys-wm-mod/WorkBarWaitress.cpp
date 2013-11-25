@@ -59,7 +59,7 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 
 	//good traits
 	if (g_Girls.HasTrait(girl, "Charismatic"))  //
-		jobperformance += 20;
+		jobperformance += 15;
 	if (g_Girls.HasTrait(girl, "Sexy Air"))  //
 		jobperformance += 10;
 	if (g_Girls.HasTrait(girl, "Cool Person"))  //people love to be around her
@@ -67,7 +67,7 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 	if (g_Girls.HasTrait(girl, "Cute"))  //
 		jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Charming"))  //people like charming people
-		jobperformance += 25;
+		jobperformance += 20;
 	if (g_Girls.HasTrait(girl, "Quick Learner"))  //people like charming people
 		jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Psychic"))
@@ -205,7 +205,7 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 			}
 			else
 			{
-				message += "People came in from everywhere to see " + girl->m_Realname + " work.  She bounces around all the bar laughing and keeping the patrons happy without messing anything up.\n";
+				message += "People came in from everywhere to see " + girl->m_Realname + " work.  She bounces all around the bar laughing and keeping the patrons happy without messing anything up.\n";
 			}
 
 			if (g_Girls.HasTrait(girl, "Great Arse"))
