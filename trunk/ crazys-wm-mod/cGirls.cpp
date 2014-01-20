@@ -1876,6 +1876,7 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 
 	//good traits
 	if (g_Girls.HasTrait(girl, "Charismatic"))  //
+	{
 		barmaid += 15;
 		barwait += 15;
 		sing += 15;
@@ -1889,7 +1890,9 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		peep += 10;
 		brothelstrip += 20;
 		massusse += 10;
+	}
 	if (g_Girls.HasTrait(girl, "Sexy Air"))  //
+	{
 		barmaid += 5;
 		barwait += 10;
 		sing += 5;
@@ -1903,7 +1906,9 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		peep += 10;
 		brothelstrip += 10;
 		massusse += 10;
+	}
 	if (g_Girls.HasTrait(girl, "Cool Person"))
+	{
 		barmaid += 5;
 		barwait += 10;
 		sing += 5;
@@ -1917,7 +1922,9 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		peep += 10;
 		brothelstrip += 10;
 		massusse += 10;
+	}
 	if (g_Girls.HasTrait(girl, "Cute"))  
+	{
 		barmaid += 5;
 		barwait += 5;
 		sing += 5;
@@ -1931,7 +1938,9 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		peep += 5;
 		brothelstrip += 5;
 		massusse += 5;
+	}
 	if (g_Girls.HasTrait(girl, "Charming"))  
+	{
 		barmaid += 15;
 		barwait += 20;
 		sing += 5;
@@ -1945,7 +1954,9 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		peep += 10;
 		brothelstrip += 10;
 		massusse += 10;
+	}
 	if (g_Girls.HasTrait(girl, "Quick Learner"))
+	{
 		barmaid += 5;
 		barwait += 5;
 		sing += 5;
@@ -1959,7 +1970,9 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		peep += 5;
 		brothelstrip += 5;
 		massusse += 5;
+	}
 	if (g_Girls.HasTrait(girl, "Psychic"))
+	{
 		barmaid += 10;
 		barwait += 10;
 		sing += 10;
@@ -1973,7 +1986,9 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		peep += 10;
 		brothelstrip += 10;
 		massusse += 10;
+	}
 	if (g_Girls.HasTrait(girl, "Fleet of Foot")) 
+	{
 		//barmaid += 10;
 		barwait += 5;
 		/*sing += 10;
@@ -1987,9 +2002,11 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		peep += 10;
 		brothelstrip += 10;
 		massusse += 10;*/
+	}
 
 		//bad traits
 	if (g_Girls.HasTrait(girl, "Dependant"))  //needs others to do the job
+	{
 		barmaid -= 50;
 		barwait -= 50;
 		sing -= 50;
@@ -2003,7 +2020,9 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		peep -= 50;
 		brothelstrip -= 50;
 		massusse -= 50;
+	}
 	if (g_Girls.HasTrait(girl, "Clumsy"))  
+	{
 		barmaid -= 20;
 		barwait -= 20;
 		sing -= 10;
@@ -2017,7 +2036,9 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		peep -= 20;
 		brothelstrip -= 20;
 		massusse -= 20;
+	}
 	if (g_Girls.HasTrait(girl, "Aggressive"))
+	{
 		barmaid -= 20;
 		barwait -= 20;
 		sing -= 20;
@@ -2031,7 +2052,9 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		peep -= 20;
 		brothelstrip -= 20;
 		massusse -= 20;
+	}
 	if (g_Girls.HasTrait(girl, "Nervous"))
+	{
 		barmaid -= 30;
 		barwait -= 30;
 		sing -= 30;
@@ -2045,7 +2068,9 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		peep -= 30;
 		brothelstrip -= 30;
 		massusse -= 30;
+	}
 	if (g_Girls.HasTrait(girl, "Meek"))
+	{
 		barmaid -= 20;
 		barwait -= 20;
 		sing -= 20;
@@ -2059,7 +2084,9 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		peep -= 20;
 		brothelstrip -= 20;
 		massusse -= 20;
+	}
 	if (g_Girls.HasTrait(girl, "Broken Will"))
+	{
 		//barmaid -= 20;
 		//barwait -= 20;
 		sing -= 50;
@@ -2073,7 +2100,9 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		//peep -= 20;
 		//brothelstrip -= 20;
 		//massusse -= 20;
+	}
 	if (g_Girls.HasTrait(girl, "Slow Learner"))
+	{
 		barmaid -= 10;
 		barwait -= 10;
 		sing -= 10;
@@ -2087,6 +2116,12 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		peep -= 10;
 		brothelstrip -= 10;
 		massusse -= 10;
+	}
+
+		stringstream dd;
+	dd << gettext("barmaid: ") << (barmaid) << gettext("\n");
+	dd << gettext("barwait: ") << (barwait) << gettext("\n");
+	data += dd.str();
 
 	data += gettext("\nJob Ratings\n");
 
@@ -2094,15 +2129,15 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 	{
 	if (barmaid < 45)
 		data+=gettext ("E");
-	else if (barmaid < 70)
+	else if (barmaid <= 70)
 		data+=gettext ("D");
-	else if (barmaid < 100)
+	else if (barmaid <= 100)
 		data+=gettext ("C");
-	else if (barmaid < 145)
+	else if(barmaid <= 145)
 		data+=gettext ("B");
-	else if (barmaid < 185)
+	else if (barmaid <= 185)
 		data+=gettext ("A");
-	else 
+	else
 		data+=gettext ("S");
 	}
 	data+=gettext("\nBar Waitress- ");
