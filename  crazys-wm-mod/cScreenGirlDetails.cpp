@@ -198,6 +198,7 @@ void cScreenGirlDetails::init()
 	DisableButton(takegold_id, (selected_girl->m_Money <= 0));
 	SetCheckBox(antipreg_id, (selected_girl->m_UseAntiPreg));
 
+	bool InArena = (selected_girl->m_InArena);
 	bool InDungeon = (selected_girl->m_DayJob == JOB_INDUNGEON);
 	DisableButton(reldungeon_id, !InDungeon);
 	DisableButton(senddungeon_id, InDungeon);

@@ -438,6 +438,18 @@ string cTraits::GetTranslateName(string name){
 	{
 		return gettext("Princess");
 	}
+	else if(name.compare("Pierced Nipples") == 0)
+	{
+		return gettext("Pierced Nipples");
+	}
+	else if(name.compare("Pierced Tongue") == 0)
+	{
+		return gettext("Pierced Tongue");
+	}
+	else if(name.compare("Pierced Clit") == 0)
+	{
+		return gettext("Pierced Clit");
+	}
 	return name;
 }
 

@@ -63,7 +63,7 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, int DayNight, str
 	if (g_Girls.HasTrait(girl, "Sexy Air"))  //
 		jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Cool Person"))  //people love to be around her
-		jobperformance += 10;
+		jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Cute"))  //
 		jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Charming"))  //people like charming people

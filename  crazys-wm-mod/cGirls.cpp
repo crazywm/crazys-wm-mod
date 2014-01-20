@@ -932,6 +932,24 @@ void cGirls::CalculateGirlType(sGirl* girl)
  		Sexy += 20;
  		Freak -= 15;
  	}
+	if(HasTrait(girl, "Pierced Nipples"))
+ 	{
+ 		Elegant -= 20;
+ 		Sexy += 20;
+ 		Freak += 15;
+ 	}
+	if(HasTrait(girl, "Pierced Tongue"))
+ 	{
+ 		Elegant -= 20;
+ 		Sexy += 20;
+ 		Freak += 15;
+ 	}
+	if(HasTrait(girl, "Pierced Clit"))
+ 	{
+ 		Elegant += 20;
+ 		Sexy += 20;
+ 		Freak += 15;
+ 	}
 
 	if(BigBoobs > SmallBoobs)
 	{
@@ -1839,6 +1857,434 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 	ss << gettext("Agility: ") << GetStat(girl, STAT_AGILITY) << gettext("\n");
 	ss << gettext("Fame: ") << GetStat(girl, STAT_FAME) << gettext("\n");
 	data += ss.str();
+
+	int barmaid = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) + g_Girls.GetSkill(girl, SKILL_SERVICE));
+	int barwait = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) + g_Girls.GetSkill(girl, SKILL_SERVICE));
+	int cards = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) + g_Girls.GetStat(girl, STAT_AGILITY))/2;  //intel makes her smart enough to know when to cheat agility makes her fast enough to cheat
+	int dealer = (cards + g_Girls.GetSkill(girl, SKILL_SERVICE));
+	int sing = (g_Girls.GetStat(girl, STAT_CONFIDENCE) + g_Girls.GetSkill(girl, SKILL_SERVICE));
+	int piano = (g_Girls.GetStat(girl, STAT_CONFIDENCE) + g_Girls.GetSkill(girl, SKILL_SERVICE));
+	int looks = (g_Girls.GetStat(girl, STAT_CHARISMA) + g_Girls.GetStat(girl, STAT_BEAUTY))/2;
+	int entertainer = (looks + g_Girls.GetSkill(girl, SKILL_SERVICE));
+	int xxx = (looks + g_Girls.GetSkill(girl, SKILL_SERVICE));
+	int clubwait = (looks + g_Girls.GetSkill(girl, SKILL_SERVICE));
+	int clubbar = (looks + g_Girls.GetSkill(girl, SKILL_SERVICE));
+	int strip = (looks + g_Girls.GetSkill(girl, SKILL_STRIP));
+	int peep = (looks + g_Girls.GetSkill(girl, SKILL_STRIP));
+	int brothelstrip = (looks + g_Girls.GetSkill(girl, SKILL_STRIP));
+	int massusse = (looks + g_Girls.GetSkill(girl, SKILL_SERVICE));
+
+	//good traits
+	if (g_Girls.HasTrait(girl, "Charismatic"))  //
+		barmaid += 15;
+		barwait += 15;
+		sing += 15;
+		piano += 10;
+		dealer += 5;
+		entertainer += 15;
+		xxx += 10;
+		clubwait += 10;
+		clubbar += 20;
+		strip += 10;
+		peep += 10;
+		brothelstrip += 20;
+		massusse += 10;
+	if (g_Girls.HasTrait(girl, "Sexy Air"))  //
+		barmaid += 5;
+		barwait += 10;
+		sing += 5;
+		piano += 5;
+		dealer += 5;
+		entertainer += 5;
+		xxx += 10;
+		clubwait += 10;
+		clubbar += 10;
+		strip += 10;
+		peep += 10;
+		brothelstrip += 10;
+		massusse += 10;
+	if (g_Girls.HasTrait(girl, "Cool Person"))
+		barmaid += 5;
+		barwait += 10;
+		sing += 5;
+		piano += 5;
+		dealer += 5;
+		entertainer += 5;
+		xxx += 5;
+		clubwait += 10;
+		clubbar += 10;
+		strip += 10;
+		peep += 10;
+		brothelstrip += 10;
+		massusse += 10;
+	if (g_Girls.HasTrait(girl, "Cute"))  
+		barmaid += 5;
+		barwait += 5;
+		sing += 5;
+		piano += 5;
+		dealer += 5;
+		entertainer += 5;
+		xxx += 5;
+		clubwait += 5;
+		clubbar += 5;
+		strip += 5;
+		peep += 5;
+		brothelstrip += 5;
+		massusse += 5;
+	if (g_Girls.HasTrait(girl, "Charming"))  
+		barmaid += 15;
+		barwait += 20;
+		sing += 5;
+		piano += 5;
+		dealer += 10;
+		entertainer += 15;
+		xxx += 5;
+		clubwait += 15;
+		clubbar += 15;
+		strip += 10;
+		peep += 10;
+		brothelstrip += 10;
+		massusse += 10;
+	if (g_Girls.HasTrait(girl, "Quick Learner"))
+		barmaid += 5;
+		barwait += 5;
+		sing += 5;
+		piano += 5;
+		dealer += 5;
+		entertainer += 5;
+		xxx += 5;
+		clubwait += 5;
+		clubbar += 5;
+		strip += 5;
+		peep += 5;
+		brothelstrip += 5;
+		massusse += 5;
+	if (g_Girls.HasTrait(girl, "Psychic"))
+		barmaid += 10;
+		barwait += 10;
+		sing += 10;
+		piano += 10;
+		dealer += 15;
+		entertainer += 15;
+		xxx += 10;
+		clubwait += 10;
+		clubbar += 10;
+		strip += 10;
+		peep += 10;
+		brothelstrip += 10;
+		massusse += 10;
+	if (g_Girls.HasTrait(girl, "Fleet of Foot")) 
+		//barmaid += 10;
+		barwait += 5;
+		/*sing += 10;
+		piano += 10;
+		dealer += 15;
+		entertainer += 15;
+		xxx += 10;
+		clubwait += 10;
+		clubbar += 10;
+		strip += 10;
+		peep += 10;
+		brothelstrip += 10;
+		massusse += 10;*/
+
+		//bad traits
+	if (g_Girls.HasTrait(girl, "Dependant"))  //needs others to do the job
+		barmaid -= 50;
+		barwait -= 50;
+		sing -= 50;
+		piano -= 50;
+		dealer -= 50;
+		entertainer -= 50;
+		xxx -= 50;
+		clubwait -= 50;
+		clubbar -= 50;
+		strip -= 50;
+		peep -= 50;
+		brothelstrip -= 50;
+		massusse -= 50;
+	if (g_Girls.HasTrait(girl, "Clumsy"))  
+		barmaid -= 20;
+		barwait -= 20;
+		sing -= 10;
+		//piano -= 20;
+		dealer -= 10;
+		entertainer -= 10;
+		xxx -= 10;
+		clubwait -= 20;
+		clubbar -= 20;
+		strip -= 20;
+		peep -= 20;
+		brothelstrip -= 20;
+		massusse -= 20;
+	if (g_Girls.HasTrait(girl, "Aggressive"))
+		barmaid -= 20;
+		barwait -= 20;
+		sing -= 20;
+		piano -= 20;
+		dealer -= 20;
+		entertainer -= 20;
+		xxx -= 20;
+		clubwait -= 20;
+		clubbar -= 20;
+		strip -= 20;
+		peep -= 20;
+		brothelstrip -= 20;
+		massusse -= 20;
+	if (g_Girls.HasTrait(girl, "Nervous"))
+		barmaid -= 30;
+		barwait -= 30;
+		sing -= 30;
+		piano -= 30;
+		dealer -= 30;
+		entertainer -= 30;
+		xxx -= 30;
+		clubwait -= 30;
+		clubbar -= 30;
+		strip -= 30;
+		peep -= 30;
+		brothelstrip -= 30;
+		massusse -= 30;
+	if (g_Girls.HasTrait(girl, "Meek"))
+		barmaid -= 20;
+		barwait -= 20;
+		sing -= 20;
+		piano -= 20;
+		dealer -= 20;
+		entertainer -= 20;
+		xxx -= 20;
+		clubwait -= 20;
+		clubbar -= 20;
+		strip -= 20;
+		peep -= 20;
+		brothelstrip -= 20;
+		massusse -= 20;
+	if (g_Girls.HasTrait(girl, "Broken Will"))
+		//barmaid -= 20;
+		//barwait -= 20;
+		sing -= 50;
+		piano -= 50;
+		//dealer -= 20;
+		entertainer -= 50;
+		//xxx -= 20;
+		//clubwait -= 20;
+		//clubbar -= 20;
+		//strip -= 20;
+		//peep -= 20;
+		//brothelstrip -= 20;
+		//massusse -= 20;
+	if (g_Girls.HasTrait(girl, "Slow Learner"))
+		barmaid -= 10;
+		barwait -= 10;
+		sing -= 10;
+		piano -= 10;
+		dealer -= 15;
+		entertainer -= 15;
+		xxx -= 10;
+		clubwait -= 10;
+		clubbar -= 10;
+		strip -= 10;
+		peep -= 10;
+		brothelstrip -= 10;
+		massusse -= 10;
+
+	data += gettext("\nJob Ratings\n");
+
+	data+=gettext("\nBarmaid- ");
+	{
+	if (barmaid < 45)
+		data+=gettext ("E");
+	else if (barmaid < 70)
+		data+=gettext ("D");
+	else if (barmaid < 100)
+		data+=gettext ("C");
+	else if (barmaid < 145)
+		data+=gettext ("B");
+	else if (barmaid < 185)
+		data+=gettext ("A");
+	else 
+		data+=gettext ("S");
+	}
+	data+=gettext("\nBar Waitress- ");
+	{
+	if (barwait < 45)
+		data+=gettext ("E");
+	else if (barwait < 70)
+		data+=gettext ("D");
+	else if (barwait < 100)
+		data+=gettext ("C");
+	else if (barwait < 145)
+		data+=gettext ("B");
+	else if (barwait < 185)
+		data+=gettext ("A");
+	else 
+		data+=gettext ("S");
+	}
+	data+=gettext("\nSinger- ");
+	{
+	if (sing < 45)
+		data+=gettext ("E");
+	else if (sing < 70)
+		data+=gettext ("D");
+	else if (sing < 100)
+		data+=gettext ("C");
+	else if (sing < 145)
+		data+=gettext ("B");
+	else if (sing < 185)
+		data+=gettext ("A");
+	else
+		data+=gettext ("S");
+	}
+	data+=gettext("\nPiano- ");
+	{
+	if (piano < 45)
+		data+=gettext ("E");
+	else if (piano < 70)
+		data+=gettext ("D");
+	else if (piano < 100)
+		data+=gettext ("C");
+	else if (piano < 145)
+		data+=gettext ("B");
+	else if (piano < 185)
+		data+=gettext ("A");
+	else
+		data+=gettext ("S");
+	}
+	data+=gettext("\nDealer- ");
+	{
+	if(dealer < 45)
+		data+=gettext ("E");
+	else if(dealer < 70)
+		data+=gettext ("D");
+	else if(dealer < 100)
+		data+=gettext ("C");
+	else if(dealer < 145)
+		data+=gettext ("B");
+	else if (dealer < 185)
+		data+=gettext ("A");
+	else
+		data+=gettext ("S");
+	}
+	data+=gettext("\nEntertainer- ");
+	{
+	if(entertainer < 45)
+		data+=gettext ("E");
+	else if(entertainer < 70)
+		data+=gettext ("D");
+	else if(entertainer < 100)
+		data+=gettext ("C");
+	else if(entertainer < 145)
+		data+=gettext ("B");
+	else if (entertainer < 185)
+		data+=gettext ("A");
+	else
+		data+=gettext ("S");
+	}
+	data+=gettext("\nXXX Entertainer- ");
+	{
+	if(xxx < 45)
+		data+=gettext ("E");
+	else if(xxx < 70)
+		data+=gettext ("D");
+	else if(xxx < 100)
+		data+=gettext ("C");
+	else if(xxx < 145)
+		data+=gettext ("B");
+	else if (xxx < 185)
+		data+=gettext ("A");
+	else
+		data+=gettext ("S");
+	}
+	data+=gettext("\nClub Barmaid- ");
+	{
+	if(clubbar < 45)
+		data+=gettext ("E");
+	else if(clubbar < 70)
+		data+=gettext ("D");
+	else if(clubbar < 100)
+		data+=gettext ("C");
+	else if(clubbar < 145)
+		data+=gettext ("B");
+	else if (clubbar < 185)
+		data+=gettext ("A");
+	else
+		data+=gettext ("S");
+	}
+	data+=gettext("\nClub Waitress- ");
+	{
+	if(clubwait < 45)
+		data+=gettext ("E");
+	else if(clubwait < 70)
+		data+=gettext ("D");
+	else if(clubwait < 100)
+		data+=gettext ("C");
+	else if(clubwait < 145)
+		data+=gettext ("B");
+	else if (clubwait < 185)
+		data+=gettext ("A");
+	else
+		data+=gettext ("S");
+	}
+	data+=gettext("\nStripper- ");
+	{
+	if(strip < 45)
+		data+=gettext ("E");
+	else if(strip < 70)
+		data+=gettext ("D");
+	else if(strip < 100)
+		data+=gettext ("C");
+	else if(strip < 145)
+		data+=gettext ("B");
+	else if (strip < 185)
+		data+=gettext ("A");
+	else
+		data+=gettext ("S");
+	}
+	data+=gettext("\nMassusse- ");
+	{
+	if(massusse < 45)
+		data+=gettext ("E");
+	else if(massusse < 70)
+		data+=gettext ("D");
+	else if(massusse < 100)
+		data+=gettext ("C");
+	else if(massusse < 145)
+		data+=gettext ("B");
+	else if (massusse < 185)
+		data+=gettext ("A");
+	else
+		data+=gettext ("S");
+	}
+	data+=gettext("\nBrothel Stripper- ");
+	{
+	if(brothelstrip < 45)
+		data+=gettext ("E");
+	else if(brothelstrip < 70)
+		data+=gettext ("D");
+	else if(brothelstrip < 100)
+		data+=gettext ("C");
+	else if(brothelstrip < 145)
+		data+=gettext ("B");
+	else if (brothelstrip < 185)
+		data+=gettext ("A");
+	else
+		data+=gettext ("S");
+	}
+	data+=gettext("\nPeep Show- ");
+	{
+	if(peep < 45)
+		data+=gettext ("E");
+	else if(peep < 70)
+		data+=gettext ("D");
+	else if(peep < 100)
+		data+=gettext ("C");
+	else if(strip < 145)
+		data+=gettext ("B");
+	else if (peep < 185)
+		data+=gettext ("A");
+	else
+		data+=gettext ("S");
+	}
 
 	return data;
 }
@@ -5165,6 +5611,23 @@ void cGirls::UnapplyTraits(sGirl* girl, sTrait* trait)
  			UpdateStat(girl,STAT_CONFIDENCE,-10);
  			UpdateStat(girl,STAT_OBEDIENCE,5);
  		}
+
+		else if(strcmp(tr->m_Name, "Pierced Nipples") == 0)
+ 		{
+ 			UpdateStat(girl,STAT_LIBIDO,-10);
+			UpdateSkill(girl, SKILL_TITTYSEX, -10);
+ 		}
+ 
+ 		else if(strcmp(tr->m_Name, "Pierced Tongue") == 0)
+ 		{
+ 			UpdateSkill(girl, SKILL_ORALSEX, -10);
+ 		}
+
+		else if(strcmp(tr->m_Name, "Pierced Clit") == 0)
+ 		{
+ 			UpdateStat(girl,STAT_LIBIDO,-20);
+			UpdateSkill(girl, SKILL_NORMALSEX, -10);
+ 		}
  
 
 		if(doOnce)
@@ -5815,6 +6278,24 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait, bool rememberflag)
  			UpdateStat(girl,STAT_CONFIDENCE,10);
  			UpdateStat(girl,STAT_OBEDIENCE,-5);
 			UpdateEnjoyment(girl, ACTION_SEX, -20, true);
+ 		}
+
+		else if(strcmp(tr->m_Name, "Pierced Nipples") == 0)
+		{
+			UpdateStat(girl,STAT_LIBIDO,10);
+			UpdateSkill(girl, SKILL_TITTYSEX, 10);
+		}
+
+ 		else if(strcmp(tr->m_Name, "Pierced Tongue") == 0)
+ 		{
+ 			UpdateSkill(girl, SKILL_ORALSEX, 10);
+ 		}
+ 
+ 		else if(strcmp(tr->m_Name, "Pierced Clit") == 0)
+ 		{
+ 			UpdateStat(girl,STAT_LIBIDO,20);
+			UpdateSkill(girl, SKILL_NORMALSEX, 10);
+			UpdateEnjoyment(girl, ACTION_SEX, 10, true);
  		}
  
 		if(doOnce)
