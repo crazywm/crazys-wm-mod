@@ -42,6 +42,7 @@ extern cMessageQue g_MessageQue;
 bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	string message = "";
+	string girlName = girl->m_Realname;
 	int tex = g_Dice%4;
 
 	if(Preprocessing(ACTION_WORKCLUB, girl, brothel, DayNight, summary, message))	// they refuse to have work in the bar
@@ -60,7 +61,7 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, int DayNight, 
 
 	//good traits
 	if (g_Girls.HasTrait(girl, "Charismatic"))  //
-		jobperformance += 15;
+		jobperformance += 10;
 	if (g_Girls.HasTrait(girl, "Sexy Air"))  //
 		jobperformance += 10;
 	if (g_Girls.HasTrait(girl, "Cool Person"))  //people love to be around her
@@ -73,6 +74,10 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, int DayNight, 
 		jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Great Arse"))  //
 		jobperformance += 5;
+	if (g_Girls.HasTrait(girl, "Quick Learner"))  
+		jobperformance += 5;
+	if (g_Girls.HasTrait(girl, "Psychic"))
+		jobperformance += 10;
 
 	//bad traits
 	if (g_Girls.HasTrait(girl, "Dependant"))  //needs others to do the job
@@ -85,37 +90,159 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, int DayNight, 
 		jobperformance -= 30;
 	if (g_Girls.HasTrait(girl, "Meek"))
 		jobperformance -= 20;
+	if (g_Girls.HasTrait(girl, "Slow Learner"))
+		jobperformance -= 10;
 
 
-	if(jobperformance < 35)
+	if(jobperformance < 45)
 		{
 			message += " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
 			wages -= 15;
+		/*if (roll <= 20)
+			{
+				message += girlName + " slipped on a fresh smear of ejaculate halfway through her dance, and fell on her ass.\n";
+			}
+		else if (roll <= 40)
+			{
+				message += girlName + "'s hair got tangled up in her shirt when she tried to take it off, making her reel about the stage like a drunk.\n";
+			}
+		else if (roll <= 60)
+			{
+				message += "Seeing the large crowd waiting outside, " + girlName + "'s nerve broke and she ran back out of the gambling hall.\n";
+			}
+		else if (roll <= 80)
+			{
+				message += girlName + " was drunk when she stumbled out at the beginning of shift, and fell asleep almost as soon as she reached the stage.\n";
+			}
+		else
+			{
+				message += "Somehow, " + girlName + " managed to be so unsexy that the audience barely seemed to notice her presence.\n";
+				}*/
 		}
-	else if(jobperformance < 65)
+	else if(jobperformance < 70)
 		{
 			message += " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
 			wages -= 5;
+		/*if (roll <= 20)
+			{
+				message += girlName + " slipped on a fresh smear of ejaculate halfway through her dance, and fell on her ass.\n";
+			}
+		else if (roll <= 40)
+			{
+				message += girlName + "'s hair got tangled up in her shirt when she tried to take it off, making her reel about the stage like a drunk.\n";
+			}
+		else if (roll <= 60)
+			{
+				message += "Seeing the large crowd waiting outside, " + girlName + "'s nerve broke and she ran back out of the gambling hall.\n";
+			}
+		else if (roll <= 80)
+			{
+				message += girlName + " was drunk when she stumbled out at the beginning of shift, and fell asleep almost as soon as she reached the stage.\n";
+			}
+		else
+			{
+				message += "Somehow, " + girlName + " managed to be so unsexy that the audience barely seemed to notice her presence.\n";
+				}*/
 		}
-	else if(jobperformance < 85)
+	else if(jobperformance < 100)
 		{
 			message += " She made a few mistakes but overall she is okay at this.\n\n";
 			wages += 15;
+		/*if (roll <= 20)
+			{
+				message += girlName + " slipped on a fresh smear of ejaculate halfway through her dance, and fell on her ass.\n";
+			}
+		else if (roll <= 40)
+			{
+				message += girlName + "'s hair got tangled up in her shirt when she tried to take it off, making her reel about the stage like a drunk.\n";
+			}
+		else if (roll <= 60)
+			{
+				message += "Seeing the large crowd waiting outside, " + girlName + "'s nerve broke and she ran back out of the gambling hall.\n";
+			}
+		else if (roll <= 80)
+			{
+				message += girlName + " was drunk when she stumbled out at the beginning of shift, and fell asleep almost as soon as she reached the stage.\n";
+			}
+		else
+			{
+				message += "Somehow, " + girlName + " managed to be so unsexy that the audience barely seemed to notice her presence.\n";
+				}*/
 		}
-	else if(jobperformance < 135)
+	else if(jobperformance < 145)
 		{
 			message += " She's good at this job and gets praised by the customers often.\n\n";
 			wages += 55;
+		/*if (roll <= 20)
+			{
+				message += girlName + " slipped on a fresh smear of ejaculate halfway through her dance, and fell on her ass.\n";
+			}
+		else if (roll <= 40)
+			{
+				message += girlName + "'s hair got tangled up in her shirt when she tried to take it off, making her reel about the stage like a drunk.\n";
+			}
+		else if (roll <= 60)
+			{
+				message += "Seeing the large crowd waiting outside, " + girlName + "'s nerve broke and she ran back out of the gambling hall.\n";
+			}
+		else if (roll <= 80)
+			{
+				message += girlName + " was drunk when she stumbled out at the beginning of shift, and fell asleep almost as soon as she reached the stage.\n";
+			}
+		else
+			{
+				message += "Somehow, " + girlName + " managed to be so unsexy that the audience barely seemed to notice her presence.\n";
+				}*/
 		}
 	else if(jobperformance < 185)
 		{
 			message += " She's unbelievable at this and is always getting praised by the customers for her work.\n\n";
 			wages += 95;
+		/*if (roll <= 20)
+			{
+				message += girlName + " slipped on a fresh smear of ejaculate halfway through her dance, and fell on her ass.\n";
+			}
+		else if (roll <= 40)
+			{
+				message += girlName + "'s hair got tangled up in her shirt when she tried to take it off, making her reel about the stage like a drunk.\n";
+			}
+		else if (roll <= 60)
+			{
+				message += "Seeing the large crowd waiting outside, " + girlName + "'s nerve broke and she ran back out of the gambling hall.\n";
+			}
+		else if (roll <= 80)
+			{
+				message += girlName + " was drunk when she stumbled out at the beginning of shift, and fell asleep almost as soon as she reached the stage.\n";
+			}
+		else
+			{
+				message += "Somehow, " + girlName + " managed to be so unsexy that the audience barely seemed to notice her presence.\n";
+				}*/
 		}
 	else if(jobperformance < 245)
 		{
 			message += " She must be the perfect stripper customers go on and on about her and always come to see her when she works.\n\n";
 			wages += 155;
+		/*if (roll <= 20)
+			{
+				message += girlName + " slipped on a fresh smear of ejaculate halfway through her dance, and fell on her ass.\n";
+			}
+		else if (roll <= 40)
+			{
+				message += girlName + "'s hair got tangled up in her shirt when she tried to take it off, making her reel about the stage like a drunk.\n";
+			}
+		else if (roll <= 60)
+			{
+				message += "Seeing the large crowd waiting outside, " + girlName + "'s nerve broke and she ran back out of the gambling hall.\n";
+			}
+		else if (roll <= 80)
+			{
+				message += girlName + " was drunk when she stumbled out at the beginning of shift, and fell asleep almost as soon as she reached the stage.\n";
+			}
+		else
+			{
+				message += "Somehow, " + girlName + " managed to be so unsexy that the audience barely seemed to notice her presence.\n";
+				}*/
 		}
 
 
