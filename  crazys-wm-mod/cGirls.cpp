@@ -1995,13 +1995,93 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		piano += 10;
 		dealer += 15;
 		entertainer += 15;
-		xxx += 10;
-		clubwait += 10;
-		clubbar += 10;
+		xxx += 10;*/
+		clubwait += 5;
+		/*clubbar += 10;
 		strip += 10;
 		peep += 10;
 		brothelstrip += 10;
 		massusse += 10;*/
+	}
+	if (g_Girls.HasTrait(girl, "Abnormally Large Boobs"))
+		{
+		//barmaid += 10;
+		barwait -= 20;
+		/*sing += 10;
+		piano += 10;
+		dealer += 15;
+		entertainer += 15;
+		xxx += 10;*/
+		clubwait -= 20;
+		/*clubbar += 10;
+		strip += 10;
+		peep += 10;
+		brothelstrip += 10;
+		massusse += 10;*/
+	}
+	if (g_Girls.HasTrait(girl, "Great Figure"))
+	{
+		/*barmaid += 10;
+		barwait -= 20;
+		sing += 10;
+		piano += 10;
+		dealer += 15;*/
+		entertainer += 5;
+		xxx += 5;
+		clubwait += 5;
+		clubbar += 5;
+		strip += 5;
+		peep += 5;
+		brothelstrip += 5;
+		massusse += 5;
+	}
+	if (g_Girls.HasTrait(girl, "Great Arse")) 
+	{
+		/*barmaid += 10;
+		barwait -= 20;
+		sing += 10;
+		piano += 10;
+		dealer += 15;*/
+		entertainer += 5;
+		xxx += 5;
+		clubwait += 5;
+		clubbar += 5;
+		strip += 5;
+		peep += 5;
+		brothelstrip += 5;
+		massusse += 5;
+	}
+	if (g_Girls.HasTrait(girl, "Elegant"))
+		{
+		/*barmaid += 10;
+		barwait -= 20;*/
+		sing += 5;
+		piano += 15;
+		/*dealer += 15;
+		entertainer += 5;
+		xxx += 5;
+		clubwait += 5;
+		clubbar += 5;
+		strip += 5;
+		peep += 5;
+		brothelstrip += 5;
+		massusse += 5;*/
+	}
+	if (g_Girls.HasTrait(girl, "Fearless"))
+		{
+		/*barmaid += 10;
+		barwait -= 20;*/
+		sing += 5;
+		//piano += 15;
+		/*dealer += 15;
+		entertainer += 5;
+		xxx += 5;
+		clubwait += 5;
+		clubbar += 5;
+		strip += 5;
+		peep += 5;
+		brothelstrip += 5;
+		massusse += 5;*/
 	}
 
 		//bad traits
@@ -2121,204 +2201,206 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		stringstream dd;
 	dd << gettext("barmaid: ") << (barmaid) << gettext("\n");
 	dd << gettext("barwait: ") << (barwait) << gettext("\n");
+	dd << gettext("sing: ") << (sing) << gettext("\n");
+	dd << gettext("piano: ") << (piano) << gettext("\n");
 	data += dd.str();
 
 	data += gettext("\nJob Ratings\n");
 
 	data+=gettext("\nBarmaid- ");
 	{
-	if (barmaid < 45)
-		data+=gettext ("E");
-	else if (barmaid <= 70)
-		data+=gettext ("D");
-	else if (barmaid <= 100)
-		data+=gettext ("C");
-	else if(barmaid <= 145)
-		data+=gettext ("B");
-	else if (barmaid <= 185)
-		data+=gettext ("A");
-	else
+	if (barmaid >= 245)
 		data+=gettext ("S");
+	else if (barmaid >= 185)
+		data+=gettext ("A");
+	else if (barmaid >= 145)
+		data+=gettext ("B");
+	else if(barmaid >= 100)
+		data+=gettext ("C");
+	else if (barmaid >= 70)
+		data+=gettext ("D");
+	else
+		data+=gettext ("E");
 	}
 	data+=gettext("\nBar Waitress- ");
 	{
-	if (barwait < 45)
-		data+=gettext ("E");
-	else if (barwait < 70)
-		data+=gettext ("D");
-	else if (barwait < 100)
-		data+=gettext ("C");
-	else if (barwait < 145)
-		data+=gettext ("B");
-	else if (barwait < 185)
-		data+=gettext ("A");
-	else 
+	if (barwait >= 245)
 		data+=gettext ("S");
+	else if (barwait >= 185)
+		data+=gettext ("A");
+	else if (barwait >= 145)
+		data+=gettext ("B");
+	else if(barwait >= 100)
+		data+=gettext ("C");
+	else if (barwait >= 70)
+		data+=gettext ("D");
+	else
+		data+=gettext ("E");
 	}
 	data+=gettext("\nSinger- ");
 	{
-	if (sing < 45)
-		data+=gettext ("E");
-	else if (sing < 70)
-		data+=gettext ("D");
-	else if (sing < 100)
-		data+=gettext ("C");
-	else if (sing < 145)
-		data+=gettext ("B");
-	else if (sing < 185)
-		data+=gettext ("A");
-	else
+	if (sing >= 245)
 		data+=gettext ("S");
+	else if (sing >= 185)
+		data+=gettext ("A");
+	else if (sing >= 145)
+		data+=gettext ("B");
+	else if(sing >= 100)
+		data+=gettext ("C");
+	else if (sing >= 70)
+		data+=gettext ("D");
+	else
+		data+=gettext ("E");
 	}
 	data+=gettext("\nPiano- ");
 	{
-	if (piano < 45)
-		data+=gettext ("E");
-	else if (piano < 70)
-		data+=gettext ("D");
-	else if (piano < 100)
-		data+=gettext ("C");
-	else if (piano < 145)
-		data+=gettext ("B");
-	else if (piano < 185)
-		data+=gettext ("A");
-	else
+	if (piano >= 245)
 		data+=gettext ("S");
+	else if (piano >= 185)
+		data+=gettext ("A");
+	else if (piano >= 145)
+		data+=gettext ("B");
+	else if(piano >= 100)
+		data+=gettext ("C");
+	else if (piano >= 70)
+		data+=gettext ("D");
+	else
+		data+=gettext ("E");
 	}
 	data+=gettext("\nDealer- ");
 	{
-	if(dealer < 45)
-		data+=gettext ("E");
-	else if(dealer < 70)
-		data+=gettext ("D");
-	else if(dealer < 100)
-		data+=gettext ("C");
-	else if(dealer < 145)
-		data+=gettext ("B");
-	else if (dealer < 185)
-		data+=gettext ("A");
-	else
+	if (dealer >= 245)
 		data+=gettext ("S");
+	else if (dealer >= 185)
+		data+=gettext ("A");
+	else if (dealer >= 145)
+		data+=gettext ("B");
+	else if(dealer >= 100)
+		data+=gettext ("C");
+	else if (dealer >= 70)
+		data+=gettext ("D");
+	else
+		data+=gettext ("E");
 	}
 	data+=gettext("\nEntertainer- ");
 	{
-	if(entertainer < 45)
-		data+=gettext ("E");
-	else if(entertainer < 70)
-		data+=gettext ("D");
-	else if(entertainer < 100)
-		data+=gettext ("C");
-	else if(entertainer < 145)
-		data+=gettext ("B");
-	else if (entertainer < 185)
-		data+=gettext ("A");
-	else
+	if (entertainer >= 245)
 		data+=gettext ("S");
+	else if (entertainer >= 185)
+		data+=gettext ("A");
+	else if (entertainer >= 145)
+		data+=gettext ("B");
+	else if(entertainer >= 100)
+		data+=gettext ("C");
+	else if (entertainer >= 70)
+		data+=gettext ("D");
+	else
+		data+=gettext ("E");
 	}
 	data+=gettext("\nXXX Entertainer- ");
 	{
-	if(xxx < 45)
-		data+=gettext ("E");
-	else if(xxx < 70)
-		data+=gettext ("D");
-	else if(xxx < 100)
-		data+=gettext ("C");
-	else if(xxx < 145)
-		data+=gettext ("B");
-	else if (xxx < 185)
-		data+=gettext ("A");
-	else
+	if (xxx >= 245)
 		data+=gettext ("S");
+	else if (xxx >= 185)
+		data+=gettext ("A");
+	else if (xxx >= 145)
+		data+=gettext ("B");
+	else if(xxx >= 100)
+		data+=gettext ("C");
+	else if (xxx >= 70)
+		data+=gettext ("D");
+	else
+		data+=gettext ("E");
 	}
 	data+=gettext("\nClub Barmaid- ");
 	{
-	if(clubbar < 45)
-		data+=gettext ("E");
-	else if(clubbar < 70)
-		data+=gettext ("D");
-	else if(clubbar < 100)
-		data+=gettext ("C");
-	else if(clubbar < 145)
-		data+=gettext ("B");
-	else if (clubbar < 185)
-		data+=gettext ("A");
-	else
+	if (clubbar >= 245)
 		data+=gettext ("S");
+	else if (clubbar >= 185)
+		data+=gettext ("A");
+	else if (clubbar >= 145)
+		data+=gettext ("B");
+	else if(clubbar >= 100)
+		data+=gettext ("C");
+	else if (clubbar >= 70)
+		data+=gettext ("D");
+	else
+		data+=gettext ("E");
 	}
 	data+=gettext("\nClub Waitress- ");
 	{
-	if(clubwait < 45)
-		data+=gettext ("E");
-	else if(clubwait < 70)
-		data+=gettext ("D");
-	else if(clubwait < 100)
-		data+=gettext ("C");
-	else if(clubwait < 145)
-		data+=gettext ("B");
-	else if (clubwait < 185)
-		data+=gettext ("A");
-	else
+	if (clubwait >= 245)
 		data+=gettext ("S");
+	else if (clubwait >= 185)
+		data+=gettext ("A");
+	else if (clubwait >= 145)
+		data+=gettext ("B");
+	else if(clubwait >= 100)
+		data+=gettext ("C");
+	else if (clubwait >= 70)
+		data+=gettext ("D");
+	else
+		data+=gettext ("E");
 	}
 	data+=gettext("\nStripper- ");
 	{
-	if(strip < 45)
-		data+=gettext ("E");
-	else if(strip < 70)
-		data+=gettext ("D");
-	else if(strip < 100)
-		data+=gettext ("C");
-	else if(strip < 145)
-		data+=gettext ("B");
-	else if (strip < 185)
-		data+=gettext ("A");
-	else
+	if (strip >= 245)
 		data+=gettext ("S");
+	else if (strip >= 185)
+		data+=gettext ("A");
+	else if (strip >= 145)
+		data+=gettext ("B");
+	else if(strip >= 100)
+		data+=gettext ("C");
+	else if (strip >= 70)
+		data+=gettext ("D");
+	else
+		data+=gettext ("E");
 	}
 	data+=gettext("\nMassusse- ");
 	{
-	if(massusse < 45)
-		data+=gettext ("E");
-	else if(massusse < 70)
-		data+=gettext ("D");
-	else if(massusse < 100)
-		data+=gettext ("C");
-	else if(massusse < 145)
-		data+=gettext ("B");
-	else if (massusse < 185)
-		data+=gettext ("A");
-	else
+	if (massusse >= 245)
 		data+=gettext ("S");
+	else if (massusse >= 185)
+		data+=gettext ("A");
+	else if (massusse >= 145)
+		data+=gettext ("B");
+	else if(massusse >= 100)
+		data+=gettext ("C");
+	else if (massusse >= 70)
+		data+=gettext ("D");
+	else
+		data+=gettext ("E");
 	}
 	data+=gettext("\nBrothel Stripper- ");
 	{
-	if(brothelstrip < 45)
-		data+=gettext ("E");
-	else if(brothelstrip < 70)
-		data+=gettext ("D");
-	else if(brothelstrip < 100)
-		data+=gettext ("C");
-	else if(brothelstrip < 145)
-		data+=gettext ("B");
-	else if (brothelstrip < 185)
-		data+=gettext ("A");
-	else
+	if (brothelstrip >= 245)
 		data+=gettext ("S");
+	else if (brothelstrip >= 185)
+		data+=gettext ("A");
+	else if (brothelstrip >= 145)
+		data+=gettext ("B");
+	else if(brothelstrip >= 100)
+		data+=gettext ("C");
+	else if (brothelstrip >= 70)
+		data+=gettext ("D");
+	else
+		data+=gettext ("E");
 	}
 	data+=gettext("\nPeep Show- ");
 	{
-	if(peep < 45)
-		data+=gettext ("E");
-	else if(peep < 70)
-		data+=gettext ("D");
-	else if(peep < 100)
-		data+=gettext ("C");
-	else if(strip < 145)
-		data+=gettext ("B");
-	else if (peep < 185)
-		data+=gettext ("A");
-	else
+	if (peep >= 245)
 		data+=gettext ("S");
+	else if (peep >= 185)
+		data+=gettext ("A");
+	else if (peep >= 145)
+		data+=gettext ("B");
+	else if(peep >= 100)
+		data+=gettext ("C");
+	else if (peep >= 70)
+		data+=gettext ("D");
+	else
+		data+=gettext ("E");
 	}
 
 	return data;

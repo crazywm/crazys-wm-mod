@@ -93,73 +93,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 	if (g_Girls.HasTrait(girl, "Slow Learner"))
 		jobperformance -= 10;
 
-
-	if(jobperformance < 45)
-		{
-			message += " Her voice sounds like nails on a chalk board.  She could be the worst singer ever.\n\n";
-			wages -= 15;
-		if (roll <= 50)
-			{
-				message += "Her audience seems paralyzed, as if they couldn't believe that a human body could produce those sounds, much less call them 'singing'.\n";
-			}
-			else
-			{
-				message += girlName + " bellowed out a melody that caused the bar to go into a panic clearing it quickly.\n";
-			}
-		}
-	else if(jobperformance < 70)
-		{
-			message += " She almost never hits a right note. Luck for you most of your customers are drunks.\n\n";
-			wages -= 5;
-		if (roll <= 50)
-			{
-				message += "Her singing is barely acceptable, but fortunately the bustling of the bar drowns " + girlName + " out for the most part.\n";
-			}
-			else
-			{
-				message += girlName + " voice is all over the place as she sings.\n";
-			}
-		}
-	else if(jobperformance < 100)
-		{
-			message += " She hits a few right notes but she still has room to improve.\n\n";
-			wages += 15;
-		if (roll <= 50)
-			{
-				message += "While she won't win any contests, " + girlName + " isn't a terrible singer.\n";
-			}
-			else
-			{
-				message += "The slow song " + girlName + " sang at the end of shift really had her full emotion and heart.  A pity that she felt so bored and tired.\n";
-			}
-		}
-	else if(jobperformance < 145)
-		{
-			message += " Her voice is really good and gets praised by the customers often.\n\n";
-			wages += 55;
-		if (roll <= 50)
-			{
-				message += "Her singing was pleasing, if bland.  Her voice was nice, if slightly untrained.\n";
-			}
-			else
-			{
-				message += "The slow song " + girlName + " sang at the end of shift really had her full emotion and heart.\n";
-			}
-		}
-	else if(jobperformance < 185)
-		{
-			message += " She's unbelievable at this and is always getting praised by the customers for her voice.\n\n";
-			wages += 95;
-		if (roll <= 50)
-			{
-				message += girlName + " begun to acquire her own following - a small crowd of people came in just to listen to her and buy drinks\n";
-			}
-			else
-			{
-				message += girlName + "'s soothing voice seems to glide over the noise and bustling of the bar.\n";
-			}
-		}
-	else if(jobperformance < 245)
+	if(jobperformance >= 245)
 		{
 			message += " She must have the voice of an angel the customers go on and on about her and always come to listen to her when she works.\n\n";
 			wages += 155;
@@ -172,7 +106,71 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 				message += girlName + "'s soothing voice seems to glide over the noise and bustling of the bar.\n";
 			}
 		}
-
+	else if(jobperformance >= 185)
+		{
+			message += " She's unbelievable at this and is always getting praised by the customers for her voice.\n\n";
+			wages += 95;
+		if (roll <= 50)
+			{
+				message += girlName + " begun to acquire her own following - a small crowd of people came in just to listen to her and buy drinks\n";
+			}
+			else
+			{
+				message += girlName + "'s soothing voice seems to glide over the noise and bustling of the bar.\n";
+			}
+		}
+	else if(jobperformance >= 145)
+		{
+			message += " Her voice is really good and gets praised by the customers often.\n\n";
+			wages += 55;
+		if (roll <= 50)
+			{
+				message += "Her singing was pleasing, if bland.  Her voice was nice, if slightly untrained.\n";
+			}
+			else
+			{
+				message += "The slow song " + girlName + " sang at the end of shift really had her full emotion and heart.\n";
+			}
+		}
+	else if(jobperformance >= 100)
+		{
+			message += " She hits a few right notes but she still has room to improve.\n\n";
+			wages += 15;
+		if (roll <= 50)
+			{
+				message += "While she won't win any contests, " + girlName + " isn't a terrible singer.\n";
+			}
+			else
+			{
+				message += "The slow song " + girlName + " sang at the end of shift really had her full emotion and heart.  A pity that she felt so bored and tired.\n";
+			}
+		}
+	else if(jobperformance >= 70)
+		{
+			message += " She almost never hits a right note. Luck for you most of your customers are drunks.\n\n";
+			wages -= 5;
+		if (roll <= 50)
+			{
+				message += "Her singing is barely acceptable, but fortunately the bustling of the bar drowns " + girlName + " out for the most part.\n";
+			}
+			else
+			{
+				message += girlName + " voice is all over the place as she sings.\n";
+			}
+		}
+	else
+		{
+			message += " Her voice sounds like nails on a chalk board.  She could be the worst singer ever.\n\n";
+			wages -= 15;
+		if (roll <= 50)
+			{
+				message += "Her audience seems paralyzed, as if they couldn't believe that a human body could produce those sounds, much less call them 'singing'.\n";
+			}
+			else
+			{
+				message += girlName + " bellowed out a melody that caused the bar to go into a panic clearing it quickly.\n";
+			}
+		}
 
 	//try and add randomness here
 	if (g_Girls.GetStat(girl, STAT_BEAUTY) >85)

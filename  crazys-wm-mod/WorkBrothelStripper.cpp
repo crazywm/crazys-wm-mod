@@ -51,6 +51,7 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, int DayNig
 	int roll = g_Dice%100;
 	int looks = (g_Girls.GetStat(girl, STAT_CHARISMA) + g_Girls.GetStat(girl, STAT_BEAUTY))/2;
 	int jobperformance = (looks + g_Girls.GetSkill(girl, SKILL_STRIP));
+	int lapdance = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) + g_Girls.GetSkill(girl, SKILL_STRIP))/2;
 	int wages = 30;
 
 	message = "She stripped for a customer.";
@@ -90,35 +91,111 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, int DayNig
 		jobperformance -= 10;
 
 
-	if(jobperformance < 35)
+	if (jobperformance >= 245)
 		{
-			message += " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
-			wages -= 15;
+			message += " She must be the perfect stripper customers go on and on about her and always come to see her when she works.\n\n";
+			wages += 155;
 		}
-	else if(jobperformance < 65)
-		{
-			message += " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
-			wages -= 5;
-		}
-	else if(jobperformance < 85)
-		{
-			message += " She made a few mistakes but overall she is okay at this.\n\n";
-			wages += 15;
-		}
-	else if(jobperformance < 135)
-		{
-			message += " She's good at this job and gets praised by the customers often.\n\n";
-			wages += 55;
-		}
-	else if(jobperformance < 185)
+	else if (jobperformance >= 185)
 		{
 			message += " She's unbelievable at this and is always getting praised by the customers for her work.\n\n";
 			wages += 95;
 		}
-	else if(jobperformance < 245)
+	else if (jobperformance >= 145)
 		{
-			message += " She must be the perfect stripper customers go on and on about her and always come to see her when she works.\n\n";
-			wages += 155;
+			message += " She's good at this job and gets praised by the customers often.\n\n";
+			wages += 55;
+		}
+	else if (jobperformance >= 100)
+		{
+			message += " She made a few mistakes but overall she is okay at this.\n\n";
+			wages += 15;
+		}
+	else if (jobperformance >= 70)
+		{
+			message += " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
+			wages -= 5;
+		}
+	else
+		{
+			message += " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
+			wages -= 15;
+		}
+
+
+	// lap dance code.. just test stuff for now
+	if (lapdance >= 100)
+		{
+			message += girl->m_Realname + " doesn't try to sell private dances the patrons beg her to buy one off her.\n";
+			if (roll < 5)
+				{
+					message += "She sold a champagne dance.";
+				}
+			if (roll < 20)
+				{
+					message += "She sold a shower dance.";
+					if(g_Girls.GetStat(girl, STAT_LIBIDO) > 90)
+						{
+							message += "She was in the mood so she put on quite a show for them.";
+							girl->m_Events.AddMessage(message, IMGTYPE_MAST, DayNight);
+							g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -40);
+							}
+				}
+			if (roll < 40)
+				{
+					message += "She was able to sell a few VIP dances.";
+				}
+			if (roll < 60)
+				{
+					message += "She sold a VIP dance.";
+				}
+			else
+				{
+				message += "She sold several lap dances.";
+			}
+		}
+	else if (lapdance >= 75)
+			{
+				message += girl->m_Realname + "'s skill at selling private dances is impressive.\n";
+			if (roll < 5)
+				{
+					message += "She convinced a patron to buy a shower dance.";
+					if(g_Girls.GetStat(girl, STAT_LIBIDO) > 90)
+						{
+							message += "She was in the mood so she put on quite a show for them.";
+							girl->m_Events.AddMessage(message, IMGTYPE_MAST, DayNight);
+							g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -40);
+							}
+						}
+			if (roll < 20)
+				{
+					message += "Sold a VIP dance to a patron.";
+						}
+			else
+				{
+					message += "Sold a few lap dance.";
+					}
+				}
+	else if (lapdance >= 50)
+				{
+					message += girl->m_Realname + " tried to sell private dances and ";
+					if (roll < 5)
+						{
+							message += "was able to sell a vip dance againts all odds.";
+						}
+					if (roll < 20)
+						{
+							message += "was able to sell a lap dance.";
+						}
+					else
+						{
+							message += "wasn't able to sell any.";
+						}
+					}
+		else 
+				{
+						message += girl->m_Realname + "'s doesn't seem to understand the real money in stripping is selling private dances.\n";
+				
 		}
 
 	u_int action = g_Dice%7;

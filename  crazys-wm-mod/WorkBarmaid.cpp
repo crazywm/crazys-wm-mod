@@ -89,59 +89,20 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, int DayNight, stri
 		jobperformance -= 10;
 
 
-	if(jobperformance < 45)
+	if (jobperformance >= 245)
 		{
-			message += " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
-			wages -= 15;
+			message += " She must be the perfect bar tender customers go on and on about her and always come to see her when she works.\n\n";
+			wages += 155;
 		if (roll <= 50)
 			{
-				message += girlName + " was giving orders to the wrong patrons and letting a lot people walk out without paying there tab.\n";
+				message += girlName + " was sliding drinks all over the bar without spilling a drop she put on quite a show for the patrons.\n";
 			}
 			else
 			{
-				message += girlName + " spilled drinks all over the place and mixed the wrong stuff when trying to make drinks for people.\n";
+				message += girlName + " mixed up what some patrons called the perfect drink.  It got them drunk faster then anything they had before.\n";
 			}
 		}
-	else if(jobperformance < 70)
-		{
-			message += " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
-			wages -= 5;
-		if (roll <= 50)
-			{
-				message += girlName + " mixed up peoples drink orders..  When she only had four patrons drinking.\n";
-			}
-			else
-			{
-				message += girlName + " gave someone a drink she mixed that made them sick.  It was nothing but coke and ice so who knows how she did it.\n";
-			}
-		}
-	else if(jobperformance < 100)
-		{
-			message += " She made a few mistakes but overall she is okay at this.\n\n";
-			wages += 15;
-		if (roll <= 50)
-			{
-				message += girlName + " mixed up a few drink orders..  But they order the same drink so it didn't matter to much.\n";
-			}
-			else
-			{
-				message += girlName + " wasted a few drinks by forgetting to ice them but wasn't major.\n";
-			}
-		}
-	else if(jobperformance < 145)
-		{
-			message += " She's good at this job and gets praised by the customers often.\n\n";
-			wages += 55;
-		if (roll <= 50)
-			{
-				message += girlName + " didn't mix up any orders and kept the patrons drunk and happy.\n";
-			}
-			else
-			{
-				message += girlName + " had some regualers come in.  She knows just how to keep them happy and spending gold.\n";
-			}
-		}
-	else if(jobperformance < 185)
+ else if (jobperformance >= 185)
 		{
 			message += " She's unbelievable at this and is always getting praised by the customers for her work.\n\n";
 			wages += 95;
@@ -154,17 +115,56 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, int DayNight, stri
 				message += "People love seeing " + girl->m_Realname + " work and they pour into the bar during her shift.  She mixes wonderful drinks and doesn't mess orders up so they couldn't be happier.\n";
 			}
 		}
-	else if(jobperformance < 245)
+ else if (jobperformance >= 145)
 		{
-			message += " She must be the perfect bar tender customers go on and on about her and always come to see her when she works.\n\n";
-			wages += 155;
+			message += " She's good at this job and gets praised by the customers often.\n\n";
+			wages += 55;
 		if (roll <= 50)
 			{
-				message += girlName + " was sliding drinks all over the bar without spilling a drop she put on quite a show for the patrons.\n";
+				message += girlName + " didn't mix up any orders and kept the patrons drunk and happy.\n";
 			}
 			else
 			{
-				message += girlName + " mixed up what some patrons called the perfect drink.  It got them drunk faster then anything they had before.\n";
+				message += girlName + " had some regualers come in.  She knows just how to keep them happy and spending gold.\n";
+			}
+		}
+ else if (jobperformance >= 100)
+		{
+			message += " She made a few mistakes but overall she is okay at this.\n\n";
+			wages += 15;
+		if (roll <= 50)
+			{
+				message += girlName + " mixed up a few drink orders..  But they order the same drink so it didn't matter to much.\n";
+			}
+			else
+			{
+				message += girlName + " wasted a few drinks by forgetting to ice them but wasn't major.\n";
+			}
+		}
+ else if (jobperformance >= 70)
+		{
+			message += " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
+			wages -= 5;
+		if (roll <= 50)
+			{
+				message += girlName + " mixed up peoples drink orders..  When she only had four patrons drinking.\n";
+			}
+			else
+			{
+				message += girlName + " gave someone a drink she mixed that made them sick.  It was nothing but coke and ice so who knows how she did it.\n";
+			}
+		}
+ else
+		{
+			message += " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
+			wages -= 15;
+		if (roll <= 50)
+			{
+				message += girlName + " was giving orders to the wrong patrons and letting a lot people walk out without paying there tab.\n";
+			}
+			else
+			{
+				message += girlName + " spilled drinks all over the place and mixed the wrong stuff when trying to make drinks for people.\n";
 			}
 		}
 
