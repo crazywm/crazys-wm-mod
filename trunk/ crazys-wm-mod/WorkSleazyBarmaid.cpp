@@ -92,35 +92,35 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, int DayNight
 		jobperformance -= 10;
 
 
-	if(jobperformance < 35)
+if (jobperformance >= 245)
 		{
-			message += " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
-			wages -= 15;
+			message += " She must be the perfect bar tender customers go on and on about her and always come to see her when she works.\n\n";
+			wages += 155;
 		}
-	else if(jobperformance < 65)
-		{
-			message += " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
-			wages -= 5;
-		}
-	else if(jobperformance < 85)
-		{
-			message += " She made a few mistakes but overall she is okay at this.\n\n";
-			wages += 15;
-		}
-	else if(jobperformance < 135)
-		{
-			message += " She's good at this job and gets praised by the customers often.\n\n";
-			wages += 55;
-		}
-	else if(jobperformance < 185)
+else if (jobperformance >= 185)
 		{
 			message += " She's unbelievable at this and is always getting praised by the customers for her work.\n\n";
 			wages += 95;
 		}
-	else if(jobperformance < 245)
+else if (jobperformance >= 145)
 		{
-			message += " She must be the perfect bar tender customers go on and on about her and always come to see her when she works.\n\n";
-			wages += 155;
+			message += " She's good at this job and gets praised by the customers often.\n\n";
+			wages += 55;
+		}
+else if (jobperformance >= 100)
+		{
+			message += " She made a few mistakes but overall she is okay at this.\n\n";
+			wages += 15;
+		}
+else if (jobperformance >= 70)
+		{
+			message += " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
+			wages -= 5;
+		}
+else
+		{
+			message += " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
+			wages -= 15;
 		}
 
 

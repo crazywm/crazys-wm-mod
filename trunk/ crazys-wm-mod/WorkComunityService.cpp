@@ -86,67 +86,67 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, int DayNig
 
 	if(girl->m_States&(1<<STATUS_SLAVE))
 	{
-		if (jobperformance < 35)
-		{
-			message += " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
-			g_Brothels.GetPlayer()->disposition(+2);
-		}
-	else if(jobperformance < 65)
-		{
-			message += " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
-			g_Brothels.GetPlayer()->disposition(+6);
-		}
-	else if(jobperformance < 85)
-		{
-			message += " She made a few mistakes but overall she is okay at this.\n\n";
-			g_Brothels.GetPlayer()->disposition(+8);
-		}
-	else if(jobperformance < 135)
-		{
-			message += " She's good at this job and gets praised by people often.\n\n";
-			g_Brothels.GetPlayer()->disposition(+10);
-		}
-	else if(jobperformance < 185)
-		{
-			message += " She's unbelievable at this and is always getting praised by people for her work.\n\n";
-			g_Brothels.GetPlayer()->disposition(+12);
-		}
-	else if (jobperformance < 245)
+		if (jobperformance >= 245)
 		{
 			message += " She must be perfect at this.\n\n";
 			g_Brothels.GetPlayer()->disposition(+14);
 		}
-	}
-	else 
-		if(jobperformance < 35)
+	else if(jobperformance >= 185)
 		{
-			message += " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
-			g_Brothels.GetPlayer()->disposition(+6);
-		}
-	else if(jobperformance < 65)
-		{
-			message += " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
-			g_Brothels.GetPlayer()->disposition(+9);
-		}
-	else if(jobperformance < 85)
-		{
-			message += " She made a few mistakes but overall she is okay at this.\n\n";
+			message += " She's unbelievable at this and is always getting praised by people for her work.\n\n";
 			g_Brothels.GetPlayer()->disposition(+12);
 		}
-	else if(jobperformance < 135)
+	else if (jobperformance >= 145)
 		{
 			message += " She's good at this job and gets praised by people often.\n\n";
-			g_Brothels.GetPlayer()->disposition(+15);
+			g_Brothels.GetPlayer()->disposition(+10);
 		}
-	else if(jobperformance < 185)
+	else if (jobperformance >= 100)
+		{
+			message += " She made a few mistakes but overall she is okay at this.\n\n";
+			g_Brothels.GetPlayer()->disposition(+8);
+		}
+	else if (jobperformance >= 70)
+		{
+			message += " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
+			g_Brothels.GetPlayer()->disposition(+6);
+		}
+	else
+		{
+			message += " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
+			g_Brothels.GetPlayer()->disposition(+2);
+		}
+	}
+	else 
+		if (jobperformance >= 245)
+		{
+			message += " She must be perfect at this.\n\n";
+			g_Brothels.GetPlayer()->disposition(+22);
+		}
+	else if (jobperformance >= 185)
 		{
 			message += " She's unbelievable at this and is always getting praised by people for her work.\n\n";
 			g_Brothels.GetPlayer()->disposition(+17);
 		}
-	else if(jobperformance < 245)
+	else if (jobperformance >= 145)
 		{
-			message += " She must be perfect at this.\n\n";
-			g_Brothels.GetPlayer()->disposition(+22);
+			message += " She's good at this job and gets praised by people often.\n\n";
+			g_Brothels.GetPlayer()->disposition(+15);
+		}
+	else if (jobperformance >= 100)
+		{
+			message += " She made a few mistakes but overall she is okay at this.\n\n";
+			g_Brothels.GetPlayer()->disposition(+12);
+		}
+	else if (jobperformance >= 70)
+		{
+			message += " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
+			g_Brothels.GetPlayer()->disposition(+9);
+		}
+	else
+		{
+			message += " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
+			g_Brothels.GetPlayer()->disposition(+6);
 		}
 	
 

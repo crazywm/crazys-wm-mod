@@ -92,61 +92,49 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 		jobperformance -= 10;
 
 
-	if(jobperformance < 45)
+	 if(jobperformance >= 245)
 		{
-			message += " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
-			wages -= 15;
-		if (roll <= 50)
-			{
-				message += girlName + " was taking orders to the wrong tables and letting a lot people walk out without paying there tab.\n";
-			}
-			else
-			{
-				message += girlName + " spilled food all over the place and mixed orders up constantly.\n";
-			}
-		}
-	else if(jobperformance < 70)
-		{
-			message += " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
-			wages -= 5;
-		if (roll <= 50)
-			{
-				message += girlName + " wrote down the wrong orders for a few patrons resulting in them leaving.\n";
-			}
-			else
-			{
-				message += girlName + " sneezed in an order she had just sat down on a table.  Needless to say the patron was mad and left.\n";
-			}
-
-		if (g_Girls.HasTrait(girl, "Great Arse"))
-			if(roll <= 15)
-		{
-			message += " A patron reached out and grabed her ass. She was startled and ended up dropping a whole order\n";
-			wages -= 15;
-		}
-		}
-	else if(jobperformance < 100)
-		{
-			message += " She made a few mistakes but overall she is okay at this.\n\n";
-			wages += 15;
+			message += " She must be the perfect waitress customers go on and on about her and always come to see her when she works.\n\n";
+			wages += 155;
 
 		if (roll <= 50)
 			{
-				message += girlName + " forgot to take an order to a table for over a hour.  But they were in a forgiving mood and stuck around.\n";
+				message += girlName + " danced around the bar dropping orders off as if she dosen't even have to think to do this anymore.\n";
 			}
 			else
 			{
-				message += girlName + " sneezed in an order she had just sat down on a table.  Needless to say the patron was mad and left.\n";
+				message += "People came in from everywhere to see " + girl->m_Realname + " work.  She bounces all around the bar laughing and keeping the patrons happy without messing anything up.\n";
 			}
 
 			if (g_Girls.HasTrait(girl, "Great Arse"))
 			if(roll <= 15)
 		{
-			message += " A patron reached out and grabed her ass. She was startled and ended up dropping half an order.\n";
-			wages -= 10;
+			message += " A patron reached out to grab her ass. But she skillfully avoided it with a laugh and told him that her ass wasn't on the menu.  He laughed so hard he increased her tip\n";
+			wages += 15;
+		}
+ }
+ else if(jobperformance >= 185)
+		{
+			message += " She's unbelievable at this and is always getting praised by the customers for her work.\n\n";
+			wages += 95;
+
+		if (roll <= 50)
+			{
+				message += girlName + " bounced from table to table taking orders and recommending items to help you make more money.\n";
+			}
+			else
+			{
+				message += girlName + " is a town favriote and knows most of the patrons by name and what they order.\n";
+			}
+
+			if (g_Girls.HasTrait(girl, "Great Arse"))
+			if(roll <= 15)
+		{
+			message += " A patron reached out to grab her ass. But she skillfully avoided it with a laugh and told him that her ass wasn't on the menu.  He laughed so hard he increased her tip\n";
+			wages += 15;
 		}
 		}
-	else if(jobperformance < 145)
+ else if(jobperformance >= 145)
 		{
 			message += " She's good at this job and gets praised by the customers often.\n\n";
 			wages += 55;
@@ -173,48 +161,61 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 			message += " A patron reached out and grabed her ass. She's use to this and skilled enough so she didn't drop anything\n";
 		}
 		}
-	else if(jobperformance < 185)
+ else if(jobperformance >= 100)
 		{
-			message += " She's unbelievable at this and is always getting praised by the customers for her work.\n\n";
-			wages += 95;
+			message += " She made a few mistakes but overall she is okay at this.\n\n";
+			wages += 15;
 
 		if (roll <= 50)
 			{
-				message += girlName + " bounced from table to table taking orders and recommending items to help you make more money.\n";
+				message += girlName + " forgot to take an order to a table for over a hour.  But they were in a forgiving mood and stuck around.\n";
 			}
 			else
 			{
-				message += girlName + " is a town favriote and knows most of the patrons by name and what they order.\n";
+				message += girlName + " sneezed in an order she had just sat down on a table.  Needless to say the patron was mad and left.\n";
 			}
 
 			if (g_Girls.HasTrait(girl, "Great Arse"))
 			if(roll <= 15)
 		{
-			message += " A patron reached out to grab her ass. But she skillfully avoided it with a laugh and told him that her ass wasn't on the menu.  He laughed so hard he increased her tip\n";
-			wages += 15;
+			message += " A patron reached out and grabed her ass. She was startled and ended up dropping half an order.\n";
+			wages -= 10;
 		}
 		}
-	else if(jobperformance < 245)
+ else if(jobperformance >= 70)
 		{
-			message += " She must be the perfect waitress customers go on and on about her and always come to see her when she works.\n\n";
-			wages += 155;
-
+			message += " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
+			wages -= 5;
 		if (roll <= 50)
 			{
-				message += girlName + " danced around the bar dropping orders off as if she dosen't even have to think to do this anymore.\n";
+				message += girlName + " wrote down the wrong orders for a few patrons resulting in them leaving.\n";
 			}
 			else
 			{
-				message += "People came in from everywhere to see " + girl->m_Realname + " work.  She bounces all around the bar laughing and keeping the patrons happy without messing anything up.\n";
+				message += girlName + " sneezed in an order she had just sat down on a table.  Needless to say the patron was mad and left.\n";
 			}
 
-			if (g_Girls.HasTrait(girl, "Great Arse"))
+		if (g_Girls.HasTrait(girl, "Great Arse"))
 			if(roll <= 15)
 		{
-			message += " A patron reached out to grab her ass. But she skillfully avoided it with a laugh and told him that her ass wasn't on the menu.  He laughed so hard he increased her tip\n";
-			wages += 15;
+			message += " A patron reached out and grabed her ass. She was startled and ended up dropping a whole order\n";
+			wages -= 15;
 		}
 		}
+ else
+		{
+			message += " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
+			wages -= 15;
+		if (roll <= 50)
+			{
+				message += girlName + " was taking orders to the wrong tables and letting a lot people walk out without paying there tab.\n";
+			}
+			else
+			{
+				message += girlName + " spilled food all over the place and mixed orders up constantly.\n";
+			}
+		}
+		
 
 	//try and add randomness here
 	if (g_Girls.GetStat(girl, STAT_BEAUTY) >85)

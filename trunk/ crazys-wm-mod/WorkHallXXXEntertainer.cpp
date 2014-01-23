@@ -92,85 +92,124 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, int Day
 		jobperformance -= 10;
 
 
-	if(jobperformance < 45)
+	if (jobperformance >= 245)
 		{
-			message += " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
-			wages -= 15;
+			message += " She must be the perfect entertainer customers go on and on about her and always come to see her when she works.\n\n";
+			wages += 155;
 		if (roll <= 20)
 			{
-				if (g_Girls.HasTrait(girl, "Long Legs"))
-					{
-					message += "Customers just can't tear their eyes away from " + girlName + "'s long, tasty legs, even as she tripped over her discarded top.\n";
-					}
+				if (g_Girls.HasTrait(girl, "Nymphomaniac"))
+				{
+					message += girlName + " could do this all day with a genuine smile on her face, pussy dripping onto the stained boards beneath her legs.\n";
+				}
 				else
 				{
-				message += girlName + " slipped on a fresh smear of ejaculate halfway through her dance, and fell on her ass.\n";
+				message += girlName + " has a large devoted group of fans, who come in every night to watch her.\n";
 				}
 			}
 		else if (roll <= 40)
 			{
-				message += girlName + "'s hair got tangled up in her shirt when she tried to take it off, making her reel about the stage like a drunk.\n";
+				message +=  "A simple smile towards the audience from " + girlName + " makes every gambler howl and cheer.\n";
 			}
 		else if (roll <= 60)
 			{
-				message += "Seeing the large crowd waiting outside, " + girlName + "'s nerve broke and she ran back out of the gambling hall.\n";
+				message += "It's amazing how many tricks " + girlName + "knows, to tease her audience but never quite push them over the point where they'd lose interest.\n";
 			}
 		else if (roll <= 80)
 			{
-				message += girlName + " was drunk when she stumbled out at the beginning of shift, and fell asleep almost as soon as she reached the stage.\n";
+				message += girlName + " stripped in a unique way tonight, dancing with a razor in each hand.  With those razors, she peeled her clothes away from her lovely body, without nicking herself a single time.\n";
 			}
 		else
 			{
 				if (g_Girls.HasTrait(girl, "Sexy Air"))
-					{
-					message += "Even though a block of wood could dance better, + " + girlName + " still draws the eye.\n";
-					}
+				{
+					message += girlName + " could be dressed in a sack and still make a fortune masturbating on stage.\n";
+				}
 				else
-					{
-				message += "Somehow, " + girlName + " managed to be so unsexy that the audience barely seemed to notice her presence.\n";
+				{
+				message +=  girlName + "'s shows are always sold out, and her fame is spreading across the city.\n";
 				}
 			}
 		}
-	else if(jobperformance < 70)
+else if (jobperformance >= 185)
 		{
-			message += " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
-			wages -= 5;
+			message += " She's unbelievable at this and is always getting praised by the customers for her work.\n\n";
+			wages += 95;
 		if (roll <= 20)
 			{
-				if (g_Girls.HasTrait(girl, "Sexy Air"))
+				if (g_Girls.HasTrait(girl, "Nymphomaniac"))
 				{
-					message += "Even though a block of wood could dance better, + " + girlName + " still draws the eye.\n";
+					message += girlName + " loves her job, you can tell by the zeal she employs as she penetrates her mouth and pussy with dildoes on stage, moaning throughout.\n";
 				}
 				else
 				{
-				message += girlName + " is still incredibly sexy, despite her lack of anything resembling an active customer appeal.\n";
+				message += "From start to finish, every move Girlname makes practically sweats sexuallity.\n";
 				}
 			}
 		else if (roll <= 40)
 			{
-				message += girlName + "'s distaste for the crowd was evident by her curled lip and perpetual scowl.\n";
+				message += girlName + " moved off the stage halfway through the act and walked amongst the audience, to their joy.\n";
 			}
 		else if (roll <= 60)
 			{
-				message += "The only person who seemed to find " + girlName + "'s striptease appetizing was a random drunk.\n";
+				message += "As clothing slowly fell from her body and her hand descended towards her core, " + girlName + " smiled seductively at the audience.\n";
 			}
 		else if (roll <= 80)
 			{
-				if (g_Girls.HasTrait(girl, "Long Legs"))
-				{
-					message += "The perfectly sculpted flesh of her leg drew attention away from the stupid look on " + girlName + "'s face.\n";
-				}
-				else
-				{
-				message += girlName + "'s hips twitched in a decidedly half-assed way.\n";
-				}
+				message += "All male members of " + girlName + "'s audience had trouble standing after she fellated a dildo on stage.\n";
 			}
 		else
 			{
-				message += girlName + " isn't qualified as a striper, which might explain why she couldn't successfully detach her bra on stage.\n";
+				if (g_Girls.HasTrait(girl, "Sexy Air"))
+				{
+					message +=  "The skill of " + girlName + "'s dancing coupled with her sexual air just pack the customers in.\n";
+				}
+				else
+				{
+				message +=  "Amusingly, one of the female members of " + girlName + "'s audience threw her panties on the stage, where Girlname used them as an impromptu prop.\n";
+				}
 			}
 		}
-	else if(jobperformance < 100)
+else if (jobperformance >= 145)
+		{
+			message += " She's good at this job and gets praised by the customers often.\n\n";
+			wages += 55;
+		if (roll <= 20)
+			{
+				message +=  "A lucky gambler almost fainted when " + girlName + " gave him her freshly removed skirt as a present.\n";
+			}
+		else if (roll <= 40)
+			{
+				if (g_Girls.HasTrait(girl, "Long Legs"))
+				{
+					message += girlName + "'s erotic dances are accentuated by her perfect legs.\n";
+				}
+				else
+				{
+				message += girlName + " has a small, but devoted fanbase, who are willing to pay gate fees just to watch her dance.\n";
+				}
+			}
+		else if (roll <= 60)
+			{
+				message += "After letting " + girlName + " chose the music that she danced to, her erotic dances have improved markedly.\n";
+			}
+		else if (roll <= 80)
+			{
+				message += "You watched with amusement as members of her audience made a disproportionate number of trips to the bathroom after her performance.\n";
+			}
+		else
+			{
+				if (g_Girls.HasTrait(girl, "Sexy Air"))
+				{
+					message += girlName + " is by no measure bad at her job, but she gets way more customers then could be expected.\n";
+				}
+				else
+				{
+				message +=  "A man made an offer to buy " + girlName + " today, which you turned down.  She's popular with the patrons.\n";
+				}
+			}
+		}
+else if (jobperformance >= 100)
 		{
 			message += " She made a few mistakes but overall she is okay at this.\n\n";
 			wages += 15;
@@ -215,120 +254,81 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, int Day
 				}
 			}
 		}
-	else if(jobperformance < 145)
+else if (jobperformance >= 70)
 		{
-			message += " She's good at this job and gets praised by the customers often.\n\n";
-			wages += 55;
+			message += " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
+			wages -= 5;
 		if (roll <= 20)
 			{
-				message +=  "A lucky gambler almost fainted when " + girlName + " gave him her freshly removed skirt as a present.\n";
+				if (g_Girls.HasTrait(girl, "Sexy Air"))
+				{
+					message += "Even though a block of wood could dance better, + " + girlName + " still draws the eye.\n";
+				}
+				else
+				{
+				message += girlName + " is still incredibly sexy, despite her lack of anything resembling an active customer appeal.\n";
+				}
 			}
 		else if (roll <= 40)
+			{
+				message += girlName + "'s distaste for the crowd was evident by her curled lip and perpetual scowl.\n";
+			}
+		else if (roll <= 60)
+			{
+				message += "The only person who seemed to find " + girlName + "'s striptease appetizing was a random drunk.\n";
+			}
+		else if (roll <= 80)
 			{
 				if (g_Girls.HasTrait(girl, "Long Legs"))
 				{
-					message += girlName + "'s erotic dances are accentuated by her perfect legs.\n";
+					message += "The perfectly sculpted flesh of her leg drew attention away from the stupid look on " + girlName + "'s face.\n";
 				}
 				else
 				{
-				message += girlName + " has a small, but devoted fanbase, who are willing to pay gate fees just to watch her dance.\n";
+				message += girlName + "'s hips twitched in a decidedly half-assed way.\n";
 				}
-			}
-		else if (roll <= 60)
-			{
-				message += "After letting " + girlName + " chose the music that she danced to, her erotic dances have improved markedly.\n";
-			}
-		else if (roll <= 80)
-			{
-				message += "You watched with amusement as members of her audience made a disproportionate number of trips to the bathroom after her performance.\n";
 			}
 		else
 			{
-				if (g_Girls.HasTrait(girl, "Sexy Air"))
-				{
-					message += girlName + " is by no measure bad at her job, but she gets way more customers then could be expected.\n";
-				}
-				else
-				{
-				message +=  "A man made an offer to buy " + girlName + " today, which you turned down.  She's popular with the patrons.\n";
-				}
+				message += girlName + " isn't qualified as a striper, which might explain why she couldn't successfully detach her bra on stage.\n";
 			}
 		}
-	else if(jobperformance < 185)
+else
 		{
-			message += " She's unbelievable at this and is always getting praised by the customers for her work.\n\n";
-			wages += 95;
+			message += " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
+			wages -= 15;
 		if (roll <= 20)
 			{
-				if (g_Girls.HasTrait(girl, "Nymphomaniac"))
-				{
-					message += girlName + " loves her job, you can tell by the zeal she employs as she penetrates her mouth and pussy with dildoes on stage, moaning throughout.\n";
-				}
+				if (g_Girls.HasTrait(girl, "Long Legs"))
+					{
+					message += "Customers just can't tear their eyes away from " + girlName + "'s long, tasty legs, even as she tripped over her discarded top.\n";
+					}
 				else
 				{
-				message += "From start to finish, every move Girlname makes practically sweats sexuallity.\n";
+				message += girlName + " slipped on a fresh smear of ejaculate halfway through her dance, and fell on her ass.\n";
 				}
 			}
 		else if (roll <= 40)
 			{
-				message += girlName + " moved off the stage halfway through the act and walked amongst the audience, to their joy.\n";
+				message += girlName + "'s hair got tangled up in her shirt when she tried to take it off, making her reel about the stage like a drunk.\n";
 			}
 		else if (roll <= 60)
 			{
-				message += "As clothing slowly fell from her body and her hand descended towards her core, " + girlName + " smiled seductively at the audience.\n";
+				message += "Seeing the large crowd waiting outside, " + girlName + "'s nerve broke and she ran back out of the gambling hall.\n";
 			}
 		else if (roll <= 80)
 			{
-				message += "All male members of " + girlName + "'s audience had trouble standing after she fellated a dildo on stage.\n";
+				message += girlName + " was drunk when she stumbled out at the beginning of shift, and fell asleep almost as soon as she reached the stage.\n";
 			}
 		else
 			{
 				if (g_Girls.HasTrait(girl, "Sexy Air"))
-				{
-					message +=  "The skill of " + girlName + "'s dancing coupled with her sexual air just pack the customers in.\n";
-				}
+					{
+					message += "Even though a block of wood could dance better, + " + girlName + " still draws the eye.\n";
+					}
 				else
-				{
-				message +=  "Amusingly, one of the female members of " + girlName + "'s audience threw her panties on the stage, where Girlname used them as an impromptu prop.\n";
-				}
-			}
-		}
-	else if(jobperformance < 245)
-		{
-			message += " She must be the perfect entertainer customers go on and on about her and always come to see her when she works.\n\n";
-			wages += 155;
-		if (roll <= 20)
-			{
-				if (g_Girls.HasTrait(girl, "Nymphomaniac"))
-				{
-					message += girlName + " could do this all day with a genuine smile on her face, pussy dripping onto the stained boards beneath her legs.\n";
-				}
-				else
-				{
-				message += girlName + " has a large devoted group of fans, who come in every night to watch her.\n";
-				}
-			}
-		else if (roll <= 40)
-			{
-				message +=  "A simple smile towards the audience from " + girlName + " makes every gambler howl and cheer.\n";
-			}
-		else if (roll <= 60)
-			{
-				message += "It's amazing how many tricks " + girlName + "knows, to tease her audience but never quite push them over the point where they'd lose interest.\n";
-			}
-		else if (roll <= 80)
-			{
-				message += girlName + " stripped in a unique way tonight, dancing with a razor in each hand.  With those razors, she peeled her clothes away from her lovely body, without nicking herself a single time.\n";
-			}
-		else
-			{
-				if (g_Girls.HasTrait(girl, "Sexy Air"))
-				{
-					message += girlName + " could be dressed in a sack and still make a fortune masturbating on stage.\n";
-				}
-				else
-				{
-				message +=  girlName + "'s shows are always sold out, and her fame is spreading across the city.\n";
+					{
+				message += "Somehow, " + girlName + " managed to be so unsexy that the audience barely seemed to notice her presence.\n";
 				}
 			}
 		}
