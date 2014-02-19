@@ -2198,12 +2198,12 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		massusse -= 10;
 	}
 
-		stringstream dd;
+		/*stringstream dd;
 	dd << gettext("barmaid: ") << (barmaid) << gettext("\n");
 	dd << gettext("barwait: ") << (barwait) << gettext("\n");
 	dd << gettext("sing: ") << (sing) << gettext("\n");
 	dd << gettext("piano: ") << (piano) << gettext("\n");
-	data += dd.str();
+	data += dd.str();*/
 
 	data += gettext("\nJob Ratings\n");
 
