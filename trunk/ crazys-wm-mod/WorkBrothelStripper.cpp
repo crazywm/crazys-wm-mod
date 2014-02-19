@@ -52,6 +52,8 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, int DayNig
 	int looks = (g_Girls.GetStat(girl, STAT_CHARISMA) + g_Girls.GetStat(girl, STAT_BEAUTY))/2;
 	int jobperformance = (looks + g_Girls.GetSkill(girl, SKILL_STRIP));
 	int lapdance = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) + g_Girls.GetSkill(girl, SKILL_STRIP))/2;
+	int mast = false;
+	int sex = false;
 	int wages = 30;
 
 	message = "She stripped for a customer.";
@@ -126,32 +128,38 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, int DayNig
 	// lap dance code.. just test stuff for now
 	if (lapdance >= 100)
 		{
-			message += girl->m_Realname + " doesn't try to sell private dances the patrons beg her to buy one off her.\n";
+			message += girl->m_Realname + " doesn't have to try to sell private dances the patrons beg her to buy one off her.\n";
 			if (roll < 5)
 				{
 					message += "She sold a champagne dance.";
+					wages += 250;
 				}
 			if (roll < 20)
 				{
 					message += "She sold a shower dance.";
-					if(g_Girls.GetStat(girl, STAT_LIBIDO) > 90)
+					wages += 75;
+					if(g_Girls.GetStat(girl, STAT_LIBIDO) > 70)
 						{
 							message += "She was in the mood so she put on quite a show for them.";
-							girl->m_Events.AddMessage(message, IMGTYPE_MAST, DayNight);
 							g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -40);
+							wages += 50;
+							mast = true;
 							}
 				}
 			if (roll < 40)
 				{
 					message += "She was able to sell a few VIP dances.";
+					wages += 75;
 				}
 			if (roll < 60)
 				{
 					message += "She sold a VIP dance.";
+					wages += 50;
 				}
 			else
 				{
 				message += "She sold several lap dances.";
+				wages += 50;
 			}
 		}
 	else if (lapdance >= 75)
@@ -160,17 +168,57 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, int DayNig
 			if (roll < 5)
 				{
 					message += "She convinced a patron to buy a shower dance.";
-					if(g_Girls.GetStat(girl, STAT_LIBIDO) > 90)
+					wages += 75;
+					if(g_Girls.GetStat(girl, STAT_LIBIDO) > 70)
 						{
 							message += "She was in the mood so she put on quite a show for them.";
-							girl->m_Events.AddMessage(message, IMGTYPE_MAST, DayNight);
 							g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -40);
+							wages += 50;
+							mast = true;
 							}
 						}
 			if (roll < 20)
 				{
 					message += "Sold a VIP dance to a patron.";
+					{
+	/*u_int action = (roll <7);
+	if(action == 0)
+	{
+		u_int n = 0;
+		message += "She stripped for and ended up fucking the customer as well, making them very happy.\n\n";
+		sCustomer cust;
+		while (true)
+		{
+		GetMiscCustomer(brothel, cust);
+		if (is_sex_type_allowed(cust.m_SexPref, brothel))
+			break;
+		}
+		g_Girls.GirlFucks(girl, DayNight, &cust, false,message,n);
+		brothel->m_Happiness += 100;
+		int imageType = IMGTYPE_SEX;
+		if(n == SKILL_ANAL)
+			imageType = IMGTYPE_ANAL;
+		else if(n == SKILL_BDSM)
+			imageType = IMGTYPE_BDSM;
+		else if(n == SKILL_NORMALSEX)
+			imageType = IMGTYPE_SEX;
+		else if(n == SKILL_BEASTIALITY)
+			imageType = IMGTYPE_BEAST;
+		else if(n == SKILL_GROUP)
+			imageType = IMGTYPE_GROUP;
+		else if(n == SKILL_LESBIAN)
+			imageType = IMGTYPE_LESBIAN;
+		else if(n == SKILL_ORALSEX)
+			imageType = IMGTYPE_ORAL;
+		else if(n == SKILL_TITTYSEX)
+			imageType = IMGTYPE_TITTY;
+		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -2);
+		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +3, true);
+		sex = true;
+							}*/
+
 						}
+			}
 			else
 				{
 					message += "Sold a few lap dance.";
@@ -182,10 +230,12 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, int DayNig
 					if (roll < 5)
 						{
 							message += "was able to sell a vip dance againts all odds.";
+							wages += 50;
 						}
 					if (roll < 20)
 						{
 							message += "was able to sell a lap dance.";
+							wages += 25;
 						}
 					else
 						{
@@ -229,9 +279,11 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, int DayNig
 			imageType = IMGTYPE_ORAL;
 		else if(n == SKILL_TITTYSEX)
 			imageType = IMGTYPE_TITTY;
-		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -4);
+		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -2);
 		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +3, true);
 
+	/*if (sex)
+	{*/
 		// work out the pay between the house and the girl
 		wages += 30;
 		wages += g_Girls.GetStat(girl, STAT_ASKPRICE);
@@ -241,6 +293,16 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, int DayNig
 		girl->m_Pay = wages;
 		girl->m_Events.AddMessage(message, imageType, DayNight);
 	}
+	else if (mast) 
+	{
+		brothel->m_Happiness += (g_Dice%70)+60;
+		// work out the pay between the house and the girl
+		int roll_max = (g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA));
+		roll_max /= 4;
+		wages += 10 + g_Dice%roll_max;
+		girl->m_Pay = wages;
+		girl->m_Events.AddMessage(message, IMGTYPE_MAST, DayNight);
+			}
 	else
 	{
 		brothel->m_Happiness += (g_Dice%70)+30;

@@ -859,6 +859,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\cScreenBrothelManagement.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\cScreenBrothelManagement.h"
+				>
+			</File>
+			<File
 				RelativePath=".\cScreenBuildingManagement.cpp"
 				>
 			</File>
@@ -944,6 +952,14 @@
 			</File>
 			<File
 				RelativePath=".\cScreenItemManagement.h"
+				>
+			</File>
+			<File
+				RelativePath=".\cScreenMainMenu.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\cScreenMainMenu.h"
 				>
 			</File>
 			<File

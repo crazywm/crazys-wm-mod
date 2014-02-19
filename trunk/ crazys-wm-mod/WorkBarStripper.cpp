@@ -311,7 +311,7 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, int DayNight, 
 	// lap dance code.. just test stuff for now
 	if (lapdance >= 100)
 		{
-			message += girl->m_Realname + " doesn't try to sell private dances the patrons beg her to buy one off her.\n";
+			message += girl->m_Realname + " doesn't have to try to sell private dances the patrons beg her to buy one off her.\n";
 			if (roll < 5)
 				{
 		message += "She sold a champagne dance.";
