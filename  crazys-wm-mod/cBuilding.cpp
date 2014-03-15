@@ -155,7 +155,7 @@ void cBuilding::make_reversion_list()
 	if(m_reversion) {
 		clear_reversion_list();
 	}
-	m_reversion = new vFacilities();
+	m_reversion = new vector<sFacility*>();
 
 	u_int lim = m_facilities.size();
  	for(u_int i = 0; i < lim; i++) {
@@ -172,7 +172,7 @@ void cBuilding::clear_reversion_list()
 	if(!m_reversion) {
 		return;
 	}
-	vFacilities &list = (*m_reversion);
+	vector<sFacility*> &list = (*m_reversion);
 	u_int lim = list.size();
  	for(u_int i = 0; i < lim; i++) {
 		delete list[i];

@@ -51,7 +51,7 @@ class cInterfaceWindow : public cInterfaceObject
 {
 public:
 	cInterfaceWindow() {m_Background=m_Border=0;m_BackgroundSurface=0;}
-	~cInterfaceWindow();
+	virtual ~cInterfaceWindow();
 
 	virtual void Free();
 	void CreateWindow(int x, int y, int width, int height, int BorderSize);	// and color options latter
@@ -183,7 +183,10 @@ public:
 		Mandatory	= 0,
 		Optional 	= 1
 	};
+
 	cInterfaceWindowXML();
+	virtual ~cInterfaceWindowXML();
+
 	void load();
 /* 
  *	this has static linkage so we can pass it

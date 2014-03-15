@@ -19,6 +19,7 @@
 #include "cMessageBox.h"
 #include "CGraphics.h"
 #include "sConfig.h"
+#include "Globals.h"
 
 extern CGraphics g_Graphics;
 
@@ -28,9 +29,6 @@ extern unsigned char g_MessageBoxBackground1R, g_MessageBoxBackground1G, g_Messa
 extern unsigned char g_MessageBoxBackground2R, g_MessageBoxBackground2G, g_MessageBoxBackground2B;
 extern unsigned char g_MessageBoxBackground3R, g_MessageBoxBackground3G, g_MessageBoxBackground3B;
 extern unsigned char g_MessageBoxTextR, g_MessageBoxTextG, g_MessageBoxTextB;
-
-extern int g_ScreenWidth, g_ScreenHeight;
-extern bool g_Fullscreen;
 
 cMessageBox::~cMessageBox()
 {
@@ -58,10 +56,10 @@ void cMessageBox::CreateWindow(int x, int y, int width, int height, int BorderSi
 	float xScale = 1.0f, yScale = 1.0f;
 	if(scale)
 	{
-		if(g_ScreenWidth != 800)
-			xScale = (float)((float)g_ScreenWidth/(float)800);
-		if(g_ScreenHeight != 600)
-			yScale = (float)((float)g_ScreenHeight/(float)600);
+		if(_G.g_ScreenWidth != 800)
+			xScale = (float)((float)_G.g_ScreenWidth/(float)800);
+		if(_G.g_ScreenHeight != 600)
+			yScale = (float)((float)_G.g_ScreenHeight/(float)600);
 	}
 
 	x = (int)((float)x*xScale);
