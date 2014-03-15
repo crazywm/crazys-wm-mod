@@ -1,18 +1,18 @@
 /*
  * Copyright 2009, 2010, The Pink Petal Development Team.
- * The Pink Petal Devloment Team are defined as the game's coders 
+ * The Pink Petal Devloment Team are defined as the game's coders
  * who meet on http://pinkpetal.co.cc
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -54,18 +54,19 @@ typedef struct sMovie
 {
 	long m_Quality;
 	sMovie* m_Next;
-	sMovie()		{ m_Next=0; }
-	~sMovie()		{ if(m_Next) delete m_Next; m_Next=0; }
+	sMovie()		{ m_Next = 0; }
+	~sMovie()		{ if (m_Next) delete m_Next; m_Next = 0; }
 }sMovie;
 
 // defines a single brothel
-typedef struct sBrothel
+struct sBrothel
 {
 	sBrothel();							// constructor
 	~sBrothel();						// destructor
 
-	int m_id;
 	string m_Name;
+
+	int             m_id;
 	unsigned short	m_Happiness;		// av. % happy customers last week
 	unsigned short	m_TotalCustomers;	// the total number of customers for the last week
 	unsigned short	m_MiscCustomers;	// customers used for temp purposes but must still be taken into account
@@ -77,17 +78,15 @@ typedef struct sBrothel
 	unsigned short	m_AdvertisingBudget;// Budget player has set for weekly advertising
 	double			m_AdvertisingLevel; // multiplier for how far budget goes, based on girls working in advertising
 
-	
 	int				m_MovieRunTime;		// see above, counter for the 7 week effect
 	int				m_NumMovies;
+
 	sMovie*			m_Movies;			// the movies currently selling
 	sMovie*			m_LastMovies;
 	sFilm *			m_CurrFilm;
 
 	cBuilding		building;
-
-	// for keeping track of how well the place is doing (for the last week)
-	cGold			m_Finance;
+	cGold			m_Finance;          // for keeping track of how well the place is doing (for the last week)
 
 	// For keeping track of any shows currently being produced here
 	int				m_ShowTime;			// when reaches 0 then the show is ready
@@ -95,7 +94,6 @@ typedef struct sBrothel
 	unsigned char	m_HasGambStaff;		// gambling hall or
 	unsigned char	m_HasBarStaff;		// Bar staff. Not as good as girls but consistent
 
-	// non private variables (just cause it makes life so much easier)
 	bool	m_RestrictAnal;
 	bool	m_RestrictBDSM;
 	bool	m_RestrictOral;
@@ -117,21 +115,18 @@ typedef struct sBrothel
 
 	int		m_SecurityLevel;
 
-	// mod docclox - convenience funcs
+	TiXmlElement* SaveBrothelXML(TiXmlElement* pRoot);
+	bool LoadBrothelXML(TiXmlHandle hBrothel);
 	int free_rooms() { return m_NumRooms - m_NumGirls; }
 	bool matron_on_shift(int shift);
 	bool has_matron();
 	int matron_count();
-	// end mod
-	TiXmlElement* SaveBrothelXML(TiXmlElement* pRoot);
-	bool LoadBrothelXML(TiXmlHandle hBrothel);
 	void AddGirl(sGirl* pGirl);
-
-}sBrothel;
+};
 
 
 /*
- * manages all the player brothels
+ * Manages all brothels
  *
  * Anyone else think this class tries to do too much?
  * Yes it does, I am working on reducing it-Delta
@@ -158,21 +153,21 @@ public:
 	void DestroyBrothel(int ID);
 	void UpdateBrothels();
 	void UpdateGirls(sBrothel* brothel, int DayNight);
+
 	// MYR: Start of my automation functions
-	void UsePlayersItems(sGirl* cur);  
-    bool AutomaticItemUse(sGirl * girl, int InvNum, string message);
+	void UsePlayersItems(sGirl* cur);
+	bool AutomaticItemUse(sGirl * girl, int InvNum, string message);
 	bool AutomaticSlotlessItemUse(sGirl * girl, int InvNum, string message);
 	bool AutomaticFoodItemUse(sGirl * girl, int InvNum, string message);
 	bool RemoveItemFromInventoryByNumber(int Pos); // support fn
 	// End of automation functions
+
 	void UpdateAllGirlsStat(sBrothel* brothel, int stat, int amount);
 	void SetGirlStat(sGirl* girl, int stat, int amount);
 
 	sGirl* GetPrison()				{ return m_Prison; }
-		//mod needed for convenience
-	int  &stat_lookup(string stat_name,int brothel_id=-1);
-	// jobs moving to their own class
-	
+	int  &stat_lookup(string stat_name, int brothel_id = -1);
+
 	int GetGirlsCurrentBrothel(sGirl* girl); // Used by new security guard code
 	vector<sGirl*> GirlsOnJob(int BrothelID, int JobID, bool day); // Also used by new security code
 
@@ -181,10 +176,10 @@ public:
 	int  GetNumPotions()					{ return m_AntiPregPotions; }
 	void KeepPotionsStocked(bool stocked)	{ m_KeepPotionsStocked = stocked; }
 	bool GetPotionRestock()					{ return m_KeepPotionsStocked; }
-	
+
 	int GetTotalNumGirls(bool monster = false);
 
-	void UpgradeSupplySheds()				{ m_SupplyShedLevel++ ;}
+	void UpgradeSupplySheds()				{ m_SupplyShedLevel++; }
 	int  GetSupplyShedLevel()				{ return m_SupplyShedLevel; }
 
 	void	AddGirl(int brothelID, sGirl* girl);
@@ -232,7 +227,7 @@ public:
 	cJobManager m_JobManager;						// manages all the jobs
 
 	long GetBribeRate()					{ return m_BribeRate; }
-	void SetBribeRate(long rate)		{ m_BribeRate=rate; }
+	void SetBribeRate(long rate)		{ m_BribeRate = rate; }
 	void UpdateBribeInfluence();
 	int  GetInfluence()					{ return m_Influence; }
 
@@ -241,11 +236,11 @@ public:
 
 	void WithdrawFromBank(long amount);
 	void DepositInBank(long amount);
-	long GetBankMoney() {return m_Bank;}
-	void add_to_beasts(int i)			{ m_Beasts+=i; if(m_Beasts<0)m_Beasts=0; }
-	int  GetNumBeasts(){return m_Beasts;}
-	void add_to_goods(int i)			{ m_HandmadeGoods+=i; if(m_HandmadeGoods<0)m_HandmadeGoods=0; }
-	int  GetNumGoods(){return m_HandmadeGoods;}
+	long GetBankMoney() { return m_Bank; }
+	void add_to_beasts(int i)			{ m_Beasts += i; if (m_Beasts < 0)m_Beasts = 0; }
+	int  GetNumBeasts(){ return m_Beasts; }
+	void add_to_goods(int i)			{ m_HandmadeGoods += i; if (m_HandmadeGoods < 0)m_HandmadeGoods = 0; }
+	int  GetNumGoods(){ return m_HandmadeGoods; }
 	bool CheckScripts();
 
 	void UpdateObjective();				// updates an objective and checks for compleation
@@ -290,7 +285,7 @@ public:
 	// WD:	Update code of girls stats
 	void updateGirlTurnBrothelStats(sGirl* girl);
 
-//private:
+	//private:
 	int TotalFame(sBrothel *);
 	cPlayer m_Player;				// the stats for the player owning these brothels
 	cDungeon m_Dungeon;				// the dungeon
@@ -313,7 +308,7 @@ public:
 	sGirl*  m_Prison;				// a list of girls kept in prision
 	sGirl*  m_LastPrison;
 
-	int		m_NumRunaways;
+	int		m_NumRunaways;          // a list of runaways
 	sGirl*	m_Runaways;
 	sGirl*	m_LastRunaway;
 

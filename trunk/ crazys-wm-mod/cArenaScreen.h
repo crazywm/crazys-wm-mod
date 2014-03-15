@@ -69,7 +69,8 @@ public:
 		GetName = false;
 		m_first_walk = true;
 	}
-	~cArenaScreen() {}
+
+	~cArenaScreen() { g_LogFile.write("Arena Shutdown"); }
 
 	void init();
 	void process();

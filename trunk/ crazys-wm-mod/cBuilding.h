@@ -30,10 +30,12 @@ class cBuilding
 {
 	int	m_capacity;
 	int	m_free;
-	typedef	vector<sFacility*> vFacilities;
-	vFacilities	m_facilities;
-	vFacilities	*m_reversion;
+	
+	vector<sFacility*>	m_facilities;
+	vector<sFacility*>	*m_reversion;
+
 public:
+
 	int capacity()		{ return m_capacity; }
 	int free_space()	{ return m_free; }
 	int used_space()	{ return m_capacity - m_free; }

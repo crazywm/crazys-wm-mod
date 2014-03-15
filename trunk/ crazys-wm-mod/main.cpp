@@ -45,11 +45,12 @@
 #include <sstream>
 
 #include "IconSurface.h"
+#include "Globals.h"
+
+Globals _G;
 
 extern cScreenMainMenu g_MainMenu;
 extern cScreenBrothelManagement g_BrothelManagement;
-extern int g_ScreenWidth, g_ScreenHeight;
-extern bool g_Fullscreen;
 sInterfaceIDs g_interfaceid;
 
 // Function Defs
@@ -1100,8 +1101,8 @@ int main(int ac, char* av[])
 		SDL_Rect clip;
 		clip.x = 0;
 		clip.y = 0;
-		clip.w = g_ScreenWidth;
-		clip.h = g_ScreenHeight;
+		clip.w = _G.g_ScreenWidth;
+		clip.h = _G.g_ScreenHeight;
 		g_BackgroundImage->DrawSurface(clip.x, clip.y, 0, &clip, true);
 
 		// Draw the interface

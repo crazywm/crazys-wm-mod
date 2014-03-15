@@ -20,11 +20,11 @@
 #include "fstream"
 #include "CLog.h"
 #include "DirPath.h"
-using namespace std;
-extern CLog g_LogFile;
+#include "Globals.h"
 
-int g_ScreenWidth = 800, g_ScreenHeight = 600;
-bool g_Fullscreen = false;
+using namespace std;
+
+extern CLog g_LogFile;
 
 CGraphics::CGraphics()
 {
@@ -84,24 +84,25 @@ bool CGraphics::InitGraphics(string caption, int Width, int Height, int BPP)
 		if(incol)
 		{
 			incol.ignore(1000, '\n');	// ignore first line
-			incol>>g_ScreenWidth>>g_ScreenHeight;incol.ignore(1000, '\n');	// width/height
+			incol>>_G.g_ScreenWidth>>_G.g_ScreenHeight;
+			incol.ignore(1000, '\n');	// width/height
 			incol.getline(buffer, 1000, '\n');
 			if(strcmp(buffer, "true") == 0)
-				g_Fullscreen = true;
+				_G.g_Fullscreen = true;
 			else
-				g_Fullscreen = false;
+				_G.g_Fullscreen = false;
 		}
 		incol.close();
 		
-		m_ScreenWidth = g_ScreenWidth;
-		m_ScreenHeight = g_ScreenHeight;
+		m_ScreenWidth = _G.g_ScreenWidth;
+		m_ScreenHeight = _G.g_ScreenHeight;
 	}
 	else
 	{
 		g_LogFile.write("Skipping Screen Mode");
-		g_ScreenWidth = m_ScreenWidth = Width;
-		g_ScreenHeight = m_ScreenHeight = Height;
-		g_Fullscreen = false;
+		_G.g_ScreenWidth = m_ScreenWidth = Width;
+		_G.g_ScreenHeight = m_ScreenHeight = Height;
+		_G.g_Fullscreen = false;
 	}
 
 	// init SDL
@@ -129,7 +130,7 @@ bool CGraphics::InitGraphics(string caption, int Width, int Height, int BPP)
 
 	// Setup the screen
 	g_LogFile.write("Determining Fullscreen or Windowed Mode");
-	if(g_Fullscreen == false)
+	if (_G.g_Fullscreen == false)
 		m_Screen = SDL_SetVideoMode(m_ScreenWidth, m_ScreenHeight, m_ScreenBPP, SDL_SWSURFACE);
 	else
 		m_Screen = SDL_SetVideoMode(m_ScreenWidth, m_ScreenHeight, m_ScreenBPP, SDL_SWSURFACE|SDL_FULLSCREEN);

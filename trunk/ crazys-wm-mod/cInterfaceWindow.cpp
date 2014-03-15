@@ -16,15 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "cInterfaceWindow.h"
+
 #include <time.h>
+#include <string>
+#include <cctype>
+#include "cInterfaceWindow.h"
 #include "DirPath.h"
 #include "CLog.h"
 #include "tinyxml.h"
 #include "XmlUtil.h"
-#include <string>
-#include <cctype>     
 #include "libintl.h" 
+#include "Globals.h"
 
 using namespace std;
 
@@ -38,8 +40,6 @@ extern cInterfaceEventManager g_InterfaceEvents;
 extern unsigned char g_WindowBorderR, g_WindowBorderG, g_WindowBorderB;
 extern unsigned char g_WindowBackgroundR, g_WindowBackgroundG, g_WindowBackgroundB;
 
-extern int g_ScreenWidth, g_ScreenHeight;
-extern bool g_Fullscreen;
 extern bool g_InitWin;
 
 cInterfaceWindow::~cInterfaceWindow()
@@ -406,10 +406,10 @@ void cInterfaceWindow::CreateWindow(int x, int y, int width, int height, int Bor
 	m_xRatio = 1.0f;
 	m_yRatio = 1.0f;
 
-	if(g_ScreenWidth != 800)
-		m_xRatio = ((float)g_ScreenWidth/(float)800);
-	if(g_ScreenHeight != 600)
-		m_yRatio = ((float)g_ScreenHeight/(float)600);
+	if(_G.g_ScreenWidth != 800)
+		m_xRatio = ((float)_G.g_ScreenWidth / (float)800);
+	if(_G.g_ScreenHeight != 600)
+		m_yRatio = ((float)_G.g_ScreenHeight / (float)600);
 
 	width = (int)((float)width*m_xRatio);
 	height = (int)((float)height*m_yRatio);
@@ -471,7 +471,6 @@ bool cInterfaceWindow::IsCheckboxOn(int ID)
 	return m_CheckBoxes[ID]->m_StateOn;
 }
 
-
 void cInterfaceWindow::AddSlider(int & ID, int x, int y, int width, int min, int max, int increment, int value, bool live_update)
 {
 	width = (int)((float)width*m_xRatio);
@@ -522,7 +521,6 @@ int cInterfaceWindow::SliderValue(int ID, int value)
 	if(ID == -1) return 0;
 	return m_Sliders[ID]->Value(value);
 }
-
 
 void cInterfaceWindow::AddCheckbox(int & ID, int x, int y, int width, int height, string text, int size)
 {
@@ -809,6 +807,11 @@ void cInterfaceWindow::SetListBoxPosition(int ID, int pos)
 
 cInterfaceWindowXML::cInterfaceWindowXML()
 {
+}
+
+cInterfaceWindowXML::~cInterfaceWindowXML()
+{
+	g_LogFile.write(m_filename);
 }
 
 void cInterfaceWindowXML::load()
@@ -1288,7 +1291,6 @@ void cInterfaceWindowXML::widget_widget(TiXmlElement *el, cXmlWidget &wid)
 	wid.add(xw);
 }
 
-
 void cInterfaceWindowXML::read_image_definition(TiXmlElement *el)
 {
 	XmlUtil xu(m_filename);
@@ -1542,7 +1544,6 @@ void cInterfaceWindowXML::register_id(int id, string name)
 	name_to_id[name] = id;
 	id_to_name[id]	 = name;
 }
-
 
 int cInterfaceWindowXML::get_id(string s, bool essential)
 {
