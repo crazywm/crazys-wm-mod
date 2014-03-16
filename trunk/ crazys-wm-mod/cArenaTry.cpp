@@ -44,8 +44,6 @@ extern string g_ReturnText;
 extern cGangManager g_Gangs;
 extern bool g_AllTogle;
 extern int g_CurrentScreen;
-extern void GetString();
-extern cInterfaceWindow g_GetString;
 extern int g_Building;
 
 bool cArenaTry::ids_set = false;

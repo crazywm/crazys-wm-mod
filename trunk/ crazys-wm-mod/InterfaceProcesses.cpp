@@ -328,34 +328,6 @@ void GetString()
 	gssm.process();
 }
 
-void GetInt()
-{
-	if(g_InitWin)
-	{
-		g_GetInt.Focused();
-		g_InitWin = false;
-		g_IntReturn = 0;
-		g_EnterKey = false;
-	}
-
-	if(g_InterfaceEvents.GetNumEvents() != 0 || g_EnterKey)
-	{
-		if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_OK) || g_EnterKey)
-		{
-			g_EnterKey = false;
-			int number;
-			g_ReturnText = g_GetInt.GetEditBoxText(g_interfaceid.EDITBOX_NAME);
-			number = atoi(g_ReturnText.c_str());
-			g_IntReturn = number;
-			g_InitWin = true;
-			g_WinManager.Pop();
-			return;
-		}
-		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_CANCEL))
-			g_WinManager.Pop();
-	}
-}
-
 static string clobber_extension(string s)
 {
 	g_LogFile.os() << "clobber_extension: s = " << s << endl;

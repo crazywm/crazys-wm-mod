@@ -21,6 +21,7 @@
 #include "cWindowManager.h"
 #include "cGold.h"
 #include "cGetStringScreenManager.h"
+#include "cScreenGetInput.h"
 #include "InterfaceGlobals.h"
 
 extern bool g_InitWin;
@@ -31,10 +32,7 @@ extern cWindowManager g_WinManager;
 extern cInterfaceEventManager g_InterfaceEvents;
 extern long g_IntReturn;
 
-extern void GetString();
-extern cInterfaceWindow g_GetString;
-extern void GetInt();
-extern cInterfaceWindow g_GetInt;
+extern cScreenGetInput g_GetInput;
 
 extern	int		g_CurrentScreen;
 
@@ -157,14 +155,16 @@ void cScreenBank::check_events()
 			return;
 		}
 		GetDeposit = true;
-		g_WinManager.Push(GetInt,&g_GetInt);
+		g_GetInput.ModeGetInt();
+		g_WinManager.push("GetInput");
 		g_InitWin = true;
 		return;
 	}
 	if(g_InterfaceEvents.CheckButton(withdraw_id))
 	{
 		GetWithdraw = true;
-		g_WinManager.Push(GetInt,&g_GetInt);
+		g_GetInput.ModeGetInt();
+		g_WinManager.push("GetInput");
 		g_InitWin = true;
 		return;
 	}

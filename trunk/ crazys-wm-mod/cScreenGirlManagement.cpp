@@ -101,7 +101,6 @@ void cScreenGirlManagement::set_ids()
 
 void cScreenGirlManagement::init()
 {
-
 	if(SellGirl)
 	{
 		if(g_ChoiceManager.GetChoice(0) == 0)
@@ -302,7 +301,6 @@ void cScreenGirlManagement::process()
 	// check to see if there's a button event needing handling
 	check_events();
 }
-
 
 bool cScreenGirlManagement::check_keys()
 {
@@ -730,7 +728,6 @@ void cScreenGirlManagement::check_events()
 	}
 }
 
-
 bool cScreenGirlManagement::GirlDead(sGirl *dgirl)
 {
 	if(g_Girls.GetStat(dgirl, STAT_HEALTH) <= 0)
@@ -796,7 +793,6 @@ void cScreenGirlManagement::RefreshJobList()
 		}
 //	}
 }
-
 
 void cScreenGirlManagement::GetSelectedGirls(vector<int> *girl_array)
 {  // take passed vector and fill it with sorted list of selected girl IDs

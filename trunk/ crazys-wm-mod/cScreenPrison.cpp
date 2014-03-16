@@ -52,9 +52,6 @@ extern	bool	g_X_Key;
 extern	bool	g_C_Key;
 extern	int		g_CurrentScreen;
 
-extern void GetString();
-extern cInterfaceWindow g_GetString;
-
 void cScreenPrison::init()
 {
 	stringstream ss;

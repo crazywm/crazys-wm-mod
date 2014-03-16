@@ -21,6 +21,7 @@
 #include "cWindowManager.h"
 #include "cGold.h"
 #include "cGetStringScreenManager.h"
+#include "cScreenGetInput.h"
 #include "InterfaceGlobals.h"
 #include "libintl.h"
 
@@ -36,10 +37,7 @@ extern cWindowManager g_WinManager;
 extern cInterfaceEventManager g_InterfaceEvents;
 extern long g_IntReturn;
 
-extern void GetString();
-extern cInterfaceWindow g_GetString;
-extern void GetInt();
-extern cInterfaceWindow g_GetInt;
+extern cScreenGetInput g_GetInput;
 extern	int		g_CurrentScreen;
 
 bool cScreenMayor::ids_set = false;
@@ -159,7 +157,6 @@ void cScreenMayor::process()
 	check_events();
 }
 
-
 void cScreenMayor::check_events()
 {
 /* 
@@ -180,7 +177,8 @@ void cScreenMayor::check_events()
 	if(g_InterfaceEvents.CheckButton(bribe_id))
 	{
 		SetBribe = true;
-		g_WinManager.Push(GetInt,&g_GetInt);
+		g_GetInput.ModeGetInt();
+		g_WinManager.push("GetInput");
 		g_InitWin = true;
 		return;
 	}

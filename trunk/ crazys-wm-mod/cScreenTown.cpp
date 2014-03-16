@@ -56,9 +56,6 @@ extern cGangManager g_Gangs;
 extern bool g_AllTogle;
 extern	int		g_CurrentScreen;
 
-extern void GetString();
-extern cInterfaceWindow g_GetString;
-
 bool cScreenTown::ids_set = false;
 
 void cScreenTown::set_ids()

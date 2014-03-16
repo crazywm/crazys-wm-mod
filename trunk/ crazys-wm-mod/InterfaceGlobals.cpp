@@ -16,8 +16,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "InterfaceGlobals.h"
+
 #include <iostream>
+#include "InterfaceGlobals.h"
 #include "DirPath.h"
 #include "cBrothel.h"
 #include "cClinic.h"
@@ -57,6 +58,7 @@
 #include "cScreenDungeon.h"
 #include "cScreenMainMenu.h"
 #include "cScreenBrothelManagement.h"
+#include "cScreenGetInput.h"
 #include "sConfig.h"
 
 using namespace std;
@@ -66,7 +68,6 @@ extern cWindowManager g_WinManager;
 
 cInterfaceEventManager g_InterfaceEvents;
 cScreenMainMenu g_MainMenu;
-cInterfaceWindow g_GetString;
 cScreenBrothelManagement g_BrothelManagement;
 cScreenGirlManagement g_GirlManagement;
 cScreenClinicManagement g_ClinicManagement;
@@ -77,8 +78,6 @@ cScreenHouseManagement g_HouseManagement;
 cScreenMovieMaker g_MovieMaker;
 cScreenGangs g_GangManagement;
 cScreenGirlDetails g_GirlDetails;
-cInterfaceWindow g_ChangeJobs;
-cInterfaceWindow g_Turnsummary;
 cScreenDungeon g_Dungeon;
 cScreenSlaveMarket g_SlaveMarket;
 cScreenTown g_TownScreen;
@@ -91,18 +90,23 @@ cClinicTry g_ClinicTry;
 cCastingTry g_CastingTry;
 cArenaScreen g_ArenaScreen;
 cAuctionScreen g_AuctionScreen;
-cInterfaceWindow g_Gallery;
-cInterfaceWindow g_Gallery2;
 cScreenBuildingSetup g_BuildingSetupScreen;
-cInterfaceWindow g_GetInt;
-cInterfaceWindow g_LoadGame;
 cScreenMayor g_MayorsOfficeScreen;
 cScreenBank g_BankScreen;
 cScreenHouse g_PlayersHouse;
-cInterfaceWindow g_TransferGirls;
 cScreenItemManagement g_ItemManagement;
 cScreenPrison g_PrisonScreen;
 cBuildingManagement g_BuildingManagementScreen;
+
+cScreenGetInput g_GetInput;
+
+cInterfaceWindow g_GetString;     // GetString.txt
+cInterfaceWindow g_LoadGame;      // LoadMenu.txt
+cInterfaceWindow g_TransferGirls; // Hard coded
+cInterfaceWindow g_Gallery;       // Hard coded
+cInterfaceWindow g_Gallery2;      // Hard coded
+cInterfaceWindow g_ChangeJobs;    // Hard coded
+cInterfaceWindow g_Turnsummary;   // Hard coded
 
 cMessageBox g_MessageBox;
 cChoiceManager g_ChoiceManager;
@@ -182,7 +186,7 @@ void FreeInterface()
 	g_Gallery.Free();
 	g_Gallery2.Free();
 	g_BuildingSetupScreen.Free();
-	g_GetInt.Free();
+	g_GetInput.Free();
 	g_MayorsOfficeScreen.Free();
 	g_BankScreen.Free();
 	g_ChoiceManager.Free();
@@ -226,7 +230,7 @@ void ResetInterface()
 	g_Gallery.Reset();
 	g_Gallery2.Reset();
 	g_BuildingSetupScreen.Reset();
-	g_GetInt.Reset();
+	g_GetInput.Reset();
 	g_MayorsOfficeScreen.Reset();
 	g_BankScreen.Reset();
 	g_ChoiceManager.Free();
@@ -427,12 +431,6 @@ void LoadInterface()
 	g_CheckBoxBackgroundB = b;
 	incol.close();
 
-
-	// Main Menu
-	g_LogFile.write("Loading MainMenu");
-	g_MainMenu.load();
-	g_WinManager.add_window("Main Menu", &g_MainMenu);
-
 	// Load game screen
 	g_LogFile.write("Loading Load Game Screen");
 	g_LoadGame.AddTextItem(g_interfaceid.STATIC_STATIC, 0, 0, 600, 32, "Please read the readme.html");
@@ -470,26 +468,100 @@ void LoadInterface()
 	g_GetString.AddEditBox(g_interfaceid.EDITBOX_NAME,a,b,c,d,e);
 	incol.close();
 
-	// Get Int
-	// WD: Typecast to resolve ambiguous call in VS 2010
-	g_LogFile.write("Loading Get Int Screen");
-	dp = DirPath() << "Resources" << "Interface"<< cfg.resolution.resolution() << "GetInt.txt";
-	incol.open(dp.c_str());
-	//incol.open(DirPath() << "Resources" << "Interface" << "GetInt.txt");
-	incol.seekg(0);
-	incol>>a>>b>>c>>d>>e;incol.ignore(1000, '\n');
-	g_GetInt.CreateWindow(a,b,c,d,e);
-	incol>>a>>b>>c>>d;incol.ignore(1000, '\n');
-	g_GetInt.AddButton("Ok", g_interfaceid.BUTTON_OK, a, b, c, d, true);
-	incol>>a>>b>>c>>d;incol.ignore(1000, '\n');
-	g_GetInt.AddButton("Cancel", g_interfaceid.BUTTON_CANCEL, a, b, c, d, true);
-	incol>>a>>b>>c>>d>>e;incol.ignore(1000, '\n');
-	g_GetInt.AddTextItem(g_interfaceid.TEXT_TEXT1, a, b, c, d, "Enter Number:", e);
-	incol>>a>>b>>c>>d>>e;incol.ignore(1000, '\n');
-	g_GetInt.AddEditBox(g_interfaceid.EDITBOX_NAME,a,b,c,d,e);
-	incol.close();
+	// Change Jobs Screen
+	g_LogFile.write("Loading Change Jobs Screen");
+	g_ChangeJobs.CreateWindow(256, 120, 304, 376, 1);
+	g_ChangeJobs.AddButton("Ok", g_interfaceid.BUTTON_CJOK, 8, 336, 128, 32, true);
+	g_ChangeJobs.AddButton("Cancel", g_interfaceid.BUTTON_CJCANCEL, 152, 336, 128, 32, true);
+	g_ChangeJobs.AddTextItem(g_interfaceid.TEXT_CJDESC, 8, 240, 272, 88, "", 10);
+	g_ChangeJobs.AddListBox(g_interfaceid.LIST_CJDAYTIME, 8, 48, 144, 192, 1, true);
+	g_ChangeJobs.AddListBox(g_interfaceid.LIST_CJNIGHTTIME, 152, 48, 144, 192, 1, true);
+	g_ChangeJobs.AddTextItem(g_interfaceid.STATIC_STATIC, 8, 8, 128, 32, "Day Shift");
+	g_ChangeJobs.AddTextItem(g_interfaceid.STATIC_STATIC, 152, 8, 128, 32, "Night Shift");
 
-	// Brothel management screen
+	// Turn summary screen
+	g_LogFile.write("Loading Turn Summary Screen");
+	g_Turnsummary.AddTextItem(g_interfaceid.TEXT_CURRENTBROTHEL, 0, 0, 900, 32, "", 10);
+	g_Turnsummary.CreateWindow(8, 8, 786, 584, 1);
+	g_Turnsummary.AddTextItem(g_interfaceid.STATIC_STATIC, 8, 8, 120, 32, "Category", 15);
+	g_Turnsummary.AddTextItem(g_interfaceid.STATIC_STATIC, 8, 106, 120, 32, "Item", 15);
+	g_Turnsummary.AddTextItem(g_interfaceid.STATIC_STATIC, 8, 266, 120, 32, "Event", 15);
+	g_Turnsummary.AddTextItem(g_interfaceid.TEXT_TSEVENTDESC, 575, 8, 202, 406, "", 12);
+	g_Turnsummary.AddButton("GoTo", g_interfaceid.BUTTON_TSGOTO, 598, 462, 160, 32, true);
+	g_Turnsummary.AddButton("NextWeek", g_interfaceid.BUTTON_TSNEWWEEK, 598, 504, 160, 32, true);
+	g_Turnsummary.AddButton("Back", g_interfaceid.BUTTON_TSCLOSE, 598, 546, 160, 32, true);
+	g_Turnsummary.AddButton("Prev", g_interfaceid.BUTTON_TSPREVBROTHEL, 598, 422, 72, 32, true);
+	g_Turnsummary.AddButton("Next", g_interfaceid.BUTTON_TSNEXTBROTHEL, 686, 422, 72, 32, true);
+	g_Turnsummary.AddListBox(g_interfaceid.LIST_TSCATEGORY, 8, 40, 120, 66, 1, true);
+	g_Turnsummary.AddListBox(g_interfaceid.LIST_TSITEM, 8, 136, 120, 128, 1, true);
+	g_Turnsummary.AddListBox(g_interfaceid.LIST_TSEVENTS, 8, 296, 120, 282, 1, true);
+	g_Turnsummary.AddImage(g_interfaceid.IMAGE_TSIMAGE, "", 136, 8, 434, 570);
+
+	// Transfer Girls Screen
+	g_LogFile.write("Loading Transfer Girls Screen");
+	g_TransferGirls.CreateWindow(16, 16, 768, 576, 1);
+	g_TransferGirls.AddButton("Back", g_interfaceid.BUTTON_TRANSGBACK, 308, 536, 160, 32, true);
+	g_TransferGirls.AddButton("ShiftLeft", g_interfaceid.BUTTON_TRANSGSHIFTL, 366, 214, 48, 48, true);
+	g_TransferGirls.AddButton("ShiftRight", g_interfaceid.BUTTON_TRANSGSHIFTR, 366, 304, 48, 48, true);
+	g_TransferGirls.AddListBox(g_interfaceid.LIST_TRANSGLEFTGIRLS, 168, 48, 190, 482, 1, true, true);
+	g_TransferGirls.AddListBox(g_interfaceid.LIST_TRANSGRIGHTGIRLS, 418, 48, 190, 482, 1, true, true);
+	g_TransferGirls.AddListBox(g_interfaceid.LIST_TRANSGLEFTBROTHEL, 8, 48, 126, 234, 1, true, false);
+	g_TransferGirls.AddListBox(g_interfaceid.LIST_TRANSGRIGHTBROTHEL, 632, 48, 126, 234, 1, true, false);
+	g_TransferGirls.AddTextItem(g_interfaceid.STATIC_STATIC, 8, 8, 160, 32, "BROTHELS");
+	g_TransferGirls.AddTextItem(g_interfaceid.STATIC_STATIC, 632, 8, 160, 32, "BROTHELS");
+
+	// gallery screen
+	g_LogFile.write("Loading Gallery Screen");
+	g_Gallery.CreateWindow(16, 16, 768, 576, 1);
+	g_Gallery.AddButton("Anal", g_interfaceid.BUTTON_GALLERYANAL, 600, 8, 160, 32, true);
+	g_Gallery.AddButton("BDSM", g_interfaceid.BUTTON_GALLERYBDSM, 600, 48, 160, 32, true);
+	g_Gallery.AddButton("Sex", g_interfaceid.BUTTON_GALLERYSEX, 600, 88, 160, 32, true);
+	g_Gallery.AddButton("Beast", g_interfaceid.BUTTON_GALLERYBEAST, 600, 128, 160, 32, true);
+	g_Gallery.AddButton("Group", g_interfaceid.BUTTON_GALLERYGROUP, 600, 168, 160, 32, true);
+	g_Gallery.AddButton("Lesbian", g_interfaceid.BUTTON_GALLERYLESBIAN, 600, 208, 160, 32, true);
+	g_Gallery.AddButton("Pregnant", g_interfaceid.BUTTON_GALLERYPREGNANT, 600, 248, 160, 32, true);
+	g_Gallery.AddButton("Death", g_interfaceid.BUTTON_GALLERYDEATH, 600, 288, 160, 32, true);
+	g_Gallery.AddButton("Profile", g_interfaceid.BUTTON_GALLERYPROFILE, 600, 328, 160, 32, true);
+	g_Gallery.AddButton("Combat", g_interfaceid.BUTTON_GALLERYCOMBAT, 600, 368, 160, 32, true);
+	g_Gallery.AddButton("Oral", g_interfaceid.BUTTON_GALLERYORAL, 600, 408, 160, 32, true);
+	g_Gallery.AddButton("Back", g_interfaceid.BUTTON_GALLERYBACK, 600, 448, 160, 32, true);
+	g_Gallery.AddButton("Prev", g_interfaceid.BUTTON_GALLERYPREV, 600, 488, 72, 32, true);
+	g_Gallery.AddButton("Next", g_interfaceid.BUTTON_GALLERYNEXT, 688, 488, 72, 32, true);
+	g_Gallery.AddImage(g_interfaceid.IMAGE_GALLERYIMAGE, "", 8, 8, 584, 560);
+	g_Gallery.AddTextItem(g_interfaceid.TEXT_GALLERYTYPE, 600, 528, 160, 32, "", 16, true, false);
+	g_Gallery.AddButton("Next", g_interfaceid.BUTTON_NEXTGALLERY, 688, 528, 72, 32, true);
+
+	// gallery 2 screen
+	g_LogFile.write("Loading Gallery 2 Screen");
+	g_Gallery2.CreateWindow(16, 16, 768, 576, 1);
+	g_Gallery2.AddButton("Ecchi", g_interfaceid.BUTTON_GALLERYECCHI, 600, 8, 160, 32, true);
+	g_Gallery2.AddButton("Striptease", g_interfaceid.BUTTON_GALLERYSTRIP, 600, 48, 160, 32, true);
+	g_Gallery2.AddButton("Maid", g_interfaceid.BUTTON_GALLERYMAID, 600, 88, 160, 32, true);
+	g_Gallery2.AddButton("Singer", g_interfaceid.BUTTON_GALLERYSING, 600, 128, 160, 32, true);
+	g_Gallery2.AddButton("Waitress", g_interfaceid.BUTTON_GALLERYWAIT, 600, 168, 160, 32, true);
+	g_Gallery2.AddButton("Dealer", g_interfaceid.BUTTON_GALLERYCARD, 600, 208, 160, 32, true);
+	g_Gallery2.AddButton("Bunny", g_interfaceid.BUTTON_GALLERYBUNNY, 600, 248, 160, 32, true);
+	g_Gallery2.AddButton("Nude", g_interfaceid.BUTTON_GALLERYNUDE, 600, 288, 160, 32, true);
+	g_Gallery2.AddButton("Mast", g_interfaceid.BUTTON_GALLERYMAST, 600, 328, 160, 32, true);
+	g_Gallery2.AddButton("Titfuck", g_interfaceid.BUTTON_GALLERYTITTY, 600, 368, 160, 32, true);
+	g_Gallery2.AddButton("", g_interfaceid.BUTTON_WHAT, 600, 368, 160, 32, true);
+	g_Gallery2.AddButton("Back", g_interfaceid.BUTTON_GALLERYBACK, 600, 448, 160, 32, true);
+	g_Gallery2.AddButton("Prev", g_interfaceid.BUTTON_GALLERYPREV, 600, 488, 72, 32, true);
+	g_Gallery2.AddButton("Next", g_interfaceid.BUTTON_GALLERYNEXT, 688, 488, 72, 32, true);
+	g_Gallery2.AddImage(g_interfaceid.IMAGE_GALLERYIMAGE, "", 8, 8, 584, 560);
+	g_Gallery2.AddTextItem(g_interfaceid.TEXT_GALLERYTYPE, 600, 528, 160, 32, "", 16, true, false);
+
+	// Main Menu
+	g_LogFile.write("Loading MainMenu");
+	g_MainMenu.load();
+	g_WinManager.add_window("Main Menu", &g_MainMenu);
+
+	// Get Input Screen
+	g_LogFile.write("Loading Input Screen");
+	g_GetInput.load();
+	g_WinManager.add_window("GetInput", &g_GetInput);
+
+	// Brothel Management Screen
 	g_LogFile.write("Loading Brothel Management Screen");
 	g_BrothelManagement.load();
 	g_WinManager.add_window("Brothel Management", &g_BrothelManagement);
@@ -504,7 +576,6 @@ void LoadInterface()
 	g_ClinicManagement.load();
 	g_WinManager.add_window("Clinic", &g_ClinicManagement);
 
-	
 	// MOVIE STUDIO SCREEN
 	g_LogFile.write("Loading Studio Management Screen");
 	g_StudioManagement.load();
@@ -535,39 +606,10 @@ void LoadInterface()
 	g_GirlDetails.load();
 	g_WinManager.add_window("Girl Details", &g_GirlDetails);
 
-	// Change Jobs Screen
-	g_LogFile.write("Loading Change Jobs Screen");
-	g_ChangeJobs.CreateWindow(256,120,304,376,1);
-	g_ChangeJobs.AddButton("Ok", g_interfaceid.BUTTON_CJOK, 8, 336, 128, 32, true);
-	g_ChangeJobs.AddButton("Cancel", g_interfaceid.BUTTON_CJCANCEL, 152, 336, 128, 32, true);
-	g_ChangeJobs.AddTextItem(g_interfaceid.TEXT_CJDESC, 8, 240, 272, 88, "", 10);
-	g_ChangeJobs.AddListBox(g_interfaceid.LIST_CJDAYTIME, 8, 48, 144, 192, 1, true);
-	g_ChangeJobs.AddListBox(g_interfaceid.LIST_CJNIGHTTIME, 152, 48, 144, 192, 1, true);
-	g_ChangeJobs.AddTextItem(g_interfaceid.STATIC_STATIC, 8, 8, 128, 32, "Day Shift");
-	g_ChangeJobs.AddTextItem(g_interfaceid.STATIC_STATIC, 152, 8, 128, 32, "Night Shift");
-
 	// Gang Management
 	g_LogFile.write("Loading Gang Management Screen");
 	g_GangManagement.load();
 	g_WinManager.add_window("Gangs", &g_GangManagement);
-
-	// Turn summary screen
-	g_LogFile.write("Loading Turn Summary Screen");
-	g_Turnsummary.AddTextItem(g_interfaceid.TEXT_CURRENTBROTHEL, 0, 0, 900, 32, "", 10);
-	g_Turnsummary.CreateWindow(8,8,786,584,1);
-	g_Turnsummary.AddTextItem(g_interfaceid.STATIC_STATIC, 8, 8, 120, 32, "Category", 15);
-	g_Turnsummary.AddTextItem(g_interfaceid.STATIC_STATIC, 8, 106, 120, 32, "Item", 15);
-	g_Turnsummary.AddTextItem(g_interfaceid.STATIC_STATIC, 8, 266, 120, 32, "Event", 15);
-	g_Turnsummary.AddTextItem(g_interfaceid.TEXT_TSEVENTDESC, 575, 8, 202, 406, "", 12);
-	g_Turnsummary.AddButton("GoTo", g_interfaceid.BUTTON_TSGOTO, 598, 462, 160, 32, true);
-	g_Turnsummary.AddButton("NextWeek", g_interfaceid.BUTTON_TSNEWWEEK, 598, 504, 160, 32, true);
-	g_Turnsummary.AddButton("Back", g_interfaceid.BUTTON_TSCLOSE, 598, 546, 160, 32, true);
-	g_Turnsummary.AddButton("Prev", g_interfaceid.BUTTON_TSPREVBROTHEL, 598, 422, 72, 32, true);
-	g_Turnsummary.AddButton("Next", g_interfaceid.BUTTON_TSNEXTBROTHEL, 686, 422, 72, 32, true);
-	g_Turnsummary.AddListBox(g_interfaceid.LIST_TSCATEGORY, 8, 40, 120, 66, 1, true);
-	g_Turnsummary.AddListBox(g_interfaceid.LIST_TSITEM, 8, 136, 120, 128, 1, true);
-	g_Turnsummary.AddListBox(g_interfaceid.LIST_TSEVENTS, 8, 296, 120, 282, 1, true);
-	g_Turnsummary.AddImage(g_interfaceid.IMAGE_TSIMAGE, "", 136, 8, 434, 570);
 
 	// Dungeon Screen
 	g_LogFile.write("Loading Dungeon Screen");
@@ -624,47 +666,6 @@ void LoadInterface()
 	g_SlaveMarket.load();
 	g_WinManager.add_window("Slave Market", &g_SlaveMarket);
 
-	// gallery screen
-	g_LogFile.write("Loading Gallery Screen");
-	g_Gallery.CreateWindow(16,16,768,576,1);
-	g_Gallery.AddButton("Anal", g_interfaceid.BUTTON_GALLERYANAL, 600, 8, 160, 32, true);
-	g_Gallery.AddButton("BDSM", g_interfaceid.BUTTON_GALLERYBDSM, 600, 48, 160, 32, true);
-	g_Gallery.AddButton("Sex", g_interfaceid.BUTTON_GALLERYSEX, 600, 88, 160, 32, true);
-	g_Gallery.AddButton("Beast", g_interfaceid.BUTTON_GALLERYBEAST, 600, 128, 160, 32, true);
-	g_Gallery.AddButton("Group", g_interfaceid.BUTTON_GALLERYGROUP, 600, 168, 160, 32, true);
-	g_Gallery.AddButton("Lesbian", g_interfaceid.BUTTON_GALLERYLESBIAN, 600, 208, 160, 32, true);
-	g_Gallery.AddButton("Pregnant", g_interfaceid.BUTTON_GALLERYPREGNANT, 600, 248, 160, 32, true);
-	g_Gallery.AddButton("Death", g_interfaceid.BUTTON_GALLERYDEATH, 600, 288, 160, 32, true);
-	g_Gallery.AddButton("Profile", g_interfaceid.BUTTON_GALLERYPROFILE, 600, 328, 160, 32, true);
-	g_Gallery.AddButton("Combat", g_interfaceid.BUTTON_GALLERYCOMBAT, 600, 368, 160, 32, true);
-	g_Gallery.AddButton("Oral", g_interfaceid.BUTTON_GALLERYORAL, 600, 408, 160, 32, true);
-	g_Gallery.AddButton("Back", g_interfaceid.BUTTON_GALLERYBACK, 600, 448, 160, 32, true);
-	g_Gallery.AddButton("Prev", g_interfaceid.BUTTON_GALLERYPREV, 600, 488, 72, 32, true);
-	g_Gallery.AddButton("Next", g_interfaceid.BUTTON_GALLERYNEXT, 688, 488, 72, 32, true);
-	g_Gallery.AddImage(g_interfaceid.IMAGE_GALLERYIMAGE, "", 8, 8, 584, 560);
-	g_Gallery.AddTextItem(g_interfaceid.TEXT_GALLERYTYPE, 600, 528, 160, 32, "", 16,true,false);
-	g_Gallery.AddButton("Next", g_interfaceid.BUTTON_NEXTGALLERY, 688, 528, 72, 32, true);
-
-	// gallery 2 screen
-	g_LogFile.write("Loading Gallery 2 Screen");
-	g_Gallery2.CreateWindow(16,16,768,576,1);
-	g_Gallery2.AddButton("Ecchi", g_interfaceid.BUTTON_GALLERYECCHI, 600, 8, 160, 32, true);
-	g_Gallery2.AddButton("Striptease", g_interfaceid.BUTTON_GALLERYSTRIP, 600, 48, 160, 32, true);
-	g_Gallery2.AddButton("Maid", g_interfaceid.BUTTON_GALLERYMAID, 600, 88, 160, 32, true);
-	g_Gallery2.AddButton("Singer", g_interfaceid.BUTTON_GALLERYSING, 600, 128, 160, 32, true);
-	g_Gallery2.AddButton("Waitress", g_interfaceid.BUTTON_GALLERYWAIT, 600, 168, 160, 32, true);
-	g_Gallery2.AddButton("Dealer", g_interfaceid.BUTTON_GALLERYCARD, 600, 208, 160, 32, true);
-	g_Gallery2.AddButton("Bunny", g_interfaceid.BUTTON_GALLERYBUNNY, 600, 248, 160, 32, true);
-	g_Gallery2.AddButton("Nude", g_interfaceid.BUTTON_GALLERYNUDE, 600, 288, 160, 32, true);
-	g_Gallery2.AddButton("Mast", g_interfaceid.BUTTON_GALLERYMAST, 600, 328, 160, 32, true);
-	g_Gallery2.AddButton("Titfuck", g_interfaceid.BUTTON_GALLERYTITTY, 600, 368, 160, 32, true);
-	g_Gallery2.AddButton("", g_interfaceid.BUTTON_WHAT, 600, 368, 160, 32, true);
-	g_Gallery2.AddButton("Back", g_interfaceid.BUTTON_GALLERYBACK, 600, 448, 160, 32, true);
-	g_Gallery2.AddButton("Prev", g_interfaceid.BUTTON_GALLERYPREV, 600, 488, 72, 32, true);
-	g_Gallery2.AddButton("Next", g_interfaceid.BUTTON_GALLERYNEXT, 688, 488, 72, 32, true);
-	g_Gallery2.AddImage(g_interfaceid.IMAGE_GALLERYIMAGE, "", 8, 8, 584, 560);
-	g_Gallery2.AddTextItem(g_interfaceid.TEXT_GALLERYTYPE, 600, 528, 160, 32, "", 16,true,false);
-
 	// Building Setup Screen
 	g_LogFile.write("Loading Building Setup Screen");
 	g_BuildingSetupScreen.load();
@@ -689,19 +690,6 @@ void LoadInterface()
 	g_LogFile.write("Loading House Screen");
 	g_PlayersHouse.load();
 	g_WinManager.add_window("House", &g_PlayersHouse);
-
-	// Transfer Girls Screen
-	g_LogFile.write("Loading Transfer Girls Screen");
-	g_TransferGirls.CreateWindow(16,16,768,576,1);
-	g_TransferGirls.AddButton("Back", g_interfaceid.BUTTON_TRANSGBACK, 308, 536, 160, 32, true);
-	g_TransferGirls.AddButton("ShiftLeft", g_interfaceid.BUTTON_TRANSGSHIFTL, 366, 214, 48, 48, true);
-	g_TransferGirls.AddButton("ShiftRight", g_interfaceid.BUTTON_TRANSGSHIFTR, 366, 304, 48, 48, true);
-	g_TransferGirls.AddListBox(g_interfaceid.LIST_TRANSGLEFTGIRLS,168, 48, 190, 482, 1, true, true);
-	g_TransferGirls.AddListBox(g_interfaceid.LIST_TRANSGRIGHTGIRLS,418, 48, 190, 482, 1, true, true);
-	g_TransferGirls.AddListBox(g_interfaceid.LIST_TRANSGLEFTBROTHEL, 8, 48, 126, 234, 1, true, false);
-	g_TransferGirls.AddListBox(g_interfaceid.LIST_TRANSGRIGHTBROTHEL,632, 48, 126, 234, 1, true, false);
-	g_TransferGirls.AddTextItem(g_interfaceid.STATIC_STATIC, 8, 8, 160, 32, "BROTHELS");
-	g_TransferGirls.AddTextItem(g_interfaceid.STATIC_STATIC, 632, 8, 160, 32, "BROTHELS");
 
 	// Item Management Screen
 	g_LogFile.write("Loading Item Management Screen");

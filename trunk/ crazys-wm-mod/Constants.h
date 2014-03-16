@@ -481,8 +481,9 @@ const int SCREEN_CREATEMOVIE		= 20;
 const int SCREEN_BUILDINGMANAGEMENT	= 21;
 const int SCREEN_MAINMENU			= 22;
 const int SCREEN_SLAVEMARKET		= 23;
-const int SCREEN_PLAYERHOUSE		= 23;
+const int SCREEN_PLAYERHOUSE		= 23; // TODO: This value might be wrong.
 const int SCREEN_GALLERY2			= 24;
+const int SCREEN_GETINPUT           = 25;
 
 // The following constants are used with g_CurrBrothel to determine if we are currently working with a brothel or a new building. --PP
 const int BUILDING_BROTHEL			= 0;

@@ -394,6 +394,17 @@ void cInterfaceWindow::AddEditBox(int & ID, int x, int y, int width, int height,
 	m_EditBoxes.push_back(newEditBox);
 }
 
+void cInterfaceWindow::HideEditBox(int id, bool hide)
+{
+	if (id == -1) return;
+	if (hide) {
+		m_EditBoxes[id]->hide();
+	}
+	else {
+		m_EditBoxes[id]->unhide();
+	}
+}
+
 void cInterfaceWindow::DisableButton(int id, bool disable)
 {
 	// diable button
@@ -842,14 +853,8 @@ void cInterfaceWindowXML::load()
 /*
  *	loop over the elements attached to the root
  */
-	for(	el = root_el->FirstChildElement();
-		el ;
-		el = el->NextSiblingElement()
-	) {
+	for(el = root_el->FirstChildElement(); el; el = el->NextSiblingElement()) {
 		string tag = el->ValueStr();
-/*
- *		now, depending on the tag name...
- */
 
  		if(tag == "Define") {
 			define_widget(el);
@@ -862,6 +867,11 @@ void cInterfaceWindowXML::load()
 
 		if(tag == "Window") {
 			read_window_definition(el);
+			continue;
+		}
+
+		if (tag == "EditBox") {
+			read_editbox_definition(el);
 			continue;
 		}
 
@@ -1162,6 +1172,23 @@ void cInterfaceWindowXML::read_window_definition(TiXmlElement *el)
 	xu.get_att(el, "Height",	h);
 	xu.get_att(el, "Border",	border_size);
 	CreateWindow(x, y, w, h, border_size);
+}
+
+void cInterfaceWindowXML::read_editbox_definition(TiXmlElement *el)
+{
+	XmlUtil xu(m_filename);
+	string name;
+	int id, x, y, w, h, border_size;
+
+	xu.get_att(el, "Name", name);
+	xu.get_att(el, "XPos", x);
+	xu.get_att(el, "YPos", y);
+	xu.get_att(el, "Width", w);
+	xu.get_att(el, "Height", h);
+	xu.get_att(el, "Border", border_size);
+
+	AddEditBox(id, x, y, w, h, border_size);
+	register_id(id, name);
 }
 
 void cInterfaceWindowXML::read_listbox_definition(TiXmlElement *el)
