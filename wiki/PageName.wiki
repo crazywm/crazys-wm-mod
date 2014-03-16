@@ -7,8 +7,8 @@
   # Finish porting the game ui from legacy data to XML.
     * ~~Main Menu~~. *Done*.
     * Load Menu
-    * GetInt/GetStr
-      * I Want to merge both in just one screen for Int/String and Confirmation.
+    * ~~GetInt~~/GetStr
+      * ~~I Want to merge both in just one screen for Int/String and Confirmation.~~ Done for Int and Confirm.
     * ~~Brothel Screen~~. *Done*.
   # Merging all those globals in a single global object.
   # Code clean up.
