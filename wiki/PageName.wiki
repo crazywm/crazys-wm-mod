@@ -10,8 +10,10 @@
     * ~~GetInt~~/GetStr
       * ~~I Want to merge both in just one screen for Int/String and Confirmation.~~ Done for Int and Confirm.
     * ~~Brothel Screen~~. *Done*.
-  # Merging all those globals in a single global object.
   # Code clean up.
+    * Merging all those globals in a single global object. (Started)
+    * Cleaning unused (global/local) variables.
+    * Using more OO.
   # cDungeon implementation. 
     * Derive from cBrothels? 
     * Shouldn't have a different structure for girls there.
