@@ -91,7 +91,8 @@ public:
 	void SetImage(int id, cAnimatedSurface* image);
 	
 	void AddEditBox(int & ID, int x, int y, int width, int height, int BorderSize);
-	
+	void HideEditBox(int id, bool hide);
+
 	void EditTextItem(string text, int ID);
 	void HideText(int id, bool hide);
 	void HideText(int id) { HideText(id, true); }
@@ -207,6 +208,7 @@ virtual	void process()=0;
  */
 	void read_text_item(TiXmlElement *el);
 	void read_window_definition(TiXmlElement *el);
+	void read_editbox_definition(TiXmlElement *el);
 	void read_button_definition(TiXmlElement *el);
 	void read_image_definition(TiXmlElement *el);
 	void read_listbox_definition(TiXmlElement *el);

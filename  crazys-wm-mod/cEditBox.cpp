@@ -52,6 +52,8 @@ cEditBox::~cEditBox()
 
 void cEditBox::Draw()
 {
+	if (m_Hidden) { return; }
+
 	if(m_Background && m_Border)
 	{
 		// Draw the window

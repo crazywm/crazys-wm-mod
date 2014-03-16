@@ -57,7 +57,6 @@ sInterfaceIDs g_interfaceid;
 void NextWeek();
 void Shutdown();
 bool Init();
-void confirmExit();
 
 bool quitAccepted = false;
 

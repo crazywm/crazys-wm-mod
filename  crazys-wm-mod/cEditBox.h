@@ -28,6 +28,8 @@ using namespace std;
 
 class cEditBox : public cInterfaceObject
 {
+	bool m_Hidden = false;
+
 public:
 	cEditBox() {m_Next = 0;m_FocusedBackground=m_Border=m_Background=0;m_Text=0;m_HasFocus=false;}
 	~cEditBox();
@@ -41,6 +43,10 @@ public:
 	void UpdateText(char key, bool upper);
 
 	void Draw();
+
+	void hide()	{ m_Hidden = true; }
+	void unhide()	{ m_Hidden = false; }
+	void toggle()	{ m_Hidden = !m_Hidden; }
 
 	int m_ID;
 	cFont* m_Text;

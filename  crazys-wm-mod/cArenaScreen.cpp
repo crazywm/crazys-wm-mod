@@ -44,8 +44,7 @@ extern cGangManager g_Gangs;
 extern bool g_AllTogle;
 extern int g_CurrentScreen;
 extern int g_Building;
-extern void GetString();
-extern cInterfaceWindow g_GetString;
+
 
 bool cArenaScreen::ids_set = false;
 

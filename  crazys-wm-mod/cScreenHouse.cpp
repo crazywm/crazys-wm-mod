@@ -34,11 +34,6 @@ extern cInterfaceEventManager g_InterfaceEvents;
 extern long g_IntReturn;
 extern cGangManager g_Gangs;
 
-extern void GetString();
-extern cInterfaceWindow g_GetString;
-extern void GetInt();
-extern cInterfaceWindow g_GetInt;
-
 extern	int		g_CurrentScreen;
 
 static string fmt_objective(stringstream &ss, string desc, int limit, int sofar=-1)

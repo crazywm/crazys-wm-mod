@@ -4,6 +4,7 @@
 #include "InterfaceProcesses.h"
 #include "InterfaceGlobals.h"
 #include "cScreenBrothelManagement.h"
+#include "cScreenGetInput.h"
 #include "libintl.h"
 
 extern CSurface *g_BrothelImages[];
@@ -17,7 +18,8 @@ extern int g_CurrBrothel;
 extern unsigned long g_Day, g_Month, g_Year;
 extern bool g_InitWin;
 
-extern void confirm_exit();
+extern cScreenGetInput g_GetInput;
+
 extern void Turnsummary();
 extern void SaveGameXML();
 
@@ -53,7 +55,6 @@ cScreenBrothelManagement::cScreenBrothelManagement()
 		<< "brothel_management.xml";
 	m_filename = dp.c_str();
 }
-
 
 cScreenBrothelManagement::~cScreenBrothelManagement()
 {
@@ -154,7 +155,8 @@ void cScreenBrothelManagement::check_events()
 		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, id_quit))
 		{
 			g_InitWin = true;
-			g_WinManager.Push(confirm_exit, &g_GetString);
+			g_GetInput.ModeConfirmExit();
+			g_WinManager.push("GetInput");
 			return;
 		}
 		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, id_next))

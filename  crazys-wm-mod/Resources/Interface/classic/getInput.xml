@@ -1,0 +1,51 @@
+<Screen>
+	<Window	
+		Name= "GetInput"
+		XPos	= "224"
+		YPos	= "132"
+		Width	= "352"
+		Height	= "155"
+		Border	= "1"
+	/>
+	
+	<Button	
+		Name	    = "Ok"
+		Image		= "Ok"
+		XPos		= "32"
+		YPos		= "104"
+		Width		= "128"
+		Height		= "32"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+	
+	<Button	
+		Name	    = "Cancel"
+		Image		= "Cancel"
+		XPos		= "192"
+		YPos		= "104"
+		Width		= "128"
+		Height		= "32"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+	
+	<Text	
+		Name	= "Label"
+		Text	= "Name"
+		XPos	= "32"
+		YPos	= "42"
+		Width	= "128"
+		Height	= "32"
+		FontSize= "20"
+	/>
+	
+	<EditBox
+		Name    = "TextField"
+		XPos	= "160"
+		YPos	= "37"
+		Width	= "160"
+		Height	= "32"
+		Border	= "1"
+	/>
+</Screen>

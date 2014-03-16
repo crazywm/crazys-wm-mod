@@ -43,9 +43,6 @@ extern string g_ReturnText;
 extern cGangManager g_Gangs;
 extern bool g_AllTogle;
 
-extern void GetString();
-extern cInterfaceWindow g_GetString;
-
 bool cAuctionScreen::ids_set = false;
 
 void cAuctionScreen::set_ids()
