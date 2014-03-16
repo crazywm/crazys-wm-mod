@@ -12,7 +12,7 @@
     * ~~Brothel Screen~~. *Done*.
   # Code clean up.
     * Merging all those globals in a single global object. (Started)
-    * Cleaning unused (global/local) variables.
+    * Cleaning unused (global/local) variables. (Started)
     * Using more OO.
   # cDungeon implementation. 
     * Derive from cBrothels? 
