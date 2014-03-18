@@ -14,9 +14,9 @@
     * Merging all those globals in a single global object. (Started)
     * Cleaning unused (global/local) variables. (Started)
     * Using more OO.
-  # cDungeon implementation. 
-    * Derive from cBrothels? 
-    * Shouldn't have a different structure for girls there.
+      * cDungeon implementation. 
+        * Derive from cBrothels? 
+        * Shouldn't have a different structure for girls there.
 
 = Things laying around that should get to the game at some point =
 
@@ -42,6 +42,8 @@
   # The dungeon is a little boring would like to see new ways to break girls.  More hardcore to nicer ways.
   # Would really like to see other building feel different then the brothels.  Movies is a good start but it could be pushed futher and arena could be so much more.  Some don't really need to be any different but I feel some should be.
   # Get rid of gangs make them henchmen instead.  So u could have like or goku or guts been ur guards.  This seem like a huge change though.
+  # Improve scripting capabilities
+    * Filtering girl "spawn points"
 
 = Things to think about =
 
