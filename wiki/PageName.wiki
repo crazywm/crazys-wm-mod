@@ -42,7 +42,7 @@
   # The dungeon is a little boring would like to see new ways to break girls.  More hardcore to nicer ways.
   # Would really like to see other building feel different then the brothels.  Movies is a good start but it could be pushed futher and arena could be so much more.  Some don't really need to be any different but I feel some should be.
   # Get rid of gangs make them henchmen instead.  So u could have like or goku or guts been ur guards.  This seem like a huge change though.
-  # Improve scripting capabilities
+  # Improve scripting capabilities (*new*)
     * Filtering girl "spawn points"
 
 = Things to think about =
