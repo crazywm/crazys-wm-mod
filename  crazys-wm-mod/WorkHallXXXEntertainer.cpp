@@ -143,7 +143,7 @@ else if (jobperformance >= 185)
 				}
 				else
 				{
-				message += "From start to finish, every move Girlname makes practically sweats sexuallity.\n";
+				message += "From start to finish, every move " + girlName + " makes practically sweats sexuallity.\n";
 				}
 			}
 		else if (roll <= 40)
@@ -166,7 +166,7 @@ else if (jobperformance >= 185)
 				}
 				else
 				{
-				message +=  "Amusingly, one of the female members of " + girlName + "'s audience threw her panties on the stage, where Girlname used them as an impromptu prop.\n";
+				message +=  "Amusingly, one of the female members of " + girlName + "'s audience threw her panties on the stage, where " + girlName + " used them as an impromptu prop.\n";
 				}
 			}
 		}

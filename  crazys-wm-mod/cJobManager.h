@@ -155,6 +155,7 @@ public:
 	static bool WorkCombatTraining(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
 	static bool WorkDoctore(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
 	static bool WorkCleanArena(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
+	static bool WorkCityGuard(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
 
 	//Comunity Centre
 	static bool WorkComunityService(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);

@@ -105,13 +105,6 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 			{
 				message += "People came in from everywhere to see " + girl->m_Realname + " work.  She bounces all around the bar laughing and keeping the patrons happy without messing anything up.\n";
 			}
-
-			if (g_Girls.HasTrait(girl, "Great Arse"))
-			if(roll <= 15)
-		{
-			message += " A patron reached out to grab her ass. But she skillfully avoided it with a laugh and told him that her ass wasn't on the menu.  He laughed so hard he increased her tip\n";
-			wages += 15;
-		}
  }
  else if(jobperformance >= 185)
 		{
@@ -126,13 +119,6 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 			{
 				message += girlName + " is a town favriote and knows most of the patrons by name and what they order.\n";
 			}
-
-			if (g_Girls.HasTrait(girl, "Great Arse"))
-			if(roll <= 15)
-		{
-			message += " A patron reached out to grab her ass. But she skillfully avoided it with a laugh and told him that her ass wasn't on the menu.  He laughed so hard he increased her tip\n";
-			wages += 15;
-		}
 		}
  else if(jobperformance >= 145)
 		{
@@ -154,12 +140,6 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 			{
 				message += girlName + " had some regulars come in.  She knows there order by heart and put it in as soon as she seen them walk in making them happy.\n";
 			}
-
-			if (g_Girls.HasTrait(girl, "Great Arse"))
-			if(roll <= 15)
-		{
-			message += " A patron reached out and grabed her ass. She's use to this and skilled enough so she didn't drop anything\n";
-		}
 		}
  else if(jobperformance >= 100)
 		{
@@ -174,13 +154,6 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 			{
 				message += girlName + " sneezed in an order she had just sat down on a table.  Needless to say the patron was mad and left.\n";
 			}
-
-			if (g_Girls.HasTrait(girl, "Great Arse"))
-			if(roll <= 15)
-		{
-			message += " A patron reached out and grabed her ass. She was startled and ended up dropping half an order.\n";
-			wages -= 10;
-		}
 		}
  else if(jobperformance >= 70)
 		{
@@ -194,13 +167,6 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 			{
 				message += girlName + " sneezed in an order she had just sat down on a table.  Needless to say the patron was mad and left.\n";
 			}
-
-		if (g_Girls.HasTrait(girl, "Great Arse"))
-			if(roll <= 15)
-		{
-			message += " A patron reached out and grabed her ass. She was startled and ended up dropping a whole order\n";
-			wages -= 15;
-		}
 		}
  else
 		{
@@ -268,6 +234,29 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 			message += "She used her Psychic skills to know excatally what the patrons wanted to order making them happy and increasing her tips.\n";
 			wages += 15;
 		}
+
+	if (g_Girls.HasTrait(girl, "Great Arse"))
+		if((g_Dice%100) < 15)
+		{
+			if(jobperformance < 50)
+			message += " A patron reached out and grabed her ass. She was startled and ended up dropping a whole order\n";
+			wages -= 15;
+		}
+		else if(jobperformance < 85)
+		{
+			message += " A patron reached out and grabed her ass. She was startled and ended up dropping half an order.\n";
+			wages -= 10;
+		}
+		else if(jobperformance < 135)
+		{
+			message += " A patron reached out and grabed her ass. She's use to this and skilled enough so she didn't drop anything\n";
+		}
+		else if(jobperformance < 185)
+		{
+		message += " A patron reached out to grab her ass. But she skillfully avoided it with a laugh and told him that her ass wasn't on the menu.  He laughed so hard he increased her tip\n";
+			wages += 15;
+		}
+
 
 	if (g_Girls.HasTrait(girl, "Assassin"))
 		if((g_Dice%101) < 5)

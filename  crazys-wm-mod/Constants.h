@@ -109,7 +109,7 @@ GIRL_CATACOMBS      = 10    // means this girl can be found in the catacombs
 
 // Jobs
 const unsigned int NUMJOBTYPES          = 14;
-const unsigned int NUM_JOBS             = 75;
+const unsigned int NUM_JOBS             = 76;
 // - General
 const unsigned int JOBFILTER_GENERAL    = 0;
 const unsigned int JOB_RESTING          = 0;    // relaxes and takes some time off
@@ -159,66 +159,67 @@ const unsigned int JOB_FIGHTTRAIN       = 31;
 const unsigned int JOB_DOCTORE          = 32;
 const unsigned int JOB_CLEANARENA       = 33;
 const unsigned int JOB_ARENAREST        = 34;
+const unsigned int JOB_CITYGUARD        = 35;
 // - Movie Crystal Studio
 const unsigned int JOBFILTER_MOVIESTUDIO = 7;
-const unsigned int JOB_FILMBEAST        = 35;		// films this sort of scene in the movie (uses beast resource)
-const unsigned int JOB_FILMSEX          = 36;		// films this sort of scene in the movie
-const unsigned int JOB_FILMANAL         = 37;		// films this sort of scene in the movie
-const unsigned int JOB_FILMLESBIAN      = 38;		// films this sort of scene in the movie. thinking about changing to Lesbian
-const unsigned int JOB_FILMBONDAGE      = 39;		// films this sort of scene in the movie
-const unsigned int JOB_FILMGROUP        = 40;		// films this sort of scene in the movie
-const unsigned int JOB_FILMORAL         = 41;       // films this type of scene CRAZY
-const unsigned int JOB_FILMMAST         = 42;		// films this type of scene CRAZY
-const unsigned int JOB_FILMTITTY        = 43;		// films this type of scene CRAZY
-const unsigned int JOB_FILMSTRIP        = 44;		// films this type of scene CRAZY
-const unsigned int JOB_FILMRANDOM       = 45;		// Films a random sex scene ... it does NOT work like mos jobs, see following note.
+const unsigned int JOB_FILMBEAST        = 36;		// films this sort of scene in the movie (uses beast resource)
+const unsigned int JOB_FILMSEX          = 37;		// films this sort of scene in the movie
+const unsigned int JOB_FILMANAL         = 38;		// films this sort of scene in the movie
+const unsigned int JOB_FILMLESBIAN      = 39;		// films this sort of scene in the movie. thinking about changing to Lesbian
+const unsigned int JOB_FILMBONDAGE      = 40;		// films this sort of scene in the movie
+const unsigned int JOB_FILMGROUP        = 41;		// films this sort of scene in the movie
+const unsigned int JOB_FILMORAL         = 42;       // films this type of scene CRAZY
+const unsigned int JOB_FILMMAST         = 43;		// films this type of scene CRAZY
+const unsigned int JOB_FILMTITTY        = 44;		// films this type of scene CRAZY
+const unsigned int JOB_FILMSTRIP        = 45;		// films this type of scene CRAZY
+const unsigned int JOB_FILMRANDOM       = 46;		// Films a random sex scene ... it does NOT work like mos jobs, see following note.
 		// *****IMPORTANT**** If you add more scene types, they must go somewhere between
 		// JOB_FILMBEAST and JOB_FILMRANDOM, or it will cause the random job to stop working..
 		// JOB_FILMBEAST must be the first film job, JOB_FILMRANDOM must be the last one. --PP
 
 // - Movie studio crew
 const unsigned int JOBFILTER_STUDIOCREW	= 8;
-const unsigned int JOB_DIRECTOR			= 46;		// Does same work as matron plus adds quality to films.
-const unsigned int JOB_PROMOTER			= 47;		// Advertising -- This helps film sales after it is created.
-const unsigned int JOB_CAMERAMAGE       = 48;		// Uses magic to record the scenes to crystals (requires at least 1)
-const unsigned int JOB_CRYSTALPURIFIER  = 49;		// Post editing to get the best out of the film (requires at least 1)
-const unsigned int JOB_FLUFFER          = 50;		// Keeps the porn stars and animals aroused
-const unsigned int JOB_STAGEHAND		= 51;		// Currently does the same as a cleaner.
-const unsigned int JOB_FILMFREETIME		= 52;		// Currently does the same as a cleaner.
+const unsigned int JOB_DIRECTOR			= 47;		// Does same work as matron plus adds quality to films.
+const unsigned int JOB_PROMOTER			= 48;		// Advertising -- This helps film sales after it is created.
+const unsigned int JOB_CAMERAMAGE       = 49;		// Uses magic to record the scenes to crystals (requires at least 1)
+const unsigned int JOB_CRYSTALPURIFIER  = 50;		// Post editing to get the best out of the film (requires at least 1)
+const unsigned int JOB_FLUFFER          = 51;		// Keeps the porn stars and animals aroused
+const unsigned int JOB_STAGEHAND		= 52;		// Currently does the same as a cleaner.
+const unsigned int JOB_FILMFREETIME		= 53;		// Currently does the same as a cleaner.
 
 // - Clinic
 const unsigned int JOBFILTER_CLINIC     = 9;	// teaches can train girls only up to their own skill level
-const unsigned int JOB_DOCTOR           = 53;	// not added yet	// becomes a doctor (requires 1) (will make some extra cash for treating locals)
-const unsigned int JOB_GETABORT         = 54;	// not added yet	// gets an abortion (takes 2 days)
-const unsigned int JOB_PHYSICALSURGERY  = 55;	// not added yet	// magical plastic surgery (takes 5 days)
-const unsigned int JOB_HEALING          = 56;	// not added yet	// takes 1 days for each wound trait received.
-const unsigned int JOB_REPAIRSHOP       = 57;	// not added yet	// construct girls can get repaired quickly
-const unsigned int JOB_NURSE            = 58;	// not added yet	// construct girls can get repaired quickly
+const unsigned int JOB_DOCTOR           = 54;	// not added yet	// becomes a doctor (requires 1) (will make some extra cash for treating locals)
+const unsigned int JOB_GETABORT         = 55;	// not added yet	// gets an abortion (takes 2 days)
+const unsigned int JOB_PHYSICALSURGERY  = 56;	// not added yet	// magical plastic surgery (takes 5 days)
+const unsigned int JOB_HEALING          = 57;	// not added yet	// takes 1 days for each wound trait received.
+const unsigned int JOB_REPAIRSHOP       = 58;	// not added yet	// construct girls can get repaired quickly
+const unsigned int JOB_NURSE            = 59;	// not added yet	// construct girls can get repaired quickly
 // - clinic staff
 const unsigned int JOBFILTER_CLINICSTAFF = 10;
-const unsigned int JOB_CHAIRMAN          = 59;	// not added yet	
-const unsigned int JOB_JANITOR           = 60;	// not added yet	
-const unsigned int JOB_CLINICREST        = 61;	// not added yet	
+const unsigned int JOB_CHAIRMAN          = 60;	// not added yet	
+const unsigned int JOB_JANITOR           = 61;	// not added yet	
+const unsigned int JOB_CLINICREST        = 62;	// not added yet	
 // - Community Centre
 const unsigned int JOBFILTER_COMMUNITYCENTRE = 11;
-const unsigned int JOB_FEEDPOOR         = 62;	// not added yet	// work in a soup kitchen
-const unsigned int JOB_COMUNITYSERVICE  = 63;	// not added yet	// Goes around town helping where they can
-const unsigned int JOB_CENTREMANAGER    = 64;	// not added yet	
-const unsigned int JOB_CLEANCENTRE      = 65;	// not added yet	
-const unsigned int JOB_CENTREREST       = 66;	// not added yet	
+const unsigned int JOB_FEEDPOOR         = 63;	// not added yet	// work in a soup kitchen
+const unsigned int JOB_COMUNITYSERVICE  = 64;	// not added yet	// Goes around town helping where they can
+const unsigned int JOB_CENTREMANAGER    = 65;	// not added yet	
+const unsigned int JOB_CLEANCENTRE      = 66;	// not added yet	
+const unsigned int JOB_CENTREREST       = 67;	// not added yet	
 // - drug centre
 const unsigned int JOBFILTER_DRUGCENTRE = 12;
-const unsigned int JOB_DRUGCOUNSELOR    = 67;	// not added yet	
-const unsigned int JOB_REHAB            = 68;	// not added yet	
+const unsigned int JOB_DRUGCOUNSELOR    = 68;	// not added yet	
+const unsigned int JOB_REHAB            = 69;	// not added yet	
 
 // - House
 const unsigned int JOBFILTER_HOUSE = 13;
-const unsigned int JOB_PERSONALTRAINING  = 69;
-const unsigned int JOB_PERSONALBEDWARMER = 70;
-const unsigned int JOB_CLEANHOUSE        = 71;
-const unsigned int JOB_RECRUITER         = 72;
-const unsigned int JOB_HOUSEREST         = 73;
-const unsigned int JOB_HEADGIRL          = 74;
+const unsigned int JOB_PERSONALTRAINING  = 70;
+const unsigned int JOB_PERSONALBEDWARMER = 71;
+const unsigned int JOB_CLEANHOUSE        = 72;
+const unsigned int JOB_RECRUITER         = 73;
+const unsigned int JOB_HOUSEREST         = 74;
+const unsigned int JOB_HEADGIRL          = 75;
 
 #if 0
 // - Community Centre
@@ -262,8 +263,8 @@ const unsigned int JOB_TRAIN            = 60;	// not added yet	// trains the gir
 #endif
 
 // - extra unassignable
-const unsigned int JOB_INDUNGEON        = 75;
-const unsigned int JOB_RUNAWAY          = 76;
+const unsigned int JOB_INDUNGEON        = 76;
+const unsigned int JOB_RUNAWAY          = 77;
 
 // Goon missions
 const unsigned int MISS_GUARDING        = 0;	// guarding your businesses

@@ -111,6 +111,11 @@ static static_brothel_data clinic_data[] = {
 	//{000, 10, 0 }
 };
 
+static static_brothel_data centre_data[] = {
+	{ 10000, 20, 10 }
+	//{000, 10, 0 }
+};
+
 void cScreenTown::init()
 {
 	if(BuyClinic != -1)
@@ -256,8 +261,8 @@ void cScreenTown::process()
 	}
 	else if(g_InterfaceEvents.CheckButton(centre_id))
 	{
+		check_centre(0);
 		g_InitWin = true;
-		g_WinManager.push("Centre Screen");
 		return;
 	}
 	else if(g_InterfaceEvents.CheckButton(mayor_id))
@@ -540,3 +545,39 @@ void cScreenTown::check_clinic(int ClinicNum)
 		g_WinManager.push("Clinic Screen");
 	}
 }
+void cScreenTown::check_centre(int CentreNum)
+{	// player clicked on one of the brothels
+	if(g_Centre.GetNumBrothels() == CentreNum)
+	{	// player doesn't own this brothel... can he buy it? 
+		static_brothel_data *bck = centre_data + CentreNum;
+		locale syslocale("");
+		stringstream ss;
+		ss.imbue(syslocale);
+
+		if(!g_Gold.afford(bck->price) || g_Gangs.GetNumBusinessExtorted() < bck->business)
+		{	// can't buy it
+			ss << gettext("This building costs ") << bck->price << gettext(" gold and you need to control at least ") << bck->business << gettext(" businesses.");
+			if(!g_Gold.afford(bck->price))
+				ss << "\n" << gettext("You need ") << (bck->price - g_Gold.ival()) << gettext(" more gold to afford it.");
+			if(g_Gangs.GetNumBusinessExtorted() < bck->business)
+				ss << "\n" << gettext("You need to control ") << (bck->business - g_Gangs.GetNumBusinessExtorted()) << gettext(" more businesses.");
+			g_MessageQue.AddToQue(ss.str(), 0);
+		}
+		else
+		{	// can buy it
+			ss << gettext("Do you wish to purchase this building for ") << bck->price << gettext(" gold? It has ") << bck->rooms << gettext(" rooms.");
+			g_MessageQue.AddToQue(ss.str(), 2);
+			g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, 8);
+			g_ChoiceManager.AddChoice(0, gettext("Buy It"), 0);
+			g_ChoiceManager.AddChoice(0, gettext("Don't Buy It"), 1);
+			g_ChoiceManager.SetActive(0);
+			BuyCentre = CentreNum;
+		}
+	}
+	else
+	{	// player owns this brothel... go to it
+		g_CurrCentre = CentreNum;
+		g_WinManager.push("Centre Screen");
+	}
+}
+

@@ -42,6 +42,7 @@ extern cMessageQue g_MessageQue;
 bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	string message = "";
+	string girlName = girl->m_Realname;
 	int num_items = 0;
 	void AddItem(sInventoryItem* item);
 	sInventoryItem* GetItem(string name);
@@ -53,38 +54,70 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, int DayNight, string&
 	g_Girls.UnequipCombat(girl);
 
 	girl->m_Pay += 15;
-		message = " She let her breasts be milked.";
+		message = " She let her breasts be milked.\n\n";
 
 	if (g_Girls.HasTrait(girl, "Small Boobs"))
 	{
-		message += " She has rather small breasts so you got less milk.";
+		if (girl->m_States&(1<<STATUS_PREGNANT) || girl->m_States&(1<<STATUS_PREGNANT_BY_PLAYER))
+		{
+			message += girl->m_Realname + " has small breasts, but her body still gives plenty of milk in anticipation of nursing!.";
+			girl->m_Pay += 125;
+		}
+		else
+		{
+		message += girl->m_Realname + " has small breasts, which only yield a small amount of milk.";
 		girl->m_Pay += 25;
+		}
 	}
 	else if (g_Girls.HasTrait(girl, "Big Boobs"))
 		{
-		message += " She has rather big breasts so you got more milk.";
+			if (girl->m_States&(1<<STATUS_PREGNANT) || girl->m_States&(1<<STATUS_PREGNANT_BY_PLAYER))
+			{
+			message += girl->m_Realname + "'s already sizable breasts have become fat and swollen with milk in preparation for her child.";
+			girl->m_Pay += 135;
+		}
+		else
+		{
+		message += girl->m_Realname + " has large breasts, that yield a good amount of milk to the suction machine even without pregnancy.";
 		girl->m_Pay += 35;
+		}
 	}
 	else if (g_Girls.HasTrait(girl, "Abnormally Large Boobs"))
 		{
-		message += "She has abnormally large breasts so you got a lot more milk.";
+		if (girl->m_States&(1<<STATUS_PREGNANT) || girl->m_States&(1<<STATUS_PREGNANT_BY_PLAYER))
+			{
+			message += girl->m_Realname + " has ridiculously large breasts, even without a baby in development.  With a bun in the oven, her tits are each larger than her head, and leak milk near continuously.";
+			girl->m_Pay += 140;
+		}
+		else
+		{
+		message += girl->m_Realname + "'s massive globes don't need pregnancy to yield a profitable quantity of milk!";
 		girl->m_Pay += 40;
-	}
+			}
+		}
 	else
 	{
-		message += " She has normal sized breasts so you get a decent amount of milk.";
+		if (girl->m_States&(1<<STATUS_PREGNANT) || girl->m_States&(1<<STATUS_PREGNANT_BY_PLAYER))
+		{
+			message += girl->m_Realname + " has average sized breasts, which yield a fair amount of milk with the help of pregnancy.";
+			girl->m_Pay += 130;
+		}
+		else
+		{
+		message += girl->m_Realname + " has average sized breasts, perfect handfuls, which yield an okay amount of milk.";
 		girl->m_Pay += 30;
+		}
 	}
-	if (girl->m_States&(1<<STATUS_PREGNANT) || girl->m_States&(1<<STATUS_PREGNANT_BY_PLAYER))
+	/*if (girl->m_States&(1<<STATUS_PREGNANT) || girl->m_States&(1<<STATUS_PREGNANT_BY_PLAYER))
 	{
 		message += " Cause she is pregnant so she is able to produce a lot more milk.";
 		girl->m_Pay += 100;
-	}
+	}*/
 
 	girl->m_Events.AddMessage(message, IMGTYPE_MILK, DayNight);
 
 	// Improve stats
-	int xp = 5, libido = 1, skill = 3;
+	int xp = 15, libido = 1, skill = 3;
 
 	if (g_Girls.HasTrait(girl, "Quick Learner"))
 	{

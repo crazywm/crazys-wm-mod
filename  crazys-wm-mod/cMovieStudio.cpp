@@ -253,6 +253,9 @@ void cMovieStudioManager::UpdateMovieStudio()
 	m_CameraQuality = 0;
 	m_PurifierQaulity = 0;
 
+	if(current->m_Filthiness < 0)
+			current->m_Filthiness = 0;
+
 	//	UpdateGirls(current, 0); Should only be one shift in movie studio --PP
 	// update the girls and satisfy the customers for this brothel during the night
 	UpdateGirls(current);
@@ -816,6 +819,16 @@ TiXmlElement* sMovieStudio::SaveMovieStudioXML(TiXmlElement* pRoot)
 	pBrothel->SetAttribute("Filthiness", m_Filthiness);
 	pBrothel->SetAttribute("MovieRunTime", m_MovieRunTime);
 	pBrothel->SetAttribute("SecurityLevel", m_SecurityLevel);
+	// save variables for sex restrictions
+	pBrothel->SetAttribute("RestrictAnal", m_RestrictAnal);
+	pBrothel->SetAttribute("RestrictBDSM", m_RestrictBDSM);
+	pBrothel->SetAttribute("RestrictOral", m_RestrictOral);
+	pBrothel->SetAttribute("RestrictTitty", m_RestrictTitty);
+	pBrothel->SetAttribute("RestrictBeast", m_RestrictBeast);
+	pBrothel->SetAttribute("RestrictGroup", m_RestrictGroup);
+	pBrothel->SetAttribute("RestrictNormal", m_RestrictNormal);
+	pBrothel->SetAttribute("RestrictLesbian", m_RestrictLesbian);
+	pBrothel->SetAttribute("AdvertisingBudget", m_AdvertisingBudget);
 
 	TiXmlElement* pMovies = new TiXmlElement("Movies");
 	pBrothel->LinkEndChild(pMovies);
@@ -905,6 +918,16 @@ bool sMovieStudio::LoadMovieStudioXML(TiXmlHandle hBrothel)
 	pBrothel->QueryIntAttribute("MovieRunTime", &m_MovieRunTime);
 	pBrothel->QueryIntAttribute("Filthiness", &m_Filthiness);
 	pBrothel->QueryIntAttribute("SecurityLevel", &m_SecurityLevel);
+	// load variables for sex restrictions
+	pBrothel->QueryValueAttribute<bool>("RestrictAnal", &m_RestrictAnal);
+	pBrothel->QueryValueAttribute<bool>("RestrictBDSM", &m_RestrictBDSM);
+	pBrothel->QueryValueAttribute<bool>("RestrictOral", &m_RestrictOral);
+	pBrothel->QueryValueAttribute<bool>("RestrictTitty", &m_RestrictTitty);
+	pBrothel->QueryValueAttribute<bool>("RestrictBeast", &m_RestrictBeast);
+	pBrothel->QueryValueAttribute<bool>("RestrictGroup", &m_RestrictGroup);
+	pBrothel->QueryValueAttribute<bool>("RestrictNormal", &m_RestrictNormal);
+	pBrothel->QueryValueAttribute<bool>("RestrictLesbian", &m_RestrictLesbian);
+	pBrothel->QueryValueAttribute<unsigned short>("AdvertisingBudget", &m_AdvertisingBudget);
 
 	m_NumMovies = 0;
 	TiXmlElement* pMovies = pBrothel->FirstChildElement("Movies");

@@ -119,34 +119,10 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, int DayNight, st
 
 
 
-	if(jobperformance < 35)
+	if (jobperformance >= 245)
 		{
-			message += " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
-			if((g_Dice%101) < 5)
-				{
-					sGirl* girl = g_Girls.GetRandomGirl();
-					if(girl)
-					{
-						/* MYR: For some reason I can't figure out, a number of girl's house percentages
-						        are at zero or set to zero when they are sent to the dungeon. I'm not sure
-								how to fix it, so I'm explicitly setting the percentage to 60 here */
-						girl->m_Stats[STAT_HOUSE] = 60;
-						message += gettext("She finds a girl, "); 
-						message += girl->m_Name;
-						message +=  gettext("  and ");
-						message += gettext("convinces her that she should work for you.");
-						m_Dungeon->AddGirl(girl, DUNGEON_NEWGIRL);
-						}
-				}
-					else
-					{
-					message += "But was unable to find anyone to join.";
-					}
-		}
-	else if(jobperformance < 65)
-		{
-			message += " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
-			if((g_Dice%101) < 8)
+			message += " She must be the perfect recruiter.\n\n";
+			if((g_Dice%101) < 20)
 				{
 					sGirl* girl = g_Girls.GetRandomGirl();
 					if(girl)
@@ -165,57 +141,9 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, int DayNight, st
 					else
 					{
 					message += "But was unable to find anyone to join.";
+					}
 			}
-		}
-	else if(jobperformance < 85)
-		{
-			message += " She made a few mistakes but overall she is okay at this.\n\n";
-			if((g_Dice%101) < 10)
-				{
-					sGirl* girl = g_Girls.GetRandomGirl();
-					if(girl)
-					{
-						/* MYR: For some reason I can't figure out, a number of girl's house percentages
-						        are at zero or set to zero when they are sent to the dungeon. I'm not sure
-								how to fix it, so I'm explicitly setting the percentage to 60 here */
-						girl->m_Stats[STAT_HOUSE] = 60;
-						message += gettext("She finds a girl, "); 
-						message += girl->m_Name;
-						message +=  gettext("  and ");
-						message += gettext("convinces her that she should work for you.");
-						m_Dungeon->AddGirl(girl, DUNGEON_NEWGIRL);
-						}
-					}
-					else
-					{
-					message += "But was unable to find anyone to join.";
-			}
-		}
-	else if(jobperformance < 135)
-		{
-			message += " She's good at this job.\n\n";
-			if((g_Dice%101) < 12)
-				{
-					sGirl* girl = g_Girls.GetRandomGirl();
-					if(girl)
-					{
-						/* MYR: For some reason I can't figure out, a number of girl's house percentages
-						        are at zero or set to zero when they are sent to the dungeon. I'm not sure
-								how to fix it, so I'm explicitly setting the percentage to 60 here */
-						girl->m_Stats[STAT_HOUSE] = 60;
-						message += gettext("She finds a girl, "); 
-						message += girl->m_Name;
-						message +=  gettext("  and ");
-						message += gettext("convinces her that she should work for you.");
-						m_Dungeon->AddGirl(girl, DUNGEON_NEWGIRL);
-						}
-					}
-					else
-					{
-					message += "But was unable to find anyone to join.";
-			}
-		}
-	else if(jobperformance < 185)
+	else if (jobperformance  >= 185)
 		{
 			message += " She's unbelievable at this.\n\n";
 			if((g_Dice%101) < 15)
@@ -238,11 +166,11 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, int DayNight, st
 					{
 					message += "But was unable to find anyone to join.";
 					}
-		}
-	else if(jobperformance < 245)
+			}
+	else if (jobperformance >= 135)
 		{
-			message += " She must be the perfect recruiter.\n\n";
-			if((g_Dice%101) < 20)
+			message += " She's good at this job.\n\n";
+			if((g_Dice%101) < 12)
 				{
 					sGirl* girl = g_Girls.GetRandomGirl();
 					if(girl)
@@ -258,6 +186,78 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, int DayNight, st
 						m_Dungeon->AddGirl(girl, DUNGEON_NEWGIRL);
 						}
 					}
+					else
+					{
+					message += "But was unable to find anyone to join.";
+				}
+			}
+	else if (jobperformance >= 85)
+		{
+			message += " She made a few mistakes but overall she is okay at this.\n\n";
+			if((g_Dice%101) < 10)
+				{
+					sGirl* girl = g_Girls.GetRandomGirl();
+					if(girl)
+					{
+						/* MYR: For some reason I can't figure out, a number of girl's house percentages
+						        are at zero or set to zero when they are sent to the dungeon. I'm not sure
+								how to fix it, so I'm explicitly setting the percentage to 60 here */
+						girl->m_Stats[STAT_HOUSE] = 60;
+						message += gettext("She finds a girl, "); 
+						message += girl->m_Name;
+						message +=  gettext("  and ");
+						message += gettext("convinces her that she should work for you.");
+						m_Dungeon->AddGirl(girl, DUNGEON_NEWGIRL);
+						}
+					}
+					else
+					{
+					message += "But was unable to find anyone to join.";
+				}
+			}
+	else if (jobperformance >= 65)
+		{
+			message += " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
+			if((g_Dice%101) < 8)
+				{
+					sGirl* girl = g_Girls.GetRandomGirl();
+					if(girl)
+					{
+						/* MYR: For some reason I can't figure out, a number of girl's house percentages
+						        are at zero or set to zero when they are sent to the dungeon. I'm not sure
+								how to fix it, so I'm explicitly setting the percentage to 60 here */
+						girl->m_Stats[STAT_HOUSE] = 60;
+						message += gettext("She finds a girl, "); 
+						message += girl->m_Name;
+						message +=  gettext("  and ");
+						message += gettext("convinces her that she should work for you.");
+						m_Dungeon->AddGirl(girl, DUNGEON_NEWGIRL);
+						}
+					}
+					else
+					{
+					message += "But was unable to find anyone to join.";
+				}
+			}
+	else
+		{
+			message += " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
+			if((g_Dice%101) < 5)
+				{
+					sGirl* girl = g_Girls.GetRandomGirl();
+					if(girl)
+					{
+						/* MYR: For some reason I can't figure out, a number of girl's house percentages
+						        are at zero or set to zero when they are sent to the dungeon. I'm not sure
+								how to fix it, so I'm explicitly setting the percentage to 60 here */
+						girl->m_Stats[STAT_HOUSE] = 60;
+						message += gettext("She finds a girl, "); 
+						message += girl->m_Name;
+						message +=  gettext("  and ");
+						message += gettext("convinces her that she should work for you.");
+						m_Dungeon->AddGirl(girl, DUNGEON_NEWGIRL);
+						}
+				}
 					else
 					{
 					message += "But was unable to find anyone to join.";

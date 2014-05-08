@@ -116,6 +116,7 @@ void cJobManager::Setup()
 	JobFunctions[JOB_FIGHTTRAIN] = &WorkCombatTraining;	// 
 	JobFunctions[JOB_DOCTORE] = &WorkDoctore;	// 
 	JobFunctions[JOB_CLEANARENA] = &WorkCleanArena;	// 
+	JobFunctions[JOB_CITYGUARD] = &WorkCityGuard;	// 
 	// - Community Centre
 	JobFunctions[JOB_FEEDPOOR] = &WorkFeedPoor;	// ************** TODO
 	//JobFunctions[JOB_MAKEITEMS] = &WorkMakeItem;	// ************** TODO
@@ -363,6 +364,8 @@ void cJobManager::Setup()
 	JobDescription[JOB_CLEANARENA] = gettext("She will clean the arena.");
 	JobName[JOB_ARENAREST] = gettext("Time off");
 	JobDescription[JOB_ARENAREST] = gettext("She will rest.");
+	JobName[JOB_CITYGUARD] = gettext("City Guard");
+	JobDescription[JOB_CITYGUARD] = gettext("She will help keep crossgate safe.");
 
 
 	//- Community Centre
