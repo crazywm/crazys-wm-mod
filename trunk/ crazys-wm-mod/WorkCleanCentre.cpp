@@ -56,7 +56,7 @@ bool cJobManager::WorkCleanCentre(sGirl* girl, sBrothel* brothel, int DayNight, 
 
 	g_Girls.UnequipCombat(girl);
 	
-	girl->m_Pay += 30;
+	girl->m_Pay += 50;
 	
 	message = girlName;	
 	message += gettext(" worked cleaning your house.\n\n");

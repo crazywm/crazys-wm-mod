@@ -91,6 +91,8 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, int DayNig
 		jobperformance -= 20;
 	if (g_Girls.HasTrait(girl, "Slow Learner"))
 		jobperformance -= 10;
+	if (g_Girls.HasTrait(girl, "Horrific Scars"))
+		jobperformance -= 20;
 
 
 	if (jobperformance >= 245)
@@ -216,12 +218,14 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, int DayNig
 		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +3, true);
 		sex = true;
 							}*/
+						wages += 25;
 
 						}
 			}
 			else
 				{
 					message += "Sold a few lap dance.";
+					wages += 25;
 					}
 				}
 	else if (lapdance >= 50)

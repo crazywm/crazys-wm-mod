@@ -1907,6 +1907,10 @@ void cBrothelManager::UpdateBrothels()
 	{
 	}
 
+	if(g_Gangs.GetNumBusinessExtorted() < 220 && GetNumBrothels() >= 7)
+	{
+	}
+
 	// update objectives or maybe create a new one
 	if(GetObjective())
 		UpdateObjective();

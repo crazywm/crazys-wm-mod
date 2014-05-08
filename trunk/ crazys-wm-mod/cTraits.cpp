@@ -450,6 +450,14 @@ string cTraits::GetTranslateName(string name){
 	{
 		return gettext("Pierced Clit");
 	}
+	else if(name.compare("Gag Reflex") == 0)
+	{
+		return gettext("Gag Relex");
+	}
+	else if(name.compare("No Gag Reflex") == 0)
+	{
+		return gettext("No Gag Relex");
+	}
 	return name;
 }
 

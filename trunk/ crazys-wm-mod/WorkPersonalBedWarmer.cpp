@@ -99,27 +99,29 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, int DayN
 					if(HateLove > -20)
 					{
 						message += "She finds you to be annoying so she wants extra for the job.\n\n";
-						wages = +125;
+						wages += 125;
 					}
 					else if(HateLove > -40)
 					{
 						message += "She finds you annoying so she wants extra for the job.\n\n";
-						wages = +175;
+						wages += 175;
 					}
 					else if(HateLove > -60)
 					{
 						message += "She doesn't like you so she wants extra for the job.\n\n";
-						wages = +205;
+						wages += 205;
 					}
 					else if(HateLove > -80)
 					{
 						message += "She don't like you at all and wants more money to lay with you at night .\n\n";
-						wages = +225;
+						wages += 225;
 					}
 					else 
+					{
 						message += "She can't stand the sight of you and demands way more money to lay with you at night.\n\n";
-						wages = +250;
+						wages += 250;
 					}
+	}
 					else
 					{
 		if (HateLove < 20)
@@ -127,22 +129,22 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, int DayN
 					else if (HateLove < 40)
 					{
 						message += "She finds you to be okay.\n\n";
-						wages = -25;
+						wages -= 25;
 					}
 					else if (HateLove < 60)
 					{
 						message += "She finds you attractive so she gives you a discount.\n\n";
-						wages = -25;
+						wages -= 50;
 					}
 					else if (HateLove < 80)
 					{
 						message += "Shes has really strong feelings for you so she lays with you for less money.\n\n";
-						wages = -25;
+						wages -= 75;
 					}
 					else
 					{
 						message += "She is totally in love with you and doesn't want as much money.\n\n";
-						wages = -25;
+						wages -= 100;
 					}
 
 if (roll <= 100 && g_Girls.DisobeyCheck(girl, ACTION_WORKHAREM, brothel))
@@ -237,10 +239,17 @@ if (roll <= 100 && g_Girls.DisobeyCheck(girl, ACTION_WORKHAREM, brothel))
 	}
 
 	if(wages < 0)
-		wages = 50;
+		wages = 0;
 
+	if(girl->m_States&(1<<STATUS_SLAVE))
+	{
+		girl->m_Pay += 0;
+	}
+	else
+	{
 	g_Gold.girl_support(wages);  // matron wages come from you
 	girl->m_Pay += wages;
+	}
 
 	// Improve stats
 	int xp = 10, libido = 3;

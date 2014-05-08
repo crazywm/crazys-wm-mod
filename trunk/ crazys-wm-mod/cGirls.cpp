@@ -114,7 +114,8 @@ const char *sGirl::skill_names[] =
 	"Service",
 	"Strip",
 	"Combat",
-	"OralSex"
+	"OralSex",
+	"TittySex"
 };
 const unsigned int sGirl::max_skills = (
 	sizeof(sGirl::skill_names) / sizeof(sGirl::skill_names[0])
@@ -948,6 +949,18 @@ void cGirls::CalculateGirlType(sGirl* girl)
  	{
  		Elegant += 20;
  		Sexy += 20;
+ 		Freak += 15;
+ 	}
+	if(HasTrait(girl, "Gag Reflex"))
+ 	{
+ 		Elegant += 10;
+ 		Nerd += 20;
+ 		Freak -= 15;
+ 	}
+	if(HasTrait(girl, "No Gag Reflex"))
+ 	{
+ 		Elegant -= 10;
+ 		Sexy += 10;
  		Freak += 15;
  	}
 
@@ -1858,6 +1871,7 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 	ss << gettext("Fame: ") << GetStat(girl, STAT_FAME) << gettext("\n");
 	data += ss.str();
 
+	//Job rating system  ///CRAZY
 	int barmaid = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) + g_Girls.GetSkill(girl, SKILL_SERVICE));
 	int barwait = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) + g_Girls.GetSkill(girl, SKILL_SERVICE));
 	int cards = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) + g_Girls.GetStat(girl, STAT_AGILITY))/2;  //intel makes her smart enough to know when to cheat agility makes her fast enough to cheat
@@ -2196,6 +2210,22 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		peep -= 10;
 		brothelstrip -= 10;
 		massusse -= 10;
+	}
+	if (g_Girls.HasTrait(girl, "Horrific Scars"))
+	{
+		//barmaid -= 20;
+		//barwait -= 20;
+		//sing -= 50;
+		//piano -= 50;
+		//dealer -= 20;
+		//entertainer -= 50;
+		//xxx -= 20;
+		//clubwait -= 20;
+		//clubbar -= 20;
+		strip -= 20;
+		peep -= 20;
+		brothelstrip -= 20;
+		//massusse -= 20;
 	}
 
 		/*stringstream dd;
@@ -3050,10 +3080,14 @@ void cGirls::UpdateStat(sGirl* girl, int a_stat, int amount)
 			amount += 3;
 		if(HasTrait(girl, "Construct"))
 		{
-			if(amount < -4)
-				amount = -4;
-			else if(amount > 4)
-				amount = 4;
+			 /*
+            if(amount < -4)
+            amount = -4;
+            else if(amount > 4)
+            amount = 4;
+            `J` Reworked construct damage/healing to 10% instead of maximum of 4 up or down
+            */
+            amount = (int)ceil(amount*0.1);
 		}
 
 		if(HasTrait(girl, "Incorporial"))
@@ -5745,6 +5779,16 @@ void cGirls::UnapplyTraits(sGirl* girl, sTrait* trait)
  			UpdateStat(girl,STAT_LIBIDO,-20);
 			UpdateSkill(girl, SKILL_NORMALSEX, -10);
  		}
+		else if(strcmp(tr->m_Name, "Gag Reflex") == 0)
+		{
+			AddTrait(girl, "No Gag Relex", false, false, true);
+			UpdateSkill(girl, SKILL_ORALSEX, 50);
+		}
+		else if(strcmp(tr->m_Name, "No Gag Reflex") == 0)
+		{
+			AddTrait(girl, "Gag Relex", false, false, true);
+			UpdateSkill(girl, SKILL_ORALSEX, -30);
+		}
  
 
 		if(doOnce)
@@ -6414,6 +6458,16 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait, bool rememberflag)
 			UpdateSkill(girl, SKILL_NORMALSEX, 10);
 			UpdateEnjoyment(girl, ACTION_SEX, 10, true);
  		}
+		else if(strcmp(tr->m_Name, "Gag Reflex") == 0)
+		{
+			RemoveTrait(girl, "No Gag Reflex", rememberflag, true);
+			UpdateSkill(girl, SKILL_ORALSEX, -50);
+		}
+		else if(strcmp(tr->m_Name, "No Gag Reflex") == 0)
+		{
+			RemoveTrait(girl, "Gag Reflex", rememberflag, true);
+			UpdateSkill(girl, SKILL_ORALSEX, 30);
+		}
  
 		if(doOnce)
 		{

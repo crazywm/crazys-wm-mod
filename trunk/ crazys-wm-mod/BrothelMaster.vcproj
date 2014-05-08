@@ -289,6 +289,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Globals.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Globals.h"
+				>
+			</File>
+			<File
 				RelativePath=".\InterfaceGlobals.cpp"
 				>
 			</File>
@@ -915,6 +923,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\cScreenGetInput.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\cScreenGetInput.h"
+				>
+			</File>
+			<File
 				RelativePath=".\cScreenGirlDetails.cpp"
 				>
 			</File>
@@ -1092,6 +1108,10 @@
 			</File>
 			<File
 				RelativePath=".\WorkChairMan.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\WorkCityGuard.cpp"
 				>
 			</File>
 			<File

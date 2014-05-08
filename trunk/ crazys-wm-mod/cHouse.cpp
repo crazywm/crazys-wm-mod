@@ -114,6 +114,9 @@ void cHouseManager::UpdateHouse()
 		cgirl = cgirl->m_Next;
 	}
 
+	if(current->m_Filthiness < 0)
+			current->m_Filthiness = 0;
+
 	// Generate customers for the brothel for the day shift and update girls
 	UpdateGirls(current, 0);
 
@@ -530,6 +533,16 @@ TiXmlElement* sHouse::SaveHouseXML(TiXmlElement* pRoot)
 	pBrothel->SetAttribute("NumRooms", m_NumRooms);
 	pBrothel->SetAttribute("Filthiness", m_Filthiness);
 	pBrothel->SetAttribute("SecurityLevel", m_SecurityLevel);
+	// save variables for sex restrictions
+	pBrothel->SetAttribute("RestrictAnal", m_RestrictAnal);
+	pBrothel->SetAttribute("RestrictBDSM", m_RestrictBDSM);
+	pBrothel->SetAttribute("RestrictOral", m_RestrictOral);
+	pBrothel->SetAttribute("RestrictTitty", m_RestrictTitty);
+	pBrothel->SetAttribute("RestrictBeast", m_RestrictBeast);
+	pBrothel->SetAttribute("RestrictGroup", m_RestrictGroup);
+	pBrothel->SetAttribute("RestrictNormal", m_RestrictNormal);
+	pBrothel->SetAttribute("RestrictLesbian", m_RestrictLesbian);
+	pBrothel->SetAttribute("AdvertisingBudget", m_AdvertisingBudget);
 	// Save Girls
 	TiXmlElement* pGirls = new TiXmlElement("Girls");
 	pBrothel->LinkEndChild(pGirls);
@@ -606,6 +619,16 @@ bool sHouse::LoadHouseXML(TiXmlHandle hBrothel)
 	pBrothel->QueryIntAttribute("NumRooms", &tempInt); m_NumRooms = tempInt; tempInt = 0;
 	pBrothel->QueryIntAttribute("Filthiness", &m_Filthiness);
 	pBrothel->QueryIntAttribute("SecurityLevel", &m_SecurityLevel);
+	// load variables for sex restrictions
+	pBrothel->QueryValueAttribute<bool>("RestrictAnal", &m_RestrictAnal);
+	pBrothel->QueryValueAttribute<bool>("RestrictBDSM", &m_RestrictBDSM);
+	pBrothel->QueryValueAttribute<bool>("RestrictOral", &m_RestrictOral);
+	pBrothel->QueryValueAttribute<bool>("RestrictTitty", &m_RestrictTitty);
+	pBrothel->QueryValueAttribute<bool>("RestrictBeast", &m_RestrictBeast);
+	pBrothel->QueryValueAttribute<bool>("RestrictGroup", &m_RestrictGroup);
+	pBrothel->QueryValueAttribute<bool>("RestrictNormal", &m_RestrictNormal);
+	pBrothel->QueryValueAttribute<bool>("RestrictLesbian", &m_RestrictLesbian);
+	pBrothel->QueryValueAttribute<unsigned short>("AdvertisingBudget", &m_AdvertisingBudget);
 
 	// Load girls
 	m_NumGirls = 0;
