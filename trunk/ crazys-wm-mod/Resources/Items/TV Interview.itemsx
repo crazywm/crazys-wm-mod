@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="TV Interview"
+      Desc="Pay for an interview for your girl on one of Crossgate's many whore oriented shows. (Fame +10, Tiredness +10)"
+      Type="Food"
+      Badness="5"
+      Special="None"
+      Cost="800"
+      Rarity="Shop50"
+      Infinite="false">
+   <Effect What="Stat"  Name="Fame"                    Amount="10"    />
+   <Effect What="Stat"  Name="Tiredness"               Amount="10"    />
+</Item>
+</Items>

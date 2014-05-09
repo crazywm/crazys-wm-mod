@@ -51,8 +51,10 @@ bool cJobManager::WorkPhysicalSurgery(sGirl* girl, sBrothel* brothel, int DayNig
 	g_Girls.UnequipCombat(girl);
 
 	bool hasDoctor = false;
-	if(g_Clinic.GetNumGirlsOnJob(brothel->m_id, JOB_DOCTOR, true) >= 1 || g_Clinic.GetNumGirlsOnJob(brothel->m_id, JOB_DOCTOR, false) >= 1)
+	if (g_Clinic.GetNumGirlsOnJob(brothel->m_id, JOB_DOCTOR, true) >= 1 || g_Clinic.GetNumGirlsOnJob(brothel->m_id, JOB_DOCTOR, false) >= 1)
+	{
 		hasDoctor = true;
+	}
 
 	if (!hasDoctor)
 	{
@@ -80,51 +82,50 @@ bool cJobManager::WorkPhysicalSurgery(sGirl* girl, sBrothel* brothel, int DayNig
 	stringstream ss;
 	if (g_Clinic.GetNumGirlsOnJob(0,JOB_NURSE,false) == 1)
 	{
-	if(girl->m_WorkingDay == 3)
-	{
-		ss << "The physical surgery is a success. She is sad and has lost some health during the operation.";
-		g_Girls.UpdateStat(girl, STAT_HAPPINESS, -20);
-		g_Girls.UpdateStat(girl, STAT_SPIRIT, -5);
-		g_Girls.UpdateStat(girl, STAT_HEALTH, -20);
-		g_Girls.UpdateStat(girl, STAT_MANA, -20);
-		g_Girls.UpdateStat(girl, STAT_BEAUTY, 40);
-		g_Girls.UpdateStat(girl, STAT_CHARISMA, 40);
-		if (g_Girls.HasTrait(girl, "Abnormally Large Boobs"))
+		if(girl->m_WorkingDay == 3)
 		{
-			g_Girls.RemoveTrait(girl, "Abnormally Large Boobs");
-			girl->add_trait("Big Boobs", false);
-			ss << "She loses Abnormally Large Boobs trait but gains Big Boobs traits.";
+			ss << "The physical surgery is a success. She is sad and has lost some health during the operation.";
+			g_Girls.UpdateStat(girl, STAT_HAPPINESS, -20);
+			g_Girls.UpdateStat(girl, STAT_SPIRIT, -5);
+			g_Girls.UpdateStat(girl, STAT_HEALTH, -20);
+			g_Girls.UpdateStat(girl, STAT_MANA, -20);
+			g_Girls.UpdateStat(girl, STAT_BEAUTY, 40);
+			g_Girls.UpdateStat(girl, STAT_CHARISMA, 40);
+			if (g_Girls.HasTrait(girl, "Abnormally Large Boobs"))
+			{
+				g_Girls.RemoveTrait(girl, "Abnormally Large Boobs");
+				girl->add_trait("Big Boobs", false);
+				ss << "She loses Abnormally Large Boobs trait but gains Big Boobs traits.";
+			}
+			else if (g_Girls.HasTrait(girl, "Small Boobs"))
+			{
+				g_Girls.RemoveTrait(girl, "Small Boobs");
+				girl->add_trait("Big Boobs", false);
+				ss << "She loses Small Boobs trait but gains Big Boobs traits.";
+			}
+			else if (!g_Girls.HasTrait(girl, "Sexy Air"))
+			{
+				girl->add_trait("Sexy Air", false);
+				ss << "She gains Sexy Air trait.";
+			}
+			else if (!g_Girls.HasTrait(girl, "Cute"))
+			{
+				girl->add_trait("Cute", false);
+				ss << "She gains Cute trait.";
+			}
+			else if (!g_Girls.HasTrait(girl, "Great Figure"))
+			{
+				girl->add_trait("Great Figure", false);
+				ss << "She gains Great Figure trait.";
+			}
+			girl->m_WorkingDay = 0;
 		}
-		else if (g_Girls.HasTrait(girl, "Small Boobs"))
+		else
 		{
-			g_Girls.RemoveTrait(girl, "Small Boobs");
-			girl->add_trait("Big Boobs", false);
-			ss << "She loses Small Boobs trait but gains Big Boobs traits.";
+			ss << "The operation is in progess (" << (3 - girl->m_WorkingDay) << " day remaining).";
 		}
-		else if (!g_Girls.HasTrait(girl, "Sexy Air"))
-		{
-			girl->add_trait("Sexy Air", false);
-			ss << "She gains Sexy Air trait.";
-		}
-		else if (!g_Girls.HasTrait(girl, "Cute"))
-		{
-			girl->add_trait("Cute", false);
-			ss << "She gains Cute trait.";
-		}
-		else if (!g_Girls.HasTrait(girl, "Great Figure"))
-		{
-			girl->add_trait("Great Figure", false);
-			ss << "She gains Great Figure trait.";
-		}
-		girl->m_WorkingDay = 0;
 	}
-	else
-	{
-		ss << "The operation is in progess (" << (3 - girl->m_WorkingDay) << " day remaining).";
-	}
-	}
-	else
-		if(girl->m_WorkingDay == 5)
+	else if(girl->m_WorkingDay == 5)
 	{
 		ss << "The physical surgery is a success. She is sad and has lost some health during the operation.";
 		g_Girls.UpdateStat(girl, STAT_HAPPINESS, -20);

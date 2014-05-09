@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Leather Pads"
+      Desc="These small plates of hardened leather strapped over one's clothes provide a small amount of protection without impeding movement, and they can even be made fashionable. (D) (+5 Comb, +5 Cons, +5 Conf, -5 Fear, -5 Hate, +5 BDSM, -3 Cha)"
+      Type="Armor"
+      Badness="0"
+      Special="None"
+      Cost="75"
+      Rarity="Shop50"
+      Infinite="false">
+   <Effect What="Skill" Name="Combat"                  Amount="5"    />
+   <Effect What="Stat"  Name="Constitution"            Amount="5"    />
+   <Effect What="Stat"  Name="Confidence"              Amount="5"    />
+   <Effect What="Stat"  Name="PCFear"                  Amount="-5"    />
+   <Effect What="Stat"  Name="PCHate"                  Amount="-5"    />
+   <Effect What="Skill" Name="BDSM"                    Amount="5"    />
+   <Effect What="Stat"  Name="Charisma"                Amount="-2"    />
+</Item>
+<Item Name="Leather Pads"
+      Desc="These small plates of hardened leather strapped over one's clothes provide a small amount of protection without impeding movement, and they can even be made fashionable. (D) (+5 Comb, +5 Cons, +5 Conf, -5 Fear, -5 Hate, +5 BDSM, -3 Cha)"
+      Type="Armor"
+      Badness="0"
+      Special="None"
+      Cost="75"
+      Rarity="Shop50"
+      Infinite="false">
+   <Effect What="Skill" Name="Combat"                  Amount="5"    />
+   <Effect What="Stat"  Name="Constitution"            Amount="5"    />
+   <Effect What="Stat"  Name="Confidence"              Amount="5"    />
+   <Effect What="Stat"  Name="PCFear"                  Amount="-5"    />
+   <Effect What="Stat"  Name="PCHate"                  Amount="-5"    />
+   <Effect What="Skill" Name="BDSM"                    Amount="5"    />
+   <Effect What="Stat"  Name="Charisma"                Amount="-2"    />
+</Item>
+</Items>

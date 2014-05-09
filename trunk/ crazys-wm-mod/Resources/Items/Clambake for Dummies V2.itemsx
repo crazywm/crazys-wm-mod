@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Clambake for Dummies V2"
+      Desc="The first book didn't sell well so they revised it. (+50 Les, -40 Man/Beast-Related Sex Skills, +25 Serv/Strip, +40 Cha, +35 Con, +45 Int, +50 Conf, -15 Obe, +35 Spirit, +35 Beauty, +20 Agi, +Lesbian, +Womanly Traits, +Tsundere/Aggressive/Manly)"
+      Type="Misc"
+      Badness="50"
+      Special="None"
+      Cost="5000"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Skill" Name="Lesbian"                 Amount="50"    />
+   <Effect What="Skill" Name="NormalSex"               Amount="-40"    />
+   <Effect What="Skill" Name="BDSM"                    Amount="-40"    />
+   <Effect What="Skill" Name="OralSex"                 Amount="-20"    />
+   <Effect What="Skill" Name="Beastiality"             Amount="-40"    />
+   <Effect What="Skill" Name="Group"                   Amount="-20"    />
+   <Effect What="Skill" Name="Anal"                    Amount="-40"    />
+   <Effect What="Skill" Name="Service"                 Amount="25"    />
+   <Effect What="Skill" Name="Strip"                   Amount="25"    />
+   <Effect What="Stat"  Name="Charisma"                Amount="40"    />
+   <Effect What="Stat"  Name="Libido"                  Amount="25"    />
+   <Effect What="Stat"  Name="Constitution"            Amount="35"    />
+   <Effect What="Stat"  Name="Intelligence"            Amount="45"    />
+   <Effect What="Stat"  Name="Confidence"              Amount="50"    />
+   <Effect What="Stat"  Name="Obedience"               Amount="-15"    />
+   <Effect What="Stat"  Name="Spirit"                  Amount="35"    />
+   <Effect What="Stat"  Name="Beauty"                  Amount="35"    />
+   <Effect What="Stat"  Name="Agility"                 Amount="20"    />
+   <Effect What="Trait" Name="Lesbian"                 Amount="1"    />
+   <Effect What="Trait" Name="Charismatic"             Amount="1"    />
+   <Effect What="Trait" Name="Charming"                Amount="1"    />
+   <Effect What="Trait" Name="Puffy Nipples"           Amount="1"    />
+   <Effect What="Trait" Name="Perky Nipples"           Amount="1"    />
+   <Effect What="Trait" Name="Sexy Air"                Amount="1"    />
+   <Effect What="Trait" Name="Great Figure"            Amount="1"    />
+   <Effect What="Trait" Name="Great Arse"              Amount="1"    />
+   <Effect What="Trait" Name="Tsundere"                Amount="1"    />
+   <Effect What="Trait" Name="Manly"                   Amount="1"    />
+   <Effect What="Trait" Name="Aggressive"              Amount="1"    />
+</Item>
+</Items>

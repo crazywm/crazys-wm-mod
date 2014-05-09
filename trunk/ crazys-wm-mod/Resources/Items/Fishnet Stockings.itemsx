@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Fishnet Stockings"
+      Desc="Thigh high fishnet stockings that are more trashy than classy. (+5 Charisma, adds Sexy Air and Long Legs, removes Elegant)"
+      Type="Misc"
+      Badness="3"
+      Special="None"
+      Cost="350"
+      Rarity="Shop25"
+      Infinite="false"
+      GirlBuyChance="40">
+   <Effect What="Stat"  Name="Charisma"                Amount="5"    />
+   <Effect What="Trait" Name="Elegant"                 Amount="0"    />
+   <Effect What="Trait" Name="Sexy Air"                Amount="1"    />
+   <Effect What="Trait" Name="Long Legs"               Amount="1"    />
+</Item>
+</Items>

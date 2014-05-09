@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Glasses"
+      Desc="A cheap pair of glasses. (Adds Nerd)"
+      Type="Misc"
+      Badness="0"
+      Special="None"
+      Cost="100"
+      Rarity="Common"
+      Infinite="true"
+      GirlBuyChance="40">
+   <Effect What="Trait" Name="Nerd"                    Amount="1"    />
+</Item>
+</Items>

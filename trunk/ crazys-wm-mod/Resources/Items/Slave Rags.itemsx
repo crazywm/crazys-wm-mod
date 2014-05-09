@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Slave Rags"
+      Desc="Worn rags and crude iron shackles, more for show than actual restraint. Wearing this is an unpleasant and humbling experience, and it certainly does nothing for one's looks. (E) (+5 BDSM, +10 Obed, -10 Spi, -5 Cha, -20 Love, -10 Hap, removes Optimist)"
+      Type="Dress"
+      Badness="30"
+      Special="None"
+      Cost="5"
+      Rarity="Common"
+      Infinite="true"
+      GirlBuyChance="0">
+   <Effect What="Skill" Name="BDSM"                    Amount="5"    />
+   <Effect What="Stat"  Name="Charisma"                Amount="-5"    />
+   <Effect What="Stat"  Name="Confidence"              Amount="-10"    />
+   <Effect What="Stat"  Name="Happiness"               Amount="-10"    />
+   <Effect What="Stat"  Name="Obedience"               Amount="10"    />
+   <Effect What="Stat"  Name="PCLove"                  Amount="-20"    />
+   <Effect What="Stat"  Name="Spirit"                  Amount="10"    />
+   <Effect What="Trait" Name="Optimist"                Amount="0"    />
+</Item>
+</Items>

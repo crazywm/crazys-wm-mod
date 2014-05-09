@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Slave Band"
+      Desc="This thick steel armband affects the wearer's mind and makes it difficult for her to refuse what is asked of her. It has a frightening aura about it, and it is almost impossible to conceal the object's true nature. (+50 Obed, adds Controlled status)"
+      Type="Armband"
+      Badness="50"
+      Special="None"
+      Cost="1000"
+      Rarity="Shop25"
+      Infinite="false"
+      GirlBuyChance="0">
+   <Effect What="Stat"  Name="Obedience"               Amount="50"    />
+   <Effect What="Trait" Name="Iron Will"               Amount="0"    />
+</Item>
+</Items>

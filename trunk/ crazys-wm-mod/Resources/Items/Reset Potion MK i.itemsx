@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Reset Potion MK i"
+      Desc="Ever wanted to build a girl from scratch? Well, use this and you can! (All skills and attributes set to 0)"
+      Type="Food"
+      Badness="50"
+      Special="None"
+      Cost="19999"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Skill" Name="Anal"                    Amount="-100"    />
+   <Effect What="Skill" Name="Magic"                   Amount="-100"    />
+   <Effect What="Skill" Name="BDSM"                    Amount="-100"    />
+   <Effect What="Skill" Name="NormalSex"               Amount="-100"    />
+   <Effect What="Skill" Name="Beastiality"             Amount="-100"    />
+   <Effect What="Skill" Name="Group"                   Amount="-100"    />
+   <Effect What="Skill" Name="Lesbian"                 Amount="-100"    />
+   <Effect What="Skill" Name="Service"                 Amount="-100"    />
+   <Effect What="Skill" Name="Strip"                   Amount="-100"    />
+   <Effect What="Skill" Name="Combat"                  Amount="-100"    />
+   <Effect What="Stat"  Name="Charisma"                Amount="-100"    />
+   <Effect What="Stat"  Name="Happiness"               Amount="-100"    />
+   <Effect What="Stat"  Name="Libido"                  Amount="-100"    />
+   <Effect What="Stat"  Name="Constitution"            Amount="-100"    />
+   <Effect What="Stat"  Name="Intelligence"            Amount="-100"    />
+   <Effect What="Stat"  Name="Confidence"              Amount="-100"    />
+   <Effect What="Stat"  Name="Mana"                    Amount="-100"    />
+   <Effect What="Stat"  Name="Agility"                 Amount="-100"    />
+   <Effect What="Stat"  Name="Fame"                    Amount="-100"    />
+   <Effect What="Stat"  Name="Obedience"               Amount="-100"    />
+   <Effect What="Stat"  Name="Spirit"                  Amount="-100"    />
+   <Effect What="Stat"  Name="Beauty"                  Amount="-100"    />
+   <Effect What="Stat"  Name="PCFear"                  Amount="-100"    />
+   <Effect What="Stat"  Name="PCLove"                  Amount="-100"    />
+   <Effect What="Stat"  Name="PCHate"                  Amount="-100"    />
+</Item>
+</Items>

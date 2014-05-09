@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Mango of Knowledge"
+      Desc="This exotic fruit has been blessed at a far-away temple dedicated to the god of knowledge. It's fairly hefty and contains a respectable amount of experience. (+100 Exp)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="1000"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Stat"  Name="Exp"                     Amount="100"    />
+</Item>
+</Items>

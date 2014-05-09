@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="The Russian"
+      Desc="A stim machine that supposedly enhances one's strength to unimaginable levels! (Combat +10, Constitution +5, Agility -5)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="1490"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Skill" Name="Combat"                  Amount="10"    />
+   <Effect What="Stat"  Name="Constitution"            Amount="5"    />
+   <Effect What="Stat"  Name="Agility"                 Amount="5"    />
+</Item>
+</Items>

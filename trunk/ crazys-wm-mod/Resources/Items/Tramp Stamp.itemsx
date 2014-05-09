@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Tramp Stamp"
+      Desc="A tattoo placed in the small of a girl's back. (+10 Libido, +5 beauty. Removes Elegant.)"
+      Type="Misc"
+      Badness="0"
+      Special="None"
+      Cost="850"
+      Rarity="Shop50"
+      Infinite="false">
+   <Effect What="Stat"  Name="Libido"                  Amount="10"    />
+   <Effect What="Stat"  Name="Beauty"                  Amount="5"    />
+   <Effect What="Trait" Name="Elegant"                 Amount="0"    />
+</Item>
+</Items>

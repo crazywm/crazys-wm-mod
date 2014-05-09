@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Chain Mail"
+      Desc="A basic suit of padded chain mail armor. It's rather heavy but doesn't impede movement as much as plate mail. (B) (+15 Comb, +15 Cons, +10 Conf, +4 BDSM, -10 Fear, -10 Hate. -10 Agi, -20 Cha, -15 Mag)"
+      Type="Armor"
+      Badness="0"
+      Special="None"
+      Cost="500"
+      Rarity="Shop50"
+      Infinite="true">
+   <Effect What="Skill" Name="Combat"                  Amount="15"    />
+   <Effect What="Stat"  Name="Constitution"            Amount="15"    />
+   <Effect What="Stat"  Name="Confidence"              Amount="10"    />
+   <Effect What="Stat"  Name="PCFear"                  Amount="-10"    />
+   <Effect What="Stat"  Name="PCHate"                  Amount="-10"    />
+   <Effect What="Stat"  Name="Agility"                 Amount="-10"    />
+   <Effect What="Stat"  Name="Charisma"                Amount="-20"    />
+   <Effect What="Skill" Name="Magic"                   Amount="-15"    />
+   <Effect What="Skill" Name="BDSM"                    Amount="4"    />
+</Item>
+</Items>

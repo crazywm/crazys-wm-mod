@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Gene Therapy"
+      Desc="With some science, you can turn anyone into a human. (Health -10, Tiredness +20. Removes Nonhuman and Demon.)"
+      Type="Food"
+      Badness="12"
+      Special="None"
+      Cost="13000"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Stat"  Name="Tiredness"               Amount="20"    />
+   <Effect What="Stat"  Name="Health"                  Amount="-10"    />
+   <Effect What="Trait" Name="Not Human"               Amount="0"    />
+   <Effect What="Trait" Name="Demon"                   Amount="0"    />
+   <Effect What="Trait" Name="Cat Girl"                Amount="0"    />
+</Item>
+</Items>

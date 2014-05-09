@@ -883,7 +883,7 @@ void cGirls::CalculateGirlType(sGirl* girl)
  		NonHuman += 20;//ditto CRAZY
 		Freak += 15;
 	}
-	if(HasTrait(girl, "Incorporial"))
+	if(HasTrait(girl, "Incorporeal"))
 	{
 		NonHuman += 60;
 		Freak += 40;
@@ -1607,7 +1607,7 @@ void cGirls::RemoveGirl(sGirl* girl, bool deleteGirl)
 
 void cGirls::AddTiredness(sGirl* girl)
 {
-	if (g_Girls.HasTrait(girl, "Incorporial")) // Sanity check
+	if (g_Girls.HasTrait(girl, "Incorporeal")) // Sanity check
 	{
 		g_Girls.SetStat(girl, STAT_TIREDNESS, 0);
 		return;
@@ -2907,12 +2907,12 @@ int cGirls::GetStat(sGirl* girl, int a_stat)
 		return value;
 	}
 
-	// Health and tiredness require the incorporial sanity check
+	// Health and tiredness require the incorporeal sanity check
 	else if(stat == STAT_HEALTH)
 	{
 		value = girl->m_Stats[stat];
 
-		if (g_Girls.HasTrait(girl, "Incorporial"))
+		if (g_Girls.HasTrait(girl, "Incorporeal"))
 			value = 100;
 		else if(value < 0)
 			value = 0;
@@ -2925,7 +2925,7 @@ int cGirls::GetStat(sGirl* girl, int a_stat)
 	{
 		value = girl->m_Stats[stat];
 
-		if (g_Girls.HasTrait(girl, "Incorporial"))
+		if (g_Girls.HasTrait(girl, "Incorporeal"))
 			value = 0;
 		else if(value < 0)
 			value = 0;
@@ -2958,10 +2958,10 @@ void cGirls::SetStat(sGirl* girl, int a_stat, int amount)
 			amt = 0;
 		girl->m_Stats[stat] = amt;
 	}
-	// Health and tiredness need the incorporial sanity check
+	// Health and tiredness need the incorporeal sanity check
 	else if(stat == STAT_HEALTH)
 	{
-		if (g_Girls.HasTrait(girl, "Incorporial"))
+		if (g_Girls.HasTrait(girl, "Incorporeal"))
 			amt = 100;
 		else if(amt > 100)
 			amt = 100;
@@ -2971,7 +2971,7 @@ void cGirls::SetStat(sGirl* girl, int a_stat, int amount)
 	}
 	else if(stat == STAT_TIREDNESS)
 	{
-		if (g_Girls.HasTrait(girl, "Incorporial"))
+		if (g_Girls.HasTrait(girl, "Incorporeal"))
 			amt = 0;
 		else if(amt > 100)
 			amt = 100;
@@ -3030,10 +3030,10 @@ void cGirls::UpdateStat(sGirl* girl, int a_stat, int amount)
 			else if(amount > 4)
 				amount = 4;
 		}
-		if(HasTrait(girl, "Incorporial") &&  stat != STAT_HAPPINESS)
+		if(HasTrait(girl, "Incorporeal") &&  stat != STAT_HAPPINESS)
 		{
 			//amount = 0;
-			girl->m_Stats[STAT_HEALTH] = 100;	// WD: Sanity - Incorporial health should allways be at 100%
+			girl->m_Stats[STAT_HEALTH] = 100;	// WD: Sanity - Incorporeal health should allways be at 100%
 			return;
 		}
 
@@ -3090,10 +3090,10 @@ void cGirls::UpdateStat(sGirl* girl, int a_stat, int amount)
             amount = (int)ceil(amount*0.1);
 		}
 
-		if(HasTrait(girl, "Incorporial"))
+		if(HasTrait(girl, "Incorporeal"))
 		{
 //			amount = 0;
-			girl->m_Stats[stat] = 0;								// WD: Sanity - Incorporial Tirdness should allways be at 0%
+			girl->m_Stats[stat] = 0;								// WD: Sanity - Incorporeal Tirdness should allways be at 0%
 		}
 
 		else
@@ -5727,7 +5727,7 @@ void cGirls::UnapplyTraits(sGirl* girl, sTrait* trait)
 			UpdateStat(girl,STAT_BEAUTY,-20);
 		}
 
-		else if(strcmp(tr->m_Name, "Incorporial") == 0)
+		else if(strcmp(tr->m_Name, "Incorporeal") == 0)
 		{
 			RemoveTrait(girl, "Sterile");
 		}
@@ -6401,7 +6401,7 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait, bool rememberflag)
 			UpdateEnjoyment(girl, ACTION_WORKHALL, +20, true);
 		}
 
-		else if(strcmp(tr->m_Name, "Incorporial") == 0)
+		else if(strcmp(tr->m_Name, "Incorporeal") == 0)
 		{
 			AddTrait(girl, "Sterile");
 			UpdateEnjoyment(girl, ACTION_COMBAT, +20, true);
@@ -10643,22 +10643,22 @@ Uint8 cGirls::girl_fights_girl(sGirl* a, sGirl* b)
 
 	CLog l;
 
-	// MYR: Sanity checks on incorporial. It is actually possible (but very rare) 
-	//      for both girls to be incorporial.
-	if(a->has_trait("Incorporial") && b->has_trait("Incorporial"))
+	// MYR: Sanity checks on incorporeal. It is actually possible (but very rare) 
+	//      for both girls to be incorporeal.
+	if(a->has_trait("Incorporeal") && b->has_trait("Incorporeal"))
 	{
 		l.ss()	<< gettext("\ngirl_fights_girl: Both ") << a->m_Realname << gettext(" and ") << b->m_Realname 
-			<< gettext(" are incorporial, so the fight is a draw.\n");
+			<< gettext(" are incorporeal, so the fight is a draw.\n");
 		return 0;
 	}
-	else if(a->has_trait("Incorporial"))
+	else if(a->has_trait("Incorporeal"))
 	{
-		l.ss()	<< gettext("\ngirl_fights_girl: ") << a->m_Realname << gettext(" is incorporial, so she wins.\n");
+		l.ss()	<< gettext("\ngirl_fights_girl: ") << a->m_Realname << gettext(" is incorporeal, so she wins.\n");
 		return 1;
 	}
-	else if(a->has_trait("Incorporial"))
+	else if(a->has_trait("Incorporeal"))
 	{
-		l.ss()	<< gettext("\ngirl_fights_girl: ") << b->m_Realname << gettext(" is incorporial, so she wins.\n");
+		l.ss()	<< gettext("\ngirl_fights_girl: ") << b->m_Realname << gettext(" is incorporeal, so she wins.\n");
 		return 2;
 	}
 
@@ -10872,7 +10872,7 @@ Uint8 cGirls::girl_fights_girl(sGirl* a, sGirl* b)
  * what returning TRUE actually means
  */
 
-// MYR: How should incorporial factor in to this?
+// MYR: How should incorporeal factor in to this?
 
 void sGirl::fight_own_gang(bool &girl_wins)
 {
@@ -11052,7 +11052,7 @@ bool cGirls::GirlInjured(sGirl* girl, unsigned int unModifier)
 	int nMod	= static_cast<int>(unModifier); 
 
 	// Sanity check, Can't get injured
-	if (girl->has_trait("Incorporial"))
+	if (girl->has_trait("Incorporeal"))
 		return false;
 
 	if (girl->has_trait("Fragile"))
@@ -11231,9 +11231,9 @@ int cGirls::GetCombatDamage(sGirl *girl, int CombatType)
 int cGirls::TakeCombatDamage(sGirl* girl, int amt)
 {
 
-	if(HasTrait(girl, "Incorporial"))
+	if(HasTrait(girl, "Incorporeal"))
 	{
-		girl->m_Stats[STAT_HEALTH] = 100;	// WD: Sanity - Incorporial health should allways be at 100%
+		girl->m_Stats[STAT_HEALTH] = 100;	// WD: Sanity - Incorporeal health should allways be at 100%
 		return 100;                         // MYR: Sanity is good. Moved to the top
 	}
 	if (amt == 0)

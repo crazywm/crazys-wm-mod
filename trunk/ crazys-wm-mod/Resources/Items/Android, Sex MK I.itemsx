@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Android, Sex MK I"
+      Desc="A male android that can train your girl for you. Unfortunately, this one can be very overzealous. (Sex +10, Tiredness +10, Constitution -5)"
+      Type="Misc"
+      Badness="5"
+      Special="None"
+      Cost="9990"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Skill" Name="NormalSex"               Amount="10"    />
+   <Effect What="Stat"  Name="Tiredness"               Amount="10"    />
+   <Effect What="Stat"  Name="Constitution"            Amount="-5"    />
+</Item>
+</Items>

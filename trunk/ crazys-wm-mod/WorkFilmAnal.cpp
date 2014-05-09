@@ -59,6 +59,67 @@ bool cJobManager::WorkFilmAnal(sGirl* girl, sBrothel* brothel, int DayNight, str
 
 	// not for actress
 	g_Girls.UnequipCombat(girl);
+	/*
+	//  ~J~ started 4/28/14
+	// attempt to add check for if the girl wants to film a scene with weapon or armor
+	double equip_check;
+	equip_check = g_Girls.GetSkill(girl, SKILL_COMBAT) + g_Girls.GetSkill(girl, SKILL_MAGIC);
+	equip_check = g_Dice%int(equip_check);  // random combat check
+	
+	int Armor = -1, Weap1 = -1, Weap2 = -1;
+	for (int i = 0; i<40; i++)
+	{
+		if (girl->m_Inventory[i] != 0)
+		{
+			if (girl->m_Inventory[i]->m_Type == INVWEAPON)
+			{
+				if (Weap1 == -1)
+					Weap1 = i;
+				else if (Weap2 == -1)
+					Weap2 = i;
+				else if (girl->m_Inventory[i]->m_Cost > girl->m_Inventory[Weap1]->m_Cost)
+				{
+					Weap2 = Weap1;
+					Weap1 = i;
+				}
+				else if (girl->m_Inventory[i]->m_Cost > girl->m_Inventory[Weap2]->m_Cost)
+					Weap2 = i;
+			}
+			if (girl->m_Inventory[i]->m_Type == INVARMOR)
+			{
+				g_InvManager.Unequip(girl, i);
+				if (Armor == -1)
+					Armor = i;
+				else if (girl->m_Inventory[i]->m_Cost > girl->m_Inventory[Armor]->m_Cost)
+					Armor = i;
+			}
+		}
+	}
+	if (Armor > -1)
+		g_InvManager.Equip(girl, Armor, false);
+	if (Weap1 > -1)
+		g_InvManager.Equip(girl, Weap1, false);
+	if (Weap2 > -1)
+		g_InvManager.Equip(girl, Weap2, false);
+
+
+
+	if(equip_check_c <= 10)
+	{
+	message = girlName + " took off her armor before starting the scene.\n";
+	message = girlName + " took off her armor before starting the scene.\n";
+	message = girlName + " took off her armor before starting the scene.\n";
+	message = girlName + " wanted to film her scene with her armor on.\n";
+	g_Girls.EquipCombat(girl);
+
+	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_NOWORK);
+	return true;
+	}
+
+
+	g_Girls.EquipCombat(girl);
+
+	*/
 
 	girl->m_Pay += 60;
 	message = girlName;

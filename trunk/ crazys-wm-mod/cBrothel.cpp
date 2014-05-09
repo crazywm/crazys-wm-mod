@@ -53,6 +53,7 @@ extern cGold            g_Gold;
 extern cGangManager     g_Gangs;
 extern char             buffer[1000];
 
+
 //extern CGraphics		g_Graphics;
 
 /*

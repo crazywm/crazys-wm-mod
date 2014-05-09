@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="AIDS Cure"
+      Desc="There is no natural or alchemical cure for AIDS, but several churches offer a magical solution in exchange for a considerable donation. Their prayers are effective, but somehow the recipients find themselves considerably less interested in sex than they were before... (-20 all sex skills.-75 Lib)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="3500"
+      Rarity="Shop05"
+      Infinite="false"
+      GirlBuyChance="0">
+   <Effect What="Skill" Name="Anal"                    Amount="-20"    />
+   <Effect What="Skill" Name="BDSM"                    Amount="-20"    />
+   <Effect What="Skill" Name="NormalSex"               Amount="-20"    />
+   <Effect What="Skill" Name="Beastiality"             Amount="-20"    />
+   <Effect What="Skill" Name="OralSex"                 Amount="-20"    />
+   <Effect What="Skill" Name="TittySex"                Amount="-20"    />
+   <Effect What="Skill" Name="Group"                   Amount="-20"    />
+   <Effect What="Skill" Name="Lesbian"                 Amount="-20"    />
+   <Effect What="Skill" Name="Service"                 Amount="-20"    />
+   <Effect What="Skill" Name="Strip"                   Amount="-20"    />
+   <Effect What="Stat"  Name="Libido"                  Amount="-75"    />
+   <Effect What="Trait" Name="AIDS"                    Amount="0"    />
+</Item>
+<Item Name="AIDS Cure"
+      Desc="There is no natural or alchemical cure for AIDS, but several churches offer a magical solution in exchange for a considerable donation. Their prayers are effective, but somehow the recipients find themselves considerably less interested in sex than they were before... (-20 all sex skills.-75 Lib) (This Seller can get more but he charges more)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="5000"
+      Rarity="Shop25"
+      Infinite="false"
+      GirlBuyChance="0">
+   <Effect What="Skill" Name="Anal"                    Amount="-20"    />
+   <Effect What="Skill" Name="BDSM"                    Amount="-20"    />
+   <Effect What="Skill" Name="NormalSex"               Amount="-20"    />
+   <Effect What="Skill" Name="Beastiality"             Amount="-20"    />
+   <Effect What="Skill" Name="Group"                   Amount="-20"    />
+   <Effect What="Skill" Name="Lesbian"                 Amount="-20"    />
+   <Effect What="Skill" Name="Service"                 Amount="-20"    />
+   <Effect What="Skill" Name="Strip"                   Amount="-20"    />
+   <Effect What="Stat"  Name="Libido"                  Amount="-75"    />
+   <Effect What="Trait" Name="AIDS"                    Amount="0"    />
+</Item>
+</Items>

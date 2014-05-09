@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Chii's Ears"
+      Desc="Robotic ears that were once part of a unique girl named Chii. (Adds Meek and Construct)"
+      Type="Misc"
+      Badness="0"
+      Special="None"
+      Cost="14500"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Trait" Name="Meek"                    Amount="1"    />
+   <Effect What="Trait" Name="Construct"               Amount="1"    />
+</Item>
+</Items>

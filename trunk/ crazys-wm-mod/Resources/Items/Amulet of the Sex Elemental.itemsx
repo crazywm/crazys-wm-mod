@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Amulet of the Sex Elemental"
+      Desc="This beautiful ruby amulet, hanging from a gold chain, holds a terrifying power. Any woman wearing it becomes an insatiable thing of pure lust, mentally and physically. Her breasts grow to an enormous size, an immense, permanently-erect penis appears between her legs so she can pleasure (and be pleasured by) anyone regardless of gender, and every moment of every day sees her mind obsessed with intense thoughts of sex. She also gains supernatural endurance, allowing her body to withstand the exertion of her new appetites. (+100 all sex skills, +100 Lib, Cons, Obed, removes Big Boobs, Lolita, Small Boobs, adds Fast Orgasms, Not Human, Nymphomaniac, Great Figure, Great Arse, Fearless, Sterile, Tough, Futanari, Mind Fucked, Long Legs, Puffy Nipples, Perky Nipples, Abnormally Large Boobs)"
+      Type="Necklace"
+      Badness="100"
+      Special="None"
+      Cost="35000"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Skill" Name="Anal"                    Amount="100"    />
+   <Effect What="Skill" Name="BDSM"                    Amount="100"    />
+   <Effect What="Skill" Name="NormalSex"               Amount="100"    />
+   <Effect What="Skill" Name="OralSex"                 Amount="100"    />
+   <Effect What="Skill" Name="TittySex"                Amount="100"    />
+   <Effect What="Skill" Name="Beastiality"             Amount="100"    />
+   <Effect What="Skill" Name="Group"                   Amount="100"    />
+   <Effect What="Skill" Name="Lesbian"                 Amount="100"    />
+   <Effect What="Skill" Name="Service"                 Amount="100"    />
+   <Effect What="Skill" Name="Strip"                   Amount="100"    />
+   <Effect What="Stat"  Name="Libido"                  Amount="100"    />
+   <Effect What="Stat"  Name="Constitution"            Amount="100"    />
+   <Effect What="Stat"  Name="Obedience"               Amount="100"    />
+   <Effect What="Trait" Name="Fast orgasms"            Amount="1"    />
+   <Effect What="Trait" Name="Not Human"               Amount="1"    />
+   <Effect What="Trait" Name="Lolita"                  Amount="0"    />
+   <Effect What="Trait" Name="Nymphomaniac"            Amount="1"    />
+   <Effect What="Trait" Name="Great Figure"            Amount="1"    />
+   <Effect What="Trait" Name="Great Arse"              Amount="1"    />
+   <Effect What="Trait" Name="Fearless"                Amount="1"    />
+   <Effect What="Trait" Name="Sterile"                 Amount="1"    />
+   <Effect What="Trait" Name="Tough"                   Amount="1"    />
+   <Effect What="Trait" Name="Futanari"                Amount="1"    />
+   <Effect What="Trait" Name="Mind Fucked"             Amount="1"    />
+   <Effect What="Trait" Name="Long Legs"               Amount="1"    />
+   <Effect What="Trait" Name="Puffy Nipples"           Amount="1"    />
+   <Effect What="Trait" Name="Perky Nipples"           Amount="1"    />
+   <Effect What="Trait" Name="Abnormally Large Boobs"  Amount="1"    />
+</Item>
+</Items>

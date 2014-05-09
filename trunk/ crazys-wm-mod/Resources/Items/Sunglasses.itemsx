@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Sunglasses"
+      Desc="The coolest form of eyewear. (Adds Cool Person. Removes Nerd.)"
+      Type="Misc"
+      Badness="0"
+      Special="None"
+      Cost="155"
+      Rarity="Common"
+      Infinite="false">
+   <Effect What="Trait" Name="Cool Person"             Amount="1"    />
+   <Effect What="Trait" Name="Nerd"                    Amount="0"    />
+</Item>
+</Items>

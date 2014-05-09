@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Ring of Breast Reduction"
+      Desc="Prized by the likes of female acrobats and warriors whose assets are occasionally a liability, this simple copper ring causes a woman's chest to shrink and flatten. (adds Small Boobs)"
+      Type="Food"
+      Badness="5"
+      Special="None"
+      Cost="600"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Trait" Name="Small Boobs"             Amount="1"    />
+</Item>
+<Item Name="Ring of Breast Reduction"
+      Desc="Prized by the likes of female acrobats and warriors whose assets are occasionally a liability, this simple copper ring causes a woman's chest to shrink and flatten. (adds Small Boobs)"
+      Type="Food"
+      Badness="5"
+      Special="None"
+      Cost="600"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Trait" Name="Small Boobs"             Amount="1"    />
+</Item>
+</Items>

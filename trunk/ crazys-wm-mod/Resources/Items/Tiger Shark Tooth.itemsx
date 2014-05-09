@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Tiger Shark Tooth"
+      Desc="This &quot;tooth&quot; isn't a tooth at all, it is actually a tablet that gives the consumer all of the perks of a tiger shark from the famous land of Mareth. There is also a note....(tigersharks are very primal indeed, when they want sex, they will get it and satisfy both genders with their body parts. Only a few tigersharks have been seen and even so they are just as wild as their regular shark counterparts. WARNING: If eaten outside of Mareth, the power of this tablet increases tenfold.) (+lots stat/skills, +lots traits, +slow learner)"
+      Type="Food"
+      Badness="21"
+      Special="None"
+      Cost="10"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Skill" Name="Beastiality"             Amount="75"    />
+   <Effect What="Skill" Name="NormalSex"               Amount="55"    />
+   <Effect What="Skill" Name="BDSM"                    Amount="65"    />
+   <Effect What="Skill" Name="OralSex"                 Amount="70"    />
+   <Effect What="Skill" Name="Anal"                    Amount="25"    />
+   <Effect What="Skill" Name="Group"                   Amount="55"    />
+   <Effect What="Skill" Name="Lesbian"                 Amount="25"    />
+   <Effect What="Skill" Name="Service"                 Amount="-25"    />
+   <Effect What="Skill" Name="Strip"                   Amount="-25"    />
+   <Effect What="Skill" Name="Combat"                  Amount="85"    />
+   <Effect What="Stat"  Name="Libido"                  Amount="70"    />
+   <Effect What="Stat"  Name="Happiness"               Amount="20"    />
+   <Effect What="Stat"  Name="Constitution"            Amount="50"    />
+   <Effect What="Stat"  Name="Intelligence"            Amount="-30"    />
+   <Effect What="Stat"  Name="Confidence"              Amount="60"    />
+   <Effect What="Stat"  Name="Agility"                 Amount="60"    />
+   <Effect What="Stat"  Name="Obedience"               Amount="-25"    />
+   <Effect What="Stat"  Name="Spirit"                  Amount="70"    />
+   <Effect What="Stat"  Name="Beauty"                  Amount="40"    />
+   <Effect What="Stat"  Name="Tiredness"               Amount="-100"    />
+   <Effect What="Stat"  Name="Health"                  Amount="100"    />
+   <Effect What="Stat"  Name="PCFear"                  Amount="-100"    />
+   <Effect What="Stat"  Name="Charisma"                Amount="20"    />
+   <Effect What="Trait" Name="Cool Person"             Amount="1"    />
+   <Effect What="Trait" Name="Clumsy"                  Amount="0"    />
+   <Effect What="Trait" Name="Fast orgasms"            Amount="1"    />
+   <Effect What="Trait" Name="Strong"                  Amount="1"    />
+   <Effect What="Trait" Name="Not Human"               Amount="1"    />
+   <Effect What="Trait" Name="Fake Orgasm Expert"      Amount="1"    />
+   <Effect What="Trait" Name="Masochist"               Amount="1"    />
+   <Effect What="Trait" Name="Yandere"                 Amount="1"    />
+   <Effect What="Trait" Name="Fleet of Foot"           Amount="1"    />
+   <Effect What="Trait" Name="Futanari"                Amount="1"    />
+   <Effect What="Trait" Name="Strange Eyes"            Amount="1"    />
+   <Effect What="Trait" Name="Iron Will"               Amount="1"    />
+   <Effect What="Trait" Name="Fearless"                Amount="1"    />
+   <Effect What="Trait" Name="Merciless"               Amount="1"    />
+   <Effect What="Trait" Name="Manly"                   Amount="1"    />
+   <Effect What="Trait" Name="Great Figure"            Amount="1"    />
+   <Effect What="Trait" Name="Nymphomaniac"            Amount="1"    />
+   <Effect What="Trait" Name="Slow Learner"            Amount="1"    />
+</Item>
+</Items>

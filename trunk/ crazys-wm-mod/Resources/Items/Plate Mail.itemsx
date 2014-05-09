@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Plate Mail"
+      Desc="This heavy suit of steel plate armor is the best battlefield protection money can buy. It is engineered for maximum mobility but is still somewhat cumbersome. (A) (+20 Comb, +20 Cons, +15 Conf, -15 Fear, -15 Hate, -20 Agi, -40 Cha, -40 Mag)"
+      Type="Armor"
+      Badness="0"
+      Special="None"
+      Cost="1500"
+      Rarity="Shop25"
+      Infinite="false">
+   <Effect What="Skill" Name="Combat"                  Amount="20"    />
+   <Effect What="Stat"  Name="Constitution"            Amount="20"    />
+   <Effect What="Stat"  Name="Confidence"              Amount="15"    />
+   <Effect What="Stat"  Name="PCFear"                  Amount="-15"    />
+   <Effect What="Stat"  Name="PCHate"                  Amount="-15"    />
+   <Effect What="Stat"  Name="Agility"                 Amount="-20"    />
+   <Effect What="Stat"  Name="Charisma"                Amount="-40"    />
+   <Effect What="Skill" Name="Magic"                   Amount="-40"    />
+</Item>
+<Item Name="Plate Mail"
+      Desc="This heavy suit of steel plate armor is the best battlefield protection money can buy. It is engineered for maximum mobility but is still somewhat cumbersome. (A) (+20 Comb, +20 Cons, +15 Conf, -15 Fear, -15 Hate, -20 Agi, -40 Cha, -40 Mag)"
+      Type="Armor"
+      Badness="0"
+      Special="None"
+      Cost="1500"
+      Rarity="Shop25"
+      Infinite="false">
+   <Effect What="Skill" Name="Combat"                  Amount="20"    />
+   <Effect What="Stat"  Name="Constitution"            Amount="20"    />
+   <Effect What="Stat"  Name="Confidence"              Amount="15"    />
+   <Effect What="Stat"  Name="PCFear"                  Amount="-15"    />
+   <Effect What="Stat"  Name="PCHate"                  Amount="-15"    />
+   <Effect What="Stat"  Name="Agility"                 Amount="-20"    />
+   <Effect What="Stat"  Name="Charisma"                Amount="-40"    />
+   <Effect What="Skill" Name="Magic"                   Amount="-40"    />
+</Item>
+</Items>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Summoner's Rod"
+      Desc="This thick iron rod is inscribed with the names of fifteen imps, magically bound in servitude to its wielder. The tiny winged devils can be summoned with a thought, and though they prefer to attack with their sharp claws and poisonous fangs, each of them is a competent spellcaster in its own right. (S) (+35 Mag, +35 Comb, +20 Conf, -40 Fear, -10 Hate)"
+      Type="Weapon"
+      Badness="18"
+      Special="None"
+      Cost="6000"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Skill" Name="Magic"                   Amount="35"    />
+   <Effect What="Skill" Name="Combat"                  Amount="35"    />
+   <Effect What="Stat"  Name="Confidence"              Amount="20"    />
+   <Effect What="Stat"  Name="PCFear"                  Amount="-40"    />
+   <Effect What="Stat"  Name="PCHate"                  Amount="-10"    />
+</Item>
+</Items>

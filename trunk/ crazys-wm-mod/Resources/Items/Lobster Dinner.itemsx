@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Lobster Dinner"
+      Desc="Take your girl out for fancy lobster. (Love +10, Heatlh +10, Tiredness -10)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="1100"
+      Rarity="Shop25"
+      Infinite="false">
+   <Effect What="Stat"  Name="PCLove"                  Amount="10"    />
+   <Effect What="Stat"  Name="Health"                  Amount="10"    />
+   <Effect What="Stat"  Name="Tiredness"               Amount="-10"    />
+</Item>
+</Items>

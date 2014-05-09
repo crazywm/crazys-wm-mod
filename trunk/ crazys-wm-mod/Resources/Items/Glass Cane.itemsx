@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Glass Cane"
+      Desc="This simple wooden cane is topped with a small sphere of clear glass. It could be mistaken for a walking stick, but mages can use it to help focus and direct arcane energy. It can also deliver a good whack if need be. (D) (+15 Mag, +3 Comb, +4 Conf, -8 Fear, -4 Hate)"
+      Type="Small Weapon"
+      Badness="0"
+      Special="None"
+      Cost="300"
+      Rarity="Common"
+      Infinite="false">
+   <Effect What="Skill" Name="Magic"                   Amount="15"    />
+   <Effect What="Skill" Name="Combat"                  Amount="3"    />
+   <Effect What="Stat"  Name="Confidence"              Amount="4"    />
+   <Effect What="Stat"  Name="PCFear"                  Amount="-8"    />
+   <Effect What="Stat"  Name="PCHate"                  Amount="-4"    />
+</Item>
+<Item Name="Glass Cane"
+      Desc="This simple wooden cane is topped with a small sphere of clear glass. It could be mistaken for a walking stick, but mages can use it to help focus and direct arcane energy. It can also deliver a good whack if need be. (D) (+15 Mag, +3 Comb, +4 Conf, -8 Fear, -4 Hate)"
+      Type="Small Weapon"
+      Badness="0"
+      Special="None"
+      Cost="300"
+      Rarity="Common"
+      Infinite="false">
+   <Effect What="Skill" Name="Magic"                   Amount="15"    />
+   <Effect What="Skill" Name="Combat"                  Amount="3"    />
+   <Effect What="Stat"  Name="Confidence"              Amount="4"    />
+   <Effect What="Stat"  Name="PCFear"                  Amount="-8"    />
+   <Effect What="Stat"  Name="PCHate"                  Amount="-4"    />
+</Item>
+</Items>

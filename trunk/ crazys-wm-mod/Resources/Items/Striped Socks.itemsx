@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Striped Socks"
+      Desc="A pair of cute, striped socks. They come in ankle length, knee length, and thigh length varieties. (Adds Cute.)"
+      Type="Misc"
+      Badness="0"
+      Special="None"
+      Cost="1250"
+      Rarity="Common"
+      Infinite="false">
+   <Effect What="Trait" Name="Cute"                    Amount="1"    />
+</Item>
+</Items>

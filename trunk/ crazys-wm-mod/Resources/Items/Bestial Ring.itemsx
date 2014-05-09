@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Bestial Ring"
+      Desc="This rough bronze ring awakens its wearer's primal instincts, suppressing their inhibitions and intellect as it draws their base passions to the surface. (+20 Lib, +50 Best, -50 Strip and Serv, +10 all other sex skills, -50 Int, removes Elegant)"
+      Type="Ring"
+      Badness="55"
+      Special="None"
+      Cost="1600"
+      Rarity="Shop05"
+      Infinite="false"
+      GirlBuyChance="10">
+   <Effect What="Stat"  Name="Intelligence"            Amount="-50"    />
+   <Effect What="Skill" Name="Beastiality"             Amount="50"    />
+   <Effect What="Stat"  Name="Libido"                  Amount="20"    />
+   <Effect What="Skill" Name="Service"                 Amount="-50"    />
+   <Effect What="Skill" Name="Strip"                   Amount="-50"    />
+   <Effect What="Skill" Name="Anal"                    Amount="10"    />
+   <Effect What="Skill" Name="OralSex"                 Amount="10"    />
+   <Effect What="Skill" Name="TittySex"                Amount="10"    />
+   <Effect What="Skill" Name="BDSM"                    Amount="10"    />
+   <Effect What="Skill" Name="NormalSex"               Amount="10"    />
+   <Effect What="Skill" Name="Group"                   Amount="10"    />
+   <Effect What="Skill" Name="Lesbian"                 Amount="10"    />
+   <Effect What="Trait" Name="Elegant"                 Amount="0"    />
+</Item>
+</Items>

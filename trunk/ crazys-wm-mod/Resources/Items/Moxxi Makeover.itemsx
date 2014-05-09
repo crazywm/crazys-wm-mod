@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Moxxi Makeover"
+      Desc="A makeup kit endorsed by Mad Moxxi herself! (Beauty +10, Adds Sexy Air.)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="2800"
+      Rarity="Shop25"
+      Infinite="false">
+   <Effect What="Stat"  Name="Beauty"                  Amount="10"    />
+   <Effect What="Trait" Name="Sexy Air"                Amount="1"    />
+</Item>
+</Items>

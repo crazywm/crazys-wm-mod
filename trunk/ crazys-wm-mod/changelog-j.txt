@@ -1,0 +1,73 @@
+### Planned/Reccomended changes:
+Make separate file for "Rebelliousness" calculation so it can be added back to all girl lists.
+Add Inventory page keys:
+   5/t - Owner Left up/down
+   g/b - Item Left up/down
+   6/y - Item group up/down
+   7/u - Owner Right up/down
+   j/m - Item Right up/down
+   *No keys for buy/sell or equip/unequip
+Add right click menus
+Transfer screen - Add Health, Happy, Tired and Rebel columns
+Transfer screen - Add Girl count above columns and/or on location lists
+Recode for config files "config.xml", "ScreenMode.txt" to make 1 file in the directory that has the EXE file
+Make the game create the "Saves" folder if it does not exist
+Move "itemsx" files from "Resources/Data" to "Resources/Items"
+Either combine "Resources/Buttons" into "Resources/Images" or combine both into "Resources/Interface/(individiual interface folder)/Images"
+Allow for subfolders in "Resources" folders. Would allow:
+   Girls folders to contain the "girlsx" files 
+   Subfolders for each image type to cleanup massive image count girls
+Items page - Add location filter
+? Items page - Add (does the girl have this item?) filter - if an item is selected, (who has one of these)'s line changes color?
+Girl Detail page - add +/- buttons to "House Percentage" (slider can sometimes be difficult)
+Brothel page - Add "Manage Inventory" button
+
+
+
+
+
+
+
+
+
+
+### Changes April 2014:
+Girl files - Cleaned and separated to 1 girl per file for easier duplicate removal.
+Items - Cleaned and reorganized files.
+Items - Moved "Gantz Suit" and "Succubus' Wardress" from armor to clothes to allow brothel workers not to unequip them loosing their bonuses.
+Items - Renamed same-named items to allow the game to save the exact variation of the item with minimal visiual effect in the game.
+Items - Added alternate "sellers" some of items - allowing items to be more common but at higher prices. - Items keep the same name so they merge with the original item when the game is reloaded.
+Items - Added "Healing Salve (T)" and "Incense of Serenity (T)" 
+# Interface - J_1024x768
+ - Moved "Next Week" buttons to top right
+ - Moved most "Back" buttons to bottom right
+ - Rearranged and resized Dungeon buttons
+ - Brothel page - Enlarged "Girls" box to 25
+ - Brothel page - added "Slave" and "Rebel" columns
+ - Girl detail - Reduced size of "Take Gold" and "Send to Dungeon" buttons
+ - Girl detail - Rearranged some buttons
+ - Girl detail - Aligned "Manage Inventory" and Inventory's "Back" button for faster use.
+ - Girl detail - Resized "Job Type" box to remove scrolling
+ - Girl detail - Enlarged "Traits" box to 6
+ - Inventory page - Enlarged "Item Group" list to remove scrolling. Moved left/right buttons to fit.
+ - Repaired Bank screen adding missing "withdraw all" button.
+# Source code:
+WorkPersonalBedWarmer.cpp
+ - Corrected brackets, wages, rolls
+ - Condensed if(HateLove) group
+WorkPersonalTraining.cpp
+ - Corrected rolls
+main.cpp
+ - Corrected background image stretching to not maintain ratio
+cButton.cpp
+ - Corrected button image stretching to not maintain ratio
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 

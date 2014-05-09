@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Queen's Blade"
+      Desc="Whoever holds this sword shall be queen. (Combat +20, Agility +10, Constitution +5, Adds Queen)"
+      Type="Weapon"
+      Badness="0"
+      Special="None"
+      Cost="14500"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Stat"  Name="Constitution"            Amount="5"    />
+   <Effect What="Skill" Name="Combat"                  Amount="20"    />
+   <Effect What="Stat"  Name="Agility"                 Amount="10"    />
+   <Effect What="Trait" Name="Queen"                   Amount="1"    />
+</Item>
+</Items>

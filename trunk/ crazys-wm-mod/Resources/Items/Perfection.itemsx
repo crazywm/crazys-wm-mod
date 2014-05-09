@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Perfection"
+      Desc="The power to remake yourself. (Someone's idea of physical and mental perfection.)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="200000"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Stat"  Name="AskPrice"                Amount="50000"    />
+   <Effect What="Stat"  Name="Exp"                     Amount="255"    />
+   <Effect What="Stat"  Name="Age"                     Amount="-100"    />
+   <Effect What="Trait" Name="Elegant"                 Amount="1"    />
+   <Effect What="Trait" Name="Charming"                Amount="1"    />
+   <Effect What="Trait" Name="Charismatic"             Amount="1"    />
+   <Effect What="Trait" Name="Good Kisser"             Amount="1"    />
+   <Effect What="Trait" Name="Cool Person"             Amount="1"    />
+   <Effect What="Trait" Name="Adventurer"              Amount="0"    />
+   <Effect What="Trait" Name="Fearless"                Amount="0"    />
+   <Effect What="Trait" Name="Aggressive"              Amount="0"    />
+   <Effect What="Trait" Name="Tsundere"                Amount="0"    />
+   <Effect What="Trait" Name="Yandere"                 Amount="0"    />
+   <Effect What="Trait" Name="Meek"                    Amount="0"    />
+   <Effect What="Trait" Name="Nervous"                 Amount="0"    />
+   <Effect What="Trait" Name="Strong"                  Amount="1"    />
+   <Effect What="Trait" Name="Manly"                   Amount="0"    />
+   <Effect What="Trait" Name="Sexy Air"                Amount="1"    />
+   <Effect What="Trait" Name="Fleet of Foot"           Amount="1"    />
+   <Effect What="Trait" Name="Nerd"                    Amount="0"    />
+   <Effect What="Trait" Name="Big Boobs"               Amount="0"    />
+   <Effect What="Trait" Name="Small Boobs"             Amount="0"    />
+   <Effect What="Trait" Name="Abnormally Large Boobs"  Amount="1"    />
+   <Effect What="Trait" Name="Clumsy"                  Amount="0"    />
+   <Effect What="Trait" Name="Fast orgasms"            Amount="1"    />
+   <Effect What="Trait" Name="Slow orgasms"            Amount="0"    />
+   <Effect What="Trait" Name="Fake Orgasm Expert"      Amount="1"    />
+   <Effect What="Trait" Name="Not Human"               Amount="0"    />
+   <Effect What="Trait" Name="Lolita"                  Amount="0"    />
+   <Effect What="Trait" Name="Lesbian"                 Amount="0"    />
+   <Effect What="Trait" Name="Futanari"                Amount="0"    />
+   <Effect What="Trait" Name="Construct"               Amount="0"    />
+   <Effect What="Trait" Name="Half-Construct"          Amount="0"    />
+   <Effect What="Trait" Name="Nymphomaniac"            Amount="1"    />
+   <Effect What="Trait" Name="Great Figure"            Amount="1"    />
+   <Effect What="Trait" Name="Great Arse"              Amount="1"    />
+   <Effect What="Trait" Name="Sterile"                 Amount="1"    />
+   <Effect What="Trait" Name="Tough"                   Amount="1"    />
+   <Effect What="Trait" Name="Masochist"               Amount="1"    />
+   <Effect What="Trait" Name="Fragile"                 Amount="0"    />
+   <Effect What="Trait" Name="Long Legs"               Amount="1"    />
+   <Effect What="Trait" Name="Puffy Nipples"           Amount="1"    />
+   <Effect What="Trait" Name="Perky Nipples"           Amount="1"    />
+   <Effect What="Trait" Name="Optimist"                Amount="1"    />
+   <Effect What="Trait" Name="Pessimistic"             Amount="0"    />
+   <Effect What="Trait" Name="Quick Learner"           Amount="1"    />
+   <Effect What="Trait" Name="Slow Learner"            Amount="0"    />
+   <Effect What="Trait" Name="Broken Will"             Amount="0"    />
+   <Effect What="Trait" Name="Mind Fucked"             Amount="0"    />
+   <Effect What="Trait" Name="Retarted"                Amount="0"    />
+   <Effect What="Trait" Name="Malformed"               Amount="0"    />
+   <Effect What="Trait" Name="Psychic"                 Amount="1"    />
+   <Effect What="Trait" Name="Strong Magic"            Amount="1"    />
+   <Effect What="Trait" Name="Sadistic"                Amount="0"    />
+   <Effect What="Trait" Name="Merciless"               Amount="0"    />
+   <Effect What="Trait" Name="Twisted"                 Amount="0"    />
+   <Effect What="Trait" Name="Small Scars"             Amount="0"    />
+   <Effect What="Trait" Name="Cool Scars"              Amount="0"    />
+   <Effect What="Trait" Name="Horrific Scars"          Amount="0"    />
+   <Effect What="Trait" Name="One Eye"                 Amount="0"    />
+   <Effect What="Trait" Name="Eye Patch"               Amount="0"    />
+   <Effect What="Trait" Name="Strange Eyes"            Amount="0"    />
+   <Effect What="Trait" Name="Fairy Dust Addict"       Amount="0"    />
+   <Effect What="Trait" Name="Viras Blood Addict"      Amount="0"    />
+   <Effect What="Trait" Name="Shroud Addict"           Amount="0"    />
+   <Effect What="Trait" Name="Chlamydia"               Amount="0"    />
+   <Effect What="Trait" Name="AIDS"                    Amount="0"    />
+   <Effect What="Trait" Name="Syphilis"                Amount="0"    />
+   <Effect What="Trait" Name="MILF"                    Amount="0"    />
+</Item>
+</Items>

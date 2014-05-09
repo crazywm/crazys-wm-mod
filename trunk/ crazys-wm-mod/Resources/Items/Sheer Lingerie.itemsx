@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Sheer Lingerie"
+      Desc="A skimpy sheer nightgown and matching underwear. It hides absolutely nothing, but the see-through fabric has that peculiar, classy way of being almost better than naked. (B) (+6 Cha, +10 Lib, +15 all sex skills)"
+      Type="Under Wear"
+      Badness="30"
+      Special="None"
+      Cost="500"
+      Rarity="Shop25"
+      Infinite="false"
+      GirlBuyChance="10">
+   <Effect What="Skill" Name="Anal"                    Amount="15"    />
+   <Effect What="Skill" Name="BDSM"                    Amount="15"    />
+   <Effect What="Skill" Name="NormalSex"               Amount="15"    />
+   <Effect What="Skill" Name="Beastiality"             Amount="15"    />
+   <Effect What="Skill" Name="OralSex"                 Amount="15"    />
+   <Effect What="Skill" Name="TittySex"                Amount="15"    />
+   <Effect What="Skill" Name="Group"                   Amount="15"    />
+   <Effect What="Skill" Name="Lesbian"                 Amount="15"    />
+   <Effect What="Skill" Name="Service"                 Amount="15"    />
+   <Effect What="Skill" Name="Strip"                   Amount="15"    />
+   <Effect What="Stat"  Name="Charisma"                Amount="6"    />
+   <Effect What="Stat"  Name="Libido"                  Amount="10"    />
+</Item>
+</Items>

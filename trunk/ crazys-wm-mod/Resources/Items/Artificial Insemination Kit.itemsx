@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Artificial Insemination Kit"
+      Desc="Sick of your girl not getting pregnant? Let science do it for you! (Inseminates girl)"
+      Type="Food"
+      Badness="19"
+      Special="None"
+      Cost="250"
+      Rarity="Shop50"
+      Infinite="false">
+   <Effect What="GirlStatus" Name="Inseminated"        Amount="1"    />
+</Item>
+</Items>

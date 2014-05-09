@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Library Card"
+      Desc="Give your girl unlimited access to the town library. (Tiredness -5, Adds Nerd)"
+      Type="Misc"
+      Badness="0"
+      Special="None"
+      Cost="100"
+      Rarity="Common"
+      Infinite="false">
+   <Effect What="Stat"  Name="Tiredness"               Amount="-5"    />
+   <Effect What="Trait" Name="Nerd"                    Amount="1"    />
+</Item>
+</Items>

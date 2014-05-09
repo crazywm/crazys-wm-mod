@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Willbreaker Spice"
+      Desc="When regularly slipped into a person's food, this magical spice will slowly wear down their willpower and mental defenses over time. Only slight amounts can be added at one time before the taste is detected, however. (+10 Obed, -10 Conf, -10 Spi, -5 Hate, +5 Fear)"
+      Type="Food"
+      Badness="5"
+      Special="None"
+      Cost="300"
+      Rarity="Shop50"
+      Infinite="false"
+      GirlBuyChance="0">
+   <Effect What="Stat"  Name="Confidence"              Amount="-10"    />
+   <Effect What="Stat"  Name="Obedience"               Amount="10"    />
+   <Effect What="Stat"  Name="Spirit"                  Amount="-10"    />
+   <Effect What="Stat"  Name="PCHate"                  Amount="-5"    />
+   <Effect What="Stat"  Name="PCFear"                  Amount="5"    />
+</Item>
+</Items>

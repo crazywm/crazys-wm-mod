@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Eye patch"
+      Desc="Who says that you have to actually lose an eye to be able to wear this? (Adds Eye Patch)"
+      Type="Misc"
+      Badness="5"
+      Special="None"
+      Cost="445"
+      Rarity="Shop50"
+      Infinite="false">
+   <Effect What="Trait" Name="Eye Patch"               Amount="1"    />
+</Item>
+</Items>

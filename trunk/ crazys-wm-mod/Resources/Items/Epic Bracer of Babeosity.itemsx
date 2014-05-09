@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Epic Bracer of Babeosity"
+      Desc="A serious refinement of the initial design. (Removes Lolita, Small Boobs, Slow Orgasms. Adds Fast Orgasms, Nymphomaniac, Great Figure, Great Arse, Long Legs, Puffy Nipples, Perky Nipples, Large Boobs, +50 cha, beauty, libido, confidence, constitution)"
+      Type="Armband"
+      Badness="50"
+      Special="None"
+      Cost="17000"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="GirlStatus" Name="Controlled"         Amount="0"    />
+   <Effect What="Stat"  Name="Libido"                  Amount="50"    />
+   <Effect What="Stat"  Name="Constitution"            Amount="50"    />
+   <Effect What="Stat"  Name="Charisma"                Amount="50"    /> 
+   <Effect What="Stat"  Name="Beauty"                  Amount="50"    />
+   <Effect What="Stat"  Name="Confidence"              Amount="50"    />
+   <Effect What="Trait" Name="Big Boobs"               Amount="0"    />
+   <Effect What="Trait" Name="Small Boobs"             Amount="0"    /> 
+   <Effect What="Trait" Name="Abnormally Large Boobs"  Amount="1"    /> 
+   <Effect What="Trait" Name="Fast orgasms"            Amount="1"    />
+   <Effect What="Trait" Name="Slow orgasms"            Amount="0"    />
+   <Effect What="Trait" Name="Lolita"                  Amount="0"    />
+   <Effect What="Trait" Name="Cute"                    Amount="0"    />
+   <Effect What="Trait" Name="Nymphomaniac"            Amount="1"    />
+   <Effect What="Trait" Name="Great Figure"            Amount="1"    />
+   <Effect What="Trait" Name="Great Arse"              Amount="1"    />
+   <Effect What="Trait" Name="Tough"                   Amount="1"    />
+   <Effect What="Trait" Name="Long Legs"               Amount="1"    />
+   <Effect What="Trait" Name="Puffy Nipples"           Amount="1"    />
+   <Effect What="Trait" Name="Perky Nipples"           Amount="1"    />
+   <Effect What="Trait" Name="Broken Will"             Amount="0"    />
+   <Effect What="Trait" Name="Strong Willed"           Amount="0"    />
+</Item>
+</Items>

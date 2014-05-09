@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Room Decorations"
+      Desc="Some posters and stuffed animals and stuff to make your girl's room a little more upbeat. (+5 happiness)"
+      Type="Misc"
+      Badness="0"
+      Special="None"
+      Cost="290"
+      Rarity="Shop50"
+      Infinite="false">
+   <Effect What="Stat"  Name="Happiness"               Amount="5"    />
+</Item>
+</Items>

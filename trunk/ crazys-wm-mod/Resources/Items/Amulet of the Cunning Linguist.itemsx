@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Amulet of the Cunning Linguist"
+      Desc="This tongue-shaped amulet instantly gives its wearer the ability to speak and understand all known languages perfectly, magnifying the effects of learning both mundane and arcane. It also has the curious side effect of making one intensely desire putting one's tongue on a woman's genitals. Odd. Strange. (+10 Mag, +10 Les, +10 Lib, gives Lesbian and Quick Learner)"
+      Type="Necklace"
+      Badness="15"
+      Special="None"
+      Cost="5000"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Skill" Name="Magic"                   Amount="10"    />
+   <Effect What="Skill" Name="Lesbian"                 Amount="25"    />
+   <Effect What="Skill" Name="OralSex"                 Amount="15"    />
+   <Effect What="Stat"  Name="Libido"                  Amount="25"    />
+   <Effect What="Trait" Name="Lesbian"                 Amount="1"    />
+   <Effect What="Trait" Name="Quick Learner"           Amount="1"    />
+</Item>
+</Items>

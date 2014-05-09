@@ -24,7 +24,7 @@
 
 class cScreenBank : public cInterfaceWindowXML 
 {
-public:
+//public:   //removed - duplicated below
 
 private:
 	bool	GetDeposit;

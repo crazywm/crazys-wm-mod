@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Hime Ring"
+      Desc="Removes all blemishes - physical and mental. A princess should be perfect, after all! (+10 Beauty. Removes Scars, Mind Fucked, Malformed, Retarded, Slow Learner, Twisted)"
+      Type="Ring"
+      Badness="0"
+      Special="None"
+      Cost="22350"
+      Rarity="Catacomb15"
+      Infinite="false"
+      GirlBuyChance="40">
+   <Effect What="Stat"  Name="Beauty"                  Amount="10"    />
+   <Effect What="Trait" Name="Small Scars"             Amount="0"    />
+   <Effect What="Trait" Name="Cool Scars"              Amount="0"    />
+   <Effect What="Trait" Name="Horrific Scars"          Amount="0"    />
+   <Effect What="Trait" Name="Slow Learner"            Amount="0"    />
+   <Effect What="Trait" Name="Twisted"                 Amount="0"    />
+   <Effect What="Trait" Name="Mind Fucked"             Amount="0"    />
+   <Effect What="Trait" Name="Malformed"               Amount="0"    />
+   <Effect What="Trait" Name="Retarded"                Amount="0"    />
+</Item>
+</Items>

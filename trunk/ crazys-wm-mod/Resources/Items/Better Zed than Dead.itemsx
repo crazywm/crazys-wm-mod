@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Better Zed than Dead, "
+      Desc="Zed is only a doctor in the loosest sense of the word, but if you're gonna die anyway, he might be able to do something... (Health +100, chance for side effects)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="2800"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Stat"  Name="Health"                  Amount="100"    />
+   <Effect What="Trait" Name="Cute"                    Amount="0"    />
+</Item>
+<Item Name="Better Zed than Dead. "
+      Desc="Zed is only a doctor in the loosest sense of the word, but if you're gonna die anyway, he might be able to do something... (Health +100, chance for side effects)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="2800"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Stat"  Name="Health"                  Amount="100"    />
+   <Effect What="Trait" Name="Horrific Scars"          Amount="1"    />
+</Item>
+<Item Name="Better Zed than Dead.."
+      Desc="Zed is only a doctor in the loosest sense of the word, but if you're gonna die anyway, he might be able to do something... (Health +100, chance for side effects)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="2800"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Stat"  Name="Health"                  Amount="100"    />
+   <Effect What="Trait" Name="Malformed"               Amount="1"    />
+</Item>
+<Item Name="Better Zed than Dead ."
+      Desc="Zed is only a doctor in the loosest sense of the word, but if you're gonna die anyway, he might be able to do something... (Health +100, chance for side effects)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="2800"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Stat"  Name="Health"                  Amount="100"    />
+   <Effect What="Trait" Name="Slow Learner"            Amount="1"    />
+   <Effect What="Trait" Name="Quick Learner"           Amount="0"    />
+</Item>
+</Items>

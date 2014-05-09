@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Cat"
+      Desc="This is a common cat. It's the ideal pet if you're looking for a cute and fluffy animal that believes you exist solely for its amusement. (+10 Hap, +5 Cha, +5 Lib, +10 Obed, +5 Best,)"
+      Type="Misc"
+      Badness="0"
+      Special="None"
+      Cost="25"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Stat"  Name="Charisma"                Amount="5"    />
+   <Effect What="Stat"  Name="Happiness"               Amount="10"    />
+   <Effect What="Stat"  Name="Libido"                  Amount="5"    />
+   <Effect What="Stat"  Name="Obedience"               Amount="10"    />
+   <Effect What="Skill" Name="Beastiality"             Amount="5"    />
+</Item>
+</Items>

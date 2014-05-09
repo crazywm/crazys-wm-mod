@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Rejuvenation Bed"
+      Desc="A bed that heals your girl slightly every night. Perfect for those fragile waifs. (Health +5)"
+      Type="Misc"
+      Badness="0"
+      Special="None"
+      Cost="5000"
+      Rarity="Shop25"
+      Infinite="false">
+   <Effect What="Stat"  Name="Health"                  Amount="5"    />
+</Item>
+</Items>

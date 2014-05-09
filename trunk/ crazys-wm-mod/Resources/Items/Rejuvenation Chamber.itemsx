@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Rejuvenation Chamber"
+      Desc="Tech from the future. Heals a girl and puts her off better than she was before. (Full heal, Age -1. Removes Malformed, One Eye, and all scars.)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="10440"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="GirlStatus" Name="Poisoned"           Amount="0"    />
+   <Effect What="GirlStatus" Name="Badly Poisoned"     Amount="0"    />
+   <Effect What="Stat"  Name="Health"                  Amount="200"    />
+   <Effect What="Stat"  Name="Tiredness"               Amount="-200"    />
+   <Effect What="Trait" Name="Malformed"               Amount="0"    />
+   <Effect What="Trait" Name="One Eye"                 Amount="0"    />
+   <Effect What="Trait" Name="Eye Patch"               Amount="0"    />
+   <Effect What="Trait" Name="Small Scars"             Amount="0"    />
+   <Effect What="Trait" Name="Cool Scars"              Amount="0"    />
+   <Effect What="Trait" Name="Horrific Scars"          Amount="0"    />
+   <Effect What="Trait" Name="AIDS"                    Amount="0"    />
+   <Effect What="Trait" Name="Chlamydia"               Amount="0"    />
+   <Effect What="Trait" Name="Syphilis"                Amount="0"    />
+</Item>
+</Items>

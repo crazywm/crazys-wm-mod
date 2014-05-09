@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="RigJuice"
+      Desc="Warning: Continued use may cause permanent brain damage. (+5 Constitution, Experience, Happiness. -10 Intelligence.)"
+      Type="Food"
+      Badness="15"
+      Special="None"
+      Cost="190"
+      Rarity="Shop50"
+      Infinite="false">
+   <Effect What="Stat"  Name="Intelligence"            Amount="-10"    />
+   <Effect What="Stat"  Name="Constitution"            Amount="5"    />
+   <Effect What="Stat"  Name="Exp"                     Amount="5"    />
+   <Effect What="Stat"  Name="Happiness"               Amount="5"    />
+</Item>
+</Items>

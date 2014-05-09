@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Elixir of Ultimate Regeneration"
+      Desc="This mighty potion instantly causes the drinker's body to regenerate all lost limbs, heal all physical wounds, cure all illnesses, and erase any scars. The process is physiologically exhausting and may require a convalescence period. (+100 HP, +100 Tired, removes One Eye, Eye Patch, Half-Construct, all scars and all diseases)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="5000"
+      Rarity="Shop05"
+      Infinite="false"
+      GirlBuyChance="0">
+   <Effect What="Stat"  Name="Health"                  Amount="100"    />
+   <Effect What="Stat"  Name="Tiredness"               Amount="100"    />
+   <Effect What="Trait" Name="Small Scars"             Amount="0"    />
+   <Effect What="Trait" Name="Cool Scars"              Amount="0"    />
+   <Effect What="Trait" Name="Horrific Scars"          Amount="0"    />
+   <Effect What="Trait" Name="Chlamydia"               Amount="0"    />
+   <Effect What="Trait" Name="Syphilis"                Amount="0"    />
+   <Effect What="Trait" Name="AIDS"                    Amount="0"    />
+   <Effect What="Trait" Name="One Eye"                 Amount="0"    />
+   <Effect What="Trait" Name="Eye Patch"               Amount="0"    />
+   <Effect What="Trait" Name="Half-Construct"          Amount="0"    />
+</Item>
+<Item Name="Elixir of Ultimate Regeneration"
+      Desc="This mighty potion instantly causes the drinker's body to regenerate all lost limbs, heal all physical wounds, cure all illnesses, and erase any scars. The process is physiologically exhausting and may require a convalescence period. (+100 HP, +100 Tired, removes One Eye, Eye Patch, Half-Construct, all scars and all diseases)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="5000"
+      Rarity="Shop05"
+      Infinite="false"
+      GirlBuyChance="0">
+   <Effect What="Stat"  Name="Health"                  Amount="100"    />
+   <Effect What="Stat"  Name="Tiredness"               Amount="100"    />
+   <Effect What="Trait" Name="Small Scars"             Amount="0"    />
+   <Effect What="Trait" Name="Cool Scars"              Amount="0"    />
+   <Effect What="Trait" Name="Horrific Scars"          Amount="0"    />
+   <Effect What="Trait" Name="Chlamydia"               Amount="0"    />
+   <Effect What="Trait" Name="Syphilis"                Amount="0"    />
+   <Effect What="Trait" Name="AIDS"                    Amount="0"    />
+   <Effect What="Trait" Name="One Eye"                 Amount="0"    />
+   <Effect What="Trait" Name="Eye Patch"               Amount="0"    />
+   <Effect What="Trait" Name="Half-Construct"          Amount="0"    />
+</Item>
+</Items>

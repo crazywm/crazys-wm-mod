@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="The Realm of Darthon"
+      Desc="A role playing game your girls can use to wind down after a long day of whoring. (-10 Tired. Adds Nerd)"
+      Type="Misc"
+      Badness="0"
+      Special="None"
+      Cost="699"
+      Rarity="Shop25"
+      Infinite="false">
+   <Effect What="Stat"  Name="Tiredness"               Amount="-10"    />
+   <Effect What="Trait" Name="Nerd"                    Amount="1"    />
+</Item>
+</Items>

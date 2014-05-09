@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Bullwhip"
+      Desc="This tough leather whip, originally used on oxen, is more than capable of causing severely painful wounds on humans, though it is awkward and difficult to use in actual combat. Some find it of more practical use in the bedroom... (C) (+5 Comb, +10 BDSM, +5 Conf, -5 Fear)"
+      Type="Small Weapon"
+      Badness="0"
+      Special="None"
+      Cost="350"
+      Rarity="Shop25"
+      Infinite="false">
+   <Effect What="Skill" Name="Combat"                  Amount="5"    />
+   <Effect What="Skill" Name="BDSM"                    Amount="10"    />
+   <Effect What="Stat"  Name="Confidence"              Amount="5"    />
+   <Effect What="Stat"  Name="PCFear"                  Amount="-5"    />
+</Item>
+<Item Name="Bullwhip"
+      Desc="This tough leather whip, originally used on oxen, is more than capable of causing severely painful wounds on humans, though it is awkward and difficult to use in actual combat. Some find it of more practical use in the bedroom... (C) (+5 Comb, +10 BDSM, +5 Conf, -5 Fear)"
+      Type="Small Weapon"
+      Badness="0"
+      Special="None"
+      Cost="350"
+      Rarity="Shop25"
+      Infinite="false">
+   <Effect What="Skill" Name="Combat"                  Amount="5"    />
+   <Effect What="Skill" Name="BDSM"                    Amount="10"    />
+   <Effect What="Stat"  Name="Confidence"              Amount="5"    />
+   <Effect What="Stat"  Name="PCFear"                  Amount="-5"    />
+</Item>
+</Items>

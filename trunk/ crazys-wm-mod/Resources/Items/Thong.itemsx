@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Thong"
+      Desc="A tiny little thong. (Removes Elegant. Adds Great Arse.)"
+      Type="Under Wear"
+      Badness="0"
+      Special="None"
+      Cost="790"
+      Rarity="Common"
+      Infinite="false">
+   <Effect What="Trait" Name="Elegant"                 Amount="0"    />
+   <Effect What="Trait" Name="Great Arse"              Amount="1"    />
+</Item>
+</Items>

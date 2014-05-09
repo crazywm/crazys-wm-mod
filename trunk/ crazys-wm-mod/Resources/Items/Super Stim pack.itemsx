@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Super Stim pack"
+      Desc="From the future, this item gives a girl a huge boost of energy. (+100 Health, -100 Tiredness, -1 Age)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="1999"
+      Rarity="Catacomb15"
+      Infinite="false"
+      GirlBuyChance="10">
+   <Effect What="Stat"  Name="Health"                  Amount="100"    />
+   <Effect What="Stat"  Name="Tiredness"               Amount="-100"    />
+   <Effect What="Stat"  Name="Age"                     Amount="-1"    />
+</Item>
+</Items>

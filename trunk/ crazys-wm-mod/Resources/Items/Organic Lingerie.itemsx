@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Organic Lingerie"
+      Desc="This bizarre living creature looks like an inert pile of thin, ropy tentacles until touched by a woman, at which point it wraps itself around her body, tightly grasping her breasts, nipples and crotch. It's unpleasant at first, but the wearer soon enters a state of perpetual arousal as the thing expertly caresses her like a gentle lover. (S) (+75 Lib, -10 Cha, +40 Best, -30 Strip, +30 all other sex skills, adds Nymphomaniac and Fast Orgasms)"
+      Type="Under Wear"
+      Badness="100"
+      Special="None"
+      Cost="15000"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Skill" Name="Anal"                    Amount="30"    />
+   <Effect What="Skill" Name="BDSM"                    Amount="30"    />
+   <Effect What="Skill" Name="NormalSex"               Amount="30"    />
+   <Effect What="Skill" Name="OralSex"                 Amount="30"    />
+   <Effect What="Skill" Name="TittySex"                Amount="30"    />
+   <Effect What="Skill" Name="Beastiality"             Amount="40"    />
+   <Effect What="Skill" Name="Group"                   Amount="30"    />
+   <Effect What="Skill" Name="Lesbian"                 Amount="30"    />
+   <Effect What="Skill" Name="Service"                 Amount="30"    />
+   <Effect What="Skill" Name="Strip"                   Amount="-30"    />
+   <Effect What="Stat"  Name="Libido"                  Amount="75"    />
+   <Effect What="Stat"  Name="Charisma"                Amount="-10"    />
+   <Effect What="Trait" Name="Nymphomaniac"            Amount="1"    />
+   <Effect What="Trait" Name="Fast orgasms"            Amount="1"    />
+</Item>
+</Items>

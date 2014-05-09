@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Kasumi's Stockings"
+      Desc="Stockings once worn by the legendary fighter and assassin Kasumi. (Beauty +10. Adds Fleet of Foot, Long Legs, and Assassin.)"
+      Type="Misc"
+      Badness="0"
+      Special="None"
+      Cost="15400"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Stat"  Name="Beauty"                  Amount="10"    />
+   <Effect What="Trait" Name="Fleet of Foot"           Amount="1"    />
+   <Effect What="Trait" Name="Long Legs"               Amount="1"    />
+   <Effect What="Trait" Name="Assassin"                Amount="1"    />
+</Item>
+</Items>
