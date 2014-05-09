@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Bag of Magic Dry Water"
+      Desc="When anyone opens and pour this on themselves, not only will they become less tired, anyone around them will feel the same. (Tiredness -50)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="1000"
+      Rarity="Shop50"
+      Infinite="false"
+      GirlBuyChance="15">
+   <Effect What="Stat"  Name="Tiredness"               Amount="-50"    />
+</Item>
+</Items>

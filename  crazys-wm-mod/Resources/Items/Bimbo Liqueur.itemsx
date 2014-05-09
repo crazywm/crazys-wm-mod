@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Bimbo Liqueur"
+      Desc="There appears to be a very big label on the back of this. (WARNING! : To all who drink this, female or not, will change into a hyper female with platinum-blonde hair and ridiculously sized breasts. You will also gain temendous perks but at the same time lose those perks that help with fighting. With that being said, you will become dumber than dirt and will crave nothing but stuffing your twat with all sorts of &quot;things&quot;. DRINK AT YOUR OWN RISK!!!!!) (+So many skills and traits, -fighting/magic abilities, +Sex traits, +going to be AGGRESSIVE to get want you want, -age but not much)"
+      Type="Food"
+      Badness="75"
+      Special="None"
+      Cost="10000"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Skill" Name="Anal"                    Amount="25"    />
+   <Effect What="Skill" Name="Magic"                   Amount="-100"    />
+   <Effect What="Skill" Name="BDSM"                    Amount="50"    />
+   <Effect What="Skill" Name="NormalSex"               Amount="100"    />
+   <Effect What="Skill" Name="Beastiality"             Amount="30"    />
+   <Effect What="Skill" Name="OralSex"                 Amount="40"    />
+   <Effect What="Skill" Name="Group"                   Amount="100"    />
+   <Effect What="Skill" Name="Lesbian"                 Amount="100"    />
+   <Effect What="Skill" Name="Service"                 Amount="-10"    />
+   <Effect What="Skill" Name="Strip"                   Amount="75"    />
+   <Effect What="Skill" Name="Combat"                  Amount="-100"    />
+   <Effect What="Stat"  Name="Charisma"                Amount="70"    />
+   <Effect What="Stat"  Name="Libido"                  Amount="100"    />
+   <Effect What="Stat"  Name="Constitution"            Amount="100"    />
+   <Effect What="Stat"  Name="Intelligence"            Amount="-200"    />
+   <Effect What="Stat"  Name="Confidence"              Amount="80"    />
+   <Effect What="Stat"  Name="Mana"                    Amount="20"    />
+   <Effect What="Stat"  Name="Age"                     Amount="-1"    />
+   <Effect What="Stat"  Name="Obedience"               Amount="25"    />
+   <Effect What="Stat"  Name="Spirit"                  Amount="50"    />
+   <Effect What="Stat"  Name="Beauty"                  Amount="100"    />
+   <Effect What="Stat"  Name="PCFear"                  Amount="-50"    />
+   <Effect What="Stat"  Name="PCLove"                  Amount="60"    />
+   <Effect What="Stat"  Name="PCHate"                  Amount="-50"    />
+   <Effect What="Trait" Name="Cute"                    Amount="1"    />
+   <Effect What="Trait" Name="Good Kisser"             Amount="1"    />
+   <Effect What="Trait" Name="Nymphomaniac"            Amount="1"    />
+   <Effect What="Trait" Name="Optimist"                Amount="1"    />
+   <Effect What="Trait" Name="Long Legs"               Amount="1"    />
+   <Effect What="Trait" Name="Puffy Nipples"           Amount="1"    />
+   <Effect What="Trait" Name="Perky Nipples"           Amount="1"    />
+   <Effect What="Trait" Name="Mind Fucked"             Amount="1"    />
+   <Effect What="Trait" Name="Retarded"                Amount="1"    />
+   <Effect What="Trait" Name="Abnormally Large Boobs"  Amount="1"    />
+   <Effect What="Trait" Name="Dependant"               Amount="1"    />
+   <Effect What="Trait" Name="Fake Orgasm Expert"      Amount="1"    />
+   <Effect What="Trait" Name="Fast orgasms"            Amount="1"    />
+   <Effect What="Trait" Name="Slow Learner"            Amount="1"    />
+   <Effect What="Trait" Name="Clumsy"                  Amount="1"    />
+   <Effect What="Trait" Name="Quick Learner"           Amount="0"    />
+   <Effect What="Trait" Name="Slow orgasms"            Amount="0"    />
+   <Effect What="Trait" Name="Psychic"                 Amount="0"    />
+   <Effect What="Trait" Name="Elegant"                 Amount="0"    />
+   <Effect What="Trait" Name="Great Figure"            Amount="1"    />
+   <Effect What="Trait" Name="Great Arse"              Amount="1"    />
+   <Effect What="Trait" Name="Lesbian"                 Amount="1"    />
+   <Effect What="Trait" Name="Futanari"                Amount="0"    />
+   <Effect What="Trait" Name="Eye Patch"               Amount="0"    />
+   <Effect What="Trait" Name="One Eye"                 Amount="0"    />
+   <Effect What="Trait" Name="Sterile"                 Amount="0"    />
+   <Effect What="Trait" Name="Fleet of Foot"           Amount="0"    />
+   <Effect What="Trait" Name="Pessimist"               Amount="0"    />
+   <Effect What="Trait" Name="Iron Will"               Amount="0"    />
+   <Effect What="Trait" Name="Fearless"                Amount="0"    />
+   <Effect What="Trait" Name="Merciless"               Amount="0"    />
+   <Effect What="Trait" Name="Manly"                   Amount="0"    />
+   <Effect What="Trait" Name="Meek"                    Amount="0"    />
+   <Effect What="Trait" Name="Yandere"                 Amount="0"    />
+   <Effect What="Trait" Name="Tsundere"                Amount="0"    />
+   <Effect What="Trait" Name="Sexy Air"                Amount="1"    />
+   <Effect What="Trait" Name="Lolita"                  Amount="0"    />
+   <Effect What="Trait" Name="Assassin"                Amount="0"    />
+   <Effect What="Trait" Name="Adventurer"              Amount="0"    />
+   <Effect What="Trait" Name="Aggressive"              Amount="1"    />
+</Item>
+<!-- Futanari -->
+</Items>

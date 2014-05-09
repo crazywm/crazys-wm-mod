@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Minerva's Dress"
+      Desc="The dress worn by Minerva Mink. Everyone knows that rabbits can't hold a candle to minks. (Strip +20, Sex +10. Adds Nymphomaniac.)"
+      Type="Dress"
+      Badness="0"
+      Special="None"
+      Cost="10"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Skill" Name="Strip"                   Amount="20"    />
+   <Effect What="Skill" Name="NormalSex"               Amount="10"    />
+   <Effect What="Trait" Name="Nymphomaniac"            Amount="1"    />
+</Item>
+</Items>

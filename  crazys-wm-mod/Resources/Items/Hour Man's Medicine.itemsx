@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Hour Man's Medicine"
+      Desc="A mysterious solution that grants the drinker's power for exactly 1 hour. (Temporarily adds Construct)"
+      Type="Food"
+      Badness="0"
+      Special="Temporary"
+      Cost="9000"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Trait" Name="Construct"               Amount="1"    />
+</Item>
+</Items>

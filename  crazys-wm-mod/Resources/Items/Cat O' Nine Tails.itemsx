@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Cat O' Nine Tails"
+      Desc="The nine lashes of this dreadful torture implement, while difficult to use on unwilling and unrestrained victims, are still capable of instilling fear at a single glance. (B) (+10 Combat, +15 BDSM, +5 Conf, -5 Fear)"
+      Type="Small Weapon"
+      Badness="0"
+      Special="None"
+      Cost="800"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Skill" Name="Combat"                  Amount="10"    />
+   <Effect What="Skill" Name="BDSM"                    Amount="15"    />
+   <Effect What="Stat"  Name="Confidence"              Amount="5"    />
+   <Effect What="Stat"  Name="PCFear"                  Amount="-5"    />
+</Item>
+</Items>

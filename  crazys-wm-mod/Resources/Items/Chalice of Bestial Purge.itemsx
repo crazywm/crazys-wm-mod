@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Chalice of Bestial Purge"
+      Desc="When consumed by a woman, pure water drunk from this blessed chalice immediately acts upon the womb and causes any non-human foetus, embryo or other such parasite lodged there to be expelled. The chalice itself has only enough power for a single use, and has no effect on human, or partially human, organisms. (aborts insemination)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="500"
+      Rarity="Shop25"
+      Infinite="false"
+      GirlBuyChance="0">
+   <Effect What="GirlStatus" Name="Inseminated"        Amount="0"    />
+</Item>
+</Items>

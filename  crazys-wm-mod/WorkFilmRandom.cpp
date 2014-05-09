@@ -45,7 +45,7 @@ extern int g_Building;
 
 bool cJobManager::WorkFilmRandom(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
-	bool refused;
+	bool refused = false;
 	int sw;
 	do
 		{

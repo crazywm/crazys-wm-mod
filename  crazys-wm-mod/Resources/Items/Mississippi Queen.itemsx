@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- I don't make things, I just clean them up. The original "Mississippi Queen" setup was flawed because of the multiple name bug; When used directly from the shop, the item worked as planned. However, when placed in the players inventory and the game reloaded, the item became the first instance of the name found. So it always reverted to the "retarded" version. Here I reduced the random guessing of what it does by naming each with a 2 letter abreviation. It is not ideal, but until the game can see the items better, it will have to do. If you don't like it, don't use it.-->
+<Items>
+
+
+<Item Name="Mississippi Queen (Ch)"
+      Desc="The spiciest drink ever made. (Health -10, Constitution +5. Adds a random trait.)"
+      Type="Food"
+      Badness="16"
+      Special="None"
+      Cost="1850"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Stat"  Name="Health"                  Amount="-10"    />
+   <Effect What="Stat"  Name="Constitution"            Amount="5"    />
+   <Effect What="Trait" Name="Charismatic"             Amount="1"    />
+</Item>
+
+
+<Item Name="Mississippi Queen (De)"
+      Desc="The spiciest drink ever made. (Health -10, Constitution +5. Adds a random trait.)"
+      Type="Food"
+      Badness="16"
+      Special="None"
+      Cost="1850"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Stat"  Name="Health"                  Amount="-10"    />
+   <Effect What="Stat"  Name="Constitution"            Amount="5"    />
+   <Effect What="Trait" Name="Dependant"               Amount="1"    />
+</Item>
+
+
+<Item Name="Mississippi Queen (FF)"
+      Desc="The spiciest drink ever made. (Health -10, Constitution +5. Adds a random trait.)"
+      Type="Food"
+      Badness="16"
+      Special="None"
+      Cost="1850"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Stat"  Name="Health"                  Amount="-10"    />
+   <Effect What="Stat"  Name="Constitution"            Amount="5"    />
+   <Effect What="Trait" Name="Fleet of Foot"           Amount="1"    />
+</Item>
+
+
+<Item Name="Mississippi Queen (Fg)"
+      Desc="The spiciest drink ever made. (Health -10, Constitution +5. Adds a random trait.)"
+      Type="Food"
+      Badness="16"
+      Special="None"
+      Cost="1850"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Stat"  Name="Health"                  Amount="-10"    />
+   <Effect What="Stat"  Name="Constitution"            Amount="5"    />
+   <Effect What="Trait" Name="Fragile"                 Amount="1"    />
+</Item>
+
+
+<Item Name="Mississippi Queen (Fl)"
+      Desc="The spiciest drink ever made. (Health -10, Constitution +5. Adds a random trait.)"
+      Type="Food"
+      Badness="16"
+      Special="None"
+      Cost="1850"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Stat"  Name="Health"                  Amount="-10"    />
+   <Effect What="Stat"  Name="Constitution"            Amount="5"    />
+   <Effect What="Trait" Name="Fearless"                Amount="1"    />
+</Item>
+
+
+<Item Name="Mississippi Queen (IW)"
+      Desc="The spiciest drink ever made. (Health -10, Constitution +5. Adds a random trait.)"
+      Type="Food"
+      Badness="16"
+      Special="None"
+      Cost="1850"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Stat"  Name="Health"                  Amount="-10"    />
+   <Effect What="Stat"  Name="Constitution"            Amount="5"    />
+   <Effect What="Trait" Name="Iron Will"               Amount="1"    />
+</Item>
+
+
+<Item Name="Mississippi Queen (MF)"
+      Desc="The spiciest drink ever made. (Health -10, Constitution +5. Adds a random trait.)"
+      Type="Food"
+      Badness="16"
+      Special="None"
+      Cost="1850"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Stat"  Name="Health"                  Amount="-10"    />
+   <Effect What="Stat"  Name="Constitution"            Amount="5"    />
+   <Effect What="Trait" Name="Mind Fucked"             Amount="1"    />
+</Item>
+
+
+<Item Name="Mississippi Queen (Mk)"
+      Desc="The spiciest drink ever made. (Health -10, Constitution +5. Adds a random trait.)"
+      Type="Food"
+      Badness="16"
+      Special="None"
+      Cost="1850"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Stat"  Name="Health"                  Amount="-10"    />
+   <Effect What="Stat"  Name="Constitution"            Amount="5"    />
+   <Effect What="Trait" Name="Meek"                    Amount="1"    />
+</Item>
+
+
+<Item Name="Mississippi Queen (Ml)"
+      Desc="The spiciest drink ever made. (Health -10, Constitution +5. Adds a random trait.)"
+      Type="Food"
+      Badness="16"
+      Special="None"
+      Cost="1850"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Stat"  Name="Health"                  Amount="-10"    />
+   <Effect What="Stat"  Name="Constitution"            Amount="5"    />
+   <Effect What="Trait" Name="Merciless"               Amount="1"    />
+</Item>
+
+
+<Item Name="Mississippi Queen (Op)"
+      Desc="The spiciest drink ever made. (Health -10, Constitution +5. Adds a random trait.)"
+      Type="Food"
+      Badness="16"
+      Special="None"
+      Cost="1850"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Stat"  Name="Health"                  Amount="-10"    />
+   <Effect What="Stat"  Name="Constitution"            Amount="5"    />
+   <Effect What="Trait" Name="Optimist"                Amount="1"    />
+</Item>
+
+
+<Item Name="Mississippi Queen (Ps)"
+      Desc="The spiciest drink ever made. (Health -10, Constitution +5. Adds a random trait.)"
+      Type="Food"
+      Badness="16"
+      Special="None"
+      Cost="1850"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Stat"  Name="Health"                  Amount="-10"    />
+   <Effect What="Stat"  Name="Constitution"            Amount="5"    />
+   <Effect What="Trait" Name="Pessimist"               Amount="1"    />
+</Item>
+
+
+<Item Name="Mississippi Queen (Rt)"
+      Desc="The spiciest drink ever made. (Health -10, Constitution +5. Adds a random trait.)"
+      Type="Food"
+      Badness="16"
+      Special="None"
+      Cost="1850"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Stat"  Name="Health"                  Amount="-10"    />
+   <Effect What="Stat"  Name="Constitution"            Amount="5"    />
+   <Effect What="Trait" Name="Retarded"                Amount="1"    />
+</Item>
+
+
+<Item Name="Mississippi Queen (St)"
+      Desc="The spiciest drink ever made. (Health -10, Constitution +5. Adds a random trait.)"
+      Type="Food"
+      Badness="16"
+      Special="None"
+      Cost="1850"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Stat"  Name="Health"                  Amount="-10"    />
+   <Effect What="Stat"  Name="Constitution"            Amount="5"    />
+   <Effect What="Trait" Name="Sterile"                 Amount="1"    />
+</Item>
+
+
+<Item Name="Mississippi Queen (To)"
+      Desc="The spiciest drink ever made. (Health -10, Constitution +5. Adds a random trait.)"
+      Type="Food"
+      Badness="16"
+      Special="None"
+      Cost="1850"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Stat"  Name="Health"                  Amount="-10"    />
+   <Effect What="Stat"  Name="Constitution"            Amount="5"    />
+   <Effect What="Trait" Name="Tough"                   Amount="1"    />
+</Item>
+
+
+<Item Name="Mississippi Queen (Tw)"
+      Desc="The spiciest drink ever made. (Health -10, Constitution +5. Adds a random trait.)"
+      Type="Food"
+      Badness="16"
+      Special="None"
+      Cost="1850"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Stat"  Name="Health"                  Amount="-10"    />
+   <Effect What="Stat"  Name="Constitution"            Amount="5"    />
+   <Effect What="Trait" Name="Twisted"                 Amount="1"    />
+</Item>
+
+
+</Items>

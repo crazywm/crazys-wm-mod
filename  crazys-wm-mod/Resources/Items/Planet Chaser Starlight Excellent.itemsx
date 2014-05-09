@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Planet Chaser Starlight Excellent"
+      Desc="An anime that seems to wipe the watcher's mind. (Removes Cool Person, Quick Learner, Optimist, Pessimist. Adds Dependant, Meek.)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="2900"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Trait" Name="Cool Person"             Amount="0"    />
+   <Effect What="Trait" Name="Quick Learner"           Amount="0"    />
+   <Effect What="Trait" Name="Optimist"                Amount="0"    />
+   <Effect What="Trait" Name="Pessimist"               Amount="0"    />
+   <Effect What="Trait" Name="Dependant"               Amount="1"    />
+   <Effect What="Trait" Name="Meek"                    Amount="1"    />
+</Item>
+</Items>

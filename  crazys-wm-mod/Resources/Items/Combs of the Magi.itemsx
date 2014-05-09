@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Combs of the Magi"
+      Desc="An incredibly fancy set of combs. You'll have to sell that fancy watch of yours to pay for these! (Beauty +30, Charisma +10, adds Elegant.)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="2880"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Stat"  Name="Beauty"                  Amount="30"    />
+   <Effect What="Stat"  Name="Charisma"                Amount="10"    />
+   <Effect What="Trait" Name="Elegant"                 Amount="1"    />
+</Item>
+</Items>

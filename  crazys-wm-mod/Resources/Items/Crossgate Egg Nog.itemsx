@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Crossgate Egg Nog"
+      Desc="This festive nog tastes so good you'll get drunk off of one glass! (More like one sip....) (+35 Health, +35 Tired, +Sexy Air)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="750"
+      Rarity="Shop50"
+      Infinite="false">
+   <Effect What="Stat"  Name="Tiredness"               Amount="35"    />
+   <Effect What="Stat"  Name="Health"                  Amount="35"    />
+   <Effect What="Trait" Name="Sexy Air"                Amount="1"    />
+</Item>
+</Items>

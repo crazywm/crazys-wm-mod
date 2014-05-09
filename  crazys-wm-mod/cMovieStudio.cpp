@@ -282,7 +282,7 @@ void cMovieStudioManager::UpdateMovieStudio()
 				movie = movie->m_Next;
 			}
 			double bonusperc = g_Studios.m_PromoterBonus/100;
-			long bonus = income * bonusperc;
+			long bonus = (int)(income * bonusperc);
 			income += bonus;
 			current->m_Finance.movie_income(income);
 			g_Gold.brothel_accounts(current->m_Finance, current->m_id);

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Ceremonial Sabre"
+      Desc="More a work of art than a weapon, this magnificent sabre is heavy with gems and gold inlays. It could almost pass for jewelry, but it's still sharp and deadly. (A) (+5 Cha, +20 Com, -20 Fear, -10 Hate, +10 Conf)"
+      Type="Weapon"
+      Badness="0"
+      Special="None"
+      Cost="2000"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Skill" Name="Combat"                  Amount="20"    />
+   <Effect What="Stat"  Name="Confidence"              Amount="10"    />
+   <Effect What="Stat"  Name="Charisma"                Amount="5"    />
+   <Effect What="Stat"  Name="PCFear"                  Amount="-20"    />
+   <Effect What="Stat"  Name="PCHate"                  Amount="-10"    />
+</Item>
+</Items>

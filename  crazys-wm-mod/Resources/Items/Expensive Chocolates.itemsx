@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Expensive Chocolates"
+      Desc="This assortment of high-quality chocolate truffles proves once again that the stomach is close to the heart. (B) (+50 Hap)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="150"
+      Rarity="Shop25"
+      Infinite="false"
+      GirlBuyChance="2">
+   <Effect What="Stat"  Name="Happiness"               Amount="50"    />
+   <Effect What="Stat"  Name="Libido"                  Amount="1"    />
+</Item>
+<Item Name="Expensive Chocolates"
+      Desc="This assortment of high-quality chocolate truffles proves once again that the stomach is close to the heart. (B) (+50 Hap)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="150"
+      Rarity="Shop25"
+      Infinite="false">
+   <Effect What="Stat"  Name="Happiness"               Amount="50"    />
+   <Effect What="Stat"  Name="Libido"                  Amount="1"    />
+</Item>
+</Items>

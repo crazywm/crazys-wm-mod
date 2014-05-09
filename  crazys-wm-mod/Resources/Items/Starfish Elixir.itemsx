@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Starfish Elixir"
+      Desc="Regrow your lost limbs, just like a starfish! (Removes One Eye, Half Construct, Malformed)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="12000"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Trait" Name="One Eye"                 Amount="0"    />
+   <Effect What="Trait" Name="Half-Construct"          Amount="0"    />
+   <Effect What="Trait" Name="Malformed"               Amount="0"    />
+</Item>
+</Items>

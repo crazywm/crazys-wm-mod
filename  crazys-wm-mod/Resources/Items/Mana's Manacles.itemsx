@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Mana's Manacles"
+      Desc="These manacles are cursed in the sense that the wearer must do any sex related task asked of her. (Sex +20. Adds Controlled Status.)"
+      Type="Armband"
+      Badness="0"
+      Special="None"
+      Cost="17500"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="GirlStatus" Name="Controlled"         Amount="1"    />
+   <Effect What="Skill" Name="NormalSex"               Amount="20"    />
+</Item>
+</Items>

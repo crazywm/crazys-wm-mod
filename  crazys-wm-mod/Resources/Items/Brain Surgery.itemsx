@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Brain Surgery"
+      Desc="Does your girl look right, but you just wish she acted a little differently? Well, here's your solution! (+Smart girl stuff)"
+      Type="Food"
+      Badness="5"
+      Special="None"
+      Cost="2200"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Stat"  Name="Health"                  Amount="-20"    />
+   <Effect What="Stat"  Name="PCFear"                  Amount="5"    />
+   <Effect What="Stat"  Name="PCHate"                  Amount="-5"    />
+   <Effect What="Stat"  Name="Intelligence"            Amount="50"    />
+   <Effect What="Stat"  Name="Exp"                     Amount="5"    />
+   <Effect What="Trait" Name="Nerd"                    Amount="1"    />
+   <Effect What="Trait" Name="Clumsy"                  Amount="0"    />
+   <Effect What="Trait" Name="Quick Learner"           Amount="1"    />
+   <Effect What="Trait" Name="Slow Learner"            Amount="0"    />
+   <Effect What="Trait" Name="Retarded"                Amount="0"    />
+</Item>
+</Items>

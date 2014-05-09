@@ -97,11 +97,11 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, int DayNight, 
 
 	if (jobperformance >= 245)
 		{
-			message += " She must be the perfect stripper customers go on and on about her and always come to see her when she works.\n\n";
+			message += " She must be the perfect stripper, customers go on and on about her and always come to see her when she works.\n\n";
 			wages += 155;
 		if (roll <= 20)
 			{
-				message += girlName + " use of the pole amazes the patrons. They truely have no ideal how she does the things she does.\n";
+				message += girlName + " use of the pole amazes the patrons. They truely have no idea how she does the things she does.\n";
 			}
 		else if (roll <= 40)
 			{
@@ -113,7 +113,7 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, int DayNight, 
 			}
 		else if (roll <= 80)
 			{
-				message += girlName + " smile is enough to bring in the tips you sometimes wonder if she even needs to take her clothes off.\n";
+				message += girlName + " smile is enough to bring in the tips. You sometimes wonder if she even needs to take her clothes off.\n";
 			}
 		else
 			{

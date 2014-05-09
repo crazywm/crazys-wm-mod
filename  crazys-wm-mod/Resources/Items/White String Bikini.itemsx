@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="White String Bikini"
+      Desc="A classic amongst the fetish set. (+ Sexy air/great figure &amp; arse +30 agil +15 cha +10 happy +5 love -5 fear)"
+      Type="Dress"
+      Badness="0"
+      Special="None"
+      Cost="2500"
+      Rarity="Common"
+      Infinite="false">
+   <Effect What="Trait" Name="Sexy Air"                Amount="1"    />
+   <Effect What="Trait" Name="Great Figure"            Amount="1"    />
+   <Effect What="Trait" Name="Great Arse"              Amount="1"    />
+   <Effect What="Stat"  Name="Agility"                 Amount="30"    />
+   <Effect What="Stat"  Name="Charisma"                Amount="15"    />
+   <Effect What="Stat"  Name="Happiness"               Amount="10"    />
+   <Effect What="Stat"  Name="PCLove"                  Amount="5"    />
+   <Effect What="Stat"  Name="PCFear"                  Amount="-5"    />
+</Item>
+</Items>

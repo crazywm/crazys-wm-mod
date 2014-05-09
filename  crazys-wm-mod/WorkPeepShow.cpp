@@ -92,7 +92,6 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, int DayNight, str
 	if (g_Girls.HasTrait(girl, "Horrific Scars"))
 		jobperformance -= 20;
 
-
 	if (jobperformance >= 245)
 		{
 			message += " She must be the perfect teaser she never goes to fast but never to slow she knows just when to do things and the customers can't get enough of her.\n\n";

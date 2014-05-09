@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Oracle's Wheelchair"
+      Desc="The wheelchair that Batgirl was forced into after the Joker crippled her. (Intelligence +100, Agility -50. Adds Dependant.)"
+      Type="Misc"
+      Badness="10"
+      Special="None"
+      Cost="16500"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Stat"  Name="Intelligence"            Amount="100"    />
+   <Effect What="Stat"  Name="Agility"                 Amount="-50"    />
+   <Effect What="Trait" Name="Dependant"               Amount="1"    />
+</Item>
+</Items>

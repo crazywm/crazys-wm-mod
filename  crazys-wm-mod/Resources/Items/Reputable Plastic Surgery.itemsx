@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Reputable Plastic Surgery"
+      Desc="A reputable surgeon complete with malpractice insurance. (+25 beauty, +25 tiredness, -5 health. Removes Malformed, One Eye, Eye Patch, and all scars. Adds Great Figure.)"
+      Type="Food"
+      Badness="1"
+      Special="None"
+      Cost="6500"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Stat"  Name="Beauty"                  Amount="25"    />
+   <Effect What="Stat"  Name="Health"                  Amount="-5"    />
+   <Effect What="Stat"  Name="Tiredness"               Amount="25"    />
+   <Effect What="Stat"  Name="Age"                     Amount="-2"    />
+   <Effect What="Trait" Name="Malformed"               Amount="0"    />
+   <Effect What="Trait" Name="One Eye"                 Amount="0"    />
+   <Effect What="Trait" Name="Eye Patch"               Amount="0"    />
+   <Effect What="Trait" Name="Small Scars"             Amount="0"    />
+   <Effect What="Trait" Name="Cool Scars"              Amount="0"    />
+   <Effect What="Trait" Name="Horrific Scars"          Amount="0"    />
+   <Effect What="Trait" Name="Great Figure"            Amount="1"    />
+</Item>
+<Item Name="Reputable Plastic Surgery"
+      Desc="A reputable surgeon complete with malpractice insurance. (+25 beauty, +25 tiredness, -5 health. Removes Malformed, One Eye, Eye Patch, and all scars. Adds Great Figure.)"
+      Type="Food"
+      Badness="1"
+      Special="None"
+      Cost="6500"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Stat"  Name="Beauty"                  Amount="25"    />
+   <Effect What="Stat"  Name="Health"                  Amount="-5"    />
+   <Effect What="Stat"  Name="Tiredness"               Amount="25"    />
+   <Effect What="Trait" Name="Malformed"               Amount="0"    />
+   <Effect What="Trait" Name="One Eye"                 Amount="0"    />
+   <Effect What="Trait" Name="Eye Patch"               Amount="0"    />
+   <Effect What="Trait" Name="Small Scars"             Amount="0"    />
+   <Effect What="Trait" Name="Cool Scars"              Amount="0"    />
+   <Effect What="Trait" Name="Horrific Scars"          Amount="0"    />
+   <Effect What="Trait" Name="Great Figure"            Amount="1"    />
+</Item>
+</Items>

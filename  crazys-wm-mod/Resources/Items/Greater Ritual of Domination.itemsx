@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Greater Ritual of Domination"
+      Desc="This difficult incantation utterly neutralizes its victim's psychological defenses without damaging her mind or personality. Only a very skilled mage can cast it correctly. (+100 Obed, -100 Conf, -100 Spi, -100 Hate, adds Controlled status and Meek, removes Iron Will and Fearless)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="6000"
+      Rarity="Shop05"
+      Infinite="false"
+      GirlBuyChance="0">
+   <Effect What="Stat"  Name="Obedience"               Amount="100"    />
+   <Effect What="Stat"  Name="Confidence"              Amount="-100"    />
+   <Effect What="Stat"  Name="Spirit"                  Amount="-100"    />
+   <Effect What="Stat"  Name="PCHate"                  Amount="-100"    />
+   <Effect What="GirlStatus" Name="Controlled"         Amount="1"    />
+   <Effect What="Trait" Name="Meek"                    Amount="1"    />
+   <Effect What="Trait" Name="Iron Will"               Amount="0"    />
+   <Effect What="Trait" Name="Fearless"                Amount="0"    />
+</Item>
+<Item Name="Greater Ritual of Domination"
+      Desc="This difficult incantation utterly neutralizes its victim's psychological defenses without damaging her mind or personality. Only a very skilled mage can cast it correctly. (+100 Obed, -100 Conf, -100 Spi, -100 Hate, adds Controlled status and Meek, removes Iron Will and Fearless)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="6000"
+      Rarity="Shop05"
+      Infinite="false"
+      GirlBuyChance="0">
+   <Effect What="Stat"  Name="Obedience"               Amount="100"    />
+   <Effect What="Stat"  Name="Confidence"              Amount="-100"    />
+   <Effect What="Stat"  Name="Spirit"                  Amount="-100"    />
+   <Effect What="Stat"  Name="PCHate"                  Amount="-100"    />
+   <Effect What="GirlStatus" Name="Controlled"         Amount="1"    />
+   <Effect What="Trait" Name="Meek"                    Amount="1"    />
+   <Effect What="Trait" Name="Iron Will"               Amount="0"    />
+   <Effect What="Trait" Name="Fearless"                Amount="0"    />
+</Item>
+</Items>

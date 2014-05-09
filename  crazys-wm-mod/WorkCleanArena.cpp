@@ -45,13 +45,14 @@ extern cArenaManager g_Arena;
 extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
+extern char buffer[1000];
 
 bool cJobManager::WorkCleanArena(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	string message = "";
 	
 	
-	char buffer[1000];
+	buffer[1000];
 	string girlName = girl->m_Realname;
 
 	g_Girls.UnequipCombat(girl);

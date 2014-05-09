@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Digistruct Module MK III"
+      Desc="A small digistruct module able to make something from nothing. This one can reconstruct dead people. (Adds Incorporial)"
+      Type="Misc"
+      Badness="0"
+      Special="None"
+      Cost="22200"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Trait" Name="Incorporial"             Amount="1"    />
+</Item>
+</Items>

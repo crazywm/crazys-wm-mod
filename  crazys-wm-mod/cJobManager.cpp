@@ -133,6 +133,7 @@ void cJobManager::Setup()
 	JobFunctions[JOB_HEALING] = &WorkHealing;
 	JobFunctions[JOB_REPAIRSHOP] = &WorkRepairShop;	
 	JobFunctions[JOB_NURSE] = &WorkNurse;
+	JobFunctions[JOB_MECHANIC] = &WorkMechanic;
 	//clinic staff
 	JobFunctions[JOB_JANITOR] = &WorkJanitor;	
 	JobFunctions[JOB_CHAIRMAN] = &WorkChairMan;
@@ -300,6 +301,8 @@ void cJobManager::Setup()
 	JobDescription[JOB_REPAIRSHOP] = gettext("Construct girls will be quickly repaired here.");
 	JobName[JOB_NURSE] = gettext("Nurse");
 	JobDescription[JOB_NURSE] = gettext("Will help the doctor and heal sick people.");
+	JobName[JOB_MECHANIC] = gettext("Mechanic");
+	JobDescription[JOB_MECHANIC] = gettext("Will help the doctor and repair Constructs.");
 
 	//- Moive Jobs
 	JobFilterName[JOBFILTER_MOVIESTUDIO] = gettext("Actresses");
@@ -366,7 +369,6 @@ void cJobManager::Setup()
 	JobDescription[JOB_ARENAREST] = gettext("She will rest.");
 	JobName[JOB_CITYGUARD] = gettext("City Guard");
 	JobDescription[JOB_CITYGUARD] = gettext("She will help keep crossgate safe.");
-
 
 	//- Community Centre
 	JobFilterName[JOBFILTER_COMMUNITYCENTRE] = gettext("Community Centre");

@@ -201,7 +201,7 @@ void cInterfaceWindow::Draw()
 		clip.w = m_Width-(m_BorderSize*2);
 		clip.h = m_Height-(m_BorderSize*2);
 
-		m_BackgroundSurface->DrawSurface(clip.x,clip.y,0,&clip,true);
+		m_BackgroundSurface->DrawSurface(clip.x,clip.y,0,&clip,true,false); // `J`
 	}
 
 	// draw Images

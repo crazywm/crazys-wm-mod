@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Orihime's Hairclip"
+      Desc="A hairclip worn by Orihime Inoue. It has some magical powers in it. (Magic +30, Intelligence -10. Adds Abnormally Large Boobs.)"
+      Type="Misc"
+      Badness="5"
+      Special="None"
+      Cost="9200"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Skill" Name="Magic"                   Amount="30"    />
+   <Effect What="Stat"  Name="Intelligence"            Amount="-10"    />
+   <Effect What="Trait" Name="Abnormally Large Boobs"  Amount="1"    />
+   <Effect What="Trait" Name="Small Boobs"             Amount="0"    />
+   <Effect What="Trait" Name="Big Boobs"               Amount="0"    />
+</Item>
+</Items>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Sword of Forever"
+      Desc="This divine blade has existed since the beginning of the universe and has the ability to sever the threads of time. It is also rumored to have once sliced a goblin's head clean off his shoulders. Just holding it in your hands makes you feel extremely awesome. (S) (+60 Com, -30 Fear, -15 Hate, +15 Conf, -1 Age, adds Cool Person)"
+      Type="Weapon"
+      Badness="0"
+      Special="None"
+      Cost="6000"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Skill" Name="Combat"                  Amount="60"    />
+   <Effect What="Stat"  Name="Confidence"              Amount="15"    />
+   <Effect What="Stat"  Name="PCFear"                  Amount="-30"    />
+   <Effect What="Stat"  Name="PCHate"                  Amount="-15"    />
+   <Effect What="Stat"  Name="Age"                     Amount="-1"    />
+   <Effect What="Trait" Name="Cool Person"             Amount="1"    />
+</Item>
+</Items>

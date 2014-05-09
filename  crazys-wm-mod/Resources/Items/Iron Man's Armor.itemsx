@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Iron Man's Armor"
+      Desc="Armor that's both sturdy and agile. (Combat +20, Adds Construct)"
+      Type="Armor"
+      Badness="0"
+      Special="None"
+      Cost="12000"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Skill" Name="Combat"                  Amount="20"    />
+   <Effect What="Trait" Name="Construct"               Amount="1"    />
+</Item>
+</Items>

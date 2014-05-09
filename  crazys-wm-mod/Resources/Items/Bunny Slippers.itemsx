@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Bunny Slippers"
+      Desc="These pink bunny-ear slippers can give any girl a cute, if slightly silly, air. (D) (+10 Hap, -5 Tired, -10 Fear, -5 Cha, adds Cute)"
+      Type="Shoes"
+      Badness="0"
+      Special="None"
+      Cost="100"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Stat"  Name="Happiness"               Amount="10"    />
+   <Effect What="Stat"  Name="Tiredness"               Amount="-5"    />
+   <Effect What="Stat"  Name="PCFear"                  Amount="-10"    />
+   <Effect What="Stat"  Name="Charisma"                Amount="-5"    />
+   <Effect What="Trait" Name="Cute"                    Amount="1"    />
+</Item>
+</Items>

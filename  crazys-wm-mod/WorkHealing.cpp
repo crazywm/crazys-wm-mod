@@ -66,7 +66,7 @@ bool cJobManager::WorkHealing(sGirl* girl, sBrothel* brothel, int DayNight, stri
 
 	if (g_Girls.HasTrait(girl, "Construct"))
 	{
-		string message = girl->m_Realname + gettext(" must go to the repair shop.");
+		string message = girl->m_Realname + gettext(" should go to the repair shop.");
 		if(DayNight == 0)
 		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_WARNING);
 		return true;
@@ -77,7 +77,17 @@ bool cJobManager::WorkHealing(sGirl* girl, sBrothel* brothel, int DayNight, stri
 
 	message += gettext("She does nothing while the doctor takes care of her.");
 
-	if (g_Clinic.GetNumGirlsOnJob(0,JOB_NURSE,false) == 1)
+	if (g_Girls.HasTrait(girl, "Construct"))
+	{
+		g_Girls.UpdateStat(girl, STAT_HEALTH, 200); //constructs heal 10% so 200 becomes 20 actual healing
+		g_Girls.UpdateStat(girl, STAT_MANA, 20);
+	}
+	else if (g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, false) >= 1 && g_Girls.HasTrait(girl, "Half-Construct"))
+	{
+		g_Girls.UpdateStat(girl, STAT_HEALTH, 30);
+		g_Girls.UpdateStat(girl, STAT_MANA, 30);
+	}
+	if (g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, false) >= 1)
 	{
 		g_Girls.UpdateStat(girl, STAT_HEALTH, 40);
 		g_Girls.UpdateStat(girl, STAT_MANA, 40);

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Certificate of Royalty (P)"
+      Desc="This indestructible scroll states that (ENTER NAME HERE) is of royal descent from the kingdom of (ENTER KINGDOM HERE) and should be treated as such. If it is written and only a few can get it then it must be true and have great influence over others. (+lots Int/Conf/Fame/Spirit, -lots Fear/Hate, +Elegant, +Princess)"
+      Type="Misc"
+      Badness="5"
+      Special="None"
+      Cost="2300"
+      Rarity="Catacomb15"
+      Infinite="false"
+      GirlBuyChance="1">
+   <Effect What="Stat"  Name="Intelligence"            Amount="40"    />
+   <Effect What="Stat"  Name="Confidence"              Amount="50"    />
+   <Effect What="Stat"  Name="Fame"                    Amount="20"    />
+   <Effect What="Stat"  Name="Spirit"                  Amount="40"    />
+   <Effect What="Stat"  Name="PCFear"                  Amount="-50"    />
+   <Effect What="Stat"  Name="PCHate"                  Amount="-50"    />
+   <Effect What="Trait" Name="Elegant"                 Amount="1"    />
+   <Effect What="Trait" Name="Princess"                Amount="1"    />
+</Item>
+</Items>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Tiger Leotard"
+      Desc="This sexy striped leotard holds a bound tiger spirit, and can give any girl a sleek, feline demeanor. It even enhances her fighting instincts! (A) (+30 Best, +10 all other sex skills, +15 Comb, +20 Cons, +15 Lib, +6 Cha, +5 Spi, +5 Agi, adds Sexy Air and Strange Eyes)"
+      Type="Dress"
+      Badness="35"
+      Special="None"
+      Cost="1500"
+      Rarity="Shop05"
+      Infinite="false"
+      GirlBuyChance="10">
+   <Effect What="Stat"  Name="Charisma"                Amount="6"    />
+   <Effect What="Stat"  Name="Libido"                  Amount="15"    />
+   <Effect What="Stat"  Name="Constitution"            Amount="20"    />
+   <Effect What="Stat"  Name="Spirit"                  Amount="5"    />
+   <Effect What="Stat"  Name="Agility"                 Amount="5"    />
+   <Effect What="Skill" Name="Combat"                  Amount="15"    />
+   <Effect What="Skill" Name="BDSM"                    Amount="10"    />
+   <Effect What="Skill" Name="NormalSex"               Amount="10"    />
+   <Effect What="Skill" Name="Beastiality"             Amount="30"    />
+   <Effect What="Skill" Name="Group"                   Amount="10"    />
+   <Effect What="Skill" Name="Lesbian"                 Amount="10"    />
+   <Effect What="Skill" Name="Service"                 Amount="10"    />
+   <Effect What="Skill" Name="OralSex"                 Amount="10"    />
+   <Effect What="Skill" Name="TittySex"                Amount="10"    />
+   <Effect What="Skill" Name="Strip"                   Amount="10"    />
+   <Effect What="Trait" Name="Strange Eyes"            Amount="1"    />
+   <Effect What="Trait" Name="Sexy Air"                Amount="1"    />
+</Item>
+</Items>

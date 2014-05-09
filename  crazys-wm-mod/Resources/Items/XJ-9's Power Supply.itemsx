@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="XJ-9's Power Supply"
+      Desc="The power supply fanny pack once needed by Jenny Wakeman, AKA XJ-9. (Tired -50, Combat +25. Adds Construct.)"
+      Type="Misc"
+      Badness="0"
+      Special="None"
+      Cost="21000"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Skill" Name="Combat"                  Amount="25"    />
+   <Effect What="Stat"  Name="Tiredness"               Amount="-50"    />
+   <Effect What="Trait" Name="Construct"               Amount="1"    />
+</Item>
+</Items>

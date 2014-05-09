@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Ornate Gladius"
+      Desc="A preferred weapon of wealthy merchants, the blade of this short stabbing sword is engraved with exquisite depictions of charging animals and its hilt is of flawless ivory. (B) (+5 Cha, +15 Com, -10 Fear, -5 Hate, +5 Conf)"
+      Type="Weapon"
+      Badness="0"
+      Special="None"
+      Cost="1000"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Skill" Name="Combat"                  Amount="15"    />
+   <Effect What="Stat"  Name="Confidence"              Amount="5"    />
+   <Effect What="Stat"  Name="Charisma"                Amount="5"    />
+   <Effect What="Stat"  Name="PCFear"                  Amount="-10"    />
+   <Effect What="Stat"  Name="PCHate"                  Amount="-5"    />
+</Item>
+<Item Name="Ornate Gladius"
+      Desc="A preferred weapon of wealthy merchants, the blade of this short stabbing sword is engraved with exquisite depictions of charging animals and its hilt is of flawless ivory. (B) (+5 Cha, +15 Com, -10 Fear, -5 Hate, +5 Conf)"
+      Type="Weapon"
+      Badness="0"
+      Special="None"
+      Cost="1000"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Skill" Name="Combat"                  Amount="15"    />
+   <Effect What="Stat"  Name="Confidence"              Amount="5"    />
+   <Effect What="Stat"  Name="Charisma"                Amount="5"    />
+   <Effect What="Stat"  Name="PCFear"                  Amount="-10"    />
+   <Effect What="Stat"  Name="PCHate"                  Amount="-5"    />
+</Item>
+</Items>

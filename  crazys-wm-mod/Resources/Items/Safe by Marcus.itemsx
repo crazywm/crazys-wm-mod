@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Safe by Marcus"
+      Desc="A safe endorsed by famous arms dealer Marcus. If he trusts it to keep your valuables safe, then anyone would. (Happiness +3, Fear -2)"
+      Type="Misc"
+      Badness="0"
+      Special="None"
+      Cost="390"
+      Rarity="Common"
+      Infinite="false">
+   <Effect What="Stat"  Name="PCFear"                  Amount="-2"    />
+   <Effect What="Stat"  Name="Happiness"               Amount="3"    />
+</Item>
+</Items>

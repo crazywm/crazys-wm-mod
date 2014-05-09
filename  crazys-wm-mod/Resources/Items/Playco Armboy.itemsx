@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Playco Armboy"
+      Desc="An attachment that goes on your arm and makes you a good deal stronger. (Combat +10)"
+      Type="Misc"
+      Badness="0"
+      Special="None"
+      Cost="100"
+      Rarity="Shop25"
+      Infinite="false">
+   <Effect What="Skill" Name="Combat"                  Amount="10"    />
+</Item>
+</Items>

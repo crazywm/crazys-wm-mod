@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Jeepers Peepers X Infinity"
+      Desc="A surveillance kit that's very effective, but a bit too intrusive. (Obedience +10, Hate +10)"
+      Type="Misc"
+      Badness="0"
+      Special="None"
+      Cost="8888"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Stat"  Name="Obedience"               Amount="10"    />
+   <Effect What="Stat"  Name="PCHate"                  Amount="10"    />
+</Item>
+</Items>

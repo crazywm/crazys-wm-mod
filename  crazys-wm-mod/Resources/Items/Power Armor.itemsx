@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Power Armor"
+      Desc="A full suit of powered armor from the future. (+50 Combat, +30 Constitution, -40 Magic, -10 Agility. Adds Manly.)"
+      Type="Armor"
+      Badness="0"
+      Special="None"
+      Cost="6000"
+      Rarity="Shop05"
+      Infinite="false"
+      GirlBuyChance="10">
+   <Effect What="Skill" Name="Combat"                  Amount="50"    />
+   <Effect What="Stat"  Name="Agility"                 Amount="-10"    />
+   <Effect What="Stat"  Name="Constitution"            Amount="30"    />
+   <Effect What="Skill" Name="Magic"                   Amount="-40"    />
+   <Effect What="Trait" Name="Manly"                   Amount="1"    />
+</Item>
+</Items>

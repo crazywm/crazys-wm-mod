@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Fujiko's Catsuit"
+      Desc="The form fitting Catsuit worn by Fujiko Miine. It magically conforms to the user's body. (Sex +25, BDSM +10. Adds Fleet of Foot and Sexy Air.)"
+      Type="Dress"
+      Badness="0"
+      Special="None"
+      Cost="13400"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Skill" Name="NormalSex"               Amount="25"    />
+   <Effect What="Skill" Name="BDSM"                    Amount="10"    />
+   <Effect What="Trait" Name="Fleet of Foot"           Amount="1"    />
+   <Effect What="Trait" Name="Sexy Air"                Amount="1"    />
+</Item>
+</Items>

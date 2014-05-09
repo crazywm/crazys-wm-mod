@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Leina's Shield"
+      Desc="The shield worn by the warrior Leina. (Constitution +40. Adds Iron Will.)"
+      Type="Armband"
+      Badness="0"
+      Special="None"
+      Cost="13400"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Stat"  Name="Constitution"            Amount="40"    />
+   <Effect What="Trait" Name="Iron Will"               Amount="1"    />
+</Item>
+</Items>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Hot Stilettos"
+      Desc="These colorful high-heeled platform shoes are, in their own special way, kind of hot. They are also, in their own special way, the opposite of classy. (E) (+5 Cha, -5 Hap, -5 Int, removes Elegant)"
+      Type="Shoes"
+      Badness="25"
+      Special="None"
+      Cost="100"
+      Rarity="Shop25"
+      Infinite="false"
+      GirlBuyChance="50">
+   <Effect What="Stat"  Name="Charisma"                Amount="5"    />
+   <Effect What="Stat"  Name="Happiness"               Amount="-5"    />
+   <Effect What="Stat"  Name="Intelligence"            Amount="-5"    />
+   <Effect What="Trait" Name="Elegant"                 Amount="0"    />
+</Item>
+</Items>

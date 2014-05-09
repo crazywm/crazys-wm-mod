@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Brothel Gown"
+      Desc="This respectable-looking gown holds an enticing secret: parts of it are separately detachable, allowing unrestricted access to the wearer's breasts, ass and genitals. It's perfect for the girl who needs to go from presentable to slutty in the blink of an eye. (C) (+10 Cha, +5 Hap, +5 Conf, +10 Lib, +15 Service, +5 Strip)"
+      Type="Dress"
+      Badness="25"
+      Special="None"
+      Cost="700"
+      Rarity="Shop25"
+      Infinite="false"
+      GirlBuyChance="0">
+   <Effect What="Stat"  Name="Charisma"                Amount="12"    />
+   <Effect What="Stat"  Name="Happiness"               Amount="5"    />
+   <Effect What="Stat"  Name="Confidence"              Amount="5"    />
+   <Effect What="Stat"  Name="Libido"                  Amount="10"    />
+   <Effect What="Skill" Name="Service"                 Amount="15"    />
+</Item>
+</Items>

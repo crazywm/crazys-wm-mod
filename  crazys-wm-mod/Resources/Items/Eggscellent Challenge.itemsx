@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Eggscellent Challenge"
+      Desc="A twelve egg omelette. Legend says that if you finish it, you receive a wonderful reward. (Health +20, Tired -10, Constitution +2)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="990"
+      Rarity="Shop25"
+      Infinite="false"
+      GirlBuyChance="1">
+   <Effect What="Stat"  Name="Health"                  Amount="20"    />
+   <Effect What="Stat"  Name="Tiredness"               Amount="-10"    />
+   <Effect What="Stat"  Name="Constitution"            Amount="2"    />
+</Item>
+</Items>

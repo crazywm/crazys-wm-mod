@@ -47,27 +47,54 @@ bool cJobManager::WorkRepairShop(sGirl* girl, sBrothel* brothel, int DayNight, s
 	string message = "";
 	int tex = g_Dice%4;
 
-	bool hasDoctor = false;
-	if(g_Clinic.GetNumGirlsOnJob(brothel->m_id, JOB_DOCTOR, true) >= 1 || g_Clinic.GetNumGirlsOnJob(brothel->m_id, JOB_DOCTOR, false) >= 1)
-		hasDoctor = true;
+	bool hasMechanic = false;
+	if (g_Clinic.GetNumGirlsOnJob(brothel->m_id, JOB_MECHANIC, true) >= 1 || g_Clinic.GetNumGirlsOnJob(brothel->m_id, JOB_MECHANIC, false) >= 1)
+		hasMechanic = true;
 
-	if (!hasDoctor)
+	if (!hasMechanic)
 	{
-		string message = girl->m_Realname + gettext(" does nothing. You don't have any Doctor (require 1)");
-		if(DayNight == 0)
-			message += gettext("day");
-		else
-			message += gettext("night");
+		string message = girl->m_Realname + gettext(" does nothing. You don't have a Mechanic (require 1)");
+		if(DayNight == 0)	message += gettext("day");
+		else				message += gettext("night");
 		message += gettext(" Shift.");
 
 		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_WARNING);
 		return true;
 	}
 
+	if (!g_Girls.HasTrait(girl, "Construct"))
+	{
+		string message = girl->m_Realname + gettext(" must go to the Healing center.");
+		if (DayNight == 0)
+			girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_WARNING);
+		return true;
+	}
 
+
+	// not for patient
+	g_Girls.UnequipCombat(girl);
+
+	message += gettext("She does nothing while the mechanic repairs her.");
+
+	if (g_Clinic.GetNumGirlsOnJob(0, JOB_MECHANIC, false) >= 1 && g_Girls.HasTrait(girl, "Construct"))
+	{
+		g_Girls.UpdateStat(girl, STAT_HEALTH, 400);
+		g_Girls.UpdateStat(girl, STAT_MANA, 40);
+	}
+	else if (g_Clinic.GetNumGirlsOnJob(0, JOB_MECHANIC, false) >= 1 && g_Girls.HasTrait(girl, "Half-Construct"))
+	{
+		g_Girls.UpdateStat(girl, STAT_HEALTH, 30);
+		g_Girls.UpdateStat(girl, STAT_MANA, 30);
+	}
+	else
+	{
+		g_Girls.UpdateStat(girl, STAT_HEALTH, 20);
+		g_Girls.UpdateStat(girl, STAT_MANA, 20);
+	}
+	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
 
 		message = girl->m_Realname + gettext(" was repaired.");
-		message += gettext(" She takes it easy while the doctor takes care of her.");
+		message += gettext(" She takes it easy while the mechanic takes care of her.");
 
 	g_Girls.UpdateStat(girl, STAT_HEALTH, 20);
 	g_Girls.UpdateStat(girl, STAT_MANA, 20);

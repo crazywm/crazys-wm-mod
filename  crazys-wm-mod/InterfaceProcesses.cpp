@@ -402,10 +402,12 @@ void LoadGameInfoFiles()
  *	Load the traits: first build the path
  */
 	DirPath location = DirPath() << "Resources" << "Data";
+	DirPath location_i = DirPath() << "Resources" << "Items"; // `J` moved items from Data to Items folder
 /*
  *	get a file list
  */
 	FileList fl(location, "*.traits");
+	FileList fl_i(location_i, "*.itemsx"); // `J` moved items from Data to Items folder
 /*
  *	loop over the list, loading the files
  */
@@ -418,7 +420,7 @@ void LoadGameInfoFiles()
  *	The "temp" function was a stopgap until
  *	I figured out XMLFileList. Needs replacing.
  */
-	load_items_temp(fl);
+	load_items_temp(fl_i); // `J` moved items from Data to Items folder
 }
 
 void LoadGirlsFiles()

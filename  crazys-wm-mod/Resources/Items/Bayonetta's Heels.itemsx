@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Bayonetta's Heels"
+      Desc="The high heels worn by Bayonetta. They have guns hidden in the heels. (Combat +20, Agility +10. Adds Sexy Air.)"
+      Type="Shoes"
+      Badness="0"
+      Special="None"
+      Cost="9750"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Skill" Name="Combat"                  Amount="20"    />
+   <Effect What="Stat"  Name="Agility"                 Amount="10"    />
+   <Effect What="Trait" Name="Sexy Air"                Amount="1"    />
+</Item>
+</Items>

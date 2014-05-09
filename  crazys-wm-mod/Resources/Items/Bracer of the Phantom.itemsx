@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Bracer of the Phantom"
+      Desc="A small bracer that makes your girl a lot less real. (Adds construct)"
+      Type="Armband"
+      Badness="0"
+      Special="None"
+      Cost="8550"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Trait" Name="Construct"               Amount="1"    />
+</Item>
+</Items>

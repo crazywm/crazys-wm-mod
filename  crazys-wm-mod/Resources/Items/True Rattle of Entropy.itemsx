@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="True Rattle of Entropy"
+      Desc="The head of this rattle is believed to be a sleeping Atropol - the undead foetus of a stillborn god. The full extent of its power is beyond the comprehension of mortal flesh. (S) (+90 Mag, +100 constitution, -90 Comb, adds Incorporeal and Quick Learner)"
+      Type="Weapon"
+      Badness="0"
+      Special="None"
+      Cost="15000"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Stat"  Name="Constitution"            Amount="100"    />
+   <Effect What="Skill" Name="Magic"                   Amount="90"    />
+   <Effect What="Skill" Name="Combat"                  Amount="-90"    />
+   <Effect What="Trait" Name="Incorporial"             Amount="1"    />
+   <Effect What="Trait" Name="Quick Learner"           Amount="1"    />
+</Item>
+<Item Name="True Rattle of Entropy"
+      Desc="The head of this rattle is believed to be a sleeping Atropol - the undead foetus of a stillborn god. The full extent of its power is beyond the comprehension of mortal flesh. (S) (+90 Mag, +100 constitution, -90 Comb, adds Incorporeal and Quick Learner)"
+      Type="Weapon"
+      Badness="0"
+      Special="None"
+      Cost="15000"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Stat"  Name="Constitution"            Amount="100"    />
+   <Effect What="Skill" Name="Magic"                   Amount="90"    />
+   <Effect What="Skill" Name="Combat"                  Amount="-90"    />
+   <Effect What="Trait" Name="Incorporial"             Amount="1"    />
+   <Effect What="Trait" Name="Quick Learner"           Amount="1"    />
+</Item>
+</Items>

@@ -3,7 +3,7 @@
  !		Resolution. classic or 1024*768 1024_768
  !-->
 <Resolution
-		Resolution          = "classic"
+		Resolution          = "J_1024x768"
 	/>
 <!--
  !	These are general settings.
@@ -16,8 +16,8 @@
  !		they will gain a trait. It is multiplied by the number of weeks in the dungeon.
  !-->
 	<Initial
-		Gold				= "10000"
-		GirlMeet			= "100"
+		Gold				= "4000"
+		GirlMeet			= "30"
 		SlaveHousePerc		= "100"
 		AutoUseItems    	= "false"
 		TortureTraitWeekMod = "1"

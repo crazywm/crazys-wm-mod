@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Stasis chamber"
+      Desc="Tech from the future. Heals a girl up right thanks to time passing faster in the chamber than out of it. (Full heal, Age +1)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="4440"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="GirlStatus" Name="Poisoned"           Amount="0"    />
+   <Effect What="GirlStatus" Name="Badly Poisoned"     Amount="0"    />
+   <Effect What="Stat"  Name="Health"                  Amount="200"    />
+   <Effect What="Stat"  Name="Tiredness"               Amount="-200"    />
+   <Effect What="Trait" Name="Syphilis"                Amount="0"    />
+   <Effect What="Trait" Name="Chlamydia"               Amount="0"    />
+   <Effect What="Trait" Name="AIDS"                    Amount="0"    />
+</Item>
+</Items>

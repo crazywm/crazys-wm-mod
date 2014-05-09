@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="BrainMax"
+      Desc="A drink that makes the drinker more intelligent. (Intelligence +5. Chance to remove Retarded)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="1300"
+      Rarity="Shop50"
+      Infinite="true">
+   <Effect What="Stat"  Name="Intelligence"            Amount="5"    />
+   <Effect What="Trait" Name="Retarded"                Amount="0"    />
+</Item>
+<Item Name="BrainMax"
+      Desc="A drink that makes the drinker more intelligent. (Intelligence +5. Chance to remove Retarded)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="1300"
+      Rarity="Shop50"
+      Infinite="true">
+   <Effect What="Stat"  Name="Intelligence"            Amount="5"    />
+</Item>
+<Item Name="BrainMax"
+      Desc="A drink that makes the drinker more intelligent. (Intelligence +5. Chance to remove Retarded)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="1300"
+      Rarity="Shop50"
+      Infinite="true">
+   <Effect What="Stat"  Name="Intelligence"            Amount="5"    />
+</Item>
+<Item Name="BrainMax"
+      Desc="A drink that makes the drinker more intelligent. (Intelligence +5. Chance to remove Retarded)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="1300"
+      Rarity="Shop50"
+      Infinite="true">
+   <Effect What="Stat"  Name="Intelligence"            Amount="5"    />
+</Item>
+</Items>

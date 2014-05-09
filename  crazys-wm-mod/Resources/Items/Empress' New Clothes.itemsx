@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Empress' New Clothes"
+      Desc="This dress is invisible, but no one has the guts to point it out. Handy! (S) (+50 Cha, +75 Lib, +25 Conf, adds Sexy Air)"
+      Type="Dress"
+      Badness="0"
+      Special="None"
+      Cost="15000"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Stat"  Name="Charisma"                Amount="50"    />
+   <Effect What="Stat"  Name="Confidence"              Amount="25"    />
+   <Effect What="Stat"  Name="Libido"                  Amount="75"    />
+   <Effect What="Trait" Name="Sexy Air"                Amount="1"    />
+</Item>
+</Items>

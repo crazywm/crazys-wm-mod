@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Love Potion"
+      Desc="Like the love potions of legend, this mystic brew will make a woman fall in love with you. Unlike the love potions of legend, this one actually works. (+100 Love)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="3000"
+      Rarity="Catacomb15"
+      Infinite="false"
+      GirlBuyChance="0">
+   <Effect What="Stat"  Name="PCLove"                  Amount="100"    />
+</Item>
+<Item Name="Love Potion"
+      Desc="Like the love potions of legend, this mystic brew will make a woman fall in love with you. Unlike the love potions of legend, this one actually works. (+100 Love)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="3000"
+      Rarity="Catacomb15"
+      Infinite="false"
+      GirlBuyChance="0">
+   <Effect What="Stat"  Name="PCLove"                  Amount="100"    />
+</Item>
+</Items>

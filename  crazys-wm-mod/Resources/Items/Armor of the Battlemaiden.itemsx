@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Armor of the Battlemaiden"
+      Desc="This suit of steel plate armor has been modified to expose small areas of a female wearer's anatomy, including cleavage, navel and thighs. The protection it offers is lessened, of course, but some say the distraction effect is worth it. (A) (+15 Comb, +15 Cons, +15 Conf, +15 Strip, +8 BDSM, -10 Fear, -10 Hate, -15 Agi, -5 Cha, -20 Mag)"
+      Type="Armor"
+      Badness="0"
+      Special="None"
+      Cost="2250"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Skill" Name="Combat"                  Amount="15"    />
+   <Effect What="Stat"  Name="Constitution"            Amount="15"    />
+   <Effect What="Stat"  Name="Confidence"              Amount="15"    />
+   <Effect What="Stat"  Name="PCFear"                  Amount="-10"    />
+   <Effect What="Stat"  Name="PCHate"                  Amount="-10"    />
+   <Effect What="Stat"  Name="Agility"                 Amount="-15"    />
+   <Effect What="Stat"  Name="Charisma"                Amount="-5"    />
+   <Effect What="Skill" Name="Magic"                   Amount="-20"    />
+   <Effect What="Skill" Name="BDSM"                    Amount="8"    />
+   <Effect What="Skill" Name="Strip"                   Amount="15"    />
+</Item>
+</Items>
