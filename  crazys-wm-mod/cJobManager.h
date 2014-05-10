@@ -127,6 +127,7 @@ public:
 	static bool WorkPhysicalSurgery(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
 	static bool WorkRepairShop(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
 	static bool WorkNurse(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
+	static bool WorkMechanic(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
 	static bool WorkChairMan(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
 	static bool WorkJanitor(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
 

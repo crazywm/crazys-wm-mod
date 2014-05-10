@@ -9,6 +9,7 @@ enum INPUT_MODE {
 
 class cScreenGetInput : public cInterfaceWindowXML
 {
+
 	bool ids_set = false;
 
 	INPUT_MODE m_profile = MODE_INT; // GetInt, GetString or GetConfirm?

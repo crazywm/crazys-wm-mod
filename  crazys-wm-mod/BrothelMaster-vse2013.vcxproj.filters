@@ -631,6 +631,8 @@
     <ClCompile Include="lua\src\lzio.c">
       <Filter>Lua\src</Filter>
     </ClCompile>
+    <ClCompile Include="WorkFilmRandom.cpp" />
+    <ClCompile Include="WorkMechanic.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cButton.h">
@@ -1040,5 +1042,8 @@
     <Resource Include="EXE_icon.res">
       <Filter>Resources</Filter>
     </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ScreenMode.txt" />
   </ItemGroup>
 </Project>

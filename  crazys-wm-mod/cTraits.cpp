@@ -198,7 +198,7 @@ string cTraits::GetTranslateName(string name){
 	{
 		return gettext("Slow orgasms");
 	}
-	else if(name.compare("Different Colored Eyes") == 0)
+	else if (name.compare("Different Colored Eyes") == 0)
 	{
 		return gettext("Different Colored Eyes");
 	}
@@ -415,10 +415,6 @@ string cTraits::GetTranslateName(string name){
 		return gettext("Great Figure");
 	}
 	else if (name.compare("Incorporeal") == 0)
-	{
-		return gettext("Incorporeal");
-	}
-	else if (name.compare("Incorporial") == 0)//kept to correct spelling error in older girl files
 	{
 		return gettext("Incorporeal");
 	}

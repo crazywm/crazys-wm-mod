@@ -190,12 +190,12 @@ const unsigned int JOB_FILMFREETIME		= 53;		// Currently does the same as a clea
 // - Clinic
 const unsigned int JOBFILTER_CLINIC     = 9;	// teaches can train girls only up to their own skill level
 const unsigned int JOB_DOCTOR           = 54;	// not added yet	// becomes a doctor (requires 1) (will make some extra cash for treating locals)
-const unsigned int JOB_GETABORT         = 55;	// not added yet	// gets an abortion (takes 2 days)
-const unsigned int JOB_PHYSICALSURGERY  = 56;	// not added yet	// magical plastic surgery (takes 5 days)
-const unsigned int JOB_HEALING          = 57;	// not added yet	// takes 1 days for each wound trait received.
-const unsigned int JOB_REPAIRSHOP       = 58;	// not added yet	// construct girls can get repaired quickly
-const unsigned int JOB_NURSE			= 59;	// not added yet	// construct girls can get repaired quickly
-const unsigned int JOB_MECHANIC			= 60;	// not added yet	// construct girls can get repaired quickly
+const unsigned int JOB_NURSE            = 55;	// not added yet	// construct girls can get repaired quickly
+const unsigned int JOB_HEALING          = 56;	// not added yet	// takes 1 days for each wound trait received.
+const unsigned int JOB_GETABORT         = 57;	// not added yet	// gets an abortion (takes 2 days)
+const unsigned int JOB_PHYSICALSURGERY  = 58;	// not added yet	// magical plastic surgery (takes 5 days)
+const unsigned int JOB_MECHANIC         = 59;	// not added yet	// construct girls can get repaired quickly
+const unsigned int JOB_REPAIRSHOP       = 60;	// not added yet	// construct girls can get repaired quickly
 // - clinic staff
 const unsigned int JOBFILTER_CLINICSTAFF = 10;
 const unsigned int JOB_CHAIRMAN          = 61;	// not added yet	
