@@ -61,8 +61,7 @@
 		FontSize= "13"
 	/>
 
-
- <!-- <Text	Name	= "BarStaffCost"
+<!--   <Text	Name	= "BarStaffCost"
 		Text	= "Bar Staff: 0 gold / week"
 		XPos	= "273"
 		YPos	= "38"
@@ -88,9 +87,9 @@
 		Transparency= "true"
 		Scale		= "true"
 	/>
+	-->
 
-
-  <Text	Name	= "CasinoStaffCost"
+<!--  <Text	Name	= "CasinoStaffCost"
 		Text	= "Casino Staff: 0 gold / week"
 		XPos	= "506"
 		YPos	= "38"
@@ -118,9 +117,9 @@
 	/>
 -->
 
-  <Slider Name		= "AdvertisingSlider"
-		XPos		= "268"
-		YPos		= "64"
+<!--  <Slider Name		= "AdvertisingSlider"
+		XPos		= "24"
+		YPos		= "143"
 		Width		= "324"
 		MinValue	= "0"
 		MaxValue	= "2000"
@@ -130,16 +129,16 @@
 		Hidden		= "false"
 		Disabled	= "false"
 	/>
-  <Text	Name	= "AdvertisingValue"
+	-->
+<!--  <Text	Name	= "AdvertisingValue"
 		Text	= "0 gold / week"
-		XPos	= "306"
-		YPos	= "75"
+		XPos	= "62"
+		YPos	= "154"
 		Width	= "300"
 		Height	= "32"
 		FontSize= "13"
 	/>
-
-
+	-->
   <Text	Name	= "RoomAddCost"
 		Text	= "Add Rooms: 5000 gold"
 		XPos	= "365"
@@ -160,13 +159,13 @@
 
 
 	<Define Widget	= "Restrictions">
- <!--		<Image	Name= "Shader"
+		<Image	Name= "Shader"
 			File	= "FacilityBG.png"
 			XPos	= "0"
 			YPos	= "0"
 			Width	= "520"
-			Height	= "86"
-		/> -->
+			Height	= "60"
+		/>
 		<Checkbox Name	= "ProhibitAnalToggle"
 			Text		= "Prohibit Anal"
 			XPos		= "43"
@@ -192,7 +191,7 @@
 			FontSize	= "12"
 		/>
 		<Checkbox Name	= "ProhibitBeastToggle"
-			Text		= "Prohibit Bestiality"
+			Text		= "Prohibit Oral Sex"
 			XPos		= "14"
 			YPos		= "35"
 			Width		= "16"
@@ -215,35 +214,19 @@
 			Height		= "16"
 			FontSize	= "12"
 		/>
-		<Checkbox Name	= "ProhibitOralToggle"
-			Text		= "Prohibit Oral Sex"
-			XPos		= "21"
-			YPos		= "60"
-			Width		= "16"
-			Height		= "16"
-			FontSize	= "12"
-		/>
-		<Checkbox Name	= "ProhibitTittyToggle"
-			Text		= "Prohibit Titty Sex"
-			XPos		= "190"
-			YPos		= "60"
-			Width		= "16"
-			Height		= "16"
-			FontSize	= "12"
-		/>
 	</Define>
 
   <Text	Name	= "SexRestrictions"
 		Text	= "Sex Restrictions:"
 		XPos	= "16"
-		YPos	= "170"
+		YPos	= "210"
 		Width	= "180"
 		Height	= "32"
 		FontSize= "19"
 	/>
 	<Widget	Definition	= "Restrictions"
 		Seq		= "Res"
-		XPos	= "16"
+		XPos	= "168"
 		YPos	= "195"
 	/>
 

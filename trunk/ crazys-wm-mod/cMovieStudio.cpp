@@ -1,7 +1,7 @@
 /*
  * Copyright 2009, 2010, The Pink Petal Development Team.
  * The Pink Petal Devloment Team are defined as the game's coders 
- * who meet on http://pinkpetal.co.cc
+ * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -386,7 +386,7 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 				_itoa(totalGold, buffer, 10);
 				summary += buffer;
 				summary += " gold";
-				summary += "\n\n Please report this to the Pink Petal Devloment Team at http://pinkpetal.co.cc";
+				summary += "\n\n Please report this to the Pink Petal Devloment Team at http://pinkpetal.org";
 				current->m_Events.AddMessage(summary, IMGTYPE_PROFILE, EVENT_DEBUG);
 				sum = false;
 			}
@@ -751,7 +751,7 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 			_itoa(totalGold, buffer, 10);
 			summary += buffer;
 			summary += " gold";
-			summary += "\n\n Please report this to the Pink Petal Devloment Team at http://pinkpetal.co.cc";
+			summary += "\n\n Please report this to the Pink Petal Devloment Team at http://pinkpetal.org";
 			current->m_Events.AddMessage(summary, IMGTYPE_PROFILE, EVENT_DEBUG);
 			sum = false;
 		}

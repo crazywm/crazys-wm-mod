@@ -1,0 +1,40 @@
+<Screen>
+	<Window Name = "Main Window"
+		XPos = "254" 
+		YPos = "144"
+		Width = "288"
+		Height = "320"
+		Border = "1"
+	/>
+
+	<Button Name = "NewGameButton"
+		Image = "NewGame"
+		XPos = "16"
+		YPos = "32"
+		Width = "256"
+		Height = "64"
+		Transparency = "true"
+		Scale = "true"
+	/>
+
+	<Button Name = "LoadGameButton"
+		Image = "LoadGame"
+		XPos = "16"
+		YPos = "128"
+		Width = "256"
+		Height = "64"
+		Transparency = "true"
+		Scale = "true"
+	/>
+
+	<Button Name = "ExitGameButton"
+		Image = "QuitGame"
+		XPos = "16"
+		YPos = "224"
+		Width = "256"
+		Height = "64"
+		Transparency = "true"
+		Scale = "true"
+	/>
+
+</Screen>

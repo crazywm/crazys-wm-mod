@@ -1,7 +1,7 @@
 /*
  * Copyright 2009, 2010, The Pink Petal Development Team.
  * The Pink Petal Development Team are defined as the game's coders 
- * who meet on http://pinkpetal.co.cc
+ * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

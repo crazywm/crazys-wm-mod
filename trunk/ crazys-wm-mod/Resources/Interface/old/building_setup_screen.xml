@@ -1,0 +1,246 @@
+<Screen>
+
+	<Window	Name= "Building Setup Window"
+		XPos	= "48"
+		YPos	= "160"
+		Width	= "704"
+		Height	= "312"
+		Border	= "1"
+	/>
+
+  <Text	Name	= "CurrentBrothel"
+		Text	= ""
+		XPos	= "266"
+		YPos	= "0"
+		Width	= "500"
+		Height	= "32"
+		FontSize= "16"
+	/>
+
+
+  <Text	Name	= "PotionCost"
+		Text	= "Anti-Preg Potions: 2 gold each"
+		XPos	= "16"
+		YPos	= "38"
+		Width	= "216"
+		Height	= "32"
+		FontSize= "13"
+	/>
+  <Button	Name	= "10PotionsButton"
+		Image		= "Buy10"
+		XPos		= "32"
+		YPos		= "64"
+		Width		= "72"
+		Height		= "32"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+  <Button	Name	= "20PotionsButton"
+		Image		= "Buy20"
+		XPos		= "112"
+		YPos		= "64"
+		Width		= "72"
+		Height		= "32"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+  <Checkbox	Name= "AutoBuyPotionToggle"
+		Text	= "Auto Buy"
+		XPos	= "24"
+		YPos	= "105"
+		Width	= "16"
+		Height	= "16"
+		FontSize= "12"
+	/>
+  <Text	Name	= "AvailablePotions"
+		Text	= "You have: 0"
+		XPos	= "118"
+		YPos	= "102"
+		Width	= "160"
+		Height	= "32"
+		FontSize= "13"
+	/>
+
+
+  <Text	Name	= "BarStaffCost"
+		Text	= "Bar Staff: 0 gold / week"
+		XPos	= "273"
+		YPos	= "38"
+		Width	= "196"
+		Height	= "32"
+		FontSize= "13"
+	/>
+  <Button	Name	= "BarHireButton"
+		Image		= "Hire"
+		XPos		= "268"
+		YPos		= "64"
+		Width		= "80"
+		Height		= "32"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+  <Button	Name	= "BarFireButton"
+		Image		= "Fire"
+		XPos		= "356"
+		YPos		= "64"
+		Width		= "80"
+		Height		= "32"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+
+
+  <Text	Name	= "CasinoStaffCost"
+		Text	= "Casino Staff: 0 gold / week"
+		XPos	= "506"
+		YPos	= "38"
+		Width	= "196"
+		Height	= "32"
+		FontSize= "13"
+	/>
+  <Button	Name	= "CasinoHireButton"
+		Image		= "Hire"
+		XPos		= "511"
+		YPos		= "64"
+		Width		= "80"
+		Height		= "32"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+  <Button	Name	= "CasinoFireButton"
+		Image		= "Fire"
+		XPos		= "599"
+		YPos		= "64"
+		Width		= "80"
+		Height		= "32"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+
+
+  <Slider Name		= "AdvertisingSlider"
+		XPos		= "24"
+		YPos		= "143"
+		Width		= "324"
+		MinValue	= "0"
+		MaxValue	= "2000"
+		Value		= "0"
+		Increment	= "100"
+		LiveUpdate	= "true"
+		Hidden		= "false"
+		Disabled	= "false"
+	/>
+  <Text	Name	= "AdvertisingValue"
+		Text	= "0 gold / week"
+		XPos	= "62"
+		YPos	= "154"
+		Width	= "300"
+		Height	= "32"
+		FontSize= "13"
+	/>
+
+
+  <Text	Name	= "RoomAddCost"
+		Text	= "Add Rooms: 5000 gold"
+		XPos	= "365"
+		YPos	= "139"
+		Width	= "160"
+		Height	= "32"
+		FontSize= "13"
+	/>
+  <Button	Name	= "BuildRoomsButton"
+		Image		= "BuildMoreRooms"
+		XPos		= "519"
+		YPos		= "134"
+		Width		= "160"
+		Height		= "32"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+
+
+	<Define Widget	= "Restrictions">
+		<Image	Name= "Shader"
+			File	= "FacilityBG.png"
+			XPos	= "0"
+			YPos	= "0"
+			Width	= "520"
+			Height	= "60"
+		/>
+		<Checkbox Name	= "ProhibitAnalToggle"
+			Text		= "Prohibit Anal"
+			XPos		= "43"
+			YPos		= "9"
+			Width		= "16"
+			Height		= "16"
+			FontSize	= "12"
+		/>
+		<Checkbox Name	= "ProhibitBDSMToggle"
+			Text		= "Prohibit BDSM"
+			XPos		= "214"
+			YPos		= "9"
+			Width		= "16"
+			Height		= "16"
+			FontSize	= "12"
+		/>
+		<Checkbox Name	= "ProhibitLesbianToggle"
+			Text		= "Prohibit Lesbian"
+			XPos		= "393"
+			YPos		= "9"
+			Width		= "16"
+			Height		= "16"
+			FontSize	= "12"
+		/>
+		<Checkbox Name	= "ProhibitBeastToggle"
+			Text		= "Prohibit Bestiality"
+			XPos		= "14"
+			YPos		= "35"
+			Width		= "16"
+			Height		= "16"
+			FontSize	= "12"
+		/>
+		<Checkbox Name	= "ProhibitGroupToggle"
+			Text		= "Prohibit Group Sex"
+			XPos		= "190"
+			YPos		= "35"
+			Width		= "16"
+			Height		= "16"
+			FontSize	= "12"
+		/>
+		<Checkbox Name	= "ProhibitNormalToggle"
+			Text		= "Prohibit Normal Sex"
+			XPos		= "371"
+			YPos		= "35"
+			Width		= "16"
+			Height		= "16"
+			FontSize	= "12"
+		/>
+	</Define>
+
+  <Text	Name	= "SexRestrictions"
+		Text	= "Sex Restrictions:"
+		XPos	= "16"
+		YPos	= "210"
+		Width	= "180"
+		Height	= "32"
+		FontSize= "19"
+	/>
+	<Widget	Definition	= "Restrictions"
+		Seq		= "Res"
+		XPos	= "168"
+		YPos	= "195"
+	/>
+
+
+  <Button Name		= "BackButton"
+		Image		= "Back"
+		XPos		= "272"
+		YPos		= "272"
+		Width		= "160"
+		Height		= "32"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+
+</Screen>
+

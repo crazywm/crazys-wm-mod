@@ -9,9 +9,9 @@
 <Button	Name="Dungeon"	Image="Dungeon"		XPos="600"	YPos="438"	Width="160"	Height="32"	Transparency="true"	Scale="true"	/>
 <Button	Name="Visit Town"	Image="VisitTown"		XPos="600"	YPos="498"	Width="160"	Height="32"	Transparency="true"	Scale="true"	/>
 <Button	Name="Next Week"	Image="NextWeek"		XPos="600"	YPos="5"	Width="160"	Height="32"	Transparency="true"	Scale="true"	/>
-<Button	Name="Turn Summary"	Image="TurnSum"	XPos="432"	YPos="536"	Width="160"	Height="32"	Transparency="true"	Scale="true"	/>
-<Button	Name="Save"	Image="Save"			XPos="184"	YPos="536"	Width="160"	Height="32"	Transparency="true"	Scale="true"	/>
-<Button	Name="Quit"	Image="Quit"			XPos="8"	YPos="536"	Width="160"	Height="32"	Transparency="true"	Scale="true"	/>
+<Button	Name="Turn Summary"	Image="TurnSum"	XPos="432"	YPos="540"	Width="160"	Height="32"	Transparency="true"	Scale="true"	/>
+<Button	Name="Save"	Image="Save"			XPos="184"	YPos="540"	Width="160"	Height="32"	Transparency="true"	Scale="true"	/>
+<Button	Name="Quit"	Image="Quit"			XPos="8"	YPos="540"	Width="160"	Height="32"	Transparency="true"	Scale="true"	/>
 <Button	Name="Prev"	Image="Prev"			XPos="600"	YPos="248"	Width="72"	Height="32"	Transparency="true"	Scale="true"	/>
 <Button	Name="Next"	Image="Next"			XPos="688"	YPos="248"	Width="72"	Height="32"	Transparency="true"	Scale="true"	/>
 </Screen>
