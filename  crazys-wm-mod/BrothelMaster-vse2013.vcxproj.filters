@@ -1046,4 +1046,8 @@
   <ItemGroup>
     <Text Include="ScreenMode.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="msvcp120d.dll" />
+    <None Include="msvcr120d.dll" />
+  </ItemGroup>
 </Project>

@@ -1,0 +1,14 @@
+1 16 768 576 1	    WINDOW - XPos, YPos, WIDTH, HEIGHT, BORDERSIZE
+600 8 160 32        Anal Button - XPos, YPos, WIDTH, HEIGHT
+600 48 160 32       BDSM Button - XPos, YPos, WIDTH, HEIGHT
+600 88 160 32       Sex Button- XPos, YPos, WIDTH, HEIGHT
+600 128 160 32      Beast Button - XPos, YPos, WIDTH, HEIGHT
+600 168 160 32      Group Button- XPos, YPos, WIDTH, HEIGHT
+600 208 160 32      Lesbian Button- XPos, YPos, WIDTH, HEIGHT
+600 248 160 32      Pregnant Button- XPos, YPos, WIDTH, HEIGHT
+600 288 160 32      Death Button- XPos, YPos, WIDTH, HEIGHT
+600 328 160 32      Profile Button- XPos, YPos, WIDTH, HEIGHT
+600 368 160 32      Back Button- XPos, YPos, WIDTH, HEIGHT
+600 408 80 32      Prev Button- XPos, YPos, WIDTH, HEIGHT
+688 408 80 32      Next Button- XPos, YPos, WIDTH, HEIGHT
+8 8 584 560         Image Area

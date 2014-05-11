@@ -1,0 +1,26 @@
+<!-- NOT DONE! -->
+<Screen>
+	<Window	Name= "Gallery Window"
+		XPos	= "7"
+		YPos	= "28"
+		Width	= "786"
+		Height	= "544"
+		Border	= "1"
+	/>
+  <Image Name	= "HireArrow"
+		File	= "imgArrowLeft.png"
+		XPos	= "125"
+		YPos	= "279"
+		Width	= "16"
+		Height	= "60"
+	/>
+  <Button	Name	= "GangFireButton"
+		Image		= "Fire"
+		XPos		= "16"
+		YPos		= "238"
+		Width		= "80"
+		Height		= "32"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+</Screen>

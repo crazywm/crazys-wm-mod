@@ -1,7 +1,7 @@
 /*
  * Copyright 2009, 2010, The Pink Petal Development Team.
  * The Pink Petal Devloment Team are defined as the game's coders 
- * who meet on http://pinkpetal.co.cc
+ * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -73,7 +73,7 @@ sConfigData::sConfigData(const char *a_filename)
 			<< endl
 			<< "*** This may seem a little easy. To fix this"
 			<< endl
-			<< "*** get a config.xml file from pinkpetal.co.cc"
+			<< "*** get a config.xml file from pinkpetal.org"
 		;
 		l.ssend();
 		return;

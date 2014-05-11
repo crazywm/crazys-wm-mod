@@ -16,7 +16,7 @@
     Height		= "480"
 	/>
 
- <Text	Name	= "MovieDetails"
+ <Text	Name	= "ArenaDetails"
 		Text	= ""
 		XPos	= "600"
 		YPos	= "20"
@@ -101,28 +101,6 @@
 		XPos		= "600"
 		YPos		= "338"
 		Width		= "160"
-		Height		= "32"
-		Transparency= "true"
-		Scale		= "true"
-	/>
-
-<Button	
-		Name	= "Next"
-		Image		= "Next"
-		XPos		= "688"
-		YPos		= "208"
-		Width		= "72"
-		Height		= "32"
-		Transparency= "true"
-		Scale		= "true"
-	/>
-
-<Button	
-		Name	= "Prev"
-		Image		= "Prev"
-		XPos		= "600"
-		YPos		= "208"
-		Width		= "72"
 		Height		= "32"
 		Transparency= "true"
 		Scale		= "true"

@@ -16,7 +16,7 @@
     Height		= "480"
 	/>
 
- <Text	Name	= "ClinicDetails"
+ <Text	Name	= "ArenaDetails"
 		Text	= ""
 		XPos	= "600"
 		YPos	= "20"

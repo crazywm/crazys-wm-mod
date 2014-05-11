@@ -1,7 +1,7 @@
 /*
  * Copyright 2009, 2010, The Pink Petal Development Team.
  * The Pink Petal Devloment Team are defined as the game's coders 
- * who meet on http://pinkpetal.co.cc
+ * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -11958,7 +11958,7 @@ bool cGirls::child_is_grown(sGirl* mom, sChild *child, string& summary, bool Pla
  *	create a new girl for the bairn
  *	
  *	WD: Bugfix as reported by chronos 
- *		http://pinkpetal.co.cc/index.php?topic=416.msg11968#msg11968
+ *		http://pinkpetal.org/index.php?topic=416.msg11968#msg11968
  */
 	//sGirl* sprog = g_Girls.CreateRandomGirl(12, false, "", slave,AllowNonHuman);
 	sGirl* sprog = g_Girls.CreateRandomGirl(12, false, slave, false, AllowNonHuman);
