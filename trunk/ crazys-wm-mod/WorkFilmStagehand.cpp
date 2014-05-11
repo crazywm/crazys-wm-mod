@@ -62,7 +62,7 @@ bool cJobManager::WorkFilmStagehand(sGirl* girl, sBrothel* brothel, int DayNight
 
 	g_Girls.UnequipCombat(girl);
 	
-	girl->m_Pay += 30;
+	//girl->m_Pay += 30;
 	
 	message = girlName;	
 	message += gettext(" worked as a stagehand.\n\n");
@@ -143,6 +143,22 @@ bool cJobManager::WorkFilmStagehand(sGirl* girl, sBrothel* brothel, int DayNight
 	stringstream sstemp;
     sstemp << gettext("Cleanliness rating improved by ") << CleanAmt;
 	girl->m_Events.AddMessage(sstemp.str(), IMGTYPE_MAID, SHIFT_NIGHT);
+
+	if (CleanAmt >= 125)
+	{
+		girl->m_Pay += 150;
+	}
+	else if (CleanAmt >= 60)
+	{
+		girl->m_Pay += 100;
+	}
+	else
+	{
+		girl->m_Pay += 50;
+	}
+
+	g_Gold.building_upkeep(girl->m_Pay);  // wages come from you
+
 
 	// Improve girl
 	int xp = 5, skill = 3;

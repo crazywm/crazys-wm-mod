@@ -56,44 +56,36 @@ bool cJobManager::WorkJanitor(sGirl* girl, sBrothel* brothel, int DayNight, stri
 
 	g_Girls.UnequipCombat(girl);
 	
-	girl->m_Pay += 30;
 	
 	message = girlName;	
-	message += gettext(" worked cleaning your house.\n\n");
+	message += gettext(" worked cleaning the clinic.\n\n");
 
 	
 	int roll = g_Dice%100;
-	if (roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKHAREM, brothel))
+	if (roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKCLEANING, brothel))
 	{
-		message = girl->m_Realname + gettext(" refused to clean your house.");
+		message = girl->m_Realname + gettext(" refused to clean the clinic.");
 		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
 	else if(roll <= 15) {
-		message += gettext(" She did not like cleaning your house today.\n\n");
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKHAREM, -1, true);
+		message += gettext(" She did not like cleaning the clinic today.\n\n");
+		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCLEANING, -1, true);
 		girl->m_Events.AddMessage(message, IMGTYPE_MAID, DayNight);
 	}
 	else if(roll >=90)
 	{
 		message += gettext(" She had a great time working today.\n\n");
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKHAREM, +3, true);
+		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCLEANING, +3, true);
 		girl->m_Events.AddMessage(message, IMGTYPE_MAID, DayNight);
 	}
 	else
 	{
 		message += gettext(" Otherwise, the shift passed uneventfully.\n\n");
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKHAREM, +1, true);
+		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCLEANING, +1, true);
 		girl->m_Events.AddMessage(message, IMGTYPE_MAID, DayNight);
 	}
 	
-/*
- *	work out the pay between the house and the girl
- */
-	int roll_max = girl->spirit() + girl->intelligence();
-	roll_max /= 4;
-	girl->m_Pay += 10 + g_Dice%roll_max;
-	g_Gold.building_upkeep(girl->m_Pay);  // wages come from you
 
 	// cleaning is a service skill
 	int CleanAmt;
@@ -105,6 +97,27 @@ bool cJobManager::WorkJanitor(sGirl* girl, sBrothel* brothel, int DayNight, stri
 	brothel->m_Filthiness -= CleanAmt;
 	stringstream sstemp;
     sstemp << gettext("Cleanliness rating improved by ") << CleanAmt;
+
+	if (CleanAmt >= 125)
+	{
+		girl->m_Pay += 150;
+	}
+	else if (CleanAmt >= 60)
+	{
+		girl->m_Pay += 100;
+	}
+	else
+	{
+		girl->m_Pay += 50;
+	}
+
+	/*
+ *	work out the pay between the house and the girl
+ */
+	int roll_max = girl->spirit() + girl->intelligence();
+	roll_max /= 4;
+	girl->m_Pay += 10 + g_Dice%roll_max;
+	g_Gold.building_upkeep(girl->m_Pay);  // wages come from you
 
 	girl->m_Events.AddMessage(sstemp.str(), IMGTYPE_MAID, DayNight);
 
