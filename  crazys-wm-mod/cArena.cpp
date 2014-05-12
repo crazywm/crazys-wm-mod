@@ -645,6 +645,7 @@ bool sArena::LoadArenaXML(TiXmlHandle hBrothel)
 			bool success = girl->LoadGirlXML(TiXmlHandle(pGirl));
 			if (success == true)
 			{
+				girl->m_InArena = true;
 				AddGirl(girl);
 			}
 			else

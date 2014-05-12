@@ -3802,7 +3802,7 @@
 			Name="Charming"
 			Percent="20" />
 		<Trait
-			Name="Incorporial"
+			Name="Incorporeal"
 			Percent="5" />
 		<Trait
 			Name="Manly"
@@ -9782,7 +9782,7 @@
 			Name="Perky Nipples"
 			Percent="1" />
 		<Trait
-			Name="Incorporial"
+			Name="Incorporeal"
 			Percent="1" />
 	</Girl>
 	<Girl
@@ -10567,7 +10567,7 @@
 			Name="Perky Nipples"
 			Percent="1" />
 		<Trait
-			Name="Incorporial"
+			Name="Incorporeal"
 			Percent="1" />
 		<Trait
 			Name="Manly"
@@ -10767,7 +10767,7 @@
 			Name="Perky Nipples"
 			Percent="1" />
 		<Trait
-			Name="Incorporial"
+			Name="Incorporeal"
 			Percent="1" />
 		<Trait
 			Name="Manly"
@@ -10967,7 +10967,7 @@
 			Name="Perky Nipples"
 			Percent="1" />
 		<Trait
-			Name="Incorporial"
+			Name="Incorporeal"
 			Percent="1" />
 		<Trait
 			Name="Manly"

@@ -676,6 +676,7 @@ bool sClinic::LoadClinicXML(TiXmlHandle hBrothel)
 			bool success = girl->LoadGirlXML(TiXmlHandle(pGirl));
 			if (success == true)
 			{
+				girl->m_InClinic = true;
 				AddGirl(girl);
 			}
 			else

@@ -48,41 +48,36 @@ extern bool				g_InitWin;
 // // ----- Strut sMovieStudio Create / destroy
 sMovieStudio::sMovieStudio() :	m_Finance(0)	// constructor
 {
-	m_var	= 0;
-	m_Name = "studio";
-	m_CurrFilm				= 0;
-	m_NumMovies				= 0;
-	m_LastMovies			= 0;
-	m_Movies				= 0;
-	m_MovieRunTime			= 0;
-	m_Filthiness			= 0;
-	m_Next					= 0;
-	m_Girls					= 0;
-	m_LastGirl				= 0;
+	m_var				= 0;
+	m_Name				= "studio";
+	m_CurrFilm			= 0;
+	m_NumMovies			= 0;
+	m_LastMovies		= 0;
+	m_Movies			= 0;
+	m_MovieRunTime		= 0;
+	m_Filthiness		= 0;
+	m_Next				= 0;
+	m_Girls				= 0;
+	m_LastGirl			= 0;
 	// end mod
-	m_NumGirls				= 0;
-	m_SecurityLevel			= 0;
-	for(u_int i=0; i<NUMJOBTYPES; i++)
-		m_BuildingQuality[i] = 0;
+	m_NumGirls			= 0;
+	m_SecurityLevel		= 0;
+	for(u_int i=0; i<NUMJOBTYPES; i++)		m_BuildingQuality[i] = 0;
 }
 
 sMovieStudio::~sMovieStudio()			// destructor
 {
-	m_NumMovies				= 0;
-	if(m_Movies)
-		delete m_Movies;
-	m_Movies				= 0;
-	m_LastMovies			= 0;
-	m_var	= 0;
-	if(m_Next)
-		delete m_Next;
-	m_Next					= 0;
-	if(m_Girls)
-		delete m_Girls;
-	m_LastGirl				= 0;
-	m_Girls					= 0;
-	if(m_CurrFilm)
-		delete m_CurrFilm;
+	m_NumMovies			= 0;
+	if(m_Movies)	delete m_Movies;
+	m_Movies			= 0;
+	m_LastMovies		= 0;
+	m_var				= 0;
+	if(m_Next)		delete m_Next;
+	m_Next				= 0;
+	if(m_Girls)		delete m_Girls;
+	m_LastGirl			= 0;
+	m_Girls				= 0;
+	if(m_CurrFilm)	delete m_CurrFilm;
 }
 
 void cMovieStudioManager::AddGirl(int brothelID, sGirl* girl)
@@ -111,58 +106,31 @@ string cMovieStudioManager::AddScene(sGirl* girl, int Job, int Bonus)
 	quality = g_Girls.GetSkill(girl, Job) / 5;
 	quality += Bonus;
 
-	if(g_Girls.HasTrait(girl,"Fast orgasms"))
-		quality += 4;
-	else if(g_Girls.HasTrait(girl,"Slow orgasms"))
-		quality -= 2;
+	//CRAZY added this to have traits play a bigger part in the movies
+	if (g_Girls.HasTrait(girl, "Fast orgasms"))			quality += 4;
+	else if(g_Girls.HasTrait(girl,"Slow orgasms"))		quality -= 2;
+	if(g_Girls.HasTrait(girl,"Fake orgasm expert"))		quality += 3;
+	if(g_Girls.HasTrait(girl,"Abnormally Large Boobs"))	quality += 4;
+	else if(g_Girls.HasTrait(girl,"Big Boobs"))			quality += 2;
+	else if(g_Girls.HasTrait(girl,"Small Boobs"))		quality += 1;
+	if(g_Girls.HasTrait(girl, "Great Figure"))			quality += 4;
+	if(g_Girls.HasTrait(girl, "Great Arse"))			quality += 2;
+	if(g_Girls.HasTrait(girl, "Charismatic"))			quality += 4;
+	if(g_Girls.HasTrait(girl, "Charming"))				quality += 2;
+	if(g_Girls.HasTrait(girl, "Long Legs"))				quality += 2;
+	if(g_Girls.HasTrait(girl, "Perky Nipples"))			quality += 1;
+	if(g_Girls.HasTrait(girl, "Puffy Nipples"))			quality += 1;
+	if(g_Girls.HasTrait(girl, "Shape Shifter"))			quality += 5;
+	if(g_Girls.HasTrait(girl, "Nymphomaniac"))			quality += 4;
+	if(g_Girls.HasTrait(girl, "Good Kisser"))			quality += 2;
 
-	if(g_Girls.HasTrait(girl,"Fake orgasm expert"))  //CRAZY fixed was fake orgasms should be what it is now
-		quality += 3;
-
-	if(g_Girls.HasTrait(girl,"Abnormally Large Boobs"))	
-		quality += 4;
-	else if(g_Girls.HasTrait(girl,"Big Boobs"))			
-		quality += 2;
-	else if(g_Girls.HasTrait(girl,"Small Boobs"))			
-		quality += 1;
-
-//CRAZY added this to have traits play a bigger part in the movies
-	if(g_Girls.HasTrait(girl, "Great Figure"))
-		quality += 4;
-	if(g_Girls.HasTrait(girl, "Great Arse"))
-		quality += 2;
-	if(g_Girls.HasTrait(girl, "Charismatic"))
-		quality += 4;
-	if(g_Girls.HasTrait(girl, "Charming"))
-		quality += 2;
-	if(g_Girls.HasTrait(girl, "Long Legs"))
-		quality += 2;
-	if(g_Girls.HasTrait(girl, "Perky Nipples"))
-		quality += 1;
-	if(g_Girls.HasTrait(girl, "Puffy Nipples"))
-		quality += 1;
-	if(g_Girls.HasTrait(girl, "Shape Shifter"))
-		quality += 5;
-	if(g_Girls.HasTrait(girl, "Nymphomaniac"))
-		quality += 4;
-	if(g_Girls.HasTrait(girl, "Good Kisser"))
-		quality += 2;
-
-
-	if(g_Girls.HasTrait(girl, "Manly"))
-		quality -= 2;
-	if(g_Girls.HasTrait(girl, "Fragile"))
-		quality -= 2;
-	if(g_Girls.HasTrait(girl, "Mind Fucked"))
-		quality -= 4;
-	if(g_Girls.HasTrait(girl, "Nervous"))
-		quality -= 2;
-	if(g_Girls.HasTrait(girl, "Horrific Scars"))
-		quality -= 4;
-	if(g_Girls.HasTrait(girl, "Clumsy"))
-		quality -= 2;
-	if(g_Girls.HasTrait(girl, "Meek"))
-		quality -= 2;
+	if(g_Girls.HasTrait(girl, "Manly"))					quality -= 2;
+	if(g_Girls.HasTrait(girl, "Fragile"))				quality -= 2;
+	if(g_Girls.HasTrait(girl, "Mind Fucked"))			quality -= 4;
+	if(g_Girls.HasTrait(girl, "Nervous"))				quality -= 2;
+	if(g_Girls.HasTrait(girl, "Horrific Scars"))		quality -= 4;
+	if(g_Girls.HasTrait(girl, "Clumsy"))				quality -= 2;
+	if(g_Girls.HasTrait(girl, "Meek"))					quality -= 2;
 
 //CRAZY added this better looking girls should make better quality movies 
 	// Changed to work with new job revision --PP
@@ -179,7 +147,11 @@ string cMovieStudioManager::AddScene(sGirl* girl, int Job, int Bonus)
 	
 	quality += g_Studios.m_CameraQuality + g_Studios.m_PurifierQaulity + g_Studios.m_DirectorQuality + g_Studios.m_StagehandQuality;
 	
+	newScene->m_Init_Quality = quality;
 	newScene->m_Quality = quality;
+	newScene->m_Promo_Quality = 0;
+	newScene->m_Money_Made = 0;
+	newScene->m_RunWeeks = 0;
 	stringstream ss;
 	ss << "scene " << m_movieScenes.size() + 1;
 	newScene->m_Name = ss.str();
@@ -201,8 +173,7 @@ cMovieStudioManager::~cMovieStudioManager()			// destructor
 
 void cMovieStudioManager::Free()
 {
-	if(m_Parent)
-		delete m_Parent;
+	if(m_Parent)	delete m_Parent;
 	m_Parent			= 0;
 	m_Last				= 0;
 }
@@ -228,12 +199,13 @@ long cMovieStudioManager::calc_movie_quality(){
 
 void cMovieStudioManager::ReleaseCurrentMovie(){
 	sMovieStudio* current = (sMovieStudio*) m_Parent;
-	// calculate movie quality
-	long quality = calc_movie_quality();
-	// clear scene list
-	m_movieScenes.clear();
-	//add new movie
-	NewMovie(current, quality);
+	long init_quality = calc_movie_quality();
+	long quality = init_quality;	// calculate movie quality
+	long promo_quality = 0;
+	long money_made = 0;
+	long runweeks = 0;
+	m_movieScenes.clear();					// clear scene list
+	NewMovie(current, init_quality, quality, promo_quality, money_made, runweeks);	//add new movie
 }
 
 // ----- Update & end of turn
@@ -253,8 +225,7 @@ void cMovieStudioManager::UpdateMovieStudio()
 	m_CameraQuality = 0;
 	m_PurifierQaulity = 0;
 
-	if(current->m_Filthiness < 0)
-			current->m_Filthiness = 0;
+	if(current->m_Filthiness < 0)		current->m_Filthiness = 0;
 
 	//	UpdateGirls(current, 0); Should only be one shift in movie studio --PP
 	// update the girls and satisfy the customers for this brothel during the night
@@ -265,25 +236,37 @@ void cMovieStudioManager::UpdateMovieStudio()
 	if(current->m_NumMovies > 0)
 	{
 		current->m_MovieRunTime++;
+		/* `J` Replaceing the global MovieRunTime with individual movie->m_RunWeeks below
 		if(current->m_MovieRunTime == 35)
 		{
 			EndMovie(current);
 			current->m_MovieRunTime = 0;
 		}
-
+		*/
 		long income = 0;
 		if(current->m_NumMovies > 0)
 		{
-			while(movie)
+			double bonusperc = g_Studios.m_PromoterBonus / 100;
+			while (movie)
 			{
-				income += movie->m_Quality;
-				int degrade = (int)((float)movie->m_Quality*0.15f);
-				movie->m_Quality -= degrade;
-				movie = movie->m_Next;
+				if (movie->m_RunWeeks > 34)
+				{
+					movie->m_Promo_Quality = 0;
+					movie->m_Quality = 0;
+					movie->m_RunWeeks += 1;
+					movie = movie->m_Next;
+				}
+				else
+				{
+					movie->m_Promo_Quality = (int)(movie->m_Quality * bonusperc);
+					movie->m_Money_Made += movie->m_Promo_Quality;
+					income += movie->m_Promo_Quality;
+					int degrade = (int)((float)(movie->m_Quality)*0.15);
+					movie->m_Quality -= degrade;
+					movie->m_RunWeeks += 1;		// `J` each movie will have its own run tracked
+					movie = movie->m_Next;
+				}
 			}
-			double bonusperc = g_Studios.m_PromoterBonus/100;
-			long bonus = (int)(income * bonusperc);
-			income += bonus;
 			current->m_Finance.movie_income(income);
 			g_Gold.brothel_accounts(current->m_Finance, current->m_id);
 			stringstream ss;
@@ -291,8 +274,8 @@ void cMovieStudioManager::UpdateMovieStudio()
 			ss << gettext("You earn ") << income << gettext(" gold from movie income, at your ") << current->m_Name;
 			g_MessageQue.AddToQue(ss.str(), 2);
 		}
-}
 	}
+}
 
 // End of turn stuff is here
 // Same method than Brothel but different job
@@ -837,7 +820,11 @@ TiXmlElement* sMovieStudio::SaveMovieStudioXML(TiXmlElement* pRoot)
 	{
 		TiXmlElement* pMovie = new TiXmlElement("Movie");
 		pMovies->LinkEndChild(pMovie);
+		pMovie->SetAttribute("Init_Qual", movie->m_Init_Quality);
 		pMovie->SetAttribute("Qual", movie->m_Quality);
+		pMovie->SetAttribute("Promo_Qual", movie->m_Promo_Quality);
+		pMovie->SetAttribute("Money_Made", movie->m_Money_Made);
+		pMovie->SetAttribute("RunWeeks", movie->m_RunWeeks);
 		movie = movie->m_Next;
 	}
 
@@ -937,13 +924,26 @@ bool sMovieStudio::LoadMovieStudioXML(TiXmlHandle hBrothel)
 			pMovie != 0;
 			pMovie = pMovie->NextSiblingElement("Movie"))
 		{
+			long init_quality = 0;
 			long quality = 0;
+			long promo_quality = 0;
+			long money_made = 0;
+			long runweeks = -1;
+			pMovie->QueryValueAttribute<long>("Init_Qual", &init_quality);
 			pMovie->QueryValueAttribute<long>("Qual", &quality);
+			pMovie->QueryValueAttribute<long>("Promo_Qual", &promo_quality);
+			pMovie->QueryValueAttribute<long>("Money_Made", &money_made);
+			pMovie->QueryValueAttribute<long>("RunWeeks", &runweeks);
+			if (runweeks < 0)
+			{
+				runweeks = m_MovieRunTime - m_NumMovies;
+			}
 			//when you create a new movie, you set m_Quality to quality*0.5
 			//but you directly save m_Quality, so this undoes the division
 			// --PP Changed quality to be equal instead of half, to increase movie value.
 			// quality *= 2;
-			g_Studios.NewMovie(this, quality);
+			g_Studios.NewMovie(this, init_quality, quality, promo_quality, money_made, runweeks);
+
 		}
 	}
 
@@ -960,6 +960,7 @@ bool sMovieStudio::LoadMovieStudioXML(TiXmlHandle hBrothel)
 			bool success = girl->LoadGirlXML(TiXmlHandle(pGirl));
 			if (success == true)
 			{
+				girl->m_InMovieStudio = true;
 				AddGirl(girl);
 			}
 			else
@@ -1045,10 +1046,14 @@ int cMovieStudioManager::GetTimeToMovie(int brothelID)
 	return current->m_ShowTime;
 }
 
-void cMovieStudioManager::NewMovie(sMovieStudio* brothel, int Quality)
+void cMovieStudioManager::NewMovie(sMovieStudio* brothel, int Init_Quality, int Quality, int Promo_Quality, int Money_Made, int RunWeeks)
 {
 	sMovie* newMovie = new sMovie();
+	newMovie->m_Init_Quality = Init_Quality;
+	newMovie->m_Promo_Quality = Promo_Quality;
 	newMovie->m_Quality = Quality;
+	newMovie->m_Money_Made = Money_Made;
+	newMovie->m_RunWeeks = RunWeeks;
 
 	if(brothel->m_NumMovies > 0)
 	{

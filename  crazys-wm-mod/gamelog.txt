@@ -687,7 +687,7 @@ registering ID 17 to name 'Brothel5'
 registering ID 18 to name 'Brothel6'
 Loading Clinic Screen
 registering ID 0 to name 'Clinic'
-registering ID 0 to name 'ArenaDetails'
+registering ID 0 to name 'ClinicDetails'
 registering ID 0 to name 'BackButton'
 registering ID 1 to name 'WalkButton'
 registering ID 2 to name 'Girls'
@@ -698,7 +698,7 @@ registering ID 6 to name 'Weeks'
 registering ID 7 to name 'SetUp'
 Loading Centre Screen
 registering ID 0 to name 'Centre'
-registering ID 0 to name 'ArenaDetails'
+registering ID 0 to name 'CentreDetails'
 registering ID 0 to name 'BackButton'
 registering ID 1 to name 'WalkButton'
 registering ID 2 to name 'Girls'
@@ -709,7 +709,7 @@ registering ID 6 to name 'Weeks'
 registering ID 7 to name 'SetUp'
 Loading Movie Screen
 registering ID 0 to name 'Movies'
-registering ID 0 to name 'ArenaDetails'
+registering ID 0 to name 'MovieDetails'
 registering ID 0 to name 'BackButton'
 registering ID 1 to name 'WalkButton'
 registering ID 2 to name 'Girls'
@@ -837,17 +837,18 @@ registering ID 2 to name 'WithdrawButton'
 registering ID 3 to name 'WithdrawAllButton'
 registering ID 4 to name 'BackButton'
 Loading Player House Screen
-registering ID 0 to name 'Your House'
 registering ID 0 to name 'House'
-registering ID 1 to name 'ArenaDetails'
+registering ID 0 to name 'HouseDetails'
+registering ID 1 to name 'Your House'
 registering ID 0 to name 'BackButton'
-registering ID 1 to name 'SetUp'
+registering ID 1 to name 'WalkButton'
 registering ID 2 to name 'Girls'
 registering ID 3 to name 'Staff'
 registering ID 4 to name 'Dungeon'
 registering ID 5 to name 'Turn'
 registering ID 6 to name 'Weeks'
 registering ID 7 to name 'House'
+registering ID 8 to name 'SetUp'
 Loading House Screen
 registering ID 0 to name 'HouseIcon'
 registering ID 0 to name 'ScreenHeader'
@@ -6044,326 +6045,6 @@ walking map...
 	key = .\Resources\Items\Zatanna's Fishnets
 	path = .\Resources\Items\Zatanna's Fishnets.itemsx
 		loading xml
-Debug: Girl='Belle'; Stat='Charisma'; Value='90'; Ival = 90'
-Debug: Girl='Belle'; Stat='Happiness'; Value='100'; Ival = 100'
-Debug: Girl='Belle'; Stat='Libido'; Value='85'; Ival = 85'
-Debug: Girl='Belle'; Stat='Constitution'; Value='30'; Ival = 30'
-Debug: Girl='Belle'; Stat='Intelligence'; Value='90'; Ival = 90'
-Debug: Girl='Belle'; Stat='Confidence'; Value='60'; Ival = 60'
-Debug: Girl='Belle'; Stat='Mana'; Value='0'; Ival = 0'
-Debug: Girl='Belle'; Stat='Agility'; Value='40'; Ival = 40'
-Debug: Girl='Belle'; Stat='Fame'; Value='0'; Ival = 0'
-Debug: Girl='Belle'; Stat='Level'; Value='0'; Ival = 0'
-Debug: Girl='Belle'; Stat='AskPrice'; Value='0'; Ival = 0'
-Debug: Girl='Belle'; Stat='House'; Value='60'; Ival = 60'
-Debug: Girl='Belle'; Stat='Exp'; Value='0'; Ival = 0'
-Debug: Girl='Belle'; Stat='Age'; Value='18'; Ival = 18'
-Debug: Girl='Belle'; Stat='Obedience'; Value='25'; Ival = 25'
-Debug: Girl='Belle'; Stat='Spirit'; Value='65'; Ival = 65'
-Debug: Girl='Belle'; Stat='Beauty'; Value='90'; Ival = 90'
-Debug: Girl='Belle'; Stat='Tiredness'; Value='0'; Ival = 0'
-Debug: Girl='Belle'; Stat='Health'; Value='100'; Ival = 100'
-Debug: Girl='Belle'; Stat='PCFear'; Value='0'; Ival = 0'
-Debug: Girl='Belle'; Stat='PCLove'; Value='0'; Ival = 0'
-Debug: Girl='Belle'; Stat='PCHate'; Value='0'; Ival = 0'
-Debug: Girl='C.C.'; Stat='Charisma'; Value='90'; Ival = 90'
-Debug: Girl='C.C.'; Stat='Happiness'; Value='100'; Ival = 100'
-Debug: Girl='C.C.'; Stat='Libido'; Value='50'; Ival = 50'
-Debug: Girl='C.C.'; Stat='Constitution'; Value='60'; Ival = 60'
-Debug: Girl='C.C.'; Stat='Intelligence'; Value='100'; Ival = 100'
-Debug: Girl='C.C.'; Stat='Confidence'; Value='90'; Ival = 90'
-Debug: Girl='C.C.'; Stat='Mana'; Value='0'; Ival = 0'
-Debug: Girl='C.C.'; Stat='Agility'; Value='60'; Ival = 60'
-Debug: Girl='C.C.'; Stat='Fame'; Value='0'; Ival = 0'
-Debug: Girl='C.C.'; Stat='Level'; Value='0'; Ival = 0'
-Debug: Girl='C.C.'; Stat='AskPrice'; Value='0'; Ival = 0'
-Debug: Girl='C.C.'; Stat='House'; Value='0'; Ival = 0'
-Debug: Girl='C.C.'; Stat='Exp'; Value='0'; Ival = 0'
-Debug: Girl='C.C.'; Stat='Age'; Value='100'; Ival = 100'
-Debug: Girl='C.C.'; Stat='Obedience'; Value='50'; Ival = 50'
-Debug: Girl='C.C.'; Stat='Spirit'; Value='50'; Ival = 50'
-Debug: Girl='C.C.'; Stat='Beauty'; Value='100'; Ival = 100'
-Debug: Girl='C.C.'; Stat='Tiredness'; Value='0'; Ival = 0'
-Debug: Girl='C.C.'; Stat='Health'; Value='100'; Ival = 100'
-Debug: Girl='C.C.'; Stat='PCFear'; Value='0'; Ival = 0'
-Debug: Girl='C.C.'; Stat='PCLove'; Value='0'; Ival = 0'
-Debug: Girl='C.C.'; Stat='PCHate'; Value='0'; Ival = 0'
-Debug: Girl='Eas'; Stat='Charisma'; Value='35'; Ival = 35'
-Debug: Girl='Eas'; Stat='Happiness'; Value='100'; Ival = 100'
-Debug: Girl='Eas'; Stat='Libido'; Value='30'; Ival = 30'
-Debug: Girl='Eas'; Stat='Constitution'; Value='75'; Ival = 75'
-Debug: Girl='Eas'; Stat='Intelligence'; Value='80'; Ival = 80'
-Debug: Girl='Eas'; Stat='Confidence'; Value='60'; Ival = 60'
-Debug: Girl='Eas'; Stat='Mana'; Value='25'; Ival = 25'
-Debug: Girl='Eas'; Stat='Agility'; Value='85'; Ival = 85'
-Debug: Girl='Eas'; Stat='Fame'; Value='0'; Ival = 0'
-Debug: Girl='Eas'; Stat='Level'; Value='0'; Ival = 0'
-Debug: Girl='Eas'; Stat='AskPrice'; Value='0'; Ival = 0'
-Debug: Girl='Eas'; Stat='House'; Value='60'; Ival = 60'
-Debug: Girl='Eas'; Stat='Exp'; Value='0'; Ival = 0'
-Debug: Girl='Eas'; Stat='Age'; Value='18'; Ival = 18'
-Debug: Girl='Eas'; Stat='Obedience'; Value='20'; Ival = 20'
-Debug: Girl='Eas'; Stat='Spirit'; Value='65'; Ival = 65'
-Debug: Girl='Eas'; Stat='Beauty'; Value='75'; Ival = 75'
-Debug: Girl='Eas'; Stat='Tiredness'; Value='0'; Ival = 0'
-Debug: Girl='Eas'; Stat='Health'; Value='100'; Ival = 100'
-Debug: Girl='Eas'; Stat='PCFear'; Value='0'; Ival = 0'
-Debug: Girl='Eas'; Stat='PCLove'; Value='0'; Ival = 0'
-Debug: Girl='Eas'; Stat='PCHate'; Value='0'; Ival = 0'
-Debug: Girl='Rachel'; Stat='Charisma'; Value='20'; Ival = 20'
-Debug: Girl='Rachel'; Stat='Happiness'; Value='100'; Ival = 100'
-Debug: Girl='Rachel'; Stat='Libido'; Value='20'; Ival = 20'
-Debug: Girl='Rachel'; Stat='Constitution'; Value='60'; Ival = 60'
-Debug: Girl='Rachel'; Stat='Intelligence'; Value='30'; Ival = 30'
-Debug: Girl='Rachel'; Stat='Confidence'; Value='50'; Ival = 50'
-Debug: Girl='Rachel'; Stat='Mana'; Value='15'; Ival = 15'
-Debug: Girl='Rachel'; Stat='Agility'; Value='50'; Ival = 50'
-Debug: Girl='Rachel'; Stat='Fame'; Value='0'; Ival = 0'
-Debug: Girl='Rachel'; Stat='Level'; Value='0'; Ival = 0'
-Debug: Girl='Rachel'; Stat='AskPrice'; Value='0'; Ival = 0'
-Debug: Girl='Rachel'; Stat='House'; Value='60'; Ival = 60'
-Debug: Girl='Rachel'; Stat='Exp'; Value='0'; Ival = 0'
-Debug: Girl='Rachel'; Stat='Age'; Value='23'; Ival = 23'
-Debug: Girl='Rachel'; Stat='Obedience'; Value='30'; Ival = 30'
-Debug: Girl='Rachel'; Stat='Spirit'; Value='50'; Ival = 50'
-Debug: Girl='Rachel'; Stat='Beauty'; Value='50'; Ival = 50'
-Debug: Girl='Rachel'; Stat='Tiredness'; Value='0'; Ival = 0'
-Debug: Girl='Rachel'; Stat='Health'; Value='100'; Ival = 100'
-Debug: Girl='Rachel'; Stat='PCFear'; Value='0'; Ival = 0'
-Debug: Girl='Rachel'; Stat='PCLove'; Value='0'; Ival = 0'
-Debug: Girl='Rachel'; Stat='PCHate'; Value='0'; Ival = 0'
-Debug: Girl='Rapunzel'; Stat='Charisma'; Value='60'; Ival = 60'
-Debug: Girl='Rapunzel'; Stat='Happiness'; Value='100'; Ival = 100'
-Debug: Girl='Rapunzel'; Stat='Libido'; Value='50'; Ival = 50'
-Debug: Girl='Rapunzel'; Stat='Constitution'; Value='33'; Ival = 33'
-Debug: Girl='Rapunzel'; Stat='Intelligence'; Value='40'; Ival = 40'
-Debug: Girl='Rapunzel'; Stat='Confidence'; Value='50'; Ival = 50'
-Debug: Girl='Rapunzel'; Stat='Mana'; Value='0'; Ival = 0'
-Debug: Girl='Rapunzel'; Stat='Agility'; Value='25'; Ival = 25'
-Debug: Girl='Rapunzel'; Stat='Fame'; Value='0'; Ival = 0'
-Debug: Girl='Rapunzel'; Stat='Level'; Value='0'; Ival = 0'
-Debug: Girl='Rapunzel'; Stat='AskPrice'; Value='0'; Ival = 0'
-Debug: Girl='Rapunzel'; Stat='House'; Value='60'; Ival = 60'
-Debug: Girl='Rapunzel'; Stat='Exp'; Value='0'; Ival = 0'
-Debug: Girl='Rapunzel'; Stat='Age'; Value='17'; Ival = 17'
-Debug: Girl='Rapunzel'; Stat='Obedience'; Value='10'; Ival = 10'
-Debug: Girl='Rapunzel'; Stat='Spirit'; Value='20'; Ival = 20'
-Debug: Girl='Rapunzel'; Stat='Beauty'; Value='65'; Ival = 65'
-Debug: Girl='Rapunzel'; Stat='Tiredness'; Value='0'; Ival = 0'
-Debug: Girl='Rapunzel'; Stat='Health'; Value='100'; Ival = 100'
-Debug: Girl='Rapunzel'; Stat='PCFear'; Value='0'; Ival = 0'
-Debug: Girl='Rapunzel'; Stat='PCLove'; Value='0'; Ival = 0'
-Debug: Girl='Rapunzel'; Stat='PCHate'; Value='0'; Ival = 0'
-Debug: Girl='Raven'; Stat='Charisma'; Value='60'; Ival = 60'
-Debug: Girl='Raven'; Stat='Happiness'; Value='100'; Ival = 100'
-Debug: Girl='Raven'; Stat='Libido'; Value='100'; Ival = 100'
-Debug: Girl='Raven'; Stat='Constitution'; Value='65'; Ival = 65'
-Debug: Girl='Raven'; Stat='Intelligence'; Value='80'; Ival = 80'
-Debug: Girl='Raven'; Stat='Confidence'; Value='95'; Ival = 95'
-Debug: Girl='Raven'; Stat='Mana'; Value='80'; Ival = 80'
-Debug: Girl='Raven'; Stat='Agility'; Value='70'; Ival = 70'
-Debug: Girl='Raven'; Stat='Fame'; Value='0'; Ival = 0'
-Debug: Girl='Raven'; Stat='Level'; Value='0'; Ival = 0'
-Debug: Girl='Raven'; Stat='AskPrice'; Value='0'; Ival = 0'
-Debug: Girl='Raven'; Stat='House'; Value='60'; Ival = 60'
-Debug: Girl='Raven'; Stat='Exp'; Value='0'; Ival = 0'
-Debug: Girl='Raven'; Stat='Age'; Value='18'; Ival = 18'
-Debug: Girl='Raven'; Stat='Obedience'; Value='5'; Ival = 5'
-Debug: Girl='Raven'; Stat='Spirit'; Value='100'; Ival = 100'
-Debug: Girl='Raven'; Stat='Beauty'; Value='65'; Ival = 65'
-Debug: Girl='Raven'; Stat='Tiredness'; Value='0'; Ival = 0'
-Debug: Girl='Raven'; Stat='Health'; Value='100'; Ival = 100'
-Debug: Girl='Raven'; Stat='PCFear'; Value='0'; Ival = 0'
-Debug: Girl='Raven'; Stat='PCLove'; Value='0'; Ival = 0'
-Debug: Girl='Raven'; Stat='PCHate'; Value='0'; Ival = 0'
-Debug: Girl='Cheetara'; Stat='Charisma'; Value='80'; Ival = 80'
-Debug: Girl='Cheetara'; Stat='Happiness'; Value='100'; Ival = 100'
-Debug: Girl='Cheetara'; Stat='Libido'; Value='10'; Ival = 10'
-Debug: Girl='Cheetara'; Stat='Constitution'; Value='60'; Ival = 60'
-Debug: Girl='Cheetara'; Stat='Intelligence'; Value='60'; Ival = 60'
-Debug: Girl='Cheetara'; Stat='Confidence'; Value='60'; Ival = 60'
-Debug: Girl='Cheetara'; Stat='Mana'; Value='10'; Ival = 10'
-Debug: Girl='Cheetara'; Stat='Agility'; Value='60'; Ival = 60'
-Debug: Girl='Cheetara'; Stat='Fame'; Value='0'; Ival = 0'
-Debug: Girl='Cheetara'; Stat='Level'; Value='0'; Ival = 0'
-Debug: Girl='Cheetara'; Stat='AskPrice'; Value='0'; Ival = 0'
-Debug: Girl='Cheetara'; Stat='House'; Value='60'; Ival = 60'
-Debug: Girl='Cheetara'; Stat='Exp'; Value='0'; Ival = 0'
-Debug: Girl='Cheetara'; Stat='Age'; Value='20'; Ival = 20'
-Debug: Girl='Cheetara'; Stat='Obedience'; Value='60'; Ival = 60'
-Debug: Girl='Cheetara'; Stat='Spirit'; Value='60'; Ival = 60'
-Debug: Girl='Cheetara'; Stat='Beauty'; Value='80'; Ival = 80'
-Debug: Girl='Cheetara'; Stat='Tiredness'; Value='0'; Ival = 0'
-Debug: Girl='Cheetara'; Stat='Health'; Value='100'; Ival = 100'
-Debug: Girl='Cheetara'; Stat='PCFear'; Value='0'; Ival = 0'
-Debug: Girl='Cheetara'; Stat='PCLove'; Value='0'; Ival = 0'
-Debug: Girl='Cheetara'; Stat='PCHate'; Value='0'; Ival = 0'
-Debug: Girl='She Ra'; Stat='Charisma'; Value='80'; Ival = 80'
-Debug: Girl='She Ra'; Stat='Happiness'; Value='100'; Ival = 100'
-Debug: Girl='She Ra'; Stat='Libido'; Value='10'; Ival = 10'
-Debug: Girl='She Ra'; Stat='Constitution'; Value='60'; Ival = 60'
-Debug: Girl='She Ra'; Stat='Intelligence'; Value='60'; Ival = 60'
-Debug: Girl='She Ra'; Stat='Confidence'; Value='60'; Ival = 60'
-Debug: Girl='She Ra'; Stat='Mana'; Value='10'; Ival = 10'
-Debug: Girl='She Ra'; Stat='Agility'; Value='60'; Ival = 60'
-Debug: Girl='She Ra'; Stat='Fame'; Value='0'; Ival = 0'
-Debug: Girl='She Ra'; Stat='Level'; Value='0'; Ival = 0'
-Debug: Girl='She Ra'; Stat='AskPrice'; Value='0'; Ival = 0'
-Debug: Girl='She Ra'; Stat='House'; Value='60'; Ival = 60'
-Debug: Girl='She Ra'; Stat='Exp'; Value='0'; Ival = 0'
-Debug: Girl='She Ra'; Stat='Age'; Value='20'; Ival = 20'
-Debug: Girl='She Ra'; Stat='Obedience'; Value='60'; Ival = 60'
-Debug: Girl='She Ra'; Stat='Spirit'; Value='60'; Ival = 60'
-Debug: Girl='She Ra'; Stat='Beauty'; Value='80'; Ival = 80'
-Debug: Girl='She Ra'; Stat='Tiredness'; Value='0'; Ival = 0'
-Debug: Girl='She Ra'; Stat='Health'; Value='100'; Ival = 100'
-Debug: Girl='She Ra'; Stat='PCFear'; Value='0'; Ival = 0'
-Debug: Girl='She Ra'; Stat='PCLove'; Value='0'; Ival = 0'
-Debug: Girl='She Ra'; Stat='PCHate'; Value='0'; Ival = 0'
-Debug: Girl='LadyDevimon'; Stat='Charisma'; Value='80'; Ival = 80'
-Debug: Girl='LadyDevimon'; Stat='Happiness'; Value='100'; Ival = 100'
-Debug: Girl='LadyDevimon'; Stat='Libido'; Value='20'; Ival = 20'
-Debug: Girl='LadyDevimon'; Stat='Constitution'; Value='60'; Ival = 60'
-Debug: Girl='LadyDevimon'; Stat='Intelligence'; Value='60'; Ival = 60'
-Debug: Girl='LadyDevimon'; Stat='Confidence'; Value='40'; Ival = 40'
-Debug: Girl='LadyDevimon'; Stat='Mana'; Value='60'; Ival = 60'
-Debug: Girl='LadyDevimon'; Stat='Agility'; Value='60'; Ival = 60'
-Debug: Girl='LadyDevimon'; Stat='Fame'; Value='0'; Ival = 0'
-Debug: Girl='LadyDevimon'; Stat='Level'; Value='0'; Ival = 0'
-Debug: Girl='LadyDevimon'; Stat='AskPrice'; Value='0'; Ival = 0'
-Debug: Girl='LadyDevimon'; Stat='House'; Value='60'; Ival = 60'
-Debug: Girl='LadyDevimon'; Stat='Exp'; Value='0'; Ival = 0'
-Debug: Girl='LadyDevimon'; Stat='Age'; Value='100'; Ival = 100'
-Debug: Girl='LadyDevimon'; Stat='Obedience'; Value='25'; Ival = 25'
-Debug: Girl='LadyDevimon'; Stat='Spirit'; Value='60'; Ival = 60'
-Debug: Girl='LadyDevimon'; Stat='Beauty'; Value='80'; Ival = 80'
-Debug: Girl='LadyDevimon'; Stat='Tiredness'; Value='0'; Ival = 0'
-Debug: Girl='LadyDevimon'; Stat='Health'; Value='100'; Ival = 100'
-Debug: Girl='LadyDevimon'; Stat='PCFear'; Value='0'; Ival = 0'
-Debug: Girl='LadyDevimon'; Stat='PCLove'; Value='0'; Ival = 0'
-Debug: Girl='LadyDevimon'; Stat='PCHate'; Value='0'; Ival = 0'
-Debug: Girl='Lilithmon'; Stat='Charisma'; Value='80'; Ival = 80'
-Debug: Girl='Lilithmon'; Stat='Happiness'; Value='100'; Ival = 100'
-Debug: Girl='Lilithmon'; Stat='Libido'; Value='20'; Ival = 20'
-Debug: Girl='Lilithmon'; Stat='Constitution'; Value='60'; Ival = 60'
-Debug: Girl='Lilithmon'; Stat='Intelligence'; Value='60'; Ival = 60'
-Debug: Girl='Lilithmon'; Stat='Confidence'; Value='40'; Ival = 40'
-Debug: Girl='Lilithmon'; Stat='Mana'; Value='60'; Ival = 60'
-Debug: Girl='Lilithmon'; Stat='Agility'; Value='60'; Ival = 60'
-Debug: Girl='Lilithmon'; Stat='Fame'; Value='0'; Ival = 0'
-Debug: Girl='Lilithmon'; Stat='Level'; Value='0'; Ival = 0'
-Debug: Girl='Lilithmon'; Stat='AskPrice'; Value='0'; Ival = 0'
-Debug: Girl='Lilithmon'; Stat='House'; Value='60'; Ival = 60'
-Debug: Girl='Lilithmon'; Stat='Exp'; Value='0'; Ival = 0'
-Debug: Girl='Lilithmon'; Stat='Age'; Value='100'; Ival = 100'
-Debug: Girl='Lilithmon'; Stat='Obedience'; Value='25'; Ival = 25'
-Debug: Girl='Lilithmon'; Stat='Spirit'; Value='60'; Ival = 60'
-Debug: Girl='Lilithmon'; Stat='Beauty'; Value='80'; Ival = 80'
-Debug: Girl='Lilithmon'; Stat='Tiredness'; Value='0'; Ival = 0'
-Debug: Girl='Lilithmon'; Stat='Health'; Value='100'; Ival = 100'
-Debug: Girl='Lilithmon'; Stat='PCFear'; Value='0'; Ival = 0'
-Debug: Girl='Lilithmon'; Stat='PCLove'; Value='0'; Ival = 0'
-Debug: Girl='Lilithmon'; Stat='PCHate'; Value='0'; Ival = 0'
-Debug: Girl='ab'; Stat='Charisma'; Value='61'; Ival = 61'
-Debug: Girl='ab'; Stat='Happiness'; Value='100'; Ival = 100'
-Debug: Girl='ab'; Stat='Libido'; Value='6'; Ival = 6'
-Debug: Girl='ab'; Stat='Constitution'; Value='43'; Ival = 43'
-Debug: Girl='ab'; Stat='Intelligence'; Value='91'; Ival = 91'
-Debug: Girl='ab'; Stat='Confidence'; Value='27'; Ival = 27'
-Debug: Girl='ab'; Stat='Mana'; Value='25'; Ival = 25'
-Debug: Girl='ab'; Stat='Agility'; Value='69'; Ival = 69'
-Debug: Girl='ab'; Stat='Fame'; Value='0'; Ival = 0'
-Debug: Girl='ab'; Stat='Level'; Value='0'; Ival = 0'
-Debug: Girl='ab'; Stat='AskPrice'; Value='0'; Ival = 0'
-Debug: Girl='ab'; Stat='House'; Value='60'; Ival = 60'
-Debug: Girl='ab'; Stat='Exp'; Value='0'; Ival = 0'
-Debug: Girl='ab'; Stat='Age'; Value='38'; Ival = 38'
-Debug: Girl='ab'; Stat='Obedience'; Value='4'; Ival = 4'
-Debug: Girl='ab'; Stat='Spirit'; Value='0'; Ival = 0'
-Debug: Girl='ab'; Stat='Beauty'; Value='56'; Ival = 56'
-Debug: Girl='ab'; Stat='Tiredness'; Value='0'; Ival = 0'
-Debug: Girl='ab'; Stat='Health'; Value='100'; Ival = 100'
-Debug: Girl='ab'; Stat='PCFear'; Value='0'; Ival = 0'
-Debug: Girl='ab'; Stat='PCLove'; Value='0'; Ival = 0'
-Debug: Girl='ab'; Stat='PCHate'; Value='0'; Ival = 0'
-Debug: Girl='adccd'; Stat='Charisma'; Value='62'; Ival = 62'
-Debug: Girl='adccd'; Stat='Happiness'; Value='100'; Ival = 100'
-Debug: Girl='adccd'; Stat='Libido'; Value='14'; Ival = 14'
-Debug: Girl='adccd'; Stat='Constitution'; Value='43'; Ival = 43'
-Debug: Girl='adccd'; Stat='Intelligence'; Value='87'; Ival = 87'
-Debug: Girl='adccd'; Stat='Confidence'; Value='81'; Ival = 81'
-Debug: Girl='adccd'; Stat='Mana'; Value='57'; Ival = 57'
-Debug: Girl='adccd'; Stat='Agility'; Value='20'; Ival = 20'
-Debug: Girl='adccd'; Stat='Fame'; Value='0'; Ival = 0'
-Debug: Girl='adccd'; Stat='Level'; Value='0'; Ival = 0'
-Debug: Girl='adccd'; Stat='AskPrice'; Value='0'; Ival = 0'
-Debug: Girl='adccd'; Stat='House'; Value='60'; Ival = 60'
-Debug: Girl='adccd'; Stat='Exp'; Value='0'; Ival = 0'
-Debug: Girl='adccd'; Stat='Age'; Value='20'; Ival = 20'
-Debug: Girl='adccd'; Stat='Obedience'; Value='11'; Ival = 11'
-Debug: Girl='adccd'; Stat='Spirit'; Value='77'; Ival = 77'
-Debug: Girl='adccd'; Stat='Beauty'; Value='39'; Ival = 39'
-Debug: Girl='adccd'; Stat='Tiredness'; Value='0'; Ival = 0'
-Debug: Girl='adccd'; Stat='Health'; Value='100'; Ival = 100'
-Debug: Girl='adccd'; Stat='PCFear'; Value='0'; Ival = 0'
-Debug: Girl='adccd'; Stat='PCLove'; Value='0'; Ival = 0'
-Debug: Girl='adccd'; Stat='PCHate'; Value='0'; Ival = 0'
-Debug: Girl='acdged'; Stat='Charisma'; Value='49'; Ival = 49'
-Debug: Girl='acdged'; Stat='Happiness'; Value='100'; Ival = 100'
-Debug: Girl='acdged'; Stat='Libido'; Value='84'; Ival = 84'
-Debug: Girl='acdged'; Stat='Constitution'; Value='25'; Ival = 25'
-Debug: Girl='acdged'; Stat='Intelligence'; Value='67'; Ival = 67'
-Debug: Girl='acdged'; Stat='Confidence'; Value='37'; Ival = 37'
-Debug: Girl='acdged'; Stat='Mana'; Value='88'; Ival = 88'
-Debug: Girl='acdged'; Stat='Agility'; Value='86'; Ival = 86'
-Debug: Girl='acdged'; Stat='Fame'; Value='0'; Ival = 0'
-Debug: Girl='acdged'; Stat='Level'; Value='0'; Ival = 0'
-Debug: Girl='acdged'; Stat='AskPrice'; Value='0'; Ival = 0'
-Debug: Girl='acdged'; Stat='House'; Value='60'; Ival = 60'
-Debug: Girl='acdged'; Stat='Exp'; Value='0'; Ival = 0'
-Debug: Girl='acdged'; Stat='Age'; Value='27'; Ival = 27'
-Debug: Girl='acdged'; Stat='Obedience'; Value='92'; Ival = 92'
-Debug: Girl='acdged'; Stat='Spirit'; Value='52'; Ival = 52'
-Debug: Girl='acdged'; Stat='Beauty'; Value='76'; Ival = 76'
-Debug: Girl='acdged'; Stat='Tiredness'; Value='0'; Ival = 0'
-Debug: Girl='acdged'; Stat='Health'; Value='100'; Ival = 100'
-Debug: Girl='acdged'; Stat='PCFear'; Value='0'; Ival = 0'
-Debug: Girl='acdged'; Stat='PCLove'; Value='0'; Ival = 0'
-Debug: Girl='acdged'; Stat='PCHate'; Value='0'; Ival = 0'
-Debug: Girl='Agrias Oaks'; Stat='Charisma'; Value='13'; Ival = 13'
-Debug: Girl='Agrias Oaks'; Stat='Happiness'; Value='100'; Ival = 100'
-Debug: Girl='Agrias Oaks'; Stat='Libido'; Value='62'; Ival = 62'
-Debug: Girl='Agrias Oaks'; Stat='Constitution'; Value='68'; Ival = 68'
-Debug: Girl='Agrias Oaks'; Stat='Intelligence'; Value='95'; Ival = 95'
-Debug: Girl='Agrias Oaks'; Stat='Confidence'; Value='83'; Ival = 83'
-Debug: Girl='Agrias Oaks'; Stat='Mana'; Value='56'; Ival = 56'
-Debug: Girl='Agrias Oaks'; Stat='Agility'; Value='25'; Ival = 25'
-Debug: Girl='Agrias Oaks'; Stat='Fame'; Value='0'; Ival = 0'
-Debug: Girl='Agrias Oaks'; Stat='Level'; Value='0'; Ival = 0'
-Debug: Girl='Agrias Oaks'; Stat='AskPrice'; Value='0'; Ival = 0'
-Debug: Girl='Agrias Oaks'; Stat='House'; Value='60'; Ival = 60'
-Debug: Girl='Agrias Oaks'; Stat='Exp'; Value='0'; Ival = 0'
-Debug: Girl='Agrias Oaks'; Stat='Age'; Value='87'; Ival = 87'
-Debug: Girl='Agrias Oaks'; Stat='Obedience'; Value='50'; Ival = 50'
-Debug: Girl='Agrias Oaks'; Stat='Spirit'; Value='40'; Ival = 40'
-Debug: Girl='Agrias Oaks'; Stat='Beauty'; Value='79'; Ival = 79'
-Debug: Girl='Agrias Oaks'; Stat='Tiredness'; Value='0'; Ival = 0'
-Debug: Girl='Agrias Oaks'; Stat='Health'; Value='100'; Ival = 100'
-Debug: Girl='Agrias Oaks'; Stat='PCFear'; Value='0'; Ival = 0'
-Debug: Girl='Agrias Oaks'; Stat='PCLove'; Value='0'; Ival = 0'
-Debug: Girl='Agrias Oaks'; Stat='PCHate'; Value='0'; Ival = 0'
-Loading Bigboobgirl
-	min money = 0
-	max money = 10
-Loading Blonde Elf
-	min money = 30
-	max money = 70
-Loading BlondeAthlete
-	min money = 0
-	max money = 10
-Loading BlondeDoc
-	min money = 0
-	max money = 10
 Loading China Dress
 	min money = 0
 	max money = 200
@@ -6583,36 +6264,84 @@ Loading Young Elf2
 Loading Young Woman
 	min money = 0
 	max money = 10
-cLuaScript::load: .\Resources\Scripts\Intro.lua
-adding to message queue: 'Welcome to Crossgate, a city in the realm of Mundiga, where criminals rule and space and time overlap with other worlds and dimensions. Once a powerful crime lord in the city, your father was recently assassinated and his assets looted by rivals. All that remains is the fire-gutted shell of an old brothel that served as your father's headquarters.
-Before add: has = 0
-After add: has = 1
-adding to message queue: 'However this building hides some interesting secrets.  Still concealed in the cellars is the dungeon where your father conducted the less savory aspects of his business. Underneath, endless catacombs extend, constantly shifting in the dimensional flux, drawing in beings and plunder from a thousand different worlds.
-Before add: has = 1
-After add: has = 1
-adding to message queue: 'Your job now is to return the brothel to its former glories of exotic women and carnal pleasures. That will give you the income you need to avenge your father, and resume your rightful place as his successor.
-Before add: has = 1
-After add: has = 1
-adding to message queue: 'It is up to you if you will be as evil as your father or not, but in any case you start with very little gold and your first order of business should be to purchase some girls from the slave market, and to hire some goons to guard your headquarters.
-Before add: has = 1
-After add: has = 1
-cLuaScript::get_ref - can't find 'init'
-cLuaScript::get_ref - can't find 'run'
-init_ref = 0
-run_ref  = 0
-script ready: return value 0
+Loading girls
+Loading gang Data
+Loading brothel Data
+***************** loading Player ******************
+***************** loading dungeon *****************
+Loading Dungeon Girl: Shura Kirigakure
+Loading Dungeon Girl: Risty
+Loading Dungeon Girl: Flannery
+Loading Dungeon Girl: Erza Scarlet
+Loading Dungeon Girl: Kim Possible
+Loading Dungeon Girl: Stacey
+Loading Dungeon Girl: Rose
+Loading Dungeon Girl: Manjari
+Loading Dungeon Girl: Nelliel Tu Odelschwanck
+Loading Dungeon Girl: Musubi
+Loading Dungeon Girl: Etain
+Loading Dungeon Girl: Kazehana
+Loading Dungeon Girl: Suika Ibuki
+Loading Dungeon Girl: Seras Victoria
+Loading Dungeon Girl: She Ra
+Loading Dungeon Girl: Mary
+Loading Dungeon Girl: ab
+Loading Dungeon Girl: Ahri
+Loading customers
+***************** Loading rivals *****************
+loaded rival: High Level Crew
+loaded rival: Scarred Assassins
+************ Loading players inventory ************
+***************** Loading brothels ****************
+Loading brothel: Alpha
+Loading brothel: Beta
+Loading clinic Data
+***************** Loading clinic ****************
+Loading clinic: Clinic
+Loading studio Data
+***************** Loading studio ****************
+Loading studio: Studio
+Loading arena Data
+***************** Loading arena ****************
+Loading arena: Arena
+Loading centre Data
+***************** Loading centre ****************
+Loading centre: Centre
+Loading house Data
+***************** Loading house ****************
+Loading house: House
+Loading global triggers
+Loading default images
 ************* saving Player data ******************
 ************* saving dungeon data *****************
+Saving Dungeon Girl: Shura Kirigakure
+Saving Dungeon Girl: Risty
+Saving Dungeon Girl: Flannery
+Saving Dungeon Girl: Erza Scarlet
+Saving Dungeon Girl: Kim Possible
+Saving Dungeon Girl: Stacey
+Saving Dungeon Girl: Rose
+Saving Dungeon Girl: Manjari
+Saving Dungeon Girl: Nelliel Tu Odelschwanck
+Saving Dungeon Girl: Musubi
+Saving Dungeon Girl: Etain
+Saving Dungeon Girl: Kazehana
+Saving Dungeon Girl: Suika Ibuki
+Saving Dungeon Girl: Seras Victoria
+Saving Dungeon Girl: She Ra
+Saving Dungeon Girl: Mary
+Saving Dungeon Girl: ab
+Saving Dungeon Girl: Ahri
 Saving Customers
 ***************** Saving rivals *******************
-saving rival: Southside Vigilantes
-saving rival: Muscle Tribe
-saving rival: Black Rats
-saving rival: Long Untouchables
+saving rival: High Level Crew
+saving rival: Scarred Assassins
 ************** Saving players inventory ***********
 ***************** Saving brothels *****************
-Saving brothel: J1
+Saving brothel: Alpha
+Saving brothel: Beta
 ***************** Saving clinics *****************
+Saving brothel: Clinic
 ***************** Saving studios *****************
 Saving brothel: Studio
 ***************** Saving arenas *****************
@@ -6623,16 +6352,34 @@ Saving brothel: Centre
 Saving brothel: House
 ************* saving Player data ******************
 ************* saving dungeon data *****************
+Saving Dungeon Girl: Shura Kirigakure
+Saving Dungeon Girl: Risty
+Saving Dungeon Girl: Flannery
+Saving Dungeon Girl: Erza Scarlet
+Saving Dungeon Girl: Kim Possible
+Saving Dungeon Girl: Stacey
+Saving Dungeon Girl: Rose
+Saving Dungeon Girl: Manjari
+Saving Dungeon Girl: Nelliel Tu Odelschwanck
+Saving Dungeon Girl: Musubi
+Saving Dungeon Girl: Etain
+Saving Dungeon Girl: Kazehana
+Saving Dungeon Girl: Suika Ibuki
+Saving Dungeon Girl: Seras Victoria
+Saving Dungeon Girl: She Ra
+Saving Dungeon Girl: Mary
+Saving Dungeon Girl: ab
+Saving Dungeon Girl: Ahri
 Saving Customers
 ***************** Saving rivals *******************
-saving rival: Southside Vigilantes
-saving rival: Muscle Tribe
-saving rival: Black Rats
-saving rival: Long Untouchables
+saving rival: High Level Crew
+saving rival: Scarred Assassins
 ************** Saving players inventory ***********
 ***************** Saving brothels *****************
-Saving brothel: J1
+Saving brothel: Alpha
+Saving brothel: Beta
 ***************** Saving clinics *****************
+Saving brothel: Clinic
 ***************** Saving studios *****************
 Saving brothel: Studio
 ***************** Saving arenas *****************
@@ -6641,52 +6388,910 @@ Saving brothel: Arena
 Saving brothel: Centre
 ***************** Saving houses *****************
 Saving brothel: House
-Brothel 1 not found in list!
-Brothel 2 not found in list!
-Brothel 3 not found in list!
-Brothel 4 not found in list!
-Brothel 5 not found in list!
-Brothel 1 not found in list!
-Brothel 2 not found in list!
-Brothel 3 not found in list!
-Brothel 4 not found in list!
-Brothel 5 not found in list!
-setting up slave market: genGirls = 0
-getting money for DCAmazon
-template is DCAmazon
+************* saving Player data ******************
+************* saving dungeon data *****************
+Saving Dungeon Girl: Shura Kirigakure
+Saving Dungeon Girl: Risty
+Saving Dungeon Girl: Flannery
+Saving Dungeon Girl: Erza Scarlet
+Saving Dungeon Girl: Kim Possible
+Saving Dungeon Girl: Stacey
+Saving Dungeon Girl: Rose
+Saving Dungeon Girl: Manjari
+Saving Dungeon Girl: Nelliel Tu Odelschwanck
+Saving Dungeon Girl: Musubi
+Saving Dungeon Girl: Etain
+Saving Dungeon Girl: Kazehana
+Saving Dungeon Girl: Suika Ibuki
+Saving Dungeon Girl: Seras Victoria
+Saving Dungeon Girl: She Ra
+Saving Dungeon Girl: Mary
+Saving Dungeon Girl: ab
+Saving Dungeon Girl: Ahri
+Saving Customers
+***************** Saving rivals *******************
+saving rival: High Level Crew
+saving rival: Scarred Assassins
+************** Saving players inventory ***********
+***************** Saving brothels *****************
+Saving brothel: Alpha
+Saving brothel: Beta
+***************** Saving clinics *****************
+Saving brothel: Clinic
+***************** Saving studios *****************
+Saving brothel: Studio
+***************** Saving arenas *****************
+Saving brothel: Arena
+***************** Saving centres *****************
+Saving brothel: Centre
+***************** Saving houses *****************
+Saving brothel: House
+sGirl::preg_chance: base %chance = 8, good flag = 0, factor = 1
+sGirl::preg_chance: base %chance = 8, good flag = 0, factor = 1
+sGirl::preg_chance: base %chance = 8, good flag = 0, factor = 1
+sGirl::preg_chance: base %chance = 8, good flag = 0, factor = 1
+sGirl::preg_chance: base %chance = 8, good flag = 0, factor = 1
+sGirl::preg_chance: base %chance = 8, good flag = 0, factor = 1
+sGirl::preg_chance: base %chance = 8, good flag = 0, factor = 1
+getting money for Royal Guard2
+template is Royal Guard2
 min money 0
 max money 10
-getting money for Cowgirl
-template is Cowgirl
+Girl vs. Girl: Hala fights Helga
+	Hala: Health 100, Dodge 100, Mana 100
+	Helga: Health 100, Dodge 41, Mana 27
+
+		Hala attacks: Using physical attack
+		Attack chance: 100 Die roll: 54
+			Hit! base damage is 5. Bonus damage is 10.
+				Helga tries to dodge: needs 41, gets 61: Failure! 
+				Helga takes 15 damage, less 5 for CON
+					New health value = 90
+		Helga attacks: Using physical attack
+		Attack chance: 43 Die roll: 71
+			Miss!
+		Hala attacks: Using physical attack
+		Attack chance: 100 Die roll: 32
+			Hit! base damage is 5. Bonus damage is 10.
+				Helga tries to dodge: needs 40, gets 75: Failure! 
+				Helga takes 15 damage, less 5 for CON
+					New health value = 80
+		Helga attacks: Using physical attack
+		Attack chance: 43 Die roll: 6
+			Hit! base damage is 5. Bonus damage is 4.
+				Hala tries to dodge: needs 99, gets 63: Success!
+
+		Hala attacks: Using physical attack
+		Attack chance: 100 Die roll: 13
+			Hit! base damage is 5. Bonus damage is 10.
+				Helga tries to dodge: needs 39, gets 37: Success!
+
+		Helga attacks: Using physical attack
+		Attack chance: 43 Die roll: 92
+			Miss!
+		Hala attacks: Using physical attack
+		Attack chance: 100 Die roll: 43
+			Hit! base damage is 5. Bonus damage is 10.
+				Helga tries to dodge: needs 38, gets 91: Failure! 
+				Helga takes 15 damage, less 5 for CON
+					New health value = 70
+		Helga attacks: Using physical attack
+		Attack chance: 43 Die roll: 52
+			Miss!
+		Hala attacks: Using physical attack
+		Attack chance: 100 Die roll: 100
+			Hit! base damage is 5. Bonus damage is 10.
+				Helga tries to dodge: needs 37, gets 74: Failure! 
+				Helga takes 15 damage, less 5 for CON
+					New health value = 60
+		Helga attacks: Using physical attack
+		Attack chance: 43 Die roll: 11
+			Hit! base damage is 5. Bonus damage is 4.
+				Hala tries to dodge: needs 96, gets 26: Success!
+
+		Hala attacks: Using physical attack
+		Attack chance: 100 Die roll: 29
+			Hit! base damage is 5. Bonus damage is 10.
+				Helga tries to dodge: needs 36, gets 37: Failure! 
+				Helga takes 15 damage, less 5 for CON
+					New health value = 50
+		Helga attacks: Using physical attack
+		Attack chance: 43 Die roll: 32
+			Hit! base damage is 5. Bonus damage is 4.
+				Hala tries to dodge: needs 95, gets 40: Success!
+
+		Hala attacks: Using physical attack
+		Attack chance: 100 Die roll: 34
+			Hit! base damage is 5. Bonus damage is 10.
+				Helga tries to dodge: needs 35, gets 46: Failure! 
+				Helga takes 15 damage, less 5 for CON
+					New health value = 40
+Hala WINS!
+getting money for Warrior Elf
+template is Warrior Elf
 min money 0
 max money 10
-getting money for Sex Priest
-template is Sex Priest
-min money 0
-max money 200
-getting money for waitresses
-template is waitresses
+Girl vs. Girl: Selvaria fights Valeska
+	Selvaria: Health 100, Dodge 99, Mana 100
+	Valeska: Health 100, Dodge 37, Mana 28
+
+		Selvaria attacks: Using physical attack
+		Attack chance: 100 Die roll: 39
+			Hit! base damage is 5. Bonus damage is 10.
+				Valeska tries to dodge: needs 37, gets 21: Success!
+
+		Valeska attacks: Using physical attack
+		Attack chance: 61 Die roll: 94
+			Miss!
+		Selvaria attacks: Using physical attack
+		Attack chance: 100 Die roll: 51
+			Hit! base damage is 5. Bonus damage is 10.
+				Valeska tries to dodge: needs 36, gets 94: Failure! 
+				Valeska takes 15 damage, less 5 for CON
+					New health value = 90
+		Valeska attacks: Using physical attack
+		Attack chance: 61 Die roll: 49
+			Hit! base damage is 5. Bonus damage is 6.
+				Selvaria tries to dodge: needs 98, gets 16: Success!
+
+		Selvaria attacks: Using physical attack
+		Attack chance: 100 Die roll: 11
+			Hit! base damage is 5. Bonus damage is 10.
+				Valeska tries to dodge: needs 35, gets 9: Success!
+
+		Valeska attacks: Using physical attack
+		Attack chance: 61 Die roll: 89
+			Miss!
+		Selvaria attacks: Using physical attack
+		Attack chance: 100 Die roll: 17
+			Hit! base damage is 5. Bonus damage is 10.
+				Valeska tries to dodge: needs 34, gets 15: Success!
+
+		Valeska attacks: Using physical attack
+		Attack chance: 61 Die roll: 73
+			Miss!
+		Selvaria attacks: Using physical attack
+		Attack chance: 100 Die roll: 3
+			Hit! base damage is 5. Bonus damage is 10.
+				Valeska tries to dodge: needs 33, gets 79: Failure! 
+				Valeska takes 15 damage, less 5 for CON
+					New health value = 80
+		Valeska attacks: Using physical attack
+		Attack chance: 61 Die roll: 68
+			Miss!
+		Selvaria attacks: Using physical attack
+		Attack chance: 100 Die roll: 55
+			Hit! base damage is 5. Bonus damage is 10.
+				Valeska tries to dodge: needs 32, gets 63: Failure! 
+				Valeska takes 15 damage, less 5 for CON
+					New health value = 70
+		Valeska attacks: Using physical attack
+		Attack chance: 61 Die roll: 87
+			Miss!
+		Selvaria attacks: Using physical attack
+		Attack chance: 100 Die roll: 53
+			Hit! base damage is 5. Bonus damage is 10.
+				Valeska tries to dodge: needs 31, gets 40: Failure! 
+				Valeska takes 15 damage, less 5 for CON
+					New health value = 60
+		Valeska attacks: Using physical attack
+		Attack chance: 61 Die roll: 63
+			Miss!
+		Selvaria attacks: Using physical attack
+		Attack chance: 100 Die roll: 65
+			Hit! base damage is 5. Bonus damage is 10.
+				Valeska tries to dodge: needs 30, gets 37: Failure! 
+				Valeska takes 15 damage, less 5 for CON
+					New health value = 50
+		Valeska attacks: Using physical attack
+		Attack chance: 61 Die roll: 73
+			Miss!
+		Selvaria attacks: Using physical attack
+		Attack chance: 100 Die roll: 1
+			Hit! base damage is 5. Bonus damage is 10.
+				Valeska tries to dodge: needs 29, gets 89: Failure! 
+				Valeska takes 15 damage, less 5 for CON
+					New health value = 40
+Selvaria WINS!
+getting money for School Girl
+template is School Girl
 min money 0
 max money 10
-getting money for Lady-in-Waiting
-template is Lady-in-Waiting
-min money 100
-max money 1000
-getting money for Twi'lek
-template is Twi'lek
+Girl vs. Girl: Fayina fights Karena
+	Fayina: Health 56, Dodge 99, Mana 100
+	Karena: Health 100, Dodge 100, Mana 11
+
+		Fayina attacks: Using physical attack
+		Attack chance: 100 Die roll: 53
+			Hit! base damage is 5. Bonus damage is 10.
+				Karena tries to dodge: needs 100, gets 66: Success!
+
+		Karena attacks: Casts a spell (mana now 4)
+		Attack chance: 32 Die roll: 10
+			Hit! base damage is 5. Bonus damage is 8.
+				Fayina tries to dodge: needs 99, gets 41: Success!
+
+		Fayina attacks: Using physical attack
+		Attack chance: 100 Die roll: 80
+			Hit! base damage is 5. Bonus damage is 10.
+				Karena tries to dodge: needs 99, gets 61: Success!
+
+		Karena attacks: Insufficient mana: using combat
+		Attack chance: 32 Die roll: 92
+			Miss!
+		Fayina attacks: Using physical attack
+		Attack chance: 100 Die roll: 26
+			Hit! base damage is 5. Bonus damage is 10.
+				Karena tries to dodge: needs 98, gets 48: Success!
+
+		Karena attacks: Insufficient mana: using combat
+		Attack chance: 32 Die roll: 60
+			Miss!
+		Fayina attacks: Using physical attack
+		Attack chance: 100 Die roll: 76
+			Hit! base damage is 5. Bonus damage is 10.
+				Karena tries to dodge: needs 97, gets 53: Success!
+
+		Karena attacks: Insufficient mana: using combat
+		Attack chance: 32 Die roll: 67
+			Miss!
+		Fayina attacks: Using physical attack
+		Attack chance: 100 Die roll: 88
+			Hit! base damage is 5. Bonus damage is 10.
+				Karena tries to dodge: needs 96, gets 88: Success!
+
+		Karena attacks: Insufficient mana: using combat
+		Attack chance: 32 Die roll: 89
+			Miss!
+		Fayina attacks: Using physical attack
+		Attack chance: 100 Die roll: 52
+			Hit! base damage is 5. Bonus damage is 10.
+				Karena tries to dodge: needs 95, gets 1: Success!
+
+		Karena attacks: Insufficient mana: using combat
+		Attack chance: 32 Die roll: 89
+			Miss!
+		Fayina attacks: Using physical attack
+		Attack chance: 100 Die roll: 16
+			Hit! base damage is 5. Bonus damage is 10.
+				Karena tries to dodge: needs 94, gets 33: Success!
+
+		Karena attacks: Insufficient mana: using combat
+		Attack chance: 32 Die roll: 40
+			Miss!
+		Fayina attacks: Using physical attack
+		Attack chance: 100 Die roll: 31
+			Hit! base damage is 5. Bonus damage is 10.
+				Karena tries to dodge: needs 93, gets 4: Success!
+
+		Karena attacks: Insufficient mana: using combat
+		Attack chance: 32 Die roll: 46
+			Miss!
+		Fayina attacks: Using physical attack
+		Attack chance: 100 Die roll: 3
+			Hit! base damage is 5. Bonus damage is 10.
+				Karena tries to dodge: needs 92, gets 47: Success!
+
+		Karena attacks: Insufficient mana: using combat
+		Attack chance: 32 Die roll: 32
+			Hit! base damage is 5. Bonus damage is 8.
+				Fayina tries to dodge: needs 91, gets 87: Success!
+
+		Fayina attacks: Using physical attack
+		Attack chance: 100 Die roll: 53
+			Hit! base damage is 5. Bonus damage is 10.
+				Karena tries to dodge: needs 91, gets 33: Success!
+
+		Karena attacks: Insufficient mana: using combat
+		Attack chance: 32 Die roll: 83
+			Miss!
+		Fayina attacks: Using physical attack
+		Attack chance: 100 Die roll: 34
+			Hit! base damage is 5. Bonus damage is 10.
+				Karena tries to dodge: needs 90, gets 17: Success!
+
+		Karena attacks: Insufficient mana: using combat
+		Attack chance: 32 Die roll: 88
+			Miss!
+		Fayina attacks: Using physical attack
+		Attack chance: 100 Die roll: 98
+			Hit! base damage is 5. Bonus damage is 10.
+				Karena tries to dodge: needs 89, gets 11: Success!
+
+		Karena attacks: Insufficient mana: using combat
+		Attack chance: 32 Die roll: 54
+			Miss!
+		Fayina attacks: Using physical attack
+		Attack chance: 100 Die roll: 90
+			Hit! base damage is 5. Bonus damage is 10.
+				Karena tries to dodge: needs 88, gets 3: Success!
+
+		Karena attacks: Insufficient mana: using combat
+		Attack chance: 32 Die roll: 97
+			Miss!
+		Fayina attacks: Using physical attack
+		Attack chance: 100 Die roll: 83
+			Hit! base damage is 5. Bonus damage is 10.
+				Karena tries to dodge: needs 87, gets 53: Success!
+
+		Karena attacks: Insufficient mana: using combat
+		Attack chance: 32 Die roll: 6
+			Hit! base damage is 5. Bonus damage is 8.
+				Fayina tries to dodge: needs 86, gets 68: Success!
+
+		Fayina attacks: Using physical attack
+		Attack chance: 100 Die roll: 39
+			Hit! base damage is 5. Bonus damage is 10.
+				Karena tries to dodge: needs 86, gets 55: Success!
+
+		Karena attacks: Insufficient mana: using combat
+		Attack chance: 32 Die roll: 79
+			Miss!
+		Fayina attacks: Using physical attack
+		Attack chance: 100 Die roll: 56
+			Hit! base damage is 5. Bonus damage is 10.
+				Karena tries to dodge: needs 85, gets 33: Success!
+
+		Karena attacks: Insufficient mana: using combat
+		Attack chance: 32 Die roll: 74
+			Miss!
+		Fayina attacks: Using physical attack
+		Attack chance: 100 Die roll: 2
+			Hit! base damage is 5. Bonus damage is 10.
+				Karena tries to dodge: needs 84, gets 24: Success!
+
+		Karena attacks: Insufficient mana: using combat
+		Attack chance: 32 Die roll: 9
+			Hit! base damage is 5. Bonus damage is 8.
+				Fayina tries to dodge: needs 83, gets 27: Success!
+
+		Fayina attacks: Using physical attack
+		Attack chance: 100 Die roll: 9
+			Hit! base damage is 5. Bonus damage is 10.
+				Karena tries to dodge: needs 83, gets 48: Success!
+
+		Karena attacks: Insufficient mana: using combat
+		Attack chance: 32 Die roll: 57
+			Miss!
+		Fayina attacks: Using physical attack
+		Attack chance: 100 Die roll: 57
+			Hit! base damage is 5. Bonus damage is 10.
+				Karena tries to dodge: needs 82, gets 4: Success!
+
+		Karena attacks: Insufficient mana: using combat
+		Attack chance: 32 Die roll: 81
+			Miss!
+		Fayina attacks: Using physical attack
+		Attack chance: 100 Die roll: 75
+			Hit! base damage is 5. Bonus damage is 10.
+				Karena tries to dodge: needs 81, gets 44: Success!
+
+		Karena attacks: Insufficient mana: using combat
+		Attack chance: 32 Die roll: 77
+			Miss!
+		Fayina attacks: Using physical attack
+		Attack chance: 100 Die roll: 17
+			Hit! base damage is 5. Bonus damage is 10.
+				Karena tries to dodge: needs 80, gets 42: Success!
+
+		Karena attacks: Insufficient mana: using combat
+		Attack chance: 32 Die roll: 96
+			Miss!
+		Fayina attacks: Using physical attack
+		Attack chance: 100 Die roll: 96
+			Hit! base damage is 5. Bonus damage is 10.
+				Karena tries to dodge: needs 79, gets 19: Success!
+
+		Karena attacks: Insufficient mana: using combat
+		Attack chance: 32 Die roll: 13
+			Hit! base damage is 5. Bonus damage is 8.
+				Fayina tries to dodge: needs 78, gets 100: Failure! 
+				Fayina takes 13 damage, less 7 for CON
+					New health value = 52
+		Fayina attacks: Using physical attack
+		Attack chance: 100 Die roll: 17
+			Hit! base damage is 5. Bonus damage is 10.
+				Karena tries to dodge: needs 78, gets 16: Success!
+
+		Karena attacks: Insufficient mana: using combat
+		Attack chance: 32 Die roll: 59
+			Miss!
+		Fayina attacks: Using physical attack
+		Attack chance: 100 Die roll: 84
+			Hit! base damage is 5. Bonus damage is 10.
+				Karena tries to dodge: needs 77, gets 66: Success!
+
+		Karena attacks: Insufficient mana: using combat
+		Attack chance: 32 Die roll: 59
+			Miss!
+		Fayina attacks: Using physical attack
+		Attack chance: 100 Die roll: 97
+			Hit! base damage is 5. Bonus damage is 10.
+				Karena tries to dodge: needs 76, gets 66: Success!
+
+		Karena attacks: Insufficient mana: using combat
+		Attack chance: 32 Die roll: 43
+			Miss!
+		Fayina attacks: Using physical attack
+		Attack chance: 100 Die roll: 21
+			Hit! base damage is 5. Bonus damage is 10.
+				Karena tries to dodge: needs 75, gets 24: Success!
+
+		Karena attacks: Insufficient mana: using combat
+		Attack chance: 32 Die roll: 47
+			Miss!
+		Fayina attacks: Using physical attack
+		Attack chance: 100 Die roll: 19
+			Hit! base damage is 5. Bonus damage is 10.
+				Karena tries to dodge: needs 74, gets 33: Success!
+
+		Karena attacks: Insufficient mana: using combat
+		Attack chance: 32 Die roll: 85
+			Miss!
+		Fayina attacks: Using physical attack
+		Attack chance: 100 Die roll: 25
+			Hit! base damage is 5. Bonus damage is 10.
+				Karena tries to dodge: needs 73, gets 42: Success!
+
+		Karena attacks: Insufficient mana: using combat
+		Attack chance: 32 Die roll: 58
+			Miss!
+		Fayina attacks: Using physical attack
+		Attack chance: 100 Die roll: 15
+			Hit! base damage is 5. Bonus damage is 10.
+				Karena tries to dodge: needs 72, gets 84: Failure! 
+				Karena takes 15 damage, less 5 for CON
+					New health value = 90
+		Karena attacks: Insufficient mana: using combat
+		Attack chance: 32 Die roll: 54
+			Miss!
+		Fayina attacks: Using physical attack
+		Attack chance: 100 Die roll: 65
+			Hit! base damage is 5. Bonus damage is 10.
+				Karena tries to dodge: needs 71, gets 64: Success!
+
+		Karena attacks: Insufficient mana: using combat
+		Attack chance: 32 Die roll: 27
+			Hit! base damage is 5. Bonus damage is 8.
+				Fayina tries to dodge: needs 70, gets 23: Success!
+
+		Fayina attacks: Using physical attack
+		Attack chance: 100 Die roll: 40
+			Hit! base damage is 5. Bonus damage is 10.
+				Karena tries to dodge: needs 70, gets 54: Success!
+
+		Karena attacks: Insufficient mana: using combat
+		Attack chance: 32 Die roll: 25
+			Hit! base damage is 5. Bonus damage is 8.
+				Fayina tries to dodge: needs 69, gets 89: Failure! 
+				Fayina takes 13 damage, less 7 for CON
+					New health value = 48
+		Fayina attacks: Using physical attack
+		Attack chance: 100 Die roll: 67
+			Hit! base damage is 5. Bonus damage is 10.
+				Karena tries to dodge: needs 69, gets 72: Failure! 
+				Karena takes 15 damage, less 5 for CON
+					New health value = 80
+		Karena attacks: Insufficient mana: using combat
+		Attack chance: 32 Die roll: 42
+			Miss!
+		Fayina attacks: Using physical attack
+		Attack chance: 100 Die roll: 35
+			Hit! base damage is 5. Bonus damage is 10.
+				Karena tries to dodge: needs 68, gets 25: Success!
+
+		Karena attacks: Insufficient mana: using combat
+		Attack chance: 32 Die roll: 54
+			Miss!
+		Fayina attacks: Using physical attack
+		Attack chance: 100 Die roll: 96
+			Hit! base damage is 5. Bonus damage is 10.
+				Karena tries to dodge: needs 67, gets 69: Failure! 
+				Karena takes 15 damage, less 5 for CON
+					New health value = 70
+		Karena attacks: Insufficient mana: using combat
+		Attack chance: 32 Die roll: 49
+			Miss!
+		Fayina attacks: Using physical attack
+		Attack chance: 100 Die roll: 65
+			Hit! base damage is 5. Bonus damage is 10.
+				Karena tries to dodge: needs 66, gets 39: Success!
+
+		Karena attacks: Insufficient mana: using combat
+		Attack chance: 32 Die roll: 49
+			Miss!
+		Fayina attacks: Using physical attack
+		Attack chance: 100 Die roll: 75
+			Hit! base damage is 5. Bonus damage is 10.
+				Karena tries to dodge: needs 65, gets 20: Success!
+
+		Karena attacks: Insufficient mana: using combat
+		Attack chance: 32 Die roll: 99
+			Miss!
+		Fayina attacks: Using physical attack
+		Attack chance: 100 Die roll: 18
+			Hit! base damage is 5. Bonus damage is 10.
+				Karena tries to dodge: needs 64, gets 38: Success!
+
+		Karena attacks: Insufficient mana: using combat
+		Attack chance: 32 Die roll: 59
+			Miss!
+		Fayina attacks: Using physical attack
+		Attack chance: 100 Die roll: 72
+			Hit! base damage is 5. Bonus damage is 10.
+				Karena tries to dodge: needs 63, gets 92: Failure! 
+				Karena takes 15 damage, less 5 for CON
+					New health value = 60
+		Karena attacks: Insufficient mana: using combat
+		Attack chance: 32 Die roll: 34
+			Miss!
+		Fayina attacks: Using physical attack
+		Attack chance: 100 Die roll: 23
+			Hit! base damage is 5. Bonus damage is 10.
+				Karena tries to dodge: needs 62, gets 8: Success!
+
+		Karena attacks: Insufficient mana: using combat
+		Attack chance: 32 Die roll: 63
+			Miss!
+		Fayina attacks: Using physical attack
+		Attack chance: 100 Die roll: 12
+			Hit! base damage is 5. Bonus damage is 10.
+				Karena tries to dodge: needs 61, gets 32: Success!
+
+		Karena attacks: Insufficient mana: using combat
+		Attack chance: 32 Die roll: 78
+			Miss!
+		Fayina attacks: Using physical attack
+		Attack chance: 100 Die roll: 58
+			Hit! base damage is 5. Bonus damage is 10.
+				Karena tries to dodge: needs 60, gets 19: Success!
+
+		Karena attacks: Insufficient mana: using combat
+		Attack chance: 32 Die roll: 30
+			Hit! base damage is 5. Bonus damage is 8.
+				Fayina tries to dodge: needs 59, gets 69: Failure! 
+				Fayina takes 13 damage, less 7 for CON
+					New health value = 44
+		Fayina attacks: Using physical attack
+		Attack chance: 100 Die roll: 22
+			Hit! base damage is 5. Bonus damage is 10.
+				Karena tries to dodge: needs 59, gets 47: Success!
+
+		Karena attacks: Insufficient mana: using combat
+		Attack chance: 32 Die roll: 83
+			Miss!
+		Fayina attacks: Using physical attack
+		Attack chance: 100 Die roll: 87
+			Hit! base damage is 5. Bonus damage is 10.
+				Karena tries to dodge: needs 58, gets 68: Failure! 
+				Karena takes 15 damage, less 5 for CON
+					New health value = 50
+		Karena attacks: Insufficient mana: using combat
+		Attack chance: 32 Die roll: 22
+			Hit! base damage is 5. Bonus damage is 8.
+				Fayina tries to dodge: needs 57, gets 98: Failure! 
+				Fayina takes 13 damage, less 7 for CON
+					New health value = 40
+Karena WINS!
+getting money for Dangerous Girl
+template is Dangerous Girl
+min money 0
+max money 400
+Girl vs. Girl: Asuka Kokawa fights Zoey
+	Asuka Kokawa: Health 100, Dodge 97, Mana 100
+	Zoey: Health 100, Dodge 43, Mana 11
+
+		Asuka Kokawa attacks: Using physical attack
+		Attack chance: 100 Die roll: 11
+			Hit! base damage is 5. Bonus damage is 10.
+				Zoey tries to dodge: needs 43, gets 13: Success!
+
+		Zoey attacks: Using physical attack
+		Attack chance: 55 Die roll: 83
+			Miss!
+		Asuka Kokawa attacks: Using physical attack
+		Attack chance: 100 Die roll: 56
+			Hit! base damage is 5. Bonus damage is 10.
+				Zoey tries to dodge: needs 42, gets 22: Success!
+
+		Zoey attacks: Using physical attack
+		Attack chance: 55 Die roll: 20
+			Hit! base damage is 5. Bonus damage is 5.
+				Asuka Kokawa tries to dodge: needs 96, gets 33: Success!
+
+		Asuka Kokawa attacks: Using physical attack
+		Attack chance: 100 Die roll: 43
+			Hit! base damage is 5. Bonus damage is 10.
+				Zoey tries to dodge: needs 41, gets 99: Failure! 
+				Zoey takes 15 damage, less 7 for CON
+					New health value = 92
+		Zoey attacks: Using physical attack
+		Attack chance: 55 Die roll: 10
+			Hit! base damage is 5. Bonus damage is 5.
+				Asuka Kokawa tries to dodge: needs 95, gets 88: Success!
+
+		Asuka Kokawa attacks: Using physical attack
+		Attack chance: 100 Die roll: 39
+			Hit! base damage is 5. Bonus damage is 10.
+				Zoey tries to dodge: needs 40, gets 9: Success!
+
+		Zoey attacks: Using physical attack
+		Attack chance: 55 Die roll: 43
+			Hit! base damage is 5. Bonus damage is 5.
+				Asuka Kokawa tries to dodge: needs 94, gets 40: Success!
+
+		Asuka Kokawa attacks: Using physical attack
+		Attack chance: 100 Die roll: 13
+			Hit! base damage is 5. Bonus damage is 10.
+				Zoey tries to dodge: needs 39, gets 60: Failure! 
+				Zoey takes 15 damage, less 7 for CON
+					New health value = 84
+		Zoey attacks: Using physical attack
+		Attack chance: 55 Die roll: 87
+			Miss!
+		Asuka Kokawa attacks: Using physical attack
+		Attack chance: 100 Die roll: 54
+			Hit! base damage is 5. Bonus damage is 10.
+				Zoey tries to dodge: needs 38, gets 100: Failure! 
+				Zoey takes 15 damage, less 7 for CON
+					New health value = 76
+		Zoey attacks: Using physical attack
+		Attack chance: 55 Die roll: 5
+			Hit! base damage is 5. Bonus damage is 5.
+				Asuka Kokawa tries to dodge: needs 92, gets 73: Success!
+
+		Asuka Kokawa attacks: Using physical attack
+		Attack chance: 100 Die roll: 31
+			Hit! base damage is 5. Bonus damage is 10.
+				Zoey tries to dodge: needs 37, gets 79: Failure! 
+				Zoey takes 15 damage, less 7 for CON
+					New health value = 68
+		Zoey attacks: Using physical attack
+		Attack chance: 55 Die roll: 4
+			Hit! base damage is 5. Bonus damage is 5.
+				Asuka Kokawa tries to dodge: needs 91, gets 62: Success!
+
+		Asuka Kokawa attacks: Using physical attack
+		Attack chance: 100 Die roll: 2
+			Hit! base damage is 5. Bonus damage is 10.
+				Zoey tries to dodge: needs 36, gets 53: Failure! 
+				Zoey takes 15 damage, less 7 for CON
+					New health value = 60
+		Zoey attacks: Using physical attack
+		Attack chance: 55 Die roll: 15
+			Hit! base damage is 5. Bonus damage is 5.
+				Asuka Kokawa tries to dodge: needs 90, gets 46: Success!
+
+		Asuka Kokawa attacks: Using physical attack
+		Attack chance: 100 Die roll: 52
+			Hit! base damage is 5. Bonus damage is 10.
+				Zoey tries to dodge: needs 35, gets 39: Failure! 
+				Zoey takes 15 damage, less 7 for CON
+					New health value = 52
+		Zoey attacks: Using physical attack
+		Attack chance: 55 Die roll: 22
+			Hit! base damage is 5. Bonus damage is 5.
+				Asuka Kokawa tries to dodge: needs 89, gets 20: Success!
+
+		Asuka Kokawa attacks: Using physical attack
+		Attack chance: 100 Die roll: 10
+			Hit! base damage is 5. Bonus damage is 10.
+				Zoey tries to dodge: needs 34, gets 61: Failure! 
+				Zoey takes 15 damage, less 7 for CON
+					New health value = 44
+		Zoey attacks: Using physical attack
+		Attack chance: 55 Die roll: 69
+			Miss!
+		Asuka Kokawa attacks: Using physical attack
+		Attack chance: 100 Die roll: 36
+			Hit! base damage is 5. Bonus damage is 10.
+				Zoey tries to dodge: needs 33, gets 96: Failure! 
+				Zoey takes 15 damage, less 7 for CON
+					New health value = 36
+Asuka Kokawa WINS!
+sGirl::preg_chance: base %chance = 8, good flag = 0, factor = 1
+sGirl::preg_chance: base %chance = 8, good flag = 0, factor = 1
+sGirl::preg_chance: base %chance = 8, good flag = 0, factor = 1
+sGirl::preg_chance: base %chance = 8, good flag = 0, factor = 1
+sGirl::preg_chance: base %chance = 8, good flag = 0, factor = 1
+sGirl::preg_chance: base %chance = 8, good flag = 0, factor = 0.75
+sGirl::preg_chance: base %chance = 8, good flag = 1, factor = 1
+sGirl::preg_chance: base %chance = 8, good flag = 0, factor = 0.75
+sGirl::preg_chance: base %chance = 8, good flag = 1, factor = 1
+sGirl::preg_chance: base %chance = 8, good flag = 1, factor = 1
+sGirl::preg_chance: base %chance = 8, good flag = 0, factor = 0.75
+sGirl::preg_chance: base %chance = 8, good flag = 1, factor = 1.5
+sGirl::preg_chance: base %chance = 8, good flag = 1, factor = 1
+sGirl::preg_chance: base %chance = 8, good flag = 1, factor = 1
+sGirl::preg_chance: base %chance = 8, good flag = 0, factor = 0.75
+sGirl::preg_chance: base %chance = 8, good flag = 1, factor = 1
+sGirl::preg_chance: base %chance = 8, good flag = 0, factor = 0.75
+sGirl::preg_chance: base %chance = 8, good flag = 1, factor = 1
+sGirl::preg_chance: base %chance = 8, good flag = 1, factor = 1
+sGirl::preg_chance: base %chance = 8, good flag = 1, factor = 1.5
+sGirl::preg_chance: base %chance = 8, good flag = 1, factor = 1
+sGirl::preg_chance: base %chance = 8, good flag = 1, factor = 1
+sGirl::preg_chance: base %chance = 8, good flag = 0, factor = 0.75
+sGirl::preg_chance: base %chance = 8, good flag = 1, factor = 1
+sGirl::preg_chance: base %chance = 8, good flag = 1, factor = 1
+sGirl::preg_chance: base %chance = 8, good flag = 1, factor = 1
+sGirl::preg_chance: base %chance = 8, good flag = 0, factor = 0.75
+sGirl::preg_chance: base %chance = 8, good flag = 1, factor = 1.5
+sGirl::preg_chance: base %chance = 8, good flag = 1, factor = 1
+sGirl::preg_chance: base %chance = 8, good flag = 1, factor = 1
+sGirl::preg_chance: base %chance = 8, good flag = 1, factor = 1
+sGirl::preg_chance: base %chance = 8, good flag = 1, factor = 1
+sGirl::preg_chance: base %chance = 8, good flag = 1, factor = 1
+sGirl::preg_chance: base %chance = 8, good flag = 0, factor = 0.75
+sGirl::preg_chance: base %chance = 8, good flag = 1, factor = 1
+sGirl::preg_chance: base %chance = 8, good flag = 0, factor = 0.75
+sGirl::preg_chance: base %chance = 8, good flag = 0, factor = 0.75
+sGirl::preg_chance: base %chance = 8, good flag = 1, factor = 1
+sGirl::preg_chance: base %chance = 8, good flag = 0, factor = 0.75
+sGirl::preg_chance: base %chance = 8, good flag = 1, factor = 1
+sGirl::preg_chance: base %chance = 8, good flag = 0, factor = 0.75
+sGirl::preg_chance: base %chance = 8, good flag = 1, factor = 1
+sGirl::preg_chance: base %chance = 8, good flag = 1, factor = 1
+sGirl::preg_chance: base %chance = 8, good flag = 1, factor = 1.5
+sGirl::preg_chance: base %chance = 8, good flag = 0, factor = 0.75
+sGirl::preg_chance: base %chance = 8, good flag = 1, factor = 1
+sGirl::preg_chance: base %chance = 8, good flag = 0, factor = 0.75
+sGirl::preg_chance: base %chance = 8, good flag = 1, factor = 1
+sGirl::preg_chance: base %chance = 8, good flag = 1, factor = 1
+sGirl::preg_chance: base %chance = 8, good flag = 1, factor = 1
+sGirl::preg_chance: base %chance = 8, good flag = 0, factor = 0.75
+sGirl::preg_chance: base %chance = 8, good flag = 0, factor = 0.75
+sGirl::preg_chance: base %chance = 8, good flag = 1, factor = 1
+sGirl::preg_chance: base %chance = 8, good flag = 0, factor = 0.75
+getting money for random student
+template is random student
 min money 0
 max money 10
-CTariff: base price for slave 'DCAmazon' = 1095
-CTariff: buy price config factor 'DCAmazon' = 1
-CTariff: buy price for slave 'DCAmazon' = 1095
-slave buyprice = 1095
+Time to restock heal potions
+Flag = 1
+Target = 20
+Current = 20
+Week End begins: value    = 118135
+               : income   = 947
+               : upkeep   = 2380
+               : cash in  = 0
+               : cash out = -2595
+Added Bothel 0: value    = 118135
+               : income   = 36231
+               : upkeep   = 6646
+               : cash in  = 0
+               : cash out = -2595
+Added Bothel 1: value    = 118135
+               : income   = 36231
+               : upkeep   = 6711
+               : cash in  = 0
+               : cash out = -2595
+Week End Final : value    = 147655
+               : income   = 0
+               : upkeep   = 0
+               : cash in  = 0
+               : cash out = 0
+
 Error in RenderText m_Message. Text which was to be rendered: 
 Text has zero width
-Brothel 1 not found in list!
+Error in RenderText m_Message. Text which was to be rendered: 
+Text has zero width
+Error in RenderText m_Message. Text which was to be rendered: 
+Text has zero width
+Error in RenderText m_Message. Text which was to be rendered: 
+Text has zero width
+Error in RenderText m_Message. Text which was to be rendered: 
+Text has zero width
+Error in RenderText m_Message. Text which was to be rendered: 
+Text has zero width
 Brothel 2 not found in list!
 Brothel 3 not found in list!
 Brothel 4 not found in list!
 Brothel 5 not found in list!
+************* saving Player data ******************
+************* saving dungeon data *****************
+Saving Dungeon Girl: Shura Kirigakure
+Saving Dungeon Girl: Risty
+Saving Dungeon Girl: Flannery
+Saving Dungeon Girl: Erza Scarlet
+Saving Dungeon Girl: Kim Possible
+Saving Dungeon Girl: Stacey
+Saving Dungeon Girl: Rose
+Saving Dungeon Girl: Manjari
+Saving Dungeon Girl: Nelliel Tu Odelschwanck
+Saving Dungeon Girl: Musubi
+Saving Dungeon Girl: Etain
+Saving Dungeon Girl: Kazehana
+Saving Dungeon Girl: Suika Ibuki
+Saving Dungeon Girl: Seras Victoria
+Saving Dungeon Girl: She Ra
+Saving Dungeon Girl: Mary
+Saving Dungeon Girl: ab
+Saving Dungeon Girl: Ahri
+Saving Dungeon Girl: Cheetara
+Saving Dungeon Girl: acdged
+Saving Dungeon Girl: Lilith the Siren
+Saving Dungeon Girl: Blondelle
+Saving Customers
+***************** Saving rivals *******************
+saving rival: High Level Crew
+saving rival: Scarred Assassins
+************** Saving players inventory ***********
+***************** Saving brothels *****************
+Saving brothel: Alpha
+Saving brothel: Beta
+***************** Saving clinics *****************
+Saving brothel: Clinic
+***************** Saving studios *****************
+Saving brothel: Studio
+***************** Saving arenas *****************
+Saving brothel: Arena
+***************** Saving centres *****************
+Saving brothel: Centre
+***************** Saving houses *****************
+Saving brothel: House
+Error in RenderText m_Message. Text which was to be rendered: 
+Text has zero width
+Error in RenderText m_Message. Text which was to be rendered: 
+Text has zero width
+Error in RenderText m_Message. Text which was to be rendered: 
+Text has zero width
+Error in RenderText m_Message. Text which was to be rendered: 
+Text has zero width
+Error in RenderText m_Message. Text which was to be rendered: 
+Text has zero width
+Error in RenderText m_Message. Text which was to be rendered: 
+Text has zero width
+Error in RenderText m_Message. Text which was to be rendered: 
+Text has zero width
+Error in RenderText m_Message. Text which was to be rendered: 
+Text has zero width
+Error in RenderText m_Message. Text which was to be rendered: 
+Text has zero width
+Error in RenderText m_Message. Text which was to be rendered: 
+Text has zero width
+Error in RenderText m_Message. Text which was to be rendered: 
+Text has zero width
+Error in RenderText m_Message. Text which was to be rendered: 
+Text has zero width
+Error in RenderText m_Message. Text which was to be rendered: 
+Text has zero width
+Error in RenderText m_Message. Text which was to be rendered: 
+Text has zero width
+Error in RenderText m_Message. Text which was to be rendered: 
+Text has zero width
+Error in RenderText m_Message. Text which was to be rendered: 
+Text has zero width
+Error in RenderText m_Message. Text which was to be rendered: 
+Text has zero width
+Error in RenderText m_Message. Text which was to be rendered: 
+Text has zero width
+Error in RenderText m_Message. Text which was to be rendered: 
+Text has zero width
+Error in RenderText m_Message. Text which was to be rendered: 
+Text has zero width
+Error in RenderText m_Message. Text which was to be rendered: 
+Text has zero width
+Error in RenderText m_Message. Text which was to be rendered: 
+Text has zero width
+Error in RenderText m_Message. Text which was to be rendered: 
+Text has zero width
+Error in RenderText m_Message. Text which was to be rendered: 
+Text has zero width
+Error in RenderText m_Message. Text which was to be rendered: 
+Text has zero width
+Error in RenderText m_Message. Text which was to be rendered: 
+Text has zero width
+Error in RenderText m_Message. Text which was to be rendered: 
+Text has zero width
+Error in RenderText m_Message. Text which was to be rendered: 
+Text has zero width
+Error in RenderText m_Message. Text which was to be rendered: 
+Text has zero width
+Error in RenderText m_Message. Text which was to be rendered: 
+Text has zero width
+Error in RenderText m_Message. Text which was to be rendered: 
+Text has zero width
 Shutting Down
 Releasing Graphics
 Releasing Images
@@ -7163,9 +7768,9 @@ Releasing Interface
 '.\Resources\Buttons\BackOff.png' Freed
 '.\Resources\Buttons\BackDisabled.png' Freed
 '.\Resources\Buttons\BackOn.png' Freed
-'.\Resources\Buttons\ShowMoreOff.png' Freed
-'.\Resources\Buttons\ShowMoreDisabled.png' Freed
-'.\Resources\Buttons\ShowMoreOn.png' Freed
+'.\Resources\Buttons\' Freed
+'.\Resources\Buttons\' Freed
+'.\Resources\Buttons\' Freed
 '.\Resources\Buttons\GirlsOff.png' Freed
 '.\Resources\Buttons\GirlsDisabled.png' Freed
 '.\Resources\Buttons\GirlsOn.png' Freed
@@ -7184,6 +7789,9 @@ Releasing Interface
 '.\Resources\Buttons\BuildingOff.png' Freed
 '.\Resources\Buttons\BuildingDisabled.png' Freed
 '.\Resources\Buttons\BuildingOn.png' Freed
+'.\Resources\Buttons\ShowMoreOff.png' Freed
+'.\Resources\Buttons\ShowMoreDisabled.png' Freed
+'.\Resources\Buttons\ShowMoreOn.png' Freed
 '.\Resources\Buttons\BackOff.png' Freed
 '.\Resources\Buttons\BackDisabled.png' Freed
 '.\Resources\Buttons\BackOn.png' Freed
