@@ -210,7 +210,40 @@ void cScreenGirlDetails::init()
 //		DisableButton(inventory_id, true);  This was causing the error where Manage inventory would be greyed out --PP
 	}
 
-	if(!InDungeon)
+	if (g_Arena.GetGirlsCurrentBrothel(selected_girl) != -1)//ARENA
+	{
+		ClearListBox(joblist_id);
+		AddToListBox(jobtypelist_id, JOBFILTER_ARENA, g_Arena.m_JobManager.JobFilterName[JOBFILTER_ARENA]);
+		SetSelectedItemInList(jobtypelist_id, JOBFILTER_ARENA);
+	}
+	else if (g_Clinic.GetGirlsCurrentBrothel(selected_girl) != -1)//CLINIC
+	{
+		ClearListBox(joblist_id);
+		AddToListBox(jobtypelist_id, JOBFILTER_CLINIC, g_Clinic.m_JobManager.JobFilterName[JOBFILTER_CLINIC]);
+		AddToListBox(jobtypelist_id, JOBFILTER_CLINICSTAFF, g_Clinic.m_JobManager.JobFilterName[JOBFILTER_CLINICSTAFF]);
+		SetSelectedItemInList(jobtypelist_id, JOBFILTER_CLINIC);
+	}
+	else if (g_Centre.GetGirlsCurrentBrothel(selected_girl) != -1)//CENTRE
+	{
+		ClearListBox(joblist_id);
+		AddToListBox(jobtypelist_id, JOBFILTER_COMMUNITYCENTRE, g_Centre.m_JobManager.JobFilterName[JOBFILTER_COMMUNITYCENTRE]);
+		AddToListBox(jobtypelist_id, JOBFILTER_DRUGCENTRE, g_Centre.m_JobManager.JobFilterName[JOBFILTER_DRUGCENTRE]);
+		SetSelectedItemInList(jobtypelist_id, JOBFILTER_COMMUNITYCENTRE);
+	}
+	else if (g_House.GetGirlsCurrentBrothel(selected_girl) != -1)//HOUSE
+	{
+		ClearListBox(joblist_id);
+		AddToListBox(jobtypelist_id, JOBFILTER_HOUSE, g_House.m_JobManager.JobFilterName[JOBFILTER_HOUSE]);
+		SetSelectedItemInList(jobtypelist_id, JOBFILTER_HOUSE);
+	}
+	else if (g_Studios.GetGirlsCurrentBrothel(selected_girl) != -1)//STUDIO
+	{
+		ClearListBox(joblist_id);
+		AddToListBox(jobtypelist_id, JOBFILTER_STUDIOCREW, g_Studios.m_JobManager.JobFilterName[JOBFILTER_STUDIOCREW]);
+		AddToListBox(jobtypelist_id, JOBFILTER_MOVIESTUDIO, g_Studios.m_JobManager.JobFilterName[JOBFILTER_MOVIESTUDIO]);
+		SetSelectedItemInList(jobtypelist_id, JOBFILTER_STUDIOCREW);
+	}
+	else if(!InDungeon)
 	{  // if not in dungeon, set up job lists
 		// add the job filters
 	//	for(int i=0; i<NUMJOBTYPES; i++)  // loop through all job types

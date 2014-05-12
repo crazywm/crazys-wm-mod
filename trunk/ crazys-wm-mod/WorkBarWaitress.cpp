@@ -90,6 +90,8 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 		jobperformance -= 20;
 	if (g_Girls.HasTrait(girl, "Slow Learner"))
 		jobperformance -= 10;
+	if (g_Girls.HasTrait(girl, "One Eye"))
+		jobperformance -= 10;
 
 
 	 if(jobperformance >= 245)
