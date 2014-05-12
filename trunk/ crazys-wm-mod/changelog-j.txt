@@ -15,7 +15,7 @@ Make the game create the "Saves" folder if it does not exist
 Move "itemsx" files from "Resources/Data" to "Resources/Items"
 Either combine "Resources/Buttons" into "Resources/Images" or combine both into "Resources/Interface/(individiual interface folder)/Images"
 Allow for subfolders in "Resources" folders. Would allow:
-   Girls folders to contain the "girlsx" files 
+   Girls folders to contain the "girlsx" files
    Subfolders for each image type to cleanup massive image count girls
 Items page - Add location filter
 ? Items page - Add (does the girl have this item?) filter - if an item is selected, (who has one of these)'s line changes color?
@@ -32,12 +32,11 @@ Brothel page - Add "Manage Inventory" button
 
 
 ### Changes April 2014:
-Girl files - Cleaned and separated to 1 girl per file for easier duplicate removal.
 Items - Cleaned and reorganized files.
 Items - Moved "Gantz Suit" and "Succubus' Wardress" from armor to clothes to allow brothel workers not to unequip them loosing their bonuses.
 Items - Renamed same-named items to allow the game to save the exact variation of the item with minimal visiual effect in the game.
 Items - Added alternate "sellers" some of items - allowing items to be more common but at higher prices. - Items keep the same name so they merge with the original item when the game is reloaded.
-Items - Added "Healing Salve (T)" and "Incense of Serenity (T)" 
+Items - Added "Healing Salve (T)" and "Incense of Serenity (T)"
 # Interface - J_1024x768
  - Moved "Next Week" buttons to top right
  - Moved most "Back" buttons to bottom right
@@ -62,12 +61,41 @@ main.cpp
 cButton.cpp
  - Corrected button image stretching to not maintain ratio
 
- 
- 
- 
- 
- 
- 
- 
- 
- 
+Crazy fixed saving of restrictions for all buildings.
+
+###### I have not been too good about keeping up with the changelog
+### Changes May 2014:
+Moved all the ".itemsx" files from ".\Resources\Data" to ".\Resources\Items"
+Changed the damage/healing of constructs to be 10% instead of a max of +/-4
+Complete rebuild of WorkPersonalTraining
+Added WorkMechanic and rearranged some jobs
+Changed spelling of "Incorporial" to "Incorporeal" 
+Updated the readme.html
+
+###  Changes 5/10/2014
+!!!!!!!!!!!!!!!!!!!! pushed version .05i    - bad
+!!!!!!!!!!!!!!!!!!!! pushed version .05i.1  - bad
+added msvcp120d.dll and related files (all are 32bit versions)
+!!!!!!!!!!!!!!!!!!!! pushed version .05i.2  - good
+
+
+###  Changes 5/11/2014
+Replaced all references to "pinkpetal.co.cc" with "pinkpetal.org" since the old site no longer works.
+Sidestep fix for the "Send to dungeon" bug
+ - All buildings now set where the girl is when loading so the "Send to dungeon" button does not show in girl details unless she is in a main brothel
+ - - (for a proper fix that allows sending girls to the dungeon from any building, much more coding will be required)
+Fixed movies to store their own runweeks - this fixes the 35 week crash bug
+Added more movie storage options:
+	<Movies>
+		<Movie Init_Qual="940" Qual="799" Promo_Qual="1412" Money_Made="1412" RunWeeks="1" />
+		<Movie Init_Qual="839" Qual="839" Promo_Qual="0" Money_Made="0" RunWeeks="0" />
+	</Movies>
+!!!!!!!!!!!!!!!!!!!! pushed version .05i.3 !!!!!!!!!!!!!!!!!!!!
+
+
+
+
+
+
+
+

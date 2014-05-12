@@ -643,6 +643,7 @@ bool sHouse::LoadHouseXML(TiXmlHandle hBrothel)
 			bool success = girl->LoadGirlXML(TiXmlHandle(pGirl));
 			if (success == true)
 			{
+				girl->m_InHouse = true;
 				AddGirl(girl);
 			}
 			else

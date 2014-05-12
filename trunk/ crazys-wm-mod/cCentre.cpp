@@ -632,6 +632,7 @@ bool sCentre::LoadCentreXML(TiXmlHandle hBrothel)
 			bool success = girl->LoadGirlXML(TiXmlHandle(pGirl));
 			if (success == true)
 			{
+				girl->m_InCentre = true;
 				AddGirl(girl);
 			}
 			else

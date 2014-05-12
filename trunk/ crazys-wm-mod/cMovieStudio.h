@@ -31,7 +31,11 @@ using namespace std;
 typedef struct sMovieScene
 {
 	string m_Name;
+	long m_Init_Quality;
 	long m_Quality;
+	long m_Promo_Quality;
+	long m_Money_Made;
+	long m_RunWeeks;
 	sMovieScene()		{  }
 	~sMovieScene()		{  }
 	void OutputSceneRow(string* Data, const vector<string>& columnNames);
@@ -65,6 +69,7 @@ public:
 
 	int				m_MovieRunTime;		// see above, counter for the 7 week effect
 	int				m_NumMovies;
+	long			RunWeeks;
 	sMovie*			m_Movies;			// the movies currently selling
 	sMovie*			m_LastMovies;
 	sFilm *			m_CurrFilm;
@@ -78,7 +83,7 @@ public:
 
 	void StartMovie(int brothelID, int Time);
 	int  GetTimeToMovie(int brothelID);
-	void NewMovie(sMovieStudio* brothel, int Quality);
+	void NewMovie(sMovieStudio* brothel, int Init_Quality, int Quality, int Promo_Quality, int Money_Made, int RunWeeks);
 	void EndMovie(sBrothel* brothel);
 	bool CheckMovieGirls(sBrothel* brothel);	// checks if any girls are working on the movie
 	long calc_movie_quality();
