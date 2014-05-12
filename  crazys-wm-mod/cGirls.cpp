@@ -19,6 +19,7 @@
 #include "cTariff.h"
 #include "cGirls.h"
 #include "cEvents.h"
+#include "cCentre.h"
 #include "math.h"
 #include <fstream>
 #include "cBrothel.h"
@@ -30,6 +31,9 @@
 #include "CGraphics.h"
 #include <algorithm>
 #include "cMovieStudio.h"
+#include "cArena.h"
+#include "cClinic.h"
+#include "cHouse.h"
 
 #ifdef LINUX
 #include "linux.h"
@@ -55,6 +59,12 @@ extern cGold g_Gold;
 extern cGangManager g_Gangs;
 extern int g_Building;
 extern cGirls g_Girls;
+extern cCentreManager g_Centre;
+extern sGirl *selected_girl;
+extern cArenaManager g_Arena;
+extern cClinicManager g_Clinic;
+extern cHouseManager g_House;
+extern cMovieStudioManager g_Studios;
 
 /*
  * MOD: DocClox: Stuff for the XML loader code
@@ -1887,6 +1897,8 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 	int peep = (looks + g_Girls.GetSkill(girl, SKILL_STRIP));
 	int brothelstrip = (looks + g_Girls.GetSkill(girl, SKILL_STRIP));
 	int massusse = (looks + g_Girls.GetSkill(girl, SKILL_SERVICE));
+	int comunityservice = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) + g_Girls.GetSkill(girl, SKILL_SERVICE));
+	int feedpoor = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) + g_Girls.GetSkill(girl, SKILL_SERVICE));
 
 	//good traits
 	if (g_Girls.HasTrait(girl, "Charismatic"))  //
@@ -1904,6 +1916,8 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		peep += 10;
 		brothelstrip += 20;
 		massusse += 10;
+		comunityservice += 20;
+		feedpoor += 20;
 	}
 	if (g_Girls.HasTrait(girl, "Sexy Air"))  //
 	{
@@ -1920,6 +1934,8 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		peep += 10;
 		brothelstrip += 10;
 		massusse += 10;
+		comunityservice += 10;
+		feedpoor += 10;
 	}
 	if (g_Girls.HasTrait(girl, "Cool Person"))
 	{
@@ -1936,6 +1952,8 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		peep += 10;
 		brothelstrip += 10;
 		massusse += 10;
+		comunityservice += 10;
+		feedpoor += 10;
 	}
 	if (g_Girls.HasTrait(girl, "Cute"))  
 	{
@@ -1952,6 +1970,8 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		peep += 5;
 		brothelstrip += 5;
 		massusse += 5;
+		comunityservice += 5;
+		feedpoor += 5;
 	}
 	if (g_Girls.HasTrait(girl, "Charming"))  
 	{
@@ -1968,6 +1988,8 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		peep += 10;
 		brothelstrip += 10;
 		massusse += 10;
+		comunityservice += 15;
+		feedpoor += 15;
 	}
 	if (g_Girls.HasTrait(girl, "Quick Learner"))
 	{
@@ -2114,6 +2136,8 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		peep -= 50;
 		brothelstrip -= 50;
 		massusse -= 50;
+		comunityservice -= 50;
+		feedpoor -= 50;
 	}
 	if (g_Girls.HasTrait(girl, "Clumsy"))  
 	{
@@ -2130,6 +2154,8 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		peep -= 20;
 		brothelstrip -= 20;
 		massusse -= 20;
+		comunityservice -= 20;
+		feedpoor -= 20;
 	}
 	if (g_Girls.HasTrait(girl, "Aggressive"))
 	{
@@ -2146,6 +2172,8 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		peep -= 20;
 		brothelstrip -= 20;
 		massusse -= 20;
+		comunityservice -= 20;
+		feedpoor -= 20;
 	}
 	if (g_Girls.HasTrait(girl, "Nervous"))
 	{
@@ -2162,6 +2190,8 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		peep -= 30;
 		brothelstrip -= 30;
 		massusse -= 30;
+		comunityservice -= 30;
+		feedpoor -= 30;
 	}
 	if (g_Girls.HasTrait(girl, "Meek"))
 	{
@@ -2178,6 +2208,8 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		peep -= 20;
 		brothelstrip -= 20;
 		massusse -= 20;
+		comunityservice -= 20;
+		feedpoor -= 20;
 	}
 	if (g_Girls.HasTrait(girl, "Broken Will"))
 	{
@@ -2225,6 +2257,22 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		strip -= 20;
 		peep -= 20;
 		brothelstrip -= 20;
+		//massusse -= 20;
+	}
+	if (g_Girls.HasTrait(girl, "One Eye"))
+	{
+		//barmaid -= 20;
+		barwait -= 10;
+		//sing -= 50;
+		//piano -= 50;
+		//dealer -= 20;
+		//entertainer -= 50;
+		//xxx -= 20;
+		clubwait -= 10;
+		//clubbar -= 20;
+		//strip -= 20;
+		//peep -= 20;
+		//brothelstrip -= 20;
 		//massusse -= 20;
 	}
 
@@ -2431,6 +2479,66 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		data+=gettext ("D");
 	else
 		data+=gettext ("E");
+	}
+
+	//CENTRE
+	if (g_Centre.GetGirlsCurrentBrothel(selected_girl) != -1)
+	{
+		data += gettext("\n\nCentre Job Ratings\n");
+
+		data+=gettext("\nComunity Service- ");
+	{
+	if (comunityservice >= 245)
+		data+=gettext ("S");
+	else if (comunityservice >= 185)
+		data+=gettext ("A");
+	else if (comunityservice >= 145)
+		data+=gettext ("B");
+	else if(comunityservice >= 100)
+		data+=gettext ("C");
+	else if (comunityservice >= 70)
+		data+=gettext ("D");
+	else
+		data+=gettext ("E");
+	}
+	data+=gettext("\nFeed Poor- ");
+	{
+	if (feedpoor >= 245)
+		data+=gettext ("S");
+	else if (feedpoor >= 185)
+		data+=gettext ("A");
+	else if (feedpoor >= 145)
+		data+=gettext ("B");
+	else if(feedpoor >= 100)
+		data+=gettext ("C");
+	else if (feedpoor >= 70)
+		data+=gettext ("D");
+	else
+		data+=gettext ("E");
+		}
+	}
+
+	//ARENA
+	if (g_Arena.GetGirlsCurrentBrothel(selected_girl) != -1)
+	{
+		data += gettext("\n\nArena Job Ratings\n");
+	}
+
+	//CLINIC
+	if (g_Clinic.GetGirlsCurrentBrothel(selected_girl) != -1)
+	{
+		data += gettext("\n\nClinic Job Ratings\n");
+	}
+
+	//HOUSE
+	if (g_House.GetGirlsCurrentBrothel(selected_girl) != -1)
+	{
+		data += gettext("\n\nHouse Job Ratings\n");
+	}
+
+	//STUDIO
+	else if (g_Studios.GetGirlsCurrentBrothel(selected_girl) != -1)
+	{
 	}
 
 	return data;
