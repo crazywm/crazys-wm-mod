@@ -1049,5 +1049,9 @@
   <ItemGroup>
     <None Include="msvcp120d.dll" />
     <None Include="msvcr120d.dll" />
+    <None Include="SDL.dll" />
+    <None Include="SDL_gfx.dll" />
+    <None Include="SDL_image.dll" />
+    <None Include="SDL_ttf.dll" />
   </ItemGroup>
 </Project>
