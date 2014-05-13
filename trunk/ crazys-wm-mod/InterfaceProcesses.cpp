@@ -711,7 +711,7 @@ void Turnsummary()
 		// 4. Clinic
 		else if(category == 4)
 		{
-			int nNumGirlsClinic	= g_Clinic.GetNumGirls(0);
+			int nNumGirlsClinic = g_Clinic.GetNumGirls(0);
 			int ID			= 0;
 
 // MYR: Girls with danger events first
@@ -760,7 +760,7 @@ void Turnsummary()
 		// 5. Studio
 		else if(category == 5)
 		{
-			int nNumGirlsStudio	= g_Studios.GetNumGirls(0);
+			int nNumGirlsStudio = g_Studios.GetNumGirls(g_CurrStudio);
 			int ID			= 0;
 			vector<sGirl*> tmpSexGirls;
 			vector<sGirl*> tmpServiceGirls;
@@ -778,7 +778,7 @@ void Turnsummary()
 			// Find out which girls have sex type jobs.
 			for (int i=0; i<nNumGirlsStudio; i++)
 			{
-				pTmpGirl = g_Studios.GetGirl(g_CurrBrothel, i);
+				pTmpGirl = g_Studios.GetGirl(g_CurrStudio, i); // `J` changed g_CurrBrothel to g_CurrStudio
 				sexjob = false;
 				switch(pTmpGirl->m_NightJob)
 				{
@@ -901,7 +901,7 @@ void Turnsummary()
 		// 6. arena
 		else if(category == 6)
 		{
-			int nNumGirlsArena	= g_Arena.GetNumGirls(0);
+			int nNumGirlsArena = g_Arena.GetNumGirls(g_CurrArena);
 			int ID			= 0;
 
 // MYR: Girls with danger events first
@@ -950,7 +950,7 @@ void Turnsummary()
 		// 7. centre
 		else if(category == 7)
 		{
-			int nNumGirlsCentre	= g_Centre.GetNumGirls(0);
+			int nNumGirlsCentre = g_Centre.GetNumGirls(g_CurrCentre);
 			int ID			= 0;
 
 // MYR: Girls with danger events first
@@ -999,7 +999,7 @@ void Turnsummary()
 		// 8. house
 		else if(category == 8)
 		{
-			int nNumGirlsHouse	= g_House.GetNumGirls(0);
+			int nNumGirlsHouse = g_House.GetNumGirls(g_CurrHouse);
 			int ID			= 0;
 
 // MYR: Girls with danger events first

@@ -90,10 +90,15 @@ Added more movie storage options:
 		<Movie Init_Qual="940" Qual="799" Promo_Qual="1412" Money_Made="1412" RunWeeks="1" />
 		<Movie Init_Qual="839" Qual="839" Promo_Qual="0" Money_Made="0" RunWeeks="0" />
 	</Movies>
-!!!!!!!!!!!!!!!!!!!! pushed version .05i.3 !!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!! pushed version .05i.3
+(20minutes after I pushed version .05i.3 Crazy sent a bug fix to the SVN)
+The girl deatils screens now show the correct buildings jobs.
+!!!!!!!!!!!!!!!!!!!! pushed version .05j
 
 
-
+###  Changes 5/12/2014
+Changed compiler settings so it would compile to work on windows xp
+Fixed InterfaceProcesses.cpp crash - pTmpGirl = g_Studios.GetGirl(g_CurrStudio, i); // `J` changed g_CurrBrothel to g_CurrStudio
 
 
 
