@@ -4500,7 +4500,7 @@ bool cBrothelManager::PlayerCombat(sGirl* girl)		//  ***************************
 	CLog l;
 
 	// MYR: Sanity check: Incorporeal is an auto-win.
-	if(girl->has_trait("Incorporeal"))
+	if(girl->has_trait("Incorporeal") || girl->has_trait("Incorporial"))
 	{
 		girl->m_Stats[STAT_HEALTH] = 100;
 		l.ss()	<< gettext("\nGirl vs. Brothel owner: ") << girl->m_Realname << gettext(" is incorporeal, so she wins.\n");

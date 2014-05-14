@@ -73,6 +73,10 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, int DayNight, string
 		jobperformance += 15;
 	if (g_Girls.HasTrait(girl, "Nerd"))  //
 		jobperformance += 15;
+	if (g_Girls.HasTrait(girl, "Quick Learner"))  
+		jobperformance += 5;
+	if (g_Girls.HasTrait(girl, "Psychic"))  //knows what is going in peoples heads
+		jobperformance += 10;
 
 	//bad traits
 	if (g_Girls.HasTrait(girl, "Dependant"))  //needs others to do the job
@@ -87,35 +91,35 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, int DayNight, string
 		jobperformance -= 20;
 
 
-	if(jobperformance < 35)
+	if (jobperformance >= 245)
 		{
-			message += " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
-			wages -= 15;
+			message += " She must be the perfect nurse patients go on and on about her and always come to see her when she works.\n\n";
+			wages += 155;
 		}
-	else if(jobperformance < 65)
-		{
-			message += " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
-			wages -= 5;
-		}
-	else if(jobperformance < 85)
-		{
-			message += " She made a few mistakes but overall she is okay at this.\n\n";
-			wages += 15;
-		}
-	else if(jobperformance < 135)
-		{
-			message += " She's good at this job and gets praised by the patients often.\n\n";
-			wages += 55;
-		}
-	else if(jobperformance < 185)
+	else if (jobperformance >= 185)
 		{
 			message += " She's unbelievable at this and is always getting praised by the patients for her work.\n\n";
 			wages += 95;
 		}
-	else if(jobperformance < 245)
+	else if (jobperformance >= 135)
 		{
-			message += " She must be the perfect nurse patients go on and on about her and always come to see her when she works.\n\n";
-			wages += 155;
+			message += " She's good at this job and gets praised by the patients often.\n\n";
+			wages += 55;
+		}
+	else if (jobperformance >= 85)
+		{
+			message += " She made a few mistakes but overall she is okay at this.\n\n";
+			wages += 15;
+		}
+	else if (jobperformance >= 65)
+		{
+			message += " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
+			wages -= 5;
+		}
+	else
+		{
+			message += " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
+			wages -= 15;
 		}
 
 
@@ -240,9 +244,9 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, int DayNight, string
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
 	//gain traits
-	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, ACTION_WORKBAR, "Dealing with customers at the bar and talking with them about their problems has made " + girl->m_Realname + " more Charismatic.", DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, ACTION_WORKDOCTOR, "Dealing with patients and talking with them about their problems has made " + girl->m_Realname + " more Charismatic.", DayNight != 0);
 
 	//lose traits
-	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 20, ACTION_WORKBAR, girl->m_Realname + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", DayNight != 0);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 20, ACTION_WORKDOCTOR, girl->m_Realname + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", DayNight != 0);
 	return false;
 }

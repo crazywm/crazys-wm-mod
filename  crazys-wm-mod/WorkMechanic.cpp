@@ -83,12 +83,12 @@ bool cJobManager::WorkMechanic(sGirl* girl, sBrothel* brothel, int DayNight, str
 	if (g_Girls.HasTrait(girl, "Princess"))			jobperformance -= 10;	// Manual labor is beneth her
 
 
-	if (jobperformance < 35)	{ wages -= 15;	message += " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n"; }
-	else if (jobperformance < 65){ wages -= 5;		message += " She was nervous and made a few mistakes. She isn't that good at this.\n\n"; }
-	else if (jobperformance < 85){ wages += 15;	message += " She made a few mistakes but overall she is okay at this.\n\n"; }
-	else if (jobperformance < 135){ wages += 55;	message += " She's good at this job and gets praised by the patients often.\n\n"; }
-	else if (jobperformance < 185){ wages += 95;	message += " She's unbelievable at this and is always getting praised by the patients for her work.\n\n"; }
-	else if (jobperformance < 245){ wages += 155;	message += " She must be the perfect mechanic patients go on and on about her and always come to see her when she works.\n\n"; }
+	if (jobperformance >= 245){ wages += 155;	message += " She must be the perfect mechanic patients go on and on about her and always come to see her when she works.\n\n"; }
+	else if (jobperformance >= 185){ wages += 95;	message += " She's unbelievable at this and is always getting praised by the patients for her work.\n\n"; }
+	else if (jobperformance >= 135){ wages += 55;	message += " She's good at this job and gets praised by the patients often.\n\n"; }
+	else if (jobperformance >= 85){ wages += 15;	message += " She made a few mistakes but overall she is okay at this.\n\n"; }
+	else if (jobperformance >= 65){ wages -= 5;		message += " She was nervous and made a few mistakes. She isn't that good at this.\n\n"; }
+	else	{ wages -= 15;	message += " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n"; }
 
 
 	//try and add randomness here
@@ -186,11 +186,11 @@ bool cJobManager::WorkMechanic(sGirl* girl, sBrothel* brothel, int DayNight, str
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
 	//gain traits
-	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, ACTION_WORKBAR, "Dealing with patients and talking with them about their problems has made " + girl->m_Realname + " more Charismatic.", DayNight != 0);
-	g_Girls.PossiblyGainNewTrait(girl, "Strong", 60, ACTION_WORKBAR, "Handling heavy parts and working with heavy tools has made " + girl->m_Realname + " more Stronger.", DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, ACTION_WORKDOCTOR, "Dealing with patients and talking with them about their problems has made " + girl->m_Realname + " more Charismatic.", DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Strong", 60, ACTION_WORKDOCTOR, "Handling heavy parts and working with heavy tools has made " + girl->m_Realname + " much Stronger.", DayNight != 0);
 
 	//lose traits
-	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 20, ACTION_WORKBAR, girl->m_Realname + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", DayNight != 0);
-	g_Girls.PossiblyLoseExistingTrait(girl, "Elegant", 20, ACTION_WORKBAR, " Working with dirty, greasy equipment has damaged " + girl->m_Realname + "'s hair, skin and nails making her less Elegant.", DayNight != 0);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 20, ACTION_WORKDOCTOR, girl->m_Realname + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", DayNight != 0);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Elegant", 20, ACTION_WORKDOCTOR, " Working with dirty, greasy equipment has damaged " + girl->m_Realname + "'s hair, skin and nails making her less Elegant.", DayNight != 0);
 	return false;
 }

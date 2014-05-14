@@ -130,7 +130,7 @@ bool cJobManager::WorkSecurity(sGirl* girl, sBrothel* brothel, int DayNight, str
 	if (g_Girls.HasTrait(girl, "Demon"))  // Even scarier
 		SecLev += 10;
 
-	if (g_Girls.HasTrait(girl, "Incorporeal"))  // I'm fucking Superman!
+	if (g_Girls.HasTrait(girl, "Incorporeal") || g_Girls.HasTrait(girl, "Incorporial"))  // I'm fucking Superman!
 		SecLev += 40;
 
 	if (g_Girls.HasTrait(girl, "Strange Eyes"))  // I'm watching you

@@ -1087,6 +1087,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\WorkBoobJob.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\WorkBreastReduction.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\WorkBrothelMassusse.cpp"
 				>
 			</File>
@@ -1263,11 +1271,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\WorkLiposuction.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\WorkMakeItem.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\WorkMatron.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\WorkMechanic.cpp"
 				>
 			</File>
 			<File

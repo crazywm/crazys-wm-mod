@@ -41,8 +41,9 @@ extern cBrothelManager g_Brothels;
 extern cClinicManager g_Clinic;
 extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
+extern cGold g_Gold;
 
-bool cJobManager::WorkPhysicalSurgery(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkLiposuction(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	string message = "";
 	u_int job = 0;	
@@ -51,10 +52,8 @@ bool cJobManager::WorkPhysicalSurgery(sGirl* girl, sBrothel* brothel, int DayNig
 	g_Girls.UnequipCombat(girl);
 
 	bool hasDoctor = false;
-	if (g_Clinic.GetNumGirlsOnJob(brothel->m_id, JOB_DOCTOR, true) >= 1 || g_Clinic.GetNumGirlsOnJob(brothel->m_id, JOB_DOCTOR, false) >= 1)
-	{
+	if(g_Clinic.GetNumGirlsOnJob(brothel->m_id, JOB_DOCTOR, true) >= 1 || g_Clinic.GetNumGirlsOnJob(brothel->m_id, JOB_DOCTOR, false) >= 1)
 		hasDoctor = true;
-	}
 
 	if (!hasDoctor)
 	{
@@ -84,22 +83,18 @@ bool cJobManager::WorkPhysicalSurgery(sGirl* girl, sBrothel* brothel, int DayNig
 	{
 	if(girl->m_WorkingDay == 3)
 	{
-		ss << "The physical surgery is a success. She is sad and has lost some health during the operation.";
-		g_Girls.UpdateStat(girl, STAT_HAPPINESS, -20);
+		ss << "The surgery is a success. She is sad and has lost some health during the operation.";
+		g_Girls.UpdateStat(girl, STAT_HAPPINESS, -10);
 		g_Girls.UpdateStat(girl, STAT_SPIRIT, -5);
-		g_Girls.UpdateStat(girl, STAT_HEALTH, -35);
-		g_Girls.UpdateStat(girl, STAT_MANA, -20);
-		g_Girls.UpdateStat(girl, STAT_BEAUTY, 15);
-		g_Girls.UpdateStat(girl, STAT_CHARISMA, 15);
-		if (!g_Girls.HasTrait(girl, "Sexy Air"))
+		g_Girls.UpdateStat(girl, STAT_HEALTH, -15);
+		g_Girls.UpdateStat(girl, STAT_MANA, -15);
+		g_Girls.UpdateStat(girl, STAT_BEAUTY, 8);
+		g_Girls.UpdateStat(girl, STAT_CHARISMA, 8);
+
+		if (!g_Girls.HasTrait(girl, "Great Figure"))
 		{
-			girl->add_trait("Sexy Air", false);
-			ss << "She gains Sexy Air trait.";
-		}
-		else if (!g_Girls.HasTrait(girl, "Cute"))
-		{
-			girl->add_trait("Cute", false);
-			ss << "She gains Cute trait.";
+			girl->add_trait("Great Figure", false);
+			ss << "Thanks to the surgery she now has a Great Figure.";
 		}
 		girl->m_WorkingDay = 0;
 	}
@@ -111,22 +106,18 @@ bool cJobManager::WorkPhysicalSurgery(sGirl* girl, sBrothel* brothel, int DayNig
 	else
 		if(girl->m_WorkingDay == 5)
 	{
-		ss << "The physical surgery is a success. She is sad and has lost some health during the operation.";
-		g_Girls.UpdateStat(girl, STAT_HAPPINESS, -20);
+		ss << "The surgery is a success. She is sad and has lost some health during the operation.";
+		g_Girls.UpdateStat(girl, STAT_HAPPINESS, -15);
 		g_Girls.UpdateStat(girl, STAT_SPIRIT, -5);
-		g_Girls.UpdateStat(girl, STAT_HEALTH, -40);
+		g_Girls.UpdateStat(girl, STAT_HEALTH, -20);
 		g_Girls.UpdateStat(girl, STAT_MANA, -20);
-		g_Girls.UpdateStat(girl, STAT_BEAUTY, 12);
-		g_Girls.UpdateStat(girl, STAT_CHARISMA, 12);
-		if (!g_Girls.HasTrait(girl, "Sexy Air"))
+		g_Girls.UpdateStat(girl, STAT_BEAUTY, 5);
+		g_Girls.UpdateStat(girl, STAT_CHARISMA, 5);
+
+		if (!g_Girls.HasTrait(girl, "Great Figure"))
 		{
-			girl->add_trait("Sexy Air", false);
-			ss << "She gains Sexy Air trait.";
-		}
-		else if (!g_Girls.HasTrait(girl, "Cute"))
-		{
-			girl->add_trait("Cute", false);
-			ss << "She gains Cute trait.";
+			girl->add_trait("Great Figure", false);
+			ss << "Thanks to the surgery she now has a Great Figure.";
 		}
 		girl->m_WorkingDay = 0;
 	}
