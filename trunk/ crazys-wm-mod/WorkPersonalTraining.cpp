@@ -165,7 +165,7 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, int DayNi
 	else if (roll_b <= 20 && (int)girl->m_Skills[SKILL_LESBIAN] < 100 && is_sex_type_allowed(SKILL_LESBIAN, brothel))
 	{
 		g_Girls.UpdateSkill(girl, SKILL_LESBIAN, skill);
-		ss << gettext("You decide to have her strip for you.\n\n");
+		ss << gettext("You decide to bring in another girl for her.\n\n");
 		ss << gettext("She managed to gain ") << skill << gettext(" Lesbian.\n\n");
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_LESBIAN, DayNight);
 	}

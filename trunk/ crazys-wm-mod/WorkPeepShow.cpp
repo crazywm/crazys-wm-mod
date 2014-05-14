@@ -75,6 +75,8 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, int DayNight, str
 		jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Psychic"))  //knows what people want to hear
 		jobperformance += 10;
+	if (g_Girls.HasTrait(girl, "Fearless"))
+		jobperformance += 10;
 
 	//bad traits
 	if (g_Girls.HasTrait(girl, "Dependant"))  //needs others to do the job
@@ -91,6 +93,8 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, int DayNight, str
 		jobperformance -= 10;
 	if (g_Girls.HasTrait(girl, "Horrific Scars"))
 		jobperformance -= 20;
+	if (g_Girls.HasTrait(girl, "Small Scars"))
+		jobperformance -= 5;
 
 	if (jobperformance >= 245)
 		{

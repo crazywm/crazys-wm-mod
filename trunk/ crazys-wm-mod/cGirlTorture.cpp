@@ -414,7 +414,7 @@ bool cGirlTorture::IsGirlInjured(unsigned int unModifier)
 	int		nMod		= static_cast<int>(unModifier); 
 
 	// Sanity check, Can't get injured
-	if (m_Girl->has_trait("Incorporeal"))
+	if (m_Girl->has_trait("Incorporeal") || m_Girl->has_trait("Incorporial"))
 		return false;
 
 	if (m_Girl->has_trait("Fragile"))

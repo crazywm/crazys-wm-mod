@@ -93,6 +93,8 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, int DayNig
 		jobperformance -= 10;
 	if (g_Girls.HasTrait(girl, "Horrific Scars"))
 		jobperformance -= 20;
+	if (g_Girls.HasTrait(girl, "Small Scars"))
+		jobperformance -= 5;
 
 
 	if (jobperformance >= 245)

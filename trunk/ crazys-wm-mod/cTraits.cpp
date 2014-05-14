@@ -418,6 +418,10 @@ string cTraits::GetTranslateName(string name){
 	{
 		return gettext("Incorporeal");
 	}
+	else if (name.compare("Incorporial") == 0)//kept to correct spelling error in older girl files 		
+	{ 		
+ 		return gettext("Incorporeal"); 		
+ 	}
 	else if (name.compare("Quick Learner") == 0)
 	{
 		return gettext("Quick Learner");

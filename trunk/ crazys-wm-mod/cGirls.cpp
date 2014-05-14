@@ -893,7 +893,7 @@ void cGirls::CalculateGirlType(sGirl* girl)
  		NonHuman += 20;//ditto CRAZY
 		Freak += 15;
 	}
-	if(HasTrait(girl, "Incorporeal"))
+	if(HasTrait(girl, "Incorporeal") || HasTrait(girl, "Incorporial"))
 	{
 		NonHuman += 60;
 		Freak += 40;
@@ -1617,7 +1617,7 @@ void cGirls::RemoveGirl(sGirl* girl, bool deleteGirl)
 
 void cGirls::AddTiredness(sGirl* girl)
 {
-	if (g_Girls.HasTrait(girl, "Incorporeal")) // Sanity check
+	if (g_Girls.HasTrait(girl, "Incorporeal") || g_Girls.HasTrait(girl, "Incorporial")) // Sanity check
 	{
 		g_Girls.SetStat(girl, STAT_TIREDNESS, 0);
 		return;
@@ -1899,6 +1899,8 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 	int massusse = (looks + g_Girls.GetSkill(girl, SKILL_SERVICE));
 	int comunityservice = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) + g_Girls.GetSkill(girl, SKILL_SERVICE));
 	int feedpoor = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) + g_Girls.GetSkill(girl, SKILL_SERVICE));
+	int nurse = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) + g_Girls.GetSkill(girl, SKILL_SERVICE));
+	int mechanic = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) + g_Girls.GetSkill(girl, SKILL_SERVICE));
 
 	//good traits
 	if (g_Girls.HasTrait(girl, "Charismatic"))  //
@@ -1918,6 +1920,8 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		massusse += 10;
 		comunityservice += 20;
 		feedpoor += 20;
+		nurse += 20;
+		mechanic += 10;
 	}
 	if (g_Girls.HasTrait(girl, "Sexy Air"))  //
 	{
@@ -1936,6 +1940,8 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		massusse += 10;
 		comunityservice += 10;
 		feedpoor += 10;
+		nurse += 10;
+		mechanic += 5;
 	}
 	if (g_Girls.HasTrait(girl, "Cool Person"))
 	{
@@ -1954,6 +1960,8 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		massusse += 10;
 		comunityservice += 10;
 		feedpoor += 10;
+		nurse += 10;
+		mechanic += 10;
 	}
 	if (g_Girls.HasTrait(girl, "Cute"))  
 	{
@@ -1972,6 +1980,8 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		massusse += 5;
 		comunityservice += 5;
 		feedpoor += 5;
+		nurse += 5;
+		mechanic += 5;
 	}
 	if (g_Girls.HasTrait(girl, "Charming"))  
 	{
@@ -1990,6 +2000,8 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		massusse += 10;
 		comunityservice += 15;
 		feedpoor += 15;
+		nurse += 15;
+		mechanic += 10;
 	}
 	if (g_Girls.HasTrait(girl, "Quick Learner"))
 	{
@@ -2006,6 +2018,7 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		peep += 5;
 		brothelstrip += 5;
 		massusse += 5;
+		nurse += 5;
 	}
 	if (g_Girls.HasTrait(girl, "Psychic"))
 	{
@@ -2022,6 +2035,7 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		peep += 10;
 		brothelstrip += 10;
 		massusse += 10;
+		nurse += 10;
 	}
 	if (g_Girls.HasTrait(girl, "Fleet of Foot")) 
 	{
@@ -2102,6 +2116,7 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		peep += 5;
 		brothelstrip += 5;
 		massusse += 5;*/
+		mechanic -= 5;
 	}
 	if (g_Girls.HasTrait(girl, "Fearless"))
 		{
@@ -2114,10 +2129,136 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		xxx += 5;
 		clubwait += 5;
 		clubbar += 5;
-		strip += 5;
-		peep += 5;
-		brothelstrip += 5;
+		strip += 5;*/
+		peep += 10;
+		/*brothelstrip += 5;
 		massusse += 5;*/
+	}
+	if (g_Girls.HasTrait(girl, "Nerd"))
+	{
+		/*barmaid += 10;
+		barwait += 10;
+		sing += 10;
+		piano += 10;
+		dealer += 15;
+		entertainer += 15;
+		xxx += 10;
+		clubwait += 10;
+		clubbar += 10;
+		strip += 10;
+		peep += 10;
+		brothelstrip += 10;
+		massusse += 10;*/
+		nurse += 15;
+		mechanic += 15;
+	}
+	if (g_Girls.HasTrait(girl, "Strong"))
+	{
+		/*barmaid += 10;
+		barwait += 10;
+		sing += 10;
+		piano += 10;
+		dealer += 15;
+		entertainer += 15;
+		xxx += 10;
+		clubwait += 10;
+		clubbar += 10;
+		strip += 10;
+		peep += 10;
+		brothelstrip += 10;
+		massusse += 10;
+		nurse += 15;*/
+		mechanic += 10;
+	}
+	if (g_Girls.HasTrait(girl, "Tough"))
+	{
+		/*barmaid += 10;
+		barwait += 10;
+		sing += 10;
+		piano += 10;
+		dealer += 15;
+		entertainer += 15;
+		xxx += 10;
+		clubwait += 10;
+		clubbar += 10;
+		strip += 10;
+		peep += 10;
+		brothelstrip += 10;
+		massusse += 10;
+		nurse += 15;*/
+		mechanic += 5;
+	}
+	if (g_Girls.HasTrait(girl, "Construct"))
+	{
+		/*barmaid += 10;
+		barwait += 10;
+		sing += 10;
+		piano += 10;
+		dealer += 15;
+		entertainer += 15;
+		xxx += 10;
+		clubwait += 10;
+		clubbar += 10;
+		strip += 10;
+		peep += 10;
+		brothelstrip += 10;
+		massusse += 10;
+		nurse += 15;*/
+		mechanic += 10;
+	}
+	if (g_Girls.HasTrait(girl, "Half-Construct"))
+	{
+		/*barmaid += 10;
+		barwait += 10;
+		sing += 10;
+		piano += 10;
+		dealer += 15;
+		entertainer += 15;
+		xxx += 10;
+		clubwait += 10;
+		clubbar += 10;
+		strip += 10;
+		peep += 10;
+		brothelstrip += 10;
+		massusse += 10;
+		nurse += 15;*/
+		mechanic += 5;
+	}
+	if (g_Girls.HasTrait(girl, "Queen"))
+	{
+		/*barmaid += 10;
+		barwait += 10;
+		sing += 10;
+		piano += 10;
+		dealer += 15;
+		entertainer += 15;
+		xxx += 10;
+		clubwait += 10;
+		clubbar += 10;
+		strip += 10;
+		peep += 10;
+		brothelstrip += 10;
+		massusse += 10;
+		nurse += 15;*/
+		mechanic -= 20;
+	}
+	if (g_Girls.HasTrait(girl, "Princess"))
+	{
+		/*barmaid += 10;
+		barwait += 10;
+		sing += 10;
+		piano += 10;
+		dealer += 15;
+		entertainer += 15;
+		xxx += 10;
+		clubwait += 10;
+		clubbar += 10;
+		strip += 10;
+		peep += 10;
+		brothelstrip += 10;
+		massusse += 10;
+		nurse += 15;*/
+		mechanic -= 10;
 	}
 
 		//bad traits
@@ -2138,6 +2279,8 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		massusse -= 50;
 		comunityservice -= 50;
 		feedpoor -= 50;
+		nurse -= 50;
+		mechanic -= 40;
 	}
 	if (g_Girls.HasTrait(girl, "Clumsy"))  
 	{
@@ -2156,6 +2299,8 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		massusse -= 20;
 		comunityservice -= 20;
 		feedpoor -= 20;
+		nurse -= 20;
+		mechanic -= 20;
 	}
 	if (g_Girls.HasTrait(girl, "Aggressive"))
 	{
@@ -2174,6 +2319,8 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		massusse -= 20;
 		comunityservice -= 20;
 		feedpoor -= 20;
+		nurse -= 20;
+		mechanic -= 10;
 	}
 	if (g_Girls.HasTrait(girl, "Nervous"))
 	{
@@ -2192,6 +2339,8 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		massusse -= 30;
 		comunityservice -= 30;
 		feedpoor -= 30;
+		nurse -= 30;
+		mechanic -= 20;
 	}
 	if (g_Girls.HasTrait(girl, "Meek"))
 	{
@@ -2210,6 +2359,8 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		massusse -= 20;
 		comunityservice -= 20;
 		feedpoor -= 20;
+		nurse -= 20;
+		mechanic -= 20;
 	}
 	if (g_Girls.HasTrait(girl, "Broken Will"))
 	{
@@ -2257,6 +2408,22 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		strip -= 20;
 		peep -= 20;
 		brothelstrip -= 20;
+		//massusse -= 20;
+	}
+	if (g_Girls.HasTrait(girl, "Horrific Scars"))
+	{
+		//barmaid -= 20;
+		//barwait -= 20;
+		//sing -= 50;
+		//piano -= 50;
+		//dealer -= 20;
+		//entertainer -= 50;
+		//xxx -= 20;
+		//clubwait -= 20;
+		//clubbar -= 20;
+		strip -= 5;
+		peep -= 5;
+		brothelstrip -= 5;
 		//massusse -= 20;
 	}
 	if (g_Girls.HasTrait(girl, "One Eye"))
@@ -2486,7 +2653,7 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 	{
 		data += gettext("\n\nCentre Job Ratings\n");
 
-		data+=gettext("\nComunity Service- ");
+	data+=gettext("\nComunity Service- ");
 	{
 	if (comunityservice >= 245)
 		data+=gettext ("S");
@@ -2528,6 +2695,37 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 	if (g_Clinic.GetGirlsCurrentBrothel(selected_girl) != -1)
 	{
 		data += gettext("\n\nClinic Job Ratings\n");
+		
+	data+=gettext("\nNurse- ");
+	{
+	if (nurse >= 245)
+		data+=gettext ("S");
+	else if (nurse >= 185)
+		data+=gettext ("A");
+	else if (nurse >= 145)
+		data+=gettext ("B");
+	else if(nurse >= 100)
+		data+=gettext ("C");
+	else if (nurse >= 70)
+		data+=gettext ("D");
+	else
+		data+=gettext ("E");
+		}
+	data+=gettext("\nMechanic- ");
+	{
+	if (mechanic >= 245)
+		data+=gettext ("S");
+	else if (mechanic >= 185)
+		data+=gettext ("A");
+	else if (mechanic >= 145)
+		data+=gettext ("B");
+	else if(mechanic >= 100)
+		data+=gettext ("C");
+	else if (mechanic >= 70)
+		data+=gettext ("D");
+	else
+		data+=gettext ("E");
+		}
 	}
 
 	//HOUSE
@@ -3020,7 +3218,7 @@ int cGirls::GetStat(sGirl* girl, int a_stat)
 	{
 		value = girl->m_Stats[stat];
 
-		if (g_Girls.HasTrait(girl, "Incorporeal"))
+		if (g_Girls.HasTrait(girl, "Incorporeal") || HasTrait(girl, "Incorporial"))
 			value = 100;
 		else if(value < 0)
 			value = 0;
@@ -3033,7 +3231,7 @@ int cGirls::GetStat(sGirl* girl, int a_stat)
 	{
 		value = girl->m_Stats[stat];
 
-		if (g_Girls.HasTrait(girl, "Incorporeal"))
+		if (g_Girls.HasTrait(girl, "Incorporeal") || g_Girls.HasTrait(girl, "Incorporial"))
 			value = 0;
 		else if(value < 0)
 			value = 0;
@@ -3069,7 +3267,7 @@ void cGirls::SetStat(sGirl* girl, int a_stat, int amount)
 	// Health and tiredness need the incorporeal sanity check
 	else if(stat == STAT_HEALTH)
 	{
-		if (g_Girls.HasTrait(girl, "Incorporeal"))
+		if (g_Girls.HasTrait(girl, "Incorporeal") || g_Girls.HasTrait(girl, "Incorporial"))
 			amt = 100;
 		else if(amt > 100)
 			amt = 100;
@@ -3079,7 +3277,7 @@ void cGirls::SetStat(sGirl* girl, int a_stat, int amount)
 	}
 	else if(stat == STAT_TIREDNESS)
 	{
-		if (g_Girls.HasTrait(girl, "Incorporeal"))
+		if (g_Girls.HasTrait(girl, "Incorporeal") || HasTrait(girl, "Incorporial"))
 			amt = 0;
 		else if(amt > 100)
 			amt = 100;
@@ -3138,7 +3336,7 @@ void cGirls::UpdateStat(sGirl* girl, int a_stat, int amount)
 			else if(amount > 4)
 				amount = 4;
 		}
-		if(HasTrait(girl, "Incorporeal") &&  stat != STAT_HAPPINESS)
+		if(HasTrait(girl, "Incorporeal") || HasTrait(girl, "Incorporial") &&  stat != STAT_HAPPINESS)
 		{
 			//amount = 0;
 			girl->m_Stats[STAT_HEALTH] = 100;	// WD: Sanity - Incorporeal health should allways be at 100%
@@ -3198,7 +3396,7 @@ void cGirls::UpdateStat(sGirl* girl, int a_stat, int amount)
             amount = (int)ceil(amount*0.1);
 		}
 
-		if(HasTrait(girl, "Incorporeal"))
+		if(HasTrait(girl, "Incorporeal") || HasTrait(girl, "Incorporial"))
 		{
 //			amount = 0;
 			girl->m_Stats[stat] = 0;								// WD: Sanity - Incorporeal Tirdness should allways be at 0%
@@ -5840,6 +6038,11 @@ void cGirls::UnapplyTraits(sGirl* girl, sTrait* trait)
 			RemoveTrait(girl, "Sterile");
 		}
 
+		else if(strcmp(tr->m_Name, "Incorporial") == 0)
+		{
+			RemoveTrait(girl, "Sterile");
+		}
+
 		else if(strcmp(tr->m_Name, "Quick Learner") == 0)
 		{
 			AddTrait(girl, "Slow Learner", false, false, true);
@@ -6510,6 +6713,12 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait, bool rememberflag)
 		}
 
 		else if(strcmp(tr->m_Name, "Incorporeal") == 0)
+		{
+			AddTrait(girl, "Sterile");
+			UpdateEnjoyment(girl, ACTION_COMBAT, +20, true);
+		}
+
+		else if(strcmp(tr->m_Name, "Incorporial") == 0)
 		{
 			AddTrait(girl, "Sterile");
 			UpdateEnjoyment(girl, ACTION_COMBAT, +20, true);
@@ -10753,18 +10962,18 @@ Uint8 cGirls::girl_fights_girl(sGirl* a, sGirl* b)
 
 	// MYR: Sanity checks on incorporeal. It is actually possible (but very rare) 
 	//      for both girls to be incorporeal.
-	if(a->has_trait("Incorporeal") && b->has_trait("Incorporeal"))
+	if(a->has_trait("Incorporeal") && b->has_trait("Incorporeal") || a->has_trait("Incorporial") && b->has_trait("Incorporial"))
 	{
 		l.ss()	<< gettext("\ngirl_fights_girl: Both ") << a->m_Realname << gettext(" and ") << b->m_Realname 
 			<< gettext(" are incorporeal, so the fight is a draw.\n");
 		return 0;
 	}
-	else if(a->has_trait("Incorporeal"))
+	else if(a->has_trait("Incorporeal") || a->has_trait("Incorporial"))
 	{
 		l.ss()	<< gettext("\ngirl_fights_girl: ") << a->m_Realname << gettext(" is incorporeal, so she wins.\n");
 		return 1;
 	}
-	else if(a->has_trait("Incorporeal"))
+	else if(a->has_trait("Incorporeal") || a->has_trait("Incorporial"))
 	{
 		l.ss()	<< gettext("\ngirl_fights_girl: ") << b->m_Realname << gettext(" is incorporeal, so she wins.\n");
 		return 2;
@@ -11160,7 +11369,7 @@ bool cGirls::GirlInjured(sGirl* girl, unsigned int unModifier)
 	int nMod	= static_cast<int>(unModifier); 
 
 	// Sanity check, Can't get injured
-	if (girl->has_trait("Incorporeal"))
+	if (girl->has_trait("Incorporeal") || girl->has_trait("Incorporial"))
 		return false;
 
 	if (girl->has_trait("Fragile"))
@@ -11339,7 +11548,7 @@ int cGirls::GetCombatDamage(sGirl *girl, int CombatType)
 int cGirls::TakeCombatDamage(sGirl* girl, int amt)
 {
 
-	if(HasTrait(girl, "Incorporeal"))
+	if(HasTrait(girl, "Incorporeal") || HasTrait(girl, "Incorporial"))
 	{
 		girl->m_Stats[STAT_HEALTH] = 100;	// WD: Sanity - Incorporeal health should allways be at 100%
 		return 100;                         // MYR: Sanity is good. Moved to the top

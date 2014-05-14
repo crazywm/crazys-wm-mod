@@ -1037,7 +1037,7 @@ bool cGangManager::GangCombat(sGirl* girl, sGang* gang)
 	CLog l;
 
 	// MYR: Sanity check: Incorporeal is an auto-win.
-	if(girl->has_trait("Incorporeal"))
+	if(girl->has_trait("Incorporeal") || girl->has_trait("Incorporial"))
 	{
 		girl->m_Stats[STAT_HEALTH] = 100;
 		l.ss()	<< gettext("\nGirl vs. Goons: ") << girl->m_Realname << gettext(" is incorporeal, so she wins.\n");
@@ -1388,7 +1388,7 @@ bool cGangManager::GirlVsEnemyGang(sGirl* girl, sGang* enemy_gang)
 	CLog l;
 
 	// MYR: Sanity check: Incorporeal is an auto-win.
-	if(girl->has_trait("Incorporeal"))
+	if(girl->has_trait("Incorporeal") || girl->has_trait("Incorporial"))
 	{
 		girl->m_Stats[STAT_HEALTH] = 100;
 		l.ss()	<< gettext("\nGirl vs. Goons: ") << girl->m_Realname << gettext(" is incorporeal, so she wins.\n");
@@ -1560,7 +1560,7 @@ bool cGangManager::GirlVsEnemyGang(sGirl* girl, sGang* enemy_gang)
 				  g_Girls.TakeCombatDamage(girl, -damage); // MYR: Note change
 
 				  l.ss() << gettext("\t") << girl->m_Realname << gettext(" takes ") << damage << gettext(". New health value: ") << girl->health();
-				  if (girl->has_trait("Incorporeal"))
+				  if (girl->has_trait("Incorporeal") || girl->has_trait("Incorporial"))
 					  l.ss() << gettext(" (Girl is Incorporeal)");
 				  l.ssend();
 				}

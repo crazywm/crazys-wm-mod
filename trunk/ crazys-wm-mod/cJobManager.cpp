@@ -137,6 +137,10 @@ void cJobManager::Setup()
 	//clinic staff
 	JobFunctions[JOB_JANITOR] = &WorkJanitor;	
 	JobFunctions[JOB_CHAIRMAN] = &WorkChairMan;
+	//surgery
+	JobFunctions[JOB_LIPO] = &WorkLiposuction;	
+	JobFunctions[JOB_BREASTREDUCTION] = &WorkBreastReduction;
+	JobFunctions[JOB_BOOBJOB] = &WorkBoobJob;
 	// - House
 	JobFunctions[JOB_PERSONALTRAINING] = &WorkPersonalTraining;	// ************** TODO
 	JobFunctions[JOB_PERSONALBEDWARMER] = &WorkPersonalBedWarmer;	// ************** TODO
@@ -279,30 +283,36 @@ void cJobManager::Setup()
 	JobFilterIndex[JOBFILTER_CLINICSTAFF] = JOB_CHAIRMAN;
 	JobName[JOB_CHAIRMAN] = gettext("Chairman");
 	JobDescription[JOB_CHAIRMAN] = gettext("She will watch over the staff of the clinic");
+	JobName[JOB_DOCTOR] = gettext("Doctor");
+	JobDescription[JOB_DOCTOR] = gettext("She will become a doctor. Doctors earn extra cash from treating locals. (requires 1)");
+	JobName[JOB_NURSE] = gettext("Nurse");
+	JobDescription[JOB_NURSE] = gettext("Will help the doctor and heal sick people.");
+	JobName[JOB_MECHANIC] = gettext("Mechanic");
+	JobDescription[JOB_MECHANIC] = gettext("Will help the doctor and repair Constructs.");
 	JobName[JOB_JANITOR] = gettext("Janitor");
 	JobDescription[JOB_JANITOR] = gettext("She will clean the clinic");
 	JobName[JOB_CLINICREST] = gettext("Time off");
 	JobDescription[JOB_CLINICREST] = gettext("She will rest");
 
-
 	// - Clinic Jobs
 	JobFilterName[JOBFILTER_CLINIC] = gettext("Medical Clinic");
 	JobFilterDescription[JOBFILTER_CLINIC] = gettext("These are jobs for running a medical clinic.");
-	JobFilterIndex[JOBFILTER_CLINIC] = JOB_DOCTOR;
-	JobName[JOB_DOCTOR] = gettext("Doctor");
-	JobDescription[JOB_DOCTOR] = gettext("She will become a doctor. Doctors earn extra cash from treating locals. (requires 1)");
+	JobFilterIndex[JOBFILTER_CLINIC] = JOB_GETABORT;
 	JobName[JOB_GETABORT] = gettext("Get Abortion");
 	JobDescription[JOB_GETABORT] = gettext("She will get an abortion, removing pregnancy and/or insemination.(takes 2 days)");
 	JobName[JOB_PHYSICALSURGERY] = gettext("Cosmetic Surgery");
 	JobDescription[JOB_PHYSICALSURGERY] = gettext("She will undergo magical surgery to \"enhance\" her appearance. (takes 5 days)");
+	JobName[JOB_LIPO] = gettext("Liposuction");
+	JobDescription[JOB_LIPO] = gettext("She will undergo liposuction to \"enhance\" her figure. (takes 5 days)");
+	JobName[JOB_BREASTREDUCTION] = gettext("Breast Reduction Surgery");
+	JobDescription[JOB_BREASTREDUCTION] = gettext("She will undergo breast reduction surgery. (takes 5 days)");
+	JobName[JOB_BOOBJOB] = gettext("Boob Job");
+	JobDescription[JOB_BOOBJOB] = gettext("She will undergo surgery to \"enhance\" her bust. (takes 5 days)");
 	JobName[JOB_HEALING] = gettext("Healing");
 	JobDescription[JOB_HEALING] = gettext("She will have her wounds attended. This takes 1 day for each wound trait.");
 	JobName[JOB_REPAIRSHOP] = gettext("Repair Shop");
 	JobDescription[JOB_REPAIRSHOP] = gettext("Construct girls will be quickly repaired here.");
-	JobName[JOB_NURSE] = gettext("Nurse");
-	JobDescription[JOB_NURSE] = gettext("Will help the doctor and heal sick people.");
-	JobName[JOB_MECHANIC] = gettext("Mechanic");
-	JobDescription[JOB_MECHANIC] = gettext("Will help the doctor and repair Constructs.");
+	
 
 	//- Moive Jobs
 	JobFilterName[JOBFILTER_MOVIESTUDIO] = gettext("Actresses");
@@ -1094,6 +1104,40 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 			g_MessageQue.AddToQue(gettext("You must be a Construct for this operation."), 0);
 		}
 	}
+	else if(u_int(JobID) == JOB_BREASTREDUCTION)
+	{
+		if(g_Clinic.GetNumGirlsOnJob(-1, JOB_DOCTOR, DayOrNight) == 0)
+		{
+			g_MessageQue.AddToQue(gettext("You must have a doctor for that operation."), 0);
+			if(DayOrNight)
+				Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+		}
+		else if (!g_Girls.HasTrait(Girl, "Small Boobs"))
+		{
+			Girl->m_DayJob = Girl->m_NightJob = JOB_BREASTREDUCTION;
+			}
+		else
+			{
+			g_MessageQue.AddToQue(gettext("Her boobs can't get no smaller."), 0);
+		}
+	}
+	else if(u_int(JobID) == JOB_BOOBJOB)
+	{
+		if(g_Clinic.GetNumGirlsOnJob(-1, JOB_DOCTOR, DayOrNight) == 0)
+		{
+			g_MessageQue.AddToQue(gettext("You must have a doctor for that operation."), 0);
+			if(DayOrNight)
+				Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+		}
+		else if (!g_Girls.HasTrait(Girl, "Abnormally Large Boobs"))
+		{
+			Girl->m_DayJob = Girl->m_NightJob = JOB_BOOBJOB;
+			}
+		else
+			{
+			g_MessageQue.AddToQue(gettext("Her boobs can't get no bigger."), 0);
+		}
+	}
 	else if(u_int(JobID) == JOB_REHAB)
 	{
 		if(g_Centre.GetNumGirlsOnJob(-1, JOB_DRUGCOUNSELOR, DayOrNight) == 0)
@@ -1152,6 +1196,9 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 			u_int(OldJobID) == JOB_CHAIRMAN || 
 			u_int(OldJobID) == JOB_PHYSICALSURGERY ||
 			u_int(OldJobID) == JOB_GETABORT ||
+			u_int(OldJobID) == JOB_BOOBJOB ||
+			u_int(OldJobID) == JOB_BREASTREDUCTION ||
+			u_int(OldJobID) == JOB_LIPO ||
 			u_int(OldJobID) == JOB_HEALING ||
 			u_int(OldJobID) == JOB_DOCTOR ||
 			u_int(OldJobID) == JOB_REHAB ||
@@ -1168,6 +1215,9 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 				u_int(JobID) != JOB_CHAIRMAN &&
 				u_int(JobID) != JOB_PHYSICALSURGERY &&
 				u_int(JobID) != JOB_GETABORT &&
+				u_int(JobID) != JOB_BOOBJOB &&
+				u_int(JobID) != JOB_BREASTREDUCTION &&
+				u_int(JobID) != JOB_LIPO &&
 				u_int(JobID) != JOB_HEALING &&
 				u_int(JobID) != JOB_DOCTOR &&
 				u_int(JobID) != JOB_REHAB &&
