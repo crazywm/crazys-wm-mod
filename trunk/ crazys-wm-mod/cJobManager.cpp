@@ -1138,6 +1138,23 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 			g_MessageQue.AddToQue(gettext("Her boobs can't get no bigger."), 0);
 		}
 	}
+	else if(u_int(JobID) == JOB_LIPO)
+	{
+		if(g_Clinic.GetNumGirlsOnJob(-1, JOB_DOCTOR, DayOrNight) == 0)
+		{
+			g_MessageQue.AddToQue(gettext("You must have a doctor for that operation."), 0);
+			if(DayOrNight)
+				Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+		}
+		else if (!g_Girls.HasTrait(Girl, "Great Figure"))
+		{
+			Girl->m_DayJob = Girl->m_NightJob = JOB_LIPO;
+			}
+		else
+			{
+			g_MessageQue.AddToQue(gettext("She already has a great figure and doesn't need this."), 0);
+		}
+	}
 	else if(u_int(JobID) == JOB_REHAB)
 	{
 		if(g_Centre.GetNumGirlsOnJob(-1, JOB_DRUGCOUNSELOR, DayOrNight) == 0)
