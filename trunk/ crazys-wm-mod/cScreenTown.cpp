@@ -116,6 +116,16 @@ static static_brothel_data centre_data[] = {
 	//{000, 10, 0 }
 };
 
+static static_brothel_data arena_data[] = {
+	{ 10000, 20, 10 }
+	//{000, 10, 0 }
+};
+
+static static_brothel_data studio_data[] = {
+	{ 10000, 20, 10 }
+	//{000, 10, 0 }
+};
+
 void cScreenTown::init()
 {
 	if(BuyClinic != -1)
@@ -136,6 +146,63 @@ void cScreenTown::init()
 
 		GetClinic = false;
 		BuyClinic = -1;
+	}
+	if(BuyCentre != -1)
+	{
+		if(g_ChoiceManager.GetChoice(0) == 0)
+		{
+			GetCentre = true;
+		}
+		g_ChoiceManager.Free();
+	}
+	if(GetCentre)
+	{
+		static_brothel_data *bpt = centre_data + BuyCentre;
+
+		g_Gold.brothel_cost(bpt->price);
+		g_Centre.NewBrothel(bpt->rooms);
+		g_Centre.SetName(0, gettext("Centre"));
+
+		GetCentre = false;
+		BuyCentre = -1;
+	}
+	if(BuyArena != -1)
+	{
+		if(g_ChoiceManager.GetChoice(0) == 0)
+		{
+			GetArena = true;
+		}
+		g_ChoiceManager.Free();
+	}
+	if(GetArena)
+	{
+		static_brothel_data *bpt = arena_data + BuyArena;
+
+		g_Gold.brothel_cost(bpt->price);
+		g_Arena.NewBrothel(bpt->rooms);
+		g_Arena.SetName(0, gettext("Arena"));
+
+		GetArena = false;
+		BuyArena = -1;
+	}
+	if(BuyStudio != -1)
+	{
+		if(g_ChoiceManager.GetChoice(0) == 0)
+		{
+			GetStudio = true;
+		}
+		g_ChoiceManager.Free();
+	}
+	if(GetStudio)
+	{
+		static_brothel_data *bpt = studio_data + BuyStudio;
+
+		g_Gold.brothel_cost(bpt->price);
+		g_Studios.NewBrothel(bpt->rooms);
+		g_Studios.SetName(0, gettext("Studio"));
+
+		GetStudio = false;
+		BuyStudio = -1;
 	}
 	if(GetName)
 	{
@@ -249,14 +316,14 @@ void cScreenTown::process()
 	}
 	else if(g_InterfaceEvents.CheckButton(studio_id))
 	{
+		check_studio(0);
 		g_InitWin = true;
-		g_WinManager.push("Movie Screen");
 		return;
 	}
 	else if(g_InterfaceEvents.CheckButton(arena_id))
 	{
+		check_arena(0);
 		g_InitWin = true;
-		g_WinManager.push("Arena Screen");
 		return;
 	}
 	else if(g_InterfaceEvents.CheckButton(centre_id))
@@ -578,6 +645,76 @@ void cScreenTown::check_centre(int CentreNum)
 	{	// player owns this brothel... go to it
 		g_CurrCentre = CentreNum;
 		g_WinManager.push("Centre Screen");
+	}
+}
+void cScreenTown::check_arena(int ArenaNum)
+{	// player clicked on one of the brothels
+	if(g_Arena.GetNumBrothels() == ArenaNum)
+	{	// player doesn't own this brothel... can he buy it? 
+		static_brothel_data *bck = arena_data + ArenaNum;
+		locale syslocale("");
+		stringstream ss;
+		ss.imbue(syslocale);
+
+		if(!g_Gold.afford(bck->price) || g_Gangs.GetNumBusinessExtorted() < bck->business)
+		{	// can't buy it
+			ss << gettext("This building costs ") << bck->price << gettext(" gold and you need to control at least ") << bck->business << gettext(" businesses.");
+			if(!g_Gold.afford(bck->price))
+				ss << "\n" << gettext("You need ") << (bck->price - g_Gold.ival()) << gettext(" more gold to afford it.");
+			if(g_Gangs.GetNumBusinessExtorted() < bck->business)
+				ss << "\n" << gettext("You need to control ") << (bck->business - g_Gangs.GetNumBusinessExtorted()) << gettext(" more businesses.");
+			g_MessageQue.AddToQue(ss.str(), 0);
+		}
+		else
+		{	// can buy it
+			ss << gettext("Do you wish to purchase this building for ") << bck->price << gettext(" gold? It has ") << bck->rooms << gettext(" rooms.");
+			g_MessageQue.AddToQue(ss.str(), 2);
+			g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, 8);
+			g_ChoiceManager.AddChoice(0, gettext("Buy It"), 0);
+			g_ChoiceManager.AddChoice(0, gettext("Don't Buy It"), 1);
+			g_ChoiceManager.SetActive(0);
+			BuyArena = ArenaNum;
+		}
+	}
+	else
+	{	// player owns this brothel... go to it
+		g_CurrArena = ArenaNum;
+		g_WinManager.push("Arena Screen");
+	}
+}
+void cScreenTown::check_studio(int StudioNum)
+{	// player clicked on one of the brothels
+	if(g_Studios.GetNumBrothels() == StudioNum)
+	{	// player doesn't own this brothel... can he buy it? 
+		static_brothel_data *bck = studio_data + StudioNum;
+		locale syslocale("");
+		stringstream ss;
+		ss.imbue(syslocale);
+
+		if(!g_Gold.afford(bck->price) || g_Gangs.GetNumBusinessExtorted() < bck->business)
+		{	// can't buy it
+			ss << gettext("This building costs ") << bck->price << gettext(" gold and you need to control at least ") << bck->business << gettext(" businesses.");
+			if(!g_Gold.afford(bck->price))
+				ss << "\n" << gettext("You need ") << (bck->price - g_Gold.ival()) << gettext(" more gold to afford it.");
+			if(g_Gangs.GetNumBusinessExtorted() < bck->business)
+				ss << "\n" << gettext("You need to control ") << (bck->business - g_Gangs.GetNumBusinessExtorted()) << gettext(" more businesses.");
+			g_MessageQue.AddToQue(ss.str(), 0);
+		}
+		else
+		{	// can buy it
+			ss << gettext("Do you wish to purchase this building for ") << bck->price << gettext(" gold? It has ") << bck->rooms << gettext(" rooms.");
+			g_MessageQue.AddToQue(ss.str(), 2);
+			g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, 8);
+			g_ChoiceManager.AddChoice(0, gettext("Buy It"), 0);
+			g_ChoiceManager.AddChoice(0, gettext("Don't Buy It"), 1);
+			g_ChoiceManager.SetActive(0);
+			BuyStudio = StudioNum;
+		}
+	}
+	else
+	{	// player owns this brothel... go to it
+		g_CurrStudio = StudioNum;
+		g_WinManager.push("Movie Screen");
 	}
 }
 
