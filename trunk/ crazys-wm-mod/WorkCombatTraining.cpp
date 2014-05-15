@@ -50,9 +50,11 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, sBrothel* brothel, int DayNigh
 	string message = "";
 	if(Preprocessing(ACTION_COMBAT, girl, brothel, DayNight, summary, message))
 		return true;
+	stringstream ss;
+	ss.str(message);
 
 	int roll = g_Dice%100;
-	int skill;
+	int skill = 0;
 	{
 		if (roll <= 15)
 		{
@@ -62,7 +64,7 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, sBrothel* brothel, int DayNigh
 		{
 			skill = 4;
 		}
-		else if (roll <= 55)
+		else if (roll <= 60)
 		{
 			skill = 3;
 		}
@@ -80,33 +82,36 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, sBrothel* brothel, int DayNigh
 		skill -= 1;
 	}
 
-	message = "She trains in combat for the day.\n\n";
+	ss << gettext("She trains in combat for the day.\n\n");
+	//message = "She trains in combat for the day.\n\n";
 
-	if (roll <= 40)
+	if (roll <= 33)
 		{
-			message += "She learns how to fight better with her weapons.\n\n";
+			ss << gettext("She learns how to fight better with her weapons.\n");
+			ss << gettext("She managed to gain ") << skill << gettext(" Combat.\n\n");
 			g_Girls.UpdateSkill(girl, SKILL_COMBAT, skill);
 		}
-		else if (roll <= 80)
+		else if (roll <= 66)
 		{
-			message += "She learns how to cast better magic.\n\n";
+			ss << gettext("She learns how to cast better magic.\n");
+			ss << gettext("She managed to gain ") << skill << gettext(" Magic.\n\n");
 			g_Girls.UpdateSkill(girl, SKILL_MAGIC, skill);
 		}
 		else if (roll <= 95)
 		{
-			message += "She has gotten tougher from the training.\n\n";
-			g_Girls.UpdateStat(girl, STAT_CONSTITUTION, skill);
+			ss << gettext("She worked her speed today.\n\n");
+			ss << gettext("She managed to gain ") << skill << gettext(" Agility.\n\n");
+			g_Girls.UpdateStat(girl, STAT_AGILITY, skill);
 		}
 		else
 		{
-			message += "She had a great day and got better at everything.\n\n";
+			ss << gettext("She has gotten tougher from the training.\n\n");
+			ss << gettext("She managed to gain ") << skill << gettext(" Constituion.\n\n");
 			g_Girls.UpdateStat(girl, STAT_CONSTITUTION, skill);
-			g_Girls.UpdateSkill(girl, SKILL_MAGIC, skill);
-			g_Girls.UpdateSkill(girl, SKILL_COMBAT, skill);
 		}
 		}
 		
-	girl->m_Events.AddMessage(message, IMGTYPE_COMBAT, DayNight);
+	girl->m_Events.AddMessage(ss.str(), IMGTYPE_COMBAT, DayNight);
 	girl->m_Pay = 25;
 
 	// Improve stats

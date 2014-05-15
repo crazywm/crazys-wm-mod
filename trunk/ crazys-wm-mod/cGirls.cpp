@@ -1264,7 +1264,7 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 		newGirl->m_Money = 0;
 	}
 
-	if(age < 17)
+	if(age < 18)
 		AddTrait(newGirl, "Lolita");
 
 	if(g_Dice%100 <= 3)

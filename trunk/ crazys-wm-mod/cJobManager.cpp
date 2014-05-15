@@ -141,6 +141,8 @@ void cJobManager::Setup()
 	JobFunctions[JOB_LIPO] = &WorkLiposuction;	
 	JobFunctions[JOB_BREASTREDUCTION] = &WorkBreastReduction;
 	JobFunctions[JOB_BOOBJOB] = &WorkBoobJob;
+	JobFunctions[JOB_VAGINAREJUV] = &WorkGetVaginalRejuvination;
+	JobFunctions[JOB_FACELIFT] = &WorkGetFacelift;
 	// - House
 	JobFunctions[JOB_PERSONALTRAINING] = &WorkPersonalTraining;	// ************** TODO
 	JobFunctions[JOB_PERSONALBEDWARMER] = &WorkPersonalBedWarmer;	// ************** TODO
@@ -301,13 +303,17 @@ void cJobManager::Setup()
 	JobName[JOB_GETABORT] = gettext("Get Abortion");
 	JobDescription[JOB_GETABORT] = gettext("She will get an abortion, removing pregnancy and/or insemination.(takes 2 days)");
 	JobName[JOB_PHYSICALSURGERY] = gettext("Cosmetic Surgery");
-	JobDescription[JOB_PHYSICALSURGERY] = gettext("She will undergo magical surgery to \"enhance\" her appearance. (takes 5 days)");
+	JobDescription[JOB_PHYSICALSURGERY] = gettext("She will undergo magical surgery to \"enhance\" her appearance. (takes up to 5 days)");
 	JobName[JOB_LIPO] = gettext("Liposuction");
-	JobDescription[JOB_LIPO] = gettext("She will undergo liposuction to \"enhance\" her figure. (takes 5 days)");
+	JobDescription[JOB_LIPO] = gettext("She will undergo liposuction to \"enhance\" her figure. (takes up to 5 days)");
 	JobName[JOB_BREASTREDUCTION] = gettext("Breast Reduction Surgery");
-	JobDescription[JOB_BREASTREDUCTION] = gettext("She will undergo breast reduction surgery. (takes 5 days)");
+	JobDescription[JOB_BREASTREDUCTION] = gettext("She will undergo breast reduction surgery. (takes up to 5 days)");
 	JobName[JOB_BOOBJOB] = gettext("Boob Job");
-	JobDescription[JOB_BOOBJOB] = gettext("She will undergo surgery to \"enhance\" her bust. (takes 5 days)");
+	JobDescription[JOB_BOOBJOB] = gettext("She will undergo surgery to \"enhance\" her bust. (takes up to 5 days)");
+	JobName[JOB_VAGINAREJUV] = gettext("Vaginal Rejuvination");
+	JobDescription[JOB_VAGINAREJUV] = gettext("She will undergo surgery to make her a virgin again. (takes up to 5 days)");
+	JobName[JOB_FACELIFT] = gettext("Face Lift");
+	JobDescription[JOB_FACELIFT] = gettext("She will undergo surgery to make her younger. (takes up to 5 days)");
 	JobName[JOB_HEALING] = gettext("Healing");
 	JobDescription[JOB_HEALING] = gettext("She will have her wounds attended. This takes 1 day for each wound trait.");
 	JobName[JOB_REPAIRSHOP] = gettext("Repair Shop");
@@ -1138,6 +1144,40 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 			g_MessageQue.AddToQue(gettext("Her boobs can't get no bigger."), 0);
 		}
 	}
+	else if(u_int(JobID) == JOB_FACELIFT)
+	{
+		if(g_Clinic.GetNumGirlsOnJob(-1, JOB_DOCTOR, DayOrNight) == 0)
+		{
+			g_MessageQue.AddToQue(gettext("You must have a doctor for that operation."), 0);
+			if(DayOrNight)
+				Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+		}
+		else if (g_Girls.GetStat(Girl, STAT_AGE) >= 20)
+		{
+			Girl->m_DayJob = Girl->m_NightJob = JOB_FACELIFT;
+			}
+		else
+			{
+			g_MessageQue.AddToQue(gettext("She is to young for a face lift."), 0);
+		}
+	}
+	else if(u_int(JobID) == JOB_VAGINAREJUV)
+	{
+		if(g_Clinic.GetNumGirlsOnJob(-1, JOB_DOCTOR, DayOrNight) == 0)
+		{
+			g_MessageQue.AddToQue(gettext("You must have a doctor for that operation."), 0);
+			if(DayOrNight)
+				Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+		}
+		else if (Girl->m_Virgin)
+		{
+			g_MessageQue.AddToQue(gettext("She is a virgin and has no need of this operation."), 0);
+			}
+		else
+			{
+				Girl->m_DayJob = Girl->m_NightJob = JOB_VAGINAREJUV;
+		}
+	}
 	else if(u_int(JobID) == JOB_LIPO)
 	{
 		if(g_Clinic.GetNumGirlsOnJob(-1, JOB_DOCTOR, DayOrNight) == 0)
@@ -1216,6 +1256,8 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 			u_int(OldJobID) == JOB_BOOBJOB ||
 			u_int(OldJobID) == JOB_BREASTREDUCTION ||
 			u_int(OldJobID) == JOB_LIPO ||
+			u_int(OldJobID) == JOB_FACELIFT ||
+			u_int(OldJobID) == JOB_VAGINAREJUV ||
 			u_int(OldJobID) == JOB_HEALING ||
 			u_int(OldJobID) == JOB_DOCTOR ||
 			u_int(OldJobID) == JOB_REHAB ||
@@ -1235,6 +1277,8 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 				u_int(JobID) != JOB_BOOBJOB &&
 				u_int(JobID) != JOB_BREASTREDUCTION &&
 				u_int(JobID) != JOB_LIPO &&
+				u_int(JobID) != JOB_FACELIFT &&
+				u_int(JobID) != JOB_VAGINAREJUV &&
 				u_int(JobID) != JOB_HEALING &&
 				u_int(JobID) != JOB_DOCTOR &&
 				u_int(JobID) != JOB_REHAB &&

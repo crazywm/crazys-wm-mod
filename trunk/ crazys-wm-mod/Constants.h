@@ -109,7 +109,7 @@ GIRL_CATACOMBS      = 10    // means this girl can be found in the catacombs
 
 // Jobs
 const unsigned int NUMJOBTYPES          = 14;
-const unsigned int NUM_JOBS             = 80;
+const unsigned int NUM_JOBS             = 82;
 // - General
 const unsigned int JOBFILTER_GENERAL    = 0;
 const unsigned int JOB_RESTING          = 0;    // relaxes and takes some time off
@@ -194,36 +194,38 @@ const unsigned int JOB_GETABORT         = 55;	// not added yet	// gets an aborti
 const unsigned int JOB_PHYSICALSURGERY  = 56;	// not added yet	// magical plastic surgery (takes 5 days)
 const unsigned int JOB_REPAIRSHOP       = 57;	// not added yet	// construct girls can get repaired quickly
 const unsigned int JOB_LIPO			    = 58;	// not added yet	// magical plastic surgery (takes 5 days)
-const unsigned int JOB_BREASTREDUCTION  = 59;	// not added yet	// construct girls can get repaired quickly
-const unsigned int JOB_BOOBJOB          = 60;	// not added yet	// construct girls can get repaired quickly
+const unsigned int JOB_BREASTREDUCTION  = 59;	// not added yet	// magical plastic surgery (takes 5 days)
+const unsigned int JOB_BOOBJOB          = 60;	// not added yet	// magical plastic surgery (takes 5 days)
+const unsigned int JOB_VAGINAREJUV      = 61;	// not added yet	// magical plastic surgery (takes 5 days)
+const unsigned int JOB_FACELIFT         = 62;	// not added yet	// magical plastic surgery (takes 5 days)
 // - clinic staff
 const unsigned int JOBFILTER_CLINICSTAFF = 10;
-const unsigned int JOB_CHAIRMAN          = 61;	// not added yet	
-const unsigned int JOB_DOCTOR            = 62;	// not added yet	// becomes a doctor (requires 1) (will make some extra cash for treating locals)
-const unsigned int JOB_NURSE             = 63;	// not added yet	//
-const unsigned int JOB_MECHANIC          = 64;	// not added yet	// construct girls can get repaired quickly
-const unsigned int JOB_JANITOR           = 65;	// not added yet	
-const unsigned int JOB_CLINICREST        = 66;	// not added yet	
+const unsigned int JOB_CHAIRMAN          = 63;	// not added yet	
+const unsigned int JOB_DOCTOR            = 64;	// not added yet	// becomes a doctor (requires 1) (will make some extra cash for treating locals)
+const unsigned int JOB_NURSE             = 65;	// not added yet	//
+const unsigned int JOB_MECHANIC          = 66;	// not added yet	// construct girls can get repaired quickly
+const unsigned int JOB_JANITOR           = 67;	// not added yet	
+const unsigned int JOB_CLINICREST        = 68;	// not added yet	
 // - Community Centre
 const unsigned int JOBFILTER_COMMUNITYCENTRE = 11;
-const unsigned int JOB_FEEDPOOR         = 67;	// not added yet	// work in a soup kitchen
-const unsigned int JOB_COMUNITYSERVICE  = 68;	// not added yet	// Goes around town helping where they can
-const unsigned int JOB_CENTREMANAGER    = 69;	// not added yet	
-const unsigned int JOB_CLEANCENTRE      = 70;	// not added yet	
-const unsigned int JOB_CENTREREST       = 71;	// not added yet	
+const unsigned int JOB_FEEDPOOR         = 69;	// not added yet	// work in a soup kitchen
+const unsigned int JOB_COMUNITYSERVICE  = 70;	// not added yet	// Goes around town helping where they can
+const unsigned int JOB_CENTREMANAGER    = 71;	// not added yet	
+const unsigned int JOB_CLEANCENTRE      = 72;	// not added yet	
+const unsigned int JOB_CENTREREST       = 73;	// not added yet	
 // - drug centre
 const unsigned int JOBFILTER_DRUGCENTRE = 12;
-const unsigned int JOB_DRUGCOUNSELOR    = 72;	// not added yet	
-const unsigned int JOB_REHAB            = 73;	// not added yet	
+const unsigned int JOB_DRUGCOUNSELOR    = 74;	// not added yet	
+const unsigned int JOB_REHAB            = 75;	// not added yet	
 
 // - House
 const unsigned int JOBFILTER_HOUSE = 13;
-const unsigned int JOB_PERSONALTRAINING  = 74;
-const unsigned int JOB_PERSONALBEDWARMER = 75;
-const unsigned int JOB_CLEANHOUSE        = 76;
-const unsigned int JOB_RECRUITER         = 77;
-const unsigned int JOB_HOUSEREST         = 78;
-const unsigned int JOB_HEADGIRL          = 79;
+const unsigned int JOB_PERSONALTRAINING  = 76;
+const unsigned int JOB_PERSONALBEDWARMER = 77;
+const unsigned int JOB_CLEANHOUSE        = 78;
+const unsigned int JOB_RECRUITER         = 79;
+const unsigned int JOB_HOUSEREST         = 80;
+const unsigned int JOB_HEADGIRL          = 81;
 
 #if 0
 // - Community Centre
@@ -267,8 +269,8 @@ const unsigned int JOB_TRAIN            = 60;	// not added yet	// trains the gir
 #endif
 
 // - extra unassignable
-const unsigned int JOB_INDUNGEON        = 80;
-const unsigned int JOB_RUNAWAY          = 81;
+const unsigned int JOB_INDUNGEON        = 82;
+const unsigned int JOB_RUNAWAY          = 83;
 
 // Goon missions
 const unsigned int MISS_GUARDING        = 0;	// guarding your businesses
