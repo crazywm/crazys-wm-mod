@@ -85,7 +85,7 @@ bool cJobManager::WorkBreastReduction(sGirl* girl, sBrothel* brothel, int DayNig
 		ss << "The surgery is a success. She is sad and has lost some health during the operation.";
 		g_Girls.UpdateStat(girl, STAT_HAPPINESS, -15);
 		g_Girls.UpdateStat(girl, STAT_SPIRIT, -5);
-		g_Girls.UpdateStat(girl, STAT_HEALTH, -15);
+		g_Girls.UpdateStat(girl, STAT_HEALTH, -35);
 		g_Girls.UpdateStat(girl, STAT_MANA, -20);
 			if (g_Girls.HasTrait(girl, "Abnormally Large Boobs"))
 		{
@@ -116,7 +116,7 @@ bool cJobManager::WorkBreastReduction(sGirl* girl, sBrothel* brothel, int DayNig
 		ss << "The surgery is a success. She is sad and has lost some health during the operation.";
 		g_Girls.UpdateStat(girl, STAT_HAPPINESS, -20);
 		g_Girls.UpdateStat(girl, STAT_SPIRIT, -5);
-		g_Girls.UpdateStat(girl, STAT_HEALTH, -20);
+		g_Girls.UpdateStat(girl, STAT_HEALTH, -40);
 		g_Girls.UpdateStat(girl, STAT_MANA, -20);
 		if (g_Girls.HasTrait(girl, "Abnormally Large Boobs"))
 		{

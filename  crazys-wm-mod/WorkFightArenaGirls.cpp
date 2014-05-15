@@ -31,6 +31,7 @@
 #include "cGold.h"
 #include "cGangs.h"
 #include "cMessageBox.h"
+#include "libintl.h"
 
 extern cRng g_Dice;
 extern CLog g_LogFile;
@@ -51,6 +52,8 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, int DayNig
 	string message = "";
 	if(Preprocessing(ACTION_COMBAT, girl, brothel, DayNight, summary, message))
 		return true;
+	stringstream ss;
+	ss.str(message);
 
 	// ready armor and weapons!
 	g_Girls.EquipCombat(girl);
@@ -61,8 +64,8 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, int DayNig
 	if(fight_outcome == 1)	// she won
 	{
 		g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, +3, true);
-		message = "She won the fight.";
-		girl->m_Events.AddMessage(message,IMGTYPE_COMBAT,DayNight);
+		ss << gettext ("She won the fight.");
+		girl->m_Events.AddMessage(ss.str(),IMGTYPE_COMBAT,DayNight);
 		int roll_max = girl->fame() + girl->charisma();
 		roll_max /= 4;
 		wages += 10 + g_Dice%roll_max;
@@ -95,8 +98,8 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, int DayNig
 	else if (fight_outcome == 2) // she lost or it was a draw
 	{
 		g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, -1, true);
-		message = "She lost the fight.";
-		girl->m_Events.AddMessage(message,IMGTYPE_COMBAT,DayNight);
+		ss << gettext ("She lost the fight.");
+		girl->m_Events.AddMessage(ss.str(),IMGTYPE_COMBAT,DayNight);
 		g_Girls.UpdateStat(girl, STAT_FAME, -1);
 
 	}
@@ -129,12 +132,11 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, int DayNig
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))
 		libido += 2;
 
-	stringstream ss;
 	//TODO make this actually work so people know that they won a girl. crazy
-	ss << girl->m_Realname <<type_unique_arena_girls << " put up a good fight so you let them live to come work for you\n\n";
+	ss << girl->m_Realname <<type_unique_arena_girls << (" put up a good fight so you let them live to come work for you\n\n");
 		ss << ".";
 
-	g_Girls.UpdateStat(girl, STAT_EXP, 15);
+	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateSkill(girl, SKILL_COMBAT, skill);
 	g_Girls.UpdateSkill(girl, SKILL_MAGIC, skill);
 	g_Girls.UpdateStat(girl, STAT_AGILITY, skill);
@@ -143,8 +145,8 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, int DayNig
 
 	
 	//gain traits
-	g_Girls.PossiblyGainNewTrait(girl, "Tough", 20, ACTION_COMBAT, "She has become pretty Tough from all of the fights she's been in.", DayNight != 0);
-	g_Girls.PossiblyGainNewTrait(girl, "Fleet of Foot", 30, ACTION_COMBAT, "She is getting rather fast from all the fighting.", DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Tough", 35, ACTION_COMBAT, "She has become pretty Tough from all of the fights she's been in.", DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Fleet of Foot", 55, ACTION_COMBAT, "She is getting rather fast from all the fighting.", DayNight != 0);
 	g_Girls.PossiblyGainNewTrait(girl, "Aggressive", 70, ACTION_COMBAT, "She is getting rather Aggressive from her enjoyment of combat.", DayNight != 0);
 
 	return false;

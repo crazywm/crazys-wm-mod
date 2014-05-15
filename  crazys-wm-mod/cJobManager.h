@@ -133,6 +133,8 @@ public:
 	static bool WorkBreastReduction(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
 	static bool WorkLiposuction(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
 	static bool WorkBoobJob(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
+	static bool WorkGetVaginalRejuvination(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
+	static bool WorkGetFacelift(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
 
 	// - Movie Studio
 	static bool WorkFluffer(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);

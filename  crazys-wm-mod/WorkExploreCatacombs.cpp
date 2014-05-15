@@ -269,12 +269,12 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, int DayNi
 	g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, +8, true);
 
 	// Myr: Turned trait gains into functions
-	g_Girls.PossiblyGainNewTrait(girl, "Tough", 15, ACTION_COMBAT, "She has become pretty Tough from all of the fights she's been in.", DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Tough", 30, ACTION_COMBAT, "She has become pretty Tough from all of the fights she's been in.", DayNight != 0);
 	g_Girls.PossiblyGainNewTrait(girl, "Adventurer", 40, ACTION_COMBAT, "She has been in enough tough spots to consider herself an Adventurer.", DayNight != 0);
 	g_Girls.PossiblyGainNewTrait(girl, "Aggressive", 60, ACTION_COMBAT, "She is getting rather Aggressive from her enjoyment of combat.", DayNight != 0);
 
 	//lose traits
-	g_Girls.PossiblyLoseExistingTrait(girl, "Fragile", 75, ACTION_COMBAT, girl->m_Realname + " has had to heal from so many inguries you can't say she is fragile anymore.", DayNight != 0);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Fragile", 75, ACTION_COMBAT, girl->m_Realname + " has had to heal from so many injuries you can't say she is fragile anymore.", DayNight != 0);
 	
 	return false;
 }

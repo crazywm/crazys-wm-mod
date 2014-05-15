@@ -42,7 +42,7 @@ extern cClinicManager g_Clinic;
 extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
-bool cJobManager::WorkBoobJob(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkGetFacelift(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	string message = "";
 	u_int job = 0;	
@@ -82,28 +82,15 @@ bool cJobManager::WorkBoobJob(sGirl* girl, sBrothel* brothel, int DayNight, stri
 	{
 	if(girl->m_WorkingDay == 3)
 	{
-		ss << "The surgery is a success. She is sad and has lost some health during the operation.";
-		g_Girls.UpdateStat(girl, STAT_HAPPINESS, -15);
+		ss << "The physical surgery is a success. She is sad and has lost some health during the operation.";
+		g_Girls.UpdateStat(girl, STAT_HAPPINESS, -20);
 		g_Girls.UpdateStat(girl, STAT_SPIRIT, -5);
 		g_Girls.UpdateStat(girl, STAT_HEALTH, -35);
 		g_Girls.UpdateStat(girl, STAT_MANA, -20);
-		if (g_Girls.HasTrait(girl, "Small Boobs"))
-		{
-			g_Girls.RemoveTrait(girl, "Small Boobs");
-			girl->add_trait("Big Boobs", false);
-			ss << "She now has big boobs.";
-		}
-		else if (g_Girls.HasTrait(girl, "Big Boobs"))
-		{
-			g_Girls.RemoveTrait(girl, "Big Boobs");
-			girl->add_trait("Abnormally Large Boobs", false);
-			ss << "She now has abnormally large boobs.";
-		}
-		else if (!g_Girls.HasTrait(girl, "Big Boobs"))
-		{
-			girl->add_trait("Big Boobs", false);
-			ss << "She now has big boobs.";
-		}
+		g_Girls.UpdateStat(girl, STAT_BEAUTY, 10);
+		g_Girls.UpdateStat(girl, STAT_CHARISMA, 10);
+		g_Girls.UpdateStat(girl, STAT_AGE, -2);
+		
 		girl->m_WorkingDay = 0;
 	}
 	else
@@ -114,28 +101,14 @@ bool cJobManager::WorkBoobJob(sGirl* girl, sBrothel* brothel, int DayNight, stri
 	else
 		if(girl->m_WorkingDay == 5)
 	{
-		ss << "The surgery is a success. She is sad and has lost some health during the operation.";
+		ss << "The physical surgery is a success. She is sad and has lost some health during the operation.";
 		g_Girls.UpdateStat(girl, STAT_HAPPINESS, -20);
 		g_Girls.UpdateStat(girl, STAT_SPIRIT, -5);
 		g_Girls.UpdateStat(girl, STAT_HEALTH, -40);
 		g_Girls.UpdateStat(girl, STAT_MANA, -20);
-		if (g_Girls.HasTrait(girl, "Small Boobs"))
-		{
-			g_Girls.RemoveTrait(girl, "Small Boobs");
-			girl->add_trait("Big Boobs", false);
-			ss << "She now has big boobs.";
-		}
-		else if (g_Girls.HasTrait(girl, "Big Boobs"))
-		{
-			g_Girls.RemoveTrait(girl, "Big Boobs");
-			girl->add_trait("Abnormally Large Boobs", false);
-			ss << "She now has abnormally large boobs.";
-		}
-		else if (!g_Girls.HasTrait(girl, "Big Boobs"))
-		{
-			girl->add_trait("Big Boobs", false);
-			ss << "She now has big boobs.";
-		}
+		g_Girls.UpdateStat(girl, STAT_BEAUTY, 8);
+		g_Girls.UpdateStat(girl, STAT_CHARISMA, 8);
+		g_Girls.UpdateStat(girl, STAT_AGE, -2);
 		girl->m_WorkingDay = 0;
 	}
 	else
