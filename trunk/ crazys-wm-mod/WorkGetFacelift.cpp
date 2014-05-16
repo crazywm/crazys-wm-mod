@@ -77,6 +77,13 @@ bool cJobManager::WorkGetFacelift(sGirl* girl, sBrothel* brothel, int DayNight, 
 		job	= girl->m_NightJob;
 	}
 
+	//half ass fix to make sure it doesn't keep doing the surgery once under age 20
+	if (g_Girls.GetStat(girl, STAT_AGE) < 20)
+	{
+		girl->m_DayJob = JOB_CLINICREST;
+		girl->m_NightJob = JOB_CLINICREST;
+	}
+
 	stringstream ss;
 	if (g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, false) >= 1)
 	{

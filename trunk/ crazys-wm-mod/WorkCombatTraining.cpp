@@ -85,25 +85,25 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, sBrothel* brothel, int DayNigh
 	ss << gettext("She trains in combat for the day.\n\n");
 	//message = "She trains in combat for the day.\n\n";
 
-	if (roll <= 33)
+	if (roll <= 33 && (int)girl->m_Skills[SKILL_COMBAT] < 100)
 		{
 			ss << gettext("She learns how to fight better with her weapons.\n");
 			ss << gettext("She managed to gain ") << skill << gettext(" Combat.\n\n");
 			g_Girls.UpdateSkill(girl, SKILL_COMBAT, skill);
 		}
-		else if (roll <= 66)
+		else if (roll <= 66 && (int)girl->m_Skills[SKILL_MAGIC] < 100)
 		{
 			ss << gettext("She learns how to cast better magic.\n");
 			ss << gettext("She managed to gain ") << skill << gettext(" Magic.\n\n");
 			g_Girls.UpdateSkill(girl, SKILL_MAGIC, skill);
 		}
-		else if (roll <= 95)
+		else if (roll <= 95 && (int)girl->m_Stats[STAT_AGILITY] < 100)
 		{
 			ss << gettext("She worked her speed today.\n\n");
 			ss << gettext("She managed to gain ") << skill << gettext(" Agility.\n\n");
 			g_Girls.UpdateStat(girl, STAT_AGILITY, skill);
 		}
-		else
+		else if (roll > 95 && (int)girl->m_Stats[STAT_CONSTITUTION] < 100)
 		{
 			ss << gettext("She has gotten tougher from the training.\n\n");
 			ss << gettext("She managed to gain ") << skill << gettext(" Constituion.\n\n");
