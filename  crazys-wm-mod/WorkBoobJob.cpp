@@ -77,6 +77,13 @@ bool cJobManager::WorkBoobJob(sGirl* girl, sBrothel* brothel, int DayNight, stri
 		job	= girl->m_NightJob;
 	}
 
+	//half ass fix to make sure it doesn't keep doing the surgery once she has the trait
+	if (g_Girls.HasTrait(girl, "Abnormally Large Boobs"))
+	{
+		girl->m_DayJob = JOB_CLINICREST;
+		girl->m_NightJob = JOB_CLINICREST;
+	}
+
 	stringstream ss;
 	if (g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, false) >= 1)
 	{
