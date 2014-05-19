@@ -52,6 +52,7 @@ long g_IntReturn;
 extern bool eventrunning;
 extern cRng g_Dice;
 bool g_WalkAround = false;	// for keeping track of weather have walked around town today
+bool g_TryCentre = false;
 bool g_TryOuts = false;
 bool g_TryEr = false;
 bool g_TryCast = false;
@@ -178,6 +179,7 @@ void NewGame()
 	g_Cheats = false;
 	g_GenGirls = g_Cheats = g_WalkAround = false;	// for keeping track of weather have walked around town today
 	g_GenGirls = g_Cheats = g_TryOuts = false;
+	g_GenGirls = g_Cheats = g_TryCentre = false;
 	g_GenGirls = g_Cheats = g_TryEr = false;
 	g_GenGirls = g_Cheats = g_TryCast = false;
 	g_TalkCount = 10;
@@ -241,7 +243,7 @@ void NewGame()
 	//g_Brothels.GetPlayer()->m_Disposition = 0;
 	//g_Brothels.GetPlayer()->m_Suspicion = 0;
 	//g_Brothels.GetPlayer()->m_WinGame = false;
-
+	/*
 	g_Studios.NewBrothel(20);
 	g_Studios.SetName(0, "Studio");
 
@@ -250,7 +252,7 @@ void NewGame()
 
 	g_Centre.NewBrothel(20);
 	g_Centre.SetName(0, "Centre");
-
+	*/
 	g_House.NewBrothel(20);
 	g_House.SetName(0, "House");
 
@@ -343,7 +345,7 @@ static string clobber_extension(string s)
  * interim loader to load XML files, and then non-xml ones
  * if there was no xml version.
  */
-static void load_items_temp(FileList &fl)
+static void LoadXMLItems(FileList &fl)
 {
 	map<string,string> lookup;
 
@@ -398,29 +400,22 @@ static void load_items_temp(FileList &fl)
 
 void LoadGameInfoFiles()
 {
-/*
- *	Load the traits: first build the path
- */
+// Load the traits: first build the path
 	DirPath location = DirPath() << "Resources" << "Data";
-	DirPath location_i = DirPath() << "Resources" << "Items"; // `J` moved items from Data to Items folder
-/*
- *	get a file list
- */
-	FileList fl(location, "*.traits");
-	FileList fl_i(location_i, "*.itemsx"); // `J` moved items from Data to Items folder
-/*
- *	loop over the list, loading the files
- */
-	for(int i = 0; i < fl.size(); i++) {
+ 	FileList fl(location, "*.traits");	// get a file list
+	for (int i = 0; i < fl.size(); i++)	// loop over the list, loading the files
+	{
 		g_Traits.LoadTraits(fl[i].full());
-
 	}
-/*
- *	scan and load items
- *	The "temp" function was a stopgap until
- *	I figured out XMLFileList. Needs replacing.
- */
-	load_items_temp(fl_i); // `J` moved items from Data to Items folder
+/* `J` Load .traitsx files (work in progress)
+	FileList fl_t(location, "*.traitsx");	// get a file list
+	cTraits::LoadXMLTraits(fl_t);
+*/
+
+// `J` Load .itemsx files
+	DirPath location_i = DirPath() << "Resources" << "Items"; // `J` moved items from Data to Items folder
+	FileList fl_i(location_i, "*.itemsx");
+	LoadXMLItems(fl_i);
 }
 
 void LoadGirlsFiles()
@@ -778,7 +773,7 @@ void Turnsummary()
 			// Find out which girls have sex type jobs.
 			for (int i=0; i<nNumGirlsStudio; i++)
 			{
-				pTmpGirl = g_Studios.GetGirl(g_CurrStudio, i); // `J` changed g_CurrBrothel to g_CurrStudio
+				pTmpGirl = g_Studios.GetGirl(0, i); // `J` changed g_CurrBrothel to 0
 				sexjob = false;
 				switch(pTmpGirl->m_NightJob)
 				{
@@ -2028,6 +2023,7 @@ void Turnsummary()
 void NextWeek()
 {
 	g_GenGirls = g_WalkAround = false;
+	g_GenGirls = g_TryCentre = false;
 	g_GenGirls = g_TryOuts = false;
 	g_GenGirls = g_TryEr = false;
 	g_GenGirls = g_TryCast = false;
@@ -2900,6 +2896,7 @@ void SaveGameXML(string filename)
 	// output interface variables
 	pRoot->SetAttribute("WalkAround", g_WalkAround);
 	pRoot->SetAttribute("TalkCount", g_TalkCount);
+	pRoot->SetAttribute("TryCentre", g_TryCentre);
 	pRoot->SetAttribute("TryOuts", g_TryOuts);
 	pRoot->SetAttribute("TryEr", g_TryEr);
 	pRoot->SetAttribute("TryCast", g_TryCast);
@@ -3038,6 +3035,8 @@ bool LoadGameXML(TiXmlHandle hDoc)
 	// load interface variables
 	g_WalkAround = false;
 	pRoot->QueryValueAttribute<bool>("WalkAround", &g_WalkAround);
+	g_TryCentre = false;
+	pRoot->QueryValueAttribute<bool>("TryCentre", &g_TryCentre);	// `J` added
 	g_TryOuts = false;
 	pRoot->QueryValueAttribute<bool>("TryOuts", &g_TryOuts);
 	g_TryEr = false;
@@ -3099,6 +3098,7 @@ bool LoadGameXML(TiXmlHandle hDoc)
 	if(g_Cheats)
 	{
 		g_WalkAround = false;
+		g_TryCentre = false;
 		g_TryOuts = false;
 		g_TryEr = false;
 		g_TryCast = false;
@@ -3266,7 +3266,6 @@ void TransferGirls()
 			g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGRIGHTBROTHEL, 0, currentStudio->m_Name);
 			currentStudio = (sMovieStudio*) currentStudio->m_Next;
 		} 
-
 		// add the clinic
 		sClinic* currentClinic = (sClinic*) g_Clinic.GetBrothel(0);
 		while(currentClinic)

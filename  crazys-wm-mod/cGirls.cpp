@@ -78,7 +78,6 @@ map<string,unsigned int> sGirl::status_lookup;
 
 const char *sGirl::stat_names[] = 
 {
-
 	"Charisma",
 	"Happiness",
 	"Libido",
@@ -102,16 +101,6 @@ const char *sGirl::stat_names[] =
 	"PCLove",
 	"PCHate"
 };
-/*
- * calculate the max like this, and it's self-maintaining
- */
-const unsigned int sGirl::max_stats = (
-	sizeof(sGirl::stat_names) / sizeof(sGirl::stat_names[0])
-);
-
-/*
- * same again for skill names
- */
 const char *sGirl::skill_names[] = 
 {
 	"Anal",
@@ -127,10 +116,6 @@ const char *sGirl::skill_names[] =
 	"OralSex",
 	"TittySex"
 };
-const unsigned int sGirl::max_skills = (
-	sizeof(sGirl::skill_names) / sizeof(sGirl::skill_names[0])
-);
-
 const char *sGirl::status_names[] =
 {
 	"None",
@@ -146,6 +131,13 @@ const char *sGirl::status_names[] =
 	"Catacombs",
 	"Arena"
 };
+// calculate the max like this, and it's self-maintaining
+const unsigned int sGirl::max_stats = (
+	sizeof(sGirl::stat_names) / sizeof(sGirl::stat_names[0])
+);
+const unsigned int sGirl::max_skills = (
+	sizeof(sGirl::skill_names) / sizeof(sGirl::skill_names[0])
+);
 const unsigned int sGirl::max_statuses = (
 	sizeof(sGirl::status_names) / sizeof(sGirl::status_names[0])
 );
@@ -322,34 +314,22 @@ sGirl *sRandomGirl::lookup = new sGirl();  // used to look up stat and skill IDs
 
 // ----- Misc
 
-/*
- * if this returns true, the girl will disobey
- */
+// if this returns true, the girl will disobey
 bool cGirls::DisobeyCheck(sGirl* girl, int action, sBrothel* brothel)
 {
 	int diff;
-	int chance_to_obey = 0;		// high value - more likely to obey
-/*
- *	let's start out with the basic rebelliousness
- */
-	chance_to_obey = -GetRebelValue(girl, false);
-/*
- *	let's normalise that:
- *	multiply by -1 to make high values more obedient;
- *	add 100 to make it range from 0 to 200
- *	and then divide by 2 to get a conventional percentage value
- */
-	//chance_to_obey *= -1;
-	chance_to_obey += 100;
-	chance_to_obey /= 2;
+	int chance_to_obey = 0;							// high value - more likely to obey
+	chance_to_obey = -GetRebelValue(girl, false);	// let's start out with the basic rebelliousness
+	chance_to_obey += 100;							// make it range from 0 to 200
+	chance_to_obey /= 2;							// get a conventional percentage value
 /*
  *	OK, let's factor in having a matron: normally this is done in GetRebelValue
  *	but matrons have shifts now, so really we want twice the effect for a matron
- *	on each shift as we'd get from just one. Either that, or we need to make this
- *	check shift dependent.
+ *	on each shift as we'd get from just one. //corrected:(Either that, or we need to make this
+ *	check shift dependent.)//
  *
  *	Anyway, the old version added 15 for a matron either shift. Let's add
- *	8 for each shift. Full coverage gets you 16 points
+ *	10 for each shift. Full coverage gets you 20 points
  */
 	if(brothel) {
 		if(brothel->matron_on_shift(SHIFT_DAY)) chance_to_obey += 10;
@@ -363,7 +343,7 @@ bool cGirls::DisobeyCheck(sGirl* girl, int action, sBrothel* brothel)
 
 	switch(action) {
 	case ACTION_COMBAT:
-/*
+/*  !!! old version !!!
  *		I thought I did this before - must have been lost in the merge
  *		somewhere.
  *
@@ -376,19 +356,18 @@ bool cGirls::DisobeyCheck(sGirl* girl, int action, sBrothel* brothel)
  *		point (whores *should* require some training before they'll work
  *		as soldiers) and for every 5 points above or below that
  *		there's a + or -1 modifier
+
+ diff = girl->combat() - 50;
+ diff /= 5;
+ chance_to_obey += diff;
+ diff = girl->magic() - 50;
+ diff /= 5;
+
  */
 
-#if 1	// WD use best stat as many girls have only one stat high	
-		
+// WD use best stat as many girls have only one stat high	
 		diff = max(girl->combat(), girl->magic()) - 50;
 		diff /= 3;
-#else
-		diff = girl->combat() - 50;
-		diff /= 5;
-		chance_to_obey += diff;
-		diff = girl->magic() - 50;
-		diff /= 5;
-#endif
 		chance_to_obey += diff;
 		break;
 	case ACTION_SEX:
@@ -402,27 +381,18 @@ bool cGirls::DisobeyCheck(sGirl* girl, int action, sBrothel* brothel)
 		diff /= 5;
 		chance_to_obey += diff;
 		break;
-
 	default:
 		break;
 	}
-/*
- *	add in her enjoyment level
- */
+// add in her enjoyment level
 	chance_to_obey += girl->m_Enjoyment[action];
-/*
- *	let's add in some mods for love, fear and hate
- */
+// let's add in some mods for love, fear and hate
 	chance_to_obey += girl->pclove() / 10;
 	chance_to_obey += girl->pcfear() / 10;
 	chance_to_obey -= girl->pchate() / 10;
-/*
- *	Let's add a blanket 30% to all of that
- */
+// Let's add a blanket 30% to all of that
 	chance_to_obey += 30;
-/*
- *	let's get a percentage roll
- */
+// let's get a percentage roll
 	int roll = g_Dice.d100();
 	diff = chance_to_obey - roll;
 	bool girl_obeys = (diff >= 0);
@@ -443,7 +413,7 @@ bool cGirls::DisobeyCheck(sGirl* girl, int action, sBrothel* brothel)
 
 // This was supposed to be overriden by previous calculation... It was basically rolling for disobedience twice -PP
 //	return g_Dice.percent(100 - chance_to_obey);  
-		return !girl_obeys;
+	return !girl_obeys;
 }
 
 void cGirls::CalculateGirlType(sGirl* girl)
@@ -471,7 +441,7 @@ void cGirls::CalculateGirlType(sGirl* girl)
 		CuteGirl -= 5;
 		Sexy += 10;
 		NiceFigure = 5;
-		SmallBoobs -= 50;
+		SmallBoobs -= 80;	// `J` was -=50
 	}
 	if(HasTrait(girl, "Abnormally Large Boobs"))
 	{
@@ -479,7 +449,8 @@ void cGirls::CalculateGirlType(sGirl* girl)
 		CuteGirl -= 15;
 		NonHuman += 5;
 		Freak += 20;
-		SmallBoobs -= 50;
+		SmallBoobs -= 100;	// `J` was -=50
+		Lolita -= 20;	// `J` added
 	}
 	if(HasTrait(girl, "Small Scars"))
 	{
@@ -560,6 +531,7 @@ void cGirls::CalculateGirlType(sGirl* girl)
 		Nerd -= 30;
 		NiceFigure += 20;
 		NiceArse += 20;
+		Lolita -= 5;	// `J` added
 	}
 	if(HasTrait(girl, "Psychic"))
 	{
@@ -651,6 +623,7 @@ void cGirls::CalculateGirlType(sGirl* girl)
 	{
 		Sexy += 15;
 		Freak += 20;
+		Elegant -= 5;	// `J` added
 	}
 	if(HasTrait(girl, "Elegant"))
 	{
@@ -728,6 +701,7 @@ void cGirls::CalculateGirlType(sGirl* girl)
 		Dangerous -= 30;
 		Cool -= 30;
 		Nerd += 30;
+		Lolita += 10; // `J` added
 	}
 	if(HasTrait(girl, "Manly"))
 	{
@@ -738,6 +712,7 @@ void cGirls::CalculateGirlType(sGirl* girl)
 		NiceFigure -= 20;
 		SmallBoobs += 10;
 		Freak += 5;
+		Lolita -= 10; // `J` added
 	}
 	if(HasTrait(girl, "Merciless"))
 	{
@@ -745,6 +720,7 @@ void cGirls::CalculateGirlType(sGirl* girl)
 		Dangerous += 20;
 		Nerd -= 10;
 		Elegant -= 5;
+		Lolita -= 10; // `J` added
 	}
 	if(HasTrait(girl, "Fearless"))
 	{
@@ -752,6 +728,7 @@ void cGirls::CalculateGirlType(sGirl* girl)
 		Cool += 15;
 		Nerd -= 10;
 		Elegant -= 10;
+		Lolita -= 5; // `J` added
 	}
 	if(HasTrait(girl, "Iron Will"))
 	{
@@ -786,7 +763,7 @@ void cGirls::CalculateGirlType(sGirl* girl)
 		Sexy -= 20;
 		Freak += 10;
 	}
-	if(HasTrait(girl, "Sterile"))
+	if(HasTrait(girl, "Sterile"))	// `J` How would a customer know this unless they are told?
 	{
 		Freak += 20;
 	}
@@ -843,6 +820,7 @@ void cGirls::CalculateGirlType(sGirl* girl)
 		CuteGirl += 10;
 		Nerd += 5;
 		Freak += 10;
+		Lolita += 10; // `J` added
 	}
 	if(HasTrait(girl, "Mind Fucked"))
 	{
@@ -901,6 +879,7 @@ void cGirls::CalculateGirlType(sGirl* girl)
 	if(HasTrait(girl, "MILF"))
 	{
 		Freak += 15;
+		Lolita -= 50; // `J` added
 	}
 	if(HasTrait(girl, "Cat Girl"))
 	{
@@ -933,7 +912,7 @@ void cGirls::CalculateGirlType(sGirl* girl)
 	}
  	if(HasTrait(girl, "Queen"))
  	{
- 		Elegant += 40;
+ 		Elegant += 60;	// `J` was 40, raised to 60 as it should be higher than Princess
  		Sexy += 20;
  		Freak -= 15;
  	}
@@ -957,7 +936,7 @@ void cGirls::CalculateGirlType(sGirl* girl)
  	}
 	if(HasTrait(girl, "Pierced Clit"))
  	{
- 		Elegant += 20;
+		Elegant -= 20;	// `J` was +=20
  		Sexy += 20;
  		Freak += 15;
  	}
@@ -1087,10 +1066,7 @@ sRandomGirl* cGirls::random_girl_at(u_int n)
 	if(n >= m_NumRandomGirls) {
 		return 0;
 	}
-/*
- *	loop through the linked list n times
- *	
- */
+// loop through the linked list n times
 	for(i = 0; i < n; i++) {
 		current = current->m_Next;
 /*
@@ -1117,34 +1093,20 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 	cConfig cfg;
 	sRandomGirl* current;
 	int random_girl_index = 0;
-
 	// Mod - removed s - should only need to call it once - docclox
-
 	if(m_NumRandomGirls == 0) {
 		return 0;
 	}
-/*
- *	pick a number between 0 and m_NumRandomGirls
- */
-	random_girl_index = g_Dice%m_NumRandomGirls;
-/*
- *	loop until we find a human/non-human template as required
- */
-	while(true)
+	random_girl_index = g_Dice%m_NumRandomGirls;	// pick a number between 0 and m_NumRandomGirls
+
+	while(true)	// loop until we find a human/non-human template as required
 	{
 		current = random_girl_at(random_girl_index);
-/*
- *		if we couldn't find the girl (which should be impossible_
- *		we pick another number at random and see if that one works
- */
-		if(current == 0) {
-			random_girl_index = g_Dice%m_NumRandomGirls;
+		if(current == 0) {									// if we couldn't find the girl (which should be impossible...
+			random_girl_index = g_Dice%m_NumRandomGirls;	// we pick another number at random and see if that one works
 			continue;
 		}
-/*
- *		test for humanity - or lack of it as the case may be
- */
-		if(NonHuman == (current->m_Human == 0))
+		if(NonHuman == (current->m_Human == 0))				// test for humanity - or lack of it as the case may be
 			break;
 /*
  *		She's either human when we wanted non-human
@@ -1166,7 +1128,6 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 	newGirl->m_NumTraits = 0;
 
 	newGirl->m_Desc = current->m_Desc;		// Bugfix.. was populating description with name.
-
 	newGirl->m_Name = new char[current->m_Name.length()+1];	// name
 	strcpy(newGirl->m_Name, current->m_Name.c_str());
 
@@ -1242,13 +1203,7 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 		newGirl->m_Stats[STAT_HOUSE] = 60;	// 60% is the norm
 	else
 		newGirl->m_Stats[STAT_HOUSE] = cfg.initial.slave_house_perc();	// 100% is the norm
-	newGirl->m_Stats[STAT_FAME] = 0;
 #endif
-	
-	if(age != 0)				// Repeat from above ??
-		newGirl->m_Stats[STAT_AGE] = age;
-	newGirl->m_Stats[STAT_HEALTH] = 100;
-	newGirl->m_Stats[STAT_HAPPINESS] = 100;
 
 	if(slave)
 	{
@@ -1330,9 +1285,8 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 /*		apply trait bonuses
  *		WD:	Duplicated stat bonuses of traits as
  * 			allready applied with addtrait() calls
+ 	ApplyTraits(newGirl);
  */
-
-	//ApplyTraits(newGirl);
 
 /*
  *		WD: remove any rembered traits created
@@ -1363,7 +1317,7 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 	newGirl->m_Realname = name;
 
 	newGirl->m_Virgin = false;
-	if(newGirl->m_Stats[STAT_AGE] <= 18)
+	if(newGirl->m_Stats[STAT_AGE] < 18)
 	{
 		newGirl->m_Stats[STAT_AGE] = 18;
 		newGirl->m_Virgin = true;
@@ -1378,12 +1332,13 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 		int avg = 0;
 		for(u_int i=0; i<NUM_SKILLS; i++)
 		{
-			if(i != SKILL_SERVICE)
+				// `J` removed magic and combat from virginity check
+			if (i != SKILL_SERVICE && i != SKILL_MAGIC && i != SKILL_COMBAT)
 				avg += (int)newGirl->m_Skills[i];
 		}
-		avg = avg/(NUM_SKILLS-1);
+		avg = avg/(NUM_SKILLS-3);	// `J` changed 1 to 3
 
-		if(avg < 30)
+		if (avg < 20)	// `J` reduced from 30 to 20
 			newGirl->m_Virgin = true;
 	}
 
@@ -2260,6 +2215,8 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		nurse += 15;*/
 		mechanic -= 10;
 	}
+
+		//bad traits
 	if (g_Girls.HasTrait(girl, "Long Legs"))
 	{
 		//barmaid -= 20;
@@ -2276,8 +2233,6 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		brothelstrip += 10;
 		//massusse -= 20;
 	}
-
-		//bad traits
 	if (g_Girls.HasTrait(girl, "Dependant"))  //needs others to do the job
 	{
 		barmaid -= 50;
@@ -11895,42 +11850,33 @@ static bool has_contraception(sGirl *girl)
 /*
  *	if contraception is TRUE, then she can't get pregnant
  *	Which makes sense
- *
- *	Two ways to get contraception: one of them is 
- *	if the brothel has a an anti-preg potion
- *	(and if she's willing to drink it!)
- *
- *	this tests both
+ *  `J` rearranged to speed up checks
  */
-	if(g_Building == BUILDING_STUDIO && (g_Studios.UseAntiPreg(girl->m_UseAntiPreg)))
-		{
-		g_Building = BUILDING_BROTHEL;
+	if (girl->has_trait("Sterile")) 
+	{	// If she's Sterile, she can't get pregnant
 		return true;
+	}
+	if (girl->is_pregnant()) 
+	{	// If she's pregnant, she shouldn't get pregnant
+		return true;
+	}
+	if (girl->m_PregCooldown > 0) 
+	{	// If she's in her cooldown period after giving birth
+		return true;
+	}
+	if(	(g_Building == BUILDING_STUDIO && (g_Studios.UseAntiPreg(girl->m_UseAntiPreg)) ) || 
+		(g_Building == BUILDING_CLINIC && (g_Clinic.UseAntiPreg(girl->m_UseAntiPreg))  ) ||
+		(g_Building == BUILDING_ARENA  && (g_Arena.UseAntiPreg(girl->m_UseAntiPreg))   ) ||
+		(g_Building == BUILDING_CENTRE && (g_Centre.UseAntiPreg(girl->m_UseAntiPreg))  ) ||
+		(g_Building == BUILDING_HOUSE  && (g_House.UseAntiPreg(girl->m_UseAntiPreg))   )  )
+		{
+			g_Building = BUILDING_BROTHEL;
+			return true;
 		}
 	else if (g_Brothels.UseAntiPreg(girl->m_UseAntiPreg)) {
 		return true;
 	}
 	g_Building = BUILDING_BROTHEL;
-/*
- *	otherwise, sterile babes should be safe as well
- */
-	if(girl->has_trait("Sterile")) {
-		return true;
-	}
-/*
- *	Actually, I lied. If she's in her cooldown period after
- *	giving birth, that is effective contraception as well
- */
-	if(girl->m_PregCooldown > 0) {
-		return true;
-	}
-/*
- *	Oh, and if she's pregnant, she shouldn't get pregnant
- *	So I guess that's four
- */
-	if(girl->is_pregnant()) {
-		return true;
-	}
 	return false;
 }
 
@@ -12288,7 +12234,7 @@ bool cGirls::child_is_grown(sGirl* mom, sChild *child, string& summary, bool Pla
 	bool slave = mom->is_slave();
 	bool AllowNonHuman = mom->has_trait("Not Human");
 /*
- *	create a new girl for the bairn
+ *	create a new girl for the barn
  *	
  *	WD: Bugfix as reported by chronos 
  *		http://pinkpetal.org/index.php?topic=416.msg11968#msg11968
@@ -12333,7 +12279,7 @@ bool cGirls::child_is_grown(sGirl* mom, sChild *child, string& summary, bool Pla
 		sprog->m_Stats[i] = (g_Dice%(max-min))+min;
 	}
 
-	//set age to 17 fix health
+	//set age to 18, fix health
 	sprog->m_Stats[STAT_AGE]=18;
 	sprog->m_Stats[STAT_HEALTH]=100;
 	sprog->m_Stats[STAT_LEVEL]=0;
@@ -13049,7 +12995,10 @@ cAImgList* cImgageListManager::LoadList(string name)
 	DirPath imagedir;
 	imagedir<<"Resources"<< "Characters"<<name;
 	string numeric="123456789";
-	string pic_types[]={"Anal*.*g","BDSM*.*g","Sex*.*g","Beast*.*g","Group*.*g","Les*.*g","Preg*.*g","Death*.*g","Profile*.*g","Combat*.*g","Oral*.*g","Ecchi*.*g","Strip*.*g","Maid*.*g","Sing*.*g","Wait*.*g","Card*.*g","Bunny*.*g","Nude*.*g","Mast*.*g","Titty*.*g","Milk*.*g","PregAnal*.*g","PregBDSM*.*g","PregSex*.*g","pregbeast*.*g","preggroup*.*g","pregles*.*g",};
+	string pic_types[]={"Anal*.*g","BDSM*.*g","Sex*.*g","Beast*.*g","Group*.*g","Les*.*g","Preg*.*g",
+		"Death*.*g","Profile*.*g","Combat*.*g","Oral*.*g","Ecchi*.*g","Strip*.*g","Maid*.*g","Sing*.*g",
+		"Wait*.*g","Card*.*g","Bunny*.*g","Nude*.*g","Mast*.*g","Titty*.*g","Milk*.*g","PregAnal*.*g",
+		"PregBDSM*.*g","PregSex*.*g","pregbeast*.*g","preggroup*.*g","pregles*.*g",};
 	int i=0;
 
 	do {
@@ -13058,14 +13007,14 @@ cAImgList* cImgageListManager::LoadList(string name)
 		for(int k=0;k<the_files.size();k++)
 		{
 			bool test=false;
-
-			if(i==6)		//  Check Preg*.*g filenames [leaf] and accept as non-subtypew ONLY those with number 1--9 in char 5
-							//  (Allows filename like 'Preg22.jpg' BUT DOESN'T allow like 'Preg (2).jpg' or 'Preg09.jpg')
-							//  MIGHT BE BETTER to just throw out sub-type filenames in this Preg*.*g section.
+/* Check Preg*.*g filenames [leaf] and accept as non-subtypew ONLY those with number 1--9 in char 5
+ * (Allows filename like 'Preg22.jpg' BUT DOESN'T allow like 'Preg (2).jpg' or 'Preg09.jpg')
+ * MIGHT BE BETTER to just throw out sub-type filenames in this Preg*.*g section. */
+			if (i == 6)
 			{
 				char c=the_files[k].leaf()[4];
-				for(int j = 0; j < 9; j++) {
-				
+				for(int j = 0; j < 9; j++) 
+				{
 					if(c==numeric[j])
 					{
 						test=true;
@@ -13101,11 +13050,10 @@ cAImgList* cImgageListManager::LoadList(string name)
 		for(int k=0;k<the_files.size();k++)
 		{
 			bool test=false;
-
-			if(i==6)		//  Check Preg*.*g filenames [leaf] and accept as non-subtypew ONLY those with number 1--9 in char 5
-							//  (Allows filename like 'Preg22.jpg' BUT DOESN'T allow like 'Preg (2).jpg' or 'Preg09.jpg')
-							//  MIGHT BE BETTER to just throw out sub-type filenames in this Preg*.*g section.
-
+/* Check Preg*.*g filenames [leaf] and accept as non-subtypew ONLY those with number 1--9 in char 5
+ * (Allows filename like 'Preg22.jpg' BUT DOESN'T allow like 'Preg (2).jpg' or 'Preg09.jpg')
+ * MIGHT BE BETTER to just throw out sub-type filenames in this Preg*.*g section. */
+			if(i==6)
 			{
 				char c=the_files[k].leaf()[4];
 				for(int j = 0; j < 9; j++) {
@@ -13543,14 +13491,7 @@ int cGirls::get_modified_image_type(sGirl *girl, int image_type, int preg_type)
  * of that image if available. If not, it takes one from the default
  * set
  */
-int cGirls::draw_with_default(
-	sGirl* girl,
-	int x, int y,
-	int width, int height,
-	int ImgType,
-	bool random,
-	int img
-)
+int cGirls::draw_with_default(sGirl* girl, int x, int y, int width, int height, int ImgType, bool random, int img)
 {
 	cImageList *images;
 /*

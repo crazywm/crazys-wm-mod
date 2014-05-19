@@ -21,4 +21,8 @@
 <Button  	Name="Brothel4"	Image="Brothel5"	Disabled=""		XPos="544"	YPos="168"	Width="48"	Height="48"	Transparency="true"	Scale="true"	/>
 <Button  	Name="Brothel5"	Image="Brothel6"	Disabled=""		XPos="698"	YPos="40"	Width="48"	Height="48"	Transparency="true"	Scale="true"	/>
 <Button  	Name="Brothel6"	Image="Brothel7"	Disabled=""		XPos="698"	YPos="140"	Width="48"	Height="48"	Transparency="true"	Scale="true"	/>
+<!-- 
+<Button  	Name="SetUp"	Image="Building"				XPos="8"	YPos="540"	Width="160"	Height="32"	Transparency="true"	Scale="true"	/>
+-->
+
 </Screen>

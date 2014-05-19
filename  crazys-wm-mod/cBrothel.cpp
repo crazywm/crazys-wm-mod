@@ -3271,15 +3271,17 @@ double cBrothelManager::calc_pilfering(sGirl *girl)
  *	on top of all other factors, 
  *	an addict will steal to feed her habit
  */
-	if(girl->is_addict() && girl->m_Money == 0) {
+	if(girl->is_addict() && girl->m_Money < 50) // `J` increased theft chances for addicts
+	{
 		factor += 0.2;
 	}
 /*
  *	let's work out what if she is going steal anything
  *
- *	love or obedience will heep her honest
+ *	love or obedience will keep her honest
  */
-	if(girl->pclove() >= 50 || girl->obedience() >= 50) {
+	if(girl->pclove() >= 50 || girl->obedience() >= 50) 
+	{
 		return factor;
 	}
 /*

@@ -299,7 +299,7 @@ const int DUNGEON_DEAD              = 9;	// this person has died and will be rem
 const int DUNGEON_GIRLRUNAWAY       = 10;	// girl ran away but was recaptured
 const int DUNGEON_NEWSLAVE          = 11;	// a newly brought slave
 const int DUNGEON_NEWGIRL           = 12;	// a new girl who just joined you
-const int DUNGEON_KID               = 13;
+const int DUNGEON_KID               = 13;	// a girl child just aged up
 
 // Town Constants
 const int TOWN_NUMBUSINESSES        = 250;	// the amount of businesses in the town
@@ -491,6 +491,7 @@ const int SCREEN_SLAVEMARKET		= 23;
 const int SCREEN_PLAYERHOUSE		= 23; // TODO: This value might be wrong.
 const int SCREEN_GALLERY2			= 24;
 const int SCREEN_GETINPUT           = 25;
+const int SCREEN_PROPERTYMANAGEMENT = 26; // `J` added for managing all properties on 1 page
 
 // The following constants are used with g_CurrBrothel to determine if we are currently working with a brothel or a new building. --PP
 const int BUILDING_BROTHEL			= 0;

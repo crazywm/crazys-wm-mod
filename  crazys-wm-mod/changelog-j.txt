@@ -1,5 +1,4 @@
 ### Planned/Reccomended changes:
-Make separate file for "Rebelliousness" calculation so it can be added back to all girl lists.
 Add Inventory page keys:
    5/t - Owner Left up/down
    g/b - Item Left up/down
@@ -12,7 +11,6 @@ Transfer screen - Add Health, Happy, Tired and Rebel columns
 Transfer screen - Add Girl count above columns and/or on location lists
 Recode for config files "config.xml", "ScreenMode.txt" to make 1 file in the directory that has the EXE file
 Make the game create the "Saves" folder if it does not exist
-Move "itemsx" files from "Resources/Data" to "Resources/Items"
 Either combine "Resources/Buttons" into "Resources/Images" or combine both into "Resources/Interface/(individiual interface folder)/Images"
 Allow for subfolders in "Resources" folders. Would allow:
    Girls folders to contain the "girlsx" files
@@ -98,9 +96,33 @@ The girl deatils screens now show the correct buildings jobs.
 
 ###  Changes 5/12/2014
 Changed compiler settings so it would compile to work on windows xp
-Fixed InterfaceProcesses.cpp crash - pTmpGirl = g_Studios.GetGirl(g_CurrStudio, i); // `J` changed g_CurrBrothel to g_CurrStudio
+!!!!!!!!!!!!!!!!!!!! pushed version .05j.1
+Fixed InterfaceProcesses.cpp crash - pTmpGirl = g_Studios.GetGirl(0, i); // `J` changed g_CurrBrothel to 0
+!!!!!!!!!!!!!!!!!!!! pushed version .05j.2
+###  Changes 5/13/2014
+Fixed cScreenBuildingSetup.cpp - loading/saving of non-brothel building settings
+!!!!!!!!!!!!!!!!!!!! pushed version .05j.3
+###  Changes 5/14/2014
+Crazy - Added two more surgery jobs.
+Crazy - Fixed it so combat training tells u how much skill u gained.
+Crazy - Fixed a few spelling errors
 
+###  Changes 5/16/2014
+Crazy - Added a skill check for combat training so it would skip things that are at 100.
+Crazy - Added a half ass fix for surgery jobs so they wouldn't keep repeating once they gave the trait or whatever they give
 
-
-
-
+###  Changes 5/18/2014
+Addicts now steal if they have less than 50gold instead of if they have none.
+Cleaned and/or rearranged several areas of code.
+Changed some hotkeys:
+ - 0 is global hotkeys
+ - 9 is screen hotkeys
+ - F12 is House
+ - F7 corrected centre
+All buildings need to be purchased now
+ - Centre requires  5000 gold and  5 territories
+ - Clinic requires 10000 gold and 10 territories
+ - Arena  requires 15000 gold and 15 territories
+ - Studio requires 20000 gold and 20 territories
+Crazy - Fixed some bugs with the rest jobs in other buildings.
+!!!!!!!!!!!!!!!!!!!! pushed version .05k

@@ -64,7 +64,7 @@ private:
 	int		brothel4_id;	// Brothel 4 map button
 	int		brothel5_id;	// Brothel 5 map button
 	int		brothel6_id;	// Brothel 6 map button
-
+	int		setup_id;		// setup map button
 	bool m_first_walk;
 
 	void set_ids();
@@ -86,6 +86,9 @@ public:
 		m_filename = dp.c_str();
 		BuyBrothel = -1;
 		BuyClinic = -1;
+		BuyArena = -1;
+		BuyStudio = -1;
+		BuyCentre = -1;
 		GetName = false;
 		m_first_walk = true;
 	}

@@ -323,6 +323,13 @@ void handle_hotkeys()
 			break;
 
 		case SDLK_F5:	// Studio
+			if (g_Studios.GetNumBrothels() == 0)	// Does player own the Studio yet?
+			{
+				msg = "You do not own a Studio";
+				g_MessageQue.AddToQue(msg, 0);
+				break;
+			}
+			// Yes!
 			g_Building = BUILDING_STUDIO;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
 			g_CurrentScreen = SCREEN_STUDIO;
@@ -336,6 +343,13 @@ void handle_hotkeys()
 			if (g_AltKeys)
 				break;
 		case SDLK_F6:
+			if (g_Arena.GetNumBrothels() == 0)	// Does player own the Arena yet?
+			{
+				msg = "You do not own a Arena";
+				g_MessageQue.AddToQue(msg, 0);
+				break;
+			}
+			// Yes!
 			g_Building = BUILDING_ARENA;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
 			g_CurrentScreen = SCREEN_ARENA;
@@ -346,11 +360,19 @@ void handle_hotkeys()
 			break;
 
 		case SDLK_F7:	// Centre
+			if (g_Centre.GetNumBrothels() == 0)	// Does player own the Centre yet?
+			{
+				msg = "You do not own a Centre";
+				g_MessageQue.AddToQue(msg, 0);
+				break;
+			}
+			// Yes!
 			g_Building = BUILDING_CENTRE;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
 			g_CurrentScreen = SCREEN_CENTRE;
 			g_InitWin = true;
 			g_WinManager.push("Town");
+			g_WinManager.push("Centre Screen");
 			g_WinManager.push("Centre");
 			break;
 
@@ -360,7 +382,7 @@ void handle_hotkeys()
 		case SDLK_F8:
 			if (g_Clinic.GetNumBrothels() == 0)	// Does player own the clinic yet?
 			{
-				msg = "You do not own a clinic";
+				msg = "You do not own a Clinic";
 				g_MessageQue.AddToQue(msg, 0);
 				break;
 			}
@@ -406,6 +428,16 @@ void handle_hotkeys()
 			g_CurrentScreen = SCREEN_TURNSUMMARY;
 			g_InitWin = true;
 			g_WinManager.Push(Turnsummary, &g_Turnsummary);
+			break;
+
+		case SDLK_F12:	// House
+			g_Building = BUILDING_HOUSE;
+			g_WinManager.PopToWindow(&g_BrothelManagement);
+			g_CurrentScreen = SCREEN_HOUSE;
+			g_InitWin = true;
+			g_WinManager.push("Town");
+			g_WinManager.push("Player House");
+			g_WinManager.push("House Management");
 			break;
 
 			// Non F-Key hotkeys (disabled by alt)
@@ -459,7 +491,7 @@ void handle_hotkeys()
 			}
 			break;
 
-		case SDLK_F12:
+		case SDLK_9:
 			//			stringstream ss;
 			//			ss.str("");
 			//			ss << gettext("These are the active hot keys:");
@@ -809,7 +841,9 @@ void handle_hotkeys()
 			msg += "F9          Shop Screen (Inventory)\n";
 			msg += "F10         Town Screen\n";
 			msg += "F11         Turn Summary\n";
-			msg += "F12         List Hotkeys for this screen.\n";
+			msg += "F12         House\n";
+			msg += "9           List Hotkeys for this screen.\n";
+			msg += "0           List Global Hotkeys.\n";
 			msg += "Space Key   Clears message boxes.\n";
 			msg += "Home        Default HotKeys\n";
 			msg += "End         Alternate HotKeys\n";
