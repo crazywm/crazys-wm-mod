@@ -2260,6 +2260,22 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		nurse += 15;*/
 		mechanic -= 10;
 	}
+	if (g_Girls.HasTrait(girl, "Long Legs"))
+	{
+		//barmaid -= 20;
+		//barwait -= 20;
+		//sing -= 50;
+		//piano -= 50;
+		//dealer -= 20;
+		//entertainer -= 50;
+		//xxx -= 20;
+		//clubwait -= 20;
+		//clubbar -= 20;
+		strip += 10;
+		//peep -= 5;
+		brothelstrip += 10;
+		//massusse -= 20;
+	}
 
 		//bad traits
 	if (g_Girls.HasTrait(girl, "Dependant"))  //needs others to do the job

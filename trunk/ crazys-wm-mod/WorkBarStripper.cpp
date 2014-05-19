@@ -79,6 +79,8 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, int DayNight, 
 		jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Psychic"))
 		jobperformance += 10;
+	if (g_Girls.HasTrait(girl, "Long Legs"))
+		jobperformance += 10;
 
 	//bad traits
 	if (g_Girls.HasTrait(girl, "Dependant"))  //needs others to do the job
@@ -318,61 +320,71 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, int DayNight, 
 			message += girl->m_Realname + " doesn't have to try to sell private dances the patrons beg her to buy one off her.\n";
 			if (roll < 5)
 				{
-		message += "She sold a champagne dance.";
-		}
+					message += "She sold a champagne dance.";
+					wages += 250;
+				}
 			if (roll < 20)
 				{
-		message += "She sold a shower dance.";
-		}
+					message += "She sold a shower dance.";
+					wages += 75;
+				}
 			if (roll < 40)
 				{
-		message += "She was able to sell a few VIP dances.";
-		}
+					message += "She was able to sell a few VIP dances.";
+					wages += 75;
+				}
 			if (roll < 60)
 				{
-		message += "She sold a VIP dance.";
-		}
+					message += "She sold a VIP dance.";
+					wages += 50;
+				}
 			else
 				{
-		message += "She sold several lap dances.";
-		}
-	}
+					message += "She sold several lap dances.";
+					wages += 50;
+				}
+			}
 	else if (lapdance >= 75)
 		{
 			message += girl->m_Realname + "'s skill at selling private dances is impressive.\n";
 			if (roll < 5)
 				{
-		message += "She convinced a patron to buy a shower dance.";
-		}
+					message += "She convinced a patron to buy a shower dance.";
+					wages += 75;
+				}
 			if (roll < 20)
 				{
-		message += "Sold a VIP dance to a patron.";
-		}
+					message += "Sold a VIP dance to a patron.";
+					wages += 50;
+				}
 			else
 				{
-		message += "Sold a few lap dance.";
-		}
-	}
+					message += "Sold a few lap dance.";
+					wages += 30;
+				}
+			}
 	else if (lapdance >= 50)
 		{
 			message += girl->m_Realname + " tried to sell private dances and ";
 			if (roll < 5)
 				{
-		message += "was able to sell a vip dance againts all odds.";
-		}
+					message += "was able to sell a vip dance againts all odds.";
+					wages += 50;
+				}
 			if (roll < 20)
 				{
-		message += "was able to sell a lap dance.";
-		}
+					message += "was able to sell a lap dance.";
+					wages += 15;
+				}
 			else
 				{
-		message += "wasn't able to sell any.";
-		}
-	}
+					message += "wasn't able to sell any.";
+				}
+			}
 	else 
 		{
-			message += girl->m_Realname + "'s doesn't seem to understand the real money in stripping is selling private dances.\n";
-	}
+				message += girl->m_Realname + "'s doesn't seem to understand the real money in stripping is selling private dances.\n";
+			}
 
 		if(wages < 0)
 			wages = 0;

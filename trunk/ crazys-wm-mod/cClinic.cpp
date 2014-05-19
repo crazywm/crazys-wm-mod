@@ -275,7 +275,7 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, int DayNight)
 			}
 		}*/
 		if (sw == JOB_CLINICREST)
-			refused = m_JobManager.JobFunctions[JOB_RESTING](current,brothel,SHIFT_NIGHT,summary);
+			refused = m_JobManager.JobFunctions[JOB_RESTING](current,brothel,DayNight,summary);
 
 		// do their job
 		//else if(sw != JOB_ADVERTISING)			// advertising is handled earlier, before customer generation
@@ -384,7 +384,7 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		}
 
 		// Back to work
-		if((current->m_NightJob == JOB_CLINICREST) && (g_Girls.GetStat(current, STAT_HEALTH) >= 80 && g_Girls.GetStat(current, STAT_TIREDNESS) <= 20))
+		if((current->m_NightJob == JOB_CLINICREST && current->m_DayJob == JOB_CLINICREST) && (g_Girls.GetStat(current, STAT_HEALTH) >= 80 && g_Girls.GetStat(current, STAT_TIREDNESS) <= 20))
 		{
 			if(
 				(chair || current->m_PrevDayJob == JOB_CHAIRMAN)  // do we have a director, or was she the director and made herself rest?
