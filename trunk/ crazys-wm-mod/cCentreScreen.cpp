@@ -43,6 +43,7 @@ extern string g_ReturnText;
 extern cGangManager g_Gangs;
 extern bool g_AllTogle;
 extern int g_Building;
+extern bool g_TryCentre;
 
 bool cCentreScreen::ids_set = false;
 
@@ -66,14 +67,8 @@ void cCentreScreen::set_ids()
 
 void cCentreScreen::init()
 {
-
-/*
- *	buttons enable/disable
- */
-#if 0
-	DisableButton(walk_id, g_TryOuts);
-#endif
-
+// buttons enable/disable
+	DisableButton(walk_id, g_TryCentre);
 }
 
 void cCentreScreen::process()

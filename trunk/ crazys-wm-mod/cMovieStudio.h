@@ -57,7 +57,7 @@ typedef struct sMovieStudio : sBrothel
 
 
 /*
- * manages the clinic
+ * manages the studio
  *
  * extend cBrothelManager
  */
@@ -79,7 +79,7 @@ public:
 	int				m_PurifierQaulity;	// Bonus to film quality based on performance of CrystalPurifiers this shift.
 	int				m_DirectorQuality;	// Bonus to film quality based on performance of  the Director this shift.
 	int				m_StagehandQuality; // Bonus to film quality based on performance of stagehands this shift.
-	double				m_PromoterBonus;	// Bonus added directly to film sales by promoter.
+	double			m_PromoterBonus;	// Bonus added directly to film sales by promoter.
 
 	void StartMovie(int brothelID, int Time);
 	int  GetTimeToMovie(int brothelID);

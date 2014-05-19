@@ -633,6 +633,12 @@
     </ClCompile>
     <ClCompile Include="WorkFilmRandom.cpp" />
     <ClCompile Include="WorkMechanic.cpp" />
+    <ClCompile Include="WorkGetFacelift.cpp" />
+    <ClCompile Include="WorkGetVaginalRejuvination.cpp" />
+    <ClCompile Include="WorkLiposuction.cpp" />
+    <ClCompile Include="WorkBreastReduction.cpp" />
+    <ClCompile Include="WorkBoobJob.cpp" />
+    <ClCompile Include="cScreenPropertyManagement.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cButton.h">
@@ -1036,6 +1042,9 @@
     </ClInclude>
     <ClInclude Include="lua\src\lzio.h">
       <Filter>Lua\src</Filter>
+    </ClInclude>
+    <ClInclude Include="cScreenPropertyManagement.h">
+      <Filter>Misc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -81,6 +81,7 @@ void cScreenTown::set_ids()
 	brothel4_id =	get_id("Brothel4");
 	brothel5_id =	get_id("Brothel5");
 	brothel6_id =	get_id("Brothel6");
+	setup_id =		get_id("SetUp");
 }
 
 struct static_brothel_data {
@@ -112,17 +113,17 @@ static static_brothel_data clinic_data[] = {
 };
 
 static static_brothel_data centre_data[] = {
-	{ 10000, 20, 10 }
+	{ 5000, 20, 5 }
 	//{000, 10, 0 }
 };
 
 static static_brothel_data arena_data[] = {
-	{ 10000, 20, 10 }
+	{ 15000, 20, 15 }
 	//{000, 10, 0 }
 };
 
 static static_brothel_data studio_data[] = {
-	{ 10000, 20, 10 }
+	{ 20000, 20, 20 }
 	//{000, 10, 0 }
 };
 
@@ -685,7 +686,7 @@ void cScreenTown::check_arena(int ArenaNum)
 void cScreenTown::check_studio(int StudioNum)
 {	// player clicked on one of the brothels
 	if(g_Studios.GetNumBrothels() == StudioNum)
-	{	// player doesn't own this brothel... can he buy it? 
+	{	// player doesn't own this Studio... can he buy it? 
 		static_brothel_data *bck = studio_data + StudioNum;
 		locale syslocale("");
 		stringstream ss;

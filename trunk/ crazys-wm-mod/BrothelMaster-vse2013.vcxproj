@@ -120,6 +120,7 @@
     <ClCompile Include="cInterfaceWindow.cpp" />
     <ClCompile Include="cListBox.cpp" />
     <ClCompile Include="cMessageBox.cpp" />
+    <ClCompile Include="cScreenPropertyManagement.cpp" />
     <ClCompile Include="cScrollBar.cpp" />
     <ClCompile Include="cSlider.cpp" />
     <ClCompile Include="cWindowManager.cpp" />
@@ -145,7 +146,12 @@
     <ClCompile Include="tinyxml.cpp" />
     <ClCompile Include="tinyxmlerror.cpp" />
     <ClCompile Include="tinyxmlparser.cpp" />
+    <ClCompile Include="WorkBoobJob.cpp" />
+    <ClCompile Include="WorkBreastReduction.cpp" />
     <ClCompile Include="WorkFilmRandom.cpp" />
+    <ClCompile Include="WorkGetFacelift.cpp" />
+    <ClCompile Include="WorkGetVaginalRejuvination.cpp" />
+    <ClCompile Include="WorkLiposuction.cpp" />
     <ClCompile Include="WorkMechanic.cpp" />
     <ClCompile Include="XmlMisc.cpp" />
     <ClCompile Include="XmlUtil.cpp" />
@@ -324,6 +330,7 @@
     <ClInclude Include="cInterfaceWindow.h" />
     <ClInclude Include="cListBox.h" />
     <ClInclude Include="cMessageBox.h" />
+    <ClInclude Include="cScreenPropertyManagement.h" />
     <ClInclude Include="cScrollBar.h" />
     <ClInclude Include="cSlider.h" />
     <ClInclude Include="cTextItem.h" />
