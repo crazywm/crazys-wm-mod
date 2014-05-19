@@ -515,10 +515,20 @@ void cBrothelManager::AddGirl(int brothelID, sGirl* girl)
 {
 	if(girl == 0)
 		return;
-	if(!girl->m_InMovieStudio)
-		girl->m_DayJob = girl->m_NightJob = JOB_RESTING;
-	else
+	if(girl->m_InMovieStudio)
 		girl->m_DayJob = girl->m_NightJob = JOB_FILMFREETIME;
+		//girl->m_DayJob = girl->m_NightJob = JOB_RESTING;
+	else if(girl->m_InArena)
+		girl->m_DayJob = girl->m_NightJob = JOB_ARENAREST;
+	else if(girl->m_InCentre)
+		girl->m_DayJob = girl->m_NightJob = JOB_CENTREREST;
+	else if(girl->m_InClinic)
+		girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
+	else if(girl->m_InHouse)
+		girl->m_DayJob = girl->m_NightJob = JOB_HOUSEREST;
+	else
+		girl->m_DayJob = girl->m_NightJob = JOB_RESTING;
+		//girl->m_DayJob = girl->m_NightJob = JOB_FILMFREETIME;
 
 	sBrothel* current = m_Parent;
 	while(current)
