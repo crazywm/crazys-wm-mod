@@ -29,6 +29,7 @@
 #include "cTariff.h"
 #include "cWindowManager.h"
 #include "cScreenBuildingManagement.h"
+#include "cScreenPropertyManagement.h"	// `J` added
 #include "cScreenPrison.h"
 #include "cScreenTown.h"
 #include "cAuctionScreen.h"
@@ -97,6 +98,7 @@ cScreenHouse g_PlayersHouse;
 cScreenItemManagement g_ItemManagement;
 cScreenPrison g_PrisonScreen;
 cBuildingManagement g_BuildingManagementScreen;
+cScreenPropertyManagement g_PropertyManagementScreen;	// `J` added
 
 cScreenGetInput g_GetInput;
 
@@ -705,6 +707,11 @@ void LoadInterface()
 	g_LogFile.write("Loading Building Management Screen");
 	g_BuildingManagementScreen.load();
 	g_WinManager.add_window("Building Management", &g_BuildingManagementScreen);
+
+	// Property Management Screen	// `J` added
+	g_LogFile.write("Loading Property Management Screen");
+	g_PropertyManagementScreen.load();
+	g_WinManager.add_window("Property Management", &g_PropertyManagementScreen);
 
 	// Setup the messagebox
 	g_LogFile.write("Setting up MessageBox");

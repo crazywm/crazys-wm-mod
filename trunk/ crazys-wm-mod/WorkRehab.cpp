@@ -80,27 +80,60 @@ bool cJobManager::WorkRehab(sGirl* girl, sBrothel* brothel, int DayNight, string
 	stringstream ss;
 	if(girl->m_WorkingDay == 3)
 	{
-		ss << "The rehab is a success.";
 		g_Girls.UpdateStat(girl, STAT_HAPPINESS, -20);
 		g_Girls.UpdateStat(girl, STAT_SPIRIT, -5);
-		g_Girls.UpdateStat(girl, STAT_HEALTH, -20);
+		if (girl->health() - 20 < 1 && (g_Centre.GetNumGirlsOnJob(brothel->m_id, JOB_DRUGCOUNSELOR, true) >= 1 || g_Centre.GetNumGirlsOnJob(brothel->m_id, JOB_DRUGCOUNSELOR, false) >= 1))
+		{	// Don't kill the girl from rehab if a Drug Counselor is on duty
+			g_Girls.SetStat(girl, STAT_HEALTH, 1);
+			g_Girls.UpdateStat(girl, STAT_PCFEAR, 5);
+			g_Girls.UpdateStat(girl, STAT_PCLOVE, -10);
+			g_Girls.UpdateStat(girl, STAT_PCHATE, 10);
+			ss << "She almost died in rehab but the Counselor saved her.";
+			ss << "She hates you a little more for forcing this on her.";
+		}
+		else
+		{
+			g_Girls.UpdateStat(girl, STAT_HEALTH, -20);
+		}
 		g_Girls.UpdateStat(girl, STAT_MANA, -20);
-		if (g_Girls.HasTrait(girl, "Fairy Dust Addict"))
+
+		if (girl->health()< 1)
 		{
-			g_Girls.RemoveTrait(girl, "Fairy Dust Addict");
-			ss << "She is no longer a fairy dust addict.";
+			ss << "She died in rehab.";
 		}
-		else if (g_Girls.HasTrait(girl, "Shroud Addict"))
+		else
 		{
-			g_Girls.RemoveTrait(girl, "Shroud Addict");
-			ss << "She is no longer a shroud addict.";
-		}
-		else if (g_Girls.HasTrait(girl, "Viras Blood Addict"))
-		{
-			g_Girls.RemoveTrait(girl, "Viras Blood Addict");
-			ss << "She is no longer a viras blood addict.";
+			ss << "The rehab is a success.";
+
+			if (g_Girls.HasTrait(girl, "Fairy Dust Addict"))
+			{
+				g_Girls.RemoveTrait(girl, "Fairy Dust Addict");
+				ss << "She is no longer a fairy dust addict.";
+			}
+			else if (g_Girls.HasTrait(girl, "Shroud Addict"))
+			{
+				g_Girls.RemoveTrait(girl, "Shroud Addict");
+				ss << "She is no longer a shroud addict.";
+			}
+			else if (g_Girls.HasTrait(girl, "Viras Blood Addict"))
+			{
+				g_Girls.RemoveTrait(girl, "Viras Blood Addict");
+				ss << "She is no longer a viras blood addict.";
+			}
 		}
 		girl->m_WorkingDay = 0;
+
+		if (g_Girls.HasTrait(girl, "Fairy Dust Addict") || g_Girls.HasTrait(girl, "Shroud Addict") || g_Girls.HasTrait(girl, "Viras Blood Addict"))
+		{
+			// stay in rehab for another session
+			ss << "She should stay in rehab to treat her other addictions.";
+		}
+		else // get out of rehab
+		{
+			ss << "She is released from rehab.";
+			girl->m_DayJob = JOB_CENTREREST;
+			girl->m_NightJob = JOB_CENTREREST;
+		}
 	}
 	else
 	{

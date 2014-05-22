@@ -54,7 +54,7 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, int DayNight, str
 	g_Girls.UnequipCombat(girl);
 
 	int roll = g_Dice%100;
-	int jobperformance = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) + g_Girls.GetSkill(girl, SKILL_SERVICE));
+	int jobperformance = ((g_Girls.GetStat(girl, STAT_INTELLIGENCE) / 2) + (g_Girls.GetStat(girl, STAT_CHARISMA) / 2) + g_Girls.GetSkill(girl, SKILL_SERVICE));
 	
 	message += "She worked feeding the poor.";
 
@@ -83,72 +83,50 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, int DayNight, str
 	if (g_Girls.HasTrait(girl, "Meek"))
 		jobperformance -= 20;
 
-
-
-		if(girl->m_States&(1<<STATUS_SLAVE))
+	int dispo; // `J` merged slave/free messages and moved actual dispo change to after
+	if (jobperformance >= 245)
 	{
-		if (jobperformance >= 245)
-		{
-			message += " She must be perfect at this.\n\n";
-			g_Brothels.GetPlayer()->disposition(+14);
-		}
-	else if(jobperformance >= 185)
-		{
-			message += " She's unbelievable at this and is always getting praised by people for her work.\n\n";
-			g_Brothels.GetPlayer()->disposition(+12);
-		}
-	else if (jobperformance >= 145)
-		{
-			message += " She's good at this job and gets praised by people often.\n\n";
-			g_Brothels.GetPlayer()->disposition(+10);
-		}
-	else if (jobperformance >= 100)
-		{
-			message += " She made a few mistakes but overall she is okay at this.\n\n";
-			g_Brothels.GetPlayer()->disposition(+8);
-		}
-	else if (jobperformance >= 70)
-		{
-			message += " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
-			g_Brothels.GetPlayer()->disposition(+6);
-		}
-	else
-		{
-			message += " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
-			g_Brothels.GetPlayer()->disposition(+2);
-		}
+		message += " She must be perfect at this.\n\n";
+		dispo = 12;
 	}
-	else 
-		if (jobperformance >= 245)
-		{
-			message += " She must be perfect at this.\n\n";
-			g_Brothels.GetPlayer()->disposition(+22);
-		}
 	else if (jobperformance >= 185)
-		{
-			message += " She's unbelievable at this and is always getting praised by people for her work.\n\n";
-			g_Brothels.GetPlayer()->disposition(+17);
-		}
+	{
+		message += " She's unbelievable at this and is always getting praised by people for her work.\n\n";
+		dispo = 10;
+	}
 	else if (jobperformance >= 145)
-		{
-			message += " She's good at this job and gets praised by people often.\n\n";
-			g_Brothels.GetPlayer()->disposition(+15);
-		}
+	{
+		message += " She's good at this job and gets praised by people often.\n\n";
+		dispo = 8;
+	}
 	else if (jobperformance >= 100)
-		{
-			message += " She made a few mistakes but overall she is okay at this.\n\n";
-			g_Brothels.GetPlayer()->disposition(+12);
-		}
+	{
+		message += " She made a few mistakes but overall she is okay at this.\n\n";
+		dispo = 6;
+	}
 	else if (jobperformance >= 70)
-		{
-			message += " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
-			g_Brothels.GetPlayer()->disposition(+9);
-		}
+	{
+		message += " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
+		dispo = 4;
+	}
 	else
-		{
-			message += " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
-			g_Brothels.GetPlayer()->disposition(+6);
-		}
+	{
+		message += " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
+		dispo = 2;
+	}
+
+	if (girl->m_States&(1 << STATUS_SLAVE))
+	{
+		message += " \nThe fact that she is your slave makes people think its less of a good deed on your part.";
+		g_Brothels.GetPlayer()->disposition(dispo);
+	}
+	else
+	{
+		message += " \nThe fact that your paying this girl to do this helps people think your a better person.";
+		girl->m_Pay += 100;
+		g_Gold.staff_wages(100);  // wages come from you
+		g_Brothels.GetPlayer()->disposition(int(dispo*1.5));
+	}
 
 
 
@@ -168,22 +146,10 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, int DayNight, str
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCENTRE, +1, true);
 	}
 
-	if(girl->m_States&(1<<STATUS_SLAVE))
-	{
-		message += " \nThe fact that she is your slave makes people think its less of a good deed on your part.";
-	}
-	else
-	{
-		message += " \nThe fact that your paying this girl to do this helps people think your a better person.";
-	girl->m_Pay += 100;
-	g_Gold.staff_wages(100);  // wages come from you
-	}
 	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
 
-
-
 	// Improve stats
-	int xp = 15, libido = 1, skill = 3;
+	int xp = 10, libido = 1, skill = 3;
 
 	if (g_Girls.HasTrait(girl, "Quick Learner"))
 	{

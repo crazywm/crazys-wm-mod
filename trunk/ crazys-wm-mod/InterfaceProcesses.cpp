@@ -2048,12 +2048,18 @@ void NextWeek()
 	{
 		g_Clinic.UpdateClinic();
 	}
-
-	g_Studios.UpdateMovieStudio();
-
-	g_Arena.UpdateArena();
-
-	g_Centre.UpdateCentre();
+		if (g_Studios.GetNumBrothels() > 0)
+	{
+		g_Studios.UpdateMovieStudio();
+	}
+		if (g_Arena.GetNumBrothels() > 0)
+	{
+		g_Arena.UpdateArena();
+	}
+		if (g_Centre.GetNumBrothels() > 0)
+	{
+		g_Centre.UpdateCentre();
+	}
 
 	g_House.UpdateHouse();
 
