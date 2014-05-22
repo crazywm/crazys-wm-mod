@@ -138,7 +138,7 @@ void cScreenBuildingSetup::init()
 			SetCheckBox(nooral_id, g_Studios.GetBrothel(0)->m_RestrictOral);
 			SetCheckBox(notitty_id, g_Studios.GetBrothel(0)->m_RestrictTitty);
 			break;
-			case BUILDING_CLINIC:
+		case BUILDING_CLINIC:
 			brothel = gettext("The Clinic");
 			EditTextItem(brothel, curbrothel_id);
 			number = g_Clinic.GetNumPotions();
@@ -167,7 +167,7 @@ void cScreenBuildingSetup::init()
 			SetCheckBox(nooral_id, g_Clinic.GetBrothel(0)->m_RestrictOral);
 			SetCheckBox(notitty_id, g_Clinic.GetBrothel(0)->m_RestrictTitty);
 			break;
-			case BUILDING_ARENA:
+		case BUILDING_ARENA:
 			brothel = gettext("The Arena");
 			EditTextItem(brothel, curbrothel_id);
 			number = g_Arena.GetNumPotions();
@@ -196,7 +196,7 @@ void cScreenBuildingSetup::init()
 			SetCheckBox(nooral_id, g_Arena.GetBrothel(0)->m_RestrictOral);
 			SetCheckBox(notitty_id, g_Arena.GetBrothel(0)->m_RestrictTitty);
 			break;
-			case BUILDING_CENTRE:
+		case BUILDING_CENTRE:
 			brothel = gettext("The Community Centre");
 			EditTextItem(brothel, curbrothel_id);
 			number = g_Centre.GetNumPotions();
@@ -225,7 +225,7 @@ void cScreenBuildingSetup::init()
 			SetCheckBox(nooral_id, g_Centre.GetBrothel(0)->m_RestrictOral);
 			SetCheckBox(notitty_id, g_Centre.GetBrothel(0)->m_RestrictTitty);
 			break;
-			case BUILDING_HOUSE:
+		case BUILDING_HOUSE:
 			brothel = gettext("Your House");
 			EditTextItem(brothel, curbrothel_id);
 			number = g_House.GetNumPotions();
@@ -237,7 +237,7 @@ void cScreenBuildingSetup::init()
 			DisableCheckBox(autopotions_id, number < 1);
 
 			// let's limit advertising budget to multiples of 50 gold (~3 added customers), from 0 - 2000
-			advert = g_Centre.GetBrothel(0)->m_AdvertisingBudget / 50;
+			advert = g_House.GetBrothel(0)->m_AdvertisingBudget / 50;
 			advert = SliderRange(advertsli_id, 0, (2000 / 50), advert, 4);  // set slider min/max range
 			ss.str("");
 			ss << gettext("Promotion Budget: ") << (advert * 50) << gettext(" gold / week");

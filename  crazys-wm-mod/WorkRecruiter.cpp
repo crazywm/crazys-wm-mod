@@ -77,27 +77,27 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, int DayNight, st
 
 	//good traits
 	if (g_Girls.HasTrait(girl, "Charismatic"))  //
-		jobperformance += 15;
-	if (g_Girls.HasTrait(girl, "Sexy Air"))  //
-		jobperformance += 8;
+		jobperformance += 20;
 	if (g_Girls.HasTrait(girl, "Cool Person"))  //people love to be around her
 		jobperformance += 10;
-	if (g_Girls.HasTrait(girl, "Cute"))  //
-		jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Charming"))  //people like charming people
 		jobperformance += 10;
+	if (g_Girls.HasTrait(girl, "Psychic"))  //knows what people want to hear
+		jobperformance += 20;
 
 	//bad traits
 	if (g_Girls.HasTrait(girl, "Dependant"))  //needs others to do the job
 		jobperformance -= 50;
 	if (g_Girls.HasTrait(girl, "Clumsy"))  //
-		jobperformance -= 20;
+		jobperformance -= 5;
 	if (g_Girls.HasTrait(girl, "Aggressive"))  //gets mad easy and may attack people
 		jobperformance -= 20;
 	if (g_Girls.HasTrait(girl, "Nervous"))  //don't like to be around people
 		jobperformance -= 30;
 	if (g_Girls.HasTrait(girl, "Meek"))
 		jobperformance -= 20;
+	if (g_Girls.HasTrait(girl, "Broken Will"))
+		jobperformance -= 50;
 
 
 
@@ -283,9 +283,10 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, int DayNight, st
 
 	g_Girls.UpdateStat(girl, STAT_FAME, 1);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	if(g_Dice%2)
-		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, 1);
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, skill);
+	if (g_Dice % 2)	g_Girls.UpdateSkill(girl, SKILL_LESBIAN, 1);
+	else			g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, 1);
+	if (g_Dice % 2)	g_Girls.UpdateStat(girl, STAT_CHARISMA, skill);
+	else			g_Girls.UpdateSkill(girl, SKILL_SERVICE, skill);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
 	//gain traits

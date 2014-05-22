@@ -1,1 +1,1 @@
-static char svn_revision[] = "Crazy and PP's mod version .05j";
+static char svn_revision[] = "Crazy and PP's mod version .05l";

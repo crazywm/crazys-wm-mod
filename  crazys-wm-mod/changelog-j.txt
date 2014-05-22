@@ -126,3 +126,27 @@ All buildings need to be purchased now
  - Studio requires 20000 gold and 20 territories
 Crazy - Fixed some bugs with the rest jobs in other buildings.
 !!!!!!!!!!!!!!!!!!!! pushed version .05k
+
+###  Changes 5/19/2014
+started rebuilding girl_fights_girl - corrections only so far
+fixed .05k crashing on next day - forgot to add "check if building is owned" to next day 
+!!!!!!!!!!!!!!!!!!!! pushed version .05k.01
+Fixed .05k crashing on house building setup - ad budget looking for centre instead of house
+!!!!!!!!!!!!!!!!!!!! pushed version .05k.02
+
+
+###  Changes 5/21/2014
+Cleaned up whitespace and rearranged some code in cGirls.cpp
+WorkRehab.cpp
+ - stop girl death if Counselor is on duty
+ - girls go to free time if they have no more addictions after they finish rehab
+WorkRecruiter.cpp - modified trait performance and skill/stat gains
+WorkComunityService.cpp and WorkFeedPoor.cpp
+ - performance now = int/2 + cha/2 + service
+ - merged slave/free messages and moved actual dispo change to after
+ - reduced xp gain from 15 to 10 and reduced dispo gain to 2-14 (times 1.5 for free girls)
+Mistletoe.itemsx - changed item type from misc to food (consumables) so it is single use
+Magic Nipple Piercings.itemsx, Magic Tongue Piercing.itemsx, Magic Clit Piercing.itemsx have corresponding "Pierced..." traits added
+!!!!!!!!!!!!!!!!!!!! pushed version .05l
+
+

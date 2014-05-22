@@ -450,7 +450,7 @@ void cGirls::CalculateGirlType(sGirl* girl)
 		NonHuman += 5;
 		Freak += 20;
 		SmallBoobs -= 100;	// `J` was -=50
-		Lolita -= 20;	// `J` added
+		Lolita -= 10;	// `J` added
 	}
 	if(HasTrait(girl, "Small Scars"))
 	{
@@ -3248,7 +3248,7 @@ void cGirls::SetStat(sGirl* girl, int a_stat, int amount)
 	}
 	else if(stat == STAT_TIREDNESS)
 	{
-		if (g_Girls.HasTrait(girl, "Incorporeal") || HasTrait(girl, "Incorporial"))
+		if (g_Girls.HasTrait(girl, "Incorporeal") || g_Girls.HasTrait(girl, "Incorporial"))
 			amt = 0;
 		else if(amt > 100)
 			amt = 100;
@@ -3307,7 +3307,7 @@ void cGirls::UpdateStat(sGirl* girl, int a_stat, int amount)
 			else if(amount > 4)
 				amount = 4;
 		}
-		if(HasTrait(girl, "Incorporeal") || HasTrait(girl, "Incorporial") &&  stat != STAT_HAPPINESS)
+		if((HasTrait(girl, "Incorporeal") || HasTrait(girl, "Incorporial")) &&  stat != STAT_HAPPINESS)
 		{
 			//amount = 0;
 			girl->m_Stats[STAT_HEALTH] = 100;	// WD: Sanity - Incorporeal health should allways be at 100%
@@ -6004,12 +6004,7 @@ void cGirls::UnapplyTraits(sGirl* girl, sTrait* trait)
 			UpdateStat(girl,STAT_BEAUTY,-20);
 		}
 
-		else if(strcmp(tr->m_Name, "Incorporeal") == 0)
-		{
-			RemoveTrait(girl, "Sterile");
-		}
-
-		else if(strcmp(tr->m_Name, "Incorporial") == 0)
+		else if (strcmp(tr->m_Name, "Incorporeal") == 0 || strcmp(tr->m_Name, "Incorporial") == 0)
 		{
 			RemoveTrait(girl, "Sterile");
 		}
@@ -6683,13 +6678,7 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait, bool rememberflag)
 			UpdateEnjoyment(girl, ACTION_WORKHALL, +20, true);
 		}
 
-		else if(strcmp(tr->m_Name, "Incorporeal") == 0)
-		{
-			AddTrait(girl, "Sterile");
-			UpdateEnjoyment(girl, ACTION_COMBAT, +20, true);
-		}
-
-		else if(strcmp(tr->m_Name, "Incorporial") == 0)
+		else if (strcmp(tr->m_Name, "Incorporeal") == 0 || strcmp(tr->m_Name, "Incorporial") == 0)
 		{
 			AddTrait(girl, "Sterile");
 			UpdateEnjoyment(girl, ACTION_COMBAT, +20, true);
@@ -10933,7 +10922,7 @@ Uint8 cGirls::girl_fights_girl(sGirl* a, sGirl* b)
 
 	// MYR: Sanity checks on incorporeal. It is actually possible (but very rare) 
 	//      for both girls to be incorporeal.
-	if(a->has_trait("Incorporeal") && b->has_trait("Incorporeal") || a->has_trait("Incorporial") && b->has_trait("Incorporial"))
+	if((a->has_trait("Incorporeal") || a->has_trait("Incorporial")) && (b->has_trait("Incorporeal") || b->has_trait("Incorporial")))
 	{
 		l.ss()	<< gettext("\ngirl_fights_girl: Both ") << a->m_Realname << gettext(" and ") << b->m_Realname 
 			<< gettext(" are incorporeal, so the fight is a draw.\n");
@@ -10944,7 +10933,7 @@ Uint8 cGirls::girl_fights_girl(sGirl* a, sGirl* b)
 		l.ss()	<< gettext("\ngirl_fights_girl: ") << a->m_Realname << gettext(" is incorporeal, so she wins.\n");
 		return 1;
 	}
-	else if(a->has_trait("Incorporeal") || a->has_trait("Incorporial"))
+	else if(b->has_trait("Incorporeal") || b->has_trait("Incorporial"))
 	{
 		l.ss()	<< gettext("\ngirl_fights_girl: ") << b->m_Realname << gettext(" is incorporeal, so she wins.\n");
 		return 2;

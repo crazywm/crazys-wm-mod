@@ -93,12 +93,6 @@ struct static_brothel_data {
 // stats of each brothel: price to buy, starting rooms, required # of businesses owned
 static static_brothel_data brothel_data[] = {
 	{ 0, 0, 0 },
-//	{ 100, 25, 1 },	// testing code, lower requirements
-//	{ 200, 30, 2 },
-//	{ 300, 35, 3 },
-//	{ 400, 40, 4 },
-//	{ 500, 50, 5 },
-	//{ 0, 25, 0 },
 	{ 10000, 25, 30 },
 	{ 30000, 30, 70 },
 	{ 70000, 35, 100 },
@@ -400,6 +394,13 @@ void cScreenTown::process()
 		if(!g_Cheats) g_WalkAround = true;
 		g_InitWin = true;
 	}
+	else if (g_InterfaceEvents.CheckButton(setup_id))	// `J` added
+	{
+		g_InitWin = true;
+		g_WinManager.push("Property Management");
+		return;
+	}
+
 }
 
 string cScreenTown::walk_no_luck()
