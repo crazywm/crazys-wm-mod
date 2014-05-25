@@ -92,6 +92,8 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 		jobperformance -= 10;
 	if (g_Girls.HasTrait(girl, "Slow Learner"))
 		jobperformance -= 10;
+	if (g_Girls.HasTrait(girl, "Construct"))  //voice would sound funny
+		jobperformance -= 20;
 
 	if(jobperformance >= 245)
 		{

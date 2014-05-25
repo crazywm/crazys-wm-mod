@@ -168,6 +168,8 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, int DayNight, str
 
 	g_Girls.UpdateStat(girl, STAT_FAME, 1);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
+	if(g_Dice%1)
+		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, 1);
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, skill);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 

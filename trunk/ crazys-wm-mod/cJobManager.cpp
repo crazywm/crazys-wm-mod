@@ -143,6 +143,7 @@ void cJobManager::Setup()
 	JobFunctions[JOB_BOOBJOB] = &WorkBoobJob;
 	JobFunctions[JOB_VAGINAREJUV] = &WorkGetVaginalRejuvination;
 	JobFunctions[JOB_FACELIFT] = &WorkGetFacelift;
+	JobFunctions[JOB_ASSJOB] = &WorkGetAssJob;
 	// - House
 	JobFunctions[JOB_PERSONALTRAINING] = &WorkPersonalTraining;	// ************** TODO
 	JobFunctions[JOB_PERSONALBEDWARMER] = &WorkPersonalBedWarmer;	// ************** TODO
@@ -310,6 +311,8 @@ void cJobManager::Setup()
 	JobDescription[JOB_BREASTREDUCTION] = gettext("She will undergo breast reduction surgery. (takes up to 5 days)");
 	JobName[JOB_BOOBJOB] = gettext("Boob Job");
 	JobDescription[JOB_BOOBJOB] = gettext("She will undergo surgery to \"enhance\" her bust. (takes up to 5 days)");
+	JobName[JOB_ASSJOB] = gettext("Arse Job");
+	JobDescription[JOB_ASSJOB] = gettext("She will undergo surgery to \"enhance\" her ass. (takes up to 5 days)");
 	JobName[JOB_VAGINAREJUV] = gettext("Vaginal Rejuvination");
 	JobDescription[JOB_VAGINAREJUV] = gettext("She will undergo surgery to make her a virgin again. (takes up to 5 days)");
 	JobName[JOB_FACELIFT] = gettext("Face Lift");
@@ -1106,6 +1109,22 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 			g_MessageQue.AddToQue(gettext("Her boobs can't get no bigger."), 0);
 		}
 	}
+	else if(u_int(JobID) == JOB_ASSJOB)
+	{
+		if(g_Clinic.GetNumGirlsOnJob(-1, JOB_DOCTOR, DayOrNight) == 0)
+		{
+			g_MessageQue.AddToQue(gettext("You must have a doctor for that operation."), 0);
+			Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+		}
+		else if (!g_Girls.HasTrait(Girl, "Great Arse"))
+		{
+			Girl->m_DayJob = Girl->m_NightJob = JOB_ASSJOB;
+		}
+		else
+		{
+			g_MessageQue.AddToQue(gettext("Her ass can't get no better."), 0);
+		}
+	}
 	else if(u_int(JobID) == JOB_FACELIFT)
 	{
 		if(g_Clinic.GetNumGirlsOnJob(-1, JOB_DOCTOR, DayOrNight) == 0)
@@ -1274,6 +1293,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 			u_int(OldJobID) == JOB_FACELIFT ||
 			u_int(OldJobID) == JOB_VAGINAREJUV ||
 			u_int(OldJobID) == JOB_GETHEALING ||
+			u_int(OldJobID) == JOB_ASSJOB ||
 			u_int(OldJobID) == JOB_DOCTOR ||
 			u_int(OldJobID) == JOB_REHAB ||
 			u_int(OldJobID) == JOB_DRUGCOUNSELOR ||
@@ -1295,6 +1315,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 				u_int(JobID) != JOB_FACELIFT &&
 				u_int(JobID) != JOB_VAGINAREJUV &&
 				u_int(JobID) != JOB_GETHEALING &&
+				u_int(JobID) != JOB_ASSJOB &&
 				u_int(JobID) != JOB_DOCTOR &&
 				u_int(JobID) != JOB_REHAB &&
 				u_int(JobID) != JOB_DRUGCOUNSELOR &&

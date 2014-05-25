@@ -109,7 +109,7 @@ GIRL_CATACOMBS      = 10    // means this girl can be found in the catacombs
 
 // Jobs
 const unsigned int NUMJOBTYPES          = 14;
-const unsigned int NUM_JOBS             = 82;
+const unsigned int NUM_JOBS             = 83;
 // - General
 const unsigned int JOBFILTER_GENERAL    = 0;
 const unsigned int JOB_RESTING          = 0;    // relaxes and takes some time off
@@ -156,9 +156,9 @@ const unsigned int JOBFILTER_ARENA      = 6;
 const unsigned int JOB_FIGHTBEASTS      = 29;	// not added yet	// customers come to place bets on who will win, girl may die (uses beasts resource)
 const unsigned int JOB_FIGHTARENAGIRLS  = 30;
 const unsigned int JOB_FIGHTTRAIN       = 31;	
-const unsigned int JOB_DOCTORE          = 32;
+const unsigned int JOB_DOCTORE          = 32;  //Matron of arena
 const unsigned int JOB_CLEANARENA       = 33;
-const unsigned int JOB_ARENAREST        = 34;
+const unsigned int JOB_ARENAREST        = 34;  //free time of arena
 const unsigned int JOB_CITYGUARD        = 35;
 // - Movie Crystal Studio
 const unsigned int JOBFILTER_MOVIESTUDIO = 7;
@@ -185,7 +185,7 @@ const unsigned int JOB_CAMERAMAGE       = 49;		// Uses magic to record the scene
 const unsigned int JOB_CRYSTALPURIFIER  = 50;		// Post editing to get the best out of the film (requires at least 1)
 const unsigned int JOB_FLUFFER          = 51;		// Keeps the porn stars and animals aroused
 const unsigned int JOB_STAGEHAND		= 52;		// Currently does the same as a cleaner.
-const unsigned int JOB_FILMFREETIME		= 53;		// Currently does the same as a cleaner.
+const unsigned int JOB_FILMFREETIME		= 53;		// Free time
 
 // - Clinic
 const unsigned int JOBFILTER_CLINIC     = 9;	// teaches can train girls only up to their own skill level
@@ -198,34 +198,35 @@ const unsigned int JOB_BREASTREDUCTION  = 59;	// not added yet	// magical plasti
 const unsigned int JOB_BOOBJOB          = 60;	// not added yet	// magical plastic surgery (takes 5 days)
 const unsigned int JOB_VAGINAREJUV      = 61;	// not added yet	// magical plastic surgery (takes 5 days)
 const unsigned int JOB_FACELIFT         = 62;	// not added yet	// magical plastic surgery (takes 5 days)
+const unsigned int JOB_ASSJOB           = 63;	// not added yet	// magical plastic surgery (takes 5 days)
 // - clinic staff
 const unsigned int JOBFILTER_CLINICSTAFF = 10;
-const unsigned int JOB_CHAIRMAN          = 63;	// not added yet	
-const unsigned int JOB_DOCTOR            = 64;	// not added yet	// becomes a doctor (requires 1) (will make some extra cash for treating locals)
-const unsigned int JOB_NURSE             = 65;	// not added yet	//
-const unsigned int JOB_MECHANIC          = 66;	// not added yet	// construct girls can get repaired quickly
-const unsigned int JOB_JANITOR           = 67;	// not added yet	
-const unsigned int JOB_CLINICREST        = 68;	// not added yet	
+const unsigned int JOB_CHAIRMAN          = 64;	// Matron of clinic	
+const unsigned int JOB_DOCTOR            = 65;	// not added yet	// becomes a doctor (requires 1) (will make some extra cash for treating locals)
+const unsigned int JOB_NURSE             = 66;	// not added yet	//
+const unsigned int JOB_MECHANIC          = 67;	// not added yet	// construct girls can get repaired quickly
+const unsigned int JOB_JANITOR           = 68;	// cleans clinic	
+const unsigned int JOB_CLINICREST        = 69;	// Is clinics free time	
 // - Community Centre
 const unsigned int JOBFILTER_COMMUNITYCENTRE = 11;
-const unsigned int JOB_FEEDPOOR         = 69;	// not added yet	// work in a soup kitchen
-const unsigned int JOB_COMUNITYSERVICE  = 70;	// not added yet	// Goes around town helping where they can
-const unsigned int JOB_CENTREMANAGER    = 71;	// not added yet	
-const unsigned int JOB_CLEANCENTRE      = 72;	// not added yet	
-const unsigned int JOB_CENTREREST       = 73;	// not added yet	
+const unsigned int JOB_FEEDPOOR         = 70;	// not added yet	// work in a soup kitchen
+const unsigned int JOB_COMUNITYSERVICE  = 71;	// not added yet	// Goes around town helping where they can
+const unsigned int JOB_CENTREMANAGER    = 72;	// matron of centre	
+const unsigned int JOB_CLEANCENTRE      = 73;	// 	
+const unsigned int JOB_CENTREREST       = 74;	// centres free time	
 // - drug centre
 const unsigned int JOBFILTER_DRUGCENTRE = 12;
-const unsigned int JOB_DRUGCOUNSELOR    = 74;	// not added yet	
-const unsigned int JOB_REHAB            = 75;	// not added yet	
+const unsigned int JOB_DRUGCOUNSELOR    = 75;	// 	
+const unsigned int JOB_REHAB            = 76;	// 	
 
 // - House
 const unsigned int JOBFILTER_HOUSE = 13;
-const unsigned int JOB_PERSONALTRAINING  = 76;
-const unsigned int JOB_PERSONALBEDWARMER = 77;
-const unsigned int JOB_CLEANHOUSE        = 78;
-const unsigned int JOB_RECRUITER         = 79;
-const unsigned int JOB_HOUSEREST         = 80;
-const unsigned int JOB_HEADGIRL          = 81;
+const unsigned int JOB_PERSONALTRAINING  = 77;
+const unsigned int JOB_PERSONALBEDWARMER = 78;
+const unsigned int JOB_CLEANHOUSE        = 79;
+const unsigned int JOB_RECRUITER         = 80;
+const unsigned int JOB_HOUSEREST         = 81;
+const unsigned int JOB_HEADGIRL          = 82;
 
 #if 0
 // - Community Centre
@@ -269,8 +270,8 @@ const unsigned int JOB_TRAIN            = 60;	// not added yet	// trains the gir
 #endif
 
 // - extra unassignable
-const unsigned int JOB_INDUNGEON        = 82;
-const unsigned int JOB_RUNAWAY          = 83;
+const unsigned int JOB_INDUNGEON        = 83;
+const unsigned int JOB_RUNAWAY          = 84;
 
 // Goon missions
 const unsigned int MISS_GUARDING        = 0;	// guarding your businesses

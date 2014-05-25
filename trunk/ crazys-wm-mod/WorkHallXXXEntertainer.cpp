@@ -391,6 +391,10 @@ else
 		wages += g_Girls.GetStat(girl, STAT_ASKPRICE)+60;
 		girl->m_Events.AddMessage(message, IMGTYPE_MAST, DayNight);
 	}
+	else
+	{
+		girl->m_Events.AddMessage(message, IMGTYPE_ECCHI, DayNight);
+	}
 
 	if(wages < 0)
 			wages = 0;
@@ -410,7 +414,8 @@ else
 		message += " \nOtherwise, the shift passed uneventfully.";
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKHALL, +1, true);
 	}
-	girl->m_Events.AddMessage(message, IMGTYPE_ECCHI, DayNight);
+
+	//girl->m_Events.AddMessage(message, IMGTYPE_ECCHI, DayNight);
 	
 
 	// work out the pay between the house and the girl
