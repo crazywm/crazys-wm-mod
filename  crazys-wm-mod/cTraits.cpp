@@ -186,17 +186,17 @@ string cTraits::GetTranslateName(string name){
 	{
 		return gettext("Small Boobs");
 	}
-	else if(name.compare("Fast orgasms") == 0)
+	else if (name.compare("Fast orgasms") == 0 || name.compare("Fast Orgasms") == 0)
 	{
-		return gettext("Fast orgasms");
+		return gettext("Fast Orgasms");
 	}
-	else if(name.compare("Fake orgasm expert") == 0)
+	else if (name.compare("Fake orgasm expert") == 0 || name.compare("Fake Orgasm Expert") == 0)
 	{
-		return gettext("Fake orgasm expert");
+		return gettext("Fake Orgasm Expert");
 	}
-	else if(name.compare("Slow orgasms") == 0)
+	else if (name.compare("Slow orgasms") == 0 || name.compare("Slow Orgasms") == 0)
 	{
-		return gettext("Slow orgasms");
+		return gettext("Slow Orgasms");
 	}
 	else if (name.compare("Different Colored Eyes") == 0)
 	{
@@ -456,11 +456,15 @@ string cTraits::GetTranslateName(string name){
 	}
 	else if(name.compare("Gag Reflex") == 0)
 	{
-		return gettext("Gag Relex");
+		return gettext("Gag Reflex");
 	}
-	else if(name.compare("No Gag Reflex") == 0)
+	else if (name.compare("No Gag Reflex") == 0)
 	{
-		return gettext("No Gag Relex");
+		return gettext("No Gag Reflex");
+	}
+	else if (name.compare("Deep Throat") == 0)
+	{
+		return gettext("Deep Throat");
 	}
 	return name;
 }

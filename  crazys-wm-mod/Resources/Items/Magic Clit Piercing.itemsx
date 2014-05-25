@@ -12,7 +12,8 @@
    <Effect What="Stat"  Name="Libido"                  Amount="40"    />
    <Effect What="Stat"  Name="PCFear"                  Amount="12"    />
    <Effect What="Stat"  Name="PCHate"                  Amount="12"    />
-   <Effect What="Trait" Name="Fast orgasms"            Amount="1"    />
+   <Effect What="Trait" Name="Fast Orgasms"            Amount="1"    />
    <Effect What="Trait" Name="Nymphomaniac"            Amount="1"    />
+   <Effect What="Trait" Name="Pierced Clit"            Amount="1"    />
 </Item>
 </Items>

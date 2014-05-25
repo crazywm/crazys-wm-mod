@@ -122,7 +122,7 @@ void cScreenItemManagement::init()
 	AddToListBox(filter_id, 10, gettext("Armbands"));
 	if(filter == -1)
 		filter = 0;
-	SetSelectedItemInList(filter_id, filter, false);
+	SetSelectedItemInList(filter_id, filter,false);
 
 	// add shop and player to list
 	AddToListBox(owners_l_id, 0, gettext("Player"));

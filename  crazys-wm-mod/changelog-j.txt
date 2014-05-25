@@ -145,8 +145,22 @@ WorkComunityService.cpp and WorkFeedPoor.cpp
  - performance now = int/2 + cha/2 + service
  - merged slave/free messages and moved actual dispo change to after
  - reduced xp gain from 15 to 10 and reduced dispo gain to 2-14 (times 1.5 for free girls)
-Mistletoe.itemsx - changed item type from misc to food (consumables) so it is single use
 Magic Nipple Piercings.itemsx, Magic Tongue Piercing.itemsx, Magic Clit Piercing.itemsx have corresponding "Pierced..." traits added
 !!!!!!!!!!!!!!!!!!!! pushed version .05l
 
+###  Changes 5/23/2014
+Renamed JOB_REPAIRSHOP to JOB_GETREPAIRS and JOB_HEALING to JOB_GETHEALING
+Fixed JOBFILTER_CLINIC not including JOB_HEALING in Clinic
+Rearranged and repaired cJobManager::HandleSpecialJobs
+Fixed film jobs now require one of each of Camera Mage and Crystal Purifier before being assigned instead of just one of either.
+Film jobs now set day job as "Free Time" when setting night job.
+
+###  Changes 5/24/2014
+Changed "Fake Orgasm Expert", "Slow Orgasms" and "Fast Orgasms" to camelcase keeping legacy spelling.
+Added actress and director to scenes - needs more work to make these usable.
+Added file "!0 Itemsx-contents.txt" to explain and assist creating new itemsx files.
+Cleaned and added new items.
+Fixed accommodation buttons in girl details screen to turn on/off when min/max is reached.
+Fixed job selection in girl details screen.
+!!!!!!!!!!!!!!!!!!!! pushed version .05m
 

@@ -16,7 +16,7 @@
    <Effect What="Stat"  Name="PCLove"                  Amount="100"    />
    <Effect What="GirlStatus" Name="Controlled"         Amount="1"    />
    <Effect What="Stat"  Name="PCFear"                  Amount="750"    />
-   <Effect What="Trait" Name="Fast orgasms"            Amount="1"    />
+   <Effect What="Trait" Name="Fast Orgasms"            Amount="1"    />
    <Effect What="Trait" Name="Retarded"                Amount="1"    />
    <Effect What="Trait" Name="Optimist"                Amount="1"    />
    <Effect What="Trait" Name="Dependant"               Amount="1"    />
@@ -43,7 +43,7 @@
    <Effect What="Stat"  Name="Spirit"                  Amount="-100"    />
    <Effect What="Stat"  Name="PCLove"                  Amount="100"    />
    <Effect What="GirlStatus" Name="Controlled"         Amount="1"    />
-   <Effect What="Trait" Name="Fast orgasms"            Amount="1"    />
+   <Effect What="Trait" Name="Fast Orgasms"            Amount="1"    />
    <Effect What="Trait" Name="Retarded"                Amount="1"    />
    <Effect What="Trait" Name="Optimist"                Amount="1"    />
    <Effect What="Trait" Name="Dependant"               Amount="1"    />

@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Doll's Ring (Greater)"    
+      Desc="This ring is somehow a tight fit on any girl's finger, regardless of her actual size. It causes the wearer to become permanently youthful, as well as making her body like smooth, delicate, flawless porcelain. In addition, her breasts will become smaller and more perky, but her sexual ability decreases. (Age never above minimum, +10 Beauty, +Lolita, +Small Boobs, +Puffy Nipples, +Fragile, -25 Constitution, -25 Sex Skills, -50 Combat)" 
+      Type="Ring" 
+      Badness="19" 
+      Special="None" 
+      Cost="5500" 
+      Rarity="Shop05" 
+      Infinite="false" 
+      GirlBuyChance="0">
+   <Effect What="Stat" Name="Age" Amount="-1000" />
+   <Effect What="Stat" Name="Beauty" Amount="10" />
+   <Effect What="Stat" Name="Constitution" Amount="-25" />
+   <Effect What="Skill" Name="Combat" Amount="-50" />
+   <Effect What="Skill" Name="Anal" Amount="-25" />
+   <Effect What="Skill" Name="BDSM" Amount="-25" />
+   <Effect What="Skill" Name="NormalSex" Amount="-25" />
+   <Effect What="Skill" Name="OralSex" Amount="-25" />
+   <Effect What="Skill" Name="TittySex" Amount="-25" />
+   <Effect What="Skill" Name="Beastiality" Amount="-25" />
+   <Effect What="Skill" Name="Group" Amount="-25" />
+   <Effect What="Skill" Name="Lesbian" Amount="-25" />
+   <Effect What="Skill" Name="Strip" Amount="-25" />
+   <Effect What="Trait" Name="Big Boobs" Amount="0" />
+   <Effect What="Trait" Name="Abnormally Large Boobs" Amount="0" />
+   <Effect What="Trait" Name="Small Boobs" Amount="1" />
+   <Effect What="Trait" Name="Puffy Nipples" Amount="1" />
+   <Effect What="Trait" Name="Lolita" Amount="1" />
+   <Effect What="Trait" Name="Tough" Amount="0" />
+   <Effect What="Trait" Name="Fragile" Amount="1" />
+</Item>
+</Items>

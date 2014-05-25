@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Elixir of Conviction"    
+      Desc="Merely holding this elixir makes a person temporarily feel more self-assured. Anyone who drinks it will become dramatically more confident. The elixir does tend to increase willfulness a little. (-Nervous, -Meek, +75 Confidence, +75 Spirit, -30 Obedience)" 
+      Type="Food" 
+      Badness="4" 
+      Special="None" 
+      Cost="1750" 
+      Rarity="Shop05" 
+      Infinite="false">
+   <Effect What="Stat" Name="Obedience" Amount="-30" />
+   <Effect What="Stat" Name="Spirit" Amount="75" />
+   <Effect What="Stat" Name="Confidence" Amount="75" />
+   <Effect What="Trait" Name="Nervous" Amount="0" />
+   <Effect What="Trait" Name="Meek" Amount="0" />
+</Item>
+</Items>

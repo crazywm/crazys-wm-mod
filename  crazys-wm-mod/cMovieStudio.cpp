@@ -82,6 +82,10 @@ sMovieStudio::~sMovieStudio()			// destructor
 
 void cMovieStudioManager::AddGirl(int brothelID, sGirl* girl)
 {
+	girl->m_InArena = false;
+	girl->m_InCentre = false;
+	girl->m_InClinic = false;
+	girl->m_InHouse = false;
 	girl->m_InMovieStudio = true;
 	cBrothelManager::AddGirl(brothelID, girl);
 }
@@ -107,9 +111,9 @@ string cMovieStudioManager::AddScene(sGirl* girl, int Job, int Bonus)
 	quality += Bonus;
 
 	//CRAZY added this to have traits play a bigger part in the movies
-	if (g_Girls.HasTrait(girl, "Fast orgasms"))			quality += 4;
-	else if(g_Girls.HasTrait(girl,"Slow orgasms"))		quality -= 2;
-	if(g_Girls.HasTrait(girl,"Fake orgasm expert"))		quality += 3;
+	if (g_Girls.HasTrait(girl, "Fast orgasms") || g_Girls.HasTrait(girl, "Fast Orgasms"))			quality += 4;
+	else if (g_Girls.HasTrait(girl, "Slow orgasms") || g_Girls.HasTrait(girl, "Slow Orgasms"))		quality -= 2;
+	if (g_Girls.HasTrait(girl, "Fake orgasm expert") || g_Girls.HasTrait(girl, "Fake Orgasm Expert"))		quality += 3;
 	if(g_Girls.HasTrait(girl,"Abnormally Large Boobs"))	quality += 4;
 	else if(g_Girls.HasTrait(girl,"Big Boobs"))			quality += 2;
 	else if(g_Girls.HasTrait(girl,"Small Boobs"))		quality += 1;
@@ -132,6 +136,14 @@ string cMovieStudioManager::AddScene(sGirl* girl, int Job, int Bonus)
 	if(g_Girls.HasTrait(girl, "Clumsy"))				quality -= 2;
 	if(g_Girls.HasTrait(girl, "Meek"))					quality -= 2;
 
+	if (Job == SKILL_ORALSEX)
+	{
+		if (g_Girls.HasTrait(girl, "Pierced Tongue"))		quality += 1;
+		if (g_Girls.HasTrait(girl, "No Gag Reflex"))		quality += 2;
+		if (g_Girls.HasTrait(girl, "Deep Throat"))			quality += 5;
+		if (g_Girls.HasTrait(girl, "Gag Reflex"))			quality -= 3;
+	}
+
 //CRAZY added this better looking girls should make better quality movies 
 	// Changed to work with new job revision --PP
 	quality += (g_Girls.GetStat(girl, STAT_CHARISMA) - 50) / 10;
@@ -147,6 +159,9 @@ string cMovieStudioManager::AddScene(sGirl* girl, int Job, int Bonus)
 	
 	quality += g_Studios.m_CameraQuality + g_Studios.m_PurifierQaulity + g_Studios.m_DirectorQuality + g_Studios.m_StagehandQuality;
 	
+	newScene->m_Director = g_Studios.m_DirectorName;
+	newScene->m_Actress = girl->m_Realname;
+	newScene->m_Job = Job;
 	newScene->m_Init_Quality = quality;
 	newScene->m_Quality = quality;
 	newScene->m_Promo_Quality = 0;

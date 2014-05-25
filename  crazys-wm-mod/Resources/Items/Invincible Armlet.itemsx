@@ -9,7 +9,7 @@
       Rarity="Catacomb15"
       Infinite="false">
    <Effect What="Stat"  Name="PCFear"                  Amount="-100"    />
-   <Effect What="Trait" Name="Incorporial"             Amount="1"    />
+   <Effect What="Trait" Name="Incorporeal"             Amount="1"    />
 </Item>
 <Item Name="Invincible Armlet"
       Desc="Fist or flame, sword or spell, the wearer of this adamantine armlet needs fear harm no longer. Time alone will take its toll. (S) (-100 Fear, adds Incorporeal)"
@@ -20,6 +20,6 @@
       Rarity="Shop05"
       Infinite="false">
    <Effect What="Stat"  Name="PCFear"                  Amount="-100"    />
-   <Effect What="Trait" Name="Incorporial"             Amount="1"    />
+   <Effect What="Trait" Name="Incorporeal"             Amount="1"    />
 </Item>
 </Items>

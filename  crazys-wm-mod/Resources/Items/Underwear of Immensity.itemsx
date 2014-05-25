@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Underwear of Immensity"    
+      Desc="This set of underwear is quite similar to underwear of endowment, except the included bra is absurdly large. No matter what size breasts a girl has, imbued magic will cause them to grow to an immense size that will fit appropriately. Once removed, the effect will dissipate in a couple of days. (+Abnormally Large Boobs, +8 Cha, +5 Happiness)" 
+      Type="Under Wear" 
+      Badness="12" 
+      Special="None" 
+      Cost="6000" 
+      Rarity="Catacomb15" 
+      Infinite="false">
+   <Effect What="Stat" Name="Charisma" Amount="8" />
+   <Effect What="Stat" Name="Happiness" Amount="5" />
+   <Effect What="Trait" Name="Small Boobs" Amount="0" />
+   <Effect What="Trait" Name="Big Boobs" Amount="0" />
+   <Effect What="Trait" Name="Abnormally Large Boobs" Amount="1" />
+</Item>
+</Items>

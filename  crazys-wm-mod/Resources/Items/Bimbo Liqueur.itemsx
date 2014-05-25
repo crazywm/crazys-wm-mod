@@ -44,11 +44,11 @@
    <Effect What="Trait" Name="Abnormally Large Boobs"  Amount="1"    />
    <Effect What="Trait" Name="Dependant"               Amount="1"    />
    <Effect What="Trait" Name="Fake Orgasm Expert"      Amount="1"    />
-   <Effect What="Trait" Name="Fast orgasms"            Amount="1"    />
+   <Effect What="Trait" Name="Fast Orgasms"            Amount="1"    />
    <Effect What="Trait" Name="Slow Learner"            Amount="1"    />
    <Effect What="Trait" Name="Clumsy"                  Amount="1"    />
    <Effect What="Trait" Name="Quick Learner"           Amount="0"    />
-   <Effect What="Trait" Name="Slow orgasms"            Amount="0"    />
+   <Effect What="Trait" Name="Slow Orgasms"            Amount="0"    />
    <Effect What="Trait" Name="Psychic"                 Amount="0"    />
    <Effect What="Trait" Name="Elegant"                 Amount="0"    />
    <Effect What="Trait" Name="Great Figure"            Amount="1"    />

@@ -32,8 +32,8 @@
    <Effect What="Trait" Name="Small Boobs"             Amount="0"    />
    <Effect What="Trait" Name="Abnormally Large Boobs"  Amount="1"    />
    <Effect What="Trait" Name="Clumsy"                  Amount="0"    />
-   <Effect What="Trait" Name="Fast orgasms"            Amount="1"    />
-   <Effect What="Trait" Name="Slow orgasms"            Amount="0"    />
+   <Effect What="Trait" Name="Fast Orgasms"            Amount="1"    />
+   <Effect What="Trait" Name="Slow Orgasms"            Amount="0"    />
    <Effect What="Trait" Name="Fake Orgasm Expert"      Amount="1"    />
    <Effect What="Trait" Name="Not Human"               Amount="0"    />
    <Effect What="Trait" Name="Lolita"                  Amount="0"    />
@@ -52,12 +52,12 @@
    <Effect What="Trait" Name="Puffy Nipples"           Amount="1"    />
    <Effect What="Trait" Name="Perky Nipples"           Amount="1"    />
    <Effect What="Trait" Name="Optimist"                Amount="1"    />
-   <Effect What="Trait" Name="Pessimistic"             Amount="0"    />
+   <Effect What="Trait" Name="Pessimist"               Amount="0"    />
    <Effect What="Trait" Name="Quick Learner"           Amount="1"    />
    <Effect What="Trait" Name="Slow Learner"            Amount="0"    />
    <Effect What="Trait" Name="Broken Will"             Amount="0"    />
    <Effect What="Trait" Name="Mind Fucked"             Amount="0"    />
-   <Effect What="Trait" Name="Retarted"                Amount="0"    />
+   <Effect What="Trait" Name="Retarded"                Amount="0"    />
    <Effect What="Trait" Name="Malformed"               Amount="0"    />
    <Effect What="Trait" Name="Psychic"                 Amount="1"    />
    <Effect What="Trait" Name="Strong Magic"            Amount="1"    />

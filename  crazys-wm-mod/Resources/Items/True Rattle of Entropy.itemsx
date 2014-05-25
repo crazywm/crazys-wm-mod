@@ -11,7 +11,7 @@
    <Effect What="Stat"  Name="Constitution"            Amount="100"    />
    <Effect What="Skill" Name="Magic"                   Amount="90"    />
    <Effect What="Skill" Name="Combat"                  Amount="-90"    />
-   <Effect What="Trait" Name="Incorporial"             Amount="1"    />
+   <Effect What="Trait" Name="Incorporeal"             Amount="1"    />
    <Effect What="Trait" Name="Quick Learner"           Amount="1"    />
 </Item>
 <Item Name="True Rattle of Entropy"
@@ -25,7 +25,7 @@
    <Effect What="Stat"  Name="Constitution"            Amount="100"    />
    <Effect What="Skill" Name="Magic"                   Amount="90"    />
    <Effect What="Skill" Name="Combat"                  Amount="-90"    />
-   <Effect What="Trait" Name="Incorporial"             Amount="1"    />
+   <Effect What="Trait" Name="Incorporeal"             Amount="1"    />
    <Effect What="Trait" Name="Quick Learner"           Amount="1"    />
 </Item>
 </Items>

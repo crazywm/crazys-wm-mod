@@ -71,6 +71,10 @@ sCentre::~sCentre()			// destructor
 
 void cCentreManager::AddGirl(int brothelID, sGirl* girl)
 {
+	girl->m_InMovieStudio = false;
+	girl->m_InArena = false;
+	girl->m_InClinic = false;
+	girl->m_InHouse = false;
 	girl->m_InCentre = true;
 	cBrothelManager::AddGirl(brothelID, girl);
 }

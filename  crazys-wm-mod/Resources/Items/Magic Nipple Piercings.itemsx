@@ -15,5 +15,6 @@
    <Effect What="Stat"  Name="Confidence"              Amount="-15"    />
    <Effect What="Trait" Name="Perky Nipples"           Amount="1"    />
    <Effect What="Trait" Name="Cute"                    Amount="1"    />
+   <Effect What="Trait" Name="Pierced Nipples"         Amount="1"    />
 </Item>
 </Items>

@@ -60,6 +60,7 @@ bool cJobManager::WorkFilmDirector(sGirl* girl, sBrothel* brothel, int DayNight,
 	char buffer[1000];
 	int jobperformance = 0;
 	string girlName = girl->m_Realname;
+	g_Studios.m_DirectorName = girl->m_Realname;
 
 	g_Girls.UnequipCombat(girl);
 	

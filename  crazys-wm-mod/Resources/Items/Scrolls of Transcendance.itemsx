@@ -35,7 +35,7 @@
    <Effect What="Trait" Name="Quick Learner"           Amount="1"    />
 </Item>
 <Item Name="Scrolls of Transcendance"
-      Desc="To read the words of power within these pages is to change the universe. You are unchanged. All flows around you.  This is the lesson.. (+Quick learner, xp, optimist, happy - Mind Fucked, retarted, tired)"
+      Desc="To read the words of power within these pages is to change the universe. You are unchanged. All flows around you.  This is the lesson.. (+Quick learner, xp, optimist, happy - Mind Fucked, Retarded, tired)"
       Type="Food"
       Badness="0"
       Special="None"
@@ -49,11 +49,11 @@
    <Effect What="Trait" Name="Optimist"                Amount="1"    />
    <Effect What="Trait" Name="Pessimist"               Amount="0"    />
    <Effect What="Trait" Name="Mind Fucked"             Amount="0"    />
-   <Effect What="Trait" Name="Retarted"                Amount="0"    />
+   <Effect What="Trait" Name="Retarded"                Amount="0"    />
    <Effect What="Stat"  Name="Exp"                     Amount="255"    />
 </Item>
 <Item Name="Scrolls of Transcendance"
-      Desc="To read the words of power within these pages is to change the universe. You are unchanged. All flows around you.  This is the lesson.. (+Quick learner, xp, optimist, happy - Mind Fucked, retarted, tired)"
+      Desc="To read the words of power within these pages is to change the universe. You are unchanged. All flows around you.  This is the lesson.. (+Quick learner, xp, optimist, happy - Mind Fucked, Retarded, tired)"
       Type="Food"
       Badness="0"
       Special="None"
@@ -67,7 +67,7 @@
    <Effect What="Trait" Name="Optimist"                Amount="1"    />
    <Effect What="Trait" Name="Pessimist"               Amount="0"    />
    <Effect What="Trait" Name="Mind Fucked"             Amount="0"    />
-   <Effect What="Trait" Name="Retarted"                Amount="0"    />
+   <Effect What="Trait" Name="Retarded"                Amount="0"    />
    <Effect What="Stat"  Name="Exp"                     Amount="255"    />
 </Item>
 </Items>

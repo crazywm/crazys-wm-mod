@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Bracelet of Refreshing Desire"    
+      Desc="This subtle, metallic band can either be placed or locked around a girl's wrist, ankle, or even a tail. While it won't actually increase the strength of her desire, it significantly increases the frequency when desire is felt. The wearer will recover from sex very quickly and will find she wants it far more often. Unfortunately being so sexually-focused makes her unfocused and less resilient. (+Nymphomaniac, +40 Libedo, -20 Intelligence, -20 Constitution)" 
+      Type="Armband" 
+      Badness="18" 
+      Special="None" 
+      Cost="2500" 
+      Rarity="Shop05" 
+      Infinite="false" 
+      GirlBuyChance="0">
+   <Effect What="Stat" Name="Libido" Amount="40" />
+   <Effect What="Stat" Name="Intelligence" Amount="-20" />
+   <Effect What="Stat" Name="Constitution" Amount="-20" />
+   <Effect What="Trait" Name="Nymphomaniac" Amount="1" />
+</Item>
+</Items>

@@ -2789,13 +2789,13 @@ void cBrothelManager::UsePlayersItems(sGirl* cur)
 	// Fast Orgasms & Nymphomaniac (Organic Lingerie, piece of equipment)
 
 	has = g_Brothels.HasItem("Organic Lingerie");
-	if (!g_Girls.HasTrait(cur, "Fast Orgasms") && !g_Girls.HasTrait(cur, "Nymphomaniac") && has != -1)
+	if (!g_Girls.HasTrait(cur, "Fast orgasms") && !g_Girls.HasTrait(cur, "Fast Orgasms") && !g_Girls.HasTrait(cur, "Nymphomaniac") && has != -1)
        AutomaticItemUse(cur, has, gettext("You had her wear organic lingerie."));
 
 	// Fast Orgasms (Ring of Pleasure, piece of equipment)
 
 	has = g_Brothels.HasItem("Ring of Pleasure");
-	if (!g_Girls.HasTrait(cur, "Fast Orgasms") && has != -1)
+	if (!g_Girls.HasTrait(cur, "Fast orgasms") && !g_Girls.HasTrait(cur, "Fast Orgasms") && has != -1)
        AutomaticItemUse(cur, has, gettext("You had her put on a ring of pleasure for the fast orgasms trait."));
 
 	// Lets try and cure mind fucked & retarted

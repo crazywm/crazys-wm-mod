@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Items>
 <Item Name="Amulet of Fleshy Softness"
-      Desc="Turn your girl completely human again. She'll need some time adjusting to the newer, fragile human body of hers, though. (Removes Construct, Incorporial, Sterile. Adds Fragile)"
+      Desc="Turn your girl completely human again. She'll need some time adjusting to the newer, fragile human body of hers, though. (Removes Construct, Incorporeal, Sterile. Adds Fragile)"
       Type="Necklace"
       Badness="0"
       Special="None"
@@ -9,7 +9,7 @@
       Rarity="Shop05"
       Infinite="false">
    <Effect What="Trait" Name="Construct"               Amount="0"    />
-   <Effect What="Trait" Name="Incorporial"             Amount="0"    />
+   <Effect What="Trait" Name="Incorporeal"             Amount="0"    />
    <Effect What="Trait" Name="Sterile"                 Amount="0"    />
    <Effect What="Trait" Name="Fragile"                 Amount="1"    />
 </Item>
