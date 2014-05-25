@@ -189,10 +189,10 @@ const unsigned int JOB_FILMFREETIME		= 53;		// Currently does the same as a clea
 
 // - Clinic
 const unsigned int JOBFILTER_CLINIC     = 9;	// teaches can train girls only up to their own skill level
-const unsigned int JOB_HEALING          = 54;	// not added yet	// takes 1 days for each wound trait received.
+const unsigned int JOB_GETHEALING       = 54;	// not added yet	// takes 1 days for each wound trait received.
 const unsigned int JOB_GETABORT         = 55;	// not added yet	// gets an abortion (takes 2 days)
 const unsigned int JOB_PHYSICALSURGERY  = 56;	// not added yet	// magical plastic surgery (takes 5 days)
-const unsigned int JOB_REPAIRSHOP       = 57;	// not added yet	// construct girls can get repaired quickly
+const unsigned int JOB_GETREPAIRS       = 57;	// not added yet	// construct girls can get repaired quickly
 const unsigned int JOB_LIPO			    = 58;	// not added yet	// magical plastic surgery (takes 5 days)
 const unsigned int JOB_BREASTREDUCTION  = 59;	// not added yet	// magical plastic surgery (takes 5 days)
 const unsigned int JOB_BOOBJOB          = 60;	// not added yet	// magical plastic surgery (takes 5 days)

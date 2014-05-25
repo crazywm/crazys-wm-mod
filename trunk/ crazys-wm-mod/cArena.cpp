@@ -71,6 +71,10 @@ sArena::~sArena()			// destructor
 
 void cArenaManager::AddGirl(int brothelID, sGirl* girl)
 {
+	girl->m_InMovieStudio = false;
+	girl->m_InCentre = false;
+	girl->m_InClinic = false;
+	girl->m_InHouse = false;
 	girl->m_InArena = true;
 	cBrothelManager::AddGirl(brothelID, girl);
 }

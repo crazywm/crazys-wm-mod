@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Enchanted Dress"    
+      Desc="This intricate, gorgeous piece of attire instantly adapts to the form of any girl who puts it on. It's extremely comfortable, and it enhances the appearance of the wearer's body. The color, pattern, and length all change with a simple thought, making it even more desirable. (+24 Charisma, +8 Beauty, +10 Agility, +20 Happiness, +20 Love, +Great Figure)" 
+      Type="Dress" 
+      Badness="0" 
+      Special="None" 
+      Cost="2800" 
+      Rarity="Shop25" 
+      Infinite="false">
+   <Effect What="Stat" Name="Agility" Amount="10" />
+   <Effect What="Stat" Name="PCLove" Amount="20" />
+   <Effect What="Stat" Name="Happiness" Amount="20" />
+   <Effect What="Stat" Name="Beauty" Amount="8" />
+   <Effect What="Stat" Name="Charisma" Amount="24" />
+   <Effect What="Trait" Name="Great Figure" Amount="1" />
+</Item>
+</Items>

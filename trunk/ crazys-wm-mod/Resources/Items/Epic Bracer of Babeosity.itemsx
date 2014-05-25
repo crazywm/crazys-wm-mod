@@ -17,8 +17,8 @@
    <Effect What="Trait" Name="Big Boobs"               Amount="0"    />
    <Effect What="Trait" Name="Small Boobs"             Amount="0"    /> 
    <Effect What="Trait" Name="Abnormally Large Boobs"  Amount="1"    /> 
-   <Effect What="Trait" Name="Fast orgasms"            Amount="1"    />
-   <Effect What="Trait" Name="Slow orgasms"            Amount="0"    />
+   <Effect What="Trait" Name="Fast Orgasms"            Amount="1"    />
+   <Effect What="Trait" Name="Slow Orgasms"            Amount="0"    />
    <Effect What="Trait" Name="Lolita"                  Amount="0"    />
    <Effect What="Trait" Name="Cute"                    Amount="0"    />
    <Effect What="Trait" Name="Nymphomaniac"            Amount="1"    />
@@ -29,6 +29,6 @@
    <Effect What="Trait" Name="Puffy Nipples"           Amount="1"    />
    <Effect What="Trait" Name="Perky Nipples"           Amount="1"    />
    <Effect What="Trait" Name="Broken Will"             Amount="0"    />
-   <Effect What="Trait" Name="Strong Willed"           Amount="0"    />
+   <Effect What="Trait" Name="Iron Will"               Amount="0"    />
 </Item>
 </Items>

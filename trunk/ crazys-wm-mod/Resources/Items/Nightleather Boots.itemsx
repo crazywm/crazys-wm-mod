@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Nightleather Boots"    
+      Desc="An unusual alternative to traditional combat footwear, these boots are made of leather from a dangerous, magical beast. The boots are designed to look sexy and unimposing, while still remaining quite functional. An innate magical effect makes them morph and conform to practically any feet. Even though they have tall heels, their magic makes it easier for the wearer to move comfortably. (+2 Charisma, +5 Combat, +8 Agility, -Clumsy, -5 Fear)" 
+      Type="Shoes" 
+      Badness="6" 
+      Special="None" 
+      Cost="850" 
+      Rarity="Shop25" 
+      Infinite="false" 
+      GirlBuyChance="10">
+   <Effect What="Skill" Name="Combat" Amount="5" />
+   <Effect What="Stat" Name="Agility" Amount="8" />
+   <Effect What="Stat" Name="Charisma" Amount="2" />
+   <Effect What="Stat" Name="PCFear" Amount="-5" />
+   <Effect What="Trait" Name="Clumsy" Amount="0" />
+</Item>
+</Items>

@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Major Tome of Genius"    
+      Desc="Like many magical tomes, each copy of this rare book can only be read a single time. Merely seeing its pages will significantly increase intelligence and allow new ideas to be learned quickly. The magic is so strong that it can alter personality a little, making someone rather nerdy, but often in a way that's kind of cute. (+30 Int, +Quick Learner, +Nerd)" 
+      Type="Food" 
+      Badness="10" 
+      Special="None" 
+      Cost="10000" 
+      Rarity="Shop05" 
+      Infinite="false">
+   <Effect What="Stat" Name="Intelligence" Amount="30" />
+   <Effect What="Trait" Name="Quick Learner" Amount="1" />
+   <Effect What="Trait" Name="Nerd" Amount="1" />
+</Item>
+</Items>

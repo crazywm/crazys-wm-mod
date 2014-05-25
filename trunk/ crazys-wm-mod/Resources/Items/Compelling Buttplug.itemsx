@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Compelling Buttplug"    
+      Desc="Unknown to the girl who receives it, this seemingly-normal buttplug will magically compel her to wear it as much as possible. As long as she has this in her possession, her interest in any type of anal sex or insertion will also increase dramatically. Between this new found interest and constantly having a plug in her ass, the girl's anal skills will quickly become very advanced. The size can sometimes make it harder to move around comfortably. (+40 Anal, +15 Libido, -5 Agi)" 
+      Type="Misc" 
+      Badness="19" 
+      Special="None" 
+      Cost="400" 
+      Rarity="Shop25" 
+      Infinite="false">
+   <Effect What="Stat" Name="Libido" Amount="15" />
+   <Effect What="Stat" Name="Agility" Amount="-5" />
+   <Effect What="Skill" Name="Anal" Amount="40" />
+</Item>
+</Items>

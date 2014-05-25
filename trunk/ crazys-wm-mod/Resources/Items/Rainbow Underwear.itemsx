@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Rainbow Underwear"    
+      Desc="The design of this underwear constantly shifts into complex, extremely colorful patterns. Any girl who wears them will have a much greater outlook on life. As an unusual side effect, the wearer will also begin to find member of the same sex more attractive. (+Optimist, +4 Cha, +20 Happiness, +15 Lesbian)" 
+      Type="Under Wear" 
+      Badness="0" 
+      Special="None" 
+      Cost="4500" 
+      Rarity="Shop05" 
+      Infinite="false"
+	GirlBuyChance="5">
+   <Effect What="Stat" Name="Charisma" Amount="4" />
+   <Effect What="Stat" Name="Happiness" Amount="20" />
+   <Effect What="Skill" Name="Lesbian" Amount="15" />
+   <Effect What="Trait" Name="Pessimist" Amount="0" />
+   <Effect What="Trait" Name="Optimist" Amount="1" />
+</Item>
+</Items>

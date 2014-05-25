@@ -194,54 +194,85 @@ void cScreenGirlDetails::init()
 
 	ClearListBox(jobtypelist_id);
 
+	DisableButton(accomdown_id, selected_girl->m_AccLevel < 1);
+	DisableButton(accomup_id, selected_girl->m_AccLevel > 4);
+
 	DisableButton(interact_id, (g_TalkCount <= 0));
 	DisableButton(takegold_id, (selected_girl->m_Money <= 0));
 	SetCheckBox(antipreg_id, (selected_girl->m_UseAntiPreg));
 
+	bool InMovieStudio = (selected_girl->m_InMovieStudio);
 	bool InArena = (selected_girl->m_InArena);
+	bool InCentre = (selected_girl->m_InCentre);
+	bool InClinic = (selected_girl->m_InClinic);
+	bool InHouse = (selected_girl->m_InHouse);
 	bool InDungeon = (selected_girl->m_DayJob == JOB_INDUNGEON);
 	DisableButton(reldungeon_id, !InDungeon);
 	DisableButton(senddungeon_id, InDungeon);
 
-	// Disable dungeon if selected girl is in the clinic
-	if (selected_girl->m_InClinic || selected_girl->m_InMovieStudio || selected_girl->m_InHouse || selected_girl->m_InCentre || selected_girl->m_InArena)
+	// Disable dungeon if selected girl is in a non-brothel building
+	if (InMovieStudio || InArena || InCentre || InClinic || InHouse)
 	{
 		DisableButton(senddungeon_id, true);
-//		DisableButton(inventory_id, true);  This was causing the error where Manage inventory would be greyed out --PP
 	}
 
-	if (g_Arena.GetGirlsCurrentBrothel(selected_girl) != -1)//ARENA
+	if (InArena)
 	{
 		ClearListBox(joblist_id);
 		AddToListBox(jobtypelist_id, JOBFILTER_ARENA, g_Arena.m_JobManager.JobFilterName[JOBFILTER_ARENA]);
 		SetSelectedItemInList(jobtypelist_id, JOBFILTER_ARENA);
+		RefreshJobList();
+		HideButton(day_id, false);
+		HideButton(night_id, false);
+		DisableButton(day_id, (DayNight == 0));
+		DisableButton(night_id, (DayNight != 0));
 	}
-	else if (g_Clinic.GetGirlsCurrentBrothel(selected_girl) != -1)//CLINIC
+	else if (InClinic)
 	{
 		ClearListBox(joblist_id);
 		AddToListBox(jobtypelist_id, JOBFILTER_CLINIC, g_Clinic.m_JobManager.JobFilterName[JOBFILTER_CLINIC]);
 		AddToListBox(jobtypelist_id, JOBFILTER_CLINICSTAFF, g_Clinic.m_JobManager.JobFilterName[JOBFILTER_CLINICSTAFF]);
 		SetSelectedItemInList(jobtypelist_id, JOBFILTER_CLINIC);
+		RefreshJobList();
+		HideButton(day_id, false);
+		HideButton(night_id, false);
+		DisableButton(day_id, (DayNight == 0));
+		DisableButton(night_id, (DayNight != 0));
 	}
-	else if (g_Centre.GetGirlsCurrentBrothel(selected_girl) != -1)//CENTRE
+	else if (InCentre)
 	{
 		ClearListBox(joblist_id);
 		AddToListBox(jobtypelist_id, JOBFILTER_COMMUNITYCENTRE, g_Centre.m_JobManager.JobFilterName[JOBFILTER_COMMUNITYCENTRE]);
 		AddToListBox(jobtypelist_id, JOBFILTER_DRUGCENTRE, g_Centre.m_JobManager.JobFilterName[JOBFILTER_DRUGCENTRE]);
 		SetSelectedItemInList(jobtypelist_id, JOBFILTER_COMMUNITYCENTRE);
+		RefreshJobList();
+		HideButton(day_id, false);
+		HideButton(night_id, false);
+		DisableButton(day_id, (DayNight == 0));
+		DisableButton(night_id, (DayNight != 0));
 	}
-	else if (g_House.GetGirlsCurrentBrothel(selected_girl) != -1)//HOUSE
+	else if (InHouse)
 	{
 		ClearListBox(joblist_id);
 		AddToListBox(jobtypelist_id, JOBFILTER_HOUSE, g_House.m_JobManager.JobFilterName[JOBFILTER_HOUSE]);
 		SetSelectedItemInList(jobtypelist_id, JOBFILTER_HOUSE);
+		RefreshJobList();
+		HideButton(day_id, false);
+		HideButton(night_id, false);
+		DisableButton(day_id, (DayNight == 0));
+		DisableButton(night_id, (DayNight != 0));
 	}
-	else if (g_Studios.GetGirlsCurrentBrothel(selected_girl) != -1)//STUDIO
+	else if (InMovieStudio)
 	{
+		DayNight = 1;
 		ClearListBox(joblist_id);
 		AddToListBox(jobtypelist_id, JOBFILTER_STUDIOCREW, g_Studios.m_JobManager.JobFilterName[JOBFILTER_STUDIOCREW]);
 		AddToListBox(jobtypelist_id, JOBFILTER_MOVIESTUDIO, g_Studios.m_JobManager.JobFilterName[JOBFILTER_MOVIESTUDIO]);
 		SetSelectedItemInList(jobtypelist_id, JOBFILTER_STUDIOCREW);
+		RefreshJobList();
+		HideButton(day_id, true);
+		HideButton(night_id, true);
+
 	}
 	else if(!InDungeon)
 	{  // if not in dungeon, set up job lists
@@ -459,6 +490,7 @@ void cScreenGirlDetails::check_events()
 				SetSelectedItemText(joblist_id, old_job, g_Brothels.m_JobManager.JobDescriptionCount(old_job, g_CurrBrothel, day));
 				SetSelectedItemText(joblist_id, selection, g_Brothels.m_JobManager.JobDescriptionCount(selection, g_CurrBrothel, day));
 			}
+			RefreshJobList();
 		}
 	}
 	if(g_InterfaceEvents.CheckButton(inventory_id))
@@ -748,7 +780,13 @@ void cScreenGirlDetails::RefreshJobList()
 	{
 		if (g_Brothels.m_JobManager.JobName[i] == "")
 			continue;
-		text = g_Brothels.m_JobManager.JobDescriptionCount(i, g_CurrBrothel, day);
+		text = g_Brothels.m_JobManager.JobDescriptionCount(i, g_CurrBrothel, day,
+			selected_girl->m_InClinic,
+			selected_girl->m_InMovieStudio,
+			selected_girl->m_InArena,
+			selected_girl->m_InCentre,
+			selected_girl->m_InHouse);
+
 		AddToListBox(joblist_id, i, text);
 	}
 

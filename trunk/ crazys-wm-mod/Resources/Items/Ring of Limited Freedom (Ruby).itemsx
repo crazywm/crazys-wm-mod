@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Ring of Limited Freedom (Ruby)"    
+      Desc="These rings are designed to allow a slave to temporarily live as a free person, albeit with strong limitations. While worn, it neutralizes any slave branding or marks, but also imposes effects to ensure a former slave remains subservient to their master. This variation gives the wearer greater sexual desire, especially towards men, but also makes it extremely difficult to achieve release or orgasm. (-Slave, +10 Obedience, +60 Libido, +10 Normal/Group. -10 Lesbian. +Slow Orgasms)" 
+      Type="Ring" 
+      Badness="28" 
+      Special="None" 
+      Cost="800" 
+      Rarity="Shop05" 
+      Infinite="false" 
+      GirlBuyChance="0">
+   <Effect What="GirlStatus" Name="Slave" Amount="0" />
+   <Effect What="Stat" Name="Libido" Amount="60" />
+   <Effect What="Stat" Name="Obedience" Amount="10" />
+   <Effect What="Skill" Name="NormalSex" Amount="10" />
+   <Effect What="Skill" Name="Group" Amount="10" />
+   <Effect What="Skill" Name="Lesbian" Amount="-10" />
+   <Effect What="Trait" Name="Fast Orgasms" Amount="0" />
+   <Effect What="Trait" Name="Fast Orgasms" Amount="0" />
+   <Effect What="Trait" Name="Slow Orgasms" Amount="1" />
+   <Effect What="Trait" Name="Slow Orgasms" Amount="1" />
+</Item>
+</Items>

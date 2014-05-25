@@ -8,6 +8,6 @@
       Cost="17550"
       Rarity="Catacomb15"
       Infinite="false">
-   <Effect What="Trait" Name="Incorporial"             Amount="1"    />
+   <Effect What="Trait" Name="Incorporeal"             Amount="1"    />
 </Item>
 </Items>

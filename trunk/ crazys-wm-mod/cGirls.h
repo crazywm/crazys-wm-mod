@@ -352,7 +352,7 @@ struct sGirl
 
 	int m_Money;
 
-	unsigned char m_AccLevel;					// how good her accomadation is, 0 is slave like and non-slaves will really hate it
+	unsigned char m_AccLevel;					// how good her Accommodation is, 0 is slave like and non-slaves will really hate it
 
 	unsigned char m_Skills[NUM_SKILLS];
 	int m_SkillMods[NUM_SKILLS];

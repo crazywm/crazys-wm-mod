@@ -22,8 +22,8 @@
    <Effect What="Trait" Name="Assassin"                Amount="0"    />
    <Effect What="Trait" Name="Elegant"                 Amount="0"    />
    <Effect What="Trait" Name="Meek"                    Amount="0"    />
-   <Effect What="Trait" Name="Fast orgasms"            Amount="1"    />
-   <Effect What="Trait" Name="Slow orgasms"            Amount="0"    />
+   <Effect What="Trait" Name="Fast Orgasms"            Amount="1"    />
+   <Effect What="Trait" Name="Slow Orgasms"            Amount="0"    />
    <Effect What="Trait" Name="Cool Person"             Amount="0"    />
 </Item>
 </Items>

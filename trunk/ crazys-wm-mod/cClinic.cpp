@@ -71,6 +71,10 @@ sClinic::~sClinic()			// destructor
 
 void cClinicManager::AddGirl(int brothelID, sGirl* girl)
 {
+	girl->m_InMovieStudio = false;
+	girl->m_InArena = false;
+	girl->m_InCentre = false;
+	girl->m_InHouse = false;
 	girl->m_InClinic = true;
 	cBrothelManager::AddGirl(brothelID, girl);
 }

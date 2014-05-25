@@ -494,12 +494,12 @@ void cGirls::CalculateGirlType(sGirl* girl)
 		Nerd += 20;
 		Freak += 5;
 	}
-	if(HasTrait(girl, "Fast orgasms"))
+	if (HasTrait(girl, "Fast orgasms") || HasTrait(girl, "Fast Orgasms"))
 	{
 		Cool += 10;
 		Sexy += 30;
 	}
-	if(HasTrait(girl, "Slow orgasms"))
+	if (HasTrait(girl, "Slow orgasms") || HasTrait(girl, "Slow Orgasms"))
 	{
 		CuteGirl -= 5;
 		Cool -= 5;
@@ -952,6 +952,12 @@ void cGirls::CalculateGirlType(sGirl* girl)
  		Sexy += 10;
  		Freak += 15;
  	}
+	if (HasTrait(girl, "Deep Throat"))
+	{
+		Elegant -= 20;
+		Sexy += 20;
+		Freak += 30;
+	}
 
 	if(BigBoobs > SmallBoobs)
 	{
@@ -2842,7 +2848,7 @@ string cGirls::GetDetailsString(sGirl* girl, bool purchase)
 		data += buffer;
 		data += gettext("%\n");
 
-		data += gettext("Accomodation: ");
+		data += gettext("Accommodation: ");
 		if(girl->m_AccLevel == 0)
 			data += gettext("Very Poor\n");
 		if(girl->m_AccLevel == 1)
@@ -5581,11 +5587,13 @@ void cGirls::UnapplyTraits(sGirl* girl, sTrait* trait)
 			UpdateSkill(girl,SKILL_TITTYSEX,10);
 		}
 
-		else if(strcmp(tr->m_Name, "Fast orgasms") == 0)
+		else if (strcmp(tr->m_Name, "Fast orgasms") == 0 || strcmp(tr->m_Name, "Fast Orgasms") == 0)
 		{
 			// Can only have one trait added
-			if (!AddTrait(girl, "Fake orgasm expert", false, false, true))
-				AddTrait(girl, "Slow orgasms", false, false, true);
+			if (HasRememberedTrait(girl, "Fake orgasm expert") || HasRememberedTrait(girl, "Fake Orgasm Expert"))
+				AddTrait(girl, "Fake Orgasm Expert", false, false, true);
+			else if (HasRememberedTrait(girl, "Slow orgasms") || HasRememberedTrait(girl, "Slow Orgasms"))
+				AddTrait(girl, "Slow Orgasms", false, false, true);
 
 			UpdateStat(girl,STAT_LIBIDO,-10);
 			UpdateSkill(girl,SKILL_ANAL,-10);
@@ -5598,11 +5606,13 @@ void cGirls::UnapplyTraits(sGirl* girl, sTrait* trait)
 			UpdateStat(girl,STAT_CONFIDENCE,-10);
 		}
 
-		else if(strcmp(tr->m_Name, "Fake orgasm expert") == 0)
+		else if (strcmp(tr->m_Name, "Fake orgasm expert") == 0 || strcmp(tr->m_Name, "Fake Orgasm Expert") == 0)
 		{
 			// Can only have one trait added
-			if (!AddTrait(girl, "Fast orgasms", false, false, true))
-				AddTrait(girl, "Slow orgasms", false, false, true);
+			if (HasRememberedTrait(girl, "Fast orgasms") || HasRememberedTrait(girl, "Fast Orgasms"))
+				AddTrait(girl, "Fast Orgasms", false, false, true);
+			else if (HasRememberedTrait(girl, "Slow orgasms") || HasRememberedTrait(girl, "Slow Orgasms"))
+				AddTrait(girl, "Slow Orgasms", false, false, true);
 
 			UpdateSkill(girl,SKILL_ANAL,-2);
 			UpdateSkill(girl,SKILL_BDSM,-2);
@@ -5613,11 +5623,13 @@ void cGirls::UnapplyTraits(sGirl* girl, sTrait* trait)
 			UpdateSkill(girl,SKILL_LESBIAN,-2);
 		}
 
-		else if(strcmp(tr->m_Name, "Slow orgasms") == 0)
+		else if (strcmp(tr->m_Name, "Slow orgasms") == 0 || strcmp(tr->m_Name, "Slow Orgasms") == 0)
 		{
 			// Can only have one trait added
-			if (!AddTrait(girl, "Fast orgasms", false, false, true))
-				AddTrait(girl, "Fake orgasm expert", false, false, true);
+			if (HasRememberedTrait(girl, "Fake orgasm expert") || HasRememberedTrait(girl, "Fake Orgasm Expert"))
+				AddTrait(girl, "Fake Orgasm Expert", false, false, true);
+			else if (HasRememberedTrait(girl, "Fast orgasms") || HasRememberedTrait(girl, "Fast Orgasms"))
+				AddTrait(girl, "Fast Orgasms", false, false, true);
 
 			UpdateSkill(girl,SKILL_ANAL,2);
 			UpdateSkill(girl,SKILL_BDSM,2);
@@ -6006,7 +6018,7 @@ void cGirls::UnapplyTraits(sGirl* girl, sTrait* trait)
 
 		else if (strcmp(tr->m_Name, "Incorporeal") == 0 || strcmp(tr->m_Name, "Incorporial") == 0)
 		{
-			RemoveTrait(girl, "Sterile");
+//			RemoveTrait(girl, "Sterile");  // `J` Why remove Sterile?
 		}
 
 		else if(strcmp(tr->m_Name, "Quick Learner") == 0)
@@ -6058,15 +6070,23 @@ void cGirls::UnapplyTraits(sGirl* girl, sTrait* trait)
  		}
 		else if(strcmp(tr->m_Name, "Gag Reflex") == 0)
 		{
-			AddTrait(girl, "No Gag Relex", false, false, true);
+			if (!AddTrait(girl, "Deep Throat", false, false, true))
+				AddTrait(girl, "No Gag Reflex", false, false, true);
 			UpdateSkill(girl, SKILL_ORALSEX, 50);
 		}
-		else if(strcmp(tr->m_Name, "No Gag Reflex") == 0)
+		else if (strcmp(tr->m_Name, "No Gag Reflex") == 0)
 		{
-			AddTrait(girl, "Gag Relex", false, false, true);
-			UpdateSkill(girl, SKILL_ORALSEX, -30);
+			if (!AddTrait(girl, "Deep Throat", false, false, true))
+				AddTrait(girl, "Gag Reflex", false, false, true);
+			UpdateSkill(girl, SKILL_ORALSEX, -25);
 		}
- 
+		else if (strcmp(tr->m_Name, "Deep Throat") == 0)
+		{
+			if (!AddTrait(girl, "No Gag Reflex", false, false, true))
+				AddTrait(girl, "Gag Reflex", false, false, true);
+			UpdateSkill(girl, SKILL_ORALSEX, -50);
+		}
+
 
 		if(doOnce)
 		{
@@ -6190,7 +6210,7 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait, bool rememberflag)
 			UpdateSkill(girl,SKILL_TITTYSEX,-15);
 		}
 
-		else if(strcmp(tr->m_Name, "Fast orgasms") == 0)
+		else if (strcmp(tr->m_Name, "Fast orgasms") == 0 || strcmp(tr->m_Name, "Fast Orgasms") == 0)
 		{
 			// should only have one trait but lets make sure
 			//if (RemoveTrait(girl, "Fake orgasm expert", true, true))
@@ -6199,7 +6219,9 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait, bool rememberflag)
 			//	RemoveTrait(girl, "Slow orgasms", true, true);
 				
 			RemoveTrait(girl, "Fake orgasm expert", rememberflag, true);
+			RemoveTrait(girl, "Fake Orgasm Expert", rememberflag, true);
 			RemoveTrait(girl, "Slow orgasms", rememberflag, true);
+			RemoveTrait(girl, "Slow Orgasms", rememberflag, true);
 
 			UpdateStat(girl,STAT_LIBIDO,10);
 			UpdateSkill(girl,SKILL_ANAL,10);
@@ -6213,7 +6235,7 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait, bool rememberflag)
 			UpdateEnjoyment(girl, ACTION_SEX, +10, true);
 		}
 		
-		else if(strcmp(tr->m_Name, "Fake orgasm expert") == 0)
+		else if (strcmp(tr->m_Name, "Fake orgasm expert") == 0 || strcmp(tr->m_Name, "Fake Orgasm Expert") == 0)
 		{
 			// should only have one trait but lets make sure
 			//if (RemoveTrait(girl, "Fast orgasms", true, true))
@@ -6222,7 +6244,9 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait, bool rememberflag)
 			//	RemoveTrait(girl, "Slow orgasms", true, true);
 				
 			RemoveTrait(girl, "Slow orgasms", rememberflag, true);
+			RemoveTrait(girl, "Slow Orgasms", rememberflag, true);
 			RemoveTrait(girl, "Fast orgasms", rememberflag, true);
+			RemoveTrait(girl, "Fast Orgasms", rememberflag, true);
 
 			UpdateSkill(girl,SKILL_ANAL,2);
 			UpdateSkill(girl,SKILL_BDSM,2);
@@ -6234,7 +6258,7 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait, bool rememberflag)
 		}
 
 
-		else if(strcmp(tr->m_Name, "Slow orgasms") == 0)
+		else if (strcmp(tr->m_Name, "Slow orgasms") == 0 || strcmp(tr->m_Name, "Slow Orgasms") == 0)
 		{
 			// should only have one trait but lets make sure
 			//if (RemoveTrait(girl, "Fast orgasms", true, true))
@@ -6243,7 +6267,9 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait, bool rememberflag)
 			//	RemoveTrait(girl, "Fake orgasm expert", true, true);	
 
 			RemoveTrait(girl, "Fake orgasm expert", rememberflag, true);
+			RemoveTrait(girl, "Fake Orgasm Expert", rememberflag, true);
 			RemoveTrait(girl, "Fast orgasms", rememberflag, true);
+			RemoveTrait(girl, "Fast Orgasms", rememberflag, true);
 
 			UpdateSkill(girl,SKILL_ANAL,-2);
 			UpdateSkill(girl,SKILL_BDSM,-2);
@@ -6737,15 +6763,23 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait, bool rememberflag)
  		}
 		else if(strcmp(tr->m_Name, "Gag Reflex") == 0)
 		{
+			RemoveTrait(girl, "Deep Throat", rememberflag, true);
 			RemoveTrait(girl, "No Gag Reflex", rememberflag, true);
 			UpdateSkill(girl, SKILL_ORALSEX, -50);
 		}
-		else if(strcmp(tr->m_Name, "No Gag Reflex") == 0)
+		else if (strcmp(tr->m_Name, "No Gag Reflex") == 0)
 		{
+			RemoveTrait(girl, "Deep Throat", rememberflag, true);
 			RemoveTrait(girl, "Gag Reflex", rememberflag, true);
-			UpdateSkill(girl, SKILL_ORALSEX, 30);
+			UpdateSkill(girl, SKILL_ORALSEX, 25);
 		}
- 
+		else if (strcmp(tr->m_Name, "Deep Throat") == 0)
+		{
+			RemoveTrait(girl, "No Gag Reflex", rememberflag, true);
+			RemoveTrait(girl, "Gag Reflex", rememberflag, true);
+			UpdateSkill(girl, SKILL_ORALSEX, 50);
+		}
+
 		if(doOnce)
 		{
 			// WD: 	Added to stop fn from aborting
@@ -7121,15 +7155,15 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 	bool contraception = false;
 	
 	// Start the customers unhappiness/happiness bad sex decreases, good sex inceases
-	if(HasTrait(girl,"Fast orgasms"))	// has priority
+	if (HasTrait(girl, "Fast orgasms") || HasTrait(girl, "Fast Orgasms"))	// has priority
 		customer->m_Stats[STAT_HAPPINESS] += 15;
-	else if(HasTrait(girl,"Slow orgasms"))
+	else if (HasTrait(girl, "Slow orgasms") || HasTrait(girl, "Slow Orgasms"))
 		customer->m_Stats[STAT_HAPPINESS] -= 10;
 	
 	if(HasTrait(girl,"Psychic"))
 		customer->m_Stats[STAT_HAPPINESS] += 10;
 
-	if(HasTrait(girl,"Fake orgasm expert"))  // CRAZY fixed was fake orgasms should be what it is now
+	if (HasTrait(girl, "Fake orgasm expert") || HasTrait(girl, "Fake Orgasm Expert"))  // CRAZY fixed was fake orgasms should be what it is now
 		customer->m_Stats[STAT_HAPPINESS] += 15;
 
 	if(HasTrait(girl,"Abnormally Large Boobs"))		// WD: added
@@ -12511,8 +12545,8 @@ bool cGirls::InheritTrait(sTrait* trait)
 		}
 
 		if(	strcmp(trait->m_Name, "Tough") == 0			|| 
-			strcmp(trait->m_Name, "Fast orgasms") == 0	|| 
-			strcmp(trait->m_Name, "Slow orgasms") == 0	|| 
+			strcmp(trait->m_Name, "Fast orgasms") == 0	|| strcmp(trait->m_Name, "Fast Orgasms") == 0 ||
+			strcmp(trait->m_Name, "Slow orgasms") == 0  || strcmp(trait->m_Name, "Slow Orgasms") == 0 ||
 			strcmp(trait->m_Name, "Quick Learner") == 0 || 
 			strcmp(trait->m_Name, "Slow Learner") == 0
 			)	
@@ -13750,7 +13784,7 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 	{
 		ss << (int)m_PregCooldown;
 	}
-	else if (detailName == "Accomodation")
+	else if (detailName == "Accommodation")
 	{
 		if(m_AccLevel == 0)
 			ss << gettext("Very Poor");

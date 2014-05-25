@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Rose of Enchantment"    
+      Desc="This single rose has been imbued with magical properties, which make it even more special for anyone who recieves it. The flower is magically preserved and will never decay. Its color actually changes depending on the mood and preference of its owner, and it has a wonderful, permanent scent. It's rumored that they develop even greater properties when in larger numbers, but few can afford or find very many. Any girl who receives enough to make a bouquet will undoubtedly feel very special. (+20 Happiness, +5 Love)." 
+      Type="Food" 
+      Badness="0" 
+      Special="None" 
+      Cost="250" 
+      Rarity="Common" 
+      Infinite="false" 
+      GirlBuyChance="0">
+   <Effect What="Stat" Name="Happiness" Amount="20" />
+   <Effect What="Stat" Name="PCLove" Amount="5" />
+</Item>
+</Items>

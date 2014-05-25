@@ -15,5 +15,6 @@
    <Effect What="Skill" Name="OralSex"                 Amount="25"    />
    <Effect What="Trait" Name="Elegant"                 Amount="0"    />
    <Effect What="Trait" Name="Good Kisser"             Amount="1"    />
+   <Effect What="Trait" Name="Pierced Tongue"          Amount="1"    />
 </Item>
 </Items>
