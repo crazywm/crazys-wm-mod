@@ -81,6 +81,8 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, int DayNight, 
 		jobperformance += 10;
 	if (g_Girls.HasTrait(girl, "Long Legs"))
 		jobperformance += 10;
+	if (g_Girls.GetStat(girl, STAT_FAME) >85)
+		jobperformance += 10;
 
 	//bad traits
 	if (g_Girls.HasTrait(girl, "Dependant"))  //needs others to do the job

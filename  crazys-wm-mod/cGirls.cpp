@@ -1858,8 +1858,8 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 	int peep = (looks + g_Girls.GetSkill(girl, SKILL_STRIP));
 	int brothelstrip = (looks + g_Girls.GetSkill(girl, SKILL_STRIP));
 	int massusse = (looks + g_Girls.GetSkill(girl, SKILL_SERVICE));
-	int comunityservice = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) + g_Girls.GetSkill(girl, SKILL_SERVICE));
-	int feedpoor = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) + g_Girls.GetSkill(girl, SKILL_SERVICE));
+	int comunityservice = ((g_Girls.GetStat(girl, STAT_INTELLIGENCE) / 2) + (g_Girls.GetStat(girl, STAT_CHARISMA) / 2) + g_Girls.GetSkill(girl, SKILL_SERVICE));
+	int feedpoor = ((g_Girls.GetStat(girl, STAT_INTELLIGENCE) / 2) + (g_Girls.GetStat(girl, STAT_CHARISMA) / 2) + g_Girls.GetSkill(girl, SKILL_SERVICE));
 	int nurse = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) + g_Girls.GetSkill(girl, SKILL_SERVICE));
 	int mechanic = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) + g_Girls.GetSkill(girl, SKILL_SERVICE));
 
@@ -2151,10 +2151,10 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 	}
 	if (g_Girls.HasTrait(girl, "Construct"))
 	{
-		/*barmaid += 10;
-		barwait += 10;
-		sing += 10;
-		piano += 10;
+		//barmaid += 10;
+		//barwait += 10;
+		sing -= 20;
+		/*piano += 10;
 		dealer += 15;
 		entertainer += 15;
 		xxx += 10;
@@ -2418,6 +2418,26 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		//peep -= 20;
 		//brothelstrip -= 20;
 		//massusse -= 20;
+	}
+
+
+	if (g_Girls.GetStat(girl, STAT_FAME) >85)
+	{
+		//barmaid += 10;
+		//barwait += 10;
+		//sing += 10;
+		//piano += 10;
+		//dealer += 15;
+		//entertainer += 15;
+		//xxx += 10;
+		//clubwait += 10;
+		//clubbar += 10;
+		strip += 10;
+		//peep += 10;
+		brothelstrip += 10;
+		//massusse += 10;
+		//nurse += 15;
+		//mechanic -= 10;
 	}
 
 		/*stringstream dd;

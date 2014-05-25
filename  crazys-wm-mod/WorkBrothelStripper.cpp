@@ -79,6 +79,8 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, int DayNig
 		jobperformance += 10;
 	if (g_Girls.HasTrait(girl, "Long Legs"))
 		jobperformance += 10;
+	if (g_Girls.GetStat(girl, STAT_FAME) >85)  //more people willing to see her
+		jobperformance += 10;
 
 	//bad traits
 	if (g_Girls.HasTrait(girl, "Dependant"))  //needs others to do the job
@@ -181,7 +183,7 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, int DayNig
 	else if (lapdance >= 75)
 			{
 				message += girl->m_Realname + "'s skill at selling private dances is impressive.\n";
-			if (roll < 5)
+			if (roll < 10)
 				{
 					message += "She convinced a patron to buy a shower dance.\n";
 					wages += 75;
@@ -193,7 +195,7 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, int DayNig
 							mast = true;
 							}
 						}
-			if (roll < 20)
+			if (roll < 40)
 				{
 					message += "Sold a VIP dance to a patron.\n";
 					wages += 25;
