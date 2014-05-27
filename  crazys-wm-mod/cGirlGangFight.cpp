@@ -101,7 +101,7 @@ cGirlGangFight::cGirlGangFight(sGirl *girl)
  	if(m_girl->has_trait("Meek"))		m_odds -= 0.05;
  	if(m_girl->has_trait("Dependant"))	m_odds -= 0.10;
  	if(m_girl->has_trait("Fearless"))	m_odds += 0.10;
- 	if(m_girl->has_trait("Fleet of Foot"))	m_odds += 0.10;
+	if (m_girl->has_trait("Fleet of Foot") || m_girl->has_trait("Fleet Of Foot"))	m_odds += 0.10;
 /*
  *	get it back into the 0 <= N <= 1 range
  */
@@ -237,7 +237,7 @@ void cGirlGangFight::win_vs_own_gang(sGang* gang)
  *	fleet of foot means she gets out by running away more than fighting
  *	so fewer fatalities
  */
-	if(m_girl->has_trait("Fleet of Foot")) casualties -= 2;
+	if (m_girl->has_trait("Fleet of Foot") || m_girl->has_trait("Fleet Of Foot")) casualties -= 2;
 /*
  *	OK, apply the casualties and make sure it doesn't go negative
  *	allow for the effect of potions, first

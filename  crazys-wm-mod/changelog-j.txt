@@ -156,7 +156,7 @@ Fixed film jobs now require one of each of Camera Mage and Crystal Purifier befo
 Film jobs now set day job as "Free Time" when setting night job.
 
 ###  Changes 5/24/2014
-Changed "Fake Orgasm Expert", "Slow Orgasms" and "Fast Orgasms" to camelcase keeping legacy spelling.
+Changed "Fake Orgasm Expert", "Slow Orgasms" and "Fast Orgasms" to Title Case keeping legacy spelling.
 Added actress and director to scenes - needs more work to make these usable.
 Added file "!0 Itemsx-contents.txt" to explain and assist creating new itemsx files.
 Cleaned and added new items.
@@ -164,3 +164,13 @@ Fixed accommodation buttons in girl details screen to turn on/off when min/max i
 Fixed job selection in girl details screen.
 !!!!!!!!!!!!!!!!!!!! pushed version .05m
 
+###  Changes 5/27/2014
+Corrected creation of random girls not passing traits through translation check. All "GetTrait"s now go through translation.
+Matron checks now check for equivalent in each building.
+Rewrote Pessimist suicide chance to allow Matron (or equivalents), Drug Counselors or You to try to stop it.
+Major rewrite of anti-pregnancy potions - Each building now stores their own potions.
+Moved Clinic Staff list above Clinic surgery list.
+Crazy added Clinic job - GetAssJob
+Crazy adjusted traits and stats for several jobs
+Added files "!0 girlsx-contents.txt" and "!0 rgirlsx-contents.txt" to explain and assist creating new girl files.
+!!!!!!!!!!!!!!!!!!!! pushed version .05n

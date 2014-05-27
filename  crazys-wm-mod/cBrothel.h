@@ -49,6 +49,8 @@ typedef struct sObjective
 	int m_Difficulty;	// a number representing how hard it is
 }sObjective;
 
+bool UseAntiPreg(bool use, bool isClinic, bool isStudio, bool isArena, bool isCentre, bool isHouse, int BrothelID);
+
 // holds data for movies
 typedef struct sMovie
 {
@@ -81,6 +83,14 @@ struct sBrothel
 	unsigned char	m_NumGirls;			// How many girls are here
 	unsigned short	m_AdvertisingBudget;// Budget player has set for weekly advertising
 	double			m_AdvertisingLevel; // multiplier for how far budget goes, based on girls working in advertising
+	int				m_AntiPregPotions;  // `J` added so all buildings save their own number of potions
+	bool			m_KeepPotionsStocked;// `J` and if they get restocked
+//	bool UseAntiPreg(bool use, int brothelID);
+//	bool UseAntiPreg(bool use);
+	void AddAntiPreg(int amount);
+	int  GetNumPotions()					{ return m_AntiPregPotions; }
+	void KeepPotionsStocked(bool stocked)	{ m_KeepPotionsStocked = stocked; }
+	bool GetPotionRestock()					{ return m_KeepPotionsStocked; }
 
 	int				m_MovieRunTime;		// see above, counter for the 7 week effect
 	int				m_NumMovies;
@@ -122,9 +132,9 @@ struct sBrothel
 	TiXmlElement* SaveBrothelXML(TiXmlElement* pRoot);
 	bool LoadBrothelXML(TiXmlHandle hBrothel);
 	int free_rooms() { return m_NumRooms - m_NumGirls; }
-	bool matron_on_shift(int shift);
+	bool matron_on_shift(int shift, bool isClinic, bool isStudio, bool isArena, bool isCentre, bool isHouse, int BrothelID); // `J` added building checks
+	int matron_count(bool isClinic, bool isStudio, bool isArena, bool isCentre, bool isHouse, int BrothelID);
 	bool has_matron();
-	int matron_count();
 	void AddGirl(sGirl* pGirl);
 };
 
@@ -175,11 +185,14 @@ public:
 	int GetGirlsCurrentBrothel(sGirl* girl); // Used by new security guard code
 	vector<sGirl*> GirlsOnJob(int BrothelID, int JobID, bool day); // Also used by new security code
 
+/*	// `J` AntiPreg Potions rewriten and moved to individual buildings
+	bool UseAntiPreg(bool use, int brothelID);
 	bool UseAntiPreg(bool use);
 	void AddAntiPreg(int amount);
 	int  GetNumPotions()					{ return m_AntiPregPotions; }
 	void KeepPotionsStocked(bool stocked)	{ m_KeepPotionsStocked = stocked; }
 	bool GetPotionRestock()					{ return m_KeepPotionsStocked; }
+/* */
 
 	int GetTotalNumGirls(bool monster = false);
 
@@ -299,8 +312,10 @@ public:
 	sBrothel* m_Last;
 
 	// brothel supplies
+/*	// `J` moved to individual buildings
 	bool m_KeepPotionsStocked;
 	int  m_AntiPregPotions;			// the number of pregnancy/insimination preventive potions in stock
+*/
 	int  m_SupplyShedLevel;			// the level of the supply sheds. the higher the level, the more alcohol and antipreg potions can hold
 
 	// brothel resources

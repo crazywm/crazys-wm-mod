@@ -149,6 +149,7 @@
     <ClCompile Include="WorkBoobJob.cpp" />
     <ClCompile Include="WorkBreastReduction.cpp" />
     <ClCompile Include="WorkFilmRandom.cpp" />
+    <ClCompile Include="WorkGetAssJob.cpp" />
     <ClCompile Include="WorkGetFacelift.cpp" />
     <ClCompile Include="WorkGetVaginalRejuvination.cpp" />
     <ClCompile Include="WorkLiposuction.cpp" />

@@ -348,8 +348,8 @@ void cScreenPropertyManagement::init()
 		ss << gettext("Promotion Budget: ") << (advert * 50) << gettext(" gold / week");
 		EditTextItem(ss.str(), p_ho_advamnt);
 
-		SetCheckBox(p_ho_pot_b, g_House.GetPotionRestock());
-		number = g_House.GetNumPotions();
+		SetCheckBox(p_ho_pot_b, g_House.GetBrothel(0)->m_KeepPotionsStocked);
+		number = g_House.GetBrothel(0)->m_AntiPregPotions;
 		_itoa(number, buffer, 10);
 		message = gettext("You have: ");
 		message += buffer;
@@ -377,8 +377,8 @@ void cScreenPropertyManagement::init()
 		ss << gettext("Advertising Budget: ") << (advert * 50) << gettext(" gold / week");
 		EditTextItem(ss.str(), p_b0_advamnt);
 
-		SetCheckBox(p_b0_pot_b, g_Brothels.GetPotionRestock());
-		number = g_Brothels.GetNumPotions();
+		SetCheckBox(p_b0_pot_b, g_Brothels.GetBrothel(0)->m_KeepPotionsStocked);
+		number = g_Brothels.GetBrothel(0)->m_AntiPregPotions;
 		_itoa(number, buffer, 10);
 		message = gettext("You have: ");
 		message += buffer;
@@ -409,8 +409,8 @@ void cScreenPropertyManagement::init()
 		ss << gettext("Advertising Budget: ") << (advert * 50) << gettext(" gold / week");
 		EditTextItem(ss.str(), p_b1_advamnt);
 
-		SetCheckBox(p_b1_pot_b, g_Brothels.GetPotionRestock());
-		number = g_Brothels.GetNumPotions();
+		SetCheckBox(p_b1_pot_b, g_Brothels.GetBrothel(1)->m_KeepPotionsStocked);
+		number = g_Brothels.GetBrothel(1)->m_AntiPregPotions;
 		_itoa(number, buffer, 10);
 		message = gettext("You have: ");
 		message += buffer;
@@ -442,8 +442,8 @@ void cScreenPropertyManagement::init()
 		ss << gettext("Advertising Budget: ") << (advert * 50) << gettext(" gold / week");
 		EditTextItem(ss.str(), p_b2_advamnt);
 
-		SetCheckBox(p_b2_pot_b, g_Brothels.GetPotionRestock());
-		number = g_Brothels.GetNumPotions();
+		SetCheckBox(p_b2_pot_b, g_Brothels.GetBrothel(2)->m_KeepPotionsStocked);
+		number = g_Brothels.GetBrothel(2)->m_AntiPregPotions;
 		_itoa(number, buffer, 10);
 		message = gettext("You have: ");
 		message += buffer;
@@ -474,8 +474,8 @@ void cScreenPropertyManagement::init()
 		ss << gettext("Advertising Budget: ") << (advert * 50) << gettext(" gold / week");
 		EditTextItem(ss.str(), p_b3_advamnt);
 
-		SetCheckBox(p_b3_pot_b, g_Brothels.GetPotionRestock());
-		number = g_Brothels.GetNumPotions();
+		SetCheckBox(p_b3_pot_b, g_Brothels.GetBrothel(3)->m_KeepPotionsStocked);
+		number = g_Brothels.GetBrothel(3)->m_AntiPregPotions;
 		_itoa(number, buffer, 10);
 		message = gettext("You have: ");
 		message += buffer;
@@ -506,8 +506,8 @@ void cScreenPropertyManagement::init()
 		ss << gettext("Advertising Budget: ") << (advert * 50) << gettext(" gold / week");
 		EditTextItem(ss.str(), p_b4_advamnt);
 
-		SetCheckBox(p_b4_pot_b, g_Brothels.GetPotionRestock());
-		number = g_Brothels.GetNumPotions();
+		SetCheckBox(p_b4_pot_b, g_Brothels.GetBrothel(4)->m_KeepPotionsStocked);
+		number = g_Brothels.GetBrothel(4)->m_AntiPregPotions;
 		_itoa(number, buffer, 10);
 		message = gettext("You have: ");
 		message += buffer;
@@ -538,8 +538,8 @@ void cScreenPropertyManagement::init()
 		ss << gettext("Advertising Budget: ") << (advert * 50) << gettext(" gold / week");
 		EditTextItem(ss.str(), p_b5_advamnt);
 
-		SetCheckBox(p_b5_pot_b, g_Brothels.GetPotionRestock());
-		number = g_Brothels.GetNumPotions();
+		SetCheckBox(p_b5_pot_b, g_Brothels.GetBrothel(5)->m_KeepPotionsStocked);
+		number = g_Brothels.GetBrothel(5)->m_AntiPregPotions;
 		_itoa(number, buffer, 10);
 		message = gettext("You have: ");
 		message += buffer;
@@ -570,8 +570,8 @@ void cScreenPropertyManagement::init()
 		ss << gettext("Advertising Budget: ") << (advert * 50) << gettext(" gold / week");
 		EditTextItem(ss.str(), p_b6_advamnt);
 
-		SetCheckBox(p_b6_pot_b, g_Brothels.GetPotionRestock());
-		number = g_Brothels.GetNumPotions();
+		SetCheckBox(p_b6_pot_b, g_Brothels.GetBrothel(6)->m_KeepPotionsStocked);
+		number = g_Brothels.GetBrothel(6)->m_AntiPregPotions;
 		_itoa(number, buffer, 10);
 		message = gettext("You have: ");
 		message += buffer;
@@ -602,8 +602,8 @@ void cScreenPropertyManagement::init()
 		ss << gettext("Promotion Budget: ") << (advert * 50) << gettext(" gold / week");
 		EditTextItem(ss.str(), p_st_advamnt);
 
-		SetCheckBox(p_st_pot_b, g_Studios.GetPotionRestock());
-		number = g_Studios.GetNumPotions();
+		SetCheckBox(p_st_pot_b, g_Studios.GetBrothel(0)->m_KeepPotionsStocked);
+		number = g_Studios.GetBrothel(0)->m_AntiPregPotions;
 		_itoa(number, buffer, 10);
 		message = gettext("You have: ");
 		message += buffer;
@@ -634,8 +634,8 @@ void cScreenPropertyManagement::init()
 		ss << gettext("Promotion Budget: ") << (advert * 50) << gettext(" gold / week");
 		EditTextItem(ss.str(), p_ar_advamnt);
 
-		SetCheckBox(p_ar_pot_b, g_Arena.GetPotionRestock());
-		number = g_Arena.GetNumPotions();
+		SetCheckBox(p_ar_pot_b, g_Arena.GetBrothel(0)->m_KeepPotionsStocked);
+		number = g_Arena.GetBrothel(0)->m_AntiPregPotions;
 		_itoa(number, buffer, 10);
 		message = gettext("You have: ");
 		message += buffer;
@@ -666,8 +666,8 @@ void cScreenPropertyManagement::init()
 		ss << gettext("Promotion Budget: ") << (advert * 50) << gettext(" gold / week");
 		EditTextItem(ss.str(), p_ce_advamnt);
 
-		SetCheckBox(p_ce_pot_b, g_Centre.GetPotionRestock());
-		number = g_Centre.GetNumPotions();
+		SetCheckBox(p_ce_pot_b, g_Centre.GetBrothel(0)->m_KeepPotionsStocked);
+		number = g_Centre.GetBrothel(0)->m_AntiPregPotions;
 		_itoa(number, buffer, 10);
 		message = gettext("You have: ");
 		message += buffer;
@@ -698,8 +698,8 @@ void cScreenPropertyManagement::init()
 		ss << gettext("Promotion Budget: ") << (advert * 50) << gettext(" gold / week");
 		EditTextItem(ss.str(), p_cl_advamnt);
 
-		SetCheckBox(p_cl_pot_b, g_Clinic.GetPotionRestock());
-		number = g_Clinic.GetNumPotions();
+		SetCheckBox(p_cl_pot_b, g_Clinic.GetBrothel(0)->m_KeepPotionsStocked);
+		number = g_Clinic.GetBrothel(0)->m_AntiPregPotions;
 		_itoa(number, buffer, 10);
 		message = gettext("You have: ");
 		message += buffer;
@@ -747,7 +747,7 @@ void cScreenPropertyManagement::check_events()
 	if (true) // Always include the house
 	{
 
-		if (g_InterfaceEvents.CheckCheckbox(p_ho_pot_b))	g_House.KeepPotionsStocked(IsCheckboxOn(p_ho_pot_b));
+		if (g_InterfaceEvents.CheckCheckbox(p_ho_pot_b))	g_House.GetBrothel(0)->m_KeepPotionsStocked = IsCheckboxOn(p_ho_pot_b);
 
 		if (g_InterfaceEvents.CheckCheckbox(p_ho_noanal))	g_House.GetBrothel(0)->m_RestrictAnal = IsCheckboxOn(p_ho_noanal);
 		if (g_InterfaceEvents.CheckCheckbox(p_ho_nobdsm))	g_House.GetBrothel(0)->m_RestrictBDSM = IsCheckboxOn(p_ho_nobdsm);
@@ -769,7 +769,7 @@ void cScreenPropertyManagement::check_events()
 
 	if (g_Brothels.GetNumBrothels() > 0)
 	{
-		if (g_InterfaceEvents.CheckCheckbox(p_b0_pot_b))	g_Brothels.KeepPotionsStocked(IsCheckboxOn(p_b0_pot_b));
+		if (g_InterfaceEvents.CheckCheckbox(p_b0_pot_b))	g_Brothels.GetBrothel(0)->m_KeepPotionsStocked = IsCheckboxOn(p_b0_pot_b);
 
 		if (g_InterfaceEvents.CheckCheckbox(p_b0_noanal))	g_Brothels.GetBrothel(0)->m_RestrictAnal = IsCheckboxOn(p_b0_noanal);
 		if (g_InterfaceEvents.CheckCheckbox(p_b0_nobdsm))	g_Brothels.GetBrothel(0)->m_RestrictBDSM = IsCheckboxOn(p_b0_nobdsm);
@@ -791,16 +791,16 @@ void cScreenPropertyManagement::check_events()
 
 	if (g_Brothels.GetNumBrothels() > 1)
 	{
-		if (g_InterfaceEvents.CheckCheckbox(p_b1_pot_b))	g_Brothels.KeepPotionsStocked(IsCheckboxOn(p_b1_pot_b));
+		if (g_InterfaceEvents.CheckCheckbox(p_b1_pot_b))	g_Brothels.GetBrothel(1)->m_KeepPotionsStocked = IsCheckboxOn(p_b1_pot_b);
 
-		if (g_InterfaceEvents.CheckCheckbox(p_b1_noanal))	g_Brothels.GetBrothel(0)->m_RestrictAnal = IsCheckboxOn(p_b1_noanal);
-		if (g_InterfaceEvents.CheckCheckbox(p_b1_nobdsm))	g_Brothels.GetBrothel(0)->m_RestrictBDSM = IsCheckboxOn(p_b1_nobdsm);
-		if (g_InterfaceEvents.CheckCheckbox(p_b1_nonorm))	g_Brothels.GetBrothel(0)->m_RestrictNormal = IsCheckboxOn(p_b1_nonorm);
-		if (g_InterfaceEvents.CheckCheckbox(p_b1_nobeast))	g_Brothels.GetBrothel(0)->m_RestrictBeast = IsCheckboxOn(p_b1_nobeast);
-		if (g_InterfaceEvents.CheckCheckbox(p_b1_nogroup))	g_Brothels.GetBrothel(0)->m_RestrictGroup = IsCheckboxOn(p_b1_nogroup);
-		if (g_InterfaceEvents.CheckCheckbox(p_b1_noles))	g_Brothels.GetBrothel(0)->m_RestrictLesbian = IsCheckboxOn(p_b1_noles);
-		if (g_InterfaceEvents.CheckCheckbox(p_b1_nooral))	g_Brothels.GetBrothel(0)->m_RestrictOral = IsCheckboxOn(p_b1_nooral);
-		if (g_InterfaceEvents.CheckCheckbox(p_b1_notitty))	g_Brothels.GetBrothel(0)->m_RestrictTitty = IsCheckboxOn(p_b1_notitty);
+		if (g_InterfaceEvents.CheckCheckbox(p_b1_noanal))	g_Brothels.GetBrothel(1)->m_RestrictAnal = IsCheckboxOn(p_b1_noanal);
+		if (g_InterfaceEvents.CheckCheckbox(p_b1_nobdsm))	g_Brothels.GetBrothel(1)->m_RestrictBDSM = IsCheckboxOn(p_b1_nobdsm);
+		if (g_InterfaceEvents.CheckCheckbox(p_b1_nonorm))	g_Brothels.GetBrothel(1)->m_RestrictNormal = IsCheckboxOn(p_b1_nonorm);
+		if (g_InterfaceEvents.CheckCheckbox(p_b1_nobeast))	g_Brothels.GetBrothel(1)->m_RestrictBeast = IsCheckboxOn(p_b1_nobeast);
+		if (g_InterfaceEvents.CheckCheckbox(p_b1_nogroup))	g_Brothels.GetBrothel(1)->m_RestrictGroup = IsCheckboxOn(p_b1_nogroup);
+		if (g_InterfaceEvents.CheckCheckbox(p_b1_noles))	g_Brothels.GetBrothel(1)->m_RestrictLesbian = IsCheckboxOn(p_b1_noles);
+		if (g_InterfaceEvents.CheckCheckbox(p_b1_nooral))	g_Brothels.GetBrothel(1)->m_RestrictOral = IsCheckboxOn(p_b1_nooral);
+		if (g_InterfaceEvents.CheckCheckbox(p_b1_notitty))	g_Brothels.GetBrothel(1)->m_RestrictTitty = IsCheckboxOn(p_b1_notitty);
 		
 		if (g_InterfaceEvents.CheckSlider(p_b1_advslid))
 		{
@@ -812,16 +812,16 @@ void cScreenPropertyManagement::check_events()
 	}
 	if (g_Brothels.GetNumBrothels() > 2)
 	{
-		if (g_InterfaceEvents.CheckCheckbox(p_b2_pot_b))	g_Brothels.KeepPotionsStocked(IsCheckboxOn(p_b2_pot_b));
+		if (g_InterfaceEvents.CheckCheckbox(p_b2_pot_b))	g_Brothels.GetBrothel(2)->m_KeepPotionsStocked = IsCheckboxOn(p_b2_pot_b);
 
-		if (g_InterfaceEvents.CheckCheckbox(p_b2_noanal))	g_Brothels.GetBrothel(0)->m_RestrictAnal = IsCheckboxOn(p_b2_noanal);
-		if (g_InterfaceEvents.CheckCheckbox(p_b2_nobdsm))	g_Brothels.GetBrothel(0)->m_RestrictBDSM = IsCheckboxOn(p_b2_nobdsm);
-		if (g_InterfaceEvents.CheckCheckbox(p_b2_nonorm))	g_Brothels.GetBrothel(0)->m_RestrictNormal = IsCheckboxOn(p_b2_nonorm);
-		if (g_InterfaceEvents.CheckCheckbox(p_b2_nobeast))	g_Brothels.GetBrothel(0)->m_RestrictBeast = IsCheckboxOn(p_b2_nobeast);
-		if (g_InterfaceEvents.CheckCheckbox(p_b2_nogroup))	g_Brothels.GetBrothel(0)->m_RestrictGroup = IsCheckboxOn(p_b2_nogroup);
-		if (g_InterfaceEvents.CheckCheckbox(p_b2_noles))	g_Brothels.GetBrothel(0)->m_RestrictLesbian = IsCheckboxOn(p_b2_noles);
-		if (g_InterfaceEvents.CheckCheckbox(p_b2_nooral))	g_Brothels.GetBrothel(0)->m_RestrictOral = IsCheckboxOn(p_b2_nooral);
-		if (g_InterfaceEvents.CheckCheckbox(p_b2_notitty))	g_Brothels.GetBrothel(0)->m_RestrictTitty = IsCheckboxOn(p_b2_notitty);
+		if (g_InterfaceEvents.CheckCheckbox(p_b2_noanal))	g_Brothels.GetBrothel(2)->m_RestrictAnal = IsCheckboxOn(p_b2_noanal);
+		if (g_InterfaceEvents.CheckCheckbox(p_b2_nobdsm))	g_Brothels.GetBrothel(2)->m_RestrictBDSM = IsCheckboxOn(p_b2_nobdsm);
+		if (g_InterfaceEvents.CheckCheckbox(p_b2_nonorm))	g_Brothels.GetBrothel(2)->m_RestrictNormal = IsCheckboxOn(p_b2_nonorm);
+		if (g_InterfaceEvents.CheckCheckbox(p_b2_nobeast))	g_Brothels.GetBrothel(2)->m_RestrictBeast = IsCheckboxOn(p_b2_nobeast);
+		if (g_InterfaceEvents.CheckCheckbox(p_b2_nogroup))	g_Brothels.GetBrothel(2)->m_RestrictGroup = IsCheckboxOn(p_b2_nogroup);
+		if (g_InterfaceEvents.CheckCheckbox(p_b2_noles))	g_Brothels.GetBrothel(2)->m_RestrictLesbian = IsCheckboxOn(p_b2_noles);
+		if (g_InterfaceEvents.CheckCheckbox(p_b2_nooral))	g_Brothels.GetBrothel(2)->m_RestrictOral = IsCheckboxOn(p_b2_nooral);
+		if (g_InterfaceEvents.CheckCheckbox(p_b2_notitty))	g_Brothels.GetBrothel(2)->m_RestrictTitty = IsCheckboxOn(p_b2_notitty);
 
 		if (g_InterfaceEvents.CheckSlider(p_b2_advslid))
 		{
@@ -833,16 +833,16 @@ void cScreenPropertyManagement::check_events()
 	}
 	if (g_Brothels.GetNumBrothels() > 3)
 	{
-		if (g_InterfaceEvents.CheckCheckbox(p_b3_pot_b))	g_Brothels.KeepPotionsStocked(IsCheckboxOn(p_b3_pot_b));
+		if (g_InterfaceEvents.CheckCheckbox(p_b3_pot_b))	g_Brothels.GetBrothel(3)->m_KeepPotionsStocked = IsCheckboxOn(p_b3_pot_b);
 
-		if (g_InterfaceEvents.CheckCheckbox(p_b3_noanal))	g_Brothels.GetBrothel(0)->m_RestrictAnal = IsCheckboxOn(p_b3_noanal);
-		if (g_InterfaceEvents.CheckCheckbox(p_b3_nobdsm))	g_Brothels.GetBrothel(0)->m_RestrictBDSM = IsCheckboxOn(p_b3_nobdsm);
-		if (g_InterfaceEvents.CheckCheckbox(p_b3_nonorm))	g_Brothels.GetBrothel(0)->m_RestrictNormal = IsCheckboxOn(p_b3_nonorm);
-		if (g_InterfaceEvents.CheckCheckbox(p_b3_nobeast))	g_Brothels.GetBrothel(0)->m_RestrictBeast = IsCheckboxOn(p_b3_nobeast);
-		if (g_InterfaceEvents.CheckCheckbox(p_b3_nogroup))	g_Brothels.GetBrothel(0)->m_RestrictGroup = IsCheckboxOn(p_b3_nogroup);
-		if (g_InterfaceEvents.CheckCheckbox(p_b3_noles))	g_Brothels.GetBrothel(0)->m_RestrictLesbian = IsCheckboxOn(p_b3_noles);
-		if (g_InterfaceEvents.CheckCheckbox(p_b3_nooral))	g_Brothels.GetBrothel(0)->m_RestrictOral = IsCheckboxOn(p_b3_nooral);
-		if (g_InterfaceEvents.CheckCheckbox(p_b3_notitty))	g_Brothels.GetBrothel(0)->m_RestrictTitty = IsCheckboxOn(p_b3_notitty);
+		if (g_InterfaceEvents.CheckCheckbox(p_b3_noanal))	g_Brothels.GetBrothel(3)->m_RestrictAnal = IsCheckboxOn(p_b3_noanal);
+		if (g_InterfaceEvents.CheckCheckbox(p_b3_nobdsm))	g_Brothels.GetBrothel(3)->m_RestrictBDSM = IsCheckboxOn(p_b3_nobdsm);
+		if (g_InterfaceEvents.CheckCheckbox(p_b3_nonorm))	g_Brothels.GetBrothel(3)->m_RestrictNormal = IsCheckboxOn(p_b3_nonorm);
+		if (g_InterfaceEvents.CheckCheckbox(p_b3_nobeast))	g_Brothels.GetBrothel(3)->m_RestrictBeast = IsCheckboxOn(p_b3_nobeast);
+		if (g_InterfaceEvents.CheckCheckbox(p_b3_nogroup))	g_Brothels.GetBrothel(3)->m_RestrictGroup = IsCheckboxOn(p_b3_nogroup);
+		if (g_InterfaceEvents.CheckCheckbox(p_b3_noles))	g_Brothels.GetBrothel(3)->m_RestrictLesbian = IsCheckboxOn(p_b3_noles);
+		if (g_InterfaceEvents.CheckCheckbox(p_b3_nooral))	g_Brothels.GetBrothel(3)->m_RestrictOral = IsCheckboxOn(p_b3_nooral);
+		if (g_InterfaceEvents.CheckCheckbox(p_b3_notitty))	g_Brothels.GetBrothel(3)->m_RestrictTitty = IsCheckboxOn(p_b3_notitty);
 
 
 		if (g_InterfaceEvents.CheckSlider(p_b3_advslid))
@@ -855,16 +855,16 @@ void cScreenPropertyManagement::check_events()
 	}
 	if (g_Brothels.GetNumBrothels() > 4)
 	{
-		if (g_InterfaceEvents.CheckCheckbox(p_b4_pot_b))	g_Brothels.KeepPotionsStocked(IsCheckboxOn(p_b4_pot_b));
+		if (g_InterfaceEvents.CheckCheckbox(p_b4_pot_b))	g_Brothels.GetBrothel(4)->m_KeepPotionsStocked = IsCheckboxOn(p_b4_pot_b);
 
-		if (g_InterfaceEvents.CheckCheckbox(p_b4_noanal))	g_Brothels.GetBrothel(0)->m_RestrictAnal = IsCheckboxOn(p_b4_noanal);
-		if (g_InterfaceEvents.CheckCheckbox(p_b4_nobdsm))	g_Brothels.GetBrothel(0)->m_RestrictBDSM = IsCheckboxOn(p_b4_nobdsm);
-		if (g_InterfaceEvents.CheckCheckbox(p_b4_nonorm))	g_Brothels.GetBrothel(0)->m_RestrictNormal = IsCheckboxOn(p_b4_nonorm);
-		if (g_InterfaceEvents.CheckCheckbox(p_b4_nobeast))	g_Brothels.GetBrothel(0)->m_RestrictBeast = IsCheckboxOn(p_b4_nobeast);
-		if (g_InterfaceEvents.CheckCheckbox(p_b4_nogroup))	g_Brothels.GetBrothel(0)->m_RestrictGroup = IsCheckboxOn(p_b4_nogroup);
-		if (g_InterfaceEvents.CheckCheckbox(p_b4_noles))	g_Brothels.GetBrothel(0)->m_RestrictLesbian = IsCheckboxOn(p_b4_noles);
-		if (g_InterfaceEvents.CheckCheckbox(p_b4_nooral))	g_Brothels.GetBrothel(0)->m_RestrictOral = IsCheckboxOn(p_b4_nooral);
-		if (g_InterfaceEvents.CheckCheckbox(p_b4_notitty))	g_Brothels.GetBrothel(0)->m_RestrictTitty = IsCheckboxOn(p_b4_notitty);
+		if (g_InterfaceEvents.CheckCheckbox(p_b4_noanal))	g_Brothels.GetBrothel(4)->m_RestrictAnal = IsCheckboxOn(p_b4_noanal);
+		if (g_InterfaceEvents.CheckCheckbox(p_b4_nobdsm))	g_Brothels.GetBrothel(4)->m_RestrictBDSM = IsCheckboxOn(p_b4_nobdsm);
+		if (g_InterfaceEvents.CheckCheckbox(p_b4_nonorm))	g_Brothels.GetBrothel(4)->m_RestrictNormal = IsCheckboxOn(p_b4_nonorm);
+		if (g_InterfaceEvents.CheckCheckbox(p_b4_nobeast))	g_Brothels.GetBrothel(4)->m_RestrictBeast = IsCheckboxOn(p_b4_nobeast);
+		if (g_InterfaceEvents.CheckCheckbox(p_b4_nogroup))	g_Brothels.GetBrothel(4)->m_RestrictGroup = IsCheckboxOn(p_b4_nogroup);
+		if (g_InterfaceEvents.CheckCheckbox(p_b4_noles))	g_Brothels.GetBrothel(4)->m_RestrictLesbian = IsCheckboxOn(p_b4_noles);
+		if (g_InterfaceEvents.CheckCheckbox(p_b4_nooral))	g_Brothels.GetBrothel(4)->m_RestrictOral = IsCheckboxOn(p_b4_nooral);
+		if (g_InterfaceEvents.CheckCheckbox(p_b4_notitty))	g_Brothels.GetBrothel(4)->m_RestrictTitty = IsCheckboxOn(p_b4_notitty);
 
 
 		if (g_InterfaceEvents.CheckSlider(p_b4_advslid))
@@ -877,16 +877,16 @@ void cScreenPropertyManagement::check_events()
 	}
 	if (g_Brothels.GetNumBrothels() > 5)
 	{
-		if (g_InterfaceEvents.CheckCheckbox(p_b5_pot_b))	g_Brothels.KeepPotionsStocked(IsCheckboxOn(p_b5_pot_b));
+		if (g_InterfaceEvents.CheckCheckbox(p_b5_pot_b))	g_Brothels.GetBrothel(5)->m_KeepPotionsStocked = IsCheckboxOn(p_b5_pot_b);
 
-		if (g_InterfaceEvents.CheckCheckbox(p_b5_noanal))	g_Brothels.GetBrothel(0)->m_RestrictAnal = IsCheckboxOn(p_b5_noanal);
-		if (g_InterfaceEvents.CheckCheckbox(p_b5_nobdsm))	g_Brothels.GetBrothel(0)->m_RestrictBDSM = IsCheckboxOn(p_b5_nobdsm);
-		if (g_InterfaceEvents.CheckCheckbox(p_b5_nonorm))	g_Brothels.GetBrothel(0)->m_RestrictNormal = IsCheckboxOn(p_b5_nonorm);
-		if (g_InterfaceEvents.CheckCheckbox(p_b5_nobeast))	g_Brothels.GetBrothel(0)->m_RestrictBeast = IsCheckboxOn(p_b5_nobeast);
-		if (g_InterfaceEvents.CheckCheckbox(p_b5_nogroup))	g_Brothels.GetBrothel(0)->m_RestrictGroup = IsCheckboxOn(p_b5_nogroup);
-		if (g_InterfaceEvents.CheckCheckbox(p_b5_noles))	g_Brothels.GetBrothel(0)->m_RestrictLesbian = IsCheckboxOn(p_b5_noles);
-		if (g_InterfaceEvents.CheckCheckbox(p_b5_nooral))	g_Brothels.GetBrothel(0)->m_RestrictOral = IsCheckboxOn(p_b5_nooral);
-		if (g_InterfaceEvents.CheckCheckbox(p_b5_notitty))	g_Brothels.GetBrothel(0)->m_RestrictTitty = IsCheckboxOn(p_b5_notitty);
+		if (g_InterfaceEvents.CheckCheckbox(p_b5_noanal))	g_Brothels.GetBrothel(5)->m_RestrictAnal = IsCheckboxOn(p_b5_noanal);
+		if (g_InterfaceEvents.CheckCheckbox(p_b5_nobdsm))	g_Brothels.GetBrothel(5)->m_RestrictBDSM = IsCheckboxOn(p_b5_nobdsm);
+		if (g_InterfaceEvents.CheckCheckbox(p_b5_nonorm))	g_Brothels.GetBrothel(5)->m_RestrictNormal = IsCheckboxOn(p_b5_nonorm);
+		if (g_InterfaceEvents.CheckCheckbox(p_b5_nobeast))	g_Brothels.GetBrothel(5)->m_RestrictBeast = IsCheckboxOn(p_b5_nobeast);
+		if (g_InterfaceEvents.CheckCheckbox(p_b5_nogroup))	g_Brothels.GetBrothel(5)->m_RestrictGroup = IsCheckboxOn(p_b5_nogroup);
+		if (g_InterfaceEvents.CheckCheckbox(p_b5_noles))	g_Brothels.GetBrothel(5)->m_RestrictLesbian = IsCheckboxOn(p_b5_noles);
+		if (g_InterfaceEvents.CheckCheckbox(p_b5_nooral))	g_Brothels.GetBrothel(5)->m_RestrictOral = IsCheckboxOn(p_b5_nooral);
+		if (g_InterfaceEvents.CheckCheckbox(p_b5_notitty))	g_Brothels.GetBrothel(5)->m_RestrictTitty = IsCheckboxOn(p_b5_notitty);
 
 
 		if (g_InterfaceEvents.CheckSlider(p_b5_advslid))
@@ -899,16 +899,16 @@ void cScreenPropertyManagement::check_events()
 	}
 	if (g_Brothels.GetNumBrothels() > 6)
 	{
-		if (g_InterfaceEvents.CheckCheckbox(p_b6_pot_b))	g_Brothels.KeepPotionsStocked(IsCheckboxOn(p_b6_pot_b));
+		if (g_InterfaceEvents.CheckCheckbox(p_b6_pot_b))	g_Brothels.GetBrothel(6)->m_KeepPotionsStocked = IsCheckboxOn(p_b6_pot_b);
 
-		if (g_InterfaceEvents.CheckCheckbox(p_b6_noanal))	g_Brothels.GetBrothel(0)->m_RestrictAnal = IsCheckboxOn(p_b6_noanal);
-		if (g_InterfaceEvents.CheckCheckbox(p_b6_nobdsm))	g_Brothels.GetBrothel(0)->m_RestrictBDSM = IsCheckboxOn(p_b6_nobdsm);
-		if (g_InterfaceEvents.CheckCheckbox(p_b6_nonorm))	g_Brothels.GetBrothel(0)->m_RestrictNormal = IsCheckboxOn(p_b6_nonorm);
-		if (g_InterfaceEvents.CheckCheckbox(p_b6_nobeast))	g_Brothels.GetBrothel(0)->m_RestrictBeast = IsCheckboxOn(p_b6_nobeast);
-		if (g_InterfaceEvents.CheckCheckbox(p_b6_nogroup))	g_Brothels.GetBrothel(0)->m_RestrictGroup = IsCheckboxOn(p_b6_nogroup);
-		if (g_InterfaceEvents.CheckCheckbox(p_b6_noles))	g_Brothels.GetBrothel(0)->m_RestrictLesbian = IsCheckboxOn(p_b6_noles);
-		if (g_InterfaceEvents.CheckCheckbox(p_b6_nooral))	g_Brothels.GetBrothel(0)->m_RestrictOral = IsCheckboxOn(p_b6_nooral);
-		if (g_InterfaceEvents.CheckCheckbox(p_b6_notitty))	g_Brothels.GetBrothel(0)->m_RestrictTitty = IsCheckboxOn(p_b6_notitty);
+		if (g_InterfaceEvents.CheckCheckbox(p_b6_noanal))	g_Brothels.GetBrothel(6)->m_RestrictAnal = IsCheckboxOn(p_b6_noanal);
+		if (g_InterfaceEvents.CheckCheckbox(p_b6_nobdsm))	g_Brothels.GetBrothel(6)->m_RestrictBDSM = IsCheckboxOn(p_b6_nobdsm);
+		if (g_InterfaceEvents.CheckCheckbox(p_b6_nonorm))	g_Brothels.GetBrothel(6)->m_RestrictNormal = IsCheckboxOn(p_b6_nonorm);
+		if (g_InterfaceEvents.CheckCheckbox(p_b6_nobeast))	g_Brothels.GetBrothel(6)->m_RestrictBeast = IsCheckboxOn(p_b6_nobeast);
+		if (g_InterfaceEvents.CheckCheckbox(p_b6_nogroup))	g_Brothels.GetBrothel(6)->m_RestrictGroup = IsCheckboxOn(p_b6_nogroup);
+		if (g_InterfaceEvents.CheckCheckbox(p_b6_noles))	g_Brothels.GetBrothel(6)->m_RestrictLesbian = IsCheckboxOn(p_b6_noles);
+		if (g_InterfaceEvents.CheckCheckbox(p_b6_nooral))	g_Brothels.GetBrothel(6)->m_RestrictOral = IsCheckboxOn(p_b6_nooral);
+		if (g_InterfaceEvents.CheckCheckbox(p_b6_notitty))	g_Brothels.GetBrothel(6)->m_RestrictTitty = IsCheckboxOn(p_b6_notitty);
 
 
 		if (g_InterfaceEvents.CheckSlider(p_b6_advslid))
@@ -921,16 +921,16 @@ void cScreenPropertyManagement::check_events()
 	}
 	if (g_Studios.GetNumBrothels() > 0)
 	{
-		if (g_InterfaceEvents.CheckCheckbox(p_st_pot_b))	g_Brothels.KeepPotionsStocked(IsCheckboxOn(p_st_pot_b));
+		if (g_InterfaceEvents.CheckCheckbox(p_st_pot_b))	g_Studios.GetBrothel(0)->m_KeepPotionsStocked = IsCheckboxOn(p_st_pot_b);
 
-		if (g_InterfaceEvents.CheckCheckbox(p_st_noanal))	g_Brothels.GetBrothel(0)->m_RestrictAnal = IsCheckboxOn(p_st_noanal);
-		if (g_InterfaceEvents.CheckCheckbox(p_st_nobdsm))	g_Brothels.GetBrothel(0)->m_RestrictBDSM = IsCheckboxOn(p_st_nobdsm);
-		if (g_InterfaceEvents.CheckCheckbox(p_st_nonorm))	g_Brothels.GetBrothel(0)->m_RestrictNormal = IsCheckboxOn(p_st_nonorm);
-		if (g_InterfaceEvents.CheckCheckbox(p_st_nobeast))	g_Brothels.GetBrothel(0)->m_RestrictBeast = IsCheckboxOn(p_st_nobeast);
-		if (g_InterfaceEvents.CheckCheckbox(p_st_nogroup))	g_Brothels.GetBrothel(0)->m_RestrictGroup = IsCheckboxOn(p_st_nogroup);
-		if (g_InterfaceEvents.CheckCheckbox(p_st_noles))	g_Brothels.GetBrothel(0)->m_RestrictLesbian = IsCheckboxOn(p_st_noles);
-		if (g_InterfaceEvents.CheckCheckbox(p_st_nooral))	g_Brothels.GetBrothel(0)->m_RestrictOral = IsCheckboxOn(p_st_nooral);
-		if (g_InterfaceEvents.CheckCheckbox(p_st_notitty))	g_Brothels.GetBrothel(0)->m_RestrictTitty = IsCheckboxOn(p_st_notitty);
+		if (g_InterfaceEvents.CheckCheckbox(p_st_noanal))	g_Studios.GetBrothel(0)->m_RestrictAnal = IsCheckboxOn(p_st_noanal);
+		if (g_InterfaceEvents.CheckCheckbox(p_st_nobdsm))	g_Studios.GetBrothel(0)->m_RestrictBDSM = IsCheckboxOn(p_st_nobdsm);
+		if (g_InterfaceEvents.CheckCheckbox(p_st_nonorm))	g_Studios.GetBrothel(0)->m_RestrictNormal = IsCheckboxOn(p_st_nonorm);
+		if (g_InterfaceEvents.CheckCheckbox(p_st_nobeast))	g_Studios.GetBrothel(0)->m_RestrictBeast = IsCheckboxOn(p_st_nobeast);
+		if (g_InterfaceEvents.CheckCheckbox(p_st_nogroup))	g_Studios.GetBrothel(0)->m_RestrictGroup = IsCheckboxOn(p_st_nogroup);
+		if (g_InterfaceEvents.CheckCheckbox(p_st_noles))	g_Studios.GetBrothel(0)->m_RestrictLesbian = IsCheckboxOn(p_st_noles);
+		if (g_InterfaceEvents.CheckCheckbox(p_st_nooral))	g_Studios.GetBrothel(0)->m_RestrictOral = IsCheckboxOn(p_st_nooral);
+		if (g_InterfaceEvents.CheckCheckbox(p_st_notitty))	g_Studios.GetBrothel(0)->m_RestrictTitty = IsCheckboxOn(p_st_notitty);
 
 
 		if (g_InterfaceEvents.CheckSlider(p_st_advslid))
@@ -943,7 +943,7 @@ void cScreenPropertyManagement::check_events()
 	}
 	if (g_Arena.GetNumBrothels() > 0)
 	{
-		if (g_InterfaceEvents.CheckCheckbox(p_ar_pot_b))	g_Arena.KeepPotionsStocked(IsCheckboxOn(p_ar_pot_b));
+		if (g_InterfaceEvents.CheckCheckbox(p_ar_pot_b))	g_Arena.GetBrothel(0)->m_KeepPotionsStocked = IsCheckboxOn(p_ar_pot_b);
 
 		if (g_InterfaceEvents.CheckCheckbox(p_ar_noanal))	g_Arena.GetBrothel(0)->m_RestrictAnal = IsCheckboxOn(p_ar_noanal);
 		if (g_InterfaceEvents.CheckCheckbox(p_ar_nobdsm))	g_Arena.GetBrothel(0)->m_RestrictBDSM = IsCheckboxOn(p_ar_nobdsm);
@@ -965,7 +965,7 @@ void cScreenPropertyManagement::check_events()
 	}
 	if (g_Centre.GetNumBrothels() > 0)
 	{
-		if (g_InterfaceEvents.CheckCheckbox(p_ce_pot_b))	g_Centre.KeepPotionsStocked(IsCheckboxOn(p_ce_pot_b));
+		if (g_InterfaceEvents.CheckCheckbox(p_ce_pot_b))	g_Centre.GetBrothel(0)->m_KeepPotionsStocked = IsCheckboxOn(p_ce_pot_b);
 
 		if (g_InterfaceEvents.CheckCheckbox(p_ce_noanal))	g_Centre.GetBrothel(0)->m_RestrictAnal = IsCheckboxOn(p_ce_noanal);
 		if (g_InterfaceEvents.CheckCheckbox(p_ce_nobdsm))	g_Centre.GetBrothel(0)->m_RestrictBDSM = IsCheckboxOn(p_ce_nobdsm);
@@ -987,7 +987,7 @@ void cScreenPropertyManagement::check_events()
 	}
 	if (g_Clinic.GetNumBrothels() > 0)
 	{
-		if (g_InterfaceEvents.CheckCheckbox(p_cl_pot_b))	g_Clinic.KeepPotionsStocked(IsCheckboxOn(p_cl_pot_b));
+		if (g_InterfaceEvents.CheckCheckbox(p_cl_pot_b))	g_Clinic.GetBrothel(0)->m_KeepPotionsStocked = IsCheckboxOn(p_cl_pot_b);
 
 		if (g_InterfaceEvents.CheckCheckbox(p_cl_noanal))	g_Clinic.GetBrothel(0)->m_RestrictAnal = IsCheckboxOn(p_cl_noanal);
 		if (g_InterfaceEvents.CheckCheckbox(p_cl_nobdsm))	g_Clinic.GetBrothel(0)->m_RestrictBDSM = IsCheckboxOn(p_cl_nobdsm);
