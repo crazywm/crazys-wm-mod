@@ -81,7 +81,7 @@ public:
 	int				m_CameraQuality;	// Bonus to film quality based on performance of Cameramages this shift.
 	int				m_PurifierQaulity;	// Bonus to film quality based on performance of CrystalPurifiers this shift.
 	int				m_DirectorQuality;	// Bonus to film quality based on performance of  the Director this shift.
-	string			m_DirectorName;	// Bonus to film quality based on performance of  the Director this shift.
+	string			m_DirectorName;	    // The Director's name.
 	int				m_StagehandQuality; // Bonus to film quality based on performance of stagehands this shift.
 	double			m_PromoterBonus;	// Bonus added directly to film sales by promoter.
 

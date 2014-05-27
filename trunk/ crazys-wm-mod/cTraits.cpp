@@ -174,73 +174,37 @@ string cTraits::GetTranslateName(string name){
 	// TODO replace string by trait constants 
 	// This is a copy/paste in cGirls.cpp ApplyTraits for testing trait
 	// and translate with gettext
-	if(name.compare("Big Boobs") == 0)
-	{
-		return gettext("Big Boobs");
-	}
-	else if(name.compare("Abnormally Large Boobs") == 0)
+	if(name.compare("Abnormally Large Boobs") == 0)
 	{
 		return gettext("Abnormally Large Boobs");
 	}
-	else if(name.compare("Small Boobs") == 0)
+	else if(name.compare("Adventurer") == 0)
 	{
-		return gettext("Small Boobs");
+		return gettext("Adventurer");
 	}
-	else if (name.compare("Fast orgasms") == 0 || name.compare("Fast Orgasms") == 0)
+	else if(name.compare("Aggressive") == 0)
 	{
-		return gettext("Fast Orgasms");
+		return gettext("Aggressive");
 	}
-	else if (name.compare("Fake orgasm expert") == 0 || name.compare("Fake Orgasm Expert") == 0)
+	else if(name.compare("AIDS") == 0)
 	{
-		return gettext("Fake Orgasm Expert");
+		return gettext("AIDS");
 	}
-	else if (name.compare("Slow orgasms") == 0 || name.compare("Slow Orgasms") == 0)
+	else if(name.compare("Assassin") == 0)
 	{
-		return gettext("Slow Orgasms");
+		return gettext("Assassin");
 	}
-	else if (name.compare("Different Colored Eyes") == 0)
+	else if(name.compare("Big Boobs") == 0)
 	{
-		return gettext("Different Colored Eyes");
+		return gettext("Big Boobs");
 	}
-	else if(name.compare("Eye Patch") == 0)
+	else if(name.compare("Broken Will") == 0)
 	{
-		return gettext("Eye Patch");
+		return gettext("Broken Will");
 	}
-	else if(name.compare("One Eye") == 0)
+	else if(name.compare("Cat Girl") == 0)
 	{
-		return gettext("One Eye");
-	}
-	else if(name.compare("Fearless") == 0)
-	{
-		return gettext("Fearless");
-	}
-	else if(name.compare("Meek") == 0)
-	{
-		return gettext("Meek");
-	}
-	else if(name.compare("Good Kisser") == 0)
-	{
-		return gettext("Good Kisser");
-	}
-	else if(name.compare("Retarded") == 0)
-	{
-		return gettext("Retarded");
-	}
-	else if(name.compare("Malformed") == 0)
-	{
-		return gettext("Malformed");
-	}
-	else if(name.compare("Long Legs") == 0)
-	{
-		return gettext("Long Legs");
-	}
-	else if(name.compare("Perky Nipples") == 0)
-	{
-		return gettext("Perky Nipples");
-	}
-	else if(name.compare("Puffy Nipples") == 0)
-	{
-		return gettext("Puffy Nipples");
+		return gettext("Cat Girl");
 	}
 	else if(name.compare("Charismatic") == 0)
 	{
@@ -250,197 +214,197 @@ string cTraits::GetTranslateName(string name){
 	{
 		return gettext("Charming");
 	}
-	else if(name.compare("Construct") == 0)
+	else if(name.compare("Chlamydia") == 0)
 	{
-		return gettext("Construct");
-	}
-	else if(name.compare("Half-Construct") == 0)
-	{
-		return gettext("Half-Construct");
-	}
-	else if(name.compare("Fragile") == 0)
-	{
-		return gettext("Fragile");
-	}
-	else if(name.compare("Tough") == 0)
-	{
-		return gettext("Tough");
-	}
-	else if(name.compare("Fleet of Foot") == 0)
-	{
-		return gettext("Fleet of Foot");
-	}
-	else if(name.compare("Dependant") == 0)
-	{
-		return gettext("Dependant");
-	}
-	else if(name.compare("Pessimist") == 0)
-	{
-		return gettext("Pessimist");
-	}
-	else if(name.compare("Optimist") == 0)
-	{
-		return gettext("Optimist");
-	}
-	else if(name.compare("Iron Will") == 0)
-	{
-		return gettext("Iron Will");
-	}
-	else if(name.compare("Merciless") == 0)
-	{
-		return gettext("Merciless");
-	}
-	else if(name.compare("Manly") == 0)
-	{
-		return gettext("Manly");
-	}
-	else if(name.compare("Mind Fucked") == 0)
-	{
-		return gettext("Mind Fucked");
-	}
-	else if(name.compare("Tsundere") == 0)
-	{
-		return gettext("Tsundere");
-	}
-	else if(name.compare("Yandere") == 0)
-	{
-		return gettext("Yandere");
-	}
-	else if(name.compare("Lesbian") == 0)
-	{
-		return gettext("Lesbian");
-	}
-	else if(name.compare("Masochist") == 0)
-	{
-		return gettext("Masochist");
-	}
-	else if(name.compare("Sadistic") == 0)
-	{
-		return gettext("Sadistic");
-	}
-	else if(name.compare("Broken Will") == 0)
-	{
-		return gettext("Broken Will");
-	}
-	else if(name.compare("Nymphomaniac") == 0)
-	{
-		return gettext("Nymphomaniac");
-	}
-	else if(name.compare("Elegant") == 0)
-	{
-		return gettext("Elegant");
-	}
-	else if(name.compare("Sexy Air") == 0)
-	{
-		return gettext("Sexy Air");
-	}
-	else if(name.compare("Great Arse") == 0)
-	{
-		return gettext("Great Arse");
-	}
-	else if(name.compare("Small Scars") == 0)
-	{
-		return gettext("Small Scars");
-	}
-	else if(name.compare("Cool Scars") == 0)
-	{
-		return gettext("Cool Scars");
-	}
-	else if(name.compare("Horrific Scars") == 0)
-	{
-		return gettext("Horrific Scars");
-	}
-	else if(name.compare("Cool Person") == 0)
-	{
-		return gettext("Cool Person");
-	}
-	else if(name.compare("Nerd") == 0)
-	{
-		return gettext("Nerd");
+		return gettext("Chlamydia");
 	}
 	else if(name.compare("Clumsy") == 0)
 	{
 		return gettext("Clumsy");
 	}
+	else if(name.compare("Construct") == 0)
+	{
+		return gettext("Construct");
+	}
+	else if(name.compare("Cool Person") == 0)
+	{
+		return gettext("Cool Person");
+	}
+	else if(name.compare("Cool Scars") == 0)
+	{
+		return gettext("Cool Scars");
+	}
 	else if(name.compare("Cute") == 0)
 	{
 		return gettext("Cute");
 	}
-	else if(name.compare("Strong") == 0)
+	else if(name.compare("Deep Throat") == 0)
 	{
-		return gettext("Strong");
+		return gettext("Deep Throat");
 	}
-	else if(name.compare("Strong Magic") == 0)
+	else if(name.compare("Demon") == 0)
 	{
-		return gettext("Strong Magic");
+		return gettext("Demon");
 	}
-	else if(name.compare("Shroud Addict") == 0)
+	else if(name.compare("Dependant") == 0)
 	{
-		return gettext("Shroud Addict");
+		return gettext("Dependant");
+	}
+	else if(name.compare("Different Colored Eyes") == 0)
+	{
+		return gettext("Different Colored Eyes");
+	}
+	else if(name.compare("Elegant") == 0)
+	{
+		return gettext("Elegant");
+	}
+	else if(name.compare("Eye Patch") == 0)
+	{
+		return gettext("Eye Patch");
 	}
 	else if(name.compare("Fairy Dust Addict") == 0)
 	{
 		return gettext("Fairy Dust Addict");
 	}
-	else if(name.compare("Viras Blood Addict") == 0)
+	else if(name.compare("Fake orgasm expert") == 0 || name.compare("Fake Orgasm Expert") == 0)
 	{
-		return gettext("Viras Blood Addict");
+		return gettext("Fake Orgasm Expert");
 	}
-	else if(name.compare("Aggressive") == 0)
+	else if(name.compare("Fast orgasms") == 0 || name.compare("Fast Orgasms") == 0)
 	{
-		return gettext("Aggressive");
+		return gettext("Fast Orgasms");
 	}
-	else if(name.compare("Adventurer") == 0)
+	else if(name.compare("Fearless") == 0)
 	{
-		return gettext("Adventurer");
+		return gettext("Fearless");
 	}
-	else if(name.compare("Assassin") == 0)
+	else if(name.compare("Fleet of Foot") == 0 || name.compare("Fleet Of Foot") == 0)
 	{
-		return gettext("Assassin");
+		return gettext("Fleet of Foot");
 	}
-	else if(name.compare("Lolita") == 0)
+	else if(name.compare("Fragile") == 0)
 	{
-		return gettext("Lolita");
+		return gettext("Fragile");
 	}
-	else if(name.compare("MILF") == 0)
+	else if(name.compare("Futanari") == 0)
 	{
-		return gettext("MILF");
+		return gettext("Futanari");
 	}
-	else if(name.compare("Nervous") == 0)
+	else if(name.compare("Gag Reflex") == 0)
 	{
-		return gettext("Nervous");
+		return gettext("Gag Reflex");
+	}
+	else if(name.compare("Good Kisser") == 0)
+	{
+		return gettext("Good Kisser");
+	}
+	else if(name.compare("Great Arse") == 0)
+	{
+		return gettext("Great Arse");
 	}
 	else if(name.compare("Great Figure") == 0)
 	{
 		return gettext("Great Figure");
 	}
-	else if (name.compare("Incorporeal") == 0)
+	else if(name.compare("Half-Construct") == 0)
+	{
+		return gettext("Half-Construct");
+	}
+	else if(name.compare("Horrific Scars") == 0)
+	{
+		return gettext("Horrific Scars");
+	}
+	else if(name.compare("Incest") == 0)
+	{
+		return gettext("Incest");
+	}
+	else if(name.compare("Incorporeal") == 0 || name.compare("Incorporial") == 0)
 	{
 		return gettext("Incorporeal");
 	}
-	else if (name.compare("Incorporial") == 0)//kept to correct spelling error in older girl files 		
-	{ 		
- 		return gettext("Incorporeal"); 		
- 	}
-	else if (name.compare("Quick Learner") == 0)
+	else if(name.compare("Iron Will") == 0)
 	{
-		return gettext("Quick Learner");
+		return gettext("Iron Will");
 	}
-	else if(name.compare("Slow Learner") == 0)
+	else if(name.compare("Lesbian") == 0)
 	{
-		return gettext("Slow Learner");
+		return gettext("Lesbian");
 	}
-	else if(name.compare("Shape Shifter") == 0)
+	else if(name.compare("Lolita") == 0)
 	{
-		return gettext("Shape Shifter");
+		return gettext("Lolita");
 	}
-	else if(name.compare("Queen") == 0)
+	else if(name.compare("Long Legs") == 0)
 	{
-		return gettext("Queen");
+		return gettext("Long Legs");
 	}
-	else if(name.compare("Princess") == 0)
+	else if(name.compare("Malformed") == 0)
 	{
-		return gettext("Princess");
+		return gettext("Malformed");
+	}
+	else if(name.compare("Manly") == 0)
+	{
+		return gettext("Manly");
+	}
+	else if(name.compare("Masochist") == 0)
+	{
+		return gettext("Masochist");
+	}
+	else if(name.compare("Meek") == 0)
+	{
+		return gettext("Meek");
+	}
+	else if(name.compare("Merciless") == 0)
+	{
+		return gettext("Merciless");
+	}
+	else if(name.compare("MILF") == 0)
+	{
+		return gettext("MILF");
+	}
+	else if(name.compare("Mind Fucked") == 0)
+	{
+		return gettext("Mind Fucked");
+	}
+	else if(name.compare("Nerd") == 0)
+	{
+		return gettext("Nerd");
+	}
+	else if(name.compare("Nervous") == 0)
+	{
+		return gettext("Nervous");
+	}
+	else if(name.compare("No Gag Reflex") == 0)
+	{
+		return gettext("No Gag Reflex");
+	}
+	else if(name.compare("Not Human") == 0)
+	{
+		return gettext("Not Human");
+	}
+	else if(name.compare("Nymphomaniac") == 0)
+	{
+		return gettext("Nymphomaniac");
+	}
+	else if(name.compare("One Eye") == 0)
+	{
+		return gettext("One Eye");
+	}
+	else if(name.compare("Optimist") == 0)
+	{
+		return gettext("Optimist");
+	}
+	else if(name.compare("Perky Nipples") == 0)
+	{
+		return gettext("Perky Nipples");
+	}
+	else if(name.compare("Pessimist") == 0)
+	{
+		return gettext("Pessimist");
+	}
+	else if(name.compare("Pierced Clit") == 0)
+	{
+		return gettext("Pierced Clit");
 	}
 	else if(name.compare("Pierced Nipples") == 0)
 	{
@@ -450,21 +414,105 @@ string cTraits::GetTranslateName(string name){
 	{
 		return gettext("Pierced Tongue");
 	}
-	else if(name.compare("Pierced Clit") == 0)
+	else if(name.compare("Princess") == 0)
 	{
-		return gettext("Pierced Clit");
+		return gettext("Princess");
 	}
-	else if(name.compare("Gag Reflex") == 0)
+	else if(name.compare("Psychic") == 0)
 	{
-		return gettext("Gag Reflex");
+		return gettext("Psychic");
 	}
-	else if (name.compare("No Gag Reflex") == 0)
+	else if(name.compare("Puffy Nipples") == 0)
 	{
-		return gettext("No Gag Reflex");
+		return gettext("Puffy Nipples");
 	}
-	else if (name.compare("Deep Throat") == 0)
+	else if(name.compare("Queen") == 0)
 	{
-		return gettext("Deep Throat");
+		return gettext("Queen");
+	}
+	else if(name.compare("Quick Learner") == 0)
+	{
+		return gettext("Quick Learner");
+	}
+	else if(name.compare("Retarded") == 0)
+	{
+		return gettext("Retarded");
+	}
+	else if(name.compare("Sadistic") == 0)
+	{
+		return gettext("Sadistic");
+	}
+	else if(name.compare("Sexy Air") == 0)
+	{
+		return gettext("Sexy Air");
+	}
+	else if(name.compare("Shape Shifter") == 0)
+	{
+		return gettext("Shape Shifter");
+	}
+	else if(name.compare("Shroud Addict") == 0)
+	{
+		return gettext("Shroud Addict");
+	}
+	else if(name.compare("Slow Learner") == 0)
+	{
+		return gettext("Slow Learner");
+	}
+	else if(name.compare("Slow orgasms") == 0 || name.compare("Slow Orgasms") == 0)
+	{
+		return gettext("Slow Orgasms");
+	}
+	else if(name.compare("Small Boobs") == 0)
+	{
+		return gettext("Small Boobs");
+	}
+	else if(name.compare("Small Scars") == 0)
+	{
+		return gettext("Small Scars");
+	}
+	else if(name.compare("Sterile") == 0)
+	{
+		return gettext("Sterile");
+	}
+	else if(name.compare("Strange Eyes") == 0)
+	{
+		return gettext("Strange Eyes");
+	}
+	else if(name.compare("Strong Magic") == 0)
+	{
+		return gettext("Strong Magic");
+	}
+	else if(name.compare("Strong") == 0)
+	{
+		return gettext("Strong");
+	}
+	else if(name.compare("Syphilis") == 0)
+	{
+		return gettext("Syphilis");
+	}
+	else if(name.compare("Tough") == 0)
+	{
+		return gettext("Tough");
+	}
+	else if(name.compare("Tsundere") == 0)
+	{
+		return gettext("Tsundere");
+	}
+	else if(name.compare("Twisted") == 0)
+	{
+		return gettext("Twisted");
+	}
+	else if(name.compare("Viras Blood Addict") == 0)
+	{
+		return gettext("Viras Blood Addict");
+	}
+	else if(name.compare("Yandere") == 0)
+	{
+		return gettext("Yandere");
+	}
+	else if(name.compare("Your Daughter") == 0)
+	{
+		return gettext("Your Daughter");
 	}
 	return name;
 }

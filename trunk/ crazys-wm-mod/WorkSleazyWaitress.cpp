@@ -77,7 +77,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, int DayNigh
 		jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Psychic"))  //knows what people want to hear
 		jobperformance += 10;
-	if (g_Girls.HasTrait(girl, "Fleet of Foot")) //faster at taking orders and droping them off
+	if (g_Girls.HasTrait(girl, "Fleet of Foot") || g_Girls.HasTrait(girl, "Fleet Of Foot")) //faster at taking orders and droping them off
 		jobperformance += 5;
 
 	//bad traits

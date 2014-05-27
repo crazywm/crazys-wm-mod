@@ -155,9 +155,9 @@ void cScreenClinicManagement::init()
 
 	// add the job filters
 //	for(int i=0; i<NUMJOBTYPES; i++)  // loop through all job types
-	AddToListBox(jobtypelist_id, JOBFILTER_CLINIC, g_Clinic.m_JobManager.JobFilterName[JOBFILTER_CLINIC]);
 	AddToListBox(jobtypelist_id, JOBFILTER_CLINICSTAFF, g_Clinic.m_JobManager.JobFilterName[JOBFILTER_CLINICSTAFF]);
-	SetSelectedItemInList(jobtypelist_id, JOBFILTER_CLINIC);
+	AddToListBox(jobtypelist_id, JOBFILTER_CLINIC, g_Clinic.m_JobManager.JobFilterName[JOBFILTER_CLINIC]);
+	SetSelectedItemInList(jobtypelist_id, JOBFILTER_CLINICSTAFF);
 
 	//get a list of all the column names, so we can find which data goes in that column
 	vector<string> columnNames;
@@ -468,7 +468,7 @@ void cScreenClinicManagement::RefreshSelectedJobType()
 		if (job >= g_Clinic.m_JobManager.JobFilterIndex[i] && job < g_Clinic.m_JobManager.JobFilterIndex[i+1])
 			jobtype = i;
 	}
-	SetSelectedItemInList(jobtypelist_id, JOBFILTER_CLINIC);
+	SetSelectedItemInList(jobtypelist_id, JOBFILTER_CLINICSTAFF);
 
 	SetJob = true;
 }

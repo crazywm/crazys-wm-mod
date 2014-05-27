@@ -30,6 +30,11 @@
 #include "strnatcmp.h"
 #include "XmlMisc.h"
 #include "libintl.h"
+#include "cMovieStudio.h"
+#include "cArena.h"
+#include "cCentre.h"
+#include "cClinic.h"
+#include "cHouse.h"
 
 //#include "cDungeon.h"
 //#include "cJobManager.h"
@@ -52,6 +57,11 @@ extern cRng             g_Dice;
 extern cGold            g_Gold;
 extern cGangManager     g_Gangs;
 extern char             buffer[1000];
+extern cMovieStudioManager  g_Studios;
+extern cArenaManager g_Arena;
+extern cClinicManager g_Clinic;
+extern cCentreManager g_Centre;
+extern cHouseManager g_House;
 
 
 //extern CGraphics		g_Graphics;
@@ -85,6 +95,8 @@ sBrothel::sBrothel()	:	m_Finance(0)	// constructor
 	m_ShowTime				= 0;
 	m_ShowQuality			= 0;
 	m_SecurityLevel			= 0;
+	m_KeepPotionsStocked	= 0;
+	m_AntiPregPotions		= 0;
 	m_RestrictAnal			= false;
 	m_RestrictBDSM			= false;
 	m_RestrictOral			= false;
@@ -127,19 +139,96 @@ sBrothel::~sBrothel()			// destructor
 	m_LastMovies			= 0;
 }
 
-// ----- Matron
-bool sBrothel::matron_on_shift(int shift)
+// ----- Matron  // `J` added building checks
+//bool sBrothel::matron_on_shift(int shift)
+bool sBrothel::matron_on_shift(int shift, bool isClinic, bool isStudio, bool isArena, bool isCentre, bool isHouse, int BrothelID)
 {
-	return g_Brothels.GetNumGirlsOnJob(m_id, JOB_MATRON, shift == SHIFT_DAY) > 0;
+	if (isArena)
+	{
+		if (g_Arena.GetNumGirlsOnJob(0, JOB_DOCTORE, shift == SHIFT_DAY) > 0)
+		{
+			return true;
+		}
+	}
+	else if (isStudio)
+	{
+		if (g_Studios.GetNumGirlsOnJob(0, JOB_DIRECTOR, shift == SHIFT_DAY) > 0)
+		{
+			return true;
+		}
+	}
+	else if (isClinic)
+	{
+		if (g_Clinic.GetNumGirlsOnJob(0, JOB_CHAIRMAN, shift == SHIFT_DAY) > 0)
+		{
+			return true;
+		}
+	}
+	else if (isCentre)
+	{
+		if (g_Centre.GetNumGirlsOnJob(0, JOB_CENTREMANAGER, shift == SHIFT_DAY) > 0)
+		{
+			return true;
+		}
+	}
+	else if (isHouse)
+	{
+		if (g_House.GetNumGirlsOnJob(0, JOB_HEADGIRL, shift == SHIFT_DAY) > 0)
+		{
+			return true;
+		}
+	}
+	else if (g_Brothels.GetNumGirlsOnJob(BrothelID, JOB_MATRON, shift == SHIFT_DAY) > 0)
+	{
+		return true;
+	}
+	return false;
 }
-
-int sBrothel::matron_count()
+//int sBrothel::matron_count
+int sBrothel::matron_count(bool isClinic, bool isStudio, bool isArena, bool isCentre, bool isHouse, int BrothelID)
 {
 	int i, sum = 0;
 
-	for(i = 0; i < 2; i++) {
-		if(g_Brothels.GetNumGirlsOnJob(m_id, JOB_MATRON, (i == 0)) > 0) {
-			sum ++;
+	for (i = 0; i < 2; i++)
+	{
+		if (isArena)
+		{
+			if (g_Arena.GetNumGirlsOnJob(0, JOB_DOCTORE, (i == 0)) > 0)
+			{
+				sum++;
+			}
+		}
+		else if (isStudio)
+		{
+			if (g_Studios.GetNumGirlsOnJob(0, JOB_DIRECTOR, (i == 0)) > 0)
+			{
+				sum++;
+			}
+		}
+		else if (isClinic)
+		{
+			if (g_Clinic.GetNumGirlsOnJob(0, JOB_CHAIRMAN, (i == 0)) > 0)
+			{
+				sum++;
+			}
+		}
+		else if (isCentre)
+		{
+			if (g_Centre.GetNumGirlsOnJob(0, JOB_CENTREMANAGER, (i == 0)) > 0)
+			{
+				sum++;
+			}
+		}
+		else if (isHouse)
+		{
+			if (g_House.GetNumGirlsOnJob(0, JOB_HEADGIRL, (i == 0)) > 0)
+			{
+				sum++;
+			}
+		}
+		else if (g_Brothels.GetNumGirlsOnJob(BrothelID, JOB_MATRON, (i == 0)) > 0)
+		{
+			sum++;
 		}
 	}
 	return sum;
@@ -150,7 +239,7 @@ bool sBrothel::has_matron()
 	int i;
 
 	for(i = 0; i < 2; i++) {
-		if(g_Brothels.GetNumGirlsOnJob(m_id, JOB_MATRON, (i == 0)) > 0) {
+		if (g_Brothels.GetNumGirlsOnJob(m_id, JOB_MATRON, (i == 0)) > 0) {
 			return true;
 		}
 	}
@@ -173,7 +262,7 @@ cBrothelManager::cBrothelManager()			// constructor
 	m_Parent			= 0;
 	m_Last				= 0;
 	m_NumBrothels		= 0;
-	m_AntiPregPotions	= 0;
+//	m_AntiPregPotions	= 0;
 	m_SupplyShedLevel	= 1;
 	m_BribeRate			= 0;
 	m_Influence			= 0;
@@ -192,7 +281,7 @@ cBrothelManager::cBrothelManager()			// constructor
 	m_HandmadeGoods		= 0; 
 	m_Beasts			= 0; 
 	m_AlchemyIngredients = 0;
-	m_KeepPotionsStocked = false;
+//	m_KeepPotionsStocked = false;
 
 	m_TortureDoneFlag	= false;
 	m_Processing_Shift	= -1;
@@ -228,13 +317,13 @@ void cBrothelManager::Free()
 		m_NumItem[i]	= 0;
 	}
 	m_NumBrothels		= 0;
-	m_AntiPregPotions	= 0;
+//	m_AntiPregPotions	= 0;
 	m_SupplyShedLevel	= 1;
 	m_BribeRate			= 0;
 	m_Influence			= 0;
 	m_Bank				= 0;
 
-	m_KeepPotionsStocked = false;
+//	m_KeepPotionsStocked = false;
 	m_HandmadeGoods		= 0;
 	m_Beasts			= 0;
 	m_AlchemyIngredients = 0;
@@ -467,33 +556,136 @@ bool cBrothelManager::CheckScripts()
 	return false;
 }
 
+//bool cBrothelManager::UseAntiPreg(bool use)
+bool UseAntiPreg(bool use, bool isClinic, bool isStudio, bool isArena, bool isCentre, bool isHouse, int BrothelID)
+{
+	if (!use)
+		return false;
+	/*
+	*	anti-preg potions, we probably should allow
+	*	on-the-fly restocks. You can imagine someone
+	*	noticing things are running low and
+	*	sending a girl running to the shops to get
+	*	a restock
+	*
+	*	that said, there's a good argument here for
+	*	making this the matron's job, and giving it a
+	*	chance dependent on skill level. Could have a
+	*	comedy event where the matron forgets, or the
+	*	girl forgets (or disobeys) and half a dozen
+	*	girls get knocked up.
+	*
+	*	'course, we could do that anyway.. :)
+	*/
+	if (isClinic)
+	{
+		if (g_Clinic.GetBrothel(0)->m_KeepPotionsStocked)
+		{
+			g_Gold.consumable_cost(10);
+			return true;
+		}
+		if (g_Clinic.GetBrothel(0)->m_AntiPregPotions > 0)
+		{
+			g_Clinic.GetBrothel(0)->m_AntiPregPotions--;
+			return true;
+		}
+	}
+	else if (isStudio)
+	{
+		if (g_Studios.GetBrothel(0)->m_KeepPotionsStocked)
+		{
+			g_Gold.consumable_cost(10);
+			return true;
+		}
+		if (g_Studios.GetBrothel(0)->m_AntiPregPotions > 0)
+		{
+			g_Studios.GetBrothel(0)->m_AntiPregPotions--;
+			return true;
+		}
+	}
+	else if (isArena)
+	{
+		if (g_Arena.GetBrothel(0)->m_KeepPotionsStocked)
+		{
+			g_Gold.consumable_cost(10);
+			return true;
+		}
+		if (g_Arena.GetBrothel(0)->m_AntiPregPotions > 0)
+		{
+			g_Arena.GetBrothel(0)->m_AntiPregPotions--;
+			return true;
+		}
+	}
+	else if (isCentre)
+	{
+		if (g_Centre.GetBrothel(0)->m_KeepPotionsStocked)
+		{
+			g_Gold.consumable_cost(10);
+			return true;
+		}
+		if (g_Centre.GetBrothel(0)->m_AntiPregPotions > 0)
+		{
+			g_Centre.GetBrothel(0)->m_AntiPregPotions--;
+			return true;
+		}
+	}
+	else if (isHouse)
+	{
+		if (g_House.GetBrothel(0)->m_KeepPotionsStocked)
+		{
+			g_Gold.consumable_cost(10);
+			return true;
+		}
+		if (g_House.GetBrothel(0)->m_AntiPregPotions > 0)
+		{
+			g_House.GetBrothel(0)->m_AntiPregPotions--;
+			return true;
+		}
+	}
+	else
+	{
+		if (g_Brothels.GetBrothel(BrothelID)->m_KeepPotionsStocked)
+		{
+			g_Gold.consumable_cost(10);
+			return true;
+		}
+		if (g_Brothels.GetBrothel(BrothelID)->m_AntiPregPotions > 0)
+		{
+			g_Brothels.GetBrothel(BrothelID)->m_AntiPregPotions--;
+			return true;
+		}
+	}
+	return false;
+}
+
+/*	`J` replaced with building check
 bool cBrothelManager::UseAntiPreg(bool use)
 {
-	if(!use)
+	if (!use)
 		return false;
-/*
- *	anti-preg potions, we probably should allow
- *	on-the-fly restocks. You can imagine someone
- *	noticing things are running low and 
- *	sending a girl running to the shops to get
- *	a restock
- *
- *	that said, there's a good argument here for
- *	making this the matron's job, and giving it a
- *	chance dependent on skill level. Could have a
- *	comedy event where the matron forgets, or the 
- *	girl forgets (or disobeys) and half a dozen
- *	girls get knocked up.
- *
- *	'course, we could do that anyway.. :)
- */
-	if(m_KeepPotionsStocked)
+	/*
+	*	anti-preg potions, we probably should allow
+	*	on-the-fly restocks. You can imagine someone
+	*	noticing things are running low and
+	*	sending a girl running to the shops to get
+	*	a restock
+	*
+	*	that said, there's a good argument here for
+	*	making this the matron's job, and giving it a
+	*	chance dependent on skill level. Could have a
+	*	comedy event where the matron forgets, or the
+	*	girl forgets (or disobeys) and half a dozen
+	*	girls get knocked up.
+	*
+	*	'course, we could do that anyway.. :)
+	* /
+	if (m_KeepPotionsStocked)
 	{
 		g_Gold.consumable_cost(10);
 		return true;
 	}
 
-	if(m_AntiPregPotions > 0)
+	if (m_AntiPregPotions > 0)
 	{
 		m_AntiPregPotions--;
 		return true;
@@ -501,8 +693,28 @@ bool cBrothelManager::UseAntiPreg(bool use)
 
 	return false;
 }
+bool cBrothelManager::UseAntiPreg(bool use, int BrothelID)
+{
+	if (!use)
+		return false;
+	if (m_KeepPotionsStocked)
+	{
+		g_Gold.consumable_cost(10);
+		return true;
+	}
 
-void cBrothelManager::AddAntiPreg(int amount)
+	if (m_AntiPregPotions > 0)
+	{
+		m_AntiPregPotions--;
+		return true;
+	}
+
+	return false;
+}
+*/
+
+//void cBrothelManager::AddAntiPreg(int amount)
+void sBrothel::AddAntiPreg(int amount) // unused
 {
 	m_AntiPregPotions += amount;
 	if(m_AntiPregPotions > 700)
@@ -538,6 +750,7 @@ void cBrothelManager::AddGirl(int brothelID, sGirl* girl)
 		current = current->m_Next;
 	}
 	g_Girls.RemoveGirl(girl, false);
+	girl->where_is_she = brothelID;
 
 	girl->m_Prev = girl->m_Next = 0;
 	if(current->m_Girls)
@@ -622,7 +835,8 @@ void cBrothelManager::LoadDataLegacy(ifstream& ifs)
 
 	// load preg potions, supply shed level, other goodies
 	if(ifs.peek()=='\n') ifs.ignore(1,'\n');
-	ifs>>m_AntiPregPotions>>m_SupplyShedLevel>>m_HandmadeGoods>>m_Beasts>>m_AlchemyIngredients;
+//	ifs >> m_AntiPregPotions >> m_SupplyShedLevel >> m_HandmadeGoods >> m_Beasts >> m_AlchemyIngredients;
+	ifs >> m_SupplyShedLevel >> m_HandmadeGoods >> m_Beasts >> m_AlchemyIngredients;
 
 	// load runaways
 	if (ifs.peek()=='\n') ifs.ignore(1,'\n');
@@ -704,9 +918,11 @@ void cBrothelManager::LoadDataLegacy(ifstream& ifs)
 	}
 	m_NumInventory=total_num;
 
+/*	`J` moved potion control to individual buildings
 	// load potions restock
 	if (ifs.peek()=='\n') ifs.ignore(1,'\n');
 	ifs>>m_KeepPotionsStocked;
+*/
 
 	// load alcohol restock
 //	if (ifs.peek()=='\n') ifs.ignore(1,'\n');
@@ -869,7 +1085,9 @@ bool cBrothelManager::LoadDataXML(TiXmlHandle hBrothelManager)
 	m_Dungeon.LoadDungeonDataXML(hBrothelManager.FirstChild("Dungeon"));
 
 	// load preg potions, supply shed level, other goodies
+	/* `J` moved to individual buildings
 	pBrothelManager->QueryIntAttribute("AntiPregPotions", &m_AntiPregPotions);
+	*/
 	pBrothelManager->QueryIntAttribute("SupplyShedLevel", &m_SupplyShedLevel);
 	pBrothelManager->QueryIntAttribute("HandmadeGoods", &m_HandmadeGoods);
 	pBrothelManager->QueryIntAttribute("Beasts", &m_Beasts);
@@ -952,8 +1170,10 @@ bool cBrothelManager::LoadDataXML(TiXmlHandle hBrothelManager)
 	LoadInventoryXML(hBrothelManager.FirstChild("Inventory"),
 		m_Inventory, m_NumInventory, m_EquipedItems, m_NumItem);
 
+	/* `J` moved to individual buildings
 	// load potions restock
 	pBrothelManager->QueryValueAttribute<bool>("KeepPotionsStocked", &m_KeepPotionsStocked);
+	*/
 
 	// load alcohol restock
 //	if (ifs.peek()=='\n') ifs.ignore(1,'\n');
@@ -1018,6 +1238,12 @@ bool sBrothel::LoadBrothelXML(TiXmlHandle hBrothel)
 	pBrothel->QueryValueAttribute<bool>("RestrictLesbian", &m_RestrictLesbian);
 
 	pBrothel->QueryValueAttribute<unsigned short>("AdvertisingBudget", &m_AdvertisingBudget);
+	// `J` Added to save potion stuff in individual buildings
+	pBrothel->QueryIntAttribute("AntiPregPotions", &m_AntiPregPotions);
+	pBrothel->QueryValueAttribute<bool>("KeepPotionsStocked", &m_KeepPotionsStocked);
+	if (m_AntiPregPotions < 0){ m_AntiPregPotions = 0; }
+	if (m_KeepPotionsStocked != 0 && m_KeepPotionsStocked != 1){ m_KeepPotionsStocked = 0; }
+
 	pBrothel->QueryIntAttribute("Bar", &tempInt); m_Bar = tempInt; tempInt = 0;
 	pBrothel->QueryIntAttribute(gettext("Fame"), &tempInt); m_Fame = tempInt; tempInt = 0;
 	pBrothel->QueryIntAttribute("GamblingHall", &tempInt); m_GamblingHall = tempInt; tempInt = 0;
@@ -1096,7 +1322,7 @@ TiXmlElement* cBrothelManager::SaveDataXML(TiXmlElement* pRoot)
 	m_Dungeon.SaveDungeonDataXML(pBrothelManager);
 
 	// save preg potions, supply shed level, other goodies
-	pBrothelManager->SetAttribute("AntiPregPotions", m_AntiPregPotions);
+//	pBrothelManager->SetAttribute("AntiPregPotions", m_AntiPregPotions); // `J` moved antipreg to individual buildings
 	pBrothelManager->SetAttribute("SupplyShedLevel", m_SupplyShedLevel);
 	pBrothelManager->SetAttribute("HandmadeGoods", m_HandmadeGoods);
 	pBrothelManager->SetAttribute("Beasts", m_Beasts);
@@ -1153,8 +1379,10 @@ TiXmlElement* cBrothelManager::SaveDataXML(TiXmlElement* pRoot)
 	pBrothelManager->LinkEndChild(pInventory);
 	SaveInventoryXML(pInventory, m_Inventory, MAXNUM_INVENTORY, m_EquipedItems, m_NumItem);
 
-	// save potions restock
+	/* `J` moved to individual buildings
+	// save potions restock 
 	pBrothelManager->SetAttribute("KeepPotionsStocked", m_KeepPotionsStocked);
+	*/
 
 	// save alcohol restock
 //	ofs<<m_KeepAlcStocked<<endl;
@@ -1195,6 +1423,9 @@ TiXmlElement* sBrothel::SaveBrothelXML(TiXmlElement* pRoot)
 	pBrothel->SetAttribute("RestrictLesbian", m_RestrictLesbian);
 
 	pBrothel->SetAttribute("AdvertisingBudget", m_AdvertisingBudget);
+	pBrothel->SetAttribute("AntiPregPotions", m_AntiPregPotions);
+	pBrothel->SetAttribute("KeepPotionsStocked", m_KeepPotionsStocked);
+
 	pBrothel->SetAttribute("Bar", m_Bar);
 	pBrothel->SetAttribute("Fame", m_Fame);
 	pBrothel->SetAttribute("GamblingHall", m_GamblingHall);
@@ -2783,7 +3014,7 @@ void cBrothelManager::UsePlayersItems(sGirl* cur)
 	// Fleet of foot (Sandals of Mercury, piece of equipment)
 
 	has = g_Brothels.HasItem("Sandals of Mercury");
-	if (!g_Girls.HasTrait(cur, "Fleet of Foot") && g_Girls.HasItem(cur, "Glass Shoes") == -1 && has != -1)
+	if (!g_Girls.HasTrait(cur, "Fleet of Foot") && !g_Girls.HasTrait(cur, "Fleet Of Foot") && g_Girls.HasItem(cur, "Glass Shoes") == -1 && has != -1)
       AutomaticItemUse(cur, has, gettext("Put on Sandals of Mercury for the fleet of foot trait."));
 
 	// Fast Orgasms & Nymphomaniac (Organic Lingerie, piece of equipment)
@@ -4832,7 +5063,9 @@ bool cBrothelManager::runaway_check(sBrothel *brothel, sGirl *girl)
  *	matron is. An unhappy matron, or one who hates the PC
  *	may be inclined to turn a blind eye to runaway attempts
  */
-	int matron_chance = brothel->matron_count() * 35;
+//	int matron_chance = brothel->matron_count() * 35;
+	int matron_chance = brothel->matron_count(girl->m_InClinic, girl->m_InMovieStudio, girl->m_InArena, girl->m_InCentre, girl->m_InHouse, girl->where_is_she) * 35;
+	
 	if(g_Dice.percent(matron_chance)) {
 		return false;
 	}

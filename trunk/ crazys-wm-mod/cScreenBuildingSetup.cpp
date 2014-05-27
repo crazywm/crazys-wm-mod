@@ -112,7 +112,7 @@ void cScreenBuildingSetup::init()
 		case BUILDING_STUDIO:
 			brothel = gettext("The Movie Studio");
 			EditTextItem(brothel, curbrothel_id);
-			number = g_Studios.GetNumPotions();
+			number = g_Studios.GetBrothel(0)->m_AntiPregPotions;
 	
 			_itoa(number,buffer,10);
 			message = gettext("You have: ");
@@ -128,7 +128,7 @@ void cScreenBuildingSetup::init()
 			EditTextItem(ss.str(), advertamt_id);
 
 			// setup check boxes
-			SetCheckBox(autopotions_id, g_Studios.GetPotionRestock());
+			SetCheckBox(autopotions_id, g_Studios.GetBrothel(0)->m_KeepPotionsStocked);
 			SetCheckBox(noanal_id, g_Studios.GetBrothel(0)->m_RestrictAnal);
 			SetCheckBox(nobdsm_id, g_Studios.GetBrothel(0)->m_RestrictBDSM);
 			SetCheckBox(nonormal_id, g_Studios.GetBrothel(0)->m_RestrictNormal);
@@ -141,7 +141,7 @@ void cScreenBuildingSetup::init()
 		case BUILDING_CLINIC:
 			brothel = gettext("The Clinic");
 			EditTextItem(brothel, curbrothel_id);
-			number = g_Clinic.GetNumPotions();
+			number = g_Clinic.GetBrothel(0)->m_AntiPregPotions;
 	
 			_itoa(number,buffer,10);
 			message = gettext("You have: ");
@@ -157,7 +157,7 @@ void cScreenBuildingSetup::init()
 			EditTextItem(ss.str(), advertamt_id);
 
 			// setup check boxes
-			SetCheckBox(autopotions_id, g_Clinic.GetPotionRestock());
+			SetCheckBox(autopotions_id, g_Clinic.GetBrothel(0)->m_KeepPotionsStocked);
 			SetCheckBox(noanal_id, g_Clinic.GetBrothel(0)->m_RestrictAnal);
 			SetCheckBox(nobdsm_id, g_Clinic.GetBrothel(0)->m_RestrictBDSM);
 			SetCheckBox(nonormal_id, g_Clinic.GetBrothel(0)->m_RestrictNormal);
@@ -170,7 +170,7 @@ void cScreenBuildingSetup::init()
 		case BUILDING_ARENA:
 			brothel = gettext("The Arena");
 			EditTextItem(brothel, curbrothel_id);
-			number = g_Arena.GetNumPotions();
+			number = g_Arena.GetBrothel(0)->m_AntiPregPotions;
 	
 			_itoa(number,buffer,10);
 			message = gettext("You have: ");
@@ -186,7 +186,7 @@ void cScreenBuildingSetup::init()
 			EditTextItem(ss.str(), advertamt_id);
 
 			// setup check boxes
-			SetCheckBox(autopotions_id, g_Arena.GetPotionRestock());
+			SetCheckBox(autopotions_id, g_Arena.GetBrothel(0)->m_KeepPotionsStocked);
 			SetCheckBox(noanal_id, g_Arena.GetBrothel(0)->m_RestrictAnal);
 			SetCheckBox(nobdsm_id, g_Arena.GetBrothel(0)->m_RestrictBDSM);
 			SetCheckBox(nonormal_id, g_Arena.GetBrothel(0)->m_RestrictNormal);
@@ -199,7 +199,7 @@ void cScreenBuildingSetup::init()
 		case BUILDING_CENTRE:
 			brothel = gettext("The Community Centre");
 			EditTextItem(brothel, curbrothel_id);
-			number = g_Centre.GetNumPotions();
+			number = g_Centre.GetBrothel(0)->m_AntiPregPotions;
 	
 			_itoa(number,buffer,10);
 			message = gettext("You have: ");
@@ -215,7 +215,7 @@ void cScreenBuildingSetup::init()
 			EditTextItem(ss.str(), advertamt_id);
 
 			// setup check boxes
-			SetCheckBox(autopotions_id, g_Centre.GetPotionRestock());
+			SetCheckBox(autopotions_id, g_Centre.GetBrothel(0)->m_KeepPotionsStocked);
 			SetCheckBox(noanal_id, g_Centre.GetBrothel(0)->m_RestrictAnal);
 			SetCheckBox(nobdsm_id, g_Centre.GetBrothel(0)->m_RestrictBDSM);
 			SetCheckBox(nonormal_id, g_Centre.GetBrothel(0)->m_RestrictNormal);
@@ -228,7 +228,7 @@ void cScreenBuildingSetup::init()
 		case BUILDING_HOUSE:
 			brothel = gettext("Your House");
 			EditTextItem(brothel, curbrothel_id);
-			number = g_House.GetNumPotions();
+			number = g_House.GetBrothel(0)->m_AntiPregPotions;
 	
 			_itoa(number,buffer,10);
 			message = gettext("You have: ");
@@ -244,7 +244,7 @@ void cScreenBuildingSetup::init()
 			EditTextItem(ss.str(), advertamt_id);
 
 			// setup check boxes
-			SetCheckBox(autopotions_id, g_House.GetPotionRestock());
+			SetCheckBox(autopotions_id, g_House.GetBrothel(0)->m_KeepPotionsStocked);
 			SetCheckBox(noanal_id, g_House.GetBrothel(0)->m_RestrictAnal);
 			SetCheckBox(nobdsm_id, g_House.GetBrothel(0)->m_RestrictBDSM);
 			SetCheckBox(nonormal_id, g_House.GetBrothel(0)->m_RestrictNormal);
@@ -260,8 +260,9 @@ void cScreenBuildingSetup::init()
 			brothel += g_Brothels.GetName(g_CurrBrothel);
 			EditTextItem(brothel, curbrothel_id);
 
-			number = g_Brothels.GetNumPotions();
-	
+			// number = g_Brothels.GetNumPotions();
+			number = g_Brothels.GetBrothel(g_CurrBrothel)->m_AntiPregPotions;
+
 			_itoa(number,buffer,10);
 			message = gettext("You have: ");
 			message += buffer;
@@ -276,7 +277,7 @@ void cScreenBuildingSetup::init()
 			EditTextItem(ss.str(), advertamt_id);
 
 			// setup check boxes
-			SetCheckBox(autopotions_id, g_Brothels.GetPotionRestock());
+			SetCheckBox(autopotions_id, g_Brothels.GetBrothel(g_CurrBrothel)->m_KeepPotionsStocked);
 			SetCheckBox(noanal_id, g_Brothels.GetBrothel(g_CurrBrothel)->m_RestrictAnal);
 			SetCheckBox(nobdsm_id, g_Brothels.GetBrothel(g_CurrBrothel)->m_RestrictBDSM);
 			SetCheckBox(nonormal_id, g_Brothels.GetBrothel(g_CurrBrothel)->m_RestrictNormal);
@@ -326,7 +327,7 @@ void cScreenBuildingSetup::check_events()
 		if(!g_Gold.brothel_cost(5000))
 			g_MessageQue.AddToQue(gettext("You need 5000 gold to add 5 rooms"), 1);
 		else
-			{
+		{
 			switch(g_Building)
 				{
 			case BUILDING_STUDIO:
@@ -349,8 +350,8 @@ void cScreenBuildingSetup::check_events()
 			default:
 				g_Brothels.GetBrothel(g_CurrBrothel)->m_NumRooms += 5;
 				break;
-				}
 			}
+		}
 	}
 	if(g_InterfaceEvents.CheckButton(potions10_id))
 	{
@@ -362,7 +363,7 @@ void cScreenBuildingSetup::check_events()
 			{
 		case BUILDING_STUDIO:
 			MaxSupplies = g_Studios.GetSupplyShedLevel()*700;
-			number = g_Studios.GetNumPotions();
+			number = g_Studios.GetBrothel(0)->m_AntiPregPotions;
 			if(number == MaxSupplies)
 			{
 				_itoa(MaxSupplies,buffer,10);
@@ -382,7 +383,7 @@ void cScreenBuildingSetup::check_events()
 				if(g_Gold.afford(number*2))
 				{
 					g_Gold.girl_support(number*2);
-					g_Studios.AddAntiPreg(number);
+					g_Studios.GetBrothel(0)->m_AntiPregPotions += number;
 				}
 				else
 					g_MessageQue.AddToQue(gettext("You don't have enough gold"), 0);
@@ -390,7 +391,7 @@ void cScreenBuildingSetup::check_events()
 			break;
 		case BUILDING_CLINIC:
 			MaxSupplies = g_Clinic.GetSupplyShedLevel()*700;
-			number = g_Clinic.GetNumPotions();
+			number = g_Clinic.GetBrothel(0)->m_AntiPregPotions;
 			if(number == MaxSupplies)
 			{
 				_itoa(MaxSupplies,buffer,10);
@@ -410,7 +411,7 @@ void cScreenBuildingSetup::check_events()
 				if(g_Gold.afford(number*2))
 				{
 					g_Gold.girl_support(number*2);
-					g_Clinic.AddAntiPreg(number);
+					g_Clinic.GetBrothel(0)->m_AntiPregPotions += number;
 				}
 				else
 					g_MessageQue.AddToQue(gettext("You don't have enough gold"), 0);
@@ -418,7 +419,7 @@ void cScreenBuildingSetup::check_events()
 			break;
 		case BUILDING_ARENA:
 			MaxSupplies = g_Arena.GetSupplyShedLevel()*700;
-			number = g_Arena.GetNumPotions();
+			number = g_Arena.GetBrothel(0)->m_AntiPregPotions;
 			if(number == MaxSupplies)
 			{
 				_itoa(MaxSupplies,buffer,10);
@@ -438,7 +439,7 @@ void cScreenBuildingSetup::check_events()
 				if(g_Gold.afford(number*2))
 				{
 					g_Gold.girl_support(number*2);
-					g_Arena.AddAntiPreg(number);
+					g_Arena.GetBrothel(0)->m_AntiPregPotions += number;
 				}
 				else
 					g_MessageQue.AddToQue(gettext("You don't have enough gold"), 0);
@@ -446,7 +447,7 @@ void cScreenBuildingSetup::check_events()
 			break;
 		case BUILDING_CENTRE:
 			MaxSupplies = g_Centre.GetSupplyShedLevel()*700;
-			number = g_Centre.GetNumPotions();
+			number = g_Centre.GetBrothel(0)->m_AntiPregPotions;
 			if(number == MaxSupplies)
 			{
 				_itoa(MaxSupplies,buffer,10);
@@ -466,7 +467,7 @@ void cScreenBuildingSetup::check_events()
 				if(g_Gold.afford(number*2))
 				{
 					g_Gold.girl_support(number*2);
-					g_Centre.AddAntiPreg(number);
+					g_Centre.GetBrothel(0)->m_AntiPregPotions += number;
 				}
 				else
 					g_MessageQue.AddToQue(gettext("You don't have enough gold"), 0);
@@ -474,7 +475,7 @@ void cScreenBuildingSetup::check_events()
 			break;
 		case BUILDING_HOUSE:
 			MaxSupplies = g_House.GetSupplyShedLevel()*700;
-			number = g_House.GetNumPotions();
+			number = g_House.GetBrothel(0)->m_AntiPregPotions;
 			if(number == MaxSupplies)
 			{
 				_itoa(MaxSupplies,buffer,10);
@@ -494,7 +495,7 @@ void cScreenBuildingSetup::check_events()
 				if(g_Gold.afford(number*2))
 				{
 					g_Gold.girl_support(number*2);
-					g_House.AddAntiPreg(number);
+					g_House.GetBrothel(0)->m_AntiPregPotions += number;
 				}
 				else
 					g_MessageQue.AddToQue(gettext("You don't have enough gold"), 0);
@@ -503,7 +504,7 @@ void cScreenBuildingSetup::check_events()
 		case BUILDING_BROTHEL:
 		default:
 			MaxSupplies = g_Brothels.GetSupplyShedLevel()*700;
-			number = g_Brothels.GetNumPotions();
+			number = g_Brothels.GetBrothel(g_CurrBrothel)->m_AntiPregPotions;
 			if(number == MaxSupplies)
 			{
 				_itoa(MaxSupplies,buffer,10);
@@ -523,7 +524,7 @@ void cScreenBuildingSetup::check_events()
 				if(g_Gold.afford(number*2))
 				{
 					g_Gold.girl_support(number*2);
-					g_Brothels.AddAntiPreg(number);
+					g_Brothels.GetBrothel(g_CurrBrothel)->m_AntiPregPotions += number;
 				}
 				else
 					g_MessageQue.AddToQue(gettext("You don't have enough gold"), 0);
@@ -539,172 +540,172 @@ void cScreenBuildingSetup::check_events()
 		int number = 0;
 		string message = "";
 
-	switch(g_Building)
+		switch(g_Building)
 		{
-	case BUILDING_STUDIO:
-		MaxSupplies = g_Studios.GetSupplyShedLevel()*700;
-		number = g_Studios.GetNumPotions();
-		if(number == MaxSupplies)
-		{
-			_itoa(MaxSupplies,buffer,10);
-			message = gettext("You can only store up to ");
-			message+=buffer;
-			message += gettext(" potions");
-			g_MessageQue.AddToQue(message, 0);
-		}
-		else
-		{
-			if(number+20 > MaxSupplies)
-				number = (number+20) - MaxSupplies;
-			else
-				number = 20;
-
-			if(g_Gold.afford(number*2))
+		case BUILDING_STUDIO:
+			MaxSupplies = g_Studios.GetSupplyShedLevel()*700;
+			number = g_Studios.GetBrothel(0)->m_AntiPregPotions;
+			if(number == MaxSupplies)
 			{
-				g_Gold.girl_support(number*2);
-				g_Studios.AddAntiPreg(number);
+				_itoa(MaxSupplies,buffer,10);
+				message = gettext("You can only store up to ");
+				message+=buffer;
+				message += gettext(" potions");
+				g_MessageQue.AddToQue(message, 0);
 			}
 			else
-				g_MessageQue.AddToQue(gettext("You don't have enough gold"), 0);
-		}
-		break;
-	case BUILDING_CLINIC:
-		MaxSupplies = g_Clinic.GetSupplyShedLevel()*700;
-		number = g_Clinic.GetNumPotions();
-		if(number == MaxSupplies)
-		{
-			_itoa(MaxSupplies,buffer,10);
-			message = gettext("You can only store up to ");
-			message+=buffer;
-			message += gettext(" potions");
-			g_MessageQue.AddToQue(message, 0);
-		}
-		else
-		{
-			if(number+20 > MaxSupplies)
-				number = (number+20) - MaxSupplies;
-			else
-				number = 20;
-
-			if(g_Gold.afford(number*2))
 			{
-				g_Gold.girl_support(number*2);
-				g_Clinic.AddAntiPreg(number);
+				if(number+20 > MaxSupplies)
+					number = (number+20) - MaxSupplies;
+				else
+					number = 20;
+	
+				if(g_Gold.afford(number*2))
+				{
+					g_Gold.girl_support(number*2);
+					g_Studios.GetBrothel(0)->m_AntiPregPotions += number;
+				}
+				else
+					g_MessageQue.AddToQue(gettext("You don't have enough gold"), 0);
+			}
+			break;
+		case BUILDING_CLINIC:
+			MaxSupplies = g_Clinic.GetSupplyShedLevel()*700;
+			number = g_Clinic.GetBrothel(0)->m_AntiPregPotions;
+			if(number == MaxSupplies)
+			{
+				_itoa(MaxSupplies,buffer,10);
+				message = gettext("You can only store up to ");
+				message+=buffer;
+				message += gettext(" potions");
+				g_MessageQue.AddToQue(message, 0);
 			}
 			else
-				g_MessageQue.AddToQue(gettext("You don't have enough gold"), 0);
-		}
-		break;
-	case BUILDING_ARENA:
-		MaxSupplies = g_Arena.GetSupplyShedLevel()*700;
-		number = g_Arena.GetNumPotions();
-		if(number == MaxSupplies)
-		{
-			_itoa(MaxSupplies,buffer,10);
-			message = gettext("You can only store up to ");
-			message+=buffer;
-			message += gettext(" potions");
-			g_MessageQue.AddToQue(message, 0);
-		}
-		else
-		{
-			if(number+20 > MaxSupplies)
-				number = (number+20) - MaxSupplies;
-			else
-				number = 20;
-
-			if(g_Gold.afford(number*2))
 			{
-				g_Gold.girl_support(number*2);
-				g_Arena.AddAntiPreg(number);
+				if(number+20 > MaxSupplies)
+					number = (number+20) - MaxSupplies;
+				else
+					number = 20;
+	
+				if(g_Gold.afford(number*2))
+				{
+					g_Gold.girl_support(number*2);
+					g_Clinic.GetBrothel(0)->m_AntiPregPotions += number;
+				}
+				else
+					g_MessageQue.AddToQue(gettext("You don't have enough gold"), 0);
+			}
+			break;
+		case BUILDING_ARENA:
+			MaxSupplies = g_Arena.GetSupplyShedLevel()*700;
+			number = g_Arena.GetBrothel(0)->m_AntiPregPotions;
+			if(number == MaxSupplies)
+			{
+				_itoa(MaxSupplies,buffer,10);
+				message = gettext("You can only store up to ");
+				message+=buffer;
+				message += gettext(" potions");
+				g_MessageQue.AddToQue(message, 0);
 			}
 			else
-				g_MessageQue.AddToQue(gettext("You don't have enough gold"), 0);
-		}
-		break;
-	case BUILDING_CENTRE:
-		MaxSupplies = g_Centre.GetSupplyShedLevel()*700;
-		number = g_Centre.GetNumPotions();
-		if(number == MaxSupplies)
-		{
-			_itoa(MaxSupplies,buffer,10);
-			message = gettext("You can only store up to ");
-			message+=buffer;
-			message += gettext(" potions");
-			g_MessageQue.AddToQue(message, 0);
-		}
-		else
-		{
-			if(number+20 > MaxSupplies)
-				number = (number+20) - MaxSupplies;
-			else
-				number = 20;
-
-			if(g_Gold.afford(number*2))
 			{
-				g_Gold.girl_support(number*2);
-				g_Centre.AddAntiPreg(number);
+				if(number+20 > MaxSupplies)
+					number = (number+20) - MaxSupplies;
+				else
+					number = 20;
+	
+				if(g_Gold.afford(number*2))
+				{
+					g_Gold.girl_support(number*2);
+					g_Arena.GetBrothel(0)->m_AntiPregPotions += number;
+				}
+				else
+					g_MessageQue.AddToQue(gettext("You don't have enough gold"), 0);
+			}
+			break;
+		case BUILDING_CENTRE:
+			MaxSupplies = g_Centre.GetSupplyShedLevel()*700;
+			number = g_Centre.GetBrothel(0)->m_AntiPregPotions;
+			if(number == MaxSupplies)
+			{
+				_itoa(MaxSupplies,buffer,10);
+				message = gettext("You can only store up to ");
+				message+=buffer;
+				message += gettext(" potions");
+				g_MessageQue.AddToQue(message, 0);
 			}
 			else
-				g_MessageQue.AddToQue(gettext("You don't have enough gold"), 0);
-		}
-		break;
-	case BUILDING_HOUSE:
-		MaxSupplies = g_House.GetSupplyShedLevel()*700;
-		number = g_House.GetNumPotions();
-		if(number == MaxSupplies)
-		{
-			_itoa(MaxSupplies,buffer,10);
-			message = gettext("You can only store up to ");
-			message+=buffer;
-			message += gettext(" potions");
-			g_MessageQue.AddToQue(message, 0);
-		}
-		else
-		{
-			if(number+20 > MaxSupplies)
-				number = (number+20) - MaxSupplies;
-			else
-				number = 20;
-
-			if(g_Gold.afford(number*2))
 			{
-				g_Gold.girl_support(number*2);
-				g_Centre.AddAntiPreg(number);
+				if(number+20 > MaxSupplies)
+					number = (number+20) - MaxSupplies;
+				else
+					number = 20;
+	
+				if(g_Gold.afford(number*2))
+				{
+					g_Gold.girl_support(number*2);
+					g_Centre.GetBrothel(0)->m_AntiPregPotions += number;
+				}
+				else
+					g_MessageQue.AddToQue(gettext("You don't have enough gold"), 0);
+			}
+			break;
+		case BUILDING_HOUSE:
+			MaxSupplies = g_House.GetSupplyShedLevel()*700;
+			number = g_House.GetBrothel(0)->m_AntiPregPotions;
+			if(number == MaxSupplies)
+			{
+				_itoa(MaxSupplies,buffer,10);
+				message = gettext("You can only store up to ");
+				message+=buffer;
+				message += gettext(" potions");
+				g_MessageQue.AddToQue(message, 0);
 			}
 			else
-				g_MessageQue.AddToQue(gettext("You don't have enough gold"), 0);
-		}
-		break;
-	case BUILDING_BROTHEL:
-	default:
-		MaxSupplies = g_Brothels.GetSupplyShedLevel()*700;
-		number = g_Brothels.GetNumPotions();
-		if(number == MaxSupplies)
-		{
-			_itoa(MaxSupplies,buffer,10);
-			message = gettext("You can only store up to ");
-			message+=buffer;
-			message += gettext(" potions");
-			g_MessageQue.AddToQue(message, 0);
-		}
-		else
-		{
-			if(number+20 > MaxSupplies)
-				number = (number+20) - MaxSupplies;
-			else
-				number = 20;
-
-			if(g_Gold.afford(number*2))
 			{
-				g_Gold.girl_support(number*2);
-				g_Brothels.AddAntiPreg(number);
+				if(number+20 > MaxSupplies)
+					number = (number+20) - MaxSupplies;
+				else
+					number = 20;
+	
+				if(g_Gold.afford(number*2))
+				{
+					g_Gold.girl_support(number*2);
+					g_House.GetBrothel(0)->m_AntiPregPotions += number;
+				}
+				else
+					g_MessageQue.AddToQue(gettext("You don't have enough gold"), 0);
+			}
+			break;
+		case BUILDING_BROTHEL:
+		default:
+			MaxSupplies = g_Brothels.GetSupplyShedLevel()*700;
+			number = g_Brothels.GetBrothel(g_CurrBrothel)->m_AntiPregPotions;
+			if(number == MaxSupplies)
+			{
+				_itoa(MaxSupplies,buffer,10);
+				message = gettext("You can only store up to ");
+				message+=buffer;
+				message += gettext(" potions");
+				g_MessageQue.AddToQue(message, 0);
 			}
 			else
-				g_MessageQue.AddToQue(gettext("You don't have enough gold"), 0);
-		}
-		break;
-		break;
+			{
+				if(number+20 > MaxSupplies)
+					number = (number+20) - MaxSupplies;
+				else
+					number = 20;
+	
+				if(g_Gold.afford(number*2))
+				{
+					g_Gold.girl_support(number*2);
+					g_Brothels.GetBrothel(g_CurrBrothel)->m_AntiPregPotions += number;
+				}
+				else
+					g_MessageQue.AddToQue(gettext("You don't have enough gold"), 0);
+			}
+			break;
+			break;
 
 		} //end switch
 		g_InitWin = true;
@@ -762,10 +763,10 @@ void cScreenBuildingSetup::check_events()
 		EditTextItem(ss.str(), advertamt_id);
 	}
 	switch(g_Building)
-		{
+	{
 	case BUILDING_STUDIO:
 		if(g_InterfaceEvents.CheckCheckbox(autopotions_id))
-			g_Studios.KeepPotionsStocked(IsCheckboxOn(autopotions_id));
+			g_Studios.GetBrothel(0)->m_KeepPotionsStocked = IsCheckboxOn(autopotions_id);
 		if(g_InterfaceEvents.CheckCheckbox(noanal_id))
 			g_Studios.GetBrothel(g_CurrBrothel)->m_RestrictAnal = IsCheckboxOn(noanal_id);
 		if(g_InterfaceEvents.CheckCheckbox(nobdsm_id))
@@ -785,7 +786,7 @@ void cScreenBuildingSetup::check_events()
 		break;
 	case BUILDING_CLINIC:
 		if(g_InterfaceEvents.CheckCheckbox(autopotions_id))
-			g_Clinic.KeepPotionsStocked(IsCheckboxOn(autopotions_id));
+			g_Clinic.GetBrothel(0)->m_KeepPotionsStocked = IsCheckboxOn(autopotions_id);
 		if(g_InterfaceEvents.CheckCheckbox(noanal_id))
 			g_Clinic.GetBrothel(g_CurrBrothel)->m_RestrictAnal = IsCheckboxOn(noanal_id);
 		if(g_InterfaceEvents.CheckCheckbox(nobdsm_id))
@@ -805,7 +806,7 @@ void cScreenBuildingSetup::check_events()
 		break;
 	case BUILDING_ARENA:
 		if(g_InterfaceEvents.CheckCheckbox(autopotions_id))
-			g_Arena.KeepPotionsStocked(IsCheckboxOn(autopotions_id));
+			g_Arena.GetBrothel(0)->m_KeepPotionsStocked = IsCheckboxOn(autopotions_id);
 		if(g_InterfaceEvents.CheckCheckbox(noanal_id))
 			g_Arena.GetBrothel(g_CurrBrothel)->m_RestrictAnal = IsCheckboxOn(noanal_id);
 		if(g_InterfaceEvents.CheckCheckbox(nobdsm_id))
@@ -825,7 +826,7 @@ void cScreenBuildingSetup::check_events()
 		break;
 	case BUILDING_CENTRE:
 		if(g_InterfaceEvents.CheckCheckbox(autopotions_id))
-			g_Centre.KeepPotionsStocked(IsCheckboxOn(autopotions_id));
+			g_Centre.GetBrothel(0)->m_KeepPotionsStocked = IsCheckboxOn(autopotions_id);
 		if(g_InterfaceEvents.CheckCheckbox(noanal_id))
 			g_Centre.GetBrothel(g_CurrBrothel)->m_RestrictAnal = IsCheckboxOn(noanal_id);
 		if(g_InterfaceEvents.CheckCheckbox(nobdsm_id))
@@ -845,7 +846,7 @@ void cScreenBuildingSetup::check_events()
 		break;
 	case BUILDING_HOUSE:
 		if(g_InterfaceEvents.CheckCheckbox(autopotions_id))
-			g_House.KeepPotionsStocked(IsCheckboxOn(autopotions_id));
+			g_House.GetBrothel(0)->m_KeepPotionsStocked = IsCheckboxOn(autopotions_id);
 		if(g_InterfaceEvents.CheckCheckbox(noanal_id))
 			g_House.GetBrothel(g_CurrBrothel)->m_RestrictAnal = IsCheckboxOn(noanal_id);
 		if(g_InterfaceEvents.CheckCheckbox(nobdsm_id))
@@ -867,7 +868,7 @@ void cScreenBuildingSetup::check_events()
 	default:
 		{
 		if(g_InterfaceEvents.CheckCheckbox(autopotions_id))
-			g_Brothels.KeepPotionsStocked(IsCheckboxOn(autopotions_id));
+			g_Brothels.GetBrothel(g_CurrBrothel)->m_KeepPotionsStocked = IsCheckboxOn(autopotions_id);
 		if(g_InterfaceEvents.CheckCheckbox(noanal_id))
 			g_Brothels.GetBrothel(g_CurrBrothel)->m_RestrictAnal = IsCheckboxOn(noanal_id);
 		if(g_InterfaceEvents.CheckCheckbox(nobdsm_id))
@@ -885,5 +886,5 @@ void cScreenBuildingSetup::check_events()
 		if(g_InterfaceEvents.CheckCheckbox(notitty_id))
 			g_Brothels.GetBrothel(g_CurrBrothel)->m_RestrictTitty = IsCheckboxOn(notitty_id);
 		}
-		}
+	}
 }

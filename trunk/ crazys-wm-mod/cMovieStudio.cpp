@@ -87,6 +87,7 @@ void cMovieStudioManager::AddGirl(int brothelID, sGirl* girl)
 	girl->m_InClinic = false;
 	girl->m_InHouse = false;
 	girl->m_InMovieStudio = true;
+	girl->where_is_she = brothelID;
 	cBrothelManager::AddGirl(brothelID, girl);
 }
 
@@ -827,6 +828,10 @@ TiXmlElement* sMovieStudio::SaveMovieStudioXML(TiXmlElement* pRoot)
 	pBrothel->SetAttribute("RestrictNormal", m_RestrictNormal);
 	pBrothel->SetAttribute("RestrictLesbian", m_RestrictLesbian);
 	pBrothel->SetAttribute("AdvertisingBudget", m_AdvertisingBudget);
+	pBrothel->SetAttribute("AntiPregPotions", m_AntiPregPotions);
+	pBrothel->SetAttribute("KeepPotionsStocked", m_KeepPotionsStocked);
+	if (m_AntiPregPotions < 0){ m_AntiPregPotions = 0; }
+	if (m_KeepPotionsStocked != 0 && m_KeepPotionsStocked != 1){ m_KeepPotionsStocked = 0; }
 
 	TiXmlElement* pMovies = new TiXmlElement("Movies");
 	pBrothel->LinkEndChild(pMovies);
@@ -930,6 +935,11 @@ bool sMovieStudio::LoadMovieStudioXML(TiXmlHandle hBrothel)
 	pBrothel->QueryValueAttribute<bool>("RestrictNormal", &m_RestrictNormal);
 	pBrothel->QueryValueAttribute<bool>("RestrictLesbian", &m_RestrictLesbian);
 	pBrothel->QueryValueAttribute<unsigned short>("AdvertisingBudget", &m_AdvertisingBudget);
+	// `J` Added to save potion stuff in individual buildings
+	pBrothel->QueryIntAttribute("AntiPregPotions", &m_AntiPregPotions);
+	if (m_AntiPregPotions < 0){ m_AntiPregPotions = 0; }
+	pBrothel->QueryValueAttribute<bool>("KeepPotionsStocked", &m_KeepPotionsStocked);
+	if (m_KeepPotionsStocked != 0 && m_KeepPotionsStocked != 1){ m_KeepPotionsStocked = 0; }
 
 	m_NumMovies = 0;
 	TiXmlElement* pMovies = pBrothel->FirstChildElement("Movies");

@@ -1,0 +1,181 @@
+Basic .rgirlsx file layout
+
+<?xml version="1.0" encoding="utf-8"?>
+<Girls>
+<Girl Name="@"
+      Desc="@"
+      Human="!"
+      Catacomb="!"
+      Arena="!"
+      >
+      <Gold           Min="#" Max="#" />
+      <Stat  Name="%" Min="#" Max="#" />
+      <Skill Name="%" Min="#" Max="#" />
+      <Trait Name="%" Percent="#" />
+</Girl>
+</Girls>
+
+Replace @ with text.
+Replace # with a number.
+Replace ! either Yes or No.
+Replace % with a choice from a list below.
+
+The first line in the file must be the "<?xml version="1.0" encoding="utf-8"?>" line followed by the "<Girls>" line
+Each Girl must have the "<Girl ... >" with:
+ - Girl Name and Description
+ - Human="Yes" if they are human or "No" if they are not
+ - Catacomb="Yes" if they are primarily found in the Catacombs or "No" if they are not
+ - Arena="Yes" if they are primarily found in the Arena or "No" if they are not
+ - Gold, Stat and Skill all need Min="#" Max="#" which is the random range the girl will start with
+Each Girl must end with "</Girl>"
+The File must end with "</Girls>"
+
+
+For "Skill" and "Stat":
+    <Stat     Name="Charisma"               Min="0" Max="0" />
+    <Stat     Name="Happiness"              Min="0" Max="0" />
+    <Stat     Name="Libido"                 Min="0" Max="0" />
+    <Stat     Name="Constitution"           Min="0" Max="0" />
+    <Stat     Name="Intelligence"           Min="0" Max="0" />
+    <Stat     Name="Confidence"             Min="0" Max="0" />
+    <Stat     Name="Mana"                   Min="0" Max="0" />
+    <Stat     Name="Agility"                Min="0" Max="0" />
+    <Stat     Name="Fame"                   Min="0" Max="0" />
+    <Stat     Name="Level"                  Min="0" Max="0" />
+    <Stat     Name="AskPrice"               Min="0" Max="0" />
+    <Stat     Name="House"                  Min="0" Max="0" />
+    <Stat     Name="Exp"                    Min="0" Max="0" />
+    <Stat     Name="Age"                    Min="0" Max="0" />
+    <Stat     Name="Obedience"              Min="0" Max="0" />
+    <Stat     Name="Spirit"                 Min="0" Max="0" />
+    <Stat     Name="Beauty"                 Min="0" Max="0" />
+    <Stat     Name="Tiredness"              Min="0" Max="0" />
+    <Stat     Name="Health"                 Min="0" Max="0" />
+    <Stat     Name="PCFear"                 Min="0" Max="0" />
+    <Stat     Name="PCLove"                 Min="0" Max="0" />
+    <Stat     Name="PCHate"                 Min="0" Max="0" />
+
+    <Skill    Name="Combat"                 Min="0" Max="0" />
+    <Skill    Name="Service"                Min="0" Max="0" />
+    <Skill    Name="Magic"                  Min="0" Max="0" />
+    <Skill    Name="Anal"                   Min="0" Max="0" />
+    <Skill    Name="BDSM"                   Min="0" Max="0" />
+    <Skill    Name="NormalSex"              Min="0" Max="0" />
+    <Skill    Name="Beastiality"            Min="0" Max="0" />
+    <Skill    Name="Group"                  Min="0" Max="0" />
+    <Skill    Name="Lesbian"                Min="0" Max="0" />
+    <Skill    Name="Strip"                  Min="0" Max="0" />
+    <Skill    Name="OralSex"                Min="0" Max="0" />
+    <Skill    Name="TittySex"               Min="0" Max="0" />
+
+
+All traits listed will be randomly chosen by their individual Percent.
+After choosing all the traits, the game cleans out any that are overridden by others.
+
+   <Trait Name="Small Boobs" Percent="#" />
+   <Trait Name="Big Boobs" Percent="#" />
+   <Trait Name="Abnormally Large Boobs" Percent="#" />
+
+   <Trait Name="Pessimist" Percent="#" />
+   <Trait Name="Optimist" Percent="#" />
+
+   <Trait Name="Broken Will" Percent="#" />
+   <Trait Name="Iron Will" Percent="#" />
+
+   <Trait Name="Lolita" Percent="#" />
+   <Trait Name="MILF" Percent="#" />
+
+   <Trait Name="Fragile" Percent="#" />
+   <Trait Name="Tough" Percent="#" />
+
+   <Trait Name="Quick Learner" Percent="#" />
+   <Trait Name="Slow Learner" Percent="#" />
+
+   <Trait Name="Gag Reflex" Percent="#" />
+   <Trait Name="No Gag Reflex" Percent="#" />
+   <Trait Name="Deep Throat" Percent="#" />
+
+   <Trait Name="Fake Orgasm Expert" Percent="#" />
+   <Trait Name="Slow Orgasms" Percent="#" />
+   <Trait Name="Fast Orgasms" Percent="#" />
+
+   <Trait Name="Princess" Percent="#" />
+   <Trait Name="Queen" Percent="#" />
+
+   <Trait Name="Aggressive" Percent="#" />
+   <Trait Name="Fearless" Percent="#" />
+   <Trait Name="Meek" Percent="#" />
+   <Trait Name="Dependant" Percent="#" />
+   <Trait Name="Nervous" Percent="#" />
+
+   <Trait Name="Perky Nipples" Percent="#" />
+   <Trait Name="Puffy Nipples" Percent="#" />
+
+   <Trait Name="Different Colored Eyes" Percent="#" />
+   <Trait Name="Eye Patch" Percent="#" />
+   <Trait Name="One Eye" Percent="#" />
+   <Trait Name="Strange Eyes" Percent="#" />
+
+   <Trait Name="Not Human" Percent="#" />
+   <Trait Name="Cat Girl" Percent="#" />
+   <Trait Name="Demon" Percent="#" />
+   <Trait Name="Futanari" Percent="#" />
+   <Trait Name="Shape Shifter" Percent="#" />
+   <Trait Name="Construct" Percent="#" />
+   <Trait Name="Half-Construct" Percent="#" />
+   <Trait Name="Incorporeal" Percent="#" />
+
+   <Trait Name="Cool Scars" Percent="#" />
+   <Trait Name="Small Scars" Percent="#" />
+   <Trait Name="Horrific Scars" Percent="#" />
+
+
+   
+Other Traits that probably do not have conflicts with any others
+   <Trait Name="Adventurer" Percent="#" />
+   <Trait Name="Assassin" Percent="#" />
+   <Trait Name="Charismatic" Percent="#" />
+   <Trait Name="Charming" Percent="#" />
+   <Trait Name="Clumsy" Percent="#" />
+   <Trait Name="Cool Person" Percent="#" />
+   <Trait Name="Cute" Percent="#" />
+   <Trait Name="Elegant" Percent="#" />
+   <Trait Name="Fleet of Foot" Percent="#" />
+   <Trait Name="Good Kisser" Percent="#" />
+   <Trait Name="Great Arse" Percent="#" />
+   <Trait Name="Great Figure" Percent="#" />
+   <Trait Name="Lesbian" Percent="#" />
+   <Trait Name="Long Legs" Percent="#" />
+   <Trait Name="Malformed" Percent="#" />
+   <Trait Name="Manly" Percent="#" />
+   <Trait Name="Masochist" Percent="#" />
+   <Trait Name="Merciless" Percent="#" />
+   <Trait Name="Mind Fucked" Percent="#" />
+   <Trait Name="Nerd" Percent="#" />
+   <Trait Name="Nymphomaniac" Percent="#" />
+   <Trait Name="Pierced Clit" Percent="#" />
+   <Trait Name="Pierced Nipples" Percent="#" />
+   <Trait Name="Pierced Tongue" Percent="#" />
+   <Trait Name="Psychic" Percent="#" />
+   <Trait Name="Retarded" Percent="#" />
+   <Trait Name="Sadistic" Percent="#" />
+   <Trait Name="Sexy Air" Percent="#" />
+   <Trait Name="Sterile" Percent="#" />
+   <Trait Name="Strong Magic" Percent="#" />
+   <Trait Name="Strong" Percent="#" />
+   <Trait Name="Tsundere" Percent="#" />
+   <Trait Name="Twisted" Percent="#" />
+   <Trait Name="Yandere" Percent="#" />
+
+   <Trait Name="Incest" Percent="#" />
+   <Trait Name="Your Daughter" Percent="#" />
+   
+STDs and Diseases
+   <Trait Name="AIDS" Percent="#" />
+   <Trait Name="Chlamydia" Percent="#" />
+   <Trait Name="Syphilis" Percent="#" />
+   <Trait Name="Fairy Dust Addict" Percent="#" />
+   <Trait Name="Shroud Addict" Percent="#" />
+   <Trait Name="Viras Blood Addict" Percent="#" />
+
+   

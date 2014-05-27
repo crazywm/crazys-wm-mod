@@ -19,7 +19,6 @@
 #include "cTariff.h"
 #include "cGirls.h"
 #include "cEvents.h"
-#include "cCentre.h"
 #include "math.h"
 #include <fstream>
 #include "cBrothel.h"
@@ -32,8 +31,10 @@
 #include <algorithm>
 #include "cMovieStudio.h"
 #include "cArena.h"
+#include "cCentre.h"
 #include "cClinic.h"
 #include "cHouse.h"
+#include "cBrothel.h"
 
 #ifdef LINUX
 #include "linux.h"
@@ -45,8 +46,6 @@
 using namespace std;
 
 extern cMessageQue g_MessageQue;
-extern cBrothelManager g_Brothels;
-extern cMovieStudioManager  g_Studios;
 extern cTraits g_Traits;
 extern cEvents g_Events;
 extern cInventory g_InvManager;
@@ -59,12 +58,14 @@ extern cGold g_Gold;
 extern cGangManager g_Gangs;
 extern int g_Building;
 extern cGirls g_Girls;
-extern cCentreManager g_Centre;
 extern sGirl *selected_girl;
+extern cBrothelManager g_Brothels;
+extern cMovieStudioManager  g_Studios;
 extern cArenaManager g_Arena;
 extern cClinicManager g_Clinic;
+extern cCentreManager g_Centre;
 extern cHouseManager g_House;
-extern cMovieStudioManager g_Studios;
+
 
 /*
  * MOD: DocClox: Stuff for the XML loader code
@@ -331,9 +332,9 @@ bool cGirls::DisobeyCheck(sGirl* girl, int action, sBrothel* brothel)
  *	Anyway, the old version added 15 for a matron either shift. Let's add
  *	10 for each shift. Full coverage gets you 20 points
  */
-	if(brothel) {
-		if(brothel->matron_on_shift(SHIFT_DAY)) chance_to_obey += 10;
-		if(brothel->matron_on_shift(SHIFT_NIGHT)) chance_to_obey += 10;
+	if(brothel) { // `J` added building checks
+		if (brothel->matron_on_shift(SHIFT_DAY, girl->m_InClinic, girl->m_InMovieStudio, girl->m_InArena, girl->m_InCentre, girl->m_InHouse, girl->where_is_she)) chance_to_obey += 10;
+		if (brothel->matron_on_shift(SHIFT_NIGHT, girl->m_InClinic, girl->m_InMovieStudio, girl->m_InArena, girl->m_InCentre, girl->m_InHouse, girl->where_is_she)) chance_to_obey += 10;
 	}
 /*
  *	This is still confusing - at least it still confuses me
@@ -767,7 +768,7 @@ void cGirls::CalculateGirlType(sGirl* girl)
 	{
 		Freak += 20;
 	}
-	if(HasTrait(girl, "Fleet of Foot"))
+	if (HasTrait(girl, "Fleet of Foot") || HasTrait(girl, "Fleet Of Foot"))
 	{
 		Dangerous += 10;
 		Sexy += 20;
@@ -1169,7 +1170,8 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 	for(int i=0; i<current->m_NumTraits; i++)	// add the traits
 	{
 		int chance = g_Dice%100+1;
-		if(g_Traits.GetTrait(current->m_Traits[i]->m_Name))
+//		if (g_Traits.GetTrait(current->m_Traits[i]->m_Name))
+		if (g_Traits.GetTrait(g_Traits.GetTranslateName(current->m_Traits[i]->m_Name))) // `J` added translation check
 		{
 			if(chance <= (int)current->m_TraitChance[i])
 			{
@@ -1449,7 +1451,7 @@ void cGirls::LevelUp(sGirl* girl)
 			ss << gettext(" She has gained the Sexy Air trait.");
 			girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);                
 		}
-		else if(chance <= 50 && !HasTrait(girl, "Fleet of Foot"))
+		else if (chance <= 50 && !HasTrait(girl, "Fleet of Foot") && !HasTrait(girl, "Fleet Of Foot"))
 		{
 			AddTrait(girl, "Fleet of Foot");
 			ss << gettext(" She has gained the Fleet of Foot trait.");
@@ -1998,7 +2000,7 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		massusse += 10;
 		nurse += 10;
 	}
-	if (g_Girls.HasTrait(girl, "Fleet of Foot")) 
+	if (g_Girls.HasTrait(girl, "Fleet of Foot") || g_Girls.HasTrait(girl, "Fleet Of Foot"))
 	{
 		//barmaid += 10;
 		barwait += 5;
@@ -3643,7 +3645,8 @@ void cGirls::LoadGirlLegacy(sGirl* current, ifstream& ifs)
 	{
 		if(ifs.peek()=='\n') ifs.ignore(1,'\n');
 		ifs.getline(buffer, sizeof(buffer), '\n');
-		current->m_Traits[i] = g_Traits.GetTrait(buffer);
+//		current->m_Traits[i] = g_Traits.GetTrait(buffer);
+		current->m_Traits[i] = g_Traits.GetTrait(g_Traits.GetTranslateName(buffer)); // `J` added translation check
 
 		// get the temp trait variable
 		if(ifs.peek()=='\n') ifs.ignore(1,'\n');
@@ -3661,7 +3664,8 @@ void cGirls::LoadGirlLegacy(sGirl* current, ifstream& ifs)
 	{
 		if(ifs.peek()=='\n') ifs.ignore(1,'\n');
 		ifs.getline(buffer, sizeof(buffer), '\n');
-		current->m_RememTraits[i] = g_Traits.GetTrait(buffer);
+//		current->m_RememTraits[i] = g_Traits.GetTrait(buffer);
+		current->m_RememTraits[i] = g_Traits.GetTrait(g_Traits.GetTranslateName(buffer)); // `J` added translation check
 	}
 
 	// Load inventory items
@@ -4287,7 +4291,8 @@ void sGirl::load_from_xml(TiXmlElement *el)
  */
 		if(child->ValueStr()=="Trait") {
 			pt=child->Attribute("Name");
-			m_Traits[m_NumTraits] =g_Traits.GetTrait(n_strdup(pt));
+//			m_Traits[m_NumTraits] = g_Traits.GetTrait(n_strdup(pt));
+			m_Traits[m_NumTraits] = g_Traits.GetTrait(g_Traits.GetTranslateName(n_strdup(pt))); // `J` added translation check
 			m_NumTraits++;
 		}
 	}
@@ -4534,8 +4539,9 @@ void cGirls::LoadRandomGirlLegacy(string filename)
 		{
 			if (in.peek()=='\n') in.ignore(1,'\n');
 			in.getline(buffer, sizeof(buffer), '\n');
-			if(g_Traits.GetTrait(buffer) == 0)	// test a trait exists
-			{
+//			if (g_Traits.GetTrait(buffer) == 0)	// test a trait exists
+			if (g_Traits.GetTrait(g_Traits.GetTranslateName(buffer)) == 0)	// `J` added translation check
+				{
 				string message = "ERROR: Trait ";
 				message += buffer;
 				message += " from girl template ";
@@ -4545,7 +4551,8 @@ void cGirls::LoadRandomGirlLegacy(string filename)
 			}
 			else
 			{
-				newGirl->m_Traits[i] = g_Traits.GetTrait(buffer);	// get the trait name
+//				newGirl->m_Traits[i] = g_Traits.GetTrait(buffer);	// get the trait name
+				newGirl->m_Traits[i] = g_Traits.GetTrait(g_Traits.GetTranslateName(buffer));	// `J` added translation check
 
 				if (in.peek()=='\n') in.ignore(1,'\n');
 				in>>tempData;
@@ -4684,8 +4691,9 @@ void cGirls::LoadGirlsLegacy(string filename)
 			if (in.peek()=='\n') in.ignore(1,'\n');
 			if (in.peek()=='\r') in.ignore(1,'\r');
 			in.getline(buffer, sizeof(buffer), '\n');
-			if(g_Traits.GetTrait(buffer) == 0)	// test a trait exists
-			{
+//			if (g_Traits.GetTrait(buffer) == 0)	// test a trait exists
+			if (g_Traits.GetTrait(g_Traits.GetTranslateName(buffer)) == 0)	// `J` added translation check
+				{
 				string message = "ERROR in cGirls::LoadGirls: Trait '";
 				message += buffer;
 				message += "' from girl template ";
@@ -4694,7 +4702,8 @@ void cGirls::LoadGirlsLegacy(string filename)
 				g_MessageQue.AddToQue(message, 2);
 			}
 			else
-				newGirl->m_Traits[i] = g_Traits.GetTrait(buffer);
+//				newGirl->m_Traits[i] = g_Traits.GetTrait(buffer);
+				newGirl->m_Traits[i] = g_Traits.GetTrait(g_Traits.GetTranslateName(buffer)); // `J` added translation check
 		}
 
 		// Get how many inventory items they have
@@ -5799,7 +5808,7 @@ void cGirls::UnapplyTraits(sGirl* girl, sTrait* trait)
 			UpdateStat(girl, STAT_SPIRIT, 50);
 		}
 
-		else if(strcmp(tr->m_Name, "Fleet of Foot") == 0)
+		else if (strcmp(tr->m_Name, "Fleet of Foot") == 0 || strcmp(tr->m_Name, "Fleet Of Foot") == 0)
 		{
 			UpdateStat(girl, STAT_AGILITY, -50);
 		}
@@ -6454,7 +6463,7 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait, bool rememberflag)
 			RemoveTrait(girl, "Fragile", rememberflag, true);
 		}
 
-		else if(strcmp(tr->m_Name, "Fleet of Foot") == 0)
+		else if (strcmp(tr->m_Name, "Fleet of Foot") == 0 || strcmp(tr->m_Name, "Fleet Of Foot") == 0)
 		{
 			UpdateStat(girl, STAT_AGILITY, 50);
 		}
@@ -7005,7 +7014,8 @@ void cGirls::AddRememberedTrait(sGirl* girl, string name)
 		if(girl->m_RememTraits[i] == 0)
 		{
 			girl->m_NumRememTraits++;
-			girl->m_RememTraits[i] = g_Traits.GetTrait(name);
+//			girl->m_RememTraits[i] = g_Traits.GetTrait(name);
+			girl->m_RememTraits[i] = g_Traits.GetTrait(g_Traits.GetTranslateName(name)); // `J` added translation check
 			return;
 		}
 	}
@@ -7063,7 +7073,8 @@ bool cGirls::AddTrait(sGirl* girl, string name, bool temp, bool removeitem, bool
 			if(temp)
 				girl->m_TempTrait[i] = 20;
 			girl->m_NumTraits++;
-			girl->m_Traits[i] = g_Traits.GetTrait(name);
+//			girl->m_Traits[i] = g_Traits.GetTrait(name);
+			girl->m_Traits[i] = g_Traits.GetTrait(g_Traits.GetTranslateName(name)); // `J` added translation check
 			ApplyTraits(girl, girl->m_Traits[i], removeitem);
 			return true;
 		}
@@ -7157,12 +7168,73 @@ void cGirls::updateHappyTraits(sGirl* girl)
 	if(girl->has_trait("Pessimist"))
 	{
 		girl->happiness(-5);
-		if(girl->happiness() <= 0)
+		if (girl->happiness() <= 0)
 		{
-			string msg = girl->m_Realname + gettext(" has killed herself since she was unhappy and depressed.");
-			girl->m_Events.AddMessage(msg, IMGTYPE_DEATH, EVENT_DANGER);
-			g_MessageQue.AddToQue(msg, 1);
-			//g_Girls.SetStat(girl, STAT_HEALTH, 0);
+			int Schance = g_Dice % 100;
+			if (girl->m_InArena && g_Arena.GetNumGirlsOnJob(0, JOB_DOCTORE, 0) > 0)
+			{
+				string msg = girl->m_Realname + gettext(" tried to killed herself but the Doctore");
+				if (Schance < 50)		{ msg += gettext(" talked her out of it."); }
+				else if (Schance < 90)	{ msg += gettext(" stopped her."); }
+				else	{ girl->m_Stats[STAT_HEALTH] = 1;	msg += gettext(" revived her."); }
+			}
+			else if (girl->m_InMovieStudio && g_Studios.GetNumGirlsOnJob(0, JOB_DIRECTOR, 0) > 0)
+			{
+				string msg = girl->m_Realname + gettext(" tried to killed herself but the Director");
+				if (Schance < 50)		{ msg += gettext(" talked her out of it."); }
+				else if (Schance < 90)	{ msg += gettext(" stopped her."); }
+				else	{ girl->m_Stats[STAT_HEALTH] = 1;	msg += gettext(" revived her."); }
+			}
+			else if (girl->m_InClinic && g_Clinic.GetNumGirlsOnJob(0, JOB_CHAIRMAN, 0) > 0)
+			{
+				string msg = girl->m_Realname + gettext(" tried to killed herself but the Chairman");
+				if (Schance < 50)		{ msg += gettext(" talked her out of it."); }
+				else if (Schance < 90)	{ msg += gettext(" stopped her."); }
+				else	{ girl->m_Stats[STAT_HEALTH] = 1;	msg += gettext(" revived her."); }
+			}
+			else if (girl->m_InCentre && (girl->m_DayJob == JOB_REHAB || girl->m_PrevDayJob == JOB_REHAB) && g_Centre.GetNumGirlsOnJob(0, JOB_DRUGCOUNSELOR, 0) > 0)
+			{
+				string msg = girl->m_Realname + gettext(" tried to killed herself but her Counselor");
+				if (Schance < 50)		{ msg += gettext(" talked her out of it."); }
+				else if (Schance < 90)	{ msg += gettext(" stopped her."); }
+				else	{ girl->m_Stats[STAT_HEALTH] = 1;	msg += gettext(" revived her."); }
+			}
+			else if (girl->m_InCentre && g_Centre.GetNumGirlsOnJob(0, JOB_CENTREMANAGER, 0) > 0)
+			{
+				string msg = girl->m_Realname + gettext(" tried to killed herself but the Centre Manager");
+				if (Schance < 50)		{	msg += gettext(" talked her out of it."); }
+				else if (Schance < 90)	{	msg += gettext(" stopped her."); }
+				else	{ girl->m_Stats[STAT_HEALTH] = 1;	msg += gettext(" revived her."); }
+			}
+			else if (girl->m_InHouse && Schance%2)	// `J` odds or evens you save her (? I hate math)
+			{
+				string msg = girl->m_Realname + gettext(" tried to killed herself but You ");
+				if (Schance < 50)		{ msg += gettext(" talked her out of it."); }
+				else if (Schance < 90)	{ msg += gettext(" stopped her."); }
+				else	{ girl->m_Stats[STAT_HEALTH] = 1;	msg += gettext(" revived her."); }
+			}
+			else if (girl->m_InHouse && g_House.GetNumGirlsOnJob(0, JOB_HEADGIRL, 0) > 0)
+			{
+				string msg = girl->m_Realname + gettext(" tried to killed herself but your Head Girl");
+				if (Schance < 50)		{ msg += gettext(" talked her out of it."); }
+				else if (Schance < 90)	{ msg += gettext(" stopped her."); }
+				else	{ girl->m_Stats[STAT_HEALTH] = 1;	msg += gettext(" revived her."); }
+			}
+			else if (g_Brothels.GetNumGirlsOnJob(girl->where_is_she, JOB_MATRON, 0) > 0)
+			{
+				string msg = girl->m_Realname + gettext(" tried to killed herself but the Matron");
+				if (Schance < 50)		{ msg += gettext(" talked her out of it."); }
+				else if (Schance < 90)	{ msg += gettext(" stopped her."); }
+				else	{ girl->m_Stats[STAT_HEALTH] = 1;	msg += gettext(" revived her."); }
+			}
+			else
+			{
+				string msg = girl->m_Realname + gettext(" has killed herself since she was unhappy and depressed.");
+				girl->m_Events.AddMessage(msg, IMGTYPE_DEATH, EVENT_DANGER);
+				g_MessageQue.AddToQue(msg, 1);
+				girl->health(-1000);
+				//g_Girls.SetStat(girl, STAT_HEALTH, 0);
+			}
 		}
 	}
 }
@@ -11262,7 +11334,7 @@ void sGirl::fight_own_gang(bool &girl_wins)
 	if(has_trait("Meek"))		odds -= 0.05;
 	if(has_trait("Dependant"))	odds -= 0.10;
 	if(has_trait("Fearless"))	odds += 0.10;
-	if(has_trait("Fleet of Foot"))	odds += 0.10;
+	if (has_trait("Fleet of Foot") || has_trait("Fleet Of Foot"))	odds += 0.10;
 /*
  *	get it back into the 0 <= N <= 1 range
  */
@@ -11317,7 +11389,7 @@ void sGirl::win_vs_own_gang(vector<sGang*> &v, int max_goons, bool &girl_wins)
  *	fleet of foot means she gets out by running away more than fighting
  *	so fewer fatalities
  */
-	if(has_trait("Fleet of Foot")) casualties -= 2;
+	if (has_trait("Fleet of Foot") || has_trait("Fleet Of Foot")) casualties -= 2;
 /*
  *	OK, apply the casualties and make sure it doesn't go negative
  */
@@ -11590,7 +11662,7 @@ int cGirls::TakeCombatDamage(sGirl* girl, int amt)
 	if (girl->has_trait("Adventurer"))
 		value++;
 
-	if (girl->has_trait("Fleet of Foot"))
+	if (girl->has_trait("Fleet of Foot") || girl->has_trait("Fleet Of Foot"))
 		value++;
 
 	if (girl->has_trait("Optimist"))
@@ -11907,6 +11979,11 @@ static bool has_contraception(sGirl *girl)
 	{	// If she's in her cooldown period after giving birth
 		return true;
 	}
+	if (UseAntiPreg(girl->m_UseAntiPreg, girl->m_InClinic, girl->m_InMovieStudio, girl->m_InArena, girl->m_InCentre, girl->m_InHouse, girl->where_is_she))
+	{
+		return true;
+	}
+/*	`J` rewritten
 	if(	(g_Building == BUILDING_STUDIO && (g_Studios.UseAntiPreg(girl->m_UseAntiPreg)) ) || 
 		(g_Building == BUILDING_CLINIC && (g_Clinic.UseAntiPreg(girl->m_UseAntiPreg))  ) ||
 		(g_Building == BUILDING_ARENA  && (g_Arena.UseAntiPreg(girl->m_UseAntiPreg))   ) ||
@@ -11919,6 +11996,8 @@ static bool has_contraception(sGirl *girl)
 	else if (g_Brothels.UseAntiPreg(girl->m_UseAntiPreg)) {
 		return true;
 	}
+*/
+
 	g_Building = BUILDING_BROTHEL;
 	return false;
 }
@@ -12553,7 +12632,7 @@ bool cGirls::InheritTrait(sTrait* trait)
 	if(trait)
 	{
 		if( strcmp(trait->m_Name, "Fragile") == 0		|| 
-			strcmp(trait->m_Name, "Fleet of Foot") == 0 || 
+			strcmp(trait->m_Name, "Fleet of Foot") == 0 || strcmp(trait->m_Name, "Fleet Of Foot") == 0 ||
 			strcmp(trait->m_Name, "Clumsy") == 0		|| 
 			strcmp(trait->m_Name, "Strong") == 0		|| 
 			strcmp(trait->m_Name, "Psychic") == 0		|| 

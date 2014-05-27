@@ -91,7 +91,7 @@ bool cJobManager::WorkSecurity(sGirl* girl, sBrothel* brothel, int DayNight, str
 	if (g_Girls.HasTrait(girl, "Psychic"))  // I sense danger
 		SecLev += 10;
 
-	if (g_Girls.HasTrait(girl, "Fleet of Foot"))  // Moves around quickly
+	if (g_Girls.HasTrait(girl, "Fleet of Foot") || g_Girls.HasTrait(girl, "Fleet Of Foot"))  // Moves around quickly
 		SecLev += 5;
 
 	if (g_Girls.HasTrait(girl, "Charming"))  // Gets more cooperation
