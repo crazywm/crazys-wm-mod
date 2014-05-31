@@ -956,20 +956,20 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	bool MadeChanges = true;  // whether a special case applies to specified job or not
 	Girl->m_WorkingDay = 0; // TODO put this in method in cGirl
 // Special Brothel Jobs
-	if(u_int(JobID) == JOB_MATRON)
+	if (u_int(JobID) == JOB_MATRON)
 	{
-		if(g_Brothels.GetNumGirlsOnJob(TargetBrothel, JOB_MATRON, DayOrNight) == 1)
+		if (g_Brothels.GetNumGirlsOnJob(TargetBrothel, JOB_MATRON, DayOrNight) == 1)
 			g_MessageQue.AddToQue(gettext("You can only have one matron per brothel."), 0);
-		else if(Girl->m_States&(1<<STATUS_SLAVE))
+		else if (Girl->m_States&(1 << STATUS_SLAVE))
 			g_MessageQue.AddToQue(gettext("The matron cannot be a slave."), 0);
 		else
 			Girl->m_NightJob = Girl->m_DayJob = JOB_MATRON;
 	}
-	else if(u_int(JobID) == JOB_TORTURER)
+	else if (u_int(JobID) == JOB_TORTURER)
 	{
-		if(g_Brothels.GetNumGirlsOnJob(-1, JOB_TORTURER, DayOrNight) == 1)
+		if (g_Brothels.GetNumGirlsOnJob(-1, JOB_TORTURER, DayOrNight) == 1)
 			g_MessageQue.AddToQue(gettext("You can only have one torturer among all of your brothels."), 0);
-		else if(Girl->m_States&(1<<STATUS_SLAVE))
+		else if (Girl->m_States&(1 << STATUS_SLAVE))
 			g_MessageQue.AddToQue(gettext("The torturer cannot be a slave."), 0);
 		else
 			Girl->m_NightJob = Girl->m_DayJob = JOB_TORTURER;
@@ -986,9 +986,9 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	}
 	else if (u_int(JobID) == JOB_RECRUITER)
 	{
-		if(g_House.GetNumGirlsOnJob(-1, JOB_RECRUITER, DayOrNight) == 1)
+		if (g_House.GetNumGirlsOnJob(-1, JOB_RECRUITER, DayOrNight) == 1)
 			g_MessageQue.AddToQue(gettext("You can only have one recruiter."), 0);
-		else if(Girl->m_States&(1<<STATUS_SLAVE))
+		else if (Girl->m_States&(1 << STATUS_SLAVE))
 			g_MessageQue.AddToQue(gettext("The recruiter cannot be a slave."), 0);
 		else
 			Girl->m_NightJob = Girl->m_DayJob = JOB_RECRUITER;
@@ -1020,157 +1020,227 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		else
 			Girl->m_NightJob = Girl->m_DayJob = JOB_DOCTOR;
 	}
-	else if (u_int(JobID) == JOB_GETHEALING)
+	else if (u_int(JobID) == JOB_NURSE)
 	{
-		if(g_Clinic.GetNumGirlsOnJob(-1, JOB_DOCTOR, DayOrNight) == 0)
+		Girl->m_NightJob = Girl->m_DayJob = JOB_NURSE;
+	}
+	else if (u_int(JobID) == JOB_MECHANIC)
+	{
+		Girl->m_NightJob = Girl->m_DayJob = JOB_MECHANIC;
+	}
+	else if (g_Girls.HasTrait(Girl, "Half-Construct") && (u_int(JobID) == JOB_GETHEALING || u_int(JobID) == JOB_GETREPAIRS))
+	{
+		if (g_Clinic.GetNumGirlsOnJob(-1, JOB_MECHANIC, DayOrNight) > 0 && g_Clinic.GetNumGirlsOnJob(-1, JOB_DOCTOR, DayOrNight) > 0)
 		{
-			g_MessageQue.AddToQue(gettext("You must have a doctor for healing."), 0);
-			Girl->m_NightJob = Girl->m_DayJob = JOB_RESTING;
+			string hctext;
+			hctext = gettext("As a Half-Construct, ") + Girl->m_Realname + gettext(" will have her ");
+			if ((DayOrNight && u_int(JobID) == JOB_GETHEALING) || (!DayOrNight && u_int(JobID) == JOB_GETREPAIRS))
+			{
+				hctext += gettext("living tissue healed durring the day\nand her constructed parts repaired at night.");
+				Girl->m_DayJob = JOB_GETHEALING;
+				Girl->m_NightJob = JOB_GETREPAIRS;
+			}
+			else
+			{
+				hctext += gettext("constructed parts repaired durring the day\nand her living tissue healed at night.");
+				Girl->m_DayJob = JOB_GETREPAIRS;
+				Girl->m_NightJob = JOB_GETHEALING;
+			}
+			g_MessageQue.AddToQue(hctext, 0);
 		}
-		else 
+		else if (g_Clinic.GetNumGirlsOnJob(-1, JOB_MECHANIC, DayOrNight) > 0 && u_int(JobID) == JOB_GETREPAIRS)
+		{
+			Girl->m_DayJob = Girl->m_NightJob = JOB_GETREPAIRS;
+		}
+		else if (g_Clinic.GetNumGirlsOnJob(-1, JOB_DOCTOR, DayOrNight) > 0 && u_int(JobID) == JOB_GETHEALING)
 		{
 			Girl->m_DayJob = Girl->m_NightJob = JOB_GETHEALING;
 		}
-	}
-	else if(u_int(JobID) == JOB_GETABORT)
-	{
-		if(g_Clinic.GetNumGirlsOnJob(-1, JOB_DOCTOR, DayOrNight) == 0)
+		else
 		{
-			g_MessageQue.AddToQue(gettext("You must have a doctor for the abortion."), 0);
 			Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
-		}
-		else if (!Girl->is_pregnant())
-		{
-			g_MessageQue.AddToQue(gettext("Oops, the girl is not pregant."), 0);
-		}
-		else 
-		{
-			Girl->m_DayJob = Girl->m_NightJob = JOB_GETABORT;
+			g_MessageQue.AddToQue(gettext("You need a Doctor or Mechanic on duty to heal or repair a Half-Construct."), 0);
 		}
 	}
-	else if(u_int(JobID) == JOB_PHYSICALSURGERY)
+	else if (u_int(JobID) == JOB_GETHEALING)
 	{
-		if(g_Clinic.GetNumGirlsOnJob(-1, JOB_DOCTOR, DayOrNight) == 0)
+		if (g_Girls.HasTrait(Girl, "Construct"))
 		{
-			g_MessageQue.AddToQue(gettext("You must have a doctor for that operation."), 0);
-			Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+			if (g_Clinic.GetNumGirlsOnJob(-1, JOB_MECHANIC, DayOrNight) > 0)
+			{
+				Girl->m_DayJob = Girl->m_NightJob = JOB_GETREPAIRS;
+				g_MessageQue.AddToQue(gettext("The Doctor does not work on Constructs so she sends ") + Girl->m_Realname + gettext(" to the Mechanic."), 0);
+			}
+			else
+			{
+				Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+				g_MessageQue.AddToQue(gettext("The Doctor does not work on Constructs.\nYou need a Mechanic on duty to repair a Construct."), 0);
+			}
 		}
-		else 
+		else if (g_Clinic.GetNumGirlsOnJob(-1, JOB_DOCTOR, DayOrNight) > 0)
 		{
-			Girl->m_DayJob = Girl->m_NightJob = JOB_PHYSICALSURGERY;
+			Girl->m_DayJob = Girl->m_NightJob = JOB_GETHEALING;
+		}
+		else
+		{
+			Girl->m_NightJob = Girl->m_DayJob = JOB_RESTING;
+			g_MessageQue.AddToQue(gettext("You must have a Doctor for healing."), 0);
 		}
 	}
 	else if (u_int(JobID) == JOB_GETREPAIRS)
 	{
-		if (g_Clinic.GetNumGirlsOnJob(-1, JOB_MECHANIC, DayOrNight) == 0)
+		if (!g_Girls.HasTrait(Girl, "Construct"))	// Half-Constructs were taken care of above
 		{
-			g_MessageQue.AddToQue(gettext("You must have a mechanic for that operation."), 0);
-			if(DayOrNight)
+			if (g_Clinic.GetNumGirlsOnJob(-1, JOB_DOCTOR, DayOrNight) > 0)
+			{
+				Girl->m_DayJob = Girl->m_NightJob = JOB_GETHEALING;
+				g_MessageQue.AddToQue(gettext("The Mechanic only works on Constructs so she sends ") + Girl->m_Realname + gettext(" to the Doctor."), 0);
+			}
+			else
+			{
 				Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+				g_MessageQue.AddToQue(gettext("The Mechanic only works on Constructs.\nYou need a Doctor on duty to heal her."), 0);
+			}
 		}
-		else if (g_Girls.HasTrait(Girl, "Construct"))
+		else if (g_Clinic.GetNumGirlsOnJob(-1, JOB_MECHANIC, DayOrNight) > 0)
 		{
 			Girl->m_DayJob = Girl->m_NightJob = JOB_GETREPAIRS;
 		}
 		else
 		{
-			g_MessageQue.AddToQue(gettext("You must be a Construct for this operation."), 0);
+			Girl->m_NightJob = Girl->m_DayJob = JOB_RESTING;
+			g_MessageQue.AddToQue(gettext("You must have a mechanic for that operation."), 0);
+		}
+	}
+	else if(u_int(JobID) == JOB_GETABORT)
+	{
+		if (!Girl->is_pregnant())
+		{
+			Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+			g_MessageQue.AddToQue(gettext("Oops, the girl is not pregant."), 0);
+		}
+		else if (g_Clinic.GetNumGirlsOnJob(-1, JOB_DOCTOR, DayOrNight) > 0)
+		{
+			Girl->m_DayJob = Girl->m_NightJob = JOB_GETABORT;
+		}
+		else 
+		{
+			Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+			g_MessageQue.AddToQue(gettext("You must have a Doctor to perform an abortion."), 0);
+		}
+	}
+	else if(u_int(JobID) == JOB_PHYSICALSURGERY)
+	{
+		if(g_Clinic.GetNumGirlsOnJob(-1, JOB_DOCTOR, DayOrNight) > 0)
+		{
+			Girl->m_DayJob = Girl->m_NightJob = JOB_PHYSICALSURGERY;
+		}
+		else 
+		{
+			Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+			g_MessageQue.AddToQue(gettext("You must have a Doctor for that operation."), 0);
 		}
 	}
 	else if(u_int(JobID) == JOB_BREASTREDUCTION)
 	{
-		if(g_Clinic.GetNumGirlsOnJob(-1, JOB_DOCTOR, DayOrNight) == 0)
+		if (g_Girls.HasTrait(Girl, "Small Boobs"))
 		{
-			g_MessageQue.AddToQue(gettext("You must have a doctor for that operation."), 0);
 			Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+			g_MessageQue.AddToQue(gettext("Her boobs can't get no smaller."), 0);
 		}
-		else if (!g_Girls.HasTrait(Girl, "Small Boobs"))
+		else if (g_Clinic.GetNumGirlsOnJob(-1, JOB_DOCTOR, DayOrNight) > 0)
 		{
 			Girl->m_DayJob = Girl->m_NightJob = JOB_BREASTREDUCTION;
 		}
 		else
 		{
-			g_MessageQue.AddToQue(gettext("Her boobs can't get no smaller."), 0);
+			Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+			g_MessageQue.AddToQue(gettext("You must have a Doctor for that operation."), 0);
 		}
 	}
 	else if(u_int(JobID) == JOB_BOOBJOB)
 	{
-		if(g_Clinic.GetNumGirlsOnJob(-1, JOB_DOCTOR, DayOrNight) == 0)
+		if (g_Girls.HasTrait(Girl, "Abnormally Large Boobs"))
 		{
-			g_MessageQue.AddToQue(gettext("You must have a doctor for that operation."), 0);
 			Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+			g_MessageQue.AddToQue(gettext("Her boobs can't get no bigger."), 0);
 		}
-		else if (!g_Girls.HasTrait(Girl, "Abnormally Large Boobs"))
+		else if (g_Clinic.GetNumGirlsOnJob(-1, JOB_DOCTOR, DayOrNight) > 0)
 		{
 			Girl->m_DayJob = Girl->m_NightJob = JOB_BOOBJOB;
 		}
 		else
 		{
-			g_MessageQue.AddToQue(gettext("Her boobs can't get no bigger."), 0);
+			Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+			g_MessageQue.AddToQue(gettext("You must have a Doctor for that operation."), 0);
 		}
 	}
 	else if(u_int(JobID) == JOB_ASSJOB)
 	{
-		if(g_Clinic.GetNumGirlsOnJob(-1, JOB_DOCTOR, DayOrNight) == 0)
+		if (g_Girls.HasTrait(Girl, "Great Arse"))
 		{
-			g_MessageQue.AddToQue(gettext("You must have a doctor for that operation."), 0);
 			Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+			g_MessageQue.AddToQue(gettext("Her ass can't get no better."), 0);
 		}
-		else if (!g_Girls.HasTrait(Girl, "Great Arse"))
+		else if (g_Clinic.GetNumGirlsOnJob(-1, JOB_DOCTOR, DayOrNight) > 0)
 		{
 			Girl->m_DayJob = Girl->m_NightJob = JOB_ASSJOB;
 		}
 		else
 		{
-			g_MessageQue.AddToQue(gettext("Her ass can't get no better."), 0);
+			Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+			g_MessageQue.AddToQue(gettext("You must have a Doctor for that operation."), 0);
 		}
 	}
 	else if(u_int(JobID) == JOB_FACELIFT)
 	{
-		if(g_Clinic.GetNumGirlsOnJob(-1, JOB_DOCTOR, DayOrNight) == 0)
+		if (g_Girls.GetStat(Girl, STAT_AGE) <= 21)
 		{
-			g_MessageQue.AddToQue(gettext("You must have a doctor for that operation."), 0);
 			Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+			g_MessageQue.AddToQue(gettext("She is to young for a face lift."), 0);
 		}
-		else if (g_Girls.GetStat(Girl, STAT_AGE) >= 20)
+		else if (g_Clinic.GetNumGirlsOnJob(-1, JOB_DOCTOR, DayOrNight) > 0)
 		{
 			Girl->m_DayJob = Girl->m_NightJob = JOB_FACELIFT;
 		}
 		else
 		{
-			g_MessageQue.AddToQue(gettext("She is to young for a face lift."), 0);
+			Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+			g_MessageQue.AddToQue(gettext("You must have a Doctor for that operation."), 0);
 		}
 	}
 	else if(u_int(JobID) == JOB_VAGINAREJUV)
 	{
-		if(g_Clinic.GetNumGirlsOnJob(-1, JOB_DOCTOR, DayOrNight) == 0)
+		if (Girl->m_Virgin)
 		{
-			g_MessageQue.AddToQue(gettext("You must have a doctor for that operation."), 0);
 			Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
-		}
-		else if (Girl->m_Virgin)
-		{
 			g_MessageQue.AddToQue(gettext("She is a virgin and has no need of this operation."), 0);
+		}
+		else if (g_Clinic.GetNumGirlsOnJob(-1, JOB_DOCTOR, DayOrNight) > 0)
+		{
+			Girl->m_DayJob = Girl->m_NightJob = JOB_VAGINAREJUV;
 		}
 		else
 		{
-			Girl->m_DayJob = Girl->m_NightJob = JOB_VAGINAREJUV;
+			Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+			g_MessageQue.AddToQue(gettext("You must have a Doctor for that operation."), 0);
 		}
 	}
 	else if(u_int(JobID) == JOB_LIPO)
 	{
-		if(g_Clinic.GetNumGirlsOnJob(-1, JOB_DOCTOR, DayOrNight) == 0)
+		if (g_Girls.HasTrait(Girl, "Great Figure"))
 		{
-			g_MessageQue.AddToQue(gettext("You must have a doctor for that operation."), 0);
 			Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+			g_MessageQue.AddToQue(gettext("She already has a great figure and doesn't need this."), 0);
 		}
-		else if (!g_Girls.HasTrait(Girl, "Great Figure"))
+		else if (g_Clinic.GetNumGirlsOnJob(-1, JOB_DOCTOR, DayOrNight) > 0)
 		{
 			Girl->m_DayJob = Girl->m_NightJob = JOB_LIPO;
 		}
 		else
 		{
-			g_MessageQue.AddToQue(gettext("She already has a great figure and doesn't need this."), 0);
+			Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+			g_MessageQue.AddToQue(gettext("You must have a Doctor for that operation."), 0);
 		}
 	}
 // Special Centre Jobs
@@ -1207,6 +1277,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		}
 		else
 		{
+			Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
 			g_MessageQue.AddToQue(gettext("She has no addiction."), 0);
 		}
 	}
@@ -1276,61 +1347,83 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 			Girl->m_NightJob = JobID;
 	}
 
+// handle instances where special job has been removed, specifically where it actually matters
 	if (JobID != OldJobID)
-	{  // handle instances where special job has been removed, specifically where it actually matters
-		if (u_int(OldJobID) == JOB_MATRON || 
-			u_int(OldJobID) == JOB_TORTURER || 
-			u_int(OldJobID) == JOB_RECRUITER || 
-			u_int(OldJobID) == JOB_HEADGIRL || 
-			u_int(OldJobID) == JOB_DOCTORE || 
-			u_int(OldJobID) == JOB_CENTREMANAGER || 
-			u_int(OldJobID) == JOB_CHAIRMAN || 
-			u_int(OldJobID) == JOB_PHYSICALSURGERY ||
-			u_int(OldJobID) == JOB_GETABORT ||
-			u_int(OldJobID) == JOB_BOOBJOB ||
-			u_int(OldJobID) == JOB_BREASTREDUCTION ||
-			u_int(OldJobID) == JOB_LIPO ||
-			u_int(OldJobID) == JOB_FACELIFT ||
-			u_int(OldJobID) == JOB_VAGINAREJUV ||
-			u_int(OldJobID) == JOB_GETHEALING ||
-			u_int(OldJobID) == JOB_ASSJOB ||
-			u_int(OldJobID) == JOB_DOCTOR ||
-			u_int(OldJobID) == JOB_REHAB ||
-			u_int(OldJobID) == JOB_DRUGCOUNSELOR ||
-			u_int(OldJobID) == JOB_CAMERAMAGE ||
-			u_int(OldJobID) == JOB_CRYSTALPURIFIER)
+	{  
+		if (u_int(OldJobID) == JOB_MATRON ||			//  6
+			u_int(OldJobID) == JOB_TORTURER)			//  7
 		{
-			if (u_int(JobID) != JOB_MATRON && 
-				u_int(JobID) != JOB_TORTURER &&
-				u_int(JobID) != JOB_RECRUITER &&
-				u_int(JobID) != JOB_HEADGIRL &&
-				u_int(JobID) != JOB_DOCTORE &&
-				u_int(JobID) != JOB_CENTREMANAGER &&
-				u_int(JobID) != JOB_CHAIRMAN &&
-				u_int(JobID) != JOB_PHYSICALSURGERY &&
-				u_int(JobID) != JOB_GETABORT &&
-				u_int(JobID) != JOB_BOOBJOB &&
-				u_int(JobID) != JOB_BREASTREDUCTION &&
-				u_int(JobID) != JOB_LIPO &&
-				u_int(JobID) != JOB_FACELIFT &&
-				u_int(JobID) != JOB_VAGINAREJUV &&
-				u_int(JobID) != JOB_GETHEALING &&
-				u_int(JobID) != JOB_ASSJOB &&
-				u_int(JobID) != JOB_DOCTOR &&
-				u_int(JobID) != JOB_REHAB &&
-				u_int(JobID) != JOB_DRUGCOUNSELOR &&
-				u_int(JobID) != JOB_CAMERAMAGE &&
-				u_int(JobID) != JOB_CRYSTALPURIFIER
-				)
+			if (u_int(JobID) != JOB_MATRON &&			//  6	Brothel
+				u_int(JobID) != JOB_TORTURER)			//  7
 			{  // for these Day+Night jobs, switch leftover day or night job back to resting
-				if (DayOrNight)
-					Girl->m_NightJob = JOB_RESTING;
-				else
-					Girl->m_DayJob = JOB_RESTING;
+				(DayOrNight) ? Girl->m_NightJob = JOB_RESTING : Girl->m_DayJob = JOB_RESTING;
+			}
+		}
+		else if (u_int(OldJobID) == JOB_DOCTORE)
+		{
+			if (u_int(JobID) != JOB_DOCTORE)
+			{  // for these Day+Night jobs, switch leftover day or night job back to resting
+				(DayOrNight) ? Girl->m_NightJob = JOB_ARENAREST : Girl->m_DayJob = JOB_ARENAREST;
+			}
+		}
+		else if (
+			u_int(OldJobID) == JOB_GETHEALING ||
+			u_int(OldJobID) == JOB_GETABORT ||
+			u_int(OldJobID) == JOB_PHYSICALSURGERY ||
+			u_int(OldJobID) == JOB_GETREPAIRS ||
+			u_int(OldJobID) == JOB_LIPO ||
+			u_int(OldJobID) == JOB_BREASTREDUCTION ||
+			u_int(OldJobID) == JOB_BOOBJOB ||
+			u_int(OldJobID) == JOB_VAGINAREJUV ||
+			u_int(OldJobID) == JOB_FACELIFT ||
+			u_int(OldJobID) == JOB_ASSJOB ||
+			u_int(OldJobID) == JOB_CHAIRMAN ||
+			u_int(OldJobID) == JOB_DOCTOR ||
+			u_int(OldJobID) == JOB_NURSE ||
+			u_int(OldJobID) == JOB_MECHANIC)
+		{
+			if (u_int(JobID) != JOB_GETHEALING &&
+				u_int(JobID) != JOB_GETABORT &&			
+				u_int(JobID) != JOB_PHYSICALSURGERY &&
+				u_int(JobID) != JOB_GETREPAIRS &&
+				u_int(JobID) != JOB_LIPO &&
+				u_int(JobID) != JOB_BREASTREDUCTION &&
+				u_int(JobID) != JOB_BOOBJOB &&
+				u_int(JobID) != JOB_VAGINAREJUV &&
+				u_int(JobID) != JOB_FACELIFT &&
+				u_int(JobID) != JOB_ASSJOB &&
+				u_int(JobID) != JOB_CHAIRMAN &&
+				u_int(JobID) != JOB_DOCTOR &&
+				u_int(JobID) != JOB_NURSE &&
+				u_int(JobID) != JOB_MECHANIC)			
+			{  // for these Day+Night jobs, switch leftover day or night job back to resting
+				(DayOrNight) ? Girl->m_NightJob = JOB_CLINICREST : Girl->m_DayJob = JOB_CLINICREST;
+			}
+		}
+		else if (
+			u_int(OldJobID) == JOB_CENTREMANAGER ||
+			u_int(OldJobID) == JOB_DRUGCOUNSELOR ||
+			u_int(OldJobID) == JOB_REHAB)
+		{
+
+			if (u_int(JobID) != JOB_CENTREMANAGER &&
+				u_int(JobID) != JOB_DRUGCOUNSELOR &&
+				u_int(JobID) != JOB_REHAB)
+			{  // for these Day+Night jobs, switch leftover day or night job back to resting
+				(DayOrNight) ? Girl->m_NightJob = JOB_CENTREREST : Girl->m_DayJob = JOB_CENTREREST;
+			}
+		}
+		else if (
+			u_int(OldJobID) == JOB_RECRUITER ||
+			u_int(OldJobID) == JOB_HEADGIRL)
+		{
+			if (u_int(JobID) != JOB_RECRUITER &&
+				u_int(JobID) != JOB_HEADGIRL)
+			{  // for these Day+Night jobs, switch leftover day or night job back to resting
+				(DayOrNight) ? Girl->m_NightJob = JOB_HOUSEREST : Girl->m_DayJob = JOB_HOUSEREST;
 			}
 		}
 	}
-
 	return MadeChanges;
 }
 

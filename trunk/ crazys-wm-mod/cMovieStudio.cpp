@@ -87,7 +87,7 @@ void cMovieStudioManager::AddGirl(int brothelID, sGirl* girl)
 	girl->m_InClinic = false;
 	girl->m_InHouse = false;
 	girl->m_InMovieStudio = true;
-	girl->where_is_she = brothelID;
+	girl->where_is_she = 0;
 	cBrothelManager::AddGirl(brothelID, girl);
 }
 
@@ -233,6 +233,12 @@ void cMovieStudioManager::UpdateMovieStudio()
 	sGirl* cgirl = current->m_Girls;
 	while(cgirl)
 	{
+		cgirl->m_InMovieStudio = true;
+		cgirl->m_InArena = false;
+		cgirl->m_InCentre = false;
+		cgirl->m_InClinic = false;
+		cgirl->m_InHouse = false;
+		cgirl->where_is_she = 0;
 		cgirl->m_Events.Clear();
 		cgirl->m_Pay = 0;
 		cgirl = cgirl->m_Next;
@@ -530,8 +536,9 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 		else
 			sw = current->m_NightJob;
 
-		// Alread processed crew jobs, so check for those jobs and move to next girl if true.
-		if(sw == JOB_FLUFFER || sw == JOB_CAMERAMAGE || sw == JOB_CRYSTALPURIFIER || sw == JOB_DIRECTOR || sw == JOB_PROMOTER || sw == JOB_STAGEHAND)
+		// Already processed crew jobs, so check for those jobs and move to next girl if true.
+		if (sw == JOB_FLUFFER || sw == JOB_CAMERAMAGE || sw == JOB_CRYSTALPURIFIER || 
+			sw == JOB_DIRECTOR || sw == JOB_PROMOTER || sw == JOB_STAGEHAND)
 		{
 			if (current->m_Next)
 			{
@@ -544,55 +551,60 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 				break;
 			}
 		}
-		if (sw == JOB_FILMFREETIME)
-			refused = m_JobManager.JobFunctions[JOB_RESTING](current,brothel,SHIFT_NIGHT,summary);
 		else if (sw == JOB_FILMRANDOM)
-			{
+		{
 			int skill = 0;
 			do	{
 				int maxroll = JOB_FILMRANDOM - JOB_FILMBEAST;
-				int roll  = g_Dice%maxroll;
-				
+				int roll = g_Dice%maxroll;
+
 				sw = roll + JOB_FILMBEAST;
 				if (sw == JOB_FILMRANDOM)
-					sw -=1;
-				switch(sw)
-					{
-					case JOB_FILMBEAST:
-						skill = SKILL_BEASTIALITY;
-						break;
-					case JOB_FILMSEX:
-						skill = SKILL_NORMALSEX;
-						break;
-					case JOB_FILMANAL:
-						skill = SKILL_ANAL;
-						break;
-					case JOB_FILMLESBIAN:
-						skill = SKILL_LESBIAN;
-						break;
-					case JOB_FILMBONDAGE:
-						skill = SKILL_BDSM;
-						break;
-					case JOB_FILMGROUP:
-						skill = SKILL_GROUP;
-						break;
-					case JOB_FILMORAL:
-						skill = SKILL_ORALSEX;
-						break;
-					case JOB_FILMTITTY:
-						skill = SKILL_TITTYSEX;
-						break;
-					case JOB_FILMSTRIP:
-						skill = SKILL_STRIP;
-						break;
-					default :
-						break;
-					}
-				} while(!(m_JobManager.is_sex_type_allowed(skill, brothel)));
-			refused = m_JobManager.JobFunctions[sw](current,brothel,SHIFT_NIGHT,summary);
-			}
+					sw -= 1;
+				switch (sw)
+				{
+				case JOB_FILMBEAST:
+					skill = SKILL_BEASTIALITY;
+					break;
+				case JOB_FILMSEX:
+					skill = SKILL_NORMALSEX;
+					break;
+				case JOB_FILMANAL:
+					skill = SKILL_ANAL;
+					break;
+				case JOB_FILMLESBIAN:
+					skill = SKILL_LESBIAN;
+					break;
+				case JOB_FILMBONDAGE:
+					skill = SKILL_BDSM;
+					break;
+				case JOB_FILMGROUP:
+					skill = SKILL_GROUP;
+					break;
+				case JOB_FILMORAL:
+					skill = SKILL_ORALSEX;
+					break;
+				case JOB_FILMTITTY:
+					skill = SKILL_TITTYSEX;
+					break;
+				case JOB_FILMSTRIP:
+					skill = SKILL_STRIP;
+					break;
+				default:
+					break;
+				}
+			} while (!(m_JobManager.is_sex_type_allowed(skill, brothel)));
+			refused = m_JobManager.JobFunctions[sw](current, brothel, SHIFT_NIGHT, summary);
+		}
+		else if (sw != JOB_FILMFREETIME && sw >= JOB_FILMBEAST && sw <= JOB_FILMFREETIME)
+		{
+			refused = m_JobManager.JobFunctions[sw](current, brothel, SHIFT_NIGHT, summary);
+		}
 		else
-			refused = m_JobManager.JobFunctions[sw](current,brothel,SHIFT_NIGHT,summary);
+		{
+			sw = current->m_DayJob = current->m_NightJob = JOB_FILMFREETIME;
+			refused = m_JobManager.JobFunctions[JOB_RESTING](current, brothel, SHIFT_NIGHT, summary);
+		}
 
 		if(refused)						// if she refused she still gets tired
 			g_Girls.AddTiredness(current);

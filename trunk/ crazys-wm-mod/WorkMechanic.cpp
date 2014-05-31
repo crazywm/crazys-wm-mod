@@ -46,7 +46,6 @@ extern cGold g_Gold;
 bool cJobManager::WorkMechanic(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	string message = "";
-	int tex = g_Dice % 4;
 
 	if (Preprocessing(ACTION_WORKDOCTOR, girl, brothel, DayNight, summary, message))	// they refuse to have work in the bar
 		return true;
@@ -113,31 +112,6 @@ bool cJobManager::WorkMechanic(sGirl* girl, sBrothel* brothel, int DayNight, str
 	
 	if(wages < 0)	wages = 0;
 
-
-
-	/*if (roll <= 50 && g_Girls.DisobeyCheck(girl, ACTION_WORKBAR, brothel))
-	{
-		message = girl->m_Realname + gettext(" refused to as a barmaid today.");
-		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_NOWORK);
-		return true;
-	}
-	else if(roll <= 15) {
-		message += gettext(" \nSome of the patrons abused her during the shift.");
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKBAR, -1, true);
-	}
-	else if(roll >=90)
-	{
-		message += gettext(" \nShe had a pleasant time working.");
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKBAR, +3, true);
-	}
-	else
-	{
-		message += gettext(" \nOtherwise, the shift passed uneventfully.");
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKBAR, +1, true);
-	}*/
-
-
-
 	//enjoyed the work or not
 	if(roll <= 5)
 	{
@@ -155,7 +129,7 @@ bool cJobManager::WorkMechanic(sGirl* girl, sBrothel* brothel, int DayNight, str
 	}
 
 	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
-	int roll_max = (g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetSkill(girl, SKILL_SERVICE));
+	int roll_max = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) + g_Girls.GetSkill(girl, SKILL_SERVICE));
 	roll_max /= 4;
 	wages += 10 + g_Dice%roll_max;
 	girl->m_Pay = wages;
@@ -180,8 +154,7 @@ bool cJobManager::WorkMechanic(sGirl* girl, sBrothel* brothel, int DayNight, str
 
 	g_Girls.UpdateStat(girl, STAT_FAME, 1);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	if(g_Dice%2) 
-		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, 1);
+	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, 1);
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, skill);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 

@@ -76,7 +76,7 @@ void cClinicManager::AddGirl(int brothelID, sGirl* girl)
 	girl->m_InCentre = false;
 	girl->m_InHouse = false;
 	girl->m_InClinic = true;
-	girl->where_is_she = brothelID;
+	girl->where_is_she = 0;
 	cBrothelManager::AddGirl(brothelID, girl);
 }
 
@@ -117,6 +117,12 @@ void cClinicManager::UpdateClinic()
 	sGirl* cgirl = current->m_Girls;
 	while(cgirl)
 	{
+		cgirl->m_InMovieStudio = false;
+		cgirl->m_InArena = false;
+		cgirl->m_InCentre = false;
+		cgirl->m_InClinic = true;
+		cgirl->m_InHouse = false;
+		cgirl->where_is_she = 0;
 		cgirl->m_Events.Clear();
 		cgirl->m_Pay = 0;
 		cgirl = cgirl->m_Next;
@@ -266,32 +272,18 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		else
 			sw = (DayNight == SHIFT_DAY) ? current->m_DayJob : current->m_NightJob;
 
-		/*if(sw == JOB_CHAIRMAN)
+		// `J` added check to force jobs into the Clinic correcting a bug
+		if (sw != JOB_CLINICREST && sw >= JOB_GETHEALING && sw <= JOB_JANITOR)
 		{
-			if (current->m_Next)
-			{
-			    current = current->m_Next;
-				continue;
-			}
-			else
-			{
-				current = 0;
-				break;
-			}
-		}*/
-		if (sw == JOB_CLINICREST)
-			refused = m_JobManager.JobFunctions[JOB_RESTING](current,brothel,DayNight,summary);
-
-		// do their job
-		//else if(sw != JOB_ADVERTISING)			// advertising is handled earlier, before customer generation
-		//{
-		//	refused = m_JobManager.JobFunctions[sw](current,brothel,DayNight,summary);
-
-		//	if(refused)						// if she refused she still gets tired
-		//		g_Girls.AddTiredness(current);
-		//}
-		else
-			refused = m_JobManager.JobFunctions[sw](current,brothel,DayNight,summary);
+			refused = m_JobManager.JobFunctions[sw](current, brothel, DayNight, summary);
+		}
+		else // Any job not in the Clinic will be replaced with JOB_CLINICREST
+		{
+			if (DayNight == SHIFT_DAY)current->m_DayJob = JOB_CLINICREST;
+			else current->m_NightJob = JOB_CLINICREST;
+			sw = JOB_CLINICREST;
+			refused = m_JobManager.JobFunctions[JOB_RESTING](current, brothel, DayNight, summary);
+		}
 
 		if(refused)						// if she refused she still gets tired
 			g_Girls.AddTiredness(current);
@@ -356,7 +348,9 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, int DayNight)
 				}
 			}
 			else
+			{
 				ChairWarningMsg += gettext("CAUTION! This girl desparatly need rest. Give her some free time\n");
+			}
 		}
 
 		if(g_Girls.GetStat(current, STAT_HAPPINESS) < 40 && chair && (g_Dice%100) +1 < 70)
@@ -378,7 +372,7 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, int DayNight)
 				}
 				else
 				{
-					ChairMsg = gettext("The head girl helps heal ") + girlName + gettext(".\n");
+					ChairMsg = gettext("The Chairman helps heal ") + girlName + gettext(".\n");
 					g_Girls.UpdateStat(current, STAT_HEALTH, 5);
 				}
 			}
@@ -403,7 +397,7 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, int DayNight)
 				else
 					current->m_DayJob = JOB_CLINICREST;
 				current->m_PrevDayJob = current->m_PrevNightJob = 255;
-				ChairMsg += gettext("The head girl puts ") + girlName + gettext(" back to work.\n");
+				ChairMsg += gettext("The Chairman puts ") + girlName + gettext(" back to work.\n");
 			}
 			else
 			{
@@ -498,6 +492,10 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		//current->m_Stats[STAT_TIREDNESS] = current->m_Stats[STAT_TIREDNESS] - 2;
 		//if (current->m_Stats[STAT_TIREDNESS] < 0)
 		//	current->m_Stats[STAT_TIREDNESS] = 0;
+		// `J` corrected it
+		current->m_Stats[STAT_TIREDNESS] -= 2;
+		if (current->m_Stats[STAT_TIREDNESS] < 0)
+			current->m_Stats[STAT_TIREDNESS] = 0;
 
 		// Process next girl
 		current = current->m_Next;

@@ -76,7 +76,7 @@ void cHouseManager::AddGirl(int brothelID, sGirl* girl)
 	girl->m_InCentre = false;
 	girl->m_InClinic = false;
 	girl->m_InHouse = true;
-	girl->where_is_she = brothelID;
+	girl->where_is_she = 0;
 	cBrothelManager::AddGirl(brothelID, girl);
 }
 
@@ -115,6 +115,13 @@ void cHouseManager::UpdateHouse()
 	sGirl* cgirl = current->m_Girls;
 	while(cgirl)
 	{
+		cgirl->m_InMovieStudio = false;
+		cgirl->m_InArena = false;
+		cgirl->m_InCentre = false;
+		cgirl->m_InClinic = false;
+		cgirl->m_InHouse = true;
+		cgirl->where_is_she = 0;
+
 		cgirl->m_Events.Clear();
 		cgirl = cgirl->m_Next;
 	}
@@ -262,32 +269,20 @@ void cHouseManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		else
 			sw = (DayNight == SHIFT_DAY) ? current->m_DayJob : current->m_NightJob;
 
-		/*if(sw == JOB_HEADGIRL)
+		// `J` added check to force jobs into the Centre correcting a bug
+		if (sw != JOB_HOUSEREST && sw >= JOB_PERSONALTRAINING && sw <= JOB_HEADGIRL)
 		{
-			if (current->m_Next)
-			{
-			    current = current->m_Next;
-				continue;
-			}
-			else
-			{
-				current = 0;
-				break;
-			}
-		}*/
-		if (sw == JOB_HOUSEREST)
-			refused = m_JobManager.JobFunctions[JOB_RESTING](current,brothel,DayNight,summary);
+			refused = m_JobManager.JobFunctions[sw](current, brothel, DayNight, summary);
+		}
+		else // Any job not in the House will be replaced with JOB_HOUSEREST
+		{
+			if (DayNight == SHIFT_DAY)current->m_DayJob = JOB_HOUSEREST;
+			else current->m_NightJob = JOB_HOUSEREST;
+			sw = JOB_HOUSEREST;
+			refused = m_JobManager.JobFunctions[JOB_RESTING](current, brothel, DayNight, summary);
+		}
 
-		// do their job
-		//else if(sw != JOB_ADVERTISING)			// advertising is handled earlier, before customer generation
-		//{
-		//	refused = m_JobManager.JobFunctions[sw](current,brothel,DayNight,summary);
 
-		//	if(refused)						// if she refused she still gets tired
-		//		g_Girls.AddTiredness(current);
-		//}
-		else
-			refused = m_JobManager.JobFunctions[sw](current,brothel,DayNight,summary);
 
 		if(refused)						// if she refused she still gets tired
 			g_Girls.AddTiredness(current);

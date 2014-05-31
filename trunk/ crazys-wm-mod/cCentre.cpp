@@ -76,7 +76,7 @@ void cCentreManager::AddGirl(int brothelID, sGirl* girl)
 	girl->m_InClinic = false;
 	girl->m_InHouse = false;
 	girl->m_InCentre = true;
-	girl->where_is_she = brothelID;
+	girl->where_is_she = 0;
 	cBrothelManager::AddGirl(brothelID, girl);
 }
 
@@ -115,6 +115,13 @@ void cCentreManager::UpdateCentre()
 	sGirl* cgirl = current->m_Girls;
 	while(cgirl)
 	{
+		cgirl->m_InMovieStudio = false;
+		cgirl->m_InArena = false;
+		cgirl->m_InCentre = true;
+		cgirl->m_InClinic = false;
+		cgirl->m_InHouse = false;
+		cgirl->where_is_she = 0;
+
 		cgirl->m_Events.Clear();
 		cgirl->m_Pay = 0;
 		cgirl = cgirl->m_Next;
@@ -264,20 +271,18 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		else
 			sw = (DayNight == SHIFT_DAY) ? current->m_DayJob : current->m_NightJob;
 
-
-		if (sw == JOB_CENTREREST)
-			refused = m_JobManager.JobFunctions[JOB_RESTING](current,brothel,DayNight,summary);
-
-		// do their job
-		//else if(sw != JOB_ADVERTISING)			// advertising is handled earlier, before customer generation
-		//{
-		//	refused = m_JobManager.JobFunctions[sw](current,brothel,DayNight,summary);
-
-		//	if(refused)						// if she refused she still gets tired
-		//		g_Girls.AddTiredness(current);
-		//}
-		else
-			refused = m_JobManager.JobFunctions[sw](current,brothel,DayNight,summary);
+		// `J` added check to force jobs into the Centre correcting a bug
+		if (sw != JOB_CENTREREST && sw >= JOB_FEEDPOOR && sw <= JOB_REHAB)
+		{
+			refused = m_JobManager.JobFunctions[sw](current, brothel, DayNight, summary);
+		}
+		else // Any job not in the Centre will be replaced with JOB_CENTREREST
+		{
+			if (DayNight == SHIFT_DAY)current->m_DayJob = JOB_CENTREREST;
+			else current->m_NightJob = JOB_CENTREREST;
+			sw = JOB_CENTREREST;
+			refused = m_JobManager.JobFunctions[JOB_RESTING](current, brothel, DayNight, summary);
+		}
 
 		if(refused)						// if she refused she still gets tired
 			g_Girls.AddTiredness(current);

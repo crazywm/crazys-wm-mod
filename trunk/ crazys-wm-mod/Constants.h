@@ -151,7 +151,7 @@ const unsigned int JOBFILTER_STABLES	= 5;
 const unsigned int JOB_BEASTCAPTURE		= 26;
 const unsigned int JOB_BEASTCARER		= 27;
 const unsigned int JOB_MILK		        = 28;
-// - Arena (these jobs gain bonus if in same building as a clinic)
+// - Arena 
 const unsigned int JOBFILTER_ARENA      = 6;
 const unsigned int JOB_FIGHTBEASTS      = 29;	// not added yet	// customers come to place bets on who will win, girl may die (uses beasts resource)
 const unsigned int JOB_FIGHTARENAGIRLS  = 30;
@@ -189,22 +189,22 @@ const unsigned int JOB_FILMFREETIME		= 53;		// Free time
 
 // - Clinic
 const unsigned int JOBFILTER_CLINIC     = 9;	// teaches can train girls only up to their own skill level
-const unsigned int JOB_GETHEALING       = 54;	// not added yet	// takes 1 days for each wound trait received.
-const unsigned int JOB_GETABORT         = 55;	// not added yet	// gets an abortion (takes 2 days)
-const unsigned int JOB_PHYSICALSURGERY  = 56;	// not added yet	// magical plastic surgery (takes 5 days)
-const unsigned int JOB_GETREPAIRS       = 57;	// not added yet	// construct girls can get repaired quickly
-const unsigned int JOB_LIPO			    = 58;	// not added yet	// magical plastic surgery (takes 5 days)
-const unsigned int JOB_BREASTREDUCTION  = 59;	// not added yet	// magical plastic surgery (takes 5 days)
-const unsigned int JOB_BOOBJOB          = 60;	// not added yet	// magical plastic surgery (takes 5 days)
-const unsigned int JOB_VAGINAREJUV      = 61;	// not added yet	// magical plastic surgery (takes 5 days)
-const unsigned int JOB_FACELIFT         = 62;	// not added yet	// magical plastic surgery (takes 5 days)
-const unsigned int JOB_ASSJOB           = 63;	// not added yet	// magical plastic surgery (takes 5 days)
+const unsigned int JOB_GETHEALING       = 54;	// takes 1 days for each wound trait received.
+const unsigned int JOB_GETREPAIRS		= 55;	// construct girls can get repaired quickly
+const unsigned int JOB_GETABORT			= 56;	// gets an abortion (takes 2 days)
+const unsigned int JOB_PHYSICALSURGERY  = 57;	// magical plastic surgery (takes 5 days)
+const unsigned int JOB_LIPO			    = 58;	// magical plastic surgery (takes 5 days)
+const unsigned int JOB_BREASTREDUCTION  = 59;	// magical plastic surgery (takes 5 days)
+const unsigned int JOB_BOOBJOB          = 60;	// magical plastic surgery (takes 5 days)
+const unsigned int JOB_VAGINAREJUV      = 61;	// magical plastic surgery (takes 5 days)
+const unsigned int JOB_FACELIFT         = 62;	// magical plastic surgery (takes 5 days)
+const unsigned int JOB_ASSJOB           = 63;	// magical plastic surgery (takes 5 days)
 // - clinic staff
 const unsigned int JOBFILTER_CLINICSTAFF = 10;
 const unsigned int JOB_CHAIRMAN          = 64;	// Matron of clinic	
-const unsigned int JOB_DOCTOR            = 65;	// not added yet	// becomes a doctor (requires 1) (will make some extra cash for treating locals)
-const unsigned int JOB_NURSE             = 66;	// not added yet	//
-const unsigned int JOB_MECHANIC          = 67;	// not added yet	// construct girls can get repaired quickly
+const unsigned int JOB_DOCTOR            = 65;	// becomes a doctor (requires 1) (will make some extra cash for treating locals)
+const unsigned int JOB_NURSE             = 66;	// helps girls recover from surgery on healing
+const unsigned int JOB_MECHANIC          = 67;	// construct girls can get repaired quickly
 const unsigned int JOB_JANITOR           = 68;	// cleans clinic	
 const unsigned int JOB_CLINICREST        = 69;	// Is clinics free time	
 // - Community Centre

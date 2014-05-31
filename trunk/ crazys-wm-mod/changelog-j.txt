@@ -174,3 +174,35 @@ Crazy added Clinic job - GetAssJob
 Crazy adjusted traits and stats for several jobs
 Added files "!0 girlsx-contents.txt" and "!0 rgirlsx-contents.txt" to explain and assist creating new girl files.
 !!!!!!!!!!!!!!!!!!!! pushed version .05n
+Corrected a bug by making the game set where the girl is before processing the next week
+!!!!!!!!!!!!!!!!!!!! pushed version .05n.01
+
+###  Changes 5/27/2014
+Partial correction of bug if girl is assigned a job outside of the building she is in
+ - Corrected for Arena, Clinic, Centre and House
+ - Still need to correct Studio and Brothel but these are lesser chance of having the bug
+Corrected antipreg check for dungeon girls
+Modified WorkGetAssJob.cpp
+!!!!!!!!!!!!!!!!!!!! pushed version .05n.02
+
+###  Changes 5/29/2014
+Increased max number of rooms from 250 to 32k
+Changed some debug strings for dungeon.
+Added a fix "dungeon screen to brothel screen crash" - needs more testing to be sure it works correctly
+Finished correction of bug "if girl is assigned a job outside of the building she is in"
+
+###  Changes 5/30-31/2014
+Clinic Nurse and Mechanic jobs are now full time jobs.
+Resting jobs get set to correct building rest jobs when changing from full time to part time jobs.
+Half-Constructs can get healed in the clinic by using either GetHealing (60), GetRepairs (60) or both (80) if a Doctor and a Mechanic are on duty.
+Reworked all Clinic surgery jobs. 
+Nurses now play more of a role in helping girls recover from surgery and healing.
+Rewrote GetAbortion from Clinic - probably made it too complicated, but it works. Takes 1 day with doctor and nurse or 2 days with just doctor.
+Tweaked numbers in WorkRecruiter.cpp and WorkPersonalTraining.cpp to be a little more useful.
+!!!!!!!!!!!!!!!!!!!! pushed version .05o
+
+
+
+
+
+

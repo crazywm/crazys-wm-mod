@@ -64,10 +64,11 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, int DayNi
 	double roll_a = g_Dice % 100; //this is used to determine gain amount
 
 	int skill = 0;
-	     if (roll_a <= 15){skill = 5;}
-	else if (roll_a <= 35){skill = 4;}
-	else if (roll_a <= 60){skill = 3;}
-	else                  {skill = 2;}
+	     if (roll_a <= 10){ skill = 7; }
+	else if (roll_a <= 20){ skill = 6; }
+	else if (roll_a <= 35){ skill = 5; }
+	else if (roll_a <= 60){ skill = 4; }
+	else                  { skill = 3; }
 	     if (g_Girls.HasTrait(girl, "Quick Learner"))	{skill += 1;}
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{skill -= 1;}
 
