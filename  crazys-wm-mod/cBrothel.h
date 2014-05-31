@@ -74,13 +74,13 @@ struct sBrothel
 
 	int             m_id;
 	unsigned short	m_Happiness;		// av. % happy customers last week
-	unsigned short	m_TotalCustomers;	// the total number of customers for the last week
-	unsigned short	m_MiscCustomers;	// customers used for temp purposes but must still be taken into account
+	int				m_TotalCustomers;	// the total number of customers for the last week
+	int				m_MiscCustomers;	// customers used for temp purposes but must still be taken into account
 	unsigned char	m_Fame;				// How famous this brothel is
-	unsigned char	m_NumRooms;			// How many rooms it has
+	int				m_NumRooms;			// How many rooms it has
+	int				m_NumGirls;			// How many girls are here
 	unsigned char	m_Bar;				// level of bar: 0 => none
 	unsigned char	m_GamblingHall;		// as above
-	unsigned char	m_NumGirls;			// How many girls are here
 	unsigned short	m_AdvertisingBudget;// Budget player has set for weekly advertising
 	double			m_AdvertisingLevel; // multiplier for how far budget goes, based on girls working in advertising
 	int				m_AntiPregPotions;  // `J` added so all buildings save their own number of potions

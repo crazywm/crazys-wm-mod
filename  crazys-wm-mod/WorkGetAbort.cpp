@@ -45,52 +45,292 @@ extern cMessageQue g_MessageQue;
 bool cJobManager::WorkGetAbort(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	string message = "";
-	u_int job = 0;	
+
+	// not for patient
+	g_Girls.UnequipCombat(girl);
 
 	bool hasDoctor = false;
-	if(g_Clinic.GetNumGirlsOnJob(brothel->m_id, JOB_DOCTOR, true) >= 1 || g_Clinic.GetNumGirlsOnJob(brothel->m_id, JOB_DOCTOR, false) >= 1)
+	if (g_Clinic.GetNumGirlsOnJob(brothel->m_id, JOB_DOCTOR, true) > 0 || g_Clinic.GetNumGirlsOnJob(brothel->m_id, JOB_DOCTOR, false) > 0)
 		hasDoctor = true;
 
 	if (!hasDoctor)
 	{
-		string message = girl->m_Realname + gettext(" does nothing. You don't have any Doctor (require 1)");
-		if(DayNight == 0)
-			message += gettext("day");
-		else
-			message += gettext("night");
-		message += gettext(" Shift.");
-
+		message = girl->m_Realname + gettext(" does nothing. You don't have any Doctor (require 1) ");
+		(DayNight == 0) ? message += gettext("day") : message += gettext("night"); message += gettext(" Shift.");
 		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_WARNING);
 		return true;
 	}
+	if (!girl->is_pregnant())
+	{
+		message = girl->m_Realname + gettext(" is not pregant so she was sent to the waiting room.");
+		if (DayNight == 0)	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_WARNING);
+		girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
+		return true;
+	}
 
-	g_Girls.UnequipCombat(girl);
-	if(DayNight == 0)
+	if (DayNight == 0)	// the Doctor works on her durring the day
 	{
 		girl->m_WorkingDay++;
-		job	= girl->m_DayJob;
 	}
-	else
+	else	// and if there are nurses on duty, they take care of her at night
 	{
-		job	= girl->m_NightJob;
+		if (g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, 1) > 0)
+		{
+			girl->m_WorkingDay++;
+			g_Girls.UpdateStat(girl, STAT_MANA, 10);
+		}
 	}
 
+	int numnurse = g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, DayNight == 0);
+
 	stringstream ss;
-	if(girl->m_WorkingDay == 2)
+	if (girl->m_WorkingDay >= 2)
 	{
+		ss << "The girl had an abortion.";
+// `J` first set the base stat modifiers
+		int happy = -10, health = -20, mana = -20, spirit = -5, love = -5, hate = 5;
+
+		if (numnurse > 0)
+		{
+			ss << "The Nurse tried to kept her healthy and happy during her recovery.";
+// `J` then adjust if a nurse helps her through it
+			happy += 10;	health += 10;	mana += 10;	spirit += 5;	love += 1;	hate -= 1;
+		}
+		else
+		{
+			ss << "She is sad and has lost some health during the operation.";
+		}
+
+// `J` next, check traits
+		if (g_Girls.HasTrait(girl, "Pessimist"))	// natural adj
+		{
+			happy -= 5;		health += 0;	mana += 0;	spirit -= 1;	love += 0;	hate += 0;
+		}
+		if (g_Girls.HasTrait(girl, "Optimist"))		// natural adj
+		{
+			happy += 5;		health += 0;	mana += 0;	spirit += 1;	love += 0;	hate += 0;
+		}
+		if (g_Girls.HasTrait(girl, "Lesbian"))		// reaffirms her dislike of men.
+		{
+			happy += 5;		health += 0;	mana += 0;	spirit += 0;	love -= 1;	hate += 1;
+		}
+		if (g_Girls.HasTrait(girl, "Sadistic"))		// "If only someone had done this to your father..."
+		{
+			happy += 0;		health += 0;	mana += 0;	spirit += 1;	love -= 1;	hate += 0;
+		}
+		if (g_Girls.HasTrait(girl, "Masochist"))	// "If only someone had done this to me..."
+		{
+			happy += 0;		health += 0;	mana += 0;	spirit -= 1;	love -= 1;	hate -= 1;
+		}
+		if (g_Girls.HasTrait(girl, "Your Daughter"))// "Why Daddy?"
+		{
+			happy += 0;		health += 0;	mana += 0;	spirit -= 1;	love -= 3;	hate += 0;
+		}
+		if (g_Girls.HasTrait(girl, "MILF"))			// "But I want more children"
+		{
+			happy -= 5;		health += 0;	mana += 0;	spirit += 0;	love -= 1;	hate += 1;
+		}
+		if (g_Girls.HasTrait(girl, "Twisted"))		// Twisted
+		{
+			happy += 2;		health += 0;	mana += 0;	spirit += 1;	love += 0;	hate += 0;
+		}
+		if (g_Girls.HasTrait(girl, "Demon"))		// "I'm going to hell anyway..."
+		{
+			happy += 5;		health += 0;	mana += 10;	spirit += 5;	love += 0;	hate += 0;
+		}
+		if (g_Girls.HasTrait(girl, "Angel"))		// "I'm going to hell."
+		{
+			happy -= 10;	health += 0;	mana -= 10;	spirit -= 5;	love -= 5;	hate += 5;
+		}
+		if (g_Girls.HasTrait(girl, "Adventurer"))	// "At least a kid will not get in my way."
+		{
+			happy += 5;		health += 0;	mana += 0;	spirit += 1;	love += 0;	hate += 0;
+		}
+		if (g_Girls.HasTrait(girl, "Fragile"))		// natural adj
+		{
+			happy += 0;		health -= 5;	mana += 0;	spirit += 0;	love += 0;	hate += 0;
+		}
+		if (g_Girls.HasTrait(girl, "Tough"))		// natural adj
+		{
+			happy += 0;		health += 5;	mana += 0;	spirit += 0;	love += 0;	hate += 0;
+		}
+		if (g_Girls.HasTrait(girl, "Shape Shifter"))// "The baby may have caused complications when I change shape."
+		{
+			happy += 2;		health += 0;	mana += 0;	spirit += 0;	love += 0;	hate += 0;
+		}
+
+
+// `J` finally see what type of pregnancy it is and get her reaction to the abortion.
+		if (girl->m_States & (1 << STATUS_PREGNANT))
+		{
+			if (happy < -50)
+			{
+				ss << "She is very distraught about the loss of her baby.";
+				hate += 10;
+				girl->add_trait("Pessimist", false);
+			}
+			else if (happy < -25)
+			{
+				ss << "She is distraught about the loss of her baby.";
+				hate += 5;
+			}
+			else if (happy < -5)
+			{
+				ss << "She is sad about the loss of her baby.";
+			}
+			else if (happy < 10)
+			{
+				ss << "She accepts that she is not ready to have her baby.";
+			}
+			else if (happy < 25)
+			{
+				ss << "She is glad she is not going to have her baby.";
+			}
+			else if (happy < 50)
+			{
+				ss << "She is happy she is not going to have her baby.";
+			}
+			else
+			{
+				ss << "She is overjoyed not to be forced to carry her baby.";
+				hate -= 5;
+				girl->add_trait("Optimist", false);
+			}
+		}
+		else if (girl->m_States & (1 << STATUS_PREGNANT_BY_PLAYER))
+		{
+// `J` adjust her happiness by her hate-love for you
+			happy += int(((g_Girls.GetStat(girl, STAT_PCHATE) + hate) - (g_Girls.GetStat(girl, STAT_PCLOVE) + love)) / 2);
+			if (happy < -50)
+			{
+				ss << "She is very distraught about the loss of your baby.";
+				hate += 10;
+				girl->add_trait("Pessimist", false);
+			}
+			else if (happy < -25)
+			{
+				ss << "She is distraught about the loss of your baby.";
+				hate += 5;
+			}
+			else if (happy < -5)
+			{
+				ss << "She is sad about the loss of your baby.";
+			}
+			else if (happy < 10)
+			{
+				ss << "She accepts that she is not ready to have your baby.";
+			}
+			else if (happy < 25)
+			{
+				ss << "She is glad she is not going to have your baby.";
+			}
+			else if (happy < 50)
+			{
+				ss << "She is happy she is not going to have your baby.";
+			}
+			else
+			{
+				ss << "She is overjoyed not to be forced to carry your hellspawn.";
+				hate -= 5;
+				girl->add_trait("Optimist", false);
+			}
+		}
+		else if (girl->m_States & (1 << STATUS_INSEMINATED))
+		{
+// `J` Some traits would react diferently to non-human pregnancys.
+			if (g_Girls.HasTrait(girl, "Adventurer"))	// "It could have been interesting to see what became of that."
+			{
+				happy -= 2;		health += 0;	mana += 0;	spirit += 0;	love += 0;	hate += 0;
+			}
+			if (g_Girls.HasTrait(girl, "Angel"))		// "DEAR GOD, WHAT WAS THAT THING?"
+			{
+				happy += 5;		health += 0;	mana -= 5;	spirit -= 5;	love -= 5;	hate += 5;
+			}
+			if (g_Girls.HasTrait(girl, "Cat Girl"))		// "No kittens for me. :("
+			{
+				happy -= 2;		health += 0;	mana += 0;	spirit += 0;	love += 0;	hate += 0;
+			}
+			if (g_Girls.HasTrait(girl, "Demon"))		// "I guess my evil brood will have to wait."
+			{
+				happy -= 10;	health += 0;	mana += 0;	spirit += 0;	love -= 2;	hate += 2;
+			}
+			if (g_Girls.HasTrait(girl, "Shape Shifter"))// "What would that have looked like?"
+			{
+				happy -= 2;		health += 0;	mana += 0;	spirit += 0;	love += 0;	hate += 0;
+			}
+			if (g_Girls.HasTrait(girl, "Twisted"))		// "What would that have felt like?"
+			{
+				happy -= 2;		health += 0;	mana += 0;	spirit += 0;	love += 0;	hate += 0;
+			}
+			if (g_Girls.HasTrait(girl, "Queen"))		// "Thank God I didn't have to carry that."
+			{
+				happy += 40;		health += 0;	mana += 0;	spirit += 0;	love += 8;	hate -= 4;
+			}
+			if (g_Girls.HasTrait(girl, "Princess"))		// "Thank God I didn't have to carry that."
+			{
+				happy += 20;		health += 0;	mana += 0;	spirit += 0;	love += 4;	hate -= 2;
+			}
+
+			if (happy < -50)
+			{
+				ss << "She is very distraught about the loss of the creature growing inside her.";
+				hate += 10;
+				girl->add_trait("Pessimist", false);
+			}
+			else if (happy < -25)
+			{
+				ss << "She is distraught about the loss of the creature growing inside her.";
+				hate += 5;
+			}
+			else if (happy < -10)
+			{
+				ss << "She is sad about the loss of the creature growing inside her.";
+			}
+			else if (happy < 10)
+			{
+				ss << "She accepts that she is not ready to bring a strange creature into this world.";
+			}
+			else if (happy < 25)
+			{
+				ss << "She is glad she is not going to have to carry that strange creature inside her.";
+			}
+			else if (happy < 50)
+			{
+				ss << "She is happy she is not going to have to carry that strange creature inside her.";
+			}
+			else
+			{
+				ss << "She is overjoyed not to be forced to carry that hellspawn anymore.";
+				hate -= 5;
+				girl->add_trait("Optimist", false);
+			}
+		}
+// `J` now apply all the stat changes and finalize the transaction
+		g_Girls.UpdateStat(girl, STAT_HAPPINESS, happy);
+		g_Girls.UpdateStat(girl, STAT_HEALTH, health);
+		g_Girls.UpdateStat(girl, STAT_MANA, mana);
+		g_Girls.UpdateStat(girl, STAT_SPIRIT, spirit);
+		g_Girls.UpdateStat(girl, STAT_PCLOVE, love);
+		g_Girls.UpdateStat(girl, STAT_PCHATE, hate);
 		girl->clear_pregnancy();
-		ss << "The girl had an abortion by the doctor. She is sad and has lost some health during the operation.";
-		g_Girls.UpdateStat(girl, STAT_HAPPINESS, -20);
-		g_Girls.UpdateStat(girl, STAT_SPIRIT, -5);
-		g_Girls.UpdateStat(girl, STAT_HEALTH, -20);
-		g_Girls.UpdateStat(girl, STAT_MANA, -20);
+		girl->m_WorkingDay = 0;
+		girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
 	}
+
 	else
 	{
 		ss << "The abortion is in progess (1 day remaining).";
 	}
 
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, DayNight);
+
+	// Improve girl
+	int libido = -10;
+	if (g_Girls.HasTrait(girl, "Lesbian"))		libido += numnurse;
+	if (g_Girls.HasTrait(girl, "Masochist"))	libido += 1;
+	if (g_Girls.HasTrait(girl, "Nymphomaniac"))	libido += 2;
+	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+
 
 	return false;
 }

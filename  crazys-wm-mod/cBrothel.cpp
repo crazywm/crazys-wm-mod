@@ -557,7 +557,7 @@ bool cBrothelManager::CheckScripts()
 }
 
 //bool cBrothelManager::UseAntiPreg(bool use)
-bool UseAntiPreg(bool use, bool isClinic, bool isStudio, bool isArena, bool isCentre, bool isHouse, int BrothelID)
+bool UseAntiPreg(bool use, bool isClinic, bool isStudio, bool isArena, bool isCentre, bool isHouse, int whereisshe)
 {
 	if (!use)
 		return false;
@@ -644,14 +644,14 @@ bool UseAntiPreg(bool use, bool isClinic, bool isStudio, bool isArena, bool isCe
 	}
 	else
 	{
-		if (g_Brothels.GetBrothel(BrothelID)->m_KeepPotionsStocked)
+		if (g_Brothels.GetBrothel(whereisshe)->m_KeepPotionsStocked)
 		{
 			g_Gold.consumable_cost(10);
 			return true;
 		}
-		if (g_Brothels.GetBrothel(BrothelID)->m_AntiPregPotions > 0)
+		if (g_Brothels.GetBrothel(whereisshe)->m_AntiPregPotions > 0)
 		{
-			g_Brothels.GetBrothel(BrothelID)->m_AntiPregPotions--;
+			g_Brothels.GetBrothel(whereisshe)->m_AntiPregPotions--;
 			return true;
 		}
 	}
@@ -1920,6 +1920,7 @@ void cBrothelManager::UpdateBrothels()
 		sGirl* cgirl = current->m_Girls;
 		while(cgirl)
 		{
+			cgirl->where_is_she = current->m_id;
 			cgirl->m_Events.Clear();
 			cgirl->m_Pay = 0;
 			cgirl = cgirl->m_Next;
@@ -2320,31 +2321,28 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		// do their job
 		//	if((sw != JOB_ADVERTISING) && (sw != JOB_WHOREGAMBHALL) && (sw != JOB_WHOREBROTHEL) && (sw != JOB_BARWHORE))		// advertising and whoring are handled earlier.
 		// Was not testing for some jobs which were already handled, changed to a switch case statement just for ease of reading, and expansion -PP
-		switch(sw)
+		if (sw == JOB_ADVERTISING || sw == JOB_WHOREGAMBHALL || sw == JOB_WHOREBROTHEL || 
+			sw == JOB_BARWHORE || sw == JOB_BARMAID || sw == JOB_WAITRESS || 
+			sw == JOB_SINGER || sw == JOB_DEALER || sw == JOB_ENTERTAINMENT || 
+			sw == JOB_XXXENTERTAINMENT || sw == JOB_SLEAZYBARMAID || sw == JOB_SLEAZYWAITRESS || 
+			sw == JOB_BARSTRIPPER || sw == JOB_MASSEUSE || sw == JOB_BROTHELSTRIPPER)
 		{
-		case JOB_ADVERTISING:
-		case JOB_WHOREGAMBHALL:
-		case JOB_WHOREBROTHEL:
-		case JOB_BARWHORE:
-		case JOB_BARMAID:
-		case JOB_WAITRESS:
-		case JOB_SINGER:
-		case JOB_DEALER:
-		case JOB_ENTERTAINMENT:
-		case JOB_XXXENTERTAINMENT:
-		case JOB_SLEAZYBARMAID:
-		case JOB_SLEAZYWAITRESS:
-		case JOB_BARSTRIPPER:
-		case JOB_MASSEUSE:
-		case JOB_BROTHELSTRIPPER:
-			break;
-		default:
-		refused = m_JobManager.JobFunctions[sw](current,brothel,DayNight,summary);
+
+		}
+		else if (sw != JOB_RESTING && sw >= JOB_RESTING && sw <= JOB_PEEP)
+		{
+			refused = m_JobManager.JobFunctions[sw](current, brothel, DayNight, summary);
+		}
+		else // Any job not in the House will be replaced with JOB_HOUSEREST
+		{
+			if (DayNight == SHIFT_DAY)current->m_DayJob = JOB_RESTING;
+			else current->m_NightJob = JOB_RESTING;
+			sw = JOB_RESTING;
+			refused = m_JobManager.JobFunctions[JOB_RESTING](current, brothel, DayNight, summary);
+		}
 
 		if(refused)						// if she refused she still gets tired
 			g_Girls.AddTiredness(current);
-			break;
-		}
 
 		totalGold += current->m_Pay;
 
@@ -3333,7 +3331,7 @@ void cBrothelManager::do_food_and_digs(sBrothel *brothel, sGirl *girl)
 		return;
 	}
 /*
- *	For a slavegirl, 20 gold per accomodation level
+ *	For a freegirl, 20 gold per accomodation level
  *	mod - doc - simplified the calculation a bit
  */
 	brothel->m_Finance.girl_support(20 * (girl->m_AccLevel+1));	

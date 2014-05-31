@@ -186,11 +186,15 @@ string cTraits::GetTranslateName(string name){
 	{
 		return gettext("Aggressive");
 	}
-	else if(name.compare("AIDS") == 0)
+	else if (name.compare("AIDS") == 0)
 	{
 		return gettext("AIDS");
 	}
-	else if(name.compare("Assassin") == 0)
+	else if (name.compare("Angel") == 0)	// `J` added
+	{
+		return gettext("Angel");
+	}
+	else if (name.compare("Assassin") == 0)
 	{
 		return gettext("Assassin");
 	}

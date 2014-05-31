@@ -44,22 +44,42 @@ extern cMessageQue g_MessageQue;
 bool cJobManager::WorkDoctor(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	string message = "";
-	int tex = g_Dice%4;
 
 	g_Girls.AddTiredness(girl);
 
 	// not for doctor
 	g_Girls.UnequipCombat(girl);
 
-	if(DayNight)
-		girl->m_DayJob = JOB_DOCTOR;
-	else
-		girl->m_NightJob = JOB_DOCTOR;
+	//	if(DayNight) // Doctor is a full time job now
+	girl->m_DayJob = girl->m_NightJob = JOB_DOCTOR;
 
 	girl->m_Pay += 100;
-	message += gettext("She worked as a doctor.");
+	message += gettext("She worked as a Doctor.");
 	
 	int roll = g_Dice%100;
+
+	/*
+JOB_CHAIRMAN      
+JOB_DOCTOR        
+JOB_NURSE         
+JOB_MECHANIC      
+JOB_JANITOR       
+JOB_CLINICREST    
+
+
+JOB_GETHEALING     
+JOB_GETABORT		
+JOB_PHYSICALSURGERY
+JOB_LIPO			
+JOB_BREASTREDUCTION
+JOB_BOOBJOB        
+JOB_VAGINAREJUV    
+JOB_FACELIFT       
+JOB_ASSJOB         
+
+	
+	*/
+
 
 	if(roll <= 25) {
 		message += gettext(" She had a pleasant time working.");

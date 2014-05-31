@@ -334,6 +334,8 @@ void cDungeon::AddGirl(sGirl* girl, int reason)
 	sDungeonGirl* newPerson = new sDungeonGirl();
 	newPerson->m_Reason		= reason;
 	newPerson->m_Girl		= girl;
+	girl->m_InMovieStudio = girl->m_InCentre = girl->m_InClinic = girl->m_InHouse = girl->m_InArena = false;	// `J`
+	girl->where_is_she = 0;	// `J`
 	girl->m_DayJob = girl->m_NightJob = JOB_INDUNGEON;
 
 	// remove from girl manager if she is there

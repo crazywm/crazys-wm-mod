@@ -3330,10 +3330,14 @@ void cGirls::UpdateStat(sGirl* girl, int a_stat, int amount)
 			amount+=2;
 		if(HasTrait(girl, "Construct") &&  stat != STAT_HAPPINESS)
 		{
+			/*
 			if(amount < -4)
-				amount = -4;
+			amount = -4;
 			else if(amount > 4)
-				amount = 4;
+			amount = 4;
+			`J` Reworked construct damage/healing to 10% instead of maximum of 4 up or down
+			*/
+			amount = (int)ceil(amount*0.1);
 		}
 		if((HasTrait(girl, "Incorporeal") || HasTrait(girl, "Incorporial")) &&  stat != STAT_HAPPINESS)
 		{
@@ -3390,7 +3394,7 @@ void cGirls::UpdateStat(sGirl* girl, int a_stat, int amount)
             amount = -4;
             else if(amount > 4)
             amount = 4;
-            `J` Reworked construct damage/healing to 10% instead of maximum of 4 up or down
+            `J` Reworked construct tiredness to 10% instead of maximum of 4 up or down
             */
             amount = (int)ceil(amount*0.1);
 		}
@@ -3398,7 +3402,7 @@ void cGirls::UpdateStat(sGirl* girl, int a_stat, int amount)
 		if(HasTrait(girl, "Incorporeal") || HasTrait(girl, "Incorporial"))
 		{
 //			amount = 0;
-			girl->m_Stats[stat] = 0;								// WD: Sanity - Incorporeal Tirdness should allways be at 0%
+			girl->m_Stats[stat] = 0;								// WD: Sanity - Incorporeal Tiredness should allways be at 0%
 		}
 
 		else
@@ -11978,6 +11982,11 @@ static bool has_contraception(sGirl *girl)
 	if (girl->m_PregCooldown > 0) 
 	{	// If she's in her cooldown period after giving birth
 		return true;
+	}
+	if (girl->m_DayJob == JOB_INDUNGEON || girl->m_NightJob == JOB_INDUNGEON)	// `J`
+	{
+		girl->m_InMovieStudio = girl->m_InCentre = girl->m_InClinic = girl->m_InHouse = girl->m_InArena = false;
+		girl->where_is_she = 0;
 	}
 	if (UseAntiPreg(girl->m_UseAntiPreg, girl->m_InClinic, girl->m_InMovieStudio, girl->m_InArena, girl->m_InCentre, girl->m_InHouse, girl->where_is_she))
 	{

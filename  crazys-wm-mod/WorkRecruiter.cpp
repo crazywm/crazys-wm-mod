@@ -47,7 +47,6 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, int DayNight, st
 
 	cTariff tariff;
 	string message = "";
-	int tex = g_Dice%4;
 
 	if(Preprocessing(ACTION_WORKRECRUIT, girl, brothel, DayNight, summary, message))	// they refuse to have work in the bar
 		return true;
@@ -100,145 +99,58 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, int DayNight, st
 		jobperformance -= 50;
 
 
+	int findchance = 0;
 
 	if (jobperformance >= 245)
 	{
 		message += " She must be the perfect recruiter.\n\n";
-		if((g_Dice%101) < 20)
-		{
-			sGirl* girl = g_Girls.GetRandomGirl();
-			if(girl)
-			{
-				/* MYR: For some reason I can't figure out, a number of girl's house percentages
-				        are at zero or set to zero when they are sent to the dungeon. I'm not sure
-						how to fix it, so I'm explicitly setting the percentage to 60 here */
-				girl->m_Stats[STAT_HOUSE] = 60;
-				message += gettext("She finds a girl, "); 
-				message += girl->m_Name;
-				message += gettext(" and convinces her that she should work for you.");
-				m_Dungeon->AddGirl(girl, DUNGEON_NEWGIRL);
-			}
-		}
-		else
-		{
-			message += "But was unable to find anyone to join.";
-		}
+		findchance = 30;
 	}
 	else if (jobperformance  >= 185)
 	{
 		message += " She's unbelievable at this.\n\n";
-		if((g_Dice%101) < 15)
-		{
-			sGirl* girl = g_Girls.GetRandomGirl();
-			if(girl)
-			{
-				/* MYR: For some reason I can't figure out, a number of girl's house percentages
-				        are at zero or set to zero when they are sent to the dungeon. I'm not sure
-						how to fix it, so I'm explicitly setting the percentage to 60 here */
-				girl->m_Stats[STAT_HOUSE] = 60;
-				message += gettext("She finds a girl, "); 
-				message += girl->m_Name;
-				message += gettext(" and convinces her that she should work for you.");
-				m_Dungeon->AddGirl(girl, DUNGEON_NEWGIRL);
-			}
-		}
-		else
-		{
-			message += "But was unable to find anyone to join.";
-		}
+		findchance = 20;
 	}
 	else if (jobperformance >= 135)
 	{
 		message += " She's good at this job.\n\n";
-		if((g_Dice%101) < 12)
-		{
-			sGirl* girl = g_Girls.GetRandomGirl();
-			if(girl)
-			{
-				/* MYR: For some reason I can't figure out, a number of girl's house percentages
-				        are at zero or set to zero when they are sent to the dungeon. I'm not sure
-						how to fix it, so I'm explicitly setting the percentage to 60 here */
-				girl->m_Stats[STAT_HOUSE] = 60;
-				message += gettext("She finds a girl, "); 
-				message += girl->m_Name;
-				message += gettext(" and convinces her that she should work for you.");
-				m_Dungeon->AddGirl(girl, DUNGEON_NEWGIRL);
-			}
-		}
-		else
-		{
-			message += "But was unable to find anyone to join.";
-		}
+		findchance = 16;
 	}
 	else if (jobperformance >= 85)
 	{
 		message += " She made a few mistakes but overall she is okay at this.\n\n";
-		if((g_Dice%101) < 10)
-		{
-			sGirl* girl = g_Girls.GetRandomGirl();
-			if(girl)
-			{
-				/* MYR: For some reason I can't figure out, a number of girl's house percentages
-				        are at zero or set to zero when they are sent to the dungeon. I'm not sure
-						how to fix it, so I'm explicitly setting the percentage to 60 here */
-				girl->m_Stats[STAT_HOUSE] = 60;
-				message += gettext("She finds a girl, "); 
-				message += girl->m_Name;
-				message += gettext(" and convinces her that she should work for you.");
-				m_Dungeon->AddGirl(girl, DUNGEON_NEWGIRL);
-			}
-		}
-		else
-		{
-			message += "But was unable to find anyone to join.";
-		}
+		findchance = 12;
 	}
 	else if (jobperformance >= 65)
 	{
 		message += " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
-		if((g_Dice%101) < 8)
-		{
-			sGirl* girl = g_Girls.GetRandomGirl();
-			if(girl)
-			{
-				/* MYR: For some reason I can't figure out, a number of girl's house percentages
-				        are at zero or set to zero when they are sent to the dungeon. I'm not sure
-						how to fix it, so I'm explicitly setting the percentage to 60 here */
-				girl->m_Stats[STAT_HOUSE] = 60;
-				message += gettext("She finds a girl, "); 
-				message += girl->m_Name;
-				message += gettext(" and convinces her that she should work for you.");
-				m_Dungeon->AddGirl(girl, DUNGEON_NEWGIRL);
-			}
-		}
-		else
-		{
-			message += "But was unable to find anyone to join.";
-		}
+		findchance = 8;
 	}
 	else
 	{
 		message += " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
-		if((g_Dice%101) < 5)
+		findchance = 4;
+	}
+	if ((g_Dice % 101)<findchance)
+	{
+		sGirl* girl = g_Girls.GetRandomGirl();
+		if (girl)
 		{
-			sGirl* girl = g_Girls.GetRandomGirl();
-			if(girl)
-			{
-				/* MYR: For some reason I can't figure out, a number of girl's house percentages
-				        are at zero or set to zero when they are sent to the dungeon. I'm not sure
-						how to fix it, so I'm explicitly setting the percentage to 60 here */
-				girl->m_Stats[STAT_HOUSE] = 60;
-				message += gettext("She finds a girl, "); 
-				message += girl->m_Name;
-				message += gettext(" and convinces her that she should work for you.");
-				m_Dungeon->AddGirl(girl, DUNGEON_NEWGIRL);
-			}
-		}
-		else
-		{
-			message += "But was unable to find anyone to join.";
+			/* MYR: For some reason I can't figure out, a number of girl's house percentages
+			are at zero or set to zero when they are sent to the dungeon. I'm not sure
+			how to fix it, so I'm explicitly setting the percentage to 60 here */
+			girl->m_Stats[STAT_HOUSE] = 60;
+			message += gettext("She finds a girl, ");
+			message += girl->m_Name;
+			message += gettext(" and convinces her that she should work for you.");
+			m_Dungeon->AddGirl(girl, DUNGEON_NEWGIRL);
 		}
 	}
+	else
+	{
+		message += "But was unable to find anyone to join.";
+	}
+
 
 
 //enjoyed the work or not
@@ -258,7 +170,7 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, int DayNight, st
 	}
 
 	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
-	int roll_max = (g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetSkill(girl, SKILL_SERVICE));
+	int roll_max = (g_Girls.GetStat(girl, STAT_CHARISMA) + g_Girls.GetSkill(girl, SKILL_SERVICE));
 	roll_max /= 4;
 	wages += 10 + g_Dice%roll_max;
 	girl->m_Pay = wages;

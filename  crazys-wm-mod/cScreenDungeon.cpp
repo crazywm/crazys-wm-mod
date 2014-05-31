@@ -99,6 +99,7 @@ void cScreenDungeon::init()
 	g_CurrentScreen = SCREEN_DUNGEON;
 	// clear the lists
 	ClearListBox(girllist_id);
+	cerr << "::init: Dungeon" << endl;	// `J`
 
 	//get a list of all the column names, so we can find which data goes in that column
 	vector<string> columnNames;
@@ -156,7 +157,7 @@ void cScreenDungeon::init()
 	DisableButton(brandslave_id);
 	DisableButton(torture_id);
 	DisableButton(sellslave_id);
-	cerr << "::init: disabling torture" << endl;
+//	cerr << "::init: disabling torture" << endl;	// `J` commented out
 	DisableButton(viewdetails_id);
 /*
  *	only enable "release all girls" if there are girls to release
@@ -200,7 +201,7 @@ void cScreenDungeon::selection_change()
 		DisableButton(interact_id);
 		DisableButton(release_id);
 		DisableButton(torture_id);
-		cerr << "selection = " << selection << " (-1) - disabling torture" << endl;
+//		cerr << "selection = " << selection << " (-1) - disabling torture" << endl;	// `J` commented out
 		DisableButton(viewdetails_id);
 		DisableButton(sellslave_id);
 		selection = -1;		// can this have changed?
@@ -211,7 +212,7 @@ void cScreenDungeon::selection_change()
  */
 	DisableButton(sellslave_id);
 	DisableButton(torture_id, !torture_possible());
-	cerr << "selection = " << selection << " - enabling torture" << endl;
+//	cerr << "selection = " << selection << " - enabling torture" << endl;	// `J` commented out
 	DisableButton(interact_id, g_TalkCount == 0);
 	EnableButton(release_id);
 	DisableButton(brandslave_id);
@@ -223,6 +224,7 @@ void cScreenDungeon::selection_change()
 /*
  *		It's a customer! All we need to do is toggle some buttons
  */
+		cerr << "Player selecting Dungeon Customer #" << selection << endl;	// `J` rewrote to reduce confusion
 		DisableButton(viewdetails_id);
 		EnableButton(allowfood_id);
 		DisableButton(stopfood_id);
@@ -231,6 +233,7 @@ void cScreenDungeon::selection_change()
 /*
  *	Not a customer then. Must be a girl...
  */
+	cerr << "Player selecting Dungeon Girl #" << selection << endl;	// `J` rewrote to reduce confusion
 	int num = selection;
 	sDungeonGirl* dgirl = dungeon->GetGirl(num);
 	sGirl * girl = dgirl->m_Girl;
@@ -522,7 +525,7 @@ void cScreenDungeon::sell_slaves()
 	vector<int> girl_array;
 	get_selected_girls(&girl_array);  // get and sort array of girls/customers
 
-	for(int i = girl_array.size(); i --> 0; )
+	for(int i = girl_array.size(); i-- > 0; )
 	{
 		selection = girl_array[i];
 /*
@@ -566,13 +569,16 @@ void cScreenDungeon::sell_slaves()
  *		remove her from the dungeon, add her back into the general pool
  */
 		girl = dungeon->RemoveGirl(dungeon->GetGirl(selection));
-		if(girl->m_Realname.compare(girl->m_Name) == 0)
+		if (girl->m_Realname.compare(girl->m_Name) == 0)
+		{
 			g_Girls.AddGirl(girl);  // add unique girls back to main pool
+		}
 		else
 		{  // random girls simply get removed from the game
-			delete girl;
+//			delete girl;
 			girl = 0;
 		}
+		g_Brothels.RemoveGirl(g_CurrBrothel, girl, true);	// `J` added to fix "dungeon screen to brothel screen crash"
 	}
 
 	if(deadcount > 0)
