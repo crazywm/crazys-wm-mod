@@ -435,7 +435,7 @@ const int NUM_GIRLFLAGS         = 30;
 const int MAXNUM_TRAITS         = 60;
 
 // Maximum number of items in inventory
-const int MAXNUM_INVENTORY         = 300;
+const int MAXNUM_INVENTORY         = 3000;
 
 
 // Listbox Constants moved from cListBox.h

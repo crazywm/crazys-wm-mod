@@ -76,6 +76,8 @@ public:
 	void init();
 	void process();
 	void check_events();
+	bool check_keys();
+
 	void attempt_transfer(Side transfer_from);
 	void refresh_item_list(Side which_list);
 

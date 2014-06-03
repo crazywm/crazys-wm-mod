@@ -240,7 +240,7 @@ public:
 	int m_NumInventory;								// current amount of inventory the brothel has
 	sInventoryItem* m_Inventory[MAXNUM_INVENTORY];	// List of inventory items they have (300 max)
 	unsigned char m_EquipedItems[MAXNUM_INVENTORY];	// value of > 0 means equipped (wearing) the item
-	unsigned char m_NumItem[MAXNUM_INVENTORY];		// the number of items there are stacked
+	int m_NumItem[MAXNUM_INVENTORY];		// the number of items there are stacked
 	cJobManager m_JobManager;						// manages all the jobs
 
 	long GetBribeRate()					{ return m_BribeRate; }

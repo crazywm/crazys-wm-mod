@@ -493,9 +493,10 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		//if (current->m_Stats[STAT_TIREDNESS] < 0)
 		//	current->m_Stats[STAT_TIREDNESS] = 0;
 		// `J` corrected it
-		current->m_Stats[STAT_TIREDNESS] -= 2;
-		if (current->m_Stats[STAT_TIREDNESS] < 0)
-			current->m_Stats[STAT_TIREDNESS] = 0;
+		int value = current->m_Stats[STAT_TIREDNESS] - 2;
+		if (value > 100)value = 100;
+		else if (value < 0)value = 0;
+		current->m_Stats[STAT_TIREDNESS] = value;
 
 		// Process next girl
 		current = current->m_Next;

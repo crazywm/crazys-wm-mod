@@ -88,6 +88,18 @@ extern	bool	g_D_Key;
 extern	bool	g_Z_Key;
 extern	bool	g_X_Key;
 extern	bool	g_C_Key;
+
+extern	bool	g_R_Key;
+extern	bool	g_F_Key;
+extern	bool	g_T_Key;
+extern	bool	g_G_Key;
+extern	bool	g_Y_Key;
+extern	bool	g_H_Key;
+extern	bool	g_U_Key;
+extern	bool	g_J_Key;
+extern	bool	g_I_Key;
+extern	bool	g_K_Key;
+
 extern	int		g_CurrentScreen;
 
 //used to store what files we have loaded

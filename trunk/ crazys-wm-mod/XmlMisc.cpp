@@ -376,7 +376,7 @@ TiXmlElement* SaveInventoryXML(TiXmlElement* pRoot,
 							   sInventoryItem* items[],
 							   const int numItems,
 							   unsigned char isEquipped[],
-							   unsigned char quantities[])
+							   int quantities[])
 {
 	TiXmlElement* pItems = new TiXmlElement("Items");
 	pRoot->LinkEndChild(pItems);
@@ -404,7 +404,7 @@ bool LoadInventoryXML(TiXmlHandle hInventory,
 					  sInventoryItem* items[],
 					  int& numItems,
 					  unsigned char isEquipped[],
-					  unsigned char quantities[])
+					  int quantities[])
 {
 	numItems = 0;
 	TiXmlElement* pInventory = hInventory.ToElement();

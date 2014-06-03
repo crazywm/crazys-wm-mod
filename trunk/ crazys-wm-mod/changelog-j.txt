@@ -201,8 +201,33 @@ Rewrote GetAbortion from Clinic - probably made it too complicated, but it works
 Tweaked numbers in WorkRecruiter.cpp and WorkPersonalTraining.cpp to be a little more useful.
 !!!!!!!!!!!!!!!!!!!! pushed version .05o
 
+###  Changes 6/1/2014
+corrected bug in tiredness for clinic
+Modified the way "Virgin" is loaded from .girlsx files, specifically yes (1) or no (0)
+ - if Virgin="0" or Virgin="1" is added inside the <girl ... > section.
+ - if <Trait Name="Virgin" /> is in the traits list then yes.
+ - if neither is specified, the game randomly sets virgin status based on age and sex stats.
+ - .rgirls still use the <Trait Name="Virgin" Percent="#" />
+Reworked WorkCombatTraining a little
+!!!!!!!!!!!!!!!!!!!! pushed version .05o.01
+Fixed bug with Brothel Stables jobs not working
+!!!!!!!!!!!!!!!!!!!! pushed version .05o.02
+Corrected some spelling errors
+Rewrote Clinic surgery working days section
+Girls will no longer runaway from rehab if a counselor is on duty
+Reworked Arena Combat Training
+You can no longer send girls with max combat, magic, agility and constitution to train in the arena.
+!!!!!!!!!!!!!!!!!!!! pushed version .05o.03
 
-
-
-
+###  Changes 6/2/2014
+Increased item counts
+ - 3000 item slots for you (increased from 300)
+ - still only 40 item slots for girls
+ - 999 of each item per slot (increased from 254)
+!!!!!!!!!!!!!!!!!!!! pushed version .05o.04
+Corrected buying buildings from the town screen (Hopefully for good)
+Fixed children ageing if <Pregnancy ... WeeksTillGrown = "#" ... > in the config.xml file is set above 255
+ - Now it can be up to 32k.
+Added hotkeys to the inventory screen (press 9 in game to see what the hotkeys for that screen are.)
+!!!!!!!!!!!!!!!!!!!! pushed version .05o.05
 

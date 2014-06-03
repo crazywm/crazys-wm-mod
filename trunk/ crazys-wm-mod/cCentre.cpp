@@ -488,6 +488,11 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		//current->m_Stats[STAT_TIREDNESS] = current->m_Stats[STAT_TIREDNESS] - 2;
 		//if (current->m_Stats[STAT_TIREDNESS] < 0)
 		//	current->m_Stats[STAT_TIREDNESS] = 0;
+		// `J` corrected it
+		int value = current->m_Stats[STAT_TIREDNESS] - 2;
+		if (value > 100)value = 100;
+		else if (value < 0)value = 0;
+		current->m_Stats[STAT_TIREDNESS] = value;
 
 		// Process next girl
 		current = current->m_Next;

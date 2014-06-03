@@ -167,6 +167,7 @@ Other Traits that probably do not have conflicts with any others
    <Trait Name="Twisted" Percent="#" />
    <Trait Name="Yandere" Percent="#" />
 
+   <Trait Name="Virgin" Percent="#" />
    <Trait Name="Incest" Percent="#" />
    <Trait Name="Your Daughter" Percent="#" />
    

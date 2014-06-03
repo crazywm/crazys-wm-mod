@@ -199,7 +199,7 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, int DayNi
 			// 1. If the item type already exists in the brothel, and there isn't already 255 of it,
 			// add one to it
 			ItemPlace = g_Brothels.HasItem(TempItem->m_Name, -1);
-			if ((ItemPlace != -1) && (g_Brothels.m_NumItem[ItemPlace] <= 254))
+			if ((ItemPlace != -1) && (g_Brothels.m_NumItem[ItemPlace] <= 999))
 			{
 				item_list += ((item_list=="") ? "" : ", ") + TempItem->m_Name;
 				g_Brothels.m_NumItem[ItemPlace]++;
