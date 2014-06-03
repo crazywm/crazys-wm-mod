@@ -319,7 +319,7 @@ bool cJobManager::WorkGetAbort(sGirl* girl, sBrothel* brothel, int DayNight, str
 
 	else
 	{
-		ss << "The abortion is in progess (1 day remaining).";
+		ss << "The abortion is in progress (1 day remaining).";
 	}
 
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, DayNight);

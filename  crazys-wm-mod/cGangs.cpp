@@ -2399,7 +2399,7 @@ void cGangManager::UpdateGangs()
 							{
 								if(curI != -1)
 								{
-									if(g_Brothels.m_NumItem[curI] >= 254)
+									if(g_Brothels.m_NumItem[curI] >= 999)
 										curI = g_Brothels.HasItem(temp->m_Name, curI+1);
 									else
 										loop = false;

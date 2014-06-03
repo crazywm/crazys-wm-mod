@@ -4,6 +4,8 @@ Basic .girlsx file layout
 <Girls>
 <Girl Name="@"
       Desc="@"
+      Gold="#"
+      Virgin="!0"
       Charisma="#"
       Happiness="#"
       Libido="#"
@@ -47,6 +49,7 @@ Basic .girlsx file layout
 Replace @ with text.
 Replace # with a number.
 Replace ! either Yes or No.
+Replace !0 either 1 for Yes or 0 for No.
 Replace % with a choice from a list below.
 
 The first line in the file must be the "<?xml version="1.0" encoding="utf-8"?>" line followed by the "<Girls>" line
@@ -153,6 +156,7 @@ Other Traits that probably do not have conflicts with any others
    <Trait Name="Twisted" />
    <Trait Name="Yandere" />
 
+   <Trait Name="Virgin" />
    <Trait Name="Incest" />
    <Trait Name="Your Daughter" />
    

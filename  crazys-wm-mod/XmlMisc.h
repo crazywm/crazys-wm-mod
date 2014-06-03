@@ -53,7 +53,7 @@ TiXmlElement* SaveInventoryXML(TiXmlElement* pRoot,
 							   sInventoryItem* items[],
 							   const int numItems,
 							   unsigned char isEquipped[] = 0,
-							   unsigned char quantities[] = 0);
+							   int quantities[] = 0);
 
 
 
@@ -86,5 +86,5 @@ bool LoadInventoryXML(TiXmlHandle hInventory,
 					  sInventoryItem* items[],
 					  int& numItems,
 					  unsigned char isEquipped[] = 0,
-					  unsigned char quantities[] = 0);
+					  int quantities[] = 0);
 

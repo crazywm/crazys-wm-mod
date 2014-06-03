@@ -4198,6 +4198,7 @@ void sGirl::load_from_xml(TiXmlElement *el)
 {
 	int ival;
 	const char *pt;
+	bool virginisset = false;
 /*
  *	get the simple fields
  */
@@ -4216,9 +4217,16 @@ void sGirl::load_from_xml(TiXmlElement *el)
 	if((pt = el->Attribute("Desc"))) 
 		m_Desc = n_strdup(pt);
 	
-	if((pt = el->Attribute("Gold", &ival))) 
+	if ((pt = el->Attribute("Gold", &ival)))
 		m_Money = ival;
-	
+
+	if ((pt = el->Attribute("Virgin", &ival)))
+	{
+		if (ival == 0)	m_Virgin = false;
+		else			m_Virgin = true;
+		virginisset = true;
+	}
+
 /*
  *	loop through stats
  */
@@ -4237,35 +4245,6 @@ void sGirl::load_from_xml(TiXmlElement *el)
 		   << int(m_Stats[i]) << "'" << endl;
 	}
 
-	// "fix" underage girls, determine virgin status
-	m_Virgin = false;
-	if(m_Stats[STAT_AGE] <= 18)
-	{
-		m_Stats[STAT_AGE] = 18;
-		m_Virgin = true;
-	}
-	else if(m_Stats[STAT_AGE] == 18)
-	{
-		if(g_Dice%3 == 1)
-			m_Virgin = true;
-	}
-	else if(m_Stats[STAT_AGE] <= 25)
-	{
-		int avg = 0;
-		for(u_int i=0; i<NUM_SKILLS; i++)
-		{
-			if(
-				i != SKILL_SERVICE
-				&& i != SKILL_COMBAT
-				&& i != SKILL_MAGIC
-			)
-				avg += (int)m_Skills[i];
-		}
-		avg = avg/(NUM_SKILLS-1);
-
-		if(avg < 30)
-			m_Virgin = true;
-	}
 
 /*
  *	loop through skills
@@ -4297,9 +4276,52 @@ void sGirl::load_from_xml(TiXmlElement *el)
 			pt=child->Attribute("Name");
 //			m_Traits[m_NumTraits] = g_Traits.GetTrait(n_strdup(pt));
 			m_Traits[m_NumTraits] = g_Traits.GetTrait(g_Traits.GetTranslateName(n_strdup(pt))); // `J` added translation check
+			if (g_Traits.GetTranslateName(n_strdup(pt)) == "Virgin"){m_Virgin = true;virginisset = true;}
 			m_NumTraits++;
 		}
 	}
+
+	// "fix" underage girls
+	if (virginisset)
+	{
+		if (m_Stats[STAT_AGE] <= 18)
+		{
+			m_Stats[STAT_AGE] = 18;
+		}
+	}
+	else	// determine virgin status
+	{
+		m_Virgin = false;
+		if (m_Stats[STAT_AGE] < 18)
+		{
+			m_Stats[STAT_AGE] = 18;
+			m_Virgin = true;
+		}
+		else if (m_Stats[STAT_AGE] == 18)
+		{
+			if (g_Dice % 3 == 1)
+				m_Virgin = true;
+		}
+		else if (m_Stats[STAT_AGE] <= 25)
+		{
+			int avg = 0;
+			for (u_int i = 0; i < NUM_SKILLS; i++)
+			{
+				if (
+					i != SKILL_SERVICE
+					&& i != SKILL_COMBAT
+					&& i != SKILL_MAGIC
+					)
+					avg += (int)m_Skills[i];
+			}
+			avg = avg / (NUM_SKILLS - 1);
+
+			if (avg < 30)
+				m_Virgin = true;
+		}
+	}
+
+
 	m_AccLevel=1;
 }
 

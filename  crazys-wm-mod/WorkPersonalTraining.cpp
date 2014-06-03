@@ -51,7 +51,6 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, int DayNi
 {
 	string message = "";
 	g_Building = BUILDING_HOUSE;
-	int tex = g_Dice % 4;
 
 	if(Preprocessing(ACTION_SEX, girl, brothel, DayNight, summary, message))	// they refuse to have work
 		return true;

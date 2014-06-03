@@ -137,7 +137,7 @@ bool cJobManager::WorkRehab(sGirl* girl, sBrothel* brothel, int DayNight, string
 	}
 	else
 	{
-		ss << "The rehab is in progess (" << (3 - girl->m_WorkingDay) << " day remaining).";
+		ss << "The rehab is in progress (" << (3 - girl->m_WorkingDay) << " day remaining).";
 	}
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, DayNight);
 

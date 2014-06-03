@@ -1,3 +1,21 @@
+/*
+* Copyright 2009, 2010, The Pink Petal Development Team.
+* The Pink Petal Devloment Team are defined as the game's coders
+* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 #include "cBrothel.h"
 #include "cScreenItemManagement.h"
 #include "cWindowManager.h"
@@ -22,6 +40,21 @@ extern cInventory g_InvManager;
 extern cWindowManager g_WinManager;
 extern bool g_AllTogle;
 extern string g_ReturnText;
+
+extern	bool	g_AltKeys;	// New hotkeys --PP
+extern	bool	g_R_Key;
+extern	bool	g_F_Key;
+extern	bool	g_T_Key;
+extern	bool	g_G_Key;
+extern	bool	g_Y_Key;
+extern	bool	g_H_Key;
+extern	bool	g_U_Key;
+extern	bool	g_J_Key;
+extern	bool	g_I_Key;
+extern	bool	g_K_Key;
+
+static int selection = -1;
+
 
 extern sGirl *selected_girl;
 
@@ -273,12 +306,36 @@ void cScreenItemManagement::process()
 	if(!ids_set)
 		set_ids();
 
+	// handle arrow keys
+	if (check_keys())
+		return;
+
 	// set up the window if needed
 	init();
 
 	// check to see if there's a button event needing handling
 	check_events();
 }
+
+bool cScreenItemManagement::check_keys()
+{
+	if (g_AltKeys)
+	{
+		if (g_R_Key)	{ selection = ArrowUpListBox(filter_id);		g_R_Key = false;	return true; }
+		if (g_F_Key)	{ selection = ArrowDownListBox(filter_id);		g_F_Key = false;	return true; }
+		if (g_T_Key)	{ selection = ArrowUpListBox(owners_l_id);		g_T_Key = false;	return true; }
+		if (g_G_Key)	{ selection = ArrowDownListBox(owners_l_id);	g_G_Key = false;	return true; }
+		if (g_Y_Key)	{ selection = ArrowUpListBox(owners_r_id);		g_Y_Key = false;	return true; }
+		if (g_H_Key)	{ selection = ArrowDownListBox(owners_r_id);	g_H_Key = false;	return true; }
+		if (g_U_Key)	{ selection = ArrowUpListBox(items_l_id);		g_U_Key = false;	return true; }
+		if (g_J_Key)	{ selection = ArrowDownListBox(items_l_id);		g_J_Key = false;	return true; }
+		if (g_I_Key)	{ selection = ArrowUpListBox(items_r_id);		g_I_Key = false;	return true; }
+		if (g_K_Key)	{ selection = ArrowDownListBox(items_r_id);		g_K_Key = false;	return true; }
+	}
+	return false;
+}
+
+
 
 
 void cScreenItemManagement::check_events()

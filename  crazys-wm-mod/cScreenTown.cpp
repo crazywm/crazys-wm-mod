@@ -129,6 +129,10 @@ void cScreenTown::init()
 		{
 			GetClinic = true;
 		}
+		else 
+		{
+			BuyClinic = -1;
+		}
 		g_ChoiceManager.Free();
 	}
 	if(GetClinic)
@@ -148,6 +152,11 @@ void cScreenTown::init()
 		{
 			GetCentre = true;
 		}
+		else
+		{
+			BuyCentre = -1;
+		}
+
 		g_ChoiceManager.Free();
 	}
 	if(GetCentre)
@@ -167,6 +176,11 @@ void cScreenTown::init()
 		{
 			GetArena = true;
 		}
+		else
+		{
+			BuyArena = -1;
+		}
+
 		g_ChoiceManager.Free();
 	}
 	if(GetArena)
@@ -186,6 +200,11 @@ void cScreenTown::init()
 		{
 			GetStudio = true;
 		}
+		else
+		{
+			BuyStudio = -1;
+		}
+
 		g_ChoiceManager.Free();
 	}
 	if(GetStudio)
@@ -229,6 +248,11 @@ void cScreenTown::init()
 			g_InitWin = true;
 			g_WinManager.Push(GetString, &g_GetString);
 		}
+		else
+		{
+			BuyBrothel = -1;
+		}
+
 		g_ChoiceManager.Free();
 		if(!GetName)
 			BuyBrothel= -1;

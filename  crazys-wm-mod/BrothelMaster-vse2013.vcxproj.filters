@@ -115,12 +115,6 @@
     <ClCompile Include="sConfig.cpp">
       <Filter>Misc</Filter>
     </ClCompile>
-    <ClCompile Include="sFacility.cpp">
-      <Filter>Misc</Filter>
-    </ClCompile>
-    <ClCompile Include="sFacilityList.cpp">
-      <Filter>Misc</Filter>
-    </ClCompile>
     <ClCompile Include="strnatcmp.cpp">
       <Filter>Misc</Filter>
     </ClCompile>
@@ -640,6 +634,8 @@
     <ClCompile Include="WorkBoobJob.cpp" />
     <ClCompile Include="cScreenPropertyManagement.cpp" />
     <ClCompile Include="WorkGetAssJob.cpp" />
+    <ClCompile Include="sFacility.cpp" />
+    <ClCompile Include="sFacilityList.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cButton.h">
@@ -742,12 +738,6 @@
       <Filter>Misc</Filter>
     </ClInclude>
     <ClInclude Include="sConfig.h">
-      <Filter>Misc</Filter>
-    </ClInclude>
-    <ClInclude Include="sFacility.h">
-      <Filter>Misc</Filter>
-    </ClInclude>
-    <ClInclude Include="sFacilityList.h">
       <Filter>Misc</Filter>
     </ClInclude>
     <ClInclude Include="strnatcmp.h">
@@ -1045,6 +1035,12 @@
       <Filter>Lua\src</Filter>
     </ClInclude>
     <ClInclude Include="cScreenPropertyManagement.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="sFacility.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="sFacilityList.h">
       <Filter>Misc</Filter>
     </ClInclude>
   </ItemGroup>

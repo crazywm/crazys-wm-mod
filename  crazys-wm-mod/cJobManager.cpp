@@ -1003,6 +1003,15 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		else
 			Girl->m_NightJob = Girl->m_DayJob = JOB_DOCTORE;
 	}
+	else if (u_int(JobID) == JOB_FIGHTTRAIN)	// `J` added
+	{
+		if (Girl->m_Skills[SKILL_COMBAT] > 99 && Girl->m_Skills[SKILL_MAGIC] > 99 && Girl->m_Stats[STAT_AGILITY] > 99 && Girl->m_Stats[STAT_CONSTITUTION] > 99)
+		{
+			g_MessageQue.AddToQue(gettext("There is nothing more she can learn here."), 0);
+			if (Girl->m_DayJob == JOB_FIGHTTRAIN)	Girl->m_DayJob = JOB_ARENAREST;
+			if (Girl->m_NightJob == JOB_FIGHTTRAIN)	Girl->m_NightJob = JOB_ARENAREST;
+		}
+	}
 // Special Clinic Jobs
 	else if (u_int(JobID) == JOB_CHAIRMAN)
 	{

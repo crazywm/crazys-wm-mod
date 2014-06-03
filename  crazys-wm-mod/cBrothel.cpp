@@ -2329,7 +2329,7 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		{
 
 		}
-		else if (sw != JOB_RESTING && sw >= JOB_RESTING && sw <= JOB_PEEP)
+		else if (sw != JOB_RESTING && sw >= JOB_RESTING && sw <= JOB_MILK)
 		{
 			refused = m_JobManager.JobFunctions[sw](current, brothel, DayNight, summary);
 		}
@@ -2584,6 +2584,11 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		//current->m_Stats[STAT_TIREDNESS] = current->m_Stats[STAT_TIREDNESS] - 2;
 		//if (current->m_Stats[STAT_TIREDNESS] < 0)
 		//	current->m_Stats[STAT_TIREDNESS] = 0;
+		// `J` corrected it
+		int value = current->m_Stats[STAT_TIREDNESS] - 2;
+		if (value > 100)value = 100;
+		else if (value < 0)value = 0;
+		current->m_Stats[STAT_TIREDNESS] = value;
 
 		// Myr: Automate the use of a number of different items. See the function itself for more comments.
 		//      Enabled or disabled based on config option.
@@ -3417,7 +3422,7 @@ bool cBrothelManager::AddItemToInventory(sInventoryItem* item)
 	{
 		if(curI != -1)
 		{
-			if(g_Brothels.m_NumItem[curI] >= 254)
+			if(g_Brothels.m_NumItem[curI] >= 999)
 				curI = g_Brothels.HasItem(item->m_Name, curI+1);
 			else
 				loop = false;
@@ -3999,7 +4004,7 @@ void cBrothelManager::PassObjective()
 						{
 							if(curI != -1)
 							{
-								if(g_Brothels.m_NumItem[curI] >= 254)
+								if(g_Brothels.m_NumItem[curI] >= 999)
 									curI = g_Brothels.HasItem(item->m_Name, curI+1);
 								else
 									loop = false;
@@ -5067,6 +5072,12 @@ bool cBrothelManager::runaway_check(sBrothel *brothel, sGirl *girl)
 	if(g_Dice.percent(matron_chance)) {
 		return false;
 	}
+
+	if (girl->m_DayJob == JOB_REHAB && (g_Clinic.GetNumGirlsOnJob(0, JOB_DRUGCOUNSELOR, true) > 0) || (g_Clinic.GetNumGirlsOnJob(0, JOB_DRUGCOUNSELOR, false) > 0))
+	{
+		return false;
+	}
+
 /*
  *	mainly here, we're interested in the chance that she might run away
  */

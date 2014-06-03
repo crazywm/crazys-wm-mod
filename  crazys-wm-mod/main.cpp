@@ -91,6 +91,18 @@ bool g_D_Key = false;
 bool g_Z_Key = false;
 bool g_X_Key = false;
 bool g_C_Key = false;
+
+bool g_R_Key = false;
+bool g_F_Key = false;
+bool g_T_Key = false;
+bool g_G_Key = false;
+bool g_Y_Key = false;
+bool g_H_Key = false;
+bool g_U_Key = false;
+bool g_J_Key = false;
+bool g_I_Key = false;
+bool g_K_Key = false;
+
 /*			// Alternate hotkeys (g is global keys, L is function defined locally) Ironically local keys must have global scope. --PP
 g		Tab 	cycle brothels
 L		space	next in list.
@@ -207,42 +219,38 @@ void handle_hotkeys()
 	else if (vent.key.keysym.sym == SDLK_RCTRL || vent.key.keysym.sym == SDLK_LCTRL)	// enable multi select
 		g_CTRLDown = true;
 
-	if (vent.key.keysym.sym == SDLK_UP)
-		g_UpArrow = true;
-	else if (vent.key.keysym.sym == SDLK_DOWN)
-		g_DownArrow = true;
-	else if (vent.key.keysym.sym == SDLK_LEFT)
-		g_LeftArrow = true;
-	else if (vent.key.keysym.sym == SDLK_RIGHT)
-		g_RightArrow = true;
-	else if (vent.key.keysym.sym == SDLK_SPACE)
-		g_SpaceKey = true;
-	else if (vent.key.keysym.sym == SDLK_q)
-		g_Q_Key = true;
-	else if (vent.key.keysym.sym == SDLK_w)
-		g_W_Key = true;
-	else if (vent.key.keysym.sym == SDLK_e)
-		g_E_Key = true;
-	else if (vent.key.keysym.sym == SDLK_a)
-		g_A_Key = true;
-	else if (vent.key.keysym.sym == SDLK_s)
-		g_S_Key = true;
-	else if (vent.key.keysym.sym == SDLK_d)
-		g_D_Key = true;
-	else if (vent.key.keysym.sym == SDLK_z)
-		g_Z_Key = true;
-	else if (vent.key.keysym.sym == SDLK_x)
-		g_X_Key = true;
-	else if (vent.key.keysym.sym == SDLK_c)
-		g_C_Key = true;
+	     if (vent.key.keysym.sym == SDLK_UP)		g_UpArrow = true;
+	else if (vent.key.keysym.sym == SDLK_DOWN)		g_DownArrow = true;
+	else if (vent.key.keysym.sym == SDLK_LEFT)		g_LeftArrow = true;
+	else if (vent.key.keysym.sym == SDLK_RIGHT)		g_RightArrow = true;
+	else if (vent.key.keysym.sym == SDLK_SPACE)		g_SpaceKey = true;
+	else if (vent.key.keysym.sym == SDLK_q)			g_Q_Key = true;
+	else if (vent.key.keysym.sym == SDLK_w)			g_W_Key = true;
+	else if (vent.key.keysym.sym == SDLK_e)			g_E_Key = true;
+	else if (vent.key.keysym.sym == SDLK_a)			g_A_Key = true;
+	else if (vent.key.keysym.sym == SDLK_s)			g_S_Key = true;
+	else if (vent.key.keysym.sym == SDLK_d)			g_D_Key = true;
+	else if (vent.key.keysym.sym == SDLK_z)			g_Z_Key = true;
+	else if (vent.key.keysym.sym == SDLK_x)			g_X_Key = true;
+	else if (vent.key.keysym.sym == SDLK_c)			g_C_Key = true;
+
+	else if (vent.key.keysym.sym == SDLK_r)			g_R_Key = true;
+	else if (vent.key.keysym.sym == SDLK_f)			g_F_Key = true;
+	else if (vent.key.keysym.sym == SDLK_t)			g_T_Key = true;
+	else if (vent.key.keysym.sym == SDLK_g)			g_G_Key = true;
+	else if (vent.key.keysym.sym == SDLK_y)			g_Y_Key = true;
+	else if (vent.key.keysym.sym == SDLK_h)			g_H_Key = true;
+	else if (vent.key.keysym.sym == SDLK_u)			g_U_Key = true;
+	else if (vent.key.keysym.sym == SDLK_j)			g_J_Key = true;
+	else if (vent.key.keysym.sym == SDLK_i)			g_I_Key = true;
+	else if (vent.key.keysym.sym == SDLK_k)			g_K_Key = true;
 
 	if (g_WinManager.GetWindow() != &g_MainMenu)
 	{
 		int br_no = 0;
 		string msg = "";
 
-		switch (vent.key.keysym.sym) {
-			// Select Brothel
+		switch (vent.key.keysym.sym) {			// Select Brothel
 		case SDLK_1: case SDLK_2: case SDLK_3:
 		case SDLK_4: case SDLK_5: case SDLK_6:
 		case SDLK_7:
@@ -277,9 +285,8 @@ void handle_hotkeys()
 			g_WinManager.Pop();
 			break;
 
-		case SDLK_g:	// girl management screen
-			if (g_AltKeys)
-				break;
+			// girl management screen
+		case SDLK_g:	if (g_AltKeys)	break;
 		case SDLK_F1:
 			g_Building = BUILDING_BROTHEL;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
@@ -288,9 +295,8 @@ void handle_hotkeys()
 			g_WinManager.push("Girl Management");
 			break;
 
-		case SDLK_t:	// staff management screen (gang management)
-			if (g_AltKeys)
-				break;
+			// staff management screen (gang management)
+		case SDLK_t:	if (g_AltKeys)	break;
 		case SDLK_F2:
 			g_Building = BUILDING_BROTHEL;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
@@ -299,9 +305,8 @@ void handle_hotkeys()
 			g_WinManager.push("Gangs");
 			break;
 
-		case SDLK_d:	// Dungeon
-			if (g_AltKeys)
-				break;
+			// Dungeon
+		case SDLK_d:	if (g_AltKeys)	break;
 		case SDLK_F3:
 			g_Building = BUILDING_BROTHEL;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
@@ -310,9 +315,8 @@ void handle_hotkeys()
 			g_WinManager.push("Dungeon");
 			break;
 
-		case SDLK_s:	// Slave market screen
-			if (g_AltKeys)
-				break;
+			// Slave market screen
+		case SDLK_s:	if (g_AltKeys)	break;
 		case SDLK_F4:
 			g_Building = BUILDING_BROTHEL;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
@@ -339,9 +343,8 @@ void handle_hotkeys()
 			g_WinManager.push("Studio");
 			break;
 
-		case SDLK_e:	// Arena
-			if (g_AltKeys)
-				break;
+			// Arena
+		case SDLK_e:	if (g_AltKeys)	break;
 		case SDLK_F6:
 			if (g_Arena.GetNumBrothels() == 0)	// Does player own the Arena yet?
 			{
@@ -376,9 +379,8 @@ void handle_hotkeys()
 			g_WinManager.push("Centre");
 			break;
 
-		case SDLK_c:	// clinic
-			if (g_AltKeys)
-				break;
+			// clinic
+		case SDLK_c:	if (g_AltKeys)	break;
 		case SDLK_F8:
 			if (g_Clinic.GetNumBrothels() == 0)	// Does player own the clinic yet?
 			{
@@ -396,9 +398,8 @@ void handle_hotkeys()
 			g_WinManager.push("Clinic");
 			break;
 
-		case SDLK_p:	// shop screen
-			if (g_AltKeys)
-				break;
+			// shop screen
+		case SDLK_p:	if (g_AltKeys)	break;
 		case SDLK_F9:
 			g_Building = BUILDING_BROTHEL;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
@@ -408,9 +409,8 @@ void handle_hotkeys()
 			g_WinManager.push("Item Management");
 			break;
 
-		case SDLK_o:	// town screen
-			if (g_AltKeys)
-				break;
+			// town screen
+		case SDLK_o:	if (g_AltKeys)	break;
 		case SDLK_F10:
 			g_Building = BUILDING_BROTHEL;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
@@ -419,9 +419,8 @@ void handle_hotkeys()
 			g_WinManager.push("Town");
 			break;
 
-		case SDLK_a:	// turn summary screen
-			if (g_AltKeys)
-				break;
+			// turn summary screen
+		case SDLK_a:	if (g_AltKeys)	break;
 		case SDLK_F11:
 			g_Building = BUILDING_BROTHEL;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
@@ -441,9 +440,8 @@ void handle_hotkeys()
 			break;
 
 			// Non F-Key hotkeys (disabled by alt)
-		case SDLK_m:	// mayors office screen
-			if (g_AltKeys)
-				break;
+			// mayors office screen
+		case SDLK_m:	if (g_AltKeys)	break;
 			g_Building = BUILDING_BROTHEL;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
 			g_CurrentScreen = SCREEN_BROTHEL;
@@ -464,9 +462,8 @@ void handle_hotkeys()
 			}
 			break;
 
-		case SDLK_b:	// bank screen
-			if (g_AltKeys)
-				break;
+			// bank screen
+		case SDLK_b:	if (g_AltKeys)	break;
 			g_Building = BUILDING_BROTHEL;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
 			g_CurrentScreen = SCREEN_BANK;
@@ -475,10 +472,8 @@ void handle_hotkeys()
 			g_WinManager.push("Bank");
 			break;
 
-
-		case SDLK_u:	// upgrades management screen
-			if (g_AltKeys)
-				break;
+			// upgrades management screen
+		case SDLK_u:	if (g_AltKeys)	break;
 			g_Building = BUILDING_BROTHEL;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
 			g_CurrentScreen = SCREEN_BUILDINGMANAGEMENT;
@@ -492,9 +487,6 @@ void handle_hotkeys()
 			break;
 
 		case SDLK_9:
-			//			stringstream ss;
-			//			ss.str("");
-			//			ss << gettext("These are the active hot keys:");
 			msg = "These are the active hot keys:\n";
 			if (g_AltKeys)
 			{
@@ -556,10 +548,6 @@ void handle_hotkeys()
 					msg += "Girl Details:\n";
 					msg += "Up Arrow    Previous Girl\n";
 					msg += "Down Arrow  Next Girl\n\n";
-					msg += "For left handed control:\n";
-					msg += "A    Previous Girl\n";
-					msg += "D    Next Girl\n\n";
-					msg += "For left handed control:\n";
 					msg += "A    Previous Girl\n";
 					msg += "D    Next Girl\n";
 					msg += "S    More Details\n";
@@ -567,8 +555,16 @@ void handle_hotkeys()
 					break;
 				case SCREEN_INVENTORY:
 					msg += "Inventory Screen:\n";
-					msg += "No special hotkeys\n";
-					msg += "Yet...\n\n";
+					msg += "                                    Up         Down\n";
+					msg += "Inventory type :        R           F\n";
+					msg += "Owner list left :          T           G\n";
+					msg += "Owner list right :        Y           H\n";
+					msg += "Items list left :          U           J\n";
+					msg += "Items list right :         I           K\n\n\n";
+					msg += "There are no hotkeys for buy and sell buttons\n";
+					msg += "or for equip or unequip buttons\n";
+					msg += "to prevent accidental buying, selling or equiping of items\n";
+					msg += "\n\n";
 					break;
 				case SCREEN_GANGMANAGEMENT:
 					msg += "Gang Management:\n";
@@ -888,33 +884,26 @@ void handle_hotkeys()
 		{
 			switch (vent.key.keysym.sym)
 			{
-			case SDLK_q:
-				g_Q_Key = true;
-				break;
-			case SDLK_w:
-				g_W_Key = true;
-				break;
-			case SDLK_e:
-				g_E_Key = true;
-				break;
-			case SDLK_a:
-				g_A_Key = true;
-				break;
-			case SDLK_s:
-				g_S_Key = true;
-				break;
-			case SDLK_d:
-				g_D_Key = true;
-				break;
-			case SDLK_z:
-				g_Z_Key = true;
-				break;
-			case SDLK_x:
-				g_X_Key = true;
-				break;
-			case SDLK_c:
-				g_C_Key = true;
-				break;
+			case SDLK_q:	g_Q_Key = true;		break;
+			case SDLK_w:	g_W_Key = true;		break;
+			case SDLK_e:	g_E_Key = true;		break;
+			case SDLK_a:	g_A_Key = true;		break;
+			case SDLK_s:	g_S_Key = true;		break;
+			case SDLK_d:	g_D_Key = true;		break;
+			case SDLK_z:	g_Z_Key = true;		break;
+			case SDLK_x:	g_X_Key = true;		break;
+			case SDLK_c:	g_C_Key = true;		break;
+
+			case SDLK_r:	g_R_Key = true;		break;
+			case SDLK_f:	g_F_Key = true;		break;
+			case SDLK_t:	g_T_Key = true;		break;
+			case SDLK_g:	g_G_Key = true;		break;
+			case SDLK_y:	g_Y_Key = true;		break;
+			case SDLK_h:	g_H_Key = true;		break;
+			case SDLK_u:	g_U_Key = true;		break;
+			case SDLK_j:	g_J_Key = true;		break;
+			case SDLK_i:	g_I_Key = true;		break;
+			case SDLK_k:	g_K_Key = true;		break;
 			default:
 				break;
 			}
@@ -1022,34 +1011,31 @@ int main(int ac, char* av[])
 					else if (vent.key.keysym.sym == SDLK_RCTRL || vent.key.keysym.sym == SDLK_LCTRL)	// enable multi select
 						g_CTRLDown = false;
 
-					if (vent.key.keysym.sym == SDLK_UP)
-						g_UpArrow = false;
-					else if (vent.key.keysym.sym == SDLK_DOWN)
-						g_DownArrow = false;
-					else if (vent.key.keysym.sym == SDLK_LEFT)
-						g_LeftArrow = false;
-					else if (vent.key.keysym.sym == SDLK_RIGHT)
-						g_RightArrow = false;
-					else if (vent.key.keysym.sym == SDLK_SPACE)
-						g_SpaceKey = false;
-					else if (vent.key.keysym.sym == SDLK_q)
-						g_Q_Key = false;
-					else if (vent.key.keysym.sym == SDLK_w)
-						g_W_Key = false;
-					else if (vent.key.keysym.sym == SDLK_e)
-						g_E_Key = false;
-					else if (vent.key.keysym.sym == SDLK_a)
-						g_A_Key = false;
-					else if (vent.key.keysym.sym == SDLK_s)
-						g_S_Key = false;
-					else if (vent.key.keysym.sym == SDLK_d)
-						g_D_Key = false;
-					else if (vent.key.keysym.sym == SDLK_z)
-						g_Z_Key = false;
-					else if (vent.key.keysym.sym == SDLK_x)
-						g_X_Key = false;
-					else if (vent.key.keysym.sym == SDLK_c)
-						g_C_Key = false;
+					if (vent.key.keysym.sym == SDLK_UP)				g_UpArrow = false;
+					else if (vent.key.keysym.sym == SDLK_DOWN)		g_DownArrow = false;
+					else if (vent.key.keysym.sym == SDLK_LEFT)		g_LeftArrow = false;
+					else if (vent.key.keysym.sym == SDLK_RIGHT)		g_RightArrow = false;
+					else if (vent.key.keysym.sym == SDLK_SPACE)		g_SpaceKey = false;
+					else if (vent.key.keysym.sym == SDLK_q)			g_Q_Key = false;
+					else if (vent.key.keysym.sym == SDLK_w)			g_W_Key = false;
+					else if (vent.key.keysym.sym == SDLK_e)			g_E_Key = false;
+					else if (vent.key.keysym.sym == SDLK_a)			g_A_Key = false;
+					else if (vent.key.keysym.sym == SDLK_s)			g_S_Key = false;
+					else if (vent.key.keysym.sym == SDLK_d)			g_D_Key = false;
+					else if (vent.key.keysym.sym == SDLK_z)			g_Z_Key = false;
+					else if (vent.key.keysym.sym == SDLK_x)			g_X_Key = false;
+					else if (vent.key.keysym.sym == SDLK_c)			g_C_Key = false;
+
+					else if (vent.key.keysym.sym == SDLK_r)			g_R_Key = false;
+					else if (vent.key.keysym.sym == SDLK_f)			g_F_Key = false;
+					else if (vent.key.keysym.sym == SDLK_t)			g_T_Key = false;
+					else if (vent.key.keysym.sym == SDLK_g)			g_G_Key = false;
+					else if (vent.key.keysym.sym == SDLK_y)			g_Y_Key = false;
+					else if (vent.key.keysym.sym == SDLK_h)			g_H_Key = false;
+					else if (vent.key.keysym.sym == SDLK_u)			g_U_Key = false;
+					else if (vent.key.keysym.sym == SDLK_j)			g_J_Key = false;
+					else if (vent.key.keysym.sym == SDLK_i)			g_I_Key = false;
+					else if (vent.key.keysym.sym == SDLK_k)			g_K_Key = false;
 				}
 			}
 			else if (vent.type == SDL_KEYDOWN)

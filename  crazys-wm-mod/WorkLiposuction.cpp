@@ -133,8 +133,17 @@ bool cJobManager::WorkLiposuction(sGirl* girl, sBrothel* brothel, int DayNight, 
 	}
 	else
 	{
-		ss << "The operation is in progess (" << (5 - girl->m_WorkingDay) << " day remaining).";
-		ss << "Having a Nurse on duty will speed up her recovery.";
+		int wdays = (5 - girl->m_WorkingDay);
+		if (g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, 1) > 0)
+		{
+			if (wdays > 3)		{ wdays = 3; }
+			else if (wdays > 1)	{ wdays = 2; }
+			else				{ wdays = 1; }
+		}
+		ss << "The operation is in progress (" << wdays << " day remaining).";
+		if (g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, 1) > 1)		{ ss << "The Nurses are taking care of her at night."; }
+		else if (g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, 1) > 0){ ss << "The Nurse is taking care of her at night."; }
+		else							{ ss << "Having a Nurse on duty will speed up her recovery."; }
 	}
 
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, DayNight);
