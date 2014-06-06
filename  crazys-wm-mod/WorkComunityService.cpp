@@ -45,7 +45,6 @@ extern cGold g_Gold;
 bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	string message = "";
-	int tex = g_Dice%4;
 
 	if(Preprocessing(ACTION_WORKCENTRE, girl, brothel, DayNight, summary, message))	// they refuse to have work
 		return true;

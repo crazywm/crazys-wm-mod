@@ -1723,45 +1723,30 @@ string cGirls::GetGirlMood(sGirl* girl)
 
 string cGirls::GetMoreDetailsString(sGirl* girl)
 {
-	if(girl == 0)
-		return string("");
+	if (girl == 0)		return string("");
 	string data = gettext("Fetish Categories: ");
-
-	if(CheckGirlType(girl, FETISH_BIGBOOBS))
-		data += gettext(" |Big Boobs| ");
-	if(CheckGirlType(girl, FETISH_CUTEGIRLS))
-		data += gettext(" |Cute Girl| ");
-	if(CheckGirlType(girl, FETISH_DANGEROUSGIRLS))
-		data += gettext(" |Dangerous| ");
-	if(CheckGirlType(girl, FETISH_COOLGIRLS))
-		data += gettext(" |Cool| ");
-	if(CheckGirlType(girl, FETISH_NERDYGIRLS))
-		data += gettext(" |Nerd| ");
-	if(CheckGirlType(girl, FETISH_NONHUMAN))
-		data += gettext(" |Non or part human| ");
-	if(CheckGirlType(girl, FETISH_LOLITA))
-		data += gettext(" |Lolita| ");
-	if(CheckGirlType(girl, FETISH_ELEGANT))
-		data += gettext(" |Elegant| ");
-	if(CheckGirlType(girl, FETISH_SEXY))
-		data += gettext(" |Sexy| ");
-	if(CheckGirlType(girl, FETISH_FIGURE))
-		data += gettext(" |Nice Figure| ");
-	if(CheckGirlType(girl, FETISH_ARSE))
-		data += gettext(" |Nice Arse| ");
-	if(CheckGirlType(girl, FETISH_SMALLBOOBS))
-		data += gettext(" |Small Boobs| ");
-	if(CheckGirlType(girl, FETISH_FREAKYGIRLS))
-		data += gettext(" |Freaky| ");
+	if (CheckGirlType(girl, FETISH_BIGBOOBS))		data += gettext(" |Big Boobs| ");
+	if (CheckGirlType(girl, FETISH_CUTEGIRLS))		data += gettext(" |Cute Girl| ");
+	if (CheckGirlType(girl, FETISH_DANGEROUSGIRLS))	data += gettext(" |Dangerous| ");
+	if (CheckGirlType(girl, FETISH_COOLGIRLS))		data += gettext(" |Cool| ");
+	if (CheckGirlType(girl, FETISH_NERDYGIRLS))		data += gettext(" |Nerd| ");
+	if (CheckGirlType(girl, FETISH_NONHUMAN))		data += gettext(" |Non or part human| ");
+	if (CheckGirlType(girl, FETISH_LOLITA))			data += gettext(" |Lolita| ");
+	if (CheckGirlType(girl, FETISH_ELEGANT))		data += gettext(" |Elegant| ");
+	if (CheckGirlType(girl, FETISH_SEXY))			data += gettext(" |Sexy| ");
+	if (CheckGirlType(girl, FETISH_FIGURE))			data += gettext(" |Nice Figure| ");
+	if (CheckGirlType(girl, FETISH_ARSE))			data += gettext(" |Nice Arse| ");
+	if (CheckGirlType(girl, FETISH_SMALLBOOBS))		data += gettext(" |Small Boobs| ");
+	if (CheckGirlType(girl, FETISH_FREAKYGIRLS))	data += gettext(" |Freaky| ");
 	data += gettext("\n\n");
 
-	string jobs[]={
+	string jobs[] = {
 		gettext("combat"),
 		gettext("working as a whore"),
 		gettext("doing miscellaneous tasks"),  // general
 		gettext("cleaning"),
 		gettext("acting as a matron"),
-		gettext("working in the bar"), 
+		gettext("working in the bar"),
 		gettext("working in the gambling hall"),
 		gettext("producing movies"),
 		gettext("providing security"),
@@ -1774,96 +1759,84 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		gettext("working in the centre"),
 		gettext("working in the club"),
 		gettext("being in your harem"),
-		gettext("being a recruiter")
+		gettext("being a recruiter"),
+		gettext("working as a nurse"),
+		gettext("fixing things"),
+		gettext("counseling people")
 	};
-	string base=gettext("She");
+	string base = gettext("She");
 	string text;
 	unsigned char count = 0;
-	for(int i=0;i<NUM_ACTIONTYPES;++i)
+	for (int i = 0; i < NUM_ACTIONTYPES; ++i)
 	{
-		if(jobs[i] == "")
-			continue;
-		if(girl->m_Enjoyment[i]<-70)
-		{
-			text=gettext(" hates ");
-		}
-		else if(girl->m_Enjoyment[i]<-50)
-		{
-			text=gettext(" really dislikes ");
-		}
-		else if(girl->m_Enjoyment[i]<-30)
-		{
-			text=gettext(" dislikes ");
-		}
-		else if(girl->m_Enjoyment[i]<-20)
-		{
-			text=gettext(" doesn't particularly enjoy ");
-		}
-		else if(girl->m_Enjoyment[i]<15)
-		{
-			//text=" is indifferent to ";
-			continue;  // if she's indifferent, why specify it? Let's instead skip it.
-		}
-		else if(girl->m_Enjoyment[i]<30)
-		{
-			text=gettext(" is happy enough with ");
-		}
-		else if(girl->m_Enjoyment[i]<50)
-		{
-			text=gettext(" likes ");
-		}
-		else if(girl->m_Enjoyment[i]<70)
-		{
-			text=gettext(" really enjoys ");
-		}
-		else
-		{
-			text= gettext(" loves ");
-		}
-		data+=base;
-		data+=text;
-		data+=jobs[i]+gettext(".\n");
+		if (jobs[i] == "")			continue;
+		if (girl->m_Enjoyment[i] < -70)			{ text = gettext(" hates "); }
+		else if (girl->m_Enjoyment[i] < -50)	{ text = gettext(" really dislikes "); }
+		else if (girl->m_Enjoyment[i] < -30)	{ text = gettext(" dislikes "); }
+		else if (girl->m_Enjoyment[i] < -20)	{ text = gettext(" doesn't particularly enjoy "); }
+		else if (girl->m_Enjoyment[i] < 15)		{ continue; } // if she's indifferent, why specify it? Let's instead skip it.
+		else if (girl->m_Enjoyment[i] < 30)		{ text = gettext(" is happy enough with "); }
+		else if (girl->m_Enjoyment[i] < 50)		{ text = gettext(" likes "); }
+		else if (girl->m_Enjoyment[i] < 70)		{ text = gettext(" really enjoys "); }
+		else									{ text = gettext(" loves "); }
+		data += base + text + jobs[i] + gettext(".\n");
 		count++;
 	}
-	if(count > 0)
-		data+=gettext("\nShe is indifferent to all other tasks.\n\n");
-	else
-		data+=gettext("At the moment, she is indifferent to all tasks.\n\n");
+	if (count > 0)	data += gettext("\nShe is indifferent to all other tasks.\n\n");
+	else			data += gettext("At the moment, she is indifferent to all tasks.\n\n");
 
 	data += gettext("\nOther Stats\n\n");
+
+	// `J` instead of repeatedly calling the girl, call her once and store her stat
+	int jr_cha = GetStat(girl, STAT_CHARISMA);
+	int jr_bea = GetStat(girl, STAT_BEAUTY);
+	int jr_int = GetStat(girl, STAT_INTELLIGENCE);
+	int jr_agi = GetStat(girl, STAT_AGILITY);
+	int jr_cnf = GetStat(girl, STAT_CONFIDENCE);
+	int jr_lib = GetStat(girl, STAT_LIBIDO);
+	int jr_man = GetStat(girl, STAT_MANA);
+	int jr_obe = GetStat(girl, STAT_OBEDIENCE);
+	int jr_spi = GetStat(girl, STAT_SPIRIT);
+	int jr_fam = GetStat(girl, STAT_FAME);
+	int jr_ser = GetSkill(girl, SKILL_SERVICE);
+	int jr_stp = GetSkill(girl, SKILL_STRIP);
+
 	stringstream ss;
-	ss << gettext("Charisma: ") << GetStat(girl, STAT_CHARISMA) << gettext("\n");
-	ss << gettext("Beauty: ") << GetStat(girl, STAT_BEAUTY) << gettext("\n");
-	ss << gettext("Libido: ") << GetStat(girl, STAT_LIBIDO) << gettext("\n");
-	ss << gettext("Mana: ") << GetStat(girl, STAT_MANA) << gettext("\n");
-	ss << gettext("Intelligence: ") << GetStat(girl, STAT_INTELLIGENCE) << gettext("\n");
-	ss << gettext("Confidence: ") << GetStat(girl, STAT_CONFIDENCE) << gettext("\n");
-	ss << gettext("Obedience: ") << GetStat(girl, STAT_OBEDIENCE) << gettext("\n");
-	ss << gettext("Spirit: ") << GetStat(girl, STAT_SPIRIT) << gettext("\n");
-	ss << gettext("Agility: ") << GetStat(girl, STAT_AGILITY) << gettext("\n");
-	ss << gettext("Fame: ") << GetStat(girl, STAT_FAME) << gettext("\n");
+	ss << gettext("Charisma: ") << jr_cha;
+	ss << gettext("\nBeauty: ") << jr_bea;
+	ss << gettext("\nLibido: ") << jr_lib;
+	ss << gettext("\nMana: ") << jr_man;
+	ss << gettext("\nIntelligence: ") << jr_int;
+	ss << gettext("\nConfidence: ") << jr_cnf;
+	ss << gettext("\nObedience: ") << jr_obe;
+	ss << gettext("\nSpirit: ") << jr_spi;
+	ss << gettext("\nAgility: ") << jr_agi;
+	ss << gettext("\nFame: ") << jr_fam << gettext("\n");
 	data += ss.str();
 
 	//Job rating system  ///CRAZY
-	int barmaid = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) + g_Girls.GetSkill(girl, SKILL_SERVICE));
-	int barwait = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) + g_Girls.GetSkill(girl, SKILL_SERVICE));
-	int cards = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) + g_Girls.GetStat(girl, STAT_AGILITY))/2;  //intel makes her smart enough to know when to cheat agility makes her fast enough to cheat
-	int dealer = (cards + g_Girls.GetSkill(girl, SKILL_SERVICE));
-	int sing = (g_Girls.GetStat(girl, STAT_CONFIDENCE) + g_Girls.GetSkill(girl, SKILL_SERVICE));
-	int piano = (g_Girls.GetStat(girl, STAT_CONFIDENCE) + g_Girls.GetSkill(girl, SKILL_SERVICE));
-	int looks = (g_Girls.GetStat(girl, STAT_CHARISMA) + g_Girls.GetStat(girl, STAT_BEAUTY))/2;
-	int entertainer = (looks + g_Girls.GetSkill(girl, SKILL_SERVICE));
-	int xxx = (looks + g_Girls.GetSkill(girl, SKILL_SERVICE));
-	int clubwait = (looks + g_Girls.GetSkill(girl, SKILL_SERVICE));
-	int clubbar = (looks + g_Girls.GetSkill(girl, SKILL_SERVICE));
-	int strip = (looks + g_Girls.GetSkill(girl, SKILL_STRIP));
-	int peep = (looks + g_Girls.GetSkill(girl, SKILL_STRIP));
-	int brothelstrip = (looks + g_Girls.GetSkill(girl, SKILL_STRIP));
-	int massusse = (looks + g_Girls.GetSkill(girl, SKILL_SERVICE));
-	int comunityservice = ((g_Girls.GetStat(girl, STAT_INTELLIGENCE) / 2) + (g_Girls.GetStat(girl, STAT_CHARISMA) / 2) + g_Girls.GetSkill(girl, SKILL_SERVICE));
-	int feedpoor = ((g_Girls.GetStat(girl, STAT_INTELLIGENCE) / 2) + (g_Girls.GetStat(girl, STAT_CHARISMA) / 2) + g_Girls.GetSkill(girl, SKILL_SERVICE));
-	int nurse = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) + g_Girls.GetSkill(girl, SKILL_SERVICE));
-	int mechanic = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) + g_Girls.GetSkill(girl, SKILL_SERVICE));
+
+	int looks = (jr_cha + jr_bea) / 2;
+	int cards = (jr_int + jr_agi) / 2;  //intel makes her smart enough to know when to cheat agility makes her fast enough to cheat
+
+	int barmaid = (jr_int + jr_ser);
+	int barwait = (jr_int / 2 + jr_agi / 2 + jr_ser);
+	int dealer = (cards + jr_ser);
+	int sing = (jr_cnf + jr_ser);
+	int piano = (jr_cnf + jr_ser);
+	int entertainer = (looks + jr_ser);
+	int xxx = (looks + jr_ser);
+	int clubwait = (looks + jr_ser);
+	int clubbar = (looks + jr_ser);
+	int strip = (looks + jr_stp);
+	int peep = (looks + jr_stp);
+	int brothelstrip = (looks + jr_stp);
+	int massusse = (looks + jr_ser);
+	int comunityservice = ((jr_int / 2) + (jr_cha / 2) + jr_ser);
+	int feedpoor = ((jr_int / 2) + (jr_cha / 2) + jr_ser);
+	int nurse = (jr_int + jr_ser);
+	int mechanic = (jr_int + jr_ser);
+
 
 	//good traits
 	if (g_Girls.HasTrait(girl, "Charismatic"))  //
@@ -1926,7 +1899,7 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		nurse += 10;
 		mechanic += 10;
 	}
-	if (g_Girls.HasTrait(girl, "Cute"))  
+	if (g_Girls.HasTrait(girl, "Cute"))
 	{
 		barmaid += 5;
 		barwait += 5;
@@ -1946,7 +1919,7 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		nurse += 5;
 		mechanic += 5;
 	}
-	if (g_Girls.HasTrait(girl, "Charming"))  
+	if (g_Girls.HasTrait(girl, "Charming"))
 	{
 		barmaid += 15;
 		barwait += 20;
@@ -2017,7 +1990,7 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		massusse += 10;*/
 	}
 	if (g_Girls.HasTrait(girl, "Abnormally Large Boobs"))
-		{
+	{
 		//barmaid += 10;
 		barwait -= 20;
 		/*sing += 10;
@@ -2048,7 +2021,7 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		brothelstrip += 5;
 		massusse += 5;
 	}
-	if (g_Girls.HasTrait(girl, "Great Arse")) 
+	if (g_Girls.HasTrait(girl, "Great Arse"))
 	{
 		/*barmaid += 10;
 		barwait -= 20;
@@ -2065,7 +2038,7 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		massusse += 5;
 	}
 	if (g_Girls.HasTrait(girl, "Elegant"))
-		{
+	{
 		/*barmaid += 10;
 		barwait -= 20;*/
 		sing += 5;
@@ -2082,7 +2055,7 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		mechanic -= 5;
 	}
 	if (g_Girls.HasTrait(girl, "Fearless"))
-		{
+	{
 		/*barmaid += 10;
 		barwait -= 20;*/
 		sing += 5;
@@ -2224,7 +2197,7 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		mechanic -= 10;
 	}
 
-		//bad traits
+	//bad traits
 	if (g_Girls.HasTrait(girl, "Long Legs"))
 	{
 		//barmaid -= 20;
@@ -2261,7 +2234,7 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		nurse -= 50;
 		mechanic -= 40;
 	}
-	if (g_Girls.HasTrait(girl, "Clumsy"))  
+	if (g_Girls.HasTrait(girl, "Clumsy"))
 	{
 		barmaid -= 20;
 		barwait -= 20;
@@ -2423,7 +2396,7 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 	}
 
 
-	if (g_Girls.GetStat(girl, STAT_FAME) >85)
+	if (g_Girls.GetStat(girl, STAT_FAME) > 85)
 	{
 		//barmaid += 10;
 		//barwait += 10;
@@ -2442,209 +2415,209 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		//mechanic -= 10;
 	}
 
-		/*stringstream dd;
-	dd << gettext("barmaid: ") << (barmaid) << gettext("\n");
-	dd << gettext("barwait: ") << (barwait) << gettext("\n");
-	dd << gettext("sing: ") << (sing) << gettext("\n");
-	dd << gettext("piano: ") << (piano) << gettext("\n");
-	data += dd.str();*/
+	/*stringstream dd;
+dd << gettext("barmaid: ") << (barmaid) << gettext("\n");
+dd << gettext("barwait: ") << (barwait) << gettext("\n");
+dd << gettext("sing: ") << (sing) << gettext("\n");
+dd << gettext("piano: ") << (piano) << gettext("\n");
+data += dd.str();*/
 
 	data += gettext("\nJob Ratings\n");
 
-	data+=gettext("\nBarmaid- ");
+	data += gettext("\nBarmaid- ");
 	{
-	if (barmaid >= 245)
-		data+=gettext ("S");
-	else if (barmaid >= 185)
-		data+=gettext ("A");
-	else if (barmaid >= 145)
-		data+=gettext ("B");
-	else if(barmaid >= 100)
-		data+=gettext ("C");
-	else if (barmaid >= 70)
-		data+=gettext ("D");
-	else
-		data+=gettext ("E");
+		if (barmaid >= 245)
+			data += gettext("S");
+		else if (barmaid >= 185)
+			data += gettext("A");
+		else if (barmaid >= 145)
+			data += gettext("B");
+		else if (barmaid >= 100)
+			data += gettext("C");
+		else if (barmaid >= 70)
+			data += gettext("D");
+		else
+			data += gettext("E");
 	}
-	data+=gettext("\nBar Waitress- ");
+	data += gettext("\nBar Waitress- ");
 	{
-	if (barwait >= 245)
-		data+=gettext ("S");
-	else if (barwait >= 185)
-		data+=gettext ("A");
-	else if (barwait >= 145)
-		data+=gettext ("B");
-	else if(barwait >= 100)
-		data+=gettext ("C");
-	else if (barwait >= 70)
-		data+=gettext ("D");
-	else
-		data+=gettext ("E");
+		if (barwait >= 245)
+			data += gettext("S");
+		else if (barwait >= 185)
+			data += gettext("A");
+		else if (barwait >= 145)
+			data += gettext("B");
+		else if (barwait >= 100)
+			data += gettext("C");
+		else if (barwait >= 70)
+			data += gettext("D");
+		else
+			data += gettext("E");
 	}
-	data+=gettext("\nSinger- ");
+	data += gettext("\nSinger- ");
 	{
-	if (sing >= 245)
-		data+=gettext ("S");
-	else if (sing >= 185)
-		data+=gettext ("A");
-	else if (sing >= 145)
-		data+=gettext ("B");
-	else if(sing >= 100)
-		data+=gettext ("C");
-	else if (sing >= 70)
-		data+=gettext ("D");
-	else
-		data+=gettext ("E");
+		if (sing >= 245)
+			data += gettext("S");
+		else if (sing >= 185)
+			data += gettext("A");
+		else if (sing >= 145)
+			data += gettext("B");
+		else if (sing >= 100)
+			data += gettext("C");
+		else if (sing >= 70)
+			data += gettext("D");
+		else
+			data += gettext("E");
 	}
-	data+=gettext("\nPiano- ");
+	data += gettext("\nPiano- ");
 	{
-	if (piano >= 245)
-		data+=gettext ("S");
-	else if (piano >= 185)
-		data+=gettext ("A");
-	else if (piano >= 145)
-		data+=gettext ("B");
-	else if(piano >= 100)
-		data+=gettext ("C");
-	else if (piano >= 70)
-		data+=gettext ("D");
-	else
-		data+=gettext ("E");
+		if (piano >= 245)
+			data += gettext("S");
+		else if (piano >= 185)
+			data += gettext("A");
+		else if (piano >= 145)
+			data += gettext("B");
+		else if (piano >= 100)
+			data += gettext("C");
+		else if (piano >= 70)
+			data += gettext("D");
+		else
+			data += gettext("E");
 	}
-	data+=gettext("\nDealer- ");
+	data += gettext("\nDealer- ");
 	{
-	if (dealer >= 245)
-		data+=gettext ("S");
-	else if (dealer >= 185)
-		data+=gettext ("A");
-	else if (dealer >= 145)
-		data+=gettext ("B");
-	else if(dealer >= 100)
-		data+=gettext ("C");
-	else if (dealer >= 70)
-		data+=gettext ("D");
-	else
-		data+=gettext ("E");
+		if (dealer >= 245)
+			data += gettext("S");
+		else if (dealer >= 185)
+			data += gettext("A");
+		else if (dealer >= 145)
+			data += gettext("B");
+		else if (dealer >= 100)
+			data += gettext("C");
+		else if (dealer >= 70)
+			data += gettext("D");
+		else
+			data += gettext("E");
 	}
-	data+=gettext("\nEntertainer- ");
+	data += gettext("\nEntertainer- ");
 	{
-	if (entertainer >= 245)
-		data+=gettext ("S");
-	else if (entertainer >= 185)
-		data+=gettext ("A");
-	else if (entertainer >= 145)
-		data+=gettext ("B");
-	else if(entertainer >= 100)
-		data+=gettext ("C");
-	else if (entertainer >= 70)
-		data+=gettext ("D");
-	else
-		data+=gettext ("E");
+		if (entertainer >= 245)
+			data += gettext("S");
+		else if (entertainer >= 185)
+			data += gettext("A");
+		else if (entertainer >= 145)
+			data += gettext("B");
+		else if (entertainer >= 100)
+			data += gettext("C");
+		else if (entertainer >= 70)
+			data += gettext("D");
+		else
+			data += gettext("E");
 	}
-	data+=gettext("\nXXX Entertainer- ");
+	data += gettext("\nXXX Entertainer- ");
 	{
-	if (xxx >= 245)
-		data+=gettext ("S");
-	else if (xxx >= 185)
-		data+=gettext ("A");
-	else if (xxx >= 145)
-		data+=gettext ("B");
-	else if(xxx >= 100)
-		data+=gettext ("C");
-	else if (xxx >= 70)
-		data+=gettext ("D");
-	else
-		data+=gettext ("E");
+		if (xxx >= 245)
+			data += gettext("S");
+		else if (xxx >= 185)
+			data += gettext("A");
+		else if (xxx >= 145)
+			data += gettext("B");
+		else if (xxx >= 100)
+			data += gettext("C");
+		else if (xxx >= 70)
+			data += gettext("D");
+		else
+			data += gettext("E");
 	}
-	data+=gettext("\nClub Barmaid- ");
+	data += gettext("\nClub Barmaid- ");
 	{
-	if (clubbar >= 245)
-		data+=gettext ("S");
-	else if (clubbar >= 185)
-		data+=gettext ("A");
-	else if (clubbar >= 145)
-		data+=gettext ("B");
-	else if(clubbar >= 100)
-		data+=gettext ("C");
-	else if (clubbar >= 70)
-		data+=gettext ("D");
-	else
-		data+=gettext ("E");
+		if (clubbar >= 245)
+			data += gettext("S");
+		else if (clubbar >= 185)
+			data += gettext("A");
+		else if (clubbar >= 145)
+			data += gettext("B");
+		else if (clubbar >= 100)
+			data += gettext("C");
+		else if (clubbar >= 70)
+			data += gettext("D");
+		else
+			data += gettext("E");
 	}
-	data+=gettext("\nClub Waitress- ");
+	data += gettext("\nClub Waitress- ");
 	{
-	if (clubwait >= 245)
-		data+=gettext ("S");
-	else if (clubwait >= 185)
-		data+=gettext ("A");
-	else if (clubwait >= 145)
-		data+=gettext ("B");
-	else if(clubwait >= 100)
-		data+=gettext ("C");
-	else if (clubwait >= 70)
-		data+=gettext ("D");
-	else
-		data+=gettext ("E");
+		if (clubwait >= 245)
+			data += gettext("S");
+		else if (clubwait >= 185)
+			data += gettext("A");
+		else if (clubwait >= 145)
+			data += gettext("B");
+		else if (clubwait >= 100)
+			data += gettext("C");
+		else if (clubwait >= 70)
+			data += gettext("D");
+		else
+			data += gettext("E");
 	}
-	data+=gettext("\nStripper- ");
+	data += gettext("\nStripper- ");
 	{
-	if (strip >= 245)
-		data+=gettext ("S");
-	else if (strip >= 185)
-		data+=gettext ("A");
-	else if (strip >= 145)
-		data+=gettext ("B");
-	else if(strip >= 100)
-		data+=gettext ("C");
-	else if (strip >= 70)
-		data+=gettext ("D");
-	else
-		data+=gettext ("E");
+		if (strip >= 245)
+			data += gettext("S");
+		else if (strip >= 185)
+			data += gettext("A");
+		else if (strip >= 145)
+			data += gettext("B");
+		else if (strip >= 100)
+			data += gettext("C");
+		else if (strip >= 70)
+			data += gettext("D");
+		else
+			data += gettext("E");
 	}
-	data+=gettext("\nMassusse- ");
+	data += gettext("\nMassusse- ");
 	{
-	if (massusse >= 245)
-		data+=gettext ("S");
-	else if (massusse >= 185)
-		data+=gettext ("A");
-	else if (massusse >= 145)
-		data+=gettext ("B");
-	else if(massusse >= 100)
-		data+=gettext ("C");
-	else if (massusse >= 70)
-		data+=gettext ("D");
-	else
-		data+=gettext ("E");
+		if (massusse >= 245)
+			data += gettext("S");
+		else if (massusse >= 185)
+			data += gettext("A");
+		else if (massusse >= 145)
+			data += gettext("B");
+		else if (massusse >= 100)
+			data += gettext("C");
+		else if (massusse >= 70)
+			data += gettext("D");
+		else
+			data += gettext("E");
 	}
-	data+=gettext("\nBrothel Stripper- ");
+	data += gettext("\nBrothel Stripper- ");
 	{
-	if (brothelstrip >= 245)
-		data+=gettext ("S");
-	else if (brothelstrip >= 185)
-		data+=gettext ("A");
-	else if (brothelstrip >= 145)
-		data+=gettext ("B");
-	else if(brothelstrip >= 100)
-		data+=gettext ("C");
-	else if (brothelstrip >= 70)
-		data+=gettext ("D");
-	else
-		data+=gettext ("E");
+		if (brothelstrip >= 245)
+			data += gettext("S");
+		else if (brothelstrip >= 185)
+			data += gettext("A");
+		else if (brothelstrip >= 145)
+			data += gettext("B");
+		else if (brothelstrip >= 100)
+			data += gettext("C");
+		else if (brothelstrip >= 70)
+			data += gettext("D");
+		else
+			data += gettext("E");
 	}
-	data+=gettext("\nPeep Show- ");
+	data += gettext("\nPeep Show- ");
 	{
-	if (peep >= 245)
-		data+=gettext ("S");
-	else if (peep >= 185)
-		data+=gettext ("A");
-	else if (peep >= 145)
-		data+=gettext ("B");
-	else if(peep >= 100)
-		data+=gettext ("C");
-	else if (peep >= 70)
-		data+=gettext ("D");
-	else
-		data+=gettext ("E");
+		if (peep >= 245)
+			data += gettext("S");
+		else if (peep >= 185)
+			data += gettext("A");
+		else if (peep >= 145)
+			data += gettext("B");
+		else if (peep >= 100)
+			data += gettext("C");
+		else if (peep >= 70)
+			data += gettext("D");
+		else
+			data += gettext("E");
 	}
 
 	//CENTRE
@@ -2652,35 +2625,35 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 	{
 		data += gettext("\n\nCentre Job Ratings\n");
 
-	data+=gettext("\nComunity Service- ");
-	{
-	if (comunityservice >= 245)
-		data+=gettext ("S");
-	else if (comunityservice >= 185)
-		data+=gettext ("A");
-	else if (comunityservice >= 145)
-		data+=gettext ("B");
-	else if(comunityservice >= 100)
-		data+=gettext ("C");
-	else if (comunityservice >= 70)
-		data+=gettext ("D");
-	else
-		data+=gettext ("E");
-	}
-	data+=gettext("\nFeed Poor- ");
-	{
-	if (feedpoor >= 245)
-		data+=gettext ("S");
-	else if (feedpoor >= 185)
-		data+=gettext ("A");
-	else if (feedpoor >= 145)
-		data+=gettext ("B");
-	else if(feedpoor >= 100)
-		data+=gettext ("C");
-	else if (feedpoor >= 70)
-		data+=gettext ("D");
-	else
-		data+=gettext ("E");
+		data += gettext("\nComunity Service- ");
+		{
+			if (comunityservice >= 245)
+				data += gettext("S");
+			else if (comunityservice >= 185)
+				data += gettext("A");
+			else if (comunityservice >= 145)
+				data += gettext("B");
+			else if (comunityservice >= 100)
+				data += gettext("C");
+			else if (comunityservice >= 70)
+				data += gettext("D");
+			else
+				data += gettext("E");
+		}
+		data += gettext("\nFeed Poor- ");
+		{
+			if (feedpoor >= 245)
+				data += gettext("S");
+			else if (feedpoor >= 185)
+				data += gettext("A");
+			else if (feedpoor >= 145)
+				data += gettext("B");
+			else if (feedpoor >= 100)
+				data += gettext("C");
+			else if (feedpoor >= 70)
+				data += gettext("D");
+			else
+				data += gettext("E");
 		}
 	}
 
@@ -2694,36 +2667,36 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 	if (g_Clinic.GetGirlsCurrentBrothel(selected_girl) != -1)
 	{
 		data += gettext("\n\nClinic Job Ratings\n");
-		
-	data+=gettext("\nNurse- ");
-	{
-	if (nurse >= 245)
-		data+=gettext ("S");
-	else if (nurse >= 185)
-		data+=gettext ("A");
-	else if (nurse >= 145)
-		data+=gettext ("B");
-	else if(nurse >= 100)
-		data+=gettext ("C");
-	else if (nurse >= 70)
-		data+=gettext ("D");
-	else
-		data+=gettext ("E");
+
+		data += gettext("\nNurse- ");
+		{
+			if (nurse >= 245)
+				data += gettext("S");
+			else if (nurse >= 185)
+				data += gettext("A");
+			else if (nurse >= 145)
+				data += gettext("B");
+			else if (nurse >= 100)
+				data += gettext("C");
+			else if (nurse >= 70)
+				data += gettext("D");
+			else
+				data += gettext("E");
 		}
-	data+=gettext("\nMechanic- ");
-	{
-	if (mechanic >= 245)
-		data+=gettext ("S");
-	else if (mechanic >= 185)
-		data+=gettext ("A");
-	else if (mechanic >= 145)
-		data+=gettext ("B");
-	else if(mechanic >= 100)
-		data+=gettext ("C");
-	else if (mechanic >= 70)
-		data+=gettext ("D");
-	else
-		data+=gettext ("E");
+		data += gettext("\nMechanic- ");
+		{
+			if (mechanic >= 245)
+				data += gettext("S");
+			else if (mechanic >= 185)
+				data += gettext("A");
+			else if (mechanic >= 145)
+				data += gettext("B");
+			else if (mechanic >= 100)
+				data += gettext("C");
+			else if (mechanic >= 70)
+				data += gettext("D");
+			else
+				data += gettext("E");
 		}
 	}
 
@@ -7271,23 +7244,30 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 {
 	bool good = false;
 	bool contraception = false;
-	
+	int happymod = 0; // changed from direct changing of customer->m_Stats[STAT_HAPPINESS] += 15;
+
 	// Start the customers unhappiness/happiness bad sex decreases, good sex inceases
 	if (HasTrait(girl, "Fast orgasms") || HasTrait(girl, "Fast Orgasms"))	// has priority
-		customer->m_Stats[STAT_HAPPINESS] += 15;
+		happymod += 15;
+
 	else if (HasTrait(girl, "Slow orgasms") || HasTrait(girl, "Slow Orgasms"))
-		customer->m_Stats[STAT_HAPPINESS] -= 10;
+		happymod -= 10;
+
 	
 	if(HasTrait(girl,"Psychic"))
-		customer->m_Stats[STAT_HAPPINESS] += 10;
+		happymod += 10;
+
 
 	if (HasTrait(girl, "Fake orgasm expert") || HasTrait(girl, "Fake Orgasm Expert"))  // CRAZY fixed was fake orgasms should be what it is now
-		customer->m_Stats[STAT_HAPPINESS] += 15;
+		happymod += 15;
+
 
 	if(HasTrait(girl,"Abnormally Large Boobs"))		// WD: added
-		customer->m_Stats[STAT_HAPPINESS] += 15;
+		happymod += 15;
+
 	else if(HasTrait(girl,"Big Boobs"))				// WD: Fixed Spelling
-		customer->m_Stats[STAT_HAPPINESS] += 10;
+		happymod += 10;
+
 
 
 	girl->m_NumCusts += (int)customer->m_Amount;
@@ -7302,24 +7282,54 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 
 	// If the girls skill < 50 then it will be unsatisfying otherwise it will be satisfying
 	if(GetSkill(girl, SexType) < 50)
-		customer->m_Stats[STAT_HAPPINESS] -= (100-GetSkill(girl, SexType))/5;
+		happymod -= (100 - GetSkill(girl, SexType)) / 5;
 	else
-		customer->m_Stats[STAT_HAPPINESS] += GetSkill(girl, SexType)/5;
+		happymod += GetSkill(girl, SexType) / 5;
 
 	// If the girl is famous then he will be slightly happier
-	customer->m_Stats[STAT_HAPPINESS] += GetStat(girl, STAT_FAME)/5;
+	happymod += GetStat(girl, STAT_FAME) / 5;
 
 	// her service ability will also make him happier (I.e. does she help clean him well)
-	customer->m_Stats[STAT_HAPPINESS] += GetSkill(girl, SKILL_SERVICE)/10;
+	happymod += GetSkill(girl, SKILL_SERVICE) / 10;
+
+	int value = customer->m_Stats[STAT_HAPPINESS] + happymod;			// `J` now set customers happiness
+	if (value > 100)	{	customer->m_Stats[STAT_HAPPINESS] = 100;}
+	else if (value<0)	{	customer->m_Stats[STAT_HAPPINESS] = 0;	}
+	else				{	customer->m_Stats[STAT_HAPPINESS] += happymod;}
 
 	// her magic ability can make him think he enjoyed it more if she has mana
-	// WD: only if Customer is not Max Happy else Whores never have any mana
-	if(customer->m_Stats[STAT_HAPPINESS] < 100 && GetStat(girl, STAT_MANA) > 20 && GetSkill(girl, SKILL_MAGIC) > 9)	// Added check for magic skill to prevent waste of Mana. -PP
+	
+	int happycost = 3 - (int)floor((GetSkill(girl, SKILL_MAGIC) / 40));	// `J` how many mana will each point of happy cost her
+	if (happycost < 1) happycost = 1;		// so [magic:cost] [<10:can't] [10-39:3] [40-79:2] [80+:1] (probably, I hate math)
+	if (customer->m_Stats[STAT_HAPPINESS] < 100 &&			// If they are not fully happy
+			GetStat(girl, STAT_MANA) >= happycost &&		// If she has enough mana to actually try
+			GetSkill(girl, SKILL_MAGIC) > 9)				// If she has at least 10 magic
 	{
-		customer->m_Stats[STAT_HAPPINESS] += GetSkill(girl, SKILL_MAGIC)/10;
-		UpdateStat(girl, STAT_MANA, -20);
+		int happymana = GetStat(girl, STAT_MANA);					// check her mana
+		if (happymana > 20) happymana = 20;							// and only max of 20 will be used
+		int happygain = happymana / happycost;						// check how much she can increase happiness with 20 mana
+		if (happygain > 10) happygain = 10;							// can only increase happy by 10
+		int lesshappy = 100 - customer->m_Stats[STAT_HAPPINESS];	// how much can she charm him before it is wasted?
+		if (happygain > lesshappy) happygain = lesshappy;			// can only increase happy by 10
+		happymana = happygain * happycost;							// check how much mana she actually spends
+		if (happymana > 20) happymana = 20;							// correct incase more than 20
+		if (happymana < 0) happymana = 1;							// will spend at least 1 mana just for trying
+
+		customer->m_Stats[STAT_HAPPINESS] += happygain;				// now apply happy
+		UpdateStat(girl, STAT_MANA, -happymana);					// and apply mana
 	}
 
+/*	`J` The old version:
+	// WD: only if Customer is not Max Happy else Whores never have any mana
+	if (customer->m_Stats[STAT_HAPPINESS] < 100 && GetStat(girl, STAT_MANA) > 20 && GetSkill(girl, SKILL_MAGIC) > 9)	// Added check for magic skill to prevent waste of Mana. -PP
+	{
+	customer->m_Stats[STAT_HAPPINESS] += GetSkill(girl, SKILL_MAGIC) / 10;
+	UpdateStat(girl, STAT_MANA, -20);
+	}
+*/
+
+
+	
 	message += girl->m_Realname;
 	switch(SexType)
 	{

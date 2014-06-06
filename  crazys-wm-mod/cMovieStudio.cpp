@@ -773,6 +773,11 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 
 		summary = "";
 
+		// Do item check at the end of the day
+			// update for girls items that are not used up
+			do_daily_items(brothel, current);					// `J` added
+
+
 		// Level the girl up if nessessary
 		if(g_Girls.GetStat(current, STAT_EXP) == 255)
 			g_Girls.LevelUp(current);

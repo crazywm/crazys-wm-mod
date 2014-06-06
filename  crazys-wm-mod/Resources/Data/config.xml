@@ -11,9 +11,12 @@
  !	GirlMeet is the %chance you'll meet a girl when walking around town.
  !	SlaveHousePerc is the default House Percentage for slave girls.
  !	AutoUseItems is whether or not the game will try to automatically use the player's
- !	    items intelligently on girls each week. This feature needs more testing.
- !	TortureTraitWeekMod is how long a girl is in the dungeon affects the chance that
- !		they will gain a trait. It is multiplied by the number of weeks in the dungeon.
+ !		items intelligently on girls each week. This feature needs more testing.
+ !	TortureTraitWeekMod affects multiplying the duration that they will keep a temporary 
+ !		trait that they get from being tortured. It is multiplied by the number of weeks in the dungeon.
+ !	`J` added		If TortureTraitWeekMod is set to -1 then torture is harsher.
+ !					This doubles the chance of injuring the girls and doubles evil gain.
+ !					Damage is increased by half. It also makes breaking the girls wills permanent.
  !-->
 	<Initial
 		Gold				= "4000"

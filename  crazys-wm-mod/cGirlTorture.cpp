@@ -369,9 +369,23 @@ void cGirlTorture::UpdateStats()
  *	WD Stats based on ortiginal torture job code
  *
  */
-
+	cConfig cfg;
 	// do heavy torture
-	if (m_Girl->health() > 10)		
+	if (cfg.initial.torture_mod() < 0)
+	{
+		m_Girl->health(-7);
+		m_Girl->happiness(-7);
+		m_Girl->constitution(g_Dice%1);
+		m_Girl->confidence(-7);
+		m_Girl->obedience(9 + g_Dice%3);
+		m_Girl->spirit(-4 - g_Dice%3);
+		m_Girl->tiredness(2-g_Dice%8);
+		m_Girl->pchate(6);
+		m_Girl->pclove(-10);
+		m_Girl->pcfear(10);
+		m_Girl->bdsm(g_Dice%3-1);
+	}
+	else if (m_Girl->health() > 10)
 	{
 		m_Girl->health(-5);
 		m_Girl->happiness(-5);
@@ -411,16 +425,17 @@ bool cGirlTorture::IsGirlInjured(unsigned int unModifier)
  */
 	string	sMsg;
 	string	sGirlName	= m_Girl->m_Realname;
-	int		nMod		= static_cast<int>(unModifier); 
+	cConfig cfg;
+	int		nMod		= static_cast<int>(unModifier);
+	if (cfg.initial.torture_mod() < 0){ nMod += nMod; }
 
 	// Sanity check, Can't get injured
 	if (m_Girl->has_trait("Incorporeal") || m_Girl->has_trait("Incorporial"))
 		return false;
 
-	if (m_Girl->has_trait("Fragile"))
-		nMod += nMod;	// nMod *= 2;
-	if (m_Girl->has_trait("Tough"))
-		nMod /= 2;
+	if (m_Girl->has_trait("Fragile"))	nMod += nMod;	// nMod *= 2;
+	if (m_Girl->has_trait("Tough"))		nMod /= 2;
+	if (nMod < 1)nMod = 1;		// `J` always at least a 1% chance
 
 	// Did the girl get injured
 	if (!g_Dice.percent(nMod))
@@ -498,21 +513,33 @@ bool cGirlTorture::IsGirlInjured(unsigned int unModifier)
 		}
 	}
 
-	// or become fragile
-	if (
-		g_Dice.percent((nMod/2))
-		&& !m_Girl->has_trait("Fragile")
-		)
+	// or loose tough or become fragile
+	if (m_Girl->has_trait("Tough"))
 	{
-		m_Girl->add_trait("Fragile", false);
+		if (g_Dice.percent(nMod))
+		{
+			g_Girls.RemoveTrait(m_Girl, "Tough", false);
+			if (m_TorturedByPlayer)
+				m_Message += gettext("Her body has become less Tough due to the extent of her injuries.\n");
+			else
+				MakeEvent("Due to " + sGirlName + gettext(" injuries her body has become less Tough.\n"));
+		}
+	}
+	else if (!m_Girl->has_trait("Fragile"))
+	{
+		if (g_Dice.percent(nMod / 2))
+		{
+			m_Girl->add_trait("Fragile", false);
 			if (m_TorturedByPlayer)
 				m_Message += gettext("Her body has become rather Fragile due to the extent of her injuries.\n");
 			else
-				MakeEvent( "Due to " + sGirlName + gettext(" injuries her body has become fragile.\n") );
+				MakeEvent("Due to " + sGirlName + gettext(" injuries her body has become fragile.\n"));
+		}
 	}
 
 	// and if pregnant, she might lose the baby; I'll assume inseminations can't be aborted so easily
-	if (m_Girl->carrying_human() && g_Dice.percent((nMod*2)))
+	if ((m_Girl->carrying_human() && g_Dice.percent(nMod * 2)) || 
+		(m_Girl->carrying_monster() && g_Dice.percent(nMod))	)	// `J` added insemination loss chance
 	{  // unintended abortion time
 		//injured = true;
 		m_Girl->clear_pregnancy();
@@ -524,8 +551,11 @@ bool cGirlTorture::IsGirlInjured(unsigned int unModifier)
 			MakeEvent( gettext("Due to ") + sGirlName + gettext(" injuries she has had a miscarriage, leaving her quite distraught.\n") );
 	}
 
-	// Lose between 5 - 14 hp
-	m_Girl->health(-5 - g_Dice%10);
+	
+	int damage = 5 + g_Dice%10;								// Lose between 5 - 14 hp
+	if (cfg.initial.torture_mod() < 0){damage += damage/2;}	// `J` Lose between 7 - 21 hp if harsh torture
+	m_Girl->health(-damage);
+
 
 	// Post any new Player messages in Red Message Box Colour 1 
 	if (m_TorturedByPlayer && !m_Message.empty())
@@ -586,19 +616,32 @@ bool cGirlTorture::girl_escapes()
 
 void cGirlTorture::UpdateTraits()
 {
+	int nWeekMod = 1;
 	cConfig cfg;
-	int nWeekMod	=	 cfg.initial.torture_mod() * m_DungeonGirl->m_Weeks;
+	bool harshtorture = false;
+	/* `J` added to allow permanent trait gain on torture
+	 if TortureTraitWeekMod is set to a negative number in the config.xml
+	 then "Broken Will", "Masochist" and "Mind Fucked" are permanent 
+	 doubles chance of injuring girls when torturing them
+	 evil gained from torture is also doubled  */
+	if (cfg.initial.torture_mod() < 0){ harshtorture = true; }
+	else	{	nWeekMod = cfg.initial.torture_mod() * m_DungeonGirl->m_Weeks;	}
 
-	if (m_Girl->spirit() < 20 && m_Girl->health() < 20 ) {
-		add_trait("Broken Will", 5 + nWeekMod / 2);
+	if (m_Girl->spirit() < 20 && m_Girl->health() < 20)
+	{
+		if (harshtorture)	{ m_Girl->add_trait("Broken Will", false); }
+		else				{ add_trait("Broken Will", 5 + nWeekMod / 2); }
+	}
+	if (m_Girl->bdsm() > 30)
+	{
+		if (harshtorture)	{ m_Girl->add_trait("Masochist", false); }
+		else				{ add_trait("Masochist", 10 + nWeekMod); }
 	}
 
-	if (m_Girl->bdsm() > 30) {
-		add_trait("Masochist", 10 + nWeekMod);
-	}
-
-	if (m_Girl->health() < 10) {
-		add_trait("Mind Fucked", 10 + nWeekMod);
+	if (m_Girl->health() < 10)
+	{
+		if (harshtorture)	{ m_Girl->add_trait("Mind Fucked", false); }
+		else				{ add_trait("Mind Fucked", 10 + nWeekMod); }
 	}
 }
 

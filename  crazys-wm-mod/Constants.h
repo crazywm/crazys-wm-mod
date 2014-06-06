@@ -363,7 +363,7 @@ const unsigned char FETISH_NONHUMAN         = 13;	// likes non human girls
 const unsigned char FETISH_FREAKYGIRLS      = 14;	// likes girls with small boobs
 
 // actions girls can disobey against
-const unsigned char NUM_ACTIONTYPES         = 19;
+const unsigned char NUM_ACTIONTYPES         = 22;
 
 const unsigned char ACTION_COMBAT           = 0;
 const unsigned char ACTION_SEX              = 1;
@@ -378,12 +378,15 @@ const unsigned char ACTION_WORKADVERTISING  = 9;
 const unsigned char ACTION_WORKTORTURER     = 10;
 const unsigned char ACTION_WORKCARING       = 11;
 const unsigned char ACTION_WORKDOCTOR       = 12;
-const unsigned char ACTION_WORKMOVIE		= 13;
+const unsigned char ACTION_WORKMOVIE        = 13;
 const unsigned char ACTION_WORKCUSTSERV     = 14;
 const unsigned char ACTION_WORKCENTRE       = 15;
 const unsigned char ACTION_WORKCLUB         = 16;
 const unsigned char ACTION_WORKHAREM        = 17;
 const unsigned char ACTION_WORKRECRUIT      = 18;
+const unsigned char ACTION_WORKNURSE        = 19;
+const unsigned char ACTION_WORKMECHANIC     = 20;
+const unsigned char ACTION_WORKCOUNSELOR    = 21;
 
 // Character image
 const int IMGTYPE_ANAL      = 0;

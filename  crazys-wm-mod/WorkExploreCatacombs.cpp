@@ -262,9 +262,11 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, int DayNi
 		libido += 2;
 
 	girl->m_Pay += gold;
-	g_Girls.UpdateStat(girl, STAT_EXP, 15);
-	g_Girls.UpdateSkill(girl, SKILL_COMBAT, skill);
-	g_Girls.UpdateSkill(girl, SKILL_MAGIC, skill);
+	g_Girls.UpdateStat(girl, STAT_EXP, xp);
+	g_Girls.UpdateSkill(girl, SKILL_COMBAT, g_Dice % 3 + skill);	// `J` increased learning 
+	g_Girls.UpdateSkill(girl, SKILL_MAGIC, g_Dice % 3 + skill);
+	g_Girls.UpdateStat(girl, STAT_AGILITY, g_Dice % 3 + skill);
+	g_Girls.UpdateStat(girl, STAT_CONSTITUTION, g_Dice % 2 + skill);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 	g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, +8, true);
 

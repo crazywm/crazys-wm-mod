@@ -50,8 +50,6 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, int DayN
 {
 	cTariff tariff;
 	string message = "";
-	int tex = g_Dice%4;
-
 
 	// put that shit away, not needed for sex training
 	g_Girls.UnequipCombat(girl);

@@ -231,3 +231,31 @@ Fixed children ageing if <Pregnancy ... WeeksTillGrown = "#" ... > in the config
 Added hotkeys to the inventory screen (press 9 in game to see what the hotkeys for that screen are.)
 !!!!!!!!!!!!!!!!!!!! pushed version .05o.05
 
+###  Changes 6/3/2014
+Fixed arena combat training precheck
+!!!!!!!!!!!!!!!!!!!! pushed version .05o.06
+Made several changes to how some jobs work, the pay for them and the xp/skill/stat gains
+ - Brothel: Explore Catacombs, Beast Capture, Beast Care
+ - Arena: Fight Girls, Fight Beasts, Combat Training
+ - Clinic: Nurse, Mechanic
+ - Centre: Drug Counselor
+ - Beast jobs now randomly increase or decrease the number of beasts by -2 to +5 
+ - Combat jobs now give random increase to all 4 combat skill/stats (com,mag,agi,con)
+ - Nurse, Mechanic and Drug Counselor now pay the girl an additional amount for each of your girls they take care of
+Added WORKNURSE, WORKMECHANIC and WORKCOUNSELOR to job enjoyment
+
+###  Changes 6/4/2014
+Changed how whores use magic to charm their customers happier
+Updated cGirlTorture::IsGirlInjured to include possibility of loosing "Tough" trait at 1% and Insemination pregnancy
+
+###  Changes 6/5/2014
+I am making it so that if TortureTraitWeekMod is set to -1 in the config.xml it makes torture harsher.
+ - This will make "Broken Will", "Masochist" and "Mind Fucked" permanent.
+ - It will double the chance of greatly injuring girls when torturing them and damage is increased by half (7-21 instead of 5-14).
+ - Also doubles any evil gained.
+
+###  Changes 6/6/2014
+Added do_daily_items code
+I changed it so the the security level goes down by 1 per attacker before checking if they get though.
+ - Then, if any attackers survive, the security level goes down by 5 per attacker who survived.
+

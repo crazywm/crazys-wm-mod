@@ -384,7 +384,7 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		if((current->m_NightJob == JOB_ARENAREST && current->m_DayJob == JOB_ARENAREST) && (g_Girls.GetStat(current, STAT_HEALTH) >= 80 && g_Girls.GetStat(current, STAT_TIREDNESS) <= 20))
 		{
 			if(
-				(doctore || current->m_PrevDayJob == JOB_DOCTORE)  // do we have a director, or was she the director and made herself rest?
+				(doctore || current->m_PrevDayJob == JOB_DOCTORE)  // do we have a Doctore, or was she the director and made herself rest?
 				&& current->m_PrevDayJob != 255  // 255 = nothing, in other words no previous job stored
 				&& current->m_PrevNightJob != 255
 				)
@@ -472,6 +472,15 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, int DayNight)
 
 		summary = "";
 
+		// Do item check at the end of the day
+		if (DayNight == SHIFT_NIGHT)
+		{
+			// update for girls items that are not used up
+			do_daily_items(brothel, current);					// `J` added
+		}
+
+
+
 		// Level the girl up if nessessary
 		if(g_Girls.GetStat(current, STAT_EXP) == 255)
 			g_Girls.LevelUp(current);
@@ -485,11 +494,15 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		current->m_Stats[STAT_HEALTH] += 2;
 		if (current->m_Stats[STAT_HEALTH] > 100)
 			current->m_Stats[STAT_HEALTH] = 100;
-		// Wow, this tiredness code causes the game to go nuts! Commented out for now
+		
+/*	// Wow, this tiredness code causes the game to go nuts! Commented out for now
 		//current->m_Stats[STAT_TIREDNESS] = current->m_Stats[STAT_TIREDNESS] - 2;
 		//if (current->m_Stats[STAT_TIREDNESS] < 0)
 		//	current->m_Stats[STAT_TIREDNESS] = 0;
-		// `J` corrected it
+// cause: m_Stats type is "unsigned char" meaning it can only be 0 to 255 
+//        therefore if m_Stats=0 then m_Stats-1=255
+// `J` corrected it
+*/
 		int value = current->m_Stats[STAT_TIREDNESS] - 2;
 		if (value > 100)value = 100;
 		else if (value < 0)value = 0;
@@ -649,7 +662,7 @@ bool sArena::LoadArenaXML(TiXmlHandle hBrothel)
 	TiXmlElement* pGirls = pBrothel->FirstChildElement("Girls");
 	if (pGirls)
 	{
-		for(TiXmlElement* pGirl = pGirls->FirstChildElement("Girl");
+		for (TiXmlElement* pGirl = pGirls->FirstChildElement("Girl");
 			pGirl != 0;
 			pGirl = pGirl->NextSiblingElement("Girl"))// load each girl and add her
 		{

@@ -43,7 +43,6 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 {
 	string message = "";
 	string girlName = girl->m_Realname;
-	int tex = g_Dice%4;
 
 	if(Preprocessing(ACTION_WORKBAR, girl, brothel, DayNight, summary, message))	// they refuse to have work in the bar
 		return true;
@@ -55,7 +54,9 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 	message += "She worked as a waitress in the bar.";
 
 	int roll = g_Dice%100;
-	int jobperformance = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) + g_Girls.GetSkill(girl, SKILL_SERVICE));
+	int jobperformance = (	g_Girls.GetStat(girl, STAT_INTELLIGENCE)/2 + 
+							g_Girls.GetStat(girl, STAT_AGILITY)/2 +
+							g_Girls.GetSkill(girl, SKILL_SERVICE));
 
 	//good traits
 	if (g_Girls.HasTrait(girl, "Charismatic"))  //

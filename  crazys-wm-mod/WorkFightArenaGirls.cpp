@@ -97,10 +97,10 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, int DayNig
 
 	else if (fight_outcome == 2) // she lost or it was a draw
 	{
-		g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, -1, true);
+		g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, -2, true);
 		ss << gettext ("She lost the fight.");
 		girl->m_Events.AddMessage(ss.str(),IMGTYPE_COMBAT,DayNight);
-		g_Girls.UpdateStat(girl, STAT_FAME, -1);
+		g_Girls.UpdateStat(girl, STAT_FAME, -2);
 
 	}
 
@@ -133,13 +133,14 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, int DayNig
 		libido += 2;
 
 	//TODO make this actually work so people know that they won a girl. crazy
-	ss << girl->m_Realname <<type_unique_arena_girls << (" put up a good fight so you let them live to come work for you\n\n");
+	ss << girl->m_Realname << type_unique_arena_girls << (" put up a good fight so you let them live to come work for you\n\n");
 		ss << ".";
 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_COMBAT, skill);
-	g_Girls.UpdateSkill(girl, SKILL_MAGIC, skill);
-	g_Girls.UpdateStat(girl, STAT_AGILITY, skill);
+	g_Girls.UpdateSkill(girl, SKILL_COMBAT, g_Dice%3 + skill);
+	g_Girls.UpdateSkill(girl, SKILL_MAGIC, g_Dice%3 + skill);
+	g_Girls.UpdateStat(girl, STAT_AGILITY, g_Dice%3 + skill);
+	g_Girls.UpdateStat(girl, STAT_CONSTITUTION, g_Dice%2 + skill);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 	g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, +8, true);
 
@@ -148,6 +149,9 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, int DayNig
 	g_Girls.PossiblyGainNewTrait(girl, "Tough", 35, ACTION_COMBAT, "She has become pretty Tough from all of the fights she's been in.", DayNight != 0);
 	g_Girls.PossiblyGainNewTrait(girl, "Fleet of Foot", 55, ACTION_COMBAT, "She is getting rather fast from all the fighting.", DayNight != 0);
 	g_Girls.PossiblyGainNewTrait(girl, "Aggressive", 70, ACTION_COMBAT, "She is getting rather Aggressive from her enjoyment of combat.", DayNight != 0);
+
+	//lose traits
+	g_Girls.PossiblyLoseExistingTrait(girl, "Fragile", 75, ACTION_COMBAT, girl->m_Realname + " has had to heal from so many injuries you can't say she is fragile anymore.", DayNight != 0);
 
 	return false;
 }
