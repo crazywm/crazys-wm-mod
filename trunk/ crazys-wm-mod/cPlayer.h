@@ -64,7 +64,9 @@ public:
 
 	int disposition()		{ return m_Disposition; }
 	int disposition(int n);
-	int evil(int n)			{ return disposition(-1 * n); }
+	int evil(int n)			{cConfig cfg;						// `J` add check for if harsher torture is set
+		if (cfg.initial.torture_mod() < 0 && n > 0){ n += n; }	// `J` double evil if increasing it BUT NOT IF LOWERING IT
+		return disposition(-1 * n); }
 	int suspicion()			{ return m_Suspicion; }
 	int suspicion(int n);
 	int customerfear()		{ return m_CustomerFear; }

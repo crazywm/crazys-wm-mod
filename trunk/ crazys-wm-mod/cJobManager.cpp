@@ -110,22 +110,22 @@ void cJobManager::Setup()
 	JobFunctions[JOB_FLUFFER] = &WorkFluffer;
 	JobFunctions[JOB_STAGEHAND] = &WorkFilmStagehand;
 
-	// - Arena (these jobs gain bonus if in same building as a clinic)
-	JobFunctions[JOB_FIGHTBEASTS] = &WorkFightBeast;	// ************** TODO
-	JobFunctions[JOB_FIGHTARENAGIRLS] = &WorkFightArenaGirls;	// ************** TODO
-	JobFunctions[JOB_FIGHTTRAIN] = &WorkCombatTraining;	// 
-	JobFunctions[JOB_DOCTORE] = &WorkDoctore;	// 
-	JobFunctions[JOB_CLEANARENA] = &WorkCleanArena;	// 
-	JobFunctions[JOB_CITYGUARD] = &WorkCityGuard;	// 
+	// - Arena
+	JobFunctions[JOB_FIGHTBEASTS] = &WorkFightBeast;
+	JobFunctions[JOB_FIGHTARENAGIRLS] = &WorkFightArenaGirls;
+	JobFunctions[JOB_FIGHTTRAIN] = &WorkCombatTraining;
+	JobFunctions[JOB_DOCTORE] = &WorkDoctore;
+	JobFunctions[JOB_CLEANARENA] = &WorkCleanArena;
+	JobFunctions[JOB_CITYGUARD] = &WorkCityGuard;
 	// - Community Centre
-	JobFunctions[JOB_FEEDPOOR] = &WorkFeedPoor;	// ************** TODO
+	JobFunctions[JOB_FEEDPOOR] = &WorkFeedPoor;
 	//JobFunctions[JOB_MAKEITEMS] = &WorkMakeItem;	// ************** TODO
-	JobFunctions[JOB_COMUNITYSERVICE] = &WorkComunityService;	// ************** TODO
-	JobFunctions[JOB_CENTREMANAGER] = &WorkCentreManager;	// ************** TODO
-	JobFunctions[JOB_CLEANCENTRE] = &WorkCleanCentre;	// ************** TODO
+	JobFunctions[JOB_COMUNITYSERVICE] = &WorkComunityService;
+	JobFunctions[JOB_CENTREMANAGER] = &WorkCentreManager;
+	JobFunctions[JOB_CLEANCENTRE] = &WorkCleanCentre;
 	// - drug Centre
-	JobFunctions[JOB_DRUGCOUNSELOR] = &WorkDrugCounselor;	// ************** TODO
-	JobFunctions[JOB_REHAB] = &WorkRehab;	// ************** TODO
+	JobFunctions[JOB_DRUGCOUNSELOR] = &WorkDrugCounselor;
+	JobFunctions[JOB_REHAB] = &WorkRehab;
 	// - Clinic
 	JobFunctions[JOB_DOCTOR] = &WorkDoctor;
 	JobFunctions[JOB_GETABORT] = &WorkGetAbort;
@@ -145,10 +145,10 @@ void cJobManager::Setup()
 	JobFunctions[JOB_FACELIFT] = &WorkGetFacelift;
 	JobFunctions[JOB_ASSJOB] = &WorkGetAssJob;
 	// - House
-	JobFunctions[JOB_PERSONALTRAINING] = &WorkPersonalTraining;	// ************** TODO
-	JobFunctions[JOB_PERSONALBEDWARMER] = &WorkPersonalBedWarmer;	// ************** TODO
-	JobFunctions[JOB_CLEANHOUSE] = &WorkCleanHouse;	// 
-	JobFunctions[JOB_HEADGIRL] = &WorkHeadGirl;	// 
+	JobFunctions[JOB_PERSONALTRAINING] = &WorkPersonalTraining;
+	JobFunctions[JOB_PERSONALBEDWARMER] = &WorkPersonalBedWarmer;
+	JobFunctions[JOB_CLEANHOUSE] = &WorkCleanHouse;
+	JobFunctions[JOB_HEADGIRL] = &WorkHeadGirl;
 #if 0
 	// - Community Centre
 	JobFunctions[JOB_COLLECTDONATIONS] = &WorkVoid;	// ************** TODO
@@ -923,30 +923,12 @@ string cJobManager::JobDescriptionCount(int job_id, int brothel_id, bool day, bo
 	stringstream text;
 	text << JobName[job_id];
 	text << " (";
-	if (isStudio)
-	{
-		text << g_Studios.GetNumGirlsOnJob(0, job_id, day);
-	}
-	else if (isClinic)
-	{
-		text << g_Clinic.GetNumGirlsOnJob(0, job_id, day);
-	}
-	else if (isArena)
-	{
-		text << g_Arena.GetNumGirlsOnJob(0, job_id, day);
-	}
-	else if (isCentre)
-	{
-		text << g_Centre.GetNumGirlsOnJob(0, job_id, day);
-	}
-	else if (isHouse)
-	{
-		text << g_House.GetNumGirlsOnJob(0, job_id, day);
-	}
-	else 
-	{
-		text << g_Brothels.GetNumGirlsOnJob(brothel_id, job_id, day);
-	}
+	     if (isStudio)	{	text << g_Studios.GetNumGirlsOnJob(0, job_id, day);	}
+	else if (isClinic)	{	text << g_Clinic.GetNumGirlsOnJob(0, job_id, day);	}
+	else if (isArena)	{	text << g_Arena.GetNumGirlsOnJob(0, job_id, day);	}
+	else if (isCentre)	{	text << g_Centre.GetNumGirlsOnJob(0, job_id, day);	}
+	else if (isHouse)	{	text << g_House.GetNumGirlsOnJob(0, job_id, day);	}
+	else				{	text << g_Brothels.GetNumGirlsOnJob(brothel_id, job_id, day);	}
 	text << ")";
 	return text.str();
 }
@@ -1005,12 +987,14 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	}
 	else if (u_int(JobID) == JOB_FIGHTTRAIN)	// `J` added
 	{
-		if (Girl->m_Skills[SKILL_COMBAT] > 99 && Girl->m_Skills[SKILL_MAGIC] > 99 && Girl->m_Stats[STAT_AGILITY] > 99 && Girl->m_Stats[STAT_CONSTITUTION] > 99)
+		if (g_Girls.GetSkill(Girl, SKILL_COMBAT) > 99 && g_Girls.GetSkill(Girl, SKILL_MAGIC) > 99 && g_Girls.GetStat(Girl, STAT_AGILITY) > 99 && g_Girls.GetStat(Girl, STAT_CONSTITUTION) > 99)
 		{
 			g_MessageQue.AddToQue(gettext("There is nothing more she can learn here."), 0);
 			if (Girl->m_DayJob == JOB_FIGHTTRAIN)	Girl->m_DayJob = JOB_ARENAREST;
 			if (Girl->m_NightJob == JOB_FIGHTTRAIN)	Girl->m_NightJob = JOB_ARENAREST;
 		}
+		else if (DayOrNight){Girl->m_DayJob = JOB_FIGHTTRAIN;}
+		else				{Girl->m_NightJob = JOB_FIGHTTRAIN;}
 	}
 // Special Clinic Jobs
 	else if (u_int(JobID) == JOB_CHAIRMAN)
@@ -1454,6 +1438,8 @@ bool cJobManager::work_related_violence(sGirl* girl, int DayNight, bool streets)
 {
 	cConfig cfg;
 	int rape_chance = (int)cfg.prostitution.rape_brothel();
+	int GirlsBrothelNo = g_Brothels.GetGirlsCurrentBrothel(girl);
+	sBrothel * Brothl = g_Brothels.GetBrothel(GirlsBrothelNo);
 	//vector<sGang *> gang_v;
 	vector<sGang *> gangs_guarding = g_Gangs.gangs_on_mission(MISS_GUARDING);
 
@@ -1500,6 +1486,9 @@ bool cJobManager::work_related_violence(sGirl* girl, int DayNight, bool streets)
 		
 		// Three more lines of defense
 
+		// first subtract 1 security point per gang member that is attacking
+		Brothl->m_SecurityLevel = Brothl->m_SecurityLevel - enemy_gang->m_Num;	// `J` moved and split m_SecurityLevel loss
+
 		// 1. Brothel security
 		if (security_stops_rape(girl, enemy_gang, DayNight))
 			return false;
@@ -1512,7 +1501,10 @@ bool cJobManager::work_related_violence(sGirl* girl, int DayNight, bool streets)
 		if (girl_fights_rape(girl, enemy_gang, DayNight)) 
 			return false;
 
+
 		// If all defensive measures fail...
+		// subtract 5 security points per gang member left
+		Brothl->m_SecurityLevel = Brothl->m_SecurityLevel - enemy_gang->m_Num * 5;	// `J` moved and split m_SecurityLevel loss
 		customer_rape(girl);
 		return true;
 	}
@@ -1697,9 +1689,10 @@ bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_n
 		g_Girls.UpdateEnjoyment(SecGuard, ACTION_COMBAT, -30, true);
 	}
 
+	/* `J` Moved outside of here so even if the gand is stopped, m_SecurityLevel still goes down
 	// Win or lose, subtract 5 security points per gang member
 	Brothl->m_SecurityLevel = Brothl->m_SecurityLevel - OrgNumMem * 5;
-
+	*/
 	return res;
 }
 

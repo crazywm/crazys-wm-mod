@@ -43,7 +43,6 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 {
 	string message = "";
 	string girlName = girl->m_Realname;
-	int tex = g_Dice%4;
 
 	if(Preprocessing(ACTION_WORKBAR, girl, brothel, DayNight, summary, message))	// they refuse to have work in the bar
 		return true;

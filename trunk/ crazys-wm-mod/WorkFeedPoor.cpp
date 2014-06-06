@@ -45,7 +45,6 @@ extern cGold g_Gold;
 bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	string message = "";
-	int tex = g_Dice%4;
 
 	if(Preprocessing(ACTION_WORKCENTRE, girl, brothel, DayNight, summary, message))	// they refuse to have work
 		return true;
@@ -168,7 +167,7 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, int DayNight, str
 
 	g_Girls.UpdateStat(girl, STAT_FAME, 1);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	if(g_Dice%1)
+	if(g_Dice%2)
 		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, 1);
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, skill);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);

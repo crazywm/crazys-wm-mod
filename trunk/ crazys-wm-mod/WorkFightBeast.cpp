@@ -85,66 +85,74 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, int DayNight, s
 	}
 	else
 	{
-	// TODO need better dialog
-	sGirl* tempgirl = g_Girls.CreateRandomGirl(18, false, false, false, true, false);
+		// TODO need better dialog
 
-	Uint8 fight_outcome = g_Girls.girl_fights_girl(girl, tempgirl);
-	if(fight_outcome == 1)	// she won
-	{
-		g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, +3, true);
-		message = "She had fun fighting beasts today.";
-		girl->m_Events.AddMessage(message,IMGTYPE_COMBAT,DayNight);
-		int roll_max = girl->fame() + girl->charisma();
-		roll_max /= 4;
-		wages += 10 + g_Dice%roll_max;
-		girl->m_Pay = wages;
-		g_Girls.UpdateStat(girl, STAT_FAME, 2);
-	}
-	else  // she lost or it was a draw
-	{
-		g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, -1, true);
-		message = " She was unable to win the fight.";
-		girl->m_Events.AddMessage(message,IMGTYPE_COMBAT,DayNight);
-		g_Girls.UpdateStat(girl, STAT_FAME, -1);
-	}
+		sGirl* tempgirl = g_Girls.CreateRandomGirl(18, false, false, false, true, false);
+		Uint8 fight_outcome = g_Girls.girl_fights_girl(girl, tempgirl);
+		if (fight_outcome == 1)	// she won
+		{
+			g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, +3, true);
+			message = "She had fun fighting beasts today.";
+			girl->m_Events.AddMessage(message, IMGTYPE_COMBAT, DayNight);
+			int roll_max = girl->fame() + girl->charisma();
+			roll_max /= 4;
+			wages += 10 + g_Dice%roll_max;
+			girl->m_Pay = wages;
+			g_Girls.UpdateStat(girl, STAT_FAME, 2);
+		}
+		else  // she lost or it was a draw
+		{
+			g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, -1, true);
+			message = " She was unable to win the fight.";
+			girl->m_Events.AddMessage(message, IMGTYPE_COMBAT, DayNight);
+			g_Girls.UpdateStat(girl, STAT_FAME, -1);
+		}
 
-    // Cleanup
-	if(tempgirl)
-		delete tempgirl;
-	tempgirl = 0;
+		int kills = g_Dice%6 - 4;		 		// `J` how many beasts she kills 0-2
+		if (g_Brothels.GetNumBeasts() < kills)	// or however many there are
+			kills = g_Brothels.GetNumBeasts();
+		if (kills < 0) kills = 0;				// can't gain any
+		g_Brothels.add_to_beasts(kills);
+
+		// Cleanup
+		if (tempgirl)
+			delete tempgirl;
+		tempgirl = 0;
+
 
 	}
 
 	// Improve girl
-	int xp = 8, libido = 2, skill = 1, BestSkill = g_Dice%4;
+	int xp = 8, libido = 2, skill = 1;
 
 	if (g_Girls.HasTrait(girl, "Quick Learner"))
 	{
 		skill += 1;
-		BestSkill += 1;
 		xp += 3;
 	}
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))
 	{
 		skill -= 1;
 		xp -= 3;
-		if (BestSkill > 0)
-			BestSkill -= 1;
 	}
 
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))
 		libido += 2;
 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_COMBAT, skill);
-	g_Girls.UpdateSkill(girl, SKILL_MAGIC, skill);
-	g_Girls.UpdateStat(girl, STAT_AGILITY, skill);
+	g_Girls.UpdateSkill(girl, SKILL_COMBAT, g_Dice%2 + skill);
+	g_Girls.UpdateSkill(girl, SKILL_MAGIC, g_Dice%2 + skill);
+	g_Girls.UpdateStat(girl, STAT_AGILITY, g_Dice%2 + skill);
+	g_Girls.UpdateStat(girl, STAT_CONSTITUTION, g_Dice%2 + skill);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
-	g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, BestSkill);
+	g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, g_Dice%4 + skill);
 
 	g_Girls.PossiblyGainNewTrait(girl, "Tough", 20, ACTION_COMBAT, "She has become pretty Tough from all of the fights she's been in.", DayNight != 0);
 	g_Girls.PossiblyGainNewTrait(girl, "Aggressive", 60, ACTION_COMBAT, "She is getting rather Aggressive from her enjoyment of combat.", DayNight != 0);
 	g_Girls.PossiblyGainNewTrait(girl, "Fleet of Foot", 30, ACTION_COMBAT, "She is getting rather fast from all the fighting.", DayNight != 0);
+
+	//lose traits
+	g_Girls.PossiblyLoseExistingTrait(girl, "Fragile", 75, ACTION_COMBAT, girl->m_Realname + " has had to heal from so many injuries you can't say she is fragile anymore.", DayNight != 0);
 
 	return false;
 }

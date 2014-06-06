@@ -47,7 +47,7 @@ bool cJobManager::WorkMechanic(sGirl* girl, sBrothel* brothel, int DayNight, str
 {
 	string message = "";
 
-	if (Preprocessing(ACTION_WORKDOCTOR, girl, brothel, DayNight, summary, message))	// they refuse to have work in the bar
+	if (Preprocessing(ACTION_WORKMECHANIC, girl, brothel, DayNight, summary, message))
 		return true;
 
 	// put that shit away, you'll scare off the customers!
@@ -110,33 +110,34 @@ bool cJobManager::WorkMechanic(sGirl* girl, sBrothel* brothel, int DayNight, str
 			else {	wages += 10;	message += " Her optimistic mood made patients cheer up increasing the amount they tip.\n";}
 	}	}
 	
-	if(wages < 0)	wages = 0;
 
 	//enjoyed the work or not
 	if(roll <= 5)
 	{
 		message += " \nSome of the patrons abused her during the shift.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKDOCTOR, -1, true);
+		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMECHANIC, -1, true);
 	}
 	else if(roll <= 25) {
 		message += " \nShe had a pleasant time working.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKDOCTOR, +3, true);
+		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMECHANIC, +3, true);
 	}
 	else
 	{
 		message += " \nOtherwise, the shift passed uneventfully.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKDOCTOR, +1, true);
+		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMECHANIC, +1, true);
 	}
 
 	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
 	int roll_max = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) + g_Girls.GetSkill(girl, SKILL_SERVICE));
 	roll_max /= 4;
 	wages += 10 + g_Dice%roll_max;
+	wages += 5 * g_Clinic.GetNumGirlsOnJob(0, JOB_GETREPAIRS, DayNight == 0);	// `J` pay her 5 for each patient you send to her		
+	if (wages < 0)	wages = 0;
 	girl->m_Pay = wages;
 	
 
 	// Improve stats
-	int xp = 10, libido = 1, skill = 3;
+	int xp = 10, libido = 1, skill = 2;
 
 	if (g_Girls.HasTrait(girl, "Quick Learner"))
 	{
@@ -154,16 +155,16 @@ bool cJobManager::WorkMechanic(sGirl* girl, sBrothel* brothel, int DayNight, str
 
 	g_Girls.UpdateStat(girl, STAT_FAME, 1);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, 1);
+	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, skill);
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, skill);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
 	//gain traits
-	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, ACTION_WORKDOCTOR, "Dealing with patients and talking with them about their problems has made " + girl->m_Realname + " more Charismatic.", DayNight != 0);
-	g_Girls.PossiblyGainNewTrait(girl, "Strong", 60, ACTION_WORKDOCTOR, "Handling heavy parts and working with heavy tools has made " + girl->m_Realname + " much Stronger.", DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, ACTION_WORKMECHANIC, "Dealing with patients and talking with them about their problems has made " + girl->m_Realname + " more Charismatic.", DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Strong", 60, ACTION_WORKMECHANIC, "Handling heavy parts and working with heavy tools has made " + girl->m_Realname + " much Stronger.", DayNight != 0);
 
 	//lose traits
-	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 20, ACTION_WORKDOCTOR, girl->m_Realname + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", DayNight != 0);
-	g_Girls.PossiblyLoseExistingTrait(girl, "Elegant", 20, ACTION_WORKDOCTOR, " Working with dirty, greasy equipment has damaged " + girl->m_Realname + "'s hair, skin and nails making her less Elegant.", DayNight != 0);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 20, ACTION_WORKMECHANIC, girl->m_Realname + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", DayNight != 0);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Elegant", 40, ACTION_WORKMECHANIC, " Working with dirty, greasy equipment has damaged " + girl->m_Realname + "'s hair, skin and nails making her less Elegant.", DayNight != 0);
 	return false;
 }

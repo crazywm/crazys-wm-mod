@@ -66,10 +66,10 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, sBrothel* brothel, int DayNigh
 	ss << gettext("She trains in combat for the day.\n\n");
 		//message = "She trains in combat for the day.\n\n";
 	int train = 0;
-	int tcom = girl->m_Skills[SKILL_COMBAT];	// train = 1
-	int tmag = girl->m_Skills[SKILL_MAGIC];		// train = 2
-	int tagi = girl->m_Stats[STAT_AGILITY];		// train = 3
-	int tcon = girl->m_Stats[STAT_CONSTITUTION];// train = 4
+	int tcom = g_Girls.GetSkill(girl, SKILL_COMBAT);		// train = 1
+	int tmag = g_Girls.GetSkill(girl, SKILL_MAGIC);			// train = 2
+	int tagi = g_Girls.GetStat(girl, STAT_AGILITY);		// train = 3
+	int tcon = g_Girls.GetStat(girl, STAT_CONSTITUTION);	// train = 4
 	double roll_b = g_Dice % 100;
 	do{		// `J` New method of selecting what job to do
 		     if (roll_b < 30 && tcom < 100)	train = 1;
@@ -114,7 +114,8 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, sBrothel* brothel, int DayNigh
 
 
 	/*
-	else if (roll_b > 80)	// `J` Try to add a trait - 20% chance if all skills are maxed otherwise 5%
+	// `J` Try to add a trait 
+	else if (roll_b > 80)	
 	{
 		double roll_c = g_Dice % 100;
 		if (roll_c < 10 && g_Girls.HasTrait(girl, "Fragile"))

@@ -2567,6 +2567,13 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, int DayNight)
 
 		summary = "";
 
+		// Do item check at the end of the day
+		if (DayNight == SHIFT_NIGHT)
+		{
+			// update for girls items that are not used up
+			do_daily_items(brothel, current);					// `J` added
+		}
+
 		// Level the girl up if nessessary
 		if(g_Girls.GetStat(current, STAT_EXP) == 255)
 			g_Girls.LevelUp(current);
@@ -3293,6 +3300,84 @@ void cBrothelManager::do_tax()
 	   << gettext(" through various local businesses.")
 	;
 	g_MessageQue.AddToQue(ss.str(), 0);
+}
+
+bool is_she_cleaning(sGirl *girl)
+{
+	if (girl->m_DayJob == JOB_CLEANING || girl->m_NightJob == JOB_CLEANING ||
+		girl->m_DayJob == JOB_CLEANARENA || girl->m_NightJob == JOB_CLEANARENA ||
+		girl->m_DayJob == JOB_STAGEHAND || girl->m_NightJob == JOB_STAGEHAND ||
+		girl->m_DayJob == JOB_JANITOR || girl->m_NightJob == JOB_JANITOR ||
+		girl->m_DayJob == JOB_CLEANCENTRE || girl->m_NightJob == JOB_CLEANCENTRE ||
+		girl->m_DayJob == JOB_CLEANHOUSE || girl->m_NightJob == JOB_CLEANHOUSE)
+	{
+		return true;
+	}
+	return false;
+}
+bool is_she_resting(sGirl *girl)
+{
+	if (
+		girl->m_DayJob == JOB_FILMFREETIME || girl->m_NightJob == JOB_FILMFREETIME ||
+		girl->m_DayJob == JOB_ARENAREST || girl->m_NightJob == JOB_ARENAREST ||
+		girl->m_DayJob == JOB_CENTREREST || girl->m_NightJob == JOB_CENTREREST ||
+		girl->m_DayJob == JOB_CLINICREST || girl->m_NightJob == JOB_CLINICREST ||
+		girl->m_DayJob == JOB_HOUSEREST || girl->m_NightJob == JOB_HOUSEREST ||
+		girl->m_DayJob == JOB_RESTING || girl->m_NightJob == JOB_RESTING)
+	{
+		return true;
+	}
+	return false;
+}
+
+
+void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` added
+{
+	string message = "";
+
+
+	if (g_Girls.HasItem(girl, gettext("Android, Assistance")) != -1)
+	{
+		message += "Her Assistance Android swept up and took out the trash for her.\n\n";
+		brothel->m_Filthiness -= 5;
+	}
+	if (g_Girls.HasItem(girl, gettext("Television Set")) != -1)
+	{
+		if (is_she_resting(girl))
+		{
+			message += girl->m_Realname + " spent most of her day lounging in front of her Television Set.\n\n";
+			girl->tiredness(-5);
+			if (g_Dice%100<5)	girl->intelligence -= 1;
+		}
+		else
+		{
+			message += "At the end of her long day, " + girl->m_Realname + " flopped down in front of her Television Set and relaxed.\n\n";
+			girl->tiredness(-3);
+		}
+	}
+	if (g_Girls.HasItem(girl, gettext("Appreciation Trophy")) != -1 && is_she_cleaning(girl) && g_Dice%100 < 5 && girl->pclove() > girl->pchate()-10)
+	{
+		message += "While cleaning, " + girl->m_Realname + " came across her Appreciation Trophy and smiled.\n\n";
+		girl->pclove(1);
+	}
+	if (g_Girls.HasItem(girl, gettext("Art Easel")) != -1 && g_Dice%100 < 2)
+	{
+		int sale = g_Dice%30+1;
+		message += girl->m_Realname + " managed to sell one of her paintings for ";
+		_itoa(sale, buffer, 10);
+		message += buffer;
+		message += " gold.\n\n";
+		girl->m_Money += sale;
+		girl->happiness(sale / 5);
+		girl->fame(1);
+	}
+
+
+
+	if (message != "")		// only pass the summary if she has any of the items listed
+	{
+		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_SUMMARY);
+	}
 }
 
 void cBrothelManager::do_food_and_digs(sBrothel *brothel, sGirl *girl)

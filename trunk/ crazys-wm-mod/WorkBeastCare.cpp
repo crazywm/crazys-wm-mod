@@ -47,6 +47,15 @@ bool cJobManager::WorkBeastCare(sGirl* girl, sBrothel* brothel, int DayNight, st
 	if(Preprocessing(ACTION_WORKCARING, girl, brothel, DayNight, summary, message))
 		return true;
 
+	int jobperformance = ((g_Girls.GetStat(girl, STAT_INTELLIGENCE) + g_Girls.GetSkill(girl, SKILL_SERVICE)) / 2 + g_Girls.GetSkill(girl, SKILL_BEASTIALITY));
+
+
+
+
+
+
+
+
 	// TODO need better dialog
 	if(g_Dice%100 <= 10)
 	{
@@ -86,6 +95,8 @@ bool cJobManager::WorkBeastCare(sGirl* girl, sBrothel* brothel, int DayNight, st
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, skill);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 	g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, g_Dice%8);
-	
+
+	g_Girls.PossiblyLoseExistingTrait(girl, "Elegant", 20, ACTION_WORKCARING, " Working with dirty, smelly beasts has damaged " + girl->m_Realname + "'s hair, skin and nails making her less Elegant.", DayNight != 0);
+
 	return false;
 }

@@ -279,7 +279,8 @@ public:
 	void do_tax();
 	void check_rivals();
 	string new_rival_text();
-	void do_food_and_digs(sBrothel* brothel, sGirl* girl);
+	void do_daily_items(sBrothel* brothel, sGirl* girl);
+	void do_food_and_digs(sBrothel* brothel, sGirl* girl);	
 	string disposition_text();
 	string fame_text(sBrothel* brothel);
 	string suss_text();
