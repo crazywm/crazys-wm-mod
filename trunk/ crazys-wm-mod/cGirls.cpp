@@ -4995,6 +4995,47 @@ int cGirls::HasItem(sGirl* girl, string name)
 	return -1;
 }
 
+string stringtolower(string name)
+{
+	string s = name;
+	for (u_int i = 0; i < name.length(); i++)
+	{
+		s[i] = tolower(name[i]);
+	}
+	return s;
+}
+
+string stringtolowerj(string name)
+{
+	string s = ""; 
+	string t = "";
+	for (u_int i = 0; i < name.length(); i++)
+	{
+		if (tolower(name[i]) != tolower(" "[0]) || tolower(name[i]) != tolower("."[0]) || tolower(name[i]) != tolower(","[0]))
+		{
+			t[0] = tolower(name[i]);
+			s += t[0];
+		}
+	}
+	return s;
+}
+
+int cGirls::HasItemJ(sGirl* girl, string name)	// `J` added to compare item names removing spaces commas and periods
+{
+	string s = stringtolowerj(name);
+	for (int i = 0; i<40; i++)
+	{
+		if (girl->m_Inventory[i])
+		{
+			string t = stringtolowerj(girl->m_Inventory[i]->m_Name);
+			if (t == s)	return i;
+		}
+	}
+
+	return -1;
+}
+
+
 void cGirls::EquipCombat(sGirl* girl)
 {  // girl makes sure best armor and weapons are equipped, ready for combat
 	cConfig cfg;
@@ -13157,12 +13198,15 @@ cAImgList* cImgageListManager::LoadList(string name)
 
 	DirPath imagedir;
 	imagedir<<"Resources"<< "Characters"<<name;
-	string numeric="123456789";
-	string pic_types[]={"Anal*.*g","BDSM*.*g","Sex*.*g","Beast*.*g","Group*.*g","Les*.*g","Preg*.*g",
-		"Death*.*g","Profile*.*g","Combat*.*g","Oral*.*g","Ecchi*.*g","Strip*.*g","Maid*.*g","Sing*.*g",
-		"Wait*.*g","Card*.*g","Bunny*.*g","Nude*.*g","Mast*.*g","Titty*.*g","Milk*.*g","PregAnal*.*g",
-		"PregBDSM*.*g","PregSex*.*g","pregbeast*.*g","preggroup*.*g","pregles*.*g",};
-	int i=0;
+	string numeric="0123456789 ()";
+	string pic_types[] = { "Anal*.*g", "BDSM*.*g", "Sex*.*g", "Beast*.*g", "Group*.*g", "Les*.*g", "torture*.*g",
+		"Death*.*g", "Profile*.*g", "Combat*.*g", "Oral*.*g", "Ecchi*.*g", "Strip*.*g", "Maid*.*g", "Sing*.*g",
+		"Wait*.*g", "Card*.*g", "Bunny*.*g", "Nude*.*g", "Mast*.*g", "Titty*.*g", "Milk*.*g", "Preg*.*g", "PregAnal*.*g",
+		"PregBDSM*.*g", "PregSex*.*g", "pregbeast*.*g", "preggroup*.*g", "pregles*.*g", "pregtorture*.*g", "pregdeath*.*g",
+		"pregprofile*.*g", "pregcombat*.*g", "pregoral*.*g", "pregecchi*.*g", "pregstrip*.*g", "pregmaid*.*g",
+		"pregsing*.*g", "pregwait*.*g", "pregcard*.*g", "pregbunny*.*g", "pregnude*.*g", "pregmast*.*g",
+		"pregtitty*.*g", "pregmilk*.*g"};
+	int i = 0;
 
 	do {
 		bool to_add=true;
@@ -13170,13 +13214,17 @@ cAImgList* cImgageListManager::LoadList(string name)
 		for(int k=0;k<the_files.size();k++)
 		{
 			bool test=false;
-/* Check Preg*.*g filenames [leaf] and accept as non-subtypew ONLY those with number 1--9 in char 5
+/* 
+ * `J` fixed this by changing 
+ *		string numeric="123456789";
+ * to	string numeric="0123456789 ()";
+ * Check Preg*.*g filenames [leaf] and accept as non-subtypew ONLY those with number 1--9 in char 5
  * (Allows filename like 'Preg22.jpg' BUT DOESN'T allow like 'Preg (2).jpg' or 'Preg09.jpg')
  * MIGHT BE BETTER to just throw out sub-type filenames in this Preg*.*g section. */
-			if (i == 6)
+			if (i == IMGTYPE_PREGNANT)
 			{
 				char c=the_files[k].leaf()[4];
-				for(int j = 0; j < 9; j++) 
+				for (int j = 0; j < (int)numeric.size(); j++)
 				{
 					if(c==numeric[j])
 					{
@@ -13201,12 +13249,14 @@ cAImgList* cImgageListManager::LoadList(string name)
 
 
 	// Yes this is just a hack to load animations (my bad ;) - Necro
-	string pic_types2[]={"Anal*.ani","BDSM*.ani","Sex*.ani","Beast*.ani","Group*.ani","Les*.ani","Preg*.ani",
-			"Death*.ani","Profile*.ani","Combat*.ani","Oral*.ani","Ecchi*.ani","Strip*.ani","Maid*.ani",
-			"Sing*.ani","Wait*.ani","Card*.ani","Bunny*.ani","Nude*.ani","Mast*.ani","Titty*.ani",
-			"Milk*.ani","PregAnal*.ani","PregBDSM*.ani","PregSex*.ani","pregbeast*.ani","preggroup*.ani",
-			"pregles*.ani"};
-	i=0;
+	string pic_types2[] = { "Anal*.ani", "BDSM*.ani", "Sex*.ani", "Beast*.ani", "Group*.ani", "Les*.ani", "torture*.ani",
+		"Death*.ani", "Profile*.ani", "Combat*.ani", "Oral*.ani", "Ecchi*.ani", "Strip*.ani", "Maid*.ani",
+		"Sing*.ani", "Wait*.ani", "Card*.ani", "Bunny*.ani", "Nude*.ani", "Mast*.ani", "Titty*.ani",
+		"Milk*.ani", "Preg*.ani", "PregAnal*.ani", "PregBDSM*.ani", "PregSex*.ani", "pregbeast*.ani", "preggroup*.ani",
+		"pregles*.ani", "pregtorture*.ani", "pregdeath*.ani", "pregprofile*.ani", "pregcombat*.ani", "pregoral*.ani",
+		"pregecchi*.ani", "pregstrip*.ani", "pregmaid*.ani", "pregsing*.ani", "pregwait*.ani", "pregcard*.ani",
+		"pregbunny*.ani", "pregnude*.ani", "pregmast*.ani", "pregtitty*.ani", "pregmilk*.ani" };
+	i = 0;
 	do {
 		bool to_add=true;
 		FileList the_files(imagedir,pic_types2[i].c_str());
@@ -13287,6 +13337,16 @@ bool cGirls::IsAnimatedSurface(sGirl* girl, int ImgType, int& img)
 		switch(ImgType)
 		{
 //				kept all cases to test for invalid Image Type.
+		case IMGTYPE_TORTURE:
+			if (girl->is_pregnant() && girl->m_GirlImages->m_Images[ImgType + PREG_OFFSET].m_NumImages)
+				return girl->m_GirlImages->m_Images[ImgType + PREG_OFFSET].IsAnimatedSurface(img);
+			else if (girl->m_GirlImages->m_Images[ImgType].m_NumImages > 0)
+				return girl->m_GirlImages->m_Images[ImgType].IsAnimatedSurface(img);
+			else
+				ImgType = IMGTYPE_BDSM;		// Try this next loop
+			break;
+
+
 		case IMGTYPE_ANAL:
 		case IMGTYPE_BDSM:
 		case IMGTYPE_BEAST:
@@ -13460,6 +13520,15 @@ CSurface* cGirls::GetImageSurface(sGirl* girl, int ImgType, bool random, int& im
 		switch(ImgType)
 		{
 //				kept all cases to test for invalid Image Type.
+		case IMGTYPE_TORTURE:
+			if (girl->is_pregnant() && girl->m_GirlImages->m_Images[ImgType + PREG_OFFSET].m_NumImages && !gallery)
+				return girl->m_GirlImages->m_Images[ImgType + PREG_OFFSET].GetImageSurface(random, img);
+			else if (girl->m_GirlImages->m_Images[ImgType].m_NumImages > 0)
+				return girl->m_GirlImages->m_Images[ImgType].GetImageSurface(random, img);
+			else
+				ImgType = IMGTYPE_BDSM;		// Try this next loop
+			break;
+
 		case IMGTYPE_ANAL:
 		case IMGTYPE_BDSM:
 		case IMGTYPE_BEAST:
@@ -13704,16 +13773,26 @@ int cGirls::DrawGirl(sGirl* girl, int x, int y, int width, int height, int ImgTy
 		switch(ImgType)
 		{
 //				kept all cases to test for invalid Image Type.
+		case IMGTYPE_TORTURE:
+			if (preg && girl->m_GirlImages->m_Images[ImgType + PREG_OFFSET].m_NumImages > 0)
+				return girl->m_GirlImages->m_Images[ImgType + PREG_OFFSET].DrawImage(x, y, width, height, random, img);
+			else if (girl->m_GirlImages->m_Images[ImgType].m_NumImages > 0)
+				return girl->m_GirlImages->m_Images[ImgType].DrawImage(x, y, width, height, random, img);
+			else
+				ImgType = IMGTYPE_BDSM;		// Try this next loop
+			break;
+
+
 		case IMGTYPE_ANAL:
 		case IMGTYPE_BDSM:
 		case IMGTYPE_BEAST:
 		case IMGTYPE_GROUP:
 		case IMGTYPE_LESBIAN:
 //				Similar pregnant/non-pregnant 'success' condition and action; uses 'pregnancy offset'
-			if(preg && girl->m_GirlImages->m_Images[ImgType + PREG_OFFSET].m_NumImages > 0)
-					return girl->m_GirlImages->m_Images[ImgType + PREG_OFFSET].DrawImage(x,y,width,height, random, img);
-			else if(girl->m_GirlImages->m_Images[ImgType].m_NumImages > 0)
-				return girl->m_GirlImages->m_Images[ImgType].DrawImage(x,y,width,height, random, img);
+			if (preg && girl->m_GirlImages->m_Images[ImgType + PREG_OFFSET].m_NumImages > 0)
+				return girl->m_GirlImages->m_Images[ImgType + PREG_OFFSET].DrawImage(x, y, width, height, random, img);
+			else if (girl->m_GirlImages->m_Images[ImgType].m_NumImages > 0)
+				return girl->m_GirlImages->m_Images[ImgType].DrawImage(x, y, width, height, random, img);
 			else
 				ImgType = IMGTYPE_SEX;		// Try this next loop
 			break;

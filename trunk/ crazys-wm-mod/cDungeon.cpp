@@ -846,50 +846,79 @@ void cDungeon::Update()
 				//doTorturer(current, TorturerGirlref, summary);
 				cGirlTorture gt(current, TorturerGirlref);
 			}
+			/*	`J` moved to the end to allow for torture images to be added
 			girl->m_Tort = false;// WD: Move till after Girls have been tortured so that we dont torture twice week
-			
+			*/
 
-/*
- *			WARNING MESSAGES
+/*		`J` merged WARNING MESSAGES and SUMMARY MESSAGES
  *			Allow girl sorting in turn summary
  */
-			// Health
-			int		nHealth	= girl->health();
-			_itoa(nHealth, buffer, 10);
+			//	`J` set the basics
+			msg = girlName + gettext(" is languish in the dungeon.");
+			int msgtype = EVENT_DUNGEON;
+			int imgtype = IMGTYPE_PROFILE;
+			int	nHealth = girl->health();	_itoa(nHealth, buffer, 10);	string ghealth = buffer;
+			int	nTired = girl->tiredness();	_itoa(nTired, buffer, 10);	string gtired = buffer;
 
-			if (nHealth < 20)
+			//	`J` check them for dangers or warnings
+			if (nHealth < 20 || nTired > 80)
 			{
-				msg	= gettext("DANGER: ") + girlName + gettext(" is severely injured.\n\nHer health is ") + buffer + gettext(".");
-				girl->m_Events.AddMessage(msg, IMGTYPE_DEATH, EVENT_DANGER);
+				msg = gettext("DANGER: ") + girlName;
+				msgtype = EVENT_DANGER;
+				imgtype = IMGTYPE_DEATH;
 			}
-			else if (nHealth < 40)
+			else if (nHealth < 40 || nTired > 60 || girl->m_Tort)
 			{
-				msg	= girlName + gettext(" is injured.\n\nHer health is ") + buffer + gettext(".");
-				girl->m_Events.AddMessage(msg, IMGTYPE_PROFILE, EVENT_WARNING);
-			}
-			
-			// Tiredness
-			int		nTired	= girl->tiredness();
-			_itoa(nTired, buffer, 10);
-
-			if (nTired > 80)
-			{
-				msg	= girlName + gettext(" is exhausted  and it may effect her health.\n\nHer tiredness is ") + buffer + gettext(".");
-				girl->m_Events.AddMessage(msg, IMGTYPE_PROFILE, EVENT_WARNING);
-			}
-			else if (nTired > 60)
-			{
-				msg	= girlName + gettext(" is tired.\n\nHer tiredness is ") + buffer + gettext(".");
-				girl->m_Events.AddMessage(msg, IMGTYPE_PROFILE, EVENT_DUNGEON);
+				msg = gettext("WARNING: ") + girlName;
+				msgtype = EVENT_WARNING;
 			}
 
+			//	`J` did msgtype change?
+			if (msgtype != EVENT_DUNGEON)
+			{
+				if (girl->m_Tort)
+				{
+					msg += gettext(" was tortured this week");
+					imgtype = IMGTYPE_TORTURE;
+					if (nHealth < 40 || nTired > 60)
+					{
+						msg += gettext(".\nShe");
+					}
+				}
 
-/*
- *			SUMMARY MESSAGES
- */
+				if (nHealth < 20)
+				{
+					msg += gettext(" is severely injured");
+				}
+				else if (nHealth < 40)
+				{
+					msg += gettext(" is injured");
+				}
+				if (nHealth < 40 && nTired > 60)
+				{
+					msg += gettext(" and");
+				}
+				else if (nTired > 60)
+				{
+					msg += gettext(" is");
+				}
+				else
+				{
+					msg += gettext(".");
+				}
+				if (nTired > 80)
+				{
+					msg += gettext(" exhausted, it may effect her health.");
+				}
+				else if (nTired > 60)
+				{
+					msg += girlName + gettext(" tired.");
+				}
+				msg += gettext("\n\nHer health is ") + ghealth + gettext(".\nHer tiredness is ") + gtired + gettext(".");
+			}
+			girl->m_Events.AddMessage(msg, imgtype, msgtype);
 
-			if(!summary.empty())
-				girl->m_Events.AddMessage( summary, IMGTYPE_PROFILE, EVENT_SUMMARY);
+			girl->m_Tort = false;
 
 			// loop next dungeon girl	
 			current = current->m_Next;

@@ -1689,7 +1689,7 @@ bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_n
 		g_Girls.UpdateEnjoyment(SecGuard, ACTION_COMBAT, -30, true);
 	}
 
-	/* `J` Moved outside of here so even if the gand is stopped, m_SecurityLevel still goes down
+	/* `J` Moved outside of here so even if the gang is stopped, m_SecurityLevel still goes down
 	// Win or lose, subtract 5 security points per gang member
 	Brothl->m_SecurityLevel = Brothl->m_SecurityLevel - OrgNumMem * 5;
 	*/

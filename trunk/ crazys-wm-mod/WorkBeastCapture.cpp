@@ -58,10 +58,10 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, int DayNight,
 	{
 		g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, +3, true);
 		message = "She had fun hunting down animals today and came back with ";
-		     if (gain <= 2)	{ message += "two"; }
+		if      (gain <= 2)	{ message += "two";  gain = 2; }
 		else if (gain == 3)	{ message += "three"; }
 		else if (gain == 4)	{ message += "four"; }
-		else   { gain =  5;   message += "five"; } // shouldn't happen but just in case
+		else   { gain = 5;    message += "five"; } // shouldn't happen but just in case
 		message += " of them.";
 		girl->m_Events.AddMessage(message,IMGTYPE_COMBAT,DayNight);
 	}
@@ -106,12 +106,12 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, int DayNight,
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 	g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, gain + skill);
 
-	g_Girls.PossiblyGainNewTrait(girl, "Tough", 15, ACTION_COMBAT, "She has become pretty Tough from all of the fights she's been in.", DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Tough", 30, ACTION_COMBAT, "She has become pretty Tough from all of the fights she's been in.", DayNight != 0);
 	g_Girls.PossiblyGainNewTrait(girl, "Adventurer", 40, ACTION_COMBAT, "She has been in enough tough spots to consider herself Adventurer.", DayNight != 0);
 	g_Girls.PossiblyGainNewTrait(girl, "Aggressive", 60, ACTION_COMBAT, "She is getting rather Aggressive from her enjoyment of combat.", DayNight != 0);
 
 	//lose traits
-	g_Girls.PossiblyLoseExistingTrait(girl, "Fragile", 75, ACTION_COMBAT, girl->m_Realname + " has had to heal from so many injuries you can't say she is fragile anymore.", DayNight != 0);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Fragile", 15, ACTION_COMBAT, girl->m_Realname + " has had to heal from so many injuries you can't say she is fragile anymore.", DayNight != 0);
 
 	return false;
 }

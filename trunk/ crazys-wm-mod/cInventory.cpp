@@ -224,6 +224,50 @@ static void do_effects(TiXmlElement *parent, sInventoryItem *item)
 
 }
 
+static void do_tests(TiXmlElement *parent, sInventoryItem *item)	// `J` added
+{
+	/*  `J` copied from do_effects as the base
+	int ival;
+	const char *pt;
+	TiXmlElement *el;
+	for (el = parent->FirstChildElement(); el; el = el->NextSiblingElement()) {
+		sEffect *ept = new sEffect;
+
+		if ((pt = el->Attribute("What")))
+			ept->set_what(pt);
+
+		if ((pt = el->Attribute("Name"))) {
+			switch (ept->m_Affects) {
+			case sEffect::Trait:
+				ept->m_Trait = pt;
+				break;
+			case sEffect::Stat:
+				if (ept->set_stat(pt) == false) {
+					g_LogFile.os() << "effect type code == " << ept->m_Affects;
+					g_LogFile.os() << " stat lookup failed for " << item->m_Name << endl;
+
+				}
+				break;
+			case sEffect::GirlStatus:
+				ept->set_girl_status(pt);
+				break;
+			case sEffect::Skill:
+				ept->set_skill(pt);
+				break;
+			default:
+				g_LogFile.os() << " can't handle effect type " << ept->m_Affects << endl;
+			}
+		}
+
+		if ((pt = el->Attribute("Amount", &ival)))
+			ept->m_Amount = ival;
+
+		item->m_Effects.push_back(*ept);
+	}
+	*/
+}
+
+
 void cInventory::AddItem(sInventoryItem* item)
 {
 	items.push_back(item);
@@ -1046,6 +1090,7 @@ static sInventoryItem* handle_element(TiXmlElement *el)
 		item->m_Infinite = false;
 	
 	do_effects(el, item);
+//	do_tests(el, item);		//	`J` added
 	return item;
 }
 

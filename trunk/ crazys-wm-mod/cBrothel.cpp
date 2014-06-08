@@ -3336,18 +3336,18 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 	string message = "";
 
 
-	if (g_Girls.HasItem(girl, gettext("Android, Assistance")) != -1)
+	if (g_Girls.HasItemJ(girl, gettext("Android, Assistance")) != -1)
 	{
 		message += "Her Assistance Android swept up and took out the trash for her.\n\n";
 		brothel->m_Filthiness -= 5;
 	}
-	if (g_Girls.HasItem(girl, gettext("Television Set")) != -1)
+	if (g_Girls.HasItemJ(girl, gettext("Television Set")) != -1)
 	{
 		if (is_she_resting(girl))
 		{
 			message += girl->m_Realname + " spent most of her day lounging in front of her Television Set.\n\n";
 			girl->tiredness(-5);
-			if (g_Dice%100<5)	girl->intelligence -= 1;
+			if (g_Dice % 100<5)		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, 1);
 		}
 		else
 		{
@@ -3355,12 +3355,12 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 			girl->tiredness(-3);
 		}
 	}
-	if (g_Girls.HasItem(girl, gettext("Appreciation Trophy")) != -1 && is_she_cleaning(girl) && g_Dice%100 < 5 && girl->pclove() > girl->pchate()-10)
+	if (g_Girls.HasItemJ(girl, gettext("Appreciation Trophy")) != -1 && is_she_cleaning(girl) && g_Dice%100 < 5 && girl->pclove() > girl->pchate()-10)
 	{
 		message += "While cleaning, " + girl->m_Realname + " came across her Appreciation Trophy and smiled.\n\n";
 		girl->pclove(1);
 	}
-	if (g_Girls.HasItem(girl, gettext("Art Easel")) != -1 && g_Dice%100 < 2)
+	if (g_Girls.HasItemJ(girl, gettext("Art Easel")) != -1 && g_Dice%100 < 2)
 	{
 		int sale = g_Dice%30+1;
 		message += girl->m_Realname + " managed to sell one of her paintings for ";
@@ -3371,6 +3371,8 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 		girl->happiness(sale / 5);
 		girl->fame(1);
 	}
+
+	
 
 
 

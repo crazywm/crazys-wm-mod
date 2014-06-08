@@ -258,4 +258,20 @@ I am making it so that if TortureTraitWeekMod is set to -1 in the config.xml it 
 Added do_daily_items code
 I changed it so the the security level goes down by 1 per attacker before checking if they get though.
  - Then, if any attackers survive, the security level goes down by 5 per attacker who survived.
+Some items have variations that have spaces, commas and/or periods to differentiate them so I added functions to assist in comparing strings 
+ - "stringtolower(string name)" to allow easier string conversion to all lower case
+ - "stringtolowerj(string name)" to allow easier string conversion to all lower case while removing spaces, commas and periods
+ - "HasItemJ(sGirl* girl, string name)" to check if a girl has an item by comparing them with "stringtolowerj"
+Some items are hard coded into do_daily_items
+Started making xml loading for do_daily_items tests, nothing in it yet.
+
+###  Changes 6/7/2014
+Corrected a few typos
+I have made some changes to the torture code in order to make the images displayed for torture be from an image list specifically for torture.
+ - If you name some images with the prefix "torture #.*g" they will show up when you or one of your girls tortures a girl in the dungeon.
+ - If you have no "torture #.*g", it defaults to "bdsm #.*g" then to "profile #.*g".
+While I was adding that, I went ahead and added pregnancy pictures for all image types that didn't already have them.
+I also fixed a bug where "preg #.*g" would only work with numbers 1-9, not with spaces or ().
+
+
 

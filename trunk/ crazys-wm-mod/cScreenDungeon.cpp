@@ -998,11 +998,20 @@ void cScreenDungeon::update_image()
 	if((selected_girl) && !IsMultiSelected(girllist_id))
 	{
 		bool Rand = true;
+		if (selected_girl->m_Tort)
+		{
+			SetImage(girlimage_id, g_Girls.GetImageSurface(selected_girl, IMGTYPE_TORTURE, Rand, ImageNum));
 
-		SetImage(girlimage_id, g_Girls.GetImageSurface(selected_girl, IMGTYPE_PROFILE, Rand, ImageNum));
+			if (g_Girls.IsAnimatedSurface(selected_girl, IMGTYPE_TORTURE, ImageNum))
+				SetImage(girlimage_id, g_Girls.GetAnimatedSurface(selected_girl, IMGTYPE_TORTURE, ImageNum));
+		}
+		else
+		{
+			SetImage(girlimage_id, g_Girls.GetImageSurface(selected_girl, IMGTYPE_PROFILE, Rand, ImageNum));
 
-		if(g_Girls.IsAnimatedSurface(selected_girl, IMGTYPE_PROFILE, ImageNum))
-			SetImage(girlimage_id, g_Girls.GetAnimatedSurface(selected_girl, IMGTYPE_PROFILE, ImageNum));
+			if (g_Girls.IsAnimatedSurface(selected_girl, IMGTYPE_PROFILE, ImageNum))
+				SetImage(girlimage_id, g_Girls.GetAnimatedSurface(selected_girl, IMGTYPE_PROFILE, ImageNum));
+		}
 
 		HideImage(girlimage_id, false); 
 	}
