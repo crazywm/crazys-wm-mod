@@ -2235,7 +2235,7 @@ void Gallery()
 			g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYPREGNANT, true);
 		else
 			g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYPREGNANT, false);
-		if(girl->m_GirlImages->m_Images[IMGTYPE_DEATH].m_NumImages == 0)
+		if (girl->m_GirlImages->m_Images[IMGTYPE_TORTURE].m_NumImages == 0)
 			g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYDEATH, true);
 		else
 			g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYDEATH, false);

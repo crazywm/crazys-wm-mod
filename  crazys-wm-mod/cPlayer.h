@@ -25,8 +25,10 @@
 #include <fstream>
 #include "Constants.h"
 #include "tinyxml.h"
+#include "sConfig.h"
 
 using namespace std;
+
 
 class cPlayer
 {

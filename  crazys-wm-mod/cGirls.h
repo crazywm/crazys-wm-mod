@@ -884,7 +884,8 @@ public:
 	void SellInvItem(sGirl* girl, int num);
 	void UseItems(sGirl* girl);
 	int HasItem(sGirl* girl, string name);
-//	void RemoveTrait(sGirl* girl, string name, bool addrememberlist = false, bool force = false);
+	int HasItemJ(sGirl* girl, string name);	// `J` added
+	//	void RemoveTrait(sGirl* girl, string name, bool addrememberlist = false, bool force = false);
 	bool RemoveTrait(sGirl* girl, string name, bool addrememberlist = false, bool force = false);
 	void RemoveRememberedTrait(sGirl* girl, string name);
 	void RemoveAllRememberedTraits(sGirl* girl);					// WD: Cleanup remembered traits on new girl creation

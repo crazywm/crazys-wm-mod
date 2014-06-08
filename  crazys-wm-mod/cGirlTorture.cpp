@@ -43,11 +43,14 @@ cGirlTorture::~cGirlTorture()		// deconstructor
 	if (! m_Message.empty())
 	{
 		if (m_TorturedByPlayer)
+		{
 			g_MessageQue.AddToQue(m_Message, 0);
+			m_Girl->m_Events.AddMessage(m_Message, IMGTYPE_TORTURE, EVENT_SUMMARY);	// `J` added
+		}
 		else
 		{
 			if (m_Girl->health()>0)		// Make sure girl is alive
-				m_Girl->m_Events.AddMessage(m_Message, IMGTYPE_PROFILE, EVENT_SUMMARY);
+				m_Girl->m_Events.AddMessage(m_Message, IMGTYPE_TORTURE, EVENT_SUMMARY);
 		}
 	}
 }
@@ -140,7 +143,7 @@ void cGirlTorture::DoTorture()
 		if (m_TorturedByPlayer)
 			m_Message += gettext("You may only torture someone once per week.\n");
 		else
-			m_Message += sGirlName + gettext(" has allready ben tortured this week.\n");
+			m_Message += sGirlName + gettext(" has allready been tortured this week.\n");
 		return;
 	}
 
@@ -238,7 +241,7 @@ void cGirlTorture::DoTorture()
 		else
 		{
 			sMsg = sGirlName + gettext(" was seriously injured in the dungeon this week.");
-			m_Girl->m_Events.AddMessage(sMsg, IMGTYPE_DEATH, EVENT_WARNING);
+			m_Girl->m_Events.AddMessage(sMsg, IMGTYPE_TORTURE, EVENT_WARNING);
 			m_Torturer->m_Events.AddMessage( sMsg, IMGTYPE_PROFILE, EVENT_DUNGEON);
 		}
 	}
@@ -259,6 +262,7 @@ void cGirlTorture::DoTorture()
 
 		else if (m_Girl->health() < 20)
 			m_Message += gettext("Also, she is close to death.\n");
+
 	}
 
 	else	// Tortured by Torturer Girl
@@ -279,14 +283,14 @@ void cGirlTorture::DoTorture()
 					gettext("  to eat because her health was low.\n");
 				m_Message += m_Torturer->m_Realname + 
 					gettext(" was allowed her food because her health was low.\n");
-				m_Girl->m_Events.AddMessage(sMsg, IMGTYPE_DEATH, EVENT_DANGER);
+				m_Girl->m_Events.AddMessage(sMsg, IMGTYPE_TORTURE, EVENT_DANGER);
 				m_Torturer->m_Events.AddMessage( sMsg, IMGTYPE_PROFILE, EVENT_DANGER);
 			}				
 			else
 			{
 				sMsg	= sGirlName + gettext("  health is low from ongoing torture.");
 				// WD	Low health warnings done as part of cDungeon::Update()
-				//m_Girl->m_Events.AddMessage(sMsg, IMGTYPE_DEATH, EVENT_DANGER);
+				//m_Girl->m_Events.AddMessage(sMsg, IMGTYPE_TORTURE, EVENT_DANGER);
 				m_Torturer->m_Events.AddMessage( sMsg, IMGTYPE_PROFILE, EVENT_DANGER);
 			}
 
@@ -371,7 +375,7 @@ void cGirlTorture::UpdateStats()
  */
 	cConfig cfg;
 	// do heavy torture
-	if (cfg.initial.torture_mod() < 0)
+	if (cfg.initial.torture_mod() < 0) // `J`  added
 	{
 		m_Girl->health(-7);
 		m_Girl->happiness(-7);
@@ -449,6 +453,8 @@ bool cGirlTorture::IsGirlInjured(unsigned int unModifier)
 	if (m_TorturedByPlayer && !m_Message.empty())
 	{
 		g_MessageQue.AddToQue(m_Message, 0);
+		m_Girl->m_Events.AddMessage(m_Message, IMGTYPE_TORTURE, EVENT_SUMMARY);	// `J` added
+
 		m_Message = sGirlName + ": ";
 	}
 
@@ -546,7 +552,7 @@ bool cGirlTorture::IsGirlInjured(unsigned int unModifier)
 		m_Girl->happiness(-20);
 		m_Girl->spirit(-5);
 		if (m_TorturedByPlayer)
-			m_Message = gettext("Her unborn child has been lost due to the injuries she sustained, leaving her quite distraught.");
+			m_Message += gettext("Her unborn child has been lost due to the injuries she sustained, leaving her quite distraught.\n");
 		else
 			MakeEvent( gettext("Due to ") + sGirlName + gettext(" injuries she has had a miscarriage, leaving her quite distraught.\n") );
 	}
@@ -561,6 +567,8 @@ bool cGirlTorture::IsGirlInjured(unsigned int unModifier)
 	if (m_TorturedByPlayer && !m_Message.empty())
 	{
 		g_MessageQue.AddToQue(m_Message, 1);
+		m_Girl->m_Events.AddMessage(m_Message, IMGTYPE_TORTURE, EVENT_WARNING);	// `J` added
+
 		m_Message = sGirlName + ": ";
 	}
 
@@ -583,18 +591,19 @@ bool cGirlTorture::girl_escapes()
 	m_Fight = true;
 	m_Message += gettext("She puts up a fight ");
 	if (ggf.girl_lost()) {
-		if (ggf.player_won()) {
-			m_Message +=
-				gettext(" and would have escaped but for your personal intervention; ")
-				;
+		if (ggf.player_won()) 
+		{
+			m_Message += gettext(" and would have escaped but for your personal intervention; ");
 		}
-		else {
+		else 
+		{
 			m_Message += gettext("but goons defeat her and ");
 		}
 		return false;
 	}
 
-	if (ggf.wipeout()) {
+	if (ggf.wipeout()) 
+	{
 		m_Message += gettext(" the gang is wiped out and");
 	}
 
@@ -665,7 +674,7 @@ void cGirlTorture::add_trait(string trait, int pc)
 	if (m_TorturedByPlayer)
 	{
 		g_MessageQue.AddToQue(sMsg, 2);
-		m_Girl->m_Events.AddMessage(sMsg, IMGTYPE_BDSM, EVENT_WARNING);
+		m_Girl->m_Events.AddMessage(sMsg, IMGTYPE_TORTURE, EVENT_WARNING);
 	}
 	else
 		MakeEvent(sMsg);
@@ -676,7 +685,7 @@ void cGirlTorture::add_trait(string trait, int pc)
 
 inline void cGirlTorture::MakeEvent(string sMsg)
 {
-	m_Girl->m_Events.AddMessage( sMsg, IMGTYPE_BDSM, EVENT_WARNING);
+	m_Girl->m_Events.AddMessage(sMsg, IMGTYPE_TORTURE, EVENT_WARNING);
 	m_Torturer->m_Events.AddMessage( sMsg, IMGTYPE_PROFILE, EVENT_DUNGEON);
 }
 

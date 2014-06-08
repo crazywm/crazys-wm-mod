@@ -397,13 +397,15 @@ const int IMGTYPE_GROUP     = 4;
 const int IMGTYPE_LESBIAN   = 5;
 
 /*
+ *		`J` removing this because changing the way images are loaded
+ *
  * keep the images that don't change with pregnancy
  * after the ones that do. Then we can convert by adding
  * PREG_OFFSET, and if the result is > NUM_IMGTYPES
  * then it was one of the unchanging categories
  */
-const int IMGTYPE_PREGNANT  = 6;
-const int IMGTYPE_DEATH     = 7;
+const int IMGTYPE_TORTURE	= 6;	// `J` added
+const int IMGTYPE_DEATH		= 7;
 const int IMGTYPE_PROFILE   = 8;
 const int IMGTYPE_COMBAT    = 9;
 const int IMGTYPE_ORAL		= 10;
@@ -418,17 +420,35 @@ const int IMGTYPE_NUDE      = 18;
 const int IMGTYPE_MAST      = 19;
 const int IMGTYPE_TITTY     = 20;
 const int IMGTYPE_MILK      = 21;
+const int IMGTYPE_PREGNANT	= 22;
 /*
  * now make the pregnant varieties
  */
-const int PREG_OFFSET = 22;
-const int IMGTYPE_PREGANAL	    = IMGTYPE_ANAL	+ PREG_OFFSET;
-const int IMGTYPE_PREGBDSM	    = IMGTYPE_BDSM	+ PREG_OFFSET;
-const int IMGTYPE_PREGSEX	    = IMGTYPE_SEX	+ PREG_OFFSET;
-const int IMGTYPE_PREGBEAST	    = IMGTYPE_BEAST + PREG_OFFSET;
-const int IMGTYPE_PREGGROUP	    = IMGTYPE_GROUP + PREG_OFFSET;
-const int IMGTYPE_PREGLESBIAN	= IMGTYPE_LESBIAN + PREG_OFFSET;
-const int NUM_IMGTYPES          = IMGTYPE_PREGLESBIAN + 1;
+const int PREG_OFFSET = 23;
+const int IMGTYPE_PREGANAL	    = IMGTYPE_ANAL		+ PREG_OFFSET;	// 23
+const int IMGTYPE_PREGBDSM	    = IMGTYPE_BDSM		+ PREG_OFFSET;	// 24
+const int IMGTYPE_PREGSEX	    = IMGTYPE_SEX		+ PREG_OFFSET;	// 25
+const int IMGTYPE_PREGBEAST	    = IMGTYPE_BEAST		+ PREG_OFFSET;	// 26
+const int IMGTYPE_PREGGROUP	    = IMGTYPE_GROUP		+ PREG_OFFSET;	// 27
+const int IMGTYPE_PREGLESBIAN	= IMGTYPE_LESBIAN	+ PREG_OFFSET;	// 28
+const int IMGTYPE_PREGTORTURE	= IMGTYPE_TORTURE	+ PREG_OFFSET;	// 29
+const int IMGTYPE_PREGDEATH		= IMGTYPE_DEATH		+ PREG_OFFSET;	// 30
+const int IMGTYPE_PREGPROFILE	= IMGTYPE_PROFILE   + PREG_OFFSET;	// 31 
+const int IMGTYPE_PREGCOMBAT	= IMGTYPE_COMBAT    + PREG_OFFSET;	// 32
+const int IMGTYPE_PREGORAL		= IMGTYPE_ORAL		+ PREG_OFFSET;	// 33 
+const int IMGTYPE_PREGECCHI		= IMGTYPE_ECCHI     + PREG_OFFSET;	// 34
+const int IMGTYPE_PREGSTRIP		= IMGTYPE_STRIP     + PREG_OFFSET;	// 35
+const int IMGTYPE_PREGMAID		= IMGTYPE_MAID      + PREG_OFFSET;	// 36
+const int IMGTYPE_PREGSING		= IMGTYPE_SING      + PREG_OFFSET;	// 37
+const int IMGTYPE_PREGWAIT		= IMGTYPE_WAIT      + PREG_OFFSET;	// 38
+const int IMGTYPE_PREGCARD		= IMGTYPE_CARD      + PREG_OFFSET;	// 39
+const int IMGTYPE_PREGBUNNY		= IMGTYPE_BUNNY     + PREG_OFFSET;	// 40
+const int IMGTYPE_PREGNUDE		= IMGTYPE_NUDE      + PREG_OFFSET;	// 41
+const int IMGTYPE_PREGMAST		= IMGTYPE_MAST      + PREG_OFFSET;	// 42
+const int IMGTYPE_PREGTITTY		= IMGTYPE_TITTY     + PREG_OFFSET;	// 43
+const int IMGTYPE_PREGMILK		= IMGTYPE_MILK      + PREG_OFFSET;	// 44
+
+const int NUM_IMGTYPES          = IMGTYPE_PREGMILK + 1;	// `J` All image types can have a pregnant variation (except pregnant-pregnant)
 
 
 
