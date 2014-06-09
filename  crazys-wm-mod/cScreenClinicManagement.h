@@ -75,4 +75,5 @@ public:
 	void check_events();
 	bool check_keys();
 	void update_image();
+
 };

@@ -2194,7 +2194,7 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, int DayNight)
 /*
  *		ONCE DAILY processing
  *		at start of Day Shift
- */
+ */		
 		if(DayNight == SHIFT_DAY)					
 		{
 			// Remove any dead bodies from last week
@@ -2233,6 +2233,9 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, int DayNight)
 			}
 
 			current->m_Tort = false;
+
+			current->m_YesterDayJob = current->m_DayJob;		// `J` set what she did yesterday
+			current->m_YesterNightJob = current->m_NightJob;	// `J` set what she did yesternight
 
 			// Brothel only update for girls accomadation level
 			do_food_and_digs(brothel, current);

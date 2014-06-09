@@ -25,6 +25,7 @@
 #include "cTariff.h"
 #include "cJobManager.h"
 #include "InterfaceProcesses.h"
+#include "libintl.h"
 
 extern bool g_InitWin;
 extern int g_CurrCentre;
@@ -326,7 +327,7 @@ void cScreenCentreManagement::check_events()
 		if(selection != -1)
 		{
 			// first handle the descriptions
-			EditTextItem(g_Centre.m_JobManager.JobDescription[selection], jobdesc_id);
+				EditTextItem(g_Centre.m_JobManager.JobDescription[selection], jobdesc_id);
 
 			// Now assign the job to all the selected girls
 			int pos = 0;
@@ -353,10 +354,10 @@ void cScreenCentreManagement::check_events()
 					{
 						// update the girl's listing to reflect the job change
 						ss.str("");
-						ss << g_Centre.m_JobManager.JobName[(int)selected_girl->m_DayJob];
+						ss << g_Centre.m_JobManager.JobName[selected_girl->m_DayJob];
 						SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), 5);
 						ss.str("");
-						ss << g_Centre.m_JobManager.JobName[(int)selected_girl->m_NightJob];
+						ss << g_Centre.m_JobManager.JobName[selected_girl->m_NightJob];
 						SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), 6);
 
 						// refresh job worker counts for former job and current job
@@ -364,6 +365,39 @@ void cScreenCentreManagement::check_events()
 						SetSelectedItemText(joblist_id, selection, g_Centre.m_JobManager.JobDescriptionCount(selection, 0, day, false, false, false, true));
 					}
 				}
+				if (selected_girl->m_DayJob == JOB_REHAB)	// `J` added
+				{
+					ss.str("");
+					ss << g_Centre.m_JobManager.JobName[selected_girl->m_DayJob] << " (" << 3 - selected_girl->m_WorkingDay << ")";
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), 5);
+				}
+				else if (selected_girl->m_YesterDayJob == JOB_REHAB && selected_girl->m_DayJob != JOB_REHAB && ((selected_girl->m_WorkingDay > 0) || selected_girl->m_PrevWorkingDay > 0))
+				{
+					ss.str("");
+					ss << g_Centre.m_JobManager.JobName[selected_girl->m_DayJob] << " **";
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), 5);				
+				}
+
+				if (selected_girl->m_NightJob == JOB_REHAB)	// `J` added
+				{
+					ss.str("");
+					ss << g_Centre.m_JobManager.JobName[selected_girl->m_NightJob] << " (" << 3 - selected_girl->m_WorkingDay << ")";
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), 6);
+				}
+				else if (selected_girl->m_YesterNightJob == JOB_REHAB && selected_girl->m_NightJob != JOB_REHAB && ((selected_girl->m_WorkingDay > 0) || selected_girl->m_PrevWorkingDay > 0))
+				{
+					ss.str("");
+					ss << g_Centre.m_JobManager.JobName[selected_girl->m_NightJob] << " **";
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), 6);
+				}
+				if (selected_girl && selected_girl->m_YesterDayJob == JOB_REHAB && selection != JOB_REHAB && (selected_girl->m_WorkingDay > 0 || selected_girl->m_PrevWorkingDay > 0))
+				{	// `J` added
+					EditTextItem(g_Centre.m_JobManager.JobDescription[selection] 
+						+ gettext("\n** This girl was in Rehab, if you send her somewhere else, she will have to start her Rehab over.")
+						, jobdesc_id);
+				}
+
+
 				GSelection = GetNextSelectedItemFromList(girllist_id, pos+1, pos);
 			}
 		}
@@ -496,12 +530,21 @@ void cScreenCentreManagement::RefreshJobList()
 //	{
 //		SetJob = false;
 		// set the job
-		if(selected_girl)
-		{
-			int sel_job = (DayNight == 0) ? (int)selected_girl->m_DayJob : (int)selected_girl->m_NightJob;
-			SetSelectedItemInList(joblist_id, sel_job, false);
-			EditTextItem(g_Centre.m_JobManager.JobDescription[sel_job], jobdesc_id);
-		}
+	if (selected_girl && selected_girl->m_YesterDayJob == JOB_REHAB && selected_girl->m_DayJob != JOB_REHAB && (selected_girl->m_WorkingDay > 0 || selected_girl->m_PrevWorkingDay > 0))
+	{	// `J` added
+		int sel_job = (DayNight) ? selected_girl->m_DayJob : selected_girl->m_NightJob;
+		SetSelectedItemInList(joblist_id, sel_job, false);
+		EditTextItem(g_Centre.m_JobManager.JobDescription[sel_job]
+			+ gettext("\n** This girl was in Rehab, if you send her somewhere else, she will have to start her Rehab over.")
+			, jobdesc_id);
+	}
+	else if (selected_girl)
+	{
+		int sel_job = (DayNight) ? selected_girl->m_DayJob : selected_girl->m_NightJob;
+		SetSelectedItemInList(joblist_id, sel_job, false);
+		EditTextItem(g_Centre.m_JobManager.JobDescription[sel_job], jobdesc_id);
+	}
+
 //	}
 }
 

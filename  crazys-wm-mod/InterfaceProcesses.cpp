@@ -342,14 +342,14 @@ void GetString()
 	gssm.process();
 }
 
-static string clobber_extension(string s)
+static string clobber_extension(string s)	// `J` removed logging
 {
-	g_LogFile.os() << "clobber_extension: s = " << s << endl;
+	// g_LogFile.os() << "clobber_extension: s = " << s << endl;
 	size_t pos = s.rfind(".");
-	g_LogFile.os() << "clobber_extension: pos = " << pos << endl;
+	// g_LogFile.os() << "clobber_extension: pos = " << pos << endl;
 	string base = s.substr(0, pos);
-	g_LogFile.os() << "clobber_extension: s = " << s << endl;
-	g_LogFile.os() << "clobber_extension: base = " << base << endl;
+	// g_LogFile.os() << "clobber_extension: s = " << s << endl;
+	// g_LogFile.os() << "clobber_extension: base = " << base << endl;
 	return base;
 }
 
@@ -368,8 +368,8 @@ static void LoadXMLItems(FileList &fl)
 		string key = clobber_extension(str);
 		lookup[key] = str;
 		g_LogFile.os() << "	adding " << str << endl;
-		g_LogFile.os() << "	under " << key << endl;
-		g_LogFile.os() << "	result " << lookup[key] << endl;
+		// g_LogFile.os() << "	under " << key << endl;
+		// g_LogFile.os() << "	result " << lookup[key] << endl;
 	}
 
 	g_LogFile.os() << "items files:" << endl;
@@ -377,34 +377,34 @@ static void LoadXMLItems(FileList &fl)
 	for(int i = 0; i < fl.size(); i++) {
 		string str = fl[i].full();
 		string key = clobber_extension(str);
-		g_LogFile.os() << "	checking " << lookup[key] << endl;
+		// g_LogFile.os() << "	checking " << lookup[key] << endl;
 		if(lookup[key] != "") {
 			continue;
 		}
 		lookup[key] = str;
 		g_LogFile.os() << "	adding " << str << endl;
-		g_LogFile.os() << "	under " << key << endl;
+		// g_LogFile.os() << "	under " << key << endl;
 	}
 /*
  *	Iterate over the map and print out all key/value pairs.
  *	kudos: wikipedia
  */
-	g_LogFile.os() << "walking map..." << endl;
+	// g_LogFile.os() << "walking map..." << endl;
 	for(map<string,string>::const_iterator it = lookup.begin(); it != lookup.end(); ++it) {
 		string full_path = it->second;
-		g_LogFile.os() <<	"\tkey = " << it->first << endl;
-		g_LogFile.os() <<	"\tpath = " << full_path << endl;
+		// g_LogFile.os() <<	"\tkey = " << it->first << endl;
+		// g_LogFile.os() <<	"\tpath = " << full_path << endl;
 /*
  *		does it end in ".items" or ".itemsx"?
  */
 		size_t len = full_path.length();
 		char c = full_path.at(len-1);
 		if(c == 'x') {
-			g_LogFile.os() << "\t\tloading xml" << endl;
+			// g_LogFile.os() << "\t\tloading xml" << endl;
 			g_InvManager.LoadItemsXML(full_path);
 		}
 		else {
-			g_LogFile.os() << "\t\tloading orig" << endl;
+			// g_LogFile.os() << "\t\tloading orig" << endl;
 			g_InvManager.LoadItems(full_path);
 		}
 	}

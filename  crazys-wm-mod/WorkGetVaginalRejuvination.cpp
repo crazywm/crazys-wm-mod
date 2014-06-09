@@ -46,6 +46,13 @@ bool cJobManager::WorkGetVaginalRejuvination(sGirl* girl, sBrothel* brothel, int
 {
 	string message = "";
 
+	if (girl->m_YesterDayJob != JOB_VAGINAREJUV)	// if she was not in surgery yesterday, 
+	{
+		girl->m_WorkingDay = 0;				// rest working days to 0 before proceding
+		girl->m_PrevWorkingDay = 0;
+	}
+
+
 	// not for patient
 	g_Girls.UnequipCombat(girl);
 
@@ -119,6 +126,7 @@ bool cJobManager::WorkGetVaginalRejuvination(sGirl* girl, sBrothel* brothel, int
 
 		(girl->m_Virgin) = true;
 		girl->m_WorkingDay = 0;
+		girl->m_PrevWorkingDay = 0;
 		girl->m_DayJob = JOB_CLINICREST;
 		girl->m_NightJob = JOB_CLINICREST;
 	}

@@ -164,7 +164,8 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)
  *		ONCE DAILY processing
  *		at start of Day Shift
  */
-		if(DayNight == SHIFT_DAY)					
+
+		if (DayNight == SHIFT_DAY)
 		{
 			// Remove any dead bodies from last week
 			if(current->health() <= 0)
@@ -200,6 +201,9 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)
 				else
 					break;
 			}
+
+			current->m_YesterDayJob = current->m_DayJob;		// `J` set what she did yesterday
+			current->m_YesterNightJob = current->m_NightJob;	// `J` set what she did yesternight
 
 			// Brothel only update for girls accomadation level
 			do_food_and_digs(brothel, current);
@@ -320,6 +324,7 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)
 
 		// Lets try to compact multiple messages into one.
 		string ManagerMsg = "";
+		string RecoupMsg = "";
 		string ManagerWarningMsg = "";
 
 		bool manager = false;
@@ -328,7 +333,12 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)
 
 		if(g_Girls.GetStat(current, STAT_TIREDNESS) > 80)
 		{
-			if (manager)
+			if (current->m_YesterDayJob == JOB_REHAB)
+			{
+				current->m_DayJob = JOB_CENTREREST;	current->m_NightJob = JOB_CENTREREST;
+				RecoupMsg += girlName + gettext(" is recouperating after her rehab.\n");
+			}
+			else if (manager)
 			{
 				if(current->m_PrevNightJob == 255 && current->m_PrevDayJob == 255)
 				{
@@ -356,11 +366,16 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)
 			g_Girls.UpdateStat(current, STAT_HAPPINESS, 5);
 		}
 
-		if(g_Girls.GetStat(current, STAT_HEALTH) < 40)
+		if (g_Girls.GetStat(current, STAT_HEALTH) < 40)
 		{
-			if(manager)
+			if (current->m_YesterDayJob == JOB_REHAB)
 			{
-				if(current->m_PrevNightJob == 255 && current->m_PrevDayJob == 255)
+				current->m_DayJob = JOB_CENTREREST;	current->m_NightJob = JOB_CENTREREST;
+				RecoupMsg += girlName + gettext(" is recouperating after her rehab.\n");
+			}
+			else if (manager)
+			{
+				if (current->m_PrevNightJob == 255 && current->m_PrevDayJob == 255)
 				{
 					current->m_PrevDayJob = current->m_DayJob;
 					current->m_PrevNightJob = current->m_NightJob;
@@ -380,16 +395,19 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		}
 
 		// Back to work
-		if((current->m_NightJob == JOB_CENTREREST && current->m_DayJob == JOB_CENTREREST) && (g_Girls.GetStat(current, STAT_HEALTH) >= 80 && g_Girls.GetStat(current, STAT_TIREDNESS) <= 20))
+		if ((current->m_NightJob == JOB_CENTREREST && current->m_DayJob == JOB_CENTREREST) && (g_Girls.GetStat(current, STAT_HEALTH) >= 80 && g_Girls.GetStat(current, STAT_TIREDNESS) <= 20))
 		{
-			if(
-				(manager || current->m_PrevDayJob == JOB_CENTREMANAGER)  // do we have a director, or was she the director and made herself rest?
+			if (current->m_YesterDayJob == JOB_REHAB)
+			{
+				current->m_DayJob = JOB_CENTREREST;	current->m_NightJob = JOB_CENTREREST;
+				RecoupMsg += girlName + gettext(" is recouperating after her rehab.\n");
+			}
+			else if ((manager || current->m_PrevDayJob == JOB_CENTREMANAGER)  // do we have a director, or was she the director and made herself rest?
 				&& current->m_PrevDayJob != 255  // 255 = nothing, in other words no previous job stored
-				&& current->m_PrevNightJob != 255
-				)
+				&& current->m_PrevNightJob != 255)
 			{
 				g_Brothels.m_JobManager.HandleSpecialJobs(brothel->m_id, current, current->m_PrevDayJob, current->m_DayJob, true);
-				if(current->m_DayJob == current->m_PrevDayJob)  // only update night job if day job passed HandleSpecialJobs
+				if (current->m_DayJob == current->m_PrevDayJob)  // only update night job if day job passed HandleSpecialJobs
 					current->m_NightJob = current->m_PrevNightJob;
 				else
 					current->m_DayJob = JOB_CENTREREST;
@@ -409,8 +427,12 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)
 			current->m_Events.AddMessage(ManagerMsg, IMGTYPE_PROFILE, SHIFT_NIGHT);
 			ManagerMsg = "";
 		}
-
-        if (strcmp(ManagerWarningMsg.c_str(), "") != 0)
+		if (strcmp(RecoupMsg.c_str(), "") != 0)
+		{
+			current->m_Events.AddMessage(RecoupMsg, IMGTYPE_PROFILE, DayNight);
+			RecoupMsg = "";
+		}
+		if (strcmp(ManagerWarningMsg.c_str(), "") != 0)
 		{
 			current->m_Events.AddMessage(ManagerWarningMsg, IMGTYPE_PROFILE, EVENT_WARNING);
 			ManagerWarningMsg = "";

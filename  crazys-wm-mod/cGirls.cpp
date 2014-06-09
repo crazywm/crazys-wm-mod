@@ -1109,8 +1109,8 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 		return 0;
 	}
 	random_girl_index = g_Dice%m_NumRandomGirls;	// pick a number between 0 and m_NumRandomGirls
-
-	while(true)	// loop until we find a human/non-human template as required
+	int i = 0;
+	while(true&&i<100)	// loop until we find a human/non-human template as required
 	{
 		current = random_girl_at(random_girl_index);
 		if(current == 0) {									// if we couldn't find the girl (which should be impossible...
@@ -1125,6 +1125,7 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
  *
  *		Either way, try again...
  */
+		i++;	// `J` check 100 times then if not found return 
 		random_girl_index = g_Dice%m_NumRandomGirls;
 	}
 
@@ -3933,6 +3934,9 @@ bool sGirl::LoadGirlXML(TiXmlHandle hGirl)
 
 	// load working day counter
 	pGirl->QueryIntAttribute("WorkingDay", &m_WorkingDay);
+	pGirl->QueryIntAttribute("PrevWorkingDay", &m_PrevWorkingDay);	// `J` added
+	if (m_WorkingDay < 0)m_WorkingDay = 0;
+	if (m_PrevWorkingDay < 0)m_PrevWorkingDay = 0;
 
 	// load acom level
 	pGirl->QueryIntAttribute("AccLevel", &tempInt); m_AccLevel = tempInt; tempInt = 0;
@@ -3943,6 +3947,10 @@ bool sGirl::LoadGirlXML(TiXmlHandle hGirl)
 	// load prev day/night jobs
 	pGirl->QueryIntAttribute("PrevDayJob", &tempInt); m_PrevDayJob = tempInt; tempInt = 0;
 	pGirl->QueryIntAttribute("PrevNightJob", &tempInt); m_PrevNightJob = tempInt; tempInt = 0;
+
+	// load yester day/night jobs
+	pGirl->QueryIntAttribute("YesterDayJob", &tempInt); m_YesterDayJob = tempInt; tempInt = 0;
+	pGirl->QueryIntAttribute("YesterNightJob", &tempInt); m_YesterNightJob = tempInt; tempInt = 0;
 
 	// load runnayway value
 	pGirl->QueryIntAttribute("RunAway", &tempInt); m_RunAway = tempInt; tempInt = 0;
@@ -4079,6 +4087,7 @@ TiXmlElement* sGirl::SaveGirlXML(TiXmlElement* pRoot)
 
 	// save working day counter
 	pGirl->SetAttribute("WorkingDay", m_WorkingDay);
+	pGirl->SetAttribute("PrevWorkingDay", m_PrevWorkingDay);	// `J` added
 
 	// save acom level
 	pGirl->SetAttribute("AccLevel", m_AccLevel);
@@ -4086,10 +4095,14 @@ TiXmlElement* sGirl::SaveGirlXML(TiXmlElement* pRoot)
 	// save day/night jobs
 	pGirl->SetAttribute("DayJob", m_DayJob);
 	pGirl->SetAttribute("NightJob", m_NightJob);
-
+	
 	// save prev day/night jobs
 	pGirl->SetAttribute("PrevDayJob", m_PrevDayJob);
 	pGirl->SetAttribute("PrevNightJob", m_PrevNightJob);
+
+	// save prev day/night jobs
+	pGirl->SetAttribute("YesterDayJob", m_YesterDayJob);
+	pGirl->SetAttribute("YesterNightJob", m_YesterNightJob);
 
 	// save runnayway vale
 	pGirl->SetAttribute("RunAway", m_RunAway);
@@ -4197,12 +4210,14 @@ void sGirl::load_from_xml(TiXmlElement *el)
 	if((pt = el->Attribute("Name"))) {
 		m_Name = n_strdup(pt);
 		m_Realname = pt; 
+		g_LogFile.os() << "Loading Girl='" << m_Realname << "'" << endl;
 	}
 	else {
 		g_LogFile.os() << "Error: can't find name when loading girl."
 		     << "XML = " << (*el) << endl;
 		return;
 	}
+	
 
 	m_newRandomFixed = -1;
 
@@ -4233,8 +4248,8 @@ void sGirl::load_from_xml(TiXmlElement *el)
 			continue;
 		}
 		m_Stats[i] = ival;
-		os << "Debug: Girl='" << m_Realname << "'; Stat='" << stat_name << "'; Value='" << pt << "'; Ival = " 
-		   << int(m_Stats[i]) << "'" << endl;
+		// os << "Debug: Girl='" << m_Realname << "'; Stat='" << stat_name << "'; Value='" << pt << "'; Ival = " 
+		//   << int(m_Stats[i]) << "'" << endl;
 	}
 
 
@@ -13962,6 +13977,13 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 	//given a statistic name, set a string to a value that represents that statistic
 	static stringstream ss;
 	ss.str("");
+	
+	bool interrupted = false;	// `J` added
+	if ((this) &&
+		(this)->m_YesterDayJob != (this)->m_DayJob &&
+		(g_Clinic.is_Surgery_Job((this)->m_YesterDayJob) || (this)->m_YesterDayJob == JOB_REHAB) &&
+		(((this)->m_WorkingDay > 0) || (this)->m_PrevWorkingDay > 0))
+		interrupted = true;
 
 	if (detailName == "Name")
 	{
@@ -14074,10 +14096,27 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 		{
 			ss << gettext("None");
 		}
+		else if (m_DayJob == JOB_REHAB)
+		{
+			ss << g_Brothels.m_JobManager.JobName[m_DayJob] << " (" << 3 - m_WorkingDay << ")";
+		}
+		else if (m_DayJob == JOB_GETABORT)
+		{
+			ss << g_Brothels.m_JobManager.JobName[m_DayJob] << " (" << 2 - m_WorkingDay << ")*";
+		}
+		else if (g_Clinic.is_Surgery_Job(m_DayJob))
+		{
+			ss << g_Brothels.m_JobManager.JobName[m_DayJob] << " (" << 5 - m_WorkingDay << ")*";
+		}
 		else
 		{
 			ss << g_Brothels.m_JobManager.JobName[m_DayJob];
 		}
+		if (interrupted)
+		{
+			ss << " **";	// `J` added
+		}
+
 	}
 	else if (detailName == "NightJob")
 	{
@@ -14085,9 +14124,25 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 		{
 			ss << gettext("None");
 		}
+		else if (m_NightJob == JOB_REHAB)
+		{
+			ss << g_Brothels.m_JobManager.JobName[m_NightJob] << " (" << 3 - m_WorkingDay << ")";
+		}
+		else if (m_NightJob == JOB_GETABORT)
+		{
+			ss << g_Brothels.m_JobManager.JobName[m_NightJob] << " (" << 2 - m_WorkingDay << ")*";
+		}
+		else if (g_Clinic.is_Surgery_Job(m_NightJob))
+		{
+			ss << g_Brothels.m_JobManager.JobName[m_NightJob] << " (" << 5 - m_WorkingDay << ")*";
+		}
 		else
 		{
 			ss << g_Brothels.m_JobManager.JobName[m_NightJob];
+		}
+		if (interrupted)
+		{
+			ss << " **";	// `J` added
 		}
 	}
 	else if (detailName.find("STAT_") != string::npos)

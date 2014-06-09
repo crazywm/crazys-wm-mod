@@ -796,7 +796,7 @@ void cScreenGirlDetails::RefreshJobList()
 		// set the job
 		if(selected_girl)
 		{
-			int sel_job = (DayNight == 0) ? (int)selected_girl->m_DayJob : (int)selected_girl->m_NightJob;
+			int sel_job = (DayNight) ? selected_girl->m_DayJob : selected_girl->m_NightJob;
 			SetSelectedItemInList(joblist_id, sel_job, false);
 		}
 //	}

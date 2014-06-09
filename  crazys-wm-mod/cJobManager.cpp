@@ -301,24 +301,24 @@ void cJobManager::Setup()
 	JobFilterName[JOBFILTER_CLINIC] = gettext("Medical Clinic");
 	JobFilterDescription[JOBFILTER_CLINIC] = gettext("These are jobs for running a medical clinic.");
 	JobFilterIndex[JOBFILTER_CLINIC] = JOB_GETHEALING;
-	JobName[JOB_GETABORT] = gettext("Get Abortion");
-	JobDescription[JOB_GETABORT] = gettext("She will get an abortion, removing pregnancy and/or insemination.(takes 2 days)");
+	JobName[JOB_GETABORT] = gettext("Abortion");
+	JobDescription[JOB_GETABORT] = gettext("She will get an abortion, removing pregnancy and/or insemination.\n*(Takes 2 days or 1 if a Nurse is on duty)");
 	JobName[JOB_PHYSICALSURGERY] = gettext("Cosmetic Surgery");
-	JobDescription[JOB_PHYSICALSURGERY] = gettext("She will undergo magical surgery to \"enhance\" her appearance. (takes up to 5 days)");
+	JobDescription[JOB_PHYSICALSURGERY] = gettext("She will undergo magical surgery to \"enhance\" her appearance.\n*(Takes up to 5 days, less if a Nurse is on duty)");
 	JobName[JOB_LIPO] = gettext("Liposuction");
-	JobDescription[JOB_LIPO] = gettext("She will undergo liposuction to \"enhance\" her figure. (takes up to 5 days)");
+	JobDescription[JOB_LIPO] = gettext("She will undergo liposuction to \"enhance\" her figure.\n*(Takes up to 5 days, less if a Nurse is on duty)");
 	JobName[JOB_BREASTREDUCTION] = gettext("Breast Reduction Surgery");
-	JobDescription[JOB_BREASTREDUCTION] = gettext("She will undergo breast reduction surgery. (takes up to 5 days)");
+	JobDescription[JOB_BREASTREDUCTION] = gettext("She will undergo breast reduction surgery.\n*(Takes up to 5 days, less if a Nurse is on duty)");
 	JobName[JOB_BOOBJOB] = gettext("Boob Job");
-	JobDescription[JOB_BOOBJOB] = gettext("She will undergo surgery to \"enhance\" her bust. (takes up to 5 days)");
+	JobDescription[JOB_BOOBJOB] = gettext("She will undergo surgery to \"enhance\" her bust.\n*(Takes up to 5 days, less if a Nurse is on duty)");
 	JobName[JOB_ASSJOB] = gettext("Arse Job");
-	JobDescription[JOB_ASSJOB] = gettext("She will undergo surgery to \"enhance\" her ass. (takes up to 5 days)");
+	JobDescription[JOB_ASSJOB] = gettext("She will undergo surgery to \"enhance\" her ass.\n*(Takes up to 5 days, less if a Nurse is on duty)");
 	JobName[JOB_VAGINAREJUV] = gettext("Vaginal Rejuvination");
-	JobDescription[JOB_VAGINAREJUV] = gettext("She will undergo surgery to make her a virgin again. (takes up to 5 days)");
+	JobDescription[JOB_VAGINAREJUV] = gettext("She will undergo surgery to make her a virgin again.\n*(Takes up to 5 days, less if a Nurse is on duty)");
 	JobName[JOB_FACELIFT] = gettext("Face Lift");
-	JobDescription[JOB_FACELIFT] = gettext("She will undergo surgery to make her younger. (takes up to 5 days)");
+	JobDescription[JOB_FACELIFT] = gettext("She will undergo surgery to make her younger.\n*(Takes up to 5 days, less if a Nurse is on duty)");
 	JobName[JOB_GETHEALING] = gettext("Get Healing");
-	JobDescription[JOB_GETHEALING] = gettext("She will have her wounds attended. This takes 1 day for each wound trait.");
+	JobDescription[JOB_GETHEALING] = gettext("She will have her wounds attended.");
 	JobName[JOB_GETREPAIRS] = gettext("Get Repaired");
 	JobDescription[JOB_GETREPAIRS] = gettext("Construct girls will be quickly repaired here.");
 	
@@ -936,7 +936,26 @@ string cJobManager::JobDescriptionCount(int job_id, int brothel_id, bool day, bo
 bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, int OldJobID, bool DayOrNight)
 {
 	bool MadeChanges = true;  // whether a special case applies to specified job or not
-	Girl->m_WorkingDay = 0; // TODO put this in method in cGirl
+	
+	/*	`J` added to reset working says only if her job actually changes
+	 * m_WorkingDay is only used for full time jobs that take more tha 1 day to complete
+	 * such as getting surgerys or rehab
+	*/
+	if (Girl->m_WorkingDay > 0)	// `J` Save it and reset it to 0 so it is only backed up once...
+	{
+		if ((Girl->m_YesterDayJob == JOB_GETABORT&& Girl->m_WorkingDay < 2) ||
+			(g_Clinic.is_Surgery_Job(Girl->m_YesterDayJob) && Girl->m_YesterDayJob != JOB_GETABORT && Girl->m_WorkingDay < 5)	||
+			(Girl->m_YesterDayJob == JOB_REHAB && Girl->m_WorkingDay < 3))
+		{
+			Girl->m_PrevWorkingDay = Girl->m_WorkingDay;
+		}
+		Girl->m_WorkingDay = 0;
+	}
+	if (Girl->m_YesterDayJob == JobID)	// `J` ...so that if you decide to put her back onto the job...
+	{
+		Girl->m_WorkingDay = Girl->m_PrevWorkingDay;	// `J` ...it will restore the previous days
+	}
+
 // Special Brothel Jobs
 	if (u_int(JobID) == JOB_MATRON)
 	{

@@ -67,7 +67,6 @@ extern sGirl *selected_girl;
 extern vector<int> cycle_girls;
 extern int cycle_pos;
 
-
 bool cScreenClinicManagement::ids_set = false;
 
 void cScreenClinicManagement::set_ids()
@@ -354,10 +353,10 @@ void cScreenClinicManagement::check_events()
 					{
 						// update the girl's listing to reflect the job change
 						ss.str("");
-						ss << g_Clinic.m_JobManager.JobName[(int)selected_girl->m_DayJob];
+						ss << g_Clinic.m_JobManager.JobName[selected_girl->m_DayJob];
 						SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), 5);
 						ss.str("");
-						ss << g_Clinic.m_JobManager.JobName[(int)selected_girl->m_NightJob];
+						ss << g_Clinic.m_JobManager.JobName[selected_girl->m_NightJob];
 						SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), 6);
 
 						// refresh job worker counts for former job and current job
@@ -365,6 +364,68 @@ void cScreenClinicManagement::check_events()
 						SetSelectedItemText(joblist_id, selection, g_Clinic.m_JobManager.JobDescriptionCount(selection, 0, day, true));
 					}
 				}
+				bool interrupted = false;	// `J` added
+				if (selected_girl->m_YesterDayJob != selected_girl->m_DayJob &&
+					g_Clinic.is_Surgery_Job(selected_girl->m_YesterDayJob) &&
+					((selected_girl->m_WorkingDay > 0) || selected_girl->m_PrevWorkingDay > 0))
+					interrupted = true;
+				
+				if (selected_girl->m_DayJob == JOB_GETABORT)	// `J` added
+				{
+					ss.str("");
+					ss << g_Clinic.m_JobManager.JobName[selected_girl->m_DayJob] << " (" << 2 - selected_girl->m_WorkingDay << ")*";
+					if (interrupted)	ss << " **";
+						SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), 5);
+				}
+				else if (g_Clinic.is_Surgery_Job(selected_girl->m_DayJob))	// `J` added
+				{
+					ss.str("");
+					ss << g_Clinic.m_JobManager.JobName[selected_girl->m_DayJob] << " (" << 5 - selected_girl->m_WorkingDay << ")*";
+					if (interrupted)	ss << " **";
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), 5);
+				}
+				else if (interrupted)
+				{
+					ss.str("");
+					ss << g_Clinic.m_JobManager.JobName[selected_girl->m_DayJob] << " **";
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), 5);
+				}
+
+				if (selected_girl->m_NightJob == JOB_GETABORT)	// `J` added
+				{
+					ss.str("");
+					ss << g_Clinic.m_JobManager.JobName[selected_girl->m_NightJob] << " (" << 2 - selected_girl->m_WorkingDay << ")*";
+					if (interrupted)	ss << " **";
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), 6);
+				}
+				else if (g_Clinic.is_Surgery_Job(selected_girl->m_NightJob))	// `J` added
+				{
+					ss.str("");
+					ss << g_Clinic.m_JobManager.JobName[selected_girl->m_NightJob] << " (" << 5 - selected_girl->m_WorkingDay << ")*";
+					if (interrupted)	ss << " **";
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), 6);
+				}
+				else if (interrupted)
+				{
+					ss.str("");
+					ss << g_Clinic.m_JobManager.JobName[selected_girl->m_NightJob] << " **";
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), 6);
+				}
+				if (interrupted)					
+				{	// `J` added
+					string jdmessage = g_Clinic.m_JobManager.JobDescription[selection] + gettext("\n** This girl was getting ");
+					if (selected_girl->m_YesterDayJob == JOB_BOOBJOB || selected_girl->m_YesterDayJob == JOB_FACELIFT)
+						jdmessage += "a ";
+					else if (selected_girl->m_YesterDayJob == JOB_GETABORT || selected_girl->m_YesterDayJob == JOB_ASSJOB)
+						jdmessage += "an ";
+						jdmessage += g_Clinic.m_JobManager.JobName[selected_girl->m_YesterDayJob]
+						+ gettext(", if you send her somewhere else, she will have to start her Surgery over.");
+
+						EditTextItem(jdmessage, jobdesc_id);
+				}
+
+
+
 				GSelection = GetNextSelectedItemFromList(girllist_id, pos+1, pos);
 			}
 		}
@@ -485,7 +546,7 @@ void cScreenClinicManagement::RefreshJobList()
 	bool day = (DayNight == 0) ? true : false;
 
 	// populate Jobs listbox with jobs in the selected category
-	for(unsigned int i=g_Clinic.m_JobManager.JobFilterIndex[job_filter]; i<g_Clinic.m_JobManager.JobFilterIndex[job_filter+1]; i++)
+	for (unsigned int i = g_Clinic.m_JobManager.JobFilterIndex[job_filter]; i < g_Clinic.m_JobManager.JobFilterIndex[job_filter + 1]; i++)
 	{
 		if (g_Clinic.m_JobManager.JobName[i] == "")
 			continue;
@@ -493,17 +554,34 @@ void cScreenClinicManagement::RefreshJobList()
 		AddToListBox(joblist_id, i, text);
 	}
 
-//	if (SetJob)
-//	{
-//		SetJob = false;
-		// set the job
-		if(selected_girl)
-		{
-			int sel_job = (DayNight == 0) ? (int)selected_girl->m_DayJob : (int)selected_girl->m_NightJob;
-			SetSelectedItemInList(joblist_id, sel_job, false);
-			EditTextItem(g_Clinic.m_JobManager.JobDescription[sel_job], jobdesc_id);
-		}
-//	}
+	//	if (SetJob)
+	//	{
+	//		SetJob = false;
+	// set the job
+	if (selected_girl && 
+		g_Clinic.is_Surgery_Job(selected_girl->m_YesterDayJob) &&		// `J` added
+		selected_girl->m_YesterDayJob != selected_girl->m_DayJob &&
+		(selected_girl->m_WorkingDay > 0 || selected_girl->m_PrevWorkingDay > 0))
+	{	
+		int sel_job = (DayNight) ? selected_girl->m_DayJob : selected_girl->m_NightJob;
+		SetSelectedItemInList(joblist_id, sel_job, false);
+
+		string jdmessage = g_Clinic.m_JobManager.JobDescription[sel_job] + gettext("\n** This girl was getting ");
+		if (selected_girl->m_YesterDayJob == JOB_BOOBJOB || selected_girl->m_YesterDayJob == JOB_FACELIFT)
+			jdmessage += "a ";
+		else if (selected_girl->m_YesterDayJob == JOB_GETABORT || selected_girl->m_YesterDayJob == JOB_ASSJOB)
+			jdmessage += "an ";
+		jdmessage += g_Clinic.m_JobManager.JobName[selected_girl->m_YesterDayJob]
+			+ gettext(", if you send her somewhere else, she will have to start her Surgery over.");
+		EditTextItem(jdmessage, jobdesc_id);
+	}
+	else if (selected_girl)
+	{
+		int sel_job = (DayNight) ? selected_girl->m_DayJob : selected_girl->m_NightJob;
+		SetSelectedItemInList(joblist_id, sel_job, false);
+		EditTextItem(g_Clinic.m_JobManager.JobDescription[sel_job], jobdesc_id);
+	}
+	//	}
 }
 
 void cScreenClinicManagement::GetSelectedGirls(vector<int> *girl_array)

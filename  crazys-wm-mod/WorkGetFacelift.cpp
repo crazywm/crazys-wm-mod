@@ -46,6 +46,13 @@ bool cJobManager::WorkGetFacelift(sGirl* girl, sBrothel* brothel, int DayNight, 
 {
 	string message = "";
 
+	if (girl->m_YesterDayJob != JOB_FACELIFT)	// if she was not in surgery yesterday, 
+	{
+		girl->m_WorkingDay = 0;				// rest working days to 0 before proceding
+		girl->m_PrevWorkingDay = 0;
+	}
+
+
 	// not for patient
 	g_Girls.UnequipCombat(girl);
 
@@ -126,6 +133,7 @@ bool cJobManager::WorkGetFacelift(sGirl* girl, sBrothel* brothel, int DayNight, 
 
 		if (girl->m_Stats[STAT_AGE] <= 18) girl->m_Stats[STAT_AGE] = 18;
 		girl->m_WorkingDay = 0;
+		girl->m_PrevWorkingDay = 0;
 		girl->m_DayJob = JOB_CLINICREST;
 		girl->m_NightJob = JOB_CLINICREST;
 	}

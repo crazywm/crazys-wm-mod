@@ -78,9 +78,33 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, int DayNi
 		int type = ((g_Dice%2)+1);	// 1 is beast, 2 is girl (human or non-human)
 
 		sGirl* tempgirl = g_Girls.CreateRandomGirl(18, false, false, false, true, false, false);
-
-		Uint8 fight_outcome = g_Girls.girl_fights_girl(girl, tempgirl);
-		if (fight_outcome == 1)  // If she won
+		Uint8 fight_outcome = 0;
+		if (tempgirl)		// `J` reworked incase there are no Non-Human Random Girls
+		{
+			fight_outcome = g_Girls.girl_fights_girl(girl, tempgirl);
+		}
+		else
+		{
+			g_LogFile.write("Error: You have no Non-Human Random Girls for your girls to fight\n");
+			g_LogFile.write("Error: You need a Non-Human Random Girl to allow WorkExploreCatacombs randomness");
+			fight_outcome = 7;
+		}
+		if (fight_outcome == 7)
+		{
+			if (g_Dice%girl->get_skill(SKILL_COMBAT) < 5)
+			{
+				raped = true;
+			}
+			else
+			{
+				message = "She came back with one animal today.\n\n";
+				message += "(Error: You need a Non-Human Random Girl to allow WorkExploreCatacombs randomness)";
+				girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
+				g_Brothels.add_to_beasts(1);
+				type_beasts++;
+			}
+		}
+		else if (fight_outcome == 1)  // If she won
 		{
 			if(type == 2)  // Catacombs girl type
 			{				// NOTE that defeating tempgirl and capturing unrelated girl is
@@ -196,7 +220,7 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, int DayNi
 		{
 			sInventoryItem* TempItem = g_InvManager.GetRandomItem();
 
-			// 1. If the item type already exists in the brothel, and there isn't already 255 of it,
+			// 1. If the item type already exists in the brothel, and there isn't already 999 of it,
 			// add one to it
 			ItemPlace = g_Brothels.HasItem(TempItem->m_Name, -1);
 			if ((ItemPlace != -1) && (g_Brothels.m_NumItem[ItemPlace] <= 999))
@@ -245,7 +269,8 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, int DayNi
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_COMBAT, DayNight);
 
 	// Improve girl
-	int xp = 15, libido = 5, skill = 1;
+	int xp = 15, libido = 5, skill = type_monster_girls+type_unique_monster_girls+type_beasts;
+
 
 	if (g_Girls.HasTrait(girl, "Quick Learner"))
 	{

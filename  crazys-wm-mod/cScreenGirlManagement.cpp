@@ -555,10 +555,10 @@ void cScreenGirlManagement::check_events()
 					{
 						// update the girl's listing to reflect the job change
 						ss.str("");
-						ss << g_Brothels.m_JobManager.JobName[(int)selected_girl->m_DayJob];
+						ss << g_Brothels.m_JobManager.JobName[selected_girl->m_DayJob];
 						SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), 5);
 						ss.str("");
-						ss << g_Brothels.m_JobManager.JobName[(int)selected_girl->m_NightJob];
+						ss << g_Brothels.m_JobManager.JobName[selected_girl->m_NightJob];
 						SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), 6);
 						// refresh job worker counts for former job and current job
 
@@ -787,7 +787,7 @@ void cScreenGirlManagement::RefreshJobList()
 		// set the job
 		if(selected_girl)
 		{
-			int sel_job = (DayNight == 0) ? (int)selected_girl->m_DayJob : (int)selected_girl->m_NightJob;
+			int sel_job = (DayNight) ? selected_girl->m_DayJob : selected_girl->m_NightJob;
 			SetSelectedItemInList(joblist_id, sel_job, false);
 			EditTextItem(g_Brothels.m_JobManager.JobDescription[sel_job], jobdesc_id);
 		}

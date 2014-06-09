@@ -46,6 +46,13 @@ bool cJobManager::WorkGetAbort(sGirl* girl, sBrothel* brothel, int DayNight, str
 {
 	string message = "";
 
+	if (girl->m_YesterDayJob != JOB_GETABORT)	// if she was not in surgery yesterday, 
+	{
+		girl->m_WorkingDay = 0;				// rest working days to 0 before proceding
+		girl->m_PrevWorkingDay = 0;
+	}
+
+
 	// not for patient
 	g_Girls.UnequipCombat(girl);
 
@@ -314,6 +321,7 @@ bool cJobManager::WorkGetAbort(sGirl* girl, sBrothel* brothel, int DayNight, str
 		g_Girls.UpdateStat(girl, STAT_PCHATE, hate);
 		girl->clear_pregnancy();
 		girl->m_WorkingDay = 0;
+		girl->m_PrevWorkingDay = 0;
 		girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
 	}
 
