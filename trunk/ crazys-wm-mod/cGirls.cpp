@@ -115,7 +115,9 @@ const char *sGirl::skill_names[] =
 	"Strip",
 	"Combat",
 	"OralSex",
-	"TittySex"
+	"TittySex",
+	"Medicine",
+	"Performance"
 };
 const char *sGirl::status_names[] =
 {
@@ -188,6 +190,8 @@ void sGirl::setup_maps()
 		skill_lookup["Service"]		= SKILL_SERVICE;
 		skill_lookup["Strip"]		= SKILL_STRIP;
 		skill_lookup["Combat"]		= SKILL_COMBAT;
+		skill_lookup["Medicine"]	= SKILL_MEDICINE;
+		skill_lookup["Performance"]	= SKILL_PERFORMANCE;
 
 		//	WD: Missing mapping for status
 		status_lookup["None"]				= STATUS_NONE; 
@@ -764,9 +768,9 @@ void cGirls::CalculateGirlType(sGirl* girl)
 		Sexy -= 20;
 		Freak += 10;
 	}
-	if(HasTrait(girl, "Sterile"))	// `J` How would a customer know this unless they are told?
+	if(HasTrait(girl, "Sterile"))	// `J` How would a customer know this unless they are told? //Agreed makes no sense does it CRAZY
 	{
-		Freak += 20;
+		//Freak += 20;
 	}
 	if (HasTrait(girl, "Fleet of Foot") || HasTrait(girl, "Fleet Of Foot"))
 	{
@@ -1800,6 +1804,8 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 	int jr_fam = GetStat(girl, STAT_FAME);
 	int jr_ser = GetSkill(girl, SKILL_SERVICE);
 	int jr_stp = GetSkill(girl, SKILL_STRIP);
+	int jr_med = GetSkill(girl, SKILL_MEDICINE);
+	int jr_per = GetSkill(girl, SKILL_PERFORMANCE);
 
 	stringstream ss;
 	ss << gettext("Charisma: ") << jr_cha;
@@ -1822,8 +1828,8 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 	int barmaid = (jr_int + jr_ser);
 	int barwait = (jr_int / 2 + jr_agi / 2 + jr_ser);
 	int dealer = (cards + jr_ser);
-	int sing = (jr_cnf + jr_ser);
-	int piano = (jr_cnf + jr_ser);
+	int sing = (jr_cnf + jr_per);
+	int piano = (jr_cnf + jr_per);
 	int entertainer = (looks + jr_ser);
 	int xxx = (looks + jr_ser);
 	int clubwait = (looks + jr_ser);
@@ -1834,7 +1840,7 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 	int massusse = (looks + jr_ser);
 	int comunityservice = ((jr_int / 2) + (jr_cha / 2) + jr_ser);
 	int feedpoor = ((jr_int / 2) + (jr_cha / 2) + jr_ser);
-	int nurse = (jr_int + jr_ser);
+	int nurse = (jr_int + jr_med);
 	int mechanic = (jr_int + jr_ser);
 
 
@@ -2709,6 +2715,7 @@ data += dd.str();*/
 	//STUDIO
 	else if (g_Studios.GetGirlsCurrentBrothel(selected_girl) != -1)
 	{
+		data += gettext("\n\nStudio Job Ratings\n");
 	}
 
 	return data;
@@ -2968,6 +2975,18 @@ string cGirls::GetDetailsString(sGirl* girl, bool purchase)
 
 	data += gettext("Stripping Sex: ");
 	variable = GetSkill(girl, SKILL_STRIP);
+	_itoa(variable, buffer, 10);
+	data += buffer;
+	data += gettext("%\n");
+
+	data += gettext("Medicine Skills: ");
+	variable = GetSkill(girl, SKILL_MEDICINE);
+	_itoa(variable, buffer, 10);
+	data += buffer;
+	data += gettext("%\n");
+
+	data += gettext("Performance Skills: ");
+	variable = GetSkill(girl, SKILL_PERFORMANCE);
 	_itoa(variable, buffer, 10);
 	data += buffer;
 	data += gettext("%\n");
@@ -5749,6 +5768,7 @@ void cGirls::UnapplyTraits(sGirl* girl, sTrait* trait)
 
 			UpdateStat(girl,STAT_PCFEAR,-200);
 			UpdateStat(girl, STAT_SPIRIT, 30);
+			UpdateSkill(girl,SKILL_PERFORMANCE, -5);
 		}
 
 		else if(strcmp(tr->m_Name, "Meek") == 0)
@@ -5760,6 +5780,7 @@ void cGirls::UnapplyTraits(sGirl* girl, sTrait* trait)
 			UpdateStat(girl, STAT_CONFIDENCE, 20);
 			UpdateStat(girl, STAT_OBEDIENCE, -20);
 			UpdateStat(girl, STAT_SPIRIT, 20);
+			UpdateSkill(girl,SKILL_PERFORMANCE, 10);
 		}
 
 		/////////////////////////////////////////////////////////////
@@ -5858,6 +5879,7 @@ void cGirls::UnapplyTraits(sGirl* girl, sTrait* trait)
 			AddTrait(girl, "Fearless", false, false, true);
 			UpdateStat(girl, STAT_SPIRIT, 30);
 			UpdateStat(girl, STAT_OBEDIENCE, -50);
+			UpdateSkill(girl,SKILL_PERFORMANCE, 10);
 		}
 
 		else if(strcmp(tr->m_Name, "Pessimist") == 0)
@@ -5941,6 +5963,7 @@ void cGirls::UnapplyTraits(sGirl* girl, sTrait* trait)
 		{
 			UpdateStat(girl,STAT_CHARISMA,-10);
 			UpdateStat(girl,STAT_CONFIDENCE,-5);
+			UpdateSkill(girl,SKILL_PERFORMANCE, -5);
 		}
 
 		else if(strcmp(tr->m_Name, "Sexy Air") == 0)
@@ -5990,6 +6013,7 @@ void cGirls::UnapplyTraits(sGirl* girl, sTrait* trait)
 		else if(strcmp(tr->m_Name, "Nerd") == 0)
 		{
 			UpdateStat(girl,STAT_CONFIDENCE,10);
+			UpdateSkill(girl,SKILL_MEDICINE, -10);
 		}
 
 		else if(strcmp(tr->m_Name, "Clumsy") == 0)
@@ -6077,6 +6101,7 @@ void cGirls::UnapplyTraits(sGirl* girl, sTrait* trait)
 			AddTrait(girl, "Fearless", false, false, true);
 			UpdateStat(girl,STAT_OBEDIENCE,-10);
 			UpdateStat(girl,STAT_CONFIDENCE,10);
+			UpdateSkill(girl,SKILL_PERFORMANCE, 20);
 		}
 
 		else if(strcmp(tr->m_Name, "Great Figure") == 0)
@@ -6404,6 +6429,7 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait, bool rememberflag)
 			
 			UpdateStat(girl,STAT_PCFEAR,-200);
 			UpdateStat(girl, STAT_SPIRIT, 30);
+			UpdateSkill(girl,SKILL_PERFORMANCE, 5);
 			UpdateEnjoyment(girl, ACTION_COMBAT, +20, true);
 		}
 	
@@ -6416,6 +6442,7 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait, bool rememberflag)
 			UpdateStat(girl, STAT_CONFIDENCE, -20);
 			UpdateStat(girl, STAT_OBEDIENCE, 20);
 			UpdateStat(girl, STAT_SPIRIT, -20);
+			UpdateSkill(girl,SKILL_PERFORMANCE, -10);
 			UpdateEnjoyment(girl, ACTION_COMBAT, -20, true);
 			UpdateEnjoyment(girl, ACTION_SEX, -20, true);
 		}
@@ -6513,6 +6540,7 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait, bool rememberflag)
 			RemoveTrait(girl, "Fearless", rememberflag, true);
 			UpdateStat(girl, STAT_SPIRIT, -30);
 			UpdateStat(girl, STAT_OBEDIENCE, 50);
+			UpdateSkill(girl,SKILL_PERFORMANCE, -10);
 			UpdateEnjoyment(girl, ACTION_COMBAT, -20, true);
 			UpdateEnjoyment(girl, ACTION_WORKHALL, -20, true);
 			UpdateEnjoyment(girl, ACTION_WORKBAR, -20, true);
@@ -6610,6 +6638,7 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait, bool rememberflag)
 		{
 			UpdateStat(girl,STAT_CHARISMA,10);
 			UpdateStat(girl,STAT_CONFIDENCE,5);
+			UpdateSkill(girl,SKILL_PERFORMANCE, 5);
 			UpdateEnjoyment(girl, ACTION_SEX, -20, true);
 			UpdateEnjoyment(girl, ACTION_WORKMATRON, +20, true);
 		}
@@ -6662,6 +6691,7 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait, bool rememberflag)
 		{
 			UpdateStat(girl,STAT_CONFIDENCE,-10);
 			UpdateStat(girl,STAT_INTELLIGENCE,10);
+			UpdateSkill(girl,SKILL_MEDICINE, 10);
 		}
 
 		else if(strcmp(tr->m_Name, "Clumsy") == 0)
@@ -6758,6 +6788,7 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait, bool rememberflag)
 			RemoveTrait(girl, "Fearless", rememberflag, true);
 			UpdateStat(girl,STAT_OBEDIENCE,10);
 			UpdateStat(girl,STAT_CONFIDENCE,-10);
+			UpdateSkill(girl,SKILL_PERFORMANCE, -20);
 			UpdateEnjoyment(girl, ACTION_WORKCLUB, -10, true);
 			UpdateEnjoyment(girl, ACTION_SEX, -20, true);
 			UpdateEnjoyment(girl, ACTION_WORKBAR, -5, true);

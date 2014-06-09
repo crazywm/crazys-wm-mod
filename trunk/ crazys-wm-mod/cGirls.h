@@ -652,6 +652,10 @@ struct sGirl
 	int	service(int n)	{ return upd_skill(SKILL_SERVICE, n); }
 	int	strip()		{ return get_skill(SKILL_STRIP); }
 	int	strip(int n)	{ return upd_skill(SKILL_STRIP, n); }
+	int	medicine()	{ return get_skill(SKILL_MEDICINE); }
+	int	medicine(int n)		{ return upd_skill(SKILL_MEDICINE, n); }
+	int	performance()	{ return get_skill(SKILL_PERFORMANCE); }
+	int	performance(int n)	{ return upd_skill(SKILL_PERFORMANCE, n); }
 
 
 /*

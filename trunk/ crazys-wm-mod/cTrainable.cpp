@@ -63,6 +63,8 @@ TrainableGirl::TrainableGirl(sGirl *girl)
 	stats.push_back(TrainableSkill(girl, "Combat", SKILL_COMBAT));
 	stats.push_back(TrainableSkill(girl, "Oral Sex", SKILL_ORALSEX));
 	stats.push_back(TrainableSkill(girl, "Titty Sex", SKILL_TITTYSEX));
+	stats.push_back(TrainableSkill(girl, "Medicine", SKILL_MEDICINE));
+	stats.push_back(TrainableSkill(girl, "Performance", SKILL_PERFORMANCE));
 
 	// MYR
 	m_girl = girl;

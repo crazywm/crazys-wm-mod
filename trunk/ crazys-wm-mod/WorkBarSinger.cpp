@@ -54,7 +54,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 	message += "She worked as a singer in the bar.";
 
 	int roll = g_Dice%100;
-	int jobperformance = (g_Girls.GetStat(girl, STAT_CONFIDENCE) + g_Girls.GetSkill(girl, SKILL_SERVICE));
+	int jobperformance = (g_Girls.GetStat(girl, STAT_CONFIDENCE) + g_Girls.GetSkill(girl, SKILL_PERFORMANCE));
 
 	//good traits
 	if (g_Girls.HasTrait(girl, "Charismatic"))  //
@@ -316,7 +316,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	if(g_Dice%10)
 		g_Girls.UpdateStat(girl, STAT_CONFIDENCE, 1);
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, skill);
+	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, skill);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
 	//gain traits
