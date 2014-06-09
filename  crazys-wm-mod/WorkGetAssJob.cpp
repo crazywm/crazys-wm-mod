@@ -91,6 +91,8 @@ bool cJobManager::WorkGetAssJob(sGirl* girl, sBrothel* brothel, int DayNight, st
 		ss << "The surgery is a success.";
 		if (numnurse > 1)
 		{
+			girl->add_trait("Great Arse", false);
+			ss << "Thanks to the surgery she now has a Great Arse.";
 			ss << "The Nurses kept her healthy and happy during her recovery.";
 			g_Girls.UpdateStat(girl, STAT_SPIRIT, 5);
 			g_Girls.UpdateStat(girl, STAT_MANA, 10);

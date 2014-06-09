@@ -60,7 +60,7 @@ const unsigned int STAT_PCLOVE          = 20;
 const unsigned int STAT_PCHATE          = 21;
 
 // Skills
-const unsigned int NUM_SKILLS           = 12;
+const unsigned int NUM_SKILLS           = 14;
 const unsigned int SKILL_ANAL           = 0;
 const unsigned int SKILL_MAGIC          = 1;
 const unsigned int SKILL_BDSM           = 2;
@@ -73,6 +73,8 @@ const unsigned int SKILL_STRIP          = 8;
 const unsigned int SKILL_COMBAT         = 9;
 const unsigned int SKILL_ORALSEX		= 10;
 const unsigned int SKILL_TITTYSEX		= 11;
+const unsigned int SKILL_MEDICINE		= 12;
+const unsigned int SKILL_PERFORMANCE	= 13;
 
 // STATUS
 const unsigned int NUM_STATUS					= 12;
@@ -334,7 +336,7 @@ const unsigned int OBJECTIVE_STEALXAMOUNTOFGOLD     = 4;
 const unsigned int OBJECTIVE_CAPTUREXCATACOMBGIRLS  = 5;
 const unsigned int OBJECTIVE_HAVEXMONSTERGIRLS      = 6;
 const unsigned int OBJECTIVE_KIDNAPXGIRLS           = 7;
-const unsigned int OBJECTIVE_EXTORTXNEWBUSINESS    = 8;
+const unsigned int OBJECTIVE_EXTORTXNEWBUSINESS     = 8;
 const unsigned int OBJECTIVE_HAVEXAMOUNTOFGIRLS     = 9;
 
 // Objective reward types
