@@ -325,10 +325,12 @@ struct sGirl
 	unsigned char m_NumRememTraits;				// number of traits that are apart of the girls starting traits
 	sTrait* m_RememTraits[MAXNUM_TRAITS*2];		// List of traits they have inbuilt
 
-	unsigned char m_DayJob;						// id for what job the girl is currently doing
-	unsigned char m_NightJob;					// id for what job the girl is currently doing
-	unsigned char m_PrevDayJob;					// id for what job the girl was doing
-	unsigned char m_PrevNightJob;				// id for what job the girl was doing
+	unsigned int m_DayJob;						// id for what job the girl is currently doing
+	unsigned int m_NightJob;					// id for what job the girl is currently doing
+	unsigned int m_PrevDayJob;					// id for what job the girl was doing
+	unsigned int m_PrevNightJob;				// id for what job the girl was doing
+	unsigned int m_YesterDayJob;				// id for what job the girl did yesterday
+	unsigned int m_YesterNightJob;				// id for what job the girl did yesternight
 
 	//ADB needs to be int because player might have more than 256
 	int m_NumInventory;							// current amount of inventory they have
@@ -397,6 +399,7 @@ struct sGirl
 	bool m_InCentre;
 	bool m_InHouse;
 	int where_is_she;
+	int m_PrevWorkingDay;	// `J` save the last count of the number of working days 
 	int m_WorkingDay;	// count the number of working day 
 
 	sGirl()

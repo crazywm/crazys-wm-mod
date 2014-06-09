@@ -52,9 +52,25 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, int DayNight,
 	// TODO need better dialog
 	int gain = g_Dice % 2 + 2;
 	sGirl* tempgirl = g_Girls.CreateRandomGirl(18, false, false, false, true, false);
-
-	Uint8 fight_outcome = g_Girls.girl_fights_girl(girl, tempgirl);
-	if (fight_outcome == 1)	// she won
+	Uint8 fight_outcome = 0;
+	if (tempgirl)		// `J` reworked incase there are no Non-Human Random Girls
+	{
+		fight_outcome = g_Girls.girl_fights_girl(girl, tempgirl);
+	}
+	else
+	{
+		g_LogFile.write("Error: You have no Non-Human Random Girls for your girls to fight\n");
+		g_LogFile.write("Error: You need a Non-Human Random Girl to allow WorkBeastCapture randomness");
+		fight_outcome = 7;
+	}
+	if (fight_outcome == 7)
+	{
+		message = "She came back with one animal today.\n\n";
+		message += "(Error: You need a Non-Human Random Girl to allow WorkBeastCapture randomness)";
+		gain = 1;
+		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
+	}
+	else if (fight_outcome == 1)	// she won
 	{
 		g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, +3, true);
 		message = "She had fun hunting down animals today and came back with ";
@@ -65,7 +81,7 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, int DayNight,
 		message += " of them.";
 		girl->m_Events.AddMessage(message,IMGTYPE_COMBAT,DayNight);
 	}
-	else  // she lost or it was a draw
+	else		// she lost or it was a draw
 	{
 		g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, -1, true);
 		message = " The animals were difficult to track, but she did manage to capture one.";
@@ -99,10 +115,10 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, int DayNight,
 	girl->m_Pay += 50 + (gain * 10);	// you catch more you get paid more
 	g_Gold.staff_wages(50+(gain*10));	// wages come from you
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_COMBAT, g_Dice % 2 + skill);
-	g_Girls.UpdateSkill(girl, SKILL_MAGIC, g_Dice % 2 + skill);
-	g_Girls.UpdateStat(girl, STAT_AGILITY, g_Dice % 2 + skill);
-	g_Girls.UpdateStat(girl, STAT_CONSTITUTION, g_Dice % 2 + skill);
+	g_Girls.UpdateSkill(girl, SKILL_COMBAT, g_Dice % gain + skill);
+	g_Girls.UpdateSkill(girl, SKILL_MAGIC, g_Dice % gain + skill);
+	g_Girls.UpdateStat(girl, STAT_AGILITY, g_Dice % gain + skill);
+	g_Girls.UpdateStat(girl, STAT_CONSTITUTION, g_Dice %2 + skill);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 	g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, gain + skill);
 

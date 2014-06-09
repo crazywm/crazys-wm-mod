@@ -51,22 +51,24 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, int DayNight, s
 	// ready armor and weapons!
 	g_Girls.EquipCombat(girl);
 
-	int roll = g_Dice%100;
+	Uint8 fight_outcome = 0;
+
+	int roll = g_Dice % 100;
 	int wages = 175;
 	string girlName = girl->m_Realname;
 
-	if(roll <= 100 && g_Girls.DisobeyCheck(girl, ACTION_COMBAT, brothel)) 
+	if (roll <= 100 && g_Girls.DisobeyCheck(girl, ACTION_COMBAT, brothel))
 	{
 		message = girlName + " refused to fight beasts today.\n";
 		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	else if(roll <= 15)
+	else if (roll <= 15)
 	{
 		g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, -3, true);
 		message += girlName + " didn't like fighting beasts today.\n\n";
 	}
-	else if(roll >=90)
+	else if (roll >= 90)
 	{
 		g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, +3, true);
 		message += girlName + " loved fighting beasts today.\n\n";
@@ -78,18 +80,33 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, int DayNight, s
 	}
 
 
-	if(g_Brothels.GetNumBeasts() == 0)
+	if (g_Brothels.GetNumBeasts() == 0)
 	{
 		message = "There are no beasts to fight.";
-		girl->m_Events.AddMessage(message,IMGTYPE_PROFILE,DayNight);
+		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
 	}
 	else
 	{
 		// TODO need better dialog
 
 		sGirl* tempgirl = g_Girls.CreateRandomGirl(18, false, false, false, true, false);
-		Uint8 fight_outcome = g_Girls.girl_fights_girl(girl, tempgirl);
-		if (fight_outcome == 1)	// she won
+		if (tempgirl)		// `J` reworked incase there are no Non-Human Random Girls
+		{
+			fight_outcome = g_Girls.girl_fights_girl(girl, tempgirl);
+		}
+		else
+		{
+			g_LogFile.write("Error: You have no Non-Human Random Girls for your girls to fight\n");
+			g_LogFile.write("Error: You need a Non-Human Random Girl to allow WorkFightBeast randomness");
+			fight_outcome = 7;
+		}
+		if (fight_outcome == 7)
+		{
+			message = "The beasts were not cooperating and refused to fight.\n\n";
+			message += "(Error: You need a Non-Human Random Girl to allow WorkFightBeast randomness)";
+			girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
+		}
+		else if (fight_outcome == 1)	// she won
 		{
 			g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, +3, true);
 			message = "She had fun fighting beasts today.";
@@ -108,7 +125,7 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, int DayNight, s
 			g_Girls.UpdateStat(girl, STAT_FAME, -1);
 		}
 
-		int kills = g_Dice%6 - 4;		 		// `J` how many beasts she kills 0-2
+		int kills = g_Dice % 6 - 4;		 		// `J` how many beasts she kills 0-2
 		if (g_Brothels.GetNumBeasts() < kills)	// or however many there are
 			kills = g_Brothels.GetNumBeasts();
 		if (kills < 0) kills = 0;				// can't gain any
@@ -118,12 +135,11 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, int DayNight, s
 		if (tempgirl)
 			delete tempgirl;
 		tempgirl = 0;
-
-
 	}
 
 	// Improve girl
-	int xp = 8, libido = 2, skill = 1;
+	int fightxp = 1;	if (fight_outcome == 1)	fightxp = 3;
+	int xp = 3 * fightxp, libido = 2, skill = 1;
 
 	if (g_Girls.HasTrait(girl, "Quick Learner"))
 	{
@@ -140,12 +156,12 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, int DayNight, s
 		libido += 2;
 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_COMBAT, g_Dice%2 + skill);
-	g_Girls.UpdateSkill(girl, SKILL_MAGIC, g_Dice%2 + skill);
-	g_Girls.UpdateStat(girl, STAT_AGILITY, g_Dice%2 + skill);
-	g_Girls.UpdateStat(girl, STAT_CONSTITUTION, g_Dice%2 + skill);
+	g_Girls.UpdateSkill(girl, SKILL_COMBAT, g_Dice%fightxp + skill);
+	g_Girls.UpdateSkill(girl, SKILL_MAGIC, g_Dice%fightxp + skill);
+	g_Girls.UpdateStat(girl, STAT_AGILITY, g_Dice%fightxp + skill);
+	g_Girls.UpdateStat(girl, STAT_CONSTITUTION, g_Dice%fightxp + skill);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
-	g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, g_Dice%4 + skill);
+	g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, g_Dice%fightxp * 2 + skill);
 
 	g_Girls.PossiblyGainNewTrait(girl, "Tough", 20, ACTION_COMBAT, "She has become pretty Tough from all of the fights she's been in.", DayNight != 0);
 	g_Girls.PossiblyGainNewTrait(girl, "Aggressive", 60, ACTION_COMBAT, "She is getting rather Aggressive from her enjoyment of combat.", DayNight != 0);

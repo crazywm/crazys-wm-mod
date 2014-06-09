@@ -108,6 +108,24 @@ void cClinicManager::Free()
 	m_Last				= 0;
 }
 
+
+bool cClinicManager::is_Surgery_Job(int testjob){
+	if (testjob == JOB_GETABORT ||
+		testjob == JOB_PHYSICALSURGERY ||
+		testjob == JOB_LIPO ||
+		testjob == JOB_BREASTREDUCTION ||
+		testjob == JOB_BOOBJOB ||
+		testjob == JOB_VAGINAREJUV ||
+		testjob == JOB_FACELIFT ||
+		testjob == JOB_ASSJOB)
+		return true;
+	return false;
+}
+
+
+
+
+
 // ----- Update & end of turn
 void cClinicManager::UpdateClinic()
 {
@@ -165,7 +183,7 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, int DayNight)
  *		ONCE DAILY processing
  *		at start of Day Shift
  */
-		if(DayNight == SHIFT_DAY)					
+		if (DayNight == SHIFT_DAY)
 		{
 			// Remove any dead bodies from last week
 			if(current->health() <= 0)
@@ -201,6 +219,9 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, int DayNight)
 				else
 					break;
 			}
+
+			current->m_YesterDayJob = current->m_DayJob;		// `J` set what she did yesterday
+			current->m_YesterNightJob = current->m_NightJob;	// `J` set what she did yesternight
 
 			// Brothel only update for girls accomadation level
 			do_food_and_digs(brothel, current);
@@ -321,7 +342,9 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, int DayNight)
 
 		// Lets try to compact multiple messages into one.
 		string ChairMsg = "";
+		string RecoupMsg = "";
 		string ChairWarningMsg = "";
+		
 
 		bool chair = false;
 		if(GetNumGirlsOnJob(brothel->m_id, JOB_CHAIRMAN, true) >= 1 || GetNumGirlsOnJob(brothel->m_id, JOB_CHAIRMAN, false) >= 1)
@@ -329,7 +352,12 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, int DayNight)
 
 		if(g_Girls.GetStat(current, STAT_TIREDNESS) > 80)
 		{
-			if (chair)
+			if (is_Surgery_Job(current->m_YesterDayJob))	// `J` added
+			{
+				current->m_DayJob = JOB_CLINICREST;	current->m_NightJob = JOB_CLINICREST;
+				RecoupMsg += girlName + gettext(" is recouperating after her surgery.\n");
+			}
+			else if (chair)
 			{
 				if(current->m_PrevNightJob == 255 && current->m_PrevDayJob == 255)
 				{
@@ -361,7 +389,12 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, int DayNight)
 
 		if(g_Girls.GetStat(current, STAT_HEALTH) < 40)
 		{
-			if(chair)
+			if (is_Surgery_Job(current->m_YesterDayJob))	// `J` added
+			{
+				current->m_DayJob = JOB_CLINICREST;	current->m_NightJob = JOB_CLINICREST;
+				RecoupMsg += girlName + gettext(" is recouperating after her surgery.\n");
+			}
+			else if (chair)
 			{
 				if(current->m_PrevNightJob == 255 && current->m_PrevDayJob == 255)
 				{
@@ -385,11 +418,14 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		// Back to work
 		if((current->m_NightJob == JOB_CLINICREST && current->m_DayJob == JOB_CLINICREST) && (g_Girls.GetStat(current, STAT_HEALTH) >= 80 && g_Girls.GetStat(current, STAT_TIREDNESS) <= 20))
 		{
-			if(
-				(chair || current->m_PrevDayJob == JOB_CHAIRMAN)  // do we have a director, or was she the director and made herself rest?
+			if (is_Surgery_Job(current->m_YesterDayJob))	// `J` added
+			{
+				current->m_DayJob = JOB_CLINICREST;	current->m_NightJob = JOB_CLINICREST;
+				RecoupMsg += girlName + gettext(" is recouperating after her surgery.\n");
+			}
+			else if ((chair || current->m_PrevDayJob == JOB_CHAIRMAN)  // do we have a director, or was she the director and made herself rest?
 				&& current->m_PrevDayJob != 255  // 255 = nothing, in other words no previous job stored
-				&& current->m_PrevNightJob != 255
-				)
+				&& current->m_PrevNightJob != 255)
 			{
 				g_Brothels.m_JobManager.HandleSpecialJobs(brothel->m_id, current, current->m_PrevDayJob, current->m_DayJob, true);
 				if(current->m_DayJob == current->m_PrevDayJob)  // only update night job if day job passed HandleSpecialJobs
@@ -412,7 +448,11 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, int DayNight)
 			current->m_Events.AddMessage(ChairMsg, IMGTYPE_PROFILE, SHIFT_NIGHT);
 			ChairMsg = "";
 		}
-
+		if (strcmp(RecoupMsg.c_str(), "") != 0)
+		{
+			current->m_Events.AddMessage(RecoupMsg, IMGTYPE_PROFILE, DayNight);
+			RecoupMsg = "";
+		}
         if (strcmp(ChairWarningMsg.c_str(), "") != 0)
 		{
 			current->m_Events.AddMessage(ChairWarningMsg, IMGTYPE_PROFILE, EVENT_WARNING);

@@ -46,7 +46,13 @@ bool cJobManager::WorkRehab(sGirl* girl, sBrothel* brothel, int DayNight, string
 {
 	string message = "";
 	u_int job = 0;	
-
+	
+	if (girl->m_YesterDayJob != JOB_REHAB)	// if she was not in rehab yesterday, 
+	{
+		girl->m_WorkingDay = 0;				// rest working days to 0 before proceding
+		girl->m_PrevWorkingDay = 0;
+	}
+	
 	// not for patient
 	g_Girls.UnequipCombat(girl);
 
@@ -121,6 +127,7 @@ bool cJobManager::WorkRehab(sGirl* girl, sBrothel* brothel, int DayNight, string
 				ss << "She is no longer a viras blood addict.";
 			}
 		}
+		girl->m_PrevWorkingDay = 0;
 		girl->m_WorkingDay = 0;
 
 		if (g_Girls.HasTrait(girl, "Fairy Dust Addict") || g_Girls.HasTrait(girl, "Shroud Addict") || g_Girls.HasTrait(girl, "Viras Blood Addict"))

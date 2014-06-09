@@ -46,6 +46,13 @@ bool cJobManager::WorkBoobJob(sGirl* girl, sBrothel* brothel, int DayNight, stri
 {
 	string message = "";
 
+	if (girl->m_YesterDayJob != JOB_BOOBJOB)	// if she was not in surgery yesterday, 
+	{
+		girl->m_WorkingDay = 0;				// rest working days to 0 before proceding
+		girl->m_PrevWorkingDay = 0;
+	}
+
+
 	// not for patient
 	g_Girls.UnequipCombat(girl);
 
@@ -132,6 +139,7 @@ bool cJobManager::WorkBoobJob(sGirl* girl, sBrothel* brothel, int DayNight, stri
 		else if (g_Girls.HasTrait(girl, "Optimist")){ g_Girls.UpdateStat(girl, STAT_HAPPINESS, 5); }
 
 		girl->m_WorkingDay = 0;
+		girl->m_PrevWorkingDay = 0;
 		girl->m_DayJob = JOB_CLINICREST;
 		girl->m_NightJob = JOB_CLINICREST;
 	}

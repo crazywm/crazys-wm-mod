@@ -311,7 +311,10 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 	m_Processing_Shift= SHIFT_NIGHT;	
 
 	// Process crew first --PP
-	while(current)
+	current->m_YesterDayJob = current->m_DayJob;		// `J` set what she did yesterday
+	current->m_YesterNightJob = current->m_NightJob;	// `J` set what she did yesternight
+	
+	while (current)
 	{
 		// Sanity check! Don't process dead girls
 		// Sanity check part 2: Check that m_Next points to something

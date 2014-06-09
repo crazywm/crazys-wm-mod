@@ -1,11 +1,4 @@
 ### Planned/Reccomended changes:
-Add Inventory page keys:
-   5/t - Owner Left up/down
-   g/b - Item Left up/down
-   6/y - Item group up/down
-   7/u - Owner Right up/down
-   j/m - Item Right up/down
-   *No keys for buy/sell or equip/unequip
 Add right click menus
 Transfer screen - Add Health, Happy, Tired and Rebel columns
 Transfer screen - Add Girl count above columns and/or on location lists
@@ -19,8 +12,6 @@ Items page - Add location filter
 ? Items page - Add (does the girl have this item?) filter - if an item is selected, (who has one of these)'s line changes color?
 Girl Detail page - add +/- buttons to "House Percentage" (slider can sometimes be difficult)
 Brothel page - Add "Manage Inventory" button
-
-
 
 
 
@@ -235,7 +226,7 @@ Added hotkeys to the inventory screen (press 9 in game to see what the hotkeys f
 Fixed arena combat training precheck
 !!!!!!!!!!!!!!!!!!!! pushed version .05o.06
 Made several changes to how some jobs work, the pay for them and the xp/skill/stat gains
- - Brothel: Explore Catacombs, Beast Capture, Beast Care
+ - Brothel: Explore Catacombs, Beast Capture
  - Arena: Fight Girls, Fight Beasts, Combat Training
  - Clinic: Nurse, Mechanic
  - Centre: Drug Counselor
@@ -255,9 +246,10 @@ I am making it so that if TortureTraitWeekMod is set to -1 in the config.xml it 
  - Also doubles any evil gained.
 
 ###  Changes 6/6/2014
-Added do_daily_items code
 I changed it so the the security level goes down by 1 per attacker before checking if they get though.
  - Then, if any attackers survive, the security level goes down by 5 per attacker who survived.
+
+Added do_daily_items code
 Some items have variations that have spaces, commas and/or periods to differentiate them so I added functions to assist in comparing strings 
  - "stringtolower(string name)" to allow easier string conversion to all lower case
  - "stringtolowerj(string name)" to allow easier string conversion to all lower case while removing spaces, commas and periods
@@ -272,6 +264,20 @@ I have made some changes to the torture code in order to make the images display
  - If you have no "torture #.*g", it defaults to "bdsm #.*g" then to "profile #.*g".
 While I was adding that, I went ahead and added pregnancy pictures for all image types that didn't already have them.
 I also fixed a bug where "preg #.*g" would only work with numbers 1-9, not with spaces or ().
+
+###  Changes 6/8/2014
+Changed m_DayJob and m_NightJob to unsigned int instead of unsigned char
+Added m_PrevWorkingDay, m_YesterDayJob and m_YesterNightJob to allow for multiday jobs to be continued if accidentally changed before hitting next week
+Rehab and clinic surgery jobs now say how long they have left. "jobname (#)*" where surgery jobs have the * note in their job description
+If Rehab or a surgery job are changed while in progress, " **" is added to the new job name with the ** note after the job description
+If an interrupted multiday job is not changed back before the next week, all progress from the old multiday job is lost.
+Chopped out a lot of useless debug logging
+Fixed bug "if you have no Non-Human Random Girls breaking combat jobs"
+ - Beast Capture, City Guard, Explore Catacombs, Fight Arena Girls and Fight Beast reworked
+Updated City Guard job for xp/skill/stat gains and results in change to Player's Suspicion level instead of Disposition.
+!!!!!!!!!!!!!!!!!!!! pushed version .05p
+
+Crazy added Medicine and Performance skills and updated 
 
 
 

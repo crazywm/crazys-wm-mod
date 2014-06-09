@@ -323,10 +323,10 @@ void cScreenStudioManagement::check_events()
 					{
 						// update the girl's listing to reflect the job change
 						ss.str("");
-						ss << g_Studios.m_JobManager.JobName[(int)selected_girl->m_DayJob];
+						ss << g_Studios.m_JobManager.JobName[selected_girl->m_DayJob];
 						SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), 5);
 						ss.str("");
-						ss << g_Studios.m_JobManager.JobName[(int)selected_girl->m_NightJob];
+						ss << g_Studios.m_JobManager.JobName[selected_girl->m_NightJob];
 						SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), 6);
 
 						// refresh job worker counts for former job and current job
@@ -432,7 +432,7 @@ void cScreenStudioManagement::RefreshJobList()
 		// set the job
 		if(selected_girl)
 		{
-			int sel_job = (int)selected_girl->m_NightJob;
+			int sel_job = selected_girl->m_NightJob;
 			SetSelectedItemInList(joblist_id, sel_job, false);
 			EditTextItem(g_Studios.m_JobManager.JobDescription[sel_job], jobdesc_id);
 		}

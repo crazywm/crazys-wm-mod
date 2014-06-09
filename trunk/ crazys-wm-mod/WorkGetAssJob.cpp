@@ -47,6 +47,13 @@ bool cJobManager::WorkGetAssJob(sGirl* girl, sBrothel* brothel, int DayNight, st
 {
 	string message = "";
 
+	if (girl->m_YesterDayJob != JOB_ASSJOB)	// if she was not in surgery yesterday, 
+	{
+		girl->m_WorkingDay = 0;				// rest working days to 0 before proceding
+		girl->m_PrevWorkingDay = 0;
+	}
+
+
 	// not for patient
 	g_Girls.UnequipCombat(girl);
 
@@ -89,10 +96,13 @@ bool cJobManager::WorkGetAssJob(sGirl* girl, sBrothel* brothel, int DayNight, st
 	if(girl->m_WorkingDay >= 5)
 	{
 		ss << "The surgery is a success.";
-		if (numnurse > 1)
+		if (!g_Girls.HasTrait(girl, "Great Arse"))
 		{
 			girl->add_trait("Great Arse", false);
 			ss << "Thanks to the surgery she now has a Great Arse.";
+		}
+		if (numnurse > 1)
+		{
 			ss << "The Nurses kept her healthy and happy during her recovery.";
 			g_Girls.UpdateStat(girl, STAT_SPIRIT, 5);
 			g_Girls.UpdateStat(girl, STAT_MANA, 10);
@@ -118,11 +128,6 @@ bool cJobManager::WorkGetAssJob(sGirl* girl, sBrothel* brothel, int DayNight, st
 			g_Girls.UpdateStat(girl, STAT_BEAUTY, 5);
 			g_Girls.UpdateStat(girl, STAT_CHARISMA, 5);
 		}
-		if (!g_Girls.HasTrait(girl, "Great Arse"))
-		{
-			girl->add_trait("Great Arse", false);
-			ss << "Thanks to the surgery she now has a Great Arse.";
-		}
 
 		if (g_Girls.HasTrait(girl, "Fragile")){ g_Girls.UpdateStat(girl, STAT_HEALTH, -5); }
 		else if (g_Girls.HasTrait(girl, "Tough")){ g_Girls.UpdateStat(girl, STAT_HEALTH, 5); }
@@ -130,6 +135,7 @@ bool cJobManager::WorkGetAssJob(sGirl* girl, sBrothel* brothel, int DayNight, st
 		else if (g_Girls.HasTrait(girl, "Optimist")){ g_Girls.UpdateStat(girl, STAT_HAPPINESS, 5); }
 
 		girl->m_WorkingDay = 0;
+		girl->m_PrevWorkingDay = 0;
 		girl->m_DayJob = JOB_CLINICREST;
 		girl->m_NightJob = JOB_CLINICREST;
 	}

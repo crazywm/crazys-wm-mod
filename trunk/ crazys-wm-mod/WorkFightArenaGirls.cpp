@@ -59,9 +59,24 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, int DayNig
 	g_Girls.EquipCombat(girl);
 
 	sGirl* tempgirl = g_Girls.CreateRandomGirl(18, false, false, false, false, false, true);
-
-	Uint8 fight_outcome = g_Girls.girl_fights_girl(girl, tempgirl);
-	if(fight_outcome == 1)	// she won
+	Uint8 fight_outcome = 0;
+	if (tempgirl)		// `J` reworked incase there are no Non-Human Random Girls
+	{
+		fight_outcome = g_Girls.girl_fights_girl(girl, tempgirl);
+	}
+	else
+	{
+		g_LogFile.write("Error: You have no Arena Girls for your girls to fight\n");
+		g_LogFile.write("Error: You need an Arena Girl to allow WorkFightArenaGirls randomness");
+		fight_outcome = 7;
+	}
+	if (fight_outcome == 7)
+	{
+		message = "There were no Arena Girls for her to fight.\n\n";
+		message += "(Error: You need an Arena Girl to allow WorkFightArenaGirls randomness)";
+		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
+	}
+	else if (fight_outcome == 1)	// she won
 	{
 		g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, +3, true);
 		ss << gettext ("She won the fight.");
@@ -77,24 +92,20 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, int DayNig
 				bool unique = false;
 				if((g_Dice%100)+1 < 25)	// chance of getting unique girl
 					unique = true;
-
 				if(unique)  // Unique arena girl type
 				{
 					ugirl = g_Girls.GetRandomGirl(false, false, true);
 					if(ugirl == 0)
 						unique = false;
 				}
-		
 				if(unique)
 				{
 					ugirl->m_States &= ~(1 << STATUS_ARENA);
 					g_Brothels.GetDungeon()->AddGirl(ugirl, DUNGEON_NEWGIRL);
 					type_unique_arena_girls++;
 				}
-				
 			}
 		}
-
 	else if (fight_outcome == 2) // she lost or it was a draw
 	{
 		g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, -2, true);
@@ -103,11 +114,10 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, int DayNig
 		g_Girls.UpdateStat(girl, STAT_FAME, -2);
 
 	}
-
 	else if (fight_outcome == 0)  // it was a draw
-		{
-			// hmm, guess we'll just ignore draws for now
-		}
+	{
+		// hmm, guess we'll just ignore draws for now
+	}
 
 		 // Cleanup
 	if(tempgirl)
@@ -116,7 +126,8 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, int DayNig
 
 
 	// Improve girl
-	int xp = 15, libido = 5, skill = 1;
+	int fightxp = 1;	if (fight_outcome == 1)	fightxp = 3;
+	int xp = 5 * fightxp, libido = 5, skill = 1;
 
 	if (g_Girls.HasTrait(girl, "Quick Learner"))
 	{
@@ -135,12 +146,13 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, int DayNig
 	//TODO make this actually work so people know that they won a girl. crazy
 	ss << girl->m_Realname << type_unique_arena_girls << (" put up a good fight so you let them live to come work for you\n\n");
 		ss << ".";
+	
 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_COMBAT, g_Dice%3 + skill);
-	g_Girls.UpdateSkill(girl, SKILL_MAGIC, g_Dice%3 + skill);
-	g_Girls.UpdateStat(girl, STAT_AGILITY, g_Dice%3 + skill);
-	g_Girls.UpdateStat(girl, STAT_CONSTITUTION, g_Dice%2 + skill);
+	g_Girls.UpdateSkill(girl, SKILL_COMBAT, g_Dice%fightxp + skill);
+	g_Girls.UpdateSkill(girl, SKILL_MAGIC, g_Dice%fightxp + skill);
+	g_Girls.UpdateStat(girl, STAT_AGILITY, g_Dice%fightxp + skill);
+	g_Girls.UpdateStat(girl, STAT_CONSTITUTION, g_Dice%fightxp + skill);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 	g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, +8, true);
 

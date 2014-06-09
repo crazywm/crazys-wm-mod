@@ -174,10 +174,10 @@ void cFont::RenderText(string text, bool multi)
 	else
 		m_Message = TTF_RenderText_Solid(m_Font, text.c_str(), m_TextColor);
 
-	if (m_Message == 0)
+	if (m_Message == 0) // `J` this log is useless - commenting it out
 	{
-		g_LogFile.write("Error in RenderText m_Message. Text which was to be rendered: " + text);
-		g_LogFile.write(TTF_GetError());
+		// g_LogFile.write("Error in RenderText m_Message. Text which was to be rendered: " + text);
+		// g_LogFile.write(TTF_GetError());
 		return;
 	}
 	else if(multi)

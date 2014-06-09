@@ -549,12 +549,12 @@ static int queue_message(lua_State *L)
 	int color = luaL_checkint(L, 2);
 
 	log.ss() << "adding to message queue: '" << msg << "\n";
-	log.ss() << "Before add: has = " << g_MessageQue.HasNext();
+	//log.ss() << "Before add: has = " << g_MessageQue.HasNext();
 	log.ssend();
 
 	g_MessageQue.AddToQue(msg, color);
-	log.ss() << "After add: has = " << g_MessageQue.HasNext();
-	log.ssend();
+	//log.ss() << "After add: has = " << g_MessageQue.HasNext();
+	//log.ssend();
 	return 0;
 }
 

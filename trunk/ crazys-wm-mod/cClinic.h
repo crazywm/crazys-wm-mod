@@ -65,6 +65,10 @@ public:
 	//Aika Edit
 	//sGirl* GetGirl(int brothelID, int num);
 	//sClinic* m_Parent;
+
+	bool is_Surgery_Job(int testjob);
+
+
 };
 
 
