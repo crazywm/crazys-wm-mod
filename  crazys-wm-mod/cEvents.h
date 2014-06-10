@@ -55,6 +55,7 @@ public:
 	string			TitleText();			//	Default listbox Text
 	unsigned int	ListboxColour();		//	Default Listbox Colour
 	unsigned int	m_Ordinal;				//  Used for sort order
+	bool			IsGoodNews();
 	bool			IsUrgent();
 	bool			IsDanger();
 	bool			IsWarning();
@@ -77,6 +78,7 @@ public:
 	CEvent			GetMessage(int id);
 	int				GetNumEvents() 			{ return events.size(); }
 	bool			IsEmpty()				{ return events.empty() ; }
+	bool			HasGoodNews();
 	bool			HasUrgent();
 	bool			HasDanger();
 	bool			HasWarning();

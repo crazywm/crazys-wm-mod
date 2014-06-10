@@ -232,8 +232,10 @@ void cScreenGirlDetails::init()
 		ClearListBox(joblist_id);
 		AddToListBox(jobtypelist_id, JOBFILTER_CLINIC, g_Clinic.m_JobManager.JobFilterName[JOBFILTER_CLINIC]);
 		AddToListBox(jobtypelist_id, JOBFILTER_CLINICSTAFF, g_Clinic.m_JobManager.JobFilterName[JOBFILTER_CLINICSTAFF]);
-		SetSelectedItemInList(jobtypelist_id, JOBFILTER_CLINIC);
 		RefreshJobList();
+		if (GetSelectedItemFromList(jobtypelist_id) != JOBFILTER_CLINIC ||
+			GetSelectedItemFromList(jobtypelist_id) != JOBFILTER_CLINICSTAFF)
+			SetSelectedItemInList(jobtypelist_id, JOBFILTER_CLINIC);
 		HideButton(day_id, false);
 		HideButton(night_id, false);
 		DisableButton(day_id, (DayNight == 0));
@@ -796,7 +798,7 @@ void cScreenGirlDetails::RefreshJobList()
 		// set the job
 		if(selected_girl)
 		{
-			int sel_job = (DayNight) ? selected_girl->m_DayJob : selected_girl->m_NightJob;
+			int sel_job = (DayNight == 0) ? selected_girl->m_DayJob : selected_girl->m_NightJob;
 			SetSelectedItemInList(joblist_id, sel_job, false);
 		}
 //	}

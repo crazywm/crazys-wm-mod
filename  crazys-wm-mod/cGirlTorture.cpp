@@ -567,7 +567,7 @@ bool cGirlTorture::IsGirlInjured(unsigned int unModifier)
 	if (m_TorturedByPlayer && !m_Message.empty())
 	{
 		g_MessageQue.AddToQue(m_Message, 1);
-		m_Girl->m_Events.AddMessage(m_Message, IMGTYPE_TORTURE, EVENT_WARNING);	// `J` added
+		m_Girl->m_Events.AddMessage(m_Message, IMGTYPE_TORTURE, EVENT_DAYSHIFT);	// `J` added
 
 		m_Message = sGirlName + ": ";
 	}

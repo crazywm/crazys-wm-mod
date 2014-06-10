@@ -276,8 +276,23 @@ Fixed bug "if you have no Non-Human Random Girls breaking combat jobs"
  - Beast Capture, City Guard, Explore Catacombs, Fight Arena Girls and Fight Beast reworked
 Updated City Guard job for xp/skill/stat gains and results in change to Player's Suspicion level instead of Disposition.
 !!!!!!!!!!!!!!!!!!!! pushed version .05p
+Crazy added Medicine and Performance skills and updated some jobs to use them
 
-Crazy added Medicine and Performance skills and updated 
-
-
+###  Changes 6/9-10/2014
+Successful Rehab and Surgeries show green when successful.
+*** Important: You will need to edit your .\Resources\Interface\(interfacename)\InterfaceColors.txt ***
+[code]
+200 30 30    LIST BOX SPECIAL ELEMENT 1 (RED) BACKGROUND
+80 80 250    LIST BOX SPECIAL ELEMENT 2 (DARK BLUE) BACKGROUND <--- after this line...
+30 190 30    LIST BOX SPECIAL ELEMENT 3 (GREEN) BACKGROUND     <--- ... Add this lines
+187 190 224    LIST BOX SELECTED ELEMENT
+255 167 180    LIST BOX SELECTED SPECIAL ELEMENT 1 (RED)
+187 190 224    LIST BOX SELECTED SPECIAL ELEMENT 2 (DARK BLUE) <--- after this line...
+0 250 0    LIST BOX SELECTED SPECIAL ELEMENT 3 (GREEN)     <--- ... Add this lines
+[/code]
+Multiday jobs now change their (#) based on if there is a Nurse or Doctor is on duty.
+ - If there is no Doctor on duty it changes to " (?)***" with a note in the job description.
+ - If there is no Mechanic on duty it changes to " (?)****" with a note in the job description.
+Corrected Rehab and Surgeries result texts.
+Torture message in the dungeon is back to normal message instead of warning.
 

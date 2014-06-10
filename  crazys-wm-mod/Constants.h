@@ -467,6 +467,7 @@ const int MAXNUM_INVENTORY         = 3000;
 const unsigned int LISTBOX_BLUE = 0;
 const unsigned int LISTBOX_RED = 1;
 const unsigned int LISTBOX_DARKBLUE = 2;
+const unsigned int LISTBOX_GREEN = 3;
 
 //how tall (in pixels) each list item is
 const int LISTBOX_ITEMHEIGHT = 20;
@@ -479,13 +480,14 @@ const int	EVENT_DAYSHIFT		= 0;
 const int	EVENT_NIGHTSHIFT	= 1;
 const int	EVENT_WARNING		= 2;
 const int	EVENT_DANGER		= 3;
-const int	EVENT_SUMMARY		= 4;
-const int	EVENT_DUNGEON		= 5;			// For torturer reports
-const int	EVENT_MATRON		= 6;			// For Matron reports
-const int	EVENT_GANG			= 7;
-const int	EVENT_BROTHEL		= 8;
+const int	EVENT_GOODNEWS		= 4;
+const int	EVENT_SUMMARY		= 5;
+const int	EVENT_DUNGEON		= 6;			// For torturer reports
+const int	EVENT_MATRON		= 7;			// For Matron reports
+const int	EVENT_GANG			= 8;
+const int	EVENT_BROTHEL		= 9;
 const int	EVENT_NOWORK		= 10;
-const int	EVENT_DEBUG			= 99;
+const int	EVENT_DEBUG = 99;
 
 
 // Constants determining which screen is currently showing. This will help with hotkeys and help menu. --PP

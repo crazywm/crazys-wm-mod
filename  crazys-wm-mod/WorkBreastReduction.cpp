@@ -45,6 +45,7 @@ extern cMessageQue g_MessageQue;
 bool cJobManager::WorkBreastReduction(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	string message = "";
+	int msgtype = DayNight;
 
 	if (girl->m_YesterDayJob != JOB_BREASTREDUCTION)	// if she was not in surgery yesterday, 
 	{
@@ -94,43 +95,45 @@ bool cJobManager::WorkBreastReduction(sGirl* girl, sBrothel* brothel, int DayNig
 	stringstream ss;
 	if (girl->m_WorkingDay >= 5)
 	{
-		ss << "The surgery is a success.";
+		ss << "The surgery is a success.\n";
+		msgtype = EVENT_GOODNEWS;
+		if (g_Girls.HasTrait(girl, "Abnormally Large Boobs"))
+		{
+			g_Girls.RemoveTrait(girl, "Abnormally Large Boobs");
+			girl->add_trait("Big Boobs", false);
+			ss << "Her Abnormally Large Boobs trait is reduced to Big Boobs traits.\n";
+		}
+		else if (g_Girls.HasTrait(girl, "Big Boobs"))
+		{
+			g_Girls.RemoveTrait(girl, "Big Boobs");
+			ss << "She no longer has Big Boobs.\n";
+		}
+		else if (!g_Girls.HasTrait(girl, "Small Boobs"))
+		{
+			girl->add_trait("Small Boobs", false);
+			ss << "She now has Small Boobs.\n";
+		}
+
 		if (numnurse > 1)
 		{
-			ss << "The Nurses kept her healthy and happy during her recovery.";
+			ss << "The Nurses kept her healthy and happy during her recovery.\n";
 			g_Girls.UpdateStat(girl, STAT_SPIRIT, 5);
 			g_Girls.UpdateStat(girl, STAT_MANA, 10);
 		}
 		else if (numnurse > 0)
 		{
-			ss << "The Nurse helped her during her recovery.";
+			ss << "The Nurse helped her during her recovery.\n";
 			g_Girls.UpdateStat(girl, STAT_HAPPINESS, -5);
 			g_Girls.UpdateStat(girl, STAT_HEALTH, -10);
 			g_Girls.UpdateStat(girl, STAT_MANA, -10);
 		}
 		else
 		{
-			ss << "She is sad and has lost some health during the operation.";
+			ss << "She is sad and has lost some health during the operation.\n";
 			g_Girls.UpdateStat(girl, STAT_SPIRIT, -5);
 			g_Girls.UpdateStat(girl, STAT_HAPPINESS, -15);
 			g_Girls.UpdateStat(girl, STAT_HEALTH, -20);
 			g_Girls.UpdateStat(girl, STAT_MANA, -20);
-		}
-		if (g_Girls.HasTrait(girl, "Abnormally Large Boobs"))
-		{
-			g_Girls.RemoveTrait(girl, "Abnormally Large Boobs");
-			girl->add_trait("Big Boobs", false);
-			ss << "Her Abnormally Large Boobs trait is reduced to Big Boobs traits.";
-		}
-		else if (g_Girls.HasTrait(girl, "Big Boobs"))
-		{
-			g_Girls.RemoveTrait(girl, "Big Boobs");
-			ss << "She no longer has Big Boobs.";
-		}
-		else if (!g_Girls.HasTrait(girl, "Small Boobs"))
-		{
-			girl->add_trait("Small Boobs", false);
-			ss << "She now has Small Boobs.";
 		}
 
 		if (g_Girls.HasTrait(girl, "Fragile")){ g_Girls.UpdateStat(girl, STAT_HEALTH, -5); }
@@ -148,17 +151,17 @@ bool cJobManager::WorkBreastReduction(sGirl* girl, sBrothel* brothel, int DayNig
 		int wdays = (5 - girl->m_WorkingDay);
 		if (g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, 1) > 0)
 		{
-			if (wdays > 3)		{ wdays = 3; }
+			if (wdays >= 3)		{ wdays = 3; }
 			else if (wdays > 1)	{ wdays = 2; }
 			else				{ wdays = 1; }
 		}
-		ss << "The operation is in progress (" << wdays << " day remaining).";
+		ss << "The operation is in progress (" << wdays << " day remaining).\n";
 		if (g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, 1) > 1)		{ ss << "The Nurses are taking care of her at night."; }
 		else if (g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, 1) > 0){ ss << "The Nurse is taking care of her at night."; }
 		else							{ ss << "Having a Nurse on duty will speed up her recovery."; }
 	}
 
-	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, DayNight);
+	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, msgtype);
 
 	// Improve girl
 	int libido = 1;

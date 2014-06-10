@@ -156,6 +156,7 @@ void cScreenClinicManagement::init()
 //	for(int i=0; i<NUMJOBTYPES; i++)  // loop through all job types
 	AddToListBox(jobtypelist_id, JOBFILTER_CLINICSTAFF, g_Clinic.m_JobManager.JobFilterName[JOBFILTER_CLINICSTAFF]);
 	AddToListBox(jobtypelist_id, JOBFILTER_CLINIC, g_Clinic.m_JobManager.JobFilterName[JOBFILTER_CLINIC]);
+	RefreshJobList();
 	SetSelectedItemInList(jobtypelist_id, JOBFILTER_CLINICSTAFF);
 
 	//get a list of all the column names, so we can find which data goes in that column
@@ -312,12 +313,24 @@ void cScreenClinicManagement::check_events()
 		selection = GetSelectedItemFromList(jobtypelist_id);
 
 		if (selection == -1)
-			EditTextItem(gettext("Nothing Selected"), jobtypedesc_id);
+			EditTextItem("Nothing Selected", jobtypedesc_id);
 		else
 		{
 			// populate Jobs listbox with jobs in the selected category
 			RefreshJobList();
-			EditTextItem(g_Clinic.m_JobManager.JobFilterDescription[selection], jobtypedesc_id);
+			string jdmessage = g_Clinic.m_JobManager.JobFilterDescription[selection];
+			if (g_Clinic.DoctorNeeded())
+			{
+				jdmessage += gettext("\n*** A Doctor is required to perform any surgeries. ");
+			}
+			if ((g_Clinic.GetNumGirlsOnJob(g_CurrClinic, JOB_MECHANIC,0)<1 &&
+				 g_Clinic.GetNumGirlsOnJob(g_CurrClinic, JOB_GETREPAIRS, 0)>0) ||
+				(g_Clinic.GetNumGirlsOnJob(g_CurrClinic, JOB_MECHANIC, 1)<1 &&
+				 g_Clinic.GetNumGirlsOnJob(g_CurrClinic, JOB_GETREPAIRS, 1)>0))
+			{
+				jdmessage += gettext("\n**** A Mechanic is required to perform any Repairs. ");
+			}
+			EditTextItem(jdmessage, jobtypedesc_id);
 		}
 	}
 	if(g_InterfaceEvents.CheckListbox(joblist_id))
@@ -419,18 +432,13 @@ void cScreenClinicManagement::check_events()
 					else if (selected_girl->m_YesterDayJob == JOB_GETABORT || selected_girl->m_YesterDayJob == JOB_ASSJOB)
 						jdmessage += "an ";
 						jdmessage += g_Clinic.m_JobManager.JobName[selected_girl->m_YesterDayJob]
-						+ gettext(", if you send her somewhere else, she will have to start her Surgery over.");
-
-						EditTextItem(jdmessage, jobdesc_id);
+						+ ", if you send her somewhere else, she will have to start her Surgery over.";
+					EditTextItem(jdmessage, jobdesc_id);
 				}
-
-
-
 				GSelection = GetNextSelectedItemFromList(girllist_id, pos+1, pos);
 			}
 		}
-		else
-			EditTextItem(gettext("Nothing Selected"), jobdesc_id);
+		else EditTextItem("Nothing Selected", jobdesc_id);
 	}
 
 	if(g_InterfaceEvents.CheckListbox(girllist_id))
@@ -515,7 +523,7 @@ bool cScreenClinicManagement::GirlDead(sGirl *dgirl)
 void cScreenClinicManagement::RefreshSelectedJobType()
 {
 	selection = GetSelectedItemFromList(girllist_id);
-	if(selection < 0)
+	if (selection < 0)
 		return;
 
 	selected_girl = g_Clinic.GetGirl(g_CurrClinic, selection);
@@ -524,12 +532,17 @@ void cScreenClinicManagement::RefreshSelectedJobType()
 
 	// set the job filter
 	int jobtype = 0;
-	for(unsigned int i=0; i<NUMJOBTYPES; i++)
+	for (unsigned int i = 0; i < NUMJOBTYPES; i++)
 	{
-		if (job >= g_Clinic.m_JobManager.JobFilterIndex[i] && job < g_Clinic.m_JobManager.JobFilterIndex[i+1])
+		if (job >= g_Clinic.m_JobManager.JobFilterIndex[i] && job < g_Clinic.m_JobManager.JobFilterIndex[i + 1])
 			jobtype = i;
 	}
-	SetSelectedItemInList(jobtypelist_id, JOBFILTER_CLINICSTAFF);
+	if (job >= g_Clinic.m_JobManager.JobFilterIndex[JOBFILTER_CLINIC] && 
+		job < g_Clinic.m_JobManager.JobFilterIndex[JOBFILTER_CLINIC + 1])
+		SetSelectedItemInList(jobtypelist_id, JOBFILTER_CLINIC);
+	if (job >= g_Clinic.m_JobManager.JobFilterIndex[JOBFILTER_CLINICSTAFF] &&
+		job < g_Clinic.m_JobManager.JobFilterIndex[JOBFILTER_CLINICSTAFF + 1])
+		SetSelectedItemInList(jobtypelist_id, JOBFILTER_CLINICSTAFF);
 
 	SetJob = true;
 }
@@ -558,12 +571,12 @@ void cScreenClinicManagement::RefreshJobList()
 	//	{
 	//		SetJob = false;
 	// set the job
-	if (selected_girl && 
+	if (selected_girl &&
 		g_Clinic.is_Surgery_Job(selected_girl->m_YesterDayJob) &&		// `J` added
 		selected_girl->m_YesterDayJob != selected_girl->m_DayJob &&
 		(selected_girl->m_WorkingDay > 0 || selected_girl->m_PrevWorkingDay > 0))
-	{	
-		int sel_job = (DayNight) ? selected_girl->m_DayJob : selected_girl->m_NightJob;
+	{
+		int sel_job = (DayNight == 0) ? selected_girl->m_DayJob : selected_girl->m_NightJob;
 		SetSelectedItemInList(joblist_id, sel_job, false);
 
 		string jdmessage = g_Clinic.m_JobManager.JobDescription[sel_job] + gettext("\n** This girl was getting ");
@@ -577,38 +590,40 @@ void cScreenClinicManagement::RefreshJobList()
 	}
 	else if (selected_girl)
 	{
-		int sel_job = (DayNight) ? selected_girl->m_DayJob : selected_girl->m_NightJob;
+		int sel_job = (DayNight == 0) ? selected_girl->m_DayJob : selected_girl->m_NightJob;
 		SetSelectedItemInList(joblist_id, sel_job, false);
 		EditTextItem(g_Clinic.m_JobManager.JobDescription[sel_job], jobdesc_id);
 	}
 	//	}
+
+
 }
 
 void cScreenClinicManagement::GetSelectedGirls(vector<int> *girl_array)
 {  // take passed vector and fill it with sorted list of selected girl IDs
 	int pos = 0;
 	int GSelection = GetNextSelectedItemFromList(girllist_id, 0, pos);
-	while(GSelection != -1)
+	while (GSelection != -1)
 	{
 		girl_array->push_back(GSelection);
-		GSelection = GetNextSelectedItemFromList(girllist_id, pos+1, pos);
+		GSelection = GetNextSelectedItemFromList(girllist_id, pos + 1, pos);
 	}
 	sort(girl_array->begin(), girl_array->end());
 }
 
 void cScreenClinicManagement::ViewSelectedGirl()
 {
-	if(selected_girl)
+	if (selected_girl)
 	{
-		if(GirlDead(selected_girl))
+		if (GirlDead(selected_girl))
 			return;
 
 		//load up the cycle_girls vector with the ordered list of girl IDs
 		FillSortedIDList(girllist_id, &cycle_girls, &cycle_pos);
-		for(int i = cycle_girls.size(); i --> 0; )
+		for (int i = cycle_girls.size(); i-- > 0;)
 		{  // no viewing dead girls
-			if(g_Clinic.GetGirl(g_CurrClinic, cycle_girls[i])->health() <= 0)
-				cycle_girls.erase(cycle_girls.begin()+i);
+			if (g_Clinic.GetGirl(g_CurrClinic, cycle_girls[i])->health() <= 0)
+				cycle_girls.erase(cycle_girls.begin() + i);
 		}
 
 		g_InitWin = true;

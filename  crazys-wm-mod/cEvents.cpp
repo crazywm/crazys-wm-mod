@@ -51,6 +51,9 @@ string CEvent::TitleText()
 	case EVENT_DANGER:
 		return "!!!DANGER!!!";
 		break;
+	case EVENT_GOODNEWS:
+		return "!!!GOODNEWS!!!";
+		break;
 	case EVENT_SUMMARY:
 		return "Summary";
 		break;
@@ -100,7 +103,10 @@ unsigned int CEvent::ListboxColour()
 	case EVENT_DANGER:
 		return LISTBOX_RED;
 		break;
-	//case EVENT_SUMMARY:
+	case EVENT_GOODNEWS:
+		return LISTBOX_GREEN;
+		break;
+		//case EVENT_SUMMARY:
 	//	return LISTBOX_BLUE;
 	//	break;
 	//case EVENT_DUNGEON:
@@ -127,9 +133,16 @@ unsigned int CEvent::ListboxColour()
 	}
 }
 
+bool CEvent::IsGoodNews()
+{
+	if (m_Event == EVENT_GOODNEWS)
+		return true;
+	return false;
+}
+
  bool CEvent::IsUrgent()
 {
-	if(m_Event == EVENT_DANGER || m_Event == EVENT_WARNING || m_Event == EVENT_NOWORK)
+	 if (m_Event == EVENT_DANGER || m_Event == EVENT_WARNING || m_Event == EVENT_NOWORK || m_Event == EVENT_GOODNEWS)
 		return true;
 	return false;
 }
@@ -154,6 +167,17 @@ void cEvents::Free()
 	events.clear();
 	m_bSorted = false;
 }
+
+bool cEvents::HasGoodNews()
+{
+	for (vector<CEvent>::iterator iter = events.begin(); iter != events.end(); ++iter)
+	{
+		if (iter->IsGoodNews())
+			return true;
+	}
+	return false;
+}
+
 
 bool cEvents::HasUrgent()
 {
