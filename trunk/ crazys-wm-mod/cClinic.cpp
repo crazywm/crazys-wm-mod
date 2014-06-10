@@ -121,6 +121,21 @@ bool cClinicManager::is_Surgery_Job(int testjob){
 		return true;
 	return false;
 }
+bool cClinicManager::DoctorNeeded()	// `J` added, if there is a doctor already on duty or there is no one needing surgery, return false
+{
+	if (GetNumGirlsOnJob(0, JOB_DOCTOR, 0) > 0 ||
+		GetNumGirlsOnJob(0, JOB_GETHEALING, 0) +
+		GetNumGirlsOnJob(0, JOB_GETABORT, 0) +
+		GetNumGirlsOnJob(0, JOB_PHYSICALSURGERY, 0) +
+		GetNumGirlsOnJob(0, JOB_LIPO, 0) +
+		GetNumGirlsOnJob(0, JOB_BREASTREDUCTION, 0) +
+		GetNumGirlsOnJob(0, JOB_BOOBJOB, 0) +
+		GetNumGirlsOnJob(0, JOB_VAGINAREJUV, 0) +
+		GetNumGirlsOnJob(0, JOB_FACELIFT, 0) +
+		GetNumGirlsOnJob(0, JOB_ASSJOB, 0) < 1)
+		return false;	// a Doctor is not Needed
+	return true;	// Otherwise a Doctor is Needed
+}
 
 
 

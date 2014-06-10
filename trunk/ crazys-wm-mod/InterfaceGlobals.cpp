@@ -138,9 +138,11 @@ unsigned char g_ListBoxBackgroundR = 0, g_ListBoxBackgroundG = 0, g_ListBoxBackg
 unsigned char g_ListBoxElementBackgroundR = 0, g_ListBoxElementBackgroundG = 0, g_ListBoxElementBackgroundB = 0;
 unsigned char g_ListBoxS1ElementBackgroundR = 0, g_ListBoxS1ElementBackgroundG = 0, g_ListBoxS1ElementBackgroundB = 0;
 unsigned char g_ListBoxS2ElementBackgroundR, g_ListBoxS2ElementBackgroundG, g_ListBoxS2ElementBackgroundB;
+unsigned char g_ListBoxS3ElementBackgroundR, g_ListBoxS3ElementBackgroundG, g_ListBoxS3ElementBackgroundB;
 unsigned char g_ListBoxSelectedElementR = 0, g_ListBoxSelectedElementG = 0, g_ListBoxSelectedElementB = 0;
 unsigned char g_ListBoxSelectedS1ElementR = 0, g_ListBoxSelectedS1ElementG = 0, g_ListBoxSelectedS1ElementB = 0;
 unsigned char g_ListBoxSelectedS2ElementR = 0, g_ListBoxSelectedS2ElementG = 0, g_ListBoxSelectedS2ElementB = 0;
+unsigned char g_ListBoxSelectedS3ElementR = 0, g_ListBoxSelectedS3ElementG = 0, g_ListBoxSelectedS3ElementB = 0;
 unsigned char g_ListBoxElementBorderR = 0, g_ListBoxElementBorderG = 0, g_ListBoxElementBorderB = 0;
 unsigned char g_ListBoxElementBorderHR = 0, g_ListBoxElementBorderHG = 0, g_ListBoxElementBorderHB = 0;
 unsigned char g_ListBoxTextR = 0, g_ListBoxTextG = 0, g_ListBoxTextB = 0;
@@ -343,6 +345,11 @@ void LoadInterface()
 	g_ListBoxS2ElementBackgroundB = b;
 
 	incol>>r>>g>>b;incol.ignore(1000, '\n');
+	g_ListBoxS3ElementBackgroundR = r;
+	g_ListBoxS3ElementBackgroundG = g;
+	g_ListBoxS3ElementBackgroundB = b;
+
+	incol>>r>>g>>b;incol.ignore(1000, '\n');
 	g_ListBoxSelectedElementR = r;
 	g_ListBoxSelectedElementG = g;
 	g_ListBoxSelectedElementB = b;
@@ -356,6 +363,11 @@ void LoadInterface()
 	g_ListBoxSelectedS2ElementR = r;
 	g_ListBoxSelectedS2ElementG = g;
 	g_ListBoxSelectedS2ElementB = b;
+
+	incol >> r >> g >> b; incol.ignore(1000, '\n');
+	g_ListBoxSelectedS3ElementR = r;
+	g_ListBoxSelectedS3ElementG = g;
+	g_ListBoxSelectedS3ElementB = b;
 
 	incol>>r>>g>>b;incol.ignore(1000, '\n');
 	g_ListBoxElementBorderR = r;

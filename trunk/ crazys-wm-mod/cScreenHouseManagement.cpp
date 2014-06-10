@@ -491,18 +491,12 @@ void cScreenHouseManagement::RefreshJobList()
 		text = g_House.m_JobManager.JobDescriptionCount(i, g_CurrHouse, day, false, false, false, false, true);
 		AddToListBox(joblist_id, i, text);
 	}
-
-//	if (SetJob)
-//	{
-//		SetJob = false;
-		// set the job
 		if(selected_girl)
 		{
-			int sel_job = (DayNight) ? selected_girl->m_DayJob : selected_girl->m_NightJob;
+			int sel_job = (DayNight == 0) ? selected_girl->m_DayJob : selected_girl->m_NightJob;
 			SetSelectedItemInList(joblist_id, sel_job, false);
 			EditTextItem(g_House.m_JobManager.JobDescription[sel_job], jobdesc_id);
 		}
-//	}
 }
 
 void cScreenHouseManagement::GetSelectedGirls(vector<int> *girl_array)

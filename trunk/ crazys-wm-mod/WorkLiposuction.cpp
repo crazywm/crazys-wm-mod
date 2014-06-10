@@ -46,6 +46,7 @@ extern cGold g_Gold;
 bool cJobManager::WorkLiposuction(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	string message = "";
+	int msgtype = DayNight;
 
 	if (girl->m_YesterDayJob != JOB_LIPO)	// if she was not in surgery yesterday, 
 	{
@@ -95,10 +96,16 @@ bool cJobManager::WorkLiposuction(sGirl* girl, sBrothel* brothel, int DayNight, 
 	stringstream ss;
 	if (girl->m_WorkingDay >= 5)
 	{
-		ss << "The surgery is a success.";
+		ss << "The surgery is a success.\n";
+		msgtype = EVENT_GOODNEWS;
+		if (!g_Girls.HasTrait(girl, "Great Figure"))
+		{
+			girl->add_trait("Great Figure", false);
+			ss << "Thanks to the surgery she now has a Great Figure.\n";
+		}
 		if (numnurse > 1)
 		{
-			ss << "The Nurses kept her healthy and happy during her recovery.";
+			ss << "The Nurses kept her healthy and happy during her recovery.\n";
 			g_Girls.UpdateStat(girl, STAT_SPIRIT, 5);
 			g_Girls.UpdateStat(girl, STAT_MANA, 10);
 			g_Girls.UpdateStat(girl, STAT_BEAUTY, 10);
@@ -106,7 +113,7 @@ bool cJobManager::WorkLiposuction(sGirl* girl, sBrothel* brothel, int DayNight, 
 		}
 		else if (numnurse > 0)
 		{
-			ss << "The Nurse helped her during her recovery.";
+			ss << "The Nurse helped her during her recovery.\n";
 			g_Girls.UpdateStat(girl, STAT_HAPPINESS, -5);
 			g_Girls.UpdateStat(girl, STAT_HEALTH, -10);
 			g_Girls.UpdateStat(girl, STAT_MANA, -10);
@@ -115,18 +122,13 @@ bool cJobManager::WorkLiposuction(sGirl* girl, sBrothel* brothel, int DayNight, 
 		}
 		else
 		{
-			ss << "She is sad and has lost some health during the operation.";
+			ss << "She is sad and has lost some health during the operation.\n";
 			g_Girls.UpdateStat(girl, STAT_SPIRIT, -5);
 			g_Girls.UpdateStat(girl, STAT_HAPPINESS, -15);
 			g_Girls.UpdateStat(girl, STAT_HEALTH, -20);
 			g_Girls.UpdateStat(girl, STAT_MANA, -20);
 			g_Girls.UpdateStat(girl, STAT_BEAUTY, 5);
 			g_Girls.UpdateStat(girl, STAT_CHARISMA, 5);
-		}
-		if (!g_Girls.HasTrait(girl, "Great Figure"))
-		{
-			girl->add_trait("Great Figure", false);
-			ss << "Thanks to the surgery she now has a Great Figure.";
 		}
 
 		if (g_Girls.HasTrait(girl, "Fragile")){ g_Girls.UpdateStat(girl, STAT_HEALTH, -5); }
@@ -144,17 +146,17 @@ bool cJobManager::WorkLiposuction(sGirl* girl, sBrothel* brothel, int DayNight, 
 		int wdays = (5 - girl->m_WorkingDay);
 		if (g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, 1) > 0)
 		{
-			if (wdays > 3)		{ wdays = 3; }
+			if (wdays >= 3)		{ wdays = 3; }
 			else if (wdays > 1)	{ wdays = 2; }
 			else				{ wdays = 1; }
 		}
-		ss << "The operation is in progress (" << wdays << " day remaining).";
+		ss << "The operation is in progress (" << wdays << " day remaining).\n";
 		if (g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, 1) > 1)		{ ss << "The Nurses are taking care of her at night."; }
 		else if (g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, 1) > 0){ ss << "The Nurse is taking care of her at night."; }
 		else							{ ss << "Having a Nurse on duty will speed up her recovery."; }
 	}
 
-	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, DayNight);
+	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, msgtype);
 	
 	// Improve girl
 	int libido = 1;

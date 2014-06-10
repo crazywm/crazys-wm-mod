@@ -46,7 +46,9 @@ bool cJobManager::WorkRehab(sGirl* girl, sBrothel* brothel, int DayNight, string
 {
 	string message = "";
 	u_int job = 0;	
-	
+	int msgtype = DayNight;
+
+
 	if (girl->m_YesterDayJob != JOB_REHAB)	// if she was not in rehab yesterday, 
 	{
 		girl->m_WorkingDay = 0;				// rest working days to 0 before proceding
@@ -63,15 +65,25 @@ bool cJobManager::WorkRehab(sGirl* girl, sBrothel* brothel, int DayNight, string
 	if (!hasDoctor)
 	{
 		string message = girl->m_Realname + gettext(" you must have a drug counselor (require 1)");
-		if(DayNight == 0)
-			message += gettext("day");
-		else
-			message += gettext("night");
+		if(DayNight == 0)	message += gettext("day");
+		else				message += gettext("night");
 		message += gettext(" Shift.");
 
 		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_WARNING);
 		return true;
 	}
+	if (!g_Girls.HasTrait(girl, "Fairy Dust Addict") &&		// `J` if the girl is not an addict
+		!g_Girls.HasTrait(girl, "Shroud Addict") &&
+		!g_Girls.HasTrait(girl, "Viras Blood Addict"))
+	{
+		message = girl->m_Realname + gettext(" is not addicted to anything so she was sent to the waiting room.");
+		if (DayNight == 0)	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_WARNING);
+		girl->m_YesterDayJob = girl->m_YesterNightJob = JOB_CENTREREST;
+		girl->m_DayJob = girl->m_NightJob = JOB_CENTREREST;
+		girl->m_PrevWorkingDay = girl->m_WorkingDay = 0;
+		return true;
+	}
+
 
 	if(DayNight == 0)
 	{
@@ -94,8 +106,9 @@ bool cJobManager::WorkRehab(sGirl* girl, sBrothel* brothel, int DayNight, string
 			g_Girls.UpdateStat(girl, STAT_PCFEAR, 5);
 			g_Girls.UpdateStat(girl, STAT_PCLOVE, -10);
 			g_Girls.UpdateStat(girl, STAT_PCHATE, 10);
-			ss << "She almost died in rehab but the Counselor saved her.";
+			ss << "She almost died in rehab but the Counselor saved her.\n";
 			ss << "She hates you a little more for forcing this on her.";
+			girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_DANGER);
 		}
 		else
 		{
@@ -106,38 +119,38 @@ bool cJobManager::WorkRehab(sGirl* girl, sBrothel* brothel, int DayNight, string
 		if (girl->health()< 1)
 		{
 			ss << "She died in rehab.";
+			msgtype = EVENT_DANGER;
 		}
 		else
 		{
-			ss << "The rehab is a success.";
-
+			ss << "The rehab is a success.\n";
+			msgtype = EVENT_GOODNEWS;
 			if (g_Girls.HasTrait(girl, "Fairy Dust Addict"))
 			{
 				g_Girls.RemoveTrait(girl, "Fairy Dust Addict");
-				ss << "She is no longer a fairy dust addict.";
+				ss << "She is no longer a fairy dust addict.\n";
 			}
 			else if (g_Girls.HasTrait(girl, "Shroud Addict"))
 			{
 				g_Girls.RemoveTrait(girl, "Shroud Addict");
-				ss << "She is no longer a shroud addict.";
+				ss << "She is no longer a shroud addict.\n";
 			}
 			else if (g_Girls.HasTrait(girl, "Viras Blood Addict"))
 			{
 				g_Girls.RemoveTrait(girl, "Viras Blood Addict");
-				ss << "She is no longer a viras blood addict.";
+				ss << "She is no longer a viras blood addict.\n";
 			}
 		}
-		girl->m_PrevWorkingDay = 0;
-		girl->m_WorkingDay = 0;
+		girl->m_PrevWorkingDay = girl->m_WorkingDay = 0;
 
 		if (g_Girls.HasTrait(girl, "Fairy Dust Addict") || g_Girls.HasTrait(girl, "Shroud Addict") || g_Girls.HasTrait(girl, "Viras Blood Addict"))
 		{
 			// stay in rehab for another session
-			ss << "She should stay in rehab to treat her other addictions.";
+			ss << "\nShe should stay in rehab to treat her other addictions.";
 		}
 		else // get out of rehab
 		{
-			ss << "She is released from rehab.";
+			ss << "\nShe has been released from rehab.";
 			girl->m_DayJob = JOB_CENTREREST;
 			girl->m_NightJob = JOB_CENTREREST;
 		}
@@ -146,7 +159,7 @@ bool cJobManager::WorkRehab(sGirl* girl, sBrothel* brothel, int DayNight, string
 	{
 		ss << "The rehab is in progress (" << (3 - girl->m_WorkingDay) << " day remaining).";
 	}
-	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, DayNight);
+	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, msgtype);
 
 	return false;
 }

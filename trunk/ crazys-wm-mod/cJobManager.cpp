@@ -50,6 +50,7 @@ extern cCentreManager  g_Centre;
 extern cHouseManager  g_House;
 extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
+extern	bool			g_InitWin;
 
 void cJobManager::Setup()
 {
@@ -1436,6 +1437,8 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 			}
 		}
 	}
+	g_InitWin = true;
+
 	return MadeChanges;
 }
 

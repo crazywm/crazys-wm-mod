@@ -67,7 +67,7 @@ public:
 	//sClinic* m_Parent;
 
 	bool is_Surgery_Job(int testjob);
-
+	bool DoctorNeeded();
 
 };
 

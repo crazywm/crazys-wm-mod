@@ -45,6 +45,7 @@ extern cMessageQue g_MessageQue;
 bool cJobManager::WorkGetAbort(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	string message = "";
+	int msgtype = DayNight;
 
 	if (girl->m_YesterDayJob != JOB_GETABORT)	// if she was not in surgery yesterday, 
 	{
@@ -93,19 +94,20 @@ bool cJobManager::WorkGetAbort(sGirl* girl, sBrothel* brothel, int DayNight, str
 	stringstream ss;
 	if (girl->m_WorkingDay >= 2)
 	{
-		ss << "The girl had an abortion.";
+		ss << "The girl had an abortion.\n";
+		msgtype = EVENT_GOODNEWS;
 // `J` first set the base stat modifiers
 		int happy = -10, health = -20, mana = -20, spirit = -5, love = -5, hate = 5;
 
 		if (numnurse > 0)
 		{
-			ss << "The Nurse tried to kept her healthy and happy during her recovery.";
+			ss << "The Nurse tried to kept her healthy and happy during her recovery.\n";
 // `J` then adjust if a nurse helps her through it
 			happy += 10;	health += 10;	mana += 10;	spirit += 5;	love += 1;	hate -= 1;
 		}
 		else
 		{
-			ss << "She is sad and has lost some health during the operation.";
+			ss << "She is sad and has lost some health during the operation.\n";
 		}
 
 // `J` next, check traits
@@ -172,34 +174,34 @@ bool cJobManager::WorkGetAbort(sGirl* girl, sBrothel* brothel, int DayNight, str
 		{
 			if (happy < -50)
 			{
-				ss << "She is very distraught about the loss of her baby.";
+				ss << "She is very distraught about the loss of her baby.\n";
 				hate += 10;
 				girl->add_trait("Pessimist", false);
 			}
 			else if (happy < -25)
 			{
-				ss << "She is distraught about the loss of her baby.";
+				ss << "She is distraught about the loss of her baby.\n";
 				hate += 5;
 			}
 			else if (happy < -5)
 			{
-				ss << "She is sad about the loss of her baby.";
+				ss << "She is sad about the loss of her baby.\n";
 			}
 			else if (happy < 10)
 			{
-				ss << "She accepts that she is not ready to have her baby.";
+				ss << "She accepts that she is not ready to have her baby.\n";
 			}
 			else if (happy < 25)
 			{
-				ss << "She is glad she is not going to have her baby.";
+				ss << "She is glad she is not going to have her baby.\n";
 			}
 			else if (happy < 50)
 			{
-				ss << "She is happy she is not going to have her baby.";
+				ss << "She is happy she is not going to have her baby.\n";
 			}
 			else
 			{
-				ss << "She is overjoyed not to be forced to carry her baby.";
+				ss << "She is overjoyed not to be forced to carry her baby.\n";
 				hate -= 5;
 				girl->add_trait("Optimist", false);
 			}
@@ -210,34 +212,34 @@ bool cJobManager::WorkGetAbort(sGirl* girl, sBrothel* brothel, int DayNight, str
 			happy += int(((g_Girls.GetStat(girl, STAT_PCHATE) + hate) - (g_Girls.GetStat(girl, STAT_PCLOVE) + love)) / 2);
 			if (happy < -50)
 			{
-				ss << "She is very distraught about the loss of your baby.";
+				ss << "She is very distraught about the loss of your baby.\n";
 				hate += 10;
 				girl->add_trait("Pessimist", false);
 			}
 			else if (happy < -25)
 			{
-				ss << "She is distraught about the loss of your baby.";
+				ss << "She is distraught about the loss of your baby.\n";
 				hate += 5;
 			}
 			else if (happy < -5)
 			{
-				ss << "She is sad about the loss of your baby.";
+				ss << "She is sad about the loss of your baby.\n";
 			}
 			else if (happy < 10)
 			{
-				ss << "She accepts that she is not ready to have your baby.";
+				ss << "She accepts that she is not ready to have your baby.\n";
 			}
 			else if (happy < 25)
 			{
-				ss << "She is glad she is not going to have your baby.";
+				ss << "She is glad she is not going to have your baby.\n";
 			}
 			else if (happy < 50)
 			{
-				ss << "She is happy she is not going to have your baby.";
+				ss << "She is happy she is not going to have your baby.\n";
 			}
 			else
 			{
-				ss << "She is overjoyed not to be forced to carry your hellspawn.";
+				ss << "She is overjoyed not to be forced to carry your hellspawn.\n";
 				hate -= 5;
 				girl->add_trait("Optimist", false);
 			}
@@ -280,34 +282,34 @@ bool cJobManager::WorkGetAbort(sGirl* girl, sBrothel* brothel, int DayNight, str
 
 			if (happy < -50)
 			{
-				ss << "She is very distraught about the loss of the creature growing inside her.";
+				ss << "She is very distraught about the loss of the creature growing inside her.\n";
 				hate += 10;
 				girl->add_trait("Pessimist", false);
 			}
 			else if (happy < -25)
 			{
-				ss << "She is distraught about the loss of the creature growing inside her.";
+				ss << "She is distraught about the loss of the creature growing inside her.\n";
 				hate += 5;
 			}
 			else if (happy < -10)
 			{
-				ss << "She is sad about the loss of the creature growing inside her.";
+				ss << "She is sad about the loss of the creature growing inside her.\n";
 			}
 			else if (happy < 10)
 			{
-				ss << "She accepts that she is not ready to bring a strange creature into this world.";
+				ss << "She accepts that she is not ready to bring a strange creature into this world.\n";
 			}
 			else if (happy < 25)
 			{
-				ss << "She is glad she is not going to have to carry that strange creature inside her.";
+				ss << "She is glad she is not going to have to carry that strange creature inside her.\n";
 			}
 			else if (happy < 50)
 			{
-				ss << "She is happy she is not going to have to carry that strange creature inside her.";
+				ss << "She is happy she is not going to have to carry that strange creature inside her.\n";
 			}
 			else
 			{
-				ss << "She is overjoyed not to be forced to carry that hellspawn anymore.";
+				ss << "She is overjoyed not to be forced to carry that hellspawn anymore.\n";
 				hate -= 5;
 				girl->add_trait("Optimist", false);
 			}
@@ -330,7 +332,7 @@ bool cJobManager::WorkGetAbort(sGirl* girl, sBrothel* brothel, int DayNight, str
 		ss << "The abortion is in progress (1 day remaining).";
 	}
 
-	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, DayNight);
+	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, msgtype);
 
 	// Improve girl
 	int libido = -10;

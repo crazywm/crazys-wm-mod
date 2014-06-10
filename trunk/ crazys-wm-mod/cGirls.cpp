@@ -251,9 +251,7 @@ int sGirl::lookup_stat_code(string s)
 	return stat_lookup[s];
 }
 
-/*
- * END MOD
- */
+// END MOD
 
 class GirlPredicate_GRG : public GirlPredicate {
 	bool m_slave;
@@ -4195,10 +4193,7 @@ TiXmlElement* sChild::SaveChildXML(TiXmlElement* pRoot)
 	return pChild;
 }
 
-
-/*
- * and an xml loader for sGirl
- */
+ // and an xml loader for sGirl
 void sGirl::load_from_xml(TiXmlElement *el)
 {
 	int ival;
@@ -12045,10 +12040,8 @@ ostream& operator<<(ostream &os, sRandomGirl &g)
 	return os;
 }
 
-/*
- * another stream operator, this time for sGirl
- */
-
+// * another stream operator, this time for sGirl
+ 
 ostream& operator<<(ostream& os, sGirl &g)
 {
 	os << g.m_Realname << endl;
@@ -13384,12 +13377,16 @@ bool cGirls::IsAnimatedSurface(sGirl* girl, int ImgType, int& img)
 		{
 //				kept all cases to test for invalid Image Type.
 		case IMGTYPE_TORTURE:
-			if (girl->is_pregnant() && girl->m_GirlImages->m_Images[ImgType + PREG_OFFSET].m_NumImages)
-				return girl->m_GirlImages->m_Images[ImgType + PREG_OFFSET].IsAnimatedSurface(img);
-			else if (girl->m_GirlImages->m_Images[ImgType].m_NumImages > 0)
-				return girl->m_GirlImages->m_Images[ImgType].IsAnimatedSurface(img);
+			if (girl->is_pregnant() && girl->m_GirlImages->m_Images[IMGTYPE_TORTURE + PREG_OFFSET].m_NumImages)
+				return girl->m_GirlImages->m_Images[IMGTYPE_TORTURE + PREG_OFFSET].IsAnimatedSurface(img);
+			if (girl->is_pregnant() && girl->m_GirlImages->m_Images[IMGTYPE_BDSM + PREG_OFFSET].m_NumImages)
+				return girl->m_GirlImages->m_Images[IMGTYPE_BDSM + PREG_OFFSET].IsAnimatedSurface(img);
+			else if (girl->m_GirlImages->m_Images[IMGTYPE_TORTURE].m_NumImages > 0)
+				return girl->m_GirlImages->m_Images[IMGTYPE_TORTURE].IsAnimatedSurface(img);
+			else if (girl->m_GirlImages->m_Images[IMGTYPE_BDSM].m_NumImages > 0)
+				return girl->m_GirlImages->m_Images[IMGTYPE_BDSM].IsAnimatedSurface(img);
 			else
-				ImgType = IMGTYPE_BDSM;		// Try this next loop
+				ImgType = IMGTYPE_PROFILE;		// Try this next loop
 			break;
 
 
@@ -13567,12 +13564,16 @@ CSurface* cGirls::GetImageSurface(sGirl* girl, int ImgType, bool random, int& im
 		{
 //				kept all cases to test for invalid Image Type.
 		case IMGTYPE_TORTURE:
-			if (girl->is_pregnant() && girl->m_GirlImages->m_Images[ImgType + PREG_OFFSET].m_NumImages && !gallery)
-				return girl->m_GirlImages->m_Images[ImgType + PREG_OFFSET].GetImageSurface(random, img);
-			else if (girl->m_GirlImages->m_Images[ImgType].m_NumImages > 0)
-				return girl->m_GirlImages->m_Images[ImgType].GetImageSurface(random, img);
+			if (girl->is_pregnant() && girl->m_GirlImages->m_Images[IMGTYPE_TORTURE + PREG_OFFSET].m_NumImages && !gallery)
+				return girl->m_GirlImages->m_Images[IMGTYPE_TORTURE + PREG_OFFSET].GetImageSurface(random, img);
+			if (girl->is_pregnant() && girl->m_GirlImages->m_Images[IMGTYPE_BDSM + PREG_OFFSET].m_NumImages && !gallery)
+				return girl->m_GirlImages->m_Images[IMGTYPE_BDSM + PREG_OFFSET].GetImageSurface(random, img);
+			else if (girl->m_GirlImages->m_Images[IMGTYPE_TORTURE].m_NumImages > 0)
+				return girl->m_GirlImages->m_Images[IMGTYPE_TORTURE].GetImageSurface(random, img);
+			else if (girl->m_GirlImages->m_Images[IMGTYPE_BDSM].m_NumImages > 0)
+				return girl->m_GirlImages->m_Images[IMGTYPE_BDSM].GetImageSurface(random, img);
 			else
-				ImgType = IMGTYPE_BDSM;		// Try this next loop
+				ImgType = IMGTYPE_PROFILE;		// Try this next loop
 			break;
 
 		case IMGTYPE_ANAL:
@@ -13820,12 +13821,16 @@ int cGirls::DrawGirl(sGirl* girl, int x, int y, int width, int height, int ImgTy
 		{
 //				kept all cases to test for invalid Image Type.
 		case IMGTYPE_TORTURE:
-			if (preg && girl->m_GirlImages->m_Images[ImgType + PREG_OFFSET].m_NumImages > 0)
-				return girl->m_GirlImages->m_Images[ImgType + PREG_OFFSET].DrawImage(x, y, width, height, random, img);
-			else if (girl->m_GirlImages->m_Images[ImgType].m_NumImages > 0)
-				return girl->m_GirlImages->m_Images[ImgType].DrawImage(x, y, width, height, random, img);
+			if (preg && girl->m_GirlImages->m_Images[IMGTYPE_TORTURE + PREG_OFFSET].m_NumImages > 0)
+				return girl->m_GirlImages->m_Images[IMGTYPE_TORTURE + PREG_OFFSET].DrawImage(x, y, width, height, random, img);
+			else if (preg && girl->m_GirlImages->m_Images[IMGTYPE_BDSM + PREG_OFFSET].m_NumImages > 0)
+				return girl->m_GirlImages->m_Images[IMGTYPE_BDSM + PREG_OFFSET].DrawImage(x, y, width, height, random, img);
+			else if (girl->m_GirlImages->m_Images[IMGTYPE_TORTURE].m_NumImages > 0)
+				return girl->m_GirlImages->m_Images[IMGTYPE_TORTURE].DrawImage(x, y, width, height, random, img);
+			else if (girl->m_GirlImages->m_Images[IMGTYPE_BDSM].m_NumImages > 0)
+				return girl->m_GirlImages->m_Images[IMGTYPE_BDSM].DrawImage(x, y, width, height, random, img);
 			else
-				ImgType = IMGTYPE_BDSM;		// Try this next loop
+				ImgType = IMGTYPE_PROFILE;		// Try this next loop
 			break;
 
 
@@ -13979,8 +13984,7 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 	ss.str("");
 	
 	bool interrupted = false;	// `J` added
-	if ((this) &&
-		(this)->m_YesterDayJob != (this)->m_DayJob &&
+	if ((this) && (this)->m_YesterDayJob != (this)->m_DayJob &&
 		(g_Clinic.is_Surgery_Job((this)->m_YesterDayJob) || (this)->m_YesterDayJob == JOB_REHAB) &&
 		(((this)->m_WorkingDay > 0) || (this)->m_PrevWorkingDay > 0))
 		interrupted = true;
@@ -14098,15 +14102,76 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 		}
 		else if (m_DayJob == JOB_REHAB)
 		{
-			ss << g_Brothels.m_JobManager.JobName[m_DayJob] << " (" << 3 - m_WorkingDay << ")";
+			if (g_Centre.GetNumGirlsOnJob(0, JOB_DRUGCOUNSELOR, 0) > 0)
+			{
+				ss << g_Brothels.m_JobManager.JobName[m_DayJob] << " (" << 3 - m_WorkingDay << ")";
+			}
+			else
+			{
+				ss << g_Brothels.m_JobManager.JobName[m_DayJob] << " (?)***";
+			}
+		}
+		else if (m_DayJob == JOB_GETHEALING)
+		{
+			if (g_Clinic.GetNumGirlsOnJob(0, JOB_DOCTOR, 0) > 0)
+			{
+				ss << g_Brothels.m_JobManager.JobName[m_DayJob];
+			}
+			else
+			{
+				ss << g_Brothels.m_JobManager.JobName[m_DayJob] << " ***";
+			}
+		}
+		else if (m_DayJob == JOB_GETREPAIRS)
+		{
+			if (g_Clinic.GetNumGirlsOnJob(0, JOB_MECHANIC, 0) > 0 &&
+				(g_Girls.HasTrait(this, "Construct") ||
+				g_Girls.HasTrait(this, "Half-Construct")))
+			{
+				ss << g_Brothels.m_JobManager.JobName[m_DayJob];
+			}
+			else if (g_Girls.HasTrait(this, "Construct"))
+			{
+				ss << g_Brothels.m_JobManager.JobName[m_DayJob] << " ****";
+			}
+			else
+			{
+				ss << g_Brothels.m_JobManager.JobName[m_DayJob] << " !!";
+			}
 		}
 		else if (m_DayJob == JOB_GETABORT)
 		{
-			ss << g_Brothels.m_JobManager.JobName[m_DayJob] << " (" << 2 - m_WorkingDay << ")*";
+			int wdays = (2 - (this)->m_WorkingDay);
+			if (g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, 0) > 0)
+			{
+				wdays = 1;
+			}
+			if (g_Clinic.GetNumGirlsOnJob(0, JOB_DOCTOR, 0) > 0)
+			{
+				ss << g_Brothels.m_JobManager.JobName[m_DayJob] << " (" << wdays << ")*";
+			}
+			else
+			{
+				ss << g_Brothels.m_JobManager.JobName[m_DayJob] << " (?)***";
+			}
 		}
 		else if (g_Clinic.is_Surgery_Job(m_DayJob))
 		{
-			ss << g_Brothels.m_JobManager.JobName[m_DayJob] << " (" << 5 - m_WorkingDay << ")*";
+			int wdays = (5 - (this)->m_WorkingDay);
+			if (g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, 0) > 0)
+			{
+				if (wdays >= 3)		{ wdays = 3; }
+				else if (wdays > 1)	{ wdays = 2; }
+				else				{ wdays = 1; }
+			}
+			if (g_Clinic.GetNumGirlsOnJob(0, JOB_DOCTOR, 0) > 0)
+			{
+				ss << g_Brothels.m_JobManager.JobName[m_DayJob] << " (" << wdays << ")*";
+			}
+			else
+			{
+				ss << g_Brothels.m_JobManager.JobName[m_DayJob] << " (?)***";
+			}
 		}
 		else
 		{
@@ -14126,15 +14191,77 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 		}
 		else if (m_NightJob == JOB_REHAB)
 		{
-			ss << g_Brothels.m_JobManager.JobName[m_NightJob] << " (" << 3 - m_WorkingDay << ")";
+			if (g_Centre.GetNumGirlsOnJob(0, JOB_DRUGCOUNSELOR, 1) > 0)
+			{
+				ss << g_Brothels.m_JobManager.JobName[m_NightJob] << " (" << 3 - m_WorkingDay << ")";
+			}
+			else
+			{
+				ss << g_Brothels.m_JobManager.JobName[m_NightJob] << " (?)***";
+			}
+		}
+		else if (m_NightJob == JOB_GETHEALING)
+		{
+			if (g_Clinic.GetNumGirlsOnJob(0, JOB_DOCTOR, 1) >0)
+			{
+				ss << g_Brothels.m_JobManager.JobName[m_NightJob];
+			}
+			else
+			{
+				ss << g_Brothels.m_JobManager.JobName[m_NightJob] << " ***";
+			}
+
+		}
+		else if (m_NightJob == JOB_GETREPAIRS)
+		{
+			if (g_Clinic.GetNumGirlsOnJob(0, JOB_MECHANIC, 1) > 0 &&
+				(g_Girls.HasTrait(this, "Construct") ||
+				g_Girls.HasTrait(this, "Half-Construct")))
+			{
+				ss << g_Brothels.m_JobManager.JobName[m_NightJob];
+			}
+			else if (g_Girls.HasTrait(this, "Construct"))
+			{
+				ss << g_Brothels.m_JobManager.JobName[m_NightJob] << " ****";
+			}
+			else
+			{
+				ss << g_Brothels.m_JobManager.JobName[m_NightJob] << " !!";
+			}
 		}
 		else if (m_NightJob == JOB_GETABORT)
 		{
-			ss << g_Brothels.m_JobManager.JobName[m_NightJob] << " (" << 2 - m_WorkingDay << ")*";
+			int wdays = (2 - (this)->m_WorkingDay);
+			if (g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, 1) > 0)
+			{
+				wdays = 1;
+			}
+			if (g_Clinic.GetNumGirlsOnJob(0, JOB_DOCTOR, 1) > 0)
+			{
+				ss << g_Brothels.m_JobManager.JobName[m_NightJob] << " (" << wdays << ")*";
+			}
+			else
+			{
+				ss << g_Brothels.m_JobManager.JobName[m_NightJob] << " (?)***";
+			}
 		}
 		else if (g_Clinic.is_Surgery_Job(m_NightJob))
 		{
-			ss << g_Brothels.m_JobManager.JobName[m_NightJob] << " (" << 5 - m_WorkingDay << ")*";
+			int wdays = (5 - (this)->m_WorkingDay);
+			if (g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, 1) > 0)
+			{
+				if (wdays >= 3)		{ wdays = 3; }
+				else if (wdays > 1)	{ wdays = 2; }
+				else				{ wdays = 1; }
+			}
+			if (g_Clinic.GetNumGirlsOnJob(0, JOB_DOCTOR, 1) > 0)
+			{
+				ss << g_Brothels.m_JobManager.JobName[m_NightJob] << " (" << wdays << ")*";
+			}
+			else
+			{
+				ss << g_Brothels.m_JobManager.JobName[m_NightJob] << " (?)***";
+			}
 		}
 		else
 		{

@@ -45,6 +45,7 @@ extern cMessageQue g_MessageQue;
 bool cJobManager::WorkPhysicalSurgery(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	string message = "";
+	int msgtype = DayNight;
 
 	// not for patient
 	g_Girls.UnequipCombat(girl);
@@ -80,10 +81,21 @@ bool cJobManager::WorkPhysicalSurgery(sGirl* girl, sBrothel* brothel, int DayNig
 	stringstream ss;
 	if (girl->m_WorkingDay >= 5)
 	{
-		ss << "The surgery is a success.";
+		ss << "The surgery is a success.\n";
+		msgtype = EVENT_GOODNEWS;
+		if (!g_Girls.HasTrait(girl, "Sexy Air"))
+		{
+			girl->add_trait("Sexy Air", false);
+			ss << "She gains Sexy Air trait.\n";
+		}
+		else if (!g_Girls.HasTrait(girl, "Cute"))
+		{
+			girl->add_trait("Cute", false);
+			ss << "She gains Cute trait.\n";
+		}
 		if (numnurse > 1)
 		{
-			ss << "The Nurses kept her healthy and happy during her recovery.";
+			ss << "The Nurses kept her healthy and happy during her recovery.\n";
 			g_Girls.UpdateStat(girl, STAT_SPIRIT, 5);
 			g_Girls.UpdateStat(girl, STAT_MANA, 10);
 			g_Girls.UpdateStat(girl, STAT_BEAUTY, 15);
@@ -91,7 +103,7 @@ bool cJobManager::WorkPhysicalSurgery(sGirl* girl, sBrothel* brothel, int DayNig
 		}
 		else if (numnurse > 0)
 		{
-			ss << "The Nurse helped her during her recovery.";
+			ss << "The Nurse helped her during her recovery.\n";
 			g_Girls.UpdateStat(girl, STAT_HAPPINESS, -5);
 			g_Girls.UpdateStat(girl, STAT_HEALTH, -10);
 			g_Girls.UpdateStat(girl, STAT_MANA, -10);
@@ -100,7 +112,7 @@ bool cJobManager::WorkPhysicalSurgery(sGirl* girl, sBrothel* brothel, int DayNig
 		}
 		else
 		{
-			ss << "She is sad and has lost some health during the operation.";
+			ss << "She is sad and has lost some health during the operation.\n";
 			g_Girls.UpdateStat(girl, STAT_SPIRIT, -5);
 			g_Girls.UpdateStat(girl, STAT_HAPPINESS, -15);
 			g_Girls.UpdateStat(girl, STAT_HEALTH, -20);
@@ -108,43 +120,31 @@ bool cJobManager::WorkPhysicalSurgery(sGirl* girl, sBrothel* brothel, int DayNig
 			g_Girls.UpdateStat(girl, STAT_BEAUTY, 8);
 			g_Girls.UpdateStat(girl, STAT_CHARISMA, 8);
 		}
-		if (!g_Girls.HasTrait(girl, "Sexy Air"))
-		{
-			girl->add_trait("Sexy Air", false);
-			ss << "She gains Sexy Air trait.";
-		}
-		else if (!g_Girls.HasTrait(girl, "Cute"))
-		{
-			girl->add_trait("Cute", false);
-			ss << "She gains Cute trait.";
-		}
 
 		if (g_Girls.HasTrait(girl, "Fragile")){ g_Girls.UpdateStat(girl, STAT_HEALTH, -5); }
 		else if (g_Girls.HasTrait(girl, "Tough")){ g_Girls.UpdateStat(girl, STAT_HEALTH, 5); }
 		if (g_Girls.HasTrait(girl, "Pessimist")){ g_Girls.UpdateStat(girl, STAT_HAPPINESS, -5); }
 		else if (g_Girls.HasTrait(girl, "Optimist")){ g_Girls.UpdateStat(girl, STAT_HAPPINESS, 5); }
 
-		girl->m_WorkingDay = 0;
-		girl->m_PrevWorkingDay = 0;
-		girl->m_DayJob = JOB_CLINICREST;
-		girl->m_NightJob = JOB_CLINICREST;
+		girl->m_WorkingDay = girl->m_PrevWorkingDay = 0;
+		girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
 	}
 	else
 	{
 		int wdays = (5 - girl->m_WorkingDay);
 		if (g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, 1) > 0)
 		{
-			if (wdays > 3)		{ wdays = 3; }
+			if (wdays >= 3)		{ wdays = 3; }
 			else if (wdays > 1)	{ wdays = 2; }
 			else				{ wdays = 1; }
 		}
-		ss << "The operation is in progress (" << wdays << " day remaining).";
+		ss << "The operation is in progress (" << wdays << " day remaining).\n";
 		if (g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, 1) > 1)		{ ss << "The Nurses are taking care of her at night."; }
 		else if (g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, 1) > 0){ ss << "The Nurse is taking care of her at night."; }
 		else							{ ss << "Having a Nurse on duty will speed up her recovery."; }
 	}
 
-	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, DayNight);
+	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, msgtype);
 
 
 
