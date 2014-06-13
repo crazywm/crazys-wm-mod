@@ -30,6 +30,9 @@ Another point is that we need a better description for jobs. Something like the 
 = Clinic =
   * Nurse-
 = Centre =
+ Run a charity, with an option for the player to steal from charity (with possible bad outcome). 
+Run schools/orphanages.. this should give a boost to the stats of new random girls, and possibly be a place to recruit new uniques.
+ Homeless shelter... once again a possible place to find new girls.
 = Studio =
 = Arena =
 = House =
