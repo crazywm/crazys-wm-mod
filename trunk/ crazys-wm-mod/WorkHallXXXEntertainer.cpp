@@ -44,15 +44,18 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, int Day
 {
 	string message = "";
 	string girlName = girl->m_Realname;
-	if(Preprocessing(ACTION_WORKHALL, girl, brothel, DayNight, summary, message))	// they refuse to have work in the hall
+	if (Preprocessing(ACTION_SEX, girl, brothel, DayNight, summary, message))	// they refuse to have work in the hall
 		return true;
 
 	// put that shit away, you'll scare off the customers!
 	g_Girls.UnequipCombat(girl);
 
 	int roll = g_Dice%100;
-	int looks = (g_Girls.GetStat(girl, STAT_CHARISMA) + g_Girls.GetStat(girl, STAT_BEAUTY))/2;
-	int jobperformance = (looks + g_Girls.GetSkill(girl, SKILL_SERVICE));
+	int jobperformance = ( (g_Girls.GetStat(girl, STAT_CHARISMA) +
+							g_Girls.GetStat(girl, STAT_BEAUTY) +
+							g_Girls.GetStat(girl, STAT_CONFIDENCE)) / 3 +
+							g_Girls.GetSkill(girl, SKILL_STRIP) / 2 +
+							g_Girls.GetSkill(girl, SKILL_PERFORMANCE) / 2);
 	int wages = 25;
 
 	message = "She worked as a sexual entertainer in the gambling hall.";
@@ -403,15 +406,18 @@ else
 	if(roll <= 5)
 	{
 		message += " \nSome of the patrons abused her during the shift.";
+		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, -1, true);
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKHALL, -1, true);
 	}
 	else if(roll <= 25) {
 		message += " \nShe had a pleasant time working.";
+		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +3, true);
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKHALL, +3, true);
 	}
 	else
 	{
 		message += " \nOtherwise, the shift passed uneventfully.";
+		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +1, true);
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKHALL, +1, true);
 	}
 
@@ -443,11 +449,13 @@ else
 
 	g_Girls.UpdateStat(girl, STAT_FAME, 1);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, skill);
+	g_Girls.UpdateStat(girl, STAT_CONFIDENCE, g_Dice%skill);
+	g_Girls.UpdateSkill(girl, SKILL_STRIP, g_Dice%skill+1);
+	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill+1);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
 	//gain traits
-	g_Girls.PossiblyGainNewTrait(girl, "Nymphomaniac", 75, ACTION_WORKHALL, "Having to preform sexual entertainment for patrons every day has made " + girl->m_Realname + " quite the nympho.", DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Nymphomaniac", 75, ACTION_SEX, "Having to preform sexual entertainment for patrons every day has made " + girl->m_Realname + " quite the nympho.", DayNight != 0);
 
 	return false;
 }

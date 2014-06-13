@@ -57,8 +57,8 @@ public:
 	virtual void UpdateSkill(sGirl* girl, int skill, int amount)=0;
 	virtual bool CalcPregnancy(
 		sGirl* girl, int chance, int type,
-		unsigned char stats[NUM_STATS],
-		unsigned char skills[NUM_SKILLS]
+		int stats[NUM_STATS],
+		int skills[NUM_SKILLS]
 	)=0;
 //	virtual void AddTrait(sGirl* girl, string name, bool temp = false, bool removeitem = false, bool remember = false)=0;
 	virtual bool AddTrait(sGirl* girl, string name, bool temp = false, bool removeitem = false, bool remember = false)=0;
@@ -270,8 +270,8 @@ typedef struct sChild
 	unsigned char m_Unborn;	// 1 when child is unborn (for when stats are inherited from customers)
 
 	// skills and stats from the father
-	unsigned char m_Stats[NUM_STATS];
-	unsigned char m_Skills[NUM_SKILLS];
+	int m_Stats[NUM_STATS];
+	int m_Skills[NUM_SKILLS];
 
 	sChild* m_Next;
 	sChild* m_Prev;
@@ -340,7 +340,7 @@ struct sGirl
 	long m_States;								// Holds the states the girl has
 
 	// Abstract stats (not shown as numbers but as a raiting)
-	unsigned char m_Stats[NUM_STATS];
+	int m_Stats[NUM_STATS];
 	int m_StatMods[NUM_STATS];					// perminant modifiers to stats
 	int m_TempStats[NUM_STATS];					// these go down (or up) by 30% each week until they reach 0
 
@@ -356,7 +356,7 @@ struct sGirl
 
 	unsigned char m_AccLevel;					// how good her Accommodation is, 0 is slave like and non-slaves will really hate it
 
-	unsigned char m_Skills[NUM_SKILLS];
+	int m_Skills[NUM_SKILLS];
 	int m_SkillMods[NUM_SKILLS];
 	int m_TempSkills[NUM_SKILLS];				// these go down (or up) by 1 each week until they reach 0
 
@@ -614,6 +614,7 @@ struct sGirl
 	int pchate(int n)	{ return upd_stat(STAT_PCHATE, n); }
 
 	int rebel();
+	string JobRatingLetter(int value);
 /*
  *	notice that if we do tweak get_stat to reference the stats array
  *	direct, the above still work.
@@ -906,6 +907,7 @@ public:
 
 	string GetDetailsString(sGirl* girl, bool purchace = false);
 	string GetMoreDetailsString(sGirl* girl);
+	string GetThirdDetailsString(sGirl* girl);
 	string GetGirlMood(sGirl* girl);
 
 //	void AddTrait(sGirl* girl, string name, bool temp = false, bool removeitem = false, bool inrememberlist = false);
@@ -933,7 +935,7 @@ public:
 	bool child_is_grown(sGirl* girl, sChild* child, string& summary, bool PlayerControlled = true);
 	bool child_is_due(sGirl* girl, sChild* child, string& summary, bool PlayerControlled = true);
 	void HandleChildren(sGirl* girl, string& summary, bool PlayerControlled = true);	// ages children and handles pregnancy
-	bool CalcPregnancy(sGirl* girl, int chance, int type, unsigned char stats[NUM_STATS], unsigned char skills[NUM_SKILLS]);	// checks if a girl gets pregnant
+	bool CalcPregnancy(sGirl* girl, int chance, int type, int stats[NUM_STATS], int skills[NUM_SKILLS]);	// checks if a girl gets pregnant
 	void UncontrolledPregnancies();	// ages children and handles pregnancy for all girls not controlled by player
 
 	// mod - docclox - func to return random girl N in the chain

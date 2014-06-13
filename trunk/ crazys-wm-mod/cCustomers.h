@@ -34,10 +34,10 @@ typedef struct sCustomer
 
 	unsigned int m_Money;
 
-	unsigned char m_Stats[NUM_STATS];
-	unsigned char m_Skills[NUM_SKILLS];
+	int m_Stats[NUM_STATS];
+	int m_Skills[NUM_SKILLS];
 
-//	unsigned char m_Skills[NUM_SKILLS];
+//	int m_Skills[NUM_SKILLS];
 
 	unsigned char m_Fetish;	// the customers fetish
 	unsigned char m_SexPref;	// their sex preference

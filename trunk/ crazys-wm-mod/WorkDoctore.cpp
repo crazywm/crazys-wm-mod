@@ -89,7 +89,8 @@ bool cJobManager::WorkDoctore(sGirl* girl, sBrothel* brothel, int DayNight, stri
 	g_Gold.girl_support(wages);  // matron wages come from you
 	girl->m_Pay += wages;
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, skill);
+	g_Girls.UpdateSkill(girl, SKILL_MEDICINE, g_Dice%skill+1);
+	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
 	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 30, ACTION_WORKMATRON, gettext("She has worked as a matron long enough that she has learned to be more Charismatic."), DayNight != 0);

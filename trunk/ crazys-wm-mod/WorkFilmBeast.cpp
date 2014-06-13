@@ -98,12 +98,12 @@ bool cJobManager::WorkFilmBeast(sGirl* girl, sBrothel* brothel, int DayNight, st
 		jobperformance += 50;
 		message += "She is a virgin.\n";
 	}
-	jobperformance += g_Dice%4 - 1;	// should add a -1 to +3 random element --PP
+	jobperformance += g_Girls.GetSkill(girl, SKILL_PERFORMANCE) / 10;
+	jobperformance += g_Dice % 4 - 1;	// should add a -1 to +3 random element --PP
 	jobperformance += 5; // Modifier for what kind of sex scene it is.. normal sex is the baseline at +0
 	// remaining modifiers are in the AddScene function --PP
 	string finalqual = g_Studios.AddScene(girl, SKILL_BEASTIALITY, jobperformance); 
 	message += "Her scene us valued at: " + finalqual + " gold.\n";
-	g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, 2);
 
 	// mod: added check for number of beasts owned; otherwise, fake beasts could somehow inseminate the girl
 	if(g_Brothels.GetNumBeasts() > 0)
@@ -112,6 +112,8 @@ bool cJobManager::WorkFilmBeast(sGirl* girl, sBrothel* brothel, int DayNight, st
 			g_MessageQue.AddToQue("She has gotten inseminated", 0);
 	}
 	
+	girl->m_Events.AddMessage(message, IMGTYPE_BEAST, DayNight);
+
 /*
  *	work out the pay between the house and the girl
  *
@@ -136,7 +138,8 @@ bool cJobManager::WorkFilmBeast(sGirl* girl, sBrothel* brothel, int DayNight, st
 	}
 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	girl->m_Events.AddMessage(message, IMGTYPE_BEAST, DayNight);
+	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill);
+	g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, g_Dice%skill + 1);
 
 	g_Girls.PossiblyGainNewTrait(girl, "Fake orgasm expert", 15, ACTION_WORKMOVIE, "She has become quite the faker.", DayNight != 0);
 

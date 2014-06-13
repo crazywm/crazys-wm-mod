@@ -54,7 +54,9 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, int DayNight, str
 	message += "She played the piano in the bar.";
 
 	int roll = g_Dice%100;
-	int jobperformance = (g_Girls.GetStat(girl, STAT_CONFIDENCE) + g_Girls.GetSkill(girl, SKILL_PERFORMANCE));
+	int jobperformance = (	g_Girls.GetStat(girl, STAT_CONFIDENCE)/2 + 
+							g_Girls.GetStat(girl, STAT_INTELLIGENCE)/2 +
+							g_Girls.GetSkill(girl, SKILL_PERFORMANCE));
 
 	//good traits
 	if (g_Girls.HasTrait(girl, "Charismatic"))  //
@@ -308,9 +310,11 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, int DayNight, str
 
 	g_Girls.UpdateStat(girl, STAT_FAME, 1);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	if(g_Dice%10)
-		g_Girls.UpdateStat(girl, STAT_CONFIDENCE, 1);
-	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, skill);
+	if(g_Dice%2==1)
+		g_Girls.UpdateStat(girl, STAT_CONFIDENCE, g_Dice%skill);
+	else
+		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, g_Dice%skill);
+	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill + 1);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
 	//gain traits

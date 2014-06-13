@@ -38,6 +38,7 @@ extern CLog g_LogFile;
 extern cCustomers g_Customers;
 extern cInventory g_InvManager;
 extern cBrothelManager g_Brothels;
+extern cClinicManager g_Clinic;
 extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
@@ -45,9 +46,18 @@ bool cJobManager::WorkDoctor(sGirl* girl, sBrothel* brothel, int DayNight, strin
 {
 	string message = "";
 
+	if (g_Girls.HasTrait(girl, "AIDS"))
+	{
+		message = gettext("Health laws prohibit anyone with AIDS from working in the Medical profession so ") +
+			girl->m_Realname + gettext(" was sent to the waiting room.");
+		if (DayNight == 0)	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_WARNING);
+		girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
+		return true;
+	}
+
 	g_Girls.AddTiredness(girl);
 
-	// not for doctor
+	// put that shit away, you'll scare off the patients!
 	g_Girls.UnequipCombat(girl);
 
 	//	if(DayNight) // Doctor is a full time job now
@@ -57,6 +67,26 @@ bool cJobManager::WorkDoctor(sGirl* girl, sBrothel* brothel, int DayNight, strin
 	message += gettext("She worked as a Doctor.");
 	
 	int roll = g_Dice%100;
+	int jobperformance = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) +
+		g_Girls.GetSkill(girl, SKILL_MEDICINE) + 
+		g_Girls.GetStat(girl, STAT_LEVEL)/5);
+
+	if (g_Girls.HasTrait(girl, "Charismatic"))		jobperformance += 20;
+	if (g_Girls.HasTrait(girl, "Sexy Air"))			jobperformance += 10;
+	if (g_Girls.HasTrait(girl, "Cool Person"))		jobperformance += 10;
+	if (g_Girls.HasTrait(girl, "Cute"))				jobperformance += 5;
+	if (g_Girls.HasTrait(girl, "Charming"))			jobperformance += 15;
+	if (g_Girls.HasTrait(girl, "Nerd"))				jobperformance += 30;
+	if (g_Girls.HasTrait(girl, "Quick Learner"))	jobperformance += 10;
+	if (g_Girls.HasTrait(girl, "Psychic"))			jobperformance += 20;	// Don't have to ask "Where does it hurt?"
+
+	//bad traits
+	if (g_Girls.HasTrait(girl, "Dependant"))		jobperformance -= 50;
+	if (g_Girls.HasTrait(girl, "Clumsy"))			jobperformance -= 20;
+	if (g_Girls.HasTrait(girl, "Aggressive"))		jobperformance -= 20;
+	if (g_Girls.HasTrait(girl, "Nervous"))			jobperformance -= 50;
+	if (g_Girls.HasTrait(girl, "Retarded"))			jobperformance -= 100;
+	if (g_Girls.HasTrait(girl, "Meek"))				jobperformance -= 20;
 
 	/*
 JOB_CHAIRMAN      
@@ -66,19 +96,19 @@ JOB_MECHANIC
 JOB_JANITOR       
 JOB_CLINICREST    
 
+*/
 
-JOB_GETHEALING     
-JOB_GETABORT		
-JOB_PHYSICALSURGERY
-JOB_LIPO			
-JOB_BREASTREDUCTION
-JOB_BOOBJOB        
-JOB_VAGINAREJUV    
-JOB_FACELIFT       
-JOB_ASSJOB         
+	int patients = g_Clinic.GetNumGirlsOnJob(0, JOB_GETHEALING, DayNight == 0) +
+		g_Clinic.GetNumGirlsOnJob(0, JOB_GETABORT, DayNight == 0) +
+		g_Clinic.GetNumGirlsOnJob(0, JOB_PHYSICALSURGERY, DayNight == 0) +
+		g_Clinic.GetNumGirlsOnJob(0, JOB_LIPO, DayNight == 0) +
+		g_Clinic.GetNumGirlsOnJob(0, JOB_BREASTREDUCTION, DayNight == 0) +
+		g_Clinic.GetNumGirlsOnJob(0, JOB_BOOBJOB, DayNight == 0) +
+		g_Clinic.GetNumGirlsOnJob(0, JOB_VAGINAREJUV, DayNight == 0) +
+		g_Clinic.GetNumGirlsOnJob(0, JOB_FACELIFT, DayNight == 0) +
+		g_Clinic.GetNumGirlsOnJob(0, JOB_ASSJOB, DayNight == 0);
 
-	
-	*/
+
 
 
 	if(roll <= 25) {
@@ -100,7 +130,7 @@ JOB_ASSJOB
 	girl->m_Pay += 10 + g_Dice%roll_max;
 
 	// Improve stats
-	int xp = 15, skill = 3;
+	int xp = 10 + (patients * 2), libido = 1, skill = 1 + (patients / 2);
 
 	if (g_Girls.HasTrait(girl, "Quick Learner"))
 	{
@@ -112,8 +142,18 @@ JOB_ASSJOB
 		skill -= 1;
 		xp -= 3;
 	}
+	if (g_Girls.HasTrait(girl, "Nymphomaniac"))
+		libido += 2;
+
+	if (g_Girls.HasTrait(girl, "Lesbian"))
+		libido += patients / 2;
 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
+	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, skill);
+	g_Girls.UpdateSkill(girl, SKILL_MEDICINE, skill);
+	g_Girls.UpdateSkill(girl, SKILL_SERVICE, 1);
+	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+
 	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
 
 	return false;

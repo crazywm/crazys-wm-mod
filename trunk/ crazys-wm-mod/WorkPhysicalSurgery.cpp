@@ -154,6 +154,8 @@ bool cJobManager::WorkPhysicalSurgery(sGirl* girl, sBrothel* brothel, int DayNig
 	if (g_Girls.HasTrait(girl, "Masochist"))	libido += 1;
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))	libido += 2;
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	if (g_Dice % 10 == 0)
+		g_Girls.UpdateSkill(girl, SKILL_MEDICINE, 1);	// `J` she watched what the doctors and nurses were doing
 
 	return false;
 }

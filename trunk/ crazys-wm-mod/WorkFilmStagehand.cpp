@@ -49,12 +49,15 @@ bool cJobManager::WorkFilmStagehand(sGirl* girl, sBrothel* brothel, int DayNight
 	string message = "";
 	
 	// No film crew.. then go home
-	if (g_Studios.GetNumGirlsOnJob(0,JOB_CAMERAMAGE,false) == 0|| g_Studios.GetNumGirlsOnJob(0,JOB_CRYSTALPURIFIER,false) == 0)
-		{
-		message = "There was no crew to film the scene, so she took the day off";
+	if (g_Studios.GetNumGirlsOnJob(0, JOB_CAMERAMAGE, false) == 0 || g_Studios.GetNumGirlsOnJob(0, JOB_CRYSTALPURIFIER, false) == 0)
+	{
+		message = "There was no crew to film the scene, so she just cleaned the set.";
+		brothel->m_Filthiness -= 50;
+		g_Girls.UpdateStat(girl, STAT_EXP, 1);
+		g_Girls.UpdateSkill(girl, SKILL_SERVICE, 1);
 		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_NOWORK);
 		return false;
-		}
+	}
 	
 	char buffer[1000];
 	int jobperformance = 0;

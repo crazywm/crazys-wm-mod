@@ -90,12 +90,14 @@ bool cJobManager::WorkFilmStrip(sGirl* girl, sBrothel* brothel, int DayNight, st
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, +1, true);
 		message += girlName + " had a pleasant day stripping today.\n\n";
 	}
-	jobperformance += g_Dice%4 - 1;	// should add a -1 to +3 random element --PP
+	jobperformance += g_Girls.GetSkill(girl, SKILL_PERFORMANCE) / 10;
+	jobperformance += g_Dice % 4 - 1;	// should add a -1 to +3 random element --PP
 	jobperformance += -5; // Modifier for what kind of sex scene it is.. normal sex is the baseline at +0
 	// remaining modifiers are in the AddScene function --PP
 	string finalqual = g_Studios.AddScene(girl, SKILL_STRIP, jobperformance);
 	message += "Her scene us valued at: " + finalqual + " gold.\n";
-	g_Girls.UpdateSkill(girl, SKILL_STRIP, 2);
+
+	girl->m_Events.AddMessage(message, IMGTYPE_STRIP, DayNight);
 
 /*
  *	work out the pay between the house and the girl
@@ -121,7 +123,8 @@ bool cJobManager::WorkFilmStrip(sGirl* girl, sBrothel* brothel, int DayNight, st
 	}
 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	girl->m_Events.AddMessage(message, IMGTYPE_STRIP, DayNight);
+	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill);
+	g_Girls.UpdateSkill(girl, SKILL_STRIP, g_Dice%skill + 1);
 
 	g_Girls.PossiblyGainNewTrait(girl, "Fake orgasm expert", 15, ACTION_WORKMOVIE, "She has become quite the faker.", DayNight != 0);
 

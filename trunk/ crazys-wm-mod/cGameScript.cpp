@@ -1368,6 +1368,8 @@ sScript* cGameScript::Script_IfHasTrait(sScript* Script)
 sScript* cGameScript::Script_TortureTarget(sScript* Script)
 {
 	cGirlTorture gt(m_GirlTarget);
+	g_GirlDetails.lastsexact = IMGTYPE_TORTURE;
+
 	return Script->m_Next;
 }
 

@@ -51,8 +51,10 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, int DayNight, s
 	g_Girls.UnequipCombat(girl);
 
 	int roll = g_Dice%100;
-	int cards = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) + g_Girls.GetStat(girl, STAT_AGILITY))/2;  //intel makes her smart enough to know when to cheat agility makes her fast enough to cheat
-	int jobperformance = (cards + g_Girls.GetSkill(girl, SKILL_SERVICE));
+	int jobperformance = (	g_Girls.GetStat(girl, STAT_INTELLIGENCE)/2 + 	// intel makes her smart enough to know when to cheat
+							g_Girls.GetStat(girl, STAT_AGILITY)/2 +			// agility makes her fast enough to cheat
+							g_Girls.GetSkill(girl, SKILL_PERFORMANCE)/2 +	// performance helps her get away with it
+							g_Girls.GetSkill(girl, SKILL_SERVICE)/2);
 	int wages = 25;
 
 	message += "She worked as a dealer in the gambling hall.";
@@ -525,7 +527,14 @@ else
 
 	g_Girls.UpdateStat(girl, STAT_FAME, 1);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, skill);
+	int gain = g_Dice%3;
+	if (gain == 0)
+		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, g_Dice%skill);
+	else if (gain == 1)
+		g_Girls.UpdateStat(girl, STAT_AGILITY, g_Dice%skill);
+	else
+		g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill);
+	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill+1);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
 	return false;

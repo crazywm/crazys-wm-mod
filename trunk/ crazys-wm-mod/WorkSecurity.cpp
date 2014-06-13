@@ -124,7 +124,10 @@ bool cJobManager::WorkSecurity(sGirl* girl, sBrothel* brothel, int DayNight, str
 	if (g_Girls.HasTrait(girl, "Iron Will"))  // Hold the line!
 		SecLev += 5;
 
-	if (g_Girls.HasTrait(girl, "Construct") || g_Girls.HasTrait(girl, "Not Human"))  // Scary
+	if (g_Girls.HasTrait(girl, "Construct"))  // Scary
+		SecLev += 5;
+
+	if (g_Girls.HasTrait(girl, "Not Human"))  // Scary
 		SecLev += 5;
 
 	if (g_Girls.HasTrait(girl, "Demon"))  // Even scarier
@@ -148,14 +151,11 @@ bool cJobManager::WorkSecurity(sGirl* girl, sBrothel* brothel, int DayNight, str
 	if (g_Girls.HasTrait(girl, "Nerd"))  // Gets no respect
 		SecLev -= 5;
 
-	if (g_Girls.HasTrait(girl, "Tsundere"))  // Puts people off
-		SecLev -= 5;
-
 	if (g_Girls.HasTrait(girl, "Twisted"))  // Wierd ideas about security rarely work
 		SecLev -= 5;
 
 	if (g_Girls.HasTrait(girl, "Broken Will"))  // I'm too tired to patrol
-		SecLev -= 5;
+		SecLev -= 50;
 
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))  // Wait! The security officer is a nymphomaniac in a brothel?
 		SecLev -= 20;      // This hurts people like me who use the automation functions.

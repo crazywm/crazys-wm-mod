@@ -1029,13 +1029,26 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	else if (u_int(JobID) == JOB_DOCTOR)
 	{
 		if (Girl->m_States&(1 << STATUS_SLAVE))
+		{
 			g_MessageQue.AddToQue(gettext("The doctor cannot be a slave."), 0);
+		}
+		else if (g_Girls.HasTrait(Girl, "AIDS"))
+		{
+			g_MessageQue.AddToQue(gettext("Health laws prohibit anyone with AIDS from working in the Medical profession"), 0);
+		}
 		else
 			Girl->m_NightJob = Girl->m_DayJob = JOB_DOCTOR;
 	}
 	else if (u_int(JobID) == JOB_NURSE)
 	{
-		Girl->m_NightJob = Girl->m_DayJob = JOB_NURSE;
+		if (g_Girls.HasTrait(Girl, "AIDS"))
+		{
+			g_MessageQue.AddToQue(gettext("Health laws prohibit anyone with AIDS from working in the Medical profession"),0);
+		}
+		else
+		{
+			Girl->m_NightJob = Girl->m_DayJob = JOB_NURSE;
+		}
 	}
 	else if (u_int(JobID) == JOB_MECHANIC)
 	{
@@ -1360,6 +1373,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 			Girl->m_NightJob = JobID;
 	}
 
+	bool refresh = false;
 // handle instances where special job has been removed, specifically where it actually matters
 	if (JobID != OldJobID)
 	{  
@@ -1411,6 +1425,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 				u_int(JobID) != JOB_MECHANIC)			
 			{  // for these Day+Night jobs, switch leftover day or night job back to resting
 				(DayOrNight) ? Girl->m_NightJob = JOB_CLINICREST : Girl->m_DayJob = JOB_CLINICREST;
+				refresh = true;
 			}
 		}
 		else if (
@@ -1424,6 +1439,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 				u_int(JobID) != JOB_REHAB)
 			{  // for these Day+Night jobs, switch leftover day or night job back to resting
 				(DayOrNight) ? Girl->m_NightJob = JOB_CENTREREST : Girl->m_DayJob = JOB_CENTREREST;
+				refresh = true;
 			}
 		}
 		else if (
@@ -1437,7 +1453,8 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 			}
 		}
 	}
-	g_InitWin = true;
+
+	g_InitWin = (refresh || MadeChanges);
 
 	return MadeChanges;
 }

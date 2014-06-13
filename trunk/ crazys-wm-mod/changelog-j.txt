@@ -294,5 +294,21 @@ Multiday jobs now change their (#) based on if there is a Nurse or Doctor is on 
  - If there is no Doctor on duty it changes to " (?)***" with a note in the job description.
  - If there is no Mechanic on duty it changes to " (?)****" with a note in the job description.
 Corrected Rehab and Surgeries result texts.
+!!!!!!!!!!!!!!!!!!!! pushed version .05p.01
 Torture message in the dungeon is back to normal message instead of warning.
 
+###  Changes 6/9-10/2014
+Added "Health laws prohibit anyone with AIDS from working in the Medical profession" to Doctor and Nurse
+ - Not added to Arena Doctore as that is regulated differently.
+Changed skill and stat types from "unsigned char" to "int" to get rid of 255<->0 wrap around problems
+Xp to level up is now (current level+1)*125  -  until level 255 then it is 32000xp per level
+Many jobs now include the new Medicine or Performance skills in their JobPerformance and skill gains.
+Even if there is no Camera Mage or Crystal Purifier on duty, the Stagehand will still clean the studio a little.
+
+###  Changes 6/11-13/2014
+Reworked Job Ratings system
+ - All jobs that have job performance modifiers are listed in the new third details page.
+ - Sex jobs, Actress, and other jobs that do not require stats/skills to do better at are not included.
+ - Ratings are (in order of best to worst) 'I' 'S' 'A' 'B' 'C' 'D' 'E' 'X'
+ - 'X' is for jobs that the girl can not do if she is a slave.
+!!!!!!!!!!!!!!!!!!!! pushed version .05q

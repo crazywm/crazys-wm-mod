@@ -51,8 +51,10 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, int DayNig
 	g_Girls.UnequipCombat(girl);
 
 	int roll = g_Dice%100;
-	int looks = (g_Girls.GetStat(girl, STAT_CHARISMA) + g_Girls.GetStat(girl, STAT_BEAUTY))/2;
-	int jobperformance = (looks + g_Girls.GetSkill(girl, SKILL_SERVICE));
+	int jobperformance = ( (g_Girls.GetStat(girl, STAT_CHARISMA) +
+							g_Girls.GetStat(girl, STAT_BEAUTY)  +
+							g_Girls.GetStat(girl, STAT_CONFIDENCE))/3 +
+							g_Girls.GetSkill(girl, SKILL_PERFORMANCE));
 	int wages = 25;
 
 	message += "She worked as an entertainer in the gambling hall.";
@@ -550,7 +552,8 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, int DayNig
 
 	g_Girls.UpdateStat(girl, STAT_FAME, 1);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, skill);
+	g_Girls.UpdateStat(girl, STAT_CONFIDENCE, g_Dice%skill);
+	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill+1);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
 	return false;
