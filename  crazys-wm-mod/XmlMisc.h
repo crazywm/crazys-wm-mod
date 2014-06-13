@@ -28,12 +28,12 @@ std::string UnXMLifyString(const std::string& XMLName);
 std::string UnXMLifyString(const char* XMLName);
 
 TiXmlElement* SaveStatsXML(TiXmlElement* pRoot,
-						   unsigned char stats[],
+						   int stats[],
 						   int statMods[] = 0,
 						   int tempStats[] = 0);
 
 TiXmlElement* SaveSkillsXML(TiXmlElement* pRoot,
-							unsigned char skills[],
+							int skills[],
 							int skillMods[] = 0,
 							int tempSkills[] = 0);
 
@@ -62,12 +62,12 @@ TiXmlElement* SaveInventoryXML(TiXmlElement* pRoot,
 
 
 bool LoadStatsXML(TiXmlHandle hStats,
-				  unsigned char stats[],
+				  int stats[],
 				  int statMods[] = 0,
 				  int tempStats[] = 0);
 
 bool LoadSkillsXML(TiXmlHandle hSkills,
-				   unsigned char skills[],
+				   int skills[],
 				   int skillMods[] = 0,
 				   int tempSkills[] = 0);
 

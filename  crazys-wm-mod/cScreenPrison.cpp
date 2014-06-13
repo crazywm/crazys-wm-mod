@@ -226,10 +226,9 @@ void cScreenPrison::update_details()
 	if(!pgirls)
 		return;
 
-	if(DetailLevel == 1)
-		EditTextItem(g_Girls.GetMoreDetailsString(pgirls), girl_desc_id);
-	else
-		EditTextItem(g_Girls.GetDetailsString(pgirls,true), girl_desc_id);
+	     if (DetailLevel == 1)	EditTextItem(g_Girls.GetMoreDetailsString(pgirls), girl_desc_id);
+	else if (DetailLevel == 2)	EditTextItem(g_Girls.GetThirdDetailsString(pgirls), girl_desc_id);
+	else						EditTextItem(g_Girls.GetDetailsString(pgirls,true), girl_desc_id);
 }
 
 sGirl* cScreenPrison::get_selected_girl()
@@ -251,10 +250,9 @@ sGirl* cScreenPrison::get_selected_girl()
 
 void cScreenPrison::more_button()
 {
-	if(DetailLevel == 0)
-		DetailLevel = 1;
-	else
-		DetailLevel = 0;
+	     if (DetailLevel == 0)	DetailLevel = 1;
+	else if (DetailLevel == 1)	DetailLevel = 2;
+	else						DetailLevel = 0;
 
 	update_details();
 }

@@ -314,9 +314,9 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 
 	g_Girls.UpdateStat(girl, STAT_FAME, 1);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	if(g_Dice%10)
-		g_Girls.UpdateStat(girl, STAT_CONFIDENCE, 1);
-	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, skill);
+	if(g_Dice%2==1)
+		g_Girls.UpdateStat(girl, STAT_CONFIDENCE, g_Dice%skill + 1);
+	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill + 1);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
 	//gain traits

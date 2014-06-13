@@ -350,9 +350,11 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 
 	g_Girls.UpdateStat(girl, STAT_FAME, 1);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	if(g_Dice%2)
+	if(g_Dice%2==1)
 		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, 1);
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, skill);
+	else 
+		g_Girls.UpdateStat(girl, STAT_AGILITY, 1);
+	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill+1);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 	
 	//gain traits

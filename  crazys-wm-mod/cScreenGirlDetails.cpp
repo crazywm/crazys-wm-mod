@@ -164,7 +164,10 @@ void cScreenGirlDetails::init()
 
 	EditTextItem(selected_girl->m_Realname, girlname_id);
 
-	string detail = (DetailLevel == 0) ? g_Girls.GetDetailsString(selected_girl) : g_Girls.GetMoreDetailsString(selected_girl);
+	string detail;
+	if (DetailLevel == 0)		detail = g_Girls.GetDetailsString(selected_girl);
+	else if (DetailLevel == 1)	detail = g_Girls.GetMoreDetailsString(selected_girl);
+	else						detail = g_Girls.GetThirdDetailsString(selected_girl);
 	EditTextItem(detail, girldesc_id);
 
 	if(selected_girl)
@@ -373,19 +376,24 @@ bool cScreenGirlDetails::check_keys()
 			NextGirl();
 			return true;
 		}
-		if(g_S_Key)
+		if (g_S_Key)
 		{
 			g_S_Key = false;
-			if(DetailLevel == 0)
-				{
-					DetailLevel = 1;
-					EditTextItem(g_Girls.GetMoreDetailsString(selected_girl), girldesc_id);
-				}
+			if (DetailLevel == 0)
+			{
+				DetailLevel = 1;
+				EditTextItem(g_Girls.GetMoreDetailsString(selected_girl), girldesc_id);
+			}
+			else if (DetailLevel == 1)
+			{
+				DetailLevel = 2;
+				EditTextItem(g_Girls.GetThirdDetailsString(selected_girl), girldesc_id);
+			}
 			else
-				{
-					DetailLevel = 0;
-					EditTextItem(g_Girls.GetDetailsString(selected_girl), girldesc_id);
-				}
+			{
+				DetailLevel = 0;
+				EditTextItem(g_Girls.GetDetailsString(selected_girl), girldesc_id);
+			}
 			return true;
 		}
 		if(g_SpaceKey)
@@ -429,10 +437,15 @@ void cScreenGirlDetails::check_events()
 	}
 	if(g_InterfaceEvents.CheckButton(more_id))
 	{
-		if(DetailLevel == 0)
+		if (DetailLevel == 0)
 		{
 			DetailLevel = 1;
 			EditTextItem(g_Girls.GetMoreDetailsString(selected_girl), girldesc_id);
+		}
+		else if (DetailLevel == 1)
+		{
+			DetailLevel = 2;
+			EditTextItem(g_Girls.GetThirdDetailsString(selected_girl), girldesc_id);
 		}
 		else
 		{

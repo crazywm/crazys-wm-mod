@@ -54,8 +54,8 @@ private:
 
 public:
 	bool m_WinGame;
-	unsigned char m_Skills[NUM_SKILLS];
-	unsigned char m_Stats[NUM_STATS];
+	int m_Skills[NUM_SKILLS];
+	int m_Stats[NUM_STATS];
 
 	cPlayer();				// constructor
 	void SetToZero();

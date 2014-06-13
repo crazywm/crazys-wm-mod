@@ -2578,7 +2578,8 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		}
 
 		// Level the girl up if nessessary
-		if(g_Girls.GetStat(current, STAT_EXP) == 255)
+		if ((g_Girls.GetStat(current, STAT_EXP) >= (g_Girls.GetStat(current, STAT_LEVEL) + 1) * 125) ||
+			(g_Girls.GetStat(current, STAT_EXP) >= 32000))	// `J` added
 			g_Girls.LevelUp(current);
 
 		// Myr: Natural healing. This amounts to 2% health/tiredness per shift and is not designed in any
@@ -2845,17 +2846,23 @@ void cBrothelManager::UsePlayersItems(sGirl* cur)
 	// XP: Nuts & tomes & mangos of knowledge, etc...
 
 	// 25 xp
-	has = g_Brothels.HasItem("Nut of Knowledge");
-	if (g_Girls.GetStat(cur, STAT_EXP) <= 230 && g_Girls.GetStat(cur, STAT_LEVEL) < 255 && has != -1)
+	/* `J` xp can now be above 255 so removing restriction
+	/* has = g_Brothels.HasItem("Nut of Knowledge");
+	/* if (g_Girls.GetStat(cur, STAT_EXP) <= 230 && g_Girls.GetStat(cur, STAT_LEVEL) < 255 && has != -1)
+	 */
+	if (g_Brothels.HasItem("Nut of Knowledge") != -1)
 	{
 		Die = g_Dice % 50;   // Spread them around
 		if (Die == 5)
-          AutomaticFoodItemUse(cur, has, gettext("Used a small nut of knowledge."));
+			AutomaticFoodItemUse(cur, has, gettext("Used a small nut of knowledge."));
 	}
 
 	// 100 xp
-	has = g_Brothels.HasItem("Mango of Knowledge");
-	if (g_Girls.GetStat(cur, STAT_EXP) <= 155 && g_Girls.GetStat(cur, STAT_LEVEL) < 255 && has != -1)
+	/* `J` xp can now be above 255 so removing restriction
+	/* has = g_Brothels.HasItem("Mango of Knowledge");
+	/* if (g_Girls.GetStat(cur, STAT_EXP) <= 155 && g_Girls.GetStat(cur, STAT_LEVEL) < 255 && has != -1)
+	 */
+	if (g_Brothels.HasItem("Mango of Knowledge") != -1)
 	{
 		Die = g_Dice % 30;
 		if (Die == 9)
@@ -2863,8 +2870,11 @@ void cBrothelManager::UsePlayersItems(sGirl* cur)
 	}
 
 	// 200 xp
-	has = g_Brothels.HasItem("Watermelon of Knowledge");
-	if (g_Girls.GetStat(cur, STAT_EXP) <= 55 && g_Girls.GetStat(cur, STAT_LEVEL) < 255 && has != -1)
+	/* `J` xp can now be above 255 so removing restriction
+	/* has = g_Brothels.HasItem("Watermelon of Knowledge");
+	/* if (g_Girls.GetStat(cur, STAT_EXP) <= 55 && g_Girls.GetStat(cur, STAT_LEVEL) < 255 && has != -1)
+	 */
+	if (g_Brothels.HasItem("Watermelon of Knowledge") != -1)
 	{
 		Die = g_Dice % 30;
 		if (Die == 9)
@@ -3433,11 +3443,12 @@ void cBrothelManager::do_food_and_digs(sBrothel *brothel, sGirl *girl)
 /*
  *	let's do the simple case
  *	if her accomodation is greater then her level 
+ *		divided by 2		// `J` added
  *	she'll get happier. That's a mod: it was >=
  *	before, but this way 0 level girls want level 1 accom
  *	and it goes up level for level thereafter
  */
-	if(girl->m_AccLevel > girl->level()) {
+	if(girl->m_AccLevel > girl->level()/2) {
 		girl->happiness(2 + girl->m_AccLevel / 2);
 		int excess = girl->happiness() - 100;
 		if(excess >= 0) {
@@ -3450,16 +3461,17 @@ void cBrothelManager::do_food_and_digs(sBrothel *brothel, sGirl *girl)
 /*
  *	If we get here, the accomodation level is less
  *	than a girl of her accomplisments would expect
- *	However, level 6 and greater and her sense of
+ *	However, level 11 (was 6) and greater and her sense of
  *	professionalism means she doesn't let it affect her
  *	state of mind
  */
-	if(girl->level() >= 6) {
+	if(girl->level() >= 11) {
 		return;
 	}
 /*
  *	Failing that, she will be less happy
  */
+	// `J` - she will be much less happy with lower accom now
 	int mod, diff =  girl->level() - girl->m_AccLevel;
 	mod = diff / 2;	// half the difference, round down
 	mod ++;		// and add one

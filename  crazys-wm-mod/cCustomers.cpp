@@ -88,7 +88,14 @@ void cCustomers::GetCustomer(sCustomer& customer, sBrothel * brothel)
 					// So it was possible to end up with male lesbians and 1 man group sex. -PP
 	{
 		customer.m_SexPref = g_Dice%NUM_SKILLS;		
-		while(customer.m_SexPref == SKILL_MAGIC || customer.m_SexPref == SKILL_SERVICE || customer.m_SexPref == SKILL_STRIP || customer.m_SexPref == SKILL_COMBAT || customer.m_SexPref == SKILL_LESBIAN || (customer.m_Amount == 1 && customer.m_SexPref == SKILL_GROUP))
+		while(customer.m_SexPref == SKILL_MAGIC || 
+			customer.m_SexPref == SKILL_SERVICE || 
+			customer.m_SexPref == SKILL_STRIP || 
+			customer.m_SexPref == SKILL_PERFORMANCE ||	// `J` added
+			customer.m_SexPref == SKILL_MEDICINE ||		// `J` added
+			customer.m_SexPref == SKILL_COMBAT ||
+			customer.m_SexPref == SKILL_LESBIAN ||
+			(customer.m_Amount == 1 && customer.m_SexPref == SKILL_GROUP))
 			customer.m_SexPref = g_Dice%NUM_SKILLS;
 	}
 

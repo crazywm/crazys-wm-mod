@@ -59,7 +59,7 @@ bool cJobManager::WorkCameraMage(sGirl* girl, sBrothel* brothel, int DayNight, s
 	
 	int roll = g_Dice%100;
 
-if (roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
+	if (roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
 	{
 		message = girl->m_Realname + gettext(" refused to work with as a cameramage today.");
 
@@ -97,30 +97,31 @@ if (roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
 	jobperformance += g_Girls.GetSkill(girl, SKILL_SERVICE) / 10;
 	jobperformance /= 3;
 	jobperformance += g_Girls.GetStat(girl, STAT_LEVEL);
-	jobperformance += g_Dice%4 - 1;	// should add a -1 to +3 random element --PP
+	jobperformance += g_Girls.GetStat(girl, STAT_FAME)/20;
+	jobperformance += g_Dice % 4 - 1;	// should add a -1 to +3 random element --PP
 	
 	g_Studios.m_CameraQuality += jobperformance;
 
-
-	if(jobperformance > 0)
+	if (jobperformance > 0)
 	{
-	message += girlName + gettext(" helped improve the scene ");
-						_itoa(jobperformance,buffer,10);
-						message += buffer;
-						message += "% with her camera skills. \n";
+		message += girlName + gettext(" helped improve the scene ");
+		_itoa(jobperformance, buffer, 10);
+		message += buffer;
+		message += "% with her camera skills. \n";
 	}
-	else if(jobperformance < 0)
+	else if (jobperformance < 0)
 	{
-	message += girlName + gettext(" did a bad job today, she reduced the scene quality ");
-					_itoa(jobperformance,buffer,10);
-					message += buffer;
-					message += "% with her poor performance. \n";
+		message += girlName + gettext(" did a bad job today, she reduced the scene quality ");
+		_itoa(jobperformance, buffer, 10);
+		message += buffer;
+		message += "% with her poor performance. \n";
 	}
 	else
 		message += girlName + gettext(" did not really effect the scene quality.\n");
 
 	// Improve stats
 	int xp = 5, skill = 3;
+	if (jobperformance > 5)	skill += 1;
 
 	if (g_Girls.HasTrait(girl, "Quick Learner"))
 	{
@@ -132,7 +133,10 @@ if (roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
 		skill -= 1;
 		xp -= 3;
 	}
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, skill);
+
+	if (g_Dice % 2 == 1)
+		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, g_Dice%skill);
+	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill+1);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
 

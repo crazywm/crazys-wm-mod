@@ -785,7 +785,7 @@ sGang *cGangManager::random_gang(vector<sGang*>& v)
 
 void cGangManager::BoostGangCombatSkills(sGang* gang, int count)
 {  // simple function to increase a gang's combat skills a bit
-	vector<unsigned char*> possible_skills;
+	vector<int*> possible_skills;
 	possible_skills.push_back(&gang->m_Skills[SKILL_COMBAT]);
 	possible_skills.push_back(&gang->m_Skills[SKILL_MAGIC]);
 	possible_skills.push_back(&gang->m_Stats[STAT_AGILITY]);
@@ -794,7 +794,7 @@ void cGangManager::BoostGangCombatSkills(sGang* gang, int count)
 	possible_skills.clear();
 }
 
-void cGangManager::BoostGangRandomSkill(vector<unsigned char*>* possible_skills, int count, int boost_count)
+void cGangManager::BoostGangRandomSkill(vector<int*>* possible_skills, int count, int boost_count)
 {
 /*
  *	Which of the passed skills/stats will be raised this time?
@@ -806,7 +806,7 @@ void cGangManager::BoostGangRandomSkill(vector<unsigned char*>* possible_skills,
  */
 	for(int j = 0; j < count; j++)  // we'll pick and boost a skill/stat "count" number of times
 	{
-		unsigned char *affect_skill = 0;
+		int *affect_skill = 0;
 		int total_chance = 0;
 		vector<int> chance;
 
@@ -834,7 +834,7 @@ void cGangManager::BoostGangRandomSkill(vector<unsigned char*>* possible_skills,
 	}
 }
 
-void cGangManager::BoostGangSkill(unsigned char* affect_skill, int count)
+void cGangManager::BoostGangSkill(int* affect_skill, int count)
 {
 /*
  *	OK, we've been passed a skill/stat. Now to raise it an amount depending on how high the
@@ -2207,14 +2207,14 @@ void cGangManager::UpdateGangs()
 				message += gettext(" Your men spend the week training and improving their skills.");
 
 #if 1			// New gang training code
-				char old_combat = currentGang->m_Skills[SKILL_COMBAT];
-				char old_magic = currentGang->m_Skills[SKILL_MAGIC];
-				char old_intel = currentGang->m_Stats[STAT_INTELLIGENCE];
-				char old_agil = currentGang->m_Stats[STAT_AGILITY];
-				char old_const = currentGang->m_Stats[STAT_CONSTITUTION];
-				char old_char = currentGang->m_Stats[STAT_CHARISMA];
+				int old_combat = currentGang->m_Skills[SKILL_COMBAT];
+				int old_magic = currentGang->m_Skills[SKILL_MAGIC];
+				int old_intel = currentGang->m_Stats[STAT_INTELLIGENCE];
+				int old_agil = currentGang->m_Stats[STAT_AGILITY];
+				int old_const = currentGang->m_Stats[STAT_CONSTITUTION];
+				int old_char = currentGang->m_Stats[STAT_CHARISMA];
 
-				vector<unsigned char*> possible_skills;
+				vector<int*> possible_skills;
 				possible_skills.push_back(&currentGang->m_Skills[SKILL_COMBAT]);
 				possible_skills.push_back(&currentGang->m_Skills[SKILL_MAGIC]);
 				possible_skills.push_back(&currentGang->m_Stats[STAT_INTELLIGENCE]);

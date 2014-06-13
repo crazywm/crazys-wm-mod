@@ -57,14 +57,15 @@ bool cJobManager::WorkMechanic(sGirl* girl, sBrothel* brothel, int DayNight, str
 	message += "She worked as a mechanic.";
 
 	int roll = g_Dice % 100;
-	int jobperformance = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) + g_Girls.GetSkill(girl, SKILL_SERVICE));
+	int jobperformance = (	g_Girls.GetStat(girl, STAT_INTELLIGENCE) + 
+							g_Girls.GetSkill(girl, SKILL_MEDICINE) / 2 + 
+							g_Girls.GetSkill(girl, SKILL_SERVICE) / 2);
 
 	//good traits
-	if (g_Girls.HasTrait(girl, "Charismatic"))		jobperformance += 10;
+	if (g_Girls.HasTrait(girl, "Charismatic"))		jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Sexy Air"))			jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Cool Person"))		jobperformance += 10;
-	if (g_Girls.HasTrait(girl, "Cute"))				jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Charming"))			jobperformance += 10;
+	if (g_Girls.HasTrait(girl, "Charming"))			jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Nerd"))				jobperformance += 15;
 	if (g_Girls.HasTrait(girl, "Strong"))			jobperformance += 10;
 	if (g_Girls.HasTrait(girl, "Tough"))			jobperformance += 5;
@@ -155,8 +156,9 @@ bool cJobManager::WorkMechanic(sGirl* girl, sBrothel* brothel, int DayNight, str
 
 	g_Girls.UpdateStat(girl, STAT_FAME, 1);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, skill);
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, skill);
+	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, g_Dice%skill+1);
+	g_Girls.UpdateSkill(girl, SKILL_MEDICINE, g_Dice%skill);
+	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
 	//gain traits

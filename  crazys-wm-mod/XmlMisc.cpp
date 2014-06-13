@@ -144,7 +144,7 @@ unsigned long
 
 
 TiXmlElement* SaveStatsXML(TiXmlElement* pRoot,
-						   unsigned char stats[],
+						   int stats[],
 						   int statMods[],
 						   int tempStats[])
 {
@@ -168,7 +168,7 @@ TiXmlElement* SaveStatsXML(TiXmlElement* pRoot,
 }
 
 bool LoadStatsXML(TiXmlHandle hStats,
-				  unsigned char stats[],
+				  int stats[],
 				  int statMods[],
 				  int tempStats[])
 {
@@ -198,7 +198,7 @@ bool LoadStatsXML(TiXmlHandle hStats,
 }
 
 TiXmlElement* SaveSkillsXML(TiXmlElement* pRoot,
-							unsigned char skills[],
+							int skills[],
 							int skillMods[],
 							int tempSkills[])
 {
@@ -222,7 +222,7 @@ TiXmlElement* SaveSkillsXML(TiXmlElement* pRoot,
 }
 
 bool LoadSkillsXML(TiXmlHandle hSkills,
-				   unsigned char skills[],
+				   int skills[],
 				   int skillMods[],
 				   int tempSkills[])
 {

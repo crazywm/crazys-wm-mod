@@ -405,7 +405,8 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 			summary = "";
 
 			// Level the girl up if nessessary
-			if(g_Girls.GetStat(current, STAT_EXP) == 255)
+			if ((g_Girls.GetStat(current, STAT_EXP) >= (g_Girls.GetStat(current, STAT_LEVEL) + 1) * 125) ||
+				(g_Girls.GetStat(current, STAT_EXP) >= 32000))	// `J` added
 				g_Girls.LevelUp(current);
 
 			// Natural healing, 2% health and 2% tiredness per day
@@ -782,8 +783,9 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 
 
 		// Level the girl up if nessessary
-		if(g_Girls.GetStat(current, STAT_EXP) == 255)
-			g_Girls.LevelUp(current);
+			if ((g_Girls.GetStat(current, STAT_EXP) >= (g_Girls.GetStat(current, STAT_LEVEL) + 1) * 125) ||
+				(g_Girls.GetStat(current, STAT_EXP) >= 32000))	// `J` added
+				g_Girls.LevelUp(current);
 
 		// Natural healing, 2% health and 2% tiredness per day
 		current->m_Stats[STAT_HEALTH] += 2;

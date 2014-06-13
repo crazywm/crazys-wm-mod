@@ -485,7 +485,8 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, int DayNight)
 
 
 		// Level the girl up if nessessary
-		if(g_Girls.GetStat(current, STAT_EXP) == 255)
+		if ((g_Girls.GetStat(current, STAT_EXP) >= (g_Girls.GetStat(current, STAT_LEVEL) + 1) * 125) ||
+			(g_Girls.GetStat(current, STAT_EXP) >= 32000))	// `J` added
 			g_Girls.LevelUp(current);
 
 		// Myr: Natural healing. This amounts to 2% health/tiredness per shift and is not designed in any

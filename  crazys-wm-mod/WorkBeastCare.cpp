@@ -47,7 +47,9 @@ bool cJobManager::WorkBeastCare(sGirl* girl, sBrothel* brothel, int DayNight, st
 	if(Preprocessing(ACTION_WORKCARING, girl, brothel, DayNight, summary, message))
 		return true;
 
-	int jobperformance = ((g_Girls.GetStat(girl, STAT_INTELLIGENCE) + g_Girls.GetSkill(girl, SKILL_SERVICE)) / 2 + g_Girls.GetSkill(girl, SKILL_BEASTIALITY));
+	int jobperformance = (	g_Girls.GetStat(girl, STAT_INTELLIGENCE) / 2+ 
+							g_Girls.GetSkill(girl, SKILL_SERVICE) / 2 + 
+							g_Girls.GetSkill(girl, SKILL_BEASTIALITY));
 
 
 

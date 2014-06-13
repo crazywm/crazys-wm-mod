@@ -52,9 +52,13 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, int DayNight, 
 	g_Girls.UnequipCombat(girl);
 
 	int roll = g_Dice%100;
-	int looks = (g_Girls.GetStat(girl, STAT_CHARISMA) + g_Girls.GetStat(girl, STAT_BEAUTY))/2;
-	int jobperformance = (looks + g_Girls.GetSkill(girl, SKILL_STRIP));
-	int lapdance = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) + g_Girls.GetSkill(girl, SKILL_STRIP))/2;
+	int jobperformance = (	g_Girls.GetStat(girl, STAT_CHARISMA) / 2 +
+							g_Girls.GetStat(girl, STAT_BEAUTY) / 2 +
+							g_Girls.GetSkill(girl, SKILL_PERFORMANCE) / 2 +
+							g_Girls.GetSkill(girl, SKILL_STRIP) / 2);
+	int lapdance = (	g_Girls.GetStat(girl, STAT_INTELLIGENCE)/2 + 
+						g_Girls.GetSkill(girl, SKILL_PERFORMANCE)/2 +
+						g_Girls.GetSkill(girl, SKILL_STRIP)		)/2;
 	//int drinks;
 
 	int wages = 30;
@@ -436,7 +440,8 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, int DayNight, 
 
 	g_Girls.UpdateStat(girl, STAT_FAME, 1);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_STRIP, skill);
+	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill);
+	g_Girls.UpdateSkill(girl, SKILL_STRIP, g_Dice%skill + 2);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
 	//gained

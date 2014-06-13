@@ -99,18 +99,20 @@ bool cJobManager::WorkFilmSex(sGirl* girl, sBrothel* brothel, int DayNight, stri
 		jobperformance += 50;
 		message += "She is a virgin.\n";
 	}
-	jobperformance += g_Dice%4 - 1;	// should add a -1 to +3 random element --PP
+	jobperformance += g_Girls.GetSkill(girl, SKILL_PERFORMANCE) / 10;
+	jobperformance += g_Dice % 4 - 1;	// should add a -1 to +3 random element --PP
 	jobperformance += 0; // Modifier for what kind of sex scene it is.. normal sex is the baseline at +0
 	// remaining modifiers are in the AddScene function --PP
 	string finalqual = g_Studios.AddScene(girl, SKILL_NORMALSEX, jobperformance);
 	message += "Her scene us valued at: " + finalqual + " gold.\n";
 	
-	g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, 2);
 
 	g_Building = BUILDING_STUDIO;
 	if(!girl->calc_pregnancy(g_Brothels.GetPlayer(), false, 1.0)) {
 		g_MessageQue.AddToQue("She has gotten pregnant", 0);
 	}
+
+	girl->m_Events.AddMessage(message, IMGTYPE_SEX, DayNight);
 
 
 /*
@@ -137,7 +139,8 @@ bool cJobManager::WorkFilmSex(sGirl* girl, sBrothel* brothel, int DayNight, stri
 	}
 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	girl->m_Events.AddMessage(message, IMGTYPE_SEX, DayNight);
+	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill);
+	g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, g_Dice%skill + 1);
 
 	g_Girls.PossiblyGainNewTrait(girl, "Fake orgasm expert", 15, ACTION_WORKMOVIE, "She has become quite the faker.", DayNight != 0);
 

@@ -102,10 +102,10 @@ bool cJobManager::WorkFilmDirector(sGirl* girl, sBrothel* brothel, int DayNight,
 	jobperformance += (girl->spirit() - 50) / 10;
 	jobperformance += (girl->intelligence() - 50) / 10;
 	jobperformance += g_Girls.GetSkill(girl, SKILL_SERVICE) / 10;
-	jobperformance += g_Girls.GetStat(girl, STAT_FAME) / 2;
-	jobperformance /= 4;
+	jobperformance /= 3;
 	jobperformance += g_Girls.GetStat(girl, STAT_LEVEL);
-	jobperformance += g_Dice%4 - 1;	// should add a -1 to +3 random element --PP
+	jobperformance += g_Girls.GetStat(girl, STAT_FAME) / 10;
+	jobperformance += g_Dice % 4 - 1;	// should add a -1 to +3 random element --PP
 	
 	g_Studios.m_DirectorQuality += jobperformance;
 
@@ -141,7 +141,8 @@ bool cJobManager::WorkFilmDirector(sGirl* girl, sBrothel* brothel, int DayNight,
 		skill -= 1;
 		xp -= 5;
 	}
-	
+
+	g_Girls.UpdateStat(girl, STAT_FAME, 1);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, skill);
 	

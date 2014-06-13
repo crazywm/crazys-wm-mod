@@ -93,11 +93,13 @@ bool cJobManager::WorkCustService(sGirl* girl, sBrothel* brothel, int DayNight, 
 	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 0)
 		bonus += g_Girls.GetStat(girl, STAT_BEAUTY) / 20;
 	// Beauty and charisma will only take you so far, if you don't know how to do service.
+	if (g_Girls.GetSkill(girl, SKILL_PERFORMANCE) > 0)			// `J` added
+		bonus += g_Girls.GetSkill(girl, SKILL_PERFORMANCE) / 20;
 	if (g_Girls.GetSkill(girl, SKILL_SERVICE) > 0)
-		bonus += g_Girls.GetSkill(girl, SKILL_SERVICE) / 10;
+		bonus += g_Girls.GetSkill(girl, SKILL_SERVICE) / 20;
 	// So this means a maximum of 20 extra points of happiness to each
 	// customer serviced by customer service, if a girl has 100 charisma,
-	// beauty, and service.
+	// beauty, performance and service.
 	
 	// Let's make customers angry if the girl sucks at customer service.
 	if (bonus < 5)
@@ -154,7 +156,7 @@ bool cJobManager::WorkCustService(sGirl* girl, sBrothel* brothel, int DayNight, 
 	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
 	
 	// Raise skills
-	int xp = 5, libido = 1, skill = 3;
+	int xp = 5 + (serviced / 5), libido = 1, skill = 2 + (serviced / 10);
 
 	if (g_Girls.HasTrait(girl, "Quick Learner"))
 	{
@@ -172,7 +174,11 @@ bool cJobManager::WorkCustService(sGirl* girl, sBrothel* brothel, int DayNight, 
 
 	g_Girls.UpdateStat(girl, STAT_FAME, 1);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, skill);
+	int gain = g_Dice % skill;
+	if (gain == 1)		g_Girls.UpdateStat(girl, STAT_CONFIDENCE, g_Dice%skill);
+	else if(gain == 2)	g_Girls.UpdateStat(girl, STAT_SPIRIT, g_Dice%skill);
+	else				g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill);
+	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill+1);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 	
 	return false;

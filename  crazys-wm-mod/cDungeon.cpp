@@ -867,7 +867,7 @@ void cDungeon::Update()
 				msgtype = EVENT_DANGER;
 				imgtype = IMGTYPE_DEATH;
 			}
-			else if (nHealth < 40 || nTired > 60 || girl->m_Tort)
+			else if (nHealth < 40 || nTired > 60)
 			{
 				msg = gettext("WARNING: ") + girlName;
 				msgtype = EVENT_WARNING;

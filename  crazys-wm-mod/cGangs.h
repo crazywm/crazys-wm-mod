@@ -35,8 +35,8 @@ extern cBrothelManager g_Brothels;
 typedef struct sGang
 {
 	int m_Num;	// number in the gang
-	unsigned char m_Skills[NUM_SKILLS];	// skills of the gang
-	unsigned char m_Stats[NUM_STATS];	// stats of the gang
+	int m_Skills[NUM_SKILLS];	// skills of the gang
+	int m_Stats[NUM_STATS];	// stats of the gang
 	u_int m_MissionID;	// the type of mission currently performing
 	int m_LastMissID;	// the last mission if auto changed to recruit mission
 	bool m_AutoRecruit;	// true if auto recruiting
@@ -104,8 +104,8 @@ public:
 	bool GangCombat(sGirl* girl, sGang* gang);	// returns true if the girl wins
 	bool GangBrawl(sGang* gang1, sGang* gang2);	// returns true if gang1 wins
 	sGang* GetTempGang();	// creates a new gang
-	void BoostGangSkill(unsigned char* affect_skill, int count = 1);  // increases a specific skill/stat the specified number of times
-	void BoostGangRandomSkill(vector<unsigned char*>* possible_skills, int count = 1, int boost_count = 1);  // chooses from the passed skills/stats and raises one or more of them
+	void BoostGangSkill(int* affect_skill, int count = 1);  // increases a specific skill/stat the specified number of times
+	void BoostGangRandomSkill(vector<int*>* possible_skills, int count = 1, int boost_count = 1);  // chooses from the passed skills/stats and raises one or more of them
 	void BoostGangCombatSkills(sGang* gang, int count = 1);  // simple function to increase a gang's combat skills a bit
 
 	sGang* GetTempWeakGang();

@@ -49,8 +49,10 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, int DayNig
 	g_Girls.UnequipCombat(girl);
 
 	int roll = g_Dice%100;
-	int looks = (g_Girls.GetStat(girl, STAT_CHARISMA) + g_Girls.GetStat(girl, STAT_BEAUTY))/2;
-	int jobperformance = (looks + g_Girls.GetSkill(girl, SKILL_SERVICE));
+	int jobperformance = (	g_Girls.GetStat(girl, STAT_CHARISMA) / 2 + 
+							g_Girls.GetStat(girl, STAT_BEAUTY) / 2  +
+							g_Girls.GetSkill(girl, SKILL_MEDICINE) / 2 +
+							g_Girls.GetSkill(girl, SKILL_SERVICE) / 2);
 	int wages = g_Girls.GetStat(girl, STAT_ASKPRICE)+40;
 
 	message += "She massaged a customer.";
@@ -185,7 +187,8 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, int DayNig
 
 	g_Girls.UpdateStat(girl, STAT_FAME, 1);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, skill);
+	g_Girls.UpdateSkill(girl, SKILL_MEDICINE, g_Dice%skill);
+	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill+1);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
 	return false;

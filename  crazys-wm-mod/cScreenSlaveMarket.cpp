@@ -292,38 +292,44 @@ bool cScreenSlaveMarket::check_keys()
 		//SetSelectedItemInList(slave_list_id, selection);
 		return true;
 	}
-	if(g_AltKeys)
+	if (g_AltKeys)
 	{
-	if(g_A_Key) {
-		selection = ArrowUpListBox(slave_list_id);
-		g_A_Key = false;
-		//g_InitWin = true;
-		g_GenGirls = true;
-		//SetSelectedItemInList(slave_list_id, selection);
-		return true;
-	}
-	if(g_D_Key) {
-		selection = ArrowDownListBox(slave_list_id);
-		g_D_Key = false;
-		//g_InitWin = true;
-		g_GenGirls = true;
-		//SetSelectedItemInList(slave_list_id, selection);
-		return true;
-	}
-	if(g_S_Key) {
-		sGirl *girl = MarketSlaveGirls[selection];
-		if(DetailLevel == 0)
-		{
-			DetailLevel = 1;
-			EditTextItem(g_Girls.GetMoreDetailsString(girl), details_id);
+		if (g_A_Key) {
+			selection = ArrowUpListBox(slave_list_id);
+			g_A_Key = false;
+			//g_InitWin = true;
+			g_GenGirls = true;
+			//SetSelectedItemInList(slave_list_id, selection);
+			return true;
 		}
-		else
-		{
-			DetailLevel = 0;
-			EditTextItem(g_Girls.GetDetailsString(girl,true), details_id);
+		if (g_D_Key) {
+			selection = ArrowDownListBox(slave_list_id);
+			g_D_Key = false;
+			//g_InitWin = true;
+			g_GenGirls = true;
+			//SetSelectedItemInList(slave_list_id, selection);
+			return true;
 		}
-		return true;
-	}
+		if (g_S_Key) {
+			sGirl *girl = MarketSlaveGirls[selection];
+			g_S_Key = false;
+			if (DetailLevel == 0)
+			{
+				DetailLevel = 1;
+				EditTextItem(g_Girls.GetMoreDetailsString(girl), details_id);
+			}
+			else if (DetailLevel == 1)
+			{
+				DetailLevel = 2;
+				EditTextItem(g_Girls.GetThirdDetailsString(girl), details_id);
+			}
+			else
+			{
+				DetailLevel = 0;
+				EditTextItem(g_Girls.GetDetailsString(girl, true), details_id);
+			}
+			return true;
+		}
 	}
 	if(g_SpaceKey)
 	{
@@ -556,10 +562,9 @@ bool cScreenSlaveMarket::change_selected_girl()
 	}
 	string detail;
 
-	if(DetailLevel == 0)
-		detail = g_Girls.GetDetailsString(girl,true);
-	else
-		detail = g_Girls.GetMoreDetailsString(girl);
+	     if (DetailLevel == 0)	detail = g_Girls.GetDetailsString(girl, true);
+	else if (DetailLevel == 1)	detail = g_Girls.GetMoreDetailsString(girl);
+	else						detail = g_Girls.GetThirdDetailsString(girl);
 	EditTextItem(detail, details_id);
 /*
  *	I don't understand where this is used...
@@ -694,10 +699,15 @@ bool cScreenSlaveMarket::check_events()
 	}
 	if(g_InterfaceEvents.CheckButton(more_id))
 	{
-		if(DetailLevel == 0)
+		if (DetailLevel == 0)
 		{
 			DetailLevel = 1;
 			EditTextItem(g_Girls.GetMoreDetailsString(girl), details_id);
+		}
+		else if (DetailLevel == 1)
+		{
+			DetailLevel = 2;
+			EditTextItem(g_Girls.GetThirdDetailsString(girl), details_id);
 		}
 		else
 		{

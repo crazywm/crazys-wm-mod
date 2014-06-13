@@ -47,47 +47,50 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, int DayNight, string
 {
 	string message = "";
 
+	if (g_Girls.HasTrait(girl, "AIDS"))
+	{
+		message = gettext("Health laws prohibit anyone with AIDS from work in the Medical profession so ") + 
+			girl->m_Realname + gettext(" was sent to the waiting room.");
+		if (DayNight == 0)	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_WARNING);
+		girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
+		return true;
+	}
+
 	if (Preprocessing(ACTION_WORKNURSE, girl, brothel, DayNight, summary, message))
 		return true;
 
-	// put that shit away, you'll scare off the customers!
+	// put that shit away, you'll scare off the patients!
 	g_Girls.UnequipCombat(girl);
+
+
+
 
 	int wages = 25;
 	message += "She worked as a nurse.";
 
 	int roll = g_Dice%100;
-	int jobperformance = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) + g_Girls.GetSkill(girl, SKILL_MEDICINE));
+	int jobperformance = (	g_Girls.GetStat(girl, STAT_INTELLIGENCE) / 2 + 
+							g_Girls.GetStat(girl, STAT_CHARISMA)/2 + 
+							g_Girls.GetSkill(girl, SKILL_MEDICINE) +
+							g_Girls.GetStat(girl, STAT_LEVEL)/5);
 
 	//good traits
-	if (g_Girls.HasTrait(girl, "Charismatic"))  //
-		jobperformance += 20;
-	if (g_Girls.HasTrait(girl, "Sexy Air"))  //
-		jobperformance += 10;
-	if (g_Girls.HasTrait(girl, "Cool Person"))  //people love to be around her
-		jobperformance += 10;
-	if (g_Girls.HasTrait(girl, "Cute"))  //
-		jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Charming"))  //people like charming people
-		jobperformance += 15;
-	if (g_Girls.HasTrait(girl, "Nerd"))  //
-		jobperformance += 15;
-	if (g_Girls.HasTrait(girl, "Quick Learner"))  
-		jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Psychic"))  //knows what is going in peoples heads
-		jobperformance += 10;
+	if (g_Girls.HasTrait(girl, "Charismatic"))		jobperformance += 20;
+	if (g_Girls.HasTrait(girl, "Sexy Air"))			jobperformance += 10;
+	if (g_Girls.HasTrait(girl, "Cool Person"))		jobperformance += 10;
+	if (g_Girls.HasTrait(girl, "Cute"))				jobperformance += 5;
+	if (g_Girls.HasTrait(girl, "Charming"))			jobperformance += 15;
+	if (g_Girls.HasTrait(girl, "Nerd"))				jobperformance += 15;
+	if (g_Girls.HasTrait(girl, "Quick Learner"))	jobperformance += 5;
+	if (g_Girls.HasTrait(girl, "Psychic"))			jobperformance += 10;
 
 	//bad traits
-	if (g_Girls.HasTrait(girl, "Dependant"))  //needs others to do the job
-		jobperformance -= 50;
-	if (g_Girls.HasTrait(girl, "Clumsy"))  //spills food and breaks things often
-		jobperformance -= 20;
-	if (g_Girls.HasTrait(girl, "Aggressive"))  //gets mad easy and may attack people
-		jobperformance -= 20;
-	if (g_Girls.HasTrait(girl, "Nervous"))  //don't like to be around people
-		jobperformance -= 30;
-	if (g_Girls.HasTrait(girl, "Meek"))
-		jobperformance -= 20;
+	if (g_Girls.HasTrait(girl, "Dependant"))		jobperformance -= 50;
+	if (g_Girls.HasTrait(girl, "Clumsy"))			jobperformance -= 20;
+	if (g_Girls.HasTrait(girl, "Aggressive"))		jobperformance -= 20;
+	if (g_Girls.HasTrait(girl, "Nervous"))			jobperformance -= 30;
+	if (g_Girls.HasTrait(girl, "Retarded"))			jobperformance -= 50;
+	if (g_Girls.HasTrait(girl, "Meek"))				jobperformance -= 20;
 
 	
 	if (jobperformance >= 245)
@@ -194,7 +197,7 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, int DayNight, string
 	wages += 10 + g_Dice%roll_max;
 
 	int patients = g_Clinic.GetNumGirlsOnJob(0, JOB_GETHEALING, DayNight == 0) +
-		g_Clinic.GetNumGirlsOnJob(0, JOB_GETABORT, DayNight==0) +
+		g_Clinic.GetNumGirlsOnJob(0, JOB_GETABORT, DayNight == 0) +
 		g_Clinic.GetNumGirlsOnJob(0, JOB_PHYSICALSURGERY, DayNight == 0) +
 		g_Clinic.GetNumGirlsOnJob(0, JOB_LIPO, DayNight == 0) +
 		g_Clinic.GetNumGirlsOnJob(0, JOB_BREASTREDUCTION, DayNight == 0) +
@@ -211,7 +214,7 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, int DayNight, string
 	
 
 	// Improve stats
-	int xp = 5 + patients, libido = 1, skill = 2;
+	int xp = 5 + patients*2, libido = 1, skill = 2 + patients/3;
 
 	if (g_Girls.HasTrait(girl, "Quick Learner"))
 	{
@@ -232,11 +235,9 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, int DayNight, string
 
 	g_Girls.UpdateStat(girl, STAT_FAME, 1);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	if (g_Dice%2==1)
-		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, skill);
-	else
-		g_Girls.UpdateStat(girl, STAT_CHARISMA, skill);
-	g_Girls.UpdateSkill(girl, SKILL_MEDICINE, skill);
+	if (g_Dice%2 == 1)	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, g_Dice%skill);
+	else				g_Girls.UpdateStat(girl, STAT_CHARISMA, g_Dice%skill);
+	g_Girls.UpdateSkill(girl, SKILL_MEDICINE, g_Dice%skill+1);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
 	//gain traits

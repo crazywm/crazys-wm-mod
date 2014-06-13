@@ -1413,10 +1413,20 @@ void cGirls::LevelUp(sGirl* girl)
 	//      this shouldn't affect anything (I hope. Feel free to revert if this breaks
 	//      something.)
 	//      Fixed the rest of the fn to be consistent with this change.
+	/* `J` No max level 
 	if(GetStat(girl, STAT_LEVEL) >= 255)    // Unsigned char's max value is 255
 		return;
-
-	SetStat(girl, STAT_EXP, 0);
+	*/
+	int xp;
+	if (GetStat(girl, STAT_LEVEL) < 255)	// `J` added
+	{
+		xp = GetStat(girl, STAT_EXP) - ((GetStat(girl, STAT_LEVEL) + 1) * 125);	// `J` added
+	}
+	else
+	{
+		xp = GetStat(girl, STAT_EXP) - 32000;	// `J` added
+	}
+	SetStat(girl, STAT_EXP, xp);
 
 	if (GetStat(girl, STAT_LEVEL) <= 20)
 		LevelUpStats(girl);
@@ -1477,27 +1487,22 @@ void cGirls::LevelUp(sGirl* girl)
 		// on the girl's regular message list.
 		//g_MessageQue.AddToQue(ss.str(), 0);
 	}
-	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_SUMMARY);
+	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
 }
 
 void cGirls::LevelUpStats(sGirl* girl)
 {
-	int DiceSize = 0;
-
-	if(HasTrait(girl,"Quick Learner"))
-		DiceSize = 4;
-	else if(HasTrait(girl,"Slow Learner"))
-		DiceSize = 2;
-	else
-		DiceSize = 3;
+	int DiceSize = 3;
+	if(HasTrait(girl,"Quick Learner"))		DiceSize = 4;
+	else if(HasTrait(girl,"Slow Learner"))	DiceSize = 2;
 
 	// level up stats (only first 8 advance in levelups)
 	for(int i=0; i<8; i++)
-		UpdateStat(girl,i,(g_Dice%4)+1); 
+		UpdateStat(girl, i, (g_Dice%DiceSize) + 1);
 
 	// level up skills
 	for(u_int i=0; i<NUM_SKILLS; i++)
-		UpdateSkill(girl,i,(g_Dice%4)+1);
+		UpdateSkill(girl, i, (g_Dice%DiceSize) + 1);
 }
 
 // ----- Add remove
@@ -1789,10 +1794,30 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 	else			data += gettext("At the moment, she is indifferent to all tasks.\n\n");
 
 	data += gettext("\nOther Stats\n\n");
+	stringstream ss;
+	ss << gettext("Charisma: ") << GetStat(girl, STAT_CHARISMA);
+	ss << gettext("\nBeauty: ") << GetStat(girl, STAT_BEAUTY);
+	ss << gettext("\nLibido: ") << GetStat(girl, STAT_LIBIDO);
+	ss << gettext("\nMana: ") << GetStat(girl, STAT_MANA);
+	ss << gettext("\nIntelligence: ") << GetStat(girl, STAT_INTELLIGENCE);
+	ss << gettext("\nConfidence: ") << GetStat(girl, STAT_CONFIDENCE);
+	ss << gettext("\nObedience: ") << GetStat(girl, STAT_OBEDIENCE);
+	ss << gettext("\nSpirit: ") << GetStat(girl, STAT_SPIRIT);
+	ss << gettext("\nAgility: ") << GetStat(girl, STAT_AGILITY);
+	ss << gettext("\nFame: ") << GetStat(girl, STAT_FAME) << gettext("\n");
+	data += ss.str();
 
+	return data;
+}
+
+string cGirls::GetThirdDetailsString(sGirl* girl)
+{
+	if (girl == 0)		return string("");
+	string data = "";
 	// `J` instead of repeatedly calling the girl, call her once and store her stat
 	int jr_cha = GetStat(girl, STAT_CHARISMA);
 	int jr_bea = GetStat(girl, STAT_BEAUTY);
+	int jr_cns = GetStat(girl, STAT_CONSTITUTION);
 	int jr_int = GetStat(girl, STAT_INTELLIGENCE);
 	int jr_agi = GetStat(girl, STAT_AGILITY);
 	int jr_cnf = GetStat(girl, STAT_CONFIDENCE);
@@ -1800,922 +1825,607 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 	int jr_man = GetStat(girl, STAT_MANA);
 	int jr_obe = GetStat(girl, STAT_OBEDIENCE);
 	int jr_spi = GetStat(girl, STAT_SPIRIT);
+	int jr_lev = GetStat(girl, STAT_LEVEL);
 	int jr_fam = GetStat(girl, STAT_FAME);
+
+	int jr_mag = GetSkill(girl, SKILL_MAGIC);
+	int jr_cmb = GetSkill(girl, SKILL_COMBAT);
 	int jr_ser = GetSkill(girl, SKILL_SERVICE);
+
+	int jr_bst = GetSkill(girl, SKILL_BEASTIALITY);
 	int jr_stp = GetSkill(girl, SKILL_STRIP);
 	int jr_med = GetSkill(girl, SKILL_MEDICINE);
 	int jr_per = GetSkill(girl, SKILL_PERFORMANCE);
 
-	stringstream ss;
-	ss << gettext("Charisma: ") << jr_cha;
-	ss << gettext("\nBeauty: ") << jr_bea;
-	ss << gettext("\nLibido: ") << jr_lib;
-	ss << gettext("\nMana: ") << jr_man;
-	ss << gettext("\nIntelligence: ") << jr_int;
-	ss << gettext("\nConfidence: ") << jr_cnf;
-	ss << gettext("\nObedience: ") << jr_obe;
-	ss << gettext("\nSpirit: ") << jr_spi;
-	ss << gettext("\nAgility: ") << jr_agi;
-	ss << gettext("\nFame: ") << jr_fam << gettext("\n");
-	data += ss.str();
 
 	//Job rating system  ///CRAZY
 
-	int looks = (jr_cha + jr_bea) / 2;
-	int cards = (jr_int + jr_agi) / 2;  //intel makes her smart enough to know when to cheat agility makes her fast enough to cheat
+	int HateLove = g_Girls.GetStat(girl, STAT_PCLOVE) - g_Girls.GetStat(girl, STAT_PCHATE);
+	int jr_slave = 0;	if (girl->is_slave()) jr_slave = -1000;
+	int combat = (jr_agi / 2 + jr_cns / 2 + jr_mag / 2 + jr_cmb);
+	if (g_Girls.HasTrait(girl, "Incorporeal") || g_Girls.HasTrait(girl, "Incorporial")) combat += 100;
 
-	int barmaid = (jr_int + jr_ser);
+	// Brothel Jobs
+	int security = ((jr_mag * 2 + jr_cmb * 2 + jr_ser) / 3);	// `J` estimate - needs work 
+	int advertising = (jr_per / 6 + jr_ser / 6 + jr_cha / 6 + jr_bea / 10 + jr_int / 6 + jr_cnf / 10 + jr_fam / 10);
+	int custservice = ((jr_cha + jr_bea + jr_per) / 3 + (jr_cnf + jr_spi) / 3 + jr_ser);	// `J` estimate - needs work 
+	int matron = ((jr_cha + jr_cnf + jr_spi) / 3 + (jr_ser + jr_int + jr_med) / 3 + jr_lev + jr_slave);	// `J`  estimate - needs work 
+	int catacombs = combat;
+	int barmaid = (jr_int / 2 + jr_per / 2 + jr_ser);
 	int barwait = (jr_int / 2 + jr_agi / 2 + jr_ser);
-	int dealer = (cards + jr_ser);
-	int sing = (jr_cnf + jr_per);
-	int piano = (jr_cnf + jr_per);
-	int entertainer = (looks + jr_ser);
-	int xxx = (looks + jr_ser);
-	int clubwait = (looks + jr_ser);
-	int clubbar = (looks + jr_ser);
-	int strip = (looks + jr_stp);
-	int peep = (looks + jr_stp);
-	int brothelstrip = (looks + jr_stp);
-	int massusse = (looks + jr_ser);
+	int barsing = (jr_cnf + jr_per);
+	int barpiano = (jr_cnf / 2 + jr_int / 2 + jr_per);
+	int dealer = (jr_int / 2 + jr_agi / 2 + jr_ser / 2 + jr_per / 2);
+	int entertainer = ((jr_cha + jr_bea + jr_cnf) / 3 + jr_per);
+	int xxx = ((jr_cha + jr_bea + jr_cnf) / 3 + jr_stp / 2 + jr_per / 2);
+	int clubbar = ((jr_cha + jr_bea + jr_per) / 3 + jr_ser);
+	int clubwait = ((jr_cha + jr_bea + jr_per) / 3 + jr_ser);
+	int clubstrip = (jr_cha / 2 + jr_bea / 2 + jr_per / 2 + jr_stp / 2);
+	int massusse = (jr_cha / 2 + jr_bea / 2 + jr_ser / 2 + jr_med / 2);
+	int brothelstrip = (jr_cha / 4 + jr_bea / 4 + jr_stp / 2 + jr_per);
+	int peep = (jr_cha / 2 + jr_bea / 2 + jr_stp / 2 + jr_per / 2);
+	int beastcap = combat;
+	int beastcare = (jr_int / 2 + jr_ser / 2 + jr_bst);
+	int milk = 0;
+	{
+		if (girl->is_pregnant())	milk += 100;					//   preg rating | non-preg rating
+		if (g_Girls.HasTrait(girl, "Abnormally Large Boobs"))	milk += 150;	// S | B
+		else if (g_Girls.HasTrait(girl, "Big Boobs"))	milk += 100;			// A | C
+		else if (g_Girls.HasTrait(girl, "Small Boobs"))	milk += 25;				// C | E
+		else	milk += 75;														// B | D
+	}
+	// Studio Jobs
+	int director = (((jr_int - 50) / 10 + (jr_spi - 50) / 10 + jr_ser / 10) / 3 + jr_fam / 10 + jr_lev + jr_slave);
+	int promoter = (jr_ser / 3 + jr_cha / 6 + jr_bea / 10 + jr_int / 6 + jr_cnf / 10 + jr_fam / 4 + jr_lev / 2);
+	int cameramage = (((jr_int - 50) / 10 + (jr_spi - 50) / 10 + jr_ser / 10) / 3 + jr_fam / 20 + jr_lev);
+	int crystalpurifier = (((jr_int - 50) / 10 + (jr_spi - 50) / 10 + jr_ser / 10) / 3 + jr_fam / 20 + jr_lev);
+	// Arena Jobs
+	int cityguard = (jr_agi / 2 + jr_cmb / 2);
+	int doctore = matron;
+	int cagematch = combat;
+	int fightbeast = combat;
+	// Centre Jobs
+	int centremanager = matron;
+	int drugcounselor = matron;
 	int comunityservice = ((jr_int / 2) + (jr_cha / 2) + jr_ser);
 	int feedpoor = ((jr_int / 2) + (jr_cha / 2) + jr_ser);
-	int nurse = (jr_int + jr_med);
-	int mechanic = (jr_int + jr_ser);
-
-
-	//good traits
-	if (g_Girls.HasTrait(girl, "Charismatic"))  //
-	{
-		barmaid += 15;
-		barwait += 15;
-		sing += 15;
-		piano += 10;
-		dealer += 5;
-		entertainer += 15;
-		xxx += 10;
-		clubwait += 10;
-		clubbar += 20;
-		strip += 10;
-		peep += 10;
-		brothelstrip += 20;
-		massusse += 10;
-		comunityservice += 20;
-		feedpoor += 20;
-		nurse += 20;
-		mechanic += 10;
-	}
-	if (g_Girls.HasTrait(girl, "Sexy Air"))  //
-	{
-		barmaid += 5;
-		barwait += 10;
-		sing += 5;
-		piano += 5;
-		dealer += 5;
-		entertainer += 5;
-		xxx += 10;
-		clubwait += 10;
-		clubbar += 10;
-		strip += 10;
-		peep += 10;
-		brothelstrip += 10;
-		massusse += 10;
-		comunityservice += 10;
-		feedpoor += 10;
-		nurse += 10;
-		mechanic += 5;
-	}
-	if (g_Girls.HasTrait(girl, "Cool Person"))
-	{
-		barmaid += 5;
-		barwait += 10;
-		sing += 5;
-		piano += 5;
-		dealer += 5;
-		entertainer += 5;
-		xxx += 5;
-		clubwait += 10;
-		clubbar += 10;
-		strip += 10;
-		peep += 10;
-		brothelstrip += 10;
-		massusse += 10;
-		comunityservice += 10;
-		feedpoor += 10;
-		nurse += 10;
-		mechanic += 10;
-	}
-	if (g_Girls.HasTrait(girl, "Cute"))
-	{
-		barmaid += 5;
-		barwait += 5;
-		sing += 5;
-		piano += 5;
-		dealer += 5;
-		entertainer += 5;
-		xxx += 5;
-		clubwait += 5;
-		clubbar += 5;
-		strip += 5;
-		peep += 5;
-		brothelstrip += 5;
-		massusse += 5;
-		comunityservice += 5;
-		feedpoor += 5;
-		nurse += 5;
-		mechanic += 5;
-	}
-	if (g_Girls.HasTrait(girl, "Charming"))
-	{
-		barmaid += 15;
-		barwait += 20;
-		sing += 5;
-		piano += 5;
-		dealer += 10;
-		entertainer += 15;
-		xxx += 5;
-		clubwait += 15;
-		clubbar += 15;
-		strip += 10;
-		peep += 10;
-		brothelstrip += 10;
-		massusse += 10;
-		comunityservice += 15;
-		feedpoor += 15;
-		nurse += 15;
-		mechanic += 10;
-	}
-	if (g_Girls.HasTrait(girl, "Quick Learner"))
-	{
-		barmaid += 5;
-		barwait += 5;
-		sing += 5;
-		piano += 5;
-		dealer += 5;
-		entertainer += 5;
-		xxx += 5;
-		clubwait += 5;
-		clubbar += 5;
-		strip += 5;
-		peep += 5;
-		brothelstrip += 5;
-		massusse += 5;
-		nurse += 5;
-	}
-	if (g_Girls.HasTrait(girl, "Psychic"))
-	{
-		barmaid += 10;
-		barwait += 10;
-		sing += 10;
-		piano += 10;
-		dealer += 15;
-		entertainer += 15;
-		xxx += 10;
-		clubwait += 10;
-		clubbar += 10;
-		strip += 10;
-		peep += 10;
-		brothelstrip += 10;
-		massusse += 10;
-		nurse += 10;
-	}
-	if (g_Girls.HasTrait(girl, "Fleet of Foot") || g_Girls.HasTrait(girl, "Fleet Of Foot"))
-	{
-		//barmaid += 10;
-		barwait += 5;
-		/*sing += 10;
-		piano += 10;
-		dealer += 15;
-		entertainer += 15;
-		xxx += 10;*/
-		clubwait += 5;
-		/*clubbar += 10;
-		strip += 10;
-		peep += 10;
-		brothelstrip += 10;
-		massusse += 10;*/
-	}
+	// Clinic Jobs
+	int chairman = matron;
+	int doctor = (jr_int + jr_med + jr_lev / 5 + jr_slave);	// `J` needs work
+	int nurse = (jr_cha / 2 + jr_int / 2 + jr_med + jr_lev / 5);
+	int mechanic = (jr_ser / 2 + jr_med / 2 + jr_int);
+	// House Jobs
+	int headgirl = matron;
+	int recruiter = (HateLove + jr_cha + jr_slave);
+	
+	
+	// Traits in alphabetical order
 	if (g_Girls.HasTrait(girl, "Abnormally Large Boobs"))
 	{
-		//barmaid += 10;
 		barwait -= 20;
-		/*sing += 10;
-		piano += 10;
-		dealer += 15;
-		entertainer += 15;
-		xxx += 10;*/
 		clubwait -= 20;
-		/*clubbar += 10;
-		strip += 10;
-		peep += 10;
-		brothelstrip += 10;
-		massusse += 10;*/
 	}
-	if (g_Girls.HasTrait(girl, "Great Figure"))
+	if (g_Girls.HasTrait(girl, "Adventurer"))
 	{
-		/*barmaid += 10;
-		barwait -= 20;
-		sing += 10;
-		piano += 10;
-		dealer += 15;*/
-		entertainer += 5;
-		xxx += 5;
-		clubwait += 5;
-		clubbar += 5;
-		strip += 5;
-		peep += 5;
-		brothelstrip += 5;
-		massusse += 5;
-	}
-	if (g_Girls.HasTrait(girl, "Great Arse"))
-	{
-		/*barmaid += 10;
-		barwait -= 20;
-		sing += 10;
-		piano += 10;
-		dealer += 15;*/
-		entertainer += 5;
-		xxx += 5;
-		clubwait += 5;
-		clubbar += 5;
-		strip += 5;
-		peep += 5;
-		brothelstrip += 5;
-		massusse += 5;
-	}
-	if (g_Girls.HasTrait(girl, "Elegant"))
-	{
-		/*barmaid += 10;
-		barwait -= 20;*/
-		sing += 5;
-		piano += 15;
-		/*dealer += 15;
-		entertainer += 5;
-		xxx += 5;
-		clubwait += 5;
-		clubbar += 5;
-		strip += 5;
-		peep += 5;
-		brothelstrip += 5;
-		massusse += 5;*/
-		mechanic -= 5;
-	}
-	if (g_Girls.HasTrait(girl, "Fearless"))
-	{
-		/*barmaid += 10;
-		barwait -= 20;*/
-		sing += 5;
-		//piano += 15;
-		/*dealer += 15;
-		entertainer += 5;
-		xxx += 5;
-		clubwait += 5;
-		clubbar += 5;
-		strip += 5;*/
-		peep += 10;
-		/*brothelstrip += 5;
-		massusse += 5;*/
-	}
-	if (g_Girls.HasTrait(girl, "Nerd"))
-	{
-		/*barmaid += 10;
-		barwait += 10;
-		sing += 10;
-		piano += 10;
-		dealer += 15;
-		entertainer += 15;
-		xxx += 10;
-		clubwait += 10;
-		clubbar += 10;
-		strip += 10;
-		peep += 10;
-		brothelstrip += 10;
-		massusse += 10;*/
-		nurse += 15;
-		mechanic += 15;
-	}
-	if (g_Girls.HasTrait(girl, "Strong"))
-	{
-		/*barmaid += 10;
-		barwait += 10;
-		sing += 10;
-		piano += 10;
-		dealer += 15;
-		entertainer += 15;
-		xxx += 10;
-		clubwait += 10;
-		clubbar += 10;
-		strip += 10;
-		peep += 10;
-		brothelstrip += 10;
-		massusse += 10;
-		nurse += 15;*/
-		mechanic += 10;
-	}
-	if (g_Girls.HasTrait(girl, "Tough"))
-	{
-		/*barmaid += 10;
-		barwait += 10;
-		sing += 10;
-		piano += 10;
-		dealer += 15;
-		entertainer += 15;
-		xxx += 10;
-		clubwait += 10;
-		clubbar += 10;
-		strip += 10;
-		peep += 10;
-		brothelstrip += 10;
-		massusse += 10;
-		nurse += 15;*/
-		mechanic += 5;
-	}
-	if (g_Girls.HasTrait(girl, "Construct"))
-	{
-		//barmaid += 10;
-		//barwait += 10;
-		sing -= 20;
-		/*piano += 10;
-		dealer += 15;
-		entertainer += 15;
-		xxx += 10;
-		clubwait += 10;
-		clubbar += 10;
-		strip += 10;
-		peep += 10;
-		brothelstrip += 10;
-		massusse += 10;
-		nurse += 15;*/
-		mechanic += 10;
-	}
-	if (g_Girls.HasTrait(girl, "Half-Construct"))
-	{
-		/*barmaid += 10;
-		barwait += 10;
-		sing += 10;
-		piano += 10;
-		dealer += 15;
-		entertainer += 15;
-		xxx += 10;
-		clubwait += 10;
-		clubbar += 10;
-		strip += 10;
-		peep += 10;
-		brothelstrip += 10;
-		massusse += 10;
-		nurse += 15;*/
-		mechanic += 5;
-	}
-	if (g_Girls.HasTrait(girl, "Queen"))
-	{
-		/*barmaid += 10;
-		barwait += 10;
-		sing += 10;
-		piano += 10;
-		dealer += 15;
-		entertainer += 15;
-		xxx += 10;
-		clubwait += 10;
-		clubbar += 10;
-		strip += 10;
-		peep += 10;
-		brothelstrip += 10;
-		massusse += 10;
-		nurse += 15;*/
-		mechanic -= 20;
-	}
-	if (g_Girls.HasTrait(girl, "Princess"))
-	{
-		/*barmaid += 10;
-		barwait += 10;
-		sing += 10;
-		piano += 10;
-		dealer += 15;
-		entertainer += 15;
-		xxx += 10;
-		clubwait += 10;
-		clubbar += 10;
-		strip += 10;
-		peep += 10;
-		brothelstrip += 10;
-		massusse += 10;
-		nurse += 15;*/
-		mechanic -= 10;
-	}
-
-	//bad traits
-	if (g_Girls.HasTrait(girl, "Long Legs"))
-	{
-		//barmaid -= 20;
-		//barwait -= 20;
-		//sing -= 50;
-		//piano -= 50;
-		//dealer -= 20;
-		//entertainer -= 50;
-		//xxx -= 20;
-		//clubwait -= 20;
-		//clubbar -= 20;
-		strip += 10;
-		//peep -= 5;
-		brothelstrip += 10;
-		//massusse -= 20;
-	}
-	if (g_Girls.HasTrait(girl, "Dependant"))  //needs others to do the job
-	{
-		barmaid -= 50;
-		barwait -= 50;
-		sing -= 50;
-		piano -= 50;
-		dealer -= 50;
-		entertainer -= 50;
-		xxx -= 50;
-		clubwait -= 50;
-		clubbar -= 50;
-		strip -= 50;
-		peep -= 50;
-		brothelstrip -= 50;
-		massusse -= 50;
-		comunityservice -= 50;
-		feedpoor -= 50;
-		nurse -= 50;
-		mechanic -= 40;
-	}
-	if (g_Girls.HasTrait(girl, "Clumsy"))
-	{
-		barmaid -= 20;
-		barwait -= 20;
-		sing -= 10;
-		//piano -= 20;
-		dealer -= 10;
-		entertainer -= 10;
-		xxx -= 10;
-		clubwait -= 20;
-		clubbar -= 20;
-		strip -= 20;
-		peep -= 20;
-		brothelstrip -= 20;
-		massusse -= 20;
-		comunityservice -= 20;
-		feedpoor -= 20;
-		nurse -= 20;
-		mechanic -= 20;
+		security += 5;
 	}
 	if (g_Girls.HasTrait(girl, "Aggressive"))
 	{
 		barmaid -= 20;
+		barpiano -= 20;
+		barsing -= 10;
 		barwait -= 20;
-		sing -= 20;
-		piano -= 20;
-		dealer -= 20;
-		entertainer -= 20;
-		xxx -= 20;
-		clubwait -= 20;
-		clubbar -= 20;
-		strip -= 20;
-		peep -= 20;
 		brothelstrip -= 20;
-		massusse -= 20;
+		clubbar -= 20;
+		clubstrip -= 20;
+		clubwait -= 20;
 		comunityservice -= 20;
+		dealer -= 20;
+		doctor -= 20;
+		entertainer -= 20;
 		feedpoor -= 20;
-		nurse -= 20;
+		massusse -= 20;
 		mechanic -= 10;
+		nurse -= 20;
+		peep -= 20;
+		recruiter -= 20;
+		security += 5;
+		xxx -= 20;
 	}
-	if (g_Girls.HasTrait(girl, "Nervous"))
+	if (g_Girls.HasTrait(girl, "Assassin"))
 	{
-		barmaid -= 30;
-		barwait -= 30;
-		sing -= 30;
-		piano -= 30;
-		dealer -= 30;
-		entertainer -= 30;
-		xxx -= 30;
-		clubwait -= 30;
-		clubbar -= 30;
-		strip -= 30;
-		peep -= 30;
-		brothelstrip -= 30;
-		massusse -= 30;
-		comunityservice -= 30;
-		feedpoor -= 30;
-		nurse -= 30;
+		security += 50;
+	}
+	if (g_Girls.HasTrait(girl, "Broken Will"))
+	{
+		barsing -= 50;
+		barpiano -= 50;
+		entertainer -= 50;
+		recruiter -= 50;
+		security -= 50;
+	}
+	if (g_Girls.HasTrait(girl, "Charismatic"))  //
+	{
+		advertising += 10;
+		barmaid += 15;
+		barpiano += 10;
+		barsing += 15;
+		barwait += 15;
+		brothelstrip += 15;
+		clubbar += 20;
+		clubstrip += 10;
+		clubwait += 10;
+		comunityservice += 20;
+		dealer += 5;
+		doctor += 20;
+		entertainer += 15;
+		feedpoor += 20;
+		massusse += 15;
+		mechanic += 5;
+		nurse += 20;
+		peep += 15;
+		promoter += 10;
+		recruiter += 20;
+		xxx += 10;
+	}
+	if (g_Girls.HasTrait(girl, "Charming"))
+	{
+		advertising += 10;
+		barmaid += 15;
+		barpiano += 5;
+		barsing += 5;
+		barwait += 20;
+		brothelstrip += 10;
+		clubbar += 15;
+		clubstrip += 10;
+		clubwait += 15;
+		comunityservice += 15;
+		dealer += 10;
+		doctor += 15;
+		entertainer += 15;
+		feedpoor += 15;
+		massusse += 10;
+		mechanic += 5;
+		nurse += 15;
+		peep += 10;
+		promoter += 10;
+		recruiter += 10;
+		security += 5;
+		xxx += 5;
+	}
+	if (g_Girls.HasTrait(girl, "Clumsy"))
+	{
+		advertising -= 5;
+		barmaid -= 20;
+		barsing -= 10;
+		barwait -= 20;
+		brothelstrip -= 20;
+		clubbar -= 20;
+		clubstrip -= 20;
+		clubwait -= 20;
+		comunityservice -= 20;
+		dealer -= 10;
+		doctor -= 20;
+		entertainer -= 10;
+		feedpoor -= 20;
+		massusse -= 20;
 		mechanic -= 20;
+		nurse -= 20;
+		peep -= 20;
+		promoter -= 5;
+		recruiter -= 5;
+		security -= 5;
+		xxx -= 10;
+	}
+	if (g_Girls.HasTrait(girl, "Construct"))
+	{
+		barsing -= 20;
+		mechanic += 10;
+		security += 5;
+	}
+	if (g_Girls.HasTrait(girl, "Cool Person"))
+	{
+		advertising += 10;
+		barmaid += 10;
+		barpiano += 5;
+		barsing += 5;
+		barwait += 10;
+		brothelstrip += 10;
+		clubbar += 10;
+		clubstrip += 10;
+		clubwait += 10;
+		comunityservice += 10;
+		dealer += 5;
+		doctor += 10;
+		entertainer += 5;
+		feedpoor += 10;
+		massusse += 10;
+		mechanic += 10;
+		nurse += 10;
+		peep += 10;
+		promoter += 10;
+		recruiter += 10;
+		security += 5;
+		xxx += 5;
+	}
+	if (g_Girls.HasTrait(girl, "Cute"))
+	{
+		barmaid += 5;
+		barpiano += 5;
+		barsing += 5;
+		barwait += 5;
+		brothelstrip += 5;
+		clubbar += 5;
+		clubstrip += 5;
+		clubwait += 5;
+		comunityservice += 5;
+		dealer += 5;
+		doctor += 5;
+		entertainer += 5;
+		feedpoor += 5;
+		massusse += 5;
+		nurse += 5;
+		peep += 5;
+		xxx += 5;
+	}
+	if (g_Girls.HasTrait(girl, "Demon"))  //
+	{
+		security += 10;
+	}
+	if (g_Girls.HasTrait(girl, "Dependant"))  //needs others to do the job
+	{
+		barmaid -= 50;
+		barpiano -= 50;
+		barsing -= 50;
+		barwait -= 50;
+		brothelstrip -= 50;
+		clubbar -= 50;
+		clubstrip -= 50;
+		clubwait -= 50;
+		comunityservice -= 50;
+		dealer -= 50;
+		doctor -= 50;
+		entertainer -= 50;
+		feedpoor -= 50;
+		massusse -= 50;
+		mechanic -= 40;
+		nurse -= 50;
+		peep -= 50;
+		recruiter -= 50;
+		security -= 5;
+		xxx -= 50;
+	}
+	if (g_Girls.HasTrait(girl, "Elegant"))
+	{
+		barsing += 5;
+		barpiano += 15;
+		mechanic -= 5;
+	}
+	if (g_Girls.HasTrait(girl, "Fearless"))
+	{
+		barsing += 5;
+		entertainer += 5;
+		peep += 10;
+		security += 5;
+	}
+	if (g_Girls.HasTrait(girl, "Fleet of Foot") || g_Girls.HasTrait(girl, "Fleet Of Foot"))
+	{
+		barwait += 5;
+		clubwait += 5;
+		security += 5;
+	}
+	if (g_Girls.HasTrait(girl, "Great Arse"))
+	{
+		brothelstrip += 5;
+		clubbar += 5;
+		clubstrip += 5;
+		clubwait += 5;
+		entertainer += 5;
+		massusse += 5;
+		peep += 5;
+		xxx += 5;
+	}
+	if (g_Girls.HasTrait(girl, "Great Figure"))
+	{
+		brothelstrip += 5;
+		clubbar += 5;
+		clubstrip += 5;
+		clubwait += 5;
+		entertainer += 5;
+		massusse += 5;
+		peep += 5;
+		xxx += 5;
+	}
+	if (g_Girls.HasTrait(girl, "Half-Construct"))
+	{
+		mechanic += 5;
+	}
+	if (g_Girls.HasTrait(girl, "Horrific Scars"))
+	{
+		brothelstrip -= 20;
+		clubstrip -= 20;
+		peep -= 20;
+	}
+	if (g_Girls.HasTrait(girl, "Iron Will"))
+	{
+		security += 5;
+	}
+	if (g_Girls.HasTrait(girl, "Lolita"))
+	{
+		security += 5;
+	}
+	if (g_Girls.HasTrait(girl, "Long Legs"))
+	{
+		clubstrip += 10;
+		brothelstrip += 10;
+	}
+	if (g_Girls.HasTrait(girl, "Malformed"))
+	{
+		advertising -= 20;
+		promoter -= 20;
 	}
 	if (g_Girls.HasTrait(girl, "Meek"))
 	{
 		barmaid -= 20;
+		barpiano -= 20;
+		barsing -= 20;
 		barwait -= 20;
-		sing -= 20;
-		piano -= 20;
-		dealer -= 20;
-		entertainer -= 20;
-		xxx -= 20;
-		clubwait -= 20;
-		clubbar -= 20;
-		strip -= 20;
-		peep -= 20;
 		brothelstrip -= 20;
-		massusse -= 20;
+		clubbar -= 20;
+		clubstrip -= 20;
+		clubwait -= 20;
 		comunityservice -= 20;
+		dealer -= 20;
+		doctor -= 20;
+		entertainer -= 20;
 		feedpoor -= 20;
+		massusse -= 20;
+		mechanic -= 20;
 		nurse -= 20;
+		peep -= 20;
+		recruiter -= 20;
+		security -= 5;
+		xxx -= 20;
+	}
+	if (g_Girls.HasTrait(girl, "Merciless"))
+	{
+		security += 5;
+	}
+	if (g_Girls.HasTrait(girl, "Mind Fucked"))
+	{
+		security -= 50;
+	}
+	if (g_Girls.HasTrait(girl, "Nerd"))
+	{
+		doctor += 30;
+		nurse += 15;
+		mechanic += 15;
+		security -= 5;
+	}
+	if (g_Girls.HasTrait(girl, "Nervous"))
+	{
+		advertising -= 5;
+		barmaid -= 30;
+		barpiano -= 30;
+		barsing -= 30;
+		barwait -= 30;
+		brothelstrip -= 30;
+		clubbar -= 30;
+		clubstrip -= 30;
+		clubwait -= 30;
+		comunityservice -= 30;
+		dealer -= 30;
+		doctor -= 50;
+		entertainer -= 30;
+		feedpoor -= 30;
+		massusse -= 30;
+		mechanic -= 20;
+		nurse -= 30;
+		peep -= 30;
+		promoter -= 5;
+		recruiter -= 30;
+		xxx -= 30;
+	}
+	if (g_Girls.HasTrait(girl, "Not Human"))
+	{
+		security += 5;
+	}
+	if (g_Girls.HasTrait(girl, "Nymphomaniac"))
+	{
+		security -= 20;
+	}
+	if (g_Girls.HasTrait(girl, "One Eye"))
+	{
+		barwait -= 10;
+		clubwait -= 10;
+	}
+	if (g_Girls.HasTrait(girl, "Princess"))
+	{
+		mechanic -= 10;
+	}
+	if (g_Girls.HasTrait(girl, "Psychic"))
+	{
+		advertising += 10;
+		barmaid += 10;
+		barpiano += 10;
+		barsing += 10;
+		barwait += 10;
+		brothelstrip += 10;
+		clubbar += 10;
+		clubstrip += 10;
+		clubwait += 10;
+		dealer += 15;
+		doctor += 20;
+		entertainer += 15;
+		massusse += 10;
+		nurse += 10;
+		peep += 10;
+		promoter += 10;
+		recruiter += 20;
+		security += 10;
+		xxx += 10;
+	}
+	if (g_Girls.HasTrait(girl, "Queen"))
+	{
 		mechanic -= 20;
 	}
-	if (g_Girls.HasTrait(girl, "Broken Will"))
+	if (g_Girls.HasTrait(girl, "Quick Learner"))
 	{
-		//barmaid -= 20;
-		//barwait -= 20;
-		sing -= 50;
-		piano -= 50;
-		//dealer -= 20;
-		entertainer -= 50;
-		//xxx -= 20;
-		//clubwait -= 20;
-		//clubbar -= 20;
-		//strip -= 20;
-		//peep -= 20;
-		//brothelstrip -= 20;
-		//massusse -= 20;
+		barmaid += 5;
+		barpiano += 5;
+		barsing += 5;
+		barwait += 5;
+		brothelstrip += 5;
+		clubbar += 5;
+		clubstrip += 5;
+		clubwait += 5;
+		dealer += 5;
+		doctor += 10;
+		entertainer += 5;
+		massusse += 5;
+		nurse += 5;
+		peep += 5;
+		xxx += 5;
+	}
+	if (g_Girls.HasTrait(girl, "Retarded"))
+	{
+		advertising -= 20;
+		doctor -= 100;
+		nurse -= 50;
+		promoter -= 20;
+	}
+	if (g_Girls.GetStat(girl, STAT_FAME) > 85)
+	{
+		clubstrip += 10;
+		brothelstrip += 10;
+	}
+	if (g_Girls.HasTrait(girl, "Sadistic"))
+	{
+		security += 5;
+	}
+	if (g_Girls.HasTrait(girl, "Sexy Air"))  //
+	{
+		advertising += 10;
+		barmaid += 5;
+		barpiano += 5;
+		barsing += 5;
+		barwait += 10;
+		brothelstrip += 10;
+		clubbar += 10;
+		clubstrip += 10;
+		clubwait += 10;
+		comunityservice += 10;
+		dealer += 5;
+		doctor += 10;
+		entertainer += 5;
+		feedpoor += 10;
+		massusse += 10;
+		mechanic += 5;
+		nurse += 10;
+		peep += 10;
+		promoter += 10;
+		xxx += 10;
 	}
 	if (g_Girls.HasTrait(girl, "Slow Learner"))
 	{
 		barmaid -= 10;
+		barpiano -= 10;
+		barsing -= 10;
 		barwait -= 10;
-		sing -= 10;
-		piano -= 10;
+		brothelstrip -= 10;
+		clubbar -= 10;
+		clubstrip -= 10;
+		clubwait -= 10;
 		dealer -= 15;
 		entertainer -= 15;
-		xxx -= 10;
-		clubwait -= 10;
-		clubbar -= 10;
-		strip -= 10;
-		peep -= 10;
-		brothelstrip -= 10;
 		massusse -= 10;
+		peep -= 10;
+		xxx -= 10;
 	}
-	if (g_Girls.HasTrait(girl, "Horrific Scars"))
+	if (g_Girls.HasTrait(girl, "Small Scars"))
 	{
-		//barmaid -= 20;
-		//barwait -= 20;
-		//sing -= 50;
-		//piano -= 50;
-		//dealer -= 20;
-		//entertainer -= 50;
-		//xxx -= 20;
-		//clubwait -= 20;
-		//clubbar -= 20;
-		strip -= 20;
-		peep -= 20;
-		brothelstrip -= 20;
-		//massusse -= 20;
-	}
-	if (g_Girls.HasTrait(girl, "Horrific Scars"))
-	{
-		//barmaid -= 20;
-		//barwait -= 20;
-		//sing -= 50;
-		//piano -= 50;
-		//dealer -= 20;
-		//entertainer -= 50;
-		//xxx -= 20;
-		//clubwait -= 20;
-		//clubbar -= 20;
-		strip -= 5;
-		peep -= 5;
 		brothelstrip -= 5;
-		//massusse -= 20;
+		clubstrip -= 5;
+		peep -= 5;
 	}
-	if (g_Girls.HasTrait(girl, "One Eye"))
+	if (g_Girls.HasTrait(girl, "Strange Eyes"))
 	{
-		//barmaid -= 20;
-		barwait -= 10;
-		//sing -= 50;
-		//piano -= 50;
-		//dealer -= 20;
-		//entertainer -= 50;
-		//xxx -= 20;
-		clubwait -= 10;
-		//clubbar -= 20;
-		//strip -= 20;
-		//peep -= 20;
-		//brothelstrip -= 20;
-		//massusse -= 20;
+		security += 2;
+	}
+	if (g_Girls.HasTrait(girl, "Strong"))
+	{
+		mechanic += 10;
+	}
+	if (g_Girls.HasTrait(girl, "Tough"))
+	{
+		mechanic += 5;
+	}
+	if (g_Girls.HasTrait(girl, "Tsundere"))
+	{
+		security += 5;
+	}
+	if (g_Girls.HasTrait(girl, "Twisted"))
+	{
+		security -= 5;
+	}
+	if (g_Girls.HasTrait(girl, "Yandere"))
+	{
+		security += 5;
 	}
 
 
-	if (g_Girls.GetStat(girl, STAT_FAME) > 85)
-	{
-		//barmaid += 10;
-		//barwait += 10;
-		//sing += 10;
-		//piano += 10;
-		//dealer += 15;
-		//entertainer += 15;
-		//xxx += 10;
-		//clubwait += 10;
-		//clubbar += 10;
-		strip += 10;
-		//peep += 10;
-		brothelstrip += 10;
-		//massusse += 10;
-		//nurse += 15;
-		//mechanic -= 10;
-	}
-
-	/*stringstream dd;
-dd << gettext("barmaid: ") << (barmaid) << gettext("\n");
-dd << gettext("barwait: ") << (barwait) << gettext("\n");
-dd << gettext("sing: ") << (sing) << gettext("\n");
-dd << gettext("piano: ") << (piano) << gettext("\n");
-data += dd.str();*/
-
-	data += gettext("\nJob Ratings\n");
-
-	data += gettext("\nBarmaid- ");
-	{
-		if (barmaid >= 245)
-			data += gettext("S");
-		else if (barmaid >= 185)
-			data += gettext("A");
-		else if (barmaid >= 145)
-			data += gettext("B");
-		else if (barmaid >= 100)
-			data += gettext("C");
-		else if (barmaid >= 70)
-			data += gettext("D");
-		else
-			data += gettext("E");
-	}
-	data += gettext("\nBar Waitress- ");
-	{
-		if (barwait >= 245)
-			data += gettext("S");
-		else if (barwait >= 185)
-			data += gettext("A");
-		else if (barwait >= 145)
-			data += gettext("B");
-		else if (barwait >= 100)
-			data += gettext("C");
-		else if (barwait >= 70)
-			data += gettext("D");
-		else
-			data += gettext("E");
-	}
-	data += gettext("\nSinger- ");
-	{
-		if (sing >= 245)
-			data += gettext("S");
-		else if (sing >= 185)
-			data += gettext("A");
-		else if (sing >= 145)
-			data += gettext("B");
-		else if (sing >= 100)
-			data += gettext("C");
-		else if (sing >= 70)
-			data += gettext("D");
-		else
-			data += gettext("E");
-	}
-	data += gettext("\nPiano- ");
-	{
-		if (piano >= 245)
-			data += gettext("S");
-		else if (piano >= 185)
-			data += gettext("A");
-		else if (piano >= 145)
-			data += gettext("B");
-		else if (piano >= 100)
-			data += gettext("C");
-		else if (piano >= 70)
-			data += gettext("D");
-		else
-			data += gettext("E");
-	}
-	data += gettext("\nDealer- ");
-	{
-		if (dealer >= 245)
-			data += gettext("S");
-		else if (dealer >= 185)
-			data += gettext("A");
-		else if (dealer >= 145)
-			data += gettext("B");
-		else if (dealer >= 100)
-			data += gettext("C");
-		else if (dealer >= 70)
-			data += gettext("D");
-		else
-			data += gettext("E");
-	}
-	data += gettext("\nEntertainer- ");
-	{
-		if (entertainer >= 245)
-			data += gettext("S");
-		else if (entertainer >= 185)
-			data += gettext("A");
-		else if (entertainer >= 145)
-			data += gettext("B");
-		else if (entertainer >= 100)
-			data += gettext("C");
-		else if (entertainer >= 70)
-			data += gettext("D");
-		else
-			data += gettext("E");
-	}
-	data += gettext("\nXXX Entertainer- ");
-	{
-		if (xxx >= 245)
-			data += gettext("S");
-		else if (xxx >= 185)
-			data += gettext("A");
-		else if (xxx >= 145)
-			data += gettext("B");
-		else if (xxx >= 100)
-			data += gettext("C");
-		else if (xxx >= 70)
-			data += gettext("D");
-		else
-			data += gettext("E");
-	}
-	data += gettext("\nClub Barmaid- ");
-	{
-		if (clubbar >= 245)
-			data += gettext("S");
-		else if (clubbar >= 185)
-			data += gettext("A");
-		else if (clubbar >= 145)
-			data += gettext("B");
-		else if (clubbar >= 100)
-			data += gettext("C");
-		else if (clubbar >= 70)
-			data += gettext("D");
-		else
-			data += gettext("E");
-	}
-	data += gettext("\nClub Waitress- ");
-	{
-		if (clubwait >= 245)
-			data += gettext("S");
-		else if (clubwait >= 185)
-			data += gettext("A");
-		else if (clubwait >= 145)
-			data += gettext("B");
-		else if (clubwait >= 100)
-			data += gettext("C");
-		else if (clubwait >= 70)
-			data += gettext("D");
-		else
-			data += gettext("E");
-	}
-	data += gettext("\nStripper- ");
-	{
-		if (strip >= 245)
-			data += gettext("S");
-		else if (strip >= 185)
-			data += gettext("A");
-		else if (strip >= 145)
-			data += gettext("B");
-		else if (strip >= 100)
-			data += gettext("C");
-		else if (strip >= 70)
-			data += gettext("D");
-		else
-			data += gettext("E");
-	}
-	data += gettext("\nMassusse- ");
-	{
-		if (massusse >= 245)
-			data += gettext("S");
-		else if (massusse >= 185)
-			data += gettext("A");
-		else if (massusse >= 145)
-			data += gettext("B");
-		else if (massusse >= 100)
-			data += gettext("C");
-		else if (massusse >= 70)
-			data += gettext("D");
-		else
-			data += gettext("E");
-	}
-	data += gettext("\nBrothel Stripper- ");
-	{
-		if (brothelstrip >= 245)
-			data += gettext("S");
-		else if (brothelstrip >= 185)
-			data += gettext("A");
-		else if (brothelstrip >= 145)
-			data += gettext("B");
-		else if (brothelstrip >= 100)
-			data += gettext("C");
-		else if (brothelstrip >= 70)
-			data += gettext("D");
-		else
-			data += gettext("E");
-	}
-	data += gettext("\nPeep Show- ");
-	{
-		if (peep >= 245)
-			data += gettext("S");
-		else if (peep >= 185)
-			data += gettext("A");
-		else if (peep >= 145)
-			data += gettext("B");
-		else if (peep >= 100)
-			data += gettext("C");
-		else if (peep >= 70)
-			data += gettext("D");
-		else
-			data += gettext("E");
-	}
-
-	//CENTRE
-	if (g_Centre.GetGirlsCurrentBrothel(selected_girl) != -1)
-	{
-		data += gettext("\n\nCentre Job Ratings\n");
-
-		data += gettext("\nComunity Service- ");
-		{
-			if (comunityservice >= 245)
-				data += gettext("S");
-			else if (comunityservice >= 185)
-				data += gettext("A");
-			else if (comunityservice >= 145)
-				data += gettext("B");
-			else if (comunityservice >= 100)
-				data += gettext("C");
-			else if (comunityservice >= 70)
-				data += gettext("D");
-			else
-				data += gettext("E");
-		}
-		data += gettext("\nFeed Poor- ");
-		{
-			if (feedpoor >= 245)
-				data += gettext("S");
-			else if (feedpoor >= 185)
-				data += gettext("A");
-			else if (feedpoor >= 145)
-				data += gettext("B");
-			else if (feedpoor >= 100)
-				data += gettext("C");
-			else if (feedpoor >= 70)
-				data += gettext("D");
-			else
-				data += gettext("E");
-		}
-	}
-
-	//ARENA
-	if (g_Arena.GetGirlsCurrentBrothel(selected_girl) != -1)
-	{
-		data += gettext("\n\nArena Job Ratings\n");
-	}
-
-	//CLINIC
-	if (g_Clinic.GetGirlsCurrentBrothel(selected_girl) != -1)
-	{
-		data += gettext("\n\nClinic Job Ratings\n");
-
-		data += gettext("\nNurse- ");
-		{
-			if (nurse >= 245)
-				data += gettext("S");
-			else if (nurse >= 185)
-				data += gettext("A");
-			else if (nurse >= 145)
-				data += gettext("B");
-			else if (nurse >= 100)
-				data += gettext("C");
-			else if (nurse >= 70)
-				data += gettext("D");
-			else
-				data += gettext("E");
-		}
-		data += gettext("\nMechanic- ");
-		{
-			if (mechanic >= 245)
-				data += gettext("S");
-			else if (mechanic >= 185)
-				data += gettext("A");
-			else if (mechanic >= 145)
-				data += gettext("B");
-			else if (mechanic >= 100)
-				data += gettext("C");
-			else if (mechanic >= 70)
-				data += gettext("D");
-			else
-				data += gettext("E");
-		}
-	}
-
-	//HOUSE
-	if (g_House.GetGirlsCurrentBrothel(selected_girl) != -1)
-	{
-		data += gettext("\n\nHouse Job Ratings\n");
-	}
-
+	data += gettext("Brothel Job Ratings\n\n");
+	data += girl->JobRatingLetter(security) + gettext("  -  Security\n");
+	data += girl->JobRatingLetter(advertising) + gettext("  -  Advertising\n");
+	data += girl->JobRatingLetter(custservice) + gettext("  -  Customer Service\n");
+	data += girl->JobRatingLetter(matron) + gettext("  -  Matron\n");
+	data += girl->JobRatingLetter(catacombs) + gettext("  -  Explore Catacombs\n\n");
+	data += girl->JobRatingLetter(barmaid) + gettext("  -  Barmaid\n");
+	data += girl->JobRatingLetter(barwait) + gettext("  -  Bar Waitress\n");
+	data += girl->JobRatingLetter(barsing) + gettext("  -  Singer\n");
+	data += girl->JobRatingLetter(barpiano) + gettext("  -  Piano\n\n");
+	data += girl->JobRatingLetter(dealer) + gettext("  -  Dealer\n");
+	data += girl->JobRatingLetter(entertainer) + gettext("  -  Entertainer\n");
+	data += girl->JobRatingLetter(xxx) + gettext("  -  XXX Entertainer\n\n");
+	data += girl->JobRatingLetter(clubbar) + gettext("  -  Club Barmaid\n");
+	data += girl->JobRatingLetter(clubwait) + gettext("  -  Club Waitress\n");
+	data += girl->JobRatingLetter(clubstrip) + gettext("  -  Stripper\n\n");
+	data += girl->JobRatingLetter(massusse) + gettext("  -  Massusse\n");
+	data += girl->JobRatingLetter(brothelstrip) + gettext("  -  Brothel Stripper\n");
+	data += girl->JobRatingLetter(peep) + gettext("  -  Peep Show\n\n");
+	data += girl->JobRatingLetter(beastcap) + gettext("  -  Beast Capture\n");
+	data += girl->JobRatingLetter(beastcare) + gettext("  -  Beast Care\n");
+	data += girl->JobRatingLetter(milk) + gettext("  -  Get Milked\n");
 	//STUDIO
-	else if (g_Studios.GetGirlsCurrentBrothel(selected_girl) != -1)
-	{
-		data += gettext("\n\nStudio Job Ratings\n");
-	}
+	data += gettext("\nStudio Job Ratings\n");
+	data += girl->JobRatingLetter(director) + gettext("  -  Director\n");
+	data += girl->JobRatingLetter(promoter) + gettext("  -  Promoter\n");
+	data += girl->JobRatingLetter(cameramage) + gettext("  -  Camera Mage\n");
+	data += girl->JobRatingLetter(crystalpurifier) + gettext("  -  Crystal Purifier\n");
+	//ARENA
+	data += gettext("\nArena Job Ratings\n");
+	data += girl->JobRatingLetter(fightbeast) + gettext("  -  Fight Beast\n");
+	data += girl->JobRatingLetter(cagematch) + gettext("  -  Cage Match\n");
+	data += girl->JobRatingLetter(doctore) + gettext("  -  Doctore\n");
+	data += girl->JobRatingLetter(cityguard) + gettext("  -  City Guard\n");
+	//CENTRE
+	data += gettext("\nCentre Job Ratings\n");
+	data += girl->JobRatingLetter(feedpoor) + gettext("  -  Feed Poor\n");
+	data += girl->JobRatingLetter(comunityservice) + gettext("  -  Comunity Service\n");
+	data += girl->JobRatingLetter(centremanager) + gettext("  -  Centre Manager\n");
+	data += girl->JobRatingLetter(drugcounselor) + gettext("  -  Drug Counselor\n");
+	//CLINIC
+	data += gettext("\nClinic Job Ratings\n");
+	data += girl->JobRatingLetter(chairman) + gettext("  -  Chairman\n");
+	data += girl->JobRatingLetter(doctor) + gettext("  -  Doctor\n");
+	data += girl->JobRatingLetter(nurse) + gettext("  -  Nurse\n");
+	data += girl->JobRatingLetter(mechanic) + gettext("  -  Mechanic\n");
+	//HOUSE
+	data += gettext("\nHouse Job Ratings\n");
+	data += girl->JobRatingLetter(headgirl) + gettext("  -  Head Girl\n");
+	data += girl->JobRatingLetter(recruiter) + gettext("  -  Recruiter\n");
+
+	data += gettext("\n\nJob Ratings range from\n'I' The absolute best, 'S' Superior,\nThen 'A'-'E' with 'E' being the worst.\n'X' means they can not do the job.");
 
 	return data;
 }
@@ -2755,6 +2465,15 @@ string cGirls::GetDetailsString(sGirl* girl, bool purchase)
 	_itoa(GetStat(girl, STAT_EXP), buffer, 10);
 	data += buffer;
 	data += gettext("\n");
+	data += gettext("Exp to level: ");					// `J` added
+	_itoa((GetStat(girl, STAT_LEVEL)+1)*125, buffer, 10);
+	data += buffer;
+	data += gettext(" | Needs: ");
+	_itoa(((GetStat(girl, STAT_LEVEL) + 1) * 125) - GetStat(girl, STAT_EXP), buffer, 10);
+	data += buffer;
+	data += gettext("\n");
+
+
 
 	if(girl->m_Virgin)
 		data += gettext("She is a virgin\n");
@@ -2770,7 +2489,7 @@ string cGirls::GetDetailsString(sGirl* girl, bool purchase)
 	}
 
 	data += gettext("Rebelliousness: ");
-	_itoa(GetRebelValue(girl, false), buffer, 10);
+	_itoa(girl->rebel(), buffer, 10);	// `J` changed to use updated rebel() code
 	data += buffer;
 	data += gettext("\n");
 
@@ -3313,13 +3032,17 @@ void cGirls::SetStat(sGirl* girl, int a_stat, int amount)
 void cGirls::UpdateStat(sGirl* girl, int a_stat, int amount)
 {
 	u_int stat = a_stat;
-	if(stat == STAT_HEALTH || stat == STAT_HAPPINESS)
+	if (stat == STAT_HEALTH)	// `J` split health and happiness checks (Why were they together in the first place???)
 	{
-		if(HasTrait(girl, "Fragile") &&  stat != STAT_HAPPINESS)
-			amount -= 3;
-		else if(HasTrait(girl, "Tough") &&  stat != STAT_HAPPINESS)
-			amount+=2;
-		if(HasTrait(girl, "Construct") &&  stat != STAT_HAPPINESS)
+		if (HasTrait(girl, "Incorporeal") || HasTrait(girl, "Incorporial"))
+		{
+			//amount = 0;
+			girl->m_Stats[STAT_HEALTH] = 100;	// WD: Sanity - Incorporeal health should allways be at 100%
+			return;
+		}
+		if (HasTrait(girl, "Fragile"))		amount -= 3;
+		else if (HasTrait(girl, "Tough"))	amount += 2;
+		if (HasTrait(girl, "Construct"))
 		{
 			/*
 			if(amount < -4)
@@ -3330,83 +3053,70 @@ void cGirls::UpdateStat(sGirl* girl, int a_stat, int amount)
 			*/
 			amount = (int)ceil(amount*0.1);
 		}
-		if((HasTrait(girl, "Incorporeal") || HasTrait(girl, "Incorporial")) &&  stat != STAT_HAPPINESS)
+		if (amount != 0)
 		{
-			//amount = 0;
-			girl->m_Stats[STAT_HEALTH] = 100;	// WD: Sanity - Incorporeal health should allways be at 100%
-			return;
-		}
-
-		else
-		{
-			if (amount != 0)
-			{
-				int value = girl->m_Stats[stat] + amount;
-				if(value > 100)
-					value = 100;
-				else if(value < 0)
-					value = 0;
-				girl->m_Stats[stat] = value;
-			}
+			int value = girl->m_Stats[stat] + amount;
+			if (value > 100)		value = 100;
+			else if (value < 0)		value = 0;
+			girl->m_Stats[stat] = value;
 		}
 	}
 
+	else if (stat == STAT_HAPPINESS)
+	{
+		if (HasTrait(girl, "Pessimist"))		amount -= 2; // `J` added
+		else if (HasTrait(girl, "Optimist"))	amount += 1; // `J` added
+		if (amount != 0)
+		{
+			int value = girl->m_Stats[stat] + amount;
+			if (value > 100)	value = 100;
+			else if (value < 0)	value = 0;
+			girl->m_Stats[stat] = value;
+		}
+	}
 
 	else if(stat == STAT_EXP || stat == STAT_LEVEL)
 	{
 		int value = girl->m_Stats[stat] + amount;
 		if(stat == STAT_LEVEL)
 		{
-			if(value > 30)
-				value = 30;
-			else if(value < 0)
-				value = 0;
+			if(value > 255)		value = 255;	// `J` Max Level is 255
+			else if(value < 0)	value = 0;
 		}
 		else
 		{
-			if(value > 255)
-				value = 255;
-			else if(value < 0)
-				value = 0;
+			if (value > 32000)	value = 32000;	// `J` xp needed = (level+1)*125 so level 255 needs 32000xp
+			else if(value < 0)	value = 0;
 		}
 		girl->m_Stats[stat] = value;
 	}
 
-	else if(stat == STAT_TIREDNESS)
+	else if (stat == STAT_TIREDNESS)
 	{
-		if(HasTrait(girl, "Tough"))
-			amount-=2;
-		else if(HasTrait(girl, "Fragile"))
-			amount += 3;
-		if(HasTrait(girl, "Construct"))
+		if (HasTrait(girl, "Incorporeal") || HasTrait(girl, "Incorporial"))
 		{
-			 /*
-            if(amount < -4)
-            amount = -4;
-            else if(amount > 4)
-            amount = 4;
-            `J` Reworked construct tiredness to 10% instead of maximum of 4 up or down
-            */
-            amount = (int)ceil(amount*0.1);
+			girl->m_Stats[stat] = 0;	// WD: Sanity - Incorporeal Tiredness should allways be at 0%
+			return;
 		}
-
-		if(HasTrait(girl, "Incorporeal") || HasTrait(girl, "Incorporial"))
+		if (HasTrait(girl, "Tough"))			amount -= 2;
+		else if (HasTrait(girl, "Fragile"))		amount += 3;
+		if (HasTrait(girl, "Construct"))
 		{
-//			amount = 0;
-			girl->m_Stats[stat] = 0;								// WD: Sanity - Incorporeal Tiredness should allways be at 0%
+			/*
+		   if(amount < -4)
+		   amount = -4;
+		   else if(amount > 4)
+		   amount = 4;
+		   `J` Reworked construct tiredness to 10% instead of maximum of 4 up or down
+		   */
+			amount = (int)ceil(amount*0.1);
 		}
-
-		else
+		if (amount != 0)
 		{
-			if (amount != 0)
-			{
-				int value = girl->m_Stats[stat] + amount;
-				if(value > 100)
-					value = 100;
-				else if(value < 0)
-					value = 0;
-				girl->m_Stats[stat] = value;
-			}
+			int value = girl->m_Stats[stat] + amount;
+			if (value > 100)	value = 100;
+			else if (value < 0)	value = 0;
+			girl->m_Stats[stat] = value;
 		}
 	}
 
@@ -3416,10 +3126,8 @@ void cGirls::UpdateStat(sGirl* girl, int a_stat, int amount)
 		{
 			int value = girl->m_Stats[stat]+amount;
 			//if(value > 80 && value != 100)
-			if(value > 80)
-				value = 80;
-			else if(value < 18)
-				value = 18;
+			if(value > 80)		value = 80;
+			else if(value < 18)	value = 18;
 			girl->m_Stats[stat] = value;
 		}
 	}
@@ -3427,10 +3135,8 @@ void cGirls::UpdateStat(sGirl* girl, int a_stat, int amount)
 	else if(stat == STAT_HOUSE)
 	{
 		int value = girl->m_Stats[stat]+amount;
-		if(value > 100)
-			value = 100;
-		else if(value < 0)
-			value = 0;
+		if(value > 100)			value = 100;
+		else if(value < 0)		value = 0;
 		girl->m_Stats[stat] = value;
 	}
 
@@ -12297,7 +12003,7 @@ bool sGirl::calc_insemination(cPlayer *player, bool good, double factor)
 	);
 }
 
-bool cGirls::CalcPregnancy(sGirl* girl, int chance, int type, unsigned char stats[NUM_STATS], unsigned char skills[NUM_SKILLS])
+bool cGirls::CalcPregnancy(sGirl* girl, int chance, int type, int stats[NUM_STATS],  int skills[NUM_SKILLS])
 {
 	string text=gettext("She has");
 /*
@@ -14401,7 +14107,29 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 
 int sGirl::rebel()
 {
-	return g_Girls.GetRebelValue(this, this->m_DayJob == JOB_MATRON);
+	// return g_Girls.GetRebelValue(this, this->m_DayJob == JOB_MATRON); // `J` old version
+	if (this->m_InMovieStudio)
+		return g_Girls.GetRebelValue(this, g_Studios.GetNumGirlsOnJob(0, JOB_DIRECTOR, 0) > 0);
+	else if (this->m_InArena)
+		return g_Girls.GetRebelValue(this, g_Arena.GetNumGirlsOnJob(0, JOB_DOCTORE, 0) > 0);
+	else if (this->m_InCentre)
+		return g_Girls.GetRebelValue(this, g_Centre.GetNumGirlsOnJob(0, JOB_CENTREMANAGER, 0) > 0);
+	else if (this->m_InClinic)
+		return g_Girls.GetRebelValue(this, g_Clinic.GetNumGirlsOnJob(0, JOB_CHAIRMAN, 0) > 0);
+	else if (this->m_InHouse)
+		return g_Girls.GetRebelValue(this, g_House.GetNumGirlsOnJob(0, JOB_HEADGIRL, 0) > 0);
+	else
+		return g_Girls.GetRebelValue(this, g_Brothels.GetNumGirlsOnJob(this->where_is_she, JOB_MATRON, 0) > 0);
 }
 
-
+string sGirl::JobRatingLetter(int value)
+{
+	     if (value < -500)		return "X";	// Can not do this job
+	else if (value >= 350)		return "   I   ";	// Incomparable
+	else if (value >= 245)		return "  S  ";	// Superior
+	else if (value >= 185)		return " A ";	// Amazing
+	else if (value >= 145)		return "B"; // Better
+	else if (value >= 100)		return "C";	// Can do it
+	else if (value >= 70)		return "D";	// Don't bother
+	else						return "E"; // Expect Failure
+}

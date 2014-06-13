@@ -54,11 +54,17 @@ bool cJobManager::WorkAdvertising(sGirl* girl, sBrothel* brothel, int DayNight, 
 	// How much will she help stretch your advertising budget? Let's find out
 	double cval, multiplier = 0.0;
 
-	cval = g_Girls.GetSkill(girl, SKILL_SERVICE);
+	cval = g_Girls.GetSkill(girl, SKILL_PERFORMANCE);	// `J` added
 	if (cval > 0)
 	{
 		cval = g_Dice%int(cval) + (cval / 2);  // random 50%-150% range
-		multiplier += (cval / 3);  // add ~33% of service skill to multiplier
+		multiplier += (cval / 6);  // add ~17% of performance skill to multiplier
+	}
+	cval = g_Girls.GetSkill(girl, SKILL_SERVICE);
+	if (cval > 0)	// `J` halved multiplier to include performace without excessive change
+	{
+		cval = g_Dice%int(cval) + (cval / 2);  // random 50%-150% range
+		multiplier += (cval / 6);  // add ~17% of service skill to multiplier
 	}
 	cval = g_Girls.GetStat(girl, STAT_CHARISMA);
 	if (cval > 0)
@@ -157,7 +163,8 @@ bool cJobManager::WorkAdvertising(sGirl* girl, sBrothel* brothel, int DayNight, 
 	girl->m_Pay += 70;
 	g_Gold.advertising_costs(70);  // wages come from you
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, skill);
+	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill+1);
+	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill+1);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
 	return false;
