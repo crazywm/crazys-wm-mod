@@ -701,6 +701,9 @@ void cScreenDungeon::torture_customer(int girls_removed)
  *	get the customer record from the dungeon
  */
 	sDungeonCust* cust = dungeon->GetCust(cust_index);
+
+	if (!cust)
+		return;
 /*
  *	don't let the PL torture more than once a da7
  *	(unless cheating is enabled)

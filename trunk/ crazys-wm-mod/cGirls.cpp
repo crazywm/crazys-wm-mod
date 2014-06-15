@@ -1162,12 +1162,12 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 	// stats
 	for(int i=0; i<NUM_STATS; i++)
 	{
-		if((int)current->m_MaxStats[i] == (int)current->m_MinStats[i])
-			newGirl->m_Stats[i] = (int)current->m_MaxStats[i];
-		else if((int)current->m_MaxStats[i] < (int)current->m_MinStats[i])
+		if(current->m_MaxStats[i] == current->m_MinStats[i])
+			newGirl->m_Stats[i] = current->m_MaxStats[i];
+		else if(current->m_MaxStats[i] < current->m_MinStats[i])
 			newGirl->m_Stats[i] = g_Dice%101;
 		else
-			newGirl->m_Stats[i] = (int)(g_Dice%((int)current->m_MaxStats[i]-(int)current->m_MinStats[i]))+(int)current->m_MinStats[i];
+			newGirl->m_Stats[i] = (g_Dice%(current->m_MaxStats[i]-current->m_MinStats[i]))+current->m_MinStats[i];
 	}
 
 	for(int i=0; i<current->m_NumTraits; i++)	// add the traits
@@ -2917,8 +2917,8 @@ int cGirls::GetStat(sGirl* girl, int a_stat)
 		value = girl->m_Stats[stat];
 		if(value < 0)
 			value = 0;
-		else if(value > 255)
-			value = 255;
+		else if(value > 32000)
+			value = 32000;
 		return value;
 	}
 
@@ -2996,8 +2996,8 @@ void cGirls::SetStat(sGirl* girl, int a_stat, int amount)
 	}
 	else if(stat == STAT_EXP)
 	{
-		if(amt > 255)
-			amt = 255;
+		if(amt > 32000)
+			amt = 32000;
 		else if(amt < 0)
 			amt = 0;
 		girl->m_Stats[stat] = amt;
@@ -11703,11 +11703,11 @@ ostream& operator<<(ostream &os, sRandomGirl &g)
 	for(unsigned int i = 0; i < sGirl::max_stats; i++) 
 	{
 		os << setw(14) << left << sGirl::stat_names[i]
-		   << gettext(": Min = ") << int(g.m_MinStats[i])
+		   << gettext(": Min = ") << (g.m_MinStats[i])
 		   << endl
 		;
 		os << setw(14) << ""
-		   << gettext(": Max = ") << int(g.m_MaxStats[i])
+		   << gettext(": Max = ") << (g.m_MaxStats[i])
 		   << endl
 		;
 	}

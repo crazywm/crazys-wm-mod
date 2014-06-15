@@ -85,11 +85,11 @@ typedef struct sRandomGirl
 	unsigned char m_Catacomb;	                // 1 means they are a monster found in catacombs, 0 means wanderer
 	unsigned char m_Arena;
 
-	unsigned char m_MinStats[NUM_STATS];	    // min and max stats they may start with
-	unsigned char m_MaxStats[NUM_STATS];
+	int m_MinStats[NUM_STATS];	    // min and max stats they may start with
+	int m_MaxStats[NUM_STATS];
 
-	unsigned char m_MinSkills[NUM_SKILLS];	    // min and max skills they may start with
-	unsigned char m_MaxSkills[NUM_SKILLS];
+	int m_MinSkills[NUM_SKILLS];	    // min and max skills they may start with
+	int m_MaxSkills[NUM_SKILLS];
 
 	unsigned char m_NumTraits;	                // number of traits they are assigned
 	sTrait* m_Traits[MAXNUM_TRAITS];	        // List of traits they may start with
