@@ -312,3 +312,13 @@ Reworked Job Ratings system
  - Ratings are (in order of best to worst) 'I' 'S' 'A' 'B' 'C' 'D' 'E' 'X'
  - 'X' is for jobs that the girl can not do if she is a slave.
 !!!!!!!!!!!!!!!!!!!! pushed version .05q
+
+###  Changes 6/14/2014
+Updated "!0 girlsx-contents.txt" and "!0 rgirlsx-contents.txt" adding new skills.
+Corrected Movie studio yesterday job setting.
+Corrected exp that I missed in a few places
+Corrected bug in dungeon tortureing customers that are not there.
+Corrected blank warning in dungeon torture.
+!!!!!!!!!!!!!!!!!!!! pushed version .05q.01
+
+

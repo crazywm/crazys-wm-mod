@@ -29,18 +29,21 @@ Basic .girlsx file layout
       PCLove="#"
       PCHate="#"
 
-      Combat="#"
-      Service="#"
-      Magic="#"
-      Anal="#"
-      BDSM="#"
-      NormalSex="#"
-      Beastiality="#"
-      Group="#"
-      Lesbian="#"
-      Strip="#"
-      OralSex="#"
-      TittySex="#"
+	Anal="#"
+	Magic="#"
+	BDSM="#"
+	NormalSex="#"
+	Beastiality="#"
+	Group="#"
+	Lesbian="#"
+	Service="#"
+	Strip="#"
+	Combat="#"
+	OralSex="#"
+	TittySex="#"
+	Medicine="#"
+	Performance="#"
+
       >
    <Trait Name="%" />
 </Girl>

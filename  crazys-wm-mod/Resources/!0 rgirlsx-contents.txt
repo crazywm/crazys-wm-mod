@@ -27,6 +27,9 @@ Each Girl must have the "<Girl ... >" with:
  - Catacomb="Yes" if they are primarily found in the Catacombs or "No" if they are not
  - Arena="Yes" if they are primarily found in the Arena or "No" if they are not
  - Gold, Stat and Skill all need Min="#" Max="#" which is the random range the girl will start with
+ -  - if Min equals Max  - sets it as Max
+ -  - if Min is more than Max - random 0-100
+ -  - otherwise sets a random number between Min and Max
 Each Girl must end with "</Girl>"
 The File must end with "</Girls>"
 
@@ -55,19 +58,21 @@ For "Skill" and "Stat":
     <Stat     Name="PCLove"                 Min="0" Max="0" />
     <Stat     Name="PCHate"                 Min="0" Max="0" />
 
-    <Skill    Name="Combat"                 Min="0" Max="0" />
-    <Skill    Name="Service"                Min="0" Max="0" />
-    <Skill    Name="Magic"                  Min="0" Max="0" />
     <Skill    Name="Anal"                   Min="0" Max="0" />
+    <Skill    Name="Magic"                  Min="0" Max="0" />
     <Skill    Name="BDSM"                   Min="0" Max="0" />
     <Skill    Name="NormalSex"              Min="0" Max="0" />
     <Skill    Name="Beastiality"            Min="0" Max="0" />
     <Skill    Name="Group"                  Min="0" Max="0" />
     <Skill    Name="Lesbian"                Min="0" Max="0" />
+    <Skill    Name="Service"                Min="0" Max="0" />
     <Skill    Name="Strip"                  Min="0" Max="0" />
+    <Skill    Name="Combat"                 Min="0" Max="0" />
     <Skill    Name="OralSex"                Min="0" Max="0" />
     <Skill    Name="TittySex"               Min="0" Max="0" />
-
+    <Skill    Name="Medicine"               Min="0" Max="0" />
+    <Skill    Name="Performance"            Min="0" Max="0" />
+    
 
 All traits listed will be randomly chosen by their individual Percent.
 After choosing all the traits, the game cleans out any that are overridden by others.
