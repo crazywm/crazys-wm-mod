@@ -3075,6 +3075,15 @@ bool LoadGame(string directory, string filename)
 	g_Traits.Free();
 	g_Girls.Free();
 	g_InvManager.Free();
+	
+	// clear all buildings
+	g_Brothels.Free();
+	g_Clinic.Free();
+	g_Studios.Free();
+	g_Arena.Free();
+	g_Centre.Free();
+	g_House.Free();
+
 
 	//load items database, traits info, etc
 	LoadGameInfoFiles();

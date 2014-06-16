@@ -321,4 +321,14 @@ Corrected bug in dungeon tortureing customers that are not there.
 Corrected blank warning in dungeon torture.
 !!!!!!!!!!!!!!!!!!!! pushed version .05q.01
 
+###  Changes 6/14/2014
+Fixed bug where if you play a game where you had a building then load or start another game, you still have that building without buying it.
+The popup message for girls that run away though torture now show red.
+Updated "!0 Itemsx-contents.txt" adding new skills.
+Modified and added several items from Comeback.itemsx by R565
+!!!!!!!!!!!!!!!!!!!! pushed version .05q.02
+
+
+
+
 

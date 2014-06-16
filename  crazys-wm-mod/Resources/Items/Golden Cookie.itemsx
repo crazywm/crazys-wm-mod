@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Golden Cookie"
+      Desc="This rare cookie is from a strange sentient universe. Etched on the back of it says &quot;The grandmas will take over everything....&quot; You really hope that was a joke..."
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="10000"
+      Rarity="Catacomb05"
+      Infinite="false">
+   <Effect What="Stat" Name="Health" Amount="100" />
+   <Effect What="Stat" Name="Tiredness" Amount="-100" />
+   <Effect What="Stat" Name="PCFear" Amount="-100" />
+   <Effect What="Stat" Name="PCHate" Amount="-100" />
+   <Effect What="Stat" Name="PCLove" Amount="100" />
+</Item>
+</Items>

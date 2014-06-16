@@ -192,6 +192,7 @@ void cMovieStudioManager::Free()
 	if(m_Parent)	delete m_Parent;
 	m_Parent			= 0;
 	m_Last				= 0;
+	m_NumBrothels = 0;
 }
 
 long cMovieStudioManager::calc_movie_quality(){
