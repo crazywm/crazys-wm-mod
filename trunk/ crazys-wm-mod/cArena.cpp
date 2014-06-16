@@ -104,6 +104,8 @@ void cArenaManager::Free()
 		delete m_Parent;
 	m_Parent			= 0;
 	m_Last				= 0;
+	m_NumBrothels = 0;
+
 }
 
 // ----- Update & end of turn

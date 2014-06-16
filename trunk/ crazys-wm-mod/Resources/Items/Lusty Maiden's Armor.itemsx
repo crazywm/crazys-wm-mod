@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Lusty Maiden's Armor"
+      Desc="This is a mystic armor that can only truly be worn by big chested ladies who have not lost their cherry yet. LOL Cherry. If they don't have those stats, it adds them. I guess the armor was worn by a loving hero....or someone who was pretty darn bored. It does have a cavity that makes it great for titty fucking. (Service and Combat +45, Magic +5) (Con, Conf, Mana, Agil, Fame, Spirit +10, Fear -10) (Removes Small Boobs, Adds Perky Nipples, Big Boobs)"
+      Type="Armor"
+      Badness="0"
+      Special="None"
+      Cost="4000"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Skill" Name="Service" Amount="45" />
+   <Effect What="Skill" Name="Combat" Amount="45" />
+   <Effect What="Skill" Name="Magic" Amount="5" />
+   <Effect What="Stat" Name="Constitution" Amount="10" />
+   <Effect What="Stat" Name="Confidence" Amount="10" />
+   <Effect What="Stat" Name="Mana" Amount="10" />
+   <Effect What="Stat" Name="Agility" Amount="10" />
+   <Effect What="Stat" Name="Fame" Amount="10" />
+   <Effect What="Stat" Name="Spirit" Amount="10" />
+   <Effect What="Stat" Name="PCFear" Amount="-10" />
+   <Effect What="Trait" Name="Small Boobs" Amount="0" />
+   <Effect What="Trait" Name="Big Boobs" Amount="1" />
+   <Effect What="Trait" Name="Perky Nipples" Amount="1" />
+
+</Item>
+</Items>

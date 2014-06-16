@@ -39,12 +39,18 @@ extern	int				g_CurrBrothel;
  */
 cGirlTorture::~cGirlTorture()		// deconstructor
 {
+	int color=0;
+	if (m_Girl->m_RunAway != 0)
+	{
+		color = 1;
+	}
+
 	// Display any outstanding messages
 	if (! m_Message.empty())
 	{
 		if (m_TorturedByPlayer)
 		{
-			g_MessageQue.AddToQue(m_Message, 0);
+			g_MessageQue.AddToQue(m_Message, color);
 			m_Girl->m_Events.AddMessage(m_Message, IMGTYPE_TORTURE, EVENT_SUMMARY);	// `J` added
 		}
 		else

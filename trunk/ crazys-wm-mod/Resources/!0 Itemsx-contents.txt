@@ -10,8 +10,8 @@ Basic .itemsx file layout
       Cost="#"
       Rarity="%"
       Infinite="!"
-	GirlBuyChance="#"
-	>
+      GirlBuyChance="#"
+      >
       <Effect (listed below go here) />
 </Item>
 </Items>
@@ -27,7 +27,7 @@ Each item must have the "<Item ... >" with:
  - Type can be "Armband", "Armor", "Dress", "Food", "Misc", "Necklace", "Ring", "Shoes", "Small Weapon", "Under Wear" or "Weapon"
  - Badness="#" this is how bad the item is for the girl. 0 is safe and the higher the number, the worse it is.
  - Special is normally "None" but if an item's effects only last 1 week "Temporary" is used. ("AffectsAll" is also an option but it currently does not work?)
- - Cost is how much you paay to buy the item. If you want to sell it, you will get half the cost.
+ - Cost is how much you pay to buy the item. If you want to sell it, you will get half the cost.
  - Rarity can be "Common", "Shop50", "Shop25", "Shop05", "Catacomb15", "Catacomb05", "Catacomb01", "ScriptOnly" or "ScriptOrReward"
  - Infinite="true or false" If the seller has an infinite stock of this item. 
  - GirlBuyChance="#" (Optional) Percent chance a girl on break will buy the item for herself.
@@ -83,6 +83,8 @@ For "Skill" and "Stat":
    <Effect What="Skill" Name="OralSex" Amount="0" />
    <Effect What="Skill" Name="Strip" Amount="0" />
    <Effect What="Skill" Name="TittySex" Amount="0" />
+   <Effect What="Skill" Name="Medicine" Amount="0" />
+   <Effect What="Skill" Name="Performance" Amount="0" />
 
 
 

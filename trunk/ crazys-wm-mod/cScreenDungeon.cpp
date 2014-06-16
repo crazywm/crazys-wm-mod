@@ -412,8 +412,7 @@ int cScreenDungeon::enslave()
 
 		if(ggf.girl_submits()) {
 			message += girl->m_Realname;
-			message += gettext(" submits the the enchanted slave tattoo being placed upon her.")
-			;
+			message += gettext(" submits the the enchanted slave tattoo being placed upon her.");
 			set_slave_stats(girl);
 			g_MessageQue.AddToQue(message, 0);
 			continue;
