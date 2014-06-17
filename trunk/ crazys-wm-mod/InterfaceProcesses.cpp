@@ -678,6 +678,7 @@ void Turnsummary()
 				g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, i, g_Brothels.GetBrothel(i)->m_Name);
 		}
 
+/* `J` Old Dungeon code
 		// 3. Dungeon
 		else if(category == 3)
 		{
@@ -743,6 +744,84 @@ void Turnsummary()
 				}
 			}
 		} // End of dungeon
+//	*/ // End of old dungeon
+
+
+		// 3. `J` New Dungeon code
+		else if (category == 3)
+		{
+
+			// Fill the list box
+			cDungeon* pDungeon = g_Brothels.GetDungeon();
+			int nNumGirls = pDungeon->GetNumGirls();
+			int ID = 0;
+			vector<sGirl*> tmpGoodNewsGirls;
+			vector<sGirl*> tmpDangerGirls;
+			vector<sGirl*> tmpWarningGirls;
+			vector<sGirl*> tmpOtherGirls;
+			tmpGoodNewsGirls.clear();
+			tmpDangerGirls.clear();
+			tmpWarningGirls.clear();
+			tmpOtherGirls.clear();
+			sGirl* pTmpGirl;
+
+			for (int i = 0; i < nNumGirls; i++)
+			{
+				pTmpGirl = pDungeon->GetGirl(i)->m_Girl;
+
+				if (!pTmpGirl->m_Events.HasUrgent())
+				{
+					tmpOtherGirls.push_back(pTmpGirl);
+				}
+				else if (pTmpGirl->m_Events.HasGoodNews())
+				{
+					tmpGoodNewsGirls.push_back(pTmpGirl);
+				}
+				else if (pTmpGirl->m_Events.HasDanger())
+				{
+					tmpDangerGirls.push_back(pTmpGirl);
+				}
+				else
+					tmpWarningGirls.push_back(pTmpGirl);
+			}
+
+			//Girls with GoodNews events
+			for (u_int i = 0; i < tmpGoodNewsGirls.size(); i++)
+			{
+				string tname = tmpGoodNewsGirls[i]->m_Realname;
+				g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, LISTBOX_GREEN);
+				if (selected_girl == tmpGoodNewsGirls[i])
+					Item = ID;
+				ID++;
+			}
+			//Girls with Danger events
+			for (u_int i = 0; i < tmpDangerGirls.size(); i++)
+			{
+				string tname = tmpDangerGirls[i]->m_Realname;
+				g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, LISTBOX_RED);
+				if (selected_girl == tmpDangerGirls[i])
+					Item = ID;
+				ID++;
+			}
+			//Girls wih Warnings
+			for (u_int i = 0; i < tmpWarningGirls.size(); i++)
+			{
+				string tname = tmpWarningGirls[i]->m_Realname;
+				g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, LISTBOX_DARKBLUE);
+				if (selected_girl == tmpWarningGirls[i])
+					Item = ID;
+				ID++;
+			}
+			//ServiceJob Girls
+			for (u_int i = 0; i < tmpOtherGirls.size(); i++)
+			{
+				string tname = tmpOtherGirls[i]->m_Realname;
+				g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname);
+				if (selected_girl == tmpOtherGirls[i])
+					Item = ID;
+				ID++;
+			}
+		}// End of New dungeon code
 
 		// 4. Clinic
 		else if(category == 4)

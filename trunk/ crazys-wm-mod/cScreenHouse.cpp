@@ -131,11 +131,6 @@ void cScreenHouse::init()
 	}
 	else ss << gettext("NONE\n");
 
-	ss << gettext("\nCurrent number of runaways: ")
-	   << g_Brothels.GetNumRunaways()
-	   << gettext("\n")
-	;
-
 	ss << gettext("\n")
 	   << gettext("Current gold: ") << g_Gold.ival() << gettext("\n")
 	   << gettext("Bank account: ") << g_Brothels.GetBankMoney() << gettext("\n")
@@ -143,6 +138,23 @@ void cScreenHouse::init()
 	   << g_Gangs.GetNumBusinessExtorted()
 	   << gettext("\n")
 	;
+
+	ss << gettext("\nCurrent number of runaways: ") << g_Brothels.GetNumRunaways() << gettext("\n");
+	//	`J` added while loop to add runaway's names to the list 
+	if (g_Brothels.GetNumRunaways() > 0)
+	{
+		char buffer[1000];
+		sGirl* rgirl = g_Brothels.m_Runaways;
+		while (rgirl)
+		{
+			_itoa(rgirl->m_RunAway, buffer, 10);
+			ss << rgirl->m_Realname << gettext(" (") << buffer << gettext(")");
+			rgirl = rgirl->m_Next;
+			if (rgirl)	ss << gettext(" ,   ");
+		}
+	}
+
+
 
 	EditTextItem(ss.str(), details_id);
 	obj = 0;

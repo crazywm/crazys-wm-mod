@@ -3655,6 +3655,8 @@ bool sGirl::LoadGirlXML(TiXmlHandle hGirl)
 	// load yester day/night jobs
 	pGirl->QueryIntAttribute("YesterDayJob", &tempInt); m_YesterDayJob = tempInt; tempInt = 0;
 	pGirl->QueryIntAttribute("YesterNightJob", &tempInt); m_YesterNightJob = tempInt; tempInt = 0;
+	if (m_YesterDayJob < 0)m_YesterDayJob = 255;
+	if (m_YesterNightJob < 0)m_YesterNightJob = 255;
 
 	// load runnayway value
 	pGirl->QueryIntAttribute("RunAway", &tempInt); m_RunAway = tempInt; tempInt = 0;
@@ -3805,7 +3807,9 @@ TiXmlElement* sGirl::SaveGirlXML(TiXmlElement* pRoot)
 	pGirl->SetAttribute("PrevNightJob", m_PrevNightJob);
 
 	// save prev day/night jobs
+	if (m_YesterDayJob < 0)m_YesterDayJob = 255;
 	pGirl->SetAttribute("YesterDayJob", m_YesterDayJob);
+	if (m_YesterNightJob < 0)m_YesterNightJob = 255;
 	pGirl->SetAttribute("YesterNightJob", m_YesterNightJob);
 
 	// save runnayway vale

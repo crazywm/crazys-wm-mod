@@ -329,6 +329,12 @@ Modified and added several items from Comeback.itemsx by R565
 !!!!!!!!!!!!!!!!!!!! pushed version .05q.02
 
 
+###  Changes 6/15-16/2014
+Corrected "YesterDayJob not a job".
+Rewrote Dungeon turn summary to sort the girls the way other buildings do.
+Added "Runaway's Names (Time)" list to house details
+Added variations of "Holy Water" items (T), (S), (M), (L), (D) 
+!!!!!!!!!!!!!!!!!!!! pushed version .05q.03
 
 
 
