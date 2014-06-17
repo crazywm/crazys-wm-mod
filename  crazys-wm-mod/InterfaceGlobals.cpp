@@ -201,7 +201,7 @@ void FreeInterface()
 	g_ItemManagement.Free();
 	g_PrisonScreen.Free();
 	g_MovieMaker.Free();
-	g_BuildingManagementScreen.Reset();
+	g_BuildingManagementScreen.Free();
 }
 
 void ResetInterface()

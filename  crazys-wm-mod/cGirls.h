@@ -455,6 +455,7 @@ struct sGirl
 		m_States				= 0;
 		m_DayJob = m_NightJob	= 0;
 		m_PrevDayJob = m_PrevNightJob = 255;
+		m_YesterDayJob = m_YesterNightJob = 255;
 
 		m_UseAntiPreg		= true;
 
