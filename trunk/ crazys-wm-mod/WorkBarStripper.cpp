@@ -45,7 +45,7 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, int DayNight, 
 	string girlName = girl->m_Realname;
 	int tex = g_Dice%4;
 
-	if(Preprocessing(ACTION_WORKCLUB, girl, brothel, DayNight, summary, message))	// they refuse to have work in the bar
+	if(Preprocessing(ACTION_WORKSTRIP, girl, brothel, DayNight, summary, message))	// they refuse to have work in the bar
 		return true;
 
 	// put that shit away, you'll scare off the customers!
@@ -401,16 +401,16 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, int DayNight, 
 	if(roll <= 5)
 	{
 		message += " \nSome of the patrons abused her during the shift.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCLUB, -1, true);
+		g_Girls.UpdateEnjoyment(girl, ACTION_WORKSTRIP, -1, true);
 	}
 	else if(roll <= 25) {
 		message += " \nShe had a pleasant time working.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCLUB, +3, true);
+		g_Girls.UpdateEnjoyment(girl, ACTION_WORKSTRIP, +3, true);
 	}
 	else
 	{
 		message += " \nOtherwise, the shift passed uneventfully.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCLUB, +1, true);
+		g_Girls.UpdateEnjoyment(girl, ACTION_WORKSTRIP, +1, true);
 	}
 
 	girl->m_Events.AddMessage(message, IMGTYPE_STRIP, DayNight);
@@ -445,10 +445,10 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, int DayNight, 
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
 	//gained
-	g_Girls.PossiblyGainNewTrait(girl, "Sexy Air", 70, ACTION_WORKCLUB, girl->m_Realname + " has been stripping and having to be sexy for so long she now reeks of sexyness.", DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Sexy Air", 70, ACTION_WORKSTRIP, girl->m_Realname + " has been stripping and having to be sexy for so long she now reeks of sexyness.", DayNight != 0);
 
 	//lose
-	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 20, ACTION_WORKCLUB, girl->m_Realname + " has had so many people see her naked she is no longer nervous about anything.", DayNight != 0);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 20, ACTION_WORKSTRIP, girl->m_Realname + " has had so many people see her naked she is no longer nervous about anything.", DayNight != 0);
 
 	return false;
 }

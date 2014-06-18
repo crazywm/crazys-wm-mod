@@ -156,6 +156,7 @@ void cScreenArenaManagement::init()
 
 	// add the job filters
 //	for(int i=0; i<NUMJOBTYPES; i++)  // loop through all job types
+	AddToListBox(jobtypelist_id, JOBFILTER_ARENASTAFF, g_Arena.m_JobManager.JobFilterName[JOBFILTER_ARENASTAFF]);
 	AddToListBox(jobtypelist_id, JOBFILTER_ARENA, g_Arena.m_JobManager.JobFilterName[JOBFILTER_ARENA]);
 	//AddToListBox(jobtypelist_id, JOBFILTER_GENERAL, g_Arena.m_JobManager.JobFilterName[JOBFILTER_GENERAL]);
 	SetSelectedItemInList(jobtypelist_id, JOBFILTER_ARENA);

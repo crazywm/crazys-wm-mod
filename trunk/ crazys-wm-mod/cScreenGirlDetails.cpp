@@ -222,6 +222,7 @@ void cScreenGirlDetails::init()
 	if (InArena)
 	{
 		ClearListBox(joblist_id);
+		AddToListBox(jobtypelist_id, JOBFILTER_ARENASTAFF, g_Arena.m_JobManager.JobFilterName[JOBFILTER_ARENASTAFF]);
 		AddToListBox(jobtypelist_id, JOBFILTER_ARENA, g_Arena.m_JobManager.JobFilterName[JOBFILTER_ARENA]);
 		SetSelectedItemInList(jobtypelist_id, JOBFILTER_ARENA);
 		RefreshJobList();

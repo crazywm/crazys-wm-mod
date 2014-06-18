@@ -48,7 +48,11 @@ const char* actionTypeNames[] =
 	"WORKRECRUIT",
 	"WORKNURSE",
 	"WORKMECHANIC",
-	"WORKCOUNSELOR"
+	"WORKCOUNSELOR",
+	"WORKMUSIC",
+	"WORKSTRIP",
+	"WORKMILK",
+	"WORKMASSUSSE"
 };
 	
 /*

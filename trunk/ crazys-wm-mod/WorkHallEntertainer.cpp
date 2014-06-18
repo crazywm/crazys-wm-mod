@@ -55,6 +55,7 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, int DayNig
 							g_Girls.GetStat(girl, STAT_BEAUTY)  +
 							g_Girls.GetStat(girl, STAT_CONFIDENCE))/3 +
 							g_Girls.GetSkill(girl, SKILL_PERFORMANCE));
+
 	int wages = 25;
 
 	message += "She worked as an entertainer in the gambling hall.";

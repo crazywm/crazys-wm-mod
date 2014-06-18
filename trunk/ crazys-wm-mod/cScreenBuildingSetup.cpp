@@ -137,6 +137,7 @@ void cScreenBuildingSetup::init()
 			SetCheckBox(nolesbian_id, g_Studios.GetBrothel(0)->m_RestrictLesbian);
 			SetCheckBox(nooral_id, g_Studios.GetBrothel(0)->m_RestrictOral);
 			SetCheckBox(notitty_id, g_Studios.GetBrothel(0)->m_RestrictTitty);
+			SetCheckBox(notitty_id, g_Studios.GetBrothel(0)->m_RestrictHand);
 			break;
 		case BUILDING_CLINIC:
 			brothel = gettext("The Clinic");
@@ -166,6 +167,7 @@ void cScreenBuildingSetup::init()
 			SetCheckBox(nolesbian_id, g_Clinic.GetBrothel(0)->m_RestrictLesbian);
 			SetCheckBox(nooral_id, g_Clinic.GetBrothel(0)->m_RestrictOral);
 			SetCheckBox(notitty_id, g_Clinic.GetBrothel(0)->m_RestrictTitty);
+			SetCheckBox(notitty_id, g_Clinic.GetBrothel(0)->m_RestrictHand);
 			break;
 		case BUILDING_ARENA:
 			brothel = gettext("The Arena");
@@ -195,6 +197,7 @@ void cScreenBuildingSetup::init()
 			SetCheckBox(nolesbian_id, g_Arena.GetBrothel(0)->m_RestrictLesbian);
 			SetCheckBox(nooral_id, g_Arena.GetBrothel(0)->m_RestrictOral);
 			SetCheckBox(notitty_id, g_Arena.GetBrothel(0)->m_RestrictTitty);
+			SetCheckBox(notitty_id, g_Arena.GetBrothel(0)->m_RestrictHand);
 			break;
 		case BUILDING_CENTRE:
 			brothel = gettext("The Community Centre");
@@ -224,6 +227,7 @@ void cScreenBuildingSetup::init()
 			SetCheckBox(nolesbian_id, g_Centre.GetBrothel(0)->m_RestrictLesbian);
 			SetCheckBox(nooral_id, g_Centre.GetBrothel(0)->m_RestrictOral);
 			SetCheckBox(notitty_id, g_Centre.GetBrothel(0)->m_RestrictTitty);
+			SetCheckBox(notitty_id, g_Centre.GetBrothel(0)->m_RestrictHand);
 			break;
 		case BUILDING_HOUSE:
 			brothel = gettext("Your House");
@@ -253,6 +257,7 @@ void cScreenBuildingSetup::init()
 			SetCheckBox(nolesbian_id, g_House.GetBrothel(0)->m_RestrictLesbian);
 			SetCheckBox(nooral_id, g_House.GetBrothel(0)->m_RestrictOral);
 			SetCheckBox(notitty_id, g_House.GetBrothel(0)->m_RestrictTitty);
+			SetCheckBox(notitty_id, g_House.GetBrothel(0)->m_RestrictHand);
 			break;
 		case BUILDING_BROTHEL:
 		default:
@@ -286,6 +291,7 @@ void cScreenBuildingSetup::init()
 			SetCheckBox(nolesbian_id, g_Brothels.GetBrothel(g_CurrBrothel)->m_RestrictLesbian);
 			SetCheckBox(nooral_id, g_Brothels.GetBrothel(g_CurrBrothel)->m_RestrictOral);
 			SetCheckBox(notitty_id, g_Brothels.GetBrothel(g_CurrBrothel)->m_RestrictTitty);
+			SetCheckBox(notitty_id, g_Brothels.GetBrothel(g_CurrBrothel)->m_RestrictHand);
 			break;
 		}
 
@@ -783,6 +789,8 @@ void cScreenBuildingSetup::check_events()
 			g_Studios.GetBrothel(g_CurrBrothel)->m_RestrictOral = IsCheckboxOn(nooral_id);
 		if(g_InterfaceEvents.CheckCheckbox(notitty_id))
 			g_Studios.GetBrothel(g_CurrBrothel)->m_RestrictTitty = IsCheckboxOn(notitty_id);
+		if(g_InterfaceEvents.CheckCheckbox(nohand_id))
+			g_Studios.GetBrothel(g_CurrBrothel)->m_RestrictHand = IsCheckboxOn(nohand_id);
 		break;
 	case BUILDING_CLINIC:
 		if(g_InterfaceEvents.CheckCheckbox(autopotions_id))
@@ -803,6 +811,8 @@ void cScreenBuildingSetup::check_events()
 			g_Clinic.GetBrothel(g_CurrBrothel)->m_RestrictOral = IsCheckboxOn(nooral_id);
 		if(g_InterfaceEvents.CheckCheckbox(notitty_id))
 			g_Clinic.GetBrothel(g_CurrBrothel)->m_RestrictTitty = IsCheckboxOn(notitty_id);
+		if(g_InterfaceEvents.CheckCheckbox(nohand_id))
+			g_Clinic.GetBrothel(g_CurrBrothel)->m_RestrictHand = IsCheckboxOn(nohand_id);
 		break;
 	case BUILDING_ARENA:
 		if(g_InterfaceEvents.CheckCheckbox(autopotions_id))
@@ -823,6 +833,8 @@ void cScreenBuildingSetup::check_events()
 			g_Arena.GetBrothel(g_CurrBrothel)->m_RestrictOral = IsCheckboxOn(nooral_id);
 		if(g_InterfaceEvents.CheckCheckbox(notitty_id))
 			g_Arena.GetBrothel(g_CurrBrothel)->m_RestrictTitty = IsCheckboxOn(notitty_id);
+		if(g_InterfaceEvents.CheckCheckbox(nohand_id))
+			g_Arena.GetBrothel(g_CurrBrothel)->m_RestrictHand = IsCheckboxOn(nohand_id);
 		break;
 	case BUILDING_CENTRE:
 		if(g_InterfaceEvents.CheckCheckbox(autopotions_id))
@@ -843,6 +855,8 @@ void cScreenBuildingSetup::check_events()
 			g_Centre.GetBrothel(g_CurrBrothel)->m_RestrictOral = IsCheckboxOn(nooral_id);
 		if(g_InterfaceEvents.CheckCheckbox(notitty_id))
 			g_Centre.GetBrothel(g_CurrBrothel)->m_RestrictTitty = IsCheckboxOn(notitty_id);
+		if(g_InterfaceEvents.CheckCheckbox(nohand_id))
+			g_Centre.GetBrothel(g_CurrBrothel)->m_RestrictHand = IsCheckboxOn(nohand_id);
 		break;
 	case BUILDING_HOUSE:
 		if(g_InterfaceEvents.CheckCheckbox(autopotions_id))
@@ -863,6 +877,8 @@ void cScreenBuildingSetup::check_events()
 			g_House.GetBrothel(g_CurrBrothel)->m_RestrictOral = IsCheckboxOn(nooral_id);
 		if(g_InterfaceEvents.CheckCheckbox(notitty_id))
 			g_House.GetBrothel(g_CurrBrothel)->m_RestrictTitty = IsCheckboxOn(notitty_id);
+		if(g_InterfaceEvents.CheckCheckbox(nohand_id))
+			g_House.GetBrothel(g_CurrBrothel)->m_RestrictHand = IsCheckboxOn(nohand_id);
 		break;
 	case BUILDING_BROTHEL:
 	default:
@@ -885,6 +901,8 @@ void cScreenBuildingSetup::check_events()
 			g_Brothels.GetBrothel(g_CurrBrothel)->m_RestrictOral = IsCheckboxOn(nooral_id);
 		if(g_InterfaceEvents.CheckCheckbox(notitty_id))
 			g_Brothels.GetBrothel(g_CurrBrothel)->m_RestrictTitty = IsCheckboxOn(notitty_id);
+		if(g_InterfaceEvents.CheckCheckbox(nohand_id))
+			g_Brothels.GetBrothel(g_CurrBrothel)->m_RestrictHand = IsCheckboxOn(nohand_id);
 		}
 	}
 }

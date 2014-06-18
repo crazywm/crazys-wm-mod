@@ -112,6 +112,7 @@ struct sBrothel
 	bool	m_RestrictBDSM;
 	bool	m_RestrictOral;
 	bool	m_RestrictTitty;
+	bool	m_RestrictHand;
 	bool	m_RestrictBeast;
 	bool	m_RestrictGroup;
 	bool	m_RestrictNormal;

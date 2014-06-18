@@ -1003,6 +1003,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\cScreenPropertyManagement.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\cScreenPropertyManagement.h"
+				>
+			</File>
+			<File
 				RelativePath=".\cScreenSlaveMarket.cpp"
 				>
 			</File>
@@ -1199,6 +1207,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\WorkFilmHandJob.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\WorkFilmLesbian.cpp"
 				>
 			</File>
@@ -1243,7 +1255,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\WorkGetAssJob.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\WorkGetFacelift.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\WorkGetFertility.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\WorkGetTubesTied.cpp"
 				>
 			</File>
 			<File
@@ -1272,6 +1296,10 @@
 			</File>
 			<File
 				RelativePath=".\WorkHealing.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\WorkIntern.cpp"
 				>
 			</File>
 			<File

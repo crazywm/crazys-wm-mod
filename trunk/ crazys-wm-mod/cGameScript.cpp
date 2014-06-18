@@ -104,6 +104,13 @@ sScript *cGameScript::Process(sScript *Script)
 	case 49: return Script_TittyTarget(Script);
 	case 50: return Script_DeathTarget(Script);
 	case 51: return Script_ProfileTarget(Script);
+	case 52: return Script_HandJobTarget(Script);
+	case 53: return Script_EcchiTarget(Script);
+	case 54: return Script_BunnyTarget(Script);
+	case 55: return Script_CardTarget(Script);
+	case 56: return Script_MilkTarget(Script);
+	case 57: return Script_WaitTarget(Script);
+	case 58: return Script_SingTarget(Script);
 	}
 
 	return 0; // Error executing
@@ -1685,6 +1692,76 @@ sScript* cGameScript::Script_ProfileTarget(sScript* Script)
 		
 	}
 		g_GirlDetails.lastsexact = IMGTYPE_PROFILE;
+
+	return Script->m_Next;
+}
+sScript* cGameScript::Script_HandJobTarget(sScript* Script)
+{
+	if(m_GirlTarget)
+	{
+		g_Girls.UpdateSkill(m_GirlTarget, SKILL_HANDJOB, 1);
+	}
+		g_GirlDetails.lastsexact = IMGTYPE_HAND;
+
+	return Script->m_Next;
+}
+sScript* cGameScript::Script_EcchiTarget(sScript* Script)
+{
+	if(m_GirlTarget)
+	{
+		//g_Girls.UpdateSkill(m_GirlTarget, SKILL_HANDJOB, 1);
+	}
+		g_GirlDetails.lastsexact = IMGTYPE_ECCHI;
+
+	return Script->m_Next;
+}
+sScript* cGameScript::Script_BunnyTarget(sScript* Script)
+{
+	if(m_GirlTarget)
+	{
+		g_Girls.UpdateSkill(m_GirlTarget, SKILL_PERFORMANCE, 1);
+	}
+		g_GirlDetails.lastsexact = IMGTYPE_BUNNY;
+
+	return Script->m_Next;
+}
+sScript* cGameScript::Script_CardTarget(sScript* Script)
+{
+	if(m_GirlTarget)
+	{
+		//g_Girls.UpdateSkill(m_GirlTarget, SKILL_HANDJOB, 1);
+	}
+		g_GirlDetails.lastsexact = IMGTYPE_CARD;
+
+	return Script->m_Next;
+}
+sScript* cGameScript::Script_MilkTarget(sScript* Script)
+{
+	if(m_GirlTarget)
+	{
+		//g_Girls.UpdateSkill(m_GirlTarget, SKILL_HANDJOB, 1);
+	}
+		g_GirlDetails.lastsexact = IMGTYPE_MILK;
+
+	return Script->m_Next;
+}
+sScript* cGameScript::Script_WaitTarget(sScript* Script)
+{
+	if(m_GirlTarget)
+	{
+		g_Girls.UpdateSkill(m_GirlTarget, SKILL_SERVICE, 1);
+	}
+		g_GirlDetails.lastsexact = IMGTYPE_WAIT;
+
+	return Script->m_Next;
+}
+sScript* cGameScript::Script_SingTarget(sScript* Script)
+{
+	if(m_GirlTarget)
+	{
+		g_Girls.UpdateSkill(m_GirlTarget, SKILL_PERFORMANCE, 1);
+	}
+		g_GirlDetails.lastsexact = IMGTYPE_SING;
 
 	return Script->m_Next;
 }

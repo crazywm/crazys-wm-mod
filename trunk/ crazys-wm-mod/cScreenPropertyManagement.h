@@ -73,6 +73,8 @@ private:
 	int p_b0_nooral, p_b1_nooral, p_b2_nooral, p_b3_nooral, p_b4_nooral, p_b5_nooral, p_b6_nooral, p_st_nooral, p_ar_nooral, p_ce_nooral, p_cl_nooral, p_ho_nooral;
 	int notitty_id;		// Prohibit Titty Sex checkbox
 	int p_b0_notitty, p_b1_notitty, p_b2_notitty, p_b3_notitty, p_b4_notitty, p_b5_notitty, p_b6_notitty, p_st_notitty, p_ar_notitty, p_ce_notitty, p_cl_notitty, p_ho_notitty;
+	int nohand_id;		// Prohibit Hand Job checkbox
+	int p_b0_nohand, p_b1_nohand, p_b2_nohand, p_b3_nohand, p_b4_nohand, p_b5_nohand, p_b6_nohand, p_st_nohand, p_ar_nohand, p_ce_nohand, p_cl_nohand, p_ho_nohand;
 	int advertsli_id;	// Advertising Budget slider
 	int p_b0_advslid, p_b1_advslid, p_b2_advslid, p_b3_advslid, p_b4_advslid, p_b5_advslid, p_b6_advslid, p_st_advslid, p_ar_advslid, p_ce_advslid, p_cl_advslid, p_ho_advslid;
 	int advertamt_id;	// Advertising Budget value output text

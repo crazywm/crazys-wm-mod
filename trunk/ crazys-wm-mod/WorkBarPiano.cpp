@@ -44,7 +44,7 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, int DayNight, str
 	string message = "";
 	string girlName = girl->m_Realname;
 
-	if(Preprocessing(ACTION_WORKBAR, girl, brothel, DayNight, summary, message))	// they refuse to have work in the bar
+	if(Preprocessing(ACTION_WORKMUSIC, girl, brothel, DayNight, summary, message))	// they refuse to have work in the bar
 		return true;
 
 	// put that shit away, you'll scare off the customers!
@@ -271,17 +271,17 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, int DayNight, str
 	if(roll <= 5)
 	{
 		message += " \nSome of the patrons abused her during the shift.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKBAR, -1, true);
+		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMUSIC, -1, true);
 	}
 	else if(roll <= 25) {
 		message += " \nShe had a pleasant time working.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKBAR, +3, true);
+		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMUSIC, +3, true);
 		g_Girls.UpdateStat(girl, STAT_CONFIDENCE, 1);
 	}
 	else
 	{
 		message += " \nOtherwise, the shift passed uneventfully.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKBAR, +1, true);
+		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMUSIC, +1, true);
 	}
 
 	
@@ -318,10 +318,10 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, int DayNight, str
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
 	//gain traits
-	g_Girls.PossiblyGainNewTrait(girl, "Elegant", 75, ACTION_WORKBAR, "Playing the piano has given " + girl->m_Realname + " an Elegant nature.", DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Elegant", 75, ACTION_WORKMUSIC, "Playing the piano has given " + girl->m_Realname + " an Elegant nature.", DayNight != 0);
 
 	//lose traits
-	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 30, ACTION_WORKBAR, girl->m_Realname + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", DayNight != 0);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 30, ACTION_WORKMUSIC, girl->m_Realname + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", DayNight != 0);
 
 	return false;
 }

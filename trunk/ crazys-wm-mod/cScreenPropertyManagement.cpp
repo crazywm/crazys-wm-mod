@@ -341,6 +341,7 @@ void cScreenPropertyManagement::init()
 		SetCheckBox(p_ho_noles, g_House.GetBrothel(0)->m_RestrictLesbian);
 		SetCheckBox(p_ho_nooral, g_House.GetBrothel(0)->m_RestrictOral);
 		SetCheckBox(p_ho_notitty, g_House.GetBrothel(0)->m_RestrictTitty);
+		SetCheckBox(p_ho_nohand, g_House.GetBrothel(0)->m_RestrictHand);
 
 		advert = g_House.GetBrothel(0)->m_AdvertisingBudget / 50;
 		advert = SliderRange(p_ho_advslid, 0, (2000 / 50), advert, 4);  // set slider min/max range
@@ -370,6 +371,7 @@ void cScreenPropertyManagement::init()
 		SetCheckBox(p_b0_noles, g_Brothels.GetBrothel(0)->m_RestrictLesbian);
 		SetCheckBox(p_b0_nooral, g_Brothels.GetBrothel(0)->m_RestrictOral);
 		SetCheckBox(p_b0_notitty, g_Brothels.GetBrothel(0)->m_RestrictTitty);
+		SetCheckBox(p_b0_nohand, g_Brothels.GetBrothel(0)->m_RestrictHand);
 
 		advert = g_Brothels.GetBrothel(0)->m_AdvertisingBudget / 50;
 		advert = SliderRange(p_b0_advslid, 0, (2000 / 50), advert, 4);  // set slider min/max range
@@ -402,6 +404,7 @@ void cScreenPropertyManagement::init()
 		SetCheckBox(p_b1_noles, g_Brothels.GetBrothel(1)->m_RestrictLesbian);
 		SetCheckBox(p_b1_nooral, g_Brothels.GetBrothel(1)->m_RestrictOral);
 		SetCheckBox(p_b1_notitty, g_Brothels.GetBrothel(1)->m_RestrictTitty);
+		SetCheckBox(p_b1_nohand, g_Brothels.GetBrothel(1)->m_RestrictHand);
 
 		advert = g_Brothels.GetBrothel(1)->m_AdvertisingBudget / 50;
 		advert = SliderRange(p_b1_advslid, 0, (2000 / 50), advert, 4);  // set slider min/max range
@@ -435,6 +438,7 @@ void cScreenPropertyManagement::init()
 		SetCheckBox(p_b2_noles, g_Brothels.GetBrothel(2)->m_RestrictLesbian);
 		SetCheckBox(p_b2_nooral, g_Brothels.GetBrothel(2)->m_RestrictOral);
 		SetCheckBox(p_b2_notitty, g_Brothels.GetBrothel(2)->m_RestrictTitty);
+		SetCheckBox(p_b2_nohand, g_Brothels.GetBrothel(2)->m_RestrictHand);
 
 		advert = g_Brothels.GetBrothel(2)->m_AdvertisingBudget / 50;
 		advert = SliderRange(p_b2_advslid, 0, (2000 / 50), advert, 4);  // set slider min/max range
@@ -467,6 +471,7 @@ void cScreenPropertyManagement::init()
 		SetCheckBox(p_b3_noles, g_Brothels.GetBrothel(3)->m_RestrictLesbian);
 		SetCheckBox(p_b3_nooral, g_Brothels.GetBrothel(3)->m_RestrictOral);
 		SetCheckBox(p_b3_notitty, g_Brothels.GetBrothel(3)->m_RestrictTitty);
+		SetCheckBox(p_b3_nohand, g_Brothels.GetBrothel(3)->m_RestrictHand);
 
 		advert = g_Brothels.GetBrothel(3)->m_AdvertisingBudget / 50;
 		advert = SliderRange(p_b3_advslid, 0, (2000 / 50), advert, 4);  // set slider min/max range
@@ -499,6 +504,7 @@ void cScreenPropertyManagement::init()
 		SetCheckBox(p_b4_noles, g_Brothels.GetBrothel(4)->m_RestrictLesbian);
 		SetCheckBox(p_b4_nooral, g_Brothels.GetBrothel(4)->m_RestrictOral);
 		SetCheckBox(p_b4_notitty, g_Brothels.GetBrothel(4)->m_RestrictTitty);
+		SetCheckBox(p_b4_nohand, g_Brothels.GetBrothel(4)->m_RestrictHand);
 
 		advert = g_Brothels.GetBrothel(4)->m_AdvertisingBudget / 50;
 		advert = SliderRange(p_b4_advslid, 0, (2000 / 50), advert, 4);  // set slider min/max range
@@ -531,6 +537,7 @@ void cScreenPropertyManagement::init()
 		SetCheckBox(p_b5_noles, g_Brothels.GetBrothel(5)->m_RestrictLesbian);
 		SetCheckBox(p_b5_nooral, g_Brothels.GetBrothel(5)->m_RestrictOral);
 		SetCheckBox(p_b5_notitty, g_Brothels.GetBrothel(5)->m_RestrictTitty);
+		SetCheckBox(p_b5_nohand, g_Brothels.GetBrothel(5)->m_RestrictHand);
 
 		advert = g_Brothels.GetBrothel(5)->m_AdvertisingBudget / 50;
 		advert = SliderRange(p_b5_advslid, 0, (2000 / 50), advert, 4);  // set slider min/max range
@@ -563,6 +570,7 @@ void cScreenPropertyManagement::init()
 		SetCheckBox(p_b6_noles, g_Brothels.GetBrothel(6)->m_RestrictLesbian);
 		SetCheckBox(p_b6_nooral, g_Brothels.GetBrothel(6)->m_RestrictOral);
 		SetCheckBox(p_b6_notitty, g_Brothels.GetBrothel(6)->m_RestrictTitty);
+		SetCheckBox(p_b6_nohand, g_Brothels.GetBrothel(6)->m_RestrictHand);
 
 		advert = g_Brothels.GetBrothel(6)->m_AdvertisingBudget / 50;
 		advert = SliderRange(p_b6_advslid, 0, (2000 / 50), advert, 4);  // set slider min/max range
@@ -595,6 +603,7 @@ void cScreenPropertyManagement::init()
 		SetCheckBox(p_st_noles, g_Studios.GetBrothel(0)->m_RestrictLesbian);
 		SetCheckBox(p_st_nooral, g_Studios.GetBrothel(0)->m_RestrictOral);
 		SetCheckBox(p_st_notitty, g_Studios.GetBrothel(0)->m_RestrictTitty);
+		SetCheckBox(p_st_nohand, g_Studios.GetBrothel(0)->m_RestrictHand);
 
 		advert = g_Studios.GetBrothel(0)->m_AdvertisingBudget / 50;
 		advert = SliderRange(p_st_advslid, 0, (2000 / 50), advert, 4);  // set slider min/max range
@@ -627,6 +636,7 @@ void cScreenPropertyManagement::init()
 		SetCheckBox(p_ar_noles, g_Arena.GetBrothel(0)->m_RestrictLesbian);
 		SetCheckBox(p_ar_nooral, g_Arena.GetBrothel(0)->m_RestrictOral);
 		SetCheckBox(p_ar_notitty, g_Arena.GetBrothel(0)->m_RestrictTitty);
+		SetCheckBox(p_ar_nohand, g_Arena.GetBrothel(0)->m_RestrictHand);
 
 		advert = g_Arena.GetBrothel(0)->m_AdvertisingBudget / 50;
 		advert = SliderRange(p_ar_advslid, 0, (2000 / 50), advert, 4);  // set slider min/max range
@@ -659,6 +669,7 @@ void cScreenPropertyManagement::init()
 		SetCheckBox(p_ce_noles, g_Centre.GetBrothel(0)->m_RestrictLesbian);
 		SetCheckBox(p_ce_nooral, g_Centre.GetBrothel(0)->m_RestrictOral);
 		SetCheckBox(p_ce_notitty, g_Centre.GetBrothel(0)->m_RestrictTitty);
+		SetCheckBox(p_ce_nohand, g_Centre.GetBrothel(0)->m_RestrictHand);
 
 		advert = g_Centre.GetBrothel(0)->m_AdvertisingBudget / 50;
 		advert = SliderRange(p_ce_advslid, 0, (2000 / 50), advert, 4);  // set slider min/max range
@@ -691,6 +702,7 @@ void cScreenPropertyManagement::init()
 		SetCheckBox(p_cl_noles, g_Clinic.GetBrothel(0)->m_RestrictLesbian);
 		SetCheckBox(p_cl_nooral, g_Clinic.GetBrothel(0)->m_RestrictOral);
 		SetCheckBox(p_cl_notitty, g_Clinic.GetBrothel(0)->m_RestrictTitty);
+		SetCheckBox(p_cl_nohand, g_Clinic.GetBrothel(0)->m_RestrictHand);
 
 		advert = g_Clinic.GetBrothel(0)->m_AdvertisingBudget / 50;
 		advert = SliderRange(p_cl_advslid, 0, (2000 / 50), advert, 4);  // set slider min/max range
@@ -757,6 +769,7 @@ void cScreenPropertyManagement::check_events()
 		if (g_InterfaceEvents.CheckCheckbox(p_ho_noles))	g_House.GetBrothel(0)->m_RestrictLesbian = IsCheckboxOn(p_ho_noles);
 		if (g_InterfaceEvents.CheckCheckbox(p_ho_nooral))	g_House.GetBrothel(0)->m_RestrictOral = IsCheckboxOn(p_ho_nooral);
 		if (g_InterfaceEvents.CheckCheckbox(p_ho_notitty))	g_House.GetBrothel(0)->m_RestrictTitty = IsCheckboxOn(p_ho_notitty);
+		if (g_InterfaceEvents.CheckCheckbox(p_ho_nohand))	g_House.GetBrothel(0)->m_RestrictHand = IsCheckboxOn(p_ho_nohand);
 
 		if (g_InterfaceEvents.CheckSlider(p_ho_advslid))
 		{
@@ -779,6 +792,7 @@ void cScreenPropertyManagement::check_events()
 		if (g_InterfaceEvents.CheckCheckbox(p_b0_noles))	g_Brothels.GetBrothel(0)->m_RestrictLesbian = IsCheckboxOn(p_b0_noles);
 		if (g_InterfaceEvents.CheckCheckbox(p_b0_nooral))	g_Brothels.GetBrothel(0)->m_RestrictOral = IsCheckboxOn(p_b0_nooral);
 		if (g_InterfaceEvents.CheckCheckbox(p_b0_notitty))	g_Brothels.GetBrothel(0)->m_RestrictTitty = IsCheckboxOn(p_b0_notitty);
+		if (g_InterfaceEvents.CheckCheckbox(p_b0_nohand))	g_Brothels.GetBrothel(0)->m_RestrictHand = IsCheckboxOn(p_b0_nohand);
 
 		if (g_InterfaceEvents.CheckSlider(p_b0_advslid))
 		{
@@ -801,6 +815,7 @@ void cScreenPropertyManagement::check_events()
 		if (g_InterfaceEvents.CheckCheckbox(p_b1_noles))	g_Brothels.GetBrothel(1)->m_RestrictLesbian = IsCheckboxOn(p_b1_noles);
 		if (g_InterfaceEvents.CheckCheckbox(p_b1_nooral))	g_Brothels.GetBrothel(1)->m_RestrictOral = IsCheckboxOn(p_b1_nooral);
 		if (g_InterfaceEvents.CheckCheckbox(p_b1_notitty))	g_Brothels.GetBrothel(1)->m_RestrictTitty = IsCheckboxOn(p_b1_notitty);
+		if (g_InterfaceEvents.CheckCheckbox(p_b1_nohand))	g_Brothels.GetBrothel(1)->m_RestrictHand = IsCheckboxOn(p_b1_nohand);
 		
 		if (g_InterfaceEvents.CheckSlider(p_b1_advslid))
 		{
@@ -822,6 +837,7 @@ void cScreenPropertyManagement::check_events()
 		if (g_InterfaceEvents.CheckCheckbox(p_b2_noles))	g_Brothels.GetBrothel(2)->m_RestrictLesbian = IsCheckboxOn(p_b2_noles);
 		if (g_InterfaceEvents.CheckCheckbox(p_b2_nooral))	g_Brothels.GetBrothel(2)->m_RestrictOral = IsCheckboxOn(p_b2_nooral);
 		if (g_InterfaceEvents.CheckCheckbox(p_b2_notitty))	g_Brothels.GetBrothel(2)->m_RestrictTitty = IsCheckboxOn(p_b2_notitty);
+		if (g_InterfaceEvents.CheckCheckbox(p_b2_nohand))	g_Brothels.GetBrothel(2)->m_RestrictHand = IsCheckboxOn(p_b2_nohand);
 
 		if (g_InterfaceEvents.CheckSlider(p_b2_advslid))
 		{
@@ -843,6 +859,7 @@ void cScreenPropertyManagement::check_events()
 		if (g_InterfaceEvents.CheckCheckbox(p_b3_noles))	g_Brothels.GetBrothel(3)->m_RestrictLesbian = IsCheckboxOn(p_b3_noles);
 		if (g_InterfaceEvents.CheckCheckbox(p_b3_nooral))	g_Brothels.GetBrothel(3)->m_RestrictOral = IsCheckboxOn(p_b3_nooral);
 		if (g_InterfaceEvents.CheckCheckbox(p_b3_notitty))	g_Brothels.GetBrothel(3)->m_RestrictTitty = IsCheckboxOn(p_b3_notitty);
+		if (g_InterfaceEvents.CheckCheckbox(p_b3_nohand))	g_Brothels.GetBrothel(3)->m_RestrictHand = IsCheckboxOn(p_b3_nohand);
 
 
 		if (g_InterfaceEvents.CheckSlider(p_b3_advslid))
@@ -865,6 +882,7 @@ void cScreenPropertyManagement::check_events()
 		if (g_InterfaceEvents.CheckCheckbox(p_b4_noles))	g_Brothels.GetBrothel(4)->m_RestrictLesbian = IsCheckboxOn(p_b4_noles);
 		if (g_InterfaceEvents.CheckCheckbox(p_b4_nooral))	g_Brothels.GetBrothel(4)->m_RestrictOral = IsCheckboxOn(p_b4_nooral);
 		if (g_InterfaceEvents.CheckCheckbox(p_b4_notitty))	g_Brothels.GetBrothel(4)->m_RestrictTitty = IsCheckboxOn(p_b4_notitty);
+		if (g_InterfaceEvents.CheckCheckbox(p_b4_nohand))	g_Brothels.GetBrothel(4)->m_RestrictHand = IsCheckboxOn(p_b4_nohand);
 
 
 		if (g_InterfaceEvents.CheckSlider(p_b4_advslid))
@@ -887,6 +905,7 @@ void cScreenPropertyManagement::check_events()
 		if (g_InterfaceEvents.CheckCheckbox(p_b5_noles))	g_Brothels.GetBrothel(5)->m_RestrictLesbian = IsCheckboxOn(p_b5_noles);
 		if (g_InterfaceEvents.CheckCheckbox(p_b5_nooral))	g_Brothels.GetBrothel(5)->m_RestrictOral = IsCheckboxOn(p_b5_nooral);
 		if (g_InterfaceEvents.CheckCheckbox(p_b5_notitty))	g_Brothels.GetBrothel(5)->m_RestrictTitty = IsCheckboxOn(p_b5_notitty);
+		if (g_InterfaceEvents.CheckCheckbox(p_b5_nohand))	g_Brothels.GetBrothel(5)->m_RestrictHand = IsCheckboxOn(p_b5_nohand);
 
 
 		if (g_InterfaceEvents.CheckSlider(p_b5_advslid))
@@ -909,6 +928,7 @@ void cScreenPropertyManagement::check_events()
 		if (g_InterfaceEvents.CheckCheckbox(p_b6_noles))	g_Brothels.GetBrothel(6)->m_RestrictLesbian = IsCheckboxOn(p_b6_noles);
 		if (g_InterfaceEvents.CheckCheckbox(p_b6_nooral))	g_Brothels.GetBrothel(6)->m_RestrictOral = IsCheckboxOn(p_b6_nooral);
 		if (g_InterfaceEvents.CheckCheckbox(p_b6_notitty))	g_Brothels.GetBrothel(6)->m_RestrictTitty = IsCheckboxOn(p_b6_notitty);
+		if (g_InterfaceEvents.CheckCheckbox(p_b6_nohand))	g_Brothels.GetBrothel(6)->m_RestrictHand = IsCheckboxOn(p_b6_nohand);
 
 
 		if (g_InterfaceEvents.CheckSlider(p_b6_advslid))
@@ -931,6 +951,7 @@ void cScreenPropertyManagement::check_events()
 		if (g_InterfaceEvents.CheckCheckbox(p_st_noles))	g_Studios.GetBrothel(0)->m_RestrictLesbian = IsCheckboxOn(p_st_noles);
 		if (g_InterfaceEvents.CheckCheckbox(p_st_nooral))	g_Studios.GetBrothel(0)->m_RestrictOral = IsCheckboxOn(p_st_nooral);
 		if (g_InterfaceEvents.CheckCheckbox(p_st_notitty))	g_Studios.GetBrothel(0)->m_RestrictTitty = IsCheckboxOn(p_st_notitty);
+		if (g_InterfaceEvents.CheckCheckbox(p_st_nohand))	g_Studios.GetBrothel(0)->m_RestrictHand = IsCheckboxOn(p_st_nohand);
 
 
 		if (g_InterfaceEvents.CheckSlider(p_st_advslid))
@@ -953,6 +974,7 @@ void cScreenPropertyManagement::check_events()
 		if (g_InterfaceEvents.CheckCheckbox(p_ar_noles))	g_Arena.GetBrothel(0)->m_RestrictLesbian = IsCheckboxOn(p_ar_noles);
 		if (g_InterfaceEvents.CheckCheckbox(p_ar_nooral))	g_Arena.GetBrothel(0)->m_RestrictOral = IsCheckboxOn(p_ar_nooral);
 		if (g_InterfaceEvents.CheckCheckbox(p_ar_notitty))	g_Arena.GetBrothel(0)->m_RestrictTitty = IsCheckboxOn(p_ar_notitty);
+		if (g_InterfaceEvents.CheckCheckbox(p_ar_nohand))	g_Arena.GetBrothel(0)->m_RestrictHand = IsCheckboxOn(p_ar_nohand);
 
 
 		if (g_InterfaceEvents.CheckSlider(p_ar_advslid))
@@ -975,6 +997,7 @@ void cScreenPropertyManagement::check_events()
 		if (g_InterfaceEvents.CheckCheckbox(p_ce_noles))	g_Centre.GetBrothel(0)->m_RestrictLesbian = IsCheckboxOn(p_ce_noles);
 		if (g_InterfaceEvents.CheckCheckbox(p_ce_nooral))	g_Centre.GetBrothel(0)->m_RestrictOral = IsCheckboxOn(p_ce_nooral);
 		if (g_InterfaceEvents.CheckCheckbox(p_ce_notitty))	g_Centre.GetBrothel(0)->m_RestrictTitty = IsCheckboxOn(p_ce_notitty);
+		if (g_InterfaceEvents.CheckCheckbox(p_ce_nohand))	g_Centre.GetBrothel(0)->m_RestrictHand = IsCheckboxOn(p_ce_nohand);
 
 
 		if (g_InterfaceEvents.CheckSlider(p_ce_advslid))
@@ -997,6 +1020,7 @@ void cScreenPropertyManagement::check_events()
 		if (g_InterfaceEvents.CheckCheckbox(p_cl_noles))	g_Clinic.GetBrothel(0)->m_RestrictLesbian = IsCheckboxOn(p_cl_noles);
 		if (g_InterfaceEvents.CheckCheckbox(p_cl_nooral))	g_Clinic.GetBrothel(0)->m_RestrictOral = IsCheckboxOn(p_cl_nooral);
 		if (g_InterfaceEvents.CheckCheckbox(p_cl_notitty))	g_Clinic.GetBrothel(0)->m_RestrictTitty = IsCheckboxOn(p_cl_notitty);
+		if (g_InterfaceEvents.CheckCheckbox(p_cl_nohand))	g_Clinic.GetBrothel(0)->m_RestrictHand = IsCheckboxOn(p_cl_nohand);
 
 
 		if (g_InterfaceEvents.CheckSlider(p_cl_advslid))
