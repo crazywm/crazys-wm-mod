@@ -117,7 +117,8 @@ const char *sGirl::skill_names[] =
 	"OralSex",
 	"TittySex",
 	"Medicine",
-	"Performance"
+	"Performance",
+	"Handjob"
 };
 const char *sGirl::status_names[] =
 {
@@ -184,6 +185,7 @@ void sGirl::setup_maps()
 		skill_lookup["NormalSex"]	= SKILL_NORMALSEX;
 		skill_lookup["OralSex"]		= SKILL_ORALSEX;
 		skill_lookup["TittySex"]	= SKILL_TITTYSEX;
+		skill_lookup["Handjob"]		= SKILL_HANDJOB;
 		skill_lookup["Beastiality"]	= SKILL_BEASTIALITY;
 		skill_lookup["Group"]		= SKILL_GROUP;
 		skill_lookup["Lesbian"]		= SKILL_LESBIAN;
@@ -1770,7 +1772,11 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		gettext("being a recruiter"),
 		gettext("working as a nurse"),
 		gettext("fixing things"),
-		gettext("counseling people")
+		gettext("counseling people"),
+		gettext("performing music"),
+		gettext("striping"),
+		gettext("having her breasts milked"),
+		gettext("working as a massusse")
 	};
 	string base = gettext("She");
 	string text;
@@ -1841,15 +1847,15 @@ string cGirls::GetThirdDetailsString(sGirl* girl)
 	//Job rating system  ///CRAZY
 
 	int HateLove = g_Girls.GetStat(girl, STAT_PCLOVE) - g_Girls.GetStat(girl, STAT_PCHATE);
-	int jr_slave = 0;	if (girl->is_slave()) jr_slave = -1000;
+	int jr_slave = 0; if (girl->is_slave()) jr_slave = -1000;
 	int combat = (jr_agi / 2 + jr_cns / 2 + jr_mag / 2 + jr_cmb);
 	if (g_Girls.HasTrait(girl, "Incorporeal") || g_Girls.HasTrait(girl, "Incorporial")) combat += 100;
 
 	// Brothel Jobs
-	int security = ((jr_mag * 2 + jr_cmb * 2 + jr_ser) / 3);	// `J` estimate - needs work 
+	int security = ((jr_mag * 2 + jr_cmb * 2 + jr_ser) / 3); // `J` estimate - needs work
 	int advertising = (jr_per / 6 + jr_ser / 6 + jr_cha / 6 + jr_bea / 10 + jr_int / 6 + jr_cnf / 10 + jr_fam / 10);
-	int custservice = ((jr_cha + jr_bea + jr_per) / 3 + (jr_cnf + jr_spi) / 3 + jr_ser);	// `J` estimate - needs work 
-	int matron = ((jr_cha + jr_cnf + jr_spi) / 3 + (jr_ser + jr_int + jr_med) / 3 + jr_lev + jr_slave);	// `J`  estimate - needs work 
+	int custservice = ((jr_cha + jr_bea + jr_per) / 3 + (jr_cnf + jr_spi) / 3 + jr_ser); // `J` estimate - needs work
+	int matron = ((jr_cha + jr_cnf + jr_spi) / 3 + (jr_ser + jr_int + jr_med) / 3 + jr_lev + jr_slave); // `J` estimate - needs work
 	int catacombs = combat;
 	int barmaid = (jr_int / 2 + jr_per / 2 + jr_ser);
 	int barwait = (jr_int / 2 + jr_agi / 2 + jr_ser);
@@ -1868,11 +1874,11 @@ string cGirls::GetThirdDetailsString(sGirl* girl)
 	int beastcare = (jr_int / 2 + jr_ser / 2 + jr_bst);
 	int milk = 0;
 	{
-		if (girl->is_pregnant())	milk += 100;					//   preg rating | non-preg rating
-		if (g_Girls.HasTrait(girl, "Abnormally Large Boobs"))	milk += 150;	// S | B
-		else if (g_Girls.HasTrait(girl, "Big Boobs"))	milk += 100;			// A | C
-		else if (g_Girls.HasTrait(girl, "Small Boobs"))	milk += 25;				// C | E
-		else	milk += 75;														// B | D
+		if (girl->is_pregnant()) milk += 100; // preg rating | non-preg rating
+		if (g_Girls.HasTrait(girl, "Abnormally Large Boobs")) milk += 150; // S | B
+		else if (g_Girls.HasTrait(girl, "Big Boobs")) milk += 100; // A | C
+		else if (g_Girls.HasTrait(girl, "Small Boobs")) milk += 25; // C | E
+		else milk += 75; // B | D
 	}
 	// Studio Jobs
 	int director = (((jr_int - 50) / 10 + (jr_spi - 50) / 10 + jr_ser / 10) / 3 + jr_fam / 10 + jr_lev + jr_slave);
@@ -1891,7 +1897,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)
 	int feedpoor = ((jr_int / 2) + (jr_cha / 2) + jr_ser);
 	// Clinic Jobs
 	int chairman = matron;
-	int doctor = (jr_int + jr_med + jr_lev / 5 + jr_slave);	// `J` needs work
+	int doctor = (jr_int + jr_med + jr_lev / 5 + jr_slave); // `J` needs work
 	int nurse = (jr_cha / 2 + jr_int / 2 + jr_med + jr_lev / 5);
 	int mechanic = (jr_ser / 2 + jr_med / 2 + jr_int);
 	// House Jobs
@@ -2681,6 +2687,12 @@ string cGirls::GetDetailsString(sGirl* girl, bool purchase)
 
 	data += "Titty Sex: ";
 	variable = GetSkill(girl, SKILL_TITTYSEX);
+	_itoa(variable, buffer, 10);
+	data += buffer;
+	data += "%\n";
+
+	data += "Hand Job: ";
+	variable = GetSkill(girl, SKILL_HANDJOB);
 	_itoa(variable, buffer, 10);
 	data += buffer;
 	data += "%\n";
@@ -7186,6 +7198,17 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 			message += " wouldn't stop using her breasts to massage the customer's cock until she had made him spill his entire load.";
 		break;
 
+	case SKILL_HANDJOB:
+		if(GetSkill(girl, SexType) < 20)
+			message += " awkwardly worked the customer's cock with her hand, and recoiled when he came.";
+		else if(GetSkill(girl, SexType) < 60)
+			message += " used her hand on the customer's cock.";
+		else if(GetSkill(girl, SexType) < 80)
+			message += " loved using her hand on the customer's cock, and let him cum all over her.";
+		else
+			message += " wouldn't stop using her hand to massage the customer's cock until she had made him spill his entire load.";
+		break;
+
 	case SKILL_BEASTIALITY:
 		if(g_Brothels.GetNumBeasts() == 0)
 		{
@@ -7373,7 +7396,21 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 			UpdateStat(girl, STAT_HAPPINESS, -2);
 			UpdateStat(girl, STAT_SPIRIT, -3);
 			UpdateStat(girl, STAT_CONFIDENCE, -1);
-		//	UpdateStat(girl, STAT_HEALTH, -3);				// Removed... oral doesn't hurt unless you get herpes or something. --PP
+		}
+
+/*
+ *		if they're both happy afterward, it's good sex
+ *		which modifies the chance of pregnancy
+ */
+		break;
+
+	case SKILL_HANDJOB:
+		if(GetSkill(girl, SexType) <= 20)	// if unexperienced then will get hurt
+		{
+			message += "\nHer inexperience caused her some embarrassment.";	// Changed... being new at handjob doesn't hurt, but can be embarrasing. --PP
+			UpdateStat(girl, STAT_HAPPINESS, -2);
+			UpdateStat(girl, STAT_SPIRIT, -3);
+			UpdateStat(girl, STAT_CONFIDENCE, -1);
 		}
 
 /*
@@ -7430,7 +7467,7 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 		message += gettext(" The customer was overjoyed that she was a virgin.");
 //		girl->m_Virgin = false;
 		customer->m_Stats[STAT_HAPPINESS] = 100;
-		if(SexType != SKILL_ANAL && SexType != SKILL_LESBIAN && SexType != SKILL_ORALSEX && SexType != SKILL_TITTYSEX)
+		if(SexType != SKILL_ANAL && SexType != SKILL_LESBIAN && SexType != SKILL_ORALSEX && SexType != SKILL_TITTYSEX && SexType != SKILL_HANDJOB)
 			girl->m_Virgin = false;
 	}
 
@@ -12950,11 +12987,11 @@ cAImgList* cImgageListManager::LoadList(string name)
 	string numeric="0123456789 ()";
 	string pic_types[] = { "Anal*.*g", "BDSM*.*g", "Sex*.*g", "Beast*.*g", "Group*.*g", "Les*.*g", "torture*.*g",
 		"Death*.*g", "Profile*.*g", "Combat*.*g", "Oral*.*g", "Ecchi*.*g", "Strip*.*g", "Maid*.*g", "Sing*.*g",
-		"Wait*.*g", "Card*.*g", "Bunny*.*g", "Nude*.*g", "Mast*.*g", "Titty*.*g", "Milk*.*g", "Preg*.*g", "PregAnal*.*g",
+		"Wait*.*g", "Card*.*g", "Bunny*.*g", "Nude*.*g", "Mast*.*g", "Titty*.*g", "Milk*.*g", "Hand*.*g", "Preg*.*g", "PregAnal*.*g",
 		"PregBDSM*.*g", "PregSex*.*g", "pregbeast*.*g", "preggroup*.*g", "pregles*.*g", "pregtorture*.*g", "pregdeath*.*g",
 		"pregprofile*.*g", "pregcombat*.*g", "pregoral*.*g", "pregecchi*.*g", "pregstrip*.*g", "pregmaid*.*g",
 		"pregsing*.*g", "pregwait*.*g", "pregcard*.*g", "pregbunny*.*g", "pregnude*.*g", "pregmast*.*g",
-		"pregtitty*.*g", "pregmilk*.*g"};
+		"pregtitty*.*g", "pregmilk*.*g", "preghand*.*g"};
 	int i = 0;
 
 	do {
@@ -13001,10 +13038,10 @@ cAImgList* cImgageListManager::LoadList(string name)
 	string pic_types2[] = { "Anal*.ani", "BDSM*.ani", "Sex*.ani", "Beast*.ani", "Group*.ani", "Les*.ani", "torture*.ani",
 		"Death*.ani", "Profile*.ani", "Combat*.ani", "Oral*.ani", "Ecchi*.ani", "Strip*.ani", "Maid*.ani",
 		"Sing*.ani", "Wait*.ani", "Card*.ani", "Bunny*.ani", "Nude*.ani", "Mast*.ani", "Titty*.ani",
-		"Milk*.ani", "Preg*.ani", "PregAnal*.ani", "PregBDSM*.ani", "PregSex*.ani", "pregbeast*.ani", "preggroup*.ani",
+		"Milk*.ani", "Hand*.ani", "Preg*.ani", "PregAnal*.ani", "PregBDSM*.ani", "PregSex*.ani", "pregbeast*.ani", "preggroup*.ani",
 		"pregles*.ani", "pregtorture*.ani", "pregdeath*.ani", "pregprofile*.ani", "pregcombat*.ani", "pregoral*.ani",
 		"pregecchi*.ani", "pregstrip*.ani", "pregmaid*.ani", "pregsing*.ani", "pregwait*.ani", "pregcard*.ani",
-		"pregbunny*.ani", "pregnude*.ani", "pregmast*.ani", "pregtitty*.ani", "pregmilk*.ani" };
+		"pregbunny*.ani", "pregnude*.ani", "pregmast*.ani", "pregtitty*.ani", "pregmilk*.ani", "preghand*.ani" };
 	i = 0;
 	do {
 		bool to_add=true;
@@ -13179,6 +13216,7 @@ bool cGirls::IsAnimatedSurface(sGirl* girl, int ImgType, int& img)
 		case IMGTYPE_NUDE:
 		case IMGTYPE_MAST:
 		case IMGTYPE_TITTY:
+		case IMGTYPE_HAND:
 //				Similar'success' condition and action  (but no alternative ImgType set); 
 			if(girl->m_GirlImages->m_Images[ImgType].m_NumImages > 0)
 				return girl->m_GirlImages->m_Images[ImgType].IsAnimatedSurface(img);
@@ -13239,6 +13277,10 @@ bool cGirls::IsAnimatedSurface(sGirl* girl, int ImgType, int& img)
 			break;
 
 		case IMGTYPE_TITTY:
+				ImgType = IMGTYPE_ORAL;
+			break;
+
+		case IMGTYPE_HAND:
 				ImgType = IMGTYPE_ORAL;
 			break;
 
@@ -13365,6 +13407,7 @@ CSurface* cGirls::GetImageSurface(sGirl* girl, int ImgType, bool random, int& im
 		case IMGTYPE_NUDE:
 		case IMGTYPE_MAST:
 		case IMGTYPE_TITTY:
+		case IMGTYPE_HAND:
 //				Similar'success' condition and action  (but no alternative ImgType set); 
 			if(girl->m_GirlImages->m_Images[ImgType].m_NumImages > 0)
 				return girl->m_GirlImages->m_Images[ImgType].GetImageSurface(random, img);
@@ -13421,6 +13464,10 @@ CSurface* cGirls::GetImageSurface(sGirl* girl, int ImgType, bool random, int& im
 			break;
 
 		case IMGTYPE_TITTY:
+				ImgType = IMGTYPE_ORAL;
+			break;
+
+		case IMGTYPE_HAND:
 				ImgType = IMGTYPE_ORAL;
 			break;
 
@@ -13610,6 +13657,7 @@ int cGirls::DrawGirl(sGirl* girl, int x, int y, int width, int height, int ImgTy
 		case IMGTYPE_NUDE:
 		case IMGTYPE_MAST:
 		case IMGTYPE_TITTY:
+		case IMGTYPE_HAND:
 //				Similar'success' condition and action  (but no alternative ImgType set); 
 			if(girl->m_GirlImages->m_Images[ImgType].m_NumImages > 0)
 				return girl->m_GirlImages->m_Images[ImgType].DrawImage(x,y,width,height, random, img);
@@ -13666,6 +13714,10 @@ int cGirls::DrawGirl(sGirl* girl, int x, int y, int width, int height, int ImgTy
 			break;
 
 		case IMGTYPE_TITTY:
+				ImgType = IMGTYPE_ORAL;
+			break;
+
+		case IMGTYPE_HAND:
 				ImgType = IMGTYPE_ORAL;
 			break;
 

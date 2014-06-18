@@ -57,6 +57,7 @@ private:
 	int nolesbian_id;	// Prohibit Lesbian checkbox
 	int nooral_id;		// Prohibit Oral checkbox
 	int notitty_id;		// Prohibit Titty Sex checkbox
+	int nohand_id;		// Prohibit Hand Job checkbox
 	int advertsli_id;	// Advertising Budget slider
 	int advertamt_id;	// Advertising Budget value output text
 

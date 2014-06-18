@@ -42,7 +42,7 @@ extern cMessageQue g_MessageQue;
 bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	string message = "";
-	if(Preprocessing(ACTION_SEX, girl, brothel, DayNight, summary, message))
+	if(Preprocessing(ACTION_WORKSTRIP, girl, brothel, DayNight, summary, message))
 		return true;
 
 	// put that shit away, you'll scare off the customers!
@@ -244,7 +244,26 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, int DayNig
 				
 		}
 
+	if(wages < 0)
+			wages = 0;
+
 	
+
+	//enjoyed the work or not
+	if(roll <= 5)
+	{
+		message += " \nSome of the patrons abused her during the shift.";
+		g_Girls.UpdateEnjoyment(girl, ACTION_WORKSTRIP, -1, true);
+	}
+	else if(roll <= 25) {
+		message += " \nShe had a pleasant time working.";
+		g_Girls.UpdateEnjoyment(girl, ACTION_WORKSTRIP, +3, true);
+	}
+	else
+	{
+		message += " \nOtherwise, the shift passed uneventfully.";
+		g_Girls.UpdateEnjoyment(girl, ACTION_WORKSTRIP, +1, true);
+	}
 
 	if (sex)
 	{
@@ -275,6 +294,8 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, int DayNig
 			imageType = IMGTYPE_ORAL;
 		else if(n == SKILL_TITTYSEX)
 			imageType = IMGTYPE_TITTY;
+		else if(n == SKILL_HANDJOB)
+			imageType = IMGTYPE_HAND;
 		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -2);
 		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +3, true);
 		// work out the pay between the house and the girl
@@ -332,10 +353,10 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, int DayNig
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
 	//gained
-	g_Girls.PossiblyGainNewTrait(girl, "Sexy Air", 80, ACTION_SEX, girl->m_Realname + " has been stripping and having to be sexy for so long she now reeks of sexyness.", DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Sexy Air", 80, ACTION_WORKSTRIP, girl->m_Realname + " has been stripping and having to be sexy for so long she now reeks of sexyness.", DayNight != 0);
 
 	//lose
-	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 30, ACTION_SEX, girl->m_Realname + " has had so many people see her naked she is no longer nervous about anything.", DayNight != 0);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 30, ACTION_WORKSTRIP, girl->m_Realname + " has had so many people see her naked she is no longer nervous about anything.", DayNight != 0);
 
 	return false;
 }

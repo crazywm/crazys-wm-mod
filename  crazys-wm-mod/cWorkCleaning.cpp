@@ -93,7 +93,18 @@ bool cJobManager::WorkCleaning(sGirl* girl, sBrothel* brothel, int DayNight, str
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))
 		libido += 2;
 
-	girl->m_Pay += 50;
+	if (CleanAmt >= 125)
+	{
+		girl->m_Pay += 150;
+	}
+	else if (CleanAmt >= 60)
+	{
+		girl->m_Pay += 100;
+	}
+	else
+	{
+		girl->m_Pay += 50;
+	}
 	g_Gold.building_upkeep(25);  // wages come from you
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, skill);

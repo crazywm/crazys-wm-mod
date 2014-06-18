@@ -42,7 +42,7 @@ extern cMessageQue g_MessageQue;
 bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	string message = "";
-	if(Preprocessing(ACTION_SEX, girl, brothel, DayNight, summary, message))
+	if(Preprocessing(ACTION_WORKMASSUSSE, girl, brothel, DayNight, summary, message))
 		return true;
 
 	// put that shit away, you'll scare off the customers!
@@ -149,6 +149,8 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, int DayNig
 			imageType = IMGTYPE_ORAL;
 		else if(n == SKILL_TITTYSEX)
 			imageType = IMGTYPE_TITTY;
+		else if(n == SKILL_HANDJOB)
+			imageType = IMGTYPE_HAND;
 		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -45);
 
 		// work out the pay between the house and the girl
@@ -165,6 +167,22 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, int DayNig
 		// work out the pay between the house and the girl
 		girl->m_Pay = wages;
 		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
+	}
+
+	//enjoyed the work or not
+	if(roll <= 5)
+	{
+		message += " \nSome of the patrons abused her during the shift.";
+		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMASSUSSE, -1, true);
+	}
+	else if(roll <= 25) {
+		message += " \nShe had a pleasant time working.";
+		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMASSUSSE, +3, true);
+	}
+	else
+	{
+		message += " \nOtherwise, the shift passed uneventfully.";
+		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMASSUSSE, +1, true);
 	}
 
 

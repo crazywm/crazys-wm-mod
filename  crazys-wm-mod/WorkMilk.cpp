@@ -47,7 +47,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, int DayNight, string&
 	void AddItem(sInventoryItem* item);
 	sInventoryItem* GetItem(string name);
 
-	if(Preprocessing(ACTION_GENERAL, girl, brothel, DayNight, summary, message))	// they refuse to have work
+	if(Preprocessing(ACTION_WORKMILK, girl, brothel, DayNight, summary, message))	// they refuse to have work
 		return true;
 
 	// put that shit away, you'll scare off the customers!

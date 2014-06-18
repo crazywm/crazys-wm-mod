@@ -44,7 +44,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 	string message = "";
 	string girlName = girl->m_Realname;
 
-	if(Preprocessing(ACTION_WORKBAR, girl, brothel, DayNight, summary, message))	// they refuse to have work in the bar
+	if(Preprocessing(ACTION_WORKMUSIC, girl, brothel, DayNight, summary, message))	// they refuse to have work in the bar
 		return true;
 
 	// put that shit away, you'll scare off the customers!
@@ -276,17 +276,17 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 	if(roll <= 5)
 	{
 		message += " \nSome of the patrons abused her during the shift.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKBAR, -1, true);
+		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMUSIC, -1, true);
 	}
 	else if(roll <= 25) {
 		message += " \nShe had a pleasant time working.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKBAR, +3, true);
+		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMUSIC, +3, true);
 		g_Girls.UpdateStat(girl, STAT_CONFIDENCE, 1);
 	}
 	else
 	{
 		message += " \nOtherwise, the shift passed uneventfully.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKBAR, +1, true);
+		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMUSIC, +1, true);
 	}
 
 	girl->m_Events.AddMessage(message, IMGTYPE_SING, DayNight);
@@ -320,11 +320,11 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
 	//gain traits
-	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 70, ACTION_WORKBAR, "Singing on a daily basis has made " + girl->m_Realname + " more Charismatic.", DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 70, ACTION_WORKMUSIC, "Singing on a daily basis has made " + girl->m_Realname + " more Charismatic.", DayNight != 0);
 
 	//lose traits
-	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 30, ACTION_WORKBAR, girl->m_Realname + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", DayNight != 0);
-	g_Girls.PossiblyLoseExistingTrait(girl, "Meek", 50, ACTION_WORKBAR, girl->m_Realname + "'s having to sing every day has forced her to get over her meekness.", DayNight != 0);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 30, ACTION_WORKMUSIC, girl->m_Realname + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", DayNight != 0);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Meek", 50, ACTION_WORKMUSIC, girl->m_Realname + "'s having to sing every day has forced her to get over her meekness.", DayNight != 0);
 
 	return false;
 }

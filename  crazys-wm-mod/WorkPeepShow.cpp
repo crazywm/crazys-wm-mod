@@ -42,7 +42,7 @@ extern cMessageQue g_MessageQue;
 bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	string message = "";
-	if(Preprocessing(ACTION_SEX, girl, brothel, DayNight, summary, message))
+	if(Preprocessing(ACTION_WORKSTRIP, girl, brothel, DayNight, summary, message))
 		return true;
 
 	// put that shit away, you'll scare off the customers!
@@ -129,6 +129,7 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, int DayNight, str
 			wages -= 15;
 		}
 
+
 	if(g_Girls.GetStat(girl, STAT_LIBIDO) > 80)
 	{
 		message += "She was horney and ended up masturbating for the customer making them very happy.";
@@ -151,6 +152,22 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, int DayNight, str
 		// work out the pay between the house and the girl
 		girl->m_Pay = wages;
 		girl->m_Events.AddMessage(message, IMGTYPE_NUDE, DayNight);
+	}
+
+	//enjoyed the work or not
+	if(roll <= 5)
+	{
+		message += " \nSome of the patrons abused her during the shift.";
+		g_Girls.UpdateEnjoyment(girl, ACTION_WORKSTRIP, -1, true);
+	}
+	else if(roll <= 25) {
+		message += " \nShe had a pleasant time working.";
+		g_Girls.UpdateEnjoyment(girl, ACTION_WORKSTRIP, +3, true);
+	}
+	else
+	{
+		message += " \nOtherwise, the shift passed uneventfully.";
+		g_Girls.UpdateEnjoyment(girl, ACTION_WORKSTRIP, +1, true);
 	}
 
 
@@ -179,7 +196,7 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, int DayNight, str
 
 
 	//lose
-	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 30, ACTION_SEX, girl->m_Realname + " has had so many people see her naked she is no longer nervous about anything.", DayNight != 0);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 30, ACTION_WORKSTRIP, girl->m_Realname + " has had so many people see her naked she is no longer nervous about anything.", DayNight != 0);
 
 	return false;
 }

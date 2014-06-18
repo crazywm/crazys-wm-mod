@@ -548,6 +548,8 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, int DayNight, string
 			imageType = IMGTYPE_ORAL;
 		else if(SexType == SKILL_TITTYSEX)
 			imageType = IMGTYPE_TITTY;
+		else if(SexType == SKILL_HANDJOB)
+			imageType = IMGTYPE_HAND;
 		else if(SexType == SKILL_GROUP)
 			imageType = IMGTYPE_GROUP;
 		else if(SexType == SKILL_LESBIAN)

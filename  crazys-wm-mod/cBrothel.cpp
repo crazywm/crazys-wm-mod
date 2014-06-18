@@ -101,6 +101,7 @@ sBrothel::sBrothel()	:	m_Finance(0)	// constructor
 	m_RestrictBDSM			= false;
 	m_RestrictOral			= false;
 	m_RestrictTitty			= false;
+	m_RestrictHand			= false;
 	m_RestrictBeast			= false;
 	m_RestrictGroup			= false;
 	m_RestrictNormal		= false;
@@ -969,6 +970,10 @@ void cBrothelManager::LoadDataLegacy(ifstream& ifs)
 		else
 			current->m_RestrictTitty = false;
 		if(temp == 1)
+			current->m_RestrictHand = true;
+		else
+			current->m_RestrictHand = false;
+		if(temp == 1)
 			current->m_RestrictBeast = true;
 		else
 			current->m_RestrictBeast = false;
@@ -1232,6 +1237,7 @@ bool sBrothel::LoadBrothelXML(TiXmlHandle hBrothel)
 	pBrothel->QueryValueAttribute<bool>("RestrictBDSM", &m_RestrictBDSM);
 	pBrothel->QueryValueAttribute<bool>("RestrictOral", &m_RestrictOral);
 	pBrothel->QueryValueAttribute<bool>("RestrictTitty", &m_RestrictTitty);
+	pBrothel->QueryValueAttribute<bool>("RestrictHand", &m_RestrictHand);
 	pBrothel->QueryValueAttribute<bool>("RestrictBeast", &m_RestrictBeast);
 	pBrothel->QueryValueAttribute<bool>("RestrictGroup", &m_RestrictGroup);
 	pBrothel->QueryValueAttribute<bool>("RestrictNormal", &m_RestrictNormal);
@@ -1417,6 +1423,7 @@ TiXmlElement* sBrothel::SaveBrothelXML(TiXmlElement* pRoot)
 	pBrothel->SetAttribute("RestrictBDSM", m_RestrictBDSM);
 	pBrothel->SetAttribute("RestrictOral", m_RestrictOral);
 	pBrothel->SetAttribute("RestrictTitty", m_RestrictTitty);
+	pBrothel->SetAttribute("RestrictHand", m_RestrictHand);
 	pBrothel->SetAttribute("RestrictBeast", m_RestrictBeast);
 	pBrothel->SetAttribute("RestrictGroup", m_RestrictGroup);
 	pBrothel->SetAttribute("RestrictNormal", m_RestrictNormal);

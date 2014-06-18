@@ -102,6 +102,7 @@ void cJobManager::Setup()
 	JobFunctions[JOB_FILMMAST] = &WorkFilmMast;
 	JobFunctions[JOB_FILMTITTY] = &WorkFilmTitty;
 	JobFunctions[JOB_FILMSTRIP] = &WorkFilmStrip;
+	JobFunctions[JOB_FILMHANDJOB] = &WorkFilmHandJob;
 //	JobFunctions[JOB_FILMRANDOM] = &WorkFilmRandom;		// This job is handled different than others, it is in cMovieStudio.cpp UpdateGirls()
 	// - Film Crew
 	JobFunctions[JOB_DIRECTOR] = &WorkFilmDirector;
@@ -134,6 +135,7 @@ void cJobManager::Setup()
 	JobFunctions[JOB_GETHEALING] = &WorkHealing;
 	JobFunctions[JOB_GETREPAIRS] = &WorkRepairShop;
 	JobFunctions[JOB_NURSE] = &WorkNurse;
+	JobFunctions[JOB_INTERN] = &WorkIntern;
 	JobFunctions[JOB_MECHANIC] = &WorkMechanic;
 	//clinic staff
 	JobFunctions[JOB_JANITOR] = &WorkJanitor;	
@@ -145,6 +147,8 @@ void cJobManager::Setup()
 	JobFunctions[JOB_VAGINAREJUV] = &WorkGetVaginalRejuvination;
 	JobFunctions[JOB_FACELIFT] = &WorkGetFacelift;
 	JobFunctions[JOB_ASSJOB] = &WorkGetAssJob;
+	JobFunctions[JOB_TUBESTIED] = &WorkGetTubesTied;
+	JobFunctions[JOB_FERTILITY] = &WorkGetFertility;
 	// - House
 	JobFunctions[JOB_PERSONALTRAINING] = &WorkPersonalTraining;
 	JobFunctions[JOB_PERSONALBEDWARMER] = &WorkPersonalBedWarmer;
@@ -293,6 +297,8 @@ void cJobManager::Setup()
 	JobDescription[JOB_NURSE] = gettext("Will help the doctor and heal sick people.");
 	JobName[JOB_MECHANIC] = gettext("Mechanic");
 	JobDescription[JOB_MECHANIC] = gettext("Will help the doctor and repair Constructs.");
+	JobName[JOB_INTERN] = gettext("Intern");
+	JobDescription[JOB_INTERN] = gettext("Will train in how to be a nurse.");
 	JobName[JOB_JANITOR] = gettext("Janitor");
 	JobDescription[JOB_JANITOR] = gettext("She will clean the clinic");
 	JobName[JOB_CLINICREST] = gettext("Time off");
@@ -318,6 +324,10 @@ void cJobManager::Setup()
 	JobDescription[JOB_VAGINAREJUV] = gettext("She will undergo surgery to make her a virgin again.\n*(Takes up to 5 days, less if a Nurse is on duty)");
 	JobName[JOB_FACELIFT] = gettext("Face Lift");
 	JobDescription[JOB_FACELIFT] = gettext("She will undergo surgery to make her younger.\n*(Takes up to 5 days, less if a Nurse is on duty)");
+	JobName[JOB_TUBESTIED] = gettext("Tubes Tied");
+	JobDescription[JOB_TUBESTIED] = gettext("She will undergo surgery to make her sterile.\n*(Takes up to 5 days, less if a Nurse is on duty)");
+	JobName[JOB_FERTILITY] = gettext("Fertility Treatmeant");
+	JobDescription[JOB_FERTILITY] = gettext("She will undergo surgery to make her fertile.\n*(Takes up to 5 days, less if a Nurse is on duty)");
 	JobName[JOB_GETHEALING] = gettext("Get Healing");
 	JobDescription[JOB_GETHEALING] = gettext("She will have her wounds attended.");
 	JobName[JOB_GETREPAIRS] = gettext("Get Repaired");
@@ -348,6 +358,8 @@ void cJobManager::Setup()
 	JobDescription[JOB_FILMTITTY] = ("She will perform in a titty fuck scene.");
 	JobName[JOB_FILMSTRIP] = ("Film Strip tease");
 	JobDescription[JOB_FILMSTRIP] = ("She will perform in a strip tease scene.");
+	JobName[JOB_FILMHANDJOB] = ("Film Hand Job");
+	JobDescription[JOB_FILMHANDJOB] = ("She will perform in a hand job scene.");
 	JobName[JOB_FILMRANDOM] = ("Film a random scene");
 	JobDescription[JOB_FILMRANDOM] = ("She will perform in a random sex scene.");
 
@@ -370,6 +382,17 @@ void cJobManager::Setup()
 	JobName[JOB_FILMFREETIME] = gettext("Time off");
 	JobDescription[JOB_FILMFREETIME] = gettext("She takes time off resting and recovering.");
 
+	//- Arena Staff
+	JobFilterName[JOBFILTER_ARENASTAFF] = gettext("Arena Staff");
+	JobFilterDescription[JOBFILTER_ARENASTAFF] = gettext("These are jobs that help run an arena.");
+	JobFilterIndex[JOBFILTER_ARENASTAFF] = JOB_DOCTORE;
+	JobName[JOB_DOCTORE] = gettext("Doctore");
+	JobDescription[JOB_DOCTORE] = gettext("She will watch over the girls in the arena.");
+	JobName[JOB_CLEANARENA] = gettext("Grounds Keeper");
+	JobDescription[JOB_CLEANARENA] = gettext("She will clean the arena.");
+	JobName[JOB_ARENAREST] = gettext("Time off");
+	JobDescription[JOB_ARENAREST] = gettext("She will rest.");
+
 	//- Arena
 	JobFilterName[JOBFILTER_ARENA] = gettext("Arena");
 	JobFilterDescription[JOBFILTER_ARENA] = gettext("These are jobs for running an arena.");
@@ -381,12 +404,6 @@ void cJobManager::Setup()
 	JobFilterIndex[JOBFILTER_ARENA] = JOB_FIGHTBEASTS;
 	JobName[JOB_FIGHTTRAIN] = gettext("Combat Training");
 	JobDescription[JOB_FIGHTTRAIN] = gettext("She will practice combat.");
-	JobName[JOB_DOCTORE] = gettext("Doctore");
-	JobDescription[JOB_DOCTORE] = gettext("She will watch over the girls in the arena.");
-	JobName[JOB_CLEANARENA] = gettext("Clean Arena");
-	JobDescription[JOB_CLEANARENA] = gettext("She will clean the arena.");
-	JobName[JOB_ARENAREST] = gettext("Time off");
-	JobDescription[JOB_ARENAREST] = gettext("She will rest.");
 	JobName[JOB_CITYGUARD] = gettext("City Guard");
 	JobDescription[JOB_CITYGUARD] = gettext("She will help keep crossgate safe.");
 
@@ -576,6 +593,8 @@ bool cJobManager::is_sex_type_allowed(unsigned int sex_type, sBrothel* brothel)
 		return false;
 	else if(sex_type == SKILL_TITTYSEX && brothel->m_RestrictTitty)
 		return false;
+	else if(sex_type == SKILL_HANDJOB && brothel->m_RestrictHand)
+		return false;
 	else if(sex_type == SKILL_GROUP && brothel->m_RestrictGroup)
 		return false;
 	else if(sex_type == SKILL_LESBIAN && brothel->m_RestrictLesbian)
@@ -746,18 +765,18 @@ void cJobManager::do_custjobs(sBrothel* brothel, int DayNight)
 		case JOB_BROTHELSTRIPPER:
 			refused = WorkBrothelStripper(current,brothel,DayNight,summary);
 			break;
-		//case JOB_PEEP:
-		//	refused = WorkPeepShow(current,brothel,DayNight,summary);
-		//	break;
-		//case JOB_BEASTCAPTURE:
-		//	refused = WorkBeastCapture(current,brothel,DayNight,summary);
-		//	break;
-		//case JOB_BEASTCARER:
-		//	refused = WorkBeastCare(current,brothel,DayNight,summary);
-		//	break;
-		//case JOB_MILK:
-		//	refused = WorkMilk(current,brothel,DayNight,summary);
+		/*case JOB_PEEP:
+			refused = WorkPeepShow(current,brothel,DayNight,summary);
 			break;
+		case JOB_BEASTCAPTURE:
+			refused = WorkBeastCapture(current,brothel,DayNight,summary);
+			break;
+		case JOB_BEASTCARER:
+			refused = WorkBeastCare(current,brothel,DayNight,summary);
+			break;
+		case JOB_MILK:
+			refused = WorkMilk(current,brothel,DayNight,summary);
+			break;*/
 		default:
 			break;
 		}
@@ -814,6 +833,7 @@ bool cJobManager::is_job_Paid_Player(u_int Job)
 		Job ==	JOB_FILMMAST			||	// films this sort of scene in the movie
 		Job ==	JOB_FILMTITTY			||	// films this sort of scene in the movie
 		Job ==	JOB_FILMSTRIP			||	// films this sort of scene in the movie
+		Job ==	JOB_FILMHANDJOB			||	// films this sort of scene in the movie
 		Job ==	JOB_FILMRANDOM			||	// Films a random sex scene
 		Job ==	JOB_DIRECTOR			||	// Direcets the movies
 		Job ==	JOB_PROMOTER			||	// Advertises the studio's films
@@ -1050,6 +1070,17 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 			Girl->m_NightJob = Girl->m_DayJob = JOB_NURSE;
 		}
 	}
+	else if (u_int(JobID) == JOB_INTERN)	// `J` added
+	{
+		if (g_Girls.GetSkill(Girl, SKILL_MEDICINE) > 99 && g_Girls.GetStat(Girl, STAT_INTELLIGENCE) > 99 && g_Girls.GetStat(Girl, STAT_CHARISMA) > 99)
+		{
+			g_MessageQue.AddToQue(gettext("There is nothing more she can learn here."), 0);
+			if (Girl->m_DayJob == JOB_FIGHTTRAIN)	Girl->m_DayJob = JOB_CLINICREST;
+			if (Girl->m_NightJob == JOB_FIGHTTRAIN)	Girl->m_NightJob = JOB_CLINICREST;
+		}
+		else if (DayOrNight){Girl->m_DayJob = JOB_INTERN;}
+		else				{Girl->m_NightJob = JOB_INTERN;}
+	}
 	else if (u_int(JobID) == JOB_MECHANIC)
 	{
 		Girl->m_NightJob = Girl->m_DayJob = JOB_MECHANIC;
@@ -1269,6 +1300,40 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 			g_MessageQue.AddToQue(gettext("You must have a Doctor for that operation."), 0);
 		}
 	}
+	else if(u_int(JobID) == JOB_TUBESTIED)
+	{
+		if (g_Girls.HasTrait(Girl, "Sterile"))
+		{
+			Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+			g_MessageQue.AddToQue(gettext("She is already Sterile and doesn't need this."), 0);
+		}
+		else if (g_Clinic.GetNumGirlsOnJob(-1, JOB_DOCTOR, DayOrNight) > 0)
+		{
+			Girl->m_DayJob = Girl->m_NightJob = JOB_TUBESTIED;
+		}
+		else
+		{
+			Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+			g_MessageQue.AddToQue(gettext("You must have a Doctor for that operation."), 0);
+		}
+	}
+	else if(u_int(JobID) == JOB_FERTILITY)
+	{
+		if (!g_Girls.HasTrait(Girl, "Sterile"))
+		{
+			Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+			g_MessageQue.AddToQue(gettext("She is already Fertile and doesn't need this."), 0);
+		}
+		else if (g_Clinic.GetNumGirlsOnJob(-1, JOB_DOCTOR, DayOrNight) > 0)
+		{
+			Girl->m_DayJob = Girl->m_NightJob = JOB_FERTILITY;
+		}
+		else
+		{
+			Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+			g_MessageQue.AddToQue(gettext("You must have a Doctor for that operation."), 0);
+		}
+	}
 // Special Centre Jobs
 	else if (u_int(JobID) == JOB_CENTREMANAGER)
 	{
@@ -1339,6 +1404,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		u_int(JobID) == JOB_FILMMAST ||
 		u_int(JobID) == JOB_FILMTITTY ||
 		u_int(JobID) == JOB_FILMSTRIP ||
+		u_int(JobID) == JOB_FILMHANDJOB ||
 		u_int(JobID) == JOB_FILMLESBIAN ||
 		u_int(JobID) == JOB_FILMRANDOM)
 	{
@@ -1404,9 +1470,12 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 			u_int(OldJobID) == JOB_VAGINAREJUV ||
 			u_int(OldJobID) == JOB_FACELIFT ||
 			u_int(OldJobID) == JOB_ASSJOB ||
+			u_int(OldJobID) == JOB_TUBESTIED ||
+			u_int(OldJobID) == JOB_FERTILITY ||
 			u_int(OldJobID) == JOB_CHAIRMAN ||
 			u_int(OldJobID) == JOB_DOCTOR ||
 			u_int(OldJobID) == JOB_NURSE ||
+			u_int(OldJobID) == JOB_INTERN ||
 			u_int(OldJobID) == JOB_MECHANIC)
 		{
 			if (u_int(JobID) != JOB_GETHEALING &&
@@ -1419,9 +1488,12 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 				u_int(JobID) != JOB_VAGINAREJUV &&
 				u_int(JobID) != JOB_FACELIFT &&
 				u_int(JobID) != JOB_ASSJOB &&
+				u_int(JobID) != JOB_TUBESTIED &&
+				u_int(JobID) != JOB_FERTILITY &&
 				u_int(JobID) != JOB_CHAIRMAN &&
 				u_int(JobID) != JOB_DOCTOR &&
 				u_int(JobID) != JOB_NURSE &&
+				u_int(JobID) != JOB_INTERN &&
 				u_int(JobID) != JOB_MECHANIC)			
 			{  // for these Day+Night jobs, switch leftover day or night job back to resting
 				(DayOrNight) ? Girl->m_NightJob = JOB_CLINICREST : Girl->m_DayJob = JOB_CLINICREST;

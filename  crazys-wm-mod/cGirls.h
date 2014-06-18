@@ -653,6 +653,8 @@ struct sGirl
 	int oralsex(int n)	{ return upd_skill(SKILL_ORALSEX, n); }
 	int tittysex() { return get_skill(SKILL_TITTYSEX); }
 	int tittysex(int n)	{ return upd_skill(SKILL_TITTYSEX, n); }
+	int handjob() { return get_skill(SKILL_HANDJOB); }
+	int handjob(int n)	{ return upd_skill(SKILL_HANDJOB, n); }
 	int	service()	{ return get_skill(SKILL_SERVICE); }
 	int	service(int n)	{ return upd_skill(SKILL_SERVICE, n); }
 	int	strip()		{ return get_skill(SKILL_STRIP); }

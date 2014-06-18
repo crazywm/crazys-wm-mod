@@ -86,6 +86,13 @@ private:
 	sScript* Script_TittyTarget(sScript* Script);
 	sScript* Script_DeathTarget(sScript* Script);
 	sScript* Script_ProfileTarget(sScript* Script);
+	sScript* Script_HandJobTarget(sScript* Script);
+	sScript* Script_EcchiTarget(sScript* Script);
+	sScript* Script_BunnyTarget(sScript* Script);
+	sScript* Script_CardTarget(sScript* Script);
+	sScript* Script_MilkTarget(sScript* Script);
+	sScript* Script_WaitTarget(sScript* Script);
+	sScript* Script_SingTarget(sScript* Script);
 
 	// The overloaded process function
 	sScript *Process(sScript *Script);
