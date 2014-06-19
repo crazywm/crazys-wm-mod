@@ -126,7 +126,9 @@ bool cJobManager::WorkFilmStrip(sGirl* girl, sBrothel* brothel, int DayNight, st
 	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill);
 	g_Girls.UpdateSkill(girl, SKILL_STRIP, g_Dice%skill + 1);
 
+	/* `J` not really applicable if she is just stripping
 	g_Girls.PossiblyGainNewTrait(girl, "Fake orgasm expert", 15, ACTION_WORKMOVIE, "She has become quite the faker.", DayNight != 0);
+	// */ //
 
 	return false;
 }

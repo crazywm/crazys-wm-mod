@@ -69,6 +69,13 @@ bool cJobManager::WorkGetTubesTied(sGirl* girl, sBrothel* brothel, int DayNight,
 		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_WARNING);
 		return true;
 	}
+	if (girl->is_pregnant())
+	{
+		message = girl->m_Realname + gettext(" is pregant.\nShe must either have her baby or get an abortion before She can get her Tubes Tied.");
+		if (DayNight == 0)	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_WARNING);
+		girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
+		return true;
+	}
 	if (g_Girls.HasTrait(girl, "Sterile"))
 	{
 		message = girl->m_Realname + gettext(" is already Sterile so she was sent to the waiting room.");

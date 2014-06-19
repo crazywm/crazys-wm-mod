@@ -1143,10 +1143,12 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 	newGirl->m_Name = new char[current->m_Name.length()+1];	// name
 	strcpy(newGirl->m_Name, current->m_Name.c_str());
 
+	/* `J` removing unhelpful log and created a more useful log at the end of the section
 	g_LogFile.os() << gettext("getting money for ") << newGirl->m_Name << endl;
 	g_LogFile.os() << gettext("template is ") << current->m_Name << endl;
 	g_LogFile.os() << gettext("min money ") << current->m_MinMoney << endl;
 	g_LogFile.os() << gettext("max money ") << current->m_MaxMoney << endl;
+	// */ //
 
 	newGirl->m_Money = (g_Dice%(current->m_MaxMoney-current->m_MinMoney))+current->m_MinMoney;	// money
 	
@@ -1258,7 +1260,7 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 	if(newGirl->m_States&(1<<STATUS_SLAVE))
 	{
 		newGirl->m_AccLevel = 0;
-		if(((int)newGirl->m_Stats[STAT_OBEDIENCE] + 20) > 100)
+		if((newGirl->m_Stats[STAT_OBEDIENCE] + 20) > 100)
 			newGirl->m_Stats[STAT_OBEDIENCE] = 100;
 		else
 			newGirl->m_Stats[STAT_OBEDIENCE] += 20;
@@ -1267,7 +1269,7 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 	if(newGirl->m_States&(1<<STATUS_ARENA))
 	{
 		newGirl->m_AccLevel = 0;
-		if(((int)newGirl->m_Stats[STAT_OBEDIENCE] + 20) > 100)
+		if((newGirl->m_Stats[STAT_OBEDIENCE] + 20) > 100)
 			newGirl->m_Stats[STAT_OBEDIENCE] = 100;
 		else
 			newGirl->m_Stats[STAT_OBEDIENCE] += 20;
@@ -1372,6 +1374,11 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 		;
 	newGirl->m_Triggers.LoadList(dp);
 	newGirl->m_Triggers.SetGirlTarget(newGirl);
+	
+	// `J` more usefull log for rgirl
+	g_LogFile.os() << gettext("Random girl ") << newGirl->m_Realname
+		<< gettext(" created from template ") << newGirl->m_Name
+		<< gettext(".rgirlsx")<< endl;
 
 	if(addToGGirls)
 		AddGirl(newGirl);

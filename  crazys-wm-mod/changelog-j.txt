@@ -335,6 +335,30 @@ Rewrote Dungeon turn summary to sort the girls the way other buildings do.
 Added "Runaway's Names (Time)" list to house details
 Added variations of "Holy Water" items (T), (S), (M), (L), (D) 
 !!!!!!!!!!!!!!!!!!!! pushed version .05q.03
+Fixed a bug dealing with the game not knowing where the girl is located.
+!!!!!!!!!!!!!!!!!!!! pushed version .05q.04
+
+###  Changes 6/17/2014
+Crazy added:
+New Skill - Hand Job
+New Jobs - WorkFilmHandJob, GetFertility, GetTubesTied, Intern
+Modified Jobs - Cleaning, BarPiano, BarSinger, BarStripper, BarWhore, Milk, PeepShow,
+                BrothelMassusse, BrothelStripper, BrothelWhore, HallEntertainer, HallWhore
+New Actions - ACTION_WORKMUSIC, ACTION_WORKSTRIP, ACTION_WORKMILK, ACTION_WORKMASSUSSE	
+New Script Targets - HandJob, Ecchi, Bunny, Card, Milk, Wait, Sing
+
+'J'
+Renamed "cWorkCleaning.cpp" to "WorkCleaning.cpp" to bring it in with the other "Work.cpp"s
+Corrected typos, missed changes, etc.
+Separated m_JustGaveBirth resting to current building resting
+Added pregnancy check to GetFertility and GetTubesTied
+Added trait gain/loss and enjoyment to Intern
+Removed possible gain of "Fake orgasm expert" from WorkFilmStrip, WorkFilmTitty, WorkFilmHandJob
+Added Hand Job to WorkPersonalTraining
+Added Hand Job restrictions to interface J_1024x768
+Removed the "End of Script text for testing purposes." line from DefaultInteractDetails.script
+Included .\Docs&Tools with ScriptEdit and WMEdit in it
+!!!!!!!!!!!!!!!!!!!! pushed version .05r
 
 
 

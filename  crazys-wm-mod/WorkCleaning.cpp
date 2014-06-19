@@ -93,24 +93,23 @@ bool cJobManager::WorkCleaning(sGirl* girl, sBrothel* brothel, int DayNight, str
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))
 		libido += 2;
 
+	int pay = 50;
 	if (CleanAmt >= 125)
 	{
-		girl->m_Pay += 150;
+		pay += 100;
 	}
 	else if (CleanAmt >= 60)
 	{
-		girl->m_Pay += 100;
+		pay += 50;
 	}
-	else
-	{
-		girl->m_Pay += 50;
-	}
-	g_Gold.building_upkeep(25);  // wages come from you
+	girl->m_Pay += pay;
+	g_Gold.building_upkeep(pay);  // wages come from you
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, skill);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
 	//lose traits
 	g_Girls.PossiblyLoseExistingTrait(girl, "Clumsy", 20, ACTION_WORKCLEANING, "It took her spilling hundreds of buckets, and just as many reprimands, but " + girl->m_Realname + " has finally stopped being so Clumsy.", DayNight != 0);
+	
 	return false;
 }

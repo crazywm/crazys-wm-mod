@@ -126,7 +126,9 @@ bool cJobManager::WorkFilmHandJob(sGirl* girl, sBrothel* brothel, int DayNight, 
 	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill);
 	g_Girls.UpdateSkill(girl, SKILL_HANDJOB, g_Dice%skill + 1);
 
+	/* `J` not really applicable to hand jobs
 	g_Girls.PossiblyGainNewTrait(girl, "Fake orgasm expert", 15, ACTION_WORKMOVIE, "She has become quite the faker.", DayNight != 0);
+	// */ //
 
 	return false;
 }
