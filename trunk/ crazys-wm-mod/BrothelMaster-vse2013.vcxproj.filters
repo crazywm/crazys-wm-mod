@@ -322,9 +322,6 @@
     <ClCompile Include="cJobManager.cpp">
       <Filter>Jobs</Filter>
     </ClCompile>
-    <ClCompile Include="cWorkCleaning.cpp">
-      <Filter>Jobs</Filter>
-    </ClCompile>
     <ClCompile Include="WorkAdvertising.cpp">
       <Filter>Jobs</Filter>
     </ClCompile>
@@ -636,6 +633,13 @@
     <ClCompile Include="WorkGetAssJob.cpp" />
     <ClCompile Include="sFacility.cpp" />
     <ClCompile Include="sFacilityList.cpp" />
+    <ClCompile Include="WorkFilmHandJob.cpp" />
+    <ClCompile Include="WorkGetTubesTied.cpp" />
+    <ClCompile Include="WorkGetFertility.cpp" />
+    <ClCompile Include="WorkIntern.cpp" />
+    <ClCompile Include="WorkCleaning.cpp">
+      <Filter>Jobs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cButton.h">

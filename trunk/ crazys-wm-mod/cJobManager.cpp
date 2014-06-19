@@ -679,10 +679,16 @@ void cJobManager::do_whorejobs(sBrothel* brothel, int DayNight)
 	{
 		string summary = "";
 		u_int sw = 0;						//	Job type
-		if(current->m_JustGaveBirth)		// if she gave birth, let her rest this week
-			sw = JOB_RESTING;
-		else
-			sw = (DayNight == SHIFT_DAY) ? current->m_DayJob : current->m_NightJob;
+		if (current->m_JustGaveBirth)		// if she gave birth, let her rest this week
+		{
+			if (current->m_InMovieStudio)	sw = JOB_FILMFREETIME;
+			else if (current->m_InArena)	sw = JOB_ARENAREST;
+			else if (current->m_InCentre)	sw = JOB_CENTREREST;
+			else if (current->m_InClinic)	sw = JOB_CLINICREST;
+			else if (current->m_InHouse)	sw = JOB_HOUSEREST;
+			else sw = JOB_RESTING;
+		}
+		else	sw = (DayNight == SHIFT_DAY) ? current->m_DayJob : current->m_NightJob;
 		
 		bool refused = false;
 		if(sw == JOB_WHOREBROTHEL)
@@ -721,11 +727,17 @@ void cJobManager::do_custjobs(sBrothel* brothel, int DayNight)
 	{
 		string summary = "";
 		u_int sw = 0;						//	Job type
-		if(current->m_JustGaveBirth)		// if she gave birth, let her rest this week
-			sw = JOB_RESTING;
-		else
-			sw = (DayNight == SHIFT_DAY) ? current->m_DayJob : current->m_NightJob;
-		
+		if (current->m_JustGaveBirth)		// if she gave birth, let her rest this week
+		{
+			if (current->m_InMovieStudio)	sw = JOB_FILMFREETIME;
+			else if (current->m_InArena)	sw = JOB_ARENAREST;
+			else if (current->m_InCentre)	sw = JOB_CENTREREST;
+			else if (current->m_InClinic)	sw = JOB_CLINICREST;
+			else if (current->m_InHouse)	sw = JOB_HOUSEREST;
+			else sw = JOB_RESTING;
+		}
+		else	sw = (DayNight == SHIFT_DAY) ? current->m_DayJob : current->m_NightJob;
+
 		bool refused = false;
 		switch(sw)
 		{
@@ -1070,13 +1082,13 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 			Girl->m_NightJob = Girl->m_DayJob = JOB_NURSE;
 		}
 	}
-	else if (u_int(JobID) == JOB_INTERN)	// `J` added
+	else if (u_int(JobID) == JOB_INTERN)	// `Crazy` added
 	{
 		if (g_Girls.GetSkill(Girl, SKILL_MEDICINE) > 99 && g_Girls.GetStat(Girl, STAT_INTELLIGENCE) > 99 && g_Girls.GetStat(Girl, STAT_CHARISMA) > 99)
 		{
 			g_MessageQue.AddToQue(gettext("There is nothing more she can learn here."), 0);
-			if (Girl->m_DayJob == JOB_FIGHTTRAIN)	Girl->m_DayJob = JOB_CLINICREST;
-			if (Girl->m_NightJob == JOB_FIGHTTRAIN)	Girl->m_NightJob = JOB_CLINICREST;
+			if (Girl->m_DayJob == JOB_INTERN)	Girl->m_DayJob = JOB_CLINICREST;
+			if (Girl->m_NightJob == JOB_INTERN)	Girl->m_NightJob = JOB_CLINICREST;
 		}
 		else if (DayOrNight){Girl->m_DayJob = JOB_INTERN;}
 		else				{Girl->m_NightJob = JOB_INTERN;}
@@ -1115,7 +1127,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		}
 		else
 		{
-			Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+			Girl->m_DayJob = Girl->m_NightJob = JOB_CLINICREST;
 			g_MessageQue.AddToQue(gettext("You need a Doctor or Mechanic on duty to heal or repair a Half-Construct."), 0);
 		}
 	}
@@ -1130,7 +1142,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 			}
 			else
 			{
-				Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+				Girl->m_DayJob = Girl->m_NightJob = JOB_CLINICREST;
 				g_MessageQue.AddToQue(gettext("The Doctor does not work on Constructs.\nYou need a Mechanic on duty to repair a Construct."), 0);
 			}
 		}
@@ -1140,7 +1152,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		}
 		else
 		{
-			Girl->m_NightJob = Girl->m_DayJob = JOB_RESTING;
+			Girl->m_NightJob = Girl->m_DayJob = JOB_CLINICREST;
 			g_MessageQue.AddToQue(gettext("You must have a Doctor for healing."), 0);
 		}
 	}
@@ -1155,7 +1167,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 			}
 			else
 			{
-				Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+				Girl->m_DayJob = Girl->m_NightJob = JOB_CLINICREST;
 				g_MessageQue.AddToQue(gettext("The Mechanic only works on Constructs.\nYou need a Doctor on duty to heal her."), 0);
 			}
 		}
@@ -1165,7 +1177,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		}
 		else
 		{
-			Girl->m_NightJob = Girl->m_DayJob = JOB_RESTING;
+			Girl->m_NightJob = Girl->m_DayJob = JOB_CLINICREST;
 			g_MessageQue.AddToQue(gettext("You must have a mechanic for that operation."), 0);
 		}
 	}
@@ -1173,7 +1185,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	{
 		if (!Girl->is_pregnant())
 		{
-			Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+			Girl->m_DayJob = Girl->m_NightJob = JOB_CLINICREST;
 			g_MessageQue.AddToQue(gettext("Oops, the girl is not pregant."), 0);
 		}
 		else if (g_Clinic.GetNumGirlsOnJob(-1, JOB_DOCTOR, DayOrNight) > 0)
@@ -1182,7 +1194,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		}
 		else 
 		{
-			Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+			Girl->m_DayJob = Girl->m_NightJob = JOB_CLINICREST;
 			g_MessageQue.AddToQue(gettext("You must have a Doctor to perform an abortion."), 0);
 		}
 	}
@@ -1194,7 +1206,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		}
 		else 
 		{
-			Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+			Girl->m_DayJob = Girl->m_NightJob = JOB_CLINICREST;
 			g_MessageQue.AddToQue(gettext("You must have a Doctor for that operation."), 0);
 		}
 	}
@@ -1202,7 +1214,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	{
 		if (g_Girls.HasTrait(Girl, "Small Boobs"))
 		{
-			Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+			Girl->m_DayJob = Girl->m_NightJob = JOB_CLINICREST;
 			g_MessageQue.AddToQue(gettext("Her boobs can't get no smaller."), 0);
 		}
 		else if (g_Clinic.GetNumGirlsOnJob(-1, JOB_DOCTOR, DayOrNight) > 0)
@@ -1211,7 +1223,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		}
 		else
 		{
-			Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+			Girl->m_DayJob = Girl->m_NightJob = JOB_CLINICREST;
 			g_MessageQue.AddToQue(gettext("You must have a Doctor for that operation."), 0);
 		}
 	}
@@ -1219,7 +1231,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	{
 		if (g_Girls.HasTrait(Girl, "Abnormally Large Boobs"))
 		{
-			Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+			Girl->m_DayJob = Girl->m_NightJob = JOB_CLINICREST;
 			g_MessageQue.AddToQue(gettext("Her boobs can't get no bigger."), 0);
 		}
 		else if (g_Clinic.GetNumGirlsOnJob(-1, JOB_DOCTOR, DayOrNight) > 0)
@@ -1228,7 +1240,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		}
 		else
 		{
-			Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+			Girl->m_DayJob = Girl->m_NightJob = JOB_CLINICREST;
 			g_MessageQue.AddToQue(gettext("You must have a Doctor for that operation."), 0);
 		}
 	}
@@ -1236,7 +1248,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	{
 		if (g_Girls.HasTrait(Girl, "Great Arse"))
 		{
-			Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+			Girl->m_DayJob = Girl->m_NightJob = JOB_CLINICREST;
 			g_MessageQue.AddToQue(gettext("Her ass can't get no better."), 0);
 		}
 		else if (g_Clinic.GetNumGirlsOnJob(-1, JOB_DOCTOR, DayOrNight) > 0)
@@ -1245,7 +1257,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		}
 		else
 		{
-			Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+			Girl->m_DayJob = Girl->m_NightJob = JOB_CLINICREST;
 			g_MessageQue.AddToQue(gettext("You must have a Doctor for that operation."), 0);
 		}
 	}
@@ -1253,7 +1265,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	{
 		if (g_Girls.GetStat(Girl, STAT_AGE) <= 21)
 		{
-			Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+			Girl->m_DayJob = Girl->m_NightJob = JOB_CLINICREST;
 			g_MessageQue.AddToQue(gettext("She is to young for a face lift."), 0);
 		}
 		else if (g_Clinic.GetNumGirlsOnJob(-1, JOB_DOCTOR, DayOrNight) > 0)
@@ -1262,7 +1274,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		}
 		else
 		{
-			Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+			Girl->m_DayJob = Girl->m_NightJob = JOB_CLINICREST;
 			g_MessageQue.AddToQue(gettext("You must have a Doctor for that operation."), 0);
 		}
 	}
@@ -1270,7 +1282,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	{
 		if (Girl->m_Virgin)
 		{
-			Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+			Girl->m_DayJob = Girl->m_NightJob = JOB_CLINICREST;
 			g_MessageQue.AddToQue(gettext("She is a virgin and has no need of this operation."), 0);
 		}
 		else if (g_Clinic.GetNumGirlsOnJob(-1, JOB_DOCTOR, DayOrNight) > 0)
@@ -1279,7 +1291,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		}
 		else
 		{
-			Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+			Girl->m_DayJob = Girl->m_NightJob = JOB_CLINICREST;
 			g_MessageQue.AddToQue(gettext("You must have a Doctor for that operation."), 0);
 		}
 	}
@@ -1287,7 +1299,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	{
 		if (g_Girls.HasTrait(Girl, "Great Figure"))
 		{
-			Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+			Girl->m_DayJob = Girl->m_NightJob = JOB_CLINICREST;
 			g_MessageQue.AddToQue(gettext("She already has a great figure and doesn't need this."), 0);
 		}
 		else if (g_Clinic.GetNumGirlsOnJob(-1, JOB_DOCTOR, DayOrNight) > 0)
@@ -1296,15 +1308,21 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		}
 		else
 		{
-			Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+			Girl->m_DayJob = Girl->m_NightJob = JOB_CLINICREST;
 			g_MessageQue.AddToQue(gettext("You must have a Doctor for that operation."), 0);
 		}
 	}
 	else if(u_int(JobID) == JOB_TUBESTIED)
 	{
-		if (g_Girls.HasTrait(Girl, "Sterile"))
+		if (Girl->is_pregnant())
 		{
-			Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+			Girl->m_DayJob = Girl->m_NightJob = JOB_CLINICREST;
+			g_MessageQue.AddToQue(Girl->m_Realname + 
+				gettext(" is pregant.\nShe must either have her baby or get an abortion before She can get her Tubes Tied."), 0);
+		}
+		else if (g_Girls.HasTrait(Girl, "Sterile"))
+		{
+			Girl->m_DayJob = Girl->m_NightJob = JOB_CLINICREST;
 			g_MessageQue.AddToQue(gettext("She is already Sterile and doesn't need this."), 0);
 		}
 		else if (g_Clinic.GetNumGirlsOnJob(-1, JOB_DOCTOR, DayOrNight) > 0)
@@ -1313,15 +1331,21 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		}
 		else
 		{
-			Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+			Girl->m_DayJob = Girl->m_NightJob = JOB_CLINICREST;
 			g_MessageQue.AddToQue(gettext("You must have a Doctor for that operation."), 0);
 		}
 	}
 	else if(u_int(JobID) == JOB_FERTILITY)
 	{
-		if (!g_Girls.HasTrait(Girl, "Sterile"))
+		if (Girl->is_pregnant())
 		{
-			Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+			Girl->m_DayJob = Girl->m_NightJob = JOB_CLINICREST;
+			g_MessageQue.AddToQue(Girl->m_Realname +
+				gettext(" is pregant.\nShe must be Fertile so She doesn't need this now."), 0);
+		}
+		else if (!g_Girls.HasTrait(Girl, "Sterile"))
+		{
+			Girl->m_DayJob = Girl->m_NightJob = JOB_CLINICREST;
 			g_MessageQue.AddToQue(gettext("She is already Fertile and doesn't need this."), 0);
 		}
 		else if (g_Clinic.GetNumGirlsOnJob(-1, JOB_DOCTOR, DayOrNight) > 0)
@@ -1330,7 +1354,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		}
 		else
 		{
-			Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+			Girl->m_DayJob = Girl->m_NightJob = JOB_CLINICREST;
 			g_MessageQue.AddToQue(gettext("You must have a Doctor for that operation."), 0);
 		}
 	}
@@ -1358,7 +1382,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		if(g_Centre.GetNumGirlsOnJob(-1, JOB_DRUGCOUNSELOR, DayOrNight) == 0)
 		{
 			g_MessageQue.AddToQue(gettext("You must have a drug counselor for rehab."), 0);
-			Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+			Girl->m_DayJob = Girl->m_NightJob = JOB_CLINICREST;
 		}
 		else if (g_Girls.HasTrait(Girl, "Shroud Addict") || 
 			g_Girls.HasTrait(Girl, "Fairy Dust Addict") || 
@@ -1368,7 +1392,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		}
 		else
 		{
-			Girl->m_DayJob = Girl->m_NightJob = JOB_RESTING;
+			Girl->m_DayJob = Girl->m_NightJob = JOB_CLINICREST;
 			g_MessageQue.AddToQue(gettext("She has no addiction."), 0);
 		}
 	}

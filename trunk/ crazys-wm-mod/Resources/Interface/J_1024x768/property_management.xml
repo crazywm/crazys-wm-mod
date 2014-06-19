@@ -15,6 +15,7 @@
 <Checkbox	Name="P_Ho_NoLes"		Text="."					XPos="320"	YPos="50"	Width="16"	Height="16"	FontSize="1"/>
 <Checkbox	Name="P_Ho_NoOral"	Text="."					XPos="340"	YPos="50"	Width="16"	Height="16"	FontSize="1"/>
 <Checkbox	Name="P_Ho_NoTitty"	Text="."					XPos="360"	YPos="50"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_Ho_NoHandJob"	Text="."					XPos="380"	YPos="50"	Width="16"	Height="16"	FontSize="1"/>
 <Checkbox	Name="P_Ho_Pot_B"		Text="."					XPos="450"	YPos="50"	Width="16"	Height="16"	FontSize="1"/>
 <Text    	Name="P_Ho_Pot_A"		Text="You have: 0"			XPos="470"	YPos="50"	Width="160"	Height="32"	FontSize="10"/>
 <Slider	Name="P_Ho_AdvSlid"							XPos="220"	YPos="70"	Width="200"	MinValue="0"	MaxValue="2000"	Value="0"	Increment="100"	LiveUpdate="true"	Hidden="false"	Disabled="false"/>
@@ -29,6 +30,7 @@
 <Checkbox	Name="P_B0_NoLes"		Text="."					XPos="320"	YPos="100"	Width="16"	Height="16"	FontSize="1"/>
 <Checkbox	Name="P_B0_NoOral"	Text="."					XPos="340"	YPos="100"	Width="16"	Height="16"	FontSize="1"/>
 <Checkbox	Name="P_B0_NoTitty"	Text="."					XPos="360"	YPos="100"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B0_NoHandJob"	Text="."					XPos="380"	YPos="100"	Width="16"	Height="16"	FontSize="1"/>
 <Checkbox	Name="P_B0_Pot_B"		Text="."					XPos="450"	YPos="100"	Width="16"	Height="16"	FontSize="1"/>
 <Text    	Name="P_B0_Pot_A"		Text="You have: 0"			XPos="470"	YPos="100"	Width="160"	Height="32"	FontSize="10"/>
 <Slider	Name="P_B0_AdvSlid"							XPos="220"	YPos="120"	Width="200"	MinValue="0"	MaxValue="2000"	Value="0"	Increment="100"	LiveUpdate="true"	Hidden="false"	Disabled="false"/>
@@ -43,6 +45,7 @@
 <Checkbox	Name="P_B1_NoLes"		Text="."					XPos="320"	YPos="150"	Width="16"	Height="16"	FontSize="1"/>
 <Checkbox	Name="P_B1_NoOral"	Text="."					XPos="340"	YPos="150"	Width="16"	Height="16"	FontSize="1"/>
 <Checkbox	Name="P_B1_NoTitty"	Text="."					XPos="360"	YPos="150"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B1_NoHandJob"	Text="."					XPos="380"	YPos="150"	Width="16"	Height="16"	FontSize="1"/>
 <Checkbox	Name="P_B1_Pot_B"		Text="."					XPos="450"	YPos="150"	Width="16"	Height="16"	FontSize="1"/>
 <Text    	Name="P_B1_Pot_A"		Text="You have: 0"			XPos="470"	YPos="150"	Width="160"	Height="32"	FontSize="10"/>
 <Slider	Name="P_B1_AdvSlid"							XPos="220"	YPos="170"	Width="200"	MinValue="0"	MaxValue="2000"	Value="0"	Increment="100"	LiveUpdate="true"	Hidden="false"	Disabled="false"/>
@@ -57,6 +60,7 @@
 <Checkbox	Name="P_B2_NoLes"		Text="."					XPos="320"	YPos="200"	Width="16"	Height="16"	FontSize="1"/>
 <Checkbox	Name="P_B2_NoOral"	Text="."					XPos="340"	YPos="200"	Width="16"	Height="16"	FontSize="1"/>
 <Checkbox	Name="P_B2_NoTitty"	Text="."					XPos="360"	YPos="200"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B2_NoHandJob"	Text="."					XPos="380"	YPos="200"	Width="16"	Height="16"	FontSize="1"/>
 <Checkbox	Name="P_B2_Pot_B"		Text="."					XPos="450"	YPos="200"	Width="16"	Height="16"	FontSize="1"/>
 <Text    	Name="P_B2_Pot_A"		Text="You have: 0"			XPos="470"	YPos="200"	Width="160"	Height="32"	FontSize="10"/>
 <Slider	Name="P_B2_AdvSlid"							XPos="220"	YPos="220"	Width="200"	MinValue="0"	MaxValue="2000"	Value="0"	Increment="100"	LiveUpdate="true"	Hidden="false"	Disabled="false"/>
@@ -71,6 +75,7 @@
 <Checkbox	Name="P_B3_NoLes"		Text="."					XPos="320"	YPos="250"	Width="16"	Height="16"	FontSize="1"/>
 <Checkbox	Name="P_B3_NoOral"	Text="."					XPos="340"	YPos="250"	Width="16"	Height="16"	FontSize="1"/>
 <Checkbox	Name="P_B3_NoTitty"	Text="."					XPos="360"	YPos="250"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B3_NoHandJob"	Text="."					XPos="380"	YPos="250"	Width="16"	Height="16"	FontSize="1"/>
 <Checkbox	Name="P_B3_Pot_B"		Text="."					XPos="450"	YPos="250"	Width="16"	Height="16"	FontSize="1"/>
 <Text    	Name="P_B3_Pot_A"		Text="You have: 0"			XPos="470"	YPos="250"	Width="160"	Height="32"	FontSize="10"/>
 <Slider	Name="P_B3_AdvSlid"							XPos="220"	YPos="270"	Width="200"	MinValue="0"	MaxValue="2000"	Value="0"	Increment="100"	LiveUpdate="true"	Hidden="false"	Disabled="false"/>
@@ -85,6 +90,7 @@
 <Checkbox	Name="P_B4_NoLes"		Text="."					XPos="320"	YPos="300"	Width="16"	Height="16"	FontSize="1"/>
 <Checkbox	Name="P_B4_NoOral"	Text="."					XPos="340"	YPos="300"	Width="16"	Height="16"	FontSize="1"/>
 <Checkbox	Name="P_B4_NoTitty"	Text="."					XPos="360"	YPos="300"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B4_NoHandJob"	Text="."					XPos="380"	YPos="300"	Width="16"	Height="16"	FontSize="1"/>
 <Checkbox	Name="P_B4_Pot_B"		Text="."					XPos="450"	YPos="300"	Width="16"	Height="16"	FontSize="1"/>
 <Text    	Name="P_B4_Pot_A"		Text="You have: 0"			XPos="470"	YPos="300"	Width="160"	Height="32"	FontSize="10"/>
 <Slider	Name="P_B4_AdvSlid"							XPos="220"	YPos="320"	Width="200"	MinValue="0"	MaxValue="2000"	Value="0"	Increment="100"	LiveUpdate="true"	Hidden="false"	Disabled="false"/>
@@ -99,6 +105,7 @@
 <Checkbox	Name="P_B5_NoLes"		Text="."					XPos="320"	YPos="350"	Width="16"	Height="16"	FontSize="1"/>
 <Checkbox	Name="P_B5_NoOral"	Text="."					XPos="340"	YPos="350"	Width="16"	Height="16"	FontSize="1"/>
 <Checkbox	Name="P_B5_NoTitty"	Text="."					XPos="360"	YPos="350"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B5_NoHandJob"	Text="."					XPos="380"	YPos="350"	Width="16"	Height="16"	FontSize="1"/>
 <Checkbox	Name="P_B5_Pot_B"		Text="."					XPos="450"	YPos="350"	Width="16"	Height="16"	FontSize="1"/>
 <Text    	Name="P_B5_Pot_A"		Text="You have: 0"			XPos="470"	YPos="350"	Width="160"	Height="32"	FontSize="10"/>
 <Slider	Name="P_B5_AdvSlid"							XPos="220"	YPos="370"	Width="200"	MinValue="0"	MaxValue="2000"	Value="0"	Increment="100"	LiveUpdate="true"	Hidden="false"	Disabled="false"/>
@@ -113,6 +120,7 @@
 <Checkbox	Name="P_B6_NoLes"		Text="."					XPos="320"	YPos="400"	Width="16"	Height="16"	FontSize="1"/>
 <Checkbox	Name="P_B6_NoOral"	Text="."					XPos="340"	YPos="400"	Width="16"	Height="16"	FontSize="1"/>
 <Checkbox	Name="P_B6_NoTitty"	Text="."					XPos="360"	YPos="400"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B6_NoHandJob"	Text="."					XPos="380"	YPos="400"	Width="16"	Height="16"	FontSize="1"/>
 <Checkbox	Name="P_B6_Pot_B"		Text="."					XPos="450"	YPos="400"	Width="16"	Height="16"	FontSize="1"/>
 <Text    	Name="P_B6_Pot_A"		Text="You have: 0"			XPos="470"	YPos="400"	Width="160"	Height="32"	FontSize="10"/>
 <Slider	Name="P_B6_AdvSlid"							XPos="220"	YPos="420"	Width="200"	MinValue="0"	MaxValue="2000"	Value="0"	Increment="100"	LiveUpdate="true"	Hidden="false"	Disabled="false"/>

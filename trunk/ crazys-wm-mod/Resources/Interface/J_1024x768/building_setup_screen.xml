@@ -20,14 +20,15 @@
 <Define Widget="Restrictions">
 <!--
 <Image	Name="Shader"	File="FacilityBG.png"	XPos="0"	YPos="0"	Width="520"	Height="86"/> -->
-<Checkbox	Name="ProhibitAnalToggle"	Text="Prohibit Anal"		XPos="43"	YPos="9"	Width="16"	Height="16"	FontSize="12"/>
-<Checkbox	Name="ProhibitBDSMToggle"	Text="Prohibit BDSM"		XPos="214"	YPos="9"	Width="16"	Height="16"	FontSize="12"/>
-<Checkbox	Name="ProhibitLesbianToggle"	Text="Prohibit Lesbian"		XPos="393"	YPos="9"	Width="16"	Height="16"	FontSize="12"/>
-<Checkbox	Name="ProhibitBeastToggle"	Text="Prohibit Bestiality"	XPos="14"	YPos="35"	Width="16"	Height="16"	FontSize="12"/>
+<Checkbox	Name="ProhibitAnalToggle"	Text="Prohibit Anal"		XPos="20"	YPos="9"	Width="16"	Height="16"	FontSize="12"/>
+<Checkbox	Name="ProhibitBDSMToggle"	Text="Prohibit BDSM"		XPos="190"	YPos="9"	Width="16"	Height="16"	FontSize="12"/>
+<Checkbox	Name="ProhibitLesbianToggle"	Text="Prohibit Lesbian"		XPos="370"	YPos="9"	Width="16"	Height="16"	FontSize="12"/>
+<Checkbox	Name="ProhibitBeastToggle"	Text="Prohibit Bestiality"	XPos="20"	YPos="35"	Width="16"	Height="16"	FontSize="12"/>
 <Checkbox	Name="ProhibitGroupToggle"	Text="Prohibit Group Sex"	XPos="190"	YPos="35"	Width="16"	Height="16"	FontSize="12"/>
-<Checkbox	Name="ProhibitNormalToggle"	Text="Prohibit Normal Sex"	XPos="371"	YPos="35"	Width="16"	Height="16"	FontSize="12"/>
-<Checkbox	Name="ProhibitOralToggle"	Text="Prohibit Oral Sex"	XPos="21"	YPos="60"	Width="16"	Height="16"	FontSize="12"/>
+<Checkbox	Name="ProhibitNormalToggle"	Text="Prohibit Normal Sex"	XPos="370"	YPos="35"	Width="16"	Height="16"	FontSize="12"/>
+<Checkbox	Name="ProhibitOralToggle"	Text="Prohibit Oral Sex"	XPos="20"	YPos="60"	Width="16"	Height="16"	FontSize="12"/>
 <Checkbox	Name="ProhibitTittyToggle"	Text="Prohibit Titty Sex"	XPos="190"	YPos="60"	Width="16"	Height="16"	FontSize="12"/>
+<Checkbox	Name="ProhibitHandJobToggle"	Text="Prohibit HandJob Sex"	XPos="370"	YPos="60"	Width="16"	Height="16"	FontSize="12"/>
 </Define>
 <Text    	Name="SexRestrictions"	Text="Sex Restrictions:"		XPos="16"	YPos="170"	Width="180"	Height="32"	FontSize="19"/>
 <Widget	Definition="Restrictions"	Seq="Res"				XPos="16"	YPos="195"/>

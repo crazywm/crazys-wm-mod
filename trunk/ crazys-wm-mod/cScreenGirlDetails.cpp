@@ -714,19 +714,12 @@ void cScreenGirlDetails::check_events()
 				if(!(trig = selected_girl->m_Triggers.CheckForScript(TRIGGER_TALK, false, v)))	// trigger any girl specific talk script
 				{
 					// no, so trigger the default one
-					dp = dp	<< "Resources"
-						<< "Scripts"
-						<< "DefaultInteractDetails.script"
-					;
+					dp = dp << "Resources" << "Scripts" << "DefaultInteractDetails.script";
 				}
 				else
 				{
 					// yes, so use that instead
-					dp = dp << "Resources"
-						<< "Characters"
-						<< selected_girl->m_Name
-						<< trig->m_Script
-					;
+					dp = dp << "Resources" << "Characters" << selected_girl->m_Name << trig->m_Script;
 				}
 			}
 			else
@@ -736,18 +729,11 @@ void cScreenGirlDetails::check_events()
 				if(!(trig = selected_girl->m_Triggers.CheckForScript(TRIGGER_TALK, false, v)))	// trigger any girl specific talk script
 				{
 					// no, so trigger the default one
-					dp = dp	<< "Resources"
-						<< "Scripts"
-						<< "DefaultInteractDungeon.script"
-					;
+					dp = dp << "Resources" << "Scripts" << "DefaultInteractDungeon.script";
 				}
 				else
 				{
-					dp = dp << "Resources"
-						<< "Characters"
-						<< selected_girl->m_Name
-						<< trig->m_Script
-					;
+					dp = dp << "Resources" << "Characters" << selected_girl->m_Name << trig->m_Script;
 				}
 			}
 			cScriptManager script_manager;

@@ -96,12 +96,28 @@ bool cJobManager::WorkIntern(sGirl* girl, sBrothel* brothel, int DayNight, strin
 	}
 	if (train == 3)
 	{
-		ss << gettext("She got more charimatic today.\n\n");
+		ss << gettext("She got more charismatic today.\n\n");
 		ss << gettext("She managed to gain ") << skill << gettext(" Charisma.\n\n");
 		g_Girls.UpdateStat(girl, STAT_CHARISMA, skill);
 	}
-
 	
+	int roll = g_Dice%100;
+	//enjoyed the work or not
+	if (roll <= 5)
+	{
+		message += " \nSome of the patrons abused her during the shift.";
+		g_Girls.UpdateEnjoyment(girl, ACTION_WORKNURSE, -1, true);
+	}
+	else if (roll <= 25) {
+		message += " \nShe had a pleasant time working.";
+		g_Girls.UpdateEnjoyment(girl, ACTION_WORKNURSE, +3, true);
+	}
+	else
+	{
+		message += " \nOtherwise, the shift passed uneventfully.";
+		g_Girls.UpdateEnjoyment(girl, ACTION_WORKNURSE, +1, true);
+	}
+
 	
 		
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, DayNight);
@@ -123,6 +139,12 @@ bool cJobManager::WorkIntern(sGirl* girl, sBrothel* brothel, int DayNight, strin
 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+
+	//gain traits
+	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, ACTION_WORKNURSE, "Dealing with patients and talking with them about their problems has made " + girl->m_Realname + " more Charismatic.", DayNight != 0);
+
+	//lose traits
+	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 20, ACTION_WORKNURSE, girl->m_Realname + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", DayNight != 0);
 
 	return false;
 }

@@ -127,7 +127,7 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, int DayNight, string
 	//try and add randomness here
 	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85)
 	{
-		if (roll <= 20)
+		if (g_Dice % 100 <= 20)
 		{
 			message += " Stunned by her beauty a patient left her a great tip.\n\n";
 			wages += 25;
@@ -135,7 +135,7 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, int DayNight, string
 	}
 	if (g_Girls.HasTrait(girl, "Clumsy"))
 	{
-		if (roll <= 15)
+		if (g_Dice % 100 <= 15)
 		{
 			message += " Her clumsy nature caused her to spill a medicine everywhere.\n";
 			wages -= 15;
@@ -143,7 +143,7 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, int DayNight, string
 	}
 	if (g_Girls.HasTrait(girl, "Pessimist"))
 	{
-		if (roll <= 5)
+		if (g_Dice % 100 <= 5)
 		{
 			if (jobperformance < 125)
 			{
@@ -159,7 +159,7 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, int DayNight, string
 	}
 	if (g_Girls.HasTrait(girl, "Optimist"))
 	{
-		if (roll <= 5)
+		if (g_Dice % 100 <= 5)
 		{
 			if (jobperformance < 125)
 			{
@@ -173,7 +173,7 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, int DayNight, string
 			}
 		}
 	}
-	
+
 	//enjoyed the work or not
 	if(roll <= 5)
 	{

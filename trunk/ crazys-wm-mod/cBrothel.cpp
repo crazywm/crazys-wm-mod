@@ -1279,6 +1279,7 @@ bool sBrothel::LoadBrothelXML(TiXmlHandle hBrothel)
 			bool success = girl->LoadGirlXML(TiXmlHandle(pGirl));
 			if (success == true)
 			{
+				girl->where_is_she = m_id;
 				AddGirl(girl);
 			}
 			else
@@ -5265,12 +5266,14 @@ void cBrothelManager::check_druggy_girl(stringstream& ss)
 	   << girl->m_Realname
 	   << gettext(" for possession of drugs and send her to prison.")
 	;
+	/* `J` just because she goes to prison doesn't mean she automatically looses her addiction - commented out
 	if(g_Girls.HasTrait(girl, "Viras Blood Addict"))
 		g_Girls.RemoveTrait(girl, "Viras Blood Addict");
 	if(g_Girls.HasTrait(girl, "Fairy Dust Addict"))
 		g_Girls.RemoveTrait(girl, "Fairy Dust Addict");
 	if(g_Girls.HasTrait(girl, "Shroud Addict"))
 		g_Girls.RemoveTrait(girl, "Shroud Addict");
+	// */ //
 
 	m_NumInventory = 0;
 	for(int i=0; i<40; i++)
