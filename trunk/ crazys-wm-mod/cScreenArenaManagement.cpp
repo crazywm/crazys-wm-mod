@@ -115,9 +115,6 @@ void cScreenArenaManagement::init()
 				{
 					selected_girl->m_States&=~(1<<STATUS_SLAVE);
 					g_Brothels.GetPlayer()->disposition(5);
-					//g_Brothels.GetPlayer()->m_Disposition += 5;
-					//if(g_Brothels.GetPlayer()->m_Disposition > 100)
-					//	g_Brothels.GetPlayer()->m_Disposition = 100;
 					g_Girls.UpdateStat(selected_girl, STAT_PCLOVE, 10);
 					g_Girls.UpdateStat(selected_girl, STAT_PCFEAR, -20);
 					g_Girls.UpdateStat(selected_girl, STAT_PCHATE, -25);
@@ -158,8 +155,8 @@ void cScreenArenaManagement::init()
 //	for(int i=0; i<NUMJOBTYPES; i++)  // loop through all job types
 	AddToListBox(jobtypelist_id, JOBFILTER_ARENASTAFF, g_Arena.m_JobManager.JobFilterName[JOBFILTER_ARENASTAFF]);
 	AddToListBox(jobtypelist_id, JOBFILTER_ARENA, g_Arena.m_JobManager.JobFilterName[JOBFILTER_ARENA]);
-	//AddToListBox(jobtypelist_id, JOBFILTER_GENERAL, g_Arena.m_JobManager.JobFilterName[JOBFILTER_GENERAL]);
-	SetSelectedItemInList(jobtypelist_id, JOBFILTER_ARENA);
+	RefreshJobList();
+	SetSelectedItemInList(jobtypelist_id, JOBFILTER_ARENASTAFF);
 
 	//get a list of all the column names, so we can find which data goes in that column
 	vector<string> columnNames;
@@ -205,11 +202,11 @@ void cScreenArenaManagement::init()
 void cScreenArenaManagement::process()
 {
 	// we need to make sure the ID variables are set
-	if(!ids_set)
+	if (!ids_set)
 		set_ids();
 
 	// handle arrow keys
- 	if(check_keys())
+	if (check_keys())
 		return;
 
 	// set up the window if needed
@@ -222,28 +219,28 @@ void cScreenArenaManagement::process()
 
 bool cScreenArenaManagement::check_keys()
 {
-	if(g_UpArrow) {
+	if (g_UpArrow) {
 		selection = ArrowUpListBox(girllist_id);
 		g_UpArrow = false;
 		return true;
 	}
-	if(g_DownArrow) {
+	if (g_DownArrow) {
 		selection = ArrowDownListBox(girllist_id);
 		g_DownArrow = false;
 		return true;
 	}
-	if(g_AltKeys)
+	if (g_AltKeys)
 	{
-	if(g_A_Key) {
-		selection = ArrowUpListBox(girllist_id);
-		g_A_Key = false;
-		return true;
-	}
-	if(g_D_Key) {
-		selection = ArrowDownListBox(girllist_id);
-		g_D_Key = false;
-		return true;
-	}
+		if (g_A_Key) {
+			selection = ArrowUpListBox(girllist_id);
+			g_A_Key = false;
+			return true;
+		}
+		if (g_D_Key) {
+			selection = ArrowDownListBox(girllist_id);
+			g_D_Key = false;
+			return true;
+		}
 	}
 	return false;
 }
@@ -273,7 +270,7 @@ void cScreenArenaManagement::update_image()
 	else
 	{
 		selection = lastNum = -1;
-		EditTextItem(gettext("No Girl Selected"), girldesc_id);
+		EditTextItem("No Girl Selected", girldesc_id);
 		HideImage(girlimage_id, true);
 	}
 }
@@ -315,7 +312,7 @@ void cScreenArenaManagement::check_events()
 		selection = GetSelectedItemFromList(jobtypelist_id);
 
 		if (selection == -1)
-			EditTextItem(gettext("Nothing Selected"), jobtypedesc_id);
+			EditTextItem("Nothing Selected", jobtypedesc_id);
 		else
 		{
 			// populate Jobs listbox with jobs in the selected category
@@ -370,8 +367,7 @@ void cScreenArenaManagement::check_events()
 				GSelection = GetNextSelectedItemFromList(girllist_id, pos+1, pos);
 			}
 		}
-		else
-			EditTextItem(gettext("Nothing Selected"), jobdesc_id);
+		else	EditTextItem("Nothing Selected", jobdesc_id);
 	}
 
 	if(g_InterfaceEvents.CheckListbox(girllist_id))
@@ -412,10 +408,10 @@ void cScreenArenaManagement::check_events()
 		{
 			if(IsMultiSelected(girllist_id))
 			{  // multiple girls selected
-				g_MessageQue.AddToQue(gettext("Are you sure you wish to give these girls their freedom?"), 0);
-				g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, strlen(gettext("Keep as a slaves")));
-				g_ChoiceManager.AddChoice(0, gettext("Grant Freedom"), 0);
-				g_ChoiceManager.AddChoice(0, gettext("Keep as a slaves"), 1);
+				g_MessageQue.AddToQue("Are you sure you wish to give these girls their freedom?", 0);
+				g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, strlen("Keep as a slaves"));
+				g_ChoiceManager.AddChoice(0, "Grant Freedom", 0);
+				g_ChoiceManager.AddChoice(0, "Keep as a slaves", 1);
 				g_ChoiceManager.SetActive(0);
 				FreeGirl = true;
 			}
@@ -423,10 +419,10 @@ void cScreenArenaManagement::check_events()
 			{
 				if(GirlDead(selected_girl))
 					return;
-				g_MessageQue.AddToQue(gettext("Are you sure you wish to give this girl her freedom?"), 0);
-				g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, strlen(gettext("Keep as a slave")));
-				g_ChoiceManager.AddChoice(0, gettext("Grant Freedom"), 0);
-				g_ChoiceManager.AddChoice(0, gettext("Keep as a slave"), 1);
+				g_MessageQue.AddToQue("Are you sure you wish to give this girl her freedom?", 0);
+				g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, strlen("Keep as a slave"));
+				g_ChoiceManager.AddChoice(0, "Grant Freedom", 0);
+				g_ChoiceManager.AddChoice(0, "Keep as a slave", 1);
 				g_ChoiceManager.SetActive(0);
 				FreeGirl = true;
 			}
@@ -446,7 +442,7 @@ bool cScreenArenaManagement::GirlDead(sGirl *dgirl)
 {
 	if(g_Girls.GetStat(dgirl, STAT_HEALTH) <= 0)
 	{
-		g_MessageQue.AddToQue(gettext("This girl is dead. She isn't going to work anymore and her body will be removed by the end of the week."), 1);
+		g_MessageQue.AddToQue("This girl is dead. She isn't going to work anymore and her body will be removed by the end of the week.", 1);
 		return true;
 	}
 	else
@@ -470,8 +466,14 @@ void cScreenArenaManagement::RefreshSelectedJobType()
 		if (job >= g_Arena.m_JobManager.JobFilterIndex[i] && job < g_Arena.m_JobManager.JobFilterIndex[i+1])
 			jobtype = i;
 	}
-	SetSelectedItemInList(jobtypelist_id, JOBFILTER_ARENA);
 
+	if (job >= g_Arena.m_JobManager.JobFilterIndex[JOBFILTER_ARENA] &&
+		job < g_Arena.m_JobManager.JobFilterIndex[JOBFILTER_ARENA + 1])
+		SetSelectedItemInList(jobtypelist_id, JOBFILTER_ARENA);
+	if (job >= g_Arena.m_JobManager.JobFilterIndex[JOBFILTER_ARENASTAFF] &&
+		job < g_Arena.m_JobManager.JobFilterIndex[JOBFILTER_ARENASTAFF + 1])
+		SetSelectedItemInList(jobtypelist_id, JOBFILTER_ARENASTAFF);
+	// */ //
 	SetJob = true;
 }
 
@@ -487,7 +489,7 @@ void cScreenArenaManagement::RefreshJobList()
 	bool day = (DayNight == 0) ? true : false;
 
 	// populate Jobs listbox with jobs in the selected category
-	for(unsigned int i=g_Arena.m_JobManager.JobFilterIndex[job_filter]; i<g_Arena.m_JobManager.JobFilterIndex[job_filter+1]; i++)
+	for (unsigned int i = g_Arena.m_JobManager.JobFilterIndex[job_filter]; i < g_Arena.m_JobManager.JobFilterIndex[job_filter + 1]; i++)
 	{
 		if (g_Arena.m_JobManager.JobName[i] == "")
 			continue;
@@ -495,17 +497,12 @@ void cScreenArenaManagement::RefreshJobList()
 		AddToListBox(joblist_id, i, text);
 	}
 
-//	if (SetJob)
-//	{
-//		SetJob = false;
-		// set the job
-		if(selected_girl)
-		{
-			int sel_job = (DayNight == 0) ? selected_girl->m_DayJob : selected_girl->m_NightJob;
-			SetSelectedItemInList(joblist_id, sel_job, false);
-			EditTextItem(g_Arena.m_JobManager.JobDescription[sel_job], jobdesc_id);
-		}
-//	}
+	if (selected_girl)
+	{
+		int sel_job = (DayNight == 0) ? selected_girl->m_DayJob : selected_girl->m_NightJob;
+		SetSelectedItemInList(joblist_id, sel_job, false);
+		EditTextItem(g_Arena.m_JobManager.JobDescription[sel_job], jobdesc_id);
+	}
 }
 
 void cScreenArenaManagement::GetSelectedGirls(vector<int> *girl_array)

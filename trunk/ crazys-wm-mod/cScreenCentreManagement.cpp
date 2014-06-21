@@ -272,7 +272,7 @@ void cScreenCentreManagement::update_image()
 	else
 	{
 		selection = lastNum = -1;
-		EditTextItem(("No Girl Selected"), girldesc_id);
+		EditTextItem("No Girl Selected", girldesc_id);
 		HideImage(girlimage_id, true);
 	}
 }
@@ -450,10 +450,10 @@ void cScreenCentreManagement::check_events()
 		{
 			if(IsMultiSelected(girllist_id))
 			{  // multiple girls selected
-				g_MessageQue.AddToQue(("Are you sure you wish to give these girls their freedom?"), 0);
-				g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, strlen(("Keep as a slaves")));
-				g_ChoiceManager.AddChoice(0, ("Grant Freedom"), 0);
-				g_ChoiceManager.AddChoice(0, ("Keep as a slaves"), 1);
+				g_MessageQue.AddToQue("Are you sure you wish to give these girls their freedom?", 0);
+				g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, strlen("Keep as a slaves"));
+				g_ChoiceManager.AddChoice(0, "Grant Freedom", 0);
+				g_ChoiceManager.AddChoice(0, "Keep as a slaves", 1);
 				g_ChoiceManager.SetActive(0);
 				FreeGirl = true;
 			}
@@ -461,10 +461,10 @@ void cScreenCentreManagement::check_events()
 			{
 				if(GirlDead(selected_girl))
 					return;
-				g_MessageQue.AddToQue(("Are you sure you wish to give this girl her freedom?"), 0);
-				g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, strlen(("Keep as a slave")));
-				g_ChoiceManager.AddChoice(0, ("Grant Freedom"), 0);
-				g_ChoiceManager.AddChoice(0, ("Keep as a slave"), 1);
+				g_MessageQue.AddToQue("Are you sure you wish to give this girl her freedom?", 0);
+				g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, strlen("Keep as a slave"));
+				g_ChoiceManager.AddChoice(0, "Grant Freedom", 0);
+				g_ChoiceManager.AddChoice(0, "Keep as a slave", 1);
 				g_ChoiceManager.SetActive(0);
 				FreeGirl = true;
 			}
@@ -484,7 +484,7 @@ bool cScreenCentreManagement::GirlDead(sGirl *dgirl)
 {
 	if(g_Girls.GetStat(dgirl, STAT_HEALTH) <= 0)
 	{
-		g_MessageQue.AddToQue(("This girl is dead. She isn't going to work anymore and her body will be removed by the end of the week."), 1);
+		g_MessageQue.AddToQue("This girl is dead. She isn't going to work anymore and her body will be removed by the end of the week.", 1);
 		return true;
 	}
 	else
@@ -530,7 +530,7 @@ void cScreenCentreManagement::RefreshJobList()
 	bool day = (DayNight == 0) ? true : false;
 
 	// populate Jobs listbox with jobs in the selected category
-	for(unsigned int i=g_Centre.m_JobManager.JobFilterIndex[job_filter]; i<g_Centre.m_JobManager.JobFilterIndex[job_filter+1]; i++)
+	for (unsigned int i = g_Centre.m_JobManager.JobFilterIndex[job_filter]; i < g_Centre.m_JobManager.JobFilterIndex[job_filter + 1]; i++)
 	{
 		if (g_Centre.m_JobManager.JobName[i] == "")
 			continue;
@@ -538,16 +538,12 @@ void cScreenCentreManagement::RefreshJobList()
 		AddToListBox(joblist_id, i, text);
 	}
 
-//	if (SetJob)
-//	{
-//		SetJob = false;
-		// set the job
 	if (selected_girl && selected_girl->m_YesterDayJob == JOB_REHAB && selected_girl->m_DayJob != JOB_REHAB && (selected_girl->m_WorkingDay > 0 || selected_girl->m_PrevWorkingDay > 0))
 	{	// `J` added
 		int sel_job = (DayNight == 0) ? selected_girl->m_DayJob : selected_girl->m_NightJob;
 		SetSelectedItemInList(joblist_id, sel_job, false);
 		EditTextItem(g_Centre.m_JobManager.JobDescription[sel_job]
-			+ gettext("\n** This girl was in Rehab, if you send her somewhere else, she will have to start her Rehab over.")
+			+ "\n** This girl was in Rehab, if you send her somewhere else, she will have to start her Rehab over."
 			, jobdesc_id);
 	}
 	else if (selected_girl)
@@ -556,8 +552,6 @@ void cScreenCentreManagement::RefreshJobList()
 		SetSelectedItemInList(joblist_id, sel_job, false);
 		EditTextItem(g_Centre.m_JobManager.JobDescription[sel_job], jobdesc_id);
 	}
-
-//	}
 }
 
 void cScreenCentreManagement::GetSelectedGirls(vector<int> *girl_array)

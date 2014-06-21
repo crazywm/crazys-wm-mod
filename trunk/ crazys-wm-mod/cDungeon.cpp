@@ -497,9 +497,16 @@ void sDungeonGirl::OutputGirlDetailString(string& Data, const string& detailName
 	//given a statistic name, set a string to a value that represents that statistic
 	static stringstream ss;
 	ss.str("");
-	if (detailName == "Rebelliousness")
-	{
-		ss << g_Girls.GetRebelValue(m_Girl, false);
+	if (detailName == "Rebelliousness")	// `J` Dungeon "Matron" can be a Torturer from any brothel
+	{	
+		ss << g_Girls.GetRebelValue(m_Girl, (
+			g_Brothels.GetNumGirlsOnJob(0, JOB_TORTURER, 0) > 0 ||
+			g_Brothels.GetNumGirlsOnJob(1, JOB_TORTURER, 0) > 0 ||
+			g_Brothels.GetNumGirlsOnJob(2, JOB_TORTURER, 0) > 0 ||
+			g_Brothels.GetNumGirlsOnJob(3, JOB_TORTURER, 0) > 0 ||
+			g_Brothels.GetNumGirlsOnJob(4, JOB_TORTURER, 0) > 0 ||
+			g_Brothels.GetNumGirlsOnJob(5, JOB_TORTURER, 0) > 0 ||
+			g_Brothels.GetNumGirlsOnJob(6, JOB_TORTURER, 0) > 0 ));
 	}
 	else if (detailName == "Reason")
 	{

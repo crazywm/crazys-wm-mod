@@ -43,6 +43,7 @@ Basic .girlsx file layout
       TittySex="#"
       Medicine="#"
       Performance="#"
+      Handjob="#"
 
       >
    <Trait Name="%" />

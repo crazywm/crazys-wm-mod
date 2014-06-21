@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Girls>
+    <Girl     Name="JTest"
+              Desc="A minimalist random test girl to make sure everything works. Delete the 'JTest.rgirlsx' file and the 'JTest' folder."
+              Human="Yes"
+              Catacomb="No">
+    <Gold                                   Min="0"     Max="10" />
+    <Stat     Name="Charisma"               Min="0"     Max="70" />
+    <Stat     Name="Happiness"              Min="100"   Max="100" />
+    <Stat     Name="Libido"                 Min="0"     Max="70" />
+    <Stat     Name="Constitution"           Min="0"     Max="30" />
+    <Stat     Name="Intelligence"           Min="0"     Max="30" />
+    <Stat     Name="Confidence"             Min="0"     Max="50" />
+    <Stat     Name="Mana"                   Min="0"     Max="0" />
+    <Stat     Name="Agility"                Min="0"     Max="30" />
+    <Stat     Name="Fame"                   Min="0"     Max="0" />
+    <Stat     Name="Level"                  Min="0"     Max="0" />
+    <Stat     Name="AskPrice"               Min="0"     Max="0" />
+    <Stat     Name="House"                  Min="100"   Max="100" />
+    <Stat     Name="Exp"                    Min="0"     Max="0" />
+    <Stat     Name="Age"                    Min="18"    Max="35" />
+    <Stat     Name="Obedience"              Min="0"     Max="20" />
+    <Stat     Name="Spirit"                 Min="0"     Max="30" />
+    <Stat     Name="Beauty"                 Min="0"     Max="80" />
+    <Stat     Name="Tiredness"              Min="0"     Max="0" />
+    <Stat     Name="Health"                 Min="100"   Max="100" />
+    <Stat     Name="PCFear"                 Min="0"     Max="0" />
+    <Stat     Name="PCLove"                 Min="0"     Max="0" />
+    <Stat     Name="PCHate"                 Min="0"     Max="0" />
+
+    <Skill    Name="Anal"                   Min="0"     Max="20" />
+    <Skill    Name="Magic"                  Min="0"     Max="20" />
+    <Skill    Name="BDSM"                   Min="0"     Max="20" />
+    <Skill    Name="NormalSex"              Min="0"     Max="20" />
+    <Skill    Name="Beastiality"            Min="0"     Max="20" />
+    <Skill    Name="Group"                  Min="0"     Max="20" />
+    <Skill    Name="Lesbian"                Min="0"     Max="20" />
+    <Skill    Name="Service"                Min="0"     Max="20" />
+    <Skill    Name="Strip"                  Min="0"     Max="20" />
+    <Skill    Name="Combat"                 Min="0"     Max="20" />
+    <Skill    Name="OralSex"                Min="0"     Max="20" />
+    <Skill    Name="TittySex"               Min="0"     Max="20" />
+    <Skill    Name="Medicine"               Min="0"     Max="20" />
+    <Skill    Name="Performance"            Min="0"     Max="20" />
+    <Skill    Name="Handjob"                Min="0"     Max="20" />
+
+    <Trait    Name="Cool Person"            Percent="10" />
+    <Trait    Name="Psychic"                Percent="10" />
+    <Trait    Name="Adventurer"             Percent="10" />
+    <Trait    Name="Good Kisser"            Percent="10" />
+    <Trait    Name="Nymphomaniac"           Percent="10" />
+    <Trait    Name="Sexy Air"               Percent="10" />
+    <Trait    Name="Great Figure"           Percent="10" />
+    <Trait    Name="Lesbian"                Percent="10" />
+    <Trait    Name="Meek"                   Percent="10" />
+    <Trait    Name="Pessimist"              Percent="10" />
+    <Trait    Name="Tough"                  Percent="10" />
+    <Trait    Name="Fleet of Foot"          Percent="10" />
+    <Trait    Name="Charming"               Percent="10" />
+    <Trait    Name="Nervous"                Percent="10" />
+    <Trait    Name="Charismatic"            Percent="10" />
+    <Trait    Name="Clumsy"                 Percent="10" />
+    <Trait    Name="Great Figure"           Percent="10" />
+    <Trait    Name="Great Arse"             Percent="10" />
+    <Trait    Name="Fairy Dust Addict"      Percent="10" />
+    <Trait    Name="Viras Blood Addict"     Percent="10" />
+    <Trait    Name="Optimist"               Percent="10" />
+    <Trait    Name="Pessimist"              Percent="10" />
+    <Trait    Name="Perky Nipples"          Percent="10" />
+    <Trait    Name="Puffy Nipples"          Percent="10" />
+    <Trait    Name="Long Legs"              Percent="10" />
+    <Trait    Name="Lolita"                 Percent="10" />
+    <Trait    Name="Tsundere"               Percent="10" />
+    <Trait    Name="Yandere"                Percent="10" />
+    <Trait    Name="Sadistic"               Percent="10" />
+    <Trait    Name="Elegant"                Percent="10" />
+    <Trait    Name="Sexy Air"               Percent="10" />
+    <Trait    Name="Big Boobs"              Percent="10" />
+</Girl>
+</Girls>

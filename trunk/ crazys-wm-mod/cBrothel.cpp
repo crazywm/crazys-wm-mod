@@ -2344,7 +2344,7 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		{
 			refused = m_JobManager.JobFunctions[sw](current, brothel, DayNight, summary);
 		}
-		else // Any job not in the House will be replaced with JOB_HOUSEREST
+		else // Any job not in a Brothel will be replaced with JOB_RESTING
 		{
 			if (DayNight == SHIFT_DAY)current->m_DayJob = JOB_RESTING;
 			else current->m_NightJob = JOB_RESTING;
@@ -3357,12 +3357,12 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 	string message = "";
 
 
-	if (g_Girls.HasItemJ(girl, gettext("Android, Assistance")) != -1)
+	if (g_Girls.HasItemJ(girl, "Android, Assistance") != -1)
 	{
 		message += "Her Assistance Android swept up and took out the trash for her.\n\n";
 		brothel->m_Filthiness -= 5;
 	}
-	if (g_Girls.HasItemJ(girl, gettext("Television Set")) != -1)
+	if (g_Girls.HasItemJ(girl, "Television Set") != -1)
 	{
 		if (is_she_resting(girl))
 		{
@@ -3376,12 +3376,12 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 			girl->tiredness(-3);
 		}
 	}
-	if (g_Girls.HasItemJ(girl, gettext("Appreciation Trophy")) != -1 && is_she_cleaning(girl) && g_Dice%100 < 5 && girl->pclove() > girl->pchate()-10)
+	if (g_Girls.HasItemJ(girl, "Appreciation Trophy") != -1 && is_she_cleaning(girl) && g_Dice%100 < 5 && girl->pclove() > girl->pchate()-10)
 	{
 		message += "While cleaning, " + girl->m_Realname + " came across her Appreciation Trophy and smiled.\n\n";
 		girl->pclove(1);
 	}
-	if (g_Girls.HasItemJ(girl, gettext("Art Easel")) != -1 && g_Dice%100 < 2)
+	if (g_Girls.HasItemJ(girl, "Art Easel") != -1 && g_Dice%100 < 2)
 	{
 		int sale = g_Dice%30+1;
 		message += girl->m_Realname + " managed to sell one of her paintings for ";
@@ -4202,7 +4202,7 @@ int &cBrothelManager::stat_lookup(string stat_name,int brothel_id)
 
 void cBrothelManager::SetGirlStat(sGirl* girl, int stat, int amount)
 {
-	girl->m_StatMods[stat] = amount;
+	girl->m_Stats[stat] = amount;	// `J` changed from m_StatMods to m_Stats
 }
 
 void cBrothelManager::updateGirlTurnBrothelStats(sGirl* girl)

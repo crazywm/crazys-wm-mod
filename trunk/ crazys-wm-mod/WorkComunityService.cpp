@@ -169,7 +169,7 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, int DayNig
 	if (g_Dice%2 == 1)
 		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, g_Dice%skill);
 	else
-		g_Girls.UpdateSkill(girl, STAT_CHARISMA, g_Dice%skill);
+		g_Girls.UpdateStat(girl, STAT_CHARISMA, g_Dice%skill);
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill+1);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 

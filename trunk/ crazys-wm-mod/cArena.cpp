@@ -277,7 +277,7 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, int DayNight)
 			sw = (DayNight == SHIFT_DAY) ? current->m_DayJob : current->m_NightJob;
 
 		// `J` added check to force jobs into the Arena correcting a bug
-		if (sw != JOB_ARENAREST && sw >= JOB_FIGHTBEASTS && sw <= JOB_CITYGUARD)
+		if (sw != JOB_ARENAREST && sw >= JOB_FIGHTBEASTS && sw <= JOB_ARENAREST)
 		{
 			refused = m_JobManager.JobFunctions[sw](current, brothel, DayNight, summary);
 		}

@@ -1856,10 +1856,6 @@ void cGangManager::UpdateGangs()
 				message += currentGang->m_Name;
 				message += gettext(", ");
 				bool lost = false;
-
-				//m_Player->m_Disposition--;
-				//m_Player->m_CustomerFear++;
-				//m_Player->m_Suspicion++;
 				m_Player->disposition(-1);
 				m_Player->customerfear(1);
 				m_Player->suspicion(1);
@@ -1988,10 +1984,6 @@ void cGangManager::UpdateGangs()
 				message += currentGang->m_Name;
 				message += ", ";
 				bool lost = false;
-
-				//m_Player->m_Disposition--;
-				//m_Player->m_CustomerFear++;
-				//m_Player->m_Suspicion++;
 				m_Player->disposition(-1);
 				m_Player->customerfear(1);
 				m_Player->suspicion(1);
