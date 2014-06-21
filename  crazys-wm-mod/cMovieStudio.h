@@ -107,6 +107,9 @@ public:
 	void Free();
 	int m_NumMovieStudios;
 	cJobManager m_JobManager;
+	
+	bool is_Actress_Job(int testjob);
+	bool cMovieStudioManager::CrewNeeded();
 };
 
 

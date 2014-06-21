@@ -359,6 +359,15 @@ Added Hand Job restrictions to interface J_1024x768
 Removed the "End of Script text for testing purposes." line from DefaultInteractDetails.script
 Included .\Docs&Tools with ScriptEdit and WMEdit in it
 !!!!!!!!!!!!!!!!!!!! pushed version .05r
+Dungeon "Matron" can be a Torturer from any brothel for purpose of dungeon girl rebelliousness.
 
-
-
+###  Changes 6/18-20/2014
+Corrected job out of building bug for new arena staff list
+Fixed arena job list flicker
+Fixed multi-girl job assigning in arena and studio (the other buildings will get this fix also)
+Major rewrite of gallery section (part 1): cleanup and expand to allow all image types.
+ - No new buttons but W, S, UpArrow, DownArrow keys cycle through all image types.
+Children get their stats/skills as an average of mother's and father's skills/stats at the time of conception instead of only from the father
+The studio now warns you if there is no camera mage or crystal purifier on duty the way rehab or surgery does
+May have fixed a bug, but it needs testing to be sure,  details here - http://www.pinkpetal.org/index.php?topic=1031.msg28068#msg28068
+!!!!!!!!!!!!!!!!!!!! pushed version .05r.01

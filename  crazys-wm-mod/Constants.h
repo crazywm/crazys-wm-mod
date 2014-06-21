@@ -429,15 +429,6 @@ const int IMGTYPE_SEX       = 2;
 const int IMGTYPE_BEAST     = 3;
 const int IMGTYPE_GROUP     = 4;
 const int IMGTYPE_LESBIAN   = 5;
-
-/*
- *		`J` removing this because changing the way images are loaded
- *
- * keep the images that don't change with pregnancy
- * after the ones that do. Then we can convert by adding
- * PREG_OFFSET, and if the result is > NUM_IMGTYPES
- * then it was one of the unchanging categories
- */
 const int IMGTYPE_TORTURE	= 6;	// `J` added
 const int IMGTYPE_DEATH		= 7;
 const int IMGTYPE_PROFILE   = 8;
@@ -456,9 +447,15 @@ const int IMGTYPE_TITTY     = 20;
 const int IMGTYPE_MILK      = 21;
 const int IMGTYPE_HAND      = 22;
 const int IMGTYPE_PREGNANT	= 23;
+
 /*
- * now make the pregnant varieties
- */
+*		`J` removing this because changing the way images are loaded
+*
+* keep the images that don't change with pregnancy
+* after the ones that do. Then we can convert by adding
+* PREG_OFFSET, and if the result is > NUM_IMGTYPES
+* then it was one of the unchanging categories
+*/
 const int PREG_OFFSET = 24;
 const int IMGTYPE_PREGANAL	    = IMGTYPE_ANAL		+ PREG_OFFSET;	// 24
 const int IMGTYPE_PREGBDSM	    = IMGTYPE_BDSM		+ PREG_OFFSET;	// 25

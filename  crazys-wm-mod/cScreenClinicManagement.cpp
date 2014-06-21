@@ -323,10 +323,10 @@ void cScreenClinicManagement::check_events()
 			{
 				jdmessage += gettext("\n*** A Doctor is required to perform any surgeries. ");
 			}
-			if ((g_Clinic.GetNumGirlsOnJob(g_CurrClinic, JOB_MECHANIC,0)<1 &&
-				 g_Clinic.GetNumGirlsOnJob(g_CurrClinic, JOB_GETREPAIRS, 0)>0) ||
-				(g_Clinic.GetNumGirlsOnJob(g_CurrClinic, JOB_MECHANIC, 1)<1 &&
-				 g_Clinic.GetNumGirlsOnJob(g_CurrClinic, JOB_GETREPAIRS, 1)>0))
+			if ((g_Clinic.GetNumGirlsOnJob(g_CurrClinic, JOB_MECHANIC, SHIFT_DAY)<1 &&
+				g_Clinic.GetNumGirlsOnJob(g_CurrClinic, JOB_GETREPAIRS, SHIFT_DAY)>0) ||
+				 (g_Clinic.GetNumGirlsOnJob(g_CurrClinic, JOB_MECHANIC, SHIFT_NIGHT)<1 &&
+				 g_Clinic.GetNumGirlsOnJob(g_CurrClinic, JOB_GETREPAIRS, SHIFT_NIGHT)>0))
 			{
 				jdmessage += gettext("\n**** A Mechanic is required to perform any Repairs. ");
 			}
@@ -537,12 +537,7 @@ void cScreenClinicManagement::RefreshSelectedJobType()
 		if (job >= g_Clinic.m_JobManager.JobFilterIndex[i] && job < g_Clinic.m_JobManager.JobFilterIndex[i + 1])
 			jobtype = i;
 	}
-	if (job >= g_Clinic.m_JobManager.JobFilterIndex[JOBFILTER_CLINIC] && 
-		job < g_Clinic.m_JobManager.JobFilterIndex[JOBFILTER_CLINIC + 1])
-		SetSelectedItemInList(jobtypelist_id, JOBFILTER_CLINIC);
-	if (job >= g_Clinic.m_JobManager.JobFilterIndex[JOBFILTER_CLINICSTAFF] &&
-		job < g_Clinic.m_JobManager.JobFilterIndex[JOBFILTER_CLINICSTAFF + 1])
-		SetSelectedItemInList(jobtypelist_id, JOBFILTER_CLINICSTAFF);
+	SetSelectedItemInList(jobtypelist_id, jobtype);
 
 	SetJob = true;
 }
@@ -567,10 +562,6 @@ void cScreenClinicManagement::RefreshJobList()
 		AddToListBox(joblist_id, i, text);
 	}
 
-	//	if (SetJob)
-	//	{
-	//		SetJob = false;
-	// set the job
 	if (selected_girl &&
 		g_Clinic.is_Surgery_Job(selected_girl->m_YesterDayJob) &&		// `J` added
 		selected_girl->m_YesterDayJob != selected_girl->m_DayJob &&
@@ -594,9 +585,6 @@ void cScreenClinicManagement::RefreshJobList()
 		SetSelectedItemInList(joblist_id, sel_job, false);
 		EditTextItem(g_Clinic.m_JobManager.JobDescription[sel_job], jobdesc_id);
 	}
-	//	}
-
-
 }
 
 void cScreenClinicManagement::GetSelectedGirls(vector<int> *girl_array)

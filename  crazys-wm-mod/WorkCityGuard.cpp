@@ -58,7 +58,7 @@ bool cJobManager::WorkCityGuard(sGirl* girl, sBrothel* brothel, int DayNight, st
 	int roll = g_Dice%100;
 	int wages = 150;
 	int trouble = false;
-	int agl = (g_Girls.GetStat(girl, STAT_AGILITY) / 2 + g_Dice%(g_Girls.GetStat(girl, SKILL_COMBAT) / 2));
+	int agl = (g_Girls.GetStat(girl, STAT_AGILITY) / 2 + g_Dice%(g_Girls.GetSkill(girl, SKILL_COMBAT) / 2));
 
 	message += "She helps guard the city.\n";
 

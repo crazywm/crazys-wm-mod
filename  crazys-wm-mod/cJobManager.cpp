@@ -1037,17 +1037,13 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		else
 			Girl->m_NightJob = Girl->m_DayJob = JOB_DOCTORE;
 	}
-	else if (u_int(JobID) == JOB_FIGHTTRAIN)	// `J` added
-	{
-		if (g_Girls.GetSkill(Girl, SKILL_COMBAT) > 99 && g_Girls.GetSkill(Girl, SKILL_MAGIC) > 99 && g_Girls.GetStat(Girl, STAT_AGILITY) > 99 && g_Girls.GetStat(Girl, STAT_CONSTITUTION) > 99)
-		{
-			g_MessageQue.AddToQue(gettext("There is nothing more she can learn here."), 0);
-			if (Girl->m_DayJob == JOB_FIGHTTRAIN)	Girl->m_DayJob = JOB_ARENAREST;
-			if (Girl->m_NightJob == JOB_FIGHTTRAIN)	Girl->m_NightJob = JOB_ARENAREST;
-		}
-		else if (DayOrNight){Girl->m_DayJob = JOB_FIGHTTRAIN;}
-		else				{Girl->m_NightJob = JOB_FIGHTTRAIN;}
+	else if (u_int(JobID) == JOB_FIGHTTRAIN && (g_Girls.GetSkill(Girl, SKILL_COMBAT) > 99 && g_Girls.GetSkill(Girl, SKILL_MAGIC) > 99 && g_Girls.GetStat(Girl, STAT_AGILITY) > 99 && g_Girls.GetStat(Girl, STAT_CONSTITUTION) > 99))
+	{	// `J` added then modified
+		g_MessageQue.AddToQue(gettext("There is nothing more she can learn here."), 0);
+		if (Girl->m_DayJob == JOB_FIGHTTRAIN)	Girl->m_DayJob = JOB_ARENAREST;
+		if (Girl->m_NightJob == JOB_FIGHTTRAIN)	Girl->m_NightJob = JOB_ARENAREST;
 	}
+
 // Special Clinic Jobs
 	else if (u_int(JobID) == JOB_CHAIRMAN)
 	{
@@ -1397,59 +1393,29 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		}
 	}
 // Special Movie Studio Jobs
-	else if (u_int(JobID) == JOB_DIRECTOR)
+	else if (u_int(JobID) == JOB_DIRECTOR && g_Studios.GetNumGirlsOnJob(TargetBrothel, JOB_DIRECTOR, DayOrNight) == 1)
 	{
-		if (g_Studios.GetNumGirlsOnJob(TargetBrothel, JOB_DIRECTOR, DayOrNight) == 1)
-			g_MessageQue.AddToQue(gettext("There can be only one Director!"), 0);
-		else if (Girl->m_States&(1 << STATUS_SLAVE))
-			g_MessageQue.AddToQue(gettext("The Director cannot be a slave."), 0);
-		else
-		{
-			Girl->m_DayJob = JOB_FILMFREETIME;
-			Girl->m_NightJob = JOB_DIRECTOR;
-		}
+		g_MessageQue.AddToQue(gettext("There can be only one Director!"), 0);
 	}
-	else if (u_int(JobID) == JOB_PROMOTER)
+	else if (u_int(JobID) == JOB_DIRECTOR && Girl->m_States&(1 << STATUS_SLAVE))
 	{
-		if (g_Studios.GetNumGirlsOnJob(TargetBrothel, JOB_PROMOTER, DayOrNight) == 1)
+		g_MessageQue.AddToQue(gettext("The Director cannot be a slave."), 0);
+	}
+	else if (u_int(JobID) == JOB_PROMOTER && g_Studios.GetNumGirlsOnJob(TargetBrothel, JOB_PROMOTER, DayOrNight) == 1)
+	{
 			g_MessageQue.AddToQue(gettext("There can be only one Promoter."), 0);
-		else
-		{
-			Girl->m_DayJob = JOB_FILMFREETIME;
-			Girl->m_NightJob = JOB_PROMOTER;
-		}
 	}
-	else if(u_int(JobID) == JOB_FILMANAL ||
-		u_int(JobID) == JOB_FILMSEX ||
-		u_int(JobID) == JOB_FILMBEAST ||
-		u_int(JobID) == JOB_FILMBONDAGE ||
-		u_int(JobID) == JOB_FILMGROUP ||
-		u_int(JobID) == JOB_FILMORAL ||
-		u_int(JobID) == JOB_FILMMAST ||
-		u_int(JobID) == JOB_FILMTITTY ||
-		u_int(JobID) == JOB_FILMSTRIP ||
-		u_int(JobID) == JOB_FILMHANDJOB ||
-		u_int(JobID) == JOB_FILMLESBIAN ||
-		u_int(JobID) == JOB_FILMRANDOM)
+	else if(u_int(JobID) >= JOB_FILMANAL &&	u_int(JobID) <= JOB_FILMRANDOM &&
+		(g_Studios.GetNumGirlsOnJob(0, JOB_CAMERAMAGE, false) == 0 ||
+		g_Studios.GetNumGirlsOnJob(0, JOB_CRYSTALPURIFIER, false) == 0))
 	{
-		if(g_Studios.GetNumGirlsOnJob(-1, JOB_CAMERAMAGE, false) == 0 ||
-			g_Studios.GetNumGirlsOnJob(-1, JOB_CRYSTALPURIFIER, false) == 0)
-		{
-			g_MessageQue.AddToQue(gettext("You must have one cameramage and one crystal purifier."), 0);
-			Girl->m_DayJob = Girl->m_NightJob = JOB_FILMFREETIME;
-		}
-		else 
-		{
-			Girl->m_DayJob = JOB_FILMFREETIME;
-			Girl->m_NightJob = u_int(JobID);
-		}
+		g_MessageQue.AddToQue("You must have one cameramage and one crystal purifier.", 0);
+		Girl->m_DayJob = Girl->m_NightJob = JOB_FILMFREETIME;
 	}
-	else if (u_int(JobID) == JOB_CAMERAMAGE ||
-		u_int(JobID) == JOB_CRYSTALPURIFIER ||
-		u_int(JobID) == JOB_FLUFFER ||
-		u_int(JobID) == JOB_STAGEHAND ||
-		u_int(JobID) == JOB_FILMFREETIME)
+// Special Studio cases were checked and don't apply, just set the studio job as requested
+	else if (Girl->m_InMovieStudio)
 	{
+		MadeChanges = false;
 		Girl->m_DayJob = JOB_FILMFREETIME;
 		Girl->m_NightJob = u_int(JobID);
 	}
@@ -1466,7 +1432,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	bool refresh = false;
 // handle instances where special job has been removed, specifically where it actually matters
 	if (JobID != OldJobID)
-	{  
+	{
 		if (u_int(OldJobID) == JOB_MATRON ||			//  6
 			u_int(OldJobID) == JOB_TORTURER)			//  7
 		{
@@ -1503,7 +1469,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 			u_int(OldJobID) == JOB_MECHANIC)
 		{
 			if (u_int(JobID) != JOB_GETHEALING &&
-				u_int(JobID) != JOB_GETABORT &&			
+				u_int(JobID) != JOB_GETABORT &&
 				u_int(JobID) != JOB_PHYSICALSURGERY &&
 				u_int(JobID) != JOB_GETREPAIRS &&
 				u_int(JobID) != JOB_LIPO &&
@@ -1518,7 +1484,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 				u_int(JobID) != JOB_DOCTOR &&
 				u_int(JobID) != JOB_NURSE &&
 				u_int(JobID) != JOB_INTERN &&
-				u_int(JobID) != JOB_MECHANIC)			
+				u_int(JobID) != JOB_MECHANIC)
 			{  // for these Day+Night jobs, switch leftover day or night job back to resting
 				(DayOrNight) ? Girl->m_NightJob = JOB_CLINICREST : Girl->m_DayJob = JOB_CLINICREST;
 				refresh = true;
@@ -1548,8 +1514,21 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 				(DayOrNight) ? Girl->m_NightJob = JOB_HOUSEREST : Girl->m_DayJob = JOB_HOUSEREST;
 			}
 		}
+		else if (	// `J` if a CAMERAMAGE or CRYSTALPURIFIER is taken off duty...
+			u_int(OldJobID) == JOB_CAMERAMAGE ||
+			u_int(OldJobID) == JOB_CRYSTALPURIFIER ||
+			u_int(JobID) == JOB_CAMERAMAGE ||
+			u_int(JobID) == JOB_CRYSTALPURIFIER ||
+			g_Studios.is_Actress_Job(JobID)
+			)
+		{			// `J` ...check if there is at least 1 of each to allow for filming...
+			if (g_Studios.GetNumGirlsOnJob(0, JOB_CAMERAMAGE, 1) == 0 ||
+				g_Studios.GetNumGirlsOnJob(0, JOB_CRYSTALPURIFIER, 1) == 0)
+			{		// `J` ...if not refresh the studio.
+				refresh = true;
+			}
+		}
 	}
-
 	g_InitWin = (refresh || MadeChanges);
 
 	return MadeChanges;

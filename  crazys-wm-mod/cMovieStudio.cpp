@@ -615,7 +615,7 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 		{
 			refused = m_JobManager.JobFunctions[sw](current, brothel, SHIFT_NIGHT, summary);
 		}
-		else
+		else // Any job not in the Studio will be replaced with JOB_FILMFREETIME
 		{
 			sw = current->m_DayJob = current->m_NightJob = JOB_FILMFREETIME;
 			refused = m_JobManager.JobFunctions[JOB_RESTING](current, brothel, SHIFT_NIGHT, summary);
@@ -1136,4 +1136,42 @@ void cMovieStudioManager::EndMovie(sBrothel* brothel)
 		movie = 0;
 		brothel->m_NumMovies--;
 	}
+}
+
+
+bool cMovieStudioManager::is_Actress_Job(int testjob){
+	if (testjob == JOB_FILMBEAST ||
+		testjob == JOB_FILMSEX ||
+		testjob == JOB_FILMANAL ||
+		testjob == JOB_FILMLESBIAN ||
+		testjob == JOB_FILMBONDAGE ||
+		testjob == JOB_FILMGROUP ||
+		testjob == JOB_FILMORAL ||
+		testjob == JOB_FILMMAST ||
+		testjob == JOB_FILMTITTY ||
+		testjob == JOB_FILMSTRIP ||
+		testjob == JOB_FILMHANDJOB ||
+		testjob == JOB_FILMRANDOM)
+		return true;
+	return false;
+}
+
+bool cMovieStudioManager::CrewNeeded()	// `J` added, if CM and CP both on duty or there are no actresses, return false
+{
+	if ((GetNumGirlsOnJob(0, JOB_CAMERAMAGE, 0) > 0 &&
+		GetNumGirlsOnJob(0, JOB_CRYSTALPURIFIER, 0) > 0) ||
+		GetNumGirlsOnJob(0, JOB_FILMBEAST, 0) +
+		GetNumGirlsOnJob(0, JOB_FILMSEX, 0) +
+		GetNumGirlsOnJob(0, JOB_FILMANAL, 0) +
+		GetNumGirlsOnJob(0, JOB_FILMLESBIAN, 0) +
+		GetNumGirlsOnJob(0, JOB_FILMBONDAGE, 0) +
+		GetNumGirlsOnJob(0, JOB_FILMGROUP, 0) +
+		GetNumGirlsOnJob(0, JOB_FILMORAL, 0) +
+		GetNumGirlsOnJob(0, JOB_FILMMAST, 0) +
+		GetNumGirlsOnJob(0, JOB_FILMTITTY, 0) +
+		GetNumGirlsOnJob(0, JOB_FILMSTRIP, 0) +
+		GetNumGirlsOnJob(0, JOB_FILMHANDJOB, 0) +
+		GetNumGirlsOnJob(0, JOB_FILMRANDOM, 0) < 1)
+		return false;	// a CM or CP is not Needed
+	return true;	// Otherwise a CM or CP is Needed
 }

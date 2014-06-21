@@ -2215,11 +2215,14 @@ void NextWeek()
 	g_GenGirls = g_TryEr = false;
 	g_GenGirls = g_TryCast = false;
 	g_TalkCount = 10;
+	/* 
+	// `J` I want to make the player start with 0 in all stats and skills
+	// and have to gain them over time. When this gets implemented 
+	// g_TalkCount will be based on the player's charisma.
+	g_TalkCount = 10 + (g_Brothels.GetPlayer()->m_Stats[STAT_CHARISMA] / 10);
+	// */ //
 
-	if(g_Cheats)
-	{
-		g_Gold.cheat();
-	}
+	if(g_Cheats)	g_Gold.cheat();
 
 	// Clear choice dialog
 	g_ChoiceManager.Free();
@@ -2231,23 +2234,10 @@ void NextWeek()
 	g_InterfaceEvents.ClearEvents();
 
 	// go through and update all the brothels (this updates the girls each brothel has and calculates sex and stuff)
-		if (g_Clinic.GetNumBrothels() > 0)
-	{
-		g_Clinic.UpdateClinic();
-	}
-		if (g_Studios.GetNumBrothels() > 0)
-	{
-		g_Studios.UpdateMovieStudio();
-	}
-		if (g_Arena.GetNumBrothels() > 0)
-	{
-		g_Arena.UpdateArena();
-	}
-		if (g_Centre.GetNumBrothels() > 0)
-	{
-		g_Centre.UpdateCentre();
-	}
-
+	if (g_Clinic.GetNumBrothels() > 0)		g_Clinic.UpdateClinic();
+	if (g_Studios.GetNumBrothels() > 0)		g_Studios.UpdateMovieStudio();
+	if (g_Arena.GetNumBrothels() > 0)		g_Arena.UpdateArena();
+	if (g_Centre.GetNumBrothels() > 0)		g_Centre.UpdateCentre();
 	g_House.UpdateHouse();
 
 	g_Brothels.UpdateBrothels(); // Moved so new buildings show up in profit reports --PP
@@ -2321,16 +2311,8 @@ void GameEvents()
 		if(g_Dice%100 < 10)	// only 10% of being discovered
 		{
 			g_Brothels.GetPlayer()->suspicion(1);
-			//g_Brothels.GetPlayer()->m_Suspicion++;
-			//if(g_Brothels.GetPlayer()->m_Suspicion > 100)
-			//	g_Brothels.GetPlayer()->m_Suspicion = 100;
 		}
-
 		g_Brothels.GetPlayer()->disposition(-1);
-		//g_Brothels.GetPlayer()->m_Disposition--;
-		//if(g_Brothels.GetPlayer()->m_Disposition < -100)
-		//	g_Brothels.GetPlayer()->m_Disposition = -100;
-
 		g_Brothels.UpdateAllGirlsStat(0, STAT_PCFEAR, 2);
 
 		ClearGameFlag(FLAG_DUNGEONGIRLDIE);
@@ -2341,24 +2323,9 @@ void GameEvents()
 		
 		if(g_Dice%100 < 10)	// only 10% chance of being found out
 		{
-			// WD: Use acessor methods 
-			//g_Brothels.GetPlayer()->m_Suspicion++;
-			//if(g_Brothels.GetPlayer()->m_Suspicion > 100)
-			//	g_Brothels.GetPlayer()->m_Suspicion = 100;
 			g_Brothels.GetPlayer()->suspicion(1);
-			
 		}
-
-		// WD: Use acessor methods 
-		//g_Brothels.GetPlayer()->m_Disposition--;
-		//if(g_Brothels.GetPlayer()->m_Disposition < -100)
-		//	g_Brothels.GetPlayer()->m_Disposition = -100;
 		g_Brothels.GetPlayer()->disposition(-1);
-
-		// WD: Use acessor methods 
-		//g_Brothels.GetPlayer()->m_CustomerFear++;
-		//if(g_Brothels.GetPlayer()->m_CustomerFear > 100)
-		//	g_Brothels.GetPlayer()->m_CustomerFear = 100;
 		g_Brothels.GetPlayer()->customerfear(1);
 
 		ClearGameFlag(FLAG_DUNGEONCUSTDIE);
@@ -2370,6 +2337,7 @@ void Gallery()
 	static int Mode = IMGTYPE_ANAL;
 	static int Img = 0;	// what image currently drawing
 	sGirl *girl = selected_girl;
+
 	g_CurrentScreen = SCREEN_GALLERY;
 	if(g_InitWin)
 	{
@@ -2380,52 +2348,22 @@ void Gallery()
 			g_WinManager.Pop();
 			return;
 		}
+		g_Gallery.Reset();
+		Mode = IMGTYPE_ANAL;
+		Img = 0;
 		g_Gallery.Focused();
 
-		if(girl->m_GirlImages->m_Images[IMGTYPE_ANAL].m_NumImages == 0)
-			g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYANAL, true);
-		else
-			g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYANAL, false);
-		if(girl->m_GirlImages->m_Images[IMGTYPE_BDSM].m_NumImages == 0)
-			g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYBDSM, true);
-		else
-			g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYBDSM, false);
-		if(girl->m_GirlImages->m_Images[IMGTYPE_SEX].m_NumImages == 0)
-			g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYSEX, true);
-		else
-			g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYSEX, false);
-		if(girl->m_GirlImages->m_Images[IMGTYPE_BEAST].m_NumImages == 0)
-			g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYBEAST, true);
-		else
-			g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYBEAST, false);
-		if(girl->m_GirlImages->m_Images[IMGTYPE_GROUP].m_NumImages == 0)
-			g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYGROUP, true);
-		else
-			g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYGROUP, false);
-		if(girl->m_GirlImages->m_Images[IMGTYPE_LESBIAN].m_NumImages == 0)
-			g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYLESBIAN, true);
-		else
-			g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYLESBIAN, false);
-		if(girl->m_GirlImages->m_Images[IMGTYPE_PREGNANT].m_NumImages == 0)
-			g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYPREGNANT, true);
-		else
-			g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYPREGNANT, false);
-		if (girl->m_GirlImages->m_Images[IMGTYPE_TORTURE].m_NumImages == 0)
-			g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYDEATH, true);
-		else
-			g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYDEATH, false);
-		if(girl->m_GirlImages->m_Images[IMGTYPE_PROFILE].m_NumImages == 0)
-			g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYPROFILE, true);
-		else
-			g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYPROFILE, false);
-		if(girl->m_GirlImages->m_Images[IMGTYPE_COMBAT].m_NumImages == 0)
-			g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYCOMBAT, true);
-		else
-			g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYCOMBAT, false);
-		if(girl->m_GirlImages->m_Images[IMGTYPE_ORAL].m_NumImages == 0)
-			g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYORAL, true);
-		else
-			g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYORAL, false);
+		g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYANAL, (girl->m_GirlImages->m_Images[IMGTYPE_ANAL].m_NumImages == 0));
+		g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYBDSM, (girl->m_GirlImages->m_Images[IMGTYPE_BDSM].m_NumImages == 0));
+		g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYSEX, (girl->m_GirlImages->m_Images[IMGTYPE_SEX].m_NumImages == 0));
+		g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYBEAST, (girl->m_GirlImages->m_Images[IMGTYPE_BEAST].m_NumImages == 0));
+		g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYGROUP, (girl->m_GirlImages->m_Images[IMGTYPE_GROUP].m_NumImages == 0));
+		g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYLESBIAN, (girl->m_GirlImages->m_Images[IMGTYPE_LESBIAN].m_NumImages == 0));
+		g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYPREGNANT, (girl->m_GirlImages->m_Images[IMGTYPE_PREGNANT].m_NumImages == 0));
+		g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYDEATH, (girl->m_GirlImages->m_Images[IMGTYPE_TORTURE].m_NumImages == 0));
+		g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYPROFILE, (girl->m_GirlImages->m_Images[IMGTYPE_PROFILE].m_NumImages == 0));
+		g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYCOMBAT, (girl->m_GirlImages->m_Images[IMGTYPE_COMBAT].m_NumImages == 0));
+		g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYORAL, (girl->m_GirlImages->m_Images[IMGTYPE_ORAL].m_NumImages == 0));
 
 		while(girl->m_GirlImages->m_Images[Mode].m_NumImages == 0 && Mode < NUM_IMGTYPES)
 		{
@@ -2450,67 +2388,67 @@ void Gallery()
 		}
 		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYANAL))
 		{
-			Mode=0;
+			Mode = IMGTYPE_ANAL;
 			Img=0;
 			return;
 		}
 		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYBDSM))
 		{
-			Mode=1;
+			Mode = IMGTYPE_BDSM;
 			Img=0;
 			return;
 		}
 		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYSEX))
 		{
-			Mode=2;
+			Mode = IMGTYPE_SEX;
 			Img=0;
 			return;
 		}
 		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYBEAST))
 		{
-			Mode=3;
+			Mode = IMGTYPE_BEAST;
 			Img=0;
 			return;
 		}
 		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYGROUP))
 		{
-			Mode=4;
+			Mode = IMGTYPE_GROUP;
 			Img=0;
 			return;
 		}
 		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYLESBIAN))
 		{
-			Mode=5;
+			Mode = IMGTYPE_LESBIAN;
 			Img=0;
 			return;
 		}
 		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYPREGNANT))
 		{
-			Mode=6;
+			Mode = IMGTYPE_PREGNANT;
 			Img=0;
 			return;
 		}
 		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYDEATH))
 		{
-			Mode=7;
+			Mode = IMGTYPE_DEATH;
 			Img=0;
 			return;
 		}
 		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYPROFILE))
 		{
-			Mode=8;
+			Mode = IMGTYPE_PROFILE;
 			Img=0;
 			return;
 		}
 		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYCOMBAT))
 		{
-			Mode=9;
+			Mode = IMGTYPE_COMBAT;
 			Img=0;
 			return;
 		}
 		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYORAL))
 		{
-			Mode=10;
+			Mode = IMGTYPE_ORAL;
 			Img=0;
 			return;
 		}
@@ -2536,97 +2474,67 @@ void Gallery()
 		}
 	}
 
-	if(g_LeftArrow)
+	if (g_LeftArrow || g_A_Key)
 	{
-		g_LeftArrow = false;
+		g_LeftArrow = g_A_Key = false;
 		Img--;
 		if(Img < 0)
 			Img = girl->m_GirlImages->m_Images[Mode].m_NumImages-1;
 		return;
 	}
-	else if(g_RightArrow)
+	else if (g_RightArrow || g_D_Key)
 	{
-		g_RightArrow = false;
+		g_RightArrow = g_D_Key = false;
 		Img++;
-		if(Img == girl->m_GirlImages->m_Images[Mode].m_NumImages)
+		if(Img >= girl->m_GirlImages->m_Images[Mode].m_NumImages)
 			Img = 0;
 		return;
 	}
-	if(g_A_Key)
+	if (g_UpArrow || g_W_Key)
 	{
-		g_A_Key = false;
-		Img--;
-		if(Img < 0)
-			Img = girl->m_GirlImages->m_Images[Mode].m_NumImages-1;
-		return;
-	}
-	else if(g_D_Key)
-	{
-		g_D_Key = false;
-		Img++;
-		if(Img == girl->m_GirlImages->m_Images[Mode].m_NumImages)	
-			Img = 0;
-		return;
-	}
-	if(g_W_Key)
-	{
-		while(1)
+		int i = 0;
+		while (i <= NUM_IMGTYPES)
 		{
-			g_W_Key = false;
-			Mode --;
+			g_UpArrow = g_W_Key = false;
+			Mode--; i++;
 			if(Mode < 0)
-				Mode = 10;
+				Mode = NUM_IMGTYPES-1;
 			Img = 0;
 			if(girl->m_GirlImages->m_Images[Mode].m_NumImages > 0)   // This hack will only work as long as the Mode numbers are the same as the IMG type.
 				break;
 		}
 	}
-	else if(g_S_Key)
+	else if(g_DownArrow ||g_S_Key)
 	{
-		while(1)
+		int i = 0;
+		while (i<=NUM_IMGTYPES)
 		{
-			g_S_Key = false;
-			Mode ++;
-			if(Mode > 10)
+			g_DownArrow = g_S_Key = false;
+			Mode++; i++;
+			if (Mode >= NUM_IMGTYPES)
 				Mode = 0;
 			Img = 0;
 			if(girl->m_GirlImages->m_Images[Mode].m_NumImages > 0)   // This hack will only work as long as the Mode numbers are the same as the IMG type.
 				break;
 		}
 	}
-		if(g_UpArrow)
-	{
-		while(1)
-		{
-			g_UpArrow = false;
-			Mode --;
-			if(Mode < 0)
-				Mode = 10;
-			Img = 0;
-			if(girl->m_GirlImages->m_Images[Mode].m_NumImages > 0)   // This hack will only work as long as the Mode numbers are the same as the IMG type.
-				break;
-		}
-	}
-	else if(g_DownArrow)
-	{
-		while(1)
-		{
-			g_DownArrow = false;
-			Mode ++;
-			if(Mode > 10)
-				Mode = 0;
-			Img = 0;
-			if(girl->m_GirlImages->m_Images[Mode].m_NumImages > 0)   // This hack will only work as long as the Mode numbers are the same as the IMG type.
-				break;
-		}
-	}
-	if (Mode == NUM_IMGTYPES)
+	if (Mode >= NUM_IMGTYPES)
 	{
 		//we've gone through all categories and could not find a single image!
 		return;
 	}
 	// Set the text for gallery type
-	string galtxt = "";
+	// `J` reworked to allow all image types
+	string galtxt[] = { "Anal", "BDSM", "Sex", "Beast", "Group", "Lesbian", "Torture", "Death", "Profile", 
+		"Combat", "Oral", "Ecchi", "Strip", "Maid", "Sing", "Wait", "Card", "Bunny", "Nude", "Mast", "Titty", 
+		"Milk", "Hand", "Pregnant", "Pregnant\nAnal", "Pregnant\nBDSM", "Pregnant\nSex", "Pregnant\nBeast", 
+		"Pregnant\nGroup", "Pregnant\nLesbian", "Pregnant\nTorture", "Pregnant\nDeath", "Pregnant\nProfile", 
+		"Pregnant\nCombat", "Pregnant\nOral", "Pregnant\nEcchi", "Pregnant\nStrip", "Pregnant\nMaid", "Pregnant\nSing", 
+		"Pregnant\nWait", "Pregnant\nCard", "Pregnant\nBunny", "Pregnant\nNude", "Pregnant\nMast", "Pregnant\nTitty", 
+		"Pregnant\nMilk", "Pregnant\nHand"};
+	g_Gallery.EditTextItem(galtxt[Mode], g_interfaceid.TEXT_GALLERYTYPE);
+
+/* `J` old code
 	switch(Mode)
 	{
 	case 0:
@@ -2678,6 +2586,8 @@ void Gallery()
 		g_Gallery.EditTextItem(galtxt,g_interfaceid.TEXT_GALLERYTYPE);
 		break;
 	}
+// */ //
+
 	// Draw the image
 	if(girl)
 	{
@@ -2703,46 +2613,16 @@ void Gallery2()
 		}
 		g_Gallery2.Focused();
 
-		if(girl->m_GirlImages->m_Images[IMGTYPE_ECCHI].m_NumImages == 0)
-			g_Gallery2.DisableButton(g_interfaceid.BUTTON_GALLERYECCHI, true);
-		else
-			g_Gallery2.DisableButton(g_interfaceid.BUTTON_GALLERYECCHI, false);
-		if(girl->m_GirlImages->m_Images[IMGTYPE_STRIP].m_NumImages == 0)
-			g_Gallery2.DisableButton(g_interfaceid.BUTTON_GALLERYSTRIP, true);
-		else
-			g_Gallery2.DisableButton(g_interfaceid.BUTTON_GALLERYSTRIP, false);
-		if(girl->m_GirlImages->m_Images[IMGTYPE_MAID].m_NumImages == 0)
-			g_Gallery2.DisableButton(g_interfaceid.BUTTON_GALLERYMAID, true);
-		else
-			g_Gallery2.DisableButton(g_interfaceid.BUTTON_GALLERYMAID, false);
-		if(girl->m_GirlImages->m_Images[IMGTYPE_SING].m_NumImages == 0)
-			g_Gallery2.DisableButton(g_interfaceid.BUTTON_GALLERYSING, true);
-		else
-			g_Gallery2.DisableButton(g_interfaceid.BUTTON_GALLERYSING, false);
-		if(girl->m_GirlImages->m_Images[IMGTYPE_WAIT].m_NumImages == 0)
-			g_Gallery2.DisableButton(g_interfaceid.BUTTON_GALLERYWAIT, true);
-		else
-			g_Gallery2.DisableButton(g_interfaceid.BUTTON_GALLERYWAIT, false);
-		if(girl->m_GirlImages->m_Images[IMGTYPE_CARD].m_NumImages == 0)
-			g_Gallery2.DisableButton(g_interfaceid.BUTTON_GALLERYCARD, true);
-		else
-			g_Gallery2.DisableButton(g_interfaceid.BUTTON_GALLERYCARD, false);
-		if(girl->m_GirlImages->m_Images[IMGTYPE_BUNNY].m_NumImages == 0)
-			g_Gallery2.DisableButton(g_interfaceid.BUTTON_GALLERYBUNNY, true);
-		else
-			g_Gallery2.DisableButton(g_interfaceid.BUTTON_GALLERYBUNNY, false);
-		if(girl->m_GirlImages->m_Images[IMGTYPE_NUDE].m_NumImages == 0)
-			g_Gallery2.DisableButton(g_interfaceid.BUTTON_GALLERYNUDE, true);
-		else
-			g_Gallery2.DisableButton(g_interfaceid.BUTTON_GALLERYNUDE, false);
-		if(girl->m_GirlImages->m_Images[IMGTYPE_MAST].m_NumImages == 0)
-			g_Gallery2.DisableButton(g_interfaceid.BUTTON_GALLERYMAST, true);
-		else
-			g_Gallery2.DisableButton(g_interfaceid.BUTTON_GALLERYMAST, false);
-		if(girl->m_GirlImages->m_Images[IMGTYPE_TITTY].m_NumImages == 0)
-			g_Gallery2.DisableButton(g_interfaceid.BUTTON_GALLERYTITTY, true);
-		else
-			g_Gallery2.DisableButton(g_interfaceid.BUTTON_GALLERYTITTY, false);
+		g_Gallery2.DisableButton(g_interfaceid.BUTTON_GALLERYECCHI, (girl->m_GirlImages->m_Images[IMGTYPE_ECCHI].m_NumImages == 0));
+		g_Gallery2.DisableButton(g_interfaceid.BUTTON_GALLERYSTRIP, (girl->m_GirlImages->m_Images[IMGTYPE_STRIP].m_NumImages == 0));
+		g_Gallery2.DisableButton(g_interfaceid.BUTTON_GALLERYMAID, (girl->m_GirlImages->m_Images[IMGTYPE_MAID].m_NumImages == 0));
+		g_Gallery2.DisableButton(g_interfaceid.BUTTON_GALLERYSING, (girl->m_GirlImages->m_Images[IMGTYPE_SING].m_NumImages == 0));
+		g_Gallery2.DisableButton(g_interfaceid.BUTTON_GALLERYWAIT, (girl->m_GirlImages->m_Images[IMGTYPE_WAIT].m_NumImages == 0));
+		g_Gallery2.DisableButton(g_interfaceid.BUTTON_GALLERYCARD, (girl->m_GirlImages->m_Images[IMGTYPE_CARD].m_NumImages == 0));
+		g_Gallery2.DisableButton(g_interfaceid.BUTTON_GALLERYBUNNY, (girl->m_GirlImages->m_Images[IMGTYPE_BUNNY].m_NumImages == 0));
+		g_Gallery2.DisableButton(g_interfaceid.BUTTON_GALLERYNUDE, (girl->m_GirlImages->m_Images[IMGTYPE_NUDE].m_NumImages == 0));
+		g_Gallery2.DisableButton(g_interfaceid.BUTTON_GALLERYMAST, (girl->m_GirlImages->m_Images[IMGTYPE_MAST].m_NumImages == 0));
+		g_Gallery2.DisableButton(g_interfaceid.BUTTON_GALLERYTITTY, (girl->m_GirlImages->m_Images[IMGTYPE_TITTY].m_NumImages == 0));
 
 		while(girl->m_GirlImages->m_Images[Mode].m_NumImages == 0 && Mode < NUM_IMGTYPES)
 		{
@@ -2767,61 +2647,61 @@ void Gallery2()
 		}
 		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYECCHI))
 		{
-			Mode=11;
+			Mode = IMGTYPE_ECCHI;
 			Img=0;
 			return;
 		}
 		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYSTRIP))
 		{
-			Mode=12;
+			Mode = IMGTYPE_STRIP;
 			Img=0;
 			return;
 		}
 		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYMAID))
 		{
-			Mode=13;
+			Mode = IMGTYPE_MAID;
 			Img=0;
 			return;
 		}
 		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYSING))
 		{
-			Mode=14;
+			Mode = IMGTYPE_SING;
 			Img=0;
 			return;
 		}
 		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYWAIT))
 		{
-			Mode=15;
+			Mode = IMGTYPE_WAIT;
 			Img=0;
 			return;
 		}
 		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYCARD))
 		{
-			Mode=16;
+			Mode = IMGTYPE_CARD;
 			Img=0;
 			return;
 		}
 		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYBUNNY))
 		{
-			Mode=17;
+			Mode = IMGTYPE_BUNNY;
 			Img=0;
 			return;
 		}
 		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYNUDE))
 		{
-			Mode=18;
+			Mode = IMGTYPE_NUDE;
 			Img=0;
 			return;
 		}
 		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYMAST))
 		{
-			Mode=19;
+			Mode = IMGTYPE_MAST;
 			Img=0;
 			return;
 		}
 		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYTITTY))
 		{
-			Mode=20;
+			Mode = IMGTYPE_TITTY;
 			Img=0;
 			return;
 		}
@@ -2841,96 +2721,67 @@ void Gallery2()
 		}
 	}
 
-	if(g_LeftArrow)
+	if (g_LeftArrow || g_A_Key)
 	{
-		g_LeftArrow = false;
+		g_LeftArrow = g_A_Key = false;
 		Img--;
-		if(Img < 0)
-			Img = girl->m_GirlImages->m_Images[Mode].m_NumImages-1;
+		if (Img < 0)
+			Img = girl->m_GirlImages->m_Images[Mode].m_NumImages - 1;
 		return;
 	}
-	else if(g_RightArrow)
+	else if (g_RightArrow || g_D_Key)
 	{
-		g_RightArrow = false;
+		g_RightArrow = g_D_Key = false;
 		Img++;
-		if(Img == girl->m_GirlImages->m_Images[Mode].m_NumImages)
+		if (Img >= girl->m_GirlImages->m_Images[Mode].m_NumImages)
 			Img = 0;
 		return;
 	}
-	if(g_A_Key)
+	if (g_UpArrow || g_W_Key)
 	{
-		g_A_Key = false;
-		Img--;
-		if(Img < 0)
-			Img = girl->m_GirlImages->m_Images[Mode].m_NumImages-1;
-		return;
-	}
-	else if(g_D_Key)
-	{
-		g_D_Key = false;
-		Img++;
-		if(Img == girl->m_GirlImages->m_Images[Mode].m_NumImages)	
-			Img = 0;
-		return;
-	}
-	if(g_W_Key)
-	{
-		while(1)
+		int i = 0;
+		while (i <= NUM_IMGTYPES)
 		{
-			g_W_Key = false;
-			Mode --;
-			if(Mode < 11)
-				Mode = 20;
+			g_UpArrow = g_W_Key = false;
+			Mode--; i++;
+			if (Mode < 0)
+				Mode = NUM_IMGTYPES - 1;
 			Img = 0;
-			if(girl->m_GirlImages->m_Images[Mode].m_NumImages > 0)   // This hack will only work as long as the Mode numbers are the same as the IMG type.
+			if (girl->m_GirlImages->m_Images[Mode].m_NumImages > 0)   // This hack will only work as long as the Mode numbers are the same as the IMG type.
 				break;
 		}
 	}
-	else if(g_S_Key)
+	else if (g_DownArrow || g_S_Key)
 	{
-		while(1)
+		int i = 0;
+		while (i <= NUM_IMGTYPES)
 		{
-			g_S_Key = false;
-			Mode ++;
-			if(Mode > 20)
-				Mode = 11;
+			g_DownArrow = g_S_Key = false;
+			Mode++; i++;
+			if (Mode >= NUM_IMGTYPES)
+				Mode = 0;
 			Img = 0;
-			if(girl->m_GirlImages->m_Images[Mode].m_NumImages > 0)   // This hack will only work as long as the Mode numbers are the same as the IMG type.
+			if (girl->m_GirlImages->m_Images[Mode].m_NumImages > 0)   // This hack will only work as long as the Mode numbers are the same as the IMG type.
 				break;
 		}
 	}
-		if(g_UpArrow)
-	{
-		while(1)
-		{
-			g_UpArrow = false;
-			Mode --;
-			if(Mode < 11)
-				Mode = 20;
-			Img = 0;
-			if(girl->m_GirlImages->m_Images[Mode].m_NumImages > 0)   // This hack will only work as long as the Mode numbers are the same as the IMG type.
-				break;
-		}
-	}
-	else if(g_DownArrow)
-	{
-		while(1)
-		{
-			g_DownArrow = false;
-			Mode ++;
-			if(Mode > 20)
-				Mode = 11;
-			Img = 0;
-			if(girl->m_GirlImages->m_Images[Mode].m_NumImages > 0)   // This hack will only work as long as the Mode numbers are the same as the IMG type.
-				break;
-		}
-	}
-	if (Mode == NUM_IMGTYPES)
+	if (Mode >= NUM_IMGTYPES)
 	{
 		//we've gone through all categories and could not find a single image!
 		return;
 	}
 	// Set the text for gallery type
+	// `J` reworked to allow all image types
+	string galtxt[] = { "Anal", "BDSM", "Sex", "Beast", "Group", "Lesbian", "Torture", "Death", "Profile",
+		"Combat", "Oral", "Ecchi", "Strip", "Maid", "Sing", "Wait", "Card", "Bunny", "Nude", "Mast", "Titty",
+		"Milk", "Hand", "Pregnant", "Pregnant\nAnal", "Pregnant\nBDSM", "Pregnant\nSex", "Pregnant\nBeast",
+		"Pregnant\nGroup", "Pregnant\nLesbian", "Pregnant\nTorture", "Pregnant\nDeath", "Pregnant\nProfile",
+		"Pregnant\nCombat", "Pregnant\nOral", "Pregnant\nEcchi", "Pregnant\nStrip", "Pregnant\nMaid", "Pregnant\nSing",
+		"Pregnant\nWait", "Pregnant\nCard", "Pregnant\nBunny", "Pregnant\nNude", "Pregnant\nMast", "Pregnant\nTitty",
+		"Pregnant\nMilk", "Pregnant\nHand" };
+	g_Gallery.EditTextItem(galtxt[Mode], g_interfaceid.TEXT_GALLERYTYPE);
+
+	/* `J` old code
 	string galtxt = "";
 	switch(Mode)
 	{
@@ -2979,6 +2830,8 @@ void Gallery2()
 		g_Gallery.EditTextItem(galtxt,g_interfaceid.TEXT_GALLERYTYPE);
 		break;
 	}
+	// */ //
+
 	// Draw the image
 	if(girl)
 	{

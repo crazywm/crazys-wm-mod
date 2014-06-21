@@ -288,7 +288,12 @@ void cScreenStudioManagement::check_events()
 		{
 			// populate Jobs listbox with jobs in the selected category
 			RefreshJobList();
-			EditTextItem(g_Studios.m_JobManager.JobFilterDescription[selection], jobtypedesc_id);
+			string jdmessage = g_Studios.m_JobManager.JobFilterDescription[selection];
+			if (g_Studios.CrewNeeded())
+			{
+				jdmessage += gettext("\n** At least one Camera Mage and one Crystal Purifier is required to film a scene. ");
+			}
+			EditTextItem(jdmessage, jobtypedesc_id);
 		}
 	}
 	if(g_InterfaceEvents.CheckListbox(joblist_id))
@@ -334,6 +339,14 @@ void cScreenStudioManagement::check_events()
 						SetSelectedItemText(joblist_id, selection, g_Studios.m_JobManager.JobDescriptionCount(selection, 0, false, false, true));
 					}
 				}
+				if (g_Studios.is_Actress_Job(selected_girl->m_NightJob) && g_Studios.CrewNeeded())	// `J` added
+				{
+					ss.str("");
+					ss << g_Studios.m_JobManager.JobName[selected_girl->m_NightJob];
+					ss << " **";
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), 6);
+				}
+	
 				GSelection = GetNextSelectedItemFromList(girllist_id, pos+1, pos);
 			}
 		}
@@ -416,9 +429,9 @@ void cScreenStudioManagement::RefreshJobList()
 		return;
 
 	string text = "";
-	
+
 	// populate Jobs listbox with jobs in the selected category
-	for(unsigned int i=g_Studios.m_JobManager.JobFilterIndex[job_filter]; i<g_Studios.m_JobManager.JobFilterIndex[job_filter+1]; i++)
+	for (unsigned int i = g_Studios.m_JobManager.JobFilterIndex[job_filter]; i < g_Studios.m_JobManager.JobFilterIndex[job_filter + 1]; i++)
 	{
 		if (g_Studios.m_JobManager.JobName[i] == "")
 			continue;
@@ -426,17 +439,12 @@ void cScreenStudioManagement::RefreshJobList()
 		AddToListBox(joblist_id, i, text);
 	}
 
-//	if (SetJob)
-//	{
-//		SetJob = false;
-		// set the job
-		if(selected_girl)
-		{
-			int sel_job = selected_girl->m_NightJob;
-			SetSelectedItemInList(joblist_id, sel_job, false);
-			EditTextItem(g_Studios.m_JobManager.JobDescription[sel_job], jobdesc_id);
-		}
-//	}
+	if (selected_girl)
+	{
+		int sel_job = selected_girl->m_NightJob;
+		SetSelectedItemInList(joblist_id, sel_job, false);
+		EditTextItem(g_Studios.m_JobManager.JobDescription[sel_job], jobdesc_id);
+	}
 }
 
 void cScreenStudioManagement::GetSelectedGirls(vector<int> *girl_array)

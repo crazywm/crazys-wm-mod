@@ -72,7 +72,7 @@ For "Skill" and "Stat":
     <Skill    Name="TittySex"               Min="0" Max="0" />
     <Skill    Name="Medicine"               Min="0" Max="0" />
     <Skill    Name="Performance"            Min="0" Max="0" />
-    
+    <Skill    Name="Handjob"                Min="0" Max="0" />
 
 All traits listed will be randomly chosen by their individual Percent.
 After choosing all the traits, the game cleans out any that are overridden by others.
