@@ -370,4 +370,17 @@ Major rewrite of gallery section (part 1): cleanup and expand to allow all image
 Children get their stats/skills as an average of mother's and father's skills/stats at the time of conception instead of only from the father
 The studio now warns you if there is no camera mage or crystal purifier on duty the way rehab or surgery does
 May have fixed a bug, but it needs testing to be sure,  details here - http://www.pinkpetal.org/index.php?topic=1031.msg28068#msg28068
+Updated "!0 girlsx-contents.txt" and "!0 rgirlsx-contents.txt" adding new skills.
+Added "JTest.zip" in Characters folder containing "JTest.rgirlsx" and "JTest" folder with test pictures for each image type
 !!!!!!!!!!!!!!!!!!!! pushed version .05r.01
+
+###  Changes 6/21/2014
+Merged day and night for OutputGirlDetailString for easier adding in later.
+Cleaned studio section of HandleSpecialJobs
+
+###  Changes 6/21/2014
+Major rewrite of gallery section (part 1b): made it work the way it was intended.
+JOB_RECRUITER is now part time job and you can have as many as you want
+Reduced JOB_RECRUITER success rate to compensate for more recruiters allowed
+JOB_RECRUITER modified to include player's disposition - Needs more texts
+!!!!!!!!!!!!!!!!!!!! pushed version .05r.02

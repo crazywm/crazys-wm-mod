@@ -7111,7 +7111,7 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 
 	// her magic ability can make him think he enjoyed it more if she has mana
 	
-	int happycost = 3 - (int)floor((GetSkill(girl, SKILL_MAGIC) / 40));	// `J` how many mana will each point of happy cost her
+	int happycost = 3 - int(GetSkill(girl, SKILL_MAGIC) / 40);	// `J` how many mana will each point of happy cost her
 	if (happycost < 1) happycost = 1;		// so [magic:cost] [<10:can't] [10-39:3] [40-79:2] [80+:1] (probably, I hate math)
 	if (customer->m_Stats[STAT_HAPPINESS] < 100 &&			// If they are not fully happy
 			GetStat(girl, STAT_MANA) >= happycost &&		// If she has enough mana to actually try
@@ -13292,49 +13292,55 @@ CSurface* cGirls::GetImageSurface(sGirl* girl, int ImgType, bool random, int& im
 	if (ImgType >= PREG_OFFSET && ImgType != IMGTYPE_PREGNANT)
 		ImgType -= PREG_OFFSET;
 
-	// `J` create list of alternates for testing
-	int alttypes[1] = { IMGTYPE_PROFILE };
-	if (ImgType == IMGTYPE_ANAL)		int alttypes[1] = { IMGTYPE_SEX };
-	if (ImgType == IMGTYPE_BDSM)		int alttypes[1] = { IMGTYPE_SEX };
-	if (ImgType == IMGTYPE_SEX)			int alttypes[6] = { IMGTYPE_ANAL, IMGTYPE_GROUP, IMGTYPE_LESBIAN, IMGTYPE_ORAL, IMGTYPE_TITTY, IMGTYPE_HAND };
-	if (ImgType == IMGTYPE_BEAST)		int alttypes[1] = { IMGTYPE_SEX };
-	if (ImgType == IMGTYPE_GROUP)		int alttypes[1] = { IMGTYPE_SEX };
-	if (ImgType == IMGTYPE_LESBIAN)		int alttypes[2] = { IMGTYPE_SEX, IMGTYPE_NUDE };
-	if (ImgType == IMGTYPE_TORTURE)		int alttypes[2] = { IMGTYPE_BDSM, IMGTYPE_DEATH };
-	if (ImgType == IMGTYPE_DEATH)		int alttypes[1] = { 8 };
-	if (ImgType == IMGTYPE_PROFILE)		int alttypes[1] = { 8 };
-	if (ImgType == IMGTYPE_COMBAT)		int alttypes[1] = { 8 };
-	if (ImgType == IMGTYPE_ORAL)		int alttypes[3] = { IMGTYPE_HAND, IMGTYPE_TITTY, IMGTYPE_SEX };
-	if (ImgType == IMGTYPE_ECCHI)		int alttypes[2] = { IMGTYPE_STRIP, IMGTYPE_NUDE };
-	if (ImgType == IMGTYPE_STRIP)		int alttypes[2] = { IMGTYPE_ECCHI, IMGTYPE_NUDE };
-	if (ImgType == IMGTYPE_MAID)		int alttypes[1] = { IMGTYPE_BUNNY };
-	if (ImgType == IMGTYPE_SING)		int alttypes[1] = { IMGTYPE_BUNNY };
-	if (ImgType == IMGTYPE_WAIT)		int alttypes[1] = { IMGTYPE_BUNNY };
-	if (ImgType == IMGTYPE_CARD)		int alttypes[1] = { IMGTYPE_BUNNY };
-	if (ImgType == IMGTYPE_BUNNY)		int alttypes[1] = { 8 };
-	if (ImgType == IMGTYPE_NUDE)		int alttypes[2] = { IMGTYPE_STRIP, IMGTYPE_ECCHI };
-	if (ImgType == IMGTYPE_MAST)		int alttypes[1] = { IMGTYPE_NUDE };
-	if (ImgType == IMGTYPE_TITTY)		int alttypes[3] = { IMGTYPE_HAND, IMGTYPE_ORAL, IMGTYPE_SEX };
-	if (ImgType == IMGTYPE_MILK)		int alttypes[1] = { IMGTYPE_NUDE };
-	if (ImgType == IMGTYPE_HAND)		int alttypes[3] = { IMGTYPE_ORAL, IMGTYPE_TITTY, IMGTYPE_SEX };
-	if (ImgType == IMGTYPE_PREGNANT)	int alttypes[1] = { 8 };
-
+	// `J` create list of alternates for testing and set null values as -1
+	int alttypes[] = { -1, -1, -1, -1, -1, -1, -1, -1, -1 };
+	     if (ImgType == IMGTYPE_ANAL)		{	alttypes[0] = IMGTYPE_SEX; }
+	else if (ImgType == IMGTYPE_BDSM)		{	alttypes[0] = IMGTYPE_SEX; }
+	else if (ImgType == IMGTYPE_SEX)		{	alttypes[0] = IMGTYPE_ANAL;		alttypes[1] = IMGTYPE_GROUP; 
+												alttypes[2] = IMGTYPE_LESBIAN;	alttypes[3] = IMGTYPE_ORAL; 
+												alttypes[4] = IMGTYPE_TITTY;	alttypes[5] = IMGTYPE_HAND; }
+	else if (ImgType == IMGTYPE_BEAST)		{	alttypes[0] = IMGTYPE_SEX; }
+	else if (ImgType == IMGTYPE_GROUP)		{	alttypes[0] = IMGTYPE_SEX; }
+	else if (ImgType == IMGTYPE_LESBIAN)	{	alttypes[0] = IMGTYPE_SEX;		alttypes[1] = IMGTYPE_NUDE; }
+	else if (ImgType == IMGTYPE_TORTURE)	{	alttypes[0] = IMGTYPE_BDSM;		alttypes[1] = IMGTYPE_DEATH; }
+	else if (ImgType == IMGTYPE_DEATH)		{	alttypes[0] = 8; }
+	else if (ImgType == IMGTYPE_PROFILE)	{	alttypes[0] = 8; }
+	else if (ImgType == IMGTYPE_COMBAT)		{	alttypes[0] = 8; }
+	else if (ImgType == IMGTYPE_ORAL)		{	alttypes[0] = IMGTYPE_HAND;		alttypes[1] = IMGTYPE_TITTY; 
+												alttypes[2] = IMGTYPE_SEX; }
+	else if (ImgType == IMGTYPE_ECCHI)		{	alttypes[0] = IMGTYPE_STRIP; 	alttypes[1] = IMGTYPE_NUDE; }
+	else if (ImgType == IMGTYPE_STRIP)		{	alttypes[0] = IMGTYPE_ECCHI;	alttypes[1] = IMGTYPE_NUDE; }
+	else if (ImgType == IMGTYPE_MAID)		{	alttypes[0] = IMGTYPE_BUNNY; }
+	else if (ImgType == IMGTYPE_SING)		{	alttypes[0] = IMGTYPE_BUNNY; }
+	else if (ImgType == IMGTYPE_WAIT)		{	alttypes[0] = IMGTYPE_BUNNY; }
+	else if (ImgType == IMGTYPE_CARD)		{	alttypes[0] = IMGTYPE_BUNNY; }
+	else if (ImgType == IMGTYPE_BUNNY)		{	alttypes[0] = 8; }
+	else if (ImgType == IMGTYPE_NUDE)		{	alttypes[0] = IMGTYPE_STRIP;	alttypes[1] = IMGTYPE_ECCHI; }
+	else if (ImgType == IMGTYPE_MAST)		{	alttypes[0] = IMGTYPE_NUDE; }
+	else if (ImgType == IMGTYPE_TITTY)		{	alttypes[0] = IMGTYPE_HAND;		alttypes[1] = IMGTYPE_ORAL; 
+												alttypes[2] = IMGTYPE_SEX; }
+	else if (ImgType == IMGTYPE_MILK)		{	alttypes[0] = IMGTYPE_NUDE; }
+	else if (ImgType == IMGTYPE_HAND)		{	alttypes[0] = IMGTYPE_ORAL;		alttypes[1] = IMGTYPE_TITTY; 
+												alttypes[2] = IMGTYPE_SEX; }
+	else if (ImgType == IMGTYPE_PREGNANT)	{	alttypes[0] = 8; }
 
 	// `J` first check if there are preg varients
 	if (girl->is_pregnant())
 	{
-		for (int test : alttypes)
+		for (int i = 0; i<10; i++)
 		{
-			if (girl->m_GirlImages->m_Images[test + PREG_OFFSET].m_NumImages)
-				return girl->m_GirlImages->m_Images[test + PREG_OFFSET].GetImageSurface(random, img);
+			if (alttypes[i] == -1) break;
+			if (girl->m_GirlImages->m_Images[alttypes[i] + PREG_OFFSET].m_NumImages)
+				return girl->m_GirlImages->m_Images[alttypes[i] + PREG_OFFSET].GetImageSurface(random, img);
 		}
 	}
 	// `J` then check varients
-	for (int test: alttypes)
+	for (int i = 0; i<10; i++)
 	{
-		if (girl->m_GirlImages->m_Images[test].m_NumImages)
+		if (alttypes[i] == -1) break;
+		if (girl->m_GirlImages->m_Images[alttypes[i]].m_NumImages)
 		{
-			return girl->m_GirlImages->m_Images[test].GetImageSurface(random, img);
+			return girl->m_GirlImages->m_Images[alttypes[i]].GetImageSurface(random, img);
 		}
 	}
 	// `J` if there are no alternate types found then try profile
@@ -13711,186 +13717,104 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 	{
 			ss << m_Pay;
 	}
-	else if (detailName == "DayJob")
+	else if (detailName == "DayJob" || detailName == "NightJob")
 	{
-		if (m_DayJob >= NUM_JOBS)
+// `J` set as day job first then test if it is night
+		int DN_Job = m_DayJob;
+		bool DN_Day = 1;
+		if (detailName == "NightJob")
+		{
+			DN_Job = m_NightJob;
+			DN_Day = 0;
+		}
+		if (DN_Job >= NUM_JOBS)
 		{
 			ss << gettext("None");
 		}
-		else if (m_DayJob == JOB_REHAB)
+		else if (DN_Job == JOB_REHAB)
 		{
-			if (g_Centre.GetNumGirlsOnJob(0, JOB_DRUGCOUNSELOR, 0) > 0)
+			if (g_Centre.GetNumGirlsOnJob(0, JOB_DRUGCOUNSELOR, DN_Day) > 0)
 			{
-				ss << g_Brothels.m_JobManager.JobName[m_DayJob] << " (" << 3 - m_WorkingDay << ")";
+				ss << g_Brothels.m_JobManager.JobName[DN_Job] << " (" << 3 - m_WorkingDay << ")";
 			}
 			else
 			{
-				ss << g_Brothels.m_JobManager.JobName[m_DayJob] << " (?)***";
+				ss << g_Brothels.m_JobManager.JobName[DN_Job] << " (?)***";
 			}
 		}
-		else if (m_DayJob == JOB_GETHEALING)
+		else if (DN_Job == JOB_GETHEALING)
 		{
-			if (g_Clinic.GetNumGirlsOnJob(0, JOB_DOCTOR, 0) > 0)
+			if (g_Clinic.GetNumGirlsOnJob(0, JOB_DOCTOR, DN_Day) >0)
 			{
-				ss << g_Brothels.m_JobManager.JobName[m_DayJob];
+				ss << g_Brothels.m_JobManager.JobName[DN_Job];
 			}
 			else
 			{
-				ss << g_Brothels.m_JobManager.JobName[m_DayJob] << " ***";
+				ss << g_Brothels.m_JobManager.JobName[DN_Job] << " ***";
 			}
+
 		}
-		else if (m_DayJob == JOB_GETREPAIRS)
+		else if (DN_Job == JOB_GETREPAIRS)
 		{
-			if (g_Clinic.GetNumGirlsOnJob(0, JOB_MECHANIC, 0) > 0 &&
-				(g_Girls.HasTrait(this, "Construct") ||
-				g_Girls.HasTrait(this, "Half-Construct")))
+			if (g_Clinic.GetNumGirlsOnJob(0, JOB_MECHANIC, DN_Day) > 0 &&
+				(g_Girls.HasTrait(this, "Construct") || g_Girls.HasTrait(this, "Half-Construct")))
 			{
-				ss << g_Brothels.m_JobManager.JobName[m_DayJob];
+				ss << g_Brothels.m_JobManager.JobName[DN_Job];
 			}
 			else if (g_Girls.HasTrait(this, "Construct"))
 			{
-				ss << g_Brothels.m_JobManager.JobName[m_DayJob] << " ****";
+				ss << g_Brothels.m_JobManager.JobName[DN_Job] << " ****";
 			}
 			else
 			{
-				ss << g_Brothels.m_JobManager.JobName[m_DayJob] << " !!";
+				ss << g_Brothels.m_JobManager.JobName[DN_Job] << " !!";
 			}
 		}
-		else if (m_DayJob == JOB_GETABORT)
+		else if (DN_Job == JOB_GETABORT)
 		{
 			int wdays = (2 - (this)->m_WorkingDay);
-			if (g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, 0) > 0)
+			if (g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, DN_Day) > 0)
 			{
 				wdays = 1;
 			}
-			if (g_Clinic.GetNumGirlsOnJob(0, JOB_DOCTOR, 0) > 0)
+			if (g_Clinic.GetNumGirlsOnJob(0, JOB_DOCTOR, DN_Day) > 0)
 			{
-				ss << g_Brothels.m_JobManager.JobName[m_DayJob] << " (" << wdays << ")*";
+				ss << g_Brothels.m_JobManager.JobName[DN_Job] << " (" << wdays << ")*";
 			}
 			else
 			{
-				ss << g_Brothels.m_JobManager.JobName[m_DayJob] << " (?)***";
+				ss << g_Brothels.m_JobManager.JobName[DN_Job] << " (?)***";
 			}
 		}
-		else if (g_Clinic.is_Surgery_Job(m_DayJob))
+		else if (g_Clinic.is_Surgery_Job(DN_Job))
 		{
 			int wdays = (5 - (this)->m_WorkingDay);
-			if (g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, 0) > 0)
+			if (g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, DN_Day) > 0)
 			{
 				if (wdays >= 3)		{ wdays = 3; }
 				else if (wdays > 1)	{ wdays = 2; }
 				else				{ wdays = 1; }
 			}
-			if (g_Clinic.GetNumGirlsOnJob(0, JOB_DOCTOR, 0) > 0)
+			if (g_Clinic.GetNumGirlsOnJob(0, JOB_DOCTOR, DN_Day) > 0)
 			{
-				ss << g_Brothels.m_JobManager.JobName[m_DayJob] << " (" << wdays << ")*";
+				ss << g_Brothels.m_JobManager.JobName[DN_Job] << " (" << wdays << ")*";
 			}
 			else
 			{
-				ss << g_Brothels.m_JobManager.JobName[m_DayJob] << " (?)***";
+				ss << g_Brothels.m_JobManager.JobName[DN_Job] << " (?)***";
 			}
+		}
+		else if (g_Studios.is_Actress_Job(DN_Job) && g_Studios.CrewNeeded())
+		{
+			ss << g_Brothels.m_JobManager.JobName[DN_Job] << " **";
 		}
 		else
 		{
-			ss << g_Brothels.m_JobManager.JobName[m_DayJob];
+			ss << g_Brothels.m_JobManager.JobName[DN_Job];
 		}
 		if (interrupted)
 		{
-			ss << " **";	// `J` added
-		}
-
-	}
-	else if (detailName == "NightJob")
-	{
-		if (m_NightJob >= NUM_JOBS)
-		{
-			ss << gettext("None");
-		}
-		else if (m_NightJob == JOB_REHAB)
-		{
-			if (g_Centre.GetNumGirlsOnJob(0, JOB_DRUGCOUNSELOR, 1) > 0)
-			{
-				ss << g_Brothels.m_JobManager.JobName[m_NightJob] << " (" << 3 - m_WorkingDay << ")";
-			}
-			else
-			{
-				ss << g_Brothels.m_JobManager.JobName[m_NightJob] << " (?)***";
-			}
-		}
-		else if (m_NightJob == JOB_GETHEALING)
-		{
-			if (g_Clinic.GetNumGirlsOnJob(0, JOB_DOCTOR, 1) >0)
-			{
-				ss << g_Brothels.m_JobManager.JobName[m_NightJob];
-			}
-			else
-			{
-				ss << g_Brothels.m_JobManager.JobName[m_NightJob] << " ***";
-			}
-
-		}
-		else if (m_NightJob == JOB_GETREPAIRS)
-		{
-			if (g_Clinic.GetNumGirlsOnJob(0, JOB_MECHANIC, 1) > 0 &&
-				(g_Girls.HasTrait(this, "Construct") ||
-				g_Girls.HasTrait(this, "Half-Construct")))
-			{
-				ss << g_Brothels.m_JobManager.JobName[m_NightJob];
-			}
-			else if (g_Girls.HasTrait(this, "Construct"))
-			{
-				ss << g_Brothels.m_JobManager.JobName[m_NightJob] << " ****";
-			}
-			else
-			{
-				ss << g_Brothels.m_JobManager.JobName[m_NightJob] << " !!";
-			}
-		}
-		else if (m_NightJob == JOB_GETABORT)
-		{
-			int wdays = (2 - (this)->m_WorkingDay);
-			if (g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, 1) > 0)
-			{
-				wdays = 1;
-			}
-			if (g_Clinic.GetNumGirlsOnJob(0, JOB_DOCTOR, 1) > 0)
-			{
-				ss << g_Brothels.m_JobManager.JobName[m_NightJob] << " (" << wdays << ")*";
-			}
-			else
-			{
-				ss << g_Brothels.m_JobManager.JobName[m_NightJob] << " (?)***";
-			}
-		}
-		else if (g_Clinic.is_Surgery_Job(m_NightJob))
-		{
-			int wdays = (5 - (this)->m_WorkingDay);
-			if (g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, 1) > 0)
-			{
-				if (wdays >= 3)		{ wdays = 3; }
-				else if (wdays > 1)	{ wdays = 2; }
-				else				{ wdays = 1; }
-			}
-			if (g_Clinic.GetNumGirlsOnJob(0, JOB_DOCTOR, 1) > 0)
-			{
-				ss << g_Brothels.m_JobManager.JobName[m_NightJob] << " (" << wdays << ")*";
-			}
-			else
-			{
-				ss << g_Brothels.m_JobManager.JobName[m_NightJob] << " (?)***";
-			}
-		}
-		else if (g_Studios.is_Actress_Job(m_NightJob) && g_Studios.CrewNeeded())
-		{
-			ss << g_Brothels.m_JobManager.JobName[m_NightJob] << " **";
-		}
-		else
-		{
-			ss << g_Brothels.m_JobManager.JobName[m_NightJob];
-		}
-		if (interrupted)
-		{
-			ss << " **";	// `J` added
+			ss << " **";
 		}
 	}
 	else if (detailName.find("STAT_") != string::npos)

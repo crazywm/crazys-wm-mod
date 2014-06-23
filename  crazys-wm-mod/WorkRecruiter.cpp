@@ -55,7 +55,6 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, int DayNight, st
 	// put that shit away, not needed for sex training
 	g_Girls.UnequipCombat(girl);
 
-	int roll = g_Dice%100;
 	int HateLove = 0;
 	HateLove = g_Girls.GetStat(girl, STAT_PCLOVE) - g_Girls.GetStat(girl, STAT_PCHATE);
 	int jobperformance = (HateLove + g_Girls.GetStat(girl, STAT_CHARISMA));
@@ -104,22 +103,22 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, int DayNight, st
 	if (jobperformance >= 245)
 	{
 		message += " She must be the perfect recruiter.\n\n";
-		findchance = 30;
+		findchance = 20;
 	}
 	else if (jobperformance  >= 185)
 	{
 		message += " She's unbelievable at this.\n\n";
-		findchance = 20;
+		findchance = 15;
 	}
 	else if (jobperformance >= 135)
 	{
 		message += " She's good at this job.\n\n";
-		findchance = 16;
+		findchance = 12;
 	}
 	else if (jobperformance >= 85)
 	{
 		message += " She made a few mistakes but overall she is okay at this.\n\n";
-		findchance = 12;
+		findchance = 10;
 	}
 	else if (jobperformance >= 65)
 	{
@@ -131,19 +130,93 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, int DayNight, st
 		message += " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
 		findchance = 4;
 	}
-	if ((g_Dice % 101)<findchance)
+	// `J` add in player's disposition so if the girl has heard of you
+	cPlayer m_Player;
+	int findroll = (g_Dice % 101);
+	int dispmod = 0;
+	     if (m_Player.disposition() >= 100)	dispmod = 3;	// "Saint"
+	else if (m_Player.disposition() >= 80)	dispmod = 2;	// "Benevolent"
+	else if (m_Player.disposition() >= 50)	dispmod = 1;	// "Nice"
+	else if (m_Player.disposition() > 10)	dispmod = 0;	// "Pleasant"
+	else if (m_Player.disposition() >= -10)	dispmod = 0;	// "Neutral"
+	else if (m_Player.disposition() > -50)	dispmod = -1;	// "Not nice"
+	else if (m_Player.disposition() > -80)	dispmod = -2;	// "Mean"
+	else /*								*/	dispmod = -3;	// "Evil"
+
+	if (findroll < findchance + 10)	// `J` While out recruiting she does find someone...
 	{
-		sGirl* girl = g_Girls.GetRandomGirl();
+		int finddif = findroll - findchance;
+		sGirl* girl = g_Girls.GetRandomGirl(false, (dispmod == -3 && g_Dice%4!=0));
 		if (girl)
 		{
-			/* MYR: For some reason I can't figure out, a number of girl's house percentages
-			are at zero or set to zero when they are sent to the dungeon. I'm not sure
-			how to fix it, so I'm explicitly setting the percentage to 60 here */
-			girl->m_Stats[STAT_HOUSE] = 60;
-			message += gettext("She finds a girl, ");
+			bool add = false;
+			message += "She finds a girl, ";
 			message += girl->m_Name;
-			message += gettext(" and convinces her that she should work for you.");
-			m_Dungeon->AddGirl(girl, DUNGEON_NEWGIRL);
+			if (findroll < findchance - 5)
+			{		// `J` ... and your disposition did not come up.
+				add = true;
+				message += " and convinces her that she should work for you.";
+			}
+			else if (findroll < findchance + 5)	// `J` ... and your disposition did come up...
+			{
+				if (findroll < findchance + dispmod)	// `J` ... and she was recruited
+				{
+					add = true;
+					if (dispmod > 0)
+					{
+						message += "\n'good guy hire text'";
+					}
+					else if (dispmod < 0)
+					{
+						message += "\n'bad guy hire text'";
+					}
+					else
+					{
+						message += "\n'neutral guy hire text'";
+					}
+					if (dispmod == 3)
+					{
+						int rollt(g_Dice % 4);
+						if (rollt == 0)	girl->add_trait("Optimist");
+					}
+					if (dispmod == -3)
+					{
+						int rollt(g_Dice % 4);
+						if (rollt == 0)	girl->add_trait("Demon");
+						if (rollt == 1)	girl->add_trait("Fearless");
+					}
+				}
+				else	// `J` ... and she was not recruited
+				{
+
+					if (dispmod > 0)
+					{
+						message += "\n'good guy reject text'";
+					}
+					else if (dispmod < 0)
+					{
+						message += "\n'bad guy reject text'";
+					}
+					else
+					{
+						message += "\n'neutral guy reject text'";
+					}
+				}
+			}
+			else	// `J` ... She was not recruited.
+			{
+				message += gettext(" but was unable to convince her that she should work for you.");
+			}
+			if (add)
+			{
+				girl->m_Stats[STAT_HOUSE] = 60;
+
+				m_Dungeon->AddGirl(girl, DUNGEON_NEWGIRL);
+			}
+		}
+		else
+		{
+			message += "But was unable to find anyone to join.";
 		}
 	}
 	else
@@ -154,7 +227,8 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, int DayNight, st
 
 
 //enjoyed the work or not
-	if(roll <= 5)
+	int roll = g_Dice % 100;
+	if (roll <= 5)
 	{
 		message += " \nSome people abused her during the shift.";
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKRECRUIT, -1, true);
