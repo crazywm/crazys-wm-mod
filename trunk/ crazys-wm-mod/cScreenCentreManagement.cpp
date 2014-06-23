@@ -326,7 +326,7 @@ void cScreenCentreManagement::check_events()
 				(g_Centre.GetNumGirlsOnJob(g_CurrCentre, JOB_DRUGCOUNSELOR, 1) < 1 &&
 				g_Centre.GetNumGirlsOnJob(g_CurrCentre, JOB_REHAB, 1) > 0))
 			{
-				jdmessage += gettext("\n*** A Durg Counselor is required to guide Rehab. ");
+				jdmessage += gettext("\n*** A Drug Counselor is required to guide Rehab. ");
 			}
 			EditTextItem(jdmessage, jobtypedesc_id);
 		}

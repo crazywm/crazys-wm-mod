@@ -117,6 +117,8 @@ bool cClinicManager::is_Surgery_Job(int testjob){
 		testjob == JOB_BREASTREDUCTION ||
 		testjob == JOB_BOOBJOB ||
 		testjob == JOB_VAGINAREJUV ||
+		testjob == JOB_TUBESTIED ||
+		testjob == JOB_FERTILITY ||
 		testjob == JOB_FACELIFT ||
 		testjob == JOB_ASSJOB)
 		return true;
@@ -132,6 +134,8 @@ bool cClinicManager::DoctorNeeded()	// `J` added, if there is a doctor already o
 		GetNumGirlsOnJob(0, JOB_BREASTREDUCTION, 0) +
 		GetNumGirlsOnJob(0, JOB_BOOBJOB, 0) +
 		GetNumGirlsOnJob(0, JOB_VAGINAREJUV, 0) +
+		GetNumGirlsOnJob(0, JOB_TUBESTIED, 0) +
+		GetNumGirlsOnJob(0, JOB_FERTILITY, 0) +
 		GetNumGirlsOnJob(0, JOB_FACELIFT, 0) +
 		GetNumGirlsOnJob(0, JOB_ASSJOB, 0) < 1)
 		return false;	// a Doctor is not Needed

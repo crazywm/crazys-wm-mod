@@ -804,6 +804,41 @@ int cJobManager::get_num_on_job(int job, int brothel_id, bool day_or_night)
 	return 0;
 }
 
+bool cJobManager::FullTimeJob(u_int Job)
+{
+	return (
+		Job == JOB_MATRON ||
+		Job == JOB_TORTURER ||
+		// - Arena
+		Job == JOB_DOCTORE ||
+		// - Clinic
+		Job == JOB_GETHEALING ||
+		Job == JOB_GETREPAIRS ||
+		Job == JOB_GETABORT ||
+		Job == JOB_PHYSICALSURGERY ||
+		Job == JOB_LIPO ||
+		Job == JOB_BREASTREDUCTION ||
+		Job == JOB_BOOBJOB ||
+		Job == JOB_VAGINAREJUV ||
+		Job == JOB_FACELIFT ||
+		Job == JOB_ASSJOB ||
+		Job == JOB_TUBESTIED ||
+		Job == JOB_FERTILITY ||
+		// - clinic staff
+		Job == JOB_CHAIRMAN ||
+		Job == JOB_DOCTOR ||
+		Job == JOB_NURSE ||
+		Job == JOB_MECHANIC ||
+		// - Community Centre
+		Job == JOB_CENTREMANAGER ||
+		// - drug centre
+		Job == JOB_DRUGCOUNSELOR ||
+		Job == JOB_REHAB ||
+		// - House
+		Job == JOB_HEADGIRL ||
+		false);
+}
+
 bool cJobManager::is_job_Paid_Player(u_int Job)
 {
 /*
@@ -970,7 +1005,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 {
 	bool MadeChanges = true;  // whether a special case applies to specified job or not
 	
-	/*	`J` added to reset working says only if her job actually changes
+	/*	`J` added to reset working days only if her job actually changes
 	 * m_WorkingDay is only used for full time jobs that take more tha 1 day to complete
 	 * such as getting surgerys or rehab
 	*/
@@ -1018,14 +1053,9 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		else
 			Girl->m_NightJob = Girl->m_DayJob = JOB_HEADGIRL;
 	}
-	else if (u_int(JobID) == JOB_RECRUITER)
+	else if (u_int(JobID) == JOB_RECRUITER && Girl->m_States&(1 << STATUS_SLAVE))
 	{
-		if (g_House.GetNumGirlsOnJob(-1, JOB_RECRUITER, DayOrNight) == 1)
-			g_MessageQue.AddToQue(gettext("You can only have one recruiter."), 0);
-		else if (Girl->m_States&(1 << STATUS_SLAVE))
 			g_MessageQue.AddToQue(gettext("The recruiter cannot be a slave."), 0);
-		else
-			Girl->m_NightJob = Girl->m_DayJob = JOB_RECRUITER;
 	}
 // Special Arena Jobs
 	else if (u_int(JobID) == JOB_DOCTORE)
@@ -1373,25 +1403,21 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		else
 			Girl->m_NightJob = Girl->m_DayJob = JOB_DRUGCOUNSELOR;
 	}
-	else if(u_int(JobID) == JOB_REHAB)
+	else if (u_int(JobID) == JOB_REHAB && g_Centre.GetNumGirlsOnJob(0, JOB_DRUGCOUNSELOR, DayOrNight) == 0)
 	{
-		if(g_Centre.GetNumGirlsOnJob(-1, JOB_DRUGCOUNSELOR, DayOrNight) == 0)
-		{
-			g_MessageQue.AddToQue(gettext("You must have a drug counselor for rehab."), 0);
-			Girl->m_DayJob = Girl->m_NightJob = JOB_CLINICREST;
-		}
-		else if (g_Girls.HasTrait(Girl, "Shroud Addict") || 
-			g_Girls.HasTrait(Girl, "Fairy Dust Addict") || 
-			g_Girls.HasTrait(Girl, "Viras Blood Addict"))
-		{
-			Girl->m_DayJob = Girl->m_NightJob = JOB_REHAB;
-		}
-		else
-		{
-			Girl->m_DayJob = Girl->m_NightJob = JOB_CLINICREST;
-			g_MessageQue.AddToQue(gettext("She has no addiction."), 0);
-		}
+		g_MessageQue.AddToQue(gettext("You must have a drug counselor for rehab."), 0);
 	}
+	else if (u_int(JobID) == JOB_REHAB && !g_Girls.HasTrait(Girl, "Shroud Addict") &&
+		!g_Girls.HasTrait(Girl, "Fairy Dust Addict") && !g_Girls.HasTrait(Girl, "Viras Blood Addict"))
+	{
+		g_MessageQue.AddToQue(gettext("She has no addiction."), 0);
+	}
+	else if (u_int(JobID) == JOB_REHAB)
+	{
+		MadeChanges = false;
+		Girl->m_DayJob = Girl->m_NightJob = JOB_REHAB;
+	}
+
 // Special Movie Studio Jobs
 	else if (u_int(JobID) == JOB_DIRECTOR && g_Studios.GetNumGirlsOnJob(TargetBrothel, JOB_DIRECTOR, DayOrNight) == 1)
 	{
@@ -1405,7 +1431,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	{
 			g_MessageQue.AddToQue(gettext("There can be only one Promoter."), 0);
 	}
-	else if(u_int(JobID) >= JOB_FILMANAL &&	u_int(JobID) <= JOB_FILMRANDOM &&
+	else if(g_Studios.is_Actress_Job(JobID) &&
 		(g_Studios.GetNumGirlsOnJob(0, JOB_CAMERAMAGE, false) == 0 ||
 		g_Studios.GetNumGirlsOnJob(0, JOB_CRYSTALPURIFIER, false) == 0))
 	{
@@ -1433,94 +1459,58 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 // handle instances where special job has been removed, specifically where it actually matters
 	if (JobID != OldJobID)
 	{
-		if (u_int(OldJobID) == JOB_MATRON ||			//  6
-			u_int(OldJobID) == JOB_TORTURER)			//  7
-		{
-			if (u_int(JobID) != JOB_MATRON &&			//  6	Brothel
-				u_int(JobID) != JOB_TORTURER)			//  7
-			{  // for these Day+Night jobs, switch leftover day or night job back to resting
-				(DayOrNight) ? Girl->m_NightJob = JOB_RESTING : Girl->m_DayJob = JOB_RESTING;
-			}
+		// brothel jobs - 
+		if ((u_int(OldJobID) == JOB_MATRON	||	u_int(OldJobID) == JOB_TORTURER) &&
+			(u_int(JobID) != JOB_MATRON		&&	u_int(JobID) != JOB_TORTURER))
+		{	// if old job was full time but new job is not, switch leftover day or night job back to resting
+			(DayOrNight) ? Girl->m_NightJob = JOB_RESTING : Girl->m_DayJob = JOB_RESTING;
 		}
-		else if (u_int(OldJobID) == JOB_DOCTORE)
-		{
-			if (u_int(JobID) != JOB_DOCTORE)
-			{  // for these Day+Night jobs, switch leftover day or night job back to resting
-				(DayOrNight) ? Girl->m_NightJob = JOB_ARENAREST : Girl->m_DayJob = JOB_ARENAREST;
-			}
+		
+		else if (u_int(OldJobID) == JOB_DOCTORE && u_int(JobID) != JOB_DOCTORE)
+		{	// if old job was full time but new job is not, switch leftover day or night job back to resting
+			(DayOrNight) ? Girl->m_NightJob = JOB_ARENAREST : Girl->m_DayJob = JOB_ARENAREST;
 		}
-		else if (
-			u_int(OldJobID) == JOB_GETHEALING ||
-			u_int(OldJobID) == JOB_GETABORT ||
-			u_int(OldJobID) == JOB_PHYSICALSURGERY ||
-			u_int(OldJobID) == JOB_GETREPAIRS ||
-			u_int(OldJobID) == JOB_LIPO ||
-			u_int(OldJobID) == JOB_BREASTREDUCTION ||
-			u_int(OldJobID) == JOB_BOOBJOB ||
-			u_int(OldJobID) == JOB_VAGINAREJUV ||
-			u_int(OldJobID) == JOB_FACELIFT ||
-			u_int(OldJobID) == JOB_ASSJOB ||
-			u_int(OldJobID) == JOB_TUBESTIED ||
-			u_int(OldJobID) == JOB_FERTILITY ||
-			u_int(OldJobID) == JOB_CHAIRMAN ||
-			u_int(OldJobID) == JOB_DOCTOR ||
-			u_int(OldJobID) == JOB_NURSE ||
-			u_int(OldJobID) == JOB_INTERN ||
-			u_int(OldJobID) == JOB_MECHANIC)
+		
+		else if (Girl->m_InClinic)
 		{
-			if (u_int(JobID) != JOB_GETHEALING &&
-				u_int(JobID) != JOB_GETABORT &&
-				u_int(JobID) != JOB_PHYSICALSURGERY &&
-				u_int(JobID) != JOB_GETREPAIRS &&
-				u_int(JobID) != JOB_LIPO &&
-				u_int(JobID) != JOB_BREASTREDUCTION &&
-				u_int(JobID) != JOB_BOOBJOB &&
-				u_int(JobID) != JOB_VAGINAREJUV &&
-				u_int(JobID) != JOB_FACELIFT &&
-				u_int(JobID) != JOB_ASSJOB &&
-				u_int(JobID) != JOB_TUBESTIED &&
-				u_int(JobID) != JOB_FERTILITY &&
-				u_int(JobID) != JOB_CHAIRMAN &&
-				u_int(JobID) != JOB_DOCTOR &&
-				u_int(JobID) != JOB_NURSE &&
-				u_int(JobID) != JOB_INTERN &&
-				u_int(JobID) != JOB_MECHANIC)
-			{  // for these Day+Night jobs, switch leftover day or night job back to resting
+			if ((g_Clinic.is_Surgery_Job(OldJobID) ||
+				u_int(OldJobID) == JOB_GETHEALING  || u_int(OldJobID) == JOB_GETREPAIRS ||
+				u_int(OldJobID) == JOB_DOCTOR      || u_int(OldJobID) == JOB_MECHANIC ||
+				u_int(OldJobID) == JOB_CHAIRMAN    || u_int(OldJobID) == JOB_NURSE	) &&
+				(!g_Clinic.is_Surgery_Job(JobID)   &&
+				u_int(JobID) != JOB_GETHEALING     && u_int(JobID) != JOB_GETREPAIRS &&
+				u_int(JobID) != JOB_DOCTOR         && u_int(JobID) != JOB_MECHANIC &&
+				u_int(JobID) != JOB_CHAIRMAN       && u_int(JobID) != JOB_NURSE))
+			{	// if old job was full time but new job is not, switch leftover day or night job back to resting
 				(DayOrNight) ? Girl->m_NightJob = JOB_CLINICREST : Girl->m_DayJob = JOB_CLINICREST;
+			}
+			if ((u_int(OldJobID) == JOB_DOCTOR || u_int(JobID) == JOB_DOCTOR) &&
+				g_Clinic.DoctorNeeded())
+			{	// `J` if adding or removing doctor, check if a doctor is needed and refresh only if true
 				refresh = true;
 			}
 		}
-		else if (
-			u_int(OldJobID) == JOB_CENTREMANAGER ||
-			u_int(OldJobID) == JOB_DRUGCOUNSELOR ||
-			u_int(OldJobID) == JOB_REHAB)
+		else if (Girl->m_InCentre)
 		{
-
-			if (u_int(JobID) != JOB_CENTREMANAGER &&
-				u_int(JobID) != JOB_DRUGCOUNSELOR &&
-				u_int(JobID) != JOB_REHAB)
-			{  // for these Day+Night jobs, switch leftover day or night job back to resting
+			if ((u_int(OldJobID) == JOB_CENTREMANAGER || u_int(OldJobID) == JOB_DRUGCOUNSELOR || u_int(OldJobID) == JOB_REHAB) &&
+				(u_int(JobID) != JOB_CENTREMANAGER && u_int(JobID) != JOB_DRUGCOUNSELOR && u_int(JobID) != JOB_REHAB))
+			{	// if old job was full time but new job is not, switch leftover day or night job back to resting
 				(DayOrNight) ? Girl->m_NightJob = JOB_CENTREREST : Girl->m_DayJob = JOB_CENTREREST;
+			}
+			if ((u_int(OldJobID) == JOB_DRUGCOUNSELOR || u_int(JobID) == JOB_DRUGCOUNSELOR) &&
+				g_Clinic.GetNumGirlsOnJob(0, JOB_REHAB, 0) + g_Clinic.GetNumGirlsOnJob(0, JOB_REHAB, 1) > 0)
+			{	// `J` if adding or removing coounselor, check if any girls are in rehab and refresh only if true
 				refresh = true;
 			}
 		}
-		else if (
-			u_int(OldJobID) == JOB_RECRUITER ||
-			u_int(OldJobID) == JOB_HEADGIRL)
-		{
-			if (u_int(JobID) != JOB_RECRUITER &&
-				u_int(JobID) != JOB_HEADGIRL)
-			{  // for these Day+Night jobs, switch leftover day or night job back to resting
-				(DayOrNight) ? Girl->m_NightJob = JOB_HOUSEREST : Girl->m_DayJob = JOB_HOUSEREST;
-			}
+		else if (u_int(OldJobID) == JOB_HEADGIRL && u_int(JobID) != JOB_HEADGIRL)
+		{	// if old job was full time but new job is not, switch leftover day or night job back to resting
+			(DayOrNight) ? Girl->m_NightJob = JOB_HOUSEREST : Girl->m_DayJob = JOB_HOUSEREST;
 		}
-		else if (	// `J` if a CAMERAMAGE or CRYSTALPURIFIER is taken off duty...
-			u_int(OldJobID) == JOB_CAMERAMAGE ||
-			u_int(OldJobID) == JOB_CRYSTALPURIFIER ||
-			u_int(JobID) == JOB_CAMERAMAGE ||
-			u_int(JobID) == JOB_CRYSTALPURIFIER ||
-			g_Studios.is_Actress_Job(JobID)
-			)
+		
+		else if (	// `J` if a CAMERAMAGE or CRYSTALPURIFIER is added or removed...
+			u_int(OldJobID) == JOB_CAMERAMAGE || u_int(OldJobID) == JOB_CRYSTALPURIFIER ||
+			u_int(JobID) == JOB_CAMERAMAGE    || u_int(JobID) == JOB_CRYSTALPURIFIER)
 		{			// `J` ...check if there is at least 1 of each to allow for filming...
 			if (g_Studios.GetNumGirlsOnJob(0, JOB_CAMERAMAGE, 1) == 0 ||
 				g_Studios.GetNumGirlsOnJob(0, JOB_CRYSTALPURIFIER, 1) == 0)

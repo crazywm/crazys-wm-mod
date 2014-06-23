@@ -229,5 +229,6 @@ public:
 	static void do_custjobs(sBrothel* brothel, int daynight);
 	~cJobManager(){}
 
-	bool is_job_Paid_Player(u_int Job);						//	WD:	Test for all jobs paid by player
+	bool is_job_Paid_Player(u_int Job);		//	WD:	Test for all jobs paid by player
+	bool FullTimeJob(u_int Job);			//	`J`	Test if job is takes both shifts
 };

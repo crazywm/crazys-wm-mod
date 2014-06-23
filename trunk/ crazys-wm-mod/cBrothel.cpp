@@ -4801,13 +4801,14 @@ void cBrothelManager::SetName(int brothelID, string name)
 // ----- Status texts
 string cBrothelManager::disposition_text()
 {
-	if(m_Player.disposition() >= 80)	return gettext("Benevolent");
-	if(m_Player.disposition() >= 50)	return gettext("Nice");
-	if(m_Player.disposition() > 10)		return gettext("Pleasant");
-	if(m_Player.disposition() >= -10)	return gettext("Neutral");
-	if(m_Player.disposition() > -50)	return gettext("Not nice");
-	if(m_Player.disposition() > -80)	return gettext("Mean");
-						return gettext("Evil");
+	if (m_Player.disposition() >= 100)	return gettext("Saint");
+	if (m_Player.disposition() >= 80)	return gettext("Benevolent");
+	if (m_Player.disposition() >= 50)	return gettext("Nice");
+	if (m_Player.disposition() > 10)	return gettext("Pleasant");
+	if (m_Player.disposition() >= -10)	return gettext("Neutral");
+	if (m_Player.disposition() > -50)	return gettext("Not nice");
+	if (m_Player.disposition() > -80)	return gettext("Mean");
+	return gettext("Evil");
 }
 
 string cBrothelManager::fame_text(sBrothel* brothel)

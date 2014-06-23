@@ -339,11 +339,11 @@ void cScreenStudioManagement::check_events()
 						SetSelectedItemText(joblist_id, selection, g_Studios.m_JobManager.JobDescriptionCount(selection, 0, false, false, true));
 					}
 				}
-				if (g_Studios.is_Actress_Job(selected_girl->m_NightJob) && g_Studios.CrewNeeded())	// `J` added
+				if (g_Studios.is_Actress_Job(selected_girl->m_NightJob))	// `J` added
 				{
 					ss.str("");
 					ss << g_Studios.m_JobManager.JobName[selected_girl->m_NightJob];
-					ss << " **";
+					if (g_Studios.CrewNeeded())	ss << " **";
 					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), 6);
 				}
 	
