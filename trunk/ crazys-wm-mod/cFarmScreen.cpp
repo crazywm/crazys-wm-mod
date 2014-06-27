@@ -17,8 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "cBrothel.h"
-#include "cMovieStudio.h"
-#include "cAuctionScreen.h"
+#include "cFarm.h"
+#include "cFarmScreen.h"
 #include "cWindowManager.h"
 #include "cGold.h"
 #include "sFacilityList.h"
@@ -34,7 +34,7 @@ extern	bool			g_InitWin;
 extern	int			g_CurrBrothel;
 extern	cGold			g_Gold;
 extern	cBrothelManager		g_Brothels;
-extern	cMovieStudioManager		g_Studios;
+extern	cFarmManager		g_Farm;
 extern	cWindowManager		g_WinManager;
 extern	cInterfaceEventManager	g_InterfaceEvents;
 extern bool g_Cheats;
@@ -42,35 +42,40 @@ extern	bool	eventrunning;
 extern string g_ReturnText;
 extern cGangManager g_Gangs;
 extern bool g_AllTogle;
+extern int g_CurrentScreen;
+extern int g_Building;
 
-bool cAuctionScreen::ids_set = false;
 
-void cAuctionScreen::set_ids()
+bool cFarmScreen::ids_set = false;
+
+void cFarmScreen::set_ids()
 {
 	ids_set = true;
 	back_id =		get_id("BackButton");
 	walk_id =		get_id("WalkButton");
 	curbrothel_id =	get_id("CurrentBrothel");
-	auction_id =	get_id("Auction");
+	farm_id =		get_id("Farm");
 	girls_id =		get_id("Girls");
 	staff_id =		get_id("Staff");
 	dungeon_id =    get_id("Dungeon");
 	turns_id =		get_id("Turn");
 	weeks_id =		get_id("Weeks");
 	setup_id =		get_id("SetUp");
+	nextbrothel_id = get_id("Next");
+	prevbrothel_id = get_id("Prev");
+	farmdetails_id = get_id("FarmDetails");
 }
 
-void cAuctionScreen::init()
+void cFarmScreen::init()
 {
-
+g_CurrentScreen = SCREEN_FARM;
+g_Building = BUILDING_FARM;
 /*
  *	buttons enable/disable
  */
-
-
 }
 
-void cAuctionScreen::process()
+void cFarmScreen::process()
 {
 /*
  *	we need to make sure the ID variables are set
@@ -80,6 +85,12 @@ void cAuctionScreen::process()
 	}
 
 	init();
+
+	if (g_InitWin)
+   {
+      EditTextItem(g_Farm.GetBrothelString(0), farmdetails_id);
+      g_InitWin = false;
+   }
 /* 
  *	no events means we can go home
  */
@@ -98,26 +109,18 @@ void cAuctionScreen::process()
 		g_WinManager.Pop();
 		return;
 	}
-#if 0
-	else if(g_InterfaceEvents.CheckButton(walk_id))
+	/*else if(g_InterfaceEvents.CheckButton(walk_id))
 	{
 		g_InitWin = true;
-		g_WinManager.push("Casting Try");
+		g_WinManager.push("Arena Try");
 		return;
-	}
+	}*/
 	else if(g_InterfaceEvents.CheckButton(girls_id))
 	{
 		g_InitWin = true;
-		g_WinManager.push("Studio");
+		g_WinManager.push("Farm Management");
 		return;
 	}
-	else if(g_InterfaceEvents.CheckButton(setup_id))
-	{
-		g_InitWin = true;
-		g_WinManager.push("House");
-		return;
-	}
-#endif
 	else if(g_InterfaceEvents.CheckButton(staff_id))
 	{
 		g_InitWin = true;
@@ -128,6 +131,13 @@ void cAuctionScreen::process()
 	{
 		g_InitWin = true;
 		g_WinManager.Push(Turnsummary, &g_Turnsummary);
+		return;
+	}
+	else if(g_InterfaceEvents.CheckButton(setup_id))
+	{
+		g_Building = BUILDING_FARM;
+		g_InitWin = true;
+		g_WinManager.push("Building Setup");
 		return;
 	}
 	else if(g_InterfaceEvents.CheckButton(dungeon_id))
@@ -147,4 +157,16 @@ void cAuctionScreen::process()
 			g_WinManager.Push(Turnsummary, &g_Turnsummary);
 			return;
 		}
+	/*else if(g_InterfaceEvents.CheckButton(nextbrothel_id))
+	{
+		g_InitWin = true;
+		g_WinManager.push("Centre Screen");
+		return;
+	}
+	else if(g_InterfaceEvents.CheckButton(prevbrothel_id))
+	{
+		g_InitWin = true;
+		g_WinManager.push("Movie Screen");
+		return;
+	}*/
 }

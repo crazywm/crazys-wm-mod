@@ -233,7 +233,7 @@ void cScreenGirlManagement::init()
 
 	// add the job filters
 //	for(int i=0; i<NUMJOBTYPES; i++)  // loop through all job types
-	for(unsigned int i=0; i<JOBFILTER_ARENA; i++)  // temporary limit to job types shown
+	for(unsigned int i=0; i<JOBFILTER_STABLES; i++)  // temporary limit to job types shown
 	{
 		AddToListBox(jobtypelist_id, i, g_Brothels.m_JobManager.JobFilterName[i]);
 	}

@@ -66,7 +66,7 @@ public:
 	string JobFilterName[NUMJOBTYPES];  // short descriptive name of job filter
 	string JobFilterDescription[NUMJOBTYPES];  // longer description of job filter
 	unsigned int JobFilterIndex[NUMJOBTYPES+1];  // starting job index # for job filter
-	string JobDescriptionCount(int job_id, int brothel_id, bool day = true, bool isClinic = false, bool isStudio = false, bool isArena = false, bool isCentre = false, bool isHouse = false);  // return a job description along with a count of how many girls are on it
+	string JobDescriptionCount(int job_id, int brothel_id, bool day = true, bool isClinic = false, bool isStudio = false, bool isArena = false, bool isCentre = false, bool isHouse = false, bool isFarm = false);  // return a job description along with a count of how many girls are on it
 	bool HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, int OldJobID, bool DayOrNight);  // check for and handle special job assignments
 
 	void Setup();
@@ -119,6 +119,10 @@ public:
 
 	//- Stables
 	static bool WorkMilk(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
+
+	// - Farm Staff
+	static bool WorkFarmManager(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
+	static bool WorkFarmHand(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
 
 	// - Clinic
 	static bool WorkDoctor(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);

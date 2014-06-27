@@ -111,6 +111,8 @@ sScript *cGameScript::Process(sScript *Script)
 	case 56: return Script_MilkTarget(Script);
 	case 57: return Script_WaitTarget(Script);
 	case 58: return Script_SingTarget(Script);
+	case 59: return Script_TorturePicTarget(Script);
+	//case 60: return Script_GirlNameTarget(Script);
 	}
 
 	return 0; // Error executing
@@ -1669,7 +1671,7 @@ sScript* cGameScript::Script_TittyTarget(sScript* Script)
 {
 	if(m_GirlTarget)
 	{
-		g_Girls.UpdateSkill(m_GirlTarget, SKILL_TITTYSEX, 1);
+		g_Girls.UpdateSkill(m_GirlTarget, SKILL_TITTYSEX, 2);
 	}
 		g_GirlDetails.lastsexact = IMGTYPE_TITTY;
 
@@ -1699,7 +1701,7 @@ sScript* cGameScript::Script_HandJobTarget(sScript* Script)
 {
 	if(m_GirlTarget)
 	{
-		g_Girls.UpdateSkill(m_GirlTarget, SKILL_HANDJOB, 1);
+		g_Girls.UpdateSkill(m_GirlTarget, SKILL_HANDJOB, 2);
 	}
 		g_GirlDetails.lastsexact = IMGTYPE_HAND;
 
@@ -1765,6 +1767,29 @@ sScript* cGameScript::Script_SingTarget(sScript* Script)
 
 	return Script->m_Next;
 }
+sScript* cGameScript::Script_TorturePicTarget(sScript* Script)
+{
+	if(m_GirlTarget)
+	{
+		//g_Girls.UpdateSkill(m_GirlTarget, SKILL_PERFORMANCE, 1);
+	}
+		g_GirlDetails.lastsexact = IMGTYPE_TORTURE;
+
+	return Script->m_Next;
+}
+//sScript* cGameScript::Script_GirlNameTarget(sScript* Script)
+//{
+//	if(m_GirlTarget)
+//	{
+//		sGirl* girl;
+//		string girlName = girl->m_Realname;
+//		stringstream sstemp;
+//		sstemp << ("Im ") << girlName;
+//	}
+//		//g_GirlDetails.lastsexact = IMGTYPE_TORTURE;
+//
+//	return Script->m_Next;
+//}
 /*
 
 

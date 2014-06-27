@@ -47,6 +47,7 @@ using namespace std;
 #include "cMovieStudio.h"
 #include "cCentre.h"
 #include "cHouse.h"
+#include "cFarm.h"
 
 class cScrollBar;
 
@@ -89,6 +90,9 @@ extern cCentreManager g_Centre;
 // House Manager
 extern cHouseManager g_House;
 
+// Farm Manager
+extern cFarmManager g_Farm;
+
 // Gang Manager
 extern cGangManager g_Gangs;
 
@@ -115,6 +119,7 @@ extern int g_CurrStudio;
 extern int g_CurrArena;
 extern int g_CurrCentre;
 extern int g_CurrHouse;
+extern int g_CurrFarm;
 
 // if a scrollbar is currently being dragged, this points to it
 extern cScrollBar* g_DragScrollBar;

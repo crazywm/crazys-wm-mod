@@ -25,6 +25,7 @@
 #include "cMovieStudio.h"
 #include "cArena.h"
 #include "cCentre.h"
+#include "cFarm.h"
 #include "Constants.h"
 #include "cTariff.h"
 #include "cWindowManager.h"
@@ -39,6 +40,7 @@
 #include "cClinicScreen.h"
 #include "cCentreScreen.h"
 #include "cMovieScreen.h"
+#include "cFarmScreen.h"
 #include "cClinicTry.h"
 #include "cCastingTry.h"
 #include "cScreenSlaveMarket.h"
@@ -51,6 +53,7 @@
 #include "cScreenGirlManagement.h"
 #include "cScreenClinicManagement.h"
 #include "cScreenHouseManagement.h"
+#include "cScreenFarmManagement.h"
 #include "cScreenStudioManagement.h"
 #include "cScreenMovieMaker.h"
 #include "cScreenArenaManagement.h"
@@ -76,6 +79,7 @@ cScreenStudioManagement g_StudioManagement;
 cScreenArenaManagement g_ArenaManagement;
 cScreenCentreManagement g_CentreManagement;
 cScreenHouseManagement g_HouseManagement;
+cScreenFarmManagement g_FarmManagement;
 cScreenMovieMaker g_MovieMaker;
 cScreenGangs g_GangManagement;
 cScreenGirlDetails g_GirlDetails;
@@ -86,6 +90,7 @@ cArenaTry g_ArenaTry;
 cClinicScreen g_ClinicScreen;
 cCentreScreen g_CentreScreen;
 cHouseScreen g_HouseScreen;
+cFarmScreen g_FarmScreen;
 cMovieScreen g_MovieScreen;
 cClinicTry g_ClinicTry;
 cCastingTry g_CastingTry;
@@ -170,6 +175,7 @@ void FreeInterface()
 	g_ArenaManagement.Free();
 	g_CentreManagement.Free();
 	g_HouseManagement.Free();
+	g_FarmManagement.Free();
 	g_GirlManagement.Free();
 	g_GangManagement.Free();
 	g_GirlDetails.Free();
@@ -186,6 +192,7 @@ void FreeInterface()
 	g_ArenaScreen.Free();
 	g_AuctionScreen.Free();
 	g_HouseScreen.Free();
+	g_FarmScreen.Free();
 	g_MovieScreen.Free();
 	g_Gallery.Free();
 	g_Gallery2.Free();
@@ -214,6 +221,7 @@ void ResetInterface()
 	g_ArenaManagement.Reset();
 	g_CentreManagement.Reset();
 	g_HouseManagement.Reset();
+	g_FarmManagement.Reset();
 	g_GirlManagement.Reset();
 	g_GangManagement.Reset();
 	g_GirlDetails.Reset();
@@ -230,6 +238,7 @@ void ResetInterface()
 	g_ArenaScreen.Reset();
 	g_AuctionScreen.Reset();
 	g_HouseScreen.Reset();
+	g_FarmScreen.Reset();
 	g_MovieScreen.Reset();
 	g_Gallery.Reset();
 	g_Gallery2.Reset();
@@ -615,6 +624,11 @@ void LoadInterface()
 	g_HouseManagement.load();
 	g_WinManager.add_window("House Management", &g_HouseManagement);
 
+	// farm management SCREEN
+	g_LogFile.write("Loading Farm Management Screen");
+	g_FarmManagement.load();
+	g_WinManager.add_window("Farm Management", &g_FarmManagement);
+
 	// GIRL DETAILS
 	g_LogFile.write("Loading Girl Details Screen");
 	g_GirlDetails.load();
@@ -699,6 +713,11 @@ void LoadInterface()
 	g_LogFile.write("Loading Player House Screen");
 	g_HouseScreen.load();
 	g_WinManager.add_window("Player House", &g_HouseScreen);
+
+	// farm screen
+	g_LogFile.write("Loading Farm Screen");
+	g_FarmScreen.load();
+	g_WinManager.add_window("Farm Screen", &g_FarmScreen);
 
 	// Players house (statistic screen)
 	g_LogFile.write("Loading House Screen");

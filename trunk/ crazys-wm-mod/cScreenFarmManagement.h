@@ -22,61 +22,58 @@
 #include "cInterfaceWindow.h"
 #include "InterfaceGlobals.h"
 
-class cBuilding;
-
-class cAuctionScreen : public cInterfaceWindowXML 
+class cScreenFarmManagement : public cInterfaceWindowXML 
 {
 public:
 
 private:
-	int BuyBrothel;
-	bool GetName;
+	char	buffer[256];
 
-	static	bool		ids_set;
+	static bool ids_set;
 /*
  *	interface/event IDs
  */
-	int		back_id;		// Back button
-	int		walk_id;		// Walk Around Town button
-	int		girls_id;		// girl managment map button
-	int		staff_id;		// gang map button
-	int		turns_id;		// turn summary map button
-	int		weeks_id;		// next week map button
-	int		dungeon_id;		// dungeon map button
-	int		setup_id;		// setup map button
-	int		curbrothel_id;	// Current Brothel text
-	int		auction_id;		// auction's House map button
-
-	bool m_first_walk;
+	int back_id;		// Back button
+	int curfarm_id;	// Current Brothel text
+	int girllist_id;	// Girls listbox
+	int girlimage_id;	// Girl image
+	int girldesc_id;	// Girl Description text
+	int viewdetails_id;	// View Details button
+	int transfer_id;	// Transfer Girl button
+	int freeslave_id;
+	int jobtypehead_id;	// Job Types header text
+	int jobtypelist_id;	// Job Types listbox
+	int jobtypedesc_id;	// Job Types Description text
+	int jobhead_id;		// Job header text
+	int joblist_id;		// Job listbox
+	int jobdesc_id;		// Job Description text
+	int day_id;			// Day button
+	int night_id;		// Night button
+	int	walk_id;		// Walk Around Town button
 
 	void set_ids();
-	void check_brothel(int BrothelNum);
-	void check_auction(int AuctionNum);
+	bool GirlDead(sGirl *dgirl);
+	void RefreshSelectedJobType();
+	void RefreshJobList();
+	void GetSelectedGirls(vector<int> *girl_array);
+	void ViewSelectedGirl();
 public:
-	cAuctionScreen()
+	cScreenFarmManagement()
 	{
 		cConfig cfg;
 		DirPath dp = DirPath()
 			<< "Resources"
 			<< "Interface"
 			<< cfg.resolution.resolution()
-			<< "auction_screen.xml"
+			<< "farm_management_screen.xml"
 		;
 		m_filename = dp.c_str();
-		GetName = false;
-		m_first_walk = true;
 	}
-	~cAuctionScreen() {}
+	~cScreenFarmManagement() {}
 
 	void init();
 	void process();
-	void more_button();
-	void release_button();
-	void update_details();
-	sGirl* get_selected_girl();
-	void selection_change();
+	void check_events();
 	bool check_keys();
-	void do_walk();
-	string walk_no_luck();
-
+	void update_image();
 };

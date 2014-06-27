@@ -21,6 +21,7 @@
 #include "cMovieStudio.h"
 #include "cArena.h"
 #include "cCentre.h"
+#include "cFarm.h"
 #include "cScreenTown.h"
 #include "cWindowManager.h"
 #include "cGold.h"
@@ -40,12 +41,14 @@ extern	int g_CurrClinic;
 extern	int g_CurrStudio;
 extern	int g_CurrArena;
 extern	int g_CurrCentre;
+extern	int g_CurrFarm;
 extern	cGold			g_Gold;
 extern	cBrothelManager		g_Brothels;
 extern	cClinicManager		g_Clinic;
 extern	cMovieStudioManager		g_Studios;
 extern	cArenaManager		g_Arena;
 extern	cCentreManager		g_Centre;
+extern	cFarmManager		g_Farm;
 extern	cWindowManager		g_WinManager;
 extern	cInterfaceEventManager	g_InterfaceEvents;
 extern bool g_WalkAround;
@@ -73,6 +76,7 @@ void cScreenTown::set_ids()
 	studio_id =		get_id("Studio");
 	arena_id =		get_id("Arena");
 	centre_id =		get_id("Centre");
+	farm_id =		get_id("Farm");
 	prison_id =		get_id("Prison");
 	brothel0_id =	get_id("Brothel0");
 	brothel1_id =	get_id("Brothel1");
@@ -117,6 +121,11 @@ static static_brothel_data arena_data[] = {
 };
 
 static static_brothel_data studio_data[] = {
+	{ 20000, 20, 20 }
+	//{000, 10, 0 }
+};
+
+static static_brothel_data farm_data[] = {
 	{ 20000, 20, 20 }
 	//{000, 10, 0 }
 };
@@ -217,6 +226,30 @@ void cScreenTown::init()
 
 		GetStudio = false;
 		BuyStudio = -1;
+	}
+	if(BuyFarm != -1)
+	{
+		if(g_ChoiceManager.GetChoice(0) == 0)
+		{
+			GetFarm = true;
+		}
+		else
+		{
+			BuyFarm = -1;
+		}
+
+		g_ChoiceManager.Free();
+	}
+	if(GetFarm)
+	{
+		static_brothel_data *bpt = farm_data + BuyFarm;
+
+		g_Gold.brothel_cost(bpt->price);
+		g_Farm.NewBrothel(bpt->rooms);
+		g_Farm.SetName(0, gettext("Farm"));
+
+		GetFarm = false;
+		BuyFarm = -1;
 	}
 	if(GetName)
 	{
@@ -348,6 +381,12 @@ void cScreenTown::process()
 	else if(g_InterfaceEvents.CheckButton(centre_id))
 	{
 		check_centre(0);
+		g_InitWin = true;
+		return;
+	}
+	else if(g_InterfaceEvents.CheckButton(farm_id))
+	{
+		check_farm(0);
 		g_InitWin = true;
 		return;
 	}
@@ -741,6 +780,41 @@ void cScreenTown::check_studio(int StudioNum)
 	{	// player owns this brothel... go to it
 		g_CurrStudio = StudioNum;
 		g_WinManager.push("Movie Screen");
+	}
+}
+void cScreenTown::check_farm(int FarmNum)
+{	// player clicked on one of the brothels
+	if(g_Farm.GetNumBrothels() == FarmNum)
+	{	// player doesn't own this Studio... can he buy it? 
+		static_brothel_data *bck = farm_data + FarmNum;
+		locale syslocale("");
+		stringstream ss;
+		ss.imbue(syslocale);
+
+		if(!g_Gold.afford(bck->price) || g_Gangs.GetNumBusinessExtorted() < bck->business)
+		{	// can't buy it
+			ss << gettext("This building costs ") << bck->price << gettext(" gold and you need to control at least ") << bck->business << gettext(" businesses.");
+			if(!g_Gold.afford(bck->price))
+				ss << "\n" << gettext("You need ") << (bck->price - g_Gold.ival()) << gettext(" more gold to afford it.");
+			if(g_Gangs.GetNumBusinessExtorted() < bck->business)
+				ss << "\n" << gettext("You need to control ") << (bck->business - g_Gangs.GetNumBusinessExtorted()) << gettext(" more businesses.");
+			g_MessageQue.AddToQue(ss.str(), 0);
+		}
+		else
+		{	// can buy it
+			ss << gettext("Do you wish to purchase this building for ") << bck->price << gettext(" gold? It has ") << bck->rooms << gettext(" rooms.");
+			g_MessageQue.AddToQue(ss.str(), 2);
+			g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, 8);
+			g_ChoiceManager.AddChoice(0, gettext("Buy It"), 0);
+			g_ChoiceManager.AddChoice(0, gettext("Don't Buy It"), 1);
+			g_ChoiceManager.SetActive(0);
+			BuyFarm = FarmNum;
+		}
+	}
+	else
+	{	// player owns this brothel... go to it
+		g_CurrFarm = FarmNum;
+		g_WinManager.push("Farm Screen");
 	}
 }
 

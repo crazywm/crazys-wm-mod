@@ -95,11 +95,23 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, int DayNight, str
 		{
 			message += " She plays with the grace of an angel the customers go on and on about her and always come to listen to her when she works.\n\n";
 			wages += 155;
-		if (roll <= 50)
+		if (roll <= 20)
 			{
 				message += girlName + "'s playing brought many patron's to tears as she played a song full of sadness.\n";
 			}
-			else
+		else if (roll <= 40)
+			{
+				message += "Nice melody fills the room when " + girlName + " is behind the piano.\n";
+			}
+		else if (roll <= 60)
+			{
+				message += "Knowing that she is good, " + girlName + " played all the tunes blindfolded.\n";
+			}
+		else if (roll <= 80)
+			{
+				message += girlName + " being confident in her skill, played today using only one hand.\n";
+			}
+		else
 			{
 				message += girlName + "'s soothing playing seems to glide over the noise and bustling of the bar.\n";
 			}
@@ -108,11 +120,23 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, int DayNight, str
 		{
 			message += " She's unbelievable at this and is always getting praised by the customers for her playing skills.\n\n";
 			wages += 95;
-		if (roll <= 50)
+		if (roll <= 20)
 			{
 				message += girlName + " begun to acquire her own following - a small crowd of people came in just to listen to her and buy drinks\n";
 			}
-			else
+		else if (roll <= 40)
+			{
+				message += "Her playing fills the room. Some customers hum the melody under their noses.\n";
+			}
+		else if (roll <= 60)
+			{
+				message += "After making a mistake she improvised a passage to the next song.\n";
+			}
+		else if (roll <= 80)
+			{
+				message += "She plays without music sheets having all the songs memorized.\n";
+			}
+		else
 			{
 				message += girlName + "'s soothing playing seems to glide over the noise and bustling of the bar.\n";
 			}
@@ -121,37 +145,73 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, int DayNight, str
 		{
 			message += " Her playing is really good and gets praised by the customers often.\n\n";
 			wages += 55;
-		if (roll <= 50)
+		if (roll <= 20)
 			{
 				message += "Her playing was pleasing, if bland.  Her rythem was nice, if slightly untrained.\n";
 			}
-			else
+		else if (roll <= 40)
 			{
-				message += "The slow song " + girlName + " sang at the end of shift really had her full emotion and heart.\n";
+				message += girlName + " don’t have any trouble playing the piano.\n";
+			}
+		else if (roll <= 60)
+			{
+				message += "Give " + girlName + " any kind of music sheet and she will play it. She is really good at this.\n";
+			}
+		else if (roll <= 80)
+			{
+				message += "When asked to play one of the more complicated tunes she gave her all.\n";
+			}
+		else
+			{
+				message += "The slow song " + girlName + " played at the end of shift really had her full emotion and heart.\n";
 			}
 		}
  else if (jobperformance >= 100)
 		{
 			message += " She hits a few right notes but she still has room to improve.\n\n";
 			wages += 15;
-		if (roll <= 50)
+		if (roll <= 20)
 			{
 				message += "While she won't win any contests, " + girlName + " isn't a terrible pianist.\n";
 			}
-			else
+		else if (roll <= 40)
 			{
-				message += "The slow song " + girlName + " sang at the end of shift really had her full emotion and heart.  A pity that she felt so bored and tired.\n";
+				message += girlName + "'s performance today was good. She seems to you as a promising pianist.\n";
+			}
+		else if (roll <= 60)
+			{
+				message += "She gets the key order right most of the time.\n";
+			}
+		else if (roll <= 80)
+			{
+				message += "You could tell that there was something like a melody, but " + girlName + " still need a lot of practice.\n";
+			}
+		else
+			{
+				message += "The slow song " + girlName + " played at the end of shift really had her full emotion and heart.  A pity that she felt so bored and tired.\n";
 			}
 		}
  else if (jobperformance >= 70)
 		{
 			message += " She almost never hits a right note. Luck for you most of your customers are drunks.\n\n";
 			wages -= 5;
-		if (roll <= 50)
+		if (roll <= 20)
 			{
 				message += "Her playing is barely acceptable, but fortunately the bustling of the bar drowns " + girlName + " out for the most part.\n";
 			}
-			else
+		else if (roll <= 40)
+			{
+				message += "She is terrible at this. Some customers left after she started to play.\n";
+			}
+		else if (roll <= 60)
+			{
+				message += "You could count on the fingers of one hand the part in her play that was clean.\n";
+			}
+		else if (roll <= 80)
+			{
+				message += "She is bad at playing the piano.\n";
+			}
+		else
 			{
 				message += girlName + " knows a note.  To bad its the only one she knows and plays it over and over.\n";
 			}
@@ -160,11 +220,23 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, int DayNight, str
 		{
 			message += " She didn't play the piano so much as banged on it.\n\n";
 			wages -= 15;
-		if (roll <= 50)
+		if (roll <= 20)
 			{
 				message += "Her audience seems paralyzed, as if they couldn't believe that a piano was capable of making such noise.\n";
 			}
-			else
+		else if (roll <= 40)
+			{
+				message += "After ten seconds you wanted to grab an axe and ends the instruments misery being tortured by " + girlName + " attempt to play.\n";
+			}
+		else if (roll <= 60)
+			{
+				message += "Hitting keys at random nobody wouldn’t call playing, but " + girlName + " thinks otherwise.\n";
+			}
+		else if (roll <= 80)
+			{
+				message += "You could swear that a rat running inside the piano would bring better sounds then " + girlName + ".\n";
+			}
+		else
 			{
 				message += girlName + " banged on the piano clearly having no clue what a note was.\n";
 			}

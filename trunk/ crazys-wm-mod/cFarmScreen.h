@@ -24,7 +24,7 @@
 
 class cBuilding;
 
-class cAuctionScreen : public cInterfaceWindowXML 
+class cFarmScreen : public cInterfaceWindowXML 
 {
 public:
 
@@ -45,28 +45,32 @@ private:
 	int		dungeon_id;		// dungeon map button
 	int		setup_id;		// setup map button
 	int		curbrothel_id;	// Current Brothel text
-	int		auction_id;		// auction's House map button
+	int		farm_id;		// farm's House map button
+	int		nextbrothel_id;	// next brothel button
+	int		prevbrothel_id;		// prev brothel button
+	int     farmdetails_id;    // farm description text
 
 	bool m_first_walk;
 
 	void set_ids();
 	void check_brothel(int BrothelNum);
-	void check_auction(int AuctionNum);
+	void check_farm(int FarmNum);
 public:
-	cAuctionScreen()
+	cFarmScreen()
 	{
 		cConfig cfg;
 		DirPath dp = DirPath()
 			<< "Resources"
 			<< "Interface"
 			<< cfg.resolution.resolution()
-			<< "auction_screen.xml"
+			<< "farm_screen.xml"
 		;
 		m_filename = dp.c_str();
 		GetName = false;
 		m_first_walk = true;
 	}
-	~cAuctionScreen() {}
+
+	~cFarmScreen() { g_LogFile.write("Farm Shutdown"); }
 
 	void init();
 	void process();

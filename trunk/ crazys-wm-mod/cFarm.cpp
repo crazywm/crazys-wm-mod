@@ -23,7 +23,7 @@
 #include "linux.h"
 #endif
 
-#include "cCentre.h"
+#include "cFarm.h"
 #include "cGangs.h"
 #include "DirPath.h"
 #include "cMessageBox.h"
@@ -41,11 +41,11 @@ extern cRng             g_Dice;
 extern cGold            g_Gold;
 extern char             buffer[1000];
 
-// // ----- Strut sCentre Create / destroy
-sCentre::sCentre() :	m_Finance(0)	// constructor
+// // ----- Strut sFarm Create / destroy
+sFarm::sFarm() :	m_Finance(0)	// constructor
 {
 	m_var	= 0;
-	m_Name = "centre";
+	m_Name = "farm";
 	m_Filthiness			= 0;
 	m_Next					= 0;
 	m_Girls					= 0;
@@ -57,7 +57,7 @@ sCentre::sCentre() :	m_Finance(0)	// constructor
 		m_BuildingQuality[i] = 0;
 }
 
-sCentre::~sCentre()			// destructor
+sFarm::~sFarm()			// destructor
 {
 	m_var	= 0;
 	if(m_Next)
@@ -69,47 +69,48 @@ sCentre::~sCentre()			// destructor
 	m_Girls					= 0;
 }
 
-void cCentreManager::AddGirl(int brothelID, sGirl* girl)
+void cFarmManager::AddGirl(int brothelID, sGirl* girl)
 {
 	girl->m_InMovieStudio = false;
-	girl->m_InArena = false;
+	girl->m_InCentre = false;
 	girl->m_InClinic = false;
 	girl->m_InHouse = false;
-	girl->m_InFarm = false;
-	girl->m_InCentre = true;
+	girl->m_InArena = false;
+	girl->m_InFarm = true;
 	girl->where_is_she = 0;
 	cBrothelManager::AddGirl(brothelID, girl);
 }
 
-void cCentreManager::RemoveGirl(int brothelID, sGirl* girl, bool deleteGirl)
+void cFarmManager::RemoveGirl(int brothelID, sGirl* girl, bool deleteGirl)
 {
-	girl->m_InCentre = false;
+	girl->m_InFarm = false;
 	cBrothelManager::RemoveGirl(brothelID, girl, deleteGirl);
 }
 
 
-// ----- Class cCentreManager Create / destroy
-cCentreManager::cCentreManager()			// constructor
+// ----- Class cFarmManager Create / destroy
+cFarmManager::cFarmManager()			// constructor
 {
 	m_JobManager.Setup();
 }
 
-cCentreManager::~cCentreManager()			// destructor
+cFarmManager::~cFarmManager()			// destructor
 {
-	cCentreManager::Free();
+	cFarmManager::Free();
 }
 
-void cCentreManager::Free()
+void cFarmManager::Free()
 {
 	if(m_Parent)
 		delete m_Parent;
 	m_Parent			= 0;
 	m_Last				= 0;
 	m_NumBrothels = 0;
+
 }
 
 // ----- Update & end of turn
-void cCentreManager::UpdateCentre()
+void cFarmManager::UpdateFarm()
 {
 	sBrothel* current = (sBrothel*) m_Parent;
 	current->m_Finance.zero();
@@ -119,10 +120,10 @@ void cCentreManager::UpdateCentre()
 	{
 		cgirl->m_InMovieStudio = false;
 		cgirl->m_InArena = false;
-		cgirl->m_InCentre = true;
+		cgirl->m_InCentre = false;
 		cgirl->m_InClinic = false;
 		cgirl->m_InHouse = false;
-		cgirl->m_InFarm = false;
+		cgirl->m_InFarm = true;
 		cgirl->where_is_she = 0;
 
 		cgirl->m_Events.Clear();
@@ -143,7 +144,7 @@ void cCentreManager::UpdateCentre()
 
 // End of turn stuff is here
 // Same method than Brothel but different job
-void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)
+void cFarmManager::UpdateGirls(sBrothel* brothel, int DayNight)
 {
 	sGirl* current = brothel->m_Girls;
 	string summary, msg, girlName;
@@ -167,7 +168,6 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)
  *		ONCE DAILY processing
  *		at start of Day Shift
  */
-
 		if (DayNight == SHIFT_DAY)
 		{
 			// Remove any dead bodies from last week
@@ -184,9 +184,9 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)
 				UpdateAllGirlsStat(brothel, STAT_PCHATE, 1);	// increase all the girls hate of the player for letting her die (weather his fault or not)
 
 				// Two messages go into the girl queue...
-				msg += girlName + (" has died from her injuries, the other girls all fear and hate you a little more.");
+				msg += girlName + gettext(" has died from her injuries, the other girls all fear and hate you a little more.");
 				DeadGirl->m_Events.AddMessage(msg, IMGTYPE_DEATH, EVENT_DANGER);
-				summary += girlName + (" has died from her injuries.  Her body will be removed by the end of the week.");
+				summary += girlName + gettext(" has died from her injuries.  Her body will be removed by the end of the week.");
 				DeadGirl->m_Events.AddMessage(summary, IMGTYPE_DEATH, EVENT_SUMMARY);
 
 				// There is also one global message
@@ -274,20 +274,20 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)
  */
 		u_int sw = 0;						//	Job type
 		if(current->m_JustGaveBirth)		// if she gave birth, let her rest this week
-			sw = JOB_CENTREREST;
+			sw = JOB_FARMREST;
 		else
 			sw = (DayNight == SHIFT_DAY) ? current->m_DayJob : current->m_NightJob;
 
-		// `J` added check to force jobs into the Centre correcting a bug
-		if (sw != JOB_CENTREREST && sw >= JOB_FEEDPOOR && sw <= JOB_REHAB)
+		// `J` added check to force jobs into the Farm correcting a bug
+		if (sw != JOB_FARMREST && sw >= JOB_BEASTCAPTURE && sw <= JOB_FARMREST)
 		{
 			refused = m_JobManager.JobFunctions[sw](current, brothel, DayNight, summary);
 		}
-		else // Any job not in the Centre will be replaced with JOB_CENTREREST
+		else // Any job not in the Farm will be replaced with JOB_FARMREST
 		{
-			if (DayNight == SHIFT_DAY)current->m_DayJob = JOB_CENTREREST;
-			else current->m_NightJob = JOB_CENTREREST;
-			sw = JOB_CENTREREST;
+			if (DayNight == SHIFT_DAY)current->m_DayJob = JOB_FARMREST;
+			else current->m_NightJob = JOB_FARMREST;
+			sw = JOB_FARMREST;
 			refused = m_JobManager.JobFunctions[JOB_RESTING](current, brothel, DayNight, summary);
 		}
 
@@ -297,7 +297,7 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		totalGold += current->m_Pay;
 
 		// work out the pay between the house and the girl 
-		// may be change this for centre
+		// may be change this for clinic
 		g_Brothels.CalculatePay(brothel, current, sw);
 
 		brothel->m_Fame += g_Girls.GetStat(current, STAT_FAME);
@@ -321,127 +321,110 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		// update girl triggers ??
 		//current->m_Triggers.ProcessTriggers();
 
+
 			/*
- *		Manager CODE START
+ *		farm manager CODE START
  */
 
 		// Lets try to compact multiple messages into one.
-		string ManagerMsg = "";
-		string RecoupMsg = "";
-		string ManagerWarningMsg = "";
+		string FarmmanagerMsg = "";
+		string FarmmanagerWarningMsg = "";
 
-		bool manager = false;
-		if(GetNumGirlsOnJob(brothel->m_id, JOB_CENTREMANAGER, true) >= 1 || GetNumGirlsOnJob(brothel->m_id, JOB_CENTREMANAGER, false) >= 1)
-			manager = true;
+		bool farmmanager = false;
+		if(GetNumGirlsOnJob(brothel->m_id, JOB_FARMMANGER, true) >= 1 || GetNumGirlsOnJob(brothel->m_id, JOB_FARMMANGER, false) >= 1)
+			farmmanager = true;
 
 		if(g_Girls.GetStat(current, STAT_TIREDNESS) > 80)
 		{
-			if (current->m_YesterDayJob == JOB_REHAB)
-			{
-				current->m_DayJob = JOB_CENTREREST;	current->m_NightJob = JOB_CENTREREST;
-				RecoupMsg += girlName + gettext(" is recouperating after her rehab.\n");
-			}
-			else if (manager)
+			if (farmmanager)
 			{
 				if(current->m_PrevNightJob == 255 && current->m_PrevDayJob == 255)
 				{
 					current->m_PrevDayJob = current->m_DayJob;
 					current->m_PrevNightJob = current->m_NightJob;
-					current->m_DayJob = current->m_NightJob = JOB_CENTREREST;
-					ManagerWarningMsg += gettext("The Manager takes ") + girlName + gettext(" off duty to rest due to her tiredness.\n");
+					current->m_DayJob = current->m_NightJob = JOB_FARMREST;
+					FarmmanagerWarningMsg += gettext("The Farm Manger takes ") + girlName + gettext(" off duty to rest due to her tiredness.\n");
 				}
 				else
 				{
 					if((g_Dice%100)+1 < 70)
 					{
-						ManagerMsg += gettext("The Manager helps ") + girlName + gettext(" to relax.\n");
+						FarmmanagerMsg += gettext("The Farm Manger helps ") + girlName + gettext(" to relax.\n");
 						g_Girls.UpdateStat(current, STAT_TIREDNESS, -5);
 					}
 				}
 			}
 			else
-				ManagerWarningMsg += gettext("CAUTION! This girl desparatly need rest. Give her some free time\n");
+				FarmmanagerWarningMsg += gettext("CAUTION! This girl desparatly need rest. Give her some free time\n");
 		}
 
-		if(g_Girls.GetStat(current, STAT_HAPPINESS) < 40 && manager && (g_Dice%100) +1 < 70)
+		if(g_Girls.GetStat(current, STAT_HAPPINESS) < 40 && farmmanager && (g_Dice%100) +1 < 70)
 		{
-			ManagerMsg = gettext("The Manager helps cheer up ") + girlName + gettext(" after she feels sad.\n");
+			FarmmanagerMsg = gettext("The Farm manager helps cheer up ") + girlName + gettext(" after she feels sad.\n");
 			g_Girls.UpdateStat(current, STAT_HAPPINESS, 5);
 		}
 
-		if (g_Girls.GetStat(current, STAT_HEALTH) < 40)
+		if(g_Girls.GetStat(current, STAT_HEALTH) < 40)
 		{
-			if (current->m_YesterDayJob == JOB_REHAB)
+			if(farmmanager)
 			{
-				current->m_DayJob = JOB_CENTREREST;	current->m_NightJob = JOB_CENTREREST;
-				RecoupMsg += girlName + gettext(" is recouperating after her rehab.\n");
-			}
-			else if (manager)
-			{
-				if (current->m_PrevNightJob == 255 && current->m_PrevDayJob == 255)
+				if(current->m_PrevNightJob == 255 && current->m_PrevDayJob == 255)
 				{
 					current->m_PrevDayJob = current->m_DayJob;
 					current->m_PrevNightJob = current->m_NightJob;
-					current->m_DayJob = current->m_NightJob = JOB_CENTREREST;
-					ManagerWarningMsg += girlName + gettext(" is taken off duty by the Manager to rest due to her low health.\n");
+					current->m_DayJob = current->m_NightJob = JOB_FARMREST;
+					FarmmanagerWarningMsg += girlName + gettext(" is taken off duty by the Farm Manger to rest due to her low health.\n");
 				}
 				else
 				{
-					ManagerMsg = gettext("The Manager helps heal ") + girlName + gettext(".\n");
+					FarmmanagerMsg = gettext("The Farm manager helps heal ") + girlName + gettext(".\n");
 					g_Girls.UpdateStat(current, STAT_HEALTH, 5);
 				}
 			}
 			else
 			{
-				ManagerWarningMsg = gettext("DANGER ") + girlName + gettext("'s health is very low!\nShe must rest or she will die!\n");
+				FarmmanagerWarningMsg = gettext("DANGER ") + girlName + gettext("'s health is very low!\nShe must rest or she will die!\n");
 			}
 		}
 
 		// Back to work
-		if ((current->m_NightJob == JOB_CENTREREST && current->m_DayJob == JOB_CENTREREST) && (g_Girls.GetStat(current, STAT_HEALTH) >= 80 && g_Girls.GetStat(current, STAT_TIREDNESS) <= 20))
+		if((current->m_NightJob == JOB_FARMREST && current->m_DayJob == JOB_FARMREST) && (g_Girls.GetStat(current, STAT_HEALTH) >= 80 && g_Girls.GetStat(current, STAT_TIREDNESS) <= 20))
 		{
-			if (current->m_YesterDayJob == JOB_REHAB)
-			{
-				current->m_DayJob = JOB_CENTREREST;	current->m_NightJob = JOB_CENTREREST;
-				RecoupMsg += girlName + gettext(" is recouperating after her rehab.\n");
-			}
-			else if ((manager || current->m_PrevDayJob == JOB_CENTREMANAGER)  // do we have a director, or was she the director and made herself rest?
+			if(
+				(farmmanager || current->m_PrevDayJob == JOB_FARMMANGER)  // do we have a Farm manager, or was she the director and made herself rest?
 				&& current->m_PrevDayJob != 255  // 255 = nothing, in other words no previous job stored
-				&& current->m_PrevNightJob != 255)
+				&& current->m_PrevNightJob != 255
+				)
 			{
 				g_Brothels.m_JobManager.HandleSpecialJobs(brothel->m_id, current, current->m_PrevDayJob, current->m_DayJob, true);
-				if (current->m_DayJob == current->m_PrevDayJob)  // only update night job if day job passed HandleSpecialJobs
+				if(current->m_DayJob == current->m_PrevDayJob)  // only update night job if day job passed HandleSpecialJobs
 					current->m_NightJob = current->m_PrevNightJob;
 				else
-					current->m_DayJob = JOB_CENTREREST;
+					current->m_DayJob = JOB_FARMREST;
 				current->m_PrevDayJob = current->m_PrevNightJob = 255;
-				ManagerMsg += gettext("The Manager puts ") + girlName + gettext(" back to work.\n");
+				FarmmanagerMsg += gettext("The Farm manager puts ") + girlName + gettext(" back to work.\n");
 			}
 			else
 			{
-				current->m_DayJob = JOB_CENTREREST;
-				ManagerWarningMsg += gettext("WARNING ") + girlName + gettext(" is doing nothing!\n");
+				current->m_DayJob = JOB_FARMREST;
+				FarmmanagerWarningMsg += gettext("WARNING ") + girlName + gettext(" is doing nothing!\n");
 			}
 		}
 
 		// Now print out the consolodated message
-		if (strcmp(ManagerMsg.c_str(), "") != 0)
+		if (strcmp(FarmmanagerMsg.c_str(), "") != 0)
 		{
-			current->m_Events.AddMessage(ManagerMsg, IMGTYPE_PROFILE, SHIFT_NIGHT);
-			ManagerMsg = "";
+			current->m_Events.AddMessage(FarmmanagerMsg, IMGTYPE_PROFILE, SHIFT_NIGHT);
+			FarmmanagerMsg = "";
 		}
-		if (strcmp(RecoupMsg.c_str(), "") != 0)
+
+        if (strcmp(FarmmanagerWarningMsg.c_str(), "") != 0)
 		{
-			current->m_Events.AddMessage(RecoupMsg, IMGTYPE_PROFILE, DayNight);
-			RecoupMsg = "";
-		}
-		if (strcmp(ManagerWarningMsg.c_str(), "") != 0)
-		{
-			current->m_Events.AddMessage(ManagerWarningMsg, IMGTYPE_PROFILE, EVENT_WARNING);
-			ManagerWarningMsg = "";
+			current->m_Events.AddMessage(FarmmanagerWarningMsg, IMGTYPE_PROFILE, EVENT_WARNING);
+			FarmmanagerWarningMsg = "";
 		}
 /*
- *		Doctore CODE END
+ *		Farm manager CODE END
  */
 /*
  *		Summary Messages
@@ -449,34 +432,34 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		bool sum = true;
 
 		if(refused)											
-			summary += girlName + (" refused to work so made no money.");
+			summary += girlName + gettext(" refused to work so made no money.");
 
 		// WD:	Only do summary messages if there is income to report
 		else if(totalGold > 0)										
 		{
-			summary += girlName + (" earned a total of ");
+			summary += girlName + gettext(" earned a total of ");
 			_itoa(totalGold, buffer, 10);
 			summary += buffer;
-			summary += (" gold");
+			summary += gettext(" gold");
 //			if(sw == JOB_MATRON)
 
 			// WD: Job Paid by player
 			if(m_JobManager.is_job_Paid_Player(sw))					
-				summary += (" directly from you. She gets to keep it all.");
+				summary += gettext(" directly from you. She gets to keep it all.");
 			else if(current->house() <= 0)
-				summary += (" and she gets to keep it all.");
+				summary += gettext(" and she gets to keep it all.");
 			else
 			{
-				summary += (", you keep ");
+				summary += gettext(", you keep ");
 				_itoa((int)current->m_Stats[STAT_HOUSE], buffer, 10);
 				summary += buffer;
-				summary += ("%. ");
+				summary += gettext("%. ");
 			}
 		}
 
 		// WD:	No Income today
 		else if(totalGold == 0)										
-			summary += girlName + (" made no money.");
+			summary += girlName + gettext(" made no money.");
 
 #if 1																// WD: Income Loss Sanity Checking
 		else if(totalGold < 0)										
@@ -504,6 +487,7 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		}
 
 
+
 		// Level the girl up if nessessary
 		if ((g_Girls.GetStat(current, STAT_EXP) >= (g_Girls.GetStat(current, STAT_LEVEL) + 1) * 125) ||
 			(g_Girls.GetStat(current, STAT_EXP) >= 32000))	// `J` added
@@ -518,11 +502,15 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		current->m_Stats[STAT_HEALTH] += 2;
 		if (current->m_Stats[STAT_HEALTH] > 100)
 			current->m_Stats[STAT_HEALTH] = 100;
-		// Wow, this tiredness code causes the game to go nuts! Commented out for now
+		
+/*	// Wow, this tiredness code causes the game to go nuts! Commented out for now
 		//current->m_Stats[STAT_TIREDNESS] = current->m_Stats[STAT_TIREDNESS] - 2;
 		//if (current->m_Stats[STAT_TIREDNESS] < 0)
 		//	current->m_Stats[STAT_TIREDNESS] = 0;
-		// `J` corrected it
+// cause: m_Stats type is "unsigned char" meaning it can only be 0 to 255 
+//        therefore if m_Stats=0 then m_Stats-1=255
+// `J` corrected it
+*/
 		int value = current->m_Stats[STAT_TIREDNESS] - 2;
 		if (value > 100)value = 100;
 		else if (value < 0)value = 0;
@@ -536,18 +524,18 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)
 	m_Processing_Shift= -1;				
 }
 
-TiXmlElement* cCentreManager::SaveDataXML(TiXmlElement* pRoot)
+TiXmlElement* cFarmManager::SaveDataXML(TiXmlElement* pRoot)
 {
-	TiXmlElement* pBrothelManager = new TiXmlElement("Centre_Manager");
+	TiXmlElement* pBrothelManager = new TiXmlElement("Farm_Manager");
 	pRoot->LinkEndChild(pBrothelManager);
 	string message;
 
-	// save centre
-	TiXmlElement* pBrothels = new TiXmlElement("Centres");
+	// save farm
+	TiXmlElement* pBrothels = new TiXmlElement("Farms");
 	pBrothelManager->LinkEndChild(pBrothels);
-	sCentre* current = (sCentre*) m_Parent;
+	sFarm* current = (sFarm*) m_Parent;
 	//         ...................................................
-	message = "***************** Saving centres *****************";
+	message = "***************** Saving farms *****************";
 	g_LogFile.write(message);
 	while(current)
 	{
@@ -555,15 +543,15 @@ TiXmlElement* cCentreManager::SaveDataXML(TiXmlElement* pRoot)
 		message += current->m_Name;
 		g_LogFile.write(message);
 
-		current->SaveCentreXML(pBrothels);
-		current = (sCentre*) current->m_Next;
+		current->SaveFarmXML(pBrothels);
+		current = (sFarm*) current->m_Next;
 	}
 	return pBrothelManager;
 }
 
-TiXmlElement* sCentre::SaveCentreXML(TiXmlElement* pRoot)
+TiXmlElement* sFarm::SaveFarmXML(TiXmlElement* pRoot)
 {
-	TiXmlElement* pBrothel = new TiXmlElement("Centre");
+	TiXmlElement* pBrothel = new TiXmlElement("Farm");
 	pRoot->LinkEndChild(pBrothel);
 	pBrothel->SetAttribute("Name", m_Name);
 
@@ -598,7 +586,7 @@ TiXmlElement* sCentre::SaveCentreXML(TiXmlElement* pRoot)
 	return pBrothel;
 }
 
-bool cCentreManager::LoadDataXML(TiXmlHandle hBrothelManager)
+bool cFarmManager::LoadDataXML(TiXmlHandle hBrothelManager)
 {
 	Free();//everything should be init even if we failed to load an XML element
 	//watch out, this frees dungeon and rivals too
@@ -611,18 +599,18 @@ bool cCentreManager::LoadDataXML(TiXmlHandle hBrothelManager)
 
 	string message = "";
 	//         ...................................................
-	message = "***************** Loading centre ****************";
+	message = "***************** Loading farm ****************";
 	g_LogFile.write(message);
-	m_NumCentres = 0;
-	TiXmlElement* pBrothels = pBrothelManager->FirstChildElement("Centres");
+	m_NumFarms = 0;
+	TiXmlElement* pBrothels = pBrothelManager->FirstChildElement("Farms");
 	if (pBrothels)
 	{
-		for(TiXmlElement* pBrothel = pBrothels->FirstChildElement("Centre");
+		for(TiXmlElement* pBrothel = pBrothels->FirstChildElement("Farm");
 			pBrothel != 0;
-			pBrothel = pBrothel->NextSiblingElement("Centre"))
+			pBrothel = pBrothel->NextSiblingElement("Farm"))
 		{
-			sCentre* current = new sCentre();
-			bool success = current->LoadCentreXML(TiXmlHandle(pBrothel));
+			sFarm* current = new sFarm();
+			bool success = current->LoadFarmXML(TiXmlHandle(pBrothel));
 			if (success == true)
 			{
 				AddBrothel(current);
@@ -633,12 +621,12 @@ bool cCentreManager::LoadDataXML(TiXmlHandle hBrothelManager)
 				continue;
 			}
 
-		} // load a centre
+		} // load a farm
 	}
 	return true;
 }
 
-bool sCentre::LoadCentreXML(TiXmlHandle hBrothel)
+bool sFarm::LoadFarmXML(TiXmlHandle hBrothel)
 {
 	//no need to init this, we just created it
 	TiXmlElement* pBrothel = hBrothel.ToElement();
@@ -654,7 +642,7 @@ bool sCentre::LoadCentreXML(TiXmlHandle hBrothel)
 
 	int tempInt = 0;
 
-	std::string message = "Loading centre: ";
+	std::string message = "Loading farm: ";
 	message += m_Name;
 	g_LogFile.write(message);
 
@@ -684,7 +672,7 @@ bool sCentre::LoadCentreXML(TiXmlHandle hBrothel)
 	TiXmlElement* pGirls = pBrothel->FirstChildElement("Girls");
 	if (pGirls)
 	{
-		for(TiXmlElement* pGirl = pGirls->FirstChildElement("Girl");
+		for (TiXmlElement* pGirl = pGirls->FirstChildElement("Girl");
 			pGirl != 0;
 			pGirl = pGirl->NextSiblingElement("Girl"))// load each girl and add her
 		{
@@ -692,7 +680,7 @@ bool sCentre::LoadCentreXML(TiXmlHandle hBrothel)
 			bool success = girl->LoadGirlXML(TiXmlHandle(pGirl));
 			if (success == true)
 			{
-				girl->m_InCentre = true;
+				girl->m_InFarm = true;
 				AddGirl(girl);
 			}
 			else

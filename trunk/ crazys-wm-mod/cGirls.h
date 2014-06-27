@@ -398,6 +398,7 @@ struct sGirl
 	bool m_InArena;
 	bool m_InCentre;
 	bool m_InHouse;
+	bool m_InFarm;
 	int where_is_she;
 	int m_PrevWorkingDay;	// `J` save the last count of the number of working days 
 	int m_WorkingDay;	// count the number of working day 
@@ -411,6 +412,7 @@ struct sGirl
 		m_InArena = false;
 		m_InCentre = false;
 		m_InHouse = false;
+		m_InFarm = false;
 		m_GirlImages		= 0; 
 		m_Tort				= false;
 		m_JustGaveBirth		= false;

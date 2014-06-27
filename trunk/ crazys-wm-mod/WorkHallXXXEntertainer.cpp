@@ -44,7 +44,7 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, int Day
 {
 	string message = "";
 	string girlName = girl->m_Realname;
-	if (Preprocessing(ACTION_SEX, girl, brothel, DayNight, summary, message))	// they refuse to have work in the hall
+	if (Preprocessing(ACTION_WORKSTRIP, girl, brothel, DayNight, summary, message))	// they refuse to have work in the hall
 		return true;
 
 	// put that shit away, you'll scare off the customers!
@@ -406,18 +406,18 @@ else
 	if(roll <= 5)
 	{
 		message += " \nSome of the patrons abused her during the shift.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, -1, true);
+		g_Girls.UpdateEnjoyment(girl, ACTION_WORKSTRIP, -1, true);
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKHALL, -1, true);
 	}
 	else if(roll <= 25) {
 		message += " \nShe had a pleasant time working.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +3, true);
+		g_Girls.UpdateEnjoyment(girl, ACTION_WORKSTRIP, +3, true);
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKHALL, +3, true);
 	}
 	else
 	{
 		message += " \nOtherwise, the shift passed uneventfully.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +1, true);
+		g_Girls.UpdateEnjoyment(girl, ACTION_WORKSTRIP, +1, true);
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKHALL, +1, true);
 	}
 
@@ -455,7 +455,7 @@ else
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
 	//gain traits
-	g_Girls.PossiblyGainNewTrait(girl, "Nymphomaniac", 75, ACTION_SEX, "Having to preform sexual entertainment for patrons every day has made " + girl->m_Realname + " quite the nympho.", DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Nymphomaniac", 75, ACTION_WORKSTRIP, "Having to preform sexual entertainment for patrons every day has made " + girl->m_Realname + " quite the nympho.", DayNight != 0);
 
 	return false;
 }
