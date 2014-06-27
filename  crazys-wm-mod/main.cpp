@@ -67,6 +67,7 @@ int g_CurrStudio = 0;
 int g_CurrArena = 0;
 int g_CurrCentre = 0;
 int g_CurrHouse = 0;
+int g_CurrFarm = 0;
 unsigned int g_LastSeed = 0;		// for seeding the random number generater every 3 seconds (3000 ticks)
 
 bool eventrunning = false;
@@ -183,6 +184,9 @@ cCentreManager g_Centre;
 
 // House Manager
 cHouseManager g_House;
+
+// Farm Manager
+cFarmManager g_Farm;
 
 // the background image
 CSurface* g_BackgroundImage = 0;
@@ -1204,6 +1208,7 @@ void Shutdown()
 	g_Arena.Free();
 	g_Centre.Free();
 	g_House.Free();
+	g_Farm.Free();
 
 	g_LogFile.write("Releasing Interface");
 	FreeInterface();

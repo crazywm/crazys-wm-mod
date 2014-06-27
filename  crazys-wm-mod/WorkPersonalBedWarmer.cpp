@@ -129,13 +129,13 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, int DayN
 			if (roll_b <= 25)
 			{
 				message += "decided to suck your cock.\n\n";
-				g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 1);
+				g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 2);
 				girl->m_Events.AddMessage(message, IMGTYPE_ORAL, DayNight);
 			}
 			else if (roll_b <= 50)
 			{
 				message += "lets you tie her up.\n\n";
-				g_Girls.UpdateSkill(girl, SKILL_BDSM, 1);
+				g_Girls.UpdateSkill(girl, SKILL_BDSM, 2);
 				girl->m_Events.AddMessage(message, IMGTYPE_BDSM, DayNight);
 				if(girl->m_Virgin)
 				{
@@ -151,13 +151,13 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, int DayN
 			else if (roll_b <= 75)
 			{
 				message += "lets you use her ass.\n\n";
-				g_Girls.UpdateSkill(girl, SKILL_ANAL, 1);
+				g_Girls.UpdateSkill(girl, SKILL_ANAL, 2);
 				girl->m_Events.AddMessage(message, IMGTYPE_ANAL, DayNight);
 			}
 			else
 			{
 				message += "has sex with you.\n\n";
-				g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, 1);
+				g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, 2);
 				girl->m_Events.AddMessage(message, IMGTYPE_SEX, DayNight);
 				if(girl->m_Virgin)
 				{

@@ -35,6 +35,7 @@ extern int MarketSlaveGirlsDel[8];
 extern bool g_GenGirls;
 extern bool g_Cheats;
 extern cTraits g_Traits;
+static cPlayer* m_Player = g_Brothels.GetPlayer();
 
 extern	bool	g_LeftArrow;
 extern	bool	g_RightArrow;
@@ -54,6 +55,8 @@ extern	bool	g_C_Key;
 extern	int		g_CurrentScreen;
 
 bool cScreenSlaveMarket::ids_set = false;
+int dispmod = 0;
+int roll = g_Dice%100;
 
 void cScreenSlaveMarket::set_ids()
 {
@@ -360,7 +363,35 @@ bool cScreenSlaveMarket::check_keys()
 			if(g_Girls.GetRebelValue(girl, false) >= 35)
 			{
 				string text = girl->m_Realname;
-				text += gettext(" has been sent to your dungeon, as she is rebellious and poorly trained.");
+				if (m_Player->disposition() >= 80)				//Benevolent
+					{
+						text += gettext(" accepting her own flaws that to needed be corrected, she goes to the dungeon where she will be waiting for your guidance.");
+					}
+				else if (m_Player->disposition() >= 50)			//Nice
+					{
+						text += gettext(" in your opinion needs to work on her attitude, she has been guided to the dungeon.");
+					}
+				else if (m_Player->disposition() > 10)			//Pleasant
+					{
+						text += gettext(" as your newest investment, she was sent to the dungeon to work on her rebellious nature.");
+					}
+				else if (m_Player->disposition() >= -10)			//Neutral
+					{
+						text += gettext(" has been sent to your dungeon, as she is rebellious and poorly trained.");
+					}
+				else if (m_Player->disposition() > -50)			//Not nice
+					{
+						text += gettext(" as your newest investment that needs your special touch, she was sent to the dungeon.");
+					}
+				else if (m_Player->disposition() > -80)			//Mean
+					{
+						text += gettext(" still had some spirit in her eyes left that you decided to stub out. She was dragged to a dungeon cell.");
+					}
+				else											//Evil
+					{
+						text += gettext(" put up a fight. She was beaten and dragged to your dungeon where you can have some private fun time with her.");
+					}
+				//text += gettext(" has been sent to your dungeon, as she is rebellious and poorly trained.");
 				g_MessageQue.AddToQue(text, 0);
 				g_Brothels.GetDungeon()->AddGirl(girl, DUNGEON_NEWSLAVE);
 			}
@@ -374,7 +405,84 @@ bool cScreenSlaveMarket::check_keys()
 			else
 			{
 				string text = girl->m_Realname;
-				text += gettext(" has been sent to your current brothel.");
+				if (m_Player->disposition() >= 80)				//Benevolent
+					{
+						if (g_Dice%100 <= 50)
+						{
+							text += gettext(" went to your current brothel with a smile on her face happy that such a nice guy bought her.");
+						}
+						else
+						{
+							text += gettext(" smiled as you offered her your arm, surprised to find such a kindness waiting for her. Hoping such kindness would continue she went happily with you as her owner.");
+						}
+					}
+				else if (m_Player->disposition() >= 50)			//Nice
+					{
+						if (g_Dice%100 <= 50)
+						{
+							text += gettext(" heard about her current owner reputation, without giving any problems was guided to your current brothel.");
+						}
+						else
+						{
+							text += gettext(" looked up at you hopefully as you refused the use of a retainer or delivery, instead finding herself taken into your retinue for the day and given a chance to enjoy the fresh air before you both return home.");
+						}
+					}
+				else if (m_Player->disposition() > 10)			//Pleasant
+					{
+						if (g_Dice%100 <= 50)
+						{
+							text += gettext(" was sent to your current brothel, knowing that she could have been bought by a lot worse owner.");
+						}
+						else
+						{
+							 text += gettext(" was escorted home by one of your slaves and helped to settle in, she seems rather hopeful of a good life in your care.");
+						}
+					}
+				else if (m_Player->disposition() >= -10)			//Neutral
+					{
+						if (g_Dice%100 <= 50)
+						{
+							text += gettext("as your newest investment, she was sent to your current brothel.");
+						}
+						else
+						{
+							 text += gettext(" has been sent to your establishment under the supervision of your most trusted slaves.");
+						}
+					}
+				else if (m_Player->disposition() > -50)			//Not nice
+					{
+						if (g_Dice%100 <= 50)
+						{
+							text += gettext(" not being very happy about her new owner, was escorted to your current brothel.");
+						}
+						else
+						{
+							 text += gettext(" struggled as her hands were shackled in front of her, her eyes locked on the floor as tears gathered in the corners of her eyes as she was sent off to be delivered to your brothels.");
+						}
+					}
+				else if (m_Player->disposition() > -80)			//Mean
+					{
+						if (g_Dice%100 <= 50)
+						{
+							text += gettext(" didn't wanted to provoke you in any possible way. She went to your current brothel quietly, without any resisting.");
+						}
+						else
+						{
+							text += gettext(" was dragged away crying to your brothels, one of your guards slapping her face as she tried to resist. ");
+						}
+					}
+				else											//Evil
+					{
+						if (g_Dice%100 <= 50)
+						{
+							text += gettext(" was dragged crying and screaming to your current brothel afraid of what you might do to her as her new owner.");
+						}
+						else
+						{
+							 text += gettext("  looked up at you in fear as you order for her to be taken to your brothels, a hint of some emotion hidden in her eyes drawing your attention for a moment before she unconsciously looked away. No doubt afraid of what you'd do to her if she met your gaze.");
+						}
+					}
+				//text += gettext(" has been sent to your current brothel.");
 				g_MessageQue.AddToQue(text, 0);
 				g_Brothels.AddGirl(g_CurrBrothel, girl);
 			}
@@ -672,7 +780,35 @@ bool cScreenSlaveMarket::check_events()
 			if(g_Girls.GetRebelValue(girl, false) >= 35)
 			{
 				string text = girl->m_Realname;
-				text += gettext(" has been sent to your dungeon, as she is rebellious and poorly trained.");
+				if (m_Player->disposition() >= 80)				//Benevolent
+					{
+						text += gettext(" accepting her own flaws that to needed be corrected, she goes to the dungeon where she will be waiting for your guidance.");
+					}
+				else if (m_Player->disposition() >= 50)			//Nice
+					{
+						text += gettext(" in your opinion needs to work on her attitude, she has been guided to the dungeon.");
+					}
+				else if (m_Player->disposition() > 10)			//Pleasant
+					{
+						text += gettext(" as your newest investment, she was sent to the dungeon to work on her rebellious nature.");
+					}
+				else if (m_Player->disposition() >= -10)			//Neutral
+					{
+						text += gettext(" has been sent to your dungeon, as she is rebellious and poorly trained.");
+					}
+				else if (m_Player->disposition() > -50)			//Not nice
+					{
+						text += gettext(" as your newest investment that needs your special touch, she was sent to the dungeon.");
+					}
+				else if (m_Player->disposition() > -80)			//Mean
+					{
+						text += gettext(" still had some spirit in her eyes left that you decided to stub out. She was dragged to a dungeon cell.");
+					}
+				else											//Evil
+					{
+						text += gettext(" put up a fight. She was beaten and dragged to your dungeon where you can have some private fun time with her.");
+					}
+				//text += gettext(" has been sent to your dungeon, as she is rebellious and poorly trained.");
 				g_MessageQue.AddToQue(text, 0);
 				g_Brothels.GetDungeon()->AddGirl(girl, DUNGEON_NEWSLAVE);
 			}
@@ -686,7 +822,84 @@ bool cScreenSlaveMarket::check_events()
 			else
 			{
 				string text = girl->m_Realname;
-				text += gettext(" has been sent to your current brothel.");
+				if (m_Player->disposition() >= 80)				//Benevolent
+					{
+						if (g_Dice%100 <= 50)
+						{
+							text += gettext(" went to your current brothel with a smile on her face happy that such a nice guy bought her.");
+						}
+						else
+						{
+							text += gettext(" smiled as you offered her your arm, surprised to find such a kindness waiting for her. Hoping such kindness would continue she went happily with you as her owner.");
+						}
+					}
+				else if (m_Player->disposition() >= 50)			//Nice
+					{
+						if (g_Dice%100 <= 50)
+						{
+							text += gettext(" heard about her current owner reputation, without giving any problems was guided to your current brothel.");
+						}
+						else
+						{
+							text += gettext(" looked up at you hopefully as you refused the use of a retainer or delivery, instead finding herself taken into your retinue for the day and given a chance to enjoy the fresh air before you both return home.");
+						}
+					}
+				else if (m_Player->disposition() > 10)			//Pleasant
+					{
+						if (g_Dice%100 <= 50)
+						{
+							text += gettext(" was sent to your current brothel, knowing that she could have been bought by a lot worse owner.");
+						}
+						else
+						{
+							 text += gettext(" was escorted home by one of your slaves and helped to settle in, she seems rather hopeful of a good life in your care.");
+						}
+					}
+				else if (m_Player->disposition() >= -10)			//Neutral
+					{
+						if (g_Dice%100 <= 50)
+						{
+							text += gettext("as your newest investment, she was sent to your current brothel.");
+						}
+						else
+						{
+							 text += gettext(" has been sent to your establishment under the supervision of your most trusted slaves.");
+						}
+					}
+				else if (m_Player->disposition() > -50)			//Not nice
+					{
+						if (g_Dice%100 <= 50)
+						{
+							text += gettext(" not being very happy about her new owner, was escorted to your current brothel.");
+						}
+						else
+						{
+							 text += gettext(" struggled as her hands were shackled in front of her, her eyes locked on the floor as tears gathered in the corners of her eyes as she was sent off to be delivered to your brothels.");
+						}
+					}
+				else if (m_Player->disposition() > -80)			//Mean
+					{
+						if (g_Dice%100 <= 50)
+						{
+							text += gettext(" didn’t wanted to provoke you in any possible way. She went to your current brothel quietly, without any resisting.");
+						}
+						else
+						{
+							text += gettext(" was dragged away crying to your brothels, one of your guards slapping her face as she tried to resist. ");
+						}
+					}
+				else											//Evil
+					{
+						if (g_Dice%100 <= 50)
+						{
+							text += gettext(" was dragged crying and screaming to your current brothel afraid of what you might do to her as her new owner.");
+						}
+						else
+						{
+							 text += gettext("  looked up at you in fear as you order for her to be taken to your brothels, a hint of some emotion hidden in her eyes drawing your attention for a moment before she unconsciously looked away. No doubt afraid of what you'd do to her if she met your gaze.");
+						}
+					}
+				//text += gettext(" has been sent to your current brothel.");
 				g_MessageQue.AddToQue(text, 0);
 				g_Brothels.AddGirl(g_CurrBrothel, girl);
 			}

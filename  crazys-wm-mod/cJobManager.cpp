@@ -24,6 +24,7 @@
 #include "cArena.h"
 #include "cCentre.h"
 #include "cHouse.h"
+#include "cFarm.h"
 #include "cCustomers.h"
 #include "cRng.h"
 #include "cInventory.h"
@@ -48,6 +49,7 @@ extern cMovieStudioManager  g_Studios;
 extern cArenaManager  g_Arena;
 extern cCentreManager  g_Centre;
 extern cHouseManager  g_House;
+extern cFarmManager  g_Farm;
 extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern	bool			g_InitWin;
@@ -91,6 +93,9 @@ void cJobManager::Setup()
 	JobFunctions[JOB_BEASTCAPTURE] = &WorkBeastCapture;
 	JobFunctions[JOB_BEASTCARER] = &WorkBeastCare;
 	JobFunctions[JOB_MILK] = &WorkMilk;
+	// - Farm staff
+	JobFunctions[JOB_FARMMANGER] = &WorkFarmManager;
+	JobFunctions[JOB_FARMHAND] = &WorkFarmHand;
 	// - Movie Crystal Studio
 	JobFunctions[JOB_FILMBEAST] = &WorkFilmBeast;
 	JobFunctions[JOB_FILMGROUP] = &WorkFilmGroup;
@@ -284,6 +289,17 @@ void cJobManager::Setup()
 	JobDescription[JOB_BEASTCARER] = "She will look after the needs of the beasts in your possession. (max 1)";
 	JobName[JOB_MILK] = "Get Milked";
 	JobDescription[JOB_MILK] = "She will have her breasts milked";
+
+	// - Farm Staff Jobs
+	JobFilterName[JOBFILTER_FARMSTAFF] = "Farm Staff";
+	JobFilterDescription[JOBFILTER_FARMSTAFF] = "These are jobs for running a farm";
+	JobFilterIndex[JOBFILTER_FARMSTAFF] = JOB_FARMMANGER;
+	JobName[JOB_FARMMANGER] = "Head Farmer";
+	JobDescription[JOB_FARMMANGER] = "She will watch over the farm and girls working there.";
+	JobName[JOB_FARMHAND] = "Farm Hand";
+	JobDescription[JOB_FARMHAND] = "She will clean up around the farm.";
+	JobName[JOB_FARMREST] = "Time off";
+	JobDescription[JOB_FARMREST] = "She will take time off and rest.";
 
 	// - Clinic staff
 	JobFilterName[JOBFILTER_CLINICSTAFF] = gettext("Clinic Staff");
@@ -686,6 +702,7 @@ void cJobManager::do_whorejobs(sBrothel* brothel, int DayNight)
 			else if (current->m_InCentre)	sw = JOB_CENTREREST;
 			else if (current->m_InClinic)	sw = JOB_CLINICREST;
 			else if (current->m_InHouse)	sw = JOB_HOUSEREST;
+			else if (current->m_InFarm)		sw = JOB_FARMREST;
 			else sw = JOB_RESTING;
 		}
 		else	sw = (DayNight == SHIFT_DAY) ? current->m_DayJob : current->m_NightJob;
@@ -734,6 +751,7 @@ void cJobManager::do_custjobs(sBrothel* brothel, int DayNight)
 			else if (current->m_InCentre)	sw = JOB_CENTREREST;
 			else if (current->m_InClinic)	sw = JOB_CLINICREST;
 			else if (current->m_InHouse)	sw = JOB_HOUSEREST;
+			else if (current->m_InFarm)		sw = JOB_FARMREST;
 			else sw = JOB_RESTING;
 		}
 		else	sw = (DayNight == SHIFT_DAY) ? current->m_DayJob : current->m_NightJob;
@@ -836,6 +854,8 @@ bool cJobManager::FullTimeJob(u_int Job)
 		Job == JOB_REHAB ||
 		// - House
 		Job == JOB_HEADGIRL ||
+		// - Farm
+		Job == JOB_FARMMANGER ||
 		false);
 }
 
@@ -906,6 +926,10 @@ bool cJobManager::is_job_Paid_Player(u_int Job)
 		Job ==	JOB_CLEANHOUSE			||	// 
 		Job ==	JOB_RECRUITER			||	// 
 		Job ==	JOB_HEADGIRL			||	//
+
+		//farm
+		Job ==	JOB_FARMMANGER	||	// 
+		Job ==	JOB_FARMHAND	||	// 
 
 		// - Brothel
 		//Job ==	JOB_WHOREBROTHEL		||	// whore herself inside the building
@@ -986,7 +1010,7 @@ bool cJobManager::is_job_Paid_Player(u_int Job)
 
 }
 
-string cJobManager::JobDescriptionCount(int job_id, int brothel_id, bool day, bool isClinic, bool isStudio, bool isArena, bool isCentre, bool isHouse)
+string cJobManager::JobDescriptionCount(int job_id, int brothel_id, bool day, bool isClinic, bool isStudio, bool isArena, bool isCentre, bool isHouse, bool isFarm)
 {
 	stringstream text;
 	text << JobName[job_id];
@@ -996,6 +1020,7 @@ string cJobManager::JobDescriptionCount(int job_id, int brothel_id, bool day, bo
 	else if (isArena)	{	text << g_Arena.GetNumGirlsOnJob(0, job_id, day);	}
 	else if (isCentre)	{	text << g_Centre.GetNumGirlsOnJob(0, job_id, day);	}
 	else if (isHouse)	{	text << g_House.GetNumGirlsOnJob(0, job_id, day);	}
+	else if (isFarm)	{	text << g_Farm.GetNumGirlsOnJob(0, job_id, day);	}
 	else				{	text << g_Brothels.GetNumGirlsOnJob(brothel_id, job_id, day);	}
 	text << ")";
 	return text.str();
@@ -1056,6 +1081,16 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	else if (u_int(JobID) == JOB_RECRUITER && Girl->m_States&(1 << STATUS_SLAVE))
 	{
 			g_MessageQue.AddToQue(gettext("The recruiter cannot be a slave."), 0);
+	}
+	// Special Farm Jobs
+	else if (u_int(JobID) == JOB_FARMMANGER)
+	{
+		if (g_Farm.GetNumGirlsOnJob(TargetBrothel, JOB_FARMMANGER, DayOrNight) == 1)
+			g_MessageQue.AddToQue(gettext("There can be only one Head Farmer!"), 0);
+		else if (Girl->m_States&(1 << STATUS_SLAVE))
+			g_MessageQue.AddToQue(gettext("The head farmer cannot be a slave."), 0);
+		else
+			Girl->m_NightJob = Girl->m_DayJob = JOB_FARMMANGER;
 	}
 // Special Arena Jobs
 	else if (u_int(JobID) == JOB_DOCTORE)
@@ -1506,6 +1541,10 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		else if (u_int(OldJobID) == JOB_HEADGIRL && u_int(JobID) != JOB_HEADGIRL)
 		{	// if old job was full time but new job is not, switch leftover day or night job back to resting
 			(DayOrNight) ? Girl->m_NightJob = JOB_HOUSEREST : Girl->m_DayJob = JOB_HOUSEREST;
+		}
+		else if (u_int(OldJobID) == JOB_FARMMANGER && u_int(JobID) != JOB_FARMMANGER)
+		{	// if old job was full time but new job is not, switch leftover day or night job back to resting
+			(DayOrNight) ? Girl->m_NightJob = JOB_FARMREST : Girl->m_DayJob = JOB_FARMREST;
 		}
 		
 		else if (	// `J` if a CAMERAMAGE or CRYSTALPURIFIER is added or removed...

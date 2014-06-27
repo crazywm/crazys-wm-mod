@@ -337,8 +337,8 @@ bool cGirls::DisobeyCheck(sGirl* girl, int action, sBrothel* brothel)
  *	10 for each shift. Full coverage gets you 20 points
  */
 	if(brothel) { // `J` added building checks
-		if (brothel->matron_on_shift(SHIFT_DAY, girl->m_InClinic, girl->m_InMovieStudio, girl->m_InArena, girl->m_InCentre, girl->m_InHouse, girl->where_is_she)) chance_to_obey += 10;
-		if (brothel->matron_on_shift(SHIFT_NIGHT, girl->m_InClinic, girl->m_InMovieStudio, girl->m_InArena, girl->m_InCentre, girl->m_InHouse, girl->where_is_she)) chance_to_obey += 10;
+		if (brothel->matron_on_shift(SHIFT_DAY, girl->m_InClinic, girl->m_InMovieStudio, girl->m_InArena, girl->m_InCentre, girl->m_InHouse, girl->m_InFarm, girl->where_is_she)) chance_to_obey += 10;
+		if (brothel->matron_on_shift(SHIFT_NIGHT, girl->m_InClinic, girl->m_InMovieStudio, girl->m_InArena, girl->m_InCentre, girl->m_InHouse, girl->m_InFarm, girl->where_is_she)) chance_to_obey += 10;
 	}
 /*
  *	This is still confusing - at least it still confuses me
@@ -11855,7 +11855,7 @@ static bool has_contraception(sGirl *girl)
 		girl->m_InMovieStudio = girl->m_InCentre = girl->m_InClinic = girl->m_InHouse = girl->m_InArena = false;
 		girl->where_is_she = 0;
 	}
-	if (UseAntiPreg(girl->m_UseAntiPreg, girl->m_InClinic, girl->m_InMovieStudio, girl->m_InArena, girl->m_InCentre, girl->m_InHouse, girl->where_is_she))
+	if (UseAntiPreg(girl->m_UseAntiPreg, girl->m_InClinic, girl->m_InMovieStudio, girl->m_InArena, girl->m_InCentre, girl->m_InHouse, girl->m_InFarm, girl->where_is_she))
 	{
 		return true;
 	}

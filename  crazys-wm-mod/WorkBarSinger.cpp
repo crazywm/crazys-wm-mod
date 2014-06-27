@@ -98,11 +98,23 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 		{
 			message += " She must have the voice of an angel the customers go on and on about her and always come to listen to her when she works.\n\n";
 			wages += 155;
-		if (roll <= 50)
+		if (roll <= 20)
 			{
 				message += girlName + "'s voice brought many patron's to tears as she sang a song full of sadness.\n";
 			}
-			else
+		else if (roll <= 40)
+			{
+				message += "Wanting to have some fun she encouraged some listeners to sing-along with her.\n";
+			}
+		else if (roll <= 60)
+			{
+				message += "Feeling little blue she only sang sad ballads today. You could swear that some customers were crying from the emotion.\n";
+			}
+		else if (roll <= 80)
+			{
+				message += "The hole room was quiet when " + girlName + " was singing. After she finished gathered listeners applauses for minutes.\n";
+			}
+		else
 			{
 				message += girlName + "'s soothing voice seems to glide over the noise and bustling of the bar.\n";
 			}
@@ -111,11 +123,19 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 		{
 			message += " She's unbelievable at this and is always getting praised by the customers for her voice.\n\n";
 			wages += 95;
-		if (roll <= 50)
+		if (roll <= 25)
 			{
 				message += girlName + " begun to acquire her own following - a small crowd of people came in just to listen to her and buy drinks\n";
 			}
-			else
+		else if (roll <= 50)
+			{
+				message += "Her performance was really great, giving the listeners a pleasant time.\n";
+			}
+		else if (roll <= 75)
+			{
+				message += "When " + girlName + " got on stage the crowd went wild. She didn’t disappoint her fans giving one of the best performances in her life.\n";
+			}
+		else
 			{
 				message += girlName + "'s soothing voice seems to glide over the noise and bustling of the bar.\n";
 			}
@@ -124,11 +144,23 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 		{
 			message += " Her voice is really good and gets praised by the customers often.\n\n";
 			wages += 55;
-		if (roll <= 50)
+		if (roll <= 20)
 			{
 				message += "Her singing was pleasing, if bland.  Her voice was nice, if slightly untrained.\n";
 			}
-			else
+		else if (roll <= 40)
+			{
+				message += "She sang every part of the song clear. " + girlName + " is a really good singer.\n";
+			}
+		else if (roll <= 60)
+			{
+				message += "This wasn’t the best performance of her life time, but in general she did good.\n";
+			}
+		else if (roll <= 80)
+			{
+				message += "She is good at this. With some work she could be a star.\n";
+			}
+		else
 			{
 				message += "The slow song " + girlName + " sang at the end of shift really had her full emotion and heart.\n";
 			}
@@ -137,11 +169,19 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 		{
 			message += " She hits a few right notes but she still has room to improve.\n\n";
 			wages += 15;
-		if (roll <= 50)
+		if (roll <= 25)
 			{
 				message += "While she won't win any contests, " + girlName + " isn't a terrible singer.\n";
 			}
-			else
+		else if (roll <= 50)
+			{
+				message += "She didn’t sang every part clear but in overall she was good.\n";
+			}
+		else if (roll <= 75)
+			{
+				message += "Maybe she isn’t the best but at least she doesn’t scare away the customers.\n";
+			}
+		else
 			{
 				message += "The slow song " + girlName + " sang at the end of shift really had her full emotion and heart.  A pity that she felt so bored and tired.\n";
 			}
@@ -150,11 +190,23 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 		{
 			message += " She almost never hits a right note. Luck for you most of your customers are drunks.\n\n";
 			wages -= 5;
-		if (roll <= 50)
+		if (roll <= 20)
 			{
 				message += "Her singing is barely acceptable, but fortunately the bustling of the bar drowns " + girlName + " out for the most part.\n";
 			}
-			else
+		else if (roll <= 40)
+			{
+				message += "After hearing today’s performance, you order your guards to gag her for a week.\n";
+			}
+		else if (roll <= 60)
+			{
+				message += "Some customers left immediately after " + girlName + " started to sing.\n";
+			}
+		else if (roll <= 80)
+			{
+				message +=  girlName + " singing was awful. Not a single line was sang clear.\n";
+			}
+		else
 			{
 				message += girlName + " voice is all over the place as she sings.\n";
 			}
@@ -163,11 +215,31 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 		{
 			message += " Her voice sounds like nails on a chalk board.  She could be the worst singer ever.\n\n";
 			wages -= 15;
-		if (roll <= 50)
+		if (roll <= 14)
 			{
 				message += "Her audience seems paralyzed, as if they couldn't believe that a human body could produce those sounds, much less call them 'singing'.\n";
 			}
-			else
+		else if (roll <= 28)
+			{
+				message += "She just can’t do it right.\n";
+			}
+		else if (roll <= 42)
+			{
+				message += "She is just terrible. You could swear that your singing under the shower is far better.\n";
+			}
+		else if (roll <= 56)
+			{
+				message +=  girlName + " was the first to get on stage before today’s star performance. Seeing the gathered crowd, she froze up being able to let out a single word.\n";
+			}
+		else if (roll <= 70)
+			{
+				message += girlName + " singing was awful. Angry listeners throw random objects at her.\n";
+			}
+		else if (roll <= 84)
+			{
+				message += "Hearing " + girlName + " singing gave you a thought to use it as a new torture method. \n";
+			}
+		else
 			{
 				message += girlName + " bellowed out a melody that caused the bar to go into a panic clearing it quickly.\n";
 			}

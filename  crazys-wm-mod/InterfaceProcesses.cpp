@@ -201,6 +201,7 @@ void NewGame()
 	g_Arena.Free();
 	g_Centre.Free();
 	g_House.Free();
+	g_Farm.Free();
 	g_Gangs.Free();
 	g_Customers.Free();
 	g_Girls.Free();
@@ -530,6 +531,7 @@ void Turnsummary()
 		g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSCATEGORY, 6, gettext("ARENA"));
 		g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSCATEGORY, 7, gettext("CENTRE"));
 		g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSCATEGORY, 8, gettext("HOUSE"));
+		g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSCATEGORY, 8, gettext("FARM"));
 		//g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSCATEGORY, 4, "RIVALS");
 		//g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSCATEGORY, 5, "GLOBAL"); */
 		g_Turnsummary.SetSelectedItemInList(g_interfaceid.LIST_TSCATEGORY, category, false);
@@ -1227,6 +1229,68 @@ void Turnsummary()
 			}
 		} // End of House
 
+		// 9. farm
+		else if(category == 9)
+		{
+			int nNumGirlsFarm = g_Farm.GetNumGirls(g_CurrFarm);
+			int ID			= 0;
+
+			// `J` Girls with GoodNews events first
+			for (int h = 0; h<nNumGirlsFarm; h++)
+			{
+				sGirl* pTmpGirl = g_Farm.GetGirl(0, h);
+				if (pTmpGirl->m_Events.HasGoodNews())
+				{
+					string tname = pTmpGirl->m_Realname;
+					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, LISTBOX_GREEN);
+					if (selected_girl == pTmpGirl)
+						Item = ID;
+					ID++;
+				}
+			}
+			// MYR: Girls with danger events first
+			for (int i = 0; i<nNumGirlsFarm; i++)
+			{
+				sGirl* pTmpGirl = g_Farm.GetGirl(0, i);
+				if (pTmpGirl->m_Events.HasDanger() && !pTmpGirl->m_Events.HasGoodNews())
+				{
+					string tname = pTmpGirl->m_Realname;
+					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, LISTBOX_RED);
+					if (selected_girl == pTmpGirl)
+						Item = ID;
+					ID++;
+				}
+			}
+
+			// Girls with warning events next
+			for(int j=0; j<nNumGirlsFarm; j++)
+			{
+				sGirl* pTmpGirl = g_Farm.GetGirl(0, j);
+				if (pTmpGirl->m_Events.HasWarning() && !pTmpGirl->m_Events.HasDanger() && !pTmpGirl->m_Events.HasGoodNews())
+				{
+					string temp = pTmpGirl->m_Realname;
+					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, temp, LISTBOX_DARKBLUE);
+					if (selected_girl == pTmpGirl)
+						Item = ID;
+					ID++;
+				}
+			}
+
+			// Farm girl
+			for(int k=0; k<nNumGirlsFarm; k++)
+			{
+				sGirl* pTmpGirl = g_Farm.GetGirl(0, k);
+				if(!pTmpGirl->m_Events.HasUrgent())
+				{
+					string temp = pTmpGirl->m_Realname;
+					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, temp);
+					if (selected_girl == pTmpGirl)
+						Item = ID;
+					ID++;
+				}
+			}
+		} // End of Farm
+
 
 		// Sets default selected item
         if(g_Turnsummary.GetListBoxSize(g_interfaceid.LIST_TSITEM) > 0)
@@ -1536,6 +1600,36 @@ void Turnsummary()
 				}
 			}
 
+			// ------------ Girl Farm Event display
+			if(category == 9)
+			{
+				if(selected != -1)
+				{
+					string selectedName = g_Turnsummary.GetSelectedTextFromList(g_interfaceid.LIST_TSITEM);
+					girl = selected_girl = g_Farm.GetGirlByName(0, selectedName);
+
+					if(girl == 0)
+						return;
+
+					// change the picture to profile (no event selected)
+					ImageType = IMGTYPE_PROFILE;
+
+					if (!girl->m_Events.IsEmpty())
+					{
+						girl->m_Events.DoSort();						// Sort Events to put Warnings & Dangers first.
+
+						for(int l=0; l<girl->m_Events.GetNumEvents(); l++)
+						{
+							string			sTitle			= girl->m_Events.GetMessage(l).TitleText();
+							unsigned int	uiListboxColour	= girl->m_Events.GetMessage(l).ListboxColour();
+							g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSEVENTS, l, sTitle, uiListboxColour);
+						}
+					}
+					if(g_Turnsummary.GetListBoxSize(g_interfaceid.LIST_TSEVENTS) > 0)
+						g_Turnsummary.SetSelectedItemInList(g_interfaceid.LIST_TSEVENTS, 0, true);
+				}
+			}
+
 		}
 
 
@@ -1821,6 +1915,41 @@ void Turnsummary()
 					}
 				}
 			}
+
+			// Farm
+			else if(category == 9)
+			{
+				int SelEvent = -1;
+				// ****************************
+				// When warnings and problems are displayed first, the ordering of events is messed up
+				// A warning is at ID 0 in the list, and is ID X in the message queue
+				// ****************************
+				//
+				//	WD: The message queue is now sorted in cEvents::DoSort()
+				//		so ID's will match
+				// ****************************
+				if((SelEvent = g_Turnsummary.GetSelectedItemFromList(g_interfaceid.LIST_TSEVENTS)) != -1)	
+				{
+					int SelGirl;
+					// if a girl is selected then
+					if((SelGirl = g_Turnsummary.GetSelectedItemFromList(g_interfaceid.LIST_TSITEM)) != -1)	
+					{
+						sGirl* girl = 0;
+
+						// MYR
+						string selectedName	= g_Turnsummary.GetSelectedTextFromList(g_interfaceid.LIST_TSITEM);
+						girl = selected_girl = g_Farm.GetGirlByName(0, selectedName);
+
+						// Set the event desc text
+						g_Turnsummary.EditTextItem(girl->m_Events.GetMessage(SelEvent).m_Message, g_interfaceid.TEXT_TSEVENTDESC);
+
+						// Change the picture
+						ImageType = girl->m_Events.GetMessage(SelEvent).m_MessageType;
+
+						lastNum = -1;
+					}
+				}
+			}
 		}
 
 		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_TSCLOSE))
@@ -1922,6 +2051,14 @@ void Turnsummary()
 					// MYR
 					string selectedName		= g_Turnsummary.GetSelectedTextFromList(g_interfaceid.LIST_TSITEM);
 					girl	= selected_girl	= g_House.GetGirlByName(0, selectedName);
+					g_CurrentScreen = SCREEN_GIRLDETAILS;
+					g_WinManager.push("Girl Details");
+				}
+				else if(category == 9)  //Farm
+				{
+					// MYR
+					string selectedName		= g_Turnsummary.GetSelectedTextFromList(g_interfaceid.LIST_TSITEM);
+					girl	= selected_girl	= g_Farm.GetGirlByName(0, selectedName);
 					g_CurrentScreen = SCREEN_GIRLDETAILS;
 					g_WinManager.push("Girl Details");
 				}
@@ -2167,6 +2304,13 @@ void Turnsummary()
 		selGirl = selected_girl = g_House.GetGirlByName(0, selectedName);
 		//selGirl = g_Brothels.GetGirl(g_CurrBrothel, num);
 	}
+	else if (category == 9)
+	{
+		// MYR
+		string selectedName = g_Turnsummary.GetSelectedTextFromList(g_interfaceid.LIST_TSITEM);
+		selGirl = selected_girl = g_Farm.GetGirlByName(0, selectedName);
+		//selGirl = g_Brothels.GetGirl(g_CurrBrothel, num);
+	}
 /*
  *	not really sure what's going on here. lastNum is static so 
  *	persists from one invocation to the next. Ditto lastType.
@@ -2238,6 +2382,7 @@ void NextWeek()
 	if (g_Studios.GetNumBrothels() > 0)		g_Studios.UpdateMovieStudio();
 	if (g_Arena.GetNumBrothels() > 0)		g_Arena.UpdateArena();
 	if (g_Centre.GetNumBrothels() > 0)		g_Centre.UpdateCentre();
+	if (g_Farm.GetNumBrothels() > 0)		g_Farm.UpdateFarm();
 	g_House.UpdateHouse();
 
 	g_Brothels.UpdateBrothels(); // Moved so new buildings show up in profit reports --PP
@@ -2979,6 +3124,9 @@ void SaveGameXML(string filename)
 	// output house
 	g_House.SaveDataXML(pRoot);
 
+	// output farm
+	g_Farm.SaveDataXML(pRoot);
+
 	// output global triggers
 	g_GlobalTriggers.SaveTriggersXML(pRoot);
 	doc.SaveFile();
@@ -3015,6 +3163,7 @@ bool LoadGame(string directory, string filename)
 	g_Arena.Free();
 	g_Centre.Free();
 	g_House.Free();
+	g_Farm.Free();
 
 
 	//load items database, traits info, etc
@@ -3143,6 +3292,10 @@ bool LoadGameXML(TiXmlHandle hDoc)
 	g_LogFile.write("Loading house Data");
 	g_House.LoadDataXML(hRoot.FirstChildElement("House_Manager"));
 
+	// load farm
+	g_LogFile.write("Loading farm Data");
+	g_Farm.LoadDataXML(hRoot.FirstChildElement("Farm_Manager"));
+
 	// load global triggers
 	g_LogFile.write("Loading global triggers");
 	g_GlobalTriggers.LoadTriggersXML(hRoot.FirstChildElement("Triggers"));
@@ -3258,6 +3411,10 @@ bool LoadGameLegacy(string directory, string filename)
 	g_LogFile.write("Loading house Data");
 	g_House.LoadDataLegacy(ifs);
 
+	// load farm
+	g_LogFile.write("Loading farm Data");
+	g_Farm.LoadDataLegacy(ifs);
+
 	// load global triggers
 	g_LogFile.write("Loading global triggers");
 	g_GlobalTriggers.LoadTriggersLegacy(ifs);
@@ -3301,7 +3458,7 @@ void TransferGirls()
 
 		// list all the brothels
 		sBrothel* current = g_Brothels.GetBrothel(0);
-		int i=5;
+		int i=6;
 		while(current)
 		{
 			g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGLEFTBROTHEL, i, current->m_Name);
@@ -3310,8 +3467,8 @@ void TransferGirls()
 			current = current->m_Next;
 		}
 
-		g_TransferGirls.SetSelectedItemInList(g_interfaceid.LIST_TRANSGLEFTBROTHEL, 5);
-		g_TransferGirls.SetSelectedItemInList(g_interfaceid.LIST_TRANSGRIGHTBROTHEL, 5);
+		g_TransferGirls.SetSelectedItemInList(g_interfaceid.LIST_TRANSGLEFTBROTHEL, 6);
+		g_TransferGirls.SetSelectedItemInList(g_interfaceid.LIST_TRANSGRIGHTBROTHEL, 6);
 
 		// add the movie studio studio
 		sMovieStudio* currentStudio = (sMovieStudio*) g_Studios.GetBrothel(0);
@@ -3357,6 +3514,15 @@ void TransferGirls()
 			currentHouse = (sHouse*) currentHouse->m_Next;
 		}
 
+		// add the farm
+		sFarm* currentFarm = (sFarm*) g_Farm.GetBrothel(0);
+		while(currentFarm)
+		{
+			g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGLEFTBROTHEL, 5, currentFarm->m_Name);
+			g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGRIGHTBROTHEL, 5, currentFarm->m_Name);
+			currentFarm = (sFarm*) currentFarm->m_Next;
+		}
+
 		g_InitWin = false;
 	}
 
@@ -3388,9 +3554,21 @@ void TransferGirls()
 			leftBrothel = g_TransferGirls.GetSelectedItemFromList(g_interfaceid.LIST_TRANSGLEFTBROTHEL);
 			if(leftBrothel != -1)
 			{
-				if (leftBrothel > 4){
+				if (leftBrothel > 5){
 					// add the girls to the list
-					sGirl* temp = g_Brothels.GetGirl(leftBrothel - 5, 0);
+					sGirl* temp = g_Brothels.GetGirl(leftBrothel - 6, 0);
+					int i=0;
+					while(temp)
+					{
+						g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGLEFTGIRLS, i, temp->m_Realname);
+						i++;
+						temp = temp->m_Next;
+					}
+				}
+				else if (leftBrothel == 5)
+				{
+					// add the girls to the list
+					sGirl* temp = g_Farm.GetGirl(0, 0);
 					int i=0;
 					while(temp)
 					{
@@ -3468,9 +3646,21 @@ void TransferGirls()
 			rightBrothel = g_TransferGirls.GetSelectedItemFromList(g_interfaceid.LIST_TRANSGRIGHTBROTHEL);
 			if(rightBrothel != -1)
 			{
-				if (rightBrothel > 4){
+				if (rightBrothel > 5){
 					// add the girls to the list
-					sGirl* temp = g_Brothels.GetGirl(rightBrothel - 5, 0);
+					sGirl* temp = g_Brothels.GetGirl(rightBrothel - 6, 0);
+					int i=0;
+					while(temp)
+					{
+						g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGRIGHTGIRLS, i, temp->m_Realname);
+						i++;
+						temp = temp->m_Next;
+					}
+				}
+				else if (rightBrothel == 5)
+				{
+					// add the girls to the list
+					sGirl* temp = g_Farm.GetGirl(0, 0);
 					int i=0;
 					while(temp)
 					{
@@ -3547,9 +3737,13 @@ void TransferGirls()
 static void TransferGirlsLeftToRight(int rightBrothel, int leftBrothel)
 {
 	sBrothel* brothel;
-	if (leftBrothel > 4)
+	if (leftBrothel > 5)
 	{
-		brothel = g_Brothels.GetBrothel(leftBrothel - 5);
+		brothel = g_Brothels.GetBrothel(leftBrothel - 6);
+	}
+	else if (leftBrothel == 5)
+	{
+		brothel = g_Farm.GetBrothel(0);
 	}
 	else if (leftBrothel == 4)
 	{
@@ -3582,10 +3776,15 @@ static void TransferGirlsLeftToRight(int rightBrothel, int leftBrothel)
 		while(girlSelection != -1)
 		{
 			sGirl* temp;
-			if (rightBrothel > 4)
+			if (rightBrothel > 5)
 			{
 				// get the girl
-				temp = g_Brothels.GetGirl(rightBrothel-5, girlSelection-NumRemoved);
+				temp = g_Brothels.GetGirl(rightBrothel-6, girlSelection-NumRemoved);
+			}
+			else if (rightBrothel == 5)
+			{
+				// get the girl
+				temp = g_Farm.GetGirl(0, girlSelection-NumRemoved);
 			}
 			else if (rightBrothel == 4)
 			{
@@ -3622,10 +3821,14 @@ static void TransferGirlsLeftToRight(int rightBrothel, int leftBrothel)
 
 			// remove girl from right side
 			NumRemoved++;
-			if (rightBrothel > 4)
+			if (rightBrothel > 5)
 			{
-				g_Brothels.RemoveGirl(rightBrothel - 5, temp, false);
+				g_Brothels.RemoveGirl(rightBrothel - 6, temp, false);
 			} 
+			else if (rightBrothel == 5)
+			{
+				g_Farm.RemoveGirl(0, temp, false);
+			}
 			else if (rightBrothel == 4)
 			{
 				g_House.RemoveGirl(0, temp, false);
@@ -3648,10 +3851,14 @@ static void TransferGirlsLeftToRight(int rightBrothel, int leftBrothel)
 			}
 
 			// add to left side
-			if (leftBrothel > 4)
+			if (leftBrothel > 5)
 			{
 				
-				g_Brothels.AddGirl(leftBrothel - 5, temp);
+				g_Brothels.AddGirl(leftBrothel - 6, temp);
+			}
+			else if (leftBrothel == 5)
+			{
+				g_Farm.AddGirl(0, temp);
 			}
 			else if (leftBrothel == 4)
 			{
@@ -3687,9 +3894,13 @@ static void TransferGirlsLeftToRight(int rightBrothel, int leftBrothel)
 static void TransferGirlsRightToLeft(int rightBrothel, int leftBrothel)
 {
 	sBrothel* brothel;
-	if (rightBrothel > 4)
+	if (rightBrothel > 5)
 	{
-		brothel = g_Brothels.GetBrothel(rightBrothel - 5);
+		brothel = g_Brothels.GetBrothel(rightBrothel - 6);
+	}
+	else if (rightBrothel == 5)
+	{
+		brothel = g_Farm.GetBrothel(0);
 	}
 	else if (rightBrothel == 4)
 	{
@@ -3721,10 +3932,14 @@ static void TransferGirlsRightToLeft(int rightBrothel, int leftBrothel)
 		while(girlSelection != -1)
 		{
 			sGirl* temp;
-			if (leftBrothel > 4)
+			if (leftBrothel > 5)
 			{
 				// get the girl
-				temp = g_Brothels.GetGirl(leftBrothel-5, girlSelection-NumRemoved);
+				temp = g_Brothels.GetGirl(leftBrothel-6, girlSelection-NumRemoved);
+			}
+			else if (leftBrothel == 5)
+			{
+				temp = g_Farm.GetGirl(0, girlSelection-NumRemoved);
 			}
 			else if (leftBrothel == 4)
 			{
@@ -3756,9 +3971,13 @@ static void TransferGirlsRightToLeft(int rightBrothel, int leftBrothel)
 
 			// remove girl from left side
 			NumRemoved++;
-			if (leftBrothel > 4)
+			if (leftBrothel > 5)
 			{
-				g_Brothels.RemoveGirl(leftBrothel - 5, temp, false);
+				g_Brothels.RemoveGirl(leftBrothel - 6, temp, false);
+			}
+			else if (leftBrothel == 5)
+			{
+				g_Farm.RemoveGirl(0, temp, false);
 			}
 			else if (leftBrothel == 4)
 			{
@@ -3782,10 +4001,14 @@ static void TransferGirlsRightToLeft(int rightBrothel, int leftBrothel)
 			}
 
 			// add to right side
-			if (rightBrothel > 4)
+			if (rightBrothel > 5)
 			{
 				
-				g_Brothels.AddGirl(rightBrothel - 5, temp);
+				g_Brothels.AddGirl(rightBrothel - 6, temp);
+			}
+			else if (rightBrothel == 5)
+			{
+				g_Farm.AddGirl(0, temp);
 			}
 			else if (rightBrothel == 4)
 			{

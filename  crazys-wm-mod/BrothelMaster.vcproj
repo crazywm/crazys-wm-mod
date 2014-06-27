@@ -607,6 +607,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\cFarm.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\cFarm.h"
+				>
+			</File>
+			<File
 				RelativePath=".\cGangs.cpp"
 				>
 			</File>
@@ -835,6 +843,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\cFarmScreen.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\cFarmScreen.h"
+				>
+			</File>
+			<File
 				RelativePath=".\cHouseScreen.cpp"
 				>
 			</File>
@@ -912,6 +928,14 @@
 			</File>
 			<File
 				RelativePath=".\cScreenDungeon.h"
+				>
+			</File>
+			<File
+				RelativePath=".\cScreenFarmManagement.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\cScreenFarmManagement.h"
 				>
 			</File>
 			<File
@@ -1055,10 +1079,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\cWorkCleaning.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\WorkAdvertising.cpp"
 				>
 			</File>
@@ -1143,6 +1163,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\WorkCleaning.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\WorkCombatTraining.cpp"
 				>
 			</File>
@@ -1172,6 +1196,14 @@
 			</File>
 			<File
 				RelativePath=".\WorkExploreCatacombs.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\WorkFarmHand.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\WorkFarmManager.cpp"
 				>
 			</File>
 			<File

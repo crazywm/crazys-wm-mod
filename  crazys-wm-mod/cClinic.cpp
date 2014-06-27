@@ -75,6 +75,7 @@ void cClinicManager::AddGirl(int brothelID, sGirl* girl)
 	girl->m_InArena = false;
 	girl->m_InCentre = false;
 	girl->m_InHouse = false;
+	girl->m_InFarm = false;
 	girl->m_InClinic = true;
 	girl->where_is_she = 0;
 	cBrothelManager::AddGirl(brothelID, girl);
@@ -160,6 +161,7 @@ void cClinicManager::UpdateClinic()
 		cgirl->m_InCentre = false;
 		cgirl->m_InClinic = true;
 		cgirl->m_InHouse = false;
+		cgirl->m_InFarm = false;
 		cgirl->where_is_she = 0;
 		cgirl->m_Events.Clear();
 		cgirl->m_Pay = 0;

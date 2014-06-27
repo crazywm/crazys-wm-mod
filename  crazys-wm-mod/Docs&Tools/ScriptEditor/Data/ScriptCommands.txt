@@ -250,3 +250,4 @@ TEXT
 "Have Milk"
 "Have Wait"
 "Have Sing"
+"Have Torture Pic"

@@ -49,7 +49,7 @@ typedef struct sObjective
 	int m_Difficulty;	// a number representing how hard it is
 }sObjective;
 
-bool UseAntiPreg(bool use, bool isClinic, bool isStudio, bool isArena, bool isCentre, bool isHouse, int BrothelID);
+bool UseAntiPreg(bool use, bool isClinic, bool isStudio, bool isArena, bool isCentre, bool isHouse, bool isFarm, int BrothelID);
 
 // holds data for movies
 typedef struct sMovie
@@ -133,8 +133,8 @@ struct sBrothel
 	TiXmlElement* SaveBrothelXML(TiXmlElement* pRoot);
 	bool LoadBrothelXML(TiXmlHandle hBrothel);
 	int free_rooms() { return m_NumRooms - m_NumGirls; }
-	bool matron_on_shift(int shift, bool isClinic, bool isStudio, bool isArena, bool isCentre, bool isHouse, int BrothelID); // `J` added building checks
-	int matron_count(bool isClinic, bool isStudio, bool isArena, bool isCentre, bool isHouse, int BrothelID);
+	bool matron_on_shift(int shift, bool isClinic, bool isStudio, bool isArena, bool isCentre, bool isHouse, bool isFarm, int BrothelID); // `J` added building checks
+	int matron_count(bool isClinic, bool isStudio, bool isArena, bool isCentre, bool isHouse, bool isFarm, int BrothelID);
 	bool has_matron();
 	void AddGirl(sGirl* pGirl);
 };

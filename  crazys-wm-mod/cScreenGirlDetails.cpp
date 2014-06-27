@@ -22,6 +22,7 @@
 #include "cCentre.h"
 #include "cArena.h"
 #include "cHouse.h"
+#include "cFarm.h"
 #include "cMovieStudio.h"
 #include "cScreenGirlDetails.h"
 #include "cWindowManager.h"
@@ -43,6 +44,7 @@ extern cMovieStudioManager g_Studios;
 extern cArenaManager g_Arena;
 extern cCentreManager g_Centre;
 extern cHouseManager g_House;
+extern cFarmManager g_Farm;
 extern cWindowManager g_WinManager;
 extern long g_IntReturn;
 extern	int	g_TalkCount;
@@ -209,12 +211,13 @@ void cScreenGirlDetails::init()
 	bool InCentre = (selected_girl->m_InCentre);
 	bool InClinic = (selected_girl->m_InClinic);
 	bool InHouse = (selected_girl->m_InHouse);
+	bool InFarm = (selected_girl->m_InFarm);
 	bool InDungeon = (selected_girl->m_DayJob == JOB_INDUNGEON);
 	DisableButton(reldungeon_id, !InDungeon);
 	DisableButton(senddungeon_id, InDungeon);
 
 	// Disable dungeon if selected girl is in a non-brothel building
-	if (InMovieStudio || InArena || InCentre || InClinic || InHouse)
+	if (InMovieStudio || InArena || InCentre || InClinic || InHouse || InFarm)
 	{
 		DisableButton(senddungeon_id, true);
 	}
@@ -280,11 +283,23 @@ void cScreenGirlDetails::init()
 		HideButton(night_id, true);
 
 	}
+	else if (InFarm)
+	{
+		DayNight = 1;
+		ClearListBox(joblist_id);
+		AddToListBox(jobtypelist_id, JOBFILTER_FARMSTAFF, g_Farm.m_JobManager.JobFilterName[JOBFILTER_FARMSTAFF]);
+		AddToListBox(jobtypelist_id, JOBFILTER_STABLES, g_Farm.m_JobManager.JobFilterName[JOBFILTER_STABLES]);
+		SetSelectedItemInList(jobtypelist_id, JOBFILTER_FARMSTAFF);
+		RefreshJobList();
+		HideButton(day_id, true);
+		HideButton(night_id, true);
+
+	}
 	else if(!InDungeon)
 	{  // if not in dungeon, set up job lists
 		// add the job filters
 	//	for(int i=0; i<NUMJOBTYPES; i++)  // loop through all job types
-		for(unsigned int i=0; i<JOBFILTER_ARENA; i++)  // temporary limit to job types shown
+		for(unsigned int i=0; i<JOBFILTER_STABLES; i++)  // temporary limit to job types shown
 		{
 			AddToListBox(jobtypelist_id, i, g_Brothels.m_JobManager.JobFilterName[i]);
 		}
@@ -787,6 +802,7 @@ void cScreenGirlDetails::RefreshJobList()
 			selected_girl->m_InMovieStudio,
 			selected_girl->m_InArena,
 			selected_girl->m_InCentre,
+			selected_girl->m_InFarm,
 			selected_girl->m_InHouse);
 
 		AddToListBox(joblist_id, i, text);
@@ -851,6 +867,11 @@ sGirl *cScreenGirlDetails::get_prev_girl()
 		g_LogFile.write("She is in the House");
 		prev_girl = g_House.GetGirl(0, g_House.GetGirlPos(0, selected_girl) - 1);
 	}
+	else if (g_Farm.GetGirlsCurrentBrothel(selected_girl) != -1)
+	{
+		g_LogFile.write("She is in the Farm");
+		prev_girl = g_Farm.GetGirl(0, g_Farm.GetGirlPos(0, selected_girl) - 1);
+	}
 	else
 	{
 		if (selected_girl->m_DayJob == JOB_INDUNGEON)
@@ -901,6 +922,11 @@ sGirl *cScreenGirlDetails::get_next_girl()
 	{
 		g_LogFile.write("She is in the House");
 		next_girl = g_House.GetGirl(0, g_House.GetGirlPos(0, selected_girl) + 1);
+	} 
+	else if (g_Farm.GetGirlsCurrentBrothel(selected_girl) != -1)
+	{
+		g_LogFile.write("She is in the Farm");
+		next_girl = g_Farm.GetGirl(0, g_Farm.GetGirlPos(0, selected_girl) + 1);
 	} 
 	else
 	{

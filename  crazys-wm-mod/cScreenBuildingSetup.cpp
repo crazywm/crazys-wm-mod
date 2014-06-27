@@ -27,6 +27,7 @@
 #include "cArena.h"
 #include "cCentre.h"
 #include "cHouse.h"
+#include "cFarm.h"
 
 extern bool g_InitWin;
 extern int g_CurrBrothel;
@@ -38,6 +39,7 @@ extern cClinicManager g_Clinic;
 extern cArenaManager g_Arena;
 extern cCentreManager g_Centre;
 extern cHouseManager g_House;
+extern cFarmManager g_Farm;
 extern int g_CurrentScreen;
 extern int g_Building;
 
@@ -260,6 +262,36 @@ void cScreenBuildingSetup::init()
 			SetCheckBox(notitty_id, g_House.GetBrothel(0)->m_RestrictTitty);
 			SetCheckBox(nohand_id, g_House.GetBrothel(0)->m_RestrictHand);
 			break;
+		case BUILDING_FARM:
+			brothel = gettext("Your Farm");
+			EditTextItem(brothel, curbrothel_id);
+			number = g_Farm.GetBrothel(0)->m_AntiPregPotions;
+	
+			_itoa(number,buffer,10);
+			message = gettext("You have: ");
+			message += buffer;
+			EditTextItem(message, potionavail_id);
+			DisableCheckBox(autopotions_id, number < 1);
+
+			// let's limit advertising budget to multiples of 50 gold (~3 added customers), from 0 - 2000
+			advert = g_House.GetBrothel(0)->m_AdvertisingBudget / 50;
+			advert = SliderRange(advertsli_id, 0, (2000 / 50), advert, 4);  // set slider min/max range
+			ss.str("");
+			ss << gettext("Promotion Budget: ") << (advert * 50) << gettext(" gold / week");
+			EditTextItem(ss.str(), advertamt_id);
+
+			// setup check boxes
+			SetCheckBox(autopotions_id, g_Farm.GetBrothel(0)->m_KeepPotionsStocked);
+			SetCheckBox(noanal_id, g_Farm.GetBrothel(0)->m_RestrictAnal);
+			SetCheckBox(nobdsm_id, g_Farm.GetBrothel(0)->m_RestrictBDSM);
+			SetCheckBox(nonormal_id, g_Farm.GetBrothel(0)->m_RestrictNormal);
+			SetCheckBox(nobeast_id, g_Farm.GetBrothel(0)->m_RestrictBeast);
+			SetCheckBox(nogroup_id, g_Farm.GetBrothel(0)->m_RestrictGroup);
+			SetCheckBox(nolesbian_id, g_Farm.GetBrothel(0)->m_RestrictLesbian);
+			SetCheckBox(nooral_id, g_Farm.GetBrothel(0)->m_RestrictOral);
+			SetCheckBox(notitty_id, g_Farm.GetBrothel(0)->m_RestrictTitty);
+			SetCheckBox(nohand_id, g_Farm.GetBrothel(0)->m_RestrictHand);
+			break;
 		case BUILDING_BROTHEL:
 		default:
 			brothel = gettext("Current Brothel: ");
@@ -351,6 +383,9 @@ void cScreenBuildingSetup::check_events()
 				break;
 			case BUILDING_HOUSE:
 				g_House.GetBrothel(0)->m_NumRooms += 5;
+				break;
+			case BUILDING_FARM:
+				g_Farm.GetBrothel(0)->m_NumRooms += 5;
 				break;
 
 			case BUILDING_BROTHEL:
@@ -503,6 +538,34 @@ void cScreenBuildingSetup::check_events()
 				{
 					g_Gold.girl_support(number*2);
 					g_House.GetBrothel(0)->m_AntiPregPotions += number;
+				}
+				else
+					g_MessageQue.AddToQue(gettext("You don't have enough gold"), 0);
+			}
+			break;
+		case BUILDING_FARM:
+			MaxSupplies = g_Farm.GetSupplyShedLevel()*700;
+			number = g_Farm.GetBrothel(0)->m_AntiPregPotions;
+			if(number == MaxSupplies)
+			{
+				_itoa(MaxSupplies,buffer,10);
+				message = gettext("You can only store up to ");
+				message += buffer;
+				message += gettext(" potions");
+				g_MessageQue.AddToQue(message, 0);
+			}
+			else
+			{
+				if(number+10 > MaxSupplies)
+					number = (number+10) - MaxSupplies;
+				else
+					number = 10;
+
+				// afford returns a bool
+				if(g_Gold.afford(number*2))
+				{
+					g_Gold.girl_support(number*2);
+					g_Farm.GetBrothel(0)->m_AntiPregPotions += number;
 				}
 				else
 					g_MessageQue.AddToQue(gettext("You don't have enough gold"), 0);
@@ -684,6 +747,33 @@ void cScreenBuildingSetup::check_events()
 					g_MessageQue.AddToQue(gettext("You don't have enough gold"), 0);
 			}
 			break;
+		case BUILDING_FARM:
+			MaxSupplies = g_Farm.GetSupplyShedLevel()*700;
+			number = g_Farm.GetBrothel(0)->m_AntiPregPotions;
+			if(number == MaxSupplies)
+			{
+				_itoa(MaxSupplies,buffer,10);
+				message = gettext("You can only store up to ");
+				message+=buffer;
+				message += gettext(" potions");
+				g_MessageQue.AddToQue(message, 0);
+			}
+			else
+			{
+				if(number+20 > MaxSupplies)
+					number = (number+20) - MaxSupplies;
+				else
+					number = 20;
+	
+				if(g_Gold.afford(number*2))
+				{
+					g_Gold.girl_support(number*2);
+					g_Farm.GetBrothel(0)->m_AntiPregPotions += number;
+				}
+				else
+					g_MessageQue.AddToQue(gettext("You don't have enough gold"), 0);
+			}
+			break;
 		case BUILDING_BROTHEL:
 		default:
 			MaxSupplies = g_Brothels.GetSupplyShedLevel()*700;
@@ -759,6 +849,9 @@ void cScreenBuildingSetup::check_events()
 		break;
 	case BUILDING_HOUSE:
 		g_House.GetBrothel(g_CurrBrothel)->m_AdvertisingBudget = SliderValue(advertsli_id) * 50;
+		break;
+	case BUILDING_FARM:
+		g_Farm.GetBrothel(g_CurrBrothel)->m_AdvertisingBudget = SliderValue(advertsli_id) * 50;
 		break;
 	case BUILDING_BROTHEL:
 	default:
@@ -880,6 +973,28 @@ void cScreenBuildingSetup::check_events()
 			g_House.GetBrothel(g_CurrBrothel)->m_RestrictTitty = IsCheckboxOn(notitty_id);
 		if(g_InterfaceEvents.CheckCheckbox(nohand_id))
 			g_House.GetBrothel(g_CurrBrothel)->m_RestrictHand = IsCheckboxOn(nohand_id);
+		break;
+	case BUILDING_FARM:
+		if(g_InterfaceEvents.CheckCheckbox(autopotions_id))
+			g_Farm.GetBrothel(0)->m_KeepPotionsStocked = IsCheckboxOn(autopotions_id);
+		if(g_InterfaceEvents.CheckCheckbox(noanal_id))
+			g_Farm.GetBrothel(g_CurrBrothel)->m_RestrictAnal = IsCheckboxOn(noanal_id);
+		if(g_InterfaceEvents.CheckCheckbox(nobdsm_id))
+			g_Farm.GetBrothel(g_CurrBrothel)->m_RestrictBDSM = IsCheckboxOn(nobdsm_id);
+		if(g_InterfaceEvents.CheckCheckbox(nonormal_id))
+			g_Farm.GetBrothel(g_CurrBrothel)->m_RestrictNormal = IsCheckboxOn(nonormal_id);
+		if(g_InterfaceEvents.CheckCheckbox(nobeast_id))
+			g_Farm.GetBrothel(g_CurrBrothel)->m_RestrictBeast = IsCheckboxOn(nobeast_id);
+		if(g_InterfaceEvents.CheckCheckbox(nogroup_id))
+			g_Farm.GetBrothel(g_CurrBrothel)->m_RestrictGroup = IsCheckboxOn(nogroup_id);
+		if(g_InterfaceEvents.CheckCheckbox(nolesbian_id))
+			g_Farm.GetBrothel(g_CurrBrothel)->m_RestrictLesbian = IsCheckboxOn(nolesbian_id);
+		if(g_InterfaceEvents.CheckCheckbox(nooral_id))
+			g_Farm.GetBrothel(g_CurrBrothel)->m_RestrictOral = IsCheckboxOn(nooral_id);
+		if(g_InterfaceEvents.CheckCheckbox(notitty_id))
+			g_Farm.GetBrothel(g_CurrBrothel)->m_RestrictTitty = IsCheckboxOn(notitty_id);
+		if(g_InterfaceEvents.CheckCheckbox(nohand_id))
+			g_Farm.GetBrothel(g_CurrBrothel)->m_RestrictHand = IsCheckboxOn(nohand_id);
 		break;
 	case BUILDING_BROTHEL:
 	default:

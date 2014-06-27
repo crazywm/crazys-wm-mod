@@ -93,6 +93,8 @@ private:
 	sScript* Script_MilkTarget(sScript* Script);
 	sScript* Script_WaitTarget(sScript* Script);
 	sScript* Script_SingTarget(sScript* Script);
+	sScript* Script_TorturePicTarget(sScript* Script);
+	//sScript* Script_GirlNameTarget(sScript* Script);
 
 	// The overloaded process function
 	sScript *Process(sScript *Script);

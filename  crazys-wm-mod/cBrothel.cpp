@@ -35,6 +35,7 @@
 #include "cCentre.h"
 #include "cClinic.h"
 #include "cHouse.h"
+#include "cFarm.h"
 
 //#include "cDungeon.h"
 //#include "cJobManager.h"
@@ -62,6 +63,7 @@ extern cArenaManager g_Arena;
 extern cClinicManager g_Clinic;
 extern cCentreManager g_Centre;
 extern cHouseManager g_House;
+extern cFarmManager g_Farm;
 
 
 //extern CGraphics		g_Graphics;
@@ -142,7 +144,7 @@ sBrothel::~sBrothel()			// destructor
 
 // ----- Matron  // `J` added building checks
 //bool sBrothel::matron_on_shift(int shift)
-bool sBrothel::matron_on_shift(int shift, bool isClinic, bool isStudio, bool isArena, bool isCentre, bool isHouse, int BrothelID)
+bool sBrothel::matron_on_shift(int shift, bool isClinic, bool isStudio, bool isArena, bool isCentre, bool isHouse, bool isFarm, int BrothelID)
 {
 	if (isArena)
 	{
@@ -179,6 +181,13 @@ bool sBrothel::matron_on_shift(int shift, bool isClinic, bool isStudio, bool isA
 			return true;
 		}
 	}
+	else if (isFarm)
+	{
+		if (g_Farm.GetNumGirlsOnJob(0, JOB_FARMMANGER, shift == SHIFT_DAY) > 0)
+		{
+			return true;
+		}
+	}
 	else if (g_Brothels.GetNumGirlsOnJob(BrothelID, JOB_MATRON, shift == SHIFT_DAY) > 0)
 	{
 		return true;
@@ -186,7 +195,7 @@ bool sBrothel::matron_on_shift(int shift, bool isClinic, bool isStudio, bool isA
 	return false;
 }
 //int sBrothel::matron_count
-int sBrothel::matron_count(bool isClinic, bool isStudio, bool isArena, bool isCentre, bool isHouse, int BrothelID)
+int sBrothel::matron_count(bool isClinic, bool isStudio, bool isArena, bool isCentre, bool isHouse, bool isFarm, int BrothelID)
 {
 	int i, sum = 0;
 
@@ -223,6 +232,13 @@ int sBrothel::matron_count(bool isClinic, bool isStudio, bool isArena, bool isCe
 		else if (isHouse)
 		{
 			if (g_House.GetNumGirlsOnJob(0, JOB_HEADGIRL, (i == 0)) > 0)
+			{
+				sum++;
+			}
+		}
+		else if (isFarm)
+		{
+			if (g_Farm.GetNumGirlsOnJob(0, JOB_FARMMANGER, (i == 0)) > 0)
 			{
 				sum++;
 			}
@@ -558,7 +574,7 @@ bool cBrothelManager::CheckScripts()
 }
 
 //bool cBrothelManager::UseAntiPreg(bool use)
-bool UseAntiPreg(bool use, bool isClinic, bool isStudio, bool isArena, bool isCentre, bool isHouse, int whereisshe)
+bool UseAntiPreg(bool use, bool isClinic, bool isStudio, bool isArena, bool isCentre, bool isHouse, bool isFarm, int whereisshe)
 {
 	if (!use)
 		return false;
@@ -640,6 +656,19 @@ bool UseAntiPreg(bool use, bool isClinic, bool isStudio, bool isArena, bool isCe
 		if (g_House.GetBrothel(0)->m_AntiPregPotions > 0)
 		{
 			g_House.GetBrothel(0)->m_AntiPregPotions--;
+			return true;
+		}
+	}
+	else if (isFarm)
+	{
+		if (g_Farm.GetBrothel(0)->m_KeepPotionsStocked)
+		{
+			g_Gold.consumable_cost(10);
+			return true;
+		}
+		if (g_Farm.GetBrothel(0)->m_AntiPregPotions > 0)
+		{
+			g_Farm.GetBrothel(0)->m_AntiPregPotions--;
 			return true;
 		}
 	}
@@ -739,6 +768,8 @@ void cBrothelManager::AddGirl(int brothelID, sGirl* girl)
 		girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
 	else if(girl->m_InHouse)
 		girl->m_DayJob = girl->m_NightJob = JOB_HOUSEREST;
+	else if(girl->m_InFarm)
+		girl->m_DayJob = girl->m_NightJob = JOB_FARMREST;
 	else
 		girl->m_DayJob = girl->m_NightJob = JOB_RESTING;
 		//girl->m_DayJob = girl->m_NightJob = JOB_FILMFREETIME;
@@ -5178,7 +5209,7 @@ bool cBrothelManager::runaway_check(sBrothel *brothel, sGirl *girl)
  *	may be inclined to turn a blind eye to runaway attempts
  */
 //	int matron_chance = brothel->matron_count() * 35;
-	int matron_chance = brothel->matron_count(girl->m_InClinic, girl->m_InMovieStudio, girl->m_InArena, girl->m_InCentre, girl->m_InHouse, girl->where_is_she) * 35;
+	int matron_chance = brothel->matron_count(girl->m_InClinic, girl->m_InMovieStudio, girl->m_InArena, girl->m_InCentre, girl->m_InHouse, girl->m_InFarm, girl->where_is_she) * 35;
 	
 	if(g_Dice.percent(matron_chance)) {
 		return false;

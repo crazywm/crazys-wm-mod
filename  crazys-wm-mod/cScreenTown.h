@@ -34,10 +34,12 @@ private:
 	int BuyArena;
 	int BuyStudio;
 	int BuyCentre;
+	int BuyFarm;
 	bool GetClinic;
 	bool GetArena;
 	bool GetStudio;
 	bool GetCentre;
+	bool GetFarm;
 	bool GetName;
 
 	static	bool		ids_set;
@@ -56,6 +58,7 @@ private:
 	int		studio_id;		// Studio's House map button
 	int		arena_id;		// Arena's House map button
 	int		centre_id;		// Centre's House map button
+	int		farm_id;		// Farm's map button
 	int		prison_id;		// Town Prison map button
 	int		brothel0_id;	// Brothel 0 map button
 	int		brothel1_id;	// Brothel 1 map button
@@ -73,6 +76,7 @@ private:
 	void check_arena(int ArenaNum);
 	void check_studio(int StudioNum);
 	void check_centre(int CentreNum);
+	void check_farm(int FarmNum);
 public:
 	cScreenTown()
 	{
@@ -89,6 +93,7 @@ public:
 		BuyArena = -1;
 		BuyStudio = -1;
 		BuyCentre = -1;
+		BuyFarm = -1;
 		GetName = false;
 		m_first_walk = true;
 	}
