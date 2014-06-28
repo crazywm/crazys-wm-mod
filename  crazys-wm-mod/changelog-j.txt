@@ -384,3 +384,25 @@ JOB_RECRUITER is now part time job and you can have as many as you want
 Reduced JOB_RECRUITER success rate to compensate for more recruiters allowed
 JOB_RECRUITER modified to include player's disposition - Needs more texts
 !!!!!!!!!!!!!!!!!!!! pushed version .05r.02
+
+###  Changes 6/22-27/2014 - busy week IRL :/
+Started "Your Daughter" status to allow (r)girlsx to be specified as only available through "pregnant by player" births
+Some more cleaning of HandleSpecialJobs
+Added default images back in for if the girl has no images for an image_type
+Rewrote virgin test for (r)girlsx to compare Virgin status and Virgin trait, 
+ - if both are the same then set as that
+ - if both are different or one is not set, do age/skill check
+Corrected so "m_Human == 1" is human , "m_Human == 0" is nonhuman
+Corrected CreateRandomGirl, some places had slave/undead switched
+Reward girls from Objectives have a 1 in 3 chance of being nonhuman.
+Fixed the int to bool warning in cLuaScript.cpp
+Changed most virginity changes to use g_Girls.LoseVirginity(girl) and g_Girls.RegainVirginity(girl)
+Added handjob to WorkPersonalTraining
+Added Player Disposition >= 100 then Player is a "Saint"
+Fixed item rarity Catacomb05 and Catacomb01 so they work
+ - added colors for them in config.xml
+ - added default colors in the code
+ - expanded the for loops to make it read them
+!!!!!!!!!!!!!!!!!!!! pushed version .05s
+
+

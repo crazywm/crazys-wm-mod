@@ -94,7 +94,7 @@ bool cJobManager::WorkFilmLesbian(sGirl* girl, sBrothel* brothel, int DayNight, 
 	if(girl->m_Virgin)
 	{
 		jobperformance += 20;
-		message += "She is a virgin.\n";
+		message += "No 'Man' has been with her, She is still a virgin.\n";
 	}
 	jobperformance += g_Girls.GetSkill(girl, SKILL_PERFORMANCE) / 10;
 	jobperformance += g_Dice % 4 - 1;	// should add a -1 to +3 random element --PP

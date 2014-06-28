@@ -66,6 +66,7 @@ public:
 	virtual bool HasTrait(sGirl* girl, string name)=0;
 	virtual bool LoseVirginity(sGirl* girl, bool removeitem = false, bool remember = false)=0;
 	virtual bool RegainVirginity(sGirl* girl, bool temp = false, bool removeitem = false, bool remember = false)=0;
+	virtual bool CheckVirginity(sGirl* girl)=0;
 	virtual void UpdateTempSkill(sGirl* girl, int skill, int amount)=0;	// updates a skill temporarily
 	virtual void UpdateTempStat(sGirl* girl, int stat, int amount)=0;
 };
@@ -81,9 +82,10 @@ typedef struct sRandomGirl
 	bool m_newRandom;
 	bool *m_newRandomTable;
 
-	unsigned char m_Human;	                    // 0 means they are human otherwise they are not
-	unsigned char m_Catacomb;	                // 1 means they are a monster found in catacombs, 0 means wanderer
-	unsigned char m_Arena;
+	bool m_Human;				// 1 means they are human otherwise they are not
+	bool m_Catacomb;			// 1 means they are a monster found in catacombs, 0 means wanderer
+	bool m_Arena;
+	bool m_YourDaughter;				// `J` 1 means they are your daughter
 
 	int m_MinStats[NUM_STATS];	    // min and max stats they may start with
 	int m_MaxStats[NUM_STATS];
@@ -111,7 +113,7 @@ typedef struct sRandomGirl
  *
  *	Not so much difficult as tedious.
  */
-	void load_from_xml(TiXmlElement*);
+	void load_from_xml(TiXmlElement*);	// uses sRandomGirl::load_from_xml
 	void process_trait_xml(TiXmlElement*);
 	void process_stat_xml(TiXmlElement*);
 	void process_skill_xml(TiXmlElement*);
@@ -120,7 +122,7 @@ typedef struct sRandomGirl
  *	END MOD
  */
 	static sGirl *lookup;  // used to look up stat and skill IDs
-	sRandomGirl() 
+	sRandomGirl()
 	{
 		m_Next=0;
 		//assigning defaults
@@ -536,7 +538,7 @@ struct sGirl
  *	Strictly speaking, methods don't belong in structs.
  *	I've always thought that more of a guideline than a hard and fast rule
  */
-	void load_from_xml(TiXmlElement *el);
+	void load_from_xml(TiXmlElement *el);	// uses sGirl::load_from_xml
 	TiXmlElement* SaveGirlXML(TiXmlElement* pRoot);
 	bool LoadGirlXML(TiXmlHandle hGirl);
 
@@ -759,8 +761,8 @@ struct sGirl
 	}
 	bool is_monster()	{ return (m_States & (1<<STATUS_CATACOMBS)) !=0; }
 	bool is_human()		{ return !is_monster(); }
-
 	bool is_arena ()	{ return (m_States & (1<<STATUS_ARENA)) !=0; }
+	bool is_yourdaughter()	{ return (m_States & (1 << STATUS_YOURDAUGHTER)) != 0; }
 	bool is_warrior()		{ return !is_arena(); }
 
 	void fight_own_gang(bool &girl_wins);
@@ -854,6 +856,7 @@ public:
 	int GetNumSlaveGirls();
 	int GetNumCatacombGirls();
 	int GetNumArenaGirls();
+	int GetNumYourDaughterGirls();
 	int GetSlaveGirl(int from);
 	int GetStat(sGirl* girl, int stat);
 	int GetSkill(sGirl* girl, int skill);
@@ -882,9 +885,9 @@ public:
 	void LoadRandomGirlLegacy(string filename);
 	// end mod
 
-	sGirl* CreateRandomGirl(int age, bool addToGGirls, bool slave = false, bool undead = false, bool NonHuman = false, bool childnaped = false, bool arena = false);
+	sGirl* CreateRandomGirl(int age, bool addToGGirls, bool slave = false, bool undead = false, bool NonHuman = false, bool childnaped = false, bool arena = false, bool daughter = false);
 
-	sGirl* GetRandomGirl(bool slave = false, bool catacomb = false, bool arena = false);
+	sGirl* GetRandomGirl(bool slave = false, bool catacomb = false, bool arena = false, bool daughter = false);
 
 	bool NameExists(string name);
 
@@ -920,6 +923,7 @@ public:
 	void AddRememberedTrait(sGirl* girl, string name);
 	bool LoseVirginity(sGirl* girl, bool removeitem = false, bool remember = false);
 	bool RegainVirginity(sGirl* girl, bool temp = false, bool removeitem = false, bool inrememberlist = false);
+	bool CheckVirginity(sGirl* girl);
 
 	cImgageListManager* GetImgManager() {return &m_ImgListManager;}
 

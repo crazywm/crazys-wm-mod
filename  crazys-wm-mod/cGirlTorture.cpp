@@ -355,7 +355,7 @@ void cGirlTorture::AddTextPlayer()
 		if (is && !was) {
 			m_Message += gettext(" She is now pregnant.");
 		}
-		m_Girl->m_Virgin = false;
+		g_Girls.LoseVirginity(m_Girl);
 		break;
 	}
 }

@@ -808,16 +808,11 @@ void cScreenGirlDetails::RefreshJobList()
 		AddToListBox(joblist_id, i, text);
 	}
 
-//	if (SetJob)
-//	{
-//		SetJob = false;
-		// set the job
 		if(selected_girl)
 		{
 			int sel_job = (DayNight == 0) ? selected_girl->m_DayJob : selected_girl->m_NightJob;
 			SetSelectedItemInList(joblist_id, sel_job, false);
 		}
-//	}
 }
 
 

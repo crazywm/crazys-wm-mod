@@ -6,6 +6,11 @@ Basic .girlsx file layout
       Desc="@"
       Gold="#"
       Virgin="!0"
+      Catacombs="!0"
+      Slave="!0"
+      Arena="!0"
+      YourDaughter="!0"
+
       Charisma="#"
       Happiness="#"
       Libido="#"
@@ -53,7 +58,7 @@ Basic .girlsx file layout
 Replace @ with text.
 Replace # with a number.
 Replace ! either Yes or No.
-Replace !0 either 1 for Yes or 0 for No.
+Replace !0 either (Yes or 1) for Yes or (No or 0) for No.
 Replace % with a choice from a list below.
 
 The first line in the file must be the "<?xml version="1.0" encoding="utf-8"?>" line followed by the "<Girls>" line

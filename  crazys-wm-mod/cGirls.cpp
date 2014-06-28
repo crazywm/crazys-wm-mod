@@ -133,7 +133,8 @@ const char *sGirl::status_names[] =
 	"Inseminated",
 	"Controlled",
 	"Catacombs",
-	"Arena"
+	"Arena",
+	"Your Daughter"
 };
 // calculate the max like this, and it's self-maintaining
 const unsigned int sGirl::max_stats = (
@@ -208,7 +209,7 @@ void sGirl::setup_maps()
 		status_lookup["Controlled"]			= STATUS_CONTROLLED;
 		status_lookup["Catacombs"]			= STATUS_CATACOMBS;
 		status_lookup["Arena"]			    = STATUS_ARENA;
-
+		status_lookup["Your Daughter"]		= STATUS_YOURDAUGHTER;
 }
 
 int sGirl::lookup_skill_code(string s)
@@ -259,16 +260,19 @@ class GirlPredicate_GRG : public GirlPredicate {
 	bool m_slave;
 	bool m_catacomb;
 	bool m_arena;
+	bool m_yourdaughter;
 public:
-	GirlPredicate_GRG(bool slave, bool catacomb, bool arena) {
+	GirlPredicate_GRG(bool slave, bool catacomb, bool arena, bool daughter) {
 		m_slave = slave;
 		m_catacomb = catacomb;
 		m_arena = arena;
+		m_yourdaughter = daughter;
 	}
 		virtual bool test(sGirl *girl) {
 		return  girl->is_slave() == m_slave 
 		&&	girl->is_monster() == m_catacomb
-		&&	girl->is_arena() == m_arena;
+		&&	girl->is_arena() == m_arena
+		&& girl->is_yourdaughter() == m_yourdaughter;
 	}
 };
 
@@ -1099,7 +1103,7 @@ sRandomGirl* cGirls::random_girl_at(u_int n)
 	return current;		// and there we (hopefully) are
 }
 
-sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool undead, bool NonHuman, bool childnaped, bool arena)
+sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool undead, bool NonHuman, bool childnaped, bool arena, bool daughter)
 {
 	cConfig cfg;
 	sRandomGirl* current;
@@ -1118,7 +1122,9 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 			continue;
 		}
 		if(NonHuman == (current->m_Human == 0))				// test for humanity - or lack of it as the case may be
+		{
 			break;
+		}
 /*
  *		She's either human when we wanted non-human
  *		or non-human when we wanted human
@@ -1197,21 +1203,20 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 		}
 	}
 
-	if(current->m_Human == 0)
-		AddTrait(newGirl, "Not Human");
+	if (current->m_Human == 0)			AddTrait(newGirl, "Not Human");
+	if (current->m_YourDaughter == 0)	AddTrait(newGirl, "Your Daughter");
 	
-	newGirl->m_DayJob = JOB_RESTING;
-	newGirl->m_NightJob = JOB_RESTING;
+	newGirl->m_DayJob = newGirl->m_NightJob = JOB_RESTING;
 
-	if(!slave)
-		newGirl->m_Stats[STAT_HOUSE] = 60;	// 60% is the norm
-	else
-		newGirl->m_Stats[STAT_HOUSE] = cfg.initial.slave_house_perc();	// 100% is the norm
+	if (daughter)				newGirl->m_Stats[STAT_HOUSE] = 0;	// your daughter gets to keep all she gets
+	else if (!slave && !arena)	newGirl->m_Stats[STAT_HOUSE] = 60;	// 60% is the norm
+	else newGirl->m_Stats[STAT_HOUSE] = cfg.initial.slave_house_perc();	// 100% is the norm
+
 	newGirl->m_Stats[STAT_FAME] = 0;
-	if(age != 0)
-		newGirl->m_Stats[STAT_AGE] = age;
+	if (age != 0)	newGirl->m_Stats[STAT_AGE] = age;
 	newGirl->m_Stats[STAT_HEALTH] = 100;
 	newGirl->m_Stats[STAT_HAPPINESS] = 100;
+	newGirl->m_Stats[STAT_TIREDNESS] = 0;
 
 #if 0  //crazy this seems to break slaves from beening set to 100 house by defualt
 	if(!arena)
@@ -1223,7 +1228,7 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 	if(slave)
 	{
 		newGirl->m_AccLevel = 0;
-		newGirl->m_States |= (1<<STATUS_SLAVE);
+		newGirl->m_States |= (1 << STATUS_SLAVE);
 		newGirl->m_Money = 0;
 	}
 
@@ -1234,18 +1239,19 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 		newGirl->m_Money = 0;
 	}
 
-	if(age < 18)
-		AddTrait(newGirl, "Lolita");
+	if (daughter)
+	{
+		newGirl->m_AccLevel = 5;
+		newGirl->m_States |= (1 << STATUS_YOURDAUGHTER);
+		newGirl->m_Money = 1000;
+		AddTrait(newGirl, "Your Daughter");
+	}
 
-	if(g_Dice%100 <= 3)
-		AddTrait(newGirl, "Shroud Addict");
-
-	if(g_Dice%100 <= 2)
-		AddTrait(newGirl, "Fairy Dust Addict");
-
-	if(g_Dice%100 == 1)
-		AddTrait(newGirl, "Viras Blood Addict");
-
+	if (age < 18)		AddTrait(newGirl, "Lolita");
+	if (g_Dice % 100 <= 3)	AddTrait(newGirl, "Shroud Addict");
+	if (g_Dice % 100 <= 2)	AddTrait(newGirl, "Fairy Dust Addict");
+	if (g_Dice % 100 == 1)	AddTrait(newGirl, "Viras Blood Addict");
+	
 	if(childnaped)	// this girl has been taken against her will so make her rebelious
 	{
 		newGirl->m_Stats[STAT_SPIRIT] = 100;
@@ -1255,6 +1261,17 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 	}
 
 	newGirl->m_Next = 0;
+
+	if (CheckVirginity(newGirl))	// `J` check random girl's virginity
+	{
+		newGirl->m_Virgin = true;
+		AddTrait(newGirl, "Virgin");
+	}
+	else
+	{
+		newGirl->m_Virgin = false;
+		RemoveTrait(newGirl, "Virgin");
+	}
 
 	// If the girl is a slave or arena.. then make her more obedient.
 	if(newGirl->m_States&(1<<STATUS_SLAVE))
@@ -1273,6 +1290,17 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 			newGirl->m_Stats[STAT_OBEDIENCE] = 100;
 		else
 			newGirl->m_Stats[STAT_OBEDIENCE] += 20;
+	}
+
+	if (newGirl->m_States&(1 << STATUS_YOURDAUGHTER))	// `J` if she is your daughter...
+	{
+		newGirl->m_AccLevel = 5;						// pamper her
+		if (newGirl->m_Stats[STAT_OBEDIENCE] < 80)		// She starts out obedient
+			newGirl->m_Stats[STAT_OBEDIENCE] = 80;
+		if (newGirl->m_Virgin || HasTrait(newGirl, "Virgin"))
+		{		// you made sure she stayed pure
+// `J` needs work
+		}
 	}
 
 	// Load any girl images if available
@@ -1330,32 +1358,6 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 		break;
 	}
 	newGirl->m_Realname = name;
-
-	newGirl->m_Virgin = false;
-	if(newGirl->m_Stats[STAT_AGE] < 18)
-	{
-		newGirl->m_Stats[STAT_AGE] = 18;
-		newGirl->m_Virgin = true;
-	}
-	else if(newGirl->m_Stats[STAT_AGE] == 18)
-	{
-		if(g_Dice%3 == 1)
-			newGirl->m_Virgin = true;
-	}
-	else if(newGirl->m_Stats[STAT_AGE] <= 25)
-	{
-		int avg = 0;
-		for(u_int i=0; i<NUM_SKILLS; i++)
-		{
-				// `J` removed magic and combat from virginity check
-			if (i != SKILL_SERVICE && i != SKILL_MAGIC && i != SKILL_COMBAT)
-				avg += (int)newGirl->m_Skills[i];
-		}
-		avg = avg/(NUM_SKILLS-3);	// `J` changed 1 to 3
-
-		if (avg < 20)	// `J` reduced from 30 to 20
-			newGirl->m_Virgin = true;
-	}
 
 	if(newGirl->m_Stats[STAT_AGE] > 20 && HasTrait(newGirl, "Lolita"))
 		RemoveTrait(newGirl, "Lolita");
@@ -2486,15 +2488,10 @@ string cGirls::GetDetailsString(sGirl* girl, bool purchase)
 	data += buffer;
 	data += gettext("\n");
 
-
-
-	if(girl->m_Virgin)
-		data += gettext("She is a virgin\n");
-
 	if(girl->m_Virgin)
 	{
-			AddTrait(girl, "Virgin");
-			//UpdateEnjoyment(girl, ACTION_SEX, -20, true);
+		data += gettext("She is a virgin\n");
+		AddTrait(girl, "Virgin");
 	}
 	else
 	{
@@ -2731,7 +2728,7 @@ string cGirls::GetDetailsString(sGirl* girl, bool purchase)
 	return data;
 }
 
-sGirl* cGirls::GetRandomGirl(bool slave, bool catacomb, bool arena)
+sGirl* cGirls::GetRandomGirl(bool slave, bool catacomb, bool arena, bool daughter)
 {
 	int num_girls = m_NumGirls;
 	if((num_girls == GetNumSlaveGirls()+GetNumCatacombGirls()+GetNumArenaGirls()) || num_girls == 0)
@@ -2744,7 +2741,7 @@ sGirl* cGirls::GetRandomGirl(bool slave, bool catacomb, bool arena)
 		}
 	}
 
-	GirlPredicate_GRG pred(slave, catacomb, arena);
+	GirlPredicate_GRG pred(slave, catacomb, arena, daughter);
 	vector<sGirl *> girls = get_girls(&pred);
 
 	if(girls.size() == 0) {
@@ -2915,6 +2912,19 @@ int cGirls::GetNumArenaGirls()
 	while(current)
 	{
 		if(current->m_States&(1<<STATUS_ARENA))
+			number++;
+		current = current->m_Next;
+	}
+
+	return number;
+}
+int cGirls::GetNumYourDaughterGirls()
+{
+	int number = 0;
+	sGirl* current = m_Parent;
+	while (current)
+	{
+		if (current->m_States&(1 << STATUS_YOURDAUGHTER))
 			number++;
 		current = current->m_Next;
 	}
@@ -3928,7 +3938,6 @@ void sGirl::load_from_xml(TiXmlElement *el)
 {
 	int ival;
 	const char *pt;
-	bool virginisset = false;
 /*
  *	get the simple fields
  */
@@ -3952,17 +3961,45 @@ void sGirl::load_from_xml(TiXmlElement *el)
 	if ((pt = el->Attribute("Gold", &ival)))
 		m_Money = ival;
 
-	if ((pt = el->Attribute("Virgin", &ival)))
+	if ((pt = el->Attribute("Virgin")))
 	{
-		if (ival == 0)	m_Virgin = false;
-		else			m_Virgin = true;
-		virginisset = true;
+		if (strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0)
+			m_Virgin = true;
+		else
+			m_Virgin = false;
+	}
+	if ((pt = el->Attribute("Catacombs")))
+	{
+		if (strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0)
+			m_States |= (1 << STATUS_CATACOMBS);
+		else
+			m_States |= (0 << STATUS_CATACOMBS);
+	}
+	if ((pt = el->Attribute("Slave")))
+	{
+		if (strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0)
+			m_States |= (1 << STATUS_SLAVE);
+		else
+			m_States |= (0 << STATUS_SLAVE);
+	}
+	if ((pt = el->Attribute("Arena")))
+	{
+		if (strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0)
+			m_States |= (1 << STATUS_ARENA);
+		else
+			m_States |= (0 << STATUS_ARENA);
 	}
 
-/*
- *	loop through stats
- */
-	for(int i = 0; i < NUM_STATS; i++) {
+	if ((pt = el->Attribute("YourDaughter")))
+	{
+		if (strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0)
+			m_States |= (1 << STATUS_YOURDAUGHTER);
+		else
+			m_States |= (0 << STATUS_YOURDAUGHTER);
+	}
+
+	for(int i = 0; i < NUM_STATS; i++) // loop through stats
+	{
 		int ival;
 		const char *stat_name = sGirl::stat_names[i];
 		pt = el->Attribute(stat_name, &ival);
@@ -3978,82 +4015,33 @@ void sGirl::load_from_xml(TiXmlElement *el)
 	}
 
 
-/*
- *	loop through skills
- */
-	for(u_int i = 0; i < NUM_SKILLS; i++) {
+	for (u_int i = 0; i < NUM_SKILLS; i++)	//	loop through skills
+	{
 		int ival;
 		if((pt = el->Attribute(sGirl::skill_names[i], &ival))) 
 			m_Skills[i] = ival;
 		}
 
-	if((pt = el->Attribute("Status"))) {
-		if(strcmp(pt, gettext("Catacombs")) == 0) 
-			m_States |=(1<<STATUS_CATACOMBS);
-		else if(strcmp(pt,gettext("Slave"))==0)
-			m_States |=(1<<STATUS_SLAVE);
-		else if(strcmp(pt,gettext("Arena"))==0)
-			m_States |=(1<<STATUS_ARENA);
-		else 
-			m_States=0;
+	if ((pt = el->Attribute("Status"))) 
+	{
+		if (strcmp(pt, gettext("Catacombs")) == 0)			m_States |= (1 << STATUS_CATACOMBS);
+		else if (strcmp(pt, gettext("Slave")) == 0)			m_States |= (1 << STATUS_SLAVE);
+		else if (strcmp(pt, gettext("Arena")) == 0)			m_States |= (1 << STATUS_ARENA);
+		else if (strcmp(pt, gettext("Your Daughter")) == 0)	m_States |= (1 << STATUS_YOURDAUGHTER);
+//		else	m_States = 0;
 	}
 
 	TiXmlElement * child;
 	for(child=el->FirstChildElement();child;child=child->NextSiblingElement())
 	{
-/*
- *		get the trait name 
- */
-		if(child->ValueStr()=="Trait") {
+		if(child->ValueStr()=="Trait")	//get the trait name 
+		{
 			pt=child->Attribute("Name");
 //			m_Traits[m_NumTraits] = g_Traits.GetTrait(n_strdup(pt));
 			m_Traits[m_NumTraits] = g_Traits.GetTrait(g_Traits.GetTranslateName(n_strdup(pt))); // `J` added translation check
-			if (g_Traits.GetTranslateName(n_strdup(pt)) == "Virgin"){m_Virgin = true;virginisset = true;}
 			m_NumTraits++;
 		}
 	}
-
-	// "fix" underage girls
-	if (virginisset)
-	{
-		if (m_Stats[STAT_AGE] <= 18)
-		{
-			m_Stats[STAT_AGE] = 18;
-		}
-	}
-	else	// determine virgin status
-	{
-		m_Virgin = false;
-		if (m_Stats[STAT_AGE] < 18)
-		{
-			m_Stats[STAT_AGE] = 18;
-			m_Virgin = true;
-		}
-		else if (m_Stats[STAT_AGE] == 18)
-		{
-			if (g_Dice % 3 == 1)
-				m_Virgin = true;
-		}
-		else if (m_Stats[STAT_AGE] <= 25)
-		{
-			int avg = 0;
-			for (u_int i = 0; i < NUM_SKILLS; i++)
-			{
-				if (
-					i != SKILL_SERVICE
-					&& i != SKILL_COMBAT
-					&& i != SKILL_MAGIC
-					)
-					avg += (int)m_Skills[i];
-			}
-			avg = avg / (NUM_SKILLS - 1);
-
-			if (avg < 30)
-				m_Virgin = true;
-		}
-	}
-
-
 	m_AccLevel=1;
 }
 
@@ -4079,7 +4067,7 @@ void sRandomGirl::load_from_xml(TiXmlElement *el)
 	m_newRandomTable = 0;
 	if((pt = el->Attribute("NewRandom"))) 
 	{
-		if(strcmp(pt, "Yes") == 0) 
+		if (strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0)
 			m_newRandom = true;
 	}
 /*
@@ -4087,7 +4075,7 @@ void sRandomGirl::load_from_xml(TiXmlElement *el)
  */
 	if((pt = el->Attribute("Human"))) 
 	{
-		if(strcmp(pt, "Yes") == 0) 
+		if (strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0)
 			m_Human = 1;
 		else 
 			m_Human = 0;
@@ -4097,7 +4085,7 @@ void sRandomGirl::load_from_xml(TiXmlElement *el)
  */
 	if((pt = el->Attribute("Catacomb")))
 	{
-		if(strcmp(pt, "Yes") == 0)
+		if (strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0)
 			m_Catacomb = 1;
 		else 
 			m_Catacomb = 0;
@@ -4105,11 +4093,18 @@ void sRandomGirl::load_from_xml(TiXmlElement *el)
 
 	if((pt = el->Attribute("Arena")))
 	{
-		if(strcmp(pt, "Yes") == 0)
+		if (strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0)
 			m_Arena = 1;
 		else 
 			m_Arena = 0;
 		}
+	if ((pt = el->Attribute("Your Daughter")))
+	{
+		if (strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0)
+			m_YourDaughter = 1;
+		else
+			m_YourDaughter = 0;
+	}
 /*
  *	loop through children
  */
@@ -4201,7 +4196,8 @@ void cGirls::LoadRandomGirlXML(string filename)
 /*
  *		walk the XML DOM to get the girl data
  */
-		girl->load_from_xml(el);
+		girl->load_from_xml(el);	// uses sRandomGirl::load_from_xml
+
 /*
  *		add the girl to the list
  */
@@ -4271,17 +4267,17 @@ void cGirls::LoadRandomGirlLegacy(string filename)
 		// Get if they are human
 		if (in.peek()=='\n') in.ignore(1,'\n');
 		in>>tempData;
-		newGirl->m_Human = !(unsigned char)tempData;
+		newGirl->m_Human = tempData == 1;
 
 		// Get if they are found in the catacombs
 		if (in.peek()=='\n') in.ignore(1,'\n');
 		in>>tempData;
-		newGirl->m_Catacomb = (unsigned char)tempData;
+		newGirl->m_Catacomb = tempData == 1;
 
 		// Get if they are found in the arena
 		if (in.peek()=='\n') in.ignore(1,'\n');
 		in>>tempData;
-		newGirl->m_Arena = (unsigned char)tempData;
+		newGirl->m_Arena = tempData == 1;
 
 		// Get how many traits they can have
 		if (in.peek()=='\n') in.ignore(1,'\n');
@@ -4373,11 +4369,26 @@ void cGirls::LoadGirlsXML(string filename)
 /*
  *		walk the XML DOM to get the girl data
  */
-		girl->load_from_xml(el);
+		girl->load_from_xml(el);	// uses sGirl::load_from_xml
 		if(cfg.debug.log_girls()) {
 			g_LogFile.ss() << *girl << endl;
 			g_LogFile.ssend();
 		}
+
+
+		if (CheckVirginity(girl))	// `J` check girl's virginity
+		{
+			girl->m_Virgin = true;
+			AddTrait(girl, "Virgin");
+		}
+		else
+		{
+			girl->m_Virgin = false;
+			RemoveTrait(girl, "Virgin");
+		}
+
+
+
 /*
  *		Mod: need to do this if you do not want a crash
  */
@@ -4542,28 +4553,7 @@ void cGirls::LoadGirlsLegacy(string filename)
 		newGirl->m_Triggers.LoadList(dp);
 		newGirl->m_Triggers.SetGirlTarget(newGirl);
 
-		if(newGirl->m_Stats[STAT_AGE] <= 19)
-			newGirl->m_Virgin = true;
-		else if(newGirl->m_Stats[STAT_AGE] <= 20)
-		{
-			if(g_Dice%3 == 1)
-				newGirl->m_Virgin = true;
-		}
-		else
-		{
-			int avg = 0;
-			for(u_int i=0; i<NUM_SKILLS; i++)
-			{
-				if(i != SKILL_SERVICE)
-					avg += (int)newGirl->m_Skills[i];
-			}
-			avg = avg/(NUM_SKILLS-1);
-
-			if((g_Dice%100)+1 > avg)
-			{
-				newGirl->m_Virgin = true;
-			}
-		}
+// `J` removed virgin test
 
 		if(newGirl->m_Stats[STAT_AGE] < 18)
 			newGirl->m_Stats[STAT_AGE] = 18;
@@ -6818,6 +6808,38 @@ bool cGirls::RegainVirginity(sGirl* girl, bool temp, bool removeitem, bool inrem
 	return traitOpSuccess;
 }
 
+bool cGirls::CheckVirginity(sGirl* girl)
+{
+	if (girl->m_Virgin != HasTrait(girl, "Virgin")) // `J` if both are not the same, run a few tests
+	{
+		if (girl->m_Stats[STAT_AGE] < 18)
+		{
+			girl->m_Stats[STAT_AGE] = 18;
+			girl->m_Virgin = true;
+		}
+		else	// `J` average all sex skills plus age
+		{
+			int avg = girl->m_Stats[STAT_AGE];
+			int div = 1;
+			for (u_int i = 0; i < NUM_SKILLS; i++)
+			{
+				// `J` removed nonsex from virginity check
+				if (i != SKILL_SERVICE && i != SKILL_MAGIC && i != SKILL_COMBAT && i != SKILL_MEDICINE && i != SKILL_PERFORMANCE)
+				{
+					avg += girl->m_Skills[i];
+					div++;	// `J` added to allow new skills
+				}
+			}
+			avg = avg/div;	// `J` fixed to allow new skills
+
+			if (avg < 20)		girl->m_Virgin = true;
+			else if (avg > 40)	girl->m_Virgin = false;
+			else	girl->m_Virgin = HasTrait(girl, "Virgin");
+		}
+	}
+	return (girl->m_Virgin);
+}
+
 void cGirls::AddRememberedTrait(sGirl* girl, string name)
 {
 	for(int i=0; i<MAXNUM_TRAITS*2; i++)	// add the traits
@@ -7473,10 +7495,10 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 	if(girl->m_Virgin)
 	{
 		message += gettext(" The customer was overjoyed that she was a virgin.");
-//		girl->m_Virgin = false;
 		customer->m_Stats[STAT_HAPPINESS] = 100;
 		if(SexType != SKILL_ANAL && SexType != SKILL_LESBIAN && SexType != SKILL_ORALSEX && SexType != SKILL_TITTYSEX && SexType != SKILL_HANDJOB)
-			girl->m_Virgin = false;
+//			girl->m_Virgin = false;
+		g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
 	}
 
 	// Now calculate other skill increases
@@ -11739,10 +11761,10 @@ ostream& operator<<(ostream &os, sRandomGirl &g)
 {
 	os << g.m_Name << endl;
 	os << g.m_Desc << endl;
-	os << gettext("Human? ") << (g.m_Human == 0 ? gettext("Yes") : gettext("No")) << endl;
-	os << gettext("Catacomb Dweller? ")
-	   << (g.m_Catacomb == 0 ? gettext("No") : gettext("Yes"))
-	   << endl;
+	os << gettext("Human? ") << (g.m_Human ? gettext("Yes") : gettext("No")) << endl;
+	os << gettext("Catacomb Dweller? ") << (g.m_Catacomb ? gettext("Yes") : gettext("No")) << endl;
+	os << gettext("Arena Girl? ") << (g.m_Arena ? gettext("Yes") : gettext("No")) << endl;
+	os << gettext("Your Daughter? ") << (g.m_YourDaughter ? gettext("Yes") : gettext("No")) << endl;
 	os << gettext("Money: Min = ") << g.m_MinMoney << gettext(". Max = ") << g.m_MaxMoney << endl;
 /*
  *	loop through stats
@@ -13303,9 +13325,9 @@ CSurface* cGirls::GetImageSurface(sGirl* girl, int ImgType, bool random, int& im
 	else if (ImgType == IMGTYPE_GROUP)		{	alttypes[0] = IMGTYPE_SEX; }
 	else if (ImgType == IMGTYPE_LESBIAN)	{	alttypes[0] = IMGTYPE_SEX;		alttypes[1] = IMGTYPE_NUDE; }
 	else if (ImgType == IMGTYPE_TORTURE)	{	alttypes[0] = IMGTYPE_BDSM;		alttypes[1] = IMGTYPE_DEATH; }
-	else if (ImgType == IMGTYPE_DEATH)		{	alttypes[0] = 8; }
-	else if (ImgType == IMGTYPE_PROFILE)	{	alttypes[0] = 8; }
-	else if (ImgType == IMGTYPE_COMBAT)		{	alttypes[0] = 8; }
+	else if (ImgType == IMGTYPE_DEATH)		{	alttypes[0] = -1; }
+	else if (ImgType == IMGTYPE_PROFILE)	{	alttypes[0] = -1; }
+	else if (ImgType == IMGTYPE_COMBAT)		{	alttypes[0] = -1; }
 	else if (ImgType == IMGTYPE_ORAL)		{	alttypes[0] = IMGTYPE_HAND;		alttypes[1] = IMGTYPE_TITTY; 
 												alttypes[2] = IMGTYPE_SEX; }
 	else if (ImgType == IMGTYPE_ECCHI)		{	alttypes[0] = IMGTYPE_STRIP; 	alttypes[1] = IMGTYPE_NUDE; }
@@ -13314,7 +13336,7 @@ CSurface* cGirls::GetImageSurface(sGirl* girl, int ImgType, bool random, int& im
 	else if (ImgType == IMGTYPE_SING)		{	alttypes[0] = IMGTYPE_BUNNY; }
 	else if (ImgType == IMGTYPE_WAIT)		{	alttypes[0] = IMGTYPE_BUNNY; }
 	else if (ImgType == IMGTYPE_CARD)		{	alttypes[0] = IMGTYPE_BUNNY; }
-	else if (ImgType == IMGTYPE_BUNNY)		{	alttypes[0] = 8; }
+	else if (ImgType == IMGTYPE_BUNNY)		{	alttypes[0] = -1; }
 	else if (ImgType == IMGTYPE_NUDE)		{	alttypes[0] = IMGTYPE_STRIP;	alttypes[1] = IMGTYPE_ECCHI; }
 	else if (ImgType == IMGTYPE_MAST)		{	alttypes[0] = IMGTYPE_NUDE; }
 	else if (ImgType == IMGTYPE_TITTY)		{	alttypes[0] = IMGTYPE_HAND;		alttypes[1] = IMGTYPE_ORAL; 
@@ -13322,7 +13344,7 @@ CSurface* cGirls::GetImageSurface(sGirl* girl, int ImgType, bool random, int& im
 	else if (ImgType == IMGTYPE_MILK)		{	alttypes[0] = IMGTYPE_NUDE; }
 	else if (ImgType == IMGTYPE_HAND)		{	alttypes[0] = IMGTYPE_ORAL;		alttypes[1] = IMGTYPE_TITTY; 
 												alttypes[2] = IMGTYPE_SEX; }
-	else if (ImgType == IMGTYPE_PREGNANT)	{	alttypes[0] = 8; }
+	else if (ImgType == IMGTYPE_PREGNANT)	{	alttypes[0] = -1; }
 
 	// `J` first check if there are preg varients
 	if (girl->is_pregnant())
@@ -13343,7 +13365,16 @@ CSurface* cGirls::GetImageSurface(sGirl* girl, int ImgType, bool random, int& im
 			return girl->m_GirlImages->m_Images[alttypes[i]].GetImageSurface(random, img);
 		}
 	}
-	// `J` if there are no alternate types found then try profile
+	// `J` if there are no alternate types found then try default images
+	if (girl->is_pregnant() && m_DefImages->m_Images[ImgType + PREG_OFFSET].m_NumImages)
+	{
+		return m_DefImages->m_Images[ImgType + PREG_OFFSET].GetImageSurface(random, img);
+	}
+	if (m_DefImages->m_Images[ImgType].m_NumImages)
+	{
+		return m_DefImages->m_Images[ImgType].GetImageSurface(random, img);
+	}
+	// `J` if there are no alternate or default types found then try profile
 	if (girl->m_GirlImages->m_Images[IMGTYPE_PROFILE].m_NumImages)
 	{
 		return girl->m_GirlImages->m_Images[IMGTYPE_PROFILE].GetImageSurface(random, img);

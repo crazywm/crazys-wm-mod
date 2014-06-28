@@ -4090,7 +4090,8 @@ void cBrothelManager::PassObjective()
 				message += gettext(" slave girls.");
 				while(girls > 0)
 				{
-					m_Dungeon.AddGirl(g_Girls.CreateRandomGirl(0, true, "", true, true), DUNGEON_NEWGIRL);
+					//m_Dungeon.AddGirl(g_Girls.CreateRandomGirl(0, true, "", true, true), DUNGEON_NEWGIRL);
+					m_Dungeon.AddGirl(g_Girls.CreateRandomGirl(0, false, true, true, g_Dice%3==1), DUNGEON_NEWGIRL);	// `J` corrected
 					girls--;
 				}
 			}break;

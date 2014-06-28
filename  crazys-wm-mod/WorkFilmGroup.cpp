@@ -139,9 +139,9 @@ if(roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
 
 	if(girl->m_Virgin)
 	{
-		girl->m_Virgin = false;
+		g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
 		jobperformance += 50;
-		message += "She is a virgin.\n";
+		message += "She is no longer a virgin.\n";
 	}
 
 	if(!girl->calc_group_pregnancy(g_Brothels.GetPlayer(), false, 1.0)) {

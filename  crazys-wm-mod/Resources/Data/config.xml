@@ -216,16 +216,20 @@
  !	RarityColor4: Appears in catacombs, 15% chance
  !	RarityColor5: Only given by scripts
  !	RarityColor6: Given by scripts or as objective rewards
+ !	RarityColor7: Appears in catacombs, 5% chance
+ !	RarityColor8: Appears in catacombs, 1% chance
  !-->
 	<Items
 		AutoCombatEquip	= "true"
 		RarityColor0	= "#000000"
-		RarityColor1	= "#000050"
-		RarityColor2	= "#0000A0"
-		RarityColor3	= "#0000F0"
-		RarityColor4	= "#004000"
-		RarityColor5	= "#006000"
-		RarityColor6	= "#006000"
+		RarityColor1	= "#000066"
+		RarityColor2	= "#0000cc"
+		RarityColor3	= "#0066ff"
+		RarityColor4	= "#8f0000"
+		RarityColor5	= "#00ff00"
+		RarityColor6	= "#008f00"
+		RarityColor7	= "#800000"
+		RarityColor8	= "#b00000"
 	/>
 
 <!--

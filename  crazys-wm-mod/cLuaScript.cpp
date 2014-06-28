@@ -267,7 +267,7 @@ int get_from_table(lua_State *L, int table, const char *key, bool &dest)
  */
  	bool found = !lua_isnil(L, -1);
 	if(found) {
-		dest = lua_toboolean(L, -1);
+		dest = lua_toboolean(L, -1) != 0;
 	}
 	lua_pop(L, 1);
 /*
@@ -493,7 +493,7 @@ static int create_random_girl(lua_State *L)
 {
 	CLog log;
 
-	int age		= 17;
+	int age		= 17;		// if age is less than 18, virgin is set to true and age gets reset to 18
 	bool global	= false;	// set to true to add her to the pool
 	bool undead	= false;	// unused by CreateRandomGirl
 	bool slave	= false;	// set to true to create her as a slave
@@ -625,7 +625,7 @@ static int add_cust_to_brothel(lua_State *L)
 	lua_gettable(L, argtab);
 	bool wife = false;
 	if(!lua_isnil(L, -1)) {
-		wife = lua_toboolean(L, -1);
+		wife = lua_toboolean(L, -1) != 0;
 	}
 	lua_pop(L, 1);
 /*

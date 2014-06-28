@@ -126,7 +126,7 @@ bool cJobManager::WorkGetVaginalRejuvination(sGirl* girl, sBrothel* brothel, int
 		if (g_Girls.HasTrait(girl, "Pessimist")){ g_Girls.UpdateStat(girl, STAT_HAPPINESS, -5); }
 		else if (g_Girls.HasTrait(girl, "Optimist")){ g_Girls.UpdateStat(girl, STAT_HAPPINESS, 5); }
 
-		(girl->m_Virgin) = true;
+		g_Girls.RegainVirginity(girl);	// `J` updated for trait/status
 		girl->m_WorkingDay = 0;
 		girl->m_PrevWorkingDay = 0;
 		girl->m_DayJob = JOB_CLINICREST;

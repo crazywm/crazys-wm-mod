@@ -583,7 +583,8 @@ sScript *cGameScript::Script_AddRandomGirlToDungeon(sScript *Script)
 	else
 		age = (g_Dice%(value[2]+1))+value[1]-1;
 
-	g_Brothels.GetDungeon()->AddGirl(g_Girls.CreateRandomGirl(age, false, "", slave, allowNonHuman, kidnaped, arena), reason);
+//	g_Brothels.GetDungeon()->AddGirl(g_Girls.CreateRandomGirl(age, false, "", slave, allowNonHuman, kidnaped, arena), reason);
+	g_Brothels.GetDungeon()->AddGirl(g_Girls.CreateRandomGirl(age, false, slave, "", allowNonHuman, kidnaped, arena), reason);
 
 	return Script->m_Next;
 }
@@ -709,7 +710,8 @@ sScript *cGameScript::Script_AddManyRandomGirlsToDungeon(sScript *Script)
 		else
 			age = (g_Dice%(value[3]+1))+value[2]-1;
 
-		g_Brothels.GetDungeon()->AddGirl(g_Girls.CreateRandomGirl(age, false, "", slave, allowNonHuman, kidnaped, arena), reason);
+		//g_Brothels.GetDungeon()->AddGirl(g_Girls.CreateRandomGirl(age, false, "", slave, allowNonHuman, kidnaped, arena), reason);
+		g_Brothels.GetDungeon()->AddGirl(g_Girls.CreateRandomGirl(age, false, slave, "", allowNonHuman, kidnaped, arena), reason);
 	}
 
 	return Script->m_Next;
@@ -767,8 +769,8 @@ sScript *cGameScript::Script_PlayerRapeTargetGirl(sScript *Script)
 	if((g_Dice%100)+1 <= 2)
 		g_Girls.AddTrait(m_GirlTarget, "Broken Will");
 
-	if(m_GirlTarget->m_Virgin)
-		m_GirlTarget->m_Virgin = false;
+	if (m_GirlTarget->m_Virgin)
+		g_Girls.LoseVirginity(m_GirlTarget);	// `J` updated for trait/status
 
 	bool preg = !m_GirlTarget->calc_pregnancy(player, false, 1.0);
 	if(preg) {
@@ -1448,7 +1450,7 @@ sScript* cGameScript::Script_NormalSexTarget(sScript* Script)
 		g_Girls.UpdateSkill(m_GirlTarget, SKILL_NORMALSEX, 2);
 
 		if(m_GirlTarget->m_Virgin)
-			m_GirlTarget->m_Virgin = false;
+			g_Girls.LoseVirginity(m_GirlTarget);	// `J` updated for trait/status
 
 		if(!m_GirlTarget->calc_pregnancy(g_Brothels.GetPlayer(), false, 1.0)) {
 			g_MessageQue.AddToQue("She has gotten pregnant", 0);
@@ -1466,7 +1468,7 @@ sScript* cGameScript::Script_BeastSexTarget(sScript* Script)
 		g_Girls.UpdateSkill(m_GirlTarget, SKILL_BEASTIALITY, 2);
 
 		if(m_GirlTarget->m_Virgin)
-			m_GirlTarget->m_Virgin = false;
+			g_Girls.LoseVirginity(m_GirlTarget);	// `J` updated for trait/status
 
 		// mod: added check for number of beasts owned; otherwise, fake beasts could somehow inseminate the girl
 		if(g_Brothels.GetNumBeasts() > 0)
@@ -1498,7 +1500,7 @@ sScript* cGameScript::Script_BDSMSexTarget(sScript* Script)
 		g_Girls.UpdateSkill(m_GirlTarget, SKILL_BDSM, 2);
 
 		if(m_GirlTarget->m_Virgin)
-			m_GirlTarget->m_Virgin = false;
+			g_Girls.LoseVirginity(m_GirlTarget);	// `J` updated for trait/status
 	}
 
 	if(!m_GirlTarget->calc_pregnancy(g_Brothels.GetPlayer(), false, 0.75)) {
@@ -1574,7 +1576,7 @@ sScript* cGameScript::Script_GroupSexTarget(sScript* Script)
 		g_Girls.UpdateSkill(m_GirlTarget, SKILL_GROUP, 2);
 
 		if(m_GirlTarget->m_Virgin)
-			m_GirlTarget->m_Virgin = false;
+			g_Girls.LoseVirginity(m_GirlTarget);	// `J` updated for trait/status
 
 		if(!m_GirlTarget->calc_group_pregnancy(g_Brothels.GetPlayer(), false, 1.0)) {
 			g_MessageQue.AddToQue("She has gotten pregnant", 0);
