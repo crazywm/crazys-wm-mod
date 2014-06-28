@@ -167,7 +167,7 @@ void cScreenSlaveMarket::init()
  *		so we need a random one
  */
 		if(MarketSlaveGirls[i] == 0) {
-			MarketSlaveGirls[i] = g_Girls.CreateRandomGirl(0, false, "", true);
+			MarketSlaveGirls[i] = g_Girls.CreateRandomGirl(0, false, true);
 			MarketSlaveGirlsDel[i] = -1;
 		}
 /*

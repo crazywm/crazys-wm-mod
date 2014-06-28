@@ -129,7 +129,7 @@ struct sConfigData
 
 	struct item_data {
 		bool auto_combat_equip;
-		SDL_Color*	rarity_color[7];
+		SDL_Color*	rarity_color[9];
 	} items;
 
 	struct font_data {

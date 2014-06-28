@@ -12,5 +12,6 @@
    <Effect What="Stat" Name="Age" Amount="-2" />
    <Effect What="Trait" Name="Great Arse" Amount="1" />
    <Effect What="Trait" Name="MILF" Amount="0" />
+   <Effect What="Trait" Name="Virgin" Amount="1" />
 </Item>
 </Items>

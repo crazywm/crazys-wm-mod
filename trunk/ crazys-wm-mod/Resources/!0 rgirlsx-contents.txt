@@ -7,6 +7,7 @@ Basic .rgirlsx file layout
       Human="!"
       Catacomb="!"
       Arena="!"
+      YourDaughter="!"
       >
       <Gold           Min="#" Max="#" />
       <Stat  Name="%" Min="#" Max="#" />
@@ -26,6 +27,7 @@ Each Girl must have the "<Girl ... >" with:
  - Human="Yes" if they are human or "No" if they are not
  - Catacomb="Yes" if they are primarily found in the Catacombs or "No" if they are not
  - Arena="Yes" if they are primarily found in the Arena or "No" if they are not
+ - YourDaughter="Yes" if they are born YourDaughter or "No" if they are not
  - Gold, Stat and Skill all need Min="#" Max="#" which is the random range the girl will start with
  -  - if Min equals Max  - sets it as Max
  -  - if Min is more than Max - random 0-100

@@ -1,0 +1,212 @@
+I wanted to make it like other buildings
+
+Jobs:
+Farm Staff:
+Head Farmer - matron - full time
+Veterinarian - tends to the animals to keep them from dying - full time
+Farmhand - cleans and repairs stuff
+Marketer - buys and sells food - full time
+Research potions - unlock various types of potions and garden qualities - full time
+Free time - resting
+
+Laborers:
+Gardener - produces herbs and potion ingredients
+Farmer - tends crops
+Beast capture - moved from brothel
+Shepherd - tends food animals - 100% food
+Rancher - tends animals for food or beast - % food/beast based on skills
+Catacomb rancher - tends strange beasts - 100% beast - dangerous
+Milker - produces milk from animals/beasts/girls - if food animals < beasts - can be dangerous
+Get milked - moved from brothel - milker not required but increases yield
+
+Producers:
+Butcher - produces food from animals
+Baker - produces food from crops
+Brewer - Produces beers and wines
+Make Items - (rename to something else?) - produce items for sale
+Make Potions - create potions with items gained from the garden
+
+
+Shepherd, Rancher and Catacomb rancher replace the old beast carer job.
+Each Shepherd, Rancher and Catacomb rancher can only take care of a certain number of animals based on their skills
+Shepherd - up to job performance *10
+Rancher - up to job performance
+Catacomb Rancher - up to job performance /10
+ - any above that may die (vet reduces the chance to die)
+
+
+Need to track:
+Food crops
+food animals by size
+beast animals - already in
+potion ingredients by quality
+beer/wine in production by quality
+
+You must have at least 5 food animals in a size category to add more through natural production.
+ - natural production of food animals (number += (int)number/5)
+
+You must have at least 10 beasts to add more through natural production
+ - natural production of beasts (number += (int)number/10)
+
+food animals by size:
+0 - eggs - 1 food each - counted as 0.1 animal
+1 - chicken - 2 food each
+2 - goat - 3 food each
+3 - sheep - 4 food each
+4 - ostrich - 5 food each
+5 - cow - 6 food each
+
+
+
+
+
+
+Add items when finished:
+Various Food items already in the game
+beer/wine
+Milk - normal
+Milk - beast
+Milk - by girl type
+Succubus Milk - already in - chance to be produced by demon girl milk
+Any type of potion when potion ingredients of a certain quality reaches a set amount and random chance
+
+Girl upkeep can be reduced by food produced - extra food can then be sold
+Antipreg potions and healing potions for gangs can be restocked
+
+
+Farm management page:
+check boxes for garden qualities
+check boxes for potion types
+Buy and sell buttons for crops, food animals, beasts
+ - hops, grapes, herbs, potion ingredients
+ 
+ 
+Garden qualities
+0 - weeds - grows if no gardener is on duty - has a chance of lowering value of other things in the garden or killing them
+1 - easy - open at start - buy 50 for 1 gold - sell 100 for 1 gold
+2 - simple - open at start - buy 5 for 1 - sell 10 for 1
+3 - common - open at start - buy 1 for 2 - sell 1 for 1
+4 - uncommon -     each researcher adds 10% chance each week -     buy 1 for 20 - sell 1 for 10
+5 - special -      each researcher adds 1% chance each week -      buy 1 for 200 - sell 1 for 100
+6 - very special - each researcher adds 0.1% chance each week -    buy 1 for 2000
+7 - rare -         each researcher adds 0.01% chance each week -   buy 1 for 20000
+8 - very rare -    each researcher adds 0.001% chance each week -  buy 1 for 200000
+9 - unique -       each researcher adds 0.0001% chance each week - buy 1 for 2000000
+% chance is started at 0.0000 from the first turn the player acquires the farm not from when the previous quality is unlocked
+the previous quality must be unlocked before the next has a chance to be unlocked
+use g_Roll%(int(chance)) so the chance is rounded down so 0.9999% is still 0%
+
+20 researchers would take 10 game years to get unique chance to 1%
+ by the time someone reached that (without cheating) we should have something that can use it :p
+
+
+
+Random event - disease
+With a vet on duty:
+"An animal is found to have (anthrax, foot-and-mouth, mad-cow) and is removed from the heard."
+Without a vet on duty:
+"An animal is found to have (anthrax, foot-and-mouth, mad-cow) and several had to be put down to prevent it from spreading."
+
+ 
+ 
+
+Change beast birth to send the newborn beast to the farm
+eventually track the beast baby?
+add get inseminated as a job to produce more beasts?
+
+
+
+
+
+// in the cFarm.h
+[code]
+int FoodAnimal[6] = {0,0,0,0,0,0};
+string FoodAnimalName[6] = {"Egg","Chicken","Goat","Sheep","Ostrich","Cow"}
+int FoodAnimalFoodValue[6] = {1,2,3,3,6,10}
+int GardenPlant[10] = {10,0,0,0,0,0,0,0,0,0};
+string GardenPlantName[10] = {"Weeds","Easy","Simple","Common","Uncommon","Special","Very Special","Rare","Very Rare","Unique"};
+[/code]
+
+// in the cFarm.cpp
+[code]
+if (DayNight == SHIFT_DAY)   // this line is probably already in the cpp so just add this stuff to it
+{
+    // do natural food animal increase once per week
+    if (FoodAnimal[1]>0)   // 3-6 food eggs per chicken per week
+            FoodAnimal[0] += int(FoodAnimal[1]*(g_Dice%4)+3);
+        //  could also do a for loop to check every chickens egg production but that may be overkill
+    for (int i=1;i<6;i++)
+    {
+            int foodanimalbirths = int(FoodAnimal[i]/i/i/2);
+            FoodAnimal[i] += foodanimalbirths;
+    }
+    
+    m_Beasts += int(m_Beasts/10);
+    
+    // add to GardenPlant
+    for (int i=0;i<10;i++)
+    {
+        GardenPlant[i] += int(g_Dice%(12-i)+(8-i));
+    }
+}
+[/code]
+
+
+// in cFarm.cpp after gardener jobs have been done
+[code]
+if (DayNight == SHIFT_NIGHT)
+{
+    // do weed damage
+    if (GardenPlant[0]>0)    // if there are any weeds
+    {
+        message += "There are some weeds growing in the farm.\n"
+        for (int i=1;i<10;i++)
+        {
+            if (GardenPlant[0]>(9-i)*GardenPlant[i]) // if there are more weeds than the plant can handle...
+            {
+                int numkilled = g_Dice%i + (GardenPlant[0]-((9-i)*GardenPlant[i]));
+                // kill off the difference plus a random amount based on the level of the plant.
+                GardenPlant[i] -= numkilled;
+                _itoa(numkilled, buffer, 10);
+                message += "The weeds have killed " + buffer + " ";
+                message += GardenPlantName[i];
+                message += " plants.\n";
+            }
+        }
+    }
+}
+[/code]
+
+// in WorkGardener.cpp
+[code]
+GardenPlant[0] -= int(jobperformance/20)+1;   // the gardener clears some weeds each shift - at least 1, jp>240 clears 13
+for (int i=1;i<10;i++)    // better numbers for this may be needed
+{
+    int herbsgrown = (g_Girls.GetSkill(girl, SKILL_FARMING))/(i*i);
+    if (herbsgrown<1)herbsgrown=1;
+    if (jobperformance>250)
+    {
+        herbsgrown *= 3;   // the gardener adds
+    }
+    else if (jobperformance>200)
+    {
+        herbsgrown *= 2;  // the gardener adds
+    }
+    else if (jobperformance<50)
+    {
+        herbsgrown /= 2;   // the gardener adds
+    }
+    GardenPlant[i] = herbsgrown;
+}
+[/code]
+
+
+
+
+
+
+
+
+
+
+

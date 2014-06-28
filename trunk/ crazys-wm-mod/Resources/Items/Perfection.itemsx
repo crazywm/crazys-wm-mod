@@ -6,11 +6,12 @@
       Badness="0"
       Special="None"
       Cost="200000"
-      Rarity="Catacomb15"
+      Rarity="Catacomb01"
       Infinite="false">
-   <Effect What="Stat"  Name="AskPrice"                Amount="50000"    />
-   <Effect What="Stat"  Name="Exp"                     Amount="255"    />
-   <Effect What="Stat"  Name="Age"                     Amount="-100"    />
+   <Effect What="Stat"  Name="AskPrice"                Amount="50000"/>
+   <Effect What="Stat"  Name="Exp"                     Amount="255"  />
+   <Effect What="Stat"  Name="Age"                     Amount="-100" />
+   <Effect What="Trait" Name="Virgin"                  Amount="1"    />
    <Effect What="Trait" Name="Elegant"                 Amount="1"    />
    <Effect What="Trait" Name="Charming"                Amount="1"    />
    <Effect What="Trait" Name="Charismatic"             Amount="1"    />

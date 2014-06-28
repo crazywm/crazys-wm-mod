@@ -139,7 +139,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, int DayN
 				girl->m_Events.AddMessage(message, IMGTYPE_BDSM, DayNight);
 				if(girl->m_Virgin)
 				{
-					girl->m_Virgin = false;
+					g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
 					message += "She was a virgin.\n";
 				}
 				g_Building = BUILDING_HOUSE;
@@ -161,7 +161,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, int DayN
 				girl->m_Events.AddMessage(message, IMGTYPE_SEX, DayNight);
 				if(girl->m_Virgin)
 				{
-					girl->m_Virgin = false;
+					g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
 					message += "She was a virgin.\n";
 				}
 				g_Building = BUILDING_HOUSE;

@@ -78,7 +78,7 @@ const unsigned int SKILL_PERFORMANCE	= 13;
 const unsigned int SKILL_HANDJOB		= 14;
 
 // STATUS
-const unsigned int NUM_STATUS					= 12;
+const unsigned int NUM_STATUS					= 13;
 const unsigned int STATUS_NONE					= 0;
 const unsigned int STATUS_POISONED				= 1;
 const unsigned int STATUS_BADLY_POISONED		= 2;
@@ -91,6 +91,7 @@ const unsigned int STATUS_INSEMINATED			= 8;
 const unsigned int STATUS_CONTROLLED			= 9;
 const unsigned int STATUS_CATACOMBS				= 10;
 const unsigned int STATUS_ARENA				    = 11;
+const unsigned int STATUS_YOURDAUGHTER			= 12;
 
 #if 0
 // Girl states

@@ -434,7 +434,7 @@ void sConfigData::get_resolution_data(TiXmlElement *el)
 void sConfigData::get_item_data(TiXmlElement *el)
 {
 	get_att(el, "AutoCombatEquip", items.auto_combat_equip);
-	for(int i=0; i<7; i++)
+	for(int i=0; i<9; i++)
 	{
 		string ColorIn;
 		stringstream ss;
@@ -514,17 +514,19 @@ void sConfigData::set_defaults()
 
 	items.auto_combat_equip = true;
 
-	for(int i=0; i<7; i++)
+	for(int i=0; i<9; i++)
 	{
 		items.rarity_color[i] = new SDL_Color();
 	}
 	ColorConvert.HexToSDLColor("000000", items.rarity_color[0]);
-	ColorConvert.HexToSDLColor("000050", items.rarity_color[1]);
-	ColorConvert.HexToSDLColor("0000A0", items.rarity_color[2]);
-	ColorConvert.HexToSDLColor("0000F0", items.rarity_color[3]);
-	ColorConvert.HexToSDLColor("004000", items.rarity_color[4]);
-	ColorConvert.HexToSDLColor("006000", items.rarity_color[5]);
-	ColorConvert.HexToSDLColor("006000", items.rarity_color[6]);
+	ColorConvert.HexToSDLColor("000066", items.rarity_color[1]);
+	ColorConvert.HexToSDLColor("0000cc", items.rarity_color[2]);
+	ColorConvert.HexToSDLColor("0066ff", items.rarity_color[3]);
+	ColorConvert.HexToSDLColor("800000", items.rarity_color[4]);
+	ColorConvert.HexToSDLColor("00ff00", items.rarity_color[5]);
+	ColorConvert.HexToSDLColor("008f00", items.rarity_color[6]);
+	ColorConvert.HexToSDLColor("a00000", items.rarity_color[7]);
+	ColorConvert.HexToSDLColor("e00000", items.rarity_color[8]);
 /*
  *	not hugely sensible values
  *	but I want something I'm not using so I can test this

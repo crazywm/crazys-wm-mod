@@ -95,9 +95,9 @@ bool cJobManager::WorkFilmSex(sGirl* girl, sBrothel* brothel, int DayNight, stri
 
 	if(girl->m_Virgin)
 	{
-		girl->m_Virgin = false;
+		g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
 		jobperformance += 50;
-		message += "She is a virgin.\n";
+		message += "She is no longer a virgin.\n";
 	}
 	jobperformance += g_Girls.GetSkill(girl, SKILL_PERFORMANCE) / 10;
 	jobperformance += g_Dice % 4 - 1;	// should add a -1 to +3 random element --PP

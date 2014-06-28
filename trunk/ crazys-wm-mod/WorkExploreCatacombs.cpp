@@ -181,7 +181,6 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, int DayNi
 		if(girl->m_Virgin)
 		{
 			ss << " That's a hell of a way to lose your virginity; naturally, she's rather distressed by this fact.";
-//			girl->m_Virgin = false;
 			g_Girls.LoseVirginity(girl);					// Virginity both attrib & trait now, 04/15/13
 			g_Girls.UpdateStat(girl, STAT_SPIRIT, -2);
 			g_Girls.UpdateEnjoyment(girl, ACTION_SEX, -4, true);

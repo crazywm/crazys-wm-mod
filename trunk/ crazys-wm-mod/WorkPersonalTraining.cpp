@@ -195,7 +195,11 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, int DayNi
 		g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, skill);
 		ss << gettext("You decide to teach her how to ride a dick like a pro.\n\n");
 		ss << gettext("She managed to gain ") << skill << gettext(" Normal Sex.\n\n");
-		if (girl->m_Virgin){girl->m_Virgin = false;ss << gettext("She is no longer a virgin.\n");}
+		if (girl->m_Virgin)
+		{
+			g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
+			ss << gettext("She is no longer a virgin.\n");
+		}
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_SEX, DayNight);
 		if (!girl->calc_pregnancy(g_Brothels.GetPlayer(), false, 1.0))
 		{
@@ -214,7 +218,11 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, int DayNi
 		g_Girls.UpdateSkill(girl, SKILL_GROUP, skill);
 		ss << gettext("You decide to over see her skill in a gang bang.\n\n");
 		ss << gettext("She managed to gain ") << skill << gettext(" Group Sex.\n\n");
-		if (girl->m_Virgin){ girl->m_Virgin = false; ss << gettext("She is no longer a virgin.\n"); }
+		if (girl->m_Virgin)
+		{
+			g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
+			ss << gettext("She is no longer a virgin.\n");
+		}
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_GROUP, DayNight);
 		if (!girl->calc_group_pregnancy(g_Brothels.GetPlayer(), false, 1.0))
 		{
@@ -226,7 +234,11 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, int DayNi
 		g_Girls.UpdateSkill(girl, SKILL_BDSM, skill);
 		ss << gettext("You decide to teach her the fine art of BDSM.\n\n");
 		ss << gettext("She managed to gain ") << skill << gettext(" BDSM.\n\n");
-		if (girl->m_Virgin){ girl->m_Virgin = false; ss << gettext("She is no longer a virgin.\n)"); }
+		if (girl->m_Virgin)
+		{
+			g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
+			ss << gettext("She is no longer a virgin.\n");
+		}
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_BDSM, DayNight);
 		if (!girl->calc_pregnancy(g_Brothels.GetPlayer(), false, 1.0))
 		{
@@ -238,7 +250,11 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, int DayNi
 		g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, skill);
 		ss << gettext("You decide to have her get acquainted with some animals.\n\n");
 		ss << gettext("She managed to gain ") << skill << gettext(" Beastiality.\n\n");
-		if (girl->m_Virgin && g_Dice%2){ girl->m_Virgin = false; ss << gettext("She is no longer a virgin.\n"); }
+		if (girl->m_Virgin)
+		{
+			g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
+			ss << gettext("She is no longer a virgin.\n");
+		}
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_BEAST, DayNight);
 	}
 	else															

@@ -88,7 +88,7 @@ static string sel_name_r = "";
 
 int HateLove = 0;
 
-static SDL_Color* RarityColor[7];
+static SDL_Color* RarityColor[9];
 
 
 void cScreenItemManagement::set_ids()
@@ -111,7 +111,7 @@ void cScreenItemManagement::set_ids()
 	unequip_r_id = get_id("UnequipRightButton");
 
 	cConfig cfg;
-	for(int i=0; i<7; i++)
+	for(int i=0; i<9; i++)
 	{
 		RarityColor[i] = cfg.items.rarity_color(i);
 	}
