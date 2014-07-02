@@ -640,6 +640,11 @@
     <ClCompile Include="WorkCleaning.cpp">
       <Filter>Jobs</Filter>
     </ClCompile>
+    <ClCompile Include="cFarm.cpp" />
+    <ClCompile Include="cFarmScreen.cpp" />
+    <ClCompile Include="cScreenFarmManagement.cpp" />
+    <ClCompile Include="WorkFarmHand.cpp" />
+    <ClCompile Include="WorkFarmManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cButton.h">
@@ -1045,6 +1050,15 @@
       <Filter>Misc</Filter>
     </ClInclude>
     <ClInclude Include="sFacilityList.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="cFarm.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="cFarmScreen.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="cScreenFarmManagement.h">
       <Filter>Misc</Filter>
     </ClInclude>
   </ItemGroup>

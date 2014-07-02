@@ -75,7 +75,7 @@ private:
 	bool do_take_gold(sGirl *girl, string &message);
 	void take_gold(sGirl *girl);
 public:
-	int lastsexact;
+	int lastsexact = -1;
 	cScreenGirlDetails()
 	{
 		cConfig cfg;

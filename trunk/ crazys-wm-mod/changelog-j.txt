@@ -404,5 +404,27 @@ Fixed item rarity Catacomb05 and Catacomb01 so they work
  - added default colors in the code
  - expanded the for loops to make it read them
 !!!!!!!!!!!!!!!!!!!! pushed version .05s
+###  Changes 6/28/2014
+Corrected bug in images where default pregnant offset was not checking for IMGTYPE_PREGNANT
+Corrected bug in virginity check not passing age to rgirls
+!!!!!!!!!!!!!!!!!!!! pushed version .05s.01
+###  Changes 6/29/2014
+Corrected bug in images so pregnant profile now looks for IMGTYPE_PREGNANT if there are no IMGTYPE_PREGPROFILE 
+!!!!!!!!!!!!!!!!!!!! pushed version .05s.02
+
+
+###  Changes 7/1/2014
+Whore Master Editor:
+ - Increased program screen dimensions to 1000x600 to allow more stuff.
+ - Rearranged buttons and boxes to allow for more things in the future.
+ - Added the 5 newest skills from .05 to non-random girls
+ - * Only creating New Non-Random Girls or opening Non-Random Girls that already have the 5 new skills works.
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.00
+
+###  Changes 7/2/2014
+Whore Master Editor:
+ - Changed how the editor loads girlsx files so if a stat/skill is not listed, it gets set to default
+ - Updated Status="" to include "Arena"
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.01
 
 
