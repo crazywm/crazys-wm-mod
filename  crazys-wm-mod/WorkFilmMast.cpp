@@ -132,7 +132,7 @@ bool cJobManager::WorkFilmMast(sGirl* girl, sBrothel* brothel, int DayNight, str
 	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill + 1);
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill);
 
-	g_Girls.PossiblyGainNewTrait(girl, "Fake orgasm expert", 15, ACTION_WORKMOVIE, "She has become quite the faker.", DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Fake Orgasm Expert", 15, ACTION_WORKMOVIE, "She has become quite the faker.", DayNight != 0);
 
 	return false;
 }

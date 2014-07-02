@@ -642,7 +642,7 @@ void cGirls::CalculateGirlType(sGirl* girl)
 		Elegant += 60;
 		Freak -= 30;
 	}
-	if(HasTrait(girl, "Fake orgasm expert"))
+	if (HasTrait(girl, "Fake orgasm expert") || HasTrait(girl, "Fake Orgasm Expert"))
 	{
 		Sexy += 5;
 	}
@@ -1272,6 +1272,11 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 		newGirl->m_Virgin = false;
 		RemoveTrait(newGirl, "Virgin");
 	}
+	if (newGirl->m_Stats[STAT_AGE] < 18)
+	{
+		newGirl->m_Stats[STAT_AGE] = 18;
+	}
+
 
 	// If the girl is a slave or arena.. then make her more obedient.
 	if(newGirl->m_States&(1<<STATUS_SLAVE))
@@ -1463,9 +1468,9 @@ void cGirls::LevelUp(sGirl* girl)
 			ss << gettext(" She has gained the Nymphomaniac trait.");
 			girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);                
 		}
-		else if(chance <= 30 && !HasTrait(girl, "Fake orgasm expert"))
+		else if (chance <= 30 && !HasTrait(girl, "Fake orgasm expert") && !HasTrait(girl, "Fake Orgasm Expert"))
 		{
-			AddTrait(girl, gettext("Fake orgasm expert"));
+			AddTrait(girl, gettext("Fake Orgasm Expert"));
 			ss << gettext(" She has gained the Fake Orgasm Expert trait.");
 			girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);                
 		}
@@ -4385,6 +4390,10 @@ void cGirls::LoadGirlsXML(string filename)
 		{
 			girl->m_Virgin = false;
 			RemoveTrait(girl, "Virgin");
+		}
+		if (girl->m_Stats[STAT_AGE] < 18)
+		{
+			girl->m_Stats[STAT_AGE] = 18;
 		}
 
 
@@ -13301,6 +13310,12 @@ CSurface* cGirls::GetImageSurface(sGirl* girl, int ImgType, bool random, int& im
 	if (gallery)
 		return girl->m_GirlImages->m_Images[ImgType].GetImageSurface(random, img);
 
+	// `J` check for pregnant profile
+	if (girl->is_pregnant() && ImgType == IMGTYPE_PROFILE &&
+		!girl->m_GirlImages->m_Images[IMGTYPE_PREGPROFILE].m_NumImages &&
+		girl->m_GirlImages->m_Images[IMGTYPE_PREGNANT].m_NumImages)
+		return girl->m_GirlImages->m_Images[IMGTYPE_PREGNANT].GetImageSurface(random, img);
+	
 	// `J` check if she is pregnant and if there are any Preg images for the requested type
 	if (girl->is_pregnant() && ImgType < PREG_OFFSET && ImgType != IMGTYPE_PREGNANT &&
 		girl->m_GirlImages->m_Images[ImgType + PREG_OFFSET].m_NumImages)
@@ -13347,7 +13362,7 @@ CSurface* cGirls::GetImageSurface(sGirl* girl, int ImgType, bool random, int& im
 	else if (ImgType == IMGTYPE_PREGNANT)	{	alttypes[0] = -1; }
 
 	// `J` first check if there are preg varients
-	if (girl->is_pregnant())
+	if (girl->is_pregnant() && ImgType != IMGTYPE_PREGNANT)
 	{
 		for (int i = 0; i<10; i++)
 		{
@@ -13366,7 +13381,7 @@ CSurface* cGirls::GetImageSurface(sGirl* girl, int ImgType, bool random, int& im
 		}
 	}
 	// `J` if there are no alternate types found then try default images
-	if (girl->is_pregnant() && m_DefImages->m_Images[ImgType + PREG_OFFSET].m_NumImages)
+	if (girl->is_pregnant() && ImgType != IMGTYPE_PREGNANT && m_DefImages->m_Images[ImgType + PREG_OFFSET].m_NumImages)
 	{
 		return m_DefImages->m_Images[ImgType + PREG_OFFSET].GetImageSurface(random, img);
 	}
