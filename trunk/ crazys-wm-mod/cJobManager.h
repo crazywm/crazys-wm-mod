@@ -116,6 +116,7 @@ public:
 	static bool WorkBrothelStripper(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
 	static bool WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
 	static bool WorkPeepShow(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
+	static bool WorkEscort(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
 
 	//- Stables
 	static bool WorkMilk(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
@@ -123,6 +124,9 @@ public:
 	// - Farm Staff
 	static bool WorkFarmManager(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
 	static bool WorkFarmHand(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
+	static bool WorkFarmVeterinarian(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
+	static bool WorkFarmResearch(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
+	static bool WorkFarmMarketer(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
 
 	// - Clinic
 	static bool WorkDoctor(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
@@ -188,6 +192,20 @@ public:
 	static bool WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
 	static bool WorkCleanHouse(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
 	static bool WorkHeadGirl(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
+
+	// laborers
+	static bool WorkGardener(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
+	static bool WorkFarmer(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
+	static bool WorkSheapherd(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
+	static bool WorkRancher(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
+	static bool WorkCatacombRancher(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
+	static bool WorkMilker(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
+
+	// Producers
+	static bool WorkButcher(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
+	static bool WorkBaker(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
+	static bool WorkBrewer(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
+	static bool WorkMakePotions(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
 
 	// - stuff that does processing for jobs
 

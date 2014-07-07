@@ -52,7 +52,8 @@ const char* actionTypeNames[] =
 	"WORKMUSIC",
 	"WORKSTRIP",
 	"WORKMILK",
-	"WORKMASSUSSE"
+	"WORKMASSUSSE",
+	"WORKFARM"
 };
 	
 /*

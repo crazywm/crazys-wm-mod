@@ -289,6 +289,8 @@ void cScreenGirlDetails::init()
 		ClearListBox(joblist_id);
 		AddToListBox(jobtypelist_id, JOBFILTER_FARMSTAFF, g_Farm.m_JobManager.JobFilterName[JOBFILTER_FARMSTAFF]);
 		AddToListBox(jobtypelist_id, JOBFILTER_STABLES, g_Farm.m_JobManager.JobFilterName[JOBFILTER_STABLES]);
+		AddToListBox(jobtypelist_id, JOBFILTER_STABLES, g_Farm.m_JobManager.JobFilterName[JOBFILTER_LABORERS]);
+		AddToListBox(jobtypelist_id, JOBFILTER_STABLES, g_Farm.m_JobManager.JobFilterName[JOBFILTER_PRODUCERS]);
 		SetSelectedItemInList(jobtypelist_id, JOBFILTER_FARMSTAFF);
 		RefreshJobList();
 		HideButton(day_id, true);

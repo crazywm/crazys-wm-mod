@@ -108,11 +108,12 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 			}
 		else if (roll <= 60)
 			{
-				message += "Feeling little blue she only sang sad ballads today. You could swear that some customers were crying from the emotion.\n";
+				message += "Feeling a little blue she only sang sad ballads today. You could swear that some customers were crying from the emotion.\n";
 			}
 		else if (roll <= 80)
 			{
 				message += "The hole room was quiet when " + girlName + " was singing. After she finished gathered listeners applauses for minutes.\n";
+				brothel->m_Fame += 5;
 			}
 		else
 			{
@@ -130,10 +131,12 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 		else if (roll <= 50)
 			{
 				message += "Her performance was really great, giving the listeners a pleasant time.\n";
+				brothel->m_Happiness += 5;
 			}
 		else if (roll <= 75)
 			{
 				message += "When " + girlName + " got on stage the crowd went wild. She didn’t disappoint her fans giving one of the best performances in her life.\n";
+				brothel->m_Happiness += 5;
 			}
 		else
 			{
@@ -201,6 +204,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 		else if (roll <= 60)
 			{
 				message += "Some customers left immediately after " + girlName + " started to sing.\n";
+				wages -= 10;
 			}
 		else if (roll <= 80)
 			{
@@ -234,10 +238,11 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 		else if (roll <= 70)
 			{
 				message += girlName + " singing was awful. Angry listeners throw random objects at her.\n";
+				brothel->m_Happiness -= 5;
 			}
 		else if (roll <= 84)
 			{
-				message += "Hearing " + girlName + " singing gave you a thought to use it as a new torture method. \n";
+				message += "Hearing " + girlName + " singing gave you a thought to use it as a new torture method.\n";
 			}
 		else
 			{

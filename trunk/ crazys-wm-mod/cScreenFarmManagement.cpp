@@ -155,6 +155,8 @@ void cScreenFarmManagement::init()
 //	for(int i=0; i<NUMJOBTYPES; i++)  // loop through all job types
 	AddToListBox(jobtypelist_id, JOBFILTER_FARMSTAFF, g_Farm.m_JobManager.JobFilterName[JOBFILTER_FARMSTAFF]);
 	AddToListBox(jobtypelist_id, JOBFILTER_STABLES, g_Farm.m_JobManager.JobFilterName[JOBFILTER_STABLES]);
+	AddToListBox(jobtypelist_id, JOBFILTER_STABLES, g_Farm.m_JobManager.JobFilterName[JOBFILTER_LABORERS]);
+	AddToListBox(jobtypelist_id, JOBFILTER_STABLES, g_Farm.m_JobManager.JobFilterName[JOBFILTER_PRODUCERS]);
 	RefreshJobList();
 	SetSelectedItemInList(jobtypelist_id, JOBFILTER_FARMSTAFF);
 
