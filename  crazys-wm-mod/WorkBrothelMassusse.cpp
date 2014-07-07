@@ -42,6 +42,7 @@ extern cMessageQue g_MessageQue;
 bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	string message = "";
+	string girlName = girl->m_Realname;
 	if(Preprocessing(ACTION_WORKMASSUSSE, girl, brothel, DayNight, summary, message))
 		return true;
 
@@ -97,31 +98,157 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, int DayNig
 		{
 			message += " She must be the perfect massusse she never goes to hard but never to soft she knows just what to do and the customers can't get enough of her.\n\n";
 			wages += 155;
+
+			if (roll <= 20)
+			{
+				message += girlName + " hands are the best thing that could touch a man. Customers left big tips after getting a massage from her.\n";
+			}
+		else if (roll <= 40)
+			{
+				message += "She is well known and have a steady base of faithful customers.\n";
+			}
+		else if (roll <= 60)
+			{
+				message += "A client wanted that " + girlName + " focus on the tight region. Doing as he asked, she left him with a boner.\n";
+			}
+		else if (roll <= 80)
+			{
+				message +=  "Every man leave girlsname room with a wide smile.\n";
+			}
+		else
+			{
+				message += "Being asked to perfume more sensual massage, " + girlName + " massage the customer with her breasts for some extra coin.\n";
+			}
 		}
 	else if (jobperformance >= 185)
 		{
 			message += " She's unbelievable at this and is always finding new ways to please the customer.\n\n";
 			wages += 95;
+
+		if (roll <= 20)
+			{
+				message += "Knowing most of masseurs techniques, she is one of the best.\n";
+			}
+		else if (roll <= 40)
+			{
+				message += "One of her customers wanted something more than the usual service. She declined and banned him from her customers list.\n";
+			}
+		else if (roll <= 60)
+			{
+				message += "Trying a new technique, " + girlName + " performed a massage with her feet. The customer really liked it and suggested she should put this on the regular menu.\n";
+			}
+		else if (roll <= 80)
+			{
+				message +=  "She certainly knows how and where to  press on a man’s body. Today, customers moans was heard on the corridor.\n";
+			}
+		else
+			{
+				message += "Today she used some new oils. The customers liked them and paid some extra for the service.\n";
+			}
 		}
 	else if (jobperformance >= 145)
 		{
 			message += " She's good at this job and knows a few tricks to drive the customers wild.\n\n";
 			wages += 55;
+
+		if (roll <= 20)
+			{
+				message += girlName + " helped a customer with a really painful back pain. The man bowed several times, thanking her for the treatment.\n";
+			}
+		else if (roll <= 40)
+			{
+				message += "She's making less mistakes with every day and earning good money.\n";
+			}
+		else if (roll <= 60)
+			{
+				message += "When massaging a customer, she had a pleasant conversation with him, leaving a very good impression.\n";
+			}
+		else if (roll <= 80)
+			{
+				message +=  "She certainly knows how to do her job and is getting better at it every day.\n";
+			}
+		else
+			{
+				message += "A female customer requested a face massage. " + girlName + " managed to meet her expectations.\n";
+			}
 		}
 	else if (jobperformance >= 100)
 		{
 			message += " She made a few mistakes but overall she is okay at this.\n\n";
 			wages += 15;
+
+		if (roll <= 20)
+			{
+				message += "Maybe she isn’t the best, but at least she won’t kill anyone.\n";
+			}
+		else if (roll <= 40)
+			{
+				message += "She got the job done. No complains was noted.\n";
+			}
+		else if (roll <= 60)
+			{
+				message += "She was good. A few of " + girlName + "'s customers praised her.\n";
+			}
+		else if (roll <= 80)
+			{
+				message +=  "She made few mistakes, but manged not to hurt anyone today.\n";
+			}
+		else
+			{
+				message += "Only few customers came today. She didn’t earn much.\n";
+			}
 		}
 	else if (jobperformance >= 70)
 		{
 			message += " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
 			wages -= 5;
+
+		if (roll <= 20)
+			{
+				message += girlName + " almost killed a customer today!\n";
+			}
+		else if (roll <= 40)
+			{
+				message += "Her performance was bad. The customer left a complaint and didn’t pay for the service.\n";
+			}
+		else if (roll <= 60)
+			{
+				message += "Thing that she did today could be called a backrub, not a massage.\n";
+			}
+		else if (roll <= 80)
+			{
+				message +=  "She argued with a client and kicked him out on the street wearing only a towel around his waist.\n";
+			}
+		else
+			{
+				message += "Not knowing what to do, she tried her best and failed.\n";
+			}
 		}
 	else
 		{
 			message += " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
 			wages -= 15;
+
+		if (roll <= 20)
+			{
+				message += girlName + " massaged a client. He could barely walk out after her service.\n";
+			}
+		else if (roll <= 40)
+			{
+				message += "Getting kicked by a horse or getting a massage from " + girlName + ". Equally deadly but the first you could get for free. \n";
+			}
+		else if (roll <= 60)
+			{
+				message += "A loud scream was heard in your building short after " + girlName + " started her shift.\n";
+			}
+		else if (roll <= 80)
+			{
+				message +=  "Not having any experience in this kind of work she fails miserably.\n";
+			}
+		else
+			{
+				message += "She tries to massage a client in the best way she knows. After ten minutes he leaves without paying and frustrated.\n";
+			}
 		}
 
 	if(g_Girls.GetStat(girl, STAT_LIBIDO) > 90)

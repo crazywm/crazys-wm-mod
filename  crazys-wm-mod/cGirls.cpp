@@ -195,6 +195,11 @@ void sGirl::setup_maps()
 		skill_lookup["Combat"]		= SKILL_COMBAT;
 		skill_lookup["Medicine"]	= SKILL_MEDICINE;
 		skill_lookup["Performance"]	= SKILL_PERFORMANCE;
+		skill_lookup["Crafting"]	= SKILL_CRAFTING;
+		skill_lookup["Herbalism"]	= SKILL_HERBALISM;
+		skill_lookup["Farming"]		= SKILL_FARMING;
+		skill_lookup["Brewing"]		= SKILL_BREWING;
+		skill_lookup["Animal Handling"]	= SKILL_ANIMALHANDLING;
 
 		//	WD: Missing mapping for status
 		status_lookup["None"]				= STATUS_NONE; 
@@ -1790,7 +1795,8 @@ string cGirls::GetMoreDetailsString(sGirl* girl)
 		gettext("performing music"),
 		gettext("striping"),
 		gettext("having her breasts milked"),
-		gettext("working as a massusse")
+		gettext("working as a massusse"),
+		gettext("working on the farm")
 	};
 	string base = gettext("She");
 	string text;
@@ -1856,6 +1862,11 @@ string cGirls::GetThirdDetailsString(sGirl* girl)
 	int jr_stp = GetSkill(girl, SKILL_STRIP);
 	int jr_med = GetSkill(girl, SKILL_MEDICINE);
 	int jr_per = GetSkill(girl, SKILL_PERFORMANCE);
+	int jr_cra = GetSkill(girl, SKILL_CRAFTING);
+	int jr_her = GetSkill(girl, SKILL_HERBALISM);
+	int jr_far = GetSkill(girl, SKILL_FARMING);
+	int jr_bre = GetSkill(girl, SKILL_BREWING);
+	int jr_anh = GetSkill(girl, SKILL_ANIMALHANDLING);
 
 
 	//Job rating system  ///CRAZY
@@ -2718,14 +2729,44 @@ string cGirls::GetDetailsString(sGirl* girl, bool purchase)
 	data += buffer;
 	data += gettext("%\n");
 
-	data += gettext("Medicine Skills: ");
+	data += gettext("Medicine Skill: ");
 	variable = GetSkill(girl, SKILL_MEDICINE);
 	_itoa(variable, buffer, 10);
 	data += buffer;
 	data += gettext("%\n");
 
-	data += gettext("Performance Skills: ");
+	data += gettext("Performance Skill: ");
 	variable = GetSkill(girl, SKILL_PERFORMANCE);
+	_itoa(variable, buffer, 10);
+	data += buffer;
+	data += gettext("%\n");
+
+	data += gettext("Crafting Skill: ");
+	variable = GetSkill(girl, SKILL_CRAFTING);
+	_itoa(variable, buffer, 10);
+	data += buffer;
+	data += gettext("%\n");
+
+	data += gettext("Herbalism Skill: ");
+	variable = GetSkill(girl, SKILL_HERBALISM);
+	_itoa(variable, buffer, 10);
+	data += buffer;
+	data += gettext("%\n");
+
+	data += gettext("Farming Skill: ");
+	variable = GetSkill(girl, SKILL_FARMING);
+	_itoa(variable, buffer, 10);
+	data += buffer;
+	data += gettext("%\n");
+
+	data += gettext("Brewing Skill: ");
+	variable = GetSkill(girl, SKILL_BREWING);
+	_itoa(variable, buffer, 10);
+	data += buffer;
+	data += gettext("%\n");
+
+	data += gettext("Animal Handling Skill: ");
+	variable = GetSkill(girl, SKILL_ANIMALHANDLING);
 	_itoa(variable, buffer, 10);
 	data += buffer;
 	data += gettext("%\n");
@@ -6833,7 +6874,7 @@ bool cGirls::CheckVirginity(sGirl* girl)
 			for (u_int i = 0; i < NUM_SKILLS; i++)
 			{
 				// `J` removed nonsex from virginity check
-				if (i != SKILL_SERVICE && i != SKILL_MAGIC && i != SKILL_COMBAT && i != SKILL_MEDICINE && i != SKILL_PERFORMANCE)
+				if (i != SKILL_SERVICE && i != SKILL_MAGIC && i != SKILL_COMBAT && i != SKILL_MEDICINE && i != SKILL_PERFORMANCE && i != SKILL_CRAFTING && i != SKILL_HERBALISM && i != SKILL_FARMING && i != SKILL_BREWING && i != SKILL_ANIMALHANDLING)
 				{
 					avg += girl->m_Skills[i];
 					div++;	// `J` added to allow new skills

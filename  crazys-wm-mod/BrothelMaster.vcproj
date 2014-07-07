@@ -1083,6 +1083,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\WorkBaker.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\WorkBarmaid.cpp"
 				>
 			</File>
@@ -1123,6 +1127,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\WorkBrewer.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\WorkBrothelMassusse.cpp"
 				>
 			</File>
@@ -1135,7 +1143,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\WorkButcher.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\WorkCameraMage.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\WorkCatacombRancher.cpp"
 				>
 			</File>
 			<File
@@ -1195,7 +1211,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\WorkEscort.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\WorkExploreCatacombs.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\WorkFarmer.cpp"
 				>
 			</File>
 			<File
@@ -1204,6 +1228,18 @@
 			</File>
 			<File
 				RelativePath=".\WorkFarmManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\WorkFarmMarketer.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\WorkFarmResearch.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\WorkFarmVeterinarian.cpp"
 				>
 			</File>
 			<File
@@ -1283,6 +1319,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\WorkGardener.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\WorkGetAbort.cpp"
 				>
 			</File>
@@ -1347,6 +1387,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\WorkMakePotions.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\WorkMatron.cpp"
 				>
 			</File>
@@ -1356,6 +1400,10 @@
 			</File>
 			<File
 				RelativePath=".\WorkMilk.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\WorkMilker.cpp"
 				>
 			</File>
 			<File
@@ -1379,6 +1427,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\WorkRancher.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\WorkRecruiter.cpp"
 				>
 			</File>
@@ -1392,6 +1444,10 @@
 			</File>
 			<File
 				RelativePath=".\WorkSecurity.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\WorkSheapherd.cpp"
 				>
 			</File>
 			<File

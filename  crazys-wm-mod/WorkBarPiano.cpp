@@ -109,7 +109,8 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, int DayNight, str
 			}
 		else if (roll <= 80)
 			{
-				message += girlName + " being confident in her skill, played today using only one hand.\n";
+				message += girlName + " being confident in her skill, " + girlName + " played today using only one hand.\n";
+				brothel->m_Fame += 5;
 			}
 		else
 			{
@@ -127,6 +128,7 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, int DayNight, str
 		else if (roll <= 40)
 			{
 				message += "Her playing fills the room. Some customers hum the melody under their noses.\n";
+				brothel->m_Happiness += 5;
 			}
 		else if (roll <= 60)
 			{
@@ -202,6 +204,7 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, int DayNight, str
 		else if (roll <= 40)
 			{
 				message += "She is terrible at this. Some customers left after she started to play.\n";
+				brothel->m_Happiness -= 5;
 			}
 		else if (roll <= 60)
 			{

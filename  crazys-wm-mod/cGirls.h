@@ -667,6 +667,16 @@ struct sGirl
 	int	medicine(int n)		{ return upd_skill(SKILL_MEDICINE, n); }
 	int	performance()	{ return get_skill(SKILL_PERFORMANCE); }
 	int	performance(int n)	{ return upd_skill(SKILL_PERFORMANCE, n); }
+	int	crafting()	{ return get_skill(SKILL_CRAFTING); }
+	int	crafting(int n)	{ return upd_skill(SKILL_CRAFTING, n); }
+	int	herbalism()	{ return get_skill(SKILL_HERBALISM); }
+	int	herbalism(int n)	{ return upd_skill(SKILL_HERBALISM, n); }
+	int	farming()	{ return get_skill(SKILL_FARMING); }
+	int	farming(int n)	{ return upd_skill(SKILL_FARMING, n); }
+	int	brewing()	{ return get_skill(SKILL_BREWING); }
+	int	brewing(int n)	{ return upd_skill(SKILL_BREWING, n); }
+	int	animalhandling()	{ return get_skill(SKILL_ANIMALHANDLING); }
+	int	animalhandling(int n)	{ return upd_skill(SKILL_ANIMALHANDLING, n); }
 
 
 /*

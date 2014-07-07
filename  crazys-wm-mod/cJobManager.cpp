@@ -79,6 +79,7 @@ void cJobManager::Setup()
 	JobFunctions[JOB_BROTHELSTRIPPER] = &WorkBrothelStripper;
 	JobFunctions[JOB_MASSEUSE] = &WorkBrothelMasseuse;
 	JobFunctions[JOB_PEEP] = &WorkPeepShow;
+	JobFunctions[JOB_ESCORT] = &WorkEscort;
 	// - Sleazy Bar
 	JobFunctions[JOB_SLEAZYBARMAID] = &WorkSleazyBarmaid;
 	JobFunctions[JOB_SLEAZYWAITRESS] = &WorkSleazyWaitress;
@@ -159,13 +160,23 @@ void cJobManager::Setup()
 	JobFunctions[JOB_PERSONALBEDWARMER] = &WorkPersonalBedWarmer;
 	JobFunctions[JOB_CLEANHOUSE] = &WorkCleanHouse;
 	JobFunctions[JOB_HEADGIRL] = &WorkHeadGirl;
+	// - Laborers
+	JobFunctions[JOB_GARDENER] = &WorkGardener;
+	JobFunctions[JOB_FARMER] = &WorkFarmer;
+	JobFunctions[JOB_SHEAPHERD] = &WorkSheapherd;
+	JobFunctions[JOB_RANCHER] = &WorkRancher;
+	JobFunctions[JOB_CATACOMBRANCHER] = &WorkCatacombRancher;
+	JobFunctions[JOB_MILKER] = &WorkMilker;
+	// - Producers
+	JobFunctions[JOB_BUTCHER] = &WorkButcher;
+	JobFunctions[JOB_BAKER] = &WorkBaker;
+	JobFunctions[JOB_BREWER] = &WorkBrewer;
+	JobFunctions[JOB_MAKEPOTIONS] = &WorkMakePotions;
 #if 0
 	// - Community Centre
 	JobFunctions[JOB_COLLECTDONATIONS] = &WorkVoid;	// ************** TODO
-	JobFunctions[JOB_FEEDPOOR] = &WorkFeedPoor;	// ************** TODO
 	JobFunctions[JOB_MAKEITEMS] = &WorkMakeItem;	// ************** TODO
 	JobFunctions[JOB_SELLITEMS] = &WorkVoid;	// ************** TODO
-	JobFunctions[JOB_COMUNITYSERVICE] = &WorkComunityService;	// ************** TODO
 	// - Drug Lab (these jobs gain bonus if in same building as a clinic)
 	JobFunctions[JOB_VIRASPLANTFUCKER] = &WorkVoid;	// ************** TODO
 	JobFunctions[JOB_SHROUDGROWER] = &WorkVoid;	// ************** TODO
@@ -278,6 +289,8 @@ void cJobManager::Setup()
 	JobDescription[JOB_WHORESTREETS] = "She will whore herself on the streets. It is more dangerous than whoring inside but more profitable.";
 	JobName[JOB_PEEP] = "Peep Show";
 	JobDescription[JOB_PEEP] = "She will let people watch her change and maybe more...";
+	/*JobName[JOB_ESCORT] = "Escort";
+	JobDescription[JOB_ESCORT] = "She will be an excort.";*/
 
 	// - Stables Jobs
 	JobFilterName[JOBFILTER_STABLES] = "Stables";
@@ -462,6 +475,38 @@ void cJobManager::Setup()
 	JobName[JOB_HOUSEREST] = gettext("Time off");
 	JobDescription[JOB_HOUSEREST] = gettext("She takes time off resting and recovering.");
 
+	//- Laborers
+	JobFilterName[JOBFILTER_LABORERS] = gettext("Laborers");
+	JobFilterDescription[JOBFILTER_LABORERS] = gettext("These are jobs your girls can do at your farm.");
+	JobFilterIndex[JOBFILTER_LABORERS] = JOB_GARDENER;
+	JobName[JOB_GARDENER] = gettext("Gardener");
+	JobDescription[JOB_GARDENER] = gettext("She will produce herbs.");
+	JobName[JOB_FARMER] = gettext("Farmer");
+	JobDescription[JOB_FARMER] = gettext("She will tend to your crops.");
+	JobName[JOB_SHEAPHERD] = gettext("Sheapherd");
+	JobDescription[JOB_SHEAPHERD] = gettext("She placeholder.");
+	JobName[JOB_RANCHER] = gettext("Rancher");
+	JobDescription[JOB_RANCHER] = gettext("She placeholder.");
+	JobName[JOB_CATACOMBRANCHER] = gettext("Catacombs Rancher");
+	JobDescription[JOB_CATACOMBRANCHER] = gettext("She placeholder.");
+	JobName[JOB_MILKER] = gettext("Milker");
+	JobDescription[JOB_MILKER] = gettext("She will milk the various animals and girls you own.");
+
+	//- Producers
+	JobFilterName[JOBFILTER_PRODUCERS] = gettext("Producers");
+	JobFilterDescription[JOBFILTER_PRODUCERS] = gettext("These are jobs your girls can do at your farm.");
+	JobFilterIndex[JOBFILTER_PRODUCERS] = JOB_BUTCHER;
+	JobName[JOB_BUTCHER] = gettext("Butcher");
+	JobDescription[JOB_BUTCHER] = gettext("She will produce food from animals you own.");
+	JobName[JOB_BAKER] = gettext("Baker");
+	JobDescription[JOB_BAKER] = gettext("She will produce food from the crops you own.");
+	JobName[JOB_BREWER] = gettext("Brewer");
+	JobDescription[JOB_BREWER] = gettext("She will make various beers and wines.");
+	/*JobName[JOB_MAKEITEMS] = gettext("Make Items");
+	JobDescription[JOB_MAKEITEMS] = gettext("She placeholder.");*/
+	JobName[JOB_MAKEPOTIONS] = gettext("Make Potions");
+	JobDescription[JOB_MAKEPOTIONS] = gettext("She will make various potions for your use.");
+
 # if 0
 
 	//- Community Centre
@@ -470,14 +515,10 @@ void cJobManager::Setup()
 	JobFilterIndex[JOBFILTER_COMMUNITYCENTRE] = JOB_COLLECTDONATIONS;
 	JobName[JOB_COLLECTDONATIONS] = gettext("Collect Donations");
 	JobDescription[JOB_COLLECTDONATIONS] = gettext("She will collect money to help the poor.");
-	JobName[JOB_FEEDPOOR] = gettext("Feed Poor");
-	JobDescription[JOB_FEEDPOOR] = gettext("She will work in a soup kitchen.");
 	JobName[JOB_MAKEITEMS] = gettext("Make Crafts");
 	JobDescription[JOB_MAKEITEMS] = gettext("She will craft cheap handmade items.");
 	JobName[JOB_SELLITEMS] = gettext("Sell Crafts");
 	JobDescription[JOB_SELLITEMS] = gettext("She will go out and sell previously crafted items.");
-	JobName[JOB_COMUNITYSERVICE] = gettext("Community Service");
-	JobDescription[JOB_COMUNITYSERVICE] = gettext("She will go around town and help out where she can.");
 
 	JobFilterName[JOBFILTER_DRUGLAB] = gettext("Drug Lab");
 	JobFilterDescription[JOBFILTER_DRUGLAB] = gettext("These are jobs for running a drug lab.");
@@ -958,10 +999,8 @@ bool cJobManager::is_job_Paid_Player(u_int Job)
 		
 		// - Community Centre
 		Job ==	JOB_COLLECTDONATIONS	||	// collects money to help the poor
-		Job ==	JOB_FEEDPOOR			||	// work in a soup kitchen
 		Job ==	JOB_MAKEITEMS			||	// makes cheap crappy handmade items for selling to raise money (creates handmade item resource)
 		Job ==	JOB_SELLITEMS			||	// goes out and sells the made items (sells handmade item resource)
-		Job ==	JOB_COMUNITYSERVICE		||	// Goes around town helping where they can
 
 		// - Drug Lab (these jobs gain bonus if in same building as a clinic)
 		Job ==	JOB_VIRASPLANTFUCKER	||	// the plants need to inseminate with other humanoids to proper-gate, creates vira blood items
