@@ -52,10 +52,71 @@ bool cJobManager::WorkFarmVeterinarian(sGirl* girl, sBrothel* brothel, int DayNi
 	// put that shit away, you'll scare off the customers!
 	g_Girls.UnequipCombat(girl);
 
-	int wages = 15;
-	message += "She worked as a Veterinarian on the farm.";
-
+	int wages = 25;
 	int roll = g_Dice%100;
+	message += "She worked as a Veterinarian on the farm.";
+	int jobperformance = (	g_Girls.GetSkill(girl, SKILL_BEASTIALITY) + 
+							g_Girls.GetSkill(girl, SKILL_ANIMALHANDLING));
+
+
+	//good traits
+	if (g_Girls.HasTrait(girl, "Quick Learner"))  
+		jobperformance += 5;
+	if (g_Girls.HasTrait(girl, "Psychic"))
+		jobperformance += 10;
+	if (g_Girls.HasTrait(girl, "Optimist"))//less willing to give up on the animal
+		jobperformance += 10;
+
+
+	//bad traits
+	if (g_Girls.HasTrait(girl, "Dependant"))  //needs others to do the job
+		jobperformance -= 50;
+	if (g_Girls.HasTrait(girl, "Clumsy"))  //spills food and breaks things often
+		jobperformance -= 20;
+	if (g_Girls.HasTrait(girl, "Aggressive"))  //gets mad easy
+		jobperformance -= 20;
+	if (g_Girls.HasTrait(girl, "Nervous"))  //don't like to be around people
+		jobperformance -= 30;
+	if (g_Girls.HasTrait(girl, "Meek"))
+		jobperformance -= 20;
+	if (g_Girls.HasTrait(girl, "Pessimist"))//more likely to give up on the animal
+		jobperformance -= 10;
+
+
+	if (jobperformance >= 245)
+		{
+			message += " She must be the perfect at this.\n\n";
+			wages += 155;
+		}
+ else if (jobperformance >= 185)
+		{
+			message += " She's unbelievable at this.\n\n";
+			wages += 95;
+		}
+ else if (jobperformance >= 145)
+		{
+			message += " She's good at this job.\n\n";
+			wages += 55;
+		}
+ else if (jobperformance >= 100)
+		{
+			message += " She made a few mistakes but overall she is okay at this.\n\n";
+			wages += 15;
+		}
+ else if (jobperformance >= 70)
+		{
+			message += " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
+			wages -= 5;
+		}
+ else
+		{
+			message += " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
+			wages -= 15;
+		}
+
+
+		if(wages < 0)
+			wages = 0;
 
 	if(roll <= 5)
 	{
@@ -73,11 +134,6 @@ bool cJobManager::WorkFarmVeterinarian(sGirl* girl, sBrothel* brothel, int DayNi
 	}
 
 	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
-
-
-	int roll_max = (g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA));
-	roll_max /= 4;
-	wages += 10 + g_Dice%roll_max;
 	girl->m_Pay = wages;
 
 
