@@ -178,7 +178,7 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, int DayNi
 	{
 		int NumMon = g_Dice%6 + 1;
 		ss << girl->m_Realname << " was defeated then" << ((NumMon <= 3) ? "" : " gang") << " raped and abused by " << NumMon << " monsters.";
-		if(girl->m_Virgin)
+		if (g_Girls.CheckVirginity(girl))
 		{
 			ss << " That's a hell of a way to lose your virginity; naturally, she's rather distressed by this fact.";
 			g_Girls.LoseVirginity(girl);					// Virginity both attrib & trait now, 04/15/13

@@ -83,8 +83,8 @@ void cScreenPrison::init()
 		g_Girls.CalculateAskPrice(pgirls, false);
 		int cost = g_Girls.GetStat(pgirls, STAT_ASKPRICE)*15;
 		cost += g_Girls.GetSkillWorth(pgirls);
-		if(pgirls->m_Virgin)
-			cost += int(cost/2);	//	`J` fixed virgin adds half cost more
+		if (g_Girls.CheckVirginity(pgirls))
+			cost += int(cost / 2);	//	`J` fixed virgin adds half cost more
 		cost *= 2;
 		_itoa(cost,buffer,10);
 		data += buffer;
@@ -269,7 +269,7 @@ void cScreenPrison::release_button()
 	g_Girls.CalculateAskPrice(pgirls, false);
 	int cost = g_Girls.GetStat(pgirls, STAT_ASKPRICE)*15;
 	cost += g_Girls.GetSkillWorth(pgirls);
-	if(pgirls->m_Virgin)
+	if(g_Girls.CheckVirginity(pgirls))
 		cost += int(cost / 2);	//	`J` fixed virgin adds half cost more
 	cost *= 2;
 

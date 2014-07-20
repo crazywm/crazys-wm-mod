@@ -61,12 +61,7 @@ public:
 	cScreenFarmManagement()
 	{
 		cConfig cfg;
-		DirPath dp = DirPath()
-			<< "Resources"
-			<< "Interface"
-			<< cfg.resolution.resolution()
-			<< "farm_management_screen.xml"
-		;
+		DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "farm_management_screen.xml";
 		m_filename = dp.c_str();
 	}
 	~cScreenFarmManagement() {}

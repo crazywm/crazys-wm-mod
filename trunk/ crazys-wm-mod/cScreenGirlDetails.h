@@ -79,12 +79,7 @@ public:
 	cScreenGirlDetails()
 	{
 		cConfig cfg;
-		DirPath dp = DirPath()
-			<< "Resources"
-			<< "Interface"
-			<< cfg.resolution.resolution()
-			<< "girl_details_screen.xml"
-		;
+		DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "girl_details_screen.xml";
 		m_filename = dp.c_str();
 	}
 	~cScreenGirlDetails() {}

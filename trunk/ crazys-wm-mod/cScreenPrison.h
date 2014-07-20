@@ -49,12 +49,7 @@ public:
 	cScreenPrison()
 	{
 		cConfig cfg;
-		DirPath dp = DirPath()
-			<< "Resources"
-			<< "Interface"
-			<< cfg.resolution.resolution()
-			<< "prison_screen.xml"
-		;
+		DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "prison_screen.xml";
 		m_filename = dp.c_str();
 		selection = -1;
 	}

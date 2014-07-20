@@ -79,7 +79,7 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, int DayNi
 // will also skip down the list if the girl has 100 in the skill
 	if (m_Player->disposition() >= 80)				//Benevolent
 	{
-		if (girl->m_Virgin)		// 25% decline
+		if (g_Girls.CheckVirginity(girl))		// 25% decline
 		{
 			ss << gettext("She is a virgin so you ask her if she wants to let you be her first.\nShe ");
 			if (roll_b <= 25)	{ ss << gettext("declines so "); roll_b *= 2; }
@@ -89,7 +89,7 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, int DayNi
 	}
 	else if (m_Player->disposition() >= 50)			//Nice
 	{
-		if (girl->m_Virgin)		// 50 % decline
+		if (g_Girls.CheckVirginity(girl))		// 50 % decline
 		{
 			ss << gettext("She is a virgin so you ask her if she wants to let you be her first.\nShe ");
 			if (roll_b <= 50)		{	ss << gettext("declines so ");	}
@@ -99,7 +99,7 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, int DayNi
 	}
 	else if (m_Player->disposition() > 10)			//Pleasant
 	{
-		if (girl->m_Virgin)		// 70% decline
+		if (g_Girls.CheckVirginity(girl))		// 70% decline
 		{
 			ss << gettext("She is a virgin so you ask her if she wants to let you be her first.\n");
 			if (roll_b <= 50)		{	ss << gettext("She declines so ");						}
@@ -110,7 +110,7 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, int DayNi
 	}
 	else if (m_Player->disposition() >= -10)			//Neutral
 	{
-		if (girl->m_Virgin)		// 80% decline
+		if (g_Girls.CheckVirginity(girl))		// 80% decline
 		{
 			ss << gettext("She is a virgin so you ask her if she wants to let you be her first.\n");
 			if (roll_b <= 50)		{ ss << gettext("She declines so "); }
@@ -121,7 +121,7 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, int DayNi
 	}
 	else if (m_Player->disposition() > -50)			//Not nice
 	{
-		if (girl->m_Virgin)
+		if (g_Girls.CheckVirginity(girl))
 		{
 			ss << gettext("She is a virgin, but not for long.\n");
 			if (roll_b <= 70)		{ ss << gettext("Wanting her for yourself, "); roll_b = 60; } // normal
@@ -132,7 +132,7 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, int DayNi
 	}
 	else if (m_Player->disposition() > -80)			//Mean
 	{
-		if (girl->m_Virgin)
+		if (g_Girls.CheckVirginity(girl))
 		{
 			ss << gettext("She is a virgin, but not for long.\n");
 			if (roll_b <= 60)		{ ss << gettext("Wanting her for yourself, "); roll_b = 60; } // normal
@@ -143,7 +143,7 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, int DayNi
 	}
 	else											//Evil
 	{
-		if (girl->m_Virgin)
+		if (g_Girls.CheckVirginity(girl))
 		{
 			ss << gettext("She is a virgin, but not for long.\n");
 			if (roll_b <= 50)		{ ss << gettext("Wanting her for yourself, "); roll_b = 60; } // normal
@@ -195,7 +195,7 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, int DayNi
 		g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, skill);
 		ss << gettext("You decide to teach her how to ride a dick like a pro.\n\n");
 		ss << gettext("She managed to gain ") << skill << gettext(" Normal Sex.\n\n");
-		if (girl->m_Virgin)
+		if (g_Girls.CheckVirginity(girl))
 		{
 			g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
 			ss << gettext("She is no longer a virgin.\n");
@@ -203,7 +203,7 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, int DayNi
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_SEX, DayNight);
 		if (!girl->calc_pregnancy(g_Brothels.GetPlayer(), false, 1.0))
 		{
-			g_MessageQue.AddToQue("She has gotten pregnant", 0);
+			g_MessageQue.AddToQue(girl->m_Realname + " has gotten pregnant", 0);
 		}
 	}
 	else if (roll_b <= 80 && girl->m_Skills[SKILL_ANAL] < 100 && is_sex_type_allowed(SKILL_ANAL, brothel))
@@ -218,7 +218,7 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, int DayNi
 		g_Girls.UpdateSkill(girl, SKILL_GROUP, skill);
 		ss << gettext("You decide to over see her skill in a gang bang.\n\n");
 		ss << gettext("She managed to gain ") << skill << gettext(" Group Sex.\n\n");
-		if (girl->m_Virgin)
+		if (g_Girls.CheckVirginity(girl))
 		{
 			g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
 			ss << gettext("She is no longer a virgin.\n");
@@ -226,7 +226,7 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, int DayNi
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_GROUP, DayNight);
 		if (!girl->calc_group_pregnancy(g_Brothels.GetPlayer(), false, 1.0))
 		{
-			g_MessageQue.AddToQue("She has gotten pregnant", 0);
+			g_MessageQue.AddToQue(girl->m_Realname + " has gotten pregnant", 0);
 		}
 	}
 	else if (roll_b <= 100 && girl->m_Skills[SKILL_BDSM] < 100 && is_sex_type_allowed(SKILL_BDSM, brothel))
@@ -234,7 +234,7 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, int DayNi
 		g_Girls.UpdateSkill(girl, SKILL_BDSM, skill);
 		ss << gettext("You decide to teach her the fine art of BDSM.\n\n");
 		ss << gettext("She managed to gain ") << skill << gettext(" BDSM.\n\n");
-		if (girl->m_Virgin)
+		if (g_Girls.CheckVirginity(girl))
 		{
 			g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
 			ss << gettext("She is no longer a virgin.\n");
@@ -242,7 +242,7 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, int DayNi
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_BDSM, DayNight);
 		if (!girl->calc_pregnancy(g_Brothels.GetPlayer(), false, 1.0))
 		{
-			g_MessageQue.AddToQue("She has gotten pregnant", 0);
+			g_MessageQue.AddToQue(girl->m_Realname + " has gotten pregnant", 0);
 		}
 	}
 	else if (girl->m_Skills[SKILL_BEASTIALITY] < 100 && is_sex_type_allowed(SKILL_BEASTIALITY, brothel))
@@ -250,7 +250,7 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, int DayNi
 		g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, skill);
 		ss << gettext("You decide to have her get acquainted with some animals.\n\n");
 		ss << gettext("She managed to gain ") << skill << gettext(" Beastiality.\n\n");
-		if (girl->m_Virgin)
+		if (g_Girls.CheckVirginity(girl))
 		{
 			g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
 			ss << gettext("She is no longer a virgin.\n");

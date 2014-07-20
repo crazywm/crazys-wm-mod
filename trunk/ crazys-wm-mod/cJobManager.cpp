@@ -1380,7 +1380,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	}
 	else if(u_int(JobID) == JOB_VAGINAREJUV)
 	{
-		if (Girl->m_Virgin)
+		if (g_Girls.CheckVirginity(Girl))
 		{
 			Girl->m_DayJob = Girl->m_NightJob = JOB_CLINICREST;
 			g_MessageQue.AddToQue(gettext("She is a virgin and has no need of this operation."), 0);
@@ -1668,8 +1668,8 @@ bool cJobManager::work_related_violence(sGirl* girl, int DayNight, bool streets)
 		
 		// Three more lines of defense
 
-		// first subtract 1 security point per gang member that is attacking
-		Brothl->m_SecurityLevel = Brothl->m_SecurityLevel - enemy_gang->m_Num;	// `J` moved and split m_SecurityLevel loss
+		// first subtract 5 security point per gang member that is attacking
+		Brothl->m_SecurityLevel = Brothl->m_SecurityLevel - enemy_gang->m_Num * 5;	// `J` moved and doubled m_SecurityLevel loss
 
 		// 1. Brothel security
 		if (security_stops_rape(girl, enemy_gang, DayNight))
@@ -1686,7 +1686,7 @@ bool cJobManager::work_related_violence(sGirl* girl, int DayNight, bool streets)
 
 		// If all defensive measures fail...
 		// subtract 5 security points per gang member left
-		Brothl->m_SecurityLevel = Brothl->m_SecurityLevel - enemy_gang->m_Num * 5;	// `J` moved and split m_SecurityLevel loss
+		Brothl->m_SecurityLevel = Brothl->m_SecurityLevel - enemy_gang->m_Num * 5;	// `J` moved and doubled m_SecurityLevel loss
 		customer_rape(girl);
 		return true;
 	}
@@ -1759,16 +1759,19 @@ int cJobManager::guard_coverage(vector<sGang*> *vpt)
 
 bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_night)
 {
-	// MYR: Note to self: STAT_HOUSE isn't the brothel number :)
 	int GirlsBrothelNo = g_Brothels.GetGirlsCurrentBrothel(girl);
 	sBrothel * Brothl = g_Brothels.GetBrothel(GirlsBrothelNo);
 	int SecLev = Brothl->m_SecurityLevel, OrgNumMem = enemy_gang->m_Num;
 	sGirl * SecGuard;
 
+	int p_seclev = 90 + (SecLev / 1000);
+	if (p_seclev > 99) p_seclev = 99;
 	// A gang takes 5 security points per member to stop
-	if (SecLev < OrgNumMem * 5)
-		return false;
-
+	if (SecLev > OrgNumMem * 5 && g_Dice.percent(p_seclev) &&
+		(g_Brothels.GetNumGirlsOnJob(GirlsBrothelNo, JOB_SECURITY, day_night == SHIFT_DAY) > 0 ||
+		g_Gangs.gangs_on_mission(MISS_GUARDING).size() > 0))
+		return true;
+	
 	// Security guards on duty this shift
 	vector<sGirl *> SecGrd = g_Brothels.GirlsOnJob(GirlsBrothelNo, JOB_SECURITY, day_night == SHIFT_DAY);
 	// Security guards with enough health to fight

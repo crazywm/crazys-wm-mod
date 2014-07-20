@@ -28,21 +28,21 @@
     <Stat     Name="PCLove"                 Min="0"     Max="0" />
     <Stat     Name="PCHate"                 Min="0"     Max="0" />
 
-    <Skill    Name="Anal"                   Min="0"     Max="20" />
-    <Skill    Name="Magic"                  Min="0"     Max="20" />
-    <Skill    Name="BDSM"                   Min="0"     Max="20" />
-    <Skill    Name="NormalSex"              Min="0"     Max="20" />
-    <Skill    Name="Beastiality"            Min="0"     Max="20" />
-    <Skill    Name="Group"                  Min="0"     Max="20" />
-    <Skill    Name="Lesbian"                Min="0"     Max="20" />
-    <Skill    Name="Service"                Min="0"     Max="20" />
-    <Skill    Name="Strip"                  Min="0"     Max="20" />
-    <Skill    Name="Combat"                 Min="0"     Max="20" />
-    <Skill    Name="OralSex"                Min="0"     Max="20" />
-    <Skill    Name="TittySex"               Min="0"     Max="20" />
-    <Skill    Name="Medicine"               Min="0"     Max="20" />
-    <Skill    Name="Performance"            Min="0"     Max="20" />
-    <Skill    Name="Handjob"                Min="0"     Max="20" />
+    <Skill    Name="Magic"                  Min="1"     Max="21" />
+    <Skill    Name="Combat"                 Min="2"     Max="22" />
+    <Skill    Name="Service"                Min="3"     Max="23" />
+    <Skill    Name="Medicine"               Min="4"     Max="24" />
+    <Skill    Name="Performance"            Min="5"     Max="25" />
+    <Skill    Name="NormalSex"              Min="6"     Max="26" />
+    <Skill    Name="Anal"                   Min="7"     Max="27" />
+    <Skill    Name="BDSM"                   Min="8"     Max="28" />
+    <Skill    Name="Beastiality"            Min="9"     Max="29" />
+    <Skill    Name="Lesbian"                Min="10"    Max="30" />
+    <Skill    Name="Strip"                  Min="11"    Max="31" />
+    <Skill    Name="Group"                  Min="12"    Max="32" />
+    <Skill    Name="OralSex"                Min="13"    Max="33" />
+    <Skill    Name="TittySex"               Min="14"    Max="34" />
+    <Skill    Name="Handjob"                Min="15"    Max="35" />
 
     <Trait    Name="Cool Person"            Percent="10" />
     <Trait    Name="Psychic"                Percent="10" />

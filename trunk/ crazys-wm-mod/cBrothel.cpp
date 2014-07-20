@@ -1972,7 +1972,8 @@ void cBrothelManager::UpdateBrothels()
 		 * before customers are generated in that particular shift */
 
 		// Generate customers for the brothel for the day shift and update girls
-		current->m_SecurityLevel -= 30; // Moved to here so Security drops once per day instead of everytime a girl works security -PP
+		current->m_SecurityLevel -= 10; // Moved to here so Security drops once per day instead of everytime a girl works security -PP
+		current->m_SecurityLevel -= current->m_NumGirls;	//`J` m_SecurityLevel is extremely over powered. Reducing it's power a lot.
 		if (current->m_SecurityLevel <= 0) // crazy added
 			current->m_SecurityLevel = 0;
 		m_JobManager.do_advertising(current, 0);

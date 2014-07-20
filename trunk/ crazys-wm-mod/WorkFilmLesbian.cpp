@@ -91,7 +91,7 @@ bool cJobManager::WorkFilmLesbian(sGirl* girl, sBrothel* brothel, int DayNight, 
 		message += girlName + " had a pleasant day playing with her girlfriend.\n\n";
 	}
 
-	if(girl->m_Virgin)
+	if (g_Girls.CheckVirginity(girl))
 	{
 		jobperformance += 20;
 		message += "No 'Man' has been with her, She is still a virgin.\n";

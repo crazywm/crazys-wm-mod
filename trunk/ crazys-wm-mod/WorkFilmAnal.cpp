@@ -91,7 +91,7 @@ bool cJobManager::WorkFilmAnal(sGirl* girl, sBrothel* brothel, int DayNight, str
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, +1, true);
 		message += girlName + " had a pleasant day letting her co-star slip his cock into her butt.\n\n";
 	}
-	if(girl->m_Virgin)
+	if (g_Girls.CheckVirginity(girl))
 	{
 		jobperformance += 50;
 		message += "She is a virgin.\n";

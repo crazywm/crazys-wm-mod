@@ -91,7 +91,7 @@ bool cJobManager::WorkFilmMast(sGirl* girl, sBrothel* brothel, int DayNight, str
 		message += girlName + " spent the afternoon fingering herself.\n\n";
 	}
 
-	if(girl->m_Virgin)
+	if (g_Girls.CheckVirginity(girl))
 	{
 		jobperformance += 20;
 		message += "She is a virgin.\n";

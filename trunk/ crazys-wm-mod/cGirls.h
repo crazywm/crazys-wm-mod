@@ -82,10 +82,10 @@ typedef struct sRandomGirl
 	bool m_newRandom;
 	bool *m_newRandomTable;
 
-	bool m_Human;				// 1 means they are human otherwise they are not
-	bool m_Catacomb;			// 1 means they are a monster found in catacombs, 0 means wanderer
-	bool m_Arena;
-	bool m_YourDaughter;				// `J` 1 means they are your daughter
+	bool m_Human = true;			// 1 means they are human otherwise they are not
+	bool m_Catacomb = false;		// 1 means they are a monster found in catacombs, 0 means wanderer
+	bool m_Arena = false;			// 1 means they are fighter found in arena
+	bool m_YourDaughter = false;	// `J` 1 means they are your daughter
 
 	int m_MinStats[NUM_STATS];	    // min and max stats they may start with
 	int m_MaxStats[NUM_STATS];
@@ -348,7 +348,7 @@ struct sGirl
 
 	int m_Enjoyment[NUM_ACTIONTYPES];			// these values determine how much a girl likes an action
 												// (-100 is hate, +100 is loves)
-	bool m_Virgin;								// is she a virgin
+	int m_Virgin = -1;							// is she a virgin, 0=false, 1=true, -1=not checked
 
 	bool m_UseAntiPreg;							// if true she will use anit preg measures
 
@@ -424,7 +424,7 @@ struct sGirl
 		m_NumCusts			= 0;
 		m_WeeksPast			= 0;
 		m_Withdrawals		= 0;
-		m_Virgin			= false;
+		m_Virgin			= -1;
 		m_Spotted			= 0;
 		m_RunAway			= 0;
 		m_AccLevel			= 0;
@@ -715,6 +715,7 @@ struct sGirl
 		m_States &= ~(1<<STATUS_PREGNANT);
 		m_States &= ~(1<<STATUS_PREGNANT_BY_PLAYER);
 		m_States &= ~(1<<STATUS_INSEMINATED);
+		m_WeeksPreg = 0;
 	}
 	int preg_chance(int base_pc, bool good=false, double factor=1.0);
 	bool calc_pregnancy(cPlayer *player, bool good=false, double factor=1.0);
@@ -738,8 +739,7 @@ struct sGirl
 	bool is_addict() {
 		return	has_trait("Shroud Addict")	||
 			has_trait("Fairy Dust Addict")	||
-			has_trait("Viras Blood Addict")	
-		;
+			has_trait("Viras Blood Addict");
 	}
 
 	sChild *next_child(sChild *child, bool remove=false) {

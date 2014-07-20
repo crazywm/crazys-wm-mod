@@ -66,46 +66,46 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, int DayN
 
 	ss << gettext("You tell her she is going to warm your bed tonight.\n");
 
-	if(girl->m_States&(1<<STATUS_SLAVE))
+	if (girl->m_States&(1 << STATUS_SLAVE))
 	{
-		     if(HateLove < -80)	ss << gettext("She hates you more then anything but you own her so she does what she is told.\n\n");
-		else if(HateLove < -60)	ss << gettext("She hates you but knows she must listen.\n\n");
-		else if(HateLove < -40)	ss << gettext("She doesn't like you but she is your slave and does what she is told.\n\n");
-		else if(HateLove < -20)	ss << gettext("She finds you annoying but knows she must listen.\n\n");
-		else if(HateLove <  0)	ss << gettext("She finds you to be annoying but you own her.\n\n");
-		else if(HateLove < 20)	ss << gettext("She finds you be a decent master.\n\n");
-		else if(HateLove < 40)	ss << gettext("She finds you be a good master.\n\n");
-		else if(HateLove < 60)	ss << gettext("She finds you to be attractive.\n\n");
-		else if(HateLove < 80)	ss << gettext("She has really strong feelings for you.\n\n");
+		if (HateLove < -80)	ss << gettext("She hates you more then anything but you own her so she does what she is told.\n\n");
+		else if (HateLove < -60)	ss << gettext("She hates you but knows she must listen.\n\n");
+		else if (HateLove < -40)	ss << gettext("She doesn't like you but she is your slave and does what she is told.\n\n");
+		else if (HateLove < -20)	ss << gettext("She finds you annoying but knows she must listen.\n\n");
+		else if (HateLove < 0)	ss << gettext("She finds you to be annoying but you own her.\n\n");
+		else if (HateLove < 20)	ss << gettext("She finds you be a decent master.\n\n");
+		else if (HateLove < 40)	ss << gettext("She finds you be a good master.\n\n");
+		else if (HateLove < 60)	ss << gettext("She finds you to be attractive.\n\n");
+		else if (HateLove < 80)	ss << gettext("She has really strong feelings for you.\n\n");
 		else					ss << gettext("She loves you more then anything.\n\n");
 	}
 	else
 	{
-		if(HateLove < -80)	{wages +=150;	ss << gettext("She can't stand the sight of you and demands way more money to lay with you at night.\n\n");}
-		else if(HateLove < -60)	{wages +=100;	ss << gettext("She don't like you at all and wants more money to lay with you at night .\n\n");}
-		else if(HateLove < -40)	{wages += 75;	ss << gettext("She doesn't like you so she wants extra for the job.\n\n");}
-		else if(HateLove < -20)	{wages += 50;	ss << gettext("She finds you annoying so she wants extra for the job.\n\n");}
-		else if(HateLove <   0)	{wages += 25;	ss << gettext("She finds you to be annoying so she wants extra for the job.\n\n");}
-		else if(HateLove <  20)	{				ss << gettext("She finds you to be okay.\n\n");}
-		else if(HateLove <  40)	{wages -= 20;	ss << gettext("She finds you to be nice so she gives you a discount.\n\n");}
-		else if(HateLove <  60)	{wages -= 40;	ss << gettext("She finds you attractive so she gives you a discount.\n\n");}
-		else if(HateLove <  80)	{wages -= 60;	ss << gettext("Shes has really strong feelings for you so she lays with you for less money.\n\n");}
-		else					{wages -= 80;	ss << gettext("She is totally in love with you and doesn't want as much money.\n\n");}
+		if (HateLove < -80)	{ wages += 150;	ss << gettext("She can't stand the sight of you and demands way more money to lay with you at night.\n\n"); }
+		else if (HateLove < -60)	{ wages += 100;	ss << gettext("She don't like you at all and wants more money to lay with you at night .\n\n"); }
+		else if (HateLove < -40)	{ wages += 75;	ss << gettext("She doesn't like you so she wants extra for the job.\n\n"); }
+		else if (HateLove < -20)	{ wages += 50;	ss << gettext("She finds you annoying so she wants extra for the job.\n\n"); }
+		else if (HateLove < 0)	{ wages += 25;	ss << gettext("She finds you to be annoying so she wants extra for the job.\n\n"); }
+		else if (HateLove < 20)	{ ss << gettext("She finds you to be okay.\n\n"); }
+		else if (HateLove < 40)	{ wages -= 20;	ss << gettext("She finds you to be nice so she gives you a discount.\n\n"); }
+		else if (HateLove < 60)	{ wages -= 40;	ss << gettext("She finds you attractive so she gives you a discount.\n\n"); }
+		else if (HateLove < 80)	{ wages -= 60;	ss << gettext("Shes has really strong feelings for you so she lays with you for less money.\n\n"); }
+		else					{ wages -= 80;	ss << gettext("She is totally in love with you and doesn't want as much money.\n\n"); }
 	}
-	
+
 	if (roll_a <= 100 && g_Girls.DisobeyCheck(girl, ACTION_WORKHAREM, brothel))
 	{
 		message = girl->m_Realname + gettext(" refused to lay with you today.");
 		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	else if(roll_a <= 15)
+	else if (roll_a <= 15)
 	{
 		message += gettext(" \nYou did something to piss her off.\n\n");
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKHAREM, -1, true);
 		g_Girls.UpdateStat(girl, STAT_PCLOVE, -1);
 	}
-	else if(roll_a >=90)
+	else if (roll_a >= 90)
 	{
 		message += gettext(" \nShe had a pleasant time with you.\n\n");
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKHAREM, +3, true);
@@ -116,86 +116,86 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, int DayN
 		message += gettext(" \nOtherwise, nothing of note happened.\n\n");
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKHAREM, +1, true);
 	}
-	
+
 
 	if (HateLove >= 80) //loves you
+	{
+		if (g_Girls.CheckVirginity(girl))		// 25% decline
 		{
-			if (girl->m_Virgin)		// 25% decline
-			{
-			ss << gettext("She is a virgin so you ask her if she wants to let you be her first.\nShe ");
-			if (roll_d <= 25)	{ ss << gettext("loves you greatly but says she isn't ready so instead she "); roll_d *= 2; }
-			else				{	ss << gettext("loves you greatly and agrees so she ");	roll_d = 77;	} // normal sex
-			}
-			else
-			{
+			ss << gettext("She is a virgin so you ask her if she wants to let you be her first.\nShe loves you greatly ");
+			if (roll_d <= 25)	{ ss << gettext("but says she isn't ready so instead she "); roll_d *= 2; }
+			else				{ ss << gettext("and agrees so she ");	roll_d = 77; } // normal sex
+		}
+		else
+		{
 			ss << gettext("She loves you greatly so she ");
-			}
+		}
 	}
 	else if (HateLove >= 60)			//find u attractive
 	{
-		if (girl->m_Virgin)		// 50 % decline
+		if (g_Girls.CheckVirginity(girl))		// 50 % decline
 		{
-			ss << gettext("She is a virgin so you ask her if she wants to let you be her first.\nShe ");
-			if (roll_d <= 50)		{	ss << gettext("finds you to be attractive but declines so instead she ");	roll_d *= 2; }
-			else					{	ss << gettext("finds you to be attractive so she agrees and she ");	roll_d = 77;	} // normal sex
+			ss << gettext("She is a virgin so you ask her if she wants to let you be her first.\nShe finds you to be attractive ");
+			if (roll_d <= 50)		{ ss << gettext("but declines so instead she ");	roll_d *= 2; }
+			else					{ ss << gettext("so she agrees and she ");	roll_d = 77; } // normal sex
 		}
 		else
-			{
+		{
 			ss << gettext("She finds you to be attractive so she ");
-			}
+		}
 	}
 	else if (HateLove > 20)			//your okay
 	{
-		if (girl->m_Virgin)		// 70% decline
+		if (g_Girls.CheckVirginity(girl))		// 70% decline
 		{
-			ss << gettext("She is a virgin so you ask her if she wants to let you be her first.\nShe ");
-			if (roll_d <= 70)	{ ss << gettext("finds you to be an okay guy but declines anyway. So she "); roll_d = 100; }
-			else				{	ss << gettext("finds you to be an okay guy so she agrees and she ");	roll_d = 77;	} // normal sex
+			ss << gettext("She is a virgin so you ask her if she wants to let you be her first.\nShe finds you to be an okay guy ");
+			if (roll_d <= 70)	{ ss << gettext("but declines anyway. So she "); roll_d = 100; }
+			else				{ ss << gettext("so she agrees and she ");	roll_d = 77; } // normal sex
 		}
 		else
-			{
+		{
 			ss << gettext("She finds you to be okay so she ");
-			}
+		}
 	}
 	else if (HateLove >= -20)			//annoying
 	{
-		if (girl->m_Virgin)		// 80% decline
+		if (g_Girls.CheckVirginity(girl))		// 80% decline
 		{
-			ss << gettext("She is a virgin so you ask her if she wants to let you be her first.\nShe ");
-			if (roll_d <= 80)	{ ss << gettext("finds you to be rather annoying so she declines and she "); roll_d = 100; }
-			else				{	ss << gettext("finds you to be rather annoying but agrees none the less. She ");	roll_d = 77;	} // normal sex
+			ss << gettext("She is a virgin so you ask her if she wants to let you be her first.\nShe finds you to be rather annoying ");
+			if (roll_d <= 80)	{ ss << gettext("so she declines and she "); roll_d = 100; }
+			else				{ ss << gettext("but agrees none the less. She ");	roll_d = 77; } // normal sex
 		}
 		else
-			{
+		{
 			ss << gettext("She finds you to be annoying so she ");
-			}
+		}
 	}
 	else if (HateLove > -60)			//dont like u at all
 	{
-		if (girl->m_Virgin)		// 95% decline
+		if (g_Girls.CheckVirginity(girl))		// 95% decline
 		{
-			ss << gettext("She is a virgin so you ask her if she wants to let you be her first.\nShe ");
-			if (roll_d <= 95)	{ ss << gettext("oesn't really like you and declines so she "); roll_d = 100; }
-			else				{	ss << gettext("doesn't really like you but for whatever reason she agrees so she ");	roll_d = 77;	} // normal sex
+			ss << gettext("She is a virgin so you ask her if she wants to let you be her first.\nShe doesn't really like you ");
+			if (roll_d <= 95)	{ ss << gettext("and declines so she "); roll_d = 100; }
+			else				{ ss << gettext("but for whatever reason she agrees so she ");	roll_d = 77; } // normal sex
 		}
 		else
 			ss << gettext("She don't like you at all so she ");
-			if(g_Girls.GetStat(girl, STAT_LIBIDO) > 60)
-				{
-					roll_d = 88;
-				}
-			else
-				{
-					roll_d = 100;
-				}
+		if (g_Girls.GetStat(girl, STAT_LIBIDO) > 60)
+		{
+			roll_d = 88;
+		}
+		else
+		{
+			roll_d = 100;
+		}
 	}
 	else											//cant stand the site of u
 	{
-		if (girl->m_Virgin)		// 100% decline
+		if (g_Girls.CheckVirginity(girl))		// 100% decline
 		{
 			ss << gettext("She is a virgin so you ask her if she wants to let you be her first.\nShe ");
 			ss << gettext("laughs hard at the thought of her letting you touch her.\nShe ");
-			if(g_Girls.GetStat(girl, STAT_LIBIDO) > 60)
+			if (g_Girls.GetStat(girl, STAT_LIBIDO) > 60)
 			{
 				roll_d = 88;
 			}
@@ -206,14 +206,14 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, int DayN
 		}
 		else
 			ss << gettext("She can't stand the sight of you so she ");
-			if(g_Girls.GetStat(girl, STAT_LIBIDO) > 60)
-				{
-					roll_d = 88;
-				}
-			else
-				{
-					roll_d = 100;
-				}
+		if (g_Girls.GetStat(girl, STAT_LIBIDO) > 60)
+		{
+			roll_d = 88;
+		}
+		else
+		{
+			roll_d = 100;
+		}
 	}
 
 
@@ -221,7 +221,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, int DayN
 
 	if (roll_d <= 11)
 	{
-		g_Girls.UpdateSkill(girl, SKILL_STRIP, 2); 
+		g_Girls.UpdateSkill(girl, SKILL_STRIP, 2);
 		ss << gettext("does a little strip show for you.\n\n");
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_STRIP, DayNight);
 	}
@@ -253,7 +253,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, int DayN
 	{
 		g_Girls.UpdateSkill(girl, SKILL_BDSM, 2);
 		ss << gettext("lets you tie her up.\n\n");
-		if (girl->m_Virgin)
+		if (g_Girls.CheckVirginity(girl))
 		{
 			g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
 			ss << gettext("She is no longer a virgin.\n");
@@ -268,7 +268,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, int DayN
 	{
 		g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, 2);
 		ss << gettext("has sex with you.\n\n");
-		if (girl->m_Virgin)
+		if (g_Girls.CheckVirginity(girl))
 		{
 			g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
 			ss << gettext("She is no longer a virgin.\n");
@@ -283,13 +283,13 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, int DayN
 	{
 		if (HateLove > 20)
 		{
-		ss << gettext("let you watch her Masturbate.\n\n");
+			ss << gettext("let you watch her Masturbate.\n\n");
 		}
 		else
 		{
-		ss << gettext("was horney so she just Masturbated.\n\n");
+			ss << gettext("was horney so she just Masturbated.\n\n");
 		}
-		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +1, true);	
+		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +1, true);
 		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -15);
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_MAST, DayNight);
 	}
@@ -297,11 +297,11 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, int DayN
 	{
 		if (HateLove > 20)
 		{
-		ss << gettext("is to tried to fool around so she goes to sleep.\n\n");
+			ss << gettext("is to tried to fool around so she goes to sleep.\n\n");
 		}
 		else
 		{
-		ss << gettext("just goes to sleep.\n\n");
+			ss << gettext("just goes to sleep.\n\n");
 		}
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_ECCHI, DayNight);
 	}
@@ -331,7 +331,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, int DayN
 	//			message += "lets you tie her up.\n\n";
 	//			g_Girls.UpdateSkill(girl, SKILL_BDSM, 2);
 	//			girl->m_Events.AddMessage(message, IMGTYPE_BDSM, DayNight);
-	//			if(girl->m_Virgin)
+	//			if(g_Girls.CheckVirginity(girl))
 	//			{
 	//				g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
 	//				message += "She was a virgin.\n";
@@ -353,7 +353,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, int DayN
 	//			message += "has sex with you.\n\n";
 	//			g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, 2);
 	//			girl->m_Events.AddMessage(message, IMGTYPE_SEX, DayNight);
-	//			if(girl->m_Virgin)
+	//			if(g_Girls.CheckVirginity(girl))
 	//			{
 	//				g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
 	//				message += "She was a virgin.\n";
@@ -373,7 +373,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, int DayN
 	//	girl->m_Events.AddMessage(message, IMGTYPE_ECCHI, DayNight);
 	//}
 
-	if(wages < 0)
+	if (wages < 0)
 		wages = 0;
 
 	g_Gold.girl_support(wages);  // wages come from you

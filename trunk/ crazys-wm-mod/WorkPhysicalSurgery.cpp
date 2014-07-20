@@ -47,6 +47,12 @@ bool cJobManager::WorkPhysicalSurgery(sGirl* girl, sBrothel* brothel, int DayNig
 	string message = "";
 	int msgtype = DayNight;
 
+	if (girl->m_YesterDayJob != JOB_PHYSICALSURGERY)	// if she was not in surgery yesterday, 
+	{
+		girl->m_WorkingDay = 0;				// rest working days to 0 before proceding
+		girl->m_PrevWorkingDay = 0;
+	}
+
 	// not for patient
 	g_Girls.UnequipCombat(girl);
 

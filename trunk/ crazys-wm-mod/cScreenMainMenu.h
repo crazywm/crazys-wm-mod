@@ -12,12 +12,7 @@ public:
 	cScreenMainMenu()
 	{
 		cConfig cfg;
-		DirPath dp = DirPath()
-			<< "Resources"
-			<< "Interface"
-			<< cfg.resolution.resolution()
-			<< "main_menu.xml"
-			;
+		DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "main_menu.xml";
 		m_filename = dp.c_str();
 	}
 

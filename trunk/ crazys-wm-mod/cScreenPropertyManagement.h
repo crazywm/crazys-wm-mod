@@ -85,12 +85,7 @@ public:
 	cScreenPropertyManagement()
 	{
 		cConfig cfg;
-		DirPath dp = DirPath()
-			<< "Resources"
-			<< "Interface"
-			<< cfg.resolution.resolution()
-			<< "property_management.xml"
-		;
+		DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "property_management.xml";
 		m_filename = dp.c_str();
 	}
 	~cScreenPropertyManagement() {}
