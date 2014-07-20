@@ -269,7 +269,7 @@ void LoadInterface()
 	// load interface colors
 	// WD: Typecast to resolve ambiguous call in VS 2010
 	g_LogFile.write("Loading InterfaceColors");
-	DirPath dp = DirPath() << "Resources" << "Interface"<< cfg.resolution.resolution() << "InterfaceColors.txt";
+	DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "InterfaceColors.txt";
 	incol.open(dp.c_str());
 	//incol.open(DirPath() << "Resources" << "Interface" << "InterfaceColors.txt");
 	incol.seekg(0);

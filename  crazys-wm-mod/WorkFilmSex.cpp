@@ -93,7 +93,7 @@ bool cJobManager::WorkFilmSex(sGirl* girl, sBrothel* brothel, int DayNight, stri
 		message += girlName + " had a pleasant day fucking her co-star.\n\n";
 	}
 
-	if(girl->m_Virgin)
+	if (g_Girls.CheckVirginity(girl))
 	{
 		g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
 		jobperformance += 50;
@@ -109,7 +109,7 @@ bool cJobManager::WorkFilmSex(sGirl* girl, sBrothel* brothel, int DayNight, stri
 
 	g_Building = BUILDING_STUDIO;
 	if(!girl->calc_pregnancy(g_Brothels.GetPlayer(), false, 1.0)) {
-		g_MessageQue.AddToQue("She has gotten pregnant", 0);
+		g_MessageQue.AddToQue(girl->m_Realname + " has gotten pregnant", 0);
 	}
 
 	girl->m_Events.AddMessage(message, IMGTYPE_SEX, DayNight);

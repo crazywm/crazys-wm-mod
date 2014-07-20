@@ -1090,7 +1090,7 @@ bool cInventory::ok_2_equip(sGirl *girl, int num, bool force)
 	case sInventoryItem::Shoes:
 	case sInventoryItem::Necklace:
 	case sInventoryItem::Armor:
-	case sInventoryItem::UnderWear:
+	case sInventoryItem::Underwear:
 		if(equip_singleton_ok(girl,  num, force) == false) 
 			return false;
 		break;

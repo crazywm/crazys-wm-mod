@@ -64,12 +64,7 @@ public:
 	{
 		selection = -1;
 		cConfig cfg;
-		DirPath dp = DirPath()
-			<< "Resources"
-			<< "Interface"
-			<< cfg.resolution.resolution()
-			<< "dungeon_screen.xml"
-		;
+		DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "dungeon_screen.xml";
 		m_filename = dp.c_str();
 	}
 

@@ -645,6 +645,20 @@
     <ClCompile Include="cScreenFarmManagement.cpp" />
     <ClCompile Include="WorkFarmHand.cpp" />
     <ClCompile Include="WorkFarmManager.cpp" />
+    <ClCompile Include="WorkBaker.cpp" />
+    <ClCompile Include="WorkBrewer.cpp" />
+    <ClCompile Include="WorkButcher.cpp" />
+    <ClCompile Include="WorkCatacombRancher.cpp" />
+    <ClCompile Include="WorkEscort.cpp" />
+    <ClCompile Include="WorkFarmer.cpp" />
+    <ClCompile Include="WorkFarmMarketer.cpp" />
+    <ClCompile Include="WorkFarmResearch.cpp" />
+    <ClCompile Include="WorkFarmVeterinarian.cpp" />
+    <ClCompile Include="WorkGardener.cpp" />
+    <ClCompile Include="WorkMakePotions.cpp" />
+    <ClCompile Include="WorkMilker.cpp" />
+    <ClCompile Include="WorkRancher.cpp" />
+    <ClCompile Include="WorkSheapherd.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cButton.h">

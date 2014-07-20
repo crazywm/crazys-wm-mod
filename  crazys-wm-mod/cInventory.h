@@ -270,7 +270,7 @@ typedef struct sInventoryItem
 		Misc	= 9,	// random stuff. may cause a constant effect without having to be equiped
 		Armband	= 10,	// (max 2), worn around arms
 		SmWeapon= 11,	// (max 1), hidden on body
-		UnderWear= 12  // (max 1) worn under dress
+		Underwear= 12  // (max 1) worn under dress
 	};
 	Type m_Type;
 /*
@@ -393,8 +393,8 @@ typedef struct sInventoryItem
 		else if(s == "Dress") {
 			m_Type = Dress;
 		}
-		else if(s == "Under Wear") {
-			m_Type = UnderWear;
+		else if (s == "Under Wear" || s == "Underwear") {
+			m_Type = Underwear;
 		}
 		else if(s == "Shoes") {
 			m_Type = Shoes;
@@ -475,8 +475,8 @@ typedef struct sInventoryItem
 			return os << "Ring";
 		case Dress:
 			return os << "Dress";
-		case UnderWear:
-			return os << "Under Wear";
+		case Underwear:
+			return os << "Underwear";
 		case Shoes:
 			return os << "Shoes";
 		case Food:

@@ -419,7 +419,7 @@ void cScreenArenaManagement::check_events()
 			{
 				if(GirlDead(selected_girl))
 					return;
-				g_MessageQue.AddToQue("Are you sure you wish to give this girl her freedom?", 0);
+				g_MessageQue.AddToQue("Are you sure you wish to give " + selected_girl->m_Realname + " her freedom?", 0);
 				g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, strlen("Keep as a slave"));
 				g_ChoiceManager.AddChoice(0, "Grant Freedom", 0);
 				g_ChoiceManager.AddChoice(0, "Keep as a slave", 1);

@@ -35,6 +35,21 @@ Catacomb Rancher - up to job performance /10
  - any above that may die (vet reduces the chance to die)
 
 
+Skills: 
+Farming
+Animal Handling
+Herbalism
+Crafting
+Brewing
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
 Need to track:
 Food crops
 food animals by size

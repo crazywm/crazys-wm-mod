@@ -92,7 +92,7 @@ if(roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
 		message += girlName + " had just another day in the dungeon.\n\n";
 	}
 
-	if(girl->m_Virgin)
+	if (g_Girls.CheckVirginity(girl))
 	{
 		g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
 		jobperformance += 50;
@@ -100,7 +100,7 @@ if(roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
 	}
 
 	if(!girl->calc_pregnancy(g_Brothels.GetPlayer(), false, 0.75)) {
-		g_MessageQue.AddToQue("She has gotten pregnant", 0);
+		g_MessageQue.AddToQue(girl->m_Realname + " has gotten pregnant", 0);
 	}
 
 	jobperformance += g_Girls.GetSkill(girl, SKILL_PERFORMANCE) / 10;

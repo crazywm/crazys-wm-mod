@@ -92,7 +92,7 @@ bool cJobManager::WorkFilmBeast(sGirl* girl, sBrothel* brothel, int DayNight, st
 		message += girlName + " didn't do much else today.\n\n";
 	}
 
-	if(girl->m_Virgin)
+	if (g_Girls.CheckVirginity(girl))
 	{
 		g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
 		jobperformance += 50;
@@ -109,7 +109,7 @@ bool cJobManager::WorkFilmBeast(sGirl* girl, sBrothel* brothel, int DayNight, st
 	if(g_Brothels.GetNumBeasts() > 0)
 	{
 		if(!girl->calc_insemination(g_Brothels.GetPlayer(), false, 1.0))
-			g_MessageQue.AddToQue("She has gotten inseminated", 0);
+			g_MessageQue.AddToQue(girl->m_Realname + " has gotten inseminated", 0);
 	}
 	
 	girl->m_Events.AddMessage(message, IMGTYPE_BEAST, DayNight);

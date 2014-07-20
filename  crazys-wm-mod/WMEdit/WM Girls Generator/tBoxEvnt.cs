@@ -121,7 +121,7 @@ namespace WM_Girls_Generator
 
         private void StatsTBox_10_TextChanged(object sender, EventArgs e)
         {
-            LimitTextBox(StatsTBox_10);
+            LimitTextBox(StatsTBox_G_Level);
         }
 
         private void StatsTBox_11_TextChanged(object sender, EventArgs e)
@@ -136,7 +136,7 @@ namespace WM_Girls_Generator
 
         private void StatsTBox_13_TextChanged(object sender, EventArgs e)
         {
-            LimitTextBox(StatsTBox_13);
+            LimitTextBox(StatsTBox_G_Exp);
         }
 
         private void StatsTBox_14_TextChanged(object sender, EventArgs e)
@@ -430,6 +430,26 @@ namespace WM_Girls_Generator
         {
             LimitTextBoxRMin(SkillRGMinTBox10);
         }
+        private void SkillRGMinTBox11_TextChanged(object sender, EventArgs e)
+        {
+            LimitTextBoxRMin(SkillRGMinTBox11);
+        }
+        private void SkillRGMinTBox12_TextChanged(object sender, EventArgs e)
+        {
+            LimitTextBoxRMin(SkillRGMinTBox12);
+        }
+        private void SkillRGMinTBox13_TextChanged(object sender, EventArgs e)
+        {
+            LimitTextBoxRMin(SkillRGMinTBox13);
+        }
+        private void SkillRGMinTBox14_TextChanged(object sender, EventArgs e)
+        {
+            LimitTextBoxRMin(SkillRGMinTBox14);
+        }
+        private void SkillRGMinTBox15_TextChanged(object sender, EventArgs e)
+        {
+            LimitTextBoxRMin(SkillRGMinTBox15);
+        }
 
         private void SkillRGMinTBox1_TextChanged(object sender, EventArgs e)
         {
@@ -479,6 +499,26 @@ namespace WM_Girls_Generator
         private void SkillRGMaxTBox10_TextChanged(object sender, EventArgs e)
         {
             LimitTextBoxRMax(SkillRGMaxTBox10);
+        }
+        private void SkillRGMaxTBox11_TextChanged(object sender, EventArgs e)
+        {
+            LimitTextBoxRMax(SkillRGMaxTBox11);
+        }
+        private void SkillRGMaxTBox12_TextChanged(object sender, EventArgs e)
+        {
+            LimitTextBoxRMax(SkillRGMaxTBox12);
+        }
+        private void SkillRGMaxTBox13_TextChanged(object sender, EventArgs e)
+        {
+            LimitTextBoxRMax(SkillRGMaxTBox13);
+        }
+        private void SkillRGMaxTBox14_TextChanged(object sender, EventArgs e)
+        {
+            LimitTextBoxRMax(SkillRGMaxTBox14);
+        }
+        private void SkillRGMaxTBox15_TextChanged(object sender, EventArgs e)
+        {
+            LimitTextBoxRMax(SkillRGMaxTBox15);
         }
 
         private void SkillRGMaxTBox1_TextChanged(object sender, EventArgs e)

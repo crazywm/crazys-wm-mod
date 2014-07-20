@@ -50,7 +50,7 @@ double cTariff::slave_base_price(sGirl *girl)
  *	but a multiplier makes more sense to me.
  *	Let's say virgins go for half as much again
  */
-	if(girl->m_Virgin) {
+	if (g_Girls.CheckVirginity(girl)) {
 		cost *= 1.5;
 	}
 	lf.ss() << "CTariff: base price for slave '"

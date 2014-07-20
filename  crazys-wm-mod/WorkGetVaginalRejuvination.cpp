@@ -68,7 +68,7 @@ bool cJobManager::WorkGetVaginalRejuvination(sGirl* girl, sBrothel* brothel, int
 		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_WARNING);
 		return true;
 	}
-	if (girl->m_Virgin)
+	if (g_Girls.CheckVirginity(girl))
 	{
 		message = girl->m_Realname + gettext(" is already a Virgin so she was sent to the waiting room.");
 		if (DayNight == 0)	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_WARNING);

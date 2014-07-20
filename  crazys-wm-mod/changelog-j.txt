@@ -2,7 +2,6 @@
 Add right click menus
 Transfer screen - Add Health, Happy, Tired and Rebel columns
 Transfer screen - Add Girl count above columns and/or on location lists
-Recode for config files "config.xml", "ScreenMode.txt" to make 1 file in the directory that has the EXE file
 Make the game create the "Saves" folder if it does not exist
 Either combine "Resources/Buttons" into "Resources/Images" or combine both into "Resources/Interface/(individiual interface folder)/Images"
 Allow for subfolders in "Resources" folders. Would allow:
@@ -404,6 +403,7 @@ Fixed item rarity Catacomb05 and Catacomb01 so they work
  - added default colors in the code
  - expanded the for loops to make it read them
 !!!!!!!!!!!!!!!!!!!! pushed version .05s
+
 ###  Changes 6/28/2014
 Corrected bug in images where default pregnant offset was not checking for IMGTYPE_PREGNANT
 Corrected bug in virginity check not passing age to rgirls
@@ -412,8 +412,8 @@ Corrected bug in virginity check not passing age to rgirls
 Corrected bug in images so pregnant profile now looks for IMGTYPE_PREGNANT if there are no IMGTYPE_PREGPROFILE 
 !!!!!!!!!!!!!!!!!!!! pushed version .05s.02
 
-
 ###  Changes 7/1/2014
+Corrected bug - default lastsexact was 0 (anal), changed to -1 so it now displays profile instead of anal on first load of girl
 Whore Master Editor:
  - Increased program screen dimensions to 1000x600 to allow more stuff.
  - Rearranged buttons and boxes to allow for more things in the future.
@@ -426,5 +426,69 @@ Whore Master Editor:
  - Changed how the editor loads girlsx files so if a stat/skill is not listed, it gets set to default
  - Updated Status="" to include "Arena"
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.01
+
+###  Changes 7/3-5/2014
+Corrected bug in Your Daughter for random girls.
+Whore Master Editor:
+ - Updated Rgirls with the new skills.
+ - Updated and added new Girls Randomize buttons.
+ - Updated Status="" to include "Your Daughter"
+ - Massive cleanup.
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.02
+!!!!!!!!!!!!!!!!!!!! pushed version .05s.03
+
+###  Changes 7/6/2014
+Updated "Box of Cookies.itemsx" to reduce power and add varieties.
+Renamed "Under Wear" to "Underwear" - both are accepted as imput
+WME - added "Underwear" to Items category
+WME - added "Catacomb05" and "Catacomb01" to Items rarity
+Corrected bug in level up where level up message and trait gained message duplicates.
+Started rewrite of m_SecurityLevel - lowers by (10 + number of girls) each day instead of flat 30
+
+###  Changes 7/7-9/2014
+Whore Master Editor:
+ - Added farm skills
+ - Added new random number generator
+ - Added all new skills to item effects
+ - Added new job focus buttons
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.03
+!!!!!!!!!!!!!!!!!!!! pushed version .05s.04
+
+###  Changes 7/10/2014
+Changed some instances of ["she", "her" and "this girl"] in g_MessageQue to [girl->m_Realname] so you know who the message is about.
+
+***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****
+***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****
+***** ***** *****                                                             ***** ***** ***** 
+***** ***** *****                .06 Started base code rewrite                ***** ***** *****
+***** ***** *****      Anything changed in .05 will be marked with (.05)      ***** ***** *****
+***** ***** *****                                                             ***** ***** ***** 
+***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****
+***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****
+
+Changed and updated config.xml 
+Merged ScreenMode.txt into config.xml
+Moved config.xml to root directory
+
+###  Changes 7/11-15/2014  ** I was sick so didn't get much done
+
+###  Changes 7/16/2014
+Fixed Virgin Check to work closer to the way it was prior to .05s (.05)
+Split Skills into nonsex and sex skills on girls display (.05)
+!!!!!!!!!!!!!!!!!!!! pushed version .05s.05
+
+###  Changes 7/17-19/2014
+Whore Master Editor:
+ - Finished Config page to load and save config.xml for .05 and .06
+ - Traits page can now load and save from either ".traits" or ".traitsx" files
+
+Started adding new config.xml settings.
+Fixed a few bugs in .05
+
+Crazy added/updated farm jobs and some other jobs
+ - Incorperated Crazy's changes to WorkPersonalBedWarmer.cpp into .05
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.04
+
+
 
 

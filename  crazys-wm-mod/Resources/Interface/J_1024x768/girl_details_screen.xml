@@ -10,8 +10,8 @@
 <Button  	Name="AccomUpButton"	Image="AcomUp"			XPos="8"	YPos="528"	Width="72"	Height="32"	Transparency="true"	Scale="true"	/>
 <Button  	Name="AccomDownButton"	Image="AcomDown"			XPos="96"	YPos="528"	Width="72"	Height="32"	Transparency="true"	Scale="true"	/>
 <Button  	Name="InventoryButton"	Image="GiveGift"			XPos="400"	YPos="528"	Width="160"	Height="32"	Transparency="true"	Scale="true"	/>
-<Button Name="SendDungeonButton" Image="SendDungeon" Disabled=""	XPos="208"	YPos="528"	Width="120"	Height="24"	Transparency="true"	Scale="true"	/>
-<Button Name="ReleaseDungeonButton" Image="Release" Disabled=""	XPos="208"	YPos="528"	Width="160"	Height="32"	Transparency="true"	Scale="true"	/>
+<Button     Name="SendDungeonButton" Image="SendDungeon" Disabled=""	XPos="208"	YPos="528"	Width="120"	Height="24"	Transparency="true"	Scale="true"	/>
+<Button     Name="ReleaseDungeonButton" Image="Release" Disabled=""	XPos="208"	YPos="528"	Width="160"	Height="32"	Transparency="true"	Scale="true"	/>
 <Button  	Name="InteractButton"	Image="Talk"			XPos="400"	YPos="488"	Width="160"	Height="32"	Transparency="true"	Scale="true"	/>
 <Button  	Name="TakeGoldButton"	Image="TakeGold"			XPos="208"	YPos="488"	Width="120"	Height="24"	Transparency="true"	Scale="true"	/>
 <!-- switched to slider control	<Button  	Name="HousePercButton"	Image="HouseP"				XPos="616"	YPos="448"	Width="144"	Height="32"	Transparency="true"	Scale="true"	/>-->

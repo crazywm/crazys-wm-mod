@@ -16,11 +16,7 @@ void ResetInterface();
 cScreenGetInput::cScreenGetInput()
 {
 	cConfig cfg;
-	DirPath dp = DirPath()
-		<< "Resources"
-		<< "Interface"
-		<< cfg.resolution.resolution()
-		<< "getInput.xml";
+	DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "getInput.xml";
 	m_filename = dp.c_str();
 }
 

@@ -120,32 +120,10 @@
   <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>24, 26</value>
   </metadata>
-  <data name="label39.Text" xml:space="preserve">
-    <value>If application fails to find CoreTraits.traits file by itself you'll need to
-find it manually. It's usually located in Whore Master game folder 
-under \Resources\Data.
-
-To browse manually press the button below.</value>
-  </data>
-  <data name="checkBox_RGCatacombs.ToolTip" xml:space="preserve">
-    <value>This toggles line 10 in old format (line that should always be "0"). But it seems
-this is catacombs flag. At the moment of this writing this doesn't do anything.
-"Is human?" checkbox toggles if girl is from catacombs or not. But maybe one
-day this'll be fixed, so to be ready for it here it is.
-
-For now leave this at unchecked, then it'll have default value of "0". There could
-potentialy be problems if otherwise.</value>
-  </data>
   <data name="checkBox_RGTraitsReadOnly.ToolTip" xml:space="preserve">
     <value>I recommend simply deleting faulty entry and adding it back with correct
 value, but if you really, really, REALLY need it, you can unlock value field
 via this checkbox. Be SURE to enter only value between 0 and 100.</value>
-  </data>
-  <data name="checkBox_RGHuman.ToolTip" xml:space="preserve">
-    <value>Girl is human or non-human. As far as I've seen from default random girls, demon girls
-have this turned on, and they're obtainable only from catacombs. So if you want your
-random girls to be obtainable from slave market leave this checked, if you want them to
-be obtainable from catacombs remove check mark.</value>
   </data>
   <data name="label26.ToolTip" xml:space="preserve">
     <value>Since these are random girls they get names from
@@ -173,6 +151,12 @@ supported value.
 
 If you enter unsuported values (like "fasdsadfgdfvd" and like) you can
 expect that Whore Master will crash.</value>
+  </data>
+  <data name="label_Load_Config.Text" xml:space="preserve">
+    <value>The WME will try to find config.xml by itself.
+If it does not find it, you will have to find it manually.
+Starting in version .06 it is in the root game folder.
+In older versions, it was in \Resources\Data\ folder.</value>
   </data>
   <data name="richTextBox1.Text" xml:space="preserve">
     <value>To get the game to load girls and random girls their respective *.girls(x) and *.rgirls(x) files must be placed under "Resources\Characters\" folder, while *.items(x) files go to "Resources\Data\" folder.

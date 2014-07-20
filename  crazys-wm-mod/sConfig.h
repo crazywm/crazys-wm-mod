@@ -40,6 +40,7 @@ struct sConfigData
 		int girl_meet;
 		int slave_house_perc;
 		bool auto_use_items;
+		bool auto_combat_equip;
 		int torture_mod;
 	} initial;
 
@@ -48,6 +49,10 @@ struct sConfigData
  */
  	struct Resolution {
 		string	resolution;
+		int width;
+		int height;
+		bool fullscreen;
+		bool configXML;
 	} resolution;
 /*
  *	income factors
@@ -72,15 +77,15 @@ struct sConfigData
 		double movie_cost;
 		double goon_wages;
 		double matron_wages;
-		double staff_wages;
+		double staff_wages;		// `J` ?not used?
 		double girl_support;
 		double consumables;
 		double item_cost;
 		double slave_cost;
 		double brothel_cost;
-		double brothel_support;
-		double bar_cost;
-		double casino_cost;
+		double brothel_support;	// `J` ?not used?
+		double bar_cost;		// `J` ?not used?
+		double casino_cost;		// `J` ?not used?
 		double bribes;
 		double fines;
 		double advertising;
@@ -128,7 +133,6 @@ struct sConfigData
 	} prostitution;
 
 	struct item_data {
-		bool auto_combat_equip;
 		SDL_Color*	rarity_color[9];
 	} items;
 
@@ -232,7 +236,6 @@ public:
 	} fonts;
 
 	struct item_data {
-		bool auto_combat_equip()			{ return data->items.auto_combat_equip; }
 		SDL_Color* rarity_color(int num)	{ return data->items.rarity_color[num]; }
 	} items;
 
@@ -273,15 +276,20 @@ public:
 	} gangs;
 
  	struct {
-		int	gold()	                { return data->initial.gold; }
-		int	girl_meet()	            { return data->initial.girl_meet; }
-		int slave_house_perc()	    { return data->initial.slave_house_perc; }
-		bool auto_use_items()	    { return data->initial.auto_use_items; }
-		int	torture_mod()	        { return data->initial.torture_mod; }
+		int	gold()					{ return data->initial.gold; }
+		int	girl_meet()				{ return data->initial.girl_meet; }
+		int slave_house_perc()		{ return data->initial.slave_house_perc; }
+		bool auto_use_items()		{ return data->initial.auto_use_items; }
+		bool auto_combat_equip()	{ return data->initial.auto_combat_equip; }
+		int	torture_mod()			{ return data->initial.torture_mod; }
 	} initial;
 
 	struct Resolution{
-		string& resolution()	        { return data->resolution.resolution; }
+		string& resolution()	{ return data->resolution.resolution; }
+		int width()				{ return data->resolution.width; }
+		int height()			{ return data->resolution.height; }
+		bool fullscreen()		{ return data->resolution.fullscreen; }
+		bool configXML()		{ return data->resolution.configXML; }
 	} resolution;
 
  	struct {

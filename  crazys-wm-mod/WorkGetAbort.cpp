@@ -101,7 +101,7 @@ bool cJobManager::WorkGetAbort(sGirl* girl, sBrothel* brothel, int DayNight, str
 
 		if (numnurse > 0)
 		{
-			ss << "The Nurse tried to kept her healthy and happy during her recovery.\n";
+			ss << "The Nurse tried to keep her healthy and happy during her recovery.\n";
 // `J` then adjust if a nurse helps her through it
 			happy += 10;	health += 10;	mana += 10;	spirit += 5;	love += 1;	hate -= 1;
 		}
@@ -321,7 +321,9 @@ bool cJobManager::WorkGetAbort(sGirl* girl, sBrothel* brothel, int DayNight, str
 		g_Girls.UpdateStat(girl, STAT_SPIRIT, spirit);
 		g_Girls.UpdateStat(girl, STAT_PCLOVE, love);
 		g_Girls.UpdateStat(girl, STAT_PCHATE, hate);
+		cConfig cfg;
 		girl->clear_pregnancy();
+		girl->m_PregCooldown = cfg.pregnancy.cool_down();
 		girl->m_WorkingDay = 0;
 		girl->m_PrevWorkingDay = 0;
 		girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;

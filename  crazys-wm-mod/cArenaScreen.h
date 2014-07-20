@@ -59,12 +59,7 @@ public:
 	cArenaScreen()
 	{
 		cConfig cfg;
-		DirPath dp = DirPath()
-			<< "Resources"
-			<< "Interface"
-			<< cfg.resolution.resolution()
-			<< "arena_screen.xml"
-		;
+		DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "arena_screen.xml";
 		m_filename = dp.c_str();
 		GetName = false;
 		m_first_walk = true;

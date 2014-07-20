@@ -43,12 +43,7 @@ public:
 	cScreenMovieMaker()
 	{
 		cConfig cfg;
-		DirPath dp = DirPath()
-			<< "Resources"
-			<< "Interface"
-			<< cfg.resolution.resolution()
-			<< "movie_maker_screen.xml"
-		;
+		DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "movie_maker_screen.xml";
 		m_filename = dp.c_str();
 	}
 	~cScreenMovieMaker() {}

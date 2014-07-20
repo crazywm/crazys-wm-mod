@@ -144,7 +144,7 @@ void cScreenItemManagement::init()
 	AddToListBox(filter_id, 0, gettext("All"));
 	AddToListBox(filter_id, 1, gettext("Rings"));
 	AddToListBox(filter_id, 2, gettext("Dress"));
-	AddToListBox(filter_id, 12, gettext("Under Wear"));
+	AddToListBox(filter_id, 12, gettext("Underwear"));
 	AddToListBox(filter_id, 3, gettext("Shoes"));
 	AddToListBox(filter_id, 4, gettext("Consumables"));
 	AddToListBox(filter_id, 5, gettext("Necklaces"));

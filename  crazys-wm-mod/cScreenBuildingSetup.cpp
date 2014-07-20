@@ -428,7 +428,7 @@ void cScreenBuildingSetup::check_events()
 					g_Studios.GetBrothel(0)->m_AntiPregPotions += number;
 				}
 				else
-					g_MessageQue.AddToQue(gettext("You don't have enough gold"), 0);
+					g_MessageQue.AddToQue("You don't have enough gold", 0);
 			}
 			break;
 		case BUILDING_CLINIC:
@@ -456,7 +456,7 @@ void cScreenBuildingSetup::check_events()
 					g_Clinic.GetBrothel(0)->m_AntiPregPotions += number;
 				}
 				else
-					g_MessageQue.AddToQue(gettext("You don't have enough gold"), 0);
+					g_MessageQue.AddToQue("You don't have enough gold", 0);
 			}
 			break;
 		case BUILDING_ARENA:
@@ -484,7 +484,7 @@ void cScreenBuildingSetup::check_events()
 					g_Arena.GetBrothel(0)->m_AntiPregPotions += number;
 				}
 				else
-					g_MessageQue.AddToQue(gettext("You don't have enough gold"), 0);
+					g_MessageQue.AddToQue("You don't have enough gold", 0);
 			}
 			break;
 		case BUILDING_CENTRE:
@@ -512,7 +512,7 @@ void cScreenBuildingSetup::check_events()
 					g_Centre.GetBrothel(0)->m_AntiPregPotions += number;
 				}
 				else
-					g_MessageQue.AddToQue(gettext("You don't have enough gold"), 0);
+					g_MessageQue.AddToQue("You don't have enough gold", 0);
 			}
 			break;
 		case BUILDING_HOUSE:
@@ -540,7 +540,7 @@ void cScreenBuildingSetup::check_events()
 					g_House.GetBrothel(0)->m_AntiPregPotions += number;
 				}
 				else
-					g_MessageQue.AddToQue(gettext("You don't have enough gold"), 0);
+					g_MessageQue.AddToQue("You don't have enough gold", 0);
 			}
 			break;
 		case BUILDING_FARM:
@@ -568,7 +568,7 @@ void cScreenBuildingSetup::check_events()
 					g_Farm.GetBrothel(0)->m_AntiPregPotions += number;
 				}
 				else
-					g_MessageQue.AddToQue(gettext("You don't have enough gold"), 0);
+					g_MessageQue.AddToQue("You don't have enough gold", 0);
 			}
 			break;
 		case BUILDING_BROTHEL:
@@ -597,7 +597,7 @@ void cScreenBuildingSetup::check_events()
 					g_Brothels.GetBrothel(g_CurrBrothel)->m_AntiPregPotions += number;
 				}
 				else
-					g_MessageQue.AddToQue(gettext("You don't have enough gold"), 0);
+					g_MessageQue.AddToQue("You don't have enough gold", 0);
 			}
 			break;
 			}
@@ -636,7 +636,7 @@ void cScreenBuildingSetup::check_events()
 					g_Studios.GetBrothel(0)->m_AntiPregPotions += number;
 				}
 				else
-					g_MessageQue.AddToQue(gettext("You don't have enough gold"), 0);
+					g_MessageQue.AddToQue("You don't have enough gold", 0);
 			}
 			break;
 		case BUILDING_CLINIC:
@@ -663,7 +663,7 @@ void cScreenBuildingSetup::check_events()
 					g_Clinic.GetBrothel(0)->m_AntiPregPotions += number;
 				}
 				else
-					g_MessageQue.AddToQue(gettext("You don't have enough gold"), 0);
+					g_MessageQue.AddToQue("You don't have enough gold", 0);
 			}
 			break;
 		case BUILDING_ARENA:
@@ -690,7 +690,7 @@ void cScreenBuildingSetup::check_events()
 					g_Arena.GetBrothel(0)->m_AntiPregPotions += number;
 				}
 				else
-					g_MessageQue.AddToQue(gettext("You don't have enough gold"), 0);
+					g_MessageQue.AddToQue("You don't have enough gold", 0);
 			}
 			break;
 		case BUILDING_CENTRE:
@@ -717,7 +717,7 @@ void cScreenBuildingSetup::check_events()
 					g_Centre.GetBrothel(0)->m_AntiPregPotions += number;
 				}
 				else
-					g_MessageQue.AddToQue(gettext("You don't have enough gold"), 0);
+					g_MessageQue.AddToQue("You don't have enough gold", 0);
 			}
 			break;
 		case BUILDING_HOUSE:
@@ -744,7 +744,7 @@ void cScreenBuildingSetup::check_events()
 					g_House.GetBrothel(0)->m_AntiPregPotions += number;
 				}
 				else
-					g_MessageQue.AddToQue(gettext("You don't have enough gold"), 0);
+					g_MessageQue.AddToQue("You don't have enough gold", 0);
 			}
 			break;
 		case BUILDING_FARM:
@@ -771,7 +771,7 @@ void cScreenBuildingSetup::check_events()
 					g_Farm.GetBrothel(0)->m_AntiPregPotions += number;
 				}
 				else
-					g_MessageQue.AddToQue(gettext("You don't have enough gold"), 0);
+					g_MessageQue.AddToQue("You don't have enough gold", 0);
 			}
 			break;
 		case BUILDING_BROTHEL:
@@ -799,7 +799,7 @@ void cScreenBuildingSetup::check_events()
 					g_Brothels.GetBrothel(g_CurrBrothel)->m_AntiPregPotions += number;
 				}
 				else
-					g_MessageQue.AddToQue(gettext("You don't have enough gold"), 0);
+					g_MessageQue.AddToQue("You don't have enough gold", 0);
 			}
 			break;
 			break;

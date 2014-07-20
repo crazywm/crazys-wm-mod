@@ -60,12 +60,7 @@ public:
 	cScreenStudioManagement()
 	{
 		cConfig cfg;
-		DirPath dp = DirPath()
-			<< "Resources"
-			<< "Interface"
-			<< cfg.resolution.resolution()
-			<< "studio_management_screen.xml"
-		;
+		DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "studio_management_screen.xml";
 		m_filename = dp.c_str();
 	}
 	~cScreenStudioManagement() {}

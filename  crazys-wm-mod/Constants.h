@@ -383,7 +383,7 @@ const unsigned int INVARMOR         = 8;	// worn on body over dresses, often une
 const unsigned int INVMISC          = 9;    // these items don't usually do anythinig just random stuff girls might buy. The ones that do, cause a constant effect without having to be equiped
 const unsigned int INVARMBAND       = 10;	// (max 2), worn around arms
 const unsigned int INVSMWEAPON      = 11;   // small weapon which can be hidden on body, (max 1)
-const unsigned int INVUNDERWEAR     = 12;  //CRAZY added this under wear (max 1)
+const unsigned int INVUNDERWEAR     = 12;  //CRAZY added this underwear (max 1)
 
 // Random objectives (well kinda random, they appear to guide the player for the win)
 const int NUM_OBJECTIVES = 10;							  // was 12 probably from when had sep Bar & Casino 

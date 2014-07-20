@@ -118,7 +118,12 @@ const char *sGirl::skill_names[] =
 	"TittySex",
 	"Medicine",
 	"Performance",
-	"Handjob"
+	"Handjob",
+	"Crafting",
+	"Herbalism",
+	"Farming",
+	"Brewing",
+	"AnimalHandling"
 };
 const char *sGirl::status_names[] =
 {
@@ -199,7 +204,7 @@ void sGirl::setup_maps()
 		skill_lookup["Herbalism"]	= SKILL_HERBALISM;
 		skill_lookup["Farming"]		= SKILL_FARMING;
 		skill_lookup["Brewing"]		= SKILL_BREWING;
-		skill_lookup["Animal Handling"]	= SKILL_ANIMALHANDLING;
+		skill_lookup["AnimalHandling"]	= SKILL_ANIMALHANDLING;
 
 		//	WD: Missing mapping for status
 		status_lookup["None"]				= STATUS_NONE; 
@@ -262,10 +267,10 @@ int sGirl::lookup_stat_code(string s)
 // END MOD
 
 class GirlPredicate_GRG : public GirlPredicate {
-	bool m_slave;
-	bool m_catacomb;
-	bool m_arena;
-	bool m_yourdaughter;
+	bool m_slave = false;
+	bool m_catacomb = false;
+	bool m_arena = false;
+	bool m_yourdaughter = false;
 public:
 	GirlPredicate_GRG(bool slave, bool catacomb, bool arena, bool daughter) {
 		m_slave = slave;
@@ -1209,7 +1214,7 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 	}
 
 	if (current->m_Human == 0)			AddTrait(newGirl, "Not Human");
-	if (current->m_YourDaughter == 0)	AddTrait(newGirl, "Your Daughter");
+	if (current->m_YourDaughter == 1)	AddTrait(newGirl, "Your Daughter");
 	
 	newGirl->m_DayJob = newGirl->m_NightJob = JOB_RESTING;
 
@@ -1269,12 +1274,12 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 
 	if (CheckVirginity(newGirl))	// `J` check random girl's virginity
 	{
-		newGirl->m_Virgin = true;
+		newGirl->m_Virgin = 1;
 		AddTrait(newGirl, "Virgin");
 	}
 	else
 	{
-		newGirl->m_Virgin = false;
+		newGirl->m_Virgin = 0;
 		RemoveTrait(newGirl, "Virgin");
 	}
 	if (newGirl->m_Stats[STAT_AGE] < 18)
@@ -1307,7 +1312,7 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 		newGirl->m_AccLevel = 5;						// pamper her
 		if (newGirl->m_Stats[STAT_OBEDIENCE] < 80)		// She starts out obedient
 			newGirl->m_Stats[STAT_OBEDIENCE] = 80;
-		if (newGirl->m_Virgin || HasTrait(newGirl, "Virgin"))
+		if (g_Girls.CheckVirginity(newGirl))
 		{		// you made sure she stayed pure
 // `J` needs work
 		}
@@ -1455,6 +1460,8 @@ void cGirls::LevelUp(sGirl* girl)
 	UpdateStat(girl, STAT_LEVEL, 1);
 
 	ss << girl->m_Realname << gettext(" levelled up to ") << girl->level() << ".";  
+	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
+	ss.str("");
 
 	// add traits
 	// MYR: One chance to get a new trait every five levels.
@@ -1508,7 +1515,6 @@ void cGirls::LevelUp(sGirl* girl)
 		// on the girl's regular message list.
 		//g_MessageQue.AddToQue(ss.str(), 0);
 	}
-	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
 }
 
 void cGirls::LevelUpStats(sGirl* girl)
@@ -2467,6 +2473,7 @@ string cGirls::GetDetailsString(sGirl* girl, bool purchase)
 	cTariff tariff;
 	stringstream ss;
 	char buffer[100];
+	int fillerlines = 0;
 
 	if(girl == 0)
 		return string("");
@@ -2504,67 +2511,62 @@ string cGirls::GetDetailsString(sGirl* girl, bool purchase)
 	data += buffer;
 	data += gettext("\n");
 
-	if(girl->m_Virgin)
-	{
-		data += gettext("She is a virgin\n");
-		AddTrait(girl, "Virgin");
-	}
-	else
-	{
-		RemoveTrait(girl, "Virgin");
-	}
-
 	data += gettext("Rebelliousness: ");
 	_itoa(girl->rebel(), buffer, 10);	// `J` changed to use updated rebel() code
 	data += buffer;
 	data += gettext("\n");
 
-	if(girl->m_States&(1<<STATUS_POISONED))
-		data += gettext("Is poisoned\n");
+	if (g_Girls.CheckVirginity(girl))
+		data += gettext("She is a virgin\n");
+	else	fillerlines++;
+
+
 	if(girl->m_States&(1<<STATUS_BADLY_POISONED))
 		data += gettext("Is badly poisoned\n");
+	else if (girl->m_States&(1 << STATUS_POISONED))
+		data += gettext("Is poisoned\n");
+	else	fillerlines++;
 
 	int to_go = cfg.pregnancy.weeks_pregnant() - girl->m_WeeksPreg;
 	if(girl->m_States&(1<<STATUS_PREGNANT))
 	{
-		//cerr << "config.weeks_preg: " << cfg.pregnancy.weeks_pregnant() << endl;
-		//cerr << "to go            : " << to_go << endl;
-
 		_itoa(to_go, buffer, 10);
 		data += gettext("Is pregnant, due: ");
 		data += buffer;
 		data += gettext(" weeks\n");
 	}
-	if(girl->m_States&(1<<STATUS_PREGNANT_BY_PLAYER))
+	else if(girl->m_States&(1<<STATUS_PREGNANT_BY_PLAYER))
 	{
-		//cerr << "config.weeks_preg: " << cfg.pregnancy.weeks_pregnant() << endl;
-		//cerr << "to go (player's) : " << to_go << endl;
-
 		_itoa(to_go, buffer, 10);
 		data += gettext("Is pregnant with your child, due: ");
 		data += buffer;
 		data += gettext(" weeks\n");
 	}
-	if(girl->m_States&(1<<STATUS_SLAVE))
-		data += gettext("Is branded a slave\n");
-	if(girl->m_States&(1<<STATUS_HAS_DAUGHTER))
-		data += gettext("Has daughter\n");
-	if(girl->m_States&(1<<STATUS_HAS_SON))
-		data += gettext("Has Son\n");
-	if(girl->m_States&(1<<STATUS_INSEMINATED))
+	else if (girl->m_States&(1 << STATUS_INSEMINATED))
 	{
 		_itoa(to_go, buffer, 10);
 		data += gettext("Is inseminated, due: ");
 		data += buffer;
 		data += gettext(" weeks\n");
 	}
-	if(girl->m_PregCooldown != 0)
+	else if (girl->m_PregCooldown != 0)
 	{
 		_itoa(((int)girl->m_PregCooldown), buffer, 10);
 		data += gettext("Cannot get pregnant for: ");
 		data += buffer;
 		data += gettext(" weeks\n");
 	}
+	else	fillerlines++;
+
+	if(girl->m_States&(1<<STATUS_SLAVE))
+		data += gettext("Is branded a slave\n");
+	else	fillerlines++;
+	if (girl->m_States&(1 << STATUS_HAS_DAUGHTER))
+		data += gettext("Has daughter\n");
+	else	fillerlines++;
+	if (girl->m_States&(1 << STATUS_HAS_SON))
+		data += gettext("Has Son\n");
+	else	fillerlines++;
 
 	if(girl->is_addict())
 		data += gettext("Has addiciton\n");
@@ -2663,6 +2665,56 @@ string cGirls::GetDetailsString(sGirl* girl, bool purchase)
 	data += buffer;
 	data += gettext("%\n");
 
+	data += gettext("Service Skills: ");
+	variable = GetSkill(girl, SKILL_SERVICE);
+	_itoa(variable, buffer, 10);
+	data += buffer;
+	data += gettext("%\n");
+
+	data += gettext("Medicine Skill: ");
+	variable = GetSkill(girl, SKILL_MEDICINE);
+	_itoa(variable, buffer, 10);
+	data += buffer;
+	data += gettext("%\n");
+
+	data += gettext("Performance Skill: ");
+	variable = GetSkill(girl, SKILL_PERFORMANCE);
+	_itoa(variable, buffer, 10);
+	data += buffer;
+	data += gettext("%\n");
+
+	data += gettext("Crafting Skill: ");
+	variable = GetSkill(girl, SKILL_CRAFTING);
+	_itoa(variable, buffer, 10);
+	data += buffer;
+	data += gettext("%\n");
+
+	data += gettext("Herbalism Skill: ");
+	variable = GetSkill(girl, SKILL_HERBALISM);
+	_itoa(variable, buffer, 10);
+	data += buffer;
+	data += gettext("%\n");
+
+	data += gettext("Farming Skill: ");
+	variable = GetSkill(girl, SKILL_FARMING);
+	_itoa(variable, buffer, 10);
+	data += buffer;
+	data += gettext("%\n");
+
+	data += gettext("Brewing Skill: ");
+	variable = GetSkill(girl, SKILL_BREWING);
+	_itoa(variable, buffer, 10);
+	data += buffer;
+	data += gettext("%\n");
+
+	data += gettext("Animal Handling Skill: ");
+	variable = GetSkill(girl, SKILL_ANIMALHANDLING);
+	_itoa(variable, buffer, 10);
+	data += buffer;
+	data += gettext("%\n");
+
+	data += gettext("\nSEX SKILLS\n");
+
 	data += gettext("Anal Sex: ");
 	variable = GetSkill(girl, SKILL_ANAL);
 	_itoa(variable, buffer, 10);
@@ -2717,56 +2769,8 @@ string cGirls::GetDetailsString(sGirl* girl, bool purchase)
 	data += buffer;
 	data += "%\n";
 
-	data += gettext("Service Skills: ");
-	variable = GetSkill(girl, SKILL_SERVICE);
-	_itoa(variable, buffer, 10);
-	data += buffer;
-	data += gettext("%\n");
-
 	data += gettext("Stripping Sex: ");
 	variable = GetSkill(girl, SKILL_STRIP);
-	_itoa(variable, buffer, 10);
-	data += buffer;
-	data += gettext("%\n");
-
-	data += gettext("Medicine Skill: ");
-	variable = GetSkill(girl, SKILL_MEDICINE);
-	_itoa(variable, buffer, 10);
-	data += buffer;
-	data += gettext("%\n");
-
-	data += gettext("Performance Skill: ");
-	variable = GetSkill(girl, SKILL_PERFORMANCE);
-	_itoa(variable, buffer, 10);
-	data += buffer;
-	data += gettext("%\n");
-
-	data += gettext("Crafting Skill: ");
-	variable = GetSkill(girl, SKILL_CRAFTING);
-	_itoa(variable, buffer, 10);
-	data += buffer;
-	data += gettext("%\n");
-
-	data += gettext("Herbalism Skill: ");
-	variable = GetSkill(girl, SKILL_HERBALISM);
-	_itoa(variable, buffer, 10);
-	data += buffer;
-	data += gettext("%\n");
-
-	data += gettext("Farming Skill: ");
-	variable = GetSkill(girl, SKILL_FARMING);
-	_itoa(variable, buffer, 10);
-	data += buffer;
-	data += gettext("%\n");
-
-	data += gettext("Brewing Skill: ");
-	variable = GetSkill(girl, SKILL_BREWING);
-	_itoa(variable, buffer, 10);
-	data += buffer;
-	data += gettext("%\n");
-
-	data += gettext("Animal Handling Skill: ");
-	variable = GetSkill(girl, SKILL_ANIMALHANDLING);
 	_itoa(variable, buffer, 10);
 	data += buffer;
 	data += gettext("%\n");
@@ -3494,9 +3498,9 @@ void cGirls::LoadGirlLegacy(sGirl* current, ifstream& ifs)
 	if(ifs.peek()=='\n') ifs.ignore(1,'\n');
 	ifs>>temp;
 	if(temp == 1)
-		current->m_Virgin = true;
+		current->m_Virgin = 1;
 	else
-		current->m_Virgin = false;
+		current->m_Virgin = 0;
 
 	// load using antipreg
 	if(ifs.peek()=='\n') ifs.ignore(1,'\n');
@@ -3701,7 +3705,7 @@ bool sGirl::LoadGirlXML(TiXmlHandle hGirl)
 	LoadSkillsXML(hGirl.FirstChild("Skills"), m_Skills, m_SkillMods, m_TempSkills);
 
 	// load virginity
-	pGirl->QueryValueAttribute<bool>("Virgin", &m_Virgin);
+	pGirl->QueryIntAttribute("Virgin", &m_Virgin);
 
 	// load using antipreg
 	pGirl->QueryValueAttribute<bool>("UseAntiPreg", &m_UseAntiPreg);
@@ -4010,9 +4014,9 @@ void sGirl::load_from_xml(TiXmlElement *el)
 	if ((pt = el->Attribute("Virgin")))
 	{
 		if (strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0)
-			m_Virgin = true;
+			m_Virgin = 1;
 		else
-			m_Virgin = false;
+			m_Virgin = 0;
 	}
 	if ((pt = el->Attribute("Catacombs")))
 	{
@@ -4424,12 +4428,12 @@ void cGirls::LoadGirlsXML(string filename)
 
 		if (CheckVirginity(girl))	// `J` check girl's virginity
 		{
-			girl->m_Virgin = true;
+			girl->m_Virgin = 1;
 			AddTrait(girl, "Virgin");
 		}
 		else
 		{
-			girl->m_Virgin = false;
+			girl->m_Virgin = 0;
 			RemoveTrait(girl, "Virgin");
 		}
 		if (girl->m_Stats[STAT_AGE] < 18)
@@ -4838,7 +4842,7 @@ int cGirls::HasItemJ(sGirl* girl, string name)	// `J` added to compare item name
 void cGirls::EquipCombat(sGirl* girl)
 {  // girl makes sure best armor and weapons are equipped, ready for combat
 	cConfig cfg;
-	if(!cfg.items.auto_combat_equip()) // this feature disabled in config?
+	if (!cfg.initial.auto_combat_equip()) // this feature disabled in config?
 		return;
 	// if she's retarded, she might refuse or forget
 	int refusal = 0;
@@ -4888,7 +4892,7 @@ void cGirls::EquipCombat(sGirl* girl)
 void cGirls::UnequipCombat(sGirl* girl)
 {  // girl unequips armor and weapons, ready for brothel work or other non-aggressive jobs	
 	cConfig cfg;
-	if(!cfg.items.auto_combat_equip()) // this feature disabled in config?
+	if (!cfg.initial.auto_combat_equip()) // this feature disabled in config?
 		return;
 	// if she's a really rough or crazy bitch, she might just keep combat gear equipped
 	int refusal = 0;
@@ -5241,7 +5245,7 @@ bool cGirls::IsItemEquipable(sGirl* girl, int num)
 	switch(girl->m_Inventory[num]->m_Type) {
 	case sInventoryItem::Ring:
 	case sInventoryItem::Dress:
-	case sInventoryItem::UnderWear:
+	case sInventoryItem::Underwear:
 	case sInventoryItem::Shoes:
 	case sInventoryItem::Necklace:
 	case sInventoryItem::Weapon:
@@ -6826,7 +6830,7 @@ bool cGirls::LoseVirginity(sGirl* girl, bool addrememberlist, bool force)
 	string traitName = "Virgin";
 	bool traitOpSuccess = false;
 
-	girl->m_Virgin = false; 
+	girl->m_Virgin = 0; 
 
 	//	Let's avoid re-inventing the wheel
 
@@ -6850,7 +6854,7 @@ bool cGirls::RegainVirginity(sGirl* girl, bool temp, bool removeitem, bool inrem
 	string traitName = "Virgin";
 	bool traitOpSuccess = false;
 
-	girl->m_Virgin = true; 
+	girl->m_Virgin = 1; 
 
 	//	Let's avoid re-inventing the wheel
 
@@ -6858,36 +6862,69 @@ bool cGirls::RegainVirginity(sGirl* girl, bool temp, bool removeitem, bool inrem
 	return traitOpSuccess;
 }
 
+
 bool cGirls::CheckVirginity(sGirl* girl)
 {
-	if (girl->m_Virgin != HasTrait(girl, "Virgin")) // `J` if both are not the same, run a few tests
+	if (HasTrait(girl, "Virgin") && girl->m_Virgin == 1) // `J` if already correct settings then return true
 	{
-		if (girl->m_Stats[STAT_AGE] < 18)
+		return true;
+	}
+	else if (HasTrait(girl, "Virgin"))	// `J` if not set correctly, set it correctly and return true
+	{
+		girl->m_Virgin = 1;
+		return true;
+	}
+	else if (girl->m_Virgin == 1)	// `J` if not set correctly, set it correctly and return true
+	{
+		AddTrait(girl, "Virgin");
+		return true;
+	}
+	else if (girl->m_Virgin == 0) // `J` if already correct settings then return false
+	{
+		return false;
+	}
+	else if (girl->m_Stats[STAT_AGE] < 18)	// `J` If she just turned 18 she should not legally have had sex yet
+	{
+		girl->m_Stats[STAT_AGE] = 18;
+		girl->m_Virgin = 1;
+		AddTrait(girl, "Virgin");
+		return true;
+	}
+	else	// `J` average all sex skills plus age
+	{
+		int totalsex = girl->m_Stats[STAT_AGE];
+		int div = 1;
+		for (u_int i = 0; i < NUM_SKILLS; i++)
 		{
-			girl->m_Stats[STAT_AGE] = 18;
-			girl->m_Virgin = true;
-		}
-		else	// `J` average all sex skills plus age
-		{
-			int avg = girl->m_Stats[STAT_AGE];
-			int div = 1;
-			for (u_int i = 0; i < NUM_SKILLS; i++)
+			// `J` removed nonsex from virginity check
+			if (i != SKILL_SERVICE && i != SKILL_MAGIC && i != SKILL_COMBAT && i != SKILL_MEDICINE && i != SKILL_PERFORMANCE && 
+				i != SKILL_CRAFTING && i != SKILL_HERBALISM && i != SKILL_FARMING && i != SKILL_BREWING && i != SKILL_ANIMALHANDLING)
 			{
-				// `J` removed nonsex from virginity check
-				if (i != SKILL_SERVICE && i != SKILL_MAGIC && i != SKILL_COMBAT && i != SKILL_MEDICINE && i != SKILL_PERFORMANCE && i != SKILL_CRAFTING && i != SKILL_HERBALISM && i != SKILL_FARMING && i != SKILL_BREWING && i != SKILL_ANIMALHANDLING)
-				{
-					avg += girl->m_Skills[i];
-					div++;	// `J` added to allow new skills
-				}
+				totalsex += girl->m_Skills[i];
+				div++;	// `J` added to allow new skills
 			}
-			avg = avg/div;	// `J` fixed to allow new skills
-
-			if (avg < 20)		girl->m_Virgin = true;
-			else if (avg > 40)	girl->m_Virgin = false;
-			else	girl->m_Virgin = HasTrait(girl, "Virgin");
+		}
+		int avg = totalsex / div;	// `J` fixed to allow new skills
+		if (avg < 20)
+		{
+			girl->m_Virgin = 1;
+			AddTrait(girl, "Virgin");
+			return true;
+		}
+		else
+		{
+			girl->m_Virgin = 0;
+			return false;
 		}
 	}
-	return (girl->m_Virgin);
+	if (girl->m_Virgin == 1)
+		AddTrait(girl, "Virgin");
+	else
+	{
+		girl->m_Virgin = 0;
+		RemoveTrait(girl, "Virgin");
+	}
+	return (girl->m_Virgin == 1);
 }
 
 void cGirls::AddRememberedTrait(sGirl* girl, string name)
@@ -7347,6 +7384,22 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 			message += GetRandomLesString();
 			//" came many times with her female customer, soaking the room in their juices.";
 		break;
+
+	case SKILL_STRIP:
+	default:
+		if (GetSkill(girl, SexType) < 20)
+			message += gettext(" shyly took her clothes off infront of the customer.");
+		else if (GetSkill(girl, SexType) < 40)
+			message += gettext(" coyly took her clothes off infront of the customer.");
+		else if (GetSkill(girl, SexType) < 60)
+			message += gettext(" hotly took her clothes off infront of the customer.");
+		else if (GetSkill(girl, SexType) < 80)
+			message += gettext(" proudly took her clothes off infront of the customer.");
+		else
+			//message += GetRandomStripString();
+			message += gettext(" joyously took her clothes off infront of the customer.");
+
+		break;
 	}
 
 	// WD:	customer HAPPINESS changes complete now cap the stat to 100
@@ -7539,15 +7592,41 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
  *		since there's more than one partner involved
  */
 		contraception = girl->calc_pregnancy(customer, good, 1.5);
+		break;
+
+	case SKILL_STRIP:
+	default:
+		if (GetSkill(girl, SexType) <= 30)	// if inexperienced then will get hurt
+		{
+			message += gettext("\nShe got tangled in her clothes and fell on her face.");
+			UpdateStat(girl, STAT_HAPPINESS, -2);
+			UpdateStat(girl, STAT_SPIRIT, -3);
+			UpdateStat(girl, STAT_CONFIDENCE, -1);
+			UpdateStat(girl, STAT_HEALTH, -3);
+		}
+
+		break;
+
 	}
 
 	// lose virginity unless it was anal sex -- or lesbian, or Oral also customer is happy no matter what. -PP
-	if(girl->m_Virgin)
+	if (g_Girls.CheckVirginity(girl))
 	{
+		/*
+		SexType == SKILL_ANAL			||
+		SexType == SKILL_BDSM			||
+		SexType == SKILL_NORMALSEX		||
+		SexType == SKILL_BEASTIALITY	||
+		SexType == SKILL_GROUP			||
+		SexType == SKILL_LESBIAN		||
+		SexType == SKILL_STRIP			||
+		SexType == SKILL_ORALSEX		||
+		SexType == SKILL_TITTYSEX		||
+		SexType == SKILL_HANDJOB		||
+		*/
 		message += gettext(" The customer was overjoyed that she was a virgin.");
 		customer->m_Stats[STAT_HAPPINESS] = 100;
-		if(SexType != SKILL_ANAL && SexType != SKILL_LESBIAN && SexType != SKILL_ORALSEX && SexType != SKILL_TITTYSEX && SexType != SKILL_HANDJOB)
-//			girl->m_Virgin = false;
+		if (SexType == SKILL_BDSM || SexType == SKILL_NORMALSEX || SexType == SKILL_BEASTIALITY || SexType == SKILL_GROUP)
 		g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
 	}
 
@@ -12093,7 +12172,7 @@ bool cGirls::CalcPregnancy(sGirl* girl, int chance, int type, int stats[NUM_STAT
  *	are kind of cool, virgins have a +10 to their pregnancy
  *	chance
  */
-	if(girl->m_Virgin && chance > 0) {
+	if(g_Girls.CheckVirginity(girl) && chance > 0) {
 		chance += 10;
 	}
 /*
@@ -13435,6 +13514,11 @@ CSurface* cGirls::GetImageSurface(sGirl* girl, int ImgType, bool random, int& im
 	{
 		return girl->m_GirlImages->m_Images[IMGTYPE_PROFILE].GetImageSurface(random, img);
 	}
+	if (m_DefImages->m_Images[IMGTYPE_PROFILE].m_NumImages)
+	{
+		return m_DefImages->m_Images[IMGTYPE_PROFILE].GetImageSurface(random, img);
+	}
+
 	return 0;		// would be failure to find & put image on surface, but errcode not passed back
 }
 
@@ -13753,7 +13837,7 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 	}
 	else if (detailName == "Virgin")
 	{
-		if(m_Virgin)
+		if (g_Girls.CheckVirginity(this))
 		{
 			ss << gettext("Yes");
 		}
