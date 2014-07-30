@@ -105,3 +105,10 @@ void cColor::HexToSDLColor(string HexColor, SDL_Color* SDLColor)
 	SDLColor->b = convertFromHex(blueString);
 }
 
+void cColor::RGBToSDLColor(SDL_Color* SDLColor, int r = 0, int g = 0, int b = 0)
+{
+	SDLColor->r = r;
+	SDLColor->g = g;
+	SDLColor->b = b;
+}
+

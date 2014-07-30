@@ -790,7 +790,7 @@ sScript *cGameScript::Script_GivePlayerRandomSpecialItem(sScript *Script)
 	bool ok = false;
 	while(!ok)
 	{
-		if(item->m_Rarity >= 3)
+		if (item->m_Rarity >= RARITYSHOP05)
 			ok = true;
 		else
 		{

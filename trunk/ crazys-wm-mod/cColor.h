@@ -34,5 +34,6 @@ public:
 	Uint8 convertFromHex(string hex);
 
 	void HexToSDLColor(string HexColor, SDL_Color* SDLColor);
+	void RGBToSDLColor(SDL_Color* SDLColor, int r, int g, int b);
 };
 #endif

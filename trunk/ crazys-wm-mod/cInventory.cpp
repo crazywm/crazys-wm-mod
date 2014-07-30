@@ -513,19 +513,17 @@ void cInventory::UpdateShop()
 	for(int i=0; i<NUM_SHOPITEMS; i++)
 	{
 		sInventoryItem* item = GetRandomItem();
-		while(item == 0)
-			item = GetRandomItem();
+		while(item == 0) item = GetRandomItem();
 		if(item->m_Infinite == 1 && CheckShopItem(item->m_Name) != -1)
 		{
 			i--;
 			continue;
 		}
 
-		if(item == 0)
-			break;
-		if(item->m_Rarity == 4 || item->m_Rarity == 5)
+		if(item == 0) break;
+		if(item->m_Rarity > 3)
 		{
-			while(item->m_Rarity == 4 || item->m_Rarity == 5)
+			while(item->m_Rarity > 3)
 			{
 				item = GetRandomItem();
 				while(item == 0)
@@ -533,13 +531,13 @@ void cInventory::UpdateShop()
 			}
 		}
 
-		if(item->m_Rarity == 0)
+		if (item->m_Rarity == RARITYCOMMON)
 		{
 			m_ShopItems[i] = item;
 			m_NumShopItems++;
 			continue;
 		}
-		else if(item->m_Rarity == 1)
+		else if (item->m_Rarity == RARITYSHOP50)
 		{
 			if(((g_Dice%100)+1) <= 50)
 			{
@@ -553,7 +551,7 @@ void cInventory::UpdateShop()
 				continue;
 			}
 		}
-		else if(item->m_Rarity == 2)
+		else if (item->m_Rarity == RARITYSHOP25)
 		{
 			if(((g_Dice%100)+1) <= 25)
 			{
@@ -567,7 +565,7 @@ void cInventory::UpdateShop()
 				continue;
 			}
 		}
-		else if(item->m_Rarity == 3)
+		else if (item->m_Rarity == RARITYSHOP05)
 		{
 			if(((g_Dice%100)+1) <= 5)
 			{
@@ -1160,10 +1158,10 @@ bool cInventory::LoadItemsXML(string filename)
 	cConfig cfg;
 
 	TiXmlDocument doc(filename);
-	if(!doc.LoadFile()) {
-		g_LogFile.os()	<< "can't load item file " << filename << endl;
-        g_LogFile.os()    << "Error: line " << doc.ErrorRow() << ", col " << doc.ErrorCol()
-			<< ": " << doc.ErrorDesc() << endl;
+	if(!doc.LoadFile()) 
+	{
+		g_LogFile.os()	<< "can't load item file " << filename << endl; 
+		g_LogFile.os() << "Error: line " << doc.ErrorRow() << ", col " << doc.ErrorCol() << ": " << doc.ErrorDesc() << endl;
 		return false;
 	}
 

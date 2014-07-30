@@ -416,11 +416,11 @@ void cInterfaceWindow::CreateWindow(int x, int y, int width, int height, int Bor
 {
 	m_xRatio = 1.0f;
 	m_yRatio = 1.0f;
-
-	if(_G.g_ScreenWidth != 800)
-		m_xRatio = ((float)_G.g_ScreenWidth / (float)800);
-	if(_G.g_ScreenHeight != 600)
-		m_yRatio = ((float)_G.g_ScreenHeight / (float)600);
+	cConfig cfg;
+	if (_G.g_ScreenWidth != cfg.resolution.scalewidth())
+		m_xRatio = ((float)_G.g_ScreenWidth / (float)cfg.resolution.scalewidth());
+	if (_G.g_ScreenHeight != cfg.resolution.scaleheight())
+		m_yRatio = ((float)_G.g_ScreenHeight / (float)cfg.resolution.scaleheight());
 
 	width = (int)((float)width*m_xRatio);
 	height = (int)((float)height*m_yRatio);
@@ -829,20 +829,8 @@ void cInterfaceWindowXML::load()
 {
 	TiXmlDocument doc(m_filename);
 	if(!doc.LoadFile()) {
-		g_LogFile.ss()
-			<< "cInterfaceWindowXML: "
-			<< "Can't load screen definition from '"
-			<< m_filename << "'" << endl
-		;
-		g_LogFile.ss()
-			<< "Error: line "
-			<< doc.ErrorRow()
-			<< ", col "
-			<< doc.ErrorCol()
-			<< ": "
-			<< doc.ErrorDesc()
-			<< endl
-		;
+		g_LogFile.ss() << "cInterfaceWindowXML: " << "Can't load screen definition from '" << m_filename << "'" << endl;
+		g_LogFile.ss() << "Error: line " << doc.ErrorRow() << ", col " << doc.ErrorCol() << ": " << doc.ErrorDesc() << endl;
 		g_LogFile.ssend();
 		return;
 	}
@@ -945,10 +933,8 @@ void cInterfaceWindowXML::define_widget(TiXmlElement *base_el)
 /*
  *	first get the widget name 
  */
-	if(!xu.get_att(base_el, "Widget", widget_name)) {
-		l.ss()	<< "Error in " << m_filename << ": "
-			<< "'Define' tag with no 'Widget' attribute"
-		;
+	if (!xu.get_att(base_el, "Widget", widget_name)) {
+		l.ss() << "Error in " << m_filename << ": " << "'Define' tag with no 'Widget' attribute";
 		l.ssend();
 		return;
 	}
@@ -1161,6 +1147,7 @@ void cInterfaceWindowXML::add_widget(string widget_name,int x,int y,string seq)
 		}
 	}
 }
+
 
 void cInterfaceWindowXML::read_window_definition(TiXmlElement *el)
 {

@@ -31,15 +31,8 @@ static map<string,int> trigger_types;
 
 void cTriggerList::AddTrigger(cTrigger* trigger)
 {
-	if(m_Triggers)
-	{
-		m_Last->m_Next = trigger;
-		m_Last = trigger;
-	}
-	else
-	{
-		m_Triggers = m_Last = trigger;
-	}
+	if (m_Triggers)	{ m_Last->m_Next = m_Last = trigger; }
+	else			{ m_Triggers = m_Last = trigger; }
 	m_NumTriggers++;
 }
 
@@ -195,71 +188,50 @@ bool cTrigger::LoadTriggerXML(TiXmlHandle hTrigger)
 	// load additional data
 	if(m_Type == TRIGGER_SKILL)
 	{
-		// skill/stat id
-		pTrigger->QueryIntAttribute("Skill", &m_Values[0]);
-
-		// what value it must reach
-		pTrigger->QueryIntAttribute("Type", &m_Values[1]);
+		pTrigger->QueryIntAttribute("Skill", &m_Values[0]);			// skill/stat id
+		pTrigger->QueryIntAttribute("Type", &m_Values[1]);			// what value it must reach
 	}
 	else if(m_Type == TRIGGER_STAT)
 	{
-		// skill/stat id
-		pTrigger->QueryIntAttribute("Stat", &m_Values[0]);
-
-		// what value it must reach
-		pTrigger->QueryIntAttribute("Value", &m_Values[1]);
+		pTrigger->QueryIntAttribute("Stat", &m_Values[0]);			// skill/stat id
+		pTrigger->QueryIntAttribute("Value", &m_Values[1]);			// what value it must reach
 	}
 	else if(m_Type == TRIGGER_STATUS)
 	{
-		// status number id
-		pTrigger->QueryIntAttribute("Status", &m_Values[0]);
-
-		// 0 means has status, 1 means doesn't have status
-		pTrigger->QueryIntAttribute("Value", &m_Values[1]);
+		pTrigger->QueryIntAttribute("Status", &m_Values[0]);		// status number id
+		pTrigger->QueryIntAttribute("Value", &m_Values[1]);			// 0 means has status, 1 means doesn't have status
 	}
 	else if(m_Type == TRIGGER_MONEY)
 	{
-		// 0 means has less than, 1 means greater than
-		pTrigger->QueryIntAttribute("Money", &m_Values[0]);
-
-		// The amount of money to have
-		pTrigger->QueryIntAttribute("Value", &m_Values[1]);
+		pTrigger->QueryIntAttribute("Money", &m_Values[0]);			// 0 means has less than, 1 means greater than
+		pTrigger->QueryIntAttribute("Value", &m_Values[1]);			// The amount of money to have
 	}
 	else if(m_Type == TRIGGER_PLAYERMONEY)
 	{
-		// 0 means has less than, 1 means greater than
-		pTrigger->QueryIntAttribute("PlayerMoney", &m_Values[0]);
-
-		// The amount of money to have
-		pTrigger->QueryIntAttribute("Value", &m_Values[1]);
+		pTrigger->QueryIntAttribute("PlayerMoney", &m_Values[0]);	// 0 means has less than, 1 means greater than
+		pTrigger->QueryIntAttribute("Value", &m_Values[1]);			// The amount of money to have
 	}
 	else if(m_Type == TRIGGER_MEET)
 	{
-		// 0 means meet in town, 1 in catacombs, 2 means at slave market
+		// 0 means meet in town, 1 in catacombs, 2 means at slave market, 3 in Arena
 		pTrigger->QueryIntAttribute("Meet", &m_Values[0]);
 	}
 	else if(m_Type == TRIGGER_TALK)
 	{
-		// 0 means meet in dungeon, 1 in details screen
-		pTrigger->QueryIntAttribute("Talk", &m_Values[0]);
+		pTrigger->QueryIntAttribute("Talk", &m_Values[0]);			// 0 means meet in dungeon, 1 in details screen
 	}
 	else if(m_Type == TRIGGER_WEEKSPAST)
 	{
-		// number of weeks that must pass
-		pTrigger->QueryIntAttribute("WeeksPassed", &m_Values[0]);
+		pTrigger->QueryIntAttribute("WeeksPassed", &m_Values[0]);	// number of weeks that must pass
 	}
 	else if(m_Type == TRIGGER_GLOBALFLAG)
 	{
-		// what global flag must be set
-		pTrigger->QueryIntAttribute("Flag", &m_Values[0]);
+		pTrigger->QueryIntAttribute("Flag", &m_Values[0]);			// what global flag must be set
 	}
 	else if(m_Type == TRIGGER_SCRIPTRUN)
 	{
-		// Get the 1st req script to have run
-		pTrigger->QueryIntAttribute("Script1", &m_Values[0]);
-
-		// Get the 2nd req script to have run
-		pTrigger->QueryIntAttribute("Script2", &m_Values[1]);
+		pTrigger->QueryIntAttribute("Script1", &m_Values[0]);		// Get the 1st req script to have run
+		pTrigger->QueryIntAttribute("Script2", &m_Values[1]);		// Get the 2nd req script to have run
 	}
 
 	// load the amount of times it has already been triggered
@@ -483,176 +455,105 @@ bool cTriggerList::HasRun(int num)
 void cTriggerList::ProcessTriggers()
 {
 	cTrigger* curr = m_Triggers;
-	while(curr)
+	while (curr)
 	{
-		if(curr->m_Once > 0)
+		if (curr->m_Once > 0 || curr->m_Triggered == curr->m_Once)
 		{
-			if(curr->m_Triggered == curr->m_Once)
-			{
-				curr = curr->m_Next;
-				continue;
-			}
+			curr = curr->m_Next;
+			continue;
 		}
-
-		switch(curr->m_Type)
+		switch (curr->m_Type)
 		{
 		case TRIGGER_RANDOM:
-			{
-				if(curr->m_Chance == 100)
-					AddToQue(curr);
-				else if(((g_Dice%100)+1) <= curr->m_Chance)
-					AddToQue(curr);
-			}break;
+		{
+			if (curr->m_Chance == 100 || ((g_Dice % 100) + 1) <= curr->m_Chance)
+				AddToQue(curr);
+		}	break;
 
 		case TRIGGER_SKILL:
-			{
-				if(m_GirlTarget)
-				{
-					if(g_Girls.GetSkill(m_GirlTarget, curr->m_Values[0]) >= curr->m_Values[1])
-					{
-						if(curr->m_Chance == 100)
-							AddToQue(curr);
-						else if(((g_Dice%100)+1) <= curr->m_Chance)
-							AddToQue(curr);
-					}
-				}
-			}break;
+		{
+			if (m_GirlTarget
+				&& g_Girls.GetSkill(m_GirlTarget, curr->m_Values[0]) >= curr->m_Values[1]
+				&& (curr->m_Chance == 100 || ((g_Dice % 100) + 1) <= curr->m_Chance))
+				AddToQue(curr);
+		}	break;
 
 		case TRIGGER_STAT:
-			{
-				if(m_GirlTarget)
-				{
-					if(g_Girls.GetStat(m_GirlTarget, curr->m_Values[0]) >= curr->m_Values[1])
-					{
-						if(curr->m_Chance == 100)
-							AddToQue(curr);
-						else if(((g_Dice%100)+1) <= curr->m_Chance)
-							AddToQue(curr);
-					}
-				}
-			}break;
+		{
+			if (m_GirlTarget
+				&& g_Girls.GetStat(m_GirlTarget, curr->m_Values[0]) >= curr->m_Values[1]
+				&& (curr->m_Chance == 100 || ((g_Dice % 100) + 1) <= curr->m_Chance))
+				AddToQue(curr);
+		}	break;
 
 		case TRIGGER_PLAYERMONEY:
-			{
-				bool doit;
-/*
- *				values[0] says to do it when gold is < value[1]
- *				or >= value[1], depending
- *
- *				so let's note the result ofthe > comparison
- */
-				bool lt = (g_Gold.ival() < curr->m_Values[1]);
-/*
- *				now we either use that directly, or inverted
- *				depending on values[1]
- */
-				if(curr->m_Values[0] == 0)	doit = lt;
-				else 				doit = !lt; 
-/*
- *				if the doit flag is set, we're done
- */
-				if(!doit) break;
-/*
- *				check the % - if it fails we're also done
- */
-				if(!g_Dice.percent(curr->m_Chance)) {
-					break;
-				}
-/*
- *				whoops, almost noting left to do! :)
- */
+		{
+			bool doit;
+			/*
+			 *				values[0] says to do it when gold is < value[1]
+			 *				or >= value[1], depending
+			 *
+			 *				so let's note the result ofthe > comparison
+			 */
+			bool lt = (g_Gold.ival() < curr->m_Values[1]);
+			/*
+			 *				now we either use that directly, or inverted
+			 *				depending on values[1]
+			 */
+			if (curr->m_Values[0] == 0)	
+				doit = lt;
+			else 						
+				doit = !lt;
+			/*
+			 *				if the doit flag is set, we're done
+			 *				check the % - if it fails we're also done
+			 */
+			if (doit && g_Dice.percent(curr->m_Chance)) 
 				AddToQue(curr);
-			}break;
+		}	break;
 
 		case TRIGGER_MONEY:
-			{
-				if(!m_GirlTarget) {
-					break;
-				}
-				bool doit;
-				if(curr->m_Values[0] == 0) {
-					doit = (m_GirlTarget->m_Money < 
-						curr->m_Values[1]
-					);
-				}
-				else {
-					doit = (m_GirlTarget->m_Money >= 
-						curr->m_Values[1]
-					);
-				}
-				if(!doit) {
-					break;
-				}
-				if(!g_Dice.percent(curr->m_Chance)) {
-					break;
-				}
-				AddToQue(curr);
-			}break;
+		{
+			if (!m_GirlTarget) { break; }
+			bool doit;
+			if (curr->m_Values[0] == 0)	
+				doit = (m_GirlTarget->m_Money < curr->m_Values[1]);
+			else 						
+				doit = (m_GirlTarget->m_Money >= curr->m_Values[1]);
+			if (doit && g_Dice.percent(curr->m_Chance)) AddToQue(curr);
+		}	break;
 
 		case TRIGGER_WEEKSPAST:
-			{
-				if(m_GirlTarget)
-				{
-					if(m_GirlTarget->m_WeeksPast >= (unsigned long)curr->m_Values[0])
-					{
-						if(curr->m_Chance == 100)
-							AddToQue(curr);
-						else if(((g_Dice%100)+1) <= curr->m_Chance)
-							AddToQue(curr);
-					}
-				}
-			}break;
+		{
+			if (m_GirlTarget
+				&& m_GirlTarget->m_WeeksPast >= (unsigned long)curr->m_Values[0]
+				&& (curr->m_Chance == 100 || ((g_Dice % 100) + 1) <= curr->m_Chance))
+				AddToQue(curr);
+		}	break;
 
 		case TRIGGER_SCRIPTRUN:
-			{
-				if(HasRun(curr->m_Values[0]) && HasRun(curr->m_Values[1]))
-				{
-					if(curr->m_Chance == 100)
-						AddToQue(curr);
-					else if(((g_Dice%100)+1) <= curr->m_Chance)
-						AddToQue(curr);
-				}
-			}break;
+		{
+			if (HasRun(curr->m_Values[0]) && HasRun(curr->m_Values[1])
+				&& (curr->m_Chance == 100 || ((g_Dice % 100) + 1) <= curr->m_Chance))
+				AddToQue(curr);
+		}	break;
 
 		case TRIGGER_STATUS:
+		{
+			if (m_GirlTarget)
 			{
-				if(m_GirlTarget)
-				{
-					if(m_GirlTarget->m_States&(1<<curr->m_Values[0]))
-					{
-						if(curr->m_Values[1] == 1)
-						{
-							if(curr->m_Chance == 100)
-								AddToQue(curr);
-							else if(((g_Dice%100)+1) <= curr->m_Chance)
-								AddToQue(curr);
-						}
-					}
-					else
-					{
-						if(curr->m_Values[1] == 0)
-						{
-							if(curr->m_Chance == 100)
-								AddToQue(curr);
-							else if(((g_Dice%100)+1) <= curr->m_Chance)
-								AddToQue(curr);
-						}
-					}
-				}
-			}break;
+				int t = 0; if (m_GirlTarget->m_States&(1 << curr->m_Values[0])) t = 1;
+				if (curr->m_Values[1] == t && (curr->m_Chance == 100 || ((g_Dice % 100) + 1) <= curr->m_Chance))
+					AddToQue(curr);
+			}
+		}	break;
 
 		case TRIGGER_GLOBALFLAG:
-			{
-				if(CheckGameFlag(curr->m_Values[0]))
-				{
-					if(curr->m_Chance == 100)
-						AddToQue(curr);
-					else if(((g_Dice%100)+1) <= curr->m_Chance)
-						AddToQue(curr);
-				}
-			}break;
+		{
+			if (CheckGameFlag(curr->m_Values[0]) && (curr->m_Chance == 100 || ((g_Dice % 100) + 1) <= curr->m_Chance))
+				AddToQue(curr);
+		}	break;
 		}
-
 		curr = curr->m_Next;
 	}
 }
@@ -723,11 +624,9 @@ void cTriggerList::RemoveFromQue(cTrigger* trigger)
 }
 //end mod
 cTriggerQue* cTriggerList::GetNextQueItem()
-{//mod
-	if(!m_TriggerQueue.empty())
-	return m_TriggerQueue.front();
-	else 
-		return 0;
+{	//mod
+	if(!m_TriggerQueue.empty())	return m_TriggerQueue.front();
+	else						return 0;
 	//end mod
 }
 
@@ -740,8 +639,7 @@ void cTriggerList::Free()
 		m_TriggerQueue.pop();
 	}
 
-	if(m_Triggers)
-		delete m_Triggers;
+	if(m_Triggers)	delete m_Triggers;
 	m_Last=m_CurrTrigger=m_Triggers=0;
 	m_NumTriggers = 0;
 	while(!m_TriggerQueue.empty())
@@ -755,8 +653,7 @@ void cTriggerList::Free()
 	m_StartQue=m_EndQue=0;
 	*/
 
-	if(m_GirlTarget)
-		m_GirlTarget = 0;
+	if (m_GirlTarget) m_GirlTarget = 0;
 	//end mod
 }
 
@@ -767,11 +664,10 @@ void cTriggerList::ProcessNextQueItem(string fileloc)
 /*
  *	nothing to do - go home
  */
- 	if(!top) {
-		return;
-	}
+	if (!top) { return; }
 
-	if(top->m_Trigger->m_Script != "") {
+	if(top->m_Trigger->m_Script != "") 
+	{
 		cScriptManager sm;
 
 		string file = fileloc;
@@ -785,19 +681,19 @@ void cTriggerList::ProcessNextQueItem(string fileloc)
 
 static void init_trigger_types()
 {
-	trigger_types["Random"]	= TRIGGER_RANDOM;
-	trigger_types["Shopping"]	= TRIGGER_SHOPPING;
-	trigger_types["Skill"]	= TRIGGER_SKILL;
-	trigger_types["Stat"]	= TRIGGER_STAT;
-	trigger_types["Status"]	= TRIGGER_STATUS;
-	trigger_types["Money"]	= TRIGGER_MONEY;
-	trigger_types["Meet"]	= TRIGGER_MEET;
-	trigger_types["Talk"]	= TRIGGER_TALK;
-	trigger_types["WeeksPast"]	= TRIGGER_WEEKSPAST;
-	trigger_types["GlobalFlag"]= TRIGGER_GLOBALFLAG;
-	trigger_types["ScriptRun"]	= TRIGGER_SCRIPTRUN;
-	trigger_types["Kidnapped"]	= TRIGGER_KIDNAPPED;
-	trigger_types["PlayerMoney"]= TRIGGER_PLAYERMONEY;
+	trigger_types["Random"] = TRIGGER_RANDOM;
+	trigger_types["Shopping"] = TRIGGER_SHOPPING;
+	trigger_types["Skill"] = TRIGGER_SKILL;
+	trigger_types["Stat"] = TRIGGER_STAT;
+	trigger_types["Status"] = TRIGGER_STATUS;
+	trigger_types["Money"] = TRIGGER_MONEY;
+	trigger_types["Meet"] = TRIGGER_MEET;
+	trigger_types["Talk"] = TRIGGER_TALK;
+	trigger_types["WeeksPast"] = TRIGGER_WEEKSPAST;
+	trigger_types["GlobalFlag"] = TRIGGER_GLOBALFLAG;
+	trigger_types["ScriptRun"] = TRIGGER_SCRIPTRUN;
+	trigger_types["Kidnapped"] = TRIGGER_KIDNAPPED;
+	trigger_types["PlayerMoney"] = TRIGGER_PLAYERMONEY;
 }
 
 static int lookup_type_code(string s)
@@ -806,9 +702,7 @@ static int lookup_type_code(string s)
  *	be useful to be able to log unrecognised
  *	type names here
  */
-	if(trigger_types.find(s) == trigger_types.end()) {
-		return -1;
-	}
+	if (trigger_types.find(s) == trigger_types.end()) { return -1; }
 	return trigger_types[s];
 }
 
@@ -826,10 +720,9 @@ int cTrigger::get_type_from_xml(TiXmlElement *el)
 /*
  *	if we didn't find it, we can't process the trigger
  */
- 	if(pt == 0) {
-		ss << "Error: Trigger with no 'Type' '"
-		   << "attribute - skipping"
-		;
+ 	if(pt == 0) 
+	{
+		ss << "Error: Trigger with no 'Type' attribute - skipping";
 		g_LogFile.write(ss.str());
 		return -1;
 	}
@@ -838,10 +731,9 @@ int cTrigger::get_type_from_xml(TiXmlElement *el)
  *	then we are similarly stymied
  */
 	int code = lookup_type_code(pt);
- 	if(code == -1) {
-		ss << "Error: Trigger with unrecognised type: '"
-		   << pt << "'"
-		;
+ 	if(code == -1) 
+	{
+		ss << "Error: Trigger with unrecognised type: '" << pt << "'";
 		g_LogFile.write(ss.str());
 		return -1;
 	}
@@ -859,36 +751,27 @@ int cTrigger::get_chance_from_xml(TiXmlElement *el)
  *	"not found" is not an error here
  *	we just default to 100%
  */
-	if(pt == 0) {
-		return 100;
-	}
+	if (pt == 0) { return 100; }
 /*
  *	if we do have a string, we may need to
  *	trim away a trailing "%"
  */
  	string s = pt;
 	size_t siz = s.find("%");
-	if(siz != string::npos) {
-		s.erase(siz, 1);
-	}
+	if (siz != string::npos) { s.erase(siz, 1); }
 /*
  *	now, we should have a string with a number in it
  */
  	int pc = 0;
 	istringstream iss(s);
-	if(iss >> pc) {
-		return pc;
-	}
+	if (iss >> pc) { return pc; }
 /*
  *	If we get here, whatever is left in the
  *	string didn't look like a number
  *
  *	Let's log an error and then assume 100%
  */
-	ss << "Error: malformed chance value '"
-	   << s
-	   << "' in Trigger: assuming 100%"
-	   ;
+	ss << "Error: malformed chance value '" << s << "' in Trigger: assuming 100%";
 	g_LogFile.write(ss.str());
 	return 100;
 }
@@ -901,27 +784,18 @@ bool cTrigger::get_once_from_xml(TiXmlElement *el)
  *	"not found" is not an error here
  *	default is false
  */
-	if(pt == 0) {
-		return false;
-	}
+	if (pt == 0) { return false; }
 /*
  *	we now expect "True" or "False"
  */
 	string s = pt;
- 	if(s == "True" || s == "true") {
-		return true;
-	}
-	if(s == "False" || s == "false") {
-		return false;
-	}
+	if (s == "True" || s == "true") { return true; }
+	if (s == "False" || s == "false") { return false; }
 /*
  *	Error handling time. Assume false, but log
  *	an error
  */
-	ss << "Error: malformed OnceOnly value '"
-	   << s
-	   << "' in Trigger: assuming False"
-	   ;
+	ss << "Error: malformed OnceOnly value '" << s << "' in Trigger: assuming False";
 	g_LogFile.write(ss.str());
 	return false;
 }
@@ -935,10 +809,9 @@ int cTrigger::load_skill_from_xml(TiXmlElement *el)
  *	get the attribute value
  */
 	pt = el->Attribute("Skill");
-	if(!pt) {
-		g_LogFile.write(
-			"Error: No skill specified for skill trigger: Ignoring."
-		);
+	if(!pt) 
+	{
+		g_LogFile.write("Error: No skill specified for skill trigger: Ignoring.");
 		return -1;
 	}
 /*
@@ -948,12 +821,9 @@ int cTrigger::load_skill_from_xml(TiXmlElement *el)
 /*
  *	make sure what we have is actually a skill name
  */
-	if(code == -1) {
-		ss << "Error: unknown skill name '"
-		   << pt
-		   << "' in trigger definition: "
-		   << "Ignoring."
-		;
+	if(code == -1) 
+	{
+		ss << "Error: unknown skill name '" << pt << "' in trigger definition: " << "Ignoring.";
 		g_LogFile.write(ss.str());
 		return -1;
 	}
@@ -966,10 +836,9 @@ int cTrigger::load_skill_from_xml(TiXmlElement *el)
  *	now the threshold value
  */
  	pt = el->Attribute("Threshold", &ival);
-	if(pt == 0) {
-		g_LogFile.write(
-			"Error: no threshold value for skill trigger"
-		);
+	if(pt == 0) 
+	{
+		g_LogFile.write("Error: no threshold value for skill trigger");
 		return -1;
 	}
 	this->threshold(ival);
@@ -985,10 +854,9 @@ int cTrigger::load_stat_from_xml(TiXmlElement *el)
  *	get the attribute value
  */
 	pt = el->Attribute("Stat");
-	if(!pt) {
-		g_LogFile.write(
-			"Error: No stat specified for stat trigger: Ignoring."
-		);
+	if(!pt) 
+	{
+		g_LogFile.write("Error: No stat specified for stat trigger: Ignoring.");
 		return -1;
 	}
 /*
@@ -998,12 +866,9 @@ int cTrigger::load_stat_from_xml(TiXmlElement *el)
 /*
  *	make sure what we have is actually a stat name
  */
-	if(code == -1) {
-		ss << "Error: unknown stat name '"
-		   << pt
-		   << "' in trigger definition: "
-		   << "Ignoring."
-		;
+	if(code == -1) 
+	{
+		ss << "Error: unknown stat name '" << pt << "' in trigger definition: " << "Ignoring.";
 		g_LogFile.write(ss.str());
 		return -1;
 	}
@@ -1016,10 +881,9 @@ int cTrigger::load_stat_from_xml(TiXmlElement *el)
  *	now the threshold value
  */
  	pt = el->Attribute("Threshold", &ival);
-	if(pt == 0) {
-		g_LogFile.write(
-			"Error: no threshold value for stat trigger"
-		);
+	if(pt == 0) 
+	{
+		g_LogFile.write("Error: no threshold value for stat trigger");
 		return -1;
 	}
 	this->threshold(ival);
@@ -1028,62 +892,47 @@ int cTrigger::load_stat_from_xml(TiXmlElement *el)
 
 int cTrigger::load_status_from_xml(TiXmlElement *el)
 {
- 	const char *pt;
+	const char *pt;
 	stringstream ss;
-/*
- *	get the attribute value
- */
+	/*
+	 *	get the attribute value
+	 */
 	pt = el->Attribute("Status");
-	if(!pt) {
-		g_LogFile.write(
-			"Error: No status specified for status trigger: Ignoring."
-		);
+	if (!pt) 
+	{
+		g_LogFile.write("Error: No status specified for status trigger: Ignoring.");
 		return -1;
 	}
-/*
- *	get the status code
- */
- 	int code = sGirl::lookup_status_code(pt);
-/*
- *	make sure what we have is actually a stat name
- */
-	if(code == -1) {
-		ss << "Error: unknown status string '"
-		   << pt
-		   << "' in trigger definition: "
-		   << "Ignoring."
-		;
+	/*
+	 *	get the status code
+	 */
+	int code = sGirl::lookup_status_code(pt);
+	/*
+	 *	make sure what we have is actually a stat name
+	 */
+	if (code == -1) 
+	{
+		ss << "Error: unknown status string '" << pt << "' in trigger definition: " << "Ignoring.";
 		g_LogFile.write(ss.str());
 		return -1;
 	}
-/*
- *	set up some wrapper funcs for the values array
- *	explicitly using "this" for clarity
- */
+	/*
+	 *	set up some wrapper funcs for the values array
+	 *	explicitly using "this" for clarity
+	 */
 	this->status(code);
-/*
- *	now the threshold value
- */
- 	pt = el->Attribute("Has");
-	if(pt == 0) {
-		g_LogFile.write(
-			"Error: no 'Has' value for status trigger"
-		);
+	/*
+	 *	now the threshold value
+	 */
+	pt = el->Attribute("Has");
+	if (pt == 0) {
+		g_LogFile.write("Error: no 'Has' value for status trigger");
 		return -1;
 	}
 	string s = pt;
- 	if(s == "True" || s == "true") {
-		this->has(true);
-		return 0;
-	}
-	if(s == "False" || s == "false") {
-		this->has(false);
-		return 0;
-	}
-	ss << "Error: unrecognised 'Has' value for stat trigger: '"
-	   << s
-	   << "' - assuming 'True'"
-	;
+	if (s == "True" || s == "true") { this->has(true); return 0; }
+	if (s == "False" || s == "false") { this->has(false); return 0; }
+	ss << "Error: unrecognised 'Has' value for stat trigger: '" << s << "' - assuming 'True'";
 	g_LogFile.write(ss.str());
 	this->has(true);
 	return 0;
@@ -1173,13 +1022,10 @@ void cTrigger::load_meet_from_xml(TiXmlElement *el)
  *	get the "Where" attribute value
  */
 	pt = el->Attribute("Where");
-	if(!pt) {
-		g_LogFile.write(
-			"Error: No 'Where' attribute specified for "
-			"'Meet' trigger: Assuming 'Town'."
-		);
+	if(!pt) 
+	{
+		g_LogFile.write("Error: No 'Where' attribute specified for 'Meet' trigger: Assuming 'Town'.");
 		pt = "Town";
-		pt = "Arena";
 	}
 /*
  *	set the where field
@@ -1189,20 +1035,16 @@ void cTrigger::load_meet_from_xml(TiXmlElement *el)
  *	if that failed, log an error
  *	and then default to "Town"
  */
-	if(rc == -1) {
-		ss << "Error: malformed 'Where' attribute '"
-		   << s
-		   << "' for 'Meet' trigger: Assuming 'Town'."
-		;
+	if(rc < 0) 
+	{
+		ss << "Error: malformed 'Where' attribute '" << s << "' for 'Meet' trigger: Assuming 'Town'.";
 		g_LogFile.write(ss.str());
 		where("Town");
 	}
 
-	if(rc == 3) {
-		ss << "Error: malformed 'Where' attribute '"
-		   << s
-		   << "' for 'Meet' trigger: Assuming 'Town'."
-		;
+	if(rc > 3) 
+	{
+		ss << "Error: malformed 'Where' attribute '" << s << "' for 'Meet' trigger: Assuming 'Arena'.";
 		g_LogFile.write(ss.str());
 		where("Arena");
 	}
@@ -1218,10 +1060,7 @@ void cTrigger::load_talk_from_xml(TiXmlElement *el)
  */
 	pt = el->Attribute("Where");
 	if(!pt) {
-		g_LogFile.write(
-			"Error: No 'Where' attribute specified for "
-			"'Talk' trigger: Assuming 'Brothel'."
-		);
+		g_LogFile.write("Error: No 'Where' attribute specified for 'Talk' trigger: Assuming 'Brothel'.");
 		pt = "Brothel";
 	}
 /*
@@ -1232,11 +1071,8 @@ void cTrigger::load_talk_from_xml(TiXmlElement *el)
  *	if that failed, log an error
  *	and then default to "Brothel"
  */
-	if(rc == -1) {
-		ss << "Error: malformed 'Where' attribute '"
-		   << s
-		   << "' for 'Talk' trigger: Assuming 'Brothel'."
-		;
+	if (rc == -1) {
+		ss << "Error: malformed 'Where' attribute '" << s << "' for 'Talk' trigger: Assuming 'Brothel'.";
 		g_LogFile.write(ss.str());
 		where("Brothel");
 	}
@@ -1253,10 +1089,7 @@ int cTrigger::load_weeks_from_xml(TiXmlElement *el)
  */
 	pt = el->Attribute("Threshold", &ival);
 	if(!pt) {
-		g_LogFile.write(
-			"Error: No 'Threshold' attribute specified for "
-			"'WeeksPast' trigger: ignoring"
-		);
+		g_LogFile.write("Error: No 'Threshold' attribute specified for 'WeeksPast' trigger: ignoring");
 		return -1;
 	}
 /*
@@ -1276,25 +1109,17 @@ int cTrigger::load_flag_from_xml(TiXmlElement *el)
  */
 	pt = el->Attribute("Flag");
 	if(!pt) {
-		g_LogFile.write(
-			"Error: No 'Flag' attribute specified for "
-			"'GlobalFlag' trigger: ignoring"
-		);
+		g_LogFile.write("Error: No 'Flag' attribute specified for 'GlobalFlag' trigger: ignoring");
 		return -1;
 	}
 /*
  *	set the where field
  */
-	if(global_flag(pt) >= 0) {
-		return 0;
-	}
+	if (global_flag(pt) >= 0) { return 0; }
 /*
  *	I don't think there's a sensible default, here
  */
-	ss << "Error: Malformed GlobalFlag '"
-	   << pt
-	   << "'in Trigger: Ignoring"
-	;
+	ss << "Error: Malformed GlobalFlag '" << pt << "'in Trigger: Ignoring";
 	g_LogFile.write(ss.str());
 	return -1;
 }
@@ -1303,84 +1128,65 @@ int cTrigger::load_from_xml(TiXmlElement *el)
 {
 	const char *pt;
 	stringstream ss;
-/*
- *	make sure the maps are intialised
- */
-	if(trigger_types.size() == 0) {
-		init_trigger_types();
-	}
-/*
- *	get the trigger type
- */
- 	int code = get_type_from_xml(el);
-	if(code == -1) {
-		return -1;		// error already reported
-	}
+	/*
+	 *	make sure the maps are intialised
+	 */
+	if (trigger_types.size() == 0) { init_trigger_types(); }
+	/*
+	 *	get the trigger type
+	 */
+	int code = get_type_from_xml(el);
+	if (code == -1) { return -1; }	// error already reported
 	m_Type = code;
-/*
- *	OK, get the script file
- */
- 	pt = el->Attribute("File");
-	if(pt == 0) {
-		g_LogFile.write(
-			"Error: can't find script file for trigger"
-		);
+	/*
+	 *	OK, get the script file
+	 */
+	pt = el->Attribute("File");
+	if (pt == 0)
+	{
+		g_LogFile.write("Error: can't find script file for trigger");
 		return -1;
 	}
 	m_Script = pt;
-/*
- *	Chance: this is allowed to be missing, and defaults to 100
- */
+	/*
+	 *	Chance: this is allowed to be missing, and defaults to 100
+	 */
 	m_Chance = get_chance_from_xml(el);
 	m_Once = get_once_from_xml(el);
-/*
- *	there's scope to set this in the config file
- *	but I can't for the life of me see why this would be useful
- */
- 	m_Triggered = 0;
-/*
- *	OK, that's the easy bits. Everything else depends on
- *	the type field
- */
- 	switch(m_Type) {
+	/*
+	 *	there's scope to set this in the config file
+	 *	but I can't for the life of me see why this would be useful
+	 */
+	m_Triggered = 0;
+	/*
+	 *	OK, that's the easy bits. Everything else depends on
+	 *	the type field
+	 */
+	switch (m_Type) {
 	case TRIGGER_SKILL:
-		if(load_skill_from_xml(el) == -1) {
-			return -1;
-		}
+		if (load_skill_from_xml(el) == -1) { return -1; }
 		break;
 	case TRIGGER_STAT:
-		if(load_stat_from_xml(el) == -1) {
-			return -1;
-		}
+		if (load_stat_from_xml(el) == -1) { return -1; }
 		break;
 	case TRIGGER_STATUS:
-		if(load_status_from_xml(el) == -1) {
-			return -1;
-		}
+		if (load_status_from_xml(el) == -1) { return -1; }
 		break;
 	case TRIGGER_MONEY:
-		if(load_money_from_xml(el) == -1) {
-			return -1;
-		}
+		if (load_money_from_xml(el) == -1) { return -1; }
 		break;
 	case TRIGGER_MEET:
-		load_meet_from_xml(el);
-		break;
+		load_meet_from_xml(el);		break;
 	case TRIGGER_TALK:
-		load_talk_from_xml(el);
-		break;
+		load_talk_from_xml(el);		break;
 	case TRIGGER_WEEKSPAST:
-		if(load_weeks_from_xml(el) == -1) {
-			return -1;
-		}
+		if (load_weeks_from_xml(el) == -1) { return -1; }
 		break;
 	case TRIGGER_GLOBALFLAG:
-		if(load_flag_from_xml(el) == -1) {
-			return -1;
-		}
+		if (load_flag_from_xml(el) == -1) { return -1; }
 		break;
-	case TRIGGER_SCRIPTRUN:
-		return -1;
+	case TRIGGER_SCRIPTRUN:		return -1;
+		break;
 	}
 	return 0;
 }
@@ -1388,53 +1194,39 @@ int cTrigger::load_from_xml(TiXmlElement *el)
 void cTriggerList::LoadList(string filename)
 {
 	TiXmlDocument doc(filename);
-	if(!doc.LoadFile()) {
-		if(!doc.ErrorRow() && !doc.ErrorCol())
+	if (!doc.LoadFile()) {
+		if (!doc.ErrorRow() && !doc.ErrorCol())
 		{
 			cerr << "Girl has no script trigger file: " << filename << endl;
 			return;
 		}
 		cerr << "can't load script trigger list " << filename << endl;
-		cerr	<< "Error: line "
-			<< doc.ErrorRow()
-			<< ", col "
-			<< doc.ErrorCol()
-			<< ": "
-			<< doc.ErrorDesc()
-			<< endl
-		;
+		cerr << "Error: line " << doc.ErrorRow() << ", col " << doc.ErrorCol() << ": " << doc.ErrorDesc() << endl;
 		return;
 	}
-/*
- *	get the docuement root
- */
+	/*
+	 *	get the docuement root
+	 */
 	TiXmlElement *el, *root_el = doc.RootElement();
-/*
- *	loop over the elements attached to the root
- */
-	for(	el = root_el->FirstChildElement();
-		el ;
-		el = el->NextSiblingElement()
-	) {
+	/*
+	 *	loop over the elements attached to the root
+	 */
+	for (el = root_el->FirstChildElement(); el; el = el->NextSiblingElement())
+	{
 		cTrigger *trigger = new cTrigger();
-/*
- *		load the trigger data. If there was no error,
- *		add it to the list and move on to the next one
- */
-		if(trigger->load_from_xml(el) == 0) {
+		/*
+		 *		load the trigger data. If there was no error,
+		 *		add it to the list and move on to the next one
+		 */
+		if (trigger->load_from_xml(el) == 0)
+		{
 			AddTrigger(trigger);
 			continue;
 		}
-/*
- *		this is the error condition.
- *		We should free up the trigger memory
- */
+		/*
+		 *		this is the error condition.
+		 *		We should free up the trigger memory
+		 */
 		delete trigger;
 	}
 }
-
-/*
-
- *
-
- */

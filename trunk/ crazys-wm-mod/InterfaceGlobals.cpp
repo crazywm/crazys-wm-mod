@@ -64,6 +64,8 @@
 #include "cScreenBrothelManagement.h"
 #include "cScreenGetInput.h"
 #include "sConfig.h"
+#include "XmlUtil.h"
+
 
 using namespace std;
 
@@ -163,7 +165,6 @@ unsigned char g_MessageBoxBackground1R = 0, g_MessageBoxBackground1G = 0, g_Mess
 unsigned char g_MessageBoxBackground2R = 0, g_MessageBoxBackground2G = 0, g_MessageBoxBackground2B = 0;
 unsigned char g_MessageBoxBackground3R = 0, g_MessageBoxBackground3G = 0, g_MessageBoxBackground3B = 0;
 unsigned char g_MessageBoxTextR = 0, g_MessageBoxTextG = 0, g_MessageBoxTextB = 0;
-
 
 void FreeInterface()
 {
@@ -268,191 +269,122 @@ void LoadInterface()
 	// load 
 	// load interface colors
 	// WD: Typecast to resolve ambiguous call in VS 2010
-	g_LogFile.write("Loading InterfaceColors");
-	DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "InterfaceColors.txt";
-	incol.open(dp.c_str());
-	//incol.open(DirPath() << "Resources" << "Interface" << "InterfaceColors.txt");
-	incol.seekg(0);
-	incol>>r>>g>>b;incol.ignore(1000, '\n');
-	g_StaticImageR = r;
-	g_StaticImageG = g;
-	g_StaticImageB = b;
-	
-	incol>>r>>g>>b;incol.ignore(1000, '\n');
-	g_ChoiceMessageTextR = r;
-	g_ChoiceMessageTextG = g;
-	g_ChoiceMessageTextB = b;
+	int loadcolors = 0;		// 0=default, 1=xml, 2=txt
+	DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "InterfaceColors.xml";
+	TiXmlDocument doc(dp.c_str());
+	if (doc.LoadFile()) { loadcolors = 1; }
+	else // try txt
+	{
+		g_LogFile.ss() << "Error: line " << doc.ErrorRow() << ", col " << doc.ErrorCol() << ": " << doc.ErrorDesc() << endl;
+		g_LogFile.ssend();
+		DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "InterfaceColors.txt";
+		incol.open(dp.c_str());
+		if (!incol.good())loadcolors = 3;
+		else 		loadcolors = 2;
+		incol.close();
+	}
 
-	incol>>r>>g>>b;incol.ignore(1000, '\n');
-	g_ChoiceMessageBorderR = r;
-	g_ChoiceMessageBorderG = g;
-	g_ChoiceMessageBorderB = b;
 
-	incol>>r>>g>>b;incol.ignore(1000, '\n');
-	g_ChoiceMessageBackgroundR = r;
-	g_ChoiceMessageBackgroundG = g;
-	g_ChoiceMessageBackgroundB = b;
-
-	incol>>r>>g>>b;incol.ignore(1000, '\n');
-	g_ChoiceMessageSelectedR = r;
-	g_ChoiceMessageSelectedG = g;
-	g_ChoiceMessageSelectedB = b;
-
-	incol>>r>>g>>b;incol.ignore(1000, '\n');
-	g_EditBoxBorderR = r;
-	g_EditBoxBorderG = g;
-	g_EditBoxBorderB = b;
-
-	incol>>r>>g>>b;incol.ignore(1000, '\n');
-	g_EditBoxBackgroundR = r;
-	g_EditBoxBackgroundG = g;
-	g_EditBoxBackgroundB = b;
-
-	incol>>r>>g>>b;incol.ignore(1000, '\n');
-	g_EditBoxSelectedR= r;
-	g_EditBoxSelectedG = g;
-	g_EditBoxSelectedB = b;
-
-	incol>>r>>g>>b;incol.ignore(1000, '\n');
-	g_EditBoxTextR = r;
-	g_EditBoxTextG = g;
-	g_EditBoxTextB = b;
-
-	incol>>r>>g>>b;incol.ignore(1000, '\n');
-	g_WindowBorderR = r;
-	g_WindowBorderG =  g;
-	g_WindowBorderB = b;
-
-	incol>>r>>g>>b;incol.ignore(1000, '\n');
-	g_WindowBackgroundR = r;
-	g_WindowBackgroundG = g;
-	g_WindowBackgroundB = b;
-
-	incol>>r>>g>>b;incol.ignore(1000, '\n');
-	g_ListBoxBorderR = r;
-	g_ListBoxBorderG = g;
-	g_ListBoxBorderB = b;
-
-	incol>>r>>g>>b;incol.ignore(1000, '\n');
-	g_ListBoxBackgroundR = r;
-	g_ListBoxBackgroundG = g;
-	g_ListBoxBackgroundB = b;
-
-	incol>>r>>g>>b;incol.ignore(1000, '\n');
-	g_ListBoxElementBackgroundR = r;
-	g_ListBoxElementBackgroundG = g;
-	g_ListBoxElementBackgroundB = b;
-
-	incol>>r>>g>>b;incol.ignore(1000, '\n');
-	g_ListBoxS1ElementBackgroundR = r;
-	g_ListBoxS1ElementBackgroundG = g;
-	g_ListBoxS1ElementBackgroundB = b;
-
-	incol>>r>>g>>b;incol.ignore(1000, '\n');
-	g_ListBoxS2ElementBackgroundR = r;
-	g_ListBoxS2ElementBackgroundG = g;
-	g_ListBoxS2ElementBackgroundB = b;
-
-	incol>>r>>g>>b;incol.ignore(1000, '\n');
-	g_ListBoxS3ElementBackgroundR = r;
-	g_ListBoxS3ElementBackgroundG = g;
-	g_ListBoxS3ElementBackgroundB = b;
-
-	incol>>r>>g>>b;incol.ignore(1000, '\n');
-	g_ListBoxSelectedElementR = r;
-	g_ListBoxSelectedElementG = g;
-	g_ListBoxSelectedElementB = b;
-
-	incol>>r>>g>>b;incol.ignore(1000, '\n');
-	g_ListBoxSelectedS1ElementR = r;
-	g_ListBoxSelectedS1ElementG = g;
-	g_ListBoxSelectedS1ElementB = b;
-
-	incol>>r>>g>>b;incol.ignore(1000, '\n');
-	g_ListBoxSelectedS2ElementR = r;
-	g_ListBoxSelectedS2ElementG = g;
-	g_ListBoxSelectedS2ElementB = b;
-
-	incol >> r >> g >> b; incol.ignore(1000, '\n');
-	g_ListBoxSelectedS3ElementR = r;
-	g_ListBoxSelectedS3ElementG = g;
-	g_ListBoxSelectedS3ElementB = b;
-
-	incol>>r>>g>>b;incol.ignore(1000, '\n');
-	g_ListBoxElementBorderR = r;
-	g_ListBoxElementBorderG = g;
-	g_ListBoxElementBorderB = b;
-
-	incol>>r>>g>>b;incol.ignore(1000, '\n');
-	g_ListBoxElementBorderHR = r;
-	g_ListBoxElementBorderHG = g;
-	g_ListBoxElementBorderHB = b;
-
-	incol>>r>>g>>b;incol.ignore(1000, '\n');
-	g_ListBoxTextR = r;
-	g_ListBoxTextG = g;
-	g_ListBoxTextB = b;
-
-	incol>>r>>g>>b;incol.ignore(1000, '\n');
-	g_ListBoxHeaderBackgroundR = r;
-	g_ListBoxHeaderBackgroundG = g;
-	g_ListBoxHeaderBackgroundB = b;
-
-	incol>>r>>g>>b;incol.ignore(1000, '\n');
-	g_ListBoxHeaderBorderR = r;
-	g_ListBoxHeaderBorderG = g;
-	g_ListBoxHeaderBorderB = b;
-
-	incol>>r>>g>>b;incol.ignore(1000, '\n');
-	g_ListBoxHeaderBorderHR = r;
-	g_ListBoxHeaderBorderHG = g;
-	g_ListBoxHeaderBorderHB = b;
-
-	incol>>r>>g>>b;incol.ignore(1000, '\n');
-	g_ListBoxHeaderTextR = r;
-	g_ListBoxHeaderTextG = g;
-	g_ListBoxHeaderTextB = b;
-
-	incol>>r>>g>>b;incol.ignore(1000, '\n');
-	g_MessageBoxBorderR = r;
-	g_MessageBoxBorderG = g;
-	g_MessageBoxBorderB = b;
-
-	incol>>r>>g>>b;incol.ignore(1000, '\n');
-	g_MessageBoxBackground0R = r;
-	g_MessageBoxBackground0G = g;
-	g_MessageBoxBackground0B = b;
-
-	incol>>r>>g>>b;incol.ignore(1000, '\n');
-	g_MessageBoxBackground1R = r;
-	g_MessageBoxBackground1G = g;
-	g_MessageBoxBackground1B = b;
-
-	incol>>r>>g>>b;incol.ignore(1000, '\n');
-	g_MessageBoxBackground2R = r;
-	g_MessageBoxBackground2G = g;
-	g_MessageBoxBackground2B = b;
-
-	incol>>r>>g>>b;incol.ignore(1000, '\n');
-	g_MessageBoxBackground3R = r;
-	g_MessageBoxBackground3G = g;
-	g_MessageBoxBackground3B = b;
-
-	incol>>r>>g>>b;incol.ignore(1000, '\n');
-	g_MessageBoxTextR = r;
-	g_MessageBoxTextG = g;
-	g_MessageBoxTextB = b;
-
-	incol>>r>>g>>b;incol.ignore(1000, '\n');
-	g_CheckBoxBorderR = r;
-	g_CheckBoxBorderG = g;
-	g_CheckBoxBorderB = b;
-
-	incol>>r>>g>>b;incol.ignore(1000, '\n');
-	g_CheckBoxBackgroundR = r;
-	g_CheckBoxBackgroundG = g;
-	g_CheckBoxBackgroundB = b;
-	incol.close();
+	if (loadcolors==1)	// load "InterfaceColors.xml"
+	{
+		g_LogFile.write("Loading InterfaceColors.xml");
+		string m_filename = dp.c_str();
+		TiXmlElement *el, *root_el = doc.RootElement();
+		for (el = root_el->FirstChildElement(); el; el = el->NextSiblingElement()) 
+		{
+			string tag = el->ValueStr();
+			if (tag == "Color")
+			{
+				XmlUtil xu(m_filename); string name; int r, g, b;
+				xu.get_att(el, "Name", name);							xu.get_att(el, "R", r); xu.get_att(el, "G", g); xu.get_att(el, "B", b);
+				     if (name == "ImageBackground")						{ g_StaticImageR = r; g_StaticImageG = g; g_StaticImageB = b; }
+				else if (name == "ChoiceBoxText")						{ g_ChoiceMessageTextR = r; g_ChoiceMessageTextG = g; g_ChoiceMessageTextB = b; }
+				else if (name == "ChoiceBoxBorder")						{ g_ChoiceMessageBorderR = r; g_ChoiceMessageBorderG = g; g_ChoiceMessageBorderB = b; }
+				else if (name == "ChoiceBoxBackground")					{ g_ChoiceMessageBackgroundR = r; g_ChoiceMessageBackgroundG = g; g_ChoiceMessageBackgroundB = b; }
+				else if (name == "ChoiceBoxSelected")					{ g_ChoiceMessageSelectedR = r; g_ChoiceMessageSelectedG = g; g_ChoiceMessageSelectedB = b; }
+				else if (name == "EditBoxBorder")						{ g_EditBoxBorderR = r; g_EditBoxBorderG = g; g_EditBoxBorderB = b; }
+				else if (name == "EditBoxBackground")					{ g_EditBoxBackgroundR = r; g_EditBoxBackgroundG = g; g_EditBoxBackgroundB = b; }
+				else if (name == "EditBoxSelected")						{ g_EditBoxSelectedR = r; g_EditBoxSelectedG = g; g_EditBoxSelectedB = b; }
+				else if (name == "EditBoxText")							{ g_EditBoxTextR = r; g_EditBoxTextG = g; g_EditBoxTextB = b; }
+				else if (name == "WindowBorder")						{ g_WindowBorderR = r; g_WindowBorderG = g; g_WindowBorderB = b; }
+				else if (name == "WindowBackground")					{ g_WindowBackgroundR = r; g_WindowBackgroundG = g; g_WindowBackgroundB = b; }
+				else if (name == "ListBoxBorder")						{ g_ListBoxBorderR = r; g_ListBoxBorderG = g; g_ListBoxBorderB = b; }
+				else if (name == "ListBoxBackground")					{ g_ListBoxBackgroundR = r; g_ListBoxBackgroundG = g; g_ListBoxBackgroundB = b; }
+				else if (name == "ListBoxElementBackground")			{ g_ListBoxElementBackgroundR = r; g_ListBoxElementBackgroundG = g; g_ListBoxElementBackgroundB = b; }
+				else if (name == "ListBoxSpecialElement1")				{ g_ListBoxS1ElementBackgroundR = r; g_ListBoxS1ElementBackgroundG = g; g_ListBoxS1ElementBackgroundB = b; }
+				else if (name == "ListBoxSpecialElement2")				{ g_ListBoxS2ElementBackgroundR = r; g_ListBoxS2ElementBackgroundG = g; g_ListBoxS2ElementBackgroundB = b; }
+				else if (name == "ListBoxSpecialElement3")				{ g_ListBoxS3ElementBackgroundR = r; g_ListBoxS3ElementBackgroundG = g; g_ListBoxS3ElementBackgroundB = b; }
+				else if (name == "ListBoxSelectedElement")				{ g_ListBoxSelectedElementR = r; g_ListBoxSelectedElementG = g; g_ListBoxSelectedElementB = b; }
+				else if (name == "ListBoxSelectedSpecialElement1")		{ g_ListBoxSelectedS1ElementR = r; g_ListBoxSelectedS1ElementG = g; g_ListBoxSelectedS1ElementB = b; }
+				else if (name == "ListBoxSelectedSpecialElement2")		{ g_ListBoxSelectedS2ElementR = r; g_ListBoxSelectedS2ElementG = g; g_ListBoxSelectedS2ElementB = b; }
+				else if (name == "ListBoxSelectedSpecialElement3")		{ g_ListBoxSelectedS3ElementR = r; g_ListBoxSelectedS3ElementG = g; g_ListBoxSelectedS3ElementB = b; }
+				else if (name == "ListBoxElementBorderTopLeft")			{ g_ListBoxElementBorderR = r; g_ListBoxElementBorderG = g; g_ListBoxElementBorderB = b; }
+				else if (name == "ListBoxElementBorderBottomRight")		{ g_ListBoxElementBorderHR = r; g_ListBoxElementBorderHG = g; g_ListBoxElementBorderHB = b; }
+				else if (name == "ListBoxFont")							{ g_ListBoxTextR = r; g_ListBoxTextG = g; g_ListBoxTextB = b; }
+				else if (name == "ListBoxColumnHeaderBackground")		{ g_ListBoxHeaderBackgroundR = r; g_ListBoxHeaderBackgroundG = g; g_ListBoxHeaderBackgroundB = b; }
+				else if (name == "ListBoxColumnHeaderBorderTopLeft")	{ g_ListBoxHeaderBorderR = r; g_ListBoxHeaderBorderG = g; g_ListBoxHeaderBorderB = b; }
+				else if (name == "ListBoxColumnHeaderBorderBottomRight"){ g_ListBoxHeaderBorderHR = r; g_ListBoxHeaderBorderHG = g; g_ListBoxHeaderBorderHB = b; }
+				else if (name == "ListBoxColumnHeaderFont")				{ g_ListBoxHeaderTextR = r; g_ListBoxHeaderTextG = g; g_ListBoxHeaderTextB = b; }
+				else if (name == "MessageBoxBorder")					{ g_MessageBoxBorderR = r; g_MessageBoxBorderG = g; g_MessageBoxBorderB = b; }
+				else if (name == "MessageBoxBackground0")				{ g_MessageBoxBackground0R = r; g_MessageBoxBackground0G = g; g_MessageBoxBackground0B = b; }
+				else if (name == "MessageBoxBackground1")				{ g_MessageBoxBackground1R = r; g_MessageBoxBackground1G = g; g_MessageBoxBackground1B = b; }
+				else if (name == "MessageBoxBackground2")				{ g_MessageBoxBackground2R = r; g_MessageBoxBackground2G = g; g_MessageBoxBackground2B = b; }
+				else if (name == "MessageBoxBackground3")				{ g_MessageBoxBackground3R = r; g_MessageBoxBackground3G = g; g_MessageBoxBackground3B = b; }
+				else if (name == "MessageBoxText")						{ g_MessageBoxTextR = r; g_MessageBoxTextG = g; g_MessageBoxTextB = b; }
+				else if (name == "CheckboxBorder")						{ g_CheckBoxBorderR = r; g_CheckBoxBorderG = g; g_CheckBoxBorderB = b; }
+				else if (name == "CheckboxBackground")					{ g_CheckBoxBackgroundR = r; g_CheckBoxBackgroundG = g; g_CheckBoxBackgroundB = b; }
+				
+				// ItemRarity is loaded in sConfig.cpp
+			}
+		}
+	}
+	else if (loadcolors==2)	// load legacy "InterfaceColors.txt"
+	{
+		g_LogFile.write("Loading InterfaceColors.txt");
+		incol.open(dp.c_str());
+		incol.seekg(0);
+		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_StaticImageR = r;                g_StaticImageG = g;                g_StaticImageB = b;
+		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_ChoiceMessageTextR = r;          g_ChoiceMessageTextG = g;          g_ChoiceMessageTextB = b;
+		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_ChoiceMessageBorderR = r;        g_ChoiceMessageBorderG = g;        g_ChoiceMessageBorderB = b;
+		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_ChoiceMessageBackgroundR = r;    g_ChoiceMessageBackgroundG = g;    g_ChoiceMessageBackgroundB = b;
+		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_ChoiceMessageSelectedR = r;      g_ChoiceMessageSelectedG = g;      g_ChoiceMessageSelectedB = b;
+		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_EditBoxBorderR = r;              g_EditBoxBorderG = g;              g_EditBoxBorderB = b;
+		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_EditBoxBackgroundR = r;          g_EditBoxBackgroundG = g;          g_EditBoxBackgroundB = b;
+		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_EditBoxSelectedR = r;            g_EditBoxSelectedG = g;            g_EditBoxSelectedB = b;
+		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_EditBoxTextR = r;                g_EditBoxTextG = g;                g_EditBoxTextB = b;
+		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_WindowBorderR = r;               g_WindowBorderG = g;               g_WindowBorderB = b;
+		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_WindowBackgroundR = r;           g_WindowBackgroundG = g;           g_WindowBackgroundB = b;
+		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_ListBoxBorderR = r;              g_ListBoxBorderG = g;              g_ListBoxBorderB = b;
+		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_ListBoxBackgroundR = r;          g_ListBoxBackgroundG = g;          g_ListBoxBackgroundB = b;
+		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_ListBoxElementBackgroundR = r;   g_ListBoxElementBackgroundG = g;   g_ListBoxElementBackgroundB = b;
+		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_ListBoxS1ElementBackgroundR = r; g_ListBoxS1ElementBackgroundG = g; g_ListBoxS1ElementBackgroundB = b;
+		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_ListBoxS2ElementBackgroundR = r; g_ListBoxS2ElementBackgroundG = g; g_ListBoxS2ElementBackgroundB = b;
+		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_ListBoxS3ElementBackgroundR = r; g_ListBoxS3ElementBackgroundG = g; g_ListBoxS3ElementBackgroundB = b;
+		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_ListBoxSelectedElementR = r;     g_ListBoxSelectedElementG = g;     g_ListBoxSelectedElementB = b;
+		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_ListBoxSelectedS1ElementR = r;   g_ListBoxSelectedS1ElementG = g;   g_ListBoxSelectedS1ElementB = b;
+		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_ListBoxSelectedS2ElementR = r;   g_ListBoxSelectedS2ElementG = g;   g_ListBoxSelectedS2ElementB = b;
+		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_ListBoxSelectedS3ElementR = r;   g_ListBoxSelectedS3ElementG = g;   g_ListBoxSelectedS3ElementB = b;
+		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_ListBoxElementBorderR = r;       g_ListBoxElementBorderG = g;       g_ListBoxElementBorderB = b;
+		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_ListBoxElementBorderHR = r;      g_ListBoxElementBorderHG = g;      g_ListBoxElementBorderHB = b;
+		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_ListBoxTextR = r;                g_ListBoxTextG = g;                g_ListBoxTextB = b;
+		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_ListBoxHeaderBackgroundR = r;    g_ListBoxHeaderBackgroundG = g;    g_ListBoxHeaderBackgroundB = b;
+		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_ListBoxHeaderBorderR = r;        g_ListBoxHeaderBorderG = g;        g_ListBoxHeaderBorderB = b;
+		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_ListBoxHeaderBorderHR = r;       g_ListBoxHeaderBorderHG = g;       g_ListBoxHeaderBorderHB = b;
+		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_ListBoxHeaderTextR = r;          g_ListBoxHeaderTextG = g;          g_ListBoxHeaderTextB = b;
+		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_MessageBoxBorderR = r;           g_MessageBoxBorderG = g;           g_MessageBoxBorderB = b;
+		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_MessageBoxBackground0R = r;      g_MessageBoxBackground0G = g;      g_MessageBoxBackground0B = b;
+		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_MessageBoxBackground1R = r;      g_MessageBoxBackground1G = g;      g_MessageBoxBackground1B = b;
+		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_MessageBoxBackground2R = r;      g_MessageBoxBackground2G = g;      g_MessageBoxBackground2B = b;
+		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_MessageBoxBackground3R = r;      g_MessageBoxBackground3G = g;      g_MessageBoxBackground3B = b;
+		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_MessageBoxTextR = r;             g_MessageBoxTextG = g;             g_MessageBoxTextB = b;
+		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_CheckBoxBorderR = r;             g_CheckBoxBorderG = g;             g_CheckBoxBorderB = b;
+		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_CheckBoxBackgroundR = r;         g_CheckBoxBackgroundG = g;         g_CheckBoxBackgroundB = b;
+		incol.close();
+	}	// end "InterfaceColors.txt"
+	else	// InterfaceColors file not found, using defaults
+	{
+		g_LogFile.write("Error Loading InterfaceColors, using defaults");
+	}
 
 	// Load game screen
 	g_LogFile.write("Loading Load Game Screen");
@@ -477,7 +409,6 @@ void LoadInterface()
 	g_LogFile.write("Loading Get String Screen");
 	dp = DirPath() << "Resources" << "Interface"<< cfg.resolution.resolution() << "GetString.txt";
 	incol.open(dp.c_str());
-	//incol.open(DirPath() << "Resources" << "Interface" << "GetString.txt");
 	incol.seekg(0);
 	incol>>a>>b>>c>>d>>e;incol.ignore(1000, '\n');
 	g_GetString.CreateWindow(a,b,c,d,e);

@@ -314,52 +314,31 @@ typedef struct sInventoryItem
 	8 means only 1% chance in catacombs (catacombs01)
  */
  	enum Rarity {
-		Common		= 0,
-		Shop50		= 1,
-		Shop25		= 2,
-		Shop05		= 3,
-		Catacomb15	= 4,
-		ScriptOnly	= 5,
-		ScriptOrReward	= 6,
-		Catacomb05 = 7,   // MYR: Added 05 and 01 for the really, really valuable things like invulnerability
-		Catacomb01 = 8
+		Common			= RARITYCOMMON,			// old 0
+		Shop50			= RARITYSHOP50,			// old 1
+		Shop25			= RARITYSHOP25,			// old 2
+		Shop05			= RARITYSHOP05,			// old 3
+		Catacomb15		= RARITYCATACOMB15,		// old 4
+		Catacomb05		= RARITYCATACOMB05,		// old 7  // MYR: Added 05 and 01 for the really, really valuable things like invulnerability
+		Catacomb01		= RARITYCATACOMB01,		// old 8
+		ScriptOnly		= RARITYSCRIPTONLY,		// old 5
+		ScriptOrReward	= RARITYSCRIPTORREWARD	// old 6
 	};
 	Rarity m_Rarity;
 
 	void set_rarity(string s)
 	{
-		if(s == "Common") {
-			m_Rarity = Common;
-		}
-		else if(s == "Shop50") {
-			m_Rarity = Shop50;
-		}
-		else if(s == "Shop25") {
-			m_Rarity = Shop25;
-		}
-		else if(s == "Shop05") {
-			m_Rarity = Shop05;
-		}
-		else if(s == "Catacomb15") {
-			m_Rarity = Catacomb15;
-		}
-		else if(s == "Catacomb05") {
-			m_Rarity = Catacomb05;
-		}
-		else if(s == "Catacomb01") {
-			m_Rarity = Catacomb01;
-		}
-		else if(s == "ScriptOnly") {
-			m_Rarity = ScriptOnly;
-		}
-		else if(s == "ScriptOrReward") {
-			m_Rarity = ScriptOrReward;
-		}
+		     if (s == "Common")			{ m_Rarity = Common; }
+		else if (s == "Shop50")			{ m_Rarity = Shop50; }
+		else if (s == "Shop25")			{ m_Rarity = Shop25; }
+		else if (s == "Shop05")			{ m_Rarity = Shop05; }
+		else if (s == "Catacomb15")		{ m_Rarity = Catacomb15; }
+		else if (s == "Catacomb05")		{ m_Rarity = Catacomb05; }
+		else if (s == "Catacomb01")		{ m_Rarity = Catacomb01; }
+		else if (s == "ScriptOnly")		{ m_Rarity = ScriptOnly; }
+		else if (s == "ScriptOrReward") { m_Rarity = ScriptOrReward; }
 		else {
-			cerr	<< "Error in set_rarity: unexpected value '"
-				<< s
-				<< "'"
-				<< endl;
+			cerr << "Error in set_rarity: unexpected value '" << s << "'" << endl;
 			m_Rarity = Shop05;	// what to do?
 		}
 	}

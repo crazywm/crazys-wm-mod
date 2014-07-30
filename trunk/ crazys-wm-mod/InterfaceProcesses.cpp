@@ -226,9 +226,7 @@ void NewGame()
 	g_Girls.LoadDefaultImages();	// load the default girl images
 
 	// load the global triggers
-	g_GlobalTriggers.LoadList(
-		DirPath() << "Resources" << "Scripts" << "GlobalTriggers.xml"
-		);
+	g_GlobalTriggers.LoadList(DirPath() << "Resources" << "Scripts" << "GlobalTriggers.xml");
 
 	g_CurrBrothel = 0;
 

@@ -111,7 +111,7 @@ void cScreenItemManagement::set_ids()
 	unequip_r_id = get_id("UnequipRightButton");
 
 	cConfig cfg;
-	for(int i=0; i<9; i++)
+	for (int i = 0; i < 9; i++)
 	{
 		RarityColor[i] = cfg.items.rarity_color(i);
 	}

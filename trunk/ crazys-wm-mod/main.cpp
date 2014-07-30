@@ -402,9 +402,28 @@ void handle_hotkeys()
 			g_WinManager.push("Clinic");
 			break;
 
+			// farm
+		case SDLK_F9:
+			if (g_Farm.GetNumBrothels() == 0)	// Does player own the farm yet?
+			{
+				msg = "You do not own a Farm";
+				g_MessageQue.AddToQue(msg, 0);
+				break;
+			}
+			// Yes!
+			g_Building = BUILDING_FARM;
+			g_WinManager.PopToWindow(&g_BrothelManagement);
+			g_CurrentScreen = SCREEN_FARM;
+			g_InitWin = true;
+			g_WinManager.push("Town");
+			g_WinManager.push("Farm Screen");
+			g_WinManager.push("Farm");
+			break;
+
 			// shop screen
 		case SDLK_p:	if (g_AltKeys)	break;
-		case SDLK_F9:
+		case SDLK_i:
+			if (vent.key.keysym.sym == SDLK_i && g_CurrentScreen == SCREEN_INVENTORY) break;
 			g_Building = BUILDING_BROTHEL;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
 			g_CurrentScreen = SCREEN_INVENTORY;
@@ -838,12 +857,13 @@ void handle_hotkeys()
 			msg += "F6          Arena\n";
 			msg += "F7          Centre\n";
 			msg += "F8          Clinic\n";
-			msg += "F9          Shop Screen (Inventory)\n";
+			msg += "F9          Farm\n";
 			msg += "F10         Town Screen\n";
 			msg += "F11         Turn Summary\n";
 			msg += "F12         House\n";
 			msg += "9           List Hotkeys for this screen.\n";
 			msg += "0           List Global Hotkeys.\n";
+			msg += "I           Shop Screen (Inventory)\n";
 			msg += "Space Key   Clears message boxes.\n";
 			msg += "Home        Default HotKeys\n";
 			msg += "End         Alternate HotKeys\n";
