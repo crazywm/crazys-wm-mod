@@ -385,6 +385,18 @@ const unsigned int INVARMBAND       = 10;	// (max 2), worn around arms
 const unsigned int INVSMWEAPON      = 11;   // small weapon which can be hidden on body, (max 1)
 const unsigned int INVUNDERWEAR     = 12;  //CRAZY added this underwear (max 1)
 
+// Item Rarity
+const int NUM_ITEM_RARITY = 9;	// number of items that the shop may hold at one time
+const unsigned int RARITYCOMMON			= 0;	// 
+const unsigned int RARITYSHOP50			= 1;	// 
+const unsigned int RARITYSHOP25			= 2;	// 
+const unsigned int RARITYSHOP05			= 3;	// 
+const unsigned int RARITYCATACOMB15		= 4;	// 
+const unsigned int RARITYCATACOMB05		= 5;	// 
+const unsigned int RARITYCATACOMB01		= 6;	// 
+const unsigned int RARITYSCRIPTONLY		= 7;	// 
+const unsigned int RARITYSCRIPTORREWARD = 8;	// 
+
 // Random objectives (well kinda random, they appear to guide the player for the win)
 const int NUM_OBJECTIVES = 10;							  // was 12 probably from when had sep Bar & Casino 
 const unsigned int OBJECTIVE_REACHGOLDTARGET        = 0;

@@ -2323,44 +2323,37 @@ void cGangManager::UpdateGangs()
 						//mod
 						//hopefully fix a crash
 						sInventoryItem* temp;
-						do
-						{
-						temp = g_InvManager.GetRandomItem();
-						}while(!temp);
+						do { temp = g_InvManager.GetRandomItem(); } while (!temp);
 						//end mod
-						while(temp->m_Rarity < sInventoryItem::Shop25)
+						while (temp->m_Rarity < RARITYSHOP25)
 							temp = g_InvManager.GetRandomItem();
 						switch(temp->m_Rarity)
 						{
-						case sInventoryItem::Shop25:
+						case RARITYSHOP25:
 							add = true;
 							break;
-						case sInventoryItem::Shop05:
+						case RARITYSHOP05:
 							if((g_Dice%100)+1 <= 15)  // 15% or 5%?
 								add = true;
 							break;
-						case sInventoryItem::Catacomb15:
+						case RARITYCATACOMB15:
 							if((g_Dice%100)+1 <= 15)
 								add = true;
 							break;
-						case sInventoryItem::Catacomb05:
+						case RARITYCATACOMB05:
 							if((g_Dice%100)+1 <= 5)
 								add = true;
 							break;
-						case sInventoryItem::Catacomb01:
+						case RARITYCATACOMB01:
 							if((g_Dice%100)+1 <= 1)
 								add = true;
 							break;
 /*
  *						adding these cases to shut the compiler up
  */
-						case sInventoryItem::Common:
-						case sInventoryItem::Shop50:
-							g_LogFile.ss()
-								<< "Warning: unexpected rarity "
-								<< temp->m_Rarity
-								<< " in cGangManager::UpdateGangs"
-							;
+						case RARITYCOMMON:
+						case RARITYSHOP50:
+							g_LogFile.ss() << "Warning: unexpected rarity " << temp->m_Rarity << " in cGangManager::UpdateGangs";
 							g_LogFile.ssend();
 							break;
 /*
@@ -2370,14 +2363,11 @@ void cGangManager::UpdateGangs()
  *
  *						assuming the latter for now. silently ignore
  */
-						case sInventoryItem::ScriptOnly:
-						case sInventoryItem::ScriptOrReward:
+						case RARITYSCRIPTONLY:
+						case RARITYSCRIPTORREWARD:
 							break;
 						default:
-							g_LogFile.ss()
-								<< "Warning: cGangManager::UpdateGangs: "
-								<< "unexpected enum in switch"
-							;
+							g_LogFile.ss() << "Warning: cGangManager::UpdateGangs: " << "unexpected enum in switch";
 							g_LogFile.ssend();
 							break;
 						}

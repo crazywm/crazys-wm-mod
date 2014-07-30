@@ -26,6 +26,9 @@
 #include "FileList.h"
 #include "tinyxml.h"
 #include "cColor.h"
+#include "Constants.h"
+#include "XmlUtil.h"
+
 
 extern CLog g_LogFile;
 static CLog &l = g_LogFile;
@@ -104,6 +107,33 @@ sConfigData::sConfigData(const char *a_filename)
 
 		l.ss() << "Warning: config.xml: tag: '" << tag << "' unexpected";
 		l.ssend();
+	}
+	// check interface for colors
+	DirPath dpi = DirPath() << "Resources" << "Interface" << resolution.resolution << "InterfaceColors.xml";
+	TiXmlDocument doci(dpi.c_str());
+	if (doci.LoadFile())
+	{
+		string m_filename = dpi.c_str();
+		TiXmlElement *el, *root_el = doci.RootElement();
+		for (el = root_el->FirstChildElement(); el; el = el->NextSiblingElement())
+		{
+			string tag = el->ValueStr();
+			if (tag == "Color")
+			{
+				XmlUtil xu(m_filename); string name; int r, g, b;
+				xu.get_att(el, "Name", name); xu.get_att(el, "R", r); xu.get_att(el, "G", g); xu.get_att(el, "B", b);
+				 if (name == "ItemRarity0") ColorConvert.RGBToSDLColor(items.rarity_color[0], r, g, b);
+			else if (name == "ItemRarity1") ColorConvert.RGBToSDLColor(items.rarity_color[1], r, g, b);
+			else if (name == "ItemRarity2") ColorConvert.RGBToSDLColor(items.rarity_color[2], r, g, b);
+			else if (name == "ItemRarity3") ColorConvert.RGBToSDLColor(items.rarity_color[3], r, g, b);
+			else if (name == "ItemRarity4") ColorConvert.RGBToSDLColor(items.rarity_color[4], r, g, b);
+			else if (name == "ItemRarity5") ColorConvert.RGBToSDLColor(items.rarity_color[5], r, g, b);
+			else if (name == "ItemRarity6") ColorConvert.RGBToSDLColor(items.rarity_color[6], r, g, b);
+			else if (name == "ItemRarity7") ColorConvert.RGBToSDLColor(items.rarity_color[7], r, g, b);
+			else if (name == "ItemRarity8") ColorConvert.RGBToSDLColor(items.rarity_color[8], r, g, b);
+
+			}
+		}
 	}
 }
 
@@ -191,11 +221,26 @@ void sConfigData::get_resolution_data(TiXmlElement *el)
 		l.ssend();
 
 	}
-	if (pt = el->Attribute("Width"))		{ get_att(el, "Width", &resolution.width);		resolution.configXML = true; }
-	if (pt = el->Attribute("Height"))		{ get_att(el, "Height", &resolution.height);	resolution.configXML = true; }
-	if (pt = el->Attribute("FullScreen"))		get_att(el, "FullScreen", resolution.fullscreen);
+	if (pt = el->Attribute("Width"))	{	get_att(el, "Width",		&resolution.width);		resolution.configXML = true; }
+	if (pt = el->Attribute("Height"))	{	get_att(el, "Height",		&resolution.height);	resolution.configXML = true; }
+	if (pt = el->Attribute("ScaleWidth"))	get_att(el, "ScaleWidth",	&resolution.scalewidth);
+	if (pt = el->Attribute("ScaleHeight"))	get_att(el, "ScaleHeight",	&resolution.scaleheight);
+	if (pt = el->Attribute("FullScreen"))	get_att(el, "FullScreen",	resolution.fullscreen);
 }
 
+void sConfigData::get_initial_values(TiXmlElement *el)
+{
+	const char *pt;
+	if (pt = el->Attribute("Gold"))					get_att(el, "Gold",					&initial.gold);
+	if (pt = el->Attribute("GirlMeet"))				get_att(el, "GirlMeet",				&initial.girl_meet);
+	if (pt = el->Attribute("GirlsHousePerc"))		get_att(el, "GirlsHousePerc",		&initial.girls_house_perc);	// `J` added
+	if (pt = el->Attribute("GirlsKeepTips"))		get_att(el, "GirlsKeepTips",		initial.girls_keep_tips);	// `J` added
+	if (pt = el->Attribute("SlaveHousePerc"))		get_att(el, "SlaveHousePerc",		&initial.slave_house_perc);
+	if (pt = el->Attribute("SlaveKeepTips"))		get_att(el, "SlaveKeepTips",		initial.slave_keep_tips);	// `J` added
+	if (pt = el->Attribute("AutoUseItems"))			get_att(el, "AutoUseItems",			initial.auto_use_items);
+	if (pt = el->Attribute("AutoCombatEquip"))		get_att(el, "AutoCombatEquip",		initial.auto_combat_equip);	// `J` moved from items
+	if (pt = el->Attribute("TortureTraitWeekMod"))	get_att(el, "TortureTraitWeekMod",	&initial.torture_mod);
+}
 
 void sConfigData::get_income_factors(TiXmlElement *el)
 {
@@ -232,15 +277,20 @@ void sConfigData::get_expense_factors(TiXmlElement *el)
 	if (pt = el->Attribute("Advertising"))			get_att(el, "Advertising",			&out_fact.advertising);
 }
 
-void sConfigData::get_initial_values(TiXmlElement *el)
+void sConfigData::get_gambling_factors(TiXmlElement *el)
 {
 	const char *pt;
-	if (pt = el->Attribute("Gold"))					get_att(el, "Gold",					&initial.gold);
-	if (pt = el->Attribute("GirlMeet"))				get_att(el, "GirlMeet",				&initial.girl_meet);
-	if (pt = el->Attribute("SlaveHousePerc"))		get_att(el, "SlaveHousePerc",		&initial.slave_house_perc);
-	if (pt = el->Attribute("AutoUseItems"))			get_att(el, "AutoUseItems",			initial.auto_use_items);
-	if (pt = el->Attribute("AutoCombatEquip"))		get_att(el, "AutoCombatEquip",		initial.auto_combat_equip);
-	if (pt = el->Attribute("TortureTraitWeekMod"))	get_att(el, "TortureTraitWeekMod",	&initial.torture_mod);
+	if (pt = el->Attribute("Odds"))					get_att(el, "Odds", &gamble.odds);
+	if (pt = el->Attribute("Base"))					get_att(el, "Base", &gamble.base);
+	if (pt = el->Attribute("Spread"))				get_att(el, "Spread", &gamble.spread);
+	/*
+	*	strictly, we only need one of these:
+	*	a customer factor OR a house factor
+	*	but I thought it might be easier to explain
+	*	if each had its own multiplier
+	*/
+	if (pt = el->Attribute("CustomerFactor"))		get_att(el, "CustomerFactor", &gamble.customer_factor);
+	if (pt = el->Attribute("HouseFactor"))			get_att(el, "HouseFactor", &gamble.house_factor);
 }
 
 void sConfigData::get_tax_factors(TiXmlElement *el)
@@ -260,22 +310,6 @@ void sConfigData::get_tax_factors(TiXmlElement *el)
 	tax.laundry	/= 100.0;
 }
 
-void sConfigData::get_gambling_factors(TiXmlElement *el)
-{
-	const char *pt;
-	if (pt = el->Attribute("Odds"))					get_att(el, "Odds",					&gamble.odds);
-	if (pt = el->Attribute("Base"))					get_att(el, "Base",					&gamble.base);
-	if (pt = el->Attribute("Spread"))				get_att(el, "Spread",				&gamble.spread);
-/*
- *	strictly, we only need one of these:
- *	a customer factor OR a house factor
- *	but I thought it might be easier to explain
- *	if each had its own multiplier
- */
-	if (pt = el->Attribute("CustomerFactor"))		get_att(el, "CustomerFactor",		&gamble.customer_factor);
-	if (pt = el->Attribute("HouseFactor"))			get_att(el, "HouseFactor",			&gamble.house_factor);
-}
-
 void sConfigData::get_preg_factors(TiXmlElement *el)
 {
 	const char *pt;
@@ -285,8 +319,18 @@ void sConfigData::get_preg_factors(TiXmlElement *el)
 	if (pt = el->Attribute("GoodSexFactor"))		get_att(el, "GoodSexFactor",		&pregnancy.good_sex_factor);
 	if (pt = el->Attribute("ChanceOfGirl"))			get_att(el, "ChanceOfGirl",			&pregnancy.chance_of_girl);
 	if (pt = el->Attribute("WeeksPregnant"))		get_att(el, "WeeksPregnant",		&pregnancy.weeks_pregnant);
+	if (pt = el->Attribute("WeeksMonsterP"))		get_att(el, "WeeksMonsterP",		&pregnancy.weeks_monster_p);	// `J` added
+	if (pt = el->Attribute("MiscarriageChance"))	get_att(el, "MiscarriageChance",	&pregnancy.miscarriage_chance);	// `J` added
+	if (pt = el->Attribute("MiscarriageMonster"))	get_att(el, "MiscarriageMonster",	&pregnancy.miscarriage_monster);	// `J` added
 	if (pt = el->Attribute("WeeksTillGrown"))		get_att(el, "WeeksTillGrown",		&pregnancy.weeks_till_grown);
 	if (pt = el->Attribute("CoolDown"))				get_att(el, "CoolDown",				&pregnancy.cool_down);
+}
+
+void sConfigData::get_pros_factors(TiXmlElement *el)
+{
+	const char *pt;
+	if (pt = el->Attribute("RapeStreet"))		get_att(el, "RapeStreet",	&prostitution.rape_streets);
+	if (pt = el->Attribute("RapeBrothel"))		get_att(el, "RapeBrothel",	&prostitution.rape_brothel);
 }
 
 void sConfigData::get_gang_factors(TiXmlElement *el)
@@ -301,31 +345,6 @@ void sConfigData::get_gang_factors(TiXmlElement *el)
 	if (pt = el->Attribute("AddNewWeeklyMin"))		get_att(el, "AddNewWeeklyMin",		&gangs.add_new_weekly_min);
 	if (pt = el->Attribute("AddNewWeeklyMax"))		get_att(el, "AddNewWeeklyMax",		&gangs.add_new_weekly_max);
 }
-void sConfigData::get_pros_factors(TiXmlElement *el)
-{
-	const char *pt;
-	if (pt = el->Attribute("RapeStreet"))		get_att(el, "RapeStreet",				&prostitution.rape_streets);
-	if (pt = el->Attribute("RapeBrothel"))		get_att(el, "RapeBrothel",				&prostitution.rape_brothel);
-}
-
-void sConfigData::get_debug_flags(TiXmlElement *el)
-{
-	const char *pt;
-	if (pt = el->Attribute("LogItems"))			get_att(el, "LogItems",					debug.log_items);
-	if (pt = el->Attribute("LogGirls"))			get_att(el, "LogGirls",					debug.log_girls);
-	if (pt = el->Attribute("LogRGirls"))		get_att(el, "LogRGirls",				debug.log_rgirls);
-	if (pt = el->Attribute("LogFonts"))			get_att(el, "LogFonts",					debug.log_fonts);
-	if (pt = el->Attribute("LogTorture"))		get_att(el, "LogTorture",				debug.log_torture);
-}
-
-void sConfigData::get_font_data(TiXmlElement *el)
-{
-	const char *pt;
-	if (pt = el->Attribute("Normal"))			get_att(el, "Normal",					fonts.normal);
-	if (pt = el->Attribute("Fixed"))			get_att(el, "Fixed",					fonts.fixed);
-	if (pt = el->Attribute("Antialias"))		get_att(el, "Antialias",				fonts.antialias);
-}
-
 
 // `J` get_item_data will be obsolete for .06 after Rarity Colors are moved to interfaces.
 void sConfigData::get_item_data(TiXmlElement *el)
@@ -335,7 +354,7 @@ void sConfigData::get_item_data(TiXmlElement *el)
 	if (pt = el->Attribute("AutoCombatEquip"))	get_att(el, "AutoCombatEquip", initial.auto_combat_equip);
 
 	// `J` Rarity Colors will be moved to interfaces. Kept here for legacy.
-	for(int i=0; i<9; i++)
+	for (int i = 0; i<NUM_ITEM_RARITY; i++)
 	{
 		string ColorIn;
 		stringstream ss;
@@ -349,6 +368,29 @@ void sConfigData::get_item_data(TiXmlElement *el)
 	}
 }
 
+void sConfigData::get_font_data(TiXmlElement *el)
+{
+	const char *pt;
+	if (pt = el->Attribute("Normal"))			get_att(el, "Normal", fonts.normal);
+	if (pt = el->Attribute("Fixed"))			get_att(el, "Fixed", fonts.fixed);
+	if (pt = el->Attribute("Antialias"))		get_att(el, "Antialias", fonts.antialias);
+}
+
+void sConfigData::get_debug_flags(TiXmlElement *el)
+{
+	const char *pt;
+	if (pt = el->Attribute("LogAll"))
+	{
+		get_att(el, "LogItems", debug.log_all);
+		debug.log_items = debug.log_girls = debug.log_rgirls = debug.log_fonts = debug.log_torture = debug.log_all;
+	}
+	if (pt = el->Attribute("LogItems"))			get_att(el, "LogItems",   debug.log_items);
+	if (pt = el->Attribute("LogGirls"))			get_att(el, "LogGirls",   debug.log_girls);
+	if (pt = el->Attribute("LogRGirls"))		get_att(el, "LogRGirls",  debug.log_rgirls);
+	if (pt = el->Attribute("LogFonts"))			get_att(el, "LogFonts",   debug.log_fonts);
+	if (pt = el->Attribute("LogTorture"))		get_att(el, "LogTorture", debug.log_torture);
+}
+
 /*
  * these just make sure the game has a playable
  * set of factors in the event that the config
@@ -357,91 +399,99 @@ void sConfigData::get_item_data(TiXmlElement *el)
 void sConfigData::set_defaults()
 {
 	resolution.resolution = "J_1024x768";	// `J` I set this to my interface because that is the one I edit myself
-	resolution.width = 1024;
-	resolution.height = 768;
-	resolution.fullscreen = false;
-	resolution.configXML = false;
+	resolution.width				= 1024;	// `J` added - Will be moved to interfaces
+	resolution.height				= 768;	// `J` added - Will be moved to interfaces
+	resolution.scalewidth			= 800;	// `J` added - Will be moved to interfaces
+	resolution.scaleheight			= 600;	// `J` added - Will be moved to interfaces
+	resolution.fullscreen			= false;	// `J` added - Will be moved to interfaces
+	resolution.configXML			= false;	// `J` added - Will be changed to interfaces
 
-	initial.gold		        = 4000;
-	initial.girl_meet	        = 30;
-	initial.slave_house_perc    = 100;
-	initial.auto_use_items	    = false;
-	initial.auto_combat_equip = true;
+	initial.gold					= 4000;
+	initial.girl_meet				= 30;
+	initial.girls_house_perc		= 60;	// `J` added
+	initial.girls_keep_tips			= true;	// `J` added
+	initial.slave_house_perc		= 100;
+	initial.slave_keep_tips			= false;	// `J` added
+	initial.auto_use_items			= false;
+	initial.auto_combat_equip		= true;
 
-	initial.torture_mod			= 1;
+	initial.torture_mod				= 1;	// `J` added
 
-	in_fact.extortion	        = 1.0;
-	in_fact.brothel_work	    = 1.0;
-	in_fact.street_work	        = 1.0;
-	in_fact.movie_income	    = 1.0;
-	in_fact.stripper_work	    = 1.0;
-	in_fact.barmaid_work	    = 1.0;
-	in_fact.slave_sales	        = 1.0;
-	in_fact.item_sales	        = 1.0;
+	in_fact.extortion				= 1.0;
+	in_fact.brothel_work			= 1.0;
+	in_fact.street_work				= 1.0;
+	in_fact.movie_income			= 1.0;
+	in_fact.stripper_work			= 1.0;
+	in_fact.barmaid_work			= 1.0;
+	in_fact.slave_sales				= 1.0;
+	in_fact.item_sales				= 1.0;
 	
-    out_fact.training	        = 0.0;
-	out_fact.actress_wages	    = 0.0;
-	out_fact.movie_cost	        = 1.0;
-	out_fact.goon_wages	        = 1.0;
-	out_fact.matron_wages	    = 1.0;
-	out_fact.staff_wages		= 1.0;	// `J` ?not used?
-	out_fact.girl_support	    = 1.0;
-	out_fact.consumables	    = 1.0;
-	out_fact.item_cost	        = 1.0;
-	out_fact.slave_cost	        = 1.0;
-	out_fact.brothel_cost	    = 1.0;
-	out_fact.brothel_support	= 1.0;	// `J` ?not used?
-	out_fact.bar_cost			= 1.0;	// `J` ?not used?
-	out_fact.casino_cost		= 1.0;	// `J` ?not used?
-	out_fact.bribes		        = 1.0;
-	out_fact.fines		        = 1.0;
-	out_fact.advertising	    = 1.0;
+    out_fact.training				= 0.0;
+	out_fact.actress_wages			= 0.0;
+	out_fact.movie_cost				= 1.0;
+	out_fact.goon_wages				= 1.0;
+	out_fact.matron_wages			= 1.0;
+	out_fact.staff_wages			= 1.0;	// `J` ?not used?
+	out_fact.girl_support			= 1.0;
+	out_fact.consumables			= 1.0;
+	out_fact.item_cost				= 1.0;
+	out_fact.slave_cost				= 1.0;
+	out_fact.brothel_cost			= 1.0;
+	out_fact.brothel_support		= 1.0;	// `J` ?not used?
+	out_fact.bar_cost				= 1.0;	// `J` ?not used?
+	out_fact.casino_cost			= 1.0;	// `J` ?not used?
+	out_fact.bribes					= 1.0;
+	out_fact.fines					= 1.0;
+	out_fact.advertising			= 1.0;
 	
-    tax.rate		            = 0.06;
-	tax.minimum		            = 0.01;
-	tax.laundry		            = 0.25;
+    tax.rate						= 0.06;
+	tax.minimum						= 0.01;
+	tax.laundry						= 0.25;
 	
-    gamble.odds		            = 49;
-	gamble.base		            = 79;
-	gamble.spread		        = 400;
-	gamble.house_factor	        = 1.0;
-	gamble.customer_factor	    = 0.5;
+    gamble.odds						= 49;
+	gamble.base						= 79;
+	gamble.spread					= 400;
+	gamble.house_factor				= 1.0;
+	gamble.customer_factor			= 0.5;
 	
-    pregnancy.player_chance	    = 8;
-	pregnancy.customer_chance   = 8;
-	pregnancy.monster_chance    = 8;
-	pregnancy.good_sex_factor	= 2.0;	// `J` changed from 8 to 2
-	pregnancy.chance_of_girl    = 50;
-	pregnancy.weeks_pregnant    = 38;
-	pregnancy.weeks_till_grown  = 60;
-	pregnancy.cool_down	        = 4;	// `J` changed from 60 weeks to 4 weeks
+    pregnancy.player_chance			= 8;
+	pregnancy.customer_chance		= 8;
+	pregnancy.monster_chance		= 8;
+	pregnancy.good_sex_factor		= 2.0;	// `J` changed from 8 to 2
+	pregnancy.chance_of_girl		= 50;
+	pregnancy.weeks_pregnant		= 38;
+	pregnancy.weeks_monster_p		= 20;	// `J` added
+	pregnancy.miscarriage_chance	= 0.1;	// `J` added
+	pregnancy.miscarriage_monster	= 1.0;	// `J` added
+	pregnancy.weeks_till_grown		= 60;
+	pregnancy.cool_down				= 4;	// `J` changed from 60 weeks to 4 weeks
 
-	gangs.max_recruit_list      = 6;
-	gangs.start_random          = 2;
-	gangs.start_boosted         = 2;
-	gangs.init_member_min       = 1;
-	gangs.init_member_max       = 10;
-	gangs.chance_remove_unwanted = 25;
-	gangs.add_new_weekly_min    = 0;
-	gangs.add_new_weekly_max    = 2;
+	gangs.max_recruit_list			= 6;
+	gangs.start_random				= 2;
+	gangs.start_boosted				= 2;
+	gangs.init_member_min			= 1;
+	gangs.init_member_max			= 10;
+	gangs.chance_remove_unwanted	= 25;
+	gangs.add_new_weekly_min		= 0;
+	gangs.add_new_weekly_max		= 2;
 
-	prostitution.rape_brothel   = 1;
-	prostitution.rape_streets   = 5;
+	prostitution.rape_brothel		= 1;
+	prostitution.rape_streets		= 5;
 
 
 	for(int i=0; i<9; i++)
 	{
 		items.rarity_color[i] = new SDL_Color();
 	}
-	ColorConvert.HexToSDLColor("000000", items.rarity_color[0]);
-	ColorConvert.HexToSDLColor("000066", items.rarity_color[1]);
-	ColorConvert.HexToSDLColor("0000cc", items.rarity_color[2]);
-	ColorConvert.HexToSDLColor("0066ff", items.rarity_color[3]);
-	ColorConvert.HexToSDLColor("8f0000", items.rarity_color[4]);
-	ColorConvert.HexToSDLColor("00ff00", items.rarity_color[5]);
-	ColorConvert.HexToSDLColor("008f00", items.rarity_color[6]);
-	ColorConvert.HexToSDLColor("a00000", items.rarity_color[7]);
-	ColorConvert.HexToSDLColor("e00000", items.rarity_color[8]);
+	ColorConvert.HexToSDLColor("000000", items.rarity_color[0]);	//000000
+	ColorConvert.HexToSDLColor("000066", items.rarity_color[1]);	//000066
+	ColorConvert.HexToSDLColor("0000cc", items.rarity_color[2]);	//0000cc
+	ColorConvert.HexToSDLColor("0066ff", items.rarity_color[3]);	//0066ff
+	ColorConvert.HexToSDLColor("8f0000", items.rarity_color[4]);	//8f0000
+	ColorConvert.HexToSDLColor("00ff00", items.rarity_color[5]);	//00ff00
+	ColorConvert.HexToSDLColor("008f00", items.rarity_color[6]);	//008f00
+	ColorConvert.HexToSDLColor("a00000", items.rarity_color[7]);	//a00000
+	ColorConvert.HexToSDLColor("e00000", items.rarity_color[8]);	//e00000
 /*
  *	not hugely sensible values
  *	but I want something I'm not using so I can test this
@@ -451,6 +501,7 @@ void sConfigData::set_defaults()
 	fonts.fixed		    = "comic.ttf";
 	fonts.antialias		= true;
 
+	debug.log_all		= false;
 	debug.log_items		= false;
 	debug.log_girls		= false;
 	debug.log_rgirls	= false;

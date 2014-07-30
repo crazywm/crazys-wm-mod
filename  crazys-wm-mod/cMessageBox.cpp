@@ -56,10 +56,11 @@ void cMessageBox::CreateWindow(int x, int y, int width, int height, int BorderSi
 	float xScale = 1.0f, yScale = 1.0f;
 	if(scale)
 	{
-		if(_G.g_ScreenWidth != 800)
-			xScale = (float)((float)_G.g_ScreenWidth/(float)800);
-		if(_G.g_ScreenHeight != 600)
-			yScale = (float)((float)_G.g_ScreenHeight/(float)600);
+		cConfig cfg;
+		if (_G.g_ScreenWidth != cfg.resolution.width())
+			xScale = (float)((float)_G.g_ScreenWidth / (float)cfg.resolution.width());
+		if (_G.g_ScreenHeight != cfg.resolution.height())
+			yScale = (float)((float)_G.g_ScreenHeight / (float)cfg.resolution.height());
 	}
 
 	x = (int)((float)x*xScale);

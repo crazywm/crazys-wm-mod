@@ -38,7 +38,10 @@ struct sConfigData
  	struct {
 		int	gold;
 		int girl_meet;
+		int girls_house_perc;
+		bool girls_keep_tips;
 		int slave_house_perc;
+		bool slave_keep_tips;
 		bool auto_use_items;
 		bool auto_combat_equip;
 		int torture_mod;
@@ -51,6 +54,8 @@ struct sConfigData
 		string	resolution;
 		int width;
 		int height;
+		int scalewidth;
+		int scaleheight;
 		bool fullscreen;
 		bool configXML;
 	} resolution;
@@ -112,6 +117,9 @@ struct sConfigData
 		double	good_sex_factor;
 		int	chance_of_girl;
 		int	weeks_pregnant;
+		int weeks_monster_p;
+		double	miscarriage_chance;
+		double	miscarriage_monster;
 		int	weeks_till_grown;
 		int	cool_down;
 	} pregnancy;
@@ -147,6 +155,7 @@ struct sConfigData
 	} fonts;
 
 	struct DebugData {
+		bool	log_all;
 		bool	log_items;
 		bool	log_girls;
 		bool	log_rgirls;
@@ -288,6 +297,8 @@ public:
 		string& resolution()	{ return data->resolution.resolution; }
 		int width()				{ return data->resolution.width; }
 		int height()			{ return data->resolution.height; }
+		int scalewidth()		{ return data->resolution.scalewidth; }
+		int scaleheight()		{ return data->resolution.scaleheight; }
 		bool fullscreen()		{ return data->resolution.fullscreen; }
 		bool configXML()		{ return data->resolution.configXML; }
 	} resolution;

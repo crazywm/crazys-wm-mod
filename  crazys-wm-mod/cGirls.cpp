@@ -1383,19 +1383,12 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 			AddTrait(newGirl, "MILF");
 	}
 
-	DirPath dp = DirPath()
-		<< "Resources"
-		<< "Characters"
-		<< newGirl->m_Name
-		<< "triggers.xml"
-		;
+	DirPath dp = DirPath() << "Resources" << "Characters" << newGirl->m_Name << "triggers.xml";
 	newGirl->m_Triggers.LoadList(dp);
 	newGirl->m_Triggers.SetGirlTarget(newGirl);
 	
 	// `J` more usefull log for rgirl
-	g_LogFile.os() << gettext("Random girl ") << newGirl->m_Realname
-		<< gettext(" created from template ") << newGirl->m_Name
-		<< gettext(".rgirlsx")<< endl;
+	g_LogFile.os() << gettext("Random girl ") << newGirl->m_Realname << gettext(" created from template ") << newGirl->m_Name << gettext(".rgirlsx") << endl;
 
 	if(addToGGirls)
 		AddGirl(newGirl);
@@ -4394,16 +4387,12 @@ void cGirls::LoadGirlsDecider(string filename)
 void cGirls::LoadGirlsXML(string filename)
 {
 	cConfig cfg;
-	if(cfg.debug.log_girls()) {
-		g_LogFile.ss() << "loading " << filename;
-		g_LogFile.ssend();
-	}
+	if (cfg.debug.log_girls()) { g_LogFile.ss() << "loading " << filename; g_LogFile.ssend(); }
 
 	TiXmlDocument doc(filename);
-	if(!doc.LoadFile()) {
+	if (!doc.LoadFile()) {
 		g_LogFile.ss() << "can't load XML girls " << filename << endl;
-		g_LogFile.ss()	<< "Error: line " << doc.ErrorRow() << ", col " << doc.ErrorCol()
-			<< ": " << doc.ErrorDesc() << endl;
+		g_LogFile.ss() << "Error: line " << doc.ErrorRow() << ", col " << doc.ErrorCol() << ": " << doc.ErrorDesc() << endl;
 		g_LogFile.ssend();
 		return;
 	}
@@ -4420,11 +4409,7 @@ void cGirls::LoadGirlsXML(string filename)
  *		walk the XML DOM to get the girl data
  */
 		girl->load_from_xml(el);	// uses sGirl::load_from_xml
-		if(cfg.debug.log_girls()) {
-			g_LogFile.ss() << *girl << endl;
-			g_LogFile.ssend();
-		}
-
+		if (cfg.debug.log_girls()) { g_LogFile.ss() << *girl << endl; g_LogFile.ssend(); }
 
 		if (CheckVirginity(girl))	// `J` check girl's virginity
 		{
@@ -4459,12 +4444,7 @@ void cGirls::LoadGirlsXML(string filename)
 /*
  *		load triggers if the girl has any
  */
-		DirPath dp = DirPath()
-			<< "Resources"
-			<< "Characters"
-			<< girl->m_Name
-			<< "triggers.xml"
-			;
+		DirPath dp = DirPath() << "Resources" << "Characters" << girl->m_Name << "triggers.xml";
 		girl->m_Triggers.LoadList(dp);
 		girl->m_Triggers.SetGirlTarget(girl);
 /*

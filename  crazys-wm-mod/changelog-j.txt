@@ -489,6 +489,31 @@ Crazy added/updated farm jobs and some other jobs
  - Incorperated Crazy's changes to WorkPersonalBedWarmer.cpp into .05
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.04
 
+###  Changes 7/20-21/2014
+Continued work on config.xml
+Cleaned and repaired triggers
+
+###  Changes 7/22/2014
+Converted InterfaceColors to xml
+
+###  Changes 7/22/2014
+Converted Item Rarity from enum to Constants.h
+Changed hotkeys:
+ - <F9> changed from Items to Farm
+ - <i> added as Item Management. 
+ - (<i> fixed so as not to conflict between "Change to item screen" and "item list up")
+
+###  Changes 7/23-29/2014
+Added "void cColor::RGBToSDLColor(SDL_Color* SDLColor, int r = 0, int g = 0, int b = 0)" to cColor.cpp
+Fixed screen resolution problem where all interfaces get scaled to 800x600
+Added the farm to town_screen.xml - Still needs its own icon
+Rearranged town_screen.xml a bit
+Rearranged sConfig.cpp and sConfig.h for better parralleling of config.xml
+Created base for farm_screen.xml and farm_management_screen.xml - neither are coded yet and need reworking
+InterfaceColors.xml contains Item Rarity Colors and is coded to load them when config.xml gets loaded - needs cleaning
+Converted GetString.txt to GetString.xml and LoadMenu.txt to LoadMenu.xml
+
+
 
 
 

@@ -4136,10 +4136,10 @@ void cBrothelManager::PassObjective()
 					sInventoryItem* item=0;
 					do
 					{
-					item = g_InvManager.GetRandomItem();
-					}while(!item);
+						item = g_InvManager.GetRandomItem();
+					} while (!item);
 					// end mod
-					if(item->m_Rarity != 5)
+					if (item->m_Rarity != RARITYSCRIPTONLY )
 					{
 						int curI = g_Brothels.HasItem(item->m_Name, -1);
 						bool loop = true;

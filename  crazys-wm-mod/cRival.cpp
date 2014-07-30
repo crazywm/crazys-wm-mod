@@ -53,16 +53,8 @@ cRivalManager::cRivalManager()
 	m_PlayerSafe = true;
 
 
-	DirPath first_names = DirPath()
-		<< "Resources"
-		<< "Data"
-		<< "RivalGangFirstNames.txt"
-		;
-	DirPath last_names = DirPath()
-		<< "Resources"
-		<< "Data"
-		<< "RivalGangLastNames.txt"
-		;
+	DirPath first_names = DirPath() << "Resources" << "Data" << "RivalGangFirstNames.txt";
+	DirPath last_names = DirPath() << "Resources" << "Data" << "RivalGangLastNames.txt";
 	names.load(first_names, last_names);
 }
 
