@@ -142,7 +142,7 @@ public:
 	static bool WorkBreastReduction(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
 	static bool WorkLiposuction(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
 	static bool WorkBoobJob(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
-	static bool WorkGetVaginalRejuvination(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
+	static bool WorkGetVaginalRejuvenation(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
 	static bool WorkGetFacelift(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
 	static bool WorkGetAssJob(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
 	static bool WorkGetTubesTied(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);

@@ -169,7 +169,7 @@
     <ClCompile Include="WorkGetFacelift.cpp" />
     <ClCompile Include="WorkGetFertility.cpp" />
     <ClCompile Include="WorkGetTubesTied.cpp" />
-    <ClCompile Include="WorkGetVaginalRejuvination.cpp" />
+    <ClCompile Include="WorkGetVaginalRejuvenation.cpp" />
     <ClCompile Include="WorkIntern.cpp" />
     <ClCompile Include="WorkLiposuction.cpp" />
     <ClCompile Include="WorkMakePotions.cpp" />

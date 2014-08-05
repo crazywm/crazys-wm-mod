@@ -229,9 +229,12 @@
 	-->
 	<Debug
 		LogAll="false"
-		LogItems="false"
 		LogGirls="false"
 		LogRGirls="false"
+		LogGirlFights="false"
+		LogItems="false"
 		LogFonts="false"
-		LogTorture="false" />
+		LogTorture="false"
+		LogDebug="false"
+		LogExtraDetails="false" />
 </config>

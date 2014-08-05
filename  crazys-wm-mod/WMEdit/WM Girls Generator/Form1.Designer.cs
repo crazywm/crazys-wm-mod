@@ -102,6 +102,7 @@
             this.TBox_G_Name = new System.Windows.Forms.TextBox();
             this.label_Girl_Name = new System.Windows.Forms.Label();
             this.groupBox12 = new System.Windows.Forms.GroupBox();
+            this.button_G_UnZero_Sex_Skills = new System.Windows.Forms.Button();
             this.comboBox_SortByType = new System.Windows.Forms.ComboBox();
             this.listBox_GirlsList = new System.Windows.Forms.ListBox();
             this.button_GirlClearList = new System.Windows.Forms.Button();
@@ -317,7 +318,7 @@
             this.button_DeleteRGirl = new System.Windows.Forms.Button();
             this.compileSRGButton1 = new System.Windows.Forms.Button();
             this.compileMRGButton1 = new System.Windows.Forms.Button();
-            this.button17 = new System.Windows.Forms.Button();
+            this.button_RG_Reset = new System.Windows.Forms.Button();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.buttonRGCondRand2 = new System.Windows.Forms.Button();
             this.buttonRGNormRand2 = new System.Windows.Forms.Button();
@@ -348,9 +349,9 @@
             this.button_ItemDelete = new System.Windows.Forms.Button();
             this.label84 = new System.Windows.Forms.Label();
             this.comboBox_ItemDuration = new System.Windows.Forms.ComboBox();
-            this.button14 = new System.Windows.Forms.Button();
-            this.button13 = new System.Windows.Forms.Button();
-            this.button12 = new System.Windows.Forms.Button();
+            this.button_Reset_Item = new System.Windows.Forms.Button();
+            this.button_Update_Selected_Item = new System.Windows.Forms.Button();
+            this.button_Add_Item_To_List = new System.Windows.Forms.Button();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
             this.checkBox_DG3 = new System.Windows.Forms.CheckBox();
             this.button_RemoveTraitsFromItem = new System.Windows.Forms.Button();
@@ -492,7 +493,10 @@
             this.label142 = new System.Windows.Forms.Label();
             this.textBox_Config_InitialSlaveHousePerc = new System.Windows.Forms.TextBox();
             this.textBox_Config_InitialGirlMeet = new System.Windows.Forms.TextBox();
-            this.groupBox23 = new System.Windows.Forms.GroupBox();
+            this.groupBox_Logging = new System.Windows.Forms.GroupBox();
+            this.checkBox_config_LogDebug = new System.Windows.Forms.CheckBox();
+            this.checkBox_config_LogExtraDetails = new System.Windows.Forms.CheckBox();
+            this.checkBox_config_LogGirlFights = new System.Windows.Forms.CheckBox();
             this.checkBox_config_LogTorture = new System.Windows.Forms.CheckBox();
             this.checkBox_config_LogFonts = new System.Windows.Forms.CheckBox();
             this.checkBox_config_LogRGirls = new System.Windows.Forms.CheckBox();
@@ -555,16 +559,17 @@
             this.traitsTBox1 = new System.Windows.Forms.TextBox();
             this.tabPage6_FAQ = new System.Windows.Forms.TabPage();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.checkBox_Add_Missing_Sex_Skills_On_Load = new System.Windows.Forms.CheckBox();
             this.checkBox_ToggleListsTooltips = new System.Windows.Forms.CheckBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.StatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.label85 = new System.Windows.Forms.Label();
             this.listBox2 = new System.Windows.Forms.ListBox();
             this.button21 = new System.Windows.Forms.Button();
             this.button22 = new System.Windows.Forms.Button();
             this.button23 = new System.Windows.Forms.Button();
             this.button24 = new System.Windows.Forms.Button();
-            this.label85 = new System.Windows.Forms.Label();
             this.checkBox_ToggleTraitTooltips = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1_Girls.SuspendLayout();
@@ -598,7 +603,7 @@
             this.groupBox_C_Gangs.SuspendLayout();
             this.groupBox_C_Pregnancy_Config.SuspendLayout();
             this.groupBox24.SuspendLayout();
-            this.groupBox23.SuspendLayout();
+            this.groupBox_Logging.SuspendLayout();
             this.groupBox22.SuspendLayout();
             this.groupBox17.SuspendLayout();
             this.groupBox_C_Prostitution_Rape_Chances.SuspendLayout();
@@ -652,7 +657,6 @@
             this.tabPage1_Girls.Controls.Add(this.TBox_G_Name);
             this.tabPage1_Girls.Controls.Add(this.label_Girl_Name);
             this.tabPage1_Girls.Controls.Add(this.groupBox12);
-            this.tabPage1_Girls.Controls.Add(this.button_G_Reset);
             this.tabPage1_Girls.Controls.Add(this.groupBox_G_Stats);
             this.tabPage1_Girls.Controls.Add(this.groupBox_G_Sk);
             this.tabPage1_Girls.Controls.Add(this.groupBox_G_St);
@@ -1084,6 +1088,7 @@
             this.SkillTBox_16.Size = new System.Drawing.Size(65, 20);
             this.SkillTBox_16.TabIndex = 11;
             this.SkillTBox_16.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.SkillTBox_16.TextChanged += new System.EventHandler(this.SkillTBox_16_TextChanged);
             // 
             // SkillTBox_18
             // 
@@ -1094,6 +1099,7 @@
             this.SkillTBox_18.Size = new System.Drawing.Size(65, 20);
             this.SkillTBox_18.TabIndex = 15;
             this.SkillTBox_18.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.SkillTBox_18.TextChanged += new System.EventHandler(this.SkillTBox_18_TextChanged);
             // 
             // SkillTBox_17
             // 
@@ -1104,6 +1110,7 @@
             this.SkillTBox_17.Size = new System.Drawing.Size(65, 20);
             this.SkillTBox_17.TabIndex = 13;
             this.SkillTBox_17.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.SkillTBox_17.TextChanged += new System.EventHandler(this.SkillTBox_17_TextChanged);
             // 
             // SkillTBox_19
             // 
@@ -1114,6 +1121,7 @@
             this.SkillTBox_19.Size = new System.Drawing.Size(65, 20);
             this.SkillTBox_19.TabIndex = 17;
             this.SkillTBox_19.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.SkillTBox_19.TextChanged += new System.EventHandler(this.SkillTBox_19_TextChanged);
             // 
             // SkillTBox_20
             // 
@@ -1124,6 +1132,7 @@
             this.SkillTBox_20.Size = new System.Drawing.Size(65, 20);
             this.SkillTBox_20.TabIndex = 19;
             this.SkillTBox_20.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.SkillTBox_20.TextChanged += new System.EventHandler(this.SkillTBox_20_TextChanged);
             // 
             // label146
             // 
@@ -1416,6 +1425,7 @@
             // 
             // groupBox12
             // 
+            this.groupBox12.Controls.Add(this.button_G_UnZero_Sex_Skills);
             this.groupBox12.Controls.Add(this.comboBox_SortByType);
             this.groupBox12.Controls.Add(this.listBox_GirlsList);
             this.groupBox12.Controls.Add(this.button_GirlClearList);
@@ -1424,12 +1434,24 @@
             this.groupBox12.Controls.Add(this.button_G_DeleteGirl);
             this.groupBox12.Controls.Add(this.button_G_AddToList);
             this.groupBox12.Controls.Add(this.button_G_Update);
+            this.groupBox12.Controls.Add(this.button_G_Reset);
             this.groupBox12.Location = new System.Drawing.Point(745, 5);
             this.groupBox12.Name = "groupBox12";
-            this.groupBox12.Size = new System.Drawing.Size(200, 450);
+            this.groupBox12.Size = new System.Drawing.Size(200, 481);
             this.groupBox12.TabIndex = 17;
             this.groupBox12.TabStop = false;
             this.groupBox12.Text = "Girls";
+            // 
+            // button_G_UnZero_Sex_Skills
+            // 
+            this.button_G_UnZero_Sex_Skills.Location = new System.Drawing.Point(5, 445);
+            this.button_G_UnZero_Sex_Skills.Name = "button_G_UnZero_Sex_Skills";
+            this.button_G_UnZero_Sex_Skills.Size = new System.Drawing.Size(100, 30);
+            this.button_G_UnZero_Sex_Skills.TabIndex = 9;
+            this.button_G_UnZero_Sex_Skills.Text = "UnZero Sex Skills";
+            this.toolTip1.SetToolTip(this.button_G_UnZero_Sex_Skills, resources.GetString("button_G_UnZero_Sex_Skills.ToolTip"));
+            this.button_G_UnZero_Sex_Skills.UseVisualStyleBackColor = true;
+            this.button_G_UnZero_Sex_Skills.Click += new System.EventHandler(this.button_G_UnZero_Sex_Skills_Click);
             // 
             // comboBox_SortByType
             // 
@@ -1442,7 +1464,7 @@
             "Catacombs girls",
             "Arena girls",
             "Your Daughters"});
-            this.comboBox_SortByType.Location = new System.Drawing.Point(5, 355);
+            this.comboBox_SortByType.Location = new System.Drawing.Point(5, 360);
             this.comboBox_SortByType.Name = "comboBox_SortByType";
             this.comboBox_SortByType.Size = new System.Drawing.Size(190, 21);
             this.comboBox_SortByType.TabIndex = 3;
@@ -1522,10 +1544,10 @@
             // 
             // button_G_Reset
             // 
-            this.button_G_Reset.Location = new System.Drawing.Point(745, 460);
+            this.button_G_Reset.Location = new System.Drawing.Point(115, 445);
             this.button_G_Reset.Name = "button_G_Reset";
-            this.button_G_Reset.Size = new System.Drawing.Size(200, 30);
-            this.button_G_Reset.TabIndex = 18;
+            this.button_G_Reset.Size = new System.Drawing.Size(80, 30);
+            this.button_G_Reset.TabIndex = 10;
             this.button_G_Reset.Text = "Reset";
             this.toolTip1.SetToolTip(this.button_G_Reset, "Resets values on this tab, also deselects\r\ncurrently selected item in the list");
             this.button_G_Reset.UseVisualStyleBackColor = true;
@@ -2219,7 +2241,6 @@
             this.tabPage2_RGirls.Controls.Add(this.label86);
             this.tabPage2_RGirls.Controls.Add(this.comboBox_RGTraits);
             this.tabPage2_RGirls.Controls.Add(this.groupBox13);
-            this.tabPage2_RGirls.Controls.Add(this.button17);
             this.tabPage2_RGirls.Controls.Add(this.groupBox8);
             this.tabPage2_RGirls.Controls.Add(this.groupBox7);
             this.tabPage2_RGirls.Controls.Add(this.confirmTraitsButton1);
@@ -3737,9 +3758,10 @@
             this.groupBox13.Controls.Add(this.button_DeleteRGirl);
             this.groupBox13.Controls.Add(this.compileSRGButton1);
             this.groupBox13.Controls.Add(this.compileMRGButton1);
+            this.groupBox13.Controls.Add(this.button_RG_Reset);
             this.groupBox13.Location = new System.Drawing.Point(745, 5);
             this.groupBox13.Name = "groupBox13";
-            this.groupBox13.Size = new System.Drawing.Size(200, 450);
+            this.groupBox13.Size = new System.Drawing.Size(200, 481);
             this.groupBox13.TabIndex = 23;
             this.groupBox13.TabStop = false;
             this.groupBox13.Text = "Random Girls";
@@ -3815,16 +3837,16 @@
             this.compileMRGButton1.UseVisualStyleBackColor = true;
             this.compileMRGButton1.Click += new System.EventHandler(this.compileMRGButton1_Click);
             // 
-            // button17
+            // button_RG_Reset
             // 
-            this.button17.Location = new System.Drawing.Point(745, 460);
-            this.button17.Name = "button17";
-            this.button17.Size = new System.Drawing.Size(200, 30);
-            this.button17.TabIndex = 24;
-            this.button17.Text = "Reset";
-            this.toolTip1.SetToolTip(this.button17, "Resets values on this tab, also deselects\r\ncurrently selected item in the list");
-            this.button17.UseVisualStyleBackColor = true;
-            this.button17.Click += new System.EventHandler(this.button17_Click);
+            this.button_RG_Reset.Location = new System.Drawing.Point(5, 445);
+            this.button_RG_Reset.Name = "button_RG_Reset";
+            this.button_RG_Reset.Size = new System.Drawing.Size(190, 30);
+            this.button_RG_Reset.TabIndex = 24;
+            this.button_RG_Reset.Text = "Reset";
+            this.toolTip1.SetToolTip(this.button_RG_Reset, "Resets values on this tab, also deselects\r\ncurrently selected item in the list");
+            this.button_RG_Reset.UseVisualStyleBackColor = true;
+            this.button_RG_Reset.Click += new System.EventHandler(this.button_RG_Reset_Click);
             // 
             // groupBox8
             // 
@@ -3965,7 +3987,7 @@
             // 
             this.label73.AutoSize = true;
             this.label73.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold);
-            this.label73.Location = new System.Drawing.Point(5, 323);
+            this.label73.Location = new System.Drawing.Point(5, 351);
             this.label73.Name = "label73";
             this.label73.Size = new System.Drawing.Size(100, 16);
             this.label73.TabIndex = 12;
@@ -4027,9 +4049,9 @@
             this.tabPage3_Items.Controls.Add(this.groupBox11);
             this.tabPage3_Items.Controls.Add(this.label84);
             this.tabPage3_Items.Controls.Add(this.comboBox_ItemDuration);
-            this.tabPage3_Items.Controls.Add(this.button14);
-            this.tabPage3_Items.Controls.Add(this.button13);
-            this.tabPage3_Items.Controls.Add(this.button12);
+            this.tabPage3_Items.Controls.Add(this.button_Reset_Item);
+            this.tabPage3_Items.Controls.Add(this.button_Update_Selected_Item);
+            this.tabPage3_Items.Controls.Add(this.button_Add_Item_To_List);
             this.tabPage3_Items.Controls.Add(this.groupBox10);
             this.tabPage3_Items.Controls.Add(this.groupBox9);
             this.tabPage3_Items.Controls.Add(this.checkBox_infinite_06);
@@ -4178,38 +4200,38 @@
             this.comboBox_ItemDuration.Size = new System.Drawing.Size(165, 21);
             this.comboBox_ItemDuration.TabIndex = 9;
             // 
-            // button14
+            // button_Reset_Item
             // 
-            this.button14.Location = new System.Drawing.Point(858, 463);
-            this.button14.Name = "button14";
-            this.button14.Size = new System.Drawing.Size(85, 23);
-            this.button14.TabIndex = 24;
-            this.button14.Text = "Reset";
-            this.toolTip1.SetToolTip(this.button14, "Resets values on this tab, also deselects\r\ncurrently selected item in the list");
-            this.button14.UseVisualStyleBackColor = true;
-            this.button14.Click += new System.EventHandler(this.button14_Click);
+            this.button_Reset_Item.Location = new System.Drawing.Point(858, 463);
+            this.button_Reset_Item.Name = "button_Reset_Item";
+            this.button_Reset_Item.Size = new System.Drawing.Size(85, 23);
+            this.button_Reset_Item.TabIndex = 24;
+            this.button_Reset_Item.Text = "Reset";
+            this.toolTip1.SetToolTip(this.button_Reset_Item, "Resets values on this tab, also deselects\r\ncurrently selected item in the list");
+            this.button_Reset_Item.UseVisualStyleBackColor = true;
+            this.button_Reset_Item.Click += new System.EventHandler(this.button_Reset_Item_Click);
             // 
-            // button13
+            // button_Update_Selected_Item
             // 
-            this.button13.Location = new System.Drawing.Point(749, 463);
-            this.button13.Name = "button13";
-            this.button13.Size = new System.Drawing.Size(106, 23);
-            this.button13.TabIndex = 23;
-            this.button13.Text = "Update selected";
-            this.toolTip1.SetToolTip(this.button13, "Replaces currently selected item with new values");
-            this.button13.UseVisualStyleBackColor = true;
-            this.button13.Click += new System.EventHandler(this.button13_Click);
+            this.button_Update_Selected_Item.Location = new System.Drawing.Point(749, 463);
+            this.button_Update_Selected_Item.Name = "button_Update_Selected_Item";
+            this.button_Update_Selected_Item.Size = new System.Drawing.Size(106, 23);
+            this.button_Update_Selected_Item.TabIndex = 23;
+            this.button_Update_Selected_Item.Text = "Update selected";
+            this.toolTip1.SetToolTip(this.button_Update_Selected_Item, "Replaces currently selected item with new values");
+            this.button_Update_Selected_Item.UseVisualStyleBackColor = true;
+            this.button_Update_Selected_Item.Click += new System.EventHandler(this.button_Update_Selected_Item_Click);
             // 
-            // button12
+            // button_Add_Item_To_List
             // 
-            this.button12.Location = new System.Drawing.Point(749, 434);
-            this.button12.Name = "button12";
-            this.button12.Size = new System.Drawing.Size(106, 23);
-            this.button12.TabIndex = 22;
-            this.button12.Text = "Add to list";
-            this.toolTip1.SetToolTip(this.button12, "Compiles item and adds it to item list");
-            this.button12.UseVisualStyleBackColor = true;
-            this.button12.Click += new System.EventHandler(this.button12_Click);
+            this.button_Add_Item_To_List.Location = new System.Drawing.Point(749, 434);
+            this.button_Add_Item_To_List.Name = "button_Add_Item_To_List";
+            this.button_Add_Item_To_List.Size = new System.Drawing.Size(106, 23);
+            this.button_Add_Item_To_List.TabIndex = 22;
+            this.button_Add_Item_To_List.Text = "Add to list";
+            this.toolTip1.SetToolTip(this.button_Add_Item_To_List, "Compiles item and adds it to item list");
+            this.button_Add_Item_To_List.UseVisualStyleBackColor = true;
+            this.button_Add_Item_To_List.Click += new System.EventHandler(this.button_Add_Item_To_List_Click);
             // 
             // groupBox10
             // 
@@ -4653,7 +4675,7 @@
             this.tabPage4_Config.Controls.Add(this.groupBox_C_Pregnancy_Config);
             this.tabPage4_Config.Controls.Add(this.button_Load_Config);
             this.tabPage4_Config.Controls.Add(this.groupBox24);
-            this.tabPage4_Config.Controls.Add(this.groupBox23);
+            this.tabPage4_Config.Controls.Add(this.groupBox_Logging);
             this.tabPage4_Config.Controls.Add(this.groupBox22);
             this.tabPage4_Config.Controls.Add(this.groupBox17);
             this.tabPage4_Config.Controls.Add(this.button_Config_Reset);
@@ -5174,7 +5196,7 @@
             this.groupBox_C_Gangs.Location = new System.Drawing.Point(5, 260);
             this.groupBox_C_Gangs.Name = "groupBox_C_Gangs";
             this.groupBox_C_Gangs.Size = new System.Drawing.Size(180, 220);
-            this.groupBox_C_Gangs.TabIndex = 0;
+            this.groupBox_C_Gangs.TabIndex = 1;
             this.groupBox_C_Gangs.TabStop = false;
             this.groupBox_C_Gangs.Text = "Gangs";
             // 
@@ -5808,43 +5830,84 @@
             this.textBox_Config_InitialGirlMeet.TabIndex = 3;
             this.textBox_Config_InitialGirlMeet.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // groupBox23
+            // groupBox_Logging
             // 
-            this.groupBox23.Controls.Add(this.checkBox_config_LogTorture);
-            this.groupBox23.Controls.Add(this.checkBox_config_LogFonts);
-            this.groupBox23.Controls.Add(this.checkBox_config_LogRGirls);
-            this.groupBox23.Controls.Add(this.checkBox_config_LogGirls);
-            this.groupBox23.Controls.Add(this.checkBox_config_LogItems);
-            this.groupBox23.Controls.Add(this.checkBox_config_LogAll);
-            this.groupBox23.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.groupBox23.Location = new System.Drawing.Point(765, 250);
-            this.groupBox23.Name = "groupBox23";
-            this.groupBox23.Size = new System.Drawing.Size(180, 90);
-            this.groupBox23.TabIndex = 10;
-            this.groupBox23.TabStop = false;
-            this.groupBox23.Text = "Debug";
+            this.groupBox_Logging.Controls.Add(this.checkBox_config_LogDebug);
+            this.groupBox_Logging.Controls.Add(this.checkBox_config_LogExtraDetails);
+            this.groupBox_Logging.Controls.Add(this.checkBox_config_LogGirlFights);
+            this.groupBox_Logging.Controls.Add(this.checkBox_config_LogTorture);
+            this.groupBox_Logging.Controls.Add(this.checkBox_config_LogFonts);
+            this.groupBox_Logging.Controls.Add(this.checkBox_config_LogRGirls);
+            this.groupBox_Logging.Controls.Add(this.checkBox_config_LogGirls);
+            this.groupBox_Logging.Controls.Add(this.checkBox_config_LogItems);
+            this.groupBox_Logging.Controls.Add(this.checkBox_config_LogAll);
+            this.groupBox_Logging.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.groupBox_Logging.Location = new System.Drawing.Point(765, 245);
+            this.groupBox_Logging.Name = "groupBox_Logging";
+            this.groupBox_Logging.Size = new System.Drawing.Size(180, 135);
+            this.groupBox_Logging.TabIndex = 10;
+            this.groupBox_Logging.TabStop = false;
+            this.groupBox_Logging.Text = "What to Log";
+            // 
+            // checkBox_config_LogDebug
+            // 
+            this.checkBox_config_LogDebug.AutoSize = true;
+            this.checkBox_config_LogDebug.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.checkBox_config_LogDebug.Location = new System.Drawing.Point(5, 115);
+            this.checkBox_config_LogDebug.Name = "checkBox_config_LogDebug";
+            this.checkBox_config_LogDebug.Size = new System.Drawing.Size(58, 17);
+            this.checkBox_config_LogDebug.TabIndex = 7;
+            this.checkBox_config_LogDebug.Text = "Debug";
+            this.checkBox_config_LogDebug.UseVisualStyleBackColor = true;
+            this.checkBox_config_LogDebug.CheckedChanged += new System.EventHandler(this.checkBox_config_LogAll_OthersChanged);
+            // 
+            // checkBox_config_LogExtraDetails
+            // 
+            this.checkBox_config_LogExtraDetails.AutoSize = true;
+            this.checkBox_config_LogExtraDetails.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.checkBox_config_LogExtraDetails.Location = new System.Drawing.Point(90, 115);
+            this.checkBox_config_LogExtraDetails.Name = "checkBox_config_LogExtraDetails";
+            this.checkBox_config_LogExtraDetails.Size = new System.Drawing.Size(85, 17);
+            this.checkBox_config_LogExtraDetails.TabIndex = 8;
+            this.checkBox_config_LogExtraDetails.Text = "Extra Details";
+            this.checkBox_config_LogExtraDetails.UseVisualStyleBackColor = true;
+            this.checkBox_config_LogExtraDetails.CheckedChanged += new System.EventHandler(this.checkBox_config_LogAll_OthersChanged);
+            // 
+            // checkBox_config_LogGirlFights
+            // 
+            this.checkBox_config_LogGirlFights.AutoSize = true;
+            this.checkBox_config_LogGirlFights.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.checkBox_config_LogGirlFights.Location = new System.Drawing.Point(90, 65);
+            this.checkBox_config_LogGirlFights.Name = "checkBox_config_LogGirlFights";
+            this.checkBox_config_LogGirlFights.Size = new System.Drawing.Size(72, 17);
+            this.checkBox_config_LogGirlFights.TabIndex = 4;
+            this.checkBox_config_LogGirlFights.Text = "Girl Fights";
+            this.checkBox_config_LogGirlFights.UseVisualStyleBackColor = true;
+            this.checkBox_config_LogGirlFights.CheckedChanged += new System.EventHandler(this.checkBox_config_LogAll_OthersChanged);
             // 
             // checkBox_config_LogTorture
             // 
             this.checkBox_config_LogTorture.AutoSize = true;
             this.checkBox_config_LogTorture.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.checkBox_config_LogTorture.Location = new System.Drawing.Point(90, 65);
+            this.checkBox_config_LogTorture.Location = new System.Drawing.Point(5, 65);
             this.checkBox_config_LogTorture.Name = "checkBox_config_LogTorture";
-            this.checkBox_config_LogTorture.Size = new System.Drawing.Size(81, 17);
-            this.checkBox_config_LogTorture.TabIndex = 5;
-            this.checkBox_config_LogTorture.Text = "Log Torture";
+            this.checkBox_config_LogTorture.Size = new System.Drawing.Size(60, 17);
+            this.checkBox_config_LogTorture.TabIndex = 3;
+            this.checkBox_config_LogTorture.Text = "Torture";
             this.checkBox_config_LogTorture.UseVisualStyleBackColor = true;
+            this.checkBox_config_LogTorture.CheckedChanged += new System.EventHandler(this.checkBox_config_LogAll_OthersChanged);
             // 
             // checkBox_config_LogFonts
             // 
             this.checkBox_config_LogFonts.AutoSize = true;
             this.checkBox_config_LogFonts.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.checkBox_config_LogFonts.Location = new System.Drawing.Point(5, 65);
+            this.checkBox_config_LogFonts.Location = new System.Drawing.Point(90, 90);
             this.checkBox_config_LogFonts.Name = "checkBox_config_LogFonts";
-            this.checkBox_config_LogFonts.Size = new System.Drawing.Size(73, 17);
-            this.checkBox_config_LogFonts.TabIndex = 4;
-            this.checkBox_config_LogFonts.Text = "Log Fonts";
+            this.checkBox_config_LogFonts.Size = new System.Drawing.Size(52, 17);
+            this.checkBox_config_LogFonts.TabIndex = 6;
+            this.checkBox_config_LogFonts.Text = "Fonts";
             this.checkBox_config_LogFonts.UseVisualStyleBackColor = true;
+            this.checkBox_config_LogFonts.CheckedChanged += new System.EventHandler(this.checkBox_config_LogAll_OthersChanged);
             // 
             // checkBox_config_LogRGirls
             // 
@@ -5852,43 +5915,47 @@
             this.checkBox_config_LogRGirls.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.checkBox_config_LogRGirls.Location = new System.Drawing.Point(90, 40);
             this.checkBox_config_LogRGirls.Name = "checkBox_config_LogRGirls";
-            this.checkBox_config_LogRGirls.Size = new System.Drawing.Size(75, 17);
-            this.checkBox_config_LogRGirls.TabIndex = 3;
-            this.checkBox_config_LogRGirls.Text = "Log RGirls";
+            this.checkBox_config_LogRGirls.Size = new System.Drawing.Size(54, 17);
+            this.checkBox_config_LogRGirls.TabIndex = 2;
+            this.checkBox_config_LogRGirls.Text = "RGirls";
             this.checkBox_config_LogRGirls.UseVisualStyleBackColor = true;
+            this.checkBox_config_LogRGirls.CheckedChanged += new System.EventHandler(this.checkBox_config_LogAll_OthersChanged);
             // 
             // checkBox_config_LogGirls
             // 
             this.checkBox_config_LogGirls.AutoSize = true;
             this.checkBox_config_LogGirls.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.checkBox_config_LogGirls.Location = new System.Drawing.Point(90, 15);
+            this.checkBox_config_LogGirls.Location = new System.Drawing.Point(5, 40);
             this.checkBox_config_LogGirls.Name = "checkBox_config_LogGirls";
-            this.checkBox_config_LogGirls.Size = new System.Drawing.Size(67, 17);
+            this.checkBox_config_LogGirls.Size = new System.Drawing.Size(46, 17);
             this.checkBox_config_LogGirls.TabIndex = 1;
-            this.checkBox_config_LogGirls.Text = "Log Girls";
+            this.checkBox_config_LogGirls.Text = "Girls";
             this.checkBox_config_LogGirls.UseVisualStyleBackColor = true;
+            this.checkBox_config_LogGirls.CheckedChanged += new System.EventHandler(this.checkBox_config_LogAll_OthersChanged);
             // 
             // checkBox_config_LogItems
             // 
             this.checkBox_config_LogItems.AutoSize = true;
             this.checkBox_config_LogItems.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.checkBox_config_LogItems.Location = new System.Drawing.Point(5, 40);
+            this.checkBox_config_LogItems.Location = new System.Drawing.Point(5, 90);
             this.checkBox_config_LogItems.Name = "checkBox_config_LogItems";
-            this.checkBox_config_LogItems.Size = new System.Drawing.Size(72, 17);
-            this.checkBox_config_LogItems.TabIndex = 2;
-            this.checkBox_config_LogItems.Text = "Log Items";
+            this.checkBox_config_LogItems.Size = new System.Drawing.Size(51, 17);
+            this.checkBox_config_LogItems.TabIndex = 5;
+            this.checkBox_config_LogItems.Text = "Items";
             this.checkBox_config_LogItems.UseVisualStyleBackColor = true;
+            this.checkBox_config_LogItems.CheckedChanged += new System.EventHandler(this.checkBox_config_LogAll_OthersChanged);
             // 
             // checkBox_config_LogAll
             // 
             this.checkBox_config_LogAll.AutoSize = true;
             this.checkBox_config_LogAll.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.checkBox_config_LogAll.Location = new System.Drawing.Point(5, 15);
+            this.checkBox_config_LogAll.Location = new System.Drawing.Point(60, 15);
             this.checkBox_config_LogAll.Name = "checkBox_config_LogAll";
             this.checkBox_config_LogAll.Size = new System.Drawing.Size(58, 17);
             this.checkBox_config_LogAll.TabIndex = 0;
             this.checkBox_config_LogAll.Text = "Log All";
             this.checkBox_config_LogAll.UseVisualStyleBackColor = true;
+            this.checkBox_config_LogAll.CheckedChanged += new System.EventHandler(this.checkBox_config_LogAll_OthersChanged);
             // 
             // groupBox22
             // 
@@ -6505,6 +6572,18 @@
             this.richTextBox1.TabIndex = 0;
             this.richTextBox1.Text = resources.GetString("richTextBox1.Text");
             // 
+            // checkBox_Add_Missing_Sex_Skills_On_Load
+            // 
+            this.checkBox_Add_Missing_Sex_Skills_On_Load.AutoSize = true;
+            this.checkBox_Add_Missing_Sex_Skills_On_Load.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.checkBox_Add_Missing_Sex_Skills_On_Load.Location = new System.Drawing.Point(660, 10);
+            this.checkBox_Add_Missing_Sex_Skills_On_Load.Name = "checkBox_Add_Missing_Sex_Skills_On_Load";
+            this.checkBox_Add_Missing_Sex_Skills_On_Load.Size = new System.Drawing.Size(175, 17);
+            this.checkBox_Add_Missing_Sex_Skills_On_Load.TabIndex = 8;
+            this.checkBox_Add_Missing_Sex_Skills_On_Load.Text = "Add Missing Sex Skills On Load";
+            this.toolTip1.SetToolTip(this.checkBox_Add_Missing_Sex_Skills_On_Load, resources.GetString("checkBox_Add_Missing_Sex_Skills_On_Load.ToolTip"));
+            this.checkBox_Add_Missing_Sex_Skills_On_Load.UseVisualStyleBackColor = true;
+            // 
             // checkBox_ToggleListsTooltips
             // 
             this.checkBox_ToggleListsTooltips.AutoSize = true;
@@ -6541,6 +6620,16 @@
             this.StatusLabel1.Name = "StatusLabel1";
             this.StatusLabel1.Size = new System.Drawing.Size(26, 17);
             this.StatusLabel1.Text = "text";
+            // 
+            // label85
+            // 
+            this.label85.AutoSize = true;
+            this.label85.Location = new System.Drawing.Point(906, 10);
+            this.label85.Name = "label85";
+            this.label85.Size = new System.Drawing.Size(60, 13);
+            this.label85.TabIndex = 1;
+            this.label85.Text = "by Solo761";
+            this.toolTip1.SetToolTip(this.label85, "Updated by aevoJoey");
             // 
             // listBox2
             // 
@@ -6586,15 +6675,6 @@
             this.button24.Text = "Delete Item";
             this.button24.UseVisualStyleBackColor = true;
             // 
-            // label85
-            // 
-            this.label85.AutoSize = true;
-            this.label85.Location = new System.Drawing.Point(906, 10);
-            this.label85.Name = "label85";
-            this.label85.Size = new System.Drawing.Size(60, 13);
-            this.label85.TabIndex = 1;
-            this.label85.Text = "by Solo761";
-            // 
             // checkBox_ToggleTraitTooltips
             // 
             this.checkBox_ToggleTraitTooltips.AutoSize = true;
@@ -6615,6 +6695,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(984, 562);
             this.Controls.Add(this.checkBox_ToggleTraitTooltips);
+            this.Controls.Add(this.checkBox_Add_Missing_Sex_Skills_On_Load);
             this.Controls.Add(this.checkBox_ToggleListsTooltips);
             this.Controls.Add(this.label85);
             this.Controls.Add(this.statusStrip1);
@@ -6623,7 +6704,7 @@
             this.MaximumSize = new System.Drawing.Size(1000, 600);
             this.MinimumSize = new System.Drawing.Size(1000, 600);
             this.Name = "Form1";
-            this.Text = "Whore Master Editor 0.8.04";
+            this.Text = "Whore Master Editor 0.8.05";
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.App_FileDrop);
             this.DragEnter += new System.Windows.Forms.DragEventHandler(this.App_DragEnter);
             this.tabControl1.ResumeLayout(false);
@@ -6675,8 +6756,8 @@
             this.groupBox_C_Pregnancy_Config.PerformLayout();
             this.groupBox24.ResumeLayout(false);
             this.groupBox24.PerformLayout();
-            this.groupBox23.ResumeLayout(false);
-            this.groupBox23.PerformLayout();
+            this.groupBox_Logging.ResumeLayout(false);
+            this.groupBox_Logging.PerformLayout();
             this.groupBox22.ResumeLayout(false);
             this.groupBox22.PerformLayout();
             this.groupBox17.ResumeLayout(false);
@@ -6920,7 +7001,7 @@
         private System.Windows.Forms.Button buttonRandomizeRG1;
         private System.Windows.Forms.Button buttonRGNormRand1;
         private System.Windows.Forms.Button buttonRGCondRand1;
-        private System.Windows.Forms.Button button17;
+        private System.Windows.Forms.Button button_RG_Reset;
         private System.Windows.Forms.GroupBox groupBox8;
         private System.Windows.Forms.Button buttonRGCondRand2;
         private System.Windows.Forms.Button buttonRGNormRand2;
@@ -6961,9 +7042,9 @@
         private System.Windows.Forms.DataGridView dataGridView3;
         private System.Windows.Forms.Button button_RemoveTraitsFromItem;
         private System.Windows.Forms.Button button_AddTraitsToItem;
-        private System.Windows.Forms.Button button13;
-        private System.Windows.Forms.Button button12;
-        private System.Windows.Forms.Button button14;
+        private System.Windows.Forms.Button button_Update_Selected_Item;
+        private System.Windows.Forms.Button button_Add_Item_To_List;
+        private System.Windows.Forms.Button button_Reset_Item;
         private System.Windows.Forms.CheckBox checkBox_DG2;
         private System.Windows.Forms.CheckBox checkBox_DG3;
         private System.Windows.Forms.TabPage tabPage6_FAQ;
@@ -7126,7 +7207,7 @@
         private System.Windows.Forms.Label label141;
         private System.Windows.Forms.TextBox textBox_config_FontFixed;
         private System.Windows.Forms.TextBox textBox_Config_FontNormal;
-        private System.Windows.Forms.GroupBox groupBox23;
+        private System.Windows.Forms.GroupBox groupBox_Logging;
         private System.Windows.Forms.CheckBox checkBox_config_LogFonts;
         private System.Windows.Forms.CheckBox checkBox_config_LogRGirls;
         private System.Windows.Forms.CheckBox checkBox_config_LogGirls;
@@ -7235,6 +7316,11 @@
         private System.Windows.Forms.TextBox textBox_Config_ExpenseStaff;
         private System.Windows.Forms.CheckBox checkBox_Config_AutoEquipCombat;
         private System.Windows.Forms.Label label_C_AutoEquip_Combat;
+        private System.Windows.Forms.CheckBox checkBox_config_LogDebug;
+        private System.Windows.Forms.CheckBox checkBox_config_LogExtraDetails;
+        private System.Windows.Forms.CheckBox checkBox_config_LogGirlFights;
+        private System.Windows.Forms.Button button_G_UnZero_Sex_Skills;
+        private System.Windows.Forms.CheckBox checkBox_Add_Missing_Sex_Skills_On_Load;
     }
 }
 

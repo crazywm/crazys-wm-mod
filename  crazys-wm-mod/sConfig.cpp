@@ -382,13 +382,16 @@ void sConfigData::get_debug_flags(TiXmlElement *el)
 	if (pt = el->Attribute("LogAll"))
 	{
 		get_att(el, "LogItems", debug.log_all);
-		debug.log_items = debug.log_girls = debug.log_rgirls = debug.log_fonts = debug.log_torture = debug.log_all;
+		debug.log_girls = debug.log_rgirls = debug.log_girl_fights = debug.log_items = debug.log_fonts = debug.log_torture = debug.log_debug = debug.log_extra_details = debug.log_all;
 	}
-	if (pt = el->Attribute("LogItems"))			get_att(el, "LogItems",   debug.log_items);
-	if (pt = el->Attribute("LogGirls"))			get_att(el, "LogGirls",   debug.log_girls);
-	if (pt = el->Attribute("LogRGirls"))		get_att(el, "LogRGirls",  debug.log_rgirls);
-	if (pt = el->Attribute("LogFonts"))			get_att(el, "LogFonts",   debug.log_fonts);
+	if (pt = el->Attribute("LogGirls"))			get_att(el, "LogGirls", debug.log_girls);
+	if (pt = el->Attribute("LogRGirls"))		get_att(el, "LogRGirls", debug.log_rgirls);
+	if (pt = el->Attribute("LogGirlFights"))	get_att(el, "LogGirlFights", debug.log_girl_fights);
+	if (pt = el->Attribute("LogItems"))			get_att(el, "LogItems", debug.log_items);
+	if (pt = el->Attribute("LogFonts"))			get_att(el, "LogFonts", debug.log_fonts);
 	if (pt = el->Attribute("LogTorture"))		get_att(el, "LogTorture", debug.log_torture);
+	if (pt = el->Attribute("LogDebug"))			get_att(el, "LogDebug", debug.log_debug);
+	if (pt = el->Attribute("LogExtraDetails"))	get_att(el, "LogExtraDetails", debug.log_extra_details);
 }
 
 /*

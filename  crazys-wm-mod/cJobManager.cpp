@@ -150,7 +150,7 @@ void cJobManager::Setup()
 	JobFunctions[JOB_LIPO] = &WorkLiposuction;	
 	JobFunctions[JOB_BREASTREDUCTION] = &WorkBreastReduction;
 	JobFunctions[JOB_BOOBJOB] = &WorkBoobJob;
-	JobFunctions[JOB_VAGINAREJUV] = &WorkGetVaginalRejuvination;
+	JobFunctions[JOB_VAGINAREJUV] = &WorkGetVaginalRejuvenation;
 	JobFunctions[JOB_FACELIFT] = &WorkGetFacelift;
 	JobFunctions[JOB_ASSJOB] = &WorkGetAssJob;
 	JobFunctions[JOB_TUBESTIED] = &WorkGetTubesTied;
@@ -349,7 +349,7 @@ void cJobManager::Setup()
 	JobDescription[JOB_BOOBJOB] = gettext("She will undergo surgery to \"enhance\" her bust.\n*(Takes up to 5 days, less if a Nurse is on duty)");
 	JobName[JOB_ASSJOB] = gettext("Arse Job");
 	JobDescription[JOB_ASSJOB] = gettext("She will undergo surgery to \"enhance\" her ass.\n*(Takes up to 5 days, less if a Nurse is on duty)");
-	JobName[JOB_VAGINAREJUV] = gettext("Vaginal Rejuvination");
+	JobName[JOB_VAGINAREJUV] = gettext("Vaginal Rejuvenation");
 	JobDescription[JOB_VAGINAREJUV] = gettext("She will undergo surgery to make her a virgin again.\n*(Takes up to 5 days, less if a Nurse is on duty)");
 	JobName[JOB_FACELIFT] = gettext("Face Lift");
 	JobDescription[JOB_FACELIFT] = gettext("She will undergo surgery to make her younger.\n*(Takes up to 5 days, less if a Nurse is on duty)");
