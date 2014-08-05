@@ -513,7 +513,24 @@ Created base for farm_screen.xml and farm_management_screen.xml - neither are co
 InterfaceColors.xml contains Item Rarity Colors and is coded to load them when config.xml gets loaded - needs cleaning
 Converted GetString.txt to GetString.xml and LoadMenu.txt to LoadMenu.xml
 
+###  Changes 7/30-8/4/2014
+Added LogGirlFights, LogDebug and LogExtraDetails to config.xml to both WM and WME
+Whore Master Editor:
+ - Fixed "LogAll" and other log check boxes to work together.
+ - Added LogGirlFights, LogDebug and LogExtraDetails to config.xml
+ - Added "Add Missing Sex Skills On Load" check box and "UnZero Sex Skills" button for girlsx
+ -  - these will try to set missing or zeroed sex skills to match close to what the existing sex skills are
+ -  -  - if existing numbers are all the same then missing numbers get set to that
+ -  - both will check for "round to 5 or 10" and "number spreads"
+ -  *** these are not automatically saved yet, you must save them manually until I make the autocheck page
+ -  *** the "Add Missing Sex Skills On Load" only works for .girlsx files. For legacy .girls files, use the "UnZero Sex Skills" button.
+ - Fixed rgirls so all skills are saved and loaded. (no add missing yet)
+ - Fixed items for the new skills and other things.
+ - Fixed an old bug where if you try to enter anything other than a number into a number box, it would crash.
+ - Major code cleanup
+ - Removed save to legacy .girls and .rgirls files - you can only save to (r)girls to xml now
 
-
-
+Whore Master:
+Corrected spelling of Rejuvenation
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.05
 

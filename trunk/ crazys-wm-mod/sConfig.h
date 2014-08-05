@@ -156,11 +156,14 @@ struct sConfigData
 
 	struct DebugData {
 		bool	log_all;
-		bool	log_items;
 		bool	log_girls;
 		bool	log_rgirls;
+		bool	log_girl_fights;
+		bool	log_items;
 		bool	log_fonts;
 		bool	log_torture;
+		bool	log_debug;
+		bool	log_extra_details;
 	} debug;
 
 	string override_dir;

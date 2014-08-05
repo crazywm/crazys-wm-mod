@@ -625,7 +625,6 @@
     <ClCompile Include="WorkFilmRandom.cpp" />
     <ClCompile Include="WorkMechanic.cpp" />
     <ClCompile Include="WorkGetFacelift.cpp" />
-    <ClCompile Include="WorkGetVaginalRejuvination.cpp" />
     <ClCompile Include="WorkLiposuction.cpp" />
     <ClCompile Include="WorkBreastReduction.cpp" />
     <ClCompile Include="WorkBoobJob.cpp" />
@@ -659,6 +658,7 @@
     <ClCompile Include="WorkMilker.cpp" />
     <ClCompile Include="WorkRancher.cpp" />
     <ClCompile Include="WorkSheapherd.cpp" />
+    <ClCompile Include="WorkGetVaginalRejuvenation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cButton.h">

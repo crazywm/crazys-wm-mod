@@ -120,6 +120,12 @@
   <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>24, 26</value>
   </metadata>
+  <data name="button_G_UnZero_Sex_Skills.ToolTip" xml:space="preserve">
+    <value>If the girl you are editing does not have some of the sex skills set in it, 
+this will check the existing sex skills and set the missing or zeroed sex skills 
+to be similar to the existing sex skill numbers.
+It checks for 'round to 5 or 10' and 'number spreads'.</value>
+  </data>
   <data name="checkBox_RGTraitsReadOnly.ToolTip" xml:space="preserve">
     <value>I recommend simply deleting faulty entry and adding it back with correct
 value, but if you really, really, REALLY need it, you can unlock value field
@@ -187,6 +193,13 @@ Only limit is this:
 Temporary effects apply to traits, stats and skills, they don't apply to status' (it is logical, status' themselves are temporary, and have prior this change, only with different mechanics).
 
 Traits that were added through this temporary mechanics will fade after 20 days, stats/skills that were added as temporary will fade by 1 point each day, until they're gone completely.</value>
+  </data>
+  <data name="checkBox_Add_Missing_Sex_Skills_On_Load.ToolTip" xml:space="preserve">
+    <value>If you are loading an old girl file that does not have some of the sex skills set in it, 
+this will check the existing sex skills and set the missing sex skills 
+to be similar to the existing sex skill numbers.
+It checks for 'round to 5 or 10' and 'number spreads'.
+*** Currently only works for .girlsx files</value>
   </data>
   <metadata name="statusStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>121, 26</value>

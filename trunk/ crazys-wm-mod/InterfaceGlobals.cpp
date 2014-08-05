@@ -261,8 +261,7 @@ void LoadInterface()
 {
 	cTariff tariff;
 	stringstream ss;
-	int r=0, g=0, b=0;
-	int a=0, c=0, d=0, e=0;
+	int r=0, g=0, b=0, a=0, c=0, d=0, e=0;
 	ifstream incol;
 	cConfig cfg;
 
@@ -272,18 +271,17 @@ void LoadInterface()
 	int loadcolors = 0;		// 0=default, 1=xml, 2=txt
 	DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "InterfaceColors.xml";
 	TiXmlDocument doc(dp.c_str());
-	if (doc.LoadFile()) { loadcolors = 1; }
+	if (doc.LoadFile())	loadcolors = 1;
 	else // try txt
 	{
 		g_LogFile.ss() << "Error: line " << doc.ErrorRow() << ", col " << doc.ErrorCol() << ": " << doc.ErrorDesc() << endl;
 		g_LogFile.ssend();
 		DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "InterfaceColors.txt";
 		incol.open(dp.c_str());
-		if (!incol.good())loadcolors = 3;
-		else 		loadcolors = 2;
+		if (!incol.good())	loadcolors = 0;
+		else loadcolors = 2;
 		incol.close();
 	}
-
 
 	if (loadcolors==1)	// load "InterfaceColors.xml"
 	{
@@ -384,19 +382,55 @@ void LoadInterface()
 	else	// InterfaceColors file not found, using defaults
 	{
 		g_LogFile.write("Error Loading InterfaceColors, using defaults");
+		g_StaticImageR = 0;                   g_StaticImageG = 0;                   g_StaticImageB = 0;
+		g_ChoiceMessageTextR = 0;             g_ChoiceMessageTextG = 0;             g_ChoiceMessageTextB = 0;
+		g_ChoiceMessageBorderR = 0;           g_ChoiceMessageBorderG = 0;           g_ChoiceMessageBorderB = 0;
+		g_ChoiceMessageBackgroundR = 88;      g_ChoiceMessageBackgroundG = 163;     g_ChoiceMessageBackgroundB = 113;
+		g_ChoiceMessageSelectedR = 229;       g_ChoiceMessageSelectedG = 227;       g_ChoiceMessageSelectedB = 52;
+		g_EditBoxBorderR = 0;                 g_EditBoxBorderG = 0;                 g_EditBoxBorderB = 0;
+		g_EditBoxBackgroundR = 90;            g_EditBoxBackgroundG = 172;           g_EditBoxBackgroundB = 161;
+		g_EditBoxSelectedR = 114;             g_EditBoxSelectedG = 211;             g_EditBoxSelectedB = 198;
+		g_EditBoxTextR = 0;                   g_EditBoxTextG = 0;                   g_EditBoxTextB = 0;
+		g_WindowBorderR = 0;                  g_WindowBorderG = 0;                  g_WindowBorderB = 0;
+		g_WindowBackgroundR = 140;            g_WindowBackgroundG = 191;            g_WindowBackgroundB = 228;
+		g_ListBoxBorderR = 0;                 g_ListBoxBorderG = 0;                 g_ListBoxBorderB = 0;
+		g_ListBoxBackgroundR = 217;           g_ListBoxBackgroundG = 214;           g_ListBoxBackgroundB = 139;
+		g_ListBoxElementBackgroundR = 114;    g_ListBoxElementBackgroundG = 139;    g_ListBoxElementBackgroundB = 217;
+		g_ListBoxS1ElementBackgroundR = 200;  g_ListBoxS1ElementBackgroundG = 30;   g_ListBoxS1ElementBackgroundB = 30;
+		g_ListBoxS2ElementBackgroundR = 80;   g_ListBoxS2ElementBackgroundG = 80;   g_ListBoxS2ElementBackgroundB = 250;
+		g_ListBoxS3ElementBackgroundR = 30;   g_ListBoxS3ElementBackgroundG = 190;  g_ListBoxS3ElementBackgroundB = 30;
+		g_ListBoxSelectedElementR = 187;      g_ListBoxSelectedElementG = 190;      g_ListBoxSelectedElementB = 224;
+		g_ListBoxSelectedS1ElementR = 255;    g_ListBoxSelectedS1ElementG = 167;    g_ListBoxSelectedS1ElementB = 180;
+		g_ListBoxSelectedS2ElementR = 187;    g_ListBoxSelectedS2ElementG = 190;    g_ListBoxSelectedS2ElementB = 224;
+		g_ListBoxSelectedS3ElementR = 0;      g_ListBoxSelectedS3ElementG = 250;    g_ListBoxSelectedS3ElementB = 0;
+		g_ListBoxElementBorderR = 79;         g_ListBoxElementBorderG = 79;         g_ListBoxElementBorderB = 111;
+		g_ListBoxElementBorderHR = 159;       g_ListBoxElementBorderHG = 175;       g_ListBoxElementBorderHB = 255;
+		g_ListBoxTextR = 0;                   g_ListBoxTextG = 0;                   g_ListBoxTextB = 0;
+		g_ListBoxHeaderBackgroundR = 25;      g_ListBoxHeaderBackgroundG = 100;     g_ListBoxHeaderBackgroundB = 144;
+		g_ListBoxHeaderBorderR = 120;         g_ListBoxHeaderBorderG = 155;         g_ListBoxHeaderBorderB = 176;
+		g_ListBoxHeaderBorderHR = 15;         g_ListBoxHeaderBorderHG = 49;         g_ListBoxHeaderBorderHB = 69;
+		g_ListBoxHeaderTextR = 255;           g_ListBoxHeaderTextG = 255;           g_ListBoxHeaderTextB = 255;
+		g_MessageBoxBorderR = 255;            g_MessageBoxBorderG = 255;            g_MessageBoxBorderB = 255;
+		g_MessageBoxBackground0R = 100;       g_MessageBoxBackground0G = 100;       g_MessageBoxBackground0B = 150;
+		g_MessageBoxBackground1R = 200;       g_MessageBoxBackground1G = 100;       g_MessageBoxBackground1B = 150;
+		g_MessageBoxBackground2R = 100;       g_MessageBoxBackground2G = 200;       g_MessageBoxBackground2B = 150;
+		g_MessageBoxBackground3R = 100;       g_MessageBoxBackground3G = 100;       g_MessageBoxBackground3B = 200;
+		g_MessageBoxTextR = 0;                g_MessageBoxTextG = 0;                g_MessageBoxTextB = 0;
+		g_CheckBoxBorderR = 0;                g_CheckBoxBorderG = 0;                g_CheckBoxBorderB = 0;
+		g_CheckBoxBackgroundR = 180;          g_CheckBoxBackgroundG = 180;          g_CheckBoxBackgroundB = 180;
+
 	}
 
 	// Load game screen
 	g_LogFile.write("Loading Load Game Screen");
-	g_LoadGame.AddTextItem(g_interfaceid.STATIC_STATIC, 0, 0, 600, 32, "Please read the readme.html");
 	// WD: Typecast to resolve ambiguous call in VS 2010
 	dp = DirPath() << "Resources" << "Interface"<< cfg.resolution.resolution() << "LoadMenu.txt";
 	incol.open(dp.c_str());
-	//incol.open(DirPath() << "Resources" << "Interface" << "LoadMenu.txt");
 	incol.seekg(0);
 	incol>>a>>b>>c>>d>>e;incol.ignore(1000, '\n');
 	g_LoadGame.CreateWindow(a,b,c,d,e);
-	incol>>a>>b>>c>>d>>e;incol.ignore(1000, '\n');
+	g_LoadGame.AddTextItem(g_interfaceid.STATIC_STATIC, 0, d-10, c, 12, "Please read the readme.html", 10);
+	incol >> a >> b >> c >> d >> e; incol.ignore(1000, '\n');
 	g_LoadGame.AddListBox(g_interfaceid.LIST_LOADGSAVES, a, b, c, d, e, true);
 	incol>>a>>b>>c>>d;incol.ignore(1000, '\n');
 	g_LoadGame.AddButton("Load", g_interfaceid.BUTTON_LOADGLOAD, a, b, c, d, true);
