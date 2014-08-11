@@ -362,7 +362,7 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 		case JOB_FLUFFER:
 		case JOB_CAMERAMAGE:
 		case JOB_CRYSTALPURIFIER:
-			refused = m_JobManager.JobFunctions[sw](current,brothel,SHIFT_NIGHT,summary);
+			refused = m_JobManager.JobFunc[sw](current,brothel,SHIFT_NIGHT,summary);
 	
 			if(refused)						// if she refused she still gets tired
 				g_Girls.AddTiredness(current);
@@ -480,7 +480,7 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 				break;
 		}
 
-		// Brothel only update for girls accomadation level
+		// Brothel only update for girls accommodation level
 		do_food_and_digs(brothel, current);
 
 		// update the fetish traits
@@ -611,16 +611,16 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 					break;
 				}
 			} while (!(m_JobManager.is_sex_type_allowed(skill, brothel)));
-			refused = m_JobManager.JobFunctions[sw](current, brothel, SHIFT_NIGHT, summary);
+			refused = m_JobManager.JobFunc[sw](current, brothel, SHIFT_NIGHT, summary);
 		}
 		else if (sw != JOB_FILMFREETIME && sw >= JOB_FILMBEAST && sw <= JOB_FILMFREETIME)
 		{
-			refused = m_JobManager.JobFunctions[sw](current, brothel, SHIFT_NIGHT, summary);
+			refused = m_JobManager.JobFunc[sw](current, brothel, SHIFT_NIGHT, summary);
 		}
 		else // Any job not in the Studio will be replaced with JOB_FILMFREETIME
 		{
 			sw = current->m_DayJob = current->m_NightJob = JOB_FILMFREETIME;
-			refused = m_JobManager.JobFunctions[JOB_RESTING](current, brothel, SHIFT_NIGHT, summary);
+			refused = m_JobManager.JobFunc[JOB_RESTING](current, brothel, SHIFT_NIGHT, summary);
 		}
 
 		if(refused)						// if she refused she still gets tired

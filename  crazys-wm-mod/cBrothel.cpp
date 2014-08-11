@@ -2277,7 +2277,7 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, int DayNight)
 			current->m_YesterDayJob = current->m_DayJob;		// `J` set what she did yesterday
 			current->m_YesterNightJob = current->m_NightJob;	// `J` set what she did yesternight
 
-			// Brothel only update for girls accomadation level
+			// Brothel only update for girls accommodation level
 			do_food_and_digs(brothel, current);
 
 			// update the fetish traits
@@ -2374,14 +2374,14 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		}
 		else if (sw != JOB_RESTING && sw >= JOB_RESTING && sw <= JOB_MILK)
 		{
-			refused = m_JobManager.JobFunctions[sw](current, brothel, DayNight, summary);
+			refused = m_JobManager.JobFunc[sw](current, brothel, DayNight, summary);
 		}
 		else // Any job not in a Brothel will be replaced with JOB_RESTING
 		{
 			if (DayNight == SHIFT_DAY)current->m_DayJob = JOB_RESTING;
 			else current->m_NightJob = JOB_RESTING;
 			sw = JOB_RESTING;
-			refused = m_JobManager.JobFunctions[JOB_RESTING](current, brothel, DayNight, summary);
+			refused = m_JobManager.JobFunc[JOB_RESTING](current, brothel, DayNight, summary);
 		}
 
 		if(refused)						// if she refused she still gets tired
@@ -3438,21 +3438,21 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 void cBrothelManager::do_food_and_digs(sBrothel *brothel, sGirl *girl)
 {
 /*
- *	add the girls accomodation and food costs to the upkeep
+ *	add the girls accommodation and food costs to the upkeep
  */
 	if(girl->is_slave()) {
 /*
- *		For a slavegirl, 5 gold per accomodation level
+ *		For a slavegirl, 5 gold per accommodation level
  */
 		brothel->m_Finance.girl_support(5 * (girl->m_AccLevel+1));	
 /* 
- *		accomodation zero is all they expect
+ *		accommodation zero is all they expect
  */
 		if(girl->m_AccLevel == 0) {
 			return;
 		}
 /* 
- *		accomodation over 0 means happier,
+ *		accommodation over 0 means happier,
  *		and maybe liking the PC more
  *
  *		mod: docclox - made happiness gains greater 
@@ -3476,13 +3476,13 @@ void cBrothelManager::do_food_and_digs(sBrothel *brothel, sGirl *girl)
 		return;
 	}
 /*
- *	For a freegirl, 20 gold per accomodation level
+ *	For a freegirl, 20 gold per accommodation level
  *	mod - doc - simplified the calculation a bit
  */
 	brothel->m_Finance.girl_support(20 * (girl->m_AccLevel+1));	
 /*
  *	let's do the simple case
- *	if her accomodation is greater then her level 
+ *	if her accommodation is greater then her level 
  *		divided by 2		// `J` added
  *	she'll get happier. That's a mod: it was >=
  *	before, but this way 0 level girls want level 1 accom
@@ -3499,7 +3499,7 @@ void cBrothelManager::do_food_and_digs(sBrothel *brothel, sGirl *girl)
 		return;
 	}
 /*
- *	If we get here, the accomodation level is less
+ *	If we get here, the accommodation level is less
  *	than a girl of her accomplisments would expect
  *	However, level 11 (was 6) and greater and her sense of
  *	professionalism means she doesn't let it affect her

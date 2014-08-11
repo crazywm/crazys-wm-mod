@@ -154,9 +154,8 @@ void cScreenFarmManagement::init()
 	// add the job filters
 //	for(int i=0; i<NUMJOBTYPES; i++)  // loop through all job types
 	AddToListBox(jobtypelist_id, JOBFILTER_FARMSTAFF, g_Farm.m_JobManager.JobFilterName[JOBFILTER_FARMSTAFF]);
-	AddToListBox(jobtypelist_id, JOBFILTER_STABLES, g_Farm.m_JobManager.JobFilterName[JOBFILTER_STABLES]);
-	AddToListBox(jobtypelist_id, JOBFILTER_STABLES, g_Farm.m_JobManager.JobFilterName[JOBFILTER_LABORERS]);
-	AddToListBox(jobtypelist_id, JOBFILTER_STABLES, g_Farm.m_JobManager.JobFilterName[JOBFILTER_PRODUCERS]);
+	AddToListBox(jobtypelist_id, JOBFILTER_LABORERS, g_Farm.m_JobManager.JobFilterName[JOBFILTER_LABORERS]);
+	AddToListBox(jobtypelist_id, JOBFILTER_PRODUCERS, g_Farm.m_JobManager.JobFilterName[JOBFILTER_PRODUCERS]);
 	RefreshJobList();
 	SetSelectedItemInList(jobtypelist_id, JOBFILTER_FARMSTAFF);
 
@@ -255,9 +254,16 @@ void cScreenFarmManagement::update_image()
 		bool Rand = false;
 		if(lastNum != selection)
 		{
-			string text = selected_girl->m_Desc;
+			string text = g_Girls.GetGirlMood(selected_girl);
 			text += "\n\n";
-			text += g_Girls.GetGirlMood(selected_girl);
+			text += selected_girl->m_Desc;
+			// Added a little feedback here to show what character template a girl is based on --PP
+			cConfig cfg;	// `J` I usually don't care about this so I made it optional
+			if (cfg.debug.log_extradetails())
+			{
+				text += "\n\nBased on: ";
+				text += selected_girl->m_Name;
+			}
 			EditTextItem(text, girldesc_id);
 			Rand = true;
 			lastNum = selection;
@@ -319,7 +325,7 @@ void cScreenFarmManagement::check_events()
 		{
 			// populate Jobs listbox with jobs in the selected category
 			RefreshJobList();
-			EditTextItem(g_Farm.m_JobManager.JobFilterDescription[selection], jobtypedesc_id);
+			EditTextItem(g_Farm.m_JobManager.JobFilterDesc[selection], jobtypedesc_id);
 		}
 	}
 	if(g_InterfaceEvents.CheckListbox(joblist_id))
@@ -328,7 +334,7 @@ void cScreenFarmManagement::check_events()
 		if(selection != -1)
 		{
 			// first handle the descriptions
-			EditTextItem(g_Farm.m_JobManager.JobDescription[selection], jobdesc_id);
+			EditTextItem(g_Farm.m_JobManager.JobDesc[selection], jobdesc_id);
 
 			// Now assign the job to all the selected girls
 			int pos = 0;
@@ -454,8 +460,7 @@ bool cScreenFarmManagement::GirlDead(sGirl *dgirl)
 void cScreenFarmManagement::RefreshSelectedJobType()
 {
 	selection = GetSelectedItemFromList(girllist_id);
-	if(selection < 0)
-		return;
+	if (selection < 0) return;
 
 	selected_girl = g_Farm.GetGirl(g_CurrFarm, selection);
 
@@ -463,19 +468,12 @@ void cScreenFarmManagement::RefreshSelectedJobType()
 
 	// set the job filter
 	int jobtype = 0;
-	for(unsigned int i=0; i<NUMJOBTYPES; i++)
+	for (unsigned int i = 0; i < NUMJOBTYPES; i++)
 	{
-		if (job >= g_Farm.m_JobManager.JobFilterIndex[i] && job < g_Farm.m_JobManager.JobFilterIndex[i+1])
+		if (job >= g_Farm.m_JobManager.JobFilterIndex[i] && job < g_Farm.m_JobManager.JobFilterIndex[i + 1])
 			jobtype = i;
 	}
-
-	if (job >= g_Farm.m_JobManager.JobFilterIndex[JOBFILTER_STABLES] &&
-		job < g_Farm.m_JobManager.JobFilterIndex[JOBFILTER_STABLES + 1])
-		SetSelectedItemInList(jobtypelist_id, JOBFILTER_STABLES);
-	if (job >= g_Farm.m_JobManager.JobFilterIndex[JOBFILTER_FARMSTAFF] &&
-		job < g_Farm.m_JobManager.JobFilterIndex[JOBFILTER_FARMSTAFF + 1])
-		SetSelectedItemInList(jobtypelist_id, JOBFILTER_FARMSTAFF);
-	// */ //
+	SetSelectedItemInList(jobtypelist_id, jobtype);
 	SetJob = true;
 }
 
@@ -503,7 +501,7 @@ void cScreenFarmManagement::RefreshJobList()
 	{
 		int sel_job = (DayNight == 0) ? selected_girl->m_DayJob : selected_girl->m_NightJob;
 		SetSelectedItemInList(joblist_id, sel_job, false);
-		EditTextItem(g_Farm.m_JobManager.JobDescription[sel_job], jobdesc_id);
+		EditTextItem(g_Farm.m_JobManager.JobDesc[sel_job], jobdesc_id);
 	}
 }
 

@@ -43,15 +43,22 @@ private:
 	int antipreg_id;	// Use Anti-preg checkbox
 	int prev_id;		// Prev button
 	int next_id;		// Next button
-	int accomup_id;		// Accom Up button
-	int accomdown_id;	// Accom Down button
 	int inventory_id;	// Inventory button
 	int senddungeon_id;	// Send To Dungeon button
 	int reldungeon_id;	// Release From Dungeon button
 	int interact_id;	// Interact button
 	int takegold_id;	// Take Gold button
+
+// `J` Replacing accom buttons with slider
+//	int accomup_id;		// Accom Up button
+//	int accomdown_id;	// Accom Down button
+	int accom_id;		// Accom slider
+	int accomval_id;	// Accom value text
+
 	int houseperc_id;	// House Percentage slider
 	int housepercval_id;// House Percentage value text
+
+
 	int gallery_id;		// Gallery button
 
 	int jobtypehead_id;	// Job Types header text

@@ -475,6 +475,8 @@
             this.textBox_Config_PregnancyPlayer = new System.Windows.Forms.TextBox();
             this.button_Load_Config = new System.Windows.Forms.Button();
             this.groupBox24 = new System.Windows.Forms.GroupBox();
+            this.checkBox_Config_SlavesPayOutOfPocket = new System.Windows.Forms.CheckBox();
+            this.label_Config_SlavesPayOutOfPocket = new System.Windows.Forms.Label();
             this.checkBox_Config_AutoEquipCombat = new System.Windows.Forms.CheckBox();
             this.label_C_AutoEquip_Combat = new System.Windows.Forms.Label();
             this.label_C_Girls_Keep_Tips = new System.Windows.Forms.Label();
@@ -5193,9 +5195,9 @@
             this.groupBox_C_Gangs.Controls.Add(this.textBox_config_StartRandom);
             this.groupBox_C_Gangs.Controls.Add(this.textBox_config_MaxRecruitList);
             this.groupBox_C_Gangs.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.groupBox_C_Gangs.Location = new System.Drawing.Point(5, 260);
+            this.groupBox_C_Gangs.Location = new System.Drawing.Point(5, 290);
             this.groupBox_C_Gangs.Name = "groupBox_C_Gangs";
-            this.groupBox_C_Gangs.Size = new System.Drawing.Size(180, 220);
+            this.groupBox_C_Gangs.Size = new System.Drawing.Size(180, 190);
             this.groupBox_C_Gangs.TabIndex = 1;
             this.groupBox_C_Gangs.TabStop = false;
             this.groupBox_C_Gangs.Text = "Gangs";
@@ -5204,36 +5206,36 @@
             // 
             this.label130.AutoSize = true;
             this.label130.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label130.Location = new System.Drawing.Point(5, 143);
+            this.label130.Location = new System.Drawing.Point(5, 93);
             this.label130.Name = "label130";
-            this.label130.Size = new System.Drawing.Size(113, 13);
-            this.label130.TabIndex = 10;
-            this.label130.Text = "RemoveUnwanted(%):";
+            this.label130.Size = new System.Drawing.Size(119, 13);
+            this.label130.TabIndex = 6;
+            this.label130.Text = "Remove Unwanted (%):";
             // 
             // label132
             // 
             this.label132.AutoSize = true;
             this.label132.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label132.Location = new System.Drawing.Point(5, 193);
+            this.label132.Location = new System.Drawing.Point(5, 168);
             this.label132.Name = "label132";
-            this.label132.Size = new System.Drawing.Size(107, 13);
-            this.label132.TabIndex = 14;
-            this.label132.Text = "AddNewWeeklyMax:";
+            this.label132.Size = new System.Drawing.Size(73, 13);
+            this.label132.TabIndex = 13;
+            this.label132.Text = "Each Week:+";
             // 
             // label133
             // 
             this.label133.AutoSize = true;
             this.label133.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label133.Location = new System.Drawing.Point(5, 168);
+            this.label133.Location = new System.Drawing.Point(95, 122);
             this.label133.Name = "label133";
-            this.label133.Size = new System.Drawing.Size(104, 13);
-            this.label133.TabIndex = 12;
-            this.label133.Text = "AddNewWeeklyMin:";
+            this.label133.Size = new System.Drawing.Size(24, 13);
+            this.label133.TabIndex = 8;
+            this.label133.Text = "Min";
             // 
             // textBox_config_AddNewWeeklyMax
             // 
             this.textBox_config_AddNewWeeklyMax.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.textBox_config_AddNewWeeklyMax.Location = new System.Drawing.Point(130, 190);
+            this.textBox_config_AddNewWeeklyMax.Location = new System.Drawing.Point(130, 165);
             this.textBox_config_AddNewWeeklyMax.MaxLength = 5;
             this.textBox_config_AddNewWeeklyMax.Name = "textBox_config_AddNewWeeklyMax";
             this.textBox_config_AddNewWeeklyMax.Size = new System.Drawing.Size(40, 20);
@@ -5243,21 +5245,21 @@
             // textBox_config_AddNewWeeklyMin
             // 
             this.textBox_config_AddNewWeeklyMin.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.textBox_config_AddNewWeeklyMin.Location = new System.Drawing.Point(130, 165);
+            this.textBox_config_AddNewWeeklyMin.Location = new System.Drawing.Point(85, 165);
             this.textBox_config_AddNewWeeklyMin.MaxLength = 5;
             this.textBox_config_AddNewWeeklyMin.Name = "textBox_config_AddNewWeeklyMin";
             this.textBox_config_AddNewWeeklyMin.Size = new System.Drawing.Size(40, 20);
-            this.textBox_config_AddNewWeeklyMin.TabIndex = 13;
+            this.textBox_config_AddNewWeeklyMin.TabIndex = 14;
             this.textBox_config_AddNewWeeklyMin.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // textBox_config_ChanceRemoveUnwanted
             // 
             this.textBox_config_ChanceRemoveUnwanted.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.textBox_config_ChanceRemoveUnwanted.Location = new System.Drawing.Point(130, 140);
+            this.textBox_config_ChanceRemoveUnwanted.Location = new System.Drawing.Point(130, 90);
             this.textBox_config_ChanceRemoveUnwanted.MaxLength = 5;
             this.textBox_config_ChanceRemoveUnwanted.Name = "textBox_config_ChanceRemoveUnwanted";
             this.textBox_config_ChanceRemoveUnwanted.Size = new System.Drawing.Size(40, 20);
-            this.textBox_config_ChanceRemoveUnwanted.TabIndex = 11;
+            this.textBox_config_ChanceRemoveUnwanted.TabIndex = 7;
             this.textBox_config_ChanceRemoveUnwanted.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label134
@@ -5274,21 +5276,21 @@
             // 
             this.label135.AutoSize = true;
             this.label135.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label135.Location = new System.Drawing.Point(5, 118);
+            this.label135.Location = new System.Drawing.Point(135, 122);
             this.label135.Name = "label135";
-            this.label135.Size = new System.Drawing.Size(88, 13);
-            this.label135.TabIndex = 8;
-            this.label135.Text = "Init Member Max:";
+            this.label135.Size = new System.Drawing.Size(27, 13);
+            this.label135.TabIndex = 9;
+            this.label135.Text = "Max";
             // 
             // label136
             // 
             this.label136.AutoSize = true;
             this.label136.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label136.Location = new System.Drawing.Point(5, 93);
+            this.label136.Location = new System.Drawing.Point(3, 143);
             this.label136.Name = "label136";
-            this.label136.Size = new System.Drawing.Size(85, 13);
-            this.label136.TabIndex = 6;
-            this.label136.Text = "Init Member Min:";
+            this.label136.Size = new System.Drawing.Size(65, 13);
+            this.label136.TabIndex = 10;
+            this.label136.Text = "Init Member:";
             // 
             // label137
             // 
@@ -5313,21 +5315,21 @@
             // textBox_config_InitMemberMax
             // 
             this.textBox_config_InitMemberMax.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.textBox_config_InitMemberMax.Location = new System.Drawing.Point(130, 115);
+            this.textBox_config_InitMemberMax.Location = new System.Drawing.Point(130, 140);
             this.textBox_config_InitMemberMax.MaxLength = 3;
             this.textBox_config_InitMemberMax.Name = "textBox_config_InitMemberMax";
             this.textBox_config_InitMemberMax.Size = new System.Drawing.Size(40, 20);
-            this.textBox_config_InitMemberMax.TabIndex = 9;
+            this.textBox_config_InitMemberMax.TabIndex = 12;
             this.textBox_config_InitMemberMax.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // textBox_config_InitMemberMin
             // 
             this.textBox_config_InitMemberMin.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.textBox_config_InitMemberMin.Location = new System.Drawing.Point(130, 90);
+            this.textBox_config_InitMemberMin.Location = new System.Drawing.Point(85, 140);
             this.textBox_config_InitMemberMin.MaxLength = 5;
             this.textBox_config_InitMemberMin.Name = "textBox_config_InitMemberMin";
             this.textBox_config_InitMemberMin.Size = new System.Drawing.Size(40, 20);
-            this.textBox_config_InitMemberMin.TabIndex = 7;
+            this.textBox_config_InitMemberMin.TabIndex = 11;
             this.textBox_config_InitMemberMin.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // textBox_config_StartBoosted
@@ -5624,6 +5626,8 @@
             // 
             // groupBox24
             // 
+            this.groupBox24.Controls.Add(this.checkBox_Config_SlavesPayOutOfPocket);
+            this.groupBox24.Controls.Add(this.label_Config_SlavesPayOutOfPocket);
             this.groupBox24.Controls.Add(this.checkBox_Config_AutoEquipCombat);
             this.groupBox24.Controls.Add(this.label_C_AutoEquip_Combat);
             this.groupBox24.Controls.Add(this.label_C_Girls_Keep_Tips);
@@ -5645,30 +5649,54 @@
             this.groupBox24.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.groupBox24.Location = new System.Drawing.Point(5, 5);
             this.groupBox24.Name = "groupBox24";
-            this.groupBox24.Size = new System.Drawing.Size(180, 245);
+            this.groupBox24.Size = new System.Drawing.Size(180, 275);
             this.groupBox24.TabIndex = 0;
             this.groupBox24.TabStop = false;
             this.groupBox24.Text = "Initial Settings";
+            // 
+            // checkBox_Config_SlavesPayOutOfPocket
+            // 
+            this.checkBox_Config_SlavesPayOutOfPocket.AutoSize = true;
+            this.checkBox_Config_SlavesPayOutOfPocket.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.checkBox_Config_SlavesPayOutOfPocket.Location = new System.Drawing.Point(145, 143);
+            this.checkBox_Config_SlavesPayOutOfPocket.Name = "checkBox_Config_SlavesPayOutOfPocket";
+            this.checkBox_Config_SlavesPayOutOfPocket.Size = new System.Drawing.Size(15, 14);
+            this.checkBox_Config_SlavesPayOutOfPocket.TabIndex = 11;
+            this.checkBox_Config_SlavesPayOutOfPocket.UseVisualStyleBackColor = true;
+            // 
+            // label_Config_SlavesPayOutOfPocket
+            // 
+            this.label_Config_SlavesPayOutOfPocket.AutoSize = true;
+            this.label_Config_SlavesPayOutOfPocket.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label_Config_SlavesPayOutOfPocket.Location = new System.Drawing.Point(5, 143);
+            this.label_Config_SlavesPayOutOfPocket.Name = "label_Config_SlavesPayOutOfPocket";
+            this.label_Config_SlavesPayOutOfPocket.Size = new System.Drawing.Size(126, 13);
+            this.label_Config_SlavesPayOutOfPocket.TabIndex = 10;
+            this.label_Config_SlavesPayOutOfPocket.Text = "Pay Slave Out-Of-Pocket";
+            this.toolTip1.SetToolTip(this.label_Config_SlavesPayOutOfPocket, "Some jobs the Player pays the girls directly instead of a customer paying her.\r\nI" +
+        "f checked, slaves get paid for their work.\r\n");
             // 
             // checkBox_Config_AutoEquipCombat
             // 
             this.checkBox_Config_AutoEquipCombat.AutoSize = true;
             this.checkBox_Config_AutoEquipCombat.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.checkBox_Config_AutoEquipCombat.Location = new System.Drawing.Point(145, 192);
+            this.checkBox_Config_AutoEquipCombat.Location = new System.Drawing.Point(145, 217);
             this.checkBox_Config_AutoEquipCombat.Name = "checkBox_Config_AutoEquipCombat";
             this.checkBox_Config_AutoEquipCombat.Size = new System.Drawing.Size(15, 14);
-            this.checkBox_Config_AutoEquipCombat.TabIndex = 15;
+            this.checkBox_Config_AutoEquipCombat.TabIndex = 17;
             this.checkBox_Config_AutoEquipCombat.UseVisualStyleBackColor = true;
             // 
             // label_C_AutoEquip_Combat
             // 
             this.label_C_AutoEquip_Combat.AutoSize = true;
             this.label_C_AutoEquip_Combat.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label_C_AutoEquip_Combat.Location = new System.Drawing.Point(5, 193);
+            this.label_C_AutoEquip_Combat.Location = new System.Drawing.Point(5, 218);
             this.label_C_AutoEquip_Combat.Name = "label_C_AutoEquip_Combat";
             this.label_C_AutoEquip_Combat.Size = new System.Drawing.Size(98, 13);
-            this.label_C_AutoEquip_Combat.TabIndex = 14;
+            this.label_C_AutoEquip_Combat.TabIndex = 16;
             this.label_C_AutoEquip_Combat.Text = "Auto-Equip Combat";
+            this.toolTip1.SetToolTip(this.label_C_AutoEquip_Combat, "The girl will automatically remove or put on weapons \r\nand armor depending on the" +
+        " job she is working.");
             // 
             // label_C_Girls_Keep_Tips
             // 
@@ -5679,26 +5707,32 @@
             this.label_C_Girls_Keep_Tips.Size = new System.Drawing.Size(78, 13);
             this.label_C_Girls_Keep_Tips.TabIndex = 6;
             this.label_C_Girls_Keep_Tips.Text = "Girls Keep Tips";
+            this.toolTip1.SetToolTip(this.label_C_Girls_Keep_Tips, "If checked, the girl gets to keep all of her tips.\r\nIf unchecked, tips are includ" +
+        "ed with House Perc.");
             // 
             // label_C_Autouse_Player_Items
             // 
             this.label_C_Autouse_Player_Items.AutoSize = true;
             this.label_C_Autouse_Player_Items.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label_C_Autouse_Player_Items.Location = new System.Drawing.Point(5, 168);
+            this.label_C_Autouse_Player_Items.Location = new System.Drawing.Point(5, 193);
             this.label_C_Autouse_Player_Items.Name = "label_C_Autouse_Player_Items";
             this.label_C_Autouse_Player_Items.Size = new System.Drawing.Size(109, 13);
-            this.label_C_Autouse_Player_Items.TabIndex = 12;
+            this.label_C_Autouse_Player_Items.TabIndex = 14;
             this.label_C_Autouse_Player_Items.Text = "Auto-use Player Items";
+            this.toolTip1.SetToolTip(this.label_C_Autouse_Player_Items, "The game can use some items automatically on girls.\r\nThis is really well tested a" +
+        "nd only has some of the items that are in the game.");
             // 
             // label_C_Slaves_Keep_Tips
             // 
             this.label_C_Slaves_Keep_Tips.AutoSize = true;
             this.label_C_Slaves_Keep_Tips.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label_C_Slaves_Keep_Tips.Location = new System.Drawing.Point(5, 143);
+            this.label_C_Slaves_Keep_Tips.Location = new System.Drawing.Point(5, 168);
             this.label_C_Slaves_Keep_Tips.Name = "label_C_Slaves_Keep_Tips";
             this.label_C_Slaves_Keep_Tips.Size = new System.Drawing.Size(90, 13);
-            this.label_C_Slaves_Keep_Tips.TabIndex = 10;
+            this.label_C_Slaves_Keep_Tips.TabIndex = 12;
             this.label_C_Slaves_Keep_Tips.Text = "Slaves Keep Tips";
+            this.toolTip1.SetToolTip(this.label_C_Slaves_Keep_Tips, "If checked, slaves get to keep all of her tips.\r\nIf unchecked, tips are included " +
+        "with House Perc.");
             // 
             // checkBox_Config_GirlsKeepTips
             // 
@@ -5714,10 +5748,10 @@
             // 
             this.checkBox_Config_SlavesKeepTips.AutoSize = true;
             this.checkBox_Config_SlavesKeepTips.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.checkBox_Config_SlavesKeepTips.Location = new System.Drawing.Point(145, 143);
+            this.checkBox_Config_SlavesKeepTips.Location = new System.Drawing.Point(145, 168);
             this.checkBox_Config_SlavesKeepTips.Name = "checkBox_Config_SlavesKeepTips";
             this.checkBox_Config_SlavesKeepTips.Size = new System.Drawing.Size(15, 14);
-            this.checkBox_Config_SlavesKeepTips.TabIndex = 11;
+            this.checkBox_Config_SlavesKeepTips.TabIndex = 13;
             this.checkBox_Config_SlavesKeepTips.UseVisualStyleBackColor = true;
             // 
             // label_C_Girls_House_Perc
@@ -5729,6 +5763,8 @@
             this.label_C_Girls_House_Perc.Size = new System.Drawing.Size(106, 13);
             this.label_C_Girls_House_Perc.TabIndex = 4;
             this.label_C_Girls_House_Perc.Text = "Girls House Perc (%):";
+            this.toolTip1.SetToolTip(this.label_C_Girls_House_Perc, "What percent of the girls income is taken by the house.\r\nThis is only the initial" +
+        " number, it can be changed for each girl in game.");
             // 
             // textBox_Config_InitialGirlsHousePerc
             // 
@@ -5759,35 +5795,39 @@
             this.label156.Size = new System.Drawing.Size(56, 13);
             this.label156.TabIndex = 0;
             this.label156.Text = "Initial Gold";
+            this.toolTip1.SetToolTip(this.label156, "How much gold you start the game with.");
             // 
             // label155
             // 
             this.label155.AutoSize = true;
             this.label155.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label155.Location = new System.Drawing.Point(5, 218);
+            this.label155.Location = new System.Drawing.Point(5, 243);
             this.label155.Name = "label155";
             this.label155.Size = new System.Drawing.Size(65, 13);
-            this.label155.TabIndex = 16;
+            this.label155.TabIndex = 18;
             this.label155.Text = "Torture Mod";
+            this.toolTip1.SetToolTip(this.label155, "This number is how long the girl remembers torture.\r\nIf the number is above 0 the" +
+        "n it is how many weeks some traits gained through torture last.\r\nIf it is -1, th" +
+        "en the traits are permanent.");
             // 
             // textBox_Torture_Mod
             // 
             this.textBox_Torture_Mod.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.textBox_Torture_Mod.Location = new System.Drawing.Point(130, 215);
+            this.textBox_Torture_Mod.Location = new System.Drawing.Point(130, 240);
             this.textBox_Torture_Mod.MaxLength = 10;
             this.textBox_Torture_Mod.Name = "textBox_Torture_Mod";
             this.textBox_Torture_Mod.Size = new System.Drawing.Size(40, 20);
-            this.textBox_Torture_Mod.TabIndex = 17;
+            this.textBox_Torture_Mod.TabIndex = 19;
             this.textBox_Torture_Mod.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // checkBox_Config_AutoUseItems
             // 
             this.checkBox_Config_AutoUseItems.AutoSize = true;
             this.checkBox_Config_AutoUseItems.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.checkBox_Config_AutoUseItems.Location = new System.Drawing.Point(145, 168);
+            this.checkBox_Config_AutoUseItems.Location = new System.Drawing.Point(145, 193);
             this.checkBox_Config_AutoUseItems.Name = "checkBox_Config_AutoUseItems";
             this.checkBox_Config_AutoUseItems.Size = new System.Drawing.Size(15, 14);
-            this.checkBox_Config_AutoUseItems.TabIndex = 13;
+            this.checkBox_Config_AutoUseItems.TabIndex = 15;
             this.checkBox_Config_AutoUseItems.UseVisualStyleBackColor = true;
             // 
             // label_C_Slave_House_Perc
@@ -5799,6 +5839,8 @@
             this.label_C_Slave_House_Perc.Size = new System.Drawing.Size(113, 13);
             this.label_C_Slave_House_Perc.TabIndex = 8;
             this.label_C_Slave_House_Perc.Text = "Slave House Perc (%):";
+            this.toolTip1.SetToolTip(this.label_C_Slave_House_Perc, "What percent of slave girls income is taken by the house.\r\nThis is only the initi" +
+        "al number, it can be changed for each girl in game.");
             // 
             // label142
             // 
@@ -5809,6 +5851,7 @@
             this.label142.Size = new System.Drawing.Size(69, 13);
             this.label142.TabIndex = 2;
             this.label142.Text = "Girl Meet (%):";
+            this.toolTip1.SetToolTip(this.label142, "Percent chance you may meet a girl when doing walk about from the buildings.");
             // 
             // textBox_Config_InitialSlaveHousePerc
             // 
@@ -6704,7 +6747,7 @@
             this.MaximumSize = new System.Drawing.Size(1000, 600);
             this.MinimumSize = new System.Drawing.Size(1000, 600);
             this.Name = "Form1";
-            this.Text = "Whore Master Editor 0.8.05";
+            this.Text = "Whore Master Editor 0.8.06";
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.App_FileDrop);
             this.DragEnter += new System.Windows.Forms.DragEventHandler(this.App_DragEnter);
             this.tabControl1.ResumeLayout(false);
@@ -7321,6 +7364,8 @@
         private System.Windows.Forms.CheckBox checkBox_config_LogGirlFights;
         private System.Windows.Forms.Button button_G_UnZero_Sex_Skills;
         private System.Windows.Forms.CheckBox checkBox_Add_Missing_Sex_Skills_On_Load;
+        private System.Windows.Forms.CheckBox checkBox_Config_SlavesPayOutOfPocket;
+        private System.Windows.Forms.Label label_Config_SlavesPayOutOfPocket;
     }
 }
 

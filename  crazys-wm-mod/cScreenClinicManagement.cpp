@@ -254,9 +254,16 @@ void cScreenClinicManagement::update_image()
 		bool Rand = false;
 		if(lastNum != selection)
 		{
-			string text = selected_girl->m_Desc;
+			string text = g_Girls.GetGirlMood(selected_girl);
 			text += "\n\n";
-			text += g_Girls.GetGirlMood(selected_girl);
+			text += selected_girl->m_Desc;
+			// Added a little feedback here to show what character template a girl is based on --PP
+			cConfig cfg;	// `J` I usually don't care about this so I made it optional
+			if (cfg.debug.log_extradetails())
+			{
+				text += "\n\nBased on: ";
+				text += selected_girl->m_Name;
+			}
 			EditTextItem(text, girldesc_id);
 			Rand = true;
 			lastNum = selection;
@@ -318,7 +325,7 @@ void cScreenClinicManagement::check_events()
 		{
 			// populate Jobs listbox with jobs in the selected category
 			RefreshJobList();
-			string jdmessage = g_Clinic.m_JobManager.JobFilterDescription[selection];
+			string jdmessage = g_Clinic.m_JobManager.JobFilterDesc[selection];
 			if (g_Clinic.DoctorNeeded())
 			{
 				jdmessage += gettext("\n*** A Doctor is required to perform any surgeries. ");
@@ -339,7 +346,7 @@ void cScreenClinicManagement::check_events()
 		if(selection != -1)
 		{
 			// first handle the descriptions
-			EditTextItem(g_Clinic.m_JobManager.JobDescription[selection], jobdesc_id);
+			EditTextItem(g_Clinic.m_JobManager.JobDesc[selection], jobdesc_id);
 
 			// Now assign the job to all the selected girls
 			int pos = 0;
@@ -426,7 +433,7 @@ void cScreenClinicManagement::check_events()
 				}
 				if (interrupted)					
 				{	// `J` added
-					string jdmessage = g_Clinic.m_JobManager.JobDescription[selection] + gettext("\n** This girl was getting ");
+					string jdmessage = g_Clinic.m_JobManager.JobDesc[selection] + gettext("\n** This girl was getting ");
 					if (selected_girl->m_YesterDayJob == JOB_BOOBJOB || selected_girl->m_YesterDayJob == JOB_FACELIFT)
 						jdmessage += "a ";
 					else if (selected_girl->m_YesterDayJob == JOB_GETABORT || selected_girl->m_YesterDayJob == JOB_ASSJOB)
@@ -570,7 +577,7 @@ void cScreenClinicManagement::RefreshJobList()
 		int sel_job = (DayNight == 0) ? selected_girl->m_DayJob : selected_girl->m_NightJob;
 		SetSelectedItemInList(joblist_id, sel_job, false);
 
-		string jdmessage = g_Clinic.m_JobManager.JobDescription[sel_job] + gettext("\n** This girl was getting ");
+		string jdmessage = g_Clinic.m_JobManager.JobDesc[sel_job] + gettext("\n** This girl was getting ");
 		if (selected_girl->m_YesterDayJob == JOB_BOOBJOB || selected_girl->m_YesterDayJob == JOB_FACELIFT)
 			jdmessage += "a ";
 		else if (selected_girl->m_YesterDayJob == JOB_GETABORT || selected_girl->m_YesterDayJob == JOB_ASSJOB)
@@ -583,7 +590,7 @@ void cScreenClinicManagement::RefreshJobList()
 	{
 		int sel_job = (DayNight == 0) ? selected_girl->m_DayJob : selected_girl->m_NightJob;
 		SetSelectedItemInList(joblist_id, sel_job, false);
-		EditTextItem(g_Clinic.m_JobManager.JobDescription[sel_job], jobdesc_id);
+		EditTextItem(g_Clinic.m_JobManager.JobDesc[sel_job], jobdesc_id);
 	}
 }
 

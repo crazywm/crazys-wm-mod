@@ -218,6 +218,7 @@ cRng g_Dice;
 
 void handle_hotkeys()
 {
+
 	if (vent.key.keysym.sym == SDLK_RSHIFT || vent.key.keysym.sym == SDLK_LSHIFT)	// enable multi select
 		g_ShiftDown = true;
 	else if (vent.key.keysym.sym == SDLK_RCTRL || vent.key.keysym.sym == SDLK_LCTRL)	// enable multi select
@@ -249,7 +250,7 @@ void handle_hotkeys()
 	else if (vent.key.keysym.sym == SDLK_i)			g_I_Key = true;
 	else if (vent.key.keysym.sym == SDLK_k)			g_K_Key = true;
 
-	if (g_WinManager.GetWindow() != &g_MainMenu)
+	if (g_WinManager.GetWindow() != &g_MainMenu && g_WinManager.GetWindow() != &g_LoadGame)
 	{
 		int br_no = 0;
 		string msg = "";
@@ -575,6 +576,8 @@ void handle_hotkeys()
 					msg += "D    Next Girl\n";
 					msg += "S    More Details\n";
 					msg += "Space    Gallery\n\n";
+					msg += "J    House Percent Up\n";
+					msg += "H    House Percent Down\n\n";
 					break;
 				case SCREEN_INVENTORY:
 					msg += "Inventory Screen:\n";

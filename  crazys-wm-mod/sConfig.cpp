@@ -235,6 +235,7 @@ void sConfigData::get_initial_values(TiXmlElement *el)
 	if (pt = el->Attribute("GirlMeet"))				get_att(el, "GirlMeet",				&initial.girl_meet);
 	if (pt = el->Attribute("GirlsHousePerc"))		get_att(el, "GirlsHousePerc",		&initial.girls_house_perc);	// `J` added
 	if (pt = el->Attribute("GirlsKeepTips"))		get_att(el, "GirlsKeepTips",		initial.girls_keep_tips);	// `J` added
+	if (pt = el->Attribute("SlavePayOutOfPocket"))	get_att(el, "SlavePayOutOfPocket",	initial.slave_pay_outofpocket);	// `J` added
 	if (pt = el->Attribute("SlaveHousePerc"))		get_att(el, "SlaveHousePerc",		&initial.slave_house_perc);
 	if (pt = el->Attribute("SlaveKeepTips"))		get_att(el, "SlaveKeepTips",		initial.slave_keep_tips);	// `J` added
 	if (pt = el->Attribute("AutoUseItems"))			get_att(el, "AutoUseItems",			initial.auto_use_items);
@@ -379,19 +380,20 @@ void sConfigData::get_font_data(TiXmlElement *el)
 void sConfigData::get_debug_flags(TiXmlElement *el)
 {
 	const char *pt;
-	if (pt = el->Attribute("LogAll"))
+	if (pt = el->Attribute("LogAll"))				get_att(el, "LogItems", debug.log_all);
+
+	if (debug.log_all) debug.log_girls = debug.log_rgirls = debug.log_girl_fights = debug.log_items = debug.log_fonts = debug.log_torture = debug.log_debug = debug.log_extra_details = debug.log_all;
+	else 
 	{
-		get_att(el, "LogItems", debug.log_all);
-		debug.log_girls = debug.log_rgirls = debug.log_girl_fights = debug.log_items = debug.log_fonts = debug.log_torture = debug.log_debug = debug.log_extra_details = debug.log_all;
+		if (pt = el->Attribute("LogGirls"))			get_att(el, "LogGirls", debug.log_girls);
+		if (pt = el->Attribute("LogRGirls"))		get_att(el, "LogRGirls", debug.log_rgirls);
+		if (pt = el->Attribute("LogGirlFights"))	get_att(el, "LogGirlFights", debug.log_girl_fights);
+		if (pt = el->Attribute("LogItems"))			get_att(el, "LogItems", debug.log_items);
+		if (pt = el->Attribute("LogFonts"))			get_att(el, "LogFonts", debug.log_fonts);
+		if (pt = el->Attribute("LogTorture"))		get_att(el, "LogTorture", debug.log_torture);
+		if (pt = el->Attribute("LogDebug"))			get_att(el, "LogDebug", debug.log_debug);
+		if (pt = el->Attribute("LogExtraDetails"))	get_att(el, "LogExtraDetails", debug.log_extra_details);
 	}
-	if (pt = el->Attribute("LogGirls"))			get_att(el, "LogGirls", debug.log_girls);
-	if (pt = el->Attribute("LogRGirls"))		get_att(el, "LogRGirls", debug.log_rgirls);
-	if (pt = el->Attribute("LogGirlFights"))	get_att(el, "LogGirlFights", debug.log_girl_fights);
-	if (pt = el->Attribute("LogItems"))			get_att(el, "LogItems", debug.log_items);
-	if (pt = el->Attribute("LogFonts"))			get_att(el, "LogFonts", debug.log_fonts);
-	if (pt = el->Attribute("LogTorture"))		get_att(el, "LogTorture", debug.log_torture);
-	if (pt = el->Attribute("LogDebug"))			get_att(el, "LogDebug", debug.log_debug);
-	if (pt = el->Attribute("LogExtraDetails"))	get_att(el, "LogExtraDetails", debug.log_extra_details);
 }
 
 /*
@@ -412,6 +414,7 @@ void sConfigData::set_defaults()
 	initial.gold					= 4000;
 	initial.girl_meet				= 30;
 	initial.girls_house_perc		= 60;	// `J` added
+	initial.slave_pay_outofpocket	= true;	// `J` added
 	initial.girls_keep_tips			= true;	// `J` added
 	initial.slave_house_perc		= 100;
 	initial.slave_keep_tips			= false;	// `J` added
@@ -499,16 +502,19 @@ void sConfigData::set_defaults()
  *	not hugely sensible values
  *	but I want something I'm not using so I can test this
  */
+	fonts.normal			= "comic.ttf";
+	fonts.fixed				= "comic.ttf";
+	fonts.antialias			= true;
 
-	fonts.normal		= "comic.ttf";
-	fonts.fixed		    = "comic.ttf";
-	fonts.antialias		= true;
+	debug.log_all			= false;
+	debug.log_girls			= false;
+	debug.log_rgirls		= false;
+	debug.log_girl_fights	= false;
+	debug.log_items			= false;
+	debug.log_fonts			= false;
+	debug.log_torture		= false;
+	debug.log_debug			= false;
+	debug.log_extra_details = false;
 
-	debug.log_all		= false;
-	debug.log_items		= false;
-	debug.log_girls		= false;
-	debug.log_rgirls	= false;
-	debug.log_fonts		= false;
-	debug.log_torture	= false;	
 }
 

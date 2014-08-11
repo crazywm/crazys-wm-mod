@@ -45,18 +45,18 @@ private:
 	bool m_FrameDone;
 	bool m_PlayOnce;
 
-	int m_CurrentFrame;	// Current frame in a playing animation
-	int m_CurrentRow;	// current row playing the animation from
+	int m_CurrentFrame;				// Current frame in a playing animation
+	int m_CurrentRow;				// current row playing the animation from
 	int m_CurrentColumn;
-	int m_Speed;	// Speed to play the animation (in time between draws)
-	int m_NumFrames;	// Number of frames in the animation
+	int m_Speed;					// Speed to play the animation (in time between draws)
+	int m_NumFrames;				// Number of frames in the animation
 	unsigned int m_LastTime;		// The last time animation was updated
 	int m_Rows;
 	int m_Colums;
 
-	CSurface* m_Surface;	// pointer to the image where all the sprites are kept
+	CSurface* m_Surface;			// pointer to the image where all the sprites are kept
 	SDL_Surface* m_SpriteSurface;	// pointer to the image where the current sprite is kept
-	SDL_Rect m_Frames;	// Holds the data for ALL frames, since all frames have same width/height
+	SDL_Rect m_Frames;				// Holds the data for ALL frames, since all frames have same width/height
 };
 
 // Manages a file with multiple animations

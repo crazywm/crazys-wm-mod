@@ -35,28 +35,8 @@ public:
 	string&	context()		{ return m_context; }
 	void	context(string s)	{ m_context = s; }
 
-	bool get_att(
-		TiXmlElement *el,
-		const char *name,
-		string &s,
-		bool optional=false
-	);
-	bool get_att(
-		TiXmlElement *el,
-		const char *name,
-		int &ival,
-		bool optional=false
-	);
-	bool get_att(
-		TiXmlElement *el,
-		const char *name,
-		double &dval,
-		bool optional=false
-	);
-	bool get_att(
-		TiXmlElement *el,
-		const char *name,
-		bool &bval,
-		bool optional=false
-	);
+	bool get_att(TiXmlElement *el, const char *name, string &s, bool optional = false);
+	bool get_att(TiXmlElement *el, const char *name, int &ival, bool optional = false);
+	bool get_att(TiXmlElement *el, const char *name, double &dval, bool optional = false);
+	bool get_att(TiXmlElement *el, const char *name, bool &bval, bool optional = false);
 };

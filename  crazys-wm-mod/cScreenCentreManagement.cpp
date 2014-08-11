@@ -255,9 +255,16 @@ void cScreenCentreManagement::update_image()
 		bool Rand = false;
 		if(lastNum != selection)
 		{
-			string text = selected_girl->m_Desc;
+			string text = g_Girls.GetGirlMood(selected_girl);
 			text += "\n\n";
-			text += g_Girls.GetGirlMood(selected_girl);
+			text += selected_girl->m_Desc;
+			// Added a little feedback here to show what character template a girl is based on --PP
+			cConfig cfg;	// `J` I usually don't care about this so I made it optional
+			if (cfg.debug.log_extradetails())
+			{
+				text += "\n\nBased on: ";
+				text += selected_girl->m_Name;
+			}
 			EditTextItem(text, girldesc_id);
 			Rand = true;
 			lastNum = selection;
@@ -319,7 +326,7 @@ void cScreenCentreManagement::check_events()
 		{
 			// populate Jobs listbox with jobs in the selected category
 			RefreshJobList();
-			string jdmessage = g_Centre.m_JobManager.JobFilterDescription[selection];
+			string jdmessage = g_Centre.m_JobManager.JobFilterDesc[selection];
 
 			if ((g_Centre.GetNumGirlsOnJob(g_CurrCentre, JOB_DRUGCOUNSELOR, 0) < 1 &&
 				g_Centre.GetNumGirlsOnJob(g_CurrCentre, JOB_REHAB, 0) > 0) ||
@@ -337,7 +344,7 @@ void cScreenCentreManagement::check_events()
 		if(selection != -1)
 		{
 			// first handle the descriptions
-			EditTextItem(g_Centre.m_JobManager.JobDescription[selection], jobdesc_id);
+			EditTextItem(g_Centre.m_JobManager.JobDesc[selection], jobdesc_id);
 
 			// Now assign the job to all the selected girls
 			int pos = 0;
@@ -402,7 +409,7 @@ void cScreenCentreManagement::check_events()
 				}
 				if (selected_girl && selected_girl->m_YesterDayJob == JOB_REHAB && selection != JOB_REHAB && (selected_girl->m_WorkingDay > 0 || selected_girl->m_PrevWorkingDay > 0))
 				{	// `J` added
-					EditTextItem(g_Centre.m_JobManager.JobDescription[selection] 
+					EditTextItem(g_Centre.m_JobManager.JobDesc[selection] 
 						+ "\n** This girl was in Rehab, if you send her somewhere else, she will have to start her Rehab over."
 						, jobdesc_id);
 				}
@@ -542,7 +549,7 @@ void cScreenCentreManagement::RefreshJobList()
 	{	// `J` added
 		int sel_job = (DayNight == 0) ? selected_girl->m_DayJob : selected_girl->m_NightJob;
 		SetSelectedItemInList(joblist_id, sel_job, false);
-		EditTextItem(g_Centre.m_JobManager.JobDescription[sel_job]
+		EditTextItem(g_Centre.m_JobManager.JobDesc[sel_job]
 			+ "\n** This girl was in Rehab, if you send her somewhere else, she will have to start her Rehab over."
 			, jobdesc_id);
 	}
@@ -550,7 +557,7 @@ void cScreenCentreManagement::RefreshJobList()
 	{
 		int sel_job = (DayNight == 0) ? selected_girl->m_DayJob : selected_girl->m_NightJob;
 		SetSelectedItemInList(joblist_id, sel_job, false);
-		EditTextItem(g_Centre.m_JobManager.JobDescription[sel_job], jobdesc_id);
+		EditTextItem(g_Centre.m_JobManager.JobDesc[sel_job], jobdesc_id);
 	}
 }
 

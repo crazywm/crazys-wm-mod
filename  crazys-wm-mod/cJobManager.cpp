@@ -57,528 +57,507 @@ extern	bool			g_InitWin;
 void cJobManager::Setup()
 {
 	// much simplier then trying to get the sJob working with this (plus a smaller memory footprint...?maybe)
-	// - General
-	JobFunctions[JOB_RESTING] = &WorkFreetime;
-	JobFunctions[JOB_TRAINING] = &WorkTraining;
-	JobFunctions[JOB_CLEANING] = &WorkCleaning;
-	JobFunctions[JOB_SECURITY] = &WorkSecurity;
-	JobFunctions[JOB_ADVERTISING] = &WorkAdvertising;
-	JobFunctions[JOB_CUSTOMERSERVICE] = &WorkCustService;
-	JobFunctions[JOB_MATRON] = &WorkMatron;
-	JobFunctions[JOB_TORTURER] = &WorkTorturer;
-	JobFunctions[JOB_EXPLORECATACOMBS] = &WorkExploreCatacombs;
-	JobFunctions[JOB_RECRUITER] = &WorkRecruiter;
-	// - Bar
-	JobFunctions[JOB_BARMAID] = &WorkBarmaid;
-	JobFunctions[JOB_WAITRESS] = &WorkBarWaitress;
-	JobFunctions[JOB_SINGER] = &WorkBarSinger;
-	JobFunctions[JOB_PIANO] = &WorkBarPiano;
-	// - Brothel
-	JobFunctions[JOB_WHOREBROTHEL] = &WorkWhore;
-	JobFunctions[JOB_WHORESTREETS] = &WorkWhore;
-	JobFunctions[JOB_BROTHELSTRIPPER] = &WorkBrothelStripper;
-	JobFunctions[JOB_MASSEUSE] = &WorkBrothelMasseuse;
-	JobFunctions[JOB_PEEP] = &WorkPeepShow;
-	JobFunctions[JOB_ESCORT] = &WorkEscort;
-	// - Sleazy Bar
-	JobFunctions[JOB_SLEAZYBARMAID] = &WorkSleazyBarmaid;
-	JobFunctions[JOB_SLEAZYWAITRESS] = &WorkSleazyWaitress;
-	JobFunctions[JOB_BARSTRIPPER] = &WorkBarStripper;	
-	JobFunctions[JOB_BARWHORE] = &WorkBarWhore;
-	// - Gambling Hall
-	JobFunctions[JOB_WHOREGAMBHALL] = &WorkHallWhore;
-	JobFunctions[JOB_DEALER] = &WorkHallDealer;
-	JobFunctions[JOB_ENTERTAINMENT] = &WorkHallEntertainer;
-	JobFunctions[JOB_XXXENTERTAINMENT] = &WorkHallXXXEntertainer;
-	// - Stables
-	JobFunctions[JOB_BEASTCAPTURE] = &WorkBeastCapture;
-	JobFunctions[JOB_BEASTCARER] = &WorkBeastCare;
-	JobFunctions[JOB_MILK] = &WorkMilk;
-	// - Farm staff
-	JobFunctions[JOB_FARMMANGER] = &WorkFarmManager;
-	JobFunctions[JOB_FARMHAND] = &WorkFarmHand;
-	// - Movie Crystal Studio
-	JobFunctions[JOB_FILMBEAST] = &WorkFilmBeast;
-	JobFunctions[JOB_FILMGROUP] = &WorkFilmGroup;
-	JobFunctions[JOB_FILMSEX] = &WorkFilmSex;	
-	JobFunctions[JOB_FILMANAL] = &WorkFilmAnal;	
-	JobFunctions[JOB_FILMLESBIAN] = &WorkFilmLesbian;	
-	JobFunctions[JOB_FILMBONDAGE] = &WorkFilmBondage;
-	JobFunctions[JOB_FILMORAL] = &WorkFilmOral;
-	JobFunctions[JOB_FILMMAST] = &WorkFilmMast;
-	JobFunctions[JOB_FILMTITTY] = &WorkFilmTitty;
-	JobFunctions[JOB_FILMSTRIP] = &WorkFilmStrip;
-	JobFunctions[JOB_FILMHANDJOB] = &WorkFilmHandJob;
-//	JobFunctions[JOB_FILMRANDOM] = &WorkFilmRandom;		// This job is handled different than others, it is in cMovieStudio.cpp UpdateGirls()
-	// - Film Crew
-	JobFunctions[JOB_DIRECTOR] = &WorkFilmDirector;
-	JobFunctions[JOB_PROMOTER] = &WorkFilmPromoter;
-	JobFunctions[JOB_CAMERAMAGE] = &WorkCameraMage;	
-	JobFunctions[JOB_CRYSTALPURIFIER] = &WorkCrystalPurifier;
-	JobFunctions[JOB_FLUFFER] = &WorkFluffer;
-	JobFunctions[JOB_STAGEHAND] = &WorkFilmStagehand;
+	// General Jobs
+	JobFilterName[JOBFILTER_GENERAL] = "General";
+	JobFilterDesc[JOBFILTER_GENERAL] = "These are general jobs that work individually in any building.";
+	JobFilterIndex[JOBFILTER_GENERAL] = JOB_RESTING;
+	JobName[JOB_RESTING] = "Free Time";
+	JobDesc[JOB_RESTING] = "She will take some time off, maybe do some shopping or walk around town. If the girl is unhappy she may try to escape.";
+	JobFunc[JOB_RESTING] = &WorkFreetime;
+	JobName[JOB_TRAINING] = "Practice Skills";
+	JobDesc[JOB_TRAINING] = "She will train either alone or with others to improve her skills.";
+	JobFunc[JOB_TRAINING] = &WorkTraining;
+	JobName[JOB_CLEANING] = "Cleaning";
+	JobDesc[JOB_CLEANING] = "She will clean the building, as filth will put off some customers.";
+	JobFunc[JOB_CLEANING] = &WorkCleaning;
+	JobName[JOB_SECURITY] = "Security";
+	JobDesc[JOB_SECURITY] = "She will patrol the building, stopping mis-deeds.";
+	JobFunc[JOB_SECURITY] = &WorkSecurity;
+	JobName[JOB_ADVERTISING] = "Advertising";
+	JobDesc[JOB_ADVERTISING] = "She will advertise the building's features in the city.";
+	JobFunc[JOB_ADVERTISING] = &WorkAdvertising;
+	JobName[JOB_CUSTOMERSERVICE] = "Customer Service";
+	JobDesc[JOB_CUSTOMERSERVICE] = "She will look after customer needs.";
+	JobFunc[JOB_CUSTOMERSERVICE] = &WorkCustService;
+	JobName[JOB_MATRON] = "Matron";
+	JobDesc[JOB_MATRON] = "This girl will look after the other girls. Only non-slave girls can have this position and you must pay them 300 gold per week. Also, it takes up both shifts. (max 1)";
+	JobFunc[JOB_MATRON] = &WorkMatron;
+	JobName[JOB_TORTURER] = "Torturer";
+	JobDesc[JOB_TORTURER] = "She will torture the prisoners in addition to your tortures, she will also look after them to ensure they don't die. (max 1 for all brothels)";
+	JobFunc[JOB_TORTURER] = &WorkTorturer;
+	JobName[JOB_EXPLORECATACOMBS] = "Explore Catacombs";
+	JobDesc[JOB_EXPLORECATACOMBS] = "She will explore the catacombs looking for treasure and capturing monsters and monster girls. Needless to say, this is a dangerous job.";
+	JobFunc[JOB_EXPLORECATACOMBS] = &WorkExploreCatacombs;
+	JobName[JOB_BEASTCARER] = "Beast Carer";
+	JobDesc[JOB_BEASTCARER] = "She will look after the needs of the beasts in your possession. (max 1)";
+	JobFunc[JOB_BEASTCARER] = &WorkBeastCare;
+	// - Bar Jobs
+	JobFilterName[JOBFILTER_BAR] = "Bar";
+	JobFilterDesc[JOBFILTER_BAR] = "These are jobs for running a bar.";
+	JobFilterIndex[JOBFILTER_BAR] = JOB_BARMAID;
+	JobName[JOB_BARMAID] = "Barmaid";
+	JobDesc[JOB_BARMAID] = "She will staff the bar and serve drinks.";
+	JobFunc[JOB_BARMAID] = &WorkBarmaid;
+	JobName[JOB_WAITRESS] = "Waitress";
+	JobDesc[JOB_WAITRESS] = "She will bring drinks and food to customers at the tables.";
+	JobFunc[JOB_WAITRESS] = &WorkBarWaitress;
+	JobName[JOB_SINGER] = "Singer";
+	JobDesc[JOB_SINGER] = "She will sing for the customers.";
+	JobFunc[JOB_SINGER] = &WorkBarSinger;
+	JobName[JOB_PIANO] = "Piano";
+	JobDesc[JOB_PIANO] = "She will play the piano for the customers.";
+	JobFunc[JOB_PIANO] = &WorkBarPiano;
+	JobName[JOB_ESCORT] = "Escort";
+	JobDesc[JOB_ESCORT] = "She will be an excort.";
+	JobFunc[JOB_ESCORT] = &WorkEscort;
+	// - Gambling Hall Jobs
+	JobFilterName[JOBFILTER_GAMBHALL] = "Gambling Hall";
+	JobFilterDesc[JOBFILTER_GAMBHALL] = "These are jobs for running a gambling hall.";
+	JobFilterIndex[JOBFILTER_GAMBHALL] = JOB_DEALER;
+	JobName[JOB_DEALER] = "Game Dealer";
+	JobDesc[JOB_DEALER] = "She will manage a game in the gambling hall. (requires 3)";
+	JobFunc[JOB_DEALER] = &WorkHallDealer;
+	JobName[JOB_ENTERTAINMENT] = "Entertainer";
+	JobDesc[JOB_ENTERTAINMENT] = "She will provide entertainment to the customers.";
+	JobFunc[JOB_ENTERTAINMENT] = &WorkHallEntertainer;
+	JobName[JOB_XXXENTERTAINMENT] = "XXX Entertainer";
+	JobDesc[JOB_XXXENTERTAINMENT] = "She will provide sexual entertainment to the customers.";
+	JobFunc[JOB_XXXENTERTAINMENT] = &WorkHallXXXEntertainer;
+	JobName[JOB_WHOREGAMBHALL] = "Hall Whore";
+	JobDesc[JOB_WHOREGAMBHALL] = "She will give her sexual favors to the customers.";
+	JobFunc[JOB_WHOREGAMBHALL] = &WorkHallWhore;
+	// - Sleazy Bar Jobs		// Changing all references to Strip Club, just sounds better to me and more realistic. -PP
+	JobFilterName[JOBFILTER_SLEAZYBAR] = "Strip Club";
+	JobFilterDesc[JOBFILTER_SLEAZYBAR] = "These are jobs for running a Strip Club.";
+	JobFilterIndex[JOBFILTER_SLEAZYBAR] = JOB_SLEAZYBARMAID;
+	JobName[JOB_SLEAZYBARMAID] = "Strip Club Barmaid";
+	JobDesc[JOB_SLEAZYBARMAID] = "She will staff the bar and serve drinks while dressed in lingerie or fetish costumes.";
+	JobFunc[JOB_SLEAZYBARMAID] = &WorkSleazyBarmaid;
+	JobName[JOB_SLEAZYWAITRESS] = "Strip Club Waitress";
+	JobDesc[JOB_SLEAZYWAITRESS] = "She will bring drinks and food to the customers at the tables while dressed in lingerie or fetish costumes.";
+	JobFunc[JOB_SLEAZYWAITRESS] = &WorkSleazyWaitress;
+	JobName[JOB_BARSTRIPPER] = "Strip Club Stripper";
+	JobDesc[JOB_BARSTRIPPER] = "She will strip on the tables and stage for the customers.";
+	JobFunc[JOB_BARSTRIPPER] = &WorkBarStripper;
+	JobName[JOB_BARWHORE] = "Strip Club Whore";
+	JobDesc[JOB_BARWHORE] = "She will provide sex to the customers.";
+	JobFunc[JOB_BARWHORE] = &WorkBarWhore;
+	// - Brothel Jobs
+	JobFilterName[JOBFILTER_BROTHEL] = "Brothel";
+	JobFilterDesc[JOBFILTER_BROTHEL] = "These are jobs for running a brothel.";
+	JobFilterIndex[JOBFILTER_BROTHEL] = JOB_MASSEUSE;
+	JobName[JOB_MASSEUSE] = "Masseuse";
+	JobDesc[JOB_MASSEUSE] = "She will give massages to the customers.";
+	JobFunc[JOB_MASSEUSE] = &WorkBrothelMasseuse;
+	JobName[JOB_BROTHELSTRIPPER] = "Brothel Stripper";
+	JobDesc[JOB_BROTHELSTRIPPER] = "She will strip for the customers.";
+	JobFunc[JOB_BROTHELSTRIPPER] = &WorkBrothelStripper;
+	JobName[JOB_PEEP] = "Peep Show";
+	JobDesc[JOB_PEEP] = "She will let people watch her change and maybe more...";
+	JobFunc[JOB_PEEP] = &WorkPeepShow;
+	JobName[JOB_WHOREBROTHEL] = "Brothel Whore";
+	JobDesc[JOB_WHOREBROTHEL] = "She will whore herself to customers within the building's walls. This is safer but a little less profitable.";
+	JobFunc[JOB_WHOREBROTHEL] = &WorkWhore;
+	JobName[JOB_WHORESTREETS] = "Whore on Streets";
+	JobDesc[JOB_WHORESTREETS] = "She will whore herself on the streets. It is more dangerous than whoring inside but more profitable.";
+	JobFunc[JOB_WHORESTREETS] = &WorkWhore;
 
-	// - Arena
-	JobFunctions[JOB_FIGHTBEASTS] = &WorkFightBeast;
-	JobFunctions[JOB_FIGHTARENAGIRLS] = &WorkFightArenaGirls;
-	JobFunctions[JOB_FIGHTTRAIN] = &WorkCombatTraining;
-	JobFunctions[JOB_DOCTORE] = &WorkDoctore;
-	JobFunctions[JOB_CLEANARENA] = &WorkCleanArena;
-	JobFunctions[JOB_CITYGUARD] = &WorkCityGuard;
-	// - Community Centre
-	JobFunctions[JOB_FEEDPOOR] = &WorkFeedPoor;
-	//JobFunctions[JOB_MAKEITEMS] = &WorkMakeItem;	// ************** TODO
-	JobFunctions[JOB_COMUNITYSERVICE] = &WorkComunityService;
-	JobFunctions[JOB_CENTREMANAGER] = &WorkCentreManager;
-	JobFunctions[JOB_CLEANCENTRE] = &WorkCleanCentre;
-	// - drug Centre
-	JobFunctions[JOB_DRUGCOUNSELOR] = &WorkDrugCounselor;
-	JobFunctions[JOB_REHAB] = &WorkRehab;
-	// - Clinic
-	JobFunctions[JOB_DOCTOR] = &WorkDoctor;
-	JobFunctions[JOB_GETABORT] = &WorkGetAbort;
-	JobFunctions[JOB_PHYSICALSURGERY] = &WorkPhysicalSurgery;	
-	JobFunctions[JOB_GETHEALING] = &WorkHealing;
-	JobFunctions[JOB_GETREPAIRS] = &WorkRepairShop;
-	JobFunctions[JOB_NURSE] = &WorkNurse;
-	JobFunctions[JOB_INTERN] = &WorkIntern;
-	JobFunctions[JOB_MECHANIC] = &WorkMechanic;
-	//clinic staff
-	JobFunctions[JOB_JANITOR] = &WorkJanitor;	
-	JobFunctions[JOB_CHAIRMAN] = &WorkChairMan;
-	//surgery
-	JobFunctions[JOB_LIPO] = &WorkLiposuction;	
-	JobFunctions[JOB_BREASTREDUCTION] = &WorkBreastReduction;
-	JobFunctions[JOB_BOOBJOB] = &WorkBoobJob;
-	JobFunctions[JOB_VAGINAREJUV] = &WorkGetVaginalRejuvenation;
-	JobFunctions[JOB_FACELIFT] = &WorkGetFacelift;
-	JobFunctions[JOB_ASSJOB] = &WorkGetAssJob;
-	JobFunctions[JOB_TUBESTIED] = &WorkGetTubesTied;
-	JobFunctions[JOB_FERTILITY] = &WorkGetFertility;
-	// - House
-	JobFunctions[JOB_PERSONALTRAINING] = &WorkPersonalTraining;
-	JobFunctions[JOB_PERSONALBEDWARMER] = &WorkPersonalBedWarmer;
-	JobFunctions[JOB_CLEANHOUSE] = &WorkCleanHouse;
-	JobFunctions[JOB_HEADGIRL] = &WorkHeadGirl;
+	//- Movie Jobs
+	JobFilterName[JOBFILTER_MOVIESTUDIO] = gettext("Actresses");
+	JobFilterDesc[JOBFILTER_MOVIESTUDIO] = gettext("These are the ladies starring in the films.");
+	JobFilterIndex[JOBFILTER_MOVIESTUDIO] = JOB_FILMBEAST;
+	JobName[JOB_FILMBEAST] = gettext("Film Bestiality");
+	JobDesc[JOB_FILMBEAST] = gettext("She will film a bestiality scenes.");
+	JobFunc[JOB_FILMBEAST] = &WorkFilmBeast;
+	JobName[JOB_FILMSEX] = gettext("Film Sex");
+	JobDesc[JOB_FILMSEX] = gettext("She will film a normal sex scenes.");
+	JobFunc[JOB_FILMSEX] = &WorkFilmSex;
+	JobName[JOB_FILMANAL] = gettext("Film Anal");
+	JobDesc[JOB_FILMANAL] = gettext("She will film an anal scenes.");
+	JobFunc[JOB_FILMANAL] = &WorkFilmAnal;
+	JobName[JOB_FILMLESBIAN] = gettext("Film Lesbian");
+	JobDesc[JOB_FILMLESBIAN] = gettext("She will do a lesbian scene.");
+	JobFunc[JOB_FILMLESBIAN] = &WorkFilmLesbian;
+	JobName[JOB_FILMBONDAGE] = gettext("Film Bondage");
+	JobDesc[JOB_FILMBONDAGE] = gettext("She will perform a in bondage scenes.");
+	JobFunc[JOB_FILMBONDAGE] = &WorkFilmBondage;
+	JobName[JOB_FILMGROUP] = ("Film Group");
+	JobDesc[JOB_FILMGROUP] = ("She will film a group sex scene.");
+	JobFunc[JOB_FILMGROUP] = &WorkFilmGroup;
+	JobName[JOB_FILMORAL] = ("Film Oral Sex");
+	JobDesc[JOB_FILMORAL] = ("She will perform in an oral sex scene.");
+	JobFunc[JOB_FILMORAL] = &WorkFilmOral;
+	JobName[JOB_FILMMAST] = ("Film Masturbation");
+	JobDesc[JOB_FILMMAST] = ("She will perform in a masturbation scene.");
+	JobFunc[JOB_FILMMAST] = &WorkFilmMast;
+	JobName[JOB_FILMTITTY] = ("Film Titty Fuck");
+	JobDesc[JOB_FILMTITTY] = ("She will perform in a titty fuck scene.");
+	JobFunc[JOB_FILMTITTY] = &WorkFilmTitty;
+	JobName[JOB_FILMSTRIP] = ("Film Strip tease");
+	JobDesc[JOB_FILMSTRIP] = ("She will perform in a strip tease scene.");
+	JobFunc[JOB_FILMSTRIP] = &WorkFilmStrip;
+	JobName[JOB_FILMHANDJOB] = ("Film Hand Job");
+	JobDesc[JOB_FILMHANDJOB] = ("She will perform in a hand job scene.");
+	JobFunc[JOB_FILMHANDJOB] = &WorkFilmHandJob;
+	JobName[JOB_FILMRANDOM] = ("Film a random scene");
+	JobDesc[JOB_FILMRANDOM] = ("She will perform in a random sex scene.");
+//	JobFunc[JOB_FILMRANDOM] = &WorkFilmRandom;		// This job is handled different than others, it is in cMovieStudio.cpp UpdateGirls()
+	//- Studio Crew
+	JobFilterName[JOBFILTER_STUDIOCREW] = gettext("Studio Crew");
+	JobFilterDesc[JOBFILTER_STUDIOCREW] = gettext("These are jobs for running a movie studio.");
+	JobFilterIndex[JOBFILTER_STUDIOCREW] = JOB_FILMFREETIME;
+	JobName[JOB_FILMFREETIME] = gettext("Time off");
+	JobDesc[JOB_FILMFREETIME] = gettext("She takes time off resting and recovering.");
+	JobFunc[JOB_FILMFREETIME] = &WorkFreetime;
+	JobName[JOB_DIRECTOR] = gettext("Director");
+	JobDesc[JOB_DIRECTOR] = gettext("She directs the filming, and keeps the girls in line. (max 1)");
+	JobFunc[JOB_DIRECTOR] = &WorkFilmDirector;
+	JobName[JOB_PROMOTER] = gettext("Promoter");
+	JobDesc[JOB_PROMOTER] = gettext("She advertises the movies. (max 1)");
+	JobFunc[JOB_PROMOTER] = &WorkFilmPromoter;
+	JobName[JOB_CAMERAMAGE] = gettext("Camera Mage");
+	JobDesc[JOB_CAMERAMAGE] = gettext("She will film the scenes. (requires 1)");
+	JobFunc[JOB_CAMERAMAGE] = &WorkCameraMage;
+	JobName[JOB_CRYSTALPURIFIER] = gettext("Crystal Purifier");
+	JobDesc[JOB_CRYSTALPURIFIER] = gettext("She will clean up the filmed scenes. (requires 1)");
+	JobFunc[JOB_CRYSTALPURIFIER] = &WorkCrystalPurifier;
+	JobName[JOB_FLUFFER] = gettext("Fluffer");
+	JobDesc[JOB_FLUFFER] = gettext("She will keep the porn stars aroused.");
+	JobFunc[JOB_FLUFFER] = &WorkFluffer;
+	JobName[JOB_STAGEHAND] = gettext("Stagehand");
+	JobDesc[JOB_STAGEHAND] = gettext("She helps setup equipment, and keeps the studio clean.");
+	JobFunc[JOB_STAGEHAND] = &WorkFilmStagehand;
+
+	// - Arena Jobs
+	JobFilterName[JOBFILTER_ARENA] = gettext("Arena");
+	JobFilterDesc[JOBFILTER_ARENA] = gettext("These are jobs for running an arena.");
+	JobFilterIndex[JOBFILTER_ARENA] = JOB_FIGHTBEASTS;
+	JobName[JOB_FIGHTBEASTS] = gettext("Fight Beasts");
+	JobDesc[JOB_FIGHTBEASTS] = gettext("She will fight to the death against beasts you own. Dangerous.");
+	JobFunc[JOB_FIGHTBEASTS] = &WorkFightBeast;
+	JobName[JOB_FIGHTARENAGIRLS] = gettext("Cage Match");
+	JobDesc[JOB_FIGHTARENAGIRLS] = gettext("She will fight against other girls. Dangerous.");
+	JobFunc[JOB_FIGHTARENAGIRLS] = &WorkFightArenaGirls;
+	JobName[JOB_FIGHTTRAIN] = gettext("Combat Training");
+	JobDesc[JOB_FIGHTTRAIN] = gettext("She will practice combat.");
+	JobFunc[JOB_FIGHTTRAIN] = &WorkCombatTraining;
+	JobName[JOB_CITYGUARD] = gettext("City Guard");
+	JobDesc[JOB_CITYGUARD] = gettext("She will help keep crossgate safe.");
+	JobFunc[JOB_CITYGUARD] = &WorkCityGuard;
+	//- Arena Staff
+	JobFilterName[JOBFILTER_ARENASTAFF] = gettext("Arena Staff");
+	JobFilterDesc[JOBFILTER_ARENASTAFF] = gettext("These are jobs that help run an arena.");
+	JobFilterIndex[JOBFILTER_ARENASTAFF] = JOB_ARENAREST;
+	JobName[JOB_ARENAREST] = gettext("Time off");
+	JobDesc[JOB_ARENAREST] = gettext("She will rest.");
+	JobFunc[JOB_ARENAREST] = &WorkFreetime;
+	JobName[JOB_DOCTORE] = gettext("Doctore");
+	JobDesc[JOB_DOCTORE] = gettext("She will watch over the girls in the arena.");
+	JobFunc[JOB_DOCTORE] = &WorkDoctore;
+	JobName[JOB_CLEANARENA] = gettext("Grounds Keeper");
+	JobDesc[JOB_CLEANARENA] = gettext("She will clean the arena.");
+	JobFunc[JOB_CLEANARENA] = &WorkCleanArena;
+
+	// - Community Centre Jobs
+	JobFilterName[JOBFILTER_COMMUNITYCENTRE] = gettext("Community Centre");
+	JobFilterDesc[JOBFILTER_COMMUNITYCENTRE] = gettext("These are jobs for running a community centre.");
+	JobFilterIndex[JOBFILTER_COMMUNITYCENTRE] = JOB_CENTREREST;
+	JobName[JOB_CENTREREST] = gettext("Time off");
+	JobDesc[JOB_CENTREREST] = gettext("She will rest.");
+	JobFunc[JOB_CENTREREST] = &WorkFreetime;
+	JobName[JOB_CENTREMANAGER] = gettext("Centre Manager");
+	JobDesc[JOB_CENTREMANAGER] = gettext("She will look after the girls working in the centre.");
+	JobFunc[JOB_CENTREMANAGER] = &WorkCentreManager;
+	JobName[JOB_FEEDPOOR] = gettext("Feed Poor");
+	JobDesc[JOB_FEEDPOOR] = gettext("She will work in a soup kitchen.");
+	JobFunc[JOB_FEEDPOOR] = &WorkFeedPoor;
+	JobName[JOB_COMUNITYSERVICE] = gettext("Community Service");
+	JobDesc[JOB_COMUNITYSERVICE] = gettext("She will go around town and help out where she can.");
+	JobFunc[JOB_COMUNITYSERVICE] = &WorkComunityService;
+	JobName[JOB_CLEANCENTRE] = gettext("Clean Centre");
+	JobDesc[JOB_CLEANCENTRE] = gettext("She will clean the centre.");
+	JobFunc[JOB_CLEANCENTRE] = &WorkCleanCentre;
+	// - Drug Centre Jobs
+	JobFilterName[JOBFILTER_DRUGCENTRE] = gettext("Drug Centre");
+	JobFilterDesc[JOBFILTER_DRUGCENTRE] = gettext("These are jobs for running a drug centre.");
+	JobFilterIndex[JOBFILTER_DRUGCENTRE] = JOB_DRUGCOUNSELOR;
+	JobName[JOB_DRUGCOUNSELOR] = gettext("Drug Counselor");
+	JobDesc[JOB_DRUGCOUNSELOR] = gettext("She will help girls get over there drug addictions.");
+	JobFunc[JOB_DRUGCOUNSELOR] = &WorkDrugCounselor;
+	JobName[JOB_REHAB] = gettext("Rehab");
+	JobDesc[JOB_REHAB] = gettext("She will go to rehab to get over her drug addiction.");
+	JobFunc[JOB_REHAB] = &WorkRehab;
+
+	// - Clinic Surgeries
+	JobFilterName[JOBFILTER_CLINIC] = gettext("Medical Clinic");
+	JobFilterDesc[JOBFILTER_CLINIC] = gettext("These are procerures the girls can have done in the Medical Clinic.");
+	JobFilterIndex[JOBFILTER_CLINIC] = JOB_GETHEALING;
+	JobName[JOB_GETHEALING] = gettext("Get Healing");
+	JobDesc[JOB_GETHEALING] = gettext("She will have her wounds attended.");
+	JobFunc[JOB_GETHEALING] = &WorkHealing;
+	JobName[JOB_GETREPAIRS] = gettext("Get Repaired");
+	JobDesc[JOB_GETREPAIRS] = gettext("Construct girls will be quickly repaired here.");
+	JobFunc[JOB_GETREPAIRS] = &WorkRepairShop;
+	JobName[JOB_GETABORT] = gettext("Abortion");
+	JobDesc[JOB_GETABORT] = gettext("She will get an abortion, removing pregnancy and/or insemination.\n*(Takes 2 days or 1 if a Nurse is on duty)");
+	JobFunc[JOB_GETABORT] = &WorkGetAbort;
+	JobName[JOB_PHYSICALSURGERY] = gettext("Cosmetic Surgery");
+	JobDesc[JOB_PHYSICALSURGERY] = gettext("She will undergo magical surgery to \"enhance\" her appearance.\n*(Takes up to 5 days, less if a Nurse is on duty)");
+	JobFunc[JOB_PHYSICALSURGERY] = &WorkPhysicalSurgery;
+	JobName[JOB_LIPO] = gettext("Liposuction");
+	JobDesc[JOB_LIPO] = gettext("She will undergo liposuction to \"enhance\" her figure.\n*(Takes up to 5 days, less if a Nurse is on duty)");
+	JobFunc[JOB_LIPO] = &WorkLiposuction;
+	JobName[JOB_BREASTREDUCTION] = gettext("Breast Reduction Surgery");
+	JobDesc[JOB_BREASTREDUCTION] = gettext("She will undergo breast reduction surgery.\n*(Takes up to 5 days, less if a Nurse is on duty)");
+	JobFunc[JOB_BREASTREDUCTION] = &WorkBreastReduction;
+	JobName[JOB_BOOBJOB] = gettext("Boob Job");
+	JobDesc[JOB_BOOBJOB] = gettext("She will undergo surgery to \"enhance\" her bust.\n*(Takes up to 5 days, less if a Nurse is on duty)");
+	JobFunc[JOB_BOOBJOB] = &WorkBoobJob;
+	JobName[JOB_VAGINAREJUV] = gettext("Vaginal Rejuvenation");
+	JobDesc[JOB_VAGINAREJUV] = gettext("She will undergo surgery to make her a virgin again.\n*(Takes up to 5 days, less if a Nurse is on duty)");
+	JobFunc[JOB_VAGINAREJUV] = &WorkGetVaginalRejuvenation;
+	JobName[JOB_FACELIFT] = gettext("Face Lift");
+	JobDesc[JOB_FACELIFT] = gettext("She will undergo surgery to make her younger.\n*(Takes up to 5 days, less if a Nurse is on duty)");
+	JobFunc[JOB_FACELIFT] = &WorkGetFacelift;
+	JobName[JOB_ASSJOB] = gettext("Arse Job");
+	JobDesc[JOB_ASSJOB] = gettext("She will undergo surgery to \"enhance\" her ass.\n*(Takes up to 5 days, less if a Nurse is on duty)");
+	JobFunc[JOB_ASSJOB] = &WorkGetAssJob;
+	JobName[JOB_TUBESTIED] = gettext("Tubes Tied");
+	JobDesc[JOB_TUBESTIED] = gettext("She will undergo surgery to make her sterile.\n*(Takes up to 5 days, less if a Nurse is on duty)");
+	JobFunc[JOB_TUBESTIED] = &WorkGetTubesTied;
+	JobName[JOB_FERTILITY] = gettext("Fertility Treatmeant");
+	JobDesc[JOB_FERTILITY] = gettext("She will undergo surgery to make her fertile.\n*(Takes up to 5 days, less if a Nurse is on duty)");
+	JobFunc[JOB_FERTILITY] = &WorkGetFertility;
+	// Clinic staff
+	JobFilterName[JOBFILTER_CLINICSTAFF] = gettext("Clinic Staff");
+	JobFilterDesc[JOBFILTER_CLINICSTAFF] = gettext("These are jobs that help run a medical clinic.");
+	JobFilterIndex[JOBFILTER_CLINICSTAFF] = JOB_CLINICREST;
+	JobName[JOB_CLINICREST] = gettext("Time off");
+	JobDesc[JOB_CLINICREST] = gettext("She will rest");
+	JobFunc[JOB_CLINICREST] = &WorkFreetime;
+	JobName[JOB_CHAIRMAN] = gettext("Chairman");
+	JobDesc[JOB_CHAIRMAN] = gettext("She will watch over the staff of the clinic");
+	JobFunc[JOB_CHAIRMAN] = &WorkChairMan;
+	JobName[JOB_DOCTOR] = gettext("Doctor");
+	JobDesc[JOB_DOCTOR] = gettext("She will become a doctor. Doctors earn extra cash from treating locals. (requires 1)");
+	JobFunc[JOB_DOCTOR] = &WorkDoctor;
+	JobName[JOB_NURSE] = gettext("Nurse");
+	JobDesc[JOB_NURSE] = gettext("Will help the doctor and heal sick people.");
+	JobFunc[JOB_NURSE] = &WorkNurse;
+	JobName[JOB_MECHANIC] = gettext("Mechanic");
+	JobDesc[JOB_MECHANIC] = gettext("Will help the doctor and repair Constructs.");
+	JobFunc[JOB_MECHANIC] = &WorkMechanic;
+	JobName[JOB_INTERN] = gettext("Intern");
+	JobDesc[JOB_INTERN] = gettext("Will train in how to be a nurse.");
+	JobFunc[JOB_INTERN] = &WorkIntern;
+	JobName[JOB_JANITOR] = gettext("Janitor");
+	JobDesc[JOB_JANITOR] = gettext("She will clean the clinic");
+	JobFunc[JOB_JANITOR] = &WorkJanitor;
+
+	// - Farm Staff
+	JobFilterName[JOBFILTER_FARMSTAFF] = "Farm Staff";
+	JobFilterDesc[JOBFILTER_FARMSTAFF] = "These are jobs for running a farm";
+	JobFilterIndex[JOBFILTER_FARMSTAFF] = JOB_FARMREST;
+	JobName[JOB_FARMREST] = "Time off";
+	JobDesc[JOB_FARMREST] = "She will take time off and rest.";
+	JobFunc[JOB_FARMREST] = &WorkFreetime;
+	JobName[JOB_FARMMANGER] = "Head Farmer";
+	JobDesc[JOB_FARMMANGER] = "She will watch over the farm and girls working there.";
+	JobFunc[JOB_FARMMANGER] = &WorkFarmManager;
+	JobName[JOB_VETERINARIAN] = "Veterinarian";
+	JobDesc[JOB_VETERINARIAN] = "She will tend to sick animals.";
+	JobFunc[JOB_VETERINARIAN] = &WorkFarmVeterinarian;
+	JobName[JOB_MARKETER] = "Marketer";
+	JobDesc[JOB_MARKETER] = "She will buy and sell things.";
+	JobFunc[JOB_MARKETER] = &WorkFarmMarketer;
+	JobName[JOB_RESEARCH] = "Researcher";
+	JobDesc[JOB_RESEARCH] = "She will research how to improve various things.";
+	JobFunc[JOB_RESEARCH] = &WorkFarmResearch;
+	JobName[JOB_FARMHAND] = "Farm Hand";
+	JobDesc[JOB_FARMHAND] = "She will clean up around the farm.";
+	JobFunc[JOB_FARMHAND] = &WorkFarmHand;
 	// - Laborers
-	JobFunctions[JOB_GARDENER] = &WorkGardener;
-	JobFunctions[JOB_FARMER] = &WorkFarmer;
-	JobFunctions[JOB_SHEAPHERD] = &WorkSheapherd;
-	JobFunctions[JOB_RANCHER] = &WorkRancher;
-	JobFunctions[JOB_CATACOMBRANCHER] = &WorkCatacombRancher;
-	JobFunctions[JOB_MILKER] = &WorkMilker;
+	JobFilterName[JOBFILTER_LABORERS] = gettext("Laborers");
+	JobFilterDesc[JOBFILTER_LABORERS] = gettext("These are jobs your girls can do at your farm.");
+	JobFilterIndex[JOBFILTER_LABORERS] = JOB_GARDENER;
+	JobName[JOB_GARDENER] = gettext("Gardener");
+	JobDesc[JOB_GARDENER] = gettext("She will produce herbs.");
+	JobFunc[JOB_GARDENER] = &WorkGardener;
+	JobName[JOB_FARMER] = gettext("Farmer");
+	JobDesc[JOB_FARMER] = gettext("She will tend to your crops.");
+	JobFunc[JOB_FARMER] = &WorkFarmer;
+	JobName[JOB_SHEAPHERD] = gettext("Sheapherd");
+	JobDesc[JOB_SHEAPHERD] = gettext("She will tend to food animals.");
+	JobFunc[JOB_SHEAPHERD] = &WorkSheapherd;
+	JobName[JOB_RANCHER] = gettext("Rancher");
+	JobDesc[JOB_RANCHER] = gettext("She will tend to larger animals.");
+	JobFunc[JOB_RANCHER] = &WorkRancher;
+	JobName[JOB_CATACOMBRANCHER] = gettext("Catacombs Rancher");
+	JobDesc[JOB_CATACOMBRANCHER] = gettext("She will tend to strange beasts.");
+	JobFunc[JOB_CATACOMBRANCHER] = &WorkCatacombRancher;
+	JobName[JOB_BEASTCAPTURE] = "Beast Capture";
+	JobDesc[JOB_BEASTCAPTURE] = "She will go out into the wilds to capture beasts.";
+	JobFunc[JOB_BEASTCAPTURE] = &WorkBeastCapture;
+	JobName[JOB_MILKER] = gettext("Milker");
+	JobDesc[JOB_MILKER] = gettext("She will milk the various animals and girls you own.");
+	JobFunc[JOB_MILKER] = &WorkMilker;
+	JobName[JOB_MILK] = "Get Milked";
+	JobDesc[JOB_MILK] = "She will have her breasts milked";
+	JobFunc[JOB_MILK] = &WorkMilk;
 	// - Producers
-	JobFunctions[JOB_BUTCHER] = &WorkButcher;
-	JobFunctions[JOB_BAKER] = &WorkBaker;
-	JobFunctions[JOB_BREWER] = &WorkBrewer;
-	JobFunctions[JOB_MAKEPOTIONS] = &WorkMakePotions;
+	JobFilterName[JOBFILTER_PRODUCERS] = gettext("Producers");
+	JobFilterDesc[JOBFILTER_PRODUCERS] = gettext("These are jobs your girls can do at your farm.");
+	JobFilterIndex[JOBFILTER_PRODUCERS] = JOB_BUTCHER;
+	JobName[JOB_BUTCHER] = gettext("Butcher");
+	JobDesc[JOB_BUTCHER] = gettext("She will produce food from animals you own.");
+	JobFunc[JOB_BUTCHER] = &WorkButcher;
+	JobName[JOB_BAKER] = gettext("Baker");
+	JobDesc[JOB_BAKER] = gettext("She will produce food from the crops you own.");
+	JobFunc[JOB_BAKER] = &WorkBaker;
+	JobName[JOB_BREWER] = gettext("Brewer");
+	JobDesc[JOB_BREWER] = gettext("She will make various beers and wines.");
+	JobFunc[JOB_BREWER] = &WorkBrewer;
+	JobName[JOB_MAKEITEM] = gettext("Make Items");
+	JobDesc[JOB_MAKEITEM] = gettext("She will make various items.");
+	JobFunc[JOB_MAKEITEM] = &WorkMakeItem;
+	JobName[JOB_MAKEPOTIONS] = gettext("Make Potions");
+	JobDesc[JOB_MAKEPOTIONS] = gettext("She will make various potions.");
+	JobFunc[JOB_MAKEPOTIONS] = &WorkMakePotions;
+
+	// - House
+	JobFilterName[JOBFILTER_HOUSE] = gettext("Player House");
+	JobFilterDesc[JOBFILTER_HOUSE] = gettext("These are jobs your girls can do at your house.");
+	JobFilterIndex[JOBFILTER_HOUSE] = JOB_PERSONALTRAINING;
+	JobName[JOB_HOUSEREST] = gettext("Time off");
+	JobDesc[JOB_HOUSEREST] = gettext("She takes time off resting and recovering.");
+	JobFunc[JOB_HOUSEREST] = &WorkFreetime;
+	JobName[JOB_HEADGIRL] = gettext("Head Girl");
+	JobDesc[JOB_HEADGIRL] = gettext("She takes care of the girls in your house.");
+	JobFunc[JOB_HEADGIRL] = &WorkHeadGirl;
+	JobName[JOB_RECRUITER] = "Recruiter";
+	JobDesc[JOB_RECRUITER] = "She will go out and try and recruit girls for you.";
+	JobFunc[JOB_RECRUITER] = &WorkRecruiter;
+	JobName[JOB_PERSONALTRAINING] = gettext("Personal Training");
+	JobDesc[JOB_PERSONALTRAINING] = gettext("You will over see her training personal.");
+	JobFunc[JOB_PERSONALTRAINING] = &WorkPersonalTraining;
+	JobName[JOB_PERSONALBEDWARMER] = gettext("Bed Warmer");
+	JobDesc[JOB_PERSONALBEDWARMER] = gettext("She will stay in your bed at night with you.");
+	JobFunc[JOB_PERSONALBEDWARMER] = &WorkPersonalBedWarmer;
+	JobName[JOB_CLEANHOUSE] = gettext("Clean House");
+	JobDesc[JOB_CLEANHOUSE] = gettext("She will clean your house.");
+	JobFunc[JOB_CLEANHOUSE] = &WorkCleanHouse;
+
+
+
 #if 0
 	// - Community Centre
-	JobFunctions[JOB_COLLECTDONATIONS] = &WorkVoid;	// ************** TODO
-	JobFunctions[JOB_MAKEITEMS] = &WorkMakeItem;	// ************** TODO
-	JobFunctions[JOB_SELLITEMS] = &WorkVoid;	// ************** TODO
+	JobFunc[JOB_COLLECTDONATIONS] = &WorkVoid;	// ************** TODO
+	JobFunc[JOB_ARTISAN] = &WorkMakeItem;	// ************** TODO
+	JobFunc[JOB_SELLITEMS] = &WorkVoid;	// ************** TODO
 	// - Drug Lab (these jobs gain bonus if in same building as a clinic)
-	JobFunctions[JOB_VIRASPLANTFUCKER] = &WorkVoid;	// ************** TODO
-	JobFunctions[JOB_SHROUDGROWER] = &WorkVoid;	// ************** TODO
-	JobFunctions[JOB_FAIRYDUSTER] = &WorkVoid;	// ************** TODO
-	JobFunctions[JOB_DRUGDEALER] = &WorkVoid;	// ************** TODO
+	JobFunc[JOB_VIRASPLANTFUCKER] = &WorkVoid;	// ************** TODO
+	JobFunc[JOB_SHROUDGROWER] = &WorkVoid;	// ************** TODO
+	JobFunc[JOB_FAIRYDUSTER] = &WorkVoid;	// ************** TODO
+	JobFunc[JOB_DRUGDEALER] = &WorkVoid;	// ************** TODO
 	// - Alchemist lab (these jobs gain bonus if in same building as a drug lab)
-	JobFunctions[JOB_FINDREGENTS] = &WorkVoid;	// ************** TODO
-	JobFunctions[JOB_BREWPOTIONS] = &WorkVoid;	// ************** TODO
-	JobFunctions[JOB_POTIONTESTER] = &WorkVoid;	// ************** TODO
+	JobFunc[JOB_FINDREGENTS] = &WorkVoid;	// ************** TODO
+	JobFunc[JOB_BREWPOTIONS] = &WorkVoid;	// ************** TODO
+	JobFunc[JOB_POTIONTESTER] = &WorkVoid;	// ************** TODO
 	// - Arena (these jobs gain bonus if in same building as a clinic)
-	JobFunctions[JOB_FIGHTBEASTS] = &WorkVoid;	// ************** TODO
-	JobFunctions[JOB_WRESTLE] = &WorkVoid;	// ************** TODO
-	JobFunctions[JOB_FIGHTTODEATH] = &WorkVoid;	// ************** TODO
-	JobFunctions[JOB_FIGHTVOLUNTEERS] = &WorkVoid;	// ************** TODO
-	JobFunctions[JOB_COLLECTBETS] = &WorkVoid;	// ************** TODO
+	JobFunc[JOB_FIGHTBEASTS] = &WorkVoid;	// ************** TODO
+	JobFunc[JOB_WRESTLE] = &WorkVoid;	// ************** TODO
+	JobFunc[JOB_FIGHTTODEATH] = &WorkVoid;	// ************** TODO
+	JobFunc[JOB_FIGHTVOLUNTEERS] = &WorkVoid;	// ************** TODO
+	JobFunc[JOB_COLLECTBETS] = &WorkVoid;	// ************** TODO
 	// - Skills Centre
-	JobFunctions[JOB_TEACHBDSM] = &WorkVoid;	// ************** TODO
-	JobFunctions[JOB_TEACHSEX] = &WorkVoid;	// ************** TODO
-	JobFunctions[JOB_TEACHBEAST] = &WorkVoid;	// ************** TODO
-	JobFunctions[JOB_TEACHMAGIC] = &WorkVoid;	// ************** TODO
-	JobFunctions[JOB_TEACHCOMBAT] = &WorkVoid;	// ************** TODO
-	JobFunctions[JOB_DAYCARE] = &WorkVoid;	// ************** TODO
-	JobFunctions[JOB_SCHOOLING] = &WorkVoid;	// ************** TODO
-	JobFunctions[JOB_TEACHDANCING] = &WorkVoid;	// ************** TODO
-	JobFunctions[JOB_TEACHSERVICE] = &WorkVoid;	// ************** TODO
-	JobFunctions[JOB_TRAIN] = &WorkVoid;	// ************** TODO
+	JobFunc[JOB_TEACHBDSM] = &WorkVoid;	// ************** TODO
+	JobFunc[JOB_TEACHSEX] = &WorkVoid;	// ************** TODO
+	JobFunc[JOB_TEACHBEAST] = &WorkVoid;	// ************** TODO
+	JobFunc[JOB_TEACHMAGIC] = &WorkVoid;	// ************** TODO
+	JobFunc[JOB_TEACHCOMBAT] = &WorkVoid;	// ************** TODO
+	JobFunc[JOB_DAYCARE] = &WorkVoid;	// ************** TODO
+	JobFunc[JOB_SCHOOLING] = &WorkVoid;	// ************** TODO
+	JobFunc[JOB_TEACHDANCING] = &WorkVoid;	// ************** TODO
+	JobFunc[JOB_TEACHSERVICE] = &WorkVoid;	// ************** TODO
+	JobFunc[JOB_TRAIN] = &WorkVoid;	// ************** TODO
 
 #endif
 
 	
 
-/*
- *	Names and descriptions of each job and job filter, along with first job index for each job filter
- */
-	// - General Jobs
-	JobFilterName[JOBFILTER_GENERAL] = "General";
-	JobFilterDescription[JOBFILTER_GENERAL] = "These are general jobs that work individually in any building.";
-	JobFilterIndex[JOBFILTER_GENERAL] = JOB_RESTING;
-	JobName[JOB_RESTING] = "Free Time";
-	JobDescription[JOB_RESTING] = "She will take some time off, maybe do some shopping or walk around town. If the girl is unhappy she may try to escape.";
-	JobName[JOB_TRAINING] = "Practice Skills";
-	JobDescription[JOB_TRAINING] = "She will train either alone or with others to improve her skills.";
-	JobName[JOB_CLEANING] = "Cleaning";
-	JobDescription[JOB_CLEANING] = "She will clean the building, as filth will put off some customers.";
-	JobName[JOB_SECURITY] = "Security";
-	JobDescription[JOB_SECURITY] = "She will patrol the building, stopping mis-deeds.";
-	JobName[JOB_ADVERTISING] = "Advertising";
-	JobDescription[JOB_ADVERTISING] = "She will advertise the building's features in the city.";
-	JobName[JOB_CUSTOMERSERVICE] = "Customer Service";
-	JobDescription[JOB_CUSTOMERSERVICE] = "She will look after customer needs.";
-	JobName[JOB_MATRON] = "Matron";
-	JobDescription[JOB_MATRON] = "This girl will look after the other girls. Only non-slave girls can have this position and you must pay them 300 gold per week. Also, it takes up both shifts. (max 1)";
-	JobName[JOB_TORTURER] = "Torturer";
-	JobDescription[JOB_TORTURER] = "She will torture the prisoners in addition to your tortures, she will also look after them to ensure they don't die. (max 1 for all brothels)";
-	JobName[JOB_EXPLORECATACOMBS] = "Explore Catacombs";
-	JobDescription[JOB_EXPLORECATACOMBS] = "She will explore the catacombs looking for treasure and capturing monsters and monster girls. Needless to say, this is a dangerous job.";
-	JobName[JOB_RECRUITER] = "Recruiter";
-	JobDescription[JOB_RECRUITER] = "She will go out and try and recruit girls for you.";
-
-	// - Bar Jobs
-	JobFilterName[JOBFILTER_BAR] = "Bar";
-	JobFilterDescription[JOBFILTER_BAR] = "These are jobs for running a bar.";
-	JobFilterIndex[JOBFILTER_BAR] = JOB_BARMAID;
-	JobName[JOB_BARMAID] = "Barmaid";
-	JobDescription[JOB_BARMAID] = "She will staff the bar and serve drinks.";
-	JobName[JOB_WAITRESS] = "Waitress";
-	JobDescription[JOB_WAITRESS] = "She will bring drinks and food to customers at the tables.";
-	JobName[JOB_SINGER] = "Singer";
-	JobDescription[JOB_SINGER] = "She will sing for the customers.";
-	JobName[JOB_PIANO] = "Piano";
-	JobDescription[JOB_PIANO] = "She will play the piano for the customers.";
-
-	// - Gambling Hall Jobs
-	JobFilterName[JOBFILTER_GAMBHALL] = "Gambling Hall";
-	JobFilterDescription[JOBFILTER_GAMBHALL] = "These are jobs for running a gambling hall.";
-	JobFilterIndex[JOBFILTER_GAMBHALL] = JOB_DEALER;
-	JobName[JOB_DEALER] = "Game Dealer";
-	JobDescription[JOB_DEALER] = "She will manage a game in the gambling hall. (requires 3)";
-	JobName[JOB_ENTERTAINMENT] = "Entertainer";
-	JobDescription[JOB_ENTERTAINMENT] = "She will provide entertainment to the customers.";
-	JobName[JOB_XXXENTERTAINMENT] = "XXX Entertainer";
-	JobDescription[JOB_XXXENTERTAINMENT] = "She will provide sexual entertainment to the customers.";
-	JobName[JOB_WHOREGAMBHALL] = "Hall Whore";
-	JobDescription[JOB_WHOREGAMBHALL] = "She will give her sexual favors to the customers.";
-
-	// - Sleazy Bar Jobs		// Changing all references to Strip Club, just sounds better to me and more realistic. -PP
-	JobFilterName[JOBFILTER_SLEAZYBAR] = "Strip Club";
-	JobFilterDescription[JOBFILTER_SLEAZYBAR] = "These are jobs for running a Strip Club.";
-	JobFilterIndex[JOBFILTER_SLEAZYBAR] = JOB_SLEAZYBARMAID;
-	JobName[JOB_SLEAZYBARMAID] = "Strip Club Barmaid";
-	JobDescription[JOB_SLEAZYBARMAID] = "She will staff the bar and serve drinks while dressed in lingerie or fetish costumes.";
-	JobName[JOB_SLEAZYWAITRESS] = "Strip Club Waitress";
-	JobDescription[JOB_SLEAZYWAITRESS] = "She will bring drinks and food to the customers at the tables while dressed in lingerie or fetish costumes.";
-	JobName[JOB_BARSTRIPPER] = "Strip Club Stripper";
-	JobDescription[JOB_BARSTRIPPER] = "She will strip on the tables and stage for the customers.";
-	JobName[JOB_BARWHORE] = "Strip Club Whore";
-	JobDescription[JOB_BARWHORE] = "She will provide sex to the customers.";
-
-	// - Brothel Jobs
-	JobFilterName[JOBFILTER_BROTHEL] = "Brothel";
-	JobFilterDescription[JOBFILTER_BROTHEL] = "These are jobs for running a brothel.";
-	JobFilterIndex[JOBFILTER_BROTHEL] = JOB_MASSEUSE;
-	JobName[JOB_MASSEUSE] = "Masseuse";
-	JobDescription[JOB_MASSEUSE] = "She will give massages to the customers.";
-	JobName[JOB_BROTHELSTRIPPER] = "Brothel Stripper";
-	JobDescription[JOB_BROTHELSTRIPPER] = "She will strip for the customers.";
-	JobName[JOB_WHOREBROTHEL] = "Brothel Whore";
-	JobDescription[JOB_WHOREBROTHEL] = "She will whore herself to customers within the building's walls. This is safer but a little less profitable.";
-	JobName[JOB_WHORESTREETS] = "Whore on Streets";
-	JobDescription[JOB_WHORESTREETS] = "She will whore herself on the streets. It is more dangerous than whoring inside but more profitable.";
-	JobName[JOB_PEEP] = "Peep Show";
-	JobDescription[JOB_PEEP] = "She will let people watch her change and maybe more...";
-	/*JobName[JOB_ESCORT] = "Escort";
-	JobDescription[JOB_ESCORT] = "She will be an excort.";*/
-
-	// - Stables Jobs
-	JobFilterName[JOBFILTER_STABLES] = "Stables";
-	JobFilterDescription[JOBFILTER_STABLES] = "These are jobs for caputring and caring for beasts";
-	JobFilterIndex[JOBFILTER_STABLES] = JOB_BEASTCAPTURE;
-	JobName[JOB_BEASTCAPTURE] = "Beast Capture";
-	JobDescription[JOB_BEASTCAPTURE] = "She will go out into the wilds to capture beasts. (max 2)";
-	JobName[JOB_BEASTCARER] = "Beast Carer";
-	JobDescription[JOB_BEASTCARER] = "She will look after the needs of the beasts in your possession. (max 1)";
-	JobName[JOB_MILK] = "Get Milked";
-	JobDescription[JOB_MILK] = "She will have her breasts milked";
-
-	// - Farm Staff Jobs
-	JobFilterName[JOBFILTER_FARMSTAFF] = "Farm Staff";
-	JobFilterDescription[JOBFILTER_FARMSTAFF] = "These are jobs for running a farm";
-	JobFilterIndex[JOBFILTER_FARMSTAFF] = JOB_FARMMANGER;
-	JobName[JOB_FARMMANGER] = "Head Farmer";
-	JobDescription[JOB_FARMMANGER] = "She will watch over the farm and girls working there.";
-	JobName[JOB_FARMHAND] = "Farm Hand";
-	JobDescription[JOB_FARMHAND] = "She will clean up around the farm.";
-	JobName[JOB_FARMREST] = "Time off";
-	JobDescription[JOB_FARMREST] = "She will take time off and rest.";
-
-	// - Clinic staff
-	JobFilterName[JOBFILTER_CLINICSTAFF] = gettext("Clinic Staff");
-	JobFilterDescription[JOBFILTER_CLINICSTAFF] = gettext("These are jobs that help run a medical clinic.");
-	JobFilterIndex[JOBFILTER_CLINICSTAFF] = JOB_CHAIRMAN;
-	JobName[JOB_CHAIRMAN] = gettext("Chairman");
-	JobDescription[JOB_CHAIRMAN] = gettext("She will watch over the staff of the clinic");
-	JobName[JOB_DOCTOR] = gettext("Doctor");
-	JobDescription[JOB_DOCTOR] = gettext("She will become a doctor. Doctors earn extra cash from treating locals. (requires 1)");
-	JobName[JOB_NURSE] = gettext("Nurse");
-	JobDescription[JOB_NURSE] = gettext("Will help the doctor and heal sick people.");
-	JobName[JOB_MECHANIC] = gettext("Mechanic");
-	JobDescription[JOB_MECHANIC] = gettext("Will help the doctor and repair Constructs.");
-	JobName[JOB_INTERN] = gettext("Intern");
-	JobDescription[JOB_INTERN] = gettext("Will train in how to be a nurse.");
-	JobName[JOB_JANITOR] = gettext("Janitor");
-	JobDescription[JOB_JANITOR] = gettext("She will clean the clinic");
-	JobName[JOB_CLINICREST] = gettext("Time off");
-	JobDescription[JOB_CLINICREST] = gettext("She will rest");
-
-	// - Clinic Jobs
-	JobFilterName[JOBFILTER_CLINIC] = gettext("Medical Clinic");
-	JobFilterDescription[JOBFILTER_CLINIC] = gettext("These are jobs for running a medical clinic.");
-	JobFilterIndex[JOBFILTER_CLINIC] = JOB_GETHEALING;
-	JobName[JOB_GETABORT] = gettext("Abortion");
-	JobDescription[JOB_GETABORT] = gettext("She will get an abortion, removing pregnancy and/or insemination.\n*(Takes 2 days or 1 if a Nurse is on duty)");
-	JobName[JOB_PHYSICALSURGERY] = gettext("Cosmetic Surgery");
-	JobDescription[JOB_PHYSICALSURGERY] = gettext("She will undergo magical surgery to \"enhance\" her appearance.\n*(Takes up to 5 days, less if a Nurse is on duty)");
-	JobName[JOB_LIPO] = gettext("Liposuction");
-	JobDescription[JOB_LIPO] = gettext("She will undergo liposuction to \"enhance\" her figure.\n*(Takes up to 5 days, less if a Nurse is on duty)");
-	JobName[JOB_BREASTREDUCTION] = gettext("Breast Reduction Surgery");
-	JobDescription[JOB_BREASTREDUCTION] = gettext("She will undergo breast reduction surgery.\n*(Takes up to 5 days, less if a Nurse is on duty)");
-	JobName[JOB_BOOBJOB] = gettext("Boob Job");
-	JobDescription[JOB_BOOBJOB] = gettext("She will undergo surgery to \"enhance\" her bust.\n*(Takes up to 5 days, less if a Nurse is on duty)");
-	JobName[JOB_ASSJOB] = gettext("Arse Job");
-	JobDescription[JOB_ASSJOB] = gettext("She will undergo surgery to \"enhance\" her ass.\n*(Takes up to 5 days, less if a Nurse is on duty)");
-	JobName[JOB_VAGINAREJUV] = gettext("Vaginal Rejuvenation");
-	JobDescription[JOB_VAGINAREJUV] = gettext("She will undergo surgery to make her a virgin again.\n*(Takes up to 5 days, less if a Nurse is on duty)");
-	JobName[JOB_FACELIFT] = gettext("Face Lift");
-	JobDescription[JOB_FACELIFT] = gettext("She will undergo surgery to make her younger.\n*(Takes up to 5 days, less if a Nurse is on duty)");
-	JobName[JOB_TUBESTIED] = gettext("Tubes Tied");
-	JobDescription[JOB_TUBESTIED] = gettext("She will undergo surgery to make her sterile.\n*(Takes up to 5 days, less if a Nurse is on duty)");
-	JobName[JOB_FERTILITY] = gettext("Fertility Treatmeant");
-	JobDescription[JOB_FERTILITY] = gettext("She will undergo surgery to make her fertile.\n*(Takes up to 5 days, less if a Nurse is on duty)");
-	JobName[JOB_GETHEALING] = gettext("Get Healing");
-	JobDescription[JOB_GETHEALING] = gettext("She will have her wounds attended.");
-	JobName[JOB_GETREPAIRS] = gettext("Get Repaired");
-	JobDescription[JOB_GETREPAIRS] = gettext("Construct girls will be quickly repaired here.");
 	
-
-	//- Moive Jobs
-	JobFilterName[JOBFILTER_MOVIESTUDIO] = gettext("Actresses");
-	JobFilterDescription[JOBFILTER_MOVIESTUDIO] = gettext("These are the ladies starring in the films.");
-	JobFilterIndex[JOBFILTER_MOVIESTUDIO] = JOB_FILMBEAST;
-	JobName[JOB_FILMBEAST] = gettext("Film Bestiality");
-	JobDescription[JOB_FILMBEAST] = gettext("She will film a bestiality scenes.");
-	JobName[JOB_FILMSEX] = gettext("Film Sex");
-	JobDescription[JOB_FILMSEX] = gettext("She will film a normal sex scenes.");
-	JobName[JOB_FILMGROUP] = ("Film Group");
-	JobDescription[JOB_FILMGROUP] = ("She will film a group sex scene.");
-	JobName[JOB_FILMANAL] = gettext("Film Anal");
-	JobDescription[JOB_FILMANAL] = gettext("She will film an anal scenes.");
-	JobName[JOB_FILMLESBIAN] = gettext("Film Lesbian");
-	JobDescription[JOB_FILMLESBIAN] = gettext("She will do a lesbian scene.");
-	JobName[JOB_FILMBONDAGE] = gettext("Film Bondage");
-	JobDescription[JOB_FILMBONDAGE] = gettext("She will perform a in bondage scenes.");
-	JobName[JOB_FILMORAL] = ("Film Oral Sex");
-	JobDescription[JOB_FILMORAL] = ("She will perform in an oral sex scene.");
-	JobName[JOB_FILMMAST] = ("Film Masturbation");
-	JobDescription[JOB_FILMMAST] = ("She will perform in a masturbation scene.");
-	JobName[JOB_FILMTITTY] = ("Film Titty Fuck");
-	JobDescription[JOB_FILMTITTY] = ("She will perform in a titty fuck scene.");
-	JobName[JOB_FILMSTRIP] = ("Film Strip tease");
-	JobDescription[JOB_FILMSTRIP] = ("She will perform in a strip tease scene.");
-	JobName[JOB_FILMHANDJOB] = ("Film Hand Job");
-	JobDescription[JOB_FILMHANDJOB] = ("She will perform in a hand job scene.");
-	JobName[JOB_FILMRANDOM] = ("Film a random scene");
-	JobDescription[JOB_FILMRANDOM] = ("She will perform in a random sex scene.");
-
-	//- Studio Crew
-	JobFilterName[JOBFILTER_STUDIOCREW] = gettext("Studio Crew");
-	JobFilterDescription[JOBFILTER_STUDIOCREW] = gettext("These are jobs for running a movie studio.");
-	JobFilterIndex[JOBFILTER_STUDIOCREW] = JOB_DIRECTOR;
-	JobName[JOB_DIRECTOR] = gettext("Director");
-	JobDescription[JOB_DIRECTOR] = gettext("She directs the filming, and keeps the girls in line. (max 1)");
-	JobName[JOB_PROMOTER] = gettext("Promoter");
-	JobDescription[JOB_PROMOTER] = gettext("She advertises the movies. (max 1)");
-	JobName[JOB_CAMERAMAGE] = gettext("Camera Mage");
-	JobDescription[JOB_CAMERAMAGE] = gettext("She will film the scenes. (requires 1)");
-	JobName[JOB_CRYSTALPURIFIER] = gettext("Crystal Purifier");
-	JobDescription[JOB_CRYSTALPURIFIER] = gettext("She will clean up the filmed scenes. (requires 1)");
-	JobName[JOB_FLUFFER] = gettext("Fluffer");
-	JobDescription[JOB_FLUFFER] = gettext("She will keep the porn stars aroused.");
-	JobName[JOB_STAGEHAND] = gettext("Stagehand");
-	JobDescription[JOB_STAGEHAND] = gettext("She helps setup equipment, and keeps the studio clean.");
-	JobName[JOB_FILMFREETIME] = gettext("Time off");
-	JobDescription[JOB_FILMFREETIME] = gettext("She takes time off resting and recovering.");
-
-	//- Arena Staff
-	JobFilterName[JOBFILTER_ARENASTAFF] = gettext("Arena Staff");
-	JobFilterDescription[JOBFILTER_ARENASTAFF] = gettext("These are jobs that help run an arena.");
-	JobFilterIndex[JOBFILTER_ARENASTAFF] = JOB_DOCTORE;
-	JobName[JOB_DOCTORE] = gettext("Doctore");
-	JobDescription[JOB_DOCTORE] = gettext("She will watch over the girls in the arena.");
-	JobName[JOB_CLEANARENA] = gettext("Grounds Keeper");
-	JobDescription[JOB_CLEANARENA] = gettext("She will clean the arena.");
-	JobName[JOB_ARENAREST] = gettext("Time off");
-	JobDescription[JOB_ARENAREST] = gettext("She will rest.");
-
-	//- Arena
-	JobFilterName[JOBFILTER_ARENA] = gettext("Arena");
-	JobFilterDescription[JOBFILTER_ARENA] = gettext("These are jobs for running an arena.");
-	JobFilterIndex[JOBFILTER_ARENA] = JOB_FIGHTBEASTS;
-	JobName[JOB_FIGHTBEASTS] = gettext("Fight Beasts");
-	JobDescription[JOB_FIGHTBEASTS] = gettext("She will fight to the death against beasts you own. Dangerous.");
-	JobName[JOB_FIGHTARENAGIRLS] = gettext("Cage Match");
-	JobDescription[JOB_FIGHTARENAGIRLS] = gettext("She will fight against other girls. Dangerous.");
-	JobFilterIndex[JOBFILTER_ARENA] = JOB_FIGHTBEASTS;
-	JobName[JOB_FIGHTTRAIN] = gettext("Combat Training");
-	JobDescription[JOB_FIGHTTRAIN] = gettext("She will practice combat.");
-	JobName[JOB_CITYGUARD] = gettext("City Guard");
-	JobDescription[JOB_CITYGUARD] = gettext("She will help keep crossgate safe.");
-
-	//- Community Centre
-	JobFilterName[JOBFILTER_COMMUNITYCENTRE] = gettext("Community Centre");
-	JobFilterDescription[JOBFILTER_COMMUNITYCENTRE] = gettext("These are jobs for running a community centre.");
-	JobFilterIndex[JOBFILTER_COMMUNITYCENTRE] = JOB_FEEDPOOR;
-	JobName[JOB_FEEDPOOR] = gettext("Feed Poor");
-	JobDescription[JOB_FEEDPOOR] = gettext("She will work in a soup kitchen.");
-	JobName[JOB_COMUNITYSERVICE] = gettext("Community Service");
-	JobDescription[JOB_COMUNITYSERVICE] = gettext("She will go around town and help out where she can.");
-	JobName[JOB_CENTREMANAGER] = gettext("Centre Manager");
-	JobDescription[JOB_CENTREMANAGER] = gettext("She will look after the girls working in the centre.");
-	JobName[JOB_CLEANCENTRE] = gettext("Clean Centre");
-	JobDescription[JOB_CLEANCENTRE] = gettext("She will clean the centre.");
-	JobName[JOB_CENTREREST] = gettext("Time off");
-	JobDescription[JOB_CENTREREST] = gettext("She will rest.");
-
-	//- drug centre
-	JobFilterName[JOBFILTER_DRUGCENTRE] = gettext("Drug Centre");
-	JobFilterDescription[JOBFILTER_DRUGCENTRE] = gettext("These are jobs for running a drug centre.");
-	JobFilterIndex[JOBFILTER_DRUGCENTRE] = JOB_DRUGCOUNSELOR;
-	JobName[JOB_DRUGCOUNSELOR] = gettext("Drug Counselor");
-	JobDescription[JOB_DRUGCOUNSELOR] = gettext("She will help girls get over there drug addictions.");
-	JobName[JOB_REHAB] = gettext("Rehab");
-	JobDescription[JOB_REHAB] = gettext("She will go to rehab to get over her drug addiction.");
-
-	//- House
-	JobFilterName[JOBFILTER_HOUSE] = gettext("Player House");
-	JobFilterDescription[JOBFILTER_HOUSE] = gettext("These are jobs your girls can do at your house.");
-	JobFilterIndex[JOBFILTER_HOUSE] = JOB_PERSONALTRAINING;
-	JobName[JOB_PERSONALTRAINING] = gettext("Personal Training");
-	JobDescription[JOB_PERSONALTRAINING] = gettext("You will over see her training personal.");
-	JobName[JOB_PERSONALBEDWARMER] = gettext("Bed Warmer");
-	JobDescription[JOB_PERSONALBEDWARMER] = gettext("She will stay in your bed at night with you.");
-	JobName[JOB_CLEANHOUSE] = gettext("Clean House");
-	JobDescription[JOB_CLEANHOUSE] = gettext("She will clean your house.");
-	JobName[JOB_HEADGIRL] = gettext("Head Girl");
-	JobDescription[JOB_HEADGIRL] = gettext("She takes care of the girls in your house.");
-	JobName[JOB_HOUSEREST] = gettext("Time off");
-	JobDescription[JOB_HOUSEREST] = gettext("She takes time off resting and recovering.");
-
-	//- Laborers
-	JobFilterName[JOBFILTER_LABORERS] = gettext("Laborers");
-	JobFilterDescription[JOBFILTER_LABORERS] = gettext("These are jobs your girls can do at your farm.");
-	JobFilterIndex[JOBFILTER_LABORERS] = JOB_GARDENER;
-	JobName[JOB_GARDENER] = gettext("Gardener");
-	JobDescription[JOB_GARDENER] = gettext("She will produce herbs.");
-	JobName[JOB_FARMER] = gettext("Farmer");
-	JobDescription[JOB_FARMER] = gettext("She will tend to your crops.");
-	JobName[JOB_SHEAPHERD] = gettext("Sheapherd");
-	JobDescription[JOB_SHEAPHERD] = gettext("She placeholder.");
-	JobName[JOB_RANCHER] = gettext("Rancher");
-	JobDescription[JOB_RANCHER] = gettext("She placeholder.");
-	JobName[JOB_CATACOMBRANCHER] = gettext("Catacombs Rancher");
-	JobDescription[JOB_CATACOMBRANCHER] = gettext("She placeholder.");
-	JobName[JOB_MILKER] = gettext("Milker");
-	JobDescription[JOB_MILKER] = gettext("She will milk the various animals and girls you own.");
-
-	//- Producers
-	JobFilterName[JOBFILTER_PRODUCERS] = gettext("Producers");
-	JobFilterDescription[JOBFILTER_PRODUCERS] = gettext("These are jobs your girls can do at your farm.");
-	JobFilterIndex[JOBFILTER_PRODUCERS] = JOB_BUTCHER;
-	JobName[JOB_BUTCHER] = gettext("Butcher");
-	JobDescription[JOB_BUTCHER] = gettext("She will produce food from animals you own.");
-	JobName[JOB_BAKER] = gettext("Baker");
-	JobDescription[JOB_BAKER] = gettext("She will produce food from the crops you own.");
-	JobName[JOB_BREWER] = gettext("Brewer");
-	JobDescription[JOB_BREWER] = gettext("She will make various beers and wines.");
-	/*JobName[JOB_MAKEITEMS] = gettext("Make Items");
-	JobDescription[JOB_MAKEITEMS] = gettext("She placeholder.");*/
-	JobName[JOB_MAKEPOTIONS] = gettext("Make Potions");
-	JobDescription[JOB_MAKEPOTIONS] = gettext("She will make various potions for your use.");
-
 # if 0
 
 	//- Community Centre
 	JobFilterName[JOBFILTER_COMMUNITYCENTRE] = gettext("Community Centre");
-	JobFilterDescription[JOBFILTER_COMMUNITYCENTRE] = gettext("These are jobs for running a community centre.");
+	JobFilterDesc[JOBFILTER_COMMUNITYCENTRE] = gettext("These are jobs for running a community centre.");
 	JobFilterIndex[JOBFILTER_COMMUNITYCENTRE] = JOB_COLLECTDONATIONS;
 	JobName[JOB_COLLECTDONATIONS] = gettext("Collect Donations");
-	JobDescription[JOB_COLLECTDONATIONS] = gettext("She will collect money to help the poor.");
-	JobName[JOB_MAKEITEMS] = gettext("Make Crafts");
-	JobDescription[JOB_MAKEITEMS] = gettext("She will craft cheap handmade items.");
+	JobDesc[JOB_COLLECTDONATIONS] = gettext("She will collect money to help the poor.");
+	JobName[JOB_ARTISAN] = gettext("Make Crafts");
+	JobDesc[JOB_ARTISAN] = gettext("She will craft cheap handmade items.");
 	JobName[JOB_SELLITEMS] = gettext("Sell Crafts");
-	JobDescription[JOB_SELLITEMS] = gettext("She will go out and sell previously crafted items.");
+	JobDesc[JOB_SELLITEMS] = gettext("She will go out and sell previously crafted items.");
 
 	JobFilterName[JOBFILTER_DRUGLAB] = gettext("Drug Lab");
-	JobFilterDescription[JOBFILTER_DRUGLAB] = gettext("These are jobs for running a drug lab.");
+	JobFilterDesc[JOBFILTER_DRUGLAB] = gettext("These are jobs for running a drug lab.");
 	JobFilterIndex[JOBFILTER_DRUGLAB] = JOB_VIRASPLANTFUCKER;
 	JobName[JOB_VIRASPLANTFUCKER] = gettext("Fuck Viras Plants");
-	JobDescription[JOB_VIRASPLANTFUCKER] = gettext("She will allow Viras plants to inseminate her, creating Vira Blood.");
+	JobDesc[JOB_VIRASPLANTFUCKER] = gettext("She will allow Viras plants to inseminate her, creating Vira Blood.");
 	JobName[JOB_SHROUDGROWER] = gettext("Grow Shroud Mushrooms");
-	JobDescription[JOB_SHROUDGROWER] = gettext("She will grow Shroud Mushrooms, which require a lot of care and may explode.");
+	JobDesc[JOB_SHROUDGROWER] = gettext("She will grow Shroud Mushrooms, which require a lot of care and may explode.");
 	JobName[JOB_FAIRYDUSTER] = gettext("Fairy Duster");
-	JobDescription[JOB_FAIRYDUSTER] = gettext("She will capture fairies and grind them into a fine powder known as Fairy Dust.");
+	JobDesc[JOB_FAIRYDUSTER] = gettext("She will capture fairies and grind them into a fine powder known as Fairy Dust.");
 	JobName[JOB_DRUGDEALER] = gettext("Drug Dealer");
-	JobDescription[JOB_DRUGDEALER] = gettext("She will go out and sell your drugs on the streets.");
+	JobDesc[JOB_DRUGDEALER] = gettext("She will go out and sell your drugs on the streets.");
 
 	JobFilterName[JOBFILTER_ALCHEMISTLAB] = gettext("Alchemist Lab");
-	JobFilterDescription[JOBFILTER_ALCHEMISTLAB] = gettext("These are jobs for running an alchemist lab.");
+	JobFilterDesc[JOBFILTER_ALCHEMISTLAB] = gettext("These are jobs for running an alchemist lab.");
 	JobFilterIndex[JOBFILTER_ALCHEMISTLAB] = JOB_FINDREGENTS;
 	JobName[JOB_FINDREGENTS] = gettext("Find Reagents");
-	JobDescription[JOB_FINDREGENTS] = gettext("She will go out and look for promising potion ingredients.");
+	JobDesc[JOB_FINDREGENTS] = gettext("She will go out and look for promising potion ingredients.");
 	JobName[JOB_BREWPOTIONS] = gettext("Brew Potions");
-	JobDescription[JOB_BREWPOTIONS] = gettext("She will brew a random potion using available ingredients.");
+	JobDesc[JOB_BREWPOTIONS] = gettext("She will brew a random potion using available ingredients.");
 	JobName[JOB_POTIONTESTER] = gettext("Guinea Pig");
-	JobDescription[JOB_POTIONTESTER] = gettext("She will test out random potions. Who knows what might happen? (requires 1)");
+	JobDesc[JOB_POTIONTESTER] = gettext("She will test out random potions. Who knows what might happen? (requires 1)");
 
 	JobFilterName[JOBFILTER_ARENA] = gettext("Arena");
-	JobFilterDescription[JOBFILTER_ARENA] = gettext("These are jobs for running an arena.");
+	JobFilterDesc[JOBFILTER_ARENA] = gettext("These are jobs for running an arena.");
 	JobFilterIndex[JOBFILTER_ARENA] = JOB_FIGHTBEASTS;
 	JobName[JOB_FIGHTBEASTS] = gettext("Fight Beasts");
-	JobDescription[JOB_FIGHTBEASTS] = gettext("She will fight to the death against beasts you own. Dangerous.");
+	JobDesc[JOB_FIGHTBEASTS] = gettext("She will fight to the death against beasts you own. Dangerous.");
 	JobName[JOB_WRESTLE] = gettext("Wrestle");
-	JobDescription[JOB_WRESTLE] = gettext("She will take part in a wrestling match. Not dangerous.");
+	JobDesc[JOB_WRESTLE] = gettext("She will take part in a wrestling match. Not dangerous.");
 	JobName[JOB_FIGHTTODEATH] = gettext("Cage Match");
-	JobDescription[JOB_FIGHTTODEATH] = gettext("She will fight to the death against other girls. Dangerous.");
+	JobDesc[JOB_FIGHTTODEATH] = gettext("She will fight to the death against other girls. Dangerous.");
 	JobName[JOB_FIGHTVOLUNTEERS] = gettext("Fight Volunteers");
-	JobDescription[JOB_FIGHTVOLUNTEERS] = gettext("She will fight against customer volunteers for gold prizes. Not dangerous.");
+	JobDesc[JOB_FIGHTVOLUNTEERS] = gettext("She will fight against customer volunteers for gold prizes. Not dangerous.");
 	JobName[JOB_COLLECTBETS] = gettext("Collect Bets");
-	JobDescription[JOB_COLLECTBETS] = gettext("She will collect bets from the customers. (requires 1)");
+	JobDesc[JOB_COLLECTBETS] = gettext("She will collect bets from the customers. (requires 1)");
 
 	JobFilterName[JOBFILTER_TRAININGCENTRE] = gettext("Training Centre");
-	JobFilterDescription[JOBFILTER_TRAININGCENTRE] = gettext("These are jobs for running a training centre.");
+	JobFilterDesc[JOBFILTER_TRAININGCENTRE] = gettext("These are jobs for running a training centre.");
 	JobFilterIndex[JOBFILTER_TRAININGCENTRE] = JOB_TEACHBDSM;
 	JobName[JOB_TEACHBDSM] = gettext("Teach BDSM");
-	JobDescription[JOB_TEACHBDSM] = gettext("She will teach other girls in BDSM skills.");
+	JobDesc[JOB_TEACHBDSM] = gettext("She will teach other girls in BDSM skills.");
 	JobName[JOB_TEACHSEX] = gettext("Teach Sex");
-	JobDescription[JOB_TEACHSEX] = gettext("She will teach other girls the ins and outs of regular sex.");
+	JobDesc[JOB_TEACHSEX] = gettext("She will teach other girls the ins and outs of regular sex.");
 	JobName[JOB_TEACHBEAST] = gettext("Teach Bestiality");
-	JobDescription[JOB_TEACHBEAST] = gettext("She will teach other girls how to safely fuck beasts.");
+	JobDesc[JOB_TEACHBEAST] = gettext("She will teach other girls how to safely fuck beasts.");
 	JobName[JOB_TEACHMAGIC] = gettext("Teach Magic");
-	JobDescription[JOB_TEACHMAGIC] = gettext("She will teach other girls how to wield magic.");
+	JobDesc[JOB_TEACHMAGIC] = gettext("She will teach other girls how to wield magic.");
 	JobName[JOB_TEACHCOMBAT] = gettext("Teach Combat");
-	JobDescription[JOB_TEACHCOMBAT] = gettext("She will teach other girls how to fight.");
+	JobDesc[JOB_TEACHCOMBAT] = gettext("She will teach other girls how to fight.");
 	JobName[JOB_DAYCARE] = gettext("Daycare");
-	JobDescription[JOB_DAYCARE] = gettext("She will look after local children. (non-sexual)");
+	JobDesc[JOB_DAYCARE] = gettext("She will look after local children. (non-sexual)");
 	JobName[JOB_SCHOOLING] = gettext("Schooling");
-	JobDescription[JOB_SCHOOLING] = gettext("She will teach the local children. (non-sexual)");
+	JobDesc[JOB_SCHOOLING] = gettext("She will teach the local children. (non-sexual)");
 	JobName[JOB_TEACHDANCING] = gettext("Teach Dancing");
-	JobDescription[JOB_TEACHDANCING] = gettext("She will teach other girls dancing and social skills.");
+	JobDesc[JOB_TEACHDANCING] = gettext("She will teach other girls dancing and social skills.");
 	JobName[JOB_TEACHSERVICE] = gettext("Teach Service");
-	JobDescription[JOB_TEACHSERVICE] = gettext("She will teach other girls a variety of service skills.");
+	JobDesc[JOB_TEACHSERVICE] = gettext("She will teach other girls a variety of service skills.");
 	JobName[JOB_TRAIN] = gettext("Student");
-	JobDescription[JOB_TRAIN] = gettext("She will learn from all of the other girls who are teaching here.");
+	JobDesc[JOB_TRAIN] = gettext("She will learn from all of the other girls who are teaching here.");
 
 #endif
 
@@ -638,24 +617,15 @@ void cJobManager::GetMiscCustomer(sBrothel* brothel, sCustomer& cust)
 
 bool cJobManager::is_sex_type_allowed(unsigned int sex_type, sBrothel* brothel)
 {
-	if(sex_type == SKILL_ANAL && brothel->m_RestrictAnal)
-		return false;
-	else if(sex_type == SKILL_BEASTIALITY && brothel->m_RestrictBeast)
-		return false;
-	else if(sex_type == SKILL_BDSM && brothel->m_RestrictBDSM)
-		return false;
-	else if(sex_type == SKILL_NORMALSEX && brothel->m_RestrictNormal)
-		return false;
-	else if(sex_type == SKILL_ORALSEX && brothel->m_RestrictOral)
-		return false;
-	else if(sex_type == SKILL_TITTYSEX && brothel->m_RestrictTitty)
-		return false;
-	else if(sex_type == SKILL_HANDJOB && brothel->m_RestrictHand)
-		return false;
-	else if(sex_type == SKILL_GROUP && brothel->m_RestrictGroup)
-		return false;
-	else if(sex_type == SKILL_LESBIAN && brothel->m_RestrictLesbian)
-		return false;
+	if((sex_type == SKILL_ANAL && brothel->m_RestrictAnal)		||
+	(sex_type == SKILL_BEASTIALITY && brothel->m_RestrictBeast)	||
+	(sex_type == SKILL_BDSM && brothel->m_RestrictBDSM)			||
+	(sex_type == SKILL_NORMALSEX && brothel->m_RestrictNormal)	||
+	(sex_type == SKILL_ORALSEX && brothel->m_RestrictOral)		||
+	(sex_type == SKILL_TITTYSEX && brothel->m_RestrictTitty)	||
+	(sex_type == SKILL_HANDJOB && brothel->m_RestrictHand)		||
+	(sex_type == SKILL_GROUP && brothel->m_RestrictGroup)		||
+	(sex_type == SKILL_LESBIAN && brothel->m_RestrictLesbian))	return false;
 
 	return true;
 }
@@ -668,17 +638,10 @@ vector<sGirl*> cJobManager::girls_on_job(sBrothel *brothel, u_int job_wanted, in
 	sGirl* girl;
 	vector<sGirl*> v;
 
-	for(girl = brothel->m_Girls; girl; girl = girl->m_Next) {
-		if (day_or_night == 0)	
-		    job_id = girl->m_DayJob;
-		else			
-			job_id = girl->m_NightJob;
-/*
- *		having sorted that out
- */
-		if(job_id != job_wanted) 
-			continue;
-		
+	for(girl = brothel->m_Girls; girl; girl = girl->m_Next) 
+	{
+		job_id = (day_or_night == 0) ? girl->m_DayJob : girl->m_NightJob;
+		if (job_id != job_wanted) continue;
 		v.push_back(girl);
 	}
 	return v;
@@ -688,13 +651,10 @@ bool cJobManager::is_job_employed(sBrothel * brothel,u_int job_wanted,int day_or
 {
 	u_int job_id;
 	sGirl* girl;
-	for(girl = brothel->m_Girls; girl; girl = girl->m_Next) {
-		if(day_or_night == 0)	
-			job_id = girl->m_DayJob;
-		else			
-			job_id = girl->m_NightJob;
-		if(job_id == job_wanted)
-		return true;
+	for(girl = brothel->m_Girls; girl; girl = girl->m_Next) 
+	{
+		job_id = (day_or_night == 0) ? girl->m_DayJob : girl->m_NightJob;
+		if (job_id == job_wanted) return true;
 	}
 	return false;
 }
@@ -704,35 +664,31 @@ void cJobManager::do_advertising(sBrothel* brothel, int DayNight)
 	brothel->m_AdvertisingLevel = 1.0;  // base multiplier
 	sGirl* current = brothel->m_Girls;
 
-
-	while(current)
+	while (current)
 	{
 		string summary = "";
 		bool refused = false;
-		if((current->m_DayJob == JOB_ADVERTISING) && (DayNight == 0)) // Added test for current shift, was running each shift twice -PP
+		if ((current->m_DayJob == JOB_ADVERTISING) && (DayNight == 0)) // Added test for current shift, was running each shift twice -PP
 		{
-			refused = WorkAdvertising(current,brothel,0,summary);
-
-			if(refused)	// if she refused she still gets tired
+			refused = WorkAdvertising(current, brothel, 0, summary);
+			if (refused)	// if she refused she still gets tired
 				g_Girls.AddTiredness(current);
 		}
-		if((current->m_NightJob == JOB_ADVERTISING) && (DayNight == 1)) // Added test for current shift, was running each shift twice -PP
+		if ((current->m_NightJob == JOB_ADVERTISING) && (DayNight == 1)) // Added test for current shift, was running each shift twice -PP
 		{
-			refused = WorkAdvertising(current,brothel,1,summary);
-
-			if(refused)	// if she refused she still gets tired
+			refused = WorkAdvertising(current, brothel, 1, summary);
+			if (refused)	// if she refused she still gets tired
 				g_Girls.AddTiredness(current);
 		}
 		current = current->m_Next;
 	}
 }
+
 void cJobManager::do_whorejobs(sBrothel* brothel, int DayNight)
 { // Whores get first crack at any customers.
 	sGirl* current = brothel->m_Girls;
-	
-	
-	
-	while(current)
+
+	while (current)
 	{
 		string summary = "";
 		u_int sw = 0;						//	Job type
@@ -747,40 +703,38 @@ void cJobManager::do_whorejobs(sBrothel* brothel, int DayNight)
 			else sw = JOB_RESTING;
 		}
 		else	sw = (DayNight == SHIFT_DAY) ? current->m_DayJob : current->m_NightJob;
-		
+
 		bool refused = false;
-		if(sw == JOB_WHOREBROTHEL)
+		if (sw == JOB_WHOREBROTHEL)
 		{
-			refused = WorkWhore(current,brothel,DayNight,summary);
+			refused = WorkWhore(current, brothel, DayNight, summary);
 
-			if(refused)	// if she refused she still gets tired
+			if (refused)	// if she refused she still gets tired
 				g_Girls.AddTiredness(current);
 		}
-		if(sw == JOB_BARWHORE)
+		if (sw == JOB_BARWHORE)
 		{
-			refused = WorkBarWhore(current,brothel,DayNight,summary);
+			refused = WorkBarWhore(current, brothel, DayNight, summary);
 
-			if(refused)	// if she refused she still gets tired
+			if (refused)	// if she refused she still gets tired
 				g_Girls.AddTiredness(current);
 		}
-		if(sw == JOB_WHOREGAMBHALL)
+		if (sw == JOB_WHOREGAMBHALL)
 		{
-			refused = WorkHallWhore(current,brothel,DayNight,summary);
+			refused = WorkHallWhore(current, brothel, DayNight, summary);
 
-			if(refused)	// if she refused she still gets tired
+			if (refused)	// if she refused she still gets tired
 				g_Girls.AddTiredness(current);
 		}
-			
+
 		current = current->m_Next;
 	}
-	
 }
+
 void cJobManager::do_custjobs(sBrothel* brothel, int DayNight)
 { // Customer taking jobs get first crack at any customers before customer service.
 	sGirl* current = brothel->m_Girls;
-	
-	
-	
+
 	while(current)
 	{
 		string summary = "";
@@ -836,23 +790,13 @@ void cJobManager::do_custjobs(sBrothel* brothel, int DayNight)
 		case JOB_BROTHELSTRIPPER:
 			refused = WorkBrothelStripper(current,brothel,DayNight,summary);
 			break;
-		/*case JOB_PEEP:
+		case JOB_PEEP:
 			refused = WorkPeepShow(current,brothel,DayNight,summary);
 			break;
-		case JOB_BEASTCAPTURE:
-			refused = WorkBeastCapture(current,brothel,DayNight,summary);
-			break;
-		case JOB_BEASTCARER:
-			refused = WorkBeastCare(current,brothel,DayNight,summary);
-			break;
-		case JOB_MILK:
-			refused = WorkMilk(current,brothel,DayNight,summary);
-			break;*/
 		default:
 			break;
 		}
-		if(refused)	
-				g_Girls.AddTiredness(current);
+		if(refused)	g_Girls.AddTiredness(current);
 			
 		current = current->m_Next;
 	}
@@ -999,7 +943,7 @@ bool cJobManager::is_job_Paid_Player(u_int Job)
 		
 		// - Community Centre
 		Job ==	JOB_COLLECTDONATIONS	||	// collects money to help the poor
-		Job ==	JOB_MAKEITEMS			||	// makes cheap crappy handmade items for selling to raise money (creates handmade item resource)
+		Job ==	JOB_ARTISAN			||	// makes cheap crappy handmade items for selling to raise money (creates handmade item resource)
 		Job ==	JOB_SELLITEMS			||	// goes out and sells the made items (sells handmade item resource)
 
 		// - Drug Lab (these jobs gain bonus if in same building as a clinic)

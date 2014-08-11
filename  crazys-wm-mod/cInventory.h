@@ -64,10 +64,7 @@ struct sEffect
 		else if	(s == "Trait")		m_Affects = Trait;
 		else {
 			m_Affects = Nothing;
-			cerr	<< "Error: Bad 'what' string for item effect: '"
-				<< s
-				<< "'"
-				<< endl;
+			cerr << "Error: Bad 'what' string for item effect: '" << s << "'" << endl;
 		}
 	}
 /*
@@ -231,20 +228,13 @@ struct sEffect
  *	and a pretty printer for the class as a whole
  *	just a debug thing, really
  */
-	friend ostream& operator << (ostream& os, sEffect &eff) {
+	friend ostream& operator << (ostream& os, sEffect &eff) 
+	{
 		os << "Effect: " << eff.m_Affects << " ";
-		if(eff.m_Affects == Stat) {
-			os << eff.stat_name(eff.m_EffectID) ;
-		}
-		if(eff.m_Affects == Skill) {
-			os << eff.skill_name(eff.m_EffectID) ;
-		}
-		if(eff.m_Affects == Trait) {
-			os << "'" << eff.m_Trait << "'";
-		}
-		if(eff.m_Affects == GirlStatus) {
-			os << eff.girl_status_name( eff.m_EffectID );
-		}
+		if (eff.m_Affects == Stat) { os << eff.stat_name(eff.m_EffectID); }
+		if (eff.m_Affects == Skill) { os << eff.skill_name(eff.m_EffectID); }
+		if (eff.m_Affects == Trait) { os << "'" << eff.m_Trait << "'"; }
+		if (eff.m_Affects == GirlStatus) { os << eff.girl_status_name(eff.m_EffectID); }
 		os << (eff.m_Amount > 0 ? " +" : " ") << eff.m_Amount;
 		return os << endl;
 	}
@@ -345,67 +335,27 @@ typedef struct sInventoryItem
 
 	void set_special(string s)
 	{
-		if(s == "None") {
-			m_Special = None;
-		}
-		else if(s == "AffectsAll") {
-			m_Special = AffectsAll;
-		}
-		else if(s == "Temporary") {
-			m_Special = Temporary;
-		}
-		else {
-			cerr	<< "unexpected special string: '"
-				<< s
-				<< "'"
-				<< endl
-			;
-			m_Special = None;
-		}
+		if (s == "None") { m_Special = None; }
+		else if (s == "AffectsAll") { m_Special = AffectsAll; }
+		else if (s == "Temporary") { m_Special = Temporary; }
+		else { m_Special = None; cerr << "unexpected special string: '" << s << "'" << endl; }
 	}
 
 	void set_type(string s)
 	{
-		if(s == "Ring") {
-			m_Type = Ring;
-		}
-		else if(s == "Dress") {
-			m_Type = Dress;
-		}
-		else if (s == "Under Wear" || s == "Underwear") {
-			m_Type = Underwear;
-		}
-		else if(s == "Shoes") {
-			m_Type = Shoes;
-		}
-		else if(s == "Food") {
-			m_Type = Food;
-		}
-		else if(s == "Necklace") {
-			m_Type = Necklace;
-		}
-		else if(s == "Weapon") {
-			m_Type = Weapon;
-		}
-		else if(s == "Small Weapon") {
-			m_Type = SmWeapon;
-		}
-		else if(s == "Makeup") {
-			m_Type = Makeup;
-		}
-		else if(s == "Armor") {
-			m_Type = Armor;
-		}
-		else if(s == "Misc") {
-			m_Type = Misc;
-		}
-		else if(s == "Armband") {
-			m_Type = Armband;
-		}
-		else {
-			cerr << "Error: unexpected item type: " << s << endl;
-			m_Type = Misc;
-		}
+		if (s == "Ring") { m_Type = Ring; }
+		else if (s == "Dress") { m_Type = Dress; }
+		else if (s == "Under Wear" || s == "Underwear") { m_Type = Underwear; }
+		else if (s == "Shoes") { m_Type = Shoes; }
+		else if (s == "Food") { m_Type = Food; }
+		else if (s == "Necklace") { m_Type = Necklace; }
+		else if (s == "Weapon") { m_Type = Weapon; }
+		else if (s == "Small Weapon") { m_Type = SmWeapon; }
+		else if (s == "Makeup") { m_Type = Makeup; }
+		else if (s == "Armor") { m_Type = Armor; }
+		else if (s == "Misc") { m_Type = Misc; }
+		else if (s == "Armband") { m_Type = Armband; }
+		else { m_Type = Misc; cerr << "Error: unexpected item type: " << s << endl; }
 	}
 
 	friend ostream& operator << (ostream& os, sInventoryItem::Special &spec) {

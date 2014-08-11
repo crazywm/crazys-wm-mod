@@ -282,56 +282,56 @@ bool cListBox::DoubleClicked()
 void cListBox::OnClicked(int x, int y, bool mouseWheelDown, bool mouseWheelUp)
 {
 	cListItem* current = 0;
-	if(m_NumElements == 0)	// it doesn't matter if there are no items in the list
+	if (m_NumElements == 0)	// it doesn't matter if there are no items in the list
 		return;
 
 	// if user clicked on "un-sort" header, do that
-	if(m_ShowHeaders && m_HeaderClicksSort
-		&& x > m_XPos+m_eWidth-16
-		&& x <= m_XPos+m_eWidth
-		&& y > m_YPos+m_BorderSize
-		&& y <= m_YPos+m_BorderSize+LISTBOX_ITEMHEIGHT
+	if (m_ShowHeaders && m_HeaderClicksSort
+		&& x > m_XPos + m_eWidth - 16
+		&& x <= m_XPos + m_eWidth
+		&& y > m_YPos + m_BorderSize
+		&& y <= m_YPos + m_BorderSize + LISTBOX_ITEMHEIGHT
 		)
 	{
 		UnSortList();
 		return;
 	}
 
-	if(IsOver(x,y))
+	if (IsOver(x, y))
 	{
-		if(mouseWheelDown)
+		if (mouseWheelDown)
 		{
 			ScrollDown();
 			return;
 		}
-		
-		if(mouseWheelUp)
+
+		if (mouseWheelUp)
 		{
 			ScrollUp();
 			return;
 		}
 
-		if(m_EnableEvents)
+		if (m_EnableEvents)
 			g_InterfaceEvents.AddEvent(EVENT_SELECTIONCHANGE, m_ID);
 
 		// See if a header was clicked
 		m_HeaderClicked = "";
-		if(m_ShowHeaders && y > m_YPos+m_BorderSize && y <= m_YPos+m_BorderSize+LISTBOX_ITEMHEIGHT)
+		if (m_ShowHeaders && y > m_YPos + m_BorderSize && y <= m_YPos + m_BorderSize + LISTBOX_ITEMHEIGHT)
 		{
 			int x_start = 0, x_end = 0;
-			for(int i=0; i<m_ColumnCount; i++)
+			for (int i = 0; i < m_ColumnCount; i++)
 			{
-				if(m_SkipColumn[i])
+				if (m_SkipColumn[i])
 					continue;
 
-				x_start = m_ColumnOffset[i]-3;
+				x_start = m_ColumnOffset[i] - 3;
 
-				if(i < m_ColumnCount-1)
-					x_end = m_ColumnOffset[i+1]-3;
+				if (i < m_ColumnCount - 1)
+					x_end = m_ColumnOffset[i + 1] - 3;
 				else
 					x_end = m_eWidth;
 
-				if(x >= m_XPos+x_start && x <= m_XPos+x_end)
+				if (x >= m_XPos + x_start && x <= m_XPos + x_end)
 				{
 					// then set it as clicked
 					m_HeaderClicked = m_ColumnName[i];
@@ -354,9 +354,9 @@ void cListBox::OnClicked(int x, int y, bool mouseWheelDown, bool mouseWheelUp)
 		}
 
 		bool deselect = false;
-		if(m_MultiSelect == true)
+		if (m_MultiSelect == true)
 		{
-			if(g_ShiftDown == false && g_CTRLDown == false)
+			if (g_ShiftDown == false && g_CTRLDown == false)
 			{
 				m_HasMultiSelect = false;
 				deselect = true;
@@ -368,11 +368,11 @@ void cListBox::OnClicked(int x, int y, bool mouseWheelDown, bool mouseWheelUp)
 			deselect = true;
 
 		// first unselect any currently selected items
-		if(deselect)
+		if (deselect)
 		{
 			m_LastSelected = 0;
 			current = m_Items;
-			while(current)
+			while (current)
 			{
 				current->m_Selected = false;
 				current = current->m_Next;
@@ -380,21 +380,21 @@ void cListBox::OnClicked(int x, int y, bool mouseWheelDown, bool mouseWheelUp)
 		}
 
 		bool singleSelect = true;
-		if(m_MultiSelect == true)
+		if (m_MultiSelect == true)
 		{
-			if(g_ShiftDown == true)
+			if (g_ShiftDown == true)
 				singleSelect = false;
 		}
 		else
 			singleSelect = true;
-		
-		if(singleSelect)	// find the first element displayed
+
+		if (singleSelect)	// find the first element displayed
 		{
 			current = m_Items;
 			int count = 0;
-			while(current)
+			while (current)
 			{
-				if(count == m_Position)
+				if (count == m_Position)
 					break;
 
 				count++;
@@ -403,18 +403,18 @@ void cListBox::OnClicked(int x, int y, bool mouseWheelDown, bool mouseWheelUp)
 
 			// Check each element to see if mouse is over it
 			int temp = 0;
-			while(current)
+			while (current)
 			{
-				if((count-m_Position) >= m_NumDrawnElements)	// stop if running past the visible list
+				if ((count - m_Position) >= m_NumDrawnElements)	// stop if running past the visible list
 					break;
 
-				int cX = m_XPos+m_BorderSize;
-				int cY = (m_YPos+m_BorderSize)+(LISTBOX_ITEMHEIGHT*temp);
+				int cX = m_XPos + m_BorderSize;
+				int cY = (m_YPos + m_BorderSize) + (LISTBOX_ITEMHEIGHT*temp);
 				if (m_ShowHeaders) // Account for headers if shown
 					cY += LISTBOX_ITEMHEIGHT;
 
 				// Check if over the item
-				if(x > cX && y > cY && x < cX+m_eWidth && y <= cY+m_eHeight)
+				if (x > cX && y > cY && x < cX + m_eWidth && y <= cY + m_eHeight)
 				{
 					// then select it
 					current->m_Selected = !current->m_Selected;
@@ -430,46 +430,46 @@ void cListBox::OnClicked(int x, int y, bool mouseWheelDown, bool mouseWheelUp)
 
 					break;
 				}
-				
-				count++;temp++;
+
+				count++; temp++;
 				current = current->m_Next;
 			}
 		}
 		else
 		{
-			if(g_ShiftDown == true)	// select from first to last
+			if (g_ShiftDown == true)	// select from first to last
 			{
 				current = m_Items;
 				cListItem* select_first = 0;
 				cListItem* select_last = 0;
 				int count = 0;
 				// scan through to find both last-clicked-on item and currently-clicked-on item
-				while(current)
+				while (current)
 				{
-					if(select_first && select_last)  // if we have both now, we're done here
+					if (select_first && select_last)  // if we have both now, we're done here
 						break;
 
 					// was this the last item the user clicked on earlier?
-					if(current == m_LastSelected)
+					if (current == m_LastSelected)
 					{
-						if(!select_first)
+						if (!select_first)
 							select_first = current;
 						else
 							select_last = current;
 					}
 
 					// is this the current item the user just clicked on?
-					if(count >= m_Position && count-m_Position < m_NumDrawnElements)
+					if (count >= m_Position && count - m_Position < m_NumDrawnElements)
 					{
-						int cX = m_XPos+m_BorderSize;
-						int cY = (m_YPos+m_BorderSize)+(LISTBOX_ITEMHEIGHT*(count-m_Position));
+						int cX = m_XPos + m_BorderSize;
+						int cY = (m_YPos + m_BorderSize) + (LISTBOX_ITEMHEIGHT*(count - m_Position));
 						if (m_ShowHeaders) // Account for headers if shown
 							cY += LISTBOX_ITEMHEIGHT;
 
 						// Check if over the item
-						if(x > cX && y > cY && x < cX+m_eWidth && y <= cY+m_eHeight)
+						if (x > cX && y > cY && x < cX + m_eWidth && y <= cY + m_eHeight)
 						{
-							if(!select_first)
+							if (!select_first)
 								select_first = current;
 							else
 								select_last = current;
@@ -481,10 +481,10 @@ void cListBox::OnClicked(int x, int y, bool mouseWheelDown, bool mouseWheelUp)
 				}
 
 				current = select_first;
-				while(current)	// now simply select each one ranging from first to last
+				while (current)	// now simply select each one ranging from first to last
 				{
 					current->m_Selected = true;	// select the item
-					if(current == select_last)
+					if (current == select_last)
 					{
 						m_LastSelected = current;
 						break;

@@ -21,7 +21,8 @@
 
 extern CLog g_LogFile;
 
-bool cAnimatedSurface::DrawFrame(int x, int y, int width, int height, unsigned int currentTime)	// Updates animation according to speed, and then draws it on the screen
+// Updates animation according to speed, and then draws it on the screen
+bool cAnimatedSurface::DrawFrame(int x, int y, int width, int height, unsigned int currentTime)
 {
 	SDL_Rect temp = m_Frames;
 
@@ -38,10 +39,7 @@ bool cAnimatedSurface::DrawFrame(int x, int y, int width, int height, unsigned i
 
 		if(m_CurrentFrame==m_NumFrames)
 		{
-			if(!m_PlayOnce)
-				m_CurrentFrame = m_NumFrames-1;
-			else
-				m_CurrentFrame = 0;
+			m_CurrentFrame = (m_PlayOnce) ? 0 : m_NumFrames - 1;
 			m_FrameDone = true;
 			m_CurrentColumn = m_CurrentRow = 0;
 		}
@@ -93,8 +91,7 @@ void cAnimatedSurface::SetData(int xPos, int yPos, int numFrames, int speed, int
 	m_Frames.h = height;
 
 	// prepare the sprite surface
-	if(m_SpriteSurface)
-		SDL_FreeSurface(m_SpriteSurface);
+	if(m_SpriteSurface)		SDL_FreeSurface(m_SpriteSurface);
 	m_SpriteSurface = 0;
 	m_SpriteSurface = SDL_CreateRGBSurface(SDL_SWSURFACE, m_Frames.w, m_Frames.h, 32, 0,0,0,0);
 
@@ -108,14 +105,10 @@ CAnimatedSprite::~CAnimatedSprite()
 
 void CAnimatedSprite::Free()
 {
-	if(m_Animations)
-		delete [] m_Animations;
+	if(m_Animations)	delete [] m_Animations;
 	m_Animations=0;
-
-	if(m_Image)
-		delete m_Image;
+	if(m_Image)			delete m_Image;
 	m_Image = 0;
-
 	m_CurrAnimation=0;
 }
 
@@ -130,8 +123,7 @@ bool CAnimatedSprite::LoadAnimations(string imgFilename, string animationData)
 	int numFrames, speed, xPos, yPos, width, height;
 	ifstream ifile(animationData.c_str());
 
-	if(ifile.bad())
-		return false;
+	if(ifile.bad())		return false;
 
 	m_Image = new CSurface(imgFilename);
 	m_Image->SetColorKey(255,0,168);
