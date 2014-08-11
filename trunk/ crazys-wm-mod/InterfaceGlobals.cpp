@@ -261,40 +261,44 @@ void LoadInterface()
 {
 	cTariff tariff;
 	stringstream ss;
-	int r=0, g=0, b=0, a=0, c=0, d=0, e=0;
+	int r = 0, g = 0, b = 0, a = 0, c = 0, d = 0, e = 0, fontsize=16;
+	string image = ""; string text = ""; string file = "";
+	bool Transparency = false; bool Scale = true; bool multi = false; bool events = false;
 	ifstream incol;
 	cConfig cfg;
 
-	// load 
+	g_LogFile.write("Begin Loading Interface");
+
 	// load interface colors
-	// WD: Typecast to resolve ambiguous call in VS 2010
 	int loadcolors = 0;		// 0=default, 1=xml, 2=txt
 	DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "InterfaceColors.xml";
-	TiXmlDocument doc(dp.c_str());
-	if (doc.LoadFile())	loadcolors = 1;
+	TiXmlDocument docInterfaceColors(dp.c_str());
+	if (docInterfaceColors.LoadFile())	loadcolors = 1;
 	else // try txt
 	{
-		g_LogFile.ss() << "Error: line " << doc.ErrorRow() << ", col " << doc.ErrorCol() << ": " << doc.ErrorDesc() << endl;
-		g_LogFile.ssend();
+		if (cfg.debug.log_debug())
+		{
+			g_LogFile.ss() << "Error: line " << docInterfaceColors.ErrorRow() << ", col " << docInterfaceColors.ErrorCol() << ": " << docInterfaceColors.ErrorDesc() << endl;
+			g_LogFile.ssend();
+		}
 		DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "InterfaceColors.txt";
 		incol.open(dp.c_str());
-		if (!incol.good())	loadcolors = 0;
-		else loadcolors = 2;
+		loadcolors = (incol.good()) ? 2 : loadcolors = 0;
 		incol.close();
 	}
-
-	if (loadcolors==1)	// load "InterfaceColors.xml"
+	if (loadcolors == 1)	// load "InterfaceColors.xml"
 	{
 		g_LogFile.write("Loading InterfaceColors.xml");
 		string m_filename = dp.c_str();
-		TiXmlElement *el, *root_el = doc.RootElement();
+		TiXmlElement *el, *root_el = docInterfaceColors.RootElement();
 		for (el = root_el->FirstChildElement(); el; el = el->NextSiblingElement()) 
 		{
 			string tag = el->ValueStr();
 			if (tag == "Color")
 			{
 				XmlUtil xu(m_filename); string name; int r, g, b;
-				xu.get_att(el, "Name", name);							xu.get_att(el, "R", r); xu.get_att(el, "G", g); xu.get_att(el, "B", b);
+				xu.get_att(el, "Name", name);							
+				xu.get_att(el, "R", r); xu.get_att(el, "G", g); xu.get_att(el, "B", b);
 				     if (name == "ImageBackground")						{ g_StaticImageR = r; g_StaticImageG = g; g_StaticImageB = b; }
 				else if (name == "ChoiceBoxText")						{ g_ChoiceMessageTextR = r; g_ChoiceMessageTextG = g; g_ChoiceMessageTextB = b; }
 				else if (name == "ChoiceBoxBorder")						{ g_ChoiceMessageBorderR = r; g_ChoiceMessageBorderG = g; g_ChoiceMessageBorderB = b; }
@@ -331,12 +335,11 @@ void LoadInterface()
 				else if (name == "MessageBoxText")						{ g_MessageBoxTextR = r; g_MessageBoxTextG = g; g_MessageBoxTextB = b; }
 				else if (name == "CheckboxBorder")						{ g_CheckBoxBorderR = r; g_CheckBoxBorderG = g; g_CheckBoxBorderB = b; }
 				else if (name == "CheckboxBackground")					{ g_CheckBoxBackgroundR = r; g_CheckBoxBackgroundG = g; g_CheckBoxBackgroundB = b; }
-				
 				// ItemRarity is loaded in sConfig.cpp
 			}
 		}
 	}
-	else if (loadcolors==2)	// load legacy "InterfaceColors.txt"
+	else if (loadcolors==2)
 	{
 		g_LogFile.write("Loading InterfaceColors.txt");
 		incol.open(dp.c_str());
@@ -378,10 +381,10 @@ void LoadInterface()
 		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_CheckBoxBorderR = r;             g_CheckBoxBorderG = g;             g_CheckBoxBorderB = b;
 		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_CheckBoxBackgroundR = r;         g_CheckBoxBackgroundG = g;         g_CheckBoxBackgroundB = b;
 		incol.close();
-	}	// end "InterfaceColors.txt"
-	else	// InterfaceColors file not found, using defaults
+	}
+	else
 	{
-		g_LogFile.write("Error Loading InterfaceColors, using defaults");
+		g_LogFile.write("Loading Default InterfaceColors");
 		g_StaticImageR = 0;                   g_StaticImageG = 0;                   g_StaticImageB = 0;
 		g_ChoiceMessageTextR = 0;             g_ChoiceMessageTextG = 0;             g_ChoiceMessageTextB = 0;
 		g_ChoiceMessageBorderR = 0;           g_ChoiceMessageBorderG = 0;           g_ChoiceMessageBorderB = 0;
@@ -418,44 +421,139 @@ void LoadInterface()
 		g_MessageBoxTextR = 0;                g_MessageBoxTextG = 0;                g_MessageBoxTextB = 0;
 		g_CheckBoxBorderR = 0;                g_CheckBoxBorderG = 0;                g_CheckBoxBorderB = 0;
 		g_CheckBoxBackgroundR = 180;          g_CheckBoxBackgroundG = 180;          g_CheckBoxBackgroundB = 180;
-
 	}
 
+
 	// Load game screen
-	g_LogFile.write("Loading Load Game Screen");
-	// WD: Typecast to resolve ambiguous call in VS 2010
-	dp = DirPath() << "Resources" << "Interface"<< cfg.resolution.resolution() << "LoadMenu.txt";
-	incol.open(dp.c_str());
-	incol.seekg(0);
-	incol>>a>>b>>c>>d>>e;incol.ignore(1000, '\n');
-	g_LoadGame.CreateWindow(a,b,c,d,e);
-	g_LoadGame.AddTextItem(g_interfaceid.STATIC_STATIC, 0, d-10, c, 12, "Please read the readme.html", 10);
-	incol >> a >> b >> c >> d >> e; incol.ignore(1000, '\n');
-	g_LoadGame.AddListBox(g_interfaceid.LIST_LOADGSAVES, a, b, c, d, e, true);
-	incol>>a>>b>>c>>d;incol.ignore(1000, '\n');
-	g_LoadGame.AddButton("Load", g_interfaceid.BUTTON_LOADGLOAD, a, b, c, d, true);
-	incol>>a>>b>>c>>d;incol.ignore(1000, '\n');
-	g_LoadGame.AddButton("Back", g_interfaceid.BUTTON_LOADGBACK, a, b, c, d, true);
-	incol.close();
+	int loadmenu = 0;		// 0=default, 1=xml, 2=txt
+	dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "LoadMenu.xml";
+	TiXmlDocument docLoadMenu(dp.c_str());
+	if (docLoadMenu.LoadFile())	loadmenu = 1;
+	else // try txt
+	{
+		if (cfg.debug.log_debug())
+		{
+			g_LogFile.ss() << "Error: line " << docLoadMenu.ErrorRow() << ", col " << docLoadMenu.ErrorCol() << ": " << docLoadMenu.ErrorDesc() << endl;
+			g_LogFile.ssend();
+		}
+		dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "LoadMenu.txt";
+		incol.open(dp.c_str());
+		loadmenu = (incol.good()) ? 2 : loadmenu = 0;
+		incol.close();
+	}
+	if (loadmenu == 1)
+	{
+		g_LogFile.write("Loading LoadMenu.xml");
+		string m_filename = dp.c_str();
+		TiXmlElement *el, *root_el = docLoadMenu.RootElement();
+		for (el = root_el->FirstChildElement(); el; el = el->NextSiblingElement())
+		{
+			XmlUtil xu(m_filename); string name;
+			xu.get_att(el, "Name", name);
+			xu.get_att(el, "XPos", a); xu.get_att(el, "YPos", b); xu.get_att(el, "Width", c); xu.get_att(el, "Height", d); xu.get_att(el, "Border", e, true);
+			xu.get_att(el, "Image", image, true); xu.get_att(el, "Transparency", Transparency, true); xu.get_att(el, "Scale", Scale, true);
 
-	// Get string
-	// WD: Typecast to resolve ambiguous call in VS 2010
-	g_LogFile.write("Loading Get String Screen");
-	dp = DirPath() << "Resources" << "Interface"<< cfg.resolution.resolution() << "GetString.txt";
-	incol.open(dp.c_str());
-	incol.seekg(0);
-	incol>>a>>b>>c>>d>>e;incol.ignore(1000, '\n');
-	g_GetString.CreateWindow(a,b,c,d,e);
-	incol>>a>>b>>c>>d;incol.ignore(1000, '\n');
-	g_GetString.AddButton("Ok", g_interfaceid.BUTTON_OK, a, b, c, d, true);
-	incol>>a>>b>>c>>d;incol.ignore(1000, '\n');
-	g_GetString.AddButton("Cancel", g_interfaceid.BUTTON_CANCEL, a, b, c, d, true);
-	incol>>a>>b>>c>>d>>e;incol.ignore(1000, '\n');
-	g_GetString.AddTextItem(g_interfaceid.TEXT_TEXT1, a, b, c, d, "Enter Text:", e);
-	incol>>a>>b>>c>>d>>e;incol.ignore(1000, '\n');
-	g_GetString.AddEditBox(g_interfaceid.EDITBOX_NAME,a,b,c,d,e);
-	incol.close();
+			if (name == "LoadMenu")	g_LoadGame.CreateWindow(a, b, c, d, e);
+			if (name == "FileName")	g_LoadGame.AddListBox(g_interfaceid.LIST_LOADGSAVES, a, b, c, d, e, true);
+			if (name == "LoadGame")	g_LoadGame.AddButton(image, g_interfaceid.BUTTON_LOADGLOAD, a, b, c, d, Transparency, Scale);
+			if (name == "Back")		g_LoadGame.AddButton(image, g_interfaceid.BUTTON_LOADGBACK, a, b, c, d, Transparency, Scale);
+		}
+	}
+	else if (loadmenu == 2)
+	{
+		g_LogFile.write("Loading LoadMenu.txt");
+		dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "LoadMenu.txt";
+		incol.open(dp.c_str());
+		incol.seekg(0);
+		incol >> a >> b >> c >> d >> e; incol.ignore(1000, '\n');
+		g_LoadGame.CreateWindow(a, b, c, d, e);
+		g_LoadGame.AddTextItem(g_interfaceid.STATIC_STATIC, 0, d - 10, c, 12, "Please read the readme.html", 10);
+		incol >> a >> b >> c >> d >> e; incol.ignore(1000, '\n');
+		g_LoadGame.AddListBox(g_interfaceid.LIST_LOADGSAVES, a, b, c, d, e, true);
+		incol >> a >> b >> c >> d; incol.ignore(1000, '\n');
+		g_LoadGame.AddButton("Load", g_interfaceid.BUTTON_LOADGLOAD, a, b, c, d, true);
+		incol >> a >> b >> c >> d; incol.ignore(1000, '\n');
+		g_LoadGame.AddButton("Back", g_interfaceid.BUTTON_LOADGBACK, a, b, c, d, true);
+		incol.close();
+	}
+	else
+	{
+		g_LogFile.write("Loading Default LoadMenu");
+		g_LoadGame.CreateWindow(224, 128, 344, 344, 1);
+		g_LoadGame.AddTextItem(g_interfaceid.STATIC_STATIC, 0, 334 - 10, 344, 12, "Please read the readme.html", 10);
+		g_LoadGame.AddListBox(g_interfaceid.LIST_LOADGSAVES, 8, 8, 328, 288, 1, true);
+		g_LoadGame.AddButton("Load", g_interfaceid.BUTTON_LOADGLOAD, 8, 304, 160, 32, true);
+		g_LoadGame.AddButton("Back", g_interfaceid.BUTTON_LOADGBACK, 176, 304, 160, 32, true);
+	}
 
+
+	// Load GetString screen
+	int GetString = 0;		// 0=default, 1=xml, 2=txt
+	dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "GetString.xml";
+	TiXmlDocument docGetString(dp.c_str());
+	if (docGetString.LoadFile())	GetString = 1;
+	else // try txt
+	{
+		if (cfg.debug.log_debug())
+		{
+			g_LogFile.ss() << "Error: line " << docGetString.ErrorRow() << ", col " << docGetString.ErrorCol() << ": " << docGetString.ErrorDesc() << endl;
+			g_LogFile.ssend();
+		}
+		dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "GetString.txt";
+		incol.open(dp.c_str());
+		GetString = (incol.good()) ? 2 : GetString = 0;
+		incol.close();
+	}
+	if (GetString == 1)
+	{
+		g_LogFile.write("Loading GetString.xml");
+		string m_filename = dp.c_str();
+		TiXmlElement *el, *root_el = docGetString.RootElement();
+
+		for (el = root_el->FirstChildElement(); el; el = el->NextSiblingElement())
+		{
+			XmlUtil xu(m_filename);	string name;
+			xu.get_att(el, "Name", name);
+			xu.get_att(el, "XPos", a); xu.get_att(el, "YPos", b); xu.get_att(el, "Width", c); xu.get_att(el, "Height", d); xu.get_att(el, "Border", e, true);
+			xu.get_att(el, "Image", image, true); xu.get_att(el, "Transparency", Transparency, true); 
+			xu.get_att(el, "Scale", Scale, true); xu.get_att(el, "Text", text,true);
+
+			if (name == "GetString")	g_GetString.CreateWindow(a, b, c, d, e);
+			if (name == "Ok")			g_GetString.AddButton(image, g_interfaceid.BUTTON_OK, a, b, c, d, Transparency, Scale);
+			if (name == "Cancel")		g_GetString.AddButton(image, g_interfaceid.BUTTON_CANCEL, a, b, c, d, Transparency, Scale);
+			if (name == "Label")		g_GetString.AddTextItem(g_interfaceid.TEXT_TEXT1, a, b, c, d, text, fontsize);
+			if (name == "TextField")	g_GetString.AddEditBox(g_interfaceid.EDITBOX_NAME, a, b, c, d, e);
+		}
+	}
+	else if (GetString == 2)
+	{
+		g_LogFile.write("Loading GetString.txt");
+		dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "GetString.txt";
+		incol.open(dp.c_str());
+		incol.seekg(0);
+		incol >> a >> b >> c >> d >> e; incol.ignore(1000, '\n');
+		g_GetString.CreateWindow(a, b, c, d, e);
+		incol >> a >> b >> c >> d; incol.ignore(1000, '\n');
+		g_GetString.AddButton("Ok", g_interfaceid.BUTTON_OK, a, b, c, d, true);
+		incol >> a >> b >> c >> d; incol.ignore(1000, '\n');
+		g_GetString.AddButton("Cancel", g_interfaceid.BUTTON_CANCEL, a, b, c, d, true);
+		incol >> a >> b >> c >> d >> e; incol.ignore(1000, '\n');
+		g_GetString.AddTextItem(g_interfaceid.TEXT_TEXT1, a, b, c, d, "Enter Text:", e);
+		incol >> a >> b >> c >> d >> e; incol.ignore(1000, '\n');
+		g_GetString.AddEditBox(g_interfaceid.EDITBOX_NAME, a, b, c, d, e);
+		incol.close();
+	}
+	else
+	{
+		g_LogFile.write("Loading Default GetString");
+		g_GetString.CreateWindow(224, 127, 352, 160, 1);
+		g_GetString.AddButton("Ok", g_interfaceid.BUTTON_OK, 32, 104, 128, 32, true);
+		g_GetString.AddButton("Cancel", g_interfaceid.BUTTON_CANCEL, 192, 104, 128, 32, true);
+		g_GetString.AddTextItem(g_interfaceid.TEXT_TEXT1, 32, 32, 128, 32, "Enter Text:", 16);
+		g_GetString.AddEditBox(g_interfaceid.EDITBOX_NAME, 160, 32, 160, 32, 1);
+	}
+
+	// `J` This is never used so not updating it now
 	// Change Jobs Screen
 	g_LogFile.write("Loading Change Jobs Screen");
 	g_ChangeJobs.CreateWindow(256, 120, 304, 376, 1);
@@ -467,36 +565,109 @@ void LoadInterface()
 	g_ChangeJobs.AddTextItem(g_interfaceid.STATIC_STATIC, 8, 8, 128, 32, "Day Shift");
 	g_ChangeJobs.AddTextItem(g_interfaceid.STATIC_STATIC, 152, 8, 128, 32, "Night Shift");
 
-	// Turn summary screen
-	g_LogFile.write("Loading Turn Summary Screen");
-	g_Turnsummary.AddTextItem(g_interfaceid.TEXT_CURRENTBROTHEL, 0, 0, 900, 32, "", 10);
-	g_Turnsummary.CreateWindow(8, 8, 786, 584, 1);
-	g_Turnsummary.AddTextItem(g_interfaceid.STATIC_STATIC, 8, 8, 120, 32, "Category", 15);
-	g_Turnsummary.AddTextItem(g_interfaceid.STATIC_STATIC, 8, 106, 120, 32, "Item", 15);
-	g_Turnsummary.AddTextItem(g_interfaceid.STATIC_STATIC, 8, 266, 120, 32, "Event", 15);
-	g_Turnsummary.AddTextItem(g_interfaceid.TEXT_TSEVENTDESC, 575, 8, 202, 406, "", 12);
-	g_Turnsummary.AddButton("GoTo", g_interfaceid.BUTTON_TSGOTO, 598, 462, 160, 32, true);
-	g_Turnsummary.AddButton("NextWeek", g_interfaceid.BUTTON_TSNEWWEEK, 598, 504, 160, 32, true);
-	g_Turnsummary.AddButton("Back", g_interfaceid.BUTTON_TSCLOSE, 598, 546, 160, 32, true);
-	g_Turnsummary.AddButton("Prev", g_interfaceid.BUTTON_TSPREVBROTHEL, 598, 422, 72, 32, true);
-	g_Turnsummary.AddButton("Next", g_interfaceid.BUTTON_TSNEXTBROTHEL, 686, 422, 72, 32, true);
-	g_Turnsummary.AddListBox(g_interfaceid.LIST_TSCATEGORY, 8, 40, 120, 66, 1, true);
-	g_Turnsummary.AddListBox(g_interfaceid.LIST_TSITEM, 8, 136, 120, 128, 1, true);
-	g_Turnsummary.AddListBox(g_interfaceid.LIST_TSEVENTS, 8, 296, 120, 282, 1, true);
-	g_Turnsummary.AddImage(g_interfaceid.IMAGE_TSIMAGE, "", 136, 8, 434, 570);
 
-	// Transfer Girls Screen
-	g_LogFile.write("Loading Transfer Girls Screen");
-	g_TransferGirls.CreateWindow(16, 16, 768, 576, 1);
-	g_TransferGirls.AddButton("Back", g_interfaceid.BUTTON_TRANSGBACK, 308, 536, 160, 32, true);
-	g_TransferGirls.AddButton("ShiftLeft", g_interfaceid.BUTTON_TRANSGSHIFTL, 366, 214, 48, 48, true);
-	g_TransferGirls.AddButton("ShiftRight", g_interfaceid.BUTTON_TRANSGSHIFTR, 366, 304, 48, 48, true);
-	g_TransferGirls.AddListBox(g_interfaceid.LIST_TRANSGLEFTGIRLS, 168, 48, 190, 482, 1, true, true);
-	g_TransferGirls.AddListBox(g_interfaceid.LIST_TRANSGRIGHTGIRLS, 418, 48, 190, 482, 1, true, true);
-	g_TransferGirls.AddListBox(g_interfaceid.LIST_TRANSGLEFTBROTHEL, 8, 48, 126, 234, 1, true, false);
-	g_TransferGirls.AddListBox(g_interfaceid.LIST_TRANSGRIGHTBROTHEL, 632, 48, 126, 234, 1, true, false);
-	g_TransferGirls.AddTextItem(g_interfaceid.STATIC_STATIC, 8, 8, 160, 32, "BROTHELS");
-	g_TransferGirls.AddTextItem(g_interfaceid.STATIC_STATIC, 632, 8, 160, 32, "BROTHELS");
+	// Load TurnSummary screen
+	dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "TurnSummary.xml";
+	TiXmlDocument docTurnSummary(dp.c_str());
+	if (docTurnSummary.LoadFile())
+	{
+		g_LogFile.write("Loading TurnSummary.xml");
+		string m_filename = dp.c_str();
+		TiXmlElement *el, *root_el = docTurnSummary.RootElement();
+		
+		for (el = root_el->FirstChildElement(); el; el = el->NextSiblingElement())
+		{
+			XmlUtil xu(m_filename);	string name = "";
+			xu.get_att(el, "Name", name);
+			xu.get_att(el, "XPos", a); xu.get_att(el, "YPos", b); xu.get_att(el, "Width", c); xu.get_att(el, "Height", d); xu.get_att(el, "Border", e, true);
+			xu.get_att(el, "Image", image, true); xu.get_att(el, "File", file, true);
+			xu.get_att(el, "Transparency", Transparency, true); xu.get_att(el, "Scale", Scale, true);
+			xu.get_att(el, "Text", text, true); xu.get_att(el, "FontSize", fontsize, true);
+
+			if (name == "Turn Summary")		g_Turnsummary.CreateWindow(a, b, c, d, e);
+			if (name == "CurrentBrothel")	g_Turnsummary.AddTextItem(g_interfaceid.TEXT_CURRENTBROTHEL, a, b, c, d, text, fontsize);
+			if (name == "LabelCategory")	g_Turnsummary.AddTextItem(g_interfaceid.STATIC_STATIC, a, b, c, d, text, fontsize);
+			if (name == "LabelItem")		g_Turnsummary.AddTextItem(g_interfaceid.STATIC_STATIC, a, b, c, d, text, fontsize);
+			if (name == "LabelEvent")		g_Turnsummary.AddTextItem(g_interfaceid.STATIC_STATIC, a, b, c, d, text, fontsize);
+			if (name == "LabelDesc")		g_Turnsummary.AddTextItem(g_interfaceid.TEXT_TSEVENTDESC, a, b, c, d, text, fontsize);
+			if (name == "GoTo")				g_Turnsummary.AddButton(image, g_interfaceid.BUTTON_TSGOTO, a, b, c, d, Transparency, Scale);
+			if (name == "NextWeek")			g_Turnsummary.AddButton(image, g_interfaceid.BUTTON_TSNEWWEEK, a, b, c, d, Transparency, Scale);
+			if (name == "Back")				g_Turnsummary.AddButton(image, g_interfaceid.BUTTON_TSCLOSE, a, b, c, d, Transparency, Scale);
+			if (name == "Prev")				g_Turnsummary.AddButton(image, g_interfaceid.BUTTON_TSPREVBROTHEL, a, b, c, d, Transparency, Scale);
+			if (name == "Next")				g_Turnsummary.AddButton(image, g_interfaceid.BUTTON_TSNEXTBROTHEL, a, b, c, d, Transparency, Scale);
+			if (name == "Category")			g_Turnsummary.AddListBox(g_interfaceid.LIST_TSCATEGORY, a, b, c, d, e, true);
+			if (name == "Item")				g_Turnsummary.AddListBox(g_interfaceid.LIST_TSITEM, a, b, c, d, e, true);
+			if (name == "Event")			g_Turnsummary.AddListBox(g_interfaceid.LIST_TSEVENTS, a, b, c, d, e, true);
+			if (name == "Background")		g_Turnsummary.AddImage(g_interfaceid.IMAGE_TSIMAGE, file, a, b, c, d);
+		}
+	}
+	else // because there never was a TurnSummary.txt, just do defaults if there is no xml
+	{
+		g_LogFile.write("Loading Default TurnSummary");
+		g_Turnsummary.CreateWindow(8, 8, 786, 584, 1);
+		g_Turnsummary.AddTextItem(g_interfaceid.TEXT_CURRENTBROTHEL, 0, 0, 900, 32, "", 10);
+		g_Turnsummary.AddTextItem(g_interfaceid.STATIC_STATIC, 8, 8, 120, 32, "Category", 15);
+		g_Turnsummary.AddTextItem(g_interfaceid.STATIC_STATIC, 8, 106, 120, 32, "Item", 15);
+		g_Turnsummary.AddTextItem(g_interfaceid.STATIC_STATIC, 8, 266, 120, 32, "Event", 15);
+		g_Turnsummary.AddTextItem(g_interfaceid.TEXT_TSEVENTDESC, 575, 8, 202, 406, "", 12);
+		g_Turnsummary.AddButton("GoTo", g_interfaceid.BUTTON_TSGOTO, 598, 462, 160, 32, true);
+		g_Turnsummary.AddButton("NextWeek", g_interfaceid.BUTTON_TSNEWWEEK, 598, 504, 160, 32, true);
+		g_Turnsummary.AddButton("Back", g_interfaceid.BUTTON_TSCLOSE, 598, 546, 160, 32, true);
+		g_Turnsummary.AddButton("Prev", g_interfaceid.BUTTON_TSPREVBROTHEL, 598, 422, 72, 32, true);
+		g_Turnsummary.AddButton("Next", g_interfaceid.BUTTON_TSNEXTBROTHEL, 686, 422, 72, 32, true);
+		g_Turnsummary.AddListBox(g_interfaceid.LIST_TSCATEGORY, 8, 40, 120, 66, 1, true);
+		g_Turnsummary.AddListBox(g_interfaceid.LIST_TSITEM, 8, 136, 120, 128, 1, true);
+		g_Turnsummary.AddListBox(g_interfaceid.LIST_TSEVENTS, 8, 296, 120, 282, 1, true);
+		g_Turnsummary.AddImage(g_interfaceid.IMAGE_TSIMAGE, "", 136, 8, 434, 570);
+	}
+
+	// Load TransferGirls screen
+	dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "TransferGirls.xml";
+	TiXmlDocument docTransferGirls(dp.c_str());
+	if (docTransferGirls.LoadFile())
+	{
+		g_LogFile.write("Loading TransferGirls.xml");
+		string m_filename = dp.c_str();
+		TiXmlElement *el, *root_el = docTransferGirls.RootElement();
+
+		for (el = root_el->FirstChildElement(); el; el = el->NextSiblingElement())
+		{
+			XmlUtil xu(m_filename);	string name = "";
+			xu.get_att(el, "Name", name);
+			xu.get_att(el, "XPos", a); xu.get_att(el, "YPos", b); xu.get_att(el, "Width", c); xu.get_att(el, "Height", d); xu.get_att(el, "Border", e, true);
+			xu.get_att(el, "Image", image, true); xu.get_att(el, "File", file, true);
+			xu.get_att(el, "Transparency", Transparency, true); xu.get_att(el, "Scale", Scale, true);
+			xu.get_att(el, "Text", text, true); xu.get_att(el, "FontSize", fontsize, true);
+
+			if (name == "Transfer Girls")	g_TransferGirls.CreateWindow(a, b, c, d, e);
+			if (name == "Back")				g_TransferGirls.AddButton(image, g_interfaceid.BUTTON_TRANSGBACK, a, b, c, d, Transparency, Scale);
+			if (name == "ShiftLeft")		g_TransferGirls.AddButton(image, g_interfaceid.BUTTON_TRANSGSHIFTL, a, b, c, d, Transparency, Scale);
+			if (name == "ShiftRight")		g_TransferGirls.AddButton(image, g_interfaceid.BUTTON_TRANSGSHIFTR, a, b, c, d, Transparency, Scale);
+			if (name == "ListLeft")			g_TransferGirls.AddListBox(g_interfaceid.LIST_TRANSGLEFTGIRLS, a, b, c, d, e, true, true);
+			if (name == "ListRight")		g_TransferGirls.AddListBox(g_interfaceid.LIST_TRANSGRIGHTGIRLS, a, b, c, d, e, true, true);
+			if (name == "BrothelLeft")		g_TransferGirls.AddListBox(g_interfaceid.LIST_TRANSGLEFTBROTHEL, a, b, c, d, e, true);
+			if (name == "BrothelRight")		g_TransferGirls.AddListBox(g_interfaceid.LIST_TRANSGRIGHTBROTHEL, a, b, c, d, e, true);
+			if (name == "LabelLeft")		g_TransferGirls.AddTextItem(g_interfaceid.STATIC_STATIC, a, b, c, d, text, fontsize);
+			if (name == "LabelRight")		g_TransferGirls.AddTextItem(g_interfaceid.STATIC_STATIC, a, b, c, d, text, fontsize);
+		}
+	}
+	else // because there never was a TransferGirls.txt, just do defaults if there is no xml
+	{
+		g_LogFile.write("Loading Default TransferGirls");
+
+		g_TransferGirls.CreateWindow(16, 16, 768, 576, 1);
+		g_TransferGirls.AddButton("Back", g_interfaceid.BUTTON_TRANSGBACK, 308, 536, 160, 32, true);
+		g_TransferGirls.AddButton("ShiftLeft", g_interfaceid.BUTTON_TRANSGSHIFTL, 366, 214, 48, 48, true);
+		g_TransferGirls.AddButton("ShiftRight", g_interfaceid.BUTTON_TRANSGSHIFTR, 366, 304, 48, 48, true);
+		g_TransferGirls.AddListBox(g_interfaceid.LIST_TRANSGLEFTGIRLS, 168, 48, 190, 482, 1, true, true);
+		g_TransferGirls.AddListBox(g_interfaceid.LIST_TRANSGRIGHTGIRLS, 418, 48, 190, 482, 1, true, true);
+		g_TransferGirls.AddListBox(g_interfaceid.LIST_TRANSGLEFTBROTHEL, 8, 48, 126, 234, 1, true, false);
+		g_TransferGirls.AddListBox(g_interfaceid.LIST_TRANSGRIGHTBROTHEL, 632, 48, 126, 234, 1, true, false);
+		g_TransferGirls.AddTextItem(g_interfaceid.STATIC_STATIC, 8, 8, 160, 32, "BROTHELS");
+		g_TransferGirls.AddTextItem(g_interfaceid.STATIC_STATIC, 632, 8, 160, 32, "BROTHELS");
+	}
+
+
 
 	// gallery screen
 	g_LogFile.write("Loading Gallery Screen");

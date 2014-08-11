@@ -225,15 +225,13 @@ void cScreenGirlManagement::init()
 	brothel += g_Brothels.GetName(g_CurrBrothel);
 	EditTextItem(brothel, curbrothel_id);
 
-	//selected_girl = 0;
-
 	// clear the lists
 	ClearListBox(girllist_id);
 	ClearListBox(jobtypelist_id);
 
 	// add the job filters
 //	for(int i=0; i<NUMJOBTYPES; i++)  // loop through all job types
-	for(unsigned int i=0; i<JOBFILTER_STABLES; i++)  // temporary limit to job types shown
+	for (unsigned int i = 0; i<JOBFILTER_BROTHEL; i++)  // temporary limit to job types shown
 	{
 		AddToListBox(jobtypelist_id, i, g_Brothels.m_JobManager.JobFilterName[i]);
 	}
@@ -437,11 +435,16 @@ void cScreenGirlManagement::update_image()
 		bool Rand = false;
 		if(lastNum != selection)
 		{
-			string text = selected_girl->m_Desc;
+			string text = g_Girls.GetGirlMood(selected_girl);
 			text += "\n\n";
-			text += g_Girls.GetGirlMood(selected_girl);	// Added a little feedback here to show what character template a girl is based on --PP
-			text += "\n\nBased on: ";
-			text += selected_girl->m_Name;
+			text += selected_girl->m_Desc;
+			// Added a little feedback here to show what character template a girl is based on --PP
+			cConfig cfg;	// `J` I usually don't care about this so I made it optional
+			if (cfg.debug.log_extradetails())
+			{
+				text += "\n\nBased on: ";
+				text += selected_girl->m_Name;
+			}
 			EditTextItem(text, girldesc_id);
 			Rand = true;
 			lastNum = selection;
@@ -521,7 +524,7 @@ void cScreenGirlManagement::check_events()
 		{
 			// populate Jobs listbox with jobs in the selected category
 			RefreshJobList();
-			EditTextItem(g_Brothels.m_JobManager.JobFilterDescription[selection], jobtypedesc_id);
+			EditTextItem(g_Brothels.m_JobManager.JobFilterDesc[selection], jobtypedesc_id);
 		}
 	}
 	if(g_InterfaceEvents.CheckListbox(joblist_id))
@@ -530,7 +533,7 @@ void cScreenGirlManagement::check_events()
 		if(selection != -1)
 		{
 			// first handle the descriptions
-			EditTextItem(g_Brothels.m_JobManager.JobDescription[selection], jobdesc_id);
+			EditTextItem(g_Brothels.m_JobManager.JobDesc[selection], jobdesc_id);
 
 			// Now assign the job to all the selected girls
 			int pos = 0;
@@ -789,7 +792,7 @@ void cScreenGirlManagement::RefreshJobList()
 		{
 			int sel_job = (DayNight == 0) ? selected_girl->m_DayJob : selected_girl->m_NightJob;
 			SetSelectedItemInList(joblist_id, sel_job, false);
-			EditTextItem(g_Brothels.m_JobManager.JobDescription[sel_job], jobdesc_id);
+			EditTextItem(g_Brothels.m_JobManager.JobDesc[sel_job], jobdesc_id);
 		}
 //	}
 }

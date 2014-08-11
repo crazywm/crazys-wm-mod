@@ -51,11 +51,14 @@ bool g_AllTogle = false;	// used on screens when wishing to apply something to a
 long g_IntReturn;
 extern bool eventrunning;
 extern cRng g_Dice;
-bool g_WalkAround = false;	// for keeping track of weather have walked around town today
+
+// for keeping track of weather have walked around town today
+bool g_WalkAround = false;	
 bool g_TryCentre = false;
 bool g_TryOuts = false;
 bool g_TryEr = false;
 bool g_TryCast = false;
+
 int g_TalkCount = 10;
 bool g_GenGirls = false;
 bool g_Cheats = false;
@@ -77,30 +80,29 @@ extern bool g_RightArrow;
 extern bool g_UpArrow;
 extern bool g_DownArrow;
 extern bool g_EnterKey;
-extern	bool	g_AltKeys;	// New hotkeys --PP
-extern	bool	g_SpaceKey;
-extern	bool	g_Q_Key;
-extern	bool	g_W_Key;
-extern	bool	g_E_Key;
-extern	bool	g_A_Key;
-extern	bool	g_S_Key;
-extern	bool	g_D_Key;
-extern	bool	g_Z_Key;
-extern	bool	g_X_Key;
-extern	bool	g_C_Key;
+extern bool g_AltKeys;
+extern bool g_SpaceKey;
+extern bool g_Q_Key;
+extern bool g_W_Key;
+extern bool g_E_Key;
+extern bool g_A_Key;
+extern bool g_S_Key;
+extern bool g_D_Key;
+extern bool g_Z_Key;
+extern bool g_X_Key;
+extern bool g_C_Key;
+extern bool g_R_Key;
+extern bool g_F_Key;
+extern bool g_T_Key;
+extern bool g_G_Key;
+extern bool g_Y_Key;
+extern bool g_H_Key;
+extern bool g_U_Key;
+extern bool g_J_Key;
+extern bool g_I_Key;
+extern bool g_K_Key;
 
-extern	bool	g_R_Key;
-extern	bool	g_F_Key;
-extern	bool	g_T_Key;
-extern	bool	g_G_Key;
-extern	bool	g_Y_Key;
-extern	bool	g_H_Key;
-extern	bool	g_U_Key;
-extern	bool	g_J_Key;
-extern	bool	g_I_Key;
-extern	bool	g_K_Key;
-
-extern	int		g_CurrentScreen;
+extern int g_CurrentScreen;
 
 //used to store what files we have loaded
 MasterFile loadedGirlsFiles;
@@ -113,64 +115,65 @@ void LoadGameScreen()
 	const char *pattern = "*.gam";
 	FileList fl(location, pattern);
 
-	if(g_InitWin)
+	if (g_InitWin)
 	{
 		g_LoadGame.Focused();
-/*
- *		clear the list box with the save games
- */
+		/*
+		 *		clear the list box with the save games
+		 */
 		g_LoadGame.ClearListBox(g_interfaceid.LIST_LOADGSAVES);
-/*
- *		loop through the files, adding them to the box
- */
-		for(int i = 0; i < fl.size(); i++) {
+		/*
+		 *		loop through the files, adding them to the box
+		 */
+		for (int i = 0; i < fl.size(); i++) {
 			g_LoadGame.AddToListBox(g_interfaceid.LIST_LOADGSAVES, i, fl[i].leaf());
 		}
 		g_InitWin = false;
 	}
 
-/*
- *	no events process means we can go home early
- */
-	if(g_InterfaceEvents.GetNumEvents() == 0) {
+	/*
+	 *	no events process means we can go home early
+	 */
+	if (g_InterfaceEvents.GetNumEvents() == 0)
+	{
 		return;
 	}
 
-/*
- *	the next simplest case is the "back" button
- */
-	if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_LOADGBACK))
+	/*
+	 *	the next simplest case is the "back" button
+	 */
+	if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_LOADGBACK))
 	{
 		g_InitWin = true;
 		g_WinManager.Pop();
 		return;
 	}
-/*
- *	by this point, we're only interested if it's a click on the load game button or a double-click on a game in the list
- */
-	if( !g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_LOADGLOAD)
-		&& !g_LoadGame.ListDoubleClicked(g_interfaceid.LIST_LOADGSAVES) )
+	/*
+	 *	by this point, we're only interested if it's a click on the load game button or a double-click on a game in the list
+	 */
+	if (!g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_LOADGLOAD)
+		&& !g_LoadGame.ListDoubleClicked(g_interfaceid.LIST_LOADGSAVES))
 	{
 		return;
 	}
-/*
- *	OK: So from this point onwards, we're loading the game
- */
+	/*
+	 *	OK: So from this point onwards, we're loading the game
+	 */
 	int selection = g_LoadGame.GetLastSelectedItemFromList(g_interfaceid.LIST_LOADGSAVES);
-/*
- *	nothing selected means nothing more to do
- */
-	if(selection == -1)
+	/*
+	 *	nothing selected means nothing more to do
+	 */
+	if (selection == -1)
 	{
 		return;
 	}
 	string temp = fl[selection].leaf();
-/* 
- *	enable cheat mode for a test brothel
- */
-	g_Cheats = (temp == "Test.gam");
+	/*
+	 *	enable cheat mode for a cheat brothel
+	 */
+	g_Cheats = (temp == "Cheat.gam");
 
-	if(LoadGame(location, fl[selection].leaf()))
+	if (LoadGame(location, fl[selection].leaf()))
 	{
 		g_WinManager.Pop();
 		g_WinManager.push("Brothel Management");
@@ -189,11 +192,9 @@ void NewGame()
 	cScriptManager sm;
 
 	g_Cheats = false;
-	g_GenGirls = g_Cheats = g_WalkAround = false;	// for keeping track of weather have walked around town today
-	g_GenGirls = g_Cheats = g_TryOuts = false;
-	g_GenGirls = g_Cheats = g_TryCentre = false;
-	g_GenGirls = g_Cheats = g_TryEr = false;
-	g_GenGirls = g_Cheats = g_TryCast = false;
+	g_GenGirls = g_Cheats = false;
+	// for keeping track of weather have walked around town today
+	g_WalkAround = g_TryOuts = g_TryCentre = g_TryEr = g_TryCast = false;
 	g_TalkCount = 10;
 	g_Brothels.Free();
 	g_Clinic.Free();
@@ -212,29 +213,20 @@ void NewGame()
 	g_InvManager.Free();
 
 	string d = g_ReturnText;
-	if (g_ReturnText == "Test")
-		g_Cheats = true;
-	else
-		g_Cheats = false;
+	g_Cheats = (g_ReturnText == "Cheat") ? true : false;
+
 	d += ".gam";
 
 	// Load all the data
 	LoadGameInfoFiles();
 	loadedGirlsFiles.LoadXML(TiXmlHandle(0));
 	LoadGirlsFiles();
-
-	g_Girls.LoadDefaultImages();	// load the default girl images
-
-	// load the global triggers
+	g_Girls.LoadDefaultImages();
 	g_GlobalTriggers.LoadList(DirPath() << "Resources" << "Scripts" << "GlobalTriggers.xml");
-
 	g_CurrBrothel = 0;
-
 	g_Gold.reset();
 
-	g_Year = 1209;
-	g_Month = 1;
-	g_Day = 1;
+	g_Year = 1209; g_Month = 1; g_Day = 1;
 
 	selected_girl = 0;
 	for (int i = 0; i<8; i++)
@@ -245,92 +237,31 @@ void NewGame()
 
 	g_Brothels.NewBrothel(20);
 	g_Brothels.SetName(0, g_ReturnText);
-	for (int i = 0; i<NUM_STATS; i++)
-		g_Brothels.GetPlayer()->m_Stats[i] = 60;
-	for (u_int i = 0; i<NUM_SKILLS; i++)
-		g_Brothels.GetPlayer()->m_Skills[i] = 10;
+	for (int i = 0; i<NUM_STATS; i++)		g_Brothels.GetPlayer()->m_Stats[i] = 60;
+	for (u_int i = 0; i<NUM_SKILLS; i++)	g_Brothels.GetPlayer()->m_Skills[i] = 10;
 	g_Brothels.GetPlayer()->SetToZero();
-	//g_Brothels.GetPlayer()->m_CustomerFear = 0;
-	//g_Brothels.GetPlayer()->m_Disposition = 0;
-	//g_Brothels.GetPlayer()->m_Suspicion = 0;
-	//g_Brothels.GetPlayer()->m_WinGame = false;
-	/*
-	g_Studios.NewBrothel(20);
-	g_Studios.SetName(0, "Studio");
-
-	g_Arena.NewBrothel(20);
-	g_Arena.SetName(0, "Arena");
-
-	g_Centre.NewBrothel(20);
-	g_Centre.SetName(0, "Centre");
-	*/
 	g_House.NewBrothel(20);
 	g_House.SetName(0, "House");
 
 	u_int start_random_gangs = cfg.gangs.start_random();
 	u_int start_boosted_gangs = cfg.gangs.start_boosted();
-	for (u_int i = 0; i<start_random_gangs; i++)
-		g_Gangs.AddNewGang(false);
-	for (u_int i = 0; i<start_boosted_gangs; i++)
-		g_Gangs.AddNewGang(true);
+	for (u_int i = 0; i<start_random_gangs; i++)	g_Gangs.AddNewGang(false);
+	for (u_int i = 0; i<start_boosted_gangs; i++)	g_Gangs.AddNewGang(true);
 
 	// update the shop inventory
 	g_InvManager.UpdateShop();
 
-	/*
-	*	two strings speparated only by white space are concatenated
-	*	by the compiler. Which means you can split up long text
-	*	passages, making them easier to read:
-	*/
-#if 0
-	stringstream ss;
-	ss << gettext("Welcome to Crossgate, a city in the realm of Mundiga, ")
-		<< gettext("where criminals rule and space and time overlap with ")
-		<< gettext("other worlds and dimensions. Once a powerful crime lord ")
-		<< gettext("in the city, your father was recently assassinated and ")
-		<< gettext("his assets looted by rivals. All that remains is the ")
-		<< gettext("fire-gutted shell of an old brothel that served as your ")
-		<< gettext("father's headquarters.\n")
-		<< gettext("However this building hides some interesting secrets. ")
-		<< gettext("Still concealed in the cellars is the dungeon where ")
-		<< gettext("your father conducted the less savory aspects of ")
-		<< gettext("his business. Underneath, endless catacombs extend, ")
-		<< gettext("constantly shifting in the dimensional flux, drawing ")
-		<< gettext("in beings and plunder from a thousand different worlds.\n")
-		<< gettext("Your job now is to return the brothel to its former ")
-		<< gettext("glories of exotic women and carnal pleasures. That will ")
-		<< gettext("give you the income you need to avenge your father, ")
-		<< gettext("and resume your rightful place as his successor.\n")
-		<< gettext("It is up to you if you will be as evil as your father ")
-		<< gettext("or not, but in any case you start with very little gold ")
-		<< gettext("and your first order of business should be to purchase ")
-		<< gettext("some girls from the slave market, and to hire some goons ")
-		<< gettext("to guard your headquarters.");
-
-	g_MessageQue.AddToQue(
-		ss.str(),
-		0
-		);
-#endif
 	// Add the begining rivals
 	g_Brothels.GetRivalManager()->CreateRival(200, 5, 10000, 2, 0, 26, 2, 2);
 	g_Brothels.GetRivalManager()->CreateRival(400, 10, 15000, 2, 1, 30, 2, 3);
 	g_Brothels.GetRivalManager()->CreateRival(600, 15, 20000, 3, 1, 56, 3, 5);
 	g_Brothels.GetRivalManager()->CreateRival(800, 20, 25000, 4, 2, 74, 4, 8);
 
-	if (g_Cheats)
-	{
-		g_Gold.cheat();
-		g_InvManager.GivePlayerAllItems();
-		//g_Brothels.AddGirl(0, g_Girls.GetGirl(23));  // Adding girl to brothel (Ayanami Rei as it happens) for some reason?
-	}
+	if (g_Cheats) { g_Gold.cheat(); g_InvManager.GivePlayerAllItems(); }
 
 	g_WinManager.push("Brothel Management");
 
-	DirPath text = DirPath()
-		<< "Saves"
-		<< (g_Brothels.GetBrothel(0)->m_Name + ".gam").c_str()
-		;
+	DirPath text = DirPath() << "Saves" << (g_Brothels.GetBrothel(0)->m_Name + ".gam").c_str();
 	sm.Load(ScriptPath("Intro.lua"), 0);
 	SaveGameXML(text);
 }
@@ -341,14 +272,15 @@ void GetString()
 	gssm.process();
 }
 
-static string clobber_extension(string s)	// `J` removed logging
+static string clobber_extension(string s)	// `J` debug logging
 {
-	// g_LogFile.os() << "clobber_extension: s = " << s << endl;
+	cConfig cfg;
+	if (cfg.debug.log_debug())	g_LogFile.os() << "clobber_extension: s = " << s << endl;
 	size_t pos = s.rfind(".");
-	// g_LogFile.os() << "clobber_extension: pos = " << pos << endl;
+	if (cfg.debug.log_debug())	g_LogFile.os() << "clobber_extension: pos = " << pos << endl;
 	string base = s.substr(0, pos);
-	// g_LogFile.os() << "clobber_extension: s = " << s << endl;
-	// g_LogFile.os() << "clobber_extension: base = " << base << endl;
+	if (cfg.debug.log_debug())	g_LogFile.os() << "clobber_extension: s = " << s << endl;
+	if (cfg.debug.log_debug())	g_LogFile.os() << "clobber_extension: base = " << base << endl;
 	return base;
 }
 
@@ -358,52 +290,64 @@ static string clobber_extension(string s)	// `J` removed logging
  */
 static void LoadXMLItems(FileList &fl)
 {
-	map<string,string> lookup;
+	map<string, string> lookup;
+	int loglevel = 0;
+	cConfig cfg;
+	if (cfg.debug.log_items())			loglevel++;
+	if (cfg.debug.log_extradetails())	loglevel++;
 
 	g_LogFile.os() << "itemsx files:" << endl;
 	fl.scan("*.itemsx");
-	for(int i = 0; i < fl.size(); i++) {
+	for (int i = 0; i < fl.size(); i++)
+	{
 		string str = fl[i].full();
 		string key = clobber_extension(str);
 		lookup[key] = str;
-		g_LogFile.os() << "	adding " << str << endl;
-		// g_LogFile.os() << "	under " << key << endl;
-		// g_LogFile.os() << "	result " << lookup[key] << endl;
+		if (loglevel>0)
+			g_LogFile.os() << "	adding " << str << endl;
+		if (loglevel > 1)
+		{
+			g_LogFile.os() << "	under " << key << endl;
+			g_LogFile.os() << "	result " << lookup[key] << endl;
+		}
 	}
 
 	g_LogFile.os() << "items files:" << endl;
 	fl.scan("*.items");
-	for(int i = 0; i < fl.size(); i++) {
+	for (int i = 0; i < fl.size(); i++)
+	{
 		string str = fl[i].full();
 		string key = clobber_extension(str);
-		// g_LogFile.os() << "	checking " << lookup[key] << endl;
-		if(lookup[key] != "") {
-			continue;
-		}
+		if (loglevel>0) g_LogFile.os() << "	checking " << lookup[key] << endl;
+		if (lookup[key] != "")	continue;
 		lookup[key] = str;
-		g_LogFile.os() << "	adding " << str << endl;
-		// g_LogFile.os() << "	under " << key << endl;
+		if (loglevel > 0) g_LogFile.os() << "	adding " << str << endl;
+		if (loglevel > 1)	g_LogFile.os() << "	under " << key << endl;
 	}
-/*
- *	Iterate over the map and print out all key/value pairs.
- *	kudos: wikipedia
- */
-	// g_LogFile.os() << "walking map..." << endl;
-	for(map<string,string>::const_iterator it = lookup.begin(); it != lookup.end(); ++it) {
+	/*
+	 *	Iterate over the map and print out all key/value pairs.
+	 *	kudos: wikipedia
+	 */
+
+	if (loglevel > 0)	g_LogFile.os() << "walking map..." << endl;
+	for (map<string, string>::const_iterator it = lookup.begin(); it != lookup.end(); ++it)
+	{
 		string full_path = it->second;
-		// g_LogFile.os() <<	"\tkey = " << it->first << endl;
-		// g_LogFile.os() <<	"\tpath = " << full_path << endl;
-/*
- *		does it end in ".items" or ".itemsx"?
- */
+		if (loglevel > 1)	g_LogFile.os() << "\tkey = " << it->first << endl;
+		if (loglevel > 1)	g_LogFile.os() << "\tpath = " << full_path << endl;
+		/*
+		 *		does it end in ".items" or ".itemsx"?
+		 */
 		size_t len = full_path.length();
-		char c = full_path.at(len-1);
-		if(c == 'x') {
-			// g_LogFile.os() << "\t\tloading xml" << endl;
+		char c = full_path.at(len - 1);
+		if (c == 'x')
+		{
+			if (loglevel > 0)	g_LogFile.os() << "\t\tloading xml" << endl;
 			g_InvManager.LoadItemsXML(full_path);
 		}
-		else {
-			// g_LogFile.os() << "\t\tloading orig" << endl;
+		else
+		{
+			if (loglevel > 0)	g_LogFile.os() << "\t\tloading orig" << endl;
 			g_InvManager.LoadItems(full_path);
 		}
 	}
@@ -413,19 +357,21 @@ void LoadGameInfoFiles()
 {
 // Load the traits: first build the path
 	DirPath location = DirPath() << "Resources" << "Data";
- 	FileList fl(location, "*.traits");	// get a file list
-	for (int i = 0; i < fl.size(); i++)	// loop over the list, loading the files
+ 	FileList fl(location, "*.traits");				// get a file list
+	for (int i = 0; i < fl.size(); i++)				// loop over the list, loading the files
 	{
 		g_Traits.LoadTraits(fl[i].full());
 	}
 /* `J` Load .traitsx files (work in progress)
-	FileList fl_t(location, "*.traitsx");	// get a file list
-	cTraits::LoadXMLTraits(fl_t);
+	FileList fl_t(location, "*.traitsx");				// get a file list
+	g_Traits.LoadXMLTraits(fl_t);
 */
 
 // `J` Load .itemsx files
 	DirPath location_i = DirPath() << "Resources" << "Items"; // `J` moved items from Data to Items folder
 	FileList fl_i(location_i, "*.itemsx");
+	cConfig cfg;
+	if (cfg.debug.log_items())	g_LogFile.os() << "Found " << fl_i.size() <<" itemsx files" << endl;
 	LoadXMLItems(fl_i);
 }
 

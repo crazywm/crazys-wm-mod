@@ -59,14 +59,12 @@ sArena::sArena() :	m_Finance(0)	// constructor
 
 sArena::~sArena()			// destructor
 {
-	m_var	= 0;
-	if(m_Next)
-		delete m_Next;
-	m_Next					= 0;
-	if(m_Girls)
-		delete m_Girls;
-	m_LastGirl				= 0;
-	m_Girls					= 0;
+	m_var			= 0;
+	if(m_Next)	delete m_Next;
+	m_Next			= 0;
+	if(m_Girls)	delete m_Girls;
+	m_LastGirl		= 0;
+	m_Girls			= 0;
 }
 
 void cArenaManager::AddGirl(int brothelID, sGirl* girl)
@@ -101,12 +99,10 @@ cArenaManager::~cArenaManager()			// destructor
 
 void cArenaManager::Free()
 {
-	if(m_Parent)
-		delete m_Parent;
+	if(m_Parent)		delete m_Parent;
 	m_Parent			= 0;
 	m_Last				= 0;
-	m_NumBrothels = 0;
-
+	m_NumBrothels		= 0;
 }
 
 // ----- Update & end of turn
@@ -131,8 +127,7 @@ void cArenaManager::UpdateArena()
 		cgirl = cgirl->m_Next;
 	}
 
-	if(current->m_Filthiness < 0)
-			current->m_Filthiness = 0;
+	if(current->m_Filthiness < 0)	current->m_Filthiness = 0;
 
 	// Generate customers for the brothel for the day shift and update girls
 	UpdateGirls(current, 0);
@@ -171,17 +166,15 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		if (DayNight == SHIFT_DAY)
 		{
 			// Remove any dead bodies from last week
-			if(current->health() <= 0)
+			if (current->health() <= 0)
 			{
 				DeadGirl = current;
+				// If there are more girls to process
+				current = (current->m_Next) ? current->m_Next : 0;
 
-				if (current->m_Next) // If there are more girls to process
-				  current = current->m_Next;
-				else
-				  current = 0;
-
-				UpdateAllGirlsStat(brothel, STAT_PCFEAR, 2);	// increase all the girls fear of the player for letting her die (weather his fault or not)
-				UpdateAllGirlsStat(brothel, STAT_PCHATE, 1);	// increase all the girls hate of the player for letting her die (weather his fault or not)
+				// increase all the girls fear and hate of the player for letting her die (weather his fault or not)
+				UpdateAllGirlsStat(brothel, STAT_PCFEAR, 2);
+				UpdateAllGirlsStat(brothel, STAT_PCHATE, 1);
 
 				// Two messages go into the girl queue...
 				msg += girlName + gettext(" has died from her injuries, the other girls all fear and hate you a little more.");
@@ -192,23 +185,21 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, int DayNight)
 				// There is also one global message
 				g_MessageQue.AddToQue(msg, 1);
 
-				// I forgot to set msg and summary to empty. D'OH!
 				msg = "";
 				summary = "";
 
 				RemoveGirl(0, DeadGirl);
 				DeadGirl = 0;
 
-				if (current)  // If there are more girls to process
-					continue;
-				else
-					break;
+				// If there are more girls to process
+				if (current) continue; 
+				else		break;
 			}
 
 			current->m_YesterDayJob = current->m_DayJob;		// `J` set what she did yesterday
 			current->m_YesterNightJob = current->m_NightJob;	// `J` set what she did yesternight
 
-			// Brothel only update for girls accomadation level
+			// Brothel only update for girls accommodation level
 			do_food_and_digs(brothel, current);
 
 			// update the fetish traits
@@ -279,16 +270,16 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, int DayNight)
 			sw = (DayNight == SHIFT_DAY) ? current->m_DayJob : current->m_NightJob;
 
 		// `J` added check to force jobs into the Arena correcting a bug
-		if (sw != JOB_ARENAREST && sw >= JOB_FIGHTBEASTS && sw <= JOB_ARENAREST)
+		if (sw >= JOB_FIGHTBEASTS && sw <= JOB_CLEANARENA)
 		{
-			refused = m_JobManager.JobFunctions[sw](current, brothel, DayNight, summary);
+			refused = m_JobManager.JobFunc[sw](current, brothel, DayNight, summary);
 		}
 		else // Any job not in the Arena will be replaced with JOB_ARENAREST
 		{
 			if (DayNight == SHIFT_DAY)current->m_DayJob = JOB_ARENAREST;
 			else current->m_NightJob = JOB_ARENAREST;
 			sw = JOB_ARENAREST;
-			refused = m_JobManager.JobFunctions[JOB_RESTING](current, brothel, DayNight, summary);
+			refused = m_JobManager.JobFunc[JOB_ARENAREST](current, brothel, DayNight, summary);
 		}
 
 		if(refused)						// if she refused she still gets tired

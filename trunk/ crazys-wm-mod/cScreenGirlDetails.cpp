@@ -71,6 +71,8 @@ extern	bool	g_D_Key;
 extern	bool	g_Z_Key;
 extern	bool	g_X_Key;
 extern	bool	g_C_Key;
+extern	bool	g_H_Key;
+extern	bool	g_J_Key;
 
 static cTariff tariff;
 static stringstream ss;
@@ -97,15 +99,23 @@ void cScreenGirlDetails::set_ids()
 	antipreg_id = get_id("UseAntiPregToggle");
 	prev_id = get_id("PrevButton");
 	next_id = get_id("NextButton");
-	accomup_id = get_id("AccomUpButton");
-	accomdown_id = get_id("AccomDownButton");
 	inventory_id = get_id("InventoryButton");
 	senddungeon_id = get_id("SendDungeonButton");
 	reldungeon_id = get_id("ReleaseDungeonButton");
 	interact_id = get_id("InteractButton");
 	takegold_id = get_id("TakeGoldButton");
+
+// `J` Replacing accom buttons with slider
+//	accomup_id = get_id("AccomUpButton");
+//	accomdown_id = get_id("AccomDownButton");
+	accom_id = get_id("AccomSlider");
+	accomval_id = get_id("AccomValue");
+
+
 	houseperc_id = get_id("HousePercSlider");
 	housepercval_id = get_id("HousePercValue");
+
+
 	gallery_id = get_id("GalleryButton");
 	jobtypehead_id = get_id("JobTypeHeader");
 	jobtypelist_id = get_id("JobTypeList");
@@ -199,8 +209,20 @@ void cScreenGirlDetails::init()
 
 	ClearListBox(jobtypelist_id);
 
-	DisableButton(accomdown_id, selected_girl->m_AccLevel < 1);
-	DisableButton(accomup_id, selected_girl->m_AccLevel > 4);
+// `J` Replacing accom buttons with slider
+//	DisableButton(accomdown_id, selected_girl->m_AccLevel < 1);
+//	DisableButton(accomup_id, selected_girl->m_AccLevel > 4);
+	SliderRange(accom_id, 0, 5, selected_girl->m_AccLevel, 1);
+	string accomstr = "Accommodation: ";
+	if (SliderValue(accom_id) == 0)	accomstr += gettext("Very Poor");
+	if (SliderValue(accom_id) == 1)	accomstr += gettext("Adequate");
+	if (SliderValue(accom_id) == 2)	accomstr += gettext("Nice");
+	if (SliderValue(accom_id) == 3)	accomstr += gettext("Good");
+	if (SliderValue(accom_id) == 4)	accomstr += gettext("Wonderful");
+	if (SliderValue(accom_id) == 5)	accomstr += gettext("High Class");
+	EditTextItem(accomstr, accomval_id);
+
+
 
 	DisableButton(interact_id, (g_TalkCount <= 0));
 	DisableButton(takegold_id, (selected_girl->m_Money <= 0));
@@ -288,9 +310,8 @@ void cScreenGirlDetails::init()
 		DayNight = 1;
 		ClearListBox(joblist_id);
 		AddToListBox(jobtypelist_id, JOBFILTER_FARMSTAFF, g_Farm.m_JobManager.JobFilterName[JOBFILTER_FARMSTAFF]);
-		AddToListBox(jobtypelist_id, JOBFILTER_STABLES, g_Farm.m_JobManager.JobFilterName[JOBFILTER_STABLES]);
-		AddToListBox(jobtypelist_id, JOBFILTER_STABLES, g_Farm.m_JobManager.JobFilterName[JOBFILTER_LABORERS]);
-		AddToListBox(jobtypelist_id, JOBFILTER_STABLES, g_Farm.m_JobManager.JobFilterName[JOBFILTER_PRODUCERS]);
+		AddToListBox(jobtypelist_id, JOBFILTER_LABORERS, g_Farm.m_JobManager.JobFilterName[JOBFILTER_LABORERS]);
+		AddToListBox(jobtypelist_id, JOBFILTER_PRODUCERS, g_Farm.m_JobManager.JobFilterName[JOBFILTER_PRODUCERS]);
 		SetSelectedItemInList(jobtypelist_id, JOBFILTER_FARMSTAFF);
 		RefreshJobList();
 		HideButton(day_id, true);
@@ -301,7 +322,7 @@ void cScreenGirlDetails::init()
 	{  // if not in dungeon, set up job lists
 		// add the job filters
 	//	for(int i=0; i<NUMJOBTYPES; i++)  // loop through all job types
-		for(unsigned int i=0; i<JOBFILTER_STABLES; i++)  // temporary limit to job types shown
+		for (unsigned int i = 0; i<JOBFILTER_BROTHEL; i++)  // temporary limit to job types shown
 		{
 			AddToListBox(jobtypelist_id, i, g_Brothels.m_JobManager.JobFilterName[i]);
 		}
@@ -392,6 +413,24 @@ bool cScreenGirlDetails::check_keys()
 		{
 			g_D_Key = false;
 			NextGirl();
+			return true;
+		}
+		if (g_H_Key || g_J_Key)
+		{
+			int mod = 1; if (g_H_Key) mod = -1;
+			g_Girls.UpdateStat(selected_girl, STAT_HOUSE, mod);
+			g_H_Key = g_J_Key = false;
+			SliderValue(houseperc_id, g_Girls.GetStat(selected_girl, STAT_HOUSE));
+			ss.str("");
+			ss << gettext("House Percentage: ") << g_Girls.GetStat(selected_girl, STAT_HOUSE) << gettext("%");
+			EditTextItem(ss.str(), housepercval_id);
+			// Rebelliousness might have changed, so update details
+			if (DetailLevel == 0)
+			{
+				string detail = g_Girls.GetDetailsString(selected_girl);
+				EditTextItem(detail, girldesc_id);
+			}
+
 			return true;
 		}
 		if (g_S_Key)
@@ -545,6 +584,24 @@ void cScreenGirlDetails::check_events()
 		g_InitWin = true;
 		return;
 	}
+
+
+	if (g_InterfaceEvents.CheckSlider(accom_id))
+	{
+		selected_girl->m_AccLevel = SliderValue(accom_id);
+		//g_Girls.SetStat(selected_girl, accom, SliderValue(accom_id));
+		SliderRange(accom_id, 0, 5, selected_girl->m_AccLevel, 1);
+		string accomstr = "Accommodation: ";
+		if (SliderValue(accom_id) == 0)	accomstr += gettext("Very Poor");
+		if (SliderValue(accom_id) == 1)	accomstr += gettext("Adequate");
+		if (SliderValue(accom_id) == 2)	accomstr += gettext("Nice");
+		if (SliderValue(accom_id) == 3)	accomstr += gettext("Good");
+		if (SliderValue(accom_id) == 4)	accomstr += gettext("Wonderful");
+		if (SliderValue(accom_id) == 5)	accomstr += gettext("High Class");
+		EditTextItem(accomstr, accomval_id);
+		return;
+	}
+/*
 	if(g_InterfaceEvents.CheckButton(accomup_id))
 	{
 		if(selected_girl->m_AccLevel+1 > 5)
@@ -565,6 +622,7 @@ void cScreenGirlDetails::check_events()
 		g_InitWin = true;
 		return;
 	}
+*/
 	if(g_InterfaceEvents.CheckButton(takegold_id))
 	{
 		take_gold(selected_girl);

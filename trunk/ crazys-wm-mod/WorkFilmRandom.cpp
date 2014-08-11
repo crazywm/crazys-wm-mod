@@ -53,6 +53,6 @@ bool cJobManager::WorkFilmRandom(sGirl* girl, sBrothel* brothel, int DayNight, s
 		sw = roll + JOB_FILMBEAST;
 		} while(!is_sex_type_allowed(sw, brothel));
 
-//	refused = jobmng.JobFunctions[sw](girl,brothel,SHIFT_NIGHT,summary);
+//	refused = jobmng.JobFunc[sw](girl,brothel,SHIFT_NIGHT,summary);
 	return refused;
 }

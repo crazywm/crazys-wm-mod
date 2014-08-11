@@ -534,3 +534,29 @@ Whore Master:
 Corrected spelling of Rejuvenation
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.05
 
+###  Changes 8/6/2014
+Cleaned cInterfaceWindow.cpp
+
+###  Changes 8/7/2014
+Converting hard coded interface items in InterfaceGlobals.cpp
+ - Converted LoadMenu.txt and GetString.txt to .xml
+ - Added TurnSummary.xml and TransferGirls.xml
+Updated .05t to use new config.xml and interface xmls
+
+###  Changes 8/8-9/2014
+Cleanup of cGirls.cpp and other girls interface stuff
+ - Fixed Virgin/MILF conflict for new girls
+ - If same name check fails 3 times, name tries double name
+ - Changed the girl note "Based on:" to be optional with log_extradetails=true
+ - Changed Accomodation from buttons to slider and moved text for it below it
+ - Added hotkeys "H" = House percent -1 and "J" = House percent +1
+ - Rearranged Girls details texts
+
+###  Changes 8/10/2014
+Added "Hard Coded Random Girl" to CreateRandomGirl incase there are no rgirlsx files for .05 and .06
+Changed "JobDescription[]" to "JobDesc[]" and "JobFilterDescription[]" to "JobFilterDesc[]" and "JobFunction[]" to "JobFunc[]" for .06
+Rearranged and renumbered jobs for .06
+Lots of cleanup.
+ 
+ 
+ 

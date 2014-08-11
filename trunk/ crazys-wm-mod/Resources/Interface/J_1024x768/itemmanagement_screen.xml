@@ -1,26 +1,25 @@
 <Screen>
-<Window	Name="Item Management Window"				XPos="16"	YPos="12"	Width="768"	Height="576"	Border="1"	/>
-<Text    	Name="OwnersLeftHeader"	Text="Owner"		XPos="101"	YPos="0"	Width="120"	Height="32"	FontSize="18"	/>
-<ListBox	Name="OwnersLeftList"					XPos="8"	YPos="24"	Width="250"	Height="222"	Border="1"	Events="true"	Multi="false"	/>
-<Text    	Name="ItemsLeftHeader"	Text="Inventory"		XPos="86"	YPos="240"	Width="120"	Height="32"	FontSize="18"	/>
-<ListBox	Name="ItemsLeftList"					XPos="8"	YPos="266"	Width="250"	Height="302"	Border="1"	Events="true"	Multi="true"	/>
-<Text    	Name="OwnersRightHeader"	Text="Owner"	XPos="603"	YPos="0"	Width="120"	Height="32"	FontSize="18"	/>
-<ListBox	Name="OwnersRightList"					XPos="510"	YPos="24"	Width="250"	Height="222"	Border="1"	Events="true"	Multi="false"	/>
-<Text    	Name="ItemsRightHeader"	Text="Inventory"		XPos="588"	YPos="240"	Width="120"	Height="32"	FontSize="18"	/>
-<ListBox	Name="ItemsRightList"					XPos="510"	YPos="266"	Width="250"	Height="302"	Border="1"	Events="true"	Multi="true"	/>
-<Text    	Name="CurrentBrothel"	Text=""			XPos="266"	YPos="0"	Width="500"	Height="32"	FontSize="12"	/>
-<!-- <Text    	Name="FilterHeader"	Text="Category Filter"	XPos="319"	YPos="20"	Width="150"	Height="32"	FontSize="18"	/> -->
-<ListBox	Name="FilterList"						XPos="325"	YPos="20"	Width="120"	Height="190"	Border="1"	Events="true"	Multi="false"	/>
-<Text    	Name="PlayerGold"	Text="Your Gold"			XPos="302"	YPos="250"	Width="208"	Height="32"	FontSize="16"	/>
-<Text    	Name="ShiftHeader"	Text="TransferItem(s)"	XPos="330"	YPos="214"	Width="150"	Height="68"	FontSize="18"	/>
-<Button  	Name="ShiftLeftButton"	Image="ShiftLeft"		XPos="270"	YPos="200"	Width="48"	Height="48"	Transparency="true"	Scale="true"	/>
-<Button  	Name="ShiftRightButton"	Image="ShiftRight"	XPos="450"	YPos="200"	Width="48"	Height="48"	Transparency="true"	Scale="true"	/>
-<Text    	Name="ItemDesc"	Text=""				XPos="266"	YPos="282"	Width="236"	Height="174"	FontSize="10"	/>
-<Image	Name="IndicateLeft"	File="imgArrowLeft.png"	XPos="261"	YPos="466"	Width="44"	Height="60"	/>
-<Button  	Name="EquipLeftButton"	Image="Equip"		XPos="278"	YPos="464"	Width="80"	Height="32"	Transparency="true"	Scale="true"	/>
-<Button  	Name="UnequipLeftButton"	Image="Unequip"	XPos="278"	YPos="496"	Width="80"	Height="32"	Transparency="true"	Scale="true"	/>
-<Image	Name="IndicateRight" File="imgArrowRight.png"	XPos="463"	YPos="466"	Width="44"	Height="60"	/>
-<Button  	Name="EquipRightButton"	Image="Equip"		XPos="410"	YPos="464"	Width="80"	Height="32"	Transparency="true"	Scale="true"	/>
-<Button  	Name="UnequipRightButton"	Image="Unequip"	XPos="410"	YPos="496"	Width="80"	Height="32"	Transparency="true"	Scale="true"	/>
-<Button  	Name="BackButton"	Image="Back"			XPos="320"	YPos="540"	Width="160"	Height="32"	Transparency="true"	Scale="true"	/>
+<Window   Name="Item Management Window"                      XPos="16"  YPos="12"  Width="768" Height="576" Border="1" />
+<Text     Name="OwnersLeftHeader"   Text="Owner"             XPos="101" YPos="0"   Width="120" Height="32"  FontSize="18" />
+<ListBox  Name="OwnersLeftList"                              XPos="8"   YPos="24"  Width="250" Height="222" Border="1"          Events="true" Multi="false" />
+<Text     Name="ItemsLeftHeader"    Text="Inventory"         XPos="86"  YPos="240" Width="120" Height="32"  FontSize="18" />
+<ListBox  Name="ItemsLeftList"                               XPos="8"   YPos="266" Width="250" Height="302" Border="1"          Events="true" Multi="true" />
+<Text     Name="OwnersRightHeader"  Text="Owner"             XPos="603" YPos="0"   Width="120" Height="32"  FontSize="18" />
+<ListBox  Name="OwnersRightList"                             XPos="510" YPos="24"  Width="250" Height="222" Border="1"          Events="true" Multi="false" />
+<Text     Name="ItemsRightHeader"   Text="Inventory"         XPos="588" YPos="240" Width="120" Height="32"  FontSize="18" />
+<ListBox  Name="ItemsRightList"                              XPos="510" YPos="266" Width="250" Height="302" Border="1"          Events="true" Multi="true" />
+<Text     Name="CurrentBrothel"     Text=""                  XPos="266" YPos="0"   Width="500" Height="32"  FontSize="12" />
+<ListBox  Name="FilterList"                                  XPos="325" YPos="20"  Width="120" Height="190" Border="1"          Events="true" Multi="false" />
+<Text     Name="PlayerGold"         Text="Your Gold"         XPos="302" YPos="250" Width="208" Height="32"  FontSize="16" />
+<Text     Name="ShiftHeader"        Text="TransferItem(s)"   XPos="330" YPos="214" Width="150" Height="68"  FontSize="18" />
+<Button   Name="ShiftLeftButton"    Image="ShiftLeft"        XPos="270" YPos="200" Width="48"  Height="48"  Transparency="true" Scale="true" />
+<Button   Name="ShiftRightButton"   Image="ShiftRight"       XPos="450" YPos="200" Width="48"  Height="48"  Transparency="true" Scale="true" />
+<Text     Name="ItemDesc"           Text=""                  XPos="266" YPos="282" Width="236" Height="174" FontSize="10" />
+<Image    Name="IndicateLeft"       File="imgArrowLeft.png"  XPos="261" YPos="466" Width="44"  Height="60" />
+<Button   Name="EquipLeftButton"    Image="Equip"            XPos="278" YPos="464" Width="80"  Height="32"  Transparency="true" Scale="true" />
+<Button   Name="UnequipLeftButton"  Image="Unequip"          XPos="278" YPos="496" Width="80"  Height="32"  Transparency="true" Scale="true" />
+<Image    Name="IndicateRight"      File="imgArrowRight.png" XPos="463" YPos="466" Width="44"  Height="60" />
+<Button   Name="EquipRightButton"   Image="Equip"            XPos="410" YPos="464" Width="80"  Height="32"  Transparency="true" Scale="true" />
+<Button   Name="UnequipRightButton" Image="Unequip"          XPos="410" YPos="496" Width="80"  Height="32"  Transparency="true" Scale="true" />
+<Button   Name="BackButton"         Image="Back"             XPos="320" YPos="540" Width="160" Height="32"  Transparency="true" Scale="true" />
 </Screen>

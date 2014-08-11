@@ -205,7 +205,7 @@ void cHouseManager::UpdateGirls(sBrothel* brothel, int DayNight)
 			current->m_YesterDayJob = current->m_DayJob;		// `J` set what she did yesterday
 			current->m_YesterNightJob = current->m_NightJob;	// `J` set what she did yesternight
 
-			// Brothel only update for girls accomadation level
+			// Brothel only update for girls accommodation level
 			do_food_and_digs(brothel, current);
 
 			// update the fetish traits
@@ -278,14 +278,14 @@ void cHouseManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		// `J` added check to force jobs into the Centre correcting a bug
 		if (sw != JOB_HOUSEREST && sw >= JOB_PERSONALTRAINING && sw <= JOB_HEADGIRL)
 		{
-			refused = m_JobManager.JobFunctions[sw](current, brothel, DayNight, summary);
+			refused = m_JobManager.JobFunc[sw](current, brothel, DayNight, summary);
 		}
 		else // Any job not in the House will be replaced with JOB_HOUSEREST
 		{
 			if (DayNight == SHIFT_DAY)current->m_DayJob = JOB_HOUSEREST;
 			else current->m_NightJob = JOB_HOUSEREST;
 			sw = JOB_HOUSEREST;
-			refused = m_JobManager.JobFunctions[JOB_RESTING](current, brothel, DayNight, summary);
+			refused = m_JobManager.JobFunc[JOB_RESTING](current, brothel, DayNight, summary);
 		}
 
 

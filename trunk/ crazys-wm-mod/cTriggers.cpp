@@ -1194,14 +1194,19 @@ int cTrigger::load_from_xml(TiXmlElement *el)
 void cTriggerList::LoadList(string filename)
 {
 	TiXmlDocument doc(filename);
-	if (!doc.LoadFile()) {
-		if (!doc.ErrorRow() && !doc.ErrorCol())
+	cConfig cfg;
+	if (!doc.LoadFile())
+	{
+		if (cfg.debug.log_girls())
 		{
-			cerr << "Girl has no script trigger file: " << filename << endl;
-			return;
+			if (!doc.ErrorRow() && !doc.ErrorCol())
+			{
+				cerr << "Girl has no script trigger file: " << filename << endl;
+				return;
+			}
+			cerr << "can't load script trigger list " << filename << endl;
+			cerr << "Error: line " << doc.ErrorRow() << ", col " << doc.ErrorCol() << ": " << doc.ErrorDesc() << endl;
 		}
-		cerr << "can't load script trigger list " << filename << endl;
-		cerr << "Error: line " << doc.ErrorRow() << ", col " << doc.ErrorCol() << ": " << doc.ErrorDesc() << endl;
 		return;
 	}
 	/*

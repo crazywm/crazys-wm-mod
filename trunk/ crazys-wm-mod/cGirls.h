@@ -76,11 +76,11 @@ extern cAbstractGirls *g_GirlsPtr;
 // structure to hold randomly generated girl information
 typedef struct sRandomGirl
 {
-	string m_Name;
-	string m_Desc;
+	string m_Name = "";
+	string m_Desc = "-";
 
-	bool m_newRandom;
-	bool *m_newRandomTable;
+	bool m_newRandom = false;
+	bool *m_newRandomTable = false;
 
 	bool m_Human = true;			// 1 means they are human otherwise they are not
 	bool m_Catacomb = false;		// 1 means they are a monster found in catacombs, 0 means wanderer
@@ -97,64 +97,60 @@ typedef struct sRandomGirl
 	sTrait* m_Traits[MAXNUM_TRAITS];	        // List of traits they may start with
 	unsigned char m_TraitChance[MAXNUM_TRAITS];	// the percentage change for each trait
 
-	int m_MinMoney;	// min and max money they can start with
-	int m_MaxMoney;
+	int m_MinMoney = 0;	// min and max money they can start with
+	int m_MaxMoney = 0;
 
 	sRandomGirl* m_Next;
-/*
- *	MOD: DocClox Sun Nov 15 06:11:43 GMT 2009
- *	stream operator for debugging
- *	plus a shitload of XML loader funcs
- */
+	/*
+	 *	MOD: DocClox Sun Nov 15 06:11:43 GMT 2009
+	 *	stream operator for debugging
+	 *	plus a shitload of XML loader funcs
+	 */
 	friend ostream& operator<<(ostream &os, sRandomGirl &g);
-/*
- *	one func to load the girl node,
- *	and then one each for each embedded node
- *
- *	Not so much difficult as tedious.
- */
+	/*
+	 *	one func to load the girl node,
+	 *	and then one each for each embedded node
+	 *
+	 *	Not so much difficult as tedious.
+	 */
 	void load_from_xml(TiXmlElement*);	// uses sRandomGirl::load_from_xml
 	void process_trait_xml(TiXmlElement*);
 	void process_stat_xml(TiXmlElement*);
 	void process_skill_xml(TiXmlElement*);
 	void process_cash_xml(TiXmlElement*);
-/*
- *	END MOD
- */
+	/*
+	 *	END MOD
+	 */
 	static sGirl *lookup;  // used to look up stat and skill IDs
 	sRandomGirl()
 	{
-		m_Next=0;
+		m_newRandomTable = false;
+		m_Next = 0;
 		//assigning defaults
-		for(int i=0;i<NUM_STATS;i++)
+		for (int i = 0; i < NUM_STATS; i++)
 		{
-			m_MinStats[i]=30;
-			m_MaxStats[i]=60;
+			m_MinStats[i] = 30;
+			m_MaxStats[i] = 60;
 		}
-		for(int i=0;i<NUM_SKILLS;i++)		// Changed from 10 to NUM_SKILLS so that it will always set the proper number of defaults --PP
+		for (int i = 0; i < NUM_SKILLS; i++)// Changed from 10 to NUM_SKILLS so that it will always set the proper number of defaults --PP
 		{
-			m_MinSkills[i]=0;				// Changed from 30 to 0, made no sense for all skills to be a default of 30.
-			m_MaxSkills[i]=30;
+			m_MinSkills[i] = 0;				// Changed from 30 to 0, made no sense for all skills to be a default of 30.
+			m_MaxSkills[i] = 30;
 		}
 		//now for a few overrides
-		m_MinStats[STAT_AGE]=18;
-		m_MaxStats[STAT_AGE]=25;
-		m_MinStats[STAT_HOUSE]=0;
-		m_MaxStats[STAT_HOUSE]=100;
-		m_MinStats[STAT_HEALTH]=100;
-		m_MaxStats[STAT_HEALTH]=100;
-		m_MinStats[STAT_FAME]=0;
-		m_MaxStats[STAT_FAME]=0;
-		m_MinStats[STAT_LEVEL]=0;
-		m_MaxStats[STAT_LEVEL]=0;
-		m_MinStats[STAT_PCFEAR]=0;
-		m_MaxStats[STAT_PCFEAR]=0;
-		m_MinStats[STAT_PCHATE]=0;
-		m_MaxStats[STAT_PCHATE]=0;
-		m_MinStats[STAT_PCLOVE]=0;
-		m_MaxStats[STAT_PCLOVE]=0;
+		m_MinMoney = 0;
+		m_MaxMoney = 10;
+		m_MinStats[STAT_AGE] = 17;	// min age is really 18 but setting it to 17 allows for "just turned 18" in virgin check.
+		m_MaxStats[STAT_AGE] = 25;
+		m_MinStats[STAT_HOUSE] = m_MaxStats[STAT_HOUSE] = 100;
+		m_MinStats[STAT_HEALTH] = m_MaxStats[STAT_HEALTH] = 100;
+		m_MinStats[STAT_FAME] = m_MaxStats[STAT_FAME] = 0;
+		m_MinStats[STAT_LEVEL] = m_MaxStats[STAT_LEVEL] = 0;
+		m_MinStats[STAT_PCFEAR] = m_MaxStats[STAT_PCFEAR] = 0;
+		m_MinStats[STAT_PCHATE] = m_MaxStats[STAT_PCHATE] = 0;
+		m_MinStats[STAT_PCLOVE] = m_MaxStats[STAT_PCLOVE] = 0;
 	}
-	~sRandomGirl() {if(m_Next)delete m_Next;m_Next=0;}
+	~sRandomGirl() { if (m_Next)delete m_Next; m_Next = 0; }
 }sRandomGirl;
 
 

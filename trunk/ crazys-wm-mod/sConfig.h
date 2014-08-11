@@ -40,6 +40,7 @@ struct sConfigData
 		int girl_meet;
 		int girls_house_perc;
 		bool girls_keep_tips;
+		bool slave_pay_outofpocket;
 		int slave_house_perc;
 		bool slave_keep_tips;
 		bool auto_use_items;
@@ -290,7 +291,11 @@ public:
  	struct {
 		int	gold()					{ return data->initial.gold; }
 		int	girl_meet()				{ return data->initial.girl_meet; }
+		int girls_house_perc()		{ return data->initial.girls_house_perc; }
+		bool girls_keep_tips()		{ return data->initial.girls_keep_tips; }
+		bool slave_pay_outofpocket(){ return data->initial.slave_pay_outofpocket; }
 		int slave_house_perc()		{ return data->initial.slave_house_perc; }
+		bool slave_keep_tips()		{ return data->initial.slave_keep_tips; }
 		bool auto_use_items()		{ return data->initial.auto_use_items; }
 		bool auto_combat_equip()	{ return data->initial.auto_combat_equip; }
 		int	torture_mod()			{ return data->initial.torture_mod; }
@@ -306,12 +311,15 @@ public:
 		bool configXML()		{ return data->resolution.configXML; }
 	} resolution;
 
- 	struct {
-		bool	log_items()	        { return data->debug.log_items; }
-		bool	log_rgirls()	    { return data->debug.log_rgirls; }
-		bool	log_girls()     	{ return data->debug.log_girls; }
-		bool	log_fonts()	        { return data->debug.log_fonts; }
-		bool	log_torture()	    { return data->debug.log_torture; }
+ 	struct Debug{
+		bool	log_girls()         { return data->debug.log_girls; }
+		bool	log_rgirls()        { return data->debug.log_rgirls; }
+		bool	log_girlfights()    { return data->debug.log_girl_fights; }
+		bool	log_items()         { return data->debug.log_items; }
+		bool	log_fonts()         { return data->debug.log_fonts; }
+		bool	log_torture()       { return data->debug.log_torture; }
+		bool	log_debug()         { return data->debug.log_debug; }
+		bool	log_extradetails()  { return data->debug.log_extra_details; }
 	} debug;
 
 	string override_dir() {

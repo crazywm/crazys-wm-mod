@@ -20,110 +20,79 @@
 #include "CLog.h"
 #include "tinyxml.h"
 
-bool XmlUtil::get_att(
-	TiXmlElement *el, const char *name, int &ipt, bool optional
-)
+bool XmlUtil::get_att(TiXmlElement *el, const char *name, int &ipt, bool optional)
 {
+	if (el->Attribute(name, &ipt) || optional)	return true;
 	CLog l;
-	if(el->Attribute(name, &ipt) || optional) {
-		return true;
-	}
-	l.ss()	<< "Warning: " << m_context << ": No '"
-		<< name
-		<< "' attribute: defaulting to "
-		<< ipt
-	;
+	l.ss() << "Warning: " << m_context << ": No '" << name << "' attribute: defaulting to " << ipt;
 	l.ssend();
 	return false;
 }
 
-bool XmlUtil::get_att(
-	TiXmlElement *el, const char *name, double &dpt, bool optional
-)
+bool XmlUtil::get_att(TiXmlElement *el, const char *name, double &dpt, bool optional)
 {
+	if (el->Attribute(name, &dpt) || optional)	return true;
 	CLog l;
-	if(el->Attribute(name, &dpt) || optional) {
-		return true;
-	}
-	l.ss()	<< "Warning: " << m_context << ": No '"
-		<< name
-		<< "' attribute: defaulting to "
-		<< dpt
-	;
+	l.ss() << "Warning: " << m_context << ": No '" << name << "' attribute: defaulting to " << dpt;
 	l.ssend();
 	return false;
 }
 
-bool XmlUtil::get_att(
-	TiXmlElement *el, const char *name, bool &bval, bool optional
-)
+bool XmlUtil::get_att(TiXmlElement *el, const char *name, bool &bval, bool optional)
 {
-	CLog l;
 	const char *pt;
-
 	pt = el->Attribute(name);
 
-	if(!pt) {
-		if(optional) {
-			return true;
-		}
-		l.ss()	<< "Warning: " << m_context << ": No '"
-			<< name
-			<< "' attribute: defaulting to "
-			<< bval
-		;
+	if (!pt)
+	{
+		if (optional) return true;
+		CLog l;
+		l.ss() << "Warning: " << m_context << ": No '" << name << "' attribute: defaulting to " << bval;
 		l.ssend();
 		return false;
 	}
 
-
-/*
- *      convert to a string, and then squash that to lower case
- */
+	/*
+	 *      convert to a string, and then squash that to lower case
+	 */
 	string s = pt;
-	for(u_int i = 0; i < s.length(); i++)
+	for (u_int i = 0; i < s.length(); i++)
 	{
 		s[i] = tolower(s[i]);
 	}
-/*
- *      now we expect either "true" or "false"
- *      we can take "1" and "0" as well
- */
-	if(s == "true" || s == "1") {
+	/*
+	 *      now we expect either "true" or "false"
+	 *      we can take "1" and "0" as well
+	 */
+	if (s == "true" || s == "1")
+	{
 		bval = true;
 		return true;
 	}
-	if(s == "false" || s == "0") {
+	if (s == "false" || s == "0")
+	{
 		bval = false;
 		return true;
 	}
-	l.ss()	<< "Error: " << m_context << ": Unexpected value '"
-		<< s
-		<< "' in binary attribute '"
-		<< name
-		<< "'"
-	;
+	CLog l;
+	l.ss() << "Error: " << m_context << ": Unexpected value '" << s << "' in binary attribute '" << name << "'";
 	l.ssend();
 	return false;
 }
 
-bool XmlUtil::get_att(
-	TiXmlElement *el, const char *name, string &s, bool optional
-)
+bool XmlUtil::get_att(TiXmlElement *el, const char *name, string &s, bool optional)
 {
-	CLog l;
 	const char *pt;
 
 	pt = el->Attribute(name);
-	if(pt) {
+	if (pt)
+	{
 		s = pt;
 		return true;
 	}
-	if(optional) return true;
-	l.ss()	<< "Warning: " << m_context << ": No '"
-		<< name
-		<< "' attribute: defaulting to "
-		<< s;
+	if (optional) return true;
+	CLog l;
+	l.ss() << "Warning: " << m_context << ": No '" << name << "' attribute: defaulting to " << s;
 	l.ssend();
 	return false;
 }

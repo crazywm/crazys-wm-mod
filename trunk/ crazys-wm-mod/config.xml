@@ -16,6 +16,8 @@
 	GirlMeet is the %chance you'll meet a girl when walking around town.
 	GirlsHousePerc and SlaveHousePerc is the default House Percentage for free girls and slave girls.
 	GirlsKeepTips and GirlsKeepTips is whether they keep tips separate from house percent.
+	SlavePayOutOfPocket is wether or not slave girls get paid by the player directly for certain jobs
+		ie. Cleaning, Advertising, Farming jobs, Film jobs, etc.
 	AutoUseItems is whether or not the game will try to automatically use
 		the player's items intelligently on girls each week.
 		This feature needs more testing.
@@ -37,6 +39,7 @@
 		GirlsHousePerc="60"
 		GirlsKeepTips="true"
 		SlaveHousePerc="100"
+		SlavePayOutOfPocket="true"
 		SlaveKeepTips="false"
 		AutoUseItems="false"
 		AutoCombatEquip="true"

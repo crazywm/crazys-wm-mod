@@ -208,7 +208,7 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)
 			current->m_YesterDayJob = current->m_DayJob;		// `J` set what she did yesterday
 			current->m_YesterNightJob = current->m_NightJob;	// `J` set what she did yesternight
 
-			// Brothel only update for girls accomadation level
+			// Brothel only update for girls accommodation level
 			do_food_and_digs(brothel, current);
 
 			// update the fetish traits
@@ -281,14 +281,14 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		// `J` added check to force jobs into the Centre correcting a bug
 		if (sw != JOB_CENTREREST && sw >= JOB_FEEDPOOR && sw <= JOB_REHAB)
 		{
-			refused = m_JobManager.JobFunctions[sw](current, brothel, DayNight, summary);
+			refused = m_JobManager.JobFunc[sw](current, brothel, DayNight, summary);
 		}
 		else // Any job not in the Centre will be replaced with JOB_CENTREREST
 		{
 			if (DayNight == SHIFT_DAY)current->m_DayJob = JOB_CENTREREST;
 			else current->m_NightJob = JOB_CENTREREST;
 			sw = JOB_CENTREREST;
-			refused = m_JobManager.JobFunctions[JOB_RESTING](current, brothel, DayNight, summary);
+			refused = m_JobManager.JobFunc[JOB_RESTING](current, brothel, DayNight, summary);
 		}
 
 		if(refused)						// if she refused she still gets tired

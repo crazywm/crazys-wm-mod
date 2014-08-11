@@ -58,13 +58,13 @@ class cJobManager
 public:
 	//static vector<sJobBase *> job_list; - Changed until it is working - necro
 	// using an array of function pointers
-//	WorkJobF JobFunctions[NUM_JOBS];
-	bool (*JobFunctions[NUM_JOBS])(sGirl*,sBrothel*,int,string&);
+//	WorkJobF JobFunc[NUM_JOBS];
+	bool (*JobFunc[NUM_JOBS])(sGirl*,sBrothel*,int,string&);
 
 	string JobName[NUM_JOBS];  // short descriptive name of job
-	string JobDescription[NUM_JOBS];  // longer description of job
+	string JobDesc[NUM_JOBS];  // longer description of job
 	string JobFilterName[NUMJOBTYPES];  // short descriptive name of job filter
-	string JobFilterDescription[NUMJOBTYPES];  // longer description of job filter
+	string JobFilterDesc[NUMJOBTYPES];  // longer description of job filter
 	unsigned int JobFilterIndex[NUMJOBTYPES+1];  // starting job index # for job filter
 	string JobDescriptionCount(int job_id, int brothel_id, bool day = true, bool isClinic = false, bool isStudio = false, bool isArena = false, bool isCentre = false, bool isHouse = false, bool isFarm = false);  // return a job description along with a count of how many girls are on it
 	bool HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, int OldJobID, bool DayOrNight);  // check for and handle special job assignments
