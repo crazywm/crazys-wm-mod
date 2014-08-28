@@ -358,6 +358,8 @@ Added Hand Job restrictions to interface J_1024x768
 Removed the "End of Script text for testing purposes." line from DefaultInteractDetails.script
 Included .\Docs&Tools with ScriptEdit and WMEdit in it
 !!!!!!!!!!!!!!!!!!!! pushed version .05r
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r85
+
 Dungeon "Matron" can be a Torturer from any brothel for purpose of dungeon girl rebelliousness.
 
 ###  Changes 6/18-20/2014
@@ -372,6 +374,7 @@ May have fixed a bug, but it needs testing to be sure,  details here - http://ww
 Updated "!0 girlsx-contents.txt" and "!0 rgirlsx-contents.txt" adding new skills.
 Added "JTest.zip" in Characters folder containing "JTest.rgirlsx" and "JTest" folder with test pictures for each image type
 !!!!!!!!!!!!!!!!!!!! pushed version .05r.01
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r86
 
 ###  Changes 6/21/2014
 Merged day and night for OutputGirlDetailString for easier adding in later.
@@ -383,6 +386,8 @@ JOB_RECRUITER is now part time job and you can have as many as you want
 Reduced JOB_RECRUITER success rate to compensate for more recruiters allowed
 JOB_RECRUITER modified to include player's disposition - Needs more texts
 !!!!!!!!!!!!!!!!!!!! pushed version .05r.02
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r87
+
 
 ###  Changes 6/22-27/2014 - busy week IRL :/
 Started "Your Daughter" status to allow (r)girlsx to be specified as only available through "pregnant by player" births
@@ -403,6 +408,8 @@ Fixed item rarity Catacomb05 and Catacomb01 so they work
  - added default colors in the code
  - expanded the for loops to make it read them
 !!!!!!!!!!!!!!!!!!!! pushed version .05s
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r89
+
 
 ###  Changes 6/28/2014
 Corrected bug in images where default pregnant offset was not checking for IMGTYPE_PREGNANT
@@ -426,6 +433,7 @@ Whore Master Editor:
  - Changed how the editor loads girlsx files so if a stat/skill is not listed, it gets set to default
  - Updated Status="" to include "Arena"
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.01
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r90
 
 ###  Changes 7/3-5/2014
 Corrected bug in Your Daughter for random girls.
@@ -488,6 +496,7 @@ Fixed a few bugs in .05
 Crazy added/updated farm jobs and some other jobs
  - Incorperated Crazy's changes to WorkPersonalBedWarmer.cpp into .05
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.04
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r93
 
 ###  Changes 7/20-21/2014
 Continued work on config.xml
@@ -512,6 +521,7 @@ Rearranged sConfig.cpp and sConfig.h for better parralleling of config.xml
 Created base for farm_screen.xml and farm_management_screen.xml - neither are coded yet and need reworking
 InterfaceColors.xml contains Item Rarity Colors and is coded to load them when config.xml gets loaded - needs cleaning
 Converted GetString.txt to GetString.xml and LoadMenu.txt to LoadMenu.xml
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r94
 
 ###  Changes 7/30-8/4/2014
 Added LogGirlFights, LogDebug and LogExtraDetails to config.xml to both WM and WME
@@ -533,6 +543,8 @@ Whore Master Editor:
 Whore Master:
 Corrected spelling of Rejuvenation
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.05
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r95
+
 
 ###  Changes 8/6/2014
 Cleaned cInterfaceWindow.cpp
@@ -547,16 +559,117 @@ Updated .05t to use new config.xml and interface xmls
 Cleanup of cGirls.cpp and other girls interface stuff
  - Fixed Virgin/MILF conflict for new girls
  - If same name check fails 3 times, name tries double name
- - Changed the girl note "Based on:" to be optional with log_extradetails=true
+ - Changed the girl note "Based on:" to be optional with log_extradetails=true .06
  - Changed Accomodation from buttons to slider and moved text for it below it
  - Added hotkeys "H" = House percent -1 and "J" = House percent +1
  - Rearranged Girls details texts
 
 ###  Changes 8/10/2014
-Added "Hard Coded Random Girl" to CreateRandomGirl incase there are no rgirlsx files for .05 and .06
-Changed "JobDescription[]" to "JobDesc[]" and "JobFilterDescription[]" to "JobFilterDesc[]" and "JobFunction[]" to "JobFunc[]" for .06
+Added "Hard Coded Random Girl" to CreateRandomGirl incase there are no rgirlsx files
+Changed "JobDescription[]" to "JobDesc[]" and "JobFilterDescription[]" to "JobFilterDesc[]" and "JobFunction[]" to "JobFunc[]"
 Rearranged and renumbered jobs for .06
-Lots of cleanup.
- 
- 
- 
+Lots of cleanup. .06
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r96
+
+
+
+
+
+###  Changes 8/11-12/2014
+More cleanup
+Working on cArena.cpp, cCentre.cpp, cClinic.cpp, cFarm.cpp and cHouse.cpp making them all similar .06
+Added set prevdayjob to m_JustGaveBirth check to (hopefully) fix maternity leave bug
+Added hotkey "space" to all buildings that were missing it to go from girl list to girl details
+SCREEN_PLAYERHOUSE was 23 conflicting with SCREEN_SLAVEMARKET also 23. (.05 only - already fixed in .06)
+SCREEN_PLAYERHOUSE was only used 1 time where SCREEN_HOUSE was supposed to be used. 
+Rewrote cScreenSlaveMarket.cpp cleaning and adding get_buy_slave_string(girl) function to handle when either "buy slave" button or the space bar is pressed
+Cleaned cInventory::UpdateShop() to make it run a little smoother
+Cleanup of cInventory.cpp .06
+Started fixing stat/skill vs statmod/skillmod incongruities
+
+###  Changes 8/13/2014
+Reworked GetDetailsString and GetMoreDetailsString to align numbers into a column
+Updated .05t with a some more of the .06 improvements
+More cleanup of cGirls.cpp .06
+ - Increased limits of Temp and Mod stats/skills, can be up to +/- 200 instead of 100
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.06
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version 05t
+
+###  Changes 8/14/2014
+Whore Master Editor:
+ - Increased width and height boxes to 5 digits and interface name to 15.
+ - Fixed the fonts to allow them to be changed.
+ - Made all the (%) things on the config page to only allow 0-100.
+ - Added Screen Scale to fix the 800x600 scale bug.
+ - Added a few more tool tips.
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.07
+
+###  Changes 8/16/2014
+Refixed maternity leave bug for .05 (was fixed for .06 but not fully fixed in .05)
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version 05t.01
+
+###  Changes 8/17/2014
+Re-Refixed maternity leave bug - matron back to work was sending them back without giving them the week off.
+Cleaned and repaired jobtype and job lists for buildings and girldetails.
+Added DayJobColumn(), NightJobColumn() and JobColumn(DayNight) checks to cListBox.(cpp,h) to allow for girl lists to be changed propperly.
+Started reworking "back to work" code
+
+###  Changes 8/18/2014
+Finished "back to work" code part 1 for .05 (.06 will have much smarter "back to work" code)
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version 05t.02
+Rearranged .05 cJobManager.cpp to merge "JobDesc[]", "JobFilterDesc[]" and "JobFunc[]" sections (already done in .06)
+Added and updated "Check for out of building jobs and set yesterday jobs for everyone" section at the start of all building's dayshift.
+
+###  Changes 8/19/2014
+Fixed a bug in WorkPersonalBedWarmer.cpp where it would show a "Sing" image instead of "Handjob" image.
+Fixed small weapon to allow 2 to be equipped
+
+###  Changes 8/20/2014
+Added insemination chance to loss in WorkExploreCatacombs.cpp
+Added high libido check if a girl captures something in WorkExploreCatacombs.cpp
+Fixed default preg profile image
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version 05t.03
+
+###  Changes 8/21/2014
+***** BSOD crashed durring compiling - lost cJobManager.cpp and main.cpp back to r96 for .06
+
+###  Changes 8/21-23/2014
+* Not doing much work on this because of Doctor Who marathon and new season starts *
+Rebuild cJobManager.cpp and main.cpp
+Changed Hotkey switching from [home] and [end] to [ctrl + home] and [ctrl + end]
+
+###  Changes 8/24/2014
+Cleaning of random girl creation removing milf and lolita and reducing virgin to simple check because of complaints.
+Rearranged girl details and made "%" optional with config.xml fonts "ShowPercent=True"
+Added new image types available for future use: "Foot", "Bed", "Farm", "Herd", "Cook", "Craft", "Swim", "Bath" (and preg varients.)
+Rearranged image alttypes to include new image types.
+City Guards can not be slaves.
+Fixed some jobs not showing up in house.
+Farm Veterinarian is a full time job.
+Added Farm background image. (Still need Farm Icon for town map.)
+Added to Matron complications and changed Matron wages from skill alone to skill plus number of girls.
+Updated all buildings' Matrons to match.
+Fixed it so you must start a new game when changing from .05 to .06
+Re-limited building size:  200, 250, 300, 350, 400, 500, 600
+
+###  Changes 8/25-28/2014 --- Studio reflow:
+Fixed GetNumGirlsOnJob to use daynight directly as SHIFT_DAY and SHIFT_NIGHT instead of checking (shift==SHIFT_DAY)
+Finished Director as matron code for studio. (matron=false if Director refuses to work.)
+Finished main part of Studio job processing. 
+Fixed Studio pay to allow slaves not to be paid for out of pocket jobs.
+Added Director assigning unassigned girls to new jobs
+Finished Studio Reflow
+Removed all Legacy girls and savegame code. XML only from now on. 
+ - Legacy triggers were not removed but thay may get removed when I get to making sure triggers work as xml.
+Lots of cleanup of old and unused code.
+Minor changes to the interface and made a halfass farm icon by recoloring centre icon.
+
+WME - added "ShowPercent" checkbox and a few minor changes.
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.08
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.00
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r97
+
+
+

@@ -26,6 +26,9 @@
 #include "cJobManager.h"
 #include "InterfaceProcesses.h"
 #include "libintl.h"
+#include "cScreenGirlDetails.h"
+
+extern cScreenGirlDetails g_GirlDetails;
 
 extern bool g_InitWin;
 extern int g_CurrCentre;
@@ -221,28 +224,36 @@ void cScreenCentreManagement::process()
 
 bool cScreenCentreManagement::check_keys()
 {
-	if(g_UpArrow) {
+	if (g_UpArrow) {
 		selection = ArrowUpListBox(girllist_id);
 		g_UpArrow = false;
 		return true;
 	}
-	if(g_DownArrow) {
+	if (g_DownArrow) {
 		selection = ArrowDownListBox(girllist_id);
 		g_DownArrow = false;
 		return true;
 	}
-	if(g_AltKeys)
+	if (g_AltKeys)
 	{
-	if(g_A_Key) {
-		selection = ArrowUpListBox(girllist_id);
-		g_A_Key = false;
-		return true;
+		if (g_A_Key) {
+			selection = ArrowUpListBox(girllist_id);
+			g_A_Key = false;
+			return true;
+		}
+		if (g_D_Key) {
+			selection = ArrowDownListBox(girllist_id);
+			g_D_Key = false;
+			return true;
+		}
 	}
-	if(g_D_Key) {
-		selection = ArrowDownListBox(girllist_id);
-		g_D_Key = false;
+	// Show Girl Details
+	if (g_SpaceKey)
+	{
+		g_SpaceKey = false;
+		g_GirlDetails.lastsexact = -1;
+		ViewSelectedGirl();
 		return true;
-	}
 	}
 	return false;
 }
@@ -366,46 +377,45 @@ void cScreenCentreManagement::check_events()
 						SetSelectedItemInList(joblist_id, selection, false);
 					}
 					
-
 					if (old_job != selection)
 					{
 						// update the girl's listing to reflect the job change
 						ss.str("");
 						ss << g_Centre.m_JobManager.JobName[selected_girl->m_DayJob];
-						SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), 5);
+						SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->DayJobColumn());
 						ss.str("");
 						ss << g_Centre.m_JobManager.JobName[selected_girl->m_NightJob];
-						SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), 6);
+						SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->NightJobColumn());
 
 						// refresh job worker counts for former job and current job
-						SetSelectedItemText(joblist_id, old_job, g_Centre.m_JobManager.JobDescriptionCount(old_job, 0, day, false, false, false, true));
-						SetSelectedItemText(joblist_id, selection, g_Centre.m_JobManager.JobDescriptionCount(selection, 0, day, false, false, false, true));
+						SetSelectedItemText(joblist_id, old_job, g_Centre.m_JobManager.JobDescriptionCount(old_job, 0, DayNight, false, false, false, true));
+						SetSelectedItemText(joblist_id, selection, g_Centre.m_JobManager.JobDescriptionCount(selection, 0, DayNight, false, false, false, true));
 					}
 				}
 				if (selected_girl->m_DayJob == JOB_REHAB)	// `J` added
 				{
 					ss.str("");
 					ss << g_Centre.m_JobManager.JobName[selected_girl->m_DayJob] << " (" << 3 - selected_girl->m_WorkingDay << ")";
-					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), 5);
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->DayJobColumn());
 				}
 				else if (selected_girl->m_YesterDayJob == JOB_REHAB && selected_girl->m_DayJob != JOB_REHAB && ((selected_girl->m_WorkingDay > 0) || selected_girl->m_PrevWorkingDay > 0))
 				{
 					ss.str("");
 					ss << g_Centre.m_JobManager.JobName[selected_girl->m_DayJob] << " **";
-					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), 5);				
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->DayJobColumn());
 				}
 
 				if (selected_girl->m_NightJob == JOB_REHAB)	// `J` added
 				{
 					ss.str("");
 					ss << g_Centre.m_JobManager.JobName[selected_girl->m_NightJob] << " (" << 3 - selected_girl->m_WorkingDay << ")";
-					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), 6);
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->NightJobColumn());
 				}
 				else if (selected_girl->m_YesterNightJob == JOB_REHAB && selected_girl->m_NightJob != JOB_REHAB && ((selected_girl->m_WorkingDay > 0) || selected_girl->m_PrevWorkingDay > 0))
 				{
 					ss.str("");
 					ss << g_Centre.m_JobManager.JobName[selected_girl->m_NightJob] << " **";
-					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), 6);
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->NightJobColumn());
 				}
 				if (selected_girl && selected_girl->m_YesterDayJob == JOB_REHAB && selection != JOB_REHAB && (selected_girl->m_WorkingDay > 0 || selected_girl->m_PrevWorkingDay > 0))
 				{	// `J` added
@@ -501,27 +511,13 @@ bool cScreenCentreManagement::GirlDead(sGirl *dgirl)
 void cScreenCentreManagement::RefreshSelectedJobType()
 {
 	selection = GetSelectedItemFromList(girllist_id);
-	if(selection < 0)
-		return;
-
+	if (selection < 0) return;
 	selected_girl = g_Centre.GetGirl(g_CurrCentre, selection);
-
 	u_int job = (DayNight == 0) ? selected_girl->m_DayJob : selected_girl->m_NightJob;
-
 	// set the job filter
-	int jobtype = 0;
-	for(unsigned int i=0; i<NUMJOBTYPES; i++)
-	{
-		if (job >= g_Centre.m_JobManager.JobFilterIndex[i] && job < g_Centre.m_JobManager.JobFilterIndex[i+1])
-			jobtype = i;
-	}
-	if (job >= g_Centre.m_JobManager.JobFilterIndex[JOBFILTER_COMMUNITYCENTRE] &&
-		job < g_Centre.m_JobManager.JobFilterIndex[JOBFILTER_COMMUNITYCENTRE + 1])
-		SetSelectedItemInList(jobtypelist_id, JOBFILTER_COMMUNITYCENTRE);
-	if (job >= g_Centre.m_JobManager.JobFilterIndex[JOBFILTER_DRUGCENTRE] &&
-		job < g_Centre.m_JobManager.JobFilterIndex[JOBFILTER_DRUGCENTRE + 1])
+	if (job >= g_Centre.m_JobManager.JobFilterIndex[JOBFILTER_DRUGCENTRE] && job < g_Centre.m_JobManager.JobFilterIndex[JOBFILTER_DRUGCENTRE + 1])
 		SetSelectedItemInList(jobtypelist_id, JOBFILTER_DRUGCENTRE);
-
+	else SetSelectedItemInList(jobtypelist_id, JOBFILTER_COMMUNITYCENTRE);
 	SetJob = true;
 }
 
@@ -541,7 +537,7 @@ void cScreenCentreManagement::RefreshJobList()
 	{
 		if (g_Centre.m_JobManager.JobName[i] == "")
 			continue;
-		text = g_Centre.m_JobManager.JobDescriptionCount(i, g_CurrCentre, day, false, false, false, true);
+		text = g_Centre.m_JobManager.JobDescriptionCount(i, g_CurrCentre, DayNight, false, false, false, true);
 		AddToListBox(joblist_id, i, text);
 	}
 

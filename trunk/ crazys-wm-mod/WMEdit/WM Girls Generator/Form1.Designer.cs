@@ -390,6 +390,9 @@
             this.textBox_ItemName = new System.Windows.Forms.TextBox();
             this.tabPage4_Config = new System.Windows.Forms.TabPage();
             this.groupBox_C_Display_Settings = new System.Windows.Forms.GroupBox();
+            this.label123 = new System.Windows.Forms.Label();
+            this.textBox_Config_Screen_Height_Scale = new System.Windows.Forms.TextBox();
+            this.textBox_Config_Screen_Width_Scale = new System.Windows.Forms.TextBox();
             this.label113 = new System.Windows.Forms.Label();
             this.checkBox_Config_FullScreen = new System.Windows.Forms.CheckBox();
             this.label125 = new System.Windows.Forms.Label();
@@ -573,6 +576,7 @@
             this.button23 = new System.Windows.Forms.Button();
             this.button24 = new System.Windows.Forms.Button();
             this.checkBox_ToggleTraitTooltips = new System.Windows.Forms.CheckBox();
+            this.checkBox_Config_Show_Percent = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1_Girls.SuspendLayout();
             this.groupBox_G_JF.SuspendLayout();
@@ -4696,6 +4700,9 @@
             // 
             // groupBox_C_Display_Settings
             // 
+            this.groupBox_C_Display_Settings.Controls.Add(this.label123);
+            this.groupBox_C_Display_Settings.Controls.Add(this.textBox_Config_Screen_Height_Scale);
+            this.groupBox_C_Display_Settings.Controls.Add(this.textBox_Config_Screen_Width_Scale);
             this.groupBox_C_Display_Settings.Controls.Add(this.label113);
             this.groupBox_C_Display_Settings.Controls.Add(this.checkBox_Config_FullScreen);
             this.groupBox_C_Display_Settings.Controls.Add(this.label125);
@@ -4712,51 +4719,86 @@
             this.groupBox_C_Display_Settings.TabStop = false;
             this.groupBox_C_Display_Settings.Text = "Display Settings";
             // 
+            // label123
+            // 
+            this.label123.AutoSize = true;
+            this.label123.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label123.Location = new System.Drawing.Point(127, 68);
+            this.label123.Name = "label123";
+            this.label123.Size = new System.Drawing.Size(34, 13);
+            this.label123.TabIndex = 4;
+            this.label123.Text = "Scale";
+            this.toolTip1.SetToolTip(this.label123, "The old code of the game scaled all windows down to 800x600\r\nThis has been fixed " +
+        "but any old interfaces will not display correctly\r\nif the scale width and height" +
+        " are not set to 800x600.");
+            // 
+            // textBox_Config_Screen_Height_Scale
+            // 
+            this.textBox_Config_Screen_Height_Scale.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.textBox_Config_Screen_Height_Scale.Location = new System.Drawing.Point(115, 110);
+            this.textBox_Config_Screen_Height_Scale.MaxLength = 5;
+            this.textBox_Config_Screen_Height_Scale.Name = "textBox_Config_Screen_Height_Scale";
+            this.textBox_Config_Screen_Height_Scale.Size = new System.Drawing.Size(55, 20);
+            this.textBox_Config_Screen_Height_Scale.TabIndex = 10;
+            this.textBox_Config_Screen_Height_Scale.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // textBox_Config_Screen_Width_Scale
+            // 
+            this.textBox_Config_Screen_Width_Scale.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.textBox_Config_Screen_Width_Scale.Location = new System.Drawing.Point(115, 85);
+            this.textBox_Config_Screen_Width_Scale.MaxLength = 5;
+            this.textBox_Config_Screen_Width_Scale.Name = "textBox_Config_Screen_Width_Scale";
+            this.textBox_Config_Screen_Width_Scale.Size = new System.Drawing.Size(55, 20);
+            this.textBox_Config_Screen_Width_Scale.TabIndex = 7;
+            this.textBox_Config_Screen_Width_Scale.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // label113
             // 
             this.label113.AutoSize = true;
             this.label113.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label113.Location = new System.Drawing.Point(5, 118);
+            this.label113.Location = new System.Drawing.Point(5, 63);
             this.label113.Name = "label113";
             this.label113.Size = new System.Drawing.Size(55, 13);
-            this.label113.TabIndex = 6;
+            this.label113.TabIndex = 2;
             this.label113.Text = "Fullscreen";
+            this.toolTip1.SetToolTip(this.label113, "Runs the game in Fullscreen if checked.\r\n(Takes over from ScreenMode.txt)");
             // 
             // checkBox_Config_FullScreen
             // 
             this.checkBox_Config_FullScreen.AutoSize = true;
             this.checkBox_Config_FullScreen.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.checkBox_Config_FullScreen.Location = new System.Drawing.Point(120, 118);
+            this.checkBox_Config_FullScreen.Location = new System.Drawing.Point(70, 63);
             this.checkBox_Config_FullScreen.Name = "checkBox_Config_FullScreen";
             this.checkBox_Config_FullScreen.Size = new System.Drawing.Size(15, 14);
-            this.checkBox_Config_FullScreen.TabIndex = 7;
+            this.checkBox_Config_FullScreen.TabIndex = 3;
             this.checkBox_Config_FullScreen.UseVisualStyleBackColor = true;
             // 
             // label125
             // 
             this.label125.AutoSize = true;
             this.label125.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label125.Location = new System.Drawing.Point(5, 93);
+            this.label125.Location = new System.Drawing.Point(5, 113);
             this.label125.Name = "label125";
-            this.label125.Size = new System.Drawing.Size(75, 13);
-            this.label125.TabIndex = 4;
-            this.label125.Text = "Screen Height";
+            this.label125.Size = new System.Drawing.Size(38, 13);
+            this.label125.TabIndex = 8;
+            this.label125.Text = "Height";
+            this.toolTip1.SetToolTip(this.label125, "Screen Height\r\n(Takes over from ScreenMode.txt)");
             // 
             // textBox_Config_Screen_Height
             // 
             this.textBox_Config_Screen_Height.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.textBox_Config_Screen_Height.Location = new System.Drawing.Point(90, 90);
-            this.textBox_Config_Screen_Height.MaxLength = 3;
+            this.textBox_Config_Screen_Height.Location = new System.Drawing.Point(50, 110);
+            this.textBox_Config_Screen_Height.MaxLength = 5;
             this.textBox_Config_Screen_Height.Name = "textBox_Config_Screen_Height";
-            this.textBox_Config_Screen_Height.Size = new System.Drawing.Size(80, 20);
-            this.textBox_Config_Screen_Height.TabIndex = 5;
+            this.textBox_Config_Screen_Height.Size = new System.Drawing.Size(55, 20);
+            this.textBox_Config_Screen_Height.TabIndex = 9;
             this.textBox_Config_Screen_Height.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // textBox_Config_Resolution
             // 
             this.textBox_Config_Resolution.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.textBox_Config_Resolution.Location = new System.Drawing.Point(5, 35);
-            this.textBox_Config_Resolution.MaxLength = 10;
+            this.textBox_Config_Resolution.MaxLength = 15;
             this.textBox_Config_Resolution.Name = "textBox_Config_Resolution";
             this.textBox_Config_Resolution.Size = new System.Drawing.Size(170, 20);
             this.textBox_Config_Resolution.TabIndex = 1;
@@ -4771,25 +4813,27 @@
             this.label126.Size = new System.Drawing.Size(80, 13);
             this.label126.TabIndex = 0;
             this.label126.Text = "Interface Name";
+            this.toolTip1.SetToolTip(this.label126, "The name of the folder containing the interface data.");
             // 
             // label129
             // 
             this.label129.AutoSize = true;
             this.label129.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label129.Location = new System.Drawing.Point(5, 68);
+            this.label129.Location = new System.Drawing.Point(5, 88);
             this.label129.Name = "label129";
-            this.label129.Size = new System.Drawing.Size(72, 13);
-            this.label129.TabIndex = 2;
-            this.label129.Text = "Screen Width";
+            this.label129.Size = new System.Drawing.Size(35, 13);
+            this.label129.TabIndex = 5;
+            this.label129.Text = "Width";
+            this.toolTip1.SetToolTip(this.label129, "Screen Width\r\n(Takes over from ScreenMode.txt)");
             // 
             // textBox_Config_Screen_Width
             // 
             this.textBox_Config_Screen_Width.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.textBox_Config_Screen_Width.Location = new System.Drawing.Point(90, 65);
-            this.textBox_Config_Screen_Width.MaxLength = 3;
+            this.textBox_Config_Screen_Width.Location = new System.Drawing.Point(50, 85);
+            this.textBox_Config_Screen_Width.MaxLength = 5;
             this.textBox_Config_Screen_Width.Name = "textBox_Config_Screen_Width";
-            this.textBox_Config_Screen_Width.Size = new System.Drawing.Size(80, 20);
-            this.textBox_Config_Screen_Width.TabIndex = 3;
+            this.textBox_Config_Screen_Width.Size = new System.Drawing.Size(55, 20);
+            this.textBox_Config_Screen_Width.TabIndex = 6;
             this.textBox_Config_Screen_Width.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // groupBox_C_Expense_Multipliers
@@ -5261,6 +5305,7 @@
             this.textBox_config_ChanceRemoveUnwanted.Size = new System.Drawing.Size(40, 20);
             this.textBox_config_ChanceRemoveUnwanted.TabIndex = 7;
             this.textBox_config_ChanceRemoveUnwanted.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_config_ChanceRemoveUnwanted.TextChanged += new System.EventHandler(this.textBox_config_ChanceRemoveUnwanted_TextChanged);
             // 
             // label134
             // 
@@ -5403,6 +5448,7 @@
             this.label_C_Weeks_Monster_Preg.Size = new System.Drawing.Size(110, 13);
             this.label_C_Weeks_Monster_Preg.TabIndex = 12;
             this.label_C_Weeks_Monster_Preg.Text = "Weeks Monster Preg:";
+            this.toolTip1.SetToolTip(this.label_C_Weeks_Monster_Preg, "How long the girl is pregnant when carrying a beast baby.\r\n(not implemented yet)");
             // 
             // label_C_Miscarriage_Monster
             // 
@@ -5413,6 +5459,8 @@
             this.label_C_Miscarriage_Monster.Size = new System.Drawing.Size(105, 13);
             this.label_C_Miscarriage_Monster.TabIndex = 16;
             this.label_C_Miscarriage_Monster.Text = "Miscarriage Monster:";
+            this.toolTip1.SetToolTip(this.label_C_Miscarriage_Monster, "Chance that the girl will have a miscarriage when pregnant with a beast baby.\r\n(n" +
+        "ot implemented yet)\r\n");
             // 
             // label_C_Miscarriage_Chance
             // 
@@ -5423,6 +5471,8 @@
             this.label_C_Miscarriage_Chance.Size = new System.Drawing.Size(104, 13);
             this.label_C_Miscarriage_Chance.TabIndex = 14;
             this.label_C_Miscarriage_Chance.Text = "Miscarriage Chance:";
+            this.toolTip1.SetToolTip(this.label_C_Miscarriage_Chance, "Chance that the girl will have a miscarriage when pregnant with a humanoid baby.\r" +
+        "\n(not implemented yet)");
             // 
             // textBox_Config_PregnancyMiscarriageMonster
             // 
@@ -5463,6 +5513,7 @@
             this.label_C_Weeks_Pregnant.Size = new System.Drawing.Size(90, 13);
             this.label_C_Weeks_Pregnant.TabIndex = 10;
             this.label_C_Weeks_Pregnant.Text = "Weeks Pregnant:";
+            this.toolTip1.SetToolTip(this.label_C_Weeks_Pregnant, "How long the girl is pregnant when carrying a humanoid baby.");
             // 
             // label_C_Cool_Down
             // 
@@ -5473,6 +5524,7 @@
             this.label_C_Cool_Down.Size = new System.Drawing.Size(62, 13);
             this.label_C_Cool_Down.TabIndex = 20;
             this.label_C_Cool_Down.Text = "Cool Down:";
+            this.toolTip1.SetToolTip(this.label_C_Cool_Down, "How long after giving birth before she can become pregnant again.");
             // 
             // label_C_Weeks_Till_Grown
             // 
@@ -5483,6 +5535,8 @@
             this.label_C_Weeks_Till_Grown.Size = new System.Drawing.Size(94, 13);
             this.label_C_Weeks_Till_Grown.TabIndex = 18;
             this.label_C_Weeks_Till_Grown.Text = "Weeks Till Grown:";
+            this.toolTip1.SetToolTip(this.label_C_Weeks_Till_Grown, "How long it takes the baby to grow up.\r\nIf set to Real World time it would be 936" +
+        ".\r\nThe magical nature of the Game World is up to you.");
             // 
             // textBox_Config_PregnancyCoolDown
             // 
@@ -5523,6 +5577,8 @@
             this.label_C_Monster_Chance.Size = new System.Drawing.Size(105, 13);
             this.label_C_Monster_Chance.TabIndex = 4;
             this.label_C_Monster_Chance.Text = "Monster Chance (%):";
+            this.toolTip1.SetToolTip(this.label_C_Monster_Chance, "Percent chance a girl will get pregnant when having unprotected sex with a Beast." +
+        "");
             // 
             // label_C_Chance_Of_Girl
             // 
@@ -5533,6 +5589,7 @@
             this.label_C_Chance_Of_Girl.Size = new System.Drawing.Size(96, 13);
             this.label_C_Chance_Of_Girl.TabIndex = 8;
             this.label_C_Chance_Of_Girl.Text = "Chance Of Girl (%):";
+            this.toolTip1.SetToolTip(this.label_C_Chance_Of_Girl, "Percent chance a girl will give birth to a baby girl.");
             // 
             // label_C_Good_Sex_Factor
             // 
@@ -5543,6 +5600,7 @@
             this.label_C_Good_Sex_Factor.Size = new System.Drawing.Size(90, 13);
             this.label_C_Good_Sex_Factor.TabIndex = 6;
             this.label_C_Good_Sex_Factor.Text = "Good Sex Factor:";
+            this.toolTip1.SetToolTip(this.label_C_Good_Sex_Factor, "If the girl enjoys the sex, the pregnancy chance is multiplied by this number.");
             // 
             // label_C_Customer_Chance
             // 
@@ -5553,6 +5611,8 @@
             this.label_C_Customer_Chance.Size = new System.Drawing.Size(111, 13);
             this.label_C_Customer_Chance.TabIndex = 2;
             this.label_C_Customer_Chance.Text = "Customer Chance (%):";
+            this.toolTip1.SetToolTip(this.label_C_Customer_Chance, "Percent chance a girl will get pregnant when having unprotected sex with a Custom" +
+        "er.");
             // 
             // label_C_Player_Chance
             // 
@@ -5563,6 +5623,8 @@
             this.label_C_Player_Chance.Size = new System.Drawing.Size(96, 13);
             this.label_C_Player_Chance.TabIndex = 0;
             this.label_C_Player_Chance.Text = "Player Chance (%):";
+            this.toolTip1.SetToolTip(this.label_C_Player_Chance, "Percent chance a girl will get pregnant when having unprotected sex with the Play" +
+        "er.");
             // 
             // textBox_Config_PregnancyGirlChance
             // 
@@ -5573,6 +5635,7 @@
             this.textBox_Config_PregnancyGirlChance.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_PregnancyGirlChance.TabIndex = 9;
             this.textBox_Config_PregnancyGirlChance.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_PregnancyGirlChance.TextChanged += new System.EventHandler(this.textBox_Config_PregnancyGirlChance_TextChanged);
             // 
             // textBox_Config_PregnancyGoodSex
             // 
@@ -5593,6 +5656,7 @@
             this.textBox_Config_PregnancyMonster.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_PregnancyMonster.TabIndex = 5;
             this.textBox_Config_PregnancyMonster.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_PregnancyMonster.TextChanged += new System.EventHandler(this.textBox_Config_PregnancyMonster_TextChanged);
             // 
             // textBox_Config_PregnancyCustomer
             // 
@@ -5603,6 +5667,7 @@
             this.textBox_Config_PregnancyCustomer.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_PregnancyCustomer.TabIndex = 3;
             this.textBox_Config_PregnancyCustomer.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_PregnancyCustomer.TextChanged += new System.EventHandler(this.textBox_Config_PregnancyCustomer_TextChanged);
             // 
             // textBox_Config_PregnancyPlayer
             // 
@@ -5613,6 +5678,7 @@
             this.textBox_Config_PregnancyPlayer.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_PregnancyPlayer.TabIndex = 1;
             this.textBox_Config_PregnancyPlayer.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_PregnancyPlayer.TextChanged += new System.EventHandler(this.textBox_Config_PregnancyPlayer_TextChanged);
             // 
             // button_Load_Config
             // 
@@ -5775,6 +5841,7 @@
             this.textBox_Config_InitialGirlsHousePerc.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_InitialGirlsHousePerc.TabIndex = 5;
             this.textBox_Config_InitialGirlsHousePerc.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_InitialGirlsHousePerc.TextChanged += new System.EventHandler(this.textBox_Config_InitialGirlsHousePerc_TextChanged);
             // 
             // textBox_Initial_Gold
             // 
@@ -5862,6 +5929,7 @@
             this.textBox_Config_InitialSlaveHousePerc.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_InitialSlaveHousePerc.TabIndex = 9;
             this.textBox_Config_InitialSlaveHousePerc.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_InitialSlaveHousePerc.TextChanged += new System.EventHandler(this.textBox_Config_InitialSlaveHousePerc_TextChanged);
             // 
             // textBox_Config_InitialGirlMeet
             // 
@@ -5872,6 +5940,7 @@
             this.textBox_Config_InitialGirlMeet.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_InitialGirlMeet.TabIndex = 3;
             this.textBox_Config_InitialGirlMeet.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_InitialGirlMeet.TextChanged += new System.EventHandler(this.textBox_Config_InitialGirlMeet_TextChanged);
             // 
             // groupBox_Logging
             // 
@@ -6002,6 +6071,7 @@
             // 
             // groupBox22
             // 
+            this.groupBox22.Controls.Add(this.checkBox_Config_Show_Percent);
             this.groupBox22.Controls.Add(this.checkBox_Config_Antialias);
             this.groupBox22.Controls.Add(this.label140);
             this.groupBox22.Controls.Add(this.label141);
@@ -6019,7 +6089,7 @@
             // 
             this.checkBox_Config_Antialias.AutoSize = true;
             this.checkBox_Config_Antialias.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.checkBox_Config_Antialias.Location = new System.Drawing.Point(30, 68);
+            this.checkBox_Config_Antialias.Location = new System.Drawing.Point(5, 68);
             this.checkBox_Config_Antialias.Name = "checkBox_Config_Antialias";
             this.checkBox_Config_Antialias.Size = new System.Drawing.Size(65, 17);
             this.checkBox_Config_Antialias.TabIndex = 4;
@@ -6050,7 +6120,7 @@
             // 
             this.textBox_config_FontFixed.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.textBox_config_FontFixed.Location = new System.Drawing.Point(50, 40);
-            this.textBox_config_FontFixed.MaxLength = 3;
+            this.textBox_config_FontFixed.MaxLength = 30;
             this.textBox_config_FontFixed.Name = "textBox_config_FontFixed";
             this.textBox_config_FontFixed.Size = new System.Drawing.Size(120, 20);
             this.textBox_config_FontFixed.TabIndex = 3;
@@ -6060,7 +6130,7 @@
             // 
             this.textBox_Config_FontNormal.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.textBox_Config_FontNormal.Location = new System.Drawing.Point(50, 15);
-            this.textBox_Config_FontNormal.MaxLength = 3;
+            this.textBox_Config_FontNormal.MaxLength = 30;
             this.textBox_Config_FontNormal.Name = "textBox_Config_FontNormal";
             this.textBox_Config_FontNormal.Size = new System.Drawing.Size(120, 20);
             this.textBox_Config_FontNormal.TabIndex = 1;
@@ -6121,6 +6191,7 @@
             this.textBox_Config_TaxLaundry.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_TaxLaundry.TabIndex = 5;
             this.textBox_Config_TaxLaundry.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_TaxLaundry.TextChanged += new System.EventHandler(this.textBox_Config_TaxLaundry_TextChanged);
             // 
             // textBox_Config_TaxMinimum
             // 
@@ -6131,6 +6202,7 @@
             this.textBox_Config_TaxMinimum.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_TaxMinimum.TabIndex = 3;
             this.textBox_Config_TaxMinimum.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_TaxMinimum.TextChanged += new System.EventHandler(this.textBox_Config_TaxMinimum_TextChanged);
             // 
             // textBox_Config_TaxRate
             // 
@@ -6141,6 +6213,7 @@
             this.textBox_Config_TaxRate.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_TaxRate.TabIndex = 1;
             this.textBox_Config_TaxRate.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_TaxRate.TextChanged += new System.EventHandler(this.textBox_Config_TaxRate_TextChanged);
             // 
             // button_Config_Reset
             // 
@@ -6175,6 +6248,7 @@
             this.groupBox_C_Prostitution_Rape_Chances.TabIndex = 7;
             this.groupBox_C_Prostitution_Rape_Chances.TabStop = false;
             this.groupBox_C_Prostitution_Rape_Chances.Text = "Prostitution Rape Chances";
+            this.toolTip1.SetToolTip(this.groupBox_C_Prostitution_Rape_Chances, "The world is a dangerous place.");
             // 
             // label115
             // 
@@ -6185,6 +6259,8 @@
             this.label115.Size = new System.Drawing.Size(84, 13);
             this.label115.TabIndex = 2;
             this.label115.Text = "Rape Street (%):";
+            this.toolTip1.SetToolTip(this.label115, "Percent chance a customer will try to rape a girl if she is working in the street" +
+        "s.");
             // 
             // label122
             // 
@@ -6195,6 +6271,7 @@
             this.label122.Size = new System.Drawing.Size(89, 13);
             this.label122.TabIndex = 0;
             this.label122.Text = "Rape Brothel (%):";
+            this.toolTip1.SetToolTip(this.label122, "Percent chance a customer will try to rape a girl in a Brothel.");
             // 
             // textBox_Config_ProstitutionRapeStreets
             // 
@@ -6205,6 +6282,7 @@
             this.textBox_Config_ProstitutionRapeStreets.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_ProstitutionRapeStreets.TabIndex = 3;
             this.textBox_Config_ProstitutionRapeStreets.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_ProstitutionRapeStreets.TextChanged += new System.EventHandler(this.textBox_Config_ProstitutionRapeStreets_TextChanged);
             // 
             // textBox_Config_ProstitutionRapeBrothel
             // 
@@ -6215,6 +6293,7 @@
             this.textBox_Config_ProstitutionRapeBrothel.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_ProstitutionRapeBrothel.TabIndex = 1;
             this.textBox_Config_ProstitutionRapeBrothel.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_ProstitutionRapeBrothel.TextChanged += new System.EventHandler(this.textBox_Config_ProstitutionRapeBrothel_TextChanged);
             // 
             // groupBox_C_Gambling
             // 
@@ -6335,6 +6414,7 @@
             this.textBox_Config_GamblingOdds.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_GamblingOdds.TabIndex = 1;
             this.textBox_Config_GamblingOdds.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_GamblingOdds.TextChanged += new System.EventHandler(this.textBox_Config_GamblingOdds_TextChanged);
             // 
             // groupBox_C_Income_Multipliers
             // 
@@ -6731,6 +6811,17 @@
             this.checkBox_ToggleTraitTooltips.UseVisualStyleBackColor = true;
             this.checkBox_ToggleTraitTooltips.CheckedChanged += new System.EventHandler(this.checkBox_ToggleTraitTooltips_CheckedChanged);
             // 
+            // checkBox_Config_Show_Percent
+            // 
+            this.checkBox_Config_Show_Percent.AutoSize = true;
+            this.checkBox_Config_Show_Percent.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.checkBox_Config_Show_Percent.Location = new System.Drawing.Point(90, 68);
+            this.checkBox_Config_Show_Percent.Name = "checkBox_Config_Show_Percent";
+            this.checkBox_Config_Show_Percent.Size = new System.Drawing.Size(64, 17);
+            this.checkBox_Config_Show_Percent.TabIndex = 5;
+            this.checkBox_Config_Show_Percent.Text = "Show %";
+            this.checkBox_Config_Show_Percent.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AllowDrop = true;
@@ -6747,7 +6838,7 @@
             this.MaximumSize = new System.Drawing.Size(1000, 600);
             this.MinimumSize = new System.Drawing.Size(1000, 600);
             this.Name = "Form1";
-            this.Text = "Whore Master Editor 0.8.06";
+            this.Text = "Whore Master Editor 0.8.08";
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.App_FileDrop);
             this.DragEnter += new System.Windows.Forms.DragEventHandler(this.App_DragEnter);
             this.tabControl1.ResumeLayout(false);
@@ -7366,6 +7457,10 @@
         private System.Windows.Forms.CheckBox checkBox_Add_Missing_Sex_Skills_On_Load;
         private System.Windows.Forms.CheckBox checkBox_Config_SlavesPayOutOfPocket;
         private System.Windows.Forms.Label label_Config_SlavesPayOutOfPocket;
+        private System.Windows.Forms.Label label123;
+        private System.Windows.Forms.TextBox textBox_Config_Screen_Height_Scale;
+        private System.Windows.Forms.TextBox textBox_Config_Screen_Width_Scale;
+        private System.Windows.Forms.CheckBox checkBox_Config_Show_Percent;
     }
 }
 

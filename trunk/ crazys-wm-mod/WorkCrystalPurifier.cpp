@@ -51,22 +51,39 @@ bool cJobManager::WorkCrystalPurifier(sGirl* girl, sBrothel* brothel, int DayNig
 	string girlName = girl->m_Realname;
 
 	g_Girls.UnequipCombat(girl);
-	
-	girl->m_Pay += 20;
-	
-	message = girlName;	
-	message += gettext(" worked as a crystal purifier.\n\n");
-	
-	int roll = g_Dice%100;
 
+	// `J` added this to allow the Director to assign someone to this job without making it permanent
+	if (girl->m_DayJob == JOB_FILMFREETIME)	// the director sets the old job to dayjob when changing night job
+	{
+		message = girlName;
+		message += gettext(" worked as a crystal purifier.\n\n");
+	}
+	else
+	{
+		message = "The Director assigned " + girlName + "to edit the scenes for the week ";
+	}
+
+	int roll = g_Dice%100;
 	if (roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
 	{
-		message = girl->m_Realname + gettext(" refused to work as a crystal purifier today.");
-
-		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_NOWORK);
+		if (girl->m_DayJob == JOB_FILMFREETIME)
+		{
+			message = girl->m_Realname + gettext(" refused to work as a crystal purifier today.");
+			girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_NOWORK);
+		}
+		else
+		{
+			if (g_Studios.is_Actress_Job(girl->m_DayJob))	message += "but she wanted to be part of the action instead of just watching it.\n";
+			else if (girl->m_DayJob == JOB_PROMOTER)		message += "but she preferred to sell the movies rather than edit them.\n";
+			else if (girl->m_DayJob == JOB_FLUFFER)			message += "but she wanted to see the action live instead of watching it afterwards.\n";
+			else if (girl->m_DayJob == JOB_STAGEHAND)		message += "but she wanted to clean instead of editing scenes.\n";
+			else if (girl->m_DayJob == JOB_CAMERAMAGE)		message += "but she preferred to film the scenes rather than edit them.\n";
+			girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_BACKTOWORK);
+		}
 		return true;
 	}
-	else if(roll <= 15) {
+	else if(roll <= 15) 
+	{
 		message += gettext(" She did not like working in the studio today.\n\n");
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, -1, true);
 		jobperformance += -5;
@@ -88,6 +105,8 @@ bool cJobManager::WorkCrystalPurifier(sGirl* girl, sBrothel* brothel, int DayNig
  *
  *	the original calc took the average of beauty and charisma and halved it
  */
+	girl->m_Pay += 20;
+
 	int roll_max = girl->spirit() + girl->intelligence();
 	roll_max /= 4;
 	girl->m_Pay += 10 + g_Dice%roll_max;

@@ -132,7 +132,7 @@ bool cJobManager::WorkMechanic(sGirl* girl, sBrothel* brothel, int DayNight, str
 	int roll_max = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) + g_Girls.GetSkill(girl, SKILL_SERVICE));
 	roll_max /= 4;
 	wages += 10 + g_Dice%roll_max;
-	wages += 5 * g_Clinic.GetNumGirlsOnJob(0, JOB_GETREPAIRS, DayNight == 0);	// `J` pay her 5 for each patient you send to her		
+	wages += 5 * g_Clinic.GetNumGirlsOnJob(0, JOB_GETREPAIRS, DayNight);	// `J` pay her 5 for each patient you send to her		
 	if (wages < 0)	wages = 0;
 	girl->m_Pay = wages;
 	

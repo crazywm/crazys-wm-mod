@@ -69,8 +69,8 @@ bool cJobManager::WorkHealing(sGirl* girl, sBrothel* brothel, int DayNight, stri
 		return true;
 	}
 
-	int numdocs = g_Clinic.GetNumGirlsOnJob(0, JOB_DOCTOR, DayNight == 0);
-	int numnurse = g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, DayNight == 0);
+	int numdocs = g_Clinic.GetNumGirlsOnJob(0, JOB_DOCTOR, DayNight);
+	int numnurse = g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, DayNight);
 	
 	message = gettext("She does nothing while the Doctor");if (numdocs > 1) message += gettext("s");
 

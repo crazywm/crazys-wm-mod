@@ -53,15 +53,15 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, int DayNi
 	string message = "";
 
 	//standard job boilerpate
-	if(Preprocessing(ACTION_COMBAT, girl, brothel, DayNight, summary, message))
+	if (Preprocessing(ACTION_COMBAT, girl, brothel, DayNight, summary, message))
 		return true;
 
 	// ready armor and weapons!
 	g_Girls.EquipCombat(girl);
 
 	// determine if they fight any monsters
-	
-	if ((g_Dice%100)+1 > max(girl->combat(), girl->magic()))	// WD:	Allow best of Combat or Magic skill 
+
+	if ((g_Dice % 100) + 1 > max(girl->combat(), girl->magic()))	// WD:	Allow best of Combat or Magic skill 
 	{
 		stringstream noplay;
 		noplay << "Nobody wants to play with you today in the catacombs :(";
@@ -70,12 +70,12 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, int DayNi
 		return false;
 	}
 
-	num_monsters = (g_Dice%3)+1;
+	num_monsters = (g_Dice % 3) + 1;
 
 	// fight/capture monsters here
-	for(int i=num_monsters; i>0; i--)
+	for (int i = num_monsters; i > 0; i--)
 	{
-		int type = ((g_Dice%2)+1);	// 1 is beast, 2 is girl (human or non-human)
+		int type = ((g_Dice % 2) + 1);	// 1 is beast, 2 is girl (human or non-human)
 
 		sGirl* tempgirl = g_Girls.CreateRandomGirl(18, false, false, false, true, false, false);
 		Uint8 fight_outcome = 0;
@@ -83,7 +83,7 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, int DayNi
 		{
 			fight_outcome = g_Girls.girl_fights_girl(girl, tempgirl);
 		}
-		else
+		else // `J` this should have been corrected with the addition of the default random girl but leaving it in just in case.
 		{
 			g_LogFile.write("Error: You have no Non-Human Random Girls for your girls to fight\n");
 			g_LogFile.write("Error: You need a Non-Human Random Girl to allow WorkExploreCatacombs randomness");
@@ -106,30 +106,31 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, int DayNi
 		}
 		else if (fight_outcome == 1)  // If she won
 		{
-			if(type == 2)  // Catacombs girl type
+			if (type == 2)  // Catacombs girl type
 			{				// NOTE that defeating tempgirl and capturing unrelated girl is
-							// the only way to ever capture rere girls like thos with incoporeal trait.
-							// Some rationilization could be done, but is probably not necessary. DustyDan
+				// the only way to ever capture rere girls like thos with incoporeal trait.
+				// Some rationilization could be done, but is probably not necessary. DustyDan
 				sGirl* ugirl = 0;
 				bool unique = false;
-				if((g_Dice%100)+1 < 50)	// chance of getting unique girl
+				if ((g_Dice % 100) + 1 < 50)	// chance of getting unique girl
 					unique = true;
 
-				if(unique)  // Unique monster girl type
+				if (unique)  // Unique monster girl type
 				{
 					ugirl = g_Girls.GetRandomGirl(false, true);
-					if(ugirl == 0)
+					if (ugirl == 0)
 						unique = false;
+
 				}
 
-				if(g_Brothels.GetObjective())
+				if (g_Brothels.GetObjective())
 				{
-					if(g_Brothels.GetObjective()->m_Objective == OBJECTIVE_CAPTUREXCATACOMBGIRLS)
+					if (g_Brothels.GetObjective()->m_Objective == OBJECTIVE_CAPTUREXCATACOMBGIRLS)
 						g_Brothels.GetObjective()->m_SoFar++;
 				}
 
 				// Either type of girl goes to the dungeon
-				if(unique)
+				if (unique)
 				{
 					ugirl->m_States &= ~(1 << STATUS_CATACOMBS);
 					g_Brothels.GetDungeon()->AddGirl(ugirl, DUNGEON_GIRLCAPTURED);
@@ -140,7 +141,7 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, int DayNi
 					// MYR: Commented out for local testing only. 
 
 					ugirl = g_Girls.CreateRandomGirl(0, false, false, true, true);
-					if(ugirl != 0)  // make sure a girl was returned
+					if (ugirl != 0)  // make sure a girl was returned
 					{
 						g_Brothels.GetDungeon()->AddGirl(ugirl, DUNGEON_GIRLCAPTURED);
 						type_monster_girls++;
@@ -156,9 +157,7 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, int DayNi
 		else if (fight_outcome == 2)  // she lost
 		{
 			raped = true;
-
-			if(tempgirl)
-				delete tempgirl;
+			if (tempgirl) delete tempgirl;
 			tempgirl = 0;
 			break;
 		}
@@ -167,8 +166,7 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, int DayNi
 			// hmm, guess we'll just ignore draws for now
 		}
 
-		if(tempgirl)
-			delete tempgirl;
+		if (tempgirl) delete tempgirl;
 		tempgirl = 0;
 	} // # of monsters to fight loop
 
@@ -176,46 +174,43 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, int DayNi
 	stringstream ss;
 	if (raped)
 	{
-		int NumMon = g_Dice%6 + 1;
+		int NumMon = g_Dice % 6 + 1;
 		ss << girl->m_Realname << " was defeated then" << ((NumMon <= 3) ? "" : " gang") << " raped and abused by " << NumMon << " monsters.";
+		int health = -NumMon, happy = -NumMon * 5, spirit = -NumMon, sex = -NumMon * 2, combat = -NumMon * 2, injury = 9 + NumMon;
+
 		if (g_Girls.CheckVirginity(girl))
 		{
 			ss << " That's a hell of a way to lose your virginity; naturally, she's rather distressed by this fact.";
 			g_Girls.LoseVirginity(girl);					// Virginity both attrib & trait now, 04/15/13
-			g_Girls.UpdateStat(girl, STAT_SPIRIT, -2);
-			g_Girls.UpdateEnjoyment(girl, ACTION_SEX, -4, true);
-			g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, -4, true);
+			health -= 1, happy -= 10, spirit -= 2, sex -= 2, combat -= 2, injury += 2;
 		}
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_DANGER);
 
-		g_Girls.UpdateStat(girl, STAT_HEALTH, -2);
-		g_Girls.UpdateStat(girl, STAT_SPIRIT, -1);
-		g_Girls.GirlInjured(girl, 10);
-		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, -4, true);
-		g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, -4, true);
+		if (!girl->calc_insemination(g_Brothels.GetPlayer(), false, 1.0 + (NumMon * 0.5)))
+		{
+			g_MessageQue.AddToQue(girl->m_Realname + " has gotten inseminated", 0);
+			health -= 1, happy -= 10, spirit -= 4, sex -= 4, combat -= 2, injury += 2;
+		}
 
-		// chance of insemination boosted depending on number of beasts
-		// She could have taken contraceptives beforehand if available to her, though
-		/*
-		 * doc : var declared but not used. commenting out for now
-		 *
-		double chance = 0.7 + (NumMon * 0.3);
-		bool inseminated = girl->calc_insemination(g_Brothels.GetPlayer(), false, chance);
-		*/
+		g_Girls.UpdateStat(girl, STAT_HEALTH, health);
+		g_Girls.UpdateStat(girl, STAT_HAPPINESS, happy);
+		g_Girls.UpdateStat(girl, STAT_SPIRIT, spirit);
+		g_Girls.GirlInjured(girl, injury);
+		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, sex, true);
+		g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, combat, true);
 
-		//return true;		// WD: not a refusal
 		return false;
 	}
 
 	int ItemPlace = 0;  // Place in 0..299
 
 	string item_list = "";
-	for(int i = num_monsters; i > 0; i--)
+	for (int i = num_monsters; i > 0; i--)
 	{
-		gold += (g_Dice%100) + 25;
+		gold += (g_Dice % 100) + 25;
 
 		// get any items
-		while((g_Dice%100)+1 < 40)
+		while ((g_Dice % 100) + 1 < 40)
 		{
 			sInventoryItem* TempItem = g_InvManager.GetRandomItem();
 
@@ -224,7 +219,7 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, int DayNi
 			ItemPlace = g_Brothels.HasItem(TempItem->m_Name, -1);
 			if ((ItemPlace != -1) && (g_Brothels.m_NumItem[ItemPlace] <= 999))
 			{
-				item_list += ((item_list=="") ? "" : ", ") + TempItem->m_Name;
+				item_list += ((item_list == "") ? "" : ", ") + TempItem->m_Name;
 				g_Brothels.m_NumItem[ItemPlace]++;
 				num_items++;
 			}
@@ -232,13 +227,13 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, int DayNi
 
 			// 3. If there are less than MAXNUM_INVENTORY different things in the inventory and the item type
 			// isn't in the inventory already, add the item
-			if(g_Brothels.m_NumInventory < MAXNUM_INVENTORY && ItemPlace == -1)
+			if (g_Brothels.m_NumInventory < MAXNUM_INVENTORY && ItemPlace == -1)
 			{
-				for(int j=0; j<MAXNUM_INVENTORY; j++)
+				for (int j = 0; j < MAXNUM_INVENTORY; j++)
 				{
-					if(g_Brothels.m_Inventory[j] == 0) // Empty slot
+					if (g_Brothels.m_Inventory[j] == 0) // Empty slot
 					{
-						item_list += ((item_list=="") ? "" : ", ") + TempItem->m_Name;
+						item_list += ((item_list == "") ? "" : ", ") + TempItem->m_Name;
 						g_Brothels.m_Inventory[j] = TempItem;
 						g_Brothels.m_EquipedItems[j] = 0;
 						g_Brothels.m_NumInventory++;
@@ -249,48 +244,63 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, int DayNi
 					}
 				}
 			}
-			// 4. If there are already MAXNUM_INVENTORY different items, do nothing
-		}  // while getting items
-	}      // for each monster killed
+		}
+	}
 
 	ss << girl->m_Realname << " adventured in the catacombs and encountered " << num_monsters << " monsters. She captured:\n"
 		<< type_monster_girls << " catacomb girls,\n"
 		<< type_unique_monster_girls << " unique girls, and\n"
 		<< type_beasts << " beasts.\n"
 		<< "Further, she came out with " << gold << " gold";
-	if(num_items == 1)
-		ss << " and a " << item_list << ".";
-	else if(num_items > 1)
-		ss << " and " << num_items << " items: " << item_list << ".";
-	else if(num_items == 0)
-		ss << ".";
+	if (num_items == 1)			ss << " and a " << item_list << ".";
+	else if (num_items > 1)		ss << " and " << num_items << " items: " << item_list << ".";
+	else if (num_items == 0)	ss << ".";
 
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_COMBAT, DayNight);
 
+	if (girl->get_stat(STAT_LIBIDO) > 90 && type_monster_girls + type_unique_monster_girls + type_beasts > 0)
+	{
+		ss.str("");
+		ss << girl->m_Realname << " was real horny so she had a little fun with ";
+		if (type_monster_girls + type_unique_monster_girls > 0)
+		{
+			ss << "the girl";
+			if (type_monster_girls + type_unique_monster_girls > 1) ss << "s";
+			ss << " she captured.";
+			g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -50);
+			g_Girls.UpdateSkill(girl, SKILL_LESBIAN, type_monster_girls + type_unique_monster_girls);
+			girl->m_Events.AddMessage(ss.str(), IMGTYPE_LESBIAN, DayNight);
+		}
+		else if (type_beasts > 0)
+		{
+			ss << "the beast";
+			if (type_beasts > 1) ss << "s";
+			ss << " she captured.";
+			g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -50);
+			g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, type_beasts);
+			girl->m_Events.AddMessage(ss.str(), IMGTYPE_BEAST, DayNight);
+			if (!girl->calc_insemination(g_Brothels.GetPlayer(), false, 1.0))
+			{
+				g_MessageQue.AddToQue(girl->m_Realname + " has gotten inseminated", 0);
+			}
+		}
+	}
+
 	// Improve girl
-	int xp = 15, libido = 5, skill = type_monster_girls+type_unique_monster_girls+type_beasts;
+	int xp = 15, libido = 5, skill = type_monster_girls + type_unique_monster_girls + type_beasts;
 
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))
-	{
-		skill += 1;
-		xp += 5;
-	}
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))
-	{
-		skill -= 1;
-		xp -= 5;
-	}
-
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))
-		libido += 2;
+	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 5; }
+	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 5; }
+	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			libido += 2;
+	if (g_Girls.HasTrait(girl, "Lesbian"))				libido += type_monster_girls + type_unique_monster_girls;
 
 	girl->m_Pay += gold;
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_COMBAT, g_Dice % 3 + skill);	// `J` increased learning 
-	g_Girls.UpdateSkill(girl, SKILL_MAGIC, g_Dice % 3 + skill);
-	g_Girls.UpdateStat(girl, STAT_AGILITY, g_Dice % 3 + skill);
-	g_Girls.UpdateStat(girl, STAT_CONSTITUTION, g_Dice % 2 + skill);
+	g_Girls.UpdateSkill(girl, SKILL_COMBAT, g_Dice % skill);
+	g_Girls.UpdateSkill(girl, SKILL_MAGIC, g_Dice % skill);
+	g_Girls.UpdateStat(girl, STAT_AGILITY, g_Dice % skill);
+	g_Girls.UpdateStat(girl, STAT_CONSTITUTION, g_Dice % skill);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 	g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, +8, true);
 
@@ -301,6 +311,6 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, int DayNi
 
 	//lose traits
 	g_Girls.PossiblyLoseExistingTrait(girl, "Fragile", 75, ACTION_COMBAT, girl->m_Realname + " has had to heal from so many injuries you can't say she is fragile anymore.", DayNight != 0);
-	
+
 	return false;
 }

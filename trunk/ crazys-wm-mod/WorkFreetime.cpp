@@ -179,7 +179,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int DayNight, str
 
 				case INVSMWEAPON:
 				{
-					if(g_InvManager.GirlBuyItem(girl, item, 1, true))
+					if(g_InvManager.GirlBuyItem(girl, item, 2, true))
 					{
 						buyList += ((buyList == "") ? "" : ", ") + itemName;
 						itemsBought++;

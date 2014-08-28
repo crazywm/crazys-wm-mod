@@ -763,7 +763,7 @@ void LoadInterface()
 	// farm management SCREEN
 	g_LogFile.write("Loading Farm Management Screen");
 	g_FarmManagement.load();
-	g_WinManager.add_window("Farm Management", &g_FarmManagement);
+	g_WinManager.add_window("Farm", &g_FarmManagement);
 
 	// GIRL DETAILS
 	g_LogFile.write("Loading Girl Details Screen");

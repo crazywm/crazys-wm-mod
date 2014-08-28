@@ -73,6 +73,7 @@ public:
 	int &image_num() { return ImageNum; }
 	int &selected_item() { return selection; }
 	bool change_selected_girl();
+	string get_buy_slave_string(sGirl* girl);
 
 	int multi_slave_first() {
 		sel_pos = 0;

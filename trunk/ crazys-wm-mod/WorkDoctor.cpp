@@ -98,15 +98,15 @@ JOB_CLINICREST
 
 */
 
-	int patients = g_Clinic.GetNumGirlsOnJob(0, JOB_GETHEALING, DayNight == 0) +
-		g_Clinic.GetNumGirlsOnJob(0, JOB_GETABORT, DayNight == 0) +
-		g_Clinic.GetNumGirlsOnJob(0, JOB_PHYSICALSURGERY, DayNight == 0) +
-		g_Clinic.GetNumGirlsOnJob(0, JOB_LIPO, DayNight == 0) +
-		g_Clinic.GetNumGirlsOnJob(0, JOB_BREASTREDUCTION, DayNight == 0) +
-		g_Clinic.GetNumGirlsOnJob(0, JOB_BOOBJOB, DayNight == 0) +
-		g_Clinic.GetNumGirlsOnJob(0, JOB_VAGINAREJUV, DayNight == 0) +
-		g_Clinic.GetNumGirlsOnJob(0, JOB_FACELIFT, DayNight == 0) +
-		g_Clinic.GetNumGirlsOnJob(0, JOB_ASSJOB, DayNight == 0);
+	int patients = g_Clinic.GetNumGirlsOnJob(0, JOB_GETHEALING, DayNight) +
+		g_Clinic.GetNumGirlsOnJob(0, JOB_GETABORT, DayNight) +
+		g_Clinic.GetNumGirlsOnJob(0, JOB_PHYSICALSURGERY, DayNight) +
+		g_Clinic.GetNumGirlsOnJob(0, JOB_LIPO, DayNight) +
+		g_Clinic.GetNumGirlsOnJob(0, JOB_BREASTREDUCTION, DayNight) +
+		g_Clinic.GetNumGirlsOnJob(0, JOB_BOOBJOB, DayNight) +
+		g_Clinic.GetNumGirlsOnJob(0, JOB_VAGINAREJUV, DayNight) +
+		g_Clinic.GetNumGirlsOnJob(0, JOB_FACELIFT, DayNight) +
+		g_Clinic.GetNumGirlsOnJob(0, JOB_ASSJOB, DayNight);
 
 
 

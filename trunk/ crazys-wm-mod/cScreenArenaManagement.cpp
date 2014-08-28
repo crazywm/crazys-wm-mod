@@ -26,6 +26,9 @@
 #include "cJobManager.h"
 #include "InterfaceProcesses.h"
 #include "libintl.h"
+#include "cScreenGirlDetails.h"
+
+extern cScreenGirlDetails g_GirlDetails;
 
 extern bool g_InitWin;
 extern int g_CurrArena;
@@ -242,6 +245,14 @@ bool cScreenArenaManagement::check_keys()
 			return true;
 		}
 	}
+	// Show Girl Details
+	if (g_SpaceKey)
+	{
+		g_SpaceKey = false;
+		g_GirlDetails.lastsexact = -1;
+		ViewSelectedGirl();
+		return true;
+	}
 	return false;
 }
 
@@ -361,14 +372,14 @@ void cScreenArenaManagement::check_events()
 						// update the girl's listing to reflect the job change
 						ss.str("");
 						ss << g_Arena.m_JobManager.JobName[selected_girl->m_DayJob];
-						SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), 5);
+						SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->DayJobColumn());
 						ss.str("");
 						ss << g_Arena.m_JobManager.JobName[selected_girl->m_NightJob];
-						SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), 6);
+						SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->NightJobColumn());
 
 						// refresh job worker counts for former job and current job
-						SetSelectedItemText(joblist_id, old_job, g_Arena.m_JobManager.JobDescriptionCount(old_job, 0, day, false, false, true));
-						SetSelectedItemText(joblist_id, selection, g_Arena.m_JobManager.JobDescriptionCount(selection, 0, day, false, false, true));
+						SetSelectedItemText(joblist_id, old_job, g_Arena.m_JobManager.JobDescriptionCount(old_job, 0, DayNight, false, false, true));
+						SetSelectedItemText(joblist_id, selection, g_Arena.m_JobManager.JobDescriptionCount(selection, 0, DayNight, false, false, true));
 					}
 				}
 				GSelection = GetNextSelectedItemFromList(girllist_id, pos+1, pos);
@@ -459,28 +470,13 @@ bool cScreenArenaManagement::GirlDead(sGirl *dgirl)
 void cScreenArenaManagement::RefreshSelectedJobType()
 {
 	selection = GetSelectedItemFromList(girllist_id);
-	if(selection < 0)
-		return;
-
+	if (selection < 0) return;
 	selected_girl = g_Arena.GetGirl(g_CurrArena, selection);
-
 	u_int job = (DayNight == 0) ? selected_girl->m_DayJob : selected_girl->m_NightJob;
-
 	// set the job filter
-	int jobtype = 0;
-	for(unsigned int i=0; i<NUMJOBTYPES; i++)
-	{
-		if (job >= g_Arena.m_JobManager.JobFilterIndex[i] && job < g_Arena.m_JobManager.JobFilterIndex[i+1])
-			jobtype = i;
-	}
-
-	if (job >= g_Arena.m_JobManager.JobFilterIndex[JOBFILTER_ARENA] &&
-		job < g_Arena.m_JobManager.JobFilterIndex[JOBFILTER_ARENA + 1])
+	if (job >= g_Arena.m_JobManager.JobFilterIndex[JOBFILTER_ARENA] && job < g_Arena.m_JobManager.JobFilterIndex[JOBFILTER_ARENA + 1])
 		SetSelectedItemInList(jobtypelist_id, JOBFILTER_ARENA);
-	if (job >= g_Arena.m_JobManager.JobFilterIndex[JOBFILTER_ARENASTAFF] &&
-		job < g_Arena.m_JobManager.JobFilterIndex[JOBFILTER_ARENASTAFF + 1])
-		SetSelectedItemInList(jobtypelist_id, JOBFILTER_ARENASTAFF);
-	// */ //
+	else SetSelectedItemInList(jobtypelist_id, JOBFILTER_ARENASTAFF);
 	SetJob = true;
 }
 
@@ -500,7 +496,7 @@ void cScreenArenaManagement::RefreshJobList()
 	{
 		if (g_Arena.m_JobManager.JobName[i] == "")
 			continue;
-		text = g_Arena.m_JobManager.JobDescriptionCount(i, g_CurrArena, day, false, false, true);
+		text = g_Arena.m_JobManager.JobDescriptionCount(i, g_CurrArena, DayNight, false, false, true);
 		AddToListBox(joblist_id, i, text);
 	}
 

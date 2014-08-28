@@ -226,7 +226,7 @@ void cScreenPrison::update_details()
 	if(!pgirls)
 		return;
 
-	     if (DetailLevel == 1)	EditTextItem(g_Girls.GetMoreDetailsString(pgirls), girl_desc_id);
+	if (DetailLevel == 1)		EditTextItem(g_Girls.GetMoreDetailsString(pgirls, true), girl_desc_id);
 	else if (DetailLevel == 2)	EditTextItem(g_Girls.GetThirdDetailsString(pgirls), girl_desc_id);
 	else						EditTextItem(g_Girls.GetDetailsString(pgirls,true), girl_desc_id);
 }

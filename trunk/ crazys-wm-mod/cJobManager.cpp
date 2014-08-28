@@ -89,7 +89,7 @@ void cJobManager::Setup()
 	JobDesc[JOB_EXPLORECATACOMBS] = "She will explore the catacombs looking for treasure and capturing monsters and monster girls. Needless to say, this is a dangerous job.";
 	JobFunc[JOB_EXPLORECATACOMBS] = &WorkExploreCatacombs;
 	JobName[JOB_BEASTCARER] = "Beast Carer";
-	JobDesc[JOB_BEASTCARER] = "She will look after the needs of the beasts in your possession. (max 1)";
+	JobDesc[JOB_BEASTCARER] = "She will look after the needs of the beasts in your Brothel.";
 	JobFunc[JOB_BEASTCARER] = &WorkBeastCare;
 	// - Bar Jobs
 	JobFilterName[JOBFILTER_BAR] = "Bar";
@@ -241,9 +241,6 @@ void cJobManager::Setup()
 	JobName[JOB_FIGHTTRAIN] = gettext("Combat Training");
 	JobDesc[JOB_FIGHTTRAIN] = gettext("She will practice combat.");
 	JobFunc[JOB_FIGHTTRAIN] = &WorkCombatTraining;
-	JobName[JOB_CITYGUARD] = gettext("City Guard");
-	JobDesc[JOB_CITYGUARD] = gettext("She will help keep crossgate safe.");
-	JobFunc[JOB_CITYGUARD] = &WorkCityGuard;
 	//- Arena Staff
 	JobFilterName[JOBFILTER_ARENASTAFF] = gettext("Arena Staff");
 	JobFilterDesc[JOBFILTER_ARENASTAFF] = gettext("These are jobs that help run an arena.");
@@ -254,6 +251,9 @@ void cJobManager::Setup()
 	JobName[JOB_DOCTORE] = gettext("Doctore");
 	JobDesc[JOB_DOCTORE] = gettext("She will watch over the girls in the arena.");
 	JobFunc[JOB_DOCTORE] = &WorkDoctore;
+	JobName[JOB_CITYGUARD] = gettext("City Guard");
+	JobDesc[JOB_CITYGUARD] = gettext("She will help keep crossgate safe.");
+	JobFunc[JOB_CITYGUARD] = &WorkCityGuard;
 	JobName[JOB_CLEANARENA] = gettext("Grounds Keeper");
 	JobDesc[JOB_CLEANARENA] = gettext("She will clean the arena.");
 	JobFunc[JOB_CLEANARENA] = &WorkCleanArena;
@@ -361,7 +361,7 @@ void cJobManager::Setup()
 	JobName[JOB_FARMREST] = "Time off";
 	JobDesc[JOB_FARMREST] = "She will take time off and rest.";
 	JobFunc[JOB_FARMREST] = &WorkFreetime;
-	JobName[JOB_FARMMANGER] = "Head Farmer";
+	JobName[JOB_FARMMANGER] = "Farm Manager";
 	JobDesc[JOB_FARMMANGER] = "She will watch over the farm and girls working there.";
 	JobFunc[JOB_FARMMANGER] = &WorkFarmManager;
 	JobName[JOB_VETERINARIAN] = "Veterinarian";
@@ -379,13 +379,13 @@ void cJobManager::Setup()
 	// - Laborers
 	JobFilterName[JOBFILTER_LABORERS] = gettext("Laborers");
 	JobFilterDesc[JOBFILTER_LABORERS] = gettext("These are jobs your girls can do at your farm.");
-	JobFilterIndex[JOBFILTER_LABORERS] = JOB_GARDENER;
-	JobName[JOB_GARDENER] = gettext("Gardener");
-	JobDesc[JOB_GARDENER] = gettext("She will produce herbs.");
-	JobFunc[JOB_GARDENER] = &WorkGardener;
+	JobFilterIndex[JOBFILTER_LABORERS] = JOB_FARMER;
 	JobName[JOB_FARMER] = gettext("Farmer");
 	JobDesc[JOB_FARMER] = gettext("She will tend to your crops.");
 	JobFunc[JOB_FARMER] = &WorkFarmer;
+	JobName[JOB_GARDENER] = gettext("Gardener");
+	JobDesc[JOB_GARDENER] = gettext("She will produce herbs.");
+	JobFunc[JOB_GARDENER] = &WorkGardener;
 	JobName[JOB_SHEAPHERD] = gettext("Sheapherd");
 	JobDesc[JOB_SHEAPHERD] = gettext("She will tend to food animals.");
 	JobFunc[JOB_SHEAPHERD] = &WorkSheapherd;
@@ -427,7 +427,7 @@ void cJobManager::Setup()
 	// - House
 	JobFilterName[JOBFILTER_HOUSE] = gettext("Player House");
 	JobFilterDesc[JOBFILTER_HOUSE] = gettext("These are jobs your girls can do at your house.");
-	JobFilterIndex[JOBFILTER_HOUSE] = JOB_PERSONALTRAINING;
+	JobFilterIndex[JOBFILTER_HOUSE] = JOB_HOUSEREST;
 	JobName[JOB_HOUSEREST] = gettext("Time off");
 	JobDesc[JOB_HOUSEREST] = gettext("She takes time off resting and recovering.");
 	JobFunc[JOB_HOUSEREST] = &WorkFreetime;
@@ -447,6 +447,9 @@ void cJobManager::Setup()
 	JobDesc[JOB_CLEANHOUSE] = gettext("She will clean your house.");
 	JobFunc[JOB_CLEANHOUSE] = &WorkCleanHouse;
 
+	JobFilterName[JOBFILTER_NONE] = gettext("Non-Job");
+	JobFilterDesc[JOBFILTER_NONE] = gettext("These are NOT jobs. They are special cases.");
+	JobFilterIndex[JOBFILTER_NONE] = JOB_INDUNGEON;
 
 
 #if 0
@@ -617,15 +620,15 @@ void cJobManager::GetMiscCustomer(sBrothel* brothel, sCustomer& cust)
 
 bool cJobManager::is_sex_type_allowed(unsigned int sex_type, sBrothel* brothel)
 {
-	if((sex_type == SKILL_ANAL && brothel->m_RestrictAnal)		||
-	(sex_type == SKILL_BEASTIALITY && brothel->m_RestrictBeast)	||
-	(sex_type == SKILL_BDSM && brothel->m_RestrictBDSM)			||
-	(sex_type == SKILL_NORMALSEX && brothel->m_RestrictNormal)	||
-	(sex_type == SKILL_ORALSEX && brothel->m_RestrictOral)		||
-	(sex_type == SKILL_TITTYSEX && brothel->m_RestrictTitty)	||
-	(sex_type == SKILL_HANDJOB && brothel->m_RestrictHand)		||
-	(sex_type == SKILL_GROUP && brothel->m_RestrictGroup)		||
-	(sex_type == SKILL_LESBIAN && brothel->m_RestrictLesbian))	return false;
+	if ((sex_type == SKILL_ANAL && brothel->m_RestrictAnal) ||
+		(sex_type == SKILL_BEASTIALITY && brothel->m_RestrictBeast) ||
+		(sex_type == SKILL_BDSM && brothel->m_RestrictBDSM) ||
+		(sex_type == SKILL_NORMALSEX && brothel->m_RestrictNormal) ||
+		(sex_type == SKILL_ORALSEX && brothel->m_RestrictOral) ||
+		(sex_type == SKILL_TITTYSEX && brothel->m_RestrictTitty) ||
+		(sex_type == SKILL_HANDJOB && brothel->m_RestrictHand) ||
+		(sex_type == SKILL_GROUP && brothel->m_RestrictGroup) ||
+		(sex_type == SKILL_LESBIAN && brothel->m_RestrictLesbian))	return false;
 
 	return true;
 }
@@ -638,7 +641,7 @@ vector<sGirl*> cJobManager::girls_on_job(sBrothel *brothel, u_int job_wanted, in
 	sGirl* girl;
 	vector<sGirl*> v;
 
-	for(girl = brothel->m_Girls; girl; girl = girl->m_Next) 
+	for (girl = brothel->m_Girls; girl; girl = girl->m_Next)
 	{
 		job_id = (day_or_night == 0) ? girl->m_DayJob : girl->m_NightJob;
 		if (job_id != job_wanted) continue;
@@ -647,11 +650,11 @@ vector<sGirl*> cJobManager::girls_on_job(sBrothel *brothel, u_int job_wanted, in
 	return v;
 }
 
-bool cJobManager::is_job_employed(sBrothel * brothel,u_int job_wanted,int day_or_night)
+bool cJobManager::is_job_employed(sBrothel * brothel, u_int job_wanted, int day_or_night)
 {
 	u_int job_id;
 	sGirl* girl;
-	for(girl = brothel->m_Girls; girl; girl = girl->m_Next) 
+	for (girl = brothel->m_Girls; girl; girl = girl->m_Next)
 	{
 		job_id = (day_or_night == 0) ? girl->m_DayJob : girl->m_NightJob;
 		if (job_id == job_wanted) return true;
@@ -701,32 +704,27 @@ void cJobManager::do_whorejobs(sBrothel* brothel, int DayNight)
 			else if (current->m_InHouse)	sw = JOB_HOUSEREST;
 			else if (current->m_InFarm)		sw = JOB_FARMREST;
 			else sw = JOB_RESTING;
+			if (current->m_DayJob != sw)	current->m_PrevDayJob = current->m_DayJob;
+			if (current->m_NightJob != sw)	current->m_PrevNightJob = current->m_NightJob;
 		}
 		else	sw = (DayNight == SHIFT_DAY) ? current->m_DayJob : current->m_NightJob;
 
 		bool refused = false;
-		if (sw == JOB_WHOREBROTHEL)
+		switch (sw)
 		{
+		case JOB_WHOREBROTHEL:
 			refused = WorkWhore(current, brothel, DayNight, summary);
-
-			if (refused)	// if she refused she still gets tired
-				g_Girls.AddTiredness(current);
-		}
-		if (sw == JOB_BARWHORE)
-		{
+			break;
+		case JOB_BARWHORE:
 			refused = WorkBarWhore(current, brothel, DayNight, summary);
-
-			if (refused)	// if she refused she still gets tired
-				g_Girls.AddTiredness(current);
-		}
-		if (sw == JOB_WHOREGAMBHALL)
-		{
+			break;
+		case JOB_WHOREGAMBHALL:
 			refused = WorkHallWhore(current, brothel, DayNight, summary);
-
-			if (refused)	// if she refused she still gets tired
-				g_Girls.AddTiredness(current);
+			break;
+		default:
+			break;
 		}
-
+		if (refused) g_Girls.AddTiredness(current);	// if she refused she still gets tired
 		current = current->m_Next;
 	}
 }
@@ -735,7 +733,7 @@ void cJobManager::do_custjobs(sBrothel* brothel, int DayNight)
 { // Customer taking jobs get first crack at any customers before customer service.
 	sGirl* current = brothel->m_Girls;
 
-	while(current)
+	while (current)
 	{
 		string summary = "";
 		u_int sw = 0;						//	Job type
@@ -748,60 +746,61 @@ void cJobManager::do_custjobs(sBrothel* brothel, int DayNight)
 			else if (current->m_InHouse)	sw = JOB_HOUSEREST;
 			else if (current->m_InFarm)		sw = JOB_FARMREST;
 			else sw = JOB_RESTING;
+			if (current->m_DayJob != sw)	current->m_PrevDayJob = current->m_DayJob;
+			if (current->m_NightJob != sw)	current->m_PrevNightJob = current->m_NightJob;
 		}
 		else	sw = (DayNight == SHIFT_DAY) ? current->m_DayJob : current->m_NightJob;
 
 		bool refused = false;
-		switch(sw)
+		switch (sw)
 		{
 		case JOB_BARMAID:
-			refused = WorkBarmaid(current,brothel,DayNight,summary);
+			refused = WorkBarmaid(current, brothel, DayNight, summary);
 			break;
 		case JOB_WAITRESS:
-			refused = WorkBarWaitress(current,brothel,DayNight,summary);
+			refused = WorkBarWaitress(current, brothel, DayNight, summary);
 			break;
 		case JOB_SINGER:
-			refused = WorkBarSinger(current,brothel,DayNight,summary);
+			refused = WorkBarSinger(current, brothel, DayNight, summary);
 			break;
-		/*case JOB_PIANO:
-			refused = WorkBarPiano(current,brothel,DayNight,summary);
-			break;*/
+			/*case JOB_PIANO:
+				refused = WorkBarPiano(current,brothel,DayNight,summary);
+				break;*/
 		case JOB_DEALER:
-			refused = WorkHallDealer(current,brothel,DayNight,summary);
+			refused = WorkHallDealer(current, brothel, DayNight, summary);
 			break;
 		case JOB_ENTERTAINMENT:
-			refused = WorkHallEntertainer(current,brothel,DayNight,summary);
+			refused = WorkHallEntertainer(current, brothel, DayNight, summary);
 			break;
 		case JOB_XXXENTERTAINMENT:
-			refused = WorkHallXXXEntertainer(current,brothel,DayNight,summary);
+			refused = WorkHallXXXEntertainer(current, brothel, DayNight, summary);
 			break;
 		case JOB_SLEAZYBARMAID:
-			refused = WorkSleazyBarmaid(current,brothel,DayNight,summary);
+			refused = WorkSleazyBarmaid(current, brothel, DayNight, summary);
 			break;
 		case JOB_SLEAZYWAITRESS:
-			refused = WorkSleazyWaitress(current,brothel,DayNight,summary);
+			refused = WorkSleazyWaitress(current, brothel, DayNight, summary);
 			break;
 		case JOB_BARSTRIPPER:
-			refused = WorkBarStripper(current,brothel,DayNight,summary);
+			refused = WorkBarStripper(current, brothel, DayNight, summary);
 			break;
 		case JOB_MASSEUSE:
-			refused = WorkBrothelMasseuse(current,brothel,DayNight,summary);
+			refused = WorkBrothelMasseuse(current, brothel, DayNight, summary);
 			break;
 		case JOB_BROTHELSTRIPPER:
-			refused = WorkBrothelStripper(current,brothel,DayNight,summary);
+			refused = WorkBrothelStripper(current, brothel, DayNight, summary);
 			break;
 		case JOB_PEEP:
-			refused = WorkPeepShow(current,brothel,DayNight,summary);
+			refused = WorkPeepShow(current, brothel, DayNight, summary);
 			break;
 		default:
 			break;
 		}
-		if(refused)	g_Girls.AddTiredness(current);
-			
+		if (refused) g_Girls.AddTiredness(current);
 		current = current->m_Next;
 	}
-	
 }
+
 int cJobManager::get_num_on_job(int job, int brothel_id, bool day_or_night)
 {
 	return 0;
@@ -841,6 +840,7 @@ bool cJobManager::FullTimeJob(u_int Job)
 		Job == JOB_HEADGIRL ||
 		// - Farm
 		Job == JOB_FARMMANGER ||
+		Job == JOB_VETERINARIAN ||
 		false);
 }
 
@@ -993,7 +993,7 @@ bool cJobManager::is_job_Paid_Player(u_int Job)
 
 }
 
-string cJobManager::JobDescriptionCount(int job_id, int brothel_id, bool day, bool isClinic, bool isStudio, bool isArena, bool isCentre, bool isHouse, bool isFarm)
+string cJobManager::JobDescriptionCount(int job_id, int brothel_id, int day, bool isClinic, bool isStudio, bool isArena, bool isCentre, bool isHouse, bool isFarm)
 {
 	stringstream text;
 	text << JobName[job_id];
@@ -1055,9 +1055,9 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	else if (u_int(JobID) == JOB_HEADGIRL)
 	{
 		if (g_House.GetNumGirlsOnJob(TargetBrothel, JOB_HEADGIRL, DayOrNight) == 1)
-			g_MessageQue.AddToQue(gettext("There can be only one Head girl!"), 0);
+			g_MessageQue.AddToQue(gettext("There can be only one Head Girl!"), 0);
 		else if (Girl->m_States&(1 << STATUS_SLAVE))
-			g_MessageQue.AddToQue(gettext("The head girl cannot be a slave."), 0);
+			g_MessageQue.AddToQue(gettext("The Head Girl cannot be a slave."), 0);
 		else
 			Girl->m_NightJob = Girl->m_DayJob = JOB_HEADGIRL;
 	}
@@ -1069,13 +1069,17 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	else if (u_int(JobID) == JOB_FARMMANGER)
 	{
 		if (g_Farm.GetNumGirlsOnJob(TargetBrothel, JOB_FARMMANGER, DayOrNight) == 1)
-			g_MessageQue.AddToQue(gettext("There can be only one Head Farmer!"), 0);
+			g_MessageQue.AddToQue(gettext("There can be only one Farm Manager!"), 0);
 		else if (Girl->m_States&(1 << STATUS_SLAVE))
-			g_MessageQue.AddToQue(gettext("The head farmer cannot be a slave."), 0);
+			g_MessageQue.AddToQue(gettext("The Farm Manager cannot be a slave."), 0);
 		else
 			Girl->m_NightJob = Girl->m_DayJob = JOB_FARMMANGER;
 	}
-// Special Arena Jobs
+	else if (u_int(JobID) == JOB_VETERINARIAN)
+	{
+		Girl->m_NightJob = Girl->m_DayJob = JOB_VETERINARIAN;
+	}
+	// Special Arena Jobs
 	else if (u_int(JobID) == JOB_DOCTORE)
 	{
 		if (g_Arena.GetNumGirlsOnJob(TargetBrothel, JOB_DOCTORE, DayOrNight) == 1)
@@ -1084,6 +1088,13 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 			g_MessageQue.AddToQue(gettext("The Doctore cannot be a slave."), 0);
 		else
 			Girl->m_NightJob = Girl->m_DayJob = JOB_DOCTORE;
+	}
+	else if (u_int(JobID) == JOB_CITYGUARD)
+	{
+		if (Girl->m_States&(1 << STATUS_SLAVE))
+			g_MessageQue.AddToQue(gettext("Slaves can not work as City Guards."), 0);
+		else
+			Girl->m_NightJob = Girl->m_DayJob = JOB_CITYGUARD;
 	}
 	else if (u_int(JobID) == JOB_FIGHTTRAIN && (g_Girls.GetSkill(Girl, SKILL_COMBAT) > 99 && g_Girls.GetSkill(Girl, SKILL_MAGIC) > 99 && g_Girls.GetStat(Girl, STAT_AGILITY) > 99 && g_Girls.GetStat(Girl, STAT_CONSTITUTION) > 99))
 	{	// `J` added then modified
@@ -1450,8 +1461,8 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 			g_MessageQue.AddToQue(gettext("There can be only one Promoter."), 0);
 	}
 	else if(g_Studios.is_Actress_Job(JobID) &&
-		(g_Studios.GetNumGirlsOnJob(0, JOB_CAMERAMAGE, false) == 0 ||
-		g_Studios.GetNumGirlsOnJob(0, JOB_CRYSTALPURIFIER, false) == 0))
+		(g_Studios.GetNumGirlsOnJob(0, JOB_CAMERAMAGE, SHIFT_NIGHT) == 0 ||
+		g_Studios.GetNumGirlsOnJob(0, JOB_CRYSTALPURIFIER, SHIFT_NIGHT) == 0))
 	{
 		g_MessageQue.AddToQue("You must have one cameramage and one crystal purifier.", 0);
 		Girl->m_DayJob = Girl->m_NightJob = JOB_FILMFREETIME;
@@ -1525,7 +1536,9 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		{	// if old job was full time but new job is not, switch leftover day or night job back to resting
 			(DayOrNight) ? Girl->m_NightJob = JOB_HOUSEREST : Girl->m_DayJob = JOB_HOUSEREST;
 		}
-		else if (u_int(OldJobID) == JOB_FARMMANGER && u_int(JobID) != JOB_FARMMANGER)
+		else if (
+			(u_int(OldJobID) == JOB_FARMMANGER || u_int(OldJobID) == JOB_VETERINARIAN) &&
+			(u_int(JobID) != JOB_FARMMANGER || u_int(JobID) != JOB_VETERINARIAN))
 		{	// if old job was full time but new job is not, switch leftover day or night job back to resting
 			(DayOrNight) ? Girl->m_NightJob = JOB_FARMREST : Girl->m_DayJob = JOB_FARMREST;
 		}
@@ -1534,8 +1547,8 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 			u_int(OldJobID) == JOB_CAMERAMAGE || u_int(OldJobID) == JOB_CRYSTALPURIFIER ||
 			u_int(JobID) == JOB_CAMERAMAGE    || u_int(JobID) == JOB_CRYSTALPURIFIER)
 		{			// `J` ...check if there is at least 1 of each to allow for filming...
-			if (g_Studios.GetNumGirlsOnJob(0, JOB_CAMERAMAGE, 1) == 0 ||
-				g_Studios.GetNumGirlsOnJob(0, JOB_CRYSTALPURIFIER, 1) == 0)
+			if (g_Studios.GetNumGirlsOnJob(0, JOB_CAMERAMAGE, SHIFT_NIGHT) == 0 ||
+				g_Studios.GetNumGirlsOnJob(0, JOB_CRYSTALPURIFIER, SHIFT_NIGHT) == 0)
 			{		// `J` ...if not refresh the studio.
 				refresh = true;
 			}
@@ -1700,7 +1713,6 @@ int cJobManager::guard_coverage(vector<sGang*> *vpt)
 }
 
 // True means security intercepted the perp(s)
-
 bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_night)
 {
 	int GirlsBrothelNo = g_Brothels.GetGirlsCurrentBrothel(girl);
@@ -2266,103 +2278,98 @@ void cJobManager::do_training_set(vector<sGirl*> girls, int DayNight)
 {
 	sGirl *girl;
 	stringstream ss;
-/*
- *	we're getting a vector of 1-4 girls here
- *	(the one is possible if only one girl trains)
- */
-	if(girls.empty())
+	/*
+	*	we're getting a vector of 1-4 girls here
+	*	(the one is possible if only one girl trains)
+	*/
+	if (girls.empty())
 	{  // no girls? that shouldn't happen
 		g_LogFile.ss() << "Logic Error in cJobManager::do_training_set: empty set passed for training!";
 		g_LogFile.ssend();
 		return;
 	}
-	else if(girls.size() == 1)
+	else if (girls.size() == 1)
 	{  // special case for only one girl
 		do_solo_training(girls[0], DayNight);
 		return;
 	}
-/*
- *	OK. Now, as I was saying. We have an array of sGirl* pointers..
- *	We need that to be a list of TrainableGirl objects:
- */
- 	vector<TrainableGirl> set;
-/*
- *	4 is the maximum set size. I should probably consider
- *	making that a class constant - or a static class member
- *	initialised from the config file. Later for that.
- */
+	/*
+	*	OK. Now, as I was saying. We have an array of sGirl* pointers..
+	*	We need that to be a list of TrainableGirl objects:
+	*/
+	vector<TrainableGirl> set;
+	/*
+	*	4 is the maximum set size. I should probably consider
+	*	making that a class constant - or a static class member
+	*	initialised from the config file. Later for that.
+	*/
 	u_int num_girls = girls.size();
-	for(u_int i = 0; i < num_girls; i++)
+	for (u_int i = 0; i < num_girls; i++)
 	{
 		girl = girls[i];
-		if(girl == 0)
-			break;
+		if (girl == 0) break;
 		set.push_back(TrainableGirl(girl));
 	}
-/*
- *	now get an idealized composite of the girls in the set
- *
- *	and the get a vector of the indices of the most efficient
- *	three attributes for them to train 
- */
+	/*
+	*	now get an idealized composite of the girls in the set
+	*
+	*	and the get a vector of the indices of the most efficient
+	*	three attributes for them to train
+	*/
 	IdealGirl ideal(set);
 	vector<int> indices = ideal.training_indices();
-/*
- *	OK. Loop over the girls, and then over the indices
- */
- 	for(u_int g_idx = 0; g_idx < set.size(); g_idx++) 
+	/*
+	*	OK. Loop over the girls, and then over the indices
+	*/
+	for (u_int g_idx = 0; g_idx < set.size(); g_idx++)
 	{
 		TrainableGirl &trainee = set[g_idx];
 
-		for(u_int i_idx = 0; i_idx < indices.size(); i_idx++) 
+		for (u_int i_idx = 0; i_idx < indices.size(); i_idx++)
 		{
 			int index = indices[i_idx];
-/*
- *			the base value for any increase is the difference
- *			between the value of girl's stat, and the value of best
- *			girl in the set
- */         int aaa = ideal[index].value(); //    [index].value();
+			/*
+			*			the base value for any increase is the difference
+			*			between the value of girl's stat, and the value of best
+			*			girl in the set
+			*/
+			int aaa = ideal[index].value(); //    [index].value();
 			int bbb = trainee[index].value();
 			int diff = aaa - bbb;
-			if(diff < 0)  // don't want a negative training value
+			if (diff < 0)  // don't want a negative training value
 				diff = 0;
-/*
- *			plus one - just so the teacher gets a chance to 
- *			learn something
- */
-			diff ++;
-/*
- *			divide by 10 for the increase
- */
- 			int inc = (int)floor(1.0 * (double)diff / 10.0);
-/*
- *			if there's any left over (or if the diff
- *			was < 10 to begin with, there's a 10%
- *			point for each difference point
- */
-			int mod = diff %10;
-			if(g_Dice.percent(mod * 10)) 
-				inc ++;
-			
+			/*
+			*			plus one - just so the teacher gets a chance to
+			*			learn something
+			*/
+			diff++;
+			/*
+			*			divide by 10 for the increase
+			*/
+			int inc = (int)floor(1.0 * (double)diff / 10.0);
+			/*
+			*			if there's any left over (or if the diff
+			*			was < 10 to begin with, there's a 10%
+			*			point for each difference point
+			*/
+			int mod = diff % 10;
+			if (g_Dice.percent(mod * 10)) inc++;
 			trainee[index].upd(inc);
 		}
 
 		sGirl *girl = trainee.girl();
-/*
- *		need to do the  "she trained hard with ..." stuff here
- */
- 		//int n_girls = set.size();
+		/*
+		*		need to do the  "she trained hard with ..." stuff here
+		*/
+		//int n_girls = set.size();
 		ss.str("");
 		ss << gettext("She trained during this shift in the following grouping: ");
-		for(u_int i = 0; i < num_girls; i++)
+		for (u_int i = 0; i < num_girls; i++)
 		{
 			ss << girls[i]->m_Realname;
-			if(i == 0 && num_girls == 2)
-				ss << gettext(" and ");
-			else if(i < num_girls - 2)
-				ss << gettext(", ");
-			else if(i == num_girls - 2)
-				ss << gettext(", and ");
+			if (i == 0 && num_girls == 2)	ss << gettext(" and ");
+			else if (i < num_girls - 2)		ss << gettext(", ");
+			else if (i == num_girls - 2)	ss << gettext(", and ");
 		}
 		ss << gettext(".");
 
@@ -2371,26 +2378,23 @@ void cJobManager::do_training_set(vector<sGirl*> girls, int DayNight)
 		ss << gettext("She trained during this shift");
 
 		bool raised = false;
-		for(u_int i_idx = 0; i_idx < indices.size(); i_idx++)
+		for (u_int i_idx = 0; i_idx < indices.size(); i_idx++)
 		{
 			int index = indices[i_idx];
-			int  gain = trainee[index].gain();
-
-			if(gain == 0) 
-				continue;
-			
-			if(!raised)
+			int gain = trainee[index].gain();
+			if (gain == 0) continue;
+			if (!raised)
 			{
 				raised = true;
 				ss << gettext(" and gained ");
 			}
-			else 
-				ss << gettext(", ");
-			
-			ss << gettext("+") << gain <<  gettext(" ") << trainee[index].name();
+			else ss << gettext(", ");
+
+			ss << gettext("+") << gain << gettext(" ") << trainee[index].name();
 		}
 		ss << gettext(".");
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_SUMMARY);
+		if (g_Girls.HasTrait(girl, "Lesbian") && set.size() > 1) g_Girls.UpdateTempStat(girl, STAT_LIBIDO, set.size() - 1);
 	}
 }
 
@@ -2398,46 +2402,37 @@ void cJobManager::do_training(sBrothel* brothel, int DayNight)
 {
 	cTariff tariff;
 	cConfig cfg;
-
 	vector<sGirl*> t_set;
 	vector<sGirl*> girls = girls_on_job(brothel, JOB_TRAINING, DayNight);
 
-	for(u_int i = girls.size(); i --> 0; )
+	for (u_int i = girls.size(); i-- > 0;)
 	{  // no girls sneaking in training if she gave birth
-		if(
-			(girls[i]->m_WeeksPreg > 0 && girls[i]->m_WeeksPreg+1 >= cfg.pregnancy.weeks_pregnant())
-			|| (girls[i]->m_JustGaveBirth && DayNight == 1)
-		)
-			girls.erase(girls.begin()+i);
+		if ((girls[i]->m_WeeksPreg > 0 && girls[i]->m_WeeksPreg + 1 >= cfg.pregnancy.weeks_pregnant()) || (girls[i]->m_JustGaveBirth && DayNight == 1))
+			girls.erase(girls.begin() + i);
 	}
-
-	random_shuffle(girls.begin(),girls.end());
-
-	for(;;)
+	random_shuffle(girls.begin(), girls.end());
+	for (;;)
 	{
 		get_training_set(girls, t_set);
-		if(t_set.empty())
-			break;
+		if (t_set.empty()) break;
 		do_training_set(t_set, DayNight);
 	}
-/*
- *	a few bookkeeping details here
- *
- *	dirt and training costs, for a start
- */
+	/*
+	*	a few bookkeeping details here
+	*	dirt and training costs, for a start
+	*/
 	brothel->m_Filthiness += girls.size();
-	brothel->m_Finance.girl_training(
-		tariff.girl_training() * girls.size()
-	);
-/*
- *	and then each girl gets to feel tired and horny
- *	as a result of training
- */
- 	for(u_int i = 0; i < girls.size(); i++)
+	brothel->m_Finance.girl_training(tariff.girl_training() * girls.size());
+	/*
+	*	and then each girl gets to feel tired and horny
+	*	as a result of training
+	*/
+	for (u_int i = 0; i < girls.size(); i++)
 	{
 		sGirl *girl = girls[i];
 		g_Girls.AddTiredness(girl);
-		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, 2);
+		int libido = (g_Girls.HasTrait(girl, "Nymphomaniac")) ? 4 : 2;
+		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 	}
 }
 

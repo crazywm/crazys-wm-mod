@@ -78,6 +78,7 @@ struct sBrothel
 	int				m_MiscCustomers;	// customers used for temp purposes but must still be taken into account
 	unsigned char	m_Fame;				// How famous this brothel is
 	int				m_NumRooms;			// How many rooms it has
+	int				m_MaxNumRooms;		// How many rooms it can have
 	int				m_NumGirls;			// How many girls are here
 	unsigned char	m_Bar;				// level of bar: 0 => none
 	unsigned char	m_GamblingHall;		// as above
@@ -133,7 +134,7 @@ struct sBrothel
 	TiXmlElement* SaveBrothelXML(TiXmlElement* pRoot);
 	bool LoadBrothelXML(TiXmlHandle hBrothel);
 	int free_rooms() { return m_NumRooms - m_NumGirls; }
-	bool matron_on_shift(int shift, bool isClinic, bool isStudio, bool isArena, bool isCentre, bool isHouse, bool isFarm, int BrothelID); // `J` added building checks
+	bool matron_on_shift(int shift, bool isClinic = false, bool isStudio = false, bool isArena = false, bool isCentre = false, bool isHouse = false, bool isFarm = false, int BrothelID = 0); // `J` added building checks
 	int matron_count(bool isClinic, bool isStudio, bool isArena, bool isCentre, bool isHouse, bool isFarm, int BrothelID);
 	bool has_matron();
 	void AddGirl(sGirl* pGirl);
@@ -164,7 +165,7 @@ public:
 	void RemoveGirlFromRunaways(sGirl* girl);
 	int  GetNumRunaways()			{ return m_NumRunaways; }
 
-	void NewBrothel(int NumRooms);
+	void NewBrothel(int NumRooms, int MaxNumRooms = 200);
 	void DestroyBrothel(int ID);
 	void UpdateBrothels();
 	void UpdateGirls(sBrothel* brothel, int DayNight);
@@ -215,7 +216,7 @@ public:
 	bool	FightsBack(sGirl* girl);
 	int		GetNumGirls(int brothelID);
 	string	GetGirlString(int brothelID, int girlNum);
-	int		GetNumGirlsOnJob(int brothelID, int jobID, bool day);
+	int		GetNumGirlsOnJob(int brothelID, int jobID, int day = 0);
 
 	string GetBrothelString(int brothelID);
 
@@ -269,7 +270,6 @@ public:
 
 	TiXmlElement* SaveDataXML(TiXmlElement* pRoot);
 	bool LoadDataXML(TiXmlHandle hBrothelManager);
-	void LoadDataLegacy(ifstream& ifs);
 
 	bool NameExists(string name);
 

@@ -62,7 +62,6 @@ public:
 
 	TiXmlElement* SaveRivalsXML(TiXmlElement* pRoot);
 	bool LoadRivalsXML(TiXmlHandle hRivalManager);
-	void LoadRivalsLegacy(ifstream& ifs);
 
 	void CreateRival(long bribeRate, int extort, long gold, int bars, int gambHalls, int Girls, int brothels, int goons);
 	void AddRival(cRival* rival);

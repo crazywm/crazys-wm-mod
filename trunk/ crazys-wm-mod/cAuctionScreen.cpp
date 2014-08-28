@@ -30,18 +30,18 @@
 #include <sstream>
 #include "cGangs.h"
 
-extern	bool			g_InitWin;
-extern	int			g_CurrBrothel;
-extern	cGold			g_Gold;
-extern	cBrothelManager		g_Brothels;
-extern	cMovieStudioManager		g_Studios;
-extern	cWindowManager		g_WinManager;
-extern	cInterfaceEventManager	g_InterfaceEvents;
-extern bool g_Cheats;
-extern	bool	eventrunning;
-extern string g_ReturnText;
-extern cGangManager g_Gangs;
-extern bool g_AllTogle;
+extern bool						g_InitWin;
+extern int						g_CurrBrothel;
+extern cGold					g_Gold;
+extern cBrothelManager			g_Brothels;
+extern cMovieStudioManager		g_Studios;
+extern cWindowManager			g_WinManager;
+extern cInterfaceEventManager	g_InterfaceEvents;
+extern bool						g_Cheats;
+extern bool						eventrunning;
+extern string					g_ReturnText;
+extern cGangManager				g_Gangs;
+extern bool						g_AllTogle;
 
 bool cAuctionScreen::ids_set = false;
 
@@ -62,89 +62,51 @@ void cAuctionScreen::set_ids()
 
 void cAuctionScreen::init()
 {
-
-/*
- *	buttons enable/disable
- */
-
-
+// buttons enable/disable
 }
 
 void cAuctionScreen::process()
 {
-/*
- *	we need to make sure the ID variables are set
- */
-	if(!ids_set) {
-		set_ids();
-	}
 
+	if (!ids_set) set_ids();							// we need to make sure the ID variables are set
 	init();
-/* 
- *	no events means we can go home
- */
-	if(g_InterfaceEvents.GetNumEvents() == 0) {
-		return;
-	}
-
-/*
- *	otherwise, compare event IDs 
- *
- *	if it's the back button, pop the window off the stack
- *	and we're done
- */
-	if(g_InterfaceEvents.CheckButton(back_id)) {
+	if (g_InterfaceEvents.GetNumEvents() == 0) return;	// no events means we can go home
+	/*
+	 *	otherwise, compare event IDs
+	 *
+	 *	if it's the back button, pop the window off the stack
+	 *	and we're done
+	 */
+	if (g_InterfaceEvents.CheckButton(back_id))
+	{
 		g_InitWin = true;
 		g_WinManager.Pop();
 		return;
 	}
-#if 0
-	else if(g_InterfaceEvents.CheckButton(walk_id))
-	{
-		g_InitWin = true;
-		g_WinManager.push("Casting Try");
-		return;
-	}
-	else if(g_InterfaceEvents.CheckButton(girls_id))
-	{
-		g_InitWin = true;
-		g_WinManager.push("Studio");
-		return;
-	}
-	else if(g_InterfaceEvents.CheckButton(setup_id))
-	{
-		g_InitWin = true;
-		g_WinManager.push("House");
-		return;
-	}
-#endif
-	else if(g_InterfaceEvents.CheckButton(staff_id))
+	else if (g_InterfaceEvents.CheckButton(staff_id))
 	{
 		g_InitWin = true;
 		g_WinManager.push("Gangs");
 		return;
 	}
-	else if(g_InterfaceEvents.CheckButton(turns_id))
+	else if (g_InterfaceEvents.CheckButton(turns_id))
 	{
 		g_InitWin = true;
 		g_WinManager.Push(Turnsummary, &g_Turnsummary);
 		return;
 	}
-	else if(g_InterfaceEvents.CheckButton(dungeon_id))
+	else if (g_InterfaceEvents.CheckButton(dungeon_id))
 	{
 		g_InitWin = true;
 		g_WinManager.push("Dungeon");
 		return;
 	}
-	else if(g_InterfaceEvents.CheckButton (weeks_id))
-		{
-			g_InitWin = true;
-			SaveGameXML(DirPath()
-				<< "Saves"
-				<< "autosave.gam"
-			);
-			NextWeek();
-			g_WinManager.Push(Turnsummary, &g_Turnsummary);
-			return;
-		}
+	else if (g_InterfaceEvents.CheckButton(weeks_id))
+	{
+		g_InitWin = true;
+		SaveGameXML(DirPath() << "Saves" << "autosave.gam");
+		NextWeek();
+		g_WinManager.Push(Turnsummary, &g_Turnsummary);
+		return;
+	}
 }

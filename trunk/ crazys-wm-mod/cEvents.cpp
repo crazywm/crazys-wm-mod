@@ -72,6 +72,9 @@ string CEvent::TitleText()
 	case EVENT_NOWORK:
 		return "Refused Job";
 		break;
+	case EVENT_BACKTOWORK:
+		return "Back to Work";
+		break;
 	case EVENT_DEBUG:
 		return "#DEBUG#";
 		break;

@@ -322,7 +322,7 @@ string cTraits::GetTranslateName(string name){
 	{
 		return gettext("Incest");
 	}
-	else if(name.compare("Incorporeal") == 0 || name.compare("Incorporial") == 0)
+	else if (name.compare("Incorporeal") == 0)
 	{
 		return gettext("Incorporeal");
 	}

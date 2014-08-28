@@ -36,12 +36,6 @@ void Gallery2();
 void SaveGameXML(string filename);
 bool LoadGame(string directory, string filename);
 bool LoadGameXML(TiXmlHandle hDoc);
-//This legacy loader, and others like it, will load the game from its old format
-//and the game will be saved in XML format thenafter.
-//No SaveGameLegacy is necessary, and all savegame format changes
-//should take place in SaveGameXML / LoadGameXML, which is extensible
-//Therefore, there is a one time conversion, but saves are not invalidated
-bool LoadGameLegacy(string directory, string filename);
 void LoadGameScreen();
 //the master file has been done away with! yay! It was only a stub anyways
 //all the info is now in the XML savegame

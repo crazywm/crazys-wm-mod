@@ -52,21 +52,38 @@ bool cJobManager::WorkCameraMage(sGirl* girl, sBrothel* brothel, int DayNight, s
 
 	g_Girls.UnequipCombat(girl);
 
-	girl->m_Pay += 20;
+	// `J` added this to allow the Director to assign someone to this job without making it permanent
+	if (girl->m_DayJob == JOB_FILMFREETIME)	// the director sets the old job to dayjob when changing night job
+	{
+		message = girlName;
+		message += gettext(" worked as a cameramage.\n\n");
+	}
+	else
+	{
+		message = "The Director assigned " + girlName + "to run the camera for the week ";
+	}
 
-	message = girlName;
-	message += gettext(" worked as a cameramage.\n\n");
-	
 	int roll = g_Dice%100;
-
 	if (roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
 	{
-		message = girl->m_Realname + gettext(" refused to work with as a cameramage today.");
-
-		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_NOWORK);
+		if (girl->m_DayJob == JOB_FILMFREETIME)
+		{
+			message = girl->m_Realname + gettext(" refused to work as a cameramage today.");
+			girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_NOWORK);
+		}
+		else
+		{
+			if (g_Studios.is_Actress_Job(girl->m_DayJob))	message += "but she wanted to be in front of the camera rather than behind it.\n";
+			else if (girl->m_DayJob == JOB_PROMOTER)		message += "but she preferred to sell the movies instead of make them.\n";
+			else if (girl->m_DayJob == JOB_FLUFFER)			message += "but she was having a bad hair day and needed some cum in it to make it cooperate.\n";
+			else if (girl->m_DayJob == JOB_STAGEHAND)		message += "but she wanted to move around more than the camera would allow her.\n";
+			else if (girl->m_DayJob == JOB_CRYSTALPURIFIER) message += "but she preferred to edit the scenes rather than makeing new ones.\n";
+			girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_BACKTOWORK);
+		}
 		return true;
 	}
-	else if(roll <= 15) {
+	else if(roll <= 15) 
+	{
 		message += gettext(" She did not like working in the studio today.\n\n");
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, -1, true);
 		jobperformance += -5;
@@ -88,6 +105,8 @@ bool cJobManager::WorkCameraMage(sGirl* girl, sBrothel* brothel, int DayNight, s
  *
  *	the original calc took the average of beauty and charisma and halved it
  */
+	girl->m_Pay += 20;
+
 	int roll_max = girl->spirit() + girl->intelligence();
 	roll_max /= 4;
 	girl->m_Pay += 10 + g_Dice%roll_max;

@@ -168,9 +168,6 @@ friend	istream &operator>>(istream& is, cGoldBase &g);
  */
 	TiXmlElement* saveGoldXML(TiXmlElement* pRoot);
 	bool loadGoldXML(TiXmlHandle hGold);
-	void loadGoldLegacy(istream &is) {
-		is >> (*this);
-	}
 /*
  *	type conversion methods
  */

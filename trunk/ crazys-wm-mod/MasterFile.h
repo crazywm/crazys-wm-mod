@@ -29,50 +29,6 @@ private:
 	FileFlags files;
 
 public:
-	void LoadLegacy(string filename)
-	{
-		files.clear();
-		ifstream ifs;
-		char buffer[1024];	// power of 2 makes better use of memory
-/*
- *		format the path for the master file. 
- */
-		string mfile = filename + ".mast";
-		DirPath mastfile = DirPath() << "Saves" << mfile;
-		filename = mastfile.c_str();
-/*
- *		open the file
- */
-		ifs.open(mastfile.c_str());
-/*
- *		problem opening the file?
- */
-		if(!ifs.good())
-		{
-			ifs.close();
-			return;
-		}
-/*
- *		loop through the file, one line at a time
- */
-		while(ifs.good())
-		{
-/*
- *			Using "sizeof()" means that the size is right even if the
- *			buffer size is later changed.
- */
-			ifs.getline(buffer, sizeof(buffer)-1, '\n');
-
-			if (string(buffer).empty() == false)
-			{
-/*
- *				add the file to the map
- */
-				files[string(buffer)] = 1;
-			}
-		}
-		ifs.close();
-	}
 
 	bool	exists(string name)
 	{

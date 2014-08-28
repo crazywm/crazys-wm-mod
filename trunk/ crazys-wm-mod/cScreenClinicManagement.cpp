@@ -26,6 +26,9 @@
 #include "cJobManager.h"
 #include "InterfaceProcesses.h"
 #include "libintl.h"
+#include "cScreenGirlDetails.h"
+
+extern cScreenGirlDetails g_GirlDetails;
 
 extern bool g_InitWin;
 extern int g_CurrClinic;
@@ -220,28 +223,36 @@ void cScreenClinicManagement::process()
 
 bool cScreenClinicManagement::check_keys()
 {
-	if(g_UpArrow) {
+	if (g_UpArrow) {
 		selection = ArrowUpListBox(girllist_id);
 		g_UpArrow = false;
 		return true;
 	}
-	if(g_DownArrow) {
+	if (g_DownArrow) {
 		selection = ArrowDownListBox(girllist_id);
 		g_DownArrow = false;
 		return true;
 	}
-	if(g_AltKeys)
+	if (g_AltKeys)
 	{
-	if(g_A_Key) {
-		selection = ArrowUpListBox(girllist_id);
-		g_A_Key = false;
-		return true;
+		if (g_A_Key) {
+			selection = ArrowUpListBox(girllist_id);
+			g_A_Key = false;
+			return true;
+		}
+		if (g_D_Key) {
+			selection = ArrowDownListBox(girllist_id);
+			g_D_Key = false;
+			return true;
+		}
 	}
-	if(g_D_Key) {
-		selection = ArrowDownListBox(girllist_id);
-		g_D_Key = false;
+	// Show Girl Details
+	if (g_SpaceKey)
+	{
+		g_SpaceKey = false;
+		g_GirlDetails.lastsexact = -1;
+		ViewSelectedGirl();
 		return true;
-	}
 	}
 	return false;
 }
@@ -374,14 +385,14 @@ void cScreenClinicManagement::check_events()
 						// update the girl's listing to reflect the job change
 						ss.str("");
 						ss << g_Clinic.m_JobManager.JobName[selected_girl->m_DayJob];
-						SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), 5);
+						SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->DayJobColumn());
 						ss.str("");
 						ss << g_Clinic.m_JobManager.JobName[selected_girl->m_NightJob];
-						SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), 6);
+						SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->NightJobColumn());
 
 						// refresh job worker counts for former job and current job
-						SetSelectedItemText(joblist_id, old_job, g_Clinic.m_JobManager.JobDescriptionCount(old_job, 0, day, true));
-						SetSelectedItemText(joblist_id, selection, g_Clinic.m_JobManager.JobDescriptionCount(selection, 0, day, true));
+						SetSelectedItemText(joblist_id, old_job, g_Clinic.m_JobManager.JobDescriptionCount(old_job, 0, DayNight, true));
+						SetSelectedItemText(joblist_id, selection, g_Clinic.m_JobManager.JobDescriptionCount(selection, 0, DayNight, true));
 					}
 				}
 				bool interrupted = false;	// `J` added
@@ -395,20 +406,20 @@ void cScreenClinicManagement::check_events()
 					ss.str("");
 					ss << g_Clinic.m_JobManager.JobName[selected_girl->m_DayJob] << " (" << 2 - selected_girl->m_WorkingDay << ")*";
 					if (interrupted)	ss << " **";
-						SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), 5);
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->DayJobColumn());
 				}
 				else if (g_Clinic.is_Surgery_Job(selected_girl->m_DayJob))	// `J` added
 				{
 					ss.str("");
 					ss << g_Clinic.m_JobManager.JobName[selected_girl->m_DayJob] << " (" << 5 - selected_girl->m_WorkingDay << ")*";
 					if (interrupted)	ss << " **";
-					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), 5);
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->DayJobColumn());
 				}
 				else if (interrupted)
 				{
 					ss.str("");
 					ss << g_Clinic.m_JobManager.JobName[selected_girl->m_DayJob] << " **";
-					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), 5);
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->DayJobColumn());
 				}
 
 				if (selected_girl->m_NightJob == JOB_GETABORT)	// `J` added
@@ -416,20 +427,20 @@ void cScreenClinicManagement::check_events()
 					ss.str("");
 					ss << g_Clinic.m_JobManager.JobName[selected_girl->m_NightJob] << " (" << 2 - selected_girl->m_WorkingDay << ")*";
 					if (interrupted)	ss << " **";
-					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), 6);
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->NightJobColumn());
 				}
 				else if (g_Clinic.is_Surgery_Job(selected_girl->m_NightJob))	// `J` added
 				{
 					ss.str("");
 					ss << g_Clinic.m_JobManager.JobName[selected_girl->m_NightJob] << " (" << 5 - selected_girl->m_WorkingDay << ")*";
 					if (interrupted)	ss << " **";
-					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), 6);
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->NightJobColumn());
 				}
 				else if (interrupted)
 				{
 					ss.str("");
 					ss << g_Clinic.m_JobManager.JobName[selected_girl->m_NightJob] << " **";
-					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), 6);
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->NightJobColumn());
 				}
 				if (interrupted)					
 				{	// `J` added
@@ -530,22 +541,13 @@ bool cScreenClinicManagement::GirlDead(sGirl *dgirl)
 void cScreenClinicManagement::RefreshSelectedJobType()
 {
 	selection = GetSelectedItemFromList(girllist_id);
-	if (selection < 0)
-		return;
-
+	if (selection < 0) return;
 	selected_girl = g_Clinic.GetGirl(g_CurrClinic, selection);
-
 	u_int job = (DayNight == 0) ? selected_girl->m_DayJob : selected_girl->m_NightJob;
-
 	// set the job filter
-	int jobtype = 0;
-	for (unsigned int i = 0; i < NUMJOBTYPES; i++)
-	{
-		if (job >= g_Clinic.m_JobManager.JobFilterIndex[i] && job < g_Clinic.m_JobManager.JobFilterIndex[i + 1])
-			jobtype = i;
-	}
-	SetSelectedItemInList(jobtypelist_id, jobtype);
-
+	if (job >= g_Clinic.m_JobManager.JobFilterIndex[JOBFILTER_CLINIC] && job < g_Clinic.m_JobManager.JobFilterIndex[JOBFILTER_CLINIC + 1])
+		SetSelectedItemInList(jobtypelist_id, JOBFILTER_CLINIC);
+	else SetSelectedItemInList(jobtypelist_id, JOBFILTER_CLINICSTAFF);
 	SetJob = true;
 }
 
@@ -565,7 +567,7 @@ void cScreenClinicManagement::RefreshJobList()
 	{
 		if (g_Clinic.m_JobManager.JobName[i] == "")
 			continue;
-		text = g_Clinic.m_JobManager.JobDescriptionCount(i, g_CurrClinic, day, true);
+		text = g_Clinic.m_JobManager.JobDescriptionCount(i, g_CurrClinic, DayNight, true);
 		AddToListBox(joblist_id, i, text);
 	}
 

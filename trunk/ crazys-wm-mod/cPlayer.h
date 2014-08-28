@@ -62,7 +62,6 @@ public:
 
 	TiXmlElement* SavePlayerXML(TiXmlElement* pRoot);
 	bool LoadPlayerXML(TiXmlHandle hPlayer);
-	void LoadPlayerLegacy(ifstream& ifs);
 
 	int disposition()		{ return m_Disposition; }
 	int disposition(int n);

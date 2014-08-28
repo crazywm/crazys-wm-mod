@@ -25,6 +25,9 @@
 #include "cJobManager.h"
 #include "InterfaceProcesses.h"
 #include "libintl.h"
+#include "cScreenGirlDetails.h"
+
+extern cScreenGirlDetails g_GirlDetails;
 
 extern bool g_InitWin;
 extern int g_CurrStudio;
@@ -185,28 +188,36 @@ void cScreenStudioManagement::process()
 
 bool cScreenStudioManagement::check_keys()
 {
-	if(g_UpArrow) {
+	if (g_UpArrow) {
 		selection = ArrowUpListBox(girllist_id);
 		g_UpArrow = false;
 		return true;
 	}
-	if(g_DownArrow) {
+	if (g_DownArrow) {
 		selection = ArrowDownListBox(girllist_id);
 		g_DownArrow = false;
 		return true;
 	}
-	if(g_AltKeys)
+	if (g_AltKeys)
 	{
-	if(g_A_Key) {
-		selection = ArrowUpListBox(girllist_id);
-		g_A_Key = false;
-		return true;
+		if (g_A_Key) {
+			selection = ArrowUpListBox(girllist_id);
+			g_A_Key = false;
+			return true;
+		}
+		if (g_D_Key) {
+			selection = ArrowDownListBox(girllist_id);
+			g_D_Key = false;
+			return true;
+		}
 	}
-	if(g_D_Key) {
-		selection = ArrowDownListBox(girllist_id);
-		g_D_Key = false;
+	// Show Girl Details
+	if (g_SpaceKey)
+	{
+		g_SpaceKey = false;
+		g_GirlDetails.lastsexact = -1;
+		ViewSelectedGirl();
 		return true;
-	}
 	}
 	return false;
 }
@@ -336,14 +347,14 @@ void cScreenStudioManagement::check_events()
 						// update the girl's listing to reflect the job change
 						ss.str("");
 						ss << g_Studios.m_JobManager.JobName[selected_girl->m_DayJob];
-						SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), 5);
+						SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->DayJobColumn());
 						ss.str("");
 						ss << g_Studios.m_JobManager.JobName[selected_girl->m_NightJob];
-						SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), 6);
+						SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->NightJobColumn());
 
 						// refresh job worker counts for former job and current job
-						SetSelectedItemText(joblist_id, old_job, g_Studios.m_JobManager.JobDescriptionCount(old_job, 0, false, false, true));
-						SetSelectedItemText(joblist_id, selection, g_Studios.m_JobManager.JobDescriptionCount(selection, 0, false, false, true));
+						SetSelectedItemText(joblist_id, old_job, g_Studios.m_JobManager.JobDescriptionCount(old_job, 0, SHIFT_NIGHT, false, true));
+						SetSelectedItemText(joblist_id, selection, g_Studios.m_JobManager.JobDescriptionCount(selection, 0, SHIFT_NIGHT, false, true));
 					}
 				}
 				if (g_Studios.is_Actress_Job(selected_girl->m_NightJob))	// `J` added
@@ -351,7 +362,7 @@ void cScreenStudioManagement::check_events()
 					ss.str("");
 					ss << g_Studios.m_JobManager.JobName[selected_girl->m_NightJob];
 					if (g_Studios.CrewNeeded())	ss << " **";
-					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), 6);
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->NightJobColumn());
 				}
 	
 				GSelection = GetNextSelectedItemFromList(girllist_id, pos+1, pos);
@@ -408,22 +419,13 @@ bool cScreenStudioManagement::GirlDead(sGirl *dgirl)
 void cScreenStudioManagement::RefreshSelectedJobType()
 {
 	selection = GetSelectedItemFromList(girllist_id);
-	if(selection < 0)
-		return;
-
+	if(selection < 0) return;
 	selected_girl = g_Studios.GetGirl(0, selection);
-
 	u_int job = selected_girl->m_NightJob;
-
 	// set the job filter
-	int jobtype = 0;
-	for(unsigned int i=0; i<NUMJOBTYPES; i++)
-	{
-		if (job >= g_Studios.m_JobManager.JobFilterIndex[i] && job < g_Studios.m_JobManager.JobFilterIndex[i+1])
-			jobtype = i;
-	}
-	SetSelectedItemInList(jobtypelist_id, jobtype);
-
+	if (job >= g_Studios.m_JobManager.JobFilterIndex[JOBFILTER_MOVIESTUDIO] && job < g_Studios.m_JobManager.JobFilterIndex[JOBFILTER_MOVIESTUDIO + 1])
+		SetSelectedItemInList(jobtypelist_id, JOBFILTER_MOVIESTUDIO);
+	else SetSelectedItemInList(jobtypelist_id, JOBFILTER_STUDIOCREW);
 	SetJob = true;
 }
 
@@ -442,7 +444,7 @@ void cScreenStudioManagement::RefreshJobList()
 	{
 		if (g_Studios.m_JobManager.JobName[i] == "")
 			continue;
-		text = g_Studios.m_JobManager.JobDescriptionCount(i, g_CurrStudio, false, false, true);
+		text = g_Studios.m_JobManager.JobDescriptionCount(i, g_CurrStudio, SHIFT_NIGHT, false, true);
 		AddToListBox(joblist_id, i, text);
 	}
 

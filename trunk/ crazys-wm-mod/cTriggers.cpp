@@ -457,7 +457,7 @@ void cTriggerList::ProcessTriggers()
 	cTrigger* curr = m_Triggers;
 	while (curr)
 	{
-		if (curr->m_Once > 0 || curr->m_Triggered == curr->m_Once)
+		if (curr->m_Once > 0 && curr->m_Triggered == curr->m_Once)
 		{
 			curr = curr->m_Next;
 			continue;

@@ -80,7 +80,7 @@ bool cJobManager::WorkDrugCounselor(sGirl* girl, sBrothel* brothel, int DayNight
 	int roll_max = girl->spirit() + girl->intelligence();
 	roll_max /= 4;
 	wages += 10 + g_Dice%roll_max;
-	wages += 5 * g_Centre.GetNumGirlsOnJob(0, JOB_REHAB, DayNight == 0);	// `J` pay her 5 for each patient you send to her
+	wages += 5 * g_Centre.GetNumGirlsOnJob(0, JOB_REHAB, DayNight);	// `J` pay her 5 for each patient you send to her
 	girl->m_Pay = wages;
 
 	// Improve stats

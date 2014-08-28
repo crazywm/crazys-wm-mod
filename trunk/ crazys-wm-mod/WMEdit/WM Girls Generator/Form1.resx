@@ -161,11 +161,20 @@ expect that Whore Master will crash.</value>
   <data name="label_Load_Config.Text" xml:space="preserve">
     <value>The WME will try to find config.xml by itself.
 If it does not find it, you will have to find it manually.
-Starting in version .06 it is in the root game folder.
+Starting in version .05t it is in the root game folder.
 In older versions, it was in \Resources\Data\ folder.</value>
   </data>
   <data name="richTextBox1.Text" xml:space="preserve">
-    <value>To get the game to load girls and random girls their respective *.girls(x) and *.rgirls(x) files must be placed under "Resources\Characters\" folder, while *.items(x) files go to "Resources\Data\" folder.
+    <value>
+This FAQ is extremely out of date, I don't know why I have not removed it yet.
+For better information check the foruns on http://www.pinkpetal.org
+
+---------
+
+
+---------
+      
+To get the game to load girls and random girls their respective *.girls(x) and *.rgirls(x) files must be placed under "Resources\Characters\" folder, while *.items(x) files go to "Resources\Data\" folder.
 
 Excerpt from old manual:
 
