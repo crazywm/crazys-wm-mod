@@ -90,7 +90,7 @@ bool cJobManager::WorkGetFacelift(sGirl* girl, sBrothel* brothel, int DayNight, 
 		}
 	}
 
-	int numnurse = g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, DayNight == 0);
+	int numnurse = g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, DayNight);
 
 	stringstream ss;
 	if (girl->m_WorkingDay >= 5)

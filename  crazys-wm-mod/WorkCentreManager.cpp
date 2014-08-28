@@ -16,6 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <sstream>
 #include "cJobManager.h"
 #include "cBrothel.h"
 #include "cCentre.h"
@@ -24,7 +25,6 @@
 #include "cInventory.h"
 #include "sConfig.h"
 #include "cRival.h"
-#include <sstream>
 #include "CLog.h"
 #include "cTrainable.h"
 #include "cTariff.h"
@@ -45,52 +45,65 @@ extern cGold g_Gold;
 
 bool cJobManager::WorkCentreManager(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
+	if (DayNight == 1) return false;
 	cTariff tariff;
-	if(DayNight == 1)
-		return false;
-
+	cConfig cfg;
 	string message = "";
-	if(Preprocessing(ACTION_WORKMATRON, girl, brothel, DayNight, summary, message))
-		return true;
+	if (Preprocessing(ACTION_WORKMATRON, girl, brothel, DayNight, summary, message)) return true;
 
-	// Complication
-	if(g_Dice%100 <= 10)
+	// Complications
+	int check = g_Dice % 100;
+	if (check < 10)
 	{
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMATRON, -3, true);
-		message = gettext("Had trouble dealing with some of the girls.");
+		if (brothel->m_NumGirls > girl->get_skill(SKILL_SERVICE) * 2)
+		{
+			g_Girls.UpdateEnjoyment(girl, ACTION_WORKMATRON, -10, true);
+			message = girl->m_Realname;
+			message += gettext(" was overwhelmed by the number of girls she was required to manage and broke down crying.");
+			g_Girls.UpdateStat(girl, STAT_HAPPINESS, -10);
+			g_Girls.UpdateStat(girl, STAT_CONFIDENCE, -5);
+			girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
+		}
+		else
+		{
+			g_Girls.UpdateEnjoyment(girl, ACTION_WORKMATRON, -3, true);
+			message = gettext("Had trouble dealing with some of the girls.");
+			g_Girls.UpdateStat(girl, STAT_HAPPINESS, -3);
+			g_Girls.UpdateStat(girl, STAT_CONFIDENCE, -1);
+			girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
+		}
+	}
+	else if (check > 90)
+	{
+		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMATRON, +3, true);
+		message = gettext("Enjoyed helping the girls with their lives.");
+		g_Girls.UpdateStat(girl, STAT_HAPPINESS, 3);
+		g_Girls.UpdateStat(girl, STAT_CONFIDENCE, 1);
 		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
 	}
 	else
 	{
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMATRON, +3, true);
-		message = gettext("Enjoyed helping the girls with their lives.");
+		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMATRON, +1, true);
+		message = gettext("Went about her day a usual.");
 		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
 	}
-	
+
 
 	// Improve girl
-	int xp = 10, libido = 1, skill = 3;
+	int numgirls = brothel->m_NumGirls;
+	int xp = 5 + (numgirls / 10), libido = 1, skill = 3;
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))
-	{
-		skill += 1;
-		xp += 5;
-	}
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))
-	{
-		skill -= 1;
-		xp -= 5;
-	}
+	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 5; }
+	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 5; }
+	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			libido += 2;
+	if (g_Girls.HasTrait(girl, "Lesbian"))				libido += numgirls / 20;
 
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))
-		libido += 2;
+	cfg.out_fact.matron_wages();
 
-	int wages = tariff.matron_wages(g_Girls.GetSkill(girl, SKILL_SERVICE));
-	g_Gold.girl_support(wages);  // matron wages come from you
-	girl->m_Pay += wages;
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, skill);
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	girl->m_Pay = int(float(100.0 + (((girl->get_skill(SKILL_SERVICE) + girl->get_stat(STAT_CHARISMA) + girl->get_stat(STAT_INTELLIGENCE) + girl->get_stat(STAT_CONFIDENCE) + girl->get_skill(SKILL_MEDICINE) + 50) / 50)*numgirls) * cfg.out_fact.matron_wages()));
+	g_Girls.UpdateStat(girl, STAT_EXP, g_Dice%xp + 5);
+	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill + 2);
+	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, g_Dice%libido);
 
 	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 30, ACTION_WORKMATRON, gettext("She has worked as a matron long enough that she has learned to be more Charismatic."), DayNight != 0);
 	g_Girls.PossiblyGainNewTrait(girl, "Psychic", 60, ACTION_WORKMATRON, gettext("She has learned to handle the girls so well that you'd almost think she was Psychic."), DayNight != 0);

@@ -12,9 +12,9 @@
 <Button Name="Prison"       Image="Prison"       Disabled="" XPos="620" YPos="130" Width="48"  Height="48"  Transparency="true" Scale="true" />      
 <Button Name="Clinic"       Image="Clinic"       Disabled="" XPos="373" YPos="40"  Width="48"  Height="48"  Transparency="true" Scale="true" />      
 <Button Name="Studio"       Image="Studio"       Disabled="" XPos="100" YPos="158" Width="48"  Height="48"  Transparency="true" Scale="true" />
-<Button Name="Arena"        Image="Arena"        Disabled="" XPos="200" YPos="200" Width="48"  Height="48"  Transparency="true" Scale="true" />
+<Button Name="Arena"        Image="Arena"        Disabled="" XPos="380" YPos="390" Width="48"  Height="48"  Transparency="true" Scale="true" />
 <Button Name="Centre"       Image="Centre"       Disabled="" XPos="448" YPos="158" Width="48"  Height="48"  Transparency="true" Scale="true" />
-<Button Name="Farm"         Image="Centre"       Disabled="" XPos="620" YPos="400" Width="48"  Height="48"  Transparency="true" Scale="true" />
+<Button Name="Farm"         Image="Farm"         Disabled="" XPos="620" YPos="430" Width="48"  Height="48"  Transparency="true" Scale="true" />
 <Button Name="Brothel0"     Image="Brothel"      Disabled="" XPos="352" YPos="208" Width="48"  Height="48"  Transparency="true" Scale="true" />
 <Button Name="Brothel1"     Image="Brothel2"     Disabled="" XPos="504" YPos="332" Width="48"  Height="48"  Transparency="true" Scale="true" />      
 <Button Name="Brothel2"     Image="Brothel3"     Disabled="" XPos="368" YPos="144" Width="48"  Height="48"  Transparency="true" Scale="true" />      

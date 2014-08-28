@@ -135,6 +135,27 @@ sConfigData::sConfigData(const char *a_filename)
 			}
 		}
 	}
+	fonts.detailfontsize = 9;	// default to 9 then check if it is set in girl_details_screen.xml
+	DirPath dpt = DirPath() << "Resources" << "Interface" << resolution.resolution << "girl_details_screen.xml";
+	TiXmlDocument doct(dp.c_str());
+	if (doct.LoadFile())
+	{
+		string m_filename = dpt.c_str();
+		TiXmlElement *el, *root_el = doct.RootElement();
+		for (el = root_el->FirstChildElement(); el; el = el->NextSiblingElement())
+		{
+			string tag = el->ValueStr();
+			if (tag == "Text")
+			{
+				XmlUtil xu(m_filename); string name; int f = 9;
+				xu.get_att(el, "Name", name); xu.get_att(el, "FontSize", f, true);
+				if (name == "GirlDescription" && f > 0)
+				{
+					fonts.detailfontsize = f; break;
+				}
+			}
+		}
+	}
 }
 
 
@@ -375,6 +396,7 @@ void sConfigData::get_font_data(TiXmlElement *el)
 	if (pt = el->Attribute("Normal"))			get_att(el, "Normal", fonts.normal);
 	if (pt = el->Attribute("Fixed"))			get_att(el, "Fixed", fonts.fixed);
 	if (pt = el->Attribute("Antialias"))		get_att(el, "Antialias", fonts.antialias);
+	if (pt = el->Attribute("ShowPercent"))		get_att(el, "ShowPercent", fonts.showpercent);
 }
 
 void sConfigData::get_debug_flags(TiXmlElement *el)
@@ -505,6 +527,8 @@ void sConfigData::set_defaults()
 	fonts.normal			= "comic.ttf";
 	fonts.fixed				= "comic.ttf";
 	fonts.antialias			= true;
+	fonts.showpercent		= false;
+	fonts.detailfontsize	= 9;
 
 	debug.log_all			= false;
 	debug.log_girls			= false;

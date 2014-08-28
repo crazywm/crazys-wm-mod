@@ -25,6 +25,9 @@
 #include "cTariff.h"
 #include "cJobManager.h"
 #include "InterfaceProcesses.h"
+#include "cScreenGirlDetails.h"
+
+extern cScreenGirlDetails g_GirlDetails;
 
 extern bool g_InitWin;
 extern int g_CurrHouse;
@@ -131,7 +134,7 @@ void cScreenHouseManagement::init()
 		g_ChoiceManager.Free();
 		FreeGirl = false;
 	}
-	g_CurrentScreen = SCREEN_PLAYERHOUSE;
+	g_CurrentScreen = SCREEN_HOUSE;
 	if(!g_InitWin)
 		return;
 
@@ -219,28 +222,36 @@ void cScreenHouseManagement::process()
 
 bool cScreenHouseManagement::check_keys()
 {
-	if(g_UpArrow) {
+	if (g_UpArrow) {
 		selection = ArrowUpListBox(girllist_id);
 		g_UpArrow = false;
 		return true;
 	}
-	if(g_DownArrow) {
+	if (g_DownArrow) {
 		selection = ArrowDownListBox(girllist_id);
 		g_DownArrow = false;
 		return true;
 	}
-	if(g_AltKeys)
+	if (g_AltKeys)
 	{
-	if(g_A_Key) {
-		selection = ArrowUpListBox(girllist_id);
-		g_A_Key = false;
-		return true;
+		if (g_A_Key) {
+			selection = ArrowUpListBox(girllist_id);
+			g_A_Key = false;
+			return true;
+		}
+		if (g_D_Key) {
+			selection = ArrowDownListBox(girllist_id);
+			g_D_Key = false;
+			return true;
+		}
 	}
-	if(g_D_Key) {
-		selection = ArrowDownListBox(girllist_id);
-		g_D_Key = false;
+	// Show Girl Details
+	if (g_SpaceKey)
+	{
+		g_SpaceKey = false;
+		g_GirlDetails.lastsexact = -1;
+		ViewSelectedGirl();
 		return true;
-	}
 	}
 	return false;
 }
@@ -361,14 +372,14 @@ void cScreenHouseManagement::check_events()
 						// update the girl's listing to reflect the job change
 						ss.str("");
 						ss << g_House.m_JobManager.JobName[selected_girl->m_DayJob];
-						SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), 5);
+						SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->DayJobColumn());
 						ss.str("");
 						ss << g_House.m_JobManager.JobName[selected_girl->m_NightJob];
-						SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), 6);
+						SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->NightJobColumn());
 
 						// refresh job worker counts for former job and current job
-						SetSelectedItemText(joblist_id, old_job, g_House.m_JobManager.JobDescriptionCount(old_job, 0, day, false, false, false, false, true));
-						SetSelectedItemText(joblist_id, selection, g_House.m_JobManager.JobDescriptionCount(selection, 0, day, false, false, false, false, true));
+						SetSelectedItemText(joblist_id, old_job, g_House.m_JobManager.JobDescriptionCount(old_job, 0, DayNight, false, false, false, false, true));
+						SetSelectedItemText(joblist_id, selection, g_House.m_JobManager.JobDescriptionCount(selection, 0, DayNight, false, false, false, false, true));
 					}
 				}
 				GSelection = GetNextSelectedItemFromList(girllist_id, pos+1, pos);
@@ -459,23 +470,15 @@ bool cScreenHouseManagement::GirlDead(sGirl *dgirl)
 
 void cScreenHouseManagement::RefreshSelectedJobType()
 {
+/* `J` no need for testing because there is only 1 job type in the house
 	selection = GetSelectedItemFromList(girllist_id);
-	if(selection < 0)
-		return;
-
+	if (selection < 0) return;
 	selected_girl = g_House.GetGirl(g_CurrHouse, selection);
-
 	u_int job = (DayNight == 0) ? selected_girl->m_DayJob : selected_girl->m_NightJob;
-
 	// set the job filter
-	int jobtype = 0;
-	for(unsigned int i=0; i<NUMJOBTYPES; i++)
-	{
-		if (job >= g_House.m_JobManager.JobFilterIndex[i] && job < g_House.m_JobManager.JobFilterIndex[i+1])
-			jobtype = i;
-	}
+	if (job >= g_House.m_JobManager.JobFilterIndex[JOBFILTER_HOUSE] && job < g_House.m_JobManager.JobFilterIndex[JOBFILTER_HOUSE + 1])
+//*/
 	SetSelectedItemInList(jobtypelist_id, JOBFILTER_HOUSE);
-
 	SetJob = true;
 }
 
@@ -495,7 +498,7 @@ void cScreenHouseManagement::RefreshJobList()
 	{
 		if (g_House.m_JobManager.JobName[i] == "")
 			continue;
-		text = g_House.m_JobManager.JobDescriptionCount(i, g_CurrHouse, day, false, false, false, false, true);
+		text = g_House.m_JobManager.JobDescriptionCount(i, g_CurrHouse, DayNight, false, false, false, false, true);
 		AddToListBox(joblist_id, i, text);
 	}
 		if(selected_girl)

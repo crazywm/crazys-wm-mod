@@ -36,6 +36,7 @@
 #include "cTriggers.h"
 #include "cNameList.h"
 #include "cAnimatedSurface.h"
+#include "cFont.h"
 
 using namespace std;
 
@@ -48,12 +49,11 @@ class   cPlayer;
 struct  sCustomer;
 struct  sGang;
 
-
 class cAbstractGirls {
 public:
 	virtual int GetStat(sGirl* girl, int stat)=0;
 	virtual int GetSkill(sGirl* girl, int skill)=0;
-	virtual void UpdateStat(sGirl* girl, int stat, int amount)=0;
+	virtual void UpdateStat(sGirl* girl, int stat, int amount, bool usetraits = true) = 0;
 	virtual void UpdateSkill(sGirl* girl, int skill, int amount)=0;
 	virtual bool CalcPregnancy(
 		sGirl* girl, int chance, int type,
@@ -336,6 +336,7 @@ struct sGirl
 	unsigned char m_EquipedItems[40];			// value of > 0 means equipped (wearing) the item
 
 	long m_States;								// Holds the states the girl has
+	long m_BaseStates;							// `J` Holds base states the girl has for use with equipable items
 
 	// Abstract stats (not shown as numbers but as a raiting)
 	int m_Stats[NUM_STATS];
@@ -391,15 +392,15 @@ struct sGirl
 	unsigned char m_WeeksPreg;					// number of weeks pregnant or inseminated
 	unsigned char m_PregCooldown;				// number of weeks until can get pregnant again
 	cChildList m_Children;
-	bool m_InClinic; 
-	bool m_InMovieStudio;
-	bool m_InArena;
-	bool m_InCentre;
-	bool m_InHouse;
-	bool m_InFarm;
-	int where_is_she;
-	int m_PrevWorkingDay;	// `J` save the last count of the number of working days 
-	int m_WorkingDay;	// count the number of working day 
+	bool m_InClinic = false;
+	bool m_InMovieStudio = false;
+	bool m_InArena = false;
+	bool m_InCentre = false;
+	bool m_InHouse = false;
+	bool m_InFarm = false;
+	int where_is_she=0;
+	int m_PrevWorkingDay=0;	// `J` save the last count of the number of working days 
+	int m_WorkingDay=0;	// count the number of working day 
 
 	sGirl()
 	{	
@@ -561,8 +562,8 @@ struct sGirl
 		g_GirlsPtr->UpdateTempStat(this, stat_id, amount);
 		return g_GirlsPtr->GetStat(this, stat_id);
 	}
- 	int upd_stat(int stat_id, int amount) {
-		g_GirlsPtr->UpdateStat(this, stat_id, amount);
+	int upd_stat(int stat_id, int amount, bool usetraits = true) {
+		g_GirlsPtr->UpdateStat(this, stat_id, amount, usetraits);
 		return g_GirlsPtr->GetStat(this, stat_id);
 	}
 /*
@@ -737,6 +738,11 @@ struct sGirl
 			has_trait("Fairy Dust Addict")	||
 			has_trait("Viras Blood Addict");
 	}
+	bool has_disease() {
+		return	has_trait("AIDS") ||
+			has_trait("Chlamydia") ||
+			has_trait("Syphilis");
+	}
 
 	sChild *next_child(sChild *child, bool remove=false) {
 		if(!remove) {
@@ -807,22 +813,18 @@ public:
  *	(if loading a save game doesn't load from the global template,
  *	loads from the save games' template)
  *
- *	LoadGirlsDecider is a wrapper function that decides to load
- *	XML or Legacy formats. 
+ *	LoadGirlsDecider is a wrapper function that decides to load XML or Legacy formats. 
+ //  `J` Legacy support has been removed
  *	LoadGirlsXML loads the XML files
- *	LoadGirlsLegacy is the original load function. More or less.
  */
 	void LoadGirlsDecider(string filename);
 	void LoadGirlsXML(string filename);
-	void LoadGirlsLegacy(string filename);
 /*
  *	SaveGirls doesn't seem to be the inverse of LoadGirls
  *	but rather writes girl data to the save file
  */
 	TiXmlElement* SaveGirlsXML(TiXmlElement* pRoot);	// Saves the girls to a file
 	bool LoadGirlsXML(TiXmlHandle hGirls);
-	void LoadGirlsLegacy(ifstream& ifs);
-	void LoadGirlLegacy(sGirl* current, ifstream& ifs);
 
 	void AddGirl(sGirl* girl);		// adds a girl to the list
 	void RemoveGirl(sGirl* girl, bool deleteGirl = false);	// Removes a girl from the list (only used with editor where all girls are available)
@@ -844,32 +846,40 @@ public:
 
 	void LevelUp(sGirl* girl);	// advances a girls level
 	void LevelUpStats(sGirl* girl); // Functionalized stat increase for LevelUp
-	void UpdateStat(sGirl* girl, int stat, int amount);	// updates a stat
-	void LoadGirlImages(sGirl* girl);	// loads a girls images using her name to check that directory in the characters folder
-	void ApplyTraits(sGirl* girl, sTrait* trait = 0, bool rememberflag= false);	// applys the stat bonuses for traits to a girl
+
+	int GetStat(sGirl* girl, int stat);
+	void SetStat(sGirl* girl, int stat, int amount);
+	void UpdateStat(sGirl* girl, int stat, int amount, bool usetraits = true);	// updates a stat
+	void UpdateStatMod(sGirl* girl, int stat, int amount);	// updates a stat
+	void UpdateTempStat(sGirl* girl, int stat, int amount);	// updates a stat temporarily
+
+	int GetSkill(sGirl* girl, int skill);
+	void SetSkill(sGirl* girl, int skill, int amount);
+	void SetSkillMod(sGirl* girl, int skill, int amount);
+	void UpdateSkill(sGirl* girl, int skill, int amount);	// updates a skill
+	void UpdateSkillMod(sGirl* girl, int skill, int amount);	// updates a skillmods
+	void UpdateTempSkill(sGirl* girl, int skill, int amount);	// updates a skill temporarily
+
+	bool HasTrait(sGirl* girl, string trait);
+	bool HasRememberedTrait(sGirl* girl, string trait);
+	void ApplyTraits(sGirl* girl, sTrait* trait = 0, bool rememberflag = false);	// applys the stat bonuses for traits to a girl
 	void UnapplyTraits(sGirl* girl, sTrait* trait = 0);	// unapplys a trait (or all traits) from a girl
 	bool PossiblyGainNewTrait(sGirl* girl, string Trait, int Threshold, int ActionType, string Message, bool DayNight);
 	bool PossiblyLoseExistingTrait(sGirl* girl, string Trait, int Threshold, int ActionType, string Message, bool DayNight);
-	//int UnapplyTraits(sGirl* girl, sTrait* trait = 0);	// unapplys a trait (or all traits) from a girl
-	void UpdateSkill(sGirl* girl, int skill, int amount);	// updates a skill
+
 	void UpdateEnjoyment(sGirl* girl, int whatSheEnjoys, int amount, bool wrapTo100 = false); //updates what she enjoys
+
+	void LoadGirlImages(sGirl* girl);	// loads a girls images using her name to check that directory in the characters folder
 	int DrawGirl(sGirl* girl, int x, int y, int width, int height, int ImgType, bool random = true, int img = 0);	// draws a image of a girl
 	CSurface* GetImageSurface(sGirl* girl, int ImgType, bool random, int& img, bool gallery=false);	// draws a image of a girl
 	cAnimatedSurface* GetAnimatedSurface(sGirl* girl, int ImgType, int& img);
 	bool IsAnimatedSurface(sGirl* girl, int ImgType, int& img);
-	bool HasTrait(sGirl* girl, string trait);
-	bool HasRememberedTrait(sGirl* girl, string trait);
+
 	int GetNumSlaveGirls();
 	int GetNumCatacombGirls();
 	int GetNumArenaGirls();
 	int GetNumYourDaughterGirls();
 	int GetSlaveGirl(int from);
-	int GetStat(sGirl* girl, int stat);
-	int GetSkill(sGirl* girl, int skill);
-	void SetSkill(sGirl* girl, int skill, int amount);
-	void SetStat(sGirl* girl, int stat, int amount);
-	void UpdateTempSkill(sGirl* girl, int skill, int amount);	// updates a skill temporarily
-	void UpdateTempStat(sGirl* girl, int stat, int amount);	// updates a stat temporarily
 	int GetRebelValue(sGirl* girl, bool matron);
 	void EquipCombat(sGirl* girl);  // girl makes sure best armor and weapons are equipped, ready for combat
 	void UnequipCombat(sGirl* girl);  // girl unequips armor and weapons, ready for brothel work or other non-aggressive jobs
@@ -883,12 +893,10 @@ public:
 /*
  *	mod - docclox
  *	same deal here: LoadRandomGirl is a wrapper
- *	The "-Legacy" version is the original
  *	The "-XML" version is the new one that loads from XML files
  */
 	void LoadRandomGirl(string filename);
 	void LoadRandomGirlXML(string filename);
-	void LoadRandomGirlLegacy(string filename);
 	// end mod
 
 	sGirl* CreateRandomGirl(int age, bool addToGGirls, bool slave = false, bool undead = false, bool NonHuman = false, bool childnaped = false, bool arena = false, bool daughter = false);
@@ -920,7 +928,7 @@ public:
 	bool DisobeyCheck(sGirl* girl, int action, sBrothel* brothel = 0);
 
 	string GetDetailsString(sGirl* girl, bool purchace = false);
-	string GetMoreDetailsString(sGirl* girl);
+	string GetMoreDetailsString(sGirl* girl, bool purchace = false);
 	string GetThirdDetailsString(sGirl* girl);
 	string GetGirlMood(sGirl* girl);
 

@@ -455,9 +455,13 @@ namespace WM_Girls_Generator
                         case "Resolution": textBox_Config_Resolution.Text = nv; break;
                         case "Width": textBox_Config_Screen_Width.Text = nv; break;
                         case "Height": textBox_Config_Screen_Height.Text = nv; break;
+                        case "ScaleWidth": textBox_Config_Screen_Width_Scale.Text = nv; break;
+                        case "ScaleHeight": textBox_Config_Screen_Height_Scale.Text = nv; break;
                         case "FullScreen": checkBox_Config_FullScreen.Checked = nvtf; break;
                     }
                 }
+                if (textBox_Config_Screen_Width_Scale.Text == "") textBox_Config_Screen_Width_Scale.Text = "800";
+                if (textBox_Config_Screen_Height_Scale.Text == "") textBox_Config_Screen_Height_Scale.Text = "600";
                 n = baseNode.SelectSingleNode("/config/Initial");
                 for (int i = 0; i < n.Attributes.Count; i++)
                 {
@@ -603,6 +607,7 @@ namespace WM_Girls_Generator
                         case "Normal": textBox_Config_FontNormal.Text = nv; break;
                         case "Fixed": textBox_config_FontFixed.Text = nv; break;
                         case "Antialias": checkBox_Config_Antialias.Checked = nvtf; break;
+                        case "ShowPercent": checkBox_Config_Show_Percent.Checked = nvtf; break;
                     }
                 }
 
@@ -655,7 +660,7 @@ namespace WM_Girls_Generator
             XmlElement xeFonts = xmldoc.CreateElement("Fonts");
             XmlElement xeDebug = xmldoc.CreateElement("Debug");
 
-            XmlComment xcResolution = xmldoc.CreateComment("\n\tResolution     = the name of your interface folder\n\tWidth          = screen width\n\tHeight         = screen height\n\tFullScreen     = 'true' or 'false'\n\t");
+            XmlComment xcResolution = xmldoc.CreateComment("\n\tResolution     = the name of your interface folder\n\tWidth          = screen width\n\tHeight         = screen height\n\tScaleWidth     = screen scale width\n\tScaleHeight    = screen scale height\n\t\t\tThe old code of the game scaled all windows down to 800x600\n\t\t\tThis has been fixed but any old interfaces will not display correctly\n\t\t\t\tif the scale width and height are not set to 800x600.\n\tFullScreen     = 'true' or 'false'\n\t"); 
             XmlComment xcInitial = xmldoc.CreateComment("\n\tGold is how much gold you start the game with.\n\tGirlMeet is the %chance you'll meet a girl when walking around town.\n\tGirlsHousePerc and SlaveHousePerc is the default House Percentage for free girls and slave girls.\n\tGirlsKeepTips and GirlsKeepTips is whether they keep tips separate from house percent.\n\tSlavePayOutOfPocket is wether or not slave girls get paid by the player directly for certain jobs\n\t\tie. Cleaning, Advertising, Farming jobs, Film jobs, etc.\n\tAutoUseItems is whether or not the game will try to automatically use\n\t\tthe player's items intelligently on girls each week.\n\t\tThis feature needs more testing.\n\tAutoCombatEquip determines whether girls will automatically equip their best weapon and\n\t\tarmor for combat jobs and also automatically unequip weapon and armor for regular\n\t\tjobs where such gear would be considered inappropriate (i.e. whores-with-swords).\n\t\tSet to \"false\" to disable this feature.\n\n\tTortureTraitWeekMod affects multiplying the duration that they will\n\t\tkeep a temporary trait that they get from being tortured.\n\t\tIt is multiplied by the number of weeks in the dungeon.\n`J` added\t\tIf TortureTraitWeekMod is set to -1 then torture is harsher.\n\t\tThis doubles the chance of injuring the girls and doubles evil gain.\n\t\tDamage is increased by half. It also makes breaking the girls wills permanent.\n\t");
             XmlComment xcIncome = xmldoc.CreateComment("\n\tThese are the numbers that will multiply the money from various sources of income.\n\t\tSo setting \"GirlsWorkBrothel\" to \"0.5\" will reduce the cash your girls generate in the brothel by half.\n\t\tYou can also use numbers >1 to increase income if you are so inclined.\n\t");
             XmlComment xcExpenses = xmldoc.CreateComment("\n\tThese are the multipliers for your expenses.\n\n\tTraining doesn't currently have a cost, so I'm setting it to 1 gold per girl per week\n\t\tand defaulting the multiplier to 0 (so no change by default).\n\tSet it higher and training begins to cost beyond the simple loss of income.\n\n\tActressWages are like training costs:\n\tA per-girl expense nominally 1 gold per girl, but with a default factor of 0,\n\t\tso no change to the current scheme unless you alter that.\n\n\tMakingMovies is the setup cost for a movie:\n\tI'm going to make this 1000 gold per movie, but again, with a zero factor by default.\n\n\tOtherwise, same as above, except you probably want numbers > 1 to make things more expensive here.\n\n\t* not all are used but are retained just in case.\n\t");
@@ -665,13 +670,17 @@ namespace WM_Girls_Generator
             XmlComment xcProstitution = xmldoc.CreateComment("\n\tThese are the base chances of rape occurring in a brothel and streetwalking.\n\t");
             XmlComment xcGangs = xmldoc.CreateComment("\n\tGangs:\n\tMaxRecruitList limits the maximum number of recruitable gangs listed for you to hire.\n\t\tWARNING: BE CAREFUL here; the number of recruitable gangs plus the number of potential hired\n\t\t\tgangs must not exceed the number of names stored in HiredGangNames.txt.\n\t\tFor example, with 20 names, you could have a max of 12 recruitables since you have to\n\t\t\taccount for the possible 8 hired gangs.\n\tStartRandom is how many random recruitable gangs are created for you at the start of a new game.\n\tStartBoosted is how many stat-boosted starting gangs are also added.\n\tInitMemberMin and InitMemberMax indicate the number of initial gang members which are in each recruitable gang;\n\t\ta random number between Min and Max is picked.\n\tAddNewWeeklyMin and AddNewWeeklyMax indicate how many new random gangs are added to the recruitable\n\t\tgangs list each week; a random number between Min and Max is picked.\n\tChanceRemoveUnwanted is the %chance each week that each unhired gang in the recruitable list is removed.\n\t");
             XmlComment xcItems = xmldoc.CreateComment("\n\tItems:\n\t*** AutoCombatEquip was moved to Initial for .06. Kept here for .05 and earlier.\n\tColors are assigned to items listed on the item management screen by there rarity.\n\tThey are in RGB hex format, so #000000 is black and #FFFFFF is white.\n\t\tRarityColor0: Common\n\t\tRarityColor1: Appears in shop, 50% chance\n\t\tRarityColor2: Appears in shop, 25% chance\n\t\tRarityColor3: Appears in shop, 5% chance\n\t\tRarityColor4: Appears in catacombs, 15% chance\n\t\tRarityColor5: Only given by scripts\n\t\tRarityColor6: Given by scripts or as objective rewards\n\t\tRarityColor7: Appears in catacombs, 5% chance\n\t\tRarityColor8: Appears in catacombs, 1% chance\n\t");
-            XmlComment xcFonts = xmldoc.CreateComment("\n\tFonts:\n\tNormal is the font that the game uses for text.\n\tFixed is for a monospaced font for tabular info but nothing currently uses that.\n\tAntialias determines whether font antialiasing (smoothing) is used.\n\n\tIt's worth leaving these in, since once the XML screen format is stable,\n\t\tit will be possible to set custom fonts for different text elements,\n\t\tjust like designing a web page.\n\tExcept that you'll have to distribute the font with the game or mod\n\t\trather than relying on the viewer to have it pre-installed.\n\t");
+            XmlComment xcFonts = xmldoc.CreateComment("\n\tFonts:\n\tNormal is the font that the game uses for text.\n\tFixed is for a monospaced font for tabular info but nothing currently uses that.\n\tShowPercent determines whether or not % is placed\n\t\tafter the number for stats and skills on the girl details list.\n\tAntialias determines whether font antialiasing (smoothing) is used.\n\n\tIt's worth leaving these in, since once the XML screen format is stable,\n\t\tit will be possible to set custom fonts for different text elements,\n\t\tjust like designing a web page.\n\tExcept that you'll have to distribute the font with the game or mod\n\t\trather than relying on the viewer to have it pre-installed.\n\t");
             XmlComment xcLogging = xmldoc.CreateComment("\n\tHow much logging is needed?\n\t* They currently don't really work all that much but they will be improved.\n\t");
 
             xeConfig.AppendChild(xcResolution);
-            xeResolution.SetAttribute("Resolution", textBox_Config_Resolution.Text);   // `J` added
-            xeResolution.SetAttribute("Width", textBox_Config_Screen_Width.Text);      // `J` added
-            xeResolution.SetAttribute("Height", textBox_Config_Screen_Height.Text);    // `J` added
+            xeResolution.SetAttribute("Resolution", textBox_Config_Resolution.Text);        // `J` added
+            xeResolution.SetAttribute("Width", textBox_Config_Screen_Width.Text);           // `J` added
+            xeResolution.SetAttribute("Height", textBox_Config_Screen_Height.Text);         // `J` added
+            if (textBox_Config_Screen_Width_Scale.Text == "") xeResolution.SetAttribute("ScaleWidth", "800");
+            else xeResolution.SetAttribute("ScaleWidth", textBox_Config_Screen_Width_Scale.Text);     // `J` added
+            if (textBox_Config_Screen_Height_Scale.Text == "") xeResolution.SetAttribute("ScaleHeight", "600");
+            else xeResolution.SetAttribute("ScaleHeight", textBox_Config_Screen_Height_Scale.Text);    // `J` added
             if (checkBox_Config_FullScreen.Checked == true) xeResolution.SetAttribute("FullScreen", "true"); else xeResolution.SetAttribute("FullScreen", "false");  // `J` added
             xeConfig.AppendChild(xeResolution);
 
@@ -782,6 +791,7 @@ namespace WM_Girls_Generator
             xeFonts.SetAttribute("Normal", textBox_Config_FontNormal.Text);
             xeFonts.SetAttribute("Fixed", textBox_config_FontFixed.Text);
             if (checkBox_Config_Antialias.Checked == true) xeFonts.SetAttribute("Antialias", "true");   else xeFonts.SetAttribute("Antialias", "false");
+            if (checkBox_Config_Show_Percent.Checked == true) xeFonts.SetAttribute("ShowPercent", "true"); else xeFonts.SetAttribute("ShowPercent", "false");
             xeConfig.AppendChild(xeFonts);
 
             xeConfig.AppendChild(xcLogging);
@@ -813,6 +823,8 @@ namespace WM_Girls_Generator
             textBox_Config_Resolution.Text = "J_1024x768";
             textBox_Config_Screen_Width.Text = "1024";
             textBox_Config_Screen_Height.Text = "768";
+            textBox_Config_Screen_Width_Scale.Text = "800";
+            textBox_Config_Screen_Height_Scale.Text = "600";
             checkBox_Config_FullScreen.Checked = false;
 
             textBox_Initial_Gold.Text = "4000";
@@ -890,6 +902,7 @@ namespace WM_Girls_Generator
             textBox_Config_FontNormal.Text = "segoeui.ttf";
             textBox_config_FontFixed.Text = "segoeui.ttf";
             checkBox_Config_Antialias.Checked = true;
+            checkBox_Config_Show_Percent.Checked = true;
 
             checkBox_config_LogAll.Checked = false;
             checkBox_config_LogItems.Checked = false;

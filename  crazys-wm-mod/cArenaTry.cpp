@@ -30,21 +30,21 @@
 #include <sstream>
 #include "cGangs.h"
 
-extern	bool			g_InitWin;
-extern	int			g_CurrBrothel;
-extern	cGold			g_Gold;
-extern	cBrothelManager		g_Brothels;
-extern	cArenaManager		g_Arena;
-extern	cWindowManager		g_WinManager;
-extern	cInterfaceEventManager	g_InterfaceEvents;
-extern bool g_TryOuts;
-extern bool g_Cheats;
-extern	bool	eventrunning;
-extern string g_ReturnText;
-extern cGangManager g_Gangs;
-extern bool g_AllTogle;
-extern int g_CurrentScreen;
-extern int g_Building;
+extern bool						g_InitWin;
+extern int						g_CurrBrothel;
+extern cGold					g_Gold;
+extern cBrothelManager			g_Brothels;
+extern cArenaManager			g_Arena;
+extern cWindowManager			g_WinManager;
+extern cInterfaceEventManager	g_InterfaceEvents;
+extern bool						g_TryOuts;
+extern bool						g_Cheats;
+extern bool						eventrunning;
+extern string					g_ReturnText;
+extern cGangManager				g_Gangs;
+extern bool						g_AllTogle;
+extern int						g_CurrentScreen;
+extern int						g_Building;
 
 bool cArenaTry::ids_set = false;
 
@@ -60,44 +60,31 @@ void cArenaTry::set_ids()
 void cArenaTry::init()
 {
 	g_CurrentScreen = SCREEN_TRYOUTS;
-/*
- *	buttons enable/disable
- */
-	DisableButton(walk_id, g_TryOuts);
-
+	DisableButton(walk_id, g_TryOuts); // buttons enable/disable
 }
 
 void cArenaTry::process()
 {
-/*
- *	we need to make sure the ID variables are set
- */
-	if(!ids_set) {
-		set_ids();
-	}
-
+	if (!ids_set) set_ids();							// we need to make sure the ID variables are set
 	init();
-/* 
- *	no events means we can go home
- */
-	if(g_InterfaceEvents.GetNumEvents() == 0) {
-		return;
-	}
+	if (g_InterfaceEvents.GetNumEvents() == 0) return;	// no events means we can go home
 
-/*
- *	otherwise, compare event IDs 
- *
- *	if it's the back button, pop the window off the stack
- *	and we're done
- */
-	if(g_InterfaceEvents.CheckButton(back_id)) {
+	/*
+	 *	otherwise, compare event IDs
+	 *
+	 *	if it's the back button, pop the window off the stack
+	 *	and we're done
+	 */
+	if (g_InterfaceEvents.CheckButton(back_id))
+	{
 		g_InitWin = true;
 		g_WinManager.Pop();
 		return;
 	}
-	else if(g_InterfaceEvents.CheckButton(walk_id)) {
+	else if (g_InterfaceEvents.CheckButton(walk_id))
+	{
 		do_walk();
-		if(!g_Cheats) g_TryOuts = true;
+		if (!g_Cheats) g_TryOuts = true;
 		g_InitWin = true;
 	}
 }
@@ -170,60 +157,59 @@ string cArenaTry::walk_no_luck()
 
 void cArenaTry::do_walk()
 {
-	if(g_TryOuts) {
+	if (g_TryOuts) 
+	{
 		g_MessageQue.AddToQue("You can only do this once per week.", 2);
 		return;
 	}
-/*
- *	let's get a girl for the player to meet
- */
+	/*
+	 *	let's get a girl for the player to meet
+	 */
 	sGirl *girl = g_Girls.GetRandomGirl();
-/*
- *	if there's no girl, no meeting
- */
-	if(girl == 0) {
+	/*
+	 *	if there's no girl, no meeting
+	 */
+	if (girl == 0) 
+	{
 		g_MessageQue.AddToQue(walk_no_luck(), 0);
 		return;
 	}
-/*
- *	most of the time, you're not going to find anyone
- *	unless you're cheating, of course.
- */
+	/*
+	 *	most of the time, you're not going to find anyone
+	 *	unless you're cheating, of course.
+	 */
 	cConfig cfg;
 	int meet_chance = cfg.initial.girl_meet();
-	if(!g_Dice.percent(meet_chance) && !g_Cheats) {
+	if (!g_Dice.percent(meet_chance) && !g_Cheats)
+	{
 		g_MessageQue.AddToQue(walk_no_luck(), 1);
 		return;
 	}
-/*
- *	I'd like to move this to the handler script
- *
- *	once scripts are stable
- */
-	string message = "You hold open try outs to all girls willing to step into, ";
-	message += "the arena and fight for there life.";
+	/*
+	 *	I'd like to move this to the handler script
+	 *
+	 *	once scripts are stable
+	 */
+	string message = "You hold open try outs to all girls willing to step into the arena and fight for their life.";
 	g_MessageQue.AddToQue(message, 2);
-	int v[2] = {3, -1};
+	int v[2] = { 3, -1 };
 	cTrigger* trig = 0;
 	g_Building = BUILDING_ARENA;
 	DirPath dp;
 	string filename;
 	cScriptManager sm;
-/*
- *	is there a girl specific talk script?
- */
-	if(!(trig = girl->m_Triggers.CheckForScript(TRIGGER_MEET, false, v))) {
+	/*
+	 *	is there a girl specific talk script?
+	 */
+	if (!(trig = girl->m_Triggers.CheckForScript(TRIGGER_MEET, false, v)))
+	{
 		// no, so trigger the default one
-		dp = DirPath()
-			<< "Resources" << "Scripts" << "MeetArenaTry.script"
-		;
+		dp = DirPath() << "Resources" << "Scripts" << "MeetArenaTry.script";
 	}
-	else {
+	else
+	{
 		// trigger the girl-specific one
-		dp = DirPath()
-			<< "Resources" << "Characters" << girl->m_Name
-			<< trig->m_Script
-		;
+		dp = DirPath() << "Resources" << "Characters" << girl->m_Name << trig->m_Script;
 	}
 	eventrunning = true;
 	sm.Load(dp, girl);

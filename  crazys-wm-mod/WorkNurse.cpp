@@ -196,15 +196,15 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, int DayNight, string
 	roll_max /= 4;
 	wages += 10 + g_Dice%roll_max;
 
-	int patients = g_Clinic.GetNumGirlsOnJob(0, JOB_GETHEALING, DayNight == 0) +
-		g_Clinic.GetNumGirlsOnJob(0, JOB_GETABORT, DayNight == 0) +
-		g_Clinic.GetNumGirlsOnJob(0, JOB_PHYSICALSURGERY, DayNight == 0) +
-		g_Clinic.GetNumGirlsOnJob(0, JOB_LIPO, DayNight == 0) +
-		g_Clinic.GetNumGirlsOnJob(0, JOB_BREASTREDUCTION, DayNight == 0) +
-		g_Clinic.GetNumGirlsOnJob(0, JOB_BOOBJOB, DayNight == 0) +
-		g_Clinic.GetNumGirlsOnJob(0, JOB_VAGINAREJUV, DayNight == 0) +
-		g_Clinic.GetNumGirlsOnJob(0, JOB_FACELIFT, DayNight == 0) +
-		g_Clinic.GetNumGirlsOnJob(0, JOB_ASSJOB, DayNight == 0);
+	int patients = g_Clinic.GetNumGirlsOnJob(0, JOB_GETHEALING, DayNight) +
+		g_Clinic.GetNumGirlsOnJob(0, JOB_GETABORT, DayNight) +
+		g_Clinic.GetNumGirlsOnJob(0, JOB_PHYSICALSURGERY, DayNight) +
+		g_Clinic.GetNumGirlsOnJob(0, JOB_LIPO, DayNight) +
+		g_Clinic.GetNumGirlsOnJob(0, JOB_BREASTREDUCTION, DayNight) +
+		g_Clinic.GetNumGirlsOnJob(0, JOB_BOOBJOB, DayNight) +
+		g_Clinic.GetNumGirlsOnJob(0, JOB_VAGINAREJUV, DayNight) +
+		g_Clinic.GetNumGirlsOnJob(0, JOB_FACELIFT, DayNight) +
+		g_Clinic.GetNumGirlsOnJob(0, JOB_ASSJOB, DayNight);
 
 
 	wages += 5 * patients;		// `J` pay her 5 for each patient you send to her		

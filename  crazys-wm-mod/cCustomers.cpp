@@ -189,12 +189,18 @@ void cCustomers::GenerateCustomers(sBrothel * brothel, int DayNight)
 
 	// `J` Too much security will scare away customers
 	int ScareCustomers = int(brothel->m_SecurityLevel / 500);	// this number will need to be tweaked a bit
-	ScareCustomers -= 2;	// less security could attract more customers (for good or bad)
+	ScareCustomers -= 4;	// less security could attract more customers (for good or bad)
+	if (ScareCustomers < 0) ScareCustomers = (g_Dice % 3) * -1;
 	if (ScareCustomers > 10) ScareCustomers += g_Dice%ScareCustomers;
 	m_NumCustomers -= ScareCustomers;
 
 	if (ScareCustomers < 0)
-		ss << gettext("Your nonintrusive security attracted a few more ") << (DayNight == 0 ? gettext("daytime") : gettext("nighttime")) << gettext(" customers. (for better or worse)");
+	{
+		ss << "Your nonintrusive security attracted ";
+		ss << -ScareCustomers << " ";
+		ss << (DayNight == 0) ? gettext("daytime") : gettext("nighttime");
+		ss << " customers. (for better or worse)";
+	}
 	else if (ScareCustomers == 0)
 		ss << gettext("Your brothel was safe and secure, so you didn't lose any ") << (DayNight == 0 ? gettext("daytime") : gettext("nighttime")) << gettext(" customers due to excessive security.");
 	else if (ScareCustomers < 10)

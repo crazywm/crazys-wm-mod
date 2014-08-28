@@ -440,7 +440,7 @@ bool cGirlTorture::IsGirlInjured(unsigned int unModifier)
 	if (cfg.initial.torture_mod() < 0){ nMod += nMod; }
 
 	// Sanity check, Can't get injured
-	if (m_Girl->has_trait("Incorporeal") || m_Girl->has_trait("Incorporial"))
+	if (m_Girl->has_trait("Incorporeal"))
 		return false;
 
 	if (m_Girl->has_trait("Fragile"))	nMod += nMod;	// nMod *= 2;

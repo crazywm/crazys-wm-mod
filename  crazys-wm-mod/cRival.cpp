@@ -739,34 +739,6 @@ TiXmlElement* cRivalManager::SaveRivalsXML(TiXmlElement* pRoot)
 	return pRivalManager;
 }
 
-void cRivalManager::LoadRivalsLegacy(ifstream& ifs)
-{
-	char buffer[1000];
-	Free();
-	if (ifs.peek()=='\n') ifs.ignore(1,'\n');
-	int numRivalsToLoad = 0;
-	ifs>>numRivalsToLoad;
-	m_NumRivals = 0;
-	string message = "";
-	for(int i=0; i<numRivalsToLoad; i++)
-	{
-		cRival* current = new cRival();
-
-		if (ifs.peek()=='\n') ifs.ignore(1,'\n');
-		ifs.getline(buffer, sizeof(buffer), '\n');
-		current->m_Name = buffer;
-
-		message = "loaded rival: ";
-		message += current->m_Name;
-		g_LogFile.write(message);
-
-		if (ifs.peek()=='\n') ifs.ignore(1,'\n');
-		ifs>>current->m_BribeRate>>current->m_BusinessesExtort>>current->m_Gold>>current->m_NumBars>>current->m_NumBrothels>>current->m_NumGamblingHalls>>current->m_NumGirls>>current->m_NumGangs;
-
-		AddRival(current);
-	}
-}
-
 bool cRivalManager::LoadRivalsXML(TiXmlHandle hRivalManager)
 {
 	Free();//everything should be init even if we failed to load an XML element

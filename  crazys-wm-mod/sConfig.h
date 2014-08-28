@@ -149,6 +149,8 @@ struct sConfigData
 		string	normal;
 		string	fixed;
 		bool	antialias;
+		bool	showpercent;
+		int detailfontsize;
 		font_data()
 		: normal(""), fixed(""), antialias("")
 		{
@@ -166,6 +168,11 @@ struct sConfigData
 		bool	log_debug;
 		bool	log_extra_details;
 	} debug;
+
+	struct FarmData {
+		bool	active;
+	} farm;
+
 
 	string override_dir;
 
@@ -246,6 +253,8 @@ public:
 		string&	normal()	    { return data->fonts.normal; }
 		string&	fixed()		    { return data->fonts.normal; }
 		bool&	antialias()	    { return data->fonts.antialias; }
+		bool&	showpercent()	{ return data->fonts.showpercent; }
+		int& detailfontsize()   { return data->fonts.detailfontsize; }
 	} fonts;
 
 	struct item_data {

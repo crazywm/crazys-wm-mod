@@ -69,8 +69,8 @@ bool cJobManager::WorkRepairShop(sGirl* girl, sBrothel* brothel, int DayNight, s
 		return true;
 	}
 
-	int nummecs = g_Clinic.GetNumGirlsOnJob(0, JOB_MECHANIC, DayNight == 0);
-	int numnurse = g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, DayNight == 0);
+	int nummecs = g_Clinic.GetNumGirlsOnJob(0, JOB_MECHANIC, DayNight);
+	int numnurse = g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, DayNight);
 
 	if (g_Girls.HasTrait(girl, "Construct"))
 	{

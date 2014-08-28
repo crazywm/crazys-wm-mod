@@ -103,117 +103,6 @@ void cGangManager::Free()
 	m_KeepHealStocked = m_KeepNetsStocked = false;
 }
 
-void cGangManager::LoadGangsLegacy(ifstream& ifs)
-{
-	Free();
-	int temp;
-	string message = "";
-
-	// load goons and goon missions
-	if (ifs.peek()=='\n') ifs.ignore(1,'\n');
-	int numGangsToLoad = 0;
-	ifs>>numGangsToLoad;
-	m_NumGangs = 0;
-	for(int p=0; p<numGangsToLoad; p++)
-	{
-		if (ifs.peek()=='\n') ifs.ignore(1,'\n');
-		sGang* gang = new sGang();
-		ifs>>gang->m_Num>>gang->m_MissionID>>gang->m_LastMissID;
-
-		if (ifs.peek()=='\n') ifs.ignore(1,'\n');
-		// load their skills
-		for(u_int i=0; i<NUM_SKILLS; i++)
-		{
-			temp = 0;
-			ifs>>temp;
-			gang->m_Skills[i] = temp;
-		}
-
-		// load their stats
-		if(ifs.peek()=='\n') ifs.ignore(1,'\n');
-		for(int i=0; i<NUM_STATS; i++)
-		{
-			temp = 0;
-			ifs>>temp;
-			gang->m_Stats[i] = temp;
-		}
-
-		// load their name
-		if(ifs.peek()=='\n') ifs.ignore(1,'\n');
-		ifs.getline(buffer, sizeof(buffer), '\n');
-		gang->m_Name = buffer;
-
-		// load the combat bool
-		if (ifs.peek()=='\n') ifs.ignore(1,'\n');
-		ifs>>temp;
-		if(temp == 1)
-			gang->m_Combat = true;
-		else
-			gang->m_Combat = false;
-
-		// load the auto recruit bool
-		if (ifs.peek()=='\n') ifs.ignore(1,'\n');
-		ifs>>temp;
-		if(temp == 1)
-			gang->m_AutoRecruit = true;
-		else
-			gang->m_AutoRecruit = false;
-
-		AddGang(gang);
-	}
-
-	// load hireable goons
-	if (ifs.peek()=='\n') ifs.ignore(1,'\n');
-	ifs>>numGangsToLoad;
-	m_NumHireableGangs = 0;
-	for(int p=0; p<numGangsToLoad; p++)
-	{
-		if (ifs.peek()=='\n') ifs.ignore(1,'\n');
-		sGang* hgang = new sGang();
-		ifs>>hgang->m_Num;
-
-		if (ifs.peek()=='\n') ifs.ignore(1,'\n');
-		// load their skills
-		for(u_int i=0; i<NUM_SKILLS; i++)
-		{
-			temp = 0;
-			ifs>>temp;
-			hgang->m_Skills[i] = temp;
-		}
-
-		// load their stats
-		if(ifs.peek()=='\n') ifs.ignore(1,'\n');
-		for(int i=0; i<NUM_STATS; i++)
-		{
-			temp = 0;
-			ifs>>temp;
-			hgang->m_Stats[i] = temp;
-		}
-
-		// load their name
-		if(ifs.peek()=='\n') ifs.ignore(1,'\n');
-		ifs.getline(buffer, sizeof(buffer), '\n');
-		hgang->m_Name = buffer;
-
-		AddHireableGang(hgang);
-	}
-
-	// load businesses extorted
-	if (ifs.peek()=='\n') ifs.ignore(1,'\n');
-	ifs>>m_BusinessesExtort;
-
-	// load weapon level, healing potions, nets
-	if(ifs.peek()=='\n') ifs.ignore(1,'\n');
-	ifs>>m_SwordLevel>>m_NumHealingPotions>>m_NumNets;
-
-	// load healing potions restock
-	if (ifs.peek()=='\n') ifs.ignore(1,'\n');
-	ifs>>m_KeepHealStocked;
-
-	// load nets restock
-	if (ifs.peek()=='\n') ifs.ignore(1,'\n');
-	ifs>>m_KeepNetsStocked;
-}
 
 bool cGangManager::LoadGangsXML(TiXmlHandle hGangManager)
 {
@@ -1037,7 +926,7 @@ bool cGangManager::GangCombat(sGirl* girl, sGang* gang)
 	CLog l;
 
 	// MYR: Sanity check: Incorporeal is an auto-win.
-	if(girl->has_trait("Incorporeal") || girl->has_trait("Incorporial"))
+	if(girl->has_trait("Incorporeal"))
 	{
 		girl->m_Stats[STAT_HEALTH] = 100;
 		l.ss()	<< gettext("\nGirl vs. Goons: ") << girl->m_Realname << gettext(" is incorporeal, so she wins.\n");
@@ -1388,7 +1277,7 @@ bool cGangManager::GirlVsEnemyGang(sGirl* girl, sGang* enemy_gang)
 	CLog l;
 
 	// MYR: Sanity check: Incorporeal is an auto-win.
-	if(girl->has_trait("Incorporeal") || girl->has_trait("Incorporial"))
+	if(girl->has_trait("Incorporeal"))
 	{
 		girl->m_Stats[STAT_HEALTH] = 100;
 		l.ss()	<< gettext("\nGirl vs. Goons: ") << girl->m_Realname << gettext(" is incorporeal, so she wins.\n");
@@ -1560,7 +1449,7 @@ bool cGangManager::GirlVsEnemyGang(sGirl* girl, sGang* enemy_gang)
 				  g_Girls.TakeCombatDamage(girl, -damage); // MYR: Note change
 
 				  l.ss() << gettext("\t") << girl->m_Realname << gettext(" takes ") << damage << gettext(". New health value: ") << girl->health();
-				  if (girl->has_trait("Incorporeal") || girl->has_trait("Incorporial"))
+				  if (girl->has_trait("Incorporeal"))
 					  l.ss() << gettext(" (Girl is Incorporeal)");
 				  l.ssend();
 				}

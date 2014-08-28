@@ -91,42 +91,43 @@ void cScreenTown::set_ids()
 struct static_brothel_data {
 	int	price;
 	int	rooms;
+	int maxrooms;
 	int business;
 };
 
-// stats of each brothel: price to buy, starting rooms, required # of businesses owned
+// stats of each brothel: price to buy, starting rooms, maximum rooms, required # of businesses owned
 static static_brothel_data brothel_data[] = {
-	{ 0, 0, 0 },
-	{ 10000, 25, 30 },
-	{ 30000, 30, 70 },
-	{ 70000, 35, 100 },
-	{ 150000, 40, 140 },
-	{ 300000, 50, 170 },
-	{ 1000000, 80, 220 }
+	{       0,  0, 200,   0 },
+	{   10000, 25, 250,  30 },
+	{   30000, 30, 300,  70 },
+	{   70000, 35, 350, 100 },
+	{  150000, 40, 400, 140 },
+	{  300000, 50, 500, 170 },
+	{ 1000000, 80, 600, 220 }
 };
 
 static static_brothel_data clinic_data[] = {
-	{ 10000, 20, 10 }
-	//{000, 10, 0 }
+	{ 10000, 20, 200, 10 }
+	//{000, 10, 0, 0 }
 };
 
 static static_brothel_data centre_data[] = {
-	{ 5000, 20, 5 }
+	{ 5000, 20, 200, 5 }
 	//{000, 10, 0 }
 };
 
 static static_brothel_data arena_data[] = {
-	{ 15000, 20, 15 }
+		{ 15000, 20, 200, 15 }
 	//{000, 10, 0 }
 };
 
 static static_brothel_data studio_data[] = {
-	{ 20000, 20, 20 }
+		{ 20000, 20, 200, 20 }
 	//{000, 10, 0 }
 };
 
 static static_brothel_data farm_data[] = {
-	{ 20000, 20, 20 }
+		{ 20000, 20, 200, 20 }
 	//{000, 10, 0 }
 };
 
@@ -149,7 +150,7 @@ void cScreenTown::init()
 		static_brothel_data *bpt = clinic_data + BuyClinic;
 
 		g_Gold.brothel_cost(bpt->price);
-		g_Clinic.NewBrothel(bpt->rooms);
+		g_Clinic.NewBrothel(bpt->rooms, bpt->maxrooms);
 		g_Clinic.SetName(0, gettext("Clinic"));
 
 		GetClinic = false;
@@ -173,7 +174,7 @@ void cScreenTown::init()
 		static_brothel_data *bpt = centre_data + BuyCentre;
 
 		g_Gold.brothel_cost(bpt->price);
-		g_Centre.NewBrothel(bpt->rooms);
+		g_Centre.NewBrothel(bpt->rooms, bpt->maxrooms);
 		g_Centre.SetName(0, gettext("Centre"));
 
 		GetCentre = false;
@@ -197,7 +198,7 @@ void cScreenTown::init()
 		static_brothel_data *bpt = arena_data + BuyArena;
 
 		g_Gold.brothel_cost(bpt->price);
-		g_Arena.NewBrothel(bpt->rooms);
+		g_Arena.NewBrothel(bpt->rooms, bpt->maxrooms);
 		g_Arena.SetName(0, gettext("Arena"));
 
 		GetArena = false;
@@ -221,7 +222,7 @@ void cScreenTown::init()
 		static_brothel_data *bpt = studio_data + BuyStudio;
 
 		g_Gold.brothel_cost(bpt->price);
-		g_Studios.NewBrothel(bpt->rooms);
+		g_Studios.NewBrothel(bpt->rooms, bpt->maxrooms);
 		g_Studios.SetName(0, gettext("Studio"));
 
 		GetStudio = false;
@@ -245,7 +246,7 @@ void cScreenTown::init()
 		static_brothel_data *bpt = farm_data + BuyFarm;
 
 		g_Gold.brothel_cost(bpt->price);
-		g_Farm.NewBrothel(bpt->rooms);
+		g_Farm.NewBrothel(bpt->rooms, bpt->maxrooms);
 		g_Farm.SetName(0, gettext("Farm"));
 
 		GetFarm = false;
@@ -264,7 +265,7 @@ void cScreenTown::init()
 			static_brothel_data *bpt = brothel_data + BuyBrothel;
 
 			g_Gold.brothel_cost(bpt->price);
-			g_Brothels.NewBrothel(bpt->rooms);
+			g_Brothels.NewBrothel(bpt->rooms, bpt->maxrooms);
 			g_Brothels.SetName(g_Brothels.GetNumBrothels() - 1, g_ReturnText);
 			
 			g_InitWin = true;
@@ -546,7 +547,8 @@ string cScreenTown::walk_no_luck()
 
 void cScreenTown::do_walk()
 {
-	if(g_WalkAround) {
+	if(g_WalkAround) 
+	{
 		g_MessageQue.AddToQue(gettext("You can only do this once per week."), 2);
 		return;
 	}
@@ -557,7 +559,8 @@ void cScreenTown::do_walk()
 /*
  *	if there's no girl, no meeting
  */
-	if(girl == 0) {
+	if(girl == 0) 
+	{
 		g_MessageQue.AddToQue(walk_no_luck(), 0);
 		return;
 	}
@@ -567,7 +570,8 @@ void cScreenTown::do_walk()
  */
 	cConfig cfg;
 	int meet_chance = cfg.initial.girl_meet();
-	if(!g_Dice.percent(meet_chance) && !g_Cheats) {
+	if(!g_Dice.percent(meet_chance) && !g_Cheats)
+	{
 		g_MessageQue.AddToQue(walk_no_luck(), 1);
 		return;
 	}
@@ -588,18 +592,15 @@ void cScreenTown::do_walk()
 /*
  *	is there a girl specific talk script?
  */
-	if(!(trig = girl->m_Triggers.CheckForScript(TRIGGER_MEET, false, v))) {
+	if(!(trig = girl->m_Triggers.CheckForScript(TRIGGER_MEET, false, v)))
+	{
 		// no, so trigger the default one
-		dp = DirPath()
-			<< "Resources" << "Scripts" << "MeetTownDefault.script"
-		;
+		dp = DirPath() << "Resources" << "Scripts" << "MeetTownDefault.script";
 	}
-	else {
+	else 
+	{
 		// trigger the girl-specific one
-		dp = DirPath()
-			<< "Resources" << "Characters" << girl->m_Name
-			<< trig->m_Script
-		;
+		dp = DirPath() << "Resources" << "Characters" << girl->m_Name << trig->m_Script;
 	}
 	eventrunning = true;
 	sm.Load(dp, girl);

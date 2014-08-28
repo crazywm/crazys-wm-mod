@@ -231,7 +231,7 @@ void cScreenGirlManagement::init()
 
 	// add the job filters
 //	for(int i=0; i<NUMJOBTYPES; i++)  // loop through all job types
-	for (unsigned int i = 0; i<JOBFILTER_BROTHEL; i++)  // temporary limit to job types shown
+	for (unsigned int i = 0; i <= JOBFILTER_BROTHEL; i++)  // temporary limit to job types shown
 	{
 		AddToListBox(jobtypelist_id, i, g_Brothels.m_JobManager.JobFilterName[i]);
 	}
@@ -302,127 +302,128 @@ void cScreenGirlManagement::process()
 
 bool cScreenGirlManagement::check_keys()
 {
-	if(g_UpArrow) {
+	if (g_UpArrow) {
 		selection = ArrowUpListBox(girllist_id);
 		g_UpArrow = false;
 		return true;
 	}
-	if(g_DownArrow) {
+	if (g_DownArrow) {
 		selection = ArrowDownListBox(girllist_id);
 		g_DownArrow = false;
 		return true;
 	}
-	if(g_AltKeys)
+	if (g_AltKeys)
 	{
 		//Select Girls
-	if(g_A_Key) {
-		selection = ArrowUpListBox(girllist_id);
-		g_A_Key = false;
-		return true;
-	}
-	if(g_D_Key) {
-		selection = ArrowDownListBox(girllist_id);
-		g_D_Key = false;
-		return true;
-	}
+		if (g_A_Key) {
+			selection = ArrowUpListBox(girllist_id);
+			g_A_Key = false;
+			return true;
+		}
+		if (g_D_Key) {
+			selection = ArrowDownListBox(girllist_id);
+			g_D_Key = false;
+			return true;
+		}
 		// Select Job  >> Current bug, wont go past torturer/matron if slave due to job check.
-	if(g_Q_Key) {
-		selection = ArrowUpListBox(joblist_id);
-		if(u_int(selection) == JOB_TORTURER)
-		{
-			if(selected_girl->m_States&(1<<STATUS_SLAVE))
+		if (g_Q_Key) {
+			selection = ArrowUpListBox(joblist_id);
+			if (u_int(selection) == JOB_TORTURER)
 			{
-				selection = ArrowUpListBox(joblist_id);
-				bool tmp = g_InterfaceEvents.CheckListbox(joblist_id);			// the purpose of this is to clear the extra event from the event queue, which prevents an error --PP		
+				if (selected_girl->m_States&(1 << STATUS_SLAVE))
+				{
+					selection = ArrowUpListBox(joblist_id);
+					bool tmp = g_InterfaceEvents.CheckListbox(joblist_id);			// the purpose of this is to clear the extra event from the event queue, which prevents an error --PP		
+				}
+				else if (g_Brothels.GetNumGirlsOnJob(g_CurrBrothel, JOB_TORTURER, 0) == 1)
+				{
+					selection = ArrowUpListBox(joblist_id);
+					bool tmp = g_InterfaceEvents.CheckListbox(joblist_id);
+				}
 			}
-			else if(g_Brothels.GetNumGirlsOnJob(g_CurrBrothel, JOB_TORTURER, 0) == 1)
+			if (u_int(selection) == JOB_MATRON)
 			{
-				selection = ArrowUpListBox(joblist_id);
-				bool tmp = g_InterfaceEvents.CheckListbox(joblist_id);
+				if (selected_girl->m_States&(1 << STATUS_SLAVE))
+				{
+					selection = ArrowUpListBox(joblist_id);
+					bool tmp = g_InterfaceEvents.CheckListbox(joblist_id);
+				}
+				else if (g_Brothels.GetNumGirlsOnJob(g_CurrBrothel, JOB_MATRON, 0) == 1 || g_Brothels.GetNumGirlsOnJob(g_CurrBrothel, JOB_MATRON, 1) == 1)
+				{
+					selection = ArrowUpListBox(joblist_id);
+					bool tmp = g_InterfaceEvents.CheckListbox(joblist_id);
+				}
 			}
+			g_Q_Key = false;
+			return true;
 		}
-		if(u_int(selection) == JOB_MATRON)
-		{
-			if(selected_girl->m_States&(1<<STATUS_SLAVE))
+		if (g_E_Key) {
+			selection = ArrowDownListBox(joblist_id);
+			if (u_int(selection) == JOB_MATRON)
 			{
-				selection = ArrowUpListBox(joblist_id);
-				bool tmp = g_InterfaceEvents.CheckListbox(joblist_id);
+				if (selected_girl->m_States&(1 << STATUS_SLAVE))
+				{
+					selection = ArrowDownListBox(joblist_id);
+					bool tmp = g_InterfaceEvents.CheckListbox(joblist_id);
+				}
+				else if (g_Brothels.GetNumGirlsOnJob(g_CurrBrothel, JOB_MATRON, 0) == 1 || g_Brothels.GetNumGirlsOnJob(g_CurrBrothel, JOB_MATRON, 1) == 1)
+				{
+					selection = ArrowDownListBox(joblist_id);
+					bool tmp = g_InterfaceEvents.CheckListbox(joblist_id);
+				}
 			}
-			else if(g_Brothels.GetNumGirlsOnJob(g_CurrBrothel, JOB_MATRON, 0) == 1 || g_Brothels.GetNumGirlsOnJob(g_CurrBrothel, JOB_MATRON, 1) == 1)
+			if (u_int(selection) == JOB_TORTURER)
 			{
-				selection = ArrowUpListBox(joblist_id);
-				bool tmp = g_InterfaceEvents.CheckListbox(joblist_id);
+				if (selected_girl->m_States&(1 << STATUS_SLAVE))
+				{
+					selection = ArrowDownListBox(joblist_id);
+					bool tmp = g_InterfaceEvents.CheckListbox(joblist_id);
+				}
+				else if (g_Brothels.GetNumGirlsOnJob(g_CurrBrothel, JOB_TORTURER, 0) == 1)
+				{
+					selection = ArrowDownListBox(joblist_id);
+					bool tmp = g_InterfaceEvents.CheckListbox(joblist_id);
+				}
 			}
+			g_E_Key = false;
+			return true;
 		}
-		g_Q_Key = false;
-		return true;
-	}
-	if(g_E_Key) {
-		selection = ArrowDownListBox(joblist_id);
-		if(u_int(selection) == JOB_MATRON)
-		{
-			if(selected_girl->m_States&(1<<STATUS_SLAVE))
-			{
-				selection = ArrowDownListBox(joblist_id);
-				bool tmp = g_InterfaceEvents.CheckListbox(joblist_id);
-			}
-			else if(g_Brothels.GetNumGirlsOnJob(g_CurrBrothel, JOB_MATRON, 0) == 1 || g_Brothels.GetNumGirlsOnJob(g_CurrBrothel, JOB_MATRON, 1) == 1)
-			{
-				selection = ArrowDownListBox(joblist_id);
-				bool tmp = g_InterfaceEvents.CheckListbox(joblist_id);
-			}
-		}
-		if(u_int(selection) == JOB_TORTURER)
-		{
-			if(selected_girl->m_States&(1<<STATUS_SLAVE))
-			{
-				selection = ArrowDownListBox(joblist_id);
-				bool tmp = g_InterfaceEvents.CheckListbox(joblist_id);
-			}
-			else if(g_Brothels.GetNumGirlsOnJob(g_CurrBrothel, JOB_TORTURER, 0) == 1)
-			{
-				selection = ArrowDownListBox(joblist_id);
-				bool tmp = g_InterfaceEvents.CheckListbox(joblist_id);
-			}
-		}
-		g_E_Key = false;
-		return true;
-	}
 		// Select Location
-	if(g_W_Key) {
-		selection = ArrowUpListBox(jobtypelist_id);
-		g_W_Key = false;
-		return true;
-	}
-	if(g_S_Key) {
-		selection = ArrowDownListBox(jobtypelist_id);
-		g_S_Key = false;
-		return true;
-	}
+		if (g_W_Key) {
+			selection = ArrowUpListBox(jobtypelist_id);
+			g_W_Key = false;
+			return true;
+		}
+		if (g_S_Key) {
+			selection = ArrowDownListBox(jobtypelist_id);
+			g_S_Key = false;
+			return true;
+		}
 		// Toggle Day/Night shift
-	if(g_Z_Key) {
-		DisableButton(day_id, true);
-		DisableButton(night_id, false);
-		DayNight = 0;
-		g_Z_Key = false;
-		RefreshSelectedJobType();
-		return true;
-	}
-		if(g_C_Key) {
-		DisableButton(day_id, false);
-		DisableButton(night_id, true);
-		DayNight = 1;
-		g_C_Key = false;
-		RefreshSelectedJobType();
-		return true;
-	}
+		if (g_Z_Key) {
+			DisableButton(day_id, true);
+			DisableButton(night_id, false);
+			DayNight = 0;
+			g_Z_Key = false;
+			RefreshSelectedJobType();
+			return true;
+		}
+		if (g_C_Key) {
+			DisableButton(day_id, false);
+			DisableButton(night_id, true);
+			DayNight = 1;
+			g_C_Key = false;
+			RefreshSelectedJobType();
+			return true;
+		}
 		// Show Girl Details
-	if(g_SpaceKey) {
-		g_SpaceKey = false;
-		g_GirlDetails.lastsexact = -1;
-		ViewSelectedGirl();
-		return true;
-	}
+		if (g_SpaceKey) 
+		{
+			g_SpaceKey = false;
+			g_GirlDetails.lastsexact = -1;
+			ViewSelectedGirl();
+			return true;
+		}
 	}
 	return false;
 }
@@ -559,14 +560,14 @@ void cScreenGirlManagement::check_events()
 						// update the girl's listing to reflect the job change
 						ss.str("");
 						ss << g_Brothels.m_JobManager.JobName[selected_girl->m_DayJob];
-						SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), 5);
+						SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->DayJobColumn());
 						ss.str("");
 						ss << g_Brothels.m_JobManager.JobName[selected_girl->m_NightJob];
-						SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), 6);
+						SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->NightJobColumn());
 						// refresh job worker counts for former job and current job
 
-						SetSelectedItemText(joblist_id, old_job, g_Brothels.m_JobManager.JobDescriptionCount(old_job, g_CurrBrothel, day));
-						SetSelectedItemText(joblist_id, selection, g_Brothels.m_JobManager.JobDescriptionCount(selection, g_CurrBrothel, day));
+						SetSelectedItemText(joblist_id, old_job, g_Brothels.m_JobManager.JobDescriptionCount(old_job, g_CurrBrothel, DayNight));
+						SetSelectedItemText(joblist_id, selection, g_Brothels.m_JobManager.JobDescriptionCount(selection, g_CurrBrothel, DayNight));
 					}
 
 				}
@@ -745,22 +746,17 @@ bool cScreenGirlManagement::GirlDead(sGirl *dgirl)
 void cScreenGirlManagement::RefreshSelectedJobType()
 {
 	selection = GetSelectedItemFromList(girllist_id);
-	if(selection < 0)
-		return;
-
+	if (selection < 0) return;
 	selected_girl = g_Brothels.GetGirl(g_CurrBrothel, selection);
-
 	u_int job = (DayNight == 0) ? selected_girl->m_DayJob : selected_girl->m_NightJob;
-
 	// set the job filter
 	int jobtype = 0;
-	for(unsigned int i=0; i<NUMJOBTYPES; i++)
+	for (unsigned int i = 0; i<NUMJOBTYPES; i++)
 	{
-		if (job >= g_Brothels.m_JobManager.JobFilterIndex[i] && job < g_Brothels.m_JobManager.JobFilterIndex[i+1])
+		if (job >= g_Brothels.m_JobManager.JobFilterIndex[i] && job < g_Brothels.m_JobManager.JobFilterIndex[i + 1])
 			jobtype = i;
 	}
 	SetSelectedItemInList(jobtypelist_id, jobtype);
-
 	SetJob = true;
 }
 
@@ -780,7 +776,7 @@ void cScreenGirlManagement::RefreshJobList()
 	{
 		if (g_Brothels.m_JobManager.JobName[i] == "")
 			continue;
-		text = g_Brothels.m_JobManager.JobDescriptionCount(i, g_CurrBrothel, day);
+		text = g_Brothels.m_JobManager.JobDescriptionCount(i, g_CurrBrothel, DayNight);
 		AddToListBox(joblist_id, i, text);
 	}
 

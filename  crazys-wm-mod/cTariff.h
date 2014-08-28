@@ -58,12 +58,15 @@ public:
 	}
 /*
  *	let's have matron wages go up as skill level increases.
+ *	`J` this is no longer used
  */
-	int matron_wages(int level = 65) {
-		int base = 200 + (level * 2);
+	int matron_wages(int level = 50, int numgirls = 1) 
+	{
+		int base = (level * 2) + numgirls * 2;
 		return int(base * config.out_fact.matron_wages());
 	}
-	int bar_staff_wages() {
+	int bar_staff_wages() 
+	{
 		return int(20 * config.out_fact.bar_cost());
 	}
 	int empty_room_cost(sBrothel *brothel);

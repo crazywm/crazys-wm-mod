@@ -25,7 +25,7 @@ typedef unsigned int u_int;
 
 // game version
 const int g_MajorVersion    = 1;
-const int g_MinorVersionA   = 3;
+const int g_MinorVersionA   = 6;
 const int g_MinorVersionB   = 0;
 const int g_StableVersion   = 4;
 
@@ -99,8 +99,8 @@ const unsigned int STATUS_ARENA					= 11;
 const unsigned int STATUS_YOURDAUGHTER			= 12;
 
 // Jobs
-const unsigned int NUMJOBTYPES			= 17;
-const unsigned int NUM_JOBS				= 106;
+const unsigned int NUMJOBTYPES			= 18;
+const unsigned int NUM_JOBS				= 107;
 // - General
 const unsigned int JOBFILTER_GENERAL	= 0;
 const unsigned int JOB_RESTING			= 0;	// relaxes and takes some time off
@@ -172,15 +172,15 @@ const unsigned int JOBFILTER_ARENA		= 7;
 const unsigned int JOB_FIGHTBEASTS		= 47;	// customers come to place bets on who will win, girl may die (uses beasts resource)
 const unsigned int JOB_FIGHTARENAGIRLS	= 48;	
 const unsigned int JOB_FIGHTTRAIN		= 49;	
-const unsigned int JOB_CITYGUARD		= 50;	
 //const unsigned int JOB_MAGICDUEL		= ;
 //const unsigned int JOB_FIGHTBATTLE	= ;
 //const unsigned int JOB_ATHELETE		= ;
 //const unsigned int JOB_RACING			= ;
 // - Arena Staff
 const unsigned int JOBFILTER_ARENASTAFF	= 8;
-const unsigned int JOB_ARENAREST		= 51;	//free time of arena
-const unsigned int JOB_DOCTORE			= 52;	//Matron of arena
+const unsigned int JOB_ARENAREST		= 50;	//free time of arena
+const unsigned int JOB_DOCTORE			= 51;	//Matron of arena
+const unsigned int JOB_CITYGUARD		= 52;	
 const unsigned int JOB_CLEANARENA		= 53;
 //const unsigned int JOB_BATTLEMASTER	= ;
 //const unsigned int JOB_ARENAPROMOTER	= ;
@@ -239,8 +239,8 @@ const unsigned int JOB_RESEARCH			= 84;  // potions - unlock various types of po
 const unsigned int JOB_FARMHAND			= 85;  //cleaning of the farm
 // - Laborers
 const unsigned int JOBFILTER_LABORERS	= 14;
-const unsigned int JOB_GARDENER			= 86;	// produces herbs and potion ingredients
-const unsigned int JOB_FARMER			= 87;	//tends crops
+const unsigned int JOB_FARMER			= 86;	//tends crops
+const unsigned int JOB_GARDENER			= 87;	// produces herbs and potion ingredients
 const unsigned int JOB_SHEAPHERD		= 88;	//tends food animals - 100% food
 const unsigned int JOB_RANCHER			= 89;	// tends animals for food or beast - % food/beast based on skills
 const unsigned int JOB_CATACOMBRANCHER	= 90;	//tends strange beasts - 100% beast - dangerous
@@ -266,8 +266,9 @@ const unsigned int JOB_CLEANHOUSE		= 104;
 //const unsigned int JOB_HOUSECOOK		= ;    // cooks for the harem, (helps keep them happy, and increase job performance)
 
 // - extra unassignable
-const unsigned int JOB_INDUNGEON        = 104;
-const unsigned int JOB_RUNAWAY          = 105;
+const unsigned int JOBFILTER_NONE		= 17;
+const unsigned int JOB_INDUNGEON        = 105;
+const unsigned int JOB_RUNAWAY          = 106;
 
 #if 0
 // - Community Centre
@@ -355,7 +356,7 @@ const unsigned int INVMAKEUP        = 7;	// worn on face, single use
 const unsigned int INVARMOR         = 8;	// worn on body over dresses, often unequipped outside of combat, (max 1)
 const unsigned int INVMISC          = 9;    // these items don't usually do anythinig just random stuff girls might buy. The ones that do, cause a constant effect without having to be equiped
 const unsigned int INVARMBAND       = 10;	// (max 2), worn around arms
-const unsigned int INVSMWEAPON      = 11;   // small weapon which can be hidden on body, (max 1)
+const unsigned int INVSMWEAPON      = 11;   // small weapon which can be hidden on body, (max 2)
 const unsigned int INVUNDERWEAR     = 12;  //CRAZY added this underwear (max 1)
 
 // Item Rarity
@@ -463,42 +464,56 @@ const int IMGTYPE_MAST      = 19;
 const int IMGTYPE_TITTY     = 20;
 const int IMGTYPE_MILK      = 21;
 const int IMGTYPE_HAND      = 22;
-const int IMGTYPE_PREGNANT	= 23;
+const int IMGTYPE_FOOT		= 23;
+const int IMGTYPE_BED		= 24;
+const int IMGTYPE_FARM		= 25;
+const int IMGTYPE_HERD		= 26;
+const int IMGTYPE_COOK		= 27;
+const int IMGTYPE_CRAFT		= 28;
+const int IMGTYPE_SWIM		= 29;
+const int IMGTYPE_BATH		= 30;
+const int IMGTYPE_PREGNANT	= 31;	// IMGTYPE_PREGNANT needs to be the last of the nonpregnant image types.
 
 /*
-*		`J` removing this because changing the way images are loaded
-*
-* keep the images that don't change with pregnancy
-* after the ones that do. Then we can convert by adding
-* PREG_OFFSET, and if the result is > NUM_IMGTYPES
-* then it was one of the unchanging categories
+*	`J` All image types can have a pregnant alternative now
+*	Then we can convert by adding PREG_OFFSET
+*	The order and exact number of the pregnant types does not really 
+*	matter as they are based off the nonpregnant types.
 */
-const int PREG_OFFSET = 24;
-const int IMGTYPE_PREGANAL	    = IMGTYPE_ANAL		+ PREG_OFFSET;	// 24
-const int IMGTYPE_PREGBDSM	    = IMGTYPE_BDSM		+ PREG_OFFSET;	// 25
-const int IMGTYPE_PREGSEX	    = IMGTYPE_SEX		+ PREG_OFFSET;	// 26
-const int IMGTYPE_PREGBEAST	    = IMGTYPE_BEAST		+ PREG_OFFSET;	// 27
-const int IMGTYPE_PREGGROUP	    = IMGTYPE_GROUP		+ PREG_OFFSET;	// 28
-const int IMGTYPE_PREGLESBIAN	= IMGTYPE_LESBIAN	+ PREG_OFFSET;	// 29
-const int IMGTYPE_PREGTORTURE	= IMGTYPE_TORTURE	+ PREG_OFFSET;	// 30
-const int IMGTYPE_PREGDEATH		= IMGTYPE_DEATH		+ PREG_OFFSET;	// 31
-const int IMGTYPE_PREGPROFILE	= IMGTYPE_PROFILE   + PREG_OFFSET;	// 32 
-const int IMGTYPE_PREGCOMBAT	= IMGTYPE_COMBAT    + PREG_OFFSET;	// 33
-const int IMGTYPE_PREGORAL		= IMGTYPE_ORAL		+ PREG_OFFSET;	// 34 
-const int IMGTYPE_PREGECCHI		= IMGTYPE_ECCHI     + PREG_OFFSET;	// 35
-const int IMGTYPE_PREGSTRIP		= IMGTYPE_STRIP     + PREG_OFFSET;	// 36
-const int IMGTYPE_PREGMAID		= IMGTYPE_MAID      + PREG_OFFSET;	// 37
-const int IMGTYPE_PREGSING		= IMGTYPE_SING      + PREG_OFFSET;	// 38
-const int IMGTYPE_PREGWAIT		= IMGTYPE_WAIT      + PREG_OFFSET;	// 39
-const int IMGTYPE_PREGCARD		= IMGTYPE_CARD      + PREG_OFFSET;	// 40
-const int IMGTYPE_PREGBUNNY		= IMGTYPE_BUNNY     + PREG_OFFSET;	// 41
-const int IMGTYPE_PREGNUDE		= IMGTYPE_NUDE      + PREG_OFFSET;	// 42
-const int IMGTYPE_PREGMAST		= IMGTYPE_MAST      + PREG_OFFSET;	// 43
-const int IMGTYPE_PREGTITTY		= IMGTYPE_TITTY     + PREG_OFFSET;	// 44
-const int IMGTYPE_PREGMILK		= IMGTYPE_MILK      + PREG_OFFSET;	// 45
-const int IMGTYPE_PREGHAND		= IMGTYPE_HAND      + PREG_OFFSET;	// 46
+const int PREG_OFFSET = IMGTYPE_PREGNANT + 1;
+const int IMGTYPE_PREGANAL	    = IMGTYPE_ANAL		+ PREG_OFFSET;
+const int IMGTYPE_PREGBDSM	    = IMGTYPE_BDSM		+ PREG_OFFSET;
+const int IMGTYPE_PREGSEX	    = IMGTYPE_SEX		+ PREG_OFFSET;
+const int IMGTYPE_PREGBEAST	    = IMGTYPE_BEAST		+ PREG_OFFSET;
+const int IMGTYPE_PREGGROUP	    = IMGTYPE_GROUP		+ PREG_OFFSET;
+const int IMGTYPE_PREGLESBIAN	= IMGTYPE_LESBIAN	+ PREG_OFFSET;
+const int IMGTYPE_PREGTORTURE	= IMGTYPE_TORTURE	+ PREG_OFFSET;
+const int IMGTYPE_PREGDEATH		= IMGTYPE_DEATH		+ PREG_OFFSET;
+const int IMGTYPE_PREGPROFILE	= IMGTYPE_PROFILE   + PREG_OFFSET; 
+const int IMGTYPE_PREGCOMBAT	= IMGTYPE_COMBAT    + PREG_OFFSET;
+const int IMGTYPE_PREGORAL		= IMGTYPE_ORAL		+ PREG_OFFSET; 
+const int IMGTYPE_PREGECCHI		= IMGTYPE_ECCHI     + PREG_OFFSET;
+const int IMGTYPE_PREGSTRIP		= IMGTYPE_STRIP     + PREG_OFFSET;
+const int IMGTYPE_PREGMAID		= IMGTYPE_MAID      + PREG_OFFSET;
+const int IMGTYPE_PREGSING		= IMGTYPE_SING      + PREG_OFFSET;
+const int IMGTYPE_PREGWAIT		= IMGTYPE_WAIT      + PREG_OFFSET;
+const int IMGTYPE_PREGCARD		= IMGTYPE_CARD      + PREG_OFFSET;
+const int IMGTYPE_PREGBUNNY		= IMGTYPE_BUNNY     + PREG_OFFSET;
+const int IMGTYPE_PREGNUDE		= IMGTYPE_NUDE      + PREG_OFFSET;
+const int IMGTYPE_PREGMAST		= IMGTYPE_MAST      + PREG_OFFSET;
+const int IMGTYPE_PREGTITTY		= IMGTYPE_TITTY     + PREG_OFFSET;
+const int IMGTYPE_PREGMILK		= IMGTYPE_MILK      + PREG_OFFSET;
+const int IMGTYPE_PREGHAND		= IMGTYPE_HAND      + PREG_OFFSET;
+const int IMGTYPE_PREGFOOT		= IMGTYPE_FOOT		+ PREG_OFFSET;
+const int IMGTYPE_PREGBED		= IMGTYPE_BED		+ PREG_OFFSET;
+const int IMGTYPE_PREGFARM		= IMGTYPE_FARM		+ PREG_OFFSET;
+const int IMGTYPE_PREGHERD		= IMGTYPE_HERD		+ PREG_OFFSET;
+const int IMGTYPE_PREGCOOK		= IMGTYPE_COOK		+ PREG_OFFSET;
+const int IMGTYPE_PREGCRAFT		= IMGTYPE_CRAFT		+ PREG_OFFSET;
+const int IMGTYPE_PREGSWIM		= IMGTYPE_SWIM		+ PREG_OFFSET;
+const int IMGTYPE_PREGBATH		= IMGTYPE_BATH		+ PREG_OFFSET;
 
-const int NUM_IMGTYPES          = IMGTYPE_PREGHAND + 1;	// `J` All image types can have a pregnant variation (except pregnant-pregnant)
+const int NUM_IMGTYPES = IMGTYPE_PREGNANT + PREG_OFFSET; // `J` All image types can have a pregnant variation (except pregnant-pregnant)
 
 
 const int NUM_GIRLFLAGS         = 30;
@@ -534,6 +549,7 @@ const int	EVENT_MATRON		= 7;			// For Matron reports
 const int	EVENT_GANG			= 8;
 const int	EVENT_BROTHEL		= 9;
 const int	EVENT_NOWORK		= 10;
+const int	EVENT_BACKTOWORK	= 11;
 const int	EVENT_DEBUG = 99;
 
 

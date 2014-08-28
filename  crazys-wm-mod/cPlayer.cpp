@@ -59,37 +59,6 @@ TiXmlElement* cPlayer::SavePlayerXML(TiXmlElement* pRoot)
 	return pPlayer;
 }
 
-void cPlayer::LoadPlayerLegacy(ifstream& ifs)
-{
-	int nTemp;
-
-	if (ifs.peek()=='\n') ifs.ignore(1,'\n');
-	ifs>>nTemp;
-	if(nTemp == 1)	// have they won the game
-		m_WinGame = true;
-	else
-		m_WinGame = false;
-
-	// stats
-	if (ifs.peek()=='\n') ifs.ignore(1,'\n');
-	for(int i=0; i<NUM_STATS; i++)
-	{
-		ifs>>nTemp;
-		m_Stats[i] = nTemp;
-	}
-
-	// skills
-	if (ifs.peek()=='\n') ifs.ignore(1,'\n');
-	for(u_int i=0; i<NUM_SKILLS; i++)
-	{
-		ifs>>nTemp;
-		m_Skills[i] = nTemp;
-	}
-
-	// load other player stuff
-	if (ifs.peek()=='\n') ifs.ignore(1,'\n');
-	ifs>>m_Suspicion>>m_Disposition>>m_CustomerFear;
-}
 
 bool cPlayer::LoadPlayerXML(TiXmlHandle hPlayer)
 {

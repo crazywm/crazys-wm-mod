@@ -27,64 +27,17 @@ std::string XMLifyString(const char* XMLName);
 std::string UnXMLifyString(const std::string& XMLName);
 std::string UnXMLifyString(const char* XMLName);
 
-TiXmlElement* SaveStatsXML(TiXmlElement* pRoot,
-						   int stats[],
-						   int statMods[] = 0,
-						   int tempStats[] = 0);
+TiXmlElement* SaveStatsXML(TiXmlElement* pRoot, int stats[], int statMods[] = 0, int tempStats[] = 0);
+TiXmlElement* SaveSkillsXML(TiXmlElement* pRoot, int skills[], int skillMods[] = 0, int tempSkills[] = 0);
+TiXmlElement* SaveJobsXML(TiXmlElement* pRoot, int buildingQualities[]);
+TiXmlElement* SaveTraitsXML(TiXmlElement* pRoot, std::string TagName, const int numTraits, sTrait* traits[], unsigned char tempTraits[]);
+TiXmlElement* SaveActionsXML(TiXmlElement* pRoot, int enjoyments[]);
+TiXmlElement* SaveInventoryXML(TiXmlElement* pRoot, sInventoryItem* items[], const int numItems, unsigned char isEquipped[] = 0, int quantities[] = 0);
 
-TiXmlElement* SaveSkillsXML(TiXmlElement* pRoot,
-							int skills[],
-							int skillMods[] = 0,
-							int tempSkills[] = 0);
-
-TiXmlElement* SaveJobsXML(TiXmlElement* pRoot,
-						  int buildingQualities[]);
-
-TiXmlElement* SaveTraitsXML(TiXmlElement* pRoot,
-							std::string TagName,
-							const int numTraits,
-							sTrait* traits[],
-							unsigned char tempTraits[]);
-
-TiXmlElement* SaveActionsXML(TiXmlElement* pRoot,
-							 int enjoyments[]);
-
-TiXmlElement* SaveInventoryXML(TiXmlElement* pRoot,
-							   sInventoryItem* items[],
-							   const int numItems,
-							   unsigned char isEquipped[] = 0,
-							   int quantities[] = 0);
-
-
-
-
-
-
-
-bool LoadStatsXML(TiXmlHandle hStats,
-				  int stats[],
-				  int statMods[] = 0,
-				  int tempStats[] = 0);
-
-bool LoadSkillsXML(TiXmlHandle hSkills,
-				   int skills[],
-				   int skillMods[] = 0,
-				   int tempSkills[] = 0);
-
-bool LoadJobsXML(TiXmlHandle hJobs,
-				 int buildingQualities[]);
-
-bool LoadTraitsXML(TiXmlHandle hTraits,
-				   unsigned char& numTraits,
-				   sTrait* traits[],
-				   unsigned char tempTraits[] = 0);
-
-bool LoadActionsXML(TiXmlHandle hActions,
-					int enjoyments[]);
-
-bool LoadInventoryXML(TiXmlHandle hInventory,
-					  sInventoryItem* items[],
-					  int& numItems,
-					  unsigned char isEquipped[] = 0,
-					  int quantities[] = 0);
+bool LoadStatsXML(TiXmlHandle hStats, int stats[], int statMods[] = 0, int tempStats[] = 0);
+bool LoadSkillsXML(TiXmlHandle hSkills, int skills[], int skillMods[] = 0, int tempSkills[] = 0);
+bool LoadJobsXML(TiXmlHandle hJobs, int buildingQualities[]);
+bool LoadTraitsXML(TiXmlHandle hTraits, unsigned char& numTraits, sTrait* traits[], unsigned char tempTraits[] = 0);
+bool LoadActionsXML(TiXmlHandle hActions, int enjoyments[]);
+bool LoadInventoryXML(TiXmlHandle hInventory, sInventoryItem* items[], int& numItems, unsigned char isEquipped[] = 0, int quantities[] = 0);
 

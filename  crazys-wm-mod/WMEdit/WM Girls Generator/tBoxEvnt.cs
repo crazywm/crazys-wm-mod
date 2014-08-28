@@ -178,6 +178,22 @@ namespace WM_Girls_Generator
         private void SkillRGMaxTBox19_TextChanged(object sender, EventArgs e) { LimitTextBox(SkillRGMaxTBox19); }
         private void SkillRGMaxTBox20_TextChanged(object sender, EventArgs e) { LimitTextBox(SkillRGMaxTBox20); }
 
+        private void textBox_Config_InitialGirlMeet_TextChanged(object sender, EventArgs e) { LimitTextBox(textBox_Config_InitialGirlMeet); }
+        private void textBox_Config_InitialGirlsHousePerc_TextChanged(object sender, EventArgs e) { LimitTextBox(textBox_Config_InitialGirlsHousePerc); }
+        private void textBox_Config_InitialSlaveHousePerc_TextChanged(object sender, EventArgs e) { LimitTextBox(textBox_Config_InitialSlaveHousePerc); }
+        private void textBox_config_ChanceRemoveUnwanted_TextChanged(object sender, EventArgs e) { LimitTextBox(textBox_config_ChanceRemoveUnwanted); }
+        private void textBox_Config_GamblingOdds_TextChanged(object sender, EventArgs e) { LimitTextBox(textBox_Config_GamblingOdds); }
+        private void textBox_Config_TaxRate_TextChanged(object sender, EventArgs e) { LimitTextBox(textBox_Config_TaxRate); }
+        private void textBox_Config_TaxMinimum_TextChanged(object sender, EventArgs e) { LimitTextBox(textBox_Config_TaxMinimum); }
+        private void textBox_Config_TaxLaundry_TextChanged(object sender, EventArgs e) { LimitTextBox(textBox_Config_TaxLaundry); }
+        private void textBox_Config_PregnancyPlayer_TextChanged(object sender, EventArgs e) { LimitTextBox(textBox_Config_PregnancyPlayer); }
+        private void textBox_Config_PregnancyCustomer_TextChanged(object sender, EventArgs e) { LimitTextBox(textBox_Config_PregnancyCustomer); }
+        private void textBox_Config_PregnancyMonster_TextChanged(object sender, EventArgs e) { LimitTextBox(textBox_Config_PregnancyMonster); }
+        private void textBox_Config_PregnancyGirlChance_TextChanged(object sender, EventArgs e) { LimitTextBox(textBox_Config_PregnancyGirlChance); }
+        private void textBox_Config_ProstitutionRapeBrothel_TextChanged(object sender, EventArgs e) { LimitTextBox(textBox_Config_ProstitutionRapeBrothel); }
+        private void textBox_Config_ProstitutionRapeStreets_TextChanged(object sender, EventArgs e) { LimitTextBox(textBox_Config_ProstitutionRapeStreets); }
+
+
         //checks keypresses to allow only numbers
         private void GoldTBox1_KeyPress(object sender, KeyPressEventArgs e)                 
         {

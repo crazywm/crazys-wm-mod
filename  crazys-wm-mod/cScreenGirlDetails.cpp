@@ -104,18 +104,12 @@ void cScreenGirlDetails::set_ids()
 	reldungeon_id = get_id("ReleaseDungeonButton");
 	interact_id = get_id("InteractButton");
 	takegold_id = get_id("TakeGoldButton");
-
-// `J` Replacing accom buttons with slider
-//	accomup_id = get_id("AccomUpButton");
-//	accomdown_id = get_id("AccomDownButton");
+	accomup_id = get_id("AccomUpButton");
+	accomdown_id = get_id("AccomDownButton");
 	accom_id = get_id("AccomSlider");
 	accomval_id = get_id("AccomValue");
-
-
 	houseperc_id = get_id("HousePercSlider");
 	housepercval_id = get_id("HousePercValue");
-
-
 	gallery_id = get_id("GalleryButton");
 	jobtypehead_id = get_id("JobTypeHeader");
 	jobtypelist_id = get_id("JobTypeList");
@@ -136,38 +130,36 @@ void cScreenGirlDetails::Free()
 
 void cScreenGirlDetails::init()
 {
-
-	if(selected_girl == 0)
+	if (selected_girl == 0)
 	{
 		g_WinManager.Pop();
 		g_InitWin = true;
 		g_LogFile.write("ERROR - girl details screen, selected_girl is null");
 /*
- *		adding this because the game will crash if we 
+ *		adding this because the game will crash if we
  *		go past this point with a null girl
  *
  *		Now as to why it was null in the first place ...
  *		-- doc
  */
- 		return;
+		return;
 	}
 
 	g_CurrentScreen = SCREEN_GIRLDETAILS;
-	if(!g_InitWin)
-		return;
+	if (!g_InitWin) return;
 
 	Focused();
 	g_InitWin = false;
 
-////////////////////
-	if(selected_girl->health() <= 0)
+	////////////////////
+	if (selected_girl->health() <= 0)
 	{
 		selected_girl = remove_selected_girl();
-		if(selected_girl == 0)
+		if (selected_girl == 0)
 		{
 			g_WinManager.Pop();
 			g_InitWin = true;
-	 		return;
+			return;
 		}
 	}
 
@@ -182,21 +174,23 @@ void cScreenGirlDetails::init()
 	else						detail = g_Girls.GetThirdDetailsString(selected_girl);
 	EditTextItem(detail, girldesc_id);
 
-	if(selected_girl)
+	if (selected_girl)
 	{
-		if(lastsexact != -1)
+		if (lastsexact != -1)
 		{
 			SetImage(girlimage_id, g_Girls.GetImageSurface(selected_girl, lastsexact, true, ImageNum));
-			if(g_Girls.IsAnimatedSurface(selected_girl, IMGTYPE_PROFILE, ImageNum))
+			if (g_Girls.IsAnimatedSurface(selected_girl, IMGTYPE_PROFILE, ImageNum))
 				SetImage(girlimage_id, g_Girls.GetAnimatedSurface(selected_girl, lastsexact, ImageNum));
 			lastsexact = -1;
-		} else {
-			if(selected_girl->m_newRandomFixed >= 0)
+		}
+		else
+		{
+			if (selected_girl->m_newRandomFixed >= 0)
 				SetImage(girlimage_id, g_Girls.GetImageSurface(selected_girl, IMGTYPE_PROFILE, false, selected_girl->m_newRandomFixed));
 			else
 			{
 				SetImage(girlimage_id, g_Girls.GetImageSurface(selected_girl, IMGTYPE_PROFILE, true, ImageNum));
-				if(g_Girls.IsAnimatedSurface(selected_girl, IMGTYPE_PROFILE, ImageNum))
+				if (g_Girls.IsAnimatedSurface(selected_girl, IMGTYPE_PROFILE, ImageNum))
 					SetImage(girlimage_id, g_Girls.GetAnimatedSurface(selected_girl, IMGTYPE_PROFILE, ImageNum));
 			}
 		}
@@ -204,26 +198,26 @@ void cScreenGirlDetails::init()
 
 	SliderRange(houseperc_id, 0, 100, g_Girls.GetStat(selected_girl, STAT_HOUSE), 10);
 	ss.str("");
-	ss << gettext("House Percentage: ") << SliderValue(houseperc_id) <<  gettext("%");
+	ss << gettext("House Percentage: ") << SliderValue(houseperc_id) << gettext("%");
 	EditTextItem(ss.str(), housepercval_id);
 
 	ClearListBox(jobtypelist_id);
 
-// `J` Replacing accom buttons with slider
-//	DisableButton(accomdown_id, selected_girl->m_AccLevel < 1);
-//	DisableButton(accomup_id, selected_girl->m_AccLevel > 4);
-	SliderRange(accom_id, 0, 5, selected_girl->m_AccLevel, 1);
-	string accomstr = "Accommodation: ";
-	if (SliderValue(accom_id) == 0)	accomstr += gettext("Very Poor");
-	if (SliderValue(accom_id) == 1)	accomstr += gettext("Adequate");
-	if (SliderValue(accom_id) == 2)	accomstr += gettext("Nice");
-	if (SliderValue(accom_id) == 3)	accomstr += gettext("Good");
-	if (SliderValue(accom_id) == 4)	accomstr += gettext("Wonderful");
-	if (SliderValue(accom_id) == 5)	accomstr += gettext("High Class");
-	EditTextItem(accomstr, accomval_id);
-
-
-
+	// `J` Replacing accom buttons with slider
+	if (accomdown_id != -1)	DisableButton(accomdown_id, selected_girl->m_AccLevel < 1);
+	if (accomup_id != -1)	DisableButton(accomup_id, selected_girl->m_AccLevel > 4);
+	if (accom_id != -1)		SliderRange(accom_id, 0, 5, selected_girl->m_AccLevel, 1);
+	if (accomval_id != -1)
+	{
+		string accomstr = "Accommodation: ";
+		if (SliderValue(accom_id) == 0)	accomstr += gettext("Very Poor");
+		if (SliderValue(accom_id) == 1)	accomstr += gettext("Adequate");
+		if (SliderValue(accom_id) == 2)	accomstr += gettext("Nice");
+		if (SliderValue(accom_id) == 3)	accomstr += gettext("Good");
+		if (SliderValue(accom_id) == 4)	accomstr += gettext("Wonderful");
+		if (SliderValue(accom_id) == 5)	accomstr += gettext("High Class");
+		EditTextItem(accomstr, accomval_id);
+	}
 	DisableButton(interact_id, (g_TalkCount <= 0));
 	DisableButton(takegold_id, (selected_girl->m_Money <= 0));
 	SetCheckBox(antipreg_id, (selected_girl->m_UseAntiPreg));
@@ -249,8 +243,11 @@ void cScreenGirlDetails::init()
 		ClearListBox(joblist_id);
 		AddToListBox(jobtypelist_id, JOBFILTER_ARENASTAFF, g_Arena.m_JobManager.JobFilterName[JOBFILTER_ARENASTAFF]);
 		AddToListBox(jobtypelist_id, JOBFILTER_ARENA, g_Arena.m_JobManager.JobFilterName[JOBFILTER_ARENA]);
-		SetSelectedItemInList(jobtypelist_id, JOBFILTER_ARENA);
 		RefreshJobList();
+		if (job >= g_Arena.m_JobManager.JobFilterIndex[JOBFILTER_ARENA] && job < g_Arena.m_JobManager.JobFilterIndex[JOBFILTER_ARENA + 1])
+			SetSelectedItemInList(jobtypelist_id, JOBFILTER_ARENA);
+		else // if (job >= g_Arena.m_JobManager.JobFilterIndex[JOBFILTER_ARENASTAFF] && job < g_Arena.m_JobManager.JobFilterIndex[JOBFILTER_ARENASTAFF + 1])
+			SetSelectedItemInList(jobtypelist_id, JOBFILTER_ARENASTAFF);
 		HideButton(day_id, false);
 		HideButton(night_id, false);
 		DisableButton(day_id, (DayNight == 0));
@@ -262,9 +259,9 @@ void cScreenGirlDetails::init()
 		AddToListBox(jobtypelist_id, JOBFILTER_CLINIC, g_Clinic.m_JobManager.JobFilterName[JOBFILTER_CLINIC]);
 		AddToListBox(jobtypelist_id, JOBFILTER_CLINICSTAFF, g_Clinic.m_JobManager.JobFilterName[JOBFILTER_CLINICSTAFF]);
 		RefreshJobList();
-		if (GetSelectedItemFromList(jobtypelist_id) != JOBFILTER_CLINIC ||
-			GetSelectedItemFromList(jobtypelist_id) != JOBFILTER_CLINICSTAFF)
+		if (job >= g_Clinic.m_JobManager.JobFilterIndex[JOBFILTER_CLINIC] && job < g_Clinic.m_JobManager.JobFilterIndex[JOBFILTER_CLINIC + 1])
 			SetSelectedItemInList(jobtypelist_id, JOBFILTER_CLINIC);
+		else SetSelectedItemInList(jobtypelist_id, JOBFILTER_CLINICSTAFF);
 		HideButton(day_id, false);
 		HideButton(night_id, false);
 		DisableButton(day_id, (DayNight == 0));
@@ -275,8 +272,10 @@ void cScreenGirlDetails::init()
 		ClearListBox(joblist_id);
 		AddToListBox(jobtypelist_id, JOBFILTER_COMMUNITYCENTRE, g_Centre.m_JobManager.JobFilterName[JOBFILTER_COMMUNITYCENTRE]);
 		AddToListBox(jobtypelist_id, JOBFILTER_DRUGCENTRE, g_Centre.m_JobManager.JobFilterName[JOBFILTER_DRUGCENTRE]);
-		SetSelectedItemInList(jobtypelist_id, JOBFILTER_COMMUNITYCENTRE);
 		RefreshJobList();
+		if (job >= g_Centre.m_JobManager.JobFilterIndex[JOBFILTER_DRUGCENTRE] && job < g_Centre.m_JobManager.JobFilterIndex[JOBFILTER_DRUGCENTRE + 1])
+			SetSelectedItemInList(jobtypelist_id, JOBFILTER_DRUGCENTRE);
+		else SetSelectedItemInList(jobtypelist_id, JOBFILTER_COMMUNITYCENTRE);
 		HideButton(day_id, false);
 		HideButton(night_id, false);
 		DisableButton(day_id, (DayNight == 0));
@@ -299,39 +298,46 @@ void cScreenGirlDetails::init()
 		ClearListBox(joblist_id);
 		AddToListBox(jobtypelist_id, JOBFILTER_STUDIOCREW, g_Studios.m_JobManager.JobFilterName[JOBFILTER_STUDIOCREW]);
 		AddToListBox(jobtypelist_id, JOBFILTER_MOVIESTUDIO, g_Studios.m_JobManager.JobFilterName[JOBFILTER_MOVIESTUDIO]);
-		SetSelectedItemInList(jobtypelist_id, JOBFILTER_STUDIOCREW);
 		RefreshJobList();
+		if (job >= g_Studios.m_JobManager.JobFilterIndex[JOBFILTER_MOVIESTUDIO] && job < g_Studios.m_JobManager.JobFilterIndex[JOBFILTER_MOVIESTUDIO + 1])
+			SetSelectedItemInList(jobtypelist_id, JOBFILTER_MOVIESTUDIO);
+		else SetSelectedItemInList(jobtypelist_id, JOBFILTER_STUDIOCREW);
 		HideButton(day_id, true);
 		HideButton(night_id, true);
 
 	}
 	else if (InFarm)
 	{
-		DayNight = 1;
 		ClearListBox(joblist_id);
 		AddToListBox(jobtypelist_id, JOBFILTER_FARMSTAFF, g_Farm.m_JobManager.JobFilterName[JOBFILTER_FARMSTAFF]);
 		AddToListBox(jobtypelist_id, JOBFILTER_LABORERS, g_Farm.m_JobManager.JobFilterName[JOBFILTER_LABORERS]);
 		AddToListBox(jobtypelist_id, JOBFILTER_PRODUCERS, g_Farm.m_JobManager.JobFilterName[JOBFILTER_PRODUCERS]);
-		SetSelectedItemInList(jobtypelist_id, JOBFILTER_FARMSTAFF);
 		RefreshJobList();
-		HideButton(day_id, true);
-		HideButton(night_id, true);
+		if (job >= g_Farm.m_JobManager.JobFilterIndex[JOBFILTER_LABORERS] && job < g_Farm.m_JobManager.JobFilterIndex[JOBFILTER_LABORERS + 1])
+			SetSelectedItemInList(jobtypelist_id, JOBFILTER_LABORERS);
+		else if (job >= g_Farm.m_JobManager.JobFilterIndex[JOBFILTER_PRODUCERS] && job < g_Farm.m_JobManager.JobFilterIndex[JOBFILTER_PRODUCERS + 1])
+			SetSelectedItemInList(jobtypelist_id, JOBFILTER_PRODUCERS);
+		else SetSelectedItemInList(jobtypelist_id, JOBFILTER_FARMSTAFF);
+		HideButton(day_id, false);
+		HideButton(night_id, false);
+		DisableButton(day_id, (DayNight == 0));
+		DisableButton(night_id, (DayNight != 0));
 
 	}
-	else if(!InDungeon)
+	else if (!InDungeon)
 	{  // if not in dungeon, set up job lists
 		// add the job filters
-	//	for(int i=0; i<NUMJOBTYPES; i++)  // loop through all job types
-		for (unsigned int i = 0; i<JOBFILTER_BROTHEL; i++)  // temporary limit to job types shown
+		//	for(int i=0; i<NUMJOBTYPES; i++)  // loop through all job types
+		for (unsigned int i = 0; i <= JOBFILTER_BROTHEL; i++)  // temporary limit to job types shown
 		{
 			AddToListBox(jobtypelist_id, i, g_Brothels.m_JobManager.JobFilterName[i]);
 		}
 
 		// set the job filter
 		int jobtype = 0;
-		for(unsigned int i=0; i<NUMJOBTYPES; i++)
+		for (unsigned int i = 0; i < NUMJOBTYPES; i++)
 		{
-			if (job >= g_Brothels.m_JobManager.JobFilterIndex[i] && job < g_Brothels.m_JobManager.JobFilterIndex[i+1])
+			if (job >= g_Brothels.m_JobManager.JobFilterIndex[i] && job < g_Brothels.m_JobManager.JobFilterIndex[i + 1])
 			{
 				jobtype = i;
 				break;
@@ -354,9 +360,9 @@ void cScreenGirlDetails::init()
 	}
 
 	ClearListBox(traitlist_id);
-	for(int i=0; i<30; i++)
+	for (int i = 0; i < 30; i++)
 	{
-		if(selected_girl->m_Traits[i])
+		if (selected_girl->m_Traits[i])
 		{
 			// TODO replace m_Name by getName()
 			// In cTraits.cpp add comparaison for gettext
@@ -436,21 +442,9 @@ bool cScreenGirlDetails::check_keys()
 		if (g_S_Key)
 		{
 			g_S_Key = false;
-			if (DetailLevel == 0)
-			{
-				DetailLevel = 1;
-				EditTextItem(g_Girls.GetMoreDetailsString(selected_girl), girldesc_id);
-			}
-			else if (DetailLevel == 1)
-			{
-				DetailLevel = 2;
-				EditTextItem(g_Girls.GetThirdDetailsString(selected_girl), girldesc_id);
-			}
-			else
-			{
-				DetailLevel = 0;
-				EditTextItem(g_Girls.GetDetailsString(selected_girl), girldesc_id);
-			}
+			if (DetailLevel == 0)		{ DetailLevel = 1; EditTextItem(g_Girls.GetMoreDetailsString(selected_girl), girldesc_id); }
+			else if (DetailLevel == 1)	{ DetailLevel = 2; EditTextItem(g_Girls.GetThirdDetailsString(selected_girl), girldesc_id); }
+			else						{ DetailLevel = 0; EditTextItem(g_Girls.GetDetailsString(selected_girl), girldesc_id); }
 			return true;
 		}
 		if(g_SpaceKey)
@@ -494,21 +488,9 @@ void cScreenGirlDetails::check_events()
 	}
 	if(g_InterfaceEvents.CheckButton(more_id))
 	{
-		if (DetailLevel == 0)
-		{
-			DetailLevel = 1;
-			EditTextItem(g_Girls.GetMoreDetailsString(selected_girl), girldesc_id);
-		}
-		else if (DetailLevel == 1)
-		{
-			DetailLevel = 2;
-			EditTextItem(g_Girls.GetThirdDetailsString(selected_girl), girldesc_id);
-		}
-		else
-		{
-			DetailLevel = 0;
-			EditTextItem(g_Girls.GetDetailsString(selected_girl), girldesc_id);
-		}
+		if (DetailLevel == 0)		{ DetailLevel = 1; EditTextItem(g_Girls.GetMoreDetailsString(selected_girl), girldesc_id); }
+		else if (DetailLevel == 1)	{ DetailLevel = 2; EditTextItem(g_Girls.GetThirdDetailsString(selected_girl), girldesc_id); }
+		else						{ DetailLevel = 0; EditTextItem(g_Girls.GetDetailsString(selected_girl), girldesc_id); }
 	}
 	if(g_InterfaceEvents.CheckButton(day_id))
 	{
@@ -559,8 +541,8 @@ void cScreenGirlDetails::check_events()
 			// refresh job worker counts for former job and current job
 			if (old_job != selection)
 			{
-				SetSelectedItemText(joblist_id, old_job, g_Brothels.m_JobManager.JobDescriptionCount(old_job, g_CurrBrothel, day));
-				SetSelectedItemText(joblist_id, selection, g_Brothels.m_JobManager.JobDescriptionCount(selection, g_CurrBrothel, day));
+				SetSelectedItemText(joblist_id, old_job, g_Brothels.m_JobManager.JobDescriptionCount(old_job, g_CurrBrothel, DayNight));
+				SetSelectedItemText(joblist_id, selection, g_Brothels.m_JobManager.JobDescriptionCount(selection, g_CurrBrothel, DayNight));
 			}
 			RefreshJobList();
 		}
@@ -589,41 +571,62 @@ void cScreenGirlDetails::check_events()
 	if (g_InterfaceEvents.CheckSlider(accom_id))
 	{
 		selected_girl->m_AccLevel = SliderValue(accom_id);
-		//g_Girls.SetStat(selected_girl, accom, SliderValue(accom_id));
 		SliderRange(accom_id, 0, 5, selected_girl->m_AccLevel, 1);
-		string accomstr = "Accommodation: ";
-		if (SliderValue(accom_id) == 0)	accomstr += gettext("Very Poor");
-		if (SliderValue(accom_id) == 1)	accomstr += gettext("Adequate");
-		if (SliderValue(accom_id) == 2)	accomstr += gettext("Nice");
-		if (SliderValue(accom_id) == 3)	accomstr += gettext("Good");
-		if (SliderValue(accom_id) == 4)	accomstr += gettext("Wonderful");
-		if (SliderValue(accom_id) == 5)	accomstr += gettext("High Class");
-		EditTextItem(accomstr, accomval_id);
+		if (accomval_id != -1)
+		{
+			string accomstr = "Accommodation: ";
+			if (selected_girl->m_AccLevel == 0)	accomstr += gettext("Very Poor");
+			if (selected_girl->m_AccLevel == 1)	accomstr += gettext("Adequate");
+			if (selected_girl->m_AccLevel == 2)	accomstr += gettext("Nice");
+			if (selected_girl->m_AccLevel == 3)	accomstr += gettext("Good");
+			if (selected_girl->m_AccLevel == 4)	accomstr += gettext("Wonderful");
+			if (selected_girl->m_AccLevel == 5)	accomstr += gettext("High Class");
+			EditTextItem(accomstr, accomval_id);
+		}
+		g_InitWin = true;
 		return;
 	}
-/*
-	if(g_InterfaceEvents.CheckButton(accomup_id))
+	if (g_InterfaceEvents.CheckButton(accomup_id))
 	{
-		if(selected_girl->m_AccLevel+1 > 5)
+		if (selected_girl->m_AccLevel + 1 > 5)
 			selected_girl->m_AccLevel = 5;
 		else
 			selected_girl->m_AccLevel++;
+		if (accomval_id != -1)
+		{
+			string accomstr = "Accommodation: ";
+			if (selected_girl->m_AccLevel == 0)	accomstr += gettext("Very Poor");
+			if (selected_girl->m_AccLevel == 1)	accomstr += gettext("Adequate");
+			if (selected_girl->m_AccLevel == 2)	accomstr += gettext("Nice");
+			if (selected_girl->m_AccLevel == 3)	accomstr += gettext("Good");
+			if (selected_girl->m_AccLevel == 4)	accomstr += gettext("Wonderful");
+			if (selected_girl->m_AccLevel == 5)	accomstr += gettext("High Class");
+			EditTextItem(accomstr, accomval_id);
+		}
 
 		g_InitWin = true;
 		return;
 	}
-	if(g_InterfaceEvents.CheckButton(accomdown_id))
+	if (g_InterfaceEvents.CheckButton(accomdown_id))
 	{
-		if(selected_girl->m_AccLevel-1 < 0)
-			selected_girl->m_AccLevel = 0;
-		else
-			selected_girl->m_AccLevel--;
+		if (selected_girl->m_AccLevel - 1 < 0)	selected_girl->m_AccLevel = 0;
+		else									selected_girl->m_AccLevel--;
+		if (accomval_id != -1)
+		{
+			string accomstr = "Accommodation: ";
+			if (selected_girl->m_AccLevel == 0)	accomstr += gettext("Very Poor");
+			if (selected_girl->m_AccLevel == 1)	accomstr += gettext("Adequate");
+			if (selected_girl->m_AccLevel == 2)	accomstr += gettext("Nice");
+			if (selected_girl->m_AccLevel == 3)	accomstr += gettext("Good");
+			if (selected_girl->m_AccLevel == 4)	accomstr += gettext("Wonderful");
+			if (selected_girl->m_AccLevel == 5)	accomstr += gettext("High Class");
+			EditTextItem(accomstr, accomval_id);
+		}
 
 		g_InitWin = true;
 		return;
 	}
-*/
-	if(g_InterfaceEvents.CheckButton(takegold_id))
+	if (g_InterfaceEvents.CheckButton(takegold_id))
 	{
 		take_gold(selected_girl);
 	}
@@ -857,13 +860,7 @@ void cScreenGirlDetails::RefreshJobList()
 	{
 		if (g_Brothels.m_JobManager.JobName[i] == "")
 			continue;
-		text = g_Brothels.m_JobManager.JobDescriptionCount(i, g_CurrBrothel, day,
-			selected_girl->m_InClinic,
-			selected_girl->m_InMovieStudio,
-			selected_girl->m_InArena,
-			selected_girl->m_InCentre,
-			selected_girl->m_InFarm,
-			selected_girl->m_InHouse);
+		text = g_Brothels.m_JobManager.JobDescriptionCount(i, g_CurrBrothel, DayNight, selected_girl->m_InClinic, selected_girl->m_InMovieStudio, selected_girl->m_InArena, selected_girl->m_InCentre, selected_girl->m_InHouse, selected_girl->m_InFarm);
 
 		AddToListBox(joblist_id, i, text);
 	}

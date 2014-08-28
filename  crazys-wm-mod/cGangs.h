@@ -112,7 +112,6 @@ public:
 
 	TiXmlElement* SaveGangsXML(TiXmlElement* pRoot);
 	bool LoadGangsXML(TiXmlHandle hGangManager);
-	void LoadGangsLegacy(ifstream& ifs);
 
 	int GetNumBusinessExtorted() {return m_BusinessesExtort;}
 

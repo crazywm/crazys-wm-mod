@@ -143,15 +143,7 @@ unsigned long
 */
 
 
-
-
-
-
-
-TiXmlElement* SaveStatsXML(TiXmlElement* pRoot,
-						   int stats[],
-						   int statMods[],
-						   int tempStats[])
+TiXmlElement* SaveStatsXML(TiXmlElement* pRoot, int stats[], int statMods[], int tempStats[])
 {
 	TiXmlElement* pStats = new TiXmlElement("Stats");
 	pRoot->LinkEndChild(pStats);
@@ -172,10 +164,7 @@ TiXmlElement* SaveStatsXML(TiXmlElement* pRoot,
 	return pStats;
 }
 
-bool LoadStatsXML(TiXmlHandle hStats,
-				  int stats[],
-				  int statMods[],
-				  int tempStats[])
+bool LoadStatsXML(TiXmlHandle hStats, int stats[], int statMods[], int tempStats[])
 {
 	TiXmlElement* pStats = hStats.ToElement();
 	if (pStats == 0)
@@ -202,14 +191,11 @@ bool LoadStatsXML(TiXmlHandle hStats,
 	return true;
 }
 
-TiXmlElement* SaveSkillsXML(TiXmlElement* pRoot,
-							int skills[],
-							int skillMods[],
-							int tempSkills[])
+TiXmlElement* SaveSkillsXML(TiXmlElement* pRoot, int skills[], int skillMods[], int tempSkills[])
 {
 	TiXmlElement* pSkills = new TiXmlElement("Skills");
 	pRoot->LinkEndChild(pSkills);
-	for(int i=0; i<NUM_SKILLS; i++)
+	for (int i = 0; i < NUM_SKILLS; i++)
 	{
 		TiXmlElement* pSkill = new TiXmlElement(XMLifyString(sGirl::skill_names[i]));
 		pSkills->LinkEndChild(pSkill);
@@ -226,10 +212,7 @@ TiXmlElement* SaveSkillsXML(TiXmlElement* pRoot,
 	return pSkills;
 }
 
-bool LoadSkillsXML(TiXmlHandle hSkills,
-				   int skills[],
-				   int skillMods[],
-				   int tempSkills[])
+bool LoadSkillsXML(TiXmlHandle hSkills, int skills[], int skillMods[], int tempSkills[])
 {
 	TiXmlElement* pSkills = hSkills.ToElement();
 	if (pSkills == 0)
@@ -256,8 +239,7 @@ bool LoadSkillsXML(TiXmlHandle hSkills,
 	return true;
 }
 
-TiXmlElement* SaveJobsXML(TiXmlElement* pRoot,
-						  int buildingQualities[])
+TiXmlElement* SaveJobsXML(TiXmlElement* pRoot, int buildingQualities[])
 {
 	TiXmlElement* pJobs = new TiXmlElement("Jobs");
 	pRoot->LinkEndChild(pJobs);
@@ -270,11 +252,7 @@ TiXmlElement* SaveJobsXML(TiXmlElement* pRoot,
 	return pJobs;
 }
 
-TiXmlElement* SaveTraitsXML(TiXmlElement* pRoot,
-							std::string TagName,
-							const int numTraits,
-							sTrait* traits[],
-							unsigned char tempTraits[])
+TiXmlElement* SaveTraitsXML(TiXmlElement* pRoot, std::string TagName, const int numTraits, sTrait* traits[], unsigned char tempTraits[])
 {
 	TiXmlElement* pTraits = new TiXmlElement(TagName);
 	pRoot->LinkEndChild(pTraits);
@@ -293,10 +271,7 @@ TiXmlElement* SaveTraitsXML(TiXmlElement* pRoot,
 	return pTraits;
 }
 
-bool LoadTraitsXML(TiXmlHandle hTraits,
-				   unsigned char& numTraits,
-				   sTrait* traits[],
-				   unsigned char tempTraits[])
+bool LoadTraitsXML(TiXmlHandle hTraits, unsigned char& numTraits, sTrait* traits[], unsigned char tempTraits[])
 {
 	numTraits = 0;
 	TiXmlElement* pTraits = hTraits.ToElement();
@@ -347,8 +322,7 @@ bool LoadTraitsXML(TiXmlHandle hTraits,
 	return true;
 }
 
-TiXmlElement* SaveActionsXML(TiXmlElement* pRoot,
-							 int enjoyments[])
+TiXmlElement* SaveActionsXML(TiXmlElement* pRoot, int enjoyments[])
 {
 	TiXmlElement* pActions = new TiXmlElement("Actions");
 	pRoot->LinkEndChild(pActions);
@@ -361,8 +335,7 @@ TiXmlElement* SaveActionsXML(TiXmlElement* pRoot,
 	return pActions;
 }
 
-bool LoadActionsXML(TiXmlHandle hActions,
-					int enjoyments[])
+bool LoadActionsXML(TiXmlHandle hActions, int enjoyments[])
 {
 	TiXmlElement* pActions = hActions.ToElement();
 	if (pActions == 0)
@@ -380,11 +353,7 @@ bool LoadActionsXML(TiXmlHandle hActions,
 	return true;
 }
 
-TiXmlElement* SaveInventoryXML(TiXmlElement* pRoot,
-							   sInventoryItem* items[],
-							   const int numItems,
-							   unsigned char isEquipped[],
-							   int quantities[])
+TiXmlElement* SaveInventoryXML(TiXmlElement* pRoot, sInventoryItem* items[], const int numItems, unsigned char isEquipped[], int quantities[])
 {
 	TiXmlElement* pItems = new TiXmlElement("Items");
 	pRoot->LinkEndChild(pItems);
@@ -408,11 +377,7 @@ TiXmlElement* SaveInventoryXML(TiXmlElement* pRoot,
 	return pItems;
 }
 
-bool LoadInventoryXML(TiXmlHandle hInventory,
-					  sInventoryItem* items[],
-					  int& numItems,
-					  unsigned char isEquipped[],
-					  int quantities[])
+bool LoadInventoryXML(TiXmlHandle hInventory, sInventoryItem* items[], int& numItems, unsigned char isEquipped[], int quantities[])
 {
 	numItems = 0;
 	TiXmlElement* pInventory = hInventory.ToElement();

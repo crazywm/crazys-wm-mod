@@ -66,7 +66,7 @@ public:
 	string JobFilterName[NUMJOBTYPES];  // short descriptive name of job filter
 	string JobFilterDesc[NUMJOBTYPES];  // longer description of job filter
 	unsigned int JobFilterIndex[NUMJOBTYPES+1];  // starting job index # for job filter
-	string JobDescriptionCount(int job_id, int brothel_id, bool day = true, bool isClinic = false, bool isStudio = false, bool isArena = false, bool isCentre = false, bool isHouse = false, bool isFarm = false);  // return a job description along with a count of how many girls are on it
+	string JobDescriptionCount(int job_id, int brothel_id, int day = SHIFT_DAY, bool isClinic = false, bool isStudio = false, bool isArena = false, bool isCentre = false, bool isHouse = false, bool isFarm = false);  // return a job description along with a count of how many girls are on it
 	bool HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, int OldJobID, bool DayOrNight);  // check for and handle special job assignments
 
 	void Setup();
@@ -96,6 +96,7 @@ public:
 	static bool WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
 	static bool WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
 	static bool WorkBarPiano(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
+	static bool WorkEscort(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
 
 	// - Sleazy Bar
 	static bool WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
@@ -116,7 +117,6 @@ public:
 	static bool WorkBrothelStripper(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
 	static bool WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
 	static bool WorkPeepShow(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
-	static bool WorkEscort(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
 
 	//- Stables
 	static bool WorkMilk(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);

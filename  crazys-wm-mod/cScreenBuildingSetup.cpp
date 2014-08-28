@@ -89,9 +89,47 @@ void cScreenBuildingSetup::init()
 	Focused();
 	g_InitWin = false;
 	
+	int rooms		= 20, 
+		maxrooms	= 200;
+	switch (g_Building)
+	{
+	case BUILDING_STUDIO:
+		rooms		=g_Studios.GetBrothel(0)->m_NumRooms;
+		maxrooms	=g_Studios.GetBrothel(0)->m_MaxNumRooms;
+		break;
+	case BUILDING_CLINIC:
+		rooms = g_Clinic.GetBrothel(0)->m_NumRooms;
+		maxrooms = g_Clinic.GetBrothel(0)->m_MaxNumRooms;
+		break;
+	case BUILDING_ARENA:
+		rooms = g_Arena.GetBrothel(0)->m_NumRooms;
+		maxrooms = g_Arena.GetBrothel(0)->m_MaxNumRooms;
+		break;
+	case BUILDING_CENTRE:
+		rooms = g_Centre.GetBrothel(0)->m_NumRooms;
+		maxrooms = g_Centre.GetBrothel(0)->m_MaxNumRooms;
+		break;
+	case BUILDING_HOUSE:
+		rooms = g_House.GetBrothel(0)->m_NumRooms;
+		maxrooms = g_House.GetBrothel(0)->m_MaxNumRooms;
+		break;
+	case BUILDING_FARM:
+		rooms = g_Farm.GetBrothel(0)->m_NumRooms;
+		maxrooms = g_Farm.GetBrothel(0)->m_MaxNumRooms;
+		break;
+	case BUILDING_BROTHEL:
+	default:
+		rooms = g_Brothels.GetBrothel(g_CurrBrothel)->m_NumRooms;
+		maxrooms = g_Brothels.GetBrothel(g_CurrBrothel)->m_MaxNumRooms;
+		break;
+	}
+
 	ss.str("");
-	ss << gettext("Add Rooms: ") << tariff.add_room_cost(5) << gettext(" gold");
+	ss << "Add Rooms: " << tariff.add_room_cost(5) << " gold\nCurrent: " << rooms << "\nMaximum: " << maxrooms << endl;
 	EditTextItem(ss.str(), roomcost_id);
+
+	DisableButton(buyrooms_id, rooms >= maxrooms);
+
 
 	ss.str("");
 	ss << gettext("Anti-Preg Potions: ") << tariff.anti_preg_price(1) << gettext(" gold each");
@@ -146,7 +184,7 @@ void cScreenBuildingSetup::init()
 			brothel = gettext("The Clinic");
 			EditTextItem(brothel, curbrothel_id);
 			number = g_Clinic.GetBrothel(0)->m_AntiPregPotions;
-	
+
 			_itoa(number,buffer,10);
 			message = gettext("You have: ");
 			message += buffer;
@@ -176,7 +214,7 @@ void cScreenBuildingSetup::init()
 			brothel = gettext("The Arena");
 			EditTextItem(brothel, curbrothel_id);
 			number = g_Arena.GetBrothel(0)->m_AntiPregPotions;
-	
+			
 			_itoa(number,buffer,10);
 			message = gettext("You have: ");
 			message += buffer;
@@ -206,7 +244,8 @@ void cScreenBuildingSetup::init()
 			brothel = gettext("The Community Centre");
 			EditTextItem(brothel, curbrothel_id);
 			number = g_Centre.GetBrothel(0)->m_AntiPregPotions;
-	
+
+			
 			_itoa(number,buffer,10);
 			message = gettext("You have: ");
 			message += buffer;
@@ -236,7 +275,8 @@ void cScreenBuildingSetup::init()
 			brothel = gettext("Your House");
 			EditTextItem(brothel, curbrothel_id);
 			number = g_House.GetBrothel(0)->m_AntiPregPotions;
-	
+
+			
 			_itoa(number,buffer,10);
 			message = gettext("You have: ");
 			message += buffer;
@@ -266,7 +306,8 @@ void cScreenBuildingSetup::init()
 			brothel = gettext("Your Farm");
 			EditTextItem(brothel, curbrothel_id);
 			number = g_Farm.GetBrothel(0)->m_AntiPregPotions;
-	
+
+			
 			_itoa(number,buffer,10);
 			message = gettext("You have: ");
 			message += buffer;
@@ -363,6 +404,20 @@ void cScreenBuildingSetup::check_events()
 	}
 	if(g_InterfaceEvents.CheckButton(buyrooms_id))
 	{
+		int rooms = 20,	maxrooms = 200;
+		switch (g_Building)
+		{
+		case BUILDING_STUDIO:	rooms = g_Studios.GetBrothel(0)->m_NumRooms;	maxrooms = g_Studios.GetBrothel(0)->m_MaxNumRooms;	break;
+		case BUILDING_CLINIC:	rooms = g_Clinic.GetBrothel(0)->m_NumRooms;		maxrooms = g_Clinic.GetBrothel(0)->m_MaxNumRooms;	break;
+		case BUILDING_ARENA:	rooms = g_Arena.GetBrothel(0)->m_NumRooms;		maxrooms = g_Arena.GetBrothel(0)->m_MaxNumRooms;	break;
+		case BUILDING_CENTRE:	rooms = g_Centre.GetBrothel(0)->m_NumRooms;		maxrooms = g_Centre.GetBrothel(0)->m_MaxNumRooms;	break;
+		case BUILDING_HOUSE:	rooms = g_House.GetBrothel(0)->m_NumRooms;		maxrooms = g_House.GetBrothel(0)->m_MaxNumRooms;	break;
+		case BUILDING_FARM:		rooms = g_Farm.GetBrothel(0)->m_NumRooms;		maxrooms = g_Farm.GetBrothel(0)->m_MaxNumRooms;		break;
+		case BUILDING_BROTHEL:
+		default:
+			rooms = g_Brothels.GetBrothel(g_CurrBrothel)->m_NumRooms;	maxrooms = g_Brothels.GetBrothel(g_CurrBrothel)->m_MaxNumRooms;
+		}
+
 		if(!g_Gold.brothel_cost(5000))
 			g_MessageQue.AddToQue(gettext("You need 5000 gold to add 5 rooms"), 1);
 		else
@@ -370,30 +425,34 @@ void cScreenBuildingSetup::check_events()
 			switch(g_Building)
 				{
 			case BUILDING_STUDIO:
-				g_Studios.GetBrothel(0)->m_NumRooms += 5;
+				g_Studios.GetBrothel(0)->m_NumRooms += 5; rooms += 5;
 				break;
 			case BUILDING_CLINIC:
-				g_Clinic.GetBrothel(0)->m_NumRooms += 5;
+				g_Clinic.GetBrothel(0)->m_NumRooms += 5; rooms += 5;
 				break;
 			case BUILDING_ARENA:
-				g_Arena.GetBrothel(0)->m_NumRooms += 5;
+				g_Arena.GetBrothel(0)->m_NumRooms += 5; rooms += 5;
 				break;
 			case BUILDING_CENTRE:
-				g_Centre.GetBrothel(0)->m_NumRooms += 5;
+				g_Centre.GetBrothel(0)->m_NumRooms += 5; rooms += 5;
 				break;
 			case BUILDING_HOUSE:
-				g_House.GetBrothel(0)->m_NumRooms += 5;
+				g_House.GetBrothel(0)->m_NumRooms += 5; rooms += 5;
 				break;
 			case BUILDING_FARM:
-				g_Farm.GetBrothel(0)->m_NumRooms += 5;
+				g_Farm.GetBrothel(0)->m_NumRooms += 5; rooms += 5;
 				break;
-
 			case BUILDING_BROTHEL:
 			default:
-				g_Brothels.GetBrothel(g_CurrBrothel)->m_NumRooms += 5;
+				g_Brothels.GetBrothel(g_CurrBrothel)->m_NumRooms += 5; rooms += 5;
 				break;
 			}
 		}
+		ss.str("");
+		ss << "Add Rooms: " << tariff.add_room_cost(5) << " gold\nCurrent: " << rooms << "\nMaximum: " << maxrooms << endl;
+		EditTextItem(ss.str(), roomcost_id);
+		DisableButton(buyrooms_id, rooms >= maxrooms);
+
 	}
 	if(g_InterfaceEvents.CheckButton(potions10_id))
 	{

@@ -3,13 +3,20 @@
 <Text     Name="GirlName"             Text=""                          XPos="8"   YPos="8"   Width="752" Height="32"  FontSize="16" />
 <Text     Name="GirlDescription"      Text=""                          XPos="8"   YPos="40"  Width="160" Height="420" FontSize="9" />
 <Image    Name="GirlImage"            File="blank.png"                 XPos="176" YPos="8"   Width="432" Height="472" />
-<Button   Name="MoreButton"           Image="ShowMore"    Disabled=""  XPos="28"  YPos="470" Width="120" Height="24"  Transparency="true" Scale="true" />
+<Button   Name="MoreButton"           Image="ShowMore"                 XPos="28"  YPos="470" Width="120" Height="24"  Transparency="true" Scale="true" Disabled=""   />
 <Button   Name="GalleryButton"        Image="Gallery"                  XPos="28"  YPos="500" Width="120" Height="24"  Transparency="true" Scale="true" />
+
 <Slider   Name="AccomSlider"                                           XPos="15"  YPos="540" Width="150"              MinValue="0"        MaxValue="5" Value="0" Increment="1" LiveUpdate="true" Hidden="false" Disabled="false" />
 <Text     Name="AccomValue"           Text="Accommodation: Very Poor"  XPos="15"  YPos="550" Width="150" Height="21"  FontSize="11" />
+<!-- Use either AccomSlider and AccomValue or  AccomUpButton and AccomDownButton    
+     or you can use all or some ove them but you will have to move them around 
+<Button   Name="AccomUpButton"        Image="AcomUp"                   XPos="8"   YPos="535" Width="72"  Height="32"  Transparency="true" Scale="true" />
+<Button   Name="AccomDownButton"      Image="AcomDown"                 XPos="96"  YPos="535" Width="72"  Height="32"  Transparency="true" Scale="true" />
+-->
+
 <Button   Name="InventoryButton"      Image="GiveGift"                 XPos="400" YPos="528" Width="160" Height="32"  Transparency="true" Scale="true" />
-<Button   Name="SendDungeonButton"    Image="SendDungeon" Disabled=""  XPos="208" YPos="528" Width="120" Height="24"  Transparency="true" Scale="true" />
-<Button   Name="ReleaseDungeonButton" Image="Release"     Disabled=""  XPos="208" YPos="528" Width="160" Height="32"  Transparency="true" Scale="true" />
+<Button   Name="SendDungeonButton"    Image="SendDungeon"              XPos="208" YPos="528" Width="120" Height="24"  Transparency="true" Scale="true" Disabled="" />
+<Button   Name="ReleaseDungeonButton" Image="Release"                  XPos="208" YPos="528" Width="160" Height="32"  Transparency="true" Scale="true" Disabled="" />
 <Button   Name="InteractButton"       Image="Talk"                     XPos="400" YPos="488" Width="160" Height="32"  Transparency="true" Scale="true" />
 <Button   Name="TakeGoldButton"       Image="TakeGold"                 XPos="208" YPos="488" Width="120" Height="24"  Transparency="true" Scale="true" />
 <Slider   Name="HousePercSlider"                                       XPos="616" YPos="451" Width="144"              MinValue="0"        MaxValue="100" Value="0" Increment="10" LiveUpdate="true" Hidden="false" Disabled="false" />

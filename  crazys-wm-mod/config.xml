@@ -4,12 +4,19 @@
 	Resolution     = the name of your interface folder
 	Width          = screen width
 	Height         = screen height
+	ScaleWidth     = screen scale width
+	ScaleHeight    = screen scale height
+			The old code of the game scaled all windows down to 800x600
+			This has been fixed but any old interfaces will not display correctly
+				if the scale width and height are not set to 800x600.
 	FullScreen     = 'true' or 'false'
 	-->
 	<Resolution
 		Resolution="J_1024x768"
 		Width="1024"
 		Height="768"
+		ScaleWidth="800"
+		ScaleHeight="600"
 		FullScreen="false" />
 	<!--
 	Gold is how much gold you start the game with.
@@ -214,6 +221,8 @@
 	Fonts:
 	Normal is the font that the game uses for text.
 	Fixed is for a monospaced font for tabular info but nothing currently uses that.
+	ShowPercent determines whether or not % is placed
+		after the number for stats and skills on the girl details list.
 	Antialias determines whether font antialiasing (smoothing) is used.
 
 	It's worth leaving these in, since once the XML screen format is stable,
@@ -225,7 +234,8 @@
 	<Fonts
 		Normal="segoeui.ttf"
 		Fixed="segoeui.ttf"
-		Antialias="true" />
+		Antialias="true"
+		ShowPercent="false" />
 	<!--
 	How much logging is needed?
 	* They currently don't really work all that much but they will be improved.

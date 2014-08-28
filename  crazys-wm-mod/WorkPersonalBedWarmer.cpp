@@ -1,21 +1,21 @@
 /*
- * Copyright 2009, 2010, The Pink Petal Development Team.
- * The Pink Petal Devloment Team are defined as the game's coders 
- * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright 2009, 2010, The Pink Petal Development Team.
+* The Pink Petal Devloment Team are defined as the game's coders
+* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 #include "cJobManager.h"
 #include "cBrothel.h"
 #include "cClinic.h"
@@ -235,7 +235,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, int DayN
 	{
 		g_Girls.UpdateSkill(girl, SKILL_HANDJOB, 2);
 		ss << gettext("gives you a hand job.\n\n");
-		girl->m_Events.AddMessage(ss.str(), SKILL_HANDJOB, DayNight);
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_HAND, DayNight);
 	}
 	else if (roll_d <= 44 && is_sex_type_allowed(SKILL_ORALSEX, brothel))
 	{
@@ -261,7 +261,9 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, int DayN
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_BDSM, DayNight);
 		if (!girl->calc_pregnancy(g_Brothels.GetPlayer(), false, 1.0))
 		{
-			g_MessageQue.AddToQue("She has gotten pregnant", 0);
+			message = girl->m_Realname;
+			message += " has gotten pregnant";
+			g_MessageQue.AddToQue(message, 0);
 		}
 	}
 	else if (roll_d <= 77 && is_sex_type_allowed(SKILL_NORMALSEX, brothel))
@@ -276,7 +278,9 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, int DayN
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_SEX, DayNight);
 		if (!girl->calc_pregnancy(g_Brothels.GetPlayer(), false, 1.0))
 		{
-			g_MessageQue.AddToQue("She has gotten pregnant", 0);
+			message = girl->m_Realname;
+			message += " has gotten pregnant";
+			g_MessageQue.AddToQue(message, 0);
 		}
 	}
 	else if (roll_d <= 88)

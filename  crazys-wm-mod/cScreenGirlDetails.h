@@ -48,19 +48,13 @@ private:
 	int reldungeon_id;	// Release From Dungeon button
 	int interact_id;	// Interact button
 	int takegold_id;	// Take Gold button
-
-// `J` Replacing accom buttons with slider
-//	int accomup_id;		// Accom Up button
-//	int accomdown_id;	// Accom Down button
+	int accomup_id;		// Accom Up button
+	int accomdown_id;	// Accom Down button
 	int accom_id;		// Accom slider
 	int accomval_id;	// Accom value text
-
 	int houseperc_id;	// House Percentage slider
 	int housepercval_id;// House Percentage value text
-
-
 	int gallery_id;		// Gallery button
-
 	int jobtypehead_id;	// Job Types header text
 	int jobtypelist_id;	// Job Types listbox
 	int jobhead_id;		// Job header text

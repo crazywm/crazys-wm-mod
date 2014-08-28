@@ -26,6 +26,9 @@
 #include "cJobManager.h"
 #include "InterfaceProcesses.h"
 #include "libintl.h"
+#include "cScreenGirlDetails.h"
+
+extern cScreenGirlDetails g_GirlDetails;
 
 extern bool g_InitWin;
 extern int g_CurrFarm;
@@ -243,6 +246,14 @@ bool cScreenFarmManagement::check_keys()
 			return true;
 		}
 	}
+	// Show Girl Details
+	if (g_SpaceKey)
+	{
+		g_SpaceKey = false;
+		g_GirlDetails.lastsexact = -1;
+		ViewSelectedGirl();
+		return true;
+	}
 	return false;
 }
 
@@ -362,14 +373,14 @@ void cScreenFarmManagement::check_events()
 						// update the girl's listing to reflect the job change
 						ss.str("");
 						ss << g_Farm.m_JobManager.JobName[selected_girl->m_DayJob];
-						SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), 5);
+						SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->DayJobColumn());
 						ss.str("");
 						ss << g_Farm.m_JobManager.JobName[selected_girl->m_NightJob];
-						SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), 6);
+						SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->NightJobColumn());
 
 						// refresh job worker counts for former job and current job
-						SetSelectedItemText(joblist_id, old_job, g_Farm.m_JobManager.JobDescriptionCount(old_job, 0, day, false, false, false, false, false, true));
-						SetSelectedItemText(joblist_id, selection, g_Farm.m_JobManager.JobDescriptionCount(selection, 0, day, false, false, false, false, false, true));
+						SetSelectedItemText(joblist_id, old_job, g_Farm.m_JobManager.JobDescriptionCount(old_job, 0, DayNight, false, false, false, false, false, true));
+						SetSelectedItemText(joblist_id, selection, g_Farm.m_JobManager.JobDescriptionCount(selection, 0, DayNight, false, false, false, false, false, true));
 					}
 				}
 				GSelection = GetNextSelectedItemFromList(girllist_id, pos+1, pos);
@@ -461,19 +472,14 @@ void cScreenFarmManagement::RefreshSelectedJobType()
 {
 	selection = GetSelectedItemFromList(girllist_id);
 	if (selection < 0) return;
-
 	selected_girl = g_Farm.GetGirl(g_CurrFarm, selection);
-
 	u_int job = (DayNight == 0) ? selected_girl->m_DayJob : selected_girl->m_NightJob;
-
 	// set the job filter
-	int jobtype = 0;
-	for (unsigned int i = 0; i < NUMJOBTYPES; i++)
-	{
-		if (job >= g_Farm.m_JobManager.JobFilterIndex[i] && job < g_Farm.m_JobManager.JobFilterIndex[i + 1])
-			jobtype = i;
-	}
-	SetSelectedItemInList(jobtypelist_id, jobtype);
+	if (job >= g_Farm.m_JobManager.JobFilterIndex[JOBFILTER_LABORERS] && job < g_Farm.m_JobManager.JobFilterIndex[JOBFILTER_LABORERS + 1])
+		SetSelectedItemInList(jobtypelist_id, JOBFILTER_LABORERS);
+	else if (job >= g_Farm.m_JobManager.JobFilterIndex[JOBFILTER_PRODUCERS] && job < g_Farm.m_JobManager.JobFilterIndex[JOBFILTER_PRODUCERS + 1])
+		SetSelectedItemInList(jobtypelist_id, JOBFILTER_PRODUCERS);
+	else SetSelectedItemInList(jobtypelist_id, JOBFILTER_FARMSTAFF);
 	SetJob = true;
 }
 
@@ -493,7 +499,7 @@ void cScreenFarmManagement::RefreshJobList()
 	{
 		if (g_Farm.m_JobManager.JobName[i] == "")
 			continue;
-		text = g_Farm.m_JobManager.JobDescriptionCount(i, g_CurrFarm, day, false, false, true);
+		text = g_Farm.m_JobManager.JobDescriptionCount(i, g_CurrFarm, DayNight, false, false, false, false, false, true);
 		AddToListBox(joblist_id, i, text);
 	}
 

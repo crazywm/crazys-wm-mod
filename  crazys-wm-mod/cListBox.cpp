@@ -1267,3 +1267,32 @@ void cListBox::GetColumnNames(vector<string>& columnNames)
 		columnNames.push_back(m_ColumnName[x]);
 	}
 }
+
+int cListBox::DayJobColumn()
+{
+	for (int i = 0; i < m_ColumnCount; i++)
+	{
+		if (m_ColumnName[i] == "DayJob") return i;
+	}
+	return -1;
+}
+
+int cListBox::NightJobColumn()
+{
+	for (int i = 0; i < m_ColumnCount; i++)
+	{
+		if (m_ColumnName[i] == "NightJob") return i;
+	}
+	return -1;
+}
+
+int cListBox::JobColumn(bool daynight)
+{
+
+	for (int i = 0; i < m_ColumnCount; i++)
+	{
+		if (m_ColumnName[i] == "DayJob" && daynight == 0) return i;
+		if (m_ColumnName[i] == "NightJob" && daynight == 1) return i;
+	}
+	return -1;
+}

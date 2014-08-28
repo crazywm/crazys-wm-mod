@@ -32,7 +32,7 @@
 #ifndef LINUX
 #ifdef _DEBUG
 // to enable leak detection uncomment the below and the first comment in main()
-/*		#ifndef _CRTDBG_MAP_ALLOC
+/* #ifndef _CRTDBG_MAP_ALLOC
 #define _CRTDBG_MAP_ALLOC
 #endif
 #include <stdlib.h>
@@ -68,7 +68,7 @@ int g_CurrArena = 0;
 int g_CurrCentre = 0;
 int g_CurrHouse = 0;
 int g_CurrFarm = 0;
-unsigned int g_LastSeed = 0;		// for seeding the random number generater every 3 seconds (3000 ticks)
+unsigned int g_LastSeed = 0;            // for seeding the random number generater every 3 seconds (3000 ticks)
 
 bool eventrunning = false;
 bool newWeek = false;
@@ -104,34 +104,34 @@ bool g_J_Key = false;
 bool g_I_Key = false;
 bool g_K_Key = false;
 
-/*			// Alternate hotkeys (g is global keys, L is function defined locally) Ironically local keys must have global scope. --PP
-g		Tab 	cycle brothels
-L		space	next in list.
-g		0		Display hotkeys
-g		Esc		Back
-g		Home	AltKeys
-g		End		NormalKeys
+/*                      // Alternate hotkeys (g is global keys, L is function defined locally) Ironically local keys must have global scope. --PP
+g               Tab     cycle brothels
+L               space   next in list.
+g               0               Display hotkeys
+g               Esc             Back
+g               Home    AltKeys
+g               End             NormalKeys
 
-L		qwe
-L		asd		Navigation
-L		zxc
-g		1-6 Brothels
-g		F1	Girl Management
-g		F2	Gang Management
-g		F3	Brothel Management
-g		F4	Dungeon
+L               qwe
+L               asd             Navigation
+L               zxc
+g               1-6 Brothels
+g               F1      Girl Management
+g               F2      Gang Management
+g               F3      Brothel Management
+g               F4      Dungeon
 
-g		F5	Slave market
-g		F6	Town
-g		F7	Bank
-g		F8	Mayors Office
+g               F5      Slave market
+g               F6      Town
+g               F7      Bank
+g               F8      Mayors Office
 
-g		F9	Turn Summary
-g		F10	Shop screen
-g		F11	Clinic
-g		F12	Arena
+g               F9      Turn Summary
+g               F10     Shop screen
+g               F11     Clinic
+g               F12     Arena
 */
-bool g_AltKeys = true;		// Toggles the alternate hotkeys --PP
+bool g_AltKeys = true;          // Toggles the alternate hotkeys --PP
 
 cScrollBar* g_DragScrollBar = 0;  // if a scrollbar is being dragged, this points to it
 cSlider* g_DragSlider = 0;  // if a slider is being dragged, this points to it
@@ -219,43 +219,43 @@ cRng g_Dice;
 void handle_hotkeys()
 {
 
-	if (vent.key.keysym.sym == SDLK_RSHIFT || vent.key.keysym.sym == SDLK_LSHIFT)	// enable multi select
+	if (vent.key.keysym.sym == SDLK_RSHIFT || vent.key.keysym.sym == SDLK_LSHIFT)   // enable multi select
 		g_ShiftDown = true;
-	else if (vent.key.keysym.sym == SDLK_RCTRL || vent.key.keysym.sym == SDLK_LCTRL)	// enable multi select
+	else if (vent.key.keysym.sym == SDLK_RCTRL || vent.key.keysym.sym == SDLK_LCTRL)        // enable multi select
 		g_CTRLDown = true;
 
-	     if (vent.key.keysym.sym == SDLK_UP)		g_UpArrow = true;
-	else if (vent.key.keysym.sym == SDLK_DOWN)		g_DownArrow = true;
-	else if (vent.key.keysym.sym == SDLK_LEFT)		g_LeftArrow = true;
-	else if (vent.key.keysym.sym == SDLK_RIGHT)		g_RightArrow = true;
-	else if (vent.key.keysym.sym == SDLK_SPACE)		g_SpaceKey = true;
-	else if (vent.key.keysym.sym == SDLK_q)			g_Q_Key = true;
-	else if (vent.key.keysym.sym == SDLK_w)			g_W_Key = true;
-	else if (vent.key.keysym.sym == SDLK_e)			g_E_Key = true;
-	else if (vent.key.keysym.sym == SDLK_a)			g_A_Key = true;
-	else if (vent.key.keysym.sym == SDLK_s)			g_S_Key = true;
-	else if (vent.key.keysym.sym == SDLK_d)			g_D_Key = true;
-	else if (vent.key.keysym.sym == SDLK_z)			g_Z_Key = true;
-	else if (vent.key.keysym.sym == SDLK_x)			g_X_Key = true;
-	else if (vent.key.keysym.sym == SDLK_c)			g_C_Key = true;
+	if (vent.key.keysym.sym == SDLK_UP)			g_UpArrow = true;
+	else if (vent.key.keysym.sym == SDLK_DOWN)  g_DownArrow = true;
+	else if (vent.key.keysym.sym == SDLK_LEFT)  g_LeftArrow = true;
+	else if (vent.key.keysym.sym == SDLK_RIGHT) g_RightArrow = true;
+	else if (vent.key.keysym.sym == SDLK_SPACE) g_SpaceKey = true;
+	else if (vent.key.keysym.sym == SDLK_q)     g_Q_Key = true;
+	else if (vent.key.keysym.sym == SDLK_w)     g_W_Key = true;
+	else if (vent.key.keysym.sym == SDLK_e)     g_E_Key = true;
+	else if (vent.key.keysym.sym == SDLK_a)     g_A_Key = true;
+	else if (vent.key.keysym.sym == SDLK_s)     g_S_Key = true;
+	else if (vent.key.keysym.sym == SDLK_d)     g_D_Key = true;
+	else if (vent.key.keysym.sym == SDLK_z)     g_Z_Key = true;
+	else if (vent.key.keysym.sym == SDLK_x)     g_X_Key = true;
+	else if (vent.key.keysym.sym == SDLK_c)     g_C_Key = true;
 
-	else if (vent.key.keysym.sym == SDLK_r)			g_R_Key = true;
-	else if (vent.key.keysym.sym == SDLK_f)			g_F_Key = true;
-	else if (vent.key.keysym.sym == SDLK_t)			g_T_Key = true;
-	else if (vent.key.keysym.sym == SDLK_g)			g_G_Key = true;
-	else if (vent.key.keysym.sym == SDLK_y)			g_Y_Key = true;
-	else if (vent.key.keysym.sym == SDLK_h)			g_H_Key = true;
-	else if (vent.key.keysym.sym == SDLK_u)			g_U_Key = true;
-	else if (vent.key.keysym.sym == SDLK_j)			g_J_Key = true;
-	else if (vent.key.keysym.sym == SDLK_i)			g_I_Key = true;
-	else if (vent.key.keysym.sym == SDLK_k)			g_K_Key = true;
+	else if (vent.key.keysym.sym == SDLK_r)     g_R_Key = true;
+	else if (vent.key.keysym.sym == SDLK_f)     g_F_Key = true;
+	else if (vent.key.keysym.sym == SDLK_t)     g_T_Key = true;
+	else if (vent.key.keysym.sym == SDLK_g)     g_G_Key = true;
+	else if (vent.key.keysym.sym == SDLK_y)     g_Y_Key = true;
+	else if (vent.key.keysym.sym == SDLK_h)     g_H_Key = true;
+	else if (vent.key.keysym.sym == SDLK_u)     g_U_Key = true;
+	else if (vent.key.keysym.sym == SDLK_j)     g_J_Key = true;
+	else if (vent.key.keysym.sym == SDLK_i)     g_I_Key = true;
+	else if (vent.key.keysym.sym == SDLK_k)     g_K_Key = true;
 
 	if (g_WinManager.GetWindow() != &g_MainMenu && g_WinManager.GetWindow() != &g_LoadGame)
 	{
 		int br_no = 0;
 		string msg = "";
 
-		switch (vent.key.keysym.sym) {			// Select Brothel
+		switch (vent.key.keysym.sym) {                  // Select Brothel
 		case SDLK_1: case SDLK_2: case SDLK_3:
 		case SDLK_4: case SDLK_5: case SDLK_6:
 		case SDLK_7:
@@ -266,7 +266,7 @@ void handle_hotkeys()
 			}
 			break;
 
-		case SDLK_TAB:	//cycle through brothles
+		case SDLK_TAB:  //cycle through brothles
 			if (g_ShiftDown)
 			{
 				g_CurrBrothel--;
@@ -282,7 +282,7 @@ void handle_hotkeys()
 			g_InitWin = true;
 			break;
 
-		case SDLK_ESCAPE:	// Go back to previous screen
+		case SDLK_ESCAPE:       // Go back to previous screen
 			if (g_CurrentScreen == SCREEN_BROTHEL)
 				break;
 			g_Building = BUILDING_BROTHEL;
@@ -291,7 +291,7 @@ void handle_hotkeys()
 			break;
 
 			// girl management screen
-		case SDLK_g:	if (g_AltKeys)	break;
+		case SDLK_g:    if (g_AltKeys)  break;
 		case SDLK_F1:
 			g_Building = BUILDING_BROTHEL;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
@@ -301,7 +301,7 @@ void handle_hotkeys()
 			break;
 
 			// staff management screen (gang management)
-		case SDLK_t:	if (g_AltKeys)	break;
+		case SDLK_t:    if (g_AltKeys)  break;
 		case SDLK_F2:
 			g_Building = BUILDING_BROTHEL;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
@@ -311,7 +311,7 @@ void handle_hotkeys()
 			break;
 
 			// Dungeon
-		case SDLK_d:	if (g_AltKeys)	break;
+		case SDLK_d:    if (g_AltKeys)  break;
 		case SDLK_F3:
 			g_Building = BUILDING_BROTHEL;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
@@ -321,7 +321,7 @@ void handle_hotkeys()
 			break;
 
 			// Slave market screen
-		case SDLK_s:	if (g_AltKeys)	break;
+		case SDLK_s:    if (g_AltKeys)  break;
 		case SDLK_F4:
 			g_Building = BUILDING_BROTHEL;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
@@ -331,8 +331,8 @@ void handle_hotkeys()
 			g_WinManager.push("Slave Market");
 			break;
 
-		case SDLK_F5:	// Studio
-			if (g_Studios.GetNumBrothels() == 0)	// Does player own the Studio yet?
+		case SDLK_F5:   // Studio
+			if (g_Studios.GetNumBrothels() == 0)    // Does player own the Studio yet?
 			{
 				msg = "You do not own a Studio";
 				g_MessageQue.AddToQue(msg, 0);
@@ -349,9 +349,9 @@ void handle_hotkeys()
 			break;
 
 			// Arena
-		case SDLK_e:	if (g_AltKeys)	break;
+		case SDLK_e:    if (g_AltKeys)  break;
 		case SDLK_F6:
-			if (g_Arena.GetNumBrothels() == 0)	// Does player own the Arena yet?
+			if (g_Arena.GetNumBrothels() == 0)      // Does player own the Arena yet?
 			{
 				msg = "You do not own a Arena";
 				g_MessageQue.AddToQue(msg, 0);
@@ -367,8 +367,8 @@ void handle_hotkeys()
 			g_WinManager.push("Arena");
 			break;
 
-		case SDLK_F7:	// Centre
-			if (g_Centre.GetNumBrothels() == 0)	// Does player own the Centre yet?
+		case SDLK_F7:   // Centre
+			if (g_Centre.GetNumBrothels() == 0)     // Does player own the Centre yet?
 			{
 				msg = "You do not own a Centre";
 				g_MessageQue.AddToQue(msg, 0);
@@ -385,9 +385,9 @@ void handle_hotkeys()
 			break;
 
 			// clinic
-		case SDLK_c:	if (g_AltKeys)	break;
+		case SDLK_c:    if (g_AltKeys)  break;
 		case SDLK_F8:
-			if (g_Clinic.GetNumBrothels() == 0)	// Does player own the clinic yet?
+			if (g_Clinic.GetNumBrothels() == 0)     // Does player own the clinic yet?
 			{
 				msg = "You do not own a Clinic";
 				g_MessageQue.AddToQue(msg, 0);
@@ -405,7 +405,7 @@ void handle_hotkeys()
 
 			// farm
 		case SDLK_F9:
-			if (g_Farm.GetNumBrothels() == 0)	// Does player own the farm yet?
+			if (g_Farm.GetNumBrothels() == 0)       // Does player own the farm yet?
 			{
 				msg = "You do not own a Farm";
 				g_MessageQue.AddToQue(msg, 0);
@@ -420,9 +420,8 @@ void handle_hotkeys()
 			g_WinManager.push("Farm Screen");
 			g_WinManager.push("Farm");
 			break;
-
 			// shop screen
-		case SDLK_p:	if (g_AltKeys)	break;
+		case SDLK_p:    if (vent.key.keysym.sym == SDLK_p && g_AltKeys)  break;
 		case SDLK_i:
 			if (vent.key.keysym.sym == SDLK_i && g_CurrentScreen == SCREEN_INVENTORY) break;
 			g_Building = BUILDING_BROTHEL;
@@ -434,7 +433,7 @@ void handle_hotkeys()
 			break;
 
 			// town screen
-		case SDLK_o:	if (g_AltKeys)	break;
+		case SDLK_o:    if (g_AltKeys)  break;
 		case SDLK_F10:
 			g_Building = BUILDING_BROTHEL;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
@@ -444,7 +443,20 @@ void handle_hotkeys()
 			break;
 
 			// turn summary screen
-		case SDLK_a:	if (g_AltKeys)	break;
+		case SDLK_END:
+			if (g_CTRLDown)
+			{
+				g_CTRLDown = false;
+				g_AltKeys = true;
+				msg = "Alternate HotKeys Active\n";
+				g_MessageQue.AddToQue(msg, 0);
+				g_ChoiceManager.CreateChoiceBox(224, 825, 352, 600, 0, 1, 32, strlen(gettext("Close")));
+				g_ChoiceManager.AddChoice(0, gettext("Close"), 0);
+				g_ChoiceManager.SetActive(0);
+				g_ChoiceManager.Free();
+				break;
+			}
+		case SDLK_a:    if (g_AltKeys && vent.key.keysym.sym == SDLK_a)  break;
 		case SDLK_F11:
 			g_Building = BUILDING_BROTHEL;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
@@ -453,7 +465,20 @@ void handle_hotkeys()
 			g_WinManager.Push(Turnsummary, &g_Turnsummary);
 			break;
 
-		case SDLK_F12:	// House
+		case SDLK_HOME:
+			if (g_CTRLDown)
+			{
+				g_CTRLDown = false;
+				g_AltKeys = false;
+				msg = "Default HotKeys Active\n";
+				g_MessageQue.AddToQue(msg, 0);
+				g_ChoiceManager.CreateChoiceBox(224, 825, 352, 600, 0, 1, 32, strlen(gettext("Close")));
+				g_ChoiceManager.AddChoice(0, gettext("Close"), 0);
+				g_ChoiceManager.SetActive(0);
+				g_ChoiceManager.Free();
+				break;
+			}
+		case SDLK_F12:  // House
 			g_Building = BUILDING_HOUSE;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
 			g_CurrentScreen = SCREEN_HOUSE;
@@ -465,19 +490,19 @@ void handle_hotkeys()
 
 			// Non F-Key hotkeys (disabled by alt)
 			// mayors office screen
-		case SDLK_m:	if (g_AltKeys)	break;
+		case SDLK_m:    if (g_AltKeys)  break;
 			g_Building = BUILDING_BROTHEL;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
 			g_CurrentScreen = SCREEN_BROTHEL;
 			g_InitWin = true;
 			/*
-			*			this will make "m" go to brothel management
-			*			you need "M" to go to the mayor screen now
-			*			which is far less used, I think, and easy to get
-			*			to from the town screen
+			*                       this will make "m" go to brothel management
+			*                       you need "M" to go to the mayor screen now
+			*                       which is far less used, I think, and easy to get
+			*                       to from the town screen
 			*
-			*			we should consider some customisable keyboard mapping
-			*			mechanism at some point
+			*                       we should consider some customisable keyboard mapping
+			*                       mechanism at some point
 			*/
 			if (g_ShiftDown) {
 				g_CurrentScreen = SCREEN_MAYOR;
@@ -487,7 +512,7 @@ void handle_hotkeys()
 			break;
 
 			// bank screen
-		case SDLK_b:	if (g_AltKeys)	break;
+		case SDLK_b:    if (g_AltKeys)  break;
 			g_Building = BUILDING_BROTHEL;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
 			g_CurrentScreen = SCREEN_BANK;
@@ -497,17 +522,13 @@ void handle_hotkeys()
 			break;
 
 			// upgrades management screen
-		case SDLK_u:	if (g_AltKeys)	break;
+		case SDLK_u:    if (g_AltKeys)  break;
 			g_Building = BUILDING_BROTHEL;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
 			g_CurrentScreen = SCREEN_BUILDINGMANAGEMENT;
 			g_InitWin = true;
-			if (g_ShiftDown) {
-				g_WinManager.push("Building Management");
-			}
-			else {
-				g_WinManager.push("Building Setup");
-			}
+			if (g_ShiftDown)	g_WinManager.push("Building Management");
+			else				g_WinManager.push("Building Setup");
 			break;
 
 		case SDLK_9:
@@ -643,8 +664,7 @@ void handle_hotkeys()
 					break;
 				case SCREEN_HOUSE:
 					msg += "House:\n";
-					msg += "No special hotkeys\n";
-					msg += "Yet...\n\n";
+					msg += "Space   Goto Girl Details\n\n";
 					break;
 				case SCREEN_CLINIC:
 					msg += "Clinic:\n";
@@ -653,6 +673,7 @@ void handle_hotkeys()
 					msg += "For left handed control:\n";
 					msg += "A     Previous Girl\n";
 					msg += "D     Next Girl\n\n";
+					msg += "Space   Goto Girl Details\n\n";
 					break;
 				case SCREEN_ARENA:
 					msg += "Arena:\n";
@@ -661,6 +682,7 @@ void handle_hotkeys()
 					msg += "For left handed control:\n";
 					msg += "A     Previous Girl\n";
 					msg += "D     Next Girl\n\n";
+					msg += "Space   Goto Girl Details\n\n";
 					break;
 				case SCREEN_TRYOUTS:
 					msg += "Try Outs:\n";
@@ -674,6 +696,7 @@ void handle_hotkeys()
 					msg += "For left handed control:\n";
 					msg += "A     Previous Girl\n";
 					msg += "D     Next Girl\n\n";
+					msg += "Space   Goto Girl Details\n\n";
 					break;
 				case SCREEN_STUDIO:
 					msg += "Studio:\n";
@@ -682,6 +705,7 @@ void handle_hotkeys()
 					msg += "For left handed control:\n";
 					msg += "A     Previous Girl\n";
 					msg += "D     Next Girl\n\n";
+					msg += "Space   Goto Girl Details\n\n";
 					break;
 				case SCREEN_CREATEMOVIE:
 					msg += "Create Movie:\n";
@@ -839,14 +863,11 @@ void handle_hotkeys()
 				}
 			}
 			g_MessageQue.AddToQue(msg, 0);
-			/*	g_ChoiceManager.CreateChoiceBox(224, 825, 352, 600, 0, 1, 32, strlen(gettext("Close")));
-			g_ChoiceManager.AddChoice(0, gettext("Close"), 0);
-			g_ChoiceManager.SetActive(0);
-			g_ChoiceManager.Free();	*/
-			//	g_InitWin = true;
 			break;
 
 		case SDLK_0:
+		{
+			cConfig cfg;
 			msg = "Global Hotkeys:\n";
 			msg += "1-7         Brothels\n";
 			msg += "Tab         Cycle Brothels\n";
@@ -867,37 +888,13 @@ void handle_hotkeys()
 			msg += "9           List Hotkeys for this screen.\n";
 			msg += "0           List Global Hotkeys.\n";
 			msg += "I           Shop Screen (Inventory)\n";
+			msg += "\n\n";
 			msg += "Space Key   Clears message boxes.\n";
-			msg += "Home        Default HotKeys\n";
-			msg += "End         Alternate HotKeys\n";
+			msg += "Ctrl + Home Default HotKeys\n";
+			msg += "Ctrl + End  Alternate HotKeys\n";
 			g_MessageQue.AddToQue(msg, 0);
-			/*			g_ChoiceManager.CreateChoiceBox(224, 825, 352, 600, 0, 1, 32, strlen(gettext("Close")));
-			g_ChoiceManager.AddChoice(0, gettext("Close"), 0);
-			g_ChoiceManager.SetActive(0);
-			g_ChoiceManager.Free(); */
-			//	g_InitWin = true;
 			break;
-
-
-		case SDLK_HOME:
-			g_AltKeys = false;
-			msg = "Default HotKeys Active\n";
-			g_MessageQue.AddToQue(msg, 0);
-			g_ChoiceManager.CreateChoiceBox(224, 825, 352, 600, 0, 1, 32, strlen(gettext("Close")));
-			g_ChoiceManager.AddChoice(0, gettext("Close"), 0);
-			g_ChoiceManager.SetActive(0);
-			g_ChoiceManager.Free();
-			break;
-
-		case SDLK_END:
-			g_AltKeys = true;
-			msg = "Alternate HotKeys Active\n";
-			g_MessageQue.AddToQue(msg, 0);
-			g_ChoiceManager.CreateChoiceBox(224, 825, 352, 600, 0, 1, 32, strlen(gettext("Close")));
-			g_ChoiceManager.AddChoice(0, gettext("Close"), 0);
-			g_ChoiceManager.SetActive(0);
-			g_ChoiceManager.Free();
-			break;
+		}
 
 		case SDLK_SPACE:
 			g_SpaceKey = true;
@@ -911,26 +908,26 @@ void handle_hotkeys()
 		{
 			switch (vent.key.keysym.sym)
 			{
-			case SDLK_q:	g_Q_Key = true;		break;
-			case SDLK_w:	g_W_Key = true;		break;
-			case SDLK_e:	g_E_Key = true;		break;
-			case SDLK_a:	g_A_Key = true;		break;
-			case SDLK_s:	g_S_Key = true;		break;
-			case SDLK_d:	g_D_Key = true;		break;
-			case SDLK_z:	g_Z_Key = true;		break;
-			case SDLK_x:	g_X_Key = true;		break;
-			case SDLK_c:	g_C_Key = true;		break;
+			case SDLK_q:    g_Q_Key = true;         break;
+			case SDLK_w:    g_W_Key = true;         break;
+			case SDLK_e:    g_E_Key = true;         break;
+			case SDLK_a:    g_A_Key = true;         break;
+			case SDLK_s:    g_S_Key = true;         break;
+			case SDLK_d:    g_D_Key = true;         break;
+			case SDLK_z:    g_Z_Key = true;         break;
+			case SDLK_x:    g_X_Key = true;         break;
+			case SDLK_c:    g_C_Key = true;         break;
 
-			case SDLK_r:	g_R_Key = true;		break;
-			case SDLK_f:	g_F_Key = true;		break;
-			case SDLK_t:	g_T_Key = true;		break;
-			case SDLK_g:	g_G_Key = true;		break;
-			case SDLK_y:	g_Y_Key = true;		break;
-			case SDLK_h:	g_H_Key = true;		break;
-			case SDLK_u:	g_U_Key = true;		break;
-			case SDLK_j:	g_J_Key = true;		break;
-			case SDLK_i:	g_I_Key = true;		break;
-			case SDLK_k:	g_K_Key = true;		break;
+			case SDLK_r:    g_R_Key = true;         break;
+			case SDLK_f:    g_F_Key = true;         break;
+			case SDLK_t:    g_T_Key = true;         break;
+			case SDLK_g:    g_G_Key = true;         break;
+			case SDLK_y:    g_Y_Key = true;         break;
+			case SDLK_h:    g_H_Key = true;         break;
+			case SDLK_u:    g_U_Key = true;         break;
+			case SDLK_j:    g_J_Key = true;         break;
+			case SDLK_i:    g_I_Key = true;         break;
+			case SDLK_k:    g_K_Key = true;         break;
 			default:
 				break;
 			}
@@ -961,7 +958,7 @@ int main(int ac, char* av[])
 	g_LogFile.ss()
 		<< "Startup: checking for variant config: argc = " << ac << ".\n";
 	if (ac > 1) {
-		g_LogFile.ss() << "	attempting to load '" << av[1] << "'\n";
+		g_LogFile.ss() << "     attempting to load '" << av[1] << "'\n";
 		cfg.reload(av[1]);
 	}
 
@@ -1022,8 +1019,8 @@ int main(int ac, char* av[])
 					g_WinManager.UpdateMouseDown(vent.motion.x, vent.motion.y);
 				}
 				/*
-				*				horizontal mouse scroll events happen here,
-				*				as do right and middle clicks.
+				*                               horizontal mouse scroll events happen here,
+				*                               as do right and middle clicks.
 				*/
 				else {
 					// do nothing ...
@@ -1033,9 +1030,9 @@ int main(int ac, char* av[])
 			{
 				if (!g_MessageBox.IsActive() && !g_ChoiceManager.IsActive())
 				{
-					if (vent.key.keysym.sym == SDLK_RSHIFT || vent.key.keysym.sym == SDLK_LSHIFT)	// enable multi select
+					if (vent.key.keysym.sym == SDLK_RSHIFT || vent.key.keysym.sym == SDLK_LSHIFT)   // enable multi select
 						g_ShiftDown = false;
-					else if (vent.key.keysym.sym == SDLK_RCTRL || vent.key.keysym.sym == SDLK_LCTRL)	// enable multi select
+					else if (vent.key.keysym.sym == SDLK_RCTRL || vent.key.keysym.sym == SDLK_LCTRL)        // enable multi select
 						g_CTRLDown = false;
 
 					if (vent.key.keysym.sym == SDLK_UP)				g_UpArrow = false;
@@ -1071,34 +1068,22 @@ int main(int ac, char* av[])
 				{
 					if (g_WinManager.HasEditBox())
 					{
-						if (vent.key.keysym.sym == SDLK_BACKSPACE)
-							g_WinManager.UpdateKeyInput('-');
-						else if (vent.key.keysym.sym == SDLK_RETURN)
-							g_EnterKey = true;
+						if (vent.key.keysym.sym == SDLK_BACKSPACE)		g_WinManager.UpdateKeyInput('-');
+						else if (vent.key.keysym.sym == SDLK_RETURN)	g_EnterKey = true;
 						else if ((vent.key.keysym.sym >= 97 && vent.key.keysym.sym <= 122) || vent.key.keysym.sym == 39 || vent.key.keysym.sym == 32 || (vent.key.keysym.sym >= 48 && vent.key.keysym.sym <= 57) || ((vent.key.keysym.sym >= 256 && vent.key.keysym.sym <= 265)))
 						{
 							if (vent.key.keysym.sym >= 256)
 							{
-								if (vent.key.keysym.sym == 256)
-									vent.key.keysym.sym = SDLK_0;
-								else if (vent.key.keysym.sym == 257)
-									vent.key.keysym.sym = SDLK_1;
-								else if (vent.key.keysym.sym == 258)
-									vent.key.keysym.sym = SDLK_2;
-								else if (vent.key.keysym.sym == 259)
-									vent.key.keysym.sym = SDLK_3;
-								else if (vent.key.keysym.sym == 260)
-									vent.key.keysym.sym = SDLK_4;
-								else if (vent.key.keysym.sym == 261)
-									vent.key.keysym.sym = SDLK_5;
-								else if (vent.key.keysym.sym == 262)
-									vent.key.keysym.sym = SDLK_6;
-								else if (vent.key.keysym.sym == 263)
-									vent.key.keysym.sym = SDLK_7;
-								else if (vent.key.keysym.sym == 264)
-									vent.key.keysym.sym = SDLK_8;
-								else if (vent.key.keysym.sym == 265)
-									vent.key.keysym.sym = SDLK_9;
+								if (vent.key.keysym.sym == 256)			vent.key.keysym.sym = SDLK_0;
+								else if (vent.key.keysym.sym == 257)	vent.key.keysym.sym = SDLK_1;
+								else if (vent.key.keysym.sym == 258)	vent.key.keysym.sym = SDLK_2;
+								else if (vent.key.keysym.sym == 259)	vent.key.keysym.sym = SDLK_3;
+								else if (vent.key.keysym.sym == 260)	vent.key.keysym.sym = SDLK_4;
+								else if (vent.key.keysym.sym == 261)	vent.key.keysym.sym = SDLK_5;
+								else if (vent.key.keysym.sym == 262)	vent.key.keysym.sym = SDLK_6;
+								else if (vent.key.keysym.sym == 263)	vent.key.keysym.sym = SDLK_7;
+								else if (vent.key.keysym.sym == 264)	vent.key.keysym.sym = SDLK_8;
+								else if (vent.key.keysym.sym == 265)	vent.key.keysym.sym = SDLK_9;
 							}
 
 							if (vent.key.keysym.mod & KMOD_LSHIFT || vent.key.keysym.mod & KMOD_RSHIFT || vent.key.keysym.mod & KMOD_CAPS)
@@ -1107,7 +1092,7 @@ int main(int ac, char* av[])
 								g_WinManager.UpdateKeyInput((char)vent.key.keysym.sym);
 						}
 					}
-					else	// hotkeys
+					else    // hotkeys
 					{
 						handle_hotkeys();
 					}
@@ -1138,8 +1123,8 @@ int main(int ac, char* av[])
 			}
 		}
 
-		//		if(!sleeping)
-		//		{
+		//              if(!sleeping)
+		//              {
 		// Clear the screen
 		g_Graphics.Begin();
 
@@ -1157,7 +1142,7 @@ int main(int ac, char* av[])
 		if (!g_MessageBox.IsActive() && g_MessageQue.HasNext())
 			g_MessageQue.ActivateNext();
 
-		if (eventrunning && !g_MessageBox.IsActive() && !g_ChoiceManager.IsActive())	// run any events that are being run
+		if (eventrunning && !g_MessageBox.IsActive() && !g_ChoiceManager.IsActive())    // run any events that are being run
 			GameEvents();
 
 		// Run the interface
@@ -1175,10 +1160,6 @@ int main(int ac, char* av[])
 		rmanager.CullOld(g_Graphics.GetTicks());
 
 		g_Graphics.End();
-		/*		}
-		else
-		SDL_Delay(1000);
-		*/
 	}
 
 	Shutdown();
@@ -1187,16 +1168,13 @@ int main(int ac, char* av[])
 
 void Shutdown()
 {
-	g_LogFile.write("Shutting Down");
-
+	g_LogFile.write("\n\n\t*** Shutting Down ***");
 	g_LogFile.write("Releasing Graphics");
 	g_Graphics.Free();
-
-	
 	g_LogFile.write("Releasing Images");
 	delete g_BackgroundImage;
 
-	for (int i = 0; i<6; i++)
+	for (int i = 0; i<7; i++)
 	{
 		if (g_BrothelImages[i])
 		{
@@ -1212,15 +1190,12 @@ void Shutdown()
 			delete MarketSlaveGirls[i];
 		MarketSlaveGirls[i] = 0;
 	}
-	
+
 	g_Girls.Free();
 
 	g_LogFile.write("Releasing Customers");
 	g_Customers.Free();
 
-	
-	
-	
 	g_Traits.Free();
 	g_InvManager.Free();
 
@@ -1252,12 +1227,12 @@ bool Init()
 {
 	g_LogFile.write("Initializing Graphics");
 	/*
-	*	build the caption string
+	*       build the caption string
 	*/
 	stringstream ss;
 	ss << "Whore Master v" << g_MajorVersion << "." << g_MinorVersionA << g_MinorVersionB << "." << g_StableVersion << " BETA" << " Svn: " << svn_revision;
 	/*
-	*	init the graphics, with the caption on the titlebar
+	*       init the graphics, with the caption on the titlebar
 	*/
 	if (!g_Graphics.InitGraphics(ss.str(), 0, 0, 32))
 	{
@@ -1270,10 +1245,10 @@ bool Init()
 	g_BackgroundImage = new ImageSurface("background", "");
 	g_LogFile.write("Background Image Set");
 
-	LoadInterface();	// Load the interface
+	LoadInterface();        // Load the interface
 	g_LogFile.write("Interface Loaded");
 
-	InitGameFlags();	// Init the game flags
+	InitGameFlags();        // Init the game flags
 	g_LogFile.write("Game Flags Initialized");
 
 	// Load the brothel images
@@ -1285,8 +1260,8 @@ bool Init()
 			g_BrothelImages[i] = 0;
 		}
 		/*
-		*		I think this should work - kept the old line below
-		*		reference
+		*               I think this should work - kept the old line below
+		*               reference
 		*/
 		char buffer[32];
 		_itoa(i, buffer, 10);
@@ -1298,4 +1273,3 @@ bool Init()
 	return true;
 }
 
-// trivial change to test Revision.h

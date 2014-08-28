@@ -1,6 +1,6 @@
 <Screen>
 <Window Name="Farm Screen Window"            XPos="15"  YPos="12"  Width="770" Height="578" Border="1" />
-<Image  Name="Farm"        File="Clinic.png" XPos="8"   YPos="48"  Width="584" Height="480" />
+<Image  Name="Farm"        File="Farm.png"   XPos="8"   YPos="48"  Width="584" Height="480" />
 <Text   Name="FarmDetails" Text=""           XPos="600" YPos="50"  Width="160" Height="170" FontSize="10" />
 <Button Name="BackButton"  Image="Back"      XPos="600" YPos="540" Width="160" Height="32"  Transparency="true" Scale="true" />
 <Button Name="Girls"       Image="Girls"     XPos="600" YPos="298" Width="160" Height="32"  Transparency="true" Scale="true" />

@@ -92,7 +92,6 @@ public:
 	void Free();
 	TiXmlElement* SaveDungeonDataXML(TiXmlElement* pRoot);	// saves dungeon data
 	bool LoadDungeonDataXML(TiXmlHandle hDungeon);
-	void LoadDungeonDataLegacy(ifstream& ifs);	// loads dungeon data
 	void AddGirl(sGirl* girl, int reason);
 	void AddCust(int reason, int numDaughters, bool hasWife);
 	void OutputGirlRow(int i, string* Data, const vector<string>& columnNames);

@@ -96,6 +96,10 @@ public:
 	void GetSortedIDList(vector<int> *id_vec, int *vec_pos);  // fills up a vector with the list of item IDs, sorted
 	void GetColumnNames(vector<string>& columnNames);
 
+	int DayJobColumn();				// `J` returns the column number of "DayJob"
+	int NightJobColumn();			// `J` returns the column number of "NightJob"
+	int JobColumn(bool daynight);	// `J` returns the column number of either 0="DayJob" 1="NightJob"
+
 
 	int m_ID;
 	cListItem* m_Items;	// The list of elements in the list

@@ -44,40 +44,36 @@ extern char             buffer[1000];
 // // ----- Strut sClinic Create / destroy
 sClinic::sClinic() :	m_Finance(0)	// constructor
 {
-	m_var	= 0;
-	m_Name = "clinic";
-	m_Filthiness			= 0;
-	m_Next					= 0;
-	m_Girls					= 0;
-	m_LastGirl				= 0;
-	// end mod
-	m_NumGirls				= 0;
-	m_SecurityLevel			= 0;
-	for(u_int i=0; i<NUMJOBTYPES; i++)
-		m_BuildingQuality[i] = 0;
+	m_var			= 0;
+	m_Name			= "clinic";
+	m_Filthiness	= 0;
+	m_Next			= 0;
+	m_Girls			= 0;
+	m_LastGirl		= 0;
+	m_NumGirls		= 0;
+	m_SecurityLevel	= 0;
+	for (u_int i = 0; i < NUMJOBTYPES; i++) m_BuildingQuality[i] = 0;
 }
 
 sClinic::~sClinic()			// destructor
 {
-	m_var	= 0;
-	if(m_Next)
-		delete m_Next;
-	m_Next					= 0;
-	if(m_Girls)
-		delete m_Girls;
-	m_LastGirl				= 0;
-	m_Girls					= 0;
+	m_var			= 0;
+	if (m_Next)		delete m_Next;
+	m_Next			= 0;
+	if (m_Girls)	delete m_Girls;
+	m_LastGirl		= 0;
+	m_Girls			= 0;
 }
 
 void cClinicManager::AddGirl(int brothelID, sGirl* girl)
 {
-	girl->m_InMovieStudio = false;
-	girl->m_InArena = false;
-	girl->m_InCentre = false;
-	girl->m_InHouse = false;
-	girl->m_InFarm = false;
-	girl->m_InClinic = true;
-	girl->where_is_she = 0;
+	girl->where_is_she		= 0;
+	girl->m_InMovieStudio	= false;
+	girl->m_InArena			= false;
+	girl->m_InCentre		= false;
+	girl->m_InClinic		= true;
+	girl->m_InFarm			= false;
+	girl->m_InHouse			= false;
 	cBrothelManager::AddGirl(brothelID, girl);
 }
 
@@ -87,12 +83,9 @@ void cClinicManager::RemoveGirl(int brothelID, sGirl* girl, bool deleteGirl)
 	cBrothelManager::RemoveGirl(brothelID, girl, deleteGirl);
 }
 
-
 // ----- Class cClinicManager Create / destroy
 cClinicManager::cClinicManager()			// constructor
 {
-	//Aika edit
-	//sClinic* current = m_Parent;
 	m_JobManager.Setup();
 }
 
@@ -103,49 +96,11 @@ cClinicManager::~cClinicManager()			// destructor
 
 void cClinicManager::Free()
 {
-	if(m_Parent)
-		delete m_Parent;
-	m_Parent			= 0;
-	m_Last				= 0;
-	m_NumBrothels		= 0;
+	if (m_Parent)	delete m_Parent;
+	m_Parent		= 0;
+	m_Last			= 0;
+	m_NumBrothels	= 0;
 }
-
-
-bool cClinicManager::is_Surgery_Job(int testjob){
-	if (testjob == JOB_GETABORT ||
-		testjob == JOB_PHYSICALSURGERY ||
-		testjob == JOB_LIPO ||
-		testjob == JOB_BREASTREDUCTION ||
-		testjob == JOB_BOOBJOB ||
-		testjob == JOB_VAGINAREJUV ||
-		testjob == JOB_TUBESTIED ||
-		testjob == JOB_FERTILITY ||
-		testjob == JOB_FACELIFT ||
-		testjob == JOB_ASSJOB)
-		return true;
-	return false;
-}
-bool cClinicManager::DoctorNeeded()	// `J` added, if there is a doctor already on duty or there is no one needing surgery, return false
-{
-	if (GetNumGirlsOnJob(0, JOB_DOCTOR, 0) > 0 ||
-		GetNumGirlsOnJob(0, JOB_GETHEALING, 0) +
-		GetNumGirlsOnJob(0, JOB_GETABORT, 0) +
-		GetNumGirlsOnJob(0, JOB_PHYSICALSURGERY, 0) +
-		GetNumGirlsOnJob(0, JOB_LIPO, 0) +
-		GetNumGirlsOnJob(0, JOB_BREASTREDUCTION, 0) +
-		GetNumGirlsOnJob(0, JOB_BOOBJOB, 0) +
-		GetNumGirlsOnJob(0, JOB_VAGINAREJUV, 0) +
-		GetNumGirlsOnJob(0, JOB_TUBESTIED, 0) +
-		GetNumGirlsOnJob(0, JOB_FERTILITY, 0) +
-		GetNumGirlsOnJob(0, JOB_FACELIFT, 0) +
-		GetNumGirlsOnJob(0, JOB_ASSJOB, 0) < 1)
-		return false;	// a Doctor is not Needed
-	return true;	// Otherwise a Doctor is Needed
-}
-
-
-
-
 
 // ----- Update & end of turn
 void cClinicManager::UpdateClinic()
@@ -156,20 +111,19 @@ void cClinicManager::UpdateClinic()
 	sGirl* cgirl = current->m_Girls;
 	while(cgirl)
 	{
-		cgirl->m_InMovieStudio = false;
-		cgirl->m_InArena = false;
-		cgirl->m_InCentre = false;
-		cgirl->m_InClinic = true;
-		cgirl->m_InHouse = false;
-		cgirl->m_InFarm = false;
-		cgirl->where_is_she = 0;
+		cgirl->where_is_she		= 0;
+		cgirl->m_InMovieStudio	= false;
+		cgirl->m_InArena		= false;
+		cgirl->m_InCentre		= false;
+		cgirl->m_InClinic		= true;
+		cgirl->m_InFarm			= false;
+		cgirl->m_InHouse		= false;
+		cgirl->m_Pay			= 0;
 		cgirl->m_Events.Clear();
-		cgirl->m_Pay = 0;
 		cgirl = cgirl->m_Next;
 	}
 
-	if(current->m_Filthiness < 0)
-			current->m_Filthiness = 0;
+	if (current->m_Filthiness < 0) current->m_Filthiness = 0;
 
 	// Generate customers for the brothel for the day shift and update girls
 	UpdateGirls(current, 0);
@@ -183,100 +137,116 @@ void cClinicManager::UpdateClinic()
 // Same method than Brothel but different job
 void cClinicManager::UpdateGirls(sBrothel* brothel, int DayNight)
 {
+	// `J` added to allow for easier copy/paste to other buildings
+	u_int restjob = JOB_CLINICREST;
+	u_int matronjob = JOB_CHAIRMAN;
+	u_int firstjob = JOB_GETHEALING;
+	u_int lastjob = JOB_JANITOR;
+	bool matron = (GetNumGirlsOnJob(brothel->m_id, matronjob, false) >= 1) ? true : false;
+	string MatronMsg = "", MatronWarningMsg = "";
+
+	cConfig cfg;
 	sGirl* current = brothel->m_Girls;
-	string summary, msg, girlName;
-	int totalGold;
-	bool refused;
 	sGirl* DeadGirl = 0;
+	string summary, msg, girlName;
+	int totalGold = 0;
+	u_int sw = 0;						//	Job type
+	bool refused = false;
+	m_Processing_Shift = DayNight;		// WD:	Set processing flag to shift type
 
-	// WD:	Set processing flag to shift type
-	m_Processing_Shift = DayNight;							
-
-	while(current)
+	// `J` Check for out of building jobs and set yesterday jobs for everyone first
+	if (DayNight == SHIFT_DAY)
 	{
-		//srand(g_Graphics.GetTicks()+(g_Dice%5432));
+		while (current)
+		{
+			if (current->m_DayJob < firstjob && current->m_DayJob > lastjob)		current->m_DayJob = restjob;
+			if (current->m_NightJob < firstjob && current->m_NightJob > lastjob)	current->m_NightJob = restjob;
+			current->m_YesterDayJob = current->m_DayJob;		// `J` set what she did yesterday
+			current->m_YesterNightJob = current->m_NightJob;	// `J` set what she did yesternight
+			if (current->m_JustGaveBirth)		// if she gave birth, let her rest this week
+			{
+				if (current->m_NightJob != restjob)	current->m_PrevNightJob = current->m_NightJob;
+				current->m_NightJob = restjob;
+			}
+			current = current->m_Next; // Next Girl
+		}
+	}
+	current = brothel->m_Girls;
+	
+
+	while (current)
+	{
 		totalGold = 0;
-		//summary = "";
 		refused = false;
 		current->m_Pay = 0;
 		girlName = current->m_Realname;
-
-/*
- *		ONCE DAILY processing
- *		at start of Day Shift
- */
+		// ONCE DAILY processing at start of Day Shift
 		if (DayNight == SHIFT_DAY)
 		{
 			// Remove any dead bodies from last week
 			if(current->health() <= 0)
 			{
 				DeadGirl = current;
-
-				if (current->m_Next) // If there are more girls to process
-				  current = current->m_Next;
-				else
-				  current = 0;
-
-				UpdateAllGirlsStat(brothel, STAT_PCFEAR, 2);	// increase all the girls fear of the player for letting her die (weather his fault or not)
-				UpdateAllGirlsStat(brothel, STAT_PCHATE, 1);	// increase all the girls hate of the player for letting her die (weather his fault or not)
+				// If there are more girls to process
+				current = (current->m_Next) ? current->m_Next : 0;
+				// increase all the girls fear and hate of the player for letting her die (weather his fault or not)
+				UpdateAllGirlsStat(brothel, STAT_PCFEAR, 2);
+				UpdateAllGirlsStat(brothel, STAT_PCHATE, 1);
 
 				// Two messages go into the girl queue...
-				msg += girlName + gettext(" has died from her injuries, the other girls all fear and hate you a little more.");
+				msg += girlName + " has died from her injuries, the other girls all fear and hate you a little more.";
 				DeadGirl->m_Events.AddMessage(msg, IMGTYPE_DEATH, EVENT_DANGER);
-				summary += girlName + gettext(" has died from her injuries.  Her body will be removed by the end of the week.");
+				summary += girlName + " has died from her injuries.  Her body will be removed by the end of the week.";
 				DeadGirl->m_Events.AddMessage(summary, IMGTYPE_DEATH, EVENT_SUMMARY);
-
 				// There is also one global message
 				g_MessageQue.AddToQue(msg, 1);
 
-				// I forgot to set msg and summary to empty. D'OH!
-				msg = "";
-				summary = "";
-
 				RemoveGirl(0, DeadGirl);
-				DeadGirl = 0;
+				DeadGirl = 0; msg = ""; summary = "";	// cleanup
 
-				if (current)  // If there are more girls to process
-					continue;
-				else
-					break;
+				// If there are more girls to process
+				if (current) continue;
+				else		break;
 			}
 
-			current->m_YesterDayJob = current->m_DayJob;		// `J` set what she did yesterday
-			current->m_YesterNightJob = current->m_NightJob;	// `J` set what she did yesternight
 
-			// Brothel only update for girls accommodation level
-			do_food_and_digs(brothel, current);
+			// Back to work
+			if ((current->m_NightJob == restjob && current->m_DayJob == restjob) && current->m_PregCooldown < cfg.pregnancy.cool_down() &&
+				g_Girls.GetStat(current, STAT_HEALTH) >= 80 && g_Girls.GetStat(current, STAT_TIREDNESS) <= 20)
+			{
+				if ((matron || current->m_PrevDayJob == matronjob)					// do we have a director, or was she the director and made herself rest?
+					&& current->m_PrevDayJob != 255 && current->m_PrevNightJob != 255)	// 255 = nothing, in other words no previous job stored
+				{
+					g_Brothels.m_JobManager.HandleSpecialJobs(brothel->m_id, current, current->m_PrevDayJob, current->m_DayJob, true);
+					if (current->m_DayJob == current->m_PrevDayJob)  // only update night job if day job passed HandleSpecialJobs
+						current->m_NightJob = current->m_PrevNightJob;
+					else
+						current->m_DayJob = restjob;
+					current->m_PrevDayJob = current->m_PrevNightJob = 255;
+					MatronMsg += gettext("The Chairman puts ") + girlName + gettext(" back to work.\n");
+					current->m_Events.AddMessage(MatronMsg, IMGTYPE_PROFILE, EVENT_BACKTOWORK);
+					MatronMsg = "";
+				}
+				else
+				{
+					current->m_DayJob = current->m_NightJob = restjob;
+					MatronWarningMsg += gettext("WARNING ") + girlName + gettext(" is doing nothing!\n");
+					current->m_Events.AddMessage(MatronWarningMsg, IMGTYPE_PROFILE, EVENT_WARNING);
+					MatronWarningMsg = "";
+				}
+			}
 
-			// update the fetish traits
-			g_Girls.CalculateGirlType(current);
-
-			// update birthday counter and age the girl
-			g_Girls.updateGirlAge(current, true);
-
-			// update temp stats
-			g_Girls.updateTempStats(current);
-
-			// update temp skills
-			g_Girls.updateTempSkills(current);
-
-			// update temp traits
-			g_Girls.updateTempTraits(current);
-
-			// handle pregnancy and children growing up
-			g_Girls.HandleChildren(current, summary);
-			
-			// health loss to STD's		NOTE: Girl can die
-			g_Girls.updateSTD(current);
-
-			// Update happiness due to Traits		NOTE: Girl can die
-			g_Girls.updateHappyTraits(current);
-
-			//	Update daily stats	Now only runs once per day
-			updateGirlTurnBrothelStats(current);
-
-			//	Stat Code common to Dugeon and Brothel
-			g_Girls.updateGirlTurnStats(current);
+			do_food_and_digs(brothel, current);			// Brothel only update for girls accommodation level
+			g_Girls.CalculateGirlType(current);			// update the fetish traits
+			g_Girls.updateGirlAge(current, true);		// update birthday counter and age the girl
+			g_Girls.updateTempStats(current);			// update temp stats
+			g_Girls.updateTempSkills(current);			// update temp skills
+			g_Girls.updateTempTraits(current);			// update temp traits
+			g_Girls.HandleChildren(current, summary);	// handle pregnancy and children growing up
+			g_Girls.updateSTD(current);					// health loss to STD's				NOTE: Girl can die
+			g_Girls.updateHappyTraits(current);			// Update happiness due to Traits	NOTE: Girl can die
+			updateGirlTurnBrothelStats(current);		// Update daily stats				Now only runs once per day
+			g_Girls.updateGirlTurnStats(current);		// Stat Code common to Dugeon and Brothel
 		}
 
 
@@ -285,7 +255,6 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, int DayNight)
  */
 
 		// Sanity check! Don't process dead girls
-		// Sanity check part 2: Check that m_Next points to something
 		if(current->health() <= 0)
 		{
 			if (current->m_Next) // If there are more girls to process
@@ -309,56 +278,42 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, int DayNight)
 /*
  *		JOB PROCESSING
  */
-		u_int sw = 0;						//	Job type
-		if(current->m_JustGaveBirth)		// if she gave birth, let her rest this week
-			sw = JOB_CLINICREST;
-		else
-			sw = (DayNight == SHIFT_DAY) ? current->m_DayJob : current->m_NightJob;
+		unsigned int restjob = JOB_CLINICREST;	// `J` added this to allow for easier copy/paste to other buildings
+		u_int sw = 0;							//	Job type
 
+		if (current->m_JustGaveBirth)		// if she gave birth, let her rest this week
+		{
+			if (current->m_DayJob != restjob)	current->m_PrevDayJob = current->m_DayJob;
+			if (current->m_NightJob != restjob)	current->m_PrevNightJob = current->m_NightJob;
+			current->m_DayJob = restjob;
+			current->m_NightJob = restjob;
+		}
+		sw = (DayNight == SHIFT_DAY) ? current->m_DayJob : current->m_NightJob;
+		
 		// `J` added check to force jobs into the Clinic correcting a bug
-		if (sw != JOB_CLINICREST && sw >= JOB_GETHEALING && sw <= JOB_JANITOR)
+		if (sw >= JOB_GETHEALING && sw <= JOB_JANITOR)
 		{
 			refused = m_JobManager.JobFunc[sw](current, brothel, DayNight, summary);
 		}
 		else // Any job not in the Clinic will be replaced with JOB_CLINICREST
 		{
-			if (DayNight == SHIFT_DAY)current->m_DayJob = JOB_CLINICREST;
-			else current->m_NightJob = JOB_CLINICREST;
-			sw = JOB_CLINICREST;
-			refused = m_JobManager.JobFunc[JOB_RESTING](current, brothel, DayNight, summary);
+			if (DayNight == SHIFT_DAY) current->m_DayJob = restjob;
+			else current->m_NightJob = restjob;
+			sw = restjob;
+			refused = m_JobManager.JobFunc[restjob](current, brothel, DayNight, summary);
 		}
-
-		if(refused)						// if she refused she still gets tired
-			g_Girls.AddTiredness(current);
+		// if she refused she still gets tired
+		if (refused) g_Girls.AddTiredness(current);
 
 		totalGold += current->m_Pay;
 
 		// work out the pay between the house and the girl 
-		// may be change this for clinic
 		g_Brothels.CalculatePay(brothel, current, sw);
 
 		brothel->m_Fame += g_Girls.GetStat(current, STAT_FAME);
 
-		// Check for dead girls
-		// Avoids all the Warning Messages you get for a dead girl
-		// MYR: This has already been done. Commenting it out.
-		// TODO death girl in summary
-		/*if (current->health() <= 0)
-		{
-			UpdateAllGirlsStat(brothel, STAT_PCFEAR, 2);	// increase all the girls fear of the player for letting her die (weather his fault or not)
-			UpdateAllGirlsStat(brothel, STAT_PCHATE, 1);	// increase all the girls hate of the player for letting her die (weather his fault or not)
-			msg = girlName + " has died from her injuries, the other girls all fear and hate you a little more.";
-			current->m_Events.AddMessage(msg, IMGTYPE_DEATH, EVENT_DANGER);
-			summary += girlName + " has died from her injuries.  Her body will be removed by the end of the week.";
-			current->m_Events.AddMessage(summary, IMGTYPE_DEATH, EVENT_SUMMARY);
-			current = current->m_Next;
-			continue;
-		}*/
 
-		// update girl triggers ??
-		//current->m_Triggers.ProcessTriggers();
-
-		/*
+/*
  *		chair man CODE START
  */
 
@@ -434,33 +389,6 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, int DayNight)
 			else
 			{
 				ChairWarningMsg = gettext("DANGER ") + girlName + gettext("'s health is very low!\nShe must rest or she will die!\n");
-			}
-		}
-
-		// Back to work
-		if((current->m_NightJob == JOB_CLINICREST && current->m_DayJob == JOB_CLINICREST) && (g_Girls.GetStat(current, STAT_HEALTH) >= 80 && g_Girls.GetStat(current, STAT_TIREDNESS) <= 20))
-		{
-			if (is_Surgery_Job(current->m_YesterDayJob))	// `J` added
-			{
-				current->m_DayJob = JOB_CLINICREST;	current->m_NightJob = JOB_CLINICREST;
-				RecoupMsg += girlName + gettext(" is recouperating after her surgery.\n");
-			}
-			else if ((chair || current->m_PrevDayJob == JOB_CHAIRMAN)  // do we have a director, or was she the director and made herself rest?
-				&& current->m_PrevDayJob != 255  // 255 = nothing, in other words no previous job stored
-				&& current->m_PrevNightJob != 255)
-			{
-				g_Brothels.m_JobManager.HandleSpecialJobs(brothel->m_id, current, current->m_PrevDayJob, current->m_DayJob, true);
-				if(current->m_DayJob == current->m_PrevDayJob)  // only update night job if day job passed HandleSpecialJobs
-					current->m_NightJob = current->m_PrevNightJob;
-				else
-					current->m_DayJob = JOB_CLINICREST;
-				current->m_PrevDayJob = current->m_PrevNightJob = 255;
-				ChairMsg += gettext("The Chairman puts ") + girlName + gettext(" back to work.\n");
-			}
-			else
-			{
-				current->m_DayJob = JOB_CLINICREST;
-				ChairWarningMsg += gettext("WARNING ") + girlName + gettext(" is doing nothing!\n");
 			}
 		}
 
@@ -546,28 +474,13 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, int DayNight)
 
 
 		// Level the girl up if nessessary
-		if ((g_Girls.GetStat(current, STAT_EXP) >= (g_Girls.GetStat(current, STAT_LEVEL) + 1) * 125) ||
-			(g_Girls.GetStat(current, STAT_EXP) >= 32000))	// `J` added
+		if ((g_Girls.GetStat(current, STAT_EXP) >= (g_Girls.GetStat(current, STAT_LEVEL) + 1) * 125) || (g_Girls.GetStat(current, STAT_EXP) >= 32000))
 			g_Girls.LevelUp(current);
 
-		// Myr: Natural healing. This amounts to 2% health/tiredness per shift and is not designed in any
-		//      way to replace any healing item or mechanism in the game.
-		//      I'm specifically not using g_Girls.UpdateStat as I don't want the modifiers for toughness
-		//      and fragile to change the base 2% (Fragile would change 2% health gain to 1% health damage,
-		//      which makes no sense and tough would change 2% health gain to 4% (8% per turn) which is
-		//      IMO too high.)
-		current->m_Stats[STAT_HEALTH] += 2;
-		if (current->m_Stats[STAT_HEALTH] > 100)
-			current->m_Stats[STAT_HEALTH] = 100;
-		// Wow, this tiredness code causes the game to go nuts! Commented out for now
-		//current->m_Stats[STAT_TIREDNESS] = current->m_Stats[STAT_TIREDNESS] - 2;
-		//if (current->m_Stats[STAT_TIREDNESS] < 0)
-		//	current->m_Stats[STAT_TIREDNESS] = 0;
-		// `J` corrected it
-		int value = current->m_Stats[STAT_TIREDNESS] - 2;
-		if (value > 100)value = 100;
-		else if (value < 0)value = 0;
-		current->m_Stats[STAT_TIREDNESS] = value;
+		// Natural healing, 2% health and 2% tiredness per day
+		current->m_Stats[STAT_HEALTH] = min(current->m_Stats[STAT_HEALTH] + 2, 100);
+		current->m_Stats[STAT_TIREDNESS] = max(current->m_Stats[STAT_TIREDNESS] - 2, 0);
+
 
 		// Process next girl
 		current = current->m_Next;
@@ -639,6 +552,9 @@ TiXmlElement* sClinic::SaveClinicXML(TiXmlElement* pRoot)
 
 	pBrothel->SetAttribute("id", m_id);
 	pBrothel->SetAttribute("NumRooms", m_NumRooms);
+	if (m_MaxNumRooms < 200)		m_MaxNumRooms = 200;
+	else if (m_MaxNumRooms > 600)	m_MaxNumRooms = 600;
+	pBrothel->SetAttribute("MaxNumRooms", m_MaxNumRooms);
 	pBrothel->SetAttribute("Filthiness", m_Filthiness);
 	pBrothel->SetAttribute("SecurityLevel", m_SecurityLevel);
 	// save variables for sex restrictions
@@ -651,11 +567,11 @@ TiXmlElement* sClinic::SaveClinicXML(TiXmlElement* pRoot)
 	pBrothel->SetAttribute("RestrictGroup", m_RestrictGroup);
 	pBrothel->SetAttribute("RestrictNormal", m_RestrictNormal);
 	pBrothel->SetAttribute("RestrictLesbian", m_RestrictLesbian);
+	
 	pBrothel->SetAttribute("AdvertisingBudget", m_AdvertisingBudget);
 	pBrothel->SetAttribute("AntiPregPotions", m_AntiPregPotions);
 	pBrothel->SetAttribute("KeepPotionsStocked", m_KeepPotionsStocked);
-	if (m_AntiPregPotions < 0){ m_AntiPregPotions = 0; }
-	if (m_KeepPotionsStocked != 0 && m_KeepPotionsStocked != 1){ m_KeepPotionsStocked = 0; }
+	
 	// Save Girls
 	TiXmlElement* pGirls = new TiXmlElement("Girls");
 	pBrothel->LinkEndChild(pGirls);
@@ -730,6 +646,9 @@ bool sClinic::LoadClinicXML(TiXmlHandle hBrothel)
 
 	pBrothel->QueryIntAttribute("id", &m_id);
 	pBrothel->QueryIntAttribute("NumRooms", &tempInt); m_NumRooms = tempInt; tempInt = 0;
+	pBrothel->QueryIntAttribute("MaxNumRooms", &tempInt); m_MaxNumRooms = tempInt; tempInt = 0;
+	if (m_MaxNumRooms < 200)		m_MaxNumRooms = 200;
+	else if (m_MaxNumRooms > 600)	m_MaxNumRooms = 600;
 	pBrothel->QueryIntAttribute("Filthiness", &m_Filthiness);
 	pBrothel->QueryIntAttribute("SecurityLevel", &m_SecurityLevel);
 	// load variables for sex restrictions
@@ -742,12 +661,10 @@ bool sClinic::LoadClinicXML(TiXmlHandle hBrothel)
 	pBrothel->QueryValueAttribute<bool>("RestrictGroup", &m_RestrictGroup);
 	pBrothel->QueryValueAttribute<bool>("RestrictNormal", &m_RestrictNormal);
 	pBrothel->QueryValueAttribute<bool>("RestrictLesbian", &m_RestrictLesbian);
+
 	pBrothel->QueryValueAttribute<unsigned short>("AdvertisingBudget", &m_AdvertisingBudget);
-	// `J` Added to save potion stuff in individual buildings
 	pBrothel->QueryIntAttribute("AntiPregPotions", &m_AntiPregPotions);
-	if (m_AntiPregPotions < 0){ m_AntiPregPotions = 0; }
 	pBrothel->QueryValueAttribute<bool>("KeepPotionsStocked", &m_KeepPotionsStocked);
-	if (m_KeepPotionsStocked != 0 && m_KeepPotionsStocked != 1){ m_KeepPotionsStocked = 0; }
 
 	// Load girls
 	m_NumGirls = 0;
@@ -776,4 +693,37 @@ bool sClinic::LoadClinicXML(TiXmlHandle hBrothel)
 	//commented out before the conversion to XML
 	//building.load(ifs);
 	return true;
+}
+
+
+bool cClinicManager::is_Surgery_Job(int testjob){
+	if (testjob == JOB_GETABORT ||
+		testjob == JOB_PHYSICALSURGERY ||
+		testjob == JOB_LIPO ||
+		testjob == JOB_BREASTREDUCTION ||
+		testjob == JOB_BOOBJOB ||
+		testjob == JOB_VAGINAREJUV ||
+		testjob == JOB_TUBESTIED ||
+		testjob == JOB_FERTILITY ||
+		testjob == JOB_FACELIFT ||
+		testjob == JOB_ASSJOB)
+		return true;
+	return false;
+}
+bool cClinicManager::DoctorNeeded()	// `J` added, if there is a doctor already on duty or there is no one needing surgery, return false
+{
+	if (GetNumGirlsOnJob(0, JOB_DOCTOR, 0) > 0 ||
+		GetNumGirlsOnJob(0, JOB_GETHEALING, 0) +
+		GetNumGirlsOnJob(0, JOB_GETABORT, 0) +
+		GetNumGirlsOnJob(0, JOB_PHYSICALSURGERY, 0) +
+		GetNumGirlsOnJob(0, JOB_LIPO, 0) +
+		GetNumGirlsOnJob(0, JOB_BREASTREDUCTION, 0) +
+		GetNumGirlsOnJob(0, JOB_BOOBJOB, 0) +
+		GetNumGirlsOnJob(0, JOB_VAGINAREJUV, 0) +
+		GetNumGirlsOnJob(0, JOB_TUBESTIED, 0) +
+		GetNumGirlsOnJob(0, JOB_FERTILITY, 0) +
+		GetNumGirlsOnJob(0, JOB_FACELIFT, 0) +
+		GetNumGirlsOnJob(0, JOB_ASSJOB, 0) < 1)
+		return false;	// a Doctor is not Needed
+	return true;	// Otherwise a Doctor is Needed
 }

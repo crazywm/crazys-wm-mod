@@ -91,6 +91,7 @@ extern bool g_D_Key;
 extern bool g_Z_Key;
 extern bool g_X_Key;
 extern bool g_C_Key;
+
 extern bool g_R_Key;
 extern bool g_F_Key;
 extern bool g_T_Key;
@@ -136,6 +137,7 @@ void LoadGameScreen()
 	 */
 	if (g_InterfaceEvents.GetNumEvents() == 0)
 	{
+
 		return;
 	}
 
@@ -195,6 +197,10 @@ void NewGame()
 	g_GenGirls = g_Cheats = false;
 	// for keeping track of weather have walked around town today
 	g_WalkAround = g_TryOuts = g_TryCentre = g_TryEr = g_TryCast = false;
+
+
+
+
 	g_TalkCount = 10;
 	g_Brothels.Free();
 	g_Clinic.Free();
@@ -221,12 +227,20 @@ void NewGame()
 	LoadGameInfoFiles();
 	loadedGirlsFiles.LoadXML(TiXmlHandle(0));
 	LoadGirlsFiles();
+
 	g_Girls.LoadDefaultImages();
+
+
 	g_GlobalTriggers.LoadList(DirPath() << "Resources" << "Scripts" << "GlobalTriggers.xml");
+
 	g_CurrBrothel = 0;
+
 	g_Gold.reset();
 
 	g_Year = 1209; g_Month = 1; g_Day = 1;
+
+
+
 
 	selected_girl = 0;
 	for (int i = 0; i<8; i++)
@@ -235,12 +249,13 @@ void NewGame()
 		MarketSlaveGirlsDel[i] = -1;
 	}
 
-	g_Brothels.NewBrothel(20);
+	g_Brothels.NewBrothel(20,250);
 	g_Brothels.SetName(0, g_ReturnText);
 	for (int i = 0; i<NUM_STATS; i++)		g_Brothels.GetPlayer()->m_Stats[i] = 60;
 	for (u_int i = 0; i<NUM_SKILLS; i++)	g_Brothels.GetPlayer()->m_Skills[i] = 10;
 	g_Brothels.GetPlayer()->SetToZero();
-	g_House.NewBrothel(20);
+
+	g_House.NewBrothel(20,250);
 	g_House.SetName(0, "House");
 
 	u_int start_random_gangs = cfg.gangs.start_random();
@@ -251,6 +266,41 @@ void NewGame()
 	// update the shop inventory
 	g_InvManager.UpdateShop();
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	// Add the begining rivals
 	g_Brothels.GetRivalManager()->CreateRival(200, 5, 10000, 2, 0, 26, 2, 2);
 	g_Brothels.GetRivalManager()->CreateRival(400, 10, 15000, 2, 1, 30, 2, 3);
@@ -258,6 +308,11 @@ void NewGame()
 	g_Brothels.GetRivalManager()->CreateRival(800, 20, 25000, 4, 2, 74, 4, 8);
 
 	if (g_Cheats) { g_Gold.cheat(); g_InvManager.GivePlayerAllItems(); }
+
+
+
+
+
 
 	g_WinManager.push("Brothel Management");
 
@@ -300,6 +355,7 @@ static void LoadXMLItems(FileList &fl)
 	fl.scan("*.itemsx");
 	for (int i = 0; i < fl.size(); i++)
 	{
+
 		string str = fl[i].full();
 		string key = clobber_extension(str);
 		lookup[key] = str;
@@ -316,10 +372,13 @@ static void LoadXMLItems(FileList &fl)
 	fl.scan("*.items");
 	for (int i = 0; i < fl.size(); i++)
 	{
+
 		string str = fl[i].full();
 		string key = clobber_extension(str);
 		if (loglevel>0) g_LogFile.os() << "	checking " << lookup[key] << endl;
 		if (lookup[key] != "")	continue;
+
+
 		lookup[key] = str;
 		if (loglevel > 0) g_LogFile.os() << "	adding " << str << endl;
 		if (loglevel > 1)	g_LogFile.os() << "	under " << key << endl;
@@ -332,6 +391,7 @@ static void LoadXMLItems(FileList &fl)
 	if (loglevel > 0)	g_LogFile.os() << "walking map..." << endl;
 	for (map<string, string>::const_iterator it = lookup.begin(); it != lookup.end(); ++it)
 	{
+
 		string full_path = it->second;
 		if (loglevel > 1)	g_LogFile.os() << "\tkey = " << it->first << endl;
 		if (loglevel > 1)	g_LogFile.os() << "\tpath = " << full_path << endl;
@@ -342,11 +402,13 @@ static void LoadXMLItems(FileList &fl)
 		char c = full_path.at(len - 1);
 		if (c == 'x')
 		{
+
 			if (loglevel > 0)	g_LogFile.os() << "\t\tloading xml" << endl;
 			g_InvManager.LoadItemsXML(full_path);
 		}
 		else
 		{
+
 			if (loglevel > 0)	g_LogFile.os() << "\t\tloading orig" << endl;
 			g_InvManager.LoadItems(full_path);
 		}
@@ -475,7 +537,7 @@ void Turnsummary()
 		g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSCATEGORY, 6, gettext("ARENA"));
 		g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSCATEGORY, 7, gettext("CENTRE"));
 		g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSCATEGORY, 8, gettext("HOUSE"));
-		g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSCATEGORY, 8, gettext("FARM"));
+		g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSCATEGORY, 9, gettext("FARM"));
 		//g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSCATEGORY, 4, "RIVALS");
 		//g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSCATEGORY, 5, "GLOBAL"); */
 		g_Turnsummary.SetSelectedItemInList(g_interfaceid.LIST_TSCATEGORY, category, false);
@@ -2075,7 +2137,7 @@ void Turnsummary()
 	{
 		g_E_Key = false;
 		category ++;
-		if(category > 8)
+		if(category > 9)
 			category = 0;
 		g_InitWin = true;
 	}
@@ -2084,7 +2146,7 @@ void Turnsummary()
 		g_Q_Key = false;
 		category --;
 		if(category < 0)
-			category = 8;
+			category = 9;
 		g_InitWin = true;
 	}
 	if(g_SpaceKey && category == 0)			//Space key changes the current show picture to another in the same catagory.
@@ -3121,17 +3183,8 @@ bool LoadGame(string directory, string filename)
 		g_LogFile.write("Tried and failed to parse savegame as XML file, error as follows");
 		g_LogFile.write("(If it says 'Error document empty.' it's probably old format)");
 		g_LogFile.write(doc.ErrorDesc());
-		g_LogFile.write("Attempting to load savegame as old format");
-		bool success = LoadGameLegacy(directory, filename);
-		if (success == true)
-		{
-			g_LogFile.write("Successfully loaded from old savegame format");
-		}
-		else
-		{
-			g_LogFile.write("Unknown error, did not load any savegame format");
-		}
-		return success;
+		g_LogFile.write(".06 no longer supports Legacy Savegames. Start a new game.");
+		return false;
 	}
 	else
 	{
@@ -3152,7 +3205,7 @@ bool LoadGameXML(TiXmlHandle hDoc)
 	int minorA = -1;
 	pRoot->QueryIntAttribute("MinorVersionA", &minorA);
 
-	if(minorA != 3)
+	if(minorA != 6)
 	{
 		g_MessageQue.AddToQue(gettext("You must start a new game with this version"), 2);
 		return false;
@@ -3269,122 +3322,6 @@ bool LoadGameXML(TiXmlHandle hDoc)
 	return true;
 }
 
-bool LoadGameLegacy(string directory, string filename)
-{
-	// load templates
-	g_LogFile.write("Loading what used to be the master file");
-/*
- *	We need to load the .girls/.girlsx files
- *
- *	To do that, we need to know which we might have already loaded
- *	that information is kept in the master file
- *	so we load that first
- */
-	loadedGirlsFiles.LoadLegacy(filename);
-	LoadGirlsFiles();
-
-	int major = 0;
-	int minorA = 0;
-	int minorB = 0;
-	int temp = 0;
-
-	ifstream ifs;
-	DirPath thefile;
-	thefile<<directory<<filename;
-	ifs.open(thefile.c_str());
-
-	// load the version
-	ifs>>major>>minorA>>minorB;
-
-	if(minorA != 3)
-	{
-		g_MessageQue.AddToQue(gettext("You must start a new game with this version"), 2);
-		return false;
-	}
-
-	g_CurrBrothel = 0;
-
-	// load interface variables
-	if (ifs.peek()=='\n') ifs.ignore(1,'\n');
-	ifs>>temp;
-	if(temp == 1)
-		g_WalkAround = true;
-	else
-		g_WalkAround = false;
-	if (ifs.peek()=='\n') ifs.ignore(1,'\n');
-	ifs>>g_TalkCount;
-
-
-	// load player gold
-	if (ifs.peek()=='\n') ifs.ignore(1,'\n');
-	g_Gold.loadGoldLegacy(ifs);
-
-	// load year, month and day
-	if (ifs.peek()=='\n') ifs.ignore(1,'\n');
-	ifs>>g_Year>>g_Month>>g_Day;
-
-	// load main girls
-	g_LogFile.write("Loading girls");
-	g_Girls.LoadGirlsLegacy(ifs);
-
-	// load gangs
-	g_LogFile.write("Loading gang Data");
-	g_Gangs.LoadGangsLegacy(ifs);
-
-	// load brothels
-	g_LogFile.write("Loading brothel Data");
-	g_Brothels.LoadDataLegacy(ifs);
-
-	// load clinic
-	g_LogFile.write("Loading clinic Data");
-	g_Clinic.LoadDataLegacy(ifs);
-
-	// load studio
-	g_LogFile.write("Loading clinic Data");
-	g_Studios.LoadDataLegacy(ifs);
-
-	// load arena
-	g_LogFile.write("Loading arena Data");
-	g_Arena.LoadDataLegacy(ifs);
-
-	// load centre
-	g_LogFile.write("Loading centre Data");
-	g_Centre.LoadDataLegacy(ifs);
-
-	// load house
-	g_LogFile.write("Loading house Data");
-	g_House.LoadDataLegacy(ifs);
-
-	// load farm
-	g_LogFile.write("Loading farm Data");
-	g_Farm.LoadDataLegacy(ifs);
-
-	// load global triggers
-	g_LogFile.write("Loading global triggers");
-	g_GlobalTriggers.LoadTriggersLegacy(ifs);
-
-	g_LogFile.write("Loading default images");
-	g_Girls.LoadDefaultImages();
-
-	ifs.close();
-	
-	if(g_Cheats)
-	{
-		g_WalkAround = false;
-		g_TalkCount = 10;
-	}
-
-	selected_girl = 0;
-	for(int i=0; i<8; i++)
-	{
-		MarketSlaveGirls[i] = 0;
-		MarketSlaveGirlsDel[i] = -1;
-	}
-
-	// update the shop inventory
-	g_InvManager.UpdateShop();
-	return true;
-}
 
 void TransferGirls()
 {
@@ -3511,6 +3448,7 @@ void TransferGirls()
 				}
 				else if (leftBrothel == 5)
 				{
+
 					// add the girls to the list
 					sGirl* temp = g_Farm.GetGirl(0, 0);
 					int i=0;

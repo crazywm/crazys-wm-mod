@@ -259,7 +259,7 @@ typedef struct sInventoryItem
 		Armor	= 8,	// worn on body over dresses (max 1)
 		Misc	= 9,	// random stuff. may cause a constant effect without having to be equiped
 		Armband	= 10,	// (max 2), worn around arms
-		SmWeapon= 11,	// (max 1), hidden on body
+		SmWeapon= 11,	// (max 2), hidden on body
 		Underwear= 12  // (max 1) worn under dress
 	};
 	Type m_Type;

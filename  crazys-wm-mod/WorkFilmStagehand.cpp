@@ -49,7 +49,7 @@ bool cJobManager::WorkFilmStagehand(sGirl* girl, sBrothel* brothel, int DayNight
 	string message = "";
 	
 	// No film crew.. then go home
-	if (g_Studios.GetNumGirlsOnJob(0, JOB_CAMERAMAGE, false) == 0 || g_Studios.GetNumGirlsOnJob(0, JOB_CRYSTALPURIFIER, false) == 0)
+	if (g_Studios.GetNumGirlsOnJob(0, JOB_CAMERAMAGE, SHIFT_NIGHT) == 0 || g_Studios.GetNumGirlsOnJob(0, JOB_CRYSTALPURIFIER, SHIFT_NIGHT) == 0)
 	{
 		message = "There was no crew to film the scene, so she just cleaned the set.";
 		brothel->m_Filthiness -= 50;

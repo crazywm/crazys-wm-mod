@@ -33,19 +33,17 @@ private:
 	bool GetName;
 
 	static	bool		ids_set;
-/*
- *	interface/event IDs
- */
-	int		back_id;		// Back button
-	int		walk_id;		// Walk Around Town button
-	int		girls_id;		// girl managment map button
-	int		staff_id;		// gang map button
-	int		turns_id;		// turn summary map button
-	int		weeks_id;		// next week map button
-	int		dungeon_id;		// dungeon map button
-	int		setup_id;		// setup map button
-	int		curbrothel_id;	// Current Brothel text
-	int		auction_id;		// auction's House map button
+// interface/event IDs
+	int back_id;		// Back button
+	int walk_id;		// Walk Around Town button
+	int girls_id;		// girl managment map button
+	int staff_id;		// gang map button
+	int turns_id;		// turn summary map button
+	int weeks_id;		// next week map button
+	int dungeon_id;		// dungeon map button
+	int setup_id;		// setup map button
+	int curbrothel_id;	// Current Brothel text
+	int auction_id;		// auction's House map button
 
 	bool m_first_walk;
 
