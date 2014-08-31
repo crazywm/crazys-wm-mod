@@ -371,7 +371,8 @@ struct sGirl
 	bool m_Tort;								// if true then have already tortured today
 	bool m_JustGaveBirth;						// did she give birth this current week?
 
-	int m_Pay;									// used to keep track of pay this turn
+	int m_Pay = 0;								// used to keep track of pay this turn
+	int m_Tips = 0;								// used to keep track of tips this turn
 
 	cAImgList* m_GirlImages;					// Images to display
 

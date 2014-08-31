@@ -573,16 +573,21 @@ void LoadInterface()
 	{
 		g_LogFile.write("Loading TurnSummary.xml");
 		string m_filename = dp.c_str();
+		string file = "blank.png";
 		TiXmlElement *el, *root_el = docTurnSummary.RootElement();
 		
 		for (el = root_el->FirstChildElement(); el; el = el->NextSiblingElement())
 		{
+
 			XmlUtil xu(m_filename);	string name = "";
 			xu.get_att(el, "Name", name);
 			xu.get_att(el, "XPos", a); xu.get_att(el, "YPos", b); xu.get_att(el, "Width", c); xu.get_att(el, "Height", d); xu.get_att(el, "Border", e, true);
-			xu.get_att(el, "Image", image, true); xu.get_att(el, "File", file, true);
+			xu.get_att(el, "Image", image, true);
+			
+			xu.get_att(el, "File", file, true);
 			xu.get_att(el, "Transparency", Transparency, true); xu.get_att(el, "Scale", Scale, true);
 			xu.get_att(el, "Text", text, true); xu.get_att(el, "FontSize", fontsize, true);
+			DirPath dp = ImagePath(file);
 
 			if (name == "Turn Summary")		g_Turnsummary.CreateWindow(a, b, c, d, e);
 			if (name == "CurrentBrothel")	g_Turnsummary.AddTextItem(g_interfaceid.TEXT_CURRENTBROTHEL, a, b, c, d, text, fontsize);
@@ -598,7 +603,10 @@ void LoadInterface()
 			if (name == "Category")			g_Turnsummary.AddListBox(g_interfaceid.LIST_TSCATEGORY, a, b, c, d, e, true);
 			if (name == "Item")				g_Turnsummary.AddListBox(g_interfaceid.LIST_TSITEM, a, b, c, d, e, true);
 			if (name == "Event")			g_Turnsummary.AddListBox(g_interfaceid.LIST_TSEVENTS, a, b, c, d, e, true);
-			if (name == "Background")		g_Turnsummary.AddImage(g_interfaceid.IMAGE_TSIMAGE, file, a, b, c, d);
+			if (name == "Background")		g_Turnsummary.AddImage(g_interfaceid.IMAGE_TSIMAGE, dp, a, b, c, d);
+//														  AddImage(g_interfaceid.IMAGE_TSIMAGE, dp, full_x, full_y, xw.w, xw.h, xw.stat, xw.r, xw.g, xw.b);
+
+
 		}
 	}
 	else // because there never was a TurnSummary.txt, just do defaults if there is no xml

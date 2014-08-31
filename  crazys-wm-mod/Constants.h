@@ -410,11 +410,10 @@ const unsigned char FETISH_NONHUMAN         = 13;	// likes non human girls
 const unsigned char FETISH_FREAKYGIRLS      = 14;	// likes girls with small boobs
 
 // actions girls can disobey against
-const unsigned char NUM_ACTIONTYPES         = 27;
-
+// `J` When adding or changing this section, search for "J-Change-Action-Types"
 const unsigned char ACTION_COMBAT           = 0;
 const unsigned char ACTION_SEX              = 1;
-const unsigned char ACTION_GENERAL          = 2;
+const unsigned char ACTION_WORKESCORT		= 2;
 const unsigned char ACTION_WORKCLEANING     = 3;
 const unsigned char ACTION_WORKMATRON       = 4;
 const unsigned char ACTION_WORKBAR          = 5;
@@ -439,8 +438,12 @@ const unsigned char ACTION_WORKSTRIP		= 23;
 const unsigned char ACTION_WORKMILK 		= 24;
 const unsigned char ACTION_WORKMASSUSSE		= 25;
 const unsigned char ACTION_WORKFARM			= 26;
+const unsigned char ACTION_GENERAL          = 27; // ACTION_GENERAL must be the last sction type
+
+const unsigned char NUM_ACTIONTYPES = ACTION_GENERAL + 1;
 
 // Character image
+// `J` When adding or changing this section, search for "J-Change-Image-Types"
 const int IMGTYPE_ANAL      = 0;
 const int IMGTYPE_BDSM      = 1;
 const int IMGTYPE_SEX       = 2;
@@ -472,7 +475,9 @@ const int IMGTYPE_COOK		= 27;
 const int IMGTYPE_CRAFT		= 28;
 const int IMGTYPE_SWIM		= 29;
 const int IMGTYPE_BATH		= 30;
-const int IMGTYPE_PREGNANT	= 31;	// IMGTYPE_PREGNANT needs to be the last of the nonpregnant image types.
+const int IMGTYPE_NURSE		= 31;
+const int IMGTYPE_FORMAL	= 32;
+const int IMGTYPE_PREGNANT	= 33;	// IMGTYPE_PREGNANT needs to be the last of the nonpregnant image types.
 
 /*
 *	`J` All image types can have a pregnant alternative now
@@ -512,8 +517,11 @@ const int IMGTYPE_PREGCOOK		= IMGTYPE_COOK		+ PREG_OFFSET;
 const int IMGTYPE_PREGCRAFT		= IMGTYPE_CRAFT		+ PREG_OFFSET;
 const int IMGTYPE_PREGSWIM		= IMGTYPE_SWIM		+ PREG_OFFSET;
 const int IMGTYPE_PREGBATH		= IMGTYPE_BATH		+ PREG_OFFSET;
+const int IMGTYPE_PREGNURSE		= IMGTYPE_NURSE		+ PREG_OFFSET;
+const int IMGTYPE_PREGFORMAL	= IMGTYPE_FORMAL	+ PREG_OFFSET;
 
 const int NUM_IMGTYPES = IMGTYPE_PREGNANT + PREG_OFFSET; // `J` All image types can have a pregnant variation (except pregnant-pregnant)
+
 
 
 const int NUM_GIRLFLAGS         = 30;

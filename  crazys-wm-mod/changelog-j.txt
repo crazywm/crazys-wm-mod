@@ -671,5 +671,28 @@ WME - added "ShowPercent" checkbox and a few minor changes.
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.00
 !!!!!!!!!!!!!!!!!!!! pushed to SVN - r97
 
+Changed default brothel background in J_1024x768 interface.
+Fixed typos in Escort job.
+
+###  Changes 8/29/2014
+WME - started Image Count for girls
+Added image types "Nurse" and "Formal"
+
+###  Changes 8/30/2014
+Fixed bug in child_is_grown that was crashing game.
+Cleaned and did some minor changes to children growing up.
+Fixed error with default background image not loading for turn summary screen.
+Adjusted AIDS check for Nurse and Doctor plus added it to Intern.
+Added m_Tips so tips can be counted seperatly from pay when useing girls_keep_tips and slave_keep_tips
+Added tips to CalculatePay and summary messages
+* Only Escort and Peep Show have new tips so far
+Spell checked and cleaned WorkPeepShow.cpp
+Updated WorkEscort.cpp to make it a working job (still needs fleshing out)
+
+###  Changes 8/31/2014
+Fixed broken flow in brothels causing bad payments
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.09
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.01
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r98
 
 

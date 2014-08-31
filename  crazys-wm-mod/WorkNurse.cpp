@@ -45,16 +45,17 @@ extern cGold g_Gold;
 
 bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
-	string message = "";
-
 	if (g_Girls.HasTrait(girl, "AIDS"))
 	{
-		message = gettext("Health laws prohibit anyone with AIDS from work in the Medical profession so ") + 
-			girl->m_Realname + gettext(" was sent to the waiting room.");
-		if (DayNight == 0)	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_WARNING);
+		stringstream ss;
+		ss << "Health laws prohibit anyone with AIDS from working in the Medical profession so " <<
+			girl->m_Realname << " was sent to the waiting room.";
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
 		girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
 		return true;
 	}
+
+	string message = "";
 
 	if (Preprocessing(ACTION_WORKNURSE, girl, brothel, DayNight, summary, message))
 		return true;

@@ -186,7 +186,7 @@ void cMovieStudioManager::UpdateMovieStudio()
 			g_Gold.brothel_accounts(current->m_Finance, current->m_id);
 			stringstream ss;
 			ss.str("");
-			ss << gettext("You earn ") << income << gettext(" gold from movie income, at your ") << current->m_Name;
+			ss << "You earn " << income << " gold from movie income, at your " << current->m_Name;
 			g_MessageQue.AddToQue(ss.str(), 2);
 		}
 	}
@@ -211,7 +211,8 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 	sGirl* current = brothel->m_Girls;
 	sGirl* DeadGirl = 0;
 	string summary, msg, girlName;
-	int totalGold = 0;
+	int totalPay = 0, totalTips = 0, totalGold = 0;
+
 	int sum = EVENT_SUMMARY;
 	int numgirls = GetNumGirls(brothel->m_id);
 	u_int sw = 0;						//	Job type
@@ -221,6 +222,7 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 	// `J` Handle the base checks for all girls first
 	while (current)
 	{
+		current->m_Pay = current->m_Tips = 0;
 		brothel->m_Filthiness++;
 		// Remove any dead bodies from last week
 		if (current->health() <= 0)
@@ -305,12 +307,15 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 		}
 		// `J` Now we have a matron so lets see if she will work
 
-		totalGold = current->m_Pay = refused = 0;
+		current->m_Pay = current->m_Tips = totalPay = totalTips = totalGold = 0;
+		refused = false;
 		sum = EVENT_SUMMARY;
 
 		refused = m_JobManager.JobFunc[matronjob](current, brothel, SHIFT_NIGHT, summary);
 
-		totalGold += current->m_Pay;
+		totalPay += current->m_Pay;
+		totalTips += current->m_Tips;
+		totalGold += current->m_Pay + current->m_Tips;
 		g_Brothels.CalculatePay(brothel, current, matronjob);
 
 		if (refused)
@@ -324,9 +329,16 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 		{
 			matron = true;
 			brothel->m_Fame += g_Girls.GetStat(current, STAT_FAME);
-			if (totalGold > 0) { summary += girlName + gettext(" earned a total of "); _itoa(totalGold, buffer, 10); summary += buffer; summary += gettext(" gold directly from you. She gets to keep it all."); }
+			if (totalGold > 0) 
+			{ 
+				stringstream ss; ss << girlName << " earned a total of " << totalGold << " gold directly from you. She gets to keep it all."; summary += ss.str();
+			}
 			else if (totalGold == 0) summary += girlName + gettext(" made no money.");
-			else if (totalGold < 0) { sum = EVENT_DEBUG; summary += "ERROR: She has a loss of "; _itoa(totalGold, buffer, 10); summary += buffer; summary += " gold"; summary += "\n\n Please report this to the Pink Petal Devloment Team at http://pinkpetal.org"; }
+			else if (totalGold < 0) 
+			{ 
+				sum = EVENT_DEBUG; 
+				stringstream ss; ss << "ERROR: She has a loss of " << totalGold << " gold\n\n Please report this to the Pink Petal Devloment Team at http://pinkpetal.org"; summary += ss.str(); 
+			}
 		}
 		current->m_Events.AddMessage(summary, IMGTYPE_PROFILE, sum);
 		summary = "";
@@ -456,7 +468,8 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 			if (current->m_Next) { current = current->m_Next; continue; }
 			else { current = 0; break; }
 		}
-		totalGold = current->m_Pay = refused = 0;
+		current->m_Pay = current->m_Tips = totalPay = totalTips = totalGold = 0;
+		refused = false;
 		girlName = current->m_Realname;
 		sum = EVENT_SUMMARY;
 
@@ -464,7 +477,9 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 		sw = current->m_NightJob;
 		refused = m_JobManager.JobFunc[current->m_NightJob](current, brothel, SHIFT_NIGHT, summary);
 
-		totalGold += current->m_Pay;
+		totalPay += current->m_Pay;
+		totalTips += current->m_Tips;
+		totalGold += current->m_Pay + current->m_Tips;
 		g_Brothels.CalculatePay(brothel, current, current->m_NightJob);
 		//		Summary Messages
 		if (refused)
@@ -517,26 +532,35 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 			brothel->m_Fame += g_Girls.GetStat(current, STAT_FAME);
 			if (totalGold > 0)
 			{
-				summary += girlName + gettext(" earned a total of "); _itoa(totalGold, buffer, 10); summary += buffer; summary += gettext(" gold");
+				stringstream ss;
+				ss << girlName << " earned a total of " << totalGold << " gold";
+				// if it is a player paid job and she is not a slave
 				if ((m_JobManager.is_job_Paid_Player(current->m_NightJob) && !current->is_slave()) ||
+					// or if it is a player paid job	and she is a slave		but you pay slaves out of pocket.
 					(m_JobManager.is_job_Paid_Player(current->m_NightJob) && current->is_slave() && cfg.initial.slave_pay_outofpocket()))
-					summary += gettext(" directly from you. She gets to keep it all.");
-				else if (current->house() <= 0)
-					summary += gettext(" and she gets to keep it all.");
+					ss << " directly from you. She gets to keep it all.";
+				else if (current->house() <= 0)				ss << " and she gets to keep it all.";
+				else if ((cfg.initial.girls_keep_tips() && !current->is_slave()) || (cfg.initial.slave_keep_tips() && current->is_slave()))
+				{
+					int hpay = totalPay * current->m_Stats[STAT_HOUSE];
+					int gpay = totalPay - hpay;
+					ss << ".\nShe keeps the " << totalTips << " she got in tips and her cut (" << 100 - current->m_Stats[STAT_HOUSE] << "%) of the payment amounting to " << gpay << " gold.\n\nYou got " << hpay << " gold";
+				}
 				else
 				{
-					summary += gettext(", you keep ");
-					_itoa((int)current->m_Stats[STAT_HOUSE], buffer, 10);
-					summary += buffer;
-					summary += gettext("%. ");
+					int hpay = totalGold * current->m_Stats[STAT_HOUSE];
+					int gpay = totalGold - hpay;
+					ss << ".\nShe keeps " << gpay << " gold. (" << 100 - current->m_Stats[STAT_HOUSE] << "%)\nYou keep " << gpay << " gold. (" << current->m_Stats[STAT_HOUSE] << "%).";
 				}
+				summary += ss.str();
 			}
 			else if (totalGold == 0) summary += girlName + gettext(" made no money.");
 			else if (totalGold < 0)
 			{
+				stringstream ss;
+				ss << "ERROR: She has a loss of " << totalGold << " gold\n\n Please report this to the Pink Petal Devloment Team at http://pinkpetal.org";
+				summary += ss.str();
 				sum = EVENT_DEBUG;
-				summary += "ERROR: She has a loss of "; _itoa(totalGold, buffer, 10); summary += buffer; summary += " gold";
-				summary += "\n\n Please report this to the Pink Petal Devloment Team at http://pinkpetal.org";
 			}
 		}
 		current->m_Events.AddMessage(summary, IMGTYPE_PROFILE, sum);
@@ -558,7 +582,8 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 		}
 		// setting day job as an easy way of tracking what the girl was doing before the director tries to reassign her
 		current->m_DayJob = current->m_NightJob;
-		totalGold = current->m_Pay = refused = 0;
+		current->m_Pay = current->m_Tips = totalPay = totalTips = totalGold = 0;
+		refused = false;
 		girlName = current->m_Realname;
 		sum = EVENT_SUMMARY;
 
@@ -575,32 +600,43 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 		}
 		else	// if she did not refuse to work...
 		{
-			totalGold += current->m_Pay;
+			totalPay += current->m_Pay;
+			totalTips += current->m_Tips;
+			totalGold += current->m_Pay + current->m_Tips;
 			g_Brothels.CalculatePay(brothel, current, current->m_NightJob);
 
 			brothel->m_Fame += g_Girls.GetStat(current, STAT_FAME);
 			if (totalGold > 0)
 			{
-				summary += girlName + gettext(" earned a total of "); _itoa(totalGold, buffer, 10); summary += buffer; summary += gettext(" gold");
+				stringstream ss;
+				ss << girlName << " earned a total of " << totalGold << " gold";
+				// if it is a player paid job and she is not a slave
 				if ((m_JobManager.is_job_Paid_Player(current->m_NightJob) && !current->is_slave()) ||
+					// or if it is a player paid job	and she is a slave		but you pay slaves out of pocket.
 					(m_JobManager.is_job_Paid_Player(current->m_NightJob) && current->is_slave() && cfg.initial.slave_pay_outofpocket()))
-					summary += gettext(" directly from you. She gets to keep it all.");
-				else if (current->house() <= 0)
-					summary += gettext(" and she gets to keep it all.");
+					ss << " directly from you. She gets to keep it all.";
+				else if (current->house() <= 0)				ss << " and she gets to keep it all.";
+				else if ((cfg.initial.girls_keep_tips() && !current->is_slave()) || (cfg.initial.slave_keep_tips() && current->is_slave()))
+				{
+					int hpay = totalPay * current->m_Stats[STAT_HOUSE];
+					int gpay = totalPay - hpay;
+					ss << ".\nShe keeps the " << totalTips << " she got in tips and her cut (" << 100 - current->m_Stats[STAT_HOUSE] << "%) of the payment amounting to " << gpay << " gold.\n\nYou got " << hpay << " gold";
+				}
 				else
 				{
-					summary += gettext(", you keep ");
-					_itoa((int)current->m_Stats[STAT_HOUSE], buffer, 10);
-					summary += buffer;
-					summary += gettext("%. ");
+					int hpay = totalGold * current->m_Stats[STAT_HOUSE];
+					int gpay = totalGold - hpay;
+					ss << ".\nShe keeps " << gpay << " gold. (" << 100 - current->m_Stats[STAT_HOUSE] << "%)\nYou keep " << gpay << " gold. (" << current->m_Stats[STAT_HOUSE] << "%).";
 				}
+				summary += ss.str();
 			}
 			else if (totalGold == 0) summary += girlName + gettext(" made no money.");
 			else if (totalGold < 0)
 			{
+				stringstream ss;
+				ss << "ERROR: She has a loss of " << totalGold << " gold\n\n Please report this to the Pink Petal Devloment Team at http://pinkpetal.org";
+				summary += ss.str();
 				sum = EVENT_DEBUG;
-				summary += "ERROR: She has a loss of "; _itoa(totalGold, buffer, 10); summary += buffer; summary += " gold";
-				summary += "\n\n Please report this to the Pink Petal Devloment Team at http://pinkpetal.org";
 			}
 			current->m_Events.AddMessage(summary, IMGTYPE_PROFILE, sum);
 			summary = "";
@@ -658,14 +694,17 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 			if (current->m_Next) { current = current->m_Next; continue; }
 			else { current = 0; break; }
 		}
-		totalGold = current->m_Pay = refused = 0;
+		current->m_Pay = current->m_Tips = totalPay = totalTips = totalGold = 0;
+		refused = false;
 		girlName = current->m_Realname;
 		sum = EVENT_SUMMARY;
 
 		// do their job
 		refused = m_JobManager.JobFunc[current->m_NightJob](current, brothel, SHIFT_NIGHT, summary);
 
-		totalGold += current->m_Pay;
+		totalPay += current->m_Pay;
+		totalTips += current->m_Tips;
+		totalGold += current->m_Pay + current->m_Tips;
 		g_Brothels.CalculatePay(brothel, current, current->m_NightJob);
 		//		Summary Messages
 		if (refused)
@@ -679,26 +718,35 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 			brothel->m_Fame += g_Girls.GetStat(current, STAT_FAME);
 			if (totalGold > 0)
 			{
-				summary += girlName + gettext(" earned a total of "); _itoa(totalGold, buffer, 10); summary += buffer; summary += gettext(" gold");
-				if ((m_JobManager.is_job_Paid_Player(current->m_NightJob) && !current->is_slave()) || 
+				stringstream ss;
+				ss << girlName << " earned a total of " << totalGold << " gold";
+				// if it is a player paid job and she is not a slave
+				if ((m_JobManager.is_job_Paid_Player(current->m_NightJob) && !current->is_slave()) ||
+					// or if it is a player paid job	and she is a slave		but you pay slaves out of pocket.
 					(m_JobManager.is_job_Paid_Player(current->m_NightJob) && current->is_slave() && cfg.initial.slave_pay_outofpocket()))
-					summary += gettext(" directly from you. She gets to keep it all.");
-				else if (current->house() <= 0)
-					summary += gettext(" and she gets to keep it all.");
+					ss << " directly from you. She gets to keep it all.";
+				else if (current->house() <= 0)				ss << " and she gets to keep it all.";
+				else if ((cfg.initial.girls_keep_tips() && !current->is_slave()) || (cfg.initial.slave_keep_tips() && current->is_slave()))
+				{
+					int hpay = totalPay * current->m_Stats[STAT_HOUSE];
+					int gpay = totalPay - hpay;
+					ss << ".\nShe keeps the " << totalTips << " she got in tips and her cut (" << 100 - current->m_Stats[STAT_HOUSE] << "%) of the payment amounting to " << gpay << " gold.\n\nYou got " << hpay << " gold";
+				}
 				else
 				{
-					summary += gettext(", you keep ");
-					_itoa((int)current->m_Stats[STAT_HOUSE], buffer, 10);
-					summary += buffer;
-					summary += gettext("%. ");
+					int hpay = totalGold * current->m_Stats[STAT_HOUSE];
+					int gpay = totalGold - hpay;
+					ss << ".\nShe keeps " << gpay << " gold. (" << 100 - current->m_Stats[STAT_HOUSE] << "%)\nYou keep " << gpay << " gold. (" << current->m_Stats[STAT_HOUSE] << "%).";
 				}
+				summary += ss.str();
 			}
 			else if (totalGold == 0) summary += girlName + gettext(" made no money.");
 			else if (totalGold < 0)
 			{
+				stringstream ss;
+				ss << "ERROR: She has a loss of " << totalGold << " gold\n\n Please report this to the Pink Petal Devloment Team at http://pinkpetal.org";
+				summary += ss.str();
 				sum = EVENT_DEBUG;
-				summary += "ERROR: She has a loss of "; _itoa(totalGold, buffer, 10); summary += buffer; summary += " gold";
-				summary += "\n\n Please report this to the Pink Petal Devloment Team at http://pinkpetal.org";
 			}
 		}
 		current->m_Events.AddMessage(summary, IMGTYPE_PROFILE, sum);
@@ -718,7 +766,8 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 			else { current = 0; break; }
 		}
 
-		totalGold = current->m_Pay = refused = 0;
+		current->m_Pay = current->m_Tips = totalPay = totalTips = totalGold = 0;
+		refused = false;
 		girlName = current->m_Realname;
 
 		// `J` only JOB_FILMRANDOM will check if anything is prohibited. If you put them on a specific job, then it is you breaking the prohibition.
@@ -749,7 +798,9 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 		}
 		refused = m_JobManager.JobFunc[sw](current, brothel, SHIFT_NIGHT, summary);
 
-		totalGold += current->m_Pay;
+		totalPay += current->m_Pay;
+		totalTips += current->m_Tips;
+		totalGold += current->m_Pay + current->m_Tips;
 		g_Brothels.CalculatePay(brothel, current, sw);
 		//	Summary Messages
 		if (refused)
@@ -763,28 +814,35 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 			brothel->m_Fame += g_Girls.GetStat(current, STAT_FAME);
 			if (totalGold > 0)
 			{
-				summary += girlName + gettext(" earned a total of "); _itoa(totalGold, buffer, 10); summary += buffer; summary += gettext(" gold");
-
-				// all jobs currently being checked are paid directly from you, but you can choose not to pay slaves
+				stringstream ss;
+				ss << girlName << " earned a total of " << totalGold << " gold";
+				// if it is a player paid job and she is not a slave
 				if ((m_JobManager.is_job_Paid_Player(current->m_NightJob) && !current->is_slave()) ||
+					// or if it is a player paid job	and she is a slave		but you pay slaves out of pocket.
 					(m_JobManager.is_job_Paid_Player(current->m_NightJob) && current->is_slave() && cfg.initial.slave_pay_outofpocket()))
-					summary += gettext(" directly from you. She gets to keep it all.");
-				else if (current->house() <= 0)				
-					summary += gettext(" and she gets to keep it all.");
-				else 
+					ss << " directly from you. She gets to keep it all.";
+				else if (current->house() <= 0)				ss << " and she gets to keep it all.";
+				else if ((cfg.initial.girls_keep_tips() && !current->is_slave()) || (cfg.initial.slave_keep_tips() && current->is_slave()))
 				{
-					summary += gettext(", you keep ");
-					_itoa((int)current->m_Stats[STAT_HOUSE], buffer, 10);
-					summary += buffer;
-					summary += gettext("%. ");
+					int hpay = totalPay * current->m_Stats[STAT_HOUSE];
+					int gpay = totalPay - hpay;
+					ss << ".\nShe keeps the " << totalTips << " she got in tips and her cut (" << 100 - current->m_Stats[STAT_HOUSE] << "%) of the payment amounting to " << gpay << " gold.\n\nYou got " << hpay << " gold";
 				}
+				else
+				{
+					int hpay = totalGold * current->m_Stats[STAT_HOUSE];
+					int gpay = totalGold - hpay;
+					ss << ".\nShe keeps " << gpay << " gold. (" << 100 - current->m_Stats[STAT_HOUSE] << "%)\nYou keep " << gpay << " gold. (" << current->m_Stats[STAT_HOUSE] << "%).";
+				}
+				summary += ss.str();
 			}
 			else if (totalGold == 0) summary += girlName + gettext(" made no money.");
 			else if (totalGold < 0)
 			{
+				stringstream ss;
+				ss << "ERROR: She has a loss of " << totalGold << " gold\n\n Please report this to the Pink Petal Devloment Team at http://pinkpetal.org";
+				summary += ss.str();
 				sum = EVENT_DEBUG;
-				summary += "ERROR: She has a loss of "; _itoa(totalGold, buffer, 10); summary += buffer; summary += " gold";
-				summary += "\n\n Please report this to the Pink Petal Devloment Team at http://pinkpetal.org";
 			}
 		}
 		current->m_Events.AddMessage(summary, IMGTYPE_PROFILE, sum);

@@ -1446,11 +1446,11 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 	if (!purchase)
 	{
 		data += gettext("\n\nJOB PREFERENCES\n");
-
+		// `J` When adding or changing this section, search for "J-Change-Action-Types"
 		string jobs[] = {
 			gettext("combat"),
 			gettext("working as a whore"),
-			gettext("doing miscellaneous tasks"),  // general
+			gettext("working as an Escort"),
 			gettext("cleaning"),
 			gettext("acting as a matron"),
 			gettext("working in the bar"),
@@ -1474,7 +1474,8 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 			gettext("striping"),
 			gettext("having her breasts milked"),
 			gettext("working as a massusse"),
-			gettext("working on the farm")
+			gettext("working on the farm"),
+			gettext("doing miscellaneous tasks")  // general
 		};
 		string base = gettext("She");
 		string text;
@@ -10728,134 +10729,97 @@ bool cGirls::child_is_grown(sGirl* mom, sChild *child, string& summary, bool Pla
 	cConfig cfg;
 	cTariff tariff;
 	stringstream ss;
-/*
- *	bump the age - if it's still not grown, go home
- */
-	child->m_Age++;
-	if(child->m_Age < cfg.pregnancy.weeks_till_grown()) {
-		return false;
-	}
-/*
- *	we need a coming of age ceremony
- *
- *	for boys, slap 'em in irons and sell 'em into slavery
- */
-	if(child->is_boy()) {
-		summary += gettext("A son grew of age. ");
-/*
- *		get the going rate for a male slave
- *		and sell the poor sod
- */
-		mom->m_States |= (1<<STATUS_HAS_SON);
+	// bump the age - if it's still not grown, go home
+	child->m_Age++;		if (child->m_Age < cfg.pregnancy.weeks_till_grown())	return false;
 
-		if(PlayerControlled)
+	// we need a coming of age ceremony
+	if (child->is_boy())
+	{
+		summary += gettext("A son grew of age. ");
+		mom->m_States |= (1 << STATUS_HAS_SON);
+
+		if (PlayerControlled)	// get the going rate for a male slave and sell the poor sod
 		{
 			int gold = tariff.male_slave_sales();
 			g_Gold.slave_sales(gold);
-/*
- *			format a message
- */
 			ss << gettext("Her son has grown of age and has been sold into slavery.\n");
 			ss << gettext("You make ") << gold << gettext(" gold selling the boy.\n");
-/*
- *			and tell the player
- */
-			mom->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_DANGER);
 		}
+		else	// or send him on his way
+		{
+			int roll = g_Dice % 4;
+			ss << "Her son has grown of age and ";
+			if (roll == 0)		ss << "moved away";
+			else if (roll == 1)	ss << "joined the army";
+			else 				ss << "got his own place in town";
+			ss << gettext(".\n");
+		}
+		mom->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
 		return true;
 	}
 
-	mom->m_States |= (1<<STATUS_HAS_DAUGHTER);
+	summary += gettext("A daughter grew of age. ");
+	mom->m_States |= (1 << STATUS_HAS_DAUGHTER);
 	bool slave = mom->is_slave();
 	bool AllowNonHuman = mom->has_trait("Not Human");
-/*
- *	create a new girl for the barn
- *	
- *	WD: Bugfix as reported by chronos 
- *		http://pinkpetal.org/index.php?topic=416.msg11968#msg11968
- */
-	//sGirl* sprog = g_Girls.CreateRandomGirl(12, false, "", slave,AllowNonHuman);
+	// create a new girl for the barn
 	sGirl* sprog = g_Girls.CreateRandomGirl(12, false, slave, false, AllowNonHuman);
-/*
- *	check for incest, get the odds on abnormality
- */
-	int abnormal_pc = calc_abnormal_pc(mom, sprog, (child->m_IsPlayers !=0));
-	if(g_Dice.percent(abnormal_pc)) {
-		if(g_Dice.percent(50)) {
-			g_Girls.AddTrait(sprog, "Malformed");
-		}
-		else {
-			g_Girls.AddTrait(sprog, "Retarded");
-		}
-	}
-/*
- *	loop throught the mom's traits, inheriting where appropriate
- */
-// 	for(int i=0; i<30; i++)		// WD: wrong loop conditions might be reason for excessive traits on kids
-	for(int i=0; i<MAXNUM_TRAITS; i++)
+	// check for incest, get the odds on abnormality
+	int abnormal_pc = calc_abnormal_pc(mom, sprog, (child->m_IsPlayers != 0));
+	if (g_Dice.percent(abnormal_pc)) 
 	{
-		if(g_Girls.InheritTrait(mom->m_Traits[i]))
+		if (g_Dice.percent(50)) g_Girls.AddTrait(sprog, "Malformed");
+		else 					g_Girls.AddTrait(sprog, "Retarded");
+	}
+	// loop throught the mom's traits, inheriting where appropriate
+	for (int i = 0; i < mom->m_NumTraits && sprog->m_NumTraits < 30; i++)
+	{
+		string tname = mom->m_Traits[i]->m_Name;
+		if (g_Girls.InheritTrait(mom->m_Traits[i]) && tname != "")
 			g_Girls.AddTrait(sprog, mom->m_Traits[i]->m_Name);
 	}
 
 	// inherit stats
-	for(int i=0; i<NUM_STATS; i++)
+	for (int i = 0; i < NUM_STATS; i++)
 	{
-		int min, max;
-		if(mom->m_Stats[i] < child->m_Stats[i])
-		{
-			min = mom->m_Stats[i];
-			max = child->m_Stats[i];
-		}
-		else {
-			max = mom->m_Stats[i];
-			min = child->m_Stats[i];
-		}
-		sprog->m_Stats[i] = (g_Dice%(max-min))+min;
+		int min = 0, max = 100;
+		if (mom->m_Stats[i] < child->m_Stats[i]) { min = mom->m_Stats[i]; max = child->m_Stats[i]; }
+		else 									 { max = mom->m_Stats[i]; min = child->m_Stats[i]; }
+		sprog->m_Stats[i] = (g_Dice % (max - min)) + min;
 	}
 
-	//set age to 18, fix health
-	sprog->m_Stats[STAT_AGE]=18;
-	sprog->m_Stats[STAT_HEALTH]=100;
-	sprog->m_Stats[STAT_LEVEL]=0;
-	sprog->m_Stats[STAT_EXP]=0;
+	// set age to 18, fix health
+	sprog->m_Stats[STAT_AGE] = 18;
+	sprog->m_Stats[STAT_HEALTH] = 100;
+	sprog->m_Stats[STAT_HAPPINESS] = 100;
+	sprog->m_Stats[STAT_TIREDNESS] = 0;
+	sprog->m_Stats[STAT_LEVEL] = 0;
+	sprog->m_Stats[STAT_EXP] = 0;
 
 	// inherit skills
-	for(u_int i=0; i<NUM_SKILLS; i++)
+	for (u_int i = 0; i < NUM_SKILLS; i++)
 	{
-		int max;
-		if(mom->m_Skills[i] < child->m_Skills[i])
-		{
-			max = child->m_Skills[i];
-			if(max > 20)
-				max = 20;
-			sprog->m_Skills[i] = g_Dice%max;
-		}
-		else {
-			max = mom->m_Skills[i];
-			if(max > 20)
-				max = 20;
-			sprog->m_Skills[i] = g_Dice%max;
-		}
+		int s = 0;
+		if (mom->m_Skills[i] < child->m_Skills[i])	s = child->m_Skills[i];
+		else										s = mom->m_Skills[i];
+		sprog->m_Skills[i] = g_Dice%max(s, 20);
 	}
 
 	// make sure slave daughters have house perc. set to 100, otherwise 60
-	if(slave)
-		sprog->m_Stats[STAT_HOUSE]=cfg.initial.slave_house_perc();
-	else
-		sprog->m_Stats[STAT_HOUSE]=60;
-
-	if(PlayerControlled)
+	sprog->m_Stats[STAT_HOUSE] = (slave) ? cfg.initial.slave_house_perc() : cfg.initial.girls_house_perc();
+	
+	if (PlayerControlled)
 	{
-		summary += gettext("A daughter grew of age. ");
-		mom->m_Events.AddMessage(
-			gettext("Her daughter has grown of age and has been placed in your dungeon."),
-			IMGTYPE_PROFILE, EVENT_DANGER
-		);
-		g_Brothels.GetDungeon()->AddGirl(sprog, 13);
+		ss << "Her daughter has grown of age and has been placed in your Dungeon.";
+		g_Brothels.GetDungeon()->AddGirl(sprog, DUNGEON_KID);
 	}
 	else
+	{
+		ss << "Her daughter has grown of age and has been placed in your Brothel.";
 		g_Girls.AddGirl(sprog);
+	}
+	mom->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
+
 	return true;
 }
 
@@ -11032,6 +10996,12 @@ bool cGirls::InheritTrait(sTrait* trait)
 	string name = trait->m_Name;
 	if (trait)
 	{
+		if (name == "Malformed" ||
+			name == "Retarded" ||
+			name == "Sterile")
+		{
+			if (g_Dice.percent(10)) return true;
+		}
 		if (name == "Fragile" ||
 			name == "Fleet of Foot" ||
 			name == "Clumsy" ||
@@ -11089,13 +11059,10 @@ bool cGirls::InheritTrait(sTrait* trait)
 			name == "Incest" ||
 			name == "One Eye" ||
 			name == "Eye Patch" ||
-			name == "Malformed" ||
-			name == "Retarded" ||
 			name == "Assassin" ||
 			name == "Adventurer" ||
 			name == "Mind Fucked" ||
-			name == "Broken Will" ||
-			name == "Sterile")
+			name == "Broken Will")
 			return false;
 
 		// WD: Any unlisted traits here
@@ -11500,18 +11467,20 @@ cAImgList* cImgageListManager::LoadList(string name)
 	string numeric="0123456789 ().,[]-";
 	string pic_types[] =
 	{
+		// `J` When adding or changing this section, search for "J-Change-Image-Types"
 		"Anal*.*g", "BDSM*.*g", "Sex*.*g", "Beast*.*g", "Group*.*g", "Les*.*g", "torture*.*g",
 		"Death*.*g", "Profile*.*g", "Combat*.*g", "Oral*.*g", "Ecchi*.*g", "Strip*.*g", "Maid*.*g", "Sing*.*g",
 		"Wait*.*g", "Card*.*g", "Bunny*.*g", "Nude*.*g", "Mast*.*g", "Titty*.*g", "Milk*.*g", "Hand*.*g",
 		// added but not used currently
-		"Foot*.*g", "Bed*.*g", "Farm*.*g", "Herd*.*g", "Cook*.*g", "Craft*.*g", "Swim*.*g", "Bath*.*g",
+		"Foot*.*g", "Bed*.*g", "Farm*.*g", "Herd*.*g", "Cook*.*g", "Craft*.*g", "Swim*.*g", "Bath*.*g", "Nurse*.*g", "Formal*.*g",
 
 		"Preg*.*g", "PregAnal*.*g", "PregBDSM*.*g", "PregSex*.*g", "pregbeast*.*g", "preggroup*.*g", "pregles*.*g", "pregtorture*.*g", "pregdeath*.*g",
 		"pregprofile*.*g", "pregcombat*.*g", "pregoral*.*g", "pregecchi*.*g", "pregstrip*.*g", "pregmaid*.*g",
 		"pregsing*.*g", "pregwait*.*g", "pregcard*.*g", "pregbunny*.*g", "pregnude*.*g", "pregmast*.*g",
 		"pregtitty*.*g", "pregmilk*.*g", "preghand*.*g",
 		// added but not used currently
-		"pregFoot*.*g", "pregBed*.*g", "pregFarm*.*g", "pregHerd*.*g", "pregCook*.*g", "pregCraft*.*g", "pregSwim*.*g", "pregBath*.*g"
+		"pregFoot*.*g", "pregBed*.*g", "pregFarm*.*g", "pregHerd*.*g", "pregCook*.*g", "pregCraft*.*g", 
+		"pregSwim*.*g", "pregBath*.*g", "pregNurse*.*g", "pregFormal*.*g"
 
 
 	};
@@ -11559,10 +11528,11 @@ cAImgList* cImgageListManager::LoadList(string name)
 
 	// Yes this is just a hack to load animations (my bad ;) - Necro
 	string pic_types2[] = {
+		// `J` When adding or changing this section, search for "J-Change-Image-Types"
 		"Anal*.ani", "BDSM*.ani", "Sex*.ani", "Beast*.ani", "Group*.ani", "Les*.ani", "torture*.ani",
 		"Death*.ani", "Profile*.ani", "Combat*.ani", "Oral*.ani", "Ecchi*.ani", "Strip*.ani", "Maid*.ani",
 		"Sing*.ani", "Wait*.ani", "Card*.ani", "Bunny*.ani", "Nude*.ani", "Mast*.ani", "Titty*.ani",
-		"Milk*.ani", "Hand*.ani",
+		"Milk*.ani", "Hand*.ani", "Nurse*.ani", "Formal*.ani",
 
 		// added but not used currently
 		"Foot*.ani", "Bed*.ani", "Farm*.ani", "Herd*.ani", "Cook*.ani", "Craft*.ani", "Swim*.ani", "Bath*.ani",
@@ -11574,7 +11544,8 @@ cAImgList* cImgageListManager::LoadList(string name)
 		"pregbunny*.ani", "pregnude*.ani", "pregmast*.ani", "pregtitty*.ani", "pregmilk*.ani", "preghand*.ani",
 
 		// added but not used currently
-		"pregFoot*.ani", "pregBed*.ani", "pregFarm*.ani", "pregHerd*.ani", "pregCook*.ani", "pregCraft*.ani", "pregSwim*.ani", "pregBath*.ani"
+		"pregFoot*.ani", "pregBed*.ani", "pregFarm*.ani", "pregHerd*.ani", "pregCook*.ani", "pregCraft*.ani", 
+		"pregSwim*.ani", "pregBath*.ani", "pregNurse*.ani", "pregFormal*.ani"
 
 
 
@@ -11869,6 +11840,7 @@ CSurface* cGirls::GetImageSurface(sGirl* girl, int ImgType, bool random, int& im
 	int alttypes[] = { -1, -1, -1, -1, -1, -1, -1, -1, -1 };
 	switch (ImgType)
 	{
+		// `J` When adding or changing this section, search for "J-Change-Image-Types"
 		// First do sex types
 	case IMGTYPE_ANAL:		alttypes[0] = IMGTYPE_SEX;		break;
 	case IMGTYPE_BDSM:		alttypes[0] = IMGTYPE_SEX;		break;
@@ -11900,11 +11872,11 @@ CSurface* cGirls::GetImageSurface(sGirl* girl, int ImgType, bool random, int& im
 	case IMGTYPE_BATH:
 		alttypes[0] = IMGTYPE_ECCHI;	alttypes[1] = IMGTYPE_NUDE;		break;
 
-	// types that alt to bunny
-	case IMGTYPE_MAID:
-	case IMGTYPE_SING:
+	// types that alt to bunny and formal
 	case IMGTYPE_WAIT:
-	case IMGTYPE_CARD:		alttypes[0] = IMGTYPE_BUNNY;	break;
+	case IMGTYPE_MAID:		alttypes[0] = IMGTYPE_BUNNY;	break;
+	case IMGTYPE_SING:		
+	case IMGTYPE_CARD:		/*alttypes[0] = IMGTYPE_FORMAL;	*/alttypes[0] = IMGTYPE_BUNNY;	break;
 	
 	// Farm types
 	case IMGTYPE_FARM:		alttypes[0] = -1;				break;
@@ -11914,6 +11886,8 @@ CSurface* cGirls::GetImageSurface(sGirl* girl, int ImgType, bool random, int& im
 
 
 	// these image types have no alt types
+//	case IMGTYPE_NURSE:
+//	case IMGTYPE_FORMAL:
 	case IMGTYPE_BUNNY:
 	case IMGTYPE_DEATH:
 	case IMGTYPE_COMBAT:

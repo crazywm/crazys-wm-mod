@@ -33,6 +33,7 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage0_Info = new System.Windows.Forms.TabPage();
             this.tabPage1_Girls = new System.Windows.Forms.TabPage();
+            this.label_G_Images_Found = new System.Windows.Forms.Label();
             this.checkBox_G_Virgin = new System.Windows.Forms.CheckBox();
             this.groupBox_G_JF = new System.Windows.Forms.GroupBox();
             this.button_Sk_Focus_Farmer = new System.Windows.Forms.Button();
@@ -509,6 +510,7 @@
             this.checkBox_config_LogItems = new System.Windows.Forms.CheckBox();
             this.checkBox_config_LogAll = new System.Windows.Forms.CheckBox();
             this.groupBox22 = new System.Windows.Forms.GroupBox();
+            this.checkBox_Config_Show_Percent = new System.Windows.Forms.CheckBox();
             this.checkBox_Config_Antialias = new System.Windows.Forms.CheckBox();
             this.label140 = new System.Windows.Forms.Label();
             this.label141 = new System.Windows.Forms.Label();
@@ -576,7 +578,6 @@
             this.button23 = new System.Windows.Forms.Button();
             this.button24 = new System.Windows.Forms.Button();
             this.checkBox_ToggleTraitTooltips = new System.Windows.Forms.CheckBox();
-            this.checkBox_Config_Show_Percent = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1_Girls.SuspendLayout();
             this.groupBox_G_JF.SuspendLayout();
@@ -648,6 +649,7 @@
             // 
             // tabPage1_Girls
             // 
+            this.tabPage1_Girls.Controls.Add(this.label_G_Images_Found);
             this.tabPage1_Girls.Controls.Add(this.checkBox_G_Virgin);
             this.tabPage1_Girls.Controls.Add(this.groupBox_G_JF);
             this.tabPage1_Girls.Controls.Add(this.groupBox25);
@@ -673,6 +675,18 @@
             this.tabPage1_Girls.TabIndex = 1;
             this.tabPage1_Girls.Text = "  Girl Data  ";
             this.tabPage1_Girls.UseVisualStyleBackColor = true;
+            // 
+            // label_G_Images_Found
+            // 
+            this.label_G_Images_Found.AutoSize = true;
+            this.label_G_Images_Found.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label_G_Images_Found.Location = new System.Drawing.Point(137, 55);
+            this.label_G_Images_Found.Name = "label_G_Images_Found";
+            this.label_G_Images_Found.Size = new System.Drawing.Size(101, 13);
+            this.label_G_Images_Found.TabIndex = 18;
+            this.label_G_Images_Found.Text = "Images Found: 0";
+            this.toolTip1.SetToolTip(this.label_G_Images_Found, "The total number of image files in the Resources\\Characters\\(Girl Name) folder.\r\n" +
+        "It only counts files with the extensions jpg, jpeg, png and ani.");
             // 
             // checkBox_G_Virgin
             // 
@@ -1418,6 +1432,7 @@
             this.TBox_G_Name.Name = "TBox_G_Name";
             this.TBox_G_Name.Size = new System.Drawing.Size(250, 20);
             this.TBox_G_Name.TabIndex = 1;
+            this.TBox_G_Name.TextChanged += new System.EventHandler(this.TBox_G_Name_TextChanged);
             // 
             // label_Girl_Name
             // 
@@ -6085,6 +6100,17 @@
             this.groupBox22.TabStop = false;
             this.groupBox22.Text = "Fonts";
             // 
+            // checkBox_Config_Show_Percent
+            // 
+            this.checkBox_Config_Show_Percent.AutoSize = true;
+            this.checkBox_Config_Show_Percent.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.checkBox_Config_Show_Percent.Location = new System.Drawing.Point(90, 68);
+            this.checkBox_Config_Show_Percent.Name = "checkBox_Config_Show_Percent";
+            this.checkBox_Config_Show_Percent.Size = new System.Drawing.Size(64, 17);
+            this.checkBox_Config_Show_Percent.TabIndex = 5;
+            this.checkBox_Config_Show_Percent.Text = "Show %";
+            this.checkBox_Config_Show_Percent.UseVisualStyleBackColor = true;
+            // 
             // checkBox_Config_Antialias
             // 
             this.checkBox_Config_Antialias.AutoSize = true;
@@ -6811,17 +6837,6 @@
             this.checkBox_ToggleTraitTooltips.UseVisualStyleBackColor = true;
             this.checkBox_ToggleTraitTooltips.CheckedChanged += new System.EventHandler(this.checkBox_ToggleTraitTooltips_CheckedChanged);
             // 
-            // checkBox_Config_Show_Percent
-            // 
-            this.checkBox_Config_Show_Percent.AutoSize = true;
-            this.checkBox_Config_Show_Percent.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.checkBox_Config_Show_Percent.Location = new System.Drawing.Point(90, 68);
-            this.checkBox_Config_Show_Percent.Name = "checkBox_Config_Show_Percent";
-            this.checkBox_Config_Show_Percent.Size = new System.Drawing.Size(64, 17);
-            this.checkBox_Config_Show_Percent.TabIndex = 5;
-            this.checkBox_Config_Show_Percent.Text = "Show %";
-            this.checkBox_Config_Show_Percent.UseVisualStyleBackColor = true;
-            // 
             // Form1
             // 
             this.AllowDrop = true;
@@ -6838,7 +6853,7 @@
             this.MaximumSize = new System.Drawing.Size(1000, 600);
             this.MinimumSize = new System.Drawing.Size(1000, 600);
             this.Name = "Form1";
-            this.Text = "Whore Master Editor 0.8.08";
+            this.Text = "Whore Master Editor 0.8.09";
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.App_FileDrop);
             this.DragEnter += new System.Windows.Forms.DragEventHandler(this.App_DragEnter);
             this.tabControl1.ResumeLayout(false);
@@ -7461,6 +7476,7 @@
         private System.Windows.Forms.TextBox textBox_Config_Screen_Height_Scale;
         private System.Windows.Forms.TextBox textBox_Config_Screen_Width_Scale;
         private System.Windows.Forms.CheckBox checkBox_Config_Show_Percent;
+        private System.Windows.Forms.Label label_G_Images_Found;
     }
 }
 

@@ -149,7 +149,9 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, int DayNight)
 	sGirl* current = brothel->m_Girls;
 	sGirl* DeadGirl = 0;
 	string summary, msg, girlName;
-	int totalGold = 0;
+	int totalPay = 0, totalTips = 0, totalGold = 0;
+
+	int sum = EVENT_SUMMARY;
 	u_int sw = 0;						//	Job type
 	bool refused = false;
 	m_Processing_Shift = DayNight;		// WD:	Set processing flag to shift type
@@ -159,6 +161,7 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, int DayNight)
 	{
 		while (current)
 		{
+			current->m_Pay = current->m_Tips = 0;
 			if (current->m_DayJob < firstjob && current->m_DayJob > lastjob)		current->m_DayJob = restjob;
 			if (current->m_NightJob < firstjob && current->m_NightJob > lastjob)	current->m_NightJob = restjob;
 			current->m_YesterDayJob = current->m_DayJob;		// `J` set what she did yesterday
@@ -176,10 +179,10 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, int DayNight)
 
 	while (current)
 	{
-		totalGold = 0;
+		current->m_Pay = current->m_Tips = totalPay = totalTips = totalGold = 0;
 		refused = false;
-		current->m_Pay = 0;
 		girlName = current->m_Realname;
+		sum = EVENT_SUMMARY;
 		// ONCE DAILY processing at start of Day Shift
 		if (DayNight == SHIFT_DAY)
 		{
@@ -305,7 +308,9 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		// if she refused she still gets tired
 		if (refused) g_Girls.AddTiredness(current);
 
-		totalGold += current->m_Pay;
+		totalPay += current->m_Pay;
+		totalTips += current->m_Tips;
+		totalGold += current->m_Pay + current->m_Tips;
 
 		// work out the pay between the house and the girl 
 		g_Brothels.CalculatePay(brothel, current, sw);
@@ -415,53 +420,43 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, int DayNight)
 /*
  *		Summary Messages
  */
-		bool sum = true;
 
-		if(refused)											
-			summary += girlName + gettext(" refused to work so made no money.");
-
-		// WD:	Only do summary messages if there is income to report
-		else if(totalGold > 0)										
+		if (refused) summary += girlName + gettext(" refused to work so made no money.");
+		else if (totalGold > 0)
 		{
-			summary += girlName + gettext(" earned a total of ");
-			_itoa(totalGold, buffer, 10);
-			summary += buffer;
-			summary += gettext(" gold");
-//			if(sw == JOB_MATRON)
-
-			// WD: Job Paid by player
-			if(m_JobManager.is_job_Paid_Player(sw))					
-				summary += gettext(" directly from you. She gets to keep it all.");
-			else if(current->house() <= 0)
-				summary += gettext(" and she gets to keep it all.");
+			stringstream ss;
+			ss << girlName << " earned a total of " << totalGold << " gold";
+			u_int job = (DayNight) ? current->m_NightJob : current->m_DayJob;
+			// if it is a player paid job and she is not a slave
+			if ((m_JobManager.is_job_Paid_Player(job) && !current->is_slave()) ||
+				// or if it is a player paid job	and she is a slave		but you pay slaves out of pocket.
+				(m_JobManager.is_job_Paid_Player(job) && current->is_slave() && cfg.initial.slave_pay_outofpocket()))
+				ss << " directly from you. She gets to keep it all.";
+			else if (current->house() <= 0)				ss << " and she gets to keep it all.";
+			else if ((cfg.initial.girls_keep_tips() && !current->is_slave()) || (cfg.initial.slave_keep_tips() && current->is_slave()))
+			{
+				int hpay = totalPay * current->m_Stats[STAT_HOUSE];
+				int gpay = totalPay - hpay;
+				ss << ".\nShe keeps the " << totalTips << " she got in tips and her cut (" << 100 - current->m_Stats[STAT_HOUSE] << "%) of the payment amounting to " << gpay << " gold.\n\nYou got " << hpay << " gold";
+			}
 			else
 			{
-				summary += gettext(", you keep ");
-				_itoa((int)current->m_Stats[STAT_HOUSE], buffer, 10);
-				summary += buffer;
-				summary += gettext("%. ");
+				int hpay = totalGold * current->m_Stats[STAT_HOUSE];
+				int gpay = totalGold - hpay;
+				ss << ".\nShe keeps " << gpay << " gold. (" << 100 - current->m_Stats[STAT_HOUSE] << "%)\nYou keep " << gpay << " gold. (" << current->m_Stats[STAT_HOUSE] << "%).";
 			}
+			summary += ss.str();
 		}
-
-		// WD:	No Income today
-		else if(totalGold == 0)										
-			summary += girlName + gettext(" made no money.");
-
-#if 1																// WD: Income Loss Sanity Checking
-		else if(totalGold < 0)										
+		else if (totalGold == 0)		summary += girlName + gettext(" made no money.");
+		else if (totalGold < 0)
 		{
-			summary += "ERROR: She has a loss of ";
-			_itoa(totalGold, buffer, 10);
-			summary += buffer;
-			summary += " gold";
-			summary += "\n\n Please report this to the Pink Petal Devloment Team at http://pinkpetal.org";
-			current->m_Events.AddMessage(summary, IMGTYPE_PROFILE, EVENT_DEBUG);
-			sum = false;
+			stringstream ss;
+			ss << "ERROR: She has a loss of " << totalGold << " gold\n\n Please report this to the Pink Petal Devloment Team at http://pinkpetal.org";
+			summary += ss.str();
+			sum = EVENT_DEBUG;
 		}
-#endif
 
-		if(sum)
-			current->m_Events.AddMessage(summary, IMGTYPE_PROFILE, EVENT_SUMMARY);
+		current->m_Events.AddMessage(summary, IMGTYPE_PROFILE, sum);
 
 		summary = "";
 

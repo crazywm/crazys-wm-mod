@@ -398,18 +398,16 @@ void cBrothelManager::check_raid()
 	*	OK, the raid is on. Start formatting a message
 	*/
 	stringstream ss;
-	ss << gettext("The local authorities perform a bust on your operations: ");
+	ss << "The local authorities perform a bust on your operations: ";
 	/*
 	*	if we make our influence check, the guard captain will be under
 	*	orders from the mayor to let you off.
 	*
 	*	Let's make sure the player can tell
 	*/
-	if (g_Dice.percent(m_Influence)) {
-		ss << gettext("the guard captain lectures you on the importance of ")
-			<< gettext("crime prevention, whilst also passing on the Mayor's ")
-			<< gettext("heartfelt best wishes.")
-			;
+	if (g_Dice.percent(m_Influence)) 
+	{
+		ss << "the guard captain lectures you on the importance of crime prevention, whilst also passing on the Mayor's heartfelt best wishes.";
 		m_Player.suspicion(-5);
 		g_MessageQue.AddToQue(ss.str(), 1);
 		return;
@@ -418,15 +416,11 @@ void cBrothelManager::check_raid()
 	*	if we have a rival influencing things, it might not matter
 	*	if the player is squeaky clean
 	*/
-	if (m_Player.disposition() > 0 && g_Dice.percent(rival->m_Influence / 2)) {
+	if (m_Player.disposition() > 0 && g_Dice.percent(rival->m_Influence / 2)) 
+	{
 		int fine = (g_Dice % 1000) + 150;
 		g_Gold.fines(fine);
-		ss << gettext("the guard captain condemns your operation as a ")
-			<< gettext("hotbed of criminal activity and fines you ")
-			<< fine
-			<< gettext(" gold for 'living without due care and attention'.")
-			;
-
+		ss << "the guard captain condemns your operation as a hotbed of criminal activity and fines you " << fine << " gold for 'living without due care and attention'.";
 		/*
 		*		see if there's a girl using drugs he can nab
 		*/
@@ -435,10 +429,7 @@ void cBrothelManager::check_raid()
 		*		make sure the player knows why the captain is
 		*		being so blatantly unfair
 		*/
-		ss << gettext("On his way out the captain smiles and says that the ")
-			<< rival->m_Name
-			<< gettext(" send their regards.")
-			;
+		ss << "On his way out the captain smiles and says that the " << rival->m_Name << " send their regards.";
 		g_MessageQue.AddToQue(ss.str(), 1);
 		return;
 	}
@@ -447,85 +438,52 @@ void cBrothelManager::check_raid()
 	*	he's unlikely to have anything incriminating on
 	*	the premises. 20 disposition should see him
 	*/
-	if (g_Dice.percent(m_Player.disposition() * 5)) {
-		ss << gettext("they pronounce your operation to be ")
-			<< gettext("entirely in accordance with the law.")
-			;
-
+	if (g_Dice.percent(m_Player.disposition() * 5)) 
+	{
+		ss << "they pronounce your operation to be entirely in accordance with the law.";
 		m_Player.suspicion(-5);
 		g_MessageQue.AddToQue(ss.str(), 1);
 		return;
 	}
-
 	int nPlayer_Disposition = m_Player.disposition();
 	if (nPlayer_Disposition > -10)
 	{
 		int fine = (g_Dice % 100) + 20;
 		g_Gold.fines(fine);
-		ss << gettext("they find in technical violation of some health ")
-			<< gettext("and safety ordinances, and they fine you ")
-			<< fine
-			<< gettext(" gold.")
-			;
+		ss << "they find you in technical violation of some health and safety ordinances, and they fine you " << fine << " gold.";
 	}
 	else if (nPlayer_Disposition > -30)
 	{
 		int fine = (g_Dice % 300) + 40;
 		g_Gold.fines(fine);
-		ss << gettext("they find some minor criminalities and fine you ")
-			<< fine
-			<< gettext(" gold.")
-			;
+		ss << "they find some minor criminalities and fine you " << fine << " gold.";
 	}
 	else if (nPlayer_Disposition > -50)
 	{
 		int fine = (g_Dice % 600) + 100;
 		g_Gold.fines(fine);
-		ss << gettext("they find evidence of dodgy dealings and fine you ")
-			<< fine
-			<< gettext(" gold.")
-			;
-
+		ss << "they find evidence of dodgy dealings and fine you " << fine << " gold.";
 	}
 	else if (nPlayer_Disposition > -70)
 	{
 		int fine = (g_Dice % 1000) + 150;
 		int bribe = (g_Dice % 300) + 100;
 		g_Gold.fines(fine + bribe);
-		ss << gettext("they find a lot of illegal activities and fine you ")
-			<< fine
-			<< gettext(" gold, it also costs you an extra ")
-			<< bribe
-			<< gettext(" to pay them off from arresting you.")
-			;
-
+		ss << "they find a lot of illegal activities and fine you " << fine << " gold, it also costs you an extra " << bribe << " to pay them off from arresting you.";
 	}
 	else if (nPlayer_Disposition > -90)
 	{
 		int fine = (g_Dice % 1500) + 200;
 		int bribe = (g_Dice % 600) + 100;
 		g_Gold.fines(fine + bribe);
-		ss << gettext("they find enough dirt to put you behind bars for life. ")
-			<< gettext("It costs you ") << bribe << gettext(" to stay out of prison, ")
-			<< gettext(" plus another ")
-			<< fine
-			<< gettext(" in fines on top of that")
-			;
+		ss << "they find enough dirt to put you behind bars for life. " << "It costs you " << bribe << " to stay out of prison, plus another " << fine << " in fines on top of that";
 	}
 	else
 	{
 		int fine = (g_Dice % 2000) + 400;
 		int bribe = (g_Dice % 800) + 150;
 		g_Gold.fines(fine + bribe);
-		ss << gettext("the captain declares your premises to be a sinkhole ")
-			<< gettext("of the utmost vice and depravity, and it is only ")
-			<< gettext("with difficulty that you dissuade him from seizing ")
-			<< gettext("all your property on the spot. You pay ")
-			<< fine
-			<< gettext(" gold in fines, but only after slipping the captain ")
-			<< bribe
-			<< gettext(" not to drag you off to prison.")
-			;
+		ss << "the captain declares your premises to be a sinkhole of the utmost vice and depravity, and it is only with difficulty that you dissuade him from seizing all your property on the spot. You pay " << fine << " gold in fines, but only after slipping the captain " << bribe << " not to drag you off to prison.";
 	}
 	/*
 	*	check for a drug-using girl they can arrest
@@ -1372,38 +1330,67 @@ string cBrothelManager::new_rival_text()
 	*	let's put the gender specific terms in
 	*	variables. Might make the code cleaner
 	*/
-	string man, boy, He, he, him, his, sorcerer, gladiator;
-	string fellow, patriarch;
-	if (male) {
-		He = gettext("He");
-		he = gettext("he");
-		him = gettext("him");
-		his = gettext("his");
-		man = gettext("man");
-		boy = gettext("boy");
-		sorcerer = gettext("sorcerer");
-		gladiator = gettext("gladiator");
-		fellow = gettext("fellow");
-		patriarch = gettext("patriarch ");
+	string man, boy, He, he, him, his, sorcerer, gladiator, fellow, patriarch;
+	if (male) 
+	{
+		He = "He";
+		he = "he";
+		him = "him";
+		his = "his";
+		man = "man";
+		boy = "boy";
+		sorcerer = "sorcerer";
+		gladiator = "gladiator";
+		fellow = "fellow";
+		patriarch = "patriarch ";
 	}
-	else {
-		He = gettext("She");
-		he = gettext("she");
-		him = gettext("her");
-		his = gettext("her");
-		man = gettext("woman");
-		boy = gettext("girl");
-		sorcerer = gettext("sorceress");
-		gladiator = gettext("gladiatrix");
-		/*
-		*		not sure what the feminine of "fellow" is
-		*		I did wonder about "fellatrix"...
-		*/
-		fellow = gettext("wench");
-		patriarch = gettext("matriarch ");
+	else 
+	{
+		He = "She";
+		he = "she";
+		him = "her";
+		his = "her";
+		man = "woman";
+		boy = "girl";
+		sorcerer = "sorceress";
+		gladiator = "gladiatrix";
+		fellow = "wench";			// not sure what the feminine of "fellow" is I did wonder about "fellatrix"...
+		patriarch = "matriarch ";
 	}
 
-	switch (g_Dice.random(MaxChallengers)) {
+	switch (g_Dice.random(MaxChallengers)) 
+	{
+	case Slaver:
+		ss << "A lieutenant reports that one of the professional slavers, finding customers be scarce, has taken to whoring out " << his << " slavegirls to make ends meet. Your men arranged a meet with " << him << " in order to explain your position on the subject, but the discussion did not go well, ending with bared steel and threats of blood.\n\nIt would seem you have a challenger.";
+		break;
+	case Gladiator:
+		ss << "Ask any Crossgate sports fan who rules the Arenas of the city. Almost always, the answer will be the same. For five long years one " << gladiator << " has stood " << his << " ground on the bloody sands and defied all who came before " << him << ".\n\nLast week, the " << gladiator << " bought " << his << " freedom from the arena, and chose to celebrate the occasion at one of your brothels. Sadly, an overindulgence in wine led to harsh words and a rash vow to show you how a whorehouse SHOULD be run.\n\nWith anyone else, the matter would have ended when the morning brought sobriety. But this is a " << man << " who has never turned " << his << " back on any sort of challenge. With wealthy admirers supplying premises and finance, and with a handful of arena veterans to provide the core of " << his << " enforcers, this is a challenger you would be foolish to ignore.";
+		break;
+	case Goon:
+		ss << "The " << boy << " was just skin and bones; a dull eyed waif from gutters of Sleaze Street, a dozen like " << him << " on any street corner. But put a knife in " << his << " hands and the " << boy << " became an artist, painting effortless masterpieces in blood and greased lightning.\n\nQuickly recruited into one of the goon squads, it soon became apparent that behind that flat unblinking stare, there lurked a mind almost as keen as " << his << " blades. The " << boy << " rose quickly, coming to head " << his << " own squad before becoming one of your trusted lieutenants. If only " << his << " ambition had stopped there...\n\n" << "" << ((male) ? "His" : "Her") << " challenge was almost over before it began; for you that is. That you still live says more about the skill of your healers than any talent you might lay claim to. Your newest rival is not only a deadly fighter and a clever strategist, but one who knows your operation, inside and out.\n\nThis will not be easy.";
+		break;
+	case Slave:
+		ss << "There are ways to beat a slaver tattoo. It wouldn't do were that to become widely known, of course. Nevertheless there are ways around it. One such is to find an area of unstable spacetime. Do it right, and you can overload the tracking spell, and the enchantment just falls apart. This is, of course wildly dangerous, but many escapees nevertheless head straight for the Crossgate sewers, which on a bad day can give the catacombs a run for their money.\n\nOver time, a community of ecapees has grown up in the sewers, survivor types, grown hardy in the most hostile environment. And as long as they stay down there, no one much minds. If nothing else they keep the monster population down. But now they seem to be organising a crusade. Against slavery. Against exploitation. Against you.\n\nRumour has it that their leader is one of your offspring, conceived of rape, born into slavery. True or not, this new factions seems determined to bring about your downfall.\n\nThis time, as the bards would say, it is personal.";
+		break;
+	case Mage:
+		ss << "The " << sorcerer << " blew into town with a travelling entertainer show, promising exotic pleasures and the taste of forbidden fruit. But behind the showman's patter and the coloured smoke, the pleasures on offer were of a distinctly carnal nature, and no more exotic than those you yourself could offer.\n\nFor a travelling show, this need not be a problem. For a week, or even two, you can stand to see a little competition. However, the newcomer has been here a month now and shows no sign of moving on. On the contrary, he appears to be shopping for permanent premises.\n\nWith this in mind, you send some men to explain the situation. To everyone's surprise, it turns out that behind the glib charlatanry, there lies genuine magecraft, most likely tantric in nature.\n\nIn your organisation you have no shortage of mages. Any fighting force in Crossgate needs a battle mage or two. This newcomer however operates on a level far beyond what you are used to. And he seems determined to stay, and challenge you for control of the city.";
+		break;
+	case Priest:
+		break;
+	case Noble:
+		ss << "They say " << he << " is a noble, an exile from " << his << " native land. Certainly, " << he << " has the manners of a courtier and the amused weariness of the jaded dilettante.\n\nAnd yet it seems there is steel behind the foppery, as many a Crossgate duelist has learned. And a wit to match the blade as well. An admirable " << fellow << " this, one you would be pleased to call 'friend', if only ...\n\nEarlier this week, your men were explaining to a handful of freelance scrubbers how prostitution worked in this city. If only " << he << " had not chosen to take the women's side against your men. If only " << his << " rash defiance had not caught the imagination of the city's duellists.\n\nAlas, such was not to be.\n\nEn Garde!";
+		break;
+	case Technologist:
+		ss << "From the distant city of Abby's Crossing comes a new rival to challenge for your throne, wielding some strange non-magic " << he << " calls 'technology', an alien art of smoke and steam and noise and lighting; one they say functions strangely in Mundiga, when it chooses to work at all.\n\nBut the hollow metal men that make up " << his << " enforcers would seem to work with deadly efficicency and the strange collapsible maze " << he << " calls a 'tesseract' seems to share many properties with the catacombs under your headquarters. Then there are rumours of strange procedures that can break a slavegirl's will, far faster than the most skilled of Crossgate's torturers.\n\nIn short, far from unreliable, " << his << " arts seem deadly efficient to you. You have no idea what other surprises this otherworldly artisan may have up " << his << " sleeve, but one thing is for certain: this challenge may not go unanswered.";
+		break;
+	case Patriarch:
+		ss << "Outside the walls of Crossgate, there is a shanty-town maze of tumbledown hovels, teeming with the poorest and most desperate of the City's inhabitants. Polygamy and incest are rife here, and extended families can run into the hundreds\n\nOne such family is ruled by the iron will of a dreadful old " << patriarch << " with a well earned reputation for utter ruthlessness. For years " << he << " has sent " << his << " progeny to the city markets, to trade, to steal, to bring back money for the clan in any way they can.\n\nNow it seems they are expanding their operation to include organised prostitution. Bad move.\n\nSomething about the " << patriarch << "'s operation disturbs you. There is a coldness in the way " << he << " sends sons and grandsons out to die for " << him << "; the way " << he << "casually rapes and enslaves " << his << " own daughters and granddaughters before sending them off to whore for " << him << ". This " << man << " holds up a mirror to what you are - or perhaps to what you could easily become. The image it presents is far from flattering.\n\nPersonal feelings aside, this is a situation that can only get worse. The time to end this, is now.";
+		break;
+	case Demon:
+		ss << "Somewhere in Crossgate, a hand trembled inscribing a pentagram; a tongue stumbled over the nine syllables of the charm of binding. A magical being slipped his arcane bonds and slaughtered those mages foolish enough to dream they might command it.\n\nA demon lord now stalks the streets of the city.\n\nWhich, in itself, is not so big a deal. It is not of unheard that the aristocracy of Hell should find themselves stumbling dazed and confused through Crossgate market. They just tend to recover quickly and promptly open a portal home.\n\nBut not this one. This one chooses to briefly linger, to partake of Crossgate society and seek such amusements as the city can offer. Unfortunately, it seems the demon finds amusement trafficking in human misery and human sex. As do you, in the eyes of many.\n\nFor a demon, 'briefly' may be anything from a day to a thousand years. You cannot afford to wait until it grows bored. A demon lord is a formidable opponent, but to ignore this challenge will send entirely the wrong signal to the other would be whore-masters in the city.\n\nLike it or not, this means war.";
+		break;
+
+		/*
 	case Slaver:
 		ss << gettext("A lieutenant reports that one of the ")
 			<< gettext("professional slavers, finding customers ")
@@ -1632,6 +1619,9 @@ string cBrothelManager::new_rival_text()
 		ss << gettext("\n\n");
 		ss << gettext("Like it or not, this means war.");
 		break;
+
+
+		//*/
 	}
 	return ss.str();
 }
@@ -1688,6 +1678,12 @@ void cBrothelManager::UpdateBrothels()
 	stringstream ss;
 	sBrothel* current = m_Parent;
 
+	u_int firstjob = JOB_RESTING;
+	u_int lastjob = JOB_WHORESTREETS;
+	u_int restjob = JOB_RESTING;
+	u_int matronjob = JOB_MATRON;
+	bool matron = (GetNumGirlsOnJob(current->m_id, matronjob, false) >= 1) ? true : false;
+
 	m_TortureDoneFlag = false;							//WD: Reset flag each day is set in WorkTorture()
 
 	UpdateBribeInfluence();
@@ -1704,8 +1700,17 @@ void cBrothelManager::UpdateBrothels()
 		while (cgirl)
 		{
 			cgirl->where_is_she = current->m_id;
+			cgirl->m_InMovieStudio = cgirl->m_InArena = cgirl->m_InCentre = 
+				cgirl->m_InClinic = cgirl->m_InFarm = cgirl->m_InHouse = false;
 			cgirl->m_Events.Clear();
-			cgirl->m_Pay = 0;
+			cgirl->m_Pay = cgirl->m_Tips = 0;
+			// `J` Check for out of building jobs and set yesterday jobs for everyone first
+			if (cgirl->m_DayJob < firstjob && cgirl->m_DayJob > lastjob)		cgirl->m_DayJob = restjob;
+			if (cgirl->m_NightJob < firstjob && cgirl->m_NightJob > lastjob)	cgirl->m_NightJob = restjob;
+			cgirl->m_YesterDayJob = cgirl->m_DayJob;
+			cgirl->m_YesterNightJob = cgirl->m_NightJob;
+
+
 			cgirl = cgirl->m_Next;
 		}
 
@@ -1896,10 +1901,7 @@ void cBrothelManager::UpdateBrothels()
 	else
 	{
 		stringstream ss;
-
-		ss << gettext("you made a overall profit of ")
-			<< totalProfit
-			<< gettext(" gold.");
+		ss << "you made a overall profit of " << totalProfit << " gold.";
 		g_MessageQue.AddToQue(ss.str(), 2);
 	}
 
@@ -1939,23 +1941,18 @@ void cBrothelManager::UpdateBrothels()
 	}
 
 	// update objectives or maybe create a new one
-	if (GetObjective())
-		UpdateObjective();
-	else
-	{
-		if ((g_Dice % 100) + 1 < 45)
-			CreateNewObjective();
-	}
+	if (GetObjective())		UpdateObjective();
+	else { if ((g_Dice % 100) + 1 < 45) CreateNewObjective(); }
 }
 
 // End of turn stuff is here
 void cBrothelManager::UpdateGirls(sBrothel* brothel, int DayNight)
 {
 	// `J` added to allow for easier copy/paste to other buildings
-	u_int restjob = JOB_RESTING;
-	u_int matronjob = JOB_MATRON;
 	u_int firstjob = JOB_RESTING;
 	u_int lastjob = JOB_WHORESTREETS;
+	u_int restjob = JOB_RESTING;
+	u_int matronjob = JOB_MATRON;
 	bool matron = (GetNumGirlsOnJob(brothel->m_id, matronjob, false) >= 1) ? true : false;
 	string MatronMsg = "", MatronWarningMsg = "";
 
@@ -1963,27 +1960,21 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, int DayNight)
 	sGirl* current = brothel->m_Girls;
 	sGirl* DeadGirl = 0;
 	string summary, msg, girlName;
-	int totalGold = 0;
+	int totalPay = 0, totalTips = 0, totalGold = 0;
+
+	int sum = EVENT_SUMMARY;
 	u_int sw = 0;						//	Job type
 	bool refused = false;
 	m_Processing_Shift = DayNight;		// WD:	Set processing flag to shift type
 
-	// `J` Check for out of building jobs and set yesterday jobs for everyone first
-	if (DayNight == SHIFT_DAY)
+	while (current)
 	{
-		while (current)
+		if (current->m_JustGaveBirth)		// if she gave birth, let her rest this week
 		{
-			if (current->m_DayJob < firstjob && current->m_DayJob > lastjob)		current->m_DayJob = restjob;
-			if (current->m_NightJob < firstjob && current->m_NightJob > lastjob)	current->m_NightJob = restjob;
-			current->m_YesterDayJob = current->m_DayJob;		// `J` set what she did yesterday
-			current->m_YesterNightJob = current->m_NightJob;	// `J` set what she did yesternight
-			if (current->m_JustGaveBirth)		// if she gave birth, let her rest this week
-			{
-				if (current->m_NightJob != restjob)	current->m_PrevNightJob = current->m_NightJob;
-				current->m_NightJob = restjob;
-			}
-			current = current->m_Next; // Next Girl
+			if (current->m_NightJob != restjob)	current->m_PrevNightJob = current->m_NightJob;
+			current->m_NightJob = restjob;
 		}
+		current = current->m_Next; // Next Girl
 	}
 	current = brothel->m_Girls;
 
@@ -1997,11 +1988,10 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, int DayNight)
 	*/
 	while (current)
 	{
-		//srand(g_Graphics.GetTicks()+(g_Dice%5432));
-		totalGold = 0;
-		//summary = "";
+		totalPay = totalTips = totalGold = 0;
 		refused = false;
 		girlName = current->m_Realname;
+		sum = EVENT_SUMMARY;
 
 		/*
 		*		ONCE DAILY processing
@@ -2012,40 +2002,20 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, int DayNight)
 			// Remove any dead bodies from last week
 			if (current->health() <= 0)
 			{
-				DeadGirl = current;
-
-				if (current->m_Next) // If there are more girls to process
-					current = current->m_Next;
-				else
-					current = 0;
-
+				DeadGirl = current; if (current->m_Next) current = current->m_Next; else current = 0;
 				UpdateAllGirlsStat(brothel, STAT_PCFEAR, 2);	// increase all the girls fear of the player for letting her die (weather his fault or not)
 				UpdateAllGirlsStat(brothel, STAT_PCHATE, 1);	// increase all the girls hate of the player for letting her die (weather his fault or not)
-
 				// Two messages go into the girl queue...
 				msg += girlName + gettext(" has died from her injuries, the other girls all fear and hate you a little more.");
 				DeadGirl->m_Events.AddMessage(msg, IMGTYPE_DEATH, EVENT_DANGER);
+				g_MessageQue.AddToQue(msg, 1);
 				summary += girlName + gettext(" has died from her injuries.  Her body will be removed by the end of the week.");
 				DeadGirl->m_Events.AddMessage(summary, IMGTYPE_DEATH, EVENT_SUMMARY);
-
-				// There is also one global message
-				g_MessageQue.AddToQue(msg, 1);
-
-				// I forgot to set msg and summary to empty. D'OH!
-				msg = "";
-				summary = "";
-
 				RemoveGirl(brothel->m_id, DeadGirl);
-				DeadGirl = 0;
-
-				if (current)  // If there are more girls to process
-					continue;
-				else
-					break;
+				DeadGirl = 0; msg = ""; summary = "";
+				if (current) continue; else break;
 			}
-
 			current->m_Tort = false;
-
 
 			// Back to work
 			if ((current->m_NightJob == restjob && current->m_DayJob == restjob) && current->m_PregCooldown < cfg.pregnancy.cool_down() &&
@@ -2093,40 +2063,18 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		*		EVERY SHIFT processing
 		*/
 
-		// Sanity check! Don't process dead girls
-		// Sanity check part 2: Check that m_Next points to something
+		// Sanity check! Don't process dead girls and check that m_Next points to something
 		if (current->health() <= 0)
 		{
-			if (current->m_Next) // If there are more girls to process
-			{
-				current = current->m_Next;
-				continue;
-			}
-			else
-			{
-				current = 0;
-				break;
-			}
+			if (current->m_Next) { current = current->m_Next; continue; } else { current = 0; break; }
 		}
-
-		// Girl uses items she has
-		g_Girls.UseItems(current);
-
-		// Calculate the girls asking price
-		g_Girls.CalculateAskPrice(current, true);
+		g_Girls.UseItems(current);						// Girl uses items she has
+		g_Girls.CalculateAskPrice(current, true);		// Calculate the girls asking price
 
 		/*
 		*		JOB PROCESSING
 		*/
-		u_int sw = 0;						//	Job type
-		if (current->m_JustGaveBirth)		// if she gave birth, let her rest this week
-		{
-			if (current->m_DayJob != restjob)	current->m_PrevDayJob = current->m_DayJob;
-			if (current->m_NightJob != restjob)	current->m_PrevNightJob = current->m_NightJob;
-			current->m_DayJob = restjob;
-			current->m_NightJob = restjob;
-		}
-		sw = (DayNight == SHIFT_DAY) ? current->m_DayJob : current->m_NightJob;
+		u_int sw = (DayNight == SHIFT_DAY) ? current->m_DayJob : current->m_NightJob;
 
 		// do their job
 		//	if((sw != JOB_ADVERTISING) && (sw != JOB_WHOREGAMBHALL) && (sw != JOB_WHOREBROTHEL) && (sw != JOB_BARWHORE))		// advertising and whoring are handled earlier.
@@ -2137,24 +2085,15 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, int DayNight)
 			sw == JOB_XXXENTERTAINMENT || sw == JOB_SLEAZYBARMAID || sw == JOB_SLEAZYWAITRESS ||
 			sw == JOB_BARSTRIPPER || sw == JOB_MASSEUSE || sw == JOB_BROTHELSTRIPPER)
 		{
-
+			// these jobs are already done so we skip them
 		}
-		else if (sw >= JOB_RESTING && sw <= JOB_MILK)
-		{
-			refused = m_JobManager.JobFunc[sw](current, brothel, DayNight, summary);
-		}
-		else // Any job not in a Brothel will be replaced with JOB_RESTING
-		{
-			if (DayNight == SHIFT_DAY)current->m_DayJob = restjob;
-			else current->m_NightJob = restjob;
-			sw = restjob;
-			refused = m_JobManager.JobFunc[restjob](current, brothel, DayNight, summary);
-		}
+		else refused = m_JobManager.JobFunc[sw](current, brothel, DayNight, summary);
 
-		if (refused)						// if she refused she still gets tired
-			g_Girls.AddTiredness(current);
+		if (refused) g_Girls.AddTiredness(current);
 
-		totalGold += current->m_Pay;
+		totalPay += current->m_Pay;
+		totalTips += current->m_Tips;
+		totalGold += current->m_Pay + current->m_Tips;
 
 		// work out the pay between the house and the girl
 		g_Brothels.CalculatePay(brothel, current, sw);
@@ -2162,7 +2101,8 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		brothel->m_Fame += g_Girls.GetStat(current, STAT_FAME);
 
 		// Runaway, Depression & Drug checking
-		if (runaway_check(brothel, current) == true) {
+		if (runaway_check(brothel, current) == true) 
+		{
 			sGirl* temp = current;
 			current = current->m_Next;
 			g_Brothels.RemoveGirl(brothel->m_id, temp, false);
@@ -2264,70 +2204,61 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		/*
 		*		Summary Messages
 		*/
-		bool sum = true;
 
 		if (sw == JOB_RESTING)
 			summary += girlName + gettext(" was resting so made no money.");
 
 		else if (sw == JOB_TRAINING)
-			sum = false;
+			sum = -1;	// `J` temporary -1 until I reflow brothel jobs
 
 		else if (sw == JOB_MATRON && DayNight == SHIFT_NIGHT)
 			summary += girlName + gettext(" continued to help the other girls throughout the night.");
 
 		else if (sw == JOB_ADVERTISING)
-			sum = false;
+			sum = -1;
 
 		// WD:	No night shift sunnary message needed for Torturer job
 		else if (sw == JOB_TORTURER && DayNight == SHIFT_NIGHT)
-			sum = false;
+			sum = -1;
 
 		// WD:	Bad girl did not work. Moved from cJobManager::Preprocessing()
-		else if (refused)
-			summary += girlName + gettext(" refused to work so made no money.");
-
-		// WD:	Only do summary messages if there is income to report
+		else if (refused) summary += girlName + gettext(" refused to work so made no money.");
 		else if (totalGold > 0)
 		{
-			summary += girlName + gettext(" earned a total of ");
-			_itoa(totalGold, buffer, 10);
-			summary += buffer;
-			summary += " gold";
-			//			if(sw == JOB_MATRON)
-
-			// WD: Job Paid by player
-			if (m_JobManager.is_job_Paid_Player(sw))
-				summary += gettext(" directly from you. She gets to keep it all.");
-			else if (current->house() <= 0)
-				summary += gettext(" and she gets to keep it all.");
+			stringstream ss;
+			ss << girlName << " earned a total of " << totalGold << " gold";
+			u_int job = (DayNight) ? current->m_NightJob : current->m_DayJob;
+			// if it is a player paid job and she is not a slave
+			if ((m_JobManager.is_job_Paid_Player(job) && !current->is_slave()) ||
+				// or if it is a player paid job	and she is a slave		but you pay slaves out of pocket.
+				(m_JobManager.is_job_Paid_Player(job) && current->is_slave() && cfg.initial.slave_pay_outofpocket()))
+				ss << " directly from you. She gets to keep it all.";
+			else if (current->house() <= 0)				ss << " and she gets to keep it all.";
+			else if ((cfg.initial.girls_keep_tips() && !current->is_slave()) || (cfg.initial.slave_keep_tips() && current->is_slave()))
+			{
+				int hpay = totalPay * current->m_Stats[STAT_HOUSE];
+				int gpay = totalPay - hpay;
+				ss << ".\nShe keeps the " << totalTips << " she got in tips and her cut (" << 100 - current->m_Stats[STAT_HOUSE] << "%) of the payment amounting to " << gpay << " gold.\n\nYou got " << hpay << " gold";
+			}
 			else
 			{
-				summary += gettext(", you keep ");
-				_itoa((int)current->m_Stats[STAT_HOUSE], buffer, 10);
-				summary += buffer;
-				summary += "%. ";
+				int hpay = totalGold * current->m_Stats[STAT_HOUSE];
+				int gpay = totalGold - hpay;
+				ss << ".\nShe keeps " << gpay << " gold. (" << 100 - current->m_Stats[STAT_HOUSE] << "%)\nYou keep " << gpay << " gold. (" << current->m_Stats[STAT_HOUSE] << "%).";
 			}
+			summary += ss.str();
 		}
 
-		// WD:	No Income today
-		else if (totalGold == 0)
-			summary += girlName + gettext(" made no money.");
-
-#if 1																// WD: Income Loss Sanity Checking
+		else if (totalGold == 0)		summary += girlName + gettext(" made no money.");
 		else if (totalGold < 0)
 		{
-			summary += gettext("ERROR: She has a loss of ");
-			_itoa(totalGold, buffer, 10);
-			summary += buffer;
-			summary += gettext(" gold");
-			summary += gettext("\n\n Please report this to the Pink Petal Devloment Team at http://pinkpetal.org");
-			current->m_Events.AddMessage(summary, IMGTYPE_PROFILE, EVENT_DEBUG);
-			sum = false;
+			stringstream ss;
+			ss << "ERROR: She has a loss of " << totalGold << " gold\n\n Please report this to the Pink Petal Devloment Team at http://pinkpetal.org";
+			summary += ss.str();
+			sum = EVENT_DEBUG;
 		}
-#endif
-
-		if (sum)
-			current->m_Events.AddMessage(summary, IMGTYPE_PROFILE, EVENT_SUMMARY);
+		if (sum>=0)	// `J` temporary -1 not to show until I reflow brothel jobs
+		current->m_Events.AddMessage(summary, IMGTYPE_PROFILE, sum);
 
 		summary = "";
 
@@ -3053,10 +2984,7 @@ void cBrothelManager::do_tax()
 	*	Let's report the laundering, at least.
 	*	Otherwise, it just makes the tax rate wobble a bit
 	*/
-	ss << gettext("You were taxed ") << tax << gettext(" gold. ")
-		<< gettext("You managed to launder ") << laundry
-		<< gettext(" through various local businesses.")
-		;
+	ss << "You were taxed " << tax << " gold. You managed to launder " << laundry << " through various local businesses.";
 	g_MessageQue.AddToQue(ss.str(), 0);
 }
 
@@ -3359,35 +3287,64 @@ double cBrothelManager::calc_pilfering(sGirl *girl)
 
 void cBrothelManager::CalculatePay(sBrothel* brothel, sGirl* girl, u_int Job)
 {
-	if (girl->m_Pay <= 0) { girl->m_Pay = 0; return; }				// no pay, no need to continue
+	// no pay or tips, no need to continue
+	if (girl->m_Pay <= 0 && girl->m_Tips <= 0) { girl->m_Pay = girl->m_Tips = 0; return; }
+
 	cConfig cfg;
+	if (girl->m_Tips > 0)		// `J` check tips first
+	{
+		if ((cfg.initial.girls_keep_tips() && !girl->is_slave()) ||	// if free girls tips are counted sepreatly from pay
+			(cfg.initial.slave_keep_tips() && girl->is_slave()))		// if slaves tips are counted sepreatly from pay
+		{
+			girl->m_Money += girl->m_Tips;	// give her the tips directly
+			girl->m_Tips = 0;
+		}
+		else	// otherwise add tips into pay
+		{
+			girl->m_Pay += girl->m_Tips;
+			girl->m_Tips = 0;
+		}
+	}
+	// no pay, no need to continue
+	if (girl->m_Pay <= 0) { girl->m_Pay = girl->m_Tips = 0; return; }
+
 	// if the house takes nothing		or if it is a player paid job and she is not a slave
 	if (girl->m_Stats[STAT_HOUSE] == 0 || (m_JobManager.is_job_Paid_Player(Job) && !girl->is_slave()) ||
 		// or if it is a player paid job	and she is a slave		but you pay slaves out of pocket.
-		(m_JobManager.is_job_Paid_Player(Job) && girl->is_slave() && cfg.initial.slave_pay_outofpocket())
-		)
-	{ girl->m_Money += girl->m_Pay; girl->m_Pay = 0; return; }		// she gets it all
+		(m_JobManager.is_job_Paid_Player(Job) && girl->is_slave() && cfg.initial.slave_pay_outofpocket()))
+	{
+		girl->m_Money += girl->m_Pay;	// she gets it all
+		girl->m_Pay = 0;
+		return;
+	}
 
-	double steal_factor = calc_pilfering(girl);
+	// so now we are to the house percent.
 	float house_factor = float(girl->m_Stats[STAT_HOUSE]) / 100.0f;
-	int stolen = int(steal_factor * girl->m_Pay);					// work out how much gold (if any) she steals
+	
+	// work out how much gold (if any) she steals
+	double steal_factor = calc_pilfering(girl);
+	int stolen = int(steal_factor * girl->m_Pay);
 	girl->m_Pay -= stolen;
-	int house = int(house_factor * girl->m_Pay);					// the house takes its cut of whatever's left
-	if (house > girl->m_Pay) house = girl->m_Pay;					// this shouldn't happen. That said...
-	brothel->m_Finance.brothel_work(house);							// add the various portions of the take to the girl and the brothel finances
-	girl->m_Money += girl->m_Pay - house;
-	girl->m_Money += stolen;										// she secrets away some money
-	if (girl->m_Money < 0) girl->m_Money = 0;						// Not sure how this could happen - suspect it's just a sanity check
-	if (!stolen) return;											// If she didn't steal anything, we're done
-	sGang* gang = g_Gangs.GetGangOnMission(MISS_SPYGIRLS);			// if no-one is watching for theft, we're done
+	girl->m_Money += stolen;
+
+
+	int house = int(house_factor * girl->m_Pay);			// the house takes its cut of whatever's left
+	if (house > girl->m_Pay) house = girl->m_Pay;			// this shouldn't happen. That said...
+
+	girl->m_Money += girl->m_Pay - house;					// The girl collects her part of the pay
+	brothel->m_Finance.brothel_work(house);					// and add the rest to the brothel finances
+	girl->m_Pay = 0;										// clear pay
+	if (girl->m_Money < 0) girl->m_Money = 0;				// Not sure how this could happen - suspect it's just a sanity check
+
+	if (!stolen) return;									// If she didn't steal anything, we're done
+	sGang* gang = g_Gangs.GetGangOnMission(MISS_SPYGIRLS);	// if no-one is watching for theft, we're done
 	if (!gang) return;
-	int catch_pc = g_Gangs.chance_to_catch(girl);					// work out the % chance that the girl gets caught
-	if (!g_Dice.percent(catch_pc)) return;							// if they don't catch her, we're done
-	string gmess = gettext("Your Goons spotted ");					// OK: she got caught. Tell the player
-	gmess += girl->m_Realname;
-	gmess += gettext(" taking more gold then she reported.");
+	int catch_pc = g_Gangs.chance_to_catch(girl);			// work out the % chance that the girl gets caught
+	if (!g_Dice.percent(catch_pc)) return;					// if they don't catch her, we're done
+	
+	// OK: she got caught. Tell the player
+	string gmess = "Your Goons spotted " + girl->m_Realname + " taking more gold then she reported.";
 	gang->m_Events.AddMessage(gmess, IMGTYPE_PROFILE, EVENT_GANG);
-	girl->m_Pay = 0;
 }
 
 // ----- Objective
@@ -4322,23 +4279,19 @@ string cBrothelManager::GetBrothelString(int brothelID)
 	/*
 	*	format the summary into one big string, and return it
 	*/
-	ss << gettext("Customer Happiness: ") << happiness_text(brothel) << endl;
-	ss << gettext("Fame: ") << fame_text(brothel);
-	ss << gettext("Rooms (available/current): ")
-		<< int(brothel->m_NumRooms) - int(brothel->m_NumGirls)
-		<< "/"
-		<< int(brothel->m_NumRooms)
-		<< endl;
+	ss << "Customer Happiness: " << happiness_text(brothel) << endl;
+	ss << "Fame: " << fame_text(brothel);
+	ss << "Rooms (available/current): " << int(brothel->m_NumRooms) - int(brothel->m_NumGirls) << " / " << int(brothel->m_NumRooms) << endl;
 	//ss << "Strip Bar: "		<< has_bar		<< endl;
 	//ss << "Gambling Hall: "	<< has_hall		<< endl;
-	ss << gettext("This brothel's Profit: ") << profit << endl;
-	ss << gettext("Your Gold: ") << g_Gold.ival() << endl;
-	ss << gettext("Security Level: ") << brothel->m_SecurityLevel << endl;
+	ss << "This brothel's Profit: " << profit << endl;
+	ss << "Your Gold: " << g_Gold.ival() << endl;
+	ss << "Security Level: " << brothel->m_SecurityLevel << endl;
 	//ss << "Gambling Pool: "		<< m_GamblingHallPool	<< endl;
-	ss << gettext("Disposition: ") << disposition_text() << endl;
-	ss << gettext("Suspicion: ") << suss_text() << endl;
-	ss << gettext("Filthiness: ") << brothel->m_Filthiness << endl;
-	ss << gettext("Beasts Owned: ") << g_Brothels.GetNumBeasts() << endl;
+	ss << "Disposition: " << disposition_text() << endl;
+	ss << "Suspicion: " << suss_text() << endl;
+	ss << "Filthiness: " << brothel->m_Filthiness << endl;
+	ss << "Beasts Housed Here: " << g_Brothels.GetNumBeasts() << endl;
 	return ss.str();
 	//add cleanliness and check gh and bh
 }
@@ -4356,7 +4309,7 @@ sBrothel* cBrothelManager::GetBrothel(int brothelID)
 	*	brothel not found at least deserves a log message
 	*/
 	stringstream ss;
-	ss << gettext("Brothel ") << brothelID << gettext(" not found in list!");
+	ss << "Brothel " << brothelID << " not found in list!";
 	g_LogFile.write(ss.str());
 	return 0;
 }
@@ -4894,34 +4847,12 @@ bool cBrothelManager::runaway_check(sBrothel *brothel, sGirl *girl)
 // ----- Drugs & addiction
 void cBrothelManager::check_druggy_girl(stringstream& ss)
 {
-	if (g_Dice.percent(90))
-		return;
-
+	if (g_Dice.percent(90)) return;
 	sGirl* girl = GetDrugPossessor();
-	if (girl == 0)
-		return;
-
-
-	ss << gettext(" They also bust a girl named ")
-		<< girl->m_Realname
-		<< gettext(" for possession of drugs and send her to prison.")
-		;
-	/* `J` just because she goes to prison doesn't mean she automatically looses her addiction - commented out
-	if(g_Girls.HasTrait(girl, "Viras Blood Addict"))
-	g_Girls.RemoveTrait(girl, "Viras Blood Addict");
-	if(g_Girls.HasTrait(girl, "Fairy Dust Addict"))
-	g_Girls.RemoveTrait(girl, "Fairy Dust Addict");
-	if(g_Girls.HasTrait(girl, "Shroud Addict"))
-	g_Girls.RemoveTrait(girl, "Shroud Addict");
-	// */ //
-
+	if (girl == 0) return;
+	ss << " They also bust a girl named " << girl->m_Realname << " for possession of drugs and send her to prison.";
+	for (int i = 0; i<girl->m_NumInventory; i++) { m_EquipedItems[i] = 0; m_Inventory[i] = 0; }
 	m_NumInventory = 0;
-	for (int i = 0; i<40; i++)
-	{
-		m_EquipedItems[i] = 0;
-		m_Inventory[i] = 0;
-	}
-
 	AddGirlToPrison(girl);
 }
 

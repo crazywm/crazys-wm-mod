@@ -98,26 +98,17 @@ bool cJobManager::WorkAdvertising(sGirl* girl, sBrothel* brothel, int DayNight, 
 	}
 
 	// useful traits
-	if(girl->has_trait("Psychic"))
-		multiplier += 10;  // add 10 to multiplier
-	if(girl->has_trait("Cool Person"))
-		multiplier += 10;  // add 10 to multiplier
-	if(girl->has_trait("Sexy Air"))
-		multiplier += 10;  // add 10 to multiplier
-	if(girl->has_trait("Charismatic"))
-		multiplier += 10;  // add 10 to multiplier
-	if(girl->has_trait("Charming"))
-		multiplier += 10;  // add 10 to multiplier
+	if(girl->has_trait("Psychic"))		multiplier += 10;
+	if(girl->has_trait("Cool Person"))	multiplier += 10;
+	if(girl->has_trait("Sexy Air"))		multiplier += 10;
+	if(girl->has_trait("Charismatic"))	multiplier += 10;
+	if(girl->has_trait("Charming"))		multiplier += 10;
 
 	// unhelpful traits
-	if(girl->has_trait("Nervous"))
-		multiplier -= 5;  // subtract 5 from multiplier
-	if(girl->has_trait("Clumsy"))
-		multiplier -= 5;  // subtract 5 from multiplier
-	if(girl->has_trait("Retarded"))
-		multiplier -= 20;  // subtract 20 from multiplier
-	if(girl->has_trait("Malformed"))
-		multiplier -= 20;  // subtract 20 from multiplier
+	if(girl->has_trait("Nervous"))		multiplier -= 5; 
+	if(girl->has_trait("Clumsy"))		multiplier -= 5; 
+	if(girl->has_trait("Retarded"))		multiplier -= 20;
+	if(girl->has_trait("Malformed"))	multiplier -= 20;
 
 	// Complications
 	if(g_Dice%100 <= 10)
