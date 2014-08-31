@@ -108,7 +108,7 @@ void cJobManager::Setup()
 	JobDesc[JOB_PIANO] = "She will play the piano for the customers.";
 	JobFunc[JOB_PIANO] = &WorkBarPiano;
 	JobName[JOB_ESCORT] = "Escort";
-	JobDesc[JOB_ESCORT] = "She will be an excort.";
+	JobDesc[JOB_ESCORT] = "She will be an escort.";
 	JobFunc[JOB_ESCORT] = &WorkEscort;
 	// - Gambling Hall Jobs
 	JobFilterName[JOBFILTER_GAMBHALL] = "Gambling Hall";
@@ -1122,6 +1122,10 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		else if (g_Girls.HasTrait(Girl, "AIDS"))
 		{
 			g_MessageQue.AddToQue(gettext("Health laws prohibit anyone with AIDS from working in the Medical profession"), 0);
+			if (Girl->m_DayJob == JOB_INTERN || Girl->m_DayJob == JOB_NURSE || Girl->m_DayJob == JOB_DOCTOR)
+				Girl->m_DayJob = JOB_CLINICREST;
+			if (Girl->m_NightJob == JOB_INTERN || Girl->m_NightJob == JOB_NURSE || Girl->m_NightJob == JOB_DOCTOR)
+				Girl->m_NightJob = JOB_CLINICREST;
 		}
 		else
 			Girl->m_NightJob = Girl->m_DayJob = JOB_DOCTOR;
@@ -1131,6 +1135,10 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		if (g_Girls.HasTrait(Girl, "AIDS"))
 		{
 			g_MessageQue.AddToQue(gettext("Health laws prohibit anyone with AIDS from working in the Medical profession"),0);
+			if (Girl->m_DayJob == JOB_INTERN || Girl->m_DayJob == JOB_NURSE || Girl->m_DayJob == JOB_DOCTOR)
+				Girl->m_DayJob = JOB_CLINICREST;
+			if (Girl->m_NightJob == JOB_INTERN || Girl->m_NightJob == JOB_NURSE || Girl->m_NightJob == JOB_DOCTOR)
+				Girl->m_NightJob = JOB_CLINICREST;
 		}
 		else
 		{
@@ -1139,7 +1147,15 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	}
 	else if (u_int(JobID) == JOB_INTERN)	// `Crazy` added
 	{
-		if (g_Girls.GetSkill(Girl, SKILL_MEDICINE) > 99 && g_Girls.GetStat(Girl, STAT_INTELLIGENCE) > 99 && g_Girls.GetStat(Girl, STAT_CHARISMA) > 99)
+		if (g_Girls.HasTrait(Girl, "AIDS"))
+		{
+			g_MessageQue.AddToQue(gettext("Health laws prohibit anyone with AIDS from working in the Medical profession"), 0);
+			if (Girl->m_DayJob == JOB_INTERN || Girl->m_DayJob == JOB_NURSE || Girl->m_DayJob == JOB_DOCTOR)	
+				Girl->m_DayJob = JOB_CLINICREST;
+			if (Girl->m_NightJob == JOB_INTERN || Girl->m_NightJob == JOB_NURSE || Girl->m_NightJob == JOB_DOCTOR)	
+				Girl->m_NightJob = JOB_CLINICREST;
+		}
+		else if (g_Girls.GetSkill(Girl, SKILL_MEDICINE) > 99 && g_Girls.GetStat(Girl, STAT_INTELLIGENCE) > 99 && g_Girls.GetStat(Girl, STAT_CHARISMA) > 99)
 		{
 			g_MessageQue.AddToQue(gettext("There is nothing more she can learn here."), 0);
 			if (Girl->m_DayJob == JOB_INTERN)	Girl->m_DayJob = JOB_CLINICREST;

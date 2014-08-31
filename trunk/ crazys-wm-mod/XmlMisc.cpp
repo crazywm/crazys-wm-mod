@@ -27,9 +27,10 @@ extern cInventory g_InvManager;
 
 const char* actionTypeNames[] = 
 {
+// `J` When adding or changing this section, search for "J-Change-Action-Types"
 	"COMBAT",
 	"SEX",
-	"GENERAL",
+	"WORKESCORT",
 	"WORKCLEANING",
 	"WORKMATRON",
 	"WORKBAR",
@@ -53,7 +54,8 @@ const char* actionTypeNames[] =
 	"WORKSTRIP",
 	"WORKMILK",
 	"WORKMASSUSSE",
-	"WORKFARM"
+	"WORKFARM",
+	"GENERAL"
 };
 	
 /*

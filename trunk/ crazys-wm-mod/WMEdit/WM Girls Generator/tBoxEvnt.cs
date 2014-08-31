@@ -15,6 +15,67 @@ namespace WM_Girls_Generator
 {
     public partial class Form1
     {
+
+        private void TBox_G_Name_TextChanged(object sender, EventArgs e)
+        {
+            bool imagesfound = false;
+            string sCharactersPath = "Resources\\Characters\\";
+            string b = sCharactersPath;
+            string c = TBox_G_Name.Text;
+            string d = b + c;
+            string f = "";
+            if (Directory.Exists(d))
+            {
+                f = d;
+                if (Directory.GetFiles(f, "*.*g").Count() + Directory.GetFiles(f, "*.ani").Count() > 0)
+                    imagesfound = true;
+            }
+            else if (Directory.Exists("..\\" + d))
+            {
+                f = "..\\" + d;
+                if (Directory.GetFiles(f, "*.*g").Count() + Directory.GetFiles(f, "*.ani").Count() > 0)
+                    imagesfound = true;
+            }
+            else if (Directory.Exists("..\\..\\" + d))
+            {
+                f = "..\\..\\" + d;
+                if (Directory.GetFiles(f, "*.*g").Count() + Directory.GetFiles(f, "*.ani").Count() > 0)
+                    imagesfound = true;
+            }
+            else if (Directory.Exists("..\\..\\..\\" + d))
+            {
+                f = "..\\..\\..\\" + d;
+                if (Directory.GetFiles(f, "*.*g").Count() + Directory.GetFiles(f, "*.ani").Count() > 0)
+                    imagesfound = true;
+            }
+            else if (Directory.Exists("..\\..\\..\\..\\" + d))
+            {
+                f = "..\\..\\..\\..\\" + d;
+                if (Directory.GetFiles(f, "*.*g").Count() + Directory.GetFiles(f, "*.ani").Count() > 0)
+                    imagesfound = true;
+            }
+
+            if (imagesfound)
+            {
+                int count = Directory.GetFiles(f, "*.jpg").Count() +    Directory.GetFiles(f, "*.jpeg").Count() +
+                            Directory.GetFiles(f, "*.png").Count() +    Directory.GetFiles(f, "*.ani").Count();
+
+                label_G_Images_Found.Text = "Images Found: " + count.ToString();
+            }
+            else
+                label_G_Images_Found.Text = "Images Found: 0";
+
+
+
+
+        }
+
+
+
+
+
+
+
         /*
          * limits input to integers and limits it to 0 to 100 values, 
          * rough way, but it works, it would take quite some time to change it to different way 

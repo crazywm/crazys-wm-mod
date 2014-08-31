@@ -1,6 +1,6 @@
 <Screen>
 <Window	Name="Brothel Management"			XPos="16"	YPos="12"	Width="768"	Height="576"	Border="1"	/>
-<Image	Name="Image"	File="Bank.png"		XPos="8"	YPos="48"	Width="584"	Height="480"	/>
+<Image	Name="Image"	File="building_mgt_bg.jpg"		XPos="8"	YPos="48"	Width="584"	Height="480"	/>
 <Text		Name="Details"	Text="Details"		XPos="600"	YPos="50"	Width="160"	Height="170"	FontSize="10"	/>
 <Text		Name="Header"	Text="Name"			XPos="8"	YPos="8"	Width="584"	Height="40"	FontSize="20"	/>
 <Button	Name="Girl Management"	Image="Girls"	XPos="600"	YPos="298"	Width="160"	Height="32"	Transparency="true"	Scale="true"	/>

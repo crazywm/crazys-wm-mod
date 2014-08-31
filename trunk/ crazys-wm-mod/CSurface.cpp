@@ -277,9 +277,7 @@ bool CSurface::DrawSurface(int x, int y, SDL_Surface* destination, SDL_Rect* cli
 		if(m_ColoredSurface == true)
 		{
 			CLog l;
-			l.ss() <<	"ERROR - Colored surface null: '"
-				<< m_Filename << "'"
-			;
+			l.ss() << "ERROR - Colored surface null: '" << m_Filename << "'";
 			l.ssend();
 			return false;
 		}
@@ -291,11 +289,7 @@ bool CSurface::DrawSurface(int x, int y, SDL_Surface* destination, SDL_Rect* cli
 		{
 			if(!LoadImage(m_Filename))
 			{
-				g_LogFile.ss()
-				<<	"ERROR - Loading Image '"
-				<<	m_Filename
-				<<	"'"
-				;
+				g_LogFile.ss() << "ERROR - Loading Image '" << m_Filename << "'";
 				g_LogFile.ssend();
 				return false;
 			}
