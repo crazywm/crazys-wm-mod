@@ -42,6 +42,7 @@ extern cMessageQue g_MessageQue;
 bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	string message = "";
+	string girlName = girl->m_Realname;
 	if(Preprocessing(ACTION_WORKSTRIP, girl, brothel, DayNight, summary, message))
 		return true;
 
@@ -296,7 +297,7 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, int DayNig
 			imageType = IMGTYPE_TITTY;
 		else if(n == SKILL_HANDJOB)
 			imageType = IMGTYPE_HAND;
-		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -2);
+		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -20);
 		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +3, true);
 		// work out the pay between the house and the girl
 		wages += 30;

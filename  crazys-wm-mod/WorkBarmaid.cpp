@@ -97,14 +97,18 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, int DayNight, stri
 		if (roll <= 14)
 			{
 				message += girlName + " was sliding drinks all over the bar without spilling a drop she put on quite a show for the patrons.\n";
+				brothel->m_Fame += 10;
 			}
 		else if (roll <= 28)
 			{
 				message +=  "She agree to play a bar game with a client. Knowing every type of bar game there is, " + girlName + " easily wins. The customer pays double for his drinks and leaves the bar saying that he will win next time.\n";
+				wages += 25;
 			}
 		else if (roll <= 42)
 			{
-				message += girlName + " made an 11 layer drink like it was nothing. The amazed customer leaved her a big tip!\n";
+				message += girlName + " made an 11 layer drink like it was nothing. The amazed customer left her a big tip!\n";
+				brothel->m_Fame += 10;
+				wages += 10;
 			}
 		else if (roll <= 56)
 			{
@@ -113,14 +117,20 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, int DayNight, stri
 		else if (roll <= 70)
 			{
 				message += girlName + " noticed that a client was upset about something. After a pleasant conversation she managed to cheer him up. The client left full of will power, leaving a generous tip behind.\n";
+				brothel->m_Happiness += 10;
+				wages += 10;
 			}
 		else if (roll <= 84)
 			{
 				message +=  "Bottles fly high under the ceiling when " + girlName + " is pouring drinks for the customers. The amazed crowd loudly applauses every caught bottle and leave big tips for the girl.\n";
+				brothel->m_Fame += 10;
+				wages += 15;
 			}
 		else
 			{
 				message += girlName + " mixed up what some patrons called the perfect drink.  It got them drunk faster then anything they had before.\n";
+				brothel->m_Happiness += 10;
+				brothel->m_Fame += 10;
 			}
 		}
  else if (jobperformance >= 185)
@@ -130,6 +140,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, int DayNight, stri
 		if (roll <= 14)
 			{
 				message += girlName + " had the bar filled with happy drunks.  She didn't miss a beat all shift.\n";
+				brothel->m_Happiness += 10;
 			}
 		else if (roll <= 28)
 			{
@@ -137,23 +148,29 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, int DayNight, stri
 			}
 		else if (roll <= 42)
 			{
-				message += girlName + " propose to a client to play a drinking game with her. If she loses she will serve nude to the end of her shift, but if she wins he will be paying double. Some other patrons join the wager on the same terms. After a few hours the last of them drops drunk and " + girlName + " cleaned up on money. \n";
+				message += girlName + " propose to a client to play a drinking game with her. If she loses she will serve nude to the end of her shift, but if she wins he will be paying double. Some other patrons join the wager on the same terms. After a few hours the last of them drops drunk and " + girlName + " cleaned up on money.\n";
+				wages += 20;
 			}
 		else if (roll <= 56)
 			{
 				message += "When taking orders from customers, " + girlName + " talked them into buying more expensive drinks, that let you make a solid profit today.\n";
+				wages += 10;
 			}
 		else if (roll <= 70)
 			{
 				message += girlName + " is great at this job. At happy hour she was irreplaceable getting all the orders right. Later on she even prevented a fight between customers.\n";
+				brothel->m_Fame += 5;
 			}
 		else if (roll <= 84)
 			{
 				message +=  "Her shift was slow and hardly anyone was buying. " + girlName + " took the initiative, announcing a special promotion. Every third shot ordered by a client could be drunk from a shot-glass between her breasts. The promotion was such a success that you almost run out of booze.\n";
+				wages += 10;
 			}
 		else
 			{
 				message += "People love seeing " + girl->m_Realname + " work and they pour into the bar during her shift.  She mixes wonderful drinks and doesn't mess orders up so they couldn't be happier.\n";
+				brothel->m_Happiness += 10;
+				brothel->m_Fame += 5;
 			}
 		}
  else if (jobperformance >= 145)
@@ -163,18 +180,24 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, int DayNight, stri
 		if (roll <= 14)
 			{
 				message += girlName + " didn't mix up any orders and kept the patrons drunk and happy.\n";
+				brothel->m_Happiness += 5;
 			}
 		else if (roll <= 28)
 			{
 				message +=  girlName + " certainly knows what she is doing behind the bar counter. She spends her shift without making any mistakes and earning a lot from tips.\n";
+				wages += 5;
 			}
 		else if (roll <= 42)
 			{
 				message += girlName + " didn’t make any mistakes today. She even earned some tips from happy customers.\n";
+				brothel->m_Happiness += 5;
+				wages += 5;
 			}
 		else if (roll <= 56)
 			{
-				message += "When mixing one of more complicated cocktails, " + girlName + " noticed that she made a mistake and remakes the order. She wasted some alcohol, but the customer has happy with his drink.\n";
+				message += "When mixing one of the more complicated cocktails, " + girlName + " noticed that she made a mistake and remakes the order. She wasted some alcohol, but the customer has happy with his drink.\n";
+				brothel->m_Happiness += 5;
+				wages -= 5;
 			}
 		else if (roll <= 70)
 			{
@@ -187,6 +210,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, int DayNight, stri
 		else
 			{
 				message += girlName + " had some regualers come in.  She knows just how to keep them happy and spending gold.\n";
+				brothel->m_Happiness += 5;
 			}
 		}
  else if (jobperformance >= 100)
@@ -204,6 +228,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, int DayNight, stri
 		else if (roll <= 42)
 			{
 				message += "Trying her best she accidently knocks down a bottle containing one of the bars most expensive liquors.\n";
+				brothel->m_Filthiness += 5;
 			}
 		else if (roll <= 56)
 			{
@@ -216,6 +241,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, int DayNight, stri
 		else if (roll <= 84)
 			{
 				message +=  girlName + " focused all her attention on taking orders and making drinks. Her attitude wasn’t too appealing to clients. Some customers left feeling mistreated and unhappy.\n";
+				brothel->m_Happiness -= 5;
 			}
 		else
 			{
@@ -233,6 +259,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, int DayNight, stri
 		else if (roll <= 28)
 			{
 				message +=  girlName + " is having a bad day and she isn’t trying to hide it.  Her bad attitude shows and rubs off on the customers, leaving a negative impression on them.\n";
+				brothel->m_Happiness -= 5;
 			}
 		else if (roll <= 42)
 			{
@@ -241,14 +268,17 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, int DayNight, stri
 		else if (roll <= 56)
 			{
 				message += "Wanting to impress a client, she throws a bottle of an expensive liquor into the air. Trying to catch it behind her back, " + girlName + " fails.\n";
+				brothel->m_Filthiness += 5;
 			}
 		else if (roll <= 70)
 			{
-				message +=  "Client looking for some encouragement and understanding words from the barmaid unfortunately approached " + girlName + ". After short conversation she made him cry.\n";
+				message +=  "Client looking for some encouragement and understanding words from the barmaid unfortunately approached " + girlName + ". After a short conversation she made him cry.\n";
+				brothel->m_Happiness -= 5;
 			}
 		else if (roll <= 84)
 			{
 				message +=  girlName + " tried to uncork a new barrel of beer. In result of her attempt, she spends the rest of her shift mopping the floor.\n";
+				brothel->m_Filthiness += 5;
 			}
 		else
 			{
@@ -266,6 +296,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, int DayNight, stri
 		else if (roll <= 28)
 			{
 				message += "She mixed the ordered cocktails in the wrong proportions, making the clients throw up from the intoxication after just one shot! Besides the swearing at her and yelling that they will never come here again, they left without paying.\n";
+				brothel->m_Happiness -= 5;
 			}
 		else if (roll <= 42)
 			{
@@ -286,6 +317,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, int DayNight, stri
 		else
 			{
 				message += girlName + " spilled drinks all over the place and mixed the wrong stuff when trying to make drinks for people.\n";
+				brothel->m_Filthiness += 5;
 			}
 		}
 

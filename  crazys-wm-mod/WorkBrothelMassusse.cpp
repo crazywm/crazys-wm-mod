@@ -102,22 +102,27 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, int DayNig
 			if (roll <= 20)
 			{
 				message += girlName + " hands are the best thing that could touch a man. Customers left big tips after getting a massage from her.\n";
+				wages += 20;
 			}
 		else if (roll <= 40)
 			{
-				message += "She is well known and have a steady base of faithful customers.\n";
+				message += "She is well known and has a steady base of faithful customers.\n";
+				brothel->m_Fame += 10;
 			}
 		else if (roll <= 60)
 			{
-				message += "A client wanted that " + girlName + " focus on the tight region. Doing as he asked, she left him with a boner.\n";
+				message += "A client wanted " + girlName + " to focus on a tight region. Doing as he asked, she left him with a boner.\n";
+				brothel->m_Happiness += 5;
 			}
 		else if (roll <= 80)
 			{
-				message +=  "Every man leave girlsname room with a wide smile.\n";
+				message +=  "Every man left " + girlName + "'s room with a wide smile.\n";
+				brothel->m_Fame += 5;
 			}
 		else
 			{
 				message += "Being asked to perfume more sensual massage, " + girlName + " massage the customer with her breasts for some extra coin.\n";
+				wages += 20;
 			}
 		}
 	else if (jobperformance >= 185)
@@ -140,10 +145,12 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, int DayNig
 		else if (roll <= 80)
 			{
 				message +=  "She certainly knows how and where to  press on a man’s body. Today, customers moans was heard on the corridor.\n";
+				brothel->m_Happiness += 5;
 			}
 		else
 			{
 				message += "Today she used some new oils. The customers liked them and paid some extra for the service.\n";
+				wages += 15;
 			}
 		}
 	else if (jobperformance >= 145)
@@ -154,6 +161,8 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, int DayNig
 		if (roll <= 20)
 			{
 				message += girlName + " helped a customer with a really painful back pain. The man bowed several times, thanking her for the treatment.\n";
+				brothel->m_Happiness += 5;
+				brothel->m_Fame += 5;
 			}
 		else if (roll <= 40)
 			{
@@ -162,6 +171,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, int DayNig
 		else if (roll <= 60)
 			{
 				message += "When massaging a customer, she had a pleasant conversation with him, leaving a very good impression.\n";
+				brothel->m_Happiness += 5;
 			}
 		else if (roll <= 80)
 			{
@@ -170,6 +180,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, int DayNig
 		else
 			{
 				message += "A female customer requested a face massage. " + girlName + " managed to meet her expectations.\n";
+				brothel->m_Happiness += 5;
 			}
 		}
 	else if (jobperformance >= 100)
@@ -210,6 +221,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, int DayNig
 		else if (roll <= 40)
 			{
 				message += "Her performance was bad. The customer left a complaint and didn’t pay for the service.\n";
+				brothel->m_Happiness -= 5;
 			}
 		else if (roll <= 60)
 			{
@@ -218,6 +230,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, int DayNig
 		else if (roll <= 80)
 			{
 				message +=  "She argued with a client and kicked him out on the street wearing only a towel around his waist.\n";
+				brothel->m_Happiness -= 5;
 			}
 		else
 			{
@@ -232,14 +245,16 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, int DayNig
 		if (roll <= 20)
 			{
 				message += girlName + " massaged a client. He could barely walk out after her service.\n";
+				brothel->m_Fame -= 5;
 			}
 		else if (roll <= 40)
 			{
-				message += "Getting kicked by a horse or getting a massage from " + girlName + ". Equally deadly but the first you could get for free. \n";
+				message += "Getting kicked by a horse or getting a massage from " + girlName + ". Equally deadly but the first you could get for free.\n";
 			}
 		else if (roll <= 60)
 			{
 				message += "A loud scream was heard in your building short after " + girlName + " started her shift.\n";
+				brothel->m_Happiness -= 5;
 			}
 		else if (roll <= 80)
 			{
@@ -248,6 +263,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, int DayNig
 		else
 			{
 				message += "She tries to massage a client in the best way she knows. After ten minutes he leaves without paying and frustrated.\n";
+				brothel->m_Happiness -= 5;
 			}
 		}
 
