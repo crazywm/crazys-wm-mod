@@ -114,22 +114,31 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, int DayNight, 
 		if (roll <= 20)
 			{
 				message += girlName + " use of the pole amazes the patrons. They truely have no idea how she does the things she does.\n";
+				brothel->m_Happiness += 10;
+				brothel->m_Fame += 5;
 			}
 		else if (roll <= 40)
 			{
 				message += girlName + "'s throws her bra into the crowd causing a fight to erupt over who got to take it home. They just love her.\n";
+				brothel->m_Happiness += 10;
 			}
 		else if (roll <= 60)
 			{
 				message += "People push and shove to get the front of the stage for her dance set.\n";
+				brothel->m_Fame += 10;
 			}
 		else if (roll <= 80)
 			{
 				message += girlName + " smile is enough to bring in the tips. You sometimes wonder if she even needs to take her clothes off.\n";
+				brothel->m_Happiness += 10;
+				wages += 15;
 			}
 		else
 			{
 				message += "Somehow, " + girlName + " managed to be so sexy that you thought you might need to close just to clean up the mess the crowd made.\n";
+				brothel->m_Happiness += 10;
+				brothel->m_Filthiness += 5;
+				wages += 10;
 				}
 		}
 	else if (jobperformance >= 185)
@@ -139,22 +148,27 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, int DayNight, 
 		if (roll <= 20)
 			{
 				message += girlName + " use of the pole makes every head in the place turn to watch.\n";
+				brothel->m_Fame += 5;
 			}
 		else if (roll <= 40)
 			{
 				message += girlName + "'s throws her bra into the crowd causing an uproar of hooting and screaming.  She knows how to drive them crazy.\n";
+				brothel->m_Happiness += 10;
 			}
 		else if (roll <= 60)
 			{
 				message += girlName + " draws just as many females as males to the club when its her shift.  It seems everyone has noticed her skill.\n";
+				brothel->m_Fame += 10;
 			}
 		else if (roll <= 80)
 			{
 				message += "All male members of " + girlName + "'s audience had trouble standing after she finished her set.\n";
+				brothel->m_Happiness += 10;
 			}
 		else
 			{
 				message += "From start to finish, every move " + girlName + " makes practically sweats sexuallity.\n";
+				brothel->m_Happiness += 10;
 				}
 		}
 	else if (jobperformance >= 145)
@@ -164,14 +178,17 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, int DayNight, 
 		if (roll <= 20)
 			{
 				message += girlName + " can spin on the pole in a way that excites the crowd.\n";
+				brothel->m_Happiness += 5;
 			}
 		else if (roll <= 40)
 			{
 				message += girlName + "'s sly smile and slow striptease drives the crowd crazy.\n";
+				brothel->m_Happiness += 5;
 			}
 		else if (roll <= 60)
 			{
 				message += "Seeing the large crowd waiting outside, " + girlName + " smirked and slowly walked on stage knowing she was going get good tips today.\n";
+				wages += 10;
 			}
 		else if (roll <= 80)
 			{
@@ -214,6 +231,7 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, int DayNight, 
 		if (roll <= 20)
 			{
 				message += girlName + " spinned around and around on the pole getting dizzy causing her to fall after getting of the pole.\n";
+				brothel->m_Fame -= 5;
 			}
 		else if (roll <= 40)
 			{
@@ -230,6 +248,7 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, int DayNight, 
 		else
 			{
 				message += girlName + " isn't qualified as a striper, which might explain why she couldn't successfully detach her bra on stage.\n";
+				brothel->m_Happiness -= 10;
 				}
 		}
 	else
@@ -243,6 +262,8 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, int DayNight, 
 		else if (roll <= 40)
 			{
 				message += girlName + "'s hair got tangled up in her shirt when she tried to take it off, making her reel about the stage like a drunk.\n";
+				brothel->m_Fame -= 10;
+				brothel->m_Happiness += 5;  //would be funny to see
 			}
 		else if (roll <= 60)
 			{
@@ -251,10 +272,12 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, int DayNight, 
 		else if (roll <= 80)
 			{
 				message += "Somehow, " + girlName + " forgot that she was a stripper and finished her set with her clothes still on.\n";
+				brothel->m_Fame -= 5;
 			}
 		else
 			{
 				message += "Somehow, " + girlName + " managed to be so unsexy that the audience barely seemed to notice her presence.\n";
+				brothel->m_Happiness -= 5;
 				}
 		}
 

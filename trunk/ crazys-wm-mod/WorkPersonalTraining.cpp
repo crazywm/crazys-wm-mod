@@ -271,6 +271,17 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, int DayNi
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_ECCHI, DayNight);
 	}
 
+	if (girl->m_States&(1 << STATUS_SLAVE))
+	{
+		message += " \nYou own her so you don't have to pay her.";
+		g_Brothels.GetPlayer()->disposition(dispo);
+	}
+	else
+	{
+		girl->m_Pay += 75;
+		g_Gold.staff_wages(75);  // wages come from you
+	}
+
 
 	// Improve stats
 	int xp = 10;

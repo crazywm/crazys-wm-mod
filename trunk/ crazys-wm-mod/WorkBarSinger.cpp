@@ -105,6 +105,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 		else if (roll <= 40)
 			{
 				message += "Wanting to have some fun she encouraged some listeners to sing-along with her.\n";
+				brothel->m_Happiness += 10;
 			}
 		else if (roll <= 60)
 			{
@@ -127,6 +128,8 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 		if (roll <= 25)
 			{
 				message += girlName + " begun to acquire her own following - a small crowd of people came in just to listen to her and buy drinks\n";
+				brothel->m_Fame += 10;
+				wages += 10;
 			}
 		else if (roll <= 50)
 			{
@@ -162,6 +165,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 		else if (roll <= 80)
 			{
 				message += "She is good at this. With some work she could be a star.\n";
+				brothel->m_Fame += 5;
 			}
 		else
 			{
@@ -178,7 +182,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 			}
 		else if (roll <= 50)
 			{
-				message += "She didn’t sang every part clear but in overall she was good.\n";
+				message += "She didn’t sing every part clear but in overall she was good.\n";
 			}
 		else if (roll <= 75)
 			{
@@ -209,6 +213,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 		else if (roll <= 80)
 			{
 				message +=  girlName + " singing was awful. Not a single line was sang clear.\n";
+				brothel->m_Happiness -= 5;
 			}
 		else
 			{
@@ -221,7 +226,8 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 			wages -= 15;
 		if (roll <= 14)
 			{
-				message += "Her audience seems paralyzed, as if they couldn't believe that a human body could produce those sounds, much less call them 'singing'.\n";
+				message += "Her audience seems paralyzed, as if they couldn't believe that a human body could produce those sounds, much less call them \"singing\".\n";
+				brothel->m_Happiness -= 5;
 			}
 		else if (roll <= 28)
 			{
@@ -247,6 +253,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 		else
 			{
 				message += girlName + " bellowed out a melody that caused the bar to go into a panic clearing it quickly.\n";
+				brothel->m_Happiness -= 10;
 			}
 		}
 

@@ -904,6 +904,7 @@ bool cJobManager::is_job_Paid_Player(u_int Job)
 		//arena
 		Job ==	JOB_DOCTORE		        ||	// 
 		Job ==	JOB_CLEANARENA		    ||	//
+		Job ==	JOB_FIGHTTRAIN		    ||	//
 
 
 		//house
@@ -911,6 +912,7 @@ bool cJobManager::is_job_Paid_Player(u_int Job)
 		Job ==	JOB_CLEANHOUSE			||	// 
 		Job ==	JOB_RECRUITER			||	// 
 		Job ==	JOB_HEADGIRL			||	//
+		Job ==	JOB_PERSONALTRAINING	||	//
 
 		//farm
 		Job ==	JOB_FARMMANGER	||	// 

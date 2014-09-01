@@ -182,9 +182,17 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, sBrothel* brothel, int DayNigh
 		*/
 	
 	
-		
+	if (girl->m_States&(1 << STATUS_SLAVE))
+	{
+		message += " \nYou own her so you don't have to pay her.";
+		g_Brothels.GetPlayer()->disposition(dispo);
+	}
+	else
+	{	
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_COMBAT, DayNight);
-	girl->m_Pay = 25 + (skill*5); // `J` Pay her more if she learns more
+	girl->m_Pay = 50 + (skill*5); // `J` Pay her more if she learns more
+	g_Gold.staff_wages(50);  // wages come from you
+	}
 
 	// Improve stats
 	int xp = 5 + skill, libido = int(1 + skill/2);

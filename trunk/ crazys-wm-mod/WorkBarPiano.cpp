@@ -98,23 +98,27 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, int DayNight, str
 		if (roll <= 20)
 			{
 				message += girlName + "'s playing brought many patron's to tears as she played a song full of sadness.\n";
+				brothel->m_Happiness += 5;
 			}
 		else if (roll <= 40)
 			{
 				message += "Nice melody fills the room when " + girlName + " is behind the piano.\n";
+				brothel->m_Happiness += 10;
 			}
 		else if (roll <= 60)
 			{
 				message += "Knowing that she is good, " + girlName + " played all the tunes blindfolded.\n";
+				brothel->m_Fame += 10;
 			}
 		else if (roll <= 80)
 			{
 				message += girlName + " being confident in her skill, " + girlName + " played today using only one hand.\n";
-				brothel->m_Fame += 5;
+				brothel->m_Fame += 10;
 			}
 		else
 			{
 				message += girlName + "'s soothing playing seems to glide over the noise and bustling of the bar.\n";
+				brothel->m_Happiness += 10;
 			}
 		}
  else if (jobperformance >= 185)
@@ -124,6 +128,8 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, int DayNight, str
 		if (roll <= 20)
 			{
 				message += girlName + " begun to acquire her own following - a small crowd of people came in just to listen to her and buy drinks\n";
+				brothel->m_Fame += 5;
+				wages += 10;
 			}
 		else if (roll <= 40)
 			{
@@ -137,6 +143,7 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, int DayNight, str
 		else if (roll <= 80)
 			{
 				message += "She plays without music sheets having all the songs memorized.\n";
+				brothel->m_Fame += 5;
 			}
 		else
 			{
@@ -158,6 +165,7 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, int DayNight, str
 		else if (roll <= 60)
 			{
 				message += "Give " + girlName + " any kind of music sheet and she will play it. She is really good at this.\n";
+				brothel->m_Happiness += 5;
 			}
 		else if (roll <= 80)
 			{
@@ -226,10 +234,12 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, int DayNight, str
 		if (roll <= 20)
 			{
 				message += "Her audience seems paralyzed, as if they couldn't believe that a piano was capable of making such noise.\n";
+				brothel->m_Happiness -= 10;
 			}
 		else if (roll <= 40)
 			{
 				message += "After ten seconds you wanted to grab an axe and ends the instruments misery being tortured by " + girlName + " attempt to play.\n";
+				brothel->m_Happiness -= 5;
 			}
 		else if (roll <= 60)
 			{
