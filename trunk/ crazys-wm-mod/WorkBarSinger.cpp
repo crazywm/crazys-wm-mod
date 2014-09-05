@@ -182,7 +182,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 			}
 		else if (roll <= 50)
 			{
-				message += "She didn’t sing every part clear but in overall she was good.\n";
+				message += "She didn’t sing every part clear but overall she was good.\n";
 			}
 		else if (roll <= 75)
 			{
@@ -261,14 +261,14 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 	if (g_Girls.GetStat(girl, STAT_BEAUTY) >85)
 		if((g_Dice%100) < 15)
 		{
-			message += " Stunned by her beauty a customer left her a great tip.\n";
+			message += "Stunned by her beauty a customer left her a great tip.\n";
 			wages += 15;
 		}
 
 	if (g_Girls.HasTrait(girl, "Clumsy"))
 		if((g_Dice%100) < 5)
 		{
-			message += " Her clumsy nature caused her to trip coming on stage causing the crowed to go wild with laughter. She went to the back and hide refusing to take the stage for her song set.\n";
+			message += "Her clumsy nature caused her to trip coming on stage causing the crowed to go wild with laughter. She went to the back and hide refusing to take the stage for her song set.\n";
 			wages -= 15;
 		}
 
@@ -277,7 +277,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 		{
 			if(jobperformance < 125)
 			{
-			message += " Her pessimistic mood depressed the customers making them tip less.\n";
+			message += "Her pessimistic mood depressed the customers making them tip less.\n";
 			wages -= 10;
 			}
 			else
@@ -297,7 +297,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 			}
 			else
 			{
-			message += " Her optimistic mood made patrons cheer up increasing the amount they tip.\n";
+			message += "Her optimistic mood made patrons cheer up increasing the amount they tip.\n";
 			wages += 10;
 			}
 		}

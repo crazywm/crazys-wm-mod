@@ -45,6 +45,7 @@ extern cGold g_Gold;
 bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	string message = "";
+	string girlName = girl->m_Realname;
 
 	if(Preprocessing(ACTION_WORKCENTRE, girl, brothel, DayNight, summary, message))	// they refuse to have work
 		return true;

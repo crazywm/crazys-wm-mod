@@ -1676,7 +1676,7 @@ bool cJobManager::work_related_violence(sGirl* girl, int DayNight, bool streets)
  *	But let's get what we have working first
  */
 	if((girl->has_trait("Yandere") || girl->has_trait("Tsundere") || girl->has_trait("Aggressive")) && g_Dice.percent(30)) {
-		girl->m_Events.AddMessage(gettext("She beat the customer silly."), IMGTYPE_PROFILE, DayNight);
+		girl->m_Events.AddMessage(gettext("She beat the customer silly."), IMGTYPE_COMBAT, DayNight);
 		g_Girls.UpdateStat(girl, STAT_FAME, -1);
 	}
 	return false;
