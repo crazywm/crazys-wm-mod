@@ -45,6 +45,7 @@ extern cGold g_Gold;
 bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	string message = "";
+	string girlName = girl->m_Realname;
 
 	if(Preprocessing(ACTION_WORKCENTRE, girl, brothel, DayNight, summary, message))	// they refuse to have work
 		return true;
@@ -52,6 +53,7 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, int DayNig
 	// put that shit away, you'll scare off the customers!
 	g_Girls.UnequipCombat(girl);
 
+	int blow = false;
 	int roll = g_Dice%100;
 	int jobperformance = (	g_Girls.GetStat(girl, STAT_INTELLIGENCE)/2 + 
 							g_Girls.GetStat(girl, STAT_CHARISMA)/2 + 
@@ -128,6 +130,18 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, int DayNig
 		g_Gold.staff_wages(100);  // wages come from you
 		g_Brothels.GetPlayer()->disposition(int(dispo*1.5));
 	}
+
+
+	//try and add randomness here
+	if (g_Girls.GetStat(girl, STAT_INTELLIGENCE) < 55)
+	{
+		if (g_Dice % 100 <= 30)
+		{
+			message += "An elderly fellow managed to convince " + girlName + " that the best way to serve her community was on her knees. She ended up giving him a blow job!\n\n";
+			blow = true;
+		}
+	}
+
 	
 	//enjoyed the work or not
 	if(roll <= 5)
@@ -145,7 +159,17 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, int DayNig
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCENTRE, +1, true);
 	}
 
-	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
+	else if (blow) 
+	{
+		brothel->m_Happiness += (g_Dice%70)+60;
+		dispo = 4;
+		g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 2);
+		girl->m_Events.AddMessage(message, IMGTYPE_ORAL, DayNight);
+	}
+	else
+	{
+		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
+	}
 
 	// Improve stats
 	int xp = 10, libido = 1, skill = 3;

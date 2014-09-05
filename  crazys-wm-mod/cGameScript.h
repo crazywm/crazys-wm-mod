@@ -94,6 +94,16 @@ private:
 	sScript* Script_WaitTarget(sScript* Script);
 	sScript* Script_SingTarget(sScript* Script);
 	sScript* Script_TorturePicTarget(sScript* Script);
+	sScript* Script_FootTarget(sScript* Script);
+	sScript* Script_BedTarget(sScript* Script);
+	sScript* Script_FarmTarget(sScript* Script);
+	sScript* Script_HerdTarget(sScript* Script);
+	sScript* Script_CookTarget(sScript* Script);
+	sScript* Script_CraftTarget(sScript* Script);
+	sScript* Script_SwimTarget(sScript* Script);
+	sScript* Script_BathTarget(sScript* Script);
+	sScript* Script_NurseTarget(sScript* Script);
+	sScript* Script_FormalTarget(sScript* Script);
 	//sScript* Script_GirlNameTarget(sScript* Script);
 
 	// The overloaded process function

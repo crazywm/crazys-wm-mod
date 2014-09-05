@@ -326,14 +326,14 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, int DayNight, stri
 	if (g_Girls.GetStat(girl, STAT_BEAUTY) >85)
 		if((g_Dice%101) < 20)
 		{
-			message += " Stunned by her beauty a customer left her a great tip.\n\n";
+			message += "Stunned by her beauty a customer left her a great tip.\n\n";
 			wages += 25;
 		}
 
 	if (g_Girls.HasTrait(girl, "Clumsy"))
 		if((g_Dice%101) < 15)
 		{
-			message += " Her clumsy nature caused her to spill a drink on a custmoer resulting in them storming off without paying.\n";
+			message += "Her clumsy nature caused her to spill a drink on a custmoer resulting in them storming off without paying.\n";
 			wages -= 15;
 		}
 
@@ -342,7 +342,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, int DayNight, stri
 		{
 			if(jobperformance < 125)
 			{
-			message += " Her pessimistic mood depressed the customers making them tip less.\n";
+			message += "Her pessimistic mood depressed the customers making them tip less.\n";
 			wages -= 10;
 			}
 			else
@@ -362,7 +362,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, int DayNight, stri
 			}
 			else
 			{
-			message += " Her optimistic mood made patrons cheer up increasing the amount they tip.\n";
+			message += "Her optimistic mood made patrons cheer up increasing the amount they tip.\n";
 			wages += 10;
 			}
 		}
@@ -372,11 +372,11 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, int DayNight, stri
 		{
 			if(jobperformance < 150)
 			{
-				message += " A patron was staring obviously at her large breasts. But she had no ideal how to take advantage of it.\n";
+				message += "A patron was staring obviously at her large breasts. But she had no ideal how to take advantage of it.\n";
 			}
 			else
 			{
-				message += " A patron was staring obviously at her large breasts. So she over charged them for drinks while they drooled not paying any mind to the price.\n";
+				message += "A patron was staring obviously at her large breasts. So she over charged them for drinks while they drooled not paying any mind to the price.\n";
 				wages += 15;
 			}
 		}
@@ -393,12 +393,12 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, int DayNight, stri
 		{
 			if(jobperformance < 150)
 			{
-				message += " A patron pissed her off and using her Assassin skills she killed him before even thinking about it resulting in patrons storming out without paying.\n";
+				message += "A patron pissed her off and using her Assassin skills she killed him before even thinking about it resulting in patrons storming out without paying.\n";
 				wages -= 50;
 			}
 			else
 			{
-				message += " A patron pissed her off but she was able to keep her cool as she is getting use to this kinda thing.\n";
+				message += "A patron pissed her off but she was able to keep her cool as she is getting use to this kinda thing.\n";
 			}
 		}
 
@@ -407,11 +407,11 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, int DayNight, stri
 		{
 			if(jobperformance < 150)
 			{
-				message += " A patron gasped at her Horrific Scars making her sad.  But they didn't feel sorry for her.\n";
+				message += "A patron gasped at her Horrific Scars making her sad.  But they didn't feel sorry for her.\n";
 			}
 			else
 			{
-				message += " A patron gasped at her Horrific Scars making her sad.  Feeling bad about it as she did a wonderful job they left a good tip.\n";
+				message += "A patron gasped at her Horrific Scars making her sad.  Feeling bad about it as she did a wonderful job they left a good tip.\n";
 				wages += 15;
 			}
 		}

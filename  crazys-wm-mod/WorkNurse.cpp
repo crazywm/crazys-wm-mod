@@ -303,7 +303,7 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, int DayNight, string
 	{
 		if (g_Dice % 100 <= 30)
 		{
-			message += "An elderly fellow managed to convince " + girlName + " that her touch can heal! She ended giving him a hand job!\n\n";
+			message += "An elderly fellow managed to convince " + girlName + " that her touch can heal! She ended up giving him a hand job!\n\n";
 			hand = true;
 		}
 	}

@@ -1595,7 +1595,22 @@ string cGirls::GetThirdDetailsString(sGirl* girl)
 	// House Jobs
 	int headgirl = matron;
 	int recruiter = (HateLove + jr_cha + jr_slave);
-	
+	// Farm Jobs
+	int farmmanger = matron;
+	int veterinarian
+	int marketer = (jr_int + jr_far);
+	int researcher = ((jr_int / 2) + (jr_her / 2) + jr_bre);
+	int farmer = (jr_int + jr_far);
+	int gardener = ((jr_int / 2) + (jr_her / 2) + jr_far);
+	int sheapherd = ((jr_int / 2) + (jr_far / 2) + jr_anh);
+	int rancher = ((jr_bst / 2) + (jr_far / 2) + jr_anh);
+	int catarancher = ((jr_int / 2) + (jr_far / 2) + jr_anh);
+	int milker = (jr_int + jr_anh);
+	int butcher = (jr_int + jr_anh);
+	int baker = (jr_int + jr_her);
+	int brewer = (jr_int + jr_bre);
+	int makeitem
+	int makepot = ((jr_int / 2) + (jr_her / 2) + (jr_bre / 2) + (jr_cra / 2));
 	
 	// Traits in alphabetical order
 	if (g_Girls.HasTrait(girl, "Abnormally Large Boobs"))
@@ -1629,6 +1644,18 @@ string cGirls::GetThirdDetailsString(sGirl* girl)
 		recruiter -= 20;
 		security += 5;
 		xxx -= 20;
+		researcher -= 20;
+		marketer -= 20;
+		farmer -= 20;
+		gardener -= 20;
+		sheapherd -= 20;
+		rancher -= 20;
+		catarancher -= 20;
+		milker -= 20;
+		butcher -= 20;
+		baker -= 20;
+		brewer -= 20;
+		makepot -= 20;
 	}
 	if (g_Girls.HasTrait(girl, "Assassin"))
 	{
@@ -1665,6 +1692,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)
 		promoter += 10;
 		recruiter += 20;
 		xxx += 10;
+		marketer += 15;
 	}
 	if (g_Girls.HasTrait(girl, "Charming"))
 	{
@@ -1690,6 +1718,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)
 		recruiter += 10;
 		security += 5;
 		xxx += 5;
+		marketer += 15;
 	}
 	if (g_Girls.HasTrait(girl, "Clumsy"))
 	{
@@ -1714,6 +1743,18 @@ string cGirls::GetThirdDetailsString(sGirl* girl)
 		recruiter -= 5;
 		security -= 5;
 		xxx -= 10;
+		researcher -= 20;
+		marketer -= 20;
+		farmer -= 20;
+		gardener -= 20;
+		sheapherd -= 20;
+		rancher -= 20;
+		catarancher -= 20;
+		milker -= 20;
+		butcher -= 20;
+		baker -= 20;
+		brewer -= 20;
+		makepot -= 20;
 	}
 	if (g_Girls.HasTrait(girl, "Construct"))
 	{
@@ -1745,6 +1786,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)
 		recruiter += 10;
 		security += 5;
 		xxx += 5;
+		marketer += 10;
 	}
 	if (g_Girls.HasTrait(girl, "Cute"))
 	{
@@ -1765,6 +1807,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)
 		nurse += 5;
 		peep += 5;
 		xxx += 5;
+		marketer += 5;
 	}
 	if (g_Girls.HasTrait(girl, "Demon"))  //
 	{
@@ -1792,6 +1835,18 @@ string cGirls::GetThirdDetailsString(sGirl* girl)
 		recruiter -= 50;
 		security -= 5;
 		xxx -= 50;
+		researcher -= 50;
+		marketer -= 50;
+		farmer -= 50;
+		gardener -= 50;
+		sheapherd -= 50;
+		rancher -= 50;
+		catarancher -= 50;
+		milker -= 50;
+		butcher -= 50;
+		baker -= 50;
+		brewer -= 50;
+		makepot -= 50;
 	}
 	if (g_Girls.HasTrait(girl, "Elegant"))
 	{
@@ -1884,6 +1939,18 @@ string cGirls::GetThirdDetailsString(sGirl* girl)
 		recruiter -= 20;
 		security -= 5;
 		xxx -= 20;
+		researcher -= 20;
+		marketer -= 20;
+		farmer -= 20;
+		gardener -= 20;
+		sheapherd -= 20;
+		rancher -= 20;
+		catarancher -= 20;
+		milker -= 20;
+		butcher -= 20;
+		baker -= 20;
+		brewer -= 20;
+		makepot -= 20;
 	}
 	if (g_Girls.HasTrait(girl, "Merciless"))
 	{
@@ -1899,6 +1966,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)
 		nurse += 15;
 		mechanic += 15;
 		security -= 5;
+		makepot += 10;
 	}
 	if (g_Girls.HasTrait(girl, "Nervous"))
 	{
@@ -1923,6 +1991,18 @@ string cGirls::GetThirdDetailsString(sGirl* girl)
 		promoter -= 5;
 		recruiter -= 30;
 		xxx -= 30;
+		researcher -= 30;
+		marketer -= 30;
+		farmer -= 30;
+		gardener -= 30;
+		sheapherd -= 30;
+		rancher -= 30;
+		catarancher -= 30;
+		milker -= 30;
+		butcher -= 30;
+		baker -= 30;
+		brewer -= 30;
+		makepot -= 30;
 	}
 	if (g_Girls.HasTrait(girl, "Not Human"))
 	{
@@ -1962,6 +2042,18 @@ string cGirls::GetThirdDetailsString(sGirl* girl)
 		recruiter += 20;
 		security += 10;
 		xxx += 10;
+		researcher += 10;
+		marketer += 10;
+		farmer += 10;
+		gardener += 10;
+		sheapherd += 10;
+		rancher += 10;
+		catarancher += 10;
+		milker += 10;
+		butcher += 10;
+		baker += 10;
+		brewer += 10;
+		makepot += 10;
 	}
 	if (g_Girls.HasTrait(girl, "Queen"))
 	{
@@ -1984,6 +2076,18 @@ string cGirls::GetThirdDetailsString(sGirl* girl)
 		nurse += 5;
 		peep += 5;
 		xxx += 5;
+		researcher += 5;
+		marketer += 5;
+		farmer += 5;
+		gardener += 5;
+		sheapherd += 5;
+		rancher += 5;
+		catarancher += 5;
+		milker += 5;
+		butcher += 5;
+		baker += 5;
+		brewer += 5;
+		makepot += 5;
 	}
 	if (g_Girls.HasTrait(girl, "Retarded"))
 	{
@@ -2023,6 +2127,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)
 		peep += 10;
 		promoter += 10;
 		xxx += 10;
+		marketer += 5;
 	}
 	if (g_Girls.HasTrait(girl, "Slow Learner"))
 	{
@@ -2122,6 +2227,23 @@ string cGirls::GetThirdDetailsString(sGirl* girl)
 	data += gettext("\nHouse Job Ratings\n");
 	data += girl->JobRatingLetter(headgirl) + gettext("  -  Head Girl\n");
 	data += girl->JobRatingLetter(recruiter) + gettext("  -  Recruiter\n");
+	//FARM
+	data += gettext("\nFarm Job Ratings\n");
+	data += girl->JobRatingLetter(farmmanger) + gettext("  -  Farm Manger\n");
+	data += girl->JobRatingLetter(veterinarian) + gettext("  -  Veterinarian\n");
+	data += girl->JobRatingLetter(marketer) + gettext("  -  Marketer\n");
+	data += girl->JobRatingLetter(researcher) + gettext("  -  Researcher\n");
+	data += girl->JobRatingLetter(farmer) + gettext("  -  Farmer\n");
+	data += girl->JobRatingLetter(gardener) + gettext("  -  Gardener\n");
+	data += girl->JobRatingLetter(sheapherd) + gettext("  -   Sheapherd\n");
+	data += girl->JobRatingLetter(rancher) + gettext("  -  Rancher\n");
+	data += girl->JobRatingLetter(catarancher) + gettext("  -  Catacombs Rancher\n");
+	data += girl->JobRatingLetter(milker) + gettext("  -  Milker\n");
+	data += girl->JobRatingLetter(butcher) + gettext("  -  Butcher\n");
+	data += girl->JobRatingLetter(baker) + gettext("  -  Baker\n");
+	data += girl->JobRatingLetter(brewer) + gettext("  -  Brewer\n");
+	//data += girl->JobRatingLetter(makeitem) + gettext("  -  Make Item\n");
+	data += girl->JobRatingLetter(makepot) + gettext("  -  Make Potion\n");
 
 	data += gettext("\n\nJob Ratings range from\n'I' The absolute best, 'S' Superior,\nThen 'A'-'E' with 'E' being the worst.\n'X' means they can not do the job.");
 

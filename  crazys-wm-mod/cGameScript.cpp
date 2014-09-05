@@ -112,6 +112,16 @@ sScript *cGameScript::Process(sScript *Script)
 	case 57: return Script_WaitTarget(Script);
 	case 58: return Script_SingTarget(Script);
 	case 59: return Script_TorturePicTarget(Script);
+	case 60: return Script_FootTarget(Script);
+	case 61: return Script_BedTarget(Script);
+	case 62: return Script_FarmTarget(Script);
+	case 63: return Script_HerdTarget(Script);
+	case 64: return Script_CookTarget(Script);
+	case 65: return Script_CraftTarget(Script);
+	case 66: return Script_SwimTarget(Script);
+	case 67: return Script_BathTarget(Script);
+	case 68: return Script_NurseTarget(Script);
+	case 69: return Script_FormalTarget(Script);
 	//case 60: return Script_GirlNameTarget(Script);
 	}
 
@@ -1776,6 +1786,106 @@ sScript* cGameScript::Script_TorturePicTarget(sScript* Script)
 		//g_Girls.UpdateSkill(m_GirlTarget, SKILL_PERFORMANCE, 1);
 	}
 		g_GirlDetails.lastsexact = IMGTYPE_TORTURE;
+
+	return Script->m_Next;
+}
+sScript* cGameScript::Script_FootTarget(sScript* Script)
+{
+	if(m_GirlTarget)
+	{
+		//g_Girls.UpdateSkill(m_GirlTarget, SKILL_PERFORMANCE, 1);
+	}
+		g_GirlDetails.lastsexact = IMGTYPE_FOOT;
+
+	return Script->m_Next;
+}
+sScript* cGameScript::Script_BedTarget(sScript* Script)
+{
+	if(m_GirlTarget)
+	{
+		//g_Girls.UpdateSkill(m_GirlTarget, SKILL_PERFORMANCE, 1);
+	}
+		g_GirlDetails.lastsexact = IMGTYPE_BED;
+
+	return Script->m_Next;
+}
+sScript* cGameScript::Script_FarmTarget(sScript* Script)
+{
+	if(m_GirlTarget)
+	{
+		g_Girls.UpdateSkill(m_GirlTarget, SKILL_FARMING, 1);
+	}
+		g_GirlDetails.lastsexact = IMGTYPE_FARM;
+
+	return Script->m_Next;
+}
+sScript* cGameScript::Script_HerdTarget(sScript* Script)
+{
+	if(m_GirlTarget)
+	{
+		//g_Girls.UpdateSkill(m_GirlTarget, SKILL_HERDING, 1);
+	}
+		g_GirlDetails.lastsexact = IMGTYPE_HERD;
+
+	return Script->m_Next;
+}
+sScript* cGameScript::Script_CookTarget(sScript* Script)
+{
+	if(m_GirlTarget)
+	{
+		//g_Girls.UpdateSkill(m_GirlTarget, SKILL_COOKING, 1);
+	}
+		g_GirlDetails.lastsexact = IMGTYPE_COOK;
+
+	return Script->m_Next;
+}
+sScript* cGameScript::Script_CraftTarget(sScript* Script)
+{
+	if(m_GirlTarget)
+	{
+		g_Girls.UpdateSkill(m_GirlTarget, SKILL_CRAFTING, 1);
+	}
+		g_GirlDetails.lastsexact = IMGTYPE_CRAFT;
+
+	return Script->m_Next;
+}
+sScript* cGameScript::Script_SwimTarget(sScript* Script)
+{
+	if(m_GirlTarget)
+	{
+		//g_Girls.UpdateSkill(m_GirlTarget, SKILL_COOKING, 1);
+	}
+		g_GirlDetails.lastsexact = IMGTYPE_SWIM;
+
+	return Script->m_Next;
+}
+sScript* cGameScript::Script_BathTarget(sScript* Script)
+{
+	if(m_GirlTarget)
+	{
+		//g_Girls.UpdateSkill(m_GirlTarget, SKILL_CRAFTING, 1);
+	}
+		g_GirlDetails.lastsexact = IMGTYPE_BATH;
+
+	return Script->m_Next;
+}
+sScript* cGameScript::Script_NurseTarget(sScript* Script)
+{
+	if(m_GirlTarget)
+	{
+		g_Girls.UpdateSkill(m_GirlTarget, SKILL_MEDICINE, 1);
+	}
+		g_GirlDetails.lastsexact = IMGTYPE_NURSE;
+
+	return Script->m_Next;
+}
+sScript* cGameScript::Script_FormalTarget(sScript* Script)
+{
+	if(m_GirlTarget)
+	{
+		//g_Girls.UpdateSkill(m_GirlTarget, SKILL_MEDICINE, 1);
+	}
+		g_GirlDetails.lastsexact = IMGTYPE_FORMAL;
 
 	return Script->m_Next;
 }
