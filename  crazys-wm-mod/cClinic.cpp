@@ -433,17 +433,17 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, int DayNight)
 				(m_JobManager.is_job_Paid_Player(job) && current->is_slave() && cfg.initial.slave_pay_outofpocket()))
 				ss << " directly from you. She gets to keep it all.";
 			else if (current->house() <= 0)				ss << " and she gets to keep it all.";
-			else if ((cfg.initial.girls_keep_tips() && !current->is_slave()) || (cfg.initial.slave_keep_tips() && current->is_slave()))
+			else if (totalTips>0 && ((cfg.initial.girls_keep_tips() && !current->is_slave()) || (cfg.initial.slave_keep_tips() && current->is_slave())))
 			{
-				int hpay = totalPay * current->m_Stats[STAT_HOUSE];
+				int hpay = int(double(totalGold * double(current->m_Stats[STAT_HOUSE] * 0.01)));
 				int gpay = totalPay - hpay;
-				ss << ".\nShe keeps the " << totalTips << " she got in tips and her cut (" << 100 - current->m_Stats[STAT_HOUSE] << "%) of the payment amounting to " << gpay << " gold.\n\nYou got " << hpay << " gold";
+				ss << ".\nShe keeps the " << totalTips << " she got in tips and her cut (" << 100 - current->m_Stats[STAT_HOUSE] << "%) of the payment amounting to " << gpay << " gold.\n\nYou got " << hpay << " gold (" << current->m_Stats[STAT_HOUSE] << "%).";
 			}
 			else
 			{
-				int hpay = totalGold * current->m_Stats[STAT_HOUSE];
+				int hpay = int(double(totalGold * double(current->m_Stats[STAT_HOUSE] * 0.01)));
 				int gpay = totalGold - hpay;
-				ss << ".\nShe keeps " << gpay << " gold. (" << 100 - current->m_Stats[STAT_HOUSE] << "%)\nYou keep " << gpay << " gold. (" << current->m_Stats[STAT_HOUSE] << "%).";
+				ss << ".\nShe keeps " << gpay << " gold. (" << 100 - current->m_Stats[STAT_HOUSE] << "%)\nYou keep " << hpay << " gold (" << current->m_Stats[STAT_HOUSE] << "%).";
 			}
 			summary += ss.str();
 		}

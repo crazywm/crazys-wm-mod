@@ -490,8 +490,9 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 				// setting day job as an easy way of tracking what the director makes the refuser do
 				current->m_DayJob = current->m_NightJob;
 				string swt = "";
-				summary += "Annoyed by her refusal to " + (current->m_DayJob == JOB_CAMERAMAGE) ? "film" : "edit";
-				summary += " the scenes, the Director ordered " + current->m_Realname + "to ";
+				summary += "Annoyed by her refusal to ";
+				summary += (current->m_DayJob == JOB_CAMERAMAGE) ? "film" : "edit";
+				summary += " the scenes, the Director ordered " + current->m_Realname + " to ";
 
 				// currently this is random but when the morality system gets added, this will be decided by the director's morality
 				int skill = SKILL_STRIP;
@@ -515,7 +516,7 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 					}
 				} while (!(m_JobManager.is_sex_type_allowed(skill, brothel)));
 				current->m_NightJob = sw;
-				summary += " while someone else filmed it.";
+				summary += swt + " while someone else filmed it.";
 			}
 			else
 			{
@@ -540,17 +541,17 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 					(m_JobManager.is_job_Paid_Player(current->m_NightJob) && current->is_slave() && cfg.initial.slave_pay_outofpocket()))
 					ss << " directly from you. She gets to keep it all.";
 				else if (current->house() <= 0)				ss << " and she gets to keep it all.";
-				else if ((cfg.initial.girls_keep_tips() && !current->is_slave()) || (cfg.initial.slave_keep_tips() && current->is_slave()))
+				else if (totalTips>0 && ((cfg.initial.girls_keep_tips() && !current->is_slave()) || (cfg.initial.slave_keep_tips() && current->is_slave())))
 				{
-					int hpay = totalPay * current->m_Stats[STAT_HOUSE];
+					int hpay = int(double(totalGold * double(current->m_Stats[STAT_HOUSE] * 0.01)));
 					int gpay = totalPay - hpay;
-					ss << ".\nShe keeps the " << totalTips << " she got in tips and her cut (" << 100 - current->m_Stats[STAT_HOUSE] << "%) of the payment amounting to " << gpay << " gold.\n\nYou got " << hpay << " gold";
+					ss << ".\nShe keeps the " << totalTips << " she got in tips and her cut (" << 100 - current->m_Stats[STAT_HOUSE] << "%) of the payment amounting to " << gpay << " gold.\n\nYou got " << hpay << " gold (" << current->m_Stats[STAT_HOUSE] << "%).";
 				}
 				else
 				{
-					int hpay = totalGold * current->m_Stats[STAT_HOUSE];
+					int hpay = int(double(totalGold * double(current->m_Stats[STAT_HOUSE] * 0.01)));
 					int gpay = totalGold - hpay;
-					ss << ".\nShe keeps " << gpay << " gold. (" << 100 - current->m_Stats[STAT_HOUSE] << "%)\nYou keep " << gpay << " gold. (" << current->m_Stats[STAT_HOUSE] << "%).";
+					ss << ".\nShe keeps " << gpay << " gold. (" << 100 - current->m_Stats[STAT_HOUSE] << "%)\nYou keep " << hpay << " gold (" << current->m_Stats[STAT_HOUSE] << "%).";
 				}
 				summary += ss.str();
 			}
@@ -616,17 +617,17 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 					(m_JobManager.is_job_Paid_Player(current->m_NightJob) && current->is_slave() && cfg.initial.slave_pay_outofpocket()))
 					ss << " directly from you. She gets to keep it all.";
 				else if (current->house() <= 0)				ss << " and she gets to keep it all.";
-				else if ((cfg.initial.girls_keep_tips() && !current->is_slave()) || (cfg.initial.slave_keep_tips() && current->is_slave()))
+				else if (totalTips>0 && ((cfg.initial.girls_keep_tips() && !current->is_slave()) || (cfg.initial.slave_keep_tips() && current->is_slave())))
 				{
-					int hpay = totalPay * current->m_Stats[STAT_HOUSE];
+					int hpay = int(double(totalGold * double(current->m_Stats[STAT_HOUSE] * 0.01)));
 					int gpay = totalPay - hpay;
-					ss << ".\nShe keeps the " << totalTips << " she got in tips and her cut (" << 100 - current->m_Stats[STAT_HOUSE] << "%) of the payment amounting to " << gpay << " gold.\n\nYou got " << hpay << " gold";
+					ss << ".\nShe keeps the " << totalTips << " she got in tips and her cut (" << 100 - current->m_Stats[STAT_HOUSE] << "%) of the payment amounting to " << gpay << " gold.\n\nYou got " << hpay << " gold (" << current->m_Stats[STAT_HOUSE] << "%).";
 				}
 				else
 				{
-					int hpay = totalGold * current->m_Stats[STAT_HOUSE];
+					int hpay = int(double(totalGold * double(current->m_Stats[STAT_HOUSE] * 0.01)));
 					int gpay = totalGold - hpay;
-					ss << ".\nShe keeps " << gpay << " gold. (" << 100 - current->m_Stats[STAT_HOUSE] << "%)\nYou keep " << gpay << " gold. (" << current->m_Stats[STAT_HOUSE] << "%).";
+					ss << ".\nShe keeps " << gpay << " gold. (" << 100 - current->m_Stats[STAT_HOUSE] << "%)\nYou keep " << hpay << " gold (" << current->m_Stats[STAT_HOUSE] << "%).";
 				}
 				summary += ss.str();
 			}
@@ -658,32 +659,12 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 			else { current = 0; break; }
 		}
 		girlName = current->m_Realname;
-		summary = "There was no crew to film the scene, so " + girlName+" took the day off";
+		summary = "There was no crew to film the scene, so " + girlName + " took the day off";
 		current->m_Events.AddMessage(summary, IMGTYPE_PROFILE, EVENT_NOWORK);
 		g_Girls.AddTiredness(current);
 
 		current = current->m_Next;
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	// Process the rest of the Crew
 	current = brothel->m_Girls;
@@ -726,17 +707,17 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 					(m_JobManager.is_job_Paid_Player(current->m_NightJob) && current->is_slave() && cfg.initial.slave_pay_outofpocket()))
 					ss << " directly from you. She gets to keep it all.";
 				else if (current->house() <= 0)				ss << " and she gets to keep it all.";
-				else if ((cfg.initial.girls_keep_tips() && !current->is_slave()) || (cfg.initial.slave_keep_tips() && current->is_slave()))
+				else if (totalTips>0 && ((cfg.initial.girls_keep_tips() && !current->is_slave()) || (cfg.initial.slave_keep_tips() && current->is_slave())))
 				{
-					int hpay = totalPay * current->m_Stats[STAT_HOUSE];
+					int hpay = int(double(totalGold * double(current->m_Stats[STAT_HOUSE] * 0.01)));
 					int gpay = totalPay - hpay;
-					ss << ".\nShe keeps the " << totalTips << " she got in tips and her cut (" << 100 - current->m_Stats[STAT_HOUSE] << "%) of the payment amounting to " << gpay << " gold.\n\nYou got " << hpay << " gold";
+					ss << ".\nShe keeps the " << totalTips << " she got in tips and her cut (" << 100 - current->m_Stats[STAT_HOUSE] << "%) of the payment amounting to " << gpay << " gold.\n\nYou got " << hpay << " gold (" << current->m_Stats[STAT_HOUSE] << "%).";
 				}
 				else
 				{
-					int hpay = totalGold * current->m_Stats[STAT_HOUSE];
+					int hpay = int(double(totalGold * double(current->m_Stats[STAT_HOUSE] * 0.01)));
 					int gpay = totalGold - hpay;
-					ss << ".\nShe keeps " << gpay << " gold. (" << 100 - current->m_Stats[STAT_HOUSE] << "%)\nYou keep " << gpay << " gold. (" << current->m_Stats[STAT_HOUSE] << "%).";
+					ss << ".\nShe keeps " << gpay << " gold. (" << 100 - current->m_Stats[STAT_HOUSE] << "%)\nYou keep " << hpay << " gold (" << current->m_Stats[STAT_HOUSE] << "%).";
 				}
 				summary += ss.str();
 			}
@@ -822,17 +803,17 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 					(m_JobManager.is_job_Paid_Player(current->m_NightJob) && current->is_slave() && cfg.initial.slave_pay_outofpocket()))
 					ss << " directly from you. She gets to keep it all.";
 				else if (current->house() <= 0)				ss << " and she gets to keep it all.";
-				else if ((cfg.initial.girls_keep_tips() && !current->is_slave()) || (cfg.initial.slave_keep_tips() && current->is_slave()))
+				else if (totalTips>0 && ((cfg.initial.girls_keep_tips() && !current->is_slave()) || (cfg.initial.slave_keep_tips() && current->is_slave())))
 				{
-					int hpay = totalPay * current->m_Stats[STAT_HOUSE];
+					int hpay = int(double(totalGold * double(current->m_Stats[STAT_HOUSE] * 0.01)));
 					int gpay = totalPay - hpay;
-					ss << ".\nShe keeps the " << totalTips << " she got in tips and her cut (" << 100 - current->m_Stats[STAT_HOUSE] << "%) of the payment amounting to " << gpay << " gold.\n\nYou got " << hpay << " gold";
+					ss << ".\nShe keeps the " << totalTips << " she got in tips and her cut (" << 100 - current->m_Stats[STAT_HOUSE] << "%) of the payment amounting to " << gpay << " gold.\n\nYou got " << hpay << " gold (" << current->m_Stats[STAT_HOUSE] << "%).";
 				}
 				else
 				{
-					int hpay = totalGold * current->m_Stats[STAT_HOUSE];
+					int hpay = int(double(totalGold * double(current->m_Stats[STAT_HOUSE] * 0.01)));
 					int gpay = totalGold - hpay;
-					ss << ".\nShe keeps " << gpay << " gold. (" << 100 - current->m_Stats[STAT_HOUSE] << "%)\nYou keep " << gpay << " gold. (" << current->m_Stats[STAT_HOUSE] << "%).";
+					ss << ".\nShe keeps " << gpay << " gold. (" << 100 - current->m_Stats[STAT_HOUSE] << "%)\nYou keep " << hpay << " gold (" << current->m_Stats[STAT_HOUSE] << "%).";
 				}
 				summary += ss.str();
 			}

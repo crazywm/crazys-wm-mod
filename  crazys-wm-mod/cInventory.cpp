@@ -531,15 +531,13 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 				break;
 
 			case sEffect::Trait:			// affects skill
-#if 1
 				/*
 				 *	WD:	New logic for remembering traits
 				 *		moved to AddTrait() RemoveTrait() fn's
 				 *
 				 *		EQUIP Temporary Item
 				 */
-
-				if (amount == 0)													// remove trait temporarily from equiping an item	
+				if (amount == 0)						// remove trait temporarily from equiping an item	
 					g_Girls.RemoveTrait(girl, girl->m_Inventory[num]->m_Effects[i].m_Trait, true);		// addrememberlist = true Temporary Item trait removal
 
 				else if (amount == 1)		// add temporary trait
@@ -549,37 +547,12 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 				{
 					girl->m_Virgin = (amount == 1);
 				}
-
-#else			//	WD:	Original Code.
-				if(amount == 0)						// remove temp trait
-					remove_trait(girl, num, i);
-
-				else if(amount == 1)	// add trait
-				{
-					// if the item is consumable
-					if(girl->m_Inventory[num]->m_Type != INVFOOD && girl->m_Inventory[num]->m_Type != INVMAKEUP)
-					{
-						// if they don't already have the trait and it is not being remembered
-						if(!g_Girls.HasTrait(girl, girl->m_Inventory[num]->m_Effects[i].m_Trait) && !g_Girls.HasRememberedTrait(girl, girl->m_Inventory[num]->m_Effects[i].m_Trait))
-							// then just add the trait
-							g_Girls.AddTrait(girl, girl->m_Inventory[num]->m_Effects[i].m_Trait, true);
-						else
-							// ok just add the trait to the trait memory
-							g_Girls.AddRememberedTrait(girl, girl->m_Inventory[num]->m_Effects[i].m_Trait);
-					}
-					else // just add the trait
-						g_Girls.AddTrait(girl, girl->m_Inventory[num]->m_Effects[i].m_Trait, true);
-				}
-#endif
 			}
 		}
 		else	// m_Special == sInventoryItem::None
 		{
-			if (affects == sEffect::Skill)	// affects skill
-				g_Girls.UpdateTempSkill(girl, eff_id, amount);
-
-			else if (affects == sEffect::Stat)	// affects stat
-				g_Girls.UpdateTempStat(girl, eff_id, amount);
+			if (affects == sEffect::Skill)		g_Girls.UpdateSkillMod(girl, eff_id, amount);
+			else if (affects == sEffect::Stat)	g_Girls.UpdateStatMod(girl, eff_id, amount);
 
 			else if (affects == sEffect::GirlStatus)	// adds/removes status
 			{
@@ -688,7 +661,8 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 		}
 	}
 
-	if (girl->m_Inventory[num]->m_Type == INVFOOD || girl->m_Inventory[num]->m_Type == INVMAKEUP)	// if consumable then remove from inventory
+	// if consumable then remove from inventory
+	if (girl->m_Inventory[num]->m_Type == INVFOOD || girl->m_Inventory[num]->m_Type == INVMAKEUP)
 	{
 		girl->m_Inventory[num] = 0;
 		girl->m_EquipedItems[num] = 0;
@@ -710,24 +684,21 @@ void cInventory::Unequip(sGirl* girl, int num)
 		int affects = girl->m_Inventory[num]->m_Effects[i].m_Affects;
 		int amount = girl->m_Inventory[num]->m_Effects[i].m_Amount;
 
-		if (affects == sEffect::Skill)				g_Girls.UpdateTempSkill(girl, eff_id, -amount);			// affects skill
-		else if (affects == sEffect::Stat)			g_Girls.UpdateTempStat(girl, eff_id, -amount);		// affects stat
+		if (affects == sEffect::Skill)				g_Girls.UpdateSkillMod(girl, eff_id, -amount);			// affects skill
+		else if (affects == sEffect::Stat)			g_Girls.UpdateStatMod(girl, eff_id, -amount);		// affects stat
 		else if (affects == sEffect::GirlStatus)	// adds/removes status
 		{
 			if (amount == 1) girl->m_States &= ~(1 << eff_id);		// add status
 			else if (amount == 0) girl->m_States |= (1 << eff_id);	// remove status
 		}
 		else if (affects == sEffect::Trait)	// trait
-#if 1
 		{
-
 			/*
 			 *	WD:	New logic for remembering traits
 			 *		moved to AddTrait() RemoveTrait() fn's
 			 *
 			 *		UNEQUIP
 			 */
-
 			if (amount == 0 && girl->m_Inventory[num]->m_Effects[i].m_Trait == "Virgin")
 			{
 				girl->m_Virgin = 0; // `J` unequiping an item will not make her a virgin again
@@ -735,38 +706,10 @@ void cInventory::Unequip(sGirl* girl, int num)
 			else if (amount == 0)					// possibly add remembered trait from unequiping an item
 				g_Girls.AddTrait(girl, girl->m_Inventory[num]->m_Effects[i].m_Trait, false, false, true);	// inrememberlist = true Add trait only if it is in the rememebered list
 
-
 			else if (amount == 1)				// remove item trait from unequiping an item
 				g_Girls.RemoveTrait(girl, girl->m_Inventory[num]->m_Effects[i].m_Trait);
-
 		}
 	}
-
-#else
-		{
-			if(amount == 0)	// add trait effect back
-			{
-				if (g_Girls.HasRememberedTrait(girl, girl->m_Inventory[num]->m_Effects[i].m_Trait))
-				{
-					// ok, they had the trait to begin with so add it back if it is only remembered once (if more then once then something else has removed it as well)
-					g_Girls.RemoveRememberedTrait(girl, girl->m_Inventory[num]->m_Effects[i].m_Trait);
-					if(!g_Girls.HasRememberedTrait(girl, girl->m_Inventory[num]->m_Effects[i].m_Trait))
-						g_Girls.AddTrait(girl, girl->m_Inventory[num]->m_Effects[i].m_Trait);
-				}
-				// if they didn't have the trait to begin with cannot add it back
-			}
-			else if(amount == 1)	// remove trait effect
-			{
-				// if it is remembered then the trait should remain but removed from memory
-				if(g_Girls.HasRememberedTrait(girl, girl->m_Inventory[num]->m_Effects[i].m_Trait))
-					g_Girls.RemoveRememberedTrait(girl, girl->m_Inventory[num]->m_Effects[i].m_Trait);
-				else
-					g_Girls.RemoveTrait(girl, girl->m_Inventory[num]->m_Effects[i].m_Trait);
-			}
-		}
-}
-#endif
-
 	// set it as unequiped
 	girl->m_EquipedItems[num] = 0;
 
@@ -781,14 +724,13 @@ void cInventory::Equip(sGirl* girl, sInventoryItem* item, bool force)
 	for (u_int i = 0; i < item->m_Effects.size(); i++)
 	{
 		if (item->m_Effects[i].m_Affects == sEffect::Skill)	// affects skill
-			g_Girls.UpdateTempSkill(girl, item->m_Effects[i].m_EffectID, item->m_Effects[i].m_Amount);
+			g_Girls.UpdateSkillMod(girl, item->m_Effects[i].m_EffectID, item->m_Effects[i].m_Amount);
 		else if (item->m_Effects[i].m_Affects == sEffect::Stat)	// affects stat
-			g_Girls.UpdateTempStat(girl, item->m_Effects[i].m_EffectID, item->m_Effects[i].m_Amount);
+			g_Girls.UpdateStatMod(girl, item->m_Effects[i].m_EffectID, item->m_Effects[i].m_Amount);
 		else if (item->m_Effects[i].m_Affects == sEffect::Trait)	// trait
 		{
 			if (item->m_Effects[i].m_Amount == 0)			// remove trait temporarily from equiping an item							
 				g_Girls.RemoveTrait(girl, item->m_Effects[i].m_Trait, true);	// addrememberlist = true AffectAll trait removal
-
 
 			else if (item->m_Effects[i].m_Amount == 1)		// add temporary trait 					
 				g_Girls.AddTrait(girl, item->m_Effects[i].m_Trait, true, true); // Temp = true AffectAll Item, removeitem = true for AffectAll trait
@@ -797,7 +739,6 @@ void cInventory::Equip(sGirl* girl, sInventoryItem* item, bool force)
 			{
 				girl->m_Virgin = (item->m_Effects[i].m_Amount == 1);
 			}
-
 		}
 	}
 }

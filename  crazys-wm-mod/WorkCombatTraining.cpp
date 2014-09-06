@@ -185,7 +185,7 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, sBrothel* brothel, int DayNigh
 	if (girl->m_States&(1 << STATUS_SLAVE))
 	{
 		message += " \nYou own her so you don't have to pay her.";
-		g_Brothels.GetPlayer()->disposition(dispo);
+		g_Brothels.GetPlayer()->disposition();
 	}
 	else
 	{	

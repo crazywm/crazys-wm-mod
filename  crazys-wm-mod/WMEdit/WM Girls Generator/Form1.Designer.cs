@@ -32,6 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage0_Info = new System.Windows.Forms.TabPage();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.tabPage1_Girls = new System.Windows.Forms.TabPage();
             this.label_G_Images_Found = new System.Windows.Forms.Label();
             this.checkBox_G_Virgin = new System.Windows.Forms.CheckBox();
@@ -114,6 +115,8 @@
             this.button_G_Update = new System.Windows.Forms.Button();
             this.button_G_Reset = new System.Windows.Forms.Button();
             this.groupBox_G_Stats = new System.Windows.Forms.GroupBox();
+            this.textBox_G_Morality = new System.Windows.Forms.TextBox();
+            this.label_G_Morality = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.StatsTBox_01 = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
@@ -134,7 +137,6 @@
             this.StatsTBox_G_Level = new System.Windows.Forms.TextBox();
             this.StatsTBox_11 = new System.Windows.Forms.TextBox();
             this.StatsTBox_12 = new System.Windows.Forms.TextBox();
-            this.StatsTBox_G_Exp = new System.Windows.Forms.TextBox();
             this.StatsTBox_14 = new System.Windows.Forms.TextBox();
             this.StatsTBox_15 = new System.Windows.Forms.TextBox();
             this.StatsTBox_16 = new System.Windows.Forms.TextBox();
@@ -155,7 +157,6 @@
             this.label20 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
-            this.label_G_Exp = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
             this.groupBox_G_Sk = new System.Windows.Forms.GroupBox();
@@ -172,6 +173,9 @@
             this.button_St_Mental = new System.Windows.Forms.Button();
             this.tabPage2_RGirls = new System.Windows.Forms.TabPage();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.textBox_RG_Morality_Max = new System.Windows.Forms.TextBox();
+            this.textBox_RG_Morality_Min = new System.Windows.Forms.TextBox();
+            this.label_RG_Morality = new System.Windows.Forms.Label();
             this.StatRGMaxTBox22 = new System.Windows.Forms.TextBox();
             this.StatRGMaxTBox20 = new System.Windows.Forms.TextBox();
             this.StatRGMaxTBox18 = new System.Windows.Forms.TextBox();
@@ -198,7 +202,6 @@
             this.StatRGMaxTBox19 = new System.Windows.Forms.TextBox();
             this.StatRGMaxTBox17 = new System.Windows.Forms.TextBox();
             this.StatRGMaxTBox15 = new System.Windows.Forms.TextBox();
-            this.StatRGMaxTBox13 = new System.Windows.Forms.TextBox();
             this.StatRGMaxTBox11 = new System.Windows.Forms.TextBox();
             this.StatRGMaxTBox9 = new System.Windows.Forms.TextBox();
             this.StatRGMaxTBox7 = new System.Windows.Forms.TextBox();
@@ -209,7 +212,6 @@
             this.StatRGMinTBox19 = new System.Windows.Forms.TextBox();
             this.StatRGMinTBox17 = new System.Windows.Forms.TextBox();
             this.StatRGMinTBox15 = new System.Windows.Forms.TextBox();
-            this.StatRGMinTBox13 = new System.Windows.Forms.TextBox();
             this.StatRGMinTBox11 = new System.Windows.Forms.TextBox();
             this.StatRGMinTBox9 = new System.Windows.Forms.TextBox();
             this.StatRGMinTBox7 = new System.Windows.Forms.TextBox();
@@ -235,7 +237,6 @@
             this.label57 = new System.Windows.Forms.Label();
             this.label58 = new System.Windows.Forms.Label();
             this.label59 = new System.Windows.Forms.Label();
-            this.label60 = new System.Windows.Forms.Label();
             this.label61 = new System.Windows.Forms.Label();
             this.label62 = new System.Windows.Forms.Label();
             this.groupBox26 = new System.Windows.Forms.GroupBox();
@@ -565,7 +566,6 @@
             this.button_Save_Traits = new System.Windows.Forms.Button();
             this.traitsTBox1 = new System.Windows.Forms.TextBox();
             this.tabPage6_FAQ = new System.Windows.Forms.TabPage();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.checkBox_Add_Missing_Sex_Skills_On_Load = new System.Windows.Forms.CheckBox();
             this.checkBox_ToggleListsTooltips = new System.Windows.Forms.CheckBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
@@ -579,6 +579,7 @@
             this.button24 = new System.Windows.Forms.Button();
             this.checkBox_ToggleTraitTooltips = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
+            this.tabPage0_Info.SuspendLayout();
             this.tabPage1_Girls.SuspendLayout();
             this.groupBox_G_JF.SuspendLayout();
             this.groupBox25.SuspendLayout();
@@ -617,7 +618,6 @@
             this.groupBox_C_Gambling.SuspendLayout();
             this.groupBox_C_Income_Multipliers.SuspendLayout();
             this.tabPage5_Traits.SuspendLayout();
-            this.tabPage6_FAQ.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -639,13 +639,26 @@
             // 
             // tabPage0_Info
             // 
+            this.tabPage0_Info.Controls.Add(this.richTextBox1);
             this.tabPage0_Info.Location = new System.Drawing.Point(4, 22);
             this.tabPage0_Info.Name = "tabPage0_Info";
             this.tabPage0_Info.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage0_Info.Size = new System.Drawing.Size(952, 492);
             this.tabPage0_Info.TabIndex = 0;
-            this.tabPage0_Info.Text = "  Info  ";
+            this.tabPage0_Info.Text = "  Short Faq  ";
             this.tabPage0_Info.UseVisualStyleBackColor = true;
+            // 
+            // richTextBox1
+            // 
+            this.richTextBox1.BackColor = System.Drawing.SystemColors.Window;
+            this.richTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.richTextBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.richTextBox1.Location = new System.Drawing.Point(6, 6);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.ReadOnly = true;
+            this.richTextBox1.Size = new System.Drawing.Size(940, 480);
+            this.richTextBox1.TabIndex = 1;
+            this.richTextBox1.Text = resources.GetString("richTextBox1.Text");
             // 
             // tabPage1_Girls
             // 
@@ -838,33 +851,36 @@
             this.SkillTBox_04.Location = new System.Drawing.Point(99, 15);
             this.SkillTBox_04.MaxLength = 3;
             this.SkillTBox_04.Name = "SkillTBox_04";
-            this.SkillTBox_04.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.SkillTBox_04.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.SkillTBox_04.Size = new System.Drawing.Size(65, 20);
             this.SkillTBox_04.TabIndex = 1;
             this.SkillTBox_04.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SkillTBox_04.TextChanged += new System.EventHandler(this.SkillTBox_04_TextChanged);
+            this.SkillTBox_04.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillTBox_04.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // SkillTBox_15
             // 
             this.SkillTBox_15.Location = new System.Drawing.Point(99, 204);
             this.SkillTBox_15.MaxLength = 3;
             this.SkillTBox_15.Name = "SkillTBox_15";
-            this.SkillTBox_15.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.SkillTBox_15.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.SkillTBox_15.Size = new System.Drawing.Size(65, 20);
             this.SkillTBox_15.TabIndex = 19;
             this.SkillTBox_15.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SkillTBox_15.TextChanged += new System.EventHandler(this.SkillTBox_15_TextChanged);
+            this.SkillTBox_15.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillTBox_15.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // SkillTBox_12
             // 
             this.SkillTBox_12.Location = new System.Drawing.Point(99, 183);
             this.SkillTBox_12.MaxLength = 3;
             this.SkillTBox_12.Name = "SkillTBox_12";
-            this.SkillTBox_12.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.SkillTBox_12.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.SkillTBox_12.Size = new System.Drawing.Size(65, 20);
             this.SkillTBox_12.TabIndex = 17;
             this.SkillTBox_12.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SkillTBox_12.TextChanged += new System.EventHandler(this.SkillTBox_12_TextChanged);
+            this.SkillTBox_12.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillTBox_12.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // label144
             // 
@@ -880,11 +896,12 @@
             this.SkillTBox_11.Location = new System.Drawing.Point(99, 162);
             this.SkillTBox_11.MaxLength = 3;
             this.SkillTBox_11.Name = "SkillTBox_11";
-            this.SkillTBox_11.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.SkillTBox_11.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.SkillTBox_11.Size = new System.Drawing.Size(65, 20);
             this.SkillTBox_11.TabIndex = 15;
             this.SkillTBox_11.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SkillTBox_11.TextChanged += new System.EventHandler(this.SkillTBox_11_TextChanged);
+            this.SkillTBox_11.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillTBox_11.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // label143
             // 
@@ -900,33 +917,36 @@
             this.SkillTBox_09.Location = new System.Drawing.Point(99, 120);
             this.SkillTBox_09.MaxLength = 3;
             this.SkillTBox_09.Name = "SkillTBox_09";
-            this.SkillTBox_09.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.SkillTBox_09.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.SkillTBox_09.Size = new System.Drawing.Size(65, 20);
             this.SkillTBox_09.TabIndex = 11;
             this.SkillTBox_09.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SkillTBox_09.TextChanged += new System.EventHandler(this.SkillTBox_09_TextChanged);
+            this.SkillTBox_09.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillTBox_09.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // SkillTBox_07
             // 
             this.SkillTBox_07.Location = new System.Drawing.Point(99, 99);
             this.SkillTBox_07.MaxLength = 3;
             this.SkillTBox_07.Name = "SkillTBox_07";
-            this.SkillTBox_07.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.SkillTBox_07.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.SkillTBox_07.Size = new System.Drawing.Size(65, 20);
             this.SkillTBox_07.TabIndex = 9;
             this.SkillTBox_07.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SkillTBox_07.TextChanged += new System.EventHandler(this.SkillTBox_07_TextChanged);
+            this.SkillTBox_07.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillTBox_07.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // SkillTBox_06
             // 
             this.SkillTBox_06.Location = new System.Drawing.Point(99, 141);
             this.SkillTBox_06.MaxLength = 3;
             this.SkillTBox_06.Name = "SkillTBox_06";
-            this.SkillTBox_06.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.SkillTBox_06.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.SkillTBox_06.Size = new System.Drawing.Size(65, 20);
             this.SkillTBox_06.TabIndex = 13;
             this.SkillTBox_06.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SkillTBox_06.TextChanged += new System.EventHandler(this.SkillTBox_06_TextChanged);
+            this.SkillTBox_06.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillTBox_06.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // label29
             // 
@@ -942,11 +962,12 @@
             this.SkillTBox_05.Location = new System.Drawing.Point(99, 78);
             this.SkillTBox_05.MaxLength = 3;
             this.SkillTBox_05.Name = "SkillTBox_05";
-            this.SkillTBox_05.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.SkillTBox_05.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.SkillTBox_05.Size = new System.Drawing.Size(65, 20);
             this.SkillTBox_05.TabIndex = 7;
             this.SkillTBox_05.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SkillTBox_05.TextChanged += new System.EventHandler(this.SkillTBox_05_TextChanged);
+            this.SkillTBox_05.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillTBox_05.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // label30
             // 
@@ -962,11 +983,12 @@
             this.SkillTBox_03.Location = new System.Drawing.Point(99, 57);
             this.SkillTBox_03.MaxLength = 3;
             this.SkillTBox_03.Name = "SkillTBox_03";
-            this.SkillTBox_03.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.SkillTBox_03.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.SkillTBox_03.Size = new System.Drawing.Size(65, 20);
             this.SkillTBox_03.TabIndex = 5;
             this.SkillTBox_03.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SkillTBox_03.TextChanged += new System.EventHandler(this.SkillTBox_03_TextChanged);
+            this.SkillTBox_03.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillTBox_03.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // label31
             // 
@@ -982,11 +1004,12 @@
             this.SkillTBox_01.Location = new System.Drawing.Point(99, 36);
             this.SkillTBox_01.MaxLength = 3;
             this.SkillTBox_01.Name = "SkillTBox_01";
-            this.SkillTBox_01.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.SkillTBox_01.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.SkillTBox_01.Size = new System.Drawing.Size(65, 20);
             this.SkillTBox_01.TabIndex = 3;
             this.SkillTBox_01.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SkillTBox_01.TextChanged += new System.EventHandler(this.SkillTBox_01_TextChanged);
+            this.SkillTBox_01.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillTBox_01.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // label32
             // 
@@ -1059,6 +1082,7 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(8, 207);
             this.label1.Name = "label1";
+            this.label1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.label1.Size = new System.Drawing.Size(86, 13);
             this.label1.TabIndex = 18;
             this.label1.Text = "Animal Handling:";
@@ -1104,55 +1128,60 @@
             this.SkillTBox_16.Location = new System.Drawing.Point(99, 121);
             this.SkillTBox_16.MaxLength = 3;
             this.SkillTBox_16.Name = "SkillTBox_16";
-            this.SkillTBox_16.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.SkillTBox_16.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.SkillTBox_16.Size = new System.Drawing.Size(65, 20);
             this.SkillTBox_16.TabIndex = 11;
             this.SkillTBox_16.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SkillTBox_16.TextChanged += new System.EventHandler(this.SkillTBox_16_TextChanged);
+            this.SkillTBox_16.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillTBox_16.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // SkillTBox_18
             // 
             this.SkillTBox_18.Location = new System.Drawing.Point(99, 163);
             this.SkillTBox_18.MaxLength = 3;
             this.SkillTBox_18.Name = "SkillTBox_18";
-            this.SkillTBox_18.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.SkillTBox_18.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.SkillTBox_18.Size = new System.Drawing.Size(65, 20);
             this.SkillTBox_18.TabIndex = 15;
             this.SkillTBox_18.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SkillTBox_18.TextChanged += new System.EventHandler(this.SkillTBox_18_TextChanged);
+            this.SkillTBox_18.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillTBox_18.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // SkillTBox_17
             // 
             this.SkillTBox_17.Location = new System.Drawing.Point(99, 142);
             this.SkillTBox_17.MaxLength = 3;
             this.SkillTBox_17.Name = "SkillTBox_17";
-            this.SkillTBox_17.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.SkillTBox_17.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.SkillTBox_17.Size = new System.Drawing.Size(65, 20);
             this.SkillTBox_17.TabIndex = 13;
             this.SkillTBox_17.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SkillTBox_17.TextChanged += new System.EventHandler(this.SkillTBox_17_TextChanged);
+            this.SkillTBox_17.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillTBox_17.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // SkillTBox_19
             // 
             this.SkillTBox_19.Location = new System.Drawing.Point(99, 184);
             this.SkillTBox_19.MaxLength = 3;
             this.SkillTBox_19.Name = "SkillTBox_19";
-            this.SkillTBox_19.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.SkillTBox_19.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.SkillTBox_19.Size = new System.Drawing.Size(65, 20);
             this.SkillTBox_19.TabIndex = 17;
             this.SkillTBox_19.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SkillTBox_19.TextChanged += new System.EventHandler(this.SkillTBox_19_TextChanged);
+            this.SkillTBox_19.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillTBox_19.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // SkillTBox_20
             // 
             this.SkillTBox_20.Location = new System.Drawing.Point(99, 205);
             this.SkillTBox_20.MaxLength = 3;
             this.SkillTBox_20.Name = "SkillTBox_20";
-            this.SkillTBox_20.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.SkillTBox_20.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.SkillTBox_20.Size = new System.Drawing.Size(65, 20);
             this.SkillTBox_20.TabIndex = 19;
             this.SkillTBox_20.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SkillTBox_20.TextChanged += new System.EventHandler(this.SkillTBox_20_TextChanged);
+            this.SkillTBox_20.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillTBox_20.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // label146
             // 
@@ -1204,55 +1233,60 @@
             this.SkillTBox_02.Location = new System.Drawing.Point(99, 15);
             this.SkillTBox_02.MaxLength = 3;
             this.SkillTBox_02.Name = "SkillTBox_02";
-            this.SkillTBox_02.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.SkillTBox_02.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.SkillTBox_02.Size = new System.Drawing.Size(65, 20);
             this.SkillTBox_02.TabIndex = 1;
             this.SkillTBox_02.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SkillTBox_02.TextChanged += new System.EventHandler(this.SkillTBox_02_TextChanged);
+            this.SkillTBox_02.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillTBox_02.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // SkillTBox_08
             // 
             this.SkillTBox_08.Location = new System.Drawing.Point(99, 57);
             this.SkillTBox_08.MaxLength = 3;
             this.SkillTBox_08.Name = "SkillTBox_08";
-            this.SkillTBox_08.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.SkillTBox_08.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.SkillTBox_08.Size = new System.Drawing.Size(65, 20);
             this.SkillTBox_08.TabIndex = 5;
             this.SkillTBox_08.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SkillTBox_08.TextChanged += new System.EventHandler(this.SkillTBox_08_TextChanged);
+            this.SkillTBox_08.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillTBox_08.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // SkillTBox_10
             // 
             this.SkillTBox_10.Location = new System.Drawing.Point(99, 36);
             this.SkillTBox_10.MaxLength = 3;
             this.SkillTBox_10.Name = "SkillTBox_10";
-            this.SkillTBox_10.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.SkillTBox_10.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.SkillTBox_10.Size = new System.Drawing.Size(65, 20);
             this.SkillTBox_10.TabIndex = 3;
             this.SkillTBox_10.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SkillTBox_10.TextChanged += new System.EventHandler(this.SkillTBox_10_TextChanged);
+            this.SkillTBox_10.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillTBox_10.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // SkillTBox_13
             // 
             this.SkillTBox_13.Location = new System.Drawing.Point(99, 78);
             this.SkillTBox_13.MaxLength = 3;
             this.SkillTBox_13.Name = "SkillTBox_13";
-            this.SkillTBox_13.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.SkillTBox_13.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.SkillTBox_13.Size = new System.Drawing.Size(65, 20);
             this.SkillTBox_13.TabIndex = 7;
             this.SkillTBox_13.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SkillTBox_13.TextChanged += new System.EventHandler(this.SkillTBox_13_TextChanged);
+            this.SkillTBox_13.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillTBox_13.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // SkillTBox_14
             // 
             this.SkillTBox_14.Location = new System.Drawing.Point(99, 99);
             this.SkillTBox_14.MaxLength = 3;
             this.SkillTBox_14.Name = "SkillTBox_14";
-            this.SkillTBox_14.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.SkillTBox_14.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.SkillTBox_14.Size = new System.Drawing.Size(65, 20);
             this.SkillTBox_14.TabIndex = 9;
             this.SkillTBox_14.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SkillTBox_14.TextChanged += new System.EventHandler(this.SkillTBox_14_TextChanged);
+            this.SkillTBox_14.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillTBox_14.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // groupBox_G_SS
             // 
@@ -1369,13 +1403,13 @@
             // 
             this.GoldTBox1.Location = new System.Drawing.Point(186, 201);
             this.GoldTBox1.Name = "GoldTBox1";
-            this.GoldTBox1.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.GoldTBox1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.GoldTBox1.Size = new System.Drawing.Size(64, 20);
             this.GoldTBox1.TabIndex = 7;
             this.GoldTBox1.Text = "0";
             this.GoldTBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.GoldTBox1.TextChanged += new System.EventHandler(this.GoldTBox1_TextChanged);
-            this.GoldTBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.GoldTBox1_KeyPress);
+            this.GoldTBox1.TextChanged += new System.EventHandler(this.ValidateTextBoxNoMax);
+            this.GoldTBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxNoMax);
             // 
             // label_G_Gold
             // 
@@ -1576,6 +1610,8 @@
             // 
             // groupBox_G_Stats
             // 
+            this.groupBox_G_Stats.Controls.Add(this.textBox_G_Morality);
+            this.groupBox_G_Stats.Controls.Add(this.label_G_Morality);
             this.groupBox_G_Stats.Controls.Add(this.label4);
             this.groupBox_G_Stats.Controls.Add(this.StatsTBox_01);
             this.groupBox_G_Stats.Controls.Add(this.label5);
@@ -1596,7 +1632,6 @@
             this.groupBox_G_Stats.Controls.Add(this.StatsTBox_G_Level);
             this.groupBox_G_Stats.Controls.Add(this.StatsTBox_11);
             this.groupBox_G_Stats.Controls.Add(this.StatsTBox_12);
-            this.groupBox_G_Stats.Controls.Add(this.StatsTBox_G_Exp);
             this.groupBox_G_Stats.Controls.Add(this.StatsTBox_14);
             this.groupBox_G_Stats.Controls.Add(this.StatsTBox_15);
             this.groupBox_G_Stats.Controls.Add(this.StatsTBox_16);
@@ -1617,7 +1652,6 @@
             this.groupBox_G_Stats.Controls.Add(this.label20);
             this.groupBox_G_Stats.Controls.Add(this.label15);
             this.groupBox_G_Stats.Controls.Add(this.label19);
-            this.groupBox_G_Stats.Controls.Add(this.label_G_Exp);
             this.groupBox_G_Stats.Controls.Add(this.label18);
             this.groupBox_G_Stats.Controls.Add(this.label17);
             this.groupBox_G_Stats.Location = new System.Drawing.Point(270, 5);
@@ -1627,6 +1661,31 @@
             this.groupBox_G_Stats.TabStop = false;
             this.groupBox_G_Stats.Text = "Stats";
             this.toolTip1.SetToolTip(this.groupBox_G_Stats, " \"Use values from 0 to 100 for these\"");
+            // 
+            // textBox_G_Morality
+            // 
+            this.textBox_G_Morality.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.textBox_G_Morality.Location = new System.Drawing.Point(99, 36);
+            this.textBox_G_Morality.Name = "textBox_G_Morality";
+            this.textBox_G_Morality.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.textBox_G_Morality.Size = new System.Drawing.Size(65, 20);
+            this.textBox_G_Morality.TabIndex = 3;
+            this.textBox_G_Morality.Text = "0";
+            this.textBox_G_Morality.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_G_Morality.TextChanged += new System.EventHandler(this.ValidateTextBoxNegative);
+            this.textBox_G_Morality.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxNegative);
+            // 
+            // label_G_Morality
+            // 
+            this.label_G_Morality.AutoSize = true;
+            this.label_G_Morality.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
+            this.label_G_Morality.Location = new System.Drawing.Point(8, 39);
+            this.label_G_Morality.Name = "label_G_Morality";
+            this.label_G_Morality.Size = new System.Drawing.Size(55, 13);
+            this.label_G_Morality.TabIndex = 2;
+            this.label_G_Morality.Text = "Morality:";
+            this.toolTip1.SetToolTip(this.label_G_Morality, "This is the balance of good and evil.\r\n-100 is Demonicly Evil, 100 is Saintly Goo" +
+        "d");
             // 
             // label4
             // 
@@ -1642,11 +1701,12 @@
             // 
             this.StatsTBox_01.Location = new System.Drawing.Point(279, 36);
             this.StatsTBox_01.Name = "StatsTBox_01";
-            this.StatsTBox_01.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.StatsTBox_01.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.StatsTBox_01.Size = new System.Drawing.Size(65, 20);
             this.StatsTBox_01.TabIndex = 25;
             this.StatsTBox_01.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatsTBox_01.TextChanged += new System.EventHandler(this.StatsTBox_01_TextChanged);
+            this.StatsTBox_01.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatsTBox_01.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // label5
             // 
@@ -1664,12 +1724,13 @@
             this.StatsTBox_02.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.StatsTBox_02.Location = new System.Drawing.Point(99, 141);
             this.StatsTBox_02.Name = "StatsTBox_02";
-            this.StatsTBox_02.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.StatsTBox_02.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.StatsTBox_02.Size = new System.Drawing.Size(65, 20);
             this.StatsTBox_02.TabIndex = 13;
             this.StatsTBox_02.Text = "100";
             this.StatsTBox_02.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatsTBox_02.TextChanged += new System.EventHandler(this.StatsTBox_02_TextChanged);
+            this.StatsTBox_02.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatsTBox_02.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // label6
             // 
@@ -1685,11 +1746,12 @@
             // 
             this.StatsTBox_03.Location = new System.Drawing.Point(279, 225);
             this.StatsTBox_03.Name = "StatsTBox_03";
-            this.StatsTBox_03.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.StatsTBox_03.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.StatsTBox_03.Size = new System.Drawing.Size(65, 20);
             this.StatsTBox_03.TabIndex = 43;
             this.StatsTBox_03.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatsTBox_03.TextChanged += new System.EventHandler(this.StatsTBox_03_TextChanged);
+            this.StatsTBox_03.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatsTBox_03.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // label7
             // 
@@ -1705,11 +1767,12 @@
             // 
             this.StatsTBox_04.Location = new System.Drawing.Point(279, 99);
             this.StatsTBox_04.Name = "StatsTBox_04";
-            this.StatsTBox_04.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.StatsTBox_04.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.StatsTBox_04.Size = new System.Drawing.Size(65, 20);
             this.StatsTBox_04.TabIndex = 31;
             this.StatsTBox_04.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatsTBox_04.TextChanged += new System.EventHandler(this.StatsTBox_04_TextChanged);
+            this.StatsTBox_04.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatsTBox_04.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // label8
             // 
@@ -1725,41 +1788,45 @@
             // 
             this.StatsTBox_05.Location = new System.Drawing.Point(279, 120);
             this.StatsTBox_05.Name = "StatsTBox_05";
-            this.StatsTBox_05.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.StatsTBox_05.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.StatsTBox_05.Size = new System.Drawing.Size(65, 20);
             this.StatsTBox_05.TabIndex = 33;
             this.StatsTBox_05.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatsTBox_05.TextChanged += new System.EventHandler(this.StatsTBox_05_TextChanged);
+            this.StatsTBox_05.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatsTBox_05.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // StatsTBox_06
             // 
             this.StatsTBox_06.Location = new System.Drawing.Point(279, 162);
             this.StatsTBox_06.Name = "StatsTBox_06";
-            this.StatsTBox_06.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.StatsTBox_06.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.StatsTBox_06.Size = new System.Drawing.Size(65, 20);
             this.StatsTBox_06.TabIndex = 37;
             this.StatsTBox_06.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatsTBox_06.TextChanged += new System.EventHandler(this.StatsTBox_06_TextChanged);
+            this.StatsTBox_06.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatsTBox_06.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // StatsTBox_07
             // 
             this.StatsTBox_07.Location = new System.Drawing.Point(279, 141);
             this.StatsTBox_07.Name = "StatsTBox_07";
-            this.StatsTBox_07.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.StatsTBox_07.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.StatsTBox_07.Size = new System.Drawing.Size(65, 20);
             this.StatsTBox_07.TabIndex = 35;
             this.StatsTBox_07.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatsTBox_07.TextChanged += new System.EventHandler(this.StatsTBox_07_TextChanged);
+            this.StatsTBox_07.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatsTBox_07.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // StatsTBox_08
             // 
             this.StatsTBox_08.Location = new System.Drawing.Point(279, 78);
             this.StatsTBox_08.Name = "StatsTBox_08";
-            this.StatsTBox_08.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.StatsTBox_08.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.StatsTBox_08.Size = new System.Drawing.Size(65, 20);
             this.StatsTBox_08.TabIndex = 29;
             this.StatsTBox_08.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatsTBox_08.TextChanged += new System.EventHandler(this.StatsTBox_08_TextChanged);
+            this.StatsTBox_08.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatsTBox_08.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // label9
             // 
@@ -1797,136 +1864,135 @@
             this.StatsTBox_09.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.StatsTBox_09.Location = new System.Drawing.Point(99, 57);
             this.StatsTBox_09.Name = "StatsTBox_09";
-            this.StatsTBox_09.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.StatsTBox_09.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.StatsTBox_09.Size = new System.Drawing.Size(65, 20);
             this.StatsTBox_09.TabIndex = 5;
             this.StatsTBox_09.Text = "0";
             this.StatsTBox_09.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatsTBox_09.TextChanged += new System.EventHandler(this.StatsTBox_09_TextChanged);
+            this.StatsTBox_09.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatsTBox_09.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // StatsTBox_G_Level
             // 
             this.StatsTBox_G_Level.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.StatsTBox_G_Level.Location = new System.Drawing.Point(99, 15);
             this.StatsTBox_G_Level.Name = "StatsTBox_G_Level";
-            this.StatsTBox_G_Level.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.StatsTBox_G_Level.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.StatsTBox_G_Level.Size = new System.Drawing.Size(65, 20);
             this.StatsTBox_G_Level.TabIndex = 1;
             this.StatsTBox_G_Level.Text = "0";
             this.StatsTBox_G_Level.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatsTBox_G_Level.TextChanged += new System.EventHandler(this.StatsTBox_10_TextChanged);
+            this.StatsTBox_G_Level.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatsTBox_G_Level.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // StatsTBox_11
             // 
             this.StatsTBox_11.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.StatsTBox_11.Location = new System.Drawing.Point(99, 78);
             this.StatsTBox_11.Name = "StatsTBox_11";
-            this.StatsTBox_11.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.StatsTBox_11.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.StatsTBox_11.Size = new System.Drawing.Size(65, 20);
             this.StatsTBox_11.TabIndex = 7;
             this.StatsTBox_11.Text = "0";
             this.StatsTBox_11.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatsTBox_11.TextChanged += new System.EventHandler(this.StatsTBox_11_TextChanged);
+            this.StatsTBox_11.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatsTBox_11.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // StatsTBox_12
             // 
             this.StatsTBox_12.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.StatsTBox_12.Location = new System.Drawing.Point(99, 99);
             this.StatsTBox_12.Name = "StatsTBox_12";
-            this.StatsTBox_12.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.StatsTBox_12.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.StatsTBox_12.Size = new System.Drawing.Size(65, 20);
             this.StatsTBox_12.TabIndex = 9;
             this.StatsTBox_12.Text = "60";
             this.StatsTBox_12.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatsTBox_12.TextChanged += new System.EventHandler(this.StatsTBox_12_TextChanged);
-            // 
-            // StatsTBox_G_Exp
-            // 
-            this.StatsTBox_G_Exp.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.StatsTBox_G_Exp.Location = new System.Drawing.Point(99, 36);
-            this.StatsTBox_G_Exp.Name = "StatsTBox_G_Exp";
-            this.StatsTBox_G_Exp.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.StatsTBox_G_Exp.Size = new System.Drawing.Size(65, 20);
-            this.StatsTBox_G_Exp.TabIndex = 3;
-            this.StatsTBox_G_Exp.Text = "0";
-            this.StatsTBox_G_Exp.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatsTBox_G_Exp.TextChanged += new System.EventHandler(this.StatsTBox_13_TextChanged);
+            this.StatsTBox_12.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatsTBox_12.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // StatsTBox_14
             // 
             this.StatsTBox_14.Location = new System.Drawing.Point(279, 15);
             this.StatsTBox_14.Name = "StatsTBox_14";
-            this.StatsTBox_14.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.StatsTBox_14.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.StatsTBox_14.Size = new System.Drawing.Size(65, 20);
             this.StatsTBox_14.TabIndex = 23;
             this.StatsTBox_14.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatsTBox_14.TextChanged += new System.EventHandler(this.StatsTBox_14_TextChanged);
+            this.StatsTBox_14.TextChanged += new System.EventHandler(this.ValidateTextBoxNoMax);
+            this.StatsTBox_14.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxNoMax);
             // 
             // StatsTBox_15
             // 
             this.StatsTBox_15.Location = new System.Drawing.Point(279, 183);
             this.StatsTBox_15.Name = "StatsTBox_15";
-            this.StatsTBox_15.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.StatsTBox_15.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.StatsTBox_15.Size = new System.Drawing.Size(65, 20);
             this.StatsTBox_15.TabIndex = 39;
             this.StatsTBox_15.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatsTBox_15.TextChanged += new System.EventHandler(this.StatsTBox_15_TextChanged);
+            this.StatsTBox_15.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatsTBox_15.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // StatsTBox_16
             // 
             this.StatsTBox_16.Location = new System.Drawing.Point(279, 204);
             this.StatsTBox_16.Name = "StatsTBox_16";
-            this.StatsTBox_16.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.StatsTBox_16.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.StatsTBox_16.Size = new System.Drawing.Size(65, 20);
             this.StatsTBox_16.TabIndex = 41;
             this.StatsTBox_16.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatsTBox_16.TextChanged += new System.EventHandler(this.StatsTBox_16_TextChanged);
+            this.StatsTBox_16.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatsTBox_16.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // StatsTBox_17
             // 
             this.StatsTBox_17.Location = new System.Drawing.Point(279, 57);
             this.StatsTBox_17.Name = "StatsTBox_17";
-            this.StatsTBox_17.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.StatsTBox_17.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.StatsTBox_17.Size = new System.Drawing.Size(65, 20);
             this.StatsTBox_17.TabIndex = 27;
             this.StatsTBox_17.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatsTBox_17.TextChanged += new System.EventHandler(this.StatsTBox_17_TextChanged);
+            this.StatsTBox_17.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatsTBox_17.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // StatsTBox_18
             // 
             this.StatsTBox_18.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.StatsTBox_18.Location = new System.Drawing.Point(99, 162);
             this.StatsTBox_18.Name = "StatsTBox_18";
-            this.StatsTBox_18.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.StatsTBox_18.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.StatsTBox_18.Size = new System.Drawing.Size(65, 20);
             this.StatsTBox_18.TabIndex = 15;
             this.StatsTBox_18.Text = "0";
             this.StatsTBox_18.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatsTBox_18.TextChanged += new System.EventHandler(this.StatsTBox_18_TextChanged);
+            this.StatsTBox_18.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatsTBox_18.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // StatsTBox_19
             // 
             this.StatsTBox_19.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.StatsTBox_19.Location = new System.Drawing.Point(99, 120);
             this.StatsTBox_19.Name = "StatsTBox_19";
-            this.StatsTBox_19.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.StatsTBox_19.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.StatsTBox_19.Size = new System.Drawing.Size(65, 20);
             this.StatsTBox_19.TabIndex = 11;
             this.StatsTBox_19.Text = "100";
             this.StatsTBox_19.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatsTBox_19.TextChanged += new System.EventHandler(this.StatsTBox_19_TextChanged);
+            this.StatsTBox_19.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatsTBox_19.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // StatsTBox_20
             // 
             this.StatsTBox_20.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.StatsTBox_20.Location = new System.Drawing.Point(99, 204);
             this.StatsTBox_20.Name = "StatsTBox_20";
-            this.StatsTBox_20.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.StatsTBox_20.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.StatsTBox_20.Size = new System.Drawing.Size(65, 20);
             this.StatsTBox_20.TabIndex = 19;
             this.StatsTBox_20.Text = "0";
             this.StatsTBox_20.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatsTBox_20.TextChanged += new System.EventHandler(this.StatsTBox_20_TextChanged);
+            this.StatsTBox_20.TextChanged += new System.EventHandler(this.ValidateTextBoxNegative);
+            this.StatsTBox_20.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxNegative);
             // 
             // label25
             // 
@@ -1944,12 +2010,13 @@
             this.StatsTBox_21.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.StatsTBox_21.Location = new System.Drawing.Point(99, 183);
             this.StatsTBox_21.Name = "StatsTBox_21";
-            this.StatsTBox_21.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.StatsTBox_21.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.StatsTBox_21.Size = new System.Drawing.Size(65, 20);
             this.StatsTBox_21.TabIndex = 17;
             this.StatsTBox_21.Text = "0";
             this.StatsTBox_21.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatsTBox_21.TextChanged += new System.EventHandler(this.StatsTBox_21_TextChanged);
+            this.StatsTBox_21.TextChanged += new System.EventHandler(this.ValidateTextBoxNegative);
+            this.StatsTBox_21.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxNegative);
             // 
             // label24
             // 
@@ -1967,12 +2034,13 @@
             this.StatsTBox_22.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.StatsTBox_22.Location = new System.Drawing.Point(99, 225);
             this.StatsTBox_22.Name = "StatsTBox_22";
-            this.StatsTBox_22.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.StatsTBox_22.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.StatsTBox_22.Size = new System.Drawing.Size(65, 20);
             this.StatsTBox_22.TabIndex = 21;
             this.StatsTBox_22.Text = "0";
             this.StatsTBox_22.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatsTBox_22.TextChanged += new System.EventHandler(this.StatsTBox_22_TextChanged);
+            this.StatsTBox_22.TextChanged += new System.EventHandler(this.ValidateTextBoxNegative);
+            this.StatsTBox_22.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxNegative);
             // 
             // label23
             // 
@@ -2071,17 +2139,6 @@
             this.label19.TabIndex = 40;
             this.label19.Text = "Spirit:";
             this.toolTip1.SetToolTip(this.label19, "Other girls have from 30 to 60, I don\'t know what exactly it affects");
-            // 
-            // label_G_Exp
-            // 
-            this.label_G_Exp.AutoSize = true;
-            this.label_G_Exp.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label_G_Exp.Location = new System.Drawing.Point(8, 39);
-            this.label_G_Exp.Name = "label_G_Exp";
-            this.label_G_Exp.Size = new System.Drawing.Size(32, 13);
-            this.label_G_Exp.TabIndex = 2;
-            this.label_G_Exp.Text = "Exp:";
-            this.toolTip1.SetToolTip(this.label_G_Exp, "The Girl\'s Experience should start at 0.");
             // 
             // label18
             // 
@@ -2284,6 +2341,9 @@
             // 
             // groupBox5
             // 
+            this.groupBox5.Controls.Add(this.textBox_RG_Morality_Max);
+            this.groupBox5.Controls.Add(this.textBox_RG_Morality_Min);
+            this.groupBox5.Controls.Add(this.label_RG_Morality);
             this.groupBox5.Controls.Add(this.StatRGMaxTBox22);
             this.groupBox5.Controls.Add(this.StatRGMaxTBox20);
             this.groupBox5.Controls.Add(this.StatRGMaxTBox18);
@@ -2310,7 +2370,6 @@
             this.groupBox5.Controls.Add(this.StatRGMaxTBox19);
             this.groupBox5.Controls.Add(this.StatRGMaxTBox17);
             this.groupBox5.Controls.Add(this.StatRGMaxTBox15);
-            this.groupBox5.Controls.Add(this.StatRGMaxTBox13);
             this.groupBox5.Controls.Add(this.StatRGMaxTBox11);
             this.groupBox5.Controls.Add(this.StatRGMaxTBox9);
             this.groupBox5.Controls.Add(this.StatRGMaxTBox7);
@@ -2321,7 +2380,6 @@
             this.groupBox5.Controls.Add(this.StatRGMinTBox19);
             this.groupBox5.Controls.Add(this.StatRGMinTBox17);
             this.groupBox5.Controls.Add(this.StatRGMinTBox15);
-            this.groupBox5.Controls.Add(this.StatRGMinTBox13);
             this.groupBox5.Controls.Add(this.StatRGMinTBox11);
             this.groupBox5.Controls.Add(this.StatRGMinTBox9);
             this.groupBox5.Controls.Add(this.StatRGMinTBox7);
@@ -2347,7 +2405,6 @@
             this.groupBox5.Controls.Add(this.label57);
             this.groupBox5.Controls.Add(this.label58);
             this.groupBox5.Controls.Add(this.label59);
-            this.groupBox5.Controls.Add(this.label60);
             this.groupBox5.Controls.Add(this.label61);
             this.groupBox5.Controls.Add(this.label62);
             this.groupBox5.Location = new System.Drawing.Point(270, 5);
@@ -2356,6 +2413,42 @@
             this.groupBox5.TabIndex = 17;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Stats";
+            // 
+            // textBox_RG_Morality_Max
+            // 
+            this.textBox_RG_Morality_Max.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.textBox_RG_Morality_Max.Location = new System.Drawing.Point(134, 36);
+            this.textBox_RG_Morality_Max.Name = "textBox_RG_Morality_Max";
+            this.textBox_RG_Morality_Max.Size = new System.Drawing.Size(30, 20);
+            this.textBox_RG_Morality_Max.TabIndex = 5;
+            this.textBox_RG_Morality_Max.Text = "0";
+            this.textBox_RG_Morality_Max.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_RG_Morality_Max.TextChanged += new System.EventHandler(this.ValidateTextBoxNegative);
+            this.textBox_RG_Morality_Max.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxNegative);
+            // 
+            // textBox_RG_Morality_Min
+            // 
+            this.textBox_RG_Morality_Min.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.textBox_RG_Morality_Min.Location = new System.Drawing.Point(99, 36);
+            this.textBox_RG_Morality_Min.Name = "textBox_RG_Morality_Min";
+            this.textBox_RG_Morality_Min.Size = new System.Drawing.Size(30, 20);
+            this.textBox_RG_Morality_Min.TabIndex = 4;
+            this.textBox_RG_Morality_Min.Text = "0";
+            this.textBox_RG_Morality_Min.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_RG_Morality_Min.TextChanged += new System.EventHandler(this.ValidateTextBoxNegative);
+            this.textBox_RG_Morality_Min.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxNegative);
+            // 
+            // label_RG_Morality
+            // 
+            this.label_RG_Morality.AutoSize = true;
+            this.label_RG_Morality.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
+            this.label_RG_Morality.Location = new System.Drawing.Point(8, 39);
+            this.label_RG_Morality.Name = "label_RG_Morality";
+            this.label_RG_Morality.Size = new System.Drawing.Size(55, 13);
+            this.label_RG_Morality.TabIndex = 3;
+            this.label_RG_Morality.Text = "Morality:";
+            this.toolTip1.SetToolTip(this.label_RG_Morality, "This is the balance of good and evil.\r\n-100 is Demonicly Evil, 100 is Saintly Goo" +
+        "d\r\n");
             // 
             // StatRGMaxTBox22
             // 
@@ -2366,7 +2459,8 @@
             this.StatRGMaxTBox22.TabIndex = 32;
             this.StatRGMaxTBox22.Text = "0";
             this.StatRGMaxTBox22.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatRGMaxTBox22.TextChanged += new System.EventHandler(this.StatRGMaxTBox22_TextChanged);
+            this.StatRGMaxTBox22.TextChanged += new System.EventHandler(this.ValidateTextBoxNegative);
+            this.StatRGMaxTBox22.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxNegative);
             // 
             // StatRGMaxTBox20
             // 
@@ -2377,7 +2471,8 @@
             this.StatRGMaxTBox20.TabIndex = 29;
             this.StatRGMaxTBox20.Text = "0";
             this.StatRGMaxTBox20.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatRGMaxTBox20.TextChanged += new System.EventHandler(this.StatRGMaxTBox20_TextChanged);
+            this.StatRGMaxTBox20.TextChanged += new System.EventHandler(this.ValidateTextBoxNegative);
+            this.StatRGMaxTBox20.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxNegative);
             // 
             // StatRGMaxTBox18
             // 
@@ -2388,7 +2483,8 @@
             this.StatRGMaxTBox18.TabIndex = 23;
             this.StatRGMaxTBox18.Text = "0";
             this.StatRGMaxTBox18.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatRGMaxTBox18.TextChanged += new System.EventHandler(this.StatRGMaxTBox18_TextChanged);
+            this.StatRGMaxTBox18.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatRGMaxTBox18.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // StatRGMaxTBox16
             // 
@@ -2397,7 +2493,8 @@
             this.StatRGMaxTBox16.Size = new System.Drawing.Size(30, 20);
             this.StatRGMaxTBox16.TabIndex = 62;
             this.StatRGMaxTBox16.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatRGMaxTBox16.TextChanged += new System.EventHandler(this.StatRGMaxTBox16_TextChanged);
+            this.StatRGMaxTBox16.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatRGMaxTBox16.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // StatRGMaxTBox14
             // 
@@ -2406,7 +2503,8 @@
             this.StatRGMaxTBox14.Size = new System.Drawing.Size(30, 20);
             this.StatRGMaxTBox14.TabIndex = 35;
             this.StatRGMaxTBox14.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatRGMaxTBox14.TextChanged += new System.EventHandler(this.StatRGMaxTBox14_TextChanged);
+            this.StatRGMaxTBox14.TextChanged += new System.EventHandler(this.ValidateTextBoxNoMax);
+            this.StatRGMaxTBox14.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxNoMax);
             // 
             // StatRGMaxTBox12
             // 
@@ -2417,7 +2515,8 @@
             this.StatRGMaxTBox12.TabIndex = 14;
             this.StatRGMaxTBox12.Text = "100";
             this.StatRGMaxTBox12.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatRGMaxTBox12.TextChanged += new System.EventHandler(this.StatRGMaxTBox12_TextChanged);
+            this.StatRGMaxTBox12.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatRGMaxTBox12.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // StatRGMaxTBox10
             // 
@@ -2428,7 +2527,8 @@
             this.StatRGMaxTBox10.TabIndex = 2;
             this.StatRGMaxTBox10.Text = "0";
             this.StatRGMaxTBox10.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatRGMaxTBox10.TextChanged += new System.EventHandler(this.StatRGMaxTBox10_TextChanged);
+            this.StatRGMaxTBox10.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatRGMaxTBox10.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // StatRGMaxTBox8
             // 
@@ -2437,7 +2537,8 @@
             this.StatRGMaxTBox8.Size = new System.Drawing.Size(30, 20);
             this.StatRGMaxTBox8.TabIndex = 44;
             this.StatRGMaxTBox8.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatRGMaxTBox8.TextChanged += new System.EventHandler(this.StatRGMaxTBox8_TextChanged);
+            this.StatRGMaxTBox8.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatRGMaxTBox8.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // StatRGMaxTBox6
             // 
@@ -2446,7 +2547,8 @@
             this.StatRGMaxTBox6.Size = new System.Drawing.Size(30, 20);
             this.StatRGMaxTBox6.TabIndex = 56;
             this.StatRGMaxTBox6.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatRGMaxTBox6.TextChanged += new System.EventHandler(this.StatRGMaxTBox6_TextChanged);
+            this.StatRGMaxTBox6.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatRGMaxTBox6.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // StatRGMaxTBox4
             // 
@@ -2455,7 +2557,8 @@
             this.StatRGMaxTBox4.Size = new System.Drawing.Size(30, 20);
             this.StatRGMaxTBox4.TabIndex = 47;
             this.StatRGMaxTBox4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatRGMaxTBox4.TextChanged += new System.EventHandler(this.StatRGMaxTBox4_TextChanged);
+            this.StatRGMaxTBox4.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatRGMaxTBox4.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // StatRGMaxTBox2
             // 
@@ -2466,7 +2569,8 @@
             this.StatRGMaxTBox2.TabIndex = 20;
             this.StatRGMaxTBox2.Text = "100";
             this.StatRGMaxTBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatRGMaxTBox2.TextChanged += new System.EventHandler(this.StatRGMaxTBox2_TextChanged);
+            this.StatRGMaxTBox2.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatRGMaxTBox2.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // StatRGMinTBox22
             // 
@@ -2477,7 +2581,8 @@
             this.StatRGMinTBox22.TabIndex = 31;
             this.StatRGMinTBox22.Text = "0";
             this.StatRGMinTBox22.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatRGMinTBox22.TextChanged += new System.EventHandler(this.StatRGMinTBox22_TextChanged);
+            this.StatRGMinTBox22.TextChanged += new System.EventHandler(this.ValidateTextBoxNegative);
+            this.StatRGMinTBox22.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxNegative);
             // 
             // StatRGMinTBox20
             // 
@@ -2488,7 +2593,8 @@
             this.StatRGMinTBox20.TabIndex = 28;
             this.StatRGMinTBox20.Text = "0";
             this.StatRGMinTBox20.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatRGMinTBox20.TextChanged += new System.EventHandler(this.StatRGMinTBox20_TextChanged);
+            this.StatRGMinTBox20.TextChanged += new System.EventHandler(this.ValidateTextBoxNegative);
+            this.StatRGMinTBox20.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxNegative);
             // 
             // StatRGMinTBox18
             // 
@@ -2499,7 +2605,8 @@
             this.StatRGMinTBox18.TabIndex = 22;
             this.StatRGMinTBox18.Text = "0";
             this.StatRGMinTBox18.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatRGMinTBox18.TextChanged += new System.EventHandler(this.StatRGMinTBox18_TextChanged);
+            this.StatRGMinTBox18.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatRGMinTBox18.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // StatRGMinTBox16
             // 
@@ -2508,7 +2615,8 @@
             this.StatRGMinTBox16.Size = new System.Drawing.Size(30, 20);
             this.StatRGMinTBox16.TabIndex = 61;
             this.StatRGMinTBox16.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatRGMinTBox16.TextChanged += new System.EventHandler(this.StatRGMinTBox16_TextChanged);
+            this.StatRGMinTBox16.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatRGMinTBox16.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // StatRGMinTBox14
             // 
@@ -2517,7 +2625,8 @@
             this.StatRGMinTBox14.Size = new System.Drawing.Size(30, 20);
             this.StatRGMinTBox14.TabIndex = 34;
             this.StatRGMinTBox14.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatRGMinTBox14.TextChanged += new System.EventHandler(this.StatRGMinTBox14_TextChanged);
+            this.StatRGMinTBox14.TextChanged += new System.EventHandler(this.ValidateTextBoxNoMax);
+            this.StatRGMinTBox14.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxNoMax);
             // 
             // StatRGMinTBox12
             // 
@@ -2528,7 +2637,8 @@
             this.StatRGMinTBox12.TabIndex = 13;
             this.StatRGMinTBox12.Text = "100";
             this.StatRGMinTBox12.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatRGMinTBox12.TextChanged += new System.EventHandler(this.StatRGMinTBox12_TextChanged);
+            this.StatRGMinTBox12.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatRGMinTBox12.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // StatRGMinTBox10
             // 
@@ -2539,7 +2649,8 @@
             this.StatRGMinTBox10.TabIndex = 1;
             this.StatRGMinTBox10.Text = "0";
             this.StatRGMinTBox10.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatRGMinTBox10.TextChanged += new System.EventHandler(this.StatRGMinTBox10_TextChanged);
+            this.StatRGMinTBox10.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatRGMinTBox10.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // StatRGMinTBox8
             // 
@@ -2548,7 +2659,8 @@
             this.StatRGMinTBox8.Size = new System.Drawing.Size(30, 20);
             this.StatRGMinTBox8.TabIndex = 43;
             this.StatRGMinTBox8.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatRGMinTBox8.TextChanged += new System.EventHandler(this.StatRGMinTBox8_TextChanged);
+            this.StatRGMinTBox8.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatRGMinTBox8.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // StatRGMinTBox6
             // 
@@ -2557,7 +2669,8 @@
             this.StatRGMinTBox6.Size = new System.Drawing.Size(30, 20);
             this.StatRGMinTBox6.TabIndex = 55;
             this.StatRGMinTBox6.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatRGMinTBox6.TextChanged += new System.EventHandler(this.StatRGMinTBox6_TextChanged);
+            this.StatRGMinTBox6.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatRGMinTBox6.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // StatRGMinTBox4
             // 
@@ -2566,7 +2679,8 @@
             this.StatRGMinTBox4.Size = new System.Drawing.Size(30, 20);
             this.StatRGMinTBox4.TabIndex = 46;
             this.StatRGMinTBox4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatRGMinTBox4.TextChanged += new System.EventHandler(this.StatRGMinTBox4_TextChanged);
+            this.StatRGMinTBox4.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatRGMinTBox4.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // StatRGMinTBox2
             // 
@@ -2577,7 +2691,8 @@
             this.StatRGMinTBox2.TabIndex = 19;
             this.StatRGMinTBox2.Text = "100";
             this.StatRGMinTBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatRGMinTBox2.TextChanged += new System.EventHandler(this.StatRGMinTBox2_TextChanged);
+            this.StatRGMinTBox2.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatRGMinTBox2.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // StatRGMaxTBox21
             // 
@@ -2588,7 +2703,8 @@
             this.StatRGMaxTBox21.TabIndex = 26;
             this.StatRGMaxTBox21.Text = "0";
             this.StatRGMaxTBox21.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatRGMaxTBox21.TextChanged += new System.EventHandler(this.StatRGMaxTBox21_TextChanged);
+            this.StatRGMaxTBox21.TextChanged += new System.EventHandler(this.ValidateTextBoxNegative);
+            this.StatRGMaxTBox21.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxNegative);
             // 
             // StatRGMaxTBox19
             // 
@@ -2599,7 +2715,8 @@
             this.StatRGMaxTBox19.TabIndex = 17;
             this.StatRGMaxTBox19.Text = "100";
             this.StatRGMaxTBox19.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatRGMaxTBox19.TextChanged += new System.EventHandler(this.StatRGMaxTBox19_TextChanged);
+            this.StatRGMaxTBox19.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatRGMaxTBox19.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // StatRGMaxTBox17
             // 
@@ -2608,7 +2725,8 @@
             this.StatRGMaxTBox17.Size = new System.Drawing.Size(30, 20);
             this.StatRGMaxTBox17.TabIndex = 41;
             this.StatRGMaxTBox17.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatRGMaxTBox17.TextChanged += new System.EventHandler(this.StatRGMaxTBox17_TextChanged);
+            this.StatRGMaxTBox17.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatRGMaxTBox17.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // StatRGMaxTBox15
             // 
@@ -2617,18 +2735,8 @@
             this.StatRGMaxTBox15.Size = new System.Drawing.Size(30, 20);
             this.StatRGMaxTBox15.TabIndex = 59;
             this.StatRGMaxTBox15.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatRGMaxTBox15.TextChanged += new System.EventHandler(this.StatRGMaxTBox15_TextChanged);
-            // 
-            // StatRGMaxTBox13
-            // 
-            this.StatRGMaxTBox13.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.StatRGMaxTBox13.Location = new System.Drawing.Point(134, 36);
-            this.StatRGMaxTBox13.Name = "StatRGMaxTBox13";
-            this.StatRGMaxTBox13.Size = new System.Drawing.Size(30, 20);
-            this.StatRGMaxTBox13.TabIndex = 5;
-            this.StatRGMaxTBox13.Text = "0";
-            this.StatRGMaxTBox13.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatRGMaxTBox13.TextChanged += new System.EventHandler(this.StatRGMaxTBox13_TextChanged);
+            this.StatRGMaxTBox15.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatRGMaxTBox15.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // StatRGMaxTBox11
             // 
@@ -2639,7 +2747,8 @@
             this.StatRGMaxTBox11.TabIndex = 11;
             this.StatRGMaxTBox11.Text = "0";
             this.StatRGMaxTBox11.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatRGMaxTBox11.TextChanged += new System.EventHandler(this.StatRGMaxTBox11_TextChanged);
+            this.StatRGMaxTBox11.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatRGMaxTBox11.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // StatRGMaxTBox9
             // 
@@ -2650,7 +2759,8 @@
             this.StatRGMaxTBox9.TabIndex = 8;
             this.StatRGMaxTBox9.Text = "0";
             this.StatRGMaxTBox9.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatRGMaxTBox9.TextChanged += new System.EventHandler(this.StatRGMaxTBox9_TextChanged);
+            this.StatRGMaxTBox9.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatRGMaxTBox9.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // StatRGMaxTBox7
             // 
@@ -2659,7 +2769,8 @@
             this.StatRGMaxTBox7.Size = new System.Drawing.Size(30, 20);
             this.StatRGMaxTBox7.TabIndex = 53;
             this.StatRGMaxTBox7.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatRGMaxTBox7.TextChanged += new System.EventHandler(this.StatRGMaxTBox7_TextChanged);
+            this.StatRGMaxTBox7.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatRGMaxTBox7.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // StatRGMaxTBox5
             // 
@@ -2668,7 +2779,8 @@
             this.StatRGMaxTBox5.Size = new System.Drawing.Size(30, 20);
             this.StatRGMaxTBox5.TabIndex = 50;
             this.StatRGMaxTBox5.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatRGMaxTBox5.TextChanged += new System.EventHandler(this.StatRGMaxTBox5_TextChanged);
+            this.StatRGMaxTBox5.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatRGMaxTBox5.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // StatRGMaxTBox3
             // 
@@ -2677,7 +2789,8 @@
             this.StatRGMaxTBox3.Size = new System.Drawing.Size(30, 20);
             this.StatRGMaxTBox3.TabIndex = 65;
             this.StatRGMaxTBox3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatRGMaxTBox3.TextChanged += new System.EventHandler(this.StatRGMaxTBox3_TextChanged);
+            this.StatRGMaxTBox3.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatRGMaxTBox3.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // StatRGMaxTBox1
             // 
@@ -2686,7 +2799,8 @@
             this.StatRGMaxTBox1.Size = new System.Drawing.Size(30, 20);
             this.StatRGMaxTBox1.TabIndex = 38;
             this.StatRGMaxTBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatRGMaxTBox1.TextChanged += new System.EventHandler(this.StatRGMaxTBox1_TextChanged);
+            this.StatRGMaxTBox1.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatRGMaxTBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // StatRGMinTBox21
             // 
@@ -2697,7 +2811,8 @@
             this.StatRGMinTBox21.TabIndex = 25;
             this.StatRGMinTBox21.Text = "0";
             this.StatRGMinTBox21.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatRGMinTBox21.TextChanged += new System.EventHandler(this.StatRGMinTBox21_TextChanged);
+            this.StatRGMinTBox21.TextChanged += new System.EventHandler(this.ValidateTextBoxNegative);
+            this.StatRGMinTBox21.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxNegative);
             // 
             // StatRGMinTBox19
             // 
@@ -2708,7 +2823,8 @@
             this.StatRGMinTBox19.TabIndex = 16;
             this.StatRGMinTBox19.Text = "100";
             this.StatRGMinTBox19.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatRGMinTBox19.TextChanged += new System.EventHandler(this.StatRGMinTBox19_TextChanged);
+            this.StatRGMinTBox19.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatRGMinTBox19.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // StatRGMinTBox17
             // 
@@ -2717,7 +2833,8 @@
             this.StatRGMinTBox17.Size = new System.Drawing.Size(30, 20);
             this.StatRGMinTBox17.TabIndex = 40;
             this.StatRGMinTBox17.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatRGMinTBox17.TextChanged += new System.EventHandler(this.StatRGMinTBox17_TextChanged);
+            this.StatRGMinTBox17.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatRGMinTBox17.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // StatRGMinTBox15
             // 
@@ -2726,18 +2843,8 @@
             this.StatRGMinTBox15.Size = new System.Drawing.Size(30, 20);
             this.StatRGMinTBox15.TabIndex = 58;
             this.StatRGMinTBox15.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatRGMinTBox15.TextChanged += new System.EventHandler(this.StatRGMinTBox15_TextChanged);
-            // 
-            // StatRGMinTBox13
-            // 
-            this.StatRGMinTBox13.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.StatRGMinTBox13.Location = new System.Drawing.Point(99, 36);
-            this.StatRGMinTBox13.Name = "StatRGMinTBox13";
-            this.StatRGMinTBox13.Size = new System.Drawing.Size(30, 20);
-            this.StatRGMinTBox13.TabIndex = 4;
-            this.StatRGMinTBox13.Text = "0";
-            this.StatRGMinTBox13.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatRGMinTBox13.TextChanged += new System.EventHandler(this.StatRGMinTBox13_TextChanged);
+            this.StatRGMinTBox15.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatRGMinTBox15.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // StatRGMinTBox11
             // 
@@ -2748,7 +2855,8 @@
             this.StatRGMinTBox11.TabIndex = 10;
             this.StatRGMinTBox11.Text = "0";
             this.StatRGMinTBox11.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatRGMinTBox11.TextChanged += new System.EventHandler(this.StatRGMinTBox11_TextChanged);
+            this.StatRGMinTBox11.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatRGMinTBox11.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // StatRGMinTBox9
             // 
@@ -2759,7 +2867,8 @@
             this.StatRGMinTBox9.TabIndex = 7;
             this.StatRGMinTBox9.Text = "0";
             this.StatRGMinTBox9.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatRGMinTBox9.TextChanged += new System.EventHandler(this.StatRGMinTBox9_TextChanged);
+            this.StatRGMinTBox9.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatRGMinTBox9.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // StatRGMinTBox7
             // 
@@ -2768,7 +2877,8 @@
             this.StatRGMinTBox7.Size = new System.Drawing.Size(30, 20);
             this.StatRGMinTBox7.TabIndex = 52;
             this.StatRGMinTBox7.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatRGMinTBox7.TextChanged += new System.EventHandler(this.StatRGMinTBox7_TextChanged);
+            this.StatRGMinTBox7.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatRGMinTBox7.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // StatRGMinTBox5
             // 
@@ -2777,7 +2887,8 @@
             this.StatRGMinTBox5.Size = new System.Drawing.Size(30, 20);
             this.StatRGMinTBox5.TabIndex = 49;
             this.StatRGMinTBox5.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatRGMinTBox5.TextChanged += new System.EventHandler(this.StatRGMinTBox5_TextChanged);
+            this.StatRGMinTBox5.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatRGMinTBox5.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // StatRGMinTBox3
             // 
@@ -2786,7 +2897,8 @@
             this.StatRGMinTBox3.Size = new System.Drawing.Size(30, 20);
             this.StatRGMinTBox3.TabIndex = 64;
             this.StatRGMinTBox3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatRGMinTBox3.TextChanged += new System.EventHandler(this.StatRGMinTBox3_TextChanged);
+            this.StatRGMinTBox3.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatRGMinTBox3.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // StatRGMinTBox1
             // 
@@ -2795,7 +2907,8 @@
             this.StatRGMinTBox1.Size = new System.Drawing.Size(30, 20);
             this.StatRGMinTBox1.TabIndex = 37;
             this.StatRGMinTBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StatRGMinTBox1.TextChanged += new System.EventHandler(this.StatRGMinTBox1_TextChanged);
+            this.StatRGMinTBox1.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatRGMinTBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // label41
             // 
@@ -2999,17 +3112,6 @@
             this.label59.Text = "Spirit:";
             this.toolTip1.SetToolTip(this.label59, "Other girls have from 30 to 60, I don\'t know what exactly it affects");
             // 
-            // label60
-            // 
-            this.label60.AutoSize = true;
-            this.label60.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label60.Location = new System.Drawing.Point(8, 39);
-            this.label60.Name = "label60";
-            this.label60.Size = new System.Drawing.Size(32, 13);
-            this.label60.TabIndex = 3;
-            this.label60.Text = "Exp:";
-            this.toolTip1.SetToolTip(this.label60, "The Girl\'s Experience should start at 0.");
-            // 
             // label61
             // 
             this.label61.AutoSize = true;
@@ -3104,7 +3206,8 @@
             this.SkillRGMinTBox11.Size = new System.Drawing.Size(30, 20);
             this.SkillRGMinTBox11.TabIndex = 22;
             this.SkillRGMinTBox11.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SkillRGMinTBox11.TextChanged += new System.EventHandler(this.SkillRGMinTBox11_TextChanged);
+            this.SkillRGMinTBox11.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillRGMinTBox11.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // SkillRGMaxTBox11
             // 
@@ -3113,7 +3216,8 @@
             this.SkillRGMaxTBox11.Size = new System.Drawing.Size(30, 20);
             this.SkillRGMaxTBox11.TabIndex = 23;
             this.SkillRGMaxTBox11.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SkillRGMaxTBox11.TextChanged += new System.EventHandler(this.SkillRGMaxTBox11_TextChanged);
+            this.SkillRGMaxTBox11.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillRGMaxTBox11.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // SkillRGMinTBox12
             // 
@@ -3122,7 +3226,8 @@
             this.SkillRGMinTBox12.Size = new System.Drawing.Size(30, 20);
             this.SkillRGMinTBox12.TabIndex = 25;
             this.SkillRGMinTBox12.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SkillRGMinTBox12.TextChanged += new System.EventHandler(this.SkillRGMinTBox12_TextChanged);
+            this.SkillRGMinTBox12.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillRGMinTBox12.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // SkillRGMaxTBox12
             // 
@@ -3131,7 +3236,8 @@
             this.SkillRGMaxTBox12.Size = new System.Drawing.Size(30, 20);
             this.SkillRGMaxTBox12.TabIndex = 26;
             this.SkillRGMaxTBox12.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SkillRGMaxTBox12.TextChanged += new System.EventHandler(this.SkillRGMaxTBox12_TextChanged);
+            this.SkillRGMaxTBox12.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillRGMaxTBox12.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // SkillRGMinTBox15
             // 
@@ -3140,7 +3246,8 @@
             this.SkillRGMinTBox15.Size = new System.Drawing.Size(30, 20);
             this.SkillRGMinTBox15.TabIndex = 28;
             this.SkillRGMinTBox15.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SkillRGMinTBox15.TextChanged += new System.EventHandler(this.SkillRGMinTBox15_TextChanged);
+            this.SkillRGMinTBox15.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillRGMinTBox15.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // SkillRGMaxTBox15
             // 
@@ -3149,7 +3256,8 @@
             this.SkillRGMaxTBox15.Size = new System.Drawing.Size(30, 20);
             this.SkillRGMaxTBox15.TabIndex = 29;
             this.SkillRGMaxTBox15.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SkillRGMaxTBox15.TextChanged += new System.EventHandler(this.SkillRGMaxTBox15_TextChanged);
+            this.SkillRGMaxTBox15.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillRGMaxTBox15.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // SkillRGMinTBox9
             // 
@@ -3158,7 +3266,8 @@
             this.SkillRGMinTBox9.Size = new System.Drawing.Size(30, 20);
             this.SkillRGMinTBox9.TabIndex = 16;
             this.SkillRGMinTBox9.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SkillRGMinTBox9.TextChanged += new System.EventHandler(this.SkillRGMinTBox9_TextChanged);
+            this.SkillRGMinTBox9.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillRGMinTBox9.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // SkillRGMaxTBox9
             // 
@@ -3167,7 +3276,8 @@
             this.SkillRGMaxTBox9.Size = new System.Drawing.Size(30, 20);
             this.SkillRGMaxTBox9.TabIndex = 17;
             this.SkillRGMaxTBox9.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SkillRGMaxTBox9.TextChanged += new System.EventHandler(this.SkillRGMaxTBox9_TextChanged);
+            this.SkillRGMaxTBox9.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillRGMaxTBox9.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // SkillRGMinTBox4
             // 
@@ -3176,7 +3286,8 @@
             this.SkillRGMinTBox4.Size = new System.Drawing.Size(30, 20);
             this.SkillRGMinTBox4.TabIndex = 1;
             this.SkillRGMinTBox4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SkillRGMinTBox4.TextChanged += new System.EventHandler(this.SkillRGMinTBox4_TextChanged);
+            this.SkillRGMinTBox4.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillRGMinTBox4.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // label71
             // 
@@ -3194,7 +3305,8 @@
             this.SkillRGMinTBox7.Size = new System.Drawing.Size(30, 20);
             this.SkillRGMinTBox7.TabIndex = 13;
             this.SkillRGMinTBox7.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SkillRGMinTBox7.TextChanged += new System.EventHandler(this.SkillRGMinTBox7_TextChanged);
+            this.SkillRGMinTBox7.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillRGMinTBox7.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // SkillRGMaxTBox7
             // 
@@ -3203,7 +3315,8 @@
             this.SkillRGMaxTBox7.Size = new System.Drawing.Size(30, 20);
             this.SkillRGMaxTBox7.TabIndex = 14;
             this.SkillRGMaxTBox7.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SkillRGMaxTBox7.TextChanged += new System.EventHandler(this.SkillRGMaxTBox7_TextChanged);
+            this.SkillRGMaxTBox7.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillRGMaxTBox7.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // SkillRGMaxTBox4
             // 
@@ -3212,7 +3325,8 @@
             this.SkillRGMaxTBox4.Size = new System.Drawing.Size(30, 20);
             this.SkillRGMaxTBox4.TabIndex = 2;
             this.SkillRGMaxTBox4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SkillRGMaxTBox4.TextChanged += new System.EventHandler(this.SkillRGMaxTBox4_TextChanged);
+            this.SkillRGMaxTBox4.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillRGMaxTBox4.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // SkillRGMinTBox1
             // 
@@ -3221,7 +3335,8 @@
             this.SkillRGMinTBox1.Size = new System.Drawing.Size(30, 20);
             this.SkillRGMinTBox1.TabIndex = 4;
             this.SkillRGMinTBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SkillRGMinTBox1.TextChanged += new System.EventHandler(this.SkillRGMinTBox1_TextChanged);
+            this.SkillRGMinTBox1.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillRGMinTBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // label67
             // 
@@ -3248,7 +3363,8 @@
             this.SkillRGMinTBox6.Size = new System.Drawing.Size(30, 20);
             this.SkillRGMinTBox6.TabIndex = 19;
             this.SkillRGMinTBox6.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SkillRGMinTBox6.TextChanged += new System.EventHandler(this.SkillRGMinTBox6_TextChanged);
+            this.SkillRGMinTBox6.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillRGMinTBox6.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // SkillRGMaxTBox6
             // 
@@ -3257,7 +3373,8 @@
             this.SkillRGMaxTBox6.Size = new System.Drawing.Size(30, 20);
             this.SkillRGMaxTBox6.TabIndex = 20;
             this.SkillRGMaxTBox6.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SkillRGMaxTBox6.TextChanged += new System.EventHandler(this.SkillRGMaxTBox6_TextChanged);
+            this.SkillRGMaxTBox6.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillRGMaxTBox6.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // SkillRGMinTBox5
             // 
@@ -3266,7 +3383,8 @@
             this.SkillRGMinTBox5.Size = new System.Drawing.Size(30, 20);
             this.SkillRGMinTBox5.TabIndex = 10;
             this.SkillRGMinTBox5.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SkillRGMinTBox5.TextChanged += new System.EventHandler(this.SkillRGMinTBox5_TextChanged);
+            this.SkillRGMinTBox5.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillRGMinTBox5.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // SkillRGMaxTBox5
             // 
@@ -3275,7 +3393,8 @@
             this.SkillRGMaxTBox5.Size = new System.Drawing.Size(30, 20);
             this.SkillRGMaxTBox5.TabIndex = 11;
             this.SkillRGMaxTBox5.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SkillRGMaxTBox5.TextChanged += new System.EventHandler(this.SkillRGMaxTBox5_TextChanged);
+            this.SkillRGMaxTBox5.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillRGMaxTBox5.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // label66
             // 
@@ -3293,7 +3412,8 @@
             this.SkillRGMaxTBox1.Size = new System.Drawing.Size(30, 20);
             this.SkillRGMaxTBox1.TabIndex = 5;
             this.SkillRGMaxTBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SkillRGMaxTBox1.TextChanged += new System.EventHandler(this.SkillRGMaxTBox1_TextChanged);
+            this.SkillRGMaxTBox1.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillRGMaxTBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // SkillRGMinTBox3
             // 
@@ -3302,7 +3422,8 @@
             this.SkillRGMinTBox3.Size = new System.Drawing.Size(30, 20);
             this.SkillRGMinTBox3.TabIndex = 7;
             this.SkillRGMinTBox3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SkillRGMinTBox3.TextChanged += new System.EventHandler(this.SkillRGMinTBox3_TextChanged);
+            this.SkillRGMinTBox3.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillRGMinTBox3.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // SkillRGMaxTBox3
             // 
@@ -3311,7 +3432,8 @@
             this.SkillRGMaxTBox3.Size = new System.Drawing.Size(30, 20);
             this.SkillRGMaxTBox3.TabIndex = 8;
             this.SkillRGMaxTBox3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SkillRGMaxTBox3.TextChanged += new System.EventHandler(this.SkillRGMaxTBox3_TextChanged);
+            this.SkillRGMaxTBox3.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillRGMaxTBox3.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // label72
             // 
@@ -3404,6 +3526,8 @@
             this.SkillRGMaxTBox19.Size = new System.Drawing.Size(30, 20);
             this.SkillRGMaxTBox19.TabIndex = 26;
             this.SkillRGMaxTBox19.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.SkillRGMaxTBox19.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillRGMaxTBox19.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // SkillRGMinTBox19
             // 
@@ -3412,6 +3536,8 @@
             this.SkillRGMinTBox19.Size = new System.Drawing.Size(30, 20);
             this.SkillRGMinTBox19.TabIndex = 25;
             this.SkillRGMinTBox19.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.SkillRGMinTBox19.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillRGMinTBox19.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // SkillRGMaxTBox20
             // 
@@ -3420,6 +3546,8 @@
             this.SkillRGMaxTBox20.Size = new System.Drawing.Size(30, 20);
             this.SkillRGMaxTBox20.TabIndex = 29;
             this.SkillRGMaxTBox20.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.SkillRGMaxTBox20.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillRGMaxTBox20.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // SkillRGMinTBox20
             // 
@@ -3428,6 +3556,8 @@
             this.SkillRGMinTBox20.Size = new System.Drawing.Size(30, 20);
             this.SkillRGMinTBox20.TabIndex = 28;
             this.SkillRGMinTBox20.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.SkillRGMinTBox20.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillRGMinTBox20.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // SkillRGMaxTBox17
             // 
@@ -3436,6 +3566,8 @@
             this.SkillRGMaxTBox17.Size = new System.Drawing.Size(30, 20);
             this.SkillRGMaxTBox17.TabIndex = 20;
             this.SkillRGMaxTBox17.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.SkillRGMaxTBox17.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillRGMaxTBox17.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // SkillRGMinTBox17
             // 
@@ -3444,6 +3576,8 @@
             this.SkillRGMinTBox17.Size = new System.Drawing.Size(30, 20);
             this.SkillRGMinTBox17.TabIndex = 19;
             this.SkillRGMinTBox17.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.SkillRGMinTBox17.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillRGMinTBox17.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // SkillRGMaxTBox18
             // 
@@ -3452,6 +3586,8 @@
             this.SkillRGMaxTBox18.Size = new System.Drawing.Size(30, 20);
             this.SkillRGMaxTBox18.TabIndex = 23;
             this.SkillRGMaxTBox18.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.SkillRGMaxTBox18.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillRGMaxTBox18.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // SkillRGMinTBox18
             // 
@@ -3460,6 +3596,8 @@
             this.SkillRGMinTBox18.Size = new System.Drawing.Size(30, 20);
             this.SkillRGMinTBox18.TabIndex = 22;
             this.SkillRGMinTBox18.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.SkillRGMinTBox18.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillRGMinTBox18.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // SkillRGMaxTBox16
             // 
@@ -3468,6 +3606,8 @@
             this.SkillRGMaxTBox16.Size = new System.Drawing.Size(30, 20);
             this.SkillRGMaxTBox16.TabIndex = 17;
             this.SkillRGMaxTBox16.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.SkillRGMaxTBox16.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillRGMaxTBox16.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // SkillRGMinTBox16
             // 
@@ -3476,6 +3616,8 @@
             this.SkillRGMinTBox16.Size = new System.Drawing.Size(30, 20);
             this.SkillRGMinTBox16.TabIndex = 16;
             this.SkillRGMinTBox16.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.SkillRGMinTBox16.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillRGMinTBox16.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // label87
             // 
@@ -3529,7 +3671,8 @@
             this.SkillRGMaxTBox13.Size = new System.Drawing.Size(30, 20);
             this.SkillRGMaxTBox13.TabIndex = 11;
             this.SkillRGMaxTBox13.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SkillRGMaxTBox13.TextChanged += new System.EventHandler(this.SkillRGMaxTBox13_TextChanged);
+            this.SkillRGMaxTBox13.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillRGMaxTBox13.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // SkillRGMinTBox13
             // 
@@ -3538,7 +3681,8 @@
             this.SkillRGMinTBox13.Size = new System.Drawing.Size(30, 20);
             this.SkillRGMinTBox13.TabIndex = 10;
             this.SkillRGMinTBox13.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SkillRGMinTBox13.TextChanged += new System.EventHandler(this.SkillRGMinTBox13_TextChanged);
+            this.SkillRGMinTBox13.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillRGMinTBox13.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // SkillRGMaxTBox14
             // 
@@ -3547,7 +3691,8 @@
             this.SkillRGMaxTBox14.Size = new System.Drawing.Size(30, 20);
             this.SkillRGMaxTBox14.TabIndex = 14;
             this.SkillRGMaxTBox14.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SkillRGMaxTBox14.TextChanged += new System.EventHandler(this.SkillRGMaxTBox14_TextChanged);
+            this.SkillRGMaxTBox14.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillRGMaxTBox14.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // SkillRGMinTBox14
             // 
@@ -3556,7 +3701,8 @@
             this.SkillRGMinTBox14.Size = new System.Drawing.Size(30, 20);
             this.SkillRGMinTBox14.TabIndex = 13;
             this.SkillRGMinTBox14.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SkillRGMinTBox14.TextChanged += new System.EventHandler(this.SkillRGMinTBox14_TextChanged);
+            this.SkillRGMinTBox14.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillRGMinTBox14.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // SkillRGMaxTBox10
             // 
@@ -3565,7 +3711,8 @@
             this.SkillRGMaxTBox10.Size = new System.Drawing.Size(30, 20);
             this.SkillRGMaxTBox10.TabIndex = 5;
             this.SkillRGMaxTBox10.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SkillRGMaxTBox10.TextChanged += new System.EventHandler(this.SkillRGMaxTBox10_TextChanged);
+            this.SkillRGMaxTBox10.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillRGMaxTBox10.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // SkillRGMinTBox10
             // 
@@ -3574,7 +3721,8 @@
             this.SkillRGMinTBox10.Size = new System.Drawing.Size(30, 20);
             this.SkillRGMinTBox10.TabIndex = 4;
             this.SkillRGMinTBox10.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SkillRGMinTBox10.TextChanged += new System.EventHandler(this.SkillRGMinTBox10_TextChanged);
+            this.SkillRGMinTBox10.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillRGMinTBox10.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // SkillRGMaxTBox8
             // 
@@ -3583,7 +3731,8 @@
             this.SkillRGMaxTBox8.Size = new System.Drawing.Size(30, 20);
             this.SkillRGMaxTBox8.TabIndex = 8;
             this.SkillRGMaxTBox8.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SkillRGMaxTBox8.TextChanged += new System.EventHandler(this.SkillRGMaxTBox8_TextChanged);
+            this.SkillRGMaxTBox8.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillRGMaxTBox8.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // SkillRGMinTBox8
             // 
@@ -3592,7 +3741,8 @@
             this.SkillRGMinTBox8.Size = new System.Drawing.Size(30, 20);
             this.SkillRGMinTBox8.TabIndex = 7;
             this.SkillRGMinTBox8.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SkillRGMinTBox8.TextChanged += new System.EventHandler(this.SkillRGMinTBox8_TextChanged);
+            this.SkillRGMinTBox8.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillRGMinTBox8.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // SkillRGMaxTBox2
             // 
@@ -3601,7 +3751,8 @@
             this.SkillRGMaxTBox2.Size = new System.Drawing.Size(30, 20);
             this.SkillRGMaxTBox2.TabIndex = 2;
             this.SkillRGMaxTBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SkillRGMaxTBox2.TextChanged += new System.EventHandler(this.SkillRGMaxTBox2_TextChanged);
+            this.SkillRGMaxTBox2.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillRGMaxTBox2.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // SkillRGMinTBox2
             // 
@@ -3610,7 +3761,8 @@
             this.SkillRGMinTBox2.Size = new System.Drawing.Size(30, 20);
             this.SkillRGMinTBox2.TabIndex = 1;
             this.SkillRGMinTBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SkillRGMinTBox2.TextChanged += new System.EventHandler(this.SkillRGMinTBox2_TextChanged);
+            this.SkillRGMinTBox2.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillRGMinTBox2.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // label64
             // 
@@ -3994,6 +4146,8 @@
             this.GoldRMaxTBox1.TabIndex = 14;
             this.GoldRMaxTBox1.Text = "10";
             this.GoldRMaxTBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.GoldRMaxTBox1.TextChanged += new System.EventHandler(this.ValidateTextBoxNoMax);
+            this.GoldRMaxTBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxNoMax);
             // 
             // GoldRMinTBox1
             // 
@@ -4003,6 +4157,8 @@
             this.GoldRMinTBox1.TabIndex = 13;
             this.GoldRMinTBox1.Text = "0";
             this.GoldRMinTBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.GoldRMinTBox1.TextChanged += new System.EventHandler(this.ValidateTextBoxNoMax);
+            this.GoldRMinTBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxNoMax);
             // 
             // label73
             // 
@@ -4130,8 +4286,8 @@
             this.textBox_Item_GirlBuyChance.Size = new System.Drawing.Size(47, 20);
             this.textBox_Item_GirlBuyChance.TabIndex = 11;
             this.textBox_Item_GirlBuyChance.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.textBox_Item_GirlBuyChance.TextChanged += new System.EventHandler(this.textBox_Item_GirlBuyChance_TextChanged);
-            this.textBox_Item_GirlBuyChance.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_Item_GirlBuyChance_KeyPress);
+            this.textBox_Item_GirlBuyChance.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.textBox_Item_GirlBuyChance.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // groupBox11
             // 
@@ -4458,8 +4614,8 @@
             this.affects_textBox_value.TabIndex = 7;
             this.affects_textBox_value.Text = "0";
             this.affects_textBox_value.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.affects_textBox_value.TextChanged += new System.EventHandler(this.affects_textBox_value_TextChanged);
-            this.affects_textBox_value.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.affects_textBox_value_KeyPress);
+            this.affects_textBox_value.TextChanged += new System.EventHandler(this.ValidateTextBoxNegative);
+            this.affects_textBox_value.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxNegative);
             // 
             // comboBox_affects_02
             // 
@@ -4568,8 +4724,8 @@
             this.textBox_itemcost_04.TabIndex = 17;
             this.textBox_itemcost_04.Text = "10";
             this.textBox_itemcost_04.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.textBox_itemcost_04.TextChanged += new System.EventHandler(this.textBox_itemcost_04_TextChanged);
-            this.textBox_itemcost_04.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_itemcost_04_KeyPress);
+            this.textBox_itemcost_04.TextChanged += new System.EventHandler(this.ValidateTextBoxNoMax);
+            this.textBox_itemcost_04.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxNoMax);
             // 
             // label78
             // 
@@ -4756,6 +4912,8 @@
             this.textBox_Config_Screen_Height_Scale.Size = new System.Drawing.Size(55, 20);
             this.textBox_Config_Screen_Height_Scale.TabIndex = 10;
             this.textBox_Config_Screen_Height_Scale.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_Screen_Height_Scale.TextChanged += new System.EventHandler(this.ValidateTextBoxNoMax);
+            this.textBox_Config_Screen_Height_Scale.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxNoMax);
             // 
             // textBox_Config_Screen_Width_Scale
             // 
@@ -4766,6 +4924,8 @@
             this.textBox_Config_Screen_Width_Scale.Size = new System.Drawing.Size(55, 20);
             this.textBox_Config_Screen_Width_Scale.TabIndex = 7;
             this.textBox_Config_Screen_Width_Scale.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_Screen_Width_Scale.TextChanged += new System.EventHandler(this.ValidateTextBoxNoMax);
+            this.textBox_Config_Screen_Width_Scale.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxNoMax);
             // 
             // label113
             // 
@@ -4808,6 +4968,8 @@
             this.textBox_Config_Screen_Height.Size = new System.Drawing.Size(55, 20);
             this.textBox_Config_Screen_Height.TabIndex = 9;
             this.textBox_Config_Screen_Height.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_Screen_Height.TextChanged += new System.EventHandler(this.ValidateTextBoxNoMax);
+            this.textBox_Config_Screen_Height.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxNoMax);
             // 
             // textBox_Config_Resolution
             // 
@@ -4850,6 +5012,8 @@
             this.textBox_Config_Screen_Width.Size = new System.Drawing.Size(55, 20);
             this.textBox_Config_Screen_Width.TabIndex = 6;
             this.textBox_Config_Screen_Width.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_Screen_Width.TextChanged += new System.EventHandler(this.ValidateTextBoxNoMax);
+            this.textBox_Config_Screen_Width.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxNoMax);
             // 
             // groupBox_C_Expense_Multipliers
             // 
@@ -4914,6 +5078,8 @@
             this.textBox_Config_ExpenseStaff.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_ExpenseStaff.TabIndex = 11;
             this.textBox_Config_ExpenseStaff.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_ExpenseStaff.TextChanged += new System.EventHandler(this.ValidateTextBoxDouble);
+            this.textBox_Config_ExpenseStaff.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxDouble);
             // 
             // label104
             // 
@@ -5084,6 +5250,8 @@
             this.textBox_Config_ExpenseAdvertising.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_ExpenseAdvertising.TabIndex = 33;
             this.textBox_Config_ExpenseAdvertising.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_ExpenseAdvertising.TextChanged += new System.EventHandler(this.ValidateTextBoxDouble);
+            this.textBox_Config_ExpenseAdvertising.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxDouble);
             // 
             // textBox_Config_ExpenseFines
             // 
@@ -5094,6 +5262,8 @@
             this.textBox_Config_ExpenseFines.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_ExpenseFines.TabIndex = 31;
             this.textBox_Config_ExpenseFines.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_ExpenseFines.TextChanged += new System.EventHandler(this.ValidateTextBoxDouble);
+            this.textBox_Config_ExpenseFines.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxDouble);
             // 
             // textBox_Config_ExpenseBribes
             // 
@@ -5104,6 +5274,8 @@
             this.textBox_Config_ExpenseBribes.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_ExpenseBribes.TabIndex = 29;
             this.textBox_Config_ExpenseBribes.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_ExpenseBribes.TextChanged += new System.EventHandler(this.ValidateTextBoxDouble);
+            this.textBox_Config_ExpenseBribes.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxDouble);
             // 
             // textBox_Config_ExpenseCasino
             // 
@@ -5114,6 +5286,8 @@
             this.textBox_Config_ExpenseCasino.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_ExpenseCasino.TabIndex = 27;
             this.textBox_Config_ExpenseCasino.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_ExpenseCasino.TextChanged += new System.EventHandler(this.ValidateTextBoxDouble);
+            this.textBox_Config_ExpenseCasino.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxDouble);
             // 
             // textBox_Config_ExpenseBar
             // 
@@ -5124,6 +5298,8 @@
             this.textBox_Config_ExpenseBar.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_ExpenseBar.TabIndex = 25;
             this.textBox_Config_ExpenseBar.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_ExpenseBar.TextChanged += new System.EventHandler(this.ValidateTextBoxDouble);
+            this.textBox_Config_ExpenseBar.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxDouble);
             // 
             // textBox_Config_ExpenseBrothel
             // 
@@ -5134,6 +5310,8 @@
             this.textBox_Config_ExpenseBrothel.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_ExpenseBrothel.TabIndex = 23;
             this.textBox_Config_ExpenseBrothel.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_ExpenseBrothel.TextChanged += new System.EventHandler(this.ValidateTextBoxDouble);
+            this.textBox_Config_ExpenseBrothel.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxDouble);
             // 
             // textBox_Config_ExpenseBrothelPrice
             // 
@@ -5144,6 +5322,8 @@
             this.textBox_Config_ExpenseBrothelPrice.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_ExpenseBrothelPrice.TabIndex = 21;
             this.textBox_Config_ExpenseBrothelPrice.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_ExpenseBrothelPrice.TextChanged += new System.EventHandler(this.ValidateTextBoxDouble);
+            this.textBox_Config_ExpenseBrothelPrice.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxDouble);
             // 
             // textBox_Config_ExpenseSlaves
             // 
@@ -5154,6 +5334,8 @@
             this.textBox_Config_ExpenseSlaves.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_ExpenseSlaves.TabIndex = 19;
             this.textBox_Config_ExpenseSlaves.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_ExpenseSlaves.TextChanged += new System.EventHandler(this.ValidateTextBoxDouble);
+            this.textBox_Config_ExpenseSlaves.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxDouble);
             // 
             // textBox_Config_ExpenseItems
             // 
@@ -5164,6 +5346,8 @@
             this.textBox_Config_ExpenseItems.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_ExpenseItems.TabIndex = 17;
             this.textBox_Config_ExpenseItems.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_ExpenseItems.TextChanged += new System.EventHandler(this.ValidateTextBoxDouble);
+            this.textBox_Config_ExpenseItems.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxDouble);
             // 
             // textBox_Config_ExpenseConsumables
             // 
@@ -5174,6 +5358,8 @@
             this.textBox_Config_ExpenseConsumables.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_ExpenseConsumables.TabIndex = 15;
             this.textBox_Config_ExpenseConsumables.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_ExpenseConsumables.TextChanged += new System.EventHandler(this.ValidateTextBoxDouble);
+            this.textBox_Config_ExpenseConsumables.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxDouble);
             // 
             // textBox_Config_ExpenseGirls
             // 
@@ -5184,6 +5370,8 @@
             this.textBox_Config_ExpenseGirls.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_ExpenseGirls.TabIndex = 13;
             this.textBox_Config_ExpenseGirls.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_ExpenseGirls.TextChanged += new System.EventHandler(this.ValidateTextBoxDouble);
+            this.textBox_Config_ExpenseGirls.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxDouble);
             // 
             // textBox_Config_ExpenseMatron
             // 
@@ -5194,6 +5382,8 @@
             this.textBox_Config_ExpenseMatron.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_ExpenseMatron.TabIndex = 9;
             this.textBox_Config_ExpenseMatron.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_ExpenseMatron.TextChanged += new System.EventHandler(this.ValidateTextBoxDouble);
+            this.textBox_Config_ExpenseMatron.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxDouble);
             // 
             // textBox_Config_ExpenseGoon
             // 
@@ -5204,6 +5394,8 @@
             this.textBox_Config_ExpenseGoon.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_ExpenseGoon.TabIndex = 7;
             this.textBox_Config_ExpenseGoon.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_ExpenseGoon.TextChanged += new System.EventHandler(this.ValidateTextBoxDouble);
+            this.textBox_Config_ExpenseGoon.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxDouble);
             // 
             // textBox_Config_ExpenseActress
             // 
@@ -5214,6 +5406,8 @@
             this.textBox_Config_ExpenseActress.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_ExpenseActress.TabIndex = 5;
             this.textBox_Config_ExpenseActress.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_ExpenseActress.TextChanged += new System.EventHandler(this.ValidateTextBoxDouble);
+            this.textBox_Config_ExpenseActress.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxDouble);
             // 
             // textBox_Config_ExpenseMovie
             // 
@@ -5224,6 +5418,8 @@
             this.textBox_Config_ExpenseMovie.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_ExpenseMovie.TabIndex = 3;
             this.textBox_Config_ExpenseMovie.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_ExpenseMovie.TextChanged += new System.EventHandler(this.ValidateTextBoxDouble);
+            this.textBox_Config_ExpenseMovie.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxDouble);
             // 
             // textBox_Config_ExpenseTraining
             // 
@@ -5234,6 +5430,8 @@
             this.textBox_Config_ExpenseTraining.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_ExpenseTraining.TabIndex = 1;
             this.textBox_Config_ExpenseTraining.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_ExpenseTraining.TextChanged += new System.EventHandler(this.ValidateTextBoxDouble);
+            this.textBox_Config_ExpenseTraining.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxDouble);
             // 
             // groupBox_C_Gangs
             // 
@@ -5300,6 +5498,8 @@
             this.textBox_config_AddNewWeeklyMax.Size = new System.Drawing.Size(40, 20);
             this.textBox_config_AddNewWeeklyMax.TabIndex = 15;
             this.textBox_config_AddNewWeeklyMax.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_config_AddNewWeeklyMax.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.textBox_config_AddNewWeeklyMax.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // textBox_config_AddNewWeeklyMin
             // 
@@ -5310,6 +5510,8 @@
             this.textBox_config_AddNewWeeklyMin.Size = new System.Drawing.Size(40, 20);
             this.textBox_config_AddNewWeeklyMin.TabIndex = 14;
             this.textBox_config_AddNewWeeklyMin.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_config_AddNewWeeklyMin.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.textBox_config_AddNewWeeklyMin.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // textBox_config_ChanceRemoveUnwanted
             // 
@@ -5320,7 +5522,8 @@
             this.textBox_config_ChanceRemoveUnwanted.Size = new System.Drawing.Size(40, 20);
             this.textBox_config_ChanceRemoveUnwanted.TabIndex = 7;
             this.textBox_config_ChanceRemoveUnwanted.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.textBox_config_ChanceRemoveUnwanted.TextChanged += new System.EventHandler(this.textBox_config_ChanceRemoveUnwanted_TextChanged);
+            this.textBox_config_ChanceRemoveUnwanted.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.textBox_config_ChanceRemoveUnwanted.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // label134
             // 
@@ -5381,6 +5584,8 @@
             this.textBox_config_InitMemberMax.Size = new System.Drawing.Size(40, 20);
             this.textBox_config_InitMemberMax.TabIndex = 12;
             this.textBox_config_InitMemberMax.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_config_InitMemberMax.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.textBox_config_InitMemberMax.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // textBox_config_InitMemberMin
             // 
@@ -5391,6 +5596,8 @@
             this.textBox_config_InitMemberMin.Size = new System.Drawing.Size(40, 20);
             this.textBox_config_InitMemberMin.TabIndex = 11;
             this.textBox_config_InitMemberMin.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_config_InitMemberMin.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.textBox_config_InitMemberMin.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // textBox_config_StartBoosted
             // 
@@ -5401,6 +5608,8 @@
             this.textBox_config_StartBoosted.Size = new System.Drawing.Size(40, 20);
             this.textBox_config_StartBoosted.TabIndex = 5;
             this.textBox_config_StartBoosted.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_config_StartBoosted.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.textBox_config_StartBoosted.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // textBox_config_StartRandom
             // 
@@ -5411,6 +5620,8 @@
             this.textBox_config_StartRandom.Size = new System.Drawing.Size(40, 20);
             this.textBox_config_StartRandom.TabIndex = 3;
             this.textBox_config_StartRandom.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_config_StartRandom.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.textBox_config_StartRandom.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // textBox_config_MaxRecruitList
             // 
@@ -5421,6 +5632,8 @@
             this.textBox_config_MaxRecruitList.Size = new System.Drawing.Size(40, 20);
             this.textBox_config_MaxRecruitList.TabIndex = 1;
             this.textBox_config_MaxRecruitList.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_config_MaxRecruitList.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.textBox_config_MaxRecruitList.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // groupBox_C_Pregnancy_Config
             // 
@@ -5498,6 +5711,8 @@
             this.textBox_Config_PregnancyMiscarriageMonster.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_PregnancyMiscarriageMonster.TabIndex = 17;
             this.textBox_Config_PregnancyMiscarriageMonster.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_PregnancyMiscarriageMonster.TextChanged += new System.EventHandler(this.ValidateTextBoxDouble);
+            this.textBox_Config_PregnancyMiscarriageMonster.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxDouble);
             // 
             // textBox_Config_PregnancyMiscarriageChance
             // 
@@ -5508,6 +5723,8 @@
             this.textBox_Config_PregnancyMiscarriageChance.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_PregnancyMiscarriageChance.TabIndex = 15;
             this.textBox_Config_PregnancyMiscarriageChance.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_PregnancyMiscarriageChance.TextChanged += new System.EventHandler(this.ValidateTextBoxDouble);
+            this.textBox_Config_PregnancyMiscarriageChance.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxDouble);
             // 
             // textBox_Config_PregnancyWeeksMonsterP
             // 
@@ -5518,6 +5735,8 @@
             this.textBox_Config_PregnancyWeeksMonsterP.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_PregnancyWeeksMonsterP.TabIndex = 13;
             this.textBox_Config_PregnancyWeeksMonsterP.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_PregnancyWeeksMonsterP.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.textBox_Config_PregnancyWeeksMonsterP.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // label_C_Weeks_Pregnant
             // 
@@ -5562,6 +5781,8 @@
             this.textBox_Config_PregnancyCoolDown.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_PregnancyCoolDown.TabIndex = 21;
             this.textBox_Config_PregnancyCoolDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_PregnancyCoolDown.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.textBox_Config_PregnancyCoolDown.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // textBox_Config_PregnancyWeeksTillGrown
             // 
@@ -5572,6 +5793,8 @@
             this.textBox_Config_PregnancyWeeksTillGrown.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_PregnancyWeeksTillGrown.TabIndex = 19;
             this.textBox_Config_PregnancyWeeksTillGrown.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_PregnancyWeeksTillGrown.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.textBox_Config_PregnancyWeeksTillGrown.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // textBox_Config_PregnancyWeeksPregnant
             // 
@@ -5582,6 +5805,8 @@
             this.textBox_Config_PregnancyWeeksPregnant.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_PregnancyWeeksPregnant.TabIndex = 11;
             this.textBox_Config_PregnancyWeeksPregnant.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_PregnancyWeeksPregnant.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.textBox_Config_PregnancyWeeksPregnant.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // label_C_Monster_Chance
             // 
@@ -5650,7 +5875,8 @@
             this.textBox_Config_PregnancyGirlChance.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_PregnancyGirlChance.TabIndex = 9;
             this.textBox_Config_PregnancyGirlChance.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.textBox_Config_PregnancyGirlChance.TextChanged += new System.EventHandler(this.textBox_Config_PregnancyGirlChance_TextChanged);
+            this.textBox_Config_PregnancyGirlChance.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.textBox_Config_PregnancyGirlChance.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // textBox_Config_PregnancyGoodSex
             // 
@@ -5661,6 +5887,8 @@
             this.textBox_Config_PregnancyGoodSex.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_PregnancyGoodSex.TabIndex = 7;
             this.textBox_Config_PregnancyGoodSex.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_PregnancyGoodSex.TextChanged += new System.EventHandler(this.ValidateTextBoxDouble);
+            this.textBox_Config_PregnancyGoodSex.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxDouble);
             // 
             // textBox_Config_PregnancyMonster
             // 
@@ -5671,7 +5899,8 @@
             this.textBox_Config_PregnancyMonster.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_PregnancyMonster.TabIndex = 5;
             this.textBox_Config_PregnancyMonster.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.textBox_Config_PregnancyMonster.TextChanged += new System.EventHandler(this.textBox_Config_PregnancyMonster_TextChanged);
+            this.textBox_Config_PregnancyMonster.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.textBox_Config_PregnancyMonster.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // textBox_Config_PregnancyCustomer
             // 
@@ -5682,7 +5911,8 @@
             this.textBox_Config_PregnancyCustomer.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_PregnancyCustomer.TabIndex = 3;
             this.textBox_Config_PregnancyCustomer.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.textBox_Config_PregnancyCustomer.TextChanged += new System.EventHandler(this.textBox_Config_PregnancyCustomer_TextChanged);
+            this.textBox_Config_PregnancyCustomer.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.textBox_Config_PregnancyCustomer.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // textBox_Config_PregnancyPlayer
             // 
@@ -5693,7 +5923,8 @@
             this.textBox_Config_PregnancyPlayer.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_PregnancyPlayer.TabIndex = 1;
             this.textBox_Config_PregnancyPlayer.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.textBox_Config_PregnancyPlayer.TextChanged += new System.EventHandler(this.textBox_Config_PregnancyPlayer_TextChanged);
+            this.textBox_Config_PregnancyPlayer.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.textBox_Config_PregnancyPlayer.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // button_Load_Config
             // 
@@ -5856,7 +6087,8 @@
             this.textBox_Config_InitialGirlsHousePerc.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_InitialGirlsHousePerc.TabIndex = 5;
             this.textBox_Config_InitialGirlsHousePerc.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.textBox_Config_InitialGirlsHousePerc.TextChanged += new System.EventHandler(this.textBox_Config_InitialGirlsHousePerc_TextChanged);
+            this.textBox_Config_InitialGirlsHousePerc.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.textBox_Config_InitialGirlsHousePerc.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // textBox_Initial_Gold
             // 
@@ -5867,6 +6099,8 @@
             this.textBox_Initial_Gold.Size = new System.Drawing.Size(100, 20);
             this.textBox_Initial_Gold.TabIndex = 1;
             this.textBox_Initial_Gold.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Initial_Gold.TextChanged += new System.EventHandler(this.ValidateTextBoxNoMax);
+            this.textBox_Initial_Gold.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxNoMax);
             // 
             // label156
             // 
@@ -5901,6 +6135,8 @@
             this.textBox_Torture_Mod.Size = new System.Drawing.Size(40, 20);
             this.textBox_Torture_Mod.TabIndex = 19;
             this.textBox_Torture_Mod.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Torture_Mod.TextChanged += new System.EventHandler(this.ValidateTextBoxNegative);
+            this.textBox_Torture_Mod.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxNegative);
             // 
             // checkBox_Config_AutoUseItems
             // 
@@ -5944,7 +6180,8 @@
             this.textBox_Config_InitialSlaveHousePerc.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_InitialSlaveHousePerc.TabIndex = 9;
             this.textBox_Config_InitialSlaveHousePerc.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.textBox_Config_InitialSlaveHousePerc.TextChanged += new System.EventHandler(this.textBox_Config_InitialSlaveHousePerc_TextChanged);
+            this.textBox_Config_InitialSlaveHousePerc.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.textBox_Config_InitialSlaveHousePerc.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // textBox_Config_InitialGirlMeet
             // 
@@ -5955,7 +6192,8 @@
             this.textBox_Config_InitialGirlMeet.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_InitialGirlMeet.TabIndex = 3;
             this.textBox_Config_InitialGirlMeet.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.textBox_Config_InitialGirlMeet.TextChanged += new System.EventHandler(this.textBox_Config_InitialGirlMeet_TextChanged);
+            this.textBox_Config_InitialGirlMeet.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.textBox_Config_InitialGirlMeet.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // groupBox_Logging
             // 
@@ -6217,7 +6455,8 @@
             this.textBox_Config_TaxLaundry.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_TaxLaundry.TabIndex = 5;
             this.textBox_Config_TaxLaundry.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.textBox_Config_TaxLaundry.TextChanged += new System.EventHandler(this.textBox_Config_TaxLaundry_TextChanged);
+            this.textBox_Config_TaxLaundry.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.textBox_Config_TaxLaundry.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // textBox_Config_TaxMinimum
             // 
@@ -6228,7 +6467,8 @@
             this.textBox_Config_TaxMinimum.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_TaxMinimum.TabIndex = 3;
             this.textBox_Config_TaxMinimum.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.textBox_Config_TaxMinimum.TextChanged += new System.EventHandler(this.textBox_Config_TaxMinimum_TextChanged);
+            this.textBox_Config_TaxMinimum.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.textBox_Config_TaxMinimum.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // textBox_Config_TaxRate
             // 
@@ -6239,7 +6479,8 @@
             this.textBox_Config_TaxRate.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_TaxRate.TabIndex = 1;
             this.textBox_Config_TaxRate.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.textBox_Config_TaxRate.TextChanged += new System.EventHandler(this.textBox_Config_TaxRate_TextChanged);
+            this.textBox_Config_TaxRate.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.textBox_Config_TaxRate.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // button_Config_Reset
             // 
@@ -6308,7 +6549,8 @@
             this.textBox_Config_ProstitutionRapeStreets.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_ProstitutionRapeStreets.TabIndex = 3;
             this.textBox_Config_ProstitutionRapeStreets.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.textBox_Config_ProstitutionRapeStreets.TextChanged += new System.EventHandler(this.textBox_Config_ProstitutionRapeStreets_TextChanged);
+            this.textBox_Config_ProstitutionRapeStreets.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.textBox_Config_ProstitutionRapeStreets.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // textBox_Config_ProstitutionRapeBrothel
             // 
@@ -6319,7 +6561,8 @@
             this.textBox_Config_ProstitutionRapeBrothel.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_ProstitutionRapeBrothel.TabIndex = 1;
             this.textBox_Config_ProstitutionRapeBrothel.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.textBox_Config_ProstitutionRapeBrothel.TextChanged += new System.EventHandler(this.textBox_Config_ProstitutionRapeBrothel_TextChanged);
+            this.textBox_Config_ProstitutionRapeBrothel.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.textBox_Config_ProstitutionRapeBrothel.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // groupBox_C_Gambling
             // 
@@ -6400,6 +6643,8 @@
             this.textBox_Config_GamblingHouse.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_GamblingHouse.TabIndex = 9;
             this.textBox_Config_GamblingHouse.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_GamblingHouse.TextChanged += new System.EventHandler(this.ValidateTextBoxDouble);
+            this.textBox_Config_GamblingHouse.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxDouble);
             // 
             // textBox_Config_GamblingCustomer
             // 
@@ -6410,6 +6655,8 @@
             this.textBox_Config_GamblingCustomer.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_GamblingCustomer.TabIndex = 7;
             this.textBox_Config_GamblingCustomer.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_GamblingCustomer.TextChanged += new System.EventHandler(this.ValidateTextBoxDouble);
+            this.textBox_Config_GamblingCustomer.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxDouble);
             // 
             // textBox_Config_GamblingSpread
             // 
@@ -6420,6 +6667,8 @@
             this.textBox_Config_GamblingSpread.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_GamblingSpread.TabIndex = 5;
             this.textBox_Config_GamblingSpread.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_GamblingSpread.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.textBox_Config_GamblingSpread.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // textBox_Config_GamblingBase
             // 
@@ -6430,6 +6679,8 @@
             this.textBox_Config_GamblingBase.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_GamblingBase.TabIndex = 3;
             this.textBox_Config_GamblingBase.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_GamblingBase.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.textBox_Config_GamblingBase.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // textBox_Config_GamblingOdds
             // 
@@ -6440,7 +6691,8 @@
             this.textBox_Config_GamblingOdds.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_GamblingOdds.TabIndex = 1;
             this.textBox_Config_GamblingOdds.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.textBox_Config_GamblingOdds.TextChanged += new System.EventHandler(this.textBox_Config_GamblingOdds_TextChanged);
+            this.textBox_Config_GamblingOdds.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.textBox_Config_GamblingOdds.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // groupBox_C_Income_Multipliers
             // 
@@ -6477,6 +6729,8 @@
             this.textBox_Config_IncomeItemSales.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_IncomeItemSales.TabIndex = 15;
             this.textBox_Config_IncomeItemSales.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_IncomeItemSales.TextChanged += new System.EventHandler(this.ValidateTextBoxDouble);
+            this.textBox_Config_IncomeItemSales.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxDouble);
             // 
             // textBox_Config_IncomeSlaveSales
             // 
@@ -6487,6 +6741,8 @@
             this.textBox_Config_IncomeSlaveSales.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_IncomeSlaveSales.TabIndex = 13;
             this.textBox_Config_IncomeSlaveSales.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_IncomeSlaveSales.TextChanged += new System.EventHandler(this.ValidateTextBoxDouble);
+            this.textBox_Config_IncomeSlaveSales.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxDouble);
             // 
             // textBox_Config_IncomeBarmaid
             // 
@@ -6497,6 +6753,8 @@
             this.textBox_Config_IncomeBarmaid.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_IncomeBarmaid.TabIndex = 11;
             this.textBox_Config_IncomeBarmaid.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_IncomeBarmaid.TextChanged += new System.EventHandler(this.ValidateTextBoxDouble);
+            this.textBox_Config_IncomeBarmaid.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxDouble);
             // 
             // label95
             // 
@@ -6527,6 +6785,8 @@
             this.textBox_Config_IncomeStripper.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_IncomeStripper.TabIndex = 9;
             this.textBox_Config_IncomeStripper.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_IncomeStripper.TextChanged += new System.EventHandler(this.ValidateTextBoxDouble);
+            this.textBox_Config_IncomeStripper.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxDouble);
             // 
             // label90
             // 
@@ -6577,6 +6837,8 @@
             this.textBox_Config_IncomeMovie.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_IncomeMovie.TabIndex = 7;
             this.textBox_Config_IncomeMovie.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_IncomeMovie.TextChanged += new System.EventHandler(this.ValidateTextBoxDouble);
+            this.textBox_Config_IncomeMovie.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxDouble);
             // 
             // textBox_Config_IncomeStreet
             // 
@@ -6587,6 +6849,8 @@
             this.textBox_Config_IncomeStreet.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_IncomeStreet.TabIndex = 5;
             this.textBox_Config_IncomeStreet.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_IncomeStreet.TextChanged += new System.EventHandler(this.ValidateTextBoxDouble);
+            this.textBox_Config_IncomeStreet.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxDouble);
             // 
             // label89
             // 
@@ -6607,6 +6871,8 @@
             this.textBox_Config_IncomeBrothel.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_IncomeBrothel.TabIndex = 3;
             this.textBox_Config_IncomeBrothel.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_IncomeBrothel.TextChanged += new System.EventHandler(this.ValidateTextBoxDouble);
+            this.textBox_Config_IncomeBrothel.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxDouble);
             // 
             // textBox_Config_IncomeExtortion
             // 
@@ -6617,6 +6883,8 @@
             this.textBox_Config_IncomeExtortion.Size = new System.Drawing.Size(40, 20);
             this.textBox_Config_IncomeExtortion.TabIndex = 1;
             this.textBox_Config_IncomeExtortion.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_IncomeExtortion.TextChanged += new System.EventHandler(this.ValidateTextBoxDouble);
+            this.textBox_Config_IncomeExtortion.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxDouble);
             // 
             // label88
             // 
@@ -6700,26 +6968,13 @@
             // 
             // tabPage6_FAQ
             // 
-            this.tabPage6_FAQ.Controls.Add(this.richTextBox1);
             this.tabPage6_FAQ.Location = new System.Drawing.Point(4, 22);
             this.tabPage6_FAQ.Name = "tabPage6_FAQ";
             this.tabPage6_FAQ.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage6_FAQ.Size = new System.Drawing.Size(952, 492);
             this.tabPage6_FAQ.TabIndex = 6;
-            this.tabPage6_FAQ.Text = "  Short Faq  ";
+            this.tabPage6_FAQ.Text = "  j1  ";
             this.tabPage6_FAQ.UseVisualStyleBackColor = true;
-            // 
-            // richTextBox1
-            // 
-            this.richTextBox1.BackColor = System.Drawing.SystemColors.Window;
-            this.richTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.richTextBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.richTextBox1.Location = new System.Drawing.Point(6, 6);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.ReadOnly = true;
-            this.richTextBox1.Size = new System.Drawing.Size(940, 480);
-            this.richTextBox1.TabIndex = 0;
-            this.richTextBox1.Text = resources.GetString("richTextBox1.Text");
             // 
             // checkBox_Add_Missing_Sex_Skills_On_Load
             // 
@@ -6853,10 +7108,11 @@
             this.MaximumSize = new System.Drawing.Size(1000, 600);
             this.MinimumSize = new System.Drawing.Size(1000, 600);
             this.Name = "Form1";
-            this.Text = "Whore Master Editor 0.8.09";
+            this.Text = "Whore Master Editor 0.8.10";
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.App_FileDrop);
             this.DragEnter += new System.Windows.Forms.DragEventHandler(this.App_DragEnter);
             this.tabControl1.ResumeLayout(false);
+            this.tabPage0_Info.ResumeLayout(false);
             this.tabPage1_Girls.ResumeLayout(false);
             this.tabPage1_Girls.PerformLayout();
             this.groupBox_G_JF.ResumeLayout(false);
@@ -6919,7 +7175,6 @@
             this.groupBox_C_Income_Multipliers.PerformLayout();
             this.tabPage5_Traits.ResumeLayout(false);
             this.tabPage5_Traits.PerformLayout();
-            this.tabPage6_FAQ.ResumeLayout(false);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -6962,7 +7217,6 @@
         private System.Windows.Forms.TextBox StatsTBox_16;
         private System.Windows.Forms.TextBox StatsTBox_15;
         private System.Windows.Forms.TextBox StatsTBox_14;
-        private System.Windows.Forms.TextBox StatsTBox_G_Exp;
         private System.Windows.Forms.TextBox StatsTBox_12;
         private System.Windows.Forms.TextBox StatsTBox_11;
         private System.Windows.Forms.TextBox StatsTBox_G_Level;
@@ -6979,7 +7233,6 @@
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.Label label_G_Exp;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.TextBox SkillTBox_01;
@@ -7051,7 +7304,6 @@
         private System.Windows.Forms.Label label57;
         private System.Windows.Forms.Label label58;
         private System.Windows.Forms.Label label59;
-        private System.Windows.Forms.Label label60;
         private System.Windows.Forms.Label label61;
         private System.Windows.Forms.Label label62;
         private System.Windows.Forms.GroupBox groupBox6;
@@ -7069,7 +7321,6 @@
         private System.Windows.Forms.TextBox StatRGMaxTBox19;
         private System.Windows.Forms.TextBox StatRGMaxTBox17;
         private System.Windows.Forms.TextBox StatRGMaxTBox15;
-        private System.Windows.Forms.TextBox StatRGMaxTBox13;
         private System.Windows.Forms.TextBox StatRGMaxTBox11;
         private System.Windows.Forms.TextBox StatRGMaxTBox9;
         private System.Windows.Forms.TextBox StatRGMaxTBox7;
@@ -7080,7 +7331,6 @@
         private System.Windows.Forms.TextBox StatRGMinTBox19;
         private System.Windows.Forms.TextBox StatRGMinTBox17;
         private System.Windows.Forms.TextBox StatRGMinTBox15;
-        private System.Windows.Forms.TextBox StatRGMinTBox13;
         private System.Windows.Forms.TextBox StatRGMinTBox11;
         private System.Windows.Forms.TextBox StatRGMinTBox9;
         private System.Windows.Forms.TextBox StatRGMinTBox7;
@@ -7197,7 +7447,6 @@
         private System.Windows.Forms.CheckBox checkBox_DG2;
         private System.Windows.Forms.CheckBox checkBox_DG3;
         private System.Windows.Forms.TabPage tabPage6_FAQ;
-        private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.ComboBox comboBox_ItemDuration;
         private System.Windows.Forms.Label label84;
         private System.Windows.Forms.GroupBox groupBox11;
@@ -7477,6 +7726,12 @@
         private System.Windows.Forms.TextBox textBox_Config_Screen_Width_Scale;
         private System.Windows.Forms.CheckBox checkBox_Config_Show_Percent;
         private System.Windows.Forms.Label label_G_Images_Found;
+        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.TextBox textBox_G_Morality;
+        private System.Windows.Forms.Label label_G_Morality;
+        private System.Windows.Forms.TextBox textBox_RG_Morality_Max;
+        private System.Windows.Forms.TextBox textBox_RG_Morality_Min;
+        private System.Windows.Forms.Label label_RG_Morality;
     }
 }
 
