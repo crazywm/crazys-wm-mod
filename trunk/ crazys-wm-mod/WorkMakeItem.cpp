@@ -46,46 +46,42 @@ extern cGold g_Gold;
 bool cJobManager::WorkMakeItem(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	string message = "";
-	if(Preprocessing(ACTION_WORKCENTRE, girl, brothel, DayNight, summary, message))
+	if (Preprocessing(ACTION_WORKCENTRE, girl, brothel, DayNight, summary, message))
 		return true;
 
+	int jobperformance = (	g_Girls.GetSkill(girl, SKILL_CRAFTING) +
+							g_Girls.GetSkill(girl, SKILL_SERVICE));
+
+
+
 	// TODO need better dialog
-	if(g_Dice%100 <= 10)
+	if (g_Dice % 100 <= 10)
 	{
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCENTRE, -1, true);
 		message = gettext(" She wasn't able to make anything.");
-		girl->m_Events.AddMessage(message,IMGTYPE_PROFILE,DayNight);
+		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
 	}
 	else
 	{
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCENTRE, +3, true);
 		message = gettext(" She enjoyed her time working and made two items.");
-		girl->m_Events.AddMessage(message,IMGTYPE_PROFILE,DayNight);
+		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
 		g_Brothels.add_to_goods(2);
 	}
 
 	// Improve girl
-	int xp = 5, libido = 1, skill = 1;
+	int xp = 5, libido = 1, skill = 2;
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))
-	{
-		skill += 1;
-		xp += 3;
-	}
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))
-	{
-		skill -= 1;
-		xp -= 3;
-	}
-
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))
-		libido += 2;
+	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
+	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
+	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
 
 	girl->m_Pay += 25;
 	g_Gold.staff_wages(25);  // wages come from you
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, skill);
+	g_Girls.UpdateSkill(girl, SKILL_CRAFTING, g_Dice%skill + 1);
+	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
-	
+
 	return false;
 }

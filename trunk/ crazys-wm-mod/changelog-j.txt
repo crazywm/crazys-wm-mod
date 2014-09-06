@@ -695,4 +695,23 @@ Fixed broken flow in brothels causing bad payments
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.01
 !!!!!!!!!!!!!!!!!!!! pushed to SVN - r98
 
+###  Changes 9/1/2014
+WME - Added Morality to girls and rgirls
+WME - Rewrote textbox validation.
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.10
+
+###  Changes 9/2/2014
+***** I replaced my hard drive with a new solid state drive
+Cleaned item equip/use changing skill/stat from temp to mod
+Fixed bug in Director dealing with unruly workers.
+Fixed bug in payment using house percent as number instead of percent.
+
+
+###  Changes 9/3-5/2014
+***** I have been updating my Characters folder so have not been working on the code much.
+* Crazy updated several jobs (svn r99 and r100)
+Fixed some unfinished jobs and added a few new things to Crazy's stuff.
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.02
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r101
+
 

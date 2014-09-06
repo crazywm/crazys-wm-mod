@@ -1524,7 +1524,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)
 	int jr_mag = GetSkill(girl, SKILL_MAGIC);
 	int jr_cmb = GetSkill(girl, SKILL_COMBAT);
 	int jr_ser = GetSkill(girl, SKILL_SERVICE);
-
+	
 	int jr_bst = GetSkill(girl, SKILL_BEASTIALITY);
 	int jr_stp = GetSkill(girl, SKILL_STRIP);
 	int jr_med = GetSkill(girl, SKILL_MEDICINE);
@@ -1534,7 +1534,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)
 	int jr_far = GetSkill(girl, SKILL_FARMING);
 	int jr_bre = GetSkill(girl, SKILL_BREWING);
 	int jr_anh = GetSkill(girl, SKILL_ANIMALHANDLING);
-
+	
 
 	//Job rating system  ///CRAZY
 
@@ -1597,7 +1597,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)
 	int recruiter = (HateLove + jr_cha + jr_slave);
 	// Farm Jobs
 	int farmmanger = matron;
-	int veterinarian
+	int veterinarian = (jr_med + jr_anh);
 	int marketer = (jr_int + jr_far);
 	int researcher = ((jr_int / 2) + (jr_her / 2) + jr_bre);
 	int farmer = (jr_int + jr_far);
@@ -1609,7 +1609,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)
 	int butcher = (jr_int + jr_anh);
 	int baker = (jr_int + jr_her);
 	int brewer = (jr_int + jr_bre);
-	int makeitem
+	int makeitem = (jr_cra + jr_ser);
 	int makepot = ((jr_int / 2) + (jr_her / 2) + (jr_bre / 2) + (jr_cra / 2));
 	
 	// Traits in alphabetical order
@@ -2242,7 +2242,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)
 	data += girl->JobRatingLetter(butcher) + gettext("  -  Butcher\n");
 	data += girl->JobRatingLetter(baker) + gettext("  -  Baker\n");
 	data += girl->JobRatingLetter(brewer) + gettext("  -  Brewer\n");
-	//data += girl->JobRatingLetter(makeitem) + gettext("  -  Make Item\n");
+	data += girl->JobRatingLetter(makeitem) + gettext("  -  Make Item\n");
 	data += girl->JobRatingLetter(makepot) + gettext("  -  Make Potion\n");
 
 	data += gettext("\n\nJob Ratings range from\n'I' The absolute best, 'S' Superior,\nThen 'A'-'E' with 'E' being the worst.\n'X' means they can not do the job.");
@@ -2540,11 +2540,11 @@ void cGirls::UpdateStatMod(sGirl* girl, int skill, int amount)
 {
 	if (amount >= 0)
 	{
-		girl->m_StatMods[skill] = min(200, amount + girl->m_StatMods[skill]);
+		girl->m_StatMods[skill] = min(100, amount + girl->m_StatMods[skill]);
 	}
 	else
 	{
-		girl->m_StatMods[skill] = max(-200, amount + girl->m_StatMods[skill]);
+		girl->m_StatMods[skill] = max(-100, amount + girl->m_StatMods[skill]);
 	}
 }
 
@@ -2567,11 +2567,11 @@ void cGirls::UpdateTempStat(sGirl* girl, int stat, int amount)
 {
 	if(amount >= 0)
 	{
-		girl->m_TempStats[stat] = min(200, amount + girl->m_TempStats[stat]);
+		girl->m_TempStats[stat] = min(100, amount + girl->m_TempStats[stat]);
 	}
 	else
 	{
-		girl->m_TempStats[stat] = max(-200, amount + girl->m_TempStats[stat]);
+		girl->m_TempStats[stat] = max(-100, amount + girl->m_TempStats[stat]);
 	}
 }
 
@@ -2614,11 +2614,11 @@ void cGirls::UpdateSkillMod(sGirl* girl, int skill, int amount)
 {
 	if (amount >= 0)
 	{
-		girl->m_SkillMods[skill] = min(200, amount + girl->m_SkillMods[skill]);
+		girl->m_SkillMods[skill] = min(100, amount + girl->m_SkillMods[skill]);
 	}
 	else
 	{
-		girl->m_SkillMods[skill] = max(-200, amount + girl->m_SkillMods[skill]);
+		girl->m_SkillMods[skill] = max(-100, amount + girl->m_SkillMods[skill]);
 	}
 }
 // add amount to tempskill

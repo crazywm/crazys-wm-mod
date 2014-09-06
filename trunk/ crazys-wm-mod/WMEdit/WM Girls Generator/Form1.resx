@@ -120,12 +120,9 @@
   <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>24, 26</value>
   </metadata>
-  <data name="button_G_UnZero_Sex_Skills.ToolTip" xml:space="preserve">
-    <value>If the girl you are editing does not have some of the sex skills set in it, 
-this will check the existing sex skills and set the missing or zeroed sex skills 
-to be similar to the existing sex skill numbers.
-It checks for 'round to 5 or 10' and 'number spreads'.</value>
-  </data>
+  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>24, 26</value>
+  </metadata>
   <data name="checkBox_RGTraitsReadOnly.ToolTip" xml:space="preserve">
     <value>I recommend simply deleting faulty entry and adding it back with correct
 value, but if you really, really, REALLY need it, you can unlock value field
@@ -137,32 +134,6 @@ random name pool, this should be just name for
 girl type (template that corresponds to folder name
 with her pics), something like "Sporty girl",
 "Funny girl" and so on.</value>
-  </data>
-  <data name="checkBox_DG3.ToolTip" xml:space="preserve">
-    <value>I recommend simply deleting entry and adding it again with correct
-value, but if you really, really, REALLY must, you can edit it manually.
-
-Be very careful when manually editing value field to be sure to enter
-supported value.
-
-Recognized values are "Add" and "Remove", everything else will be
-interpreted as "Remove".</value>
-  </data>
-  <data name="checkBox_DG2.ToolTip" xml:space="preserve">
-    <value>I recommend simply deleting entry and adding it again with correct
-value, but if you really, really, REALLY must, you can edit it manually.
-
-Be very careful when manually editing value field to be sure to enter
-supported value.
-
-If you enter unsuported values (like "fasdsadfgdfvd" and like) you can
-expect that Whore Master will crash.</value>
-  </data>
-  <data name="label_Load_Config.Text" xml:space="preserve">
-    <value>The WME will try to find config.xml by itself.
-If it does not find it, you will have to find it manually.
-Starting in version .05t it is in the root game folder.
-In older versions, it was in \Resources\Data\ folder.</value>
   </data>
   <data name="richTextBox1.Text" xml:space="preserve">
     <value>
@@ -202,6 +173,38 @@ Only limit is this:
 Temporary effects apply to traits, stats and skills, they don't apply to status' (it is logical, status' themselves are temporary, and have prior this change, only with different mechanics).
 
 Traits that were added through this temporary mechanics will fade after 20 days, stats/skills that were added as temporary will fade by 1 point each day, until they're gone completely.</value>
+  </data>
+  <data name="button_G_UnZero_Sex_Skills.ToolTip" xml:space="preserve">
+    <value>If the girl you are editing does not have some of the sex skills set in it, 
+this will check the existing sex skills and set the missing or zeroed sex skills 
+to be similar to the existing sex skill numbers.
+It checks for 'round to 5 or 10' and 'number spreads'.</value>
+  </data>
+  <data name="checkBox_DG3.ToolTip" xml:space="preserve">
+    <value>I recommend simply deleting entry and adding it again with correct
+value, but if you really, really, REALLY must, you can edit it manually.
+
+Be very careful when manually editing value field to be sure to enter
+supported value.
+
+Recognized values are "Add" and "Remove", everything else will be
+interpreted as "Remove".</value>
+  </data>
+  <data name="checkBox_DG2.ToolTip" xml:space="preserve">
+    <value>I recommend simply deleting entry and adding it again with correct
+value, but if you really, really, REALLY must, you can edit it manually.
+
+Be very careful when manually editing value field to be sure to enter
+supported value.
+
+If you enter unsuported values (like "fasdsadfgdfvd" and like) you can
+expect that Whore Master will crash.</value>
+  </data>
+  <data name="label_Load_Config.Text" xml:space="preserve">
+    <value>The WME will try to find config.xml by itself.
+If it does not find it, you will have to find it manually.
+Starting in version .05t it is in the root game folder.
+In older versions, it was in \Resources\Data\ folder.</value>
   </data>
   <data name="checkBox_Add_Missing_Sex_Skills_On_Load.ToolTip" xml:space="preserve">
     <value>If you are loading an old girl file that does not have some of the sex skills set in it, 
