@@ -307,15 +307,18 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, int DayNight, string
 	}
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))
 	{
-		if (g_Girls.GetStat(girl, STAT_LIBIDO) > 65)
+		if (g_Dice % 100 <= 30)
 		{
-			message += "When giving a sponge bath to one of her male patients she couldn’t look away from his enormous manhood. The man took advantage and fuck her brains out!\n";
-			wages += 50;
-			sex = true;
-		}
-		else
-		{
-			message += "When giving a sponge bath to one of her male patients she couldn’t look away from his enormous manhood. But she wasn't in the mood so she left.\n";
+			if (g_Girls.GetStat(girl, STAT_LIBIDO) > 65)
+			{
+				message += "When giving a sponge bath to one of her male patients she couldn’t look away from his enormous manhood. The man took advantage and fuck her brains out!\n";
+				wages += 50;
+				sex = true;
+			}
+			else
+			{
+				message += "When giving a sponge bath to one of her male patients she couldn’t look away from his enormous manhood. But she wasn't in the mood so she left.\n";
+			}
 		}
 	}
 

@@ -62,26 +62,19 @@ bool cJobManager::WorkMakePotions(sGirl* girl, sBrothel* brothel, int DayNight, 
 							g_Girls.GetSkill(girl, SKILL_CRAFTING)/2);
 
 
-	//good traits
-	if (g_Girls.HasTrait(girl, "Quick Learner"))  
-		jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Psychic"))
-		jobperformance += 10;
-	if (g_Girls.HasTrait(girl, "Nerd"))
-		jobperformance += 10;
 
+	//good traits
+	if (g_Girls.HasTrait(girl, "Quick Learner"))  jobperformance += 5;
+	if (g_Girls.HasTrait(girl, "Psychic"))		  jobperformance += 10;
+	if (g_Girls.HasTrait(girl, "Nerd"))			  jobperformance += 10;
 
 	//bad traits
-	if (g_Girls.HasTrait(girl, "Dependant"))  //needs others to do the job
-		jobperformance -= 50;
-	if (g_Girls.HasTrait(girl, "Clumsy"))  //spills food and breaks things often
-		jobperformance -= 20;
-	if (g_Girls.HasTrait(girl, "Aggressive"))  //gets mad easy
-		jobperformance -= 20;
-	if (g_Girls.HasTrait(girl, "Nervous"))  //don't like to be around people
-		jobperformance -= 30;
-	if (g_Girls.HasTrait(girl, "Meek"))
-		jobperformance -= 20;
+	if (g_Girls.HasTrait(girl, "Dependant"))	jobperformance -= 50; //needs others to do the job
+	if (g_Girls.HasTrait(girl, "Clumsy")) 		jobperformance -= 20; //spills food and breaks things often
+	if (g_Girls.HasTrait(girl, "Aggressive")) 	jobperformance -= 20; //gets mad easy
+	if (g_Girls.HasTrait(girl, "Nervous"))		jobperformance -= 30; //don't like to be around people	
+	if (g_Girls.HasTrait(girl, "Meek"))			jobperformance -= 20;
+
 
 
 

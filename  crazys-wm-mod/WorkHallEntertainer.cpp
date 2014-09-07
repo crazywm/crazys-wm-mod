@@ -61,42 +61,25 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, int DayNig
 	message += "She worked as an entertainer in the gambling hall.";
 
 	//good traits
-	if (g_Girls.HasTrait(girl, "Charismatic"))  //
-		jobperformance += 15;
-	if (g_Girls.HasTrait(girl, "Sexy Air"))  //
-		jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Cool Person"))  //people love to be around her
-		jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Cute"))  //
-		jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Charming"))  //people like charming people
-		jobperformance += 15;
-	if (g_Girls.HasTrait(girl, "Great Figure"))  //
-		jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Great Arse"))  //
-		jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Quick Learner"))  //
-		jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Psychic"))
-		jobperformance += 15;
-	if (g_Girls.HasTrait(girl, "Fearless"))
-		jobperformance += 5;
+	if (g_Girls.HasTrait(girl, "Charismatic"))   jobperformance += 15;
+	if (g_Girls.HasTrait(girl, "Sexy Air"))		 jobperformance += 5;
+	if (g_Girls.HasTrait(girl, "Cool Person"))   jobperformance += 5; //people love to be around her
+	if (g_Girls.HasTrait(girl, "Cute"))			 jobperformance += 5;
+	if (g_Girls.HasTrait(girl, "Charming"))		 jobperformance += 15; //people like charming people
+	if (g_Girls.HasTrait(girl, "Great Figure"))  jobperformance += 5;
+	if (g_Girls.HasTrait(girl, "Great Arse"))	 jobperformance += 5;
+	if (g_Girls.HasTrait(girl, "Quick Learner")) jobperformance += 5;
+	if (g_Girls.HasTrait(girl, "Psychic"))		 jobperformance += 15;
+	if (g_Girls.HasTrait(girl, "Fearless"))		 jobperformance += 5;
 
 	//bad traits
-	if (g_Girls.HasTrait(girl, "Dependant"))  //needs others to do the job
-		jobperformance -= 50;
-	if (g_Girls.HasTrait(girl, "Clumsy"))  //spills food and breaks things often
-		jobperformance -= 10;
-	if (g_Girls.HasTrait(girl, "Aggressive"))  //gets mad easy and may attack people
-		jobperformance -= 20;
-	if (g_Girls.HasTrait(girl, "Nervous"))  //don't like to be around people
-		jobperformance -= 30;
-	if (g_Girls.HasTrait(girl, "Meek"))
-		jobperformance -= 20;
-	if (g_Girls.HasTrait(girl, "Broken Will"))
-		jobperformance -= 50;
-	if (g_Girls.HasTrait(girl, "Slow Learner"))
-		jobperformance -= 15;
+	if (g_Girls.HasTrait(girl, "Dependant"))	jobperformance -= 50; //needs others to do the job	
+	if (g_Girls.HasTrait(girl, "Clumsy"))		jobperformance -= 10; //spills food and breaks things often	
+	if (g_Girls.HasTrait(girl, "Aggressive"))	jobperformance -= 20; //gets mad easy and may attack people
+	if (g_Girls.HasTrait(girl, "Nervous"))		jobperformance -= 30; //don't like to be around people
+	if (g_Girls.HasTrait(girl, "Meek"))			jobperformance -= 20;
+	if (g_Girls.HasTrait(girl, "Broken Will"))	jobperformance -= 50;
+	if (g_Girls.HasTrait(girl, "Slow Learner"))	jobperformance -= 15;
 
 
 	 if (jobperformance >= 245)

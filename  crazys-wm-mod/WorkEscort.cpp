@@ -61,6 +61,23 @@ bool cJobManager::WorkEscort(sGirl* girl, sBrothel* brothel, int DayNight, strin
 	int pass_a = false;
 	int pass_b = false;
 
+	//CRAZY
+	/*Escort plans
+		General ideal is to have her arrive to an appoiment with a client.  If she is to late they may turn her away 
+		resulting in no money if she is on time it goes to the next part.  Next part is they look her over seeing if
+		she looks good enough for them or not and looks at what she is wearing.  Fancy dresses help while something like 
+		slave rags would hurt and may get her sent away again.  Then they are off to do something like go to dinner, a bar,
+		maybe a fancy party what have u.  From there its can she hold his intrest and not embarres him.  Traits play the biggest
+		part in this.  An elegant girl would do well for a rich person where a aggressive girl might not. On the other hand
+		a deadbeat might be turned off by a elegant girl and prefer something more sleazy or such.  If they pass this part 
+		it goes to a will they have sex roll.  Sometimes they might be okay with not having sex with the girl and be more then
+		happy with just her company other times sex is a must.  Do a roll for the sex type while taking into account what
+		types of sex are allowed.  Her skill will determine if the client is happy or not.  Sex would be an extra cost.  The 
+		further a girl makes it and the happier the client the more she makes.  Deadbeat would be super easy to please where
+		a king might be almost impossable to make fully happy without the perfect girl.  Sending a virgin should have different
+		things happen if it comes to sex where the girl could accept or not.  Maybe have special things happen if the escort is 
+		your daughter.*/ 
+
 
 	// `J` The type of customer She Escorts
 	/*default*/	int cust_type = 1;    string cust_type_text = "Commoner";

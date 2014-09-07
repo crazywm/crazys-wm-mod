@@ -59,40 +59,25 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 							g_Girls.GetSkill(girl, SKILL_SERVICE));
 
 	//good traits
-	if (g_Girls.HasTrait(girl, "Charismatic"))  //
-		jobperformance += 15;
-	if (g_Girls.HasTrait(girl, "Sexy Air"))  //
-		jobperformance += 10;
-	if (g_Girls.HasTrait(girl, "Cool Person"))  //people love to be around her
-		jobperformance += 10;
-	if (g_Girls.HasTrait(girl, "Cute"))  //
-		jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Charming"))  //people like charming people
-		jobperformance += 20;
-	if (g_Girls.HasTrait(girl, "Quick Learner"))
-		jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Psychic"))
-		jobperformance += 10;
-	if (g_Girls.HasTrait(girl, "Fleet of Foot") || g_Girls.HasTrait(girl, "Fleet Of Foot")) //faster at taking orders and droping them off
-		jobperformance += 5;
+	if (g_Girls.HasTrait(girl, "Charismatic"))  jobperformance += 15;
+	if (g_Girls.HasTrait(girl, "Sexy Air"))		jobperformance += 10;
+	if (g_Girls.HasTrait(girl, "Cool Person"))  jobperformance += 10; //people love to be around her	
+	if (g_Girls.HasTrait(girl, "Cute"))			jobperformance += 5;
+	if (g_Girls.HasTrait(girl, "Charming"))		jobperformance += 20; //people like charming people
+	if (g_Girls.HasTrait(girl, "Quick Learner"))jobperformance += 5;
+	if (g_Girls.HasTrait(girl, "Psychic"))		jobperformance += 10;
+	if (g_Girls.HasTrait(girl, "Fleet of Foot") || g_Girls.HasTrait(girl, "Fleet Of Foot")) jobperformance += 5;//faster at taking orders and droping them off
+		
 
 	//bad traits
-	if (g_Girls.HasTrait(girl, "Dependant"))  //needs others to do the job
-		jobperformance -= 50;
-	if (g_Girls.HasTrait(girl, "Clumsy"))  //spills food and breaks things often
-		jobperformance -= 20;
-	if (g_Girls.HasTrait(girl, "Aggressive"))  //gets mad easy and may attack people
-		jobperformance -= 20;
-	if (g_Girls.HasTrait(girl, "Nervous"))  //don't like to be around people
-		jobperformance -= 30;
-	if (g_Girls.HasTrait(girl, "Abnormally Large Boobs"))  //boobs are to big and get in the way
-		jobperformance -= 20;
-	if (g_Girls.HasTrait(girl, "Meek"))
-		jobperformance -= 20;
-	if (g_Girls.HasTrait(girl, "Slow Learner"))
-		jobperformance -= 10;
-	if (g_Girls.HasTrait(girl, "One Eye"))
-		jobperformance -= 10;
+	if (g_Girls.HasTrait(girl, "Dependant"))			  jobperformance -= 50; //needs others to do the job	
+	if (g_Girls.HasTrait(girl, "Clumsy")) 				  jobperformance -= 20; //spills food and breaks things often
+	if (g_Girls.HasTrait(girl, "Aggressive"))			  jobperformance -= 20; //gets mad easy and may attack people	
+	if (g_Girls.HasTrait(girl, "Nervous"))				  jobperformance -= 30; //don't like to be around people	
+	if (g_Girls.HasTrait(girl, "Abnormally Large Boobs")) jobperformance -= 20; //boobs are to big and get in the way	
+	if (g_Girls.HasTrait(girl, "Meek"))					  jobperformance -= 20;
+	if (g_Girls.HasTrait(girl, "Slow Learner"))			  jobperformance -= 10;
+	if (g_Girls.HasTrait(girl, "One Eye"))				  jobperformance -= 10;
 
 
 	 if(jobperformance >= 245)
