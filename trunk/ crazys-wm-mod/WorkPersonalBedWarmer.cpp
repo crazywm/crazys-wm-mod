@@ -52,6 +52,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, int DayN
 	string message = "";
 	stringstream ss;
 	ss.str(message);
+	g_Building = BUILDING_HOUSE;
 
 	// put that shit away, not needed for sex training
 	g_Girls.UnequipCombat(girl);

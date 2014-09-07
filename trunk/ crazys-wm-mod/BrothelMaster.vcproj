@@ -1083,6 +1083,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\WorkArenaJousting.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\WorkBaker.cpp"
 				>
 			</File>

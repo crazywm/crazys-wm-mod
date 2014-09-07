@@ -41,11 +41,13 @@ extern cCentreManager g_Centre;
 extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
+extern int g_Building;
 
 bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	string message = "";
 	string girlName = girl->m_Realname;
+	g_Building = BUILDING_CENTRE;
 
 	if(Preprocessing(ACTION_WORKCENTRE, girl, brothel, DayNight, summary, message))	// they refuse to have work
 		return true;
@@ -55,33 +57,27 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, int DayNight, str
 
 	int roll = g_Dice%100;
 	int jobperformance = ((g_Girls.GetStat(girl, STAT_INTELLIGENCE) / 2) + (g_Girls.GetStat(girl, STAT_CHARISMA) / 2) + g_Girls.GetSkill(girl, SKILL_SERVICE));
+	bool blow = false;
+	bool sex = false;
 	
 	message += "She worked feeding the poor.";
 
 
 	//good traits
-	if (g_Girls.HasTrait(girl, "Charismatic"))  //
-		jobperformance += 20;
-	if (g_Girls.HasTrait(girl, "Sexy Air"))  //
-		jobperformance += 10;
-	if (g_Girls.HasTrait(girl, "Cool Person"))  //people love to be around her
-		jobperformance += 10;
-	if (g_Girls.HasTrait(girl, "Cute"))  //
-		jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Charming"))  //people like charming people
-		jobperformance += 15;
+	if (g_Girls.HasTrait(girl, "Charismatic"))  jobperformance += 20;
+	if (g_Girls.HasTrait(girl, "Sexy Air"))		jobperformance += 10;
+	if (g_Girls.HasTrait(girl, "Cool Person"))  jobperformance += 10;  //people love to be around her
+	if (g_Girls.HasTrait(girl, "Cute"))			jobperformance += 5;
+	if (g_Girls.HasTrait(girl, "Charming"))		jobperformance += 15;  //people like charming people
+
 
 	//bad traits
-	if (g_Girls.HasTrait(girl, "Dependant"))  //needs others to do the job
-		jobperformance -= 50;
-	if (g_Girls.HasTrait(girl, "Clumsy"))  //spills food and breaks things often
-		jobperformance -= 20;
-	if (g_Girls.HasTrait(girl, "Aggressive"))  //gets mad easy and may attack people
-		jobperformance -= 20;
-	if (g_Girls.HasTrait(girl, "Nervous"))  //don't like to be around people
-		jobperformance -= 30;
-	if (g_Girls.HasTrait(girl, "Meek"))
-		jobperformance -= 20;
+	if (g_Girls.HasTrait(girl, "Dependant"))    jobperformance -= 50; //needs others to do the job
+	if (g_Girls.HasTrait(girl, "Clumsy"))		jobperformance -= 20; //spills food and breaks things often
+	if (g_Girls.HasTrait(girl, "Aggressive"))   jobperformance -= 20; //gets mad easy and may attack people
+	if (g_Girls.HasTrait(girl, "Nervous"))		jobperformance -= 30; //don't like to be around people
+	if (g_Girls.HasTrait(girl, "Meek"))			jobperformance -= 20;
+
 
 	int dispo; // `J` merged slave/free messages and moved actual dispo change to after
 	if (jobperformance >= 245)
@@ -115,6 +111,29 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, int DayNight, str
 		dispo = 2;
 	}
 
+
+		//try and add randomness here
+	if (g_Girls.GetStat(girl, STAT_INTELLIGENCE) < 55)
+	{
+		if (g_Dice % 100 <= 30)
+		{
+			message += "An elderly fellow managed to convince " + girlName + " that he was full and didn't need anymore food but that she did.  He told her his cock gave a special treat if she would suck on it long enough.  Which she did man she isn't very smart.\n\n";
+			blow = true;
+		}
+	}
+	if (g_Girls.HasTrait(girl, "Nymphomaniac"))
+	{
+		if (g_Dice % 100 <= 30)
+		{
+			if (g_Girls.GetStat(girl, STAT_LIBIDO) > 85)
+			{
+				message += "Her Nymphomania got the better of her today and she decide to let them eat her pussy!  After a few minutes they started fucking her.\n";
+				sex = true;
+			}
+		}
+	}
+
+
 	if (girl->m_States&(1 << STATUS_SLAVE))
 	{
 		message += " \nThe fact that she is your slave makes people think its less of a good deed on your part.";
@@ -146,7 +165,40 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, int DayNight, str
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCENTRE, +1, true);
 	}
 
-	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
+
+	if (sex)
+	{
+		if(roll <= 50)
+		{
+			girl->m_Events.AddMessage(message, IMGTYPE_SEX, DayNight);
+			g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, 2);
+			if (g_Girls.CheckVirginity(girl))
+			{
+				g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
+				message += "She is no longer a virgin.\n";
+			}
+		}
+		else
+		{
+			girl->m_Events.AddMessage(message, IMGTYPE_ANAL, DayNight);
+			g_Girls.UpdateSkill(girl, SKILL_ANAL, 2);
+		}
+		brothel->m_Happiness += 100;
+		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -20);
+		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +3, true);
+		dispo += 6;
+	}
+	else if (blow) 
+	{
+		brothel->m_Happiness += (g_Dice%70)+60;
+		dispo += 4;
+		g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 2);
+		girl->m_Events.AddMessage(message, IMGTYPE_ORAL, DayNight);
+	}
+	else
+	{
+		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
+	}
 
 	// Improve stats
 	int xp = 10, libido = 1, skill = 3;

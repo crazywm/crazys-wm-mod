@@ -60,23 +60,16 @@ bool cJobManager::WorkFarmer(sGirl* girl, sBrothel* brothel, int DayNight, strin
 
 
 	//good traits
-	if (g_Girls.HasTrait(girl, "Quick Learner"))  
-		jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Psychic"))
-		jobperformance += 10;
+	if (g_Girls.HasTrait(girl, "Quick Learner"))  jobperformance += 5;
+	if (g_Girls.HasTrait(girl, "Psychic"))		  jobperformance += 10;
 
 
 	//bad traits
-	if (g_Girls.HasTrait(girl, "Dependant"))  //needs others to do the job
-		jobperformance -= 50;
-	if (g_Girls.HasTrait(girl, "Clumsy"))  //spills food and breaks things often
-		jobperformance -= 20;
-	if (g_Girls.HasTrait(girl, "Aggressive"))  //gets mad easy
-		jobperformance -= 20;
-	if (g_Girls.HasTrait(girl, "Nervous"))  //don't like to be around people
-		jobperformance -= 30;
-	if (g_Girls.HasTrait(girl, "Meek"))
-		jobperformance -= 20;
+	if (g_Girls.HasTrait(girl, "Dependant"))	jobperformance -= 50; //needs others to do the job
+	if (g_Girls.HasTrait(girl, "Clumsy")) 		jobperformance -= 20; //spills food and breaks things often
+	if (g_Girls.HasTrait(girl, "Aggressive")) 	jobperformance -= 20; //gets mad easy
+	if (g_Girls.HasTrait(girl, "Nervous"))		jobperformance -= 30; //don't like to be around people	
+	if (g_Girls.HasTrait(girl, "Meek"))			jobperformance -= 20;
 
 
 
@@ -85,27 +78,27 @@ bool cJobManager::WorkFarmer(sGirl* girl, sBrothel* brothel, int DayNight, strin
 			message += " She must be the perfect at this.\n\n";
 			wages += 155;
 		}
- else if (jobperformance >= 185)
+	else if (jobperformance >= 185)
 		{
 			message += " She's unbelievable at this.\n\n";
 			wages += 95;
 		}
- else if (jobperformance >= 145)
+	else if (jobperformance >= 145)
 		{
 			message += " She's good at this job.\n\n";
 			wages += 55;
 		}
- else if (jobperformance >= 100)
+	else if (jobperformance >= 100)
 		{
 			message += " She made a few mistakes but overall she is okay at this.\n\n";
 			wages += 15;
 		}
- else if (jobperformance >= 70)
+	else if (jobperformance >= 70)
 		{
 			message += " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
 			wages -= 5;
 		}
- else
+	 else
 		{
 			message += " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
 			wages -= 15;
