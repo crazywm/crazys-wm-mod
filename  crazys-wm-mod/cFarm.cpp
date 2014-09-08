@@ -414,7 +414,7 @@ void cFarmManager::UpdateGirls(sBrothel* brothel, int DayNight)
 			else if (current->house() <= 0)				ss << " and she gets to keep it all.";
 			else if (totalTips>0 && ((cfg.initial.girls_keep_tips() && !current->is_slave()) || (cfg.initial.slave_keep_tips() && current->is_slave())))
 			{
-				int hpay = int(double(totalGold * double(current->m_Stats[STAT_HOUSE] * 0.01)));
+				int hpay = int(double(totalPay * double(current->m_Stats[STAT_HOUSE] * 0.01)));
 				int gpay = totalPay - hpay;
 				ss << ".\nShe keeps the " << totalTips << " she got in tips and her cut (" << 100 - current->m_Stats[STAT_HOUSE] << "%) of the payment amounting to " << gpay << " gold.\n\nYou got " << hpay << " gold (" << current->m_Stats[STAT_HOUSE] << "%).";
 			}

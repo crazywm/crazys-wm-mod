@@ -45,125 +45,101 @@ extern cGold g_Gold;
 
 bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
-	int type_arena_girls = 0;
-	int type_unique_arena_girls = 0;
-	int wages = 175;
-
 	string message = "";
-	if(Preprocessing(ACTION_COMBAT, girl, brothel, DayNight, summary, message))
+	if (Preprocessing(ACTION_COMBAT, girl, brothel, DayNight, summary, message))
 		return true;
+	int wages = 0, fight_outcome = 0, enjoyment = 0, fame = 0, imagetype = IMGTYPE_COMBAT;
 	stringstream ss;
-	ss.str(message);
+	bool unique = false;
 
-	// ready armor and weapons!
-	g_Girls.EquipCombat(girl);
+	g_Girls.EquipCombat(girl);		// ready armor and weapons!
 
 	sGirl* tempgirl = g_Girls.CreateRandomGirl(18, false, false, false, false, false, true);
-	Uint8 fight_outcome = 0;
-	if (tempgirl)		// `J` reworked incase there are no Non-Human Random Girls
-	{
-		fight_outcome = g_Girls.girl_fights_girl(girl, tempgirl);
-	}
-	else
+	if (tempgirl) fight_outcome = g_Girls.girl_fights_girl(girl, tempgirl);
+	else fight_outcome = 7;			// `J` reworked incase there are no Non-Human Random Girls
+	if (fight_outcome == 7)
 	{
 		g_LogFile.write("Error: You have no Arena Girls for your girls to fight\n");
 		g_LogFile.write("Error: You need an Arena Girl to allow WorkFightArenaGirls randomness");
-		fight_outcome = 7;
-	}
-	if (fight_outcome == 7)
-	{
-		message = "There were no Arena Girls for her to fight.\n\n";
-		message += "(Error: You need an Arena Girl to allow WorkFightArenaGirls randomness)";
-		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
+		message = "There were no Arena Girls for her to fight.\n\n(Error: You need an Arena Girl to allow WorkFightArenaGirls randomness)";
+		imagetype = IMGTYPE_PROFILE;
 	}
 	else if (fight_outcome == 1)	// she won
 	{
-		g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, +3, true);
-		ss << gettext ("She won the fight.");
-		girl->m_Events.AddMessage(ss.str(),IMGTYPE_COMBAT,DayNight);
-		int roll_max = girl->fame() + girl->charisma();
-		roll_max /= 4;
-		wages += 10 + g_Dice%roll_max;
-		girl->m_Pay = wages;
-		g_Girls.UpdateStat(girl, STAT_FAME, 2);
-
+		enjoyment = g_Dice % 3 + 1;
+		fame = g_Dice % 3 + 1;
+		sGirl* ugirl = 0;
+		if (g_Dice.percent(20))		// chance of getting unique girl
 		{
-				sGirl* ugirl = 0;
-				bool unique = false;
-				if((g_Dice%100)+1 < 25)	// chance of getting unique girl
-					unique = true;
-				if(unique)  // Unique arena girl type
-				{
-					ugirl = g_Girls.GetRandomGirl(false, false, true);
-					if(ugirl == 0)
-						unique = false;
-				}
-				if(unique)
-				{
-					ugirl->m_States &= ~(1 << STATUS_ARENA);
-					g_Brothels.GetDungeon()->AddGirl(ugirl, DUNGEON_NEWGIRL);
-					type_unique_arena_girls++;
-				}
-			}
+			ugirl = g_Girls.GetRandomGirl(false, false, true);
+			if (ugirl != 0) unique = true;
 		}
-	else if (fight_outcome == 2) // she lost or it was a draw
+		if (unique)
+		{
+			ugirl->m_Stats[STAT_HEALTH] = g_Dice % 50 + 1;
+			ugirl->m_Stats[STAT_HAPPINESS] = g_Dice % 80 + 1;
+			ugirl->m_Stats[STAT_TIREDNESS] = g_Dice % 50 + 50;
+			ugirl->m_States |= (1 << STATUS_ARENA);
+			message = girl->m_Realname + " won her fight against " + ugirl->m_Realname + ".\n";
+			if (g_Dice.percent(50))
+			{
+				ugirl->m_States |= (1 << STATUS_SLAVE);
+				message += ugirl->m_Realname + "'s owner could not afford to pay you your winnings so he gave her to you instead.";
+			}
+			else
+			{
+				message += ugirl->m_Realname + " put up a good fight so you let her live as long as she came work for you.";
+				wages = 100 + g_Dice % (girl->fame() + girl->charisma());
+			}
+			g_MessageQue.AddToQue(message, 0);
+			g_Brothels.GetDungeon()->AddGirl(ugirl, DUNGEON_NEWGIRL);
+		}
+		else
+		{
+			message = "She won the fight.";
+			wages = 100 + g_Dice % (girl->fame() + girl->charisma());
+		}
+	}
+	else if (fight_outcome == 2) // she lost
 	{
-		g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, -2, true);
-		ss << gettext ("She lost the fight.");
-		girl->m_Events.AddMessage(ss.str(),IMGTYPE_COMBAT,DayNight);
-		g_Girls.UpdateStat(girl, STAT_FAME, -2);
-
+		enjoyment = -(g_Dice % 3 + 1);
+		fame = -(g_Dice % 3 + 1);
+		message = "She lost the fight.";
 	}
 	else if (fight_outcome == 0)  // it was a draw
 	{
-		// hmm, guess we'll just ignore draws for now
+		enjoyment = g_Dice % 3 - 2;
+		fame = g_Dice % 3 - 2;
+		message = "The fight ended in a draw.";
 	}
 
-		 // Cleanup
-	if(tempgirl)
-		delete tempgirl;
-	tempgirl = 0;
-
+	if (tempgirl) delete tempgirl; tempgirl = 0;	// Cleanup
 
 	// Improve girl
-	int fightxp = 1;	if (fight_outcome == 1)	fightxp = 3;
+	int fightxp = (fight_outcome == 1) ? 3 : 1;
 	int xp = 5 * fightxp, libido = 5, skill = 1;
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))
-	{
-		skill += 1;
-		xp += 5;
-	}
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))
-	{
-		skill -= 1;
-		xp -= 5;
-	}
+	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 5; }
+	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 5; }
+	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
 
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))
-		libido += 2;
-
-	//TODO make this actually work so people know that they won a girl. crazy
-	ss << girl->m_Realname << type_unique_arena_girls << (" put up a good fight so you let them live to come work for you\n\n");
-		ss << ".";
-	
-
+	girl->m_Pay = wages;
+	girl->m_Events.AddMessage(message, imagetype, DayNight);
+	g_Girls.UpdateStat(girl, STAT_FAME, fame);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateSkill(girl, SKILL_COMBAT, g_Dice%fightxp + skill);
 	g_Girls.UpdateSkill(girl, SKILL_MAGIC, g_Dice%fightxp + skill);
 	g_Girls.UpdateStat(girl, STAT_AGILITY, g_Dice%fightxp + skill);
 	g_Girls.UpdateStat(girl, STAT_CONSTITUTION, g_Dice%fightxp + skill);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
-	g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, +8, true);
+	g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, enjoyment, true);
 
-	
+
 	//gain traits
-	g_Girls.PossiblyGainNewTrait(girl, "Tough", 35, ACTION_COMBAT, "She has become pretty Tough from all of the fights she's been in.", DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Tough", 65, ACTION_COMBAT, "She has become pretty Tough from all of the fights she's been in.", DayNight != 0);
 	g_Girls.PossiblyGainNewTrait(girl, "Fleet of Foot", 55, ACTION_COMBAT, "She is getting rather fast from all the fighting.", DayNight != 0);
 	g_Girls.PossiblyGainNewTrait(girl, "Aggressive", 70, ACTION_COMBAT, "She is getting rather Aggressive from her enjoyment of combat.", DayNight != 0);
-
 	//lose traits
-	g_Girls.PossiblyLoseExistingTrait(girl, "Fragile", 75, ACTION_COMBAT, girl->m_Realname + " has had to heal from so many injuries you can't say she is fragile anymore.", DayNight != 0);
-
+	g_Girls.PossiblyLoseExistingTrait(girl, "Fragile", 35, ACTION_COMBAT, girl->m_Realname + " has had to heal from so many injuries you can't say she is fragile anymore.", DayNight != 0);
 	return false;
 }

@@ -46,6 +46,25 @@ namespace WM_Girls_Generator
 
             TraitCollection.Columns.Add("Name", typeof(string));			//formatting of traits DataTable, adding two columns, Name and Data
             TraitCollection.Columns.Add("Desc", typeof(string));
+            TraitCollection.Columns.Add("Type", typeof(string));
+            TraitCollection.Columns.Add("Checked", typeof(string));
+
+            dataGridView_Traits.DataSource = TraitCollection;
+            dataGridView_Traits.RowHeadersVisible = false;
+            dataGridView_Traits.AllowUserToAddRows = true;
+            dataGridView_Traits.Columns["Checked"].Visible = false;
+
+            dataGridView_G_Traits.DataSource = TraitCollection;
+            dataGridView_G_Traits.Columns[0].SortMode = DataGridViewColumnSortMode.Automatic;
+            dataGridView_G_Traits.Columns["Desc"].Visible = false;
+            dataGridView_G_Traits.RowHeadersVisible = false;
+            dataGridView_G_Traits.AllowUserToAddRows = false;
+            dataGridView_G_Traits.AllowUserToDeleteRows = false;
+            dataGridView_G_Traits.Columns[1].ReadOnly = true;
+            dataGridView_G_Traits.Columns[2].ReadOnly = true;
+            dataGridView_G_Traits.ShowCellToolTips = false;
+
+
 
             //Checks to determine editor executable is in one of predefined places so it can load CoreTraits.traits file automaticaly
             bool traitsloaded = false;
@@ -246,7 +265,7 @@ namespace WM_Girls_Generator
         private void button_Load_Traits_Click(object sender, EventArgs e)
         {
             OpenFileDialog openTraits = new OpenFileDialog();
-            openTraits.Filter = "Traits Plain Text|*.traits|Traits xml|*.traitsx|All Files|*.*";
+            openTraits.Filter = "Traits xml|*.traitsx|Traits Plain Text|*.traits|All Files|*.*";
             openTraits.ShowDialog();
             try
             {
@@ -259,7 +278,6 @@ namespace WM_Girls_Generator
                         LoadTraitsXML(openTraits.FileName);
                         break;
                 }
-                tabControl1.SelectedTab = tabPage1_Girls;
             }
             catch (Exception err)
             {
@@ -268,7 +286,7 @@ namespace WM_Girls_Generator
         }
         private void button_Save_Traits_Click(object sender, EventArgs e)
         {
-            saveTraits.Filter = "Whore Master traits file|*.traits|Whore Master XML traits file|*.traitsx|All files|*.*";
+            saveTraits.Filter = "Whore Master XML traits file|*.traitsx|Whore Master traits file|*.traits|All files|*.*";
             if (sTraitsPath != "")
             {
                 saveTraits.FileName = Path.GetFileName(sTraitsPath);
@@ -293,7 +311,6 @@ namespace WM_Girls_Generator
             }
             catch { }
         }
-        //Function that populates traits checkboxes and traits tab
         private void LoadTraits(string path)
         {
             try
@@ -303,12 +320,11 @@ namespace WM_Girls_Generator
                 {
                     string temp1 = Convert.ToString(Import.ReadLine());	//reads first line from traits file (this is trait name), it could be added directly to trait trait list, but this way I can use it multiple times (to fill traits tab and trait tooltips)
                     string temp2 = Convert.ToString(Import.ReadLine());	//second line this is trait description
-                    ListBox_G_Traits.Items.Add(temp1);					//adds trait to checkedListBox for girls
+//                    ListBox_G_Traits.Items.Add(temp1);					//adds trait to checkedListBox for girls
+                    TraitCollection.Rows.Add(temp1, temp2);
                     comboBox_ItemTraits.Items.Add(temp1);				//fills droplist on item tab with traits
                     comboBox_RGTraits.Items.Add(temp1);					//same with droplist on random girls tab
-                    traitsTBox1.Text = traitsTBox1.Text + temp1 + " - " + temp2 + "\r\n\r\n";	//this one populates traits tab with "trait - trait description" format
                     aTraits.Add(temp2);									//fills aTraits ArrayList with traits description, they are called as traits tooltips description, each trait in listbox has the same index as description here so it's easy to link them
-                    TraitCollection.Rows.Add(temp1, temp2);
                 }
                 Import.Close();
                 StatusLabel1.Text = "Loaded traits file...";				//updates status line with this message
@@ -316,7 +332,8 @@ namespace WM_Girls_Generator
             }
             catch (Exception err)
             {
-                MessageBox.Show(err.Message, "Open trait file error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                dataGridView_Bad_Files.Rows.Add(path, err.Message);
+                MessageBox.Show("File load error in file \n\n" + path + "\n\n" + err.Message + "\n\nSee the Extras tab for details.", "Open trait file error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         private void LoadTraitsXML(string path)     // `J` added
@@ -331,18 +348,18 @@ namespace WM_Girls_Generator
                 foreach (XmlNode node in baseNode.SelectNodes("/Traits/Trait"))
                 {
                     x++;
-                    string sName = "", sDesc = "";
+                    string sName = "", sDesc = "", sType = "";
                     for (int i = 0; i < node.Attributes.Count; i++)
                     {
                         if (node.Attributes[i].Name == "Name") sName = node.Attributes["Name"].Value;
                         if (node.Attributes[i].Name == "Desc") sDesc = node.Attributes["Desc"].Value;
+                        if (node.Attributes[i].Name == "Type") sType = node.Attributes["Type"].Value;
                     }
-                    ListBox_G_Traits.Items.Add(sName);
+//                    ListBox_G_Traits.Items.Add(sName);
+                    TraitCollection.Rows.Add(sName, sDesc, sType);
                     comboBox_ItemTraits.Items.Add(sName);
                     comboBox_RGTraits.Items.Add(sName);
-                    traitsTBox1.Text = traitsTBox1.Text + sName + " - " + sDesc + "\r\n\r\n";
                     aTraits.Add(sDesc);
-                    TraitCollection.Rows.Add(sName, sDesc);
                 }
                 xmlread.Close();
                 StatusLabel1.Text = "Loaded " + x.ToString() + " traits from XML file...";
@@ -350,7 +367,8 @@ namespace WM_Girls_Generator
             }
             catch (Exception err)
             {
-                MessageBox.Show(err.Message, "XML Trait load error error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                dataGridView_Bad_Files.Rows.Add(path, err.Message);
+                MessageBox.Show("XML load error in file \n\n" + path + "\n\n" + err.Message + "\n\nSee the Extras tab for details.", "XML Trait load error error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 StatusLabel1.Text = "XML Trait load error...";
             }
         }
@@ -367,19 +385,29 @@ namespace WM_Girls_Generator
             Export.Write(output);
             Export.Close();
         }
+        private void button_Clear_Traits_Click(object sender, EventArgs e)
+        {
+        // zzzzzzzzzzzz needs work
+            TraitCollection.Clear();
+        }
         private void SaveTraitsXML(string path)
         {
             XmlDocument xmldoc = new XmlDocument();
             XmlElement traits = xmldoc.CreateElement("Traits");
             XmlElement trait = xmldoc.CreateElement("Trait");
             xmldoc.AppendChild(traits);
+            string sType = "", sName = "", sDesc = "";
             for (int x = 0; x < TraitCollection.Rows.Count; x++)
             {
+                if (TraitCollection.Rows[x]["Name"].ToString() == "")
+                    continue;
                 trait = xmldoc.CreateElement("Trait");
-                string sName = TraitCollection.Rows[x][0].ToString();
-                string sDesc = TraitCollection.Rows[x][1].ToString();
+                sName = TraitCollection.Rows[x]["Name"].ToString();
+                sDesc = TraitCollection.Rows[x]["Desc"].ToString();
+                sType = TraitCollection.Rows[x]["Type"].ToString();
                 trait.SetAttribute("Name", sName);
                 trait.SetAttribute("Desc", sDesc);
+                trait.SetAttribute("Type", sType);
                 traits.AppendChild(trait);
             }
             //after it's all done we have our XML, although, only in memory, not stored somewhere safe
@@ -985,10 +1013,16 @@ namespace WM_Girls_Generator
         {
             if (checkBox_ToggleTraitTooltips.Checked == false)
             {
-                ListBox_G_Traits.MouseMove -= new System.Windows.Forms.MouseEventHandler(checkedListBox1_MouseMove);
-                toolTip1.SetToolTip(ListBox_G_Traits, "");
+//                ListBox_G_Traits.MouseMove -= new System.Windows.Forms.MouseEventHandler(checkedListBox1_MouseMove);
+                dataGridView_G_Traits.CellMouseMove -= new System.Windows.Forms.DataGridViewCellMouseEventHandler(DataGridView_G_Traits_MouseMove);
+//                toolTip1.SetToolTip(ListBox_G_Traits, "");
+                toolTip1.SetToolTip(dataGridView_G_Traits, "");
             }
-            else ListBox_G_Traits.MouseMove += new System.Windows.Forms.MouseEventHandler(checkedListBox1_MouseMove);
+            else
+            {
+//                ListBox_G_Traits.MouseMove += new System.Windows.Forms.MouseEventHandler(checkedListBox1_MouseMove);
+                dataGridView_G_Traits.CellMouseMove += new System.Windows.Forms.DataGridViewCellMouseEventHandler(DataGridView_G_Traits_MouseMove);
+            }
         }
 
         //*************************
@@ -1107,9 +1141,20 @@ namespace WM_Girls_Generator
             string sGDesc = "";			    // girl description
 
             int i = 0;
-            while (i < ListBox_G_Traits.CheckedItems.Count)	//this while loop goes through selected traits and puts them in sTraits string
+//            while (i < ListBox_G_Traits.CheckedItems.Count)	//this while loop goes through selected traits and puts them in sTraits string
+//            {
+//                sTraits = sTraits + ListBox_G_Traits.CheckedItems[i].ToString() + nln;		//since every trait is in separate line I need to add carraige return at the end, this is where that "nln" comes in
+//                i++;
+//            }
+            int numberoftraits = 0;
+            while (i < TraitCollection.Rows.Count)
             {
-                sTraits = sTraits + ListBox_G_Traits.CheckedItems[i].ToString() + nln;		//since every trait is in separate line I need to add carraige return at the end, this is where that "nln" comes in
+                string check = TraitCollection.Rows[i]["Checked"].ToString();
+                if (check == "true")
+                {
+                    sTraits = sTraits + TraitCollection.Rows[i]["Name"].ToString() + nln;
+                    numberoftraits++;
+                }
                 i++;
             }
 
@@ -1129,7 +1174,7 @@ namespace WM_Girls_Generator
             //first element in array is name
             sGirl[0] = TBox_G_Name.Text;
             //second is girl data, this is where nln comes handy, easier to type nln than "\n\r" every time, and less error prone
-            sGirl[1] = sGDesc + nln + ListBox_G_Traits.CheckedItems.Count + nln + sTraits + "0" + nln + sStats + nln + sSkills + nln + GoldTBox1.Text + nln + sVirgin + nln + sSlave;
+            sGirl[1] = sGDesc + nln + numberoftraits + nln + sTraits + "0" + nln + sStats + nln + sSkills + nln + GoldTBox1.Text + nln + sVirgin + nln + sSlave;
             sGirl[2] = sSlave;
 
             return sGirl;
@@ -1168,24 +1213,7 @@ namespace WM_Girls_Generator
         //Conditional randomize stats button, this will have way more fiddling than normal randomize to limit results as to my observances of what these usually are
         private void button_St_CR_Click(object sender, EventArgs e)
         {
-            //Constitution
-            int concheck = 0, i = 0;
-            if (rnd.Next(2, 9) >= 4) concheck = 40;
-            else concheck = 50;
-
-            while (i < ListBox_G_Traits.CheckedItems.Count)
-            {
-                if (ListBox_G_Traits.CheckedItems[i].ToString() == "Adventurer" ||
-                    ListBox_G_Traits.CheckedItems[i].ToString() == "Assassin" ||
-                    ListBox_G_Traits.CheckedItems[i].ToString() == "Cool Scars")
-                {
-                    concheck += 20;
-                    break;
-                }
-                i++;
-            }
-            StatsTBox_04.Text = concheck.ToString();
-
+            StatsTBox_04.Text = J_Rand(40, 50, 5, 3);   //Constitution
             StatsTBox_14.Text = J_Rand(18, 70, 18, 6);  //Age, I'll limit it from 18 to 70
             StatsTBox_01.Text = J_Rand(20, 50, 5, 3);   //Charisma
             StatsTBox_17.Text = J_Rand(40, 77, 5, 3);   //Beauty
@@ -1257,34 +1285,9 @@ namespace WM_Girls_Generator
         //Conditional randomize skills button
         private void button_Sk_CR_Click(object sender, EventArgs e)
         {
-            //magic ability, if Strong Magic trait is selected she'll have magic ability 60 or 70, if not it will be random
-            SkillTBox_02.Text = (rnd.Next(0, 9) * 5).ToString();
-            int i = 0;
-            while (i < ListBox_G_Traits.CheckedItems.Count)
-            {
-                if (ListBox_G_Traits.CheckedItems[i].ToString() == "Strong Magic")
-                {
-                    if (rnd.Next(2, 9) >= 4) SkillTBox_02.Text = "60";
-                    else SkillTBox_02.Text = "70";
-                    break;
-                }
-                i++;
-            }
-            //Combat Ability, again little check if adventurer or assassin trait is set, in that case combat ability will be higher
-            SkillTBox_10.Text = (rnd.Next(0, 9) * 5).ToString();
-            i = 0;
-            while (i < ListBox_G_Traits.CheckedItems.Count)
-            {
-                if (ListBox_G_Traits.CheckedItems[i].ToString() == "Adventurer" ||
-                    ListBox_G_Traits.CheckedItems[i].ToString() == "Assassin")
-                {
-                    if (rnd.Next(2, 9) >= 4) SkillTBox_10.Text = "60";
-                    else SkillTBox_10.Text = "70";
-                    break;
-                }
-                i++;
-            }
+            SkillTBox_02.Text = J_Rand(0, 50, 5, 3);		//Magic
             SkillTBox_08.Text = J_Rand(0, 50, 5, 3);		//Service
+            SkillTBox_10.Text = J_Rand(0, 50, 5, 3);		//Combat
             SkillTBox_13.Text = J_Rand(0, 50, 5, 3);		//Medicine
             SkillTBox_14.Text = J_Rand(0, 50, 5, 3);		//Performance
             SkillTBox_16.Text = J_Rand(0, 50, 5, 3);		//Crafting
@@ -1654,10 +1657,15 @@ namespace WM_Girls_Generator
         private void button_G_Reset_Click(object sender, EventArgs e)
         {
             TBox_G_Name.Text = TBox_G_Desc.Text = "";
-            for (int i = 0; i < ListBox_G_Traits.Items.Count; i++)			//loop that unchecks every trait in the list
+//            for (int i = 0; i < ListBox_G_Traits.Items.Count; i++)			//loop that unchecks every trait in the list
+//            {
+//                ListBox_G_Traits.SetItemCheckState(i, CheckState.Unchecked);
+//            }
+            for (int i = 0; i < TraitCollection.Rows.Count; i++)
             {
-                ListBox_G_Traits.SetItemCheckState(i, CheckState.Unchecked);
+                TraitCollection.Rows[i]["Checked"] = false;
             }
+
             GoldTBox1.Text = StatsTBox_09.Text = StatsTBox_G_Level.Text = StatsTBox_11.Text = StatsTBox_20.Text = StatsTBox_21.Text = StatsTBox_22.Text = StatsTBox_18.Text = textBox_G_Morality.Text = "0";
             StatsTBox_12.Text = "60"; StatsTBox_02.Text = StatsTBox_19.Text = "100";
             StatsTBox_01.Text = StatsTBox_03.Text = StatsTBox_04.Text = StatsTBox_05.Text = StatsTBox_06.Text = StatsTBox_07.Text = StatsTBox_08.Text = StatsTBox_14.Text = StatsTBox_15.Text = StatsTBox_16.Text = StatsTBox_17.Text = SkillTBox_01.Text = SkillTBox_02.Text = SkillTBox_03.Text = SkillTBox_04.Text = SkillTBox_05.Text = SkillTBox_06.Text = SkillTBox_07.Text = SkillTBox_08.Text = SkillTBox_09.Text = SkillTBox_10.Text = SkillTBox_11.Text = SkillTBox_12.Text = SkillTBox_13.Text = SkillTBox_14.Text = SkillTBox_15.Text = SkillTBox_16.Text = SkillTBox_17.Text = SkillTBox_18.Text = SkillTBox_19.Text = SkillTBox_20.Text = "";
@@ -1691,7 +1699,9 @@ namespace WM_Girls_Generator
             }
             catch (Exception err)
             {
-                MessageBox.Show(err.Message, "Open girls(x) file error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                dataGridView_Bad_Files.Rows.Add(Open.FileName, err.Message);
+                StatusLabel1.Text = "XML Trait load error...";
+                MessageBox.Show("File load error in file \n\n" + Open.FileName + "\n\n" + err.Message + "\n\nSee the Extras tab for details.", "Open girls(x) file error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         //method that parses girls files to fill listbox and DataTable
@@ -1726,9 +1736,10 @@ namespace WM_Girls_Generator
                 Import.Close();
                 StatusLabel1.Text = "Loaded " + x.ToString() + " girls from file...";
             }
-            catch /*(Exception err)*/
+            catch (Exception err)
             {
-                //MessageBox.Show(err.Message, "Open error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                dataGridView_Bad_Files.Rows.Add(path, err.Message);
+                MessageBox.Show("File load error in file \n\n" + path + "\n\n" + err.Message + "\n\nSee the Extras tab for details.", "Open error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 StatusLabel1.Text = "Load canceled...";
             }
         }
@@ -1984,7 +1995,8 @@ namespace WM_Girls_Generator
             }
             catch (Exception err)
             {
-                MessageBox.Show(err.Message, "XML load error error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                dataGridView_Bad_Files.Rows.Add(path,err.Message);
+                MessageBox.Show("XML load error in file \n\n" + path + "\n\n" + err.Message + "\n\nSee the Extras tab for details.", "XML load error error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 StatusLabel1.Text = "XML load error...";
             }
         }
@@ -2097,25 +2109,13 @@ namespace WM_Girls_Generator
                     trait.SetAttribute("Name", "Virgin");		//Trait name is attribute in "Trait" node, this is where that attribute get's set
                     girl.AppendChild(trait);								//and after that's done append that child node to "Girl" node, rinse and repeat for every trait
                 }
-
                 switch (sStatus)											//and here's where it gets "translated" to old XML, on old format it's represented with number, in new with string, so this simple replaces that number with string
                 {
-                    case "1":
-                        sStatus = "Slave";
-                        break;
-                    case "2":
-                        sStatus = "Catacombs";
-                        break;
-                    case "3":
-                        sStatus = "Arena";
-                        break;
-                    case "4":
-                        sStatus = "Your Daughter";
-                        break;
-                    case "0":
-                    default:
-                        sStatus = "Normal";
-                        break;
+                    case "1":           sStatus = "Slave";          break;
+                    case "2":           sStatus = "Catacombs";      break;
+                    case "3":           sStatus = "Arena";          break;
+                    case "4":           sStatus = "Your Daughter";  break;
+                    case "0": default:  sStatus = "Normal";         break;
                 }
 
                 //now that we have all that data isolated it should be assigned to their respective attributes in "Girl" node, this is what's done here, bunch of attributes getting assingned their values
@@ -2200,23 +2200,39 @@ namespace WM_Girls_Generator
             if (listBox_GirlsList.SelectedIndex < 0) return;
             TBox_G_Name.Text = dt.Rows[listBox_GirlsList.SelectedIndex][0].ToString();	//what goes on is basically compiling in reverse, name is already isolated so it just needs to be put in it's place
             StringReader data = new StringReader(dt.Rows[listBox_GirlsList.SelectedIndex][1].ToString());	//data is basically chunk of text, as it's in file, so we construct StringReader around that data, and proceed to read it and parse it line by line
-            TBox_G_Desc.Text = data.ReadLine();								//first line is description, just pass it through to it's textbox
+            TBox_G_Desc.Text = data.ReadLine();					        //first line is description, just pass it through to it's textbox
 
-            int traitNum = Convert.ToInt32(data.ReadLine());					//next is number of traits, this isn't entered anywhere, upon compiling it's caluculated anew, it's used for following for loop to read all traits from data
+            int traitNum = Convert.ToInt32(data.ReadLine());	        //next is number of traits, this isn't entered anywhere, upon compiling it's caluculated anew, it's used for following for loop to read all traits from data
 
-            for (int i = 0; i < ListBox_G_Traits.Items.Count; i++)			//well, not this "for" loop... this "for" loop set's every trait to unchecked state, or else they would get mixed while browsing the girls, or you'd have to click reset button before selecting new girl
+//            for (int i = 0; i < ListBox_G_Traits.Items.Count; i++)	    //well, not this "for" loop... this "for" loop set's every trait to unchecked state, or else they would get mixed while browsing the girls, or you'd have to click reset button before selecting new girl
+//            {
+//                ListBox_G_Traits.SetItemChecked(i, false);
+//            }
+//
+//            for (int i = 0; i < traitNum; i++)                          //two nested for loops, first one reads trait, second one looks in trait list for that trait, when it finds it it checks it, and then first one loads next one, so this one checks it and so on...
+//            {
+//                string trait = data.ReadLine();
+//                for (int j = 0; j < ListBox_G_Traits.Items.Count; j++)
+//                {
+//                    if (ListBox_G_Traits.Items[j].ToString() == trait)
+//                    {
+//                        ListBox_G_Traits.SetItemChecked(j, true);
+//                        break;
+//                    }
+//                }
+//            }
+            for (int i = 0; i < TraitCollection.Rows.Count; i++)
             {
-                ListBox_G_Traits.SetItemChecked(i, false);
+                TraitCollection.Rows[i]["Checked"] = false;
             }
-
-            for (int i = 0; i < traitNum; i++)								//two nested for loops, first one reads trait, second one looks in trait list for that trait, when it finds it it checks it, and then first one loads next one, so this one checks it and so on...
+            for (int i = 0; i < traitNum; i++)
             {
                 string trait = data.ReadLine();
-                for (int j = 0; j < ListBox_G_Traits.Items.Count; j++)
+                for (int j = 0; j < TraitCollection.Rows.Count; j++)
                 {
-                    if (ListBox_G_Traits.Items[j].ToString() == trait)
+                    if (TraitCollection.Rows[j]["Name"].ToString() == trait)
                     {
-                        ListBox_G_Traits.SetItemChecked(j, true);
+                        TraitCollection.Rows[j]["Checked"] = true;
                         break;
                     }
                 }
@@ -2306,6 +2322,22 @@ namespace WM_Girls_Generator
                 }
             }
         }
+
+        private void DataGridView_G_Traits_MouseMove(object sender, DataGridViewCellMouseEventArgs e)
+        {
+
+            if (checkBox_ToggleTraitTooltips.Checked && e.RowIndex > -1 && e.RowIndex < dataGridView_G_Traits.RowCount)
+            {
+                string tip = dataGridView_G_Traits.Rows[e.RowIndex].Cells["Desc"].Value.ToString();
+                if (tip != lastTip)							
+                {
+                    toolTip1.SetToolTip(dataGridView_G_Traits, dataGridView_G_Traits.Rows[e.RowIndex].Cells["Desc"].Value.ToString());
+                    lastTip = tip;											
+                }
+            }
+        }
+
+        
         //displays tooltips with girl descriptions on girls list, same as above with traits
         private void listBox_GirlsList_MouseMove(object sender, MouseEventArgs e)
         {
@@ -2780,9 +2812,10 @@ namespace WM_Girls_Generator
                 Import.Close();
                 StatusLabel1.Text = "Loaded " + x.ToString() + " random girls from file...";
             }
-            catch//(Exception err)
+            catch (Exception err)
             {
-                //MessageBox.Show(err.Message, "Open error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                dataGridView_Bad_Files.Rows.Add(path, err.Message);
+                MessageBox.Show("File load error in file \n\n" + path + "\n\n" + err.Message + "\n\nSee the Extras tab for details.", "Open error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 StatusLabel1.Text = "Load canceled...";
             }
         }
@@ -3087,7 +3120,8 @@ namespace WM_Girls_Generator
             }
             catch (Exception err)
             {
-                MessageBox.Show(err.Message, "XML load error error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                dataGridView_Bad_Files.Rows.Add(path, err.Message);
+                MessageBox.Show("XML load error error in file \n\n" + path + "\n\n" + err.Message + "\n\nSee the Extras tab for details.", "XML load error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 StatusLabel1.Text = "XML load error...";
             }
         }
@@ -3334,6 +3368,267 @@ namespace WM_Girls_Generator
                     lastTip = tip;											//updates lastTip string
                 }
             }
+        }
+
+
+
+        private void button_SaveIndividualGirls_Click(object sender, EventArgs e)
+        {
+
+            string create = DateTime.Now.GetHashCode().ToString();
+            Directory.CreateDirectory(".\\" + create + "\\");
+            try
+            {
+                SaveIndividualGirlsXML(".\\" + create + "\\");
+                SaveIndividualRGirlsXML(".\\" + create + "\\");
+                StatusLabel1.Text = "Successfully compiled " + listBox_GirlsList.Items.Count.ToString() + 
+                    " girls and "+
+                    listBox_RGirlsList.Items.Count.ToString() +                 
+                " rgirls to folder " + create;
+            }
+            catch
+            {
+                StatusLabel1.Text = "Save Error.";
+            }
+        }
+        private void SaveIndividualGirlsXML(string path)
+        {																//and this is other part of the wrapper, this one reads old format from memory and stores it in XML
+            for (int x = 0; x < GirlsCollection.Rows.Count; x++)			//and now we need to go through each girl, i.e. row in DataTable
+            {
+                string filepath = path;
+
+                XmlDocument xmldoc = new XmlDocument();						//first we'll create XmlDocument
+                XmlElement girls = xmldoc.CreateElement("Girls");			//and create nodes that are used in this document
+                XmlElement girl = xmldoc.CreateElement("Girl");
+                XmlElement trait = xmldoc.CreateElement("Trait");
+
+                xmldoc.AppendChild(girls);									//"Girls" is the root node so we append it to our xmldoc first
+
+
+                girl = xmldoc.CreateElement("Girl");						//I think that creation of child nodes could be placed here instead of there, but this way code looks more readable, anyway, here's where we create our "Girl" node for each girl
+
+                StringReader sData = new StringReader(GirlsCollection.Rows[x][1].ToString());	//girl data is stored in string that's stored in second column of each row in DataTable, to be able to read it easier we'll access that through StringReader object, it has similar properties as TextReader
+
+                string sName = GirlsCollection.Rows[x][0].ToString();	//girl name is stored in first column of the row so we can get to it directly
+                string sDesc = sData.ReadLine();							//girl description is first line of description
+
+                int num = Convert.ToInt32(sData.ReadLine());				//after description we get to traits, first line after description is number of traits
+                bool foundvirgintrait = false;
+                for (int y = 0; y < num; y++)							//we'll use it to know how many lines need to be read (i.e. how many lines are traits)
+                {
+                    trait = xmldoc.CreateElement("Trait");				//each trait is stored in separate child node under "Girl" node, so here's where that's done
+                    string traitname = sData.ReadLine();
+                    trait.SetAttribute("Name", traitname);		//Trait name is attribute in "Trait" node, this is where that attribute get's set
+                    girl.AppendChild(trait);								//and after that's done append that child node to "Girl" node, rinse and repeat for every trait
+                    if (traitname == "Virgin") foundvirgintrait = true;
+                }
+
+                string sZero = sData.ReadLine();				//This line is always 0, it's not used for now, but if need be it's stored anyway, it's just not currently saved to XML (there are no attribute for it)
+                string[] sStats = sData.ReadLine().Split(' ');	//line with stats, stored in string array, it's basically space delimited data so it get's splitted right away
+                string[] sSkills = sData.ReadLine().Split(' ');	//and again for skills
+                string sGold = sData.ReadLine();				//gold
+                string sVirgin = sData.ReadLine();				//virgin
+                string sStatus = sData.ReadLine();				//status, slave, normal, catacombs, arena, your daughter
+                if (!foundvirgintrait && sVirgin == "1")          // add virgin trait if not already there and Virgin box is checked.
+                {
+                    trait.SetAttribute("Name", "Virgin");		//Trait name is attribute in "Trait" node, this is where that attribute get's set
+                    girl.AppendChild(trait);								//and after that's done append that child node to "Girl" node, rinse and repeat for every trait
+                }
+                switch (sStatus)											//and here's where it gets "translated" to old XML, on old format it's represented with number, in new with string, so this simple replaces that number with string
+                {
+                    case "1": sStatus = "Slave"; break;
+                    case "2": sStatus = "Catacombs"; break;
+                    case "3": sStatus = "Arena"; break;
+                    case "4": sStatus = "Your Daughter"; break;
+                    case "0":
+                    default: sStatus = "Normal"; break;
+                }
+                //now that we have all that data isolated it should be assigned to their respective attributes in "Girl" node, this is what's done here, bunch of attributes getting assingned their values
+                girl.SetAttribute("Name", sName);
+                girl.SetAttribute("Desc", sDesc);
+                girl.SetAttribute("Charisma", sStats[0]);
+                girl.SetAttribute("Happiness", sStats[1]);
+                girl.SetAttribute("Libido", sStats[2]);
+                girl.SetAttribute("Constitution", sStats[3]);
+                girl.SetAttribute("Intelligence", sStats[4]);
+                girl.SetAttribute("Confidence", sStats[5]);
+                girl.SetAttribute("Mana", sStats[6]);
+                girl.SetAttribute("Agility", sStats[7]);
+                girl.SetAttribute("Fame", sStats[8]);
+                girl.SetAttribute("Level", sStats[9]);
+                girl.SetAttribute("AskPrice", sStats[10]);
+                girl.SetAttribute("House", sStats[11]);
+                girl.SetAttribute("Exp", sStats[12]);
+                girl.SetAttribute("Age", sStats[13]);
+                girl.SetAttribute("Obedience", sStats[14]);
+                girl.SetAttribute("Spirit", sStats[15]);
+                girl.SetAttribute("Beauty", sStats[16]);
+                girl.SetAttribute("Tiredness", sStats[17]);
+                girl.SetAttribute("Health", sStats[18]);
+                girl.SetAttribute("PCFear", sStats[19]);
+                girl.SetAttribute("PCLove", sStats[20]);
+                girl.SetAttribute("PCHate", sStats[21]);
+                girl.SetAttribute("Morality", sStats[22]);
+
+                girl.SetAttribute("Anal", sSkills[0]);
+                girl.SetAttribute("Magic", sSkills[1]);
+                girl.SetAttribute("BDSM", sSkills[2]);
+                girl.SetAttribute("NormalSex", sSkills[3]);
+                girl.SetAttribute("Beastiality", sSkills[4]);
+                girl.SetAttribute("Group", sSkills[5]);
+                girl.SetAttribute("Lesbian", sSkills[6]);
+                girl.SetAttribute("Service", sSkills[7]);
+                girl.SetAttribute("Strip", sSkills[8]);
+                girl.SetAttribute("Combat", sSkills[9]);
+                girl.SetAttribute("OralSex", sSkills[10]);
+                girl.SetAttribute("TittySex", sSkills[11]);
+                girl.SetAttribute("Medicine", sSkills[12]);
+                girl.SetAttribute("Performance", sSkills[13]);
+                girl.SetAttribute("Handjob", sSkills[14]);
+                girl.SetAttribute("Crafting", sSkills[15]);
+                girl.SetAttribute("Herbalism", sSkills[16]);
+                girl.SetAttribute("Farming", sSkills[17]);
+                girl.SetAttribute("Brewing", sSkills[18]);
+                girl.SetAttribute("AnimalHandling", sSkills[19]);
+
+                girl.SetAttribute("Gold", sGold);
+                girl.SetAttribute("Virgin", sVirgin);
+                girl.SetAttribute("Status", sStatus);
+
+                girls.AppendChild(girl);								//finaly done (with one girl), all her data has been read and assigned to nodes or attributes, now we only need to "stick" this finished "Girl" child node to root "Girls" node and this is what this does. and then goes at begining of the loop for the next one
+
+
+
+                int test = 0;
+                string filename = filepath + sName + ".girlsx";
+
+                while (File.Exists(Convert.ToString(filename)) == true)
+                {
+                    test++;
+                    if (!Directory.Exists(filepath + test.ToString())) Directory.CreateDirectory(filepath + test.ToString());
+                    filename = filepath + test.ToString() + "\\" + sName + ".girlsx";
+                }
+
+
+                //after it's all done we have our XML, although, only in memory, not stored somewhere safe
+                XmlWriterSettings settings = new XmlWriterSettings();	//I've tried few ways of saving this, and this had the nicest output (they were all correct XML wise mind you, but output of this has the "nicest" structure as far as human readability goes
+                settings.Indent = true;									//indent every node, otherwise it would be harder to find where each node begins, again, not for computer, for some person looking at outputed XML
+                settings.NewLineOnAttributes = true;						//without this each node would be one long line, this puts each attribute in new line
+                settings.IndentChars = "\t";								//just a character that'll be used for indenting, \t means tab, so indent is one tab,
+                XmlWriter xmlwrite = XmlWriter.Create(filename, settings);	//now that settings are complete we can write this file, using path passed from button function, and settings we just made
+
+                xmldoc.Save(xmlwrite);									//now we tell our XmlDocument to save itself to our XmlWriter, this is what finally gives us our file
+                xmlwrite.Close();										//now to be all nice and proper we close our file, after all it's finished
+
+
+            }
+        }
+
+
+        private void SaveIndividualRGirlsXML(string path)
+        {
+
+            for (int x = 0; x < RGirlsCollection.Rows.Count; x++)
+            {
+                string filepath = path;
+                XmlDocument xmldoc = new XmlDocument();
+
+                XmlElement girls = xmldoc.CreateElement("Girls");
+                XmlElement girl = xmldoc.CreateElement("Girl");
+                XmlElement cash = xmldoc.CreateElement("Cash");
+                XmlElement stat = xmldoc.CreateElement("Stat");
+                XmlElement skill = xmldoc.CreateElement("Skill");
+                XmlElement trait = xmldoc.CreateElement("Trait");
+
+                string[] sStats = new string[23] { "Charisma", "Happiness", "Libido", "Constitution", "Intelligence", "Confidence", "Mana", "Agility", "Fame", "Level", "AskPrice", "House", "Exp", "Age", "Obedience", "Spirit", "Beauty", "Tiredness", "Health", "PCFear", "PCLove", "PCHate", "Morality" };
+                string[] sSkills = new string[20] { "Anal", "Magic", "BDSM", "NormalSex", "Beastiality", "Group", "Lesbian", "Service", "Strip", "Combat", "OralSex", "TittySex", "Medicine", "Performance", "Handjob", "Crafting", "Herbalism", "Farming", "Brewing", "AnimalHandling" };
+
+                xmldoc.AppendChild(girls);
+
+                girl = xmldoc.CreateElement("Girl");
+
+                StringReader sData = new StringReader(RGirlsCollection.Rows[x][1].ToString());
+
+                string sName = RGirlsCollection.Rows[x][0].ToString();
+                string sDesc = sData.ReadLine();
+
+                string[] sMinStat = sData.ReadLine().Split(' ');
+                string[] sMaxStat = sData.ReadLine().Split(' ');
+                string[] sMinSkill = sData.ReadLine().Split(' ');
+                string[] sMaxSkill = sData.ReadLine().Split(' ');
+
+                string sMinMoney = sData.ReadLine();
+                string sMaxMoney = sData.ReadLine();
+
+                string sHuman = "";
+
+                switch (sData.ReadLine())
+                {
+                    case "0": sHuman = "No"; break;
+                    default: sHuman = "Yes"; break;
+                }
+                girl.SetAttribute("Name", sName);
+                girl.SetAttribute("Desc", sDesc);
+                girl.SetAttribute("Human", sHuman);
+
+                cash = xmldoc.CreateElement("Gold");
+                cash.SetAttribute("Min", sMinMoney);
+                cash.SetAttribute("Max", sMaxMoney);
+                girl.AppendChild(cash);
+                for (int y = 0; y < sStats.Count(); y++)
+                {
+                    stat = xmldoc.CreateElement("Stat");
+                    stat.SetAttribute("Name", sStats[y]);
+                    stat.SetAttribute("Min", sMinStat[y]);
+                    stat.SetAttribute("Max", sMaxStat[y]);
+                    girl.AppendChild(stat);
+                }
+                for (int y = 0; y < sSkills.Count(); y++)
+                {
+                    skill = xmldoc.CreateElement("Skill");
+                    skill.SetAttribute("Name", sSkills[y]);
+                    skill.SetAttribute("Min", sMinSkill[y]);
+                    skill.SetAttribute("Max", sMaxSkill[y]);
+                    girl.AppendChild(skill);
+                }
+                string sCatacombs = "";
+                switch (sData.ReadLine())
+                {
+                    case "0": sCatacombs = "No"; break;
+                    case "1": sCatacombs = "Yes"; break;
+                }
+                girl.SetAttribute("Catacomb", sCatacombs);
+                int iTraitNum = Convert.ToInt32(sData.ReadLine());
+                for (int y = 0; y < iTraitNum; y++)
+                {
+                    trait = xmldoc.CreateElement("Trait");
+                    trait.SetAttribute("Name", sData.ReadLine());
+                    trait.SetAttribute("Percent", sData.ReadLine());
+                    girl.AppendChild(trait);
+                }
+                girls.AppendChild(girl);
+
+                int test = 0;
+                string filename = filepath + sName + ".rgirlsx";
+
+                while (File.Exists(Convert.ToString(filename)) == true)
+                {
+                    test++;
+                    if (!Directory.Exists(filepath + test.ToString())) Directory.CreateDirectory(filepath + test.ToString());
+                    filename = filepath + test.ToString() + "\\" + sName + ".rgirlsx";
+                }
+
+
+                XmlWriterSettings settings = new XmlWriterSettings();
+                settings.Indent = true;
+                settings.NewLineOnAttributes = true;
+                settings.IndentChars = "\t";
+                XmlWriter xmlwrite = XmlWriter.Create(filename, settings);
+
+                xmldoc.Save(xmlwrite);
+                xmlwrite.Close();
+            }
+
         }
 
         //*************************
@@ -3762,9 +4057,10 @@ namespace WM_Girls_Generator
                 Import.Close();
                 StatusLabel1.Text = "Loaded " + x.ToString() + " items from file...";
             }
-            catch /*(Exception err)*/
+            catch (Exception err)
             {
-                //MessageBox.Show(err.Message, "Open error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                dataGridView_Bad_Files.Rows.Add(path, err.Message);
+                MessageBox.Show("File load error in file \n\n" + path + "\n\n" + err.Message + "\n\nSee the Extras tab for details.", "Open error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 StatusLabel1.Text = "Load canceled...";
             }
         }
@@ -3939,7 +4235,8 @@ namespace WM_Girls_Generator
             }
             catch (Exception err)
             {
-                MessageBox.Show(err.Message, "XML load error error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                dataGridView_Bad_Files.Rows.Add(path, err.Message);
+                MessageBox.Show("File load error in file \n\n" + path + "\n\n" + err.Message + "\n\nSee the Extras tab for details.", "XML load error error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 StatusLabel1.Text = "XML load error...";
             }
         }
@@ -4446,6 +4743,5 @@ namespace WM_Girls_Generator
              * and can probably be removed
              */
         }
-
     }
 }

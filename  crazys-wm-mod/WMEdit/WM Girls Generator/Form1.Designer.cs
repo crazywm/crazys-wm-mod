@@ -30,10 +30,16 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage0_Info = new System.Windows.Forms.TabPage();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.tabPage1_Girls = new System.Windows.Forms.TabPage();
+            this.dataGridView_G_Traits = new System.Windows.Forms.DataGridView();
+            this.dataGridView_G_Traits_Has = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.dataGridView_G_Traits_List = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridView_G_Traits_Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.hidden_has = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label_G_Images_Found = new System.Windows.Forms.Label();
             this.checkBox_G_Virgin = new System.Windows.Forms.CheckBox();
             this.groupBox_G_JF = new System.Windows.Forms.GroupBox();
@@ -97,7 +103,6 @@
             this.comboBox_Girl_Type = new System.Windows.Forms.ComboBox();
             this.GoldTBox1 = new System.Windows.Forms.TextBox();
             this.label_G_Gold = new System.Windows.Forms.Label();
-            this.ListBox_G_Traits = new System.Windows.Forms.CheckedListBox();
             this.label_G_Traits = new System.Windows.Forms.Label();
             this.TBox_G_Desc = new System.Windows.Forms.TextBox();
             this.label_G_Desc = new System.Windows.Forms.Label();
@@ -561,11 +566,20 @@
             this.label88 = new System.Windows.Forms.Label();
             this.label_Load_Config = new System.Windows.Forms.Label();
             this.tabPage5_Traits = new System.Windows.Forms.TabPage();
+            this.button_Clear_Traits = new System.Windows.Forms.Button();
+            this.dataGridView_Traits = new System.Windows.Forms.DataGridView();
+            this.dataGridView_Traits_Trait_Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridView_Traits_Trait_Desc = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridView_Traits_Trait_Type = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.button_Load_Traits = new System.Windows.Forms.Button();
             this.label_Load_Traits = new System.Windows.Forms.Label();
             this.button_Save_Traits = new System.Windows.Forms.Button();
-            this.traitsTBox1 = new System.Windows.Forms.TextBox();
             this.tabPage6_FAQ = new System.Windows.Forms.TabPage();
+            this.dataGridView_Bad_Files = new System.Windows.Forms.DataGridView();
+            this.Bad_Files = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Error_Message = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.richTextBox2 = new System.Windows.Forms.RichTextBox();
+            this.button_G_Save_Individual = new System.Windows.Forms.Button();
             this.checkBox_Add_Missing_Sex_Skills_On_Load = new System.Windows.Forms.CheckBox();
             this.checkBox_ToggleListsTooltips = new System.Windows.Forms.CheckBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
@@ -581,6 +595,7 @@
             this.tabControl1.SuspendLayout();
             this.tabPage0_Info.SuspendLayout();
             this.tabPage1_Girls.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_G_Traits)).BeginInit();
             this.groupBox_G_JF.SuspendLayout();
             this.groupBox25.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -618,6 +633,9 @@
             this.groupBox_C_Gambling.SuspendLayout();
             this.groupBox_C_Income_Multipliers.SuspendLayout();
             this.tabPage5_Traits.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Traits)).BeginInit();
+            this.tabPage6_FAQ.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Bad_Files)).BeginInit();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -662,6 +680,7 @@
             // 
             // tabPage1_Girls
             // 
+            this.tabPage1_Girls.Controls.Add(this.dataGridView_G_Traits);
             this.tabPage1_Girls.Controls.Add(this.label_G_Images_Found);
             this.tabPage1_Girls.Controls.Add(this.checkBox_G_Virgin);
             this.tabPage1_Girls.Controls.Add(this.groupBox_G_JF);
@@ -671,7 +690,6 @@
             this.tabPage1_Girls.Controls.Add(this.comboBox_Girl_Type);
             this.tabPage1_Girls.Controls.Add(this.GoldTBox1);
             this.tabPage1_Girls.Controls.Add(this.label_G_Gold);
-            this.tabPage1_Girls.Controls.Add(this.ListBox_G_Traits);
             this.tabPage1_Girls.Controls.Add(this.label_G_Traits);
             this.tabPage1_Girls.Controls.Add(this.TBox_G_Desc);
             this.tabPage1_Girls.Controls.Add(this.label_G_Desc);
@@ -688,6 +706,65 @@
             this.tabPage1_Girls.TabIndex = 1;
             this.tabPage1_Girls.Text = "  Girl Data  ";
             this.tabPage1_Girls.UseVisualStyleBackColor = true;
+            // 
+            // dataGridView_G_Traits
+            // 
+            this.dataGridView_G_Traits.AllowUserToAddRows = false;
+            this.dataGridView_G_Traits.AllowUserToDeleteRows = false;
+            this.dataGridView_G_Traits.AllowUserToOrderColumns = true;
+            this.dataGridView_G_Traits.AllowUserToResizeColumns = false;
+            this.dataGridView_G_Traits.AllowUserToResizeRows = false;
+            this.dataGridView_G_Traits.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
+            this.dataGridView_G_Traits.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView_G_Traits.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridView_G_Traits_Has,
+            this.dataGridView_G_Traits_List,
+            this.dataGridView_G_Traits_Type,
+            this.hidden_has});
+            this.dataGridView_G_Traits.Location = new System.Drawing.Point(5, 233);
+            this.dataGridView_G_Traits.Name = "dataGridView_G_Traits";
+            this.dataGridView_G_Traits.RowHeadersVisible = false;
+            this.dataGridView_G_Traits.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.dataGridView_G_Traits.Size = new System.Drawing.Size(250, 196);
+            this.dataGridView_G_Traits.TabIndex = 19;
+            this.dataGridView_G_Traits.CellMouseMove += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.DataGridView_G_Traits_MouseMove);
+            // 
+            // dataGridView_G_Traits_Has
+            // 
+            this.dataGridView_G_Traits_Has.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dataGridView_G_Traits_Has.DataPropertyName = "Checked";
+            this.dataGridView_G_Traits_Has.FalseValue = "false";
+            this.dataGridView_G_Traits_Has.HeaderText = "";
+            this.dataGridView_G_Traits_Has.Name = "dataGridView_G_Traits_Has";
+            this.dataGridView_G_Traits_Has.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView_G_Traits_Has.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.dataGridView_G_Traits_Has.TrueValue = "true";
+            this.dataGridView_G_Traits_Has.Width = 19;
+            // 
+            // dataGridView_G_Traits_List
+            // 
+            this.dataGridView_G_Traits_List.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dataGridView_G_Traits_List.DataPropertyName = "Name";
+            this.dataGridView_G_Traits_List.HeaderText = "Traits";
+            this.dataGridView_G_Traits_List.Name = "dataGridView_G_Traits_List";
+            this.dataGridView_G_Traits_List.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            // 
+            // dataGridView_G_Traits_Type
+            // 
+            this.dataGridView_G_Traits_Type.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dataGridView_G_Traits_Type.DataPropertyName = "Type";
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dataGridView_G_Traits_Type.DefaultCellStyle = dataGridViewCellStyle1;
+            this.dataGridView_G_Traits_Type.HeaderText = "Type";
+            this.dataGridView_G_Traits_Type.Name = "dataGridView_G_Traits_Type";
+            this.dataGridView_G_Traits_Type.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView_G_Traits_Type.Width = 56;
+            // 
+            // hidden_has
+            // 
+            this.hidden_has.HeaderText = "hidden_has";
+            this.hidden_has.Name = "hidden_has";
+            this.hidden_has.Visible = false;
             // 
             // label_G_Images_Found
             // 
@@ -1419,16 +1496,6 @@
             this.label_G_Gold.Size = new System.Drawing.Size(69, 13);
             this.label_G_Gold.TabIndex = 6;
             this.label_G_Gold.Text = "Starting gold:";
-            // 
-            // ListBox_G_Traits
-            // 
-            this.ListBox_G_Traits.CheckOnClick = true;
-            this.ListBox_G_Traits.FormattingEnabled = true;
-            this.ListBox_G_Traits.Location = new System.Drawing.Point(5, 225);
-            this.ListBox_G_Traits.Name = "ListBox_G_Traits";
-            this.ListBox_G_Traits.Size = new System.Drawing.Size(250, 199);
-            this.ListBox_G_Traits.TabIndex = 5;
-            this.ListBox_G_Traits.MouseMove += new System.Windows.Forms.MouseEventHandler(this.checkedListBox1_MouseMove);
             // 
             // label_G_Traits
             // 
@@ -6908,10 +6975,11 @@
             // 
             // tabPage5_Traits
             // 
+            this.tabPage5_Traits.Controls.Add(this.button_Clear_Traits);
+            this.tabPage5_Traits.Controls.Add(this.dataGridView_Traits);
             this.tabPage5_Traits.Controls.Add(this.button_Load_Traits);
             this.tabPage5_Traits.Controls.Add(this.label_Load_Traits);
             this.tabPage5_Traits.Controls.Add(this.button_Save_Traits);
-            this.tabPage5_Traits.Controls.Add(this.traitsTBox1);
             this.tabPage5_Traits.Location = new System.Drawing.Point(4, 22);
             this.tabPage5_Traits.Name = "tabPage5_Traits";
             this.tabPage5_Traits.Padding = new System.Windows.Forms.Padding(3);
@@ -6919,6 +6987,66 @@
             this.tabPage5_Traits.TabIndex = 5;
             this.tabPage5_Traits.Text = "  Traits  ";
             this.tabPage5_Traits.UseVisualStyleBackColor = true;
+            // 
+            // button_Clear_Traits
+            // 
+            this.button_Clear_Traits.Location = new System.Drawing.Point(644, 461);
+            this.button_Clear_Traits.Name = "button_Clear_Traits";
+            this.button_Clear_Traits.Size = new System.Drawing.Size(80, 25);
+            this.button_Clear_Traits.TabIndex = 5;
+            this.button_Clear_Traits.Text = "Clear Traits";
+            this.button_Clear_Traits.UseVisualStyleBackColor = true;
+            this.button_Clear_Traits.Click += new System.EventHandler(this.button_Clear_Traits_Click);
+            // 
+            // dataGridView_Traits
+            // 
+            this.dataGridView_Traits.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView_Traits.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridView_Traits_Trait_Name,
+            this.dataGridView_Traits_Trait_Desc,
+            this.dataGridView_Traits_Trait_Type});
+            this.dataGridView_Traits.Location = new System.Drawing.Point(6, 6);
+            this.dataGridView_Traits.Name = "dataGridView_Traits";
+            this.dataGridView_Traits.RowHeadersVisible = false;
+            this.dataGridView_Traits.Size = new System.Drawing.Size(939, 445);
+            this.dataGridView_Traits.TabIndex = 4;
+            // 
+            // dataGridView_Traits_Trait_Name
+            // 
+            this.dataGridView_Traits_Trait_Name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dataGridView_Traits_Trait_Name.DataPropertyName = "Name";
+            this.dataGridView_Traits_Trait_Name.HeaderText = "Trait Name";
+            this.dataGridView_Traits_Trait_Name.Name = "dataGridView_Traits_Trait_Name";
+            this.dataGridView_Traits_Trait_Name.Width = 78;
+            // 
+            // dataGridView_Traits_Trait_Desc
+            // 
+            this.dataGridView_Traits_Trait_Desc.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dataGridView_Traits_Trait_Desc.DataPropertyName = "Desc";
+            this.dataGridView_Traits_Trait_Desc.HeaderText = "Trait Description";
+            this.dataGridView_Traits_Trait_Desc.Name = "dataGridView_Traits_Trait_Desc";
+            // 
+            // dataGridView_Traits_Trait_Type
+            // 
+            this.dataGridView_Traits_Trait_Type.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dataGridView_Traits_Trait_Type.DataPropertyName = "Type";
+            this.dataGridView_Traits_Trait_Type.HeaderText = "Trait Type";
+            this.dataGridView_Traits_Trait_Type.Items.AddRange(new object[] {
+            "Species",
+            "Physical",
+            "Appearance",
+            "Action",
+            "Perception",
+            "Social",
+            "Mental",
+            "Magical",
+            "Sexual",
+            "Job",
+            "Temporary",
+            "Addiction",
+            "Disease"});
+            this.dataGridView_Traits_Trait_Type.Name = "dataGridView_Traits_Trait_Type";
+            this.dataGridView_Traits_Trait_Type.Width = 55;
             // 
             // button_Load_Traits
             // 
@@ -6949,32 +7077,71 @@
             this.button_Save_Traits.Name = "button_Save_Traits";
             this.button_Save_Traits.Size = new System.Drawing.Size(80, 25);
             this.button_Save_Traits.TabIndex = 3;
-            this.button_Save_Traits.Text = "Save";
+            this.button_Save_Traits.Text = "Save Traits";
             this.button_Save_Traits.UseVisualStyleBackColor = true;
             this.button_Save_Traits.Click += new System.EventHandler(this.button_Save_Traits_Click);
             // 
-            // traitsTBox1
-            // 
-            this.traitsTBox1.BackColor = System.Drawing.SystemColors.Window;
-            this.traitsTBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.traitsTBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.traitsTBox1.Location = new System.Drawing.Point(5, 5);
-            this.traitsTBox1.Multiline = true;
-            this.traitsTBox1.Name = "traitsTBox1";
-            this.traitsTBox1.ReadOnly = true;
-            this.traitsTBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.traitsTBox1.Size = new System.Drawing.Size(940, 440);
-            this.traitsTBox1.TabIndex = 0;
-            // 
             // tabPage6_FAQ
             // 
+            this.tabPage6_FAQ.Controls.Add(this.dataGridView_Bad_Files);
+            this.tabPage6_FAQ.Controls.Add(this.richTextBox2);
+            this.tabPage6_FAQ.Controls.Add(this.button_G_Save_Individual);
             this.tabPage6_FAQ.Location = new System.Drawing.Point(4, 22);
             this.tabPage6_FAQ.Name = "tabPage6_FAQ";
             this.tabPage6_FAQ.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage6_FAQ.Size = new System.Drawing.Size(952, 492);
             this.tabPage6_FAQ.TabIndex = 6;
-            this.tabPage6_FAQ.Text = "  j1  ";
+            this.tabPage6_FAQ.Text = "  Extras  ";
             this.tabPage6_FAQ.UseVisualStyleBackColor = true;
+            // 
+            // dataGridView_Bad_Files
+            // 
+            this.dataGridView_Bad_Files.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView_Bad_Files.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Bad_Files,
+            this.Error_Message});
+            this.dataGridView_Bad_Files.Location = new System.Drawing.Point(6, 326);
+            this.dataGridView_Bad_Files.Name = "dataGridView_Bad_Files";
+            this.dataGridView_Bad_Files.Size = new System.Drawing.Size(940, 160);
+            this.dataGridView_Bad_Files.TabIndex = 13;
+            // 
+            // Bad_Files
+            // 
+            this.Bad_Files.FillWeight = 280F;
+            this.Bad_Files.HeaderText = "Bad_Files";
+            this.Bad_Files.Name = "Bad_Files";
+            this.Bad_Files.ReadOnly = true;
+            this.Bad_Files.Width = 297;
+            // 
+            // Error_Message
+            // 
+            this.Error_Message.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Error_Message.FillWeight = 600F;
+            this.Error_Message.HeaderText = "Error_Message";
+            this.Error_Message.Name = "Error_Message";
+            this.Error_Message.ReadOnly = true;
+            // 
+            // richTextBox2
+            // 
+            this.richTextBox2.BackColor = System.Drawing.SystemColors.Window;
+            this.richTextBox2.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.richTextBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.richTextBox2.Location = new System.Drawing.Point(220, 25);
+            this.richTextBox2.Name = "richTextBox2";
+            this.richTextBox2.ReadOnly = true;
+            this.richTextBox2.Size = new System.Drawing.Size(700, 80);
+            this.richTextBox2.TabIndex = 12;
+            this.richTextBox2.Text = resources.GetString("richTextBox2.Text");
+            // 
+            // button_G_Save_Individual
+            // 
+            this.button_G_Save_Individual.Location = new System.Drawing.Point(54, 36);
+            this.button_G_Save_Individual.Name = "button_G_Save_Individual";
+            this.button_G_Save_Individual.Size = new System.Drawing.Size(160, 49);
+            this.button_G_Save_Individual.TabIndex = 11;
+            this.button_G_Save_Individual.Text = "Save All Girls and Rgirls to Individual Files";
+            this.button_G_Save_Individual.UseVisualStyleBackColor = true;
+            this.button_G_Save_Individual.Click += new System.EventHandler(this.button_SaveIndividualGirls_Click);
             // 
             // checkBox_Add_Missing_Sex_Skills_On_Load
             // 
@@ -7108,13 +7275,14 @@
             this.MaximumSize = new System.Drawing.Size(1000, 600);
             this.MinimumSize = new System.Drawing.Size(1000, 600);
             this.Name = "Form1";
-            this.Text = "Whore Master Editor 0.8.10";
+            this.Text = "Whore Master Editor 0.8.12";
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.App_FileDrop);
             this.DragEnter += new System.Windows.Forms.DragEventHandler(this.App_DragEnter);
             this.tabControl1.ResumeLayout(false);
             this.tabPage0_Info.ResumeLayout(false);
             this.tabPage1_Girls.ResumeLayout(false);
             this.tabPage1_Girls.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_G_Traits)).EndInit();
             this.groupBox_G_JF.ResumeLayout(false);
             this.groupBox25.ResumeLayout(false);
             this.groupBox25.PerformLayout();
@@ -7175,6 +7343,9 @@
             this.groupBox_C_Income_Multipliers.PerformLayout();
             this.tabPage5_Traits.ResumeLayout(false);
             this.tabPage5_Traits.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Traits)).EndInit();
+            this.tabPage6_FAQ.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Bad_Files)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -7191,7 +7362,6 @@
         private System.Windows.Forms.Label label_G_Traits;
         private System.Windows.Forms.TextBox TBox_G_Desc;
         private System.Windows.Forms.Label label_G_Desc;
-        private System.Windows.Forms.CheckedListBox ListBox_G_Traits;
         private System.Windows.Forms.TextBox StatsTBox_02;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox StatsTBox_01;
@@ -7264,7 +7434,6 @@
         private System.Windows.Forms.Label label_G_Gold;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.TabPage tabPage5_Traits;
-        private System.Windows.Forms.TextBox traitsTBox1;
         private System.Windows.Forms.TabPage tabPage0_Info;
         private System.Windows.Forms.Button button_St_R;
         private System.Windows.Forms.Button button_St_CR;
@@ -7732,6 +7901,21 @@
         private System.Windows.Forms.TextBox textBox_RG_Morality_Max;
         private System.Windows.Forms.TextBox textBox_RG_Morality_Min;
         private System.Windows.Forms.Label label_RG_Morality;
+        private System.Windows.Forms.Button button_G_Save_Individual;
+        private System.Windows.Forms.RichTextBox richTextBox2;
+        private System.Windows.Forms.DataGridView dataGridView_Bad_Files;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Bad_Files;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Error_Message;
+        private System.Windows.Forms.DataGridView dataGridView_Traits;
+        private System.Windows.Forms.Button button_Clear_Traits;
+        private System.Windows.Forms.DataGridView dataGridView_G_Traits;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridView_Traits_Trait_Name;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridView_Traits_Trait_Desc;
+        private System.Windows.Forms.DataGridViewComboBoxColumn dataGridView_Traits_Trait_Type;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn dataGridView_G_Traits_Has;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridView_G_Traits_List;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridView_G_Traits_Type;
+        private System.Windows.Forms.DataGridViewTextBoxColumn hidden_has;
     }
 }
 

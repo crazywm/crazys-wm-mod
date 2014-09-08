@@ -1,261 +1,503 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Traits>
 	<Trait
-		Name="Big Boobs"
-		Desc="Wow! This girl really has knockers. (+looks)" />
+		Name="Abnormally Large Boobs"
+		Desc="My god these things are like miniture moons..."
+		Type="Physical" />
 	<Trait
-		Name="Small Scars"
-		Desc="This poor girl has small scars. (-looks)" />
-	<Trait
-		Name="Cool Scars"
-		Desc="This girl has some scars that look kinda cool and dangerous." />
-	<Trait
-		Name="Horrific Scars"
-		Desc="The poor girl has some horrid scars on her body. (-looks)" />
-	<Trait
-		Name="Cool Person"
-		Desc="This person is just cool to be with. (+looks)" />
-	<Trait
-		Name="Nerd"
-		Desc="Bookish and clumsy but kinda cute all the same. (+brains)" />
-	<Trait
-		Name="Clumsy"
-		Desc="This girl often makes mistakes. Maybe she will learn in time." />
-	<Trait
-		Name="Fast Orgasms"
-		Desc="This girl cums faster then a dragon in heat. She always leaves men feeling good about themselves and enjoys herself to boot. (+sex skills)" />
-	<Trait
-		Name="Slow Orgasms"
-		Desc="The poor girl just can't get herself off. Guys feel like they are just doing the rounds with her (negated by the fast orgasms trait). (-sex skills)" />
-	<Trait
-		Name="Quick Learner"
-		Desc="This girl picks things up quick. She will probably rise to the top in no time. (+exp)" />
-	<Trait
-		Name="Slow Learner"
-		Desc="A little daft, this girl will take awhile to learn things. (-exp)" />
-	<Trait
-		Name="Cute"
-		Desc="This girl is just very cute." />
-	<Trait
-		Name="Strong"
-		Desc="This girl can fight well and is tough. (+combat skills/stats)" />
-	<Trait
-		Name="Psychic"
-		Desc="This girl always seems to know what a guy wants. (+magic skills/stats)" />
-	<Trait
-		Name="Strong Magic"
-		Desc="This girl has strong power within her. Be careful you don't give her too much trouble. (+magic skills/stats)" />
-	<Trait
-		Name="Shroud Addict"
-		Desc="A girl additced to the gas emmited from the rare Shroud Mushroom. (drug) (+happiness) (-looks)" />
-	<Trait
-		Name="Fairy Dust Addict"
-		Desc="This girl is addicted to the mellow fairy dust. (drug) (+happiness) (-looks)" />
-	<Trait
-		Name="Viras Blood Addict"
-		Desc="This girl is additced to the blood of the sex crazed plant Viras. (drug) (+happiness) (-looks)" />
-	<Trait
-		Name="Aggressive"
-		Desc="This girl is alot more angry at things then others. (may attack customers)" />
-	<Trait
-		Name="Not Human"
-		Desc="This girl is not human, which may appeal to some customers." />
+		Name="Abundant Lactation"
+		Desc="Her breasts produce a large amount of milk at a faster-than-average rate."
+		Type="Action" />
 	<Trait
 		Name="Adventurer"
-		Desc="This girl loves adventure (+combat skills/stats)" />
+		Desc="This girl loves adventure (+combat skills/stats)"
+		Type="Mental" />
 	<Trait
-		Name="Assassin"
-		Desc="This girl has had training to kill, just name a price. (+combat skills/stats)" />
+		Name="Aggressive"
+		Desc="This girl is alot more angry at things then others. (may attack customers)"
+		Type="Mental" />
 	<Trait
-		Name="Lolita"
-		Desc="This girl looks very young and is sexually flirtatious." />
-	<Trait
-		Name="Nervous"
-		Desc="Shy and afraid to speak or mind sometimes." />
-	<Trait
-		Name="Good Kisser"
-		Desc="This girl can kiss unlike most other girls. A true master kisser. (+sex ability)" />
-	<Trait
-		Name="Nymphomaniac"
-		Desc="This girl loves the sex, but will have to learn to let the guy have his moment. (+libedo)" />
-	<Trait
-		Name="Elegant"
-		Desc="She's got style and flair (+looks)" />
-	<Trait
-		Name="Fake Orgasm Expert"
-		Desc="If the guy isn't satisfying her she can make him think he is. Not as good as the real thing, but most guys can't notice. Negates slow orgasms. (+sex ability)" />
-	<Trait
-		Name="Sexy Air"
-		Desc="Something about this girl is just so sexy, everything she does is hot. (+customer attraction)" />
-	<Trait
-		Name="Great Figure"
-		Desc="This girl has a really good figure." />
-	<Trait
-		Name="Great Arse"
-		Desc="She has a really nice arse." />
-	<Trait
-		Name="Small Boobs"
-		Desc="Her boobs may be small, but some customers like that." />
+		Name="Agile"
+		Desc="This girl is quick on her feet and swift with her hands. She has natural gift of dexterity."
+		Type="Action" />
 	<Trait
 		Name="AIDS"
-		Desc="She has aids, rare magical cures exist but you may as well accept she will probably die. (disease)" />
+		Desc="She has aids, rare magical cures exist but you may as well accept she will probably die. (disease)"
+		Type="Disease" />
 	<Trait
-		Name="Chlamydia"
-		Desc="This nasty disease will cause pain for both her and the customers during urination. (disease)" />
+		Name="Angel"
+		Desc="She is literally an Angel."
+		Type="Species" />
 	<Trait
-		Name="Syphilis"
-		Desc="This disease can cause death if left untreated. While untreated sores will appear on parts of her body and eventually worse symptoms will appear. (disease)" />
+		Name="Assassin"
+		Desc="This girl has had training to kill, just name a price. (+combat skills/stats)"
+		Type="Mental" />
+	<Trait
+		Name="Audacity"
+		Desc="She certainly doesn't lack courage and will put up a challenge to anyone who wishes to dominate her."
+		Type="Mental" />
+	<Trait
+		Name="Beauty Mark"
+		Desc="She has a visible beauty mark somewhere. Above her lips, on her cheek or maybe on her tits."
+		Type="Appearance" />
+	<Trait
+		Name="Big Boobs"
+		Desc="Wow! This girl really has knockers. (+looks)"
+		Type="Physical" />
+	<Trait
+		Name="Bimbo"
+		Desc="This girl is, like, a total ditz."
+		Type="Mental" />
+	<Trait
+		Name="Brawler"
+		Desc="This girl knows how to whoop asses when necessary."
+		Type="Action" />
 	<Trait
 		Name="Broken Will"
-		Desc="This girls' will is broken and she is completely obedient. (+OBEDIENCE)(-SPIRIT)" />
+		Desc="This girls' will is broken and she is completely obedient. (+OBEDIENCE)(-SPIRIT)"
+		Type="Mental" />
 	<Trait
-		Name="Masochist"
-		Desc="She gets sexual gratification from pain, deprivation, degradation, etc. (+BDSM)(+CONSTITUTION)" />
+		Name="Broodmother"
+		Desc="Her mighty thick thighs and body are capable of giving birth to children by the dozens."
+		Type="Physical" />
 	<Trait
-		Name="Sadistic"
-		Desc="Enjoys inflicting or watching pain inflicted. (+BDSM)" />
-	<Trait
-		Name="Lesbian"
-		Desc="This girl considers herself a lesbian (+LESBIAN)" />
-	<Trait
-		Name="Tsundere"
-		Desc="A person with a conceited, irritable, and/or violent personality that suddenly becomes modest and loving when triggered by some sort of cause. (may attack customers)" />
-	<Trait
-		Name="Yandere"
-		Desc="Expect this girl to be hurting people on the job. Alot. (may attack customers)" />
-	<Trait
-		Name="Meek"
-		Desc="She has a low rebelliousness. (+OBEDIENCE)" />
-	<Trait
-		Name="Manly"
-		Desc="Higher resistance to damage, higher rebelliousness, higher starting combat skill, can pass off as a man. Lowers her initial Looks. (-looks)" />
-	<Trait
-		Name="Merciless"
-		Desc="Causes higher damage. Even with rebelliousness at a lower level, she will still take out (if not outright murder) anyone causing harm to her. Expect goons to die often, and expect her to take a long time to break. (will more likely disobey)" />
-	<Trait
-		Name="Fearless"
-		Desc="Fear has no effect. (will more likely defend herself)" />
-	<Trait
-		Name="Iron Will"
-		Desc="Do not expect rebelliousness to reduce itself in the near future, if ever. Broken Will will remove this trait. (hard to break)" />
-	<Trait
-		Name="Twisted"
-		Desc="Her thought of pleasure is not... ordinary. Customers need to have a rather exotic taste or they won't enjoy what she has in store." />
-	<Trait
-		Name="Optimist"
-		Desc="She is very cheerful and she is rarely in a bad mood. High happiness regeneration. She enjoys what she does, alot. (+happiness)" />
-	<Trait
-		Name="Pessimist"
-		Desc="All it takes is one thing to send her mood down to the pits of the abyss. Low happiness regeneration. Less rebellious. If happiness is low enough, expect her to be killing herself in the near future. (-happiness)" />
-	<Trait
-		Name="Dependant"
-		Desc="This girl is rather dependent on other people for survival. Low rebelliousness. Will not strike out on her own. (+obedience)" />
-	<Trait
-		Name="Sterile"
-		Desc="This girl has lost the ability to give birth. (can't get pregnant)" />
-	<Trait
-		Name="Fleet of Foot"
-		Desc="This girl is quick on her feet. (+sex ability) (+combat ability)" />
-	<Trait
-		Name="Tough"
-		Desc="This girl is tough, she can take alot of punishment. (hard to hurt)" />
-	<Trait
-		Name="One Eye"
-		Desc="This girl has lost an eye somewhere along the way. (-looks)" />
-	<Trait
-		Name="Eye Patch"
-		Desc="This girl has lost an eye, but wheres a patch over it making her look dangerous and cool. (-looks)" />
-	<Trait
-		Name="Futanari"
-		Desc="This girl is a hermaphrodite, possibly due to magic or maybe just born that way. Only a few guys will sleep with her." />
-	<Trait
-		Name="Construct"
-		Desc="This girl is not alive or real, as she is a machine or has been created with magic. Her health doesn't go down or up easy. (hard to hurt)" />
-	<Trait
-		Name="Half-Construct"
-		Desc="This girl has lost a limb, and has a machine or magically animated replacement one. (hard to hurt)" />
-	<Trait
-		Name="Fragile"
-		Desc="This girl is fragile and gets hurt or tired easy. (easy to hurt)" />
-	<Trait
-		Name="Mind Fucked"
-		Desc="This girl is gone in the head. She will be compliant with anything. (+obedience)" />
-	<Trait
-		Name="Charismatic"
-		Desc="Increased Charisma. She is a natural born leader, negotiator, diplomat, and fast talker. Damn, she's smooth. (+looks)" />
-	<Trait
-		Name="Charming"
-		Desc="This girl has a lot of natural appealing wit on her side, in a non-sexual sort of way. Higher Charisma, and Natural Looks. (+looks)" />
-	<Trait
-		Name="Long Legs"
-		Desc="The legs on this girl go all the way to heaven." />
-	<Trait
-		Name="Puffy Nipples"
-		Desc="Her nipples are puffy." />
-	<Trait
-		Name="Perky Nipples"
-		Desc="She has perky nipples." />
-	<Trait
-		Name="Different Colored Eyes"
-		Desc="Her eyes are different colors" />
-	<Trait
-		Name="Strange Eyes"
-		Desc="Her eyes are unusual in some way." />
-	<Trait
-		Name="Incorporeal"
-		Desc="This girl never gets tired or loses health. (can't get tired or hurt)" />
-	<Trait
-		Name="MILF"
-		Desc="This woman has had children before." />
+		Name="Canine"
+		Desc="This girl is a dog, literally."
+		Type="Species" />
 	<Trait
 		Name="Cat Girl"
-		Desc="This girl is part feline" />
+		Desc="This girl is part feline"
+		Type="Species" />
 	<Trait
-		Name="Demon"
-		Desc="This girl comes from the abyss." />
+		Name="Charismatic"
+		Desc="Increased Charisma. She is a natural born leader, negotiator, diplomat, and fast talker. Damn, she's smooth. (+looks)"
+		Type="Social" />
 	<Trait
-		Name="Abnormally Large Boobs"
-		Desc="My god these things are like miniture moons..." />
+		Name="Charming"
+		Desc="This girl has a lot of natural appealing wit on her side, in a non-sexual sort of way. Higher Charisma, and Natural Looks. (+looks)"
+		Type="Social" />
 	<Trait
-		Name="Your Daughter"
-		Desc="This girl is a child of your loins" />
+		Name="Chlamydia"
+		Desc="This nasty disease will cause pain for both her and the customers during urination. (disease)"
+		Type="Disease" />
 	<Trait
-		Name="Incest"
-		Desc="This is a child of incest." />
+		Name="Clumsy"
+		Desc="This girl often makes mistakes. Maybe she will learn in time."
+		Type="Action" />
 	<Trait
-		Name="Malformed"
-		Desc="This girl is deformed." />
+		Name="Construct"
+		Desc="This girl is not alive or real, as she is a machine or has been created with magic. Her health doesn't go down or up easy. (hard to hurt)"
+		Type="Species" />
 	<Trait
-		Name="Retarded"
-		Desc="This girl is mentaly retarded." />
+		Name="Cool Person"
+		Desc="This person is just cool to be with. (+looks)"
+		Type="Social" />
 	<Trait
-		Name="Shape Shifter"
-		Desc="This girl can change her shape to anything." />
+		Name="Cool Scars"
+		Desc="This girl has some scars that look kinda cool and dangerous."
+		Type="Appearance" />
 	<Trait
-		Name="Queen"
-		Desc="She is a queen." />
+		Name="Cow Tits"
+		Desc="This girl's breasts produce an astoundingly large amount of milk at an extremely quick rate. Her mammaries are practically overflowing with deliciously sweet and rich milk."
+		Type="Action" />
 	<Trait
-		Name="Princess"
-		Desc="She is a princess." />
-	<Trait
-		Name="Virgin"
-		Desc="This girl has never had sex before." />
-	<Trait
-		Name="Pierced Nipples"
-		Desc="She has her nipples pierced." />
-	<Trait
-		Name="Pierced Tongue"
-		Desc="She has her tongue pierced." />
-	<Trait
-		Name="Pierced Clit"
-		Desc="She has her clit pierced." />
-	<Trait
-		Name="Gag Reflex"
-		Desc="She can't handle dicks in her mouth." />
-	<Trait
-		Name="No Gag Reflex"
-		Desc="She can handle dicks in her mouth." />
+		Name="Cute"
+		Desc="This girl is just very cute."
+		Type="Perception" />
 	<Trait
 		Name="Deep Throat"
-		Desc="She can really handle big dicks in her mouth." />
+		Desc="She can really handle big dicks in her mouth."
+		Type="Sexual" />
+	<Trait
+		Name="Delicate"
+		Desc="This girl is as fragile as porcelain. She gets tired quickly and bruises easily if she's hit."
+		Type="Action" />
+	<Trait
+		Name="Demon"
+		Desc="This girl comes from the abyss."
+		Type="Species" />
+	<Trait
+		Name="Dependant"
+		Desc="This girl is rather dependent on other people for survival. Low rebelliousness. Will not strike out on her own. (+obedience)"
+		Type="Mental" />
+	<Trait
+		Name="Dick-Sucking Lips"
+		Desc="Her lips are gorgeously full and they look even better when they're sucking on something."
+		Type="Appearance" />
+	<Trait
+		Name="Different Colored Eyes"
+		Desc="Her eyes are different colors"
+		Type="Species" />
+	<Trait
+		Name="Dry Milk"
+		Desc="This girl is incapable of producing milk of any worth."
+		Type="Action" />
+	<Trait
+		Name="Elegant"
+		Desc="She's got style and flair (+looks)"
+		Type="Social" />
+	<Trait
+		Name="Equine"
+		Desc="This girl has the body of a horse."
+		Type="Species" />
+	<Trait
+		Name="Exotic"
+		Desc="Her skin colour is unusual. It could be natural chocolate, tanned orange, perhaps even alien green or purple."
+		Type="Appearance" />
+	<Trait
+		Name="Eye Patch"
+		Desc="This girl has lost an eye, but wheres a patch over it making her look dangerous and cool. (-looks)"
+		Type="Physical" />
+	<Trait
+		Name="Fairy Dust Addict"
+		Desc="This girl is addicted to the mellow fairy dust. (drug) (+happiness) (-looks)"
+		Type="Addiction" />
+	<Trait
+		Name="Fake Orgasm Expert"
+		Desc="If the guy isn't satisfying her she can make him think he is. Not as good as the real thing, but most guys can't notice. Negates slow orgasms. (+sex ability)"
+		Type="Sexual" />
+	<Trait
+		Name="Fast Orgasms"
+		Desc="This girl cums faster then a dragon in heat. She always leaves men feeling good about themselves and enjoys herself to boot. (+sex skills)"
+		Type="Sexual" />
+	<Trait
+		Name="Fearless"
+		Desc="Fear has no effect. (will more likely defend herself)"
+		Type="Mental" />
+	<Trait
+		Name="Flat Chest"
+		Desc="This girl's boobs aren't just small - her entire chest area is practically plank-shaped."
+		Type="Physical" />
+	<Trait
+		Name="Fleet of Foot"
+		Desc="This girl is quick on her feet. (+sex ability) (+combat ability)"
+		Type="Action" />
+	<Trait
+		Name="Flight"
+		Desc="This girl can fly."
+		Type="Magical" />
+	<Trait
+		Name="Fragile"
+		Desc="This girl is fragile and gets hurt or tired easy. (easy to hurt)"
+		Type="Action" />
+	<Trait
+		Name="Futanari"
+		Desc="This girl is a hermaphrodite, possibly due to magic or maybe just born that way. Only a few guys will sleep with her."
+		Type="Species" />
+	<Trait
+		Name="Gag Reflex"
+		Desc="She can't handle dicks in her mouth."
+		Type="Sexual" />
+	<Trait
+		Name="Good Kisser"
+		Desc="This girl can kiss unlike most other girls. A true master kisser. (+sex ability)"
+		Type="Sexual" />
+	<Trait
+		Name="Great Arse"
+		Desc="She has a really nice arse."
+		Type="Physical" />
+	<Trait
+		Name="Great Figure"
+		Desc="This girl has a really good figure."
+		Type="Physical" />
+	<Trait
+		Name="Half-Breed"
+		Desc="This girl is half human and half... something else."
+		Type="Species" />
+	<Trait
+		Name="Half-Construct"
+		Desc="This girl has lost a limb, and has a machine or magically animated replacement one. (hard to hurt)"
+		Type="Species" />
+	<Trait
+		Name="Horrific Scars"
+		Desc="The poor girl has some horrid scars on her body. (-looks)"
+		Type="Appearance" />
+	<Trait
+		Name="Incest"
+		Desc="This is a child of incest."
+		Type="Physical" />
+	<Trait
+		Name="Incorporeal"
+		Desc="This girl never gets tired or loses health. (can't get tired or hurt)"
+		Type="Species" />
+	<Trait
+		Name="Iron Will"
+		Desc="Do not expect rebelliousness to reduce itself in the near future, if ever. Broken Will will remove this trait. (hard to break)"
+		Type="Mental" />
+	<Trait
+		Name="Lesbian"
+		Desc="This girl considers herself a lesbian (+LESBIAN)"
+		Type="Sexual" />
+	<Trait
+		Name="Lolita"
+		Desc="This girl looks very young and is sexually flirtatious."
+		Type="Perception" />
+	<Trait
+		Name="Long Legs"
+		Desc="The legs on this girl go all the way to heaven."
+		Type="Physical" />
+	<Trait
+		Name="Malformed"
+		Desc="This girl is deformed."
+		Type="Physical" />
+	<Trait
+		Name="Manly"
+		Desc="Higher resistance to damage, higher rebelliousness, higher starting combat skill, can pass off as a man. Lowers her initial Looks. (-looks)"
+		Type="Mental" />
+	<Trait
+		Name="Masochist"
+		Desc="She gets sexual gratification from pain, deprivation, degradation, etc. (+BDSM)(+CONSTITUTION)"
+		Type="Mental" />
+	<Trait
+		Name="Mature Body"
+		Desc="A girl no longer, this woman's lascivious body is a fruit ripe for the picking."
+		Type="Physical" />
+	<Trait
+		Name="Meek"
+		Desc="She has a low rebelliousness. (+OBEDIENCE)"
+		Type="Mental" />
+	<Trait
+		Name="Merciless"
+		Desc="Causes higher damage. Even with rebelliousness at a lower level, she will still take out (if not outright murder) anyone causing harm to her. Expect goons to die often, and expect her to take a long time to break. (will more likely disobey)"
+		Type="Mental" />
+	<Trait
+		Name="MILF"
+		Desc="This woman has had children before."
+		Type="Perception" />
+	<Trait
+		Name="Mind Fucked"
+		Desc="This girl is gone in the head. She will be compliant with anything. (+obedience)"
+		Type="Mental" />
+	<Trait
+		Name="Muscular"
+		Desc="This girl has a toned body with visible muscles. She definitely lifts."
+		Type="Physical" />
+	<Trait
+		Name="Nerd"
+		Desc="Bookish and clumsy but kinda cute all the same. (+brains)"
+		Type="Perception" />
+	<Trait
+		Name="Nervous"
+		Desc="Shy and afraid to speak or mind sometimes."
+		Type="Mental" />
+	<Trait
+		Name="Nimble Tongue"
+		Desc="She's capable of doing amazing things with her tongue."
+		Type="Sexual" />
+	<Trait
+		Name="No Gag Reflex"
+		Desc="She has no problems handleing dicks in her mouth."
+		Type="Sexual" />
+	<Trait
+		Name="Not Human"
+		Desc="This girl is not human, which may appeal to some customers."
+		Type="Species" />
+	<Trait
+		Name="Nymphomaniac"
+		Desc="This girl loves the sex, but will have to learn to let the guy have his moment. (+libedo)"
+		Type="Sexual" />
+	<Trait
+		Name="One Eye"
+		Desc="This girl has lost an eye somewhere along the way. (-looks)"
+		Type="Physical" />
+	<Trait
+		Name="Optimist"
+		Desc="She is very cheerful and she is rarely in a bad mood. High happiness regeneration. She enjoys what she does, alot. (+happiness)"
+		Type="Mental" />
+	<Trait
+		Name="Perky Nipples"
+		Desc="She has perky nipples."
+		Type="Physical" />
+	<Trait
+		Name="Pessimist"
+		Desc="All it takes is one thing to send her mood down to the pits of the abyss. Low happiness regeneration. Less rebellious. If happiness is low enough, expect her to be killing herself in the near future. (-happiness)"
+		Type="Mental" />
+	<Trait
+		Name="Pierced Clit"
+		Desc="She has her clit pierced."
+		Type="Appearance" />
+	<Trait
+		Name="Pierced Nipples"
+		Desc="She has her nipples pierced."
+		Type="Appearance" />
+	<Trait
+		Name="Pierced Tongue"
+		Desc="She has her tongue pierced."
+		Type="Appearance" />
+	<Trait
+		Name="Plump"
+		Desc="This girl has more than a few soft bits. Plenty of supple flesh to squeeze and pinch."
+		Type="Physical" />
+	<Trait
+		Name="Princess"
+		Desc="She is a princess."
+		Type="Social" />
+	<Trait
+		Name="Psychic"
+		Desc="This girl always seems to know what a guy wants. (+magic skills/stats)"
+		Type="Mental" />
+	<Trait
+		Name="Puffy Nipples"
+		Desc="Her nipples are puffy."
+		Type="Physical" />
+	<Trait
+		Name="Queen"
+		Desc="She is a queen."
+		Type="Social" />
+	<Trait
+		Name="Quick Learner"
+		Desc="This girl picks things up quick. She will probably rise to the top in no time. (+exp)"
+		Type="Mental" />
+	<Trait
+		Name="Retarded"
+		Desc="This girl is mentaly retarded."
+		Type="Mental" />
+	<Trait
+		Name="Sadistic"
+		Desc="Enjoys inflicting or watching pain inflicted. (+BDSM)"
+		Type="Mental" />
+	<Trait
+		Name="Scarce Lactation"
+		Desc="Her breasts produce a smaller amount of milk than usual."
+		Type="Action" />
+	<Trait
+		Name="Sexy Air"
+		Desc="Something about this girl is just so sexy, everything she does is hot. (+customer attraction)"
+		Type="Social" />
+	<Trait
+		Name="Shape Shifter"
+		Desc="This girl can change her shape to anything."
+		Type="Species" />
+	<Trait
+		Name="Shroud Addict"
+		Desc="A girl additced to the gas emmited from the rare Shroud Mushroom. (drug) (+happiness) (-looks)"
+		Type="Addiction" />
+	<Trait
+		Name="Slow Learner"
+		Desc="A little daft, this girl will take awhile to learn things. (-exp)"
+		Type="Mental" />
+	<Trait
+		Name="Slow Orgasms"
+		Desc="The poor girl just can't get herself off. Guys feel like they are just doing the rounds with her (negated by the fast orgasms trait). (-sex skills)"
+		Type="Sexual" />
+	<Trait
+		Name="Slut"
+		Desc="She definitely wouldn't make a good wife. A good whore on the other hand..."
+		Type="Sexual" />
+	<Trait
+		Name="Small Boobs"
+		Desc="Her boobs may be small, but some customers like that."
+		Type="Physical" />
+	<Trait
+		Name="Small Scars"
+		Desc="This poor girl has small scars. (-looks)"
+		Type="Appearance" />
+	<Trait
+		Name="Sterile"
+		Desc="This girl has lost the ability to give birth. (can't get pregnant)"
+		Type="Sexual" />
+	<Trait
+		Name="Strange Eyes"
+		Desc="Her eyes are unusual in some way."
+		Type="Species" />
+	<Trait
+		Name="Strong"
+		Desc="This girl can fight well and is tough. (+combat skills/stats)"
+		Type="Action" />
+	<Trait
+		Name="Strong Gag Reflex"
+		Desc="This girl just isn't used to sticking things down her throat."
+		Type="Sexual" />
+	<Trait
+		Name="Strong Magic"
+		Desc="This girl has strong power within her. Be careful you don't give her too much trouble. (+magic skills/stats)"
+		Type="Magical" />
+	<Trait
+		Name="Syphilis"
+		Desc="This disease can cause death if left untreated. While untreated sores will appear on parts of her body and eventually worse symptoms will appear. (disease)"
+		Type="Disease" />
+	<Trait
+		Name="Tomboy"
+		Desc="This girl is feisty tomboy and her personality is somewhat manly."
+		Type="Mental" />
+	<Trait
+		Name="Tough"
+		Desc="This girl is tough, she can take alot of punishment. (hard to hurt)"
+		Type="Action" />
+	<Trait
+		Name="Tsundere"
+		Desc="A person with a conceited, irritable, and/or violent personality that suddenly becomes modest and loving when triggered by some sort of cause. (may attack customers)"
+		Type="Mental" />
+	<Trait
+		Name="Twisted"
+		Desc="Her thought of pleasure is not... ordinary. Customers need to have a rather exotic taste or they won't enjoy what she has in store."
+		Type="Mental" />
+	<Trait
+		Name="Viras Blood Addict"
+		Desc="This girl is additced to the blood of the sex crazed plant Viras. (drug) (+happiness) (-looks)"
+		Type="Addiction" />
+	<Trait
+		Name="Virgin"
+		Desc="This girl has never had sex before."
+		Type="Sexual" />
+	<Trait
+		Name="Wings"
+		Desc="This girl has wings."
+		Type="Species" />
+	<Trait
+		Name="Yandere"
+		Desc="Expect this girl to be hurting people on the job. Alot. (may attack customers)"
+		Type="Mental" />
+	<Trait
+		Name="Your Daughter"
+		Desc="This girl is a child of your loins"
+		Type="Social" />
+	<Trait
+		Name="Actress"
+		Desc="She is a born Actress, ready for whatever the Director throws at her."
+		Type="Job" />
+	<Trait
+		Name="Director"
+		Desc="She has a knack for getting people to do things her way."
+		Type="Job" />
+	<Trait
+		Name="Farmer's Daughter"
+		Desc="She grew up on the family farm."
+		Type="Job" />
+	<Trait
+		Name="Doctor"
+		Desc="She has already had extensive medical training."
+		Type="Job" />
+	<Trait
+		Name="Out-Patient Surgery"
+		Desc="She recently got out of surgery and should be resting."
+		Type="Temporary" />
+	<Trait
+		Name="Botox Treatment"
+		Desc="She recently had Botox injected into her face. If she is happy about it, no one can tell."
+		Type="Temporary" />
+	<Trait
+		Name="Battery Operated"
+		Desc="She keeps going and going and going... She can never get tired, but she can get hurt or sad."
+		Type="Species" />
+	<Trait
+		Name="Open Minded"
+		Desc="She has no problems trying different things sexually and she will accept anything as is."
+		Type="Action" />
+	<Trait
+		Name="Bisexual"
+		Desc="She has no problems sleeping with guys or gals."
+		Type="Sexual" />
+	<Trait
+		Name="Heavily Tattooed"
+		Desc="She has tattoos over most of her body. It is very hard for her to cover them all."
+		Type="Appearance" />
+	<Trait
+		Name="Tattooed"
+		Desc="She has some type of image tattooed on her body, be it a bird, a heart or the name of some old boyfriend or girlfriend."
+		Type="Appearance" />
+	<Trait
+		Name="Small Tattoos"
+		Desc="She has some small tattoos on her body. If you ask nicely, she may show you."
+		Type="Appearance" />
 </Traits>

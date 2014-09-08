@@ -136,71 +136,49 @@
 			Name="Combat"
 			Min="70"
 			Max="70" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="50" />
-		<Trait
-			Name="Cool Person"
+		<Trait		Name="Cool Person"
 			Percent="50" />
-		<Trait
-			Name="Fast orgasms"
+		<Trait		Name="Fast orgasms"
 			Percent="75" />
-		<Trait
-			Name="Psychic"
+		<Trait		Name="Psychic"
 			Percent="75" />
-		<Trait
-			Name="Adventurer"
+		<Trait		Name="Adventurer"
 			Percent="75" />
-		<Trait
-			Name="Fake orgasm expert"
+		<Trait		Name="Fake orgasm expert"
 			Percent="75" />
-		<Trait
-			Name="Nerd"
+		<Trait		Name="Nerd"
 			Percent="75" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="75" />
-		<Trait
-			Name="Nymphomaniac"
+		<Trait		Name="Nymphomaniac"
 			Percent="90" />
-		<Trait
-			Name="Sexy Air"
+		<Trait		Name="Sexy Air"
 			Percent="75" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="90" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="75" />
-		<Trait
-			Name="Optimist"
+		<Trait		Name="Optimist"
 			Percent="50" />
-		<Trait
-			Name="Pessimist"
+		<Trait		Name="Pessimist"
 			Percent="50" />
-		<Trait
-			Name="Sterile"
+		<Trait		Name="Sterile"
 			Percent="5" />
-		<Trait
-			Name="Tough"
+		<Trait		Name="Tough"
 			Percent="75" />
-		<Trait
-			Name="Fragile"
+		<Trait		Name="Fragile"
 			Percent="75" />
-		<Trait
-			Name="MILF"
+		<Trait		Name="MILF"
 			Percent="50" />
-		<Trait
-			Name="Small Scars"
+		<Trait		Name="Small Scars"
 			Percent="50" />
-		<Trait
-			Name="Shroud Addict"
+		<Trait		Name="Shroud Addict"
 			Percent="50" />
-		<Trait
-			Name="Nervous"
+		<Trait		Name="Nervous"
 			Percent="50" />
-		<Trait
-			Name="Great Arse"
+		<Trait		Name="Great Arse"
 			Percent="50" />
 	</Girl>
 	<Girl
@@ -339,113 +317,77 @@
 			Name="Combat"
 			Min="50"
 			Max="100" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="15" />
-		<Trait
-			Name="Small Scars"
+		<Trait		Name="Small Scars"
 			Percent="10" />
-		<Trait
-			Name="Cool Scars"
+		<Trait		Name="Cool Scars"
 			Percent="10" />
-		<Trait
-			Name="Cool Person"
+		<Trait		Name="Cool Person"
 			Percent="5" />
-		<Trait
-			Name="Fast orgasms"
+		<Trait		Name="Fast orgasms"
 			Percent="45" />
-		<Trait
-			Name="Quick Learner"
+		<Trait		Name="Quick Learner"
 			Percent="60" />
-		<Trait
-			Name="Cute"
+		<Trait		Name="Cute"
 			Percent="35" />
-		<Trait
-			Name="Strong"
+		<Trait		Name="Strong"
 			Percent="75" />
-		<Trait
-			Name="Strong Magic"
+		<Trait		Name="Strong Magic"
 			Percent="50" />
-		<Trait
-			Name="Shroud Addict"
+		<Trait		Name="Shroud Addict"
 			Percent="10" />
-		<Trait
-			Name="Fairy Dust Addict"
+		<Trait		Name="Fairy Dust Addict"
 			Percent="10" />
-		<Trait
-			Name="Viras Blood Addict"
+		<Trait		Name="Viras Blood Addict"
 			Percent="10" />
-		<Trait
-			Name="Aggressive"
+		<Trait		Name="Aggressive"
 			Percent="100" />
-		<Trait
-			Name="Adventurer"
+		<Trait		Name="Adventurer"
 			Percent="15" />
-		<Trait
-			Name="Assassin"
+		<Trait		Name="Assassin"
 			Percent="5" />
-		<Trait
-			Name="Lolita"
+		<Trait		Name="Lolita"
 			Percent="20" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="75" />
-		<Trait
-			Name="Nymphomaniac"
+		<Trait		Name="Nymphomaniac"
 			Percent="85" />
-		<Trait
-			Name="Fake orgasm expert"
+		<Trait		Name="Fake orgasm expert"
 			Percent="65" />
-		<Trait
-			Name="Sexy Air"
+		<Trait		Name="Sexy Air"
 			Percent="15" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="45" />
-		<Trait
-			Name="Great Arse"
+		<Trait		Name="Great Arse"
 			Percent="50" />
-		<Trait
-			Name="Sadistic"
+		<Trait		Name="Sadistic"
 			Percent="95" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="25" />
-		<Trait
-			Name="Tsundere"
+		<Trait		Name="Tsundere"
 			Percent="60" />
-		<Trait
-			Name="Yandere"
+		<Trait		Name="Yandere"
 			Percent="80" />
-		<Trait
-			Name="Manly"
+		<Trait		Name="Manly"
 			Percent="5" />
-		<Trait
-			Name="Merciless"
+		<Trait		Name="Merciless"
 			Percent="100" />
-		<Trait
-			Name="Fearless"
+		<Trait		Name="Fearless"
 			Percent="95" />
-		<Trait
-			Name="Iron Will"
+		<Trait		Name="Iron Will"
 			Percent="95" />
-		<Trait
-			Name="Twisted"
+		<Trait		Name="Twisted"
 			Percent="75" />
-		<Trait
-			Name="Optimist"
+		<Trait		Name="Optimist"
 			Percent="25" />
-		<Trait
-			Name="Fleet of Foot"
+		<Trait		Name="Fleet of Foot"
 			Percent="55" />
-		<Trait
-			Name="Tough"
+		<Trait		Name="Tough"
 			Percent="90" />
-		<Trait
-			Name="Eye Patch"
+		<Trait		Name="Eye Patch"
 			Percent="50" />
-		<Trait
-			Name="Long Legs"
+		<Trait		Name="Long Legs"
 			Percent="30" />
 	</Girl>
 	<Girl
@@ -584,56 +526,39 @@
 			Name="Combat"
 			Min="15"
 			Max="50" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="20" />
-		<Trait
-			Name="Cool Person"
+		<Trait		Name="Cool Person"
 			Percent="20" />
-		<Trait
-			Name="Slow orgasms"
+		<Trait		Name="Slow orgasms"
 			Percent="20" />
-		<Trait
-			Name="Strong"
+		<Trait		Name="Strong"
 			Percent="50" />
-		<Trait
-			Name="Elegant"
+		<Trait		Name="Elegant"
 			Percent="10" />
-		<Trait
-			Name="Sexy Air"
+		<Trait		Name="Sexy Air"
 			Percent="40" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="10" />
-		<Trait
-			Name="Great Arse"
+		<Trait		Name="Great Arse"
 			Percent="10" />
-		<Trait
-			Name="Sadistic"
+		<Trait		Name="Sadistic"
 			Percent="1" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="10" />
-		<Trait
-			Name="Merciless"
+		<Trait		Name="Merciless"
 			Percent="10" />
-		<Trait
-			Name="Fearless"
+		<Trait		Name="Fearless"
 			Percent="10" />
-		<Trait
-			Name="Fleet of Foot"
+		<Trait		Name="Fleet of Foot"
 			Percent="50" />
-		<Trait
-			Name="Charismatic"
+		<Trait		Name="Charismatic"
 			Percent="50" />
-		<Trait
-			Name="Charming"
+		<Trait		Name="Charming"
 			Percent="50" />
-		<Trait
-			Name="Long Legs"
+		<Trait		Name="Long Legs"
 			Percent="5" />
-		<Trait
-			Name="Perky Nipples"
+		<Trait		Name="Perky Nipples"
 			Percent="5" />
 	</Girl>
 	<Girl
@@ -772,44 +697,31 @@
 			Name="Combat"
 			Min="0"
 			Max="10" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="10" />
-		<Trait
-			Name="Cool Person"
+		<Trait		Name="Cool Person"
 			Percent="10" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="10" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="10" />
-		<Trait
-			Name="Nervous"
+		<Trait		Name="Nervous"
 			Percent="10" />
-		<Trait
-			Name="Nymphomaniac"
+		<Trait		Name="Nymphomaniac"
 			Percent="10" />
-		<Trait
-			Name="Cute"
+		<Trait		Name="Cute"
 			Percent="100" />
-		<Trait
-			Name="Strong Magic"
+		<Trait		Name="Strong Magic"
 			Percent="10" />
-		<Trait
-			Name="Nerd"
+		<Trait		Name="Nerd"
 			Percent="30" />
-		<Trait
-			Name="Fast orgasms"
+		<Trait		Name="Fast orgasms"
 			Percent="40" />
-		<Trait
-			Name="Clumsy"
+		<Trait		Name="Clumsy"
 			Percent="70" />
-		<Trait
-			Name="Quick Learner"
+		<Trait		Name="Quick Learner"
 			Percent="50" />
-		<Trait
-			Name="Psychic"
+		<Trait		Name="Psychic"
 			Percent="10" />
 	</Girl>
 	<Girl
@@ -948,56 +860,39 @@
 			Name="Combat"
 			Min="25"
 			Max="40" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="20" />
-		<Trait
-			Name="Cool Person"
+		<Trait		Name="Cool Person"
 			Percent="40" />
-		<Trait
-			Name="Quick Learner"
+		<Trait		Name="Quick Learner"
 			Percent="40" />
-		<Trait
-			Name="Strong Magic"
+		<Trait		Name="Strong Magic"
 			Percent="65" />
-		<Trait
-			Name="Nerd"
+		<Trait		Name="Nerd"
 			Percent="60" />
-		<Trait
-			Name="Psychic"
+		<Trait		Name="Psychic"
 			Percent="80" />
-		<Trait
-			Name="Not Human"
+		<Trait		Name="Not Human"
 			Percent="100" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="35" />
-		<Trait
-			Name="Elegant"
+		<Trait		Name="Elegant"
 			Percent="55" />
-		<Trait
-			Name="Small Boobs"
+		<Trait		Name="Small Boobs"
 			Percent="20" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="15" />
-		<Trait
-			Name="Charismatic"
+		<Trait		Name="Charismatic"
 			Percent="5" />
-		<Trait
-			Name="Charming"
+		<Trait		Name="Charming"
 			Percent="5" />
-		<Trait
-			Name="Long Legs"
+		<Trait		Name="Long Legs"
 			Percent="10" />
-		<Trait
-			Name="Sexy Air"
+		<Trait		Name="Sexy Air"
 			Percent="10" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="10" />
-		<Trait
-			Name="Great Arse"
+		<Trait		Name="Great Arse"
 			Percent="10" />
 	</Girl>
 	<Girl
@@ -1136,83 +1031,57 @@
 			Name="Combat"
 			Min="5"
 			Max="5" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="75" />
-		<Trait
-			Name="Cool Person"
+		<Trait		Name="Cool Person"
 			Percent="75" />
-		<Trait
-			Name="Quick Learner"
+		<Trait		Name="Quick Learner"
 			Percent="75" />
-		<Trait
-			Name="Charismatic"
+		<Trait		Name="Charismatic"
 			Percent="75" />
-		<Trait
-			Name="Fast orgasms"
+		<Trait		Name="Fast orgasms"
 			Percent="50" />
-		<Trait
-			Name="Slow orgasms"
+		<Trait		Name="Slow orgasms"
 			Percent="50" />
-		<Trait
-			Name="Psychic"
+		<Trait		Name="Psychic"
 			Percent="50" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="50" />
-		<Trait
-			Name="Nymphomaniac"
+		<Trait		Name="Nymphomaniac"
 			Percent="50" />
-		<Trait
-			Name="Elegant"
+		<Trait		Name="Elegant"
 			Percent="50" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="25" />
-		<Trait
-			Name="Great Arse"
+		<Trait		Name="Great Arse"
 			Percent="25" />
-		<Trait
-			Name="Lolita"
+		<Trait		Name="Lolita"
 			Percent="25" />
-		<Trait
-			Name="Sexy Air"
+		<Trait		Name="Sexy Air"
 			Percent="25" />
-		<Trait
-			Name="Meek"
+		<Trait		Name="Meek"
 			Percent="25" />
-		<Trait
-			Name="Optimist"
+		<Trait		Name="Optimist"
 			Percent="25" />
-		<Trait
-			Name="Pessimist"
+		<Trait		Name="Pessimist"
 			Percent="25" />
-		<Trait
-			Name="Dependant"
+		<Trait		Name="Dependant"
 			Percent="25" />
-		<Trait
-			Name="Fleet of Foot"
+		<Trait		Name="Fleet of Foot"
 			Percent="50" />
-		<Trait
-			Name="Tough"
+		<Trait		Name="Tough"
 			Percent="50" />
-		<Trait
-			Name="Malformed"
+		<Trait		Name="Malformed"
 			Percent="15" />
-		<Trait
-			Name="Retarded"
+		<Trait		Name="Retarded"
 			Percent="15" />
-		<Trait
-			Name="Mind Fucked"
+		<Trait		Name="Mind Fucked"
 			Percent="15" />
-		<Trait
-			Name="Sterile"
+		<Trait		Name="Sterile"
 			Percent="15" />
-		<Trait
-			Name="Tsundere"
+		<Trait		Name="Tsundere"
 			Percent="15" />
-		<Trait
-			Name="Horrific Scars"
+		<Trait		Name="Horrific Scars"
 			Percent="15" />
 	</Girl>
 	<Girl
@@ -1351,41 +1220,29 @@
 			Name="Combat"
 			Min="5"
 			Max="35" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="40" />
-		<Trait
-			Name="Small Scars"
+		<Trait		Name="Small Scars"
 			Percent="40" />
-		<Trait
-			Name="Nerd"
+		<Trait		Name="Nerd"
 			Percent="30" />
-		<Trait
-			Name="Strong"
+		<Trait		Name="Strong"
 			Percent="30" />
-		<Trait
-			Name="Strong Magic"
+		<Trait		Name="Strong Magic"
 			Percent="70" />
-		<Trait
-			Name="Not Human"
+		<Trait		Name="Not Human"
 			Percent="100" />
-		<Trait
-			Name="Elegant"
+		<Trait		Name="Elegant"
 			Percent="60" />
-		<Trait
-			Name="Sexy Air"
+		<Trait		Name="Sexy Air"
 			Percent="20" />
-		<Trait
-			Name="Masochist"
+		<Trait		Name="Masochist"
 			Percent="20" />
-		<Trait
-			Name="Merciless"
+		<Trait		Name="Merciless"
 			Percent="20" />
-		<Trait
-			Name="Fearless"
+		<Trait		Name="Fearless"
 			Percent="20" />
-		<Trait
-			Name="Strange Eyes"
+		<Trait		Name="Strange Eyes"
 			Percent="100" />
 	</Girl>
 	<Girl
@@ -1524,56 +1381,39 @@
 			Name="Combat"
 			Min="30"
 			Max="40" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="50" />
-		<Trait
-			Name="Cool Person"
+		<Trait		Name="Cool Person"
 			Percent="50" />
-		<Trait
-			Name="Clumsy"
+		<Trait		Name="Clumsy"
 			Percent="50" />
-		<Trait
-			Name="Quick Learner"
+		<Trait		Name="Quick Learner"
 			Percent="50" />
-		<Trait
-			Name="Psychic"
+		<Trait		Name="Psychic"
 			Percent="50" />
-		<Trait
-			Name="Adventurer"
+		<Trait		Name="Adventurer"
 			Percent="50" />
-		<Trait
-			Name="Elegant"
+		<Trait		Name="Elegant"
 			Percent="50" />
-		<Trait
-			Name="Sexy Air"
+		<Trait		Name="Sexy Air"
 			Percent="50" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="50" />
-		<Trait
-			Name="Optimist"
+		<Trait		Name="Optimist"
 			Percent="50" />
-		<Trait
-			Name="Pessimist"
+		<Trait		Name="Pessimist"
 			Percent="50" />
-		<Trait
-			Name="Fleet of Foot"
+		<Trait		Name="Fleet of Foot"
 			Percent="50" />
-		<Trait
-			Name="Tough"
+		<Trait		Name="Tough"
 			Percent="50" />
-		<Trait
-			Name="Fragile"
+		<Trait		Name="Fragile"
 			Percent="50" />
-		<Trait
-			Name="Charming"
+		<Trait		Name="Charming"
 			Percent="50" />
-		<Trait
-			Name="Malformed"
+		<Trait		Name="Malformed"
 			Percent="30" />
-		<Trait
-			Name="Retarded"
+		<Trait		Name="Retarded"
 			Percent="30" />
 	</Girl>
 	<Girl
@@ -1712,47 +1552,33 @@
 			Name="Combat"
 			Min="35"
 			Max="35" />
-		<Trait
-			Name="Nerd"
+		<Trait		Name="Nerd"
 			Percent="100" />
-		<Trait
-			Name="Clumsy"
+		<Trait		Name="Clumsy"
 			Percent="75" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="50" />
-		<Trait
-			Name="Cool Person"
+		<Trait		Name="Cool Person"
 			Percent="50" />
-		<Trait
-			Name="Psychic"
+		<Trait		Name="Psychic"
 			Percent="75" />
-		<Trait
-			Name="Lolita"
+		<Trait		Name="Lolita"
 			Percent="50" />
-		<Trait
-			Name="Fake orgasm expert"
+		<Trait		Name="Fake orgasm expert"
 			Percent="50" />
-		<Trait
-			Name="Small Boobs"
+		<Trait		Name="Small Boobs"
 			Percent="50" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="50" />
-		<Trait
-			Name="Optimist"
+		<Trait		Name="Optimist"
 			Percent="50" />
-		<Trait
-			Name="Pessimist"
+		<Trait		Name="Pessimist"
 			Percent="50" />
-		<Trait
-			Name="Dependant"
+		<Trait		Name="Dependant"
 			Percent="50" />
-		<Trait
-			Name="Fleet of Foot"
+		<Trait		Name="Fleet of Foot"
 			Percent="50" />
-		<Trait
-			Name="Tough"
+		<Trait		Name="Tough"
 			Percent="50" />
 	</Girl>
 	<Girl
@@ -1891,29 +1717,21 @@
 			Name="Combat"
 			Min="0"
 			Max="40" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="15" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="60" />
-		<Trait
-			Name="Nymphomaniac"
+		<Trait		Name="Nymphomaniac"
 			Percent="30" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="100" />
-		<Trait
-			Name="Sexy Air"
+		<Trait		Name="Sexy Air"
 			Percent="15" />
-		<Trait
-			Name="Fast orgasms"
+		<Trait		Name="Fast orgasms"
 			Percent="30" />
-		<Trait
-			Name="Cool Person"
+		<Trait		Name="Cool Person"
 			Percent="15" />
-		<Trait
-			Name="Elegant"
+		<Trait		Name="Elegant"
 			Percent="15" />
 	</Girl>
 	<Girl
@@ -2052,38 +1870,27 @@
 			Name="Combat"
 			Min="30"
 			Max="50" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="10" />
-		<Trait
-			Name="Cool Person"
+		<Trait		Name="Cool Person"
 			Percent="10" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="10" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="40" />
-		<Trait
-			Name="Nymphomaniac"
+		<Trait		Name="Nymphomaniac"
 			Percent="40" />
-		<Trait
-			Name="Aggressive"
+		<Trait		Name="Aggressive"
 			Percent="30" />
-		<Trait
-			Name="Cute"
+		<Trait		Name="Cute"
 			Percent="90" />
-		<Trait
-			Name="Adventurer"
+		<Trait		Name="Adventurer"
 			Percent="35" />
-		<Trait
-			Name="Fast orgasms"
+		<Trait		Name="Fast orgasms"
 			Percent="60" />
-		<Trait
-			Name="Strong"
+		<Trait		Name="Strong"
 			Percent="40" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="40" />
 	</Girl>
 	<Girl
@@ -2222,56 +2029,39 @@
 			Name="Combat"
 			Min="50"
 			Max="100" />
-		<Trait
-			Name="Cool Person"
+		<Trait		Name="Cool Person"
 			Percent="33" />
-		<Trait
-			Name="Fast orgasms"
+		<Trait		Name="Fast orgasms"
 			Percent="33" />
-		<Trait
-			Name="Strong"
+		<Trait		Name="Strong"
 			Percent="33" />
-		<Trait
-			Name="Psychic"
+		<Trait		Name="Psychic"
 			Percent="33" />
-		<Trait
-			Name="Aggressive"
+		<Trait		Name="Aggressive"
 			Percent="33" />
-		<Trait
-			Name="Assassin"
+		<Trait		Name="Assassin"
 			Percent="33" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="33" />
-		<Trait
-			Name="Small Boobs"
+		<Trait		Name="Small Boobs"
 			Percent="33" />
-		<Trait
-			Name="Sadistic"
+		<Trait		Name="Sadistic"
 			Percent="33" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="100" />
-		<Trait
-			Name="Merciless"
+		<Trait		Name="Merciless"
 			Percent="33" />
-		<Trait
-			Name="Optimist"
+		<Trait		Name="Optimist"
 			Percent="33" />
-		<Trait
-			Name="Fleet of Foot"
+		<Trait		Name="Fleet of Foot"
 			Percent="100" />
-		<Trait
-			Name="Tough"
+		<Trait		Name="Tough"
 			Percent="33" />
-		<Trait
-			Name="Strange Eyes"
+		<Trait		Name="Strange Eyes"
 			Percent="100" />
-		<Trait
-			Name="Cat Girl"
+		<Trait		Name="Cat Girl"
 			Percent="100" />
-		<Trait
-			Name="Demon"
+		<Trait		Name="Demon"
 			Percent="50" />
 	</Girl>
 	<Girl
@@ -2410,80 +2200,55 @@
 			Name="Combat"
 			Min="25"
 			Max="40" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="75" />
-		<Trait
-			Name="Small Scars"
+		<Trait		Name="Small Scars"
 			Percent="25" />
-		<Trait
-			Name="Cool Scars"
+		<Trait		Name="Cool Scars"
 			Percent="25" />
-		<Trait
-			Name="Fast orgasms"
+		<Trait		Name="Fast orgasms"
 			Percent="25" />
-		<Trait
-			Name="Quick Learner"
+		<Trait		Name="Quick Learner"
 			Percent="25" />
-		<Trait
-			Name="Strong"
+		<Trait		Name="Strong"
 			Percent="75" />
-		<Trait
-			Name="Strong Magic"
+		<Trait		Name="Strong Magic"
 			Percent="25" />
-		<Trait
-			Name="Aggressive"
+		<Trait		Name="Aggressive"
 			Percent="50" />
-		<Trait
-			Name="Adventurer"
+		<Trait		Name="Adventurer"
 			Percent="50" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="50" />
-		<Trait
-			Name="Nymphomaniac"
+		<Trait		Name="Nymphomaniac"
 			Percent="50" />
-		<Trait
-			Name="Elegant"
+		<Trait		Name="Elegant"
 			Percent="50" />
-		<Trait
-			Name="Sexy Air"
+		<Trait		Name="Sexy Air"
 			Percent="50" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="50" />
-		<Trait
-			Name="Great Arse"
+		<Trait		Name="Great Arse"
 			Percent="50" />
-		<Trait
-			Name="Small Boobs"
+		<Trait		Name="Small Boobs"
 			Percent="25" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="50" />
-		<Trait
-			Name="Optimist"
+		<Trait		Name="Optimist"
 			Percent="50" />
-		<Trait
-			Name="Dependant"
+		<Trait		Name="Dependant"
 			Percent="50" />
-		<Trait
-			Name="Fleet of Foot"
+		<Trait		Name="Fleet of Foot"
 			Percent="75" />
-		<Trait
-			Name="Tough"
+		<Trait		Name="Tough"
 			Percent="75" />
-		<Trait
-			Name="Charming"
+		<Trait		Name="Charming"
 			Percent="75" />
-		<Trait
-			Name="Different Colored Eyes"
+		<Trait		Name="Different Colored Eyes"
 			Percent="25" />
-		<Trait
-			Name="Malformed"
+		<Trait		Name="Malformed"
 			Percent="20" />
-		<Trait
-			Name="Perky Nipples"
+		<Trait		Name="Perky Nipples"
 			Percent="50" />
 	</Girl>
 	<Girl
@@ -2622,29 +2387,21 @@
 			Name="Combat"
 			Min="25"
 			Max="85" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="10" />
-		<Trait
-			Name="Cool Scars"
+		<Trait		Name="Cool Scars"
 			Percent="10" />
-		<Trait
-			Name="Fast orgasms"
+		<Trait		Name="Fast orgasms"
 			Percent="25" />
-		<Trait
-			Name="Aggressive"
+		<Trait		Name="Aggressive"
 			Percent="25" />
-		<Trait
-			Name="Adventurer"
+		<Trait		Name="Adventurer"
 			Percent="65" />
-		<Trait
-			Name="Nymphomaniac"
+		<Trait		Name="Nymphomaniac"
 			Percent="15" />
-		<Trait
-			Name="Great Arse"
+		<Trait		Name="Great Arse"
 			Percent="55" />
-		<Trait
-			Name="Sterile"
+		<Trait		Name="Sterile"
 			Percent="25" />
 	</Girl>
 	<Girl
@@ -2783,44 +2540,31 @@
 			Name="Combat"
 			Min="30"
 			Max="80" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="10" />
-		<Trait
-			Name="Sadistic"
+		<Trait		Name="Sadistic"
 			Percent="20" />
-		<Trait
-			Name="Cool Person"
+		<Trait		Name="Cool Person"
 			Percent="10" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="10" />
-		<Trait
-			Name="Adventurer"
+		<Trait		Name="Adventurer"
 			Percent="80" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="20" />
-		<Trait
-			Name="Nymphomaniac"
+		<Trait		Name="Nymphomaniac"
 			Percent="20" />
-		<Trait
-			Name="Horrific Scars"
+		<Trait		Name="Horrific Scars"
 			Percent="30" />
-		<Trait
-			Name="Assassin"
+		<Trait		Name="Assassin"
 			Percent="30" />
-		<Trait
-			Name="Aggressive"
+		<Trait		Name="Aggressive"
 			Percent="30" />
-		<Trait
-			Name="Adventurer"
+		<Trait		Name="Adventurer"
 			Percent="35" />
-		<Trait
-			Name="Strong"
+		<Trait		Name="Strong"
 			Percent="70" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="50" />
 	</Girl>
 	<Girl
@@ -2959,89 +2703,59 @@
 			Name="Combat"
 			Min="10"
 			Max="50" />
-		<Trait
-			Name="Adventurer"
+		<Trait		Name="Adventurer"
 			Percent="10" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="2" />
-		<Trait
-			Name="Manly"
+		<Trait		Name="Manly"
 			Percent="40" />
-		<Trait
-			Name="Pessimist"
+		<Trait		Name="Pessimist"
 			Percent="10" />
-		<Trait
-			Name="Twisted"
+		<Trait		Name="Twisted"
 			Percent="10" />
-		<Trait
-			Name="Fearless"
+		<Trait		Name="Fearless"
 			Percent="70" />
-		<Trait
-			Name="Iron Will"
+		<Trait		Name="Iron Will"
 			Percent="5" />
-		<Trait
-			Name="Sadistic"
+		<Trait		Name="Sadistic"
 			Percent="5" />
-		<Trait
-			Name="Great Arse"
+		<Trait		Name="Great Arse"
 			Percent="5" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="5" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="5" />
-		<Trait
-			Name="Nervous"
+		<Trait		Name="Nervous"
 			Percent="1" />
-		<Trait
-			Name="Horrific Scars"
+		<Trait		Name="Horrific Scars"
 			Percent="1" />
-		<Trait
-			Name="Small Scars"
+		<Trait		Name="Small Scars"
 			Percent="80" />
-		<Trait
-			Name="Clumsy"
+		<Trait		Name="Clumsy"
 			Percent="1" />
-		<Trait
-			Name="Retarded"
+		<Trait		Name="Retarded"
 			Percent="1" />
-		<Trait
-			Name="Dependant"
+		<Trait		Name="Dependant"
 			Percent="1" />
-		<Trait
-			Name="Nerd"
+		<Trait		Name="Nerd"
 			Percent="3" />
-		<Trait
-			Name="Long Legs"
+		<Trait		Name="Long Legs"
 			Percent="3" />
-		<Trait
-			Name="Perky Nipples"
+		<Trait		Name="Perky Nipples"
 			Percent="3" />
-		<Trait
-			Name="Charismatic"
+		<Trait		Name="Charismatic"
 			Percent="30" />
-		<Trait
-			Name="Fleet of Foot"
+		<Trait		Name="Fleet of Foot"
 			Percent="30" />
-		<Trait
-			Name="Tough"
+		<Trait		Name="Tough"
 			Percent="40" />
-		<Trait
-			Name="Merciless"
+		<Trait		Name="Merciless"
 			Percent="5" />
-		<Trait
-			Name="Cool Scars"
+		<Trait		Name="Cool Scars"
 			Percent="5" />
-		<Trait
-			Name="Quick Learner"
+		<Trait		Name="Quick Learner"
 			Percent="5" />
-		<Trait
-			Name="Strong"
-			Percent="30" />
-		<Trait
-			Name="Average Boobs"
+		<Trait		Name="Strong"
 			Percent="30" />
 	</Girl>
 	<Girl
@@ -3180,74 +2894,51 @@
 			Name="Combat"
 			Min="0"
 			Max="20" />
-		<Trait
-			Name="Adventurer"
+		<Trait		Name="Adventurer"
 			Percent="10" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="2" />
-		<Trait
-			Name="Pessimist"
+		<Trait		Name="Pessimist"
 			Percent="10" />
-		<Trait
-			Name="Twisted"
+		<Trait		Name="Twisted"
 			Percent="10" />
-		<Trait
-			Name="Iron Will"
+		<Trait		Name="Iron Will"
 			Percent="5" />
-		<Trait
-			Name="Sadistic"
+		<Trait		Name="Sadistic"
 			Percent="5" />
-		<Trait
-			Name="Great Arse"
+		<Trait		Name="Great Arse"
 			Percent="5" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="5" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="5" />
-		<Trait
-			Name="Nervous"
+		<Trait		Name="Nervous"
 			Percent="1" />
-		<Trait
-			Name="Horrific Scars"
+		<Trait		Name="Horrific Scars"
 			Percent="1" />
-		<Trait
-			Name="Clumsy"
+		<Trait		Name="Clumsy"
 			Percent="1" />
-		<Trait
-			Name="Retarded"
+		<Trait		Name="Retarded"
 			Percent="1" />
-		<Trait
-			Name="Dependant"
+		<Trait		Name="Dependant"
 			Percent="1" />
-		<Trait
-			Name="Abnormally Large Boobs"
+		<Trait		Name="Abnormally Large Boobs"
 			Percent="100" />
-		<Trait
-			Name="Strong Magic"
+		<Trait		Name="Strong Magic"
 			Percent="20" />
-		<Trait
-			Name="Psychic"
+		<Trait		Name="Psychic"
 			Percent="10" />
-		<Trait
-			Name="Virgin"
+		<Trait		Name="Virgin"
 			Percent="90" />
-		<Trait
-			Name="Sexy Air"
+		<Trait		Name="Sexy Air"
 			Percent="5" />
-		<Trait
-			Name="Puffy Nipples"
+		<Trait		Name="Puffy Nipples"
 			Percent="5" />
-		<Trait
-			Name="Nymphomaniac"
+		<Trait		Name="Nymphomaniac"
 			Percent="5" />
-		<Trait
-			Name="Psychic"
+		<Trait		Name="Psychic"
 			Percent="5" />
-		<Trait
-			Name="Optimist"
+		<Trait		Name="Optimist"
 			Percent="10" />
 	</Girl>
 	<Girl
@@ -3386,47 +3077,33 @@
 			Name="Combat"
 			Min="30"
 			Max="80" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="10" />
-		<Trait
-			Name="Cool Person"
+		<Trait		Name="Cool Person"
 			Percent="10" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="90" />
-		<Trait
-			Name="Adventurer"
+		<Trait		Name="Adventurer"
 			Percent="30" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="60" />
-		<Trait
-			Name="Nymphomaniac"
+		<Trait		Name="Nymphomaniac"
 			Percent="40" />
-		<Trait
-			Name="Assassin"
+		<Trait		Name="Assassin"
 			Percent="10" />
-		<Trait
-			Name="Aggressive"
+		<Trait		Name="Aggressive"
 			Percent="10" />
-		<Trait
-			Name="Cute"
+		<Trait		Name="Cute"
 			Percent="40" />
-		<Trait
-			Name="Strong Magic"
+		<Trait		Name="Strong Magic"
 			Percent="50" />
-		<Trait
-			Name="Adventurer"
+		<Trait		Name="Adventurer"
 			Percent="10" />
-		<Trait
-			Name="Fast orgasms"
+		<Trait		Name="Fast orgasms"
 			Percent="100" />
-		<Trait
-			Name="Strong"
+		<Trait		Name="Strong"
 			Percent="70" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="60" />
 	</Girl>
 	<Girl
@@ -3565,47 +3242,33 @@
 			Name="Combat"
 			Min="10"
 			Max="75" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="10" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="40" />
-		<Trait
-			Name="Adventurer"
+		<Trait		Name="Adventurer"
 			Percent="60" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="20" />
-		<Trait
-			Name="Nymphomaniac"
+		<Trait		Name="Nymphomaniac"
 			Percent="90" />
-		<Trait
-			Name="Aggressive"
+		<Trait		Name="Aggressive"
 			Percent="40" />
-		<Trait
-			Name="Cute"
+		<Trait		Name="Cute"
 			Percent="25" />
-		<Trait
-			Name="Strong Magic"
+		<Trait		Name="Strong Magic"
 			Percent="50" />
-		<Trait
-			Name="Adventurer"
+		<Trait		Name="Adventurer"
 			Percent="35" />
-		<Trait
-			Name="Fast orgasms"
+		<Trait		Name="Fast orgasms"
 			Percent="90" />
-		<Trait
-			Name="Strong"
+		<Trait		Name="Strong"
 			Percent="90" />
-		<Trait
-			Name="Small Scars"
+		<Trait		Name="Small Scars"
 			Percent="20" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="45" />
-		<Trait
-			Name="Sadistic"
+		<Trait		Name="Sadistic"
 			Percent="15" />
 	</Girl>
 	<Girl
@@ -3744,74 +3407,51 @@
 			Name="Combat"
 			Min="10"
 			Max="75" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="10" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="40" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="20" />
-		<Trait
-			Name="Aggressive"
+		<Trait		Name="Aggressive"
 			Percent="40" />
-		<Trait
-			Name="Cute"
+		<Trait		Name="Cute"
 			Percent="25" />
-		<Trait
-			Name="Strong Magic"
+		<Trait		Name="Strong Magic"
 			Percent="50" />
-		<Trait
-			Name="Adventurer"
+		<Trait		Name="Adventurer"
 			Percent="35" />
-		<Trait
-			Name="Small Scars"
+		<Trait		Name="Small Scars"
 			Percent="20" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="45" />
-		<Trait
-			Name="Sadistic"
+		<Trait		Name="Sadistic"
 			Percent="15" />
-		<Trait
-			Name="Fleet of Foot"
+		<Trait		Name="Fleet of Foot"
 			Percent="60" />
-		<Trait
-			Name="Strange Eyes"
+		<Trait		Name="Strange Eyes"
 			Percent="5" />
-		<Trait
-			Name="Demon"
+		<Trait		Name="Demon"
 			Percent="100" />
-		<Trait
-			Name="Twisted"
+		<Trait		Name="Twisted"
 			Percent="5" />
-		<Trait
-			Name="Meek"
+		<Trait		Name="Meek"
 			Percent="5" />
-		<Trait
-			Name="Small Boobs"
+		<Trait		Name="Small Boobs"
 			Percent="90" />
-		<Trait
-			Name="Lolita"
+		<Trait		Name="Lolita"
 			Percent="90" />
-		<Trait
-			Name="Iron Will"
+		<Trait		Name="Iron Will"
 			Percent="5" />
-		<Trait
-			Name="Charming"
+		<Trait		Name="Charming"
 			Percent="20" />
-		<Trait
-			Name="Incorporeal"
+		<Trait		Name="Incorporeal"
 			Percent="5" />
-		<Trait
-			Name="Manly"
+		<Trait		Name="Manly"
 			Percent="5" />
-		<Trait
-			Name="Slow Learner"
+		<Trait		Name="Slow Learner"
 			Percent="5" />
-		<Trait
-			Name="Cute"
+		<Trait		Name="Cute"
 			Percent="50" />
 	</Girl>
 	<Girl
@@ -3950,77 +3590,53 @@
 			Name="Combat"
 			Min="5"
 			Max="25" />
-		<Trait
-			Name="Fast orgasms"
+		<Trait		Name="Fast orgasms"
 			Percent="50" />
-		<Trait
-			Name="Strong"
+		<Trait		Name="Strong"
 			Percent="40" />
-		<Trait
-			Name="Strong Magic"
+		<Trait		Name="Strong Magic"
 			Percent="50" />
-		<Trait
-			Name="Not Human"
+		<Trait		Name="Not Human"
 			Percent="100" />
-		<Trait
-			Name="Nymphomaniac"
+		<Trait		Name="Nymphomaniac"
 			Percent="60" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="30" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="30" />
-		<Trait
-			Name="Fleet of Foot"
+		<Trait		Name="Fleet of Foot"
 			Percent="55" />
-		<Trait
-			Name="Great Arse"
+		<Trait		Name="Great Arse"
 			Percent="25" />
-		<Trait
-			Name="Small Boobs"
+		<Trait		Name="Small Boobs"
 			Percent="5" />
-		<Trait
-			Name="Abnormally Large Boobs"
+		<Trait		Name="Abnormally Large Boobs"
 			Percent="5" />
-		<Trait
-			Name="Charismatic"
+		<Trait		Name="Charismatic"
 			Percent="5" />
-		<Trait
-			Name="Charming"
+		<Trait		Name="Charming"
 			Percent="5" />
-		<Trait
-			Name="Different Colored Eyes"
+		<Trait		Name="Different Colored Eyes"
 			Percent="15" />
-		<Trait
-			Name="Puffy Nipples"
+		<Trait		Name="Puffy Nipples"
 			Percent="15" />
-		<Trait
-			Name="Perky Nipples"
+		<Trait		Name="Perky Nipples"
 			Percent="15" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="25" />
-		<Trait
-			Name="Horrific Scars"
+		<Trait		Name="Horrific Scars"
 			Percent="8" />
-		<Trait
-			Name="Quick Learner"
+		<Trait		Name="Quick Learner"
 			Percent="8" />
-		<Trait
-			Name="Sexy Air"
+		<Trait		Name="Sexy Air"
 			Percent="10" />
-		<Trait
-			Name="Broken Will"
+		<Trait		Name="Broken Will"
 			Percent="5" />
-		<Trait
-			Name="Sterile"
+		<Trait		Name="Sterile"
 			Percent="5" />
-		<Trait
-			Name="Elegant"
+		<Trait		Name="Elegant"
 			Percent="5" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="5" />
 	</Girl>
 	<Girl
@@ -4159,53 +3775,37 @@
 			Name="Combat"
 			Min="0"
 			Max="30" />
-		<Trait
-			Name="Cool Person"
+		<Trait		Name="Cool Person"
 			Percent="20" />
-		<Trait
-			Name="Slow orgasms"
+		<Trait		Name="Slow orgasms"
 			Percent="20" />
-		<Trait
-			Name="Elegant"
+		<Trait		Name="Elegant"
 			Percent="10" />
-		<Trait
-			Name="Sexy Air"
+		<Trait		Name="Sexy Air"
 			Percent="40" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="10" />
-		<Trait
-			Name="Great Arse"
+		<Trait		Name="Great Arse"
 			Percent="10" />
-		<Trait
-			Name="Sadistic"
+		<Trait		Name="Sadistic"
 			Percent="1" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="10" />
-		<Trait
-			Name="Merciless"
+		<Trait		Name="Merciless"
 			Percent="10" />
-		<Trait
-			Name="Fearless"
+		<Trait		Name="Fearless"
 			Percent="10" />
-		<Trait
-			Name="Fleet of Foot"
+		<Trait		Name="Fleet of Foot"
 			Percent="50" />
-		<Trait
-			Name="Charismatic"
+		<Trait		Name="Charismatic"
 			Percent="50" />
-		<Trait
-			Name="Charming"
+		<Trait		Name="Charming"
 			Percent="50" />
-		<Trait
-			Name="Long Legs"
+		<Trait		Name="Long Legs"
 			Percent="5" />
-		<Trait
-			Name="Perky Nipples"
+		<Trait		Name="Perky Nipples"
 			Percent="5" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="70" />
 	</Girl>
 	<Girl
@@ -4344,80 +3944,55 @@
 			Name="Combat"
 			Min="3"
 			Max="35" />
-		<Trait
-			Name="Cool Person"
+		<Trait		Name="Cool Person"
 			Percent="20" />
-		<Trait
-			Name="Elegant"
+		<Trait		Name="Elegant"
 			Percent="10" />
-		<Trait
-			Name="Sexy Air"
+		<Trait		Name="Sexy Air"
 			Percent="40" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="10" />
-		<Trait
-			Name="Great Arse"
+		<Trait		Name="Great Arse"
 			Percent="10" />
-		<Trait
-			Name="Sadistic"
+		<Trait		Name="Sadistic"
 			Percent="1" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="10" />
-		<Trait
-			Name="Merciless"
+		<Trait		Name="Merciless"
 			Percent="10" />
-		<Trait
-			Name="Charismatic"
+		<Trait		Name="Charismatic"
 			Percent="50" />
-		<Trait
-			Name="Charming"
+		<Trait		Name="Charming"
 			Percent="50" />
-		<Trait
-			Name="Long Legs"
+		<Trait		Name="Long Legs"
 			Percent="5" />
-		<Trait
-			Name="Small Boobs"
+		<Trait		Name="Small Boobs"
 			Percent="20" />
-		<Trait
-			Name="Tsundere"
+		<Trait		Name="Tsundere"
 			Percent="10" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="50" />
-		<Trait
-			Name="Optimist"
+		<Trait		Name="Optimist"
 			Percent="5" />
-		<Trait
-			Name="Tough"
+		<Trait		Name="Tough"
 			Percent="1" />
-		<Trait
-			Name="Different Colored Eyes"
+		<Trait		Name="Different Colored Eyes"
 			Percent="1" />
-		<Trait
-			Name="Meek"
+		<Trait		Name="Meek"
 			Percent="10" />
-		<Trait
-			Name="Manly"
+		<Trait		Name="Manly"
 			Percent="5" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="5" />
-		<Trait
-			Name="Nervous"
+		<Trait		Name="Nervous"
 			Percent="5" />
-		<Trait
-			Name="Cute"
+		<Trait		Name="Cute"
 			Percent="50" />
-		<Trait
-			Name="Twisted"
+		<Trait		Name="Twisted"
 			Percent="1" />
-		<Trait
-			Name="Fearless"
+		<Trait		Name="Fearless"
 			Percent="1" />
-		<Trait
-			Name="Merciless"
+		<Trait		Name="Merciless"
 			Percent="1" />
 	</Girl>
 	<Girl
@@ -4556,77 +4131,53 @@
 			Name="Combat"
 			Min="0"
 			Max="30" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="50" />
-		<Trait
-			Name="Cool Person"
+		<Trait		Name="Cool Person"
 			Percent="20" />
-		<Trait
-			Name="Cute"
+		<Trait		Name="Cute"
 			Percent="20" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="15" />
-		<Trait
-			Name="Elegant"
+		<Trait		Name="Elegant"
 			Percent="40" />
-		<Trait
-			Name="Strong Magic"
+		<Trait		Name="Strong Magic"
 			Percent="25" />
-		<Trait
-			Name="Nymphomaniac"
+		<Trait		Name="Nymphomaniac"
 			Percent="20" />
-		<Trait
-			Name="Fast orgasms"
+		<Trait		Name="Fast orgasms"
 			Percent="15" />
-		<Trait
-			Name="Slow orgasms"
+		<Trait		Name="Slow orgasms"
 			Percent="15" />
-		<Trait
-			Name="Quick Learner"
+		<Trait		Name="Quick Learner"
 			Percent="15" />
-		<Trait
-			Name="Nervous"
+		<Trait		Name="Nervous"
 			Percent="15" />
-		<Trait
-			Name="Meek"
+		<Trait		Name="Meek"
 			Percent="25" />
-		<Trait
-			Name="Fleet of Foot"
+		<Trait		Name="Fleet of Foot"
 			Percent="20" />
-		<Trait
-			Name="Charming"
+		<Trait		Name="Charming"
 			Percent="20" />
-		<Trait
-			Name="Abnormally Large Boobs"
+		<Trait		Name="Abnormally Large Boobs"
 			Percent="10" />
-		<Trait
-			Name="Dependant"
+		<Trait		Name="Dependant"
 			Percent="10" />
-		<Trait
-			Name="Fragile"
+		<Trait		Name="Fragile"
 			Percent="10" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="15" />
-		<Trait
-			Name="Sexy Air"
+		<Trait		Name="Sexy Air"
 			Percent="15" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="20" />
-		<Trait
-			Name="Fairy Dust Addict"
+		<Trait		Name="Fairy Dust Addict"
 			Percent="5" />
-		<Trait
-			Name="Long Legs"
+		<Trait		Name="Long Legs"
 			Percent="10" />
-		<Trait
-			Name="Broken Will"
+		<Trait		Name="Broken Will"
 			Percent="10" />
-		<Trait
-			Name="Clumsy"
+		<Trait		Name="Clumsy"
 			Percent="10" />
 	</Girl>
 	<Girl
@@ -4765,86 +4316,59 @@
 			Name="Combat"
 			Min="0"
 			Max="30" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="50" />
-		<Trait
-			Name="Cool Person"
+		<Trait		Name="Cool Person"
 			Percent="20" />
-		<Trait
-			Name="Cute"
+		<Trait		Name="Cute"
 			Percent="20" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="15" />
-		<Trait
-			Name="Elegant"
+		<Trait		Name="Elegant"
 			Percent="40" />
-		<Trait
-			Name="Strong Magic"
+		<Trait		Name="Strong Magic"
 			Percent="25" />
-		<Trait
-			Name="Nymphomaniac"
+		<Trait		Name="Nymphomaniac"
 			Percent="20" />
-		<Trait
-			Name="Fast orgasms"
+		<Trait		Name="Fast orgasms"
 			Percent="15" />
-		<Trait
-			Name="Slow orgasms"
+		<Trait		Name="Slow orgasms"
 			Percent="15" />
-		<Trait
-			Name="Quick Learner"
+		<Trait		Name="Quick Learner"
 			Percent="15" />
-		<Trait
-			Name="Nervous"
+		<Trait		Name="Nervous"
 			Percent="15" />
-		<Trait
-			Name="Meek"
+		<Trait		Name="Meek"
 			Percent="25" />
-		<Trait
-			Name="Fleet of Foot"
+		<Trait		Name="Fleet of Foot"
 			Percent="20" />
-		<Trait
-			Name="Charming"
+		<Trait		Name="Charming"
 			Percent="20" />
-		<Trait
-			Name="Abnormally Large Boobs"
+		<Trait		Name="Abnormally Large Boobs"
 			Percent="10" />
-		<Trait
-			Name="Dependant"
+		<Trait		Name="Dependant"
 			Percent="10" />
-		<Trait
-			Name="Fragile"
+		<Trait		Name="Fragile"
 			Percent="10" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="15" />
-		<Trait
-			Name="Sexy Air"
+		<Trait		Name="Sexy Air"
 			Percent="15" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="20" />
-		<Trait
-			Name="Fairy Dust Addict"
+		<Trait		Name="Fairy Dust Addict"
 			Percent="5" />
-		<Trait
-			Name="Long Legs"
+		<Trait		Name="Long Legs"
 			Percent="10" />
-		<Trait
-			Name="Broken Will"
+		<Trait		Name="Broken Will"
 			Percent="10" />
-		<Trait
-			Name="Clumsy"
+		<Trait		Name="Clumsy"
 			Percent="10" />
-		<Trait
-			Name="Fearless"
+		<Trait		Name="Fearless"
 			Percent="5" />
-		<Trait
-			Name="Merciless"
+		<Trait		Name="Merciless"
 			Percent="5" />
-		<Trait
-			Name="Twisted"
+		<Trait		Name="Twisted"
 			Percent="5" />
 	</Girl>
 	<Girl
@@ -4983,92 +4507,63 @@
 			Name="Combat"
 			Min="0"
 			Max="50" />
-		<Trait
-			Name="Cool Person"
+		<Trait		Name="Cool Person"
 			Percent="20" />
-		<Trait
-			Name="Cute"
+		<Trait		Name="Cute"
 			Percent="20" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="15" />
-		<Trait
-			Name="Elegant"
+		<Trait		Name="Elegant"
 			Percent="40" />
-		<Trait
-			Name="Strong Magic"
+		<Trait		Name="Strong Magic"
 			Percent="25" />
-		<Trait
-			Name="Nymphomaniac"
+		<Trait		Name="Nymphomaniac"
 			Percent="20" />
-		<Trait
-			Name="Fast orgasms"
+		<Trait		Name="Fast orgasms"
 			Percent="15" />
-		<Trait
-			Name="Slow orgasms"
+		<Trait		Name="Slow orgasms"
 			Percent="15" />
-		<Trait
-			Name="Quick Learner"
+		<Trait		Name="Quick Learner"
 			Percent="15" />
-		<Trait
-			Name="Nervous"
+		<Trait		Name="Nervous"
 			Percent="15" />
-		<Trait
-			Name="Meek"
+		<Trait		Name="Meek"
 			Percent="25" />
-		<Trait
-			Name="Fleet of Foot"
+		<Trait		Name="Fleet of Foot"
 			Percent="20" />
-		<Trait
-			Name="Charming"
+		<Trait		Name="Charming"
 			Percent="20" />
-		<Trait
-			Name="Abnormally Large Boobs"
+		<Trait		Name="Abnormally Large Boobs"
 			Percent="10" />
-		<Trait
-			Name="Dependant"
+		<Trait		Name="Dependant"
 			Percent="10" />
-		<Trait
-			Name="Fragile"
+		<Trait		Name="Fragile"
 			Percent="10" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="15" />
-		<Trait
-			Name="Sexy Air"
+		<Trait		Name="Sexy Air"
 			Percent="15" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="20" />
-		<Trait
-			Name="Fairy Dust Addict"
+		<Trait		Name="Fairy Dust Addict"
 			Percent="5" />
-		<Trait
-			Name="Long Legs"
+		<Trait		Name="Long Legs"
 			Percent="10" />
-		<Trait
-			Name="Broken Will"
+		<Trait		Name="Broken Will"
 			Percent="10" />
-		<Trait
-			Name="Clumsy"
+		<Trait		Name="Clumsy"
 			Percent="10" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="40" />
-		<Trait
-			Name="Adventurer"
+		<Trait		Name="Adventurer"
 			Percent="25" />
-		<Trait
-			Name="Psychic"
+		<Trait		Name="Psychic"
 			Percent="10" />
-		<Trait
-			Name="Cool Scars"
+		<Trait		Name="Cool Scars"
 			Percent="10" />
-		<Trait
-			Name="Small Scars"
+		<Trait		Name="Small Scars"
 			Percent="5" />
-		<Trait
-			Name="Strong"
+		<Trait		Name="Strong"
 			Percent="10" />
 	</Girl>
 	<Girl
@@ -5207,86 +4702,59 @@
 			Name="Combat"
 			Min="0"
 			Max="50" />
-		<Trait
-			Name="Cool Person"
+		<Trait		Name="Cool Person"
 			Percent="20" />
-		<Trait
-			Name="Cute"
+		<Trait		Name="Cute"
 			Percent="20" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="15" />
-		<Trait
-			Name="Elegant"
+		<Trait		Name="Elegant"
 			Percent="40" />
-		<Trait
-			Name="Strong Magic"
+		<Trait		Name="Strong Magic"
 			Percent="25" />
-		<Trait
-			Name="Nymphomaniac"
+		<Trait		Name="Nymphomaniac"
 			Percent="20" />
-		<Trait
-			Name="Fast orgasms"
+		<Trait		Name="Fast orgasms"
 			Percent="15" />
-		<Trait
-			Name="Slow orgasms"
+		<Trait		Name="Slow orgasms"
 			Percent="15" />
-		<Trait
-			Name="Quick Learner"
+		<Trait		Name="Quick Learner"
 			Percent="15" />
-		<Trait
-			Name="Nervous"
+		<Trait		Name="Nervous"
 			Percent="15" />
-		<Trait
-			Name="Meek"
+		<Trait		Name="Meek"
 			Percent="25" />
-		<Trait
-			Name="Fleet of Foot"
+		<Trait		Name="Fleet of Foot"
 			Percent="20" />
-		<Trait
-			Name="Charming"
+		<Trait		Name="Charming"
 			Percent="20" />
-		<Trait
-			Name="Abnormally Large Boobs"
+		<Trait		Name="Abnormally Large Boobs"
 			Percent="10" />
-		<Trait
-			Name="Dependant"
+		<Trait		Name="Dependant"
 			Percent="10" />
-		<Trait
-			Name="Fragile"
+		<Trait		Name="Fragile"
 			Percent="10" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="15" />
-		<Trait
-			Name="Sexy Air"
+		<Trait		Name="Sexy Air"
 			Percent="15" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="20" />
-		<Trait
-			Name="Fairy Dust Addict"
+		<Trait		Name="Fairy Dust Addict"
 			Percent="5" />
-		<Trait
-			Name="Long Legs"
+		<Trait		Name="Long Legs"
 			Percent="10" />
-		<Trait
-			Name="Clumsy"
+		<Trait		Name="Clumsy"
 			Percent="10" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="40" />
-		<Trait
-			Name="Adventurer"
+		<Trait		Name="Adventurer"
 			Percent="25" />
-		<Trait
-			Name="Psychic"
+		<Trait		Name="Psychic"
 			Percent="10" />
-		<Trait
-			Name="Cool Scars"
+		<Trait		Name="Cool Scars"
 			Percent="10" />
-		<Trait
-			Name="Small Scars"
+		<Trait		Name="Small Scars"
 			Percent="5" />
 	</Girl>
 	<Girl
@@ -5425,80 +4893,55 @@
 			Name="Combat"
 			Min="0"
 			Max="60" />
-		<Trait
-			Name="Cool Person"
+		<Trait		Name="Cool Person"
 			Percent="20" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="15" />
-		<Trait
-			Name="Elegant"
+		<Trait		Name="Elegant"
 			Percent="40" />
-		<Trait
-			Name="Nymphomaniac"
+		<Trait		Name="Nymphomaniac"
 			Percent="20" />
-		<Trait
-			Name="Fast orgasms"
+		<Trait		Name="Fast orgasms"
 			Percent="15" />
-		<Trait
-			Name="Slow orgasms"
+		<Trait		Name="Slow orgasms"
 			Percent="15" />
-		<Trait
-			Name="Quick Learner"
+		<Trait		Name="Quick Learner"
 			Percent="15" />
-		<Trait
-			Name="Nervous"
+		<Trait		Name="Nervous"
 			Percent="15" />
-		<Trait
-			Name="Meek"
+		<Trait		Name="Meek"
 			Percent="25" />
-		<Trait
-			Name="Fleet of Foot"
+		<Trait		Name="Fleet of Foot"
 			Percent="20" />
-		<Trait
-			Name="Charming"
+		<Trait		Name="Charming"
 			Percent="20" />
-		<Trait
-			Name="Abnormally Large Boobs"
+		<Trait		Name="Abnormally Large Boobs"
 			Percent="10" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="15" />
-		<Trait
-			Name="Sexy Air"
+		<Trait		Name="Sexy Air"
 			Percent="15" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="20" />
-		<Trait
-			Name="Fairy Dust Addict"
+		<Trait		Name="Fairy Dust Addict"
 			Percent="5" />
-		<Trait
-			Name="Long Legs"
+		<Trait		Name="Long Legs"
 			Percent="10" />
-		<Trait
-			Name="Clumsy"
+		<Trait		Name="Clumsy"
 			Percent="10" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="40" />
-		<Trait
-			Name="Adventurer"
+		<Trait		Name="Adventurer"
 			Percent="25" />
-		<Trait
-			Name="Cool Scars"
+		<Trait		Name="Cool Scars"
 			Percent="10" />
-		<Trait
-			Name="Small Scars"
+		<Trait		Name="Small Scars"
 			Percent="5" />
-		<Trait
-			Name="Strong"
+		<Trait		Name="Strong"
 			Percent="10" />
-		<Trait
-			Name="Assassin"
+		<Trait		Name="Assassin"
 			Percent="10" />
-		<Trait
-			Name="Tsundere"
+		<Trait		Name="Tsundere"
 			Percent="10" />
 	</Girl>
 	<Girl
@@ -5637,95 +5080,65 @@
 			Name="Combat"
 			Min="0"
 			Max="80" />
-		<Trait
-			Name="Cool Person"
+		<Trait		Name="Cool Person"
 			Percent="20" />
-		<Trait
-			Name="Cute"
+		<Trait		Name="Cute"
 			Percent="20" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="15" />
-		<Trait
-			Name="Elegant"
+		<Trait		Name="Elegant"
 			Percent="40" />
-		<Trait
-			Name="Strong Magic"
+		<Trait		Name="Strong Magic"
 			Percent="25" />
-		<Trait
-			Name="Nymphomaniac"
+		<Trait		Name="Nymphomaniac"
 			Percent="20" />
-		<Trait
-			Name="Fast orgasms"
+		<Trait		Name="Fast orgasms"
 			Percent="15" />
-		<Trait
-			Name="Slow orgasms"
+		<Trait		Name="Slow orgasms"
 			Percent="15" />
-		<Trait
-			Name="Quick Learner"
+		<Trait		Name="Quick Learner"
 			Percent="15" />
-		<Trait
-			Name="Nervous"
+		<Trait		Name="Nervous"
 			Percent="15" />
-		<Trait
-			Name="Meek"
+		<Trait		Name="Meek"
 			Percent="25" />
-		<Trait
-			Name="Fleet of Foot"
+		<Trait		Name="Fleet of Foot"
 			Percent="20" />
-		<Trait
-			Name="Charming"
+		<Trait		Name="Charming"
 			Percent="20" />
-		<Trait
-			Name="Abnormally Large Boobs"
+		<Trait		Name="Abnormally Large Boobs"
 			Percent="10" />
-		<Trait
-			Name="Dependant"
+		<Trait		Name="Dependant"
 			Percent="10" />
-		<Trait
-			Name="Fragile"
+		<Trait		Name="Fragile"
 			Percent="10" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="15" />
-		<Trait
-			Name="Sexy Air"
+		<Trait		Name="Sexy Air"
 			Percent="15" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="20" />
-		<Trait
-			Name="Fairy Dust Addict"
+		<Trait		Name="Fairy Dust Addict"
 			Percent="5" />
-		<Trait
-			Name="Long Legs"
+		<Trait		Name="Long Legs"
 			Percent="10" />
-		<Trait
-			Name="Clumsy"
+		<Trait		Name="Clumsy"
 			Percent="10" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="40" />
-		<Trait
-			Name="Adventurer"
+		<Trait		Name="Adventurer"
 			Percent="25" />
-		<Trait
-			Name="Psychic"
+		<Trait		Name="Psychic"
 			Percent="10" />
-		<Trait
-			Name="Cool Scars"
+		<Trait		Name="Cool Scars"
 			Percent="10" />
-		<Trait
-			Name="Small Scars"
+		<Trait		Name="Small Scars"
 			Percent="5" />
-		<Trait
-			Name="Tsundere"
+		<Trait		Name="Tsundere"
 			Percent="10" />
-		<Trait
-			Name="Sadistic"
+		<Trait		Name="Sadistic"
 			Percent="10" />
-		<Trait
-			Name="Horrific Scars"
+		<Trait		Name="Horrific Scars"
 			Percent="5" />
 	</Girl>
 	<Girl
@@ -5864,104 +5277,71 @@
 			Name="Combat"
 			Min="0"
 			Max="50" />
-		<Trait
-			Name="Cool Person"
+		<Trait		Name="Cool Person"
 			Percent="20" />
-		<Trait
-			Name="Cute"
+		<Trait		Name="Cute"
 			Percent="20" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="15" />
-		<Trait
-			Name="Elegant"
+		<Trait		Name="Elegant"
 			Percent="40" />
-		<Trait
-			Name="Strong Magic"
+		<Trait		Name="Strong Magic"
 			Percent="25" />
-		<Trait
-			Name="Nymphomaniac"
+		<Trait		Name="Nymphomaniac"
 			Percent="20" />
-		<Trait
-			Name="Fast orgasms"
+		<Trait		Name="Fast orgasms"
 			Percent="15" />
-		<Trait
-			Name="Slow orgasms"
+		<Trait		Name="Slow orgasms"
 			Percent="15" />
-		<Trait
-			Name="Quick Learner"
+		<Trait		Name="Quick Learner"
 			Percent="15" />
-		<Trait
-			Name="Nervous"
+		<Trait		Name="Nervous"
 			Percent="15" />
-		<Trait
-			Name="Meek"
+		<Trait		Name="Meek"
 			Percent="25" />
-		<Trait
-			Name="Fleet of Foot"
+		<Trait		Name="Fleet of Foot"
 			Percent="20" />
-		<Trait
-			Name="Charming"
+		<Trait		Name="Charming"
 			Percent="20" />
-		<Trait
-			Name="Abnormally Large Boobs"
+		<Trait		Name="Abnormally Large Boobs"
 			Percent="10" />
-		<Trait
-			Name="Dependant"
+		<Trait		Name="Dependant"
 			Percent="10" />
-		<Trait
-			Name="Fragile"
+		<Trait		Name="Fragile"
 			Percent="10" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="15" />
-		<Trait
-			Name="Sexy Air"
+		<Trait		Name="Sexy Air"
 			Percent="15" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="20" />
-		<Trait
-			Name="Fairy Dust Addict"
+		<Trait		Name="Fairy Dust Addict"
 			Percent="5" />
-		<Trait
-			Name="Long Legs"
+		<Trait		Name="Long Legs"
 			Percent="10" />
-		<Trait
-			Name="Clumsy"
+		<Trait		Name="Clumsy"
 			Percent="10" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="40" />
-		<Trait
-			Name="Adventurer"
+		<Trait		Name="Adventurer"
 			Percent="25" />
-		<Trait
-			Name="Psychic"
+		<Trait		Name="Psychic"
 			Percent="10" />
-		<Trait
-			Name="Cool Scars"
+		<Trait		Name="Cool Scars"
 			Percent="10" />
-		<Trait
-			Name="Small Scars"
+		<Trait		Name="Small Scars"
 			Percent="5" />
-		<Trait
-			Name="Tsundere"
+		<Trait		Name="Tsundere"
 			Percent="10" />
-		<Trait
-			Name="Sadistic"
+		<Trait		Name="Sadistic"
 			Percent="10" />
-		<Trait
-			Name="Horrific Scars"
+		<Trait		Name="Horrific Scars"
 			Percent="5" />
-		<Trait
-			Name="Twisted"
+		<Trait		Name="Twisted"
 			Percent="5" />
-		<Trait
-			Name="Pessimist"
+		<Trait		Name="Pessimist"
 			Percent="5" />
-		<Trait
-			Name="Iron Will"
+		<Trait		Name="Iron Will"
 			Percent="5" />
 	</Girl>
 	<Girl
@@ -6100,53 +5480,37 @@
 			Name="Combat"
 			Min="0"
 			Max="10" />
-		<Trait
-			Name="Slow Learner"
+		<Trait		Name="Slow Learner"
 			Percent="50" />
-		<Trait
-			Name="Cute"
+		<Trait		Name="Cute"
 			Percent="80" />
-		<Trait
-			Name="Psychic"
+		<Trait		Name="Psychic"
 			Percent="33" />
-		<Trait
-			Name="Strong Magic"
+		<Trait		Name="Strong Magic"
 			Percent="50" />
-		<Trait
-			Name="Not Human"
+		<Trait		Name="Not Human"
 			Percent="100" />
-		<Trait
-			Name="Lolita"
+		<Trait		Name="Lolita"
 			Percent="100" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="50" />
-		<Trait
-			Name="Nymphomaniac"
+		<Trait		Name="Nymphomaniac"
 			Percent="25" />
-		<Trait
-			Name="Small Boobs"
+		<Trait		Name="Small Boobs"
 			Percent="100" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="33" />
-		<Trait
-			Name="Meek"
+		<Trait		Name="Meek"
 			Percent="25" />
-		<Trait
-			Name="Fearless"
+		<Trait		Name="Fearless"
 			Percent="25" />
-		<Trait
-			Name="Optimist"
+		<Trait		Name="Optimist"
 			Percent="50" />
-		<Trait
-			Name="Fragile"
+		<Trait		Name="Fragile"
 			Percent="75" />
-		<Trait
-			Name="Strange Eyes"
+		<Trait		Name="Strange Eyes"
 			Percent="33" />
-		<Trait
-			Name="Retarded"
+		<Trait		Name="Retarded"
 			Percent="10" />
 	</Girl>
 	<Girl
@@ -6285,80 +5649,55 @@
 			Name="Combat"
 			Min="10"
 			Max="65" />
-		<Trait
-			Name="Cute"
+		<Trait		Name="Cute"
 			Percent="50" />
-		<Trait
-			Name="Sexy Air"
+		<Trait		Name="Sexy Air"
 			Percent="5" />
-		<Trait
-			Name="Sadistic"
+		<Trait		Name="Sadistic"
 			Percent="5" />
-		<Trait
-			Name="Merciless"
+		<Trait		Name="Merciless"
 			Percent="5" />
-		<Trait
-			Name="Fearless"
+		<Trait		Name="Fearless"
 			Percent="5" />
-		<Trait
-			Name="Twisted"
+		<Trait		Name="Twisted"
 			Percent="1" />
-		<Trait
-			Name="Optimist"
+		<Trait		Name="Optimist"
 			Percent="5" />
-		<Trait
-			Name="Fast orgasms"
+		<Trait		Name="Fast orgasms"
 			Percent="5" />
-		<Trait
-			Name="Slow Learner"
+		<Trait		Name="Slow Learner"
 			Percent="5" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="5" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="5" />
-		<Trait
-			Name="Fleet of Foot"
+		<Trait		Name="Fleet of Foot"
 			Percent="5" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="50" />
-		<Trait
-			Name="Assassin"
+		<Trait		Name="Assassin"
 			Percent="5" />
-		<Trait
-			Name="Nervous"
+		<Trait		Name="Nervous"
 			Percent="15" />
-		<Trait
-			Name="Small Boobs"
+		<Trait		Name="Small Boobs"
 			Percent="50" />
-		<Trait
-			Name="Pessimist"
+		<Trait		Name="Pessimist"
 			Percent="70" />
-		<Trait
-			Name="Fragile"
+		<Trait		Name="Fragile"
 			Percent="1" />
-		<Trait
-			Name="Sterile"
+		<Trait		Name="Sterile"
 			Percent="1" />
-		<Trait
-			Name="Fleet of Foot"
+		<Trait		Name="Fleet of Foot"
 			Percent="10" />
-		<Trait
-			Name="Dependant"
+		<Trait		Name="Dependant"
 			Percent="1" />
-		<Trait
-			Name="Twisted"
+		<Trait		Name="Twisted"
 			Percent="1" />
-		<Trait
-			Name="Yandere"
+		<Trait		Name="Yandere"
 			Percent="40" />
-		<Trait
-			Name="Tsundere"
+		<Trait		Name="Tsundere"
 			Percent="10" />
-		<Trait
-			Name="Charismatic"
+		<Trait		Name="Charismatic"
 			Percent="1" />
 	</Girl>
 	<Girl
@@ -6497,80 +5836,55 @@
 			Name="Combat"
 			Min="10"
 			Max="65" />
-		<Trait
-			Name="Cute"
+		<Trait		Name="Cute"
 			Percent="50" />
-		<Trait
-			Name="Sexy Air"
+		<Trait		Name="Sexy Air"
 			Percent="5" />
-		<Trait
-			Name="Sadistic"
+		<Trait		Name="Sadistic"
 			Percent="5" />
-		<Trait
-			Name="Merciless"
+		<Trait		Name="Merciless"
 			Percent="5" />
-		<Trait
-			Name="Fearless"
+		<Trait		Name="Fearless"
 			Percent="5" />
-		<Trait
-			Name="Twisted"
+		<Trait		Name="Twisted"
 			Percent="1" />
-		<Trait
-			Name="Optimist"
+		<Trait		Name="Optimist"
 			Percent="5" />
-		<Trait
-			Name="Fast orgasms"
+		<Trait		Name="Fast orgasms"
 			Percent="5" />
-		<Trait
-			Name="Slow Learner"
+		<Trait		Name="Slow Learner"
 			Percent="5" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="5" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="5" />
-		<Trait
-			Name="Fleet of Foot"
+		<Trait		Name="Fleet of Foot"
 			Percent="5" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="50" />
-		<Trait
-			Name="Assassin"
+		<Trait		Name="Assassin"
 			Percent="5" />
-		<Trait
-			Name="Nervous"
+		<Trait		Name="Nervous"
 			Percent="15" />
-		<Trait
-			Name="Small Boobs"
+		<Trait		Name="Small Boobs"
 			Percent="50" />
-		<Trait
-			Name="Pessimist"
+		<Trait		Name="Pessimist"
 			Percent="70" />
-		<Trait
-			Name="Fragile"
+		<Trait		Name="Fragile"
 			Percent="1" />
-		<Trait
-			Name="Sterile"
+		<Trait		Name="Sterile"
 			Percent="1" />
-		<Trait
-			Name="Fleet of Foot"
+		<Trait		Name="Fleet of Foot"
 			Percent="10" />
-		<Trait
-			Name="Dependant"
+		<Trait		Name="Dependant"
 			Percent="1" />
-		<Trait
-			Name="Twisted"
+		<Trait		Name="Twisted"
 			Percent="1" />
-		<Trait
-			Name="Yandere"
+		<Trait		Name="Yandere"
 			Percent="40" />
-		<Trait
-			Name="Tsundere"
+		<Trait		Name="Tsundere"
 			Percent="10" />
-		<Trait
-			Name="Charismatic"
+		<Trait		Name="Charismatic"
 			Percent="1" />
 	</Girl>
 	<Girl
@@ -6709,80 +6023,55 @@
 			Name="Combat"
 			Min="10"
 			Max="35" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="75" />
-		<Trait
-			Name="Cool Person"
+		<Trait		Name="Cool Person"
 			Percent="50" />
-		<Trait
-			Name="Quick Learner"
+		<Trait		Name="Quick Learner"
 			Percent="50" />
-		<Trait
-			Name="Strong"
+		<Trait		Name="Strong"
 			Percent="50" />
-		<Trait
-			Name="Strong Magic"
+		<Trait		Name="Strong Magic"
 			Percent="50" />
-		<Trait
-			Name="Lolita"
+		<Trait		Name="Lolita"
 			Percent="25" />
-		<Trait
-			Name="Elegant"
+		<Trait		Name="Elegant"
 			Percent="25" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="25" />
-		<Trait
-			Name="Great Arse"
+		<Trait		Name="Great Arse"
 			Percent="25" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="25" />
-		<Trait
-			Name="Pessimist"
+		<Trait		Name="Pessimist"
 			Percent="25" />
-		<Trait
-			Name="Optimist"
+		<Trait		Name="Optimist"
 			Percent="25" />
-		<Trait
-			Name="Dependant"
+		<Trait		Name="Dependant"
 			Percent="25" />
-		<Trait
-			Name="Sterile"
+		<Trait		Name="Sterile"
 			Percent="25" />
-		<Trait
-			Name="Fleet of Foot"
+		<Trait		Name="Fleet of Foot"
 			Percent="75" />
-		<Trait
-			Name="Tough"
+		<Trait		Name="Tough"
 			Percent="75" />
-		<Trait
-			Name="Long Legs"
+		<Trait		Name="Long Legs"
 			Percent="50" />
-		<Trait
-			Name="Retarded"
+		<Trait		Name="Retarded"
 			Percent="15" />
-		<Trait
-			Name="Malformed"
+		<Trait		Name="Malformed"
 			Percent="15" />
-		<Trait
-			Name="MILF"
+		<Trait		Name="MILF"
 			Percent="15" />
-		<Trait
-			Name="Clumsy"
+		<Trait		Name="Clumsy"
 			Percent="15" />
-		<Trait
-			Name="Horrific Scars"
+		<Trait		Name="Horrific Scars"
 			Percent="15" />
-		<Trait
-			Name="Shroud Addict"
+		<Trait		Name="Shroud Addict"
 			Percent="15" />
-		<Trait
-			Name="Fairy Dust Addict"
+		<Trait		Name="Fairy Dust Addict"
 			Percent="15" />
-		<Trait
-			Name="Nervous"
+		<Trait		Name="Nervous"
 			Percent="15" />
 	</Girl>
 	<Girl
@@ -6921,35 +6210,25 @@
 			Name="Combat"
 			Min="0"
 			Max="10" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="10" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="100" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="25" />
-		<Trait
-			Name="Nervous"
+		<Trait		Name="Nervous"
 			Percent="20" />
-		<Trait
-			Name="Nymphomaniac"
+		<Trait		Name="Nymphomaniac"
 			Percent="100" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="40" />
-		<Trait
-			Name="Sexy Air"
+		<Trait		Name="Sexy Air"
 			Percent="30" />
-		<Trait
-			Name="Fast orgasms"
+		<Trait		Name="Fast orgasms"
 			Percent="70" />
-		<Trait
-			Name="Cool Person"
+		<Trait		Name="Cool Person"
 			Percent="10" />
-		<Trait
-			Name="Slow Learner"
+		<Trait		Name="Slow Learner"
 			Percent="10" />
 	</Girl>
 	<Girl
@@ -7088,104 +6367,71 @@
 			Name="Combat"
 			Min="25"
 			Max="30" />
-		<Trait
-			Name="Retarded"
+		<Trait		Name="Retarded"
 			Percent="30" />
-		<Trait
-			Name="Malformed"
+		<Trait		Name="Malformed"
 			Percent="30" />
-		<Trait
-			Name="Incest"
+		<Trait		Name="Incest"
 			Percent="30" />
-		<Trait
-			Name="Strange Eyes"
+		<Trait		Name="Strange Eyes"
 			Percent="30" />
-		<Trait
-			Name="Different Colored Eyes"
+		<Trait		Name="Different Colored Eyes"
 			Percent="30" />
-		<Trait
-			Name="Long Legs"
+		<Trait		Name="Long Legs"
 			Percent="30" />
-		<Trait
-			Name="Charming"
+		<Trait		Name="Charming"
 			Percent="50" />
-		<Trait
-			Name="Fragile"
+		<Trait		Name="Fragile"
 			Percent="40" />
-		<Trait
-			Name="Tough"
+		<Trait		Name="Tough"
 			Percent="40" />
-		<Trait
-			Name="Fleet of Foot"
+		<Trait		Name="Fleet of Foot"
 			Percent="40" />
-		<Trait
-			Name="Sterile"
+		<Trait		Name="Sterile"
 			Percent="40" />
-		<Trait
-			Name="Dependant"
+		<Trait		Name="Dependant"
 			Percent="40" />
-		<Trait
-			Name="Pessimist"
+		<Trait		Name="Pessimist"
 			Percent="40" />
-		<Trait
-			Name="Optimist"
+		<Trait		Name="Optimist"
 			Percent="40" />
-		<Trait
-			Name="Meek"
+		<Trait		Name="Meek"
 			Percent="40" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="40" />
-		<Trait
-			Name="Great Arse"
+		<Trait		Name="Great Arse"
 			Percent="50" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="50" />
-		<Trait
-			Name="Sexy Air"
+		<Trait		Name="Sexy Air"
 			Percent="50" />
-		<Trait
-			Name="Elegant"
+		<Trait		Name="Elegant"
 			Percent="50" />
-		<Trait
-			Name="Nymphomaniac"
+		<Trait		Name="Nymphomaniac"
 			Percent="50" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="50" />
-		<Trait
-			Name="Nervous"
+		<Trait		Name="Nervous"
 			Percent="50" />
-		<Trait
-			Name="Psychic"
+		<Trait		Name="Psychic"
 			Percent="50" />
-		<Trait
-			Name="Cute"
+		<Trait		Name="Cute"
 			Percent="50" />
-		<Trait
-			Name="Quick Learner"
+		<Trait		Name="Quick Learner"
 			Percent="50" />
-		<Trait
-			Name="Slow Learner"
+		<Trait		Name="Slow Learner"
 			Percent="50" />
-		<Trait
-			Name="Slow orgasms"
+		<Trait		Name="Slow orgasms"
 			Percent="50" />
-		<Trait
-			Name="Fast orgasms"
+		<Trait		Name="Fast orgasms"
 			Percent="50" />
-		<Trait
-			Name="Nerd"
+		<Trait		Name="Nerd"
 			Percent="50" />
-		<Trait
-			Name="Clumsy"
+		<Trait		Name="Clumsy"
 			Percent="50" />
-		<Trait
-			Name="Cool Person"
+		<Trait		Name="Cool Person"
 			Percent="100" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="100" />
 	</Girl>
 	<Girl
@@ -7324,68 +6570,47 @@
 			Name="Combat"
 			Min="15"
 			Max="30" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="100" />
-		<Trait
-			Name="Cool Person"
+		<Trait		Name="Cool Person"
 			Percent="100" />
-		<Trait
-			Name="Quick Learner"
+		<Trait		Name="Quick Learner"
 			Percent="100" />
-		<Trait
-			Name="Psychic"
+		<Trait		Name="Psychic"
 			Percent="40" />
-		<Trait
-			Name="Nervous"
+		<Trait		Name="Nervous"
 			Percent="40" />
-		<Trait
-			Name="Nymphomaniac"
+		<Trait		Name="Nymphomaniac"
 			Percent="40" />
-		<Trait
-			Name="Elegant"
+		<Trait		Name="Elegant"
 			Percent="100" />
-		<Trait
-			Name="Sexy Air"
+		<Trait		Name="Sexy Air"
 			Percent="75" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="75" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="40" />
-		<Trait
-			Name="Meek"
+		<Trait		Name="Meek"
 			Percent="40" />
-		<Trait
-			Name="Optimist"
+		<Trait		Name="Optimist"
 			Percent="40" />
-		<Trait
-			Name="Dependant"
+		<Trait		Name="Dependant"
 			Percent="40" />
-		<Trait
-			Name="Sterile"
+		<Trait		Name="Sterile"
 			Percent="40" />
-		<Trait
-			Name="Fleet of Foot"
+		<Trait		Name="Fleet of Foot"
 			Percent="40" />
-		<Trait
-			Name="Tough"
+		<Trait		Name="Tough"
 			Percent="40" />
-		<Trait
-			Name="Charismatic"
+		<Trait		Name="Charismatic"
 			Percent="100" />
-		<Trait
-			Name="Long Legs"
+		<Trait		Name="Long Legs"
 			Percent="100" />
-		<Trait
-			Name="Incest"
+		<Trait		Name="Incest"
 			Percent="75" />
-		<Trait
-			Name="Malformed"
+		<Trait		Name="Malformed"
 			Percent="30" />
-		<Trait
-			Name="Retarded"
+		<Trait		Name="Retarded"
 			Percent="30" />
 	</Girl>
 	<Girl
@@ -7524,86 +6749,59 @@
 			Name="Combat"
 			Min="10"
 			Max="30" />
-		<Trait
-			Name="Strange Eyes"
+		<Trait		Name="Strange Eyes"
 			Percent="30" />
-		<Trait
-			Name="Different Colored Eyes"
+		<Trait		Name="Different Colored Eyes"
 			Percent="30" />
-		<Trait
-			Name="Perky Nipples"
+		<Trait		Name="Perky Nipples"
 			Percent="30" />
-		<Trait
-			Name="Long Legs"
+		<Trait		Name="Long Legs"
 			Percent="30" />
-		<Trait
-			Name="Charming"
+		<Trait		Name="Charming"
 			Percent="30" />
-		<Trait
-			Name="Mind Fucked"
+		<Trait		Name="Mind Fucked"
 			Percent="60" />
-		<Trait
-			Name="Fragile"
+		<Trait		Name="Fragile"
 			Percent="60" />
-		<Trait
-			Name="Fleet of Foot"
+		<Trait		Name="Fleet of Foot"
 			Percent="60" />
-		<Trait
-			Name="Dependant"
+		<Trait		Name="Dependant"
 			Percent="60" />
-		<Trait
-			Name="Optimist"
+		<Trait		Name="Optimist"
 			Percent="60" />
-		<Trait
-			Name="Meek"
+		<Trait		Name="Meek"
 			Percent="60" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="40" />
-		<Trait
-			Name="Small Boobs"
+		<Trait		Name="Small Boobs"
 			Percent="70" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="40" />
-		<Trait
-			Name="Sexy Air"
+		<Trait		Name="Sexy Air"
 			Percent="40" />
-		<Trait
-			Name="Elegant"
+		<Trait		Name="Elegant"
 			Percent="40" />
-		<Trait
-			Name="Nymphomaniac"
+		<Trait		Name="Nymphomaniac"
 			Percent="40" />
-		<Trait
-			Name="Lolita"
+		<Trait		Name="Lolita"
 			Percent="60" />
-		<Trait
-			Name="Aggressive"
+		<Trait		Name="Aggressive"
 			Percent="60" />
-		<Trait
-			Name="Slow Learner"
+		<Trait		Name="Slow Learner"
 			Percent="50" />
-		<Trait
-			Name="Quick Learner"
+		<Trait		Name="Quick Learner"
 			Percent="50" />
-		<Trait
-			Name="Slow orgasms"
+		<Trait		Name="Slow orgasms"
 			Percent="50" />
-		<Trait
-			Name="Fast orgasms"
+		<Trait		Name="Fast orgasms"
 			Percent="50" />
-		<Trait
-			Name="Fake orgasm expert"
+		<Trait		Name="Fake orgasm expert"
 			Percent="50" />
-		<Trait
-			Name="Clumsy"
+		<Trait		Name="Clumsy"
 			Percent="50" />
-		<Trait
-			Name="Nerd"
+		<Trait		Name="Nerd"
 			Percent="50" />
-		<Trait
-			Name="Cool Person"
+		<Trait		Name="Cool Person"
 			Percent="50" />
 	</Girl>
 	<Girl
@@ -7742,86 +6940,59 @@
 			Name="Combat"
 			Min="15"
 			Max="50" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="5" />
-		<Trait
-			Name="Small Scars"
+		<Trait		Name="Small Scars"
 			Percent="25" />
-		<Trait
-			Name="Cool Scars"
+		<Trait		Name="Cool Scars"
 			Percent="20" />
-		<Trait
-			Name="Nerd"
+		<Trait		Name="Nerd"
 			Percent="15" />
-		<Trait
-			Name="Quick Learner"
+		<Trait		Name="Quick Learner"
 			Percent="15" />
-		<Trait
-			Name="Strong"
+		<Trait		Name="Strong"
 			Percent="20" />
-		<Trait
-			Name="Strong Magic"
+		<Trait		Name="Strong Magic"
 			Percent="15" />
-		<Trait
-			Name="Shroud Addict"
+		<Trait		Name="Shroud Addict"
 			Percent="5" />
-		<Trait
-			Name="Aggressive"
+		<Trait		Name="Aggressive"
 			Percent="5" />
-		<Trait
-			Name="Sexy Air"
+		<Trait		Name="Sexy Air"
 			Percent="5" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="10" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="10" />
-		<Trait
-			Name="Tsundere"
+		<Trait		Name="Tsundere"
 			Percent="10" />
-		<Trait
-			Name="Yandere"
+		<Trait		Name="Yandere"
 			Percent="10" />
-		<Trait
-			Name="Fearless"
+		<Trait		Name="Fearless"
 			Percent="5" />
-		<Trait
-			Name="Sterile"
+		<Trait		Name="Sterile"
 			Percent="5" />
-		<Trait
-			Name="Fleet of Foot"
+		<Trait		Name="Fleet of Foot"
 			Percent="15" />
-		<Trait
-			Name="Tough"
+		<Trait		Name="Tough"
 			Percent="20" />
-		<Trait
-			Name="Eye Patch"
+		<Trait		Name="Eye Patch"
 			Percent="6" />
-		<Trait
-			Name="Long Legs"
+		<Trait		Name="Long Legs"
 			Percent="5" />
-		<Trait
-			Name="Puffy Nipples"
+		<Trait		Name="Puffy Nipples"
 			Percent="5" />
-		<Trait
-			Name="Perky Nipples"
+		<Trait		Name="Perky Nipples"
 			Percent="5" />
-		<Trait
-			Name="MILF"
+		<Trait		Name="MILF"
 			Percent="2" />
-		<Trait
-			Name="Abnormally Large Boobs"
+		<Trait		Name="Abnormally Large Boobs"
 			Percent="3" />
-		<Trait
-			Name="Small Boobs"
+		<Trait		Name="Small Boobs"
 			Percent="5" />
-		<Trait
-			Name="Adventurer"
+		<Trait		Name="Adventurer"
 			Percent="25" />
-		<Trait
-			Name="Assassin"
+		<Trait		Name="Assassin"
 			Percent="10" />
 	</Girl>
 	<Girl
@@ -7960,62 +7131,43 @@
 			Name="Combat"
 			Min="0"
 			Max="10" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="5" />
-		<Trait
-			Name="Clumsy"
+		<Trait		Name="Clumsy"
 			Percent="15" />
-		<Trait
-			Name="Fast orgasms"
+		<Trait		Name="Fast orgasms"
 			Percent="5" />
-		<Trait
-			Name="Slow orgasms"
+		<Trait		Name="Slow orgasms"
 			Percent="5" />
-		<Trait
-			Name="Quick Learner"
+		<Trait		Name="Quick Learner"
 			Percent="10" />
-		<Trait
-			Name="Slow Learner"
+		<Trait		Name="Slow Learner"
 			Percent="10" />
-		<Trait
-			Name="Cute"
+		<Trait		Name="Cute"
 			Percent="25" />
-		<Trait
-			Name="Shroud Addict"
+		<Trait		Name="Shroud Addict"
 			Percent="5" />
-		<Trait
-			Name="Fairy Dust Addict"
+		<Trait		Name="Fairy Dust Addict"
 			Percent="5" />
-		<Trait
-			Name="Nervous"
+		<Trait		Name="Nervous"
 			Percent="15" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="20" />
-		<Trait
-			Name="Nymphomaniac"
+		<Trait		Name="Nymphomaniac"
 			Percent="20" />
-		<Trait
-			Name="Fake orgasm expert"
+		<Trait		Name="Fake orgasm expert"
 			Percent="40" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="10" />
-		<Trait
-			Name="Great Arse"
+		<Trait		Name="Great Arse"
 			Percent="10" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="20" />
-		<Trait
-			Name="Meek"
+		<Trait		Name="Meek"
 			Percent="30" />
-		<Trait
-			Name="Dependant"
+		<Trait		Name="Dependant"
 			Percent="5" />
-		<Trait
-			Name="MILF"
+		<Trait		Name="MILF"
 			Percent="5" />
 	</Girl>
 	<Girl
@@ -8154,47 +7306,33 @@
 			Name="Combat"
 			Min="0"
 			Max="50" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="50" />
-		<Trait
-			Name="Clumsy"
+		<Trait		Name="Clumsy"
 			Percent="25" />
-		<Trait
-			Name="Slow Learner"
+		<Trait		Name="Slow Learner"
 			Percent="25" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="25" />
-		<Trait
-			Name="Nymphomaniac"
+		<Trait		Name="Nymphomaniac"
 			Percent="25" />
-		<Trait
-			Name="Elegant"
+		<Trait		Name="Elegant"
 			Percent="25" />
-		<Trait
-			Name="Fake orgasm expert"
+		<Trait		Name="Fake orgasm expert"
 			Percent="25" />
-		<Trait
-			Name="Sexy Air"
+		<Trait		Name="Sexy Air"
 			Percent="25" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="25" />
-		<Trait
-			Name="Meek"
+		<Trait		Name="Meek"
 			Percent="25" />
-		<Trait
-			Name="Dependant"
+		<Trait		Name="Dependant"
 			Percent="25" />
-		<Trait
-			Name="Long Legs"
+		<Trait		Name="Long Legs"
 			Percent="25" />
-		<Trait
-			Name="Puffy Nipples"
+		<Trait		Name="Puffy Nipples"
 			Percent="25" />
-		<Trait
-			Name="MILF"
+		<Trait		Name="MILF"
 			Percent="100" />
 	</Girl>
 	<Girl
@@ -8333,29 +7471,21 @@
 			Name="Combat"
 			Min="40"
 			Max="70" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="40" />
-		<Trait
-			Name="Small Scars"
+		<Trait		Name="Small Scars"
 			Percent="20" />
-		<Trait
-			Name="Cool Scars"
+		<Trait		Name="Cool Scars"
 			Percent="20" />
-		<Trait
-			Name="Horrific Scars"
+		<Trait		Name="Horrific Scars"
 			Percent="10" />
-		<Trait
-			Name="Fast orgasms"
+		<Trait		Name="Fast orgasms"
 			Percent="35" />
-		<Trait
-			Name="Cute"
+		<Trait		Name="Cute"
 			Percent="45" />
-		<Trait
-			Name="Not Human"
+		<Trait		Name="Not Human"
 			Percent="100" />
-		<Trait
-			Name="Cat Girl"
+		<Trait		Name="Cat Girl"
 			Percent="100" />
 	</Girl>
 	<Girl
@@ -8494,68 +7624,47 @@
 			Name="Combat"
 			Min="15"
 			Max="50" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="30" />
-		<Trait
-			Name="Small Scars"
+		<Trait		Name="Small Scars"
 			Percent="30" />
-		<Trait
-			Name="Horrific Scars"
+		<Trait		Name="Horrific Scars"
 			Percent="30" />
-		<Trait
-			Name="Cool Person"
+		<Trait		Name="Cool Person"
 			Percent="30" />
-		<Trait
-			Name="Quick Learner"
+		<Trait		Name="Quick Learner"
 			Percent="40" />
-		<Trait
-			Name="Cute"
+		<Trait		Name="Cute"
 			Percent="40" />
-		<Trait
-			Name="Strong"
+		<Trait		Name="Strong"
 			Percent="60" />
-		<Trait
-			Name="Strong Magic"
+		<Trait		Name="Strong Magic"
 			Percent="80" />
-		<Trait
-			Name="Not Human"
+		<Trait		Name="Not Human"
 			Percent="100" />
-		<Trait
-			Name="Adventurer"
+		<Trait		Name="Adventurer"
 			Percent="80" />
-		<Trait
-			Name="Assassin"
+		<Trait		Name="Assassin"
 			Percent="25" />
-		<Trait
-			Name="Elegant"
+		<Trait		Name="Elegant"
 			Percent="65" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="50" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="50" />
-		<Trait
-			Name="Merciless"
+		<Trait		Name="Merciless"
 			Percent="50" />
-		<Trait
-			Name="Fearless"
+		<Trait		Name="Fearless"
 			Percent="50" />
-		<Trait
-			Name="Iron Will"
+		<Trait		Name="Iron Will"
 			Percent="50" />
-		<Trait
-			Name="Fleet of Foot"
+		<Trait		Name="Fleet of Foot"
 			Percent="50" />
-		<Trait
-			Name="Tough"
+		<Trait		Name="Tough"
 			Percent="50" />
-		<Trait
-			Name="Fragile"
+		<Trait		Name="Fragile"
 			Percent="35" />
-		<Trait
-			Name="Strange Eyes"
+		<Trait		Name="Strange Eyes"
 			Percent="45" />
 	</Girl>
 	<Girl
@@ -8694,50 +7803,35 @@
 			Name="Combat"
 			Min="15"
 			Max="20" />
-		<Trait
-			Name="Cool Person"
+		<Trait		Name="Cool Person"
 			Percent="100" />
-		<Trait
-			Name="Quick Learner"
+		<Trait		Name="Quick Learner"
 			Percent="75" />
-		<Trait
-			Name="Psychic"
+		<Trait		Name="Psychic"
 			Percent="75" />
-		<Trait
-			Name="Strong Magic"
+		<Trait		Name="Strong Magic"
 			Percent="75" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="75" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="75" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="50" />
-		<Trait
-			Name="Meek"
+		<Trait		Name="Meek"
 			Percent="50" />
-		<Trait
-			Name="Pessimist"
+		<Trait		Name="Pessimist"
 			Percent="50" />
-		<Trait
-			Name="Optimist"
+		<Trait		Name="Optimist"
 			Percent="50" />
-		<Trait
-			Name="Dependant"
+		<Trait		Name="Dependant"
 			Percent="50" />
-		<Trait
-			Name="Tough"
+		<Trait		Name="Tough"
 			Percent="50" />
-		<Trait
-			Name="Mind Fucked"
+		<Trait		Name="Mind Fucked"
 			Percent="50" />
-		<Trait
-			Name="Long Legs"
+		<Trait		Name="Long Legs"
 			Percent="50" />
-		<Trait
-			Name="Malformed"
+		<Trait		Name="Malformed"
 			Percent="50" />
 	</Girl>
 	<Girl
@@ -8876,50 +7970,35 @@
 			Name="Combat"
 			Min="35"
 			Max="35" />
-		<Trait
-			Name="Cool Person"
+		<Trait		Name="Cool Person"
 			Percent="100" />
-		<Trait
-			Name="Quick Learner"
+		<Trait		Name="Quick Learner"
 			Percent="75" />
-		<Trait
-			Name="Psychic"
+		<Trait		Name="Psychic"
 			Percent="75" />
-		<Trait
-			Name="Strong Magic"
+		<Trait		Name="Strong Magic"
 			Percent="75" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="75" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="75" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="50" />
-		<Trait
-			Name="Meek"
+		<Trait		Name="Meek"
 			Percent="50" />
-		<Trait
-			Name="Pessimist"
+		<Trait		Name="Pessimist"
 			Percent="50" />
-		<Trait
-			Name="Optimist"
+		<Trait		Name="Optimist"
 			Percent="50" />
-		<Trait
-			Name="Dependant"
+		<Trait		Name="Dependant"
 			Percent="50" />
-		<Trait
-			Name="Tough"
+		<Trait		Name="Tough"
 			Percent="50" />
-		<Trait
-			Name="Mind Fucked"
+		<Trait		Name="Mind Fucked"
 			Percent="50" />
-		<Trait
-			Name="Long Legs"
+		<Trait		Name="Long Legs"
 			Percent="50" />
-		<Trait
-			Name="Malformed"
+		<Trait		Name="Malformed"
 			Percent="50" />
 	</Girl>
 	<Girl
@@ -9058,86 +8137,59 @@
 			Name="Combat"
 			Min="20"
 			Max="40" />
-		<Trait
-			Name="MILF"
+		<Trait		Name="MILF"
 			Percent="25" />
-		<Trait
-			Name="Strange Eyes"
+		<Trait		Name="Strange Eyes"
 			Percent="25" />
-		<Trait
-			Name="Long Legs"
+		<Trait		Name="Long Legs"
 			Percent="75" />
-		<Trait
-			Name="Charming"
+		<Trait		Name="Charming"
 			Percent="75" />
-		<Trait
-			Name="Tough"
+		<Trait		Name="Tough"
 			Percent="50" />
-		<Trait
-			Name="Fleet of Foot"
+		<Trait		Name="Fleet of Foot"
 			Percent="100" />
-		<Trait
-			Name="Dependant"
+		<Trait		Name="Dependant"
 			Percent="50" />
-		<Trait
-			Name="Pessimist"
+		<Trait		Name="Pessimist"
 			Percent="50" />
-		<Trait
-			Name="Optimist"
+		<Trait		Name="Optimist"
 			Percent="50" />
-		<Trait
-			Name="Meek"
+		<Trait		Name="Meek"
 			Percent="50" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="75" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="75" />
-		<Trait
-			Name="Sexy Air"
+		<Trait		Name="Sexy Air"
 			Percent="75" />
-		<Trait
-			Name="Elegant"
+		<Trait		Name="Elegant"
 			Percent="50" />
-		<Trait
-			Name="Nymphomaniac"
+		<Trait		Name="Nymphomaniac"
 			Percent="100" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="100" />
-		<Trait
-			Name="Nervous"
+		<Trait		Name="Nervous"
 			Percent="50" />
-		<Trait
-			Name="Lolita"
+		<Trait		Name="Lolita"
 			Percent="50" />
-		<Trait
-			Name="Shroud Addict"
+		<Trait		Name="Shroud Addict"
 			Percent="50" />
-		<Trait
-			Name="Psychic"
+		<Trait		Name="Psychic"
 			Percent="50" />
-		<Trait
-			Name="Cute"
+		<Trait		Name="Cute"
 			Percent="50" />
-		<Trait
-			Name="Quick Learner"
+		<Trait		Name="Quick Learner"
 			Percent="100" />
-		<Trait
-			Name="Fast orgasms"
+		<Trait		Name="Fast orgasms"
 			Percent="50" />
-		<Trait
-			Name="Clumsy"
+		<Trait		Name="Clumsy"
 			Percent="50" />
-		<Trait
-			Name="Nerd"
+		<Trait		Name="Nerd"
 			Percent="50" />
-		<Trait
-			Name="Cool Person"
+		<Trait		Name="Cool Person"
 			Percent="50" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="75" />
 	</Girl>
 	<Girl
@@ -9276,50 +8328,35 @@
 			Name="Combat"
 			Min="40"
 			Max="70" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="60" />
-		<Trait
-			Name="Small Scars"
+		<Trait		Name="Small Scars"
 			Percent="40" />
-		<Trait
-			Name="Cool Scars"
+		<Trait		Name="Cool Scars"
 			Percent="40" />
-		<Trait
-			Name="Horrific Scars"
+		<Trait		Name="Horrific Scars"
 			Percent="40" />
-		<Trait
-			Name="Clumsy"
+		<Trait		Name="Clumsy"
 			Percent="30" />
-		<Trait
-			Name="Slow Learner"
+		<Trait		Name="Slow Learner"
 			Percent="50" />
-		<Trait
-			Name="Strong"
+		<Trait		Name="Strong"
 			Percent="80" />
-		<Trait
-			Name="Aggressive"
+		<Trait		Name="Aggressive"
 			Percent="70" />
-		<Trait
-			Name="Not Human"
+		<Trait		Name="Not Human"
 			Percent="100" />
-		<Trait
-			Name="Sadistic"
+		<Trait		Name="Sadistic"
 			Percent="40" />
-		<Trait
-			Name="Yandere"
+		<Trait		Name="Yandere"
 			Percent="40" />
-		<Trait
-			Name="Manly"
+		<Trait		Name="Manly"
 			Percent="70" />
-		<Trait
-			Name="Merciless"
+		<Trait		Name="Merciless"
 			Percent="20" />
-		<Trait
-			Name="Fearless"
+		<Trait		Name="Fearless"
 			Percent="20" />
-		<Trait
-			Name="Tough"
+		<Trait		Name="Tough"
 			Percent="60" />
 	</Girl>
 	<Girl
@@ -9458,137 +8495,93 @@
 			Name="Combat"
 			Min="20"
 			Max="60" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="5" />
-		<Trait
-			Name="Small Scars"
+		<Trait		Name="Small Scars"
 			Percent="15" />
-		<Trait
-			Name="Cool Scars"
+		<Trait		Name="Cool Scars"
 			Percent="15" />
-		<Trait
-			Name="Horrific Scars"
+		<Trait		Name="Horrific Scars"
 			Percent="15" />
-		<Trait
-			Name="Cool Person"
+		<Trait		Name="Cool Person"
 			Percent="40" />
-		<Trait
-			Name="Fast orgasms"
+		<Trait		Name="Fast orgasms"
 			Percent="35" />
-		<Trait
-			Name="Slow orgasms"
+		<Trait		Name="Slow orgasms"
 			Percent="25" />
-		<Trait
-			Name="Quick Learner"
+		<Trait		Name="Quick Learner"
 			Percent="50" />
-		<Trait
-			Name="Slow Learner"
+		<Trait		Name="Slow Learner"
 			Percent="50" />
-		<Trait
-			Name="Cute"
+		<Trait		Name="Cute"
 			Percent="75" />
-		<Trait
-			Name="Strong"
+		<Trait		Name="Strong"
 			Percent="55" />
-		<Trait
-			Name="Shroud Addict"
+		<Trait		Name="Shroud Addict"
 			Percent="15" />
-		<Trait
-			Name="Fairy Dust Addict"
+		<Trait		Name="Fairy Dust Addict"
 			Percent="15" />
-		<Trait
-			Name="Viras Blood Addict"
+		<Trait		Name="Viras Blood Addict"
 			Percent="15" />
-		<Trait
-			Name="Aggressive"
+		<Trait		Name="Aggressive"
 			Percent="70" />
-		<Trait
-			Name="Adventurer"
+		<Trait		Name="Adventurer"
 			Percent="90" />
-		<Trait
-			Name="Lolita"
+		<Trait		Name="Lolita"
 			Percent="30" />
-		<Trait
-			Name="Nymphomaniac"
+		<Trait		Name="Nymphomaniac"
 			Percent="25" />
-		<Trait
-			Name="Fake orgasm expert"
+		<Trait		Name="Fake orgasm expert"
 			Percent="25" />
-		<Trait
-			Name="Sexy Air"
+		<Trait		Name="Sexy Air"
 			Percent="40" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="45" />
-		<Trait
-			Name="Great Arse"
+		<Trait		Name="Great Arse"
 			Percent="65" />
-		<Trait
-			Name="Small Boobs"
+		<Trait		Name="Small Boobs"
 			Percent="40" />
-		<Trait
-			Name="Masochist"
+		<Trait		Name="Masochist"
 			Percent="25" />
-		<Trait
-			Name="Sadistic"
+		<Trait		Name="Sadistic"
 			Percent="80" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="35" />
-		<Trait
-			Name="Tsundere"
+		<Trait		Name="Tsundere"
 			Percent="55" />
-		<Trait
-			Name="Yandere"
+		<Trait		Name="Yandere"
 			Percent="85" />
-		<Trait
-			Name="Meek"
+		<Trait		Name="Meek"
 			Percent="5" />
-		<Trait
-			Name="Manly"
+		<Trait		Name="Manly"
 			Percent="30" />
-		<Trait
-			Name="Merciless"
+		<Trait		Name="Merciless"
 			Percent="90" />
-		<Trait
-			Name="Fearless"
+		<Trait		Name="Fearless"
 			Percent="85" />
-		<Trait
-			Name="Iron Will"
+		<Trait		Name="Iron Will"
 			Percent="80" />
-		<Trait
-			Name="Twisted"
+		<Trait		Name="Twisted"
 			Percent="80" />
-		<Trait
-			Name="Optimist"
+		<Trait		Name="Optimist"
 			Percent="65" />
-		<Trait
-			Name="Pessimist"
+		<Trait		Name="Pessimist"
 			Percent="10" />
-		<Trait
-			Name="Dependant"
+		<Trait		Name="Dependant"
 			Percent="5" />
-		<Trait
-			Name="Fleet of Foot"
+		<Trait		Name="Fleet of Foot"
 			Percent="60" />
-		<Trait
-			Name="Tough"
+		<Trait		Name="Tough"
 			Percent="65" />
-		<Trait
-			Name="Eye Patch"
+		<Trait		Name="Eye Patch"
 			Percent="65" />
-		<Trait
-			Name="Charismatic"
+		<Trait		Name="Charismatic"
 			Percent="40" />
-		<Trait
-			Name="Charming"
+		<Trait		Name="Charming"
 			Percent="50" />
-		<Trait
-			Name="Puffy Nipples"
+		<Trait		Name="Puffy Nipples"
 			Percent="25" />
-		<Trait
-			Name="Perky Nipples"
+		<Trait		Name="Perky Nipples"
 			Percent="25" />
 	</Girl>
 	<Girl
@@ -9727,62 +8720,43 @@
 			Name="Combat"
 			Min="5"
 			Max="5" />
-		<Trait
-			Name="Slow orgasms"
+		<Trait		Name="Slow orgasms"
 			Percent="5" />
-		<Trait
-			Name="Slow Learner"
+		<Trait		Name="Slow Learner"
 			Percent="5" />
-		<Trait
-			Name="Aggressive"
+		<Trait		Name="Aggressive"
 			Percent="5" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="5" />
-		<Trait
-			Name="Nymphomaniac"
+		<Trait		Name="Nymphomaniac"
 			Percent="5" />
-		<Trait
-			Name="Elegant"
+		<Trait		Name="Elegant"
 			Percent="50" />
-		<Trait
-			Name="Great Arse"
+		<Trait		Name="Great Arse"
 			Percent="10" />
-		<Trait
-			Name="Masochist"
+		<Trait		Name="Masochist"
 			Percent="10" />
-		<Trait
-			Name="Sadistic"
+		<Trait		Name="Sadistic"
 			Percent="10" />
-		<Trait
-			Name="Tsundere"
+		<Trait		Name="Tsundere"
 			Percent="60" />
-		<Trait
-			Name="Twisted"
+		<Trait		Name="Twisted"
 			Percent="1" />
-		<Trait
-			Name="Sterile"
+		<Trait		Name="Sterile"
 			Percent="1" />
-		<Trait
-			Name="Fleet of Foot"
+		<Trait		Name="Fleet of Foot"
 			Percent="1" />
-		<Trait
-			Name="Fragile"
+		<Trait		Name="Fragile"
 			Percent="1" />
-		<Trait
-			Name="Charismatic"
+		<Trait		Name="Charismatic"
 			Percent="10" />
-		<Trait
-			Name="Charming"
+		<Trait		Name="Charming"
 			Percent="10" />
-		<Trait
-			Name="Long Legs"
+		<Trait		Name="Long Legs"
 			Percent="1" />
-		<Trait
-			Name="Perky Nipples"
+		<Trait		Name="Perky Nipples"
 			Percent="1" />
-		<Trait
-			Name="Incorporeal"
+		<Trait		Name="Incorporeal"
 			Percent="1" />
 	</Girl>
 	<Girl
@@ -9921,41 +8895,29 @@
 			Name="Combat"
 			Min="0"
 			Max="20" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="10" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="10" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="50" />
-		<Trait
-			Name="Nervous"
+		<Trait		Name="Nervous"
 			Percent="70" />
-		<Trait
-			Name="Nymphomaniac"
+		<Trait		Name="Nymphomaniac"
 			Percent="10" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="35" />
-		<Trait
-			Name="Sexy Air"
+		<Trait		Name="Sexy Air"
 			Percent="10" />
-		<Trait
-			Name="Fast orgasms"
+		<Trait		Name="Fast orgasms"
 			Percent="50" />
-		<Trait
-			Name="Strong Magic"
+		<Trait		Name="Strong Magic"
 			Percent="30" />
-		<Trait
-			Name="Nerd"
+		<Trait		Name="Nerd"
 			Percent="50" />
-		<Trait
-			Name="Clumsy"
+		<Trait		Name="Clumsy"
 			Percent="40" />
-		<Trait
-			Name="Cute"
+		<Trait		Name="Cute"
 			Percent="60" />
 	</Girl>
 	<Girl
@@ -10094,71 +9056,49 @@
 			Name="Combat"
 			Min="50"
 			Max="65" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="50" />
-		<Trait
-			Name="Cool Person"
+		<Trait		Name="Cool Person"
 			Percent="50" />
-		<Trait
-			Name="Fast orgasms"
+		<Trait		Name="Fast orgasms"
 			Percent="50" />
-		<Trait
-			Name="Quick Learner"
+		<Trait		Name="Quick Learner"
 			Percent="50" />
-		<Trait
-			Name="Cute"
+		<Trait		Name="Cute"
 			Percent="50" />
-		<Trait
-			Name="Psychic"
+		<Trait		Name="Psychic"
 			Percent="50" />
-		<Trait
-			Name="Adventurer"
+		<Trait		Name="Adventurer"
 			Percent="50" />
-		<Trait
-			Name="Nervous"
+		<Trait		Name="Nervous"
 			Percent="75" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="50" />
-		<Trait
-			Name="Nymphomaniac"
+		<Trait		Name="Nymphomaniac"
 			Percent="100" />
-		<Trait
-			Name="Elegant"
+		<Trait		Name="Elegant"
 			Percent="25" />
-		<Trait
-			Name="Fake orgasm expert"
+		<Trait		Name="Fake orgasm expert"
 			Percent="25" />
-		<Trait
-			Name="Sexy Air"
+		<Trait		Name="Sexy Air"
 			Percent="50" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="50" />
-		<Trait
-			Name="Small Boobs"
+		<Trait		Name="Small Boobs"
 			Percent="50" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="50" />
-		<Trait
-			Name="Meek"
+		<Trait		Name="Meek"
 			Percent="50" />
-		<Trait
-			Name="Optimist"
+		<Trait		Name="Optimist"
 			Percent="90" />
-		<Trait
-			Name="Tough"
+		<Trait		Name="Tough"
 			Percent="90" />
-		<Trait
-			Name="Fragile"
+		<Trait		Name="Fragile"
 			Percent="75" />
-		<Trait
-			Name="Charismatic"
+		<Trait		Name="Charismatic"
 			Percent="75" />
-		<Trait
-			Name="Long Legs"
+		<Trait		Name="Long Legs"
 			Percent="75" />
 	</Girl>
 	<Girl
@@ -10297,89 +9237,61 @@
 			Name="Combat"
 			Min="10"
 			Max="65" />
-		<Trait
-			Name="Cute"
+		<Trait		Name="Cute"
 			Percent="50" />
-		<Trait
-			Name="Sexy Air"
+		<Trait		Name="Sexy Air"
 			Percent="5" />
-		<Trait
-			Name="Sadistic"
+		<Trait		Name="Sadistic"
 			Percent="5" />
-		<Trait
-			Name="Merciless"
+		<Trait		Name="Merciless"
 			Percent="5" />
-		<Trait
-			Name="Fearless"
+		<Trait		Name="Fearless"
 			Percent="5" />
-		<Trait
-			Name="Twisted"
+		<Trait		Name="Twisted"
 			Percent="1" />
-		<Trait
-			Name="Optimist"
+		<Trait		Name="Optimist"
 			Percent="5" />
-		<Trait
-			Name="Fast orgasms"
+		<Trait		Name="Fast orgasms"
 			Percent="5" />
-		<Trait
-			Name="Slow Learner"
+		<Trait		Name="Slow Learner"
 			Percent="5" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="5" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="5" />
-		<Trait
-			Name="Fleet of Foot"
+		<Trait		Name="Fleet of Foot"
 			Percent="5" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="50" />
-		<Trait
-			Name="Assassin"
+		<Trait		Name="Assassin"
 			Percent="5" />
-		<Trait
-			Name="Nervous"
+		<Trait		Name="Nervous"
 			Percent="15" />
-		<Trait
-			Name="Pessimist"
+		<Trait		Name="Pessimist"
 			Percent="70" />
-		<Trait
-			Name="Fragile"
+		<Trait		Name="Fragile"
 			Percent="1" />
-		<Trait
-			Name="Sterile"
+		<Trait		Name="Sterile"
 			Percent="1" />
-		<Trait
-			Name="Fleet of Foot"
+		<Trait		Name="Fleet of Foot"
 			Percent="10" />
-		<Trait
-			Name="Dependant"
+		<Trait		Name="Dependant"
 			Percent="1" />
-		<Trait
-			Name="Twisted"
+		<Trait		Name="Twisted"
 			Percent="1" />
-		<Trait
-			Name="Yandere"
+		<Trait		Name="Yandere"
 			Percent="40" />
-		<Trait
-			Name="Tsundere"
+		<Trait		Name="Tsundere"
 			Percent="10" />
-		<Trait
-			Name="Charismatic"
+		<Trait		Name="Charismatic"
 			Percent="1" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="70" />
-		<Trait
-			Name="Small Scars"
+		<Trait		Name="Small Scars"
 			Percent="10" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="10" />
-		<Trait
-			Name="Puffy Nipples"
+		<Trait		Name="Puffy Nipples"
 			Percent="10" />
 	</Girl>
 	<Girl
@@ -10518,77 +9430,53 @@
 			Name="Combat"
 			Min="15"
 			Max="60" />
-		<Trait
-			Name="Slow orgasms"
+		<Trait		Name="Slow orgasms"
 			Percent="5" />
-		<Trait
-			Name="Slow Learner"
+		<Trait		Name="Slow Learner"
 			Percent="5" />
-		<Trait
-			Name="Aggressive"
+		<Trait		Name="Aggressive"
 			Percent="5" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="5" />
-		<Trait
-			Name="Nymphomaniac"
+		<Trait		Name="Nymphomaniac"
 			Percent="5" />
-		<Trait
-			Name="Elegant"
+		<Trait		Name="Elegant"
 			Percent="50" />
-		<Trait
-			Name="Masochist"
+		<Trait		Name="Masochist"
 			Percent="10" />
-		<Trait
-			Name="Sadistic"
+		<Trait		Name="Sadistic"
 			Percent="10" />
-		<Trait
-			Name="Twisted"
+		<Trait		Name="Twisted"
 			Percent="1" />
-		<Trait
-			Name="Sterile"
+		<Trait		Name="Sterile"
 			Percent="1" />
-		<Trait
-			Name="Fleet of Foot"
+		<Trait		Name="Fleet of Foot"
 			Percent="1" />
-		<Trait
-			Name="Fragile"
+		<Trait		Name="Fragile"
 			Percent="1" />
-		<Trait
-			Name="Charismatic"
+		<Trait		Name="Charismatic"
 			Percent="10" />
-		<Trait
-			Name="Charming"
+		<Trait		Name="Charming"
 			Percent="10" />
-		<Trait
-			Name="Long Legs"
+		<Trait		Name="Long Legs"
 			Percent="1" />
-		<Trait
-			Name="Perky Nipples"
+		<Trait		Name="Perky Nipples"
 			Percent="1" />
-		<Trait
-			Name="Incorporeal"
+		<Trait		Name="Incorporeal"
 			Percent="1" />
-		<Trait
-			Name="Manly"
+		<Trait		Name="Manly"
 			Percent="1" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="30" />
-		<Trait
-			Name="Great Arse"
+		<Trait		Name="Great Arse"
 			Percent="30" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="10" />
-		<Trait
-			Name="Fearless"
+		<Trait		Name="Fearless"
 			Percent="30" />
-		<Trait
-			Name="Iron Will"
+		<Trait		Name="Iron Will"
 			Percent="30" />
-		<Trait
-			Name="Merciless"
+		<Trait		Name="Merciless"
 			Percent="30" />
 	</Girl>
 	<Girl
@@ -10727,65 +9615,45 @@
 			Name="Combat"
 			Min="15"
 			Max="60" />
-		<Trait
-			Name="Slow orgasms"
+		<Trait		Name="Slow orgasms"
 			Percent="5" />
-		<Trait
-			Name="Slow Learner"
+		<Trait		Name="Slow Learner"
 			Percent="5" />
-		<Trait
-			Name="Aggressive"
+		<Trait		Name="Aggressive"
 			Percent="5" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="5" />
-		<Trait
-			Name="Nymphomaniac"
+		<Trait		Name="Nymphomaniac"
 			Percent="5" />
-		<Trait
-			Name="Twisted"
+		<Trait		Name="Twisted"
 			Percent="1" />
-		<Trait
-			Name="Sterile"
+		<Trait		Name="Sterile"
 			Percent="1" />
-		<Trait
-			Name="Fleet of Foot"
+		<Trait		Name="Fleet of Foot"
 			Percent="1" />
-		<Trait
-			Name="Fragile"
+		<Trait		Name="Fragile"
 			Percent="1" />
-		<Trait
-			Name="Charismatic"
+		<Trait		Name="Charismatic"
 			Percent="10" />
-		<Trait
-			Name="Charming"
+		<Trait		Name="Charming"
 			Percent="10" />
-		<Trait
-			Name="Long Legs"
+		<Trait		Name="Long Legs"
 			Percent="1" />
-		<Trait
-			Name="Perky Nipples"
+		<Trait		Name="Perky Nipples"
 			Percent="1" />
-		<Trait
-			Name="Incorporeal"
+		<Trait		Name="Incorporeal"
 			Percent="1" />
-		<Trait
-			Name="Manly"
+		<Trait		Name="Manly"
 			Percent="1" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="30" />
-		<Trait
-			Name="Great Arse"
+		<Trait		Name="Great Arse"
 			Percent="30" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="10" />
-		<Trait
-			Name="Fearless"
+		<Trait		Name="Fearless"
 			Percent="30" />
-		<Trait
-			Name="Merciless"
+		<Trait		Name="Merciless"
 			Percent="30" />
 	</Girl>
 	<Girl
@@ -10924,62 +9792,43 @@
 			Name="Combat"
 			Min="15"
 			Max="60" />
-		<Trait
-			Name="Slow orgasms"
+		<Trait		Name="Slow orgasms"
 			Percent="5" />
-		<Trait
-			Name="Slow Learner"
+		<Trait		Name="Slow Learner"
 			Percent="5" />
-		<Trait
-			Name="Aggressive"
+		<Trait		Name="Aggressive"
 			Percent="5" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="5" />
-		<Trait
-			Name="Nymphomaniac"
+		<Trait		Name="Nymphomaniac"
 			Percent="5" />
-		<Trait
-			Name="Elegant"
+		<Trait		Name="Elegant"
 			Percent="50" />
-		<Trait
-			Name="Twisted"
+		<Trait		Name="Twisted"
 			Percent="1" />
-		<Trait
-			Name="Sterile"
+		<Trait		Name="Sterile"
 			Percent="1" />
-		<Trait
-			Name="Fleet of Foot"
+		<Trait		Name="Fleet of Foot"
 			Percent="1" />
-		<Trait
-			Name="Fragile"
+		<Trait		Name="Fragile"
 			Percent="1" />
-		<Trait
-			Name="Charismatic"
+		<Trait		Name="Charismatic"
 			Percent="10" />
-		<Trait
-			Name="Charming"
+		<Trait		Name="Charming"
 			Percent="10" />
-		<Trait
-			Name="Long Legs"
+		<Trait		Name="Long Legs"
 			Percent="1" />
-		<Trait
-			Name="Perky Nipples"
+		<Trait		Name="Perky Nipples"
 			Percent="1" />
-		<Trait
-			Name="Incorporeal"
+		<Trait		Name="Incorporeal"
 			Percent="1" />
-		<Trait
-			Name="Manly"
+		<Trait		Name="Manly"
 			Percent="1" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="30" />
-		<Trait
-			Name="Great Arse"
+		<Trait		Name="Great Arse"
 			Percent="30" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="10" />
 	</Girl>
 	<Girl
@@ -11118,80 +9967,55 @@
 			Name="Combat"
 			Min="10"
 			Max="20" />
-		<Trait
-			Name="Cool Person"
+		<Trait		Name="Cool Person"
 			Percent="100" />
-		<Trait
-			Name="Nerd"
+		<Trait		Name="Nerd"
 			Percent="40" />
-		<Trait
-			Name="Clumsy"
+		<Trait		Name="Clumsy"
 			Percent="40" />
-		<Trait
-			Name="Fast orgasms"
+		<Trait		Name="Fast orgasms"
 			Percent="40" />
-		<Trait
-			Name="Slow orgasms"
+		<Trait		Name="Slow orgasms"
 			Percent="40" />
-		<Trait
-			Name="Quick Learner"
+		<Trait		Name="Quick Learner"
 			Percent="40" />
-		<Trait
-			Name="Slow Learner"
+		<Trait		Name="Slow Learner"
 			Percent="40" />
-		<Trait
-			Name="Psychic"
+		<Trait		Name="Psychic"
 			Percent="60" />
-		<Trait
-			Name="Lolita"
+		<Trait		Name="Lolita"
 			Percent="60" />
-		<Trait
-			Name="Elegant"
+		<Trait		Name="Elegant"
 			Percent="60" />
-		<Trait
-			Name="Nymphomaniac"
+		<Trait		Name="Nymphomaniac"
 			Percent="60" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="100" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="100" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="40" />
-		<Trait
-			Name="Optimist"
+		<Trait		Name="Optimist"
 			Percent="60" />
-		<Trait
-			Name="Pessimist"
+		<Trait		Name="Pessimist"
 			Percent="40" />
-		<Trait
-			Name="Dependant"
+		<Trait		Name="Dependant"
 			Percent="40" />
-		<Trait
-			Name="Fleet of Foot"
+		<Trait		Name="Fleet of Foot"
 			Percent="40" />
-		<Trait
-			Name="Tough"
+		<Trait		Name="Tough"
 			Percent="60" />
-		<Trait
-			Name="Long Legs"
+		<Trait		Name="Long Legs"
 			Percent="60" />
-		<Trait
-			Name="Charming"
+		<Trait		Name="Charming"
 			Percent="60" />
-		<Trait
-			Name="Strange Eyes"
+		<Trait		Name="Strange Eyes"
 			Percent="60" />
-		<Trait
-			Name="Incest"
+		<Trait		Name="Incest"
 			Percent="40" />
-		<Trait
-			Name="Perky Nipples"
+		<Trait		Name="Perky Nipples"
 			Percent="40" />
-		<Trait
-			Name="Puffy Nipples"
+		<Trait		Name="Puffy Nipples"
 			Percent="40" />
 	</Girl>
 	<Girl
@@ -11330,35 +10154,25 @@
 			Name="Combat"
 			Min="5"
 			Max="10" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="30" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="100" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="15" />
-		<Trait
-			Name="Nervous"
+		<Trait		Name="Nervous"
 			Percent="15" />
-		<Trait
-			Name="Nymphomaniac"
+		<Trait		Name="Nymphomaniac"
 			Percent="100" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="15" />
-		<Trait
-			Name="Sexy Air"
+		<Trait		Name="Sexy Air"
 			Percent="15" />
-		<Trait
-			Name="Fast orgasms"
+		<Trait		Name="Fast orgasms"
 			Percent="30" />
-		<Trait
-			Name="Cool Person"
+		<Trait		Name="Cool Person"
 			Percent="15" />
-		<Trait
-			Name="Slow Learner"
+		<Trait		Name="Slow Learner"
 			Percent="15" />
 	</Girl>
 	<Girl
@@ -11497,44 +10311,31 @@
 			Name="Combat"
 			Min="40"
 			Max="40" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="10" />
-		<Trait
-			Name="Cute"
+		<Trait		Name="Cute"
 			Percent="30" />
-		<Trait
-			Name="Not Human"
+		<Trait		Name="Not Human"
 			Percent="100" />
-		<Trait
-			Name="Elegant"
+		<Trait		Name="Elegant"
 			Percent="30" />
-		<Trait
-			Name="Slow Learner"
+		<Trait		Name="Slow Learner"
 			Percent="10" />
-		<Trait
-			Name="Slow orgasms"
+		<Trait		Name="Slow orgasms"
 			Percent="10" />
-		<Trait
-			Name="Lolita"
+		<Trait		Name="Lolita"
 			Percent="10" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="10" />
-		<Trait
-			Name="Sterile"
+		<Trait		Name="Sterile"
 			Percent="100" />
-		<Trait
-			Name="Retarded"
+		<Trait		Name="Retarded"
 			Percent="5" />
-		<Trait
-			Name="Small Boobs"
+		<Trait		Name="Small Boobs"
 			Percent="5" />
-		<Trait
-			Name="Cool Person"
+		<Trait		Name="Cool Person"
 			Percent="1" />
-		<Trait
-			Name="Meek"
+		<Trait		Name="Meek"
 			Percent="20" />
 	</Girl>
 	<Girl
@@ -11673,47 +10474,33 @@
 			Name="Combat"
 			Min="40"
 			Max="65" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="75" />
-		<Trait
-			Name="Cool Person"
+		<Trait		Name="Cool Person"
 			Percent="75" />
-		<Trait
-			Name="Quick Learner"
+		<Trait		Name="Quick Learner"
 			Percent="100" />
-		<Trait
-			Name="Strong"
+		<Trait		Name="Strong"
 			Percent="50" />
-		<Trait
-			Name="Adventurer"
+		<Trait		Name="Adventurer"
 			Percent="50" />
-		<Trait
-			Name="Nymphomaniac"
+		<Trait		Name="Nymphomaniac"
 			Percent="100" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="50" />
-		<Trait
-			Name="Elegant"
+		<Trait		Name="Elegant"
 			Percent="75" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="75" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="50" />
-		<Trait
-			Name="Fearless"
+		<Trait		Name="Fearless"
 			Percent="50" />
-		<Trait
-			Name="Fleet of Foot"
+		<Trait		Name="Fleet of Foot"
 			Percent="75" />
-		<Trait
-			Name="Charming"
+		<Trait		Name="Charming"
 			Percent="100" />
-		<Trait
-			Name="Strange Eyes"
+		<Trait		Name="Strange Eyes"
 			Percent="25" />
 	</Girl>
 	<Girl
@@ -11852,29 +10639,21 @@
 			Name="Combat"
 			Min="55"
 			Max="65" />
-		<Trait
-			Name="Small Scars"
+		<Trait		Name="Small Scars"
 			Percent="35" />
-		<Trait
-			Name="Cool Person"
+		<Trait		Name="Cool Person"
 			Percent="25" />
-		<Trait
-			Name="Strong"
+		<Trait		Name="Strong"
 			Percent="25" />
-		<Trait
-			Name="Adventurer"
+		<Trait		Name="Adventurer"
 			Percent="45" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="55" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="10" />
-		<Trait
-			Name="Dependant"
+		<Trait		Name="Dependant"
 			Percent="40" />
-		<Trait
-			Name="Not Human"
+		<Trait		Name="Not Human"
 			Percent="100" />
 	</Girl>
 	<Girl
@@ -12013,41 +10792,29 @@
 			Name="Combat"
 			Min="40"
 			Max="70" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="30" />
-		<Trait
-			Name="Small Scars"
+		<Trait		Name="Small Scars"
 			Percent="20" />
-		<Trait
-			Name="Cool Scars"
+		<Trait		Name="Cool Scars"
 			Percent="20" />
-		<Trait
-			Name="Horrific Scars"
+		<Trait		Name="Horrific Scars"
 			Percent="20" />
-		<Trait
-			Name="Slow Learner"
+		<Trait		Name="Slow Learner"
 			Percent="40" />
-		<Trait
-			Name="Strong"
+		<Trait		Name="Strong"
 			Percent="40" />
-		<Trait
-			Name="Not Human"
+		<Trait		Name="Not Human"
 			Percent="100" />
-		<Trait
-			Name="Adventurer"
+		<Trait		Name="Adventurer"
 			Percent="50" />
-		<Trait
-			Name="Nervous"
+		<Trait		Name="Nervous"
 			Percent="50" />
-		<Trait
-			Name="Manly"
+		<Trait		Name="Manly"
 			Percent="40" />
-		<Trait
-			Name="Malformed"
+		<Trait		Name="Malformed"
 			Percent="40" />
-		<Trait
-			Name="Retarded"
+		<Trait		Name="Retarded"
 			Percent="40" />
 	</Girl>
 	<Girl
@@ -12186,83 +10953,57 @@
 			Name="Combat"
 			Min="15"
 			Max="35" />
-		<Trait
-			Name="Puffy Nipples"
+		<Trait		Name="Puffy Nipples"
 			Percent="100" />
-		<Trait
-			Name="Perky Nipples"
+		<Trait		Name="Perky Nipples"
 			Percent="100" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="100" />
-		<Trait
-			Name="Cool Person"
+		<Trait		Name="Cool Person"
 			Percent="100" />
-		<Trait
-			Name="Fast orgasms"
+		<Trait		Name="Fast orgasms"
 			Percent="40" />
-		<Trait
-			Name="Slow orgasms"
+		<Trait		Name="Slow orgasms"
 			Percent="40" />
-		<Trait
-			Name="Quick Learner"
+		<Trait		Name="Quick Learner"
 			Percent="40" />
-		<Trait
-			Name="Slow Learner"
+		<Trait		Name="Slow Learner"
 			Percent="40" />
-		<Trait
-			Name="Psychic"
+		<Trait		Name="Psychic"
 			Percent="100" />
-		<Trait
-			Name="Adventurer"
+		<Trait		Name="Adventurer"
 			Percent="40" />
-		<Trait
-			Name="Nervous"
+		<Trait		Name="Nervous"
 			Percent="40" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="40" />
-		<Trait
-			Name="Nymphomaniac"
+		<Trait		Name="Nymphomaniac"
 			Percent="60" />
-		<Trait
-			Name="Fake orgasm expert"
+		<Trait		Name="Fake orgasm expert"
 			Percent="40" />
-		<Trait
-			Name="Sexy Air"
+		<Trait		Name="Sexy Air"
 			Percent="60" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="60" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="40" />
-		<Trait
-			Name="Optimist"
+		<Trait		Name="Optimist"
 			Percent="40" />
-		<Trait
-			Name="Pessimist"
+		<Trait		Name="Pessimist"
 			Percent="40" />
-		<Trait
-			Name="Dependant"
+		<Trait		Name="Dependant"
 			Percent="40" />
-		<Trait
-			Name="Sterile"
+		<Trait		Name="Sterile"
 			Percent="40" />
-		<Trait
-			Name="Fleet of Foot"
+		<Trait		Name="Fleet of Foot"
 			Percent="40" />
-		<Trait
-			Name="Fragile"
+		<Trait		Name="Fragile"
 			Percent="40" />
-		<Trait
-			Name="Mind Fucked"
+		<Trait		Name="Mind Fucked"
 			Percent="40" />
-		<Trait
-			Name="Charming"
+		<Trait		Name="Charming"
 			Percent="40" />
-		<Trait
-			Name="Retarded"
+		<Trait		Name="Retarded"
 			Percent="40" />
 	</Girl>
 	<Girl
@@ -12401,62 +11142,43 @@
 			Name="Combat"
 			Min="35"
 			Max="35" />
-		<Trait
-			Name="Not Human"
+		<Trait		Name="Not Human"
 			Percent="100" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="30" />
-		<Trait
-			Name="Fast orgasms"
+		<Trait		Name="Fast orgasms"
 			Percent="30" />
-		<Trait
-			Name="Elegant"
+		<Trait		Name="Elegant"
 			Percent="30" />
-		<Trait
-			Name="Great Arse"
+		<Trait		Name="Great Arse"
 			Percent="10" />
-		<Trait
-			Name="Small Boobs"
+		<Trait		Name="Small Boobs"
 			Percent="10" />
-		<Trait
-			Name="Great Arse"
+		<Trait		Name="Great Arse"
 			Percent="10" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="10" />
-		<Trait
-			Name="Sexy Air"
+		<Trait		Name="Sexy Air"
 			Percent="10" />
-		<Trait
-			Name="Meek"
+		<Trait		Name="Meek"
 			Percent="10" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="10" />
-		<Trait
-			Name="Mind Fucked"
+		<Trait		Name="Mind Fucked"
 			Percent="3" />
-		<Trait
-			Name="Charismatic"
+		<Trait		Name="Charismatic"
 			Percent="5" />
-		<Trait
-			Name="Charming"
+		<Trait		Name="Charming"
 			Percent="5" />
-		<Trait
-			Name="Cool Person"
+		<Trait		Name="Cool Person"
 			Percent="5" />
-		<Trait
-			Name="Long Legs"
+		<Trait		Name="Long Legs"
 			Percent="5" />
-		<Trait
-			Name="Puffy Nipples"
+		<Trait		Name="Puffy Nipples"
 			Percent="5" />
-		<Trait
-			Name="Perky Nipples"
+		<Trait		Name="Perky Nipples"
 			Percent="5" />
-		<Trait
-			Name="Different Colored Eyes"
+		<Trait		Name="Different Colored Eyes"
 			Percent="5" />
 	</Girl>
 	<Girl
@@ -12595,77 +11317,53 @@
 			Name="Combat"
 			Min="15"
 			Max="50" />
-		<Trait
-			Name="Quick Learner"
+		<Trait		Name="Quick Learner"
 			Percent="20" />
-		<Trait
-			Name="Cute"
+		<Trait		Name="Cute"
 			Percent="99" />
-		<Trait
-			Name="Strong Magic"
+		<Trait		Name="Strong Magic"
 			Percent="10" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="5" />
-		<Trait
-			Name="Fake orgasm expert"
+		<Trait		Name="Fake orgasm expert"
 			Percent="5" />
-		<Trait
-			Name="Sexy Air"
+		<Trait		Name="Sexy Air"
 			Percent="5" />
-		<Trait
-			Name="Great Arse"
+		<Trait		Name="Great Arse"
 			Percent="90" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="30" />
-		<Trait
-			Name="Iron Will"
+		<Trait		Name="Iron Will"
 			Percent="3" />
-		<Trait
-			Name="Puffy Nipples"
+		<Trait		Name="Puffy Nipples"
 			Percent="3" />
-		<Trait
-			Name="Charming"
+		<Trait		Name="Charming"
 			Percent="3" />
-		<Trait
-			Name="Charismatic"
+		<Trait		Name="Charismatic"
 			Percent="3" />
-		<Trait
-			Name="Optimist"
+		<Trait		Name="Optimist"
 			Percent="30" />
-		<Trait
-			Name="Strange Eyes"
+		<Trait		Name="Strange Eyes"
 			Percent="30" />
-		<Trait
-			Name="Fragile"
+		<Trait		Name="Fragile"
 			Percent="5" />
-		<Trait
-			Name="Fleet of Foot"
+		<Trait		Name="Fleet of Foot"
 			Percent="70" />
-		<Trait
-			Name="Sadistic"
+		<Trait		Name="Sadistic"
 			Percent="70" />
-		<Trait
-			Name="Tsundere"
+		<Trait		Name="Tsundere"
 			Percent="30" />
-		<Trait
-			Name="Nymphomaniac"
+		<Trait		Name="Nymphomaniac"
 			Percent="30" />
-		<Trait
-			Name="Assassin"
+		<Trait		Name="Assassin"
 			Percent="30" />
-		<Trait
-			Name="Strong"
+		<Trait		Name="Strong"
 			Percent="80" />
-		<Trait
-			Name="Psychic"
+		<Trait		Name="Psychic"
 			Percent="10" />
-		<Trait
-			Name="Quick Learner"
+		<Trait		Name="Quick Learner"
 			Percent="10" />
-		<Trait
-			Name="Slow orgasms"
+		<Trait		Name="Slow orgasms"
 			Percent="10" />
 	</Girl>
 	<Girl
@@ -12804,53 +11502,37 @@
 			Name="Combat"
 			Min="65"
 			Max="75" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="75" />
-		<Trait
-			Name="Cool Person"
+		<Trait		Name="Cool Person"
 			Percent="100" />
-		<Trait
-			Name="Quick Learner"
+		<Trait		Name="Quick Learner"
 			Percent="100" />
-		<Trait
-			Name="Psychic"
+		<Trait		Name="Psychic"
 			Percent="50" />
-		<Trait
-			Name="Adventurer"
+		<Trait		Name="Adventurer"
 			Percent="50" />
-		<Trait
-			Name="Nervous"
+		<Trait		Name="Nervous"
 			Percent="50" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="75" />
-		<Trait
-			Name="Nymphomaniac"
+		<Trait		Name="Nymphomaniac"
 			Percent="100" />
-		<Trait
-			Name="Sexy Air"
+		<Trait		Name="Sexy Air"
 			Percent="100" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="50" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="50" />
-		<Trait
-			Name="Meek"
+		<Trait		Name="Meek"
 			Percent="50" />
-		<Trait
-			Name="Pessimist"
+		<Trait		Name="Pessimist"
 			Percent="100" />
-		<Trait
-			Name="Tough"
+		<Trait		Name="Tough"
 			Percent="100" />
-		<Trait
-			Name="Fleet of Foot"
+		<Trait		Name="Fleet of Foot"
 			Percent="100" />
-		<Trait
-			Name="Charming"
+		<Trait		Name="Charming"
 			Percent="75" />
 	</Girl>
 	<Girl
@@ -12989,95 +11671,65 @@
 			Name="Combat"
 			Min="30"
 			Max="60" />
-		<Trait
-			Name="Cool Person"
+		<Trait		Name="Cool Person"
 			Percent="20" />
-		<Trait
-			Name="Elegant"
+		<Trait		Name="Elegant"
 			Percent="10" />
-		<Trait
-			Name="Sexy Air"
+		<Trait		Name="Sexy Air"
 			Percent="40" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="10" />
-		<Trait
-			Name="Great Arse"
+		<Trait		Name="Great Arse"
 			Percent="10" />
-		<Trait
-			Name="Sadistic"
+		<Trait		Name="Sadistic"
 			Percent="1" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="10" />
-		<Trait
-			Name="Merciless"
+		<Trait		Name="Merciless"
 			Percent="10" />
-		<Trait
-			Name="Charismatic"
+		<Trait		Name="Charismatic"
 			Percent="50" />
-		<Trait
-			Name="Charming"
+		<Trait		Name="Charming"
 			Percent="50" />
-		<Trait
-			Name="Long Legs"
+		<Trait		Name="Long Legs"
 			Percent="5" />
-		<Trait
-			Name="Tsundere"
+		<Trait		Name="Tsundere"
 			Percent="10" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="50" />
-		<Trait
-			Name="Optimist"
+		<Trait		Name="Optimist"
 			Percent="5" />
-		<Trait
-			Name="Tough"
+		<Trait		Name="Tough"
 			Percent="1" />
-		<Trait
-			Name="Different Colored Eyes"
+		<Trait		Name="Different Colored Eyes"
 			Percent="1" />
-		<Trait
-			Name="Meek"
+		<Trait		Name="Meek"
 			Percent="10" />
-		<Trait
-			Name="Manly"
+		<Trait		Name="Manly"
 			Percent="5" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="5" />
-		<Trait
-			Name="Nervous"
+		<Trait		Name="Nervous"
 			Percent="5" />
-		<Trait
-			Name="Cute"
+		<Trait		Name="Cute"
 			Percent="50" />
-		<Trait
-			Name="Twisted"
+		<Trait		Name="Twisted"
 			Percent="1" />
-		<Trait
-			Name="Fearless"
+		<Trait		Name="Fearless"
 			Percent="1" />
-		<Trait
-			Name="Merciless"
+		<Trait		Name="Merciless"
 			Percent="1" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="80" />
-		<Trait
-			Name="Horrific Scars"
+		<Trait		Name="Horrific Scars"
 			Percent="50" />
-		<Trait
-			Name="Strong"
+		<Trait		Name="Strong"
 			Percent="30" />
-		<Trait
-			Name="Aggressive"
+		<Trait		Name="Aggressive"
 			Percent="30" />
-		<Trait
-			Name="Adventurer"
+		<Trait		Name="Adventurer"
 			Percent="10" />
-		<Trait
-			Name="Sadistic"
+		<Trait		Name="Sadistic"
 			Percent="5" />
 	</Girl>
 	<Girl
@@ -13216,26 +11868,19 @@
 			Name="Combat"
 			Min="20"
 			Max="30" />
-		<Trait
-			Name="Small Scars"
+		<Trait		Name="Small Scars"
 			Percent="50" />
-		<Trait
-			Name="Cute"
+		<Trait		Name="Cute"
 			Percent="30" />
-		<Trait
-			Name="Not Human"
+		<Trait		Name="Not Human"
 			Percent="100" />
-		<Trait
-			Name="Nymphomaniac"
+		<Trait		Name="Nymphomaniac"
 			Percent="60" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="45" />
-		<Trait
-			Name="Fleet of Foot"
+		<Trait		Name="Fleet of Foot"
 			Percent="70" />
-		<Trait
-			Name="Cat Girl"
+		<Trait		Name="Cat Girl"
 			Percent="5" />
 	</Girl>
 	<Girl
@@ -13374,77 +12019,53 @@
 			Name="Combat"
 			Min="15"
 			Max="50" />
-		<Trait
-			Name="Quick Learner"
+		<Trait		Name="Quick Learner"
 			Percent="20" />
-		<Trait
-			Name="Cute"
+		<Trait		Name="Cute"
 			Percent="99" />
-		<Trait
-			Name="Strong Magic"
+		<Trait		Name="Strong Magic"
 			Percent="10" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="5" />
-		<Trait
-			Name="Fake orgasm expert"
+		<Trait		Name="Fake orgasm expert"
 			Percent="5" />
-		<Trait
-			Name="Sexy Air"
+		<Trait		Name="Sexy Air"
 			Percent="5" />
-		<Trait
-			Name="Great Arse"
+		<Trait		Name="Great Arse"
 			Percent="90" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="30" />
-		<Trait
-			Name="Iron Will"
+		<Trait		Name="Iron Will"
 			Percent="3" />
-		<Trait
-			Name="Puffy Nipples"
+		<Trait		Name="Puffy Nipples"
 			Percent="3" />
-		<Trait
-			Name="Charming"
+		<Trait		Name="Charming"
 			Percent="3" />
-		<Trait
-			Name="Charismatic"
+		<Trait		Name="Charismatic"
 			Percent="3" />
-		<Trait
-			Name="Optimist"
+		<Trait		Name="Optimist"
 			Percent="30" />
-		<Trait
-			Name="Strange Eyes"
+		<Trait		Name="Strange Eyes"
 			Percent="30" />
-		<Trait
-			Name="Fragile"
+		<Trait		Name="Fragile"
 			Percent="5" />
-		<Trait
-			Name="Fleet of Foot"
+		<Trait		Name="Fleet of Foot"
 			Percent="70" />
-		<Trait
-			Name="Sadistic"
+		<Trait		Name="Sadistic"
 			Percent="70" />
-		<Trait
-			Name="Tsundere"
+		<Trait		Name="Tsundere"
 			Percent="30" />
-		<Trait
-			Name="Nymphomaniac"
+		<Trait		Name="Nymphomaniac"
 			Percent="30" />
-		<Trait
-			Name="Assassin"
+		<Trait		Name="Assassin"
 			Percent="30" />
-		<Trait
-			Name="Strong"
+		<Trait		Name="Strong"
 			Percent="80" />
-		<Trait
-			Name="Psychic"
+		<Trait		Name="Psychic"
 			Percent="10" />
-		<Trait
-			Name="Quick Learner"
+		<Trait		Name="Quick Learner"
 			Percent="10" />
-		<Trait
-			Name="Slow orgasms"
+		<Trait		Name="Slow orgasms"
 			Percent="10" />
 	</Girl>
 	<Girl
@@ -13583,50 +12204,35 @@
 			Name="Combat"
 			Min="0"
 			Max="20" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="30" />
-		<Trait
-			Name="Small Scars"
+		<Trait		Name="Small Scars"
 			Percent="5" />
-		<Trait
-			Name="Fast orgasms"
+		<Trait		Name="Fast orgasms"
 			Percent="60" />
-		<Trait
-			Name="Cute"
+		<Trait		Name="Cute"
 			Percent="70" />
-		<Trait
-			Name="Adventurer"
+		<Trait		Name="Adventurer"
 			Percent="70" />
-		<Trait
-			Name="Sexy Air"
+		<Trait		Name="Sexy Air"
 			Percent="20" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="20" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="70" />
-		<Trait
-			Name="Fleet of Foot"
+		<Trait		Name="Fleet of Foot"
 			Percent="10" />
-		<Trait
-			Name="Charming"
+		<Trait		Name="Charming"
 			Percent="10" />
-		<Trait
-			Name="Long Legs"
+		<Trait		Name="Long Legs"
 			Percent="10" />
-		<Trait
-			Name="Perky Nipples"
+		<Trait		Name="Perky Nipples"
 			Percent="10" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="10" />
-		<Trait
-			Name="Nervous"
+		<Trait		Name="Nervous"
 			Percent="10" />
-		<Trait
-			Name="Nerd"
+		<Trait		Name="Nerd"
 			Percent="10" />
 	</Girl>
 	<Girl
@@ -13765,50 +12371,35 @@
 			Name="Combat"
 			Min="0"
 			Max="20" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="15" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="10" />
-		<Trait
-			Name="Big Boobs"
+		<Trait		Name="Big Boobs"
 			Percent="20" />
-		<Trait
-			Name="Nervous"
+		<Trait		Name="Nervous"
 			Percent="30" />
-		<Trait
-			Name="Nymphomaniac"
+		<Trait		Name="Nymphomaniac"
 			Percent="30" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="20" />
-		<Trait
-			Name="Sexy Air"
+		<Trait		Name="Sexy Air"
 			Percent="10" />
-		<Trait
-			Name="Fake orgasm expert"
+		<Trait		Name="Fake orgasm expert"
 			Percent="10" />
-		<Trait
-			Name="Fast orgasms"
+		<Trait		Name="Fast orgasms"
 			Percent="10" />
-		<Trait
-			Name="Cool Person"
+		<Trait		Name="Cool Person"
 			Percent="10" />
-		<Trait
-			Name="Strong Magic"
+		<Trait		Name="Strong Magic"
 			Percent="100" />
-		<Trait
-			Name="Small Scars"
+		<Trait		Name="Small Scars"
 			Percent="20" />
-		<Trait
-			Name="Nerd"
+		<Trait		Name="Nerd"
 			Percent="40" />
-		<Trait
-			Name="Clumsy"
+		<Trait		Name="Clumsy"
 			Percent="30" />
-		<Trait
-			Name="Cute"
+		<Trait		Name="Cute"
 			Percent="70" />
 	</Girl>
 	<Girl
@@ -13947,77 +12538,53 @@
 			Name="Combat"
 			Min="3"
 			Max="35" />
-		<Trait
-			Name="Cool Person"
+		<Trait		Name="Cool Person"
 			Percent="20" />
-		<Trait
-			Name="Elegant"
+		<Trait		Name="Elegant"
 			Percent="10" />
-		<Trait
-			Name="Sexy Air"
+		<Trait		Name="Sexy Air"
 			Percent="40" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="10" />
-		<Trait
-			Name="Great Arse"
+		<Trait		Name="Great Arse"
 			Percent="10" />
-		<Trait
-			Name="Sadistic"
+		<Trait		Name="Sadistic"
 			Percent="1" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="10" />
-		<Trait
-			Name="Merciless"
+		<Trait		Name="Merciless"
 			Percent="10" />
-		<Trait
-			Name="Charismatic"
+		<Trait		Name="Charismatic"
 			Percent="50" />
-		<Trait
-			Name="Charming"
+		<Trait		Name="Charming"
 			Percent="50" />
-		<Trait
-			Name="Long Legs"
+		<Trait		Name="Long Legs"
 			Percent="5" />
-		<Trait
-			Name="Small Boobs"
+		<Trait		Name="Small Boobs"
 			Percent="20" />
-		<Trait
-			Name="Tsundere"
+		<Trait		Name="Tsundere"
 			Percent="10" />
-		<Trait
-			Name="Good Kisser"
+		<Trait		Name="Good Kisser"
 			Percent="50" />
-		<Trait
-			Name="Optimist"
+		<Trait		Name="Optimist"
 			Percent="5" />
-		<Trait
-			Name="Tough"
+		<Trait		Name="Tough"
 			Percent="1" />
-		<Trait
-			Name="Different Colored Eyes"
+		<Trait		Name="Different Colored Eyes"
 			Percent="1" />
-		<Trait
-			Name="Meek"
+		<Trait		Name="Meek"
 			Percent="10" />
-		<Trait
-			Name="Manly"
+		<Trait		Name="Manly"
 			Percent="5" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="5" />
-		<Trait
-			Name="Nervous"
+		<Trait		Name="Nervous"
 			Percent="5" />
-		<Trait
-			Name="Cute"
+		<Trait		Name="Cute"
 			Percent="50" />
-		<Trait
-			Name="Quick Learner"
+		<Trait		Name="Quick Learner"
 			Percent="1" />
-		<Trait
-			Name="Dependant"
+		<Trait		Name="Dependant"
 			Percent="30" />
 	</Girl>
 	<Girl
@@ -14156,83 +12723,57 @@
 			Name="Combat"
 			Min="10"
 			Max="40" />
-		<Trait
-			Name="Long Legs"
+		<Trait		Name="Long Legs"
 			Percent="100" />
-		<Trait
-			Name="Tough"
+		<Trait		Name="Tough"
 			Percent="100" />
-		<Trait
-			Name="Charismatic"
+		<Trait		Name="Charismatic"
 			Percent="100" />
-		<Trait
-			Name="Mind Fucked"
+		<Trait		Name="Mind Fucked"
 			Percent="40" />
-		<Trait
-			Name="Perky Nipples"
+		<Trait		Name="Perky Nipples"
 			Percent="40" />
-		<Trait
-			Name="Fragile"
+		<Trait		Name="Fragile"
 			Percent="40" />
-		<Trait
-			Name="Fleet of Foot"
+		<Trait		Name="Fleet of Foot"
 			Percent="40" />
-		<Trait
-			Name="Dependant"
+		<Trait		Name="Dependant"
 			Percent="40" />
-		<Trait
-			Name="Optimist"
+		<Trait		Name="Optimist"
 			Percent="100" />
-		<Trait
-			Name="Meek"
+		<Trait		Name="Meek"
 			Percent="60" />
-		<Trait
-			Name="Lesbian"
+		<Trait		Name="Lesbian"
 			Percent="40" />
-		<Trait
-			Name="Great Figure"
+		<Trait		Name="Great Figure"
 			Percent="60" />
-		<Trait
-			Name="Sexy Air"
+		<Trait		Name="Sexy Air"
 			Percent="40" />
-		<Trait
-			Name="Fake orgasm expert"
+		<Trait		Name="Fake orgasm expert"
 			Percent="40" />
-		<Trait
-			Name="Elegant"
+		<Trait		Name="Elegant"
 			Percent="40" />
-		<Trait
-			Name="Nymphomaniac"
+		<Trait		Name="Nymphomaniac"
 			Percent="40" />
-		<Trait
-			Name="Nervous"
+		<Trait		Name="Nervous"
 			Percent="40" />
-		<Trait
-			Name="Lolita"
+		<Trait		Name="Lolita"
 			Percent="40" />
-		<Trait
-			Name="Adventurer"
+		<Trait		Name="Adventurer"
 			Percent="100" />
-		<Trait
-			Name="Psychic"
+		<Trait		Name="Psychic"
 			Percent="40" />
-		<Trait
-			Name="Cute"
+		<Trait		Name="Cute"
 			Percent="40" />
-		<Trait
-			Name="Strong"
+		<Trait		Name="Strong"
 			Percent="40" />
-		<Trait
-			Name="Quick Learner"
+		<Trait		Name="Quick Learner"
 			Percent="60" />
-		<Trait
-			Name="Fast orgasms"
+		<Trait		Name="Fast orgasms"
 			Percent="60" />
-		<Trait
-			Name="Nerd"
+		<Trait		Name="Nerd"
 			Percent="60" />
-		<Trait
-			Name="Clumsy"
+		<Trait		Name="Clumsy"
 			Percent="60" />
 	</Girl>
 </Girls>

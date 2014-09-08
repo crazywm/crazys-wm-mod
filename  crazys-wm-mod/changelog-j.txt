@@ -711,7 +711,30 @@ Fixed bug in payment using house percent as number instead of percent.
 ***** I have been updating my Characters folder so have not been working on the code much.
 * Crazy updated several jobs (svn r99 and r100)
 Fixed some unfinished jobs and added a few new things to Crazy's stuff.
-!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.02
 !!!!!!!!!!!!!!!!!!!! pushed to SVN - r101
+Re-Fixed an error with girls payment text.
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.02
+
+
+###  Changes 9/6/2014
+WME - Added "Save All Girls and Rgirls to Individual Files" button on Extras tab
+WME - Improved load error message to actually tell you what file caused the error and added "Bad Files" list on Extras tab.
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.11
+
+###  Changes 9/7/2014
+Crazy updated several jobs
+Crazy added more items to do_daily_items
+WME - Extensive changes to Traits
+Added more traits to CoreTraits.traitsx
+WM - Updated WorkFightArenaGirls.cpp 
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.11
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r103
+
+
+
+
+
+
 
 
