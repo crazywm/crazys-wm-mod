@@ -196,9 +196,8 @@ void cCustomers::GenerateCustomers(sBrothel * brothel, int DayNight)
 
 	if (ScareCustomers < 0)
 	{
-		ss << "Your nonintrusive security attracted ";
-		ss << -ScareCustomers << " ";
-		ss << (DayNight == 0) ? gettext("daytime") : gettext("nighttime");
+		ss << "Your nonintrusive security attracted " << -ScareCustomers << " ";
+		if (DayNight == 0) ss << gettext("daytime"); else ss << gettext("nighttime");
 		ss << " customers. (for better or worse)";
 	}
 	else if (ScareCustomers == 0)

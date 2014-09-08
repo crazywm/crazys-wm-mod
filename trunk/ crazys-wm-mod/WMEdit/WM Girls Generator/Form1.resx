@@ -117,24 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>24, 26</value>
-  </metadata>
-  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>24, 26</value>
-  </metadata>
-  <data name="checkBox_RGTraitsReadOnly.ToolTip" xml:space="preserve">
-    <value>I recommend simply deleting faulty entry and adding it back with correct
-value, but if you really, really, REALLY need it, you can unlock value field
-via this checkbox. Be SURE to enter only value between 0 and 100.</value>
-  </data>
-  <data name="label26.ToolTip" xml:space="preserve">
-    <value>Since these are random girls they get names from
-random name pool, this should be just name for
-girl type (template that corresponds to folder name
-with her pics), something like "Sporty girl",
-"Funny girl" and so on.</value>
-  </data>
   <data name="richTextBox1.Text" xml:space="preserve">
     <value>
 This FAQ is extremely out of date, I don't know why I have not removed it yet.
@@ -174,11 +156,38 @@ Temporary effects apply to traits, stats and skills, they don't apply to status'
 
 Traits that were added through this temporary mechanics will fade after 20 days, stats/skills that were added as temporary will fade by 1 point each day, until they're gone completely.</value>
   </data>
+  <metadata name="dataGridView_G_Traits_Has.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="dataGridView_G_Traits_List.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="dataGridView_G_Traits_Type.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="hidden_has.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>24, 26</value>
+  </metadata>
   <data name="button_G_UnZero_Sex_Skills.ToolTip" xml:space="preserve">
     <value>If the girl you are editing does not have some of the sex skills set in it, 
 this will check the existing sex skills and set the missing or zeroed sex skills 
 to be similar to the existing sex skill numbers.
 It checks for 'round to 5 or 10' and 'number spreads'.</value>
+  </data>
+  <data name="checkBox_RGTraitsReadOnly.ToolTip" xml:space="preserve">
+    <value>I recommend simply deleting faulty entry and adding it back with correct
+value, but if you really, really, REALLY need it, you can unlock value field
+via this checkbox. Be SURE to enter only value between 0 and 100.</value>
+  </data>
+  <data name="label26.ToolTip" xml:space="preserve">
+    <value>Since these are random girls they get names from
+random name pool, this should be just name for
+girl type (template that corresponds to folder name
+with her pics), something like "Sporty girl",
+"Funny girl" and so on.</value>
   </data>
   <data name="checkBox_DG3.ToolTip" xml:space="preserve">
     <value>I recommend simply deleting entry and adding it again with correct
@@ -205,6 +214,28 @@ expect that Whore Master will crash.</value>
 If it does not find it, you will have to find it manually.
 Starting in version .05t it is in the root game folder.
 In older versions, it was in \Resources\Data\ folder.</value>
+  </data>
+  <metadata name="dataGridView_Traits_Trait_Name.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="dataGridView_Traits_Trait_Desc.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="dataGridView_Traits_Trait_Type.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="Bad_Files.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="Error_Message.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="richTextBox2.Text" xml:space="preserve">
+    <value>This button will create a new random numbered folder in the same folder as the WME.exe
+It will then attempt to save every Girl and Rgirl into their own files.
+If it comes across a file that already exists, it will create a numbered folder and place the new file in there.
+It will continue making numbered folders as long as there are multiple .girlsx or .rgirlsx with the same name.
+</value>
   </data>
   <data name="checkBox_Add_Missing_Sex_Skills_On_Load.ToolTip" xml:space="preserve">
     <value>If you are loading an old girl file that does not have some of the sex skills set in it, 
