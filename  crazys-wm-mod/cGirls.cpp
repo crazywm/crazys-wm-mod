@@ -65,6 +65,7 @@ extern cArenaManager g_Arena;
 extern cClinicManager g_Clinic;
 extern cCentreManager g_Centre;
 extern cHouseManager g_House;
+extern cFarmManager g_Farm;
 extern cFont m_Font;
 
 
@@ -5712,6 +5713,13 @@ void cGirls::updateHappyTraits(sGirl* girl)
 				else if (Schance < 90)	{ msg += gettext(" stopped her."); }
 				else	{ girl->m_Stats[STAT_HEALTH] = 1;	msg += gettext(" revived her."); }
 			}
+			else if (girl->m_InFarm && g_Farm.GetNumGirlsOnJob(0, JOB_FARMMANGER, 0) > 0)
+			{
+				string msg = girl->m_Realname + gettext(" tried to killed herself but the Farm Manger");
+				if (Schance < 50)		{ msg += gettext(" talked her out of it."); }
+				else if (Schance < 90)	{ msg += gettext(" stopped her."); }
+				else	{ girl->m_Stats[STAT_HEALTH] = 1;	msg += gettext(" revived her."); }
+			}
 			else
 			{
 				string msg = girl->m_Realname + gettext(" has killed herself since she was unhappy and depressed.");
@@ -6041,7 +6049,7 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 		break;
 
 	case SKILL_NORMALSEX:
-		if(GetSkill(girl, SexType) < 10)
+		if(GetSkill(girl, SexType) < 15)
 		{
 			message += gettext("\nHer inexperience hurt her a little.");
 			UpdateStat(girl, STAT_HAPPINESS, -2);
@@ -10550,7 +10558,7 @@ static bool has_contraception(sGirl *girl)
 	}
 	if (girl->m_DayJob == JOB_INDUNGEON || girl->m_NightJob == JOB_INDUNGEON)	// `J`
 	{
-		girl->m_InMovieStudio = girl->m_InCentre = girl->m_InClinic = girl->m_InHouse = girl->m_InArena = false;
+		girl->m_InMovieStudio = girl->m_InCentre = girl->m_InClinic = girl->m_InHouse = girl->m_InArena = girl->m_InFarm = false;
 		girl->where_is_she = 0;
 	}
 	if (UseAntiPreg(girl->m_UseAntiPreg, girl->m_InClinic, girl->m_InMovieStudio, girl->m_InArena, girl->m_InCentre, girl->m_InHouse, girl->m_InFarm, girl->where_is_she))
@@ -10562,6 +10570,7 @@ static bool has_contraception(sGirl *girl)
 		(g_Building == BUILDING_CLINIC && (g_Clinic.UseAntiPreg(girl->m_UseAntiPreg))  ) ||
 		(g_Building == BUILDING_ARENA  && (g_Arena.UseAntiPreg(girl->m_UseAntiPreg))   ) ||
 		(g_Building == BUILDING_CENTRE && (g_Centre.UseAntiPreg(girl->m_UseAntiPreg))  ) ||
+		(g_Building == BUILDING_FARM   && (g_Farm.UseAntiPreg(girl->m_UseAntiPreg))	   ) ||
 		(g_Building == BUILDING_HOUSE  && (g_House.UseAntiPreg(girl->m_UseAntiPreg))   )  )
 		{
 			g_Building = BUILDING_BROTHEL;
@@ -12686,6 +12695,7 @@ int sGirl::rebel()
 	else if (this->m_InCentre)			return g_Girls.GetRebelValue(this, g_Centre.GetNumGirlsOnJob(0, JOB_CENTREMANAGER, 0) > 0);
 	else if (this->m_InClinic)			return g_Girls.GetRebelValue(this, g_Clinic.GetNumGirlsOnJob(0, JOB_CHAIRMAN, 0) > 0);
 	else if (this->m_InHouse)			return g_Girls.GetRebelValue(this, g_House.GetNumGirlsOnJob(0, JOB_HEADGIRL, 0) > 0);
+	else if (this->m_InFarm)			return g_Girls.GetRebelValue(this, g_Farm.GetNumGirlsOnJob(0, JOB_FARMMANGER, 0) > 0);
 	else								return g_Girls.GetRebelValue(this, g_Brothels.GetNumGirlsOnJob(this->where_is_she, JOB_MATRON, 0) > 0);
 }
 

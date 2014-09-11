@@ -74,28 +74,19 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, int DayNight, st
 	else					message += " She loves you more then anything so she gives it her all.\n\n";
 
 	//good traits
-	if (g_Girls.HasTrait(girl, "Charismatic"))  //
-		jobperformance += 20;
-	if (g_Girls.HasTrait(girl, "Cool Person"))  //people love to be around her
-		jobperformance += 10;
-	if (g_Girls.HasTrait(girl, "Charming"))  //people like charming people
-		jobperformance += 10;
-	if (g_Girls.HasTrait(girl, "Psychic"))  //knows what people want to hear
-		jobperformance += 20;
+	if (g_Girls.HasTrait(girl, "Charismatic"))  jobperformance += 20;
+	if (g_Girls.HasTrait(girl, "Cool Person"))  jobperformance += 10; //people love to be around her
+	if (g_Girls.HasTrait(girl, "Charming"))		jobperformance += 10; //people like charming people	
+	if (g_Girls.HasTrait(girl, "Psychic"))		jobperformance += 20; //knows what people want to hear
+		
 
 	//bad traits
-	if (g_Girls.HasTrait(girl, "Dependant"))  //needs others to do the job
-		jobperformance -= 50;
-	if (g_Girls.HasTrait(girl, "Clumsy"))  //
-		jobperformance -= 5;
-	if (g_Girls.HasTrait(girl, "Aggressive"))  //gets mad easy and may attack people
-		jobperformance -= 20;
-	if (g_Girls.HasTrait(girl, "Nervous"))  //don't like to be around people
-		jobperformance -= 30;
-	if (g_Girls.HasTrait(girl, "Meek"))
-		jobperformance -= 20;
-	if (g_Girls.HasTrait(girl, "Broken Will"))
-		jobperformance -= 50;
+	if (g_Girls.HasTrait(girl, "Dependant"))	jobperformance -= 50; //needs others to do the job
+	if (g_Girls.HasTrait(girl, "Clumsy"))		jobperformance -= 5;
+	if (g_Girls.HasTrait(girl, "Aggressive"))	jobperformance -= 20; //gets mad easy and may attack people
+	if (g_Girls.HasTrait(girl, "Nervous"))		jobperformance -= 30; //don't like to be around people
+	if (g_Girls.HasTrait(girl, "Meek"))			jobperformance -= 20;
+	if (g_Girls.HasTrait(girl, "Broken Will"))	jobperformance -= 50;
 
 
 	int findchance = 0;
@@ -164,15 +155,15 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, int DayNight, st
 					add = true;
 					if (dispmod > 0)
 					{
-						message += "\n'good guy hire text'";
+						message += "\nYour nice reputation has helped you today as she agrees to come work for you.";
 					}
 					else if (dispmod < 0)
 					{
-						message += "\n'bad guy hire text'";
+						message += "\nScared of what you might to do to her if you don't come work for her she agrees to taking the job.";
 					}
 					else
 					{
-						message += "\n'neutral guy hire text'";
+						message += "\nThe fact that your neither good nor evil seems to have helped you today.  As the girl doesn't think your evil nor a \"pussy\" and comes to work for you.";
 					}
 					if (dispmod == 3)
 					{
@@ -191,15 +182,15 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, int DayNight, st
 
 					if (dispmod > 0)
 					{
-						message += "\n'good guy reject text'";
+						message += "\nBeing so nice she is worried you will get yourself killed and someone else will take over that she won't like.  So she won't come work for you.";
 					}
 					else if (dispmod < 0)
 					{
-						message += "\n'bad guy reject text'";
+						message += "\nShe fears you to much to come and work for you.";
 					}
 					else
 					{
-						message += "\n'neutral guy reject text'";
+						message += "\nAs you are on the fence with your reputation she doesn't know what to think about you and won't work for you.";
 					}
 				}
 			}
@@ -253,19 +244,9 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, int DayNight, st
 	// Improve stats
 	int xp = 10, libido = 1, skill = 3;
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))
-	{
-		skill += 1;
-		xp += 3;
-	}
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))
-	{
-		skill -= 1;
-		xp -= 3;
-	}
-
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))
-		libido += 2;
+	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
+	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
+	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
 
 	g_Girls.UpdateStat(girl, STAT_FAME, 1);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
@@ -277,6 +258,7 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, int DayNight, st
 
 	//gain traits
 	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, ACTION_WORKRECRUIT, "Dealing with people all day has made " + girl->m_Realname + " more Charismatic.", DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Psychic", 80, ACTION_WORKRECRUIT, girl->m_Realname + " has been doing this for so long it's as if she can read minds now.", DayNight != 0);
 
 	//lose traits
 	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 20, ACTION_WORKRECRUIT, girl->m_Realname + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", DayNight != 0);

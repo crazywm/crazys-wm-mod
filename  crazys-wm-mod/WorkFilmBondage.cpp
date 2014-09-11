@@ -124,16 +124,8 @@ if(roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
 	// Improve stats
 	int xp = 5, skill = 3;
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))
-	{
-		skill += 1;
-		xp += 3;
-	}
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))
-	{
-		skill -= 1;
-		xp -= 3;
-	}
+	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
+	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill);

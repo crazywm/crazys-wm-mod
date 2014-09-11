@@ -45,7 +45,6 @@ extern cGold g_Gold;
 
 bool cJobManager::WorkArenaJousting(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
-	cTariff tariff;
 	string message = "";
 	string girlName = girl->m_Realname;
 
@@ -157,19 +156,9 @@ bool cJobManager::WorkArenaJousting(sGirl* girl, sBrothel* brothel, int DayNight
 	// Improve stats
 	int xp = 15, libido = 1, skill = 3;
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))
-	{
-		skill += 1;
-		xp += 3;
-	}
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))
-	{
-		skill -= 1;
-		xp -= 3;
-	}
-
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))
-		libido += 2;
+	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3;}
+	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3;}
+	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
 
 	g_Girls.UpdateStat(girl, STAT_FAME, 1);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);

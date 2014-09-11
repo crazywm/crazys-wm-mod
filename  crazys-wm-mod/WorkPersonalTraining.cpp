@@ -285,14 +285,8 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, int DayNi
 	// Improve stats
 	int xp = 10;
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))
-	{
-		xp += 3;
-	}
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))
-	{
-		xp -= 3;
-	}
+	if (g_Girls.HasTrait(girl, "Quick Learner"))		{xp += 3;}
+	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{xp -= 3;}
 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 

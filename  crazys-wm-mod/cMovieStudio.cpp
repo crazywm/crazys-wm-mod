@@ -1385,6 +1385,7 @@ string cMovieStudioManager::AddScene(sGirl* girl, int Job, int Bonus)
 	if (g_Girls.HasTrait(girl, "Fast orgasms") || g_Girls.HasTrait(girl, "Fast Orgasms"))			quality += 4;
 	else if (g_Girls.HasTrait(girl, "Slow orgasms") || g_Girls.HasTrait(girl, "Slow Orgasms"))		quality -= 2;
 	if (g_Girls.HasTrait(girl, "Fake orgasm expert") || g_Girls.HasTrait(girl, "Fake Orgasm Expert"))		quality += 3;
+	if (g_Girls.HasTrait(girl, "Puffy Nipples") || g_Girls.HasTrait(girl, "Perky Nipples"))		quality += 2;
 	if (g_Girls.HasTrait(girl, "Abnormally Large Boobs"))	quality += 4;
 	else if (g_Girls.HasTrait(girl, "Big Boobs"))			quality += 2;
 	else if (g_Girls.HasTrait(girl, "Small Boobs"))		quality += 1;
@@ -1392,20 +1393,26 @@ string cMovieStudioManager::AddScene(sGirl* girl, int Job, int Bonus)
 	if (g_Girls.HasTrait(girl, "Great Arse"))			quality += 2;
 	if (g_Girls.HasTrait(girl, "Charismatic"))			quality += 4;
 	if (g_Girls.HasTrait(girl, "Charming"))				quality += 2;
-	if (g_Girls.HasTrait(girl, "Long Legs"))				quality += 2;
-	if (g_Girls.HasTrait(girl, "Perky Nipples"))			quality += 1;
-	if (g_Girls.HasTrait(girl, "Puffy Nipples"))			quality += 1;
-	if (g_Girls.HasTrait(girl, "Shape Shifter"))			quality += 5;
+	if (g_Girls.HasTrait(girl, "Long Legs"))			quality += 2;
+	if (g_Girls.HasTrait(girl, "Perky Nipples"))		quality += 1;
+	if (g_Girls.HasTrait(girl, "Puffy Nipples"))		quality += 1;
+	if (g_Girls.HasTrait(girl, "Shape Shifter"))		quality += 5;
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			quality += 4;
 	if (g_Girls.HasTrait(girl, "Good Kisser"))			quality += 2;
+	if (g_Girls.HasTrait(girl, "Cute"))					quality += 2;
+	if (g_Girls.HasTrait(girl, "Sexy Air"))				quality += 2;
+	if (g_Girls.HasTrait(girl, "Psychic"))				quality += 4;
 
-	if (g_Girls.HasTrait(girl, "Manly"))					quality -= 2;
+	if (g_Girls.HasTrait(girl, "Manly"))				quality -= 2;
 	if (g_Girls.HasTrait(girl, "Fragile"))				quality -= 2;
 	if (g_Girls.HasTrait(girl, "Mind Fucked"))			quality -= 4;
 	if (g_Girls.HasTrait(girl, "Nervous"))				quality -= 2;
 	if (g_Girls.HasTrait(girl, "Horrific Scars"))		quality -= 4;
 	if (g_Girls.HasTrait(girl, "Clumsy"))				quality -= 2;
 	if (g_Girls.HasTrait(girl, "Meek"))					quality -= 2;
+	if (g_Girls.HasTrait(girl, "Aggressive"))			quality -= 2;
+	if (g_Girls.HasTrait(girl, "Broken Will"))			quality -= 4;
+	if (g_Girls.HasTrait(girl, "Dependant"))			quality -= 3;
 
 	if (Job == SKILL_ORALSEX)
 	{

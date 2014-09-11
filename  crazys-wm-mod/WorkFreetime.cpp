@@ -47,7 +47,8 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int DayNight, str
 	g_Girls.UpdateStat(girl, STAT_HAPPINESS, 15);
 	g_Girls.UpdateStat(girl, STAT_HEALTH, 10);
 	g_Girls.UpdateStat(girl, STAT_MANA, 10);
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, 5);
+	if (g_Girls.HasTrait(girl, "Nymphomaniac"))	{ g_Girls.UpdateTempStat(girl, STAT_LIBIDO, 10); }
+	else/*									  */{ g_Girls.UpdateTempStat(girl, STAT_LIBIDO, 5); }
 	g_Girls.UpdateStat(girl, STAT_EXP, 1);   // Just because!
 
 	string message = gettext("She rested and recovered some energy.");

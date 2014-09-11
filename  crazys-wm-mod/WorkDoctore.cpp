@@ -84,7 +84,7 @@ bool cJobManager::WorkDoctore(sGirl* girl, sBrothel* brothel, int DayNight, stri
 	else
 	{
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMATRON, +1, true);
-		message = gettext("Went about her day a usual.");
+		message = gettext("Went about her day as usual.");
 		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
 	}
 
