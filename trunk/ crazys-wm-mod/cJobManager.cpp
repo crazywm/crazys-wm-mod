@@ -945,7 +945,7 @@ bool cJobManager::is_job_Paid_Player(u_int Job)
 		
 		// - Community Centre
 		Job ==	JOB_COLLECTDONATIONS	||	// collects money to help the poor
-		Job ==	JOB_ARTISAN			||	// makes cheap crappy handmade items for selling to raise money (creates handmade item resource)
+		Job ==	JOB_ARTISAN				||	// makes cheap crappy handmade items for selling to raise money (creates handmade item resource)
 		Job ==	JOB_SELLITEMS			||	// goes out and sells the made items (sells handmade item resource)
 
 		// - Drug Lab (these jobs gain bonus if in same building as a clinic)
@@ -982,7 +982,7 @@ bool cJobManager::is_job_Paid_Player(u_int Job)
 		Job ==	JOB_DOCTOR				||	// becomes a doctor (requires 1) (will make some extra cash for treating locals)
 		Job ==	JOB_GETABORT			||	// gets an abortion (takes 2 days)
 		Job ==	JOB_PHYSICALSURGERY		||	// magical plastic surgery (takes 5 days)
-		Job ==	JOB_GETHEALING				||	// takes 1 days for each wound trait received.
+		Job ==	JOB_GETHEALING			||	// takes 1 days for each wound trait received.
 		Job ==	JOB_GETREPAIRS			||	// construct girls can get repaired quickly
 #endif
 

@@ -106,6 +106,17 @@ bool cJobManager::WorkEscort(sGirl* girl, sBrothel* brothel, int DayNight, strin
 	else /*             */	{ jobperformance -= 10;	message += " was very late"; }
 	message += " to her appointment with a " + cust_wealth_text + cust_type_text + ".\n";
 
+	//// Where do they go?
+	//*default*/	int loc_type = 1;    string loc_type_text = "Restaurant";
+	///* */if (roll_d <= 1)	{ loc_type = 8; loc_type_text = "Vacation"; }
+	//else if (roll_d <= 3)	{ loc_type = 7; loc_type_text = "Wedding"; }
+	//else if (roll_d <= 6)	{ loc_type = 6; loc_type_text = "Party"; }
+	//else if (roll_d <= 10)	{ loc_type = 5; loc_type_text = "Arena Match"; }
+	//else if (roll_d <= 15)	{ loc_type = 4; loc_type_text = "Movie"; }
+	//else if (roll_d <= 45)	{ loc_type = 3; loc_type_text = "Strip Club"; }
+	//else if (roll_d <= 65)	{ loc_type = 2; loc_type_text = "Bar"; }
+	//else if (roll_d >= 98)	{ loc_type = 0; loc_type_text = "Park"; }
+
 
 	// `J` do wages and tips
 	if (cust_type * cust_wealth <= 0 || g_Dice.percent(2))	// the customer can not or will not pay
@@ -155,7 +166,7 @@ bool cJobManager::WorkEscort(sGirl* girl, sBrothel* brothel, int DayNight, strin
 
 	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3;}
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			libido += 2;
+	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, g_Dice%skill+1);
