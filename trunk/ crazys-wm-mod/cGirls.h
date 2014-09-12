@@ -55,11 +55,7 @@ public:
 	virtual int GetSkill(sGirl* girl, int skill)=0;
 	virtual void UpdateStat(sGirl* girl, int stat, int amount, bool usetraits = true) = 0;
 	virtual void UpdateSkill(sGirl* girl, int skill, int amount)=0;
-	virtual bool CalcPregnancy(
-		sGirl* girl, int chance, int type,
-		int stats[NUM_STATS],
-		int skills[NUM_SKILLS]
-	)=0;
+	virtual bool CalcPregnancy(sGirl* girl, int chance, int type, int stats[NUM_STATS], int skills[NUM_SKILLS]) = 0;
 //	virtual void AddTrait(sGirl* girl, string name, bool temp = false, bool removeitem = false, bool remember = false)=0;
 	virtual bool AddTrait(sGirl* girl, string name, bool temp = false, bool removeitem = false, bool remember = false)=0;
 	virtual bool RemoveTrait(sGirl* girl, string name, bool removeitem = false, bool remember = false)=0;
@@ -149,6 +145,7 @@ typedef struct sRandomGirl
 		m_MinStats[STAT_PCFEAR] = m_MaxStats[STAT_PCFEAR] = 0;
 		m_MinStats[STAT_PCHATE] = m_MaxStats[STAT_PCHATE] = 0;
 		m_MinStats[STAT_PCLOVE] = m_MaxStats[STAT_PCLOVE] = 0;
+		m_MinStats[STAT_MORALITY] = m_MaxStats[STAT_MORALITY] = 0;
 	}
 	~sRandomGirl() { if (m_Next)delete m_Next; m_Next = 0; }
 }sRandomGirl;
@@ -340,6 +337,7 @@ struct sGirl
 
 	// Abstract stats (not shown as numbers but as a raiting)
 	int m_Stats[NUM_STATS];
+	int m_StatTr[NUM_STATS];					// Trait modifiers to stats
 	int m_StatMods[NUM_STATS];					// perminant modifiers to stats
 	int m_TempStats[NUM_STATS];					// these go down (or up) by 30% each week until they reach 0
 
@@ -356,6 +354,7 @@ struct sGirl
 	unsigned char m_AccLevel;					// how good her Accommodation is, 0 is slave like and non-slaves will really hate it
 
 	int m_Skills[NUM_SKILLS];
+	int m_SkillTr[NUM_SKILLS];
 	int m_SkillMods[NUM_SKILLS];
 	int m_TempSkills[NUM_SKILLS];				// these go down (or up) by 1 each week until they reach 0
 
@@ -462,9 +461,9 @@ struct sGirl
 		m_UseAntiPreg		= true;
 
 		for(u_int i=0; i<NUM_SKILLS; i++)
-			m_TempSkills[i] = m_SkillMods[i] = m_Skills[i] = 0;		// Added m_Skills here to zero out any that are not specified -- PP
-		for(int i=0; i<NUM_STATS; i++)
-			m_TempStats[i] = m_StatMods[i] = m_Stats[i] = 0;		// Added m_Stats here to zero out any that are not specified -- PP
+			m_TempSkills[i] = m_SkillMods[i] = m_Skills[i] = m_SkillTr[i] = 0;		// Added m_Skills here to zero out any that are not specified -- PP
+		for (int i = 0; i < NUM_STATS; i++)
+			m_TempStats[i] = m_StatMods[i] = m_Stats[i] = m_StatTr[i] = 0;		// Added m_Stats here to zero out any that are not specified -- PP
 		for(u_int i=0; i<NUM_ACTIONTYPES; i++)
 			m_Enjoyment[i] = -10;	// start off disliking everything
 		
@@ -485,15 +484,10 @@ struct sGirl
 	~sGirl()
 	{
 		m_GirlImages = 0;
-
-		if(m_Name)
-			delete [] m_Name;
-		m_Name = 0;
-			
+		if(m_Name)		delete [] m_Name;
+		m_Name = 0;			
 		m_Events.Free();
-
-		if(m_Next)
-			delete m_Next;
+		if(m_Next)		delete m_Next;
 		m_Next = 0;
 		m_Prev = 0;
 	}
@@ -556,65 +550,68 @@ struct sGirl
  *	So this is safer, if a bit inefficient.
  */
  	bool calc_pregnancy(int,cPlayer *);
- 	int get_stat(int stat_id) {
+ 	int get_stat(int stat_id) 
+	{
 		return g_GirlsPtr->GetStat(this, stat_id);
 	}
- 	int upd_temp_stat(int stat_id, int amount) {
+ 	int upd_temp_stat(int stat_id, int amount) 
+	{
 		g_GirlsPtr->UpdateTempStat(this, stat_id, amount);
 		return g_GirlsPtr->GetStat(this, stat_id);
 	}
-	int upd_stat(int stat_id, int amount, bool usetraits = true) {
+	int upd_stat(int stat_id, int amount, bool usetraits = true) 
+	{
 		g_GirlsPtr->UpdateStat(this, stat_id, amount, usetraits);
 		return g_GirlsPtr->GetStat(this, stat_id);
 	}
 /*
  *	Now then:
  */
-	int charisma()		{ return get_stat(STAT_CHARISMA); }
-	int charisma(int n)	{ return upd_stat(STAT_CHARISMA, n); }
-	int happiness()		{ return get_stat(STAT_HAPPINESS); }
-	int happiness(int n)	{ return upd_stat(STAT_HAPPINESS, n); }
-	int libido()		{ return get_stat(STAT_LIBIDO); }
-	int libido(int n)	{ return upd_stat(STAT_LIBIDO, n); }
-	int constitution()	{ return get_stat(STAT_CONSTITUTION); }
-	int constitution(int n)	{ return upd_stat(STAT_CONSTITUTION, n); }
-	int intelligence()	{ return get_stat(STAT_INTELLIGENCE); }
-	int intelligence(int n)	{ return upd_stat(STAT_INTELLIGENCE, n); }
-	int confidence()	{ return get_stat(STAT_CONFIDENCE); }
-	int confidence(int n)	{ return upd_stat(STAT_CONFIDENCE, n); }
-	int mana()		{ return get_stat(STAT_MANA); }
-	int mana(int n)		{ return upd_stat(STAT_MANA, n); }
-	int agility()		{ return get_stat(STAT_AGILITY); }
-	int agility(int n)	{ return upd_stat(STAT_AGILITY, n); }
-	int fame()		{ return get_stat(STAT_FAME); }
-	int fame(int n)		{ return upd_stat(STAT_FAME, n); }
-	int level()		{ return get_stat(STAT_LEVEL); }
-	int level(int n)	{ return upd_stat(STAT_LEVEL, n); }
-	int askprice()		{ return get_stat(STAT_ASKPRICE); }
-	int askprice(int n)	{ return upd_stat(STAT_ASKPRICE, n); }
+	int charisma()				{ return get_stat(STAT_CHARISMA); }
+	int charisma(int n)			{ return upd_stat(STAT_CHARISMA, n); }
+	int happiness()				{ return get_stat(STAT_HAPPINESS); }
+	int happiness(int n)		{ return upd_stat(STAT_HAPPINESS, n); }
+	int libido()				{ return get_stat(STAT_LIBIDO); }
+	int libido(int n)			{ return upd_stat(STAT_LIBIDO, n); }
+	int constitution()			{ return get_stat(STAT_CONSTITUTION); }
+	int constitution(int n)		{ return upd_stat(STAT_CONSTITUTION, n); }
+	int intelligence()			{ return get_stat(STAT_INTELLIGENCE); }
+	int intelligence(int n)		{ return upd_stat(STAT_INTELLIGENCE, n); }
+	int confidence()			{ return get_stat(STAT_CONFIDENCE); }
+	int confidence(int n)		{ return upd_stat(STAT_CONFIDENCE, n); }
+	int mana()					{ return get_stat(STAT_MANA); }
+	int mana(int n)				{ return upd_stat(STAT_MANA, n); }
+	int agility()				{ return get_stat(STAT_AGILITY); }
+	int agility(int n)			{ return upd_stat(STAT_AGILITY, n); }
+	int fame()					{ return get_stat(STAT_FAME); }
+	int fame(int n)				{ return upd_stat(STAT_FAME, n); }
+	int level()					{ return get_stat(STAT_LEVEL); }
+	int level(int n)			{ return upd_stat(STAT_LEVEL, n); }
+	int askprice()				{ return get_stat(STAT_ASKPRICE); }
+	int askprice(int n)			{ return upd_stat(STAT_ASKPRICE, n); }
 	/* It's NOT lupus! */
-	int house()		{ return get_stat(STAT_HOUSE); }
-	int house(int n)	{ return upd_stat(STAT_HOUSE, n); }
-	int exp()		{ return get_stat(STAT_EXP); }
-	int exp(int n)		{ return upd_stat(STAT_EXP, n); }
-	int age()		{ return get_stat(STAT_AGE); }
-	int age(int n)		{ return upd_stat(STAT_AGE, n); }
-	int obedience()		{ return get_stat(STAT_OBEDIENCE); }
-	int obedience(int n)	{ return upd_stat(STAT_OBEDIENCE, n); }
-	int spirit()		{ return get_stat(STAT_SPIRIT); }
-	int spirit(int n)	{ return upd_stat(STAT_SPIRIT, n); }
-	int beauty()		{ return get_stat(STAT_BEAUTY); }
-	int beauty(int n)	{ return upd_stat(STAT_BEAUTY, n); }
-	int tiredness()		{ return get_stat(STAT_TIREDNESS); }
-	int tiredness(int n)	{ return upd_stat(STAT_TIREDNESS, n); }
-	int health()		{ return get_stat(STAT_HEALTH); }
-	int health(int n)	{ return upd_stat(STAT_HEALTH, n); }
-	int pcfear()		{ return get_stat(STAT_PCFEAR); }
-	int pcfear(int n)	{ return upd_stat(STAT_PCFEAR, n); }
-	int pclove()		{ return get_stat(STAT_PCLOVE); }
-	int pclove(int n)	{ return upd_stat(STAT_PCLOVE, n); }
-	int pchate()		{ return get_stat(STAT_PCHATE); }
-	int pchate(int n)	{ return upd_stat(STAT_PCHATE, n); }
+	int house()					{ return get_stat(STAT_HOUSE); }
+	int house(int n)			{ return upd_stat(STAT_HOUSE, n); }
+	int exp()					{ return get_stat(STAT_EXP); }
+	int exp(int n)				{ return upd_stat(STAT_EXP, n); }
+	int age()					{ return get_stat(STAT_AGE); }
+	int age(int n)				{ return upd_stat(STAT_AGE, n); }
+	int obedience()				{ return get_stat(STAT_OBEDIENCE); }
+	int obedience(int n)		{ return upd_stat(STAT_OBEDIENCE, n); }
+	int spirit()				{ return get_stat(STAT_SPIRIT); }
+	int spirit(int n)			{ return upd_stat(STAT_SPIRIT, n); }
+	int beauty()				{ return get_stat(STAT_BEAUTY); }
+	int beauty(int n)			{ return upd_stat(STAT_BEAUTY, n); }
+	int tiredness()				{ return get_stat(STAT_TIREDNESS); }
+	int tiredness(int n)		{ return upd_stat(STAT_TIREDNESS, n); }
+	int health()				{ return get_stat(STAT_HEALTH); }
+	int health(int n)			{ return upd_stat(STAT_HEALTH, n); }
+	int pcfear()				{ return get_stat(STAT_PCFEAR); }
+	int pcfear(int n)			{ return upd_stat(STAT_PCFEAR, n); }
+	int pclove()				{ return get_stat(STAT_PCLOVE); }
+	int pclove(int n)			{ return upd_stat(STAT_PCLOVE, n); }
+	int pchate()				{ return get_stat(STAT_PCHATE); }
+	int pchate(int n)			{ return upd_stat(STAT_PCHATE, n); }
 
 	int rebel();
 	string JobRatingLetter(int value);
@@ -624,56 +621,59 @@ struct sGirl
  *
  *	similarly...
  */
- 	int get_skill(int skill_id) {
+ 	int get_skill(int skill_id)
+	{
 		return g_GirlsPtr->GetSkill(this, skill_id);
 	}
- 	int upd_temp_skill(int skill_id, int amount) {
+ 	int upd_temp_skill(int skill_id, int amount) 
+	{
 		g_GirlsPtr->UpdateTempSkill(this, skill_id, amount);
 		return g_GirlsPtr->GetSkill(this, skill_id);
 	}
- 	int upd_skill(int skill_id, int amount) {
+ 	int upd_skill(int skill_id, int amount) 
+	{
 		g_GirlsPtr->UpdateSkill(this, skill_id, amount);
 		return g_GirlsPtr->GetSkill(this, skill_id);
 	}
-	int	anal()		{ return get_skill(SKILL_ANAL); }
-	int	anal(int n)	{ return upd_skill(SKILL_ANAL, n); }
-	int	bdsm()		{ return get_skill(SKILL_BDSM); }
-	int	bdsm(int n)	{ return upd_skill(SKILL_BDSM, n); }
-	int	beastiality()	{ return get_skill(SKILL_BEASTIALITY); }
-	int	beastiality(int n){ return upd_skill(SKILL_BEASTIALITY, n); }
-	int	combat()	{ return get_skill(SKILL_COMBAT); }
-	int	combat(int n)	{ return upd_skill(SKILL_COMBAT, n); }
-	int	group()		{ return get_skill(SKILL_GROUP); }
-	int	group(int n)	{ return upd_skill(SKILL_GROUP, n); }
-	int	lesbian()	{ return get_skill(SKILL_LESBIAN); }
-	int	lesbian(int n)	{ return upd_skill(SKILL_LESBIAN, n); }
-	int	magic()		{ return get_skill(SKILL_MAGIC); }
-	int	magic(int n)	{ return upd_skill(SKILL_MAGIC, n); }
-	int	normalsex()	{ return get_skill(SKILL_NORMALSEX); }
-	int	normalsex(int n){ return upd_skill(SKILL_NORMALSEX, n); }
-	int oralsex() { return get_skill(SKILL_ORALSEX); }
-	int oralsex(int n)	{ return upd_skill(SKILL_ORALSEX, n); }
-	int tittysex() { return get_skill(SKILL_TITTYSEX); }
-	int tittysex(int n)	{ return upd_skill(SKILL_TITTYSEX, n); }
-	int handjob() { return get_skill(SKILL_HANDJOB); }
-	int handjob(int n)	{ return upd_skill(SKILL_HANDJOB, n); }
-	int	service()	{ return get_skill(SKILL_SERVICE); }
-	int	service(int n)	{ return upd_skill(SKILL_SERVICE, n); }
-	int	strip()		{ return get_skill(SKILL_STRIP); }
-	int	strip(int n)	{ return upd_skill(SKILL_STRIP, n); }
-	int	medicine()	{ return get_skill(SKILL_MEDICINE); }
-	int	medicine(int n)		{ return upd_skill(SKILL_MEDICINE, n); }
-	int	performance()	{ return get_skill(SKILL_PERFORMANCE); }
-	int	performance(int n)	{ return upd_skill(SKILL_PERFORMANCE, n); }
-	int	crafting()	{ return get_skill(SKILL_CRAFTING); }
-	int	crafting(int n)	{ return upd_skill(SKILL_CRAFTING, n); }
-	int	herbalism()	{ return get_skill(SKILL_HERBALISM); }
-	int	herbalism(int n)	{ return upd_skill(SKILL_HERBALISM, n); }
-	int	farming()	{ return get_skill(SKILL_FARMING); }
-	int	farming(int n)	{ return upd_skill(SKILL_FARMING, n); }
-	int	brewing()	{ return get_skill(SKILL_BREWING); }
-	int	brewing(int n)	{ return upd_skill(SKILL_BREWING, n); }
-	int	animalhandling()	{ return get_skill(SKILL_ANIMALHANDLING); }
+	int	anal()					{ return get_skill(SKILL_ANAL); }
+	int	anal(int n)				{ return upd_skill(SKILL_ANAL, n); }
+	int	bdsm()					{ return get_skill(SKILL_BDSM); }
+	int	bdsm(int n)				{ return upd_skill(SKILL_BDSM, n); }
+	int	beastiality()			{ return get_skill(SKILL_BEASTIALITY); }
+	int	beastiality(int n)		{ return upd_skill(SKILL_BEASTIALITY, n); }
+	int	combat()				{ return get_skill(SKILL_COMBAT); }
+	int	combat(int n)			{ return upd_skill(SKILL_COMBAT, n); }
+	int	group()					{ return get_skill(SKILL_GROUP); }
+	int	group(int n)			{ return upd_skill(SKILL_GROUP, n); }
+	int	lesbian()				{ return get_skill(SKILL_LESBIAN); }
+	int	lesbian(int n)			{ return upd_skill(SKILL_LESBIAN, n); }
+	int	magic()					{ return get_skill(SKILL_MAGIC); }
+	int	magic(int n)			{ return upd_skill(SKILL_MAGIC, n); }
+	int	normalsex()				{ return get_skill(SKILL_NORMALSEX); }
+	int	normalsex(int n)		{ return upd_skill(SKILL_NORMALSEX, n); }
+	int oralsex()				{ return get_skill(SKILL_ORALSEX); }
+	int oralsex(int n)			{ return upd_skill(SKILL_ORALSEX, n); }
+	int tittysex()				{ return get_skill(SKILL_TITTYSEX); }
+	int tittysex(int n)			{ return upd_skill(SKILL_TITTYSEX, n); }
+	int handjob()				{ return get_skill(SKILL_HANDJOB); }
+	int handjob(int n)			{ return upd_skill(SKILL_HANDJOB, n); }
+	int	service()				{ return get_skill(SKILL_SERVICE); }
+	int	service(int n)			{ return upd_skill(SKILL_SERVICE, n); }
+	int	strip()					{ return get_skill(SKILL_STRIP); }
+	int	strip(int n)			{ return upd_skill(SKILL_STRIP, n); }
+	int	medicine()				{ return get_skill(SKILL_MEDICINE); }
+	int	medicine(int n)			{ return upd_skill(SKILL_MEDICINE, n); }
+	int	performance()			{ return get_skill(SKILL_PERFORMANCE); }
+	int	performance(int n)		{ return upd_skill(SKILL_PERFORMANCE, n); }
+	int	crafting()				{ return get_skill(SKILL_CRAFTING); }
+	int	crafting(int n)			{ return upd_skill(SKILL_CRAFTING, n); }
+	int	herbalism()				{ return get_skill(SKILL_HERBALISM); }
+	int	herbalism(int n)		{ return upd_skill(SKILL_HERBALISM, n); }
+	int	farming()				{ return get_skill(SKILL_FARMING); }
+	int	farming(int n)			{ return upd_skill(SKILL_FARMING, n); }
+	int	brewing()				{ return get_skill(SKILL_BREWING); }
+	int	brewing(int n)			{ return upd_skill(SKILL_BREWING, n); }
+	int	animalhandling()		{ return get_skill(SKILL_ANIMALHANDLING); }
 	int	animalhandling(int n)	{ return upd_skill(SKILL_ANIMALHANDLING, n); }
 
 
@@ -725,28 +725,36 @@ struct sGirl
  *	let's overload that...
  *	should be able to do the same using sCustomer as well...
  */
-	void add_trait(string trait, bool temp = true) {
+	void add_trait(string trait, bool temp = true) 
+	{
 		g_GirlsPtr->AddTrait(this, trait, temp);
 	}
-	void remove_trait(string trait) {
+	void remove_trait(string trait) 
+	{
 		g_GirlsPtr->RemoveTrait(this, trait);
 	}
-	bool has_trait(string trait) {
+	bool has_trait(string trait) 
+	{
 		return g_GirlsPtr->HasTrait(this, trait);
 	}
-	bool is_addict() {
+	bool is_addict() 
+	{
 		return	has_trait("Shroud Addict")	||
 			has_trait("Fairy Dust Addict")	||
 			has_trait("Viras Blood Addict");
 	}
-	bool has_disease() {
+	bool has_disease() 
+	{
 		return	has_trait("AIDS") ||
+			has_trait("Herpes") ||
 			has_trait("Chlamydia") ||
 			has_trait("Syphilis");
 	}
 
-	sChild *next_child(sChild *child, bool remove=false) {
-		if(!remove) {
+	sChild *next_child(sChild *child, bool remove=false) 
+	{
+		if(!remove) 
+		{
 			return child->m_Next;
 		}
 		return m_Children.remove_child(child, this);
@@ -760,33 +768,26 @@ struct sGirl
  *		then it was one of the types that doesn't have 
  *		an equivalent pregnant form
  */
- 		if(new_type >= NUM_IMGTYPES) {
+ 		if(new_type >= NUM_IMGTYPES) 
+		{
 			return image_type;
 		}
 		return new_type;
 	}
 	sGirl *run_away();
 
-	bool is_slave() { return (m_States & (1<<STATUS_SLAVE)) !=0; }
-	bool is_free()	{ return !is_slave(); }
-	void set_slave() {
-		m_States |= (1<<STATUS_SLAVE);
-	}
-	bool is_monster()	{ return (m_States & (1<<STATUS_CATACOMBS)) !=0; }
-	bool is_human()		{ return !is_monster(); }
-	bool is_arena ()	{ return (m_States & (1<<STATUS_ARENA)) !=0; }
+	bool is_slave()			{ return (m_States & (1<<STATUS_SLAVE)) !=0; }
+	bool is_free()			{ return !is_slave(); }
+	void set_slave()		{ m_States |= (1<<STATUS_SLAVE); }
+	bool is_monster()		{ return (m_States & (1<<STATUS_CATACOMBS)) !=0; }
+	bool is_human()			{ return !is_monster(); }
+	bool is_arena ()		{ return (m_States & (1<<STATUS_ARENA)) !=0; }
 	bool is_yourdaughter()	{ return (m_States & (1 << STATUS_YOURDAUGHTER)) != 0; }
 	bool is_warrior()		{ return !is_arena(); }
 
 	void fight_own_gang(bool &girl_wins);
 	void win_vs_own_gang(vector<sGang*> &v, int max_goons, bool &girl_wins);
-	void lose_vs_own_gang(
-		vector<sGang*> &v,
-		int max_goons,
-		int girl_stats,
-		int gang_stats,
-		bool &girl_wins
-	);
+	void lose_vs_own_gang(vector<sGang*> &v, int max_goons, int girl_stats, int gang_stats, bool &girl_wins);
 
 	void OutputGirlRow(string* Data, const vector<string>& columnNames);
 	void OutputGirlDetailString(string& Data, const string& detailName);
@@ -851,6 +852,7 @@ public:
 	int GetStat(sGirl* girl, int stat);
 	void SetStat(sGirl* girl, int stat, int amount);
 	void UpdateStat(sGirl* girl, int stat, int amount, bool usetraits = true);	// updates a stat
+	void UpdateStatTr(sGirl* girl, int stat, int amount);	// updates a stat from traits
 	void UpdateStatMod(sGirl* girl, int stat, int amount);	// updates a stat
 	void UpdateTempStat(sGirl* girl, int stat, int amount);	// updates a stat temporarily
 
@@ -858,6 +860,7 @@ public:
 	void SetSkill(sGirl* girl, int skill, int amount);
 	void SetSkillMod(sGirl* girl, int skill, int amount);
 	void UpdateSkill(sGirl* girl, int skill, int amount);	// updates a skill
+	void UpdateSkillTr(sGirl* girl, int skill, int amount);	// updates a skill from traits
 	void UpdateSkillMod(sGirl* girl, int skill, int amount);	// updates a skillmods
 	void UpdateTempSkill(sGirl* girl, int skill, int amount);	// updates a skill temporarily
 

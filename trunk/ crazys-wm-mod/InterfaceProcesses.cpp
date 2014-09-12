@@ -417,22 +417,58 @@ static void LoadXMLItems(FileList &fl)
 
 void LoadGameInfoFiles()
 {
-// Load the traits: first build the path
+	stringstream ss;
+	ifstream incol;
+	cConfig cfg;
+
+	int loadtraits = 0;		// 0=default, 1=xml, 2=txt
 	DirPath location = DirPath() << "Resources" << "Data";
- 	FileList fl(location, "*.traits");				// get a file list
-	for (int i = 0; i < fl.size(); i++)				// loop over the list, loading the files
+	DirPath dp = DirPath() << "Resources" << "Data" << "CoreTraits.traitsx";
+	TiXmlDocument docTraits(dp.c_str());
+	if (docTraits.LoadFile())	loadtraits = 1;
+	else // try txt
 	{
-		g_Traits.LoadTraits(fl[i].full());
+		if (cfg.debug.log_debug())
+		{
+			g_LogFile.ss() << "Error: line " << docTraits.ErrorRow() << ", col " << docTraits.ErrorCol() << ": " << docTraits.ErrorDesc() << endl;
+			g_LogFile.ssend();
+		}
+		dp = DirPath() << "Resources" << "Data" << "CoreTraits.traits";
+		incol.open(dp.c_str());
+		loadtraits = (incol.good()) ? 2 : 0;
+		incol.close();
 	}
-/* `J` Load .traitsx files (work in progress)
-	FileList fl_t(location, "*.traitsx");				// get a file list
-	g_Traits.LoadXMLTraits(fl_t);
-*/
+	if (loadtraits == 1)
+	{
+		g_Traits.LoadXMLTraits(dp);
+	}
+	else if (loadtraits == 2)
+	{
+		g_Traits.LoadTraits(dp);
+	}
+	else if (loadtraits == 0)
+	{
+		FileList fl_t(location, "*.traitsx");				// get a file list
+		FileList fl(location, "*.traits");				// get a file list
+		if (fl_t.size() > 0)
+		{
+			for (int i = 0; i < fl_t.size(); i++)				// loop over the list, loading the files
+			{
+				g_Traits.LoadXMLTraits(fl_t[i].full());
+			}
+		}
+		else if (fl.size() > 0)
+		{
+			for (int i = 0; i < fl.size(); i++)				// loop over the list, loading the files
+			{
+				g_Traits.LoadTraits(fl[i].full());
+			}
+		}
+	}
 
 // `J` Load .itemsx files
 	DirPath location_i = DirPath() << "Resources" << "Items"; // `J` moved items from Data to Items folder
 	FileList fl_i(location_i, "*.itemsx");
-	cConfig cfg;
 	if (cfg.debug.log_items())	g_LogFile.os() << "Found " << fl_i.size() <<" itemsx files" << endl;
 	LoadXMLItems(fl_i);
 }

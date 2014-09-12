@@ -748,8 +748,8 @@ sScript *cGameScript::Script_AdjustTargetGirlStat(sScript *Script)
 
 	if(m_GirlTarget)
 	{
-		if(value[0]-22 >= 0)
-			g_Girls.UpdateSkill(m_GirlTarget, value[0]-22, value[1]);
+		if(value[0]-NUM_STATS >= 0)
+			g_Girls.UpdateSkill(m_GirlTarget, value[0]-NUM_STATS, value[1]);
 		else
 			g_Girls.UpdateStat(m_GirlTarget, value[0], value[1]);
 	}

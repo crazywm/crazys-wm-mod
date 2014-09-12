@@ -283,7 +283,7 @@ void LoadInterface()
 		}
 		DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "InterfaceColors.txt";
 		incol.open(dp.c_str());
-		loadcolors = (incol.good()) ? 2 : loadcolors = 0;
+		loadcolors = (incol.good()) ? 2 : 0;
 		incol.close();
 	}
 	if (loadcolors == 1)	// load "InterfaceColors.xml"

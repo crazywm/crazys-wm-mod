@@ -731,9 +731,27 @@ WM - Updated WorkFightArenaGirls.cpp
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.11
 !!!!!!!!!!!!!!!!!!!! pushed to SVN - r103
 
+###  Changes 9/8-10/2014
+Changed prescript text for movie recruitment and added CaptC's MeetCastingTry.script
+Added more traits to CoreTraits.traitsx
+Started integrating new traits into the game.
+Rebuilt cTraits::GetTranslateName() for faster flow and checking case insensitive.
+Added more negative effects from STDs in cGirls::updateSTD
+Added "Herpes Cure.itemsx".
+Added more traits into cGirls::GirlFucks
+Modified diseases calculations.
+Cleaned up GetRandomSexString and varients.
+Added Morality as a Stat. Nothing uses it yet.
 
+Crazy made more changes to jobs - SVN r104
 
+###  Changes 9/11/2014
+Added loading of .traitsx files
 
+WME - minor changes
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.03
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.13
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r105
 
 
 

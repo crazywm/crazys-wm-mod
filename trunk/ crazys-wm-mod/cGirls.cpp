@@ -35,6 +35,7 @@
 #include "cClinic.h"
 #include "cHouse.h"
 #include "cBrothel.h"
+#include "cFarm.h"
 
 #ifdef LINUX
 #include "linux.h"
@@ -68,7 +69,6 @@ extern cHouseManager g_House;
 extern cFarmManager g_Farm;
 extern cFont m_Font;
 
-
 /*
  * MOD: DocClox: Stuff for the XML loader code
  *
@@ -81,10 +81,12 @@ map<string,unsigned int> sGirl::status_lookup;
 
 const char *sGirl::stat_names[] = 
 {
+
 	"Charisma",		"Happiness",	"Libido",		"Constitution",	"Intelligence",	"Confidence",	"Mana",			"Agility",
 	"Fame",			"Level",		"AskPrice",		"House",		"Exp",			"Age",			"Obedience",	"Spirit",
-	"Beauty",		"Tiredness",	"Health",		"PCFear",		"PCLove",		"PCHate"
+	"Beauty",		"Tiredness",	"Health",		"PCFear",		"PCLove",		"PCHate",		"Morality"
 };
+// `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in > Constants.h
 const char *sGirl::skill_names[] = 
 {
 	"Anal",			"Magic",		"BDSM",			"NormalSex",	"Beastiality",
@@ -336,13 +338,16 @@ bool cGirls::DisobeyCheck(sGirl* girl, int action, sBrothel* brothel)
 
 void cGirls::CalculateGirlType(sGirl* girl)
 {
-	int BigBoobs = 0, CuteGirl = 0, Dangerous = 0, Cool = 0, Nerd = 0, NonHuman = 0, Lolita = 0,
-		Elegant = 0, Sexy = 0, NiceFigure = 0, NiceArse = 0, SmallBoobs = 0, Freak = 0;
+	// `J` When adding new traits, search for "J-Add-New-Traits"  :  found in > CalculateGirlType
+	int BigBoobs = 0, SmallBoobs = 0, CuteGirl = 0, Dangerous = 0, Cool = 0, Nerd = 0, NonHuman = 0, Lolita = 0,
+		Elegant = 0, Sexy = 0, NiceFigure = 0, NiceArse = 0,  Freak = 0;
 
 	girl->m_FetishTypes = 0;
-
+	//zzzzzz boobs
+	if (HasTrait(girl, "Small Boobs"))               { BigBoobs -= 60; CuteGirl += 25; Lolita += 15; SmallBoobs += 60; }
 	if (HasTrait(girl, "Big Boobs"))                 { BigBoobs += 60; CuteGirl -= 5; Sexy += 10; NiceFigure = 5; SmallBoobs -= 80; }
 	if (HasTrait(girl, "Abnormally Large Boobs"))    { BigBoobs += 85; CuteGirl -= 15; NonHuman += 5; Freak += 20; SmallBoobs -= 100; Lolita -= 10; }
+
 	if (HasTrait(girl, "Small Scars"))               { CuteGirl -= 5; Dangerous += 5; Cool += 2; Freak += 2; }
 	if (HasTrait(girl, "Cool Scars"))                { CuteGirl -= 10; Dangerous += 20; Cool += 30; Freak += 5; }
 	if (HasTrait(girl, "Horrific Scars"))            { CuteGirl -= 15; Dangerous += 30; Freak += 20; }
@@ -373,7 +378,6 @@ void cGirls::CalculateGirlType(sGirl* girl)
 	if (HasTrait(girl, "Sexy Air"))                  { Cool += 5; Elegant -= 5; Sexy += 10; }
 	if (HasTrait(girl, "Great Figure"))              { BigBoobs += 10; Sexy += 10; NiceFigure += 60; }
 	if (HasTrait(girl, "Great Arse"))                { Sexy += 10; NiceArse += 60; }
-	if (HasTrait(girl, "Small Boobs"))               { BigBoobs -= 60; CuteGirl += 25; Lolita += 15; SmallBoobs += 60; }
 	if (HasTrait(girl, "Broken Will"))               { Cool -= 40; Nerd -= 40; Elegant -= 40; Sexy -= 40; Freak += 40; }
 	if (HasTrait(girl, "Masochist"))                 { CuteGirl -= 10; Nerd -= 10; CuteGirl -= 15; Dangerous += 10; Elegant -= 10; Freak += 30; }
 	if (HasTrait(girl, "Sadistic"))                  { CuteGirl -= 20; Dangerous += 15; Nerd -= 10; Elegant -= 30; Sexy -= 10; Freak += 30; }
@@ -616,6 +620,7 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 			if (current->m_MinSkills[i] > current->m_MaxSkills[i]) { int a = current->m_MinSkills[i]; current->m_MinSkills[i] = current->m_MaxSkills[i]; current->m_MaxSkills[i] = a; }
 		}
 
+		// `J` When adding new traits, search for "J-Add-New-Traits"  :  found in > CreateRandomGirl > hardcoded rgirl
 		current->m_NumTraits = 0;
 		for (int i = 0; i < g_Traits.GetNumTraits() && current->m_NumTraits < 50; i++)
 		{
@@ -644,9 +649,10 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 				if (test == "Shroud Addict")		c = 5;
 				if (test == "Fairy Dust Addict")	c = 5;
 				if (test == "Viras Blood Addict")	c = 5;
-				if (test == "AIDS")					c = 5;
-				if (test == "Chlamydia")			c = 5;
-				if (test == "Syphilis")				c = 5;
+				if (test == "AIDS")					c = 2;
+				if (test == "Chlamydia")			c = 3;
+				if (test == "Syphilis")				c = 4;
+				if (test == "Herpes")				c = 5;
 				if (test == "Queen")				c = 5;
 				if (test == "Princess")				c = 10;
 				if (test == "Sterile")				c = 5;
@@ -760,7 +766,6 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 	if (current->m_Human == 0)			AddTrait(newGirl, "Not Human");
 	if (current->m_YourDaughter == 1)	AddTrait(newGirl, "Your Daughter");
 
-
 	newGirl->m_Stats[STAT_FAME] = 0;
 	if (age != 0)	newGirl->m_Stats[STAT_AGE] = age;
 	newGirl->m_Stats[STAT_HEALTH] = 100;
@@ -774,7 +779,6 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 		newGirl->m_Stats[STAT_OBEDIENCE] = 0;
 		newGirl->m_Stats[STAT_PCHATE] = 50;
 	}
-
 
 	if (CheckVirginity(newGirl))	// `J` check random girl's virginity
 	{
@@ -846,7 +850,6 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 	}
 	else	newGirl->m_newRandomFixed = -1;
 
-
 	RemoveAllRememberedTraits(newGirl);	// WD: remove any rembered traits created from trait incompatibilities
 
 	/*
@@ -874,7 +877,6 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 	DirPath dp = DirPath() << "Resources" << "Characters" << newGirl->m_Name << "triggers.xml";
 	newGirl->m_Triggers.LoadList(dp);
 	newGirl->m_Triggers.SetGirlTarget(newGirl);
-
 
 	// `J` more usefull log for rgirl
 	g_LogFile.os() << gettext("Random girl ") << newGirl->m_Realname << gettext(" created from template ") << newGirl->m_Name << gettext(".rgirlsx") << endl;
@@ -1233,12 +1235,8 @@ string cGirls::GetDetailsString(sGirl* girl, bool purchase)
 
 	}
 
-
-
-
 	// display looks
 	ss << basestr[2] << (GetStat(girl, STAT_BEAUTY) + GetStat(girl, STAT_CHARISMA)) / 2 << sper;
-
 
 	// display level and exp
 	ss << "\n" << levelstr[0] << GetStat(girl, STAT_LEVEL);
@@ -1353,7 +1351,6 @@ string cGirls::GetDetailsString(sGirl* girl, bool purchase)
 		else											data += gettext("\n");
 	}
 
-
 	// display Skills
 	ss.str("");
 	ss << "\n\nSKILLS";
@@ -1447,7 +1444,7 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 	if (!purchase)
 	{
 		data += gettext("\n\nJOB PREFERENCES\n");
-		// `J` When adding or changing this section, search for "J-Change-Action-Types"
+		// `J` When modifying Action types, search for "J-Change-Action-Types"  :  found in > GetMoreDetailsString
 		string jobs[] = {
 			gettext("combat"),
 			gettext("working as a whore"),
@@ -1568,6 +1565,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)
 	int milk = 0;
 	{
 		if (girl->is_pregnant()) milk += 100; // preg rating | non-preg rating
+		//zzzzzz boobs
 		if (g_Girls.HasTrait(girl, "Abnormally Large Boobs")) milk += 150; // S | B
 		else if (g_Girls.HasTrait(girl, "Big Boobs")) milk += 100; // A | C
 		else if (g_Girls.HasTrait(girl, "Small Boobs")) milk += 25; // C | E
@@ -1613,7 +1611,9 @@ string cGirls::GetThirdDetailsString(sGirl* girl)
 	int makeitem = (jr_cra + jr_ser);
 	int makepot = ((jr_int / 2) + (jr_her / 2) + (jr_bre / 2) + (jr_cra / 2));
 	
+	// `J` When adding new traits, search for "J-Add-New-Traits"  :  found in > GetThirdDetailsString > trait adjustments for jobs
 	// Traits in alphabetical order
+	//zzzzzz boobs
 	if (g_Girls.HasTrait(girl, "Abnormally Large Boobs"))
 	{
 		barwait -= 20;
@@ -2177,7 +2177,6 @@ string cGirls::GetThirdDetailsString(sGirl* girl)
 		security += 5;
 	}
 
-
 	data += gettext("Brothel Job Ratings\n\n");
 	data += girl->JobRatingLetter(security) + gettext("  -  Security\n");
 	data += girl->JobRatingLetter(advertising) + gettext("  -  Advertising\n");
@@ -2302,7 +2301,6 @@ int cGirls::GetRebelValue(sGirl* girl, bool matron)
 	int happyStat = GetStat(girl, STAT_HAPPINESS);
 	bool girlIsSlave = girl->is_slave();
 
-
 	// a matron (or torturer in dungeon) will help convince a girl to obey 
 	if (matron)	chanceNo -= 15;
 
@@ -2323,7 +2321,6 @@ int cGirls::GetRebelValue(sGirl* girl, bool matron)
 			chanceNo += 10 - happyStat;				// WD:	Rebel increases by an additional point if happy < 10
 	}
 	else	chanceNo -= (happyStat - 50) / 10;		// happy girls are less cranky, less Rebel
-
 
 	// House Take has no effect on slaves
 	if (girlIsSlave)	chanceNo -= 15;				// Slave Girl lowers rebelinous of course
@@ -2425,7 +2422,7 @@ int cGirls::GetStat(sGirl* girl, int a_stat)
 	else if (stat == STAT_TIREDNESS && g_Girls.HasTrait(girl, "Incorporeal"))	return 0;
 	else if (stat == STAT_PCLOVE || stat == STAT_PCFEAR || stat == STAT_PCHATE) min = -100;
 	// Generic calculation
-	value = girl->m_Stats[stat] + girl->m_StatMods[stat] + girl->m_TempStats[stat];
+	value = girl->m_Stats[stat] + girl->m_StatMods[stat] + girl->m_TempStats[stat] + girl->m_StatTr[stat];
 
 	if (value < min) value = min;
 	else if (value > max) value = max;
@@ -2536,16 +2533,34 @@ void cGirls::UpdateStat(sGirl* girl, int a_stat, int amount, bool usetraits)
 		girl->m_Stats[stat] = value;
 	}
 }
-// add amount to skillmod
-void cGirls::UpdateStatMod(sGirl* girl, int skill, int amount)
+
+void cGirls::UpdateStatMod(sGirl* girl, int stat, int amount)
 {
+	bool hht = (stat == STAT_HEALTH || stat == STAT_HAPPINESS || stat == STAT_TIREDNESS) ? true : false;
+	if (hht)	girl->m_StatMods[stat] = 0; // hht should not have mod or temp stat
 	if (amount >= 0)
 	{
-		girl->m_StatMods[skill] = min(100, amount + girl->m_StatMods[skill]);
+		if (hht)	girl->m_Stats[stat] = min(100, amount + girl->m_Stats[stat]);
+		else		girl->m_StatMods[stat] = min(100, amount + girl->m_StatMods[stat]);
 	}
 	else
 	{
-		girl->m_StatMods[skill] = max(-100, amount + girl->m_StatMods[skill]);
+		if (hht)	girl->m_Stats[stat] = max(0, amount + girl->m_Stats[stat]);
+		else		girl->m_StatMods[stat] = max(-100, amount + girl->m_StatMods[stat]);
+	}
+}
+
+void cGirls::UpdateStatTr(sGirl* girl, int stat, int amount)
+{
+	bool hht = (stat == STAT_HEALTH || stat == STAT_HAPPINESS || stat == STAT_TIREDNESS) ? true : false;
+	if (hht)	girl->m_StatTr[stat] = 0; // Traits should not directly change hht
+	if (amount >= 0)
+	{
+		girl->m_StatTr[stat] = min(100, amount + girl->m_StatTr[stat]);
+	}
+	else
+	{
+		girl->m_StatTr[stat] = max(-100, amount + girl->m_StatTr[stat]);
 	}
 }
 
@@ -2566,13 +2581,17 @@ void cGirls::updateTempStats(sGirl* girl)	// Normalise to zero by 30% each week
 
 void cGirls::UpdateTempStat(sGirl* girl, int stat, int amount)
 {
-	if(amount >= 0)
+	bool hht = (stat == STAT_HEALTH || stat == STAT_HAPPINESS || stat == STAT_TIREDNESS) ? true : false;
+	if (hht)	girl->m_TempStats[stat] = 0; // hht should not have mod or temp stat
+	if (amount >= 0)
 	{
-		girl->m_TempStats[stat] = min(100, amount + girl->m_TempStats[stat]);
+		if (hht)	girl->m_Stats[stat] = min(100, amount + girl->m_Stats[stat]);
+		else		girl->m_TempStats[stat] = min(100, amount + girl->m_TempStats[stat]);
 	}
 	else
 	{
-		girl->m_TempStats[stat] = max(-100, amount + girl->m_TempStats[stat]);
+		if (hht)	girl->m_Stats[stat] = max(0, amount + girl->m_Stats[stat]);
+		else		girl->m_TempStats[stat] = max(-100, amount + girl->m_TempStats[stat]);
 	}
 }
 
@@ -2581,7 +2600,7 @@ void cGirls::UpdateTempStat(sGirl* girl, int stat, int amount)
 // returns total of skill + mod + temp
 int cGirls::GetSkill(sGirl* girl, int skill)
 {
-	int value = (girl->m_Skills[skill]) + girl->m_SkillMods[skill] + girl->m_TempSkills[skill];
+	int value = (girl->m_Skills[skill]) + girl->m_SkillMods[skill] + girl->m_TempSkills[skill] + girl->m_SkillTr[skill];
 	if (value < 0)			value = 0;
 	else if (value > 100)	value = 100;
 	return value;
@@ -2622,6 +2641,18 @@ void cGirls::UpdateSkillMod(sGirl* girl, int skill, int amount)
 		girl->m_SkillMods[skill] = max(-100, amount + girl->m_SkillMods[skill]);
 	}
 }
+void cGirls::UpdateSkillTr(sGirl* girl, int skill, int amount)
+{
+	if (amount >= 0)
+	{
+		girl->m_SkillTr[skill] = min(100, amount + girl->m_SkillTr[skill]);
+	}
+	else
+	{
+		girl->m_SkillTr[skill] = max(-100, amount + girl->m_SkillTr[skill]);
+	}
+}
+
 // add amount to tempskill
 void cGirls::UpdateTempSkill(sGirl* girl, int skill, int amount)
 {
@@ -2661,7 +2692,6 @@ void cGirls::updateTempSkills(sGirl* girl)
 // ----- Load save
 
 // This load
-
 
 bool sGirl::LoadGirlXML(TiXmlHandle hGirl)
 {
@@ -2801,7 +2831,6 @@ bool sGirl::LoadGirlXML(TiXmlHandle hGirl)
 
 	// Load their children
 	pGirl->QueryIntAttribute("PregCooldown", &tempInt); m_PregCooldown = tempInt; tempInt = 0;
-
 
 	// load number of children
 	TiXmlElement* pChildren = pGirl->FirstChildElement("Children");
@@ -3075,7 +3104,6 @@ void sGirl::load_from_xml(TiXmlElement *el)
 		if (child->ValueStr() == "Trait")	//get the trait name 
 		{
 			pt = child->Attribute("Name");
-			//			m_Traits[m_NumTraits] = g_Traits.GetTrait(n_strdup(pt));
 			m_Traits[m_NumTraits] = g_Traits.GetTrait(g_Traits.GetTranslateName(n_strdup(pt))); // `J` added translation check
 			m_NumTraits++;
 		}
@@ -3193,7 +3221,6 @@ void cGirls::LoadRandomGirlXML(string filename)
 		AddRandomGirl(girl);						// add the girl to the list
 	}
 }
-
 
 void cGirls::LoadGirlsDecider(string filename)
 {
@@ -3697,7 +3724,6 @@ void cGirls::UseItems(sGirl* girl)
 							break;
 						}
 
-
 					}
 					else if (curEffect->m_Affects == sEffect::Trait)
 					{
@@ -3958,47 +3984,31 @@ int cGirls::GetNumItemEquiped(sGirl* girl, int Type)
 
 void cGirls::UnapplyTraits(sGirl* girl, sTrait* trait)
 {
+	// `J` When adding new traits, search for "J-Add-New-Traits"  :  found in > UnapplyTraits
 	/* WD:
 	*	Added doOnce = false; to end of fn
 	*	else the fn will allways abort
 	*/
-
-	//	WD:	don't know why it has to be static
-	//static bool doOnce = false;
-
-	//static int num=0;
-	//if(doOnce)
-	//{
-	//	doOnce=false;
-	//	return num;
-	//}
-
-	bool doOnce = false;
-	if(trait)
-		doOnce = true;
-
+	
+	bool doOnce = (trait) ? true : false;
 	for(int i=0; i<girl->m_NumTraits || doOnce; i++)
 	{
 		sTrait* tr = 0;
-		if(doOnce)
-			tr = trait;
-		else
-			tr = girl->m_Traits[i];
-		if(tr == 0)
-			continue;
+		tr = (doOnce) ? trait : girl->m_Traits[i];
+		if (tr == 0) continue;
 
-
+		//zzzzzz boobs
 		if(strcmp(tr->m_Name, "Big Boobs") == 0)
 		{
 			// Can only have one trait added
 			if (!AddTrait(girl, "Abnormally Large Boobs", false, false, true))
 				AddTrait(girl, "Small Boobs", false, false, true);
 
-			UpdateStat(girl,STAT_BEAUTY,-10);
-			UpdateStat(girl,STAT_CONSTITUTION,-5);
-			UpdateStat(girl,STAT_AGILITY,5);
-			UpdateStat(girl,STAT_CHARISMA,-2);
-			UpdateSkill(girl,SKILL_TITTYSEX,-15);
+				UpdateStatTr(girl, STAT_BEAUTY, -10);
+				UpdateStatTr(girl, STAT_CONSTITUTION, -5);
+				UpdateStatTr(girl, STAT_AGILITY, 5);
+				UpdateStatTr(girl, STAT_CHARISMA, -2);
+				UpdateSkillTr(girl, SKILL_TITTYSEX, -15);
 		}
 
 		else if(strcmp(tr->m_Name, "Abnormally Large Boobs") == 0)
@@ -4024,13 +4034,11 @@ void cGirls::UnapplyTraits(sGirl* girl, sTrait* trait)
 			UpdateSkill(girl,SKILL_TITTYSEX,10);
 		}
 
-		else if (strcmp(tr->m_Name, "Fast orgasms") == 0 || strcmp(tr->m_Name, "Fast Orgasms") == 0)
+		else if (strcmp(tr->m_Name, "Fast Orgasms") == 0)
 		{
 			// Can only have one trait added
-			if (HasRememberedTrait(girl, "Fake orgasm expert") || HasRememberedTrait(girl, "Fake Orgasm Expert"))
-				AddTrait(girl, "Fake Orgasm Expert", false, false, true);
-			else if (HasRememberedTrait(girl, "Slow orgasms") || HasRememberedTrait(girl, "Slow Orgasms"))
-				AddTrait(girl, "Slow Orgasms", false, false, true);
+			if (HasRememberedTrait(girl, "Fake Orgasm Expert"))		AddTrait(girl, "Fake Orgasm Expert", false, false, true);
+			else if (HasRememberedTrait(girl, "Slow Orgasms"))		AddTrait(girl, "Slow Orgasms", false, false, true);
 
 			UpdateStat(girl,STAT_LIBIDO,-10);
 			UpdateSkill(girl,SKILL_ANAL,-10);
@@ -4043,13 +4051,11 @@ void cGirls::UnapplyTraits(sGirl* girl, sTrait* trait)
 			UpdateStat(girl,STAT_CONFIDENCE,-10);
 		}
 
-		else if (strcmp(tr->m_Name, "Fake orgasm expert") == 0 || strcmp(tr->m_Name, "Fake Orgasm Expert") == 0)
+		else if (strcmp(tr->m_Name, "Fake Orgasm Expert") == 0)
 		{
 			// Can only have one trait added
-			if (HasRememberedTrait(girl, "Fast orgasms") || HasRememberedTrait(girl, "Fast Orgasms"))
-				AddTrait(girl, "Fast Orgasms", false, false, true);
-			else if (HasRememberedTrait(girl, "Slow orgasms") || HasRememberedTrait(girl, "Slow Orgasms"))
-				AddTrait(girl, "Slow Orgasms", false, false, true);
+			if (HasRememberedTrait(girl, "Fast Orgasms"))			AddTrait(girl, "Fast Orgasms", false, false, true);
+			else if (HasRememberedTrait(girl, "Slow Orgasms"))		AddTrait(girl, "Slow Orgasms", false, false, true);
 
 			UpdateSkill(girl,SKILL_ANAL,-2);
 			UpdateSkill(girl,SKILL_BDSM,-2);
@@ -4060,13 +4066,11 @@ void cGirls::UnapplyTraits(sGirl* girl, sTrait* trait)
 			UpdateSkill(girl,SKILL_LESBIAN,-2);
 		}
 
-		else if (strcmp(tr->m_Name, "Slow orgasms") == 0 || strcmp(tr->m_Name, "Slow Orgasms") == 0)
+		else if (strcmp(tr->m_Name, "Slow Orgasms") == 0)
 		{
 			// Can only have one trait added
-			if (HasRememberedTrait(girl, "Fake orgasm expert") || HasRememberedTrait(girl, "Fake Orgasm Expert"))
-				AddTrait(girl, "Fake Orgasm Expert", false, false, true);
-			else if (HasRememberedTrait(girl, "Fast orgasms") || HasRememberedTrait(girl, "Fast Orgasms"))
-				AddTrait(girl, "Fast Orgasms", false, false, true);
+			if (HasRememberedTrait(girl, "Fake Orgasm Expert"))		AddTrait(girl, "Fake Orgasm Expert", false, false, true);
+			else if (HasRememberedTrait(girl, "Fast Orgasms"))		AddTrait(girl, "Fast Orgasms", false, false, true);
 
 			UpdateSkill(girl,SKILL_ANAL,2);
 			UpdateSkill(girl,SKILL_BDSM,2);
@@ -4155,10 +4159,8 @@ void cGirls::UnapplyTraits(sGirl* girl, sTrait* trait)
 
 		else if(strcmp(tr->m_Name, "Retarded") == 0)
 		{
-// WD:		UpdateStat(girl,STAT_CONFIDENCE,20);
 			UpdateStat(girl,STAT_SPIRIT,20);
 			UpdateStat(girl,STAT_INTELLIGENCE,50);
-// WD:		UpdateStat(girl,STAT_CONFIDENCE,40);
 			UpdateStat(girl,STAT_CONFIDENCE,60);
 		}
 
@@ -4461,7 +4463,6 @@ void cGirls::UnapplyTraits(sGirl* girl, sTrait* trait)
 
 		else if (strcmp(tr->m_Name, "Incorporeal") == 0)
 		{
-//			RemoveTrait(girl, "Sterile");  // `J` Why remove Sterile?
 		}
 
 		else if(strcmp(tr->m_Name, "Quick Learner") == 0)
@@ -4530,7 +4531,6 @@ void cGirls::UnapplyTraits(sGirl* girl, sTrait* trait)
 			UpdateSkill(girl, SKILL_ORALSEX, -50);
 		}
 
-
 		if(doOnce)
 		{
 			// WD: 	Added to stop fn from aborting
@@ -4577,21 +4577,13 @@ bool cGirls::PossiblyLoseExistingTrait(sGirl* girl, string Trait, int Threshold,
 
 void cGirls::ApplyTraits(sGirl* girl, sTrait* trait, bool rememberflag)
 {
+	// `J` When adding new traits, search for "J-Add-New-Traits"  :  found in > ApplyTraits
 	/* WD:
 	*	Added doOnce = false; to end of fn
 	*	else the fn will allways abort
 	*/
-
-	//	WD:	don't know why it has to be static
-	//static bool doOnce = false;
-
-	//if(doOnce)
-	//	return;
-
 	bool doOnce = false;
-	if(trait)
-		doOnce = true;
-
+	if (trait)		doOnce = true;
 	for(int i=0; i<girl->m_NumTraits || doOnce; i++)
 	{
 		sTrait* tr = 0;
@@ -4602,14 +4594,9 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait, bool rememberflag)
 		if(tr == 0)
 			continue;
 			
+		//zzzzzz boobs
 		if(strcmp(tr->m_Name, "Big Boobs") == 0)
 		{
-			// should only have one trait but lets make sure
-			//if (RemoveTrait(girl, "Abnormally Large Boobs", true, true))
-			//	RemoveTrait(girl, "Small Boobs", false, true);
-			//else
-			//	RemoveTrait(girl, "Small Boobs", true, true);
-
 			RemoveTrait(girl, "Abnormally Large Boobs", rememberflag, true);
 			RemoveTrait(girl, "Small Boobs", rememberflag, true);
 
@@ -4622,12 +4609,6 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait, bool rememberflag)
 
 		else if(strcmp(tr->m_Name, "Abnormally Large Boobs") == 0)
 		{
-			// should only have one trait but lets make sure
-			//if (RemoveTrait(girl, "Big Boobs", true, true))
-			//	RemoveTrait(girl, "Small Boobs", false, true);
-			//else
-			//	RemoveTrait(girl, "Small Boobs", true, true);
-
 			RemoveTrait(girl, "Big Boobs", rememberflag, true);
 			RemoveTrait(girl, "Small Boobs", rememberflag, true);
 
@@ -4639,12 +4620,6 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait, bool rememberflag)
 		
 		else if(strcmp(tr->m_Name, "Small Boobs") == 0)
 		{
-			// should only have one trait but lets make sure
-			//if (RemoveTrait(girl, "Big Boobs", true, true))
-			//	RemoveTrait(girl, "Abnormally Large Boobs", false, true);
-			//else
-			//	RemoveTrait(girl, "Abnormally Large Boobs", true, true);
-
 			RemoveTrait(girl, "Big Boobs", rememberflag, true);
 			RemoveTrait(girl, "Abnormally Large Boobs", rememberflag, true);
 			
@@ -4653,65 +4628,40 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait, bool rememberflag)
 			UpdateSkill(girl,SKILL_TITTYSEX,-15);
 		}
 
-		else if (strcmp(tr->m_Name, "Fast orgasms") == 0 || strcmp(tr->m_Name, "Fast Orgasms") == 0)
+		else if (strcmp(tr->m_Name, "Fast Orgasms") == 0)
 		{
-			// should only have one trait but lets make sure
-			//if (RemoveTrait(girl, "Fake orgasm expert", true, true))
-			//	RemoveTrait(girl, "Slow orgasms", false, true);
-			//else
-			//	RemoveTrait(girl, "Slow orgasms", true, true);
-				
-			RemoveTrait(girl, "Fake orgasm expert", rememberflag, true);
 			RemoveTrait(girl, "Fake Orgasm Expert", rememberflag, true);
-			RemoveTrait(girl, "Slow orgasms", rememberflag, true);
 			RemoveTrait(girl, "Slow Orgasms", rememberflag, true);
 
-			UpdateStat(girl,STAT_LIBIDO,10);
-			UpdateSkill(girl,SKILL_ANAL,10);
-			UpdateSkill(girl,SKILL_BDSM,10);
-			UpdateSkill(girl,SKILL_NORMALSEX,10);
-			UpdateSkill(girl,SKILL_ORALSEX,10);
-			UpdateSkill(girl,SKILL_BEASTIALITY,10);
-			UpdateSkill(girl,SKILL_GROUP,10);
-			UpdateSkill(girl,SKILL_LESBIAN,10);
-			UpdateStat(girl,STAT_CONFIDENCE,10);
+			UpdateStat(girl, STAT_LIBIDO, 10);
+			UpdateSkill(girl, SKILL_ANAL, 10);
+			UpdateSkill(girl, SKILL_BDSM, 10);
+			UpdateSkill(girl, SKILL_NORMALSEX, 10);
+			UpdateSkill(girl, SKILL_ORALSEX, 10);
+			UpdateSkill(girl, SKILL_BEASTIALITY, 10);
+			UpdateSkill(girl, SKILL_GROUP, 10);
+			UpdateSkill(girl, SKILL_LESBIAN, 10);
+			UpdateStat(girl, STAT_CONFIDENCE, 10);
 			UpdateEnjoyment(girl, ACTION_SEX, +10, true);
 		}
-		
-		else if (strcmp(tr->m_Name, "Fake orgasm expert") == 0 || strcmp(tr->m_Name, "Fake Orgasm Expert") == 0)
+
+		else if (strcmp(tr->m_Name, "Fake Orgasm Expert") == 0)
 		{
-			// should only have one trait but lets make sure
-			//if (RemoveTrait(girl, "Fast orgasms", true, true))
-			//	RemoveTrait(girl, "Slow orgasms", false, true);
-			//else
-			//	RemoveTrait(girl, "Slow orgasms", true, true);
-				
-			RemoveTrait(girl, "Slow orgasms", rememberflag, true);
 			RemoveTrait(girl, "Slow Orgasms", rememberflag, true);
-			RemoveTrait(girl, "Fast orgasms", rememberflag, true);
 			RemoveTrait(girl, "Fast Orgasms", rememberflag, true);
 
-			UpdateSkill(girl,SKILL_ANAL,2);
-			UpdateSkill(girl,SKILL_BDSM,2);
-			UpdateSkill(girl,SKILL_NORMALSEX,2);
-			UpdateSkill(girl,SKILL_BEASTIALITY,2);
-			UpdateSkill(girl,SKILL_ORALSEX,2);
-			UpdateSkill(girl,SKILL_GROUP,2);
-			UpdateSkill(girl,SKILL_LESBIAN,2);
+			UpdateSkill(girl, SKILL_ANAL, 2);
+			UpdateSkill(girl, SKILL_BDSM, 2);
+			UpdateSkill(girl, SKILL_NORMALSEX, 2);
+			UpdateSkill(girl, SKILL_BEASTIALITY, 2);
+			UpdateSkill(girl, SKILL_ORALSEX, 2);
+			UpdateSkill(girl, SKILL_GROUP, 2);
+			UpdateSkill(girl, SKILL_LESBIAN, 2);
 		}
 
-
-		else if (strcmp(tr->m_Name, "Slow orgasms") == 0 || strcmp(tr->m_Name, "Slow Orgasms") == 0)
+		else if (strcmp(tr->m_Name, "Slow Orgasms") == 0)
 		{
-			// should only have one trait but lets make sure
-			//if (RemoveTrait(girl, "Fast orgasms", true, true))
-			//	RemoveTrait(girl, "Fake orgasm expert", false, true);
-			//else
-			//	RemoveTrait(girl, "Fake orgasm expert", true, true);	
-
-			RemoveTrait(girl, "Fake orgasm expert", rememberflag, true);
 			RemoveTrait(girl, "Fake Orgasm Expert", rememberflag, true);
-			RemoveTrait(girl, "Fast orgasms", rememberflag, true);
 			RemoveTrait(girl, "Fast Orgasms", rememberflag, true);
 
 			UpdateSkill(girl,SKILL_ANAL,-2);
@@ -4879,7 +4829,7 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait, bool rememberflag)
 			RemoveTrait(girl, "Fragile", rememberflag, true);
 		}
 
-		else if (strcmp(tr->m_Name, "Fleet of Foot") == 0 || strcmp(tr->m_Name, "Fleet Of Foot") == 0)
+		else if (strcmp(tr->m_Name, "Fleet Of Foot") == 0)
 		{
 			UpdateStat(girl, STAT_AGILITY, 50);
 		}
@@ -5415,7 +5365,6 @@ bool cGirls::RegainVirginity(sGirl* girl, bool temp, bool removeitem, bool inrem
 	 *	Well, why not?		DustyDan
 	 */
 
-
 	string traitName = "Virgin";
 	bool traitOpSuccess = false;
 
@@ -5426,7 +5375,6 @@ bool cGirls::RegainVirginity(sGirl* girl, bool temp, bool removeitem, bool inrem
 	traitOpSuccess = AddTrait(girl, traitName, temp, removeitem, inrememberlist);
 	return traitOpSuccess;
 }
-
 
 bool cGirls::CheckVirginity(sGirl* girl)
 {
@@ -5500,7 +5448,6 @@ void cGirls::AddRememberedTrait(sGirl* girl, string name)
 		if(girl->m_RememTraits[i] == 0)
 		{
 			girl->m_NumRememTraits++;
-//			girl->m_RememTraits[i] = g_Traits.GetTrait(name);
 			girl->m_RememTraits[i] = g_Traits.GetTrait(g_Traits.GetTranslateName(name)); // `J` added translation check
 			return;
 		}
@@ -5532,34 +5479,25 @@ bool cGirls::AddTrait(sGirl* girl, string name, bool temp, bool removeitem, bool
 	 *
 	 */
 
-
 	if(HasTrait(girl, name))
 	{
 		if (removeitem)								//	WD: Overwriting existing trait with removable item / effect
 			AddRememberedTrait(girl, name);			//	WD:	Save trait for when item is removed
-
 		return true;
 	}
 
 	if(inrememberlist)								// WD: Add trait only if it is in the Remember List
 	{
-		if(HasRememberedTrait(girl, name))
-		{
-			RemoveRememberedTrait(girl, name);		
-		}
-
-		else
-			return false;							//	WD:	No trait to add
+		if (HasRememberedTrait(girl, name)) RemoveRememberedTrait(girl, name);
+		else return false;							//	WD:	No trait to add
 	}
-	
+
 	for(int i=0; i<MAXNUM_TRAITS; i++)				// add the trait
 	{
 		if(girl->m_Traits[i] == 0)
 		{
-			if(temp)
-				girl->m_TempTrait[i] = 20;
+			if (temp) girl->m_TempTrait[i] = 20;
 			girl->m_NumTraits++;
-//			girl->m_Traits[i] = g_Traits.GetTrait(name);
 			girl->m_Traits[i] = g_Traits.GetTrait(g_Traits.GetTranslateName(name)); // `J` added translation check
 			ApplyTraits(girl, girl->m_Traits[i], removeitem);
 			return true;
@@ -5567,51 +5505,6 @@ bool cGirls::AddTrait(sGirl* girl, string name, bool temp, bool removeitem, bool
 	}
 	return false;
 }
-#if 0
-	/*
-	 * WD: Sanity checks not allways working as apply traits is called
-	 *	direclty by the load coad bypassing these checks
-	 *	also some of the checks in applytraits() and unapplytraits() are not here
-	 */
-	// Sanity checks
-	if (HasTrait(girl, "Manly") && HasTrait(girl, "Elegant"))
-		RemoveTrait(girl, "Elegant");
-	if (HasTrait(girl, "MILF") && HasTrait(girl, "Lolita"))
-		RemoveTrait(girl, "Lolita");
-	if (HasTrait(girl, "Quick Learner") && HasTrait(girl, "Slow Learner"))
-		RemoveTrait(girl, "Slow Learner");
-	if (HasTrait(girl, "Small Boobs") && (HasTrait(girl, "Big Boobs") || HasTrait(girl, "Abnormally Large Boobs")))
-		RemoveTrait(girl, "Small Boobs");
-	if (HasTrait(girl, "Big Boobs") && HasTrait(girl, "Abnormally Large Boobs"))
-		RemoveTrait(girl, "Big Boobs");
-	if (HasTrait(girl, "Iron Will") && HasTrait(girl, "Broken Will"))
-		RemoveTrait(girl, "Iron Will");
-	if (HasTrait(girl, "Fast Orgasms") && HasTrait(girl, "Slow Orgasms"))
-		RemoveTrait(girl, "Slow Orgasms");
-	if (HasTrait(girl, "Aggressive") && HasTrait(girl, "Meek"))
-		RemoveTrait(girl, "Meek");
-	if (HasTrait(girl, "Fearless") && (HasTrait(girl, "Dependant") || HasTrait(girl, "Nervous") || HasTrait(girl, "Meek")))
-	{
-		if (HasTrait(girl, "Dependant"))
-			RemoveTrait(girl, "Dependant");
-		if (HasTrait(girl, "Nervous"))
-			RemoveTrait(girl, "Nervous");
-		if (HasTrait(girl, "Meek"))
-			RemoveTrait(girl, "Meek");
-	}
-	if (HasTrait(girl, "Optimist") && HasTrait(girl, "Pessimist"))
-		RemoveTrait(girl, "Pessimist");
-	if (HasTrait(girl, "Tough") && HasTrait(girl, "Fragile"))
-		RemoveTrait(girl, "Fragile");
-	if (HasTrait(girl, "Different Colored Eyes") && (HasTrait(girl, "One Eye") || HasTrait(girl, "Eye Patch") ))
-	{
-		if (HasTrait(girl, "One Eye"))
-			RemoveTrait(girl, "One Eye");
-		if (HasTrait(girl, "Eye Patch"))
-			RemoveTrait(girl, "Eye Patch");
-	}
-}
-#endif
 
 void cGirls::updateTempTraits(sGirl* girl)
 {
@@ -5741,28 +5634,13 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 	int happymod = 0; // changed from direct changing of customer->m_Stats[STAT_HAPPINESS] += 15;
 
 	// Start the customers unhappiness/happiness bad sex decreases, good sex inceases
-	if (HasTrait(girl, "Fast orgasms") || HasTrait(girl, "Fast Orgasms"))	// has priority
-		happymod += 15;
+	if (HasTrait(girl, "Fake Orgasm Expert"))		happymod += 20;
+	else if (HasTrait(girl, "Fast Orgasms"))		happymod += 10;
+	else if (HasTrait(girl, "Slow Orgasms"))		happymod -= 10;
+	if (HasTrait(girl, "Psychic"))					happymod += 10;
 
-	else if (HasTrait(girl, "Slow orgasms") || HasTrait(girl, "Slow Orgasms"))
-		happymod -= 10;
-
-	
-	if(HasTrait(girl,"Psychic"))
-		happymod += 10;
-
-
-	if (HasTrait(girl, "Fake orgasm expert") || HasTrait(girl, "Fake Orgasm Expert"))  // CRAZY fixed was fake orgasms should be what it is now
-		happymod += 15;
-
-
-	if(HasTrait(girl,"Abnormally Large Boobs"))		// WD: added
-		happymod += 15;
-
-	else if(HasTrait(girl,"Big Boobs"))				// WD: Fixed Spelling
-		happymod += 10;
-
-
+	if(HasTrait(girl,"Abnormally Large Boobs"))		happymod += 15;
+	else if(HasTrait(girl,"Big Boobs"))				happymod += 10;
 
 	girl->m_NumCusts += (int)customer->m_Amount;
 	
@@ -5775,10 +5653,8 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 		SexType = customer->m_SexPref;
 
 	// If the girls skill < 50 then it will be unsatisfying otherwise it will be satisfying
-	if(GetSkill(girl, SexType) < 50)
-		happymod -= (100 - GetSkill(girl, SexType)) / 5;
-	else
-		happymod += GetSkill(girl, SexType) / 5;
+	if(GetSkill(girl, SexType) < 50)	happymod -= (100 - GetSkill(girl, SexType)) / 5;
+	else happymod += GetSkill(girl, SexType) / 5;
 
 	// If the girl is famous then he will be slightly happier
 	happymod += GetStat(girl, STAT_FAME) / 5;
@@ -5813,216 +5689,147 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 		UpdateStat(girl, STAT_MANA, -happymana);					// and apply mana
 	}
 
-/*	`J` The old version:
-	// WD: only if Customer is not Max Happy else Whores never have any mana
-	if (customer->m_Stats[STAT_HAPPINESS] < 100 && GetStat(girl, STAT_MANA) > 20 && GetSkill(girl, SKILL_MAGIC) > 9)	// Added check for magic skill to prevent waste of Mana. -PP
-	{
-	customer->m_Stats[STAT_HAPPINESS] += GetSkill(girl, SKILL_MAGIC) / 10;
-	UpdateStat(girl, STAT_MANA, -20);
-	}
-*/
-
-
-	
 	message += girl->m_Realname;
-	switch(SexType)
+	switch (SexType)
 	{
 	case SKILL_ANAL:
-		if(GetSkill(girl, SexType) < 20)
-			message += gettext(" found it difficult to get it in but painfully allowed the customer to fuck her in her tight ass.");
-		else if(GetSkill(girl, SexType) < 40)
-			message += gettext(" had to relax somewhat but had the customer fucking her in her ass.");
-		else if(GetSkill(girl, SexType) < 60)
-			message += gettext(" found it easier going with the customer fucking her in her ass.");
-		else if(GetSkill(girl, SexType) < 80)
-			message += gettext(" had the customer's cock go in easy. She found his cock in her ass a very pleasurable experience.");
-		else
-			message += gettext(" came hard as the customer fucked her ass.");
+		/* */if (GetSkill(girl, SexType) < 20)	message += gettext(" found it difficult to get it in but painfully allowed the customer to fuck her in her tight ass.");
+		else if (GetSkill(girl, SexType) < 40)	message += gettext(" had to relax somewhat but had the customer fucking her in her ass.");
+		else if (GetSkill(girl, SexType) < 60)	message += gettext(" found it easier going with the customer fucking her in her ass.");
+		else if (GetSkill(girl, SexType) < 80)	message += gettext(" had the customer's cock go in easy. She found his cock in her ass a very pleasurable experience.");
+		else /*                             */	message += gettext(" came hard as the customer fucked her ass.");
 		break;
 
 	case SKILL_BDSM:
-		if(GetSkill(girl, SexType) < 40)
-			message += gettext(" was frightened by being tied up and having pain inflicted on her.");
-		else if(GetSkill(girl, SexType) < 60)
-			message += gettext(" was a little turned on by being tied up and having the customer hurting her.");
-		else if(GetSkill(girl, SexType) < 80)
-			message += gettext(" was highly aroused by the pain and bondage, even more so when fucking at the same time.");
-		else
-			message += GetRandomBDSMString();
-			//			" her screams of pain mixed with pleasure could be heard throughout the building as she came over and over during the bondage session.";
+
+		/* */if (GetSkill(girl, SexType) < 40)	message += gettext(" was frightened by being tied up and having pain inflicted on her.");
+		else if (GetSkill(girl, SexType) < 60)	message += gettext(" was a little turned on by being tied up and having the customer hurting her.");
+		else if (GetSkill(girl, SexType) < 80)	message += gettext(" was highly aroused by the pain and bondage, even more so when fucking at the same time.");
+		else /*                             */	message += GetRandomBDSMString();
 		break;
 
 	case SKILL_NORMALSEX:
-		if(GetSkill(girl, SexType) < 20)
-			message += gettext(" didn't do much as she allowed the customer to fuck her pussy.");
-		else if(GetSkill(girl, SexType) < 40)
-			message += gettext(" fucked the customer back while their cock was embedded in her cunt.");
-		else if(GetSkill(girl, SexType) < 60)
-			message += gettext(" liked the feeling of having a cock buried in her cunt and fucked back as much as she got.");
-		else if(GetSkill(girl, SexType) < 80)
-			message += gettext(" fucked like a wild animal, cumming several times and ending with her and the customer covered in sweat.");
-		else
-			message += GetRandomSexString();
-			//" fucked hard and came many times, so much so that the bed was soaked in their sweat and juices.";
+		/* */if (GetSkill(girl, SexType) < 20)	message += gettext(" didn't do much as she allowed the customer to fuck her pussy.");
+		else if (GetSkill(girl, SexType) < 40)	message += gettext(" fucked the customer back while their cock was embedded in her cunt.");
+		else if (GetSkill(girl, SexType) < 60)	message += gettext(" liked the feeling of having a cock buried in her cunt and fucked back as much as she got.");
+		else if (GetSkill(girl, SexType) < 80)	message += gettext(" fucked like a wild animal, cumming several times and ending with her and the customer covered in sweat.");
+		else /*                             */	message += GetRandomSexString();
 		break;
 
 	case SKILL_ORALSEX:
-		if(GetSkill(girl, SexType) < 20)
-			message += " awkwardly licked the customer's cock, and recoiled when he came.";
-		else if(GetSkill(girl, SexType) < 60)
-			message += " licked and sucked the customer's cock.";
-		else if(GetSkill(girl, SexType) < 80)
-			message += " loved sucking the customer's cock, and let him cum all over her.";
-		else
-			message += " wouldn't stop licking and sucking the customer's cock until she had swallowed his entire load.";
+
+		/* */if (GetSkill(girl, SexType) < 20)	message += " awkwardly licked the customer's cock, and recoiled when he came.";
+		else if (GetSkill(girl, SexType) < 60)	message += " licked and sucked the customer's cock.";
+		else if (GetSkill(girl, SexType) < 80)	message += " loved sucking the customer's cock, and let him cum all over her.";
+		else /*                             */	message += " wouldn't stop licking and sucking the customer's cock until she had swallowed his entire load.";
 		break;
 
 	case SKILL_TITTYSEX:
-		if(GetSkill(girl, SexType) < 20)
-			message += " awkwardly let the customer's cock fuck her tits, and recoiled when he came.";
-		else if(GetSkill(girl, SexType) < 60)
-			message += " used her breasts on the customer's cock.";
-		else if(GetSkill(girl, SexType) < 80)
-			message += " loved using her breasts on the customer's cock, and let him cum all over her.";
-		else
-			message += " wouldn't stop using her breasts to massage the customer's cock until she had made him spill his entire load.";
+
+		/* */if (GetSkill(girl, SexType) < 20)	message += " awkwardly let the customer's cock fuck her tits, and recoiled when he came.";
+		else if (GetSkill(girl, SexType) < 60)	message += " used her breasts on the customer's cock.";
+		else if (GetSkill(girl, SexType) < 80)	message += " loved using her breasts on the customer's cock, and let him cum all over her.";
+		else /*                             */	message += " wouldn't stop using her breasts to massage the customer's cock until she had made him spill his entire load.";
 		break;
 
 	case SKILL_HANDJOB:
-		if(GetSkill(girl, SexType) < 20)
-			message += " awkwardly worked the customer's cock with her hand, and recoiled when he came.";
-		else if(GetSkill(girl, SexType) < 60)
-			message += " used her hand on the customer's cock.";
-		else if(GetSkill(girl, SexType) < 80)
-			message += " loved using her hand on the customer's cock, and let him cum all over her.";
-		else
-			message += " wouldn't stop using her hand to massage the customer's cock until she had made him spill his entire load.";
+
+		/* */if (GetSkill(girl, SexType) < 20)	message += " awkwardly worked the customer's cock with her hand, and recoiled when he came.";
+		else if (GetSkill(girl, SexType) < 60)	message += " used her hand on the customer's cock.";
+		else if (GetSkill(girl, SexType) < 80)	message += " loved using her hand on the customer's cock, and let him cum all over her.";
+		else /*                             */	message += " wouldn't stop using her hand to massage the customer's cock until she had made him spill his entire load.";
 		break;
 
 	case SKILL_BEASTIALITY:
-		if(g_Brothels.GetNumBeasts() == 0)
+		if (g_Brothels.GetNumBeasts() == 0)
 		{
 			message += gettext(" found that there were no beasts available, so some fake ones were used. This disapointed the customer somewhat.");
 			customer->m_Stats[STAT_HAPPINESS] -= 10;
 		}
 		else
 		{
-			if(GetSkill(girl, SexType) < 50)
+			if (GetSkill(girl, SexType) < 50)
 			{  // the less skilled she is, the more chance of hurting a beast accidentally
 				int harmchance = -(GetSkill(girl, SexType) - 50);  // 50% chance at 0 skill, 1% chance at 49 skill
-				if(g_Dice.percent(harmchance))
+				if (g_Dice.percent(harmchance))
 				{
 					message += gettext(" accidentally harmed some beasts during the act and she");
-					g_Brothels.add_to_beasts(-((g_Dice%3)+1));
+					g_Brothels.add_to_beasts(-((g_Dice % 3) + 1));
 				}
 			}
-			if(GetSkill(girl, SexType) < 20)
-				message += gettext(" was disgusted by the idea but still allowed the customer to watch as she was fucked by some animals.");
-			else if(GetSkill(girl, SexType) < 40)
-				message += gettext(" was a only little put off by the idea but still allowed the customer to watch and help as she was fucked by animals.");
-			else if(GetSkill(girl, SexType) < 60)
-				message += gettext(" took a large animal's cock deep inside her and enjoyed being fucked by it, her cries of pleasure being muffled by the customer's cock in her mouth.");
-			else if(GetSkill(girl, SexType) < 80)
-				message += gettext(" fucked some exotic beasts covered with massive cocks and tentacles, she came over and over alongside with the customer.");
-			else
-				message += GetRandomBeastString();
-				//" came many times as she enjoyed all the pleasures of sex with animals and monsters, covered in cum she lay with the customer exhausted a long time.";
+
+			/* */if (GetSkill(girl, SexType) < 20)	message += " was disgusted by the idea but still allowed the customer to watch as she was fucked by some animals.";
+			else if (GetSkill(girl, SexType) < 40)	message += " was a only little put off by the idea but still allowed the customer to watch and help as she was fucked by animals.";
+			else if (GetSkill(girl, SexType) < 60)	message += " took a large animal's cock deep inside her and enjoyed being fucked by it, her cries of pleasure being muffled by the customer's cock in her mouth.";
+			else if (GetSkill(girl, SexType) < 80)	message += " fucked some exotic beasts covered with massive cocks and tentacles, she came over and over alongside with the customer.";
+			else /*                             */	message += GetRandomBeastString();
 		}
 		break;
 
 	case SKILL_GROUP:
-		if(GetSkill(girl, SexType) < 20)
-			message += gettext(" struggled to service everyone in the group that came to fuck her.");
-		else if(GetSkill(girl, SexType) < 40)
-			message += gettext(" managed to keep the group of customers fucking her satisfied.");
-		else if(GetSkill(girl, SexType) < 60)
-			message += gettext(" serviced all of the group of customers that fucked her.");
-		else if(GetSkill(girl, SexType) < 80)
-			message += gettext(" fucked and came many times with everyone in the group of customers.");
-		else
-			message += GetRandomGroupString();
-			//"'s orgasms could be heard through the building, along with all the customers in the group.";
+
+		/* */if (GetSkill(girl, SexType) < 20)	message += gettext(" struggled to service everyone in the group that came to fuck her.");
+		else if (GetSkill(girl, SexType) < 40)	message += gettext(" managed to keep the group of customers fucking her satisfied.");
+		else if (GetSkill(girl, SexType) < 60)	message += gettext(" serviced all of the group of customers that fucked her.");
+		else if (GetSkill(girl, SexType) < 80)	message += gettext(" fucked and came many times with everyone in the group of customers.");
+		else /*                             */	message += GetRandomGroupString();
 		break;
 
 	case SKILL_LESBIAN:
-		if(GetSkill(girl, SexType) < 20)
-			message += gettext(" licked her female customer's cunt until she came. She didn't want any herself.");
-		else if(GetSkill(girl, SexType) < 40)
-			message += gettext(" was aroused as she made her female customer cum.");
-		else if(GetSkill(girl, SexType) < 60)
-			message += gettext(" fucked and was fucked by her female customer.");
-		else if(GetSkill(girl, SexType) < 80)
-			message += gettext(" and her female customer's cumming could be heard thoughout the building.");
-		else
-			message += GetRandomLesString();
-			//" came many times with her female customer, soaking the room in their juices.";
+
+		/* */if (GetSkill(girl, SexType) < 20)	message += gettext(" licked her female customer's cunt until she came. She didn't want any herself.");
+		else if (GetSkill(girl, SexType) < 40)	message += gettext(" was aroused as she made her female customer cum.");
+		else if (GetSkill(girl, SexType) < 60)	message += gettext(" fucked and was fucked by her female customer.");
+		else if (GetSkill(girl, SexType) < 80)	message += gettext(" and her female customer's cumming could be heard thoughout the building.");
+		else /*                             */	message += GetRandomLesString();
 		break;
 
 	case SKILL_STRIP:
 	default:
-		if (GetSkill(girl, SexType) < 20)
-			message += gettext(" shyly took her clothes off infront of the customer.");
-		else if (GetSkill(girl, SexType) < 40)
-			message += gettext(" coyly took her clothes off infront of the customer.");
-		else if (GetSkill(girl, SexType) < 60)
-			message += gettext(" hotly took her clothes off infront of the customer.");
-		else if (GetSkill(girl, SexType) < 80)
-			message += gettext(" proudly took her clothes off infront of the customer.");
-		else
-			//message += GetRandomStripString();
-			message += gettext(" joyously took her clothes off infront of the customer.");
-
+		/* */if (GetSkill(girl, SexType) < 20)	message += gettext(" shyly took her clothes off infront of the customer.");
+		else if (GetSkill(girl, SexType) < 40)	message += gettext(" coyly took her clothes off infront of the customer.");
+		else if (GetSkill(girl, SexType) < 60)	message += gettext(" hotly took her clothes off infront of the customer.");
+		else if (GetSkill(girl, SexType) < 80)	message += gettext(" proudly took her clothes off infront of the customer.");
+		else /*                             */	message += gettext(" joyously took her clothes off infront of the customer.");
 		break;
 	}
 
 	// WD:	customer HAPPINESS changes complete now cap the stat to 100
 	customer->m_Stats[STAT_HAPPINESS] = min(100, (int)customer->m_Stats[STAT_HAPPINESS]);
 
-	if(SexType == SKILL_GROUP)
-		message += gettext("\nThe customers ");
-	else
-		message += gettext("\nThe customer ");
-	if(customer->m_Stats[STAT_HAPPINESS] > 80)
-		message += gettext("swore they would come back.");
-	else if(customer->m_Stats[STAT_HAPPINESS] > 50)
-		message += gettext("enjoyed the experience.");
-	else if(customer->m_Stats[STAT_HAPPINESS] > 30)
-		message += gettext("didn't enjoy it.");
-	else
-		message += gettext("thought it was crap.");
+	message += (SexType == SKILL_GROUP) ? "\nThe customers " : "\nThe customer ";
+	/* */if (customer->m_Stats[STAT_HAPPINESS] > 80)	message += gettext("swore they would come back.");
+	else if (customer->m_Stats[STAT_HAPPINESS] > 50)	message += gettext("enjoyed the experience.");
+	else if (customer->m_Stats[STAT_HAPPINESS] > 30)	message += gettext("didn't enjoy it.");
+	else /*                                       */	message += gettext("thought it was crap.");
 
 	// WD: update Fame based on Customer HAPPINESS
-		UpdateStat(girl, STAT_FAME, (customer->m_Stats[STAT_HAPPINESS]-1) / 33);
+	UpdateStat(girl, STAT_FAME, (customer->m_Stats[STAT_HAPPINESS] - 1) / 33);
 
 	// The girls STAT_CONSTITUTION and STAT_AGILITY modify how tired she gets
 	AddTiredness(girl);
 
 	// if the girl likes sex and the sex type then increase her happiness otherwise decrease it
-	if(GetStat(girl, STAT_LIBIDO) > 5)
+	if (GetStat(girl, STAT_LIBIDO) > 5)
 	{
-		if(GetSkill(girl, SexType) < 20)
-			message += gettext("\nThough she had a tough time with it, she was horny and still managed to gain some little enjoyment.");
-		else if(GetSkill(girl, SexType) < 40)
-			message += gettext("\nShe considered it a learning experience and enjoyed it a bit.");
-		else if(GetSkill(girl, SexType) < 60)
-			message += gettext("\nShe enjoyed it a lot and wanted more.");
-		else if(GetSkill(girl, SexType) < 80)
-			message += gettext("\nIt was nothing new for her, but she really does appreciate such work.");
-		else
-			message += gettext("\nIt seems that she lives for this sort of thing.");
-		UpdateStat(girl, STAT_HAPPINESS, GetStat(girl, STAT_LIBIDO)/5);
+		/* */if (GetSkill(girl, SexType) < 20)	message += gettext("\nThough she had a tough time with it, she was horny and still managed to gain some little enjoyment.");
+		else if (GetSkill(girl, SexType) < 40)	message += gettext("\nShe considered it a learning experience and enjoyed it a bit.");
+		else if (GetSkill(girl, SexType) < 60)	message += gettext("\nShe enjoyed it a lot and wanted more.");
+		else if (GetSkill(girl, SexType) < 80)	message += gettext("\nIt was nothing new for her, but she really does appreciate such work.");
+		else /*                             */	message += gettext("\nIt seems that she lives for this sort of thing.");
+		UpdateStat(girl, STAT_HAPPINESS, GetStat(girl, STAT_LIBIDO) / 5);
 	}
 	else
 	{
 		message += gettext("\nShe wasn't really in the mood.");
- 		UpdateStat(girl, STAT_HAPPINESS, -1);
+		UpdateStat(girl, STAT_HAPPINESS, -1);
 	}
 
 	// special cases for certain sex types
-	switch(SexType)
+	switch (SexType)
 	{
 	case SKILL_ANAL:
-		if(GetSkill(girl, SexType) <= 20)	// if unexperienced then will get hurt
+		if (GetSkill(girl, SexType) <= 20)	// if unexperienced then will get hurt
 		{
 			message += gettext("\nHer inexperience hurt her a little.");
 			UpdateStat(girl, STAT_HAPPINESS, -3);
@@ -6030,13 +5837,11 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 			UpdateStat(girl, STAT_SPIRIT, -3);
 			UpdateStat(girl, STAT_HEALTH, -3);
 		}
-
 		UpdateStat(girl, STAT_SPIRIT, -1);
-
 		break;
 
 	case SKILL_BDSM:
-		if(GetSkill(girl, SexType) <= 30)	// if unexperienced then will get hurt
+		if (GetSkill(girl, SexType) <= 30)	// if unexperienced then will get hurt
 		{
 			message += gettext("\nHer inexperience hurt her a little.");
 			UpdateStat(girl, STAT_HAPPINESS, -2);
@@ -6057,62 +5862,45 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 			UpdateStat(girl, STAT_CONFIDENCE, -1);
 			UpdateStat(girl, STAT_HEALTH, -3);
 		}
-/*
- *		if they're both happy afterward, it's good sex
- *		which modifies the chance of pregnancy
- */
+		// if they're both happy afterward, it's good sex which modifies the chance of pregnancy
 		good = (customer->happiness() >= 60 && girl->happiness() >= 60);
 		contraception = girl->calc_pregnancy(customer, good);
 		break;
 
 	case SKILL_ORALSEX:
-		if(GetSkill(girl, SexType) <= 20)	// if unexperienced then will get hurt
+		if (GetSkill(girl, SexType) <= 20)	// if unexperienced then will get hurt
 		{
 			message += "\nHer inexperience caused her some embarrassment.";	// Changed... being new at oral doesn't hurt, but can be embarrasing. --PP
 			UpdateStat(girl, STAT_HAPPINESS, -2);
 			UpdateStat(girl, STAT_SPIRIT, -3);
 			UpdateStat(girl, STAT_CONFIDENCE, -1);
-		//	UpdateStat(girl, STAT_HEALTH, -3);				// Removed... oral doesn't hurt unless you get herpes or something. --PP
+			//	UpdateStat(girl, STAT_HEALTH, -3);				// Removed... oral doesn't hurt unless you get herpes or something. --PP
 		}
 
-/*
- *		if they're both happy afterward, it's good sex
- *		which modifies the chance of pregnancy
- */
 		break;
 
 	case SKILL_TITTYSEX:
-		if(GetSkill(girl, SexType) <= 20)	// if unexperienced then will get hurt
+		if (GetSkill(girl, SexType) <= 20)	// if unexperienced then will get hurt
 		{
 			message += "\nHer inexperience caused her some embarrassment.";	// Changed... being new at oral doesn't hurt, but can be embarrasing. --PP
 			UpdateStat(girl, STAT_HAPPINESS, -2);
 			UpdateStat(girl, STAT_SPIRIT, -3);
 			UpdateStat(girl, STAT_CONFIDENCE, -1);
 		}
-
-/*
- *		if they're both happy afterward, it's good sex
- *		which modifies the chance of pregnancy
- */
 		break;
 
 	case SKILL_HANDJOB:
-		if(GetSkill(girl, SexType) <= 20)	// if unexperienced then will get hurt
+		if (GetSkill(girl, SexType) <= 20)	// if unexperienced then will get hurt
 		{
 			message += "\nHer inexperience caused her some embarrassment.";	// Changed... being new at handjob doesn't hurt, but can be embarrasing. --PP
 			UpdateStat(girl, STAT_HAPPINESS, -2);
 			UpdateStat(girl, STAT_SPIRIT, -3);
 			UpdateStat(girl, STAT_CONFIDENCE, -1);
 		}
-
-/*
- *		if they're both happy afterward, it's good sex
- *		which modifies the chance of pregnancy
- */
 		break;
 
 	case SKILL_BEASTIALITY:
-		if(GetSkill(girl, SexType) <= 30)	// if unexperienced then will get hurt
+		if (GetSkill(girl, SexType) <= 30)	// if unexperienced then will get hurt
 		{
 			message += gettext("\nHer inexperience hurt her a little.");
 			UpdateStat(girl, STAT_HAPPINESS, -2);
@@ -6120,20 +5908,15 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 			UpdateStat(girl, STAT_CONFIDENCE, -1);
 			UpdateStat(girl, STAT_HEALTH, -3);
 		}
-
 		UpdateStat(girl, STAT_SPIRIT, -1);	// is pretty degrading
-/*
- *		if they're both happy afterward, it's good sex
- *		which modifies the chance of pregnancy
- */
+		// if they're both happy afterward, it's good sex which modifies the chance of pregnancy
 		good = (customer->happiness() >= 60 && girl->happiness() >= 60);
 		// mod: added check for number of beasts owned; otherwise, fake beasts could somehow inseminate the girl
-		if(g_Brothels.GetNumBeasts() > 0)
-			contraception = girl->calc_insemination(customer, good);
+		if (g_Brothels.GetNumBeasts() > 0) contraception = girl->calc_insemination(customer, good);
 		break;
 
 	case SKILL_GROUP:
-		if(GetSkill(girl, SexType) <= 30)	// if unexperienced then will get hurt
+		if (GetSkill(girl, SexType) <= 30)	// if unexperienced then will get hurt
 		{
 			message += gettext("\nHer inexperience hurt her a little.");
 			UpdateStat(girl, STAT_HAPPINESS, -2);
@@ -6141,15 +5924,9 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 			UpdateStat(girl, STAT_CONFIDENCE, -1);
 			UpdateStat(girl, STAT_HEALTH, -3);
 		}
-/*
- *		if they're both happy afterward, it's good sex
- *		which modifies the chance of pregnancy
- */
+		// if they're both happy afterward, it's good sex which modifies the chance of pregnancy
 		good = (customer->happiness() >= 60 && girl->happiness() >= 60);
-/*
- *		adding a 50% bonus to the chance of pregnancy
- *		since there's more than one partner involved
- */
+		// adding a 50% bonus to the chance of pregnancy since there's more than one partner involved
 		contraception = girl->calc_pregnancy(customer, good, 1.5);
 		break;
 
@@ -6163,9 +5940,7 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 			UpdateStat(girl, STAT_CONFIDENCE, -1);
 			UpdateStat(girl, STAT_HEALTH, -3);
 		}
-
 		break;
-
 	}
 
 	// lose virginity unless it was anal sex -- or lesbian, or Oral also customer is happy no matter what. -PP
@@ -6186,102 +5961,164 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 		message += gettext(" The customer was overjoyed that she was a virgin.");
 		customer->m_Stats[STAT_HAPPINESS] = 100;
 		if (SexType == SKILL_BDSM || SexType == SKILL_NORMALSEX || SexType == SKILL_BEASTIALITY || SexType == SKILL_GROUP)
-		g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
+			g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
 	}
 
 	// Now calculate other skill increases
-	if(HasTrait(girl,"Quick Learner"))
+	int skillgain = 4;	int exp = 5;
+	if (HasTrait(girl, "Quick Learner"))		{ skillgain = 5; exp = 7; }
+	else if (HasTrait(girl, "Slow Learner"))	{ skillgain = 3; exp = 3; }
+	if (SexType == SKILL_GROUP)
 	{
-		if(SexType == SKILL_GROUP)
-		{
-			for(u_int i=0; i<NUM_SKILLS; i++)
-				UpdateSkill(girl,i,g_Dice%3);
-		}
-		else
-			UpdateSkill(girl,SexType,g_Dice%5);
-		UpdateSkill(girl,SKILL_SERVICE,g_Dice%5);
-		UpdateStat(girl,STAT_EXP,((g_Dice%7) * 3));  // MYR: More xp, so levelling happens more
+		UpdateSkill(girl, SKILL_ANAL,		max(0, g_Dice%skillgain + 1));
+		UpdateSkill(girl, SKILL_BDSM,		max(0, g_Dice%skillgain - 1));
+		UpdateSkill(girl, SKILL_NORMALSEX,	max(0, g_Dice%skillgain + 1));
+		UpdateSkill(girl, SKILL_GROUP,		max(0, g_Dice%skillgain + 1));
+		UpdateSkill(girl, SKILL_LESBIAN,	max(0, g_Dice%skillgain - 1));
+		UpdateSkill(girl, SKILL_STRIP,		max(0, g_Dice%skillgain - 1));
+		UpdateSkill(girl, SKILL_ORALSEX,	max(0, g_Dice%skillgain - 1));
+		UpdateSkill(girl, SKILL_TITTYSEX,	max(0, g_Dice%skillgain - 1));
+		UpdateSkill(girl, SKILL_HANDJOB,	max(0, g_Dice%skillgain - 1));
 	}
-	else if(HasTrait(girl,"Slow Learner"))
-	{
-		if(SexType == SKILL_GROUP)
-		{
-			for(u_int i=0; i<NUM_SKILLS; i++)
-				UpdateSkill(girl,i,g_Dice%2);
-		}
-		else
-			UpdateSkill(girl,SexType,g_Dice%2);
-		UpdateSkill(girl,SKILL_SERVICE,g_Dice%2);
-		UpdateStat(girl,STAT_EXP,((g_Dice%3) * 3)); 
-	}
-	else
-	{
-		if(SexType == SKILL_GROUP)
-		{
-			for(u_int i=0; i<NUM_SKILLS; i++)
-				UpdateSkill(girl,i,g_Dice%2);
-		}
-		else
-			UpdateSkill(girl,SexType,g_Dice%3);
-		UpdateSkill(girl,SKILL_SERVICE,g_Dice%3);
-		UpdateStat(girl,STAT_EXP,((g_Dice%5) * 3));
-	}
+	else	UpdateSkill(girl, SexType, g_Dice%skillgain + 1);
+	UpdateSkill(girl, SKILL_SERVICE, max(0, g_Dice % skillgain - 1));
+	UpdateStat(girl, STAT_EXP, ((g_Dice%exp) * 3));
 
-	if(GetStat(girl, STAT_HAPPINESS) > 50 && !HasTrait(girl,"Nymphomaniac"))
+	int enjoy = 1;
+	if (HasTrait(girl, "Nymphomaniac"))
 	{
-		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +2, true);
-		//UpdateStat(girl,STAT_LIBIDO,-3);	// libido is satisfied after sex  // Libido decremented in JobManager
-	}
-	else
-	{
-		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +1, true);
-	}
-
-	if(GetStat(girl, STAT_HAPPINESS) <= 5)
-	{
-		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, -1, true);
-	}
-	//UpdateStat(girl,STAT_LIBIDO,-1);  // Libido decremented in JobManager
-
-	if(HasTrait(girl, "AIDS"))
-		customer->m_Stats[STAT_HAPPINESS] -= 10;
-	else if(GetStat(girl, STAT_HEALTH) <= 10)
-	{
-		if((g_Dice%100)+1 == 1 && !contraception)
+		switch (SexType)
 		{
-			string mess = girl->m_Realname;
-			mess += gettext(" has caught the disease AIDS! She will likely die, but a rare cure can sometimes be found in the shop.");
-			girl->m_Events.AddMessage(mess, IMGTYPE_PROFILE, EVENT_DANGER);
-			AddTrait(girl, "AIDS");
+		case SKILL_GROUP:			enjoy += 3; break;
+		case SKILL_ANAL:			enjoy += 2; break;
+		case SKILL_NORMALSEX:		enjoy += 2; break;
+		case SKILL_BDSM:
+		case SKILL_BEASTIALITY:
+		case SKILL_LESBIAN:			enjoy += 1; break;
+		// Nymphomaniac would rather have something inside her so if she can't, she does not enjoy it as much
+		case SKILL_STRIP:			enjoy -= 2; break; 
+		case SKILL_TITTYSEX:
+		case SKILL_HANDJOB:			enjoy -= 1; break;
+		case SKILL_ORALSEX:
+		default:
+			break;
 		}
 	}
-
-	if(HasTrait(girl, "Chlamydia"))
-		customer->m_Stats[STAT_HAPPINESS] -= 20;
-	else if(GetStat(girl, STAT_HEALTH) <= 10)
+	if (HasTrait(girl, "Lesbian"))
 	{
-		if((g_Dice%100)+1 <= 1 && !contraception)
+		switch (SexType)
 		{
-			string mess = "";
-			mess += girl->m_Realname;
-			mess += gettext(" has caught the disease Chlamydia! A cure can sometimes be found in the shop.");
-			girl->m_Events.AddMessage(mess, IMGTYPE_PROFILE, EVENT_DANGER);
-			AddTrait(girl, "Chlamydia");
+		case SKILL_LESBIAN:			enjoy += 3; break;
+		case SKILL_STRIP:			enjoy += 1; break;
+		// Lesbian would rather not have sex with a male
+		case SKILL_NORMALSEX:
+		case SKILL_TITTYSEX:
+		case SKILL_ORALSEX:
+		case SKILL_HANDJOB:			enjoy -= 1; break;
+		case SKILL_ANAL:
+		case SKILL_GROUP:			enjoy -= 2; break;
+		default:
+			break;
+		}
+	}
+	if (HasTrait(girl, "Straight"))
+	{
+		switch (SexType)
+		{
+		case SKILL_NORMALSEX:		enjoy += 1; break;
+		case SKILL_LESBIAN:			enjoy -= 1; break;
+		default:
+			break;
 		}
 	}
 
-	if(HasTrait(girl, "Syphilis"))
-		customer->m_Stats[STAT_HAPPINESS] -= 10;
-	else if(GetStat(girl, STAT_HEALTH) <= 10)
+	if (GetStat(girl, STAT_HAPPINESS) > 50)			enjoy += 2;
+	else if (GetStat(girl, STAT_HAPPINESS) <= 5)	enjoy -= 2;
+	g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +2, true);
+
+	bool newdisease = false; // only let her get 1 disease at a time
+	int health = GetStat(girl, STAT_HEALTH);
+
+	if (HasTrait(girl, "AIDS"))
 	{
-		if((g_Dice%100)+1 <= 1 && !contraception)
+		if ((!contraception && g_Dice.percent(90)) || (contraception && g_Dice.percent(10)))
 		{
-			string mess = "";
-			mess += girl->m_Realname;
-			mess += gettext(" has caught the disease Syphilis! This can be deadly, but a cure can sometimes be found in the shop.");
-			girl->m_Events.AddMessage(mess, IMGTYPE_PROFILE, EVENT_DANGER);
-			AddTrait(girl, "Syphilis");
+			girl->m_Events.AddMessage(girl->m_Realname + " gave the customer AIDS! They are not happy about this.", IMGTYPE_PROFILE, EVENT_DANGER);
+			customer->m_Stats[STAT_HAPPINESS] -= 100;
 		}
+		else customer->m_Stats[STAT_HAPPINESS] -= 20;
+	}
+	else if ((contraception && health <= 20 && g_Dice.percent(1)) ||
+		(!contraception && health <= 80 && g_Dice.percent(((100 - health) / 10) - 2)))
+	{
+		girl->m_Events.AddMessage(girl->m_Realname + " has caught the disease AIDS! She will likely die, but a rare cure can sometimes be found in the shop.", IMGTYPE_PROFILE, EVENT_DANGER);
+		AddTrait(girl, "AIDS");
+		girl->happiness(-50);
+		newdisease = true;
+	}
+
+	if (HasTrait(girl, "Herpes"))
+	{
+		if ((!contraception && g_Dice.percent(80)) || (contraception && g_Dice.percent(20)))
+		{
+			girl->m_Events.AddMessage(girl->m_Realname + " gave the customer Herpes! They are not happy about this.", IMGTYPE_PROFILE, EVENT_DANGER);
+			customer->m_Stats[STAT_HAPPINESS] -= 30;
+		}
+		else customer->m_Stats[STAT_HAPPINESS] -= 10;
+
+	}
+	else if (!newdisease && 
+		((!contraception && health <= 60 && g_Dice.percent(((100 - health) / 10) - 2)) ||
+		(contraception && GetStat(girl, STAT_HEALTH) <= 10 && g_Dice.percent(1))))
+	{
+		girl->m_Events.AddMessage(girl->m_Realname + " has caught the disease Herpes! A cure can sometimes be found in the shop.", IMGTYPE_PROFILE, EVENT_DANGER);
+		AddTrait(girl, "Herpes");
+		girl->happiness(-30);
+		newdisease = true;
+	}
+
+	if (HasTrait(girl, "Chlamydia"))	
+	{
+		if ((!contraception && g_Dice.percent(70)) || (contraception && g_Dice.percent(5)))
+
+		{
+			girl->m_Events.AddMessage(girl->m_Realname + " gave the customer Chlamydia! They are not happy about this.", IMGTYPE_PROFILE, EVENT_DANGER);
+			customer->m_Stats[STAT_HAPPINESS] -= 40;
+		}
+		else customer->m_Stats[STAT_HAPPINESS] -= 10;
+	}
+	else if (!newdisease && !contraception && GetStat(girl, STAT_HEALTH) <= 20 && g_Dice.percent(2))
+
+	{
+
+		girl->m_Events.AddMessage(girl->m_Realname + " has caught the disease Chlamydia! A cure can sometimes be found in the shop.", IMGTYPE_PROFILE, EVENT_DANGER);
+
+		AddTrait(girl, "Chlamydia");
+		girl->happiness(-30);
+		newdisease = true;
+
+	}
+
+	if (HasTrait(girl, "Syphilis"))
+	{
+		if ((!contraception && g_Dice.percent(60)) || (contraception && g_Dice.percent(5)))
+
+		{
+			girl->m_Events.AddMessage(girl->m_Realname + " gave the customer Syphilis! They are not happy about this.", IMGTYPE_PROFILE, EVENT_DANGER);
+			customer->m_Stats[STAT_HAPPINESS] -= 50;
+		}
+		else customer->m_Stats[STAT_HAPPINESS] -= 10;
+	}
+	else if (!newdisease && !contraception && GetStat(girl, STAT_HEALTH) <= 20 && g_Dice.percent(2))
+
+	{
+
+		girl->m_Events.AddMessage(girl->m_Realname + " has caught the disease Syphilis! This can be deadly, but a cure can sometimes be found in the shop.", IMGTYPE_PROFILE, EVENT_DANGER);
+
+		AddTrait(girl, "Syphilis");
+		girl->happiness(-30);
+		newdisease = true;
+
 	}
 }
 
@@ -6289,3257 +6126,1893 @@ string cGirls::GetRandomSexString()
 {
 	int roll1 = 0, roll2 = 0, roll3 = 0, random = 0;
 	string OutStr;
-
-
 	// MYR: Can't resist a little cheeky chaos
-	random = g_Dice%500;
+	random = g_Dice % 500;
 	if (random == 345)
 	{
 		OutStr += " (phrase 1). (phrase 2) (phrase 3).";
 		return OutStr;
 	}
-
 	OutStr += " ";  // Consistency
-
 	// Roll #1
 # pragma region sex1
 	roll1 = g_Dice % 8 + 1;   // Remember to update this when new strings are added
 	switch (roll1)
 	{
-	case 1: 
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("straddled");
-		else if (random <= 4)
-			OutStr += gettext("cow-girled");
-		else if (random <= 6)
-			OutStr += gettext("wrapped her legs around");
-		else if (random <= 8)
-			OutStr += gettext("contorted her legs behind her head for");
-		else
-			OutStr += gettext("scissored");
-
+	case 1:
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("straddled");
+		else if (random <= 4)	OutStr += gettext("cow-girled");
+		else if (random <= 6)	OutStr += gettext("wrapped her legs around");
+		else if (random <= 8)	OutStr += gettext("contorted her legs behind her head for");
+		else /*            */	OutStr += gettext("scissored");
 		OutStr += gettext(" the client, because it ");
-
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("turned him on");
-		else if (random <= 4)
-			OutStr += gettext("made him crazy");
-		else if (random <= 6)
-			OutStr += gettext("gave him a massive boner");
-		else if (random <= 8)
-			OutStr += gettext("was more fun than talking");
-		else
-			OutStr += gettext("made him turn red");
-
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("turned him on");
+		else if (random <= 4)	OutStr += gettext("made him crazy");
+		else if (random <= 6)	OutStr += gettext("gave him a massive boner");
+		else if (random <= 8)	OutStr += gettext("was more fun than talking");
+		else /*            */	OutStr += gettext("made him turn red");
 		break;
-	case 2: 
+	case 2:
 		OutStr += gettext("was told to grab ");
-				
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("her ankles");
-		else if (random <= 4)
-			OutStr += gettext("the chair");
-		else if (random <= 6)
-			OutStr += gettext("her knees");
-		else if (random <= 8)
-			OutStr += gettext("the table");
-		else
-			OutStr += gettext("the railing");
-
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("her ankles");
+		else if (random <= 4)	OutStr += gettext("the chair");
+		else if (random <= 6)	OutStr += gettext("her knees");
+		else if (random <= 8)	OutStr += gettext("the table");
+		else /*            */	OutStr += gettext("the railing");
 		OutStr += gettext(" and ");
-
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("shook her hips");
-		else if (random <= 4)
-			OutStr += gettext("spread her legs");
-		else if (random <= 6)
-			OutStr += gettext("close her eyes");
-		else if (random <= 8)
-			OutStr += gettext("look away");
-		else
-			OutStr += gettext("bend waaaaayyy over");
-
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("shook her hips");
+		else if (random <= 4)	OutStr += gettext("spread her legs");
+		else if (random <= 6)	OutStr += gettext("close her eyes");
+		else if (random <= 8)	OutStr += gettext("look away");
+		else /*            */	OutStr += gettext("bend waaaaayyy over");
 		break;
-	case 3: 
+	case 3:
 		OutStr += gettext("had fun with his ");
-		
-		random = g_Dice%12 + 1;
-		if (random <= 2)
-			OutStr += gettext("foot");
-		else if (random <= 4)
-			OutStr += gettext("stocking");
-		else if (random <= 6)
-			OutStr += gettext("hair");
-		else if (random <= 8)
-			OutStr += gettext("lace");
-		else if (random <= 10)
-			OutStr += gettext("butt");
-		else
-			OutStr += gettext("food");
-
+		random = g_Dice % 12 + 1;
+		/* */if (random <= 2)	OutStr += gettext("foot");
+		else if (random <= 4)	OutStr += gettext("stocking");
+		else if (random <= 6)	OutStr += gettext("hair");
+		else if (random <= 8)	OutStr += gettext("lace");
+		else if (random <= 10)	OutStr += gettext("butt");
+		else /*            */	OutStr += gettext("food");
 		OutStr += gettext(" fetish and gave him an extended ");
-
-		random = g_Dice%6 + 1;
-		if (random <= 2)
-			OutStr += gettext("foot");
-		else if (random <= 4)
-			OutStr += gettext("hand");
-		else
-			OutStr += gettext("oral");
-
-		OutStr += gettext(" surprise"); 
-
+		random = g_Dice % 6 + 1;
+		/* */if (random <= 2)	OutStr += gettext("foot");
+		else if (random <= 4)	OutStr += gettext("hand");
+		else /*            */	OutStr += gettext("oral");
+		OutStr += gettext(" surprise");
 		break;
-	case 4: 
+	case 4:
 		OutStr += gettext("dressed as ");
-		
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("a school girl");
-		else if (random <= 4)
-			OutStr += gettext("a nurse");
-		else if (random <= 6)
-			OutStr += gettext("a nun");
-		else if (random <= 8)
-			OutStr += gettext("an adventurer");
-		else
-			OutStr += gettext("a dominatrix");
-			
-		OutStr += gettext(" to grease "); 
-		
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("the little man");
-		else if (random <= 4)
-			OutStr += gettext("his pole");
-		else if (random <= 6)
-			OutStr += gettext("his tool");
-		else if (random <= 8)
-			OutStr += gettext("his fingers");
-		else
-			OutStr += gettext("his toes");
-
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("a school girl");
+		else if (random <= 4)	OutStr += gettext("a nurse");
+		else if (random <= 6)	OutStr += gettext("a nun");
+		else if (random <= 8)	OutStr += gettext("an adventurer");
+		else /*            */	OutStr += gettext("a dominatrix");
+		OutStr += gettext(" to grease ");
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("the little man");
+		else if (random <= 4)	OutStr += gettext("his pole");
+		else if (random <= 6)	OutStr += gettext("his tool");
+		else if (random <= 8)	OutStr += gettext("his fingers");
+		else /*            */	OutStr += gettext("his toes");
 		break;
-	case 5: 
-		OutStr += gettext("decided to skip "); 
-		
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("the bed");
-		else if (random <= 4)
-			OutStr += gettext("foreplay");
-		else if (random <= 6)
-			OutStr += gettext("niceties");
-		else
-			OutStr += gettext("greetings");
-
-		OutStr += gettext(" and assumed position "); 
-		
-		random = g_Dice%9999 + 1;
+	case 5:
+		OutStr += gettext("decided to skip ");
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("the bed");
+		else if (random <= 4)	OutStr += gettext("foreplay");
+		else if (random <= 6)	OutStr += gettext("niceties");
+		else /*            */	OutStr += gettext("greetings");
+		OutStr += gettext(" and assumed position ");
+		random = g_Dice % 9999 + 1;
 		char buffer[10];
 		_itoa(random, buffer, 10);
 		OutStr += buffer;
-
 		break;
-	case 6: 
+	case 6:
 		OutStr += gettext("gazed in awe at ");
-				 
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("how well hung he was");
-		else if (random <= 4)
-			OutStr += gettext("the time");
-		else if (random <= 6)
-			OutStr += gettext("his muscles");
-		else if (random <= 8)
-			OutStr += gettext("his handsome face");					 
-		else
-			OutStr += gettext("his collection of sexual magic items");
-
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("how well hung he was");
+		else if (random <= 4)	OutStr += gettext("the time");
+		else if (random <= 6)	OutStr += gettext("his muscles");
+		else if (random <= 8)	OutStr += gettext("his handsome face");
+		else /*            */	OutStr += gettext("his collection of sexual magic items");
 		OutStr += gettext(" and ");
-		
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("felt inspired");
-		else if (random <= 4)
-			OutStr += gettext("played hard to get");
-		else if (random <= 6)
-			OutStr += gettext("squealed like a little girl");
-		else
-			OutStr += gettext("prepared for action");
-
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("felt inspired");
+		else if (random <= 4)	OutStr += gettext("played hard to get");
+		else if (random <= 6)	OutStr += gettext("squealed like a little girl");
+		else /*            */	OutStr += gettext("prepared for action");
 		break;
 	case 7: OutStr += gettext("bent into ");
-		
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("a delightful");
-		else if (random <= 4)
-			OutStr += gettext("an awkward");
-		else if (random <= 6)
-			OutStr += gettext("a difficult");
-		else
-			OutStr += gettext("a crazy");	
-
-		OutStr += gettext(" position and "); 
-		
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("squealed");
-		else if (random <= 4)
-			OutStr += gettext("moaned");
-		else 
-			OutStr += gettext("grew hot");
-
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("a delightful");
+		else if (random <= 4)	OutStr += gettext("an awkward");
+		else if (random <= 6)	OutStr += gettext("a difficult");
+		else /*            */	OutStr += gettext("a crazy");
+		OutStr += gettext(" position and ");
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("squealed");
+		else if (random <= 4)	OutStr += gettext("moaned");
+		else 	OutStr += gettext("grew hot");
 		OutStr += gettext(" as he ");
-
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("touched");
-		else if (random <= 4)
-			OutStr += gettext("caressed");
-		else
-			OutStr += gettext("probed");
-
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("touched");
+		else if (random <= 4)	OutStr += gettext("caressed");
+		else /*            */	OutStr += gettext("probed");
 		OutStr += gettext(" her defenseless body");
 		break;
-	case 8: 
-		OutStr += gettext("lay on the "); 
-		
-		random = g_Dice%6 + 1;
-		if (random <= 2)
-			OutStr += gettext("floor");
-		else if (random <= 4)
-			OutStr += gettext("bed");
-		else
-			OutStr += gettext("couch");
-	
+	case 8:
+		OutStr += gettext("lay on the ");
+		random = g_Dice % 6 + 1;
+		/* */if (random <= 2)	OutStr += gettext("floor");
+		else if (random <= 4)	OutStr += gettext("bed");
+		else /*            */	OutStr += gettext("couch");
 		OutStr += gettext(" and ");
-
-		random = g_Dice%6 + 1;
-		if (random <= 2)
-			OutStr += gettext("had him take off all her clothes");
-		else if (random <= 4)
-			OutStr += gettext("told him exactly what turned her on");
-		else
-			OutStr += gettext("encouraged him to take off her bra and panties with his teeth");
-
+		random = g_Dice % 6 + 1;
+		/* */if (random <= 2)	OutStr += gettext("had him take off all her clothes");
+		else if (random <= 4)	OutStr += gettext("told him exactly what turned her on");
+		else /*            */	OutStr += gettext("encouraged him to take off her bra and panties with his teeth");
 		break;
 	}
 # pragma endregion sex1
-
 	// Roll #2
 # pragma region sex2
 	OutStr += ". ";
-
 	roll2 = g_Dice % 11 + 1;
 	switch (roll2)
 	{
-	case 1: 
+	case 1:
 		OutStr += gettext("She ");
-
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("rode him all the way to the next town");
-		else if (random <= 4)
-			OutStr += gettext("massaged his balls and sucked him dry");
-		else if (random <=6 )
-			OutStr += gettext("titty fucked and sucked the well dry");
-		else
-			OutStr += gettext("fucked him blind");
-
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("rode him all the way to the next town");
+		else if (random <= 4)	OutStr += gettext("massaged his balls and sucked him dry");
+		else if (random <= 6)	OutStr += gettext("titty fucked and sucked the well dry");
+		else /*            */	OutStr += gettext("fucked him blind");
 		OutStr += gettext(". He was a trooper though and rallied: She ");
-
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("was deeply penetrated");
-		else if (random <= 4)
-			OutStr += gettext("was paralyzed with stunning sensations");
-		else if (random <=6 )
-			OutStr += gettext("bucked like a bronko");
-		else
-			OutStr += gettext("shook with pleasure");
-
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("was deeply penetrated");
+		else if (random <= 4)	OutStr += gettext("was paralyzed with stunning sensations");
+		else if (random <= 6)	OutStr += gettext("bucked like a bronko");
+		else /*            */	OutStr += gettext("shook with pleasure");
 		OutStr += gettext(" and ");
-
-		random = g_Dice%4 + 1;
-		if (random <= 2)
-			OutStr += gettext("came like a fire hose from");
-		else
-			OutStr += gettext("repeatedly shook in orgasm with");
-	
+		random = g_Dice % 4 + 1;
+		/* */if (random <= 2)	OutStr += gettext("came like a fire hose from");
+		else /*            */	OutStr += gettext("repeatedly shook in orgasm with");
 		break;
-	case 2: 
+	case 2:
 		OutStr += gettext("It took a lot of effort to stay ");
-				
-		random = g_Dice%10 + 1;
-		if (random <= 3)
-			OutStr += gettext("interested in");
-		else if (random <= 7)
-			OutStr += gettext("awake for");
-		else 
-			OutStr += gettext("conscious for");
-
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 3)	OutStr += gettext("interested in");
+		else if (random <= 7)	OutStr += gettext("awake for");
+		else 	OutStr += gettext("conscious for");
 		break;
-
-	case 3: 
+	case 3:
 		OutStr += gettext("She was fucked ");
-		
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("blind");
-		else if (random <= 4)
-			OutStr += gettext("silly twice over");
-		else if (random <= 6)
-			OutStr += gettext("all crazy like");
-		else if (random <= 8)
-			OutStr += gettext("for hours");
-		else
-			OutStr += gettext("for minutes");
-
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("blind");
+		else if (random <= 4)	OutStr += gettext("silly twice over");
+		else if (random <= 6)	OutStr += gettext("all crazy like");
+		else if (random <= 8)	OutStr += gettext("for hours");
+		else /*            */	OutStr += gettext("for minutes");
 		OutStr += gettext(" by"); break;
-
-	case 4: 
+	case 4:
 		OutStr += gettext("She performed ");
-		
-		random = g_Dice%10 + 1;
-		if (random <= 5)
-			OutStr += gettext("uninspired ");
-		else
-			OutStr += gettext("inspired ");
-				
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("missionary ");
-		else if (random <= 4)
-			OutStr += gettext("oral ");
-		else if (random <= 6)
-			OutStr += gettext("foot ");
-		else
-			OutStr += gettext("hand ");
-				
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 5)	OutStr += gettext("uninspired ");
+		else /*            */	OutStr += gettext("inspired ");
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("missionary ");
+		else if (random <= 4)	OutStr += gettext("oral ");
+		else if (random <= 6)	OutStr += gettext("foot ");
+		else /*            */	OutStr += gettext("hand ");
 		OutStr += gettext("sex for"); break;
-
-	case 5: 
+	case 5:
 		//OutStr += ""; 
-		
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("Semen");
-		else if (random <= 4)
-			OutStr += gettext("Praise");
-		else if (random <= 6)
-			OutStr += gettext("Flesh");
-		else if (random <= 8)
-			OutStr += gettext("Drool");
-		else
-			OutStr += gettext("Chocolate sauce");
-
-		OutStr += gettext(" rained down on her from"); 
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("Semen");
+		else if (random <= 4)	OutStr += gettext("Praise");
+		else if (random <= 6)	OutStr += gettext("Flesh");
+		else if (random <= 8)	OutStr += gettext("Drool");
+		else /*            */	OutStr += gettext("Chocolate sauce");
+		OutStr += gettext(" rained down on her from");
 		break;
-
-	case 6: 
-		OutStr += gettext("She couldn't "); 
-		
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("stand");
-		else if (random <= 4)
-			OutStr += gettext("walk");
-		else if (random <= 6)
-			OutStr += gettext("swallow");
-		else if (random <= 8)
-			OutStr += gettext("feel her legs");
-		else
-			OutStr += gettext("move");
-
-		OutStr += gettext(" after screwing"); 
+	case 6:
+		OutStr += gettext("She couldn't ");
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("stand");
+		else if (random <= 4)	OutStr += gettext("walk");
+		else if (random <= 6)	OutStr += gettext("swallow");
+		else if (random <= 8)	OutStr += gettext("feel her legs");
+		else /*            */	OutStr += gettext("move");
+		OutStr += gettext(" after screwing");
 		break;
-	case 7: 
+	case 7:
 		OutStr += gettext("It took a great deal of effort to look ");
-
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("interested in");
-		else if (random <= 4)
-			OutStr += gettext("awake for");
-		else if (random <= 6)
-			OutStr += gettext("alive for");
-		else if (random <= 8)
-			OutStr += gettext("enthusiastic for");
-		else
-			OutStr += gettext("hurt for");
-				 
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("interested in");
+		else if (random <= 4)	OutStr += gettext("awake for");
+		else if (random <= 6)	OutStr += gettext("alive for");
+		else if (random <= 8)	OutStr += gettext("enthusiastic for");
+		else /*            */	OutStr += gettext("hurt for");
 		break;
-	case 8: 
+	case 8:
 		OutStr += gettext("She played 'clean up the ");
-				
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("tools");
-		else if (random <= 4)
-			OutStr += gettext("customer");
-		else if (random <= 6)
-			OutStr += gettext("sword");
-		else 
-			OutStr += gettext("sugar frosting");
-
-		OutStr += gettext("' with"); 
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("tools");
+		else if (random <= 4)	OutStr += gettext("customer");
+		else if (random <= 6)	OutStr += gettext("sword");
+		else 	OutStr += gettext("sugar frosting");
+		OutStr += gettext("' with");
 		break;
-	case 9: 
+	case 9:
 		OutStr += gettext("Hopefully her ");
-			
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("cervix");
-		else if (random <= 4)
-			OutStr += gettext("pride");
-		else if (random <= 6)
-			OutStr += gettext("reputation");
-		else if (random <= 8)
-			OutStr += gettext("ego");
-		else
-			OutStr += gettext("stomach");
-
-		OutStr += gettext(" wasn't bruised by"); 
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("cervix");
+		else if (random <= 4)	OutStr += gettext("pride");
+		else if (random <= 6)	OutStr += gettext("reputation");
+		else if (random <= 8)	OutStr += gettext("ego");
+		else /*            */	OutStr += gettext("stomach");
+		OutStr += gettext(" wasn't bruised by");
 		break;
-	case 10: 
-		OutStr += gettext("She called in "); 
-		
-		random = g_Dice%3 + 2;
+	case 10:
+		OutStr += gettext("She called in ");
+		random = g_Dice % 3 + 2;
 		char buffer[10];
 		_itoa(random, buffer, 10);
 		OutStr += buffer;
-		
-		OutStr += gettext(" reinforcements to tame"); 
+		OutStr += gettext(" reinforcements to tame");
 		break;
-	case 11: 
-		OutStr += gettext("She orgasmed "); 
-		
-		random = g_Dice%100 + 30;
+	case 11:
+		OutStr += gettext("She orgasmed ");
+		random = g_Dice % 100 + 30;
 		_itoa(random, buffer, 10);
 		OutStr += buffer;
-
 		OutStr += gettext(" times with"); break;
 	}
 # pragma endregion sex2
-
 	// Roll #3
 # pragma region sex3
 	OutStr += " ";	// Consistency
-
 	roll3 = g_Dice % 20 + 1;
 	switch (roll3)
 	{
 	case 1:
-		OutStr += gettext("the guy "); 
-		
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("wearing three amulets of the sex elemental.");
-		else if (random <= 4)
-			OutStr += gettext("wearing eight rings of the horndog.");
-		else if (random <= 6)
-			OutStr += gettext("wearing a band of invulnerability.");
-		else if (random <= 8)
-			OutStr += gettext("carrying a waffle iron.");
-		else
-			OutStr += gettext("carrying a body probe of irresistable sensations.");
-
+		OutStr += gettext("the guy ");
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("wearing three amulets of the sex elemental.");
+		else if (random <= 4)	OutStr += gettext("wearing eight rings of the horndog.");
+		else if (random <= 6)	OutStr += gettext("wearing a band of invulnerability.");
+		else if (random <= 8)	OutStr += gettext("carrying a waffle iron.");
+		else /*            */	OutStr += gettext("carrying a body probe of irresistable sensations.");
 		break;
 	case 2: OutStr += gettext("Thor, God of Thunderfucking!!!!"); break;
-	case 3: 
-		OutStr += gettext("the frustrated "); 
-		
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("astronomer.");
-		else if (random <= 4)
-			OutStr += gettext("physicist.");
-		else if (random <= 6)
-			OutStr += gettext("chemist.");
-		else if (random <= 8)
-			OutStr += gettext("biologist.");
-		else
-			OutStr += gettext("engineer.");
-
+	case 3:
+		OutStr += gettext("the frustrated ");
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("astronomer.");
+		else if (random <= 4)	OutStr += gettext("physicist.");
+		else if (random <= 6)	OutStr += gettext("chemist.");
+		else if (random <= 8)	OutStr += gettext("biologist.");
+		else /*            */	OutStr += gettext("engineer.");
 		break;
 	case 4: OutStr += gettext("the invisible something or other????"); break;
 	case 5: OutStr += gettext("the butler. (He always did it.)"); break;
-	case 6: 
-		OutStr += gettext("the "); 
-		
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += "sentient apple tree.";
-		else if (random <= 4)
-			OutStr += gettext("sentient sex toy.");
-		else if (random <= 6)
-			OutStr += gettext("pan-dimensional toothbrush.");
-		else if (random <= 8)
-			OutStr += gettext("magic motorcycle.");
-		else
-			OutStr += gettext("regular bloke.");
-
+	case 6:
+		OutStr += gettext("the ");
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += "sentient apple tree.";
+		else if (random <= 4)	OutStr += gettext("sentient sex toy.");
+		else if (random <= 6)	OutStr += gettext("pan-dimensional toothbrush.");
+		else if (random <= 8)	OutStr += gettext("magic motorcycle.");
+		else /*            */	OutStr += gettext("regular bloke.");
 		break;
-	case 7: 
+	case 7:
 		OutStr += gettext("the unbelievably well behaved ");
-				
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("Pink Petal forum member.");
-		else if (random <= 4)
-			OutStr += gettext("tentacle.");
-		else if (random <= 6)
-			OutStr += gettext("pirate.");
-		else 
-			OutStr += gettext("sentient bottle.");
-
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("Pink Petal forum member.");
+		else if (random <= 4)	OutStr += gettext("tentacle.");
+		else if (random <= 6)	OutStr += gettext("pirate.");
+		else 	OutStr += gettext("sentient bottle.");
 		break;
-	case 8: 
-		random = g_Dice%20 + 1;
-		if (random <= 2)
-			OutStr += gettext("Cousin");
-		else if (random <= 4)
-			OutStr += gettext("Brother");
-		else if (random <= 6)
-			OutStr += gettext("Saint");
-		else if (random <= 8)
-			OutStr += gettext("Lieutenant");
-		else if (random <= 10)
-			OutStr += gettext("Master");
-		else if (random <= 12)
-			OutStr += gettext("Doctor");
-		else if (random <= 14)
-			OutStr += gettext("Mr.");
-		else if (random <= 16)
-			OutStr += gettext("Smith");
-		else if (random <= 18)
-			OutStr += gettext("DockMaster");
-		else
-			OutStr += gettext("Perfect");
-			
-		OutStr += gettext(" Parkins from down the street."); 
+	case 8:
+		random = g_Dice % 20 + 1;
+		/* */if (random <= 2)	OutStr += gettext("Cousin");
+		else if (random <= 4)	OutStr += gettext("Brother");
+		else if (random <= 6)	OutStr += gettext("Saint");
+		else if (random <= 8)	OutStr += gettext("Lieutenant");
+		else if (random <= 10)	OutStr += gettext("Master");
+		else if (random <= 12)	OutStr += gettext("Doctor");
+		else if (random <= 14)	OutStr += gettext("Mr.");
+		else if (random <= 16)	OutStr += gettext("Smith");
+		else if (random <= 18)	OutStr += gettext("DockMaster");
+		else /*            */	OutStr += gettext("Perfect");
+		OutStr += gettext(" Parkins from down the street.");
 		break;
 	case 9: OutStr += gettext("the master of the hidden dick technique. (Where is it? Nobody knows.)"); break;
 	case 10: OutStr += gettext("cake. It isn't a lie!"); break;
-	case 11: 
+	case 11:
 		OutStr += gettext("the really, really macho ");
-		
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("Titan.");
-		else if (random <= 4)
-			OutStr += gettext("Storm Giant.");
-		else if (random <= 6)
-			OutStr += gettext("small moon.");
-		else if (random <= 8)
-			OutStr += gettext("kobold.");
-		else
-			OutStr += gettext("madness.");
-		
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("Titan.");
+		else if (random <= 4)	OutStr += gettext("Storm Giant.");
+		else if (random <= 6)	OutStr += gettext("small moon.");
+		else if (random <= 8)	OutStr += gettext("kobold.");
+		else /*            */	OutStr += gettext("madness.");
 		break;
-	case 12: 
+	case 12:
 		OutStr += gettext("the clockwork man!");
-			
 		OutStr += gettext(" (With no sensation in his clockwork ");
-		
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("tool");
-		else if (random <= 4)
-			OutStr += gettext("head");
-		else if (random <= 6)
-			OutStr += gettext("fingers");
-		else if (random <= 8)
-			OutStr += gettext("attachment");
-		else
-			OutStr += gettext("clock");
-		
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("tool");
+		else if (random <= 4)	OutStr += gettext("head");
+		else if (random <= 6)	OutStr += gettext("fingers");
+		else if (random <= 8)	OutStr += gettext("attachment");
+		else /*            */	OutStr += gettext("clock");
 		OutStr += gettext(" and no sense to ");
-			
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("stop");
-		else if (random <= 4)
-			OutStr += gettext("slow down");
-		else if (random <= 6)
-			OutStr += gettext("moderate");
-		else if (random <= 8)
-			OutStr += gettext("be gentle");
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("stop");
+		else if (random <= 4)	OutStr += gettext("slow down");
+		else if (random <= 6)	OutStr += gettext("moderate");
+		else if (random <= 8)	OutStr += gettext("be gentle");
 		else
 		{
 			OutStr += gettext("stop at ");
-
-			random = g_Dice%50 + 30;
+			random = g_Dice % 50 + 30;
 			_itoa(random, buffer, 10);
 			OutStr += buffer;
-		
 			OutStr += gettext(" orgasms");
 		}
-
-		OutStr += gettext(".)"); 
+		OutStr += gettext(".)");
 		break;
-	case 13: 
+	case 13:
 		// MYR: This one gives useful advice to the players.  A gift from us to them.
 		OutStr += gettext("the Brothel Master developer. ");
-		
-		random = g_Dice%20 + 1;
-		if (random <= 2)
-			OutStr += gettext("(Quick learner is a great talent to have.)");
-		else if (random <= 4)
-			OutStr += gettext("(Don't ignore the practice skills option for your girls.)");
-		else if (random <= 6)
-			OutStr += gettext("(Train your gangs.)");
-		else if (random <= 8)
-			OutStr += gettext("(Every time you restart the game, the shop inventory is reset.)");
-		else if (random <= 10)
-			OutStr += gettext("(Invulnerable (insubstantial) characters should be exploring the catacombs.)");
-		else if (random <= 12)
-			OutStr += gettext("(High dodge gear is great for characters exploring the catacombs.)");
-		else if (random <= 14)
-			OutStr += gettext("(For a character with a high constitution, experiment with working on both shifts.)");
-		else if (random <= 16)
-			OutStr += gettext("(Matrons need high service skills.)");
-		else if (random <= 18)
-			OutStr += gettext("(Girls see a max of 3 people for high reputations, 3 for high appearance and 3 for high skills.)");
-		else
-			OutStr += gettext("(Don't overlook the bribery option in the town hall and the bank.)");
-
+		random = g_Dice % 20 + 1;
+		/* */if (random <= 2)	OutStr += gettext("(Quick learner is a great talent to have.)");
+		else if (random <= 4)	OutStr += gettext("(Don't ignore the practice skills option for your girls.)");
+		else if (random <= 6)	OutStr += gettext("(Train your gangs.)");
+		else if (random <= 8)	OutStr += gettext("(Every time you restart the game, the shop inventory is reset.)");
+		else if (random <= 10)	OutStr += gettext("(Invulnerable (insubstantial) characters should be exploring the catacombs.)");
+		else if (random <= 12)	OutStr += gettext("(High dodge gear is great for characters exploring the catacombs.)");
+		else if (random <= 14)	OutStr += gettext("(For a character with a high constitution, experiment with working on both shifts.)");
+		else if (random <= 16)	OutStr += gettext("(Matrons need high service skills.)");
+		else if (random <= 18)	OutStr += gettext("(Girls see a max of 3 people for high reputations, 3 for high appearance and 3 for high skills.)");
+		else /*            */	OutStr += gettext("(Don't overlook the bribery option in the town hall and the bank.)");
 		break;
 	case 14: OutStr += gettext("grandmaster piledriver the 17th."); break;
 	case 15:
 		OutStr += gettext("the evolved sexual entity from ");
-				 
-		random = g_Dice%8 + 1;
+		random = g_Dice % 8 + 1;
 		if (random <= 2)
 		{
-			random = g_Dice%200000 + 100000;
+			random = g_Dice % 200000 + 100000;
 			_itoa(random, buffer, 10);
 			OutStr += buffer;
 			OutStr += gettext(" years in the future.");
 		}
-		else if (random <= 4)
-			OutStr += gettext("the closet.");
-		else if (random <= 6)
-			OutStr += gettext("the suburbs.");
-		else 
-			OutStr += gettext("somewhere in deep space.");
-				 
+		else if (random <= 4)	OutStr += gettext("the closet.");
+		else if (random <= 6)	OutStr += gettext("the suburbs.");
+		else 	OutStr += gettext("somewhere in deep space.");
 		break;
 	case 16:
 		OutStr += gettext("the ");
-				 
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("mayor");
-		else if (random <= 4)
-			OutStr += gettext("bishop");
-		else if (random <= 6)
-			OutStr += gettext("town treasurer");
-		else 
-			OutStr += gettext("school principle");
-
-		 OutStr += gettext(", on one of his regular health checkups."); 
-		 break;
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("mayor");
+		else if (random <= 4)	OutStr += gettext("bishop");
+		else if (random <= 6)	OutStr += gettext("town treasurer");
+		else 	OutStr += gettext("school principle");
+		OutStr += gettext(", on one of his regular health checkups.");
+		break;
 	case 17: OutStr += gettext("the letter H."); break;
 	case 18: OutStr += gettext("a completely regular and unspectacular guy."); break;
-	case 19: 
+	case 19:
 		OutStr += gettext("the ");
-			
-		random = g_Dice%20 + 5;
+		random = g_Dice % 20 + 5;
 		_itoa(random, buffer, 10);
 		OutStr += buffer;
 		OutStr += gettext(" dick, ");
-
-		random = g_Dice%20 + 5;
+		random = g_Dice % 20 + 5;
 		_itoa(random, buffer, 10);
 		OutStr += buffer;
 		OutStr += gettext("-armed ");
-
 		OutStr += gettext("(Each wearing ");
-		
-		random = g_Dice%2 + 4;
+		random = g_Dice % 2 + 4;
 		_itoa(random, buffer, 10);
 		OutStr += buffer;
 		OutStr += gettext(" ");
-
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("rings of the Schwarzenegger");
-		else if (random <= 4)
-			OutStr += gettext("rings of the horndog");
-		else if (random <= 6)
-			OutStr += gettext("rings of beauty");
-		else 
-			OutStr += gettext("rings of potent sexual stamina");
-
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("rings of the Schwarzenegger");
+		else if (random <= 4)	OutStr += gettext("rings of the horndog");
+		else if (random <= 6)	OutStr += gettext("rings of beauty");
+		else 	OutStr += gettext("rings of potent sexual stamina");
 		OutStr += gettext(") ");
-
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("neighbor");
-		else if (random <= 4)
-			OutStr += gettext("yugoloth");
-		else if (random <= 6)
-			OutStr += gettext("abberation");
-		else 
-			OutStr += gettext("ancient one");
-
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("neighbor");
+		else if (random <= 4)	OutStr += gettext("yugoloth");
+		else if (random <= 6)	OutStr += gettext("abberation");
+		else 	OutStr += gettext("ancient one");
 		OutStr += gettext(".");
 		break;
-	case 20: 
+	case 20:
 		OutStr += gettext("the number 69."); break;
 	}
 # pragma endregion sex3
-
 	OutStr += gettext("\n");
 	return OutStr;
 }
-
 string cGirls::GetRandomGroupString()
 {
 	int roll1 = 0, roll2 = 0, roll3 = 0, random = 0;
 	string OutStr;
 	char buffer[10];
-
 	// Part 1
 # pragma region group1
 	OutStr += gettext(" ");
-
 	roll1 = g_Dice % 4 + 1;   // Remember to update this when new strings are added
 	switch (roll1)
 	{
 	case 1:
 		OutStr += gettext("counted the number of customers: ");
-
-		random = g_Dice%20 + 5;
+		random = g_Dice % 20 + 5;
 		_itoa(random, buffer, 10);
 		OutStr += buffer;
 		OutStr += ". ";
-
-		random = g_Dice%14 + 1;
-		if (random <= 2)
-			OutStr += gettext("This was going to be rough");
-		else if (random <= 4)
-			OutStr += gettext("Sweet");
-		else if (random <= 6)
-			OutStr += gettext("It could be worse");
-		else if (random <= 8)
-			OutStr += gettext("A smile formed on her lips. This was going to be fun");
-		else if (random <= 10)
-			OutStr += gettext("Boring");
-		else if (random <= 12)
-			OutStr += gettext("Not enough");
-		else
-			OutStr += gettext("'Could you get more?' she wondered");
-
+		random = g_Dice % 14 + 1;
+		/* */if (random <= 2)	OutStr += gettext("This was going to be rough");
+		else if (random <= 4)	OutStr += gettext("Sweet");
+		else if (random <= 6)	OutStr += gettext("It could be worse");
+		else if (random <= 8)	OutStr += gettext("A smile formed on her lips. This was going to be fun");
+		else if (random <= 10)	OutStr += gettext("Boring");
+		else if (random <= 12)	OutStr += gettext("Not enough");
+		else /*            */	OutStr += gettext("'Could you get more?' she wondered");
 		break;
 	case 2: OutStr += gettext("was lost in ");
-		
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("a sea");
-		else if (random <= 4)
-			OutStr += gettext("a storm");
-		else if (random <= 6)
-			OutStr += gettext("an ocean");
-		else
-			OutStr += gettext("a jungle");		
-
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("a sea");
+		else if (random <= 4)	OutStr += gettext("a storm");
+		else if (random <= 6)	OutStr += gettext("an ocean");
+		else /*            */	OutStr += gettext("a jungle");
 		OutStr += gettext(" of hot bodies");
 		break;
-	case 3: 
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("sat");
-		else if (random <= 4)
-			OutStr += gettext("lay");
-		else if (random <= 6)
-			OutStr += gettext("stood");
-		else
-			OutStr += gettext("crouched");
-		
+	case 3:
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("sat");
+		else if (random <= 4)	OutStr += gettext("lay");
+		else if (random <= 6)	OutStr += gettext("stood");
+		else /*            */	OutStr += gettext("crouched");
 		OutStr += " ";
-
-		random = g_Dice%10 + 1;
-		if (random <= 5)
-			OutStr += gettext("blindfolded and ");
-		
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("handcuffed");
-		else if (random <= 4)
-			OutStr += gettext("tied up");
-		else if (random <= 6)
-			OutStr += gettext("wrists bound in rope");
-		else
-			OutStr += gettext("wrists in chains hanging from the ceiling");
-
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 5)	OutStr += gettext("blindfolded and ");
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("handcuffed");
+		else if (random <= 4)	OutStr += gettext("tied up");
+		else if (random <= 6)	OutStr += gettext("wrists bound in rope");
+		else /*            */	OutStr += gettext("wrists in chains hanging from the ceiling");
 		OutStr += gettext(" in the middle of a ");
-
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("circle");
-		else if (random <= 4)
-			OutStr += gettext("smouldering pile");
-		else if (random <= 6)
-			OutStr += gettext("phalanx");
-		else
-			OutStr += gettext("wall");
-
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("circle");
+		else if (random <= 4)	OutStr += gettext("smouldering pile");
+		else if (random <= 6)	OutStr += gettext("phalanx");
+		else /*            */	OutStr += gettext("wall");
 		OutStr += gettext(" of flesh");
 		break;
-	case 4: 	
+	case 4:
 		OutStr += gettext("was ");
-
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("amazed by");
-		else if (random <= 4)
-			OutStr += gettext("disappointed by");
-		else if (random <= 6)
-			OutStr += gettext("overjoyed with");
-		else
-			OutStr += gettext("ecstatically happy with"); 
-		
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("amazed by");
+		else if (random <= 4)	OutStr += gettext("disappointed by");
+		else if (random <= 6)	OutStr += gettext("overjoyed with");
+		else /*            */	OutStr += gettext("ecstatically happy with");
 		OutStr += gettext(" the ");
-			
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("brigade");
-		else if (random <= 4)
-			OutStr += gettext("army group");
-		else if (random <= 6)
-			OutStr += gettext("squad");
-		else
-			OutStr += gettext("batallion"); 
-		
-		OutStr += gettext(" of "); 
-		
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("man meat");
-		else if (random <= 4)
-			OutStr += gettext("cock");
-		else if (random <= 6)
-			OutStr += gettext("muscle");
-		else
-			OutStr += gettext("horny, brainless thugs");
-		
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("brigade");
+		else if (random <= 4)	OutStr += gettext("army group");
+		else if (random <= 6)	OutStr += gettext("squad");
+		else /*            */	OutStr += gettext("batallion");
+		OutStr += gettext(" of ");
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("man meat");
+		else if (random <= 4)	OutStr += gettext("cock");
+		else if (random <= 6)	OutStr += gettext("muscle");
+		else /*            */	OutStr += gettext("horny, brainless thugs");
 		OutStr += gettext(" around her");
 		break;
 	}
 # pragma endregion group1
-
 	// Part 2
 # pragma region group2
 	OutStr += gettext(". ");
-
 	roll2 = g_Dice % 8 + 1;
 	switch (roll2)
 	{
-	case 1: 
+	case 1:
 		OutStr += gettext("She was thoroughly ");
-		
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("banged");
-		else if (random <= 4)
-			OutStr += gettext("fucked");
-		else if (random <= 6)
-			OutStr += gettext("disappointed");
-		else
-			OutStr += gettext("penetrated");
-		
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("banged");
+		else if (random <= 4)	OutStr += gettext("fucked");
+		else if (random <= 6)	OutStr += gettext("disappointed");
+		else /*            */	OutStr += gettext("penetrated");
 		OutStr += gettext(" by");
 		break;
-	case 2: 
+	case 2:
 		OutStr += gettext("They handled her like ");
-
-		random = g_Dice%10 + 1;
-		if (random <= 5)
-			OutStr += gettext("an expensive");
-		else
-			OutStr += gettext("a cheap");
-
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 5)	OutStr += gettext("an expensive");
+		else /*            */	OutStr += gettext("a cheap");
 		OutStr += gettext(" ");
-
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("hooker");
-		else if (random <= 4)
-			OutStr += gettext("street worker");
-		else if (random <= 6)
-			OutStr += gettext("violin");
-		else
-			OutStr += gettext("wine");
-
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("hooker");
+		else if (random <= 4)	OutStr += gettext("street worker");
+		else if (random <= 6)	OutStr += gettext("violin");
+		else /*            */	OutStr += gettext("wine");
 		OutStr += gettext(" for");
 		break;
-	case 3: 
+	case 3:
 		OutStr += gettext("Her ");
-		
-		random = g_Dice%10 + 1;
-		if (random <= 5)
-			OutStr += gettext("holes were");
-		else
-			OutStr += gettext("love canal was");
-
-		OutStr += gettext(" plugged by"); 
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 5)	OutStr += gettext("holes were");
+		else /*            */	OutStr += gettext("love canal was");
+		OutStr += gettext(" plugged by");
 		break;
-	case 4: 
+	case 4:
 		OutStr += gettext("She ");
-
-		random = g_Dice%6 + 1;
-		if (random <= 2)
-			OutStr += gettext("was bukkaked by");
-		else if (random <= 4)
-			OutStr += gettext("was given pearl necklaces by");
-		else 
-			OutStr += gettext("received a thorough face/hair job from");
-		
+		random = g_Dice % 6 + 1;
+		/* */if (random <= 2)	OutStr += gettext("was bukkaked by");
+		else if (random <= 4)	OutStr += gettext("was given pearl necklaces by");
+		else 	OutStr += gettext("received a thorough face/hair job from");
 		break;
-	case 5: 
+	case 5:
 		OutStr += gettext("They demanded simultaneous hand, foot and mouth ");
-				
-		random = g_Dice%6 + 1;
-		if (random <= 2)
-			OutStr += gettext("jobs");
-		else if (random <= 4)
-			OutStr += gettext("action");
-		else 
-			OutStr += gettext("combat");
-
+		random = g_Dice % 6 + 1;
+		/* */if (random <= 2)	OutStr += gettext("jobs");
+		else if (random <= 4)	OutStr += gettext("action");
+		else 	OutStr += gettext("combat");
 		OutStr += gettext(" for");
 		break;
-	case 6: 
+	case 6:
 		OutStr += gettext("There was a positive side: 'So much ");
-		
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("meat");
-		else if (random <= 4)
-			OutStr += gettext("cock");
-		else if (random <= 6)
-			OutStr += gettext("testosterone");
-		else
-			OutStr += gettext("to do");
-			
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("meat");
+		else if (random <= 4)	OutStr += gettext("cock");
+		else if (random <= 6)	OutStr += gettext("testosterone");
+		else /*            */	OutStr += gettext("to do");
 		OutStr += gettext(", so little time' she said to");
 		break;
-	case 7: 
+	case 7:
 		OutStr += gettext("They made sure she had a nutritious meal of ");
-		
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("man meat");
-		else if (random <= 4)
-			OutStr += gettext("cock");
-		else if (random <= 6)
-			OutStr += gettext("penis");
-		else
-			OutStr += gettext("meat rods");
-			
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("man meat");
+		else if (random <= 4)	OutStr += gettext("cock");
+		else if (random <= 6)	OutStr += gettext("penis");
+		else /*            */	OutStr += gettext("meat rods");
 		OutStr += gettext(" and drinks of delicious ");
-			
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("semen");
-		else if (random <= 4)
-			OutStr += gettext("man mucus");
-		else if (random <= 6)
-			OutStr += gettext("man-love");
-		else
-			OutStr += gettext("man-cream");
-			
-		OutStr += gettext(" from"); 
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("semen");
+		else if (random <= 4)	OutStr += gettext("man mucus");
+		else if (random <= 6)	OutStr += gettext("man-love");
+		else /*            */	OutStr += gettext("man-cream");
+		OutStr += gettext(" from");
 		break;
-	case 8: 
+	case 8:
 		OutStr += gettext("She was ");
-
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("fucked");
-		else if (random <= 4)
-			OutStr += gettext("banged");
-		else if (random <= 6)
-			OutStr += gettext("humped");
-		else
-			OutStr += gettext("sucked");		
-		
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("fucked");
+		else if (random <= 4)	OutStr += gettext("banged");
+		else if (random <= 6)	OutStr += gettext("humped");
+		else /*            */	OutStr += gettext("sucked");
 		OutStr += gettext(" silly ");
-		
-		if (random <= 2)
-			OutStr += gettext("twice over");
-		else if (random <= 4)
-			OutStr += gettext("three times over");
-		else 
-			OutStr += gettext("so many times");
-
-		OutStr += gettext(" by"); 
+		/* */if (random <= 2)	OutStr += gettext("twice over");
+		else if (random <= 4)	OutStr += gettext("three times over");
+		else 	OutStr += gettext("so many times");
+		OutStr += gettext(" by");
 		break;
 	}
 # pragma endregion group2
-
 	// Part 3
 # pragma region group3
 	OutStr += gettext(" ");
-
 	roll3 = g_Dice % 11 + 1;
 	switch (roll3)
 	{
-	case 1: 
+	case 1:
 		OutStr += gettext("every member of the Crossgate ");
-			
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("roads crew.");
-		else if (random <= 4)
-			OutStr += gettext("administrative staff.");
-		else if (random <= 6)
-			OutStr += gettext("interleague volleyball team.");
-		else
-			OutStr += gettext("short persons defense league.");			
-			
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("roads crew.");
+		else if (random <= 4)	OutStr += gettext("administrative staff.");
+		else if (random <= 6)	OutStr += gettext("interleague volleyball team.");
+		else /*            */	OutStr += gettext("short persons defense league.");
 		; break;
 	case 2:
 		OutStr += gettext("all the ");
-		
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("lieutenants");
-		else if (random <= 4)
-			OutStr += gettext("sergeants");
-		else if (random <= 6)
-			OutStr += gettext("captains");
-		else
-			OutStr += gettext("junior officers");	
-		
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("lieutenants");
+		else if (random <= 4)	OutStr += gettext("sergeants");
+		else if (random <= 6)	OutStr += gettext("captains");
+		else /*            */	OutStr += gettext("junior officers");
 		OutStr += gettext(" in the Mundigan ");
-			
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("army.");
-		else if (random <= 4)
-			OutStr += gettext("navy.");
-		else if (random <= 6)
-			OutStr += gettext("elite forces.");
-		else
-			OutStr += gettext("foreign legion.");
-
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("army.");
+		else if (random <= 4)	OutStr += gettext("navy.");
+		else if (random <= 6)	OutStr += gettext("elite forces.");
+		else /*            */	OutStr += gettext("foreign legion.");
 		break;
-	case 3: 
+	case 3:
 		OutStr += gettext("the visiting ");
-				
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("half-giants. (Ouch!)");
-		else if (random <= 4)
-			OutStr += gettext("storm giants.");
-		else if (random <= 6)
-			OutStr += gettext("titans.");
-		else
-			OutStr += gettext("ogres.");
-
-				break;
-	case 4: 
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("half-giants. (Ouch!)");
+		else if (random <= 4)	OutStr += gettext("storm giants.");
+		else if (random <= 6)	OutStr += gettext("titans.");
+		else /*            */	OutStr += gettext("ogres.");
+		break;
+	case 4:
 		OutStr += gettext("the ");
-		
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("Hentai Research");
-		else if (random <= 4)
-			OutStr += gettext("Women's Rights");
-		else if (random <= 6)
-			OutStr += gettext("Prostitution Studies");
-		else
-			OutStr += gettext("Celibacy");
-
-		 OutStr += gettext(" club of the University of Cunning Linguists."); 
-		 break;
-	case 5: 
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("Hentai Research");
+		else if (random <= 4)	OutStr += gettext("Women's Rights");
+		else if (random <= 6)	OutStr += gettext("Prostitution Studies");
+		else /*            */	OutStr += gettext("Celibacy");
+		OutStr += gettext(" club of the University of Cunning Linguists.");
+		break;
+	case 5:
 		OutStr += gettext("the squad of ");
-		
-		random = g_Dice%10 + 1;
-		if (random <= 5)
-		  OutStr += gettext("hard-to-find ninjas."); 
-		else
-		  OutStr += gettext("racous pirates.");
-		
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 5)	OutStr += gettext("hard-to-find ninjas.");
+		else /*            */	OutStr += gettext("racous pirates.");
 		break;
 	case 6: OutStr += gettext("a group of people from some place called the 'Pink Petal forums'."); break;
-	case 7: 
+	case 7:
 		OutStr += gettext("the seemingly endless ");
-		
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("army");
-		else if (random <= 4)
-			OutStr += gettext("horde");
-		else if (random <= 6)
-			OutStr += gettext("number");
-		else
-			OutStr += gettext("group");		
-		
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("army");
+		else if (random <= 4)	OutStr += gettext("horde");
+		else if (random <= 6)	OutStr += gettext("number");
+		else /*            */	OutStr += gettext("group");
 		OutStr += gettext(" of really");
-			
-		random = g_Dice%10 + 1;
-		if (random <= 5)
-			OutStr += gettext(", really ");
-		else
-			OutStr += gettext(" ");
-
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("fired up");
-		else if (random <= 4)
-			OutStr += gettext("horny");
-		else if (random <= 6)
-			OutStr += gettext("randy");
-		else
-			OutStr += gettext("backed up");
-
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 5)	OutStr += gettext(", really ");
+		else /*            */	OutStr += gettext(" ");
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("fired up");
+		else if (random <= 4)	OutStr += gettext("horny");
+		else if (random <= 6)	OutStr += gettext("randy");
+		else /*            */	OutStr += gettext("backed up");
 		OutStr += gettext(" ");
-
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("gnomes.");
-		else if (random <= 4)
-			OutStr += gettext("halflings.");
-		else if (random <= 6)
-			OutStr += gettext("kobolds.");
-		else
-			OutStr += gettext("office workers.");
-
-			break;
-	case 8: 
-		OutStr += gettext("CSI ");
-		
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("New York");
-		else if (random <= 4)
-			OutStr += gettext("Miami");
-		else if (random <= 6)
-			OutStr += gettext("Mundigan");
-		else
-			OutStr += gettext("Tokyo"); 
-			
-		OutStr += gettext(" branch."); 
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("gnomes.");
+		else if (random <= 4)	OutStr += gettext("halflings.");
+		else if (random <= 6)	OutStr += gettext("kobolds.");
+		else /*            */	OutStr += gettext("office workers.");
 		break;
-	case 9: 
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("frosh");
-		else if (random <= 4)
-			OutStr += gettext("seniors");
-		else if (random <= 6)
-			OutStr += gettext("young adults");
-		else
-			OutStr += gettext("women");
-
-		OutStr += gettext(" on a "); 
-		
-		random = g_Dice%10 + 1;
-		if (random <= 5)
-			OutStr += gettext("serious ");
-
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("bender");
-		else if (random <= 4)
-			OutStr += gettext("road trip");
-		else if (random <= 6)
-			OutStr += gettext("medical study");
-		else
-			OutStr += gettext("lark");
-
+	case 8:
+		OutStr += gettext("CSI ");
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("New York");
+		else if (random <= 4)	OutStr += gettext("Miami");
+		else if (random <= 6)	OutStr += gettext("Mundigan");
+		else /*            */	OutStr += gettext("Tokyo");
+		OutStr += gettext(" branch.");
+		break;
+	case 9:
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("frosh");
+		else if (random <= 4)	OutStr += gettext("seniors");
+		else if (random <= 6)	OutStr += gettext("young adults");
+		else /*            */	OutStr += gettext("women");
+		OutStr += gettext(" on a ");
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 5)	OutStr += gettext("serious ");
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("bender");
+		else if (random <= 4)	OutStr += gettext("road trip");
+		else if (random <= 6)	OutStr += gettext("medical study");
+		else /*            */	OutStr += gettext("lark");
 		OutStr += gettext(".");
 		break;
-	case 10: 
+	case 10:
 		OutStr += gettext("all the ");
-			
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("second stringers");
-		else if (random <= 4)
-			OutStr += gettext("has-beens");
-		else if (random <= 6)
-			OutStr += gettext("never-weres");
-		else
-			OutStr += gettext("victims"); 
-		
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("second stringers");
+		else if (random <= 4)	OutStr += gettext("has-beens");
+		else if (random <= 6)	OutStr += gettext("never-weres");
+		else /*            */	OutStr += gettext("victims");
 		OutStr += gettext(" from the ");
-		
-		random = g_Dice%20 + 1991;
+		random = g_Dice % 20 + 1991;
 		_itoa(random, buffer, 10);
 		OutStr += buffer;
-		
-		OutStr += gettext(" H anime season."); 
+		OutStr += gettext(" H anime season.");
 		break;
 	case 11:
-		OutStr += gettext("Grandpa Parkins and his extended family of "); 
-		
-		random = g_Dice%200 + 100;
+		OutStr += gettext("Grandpa Parkins and his extended family of ");
+		random = g_Dice % 200 + 100;
 		_itoa(random, buffer, 10);
 		OutStr += buffer;
-
 		OutStr += gettext(".");
-
-		random = g_Dice%10 + 1;
+		random = g_Dice % 10 + 1;
 		if (random <= 5)
 		{
 			OutStr += gettext(" (And ");
-
-			random = g_Dice%100 + 50;
+			random = g_Dice % 100 + 50;
 			_itoa(random, buffer, 10);
 			OutStr += buffer;
-
 			OutStr += gettext(" guests.)");
 		}
-
-		random = g_Dice%10 + 1;
+		random = g_Dice % 10 + 1;
 		if (random <= 5)
 		{
 			OutStr += gettext(" (And ");
-
-			random = g_Dice%100 + 50;
+			random = g_Dice % 100 + 50;
 			_itoa(random, buffer, 10);
 			OutStr += buffer;
-
 			OutStr += gettext(" more from the extended extended family.)");
 		}
 		break;
 	}
 # pragma endregion group3
-
 	OutStr += gettext("\n");
 	return OutStr;
 }
-
 string cGirls::GetRandomBDSMString()
 {
 	int roll2 = 0, roll3 = 0, random = 0;
 	string OutStr;
 	char buffer[10];
-
 	OutStr += gettext(" was ");
-
 	// Part 1:
 # pragma region bdsm1
 	// MYR: Was on a roll so I completely redid the first part
-
-	random = g_Dice%12 + 1;
-	if (random <= 2)
-		OutStr += gettext("dressed as a dominatrix");
-	else if (random <= 4)
-		OutStr += gettext("stripped naked");
-	else if (random <= 6)
-		OutStr += gettext("dressed as a (strictly legal age) school girl");
-	else if (random <= 8)
-		OutStr += gettext("dressed as a nurse");
-	else if (random <= 10)
-		OutStr += gettext("put in heels");
-	else
-		OutStr += gettext("covered in oil");
-
-	random = g_Dice%4 + 1;
+	random = g_Dice % 12 + 1;
+	/* */if (random <= 2)	OutStr += gettext("dressed as a dominatrix");
+	else if (random <= 4)	OutStr += gettext("stripped naked");
+	else if (random <= 6)	OutStr += gettext("dressed as a (strictly legal age) school girl");
+	else if (random <= 8)	OutStr += gettext("dressed as a nurse");
+	else if (random <= 10)	OutStr += gettext("put in heels");
+	else /*            */	OutStr += gettext("covered in oil");
+	random = g_Dice % 4 + 1;
 	if (random == 3)
 	{
-		random = g_Dice%4 + 1;
-		if (random <= 2)
-			OutStr += gettext(", rendered helpless by drugs");
-		else 
-			OutStr += gettext(", restrained by magic");
+		random = g_Dice % 4 + 1;
+		if (random <= 2)	OutStr += gettext(", rendered helpless by drugs");
+		else 	OutStr += gettext(", restrained by magic");
 	}
-
-	random = g_Dice%4 + 1;
-	if (random == 2)
-		OutStr += gettext(", blindfolded");
-
-	random = g_Dice%4 + 1;
-	if (random == 2)
-		OutStr += gettext(", gagged");
-
+	random = g_Dice % 4 + 1;
+	/* */if (random == 2)	OutStr += gettext(", blindfolded");
+	random = g_Dice % 4 + 1;
+	/* */if (random == 2)	OutStr += gettext(", gagged");
 	OutStr += gettext(", and ");
-
-	random = g_Dice%12 + 1;
-	if (random <= 2)
-		OutStr += gettext("chained");
-	else if (random <= 4)
-		OutStr += gettext("lashed");
-	else if (random <= 6)
-		OutStr += gettext("tied");
-	else if (random <= 8)
-		OutStr += gettext("bound");
-	else if (random <= 10)
-		OutStr += gettext("cuffed");
-	else
-		OutStr += gettext("leashed");
-
-	random = g_Dice%4 + 1;
-	if (random == 3)
-		OutStr += gettext(", arms behind her back");
-
-	random = g_Dice%4 + 1;
-	if (random == 2)
-		OutStr += gettext(", fettered");
-
-	random = g_Dice%4 + 1;
-	if (random == 2)
-		OutStr += gettext(", spread eagle");
-
-	random = g_Dice%4 + 1;
-	if (random == 2)
-		OutStr += gettext(", upside down");
-
+	random = g_Dice % 12 + 1;
+	/* */if (random <= 2)	OutStr += gettext("chained");
+	else if (random <= 4)	OutStr += gettext("lashed");
+	else if (random <= 6)	OutStr += gettext("tied");
+	else if (random <= 8)	OutStr += gettext("bound");
+	else if (random <= 10)	OutStr += gettext("cuffed");
+	else /*            */	OutStr += gettext("leashed");
+	random = g_Dice % 4 + 1;
+	/* */if (random == 3)	OutStr += gettext(", arms behind her back");
+	random = g_Dice % 4 + 1;
+	/* */if (random == 2)	OutStr += gettext(", fettered");
+	random = g_Dice % 4 + 1;
+	/* */if (random == 2)	OutStr += gettext(", spread eagle");
+	random = g_Dice % 4 + 1;
+	/* */if (random == 2)	OutStr += gettext(", upside down");
 	OutStr += gettext(" ");
-
-	random = g_Dice%16 + 1;
-	if (random <= 2)
-		OutStr += gettext("to a bed");
-	else if (random <= 4)
-		OutStr += gettext("to a post");
-	else if (random <= 6)
-		OutStr += gettext("to a wall");
-	else if (random <= 8)
-		OutStr += gettext("to vertical stocks");
-	else if (random <= 10)
-		OutStr += gettext("to a table");	
-	else if (random <= 12)
-		OutStr += gettext("on a wooden horse");
-	else if (random <= 14)
-		OutStr += gettext("in stocks");
-	else
-		OutStr += gettext("at the dog house");
+	random = g_Dice % 16 + 1;
+	/* */if (random <= 2)	OutStr += gettext("to a bed");
+	else if (random <= 4)	OutStr += gettext("to a post");
+	else if (random <= 6)	OutStr += gettext("to a wall");
+	else if (random <= 8)	OutStr += gettext("to vertical stocks");
+	else if (random <= 10)	OutStr += gettext("to a table");
+	else if (random <= 12)	OutStr += gettext("on a wooden horse");
+	else if (random <= 14)	OutStr += gettext("in stocks");
+	else /*            */	OutStr += gettext("at the dog house");
 # pragma endregion bdsm1
-
 	// Part 2
 # pragma region bdsm2
 	OutStr += gettext(". ");
-
 	roll2 = g_Dice % 8 + 1;
 	switch (roll2)
 	{
-	case 1: 
-		OutStr += gettext("She was fucked "); 
-
-		random = g_Dice%12 + 1;
-		if (random <= 2)
-			OutStr += gettext("with a rake");
-		else if (random <= 4)
-			OutStr += gettext("with a giant dildo");
-		else if (random <= 6)
-			OutStr += gettext("and flogged");
-		else if (random <= 8)
-			OutStr += gettext("and lashed");
-		else if (random <= 10)
-			OutStr += gettext("tenderly");
-		else
-			OutStr += gettext("like a dog");	
-
+	case 1:
+		OutStr += gettext("She was fucked ");
+		random = g_Dice % 12 + 1;
+		/* */if (random <= 2)	OutStr += gettext("with a rake");
+		else if (random <= 4)	OutStr += gettext("with a giant dildo");
+		else if (random <= 6)	OutStr += gettext("and flogged");
+		else if (random <= 8)	OutStr += gettext("and lashed");
+		else if (random <= 10)	OutStr += gettext("tenderly");
+		else /*            */	OutStr += gettext("like a dog");
 		OutStr += gettext(" by");
 		break;
-	case 2: 
-		OutStr += gettext("Explanations were necessary before she was "); 
-		
-		random = g_Dice%14 + 1;
-		if (random <= 2)
-			OutStr += gettext("screwed");
-		else if (random <= 4)
-			OutStr += gettext("penetrated");
-		else if (random <= 6)
-			OutStr += gettext("abused");
-		else if (random <= 8)
-			OutStr += gettext("whipped");
-		else if (random <= 10)
-			OutStr += gettext("yelled at");
-		else if (random <= 12)
-			OutStr += gettext("banged repeatedly");
-		else
-			OutStr += gettext("smacked around");
-
+	case 2:
+		OutStr += gettext("Explanations were necessary before she was ");
+		random = g_Dice % 14 + 1;
+		/* */if (random <= 2)	OutStr += gettext("screwed");
+		else if (random <= 4)	OutStr += gettext("penetrated");
+		else if (random <= 6)	OutStr += gettext("abused");
+		else if (random <= 8)	OutStr += gettext("whipped");
+		else if (random <= 10)	OutStr += gettext("yelled at");
+		else if (random <= 12)	OutStr += gettext("banged repeatedly");
+		else /*            */	OutStr += gettext("smacked around");
 		OutStr += gettext(" by");
 		break;
-	case 3: 
-		OutStr += gettext("Her holes were filled "); 
-	
-		random = g_Dice%16 + 1;
-		if (random <= 2)
-			OutStr += gettext("with wiggly things");
-		else if (random <= 4)
-			OutStr += gettext("with vibrating things");
-		else if (random <= 6)
-			OutStr += gettext("with sex toys");
-		else if (random <= 8)
-			OutStr += gettext("by things with uncomfortable edges");
-		else if (random <= 10)
-			OutStr += gettext("with marbles");
-		else if (random <= 12)
-			OutStr += gettext("with foreign objects");
-		else if (random <= 14)
-			OutStr += gettext("with hopes and dreams");
-		else
-			OutStr += gettext("with semen");
-
+	case 3:
+		OutStr += gettext("Her holes were filled ");
+		random = g_Dice % 16 + 1;
+		/* */if (random <= 2)	OutStr += gettext("with wiggly things");
+		else if (random <= 4)	OutStr += gettext("with vibrating things");
+		else if (random <= 6)	OutStr += gettext("with sex toys");
+		else if (random <= 8)	OutStr += gettext("by things with uncomfortable edges");
+		else if (random <= 10)	OutStr += gettext("with marbles");
+		else if (random <= 12)	OutStr += gettext("with foreign objects");
+		else if (random <= 14)	OutStr += gettext("with hopes and dreams");
+		else /*            */	OutStr += gettext("with semen");
 		OutStr += gettext(" by");
 		break;
-	case 4: 
-		OutStr += gettext("A massive aphrodisiac was administered before she was "); 
-		
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("teased");
-		else if (random <= 4)
-			OutStr += gettext("fucked");
-		else if (random <= 6)
-			OutStr += gettext("left alone");
-		else if (random <= 8)
-			OutStr += gettext("repeatedly brought to the edge of orgasm, but not over");
-		else 
-			OutStr += gettext("mercilessly tickled by a feather wielded");
-
+	case 4:
+		OutStr += gettext("A massive aphrodisiac was administered before she was ");
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("teased");
+		else if (random <= 4)	OutStr += gettext("fucked");
+		else if (random <= 6)	OutStr += gettext("left alone");
+		else if (random <= 8)	OutStr += gettext("repeatedly brought to the edge of orgasm, but not over");
+		else 	OutStr += gettext("mercilessly tickled by a feather wielded");
 		OutStr += gettext(" by");
 		break;
-	case 5: 
-		OutStr += gettext("Entertainment was demanded before she was "); 
-		
-		random = g_Dice%12 + 1;
-		if (random <= 2)
-			OutStr += gettext("humped");
-		else if (random <= 4)
-			OutStr += gettext("rough-housed");
-		else if (random <= 6)
-			OutStr += gettext("pinched over and over");
-		else if (random <= 8)
-			OutStr += gettext("probed by instruments");
-		else if (random <= 10)
-			OutStr += gettext("fondled roughly");
-		else
-			OutStr += gettext("sent away");
-
+	case 5:
+		OutStr += gettext("Entertainment was demanded before she was ");
+		random = g_Dice % 12 + 1;
+		/* */if (random <= 2)	OutStr += gettext("humped");
+		else if (random <= 4)	OutStr += gettext("rough-housed");
+		else if (random <= 6)	OutStr += gettext("pinched over and over");
+		else if (random <= 8)	OutStr += gettext("probed by instruments");
+		else if (random <= 10)	OutStr += gettext("fondled roughly");
+		else /*            */	OutStr += gettext("sent away");
 		OutStr += gettext(" by");
 		break;
-	case 6: 
+	case 6:
 		OutStr += gettext("She was pierced repeatedly by ");
-		
-		random = g_Dice%6 + 1;
-		if (random <= 2)
-			OutStr += gettext("needles");
-		else if (random <= 4)
-			OutStr += gettext("magic missiles");
-		else
-			OutStr += gettext("evil thoughts");
-			
-		OutStr += gettext(" from"); 
+		random = g_Dice % 6 + 1;
+		/* */if (random <= 2)	OutStr += gettext("needles");
+		else if (random <= 4)	OutStr += gettext("magic missiles");
+		else /*            */	OutStr += gettext("evil thoughts");
+		OutStr += gettext(" from");
 		break;
-	case 7: 
+	case 7:
 		//OutStr += "She had ";
-			
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("Weights");
-		else if (random <= 4)
-			OutStr += gettext("Christmas ornaments");
-		else if (random <= 6)
-			OutStr += gettext("Lewd signs");
-		else if (random <= 6)
-			OutStr += gettext("Trinkets");
-		else
-			OutStr += gettext("Abstract symbols");
-			
-		OutStr += gettext(" were hung from her unmentionables by"); 
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("Weights");
+		else if (random <= 4)	OutStr += gettext("Christmas ornaments");
+		else if (random <= 6)	OutStr += gettext("Lewd signs");
+		else if (random <= 6)	OutStr += gettext("Trinkets");
+		else /*            */	OutStr += gettext("Abstract symbols");
+		OutStr += gettext(" were hung from her unmentionables by");
 		break;
-	case 8: 
-		OutStr += gettext("She was ordered to "); 
-		
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("flail herself");
-		else if (random <= 4)
-			OutStr += gettext("perform fellatio");
-		else if (random <= 6)
-			OutStr += gettext("masturbate");
-		else
-			OutStr += gettext("beg for it");
-
+	case 8:
+		OutStr += gettext("She was ordered to ");
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("flail herself");
+		else if (random <= 4)	OutStr += gettext("perform fellatio");
+		else if (random <= 6)	OutStr += gettext("masturbate");
+		else /*            */	OutStr += gettext("beg for it");
 		OutStr += gettext(" by");
 		break;
 	}
 # pragma endregion bdsm2
-
 	// Part 3
 # pragma region bdsm3
 	OutStr += gettext(" ");
-
 	roll3 = g_Dice % 18 + 1;
 	switch (roll3)
 	{
 	case 1: OutStr += gettext("Iron Man."); break;
-	case 2: 
+	case 2:
 		OutStr += gettext("the ");
-
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("wizard"); 
-		else if (random <= 4)
-			OutStr += gettext("sorceress");
-		else if (random <= 6)
-			OutStr += gettext("archmage");
-		else
-			OutStr += gettext("warlock");
-
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("wizard");
+		else if (random <= 4)	OutStr += gettext("sorceress");
+		else if (random <= 6)	OutStr += gettext("archmage");
+		else /*            */	OutStr += gettext("warlock");
 		OutStr += gettext("'s ");
-
-		random = g_Dice%8;
-		if (random <= 2)
-			OutStr += gettext("golem.");
-		else if (random <= 4)
-			OutStr += gettext("familiar.");
-		else if (random <= 6)
-			OutStr += gettext("homoculous.");
-		else
-			OutStr += gettext("summoned monster.");
-
+		random = g_Dice % 8;
+		/* */if (random <= 2)	OutStr += gettext("golem.");
+		else if (random <= 4)	OutStr += gettext("familiar.");
+		else if (random <= 6)	OutStr += gettext("homoculous.");
+		else /*            */	OutStr += gettext("summoned monster.");
 		break;
-	case 3: 
-		OutStr += gettext("the amazingly hung "); 
-	
-		random = g_Dice%8;
-		if (random <= 2)
-			OutStr += gettext("goblin.");
-		else if (random <= 4)
-			OutStr += gettext("civic worker.");
-		else if (random <= 6)
-			OutStr += gettext("geletanious cube.");
-		else
-			OutStr += gettext("sentient shirt.");   // MYR: I love this one.
-
+	case 3:
+		OutStr += gettext("the amazingly hung ");
+		random = g_Dice % 8;
+		if (random <= 2)	OutStr += gettext("goblin.");
+		else if (random <= 4)	OutStr += gettext("civic worker.");
+		else if (random <= 6)	OutStr += gettext("geletanious cube.");
+		else /*            */	OutStr += gettext("sentient shirt.");   // MYR: I love this one.
 		break;
 	case 4: OutStr += gettext("the pirate dressed as a ninja. (Cool things are cool.)"); break;
 	case 5: OutStr += gettext("Hannibal Lecter."); break;
-	case 6: 
-		OutStr += gettext("the stoned "); 
-		
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("dark elf.");
-		else if (random <= 4)
-			OutStr += gettext("gargoyle.");
-		else if (random <= 6)
-			OutStr += gettext("earth elemental.");
-		else if (random <= 8)
-			OutStr += gettext("astral deva.");
-		else
-			OutStr += gettext("college kid.");		
-		
+	case 6:
+		OutStr += gettext("the stoned ");
+		random = g_Dice % 10 + 1;
+		if (random <= 2)	OutStr += gettext("dark elf.");
+		else if (random <= 4)	OutStr += gettext("gargoyle.");
+		else if (random <= 6)	OutStr += gettext("earth elemental.");
+		else if (random <= 8)	OutStr += gettext("astral deva.");
+		else /*            */	OutStr += gettext("college kid.");
 		break;
-	case 7: 
+	case 7:
 		OutStr += gettext("your hyperactive ");
-				
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("cousin.");
-		else if (random <= 4)
-			OutStr += gettext("grandmother.");
-		else if (random <= 6)
-			OutStr += gettext("grandfather.");
-		else if (random <= 8)
-			OutStr += gettext("brother.");
-		else
-			OutStr += gettext("sister.");
-
-			break;
+		random = g_Dice % 10 + 1;
+		if (random <= 2)	OutStr += gettext("cousin.");
+		else if (random <= 4)	OutStr += gettext("grandmother.");
+		else if (random <= 6)	OutStr += gettext("grandfather.");
+		else if (random <= 8)	OutStr += gettext("brother.");
+		else /*            */	OutStr += gettext("sister.");
+		break;
 	case 8: OutStr += gettext("someone who looks exactly like you!"); break;
-	case 9: 
-		OutStr += gettext("the horny "); 
-				 
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("genie.");
-		else if (random <= 4)
-			OutStr += gettext("fishmonger.");
-		else if (random <= 6)
-			OutStr += gettext("chauffeur.");
-		else if (random <= 8)
-			OutStr += gettext("Autobot.");
-		else
-			OutStr += gettext("thought.");
-
+	case 9:
+		OutStr += gettext("the horny ");
+		random = g_Dice % 10 + 1;
+		if (random <= 2)	OutStr += gettext("genie.");
+		else if (random <= 4)	OutStr += gettext("fishmonger.");
+		else if (random <= 6)	OutStr += gettext("chauffeur.");
+		else if (random <= 8)	OutStr += gettext("Autobot.");
+		else /*            */	OutStr += gettext("thought.");
 		break;
-	case 10: 
-		OutStr += gettext("the rampaging "); 
-				 
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("english professor.");
-		else if (random <= 4)
-			OutStr += gettext("peace activist.");
-		else if (random <= 6)
-			OutStr += gettext("color red.");
-		else if (random <= 8)
-			OutStr += gettext("special forces agent.");
-		else
-			OutStr += gettext("chef.");
-
+	case 10:
+		OutStr += gettext("the rampaging ");
+		random = g_Dice % 10 + 1;
+		if (random <= 2)	OutStr += gettext("english professor.");
+		else if (random <= 4)	OutStr += gettext("peace activist.");
+		else if (random <= 6)	OutStr += gettext("color red.");
+		else if (random <= 8)	OutStr += gettext("special forces agent.");
+		else /*            */	OutStr += gettext("chef.");
 		break;
-	case 11: 
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("disloyal thugs");
-		else if (random <= 4)
-			OutStr += gettext("girls");
-		else if (random <= 6)
-			OutStr += gettext("dissatisfied customers");
-		else if (random <= 8)
-			OutStr += gettext("workers");
-		else
-			OutStr += gettext("malicious agents");		
-		
+	case 11:
+		random = g_Dice % 10 + 1;
+		if (random <= 2)	OutStr += gettext("disloyal thugs");
+		else if (random <= 4)	OutStr += gettext("girls");
+		else if (random <= 6)	OutStr += gettext("dissatisfied customers");
+		else if (random <= 8)	OutStr += gettext("workers");
+		else /*            */	OutStr += gettext("malicious agents");
 		OutStr += gettext(" from a competing brothel."); break;
-	case 12: OutStr += gettext("a cruel "); 
-		
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("Cyberman.");
-		else if (random <= 4)
-			OutStr += gettext("Dalek.");
-		else if (random <= 6)
-			OutStr += gettext("Newtype.");
-		else
-			OutStr += gettext("Gundam.");
-
+	case 12: OutStr += gettext("a cruel ");
+		random = g_Dice % 8 + 1;
+		if (random <= 2)	OutStr += gettext("Cyberman.");
+		else if (random <= 4)	OutStr += gettext("Dalek.");
+		else if (random <= 6)	OutStr += gettext("Newtype.");
+		else /*            */	OutStr += gettext("Gundam.");
 		break;
-	case 13: OutStr += gettext("Sexbot Mk-"); 
-		
-		random = g_Dice%200+50;
+	case 13: OutStr += gettext("Sexbot Mk-");
+		random = g_Dice % 200 + 50;
 		_itoa(random, buffer, 10);
 		OutStr += buffer;
 		OutStr += gettext(".");
-
 		break;
-	case 14: 
+	case 14:
 		OutStr += gettext("underage kids ");
-		
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("(Who claim to be of age.)");
-		else if (random <= 4)
-			OutStr += gettext("(Who snuck in.)");
-		else if (random <= 6)
-			OutStr += gettext("(Who are somehow related to the Brothel Master, so its ok.)");
-		else if (random <= 8)
-			OutStr += gettext("(They paid, so who cares?)");
-		else
-			OutStr += gettext("(We must corrupt them while they're still young.)");
-			
+		random = g_Dice % 10 + 1;
+		if (random <= 2)	OutStr += gettext("(Who claim to be of age.)");
+		else if (random <= 4)	OutStr += gettext("(Who snuck in.)");
+		else if (random <= 6)	OutStr += gettext("(Who are somehow related to the Brothel Master, so its ok.)");
+		else if (random <= 8)	OutStr += gettext("(They paid, so who cares?)");
+		else /*            */	OutStr += gettext("(We must corrupt them while they're still young.)");
 		break;
 	case 15: OutStr += gettext("Grandpa Parkins from down the street."); break;
-	case 16: 
-		OutStr += gettext("the ... thing living "); 
-		
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("in the underwear drawer");
-		else if (random <= 4)
-			OutStr += gettext("in the sex-toy box");
-		else if (random <= 6)
-			OutStr += gettext("under the bed");
-		else if (random <= 8)
-			OutStr += gettext("in her shadow");
-		else
-			OutStr += gettext("in her psyche");
-
+	case 16:
+		OutStr += gettext("the ... thing living ");
+		random = g_Dice % 10 + 1;
+		if (random <= 2)	OutStr += gettext("in the underwear drawer");
+		else if (random <= 4)	OutStr += gettext("in the sex-toy box");
+		else if (random <= 6)	OutStr += gettext("under the bed");
+		else if (random <= 8)	OutStr += gettext("in her shadow");
+		else /*            */	OutStr += gettext("in her psyche");
 		OutStr += gettext(".");
 		break;
 	case 17: OutStr += gettext("the senior member of the cult of ");
-		
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("tentacles.");
-		else if (random <= 4)
-			OutStr += gettext("unending pain.");
-		else if (random <= 6)
-			OutStr += gettext("joy and happiness.");
-		else if (random <= 8)
-			OutStr += gettext("Whore Master developers.");
-		else
-			OutStr += gettext("eunuchs.");
-
+		random = g_Dice % 10 + 1;
+		if (random <= 2)	OutStr += gettext("tentacles.");
+		else if (random <= 4)	OutStr += gettext("unending pain.");
+		else if (random <= 6)	OutStr += gettext("joy and happiness.");
+		else if (random <= 8)	OutStr += gettext("Whore Master developers.");
+		else /*            */	OutStr += gettext("eunuchs.");
 		break;
-	case 18: 
+	case 18:
 		OutStr += gettext("this wierdo who appeared out of this blue box called a ");
-			
-		random = g_Dice%10 + 1;
-		if (random <= 5)
-			OutStr += gettext("TARDIS."); 
-		else
-			OutStr += gettext("TURDIS"); // How many people will say I made a spelling mistake?
-
-		random = g_Dice%10 + 1;
+		random = g_Dice % 10 + 1;
+		if (random <= 5)	OutStr += gettext("TARDIS.");
+		else /*            */	OutStr += gettext("TURDIS"); // How many people will say I made a spelling mistake?
+		random = g_Dice % 10 + 1;
 		if (random <= 5)
 		{
 			OutStr += " ";
-			random = g_Dice%10 + 1;
-			if (random <= 2)
-				OutStr += gettext("His female companion was in on the action too.");
-			else if (random <= 4)
-				OutStr += gettext("His mechanical dog was involved as well.");
-			else if (random <= 6)
-				OutStr += gettext("His female companion and mechanical dog did lewd things to each other and watched.");
+			random = g_Dice % 10 + 1;
+			/* */if (random <= 2)	OutStr += gettext("His female companion was in on the action too.");
+			else if (random <= 4)	OutStr += gettext("His mechanical dog was involved as well.");
+			else if (random <= 6)	OutStr += gettext("His female companion and mechanical dog did lewd things to each other while they watched.");
 		}
 		break;
 	}
 # pragma endregion bdsm3
-
 	OutStr += "\n";
 	return OutStr;
 }
-
 string cGirls::GetRandomBeastString()
 {
 	int roll1 = 0, roll2 = 0, roll3 = 0, random = 0;
 	char buffer[10];
 	string OutStr;
 	bool NeedAnd = false;
-
 	OutStr += gettext(" was ");
-
 # pragma region beast1
 	roll1 = g_Dice % 7 + 1;   // Remember to update this when new strings are added
 	switch (roll1)
 	{
 	case 1: OutStr += gettext("filled with ");
-		
-		random = g_Dice%12 + 1;
-		if (random <= 2)
-			OutStr += gettext("vibrating");
-		else if (random <= 4)
-			OutStr += gettext("wiggling");
-		else if (random <= 6)
-			OutStr += gettext("living");
-		else if (random <= 8)
-			OutStr += gettext("energetic");
-		else if (random <= 10)
-			OutStr += gettext("big");
-		else 
-			OutStr += gettext("pokey");
-		
-		OutStr += gettext(" things that "); 
-		
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("tickled");
-		else if (random <= 4)
-			OutStr += gettext("pleasured");
-		else if (random <= 6)
-			OutStr += gettext("massaged");
-		else
-			OutStr += gettext("scraped");
-
+		random = g_Dice % 12 + 1;
+		/* */if (random <= 2)	OutStr += gettext("vibrating");
+		else if (random <= 4)	OutStr += gettext("wiggling");
+		else if (random <= 6)	OutStr += gettext("living");
+		else if (random <= 8)	OutStr += gettext("energetic");
+		else if (random <= 10)	OutStr += gettext("big");
+		else 	OutStr += gettext("pokey");
+		OutStr += gettext(" things that ");
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("tickled");
+		else if (random <= 4)	OutStr += gettext("pleasured");
+		else if (random <= 6)	OutStr += gettext("massaged");
+		else /*            */	OutStr += gettext("scraped");
 		OutStr += gettext(" her insides");
 		break;
-	case 2: 
+	case 2:
 		OutStr += gettext("forced against ");
-			
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("a wall");
-		else if (random <= 4)
-			OutStr += gettext("a window");
-		else if (random <= 6)
-			OutStr += gettext("another client");
-		else
-			OutStr += gettext("another girl");
-
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("a wall");
+		else if (random <= 4)	OutStr += gettext("a window");
+		else if (random <= 6)	OutStr += gettext("another client");
+		else /*            */	OutStr += gettext("another girl");
 		OutStr += gettext(" and told to ");
-
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("spread her legs");
-		else if (random <= 4)
-			OutStr += gettext("give up hope");
-		else if (random <= 6)
-			OutStr += gettext("hold on tight");
-		else
-			OutStr += gettext("smile through it");
-
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("spread her legs");
+		else if (random <= 4)	OutStr += gettext("give up hope");
+		else if (random <= 6)	OutStr += gettext("hold on tight");
+		else /*            */	OutStr += gettext("smile through it");
 		break;
-	case 3: 
+	case 3:
 		OutStr += gettext("worried by the ");
-		
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("huge size");
-		else if (random <= 4)
-			OutStr += gettext("skill");
-		else if (random <= 6)
-			OutStr += gettext("reputation");
-		else
-			OutStr += gettext("aggressiveness"); 
-		
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("huge size");
+		else if (random <= 4)	OutStr += gettext("skill");
+		else if (random <= 6)	OutStr += gettext("reputation");
+		else /*            */	OutStr += gettext("aggressiveness");
 		OutStr += gettext(" of the client");
 		break;
-	case 4: 
+	case 4:
 		OutStr += gettext("stripped down to her ");
-
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("g-string");
-		else if (random <= 4)
-			OutStr += gettext("panties");
-		else if (random <= 6)
-			OutStr += gettext("bra and panties");
-		else if (random <= 8)
-			OutStr += gettext("teddy");
-		else
-			OutStr += gettext("skin");
-
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("g-string");
+		else if (random <= 4)	OutStr += gettext("panties");
+		else if (random <= 6)	OutStr += gettext("bra and panties");
+		else if (random <= 8)	OutStr += gettext("teddy");
+		else /*            */	OutStr += gettext("skin");
 		OutStr += gettext(" and covered in ");
-		
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("compliments");
-		else if (random <= 4)
-			OutStr += gettext("abuse");
-		else if (random <= 6)
-			OutStr += gettext("peanut butter");
-		else if (random <= 8)
-			OutStr += gettext("honey");
-		else
-			OutStr += gettext("motor oil");			
-		
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("compliments");
+		else if (random <= 4)	OutStr += gettext("abuse");
+		else if (random <= 6)	OutStr += gettext("peanut butter");
+		else if (random <= 8)	OutStr += gettext("honey");
+		else /*            */	OutStr += gettext("motor oil");
 		break;
-	case 5: 
+	case 5:
 		OutStr += gettext("chained up in the ");
-				
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("dungeon");
-		else if (random <= 4)
-			OutStr += gettext("den");
-		else if (random <= 6)
-			OutStr += gettext("kitchen");
-		else if (random <= 8)
-			OutStr += gettext("most public of places");
-		else
-			OutStr += gettext("backyard");			
-		
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("dungeon");
+		else if (random <= 4)	OutStr += gettext("den");
+		else if (random <= 6)	OutStr += gettext("kitchen");
+		else if (random <= 8)	OutStr += gettext("most public of places");
+		else /*            */	OutStr += gettext("backyard");
 		OutStr += gettext(" and her ");
-
-		random = g_Dice%6 + 1;
-		if (random <= 2)
-			OutStr += gettext("arms");
-		else if (random <= 4)
-			OutStr += gettext("legs");
-		else
-			OutStr += gettext("arms and legs");
-
+		random = g_Dice % 6 + 1;
+		/* */if (random <= 2)	OutStr += gettext("arms");
+		else if (random <= 4)	OutStr += gettext("legs");
+		else /*            */	OutStr += gettext("arms and legs");
 		OutStr += gettext(" were lashed to posts");
 		break;
-	case 6: 
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("tied up");
-		else if (random <= 4)
-			OutStr += gettext("wrapped up");
-		else if (random <= 6)
-			OutStr += gettext("trapped");
-		else if (random <= 8)
-			OutStr += gettext("bound");
-		else
-			OutStr += gettext("covered");	
-
+	case 6:
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("tied up");
+		else if (random <= 4)	OutStr += gettext("wrapped up");
+		else if (random <= 6)	OutStr += gettext("trapped");
+		else if (random <= 8)	OutStr += gettext("bound");
+		else /*            */	OutStr += gettext("covered");
 		OutStr += gettext(" in ");
-
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("flesh");
-		else if (random <= 4)
-			OutStr += gettext("tentacles");
-		else if (random <= 6)
-			OutStr += gettext("cellophane");
-		else if (random <= 8)
-			OutStr += gettext("tape");
-		else
-			OutStr += gettext("false promises");			
-		
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("flesh");
+		else if (random <= 4)	OutStr += gettext("tentacles");
+		else if (random <= 6)	OutStr += gettext("cellophane");
+		else if (random <= 8)	OutStr += gettext("tape");
+		else /*            */	OutStr += gettext("false promises");
 		OutStr += gettext(" and ");
-
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("groped");
-		else if (random <= 4)
-			OutStr += gettext("tweaked");
-		else if (random <= 6)
-			OutStr += gettext("licked");
-		else if (random <= 8)
-			OutStr += gettext("spanked");
-		else
-			OutStr += gettext("left alone");
-
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("groped");
+		else if (random <= 4)	OutStr += gettext("tweaked");
+		else if (random <= 6)	OutStr += gettext("licked");
+		else if (random <= 8)	OutStr += gettext("spanked");
+		else /*            */	OutStr += gettext("left alone");
 		OutStr += gettext(" for hours");
-		break;				
-	case 7: 
+		break;
+	case 7:
 		OutStr += gettext("pushed to the limits of ");
-
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("flexibility");
-		else if (random <= 4)
-			OutStr += gettext("endurance");
-		else if (random <= 6)
-			OutStr += gettext("patience");
-		else if (random <= 8)
-			OutStr += gettext("consciousness");
-		else
-			OutStr += gettext("sanity");			
-		
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("flexibility");
+		else if (random <= 4)	OutStr += gettext("endurance");
+		else if (random <= 6)	OutStr += gettext("patience");
+		else if (random <= 8)	OutStr += gettext("consciousness");
+		else /*            */	OutStr += gettext("sanity");
 		OutStr += gettext(" and ");
-
-		random = g_Dice%6 + 1;
-		if (random <= 2)
-			OutStr += gettext("cried out");
-		else if (random <= 4)
-			OutStr += gettext("swooned");
-		else
-			OutStr += gettext("spasmed");
+		random = g_Dice % 6 + 1;
+		/* */if (random <= 2)	OutStr += gettext("cried out");
+		else if (random <= 4)	OutStr += gettext("swooned");
+		else /*            */	OutStr += gettext("spasmed");
 		break;
 	}
 # pragma endregion beast1
-
 	// Part 2
 # pragma region beast2
 	OutStr += ". ";
-
 	roll2 = g_Dice % 9 + 1;
 	switch (roll2)
 	{
-	case 1: 
+	case 1:
 		OutStr += gettext("She ");
-
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("smoothly");
-		else if (random <= 4)
-			OutStr += gettext("roughly");
-		else if (random <= 6)
-			OutStr += gettext("lustily");
-		else if (random <= 8)
-			OutStr += gettext("repeatedly");
-		else
-			OutStr += gettext("orgasmically");
-
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("smoothly");
+		else if (random <= 4)	OutStr += gettext("roughly");
+		else if (random <= 6)	OutStr += gettext("lustily");
+		else if (random <= 8)	OutStr += gettext("repeatedly");
+		else /*            */	OutStr += gettext("orgasmically");
 		OutStr += gettext(" ");
-
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("fucked");
-		else if (random <= 4)
-			OutStr += gettext("railed");
-		else if (random <= 6)
-			OutStr += gettext("banged");
-		else if (random <= 8)
-			OutStr += gettext("screwed");
-		else
-			OutStr += gettext("pleasured");
-		
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("fucked");
+		else if (random <= 4)	OutStr += gettext("railed");
+		else if (random <= 6)	OutStr += gettext("banged");
+		else if (random <= 8)	OutStr += gettext("screwed");
+		else /*            */	OutStr += gettext("pleasured");
 		break;
-	case 2: 
+	case 2:
 		OutStr += gettext("She was ");
-
-		random = g_Dice%6 + 1;
-		if (random <= 2)
-			OutStr += gettext("teased");
-		else if (random <= 4)
-			OutStr += gettext("taunted");       
-		else 
-			OutStr += gettext("roughed up");
-	
+		random = g_Dice % 6 + 1;
+		/* */if (random <= 2)	OutStr += gettext("teased");
+		else if (random <= 4)	OutStr += gettext("taunted");
+		else /*            */	OutStr += gettext("roughed up");
 		OutStr += gettext(" and ");
-
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("orally");
-		else if (random <= 4)
-			OutStr += "";         // MYR: This isn't a bug.  'physically violated' is redundant, so this just prints 'violated'
-		else if (random <= 6)
-			OutStr += gettext("mentally");
-		else if (random <= 8)
-			OutStr += gettext("repeatedly");
-		else
-			OutStr += gettext("haughtily");			
-		
-		OutStr += gettext(" violated by"); 
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("orally");
+		else if (random <= 4)	OutStr += "";         // MYR: This isn't a bug.  'physically violated' is redundant, so this just prints 'violated'
+		else if (random <= 6)	OutStr += gettext("mentally");
+		else if (random <= 8)	OutStr += gettext("repeatedly");
+		else /*            */	OutStr += gettext("haughtily");
+		OutStr += gettext(" violated by");
 		break;
 	case 3:
-		OutStr += gettext("She was drenched in "); 
-		
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("cum");
-		else if (random <= 4)
-			OutStr += gettext("sweat");
-		else if (random <= 6) 
-			OutStr += gettext("broken hopes and dreams");
-		else if (random <= 8)
-			OutStr += gettext("Koolaid");
-		else
-			OutStr += gettext("sticky secretions");
-
+		OutStr += gettext("She was drenched in ");
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("cum");
+		else if (random <= 4)	OutStr += gettext("sweat");
+		else if (random <= 6) 	OutStr += gettext("broken hopes and dreams");
+		else if (random <= 8)	OutStr += gettext("Koolaid");
+		else /*            */	OutStr += gettext("sticky secretions");
 		OutStr += gettext(" by");
 		break;
-	case 4: 
+	case 4:
 		OutStr += gettext("She ");
-
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("moaned");
-		else if (random <= 4)
-			OutStr += gettext("winced");
-		else if (random <= 6) 
-			OutStr += gettext("swooned");
-		else if (random <= 8) 
-			OutStr += gettext("orgasmed");	
-		else
-			OutStr += gettext("begged for more");
-		
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("moaned");
+		else if (random <= 4)	OutStr += gettext("winced");
+		else if (random <= 6) 	OutStr += gettext("swooned");
+		else if (random <= 8) 	OutStr += gettext("orgasmed");
+		else /*            */	OutStr += gettext("begged for more");
 		OutStr += gettext(" as her stomach repeatedly poked out from ");
-
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("thrusts");
-		else if (random <= 4)
-			OutStr += gettext("strokes");
-		else if (random <= 6) 
-			OutStr += gettext("fistings");
-		else
-			OutStr += gettext("a powerful fucking");
-			
-		OutStr += gettext(" by"); 
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("thrusts");
+		else if (random <= 4)	OutStr += gettext("strokes");
+		else if (random <= 6) 	OutStr += gettext("fistings");
+		else /*            */	OutStr += gettext("a powerful fucking");
+		OutStr += gettext(" by");
 		break;
 	case 5:
 		OutStr += gettext("She used her ");
-
-		random = g_Dice%10 + 1;
-		if (random <= 5)
-		{
-			OutStr += gettext("hands, ");
-			NeedAnd = true;
-		}
-
-		random = g_Dice%10 + 1;
-		if (random <= 5)
-		{
-			OutStr += gettext("feet, ");
-			NeedAnd = true;
-		}
-
-		random = g_Dice%10 + 1;
-		if (random <= 5)
-		{
-			OutStr += gettext("mouth, ");
-			NeedAnd = true;
-		}
-
-		if (NeedAnd == true)
-		{
-			OutStr += gettext("and ");
-			NeedAnd = false;   // Just in case it's used again here
-		}
-
-		random = g_Dice%10 + 1;
-		if (random <= 5)
-			OutStr += gettext("pussy");
-		else
-			OutStr += gettext("holes");
-
+		if (g_Dice % 10 + 1 <= 5)	{ NeedAnd = true;	OutStr += gettext("hands, "); }
+		if (g_Dice % 10 + 1 <= 5)	{ NeedAnd = true;	OutStr += gettext("feet, "); }
+		if (g_Dice % 10 + 1 <= 5)	{ NeedAnd = true;	OutStr += gettext("mouth, "); }
+		if (NeedAnd == true)		{ NeedAnd = false;	OutStr += gettext("and "); }
+		if (g_Dice % 10 + 1 <= 5)	OutStr += gettext("pussy");
+		else /*            */	OutStr += gettext("holes");
 		OutStr += gettext(" to ");
-
-		random = g_Dice%6 + 1;
-		if (random <= 2)
-			OutStr += gettext("please");
-		else if (random <= 4)
-			OutStr += gettext("pleasure");
-		else
-			OutStr += gettext("tame");
-
+		random = g_Dice % 6 + 1;
+		/* */if (random <= 2)	OutStr += gettext("please");
+		else if (random <= 4)	OutStr += gettext("pleasure");
+		else /*            */	OutStr += gettext("tame");
 		break;
-	case 6: 
-		OutStr += gettext("She shook with "); 
-				
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("orgasmic joy");
-		else if (random <= 4)
-			OutStr += gettext("searing pain");
-		else if (random <= 6)
-			OutStr += gettext("frustration");
-		else if (random <= 8)
-			OutStr += gettext("agony");
-		else
-			OutStr += gettext("frustrated boredom");
-
-		OutStr += gettext(" when fondled by"); 
+	case 6:
+		OutStr += gettext("She shook with ");
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("orgasmic joy");
+		else if (random <= 4)	OutStr += gettext("searing pain");
+		else if (random <= 6)	OutStr += gettext("frustration");
+		else if (random <= 8)	OutStr += gettext("agony");
+		else /*            */	OutStr += gettext("frustrated boredom");
+		OutStr += gettext(" when fondled by");
 		break;
-	case 7: 
+	case 7:
 		OutStr += gettext("It felt like she was ");
-		
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("ripping apart");
-		else if (random <= 4)
-			OutStr += gettext("exploding");
-		else if (random <= 6)
-			OutStr += gettext("imploding");
-		else if (random <= 8)
-			OutStr += gettext("nothing");
-		else
-			OutStr += gettext("absent");
-
-		OutStr += gettext(" when handled by"); 
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("ripping apart");
+		else if (random <= 4)	OutStr += gettext("exploding");
+		else if (random <= 6)	OutStr += gettext("imploding");
+		else if (random <= 8)	OutStr += gettext("nothing");
+		else /*            */	OutStr += gettext("absent");
+		OutStr += gettext(" when handled by");
 		break;
-	case 8: 
+	case 8:
 		OutStr += gettext("She passed out from ");
-				 
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("pleasure");
-		else if (random <= 4)
-			OutStr += gettext("pain");
-		else if (random <= 6)
-			OutStr += gettext("boredom");
-		else if (random <= 8)
-			OutStr += gettext("rough sex");
-		else
-			OutStr += gettext("inactivity");
-
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("pleasure");
+		else if (random <= 4)	OutStr += gettext("pain");
+		else if (random <= 6)	OutStr += gettext("boredom");
+		else if (random <= 8)	OutStr += gettext("rough sex");
+		else /*            */	OutStr += gettext("inactivity");
 		OutStr += gettext(" from");
 		break;
-	case 9: 
+	case 9:
 		OutStr += gettext("She screamed as ");
-		
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("wrenching pain");
-		else if (random <= 4)
-			OutStr += gettext("powerful orgasms");
-		else if (random <= 6)
-			OutStr += gettext("incredible sensations");
-		else if (random <= 8)
-			OutStr += gettext("freight trains");
-		else
-			OutStr += gettext("lots and lots of nothing");
-
-		OutStr += gettext(" thundered through her from"); 
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("wrenching pain");
+		else if (random <= 4)	OutStr += gettext("powerful orgasms");
+		else if (random <= 6)	OutStr += gettext("incredible sensations");
+		else if (random <= 8)	OutStr += gettext("freight trains");
+		else /*            */	OutStr += gettext("lots and lots of nothing");
+		OutStr += gettext(" thundered through her from");
 		break;
 	}
 # pragma endregion beast2
-
 	// Part 3
 # pragma region beast3
 	OutStr += " ";
-
 	roll3 = g_Dice % 12 + 1;
 	switch (roll3)
 	{
-	case 1: 
+	case 1:
 		OutStr += gettext("the ravenous ");
-
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("tentacles.");
-		else if (random <= 4)
-			OutStr += gettext(", sex-starved essences of lust.");
-		else if (random <= 6)
-			OutStr += gettext("Balhannoth. (Monster Manual 4, pg. 15.)");
-		else if (random <= 8)
-			OutStr += gettext("priest.");
-		else
-			OutStr += gettext("Yugoloth.");
-
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("tentacles.");
+		else if (random <= 4)	OutStr += gettext(", sex-starved essences of lust.");
+		else if (random <= 6)	OutStr += gettext("Balhannoth. (Monster Manual 4, pg. 15.)");
+		else if (random <= 8)	OutStr += gettext("priest.");
+		else /*            */	OutStr += gettext("Yugoloth.");
 		break;
-	case 2: 
-		random = g_Dice%10 + 1;
-		if (random <= 5)
-			OutStr += gettext("an evil");
-		else
-			OutStr += gettext("a misunderstood");
-
+	case 2:
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 5)	OutStr += gettext("an evil");
+		else /*            */	OutStr += gettext("a misunderstood");
 		OutStr += gettext(" ");
-
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("tengu.");
-		else if (random <= 4)
-			OutStr += gettext("Whore Master developer.");
-		else if (random <= 6)
-			OutStr += gettext("school girl.");
-		else if (random <= 8)
-			OutStr += gettext("garden hose.");
-		else
-			OutStr += gettext("thought.");				
-				
-				break;
-	case 3: 
-		OutStr += gettext("a major "); 
-		
-		random = g_Dice%12 + 1;
-		if (random <= 2)
-			OutStr += gettext("demon");
-		else if (random <= 4)
-			OutStr += gettext("devil");
-		else if (random <= 6)
-			OutStr += gettext("oni");
-		else if (random <= 8)
-			OutStr += gettext("fire elemental");
-		else if (random <= 10)
-			OutStr += gettext("god");
-		else
-			OutStr += gettext("Mr. Coffee");
-
-		OutStr += gettext(" from the outer planes."); 
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("tengu.");
+		else if (random <= 4)	OutStr += gettext("Whore Master developer.");
+		else if (random <= 6)	OutStr += gettext("school girl.");
+		else if (random <= 8)	OutStr += gettext("garden hose.");
+		else /*            */	OutStr += gettext("thought.");
 		break;
-	case 4: 
+	case 3:
+		OutStr += gettext("a major ");
+		random = g_Dice % 12 + 1;
+		/* */if (random <= 2)	OutStr += gettext("demon");
+		else if (random <= 4)	OutStr += gettext("devil");
+		else if (random <= 6)	OutStr += gettext("oni");
+		else if (random <= 8)	OutStr += gettext("fire elemental");
+		else if (random <= 10)	OutStr += gettext("god");
+		else /*            */	OutStr += gettext("Mr. Coffee");
+		OutStr += gettext(" from the outer planes.");
+		break;
+	case 4:
 		OutStr += gettext("the angel.");
-				
-		random = g_Dice%10 + 1;
+		random = g_Dice % 10 + 1;
 		if (random <= 5)
 		{
 			OutStr += gettext(" ('");
-			random = g_Dice%8 + 1;
-			if (random <= 2)
-				OutStr += gettext("You're very pretty");
-			else if (random <= 4)
-				OutStr += gettext("I was never here");
-			else if (random <= 6)
-				OutStr += gettext("I had a great time");
-			else 
-				OutStr += gettext("I didn't know my body could do that");
-
+			random = g_Dice % 8 + 1;
+			/* */if (random <= 2)	OutStr += gettext("You're very pretty");
+			else if (random <= 4)	OutStr += gettext("I was never here");
+			else if (random <= 6)	OutStr += gettext("I had a great time");
+			else /*            */	OutStr += gettext("I didn't know my body could do that");
 			OutStr += gettext("' he said.)");
 		}
-			
 		break;
 	case 5:
 		OutStr += gettext("the ");
-
-		random = g_Dice%12 + 1;
-		if (random <= 2)
-			OutStr += gettext("demon");
-		else if (random <= 4)
-			OutStr += gettext("major devil");
-		else if (random <= 6)
-			OutStr += gettext("oni");
-		else if (random <= 8)
-			OutStr += gettext("earth elemental");
-		else if (random <= 10)
-			OutStr += gettext("raging hormome beast");
-		else
-			OutStr += gettext("Happy Fun Ball");
-
+		random = g_Dice % 12 + 1;
+		/* */if (random <= 2)	OutStr += gettext("demon");
+		else if (random <= 4)	OutStr += gettext("major devil");
+		else if (random <= 6)	OutStr += gettext("oni");
+		else if (random <= 8)	OutStr += gettext("earth elemental");
+		else if (random <= 10)	OutStr += gettext("raging hormome beast");
+		else /*            */	OutStr += gettext("Happy Fun Ball");
 		OutStr += gettext(" with an urge to exercise his ");
-		
-		random = g_Dice%30 + 20;
+		random = g_Dice % 30 + 20;
 		_itoa(random, buffer, 10);
 		OutStr += buffer;
 		OutStr += gettext(" cocks and ");
-		
-		random = g_Dice%30 + 20;
+		random = g_Dice % 30 + 20;
 		_itoa(random, buffer, 10);
 		OutStr += buffer;
 		OutStr += gettext(" claws.");
-
 		break;
 	case 6: OutStr += gettext("the swamp thing with (wait for it) swamp tentacles!"); break;
 	case 7: OutStr += gettext("the pirnja gestalt. (The revolution is coming.)"); break;
-	case 8: 
+	case 8:
 		OutStr += gettext("the color ");
-			
-		random = g_Dice%12 + 1;
-		if (random <= 2)
-			OutStr += gettext("purple");
-		else if (random <= 4)
-			OutStr += gettext("seven");  // MYR: Not a mistake. I meant to write 'seven'.
-		else if (random <= 6)
-			OutStr += gettext("mauve");
-		else if (random <= 8)
-			OutStr += gettext("silver");
-		else if (random <= 10)
-			OutStr += gettext("ochre");
-		else
-			OutStr += gettext("pale yellow");
-			
+		random = g_Dice % 12 + 1;
+		/* */if (random <= 2)	OutStr += gettext("purple");
+		else if (random <= 4)	OutStr += gettext("seven");  // MYR: Not a mistake. I meant to write 'seven'.
+		else if (random <= 6)	OutStr += gettext("mauve");
+		else if (random <= 8)	OutStr += gettext("silver");
+		else if (random <= 10)	OutStr += gettext("ochre");
+		else /*            */	OutStr += gettext("pale yellow");
 		OutStr += gettext(".");
 		break;
-	case 9: 
-		random = g_Dice%10 + 5;
+	case 9:
+		random = g_Dice % 10 + 5;
 		_itoa(random, buffer, 10);
 		OutStr += buffer;
-		
 		OutStr += gettext(" werewolves wearing ");
-		
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("true");
-		else if (random <= 4)
-			OutStr += gettext("minor artifact"); 
-		else if (random <= 6)
-			OutStr += gettext("greater artifact");
-		else if (random <= 10)
-			OutStr += gettext("godly");
-		else
-			OutStr += gettext("near omnipitent");
-
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("true");
+		else if (random <= 4)	OutStr += gettext("minor artifact");
+		else if (random <= 6)	OutStr += gettext("greater artifact");
+		else if (random <= 10)	OutStr += gettext("godly");
+		else /*            */	OutStr += gettext("near omnipitent");
 		OutStr += gettext(" rings of the ");
-		
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("eternal");
-		else if (random <= 4)
-			OutStr += gettext("body breaking"); 
-		else if (random <= 6)
-			OutStr += gettext("vorporal");
-		else if (random <= 10)
-			OutStr += gettext("transcendent");
-		else
-			OutStr += gettext("incorporeal"); 
-			
-		OutStr += gettext(" hard-on."); 
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("eternal");
+		else if (random <= 4)	OutStr += gettext("body breaking");
+		else if (random <= 6)	OutStr += gettext("vorporal");
+		else if (random <= 10)	OutStr += gettext("transcendent");
+		else /*            */	OutStr += gettext("incorporeal");
+		OutStr += gettext(" hard-on.");
 		break;
-	case 10: 
-		random = g_Dice%10 + 5;
+	case 10:
+		random = g_Dice % 10 + 5;
 		_itoa(random, buffer, 10);
-		OutStr += buffer;		
-		
+		OutStr += buffer;
 		OutStr += gettext(" Elder Gods.");
-		
-		random = g_Dice%10 + 1;
+		random = g_Dice % 10 + 1;
 		if (random <= 4)
 		{
 			OutStr += gettext(" (She thought ");
-
-			random = g_Dice%12 + 1;
-			if (random <= 2)
-				OutStr += gettext("Cthulhu");
-			else if (random <= 4)
-				OutStr += gettext("Hastur");
-			else if (random <= 6)
-				OutStr += gettext("an Old One");
-			else if (random <= 8)
-				OutStr += gettext("Shub-Niggurath");
-			else if (random <= 10)
-				OutStr += gettext("Nyarlathotep");
-			else
-				OutStr += gettext("Yog-Sothoth");
-
-			OutStr += gettext(" was amongst them, but blacked out after a minute or so.)"); 
+			random = g_Dice % 12 + 1;
+			/* */if (random <= 2)	OutStr += gettext("Cthulhu");
+			else if (random <= 4)	OutStr += gettext("Hastur");
+			else if (random <= 6)	OutStr += gettext("an Old One");
+			else if (random <= 8)	OutStr += gettext("Shub-Niggurath");
+			else if (random <= 10)	OutStr += gettext("Nyarlathotep");
+			else /*            */	OutStr += gettext("Yog-Sothoth");
+			OutStr += gettext(" was amongst them, but blacked out after a minute or so.)");
 		}
 		break;
-	case 11: 
+	case 11:
 		OutStr += gettext("the level ");
-		
-		random = g_Dice%20 + 25;
+		random = g_Dice % 20 + 25;
 		_itoa(random, buffer, 10);
 		OutStr += buffer;
-
 		OutStr += gettext(" epic paragon ");
-			
-		random = g_Dice%12 + 1;
-		if (random <= 2)
-			OutStr += gettext("troll");
-		else if (random <= 4)
-			OutStr += gettext("beholder");
-		else if (random <= 6)
-			OutStr += gettext("displacer beast");
-		else if (random <= 8)
-			OutStr += gettext("ettin");
-		else if (random <= 10)
-			OutStr += gettext("gargoyle");
-		else
-			OutStr += gettext("fire extinguisher");
-			
+		random = g_Dice % 12 + 1;
+		/* */if (random <= 2)	OutStr += gettext("troll");
+		else if (random <= 4)	OutStr += gettext("beholder");
+		else if (random <= 6)	OutStr += gettext("displacer beast");
+		else if (random <= 8)	OutStr += gettext("ettin");
+		else if (random <= 10)	OutStr += gettext("gargoyle");
+		else /*            */	OutStr += gettext("fire extinguisher");
 		OutStr += gettext(" with ");
-		
-		random = g_Dice%20 + 20;
+		random = g_Dice % 20 + 20;
 		_itoa(random, buffer, 10);
 		OutStr += buffer;
 		OutStr += gettext(" strength and ");
-		
-		random = g_Dice%20 + 20;
+		random = g_Dice % 20 + 20;
 		_itoa(random, buffer, 10);
 		OutStr += buffer;
 		OutStr += gettext(" constitution.");
-		
 		break;
-	case 12: 
+	case 12:
 		OutStr += gettext("the phalanx of ");
-		
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("horny orcs.");
-		else if (random <= 4)
-			OutStr += gettext("goblins.");
-		else if (random <= 6)
-			OutStr += gettext("sentient marbles.");
-		else if (random <= 8)
-			OutStr += gettext("living garden gnomes.");
-		else
-			OutStr += gettext("bugbears.");
-
+		random = g_Dice % 10 + 1;
+		if (random <= 2)	OutStr += gettext("horny orcs.");
+		else if (random <= 4)	OutStr += gettext("goblins.");
+		else if (random <= 6)	OutStr += gettext("sentient marbles.");
+		else if (random <= 8)	OutStr += gettext("living garden gnomes.");
+		else /*            */	OutStr += gettext("bugbears.");
 		break;
 	}
 # pragma endregion beast3
-
 	OutStr += gettext("\n");
 	return OutStr;
 }
-
 string cGirls::GetRandomLesString()
 {
 	int roll1 = 0, roll2 = 0, roll3 = 0, random = 0, plus = 0;
 	string OutStr;
 	char buffer[10];
-
 	OutStr += gettext(" ");
-
 	// Part1
 # pragma region les1
 	roll1 = g_Dice % 6 + 1;   // Remember to update this when new strings are added
 	switch (roll1)
 	{
-	case 1: 
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("aggressively");
-		else if (random <= 4)
-			OutStr += gettext("tenderly");
-		else if (random <= 6)
-			OutStr += gettext("slowly");
-		else if (random <= 8) 
-			OutStr += gettext("authoratively");
-		else
-			OutStr += gettext("violently");
-
+	case 1:
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("aggressively");
+		else if (random <= 4)	OutStr += gettext("tenderly");
+		else if (random <= 6)	OutStr += gettext("slowly");
+		else if (random <= 8) 	OutStr += gettext("authoratively");
+		else /*            */	OutStr += gettext("violently");
 		OutStr += gettext(" ");
-
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("straddled");
-		else if (random <= 4)
-			OutStr += gettext("scissored");
-		else if (random <= 6)
-			OutStr += gettext("symmetrically docked with");
-		else if (random <= 8) 
-			OutStr += gettext("cowgirled");	
-		else
-			OutStr += gettext("69ed");
-
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("straddled");
+		else if (random <= 4)	OutStr += gettext("scissored");
+		else if (random <= 6)	OutStr += gettext("symmetrically docked with");
+		else if (random <= 8) 	OutStr += gettext("cowgirled");
+		else /*            */	OutStr += gettext("69ed");
 		OutStr += gettext(" the woman");
 		break;
-	case 2: 
-		random = g_Dice%10 + 1;
-		if (random <= 5)
-			OutStr += gettext("shaved her");
-		else
-			OutStr += gettext("was shaved");
-			
-		OutStr += gettext(" with a +"); 
-		
-		plus = g_Dice%7 + 4;
+	case 2:
+		random = g_Dice % 10 + 1;
+		if (random <= 5)	OutStr += gettext("shaved her");
+		else /*            */	OutStr += gettext("was shaved");
+		OutStr += gettext(" with a +");
+		plus = g_Dice % 7 + 4;
 		_itoa(plus, buffer, 10);
 		OutStr += buffer;
 		OutStr += gettext(" ");
-
-		random = g_Dice%14 + 1;
-		if (random <= 2)
-			OutStr += gettext("vorporal broadsword");
+		random = g_Dice % 14 + 1;
+		/* */if (random <= 2)	OutStr += gettext("vorporal broadsword");
 		else if (random <= 4)
 		{
 			OutStr += gettext("dagger, +");
-			plus = plus + g_Dice%5 + 2;
+			plus = plus + g_Dice % 5 + 2;
 			_itoa(plus, buffer, 10);
-			OutStr += buffer;				
+			OutStr += buffer;
 			OutStr += gettext(" vs pubic hair");
 		}
-		else if (random <= 6)
-			OutStr += gettext("flaming sickle");
-		else if (random <= 8) 
-			OutStr += gettext("lightning burst bo-staff");	
-		else if (random <= 10)
-			OutStr += gettext("human bane greatsword");
-		else if (random <= 12)
-			OutStr += gettext("acid burst warhammer");
-		else
-			OutStr += gettext("feral halfling");
-
+		else if (random <= 6)	OutStr += gettext("flaming sickle");
+		else if (random <= 8) 	OutStr += gettext("lightning burst bo-staff");
+		else if (random <= 10)	OutStr += gettext("human bane greatsword");
+		else if (random <= 12)	OutStr += gettext("acid burst warhammer");
+		else /*            */	OutStr += gettext("feral halfling");
 		break;
-	case 3: 
-		OutStr += gettext("had a "); 
-		
-		random = g_Dice%14 + 1;
-		if (random <= 2)
-			OutStr += gettext("pleasant");
-		else if (random <= 4)
-			OutStr += gettext("long");
-		else if (random <= 6)
-			OutStr += gettext("heartfelt");
-		else if (random <= 8)
-			OutStr += gettext("deeply personal");	
-		else if (random <= 10)
-			OutStr += gettext("emotional");
-		else if (random <= 12)
-			OutStr += gettext("angry");	
-		else
-			OutStr += gettext("violent");
-		
+	case 3:
+		OutStr += gettext("had a ");
+		random = g_Dice % 14 + 1;
+		/* */if (random <= 2)	OutStr += gettext("pleasant");
+		else if (random <= 4)	OutStr += gettext("long");
+		else if (random <= 6)	OutStr += gettext("heartfelt");
+		else if (random <= 8)	OutStr += gettext("deeply personal");
+		else if (random <= 10)	OutStr += gettext("emotional");
+		else if (random <= 12)	OutStr += gettext("angry");
+		else /*            */	OutStr += gettext("violent");
 		OutStr += gettext(" conversation with her lady-client about ");
-
-		random = g_Dice%16 + 1;
-		if (random <= 2)
-			OutStr += gettext("sadism");
-		else if (random <= 4)
-			OutStr += gettext("particle physics");
-		else if (random <= 6)
-			OutStr += gettext("domination");
-		else if (random <= 8) 
-			OutStr += gettext("submission");
-		else if (random <= 10)
-			OutStr += gettext("brewing poisons");
-		else if (random <= 12) 
-			OutStr += gettext("flower arranging");
-		else if (random <= 14)
-			OutStr += gettext("the Brothel Master");
-		else
-			OutStr += gettext("assassination techniques");
-
+		random = g_Dice % 16 + 1;
+		/* */if (random <= 2)	OutStr += gettext("sadism");
+		else if (random <= 4)	OutStr += gettext("particle physics");
+		else if (random <= 6)	OutStr += gettext("domination");
+		else if (random <= 8) 	OutStr += gettext("submission");
+		else if (random <= 10)	OutStr += gettext("brewing poisons");
+		else if (random <= 12) 	OutStr += gettext("flower arranging");
+		else if (random <= 14)	OutStr += gettext("the Brothel Master");
+		else /*            */	OutStr += gettext("assassination techniques");
 		break;
-	case 4: 
-		OutStr += gettext("massaged the woman with "); 
-		
+	case 4:
+		OutStr += gettext("massaged the woman with ");
 		// MYR: Ok, I know I'm being super-silly
-		random = g_Dice%20 + 1;
-		if (random <= 2)
-			OutStr += gettext("bath oil");
-		else if (random <= 4)
-			OutStr += gettext("aloe vera");
-		else if (random <= 6)
-			OutStr += gettext("the tears of Chuck Norris's many victims");
-		else if (random <= 8)
-			OutStr += gettext("the blood of innocent angels");
-		else if (random <= 10)
-			OutStr += gettext("Unicorn blood");
-		else if (random <= 12)
-			OutStr += gettext("Unicorn's tears");
-		else if (random <= 14)
-			OutStr += gettext("a strong aphrodisiac");
-		else if (random <= 16)
-			OutStr += gettext("oil of greater breast growth");
-		else if (random <= 18)
-			OutStr += gettext("potent oil of massive breast growth");
-		else
-			OutStr += gettext("oil of camel-toe growth");
-
+		random = g_Dice % 20 + 1;
+		/* */if (random <= 2)	OutStr += gettext("bath oil");
+		else if (random <= 4)	OutStr += gettext("aloe vera");
+		else if (random <= 6)	OutStr += gettext("the tears of Chuck Norris's many victims");
+		else if (random <= 8)	OutStr += gettext("the blood of innocent angels");
+		else if (random <= 10)	OutStr += gettext("Unicorn blood");
+		else if (random <= 12)	OutStr += gettext("Unicorn's tears");
+		else if (random <= 14)	OutStr += gettext("a strong aphrodisiac");
+		else if (random <= 16)	OutStr += gettext("oil of greater breast growth");
+		else if (random <= 18)	OutStr += gettext("potent oil of massive breast growth");
+		else /*            */	OutStr += gettext("oil of camel-toe growth");
 		break;
-	case 5: 
-		random = g_Dice%10 + 1;
-		if (random <= 5)
-			OutStr += gettext("put a ball gag and blindfolded on");
-		else
-			OutStr += gettext("put a sensory deprivation hood on"); 
-		
+	case 5:
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 5)	OutStr += gettext("put a ball gag and blindfolded on");
+		else /*            */	OutStr += gettext("put a sensory deprivation hood on");
 		OutStr += gettext(", was ");
-
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("lashed");
-		else if (random <= 4)
-			OutStr += gettext("cuffed");
-		else if (random <= 6)
-			OutStr += gettext("tied");
-		else 
-			OutStr += gettext("chained");
-
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("lashed");
+		else if (random <= 4)	OutStr += gettext("cuffed");
+		else if (random <= 6)	OutStr += gettext("tied");
+		else /*            */	OutStr += gettext("chained");
 		OutStr += gettext(" to a ");
-
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("bed");
-		else if (random <= 4)
-			OutStr += gettext("bench");
-		else if (random <= 6)
-			OutStr += gettext("table");
-		else 
-			OutStr += gettext("post");
-
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("bed");
+		else if (random <= 4)	OutStr += gettext("bench");
+		else if (random <= 6)	OutStr += gettext("table");
+		else /*            */	OutStr += gettext("post");
 		OutStr += gettext(" and ");
-
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("symmetrically docked");
-		else if (random <= 4)
-			OutStr += gettext("69ed");
-		else if (random <= 6)
-			OutStr += gettext("straddled");
-		else 
-			OutStr += gettext("scissored");
-		
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("symmetrically docked");
+		else if (random <= 4)	OutStr += gettext("69ed");
+		else if (random <= 6)	OutStr += gettext("straddled");
+		else /*            */	OutStr += gettext("scissored");
 		break;
-	case 6: 
+	case 6:
 		// MYR: This is like a friggin movie! The epic story of the whore and her customer.
 		OutStr += gettext("looked at the woman across from her. ");
-		
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("Position");
-		else if (random <= 4)
-			OutStr += gettext("Toy");
-		else if (random <= 6)
-			OutStr += gettext("Oil");
-		else if (random <= 8)
-			OutStr += gettext("Bed sheet color");
-		else
-			OutStr += gettext("Price");
-
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("Position");
+		else if (random <= 4)	OutStr += gettext("Toy");
+		else if (random <= 6)	OutStr += gettext("Oil");
+		else if (random <= 8)	OutStr += gettext("Bed sheet color");
+		else /*            */	OutStr += gettext("Price");
 		OutStr += gettext(" was to be ");
-		
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("a trial");
-		else if (random <= 4)
-			OutStr += gettext("decided");
-		else if (random <= 6)
-			OutStr += gettext("resolved");
-		else 
-			OutStr += gettext("dictated");
-
-		OutStr += gettext(" by combat. Both had changed into "); 
-		
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("string bikinis");
-		else if (random <= 4)
-			OutStr += gettext("lingerie");
-		else if (random <= 6)
-			OutStr += gettext("body stockings");
-		else if (random <= 8)
-			OutStr += gettext("their old school uniforms");
-		else
-			OutStr += gettext("dominatrix outfits");
-
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("a trial");
+		else if (random <= 4)	OutStr += gettext("decided");
+		else if (random <= 6)	OutStr += gettext("resolved");
+		else /*            */	OutStr += gettext("dictated");
+		OutStr += gettext(" by combat. Both had changed into ");
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("string bikinis");
+		else if (random <= 4)	OutStr += gettext("lingerie");
+		else if (random <= 6)	OutStr += gettext("body stockings");
+		else if (random <= 8)	OutStr += gettext("their old school uniforms");
+		else /*            */	OutStr += gettext("dominatrix outfits");
 		OutStr += gettext(" and wielded ");
-
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("whips");
-		else if (random <= 4)
-			OutStr += gettext("staves");
-		else if (random <= 6)
-			OutStr += gettext("boxing gloves");
-		else 
-			OutStr += gettext("cat-o-nine tails");
-
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("whips");
+		else if (random <= 4)	OutStr += gettext("staves");
+		else if (random <= 6)	OutStr += gettext("boxing gloves");
+		else /*            */	OutStr += gettext("cat-o-nine tails");
 		OutStr += gettext(" of ");
-
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("explosive orgasms");
-		else if (random <= 4)
-			OutStr += gettext("clothes shredding");
-		else if (random <= 6)
-			OutStr += gettext("humiliation");
-		else if (random <= 8) 
-			OutStr += gettext("subjugation");
-		else
-			OutStr += gettext("brutal stunning");
-
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("explosive orgasms");
+		else if (random <= 4)	OutStr += gettext("clothes shredding");
+		else if (random <= 6)	OutStr += gettext("humiliation");
+		else if (random <= 8) 	OutStr += gettext("subjugation");
+		else /*            */	OutStr += gettext("brutal stunning");
 		OutStr += gettext(". ");
-
-		random = g_Dice%10 + 1;
+		random = g_Dice % 10 + 1;
 		if (random <= 5)
 		{
 			OutStr += gettext("They stared at each other across the ");
-			random = g_Dice%8 + 1;
-			if (random <= 2)
-				OutStr += gettext("mud");
-			else if (random <= 4)
-				OutStr += gettext("jello");
-			else if (random <= 6)
-				OutStr += gettext("whip cream");
-			else 
-				OutStr += gettext("clothes-eating slime");
+			random = g_Dice % 8 + 1;
+			/* */if (random <= 2)	OutStr += gettext("mud");
+			else if (random <= 4)	OutStr += gettext("jello");
+			else if (random <= 6)	OutStr += gettext("whip cream");
+			else /*            */	OutStr += gettext("clothes-eating slime");
 			OutStr += gettext(" pit.");
 		}
-
 		OutStr += gettext(" A bell sounded! They charged and ");
-		
-		random = g_Dice%6 + 1;
-		if (random <= 2)
-			OutStr += gettext("dueled");
-		else if (random <= 4)
-			OutStr += gettext("fought it out");
-		else if (random <= 6)
-			OutStr += gettext("battled");
-			
+		random = g_Dice % 6 + 1;
+		/* */if (random <= 2)	OutStr += gettext("dueled");
+		else if (random <= 4)	OutStr += gettext("fought it out");
+		else if (random <= 6)	OutStr += gettext("battled");
 		OutStr += gettext("!\n");
-
-		random = g_Dice%10 + 1;
-		if (random <= 6)  // MYR: small bias for the customer
-			OutStr += gettext("The customer won");
-		else
-			OutStr += gettext("The customer was vanquished");
-
+		random = g_Dice % 10 + 1;
+		if (random <= 6)	OutStr += gettext("The customer won");
+		else /*            */	OutStr += gettext("The customer was vanquished");
 		break;
 	}
 # pragma endregion les1
-
 	OutStr += gettext(". ");
-
 	// Part 2
 # pragma region les2
-	roll2 = g_Dice%8 + 1;
+	roll2 = g_Dice % 8 + 1;
 	switch (roll2)
 	{
-	case 1: 
-		OutStr += gettext("She was "); 
-		
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("tormented");
-		else if (random <= 4)
-			OutStr += gettext("teased");
-		else if (random <= 6)
-			OutStr += gettext("massaged");
-		else if (random <= 8) 
-			OutStr += gettext("frustrated");
-		else
-			OutStr += gettext("satisfied");
-
+	case 1:
+		OutStr += gettext("She was ");
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("tormented");
+		else if (random <= 4)	OutStr += gettext("teased");
+		else if (random <= 6)	OutStr += gettext("massaged");
+		else if (random <= 8) 	OutStr += gettext("frustrated");
+		else /*            */	OutStr += gettext("satisfied");
 		OutStr += gettext(" with ");
-
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("great care");
-		else if (random <= 4)
-			OutStr += gettext("deva feathers");
-		else if (random <= 6)
-			OutStr += gettext("drug-soaked sex toys");
-		else if (random <= 8) 
-			OutStr += gettext("extreme skill");
-		else
-			OutStr += gettext("wild abandon");
-
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("great care");
+		else if (random <= 4)	OutStr += gettext("deva feathers");
+		else if (random <= 6)	OutStr += gettext("drug-soaked sex toys");
+		else if (random <= 8) 	OutStr += gettext("extreme skill");
+		else /*            */	OutStr += gettext("wild abandon");
 		OutStr += gettext(" by");
 		break;
-	case 2: 
+	case 2:
 		// Case 1 reversed and reworded
 		OutStr += gettext("She used ");
-
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("phoenix down");
-		else if (random <= 4)
-			OutStr += gettext("deva feathers");
-		else if (random <= 6)
-			OutStr += gettext("drug-soaked sex toys");
-		else if (random <= 8) 
-			OutStr += gettext("restraints");
-		else
-			OutStr += gettext("her wiles");
-
-		OutStr += gettext(" to "); 
-		
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("torment");
-		else if (random <= 4)
-			OutStr += gettext("tease");
-		else if (random <= 6)
-			OutStr += gettext("massage");
-		else if (random <= 8) 
-			OutStr += gettext("frustrate");
-		else
-			OutStr += gettext("satisfy");
-
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("phoenix down");
+		else if (random <= 4)	OutStr += gettext("deva feathers");
+		else if (random <= 6)	OutStr += gettext("drug-soaked sex toys");
+		else if (random <= 8) 	OutStr += gettext("restraints");
+		else /*            */	OutStr += gettext("her wiles");
+		OutStr += gettext(" to ");
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("torment");
+		else if (random <= 4)	OutStr += gettext("tease");
+		else if (random <= 6)	OutStr += gettext("massage");
+		else if (random <= 8) 	OutStr += gettext("frustrate");
+		else /*            */	OutStr += gettext("satisfy");
 		break;
-	case 3: 
+	case 3:
 		OutStr += gettext("She ");
-
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("fingered");
-		else if (random <= 4)
-			OutStr += gettext("teased");
-		else if (random <= 6)
-			OutStr += gettext("caressed");
-		else if (random <= 8) 
-			OutStr += gettext("fondled");
-		else
-			OutStr += gettext("pinched");
-			
-		OutStr += gettext(" the client's "); 
-
-		random = g_Dice%6 + 1;
-		if (random <= 2)
-			OutStr += gettext("clit");
-		else if (random <= 4)
-			OutStr += gettext("clitorus");
-		else
-			OutStr += gettext("love bud");
-	
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("fingered");
+		else if (random <= 4)	OutStr += gettext("teased");
+		else if (random <= 6)	OutStr += gettext("caressed");
+		else if (random <= 8) 	OutStr += gettext("fondled");
+		else /*            */	OutStr += gettext("pinched");
+		OutStr += gettext(" the client's ");
+		random = g_Dice % 6 + 1;
+		/* */if (random <= 2)	OutStr += gettext("clit");
+		else if (random <= 4)	OutStr += gettext("clitorus");
+		else /*            */	OutStr += gettext("love bud");
 		OutStr += gettext(" and expertly elicited orgasm after orgasm from");
 		break;
-	case 4: 
-		OutStr += gettext("Her "); 
-
-		random = g_Dice%6 + 1;
-		if (random <= 2)
-			OutStr += gettext("clit");
-		else if (random <= 4)
-			OutStr += gettext("clitorus");
-		else
-			OutStr += gettext("love bud");
-
+	case 4:
+		OutStr += gettext("Her ");
+		random = g_Dice % 6 + 1;
+		/* */if (random <= 2)	OutStr += gettext("clit");
+		else if (random <= 4)	OutStr += gettext("clitorus");
+		else /*            */	OutStr += gettext("love bud");
 		OutStr += gettext(" was ");
-
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("fingered");
-		else if (random <= 4)
-			OutStr += gettext("teased");
-		else if (random <= 6)
-			OutStr += gettext("caressed");
-		else if (random <= 8) 
-			OutStr += gettext("fondled");
-		else
-			OutStr += gettext("pinched");
-
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("fingered");
+		else if (random <= 4)	OutStr += gettext("teased");
+		else if (random <= 6)	OutStr += gettext("caressed");
+		else if (random <= 8) 	OutStr += gettext("fondled");
+		else /*            */	OutStr += gettext("pinched");
 		OutStr += gettext(" and she orgasmed repeatedly under the expert touch of");
 		break;
 	case 5:
 		OutStr += gettext("She ");
-
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("clam wrestled");
-		else if (random <= 4)
-			OutStr += gettext("rubbed");
-		else if (random <= 6)
-			OutStr += gettext("attacked");
-		else
-			OutStr += gettext("hammered");
-
-		OutStr += gettext(" the client's "); 
-
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("clit");
-		else if (random <= 4)
-			OutStr += gettext("clitorus");
-		else if (random <= 6)
-			OutStr += gettext("love bud");
-		else
-			OutStr += gettext("vagina");
-
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("clam wrestled");
+		else if (random <= 4)	OutStr += gettext("rubbed");
+		else if (random <= 6)	OutStr += gettext("attacked");
+		else /*            */	OutStr += gettext("hammered");
+		OutStr += gettext(" the client's ");
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("clit");
+		else if (random <= 4)	OutStr += gettext("clitorus");
+		else if (random <= 6)	OutStr += gettext("love bud");
+		else /*            */	OutStr += gettext("vagina");
 		OutStr += gettext(" causing waves of orgasms to thunder through");
 		break;
-	case 6: 
+	case 6:
 		OutStr += gettext("She ");
-
-		random = g_Dice%6 + 1;
-		if (random <= 2)
-			OutStr += gettext("single mindedly");
-		else if (random <= 4)
-			OutStr += gettext("repeatedly");
-		else
-			OutStr += gettext("roughly");
-
+		random = g_Dice % 6 + 1;
+		/* */if (random <= 2)	OutStr += gettext("single mindedly");
+		else if (random <= 4)	OutStr += gettext("repeatedly");
+		else /*            */	OutStr += gettext("roughly");
 		OutStr += gettext(" ");
-
-		random = g_Dice%2 + 1;
-		if (random <= 2)
-			OutStr += gettext("rubbed");
-		else if (random <= 4)
-			OutStr += gettext("fondled");
-		else if (random <= 6)
-			OutStr += gettext("prodded");
-		else if (random <= 8)
-			OutStr += gettext("attacked");
-		else if (random <= 10)
-			OutStr += gettext("tongued");
-		else
-			OutStr += gettext("licked");
-
-		OutStr += gettext(" the client's g-spot. Wave after wave of "); 
-
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("orgasms");
-		else if (random <= 4)
-			OutStr += gettext("pleasure");
-		else if (random <= 6)
-			OutStr += gettext("powerful sensations");
-		else
-			OutStr += gettext("indescribable joy");
-
+		random = g_Dice % 2 + 1;
+		/* */if (random <= 2)	OutStr += gettext("rubbed");
+		else if (random <= 4)	OutStr += gettext("fondled");
+		else if (random <= 6)	OutStr += gettext("prodded");
+		else if (random <= 8)	OutStr += gettext("attacked");
+		else if (random <= 10)	OutStr += gettext("tongued");
+		else /*            */	OutStr += gettext("licked");
+		OutStr += gettext(" the client's g-spot. Wave after wave of ");
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("orgasms");
+		else if (random <= 4)	OutStr += gettext("pleasure");
+		else if (random <= 6)	OutStr += gettext("powerful sensations");
+		else /*            */	OutStr += gettext("indescribable joy");
 		OutStr += gettext(" ");
-
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("rushed");
-		else if (random <= 4)
-			OutStr += gettext("thundered");
-		else if (random <= 6)
-			OutStr += gettext("cracked");
-		else
-			OutStr += gettext("pounded");
-
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("rushed");
+		else if (random <= 4)	OutStr += gettext("thundered");
+		else if (random <= 6)	OutStr += gettext("cracked");
+		else /*            */	OutStr += gettext("pounded");
 		OutStr += gettext(" through");
 		break;
-	case 7: 
-		OutStr += gettext("Wave after wave of "); 
-
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("orgasms");
-		else if (random <= 4)
-			OutStr += gettext("back-stretching joy");
-		else if (random <= 6)
-			OutStr += gettext("madness");
-		else
-			OutStr += gettext("incredible feeling");
-
+	case 7:
+		OutStr += gettext("Wave after wave of ");
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("orgasms");
+		else if (random <= 4)	OutStr += gettext("back-stretching joy");
+		else if (random <= 6)	OutStr += gettext("madness");
+		else /*            */	OutStr += gettext("incredible feeling");
 		OutStr += gettext(" ");
-
-		random = g_Dice%8 + 1;
-		if (random <= 2)
-			OutStr += gettext("throbbed");
-		else if (random <= 4)
-			OutStr += gettext("shook");
-		else if (random <= 6)
-			OutStr += gettext("arced");
-		else
-			OutStr += gettext("stabbed");
-
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OutStr += gettext("throbbed");
+		else if (random <= 4)	OutStr += gettext("shook");
+		else if (random <= 6)	OutStr += gettext("arced");
+		else /*            */	OutStr += gettext("stabbed");
 		OutStr += gettext(" through her as she was ");
-
-		random = g_Dice%6 + 1;
-		if (random <= 2)
-			OutStr += gettext("single mindedly");
-		else if (random <= 4)
-			OutStr += gettext("repeatedly");
-		else
-			OutStr += gettext("roughly");
-
+		random = g_Dice % 6 + 1;
+		/* */if (random <= 2)	OutStr += gettext("single mindedly");
+		else if (random <= 4)	OutStr += gettext("repeatedly");
+		else /*            */	OutStr += gettext("roughly");
 		OutStr += gettext(" ");
-
-		random = g_Dice%12 + 1;
-		if (random <= 2)
-			OutStr += gettext("rubbed");
-		else if (random <= 4)
-			OutStr += gettext("fondled");
-		else if (random <= 6)
-			OutStr += gettext("prodded");
-		else if (random <= 8)
-			OutStr += gettext("attacked");
-		else if (random <= 10)
-			OutStr += gettext("tongued");
-		else
-			OutStr += gettext("licked");
-
-		OutStr += gettext(" by");	
+		random = g_Dice % 12 + 1;
+		/* */if (random <= 2)	OutStr += gettext("rubbed");
+		else if (random <= 4)	OutStr += gettext("fondled");
+		else if (random <= 6)	OutStr += gettext("prodded");
+		else if (random <= 8)	OutStr += gettext("attacked");
+		else if (random <= 10)	OutStr += gettext("tongued");
+		else /*            */	OutStr += gettext("licked");
+		OutStr += gettext(" by");
 		break;
 	case 8:
 		// MYR: I just remembered about \n
 		OutStr += gettext("Work stopped ");
-
-		random = g_Dice%14 + 1;
-		if (random <= 2)
-			OutStr += gettext("in the brothel");
-		else if (random <= 4)
-			OutStr += gettext("on the street");
-		else if (random <= 6)
-			OutStr += gettext("all over the block");
-		else if (random <= 8)
-			OutStr += gettext("in the town");
-		else if (random <= 10)
-			OutStr += gettext("within the country");
-		else  if (random <= 12)
-			OutStr += gettext("over the whole planet");
-		else  if (random <= 12)
-			OutStr += gettext("within the solar system");
-		else
-			OutStr += gettext("all over the galactic sector");
-
-
+		random = g_Dice % 14 + 1;
+		/* */if (random <= 2)	OutStr += gettext("in the brothel");
+		else if (random <= 4)	OutStr += gettext("on the street");
+		else if (random <= 6)	OutStr += gettext("all over the block");
+		else if (random <= 8)	OutStr += gettext("in the town");
+		else if (random <= 10)	OutStr += gettext("within the country");
+		else  if (random <= 12)	OutStr += gettext("over the whole planet");
+		else  if (random <= 12)	OutStr += gettext("within the solar system");
+		else /*            */	OutStr += gettext("all over the galactic sector");
 		OutStr += gettext(". Everything was drowned out by:\n\n");
 		OutStr += gettext("Ahhhhh!\n\n");
-
-
-		random = g_Dice%10 + 1;
+		random = g_Dice % 10 + 1;
 		if (random <= 5)
 		{
-			random = g_Dice%6 + 1;
-			if (random <= 2)
-				OutStr += gettext("For the love... of aaaaahhhhh mercy.  No nnnnnnnnh more!\n\n");
-			else if (random <= 4)
-				OutStr += gettext("oooooOOOOOO YES! ahhhhhhHHHH!\n\n");
-			else
-				OutStr += gettext("nnnnnhhh nnnnnhhhh NNNHHHHHH!!!!\n\n");
+			random = g_Dice % 6 + 1;
+			/* */if (random <= 2)	OutStr += gettext("For the love... of aaaaahhhhh mercy.  No nnnnnnnnh more!\n\n");
+			else if (random <= 4)	OutStr += gettext("oooooOOOOOO YES! ahhhhhhHHHH!\n\n");
+			else /*            */	OutStr += gettext("nnnnnhhh nnnnnhhhh NNNHHHHHH!!!!\n\n");
 		}
-
 		OutStr += gettext("Annnnnhhhhhaaa!\n\n");
 		OutStr += gettext("AHHHHHHHH! I'm going to ");
-
-		random = g_Dice%12 + 1;
-		if (random <= 2)
-			OutStr += gettext("CCCUUUUUUMMMMMMMM!!!!!");
-		else if (random <= 4)
-			OutStr += gettext("EEEXXXXXPLLLOOODDDDEEEE!!!");
-		else if (random <= 6)
-			OutStr += gettext("DIEEEEEE!");
-		else if (random <= 8)
-			OutStr += gettext("AHHHHHHHHHHH!!!!");
-		else if (random <= 10)
-			OutStr += gettext("BRRRREEEEAAAAKKKKKK!!!!");
-		else
-			OutStr += gettext("WAAAAHHHHHOOOOOOO!!!");
-
+		random = g_Dice % 12 + 1;
+		/* */if (random <= 2)	OutStr += gettext("CCCUUUUUUMMMMMMMM!!!!!");
+		else if (random <= 4)	OutStr += gettext("EEEXXXXXPLLLOOODDDDEEEE!!!");
+		else if (random <= 6)	OutStr += gettext("DIEEEEEE!");
+		else if (random <= 8)	OutStr += gettext("AHHHHHHHHHHH!!!!");
+		else if (random <= 10)	OutStr += gettext("BRRRREEEEAAAAKKKKKK!!!!");
+		else /*            */	OutStr += gettext("WAAAAHHHHHOOOOOOO!!!");
 		OutStr += gettext("\nfrom ");
 		break;
 	}
 # pragma endregion les2
-
 	OutStr += " ";
-
 	// Part 3
 # pragma region les3
-
 	// For case 2
 	int BrothelNo = -1, NumGirlsInBroth = -1;
 	sGirl * TempGPtr = 0;
-
-	roll3 = g_Dice %6 + 1;
+	roll3 = g_Dice % 6 + 1;
 	switch (roll3)
 	{
-	case 1: 
+	case 1:
 		OutStr += gettext("the ");
-			
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("prostitute");
-		else if (random <= 4)
-			OutStr += gettext("street worker");
-		else if (random <= 6)
-			OutStr += gettext("hooker");
-		else if (random <= 8)
-			OutStr += gettext("street walker");
-		else
-			OutStr += gettext("working girl");
-			
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("prostitute");
+		else if (random <= 4)	OutStr += gettext("street worker");
+		else if (random <= 6)	OutStr += gettext("hooker");
+		else if (random <= 8)	OutStr += gettext("street walker");
+		else /*            */	OutStr += gettext("working girl");
 		OutStr += gettext(" from a ");
-			
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("friendly");
-		else if (random <= 4)
-			OutStr += gettext("rival");
-		else if (random <= 6)
-			OutStr += gettext("hostile");
-		else 
-			OutStr += gettext("feeder");
-			
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("friendly");
+		else if (random <= 4)	OutStr += gettext("rival");
+		else if (random <= 6)	OutStr += gettext("hostile");
+		else 	OutStr += gettext("feeder");
 		OutStr += gettext(" brothel.");
 		break;
-	case 2: 
+	case 2:
 		BrothelNo = g_Dice%g_Brothels.GetNumBrothels();
 		NumGirlsInBroth = g_Brothels.GetNumGirls(BrothelNo);
 		random = g_Dice%NumGirlsInBroth;
 		TempGPtr = g_Brothels.GetGirl(BrothelNo, random);
-
-		if(TempGPtr == 0)
-			OutStr += "a girl";
-		else
-			OutStr += TempGPtr->m_Realname;
+		/* */if (TempGPtr == 0)	OutStr += "a girl";
+		else /*            */	OutStr += TempGPtr->m_Realname;
 		OutStr += gettext(" from ");
 		OutStr += g_Brothels.GetName(BrothelNo);
 		OutStr += gettext(" brothel.");
-		
 		BrothelNo = -1;        // MYR: Paranoia
 		NumGirlsInBroth = -1;
 		TempGPtr = 0;
 		break;
-	case 3: 
+	case 3:
 		OutStr += gettext("the ");
-		
-		random = g_Dice%12 + 1;
-		if (random <= 2)
-			OutStr += gettext("sexy");
-		else if (random <= 4)
-			OutStr += gettext("rock hard");
-		else if (random <= 6)
-			OutStr += gettext("hot");
-		else if (random <= 8)
-			OutStr += gettext("androgonous");
-		else if (random <= 10)
-			OutStr += gettext("spirited");
-		else
-			OutStr += gettext("exuberant"); 
-		
-		OutStr += gettext(" MILF."); 
+		random = g_Dice % 12 + 1;
+		/* */if (random <= 2)	OutStr += gettext("sexy");
+		else if (random <= 4)	OutStr += gettext("rock hard");
+		else if (random <= 6)	OutStr += gettext("hot");
+		else if (random <= 8)	OutStr += gettext("androgonous");
+		else if (random <= 10)	OutStr += gettext("spirited");
+		else /*            */	OutStr += gettext("exuberant");
+		OutStr += gettext(" MILF.");
 		break;
 	case 4:
 		OutStr += gettext("the ");
-
-		random = g_Dice%10 + 1;
-		if (random <= 5)
-			OutStr += gettext("senior");
-		else
-			OutStr += gettext("junior");
-
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 5)	OutStr += gettext("senior");
+		else /*            */	OutStr += gettext("junior");
 		OutStr += gettext(" ");
-
-		random = g_Dice%12 + 1;
-		if (random <= 2)
-			OutStr += gettext("Sorceress");
-		else if (random <= 4)
-			OutStr += gettext("Warrioress");
-		else if (random <= 6)
-			OutStr += gettext("Priestess");
-		else if (random <= 8)
-			OutStr += gettext("Huntress");
-		else if (random <= 10)
-			OutStr += gettext("Amazon");
-		else
-			OutStr += gettext("Druidess"); 
-
+		random = g_Dice % 12 + 1;
+		/* */if (random <= 2)	OutStr += gettext("Sorceress");
+		else if (random <= 4)	OutStr += gettext("Warrioress");
+		else if (random <= 6)	OutStr += gettext("Priestess");
+		else if (random <= 8)	OutStr += gettext("Huntress");
+		else if (random <= 10)	OutStr += gettext("Amazon");
+		else /*            */	OutStr += gettext("Druidess");
 		OutStr += gettext(" of the ");
-
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("Hidden");
-		else if (random <= 4)
-			OutStr += gettext("Silent");
-		else if (random <= 6)
-			OutStr += gettext("Masters");
-		else if (random <= 8)
-			OutStr += gettext("Scarlet");
-		else
-			OutStr += gettext("Resolute");
-
-
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("Hidden");
+		else if (random <= 4)	OutStr += gettext("Silent");
+		else if (random <= 6)	OutStr += gettext("Masters");
+		else if (random <= 8)	OutStr += gettext("Scarlet");
+		else /*            */	OutStr += gettext("Resolute");
 		OutStr += gettext(" ");
-
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("Hand");
-		else if (random <= 4)
-			OutStr += gettext("Dagger");
-		else if (random <= 6)
-			OutStr += gettext("Will");
-		else if (random <= 8)
-			OutStr += gettext("League");
-		else
-			OutStr += gettext("Hearts");
-
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("Hand");
+		else if (random <= 4)	OutStr += gettext("Dagger");
+		else if (random <= 6)	OutStr += gettext("Will");
+		else if (random <= 8)	OutStr += gettext("League");
+		else /*            */	OutStr += gettext("Hearts");
 		OutStr += gettext(".");
 		break;
 	case 5:
 		OutStr += gettext("the ");
-
-		random = g_Dice%6 + 1;
-		if (random <= 2)
-			OutStr += gettext("high-ranking");
-		else if (random <= 4)
-			OutStr += gettext("mid-tier");
-		else
-			OutStr += gettext("low-ranking");
-
+		random = g_Dice % 6 + 1;
+		/* */if (random <= 2)	OutStr += gettext("high-ranking");
+		else if (random <= 4)	OutStr += gettext("mid-tier");
+		else /*            */	OutStr += gettext("low-ranking");
 		OutStr += gettext(" ");
-
-		random = g_Dice%14 + 1;
-		if (random <= 2)
-			OutStr += gettext("elf");
-		else if (random <= 4)
-			OutStr += gettext("woman");     // MYR: Human assumed
-		else if (random <= 6)
-			OutStr += gettext("dryad");
-		else if (random <= 8)
-			OutStr += gettext("succubus");
-		else if (random <= 10)
-			OutStr += gettext("nymph");
-		else if (random <= 12)
-			OutStr += gettext("eyrine"); 
-		else
-			OutStr += gettext("cat girl");
-
+		random = g_Dice % 14 + 1;
+		/* */if (random <= 2)	OutStr += gettext("elf");
+		else if (random <= 4)	OutStr += gettext("woman");     // MYR: Human assumed
+		else if (random <= 6)	OutStr += gettext("dryad");
+		else if (random <= 8)	OutStr += gettext("succubus");
+		else if (random <= 10)	OutStr += gettext("nymph");
+		else if (random <= 12)	OutStr += gettext("eyrine");
+		else /*            */	OutStr += gettext("cat girl");
 		OutStr += gettext(" from the ");
-
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("Nymphomania");
-		else if (random <= 4)
-			OutStr += gettext("Satyriasis");
-		else if (random <= 6)
-			OutStr += gettext("Women Who Love Sex");
-		else if (random <= 8)
-			OutStr += gettext("Real Women Don't Marry");
-		else
-			OutStr += gettext("Monster Sex is Best");
-
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("Nymphomania");
+		else if (random <= 4)	OutStr += gettext("Satyriasis");
+		else if (random <= 6)	OutStr += gettext("Women Who Love Sex");
+		else if (random <= 8)	OutStr += gettext("Real Women Don't Marry");
+		else /*            */	OutStr += gettext("Monster Sex is Best");
 		OutStr += gettext(" ");
-
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("support group");
-		else if (random <= 4)
-			OutStr += gettext("league");
-		else if (random <= 6)
-			OutStr += gettext("club");
-		else if (random <= 8)
-			OutStr += gettext("faction");
-		else
-			OutStr += gettext("guild");
-
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("support group");
+		else if (random <= 4)	OutStr += gettext("league");
+		else if (random <= 6)	OutStr += gettext("club");
+		else if (random <= 8)	OutStr += gettext("faction");
+		else /*            */	OutStr += gettext("guild");
 		OutStr += gettext(".");
 		break;
-	case 6: 
-		OutStr += gettext("the "); 
-
-		random = g_Dice%10 + 1;
-		if (random <= 2)
-			OutStr += gettext("disguised");
-		else if (random <= 4)
-			OutStr += gettext("hot");
-		else if (random <= 6)
-			OutStr += gettext("sexy");
-		else if (random <= 8)
-			OutStr += gettext("curvacious");
-		else
-			OutStr += gettext("sultry");
-
+	case 6:
+		OutStr += gettext("the ");
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OutStr += gettext("disguised");
+		else if (random <= 4)	OutStr += gettext("hot");
+		else if (random <= 6)	OutStr += gettext("sexy");
+		else if (random <= 8)	OutStr += gettext("curvacious");
+		else /*            */	OutStr += gettext("sultry");
 		OutStr += gettext(" ");
-
 		// MYR: Covering the big fetishes/stereotpes
-		random = g_Dice%12 + 1;
-		if (random <= 2)
-			OutStr += gettext("idol singer");
-		else if (random <= 4)
-			OutStr += gettext("princess");
-		else if (random <= 6)
-			OutStr += gettext("school girl");
-		else if (random <= 8)
-			OutStr += gettext("nurse");
-		else if (random <= 10)
-			OutStr += gettext("maid");
-		else
-			OutStr += gettext("waitress");
-
+		random = g_Dice % 12 + 1;
+		/* */if (random <= 2)	OutStr += gettext("idol singer");
+		else if (random <= 4)	OutStr += gettext("princess");
+		else if (random <= 6)	OutStr += gettext("school girl");
+		else if (random <= 8)	OutStr += gettext("nurse");
+		else if (random <= 10)	OutStr += gettext("maid");
+		else /*            */	OutStr += gettext("waitress");
 		OutStr += gettext(".");
 		break;
 	}
@@ -9547,16 +8020,12 @@ string cGirls::GetRandomLesString()
 	OutStr += gettext("\n");
 	return OutStr;
 }
-
 // MYR: Burned out before anal. Someone else feeling creative?
-
 string cGirls::GetRandomAnalString()
 {
 	int roll1 = 0, roll2 = 0, roll3 = 0;
 	string OutStr;
-
 	OutStr += gettext(" ");
-
 	// Part 1
 #pragma region anal1
 	roll1 = g_Dice % 10 + 1;   // Remember to update this when new strings are added
@@ -9574,9 +8043,7 @@ string cGirls::GetRandomAnalString()
 	case 10: OutStr += ""; break;
 	}
 #pragma endregion anal1
-
 	OutStr += ". ";
-
 	// Part 2
 #pragma region anal2
 	roll2 = g_Dice % 10 + 1;
@@ -9594,9 +8061,7 @@ string cGirls::GetRandomAnalString()
 	case 10: OutStr += ""; break;
 	}
 #pragma endregion anal2
-
 	OutStr += " ";
-
 	// Part 3
 #pragma endregion anal3
 	roll3 = g_Dice % 10 + 1;
@@ -9614,7 +8079,6 @@ string cGirls::GetRandomAnalString()
 	case 10: OutStr += ""; break;
 	}
 #pragma endregion anal3
-
 	return OutStr;
 }
 
@@ -9757,7 +8221,6 @@ Uint8 cGirls::girl_fights_girl(sGirl* a, sGirl* b)
 
 		l.ss()	<< gettext("\t\t") << gettext("Attack chance: ") << girl_attack_chance << gettext(" Die roll: ") << die_roll;
 		l.ssend();
-
 
 		if(die_roll > girl_attack_chance)
 			l.ss()	<< gettext("\t\t\t") << gettext("Miss!");
@@ -10316,88 +8779,82 @@ void cGirls::updateGirlAge(sGirl* girl, bool inc_inService)
 	}
 }
 
+// Update health and other things for STDs
 void cGirls::updateSTD(sGirl* girl)
 {
-/*
- *	 Update health for any STD
- */
-
 	// Sanity check. Abort on dead girl
-	if(girl->health() <= 0)
-	{
-		return;
-	}
+	if (girl->health() <= 0) return;
 
 	// STDs
-	if(girl->has_trait("AIDS"))
-		girl->health(-15);
-	if(girl->has_trait("Chlamydia"))
-		girl->health(-2);
-	if(girl->has_trait("Syphilis"))
-		girl->health(-5);
-
-	if(girl->health() <= 0)
+	if (girl->has_trait("AIDS"))
 	{
-		string msg = girl->m_Realname + gettext(" has died from STD's.");
+		int a = g_Dice % 10 + 10;		girl->health(-a);
+		int b = g_Dice % 5 + 5;			girl->happiness(-b);
+		int c = g_Dice % 2 + 1;			girl->tiredness(c);
+	}
+	if (girl->has_trait("Herpes"))
+	{
+		int a = max(0, g_Dice % 4 - 2);	girl->health(-a);
+		int b = max(1, g_Dice % 5 - 2);	girl->happiness(-b);
+		int c = max(0, g_Dice % 4 - 1);	girl->charisma(-c);
+	}
+	if (girl->has_trait("Chlamydia"))
+	{
+		int a = g_Dice % 3 + 1;			girl->health(-a);
+		int b = g_Dice % 3 + 1;			girl->happiness(-b);
+		int c = g_Dice % 2 + 1;			girl->tiredness(c);
+	}
+	if (girl->has_trait("Syphilis"))
+	{
+		int a = g_Dice % 10 + 5;		girl->health(-5);
+		int b = g_Dice % 5 + 5;			girl->happiness(-3);
+		int c = max(0, g_Dice % 3 + 2);	girl->intelligence(-1);
+	}
+
+	if (girl->health() <= 0)
+	{
+		string msg = girl->m_Realname + gettext(" has died from STDs.");
 		girl->m_Events.AddMessage(msg, IMGTYPE_DEATH, EVENT_DANGER);
 		//g_MessageQue.AddToQue(msg, 1);
 	}
 }
 
+// Stat update code that is to be run every turn
 void cGirls::updateGirlTurnStats(sGirl* girl)
 {
-/*
- *	Stat update code that is to be run every turn
- */
-
-	// Sanity check. Abort on dead girl
-	if(girl->health() <= 0)
-	{
-		return;
-	}
+	if (girl->health() <= 0) return;		// Sanity check. Abort on dead girl
 
 	// TIREDNESS Really tired girls get unhappy fast
 	int bonus = girl->tiredness() - 90;
-	if(bonus > 0)
+	int b = 0;
+	if (bonus > 0)
 	{
-		girl->obedience(-1);				// Base loss for being tired
+		girl->obedience(-1);					// Base loss for being tired
 		girl->pclove(-1);
-
-		bonus	= bonus / 3 + 1;			// bonus vs tiredness values 1: 91-92, 2: 93-95, 3: 96-98, 4: 99-100
-		girl->happiness(-bonus);
-
-		bonus	= bonus / 2 + 1;			// bonus vs tiredness values 1: 91-92, 2: 93-98, 3: 99-100
-		if (girl->health() - bonus < 10)	// Don't kill the girl from tiredness
+		b = bonus / 3 + 1;
+		girl->happiness(-b);
+		b = bonus / 2 + 1;
+		if (girl->health() - b < 10)	// Don't kill the girl from tiredness
 		{
 			girl->health(10);				// Girl will hate player more if badly hurt from being tired
-			girl->pclove(-1);				
+			girl->pclove(-1);
 			girl->pchate(1);
 		}
-		else
-		{
-			girl->health(-bonus);			// Really tired girls lose more health
-		}
-
-/*		These messages duplicate warning messages in the matron code
- *
- *		msg = girlName + " is so tired her health has been affected.";
- *		girl->m_Events.AddMessage(msg, IMGTYPE_PROFILE, EVENT_WARNING);
- */
+		else girl->health(-bonus);			// Really tired girls lose more health
 	}
-
 
 	// HEALTH hurt girls get tired fast
 	bonus = 40 - girl->health();
-	if(bonus > 0)
+	if (bonus > 0)
 	{
 		girl->pchate(1);					// Base loss for being hurt
 		girl->pclove(-1);
 		girl->happiness(-1);
 
-		bonus	= bonus / 8 + 1;			// bonus vs health values 1: 33-39, 2: 25-32, 3: 17-24, 4: 09-16 5: 01-08
+		bonus = bonus / 8 + 1;			// bonus vs health values 1: 33-39, 2: 25-32, 3: 17-24, 4: 09-16 5: 01-08
 		girl->tiredness(bonus);
 
-		bonus	= bonus / 2 + 1;			// bonus vs health values 1: 33-39, 2: 17-32, 3: 01-16
+		bonus = bonus / 2 + 1;			// bonus vs health values 1: 33-39, 2: 17-32, 3: 01-16
 		if (girl->health() - bonus < 1)		// Don't kill the girl from low health
 		{
 			girl->health(1);				// Girl will hate player more for very low health
@@ -10409,16 +8866,15 @@ void cGirls::updateGirlTurnStats(sGirl* girl)
 			girl->health(-bonus);
 		}
 
-/*		These messages duplicate warning messages in the matron code
- *
- *		msg = "DANGER " + girlName + " health is low!";
- *		girl->m_Events.AddMessage(msg, IMGTYPE_PROFILE, EVENT_DANGER);
- */
-	}		
-
+		/*		These messages duplicate warning messages in the matron code
+		 *
+		 *		msg = "DANGER " + girlName + " health is low!";
+		 *		girl->m_Events.AddMessage(msg, IMGTYPE_PROFILE, EVENT_DANGER);
+		 */
+	}
 
 	// LOVE love is updated only if happiness is >= 100 or < 50
-	if(girl->happiness() >= 100)
+	if (girl->happiness() >= 100)
 	{
 		girl->pclove(2);					// Happy girls love player more
 	}
@@ -10426,9 +8882,7 @@ void cGirls::updateGirlTurnStats(sGirl* girl)
 	{
 		girl->pclove(-2);					// Unhappy FREE girls love player less	
 	}
-
 }
-
 
 // ----- Stream operators
 
@@ -10509,25 +8963,19 @@ ostream& operator<<(ostream& os, sGirl &g)
 	os << g.m_Desc << endl;
 	os << endl;
 
-	for(int i = 0; i < NUM_STATS; i++) {
+	for (int i = 0; i < NUM_STATS; i++)
+	{
 		os.width(20);
 		os.flags(ios::left);
-		os << g.stat_names[i] 
-		   << gettext("\t: ")
-		   << int(g.m_Stats[i])
-		   << endl
-		;
+		os << g.stat_names[i] << gettext("\t: ") << int(g.m_Stats[i]) << endl;
 	}
 	os << endl;
 
-	for(u_int i = 0; i < NUM_SKILLS; i++) {
+	for (u_int i = 0; i < NUM_SKILLS; i++)
+	{
 		os.width(20);
 		os.flags(ios::left);
-		os << g.skill_names[i] 
-		   << gettext("\t: ")
-		   << int(g.m_Skills[i])
-		   << endl
-		;
+		os << g.skill_names[i] << gettext("\t: ") << int(g.m_Skills[i]) << endl;
 	}
 	os << endl;
 
@@ -10720,59 +9168,62 @@ bool sGirl::calc_insemination(cPlayer *player, bool good, double factor)
 	return g_GirlsPtr->CalcPregnancy(this, int(chance), STATUS_INSEMINATED, player->m_Stats, player->m_Skills);
 }
 
-bool cGirls::CalcPregnancy(sGirl* girl, int chance, int type, int stats[NUM_STATS],  int skills[NUM_SKILLS])
+bool cGirls::CalcPregnancy(sGirl* girl, int chance, int type, int stats[NUM_STATS], int skills[NUM_SKILLS])
 {
-	string text=gettext("She has");
-/*
- *	for reasons I do not understand, but nevertheless think
- *	are kind of cool, virgins have a +10 to their pregnancy
- *	chance
- */
-	if(g_Girls.CheckVirginity(girl) && chance > 0) {
+	string text = gettext("She has");
+	/*
+	 *	for reasons I do not understand, but nevertheless think
+	 *	are kind of cool, virgins have a +10 to their pregnancy
+	 *	chance
+	 */
+	if (g_Girls.CheckVirginity(girl) && chance > 0)
+	{
 		chance += 10;
 	}
-/*
- *	If there's a condition that would stop her getting preggers
- *	then we get to go home early
- *
- *	return TRUE to indicate that pregnancy is FALSE
- *	(actually, supposed to mean that contraception is true,
- *	but it also applies for things like being pregnant,
- *	or just blowing the dice roll. That gets confusing too.
- */
-	if(has_contraception(girl)) {
+	/*
+	 *	If there's a condition that would stop her getting preggers
+	 *	then we get to go home early
+	 *
+	 *	return TRUE to indicate that pregnancy is FALSE
+	 *	(actually, supposed to mean that contraception is true,
+	 *	but it also applies for things like being pregnant,
+	 *	or just blowing the dice roll. That gets confusing too.
+	 */
+	if (has_contraception(girl)) 
+	{
 		return true;
 	}
-/*
- *	the other effective form of contraception, of course,
- *	is failing the dice roll. Let's check the chance of
- *	her NOT getting preggers here
- */
-	if(g_Dice.percent(100 - chance)) {
+	/*
+	 *	the other effective form of contraception, of course,
+	 *	is failing the dice roll. Let's check the chance of
+	 *	her NOT getting preggers here
+	 */
+	if (g_Dice.percent(100 - chance)) 
+	{
 		return true;
 	}
-/*
- *	set the pregnant status
- */
-	girl->m_States |= (1<<type);
-/*
- *	narrative depends on what it was that Did The Deed
- *	specifically, was it human or not?
- */
+	/*
+	 *	set the pregnant status
+	 */
+	girl->m_States |= (1 << type);
+	/*
+	 *	narrative depends on what it was that Did The Deed
+	 *	specifically, was it human or not?
+	 */
 
 	switch (type)
 	{
-		case STATUS_INSEMINATED:
-			text+=gettext(" been inseminated.");
-			break;
+	case STATUS_INSEMINATED:
+		text += gettext(" been inseminated.");
+		break;
 
-		case STATUS_PREGNANT:
-			text+=gettext(" gotten pregnant.");
-			break;
+	case STATUS_PREGNANT:
+		text += gettext(" gotten pregnant.");
+		break;
 
-		case STATUS_PREGNANT_BY_PLAYER:
-			text+=gettext(" gotten pregnant with you.");
-			break;
+	case STATUS_PREGNANT_BY_PLAYER:
+		text += gettext(" gotten pregnant with you.");
+		break;
 
 	}
 	girl->m_Events.AddMessage(text, IMGTYPE_PREGNANT, EVENT_DANGER);
@@ -10780,15 +9231,15 @@ bool cGirls::CalcPregnancy(sGirl* girl, int chance, int type, int stats[NUM_STAT
 	sChild* child = new sChild(unsigned(type) == STATUS_PREGNANT_BY_PLAYER);
 
 	// `J` average the mother's and father's stats and skills
-	for(int i=0; i<NUM_STATS; i++)
-		child->m_Stats[i] = (stats[i] + girl->m_Stats[i])/2;
-	for(u_int i=0; i<NUM_SKILLS; i++)
-		child->m_Skills[i] = (skills[i]+ girl->m_Skills[i])/2;
+	for (int i = 0; i < NUM_STATS; i++)
+		child->m_Stats[i] = (stats[i] + girl->m_Stats[i]) / 2;
+	for (u_int i = 0; i < NUM_SKILLS; i++)
+		child->m_Skills[i] = (skills[i] + girl->m_Skills[i]) / 2;
 
 	// if there is somehow leftover pregnancy data, clear it
 	girl->m_WeeksPreg = 0;
 	sChild* leftover = girl->m_Children.m_FirstChild;
-	while(leftover)
+	while (leftover)
 	{
 		leftover = girl->next_child(leftover, (leftover->m_Unborn > 0));
 	}
@@ -11124,6 +9575,8 @@ bool cGirls::child_is_due(sGirl* girl, sChild *child, string& summary, bool Play
 
 bool cGirls::InheritTrait(sTrait* trait)
 {
+	// `J` When adding new traits, search for "J-Add-New-Traits"  :  found in > InheritTrait
+
 	string name = trait->m_Name;
 	if (trait)
 	{
@@ -11149,6 +9602,8 @@ bool cGirls::InheritTrait(sTrait* trait)
 			name == "Slow Learner" ||
 			name == "Chlamydia" ||
 			name == "Syphilis" ||
+			name == "Herpes" ||
+
 			name == "Shroud Addict" ||
 			name == "Fairy Dust Addict" ||
 			name == "Viras Blood Addict")
@@ -11162,6 +9617,8 @@ bool cGirls::InheritTrait(sTrait* trait)
 		if (name == "Perky Nipples" ||
 			name == "Puffy Nipples" ||
 			name == "Long Legs" ||
+			//zzzzzz boobs
+
 			name == "Big Boobs" ||
 			name == "Abnormally Large Boobs" ||
 			name == "Small Boobs" ||
@@ -11598,7 +10055,7 @@ cAImgList* cImgageListManager::LoadList(string name)
 	string numeric="0123456789 ().,[]-";
 	string pic_types[] =
 	{
-		// `J` When adding or changing this section, search for "J-Change-Image-Types"
+		// `J` When modifying Image types, search for "J-Change-Image-Types"  :  found in > cImgageListManager::LoadList
 		"Anal*.*g", "BDSM*.*g", "Sex*.*g", "Beast*.*g", "Group*.*g", "Les*.*g", "torture*.*g",
 		"Death*.*g", "Profile*.*g", "Combat*.*g", "Oral*.*g", "Ecchi*.*g", "Strip*.*g", "Maid*.*g", "Sing*.*g",
 		"Wait*.*g", "Card*.*g", "Bunny*.*g", "Nude*.*g", "Mast*.*g", "Titty*.*g", "Milk*.*g", "Hand*.*g",
@@ -11612,7 +10069,6 @@ cAImgList* cImgageListManager::LoadList(string name)
 		// added but not used currently
 		"pregFoot*.*g", "pregBed*.*g", "pregFarm*.*g", "pregHerd*.*g", "pregCook*.*g", "pregCraft*.*g", 
 		"pregSwim*.*g", "pregBath*.*g", "pregNurse*.*g", "pregFormal*.*g"
-
 
 	};
 	int i = 0;
@@ -11656,10 +10112,9 @@ cAImgList* cImgageListManager::LoadList(string name)
 		i++;
 	}while(i<NUM_IMGTYPES);
 
-
 	// Yes this is just a hack to load animations (my bad ;) - Necro
 	string pic_types2[] = {
-		// `J` When adding or changing this section, search for "J-Change-Image-Types"
+		// `J` When modifying Image types, search for "J-Change-Image-Types"  :  found in > cImgageListManager::LoadList
 		"Anal*.ani", "BDSM*.ani", "Sex*.ani", "Beast*.ani", "Group*.ani", "Les*.ani", "torture*.ani",
 		"Death*.ani", "Profile*.ani", "Combat*.ani", "Oral*.ani", "Ecchi*.ani", "Strip*.ani", "Maid*.ani",
 		"Sing*.ani", "Wait*.ani", "Card*.ani", "Bunny*.ani", "Nude*.ani", "Mast*.ani", "Titty*.ani",
@@ -11667,7 +10122,6 @@ cAImgList* cImgageListManager::LoadList(string name)
 
 		// added but not used currently
 		"Foot*.ani", "Bed*.ani", "Farm*.ani", "Herd*.ani", "Cook*.ani", "Craft*.ani", "Swim*.ani", "Bath*.ani",
-
 
 		"Preg*.ani", "PregAnal*.ani", "PregBDSM*.ani", "PregSex*.ani", "pregbeast*.ani", "preggroup*.ani",
 		"pregles*.ani", "pregtorture*.ani", "pregdeath*.ani", "pregprofile*.ani", "pregcombat*.ani", "pregoral*.ani",
@@ -11677,8 +10131,6 @@ cAImgList* cImgageListManager::LoadList(string name)
 		// added but not used currently
 		"pregFoot*.ani", "pregBed*.ani", "pregFarm*.ani", "pregHerd*.ani", "pregCook*.ani", "pregCraft*.ani", 
 		"pregSwim*.ani", "pregBath*.ani", "pregNurse*.ani", "pregFormal*.ani"
-
-
 
 	};
 	i = 0;
@@ -11775,7 +10227,6 @@ bool cGirls::IsAnimatedSurface(sGirl* girl, int ImgType, int& img)
 				ImgType = IMGTYPE_PROFILE;		// Try this next loop
 			break;
 
-
 		case IMGTYPE_ANAL:
 		case IMGTYPE_BDSM:
 		case IMGTYPE_BEAST:
@@ -11823,7 +10274,6 @@ bool cGirls::IsAnimatedSurface(sGirl* girl, int ImgType, int& img)
 			else
 				return m_DefImages->m_Images[ImgType].IsAnimatedSurface(img);
 			break;
-
 
 		case IMGTYPE_SEX:
 			if(girl->is_pregnant() && girl->m_GirlImages->m_Images[IMGTYPE_PREGSEX].m_NumImages)
@@ -11924,7 +10374,6 @@ bool cGirls::IsAnimatedSurface(sGirl* girl, int ImgType, int& img)
 				ImgType = IMGTYPE_ORAL;
 			break;
 
-
 		default:	// `J` return the ImgType if there are any otherwise return 0
 			if (girl->m_GirlImages->m_Images[ImgType].m_NumImages > 0)
 				return girl->m_GirlImages->m_Images[ImgType].IsAnimatedSurface(img);
@@ -11971,7 +10420,7 @@ CSurface* cGirls::GetImageSurface(sGirl* girl, int ImgType, bool random, int& im
 	int alttypes[] = { -1, -1, -1, -1, -1, -1, -1, -1, -1 };
 	switch (ImgType)
 	{
-		// `J` When adding or changing this section, search for "J-Change-Image-Types"
+		// `J` When modifying Image types, search for "J-Change-Image-Types"  :  found in > GetImageSurface
 		// First do sex types
 	case IMGTYPE_ANAL:		alttypes[0] = IMGTYPE_SEX;		break;
 	case IMGTYPE_BDSM:		alttypes[0] = IMGTYPE_SEX;		break;
@@ -12014,7 +10463,6 @@ CSurface* cGirls::GetImageSurface(sGirl* girl, int ImgType, bool random, int& im
 	case IMGTYPE_COOK:		alttypes[0] = IMGTYPE_WAIT;		alttypes[1] = IMGTYPE_MAID;	break;
 	case IMGTYPE_HERD:		alttypes[0] = IMGTYPE_FARM;		break;
 	case IMGTYPE_CRAFT:		alttypes[0] = IMGTYPE_FARM;		break;
-
 
 	// these image types have no alt types
 //	case IMGTYPE_NURSE:
@@ -12183,7 +10631,6 @@ int cGirls::DrawGirl(sGirl* girl, int x, int y, int width, int height, int ImgTy
 				ImgType = IMGTYPE_PROFILE;		// Try this next loop
 			break;
 
-
 		case IMGTYPE_ANAL:
 		case IMGTYPE_BDSM:
 		case IMGTYPE_BEAST:
@@ -12211,7 +10658,6 @@ int cGirls::DrawGirl(sGirl* girl, int x, int y, int width, int height, int ImgTy
 //							Use default images, avoid endless loop
 				return m_DefImages->m_Images[IMGTYPE_PROFILE].DrawImage(x,y,width,height, random, img);
 			break;
-
 
 		case IMGTYPE_PREGNANT:
 		case IMGTYPE_DEATH:
@@ -12262,7 +10708,6 @@ int cGirls::DrawGirl(sGirl* girl, int x, int y, int width, int height, int ImgTy
 
 		//				And many conditions return early
 		}
-
 
 //		If not returned to calling module already, have failed to find ImgType images.
 //              If have not already, test a substitute image type that has/may have images,

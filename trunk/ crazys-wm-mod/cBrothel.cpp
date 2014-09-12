@@ -145,107 +145,28 @@ sBrothel::~sBrothel()			// destructor
 //bool sBrothel::matron_on_shift(int shift)
 bool sBrothel::matron_on_shift(int shift, bool isClinic, bool isStudio, bool isArena, bool isCentre, bool isHouse, bool isFarm, int BrothelID)
 {
-	if (isArena)
-	{
-		if (g_Arena.GetNumGirlsOnJob(0, JOB_DOCTORE, shift) > 0)
-		{
-			return true;
-		}
-	}
-	else if (isStudio)
-	{
-		if (g_Studios.GetNumGirlsOnJob(0, JOB_DIRECTOR, shift) > 0)
-		{
-			return true;
-		}
-	}
-	else if (isClinic)
-	{
-		if (g_Clinic.GetNumGirlsOnJob(0, JOB_CHAIRMAN, shift) > 0)
-		{
-			return true;
-		}
-	}
-	else if (isCentre)
-	{
-		if (g_Centre.GetNumGirlsOnJob(0, JOB_CENTREMANAGER, shift) > 0)
-		{
-			return true;
-		}
-	}
-	else if (isHouse)
-	{
-		if (g_House.GetNumGirlsOnJob(0, JOB_HEADGIRL, shift) > 0)
-		{
-			return true;
-		}
-	}
-	else if (isFarm)
-	{
-		if (g_Farm.GetNumGirlsOnJob(0, JOB_FARMMANGER, shift) > 0)
-		{
-			return true;
-		}
-	}
-	else if (g_Brothels.GetNumGirlsOnJob(BrothelID, JOB_MATRON, shift) > 0)
-	{
-		return true;
-	}
+	/* */if (isArena)	{ if (g_Arena.GetNumGirlsOnJob(0, JOB_DOCTORE, shift) > 0)				return true; }
+	else if (isStudio)	{ if (g_Studios.GetNumGirlsOnJob(0, JOB_DIRECTOR, shift) > 0)			return true; }
+	else if (isClinic)	{ if (g_Clinic.GetNumGirlsOnJob(0, JOB_CHAIRMAN, shift) > 0)			return true; }
+	else if (isCentre)	{ if (g_Centre.GetNumGirlsOnJob(0, JOB_CENTREMANAGER, shift) > 0)		return true; }
+	else if (isHouse)	{ if (g_House.GetNumGirlsOnJob(0, JOB_HEADGIRL, shift) > 0)				return true; }
+	else if (isFarm)	{ if (g_Farm.GetNumGirlsOnJob(0, JOB_FARMMANGER, shift) > 0)			return true; }
+	else /*         */	{ if (g_Brothels.GetNumGirlsOnJob(BrothelID, JOB_MATRON, shift) > 0)	return true; }
 	return false;
 }
 //int sBrothel::matron_count
 int sBrothel::matron_count(bool isClinic, bool isStudio, bool isArena, bool isCentre, bool isHouse, bool isFarm, int BrothelID)
 {
 	int i, sum = 0;
-
 	for (i = 0; i < 2; i++)
 	{
-		if (isArena)
-		{
-			if (g_Arena.GetNumGirlsOnJob(0, JOB_DOCTORE, i) > 0)
-			{
-				sum++;
-			}
-		}
-		else if (isStudio)
-		{
-			if (g_Studios.GetNumGirlsOnJob(0, JOB_DIRECTOR, i) > 0)
-			{
-				sum++;
-			}
-		}
-		else if (isClinic)
-		{
-			if (g_Clinic.GetNumGirlsOnJob(0, JOB_CHAIRMAN, i) > 0)
-			{
-				sum++;
-			}
-		}
-		else if (isCentre)
-		{
-			if (g_Centre.GetNumGirlsOnJob(0, JOB_CENTREMANAGER, i) > 0)
-			{
-				sum++;
-			}
-		}
-		else if (isHouse)
-		{
-			if (g_House.GetNumGirlsOnJob(0, JOB_HEADGIRL, i) > 0)
-			{
-				sum++;
-			}
-		}
-		else if (isFarm)
-		{
-			if (g_Farm.GetNumGirlsOnJob(0, JOB_FARMMANGER, i) > 0)
-			{
-				sum++;
-			}
-		}
-		else if (g_Brothels.GetNumGirlsOnJob(BrothelID, JOB_MATRON, i) > 0)
-		{
-			sum++;
-		}
+		/* */if (isArena)	{ if (g_Arena.GetNumGirlsOnJob(0, JOB_DOCTORE, i) > 0)				sum++; }
+		else if (isStudio)	{ if (g_Studios.GetNumGirlsOnJob(0, JOB_DIRECTOR, i) > 0)			sum++; }
+		else if (isClinic)	{ if (g_Clinic.GetNumGirlsOnJob(0, JOB_CHAIRMAN, i) > 0)			sum++; }
+		else if (isCentre)	{ if (g_Centre.GetNumGirlsOnJob(0, JOB_CENTREMANAGER, i) > 0)		sum++; }
+		else if (isHouse)	{ if (g_House.GetNumGirlsOnJob(0, JOB_HEADGIRL, i) > 0)				sum++; }
+		else if (isFarm)	{ if (g_Farm.GetNumGirlsOnJob(0, JOB_FARMMANGER, i) > 0)			sum++; }
+		else /*        */	{ if (g_Brothels.GetNumGirlsOnJob(BrothelID, JOB_MATRON, i) > 0)	sum++; }
 	}
 	return sum;
 }
@@ -253,16 +174,12 @@ int sBrothel::matron_count(bool isClinic, bool isStudio, bool isArena, bool isCe
 bool sBrothel::has_matron()
 {
 	int i;
-
-	for (i = 0; i < 2; i++) {
-		if (g_Brothels.GetNumGirlsOnJob(m_id, JOB_MATRON, i) > 0) {
-			return true;
-		}
+	for (i = 0; i < 2; i++) 
+	{
+		if (g_Brothels.GetNumGirlsOnJob(m_id, JOB_MATRON, i) > 0)	return true;
 	}
 	return false;
 }
-
-
 
 // ----- Class cBrothelManager Create / destroy
 cBrothelManager::cBrothelManager()			// constructor
@@ -313,49 +230,25 @@ cBrothelManager::~cBrothelManager()			// destructor
 void cBrothelManager::Free()
 {
 	cConfig cfg;
-	if (m_Prison)
-		delete m_Prison;
-	m_Prison = 0;
-	m_NumPrison = 0;
-	m_LastPrison = 0;
-
-	m_NumRunaways = 0;
-	if (m_Runaways)
-		delete m_Runaways;
-	m_Runaways = 0;
-	m_LastRunaway = 0;
-
-	m_NumInventory = 0;
+	if (m_Prison)		delete m_Prison;
+	if (m_Runaways)		delete m_Runaways;
+	/* sGirls */	m_Prison = m_LastPrison = m_Runaways = m_LastRunaway = 0;
+	/* int    */	m_NumPrison = m_NumRunaways = m_NumInventory = 0;
 	for (int i = 0; i<MAXNUM_INVENTORY; i++)
 	{
 		m_Inventory[i] = 0;
 		m_EquipedItems[i] = 0;
 		m_NumItem[i] = 0;
 	}
-	m_NumBrothels = 0;
-	//	m_AntiPregPotions	= 0;
-	m_SupplyShedLevel = 1;
-	m_BribeRate = 0;
-	m_Influence = 0;
-	m_Bank = 0;
-
-	//	m_KeepPotionsStocked = false;
-	m_HandmadeGoods = 0;
-	m_Beasts = 0;
-	m_AlchemyIngredients = 0;
-
-
-	if (m_Objective)
-		delete m_Objective;
+	/* long   */	m_BribeRate = m_Bank = 0;
+	/* int    */	m_NumBrothels = m_Influence = m_HandmadeGoods = m_Beasts = m_AlchemyIngredients = 0;
+	/* int    */	m_SupplyShedLevel = 1;
+	if (m_Objective)		delete m_Objective;
 	m_Objective = 0;
-
 	m_Dungeon.Free();
-
 	m_Rivals.Free();
-	if (m_Parent)
-		delete m_Parent;
-	m_Parent = 0;
-	m_Last = 0;
+	if (m_Parent)		delete m_Parent;
+	m_Parent = m_Last = 0;
 }
 
 // ----- Misc

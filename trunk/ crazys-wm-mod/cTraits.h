@@ -28,29 +28,27 @@ using namespace std;
 // Represents a single trait
 typedef struct sTrait
 {
-	char* m_Name;		// the name and unique ID of the trait
-	char* m_Desc;		// a description of the trait
+	char* m_Name = 0;		// the name and unique ID of the trait
+	char* m_Desc = 0;		// a description of the trait
+	char* m_Type = 0;		// a description of the trait
 
 	sTrait* m_Next;		// the next trait in the list
 
 	sTrait()
 	{
-		m_Name = m_Desc = 0;
+		m_Name = m_Desc = m_Type = 0;
 		m_Next = 0;
 	}
 
 	~sTrait()
 	{
-		if(m_Name)
-			delete [] m_Name;
+		if (m_Name) delete[] m_Name;
 		m_Name = 0;
-		
-		if(m_Desc)
-			delete [] m_Desc;
+		if (m_Desc) delete[] m_Desc;
 		m_Desc = 0;
-
-		if(m_Next)
-			delete m_Next;
+		if (m_Type) delete[] m_Type;
+		m_Type = 0;
+		if (m_Next) delete m_Next;
 		m_Next = 0;
 	}
 }sTrait;
@@ -64,8 +62,10 @@ public:
 
 	void Free();	// Delete all the loaded data
 
-	void LoadTraits(string filename);	// Loads the traits from a file (adding them to the existing traits)
+	void LoadTraits(string filename);		// Loads the traits from a file (adding them to the existing traits)
+	void LoadXMLTraits(string filename);	// Loads the traits from an XML file (adding them to the existing traits)
 	void SaveTraits(string filename);	// Saves the traits to a file
+
 	void AddTrait(sTrait* trait);
 	void RemoveTrait(string name);
 	sTrait* GetTrait(string name);
