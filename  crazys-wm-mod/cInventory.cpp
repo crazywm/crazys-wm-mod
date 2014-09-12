@@ -527,7 +527,9 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 				break;
 
 			case sEffect::Stat:			// affects skill
-				girl->upd_temp_stat(eff_id, amount);
+				if (eff_id == STAT_HEALTH || eff_id == STAT_HAPPINESS || eff_id == STAT_TIREDNESS)
+					girl->upd_stat(eff_id, amount);
+				else girl->upd_temp_stat(eff_id, amount);
 				break;
 
 			case sEffect::Trait:			// affects skill
@@ -552,8 +554,12 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 		else	// m_Special == sInventoryItem::None
 		{
 			if (affects == sEffect::Skill)		g_Girls.UpdateSkillMod(girl, eff_id, amount);
-			else if (affects == sEffect::Stat)	g_Girls.UpdateStatMod(girl, eff_id, amount);
-
+			else if (affects == sEffect::Stat)
+			{
+				if (eff_id == STAT_HEALTH || eff_id == STAT_HAPPINESS || eff_id == STAT_TIREDNESS)
+					g_Girls.UpdateStat(girl, eff_id, amount);
+				else g_Girls.UpdateStatMod(girl, eff_id, amount);
+			}
 			else if (affects == sEffect::GirlStatus)	// adds/removes status
 			{
 				if (amount >= 1)	// add status
@@ -612,8 +618,7 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 							girl->m_UseAntiPreg = AntiPreg;
 						}
 					}
-					else
-						girl->m_States |= (1 << eff_id);
+					else girl->m_States |= (1 << eff_id);
 				}
 				else if (amount == 0)	// remove status
 				{
@@ -685,7 +690,12 @@ void cInventory::Unequip(sGirl* girl, int num)
 		int amount = girl->m_Inventory[num]->m_Effects[i].m_Amount;
 
 		if (affects == sEffect::Skill)				g_Girls.UpdateSkillMod(girl, eff_id, -amount);			// affects skill
-		else if (affects == sEffect::Stat)			g_Girls.UpdateStatMod(girl, eff_id, -amount);		// affects stat
+		else if (affects == sEffect::Stat)			
+		{
+			if (eff_id == STAT_HEALTH || eff_id == STAT_HAPPINESS || eff_id == STAT_TIREDNESS)
+				g_Girls.UpdateStat(girl, eff_id, -amount);
+			else g_Girls.UpdateStatMod(girl, eff_id, -amount);
+		}
 		else if (affects == sEffect::GirlStatus)	// adds/removes status
 		{
 			if (amount == 1) girl->m_States &= ~(1 << eff_id);		// add status
@@ -720,24 +730,33 @@ void cInventory::Equip(sGirl* girl, sInventoryItem* item, bool force)
 {
 	// this function is only used for global effects sInventoryItem::AffectsAll = 1
 	if (item->m_Special != sInventoryItem::AffectsAll) return;
-
 	for (u_int i = 0; i < item->m_Effects.size(); i++)
 	{
-		if (item->m_Effects[i].m_Affects == sEffect::Skill)	// affects skill
-			g_Girls.UpdateSkillMod(girl, item->m_Effects[i].m_EffectID, item->m_Effects[i].m_Amount);
-		else if (item->m_Effects[i].m_Affects == sEffect::Stat)	// affects stat
-			g_Girls.UpdateStatMod(girl, item->m_Effects[i].m_EffectID, item->m_Effects[i].m_Amount);
-		else if (item->m_Effects[i].m_Affects == sEffect::Trait)	// trait
+		int eff_id = item->m_Effects[i].m_EffectID;
+		int affects = item->m_Effects[i].m_Affects;
+		int amount = item->m_Effects[i].m_Amount;
+
+		if (affects == sEffect::Skill)	// affects skill
+			g_Girls.UpdateSkillMod(girl, eff_id, amount);
+		else if (affects == sEffect::Stat)	// affects stat
 		{
-			if (item->m_Effects[i].m_Amount == 0)			// remove trait temporarily from equiping an item							
+			if (eff_id == STAT_HEALTH || eff_id == STAT_HAPPINESS || eff_id == STAT_TIREDNESS)
+				g_Girls.UpdateStat(girl, eff_id, amount);
+			else
+				g_Girls.UpdateStatMod(girl, eff_id, amount);
+		}
+
+		else if (affects == sEffect::Trait)	// trait
+		{
+			if (amount == 0)			// remove trait temporarily from equiping an item							
 				g_Girls.RemoveTrait(girl, item->m_Effects[i].m_Trait, true);	// addrememberlist = true AffectAll trait removal
 
-			else if (item->m_Effects[i].m_Amount == 1)		// add temporary trait 					
+			else if (amount == 1)		// add temporary trait 					
 				g_Girls.AddTrait(girl, item->m_Effects[i].m_Trait, true, true); // Temp = true AffectAll Item, removeitem = true for AffectAll trait
 
 			if (item->m_Effects[i].m_Trait == "Virgin")
 			{
-				girl->m_Virgin = (item->m_Effects[i].m_Amount == 1);
+				girl->m_Virgin = (amount == 1);
 			}
 		}
 	}

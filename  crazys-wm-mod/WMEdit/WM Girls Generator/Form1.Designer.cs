@@ -568,9 +568,6 @@
             this.tabPage5_Traits = new System.Windows.Forms.TabPage();
             this.button_Clear_Traits = new System.Windows.Forms.Button();
             this.dataGridView_Traits = new System.Windows.Forms.DataGridView();
-            this.dataGridView_Traits_Trait_Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridView_Traits_Trait_Desc = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridView_Traits_Trait_Type = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.button_Load_Traits = new System.Windows.Forms.Button();
             this.label_Load_Traits = new System.Windows.Forms.Label();
             this.button_Save_Traits = new System.Windows.Forms.Button();
@@ -592,6 +589,9 @@
             this.button23 = new System.Windows.Forms.Button();
             this.button24 = new System.Windows.Forms.Button();
             this.checkBox_ToggleTraitTooltips = new System.Windows.Forms.CheckBox();
+            this.dataGridView_Traits_Trait_Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridView_Traits_Trait_Desc = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridView_Traits_Trait_Type = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.tabControl1.SuspendLayout();
             this.tabPage0_Info.SuspendLayout();
             this.tabPage1_Girls.SuspendLayout();
@@ -7011,43 +7011,6 @@
             this.dataGridView_Traits.Size = new System.Drawing.Size(939, 445);
             this.dataGridView_Traits.TabIndex = 4;
             // 
-            // dataGridView_Traits_Trait_Name
-            // 
-            this.dataGridView_Traits_Trait_Name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dataGridView_Traits_Trait_Name.DataPropertyName = "Name";
-            this.dataGridView_Traits_Trait_Name.HeaderText = "Trait Name";
-            this.dataGridView_Traits_Trait_Name.Name = "dataGridView_Traits_Trait_Name";
-            this.dataGridView_Traits_Trait_Name.Width = 78;
-            // 
-            // dataGridView_Traits_Trait_Desc
-            // 
-            this.dataGridView_Traits_Trait_Desc.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.dataGridView_Traits_Trait_Desc.DataPropertyName = "Desc";
-            this.dataGridView_Traits_Trait_Desc.HeaderText = "Trait Description";
-            this.dataGridView_Traits_Trait_Desc.Name = "dataGridView_Traits_Trait_Desc";
-            // 
-            // dataGridView_Traits_Trait_Type
-            // 
-            this.dataGridView_Traits_Trait_Type.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dataGridView_Traits_Trait_Type.DataPropertyName = "Type";
-            this.dataGridView_Traits_Trait_Type.HeaderText = "Trait Type";
-            this.dataGridView_Traits_Trait_Type.Items.AddRange(new object[] {
-            "Species",
-            "Physical",
-            "Appearance",
-            "Action",
-            "Perception",
-            "Social",
-            "Mental",
-            "Magical",
-            "Sexual",
-            "Job",
-            "Temporary",
-            "Addiction",
-            "Disease"});
-            this.dataGridView_Traits_Trait_Type.Name = "dataGridView_Traits_Trait_Type";
-            this.dataGridView_Traits_Trait_Type.Width = 55;
-            // 
             // button_Load_Traits
             // 
             this.button_Load_Traits.Location = new System.Drawing.Point(6, 463);
@@ -7259,6 +7222,45 @@
             this.checkBox_ToggleTraitTooltips.UseVisualStyleBackColor = true;
             this.checkBox_ToggleTraitTooltips.CheckedChanged += new System.EventHandler(this.checkBox_ToggleTraitTooltips_CheckedChanged);
             // 
+            // dataGridView_Traits_Trait_Name
+            // 
+            this.dataGridView_Traits_Trait_Name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dataGridView_Traits_Trait_Name.DataPropertyName = "Name";
+            this.dataGridView_Traits_Trait_Name.HeaderText = "Trait Name";
+            this.dataGridView_Traits_Trait_Name.Name = "dataGridView_Traits_Trait_Name";
+            this.dataGridView_Traits_Trait_Name.Width = 84;
+            // 
+            // dataGridView_Traits_Trait_Desc
+            // 
+            this.dataGridView_Traits_Trait_Desc.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dataGridView_Traits_Trait_Desc.DataPropertyName = "Desc";
+            this.dataGridView_Traits_Trait_Desc.HeaderText = "Trait Description";
+            this.dataGridView_Traits_Trait_Desc.Name = "dataGridView_Traits_Trait_Desc";
+            // 
+            // dataGridView_Traits_Trait_Type
+            // 
+            this.dataGridView_Traits_Trait_Type.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dataGridView_Traits_Trait_Type.DataPropertyName = "Type";
+            this.dataGridView_Traits_Trait_Type.HeaderText = "Trait Type";
+            this.dataGridView_Traits_Trait_Type.Items.AddRange(new object[] {
+            "Species",
+            "Physical",
+            "Breasts",
+            "Appearance",
+            "Action",
+            "Perception",
+            "Social",
+            "Mental",
+            "Magical",
+            "Sexual",
+            "Job",
+            "Temporary",
+            "Addiction",
+            "Disease"});
+            this.dataGridView_Traits_Trait_Type.Name = "dataGridView_Traits_Trait_Type";
+            this.dataGridView_Traits_Trait_Type.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.dataGridView_Traits_Trait_Type.Width = 80;
+            // 
             // Form1
             // 
             this.AllowDrop = true;
@@ -7275,7 +7277,7 @@
             this.MaximumSize = new System.Drawing.Size(1000, 600);
             this.MinimumSize = new System.Drawing.Size(1000, 600);
             this.Name = "Form1";
-            this.Text = "Whore Master Editor 0.8.12";
+            this.Text = "Whore Master Editor 0.8.13";
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.App_FileDrop);
             this.DragEnter += new System.Windows.Forms.DragEventHandler(this.App_DragEnter);
             this.tabControl1.ResumeLayout(false);
@@ -7909,13 +7911,13 @@
         private System.Windows.Forms.DataGridView dataGridView_Traits;
         private System.Windows.Forms.Button button_Clear_Traits;
         private System.Windows.Forms.DataGridView dataGridView_G_Traits;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridView_Traits_Trait_Name;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridView_Traits_Trait_Desc;
-        private System.Windows.Forms.DataGridViewComboBoxColumn dataGridView_Traits_Trait_Type;
         private System.Windows.Forms.DataGridViewCheckBoxColumn dataGridView_G_Traits_Has;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridView_G_Traits_List;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridView_G_Traits_Type;
         private System.Windows.Forms.DataGridViewTextBoxColumn hidden_has;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridView_Traits_Trait_Name;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridView_Traits_Trait_Desc;
+        private System.Windows.Forms.DataGridViewComboBoxColumn dataGridView_Traits_Trait_Type;
     }
 }
 

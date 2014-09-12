@@ -52,9 +52,10 @@ static const char *stats[] = {
 	"exp",          "age",          "obedience",
 	"spirit",	"beauty",       "tiredness",
 	"health",       "pc_fear",	 "pc_love",
-	"pc_hate",
+	"pc_hate", "morality",
 	0
 };
+// `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in > Constants.h
 
 /*
  * same again for skill names

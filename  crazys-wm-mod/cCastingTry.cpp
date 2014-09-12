@@ -189,8 +189,10 @@ void cCastingTry::do_walk()
  *
  *	once scripts are stable
  */
-	string message = "You hold open casting couch to try and get a few new, ";
-	message += "actress for your movies.";
+	string message = "";
+	int pre = g_Dice % 2;
+	if (pre == 1)	message = "You need a new girl for your next film. You set up a public casting call.";
+	else			message = "You hold an open casting call to try to get a new actress for your movies.";
 	g_MessageQue.AddToQue(message, 2);
 	int v[2] = {0,-1};
 	cTrigger* trig = 0;

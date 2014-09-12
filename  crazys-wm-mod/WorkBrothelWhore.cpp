@@ -104,8 +104,6 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, int DayNight, string
 	string fuckMessage	= "";
 	string message		= "";
 	sCustomer Cust;
-	int NumCusts		= 0;		// Max number on customers the girl can fuck
-	int NumSleptWith	= 0;		// Total num customers she fucks this session
 	int iNum			= 0;
 	int iOriginal		= 0;
 	int	AskPrice		= g_Girls.GetStat(girl, STAT_ASKPRICE);
@@ -118,13 +116,8 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, int DayNight, string
 	bool bStreetWork;				// Girl Doing StreetWork
 
 	u_int SexType = 0;
-	u_int job = 0;		
-
-	if(DayNight == 0)
-		job				= girl->m_DayJob;	
-	else
-		job				= girl->m_NightJob;
-	bStreetWork			= (job == JOB_WHORESTREETS);
+	u_int job = (DayNight == 0) ? girl->m_DayJob : girl->m_NightJob;
+	bStreetWork = (job == JOB_WHORESTREETS);
 	stringstream ss;
 
 	girl->m_Pay = 0;
@@ -135,28 +128,11 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, int DayNight, string
 	// it was only adding 1 customer per stat, unless stat was 100 for beauty and Charisma. Fame would add a max of 3. and only if was = 10
 	// there would be NO point in doing this, if it defaults to NumCusts++ since it is basically the same effect.	-PP
 
-	if(g_Girls.GetStat(girl, STAT_BEAUTY) > 0)
-		NumCusts = g_Girls.GetStat(girl, STAT_BEAUTY) / 50 + 1;	// was 50
-	else
-		NumCusts++;
+	// Max number on customers the girl can fuck
+	int b = g_Girls.GetStat(girl, STAT_BEAUTY), c = g_Girls.GetStat(girl, STAT_CHARISMA), f = g_Girls.GetStat(girl, STAT_FAME);
+	int NumCusts = min(10, 3 + ((b + 1) / 50) + ((c + 1) / 50) + ((f + 1) / 25));
 
-	if(g_Girls.GetStat(girl, STAT_CHARISMA) > 0)
-		NumCusts += g_Girls.GetStat(girl, STAT_CHARISMA) / 50 + 1;	// was 50
-	else
-		NumCusts++;
-
-	if(g_Girls.GetStat(girl, STAT_FAME) > 0)
-		NumCusts += g_Girls.GetStat(girl, STAT_FAME) / 25 + 1;	// was 25
-	else
-		NumCusts++;
-
-	/*
-	 *	WD:	Reduce price and number of customers that 
-	 *		can be serviced for street work.
-	 *
-	 *		Done as there is no limit on number of customers
-	 *		for street work
-	 */
+	int NumSleptWith = 0;		// Total num customers she fucks this session
 
 	if(bStreetWork)		
 	{
