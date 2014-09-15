@@ -115,21 +115,11 @@ bool cJobManager::WorkFluffer(sGirl* girl, sBrothel* brothel, int DayNight, stri
 
 	girl->m_Events.AddMessage(message,IMGTYPE_ORAL,DayNight);
 	// Improve girl
-	int xp = 3, libido = 1, skill = 1;
+	int xp = 10, libido = 1, skill = 1;
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))
-	{
-		skill += 1;
-		xp += 2;
-	}
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))
-	{
-		skill -= 1;
-		xp -= 2;
-	}
-
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))
-		libido += 2;
+	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
+	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
+	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
 
 	girl->m_Pay += 55 + jobperformance;
 	g_Gold.staff_wages(55 + jobperformance);  // wages come from you

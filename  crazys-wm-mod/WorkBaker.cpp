@@ -126,26 +126,16 @@ bool cJobManager::WorkBaker(sGirl* girl, sBrothel* brothel, int DayNight, string
 
 
 
-	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
+	girl->m_Events.AddMessage(message, IMGTYPE_COOK, DayNight);
 	girl->m_Pay = wages;
 
 
 	// Improve stats
-	int xp = 5, libido = 1, skill = 3;
+	int xp = 10, libido = 1, skill = 3;
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))
-	{
-		skill += 1;
-		xp += 3;
-	}
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))
-	{
-		skill -= 1;
-		xp -= 3;
-	}
-
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))
-		libido += 2;
+	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
+	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
+	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
 
 	g_Girls.UpdateStat(girl, STAT_FAME, 1);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);

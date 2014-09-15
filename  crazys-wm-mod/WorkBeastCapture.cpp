@@ -98,19 +98,9 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, int DayNight,
 	// Improve girl
 	int xp = 8, libido = 2, skill = 1;
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))
-	{
-		skill += 1;
-		xp += 3;
-	}
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))
-	{
-		skill -= 1;
-		xp -= 3;
-	}
-
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))
-		libido += 2;
+	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
+	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
+	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
 
 	girl->m_Pay += 50 + (gain * 10);	// you catch more you get paid more
 	g_Gold.staff_wages(50+(gain*10));	// wages come from you

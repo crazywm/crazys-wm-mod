@@ -109,7 +109,7 @@ bool cJobManager::WorkFilmFootJob(sGirl* girl, sBrothel* brothel, int DayNight, 
 	girl->m_Pay += 10 + g_Dice%roll_max;
 
 	// Improve stats
-	int xp = 15, skill = 3 libido = 1;
+	int xp = 15, skill = 3, libido = 1;
 
 	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
@@ -118,6 +118,7 @@ bool cJobManager::WorkFilmFootJob(sGirl* girl, sBrothel* brothel, int DayNight, 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill);
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill + 1);
+	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
 
 	return false;

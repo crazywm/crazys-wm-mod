@@ -10060,7 +10060,7 @@ cAImgList* cImgageListManager::LoadList(string name)
 		"Death*.*g", "Profile*.*g", "Combat*.*g", "Oral*.*g", "Ecchi*.*g", "Strip*.*g", "Maid*.*g", "Sing*.*g",
 		"Wait*.*g", "Card*.*g", "Bunny*.*g", "Nude*.*g", "Mast*.*g", "Titty*.*g", "Milk*.*g", "Hand*.*g",
 		// added but not used currently
-		"Foot*.*g", "Bed*.*g", "Farm*.*g", "Herd*.*g", "Cook*.*g", "Craft*.*g", "Swim*.*g", "Bath*.*g", "Nurse*.*g", "Formal*.*g",
+		"Foot*.*g", "Bed*.*g", "Farm*.*g", "Herd*.*g", "Cook*.*g", "Craft*.*g", "Swim*.*g", "Bath*.*g", "Nurse*.*g", "Formal*.*g", "Shop*.*g",
 
 		"Preg*.*g", "PregAnal*.*g", "PregBDSM*.*g", "PregSex*.*g", "pregbeast*.*g", "preggroup*.*g", "pregles*.*g", "pregtorture*.*g", "pregdeath*.*g",
 		"pregprofile*.*g", "pregcombat*.*g", "pregoral*.*g", "pregecchi*.*g", "pregstrip*.*g", "pregmaid*.*g",
@@ -10068,7 +10068,7 @@ cAImgList* cImgageListManager::LoadList(string name)
 		"pregtitty*.*g", "pregmilk*.*g", "preghand*.*g",
 		// added but not used currently
 		"pregFoot*.*g", "pregBed*.*g", "pregFarm*.*g", "pregHerd*.*g", "pregCook*.*g", "pregCraft*.*g", 
-		"pregSwim*.*g", "pregBath*.*g", "pregNurse*.*g", "pregFormal*.*g"
+		"pregSwim*.*g", "pregBath*.*g", "pregNurse*.*g", "pregFormal*.*g", "pregShop*.*g"
 
 	};
 	int i = 0;
@@ -10118,7 +10118,7 @@ cAImgList* cImgageListManager::LoadList(string name)
 		"Anal*.ani", "BDSM*.ani", "Sex*.ani", "Beast*.ani", "Group*.ani", "Les*.ani", "torture*.ani",
 		"Death*.ani", "Profile*.ani", "Combat*.ani", "Oral*.ani", "Ecchi*.ani", "Strip*.ani", "Maid*.ani",
 		"Sing*.ani", "Wait*.ani", "Card*.ani", "Bunny*.ani", "Nude*.ani", "Mast*.ani", "Titty*.ani",
-		"Milk*.ani", "Hand*.ani", "Nurse*.ani", "Formal*.ani",
+		"Milk*.ani", "Hand*.ani", "Nurse*.ani", "Formal*.ani", "Shop*.ani",
 
 		// added but not used currently
 		"Foot*.ani", "Bed*.ani", "Farm*.ani", "Herd*.ani", "Cook*.ani", "Craft*.ani", "Swim*.ani", "Bath*.ani",
@@ -10127,6 +10127,7 @@ cAImgList* cImgageListManager::LoadList(string name)
 		"pregles*.ani", "pregtorture*.ani", "pregdeath*.ani", "pregprofile*.ani", "pregcombat*.ani", "pregoral*.ani",
 		"pregecchi*.ani", "pregstrip*.ani", "pregmaid*.ani", "pregsing*.ani", "pregwait*.ani", "pregcard*.ani",
 		"pregbunny*.ani", "pregnude*.ani", "pregmast*.ani", "pregtitty*.ani", "pregmilk*.ani", "preghand*.ani",
+		"pregShop*.ani",
 
 		// added but not used currently
 		"pregFoot*.ani", "pregBed*.ani", "pregFarm*.ani", "pregHerd*.ani", "pregCook*.ani", "pregCraft*.ani", 

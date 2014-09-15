@@ -136,16 +136,9 @@ bool cJobManager::WorkIntern(sGirl* girl, sBrothel* brothel, int DayNight, strin
 	// Improve stats
 	int xp = 5 + skill, libido = int(1 + skill/2);
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))
-	{
-		xp += 2;
-	}
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))
-	{
-		xp -= 2;
-	}
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))
-		libido += 2;
+	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
+	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
+	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);

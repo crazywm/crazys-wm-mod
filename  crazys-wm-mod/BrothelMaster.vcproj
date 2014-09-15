@@ -1275,6 +1275,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\WorkFilmFootJob.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\WorkFilmGroup.cpp"
 				>
 			</File>

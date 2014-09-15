@@ -122,7 +122,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 			}
 		else if (roll <= 75)
 			{
-				message += "When " + girlName + " got on stage the crowd went wild. She didn’t disappoint her fans giving one of the best performances in her life.\n";
+				message += "When " + girlName + " got on stage the crowd went wild. She didn't disappoint her fans giving one of the best performances in her life.\n";
 				brothel->m_Happiness += 5;
 			}
 		else
@@ -144,7 +144,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 			}
 		else if (roll <= 60)
 			{
-				message += "This wasn’t the best performance of her life time, but in general she did good.\n";
+				message += "This wasn't the best performance of her life time, but in general she did good.\n";
 			}
 		else if (roll <= 80)
 			{
@@ -166,11 +166,11 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 			}
 		else if (roll <= 50)
 			{
-				message += "She didn’t sing every part clear but overall she was good.\n";
+				message += "She didn't sing every part clear but overall she was good.\n";
 			}
 		else if (roll <= 75)
 			{
-				message += "Maybe she isn’t the best but at least she doesn’t scare away the customers.\n";
+				message += "Maybe she isn't the best but at least she doesn't scare away the customers.\n";
 			}
 		else
 			{
@@ -187,7 +187,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 			}
 		else if (roll <= 40)
 			{
-				message += "After hearing today’s performance, you order your guards to gag her for a week.\n";
+				message += "After hearing today's performance, you order your guards to gag her for a week.\n";
 			}
 		else if (roll <= 60)
 			{
@@ -215,7 +215,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 			}
 		else if (roll <= 28)
 			{
-				message += "She just can’t do it right.\n";
+				message += "She just can't do it right.\n";
 			}
 		else if (roll <= 42)
 			{
@@ -223,7 +223,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 			}
 		else if (roll <= 56)
 			{
-				message +=  girlName + " was the first to get on stage before today’s star performance. Seeing the gathered crowd, she froze up being able to let out a single word.\n";
+				message +=  girlName + " was the first to get on stage before today's star performance. Seeing the gathered crowd, she froze up being able to let out a single word.\n";
 			}
 		else if (roll <= 70)
 			{
@@ -366,19 +366,9 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 	// Improve stats
 	int xp = 10, libido = 1, skill = 3;
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))
-	{
-		skill += 1;
-		xp += 3;
-	}
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))
-	{
-		skill -= 1;
-		xp -= 3;
-	}
-
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))
-		libido += 2;
+	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
+	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
+	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
 
 	g_Girls.UpdateStat(girl, STAT_FAME, 1);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);

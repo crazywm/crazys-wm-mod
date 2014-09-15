@@ -84,18 +84,11 @@ bool cJobManager::WorkDrugCounselor(sGirl* girl, sBrothel* brothel, int DayNight
 	girl->m_Pay = wages;
 
 	// Improve stats
-	int xp = 15, skill = 2;
+	int xp = 15, skill = 2, libido = 1;
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))
-	{
-		skill += 1;
-		xp += 3;
-	}
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))
-	{
-		skill -= 1;
-		xp -= 3;
-	}
+	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
+	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
+	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateStat(girl, STAT_CHARISMA, skill);

@@ -387,17 +387,9 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, int DayN
 	// Improve stats
 	int xp = 10, libido = 3;
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))
-	{
-		xp += 3;
-	}
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))
-	{
-		xp -= 3;
-	}
-
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))
-		libido += 2;
+	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ xp += 3; }
+	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ xp -= 3; }
+	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);

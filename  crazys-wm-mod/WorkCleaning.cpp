@@ -79,29 +79,14 @@ bool cJobManager::WorkCleaning(sGirl* girl, sBrothel* brothel, int DayNight, str
 	// Improve girl
 	int xp = 5, libido = 1, skill = 3;
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))
-	{
-		skill += 1;
-		xp += 3;
-	}
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))
-	{
-		skill -= 1;
-		xp -= 3;
-	}
-
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))
-		libido += 2;
+	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
+	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
+	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
 
 	int pay = 50;
-	if (CleanAmt >= 125)
-	{
-		pay += 100;
-	}
-	else if (CleanAmt >= 60)
-	{
-		pay += 50;
-	}
+	if (CleanAmt >= 125)		{ pay += 100; }
+	else if (CleanAmt >= 60)	{ pay += 50; }
+
 	girl->m_Pay += pay;
 	g_Gold.building_upkeep(pay);  // wages come from you
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);

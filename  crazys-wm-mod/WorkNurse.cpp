@@ -107,7 +107,7 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, int DayNight, string
 		}
 		else if (roll <= 40)
 		{
-			message += "Today the knowledge and swift reaction from " + girlName + " saved a patient’s life!\n";
+			message += "Today the knowledge and swift reaction from " + girlName + " saved a patient's life!\n";
 		}
 		else if (roll <= 60)
 		{
@@ -144,7 +144,7 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, int DayNight, string
 		}
 		else
 		{
-			message += girlName + " is really committed to her job as a nurse. She’s starting to feel enjoyment after every hard worked day.\n";
+			message += girlName + " is really committed to her job as a nurse. She's starting to feel enjoyment after every hard worked day.\n";
 		}
 	}
 	else if (jobperformance >= 135)
@@ -215,7 +215,7 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, int DayNight, string
 		}
 		else if (roll <= 80)
 		{
-			message += "Being responsible for utilizing today’s medical waste, " + girlName + " just flashed them in the toilet.\n";
+			message += "Being responsible for utilizing today's medical waste, " + girlName + " just flashed them in the toilet.\n";
 		}
 		else
 		{
@@ -244,7 +244,7 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, int DayNight, string
 		}
 		else
 		{
-			message += girlName + " fainted on her first sight of blood. She wasn’t helpful today.\n";
+			message += girlName + " fainted on her first sight of blood. She wasn't helpful today.\n";
 		}
 	}
 
@@ -311,13 +311,13 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, int DayNight, string
 		{
 			if (g_Girls.GetStat(girl, STAT_LIBIDO) > 65)
 			{
-				message += "When giving a sponge bath to one of her male patients she couldn’t look away from his enormous manhood. The man took advantage and fuck her brains out!\n";
+				message += "When giving a sponge bath to one of her male patients she couldn't look away from his enormous manhood. The man took advantage and fuck her brains out!\n";
 				wages += 50;
 				sex = true;
 			}
 			else
 			{
-				message += "When giving a sponge bath to one of her male patients she couldn’t look away from his enormous manhood. But she wasn't in the mood so she left.\n";
+				message += "When giving a sponge bath to one of her male patients she couldn't look away from his enormous manhood. But she wasn't in the mood so she left.\n";
 			}
 		}
 	}
@@ -399,19 +399,9 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, int DayNight, string
 	// Improve stats
 	int xp = 5 + patients * 2, libido = 1, skill = 2 + patients / 3;
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))
-	{
-		skill += 1;
-		xp += 3;
-	}
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))
-	{
-		skill -= 1;
-		xp -= 3;
-	}
-
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))
-		libido += 2;
+	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
+	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
+	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
 
 	if (g_Girls.HasTrait(girl, "Lesbian"))
 		libido += patients / 2;

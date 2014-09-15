@@ -139,24 +139,18 @@ bool cJobManager::WorkCrystalPurifier(sGirl* girl, sBrothel* brothel, int DayNig
 		message += girlName + gettext(" did not really help the scene quality.\n");
 
 	// Improve stats
-	int xp = 5, skill = 3;
+	int xp = 5, skill = 3, libido = 1;
 	if (jobperformance > 5)	skill += 1;
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))
-	{
-		skill += 1;
-		xp += 3;
-	}
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))
-	{
-		skill -= 1;
-		xp -= 3;
-	}
+	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
+	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
+	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
 
 	if (g_Dice % 2 == 1)
 		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, g_Dice%skill);
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill + 1);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
+	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
 
 	return false;
