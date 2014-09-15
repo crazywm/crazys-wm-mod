@@ -159,6 +159,13 @@ bool cJobManager::WorkRehab(sGirl* girl, sBrothel* brothel, int DayNight, string
 	{
 		ss << "The rehab is in progress (" << (3 - girl->m_WorkingDay) << " day remaining).";
 	}
+
+	// Improve girl
+	int libido = 1;
+
+	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
+
+	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, msgtype);
 
 	return false;

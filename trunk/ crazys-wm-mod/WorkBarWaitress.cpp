@@ -111,7 +111,7 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 			}
 		else if (roll <= 84)
 			{
-				message +=  "Today she saved your place from a mayor disturbance. When greeting clients, " + girlName + " noticed that the newly arrived group was part of a gang that was at war with another group of men which were already inside your place. She politely apologized and explained that your place was full and couldn’t take such a large group. The men left unhappy but without giving her any trouble.\n";
+				message +=  "Today she saved your place from a mayor disturbance. When greeting clients, " + girlName + " noticed that the newly arrived group was part of a gang that was at war with another group of men which were already inside your place. She politely apologized and explained that your place was full and couldn't take such a large group. The men left unhappy but without giving her any trouble.\n";
 			}
 		else
 			{
@@ -131,11 +131,11 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 			}
 		else if (roll <= 32)
 			{
-				message +=  "She’s very good at this. You saw her several times today carrying out two orders at a time.\n";
+				message +=  "She's very good at this. You saw her several times today carrying out two orders at a time.\n";
 			}
 		else if (roll <= 48)
 			{
-				message += "When placing drink on the table she got slapped on the ass by one of the customers. " + girlName + " scolded them in a flirty way, saying that this kind of behavior could get them kicked out by the security and that she didn’t want to lose her favorite customers. The client apologies, ensuring her that he didn’t meant any harm.\n";
+				message += "When placing drink on the table she got slapped on the ass by one of the customers. " + girlName + " scolded them in a flirty way, saying that this kind of behavior could get them kicked out by the security and that she didn't want to lose her favorite customers. The client apologies, ensuring her that he didn't meant any harm.\n";
 			}
 		else if (roll <= 64)
 			{
@@ -180,7 +180,7 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 			}
 		else if (roll <= 56)
 			{
-				message += "Being confident in her skill, " + girlName + " didn’t make a single mistake today. She also earned some tips from happy customers.\n";
+				message += "Being confident in her skill, " + girlName + " didn't make a single mistake today. She also earned some tips from happy customers.\n";
 				wages += 10;
 			}
 		else if (roll <= 70)
@@ -223,7 +223,7 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 			}
 		else if (roll <= 70)
 			{
-				message += "When placing drink on the table she got slapped on the ass by one of the customers. " + girlName + " didn’t ignore that and called him names. Her behavior left the clients stunned for a moment.\n";
+				message += "When placing drink on the table she got slapped on the ass by one of the customers. " + girlName + " didn't ignore that and called him names. Her behavior left the clients stunned for a moment.\n";
 			}
 		else if (roll <= 84)
 			{
@@ -247,7 +247,7 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 			}
 		else if (roll <= 28)
 			{
-				message +=  "After being asked for the fourth time to repeat his order, the irritated customer left your facility. " + girlName + " clearly isn’t very good at this job.\n";
+				message +=  "After being asked for the fourth time to repeat his order, the irritated customer left your facility. " + girlName + " clearly isn't very good at this job.\n";
 				brothel->m_Happiness -= 5;
 			}
 		else if (roll <= 42)
@@ -461,19 +461,9 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 	// Improve stats
 	int xp = 10, libido = 1, skill = 3;
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))
-	{
-		skill += 1;
-		xp += 3;
-	}
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))
-	{
-		skill -= 1;
-		xp -= 3;
-	}
-
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))
-		libido += 2;
+	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
+	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
+	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
 
 	g_Girls.UpdateStat(girl, STAT_FAME, 1);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);

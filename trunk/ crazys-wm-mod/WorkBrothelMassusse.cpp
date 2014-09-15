@@ -129,7 +129,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, int DayNig
 			}
 		else if (roll <= 80)
 			{
-				message +=  "She certainly knows how and where to  press on a man’s body. Today, customers moans was heard on the corridor.\n";
+				message +=  "She certainly knows how and where to  press on a man's body. Today, customers moans was heard on the corridor.\n";
 				brothel->m_Happiness += 5;
 			}
 		else
@@ -175,7 +175,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, int DayNig
 
 		if (roll <= 20)
 			{
-				message += "Maybe she isn’t the best, but at least she won’t kill anyone.\n";
+				message += "Maybe she isn't the best, but at least she won't kill anyone.\n";
 			}
 		else if (roll <= 40)
 			{
@@ -191,7 +191,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, int DayNig
 			}
 		else
 			{
-				message += "Only few customers came today. She didn’t earn much.\n";
+				message += "Only few customers came today. She didn't earn much.\n";
 			}
 		}
 	else if (jobperformance >= 70)
@@ -205,7 +205,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, int DayNig
 			}
 		else if (roll <= 40)
 			{
-				message += "Her performance was bad. The customer left a complaint and didn’t pay for the service.\n";
+				message += "Her performance was bad. The customer left a complaint and didn't pay for the service.\n";
 				brothel->m_Happiness -= 5;
 			}
 		else if (roll <= 60)
@@ -316,19 +316,9 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, int DayNig
 		// Improve stats
 	int xp = 15, libido = 1, skill = 3;
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))
-	{
-		skill += 1;
-		xp += 3;
-	}
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))
-	{
-		skill -= 1;
-		xp -= 3;
-	}
-
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))
-		libido += 2;
+	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
+	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
+	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
 
 	g_Girls.UpdateStat(girl, STAT_FAME, 1);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);

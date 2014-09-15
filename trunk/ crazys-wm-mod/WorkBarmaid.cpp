@@ -99,7 +99,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, int DayNight, stri
 			}
 		else if (roll <= 56)
 			{
-				message += "She pours eleven 100ml shots from a single, one liter bottle. Now there’s a good barmaid!\n";
+				message += "She pours eleven 100ml shots from a single, one liter bottle. Now there's a good barmaid!\n";
 			}
 		else if (roll <= 70)
 			{
@@ -131,7 +131,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, int DayNight, stri
 			}
 		else if (roll <= 28)
 			{
-				message +=  "Today wasn’t really exciting for " + girlName + ". From boredom she spent some time trying to make more complicated drinks from the menu.\n";
+				message +=  "Today wasn't really exciting for " + girlName + ". From boredom she spent some time trying to make more complicated drinks from the menu.\n";
 			}
 		else if (roll <= 42)
 			{
@@ -176,7 +176,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, int DayNight, stri
 			}
 		else if (roll <= 42)
 			{
-				message += girlName + " didn’t make any mistakes today. She even earned some tips from happy customers.\n";
+				message += girlName + " didn't make any mistakes today. She even earned some tips from happy customers.\n";
 				brothel->m_Happiness += 5;
 				wages += 5;
 			}
@@ -188,7 +188,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, int DayNight, stri
 			}
 		else if (roll <= 70)
 			{
-				message += girlName + " spend more time talking with customers then pouring into their glasses. She didn’t earn much today.\n";
+				message += girlName + " spend more time talking with customers then pouring into their glasses. She didn't earn much today.\n";
 			}
 		else if (roll <= 84)
 			{
@@ -219,7 +219,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, int DayNight, stri
 			}
 		else if (roll <= 56)
 			{
-				message += "Maybe she isn’t the best and fastest, but at least every drop of a drink that she pours stays in the glass.\n";
+				message += "Maybe she isn't the best and fastest, but at least every drop of a drink that she pours stays in the glass.\n";
 			}
 		else if (roll <= 70)
 			{
@@ -227,7 +227,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, int DayNight, stri
 			}
 		else if (roll <= 84)
 			{
-				message +=  girlName + " focused all her attention on taking orders and making drinks. Her attitude wasn’t too appealing to clients. Some customers left feeling mistreated and unhappy.\n";
+				message +=  girlName + " focused all her attention on taking orders and making drinks. Her attitude wasn't too appealing to clients. Some customers left feeling mistreated and unhappy.\n";
 				brothel->m_Happiness -= 5;
 			}
 		else
@@ -245,12 +245,12 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, int DayNight, stri
 			}
 		else if (roll <= 28)
 			{
-				message +=  girlName + " is having a bad day and she isn’t trying to hide it.  Her bad attitude shows and rubs off on the customers, leaving a negative impression on them.\n";
+				message +=  girlName + " is having a bad day and she isn't trying to hide it.  Her bad attitude shows and rubs off on the customers, leaving a negative impression on them.\n";
 				brothel->m_Happiness -= 5;
 			}
 		else if (roll <= 42)
 			{
-				message += "Not being very good at this, she makes few mistakes. " + girlName + " feels that she didn’t improve today.\n";
+				message += "Not being very good at this, she makes few mistakes. " + girlName + " feels that she didn't improve today.\n";
 			}
 		else if (roll <= 56)
 			{
@@ -287,7 +287,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, int DayNight, stri
 			}
 		else if (roll <= 42)
 			{
-				message += "You can surely tell, that standing behind the bar isn’t her happy place. Being tense she made a lot of mistakes today.\n";
+				message += "You can surely tell, that standing behind the bar isn't her happy place. Being tense she made a lot of mistakes today.\n";
 			}
 		else if (roll <= 56)
 			{
@@ -299,7 +299,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, int DayNight, stri
 			}
 		else if (roll <= 84)
 			{
-				message += "She spends more of her shift flirting with a client not paying any attention to others. What’s worse, the guy she was flirting with, skips without paying the bill!\n";
+				message += "She spends more of her shift flirting with a client not paying any attention to others. What's worse, the guy she was flirting with, skips without paying the bill!\n";
 			}
 		else
 			{
@@ -457,19 +457,9 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, int DayNight, stri
 	// Improve stats
 	int xp = 10, libido = 1, skill = 3;
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))
-	{
-		skill += 1;
-		xp += 3;
-	}
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))
-	{
-		skill -= 1;
-		xp -= 3;
-	}
-
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))
-		libido += 2;
+	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
+	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
+	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
 
 	g_Girls.UpdateStat(girl, STAT_FAME, 1);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);

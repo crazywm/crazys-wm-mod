@@ -42,12 +42,14 @@ extern cMessageQue g_MessageQue;
 
 bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
+	int roll = g_Dice%100;
+	int imagetype = IMGTYPE_PROFILE;
 	//brothel->m_Filthiness++;
 	g_Girls.UpdateStat(girl, STAT_TIREDNESS, -20);
 	g_Girls.UpdateStat(girl, STAT_HAPPINESS, 15);
 	g_Girls.UpdateStat(girl, STAT_HEALTH, 10);
 	g_Girls.UpdateStat(girl, STAT_MANA, 10);
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))	{ g_Girls.UpdateTempStat(girl, STAT_LIBIDO, 10); }
+	if (g_Girls.HasTrait(girl, "Nymphomaniac"))	{ g_Girls.UpdateTempStat(girl, STAT_LIBIDO, 15); }
 	else/*									  */{ g_Girls.UpdateTempStat(girl, STAT_LIBIDO, 5); }
 	g_Girls.UpdateStat(girl, STAT_EXP, 1);   // Just because!
 
@@ -61,7 +63,36 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int DayNight, str
 
 	if(girl->m_Money == 0 || girl->m_NumInventory == 40)
 	{
-		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
+		if (roll <= 10)  //this is just something to add for now once I figure out how to do what I plan things will change
+			{
+				message += gettext(" She went to the local pool today.");
+				imagetype = IMGTYPE_SWIM;;
+				g_Girls.UpdateStat(girl, STAT_HAPPINESS, 5);
+			}
+		else if (roll <= 20)
+			{
+				message += gettext(" She decide to take a bath today.");
+				imagetype = IMGTYPE_BATH;;
+				g_Girls.UpdateStat(girl, STAT_HAPPINESS, 5);
+				g_Girls.UpdateStat(girl, STAT_HEALTH, 5);
+			}
+		else if (roll <= 30)
+			{
+				message += gettext(" She cooked a meal today in her free time.");
+				imagetype = IMGTYPE_COOK;;
+				g_Girls.UpdateStat(girl, STAT_HEALTH, 5);
+			}
+		else if (roll <= 40)
+			{
+				message += gettext(" She spent the day in the bed getting her rest in.");
+				imagetype = IMGTYPE_BED;;
+				g_Girls.UpdateStat(girl, STAT_TIREDNESS, -10);
+			}
+		else
+			{
+				imagetype = IMGTYPE_PROFILE;
+			}
+		girl->m_Events.AddMessage(message, imagetype, DayNight);
 		return false;
 	}
 
@@ -241,7 +272,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int DayNight, str
 		message += gettext(" She did some shopping, and bought: ") + buyList + ".";
 	}
 
-	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
+	girl->m_Events.AddMessage(message, IMGTYPE_SHOP, DayNight);
 	return false;
 }
 

@@ -59,18 +59,18 @@ bool cJobManager::WorkMakeItem(sGirl* girl, sBrothel* brothel, int DayNight, str
 	{
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCENTRE, -1, true);
 		message = gettext(" She wasn't able to make anything.");
-		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
+		girl->m_Events.AddMessage(message, IMGTYPE_CRAFT, DayNight);
 	}
 	else
 	{
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCENTRE, +3, true);
 		message = gettext(" She enjoyed her time working and made two items.");
-		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
+		girl->m_Events.AddMessage(message, IMGTYPE_CRAFT, DayNight);
 		g_Brothels.add_to_goods(2);
 	}
 
 	// Improve girl
-	int xp = 5, libido = 1, skill = 2;
+	int xp = 10, libido = 1, skill = 2;
 
 	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }

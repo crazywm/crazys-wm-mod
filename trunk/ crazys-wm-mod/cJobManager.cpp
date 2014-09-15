@@ -199,6 +199,9 @@ void cJobManager::Setup()
 	JobName[JOB_FILMHANDJOB] = ("Film Hand Job");
 	JobDesc[JOB_FILMHANDJOB] = ("She will perform in a hand job scene.");
 	JobFunc[JOB_FILMHANDJOB] = &WorkFilmHandJob;
+	JobName[JOB_FILMFOOTJOB] = ("Film Foot Job");
+	JobDesc[JOB_FILMFOOTJOB] = ("She will perform in a foot job scene.");
+	JobFunc[JOB_FILMFOOTJOB] = &WorkFilmFootJob;
 	JobName[JOB_FILMRANDOM] = ("Film a random scene");
 	JobDesc[JOB_FILMRANDOM] = ("She will perform in a random sex scene.");
 //	JobFunc[JOB_FILMRANDOM] = &WorkFilmRandom;		// This job is handled different than others, it is in cMovieStudio.cpp UpdateGirls()
@@ -790,9 +793,9 @@ void cJobManager::do_custjobs(sBrothel* brothel, int DayNight)
 		case JOB_BROTHELSTRIPPER:
 			refused = WorkBrothelStripper(current, brothel, DayNight, summary);
 			break;
-		case JOB_PEEP:
+		/*case JOB_PEEP:
 			refused = WorkPeepShow(current, brothel, DayNight, summary);
-			break;
+			break;*/
 		default:
 			break;
 		}
@@ -857,7 +860,7 @@ bool cJobManager::is_job_Paid_Player(u_int Job)
 		// ALL JOBS
 
 		// - General
-		Job ==	JOB_RESTING				||	// relaxes and takes some time off
+		//Job ==	JOB_RESTING				||	// relaxes and takes some time off
 		Job ==	JOB_TRAINING			||	// trains skills at a basic level
 		Job ==	JOB_CLEANING			||	// cleans the building
 		Job ==	JOB_SECURITY			||	// Protects the building and its occupants
@@ -886,6 +889,7 @@ bool cJobManager::is_job_Paid_Player(u_int Job)
 		Job ==	JOB_FILMTITTY			||	// films this sort of scene in the movie
 		Job ==	JOB_FILMSTRIP			||	// films this sort of scene in the movie
 		Job ==	JOB_FILMHANDJOB			||	// films this sort of scene in the movie
+		Job ==	JOB_FILMFOOTJOB			||	// films this sort of scene in the movie
 		Job ==	JOB_FILMRANDOM			||	// Films a random sex scene
 		Job ==	JOB_DIRECTOR			||	// Direcets the movies
 		Job ==	JOB_PROMOTER			||	// Advertises the studio's films

@@ -418,12 +418,13 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 						int s__o = (m_JobManager.is_sex_type_allowed(SKILL_ORALSEX, brothel)) ? current->get_skill(SKILL_ORALSEX) : -10;
 						int s__t = (m_JobManager.is_sex_type_allowed(SKILL_TITTYSEX, brothel)) ? current->get_skill(SKILL_TITTYSEX) : -10;
 						int s__h = (m_JobManager.is_sex_type_allowed(SKILL_HANDJOB, brothel)) ? current->get_skill(SKILL_HANDJOB) : -10;
+						int s__f = current->get_skill(SKILL_SERVICE);
 						int s__s = current->get_skill(SKILL_STRIP);
 
 						int test = 80;
 						do // now roll a random number and if that skill is higher than the test number set that as her job
 						{
-							switch (g_Dice % 11)
+							switch (g_Dice % 12)
 							{
 							case 0:		if (test <= s__b) { sw = JOB_FILMBEAST;		swt = "perform in bestiality scenes"; }		break;
 							case 1:		if (test <= s__n) { sw = JOB_FILMSEX;		swt = "perform in normal sex scenes"; }		break;
@@ -435,7 +436,8 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 							case 7:		if (test <= s__t) { sw = JOB_FILMTITTY;		swt = "perform in titty fuck scenes"; }		break;
 							case 8:		if (test <= s__h) { sw = JOB_FILMHANDJOB;	swt = "perform in hand job scenes"; }		break;
 							case 9:		if (test <= s__s) { sw = JOB_FILMMAST;		swt = "perform in masturbation scenes"; }	break;
-							case 10:	if (test <= s__s) { sw = JOB_FILMSTRIP;		swt = "perform in strip tease scenes"; }	break;
+							case 10:	if (test <= s__f) { sw = JOB_FILMFOOTJOB;	swt = "perform in foot job scenes"; }		break;
+							case 11:	if (test <= s__s) { sw = JOB_FILMSTRIP;		swt = "perform in strip tease scenes"; }	break;
 							default: break;
 							}
 							test -= 2;	// after each roll, lower the test number roll again
@@ -511,6 +513,7 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 					case JOB_FILMORAL:				skill = SKILL_ORALSEX;		swt = "blow one of the extras";	break;
 					case JOB_FILMTITTY:				skill = SKILL_TITTYSEX;		swt = "let one of the extras fuck her tits";	break;
 					case JOB_FILMHANDJOB:			skill = SKILL_HANDJOB;		swt = "jack off one of the extras";	break;
+					case JOB_FILMFOOTJOB:			skill = SKILL_SERVICE;		swt = "use her feet on one of the extras";	break;
 					case JOB_FILMMAST:				skill = SKILL_STRIP;		swt = "get herself off";	break;
 					case JOB_FILMSTRIP:	default:	skill = SKILL_STRIP;		swt = "take her clothes off";	break;
 					}
@@ -772,6 +775,7 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 				case JOB_FILMHANDJOB:	skill = SKILL_HANDJOB;		break;
 					// strip and mast are the only ones that can not be prohibited.
 				case JOB_FILMMAST:
+				case JOB_FILMFOOTJOB:
 				case JOB_FILMSTRIP:		skill = SKILL_STRIP;		break;
 				default:					break;
 				}
@@ -1327,6 +1331,7 @@ int cMovieStudioManager::Num_Actress(int brothel)
 		g_Studios.GetNumGirlsOnJob(brothel, JOB_FILMTITTY, 1) +
 		g_Studios.GetNumGirlsOnJob(brothel, JOB_FILMSTRIP, 1) +
 		g_Studios.GetNumGirlsOnJob(brothel, JOB_FILMHANDJOB, 1) +
+		g_Studios.GetNumGirlsOnJob(brothel, JOB_FILMFOOTJOB, 1) +
 		g_Studios.GetNumGirlsOnJob(brothel, JOB_FILMRANDOM, 1);
 }
 
@@ -1342,6 +1347,7 @@ bool cMovieStudioManager::is_Actress_Job(int testjob){
 		testjob == JOB_FILMTITTY ||
 		testjob == JOB_FILMSTRIP ||
 		testjob == JOB_FILMHANDJOB ||
+		testjob == JOB_FILMFOOTJOB ||
 		testjob == JOB_FILMRANDOM)
 		return true;
 	return false;
@@ -1362,6 +1368,7 @@ bool cMovieStudioManager::CrewNeeded()	// `J` added, if CM and CP both on duty o
 		GetNumGirlsOnJob(0, JOB_FILMTITTY, 1) +
 		GetNumGirlsOnJob(0, JOB_FILMSTRIP, 1) +
 		GetNumGirlsOnJob(0, JOB_FILMHANDJOB, 1) +
+		GetNumGirlsOnJob(0, JOB_FILMFOOTJOB, 1) +
 		GetNumGirlsOnJob(0, JOB_FILMRANDOM, 1) < 1)
 		return false;	// a CM or CP is not Needed
 	return true;	// Otherwise a CM or CP is Needed

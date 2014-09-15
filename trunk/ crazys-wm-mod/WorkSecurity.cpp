@@ -182,21 +182,11 @@ bool cJobManager::WorkSecurity(sGirl* girl, sBrothel* brothel, int DayNight, str
 	girl->m_Events.AddMessage(sstemp.str(), IMGTYPE_COMBAT, DayNight);
 
 	// Improve girl
-	int xp = 10, libido = 1, skill = 2;
+	int xp = 15, libido = 1, skill = 2;
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))
-	{
-		skill += 1;
-		xp += 5;
-	}
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))
-	{
-		skill -= 1;
-		xp -= 5;
-	}
-
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))
-		libido += 2;
+	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 5; }
+	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 5; }
+	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
 
 	girl->m_Pay += 70;
 	g_Gold.staff_wages(70);  // wages come from you

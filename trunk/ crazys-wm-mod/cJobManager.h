@@ -161,6 +161,7 @@ public:
 	static bool WorkFilmTitty(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
 	static bool WorkFilmStrip(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
 	static bool WorkFilmHandJob(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
+	static bool WorkFilmFootJob(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
 	static bool WorkFilmRandom(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
 	static bool WorkCameraMage(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
 	static bool WorkCrystalPurifier(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
