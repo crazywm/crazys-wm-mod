@@ -302,7 +302,7 @@ void cBrothelManager::check_raid()
 	{
 		ss << "the guard captain lectures you on the importance of crime prevention, whilst also passing on the Mayor's heartfelt best wishes.";
 		m_Player.suspicion(-5);
-		g_MessageQue.AddToQue(ss.str(), 1);
+		g_MessageQue.AddToQue(ss.str(), COLOR_GREEN);
 		return;
 	}
 	/*
@@ -323,7 +323,7 @@ void cBrothelManager::check_raid()
 		*		being so blatantly unfair
 		*/
 		ss << "On his way out the captain smiles and says that the " << rival->m_Name << " send their regards.";
-		g_MessageQue.AddToQue(ss.str(), 1);
+		g_MessageQue.AddToQue(ss.str(), COLOR_RED);
 		return;
 	}
 	/*
@@ -335,7 +335,7 @@ void cBrothelManager::check_raid()
 	{
 		ss << "they pronounce your operation to be entirely in accordance with the law.";
 		m_Player.suspicion(-5);
-		g_MessageQue.AddToQue(ss.str(), 1);
+		g_MessageQue.AddToQue(ss.str(), COLOR_GREEN);
 		return;
 	}
 	int nPlayer_Disposition = m_Player.disposition();
@@ -382,7 +382,7 @@ void cBrothelManager::check_raid()
 	*	check for a drug-using girl they can arrest
 	*/
 	check_druggy_girl(ss);
-	g_MessageQue.AddToQue(ss.str(), 1);
+	g_MessageQue.AddToQue(ss.str(), COLOR_RED);
 }
 
 int cBrothelManager::TotalFame(sBrothel * brothel)
@@ -1197,7 +1197,7 @@ void cBrothelManager::check_rivals()
 	*/
 	peace = false;
 	m_Rivals.CreateRandomRival();
-	g_MessageQue.AddToQue(new_rival_text(), 2);
+	g_MessageQue.AddToQue(new_rival_text(), COLOR_RED);
 }
 
 string cBrothelManager::new_rival_text()
@@ -1530,7 +1530,7 @@ void cBrothelManager::peace_breaks_out()
 		string s = gettext("The last of your challengers has been overthrown. ");
 		s += gettext("Your domination of Crossgate is absolute.\n\n");
 		s += gettext("Until the next time that is...");
-		g_MessageQue.AddToQue(s, 1);
+		g_MessageQue.AddToQue(s, COLOR_GREEN);
 		return;
 	}
 	/*
@@ -1560,7 +1560,7 @@ void cBrothelManager::peace_breaks_out()
 	s += gettext("You may have seized the city, but holding on to it ");
 	s += gettext("is never going to be easy.");
 	;
-	g_MessageQue.AddToQue(s, 1);
+	g_MessageQue.AddToQue(s, COLOR_GREEN);
 	return;
 }
 
@@ -1604,6 +1604,16 @@ void cBrothelManager::UpdateBrothels()
 			cgirl->m_YesterNightJob = cgirl->m_NightJob;
 
 
+			if (cgirl->m_JustGaveBirth)		// if she gave birth, let her rest this week
+			{
+				if (cgirl->m_DayJob != restjob)		cgirl->m_PrevDayJob = cgirl->m_DayJob;
+				if (cgirl->m_NightJob != restjob)	cgirl->m_PrevNightJob = cgirl->m_NightJob;
+				cgirl->m_DayJob = cgirl->m_NightJob = restjob;
+			}
+
+
+
+
 			cgirl = cgirl->m_Next;
 		}
 
@@ -1616,8 +1626,8 @@ void cBrothelManager::UpdateBrothels()
 		// Generate customers for the brothel for the day shift and update girls
 		current->m_SecurityLevel -= 10; // Moved to here so Security drops once per day instead of everytime a girl works security -PP
 		current->m_SecurityLevel -= current->m_NumGirls;	//`J` m_SecurityLevel is extremely over powered. Reducing it's power a lot.
-		if (current->m_SecurityLevel <= 0) // crazy added
-			current->m_SecurityLevel = 0;
+		if (current->m_SecurityLevel <= 0) current->m_SecurityLevel = 0;	 // crazy added
+		
 		m_JobManager.do_advertising(current, 0);
 		g_Customers.GenerateCustomers(current, 0);
 		current->m_TotalCustomers += g_Customers.GetNumCustomers();
@@ -1637,7 +1647,7 @@ void cBrothelManager::UpdateBrothels()
 		current->m_TotalCustomers += current->m_MiscCustomers;
 
 		string data = "";
-		_itoa(current->m_TotalCustomers + current->m_MiscCustomers, buffer, 10);
+		_itoa(current->m_TotalCustomers, buffer, 10);
 		data += buffer;
 		data += gettext(" customers visited the building.");
 
@@ -1694,22 +1704,19 @@ void cBrothelManager::UpdateBrothels()
 			if (rgirl->m_RunAway > 0)
 			{
 				// there is a chance the authorities will catch her if she is branded a slave
-				if (rgirl->m_States&(1 << STATUS_SLAVE))
+				if (rgirl->is_slave() && g_Dice.percent(5))
 				{
-					if ((g_Dice % 100) + 1 < 5)
-					{
-						// girl is recaptured and returned to you
-						sGirl* temp = rgirl;
-						rgirl = temp->m_Next;
-						RemoveGirlFromRunaways(temp);
-						m_Dungeon.AddGirl(temp, DUNGEON_GIRLRUNAWAY);
-						g_MessageQue.AddToQue(gettext("A runnaway slave has been recaptured by the authorities and returned to you."), 1);
-						continue;
-					}
+					// girl is recaptured and returned to you
+					sGirl* temp = rgirl;
+					rgirl = temp->m_Next;
+					RemoveGirlFromRunaways(temp);
+					m_Dungeon.AddGirl(temp, DUNGEON_GIRLRUNAWAY);
+					g_MessageQue.AddToQue(gettext("A runnaway slave has been recaptured by the authorities and returned to you."), COLOR_GREEN);
+					continue;
 				}
 				rgirl->m_RunAway--;
 			}
-			else	// add her back to girls
+			else	// add her back to girls available to reacquire
 			{
 				sGirl* temp = rgirl;
 				rgirl = temp->m_Next;
@@ -1724,7 +1731,7 @@ void cBrothelManager::UpdateBrothels()
 
 	if (m_Prison)
 	{
-		if ((g_Dice % 100) + 1 < 10)	// 10% chance of someone being released
+		if (g_Dice.percent(10))	// 10% chance of someone being released
 		{
 			sGirl* girl = m_Prison;
 			RemoveGirlFromPrison(girl);
@@ -1733,16 +1740,11 @@ void cBrothelManager::UpdateBrothels()
 	}
 
 	// keep gravitating player suspicion to 0
-	if (m_Player.suspicion() > 0)
-		m_Player.suspicion(-1);
-	else if (m_Player.suspicion() < 0)
-		m_Player.suspicion(1);
+	/* */if (m_Player.suspicion() > 0)	m_Player.suspicion(-1);
+	else if (m_Player.suspicion() < 0)	m_Player.suspicion(1);
 
 	// is the player under suspision by the authorities
-	if (m_Player.suspicion() > 20)
-	{
-		check_raid();
-	}
+	if (m_Player.suspicion() > 20)		check_raid();
 
 	// incraese the bank gold by 02%
 	if (m_Bank > 0)
@@ -1773,10 +1775,11 @@ void cBrothelManager::UpdateBrothels()
 		g_Gold.extortion(gold);
 		if (num == 1)
 		{
-			message += gettext("A man cannot pay so he sells you his daughter.");
-			m_Dungeon.AddGirl(g_Girls.CreateRandomGirl(17, false), DUNGEON_GIRLKIDNAPPED);
+			sGirl* girl = g_Girls.CreateRandomGirl(17, false);
+			message += gettext("A man cannot pay so he sells you his daughter ") + girl->m_Realname;
+			m_Dungeon.AddGirl(girl, DUNGEON_NEWGIRL);
 		}
-		g_MessageQue.AddToQue(message, 3);
+		g_MessageQue.AddToQue(message, COLOR_GREEN);
 	}
 
 	do_tax();
@@ -1787,15 +1790,21 @@ void cBrothelManager::UpdateBrothels()
 	check_rivals();
 
 	long totalProfit = g_Gold.total_profit();
-	if (totalProfit == 0)
+	if (totalProfit < 0)
 	{
-		g_MessageQue.AddToQue(gettext("You are breaking even (made as much money as you spent)"), 3);
+		stringstream ss;
+		ss << "Your brothel had an overall deficit of " << -totalProfit << " gold.";
+		g_MessageQue.AddToQue(ss.str(), COLOR_RED);
+	}
+	else if (totalProfit > 0)
+	{
+		stringstream ss;
+		ss << "You made a overall profit of " << totalProfit << " gold.";
+		g_MessageQue.AddToQue(ss.str(), COLOR_GREEN);
 	}
 	else
 	{
-		stringstream ss;
-		ss << "you made a overall profit of " << totalProfit << " gold.";
-		g_MessageQue.AddToQue(ss.str(), 2);
+		g_MessageQue.AddToQue(gettext("You are breaking even (made as much money as you spent)"), COLOR_DARKBLUE);
 	}
 
 	// MYR: I'm really curious about what goes in these if statements
@@ -1860,17 +1869,6 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, int DayNight)
 	bool refused = false;
 	m_Processing_Shift = DayNight;		// WD:	Set processing flag to shift type
 
-	while (current)
-	{
-		if (current->m_JustGaveBirth)		// if she gave birth, let her rest this week
-		{
-			if (current->m_NightJob != restjob)	current->m_PrevNightJob = current->m_NightJob;
-			current->m_NightJob = restjob;
-		}
-		current = current->m_Next; // Next Girl
-	}
-	current = brothel->m_Girls;
-
 
 	/*
 	*	handle any girls training during this shift
@@ -1901,7 +1899,7 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, int DayNight)
 				// Two messages go into the girl queue...
 				msg += girlName + gettext(" has died from her injuries, the other girls all fear and hate you a little more.");
 				DeadGirl->m_Events.AddMessage(msg, IMGTYPE_DEATH, EVENT_DANGER);
-				g_MessageQue.AddToQue(msg, 1);
+				g_MessageQue.AddToQue(msg, COLOR_RED);
 				summary += girlName + gettext(" has died from her injuries.  Her body will be removed by the end of the week.");
 				DeadGirl->m_Events.AddMessage(summary, IMGTYPE_DEATH, EVENT_SUMMARY);
 				RemoveGirl(brothel->m_id, DeadGirl);
@@ -1993,127 +1991,18 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, int DayNight)
 
 		brothel->m_Fame += g_Girls.GetStat(current, STAT_FAME);
 
-		// Runaway, Depression & Drug checking
-		if (runaway_check(brothel, current) == true) 
-		{
-			sGirl* temp = current;
-			current = current->m_Next;
-			g_Brothels.RemoveGirl(brothel->m_id, temp, false);
-			g_Brothels.AddGirlToRunaways(temp);
-			continue;
-		}
-
-		/*
-		*		MATRON CODE START
-		*/
-
-		// Lets try to compact multiple messages into one.
-		MatronMsg = "";
-		MatronWarningMsg = "";
-
-		bool matron = false;
-		if (GetNumGirlsOnJob(brothel->m_id, JOB_MATRON, true) >= 1 || GetNumGirlsOnJob(brothel->m_id, JOB_MATRON, false) >= 1)
-			matron = true;
-
-		if (g_Girls.GetStat(current, STAT_TIREDNESS) > 80)
-		{
-			if (matron)
-			{
-				if (current->m_PrevNightJob == 255 && current->m_PrevDayJob == 255)
-				{
-					current->m_PrevDayJob = current->m_DayJob;
-					current->m_PrevNightJob = current->m_NightJob;
-					current->m_DayJob = current->m_NightJob = JOB_RESTING;
-					MatronWarningMsg += gettext("Your matron takes ") + girlName + gettext(" off duty to rest due to her tiredness.\n");
-					//current->m_Events.AddMessage(msg, IMGTYPE_DEATH, EVENT_WARNING);
-				}
-				else
-				{
-					if ((g_Dice % 100) + 1 < 70)
-					{
-						MatronMsg += gettext("Your matron helps ") + girlName + gettext(" to relax.\n");
-						//current->m_Events.AddMessage(msg, IMGTYPE_PROFILE, DayNight);
-						g_Girls.UpdateStat(current, STAT_TIREDNESS, -5);
-					}
-				}
-			}
-			else
-				MatronWarningMsg += gettext("CAUTION! This girl desparatly need rest. Give her some free time\n");
-			//current->m_Events.AddMessage("CAUTION! This girl desparatly need rest. Give her some free time", IMGTYPE_DEATH, EVENT_WARNING);
-		}
-
-		if (g_Girls.GetStat(current, STAT_HAPPINESS) < 40 && matron && (g_Dice % 100) + 1 < 70)
-		{
-			MatronMsg = gettext("Your matron helps cheer up ") + girlName + gettext(" after she feels sad.\n");
-			//current->m_Events.AddMessage(msg, IMGTYPE_PROFILE, DayNight);
-			g_Girls.UpdateStat(current, STAT_HAPPINESS, 5);
-		}
-
-		if (g_Girls.GetStat(current, STAT_HEALTH) < 40)
-		{
-			if (matron)
-			{
-				if (current->m_PrevNightJob == 255 && current->m_PrevDayJob == 255)
-				{
-					current->m_PrevDayJob = current->m_DayJob;
-					current->m_PrevNightJob = current->m_NightJob;
-					current->m_DayJob = current->m_NightJob = JOB_RESTING;
-					MatronWarningMsg += girlName + gettext(" is taken off duty by your matron to rest due to her low health.\n");
-					//current->m_Events.AddMessage(msg, IMGTYPE_DEATH, EVENT_WARNING);
-				}
-				else
-				{
-					MatronMsg = gettext("Your matron helps heal ") + girlName + gettext(".\n");
-					//current->m_Events.AddMessage(msg, IMGTYPE_PROFILE, DayNight);
-					g_Girls.UpdateStat(current, STAT_HEALTH, 5);
-				}
-			}
-			else
-			{
-				MatronWarningMsg = gettext("DANGER ") + girlName + gettext("'s health is very low!\nShe must rest or she will die!\n");
-				//current->m_Events.AddMessage(msg, IMGTYPE_DEATH, EVENT_DANGER);
-			}
-		}
-
-		// Now print out the consolodated message
-		if (strcmp(MatronMsg.c_str(), "") != 0)
-		{
-			current->m_Events.AddMessage(MatronMsg, IMGTYPE_PROFILE, DayNight);
-			MatronMsg = "";
-		}
-
-		if (strcmp(MatronWarningMsg.c_str(), "") != 0)
-		{
-			current->m_Events.AddMessage(MatronWarningMsg, IMGTYPE_PROFILE, EVENT_WARNING);
-			MatronWarningMsg = "";
-		}
-		/*
-		*		MATRON CODE END
-		*/
-
-		// update girl triggers
-		current->m_Triggers.ProcessTriggers();
-
 		/*
 		*		Summary Messages
 		*/
 
-		if (sw == JOB_RESTING)
-			summary += girlName + gettext(" was resting so made no money.");
-
-		else if (sw == JOB_TRAINING)
-			sum = -1;	// `J` temporary -1 until I reflow brothel jobs
-
+		/* */if (sw == JOB_RESTING)			summary += girlName + gettext(" was resting so made no money.");
 		else if (sw == JOB_MATRON && DayNight == SHIFT_NIGHT)
 			summary += girlName + gettext(" continued to help the other girls throughout the night.");
 
-		else if (sw == JOB_ADVERTISING)
-			sum = -1;
-
-		// WD:	No night shift sunnary message needed for Torturer job
-		else if (sw == JOB_TORTURER && DayNight == SHIFT_NIGHT)
-			sum = -1;
-
+		// `J` temporary -1 until I reflow brothel jobs
+		else if (sw == JOB_TRAINING || sw == JOB_ADVERTISING)	sum = -1;
+		// WD:	No night shift summary message needed for Torturer job
+		else if (sw == JOB_TORTURER && DayNight == SHIFT_NIGHT)	sum = -1;
 		// WD:	Bad girl did not work. Moved from cJobManager::Preprocessing()
 		else if (refused) summary += girlName + gettext(" refused to work so made no money.");
 		else if (totalGold > 0)
@@ -2150,10 +2039,109 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, int DayNight)
 			summary += ss.str();
 			sum = EVENT_DEBUG;
 		}
-		if (sum>=0)	// `J` temporary -1 not to show until I reflow brothel jobs
-		current->m_Events.AddMessage(summary, IMGTYPE_PROFILE, sum);
+		if (sum >= 0)	// `J` temporary -1 not to show until I reflow brothel jobs
+			current->m_Events.AddMessage(summary, IMGTYPE_PROFILE, sum);
 
 		summary = "";
+
+
+
+
+
+
+		// Runaway, Depression & Drug checking
+		if (runaway_check(brothel, current) == true) 
+		{
+			sGirl* temp = current;
+			current = current->m_Next;
+			g_Brothels.RemoveGirl(brothel->m_id, temp, false);
+			g_Brothels.AddGirlToRunaways(temp);
+			continue;
+		}
+
+		/*
+		*		MATRON CODE START
+		*/
+
+		// Lets try to compact multiple messages into one.
+		MatronMsg = "";
+		MatronWarningMsg = "";
+
+		bool matron = false;
+		if (GetNumGirlsOnJob(brothel->m_id, JOB_MATRON, true) >= 1 || GetNumGirlsOnJob(brothel->m_id, JOB_MATRON, false) >= 1)
+			matron = true;
+
+		if (g_Girls.GetStat(current, STAT_TIREDNESS) > 80)
+		{
+			if (matron)
+			{
+				if (current->m_PrevNightJob == 255 && current->m_PrevDayJob == 255)
+				{
+					current->m_PrevDayJob = current->m_DayJob;
+					current->m_PrevNightJob = current->m_NightJob;
+					current->m_DayJob = current->m_NightJob = JOB_RESTING;
+					MatronWarningMsg += gettext("Your matron takes ") + girlName + gettext(" off duty to rest due to her tiredness.\n");
+				}
+				else
+				{
+					if ((g_Dice % 100) + 1 < 70)
+					{
+						MatronMsg += gettext("Your matron helps ") + girlName + gettext(" to relax.\n");
+						g_Girls.UpdateStat(current, STAT_TIREDNESS, -5);
+					}
+				}
+			}
+			else
+				MatronWarningMsg += gettext("CAUTION! This girl desparatly need rest. Give her some free time\n");
+		}
+
+		if (g_Girls.GetStat(current, STAT_HAPPINESS) < 40 && matron && (g_Dice % 100) + 1 < 70)
+		{
+			MatronMsg = gettext("Your matron helps cheer up ") + girlName + gettext(" after she feels sad.\n");
+			g_Girls.UpdateStat(current, STAT_HAPPINESS, 5);
+		}
+
+		if (g_Girls.GetStat(current, STAT_HEALTH) < 40)
+		{
+			if (matron)
+			{
+				if (current->m_PrevNightJob == 255 && current->m_PrevDayJob == 255)
+				{
+					current->m_PrevDayJob = current->m_DayJob;
+					current->m_PrevNightJob = current->m_NightJob;
+					current->m_DayJob = current->m_NightJob = JOB_RESTING;
+					MatronWarningMsg += girlName + gettext(" is taken off duty by your matron to rest due to her low health.\n");
+				}
+				else
+				{
+					MatronMsg = gettext("Your matron helps heal ") + girlName + gettext(".\n");
+					g_Girls.UpdateStat(current, STAT_HEALTH, 5);
+				}
+			}
+			else
+			{
+				MatronWarningMsg = gettext("DANGER ") + girlName + gettext("'s health is very low!\nShe must rest or she will die!\n");
+			}
+		}
+
+		if (strcmp(MatronMsg.c_str(), "") != 0)
+		{
+			current->m_Events.AddMessage(MatronMsg, IMGTYPE_PROFILE, DayNight);
+			MatronMsg = "";
+		}
+
+		if (strcmp(MatronWarningMsg.c_str(), "") != 0)
+		{
+			current->m_Events.AddMessage(MatronWarningMsg, IMGTYPE_PROFILE, EVENT_WARNING);
+			MatronWarningMsg = "";
+		}
+		/*
+		*		MATRON CODE END
+		*/
+
+		// update girl triggers
+		current->m_Triggers.ProcessTriggers();
+
 
 		// Do item check at the end of the day
 		if (DayNight == SHIFT_NIGHT)
@@ -2846,10 +2834,9 @@ void cBrothelManager::do_tax()
 	// check for money laundering and apply tax
 	int earnings = g_Gold.total_earned();
 
-	if (earnings <= 0) {
-		g_MessageQue.AddToQue(
-			gettext("You didn't earn any money so didn't get taxed."), 0
-			);
+	if (earnings <= 0)
+	{
+		g_MessageQue.AddToQue(gettext("You didn't earn any money so didn't get taxed."), COLOR_BLUE);
 		return;
 	}
 	/*
@@ -2865,10 +2852,9 @@ void cBrothelManager::do_tax()
 	*	this should not logically happen unless we
 	*	do something very clever with the money laundering
 	*/
-	if (tax <= 0) {
-		g_MessageQue.AddToQue(
-			gettext("Thanks to a clever accountant, none of your income turns out to be taxable"), 0
-			);
+	if (tax <= 0)
+	{
+		g_MessageQue.AddToQue(gettext("Thanks to a clever accountant, none of your income turns out to be taxable"), COLOR_BLUE);
 		return;
 	}
 	g_Gold.tax(tax);
@@ -2878,7 +2864,7 @@ void cBrothelManager::do_tax()
 	*	Otherwise, it just makes the tax rate wobble a bit
 	*/
 	ss << "You were taxed " << tax << " gold. You managed to launder " << laundry << " through various local businesses.";
-	g_MessageQue.AddToQue(ss.str(), 0);
+	g_MessageQue.AddToQue(ss.str(), COLOR_BLUE);
 }
 
 bool is_she_cleaning(sGirl *girl)
@@ -3510,16 +3496,15 @@ void cBrothelManager::CalculatePay(sBrothel* brothel, sGirl* girl, u_int Job)
 			(cfg.initial.slave_keep_tips() && girl->is_slave()))		// if slaves tips are counted sepreatly from pay
 		{
 			girl->m_Money += girl->m_Tips;	// give her the tips directly
-			girl->m_Tips = 0;
 		}
 		else	// otherwise add tips into pay
 		{
 			girl->m_Pay += girl->m_Tips;
-			girl->m_Tips = 0;
 		}
 	}
+	girl->m_Tips = 0;
 	// no pay, no need to continue
-	if (girl->m_Pay <= 0) { girl->m_Pay = girl->m_Tips = 0; return; }
+	if (girl->m_Pay <= 0) { girl->m_Pay = 0; return; }
 
 	// if the house takes nothing		or if it is a player paid job and she is not a slave
 	if (girl->m_Stats[STAT_HOUSE] == 0 || (m_JobManager.is_job_Paid_Player(Job) && !girl->is_slave()) ||
@@ -3569,7 +3554,7 @@ void cBrothelManager::UpdateObjective()
 			m_Objective->m_Limit--;
 		if (m_Objective->m_Limit == 0)
 		{
-			g_MessageQue.AddToQue(gettext("You have failed an objective."), 2);
+			g_MessageQue.AddToQue(gettext("You have failed an objective."), COLOR_RED);
 			delete m_Objective;
 			m_Objective = 0;
 			return;
@@ -5012,7 +4997,7 @@ bool cBrothelManager::runaway_check(sBrothel *brothel, sGirl *girl)
 		smess += girl->m_Realname;
 		smess += gettext(" has run away,");
 		smess += gettext("  Send your goons after her to attempt recapture.\nShe will escape for good after 6 weeks");
-		g_MessageQue.AddToQue(smess, 1);
+		g_MessageQue.AddToQue(smess, COLOR_RED);
 		return true;
 	}
 
@@ -5235,9 +5220,7 @@ int cBrothelManager::bar_update(sbrothel* brothel)
 	//		brothel->m_Happiness += 5;
 	//		if(!message_shown)
 	//		{
-	//			g_MessageQue.AddToQue(
-	//				"Your bars have run out of booze", 1
-	//			);
+	//			g_MessageQue.AddToQue("Your bars have run out of booze", 1);
 	//			message_shown = true;
 	//		}
 	//	}

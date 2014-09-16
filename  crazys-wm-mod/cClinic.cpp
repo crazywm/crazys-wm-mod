@@ -202,7 +202,7 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, int DayNight)
 				summary += girlName + " has died from her injuries.  Her body will be removed by the end of the week.";
 				DeadGirl->m_Events.AddMessage(summary, IMGTYPE_DEATH, EVENT_SUMMARY);
 				// There is also one global message
-				g_MessageQue.AddToQue(msg, 1);
+				g_MessageQue.AddToQue(msg, COLOR_RED);
 
 				RemoveGirl(0, DeadGirl);
 				DeadGirl = 0; msg = ""; summary = "";	// cleanup
@@ -318,104 +318,6 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		brothel->m_Fame += g_Girls.GetStat(current, STAT_FAME);
 
 
-/*
- *		chair man CODE START
- */
-
-		// Lets try to compact multiple messages into one.
-		string ChairMsg = "";
-		string RecoupMsg = "";
-		string ChairWarningMsg = "";
-		
-
-		bool chair = false;
-		if(GetNumGirlsOnJob(brothel->m_id, JOB_CHAIRMAN, true) >= 1 || GetNumGirlsOnJob(brothel->m_id, JOB_CHAIRMAN, false) >= 1)
-			chair = true;
-
-		if(g_Girls.GetStat(current, STAT_TIREDNESS) > 80)
-		{
-			if (is_Surgery_Job(current->m_YesterDayJob))	// `J` added
-			{
-				current->m_DayJob = JOB_CLINICREST;	current->m_NightJob = JOB_CLINICREST;
-				RecoupMsg += girlName + gettext(" is recouperating after her surgery.\n");
-			}
-			else if (chair)
-			{
-				if(current->m_PrevNightJob == 255 && current->m_PrevDayJob == 255)
-				{
-					current->m_PrevDayJob = current->m_DayJob;
-					current->m_PrevNightJob = current->m_NightJob;
-					current->m_DayJob = current->m_NightJob = JOB_CLINICREST;
-					ChairWarningMsg += gettext("The Chairman takes ") + girlName + gettext(" off duty to rest due to her tiredness.\n");
-				}
-				else
-				{
-					if((g_Dice%100)+1 < 70)
-					{
-						ChairMsg += gettext("The Chairman helps ") + girlName + gettext(" to relax.\n");
-						g_Girls.UpdateStat(current, STAT_TIREDNESS, -5);
-					}
-				}
-			}
-			else
-			{
-				ChairWarningMsg += gettext("CAUTION! This girl desparatly need rest. Give her some free time\n");
-			}
-		}
-
-		if(g_Girls.GetStat(current, STAT_HAPPINESS) < 40 && chair && (g_Dice%100) +1 < 70)
-		{
-			ChairMsg = gettext("The Chairman helps cheer up ") + girlName + gettext(" after she feels sad.\n");
-			g_Girls.UpdateStat(current, STAT_HAPPINESS, 5);
-		}
-
-		if(g_Girls.GetStat(current, STAT_HEALTH) < 40)
-		{
-			if (is_Surgery_Job(current->m_YesterDayJob))	// `J` added
-			{
-				current->m_DayJob = JOB_CLINICREST;	current->m_NightJob = JOB_CLINICREST;
-				RecoupMsg += girlName + gettext(" is recouperating after her surgery.\n");
-			}
-			else if (chair)
-			{
-				if(current->m_PrevNightJob == 255 && current->m_PrevDayJob == 255)
-				{
-					current->m_PrevDayJob = current->m_DayJob;
-					current->m_PrevNightJob = current->m_NightJob;
-					current->m_DayJob = current->m_NightJob = JOB_CLINICREST;
-					ChairWarningMsg += girlName + gettext(" is taken off duty by the Chairman to rest due to her low health.\n");
-				}
-				else
-				{
-					ChairMsg = gettext("The Chairman helps heal ") + girlName + gettext(".\n");
-					g_Girls.UpdateStat(current, STAT_HEALTH, 5);
-				}
-			}
-			else
-			{
-				ChairWarningMsg = gettext("DANGER ") + girlName + gettext("'s health is very low!\nShe must rest or she will die!\n");
-			}
-		}
-
-		// Now print out the consolodated message
-		if (strcmp(ChairMsg.c_str(), "") != 0)
-		{
-			current->m_Events.AddMessage(ChairMsg, IMGTYPE_PROFILE, SHIFT_NIGHT);
-			ChairMsg = "";
-		}
-		if (strcmp(RecoupMsg.c_str(), "") != 0)
-		{
-			current->m_Events.AddMessage(RecoupMsg, IMGTYPE_PROFILE, DayNight);
-			RecoupMsg = "";
-		}
-        if (strcmp(ChairWarningMsg.c_str(), "") != 0)
-		{
-			current->m_Events.AddMessage(ChairWarningMsg, IMGTYPE_PROFILE, EVENT_WARNING);
-			ChairWarningMsg = "";
-		}
-/*
- *		chair man CODE END
- */
 
 /*
  *		Summary Messages
@@ -460,6 +362,104 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, int DayNight)
 
 		summary = "";
 
+		/*
+		*		chair man CODE START
+		*/
+
+		// Lets try to compact multiple messages into one.
+		string ChairMsg = "";
+		string RecoupMsg = "";
+		string ChairWarningMsg = "";
+
+
+		bool chair = false;
+		if (GetNumGirlsOnJob(brothel->m_id, JOB_CHAIRMAN, true) >= 1 || GetNumGirlsOnJob(brothel->m_id, JOB_CHAIRMAN, false) >= 1)
+			chair = true;
+
+		if (g_Girls.GetStat(current, STAT_TIREDNESS) > 80)
+		{
+			if (is_Surgery_Job(current->m_YesterDayJob))	// `J` added
+			{
+				current->m_DayJob = JOB_CLINICREST;	current->m_NightJob = JOB_CLINICREST;
+				RecoupMsg += girlName + gettext(" is recouperating after her surgery.\n");
+			}
+			else if (chair)
+			{
+				if (current->m_PrevNightJob == 255 && current->m_PrevDayJob == 255)
+				{
+					current->m_PrevDayJob = current->m_DayJob;
+					current->m_PrevNightJob = current->m_NightJob;
+					current->m_DayJob = current->m_NightJob = JOB_CLINICREST;
+					ChairWarningMsg += gettext("The Chairman takes ") + girlName + gettext(" off duty to rest due to her tiredness.\n");
+				}
+				else
+				{
+					if ((g_Dice % 100) + 1 < 70)
+					{
+						ChairMsg += gettext("The Chairman helps ") + girlName + gettext(" to relax.\n");
+						g_Girls.UpdateStat(current, STAT_TIREDNESS, -5);
+					}
+				}
+			}
+			else
+			{
+				ChairWarningMsg += gettext("CAUTION! This girl desparatly need rest. Give her some free time\n");
+			}
+		}
+
+		if (g_Girls.GetStat(current, STAT_HAPPINESS) < 40 && chair && (g_Dice % 100) + 1 < 70)
+		{
+			ChairMsg = gettext("The Chairman helps cheer up ") + girlName + gettext(" after she feels sad.\n");
+			g_Girls.UpdateStat(current, STAT_HAPPINESS, 5);
+		}
+
+		if (g_Girls.GetStat(current, STAT_HEALTH) < 40)
+		{
+			if (is_Surgery_Job(current->m_YesterDayJob))	// `J` added
+			{
+				current->m_DayJob = JOB_CLINICREST;	current->m_NightJob = JOB_CLINICREST;
+				RecoupMsg += girlName + gettext(" is recouperating after her surgery.\n");
+			}
+			else if (chair)
+			{
+				if (current->m_PrevNightJob == 255 && current->m_PrevDayJob == 255)
+				{
+					current->m_PrevDayJob = current->m_DayJob;
+					current->m_PrevNightJob = current->m_NightJob;
+					current->m_DayJob = current->m_NightJob = JOB_CLINICREST;
+					ChairWarningMsg += girlName + gettext(" is taken off duty by the Chairman to rest due to her low health.\n");
+				}
+				else
+				{
+					ChairMsg = gettext("The Chairman helps heal ") + girlName + gettext(".\n");
+					g_Girls.UpdateStat(current, STAT_HEALTH, 5);
+				}
+			}
+			else
+			{
+				ChairWarningMsg = gettext("DANGER ") + girlName + gettext("'s health is very low!\nShe must rest or she will die!\n");
+			}
+		}
+
+		// Now print out the consolodated message
+		if (strcmp(ChairMsg.c_str(), "") != 0)
+		{
+			current->m_Events.AddMessage(ChairMsg, IMGTYPE_PROFILE, SHIFT_NIGHT);
+			ChairMsg = "";
+		}
+		if (strcmp(RecoupMsg.c_str(), "") != 0)
+		{
+			current->m_Events.AddMessage(RecoupMsg, IMGTYPE_PROFILE, DayNight);
+			RecoupMsg = "";
+		}
+		if (strcmp(ChairWarningMsg.c_str(), "") != 0)
+		{
+			current->m_Events.AddMessage(ChairWarningMsg, IMGTYPE_PROFILE, EVENT_WARNING);
+			ChairWarningMsg = "";
+		}
+		/*
+		*		chair man CODE END
+		*/
 		// Do item check at the end of the day
 		if (DayNight == SHIFT_NIGHT)
 		{

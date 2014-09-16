@@ -159,7 +159,7 @@ void cArenaTry::do_walk()
 {
 	if (g_TryOuts) 
 	{
-		g_MessageQue.AddToQue("You can only do this once per week.", 2);
+		g_MessageQue.AddToQue("You can only do this once per week.", COLOR_RED);
 		return;
 	}
 	/*
@@ -171,7 +171,7 @@ void cArenaTry::do_walk()
 	 */
 	if (girl == 0) 
 	{
-		g_MessageQue.AddToQue(walk_no_luck(), 0);
+		g_MessageQue.AddToQue(walk_no_luck(), COLOR_RED);
 		return;
 	}
 	/*
@@ -182,7 +182,7 @@ void cArenaTry::do_walk()
 	int meet_chance = cfg.initial.girl_meet();
 	if (!g_Dice.percent(meet_chance) && !g_Cheats)
 	{
-		g_MessageQue.AddToQue(walk_no_luck(), 1);
+		g_MessageQue.AddToQue(walk_no_luck(), COLOR_RED);
 		return;
 	}
 	/*
@@ -191,7 +191,7 @@ void cArenaTry::do_walk()
 	 *	once scripts are stable
 	 */
 	string message = "You hold open try outs to all girls willing to step into the arena and fight for their life.";
-	g_MessageQue.AddToQue(message, 2);
+	g_MessageQue.AddToQue(message, COLOR_BLUE);
 	int v[2] = { 3, -1 };
 	cTrigger* trig = 0;
 	g_Building = BUILDING_ARENA;

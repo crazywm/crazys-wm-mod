@@ -159,19 +159,16 @@ string cCastingTry::walk_no_luck()
 
 void cCastingTry::do_walk()
 {
-	if(g_TryCast) {
+	if (g_TryCast)
+	{
 		g_MessageQue.AddToQue("You can only do this once per week.", 2);
 		return;
 	}
-/*
- *	let's get a girl for the player to meet
- */
-	sGirl *girl = g_Girls.GetRandomGirl();
-/*
- *	if there's no girl, no meeting
- */
-	if(girl == 0) {
-		g_MessageQue.AddToQue(walk_no_luck(), 0);
+
+	sGirl *girl = g_Girls.GetRandomGirl();	//let's get a girl for the player to meet
+	if (girl == 0)							// if there's no girl, no meeting
+	{
+		g_MessageQue.AddToQue(walk_no_luck(), COLOR_RED);
 		return;
 	}
 /*
@@ -181,7 +178,7 @@ void cCastingTry::do_walk()
 	cConfig cfg;
 	int meet_chance = cfg.initial.girl_meet();
 	if(!g_Dice.percent(meet_chance) && !g_Cheats) {
-		g_MessageQue.AddToQue(walk_no_luck(), 1);
+		g_MessageQue.AddToQue(walk_no_luck(), COLOR_RED);
 		return;
 	}
 /*
@@ -193,7 +190,7 @@ void cCastingTry::do_walk()
 	int pre = g_Dice % 2;
 	if (pre == 1)	message = "You need a new girl for your next film. You set up a public casting call.";
 	else			message = "You hold an open casting call to try to get a new actress for your movies.";
-	g_MessageQue.AddToQue(message, 2);
+	g_MessageQue.AddToQue(message, COLOR_BLUE);
 	int v[2] = {0,-1};
 	cTrigger* trig = 0;
 	g_Building = BUILDING_STUDIO;

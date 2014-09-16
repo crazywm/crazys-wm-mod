@@ -121,7 +121,7 @@
 	<Gambling
 		Odds="49%"
 		Base="79"
-		Spread="400"
+		Spread="100"
 		CustomerFactor="0.5"
 		HouseFactor="1.0" />
 	<!--

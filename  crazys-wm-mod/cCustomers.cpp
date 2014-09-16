@@ -43,85 +43,78 @@ void cCustomers::Free()
 
 void cCustomers::GetCustomer(sCustomer& customer, sBrothel * brothel)
 {
-	int level = (g_Dice%100)+1;	// what working class are they
+	customer.m_SexPrefB = 100;
 
 	// It may be a group of people looking for group sex (5% chance)
-	customer.m_Amount = (g_Dice%100)+1;
-	if(customer.m_Amount <= 5) // changed to bring to documented 5%, consider rasing to 10 or 15, was 4. -PP
+	customer.m_Amount = (g_Dice % 100) + 1;
+	if (customer.m_Amount <= 5) // changed to bring to documented 5%, consider rasing to 10 or 15, was 4. -PP
 	{
 		customer.m_IsWoman = 0;
-		customer.m_Amount = (g_Dice%3)+2; // was +1 this allowed groups of 1 -PP
+		customer.m_Amount = (g_Dice%3) + 2; // was +1 this allowed groups of 1 -PP
 	}
 	else	// Then it is just one customer
 	{
 		customer.m_Amount = 1;
 		// 15% chance they are a woman since women don't come often
-		customer.m_IsWoman = g_Dice%100;
-		if(customer.m_IsWoman < 15)
-			customer.m_IsWoman = 1;
-		else
-			customer.m_IsWoman = 0;
+		customer.m_IsWoman = (g_Dice.percent(15)) ? true : false;
 	}
 
 	// get their stats generated
-	for(int j=0; j<NUM_STATS; j++)
-		customer.m_Stats[j] = (g_Dice%81)+20;
-	for(u_int j=0; j<NUM_SKILLS; j++)
-		customer.m_Skills[j] = (g_Dice%81)+20;
+	for (int j = 0; j < NUM_STATS; j++)		customer.m_Stats[j] = (g_Dice % 81) + 20;
+	for (u_int j = 0; j < NUM_SKILLS; j++)	customer.m_Skills[j] = (g_Dice % 81) + 20;
 
 	// generate their fetish
 	customer.m_Fetish = g_Dice%NUM_FETISH;
-	if(customer.m_Fetish == FETISH_SPECIFICGIRL)
+	if (customer.m_Fetish == FETISH_SPECIFICGIRL)
 		customer.m_ParticularGirl = g_Dice%brothel->m_NumGirls;
 
 	// generate their sex preference
-	if(customer.m_IsWoman == 1)
+	if (customer.m_IsWoman)
 	{
-		int b = g_Dice%2;
-		if(b == 1)
-			customer.m_SexPref = SKILL_LESBIAN;
-		else
-			customer.m_SexPref = SKILL_BEASTIALITY;
+		int b = g_Dice % 4;
+		/* */if (b == 1)	customer.m_SexPref = SKILL_BEASTIALITY;	
+		else if (b == 2)	customer.m_SexPref = SKILL_BDSM;		
+		else /*       */	customer.m_SexPref = SKILL_LESBIAN;
+
+		if (g_Dice%2 == 1)	customer.m_SexPrefB = SKILL_LESBIAN;
+	}
+	else if (customer.m_Amount > 1)
+	{
+		int b = g_Dice % 10;
+		if (b == 1)	customer.m_SexPref = SKILL_STRIP; // bachelor party
+		else 		customer.m_SexPref = SKILL_GROUP;
+
+		if (g_Dice % 2 == 1)	customer.m_SexPrefB = SKILL_STRIP;
 	}
 	else
-					// Added two checks, for Lesbian and Groups, not having these here are the reason that both of those types were so common, it was bypassing all checks against them.
-					// So it was possible to end up with male lesbians and 1 man group sex. -PP
 	{
-		customer.m_SexPref = g_Dice%NUM_SKILLS;		
-		while(customer.m_SexPref == SKILL_MAGIC || 
-			customer.m_SexPref == SKILL_SERVICE || 
-			customer.m_SexPref == SKILL_STRIP || 
-			customer.m_SexPref == SKILL_PERFORMANCE ||	// `J` added
-			customer.m_SexPref == SKILL_MEDICINE ||		// `J` added
-			customer.m_SexPref == SKILL_COMBAT ||
-			customer.m_SexPref == SKILL_LESBIAN ||
-			(customer.m_Amount == 1 && customer.m_SexPref == SKILL_GROUP))
-			customer.m_SexPref = g_Dice%NUM_SKILLS;
+		int b = g_Dice.d100();
+		/* */if (b < 20)	customer.m_SexPref = SKILL_NORMALSEX;
+		else if (b < 35)	customer.m_SexPref = SKILL_ANAL;
+		else if (b < 50)	customer.m_SexPref = SKILL_BDSM;
+		else if (b < 60)	customer.m_SexPref = SKILL_BEASTIALITY;
+		else if (b < 70)	customer.m_SexPref = SKILL_ORALSEX;
+		else if (b < 80)	customer.m_SexPref = SKILL_TITTYSEX;
+		else if (b < 90)	customer.m_SexPref = SKILL_HANDJOB;
+		else /*       */	customer.m_SexPref = SKILL_STRIP;
+
+		b = g_Dice.d100();
+		/* */if (b < 20)	customer.m_SexPrefB = SKILL_NORMALSEX;
+		else if (b < 35)	customer.m_SexPrefB = SKILL_ANAL;
+		else if (b < 50)	customer.m_SexPrefB = SKILL_BDSM;
+		else if (b < 60)	customer.m_SexPrefB = SKILL_BEASTIALITY;
+		else if (b < 70)	customer.m_SexPrefB = SKILL_ORALSEX;
+		else if (b < 80)	customer.m_SexPrefB = SKILL_TITTYSEX;
+		else if (b < 90)	customer.m_SexPrefB = SKILL_HANDJOB;
+		else /*       */	customer.m_SexPrefB = SKILL_STRIP;
 	}
 
-	// are they an official
-	if((g_Dice%100) == 1)
-		customer.m_Official = 1;
-	else
-		customer.m_Official = 0;
-
-	// generate their money
-	if(level < m_Rich)
-	{
-		customer.m_Money = (g_Dice%2000)+600;
-		customer.m_Class = 1;
-	}
-	else if(level < m_Middle)
-	{
-		customer.m_Money = (g_Dice%200)+60;
-		customer.m_Class = 2;
-	}
-	else	// poor
-	{
-		customer.m_Money = (g_Dice%100)+20;
-		customer.m_Class = 3;
-	}
-	customer.m_Money *= customer.m_Amount; // quick hack to create a larger pool of money for groups, since they have to pay more. -PP
+	customer.m_Official = (g_Dice.percent(2)) ? 1 : 0;	// are they an official
+	int level = g_Dice.d100();	// what working class are they
+	/* */if (level < m_Rich)	{ customer.m_Class = 1; customer.m_Money = (g_Dice % 2000) + 600; }
+	else if (level < m_Middle)	{ customer.m_Class = 2; customer.m_Money = (g_Dice % 200) + 60; }
+	else /*                 */	{ customer.m_Class = 3; customer.m_Money = (g_Dice % 100) + 20; }
+	customer.m_Money *= customer.m_Amount;
 	customer.m_Next = 0;
 }
 
@@ -131,13 +124,9 @@ void cCustomers::GenerateCustomers(sBrothel * brothel, int DayNight)
 
 	stringstream ss;
 	ss.str("");
-/*
- *	no girls, no customers
- */
-	if(brothel->m_NumGirls == 0) {
-		return;
-	}
-/*
+	if (brothel->m_NumGirls == 0) return;	// no girls, no customers
+
+	/*
  *	base number of customers = number of girls times 1.5f
  *	(was set to time 5 - reverting it to agree with the comment for now
  *	--doc)
@@ -146,11 +135,8 @@ void cCustomers::GenerateCustomers(sBrothel * brothel, int DayNight)
  *	punters after dark it seems to me
  */
 	m_NumCustomers = int(brothel->m_NumGirls * (DayNight == 0 ? 1.5 : 2.0));
-	ss << gettext("The number of girls in this brothel attracted ")
-	   << m_NumCustomers
-	   << gettext(" initial ") << (DayNight == 0 ? gettext("daytime") : gettext("nighttime"))
-	   << gettext(" customers.\n\n")
-	;
+	ss << gettext("The number of girls in this brothel attracted ") << m_NumCustomers
+		<< gettext(" initial ") << (DayNight == 0 ? gettext("daytime") : gettext("nighttime")) << gettext(" customers.\n\n");
 /*
  *	the customers attracted by the places fame (for this shift)
  *	is the fame divided by 4 (so a max of 25 people)
@@ -158,20 +144,17 @@ void cCustomers::GenerateCustomers(sBrothel * brothel, int DayNight)
  *	(halved the number -- doc)
  */
 	int fame_customers = brothel->m_Fame / 4;
-	ss << gettext("This brothel's fame enticed ")
-	   << fame_customers
-	   << gettext(" additional ") << (DayNight == 0 ? gettext("daytime") : gettext("nighttime"))
-	   << gettext(" customers to visit.\n\n");
+	ss << gettext("This brothel's fame enticed ") << fame_customers
+		<< gettext(" additional ") << (DayNight == 0 ? gettext("daytime") : gettext("nighttime")) << gettext(" customers to visit.\n\n");
 	m_NumCustomers += fame_customers;
 
 	// each 100 gold of advertising adds 6 customers which is then randomized a little
-	if(brothel->m_AdvertisingBudget > 0 || brothel->m_AdvertisingLevel > 1.0)
+	if (brothel->m_AdvertisingBudget > 0 || brothel->m_AdvertisingLevel > 1.0)
 	{  // advertising value is actual gold budget multiplied by advertising level, set by girls working in advertising
 		double advert = double(brothel->m_AdvertisingBudget);
-		if(brothel->m_AdvertisingLevel > 1.0)
-			advert += 50; // a 50 gold gimme if you have girls working on advertising
-		advert *= brothel->m_AdvertisingLevel;  // apply multiplier from girls working on advertising
-		int custsFromAds = int(advert * 0.06);  // 6 customers per 100 gold or so
+		if (brothel->m_AdvertisingLevel > 1.0) advert += 50;	// a 50 gold gimme if you have girls working on advertising
+		advert *= brothel->m_AdvertisingLevel;					// apply multiplier from girls working on advertising
+		int custsFromAds = int(advert * 0.06);					// 6 customers per 100 gold or so
 		custsFromAds = g_Dice%custsFromAds + (custsFromAds / 2);  // randomized from 50% to 150%
 		ss << gettext("You brought in ") << custsFromAds << gettext(" more ") << (DayNight == 0 ? gettext("daytime") : gettext("nighttime")) << gettext(" customers through advertising.\n\n");
 		m_NumCustomers += custsFromAds;
@@ -197,7 +180,7 @@ void cCustomers::GenerateCustomers(sBrothel * brothel, int DayNight)
 	if (ScareCustomers < 0)
 	{
 		ss << "Your nonintrusive security attracted " << -ScareCustomers << " ";
-		if (DayNight == 0) ss << gettext("daytime"); else ss << gettext("nighttime");
+		ss << (DayNight == 0 ? gettext("daytime") : gettext("nighttime"));
 		ss << " customers. (for better or worse)";
 	}
 	else if (ScareCustomers == 0)
@@ -211,96 +194,6 @@ void cCustomers::GenerateCustomers(sBrothel * brothel, int DayNight)
 
 	if (m_NumCustomers < 0)  // negative number of customers doesn't make sense
 		m_NumCustomers = 0;
-
-/*necch	for(int i=0; i<m_NumCustomers; i++)	// generate the customers stats
-	{
-		int level = (g_Dice%100)+1;	// what working class are they
-
-		sCustomer* newCust = new sCustomer();
-
-		// It may be a group of people looking for group sex (5% chance)
-		newCust->m_Amount = (g_Dice%100)+1;
-		if(newCust->m_Amount <= 4)
-		{
-			newCust->m_IsWoman = 0;
-			newCust->m_Amount = (g_Dice%3)+1;
-		}
-		else	// Then it is just one customer
-		{
-			newCust->m_Amount = 1;
-
-			// 15% chance they are a woman since women don't come often
-			newCust->m_IsWoman = g_Dice%100;
-			if(newCust->m_IsWoman < 15)
-				newCust->m_IsWoman = 1;
-			else
-				newCust->m_IsWoman = 0;
-		}
-
-		// get their stats generated
-		for(int j=0; j<NUM_STATS; j++)
-			newCust->m_Stats[j] = (g_Dice%81)+20;
-		for(u_int j=0; j<NUM_SKILLS; j++)
-			newCust->m_Skills[j] = (g_Dice%81)+20;
-
-		// generate their fetish
-		newCust->m_Fetish = g_Dice%NUM_FETISH;
-		if(newCust->m_Fetish == FETISH_SPECIFICGIRL)
-			newCust->m_ParticularGirl = g_Dice%brothel->m_NumGirls;
-
-		// generate their sex preference
-		if(newCust->m_IsWoman == 1)
-		{
-			int b = g_Dice%2;
-			if(b == 1)
-				newCust->m_SexPref = SKILL_LESBIAN;
-			else
-				newCust->m_SexPref = SKILL_BEASTIALITY;
-		}
-		else
-		{
-			newCust->m_SexPref = g_Dice%NUM_SKILLS;
-			while(newCust->m_SexPref == SKILL_MAGIC || newCust->m_SexPref == SKILL_SERVICE || newCust->m_SexPref == SKILL_STRIP || newCust->m_SexPref == SKILL_COMBAT)
-				newCust->m_SexPref = g_Dice%NUM_SKILLS;
-		}
-
-		// are they an official
-		if((g_Dice%100) == 0)
-			newCust->m_Official = 1;
-		else
-			newCust->m_Official = 0;
-
-		// generate their money
-		if(level < m_Rich)
-		{
-			newCust->m_Money = (g_Dice%2000)+600;
-			newCust->m_Class = 1;
-		}
-		else if(level < m_Middle)
-		{
-			newCust->m_Money = (g_Dice%200)+60;
-			newCust->m_Class = 2;
-		}
-		else	// poor
-		{
-			newCust->m_Money = (g_Dice%100)+20;
-			newCust->m_Class = 3;
-		}
-
-		newCust->m_Next = 0;
-
-		if(m_Parent)
-		{
-			m_Last->m_Next = newCust;
-			newCust->m_Prev = m_Last;
-			m_Last = newCust;
-		}
-		else
-		{
-			m_Last = m_Parent = newCust;
-		}
-		newCust = 0;
-	}*/
 }
 
 /*sCustomer* cCustomers::GetParentCustomer()
@@ -310,9 +203,9 @@ void cCustomers::GenerateCustomers(sBrothel * brothel, int DayNight)
 
 void cCustomers::ChangeCustomerBase()
 {
-	m_Poor = g_Dice%50+30;
-	m_Middle = g_Dice%(90-m_Poor)+5;
-	m_Rich = (100-m_Poor)-m_Middle+1;
+	m_Rich = g_Dice % 31 + 10;				// 10-40% Rich
+	m_Middle = g_Dice % 41 + 10 + m_Rich;	// 10-50% Middle
+	// leaving 10-80% poor
 }
 
 /*void cCustomers::Remove(sCustomer* cust)

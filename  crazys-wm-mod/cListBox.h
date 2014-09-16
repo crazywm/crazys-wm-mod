@@ -29,9 +29,9 @@ using namespace std;
 
 #if 0
 // Listbox Constants moved to Constants.h
-const unsigned int LISTBOX_BLUE = 0;
-const unsigned int LISTBOX_RED = 1;
-//const unsigned int LISTBOX_DARKBLUE = 2;
+const unsigned int COLOR_BLUE = 0;
+const unsigned int COLOR_RED = 1;
+//const unsigned int COLOR_DARKBLUE = 2;
 
 //how tall (in pixels) each list item is
 const int LISTBOX_ITEMHEIGHT = 20;
@@ -69,7 +69,7 @@ public:
 
 	void Draw();
 
-	void AddElement(int ID, string data, int color = LISTBOX_BLUE);
+	void AddElement(int ID, string data, int color = COLOR_BLUE);
 	void SetElementText(int ID, string data);
 //	void RemoveElement(int ID);
 
@@ -127,7 +127,7 @@ public:
 
 	void DefineColumns(string name[], string header[], int offset[], bool skip[], int columns);  // define column layout
 	void SetColumnSort(string column_name[], int columns);	// Update column sorting based on expected default order
-	void AddElement(int ID, string data[], int columns, int color = LISTBOX_BLUE);
+	void AddElement(int ID, string data[], int columns, int color = COLOR_BLUE);
 	void SetElementText(int ID, string data[], int columns);
 	void SetElementColumnText(int ID, string data, int column);
 	void SetElementTextColor(int ID, SDL_Color* text_color);

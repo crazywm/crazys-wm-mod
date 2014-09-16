@@ -95,43 +95,43 @@ unsigned int CEvent::ListboxColour()
 	switch (m_Event)
 	{
 	//case EVENT_DAYSHIFT:
-	//	return LISTBOX_BLUE;
+	//	return COLOR_BLUE;
 	//	break;
 	//case EVENT_NIGHTSHIFT:
-	//	return LISTBOX_BLUE;
+	//	return COLOR_BLUE;
 	//	break;
 	case EVENT_WARNING:
-		return LISTBOX_DARKBLUE;
+		return COLOR_DARKBLUE;
 		break;
 	case EVENT_DANGER:
-		return LISTBOX_RED;
+		return COLOR_RED;
 		break;
 	case EVENT_GOODNEWS:
-		return LISTBOX_GREEN;
+		return COLOR_GREEN;
 		break;
 		//case EVENT_SUMMARY:
-	//	return LISTBOX_BLUE;
+	//	return COLOR_BLUE;
 	//	break;
 	//case EVENT_DUNGEON:
-	//	return LISTBOX_BLUE;
+	//	return COLOR_BLUE;
 	//	break;
 	//case EVENT_MATRON:
-	//	return LISTBOX_BLUE;
+	//	return COLOR_BLUE;
 	//	break;
 	case EVENT_DEBUG:
-		return LISTBOX_RED;
+		return COLOR_RED;
 		break;
 	//case EVENT_GANG:
-	//	return LISTBOX_BLUE;
+	//	return COLOR_BLUE;
 	//	break;
 	//case EVENT_BROTHEL:
-	//	return LISTBOX_BLUE;
+	//	return COLOR_BLUE;
 	//	break;
 	case EVENT_NOWORK:
-		return LISTBOX_DARKBLUE;
+		return COLOR_DARKBLUE;
 		break;
 	default:
-		return LISTBOX_BLUE;
+		return COLOR_BLUE;
 		break;
 	}
 }

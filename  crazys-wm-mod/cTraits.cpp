@@ -209,7 +209,6 @@ string cTraits::GetTranslateName(string name)
 		else if (trait.compare("aggressive") == 0)				return gettext("Aggressive");
 		else if (trait.compare("agile") == 0)					return gettext("Agile");
 		else if (trait.compare("alcoholic") == 0)				return gettext("Alcoholic");
-		else if (trait.compare("anal plug") == 0)				return gettext("Anal Plug");
 		else if (trait.compare("angel") == 0)					return gettext("Angel");
 		else if (trait.compare("assassin") == 0)				return gettext("Assassin");
 		else if (trait.compare("audacity") == 0)				return gettext("Audacity");
@@ -360,8 +359,7 @@ string cTraits::GetTranslateName(string name)
 	}
 	else if (first == "n")
 	{
-		/* */if (trait.compare("nail polish") == 0)				return gettext("Nail Polish");
-		else if (trait.compare("natural pheromones") == 0)		return gettext("Natural Pheromones");
+		/* */if (trait.compare("natural pheromones") == 0)		return gettext("Natural Pheromones");
 		else if (trait.compare("nerd") == 0)					return gettext("Nerd");
 		else if (trait.compare("nervous") == 0)					return gettext("Nervous");
 		else if (trait.compare("nimble tongue") == 0)			return gettext("Nimble Tongue");
@@ -395,18 +393,13 @@ string cTraits::GetTranslateName(string name)
 		else if (trait.compare("pessimist") == 0)				return gettext("Pessimist");
 		else if (trait.compare("petite breasts") == 0)			return gettext("Petite Breasts");
 		else if (trait.compare("phat booty") == 0)				return gettext("Phat Booty");
-		else if (trait.compare("pheromones") == 0)				return gettext("Pheromones");
 		else if (trait.compare("pierced clit") == 0)			return gettext("Pierced Clit");
 		else if (trait.compare("pierced nipples") == 0)			return gettext("Pierced Nipples");
 		else if (trait.compare("pierced nose") == 0)			return gettext("Pierced Nose");
 		else if (trait.compare("pierced tongue") == 0)			return gettext("Pierced Tongue");
-		else if (trait.compare("plain lipstick") == 0)			return gettext("Plain Lipstick");
 		else if (trait.compare("playful tail") == 0)			return gettext("Playful Tail");
 		else if (trait.compare("plump tush") == 0)				return gettext("Plump Tush");
 		else if (trait.compare("plump") == 0)					return gettext("Plump");
-		else if (trait.compare("pregnant 1t") == 0)				return gettext("Pregnant 1T");
-		else if (trait.compare("pregnant 2t") == 0)				return gettext("Pregnant 2T");
-		else if (trait.compare("pregnant 3t") == 0)				return gettext("Pregnant 3T");
 		else if (trait.compare("prehensile tail") == 0)			return gettext("Prehensile Tail");
 		else if (trait.compare("priestess") == 0)				return gettext("Priestess");
 		else if (trait.compare("princess") == 0)				return gettext("Princess");
@@ -428,7 +421,6 @@ string cTraits::GetTranslateName(string name)
 		/* */if (trait.compare("sadistic") == 0)				return gettext("Sadistic");
 		else if (trait.compare("scarce lactation") == 0)		return gettext("Scarce Lactation");
 		else if (trait.compare("sexy air") == 0)				return gettext("Sexy Air");
-		else if (trait.compare("sexy lipstick") == 0)			return gettext("Sexy Lipstick");
 		else if (trait.compare("shape shifter") == 0)			return gettext("Shape Shifter");
 		else if (trait.compare("shroud addict") == 0)			return gettext("Shroud Addict");
 		else if (trait.compare("singer") == 0)					return gettext("Singer");
@@ -466,15 +458,13 @@ string cTraits::GetTranslateName(string name)
 	}
 	else if (first == "v")
 	{
-		/* */if (trait.compare("vibrator") == 0)				return gettext("Vibrator");
-		else if (trait.compare("viras blood addict") == 0)		return gettext("Viras Blood Addict");
+		/* */if (trait.compare("viras blood addict") == 0)		return gettext("Viras Blood Addict");
 		else if (trait.compare("virgin") == 0)					return gettext("Virgin");
 	}
 	else if (first == "w")
 	{
 		/* */if (trait.compare("waitress") == 0)				return gettext("Waitress");
 		else if (trait.compare("whore") == 0)					return gettext("Whore");
-		else if (trait.compare("whoreish lipstick") == 0)		return gettext("Whoreish Lipstick");
 		else if (trait.compare("wide bottom") == 0)				return gettext("Wide Bottom");
 		else if (trait.compare("wings") == 0)					return gettext("Wings");
 	}

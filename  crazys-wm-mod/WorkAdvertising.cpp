@@ -45,11 +45,10 @@ extern cGold g_Gold;
 bool cJobManager::WorkAdvertising(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	string message = "";
-	if(Preprocessing(ACTION_WORKADVERTISING, girl, brothel, DayNight, summary, message))
-		return true;
-
-	// put that shit away, you'll scare off the customers!
-	g_Girls.UnequipCombat(girl);
+	if (Preprocessing(ACTION_WORKADVERTISING, girl, brothel, DayNight, summary, message)) return true;
+	
+	cConfig cfg;
+	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
 	// How much will she help stretch your advertising budget? Let's find out
 	double cval, multiplier = 0.0;
@@ -98,37 +97,61 @@ bool cJobManager::WorkAdvertising(sGirl* girl, sBrothel* brothel, int DayNight, 
 	}
 
 	// useful traits
-	if(girl->has_trait("Psychic"))		multiplier += 10;
-	if(girl->has_trait("Cool Person"))	multiplier += 10;
-	if(girl->has_trait("Sexy Air"))		multiplier += 10;
-	if(girl->has_trait("Charismatic"))	multiplier += 10;
-	if(girl->has_trait("Charming"))		multiplier += 10;
+	if (girl->has_trait("Psychic"))		multiplier += 10;
+	if (girl->has_trait("Cool Person"))	multiplier += 10;
+	if (girl->has_trait("Sexy Air"))	multiplier += 10;
+	if (girl->has_trait("Charismatic"))	multiplier += 10;
+	if (girl->has_trait("Charming"))	multiplier += 10;
 
 	// unhelpful traits
-	if(girl->has_trait("Nervous"))		multiplier -= 5; 
-	if(girl->has_trait("Clumsy"))		multiplier -= 5; 
-	if(girl->has_trait("Retarded"))		multiplier -= 20;
-	if(girl->has_trait("Malformed"))	multiplier -= 20;
+	if (girl->has_trait("Nervous"))		multiplier -= 5;
+	if (girl->has_trait("Clumsy"))		multiplier -= 5;
+	if (girl->has_trait("Retarded"))	multiplier -= 20;
+	if (girl->has_trait("Malformed"))	multiplier -= 20;
+
+	if (girl->is_slave() && !cfg.initial.slave_pay_outofpocket())
+		multiplier *= 0.95;	// unpaid slaves don't seem to want to advertise as much.
+	if (girl->is_free())
+		multiplier *= 1.05;	// paid free girls seem to attract more business
+
 
 	// Complications
-	if(g_Dice%100 <= 10)
+	int b = g_Dice.d100();
+	if (b <= 10)
 	{
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKADVERTISING, -1, true);
 		message = gettext("She was harassed and made fun of while advertising.");
 		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
 		multiplier *= 0.8;
 	}
-	else
+	else if (b >= 90)
 	{
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKADVERTISING, +3, true);
 		message = gettext("She made sure many people were interested in the buildings facilities.");
 		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
 	}
+	else
+	{
+		g_Girls.UpdateEnjoyment(girl, ACTION_WORKADVERTISING, +1, true);
+		message = gettext("She had an uneventful day advertising.");
+		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
+	}
+
 
 	stringstream ss;
 	ss.str("");
 	ss << gettext("She managed to stretch the effectiveness of your advertising budget by about ") << int(multiplier) << gettext("%.");
-	ss << gettext(" You paid her 70 gold for her advertising efforts.");
+	// if you pay slave girls out of pocket  or if she is a free girl  pay them
+	if ((girl->is_slave() && cfg.initial.slave_pay_outofpocket()) || girl->is_free())
+	{
+		girl->m_Pay += 70;
+		g_Gold.advertising_costs(70);
+		ss << gettext(" You paid her 70 gold for her advertising efforts.");
+	}
+	else
+	{
+		ss << gettext(" You do not pay your slave for her advertising efforts.");
+	}
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_SUMMARY);
 
 	// now to boost the brothel's advertising level accordingly
@@ -141,12 +164,14 @@ bool cJobManager::WorkAdvertising(sGirl* girl, sBrothel* brothel, int DayNight, 
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
 
-	girl->m_Pay += 70;
-	g_Gold.advertising_costs(70);  // wages come from you
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill+1);
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill+1);
+	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill + 1);
+	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill + 1);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+
+	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 70, ACTION_WORKADVERTISING, "Advertising on a daily basis has made " + girl->m_Realname + " more Charismatic.", DayNight != 0);
+	
+	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 40, ACTION_WORKADVERTISING, girl->m_Realname + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", DayNight != 0);
 
 	return false;
 }

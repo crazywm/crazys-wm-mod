@@ -753,6 +753,30 @@ WME - minor changes
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.13
 !!!!!!!!!!!!!!!!!!!! pushed to SVN - r105
 
+###  Changes 9/12/2014
+Moved girl's payment text to before matron text because the matron taking the girl off work breaks the flow.
+Started reflow of house
 
+###  Changes 9/13/2014
+Some people were complaining about the third detail list for girls so I made it optional with "shift+s"
+Fixed end turn screen for farm not showing girls details.
+Reworked customer.m_SexPref to choose pref differently. 
+ - female customer = 50% les, 25% bdsm or beast
+ - group = 10% strip or 90% group
+ - single males = 20% normal, 15% anal or bdsm, 10% all others.
+Added secondary sex pref to reduce sex restriction turn aways. (not implemented yet)
+Reworked customer base: 10-40% Rich, 10-50% Middle, 10-80% poor
 
+###  Changes 9/14/2014
+Updated advertising job
+Changed LISTBOX_(colors) to COLOR_(colors) and fixed Message box colors to match.
+Condensed cScreenBuildingSetup.cpp
 
+###  Changes 9/15/2014
+WME - fixed a bug in update girls button
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.14
+
+Crazy did more fixes to some jobs.
+Removed some of the unneeded traits - "Anal Plug", "Nail Polish", "Pheromones", "Plain Lipstick", "Sexy Lipstick", "Vibrator", "Whoreish Lipstick", "Pregnant 1T", "Pregnant 2T", "Pregnant 3T"
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.04
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r109

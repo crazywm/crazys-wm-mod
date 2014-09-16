@@ -62,6 +62,7 @@ extern	bool	g_DownArrow;
 extern	int		g_CurrentScreen;
 extern	bool	g_AltKeys;	// New hotkeys --PP
 extern	bool	g_SpaceKey;
+extern	bool	g_ShiftDown;
 extern	bool	g_Q_Key;
 extern	bool	g_W_Key;
 extern	bool	g_E_Key;
@@ -442,9 +443,16 @@ bool cScreenGirlDetails::check_keys()
 		if (g_S_Key)
 		{
 			g_S_Key = false;
-			if (DetailLevel == 0)		{ DetailLevel = 1; EditTextItem(g_Girls.GetMoreDetailsString(selected_girl), girldesc_id); }
-			else if (DetailLevel == 1)	{ DetailLevel = 2; EditTextItem(g_Girls.GetThirdDetailsString(selected_girl), girldesc_id); }
-			else						{ DetailLevel = 0; EditTextItem(g_Girls.GetDetailsString(selected_girl), girldesc_id); }
+			if (g_ShiftDown)
+			{
+				DetailLevel = 2; 
+				EditTextItem(g_Girls.GetThirdDetailsString(selected_girl), girldesc_id);
+			}
+			else
+			{
+				if (DetailLevel == 0)		{ DetailLevel = 1; EditTextItem(g_Girls.GetMoreDetailsString(selected_girl), girldesc_id); }
+				else						{ DetailLevel = 0; EditTextItem(g_Girls.GetDetailsString(selected_girl), girldesc_id); }
+			}
 			return true;
 		}
 		if(g_SpaceKey)

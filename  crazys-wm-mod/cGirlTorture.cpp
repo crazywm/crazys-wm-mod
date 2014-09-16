@@ -39,10 +39,10 @@ extern	int				g_CurrBrothel;
  */
 cGirlTorture::~cGirlTorture()		// deconstructor
 {
-	int color=0;
+	int color=COLOR_BLUE;
 	if (m_Girl->m_RunAway != 0)
 	{
-		color = 1;
+		color = COLOR_RED;
 	}
 
 	// Display any outstanding messages
@@ -572,7 +572,7 @@ bool cGirlTorture::IsGirlInjured(unsigned int unModifier)
 	// Post any new Player messages in Red Message Box Colour 1 
 	if (m_TorturedByPlayer && !m_Message.empty() && m_Message!=sGirlName + ": ")
 	{
-		g_MessageQue.AddToQue(m_Message, 1);
+		g_MessageQue.AddToQue(m_Message, COLOR_RED);
 		m_Girl->m_Events.AddMessage(m_Message, IMGTYPE_TORTURE, EVENT_DAYSHIFT);	// `J` added
 
 		m_Message = sGirlName + ": ";

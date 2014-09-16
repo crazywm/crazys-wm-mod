@@ -124,7 +124,7 @@ void cScreenBrothelManagement::check_events()
 		}
 		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, id_save))
 		{
-			g_MessageQue.AddToQue("Game Saved", 2);
+			g_MessageQue.AddToQue("Game Saved", COLOR_GREEN);
 			SaveGameXML(DirPath()
 			<< "Saves"
 			<< (g_Brothels.GetBrothel(0)->m_Name + ".gam").c_str()

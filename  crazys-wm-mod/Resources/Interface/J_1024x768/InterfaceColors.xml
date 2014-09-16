@@ -28,10 +28,10 @@
 <Color Name = "ListBoxColumnHeaderBorderBottomRight" R="15"  G="49"  B="69"  OldTXT="LIST BOX COLUMN HEADER BORDER: BOTTOM & RIGHT" />
 <Color Name = "ListBoxColumnHeaderFont"              R="255" G="255" B="255" OldTXT="LIST BOX COLUMN HEADER FONT" />
 <Color Name = "MessageBoxBorder"                     R="255" G="255" B="255" OldTXT="MESSAGE BOX BORDER" />
-<Color Name = "MessageBoxBackground0"                R="100" G="100" B="150" OldTXT="MESSAGE BOX BACKGROUND 0" />
-<Color Name = "MessageBoxBackground1"                R="200" G="100" B="150" OldTXT="MESSAGE BOX BACKGROUND 1" />
-<Color Name = "MessageBoxBackground2"                R="100" G="200" B="150" OldTXT="MESSAGE BOX BACKGROUND 2" />
-<Color Name = "MessageBoxBackground3"                R="100" G="100" B="200" OldTXT="MESSAGE BOX BACKGROUND 3" />
+<Color Name = "MessageBoxBackground0"                R="114" G="139" B="217" OldTXT="MESSAGE BOX BACKGROUND 0 (NORMAL)" />
+<Color Name = "MessageBoxBackground1"                R="200" G="30"  B="30"  OldTXT="MESSAGE BOX BACKGROUND 1 (RED) BACKGROUND" />
+<Color Name = "MessageBoxBackground2"                R="80"  G="80"  B="250" OldTXT="MESSAGE BOX BACKGROUND 2 (DARK BLUE) BACKGROUND" />
+<Color Name = "MessageBoxBackground3"                R="30"  G="190" B="30"  OldTXT="MESSAGE BOX BACKGROUND 3 (GREEN) BACKGROUND" />
 <Color Name = "MessageBoxText"                       R="0"   G="0"   B="0"   OldTXT="MESSAGE BOX TEXT" />
 <Color Name = "CheckboxBorder"                       R="0"   G="0"   B="0"   OldTXT="CHECKBOX BORDER" />
 <Color Name = "CheckboxBackground"                   R="180" G="180" B="180" OldTXT="CHECKBOX BACKGROUND" />

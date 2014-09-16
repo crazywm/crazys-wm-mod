@@ -43,6 +43,7 @@ extern	bool	g_UpArrow;
 extern	bool	g_DownArrow;
 extern	bool	g_AltKeys;	// New hotkeys --PP
 extern	bool	g_SpaceKey;
+extern	bool	g_ShiftDown;
 extern	bool	g_Q_Key;
 extern	bool	g_W_Key;
 extern	bool	g_E_Key;
@@ -106,10 +107,10 @@ void cScreenSlaveMarket::init()
 			* I'm going to assume that -1 here means "OK to delete". Which means non -1 means
 			* "do not delete", from which we can infer that the girl is unique.
 			*/
-			int col = LISTBOX_BLUE;
+			int col = COLOR_BLUE;
 			if (MarketSlaveGirlsDel[i] != -1)
 			{
-				col = LISTBOX_RED;
+				col = COLOR_RED;
 				unique = true;
 			}
 			AddToListBox(slave_list_id, i, MarketSlaveGirls[i]->m_Realname, col);
@@ -142,7 +143,7 @@ void cScreenSlaveMarket::init()
 		*/
 		if (MarketSlaveGirls[i] == 0) continue;
 		// decide the display color based on whether the girl is unique
-		int col = unique ? LISTBOX_RED : LISTBOX_BLUE;
+		int col = unique ? COLOR_RED : COLOR_BLUE;
 		// and display
 		AddToListBox(slave_list_id, i, MarketSlaveGirls[i]->m_Realname, col);
 	}
@@ -213,9 +214,16 @@ bool cScreenSlaveMarket::check_keys()
 	{
 		sGirl *girl = MarketSlaveGirls[selection];
 		g_S_Key = false;
-		if (DetailLevel == 0)		{ DetailLevel = 1; EditTextItem(g_Girls.GetMoreDetailsString(girl, true), details_id); }
-		else if (DetailLevel == 1)	{ DetailLevel = 2; EditTextItem(g_Girls.GetThirdDetailsString(girl), details_id); }
-		else						{ DetailLevel = 0; EditTextItem(g_Girls.GetDetailsString(girl, true), details_id); }
+		if (g_ShiftDown)
+		{
+			DetailLevel = 2;
+			EditTextItem(g_Girls.GetThirdDetailsString(girl), details_id);
+		}
+		else
+		{
+			if (DetailLevel == 0)		{ DetailLevel = 1; EditTextItem(g_Girls.GetMoreDetailsString(girl, true), details_id); }
+			else						{ DetailLevel = 0; EditTextItem(g_Girls.GetDetailsString(girl, true), details_id); }
+		}
 		return true;
 	}
 	if (g_SpaceKey)

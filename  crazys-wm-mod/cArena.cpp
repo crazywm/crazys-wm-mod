@@ -202,7 +202,7 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, int DayNight)
 				summary += girlName + " has died from her injuries.  Her body will be removed by the end of the week.";
 				DeadGirl->m_Events.AddMessage(summary, IMGTYPE_DEATH, EVENT_SUMMARY);
 				// There is also one global message
-				g_MessageQue.AddToQue(msg, 1);
+				g_MessageQue.AddToQue(msg, COLOR_RED);
 
 				RemoveGirl(0, DeadGirl);
 				DeadGirl = 0; msg = ""; summary = "";	// cleanup
@@ -321,80 +321,6 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		brothel->m_Fame += g_Girls.GetStat(current, STAT_FAME);
 
 /*
- *		doctore CODE START
- */
-		// Lets try to compact multiple messages into one.
-		string DoctoreMsg = "";
-		string DoctoreWarningMsg = "";
-
-		if(g_Girls.GetStat(current, STAT_TIREDNESS) > 80)
-		{
-			if (matron)
-			{
-				if(current->m_PrevNightJob == 255 && current->m_PrevDayJob == 255)
-				{
-					current->m_PrevDayJob = current->m_DayJob;
-					current->m_PrevNightJob = current->m_NightJob;
-					current->m_DayJob = current->m_NightJob = JOB_ARENAREST;
-					DoctoreWarningMsg +=  "The Doctore takes " + girlName + " off duty to rest due to her tiredness.\n";
-				}
-				else
-				{
-					if((g_Dice%100)+1 < 70)
-					{
-						DoctoreMsg += "The Doctore helps " + girlName + " to relax.\n";
-						g_Girls.UpdateStat(current, STAT_TIREDNESS, -5);
-					}
-				}
-			}
-			else DoctoreWarningMsg += "CAUTION! This girl desparatly need rest. Give her some free time\n";
-		}
-
-		if (g_Girls.GetStat(current, STAT_HAPPINESS) < 40 && matron && (g_Dice % 100) + 1 < 70)
-		{
-			DoctoreMsg = gettext("The Doctore helps cheer up ") + girlName + gettext(" after she feels sad.\n");
-			g_Girls.UpdateStat(current, STAT_HAPPINESS, 5);
-		}
-
-		if(g_Girls.GetStat(current, STAT_HEALTH) < 40)
-		{
-			if (matron)
-			{
-				if(current->m_PrevNightJob == 255 && current->m_PrevDayJob == 255)
-				{
-					current->m_PrevDayJob = current->m_DayJob;
-					current->m_PrevNightJob = current->m_NightJob;
-					current->m_DayJob = current->m_NightJob = JOB_ARENAREST;
-					DoctoreWarningMsg += girlName + gettext(" is taken off duty by the Doctore to rest due to her low health.\n");
-				}
-				else
-				{
-					DoctoreMsg = gettext("The Doctore helps heal ") + girlName + gettext(".\n");
-					g_Girls.UpdateStat(current, STAT_HEALTH, 5);
-				}
-			}
-			else
-			{
-				DoctoreWarningMsg = gettext("DANGER ") + girlName + gettext("'s health is very low!\nShe must rest or she will die!\n");
-			}
-		}
-
-		// Now print out the consolodated message
-		if (strcmp(DoctoreMsg.c_str(), "") != 0)
-		{
-			current->m_Events.AddMessage(DoctoreMsg, IMGTYPE_PROFILE, SHIFT_NIGHT);
-			DoctoreMsg = "";
-		}
-
-        if (strcmp(DoctoreWarningMsg.c_str(), "") != 0)
-		{
-			current->m_Events.AddMessage(DoctoreWarningMsg, IMGTYPE_PROFILE, EVENT_WARNING);
-			DoctoreWarningMsg = "";
-		}
-/*
- *		Doctore CODE END
- */
-/*
  *		Summary Messages
  */
 
@@ -436,6 +362,81 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		current->m_Events.AddMessage(summary, IMGTYPE_PROFILE, sum);
 
 		summary = "";
+
+		/*
+		*		doctore CODE START
+		*/
+		// Lets try to compact multiple messages into one.
+		string DoctoreMsg = "";
+		string DoctoreWarningMsg = "";
+
+		if (g_Girls.GetStat(current, STAT_TIREDNESS) > 80)
+		{
+			if (matron)
+			{
+				if (current->m_PrevNightJob == 255 && current->m_PrevDayJob == 255)
+				{
+					current->m_PrevDayJob = current->m_DayJob;
+					current->m_PrevNightJob = current->m_NightJob;
+					current->m_DayJob = current->m_NightJob = JOB_ARENAREST;
+					DoctoreWarningMsg += "The Doctore takes " + girlName + " off duty to rest due to her tiredness.\n";
+				}
+				else
+				{
+					if ((g_Dice % 100) + 1 < 70)
+					{
+						DoctoreMsg += "The Doctore helps " + girlName + " to relax.\n";
+						g_Girls.UpdateStat(current, STAT_TIREDNESS, -5);
+					}
+				}
+			}
+			else DoctoreWarningMsg += "CAUTION! This girl desparatly need rest. Give her some free time\n";
+		}
+
+		if (g_Girls.GetStat(current, STAT_HAPPINESS) < 40 && matron && (g_Dice % 100) + 1 < 70)
+		{
+			DoctoreMsg = gettext("The Doctore helps cheer up ") + girlName + gettext(" after she feels sad.\n");
+			g_Girls.UpdateStat(current, STAT_HAPPINESS, 5);
+		}
+
+		if (g_Girls.GetStat(current, STAT_HEALTH) < 40)
+		{
+			if (matron)
+			{
+				if (current->m_PrevNightJob == 255 && current->m_PrevDayJob == 255)
+				{
+					current->m_PrevDayJob = current->m_DayJob;
+					current->m_PrevNightJob = current->m_NightJob;
+					current->m_DayJob = current->m_NightJob = JOB_ARENAREST;
+					DoctoreWarningMsg += girlName + gettext(" is taken off duty by the Doctore to rest due to her low health.\n");
+				}
+				else
+				{
+					DoctoreMsg = gettext("The Doctore helps heal ") + girlName + gettext(".\n");
+					g_Girls.UpdateStat(current, STAT_HEALTH, 5);
+				}
+			}
+			else
+			{
+				DoctoreWarningMsg = gettext("DANGER ") + girlName + gettext("'s health is very low!\nShe must rest or she will die!\n");
+			}
+		}
+
+		// Now print out the consolodated message
+		if (strcmp(DoctoreMsg.c_str(), "") != 0)
+		{
+			current->m_Events.AddMessage(DoctoreMsg, IMGTYPE_PROFILE, SHIFT_NIGHT);
+			DoctoreMsg = "";
+		}
+
+		if (strcmp(DoctoreWarningMsg.c_str(), "") != 0)
+		{
+			current->m_Events.AddMessage(DoctoreWarningMsg, IMGTYPE_PROFILE, EVENT_WARNING);
+			DoctoreWarningMsg = "";
+		}
+		/*
+		*		Doctore CODE END
+		*/
 
 		// Do item check at the end of the day
 		if (DayNight == SHIFT_NIGHT)

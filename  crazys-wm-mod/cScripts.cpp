@@ -380,8 +380,7 @@ bool SaveScriptFile(const char *Filename, sScript *ScriptRoot)
 	}
 
 	// Open the file for output
-	if((fp=fopen(Filename, "wb"))==0)
-		return false; // return a failure
+	if ((fp = fopen(Filename, "wb")) == 0) return false; // return a failure
 
 	// Output # of script actions
 	fwrite(&NumActions, 1, sizeof(long), fp);
@@ -425,43 +424,40 @@ sScript *LoadScriptFile(string Filename)
 	sScript *ScriptRoot = 0, *Script = 0, *ScriptPtr = 0;
 
 	// Open the file for input
-	if((fp=fopen(Filename.c_str(), "rb"))==0)
-		return 0;
+	if ((fp = fopen(Filename.c_str(), "rb")) == 0) return 0;
 
 	// Get # of script actions from file
 	fread(&Num, 1, sizeof(long), fp);
 
 	// Loop through each script action
-	for(i=0;i<Num;i++) 
+	for (i = 0; i < Num; i++)
 	{
 		// Allocate a script structure and link in
 		Script = new sScript();
-		if(ScriptPtr == 0)
-			ScriptRoot = Script; // Assign root
-		else
-			ScriptPtr->m_Next = Script;
+		if (ScriptPtr == 0) ScriptRoot = Script; // Assign root
+		else ScriptPtr->m_Next = Script;
 		ScriptPtr = Script;
-	
+
 		// Get type of action and # of entries
 		fread(&Script->m_Type, 1, sizeof(long), fp);
 		fread(&Script->m_NumEntries, 1, sizeof(long), fp);
 
 		// Get entry data (if any)
-		if(Script->m_NumEntries) 
+		if (Script->m_NumEntries)
 		{
 			// Allocate entry array
 			Script->m_Entries = new sScriptEntry[Script->m_NumEntries]();
-			
+
 			// Load in each entry
-			for(j=0;j<Script->m_NumEntries;j++) 
+			for (j = 0; j < Script->m_NumEntries; j++)
 			{
 				// Get entry type and data
 				fread(&Script->m_Entries[j].m_Type, 1, sizeof(long), fp);
-				fread(&Script->m_Entries[j].m_IOValue, 1, sizeof(long),fp);
-				fread(&Script->m_Entries[j].m_Var, 1, sizeof(unsigned char),fp);
+				fread(&Script->m_Entries[j].m_IOValue, 1, sizeof(long), fp);
+				fread(&Script->m_Entries[j].m_Var, 1, sizeof(unsigned char), fp);
 
 				// Get text (if any)
-				if(Script->m_Entries[j].m_Type == _TEXT && Script->m_Entries[j].m_Length) 
+				if (Script->m_Entries[j].m_Type == _TEXT && Script->m_Entries[j].m_Length)
 				{
 					// Allocate a buffer and get string
 					Script->m_Entries[j].m_Text = new char[Script->m_Entries[j].m_Length];

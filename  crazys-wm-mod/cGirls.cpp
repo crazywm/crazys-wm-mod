@@ -759,7 +759,7 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 			message += "' from girl template ";
 			message += current->m_Name;
 			message += " doesn't exist or is spelled incorrectly.";
-			g_MessageQue.AddToQue(message, 2);
+			g_MessageQue.AddToQue(message, COLOR_RED);
 		}
 	}
 
@@ -5342,14 +5342,9 @@ bool cGirls::LoseVirginity(sGirl* girl, bool addrememberlist, bool force)
 	 *	Well, why not?		DustyDan
 	 */
 
-	string traitName = "Virgin";
 	bool traitOpSuccess = false;
-
 	girl->m_Virgin = 0; 
-
-	//	Let's avoid re-inventing the wheel
-
-	traitOpSuccess = RemoveTrait(girl, traitName, addrememberlist, force);
+	traitOpSuccess = RemoveTrait(girl, "Virgin", addrememberlist, force);
 	return traitOpSuccess;
 }
 
@@ -5617,7 +5612,7 @@ void cGirls::updateHappyTraits(sGirl* girl)
 			{
 				string msg = girl->m_Realname + gettext(" has killed herself since she was unhappy and depressed.");
 				girl->m_Events.AddMessage(msg, IMGTYPE_DEATH, EVENT_DANGER);
-				g_MessageQue.AddToQue(msg, 1);
+				g_MessageQue.AddToQue(msg, COLOR_RED);
 				girl->health(-1000);
 				//g_Girls.SetStat(girl, STAT_HEALTH, 0);
 			}
@@ -8815,7 +8810,7 @@ void cGirls::updateSTD(sGirl* girl)
 	{
 		string msg = girl->m_Realname + gettext(" has died from STDs.");
 		girl->m_Events.AddMessage(msg, IMGTYPE_DEATH, EVENT_DANGER);
-		//g_MessageQue.AddToQue(msg, 1);
+		g_MessageQue.AddToQue(msg, COLOR_RED);
 	}
 }
 

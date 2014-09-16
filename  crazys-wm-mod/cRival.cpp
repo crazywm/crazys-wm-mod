@@ -370,7 +370,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 									message += gettext("\nYou lose the territory.");
 									NumPlayerBussiness--;
 									curr->m_BusinessesExtort++;
-									g_MessageQue.AddToQue(message, 3);
+									g_MessageQue.AddToQue(message, COLOR_RED);
 								}
 								delete rGang;
 								rGang = 0;
@@ -380,7 +380,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 								string message = gettext("Your rival ");
 								message += curr->m_Name;
 								message += gettext(" has taken one of the undefended territories you control.");
-								g_MessageQue.AddToQue(message, 3);
+								g_MessageQue.AddToQue(message, COLOR_RED);
 								NumPlayerBussiness--;
 								curr->m_BusinessesExtort++;
 							}
@@ -466,7 +466,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 									}
 
 									rivals_plunder_pc_gold(curr, message);
-									g_MessageQue.AddToQue(message, 3);
+									g_MessageQue.AddToQue(message, COLOR_RED);
 
 								}
 								else
@@ -496,7 +496,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 									}
 
 									rivals_plunder_pc_gold(curr, message);
-									g_MessageQue.AddToQue(message, 3);
+									g_MessageQue.AddToQue(message, COLOR_RED);
 								}
 							}
 						}

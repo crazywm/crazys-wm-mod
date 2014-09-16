@@ -159,8 +159,9 @@ string cClinicTry::walk_no_luck()
 
 void cClinicTry::do_walk()
 {
-	if(g_TryEr) {
-		g_MessageQue.AddToQue("You can only do this once per week.", 2);
+	if (g_TryEr)
+	{
+		g_MessageQue.AddToQue("You can only do this once per week.", COLOR_BLUE);
 		return;
 	}
 /*
@@ -170,8 +171,9 @@ void cClinicTry::do_walk()
 /*
  *	if there's no girl, no meeting
  */
-	if(girl == 0) {
-		g_MessageQue.AddToQue(walk_no_luck(), 0);
+	if (girl == 0)
+	{
+		g_MessageQue.AddToQue(walk_no_luck(), COLOR_RED);
 		return;
 	}
 /*
@@ -181,7 +183,7 @@ void cClinicTry::do_walk()
 	cConfig cfg;
 	int meet_chance = cfg.initial.girl_meet();
 	if(!g_Dice.percent(meet_chance) && !g_Cheats) {
-		g_MessageQue.AddToQue(walk_no_luck(), 1);
+		g_MessageQue.AddToQue(walk_no_luck(), COLOR_RED);
 		return;
 	}
 /*
@@ -189,9 +191,8 @@ void cClinicTry::do_walk()
  *
  *	once scripts are stable
  */
-	string message = "You go to your clinic in the hopes that your men have, ";
-	message += "brought in a potential new girl as per your orders.";
-	g_MessageQue.AddToQue(message, 2);
+	string message = "You go to your clinic in the hopes that your men have brought in a potential new girl as per your orders.";
+	g_MessageQue.AddToQue(message, COLOR_BLUE);
 	int v[2] = {0,-1};
 	cTrigger* trig = 0;
 	g_Building = BUILDING_CLINIC;

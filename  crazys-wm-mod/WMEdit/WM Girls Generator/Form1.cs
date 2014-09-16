@@ -1663,7 +1663,7 @@ namespace WM_Girls_Generator
 //            }
             for (int i = 0; i < TraitCollection.Rows.Count; i++)
             {
-                TraitCollection.Rows[i]["Checked"] = false;
+                TraitCollection.Rows[i]["Checked"] = "false";
             }
 
             GoldTBox1.Text = StatsTBox_09.Text = StatsTBox_G_Level.Text = StatsTBox_11.Text = StatsTBox_20.Text = StatsTBox_21.Text = StatsTBox_22.Text = StatsTBox_18.Text = textBox_G_Morality.Text = "0";
@@ -2223,7 +2223,7 @@ namespace WM_Girls_Generator
 //            }
             for (int i = 0; i < TraitCollection.Rows.Count; i++)
             {
-                TraitCollection.Rows[i]["Checked"] = false;
+                TraitCollection.Rows[i]["Checked"] = "false";
             }
             for (int i = 0; i < traitNum; i++)
             {
@@ -2232,7 +2232,7 @@ namespace WM_Girls_Generator
                 {
                     if (TraitCollection.Rows[j]["Name"].ToString() == trait)
                     {
-                        TraitCollection.Rows[j]["Checked"] = true;
+                        TraitCollection.Rows[j]["Checked"] = "true";
                         break;
                     }
                 }

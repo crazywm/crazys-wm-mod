@@ -75,6 +75,7 @@ struct sBrothel
 	int             m_id;
 	unsigned short	m_Happiness;		// av. % happy customers last week
 	int				m_TotalCustomers;	// the total number of customers for the last week
+	int				m_RejectCustomers;	// How many customers were turned away by your sex restrictions.
 	int				m_MiscCustomers;	// customers used for temp purposes but must still be taken into account
 	unsigned char	m_Fame;				// How famous this brothel is
 	int				m_NumRooms;			// How many rooms it has

@@ -63,7 +63,7 @@ void cGetStringScreenManager_Inner::submit()
 	g_ReturnText = g_GetString.GetEditBoxText(g_interfaceid.EDITBOX_NAME);
 
 	if(!m_empty_ok && g_ReturnText == "") {
-		g_MessageQue.AddToQue(gettext("You must enter a name"), 0);
+		g_MessageQue.AddToQue(gettext("You must enter a name"), COLOR_RED);
 		return;
 	}
 	m_empty_ok = true;

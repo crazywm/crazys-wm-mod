@@ -1585,7 +1585,7 @@ void cGangManager::UpdateGangs()
 			string message = gettext("All of the men in gang ");
 			message += currentGang->m_Name;
 			message += gettext(" have died.");
-			g_MessageQue.AddToQue(message, 1);
+			g_MessageQue.AddToQue(message, COLOR_RED);
 			sGang* temp = currentGang->m_Next;
 			RemoveGang(currentGang);
 			currentGang = temp;
@@ -1725,7 +1725,7 @@ void cGangManager::UpdateGangs()
 				if(currentGang->m_Num <= 0)
 				{
 					message += gettext("\nThe gang on this mission has been killed.");
-					g_MessageQue.AddToQue(message, 2);
+					g_MessageQue.AddToQue(message, COLOR_RED);
 					sGang* temp = currentGang->m_Next;
 					RemoveGang(currentGang);
 					currentGang = temp;
@@ -1813,7 +1813,7 @@ void cGangManager::UpdateGangs()
 				if(currentGang->m_Num <= 0)
 				{
 					message += gettext("The gang was killed.");
-					g_MessageQue.AddToQue(message, 2);
+					g_MessageQue.AddToQue(message, COLOR_RED);
 					sGang* temp = currentGang->m_Next;
 					RemoveGang(currentGang);
 					currentGang = temp;
@@ -1938,7 +1938,7 @@ void cGangManager::UpdateGangs()
 				if(currentGang->m_Num <= 0)
 				{
 					message += gettext("\nAll your men on this mission have died.");
-					g_MessageQue.AddToQue(message, 2);
+					g_MessageQue.AddToQue(message, COLOR_RED);
 					sGang* temp = currentGang->m_Next;
 					RemoveGang(currentGang);
 					currentGang = temp;
@@ -2046,7 +2046,7 @@ void cGangManager::UpdateGangs()
 								if(currentGang->m_Num <= 0)
 								{
 									message += gettext("\nThe girl fights back and kills your men before escaping into the crowd.");
-									g_MessageQue.AddToQue(message, 2);
+									g_MessageQue.AddToQue(message, COLOR_RED);
 									sGang* temp = currentGang->m_Next;
 									RemoveGang(currentGang);
 									currentGang = temp;
@@ -2358,7 +2358,7 @@ void cGangManager::UpdateGangs()
 				else
 				{
 					message += gettext(" The men were wiped out.");
-					g_MessageQue.AddToQue(message, 0);
+					g_MessageQue.AddToQue(message, COLOR_RED);
 					sGang* temp = currentGang->m_Next;
 					RemoveGang(currentGang);
 					currentGang = temp;
@@ -2593,7 +2593,7 @@ void cGangManager::sabotage_mission(sGang* gang)
 			}
 
 			ss << gettext("Your gang fails to report back. Later you learn that they were wiped out to the last man.");
-			g_MessageQue.AddToQue(ss.str(), 0);
+			g_MessageQue.AddToQue(ss.str(), COLOR_RED);
 			delete rival_gang;
 			rival_gang = 0;
 			return;
@@ -2790,13 +2790,14 @@ bool cGangManager::recapture_mission(sGang* gang)
  */
 	// 3B: Escapee wins
 	//gang->m_Num = 0;	
-	if(gang->m_Num > 0) {
+	if(gang->m_Num > 0) 
+	{
 		ss << gettext("She thrashes your gang before disappearing again.");
 		gang->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
 		return true;
 	}
 	ss << gettext("She destroys your gang before disappearing again.");
-	g_MessageQue.AddToQue(ss.str(), 0);
+	g_MessageQue.AddToQue(ss.str(), COLOR_RED);
 	return false;
 }
 

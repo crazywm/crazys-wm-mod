@@ -528,32 +528,20 @@ void LoadGirlsFiles()
 // WD:	Copy sort code to Dungeon Girls
 
 void Turnsummary()
-
 {
-	static int ImageType = -1;
-	static int lastNum = -1;
-	static int ImageNum = -1;
-	static int LastType = -1;
-	static int category = 0;
-	static int category_last = 0;
-	static int Item = 0;
-
+	static int ImageType = -1, lastNum = -1, ImageNum = -1, LastType = -1, category = 0, category_last = 0, Item = 0;
 	sGirl *girl;
 	g_CurrentScreen = SCREEN_TURNSUMMARY;
-	if(g_InitWin)
+
+	if (g_InitWin)
 	{
 		g_Turnsummary.Focused();
 		string brothel = gettext("Current Brothel: ");
 		brothel += g_Brothels.GetName(g_CurrBrothel);
 		g_Turnsummary.EditTextItem(brothel, g_interfaceid.TEXT_CURRENTBROTHEL);
 
-		if(category_last == category)
-			Item = g_Turnsummary.GetSelectedItemFromList(g_interfaceid.LIST_TSITEM);
-		else
-		{
-			Item = 0;
-			category_last = category;
-		}
+		if (category_last == category) Item = g_Turnsummary.GetSelectedItemFromList(g_interfaceid.LIST_TSITEM);
+		else { Item = 0; category_last = category; }
 
 		// Clear the lists
 		g_Turnsummary.ClearListBox(g_interfaceid.LIST_TSCATEGORY);
@@ -575,7 +563,7 @@ void Turnsummary()
 		g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSCATEGORY, 8, gettext("HOUSE"));
 		g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSCATEGORY, 9, gettext("FARM"));
 		//g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSCATEGORY, 4, "RIVALS");
-		//g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSCATEGORY, 5, "GLOBAL"); */
+		//g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSCATEGORY, 5, "GLOBAL");
 		g_Turnsummary.SetSelectedItemInList(g_interfaceid.LIST_TSCATEGORY, category, false);
 
 /*
@@ -584,18 +572,9 @@ void Turnsummary()
 		// 0. List girls
 		if(category == 0)
 		{
-			int nNumGirls	= g_Brothels.GetNumGirls(g_CurrBrothel);
-			int ID			= 0;
-			vector<sGirl*> tmpSexGirls;
-			vector<sGirl*> tmpServiceGirls;
-			vector<sGirl*> tmpGoodNewsGirls;
-			vector<sGirl*> tmpDangerGirls;
-			vector<sGirl*> tmpWarningGirls;
-			tmpSexGirls.clear();
-			tmpServiceGirls.clear();
-			tmpGoodNewsGirls.clear();
-			tmpDangerGirls.clear();
-			tmpWarningGirls.clear();
+			int ID = 0, nNumGirls = g_Brothels.GetNumGirls(g_CurrBrothel);
+			vector<sGirl*> tmpSexGirls, tmpServiceGirls, tmpGoodNewsGirls, tmpDangerGirls, tmpWarningGirls;
+			tmpSexGirls.clear(); tmpServiceGirls.clear(); tmpGoodNewsGirls.clear(); tmpDangerGirls.clear(); tmpWarningGirls.clear();
 			sGirl* pTmpGirl;
 			bool sexjob = false;
 
@@ -617,7 +596,8 @@ void Turnsummary()
 					case JOB_WHOREGAMBHALL:
 					case JOB_WHOREBROTHEL:
 					case JOB_WHORESTREETS:
-						  sexjob = true;
+					case JOB_ESCORT:
+						sexjob = true;
 						break;
 					default:
 						break;
@@ -633,6 +613,7 @@ void Turnsummary()
 					case JOB_WHOREGAMBHALL:
 					case JOB_WHOREBROTHEL:
 					case JOB_WHORESTREETS:
+					case JOB_ESCORT:
 						  sexjob = true;
 						break;
 					default:
@@ -641,51 +622,35 @@ void Turnsummary()
 				// Sort the girls into 4 catagories... sex jobs, service jobs, warning, and danger
 				// `J` added 5th catagory... goodnews
 				// If we want to we could add a seperate catagory for each job and order the list even further, but it will make this clunkier.
-				if (!pTmpGirl->m_Events.HasUrgent() && sexjob)
-				{
-					tmpSexGirls.push_back(pTmpGirl);
-				}
-				else if (!pTmpGirl->m_Events.HasUrgent())
-				{
-					tmpServiceGirls.push_back(pTmpGirl);
-				}
-				else if (pTmpGirl->m_Events.HasGoodNews())
-				{
-					tmpGoodNewsGirls.push_back(pTmpGirl);
-				}
-				else if (pTmpGirl->m_Events.HasDanger())
-				{
-					tmpDangerGirls.push_back(pTmpGirl);
-				}
-				else
-					tmpWarningGirls.push_back(pTmpGirl);
+				/* */if (!pTmpGirl->m_Events.HasUrgent() && sexjob)	tmpSexGirls.push_back(pTmpGirl);
+				else if (!pTmpGirl->m_Events.HasUrgent())			tmpServiceGirls.push_back(pTmpGirl);
+				else if (pTmpGirl->m_Events.HasGoodNews())			tmpGoodNewsGirls.push_back(pTmpGirl);
+				else if (pTmpGirl->m_Events.HasDanger())			tmpDangerGirls.push_back(pTmpGirl);
+				else /*                                 */			tmpWarningGirls.push_back(pTmpGirl);
 			}
 			// Put the catagories into the List Boxes... to change what order they are listed in, just swap these for-next loops. --PP
 			//Girls with GoodNews events
 			for (u_int i = 0; i < tmpGoodNewsGirls.size(); i++)
 			{
 				string tname = tmpGoodNewsGirls[i]->m_Realname;
-				g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, LISTBOX_GREEN);
-				if (selected_girl == tmpGoodNewsGirls[i])
-					Item = ID;
+				g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, COLOR_GREEN);
+				if (selected_girl == tmpGoodNewsGirls[i]) Item = ID;
 				ID++;
 			}
 			//Girls with Danger events
 			for (u_int i = 0; i < tmpDangerGirls.size(); i++)
 			{
 				string tname = tmpDangerGirls[i]->m_Realname;
-				g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, LISTBOX_RED);
-				if (selected_girl == tmpDangerGirls[i])
-					Item = ID;
+				g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, COLOR_RED);
+				if (selected_girl == tmpDangerGirls[i]) Item = ID;
 				ID++;
 			}
 			//Girls wih Warnings
 			for(u_int i = 0; i < tmpWarningGirls.size() ;i++)
 			{
 				string tname = tmpWarningGirls[i]->m_Realname;
-				g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, LISTBOX_DARKBLUE);
-				if (selected_girl == tmpWarningGirls[i])
-					Item = ID;
+				g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, COLOR_DARKBLUE);
+				if (selected_girl == tmpWarningGirls[i]) Item = ID;
 				ID++;
 			}
 			//ServiceJob Girls
@@ -693,8 +658,7 @@ void Turnsummary()
 			{
 				string tname = tmpServiceGirls[i]->m_Realname;
 				g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname);
-				if (selected_girl == tmpServiceGirls[i])
-					Item = ID;
+				if (selected_girl == tmpServiceGirls[i]) Item = ID;
 				ID++;
 			}
 			//SexJob girls
@@ -702,8 +666,7 @@ void Turnsummary()
 			{
 				string tname = tmpSexGirls[i]->m_Realname;
 				g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname);
-				if (selected_girl == tmpSexGirls[i])
-					Item = ID;
+				if (selected_girl == tmpSexGirls[i]) Item = ID;
 				ID++;
 			}
 		}
@@ -721,139 +684,50 @@ void Turnsummary()
 			for(int i=0; i<g_Brothels.GetNumBrothels(); i++)
 				g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, i, g_Brothels.GetBrothel(i)->m_Name);
 		}
-
-/* `J` Old Dungeon code
-		// 3. Dungeon
-		else if(category == 3)
-		{
-			
-			// Fill the list box
-			cDungeon* pDungeon	= g_Brothels.GetDungeon();
-			int nNumGirls		= pDungeon->GetNumGirls();
-			int ID	= 0;
-
-			// WD:	Copied sort to dungeon girls.  Added warnings to cDungeon::Update() to sort
-			//  `J` Girls with GoodNews events first
-			for (int h = 0; h<nNumGirls; h++)
-			{
-				sGirl* pTmpGirl = pDungeon->GetGirl(h)->m_Girl;
-				if (pTmpGirl->m_Events.HasGoodNews())
-				{
-					string tname = pTmpGirl->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, LISTBOX_GREEN);
-					if (selected_girl == pTmpGirl)
-						Item = ID;
-					ID++;
-				}
-			}
-			// MYR: Girls with danger events first
-			for(int i=0; i<nNumGirls; i++)
-			{
-				sGirl* pTmpGirl = pDungeon->GetGirl(i)->m_Girl;
-				if (pTmpGirl->m_Events.HasDanger() && !pTmpGirl->m_Events.HasGoodNews())
-				{
-					string tname = pTmpGirl->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, LISTBOX_RED);
-					if (selected_girl == pTmpGirl)
-						Item = ID;
-					ID++;
-				}
-			}
-				
-			// Girls with warning events next
-			for(int j=0; j<nNumGirls; j++)
-			{
-				sGirl* pTmpGirl = pDungeon->GetGirl(j)->m_Girl;
-				if (pTmpGirl->m_Events.HasWarning() && !pTmpGirl->m_Events.HasDanger() && !pTmpGirl->m_Events.HasGoodNews())
-				{
-					string temp = pTmpGirl->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, temp, LISTBOX_DARKBLUE);
-					if (selected_girl == pTmpGirl)
-						Item = ID;
-					ID++;
-				}
-			}
-
-			// Then every other girl
-			for(int k=0; k<nNumGirls; k++)
-			{
-				sGirl* pTmpGirl = pDungeon->GetGirl(k)->m_Girl;
-				if(!pTmpGirl->m_Events.HasUrgent())
-				{
-					string temp = pTmpGirl->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, temp);
-					if (selected_girl == pTmpGirl)
-						Item = ID;
-					ID++;
-				}
-			}
-		} // End of dungeon
-//	*/ // End of old dungeon
-
-
+		
 		// 3. `J` New Dungeon code
 		else if (category == 3)
 		{
 
 			// Fill the list box
 			cDungeon* pDungeon = g_Brothels.GetDungeon();
-			int nNumGirls = pDungeon->GetNumGirls();
-			int ID = 0;
-			vector<sGirl*> tmpGoodNewsGirls;
-			vector<sGirl*> tmpDangerGirls;
-			vector<sGirl*> tmpWarningGirls;
-			vector<sGirl*> tmpOtherGirls;
-			tmpGoodNewsGirls.clear();
-			tmpDangerGirls.clear();
-			tmpWarningGirls.clear();
-			tmpOtherGirls.clear();
+			int ID = 0, nNumGirls = pDungeon->GetNumGirls();
+			vector<sGirl*> tmpGoodNewsGirls, tmpDangerGirls, tmpWarningGirls, tmpOtherGirls;
+			tmpGoodNewsGirls.clear(); tmpDangerGirls.clear(); tmpWarningGirls.clear(); tmpOtherGirls.clear();
 			sGirl* pTmpGirl;
 
 			for (int i = 0; i < nNumGirls; i++)
 			{
 				pTmpGirl = pDungeon->GetGirl(i)->m_Girl;
 
-				if (!pTmpGirl->m_Events.HasUrgent())
-				{
-					tmpOtherGirls.push_back(pTmpGirl);
-				}
-				else if (pTmpGirl->m_Events.HasGoodNews())
-				{
-					tmpGoodNewsGirls.push_back(pTmpGirl);
-				}
-				else if (pTmpGirl->m_Events.HasDanger())
-				{
-					tmpDangerGirls.push_back(pTmpGirl);
-				}
-				else
-					tmpWarningGirls.push_back(pTmpGirl);
+				/* */if (!pTmpGirl->m_Events.HasUrgent())	tmpOtherGirls.push_back(pTmpGirl);
+				else if (pTmpGirl->m_Events.HasGoodNews())	tmpGoodNewsGirls.push_back(pTmpGirl);
+				else if (pTmpGirl->m_Events.HasDanger())	tmpDangerGirls.push_back(pTmpGirl);
+				else /*                                */	tmpWarningGirls.push_back(pTmpGirl);
 			}
 
 			//Girls with GoodNews events
 			for (u_int i = 0; i < tmpGoodNewsGirls.size(); i++)
 			{
 				string tname = tmpGoodNewsGirls[i]->m_Realname;
-				g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, LISTBOX_GREEN);
-				if (selected_girl == tmpGoodNewsGirls[i])
-					Item = ID;
+				g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, COLOR_GREEN);
+				if (selected_girl == tmpGoodNewsGirls[i]) Item = ID;
 				ID++;
 			}
 			//Girls with Danger events
 			for (u_int i = 0; i < tmpDangerGirls.size(); i++)
 			{
 				string tname = tmpDangerGirls[i]->m_Realname;
-				g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, LISTBOX_RED);
-				if (selected_girl == tmpDangerGirls[i])
-					Item = ID;
+				g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, COLOR_RED);
+				if (selected_girl == tmpDangerGirls[i]) Item = ID;
 				ID++;
 			}
 			//Girls wih Warnings
 			for (u_int i = 0; i < tmpWarningGirls.size(); i++)
 			{
 				string tname = tmpWarningGirls[i]->m_Realname;
-				g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, LISTBOX_DARKBLUE);
-				if (selected_girl == tmpWarningGirls[i])
-					Item = ID;
+				g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, COLOR_DARKBLUE);
+				if (selected_girl == tmpWarningGirls[i]) Item = ID;
 				ID++;
 			}
 			//ServiceJob Girls
@@ -861,8 +735,7 @@ void Turnsummary()
 			{
 				string tname = tmpOtherGirls[i]->m_Realname;
 				g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname);
-				if (selected_girl == tmpOtherGirls[i])
-					Item = ID;
+				if (selected_girl == tmpOtherGirls[i]) Item = ID;
 				ID++;
 			}
 		}// End of New dungeon code
@@ -880,7 +753,7 @@ void Turnsummary()
 				if (pTmpGirl->m_Events.HasGoodNews())
 				{
 					string tname = pTmpGirl->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, LISTBOX_GREEN);
+					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, COLOR_GREEN);
 					if (selected_girl == pTmpGirl)
 						Item = ID;
 					ID++;
@@ -893,7 +766,7 @@ void Turnsummary()
 				if (pTmpGirl->m_Events.HasDanger() && !pTmpGirl->m_Events.HasGoodNews())
 				{
 					string tname = pTmpGirl->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, LISTBOX_RED);
+					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, COLOR_RED);
 					if (selected_girl == pTmpGirl)
 						Item = ID;
 					ID++;
@@ -907,7 +780,7 @@ void Turnsummary()
 				if (pTmpGirl->m_Events.HasWarning() && !pTmpGirl->m_Events.HasDanger() && !pTmpGirl->m_Events.HasGoodNews())
 				{
 					string temp = pTmpGirl->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, temp, LISTBOX_DARKBLUE);
+					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, temp, COLOR_DARKBLUE);
 					if (selected_girl == pTmpGirl)
 						Item = ID;
 					ID++;
@@ -999,7 +872,7 @@ void Turnsummary()
 			for (u_int i = 0; i < tmpGoodNewsGirls.size(); i++)
 			{
 				string tname = tmpGoodNewsGirls[i]->m_Realname;
-				g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, LISTBOX_GREEN);
+				g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, COLOR_GREEN);
 				if (selected_girl == tmpGoodNewsGirls[i])
 					Item = ID;
 				ID++;
@@ -1008,7 +881,7 @@ void Turnsummary()
 			for(u_int i = 0; i < tmpDangerGirls.size() ;i++)
 			{
 				string tname = tmpDangerGirls[i]->m_Realname;
-				g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, LISTBOX_RED);
+				g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, COLOR_RED);
 				if (selected_girl == tmpDangerGirls[i])
 					Item = ID;
 				ID++;
@@ -1017,7 +890,7 @@ void Turnsummary()
 			for(u_int i = 0; i < tmpWarningGirls.size() ;i++)
 			{
 				string tname = tmpWarningGirls[i]->m_Realname;
-				g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, LISTBOX_DARKBLUE);
+				g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, COLOR_DARKBLUE);
 				if (selected_girl == tmpWarningGirls[i])
 					Item = ID;
 				ID++;
@@ -1049,7 +922,7 @@ void Turnsummary()
 				if(pTmpGirl->m_Events.HasDanger())
 				{
 					string tname = pTmpGirl->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, LISTBOX_RED);
+					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, COLOR_RED);
 					if (selected_girl == pTmpGirl)
 						Item = ID;
 					ID++;
@@ -1063,7 +936,7 @@ void Turnsummary()
 				if( pTmpGirl->m_Events.HasWarning() && !pTmpGirl->m_Events.HasDanger())
 				{
 					string temp = pTmpGirl->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, temp, LISTBOX_DARKBLUE);
+					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, temp, COLOR_DARKBLUE);
 					if (selected_girl == pTmpGirl)
 						Item = ID;
 					ID++;
@@ -1098,7 +971,7 @@ void Turnsummary()
 				if (pTmpGirl->m_Events.HasGoodNews())
 				{
 					string tname = pTmpGirl->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, LISTBOX_GREEN);
+					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, COLOR_GREEN);
 					if (selected_girl == pTmpGirl)
 						Item = ID;
 					ID++;
@@ -1111,7 +984,7 @@ void Turnsummary()
 				if (pTmpGirl->m_Events.HasDanger() && !pTmpGirl->m_Events.HasGoodNews())
 				{
 					string tname = pTmpGirl->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, LISTBOX_RED);
+					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, COLOR_RED);
 					if (selected_girl == pTmpGirl)
 						Item = ID;
 					ID++;
@@ -1125,7 +998,7 @@ void Turnsummary()
 				if (pTmpGirl->m_Events.HasWarning() && !pTmpGirl->m_Events.HasDanger() && !pTmpGirl->m_Events.HasGoodNews())
 				{
 					string temp = pTmpGirl->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, temp, LISTBOX_DARKBLUE);
+					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, temp, COLOR_DARKBLUE);
 					if (selected_girl == pTmpGirl)
 						Item = ID;
 					ID++;
@@ -1160,7 +1033,7 @@ void Turnsummary()
 				if (pTmpGirl->m_Events.HasGoodNews())
 				{
 					string tname = pTmpGirl->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, LISTBOX_GREEN);
+					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, COLOR_GREEN);
 					if (selected_girl == pTmpGirl)
 						Item = ID;
 					ID++;
@@ -1173,7 +1046,7 @@ void Turnsummary()
 				if (pTmpGirl->m_Events.HasDanger() && !pTmpGirl->m_Events.HasGoodNews())
 				{
 					string tname = pTmpGirl->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, LISTBOX_RED);
+					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, COLOR_RED);
 					if (selected_girl == pTmpGirl)
 						Item = ID;
 					ID++;
@@ -1187,7 +1060,7 @@ void Turnsummary()
 				if (pTmpGirl->m_Events.HasWarning() && !pTmpGirl->m_Events.HasDanger() && !pTmpGirl->m_Events.HasGoodNews())
 				{
 					string temp = pTmpGirl->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, temp, LISTBOX_DARKBLUE);
+					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, temp, COLOR_DARKBLUE);
 					if (selected_girl == pTmpGirl)
 						Item = ID;
 					ID++;
@@ -1222,7 +1095,7 @@ void Turnsummary()
 				if (pTmpGirl->m_Events.HasGoodNews())
 				{
 					string tname = pTmpGirl->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, LISTBOX_GREEN);
+					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, COLOR_GREEN);
 					if (selected_girl == pTmpGirl)
 						Item = ID;
 					ID++;
@@ -1235,7 +1108,7 @@ void Turnsummary()
 				if (pTmpGirl->m_Events.HasDanger() && !pTmpGirl->m_Events.HasGoodNews())
 				{
 					string tname = pTmpGirl->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, LISTBOX_RED);
+					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, COLOR_RED);
 					if (selected_girl == pTmpGirl)
 						Item = ID;
 					ID++;
@@ -1249,7 +1122,7 @@ void Turnsummary()
 				if (pTmpGirl->m_Events.HasWarning() && !pTmpGirl->m_Events.HasDanger() && !pTmpGirl->m_Events.HasGoodNews())
 				{
 					string temp = pTmpGirl->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, temp, LISTBOX_DARKBLUE);
+					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, temp, COLOR_DARKBLUE);
 					if (selected_girl == pTmpGirl)
 						Item = ID;
 					ID++;
@@ -1284,7 +1157,7 @@ void Turnsummary()
 				if (pTmpGirl->m_Events.HasGoodNews())
 				{
 					string tname = pTmpGirl->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, LISTBOX_GREEN);
+					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, COLOR_GREEN);
 					if (selected_girl == pTmpGirl)
 						Item = ID;
 					ID++;
@@ -1297,7 +1170,7 @@ void Turnsummary()
 				if (pTmpGirl->m_Events.HasDanger() && !pTmpGirl->m_Events.HasGoodNews())
 				{
 					string tname = pTmpGirl->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, LISTBOX_RED);
+					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, COLOR_RED);
 					if (selected_girl == pTmpGirl)
 						Item = ID;
 					ID++;
@@ -1311,7 +1184,7 @@ void Turnsummary()
 				if (pTmpGirl->m_Events.HasWarning() && !pTmpGirl->m_Events.HasDanger() && !pTmpGirl->m_Events.HasGoodNews())
 				{
 					string temp = pTmpGirl->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, temp, LISTBOX_DARKBLUE);
+					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, temp, COLOR_DARKBLUE);
 					if (selected_girl == pTmpGirl)
 						Item = ID;
 					ID++;
@@ -2273,20 +2146,13 @@ void Turnsummary()
  *	make sure we don't trip over any other categories that were being 
  *	silently ignored
  */
-	if(category != 0 && category != 3 && category != 4 && category != 5 && category != 6 && category != 7 && category != 8) {
+	if (category != 0 && category != 3 && category != 4 && category != 5 && 
+		category != 6 && category != 7 && category != 8 && category != 9)
+	{
 		return;
 	}
-/*
- *	anythign hereafter is category zero - so we can lose the "if"
- */
 	int GirlNum = g_Turnsummary.GetSelectedItemFromList(g_interfaceid.LIST_TSITEM);
-/*
- *	again, no selected item means "nothing to do"
- *	so let's do that first :)
- */
-	if(GirlNum == -1) {
-		return;
-	}
+	if (GirlNum == -1) return;	// again, no selected item means "nothing to do" so let's do that first :)
 
 /*
  *	both cases need the selected girl data - so let's get that
@@ -2401,14 +2267,14 @@ void NextWeek()
 	g_GenGirls = g_TryEr = false;
 	g_GenGirls = g_TryCast = false;
 	g_TalkCount = 10;
-	/* 
+	/*
 	// `J` I want to make the player start with 0 in all stats and skills
-	// and have to gain them over time. When this gets implemented 
+	// and have to gain them over time. When this gets implemented
 	// g_TalkCount will be based on the player's charisma.
 	g_TalkCount = 10 + (g_Brothels.GetPlayer()->m_Stats[STAT_CHARISMA] / 10);
 	// */ //
 
-	if(g_Cheats)	g_Gold.cheat();
+	if (g_Cheats)	g_Gold.cheat();
 
 	// Clear choice dialog
 	g_ChoiceManager.Free();
@@ -2442,12 +2308,12 @@ void NextWeek()
 	g_Customers.Free();
 
 	// Update the time
-	g_Day+=7;
-	if(g_Day > 30)
+	g_Day += 7;
+	if (g_Day > 30)
 	{
-		g_Day = g_Day-30;
+		g_Day = g_Day - 30;
 		g_Month++;
-		if(g_Month > 12)
+		if (g_Month > 12)
 		{
 			g_Month = 1;
 			g_Year++;

@@ -582,11 +582,11 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 								if (preg)
 									g_MessageQue.AddToQue(girl->m_Realname + gettext(": ") +
 									girl->m_Inventory[num]->m_Name +
-									gettext(": The use of this item has impregnated her with your seed."), 1);
+									gettext(": The use of this item has impregnated her with your seed."), COLOR_BLUE);
 								else
 									g_MessageQue.AddToQue(girl->m_Realname + gettext(": ") +
 									girl->m_Inventory[num]->m_Name +
-									gettext(": The use of this item has failed to impregnate her with your seed. Better luck next time."), 0);
+									gettext(": The use of this item has failed to impregnate her with your seed. Better luck next time."), COLOR_BLUE);
 							}
 							if (eff_id == STATUS_PREGNANT)
 							{
@@ -597,11 +597,11 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 								if (preg)
 									g_MessageQue.AddToQue(girl->m_Realname + gettext(": ") +
 									girl->m_Inventory[num]->m_Name +
-									gettext(": The use of this item has impregnated her."), 1);
+									gettext(": The use of this item has impregnated her."), COLOR_BLUE);
 								else
 									g_MessageQue.AddToQue(girl->m_Realname + gettext(": ") +
 									girl->m_Inventory[num]->m_Name +
-									gettext(": The use of this item has failed to impregnate her. Better luck next time."), 0);
+									gettext(": The use of this item has failed to impregnate her. Better luck next time."), COLOR_BLUE);
 							}
 							if (eff_id == STATUS_INSEMINATED)
 							{
@@ -609,11 +609,11 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 								if (preg)
 									g_MessageQue.AddToQue(girl->m_Realname + gettext(": ") +
 									girl->m_Inventory[num]->m_Name +
-									gettext(": The use of this item has inseminated her with the seed of a beast."), 1);
+									gettext(": The use of this item has inseminated her with the seed of a beast."), COLOR_BLUE);
 								else
 									g_MessageQue.AddToQue(girl->m_Realname + gettext(": ") +
 									girl->m_Inventory[num]->m_Name +
-									gettext(": The use of this item has failed to inseminate her. Better luck next time."), 0);
+									gettext(": The use of this item has failed to inseminate her. Better luck next time."), COLOR_BLUE);
 							}
 							girl->m_UseAntiPreg = AntiPreg;
 						}
@@ -634,7 +634,7 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 							{
 								g_MessageQue.AddToQue(girl->m_Realname + gettext(": ") +
 									girl->m_Inventory[num]->m_Name +
-									gettext(": The use of this item has made her sterile, she can no longer have children."), 1);
+									gettext(": The use of this item has made her sterile, she can no longer have children."), COLOR_RED);
 								g_Girls.AddTrait(girl, "Sterile");
 							}
 						}
