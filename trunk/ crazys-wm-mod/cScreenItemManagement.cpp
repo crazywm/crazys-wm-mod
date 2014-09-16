@@ -269,8 +269,8 @@ void cScreenItemManagement::init()
 			break;
 		if(g_AllTogle && selected_girl == temp2->m_Girl)
 			rightOwner = i;
-		AddToListBox(owners_l_id, i, temp2->m_Girl->m_Realname, LISTBOX_RED);
-		AddToListBox(owners_r_id, i, temp2->m_Girl->m_Realname, LISTBOX_RED);
+		AddToListBox(owners_l_id, i, temp2->m_Girl->m_Realname, COLOR_RED);
+		AddToListBox(owners_r_id, i, temp2->m_Girl->m_Realname, COLOR_RED);
 		NumDungeonGirls++;
 		temp2 = temp2->m_Next;
 		i++;

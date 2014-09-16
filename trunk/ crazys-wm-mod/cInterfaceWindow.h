@@ -117,7 +117,7 @@ public:
 	void ScrollListBoxDown(int ID);
 	int GetListBoxSize(int ID);
 	void ScrollListBoxUp(int ID);
-	void AddToListBox(int listBoxID, int dataID, string data, int color = LISTBOX_BLUE);
+	void AddToListBox(int listBoxID, int dataID, string data, int color = COLOR_BLUE);
 //	void RemoveFromListBox(int listBoxID, int dataID);
 	int GetSelectedItemFromList(int listBoxID);
 	string GetSelectedTextFromList(int listBoxID); // MYR: For new message summary display in InterfaceProcesses.cpp
@@ -131,7 +131,7 @@ public:
 	int ArrowDownListBox(int ID);
 	int ArrowUpListBox(int ID);
 	bool IsMultiSelected(int ID);	// returns true if list has more than one item selected
-	void AddToListBox(int listBoxID, int dataID, string data[], int columns, int color = LISTBOX_BLUE);
+	void AddToListBox(int listBoxID, int dataID, string data[], int columns, int color = COLOR_BLUE);
 	void SetSelectedItemText(int listBoxID, int itemID, string data[], int columns);
 	void SetSelectedItemColumnText(int listBoxID, int itemID, string data, int column);
 	void SortColumns(int listBoxID, string column_name[], int columns);

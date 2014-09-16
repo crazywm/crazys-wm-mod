@@ -175,9 +175,9 @@ void cScreenFarmManagement::init()
 		if (selected_girl == gir)
 			selection = i;
 
-		unsigned int item_color = LISTBOX_BLUE;
+		unsigned int item_color = COLOR_BLUE;
 		if(g_Girls.GetStat(gir, STAT_HEALTH) <= 30 || g_Girls.GetStat(gir, STAT_TIREDNESS) >= 80 || g_Girls.GetStat(gir, STAT_HAPPINESS) <= 30)
-			item_color = LISTBOX_RED;
+			item_color = COLOR_RED;
 
 		gir->OutputGirlRow(Data, columnNames);
 		AddToListBox(girllist_id, i, Data, numColumns, item_color);

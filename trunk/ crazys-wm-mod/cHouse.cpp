@@ -106,20 +106,86 @@ void cHouseManager::Free()
 void cHouseManager::UpdateHouse()
 {
 	sBrothel* current = (sBrothel*) m_Parent;
+	u_int restjob = JOB_HOUSEREST;
+	u_int matronjob = JOB_HEADGIRL;
+	u_int firstjob = JOB_HOUSEREST;
+	u_int lastjob = JOB_CLEANHOUSE;
 
-	// Clear the girls' events from the last turn
+	// Clear the girls' events from the last turn and do start of day stuff
 	sGirl* cgirl = current->m_Girls;
 	while(cgirl)
 	{
-		cgirl->where_is_she		= 0;
-		cgirl->m_InMovieStudio	= false;
-		cgirl->m_InArena		= false;
-		cgirl->m_InCentre		= false;
-		cgirl->m_InClinic		= false;
-		cgirl->m_InFarm			= false;
-		cgirl->m_InHouse		= true;
-		cgirl->m_Pay			= 0;
+		// Remove any dead bodies from last week
+		if (cgirl->health() <= 0)
+		{
+			sGirl* DeadGirl = 0;
+
+			string girlName = cgirl->m_Realname;
+			DeadGirl = cgirl;
+			// If there are more girls to process
+			cgirl = (cgirl->m_Next) ? cgirl->m_Next : 0;
+			// increase all the girls fear and hate of the player for letting her die (weather his fault or not)
+			UpdateAllGirlsStat(current, STAT_PCFEAR, 2);
+			UpdateAllGirlsStat(current, STAT_PCHATE, 1);
+
+			// Two messages go into the girl queue...
+			string msg = girlName + " has died from her injuries, the other girls all fear and hate you a little more.";
+			string summary = girlName + " has died from her injuries.  Her body will be removed by the end of the week.";
+			DeadGirl->m_Events.AddMessage(msg, IMGTYPE_DEATH, EVENT_DANGER);
+			DeadGirl->m_Events.AddMessage(summary, IMGTYPE_DEATH, EVENT_SUMMARY);
+			// There is also one global message
+			g_MessageQue.AddToQue(msg, COLOR_RED);
+
+			RemoveGirl(0, DeadGirl);
+			DeadGirl = 0; msg = ""; summary = "";	// cleanup
+
+			// If there are more girls to process
+			if (cgirl) continue;
+			else		break;
+		}
+
+		cgirl->where_is_she = 0;
+		cgirl->m_InMovieStudio = false;
+		cgirl->m_InArena = false;
+		cgirl->m_InCentre = false;
+		cgirl->m_InClinic = false;
+		cgirl->m_InFarm = false;
+		cgirl->m_InHouse = true;
+
 		cgirl->m_Events.Clear();
+
+		cgirl->m_Pay = 0;
+		cgirl->m_Tips = 0;
+
+		// `J` Check for out of building jobs and set yesterday jobs for everyone first
+		if (cgirl->m_DayJob	  < firstjob && cgirl->m_DayJob   > lastjob)	cgirl->m_DayJob = restjob;
+		if (cgirl->m_NightJob < firstjob && cgirl->m_NightJob > lastjob)	cgirl->m_NightJob = restjob;
+
+
+		cgirl->m_YesterDayJob = cgirl->m_DayJob;		// `J` set what she did yesterday
+		cgirl->m_YesterNightJob = cgirl->m_NightJob;	// `J` set what she did yesternight
+
+
+		string summary ="";
+		do_food_and_digs(current, cgirl);			// Brothel only update for girls accommodation level
+		g_Girls.CalculateGirlType(cgirl);			// update the fetish traits
+		g_Girls.updateGirlAge(cgirl, true);		// update birthday counter and age the girl
+		g_Girls.updateTempStats(cgirl);			// update temp stats
+		g_Girls.updateTempSkills(cgirl);			// update temp skills
+		g_Girls.updateTempTraits(cgirl);			// update temp traits
+		g_Girls.HandleChildren(cgirl, summary);	// handle pregnancy and children growing up
+		g_Girls.updateSTD(cgirl);					// health loss to STD's				NOTE: Girl can die
+		g_Girls.updateHappyTraits(cgirl);			// Update happiness due to Traits	NOTE: Girl can die
+		updateGirlTurnBrothelStats(cgirl);		// Update daily stats				Now only runs once per day
+		g_Girls.updateGirlTurnStats(cgirl);		// Stat Code common to Dugeon and Brothel
+
+		if (cgirl->m_JustGaveBirth)		// if she gave birth, let her rest this week
+		{
+			if (cgirl->m_DayJob != restjob)		cgirl->m_PrevDayJob = cgirl->m_DayJob;
+			if (cgirl->m_NightJob != restjob)	cgirl->m_PrevNightJob = cgirl->m_NightJob;
+			cgirl->m_DayJob = cgirl->m_NightJob = restjob;
+		}
+
 		cgirl = cgirl->m_Next;
 	}
 
@@ -147,7 +213,6 @@ void cHouseManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		
 	cConfig cfg;
 	sGirl* current = brothel->m_Girls;
-	sGirl* DeadGirl = 0;
 	string summary, msg, girlName;
 	int totalPay = 0, totalTips = 0, totalGold = 0;
 
@@ -156,63 +221,16 @@ void cHouseManager::UpdateGirls(sBrothel* brothel, int DayNight)
 	bool refused = false;
 	m_Processing_Shift = DayNight;		// WD:	Set processing flag to shift type
 
-	// `J` Check for out of building jobs and set yesterday jobs for everyone first
-	if (DayNight == SHIFT_DAY)
-	{
-		while (current)
-		{
-			current->m_Pay = current->m_Tips = 0;
-
-			if (current->m_DayJob < firstjob && current->m_DayJob > lastjob)		current->m_DayJob = restjob;
-			if (current->m_NightJob < firstjob && current->m_NightJob > lastjob)	current->m_NightJob = restjob;
-			current->m_YesterDayJob = current->m_DayJob;		// `J` set what she did yesterday
-			current->m_YesterNightJob = current->m_NightJob;	// `J` set what she did yesternight
-			if (current->m_JustGaveBirth)		// if she gave birth, let her rest this week
-			{
-				if (current->m_NightJob != restjob)	current->m_PrevNightJob = current->m_NightJob;
-				current->m_NightJob = restjob;
-			}
-			current = current->m_Next; // Next Girl
-		}
-	}
-	current = brothel->m_Girls;
 
 	while (current)
 	{
-		current->m_Pay = current->m_Tips = totalPay = totalTips = totalGold = 0;
+		totalPay = totalTips = totalGold = 0;
 		refused = false;
 		girlName = current->m_Realname;
 		sum = EVENT_SUMMARY;
 		// ONCE DAILY processing at start of Day Shift
 		if (DayNight == SHIFT_DAY)
 		{
-			// Remove any dead bodies from last week
-			if(current->health() <= 0)
-			{
-				DeadGirl = current;
-				// If there are more girls to process
-				current = (current->m_Next) ? current->m_Next : 0;
-				// increase all the girls fear and hate of the player for letting her die (weather his fault or not)
-				UpdateAllGirlsStat(brothel, STAT_PCFEAR, 2);
-				UpdateAllGirlsStat(brothel, STAT_PCHATE, 1);
-
-				// Two messages go into the girl queue...
-				msg += girlName + " has died from her injuries, the other girls all fear and hate you a little more.";
-				DeadGirl->m_Events.AddMessage(msg, IMGTYPE_DEATH, EVENT_DANGER);
-				summary += girlName + " has died from her injuries.  Her body will be removed by the end of the week.";
-				DeadGirl->m_Events.AddMessage(summary, IMGTYPE_DEATH, EVENT_SUMMARY);
-				// There is also one global message
-				g_MessageQue.AddToQue(msg, 1);
-
-				RemoveGirl(0, DeadGirl);
-				DeadGirl = 0; msg = ""; summary = "";	// cleanup
-
-				// If there are more girls to process
-				if (current) continue;
-				else		break;
-			}
-
-		
 			// Back to work
 			if ((current->m_NightJob == restjob && current->m_DayJob == restjob) && current->m_PregCooldown < cfg.pregnancy.cool_down() &&
 				g_Girls.GetStat(current, STAT_HEALTH) >= 80 && g_Girls.GetStat(current, STAT_TIREDNESS) <= 20)
@@ -239,17 +257,6 @@ void cHouseManager::UpdateGirls(sBrothel* brothel, int DayNight)
 				}
 			}
 
-			do_food_and_digs(brothel, current);			// Brothel only update for girls accommodation level
-			g_Girls.CalculateGirlType(current);			// update the fetish traits
-			g_Girls.updateGirlAge(current, true);		// update birthday counter and age the girl
-			g_Girls.updateTempStats(current);			// update temp stats
-			g_Girls.updateTempSkills(current);			// update temp skills
-			g_Girls.updateTempTraits(current);			// update temp traits
-			g_Girls.HandleChildren(current, summary);	// handle pregnancy and children growing up
-			g_Girls.updateSTD(current);					// health loss to STD's				NOTE: Girl can die
-			g_Girls.updateHappyTraits(current);			// Update happiness due to Traits	NOTE: Girl can die
-			updateGirlTurnBrothelStats(current);		// Update daily stats				Now only runs once per day
-			g_Girls.updateGirlTurnStats(current);		// Stat Code common to Dugeon and Brothel
 		}
 
 
@@ -317,86 +324,6 @@ void cHouseManager::UpdateGirls(sBrothel* brothel, int DayNight)
 
 		brothel->m_Fame += g_Girls.GetStat(current, STAT_FAME);
 
-/*
- *		head girl CODE START
- */
-
-		// Lets try to compact multiple messages into one.
-		string HeadMsg = "";
-		string HeadWarningMsg = "";
-
-		bool head = false;
-		if(GetNumGirlsOnJob(brothel->m_id, JOB_HEADGIRL, true) >= 1 || GetNumGirlsOnJob(brothel->m_id, JOB_HEADGIRL, false) >= 1)
-			head = true;
-
-		if(g_Girls.GetStat(current, STAT_TIREDNESS) > 80)
-		{
-			if (head)
-			{
-				if(current->m_PrevNightJob == 255 && current->m_PrevDayJob == 255)
-				{
-					current->m_PrevDayJob = current->m_DayJob;
-					current->m_PrevNightJob = current->m_NightJob;
-					current->m_DayJob = current->m_NightJob = JOB_HOUSEREST;
-					HeadWarningMsg += gettext("The head girl takes ") + girlName + gettext(" off duty to rest due to her tiredness.\n");
-				}
-				else
-				{
-					if((g_Dice%100)+1 < 70)
-					{
-						HeadMsg += gettext("The Head girl helps ") + girlName + gettext(" to relax.\n");
-						g_Girls.UpdateStat(current, STAT_TIREDNESS, -5);
-					}
-				}
-			}
-			else
-				HeadWarningMsg += gettext("CAUTION! This girl desparatly need rest. Give her some free time\n");
-		}
-
-		if(g_Girls.GetStat(current, STAT_HAPPINESS) < 40 && head && (g_Dice%100) +1 < 70)
-		{
-			HeadMsg = gettext("The Head girl helps cheer up ") + girlName + gettext(" after she feels sad.\n");
-			g_Girls.UpdateStat(current, STAT_HAPPINESS, 5);
-		}
-
-		if(g_Girls.GetStat(current, STAT_HEALTH) < 40)
-		{
-			if(head)
-			{
-				if(current->m_PrevNightJob == 255 && current->m_PrevDayJob == 255)
-				{
-					current->m_PrevDayJob = current->m_DayJob;
-					current->m_PrevNightJob = current->m_NightJob;
-					current->m_DayJob = current->m_NightJob = JOB_HOUSEREST;
-					HeadWarningMsg += girlName + gettext(" is taken off duty by the head girl to rest due to her low health.\n");
-				}
-				else
-				{
-					HeadMsg = gettext("The head girl helps heal ") + girlName + gettext(".\n");
-					g_Girls.UpdateStat(current, STAT_HEALTH, 5);
-				}
-			}
-			else
-			{
-				HeadWarningMsg = gettext("DANGER ") + girlName + gettext("'s health is very low!\nShe must rest or she will die!\n");
-			}
-		}
-
-		// Now print out the consolodated message
-		if (strcmp(HeadMsg.c_str(), "") != 0)
-		{
-			current->m_Events.AddMessage(HeadMsg, IMGTYPE_PROFILE, SHIFT_NIGHT);
-			HeadMsg = "";
-		}
-
-        if (strcmp(HeadWarningMsg.c_str(), "") != 0)
-		{
-			current->m_Events.AddMessage(HeadWarningMsg, IMGTYPE_PROFILE, EVENT_WARNING);
-			HeadWarningMsg = "";
-		}
-/*
- *		Head girl CODE END
- */
 
 /*
  *		Summary Messages
@@ -441,6 +368,86 @@ void cHouseManager::UpdateGirls(sBrothel* brothel, int DayNight)
 
 		summary = "";
 
+		/*
+		*		head girl CODE START
+		*/
+
+		// Lets try to compact multiple messages into one.
+		string HeadMsg = "";
+		string HeadWarningMsg = "";
+
+		bool head = false;
+		if (GetNumGirlsOnJob(brothel->m_id, JOB_HEADGIRL, true) >= 1 || GetNumGirlsOnJob(brothel->m_id, JOB_HEADGIRL, false) >= 1)
+			head = true;
+
+		if (g_Girls.GetStat(current, STAT_TIREDNESS) > 80)
+		{
+			if (head)
+			{
+				if (current->m_PrevNightJob == 255 && current->m_PrevDayJob == 255)
+				{
+					current->m_PrevDayJob = current->m_DayJob;
+					current->m_PrevNightJob = current->m_NightJob;
+					current->m_DayJob = current->m_NightJob = JOB_HOUSEREST;
+					HeadWarningMsg += gettext("The head girl takes ") + girlName + gettext(" off duty to rest due to her tiredness.\n");
+				}
+				else
+				{
+					if ((g_Dice % 100) + 1 < 70)
+					{
+						HeadMsg += gettext("The Head girl helps ") + girlName + gettext(" to relax.\n");
+						g_Girls.UpdateStat(current, STAT_TIREDNESS, -5);
+					}
+				}
+			}
+			else
+				HeadWarningMsg += gettext("CAUTION! This girl desparatly need rest. Give her some free time\n");
+		}
+
+		if (g_Girls.GetStat(current, STAT_HAPPINESS) < 40 && head && (g_Dice % 100) + 1 < 70)
+		{
+			HeadMsg = gettext("The Head girl helps cheer up ") + girlName + gettext(" after she feels sad.\n");
+			g_Girls.UpdateStat(current, STAT_HAPPINESS, 5);
+		}
+
+		if (g_Girls.GetStat(current, STAT_HEALTH) < 40)
+		{
+			if (head)
+			{
+				if (current->m_PrevNightJob == 255 && current->m_PrevDayJob == 255)
+				{
+					current->m_PrevDayJob = current->m_DayJob;
+					current->m_PrevNightJob = current->m_NightJob;
+					current->m_DayJob = current->m_NightJob = JOB_HOUSEREST;
+					HeadWarningMsg += girlName + gettext(" is taken off duty by the head girl to rest due to her low health.\n");
+				}
+				else
+				{
+					HeadMsg = gettext("The head girl helps heal ") + girlName + gettext(".\n");
+					g_Girls.UpdateStat(current, STAT_HEALTH, 5);
+				}
+			}
+			else
+			{
+				HeadWarningMsg = gettext("DANGER ") + girlName + gettext("'s health is very low!\nShe must rest or she will die!\n");
+			}
+		}
+
+		// Now print out the consolodated message
+		if (strcmp(HeadMsg.c_str(), "") != 0)
+		{
+			current->m_Events.AddMessage(HeadMsg, IMGTYPE_PROFILE, SHIFT_NIGHT);
+			HeadMsg = "";
+		}
+
+		if (strcmp(HeadWarningMsg.c_str(), "") != 0)
+		{
+			current->m_Events.AddMessage(HeadWarningMsg, IMGTYPE_PROFILE, EVENT_WARNING);
+			HeadWarningMsg = "";
+		}
+		/*
+		*		Head girl CODE END
+		*/
 		// Do item check at the end of the day
 		if (DayNight == SHIFT_NIGHT)
 		{

@@ -862,7 +862,7 @@ void handle_hotkeys()
 					break;
 				}
 			}
-			g_MessageQue.AddToQue(msg, 0);
+			g_MessageQue.AddToQue(msg, 1);
 			break;
 
 		case SDLK_0:

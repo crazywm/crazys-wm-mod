@@ -677,7 +677,7 @@ void cDungeon::Update()
 					current = current->m_Next;
 
 					msg =  girlName + "'s body has been removed from the dungeon since she was dead.";
-					g_MessageQue.AddToQue(msg, 1);
+					g_MessageQue.AddToQue(msg, COLOR_RED);
 
 					delete RemoveGirl(temp);
 					continue;	

@@ -577,18 +577,6 @@
 		Desc="This girl has more than a few soft bits. Plenty of supple flesh to squeeze and pinch."
 		Type="Physical" />
 	<Trait
-		Name="Pregnant 1T"
-		Desc="She is pregnant in her first trimester. Expect morning sickness and mood swings."
-		Type="Physical" />
-	<Trait
-		Name="Pregnant 2T"
-		Desc="She is pregnant in her second trimester and starting to show."
-		Type="Physical" />
-	<Trait
-		Name="Pregnant 3T"
-		Desc="She is pregnant in her third trimester. She is getting ready to give birth, let her rest a little."
-		Type="Physical" />
-	<Trait
 		Name="Tight Butt"
 		Desc="Two finely-sculpted, scrumptious ass cheeks. What they lack in size, they make up with shape."
 		Type="Physical" />
@@ -833,10 +821,6 @@
 		Desc="This girl has wings."
 		Type="Species" />
 	<Trait
-		Name="Anal Plug"
-		Desc="This girl is holding a plug in her ass. It doesn't seems to be affecting her work much."
-		Type="Temporary" />
-	<Trait
 		Name="Botox Treatment"
 		Desc="She recently had Botox injected into her face. If she is happy about it, no one can tell."
 		Type="Temporary" />
@@ -849,35 +833,11 @@
 		Desc="Her body is currently being physically possessed by a demon."
 		Type="Temporary" />
 	<Trait
-		Name="Nail Polish"
-		Desc="She has applied polish to her nails."
-		Type="Temporary" />
-	<Trait
 		Name="Out-Patient Surgery"
 		Desc="She recently got out of surgery and should be resting."
 		Type="Temporary" />
 	<Trait
-		Name="Pheromones"
-		Desc="The girl has put on a scent to draw in customers."
-		Type="Temporary" />
-	<Trait
-		Name="Plain Lipstick"
-		Desc="She is wearing lipstick."
-		Type="Temporary" />
-	<Trait
-		Name="Sexy Lipstick"
-		Desc="She is wearing lipstick. It makes her look sexier."
-		Type="Temporary" />
-	<Trait
 		Name="Spirit Possessed"
 		Desc="Her body is currently being physically possessed by an evil spirit."
-		Type="Temporary" />
-	<Trait
-		Name="Vibrator"
-		Desc="She has a small vibrator inside her all the time to keep herself stimulated."
-		Type="Temporary" />
-	<Trait
-		Name="Whoreish Lipstick"
-		Desc="She is wearing lipstick. It makes her look more like a whore."
 		Type="Temporary" />
 </Traits>

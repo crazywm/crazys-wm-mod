@@ -389,7 +389,7 @@ static int game_over(lua_State *L)
 {
 	cScriptManager sm;
 
-	g_MessageQue.AddToQue("GAME OVER", 1);
+	g_MessageQue.AddToQue("GAME OVER", COLOR_RED);
 	g_WinManager.PopToWindow(&g_BrothelManagement);
 	g_WinManager.Pop();
 	g_InitWin = true;

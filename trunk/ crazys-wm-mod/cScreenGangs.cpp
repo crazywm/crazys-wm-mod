@@ -230,7 +230,7 @@ void cScreenGangs::init()
 /*
  *			add the box to the list; red highlight gangs that are low on numbers
  */
-		AddToListBox( ganglist_id, num++, Data, 9, (current->m_Num < 6 ? LISTBOX_RED : LISTBOX_BLUE) );
+		AddToListBox( ganglist_id, num++, Data, 9, (current->m_Num < 6 ? COLOR_RED : COLOR_BLUE) );
 	}
 
 	ClearListBox(recruitlist_id);
@@ -279,7 +279,7 @@ void cScreenGangs::init()
 /*
  *			add the box to the list
  */
-		AddToListBox( recruitlist_id, num++, Data, 8, (current->m_Num < 6 ? LISTBOX_RED : LISTBOX_BLUE) );
+		AddToListBox( recruitlist_id, num++, Data, 8, (current->m_Num < 6 ? COLOR_RED : COLOR_BLUE) );
 	}
 
 	if(selection == -1 && GetListBoxSize(ganglist_id) >= 1)

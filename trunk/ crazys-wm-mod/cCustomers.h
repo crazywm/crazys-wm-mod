@@ -28,8 +28,8 @@ typedef struct sCustomer
 {
 	// Regular Stats
 	unsigned char m_IsWoman;	// 0 means a man, 1 means a woman
-	unsigned char m_Amount;	// how many customers this represents
-	unsigned char m_Class;	// is the person rich, poor or middle class
+	unsigned char m_Amount;		// how many customers this represents
+	unsigned char m_Class;		// is the person rich, poor or middle class
 	unsigned char m_Official;	// is the person an official of the town
 
 	unsigned int m_Money;
@@ -37,10 +37,9 @@ typedef struct sCustomer
 	int m_Stats[NUM_STATS];
 	int m_Skills[NUM_SKILLS];
 
-//	int m_Skills[NUM_SKILLS];
-
-	unsigned char m_Fetish;	// the customers fetish
-	unsigned char m_SexPref;	// their sex preference
+	unsigned char m_Fetish;			// the customers fetish
+	unsigned char m_SexPref;		// their sex preference
+	unsigned char m_SexPrefB = 100;	// their secondary sex preference - 100 if none
 
 	unsigned char m_ParticularGirl;	// the id of the girl he wants
 
@@ -70,8 +69,17 @@ typedef struct sCustomer
 class cCustomers
 {
 public:
-	cCustomers() {/*m_Parent=0;*/m_NumCustomers=0;ChangeCustomerBase();/*m_Last=0;*/}
-	~cCustomers(){Free();}
+	cCustomers() 
+	{
+		//	m_Parent=0;
+		m_NumCustomers=0;
+		ChangeCustomerBase();
+		//	m_Last=0;
+	}
+	~cCustomers()
+	{
+		Free();
+	}
 
 	void Free();
 

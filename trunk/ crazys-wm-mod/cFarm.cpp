@@ -202,7 +202,7 @@ void cFarmManager::UpdateGirls(sBrothel* brothel, int DayNight)
 				summary += girlName + " has died from her injuries.  Her body will be removed by the end of the week.";
 				DeadGirl->m_Events.AddMessage(summary, IMGTYPE_DEATH, EVENT_SUMMARY);
 				// There is also one global message
-				g_MessageQue.AddToQue(msg, 1);
+				g_MessageQue.AddToQue(msg, COLOR_RED);
 
 				RemoveGirl(0, DeadGirl);
 				DeadGirl = 0; msg = ""; summary = "";	// cleanup
@@ -318,86 +318,6 @@ void cFarmManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		brothel->m_Fame += g_Girls.GetStat(current, STAT_FAME);
 
 /*
- *		farm manager CODE START
- */
-
-		// Lets try to compact multiple messages into one.
-		string FarmmanagerMsg = "";
-		string FarmmanagerWarningMsg = "";
-
-		bool farmmanager = false;
-		if(GetNumGirlsOnJob(brothel->m_id, JOB_FARMMANGER, true) >= 1 || GetNumGirlsOnJob(brothel->m_id, JOB_FARMMANGER, false) >= 1)
-			farmmanager = true;
-
-		if(g_Girls.GetStat(current, STAT_TIREDNESS) > 80)
-		{
-			if (farmmanager)
-			{
-				if(current->m_PrevNightJob == 255 && current->m_PrevDayJob == 255)
-				{
-					current->m_PrevDayJob = current->m_DayJob;
-					current->m_PrevNightJob = current->m_NightJob;
-					current->m_DayJob = current->m_NightJob = JOB_FARMREST;
-					FarmmanagerWarningMsg += gettext("The Farm Manger takes ") + girlName + gettext(" off duty to rest due to her tiredness.\n");
-				}
-				else
-				{
-					if((g_Dice%100)+1 < 70)
-					{
-						FarmmanagerMsg += gettext("The Farm Manger helps ") + girlName + gettext(" to relax.\n");
-						g_Girls.UpdateStat(current, STAT_TIREDNESS, -5);
-					}
-				}
-			}
-			else
-				FarmmanagerWarningMsg += gettext("CAUTION! This girl desparatly need rest. Give her some free time\n");
-		}
-
-		if(g_Girls.GetStat(current, STAT_HAPPINESS) < 40 && farmmanager && (g_Dice%100) +1 < 70)
-		{
-			FarmmanagerMsg = gettext("The Farm manager helps cheer up ") + girlName + gettext(" after she feels sad.\n");
-			g_Girls.UpdateStat(current, STAT_HAPPINESS, 5);
-		}
-
-		if(g_Girls.GetStat(current, STAT_HEALTH) < 40)
-		{
-			if(farmmanager)
-			{
-				if(current->m_PrevNightJob == 255 && current->m_PrevDayJob == 255)
-				{
-					current->m_PrevDayJob = current->m_DayJob;
-					current->m_PrevNightJob = current->m_NightJob;
-					current->m_DayJob = current->m_NightJob = JOB_FARMREST;
-					FarmmanagerWarningMsg += girlName + gettext(" is taken off duty by the Farm Manger to rest due to her low health.\n");
-				}
-				else
-				{
-					FarmmanagerMsg = gettext("The Farm manager helps heal ") + girlName + gettext(".\n");
-					g_Girls.UpdateStat(current, STAT_HEALTH, 5);
-				}
-			}
-			else
-			{
-				FarmmanagerWarningMsg = gettext("DANGER ") + girlName + gettext("'s health is very low!\nShe must rest or she will die!\n");
-			}
-		}
-
-		// Now print out the consolodated message
-		if (strcmp(FarmmanagerMsg.c_str(), "") != 0)
-		{
-			current->m_Events.AddMessage(FarmmanagerMsg, IMGTYPE_PROFILE, SHIFT_NIGHT);
-			FarmmanagerMsg = "";
-		}
-
-        if (strcmp(FarmmanagerWarningMsg.c_str(), "") != 0)
-		{
-			current->m_Events.AddMessage(FarmmanagerWarningMsg, IMGTYPE_PROFILE, EVENT_WARNING);
-			FarmmanagerWarningMsg = "";
-		}
-/*
- *		Farm manager CODE END
- */
-/*
  *		Summary Messages
  */
 		if (refused) summary += girlName + gettext(" refused to work so made no money.");
@@ -439,6 +359,86 @@ void cFarmManager::UpdateGirls(sBrothel* brothel, int DayNight)
 
 		summary = "";
 
+		/*
+		*		farm manager CODE START
+		*/
+
+		// Lets try to compact multiple messages into one.
+		string FarmmanagerMsg = "";
+		string FarmmanagerWarningMsg = "";
+
+		bool farmmanager = false;
+		if (GetNumGirlsOnJob(brothel->m_id, JOB_FARMMANGER, true) >= 1 || GetNumGirlsOnJob(brothel->m_id, JOB_FARMMANGER, false) >= 1)
+			farmmanager = true;
+
+		if (g_Girls.GetStat(current, STAT_TIREDNESS) > 80)
+		{
+			if (farmmanager)
+			{
+				if (current->m_PrevNightJob == 255 && current->m_PrevDayJob == 255)
+				{
+					current->m_PrevDayJob = current->m_DayJob;
+					current->m_PrevNightJob = current->m_NightJob;
+					current->m_DayJob = current->m_NightJob = JOB_FARMREST;
+					FarmmanagerWarningMsg += gettext("The Farm Manger takes ") + girlName + gettext(" off duty to rest due to her tiredness.\n");
+				}
+				else
+				{
+					if ((g_Dice % 100) + 1 < 70)
+					{
+						FarmmanagerMsg += gettext("The Farm Manger helps ") + girlName + gettext(" to relax.\n");
+						g_Girls.UpdateStat(current, STAT_TIREDNESS, -5);
+					}
+				}
+			}
+			else
+				FarmmanagerWarningMsg += gettext("CAUTION! This girl desparatly need rest. Give her some free time\n");
+		}
+
+		if (g_Girls.GetStat(current, STAT_HAPPINESS) < 40 && farmmanager && (g_Dice % 100) + 1 < 70)
+		{
+			FarmmanagerMsg = gettext("The Farm manager helps cheer up ") + girlName + gettext(" after she feels sad.\n");
+			g_Girls.UpdateStat(current, STAT_HAPPINESS, 5);
+		}
+
+		if (g_Girls.GetStat(current, STAT_HEALTH) < 40)
+		{
+			if (farmmanager)
+			{
+				if (current->m_PrevNightJob == 255 && current->m_PrevDayJob == 255)
+				{
+					current->m_PrevDayJob = current->m_DayJob;
+					current->m_PrevNightJob = current->m_NightJob;
+					current->m_DayJob = current->m_NightJob = JOB_FARMREST;
+					FarmmanagerWarningMsg += girlName + gettext(" is taken off duty by the Farm Manger to rest due to her low health.\n");
+				}
+				else
+				{
+					FarmmanagerMsg = gettext("The Farm manager helps heal ") + girlName + gettext(".\n");
+					g_Girls.UpdateStat(current, STAT_HEALTH, 5);
+				}
+			}
+			else
+			{
+				FarmmanagerWarningMsg = gettext("DANGER ") + girlName + gettext("'s health is very low!\nShe must rest or she will die!\n");
+			}
+		}
+
+		// Now print out the consolodated message
+		if (strcmp(FarmmanagerMsg.c_str(), "") != 0)
+		{
+			current->m_Events.AddMessage(FarmmanagerMsg, IMGTYPE_PROFILE, SHIFT_NIGHT);
+			FarmmanagerMsg = "";
+		}
+
+		if (strcmp(FarmmanagerWarningMsg.c_str(), "") != 0)
+		{
+			current->m_Events.AddMessage(FarmmanagerWarningMsg, IMGTYPE_PROFILE, EVENT_WARNING);
+			FarmmanagerWarningMsg = "";
+		}
+		/*
+		*		Farm manager CODE END
+		*/
 		// Do item check at the end of the day
 		if (DayNight == SHIFT_NIGHT)
 		{

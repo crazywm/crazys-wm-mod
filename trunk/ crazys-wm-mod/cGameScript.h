@@ -131,7 +131,12 @@ public:
 		m_Leave = false;
 		m_GirlTarget = 0;
 	}
-	~cGameScript(){m_CurrPos = 0;if(m_ScriptParent) delete m_ScriptParent; m_ScriptParent = 0;}
+	~cGameScript()
+	{
+		m_CurrPos = 0;
+		if (m_ScriptParent) delete m_ScriptParent;
+		m_ScriptParent = 0;
+	}
 
 	bool Prepare(sGirl* girlTarget)
 	{
@@ -151,9 +156,7 @@ public:
 		//
 		// Which may not work at all, of course, since there's
 		// no reliable way to test it.
-		if(m_ScriptParent == 0) {
-			return true;
-		}
+		if(m_ScriptParent == 0) return true;
 		if(m_ScriptParent && m_ScriptParent->m_Type == 1)
 		{
 			sScript* Ptr = m_ScriptParent;

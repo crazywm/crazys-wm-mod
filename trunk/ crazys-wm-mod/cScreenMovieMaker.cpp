@@ -90,7 +90,7 @@ void cScreenMovieMaker::init()
 		sMovieScene* scene = g_Studios.GetScene(i);
 		//if (selected_girl == gir)
 		//	selection = i;
-		unsigned int item_color = LISTBOX_BLUE;
+		unsigned int item_color = COLOR_BLUE;
 
 		scene->OutputSceneRow(Data, columnNames);
 		AddToListBox(sceneslist_id, i, Data, numColumns, item_color);

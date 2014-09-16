@@ -659,6 +659,7 @@
     <ClCompile Include="WorkRancher.cpp" />
     <ClCompile Include="WorkSheapherd.cpp" />
     <ClCompile Include="WorkGetVaginalRejuvenation.cpp" />
+    <ClCompile Include="WorkFilmFootJob.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cButton.h">

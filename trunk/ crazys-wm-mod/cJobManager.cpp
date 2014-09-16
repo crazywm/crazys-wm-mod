@@ -669,7 +669,6 @@ void cJobManager::do_advertising(sBrothel* brothel, int DayNight)
 {  // advertising jobs are handled before other jobs, more particularly before customer generation
 	brothel->m_AdvertisingLevel = 1.0;  // base multiplier
 	sGirl* current = brothel->m_Girls;
-
 	while (current)
 	{
 		string summary = "";
@@ -677,14 +676,12 @@ void cJobManager::do_advertising(sBrothel* brothel, int DayNight)
 		if ((current->m_DayJob == JOB_ADVERTISING) && (DayNight == 0)) // Added test for current shift, was running each shift twice -PP
 		{
 			refused = WorkAdvertising(current, brothel, 0, summary);
-			if (refused)	// if she refused she still gets tired
-				g_Girls.AddTiredness(current);
+			if (refused) g_Girls.AddTiredness(current);
 		}
 		if ((current->m_NightJob == JOB_ADVERTISING) && (DayNight == 1)) // Added test for current shift, was running each shift twice -PP
 		{
 			refused = WorkAdvertising(current, brothel, 1, summary);
-			if (refused)	// if she refused she still gets tired
-				g_Girls.AddTiredness(current);
+			if (refused) g_Girls.AddTiredness(current);
 		}
 		current = current->m_Next;
 	}

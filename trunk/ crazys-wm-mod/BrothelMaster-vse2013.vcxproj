@@ -162,6 +162,7 @@
     <ClCompile Include="WorkFarmMarketer.cpp" />
     <ClCompile Include="WorkFarmResearch.cpp" />
     <ClCompile Include="WorkFarmVeterinarian.cpp" />
+    <ClCompile Include="WorkFilmFootJob.cpp" />
     <ClCompile Include="WorkFilmHandJob.cpp" />
     <ClCompile Include="WorkFilmRandom.cpp" />
     <ClCompile Include="WorkGardener.cpp" />

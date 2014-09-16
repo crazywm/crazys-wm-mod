@@ -530,26 +530,17 @@ const int NUM_IMGTYPES = IMGTYPE_PREGNANT + PREG_OFFSET; // `J` All image types 
 
 
 
-const int NUM_GIRLFLAGS         = 30;
-
-// Maximum number of traits a girl can have
-const int MAXNUM_TRAITS         = 60;
-
-// Maximum number of items in inventory
-const int MAXNUM_INVENTORY         = 3000;
-
+const int NUM_GIRLFLAGS				= 30;
+const int MAXNUM_TRAITS				= 60;		// Maximum number of traits a girl can have
+const int MAXNUM_INVENTORY			= 3000;		// Maximum number of items in inventory
+const int LISTBOX_ITEMHEIGHT = 20;		//how tall (in pixels) each list item is
+const unsigned int LISTBOX_COLUMNS = 15;		//how many columns are allowed
 
 // Listbox Constants moved from cListBox.h
-const unsigned int LISTBOX_BLUE = 0;
-const unsigned int LISTBOX_RED = 1;
-const unsigned int LISTBOX_DARKBLUE = 2;
-const unsigned int LISTBOX_GREEN = 3;
-
-//how tall (in pixels) each list item is
-const int LISTBOX_ITEMHEIGHT = 20;
-
-//how many columns are allowed
-const unsigned int LISTBOX_COLUMNS = 15;
+const unsigned int COLOR_BLUE		= 0;
+const unsigned int COLOR_RED		= 1;
+const unsigned int COLOR_DARKBLUE	= 2;
+const unsigned int COLOR_GREEN		= 3;
 
 // Event constants oved from cEvents.h
 const int	EVENT_DAYSHIFT		= 0;
@@ -564,7 +555,7 @@ const int	EVENT_GANG			= 8;
 const int	EVENT_BROTHEL		= 9;
 const int	EVENT_NOWORK		= 10;
 const int	EVENT_BACKTOWORK	= 11;
-const int	EVENT_DEBUG = 99;
+const int	EVENT_DEBUG			= 99;
 
 
 // Constants determining which screen is currently showing. This will help with hotkeys and help menu. --PP

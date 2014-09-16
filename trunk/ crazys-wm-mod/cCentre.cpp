@@ -202,7 +202,7 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)
 				summary += girlName + " has died from her injuries.  Her body will be removed by the end of the week.";
 				DeadGirl->m_Events.AddMessage(summary, IMGTYPE_DEATH, EVENT_SUMMARY);
 				// There is also one global message
-				g_MessageQue.AddToQue(msg, 1);
+				g_MessageQue.AddToQue(msg, COLOR_RED);
 
 				RemoveGirl(0, DeadGirl);
 				DeadGirl = 0; msg = ""; summary = "";	// cleanup
@@ -319,8 +319,49 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		brothel->m_Fame += g_Girls.GetStat(current, STAT_FAME);
 
 /*
- *		Manager CODE START
+ *		Summary Messages
  */
+		if (refused) summary += girlName + gettext(" refused to work so made no money.");
+		else if (totalGold > 0)
+		{
+			stringstream ss;
+			ss << girlName << " earned a total of " << totalGold << " gold";
+			u_int job = (DayNight) ? current->m_NightJob : current->m_DayJob;
+			// if it is a player paid job and she is not a slave
+			if ((m_JobManager.is_job_Paid_Player(job) && !current->is_slave()) ||
+				// or if it is a player paid job	and she is a slave		but you pay slaves out of pocket.
+				(m_JobManager.is_job_Paid_Player(job) && current->is_slave() && cfg.initial.slave_pay_outofpocket()))
+				ss << " directly from you. She gets to keep it all.";
+			else if (current->house() <= 0)				ss << " and she gets to keep it all.";
+			else if (totalTips>0 && ((cfg.initial.girls_keep_tips() && !current->is_slave()) || (cfg.initial.slave_keep_tips() && current->is_slave())))
+			{
+				int hpay = int(double(totalPay * double(current->m_Stats[STAT_HOUSE] * 0.01)));
+				int gpay = totalPay - hpay;
+				ss << ".\nShe keeps the " << totalTips << " she got in tips and her cut (" << 100 - current->m_Stats[STAT_HOUSE] << "%) of the payment amounting to " << gpay << " gold.\n\nYou got " << hpay << " gold (" << current->m_Stats[STAT_HOUSE] << "%).";
+			}
+			else
+			{
+				int hpay = int(double(totalGold * double(current->m_Stats[STAT_HOUSE] * 0.01)));
+				int gpay = totalGold - hpay;
+				ss << ".\nShe keeps " << gpay << " gold. (" << 100 - current->m_Stats[STAT_HOUSE] << "%)\nYou keep " << hpay << " gold (" << current->m_Stats[STAT_HOUSE] << "%).";
+			}
+			summary += ss.str();
+		}
+		else if (totalGold == 0)		summary += girlName + gettext(" made no money.");
+		else if (totalGold < 0)
+		{
+			stringstream ss;
+			ss << "ERROR: She has a loss of " << totalGold << " gold\n\n Please report this to the Pink Petal Devloment Team at http://pinkpetal.org";
+			summary += ss.str();
+			sum = EVENT_DEBUG;
+		}
+
+		current->m_Events.AddMessage(summary, IMGTYPE_PROFILE, sum);
+		summary = "";
+
+		/*
+		*		Manager CODE START
+		*/
 
 		// Lets try to compact multiple messages into one.
 		string ManagerMsg = "";
@@ -328,10 +369,10 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		string ManagerWarningMsg = "";
 
 		bool manager = false;
-		if(GetNumGirlsOnJob(brothel->m_id, JOB_CENTREMANAGER, true) >= 1 || GetNumGirlsOnJob(brothel->m_id, JOB_CENTREMANAGER, false) >= 1)
+		if (GetNumGirlsOnJob(brothel->m_id, JOB_CENTREMANAGER, true) >= 1 || GetNumGirlsOnJob(brothel->m_id, JOB_CENTREMANAGER, false) >= 1)
 			manager = true;
 
-		if(g_Girls.GetStat(current, STAT_TIREDNESS) > 80)
+		if (g_Girls.GetStat(current, STAT_TIREDNESS) > 80)
 		{
 			if (current->m_YesterDayJob == JOB_REHAB)
 			{
@@ -340,7 +381,7 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)
 			}
 			else if (manager)
 			{
-				if(current->m_PrevNightJob == 255 && current->m_PrevDayJob == 255)
+				if (current->m_PrevNightJob == 255 && current->m_PrevDayJob == 255)
 				{
 					current->m_PrevDayJob = current->m_DayJob;
 					current->m_PrevNightJob = current->m_NightJob;
@@ -349,7 +390,7 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)
 				}
 				else
 				{
-					if((g_Dice%100)+1 < 70)
+					if ((g_Dice % 100) + 1 < 70)
 					{
 						ManagerMsg += gettext("The Manager helps ") + girlName + gettext(" to relax.\n");
 						g_Girls.UpdateStat(current, STAT_TIREDNESS, -5);
@@ -360,7 +401,7 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)
 				ManagerWarningMsg += gettext("CAUTION! This girl desparatly need rest. Give her some free time\n");
 		}
 
-		if(g_Girls.GetStat(current, STAT_HAPPINESS) < 40 && manager && (g_Dice%100) +1 < 70)
+		if (g_Girls.GetStat(current, STAT_HAPPINESS) < 40 && manager && (g_Dice % 100) + 1 < 70)
 		{
 			ManagerMsg = gettext("The Manager helps cheer up ") + girlName + gettext(" after she feels sad.\n");
 			g_Girls.UpdateStat(current, STAT_HAPPINESS, 5);
@@ -410,50 +451,9 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)
 			current->m_Events.AddMessage(ManagerWarningMsg, IMGTYPE_PROFILE, EVENT_WARNING);
 			ManagerWarningMsg = "";
 		}
-/*
- *		Doctore CODE END
- */
-/*
- *		Summary Messages
- */
-		if (refused) summary += girlName + gettext(" refused to work so made no money.");
-		else if (totalGold > 0)
-		{
-			stringstream ss;
-			ss << girlName << " earned a total of " << totalGold << " gold";
-			u_int job = (DayNight) ? current->m_NightJob : current->m_DayJob;
-			// if it is a player paid job and she is not a slave
-			if ((m_JobManager.is_job_Paid_Player(job) && !current->is_slave()) ||
-				// or if it is a player paid job	and she is a slave		but you pay slaves out of pocket.
-				(m_JobManager.is_job_Paid_Player(job) && current->is_slave() && cfg.initial.slave_pay_outofpocket()))
-				ss << " directly from you. She gets to keep it all.";
-			else if (current->house() <= 0)				ss << " and she gets to keep it all.";
-			else if (totalTips>0 && ((cfg.initial.girls_keep_tips() && !current->is_slave()) || (cfg.initial.slave_keep_tips() && current->is_slave())))
-			{
-				int hpay = int(double(totalPay * double(current->m_Stats[STAT_HOUSE] * 0.01)));
-				int gpay = totalPay - hpay;
-				ss << ".\nShe keeps the " << totalTips << " she got in tips and her cut (" << 100 - current->m_Stats[STAT_HOUSE] << "%) of the payment amounting to " << gpay << " gold.\n\nYou got " << hpay << " gold (" << current->m_Stats[STAT_HOUSE] << "%).";
-			}
-			else
-			{
-				int hpay = int(double(totalGold * double(current->m_Stats[STAT_HOUSE] * 0.01)));
-				int gpay = totalGold - hpay;
-				ss << ".\nShe keeps " << gpay << " gold. (" << 100 - current->m_Stats[STAT_HOUSE] << "%)\nYou keep " << hpay << " gold (" << current->m_Stats[STAT_HOUSE] << "%).";
-			}
-			summary += ss.str();
-		}
-		else if (totalGold == 0)		summary += girlName + gettext(" made no money.");
-		else if (totalGold < 0)
-		{
-			stringstream ss;
-			ss << "ERROR: She has a loss of " << totalGold << " gold\n\n Please report this to the Pink Petal Devloment Team at http://pinkpetal.org";
-			summary += ss.str();
-			sum = EVENT_DEBUG;
-		}
-
-		current->m_Events.AddMessage(summary, IMGTYPE_PROFILE, sum);
-		summary = "";
-
+		/*
+		*		Manager CODE END
+		*/
 		// Do item check at the end of the day
 		if (DayNight == SHIFT_NIGHT)
 		{

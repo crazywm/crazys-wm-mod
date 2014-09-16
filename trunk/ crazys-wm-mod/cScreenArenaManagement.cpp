@@ -174,9 +174,9 @@ void cScreenArenaManagement::init()
 		if (selected_girl == gir)
 			selection = i;
 
-		unsigned int item_color = LISTBOX_BLUE;
+		unsigned int item_color = COLOR_BLUE;
 		if(g_Girls.GetStat(gir, STAT_HEALTH) <= 30 || g_Girls.GetStat(gir, STAT_TIREDNESS) >= 80 || g_Girls.GetStat(gir, STAT_HAPPINESS) <= 30)
-			item_color = LISTBOX_RED;
+			item_color = COLOR_RED;
 
 		gir->OutputGirlRow(Data, columnNames);
 		AddToListBox(girllist_id, i, Data, numColumns, item_color);
@@ -460,7 +460,7 @@ bool cScreenArenaManagement::GirlDead(sGirl *dgirl)
 {
 	if(g_Girls.GetStat(dgirl, STAT_HEALTH) <= 0)
 	{
-		g_MessageQue.AddToQue("This girl is dead. She isn't going to work anymore and her body will be removed by the end of the week.", 1);
+		g_MessageQue.AddToQue("This girl is dead. She isn't going to work anymore and her body will be removed by the end of the week.", COLOR_RED);
 		return true;
 	}
 	else

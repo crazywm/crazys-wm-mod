@@ -128,7 +128,7 @@ void cScreenDungeon::init()
 /*
  *		if she's low health or unhappy, flag her entry to display in red
  */
-		int col = ((girl->health() <= 30) || (girl->happiness() <= 30)) ? LISTBOX_RED : LISTBOX_BLUE; // Anon21
+		int col = ((girl->health() <= 30) || (girl->happiness() <= 30)) ? COLOR_RED : COLOR_BLUE; // Anon21
 
 /*
  *		add her to the list
@@ -142,7 +142,7 @@ void cScreenDungeon::init()
 	int offset = dungeon->GetNumGirls();
 	for(int i=0; i<dungeon->GetNumCusts(); i++)	// add customers
 	{
-		int col = (dungeon->GetCust(i)->m_Health <= 30) ? LISTBOX_RED : LISTBOX_BLUE;
+		int col = (dungeon->GetCust(i)->m_Health <= 30) ? COLOR_RED : COLOR_BLUE;
 		dungeon->OutputCustRow(i, Data, columnNames);
 		AddToListBox(girllist_id, i+offset, Data, numColumns, col);
 	}
@@ -301,7 +301,7 @@ int cScreenDungeon::view_girl()
 /*
  *	can't ... resist ...
  */
-	g_MessageQue.AddToQue(gettext("This is a dead girl. She has ceased to be."), 1);
+	g_MessageQue.AddToQue(gettext("This is a dead girl. She has ceased to be."), COLOR_RED);
 /*
  *	Furthermore, she's shuffled off this mortal coil and joined the bleeding
  *	choir invisible!
@@ -322,12 +322,7 @@ int cScreenDungeon::enslave_customer(int girls_removed, int custs_removed)
  *	format the message
  */
 	stringstream ss;
-	ss <<	gettext("You force the customer into slavery lawfully ")
-	   <<	gettext("for committing a crime against your business ")
-	   <<	gettext("and sell them for ")
-	   <<	gold
-	   <<	gettext(" gold.")
-	;
+	ss << "You force the customer into slavery lawfully for committing a crime against your business and sell them for " << gold << " gold.";
 	g_MessageQue.AddToQue(ss.str(), 0);
 /*
  *	get the index of the about-to-be-sold customer
@@ -431,27 +426,18 @@ int cScreenDungeon::enslave()
 			set_slave_stats(girl);
 			message += girl->m_Realname;
 			message += gettext(" breaks free from your goons' control. You restrain her personally while the slave tattoo placed upon her.");
-			g_MessageQue.AddToQue(message, 1);
+			g_MessageQue.AddToQue(message, COLOR_RED);
 			continue;
 			}
 
-		if(ggf.girl_lost()) {
+		if (ggf.girl_lost())
+		{
 			message += girl->m_Realname;
-			message += gettext(" puts up a fight ");
-/*
- *			there was a gang, and some of them are still with us
- */
+			message += gettext(" puts up a fight ");	// there was a gang, and some of them are still with us
 			message += gettext("but your goons control her as the enchanted slave tattoo is placed upon her.");
-/*
- *			evil up the player for doing a naughty thing
- *			and adjust the girl's stats
- */
-			player->evil(5);
+			player->evil(5);				// evil up the player for doing a naughty thing and adjust the girl's stats
 			set_slave_stats(girl);
-/*
- *			and queue the message
- */
-			g_MessageQue.AddToQue(message, 1);
+			g_MessageQue.AddToQue(message, COLOR_RED);	// and queue the message
 			continue;
 		}
 /*

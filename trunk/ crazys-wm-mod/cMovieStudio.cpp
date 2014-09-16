@@ -187,7 +187,7 @@ void cMovieStudioManager::UpdateMovieStudio()
 			stringstream ss;
 			ss.str("");
 			ss << "You earn " << income << " gold from movie income, at your " << current->m_Name;
-			g_MessageQue.AddToQue(ss.str(), 2);
+			g_MessageQue.AddToQue(ss.str(), COLOR_GREEN);
 		}
 	}
 }
@@ -236,7 +236,7 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 			// Do the messages
 			msg += girlName + gettext(" has died from her injuries, the other girls all fear and hate you a little more.");
 			DeadGirl->m_Events.AddMessage(msg, IMGTYPE_DEATH, EVENT_DANGER);
-			g_MessageQue.AddToQue(msg, 1);
+			g_MessageQue.AddToQue(msg, COLOR_RED);
 			summary += girlName + gettext(" has died from her injuries.  Her body will be removed by the end of the week.");
 			DeadGirl->m_Events.AddMessage(summary, IMGTYPE_DEATH, EVENT_SUMMARY);
 			msg = ""; summary = "";
@@ -479,10 +479,6 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 		sw = current->m_NightJob;
 		refused = m_JobManager.JobFunc[current->m_NightJob](current, brothel, SHIFT_NIGHT, summary);
 
-		totalPay += current->m_Pay;
-		totalTips += current->m_Tips;
-		totalGold += current->m_Pay + current->m_Tips;
-		g_Brothels.CalculatePay(brothel, current, current->m_NightJob);
 		//		Summary Messages
 		if (refused)
 		{
@@ -532,6 +528,12 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 		{
 			if (current->m_NightJob == JOB_CAMERAMAGE) camera = true;
 			if (current->m_NightJob == JOB_CRYSTALPURIFIER) crystal = true;
+
+			totalPay += current->m_Pay;
+			totalTips += current->m_Tips;
+			totalGold += current->m_Pay + current->m_Tips;
+			g_Brothels.CalculatePay(brothel, current, current->m_NightJob);
+
 
 			brothel->m_Fame += g_Girls.GetStat(current, STAT_FAME);
 			if (totalGold > 0)
@@ -1475,7 +1477,7 @@ long cMovieStudioManager::calc_movie_quality(){
 	_itoa(result, buffer, 10);
 	message += buffer;
 	message += " gold, for 35 weeks, but it's value will drop over time. \n A promoter with an advertising budget will help it sell for more.";
-	g_MessageQue.AddToQue(message, 0);
+	g_MessageQue.AddToQue(message, COLOR_BLUE);
 	g_InitWin = true;
 	return result;
 }

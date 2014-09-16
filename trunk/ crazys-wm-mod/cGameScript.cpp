@@ -147,7 +147,7 @@ void cGameScript::RunScript()
 
 sScript *cGameScript::Script_Dialog(sScript *Script)
 {
-	g_MessageQue.AddToQue(Script->m_Entries[0].m_Text, 0);
+	g_MessageQue.AddToQue(Script->m_Entries[0].m_Text, COLOR_BLUE);
 	return Script->m_Next; // Go to next script action
 }
 
@@ -784,7 +784,7 @@ sScript *cGameScript::Script_PlayerRapeTargetGirl(sScript *Script)
 
 	bool preg = !m_GirlTarget->calc_pregnancy(player, false, 1.0);
 	if(preg) {
-		g_MessageQue.AddToQue(m_GirlTarget->m_Realname + " has gotten pregnant", 0);
+		g_MessageQue.AddToQue(m_GirlTarget->m_Realname + " has gotten pregnant", COLOR_BLUE);
 	}
 	g_GirlDetails.lastsexact = IMGTYPE_SEX;
 
@@ -845,7 +845,7 @@ sScript *cGameScript::Script_GivePlayerRandomSpecialItem(sScript *Script)
 		}
 	}
 	else
-		g_MessageQue.AddToQue(" Your inventory is full\n", 1);
+		g_MessageQue.AddToQue(" Your inventory is full\n", COLOR_RED);
 
 	return Script->m_Next;
 }
@@ -1086,7 +1086,7 @@ sScript* cGameScript::Script_IfGirlFlag(sScript* Script)
 
 sScript* cGameScript::Script_GameOver(sScript* Script)
 {
-	g_MessageQue.AddToQue("GAME OVER", 1);
+	g_MessageQue.AddToQue("GAME OVER", COLOR_RED);
 	g_WinManager.PopToWindow(&g_BrothelManagement);
 	g_WinManager.Pop();
 	g_InitWin = true;
