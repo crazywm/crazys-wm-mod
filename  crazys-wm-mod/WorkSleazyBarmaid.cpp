@@ -41,7 +41,7 @@ extern cMessageQue g_MessageQue;
 
 bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
-	string message = "";
+	string message = ""; string girlName = girl->m_Realname;
 	int tex = g_Dice%4;
 
 	if(Preprocessing(ACTION_WORKCLUB, girl, brothel, DayNight, summary, message))	// they refuse to have work in the bar
@@ -50,15 +50,16 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, int DayNight
 	// put that shit away, you'll scare off the customers!
 	g_Girls.UnequipCombat(girl);
 
-	int wages = 15;
-	message += "She worked as a bartender in the strip club.";
-
+	int wages = 15, work = 0;
 	int roll = g_Dice%100;
+	int imagetype = IMGTYPE_ECCHI;
 	int jobperformance = ( (g_Girls.GetStat(girl, STAT_CHARISMA) + 
 							g_Girls.GetStat(girl, STAT_BEAUTY) +
 							g_Girls.GetSkill(girl, SKILL_PERFORMANCE))/3 +
 							g_Girls.GetSkill(girl, SKILL_SERVICE));
 
+
+	message += "She worked as a bartender in the strip club.";
 
 
 	//good traits
@@ -71,6 +72,7 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, int DayNight
 	if (g_Girls.HasTrait(girl, "Great Arse"))		jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Quick Learner"))	jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Psychic"))			jobperformance += 10;
+	if (g_Girls.HasTrait(girl, "Mixologist"))		jobperformance += 25;
 
 	//bad traits
 	if (g_Girls.HasTrait(girl, "Dependant"))	jobperformance -= 50; //needs others to do the job	
@@ -79,34 +81,35 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, int DayNight
 	if (g_Girls.HasTrait(girl, "Nervous"))		jobperformance -= 30; //don't like to be around people
 	if (g_Girls.HasTrait(girl, "Meek"))			jobperformance -= 20;
 	if (g_Girls.HasTrait(girl, "Slow Learner"))	jobperformance -= 10;
+	if (g_Girls.HasTrait(girl, "Alcoholic"))	jobperformance -= 40;  //bad idea let an alcoholic near booze
 
 
-if (jobperformance >= 245)
+	if (jobperformance >= 245)
 		{
 			message += " She must be the perfect bar tender customers go on and on about her and always come to see her when she works.\n\n";
 			wages += 155;
 		}
-else if (jobperformance >= 185)
+	else if (jobperformance >= 185)
 		{
 			message += " She's unbelievable at this and is always getting praised by the customers for her work.\n\n";
 			wages += 95;
 		}
-else if (jobperformance >= 145)
+	else if (jobperformance >= 145)
 		{
 			message += " She's good at this job and gets praised by the customers often.\n\n";
 			wages += 55;
 		}
-else if (jobperformance >= 100)
+	else if (jobperformance >= 100)
 		{
 			message += " She made a few mistakes but overall she is okay at this.\n\n";
 			wages += 15;
 		}
-else if (jobperformance >= 70)
+	else if (jobperformance >= 70)
 		{
 			message += " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
 			wages -= 5;
 		}
-else
+	else
 		{
 			message += " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
 			wages -= 15;
@@ -115,84 +118,100 @@ else
 
 	//try and add randomness here
 	if (g_Girls.GetStat(girl, STAT_BEAUTY) >85)
-		if((g_Dice%100) < 20)
+	{
+		if ((g_Dice%100) < 20)
 		{
-			message += " Stunned by her beauty a customer left her a great tip.\n\n";
+			message += "Stunned by her beauty a customer left her a great tip.\n\n";
 			wages += 25;
 		}
+	}
 
 	if (g_Girls.HasTrait(girl, "Clumsy"))
-		if((g_Dice%100) < 15)
+	{
+		if ((g_Dice%100) < 15)
 		{
-			message += " Her clumsy nature caused her to spill a drink on a custmoer resulting in them storming off without paying.\n";
+			message += "Her clumsy nature caused her to spill a drink on a custmoer resulting in them storming off without paying.\n";
 			wages -= 15;
 		}
+	}
 
 	if (g_Girls.HasTrait(girl, "Pessimist"))
-		if((g_Dice%100) < 5)
+	{
+		if ((g_Dice%100) < 5)
 		{
 			if(jobperformance < 125)
 			{
-			message += " Her pessimistic mood depressed the customers making them tip less.\n";
+			message += "Her pessimistic mood depressed the customers making them tip less.\n";
 			wages -= 10;
 			}
 			else
 			{
-				message += girl->m_Realname + " was in a poor mood so the patrons gave her a bigger tip to try and cheer her up.\n";
+				message += girlName + " was in a poor mood so the patrons gave her a bigger tip to try and cheer her up.\n";
 				wages += 10;
 			}
 		}
+	}
 
 	if (g_Girls.HasTrait(girl, "Optimist"))
-		if((g_Dice%100) < 5)
+	{
+		if ((g_Dice%100) < 5)
 		{
 			if(jobperformance < 125)
 			{
-				message += girl->m_Realname + " was in a cheerful mood but the patrons thought she needed to work more on her services.\n";
+				message += girlName + " was in a cheerful mood but the patrons thought she needed to work more on her services.\n";
 				wages -= 10;
 			}
 			else
 			{
-			message += " Her optimistic mood made patrons cheer up increasing the amount they tip.\n";
+			message += "Her optimistic mood made patrons cheer up increasing the amount they tip.\n";
 			wages += 10;
 			}
 		}
+	}
 
 	if (g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Abnormally Large Boobs"))
-		if((g_Dice%100) < 15)
+	{
+		if ((g_Dice%100) < 15)
 		{
 			if(jobperformance < 150)
 			{
-				message += " A patron was staring obviously at her large breasts. But she had no ideal how to take advantage of it.\n";
+				message += "A patron was staring obviously at her large breasts. But she had no ideal how to take advantage of it.\n";
 			}
 			else
 			{
-				message += " A patron was staring obviously at her large breasts. So she over charged them for drinks while they drooled not paying any mind to the price.\n";
+				message += "A patron was staring obviously at her large breasts. So she over charged them for drinks while they drooled not paying any mind to the price.\n";
 				wages += 15;
 			}
 		}
+	}
 
-	if(wages < 0)
+	if (g_Girls.HasTrait(girl, "Meek"))
+	{
+		if ((g_Dice%100) < 5)
+		{
+			if (jobperformance < 125)
+			{
+				message += girlName + " spilled a drink all over a mans lap.  He told her she had to lick it up and forced her to clean him up which she Meekly accepted and went about licking his cock clean.\n";
+				imagetype = IMGTYPE_ORAL;
+			}
+		}
+	}
+
+	if (wages < 0)
 		wages = 0;
 
 
 	//enjoyed the work or not
-	if(roll <= 5)
-	{
-		message += " \nSome of the patrons abused her during the shift.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCLUB, -1, true);
-	}
-	else if(roll <= 25) {
-		message += " \nShe had a pleasant time working.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCLUB, +3, true);
-	}
+	if (roll <= 5)
+	{ message += " \nSome of the patrons abused her during the shift."; work -= 1; }
+	else if (roll <= 25) 
+	{ message += " \nShe had a pleasant time working."; work += 3; }
 	else
-	{
-		message += " \nOtherwise, the shift passed uneventfully.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCLUB, +1, true);
-	}
+	{ message += " \nOtherwise, the shift passed uneventfully."; work += 1; }
 
-	girl->m_Events.AddMessage(message, IMGTYPE_ECCHI, DayNight);
+
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKCLUB, work , true);
+	girl->m_Events.AddMessage(message, imagetype, DayNight);
 
 
 	int roll_max = (g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA));
@@ -214,10 +233,11 @@ else
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
 	//gained
-	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, ACTION_WORKBAR, "Dealing with customers at the bar and talking with them about their problems has made " + girl->m_Realname + " more Charismatic.", DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, ACTION_WORKBAR, "Dealing with customers at the bar and talking with them about their problems has made " + girlName + " more Charismatic.", DayNight != 0);
+	if (jobperformance < 100 || roll <= 2) { g_Girls.PossiblyGainNewTrait(girl, "Assassin", 10, ACTION_WORKBAR, girlName + "'s lack of skill at mixing drinks has been killing people left and right making her into quite the Assassin.", DayNight != 0); }
 
 	//lose
-	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 20, ACTION_WORKBAR, girl->m_Realname + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", DayNight != 0);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 20, ACTION_WORKBAR, girlName + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", DayNight != 0);
 
 	return false;
 }

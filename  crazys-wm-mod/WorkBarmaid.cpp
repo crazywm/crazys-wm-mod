@@ -67,6 +67,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, int DayNight, stri
 	if (g_Girls.HasTrait(girl, "Charming")) 		jobperformance += 15;  //people like charming people
 	if (g_Girls.HasTrait(girl, "Quick Learner"))    jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Psychic"))			jobperformance += 10;
+	if (g_Girls.HasTrait(girl, "Mixologist"))		jobperformance += 25;
 
 	//bad traits
 	if (g_Girls.HasTrait(girl, "Dependant"))	jobperformance -= 50;  //needs others to do the job
@@ -75,6 +76,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, int DayNight, stri
 	if (g_Girls.HasTrait(girl, "Nervous"))		jobperformance -= 30;  //don't like to be around people
 	if (g_Girls.HasTrait(girl, "Meek"))			jobperformance -= 20;
 	if (g_Girls.HasTrait(girl, "Slow Learner"))	jobperformance -= 10;
+	if (g_Girls.HasTrait(girl, "Alcoholic"))	jobperformance -= 40;  //bad idea let an alcoholic near booze
 
 
 	if (jobperformance >= 245)
@@ -471,9 +473,10 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, int DayNight, stri
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
 	//gain traits
-	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, ACTION_WORKBAR, "Dealing with customers at the bar and talking with them about their problems has made " + girl->m_Realname + " more Charismatic.", DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, ACTION_WORKBAR, "Dealing with customers at the bar and talking with them about their problems has made " + girlName + " more Charismatic.", DayNight != 0);
+	if (jobperformance < 100 || roll <= 2) { g_Girls.PossiblyGainNewTrait(girl, "Assassin", 10, ACTION_WORKBAR, girlName + "'s lack of skill at mixing drinks has been killing people left and right making her into quite the Assassin.", DayNight != 0); }
 
 	//lose traits
-	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 40, ACTION_WORKBAR, girl->m_Realname + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", DayNight != 0);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 40, ACTION_WORKBAR, girlName + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", DayNight != 0);
 	return false;
 }

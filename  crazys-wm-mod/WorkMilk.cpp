@@ -54,7 +54,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, int DayNight, string&
 	g_Girls.UnequipCombat(girl);
 
 	girl->m_Pay += 15;
-		message = " She let her breasts be milked.\n\n";
+		message = "She let her breasts be milked.\n\n";
 
 	if (g_Girls.HasTrait(girl, "Small Boobs"))
 	{

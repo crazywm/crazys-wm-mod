@@ -1658,6 +1658,12 @@ string cGirls::GetThirdDetailsString(sGirl* girl)
 		brewer -= 20;
 		makepot -= 20;
 	}
+	if (g_Girls.HasTrait(girl, "Alcoholic"))
+	{
+		barmaid -= 40;
+		clubbar -= 40;
+		security -= 50;
+	}
 	if (g_Girls.HasTrait(girl, "Assassin"))
 	{
 		security += 50;
@@ -1961,6 +1967,11 @@ string cGirls::GetThirdDetailsString(sGirl* girl)
 	{
 		security -= 50;
 	}
+	if (g_Girls.HasTrait(girl, "Mixologist"))
+	{
+		barmaid += 25;
+		clubbar += 25;
+	}
 	if (g_Girls.HasTrait(girl, "Nerd"))
 	{
 		doctor += 30;
@@ -2017,6 +2028,11 @@ string cGirls::GetThirdDetailsString(sGirl* girl)
 	{
 		barwait -= 10;
 		clubwait -= 10;
+	}
+	if (g_Girls.HasTrait(girl, "Optimist"))
+	{
+		comunityservice += 10;
+		feedpoor += 10;
 	}
 	if (g_Girls.HasTrait(girl, "Princess"))
 	{

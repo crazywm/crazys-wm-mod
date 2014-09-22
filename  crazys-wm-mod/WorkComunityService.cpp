@@ -72,6 +72,8 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, int DayNig
 	if (g_Girls.HasTrait(girl, "Cool Person"))		jobperformance += 10;	//people love to be around her
 	if (g_Girls.HasTrait(girl, "Cute"))				jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Charming")) 		jobperformance += 15;	//people like charming people
+	if (g_Girls.HasTrait(girl, "Optimist"))			jobperformance += 10;
+
 	//bad traits
 	if (g_Girls.HasTrait(girl, "Dependant"))		jobperformance -= 50;	//needs others to do the job
 	if (g_Girls.HasTrait(girl, "Clumsy"))			jobperformance -= 20;	//spills food and breaks things often

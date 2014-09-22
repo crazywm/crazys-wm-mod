@@ -57,6 +57,7 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, int Day
 							g_Girls.GetSkill(girl, SKILL_STRIP) / 2 +
 							g_Girls.GetSkill(girl, SKILL_PERFORMANCE) / 2);
 	int wages = 25;
+	int imagetype = IMGTYPE_ECCHI;
 
 	message = "She worked as a sexual entertainer in the gambling hall.";
 
@@ -373,10 +374,10 @@ else
 		sCustomer cust;
 		GetMiscCustomer(brothel, cust);
 		brothel->m_Happiness += 100;
-		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -40);
-
+		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -20);
 		// work out the pay between the house and the girl
 		wages += g_Girls.GetStat(girl, STAT_ASKPRICE)+60;
+		imagetype = IMGTYPE_MAST;
 		girl->m_Events.AddMessage(message, IMGTYPE_MAST, DayNight);
 	}
 	else

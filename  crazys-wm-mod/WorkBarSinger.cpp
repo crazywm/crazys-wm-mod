@@ -41,8 +41,7 @@ extern cMessageQue g_MessageQue;
 
 bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
-	string message = "";
-	string girlName = girl->m_Realname;
+	string message = ""; string girlName = girl->m_Realname;
 
 	if(Preprocessing(ACTION_WORKMUSIC, girl, brothel, DayNight, summary, message))	// they refuse to have work in the bar
 		return true;
@@ -51,8 +50,6 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 	g_Girls.UnequipCombat(girl);
 
 	int wages = 20;
-	message += "She worked as a singer in the bar.";
-
 	int roll = g_Dice%100;
 	int jobperformance = (g_Girls.GetStat(girl, STAT_CONFIDENCE) + g_Girls.GetSkill(girl, SKILL_PERFORMANCE));
 
@@ -62,25 +59,49 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 	if (g_Girls.HasTrait(girl, "Cool Person"))		jobperformance += 5;   //people love to be around her	
 	if (g_Girls.HasTrait(girl, "Cute"))				jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Charming"))			jobperformance += 5;   //people like charming people	
-	if (g_Girls.HasTrait(girl, "Elegant"))			jobperformance += 5;
+	if (g_Girls.HasTrait(girl, "Elegant"))			{ jobperformance += 5; roll_a = 30; }
 	if (g_Girls.HasTrait(girl, "Quick Learner"))    jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Psychic"))			jobperformance += 10;  //knows what people want to hear
 	if (g_Girls.HasTrait(girl, "Fearless"))			jobperformance += 5;
+	if (g_Girls.HasTrait(girl, "Singer"))			jobperformance += 50;
 
 	//bad traits
 	if (g_Girls.HasTrait(girl, "Dependant"))	jobperformance -= 50; //needs others to do the job
-	if (g_Girls.HasTrait(girl, "Aggressive"))	jobperformance -= 10; //gets mad easy and may attack people
+	if (g_Girls.HasTrait(girl, "Aggressive"))	{ jobperformance -= 10; roll_a = 20; } //gets mad easy and may attack people
 	if (g_Girls.HasTrait(girl, "Nervous"))		jobperformance -= 30; //don't like to be around people
 	if (g_Girls.HasTrait(girl, "Meek"))			jobperformance -= 20;
 	if (g_Girls.HasTrait(girl, "Broken Will"))	jobperformance -= 50;
 	if (g_Girls.HasTrait(girl, "Clumsy"))		jobperformance -= 10;//might trip on stage	
 	if (g_Girls.HasTrait(girl, "Slow Learner")) jobperformance -= 10;
+	if (g_Girls.HasTrait(girl, "Shy"))			jobperformance -= 10;
 	if (g_Girls.HasTrait(girl, "Construct"))	jobperformance -= 20; //voice would sound funny
+	if (g_Girls.HasTrait(girl, "Tone Deaf"))	jobperformance -= 150; //should never get good at this job
+
+	// `CRAZY` The type of music she sings
+	/*default*/	int song_type = 1;    string song_type_text = "Various types of music";
+	/* */if (roll_a <= 10)	{ song_type = 7; song_type_text = "Goth Rock songs"; }
+	else if (roll_a <= 20)	{ song_type = 6; song_type_text = "Death Metal songs"; }
+	else if (roll_a <= 30)	{ song_type = 5; song_type_text = "Classical songs"; }
+	else if (roll_a <= 40)	{ song_type = 4; song_type_text = "Metal songs"; }
+	else if (roll_a <= 50)	{ song_type = 3; song_type_text = "Rock songs"; }
+	else if (roll_a <= 60)	{ song_type = 2; song_type_text = "Country songs"; }
+	else if (roll_a >= 90)	{ song_type = 0; song_type_text = "Pop songs"; }
+
+	// `CRAZY` How well she sings
+	/*default*/	int sing_pre = 0;	string sing_pre_text = "";
+	/* */if (jobperformance >= 245)	{ sing_pre = 6; sing_pre_text = " perfectly"; }
+	else if (jobperformance >= 185)	{ sing_pre = 5; sing_pre_text = " great"; }
+	else if (jobperformance >= 145)	{ sing_pre = 4; sing_pre_text = " good"; }
+	else if (jobperformance >= 100)	{ sing_pre = 3; sing_pre_text = " decent"; }
+	else if (jobperformance >= 70)	{ sing_pre = 2; sing_pre_text = " poorly"; }
+	else							{ sing_pre = 1; sing_pre_text = " very poorly"; }
+
+	message += girlName + " worked as a singer in the bar. She sang " + song_type_text  + sing_pre_text + ".\n";
 		
 
 	if(jobperformance >= 245)
 		{
-			message += " She must have the voice of an angel the customers go on and on about her and always come to listen to her when she works.\n\n";
+			message += "She must have the voice of an angel the customers go on and on about her and always come to listen to her when she works.\n\n";
 			wages += 155;
 		if (roll <= 20)
 			{
@@ -107,7 +128,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 		}
 	else if(jobperformance >= 185)
 		{
-			message += " She's unbelievable at this and is always getting praised by the customers for her voice.\n\n";
+			message += "She's unbelievable at this and is always getting praised by the customers for her voice.\n\n";
 			wages += 95;
 		if (roll <= 25)
 			{
@@ -132,7 +153,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 		}
 	else if(jobperformance >= 145)
 		{
-			message += " Her voice is really good and gets praised by the customers often.\n\n";
+			message += "Her voice is really good and gets praised by the customers often.\n\n";
 			wages += 55;
 		if (roll <= 20)
 			{
@@ -158,7 +179,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 		}
 	else if(jobperformance >= 100)
 		{
-			message += " She hits a few right notes but she still has room to improve.\n\n";
+			message += "She hits a few right notes but she still has room to improve.\n\n";
 			wages += 15;
 		if (roll <= 25)
 			{
@@ -179,7 +200,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 		}
 	else if(jobperformance >= 70)
 		{
-			message += " She almost never hits a right note. Luck for you most of your customers are drunks.\n\n";
+			message += "She almost never hits a right note. Luck for you most of your customers are drunks.\n\n";
 			wages -= 5;
 		if (roll <= 20)
 			{
@@ -206,7 +227,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 		}
 	else
 		{
-			message += " Her voice sounds like nails on a chalk board.  She could be the worst singer ever.\n\n";
+			message += "Her voice sounds like nails on a chalk board.  She could be the worst singer ever.\n\n";
 			wages -= 15;
 		if (roll <= 14)
 			{
@@ -242,7 +263,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 		}
 
 	//try and add randomness here
-	if (g_Girls.GetStat(girl, STAT_BEAUTY) >85)
+	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85)
 		if((g_Dice%100) < 15)
 		{
 			message += "Stunned by her beauty a customer left her a great tip.\n";
@@ -266,7 +287,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 			}
 			else
 			{
-				message += girl->m_Realname + " was in a poor mood so the patrons gave her a bigger tip to try and cheer her up.\n";
+				message += girlName + " was in a poor mood so the patrons gave her a bigger tip to try and cheer her up.\n";
 				wages += 10;
 			}
 		}
@@ -276,7 +297,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 		{
 			if(jobperformance < 125)
 			{
-				message += girl->m_Realname + " was in a cheerful mood but the patrons thought she needed to work more on her on her sining.\n";
+				message += girlName + " was in a cheerful mood but the patrons thought she needed to work more on her on her sining.\n";
 				wages -= 10;
 			}
 			else
@@ -298,12 +319,12 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 		{
 			if(jobperformance < 150)
 			{
-				message += " A patron booed her making her mad and using her Assassin skills she killed him before even thinking about it resulting in patrons storming out without paying.\n";
+				message += "A patron booed her making her mad and using her Assassin skills she killed him before even thinking about it resulting in patrons storming out without paying.\n";
 				wages -= 50;
 			}
 			else
 			{
-				message += " A patron booed her.  But was drunk and started crying a moment later so she ignored them.\n";
+				message += "A patron booed her.  But was drunk and started crying a moment later so she ignored them.\n";
 			}
 		}
 
@@ -312,11 +333,11 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 		{
 			if(jobperformance < 150)
 			{
-				message += " A patron gasped at her Horrific Scars making her uneasy.  But they didn't feel sorry for her.\n";
+				message += "A patron gasped at her Horrific Scars making her uneasy.  But they didn't feel sorry for her.\n";
 			}
 			else
 			{
-				message += " A patron gasped at her Horrific Scars making her sad.  Feeling bad about it as she sang wonderful they left her a good tip.\n";
+				message += "A patron gasped at her Horrific Scars making her sad.  Feeling bad about it as she sang wonderful they left her a good tip.\n";
 				wages += 15;
 			}
 		}
@@ -326,12 +347,12 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 		{
 			if(jobperformance < 125)
 			{
-				message += girl->m_Realname + " she sang very out of tune with the paino player forcing people to leave.\n";
+				message += girlName + " she sang very out of tune with the paino player forcing people to leave.\n";
 				wages -= 10;
 			}
 			else
 			{
-			message += girl->m_Realname + " the paino player took her sining to the next level causing the tips to flood in.\n";
+			message += girlName + " the paino player took her sining to the next level causing the tips to flood in.\n";
 			wages += 25;
 			}
 		}
@@ -378,11 +399,11 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
 	//gain traits
-	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 70, ACTION_WORKMUSIC, "Singing on a daily basis has made " + girl->m_Realname + " more Charismatic.", DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 70, ACTION_WORKMUSIC, "Singing on a daily basis has made " + girlName + " more Charismatic.", DayNight != 0);
 
 	//lose traits
-	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 30, ACTION_WORKMUSIC, girl->m_Realname + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", DayNight != 0);
-	g_Girls.PossiblyLoseExistingTrait(girl, "Meek", 50, ACTION_WORKMUSIC, girl->m_Realname + "'s having to sing every day has forced her to get over her meekness.", DayNight != 0);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 30, ACTION_WORKMUSIC, girlName + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", DayNight != 0);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Meek", 50, ACTION_WORKMUSIC, girlName + "'s having to sing every day has forced her to get over her meekness.", DayNight != 0);
 
 	return false;
 }

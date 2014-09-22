@@ -279,8 +279,10 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, int DayNig
 			imageType = IMGTYPE_TITTY;
 		else if(n == SKILL_HANDJOB)
 			imageType = IMGTYPE_HAND;
+		else if(n == SKILL_STRIP)
+			imageType = IMGTYPE_STRIP;
 		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -20);
-		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +3, true);
+		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +1, true);
 		// work out the pay between the house and the girl
 		wages += 30;
 		wages += g_Girls.GetStat(girl, STAT_ASKPRICE);
