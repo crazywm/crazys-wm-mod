@@ -48,7 +48,6 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, int DayNight, string
 	string message = "";
 	string girlName = girl->m_Realname;
 
-
 	if (g_Girls.HasTrait(girl, "AIDS"))
 	{
 		stringstream ss;
@@ -69,6 +68,7 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, int DayNight, string
 
 	int hand = false;
 	int sex = false;
+	int les = false;
 	int wages = 25;
 	message += "She worked as a nurse.";
 
@@ -321,6 +321,14 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, int DayNight, string
 			}
 		}
 	}
+	if (g_Girls.HasTrait(girl, "Lesbian") && g_Girls.HasTrait(girl, "Aggressive") && g_Girls.GetStat(girl, STAT_LIBIDO) > 65)
+	{
+		if ((g_Dice%100) < 10)
+		{
+			message += "When giving a sponge bath to one of her female patients she couldn't help herself and took advantage of the situation.\n";
+			les = true;
+		}
+	}
 
 	//enjoyed the work or not
 	if (roll <= 5)
@@ -370,6 +378,11 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, int DayNight, string
 		g_Girls.UpdateSkill(girl, SKILL_HANDJOB, 2);
 		girl->m_Events.AddMessage(message, IMGTYPE_HAND, DayNight);
 	}
+	else if (les)
+	{
+		g_Girls.UpdateSkill(girl, SKILL_LESBIAN, 2);
+		girl->m_Events.AddMessage(message, IMGTYPE_LESBIAN, DayNight);
+	}
 	else
 	{
 		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
@@ -402,7 +415,6 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, int DayNight, string
 	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
-
 	if (g_Girls.HasTrait(girl, "Lesbian"))
 		libido += patients / 2;
 
@@ -414,10 +426,10 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, int DayNight, string
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
 	//gain traits
-	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, ACTION_WORKNURSE, "Dealing with patients and talking with them about their problems has made " + girl->m_Realname + " more Charismatic.", DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, ACTION_WORKNURSE, "Dealing with patients and talking with them about their problems has made " + girlName + " more Charismatic.", DayNight != 0);
 
 	//lose traits
-	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 20, ACTION_WORKNURSE, girl->m_Realname + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", DayNight != 0);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 20, ACTION_WORKNURSE, girlName + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", DayNight != 0);
 
 	return false;
 }

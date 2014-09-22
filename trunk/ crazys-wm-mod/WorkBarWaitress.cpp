@@ -315,23 +315,23 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 
 	//try and add randomness here
 	if (g_Girls.GetStat(girl, STAT_BEAUTY) >85)
-		if((g_Dice%100) < 20)
+		if ((g_Dice%100) < 20)
 		{
 			message += " Stunned by her beauty a customer left her a great tip.\n";
 			wages += 25;
 		}
 
 	if (g_Girls.HasTrait(girl, "Clumsy"))
-		if((g_Dice%100) < 15)
+		if ((g_Dice%100) < 15)
 		{
 			message += " Her clumsy nature cause her to spill food on a custmoer resulting in them storming off without paying.\n";
 			wages -= 25;
 		}
 
 	if (g_Girls.HasTrait(girl, "Pessimist"))
-		if((g_Dice%100) < 5)
+		if ((g_Dice%100) < 5)
 		{
-			if(jobperformance < 125)
+			if (jobperformance < 125)
 			{
 			message += " Her pessimistic mood depressed the customers making them tip less.\n";
 			wages -= 10;
@@ -344,7 +344,7 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 		}
 
 	if (g_Girls.HasTrait(girl, "Optimist"))
-		if((g_Dice%100) < 5)
+		if ((g_Dice%100) < 5)
 		{
 			if(jobperformance < 125)
 			{
@@ -359,37 +359,40 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 		}
 
 	if (g_Girls.HasTrait(girl, "Psychic"))
-		if((g_Dice%101) < 20)
+		if ((g_Dice%101) < 20)
 		{
 			message += "She used her Psychic skills to know excatally what the patrons wanted to order making them happy and increasing her tips.\n";
 			wages += 15;
 		}
 
 	if (g_Girls.HasTrait(girl, "Great Arse"))
+	{
 		if((g_Dice%100) < 15)
 		{
-			if(jobperformance < 50)
-			message += " A patron reached out and grabed her ass. She was startled and ended up dropping a whole order\n";
-			wages -= 15;
-		}
-		else if(jobperformance < 85)
-		{
-			message += " A patron reached out and grabed her ass. She was startled and ended up dropping half an order.\n";
-			wages -= 10;
-		}
-		else if(jobperformance < 135)
-		{
-			message += " A patron reached out and grabed her ass. She's use to this and skilled enough so she didn't drop anything\n";
-		}
-		else if(jobperformance < 185)
-		{
-		message += " A patron reached out to grab her ass. But she skillfully avoided it with a laugh and told him that her ass wasn't on the menu.  He laughed so hard he increased her tip\n";
-			wages += 15;
+		if (jobperformance >= 185) //great
+			{
+				message += " A patron reached out to grab her ass. But she skillfully avoided it with a laugh and told him that her ass wasn't on the menu.  He laughed so hard he increased her tip\n";
+				wages += 15;
+			}
+		else if (jobperformance >= 135) //decent or good
+			{
+				message += " A patron reached out and grabed her ass. She's use to this and skilled enough so she didn't drop anything\n";
+			}
+		else if (jobperformance >= 85) //bad
+			{
+				message += " A patron reached out and grabed her ass. She was startled and ended up dropping half an order.\n";
+				wages -= 10;
+			}
+		else  //very bad
+			{
+				message += " A patron reached out and grabed her ass. She was startled and ended up dropping a whole order\n";
+				wages -= 15;
+			}
 		}
 
 
 	if (g_Girls.HasTrait(girl, "Assassin"))
-		if((g_Dice%101) < 5)
+		if ((g_Dice%101) < 5)
 		{
 			if(jobperformance < 150)
 			{
@@ -403,9 +406,9 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 		}
 
 	if (g_Girls.HasTrait(girl, "Horrific Scars"))
-		if((g_Dice%101) < 15)
+		if ((g_Dice%101) < 15)
 		{
-			if(jobperformance < 150)
+			if (jobperformance < 150)
 			{
 				message += " A patron gasped at her Horrific Scars making her uneasy.  But they didn't feel sorry for her.\n";
 			}
@@ -417,9 +420,9 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 		}
 
 	if (g_Brothels.GetNumGirlsOnJob(0,JOB_BARMAID,false) == 1)
-		if((g_Dice%100) < 25)
+		if ((g_Dice%100) < 25)
 		{
-			if(jobperformance < 125)
+			if (jobperformance < 125)
 			{
 				message += girl->m_Realname + " wasn't good enough at her job to use the barmaid to her advantage.\n";
 			}
@@ -430,18 +433,18 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 			}
 		}
 
-		if(wages < 0)
+		if (wages < 0)
 			wages = 0;
 
 
 
 	//enjoyed the work or not
-	if(roll <= 5)
+	if (roll <= 5)
 	{
 		message += " \nSome of the patrons abused her during the shift.";
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKBAR, -1, true);
 	}
-	else if(roll <= 25) {
+	else if (roll <= 25) {
 		message += " \nShe had a pleasant time working.";
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKBAR, +3, true);
 	}
@@ -475,9 +478,10 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 	
 	//gain traits
-	g_Girls.PossiblyGainNewTrait(girl, "Charming", 70, ACTION_WORKBAR, girl->m_Realname + " has been flirting with customers to try to get better tips. Enough practice at it has made her quite Charming.", DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Charming", 70, ACTION_WORKBAR, girlName + " has been flirting with customers to try to get better tips. Enough practice at it has made her quite Charming.", DayNight != 0);
+	if (jobperformance > 150 || g_Girls.GetStat(girl, STAT_CONSTITUTION) > 65) { g_Girls.PossiblyGainNewTrait(girl, "Fleet Of Foot", 60, ACTION_WORKBAR, girlName + " has been doding bewteen tables and avoiding running into customers for so long she has become Fleet Of Foot.", DayNight != 0); }
 
 	//lose traits
-	g_Girls.PossiblyLoseExistingTrait(girl, "Clumsy", 30, ACTION_WORKBAR, "It took her break hundreds of dishes, and just as many reprimands, but " + girl->m_Realname + " has finally stopped being so Clumsy.", DayNight != 0);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Clumsy", 30, ACTION_WORKBAR, "It took her break hundreds of dishes, and just as many reprimands, but " + girlName + " has finally stopped being so Clumsy.", DayNight != 0);
 	return false;
 }

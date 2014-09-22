@@ -107,15 +107,16 @@ bool cJobManager::WorkEscort(sGirl* girl, sBrothel* brothel, int DayNight, strin
 	message += " to her appointment with a " + cust_wealth_text + cust_type_text + ".\n";
 
 	//// Where do they go?
-	//*default*/	int loc_type = 1;    string loc_type_text = "Restaurant";
+	//*default*/	int loc_type = 1;    string loc_type_text = "a Restaurant";
 	///* */if (roll_d <= 1)	{ loc_type = 8; loc_type_text = "Vacation"; }
-	//else if (roll_d <= 3)	{ loc_type = 7; loc_type_text = "Wedding"; }
-	//else if (roll_d <= 6)	{ loc_type = 6; loc_type_text = "Party"; }
-	//else if (roll_d <= 10)	{ loc_type = 5; loc_type_text = "Arena Match"; }
-	//else if (roll_d <= 15)	{ loc_type = 4; loc_type_text = "Movie"; }
-	//else if (roll_d <= 45)	{ loc_type = 3; loc_type_text = "Strip Club"; }
-	//else if (roll_d <= 65)	{ loc_type = 2; loc_type_text = "Bar"; }
-	//else if (roll_d >= 98)	{ loc_type = 0; loc_type_text = "Park"; }
+	//else if (roll_d <= 3)	{ loc_type = 7; loc_type_text = "a Wedding"; }
+	//else if (roll_d <= 6)	{ loc_type = 6; loc_type_text = "a Party"; }
+	//else if (roll_d <= 10)	{ loc_type = 5; loc_type_text = "an Arena Match"; }
+	//else if (roll_d <= 15)	{ loc_type = 4; loc_type_text = "the Movies"; }
+	//else if (roll_d <= 45)	{ loc_type = 3; loc_type_text = "the Strip Club"; }
+	//else if (roll_d <= 65)	{ loc_type = 2; loc_type_text = "the Bar"; }
+	//else if (roll_d >= 98)	{ loc_type = 0; loc_type_text = "the Park"; }
+	//message += "They went to " + loc_type_text + " together.\n";
 
 
 	// `J` do wages and tips

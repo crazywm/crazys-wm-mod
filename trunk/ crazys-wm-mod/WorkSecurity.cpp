@@ -61,11 +61,11 @@ bool cJobManager::WorkSecurity(sGirl* girl, sBrothel* brothel, int DayNight, str
 	{
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKSECURITY, +3, true);
 		message = gettext("Successfully handled unruly patrons.");
-		girl->m_Events.AddMessage(message, IMGTYPE_COMBAT, DayNight);
 
-		// Just 'cause  CRAZY FIXME this seem to do nothing
-		if (g_Girls.HasTrait(girl, "Nymphomaniac") && g_Dice%100 <= 50)
+		// Just 'cause  CRAZY FIXME works now but needs to be better if its going be here
+		if (g_Girls.HasTrait(girl, "Nymphomaniac") && g_Dice%100 <= 10)
 			message += gettext("\nGave some bonus service to the well behaved patrons.");
+		girl->m_Events.AddMessage(message, IMGTYPE_COMBAT, DayNight);
 	}
 
 	// First lets decay the previous security level somewhat.  Lets not have too much banking
@@ -171,6 +171,8 @@ bool cJobManager::WorkSecurity(sGirl* girl, sBrothel* brothel, int DayNight, str
 
 	if (g_Girls.HasTrait(girl, "Mind Fucked"))  // duurrrrrr..... secu.... sec... what?
 		SecLev -= 50;                           // (Mind fucked can be cured btw.)
+
+	if (g_Girls.HasTrait(girl, "Alcoholic"))  SecLev -= 50;                           
 
 	if (SecLev < 10)
 		SecLev = 10;

@@ -530,6 +530,8 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, int DayNight, string
 			imageType = IMGTYPE_GROUP;
 		else if(SexType == SKILL_LESBIAN)
 			imageType = IMGTYPE_LESBIAN;
+		else if(SexType == SKILL_STRIP)
+			imageType = IMGTYPE_STRIP;
 
 		// chance of customer beating or attempting to beat girl
 		if(work_related_violence(girl, DayNight, bStreetWork)) 
