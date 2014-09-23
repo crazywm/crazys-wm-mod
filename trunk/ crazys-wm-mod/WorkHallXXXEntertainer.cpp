@@ -42,8 +42,7 @@ extern cGold g_Gold;
 
 bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
-	string message = "";
-	string girlName = girl->m_Realname;
+	string message = ""; string girlName = girl->m_Realname;
 	if (Preprocessing(ACTION_WORKSTRIP, girl, brothel, DayNight, summary, message))	// they refuse to have work in the hall
 		return true;
 
@@ -56,7 +55,7 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, int Day
 							g_Girls.GetStat(girl, STAT_CONFIDENCE)) / 3 +
 							g_Girls.GetSkill(girl, SKILL_STRIP) / 2 +
 							g_Girls.GetSkill(girl, SKILL_PERFORMANCE) / 2);
-	int wages = 25;
+	int wages = 25, work = 0;
 	int imagetype = IMGTYPE_ECCHI;
 
 	message = "She worked as a sexual entertainer in the gambling hall.";
@@ -78,6 +77,7 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, int Day
 	if (g_Girls.HasTrait(girl, "Aggressive"))	jobperformance -= 20; //gets mad easy and may attack people
 	if (g_Girls.HasTrait(girl, "Nervous"))		jobperformance -= 30; //don't like to be around people
 	if (g_Girls.HasTrait(girl, "Meek"))			jobperformance -= 20;
+	if (g_Girls.HasTrait(girl, "Shy"))			jobperformance -= 20;
 	if (g_Girls.HasTrait(girl, "Slow Learner"))	jobperformance -= 10;
 
 
@@ -88,13 +88,9 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, int Day
 		if (roll <= 20)
 			{
 				if (g_Girls.HasTrait(girl, "Nymphomaniac"))
-				{
-					message += girlName + " could do this all day with a genuine smile on her face, pussy dripping onto the stained boards beneath her legs.\n";
-				}
+				{ message += girlName + " could do this all day with a genuine smile on her face, pussy dripping onto the stained boards beneath her legs.\n"; }
 				else
-				{
-				message += girlName + " has a large devoted group of fans, who come in every night to watch her.\n";
-				}
+				{ message += girlName + " has a large devoted group of fans, who come in every night to watch her.\n"; }
 			}
 		else if (roll <= 40)
 			{
@@ -111,13 +107,9 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, int Day
 		else
 			{
 				if (g_Girls.HasTrait(girl, "Sexy Air"))
-				{
-					message += girlName + " could be dressed in a sack and still make a fortune masturbating on stage.\n";
-				}
+				{ message += girlName + " could be dressed in a sack and still make a fortune masturbating on stage.\n"; }
 				else
-				{
-				message +=  girlName + "'s shows are always sold out, and her fame is spreading across the city.\n";
-				}
+				{ message +=  girlName + "'s shows are always sold out, and her fame is spreading across the city.\n"; }
 			}
 		}
 else if (jobperformance >= 185)
@@ -131,9 +123,7 @@ else if (jobperformance >= 185)
 					message += girlName + " loves her job, you can tell by the zeal she employs as she penetrates her mouth and pussy with dildoes on stage, moaning throughout.\n";
 				}
 				else
-				{
-				message += "From start to finish, every move " + girlName + " makes practically sweats sexuallity.\n";
-				}
+				{ message += "From start to finish, every move " + girlName + " makes practically sweats sexuallity.\n"; }
 			}
 		else if (roll <= 40)
 			{
@@ -150,13 +140,9 @@ else if (jobperformance >= 185)
 		else
 			{
 				if (g_Girls.HasTrait(girl, "Sexy Air"))
-				{
-					message +=  "The skill of " + girlName + "'s dancing coupled with her sexual air just pack the customers in.\n";
-				}
+				{ message +=  "The skill of " + girlName + "'s dancing coupled with her sexual air just pack the customers in.\n"; }
 				else
-				{
-				message +=  "Amusingly, one of the female members of " + girlName + "'s audience threw her panties on the stage, where " + girlName + " used them as an impromptu prop.\n";
-				}
+				{ message +=  "Amusingly, one of the female members of " + girlName + "'s audience threw her panties on the stage, where " + girlName + " used them as an impromptu prop.\n"; }
 			}
 		}
 else if (jobperformance >= 145)
@@ -170,13 +156,9 @@ else if (jobperformance >= 145)
 		else if (roll <= 40)
 			{
 				if (g_Girls.HasTrait(girl, "Long Legs"))
-				{
-					message += girlName + "'s erotic dances are accentuated by her perfect legs.\n";
-				}
+				{ message += girlName + "'s erotic dances are accentuated by her perfect legs.\n"; }
 				else
-				{
-				message += girlName + " has a small, but devoted fanbase, who are willing to pay gate fees just to watch her dance.\n";
-				}
+				{ message += girlName + " has a small, but devoted fanbase, who are willing to pay gate fees just to watch her dance.\n"; }
 			}
 		else if (roll <= 60)
 			{
@@ -189,13 +171,9 @@ else if (jobperformance >= 145)
 		else
 			{
 				if (g_Girls.HasTrait(girl, "Sexy Air"))
-				{
-					message += girlName + " is by no measure bad at her job, but she gets way more customers then could be expected.\n";
-				}
+				{ message += girlName + " is by no measure bad at her job, but she gets way more customers then could be expected.\n"; }
 				else
-				{
-				message +=  "A man made an offer to buy " + girlName + " today, which you turned down.  She's popular with the patrons.\n";
-				}
+				{ message +=  "A man made an offer to buy " + girlName + " today, which you turned down.  She's popular with the patrons.\n"; }
 			}
 		}
 else if (jobperformance >= 100)
@@ -205,13 +183,9 @@ else if (jobperformance >= 100)
 		if (roll <= 20)
 			{
 				if (g_Girls.HasTrait(girl, "Sexy Air"))
-				{
-					message += girlName + "'s dances are mechanical, but her aurora of sexuality make clients break out in sweats.\n";
-				}
+				{ message += girlName + "'s dances are mechanical, but her aurora of sexuality make clients break out in sweats.\n"; }
 				else
-				{
-				message += girlName + "'s striptease draws a decent crowd each night.\n";
-				}
+				{ message += girlName + "'s striptease draws a decent crowd each night.\n"; }
 			}
 		else if (roll <= 40)
 			{
@@ -234,13 +208,9 @@ else if (jobperformance >= 100)
 		else
 			{
 				if (g_Girls.HasTrait(girl, "Long Legs"))
-				{
-					message += "Although " + girlName + " is no great shake at this job, her legs lend her a significant popularity boost.\n";
-				}
+				{ message += "Although " + girlName + " is no great shake at this job, her legs lend her a significant popularity boost.\n"; }
 				else
-				{
-				message += girlName + " has some talent at this job, but she needs to develop it.\n";
-				}
+				{ message += girlName + " has some talent at this job, but she needs to develop it.\n"; }
 			}
 		}
 else if (jobperformance >= 70)
@@ -250,13 +220,9 @@ else if (jobperformance >= 70)
 		if (roll <= 20)
 			{
 				if (g_Girls.HasTrait(girl, "Sexy Air"))
-				{
-					message += "Even though a block of wood could dance better, + " + girlName + " still draws the eye.\n";
-				}
+				{ message += "Even though a block of wood could dance better, + " + girlName + " still draws the eye.\n"; }
 				else
-				{
-				message += girlName + " is still incredibly sexy, despite her lack of anything resembling an active customer appeal.\n";
-				}
+				{ message += girlName + " is still incredibly sexy, despite her lack of anything resembling an active customer appeal.\n"; }
 			}
 		else if (roll <= 40)
 			{
@@ -269,13 +235,9 @@ else if (jobperformance >= 70)
 		else if (roll <= 80)
 			{
 				if (g_Girls.HasTrait(girl, "Long Legs"))
-				{
-					message += "The perfectly sculpted flesh of her leg drew attention away from the stupid look on " + girlName + "'s face.\n";
-				}
+				{ message += "The perfectly sculpted flesh of her leg drew attention away from the stupid look on " + girlName + "'s face.\n"; }
 				else
-				{
-				message += girlName + "'s hips twitched in a decidedly half-assed way.\n";
-				}
+				{ message += girlName + "'s hips twitched in a decidedly half-assed way.\n"; }
 			}
 		else
 			{
@@ -289,13 +251,9 @@ else
 		if (roll <= 20)
 			{
 				if (g_Girls.HasTrait(girl, "Long Legs"))
-					{
-					message += "Customers just can't tear their eyes away from " + girlName + "'s long, tasty legs, even as she tripped over her discarded top.\n";
-					}
+					{ message += "Customers just can't tear their eyes away from " + girlName + "'s long, tasty legs, even as she tripped over her discarded top.\n"; }
 				else
-				{
-				message += girlName + " slipped on a fresh smear of ejaculate halfway through her dance, and fell on her ass.\n";
-				}
+					{ message += girlName + " slipped on a fresh smear of ejaculate halfway through her dance, and fell on her ass.\n"; }
 			}
 		else if (roll <= 40)
 			{
@@ -312,61 +270,35 @@ else
 		else
 			{
 				if (g_Girls.HasTrait(girl, "Sexy Air"))
-					{
-					message += "Even though a block of wood could dance better, + " + girlName + " still draws the eye.\n";
-					}
+					{ message += "Even though a block of wood could dance better, + " + girlName + " still draws the eye.\n"; }
 				else
-					{
-				message += "Somehow, " + girlName + " managed to be so unsexy that the audience barely seemed to notice her presence.\n";
-				}
+					{ message += "Somehow, " + girlName + " managed to be so unsexy that the audience barely seemed to notice her presence.\n"; }
 			}
 		}
 
 
 	//try and add randomness here
-	if (g_Girls.GetStat(girl, STAT_BEAUTY) >85)
-		if((g_Dice%100) < 20)
-		{
-			message += " Stunned by her beauty a customer left her a great tip.\n";
-			wages += 25;
-		}
+	if (g_Girls.GetStat(girl, STAT_BEAUTY) >85 && g_Dice.percent(20))
+		{ message += "Stunned by her beauty a customer left her a great tip.\n\n"; wages += 25; }
 
-	if (g_Girls.HasTrait(girl, "Clumsy"))
-		if((g_Dice%100) < 15)
-		{
-			message += " Her clumsy nature caused her to spill a custmoers drink on them resulting in them storming off without paying.\n";
-			wages -= 15;
-		}
+	if (g_Girls.HasTrait(girl, "Clumsy") && g_Dice.percent(15))
+		{ message += "Her clumsy nature caused her to spill a customers drink on them resulting in them storming off without paying.\n"; wages -= 15; }
 
-	if (g_Girls.HasTrait(girl, "Pessimist"))
-		if((g_Dice%100) < 5)
+	if (g_Girls.HasTrait(girl, "Pessimist") && g_Dice.percent(5))
 		{
-			if(jobperformance < 125)
-			{
-			message += " Her pessimistic mood depressed the customers making them tip less.\n";
-			wages -= 10;
-			}
+			if (jobperformance < 125)
+			{ message += "Her pessimistic mood depressed the customers making them tip less.\n"; wages -= 10; }
 			else
-			{
-				message += girl->m_Realname + " was in a poor mood so the patrons gave her a bigger tip to try and cheer her up.\n";
-				wages += 10;
-			}
+			{ message += girlName + " was in a poor mood so the patrons gave her a bigger tip to try and cheer her up.\n"; wages += 10; }
 		}
 
-	if (g_Girls.HasTrait(girl, "Optimist"))
-		if((g_Dice%100) < 5)
-		{
-			if(jobperformance < 125)
-			{
-				message += girl->m_Realname + " was in a cheerful mood but the patrons thought she needed to work more on her services.\n";
-				wages -= 10;
-			}
-			else
-			{
-			message += "Her optimistic mood made patrons cheer up increasing the amount they tip.\n";
-			wages += 10;
-			}
-		}
+	if (g_Girls.HasTrait(girl, "Optimist") && g_Dice.percent(5))
+	{
+		if (jobperformance < 125)
+			{ message += girlName + " was in a cheerful mood but the patrons thought she needed to work more on her services.\n"; wages -= 10; }
+		else
+			{ message += "Her optimistic mood made patrons cheer up increasing the amount they tip.\n"; wages += 10; }
+	}
 
 	if(g_Girls.GetStat(girl, STAT_LIBIDO) > 90)
 	{
@@ -389,25 +321,16 @@ else
 			wages = 0;
 
 	//enjoyed the work or not
-	if(roll <= 5)
-	{
-		message += " \nSome of the patrons abused her during the shift.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKSTRIP, -1, true);
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKHALL, -1, true);
-	}
-	else if(roll <= 25) {
-		message += " \nShe had a pleasant time working.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKSTRIP, +3, true);
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKHALL, +3, true);
-	}
+	if (roll <= 5)
+	{ message += " \nSome of the patrons abused her during the shift."; work -= 1; }
+	else if (roll <= 25) 
+	{ message += " \nShe had a pleasant time working."; work += 3; }
 	else
-	{
-		message += " \nOtherwise, the shift passed uneventfully.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKSTRIP, +1, true);
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKHALL, +1, true);
-	}
+	{ message += " \nOtherwise, the shift passed uneventfully."; work += 1; }
 
-	//girl->m_Events.AddMessage(message, IMGTYPE_ECCHI, DayNight);
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKHALL, work, true);
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKSTRIP, work , true);
+
 	
 
 	// work out the pay between the house and the girl
@@ -431,7 +354,7 @@ else
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
 	//gain traits
-	g_Girls.PossiblyGainNewTrait(girl, "Nymphomaniac", 75, ACTION_WORKSTRIP, "Having to preform sexual entertainment for patrons every day has made " + girl->m_Realname + " quite the nympho.", DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Nymphomaniac", 75, ACTION_WORKSTRIP, "Having to preform sexual entertainment for patrons every day has made " + girlName + " quite the nympho.", DayNight != 0);
 
 	return false;
 }

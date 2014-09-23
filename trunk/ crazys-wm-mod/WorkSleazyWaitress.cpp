@@ -118,109 +118,66 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, int DayNigh
 
 
 	//try and add randomness here
-	if (g_Girls.GetStat(girl, STAT_BEAUTY) >85)
-		if ((g_Dice%100) < 20)
-		{
-			message += " Stunned by her beauty a customer left her a great tip.\n";
-			wages += 25;
-		}
+	if (g_Girls.GetStat(girl, STAT_BEAUTY) >85 && g_Dice.percent(20))
+	{ message += "Stunned by her beauty a customer left her a great tip.\n\n"; wages += 25; }
 
-	if (g_Girls.HasTrait(girl, "Clumsy"))
-		if ((g_Dice%100) < 15)
-		{
-			message += " Her clumsy nature cause her to spill food on a custmoer resulting in them storming off without paying.\n";
-			wages -= 25;
-		}
+	if (g_Girls.HasTrait(girl, "Clumsy") && g_Dice.percent(15))
+		{ message += "Her clumsy nature cause her to spill food on a custmoer resulting in them storming off without paying.\n"; wages -= 25; }
 
-	if (g_Girls.HasTrait(girl, "Pessimist"))
-		if ((g_Dice%100) < 5)
-		{
-			if (jobperformance < 125)
-			{
-			message += " Her pessimistic mood depressed the customers making them tip less.\n";
-			wages -= 10;
-			}
-			else
-			{
-				message += girl->m_Realname + " was in a poor mood so the patrons gave her a bigger tip to try and cheer her up.\n";
-				wages += 10;
-			}
-		}
-
-	if (g_Girls.HasTrait(girl, "Optimist"))
-		if ((g_Dice%100) < 5)
-		{
-			if (jobperformance < 125)
-			{
-				message += girlName + " was in a cheerful mood but the patrons thought she needed to work more on her services.\n";
-				wages -= 10;
-			}
-			else
-			{
-			message += " Her optimistic mood made patrons cheer up increasing the amount they tip.\n";
-			wages += 10;
-			}
-		}
-
-	if (g_Girls.HasTrait(girl, "Great Arse"))
+	if (g_Girls.HasTrait(girl, "Pessimist") && g_Dice.percent(5))
 	{
-		if((g_Dice%100) < 15)
-		{
+		if (jobperformance < 125)
+			{ message += "Her pessimistic mood depressed the customers making them tip less.\n"; wages -= 10; }
+		else
+			{ message += girlName + " was in a poor mood so the patrons gave her a bigger tip to try and cheer her up.\n"; wages += 10; }
+	}
+
+	if (g_Girls.HasTrait(girl, "Optimist") && g_Dice.percent(5))
+	{
+		if (jobperformance < 125)
+			{ message += girlName + " was in a cheerful mood but the patrons thought she needed to work more on her services.\n"; wages -= 10; }
+		else
+			{ message += "Her optimistic mood made patrons cheer up increasing the amount they tip.\n"; wages += 10; }
+	}
+
+	if (g_Girls.HasTrait(girl, "Great Arse") && g_Dice.percent(15))
+	{
 		if (jobperformance >= 185) //great
-			{
-				message += " A patron reached out to grab her ass. But she skillfully avoided it with a laugh and told him that her ass wasn't on the menu.  He laughed so hard he increased her tip\n";
-				wages += 15;
-			}
+			{ message += "A patron reached out to grab her ass. But she skillfully avoided it with a laugh and told him that her ass wasn't on the menu. He laughed so hard he increased her tip\n"; wages += 15; }
 		else if (jobperformance >= 135) //decent or good
-			{
-				message += " A patron reached out and grabed her ass. She's use to this and skilled enough so she didn't drop anything\n";
-			}
+			{ message += "A patron reached out and grabed her ass. She's use to this and skilled enough so she didn't drop anything\n"; }
 		else if (jobperformance >= 85) //bad
-			{
-				message += " A patron reached out and grabed her ass. She was startled and ended up dropping half an order.\n";
-				wages -= 10;
-			}
+			{ message += "A patron reached out and grabed her ass. She was startled and ended up dropping half an order.\n"; wages -= 10; }
 		else  //very bad
-			{
-				message += " A patron reached out and grabed her ass. She was startled and ended up dropping a whole order\n";
-				wages -= 15;
-			}
-		}
+			{ message += "A patron reached out and grabed her ass. She was startled and ended up dropping a whole order\n"; wages -= 15; }
+	}
 
-	if (g_Girls.HasTrait(girl, "Great Figure"))
-		if ((g_Dice%100) <= 25)
+	if (g_Girls.HasTrait(girl, "Great Figure")&& g_Dice.percent(25))
+	{
+		if (jobperformance < 125)
+			{ message += girlName + "'s amazing figure wasn't enough to keep the patrons happy when her servies was so bad.\n"; wages -= 10; }
+		else
+			{ message += "Not only does she have an amazing figure but she is also an amazing waitress the patrons really love her and her tips prove it.\n"; wages += 10; }
+	}
+
+	if (g_Girls.HasTrait(girl, "Meek") || g_Girls.HasTrait(girl, "Shy") && g_Dice.percent(5))
 		{
-			if (jobperformance < 125)
-			{
-				message += girlName + "'s amazing figure wasn't enough to keep the patrons happy when her servies was so bad.\n";
-				wages -= 10;
-			}
-			else
-			{
-			message += " Not only does she have an amazing figure but she is also an amazing waitress the patrons really love her and her tips prove it.\n";
-			wages += 10;
-			}
+			message += girlName + " was taking an order from a rather rude patron when he decide to grope her. She ins't the kind of girl to resist this and had a bad day at work because of this.\n";
+			work -=5;
 		}
-
-	if (g_Girls.HasTrait(girl, "Meek") || g_Girls.HasTrait(girl, "Shy"))
-		if ((g_Dice%100) < 5)
-			{
-				message += girlName + " was taking an order from a rather rude patron when he decide to grope her.  She ins't the kind of girl to resist this and had a bad day at work because of this.\n";
-				work -=5;
-			}
 
 
 		if(wages < 0)
-			wages = 0;
+		 wages = 0;
 
 
 	//enjoyed the work or not
 	if (roll <= 5)
-	{ message += " \nSome of the patrons abused her during the shift."; work -= 1; }
+	{ message += "\nSome of the patrons abused her during the shift."; work -= 1; }
 	else if (roll <= 25) 
-	{ message += " \nShe had a pleasant time working."; work += 3; }
+	{ message += "\nShe had a pleasant time working."; work += 3; }
 	else
-	{ message += " \nOtherwise, the shift passed uneventfully."; work += 1; }
+	{ message += "\nOtherwise, the shift passed uneventfully."; work += 1; }
 
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKCLUB, work , true);

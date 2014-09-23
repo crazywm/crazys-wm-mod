@@ -591,6 +591,8 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, int DayNight, string
 
 	girl->m_Events.AddMessage(summary, IMGTYPE_PROFILE, DayNight);
 
+	//gain
+	g_Girls.PossiblyGainNewTrait(girl, "Good Kisser", 20, ACTION_SEX, girl->m_Realname + " has had a lot of practice kissing and as such as become a Good Kisser.", DayNight != 0);
 	g_Girls.PossiblyGainNewTrait(girl, "Nymphomaniac", 60, ACTION_SEX, girl->m_Realname + " has been having so much sex she is now wanting sex all the time.", DayNight != 0);
 
 	return false;

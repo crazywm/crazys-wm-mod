@@ -69,7 +69,6 @@ bool cJobManager::WorkFilmFootJob(sGirl* girl, sBrothel* brothel, int DayNight, 
 	if(roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel)) 
 	{
 		message = girlName + " refused to use her feet on film today.\n";
-
 		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}

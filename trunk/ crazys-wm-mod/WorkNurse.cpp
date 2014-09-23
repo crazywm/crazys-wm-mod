@@ -45,8 +45,7 @@ extern cGold g_Gold;
 
 bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
-	string message = "";
-	string girlName = girl->m_Realname;
+	string message = ""; string girlName = girl->m_Realname;
 
 	if (g_Girls.HasTrait(girl, "AIDS"))
 	{
@@ -66,10 +65,8 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, int DayNight, string
 
 
 
-	int hand = false;
-	int sex = false;
-	int les = false;
-	int wages = 25;
+	int hand = false, sex = false, les = false;
+	int wages = 25, work = 0;
 	message += "She worked as a nurse.";
 
 	int roll = g_Dice % 100;
@@ -249,102 +246,56 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, int DayNight, string
 	}
 
 	//try and add randomness here
-	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85)
+	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85 && g_Dice.percent(20))
+	{ message += "Stunned by her beauty a customer left her a great tip.\n\n"; wages += 25; }
+
+	if (g_Girls.HasTrait(girl, "Clumsy") && g_Dice.percent(20))
+		{ message += "Her clumsy nature caused her to spill some medicine everywhere.\n"; wages -= 15; }
+
+	if (g_Girls.HasTrait(girl, "Pessimist") && g_Dice.percent(5))
 	{
-		if (g_Dice % 100 <= 20)
-		{
-			message += "Stunned by her beauty a patient left her a great tip.\n\n";
-			wages += 25;
-		}
+		if (jobperformance < 125)
+			{ message += "Her pessimistic mood depressed the patients making them tip less.\n"; wages -= 10; }
+		else
+			{ message += girlName + " was in a poor mood so the patients gave her a bigger tip to try and cheer her up.\n"; wages += 10; }
 	}
-	if (g_Girls.HasTrait(girl, "Clumsy"))
+
+	if (g_Girls.HasTrait(girl, "Optimist") && g_Dice.percent(20))
 	{
-		if (g_Dice % 100 <= 15)
-		{
-			message += "Her clumsy nature caused her to spill some medicine everywhere.\n";
-			wages -= 15;
-		}
+		if (jobperformance < 125)
+			{ message += girlName + " was in a cheerful mood but the patients thought she needed to work more on her services.\n"; wages -= 10; }
+		else
+			{ message += "Her optimistic mood made patients cheer up increasing the amount they tip.\n"; wages += 10; }
 	}
-	if (g_Girls.HasTrait(girl, "Pessimist"))
+
+	if (g_Girls.GetStat(girl, STAT_INTELLIGENCE) < 55 && g_Dice.percent(30))
+		{ message += "An elderly fellow managed to convince " + girlName + " that her touch can heal! She ended up giving him a hand job!\n"; hand = true; }
+
+	if (g_Girls.HasTrait(girl, "Nymphomaniac") && g_Dice.percent(30) && g_Girls.HasTrait(girl, "Straight") || g_Girls.HasTrait(girl, "Bisexual"))
 	{
-		if (g_Dice % 100 <= 5)
-		{
-			if (jobperformance < 125)
-			{
-				message += "Her pessimistic mood depressed the patients making them tip less.\n";
-				wages -= 10;
-			}
-			else
-			{
-				message += girl->m_Realname + " was in a poor mood so the patients gave her a bigger tip to try and cheer her up.\n";
-				wages += 10;
-			}
-		}
-	}
-	if (g_Girls.HasTrait(girl, "Optimist"))
-	{
-		if (g_Dice % 100 <= 5)
-		{
-			if (jobperformance < 125)
-			{
-				message += girl->m_Realname + " was in a cheerful mood but the patients thought she needed to work more on her services.\n";
-				wages -= 10;
-			}
-			else
-			{
-				message += "Her optimistic mood made patients cheer up increasing the amount they tip.\n";
-				wages += 10;
-			}
-		}
-	}
-	if (g_Girls.GetStat(girl, STAT_INTELLIGENCE) < 55)
-	{
-		if (g_Dice % 100 <= 30)
-		{
-			message += "An elderly fellow managed to convince " + girlName + " that her touch can heal! She ended up giving him a hand job!\n\n";
-			hand = true;
-		}
-	}
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))
-	{
-		if (g_Dice % 100 <= 30)
-		{
-			if (g_Girls.GetStat(girl, STAT_LIBIDO) > 65)
+		if (g_Girls.GetStat(girl, STAT_LIBIDO) > 65)
 			{
 				message += "When giving a sponge bath to one of her male patients she couldn't look away from his enormous manhood. The man took advantage and fuck her brains out!\n";
 				wages += 50;
 				sex = true;
 			}
-			else
-			{
-				message += "When giving a sponge bath to one of her male patients she couldn't look away from his enormous manhood. But she wasn't in the mood so she left.\n";
-			}
-		}
+		else
+			{ message += "When giving a sponge bath to one of her male patients she couldn't look away from his enormous manhood. But she wasn't in the mood so she left.\n"; }
 	}
-	if (g_Girls.HasTrait(girl, "Lesbian") && g_Girls.HasTrait(girl, "Aggressive") && g_Girls.GetStat(girl, STAT_LIBIDO) > 65)
-	{
-		if ((g_Dice%100) < 10)
-		{
-			message += "When giving a sponge bath to one of her female patients she couldn't help herself and took advantage of the situation.\n";
-			les = true;
-		}
-	}
+
+	if (g_Girls.HasTrait(girl, "Lesbian") && g_Girls.HasTrait(girl, "Aggressive") && g_Girls.GetStat(girl, STAT_LIBIDO) > 65 && g_Dice.percent(10))
+		{ message += "When giving a sponge bath to one of her female patients she couldn't help herself and took advantage of the situation.\n"; les = true; }
+
 
 	//enjoyed the work or not
 	if (roll <= 5)
-	{
-		message += " \nSome of the patrons abused her during the shift.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKNURSE, -1, true);
-	}
-	else if (roll <= 25) {
-		message += " \nShe had a pleasant time working.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKNURSE, +3, true);
-	}
+	{ message += "\nSome of the patrons abused her during the shift."; work -= 1; }
+	else if (roll <= 25) 
+	{ message += "\nShe had a pleasant time working."; work += 3; }
 	else
-	{
-		message += " \nOtherwise, the shift passed uneventfully.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKNURSE, +1, true);
-	}
+	{ message += "\nOtherwise, the shift passed uneventfully."; work += 1; }
+
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKNURSE, work, true);
 
 
 	if (sex)
@@ -410,13 +361,12 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, int DayNight, string
 
 
 	// Improve stats
-	int xp = 5 + patients * 2, libido = 1, skill = 2 + patients / 3;
+	int xp = 10 + patients * 2, libido = 1, skill = 2 + patients / 3;
 
 	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
-	if (g_Girls.HasTrait(girl, "Lesbian"))
-		libido += patients / 2;
+	if (g_Girls.HasTrait(girl, "Lesbian"))				{ libido += patients / 2; }
 
 	g_Girls.UpdateStat(girl, STAT_FAME, 1);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);

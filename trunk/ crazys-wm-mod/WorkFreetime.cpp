@@ -75,7 +75,8 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int DayNight, str
 
 	if(girl->m_Money == 0 || girl->m_NumInventory == 40)
 	{
-	if(g_Girls.GetStat(girl, STAT_TIREDNESS) > 80) { roll_a = 0; }
+	if(g_Girls.GetStat(girl, STAT_TIREDNESS) >= 80) { roll_a = 0; }
+	if(g_Girls.GetStat(girl, STAT_HEALTH) <= 30)   { roll_a = 0; }
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))	   { roll_a += 30; }
 	if (g_Girls.HasTrait(girl, "Adventurer"))	   { roll_a += 30; }
 		/* if (roll_a <= 0)	{ nothing = true; }
@@ -105,7 +106,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int DayNight, str
 	else if (roll_b <= 78)	{ gen_type = 3; gen_type_text = "went to the movies"; }
 	else if (roll_b <= 86)	{ gen_type = 2; gen_type_text = "went to the club"; }
 	else if (roll_b >= 94)	{ gen_type = 0; gen_type_text = "went to the bar"; } 
-	//add salons, concert
+	//add salons, concert, do hobby
 
 	// `CRAZY` This is things she can explore on a quest
 	/*default*/	int adv_type = 1;    string adv_type_text = "a cave";
@@ -175,29 +176,27 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int DayNight, str
 		message += girlName + " had some free time so she " + gen_type_text + ".\n";
 		if (roll_b <= 6) //temple
 		{
-			/*if(g_Girls.GetStat(girl, STAT_MORALITY) > 0)
+			/*if(g_Girls.GetStat(girl, STAT_MORALITY) >= 80)
+			{ message += girlName + " prayed hard for hours.\n"; }
+			else if(g_Girls.GetStat(girl, STAT_MORALITY) > 0)
 			{ message += girlName + " said a small prayer.\n"; }
+			else if(g_Girls.GetStat(girl, STAT_MORALITY) <= -80)
+			{ message += girlName + " seduced a priest, leading him toward evil.\n"; }
 			else
 			{ message += girlName + " laughed at the people there.\n"; }*/
 		}
 		else if (roll_b <= 14) //clinic
 		{
 			if (g_Girls.HasTrait(girl, "AIDS") || g_Girls.HasTrait(girl, "Chlamydia") || g_Girls.HasTrait(girl, "Herpes") || g_Girls.HasTrait(girl, "Syphilis"))
-				message += "The doctor told her she has an STD.\n";
+			{ message += "The doctor told her she has an STD.\n"; }
 			 if (g_Girls.GetStat(girl, STAT_HEALTH) >= 90)
-			{
-				message += "Her check up went wonderful. She was told she was in near perfect health.\n";
-				g_Girls.UpdateStat(girl, STAT_HAPPINESS, 5);
-			}
-			  if (g_Girls.GetStat(girl, STAT_HEALTH) < 90)
+			{ message += "Her check up went wonderful. She was told she was in near perfect health.\n"; happy += 5; }
+			else if (g_Girls.GetStat(girl, STAT_HEALTH) < 90)
 			{ message += "Her check up went good. She was told she was in very good health.\n"; }
 			else if (g_Girls.GetStat(girl, STAT_HEALTH) <= 50)
 			{ message += "Her check up decent. She was told she was in fair health.\n"; }
 			else if (g_Girls.GetStat(girl, STAT_HEALTH) <= 20)
-			{
-				message += "Her check up went poorly. She was told she was in bad health.\n";
-				g_Girls.UpdateStat(girl, STAT_HAPPINESS, -5); roll = 4;
-			}
+			{ message += "Her check up went poorly. She was told she was in bad health.\n"; happy -= 5; roll = 4; }
 			if (roll <= 5)
 			{ message += "The doctor decides to give her a booster shot."; g_Girls.UpdateStat(girl, STAT_HEALTH, 10); }
 		}
@@ -217,7 +216,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int DayNight, str
 		}
 		else if (roll_b <= 54) //bath
 		{
-			//imagetype = IMGTYPE_BATH;;
+			imagetype = IMGTYPE_BATH;;
 			g_Girls.UpdateStat(girl, STAT_HAPPINESS, 5);
 			g_Girls.UpdateStat(girl, STAT_HEALTH, 5);
 			if (g_Girls.GetStat(girl, STAT_LIBIDO) > 70)
@@ -232,12 +231,32 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int DayNight, str
 		}
 		else if (roll_b <= 62) //pool
 		{
-			//imagetype = IMGTYPE_SWIM;;
+			imagetype = IMGTYPE_SWIM;;
 			g_Girls.UpdateStat(girl, STAT_HAPPINESS, 5);
 			if(g_Girls.GetStat(girl, STAT_TIREDNESS) > 50)
 			{
 				message += "Begin on the tired side she just decided to lay around the pool and get some sun.  She is going to have a tan for a few days.\n";
 				g_Girls.UpdateTempStat(girl, STAT_BEAUTY, 5);
+				if (roll < 15)
+				{
+					message += "A rather brave kid seen her laying there and decide to try and remove her top.";
+					if (g_Girls.HasTrait(girl, "Psychic"))
+					{ message += " But using her Psychic skills she stopped him before he could do it."; }
+					else
+					{
+						if (g_Girls.HasTrait(girl, "Massive Melons") || g_Girls.HasTrait(girl, "Abnormally Large Boobs")|| g_Girls.HasTrait(girl, "Titanic Tits"))
+						{ message += " He succeed and was able to expose her gigantic boobs."; }
+						else if (g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Busty Boobs")|| g_Girls.HasTrait(girl, "Giant Juggs"))
+						{ message += " He succeed and was able to expose her large breasts."; }
+						else if (g_Girls.HasTrait(girl, "Small boobs") || g_Girls.HasTrait(girl, "Petite Breasts"))
+						{ message += " He succeed and was able to expose her small and perky tits."; }
+						else if (g_Girls.HasTrait(girl, "Flat Chest"))
+						{ message += " He succeed and was able to expose her rather Flat Chest."; }
+						else
+						{ message += " He was able to do it exposing her breasts."; }
+							imagetype = IMGTYPE_NUDE;
+					}
+				}
 			}
 			else
 			{
@@ -246,7 +265,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int DayNight, str
 		}
 		else if (roll_b <= 70) //cook
 		{
-			//imagetype = IMGTYPE_COOK;;
+			imagetype = IMGTYPE_COOK;;
 			message += "The meal she cooked was .\n";
 			if (g_Girls.GetSkill(girl, SKILL_SERVICE) >= 85)//use service for now on how well she can cook.. if cooking skill ever gets added can be changed then
 			{ message += "amazing.  She really knows how to cook.\n"; g_Girls.UpdateStat(girl, STAT_HEALTH, 5); }
@@ -330,11 +349,11 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int DayNight, str
 								message += "The movie started to turn her on so she started to pleasure herself. ";
 								if (roll_d <= 20)
 								{
-									message += "A man noticed her and approched her asking if she wanted the real thing instead of her fingers.";
+									message += "A man noticed and approched her asking if she wanted the real thing instead of her fingers.";
 									if (g_Girls.HasTrait(girl, "Virgin"))
-									{
-										message += " She informs him she is a Virgin and that she won't be having sex with him.";
-									}
+									{ message += " She informs him she is a Virgin and that she won't be having sex with him."; }
+									else if (g_Girls.HasTrait(girl, "Lesbian"))
+									{ message += " She informs him she is a Lesbian and that she don't be having sex with guys."; }
 									else if (HateLove >= 80 && g_Girls.GetStat(girl, STAT_LIBIDO) > 99)
 									{
 										message += " Despite the fact that she is in love with you she couldn't help herself her lust is to great and she agrees. ";
@@ -380,11 +399,11 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int DayNight, str
 		{
 			message += girlName + " puts on her best dress before leaving.\n";
 			//message += girlName + " says hi to " + clubbar->m_Realname + ".\n";  zzzzz needs work FIXME just a test to see it worked it didnt
-			//imagetype = IMGTYPE_FORMAL;;
+			imagetype = IMGTYPE_FORMAL;;
 		}
 		else if (roll_b <= 93) //bed
 		{
-			//imagetype = IMGTYPE_BED;;
+			imagetype = IMGTYPE_BED;;
 			g_Girls.UpdateStat(girl, STAT_TIREDNESS, -10);
 		}
 		else //bar
@@ -531,7 +550,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int DayNight, str
 
 				case INVSMWEAPON:
 				{
-					if(g_InvManager.GirlBuyItem(girl, item, 1, true))
+					if(g_InvManager.GirlBuyItem(girl, item, 2, true))
 					{
 						buyList += ((buyList == "") ? "" : ", ") + itemName;
 						itemsBought++;
@@ -592,7 +611,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int DayNight, str
 		message += gettext(" She did some shopping, and bought: ") + buyList + ".";
 	}
 
-	girl->m_Events.AddMessage(message, imagetype, DayNight);
+	girl->m_Events.AddMessage(message, IMGTYPE_SHOP, DayNight);
 	return false;
 }
 

@@ -42,8 +42,7 @@ extern cGold g_Gold;
 
 bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
-	string message = "";
-	string girlName = girl->m_Realname;
+	string message = ""; string girlName = girl->m_Realname;
 	if(Preprocessing(ACTION_WORKHALL, girl, brothel, DayNight, summary, message))	// they refuse to have work in the hall
 		return true;
 
@@ -55,8 +54,8 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, int DayNight, s
 							g_Girls.GetStat(girl, STAT_AGILITY)/2 +			// agility makes her fast enough to cheat
 							g_Girls.GetSkill(girl, SKILL_PERFORMANCE)/2 +	// performance helps her get away with it
 							g_Girls.GetSkill(girl, SKILL_SERVICE)/2);
-	int wages = 25;
-
+	
+	int wages = 25, work = 0;
 	message += "She worked as a dealer in the gambling hall.";
 
 
@@ -84,29 +83,19 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, int DayNight, s
 			wages += 155;
 		if (roll <= 33)
 			{
-				if (g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Abnormally Large Boobs"))
-					{
-					message += "Between her exceptional card skills and her massive tits, " + girl->m_Realname + " raked the money in this shift.\n";
-					}
+				if (g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Abnormally Large Boobs"))//zzzzzz FIXME needs new boob tratis added
+					{ message += "Between her exceptional card skills and her massive tits, " + girlName + " raked the money in this shift.\n"; }
 				else if (g_Girls.HasTrait(girl, "Lolita"))
-					{
-					message += "Behind her small frame and innocent face lurks a true card-shark.\n";
-					}
+					{ message += "Behind her small frame and innocent face lurks a true card-shark.\n"; }
 				else
-					{
-					message += girlName + " is as near to perfect as any being could get.  She made a pile of money today.\n";
-				}
+					{ message += girlName + " is as near to perfect as any being could get.  She made a pile of money today.\n"; }
 			}
 		else if (roll <= 66)
 			{
 				if (g_Girls.HasTrait(girl, "Sexy Air"))
-					{
-					message += "Her sexy body draws gamblers to her table like flies to a pitcher plant.\n";
-					}
+					{ message += "Her sexy body draws gamblers to her table like flies to a pitcher plant.\n"; }
 				else
-					{
-				message += girlName + " managed to win every game she played in today.\n";
-				}
+					{ message += girlName + " managed to win every game she played in today.\n"; }
 			}
 		else 
 			{
@@ -124,24 +113,16 @@ else if (jobperformance >= 185)
 		else if (roll <= 40)
 			{
 				if (g_Girls.HasTrait(girl, "Sexy Air"))
-					{
-					message += girlName + "'s sex appeal is paying off in a different way, as the profits from her table tumble in.\n";
-					}
+					{ message += girlName + "'s sex appeal is paying off in a different way, as the profits from her table tumble in.\n"; }
 				else
-					{
-				message += "She won all of her games bar one or two today!.\n";
-				}
+					{ message += "She won all of her games bar one or two today!.\n"; }
 			}
 		else if (roll <= 60)
 			{
 				if (g_Girls.HasTrait(girl, "Quick Learner"))
-					{
-					message += "After a good deal of practical education, " + girlName + " is a formidable card dealer.\n";
-					}
+					{ message += "After a good deal of practical education, " + girlName + " is a formidable card dealer.\n"; }
 				else
-					{
-				message += girlName + " could find a place in any gambling institution with her skills with cards.\n";
-				}
+					{ message += girlName + " could find a place in any gambling institution with her skills with cards.\n"; }
 			}
 		else if (roll <= 80)
 			{
@@ -150,17 +131,11 @@ else if (jobperformance >= 185)
 		else
 			{
 				if (g_Girls.HasTrait(girl, "Lolita"))
-					{
-					message += "Lured into a false sense of security, the gamblers were shocked to lose to such a child-like woman!\n";
-					}
-				else if (g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Abnormally Large Boobs"))
-					{
-					message += "Distracted by " + girlName + "'s breasts, players didn't even seem to notice their money vanishing.\n";
-					}
+					{ message += "Lured into a false sense of security, the gamblers were shocked to lose to such a child-like woman!\n"; }
+				else if (g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Abnormally Large Boobs"))//zzzzzz FIXME needs new boob tratis added
+					{ message += "Distracted by " + girlName + "'s breasts, players didn't even seem to notice their money vanishing.\n"; }
 				else
-				{
-				message +=  "You flash a congratulatory smile at " + girlName + " on her way out the door at the end of shift.\n";
-				}
+				{ message +=  "You flash a congratulatory smile at " + girlName + " on her way out the door at the end of her shift.\n"; }
 			}
 		}
 else if (jobperformance >= 145)
@@ -174,28 +149,18 @@ else if (jobperformance >= 145)
 		else if (roll <= 40)
 			{
 				if (g_Girls.HasTrait(girl, "Lolita"))
-					{
-					message += "Nobody expected such a sweet little girl to win anything!\n";
-					}
-				else if (g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Abnormally Large Boobs"))
-					{
-					message += "While she's a good card dealer, " + girlName + "'s big tits helped weigh the odds in her favor.\n";
-					}
+					{ message += "Nobody expected such a sweet little girl to win anything!\n"; }
+				else if (g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Abnormally Large Boobs"))//zzzzzz FIXME needs new boob tratis added
+					{ message += "While she's a good card dealer, " + girlName + "'s big tits helped weigh the odds in her favor.\n"; }
 				else
-					{
-					message += "Her professional smile and pleasing form reinforced her acceptable skill level.\n";
-				}
+					{ message += "Her professional smile and pleasing form reinforced her acceptable skill level.\n"; }
 			}
 		else if (roll <= 60)
 			{
 				if (g_Girls.HasTrait(girl, "Quick Learner"))
-					{
-					message += "Using tricks learned before from her past, " + girlName + " had a productive shift.\n";
-					}
+					{ message += "Using tricks learned before from her past, " + girlName + " had a productive shift.\n"; }
 				else
-					{
-				message += " Lady Luck seems to be smiling on " + girlName + " today - she won more games then she lost.\n";
-				}
+					{ message += " Lady Luck seems to be smiling on " + girlName + " today - she won more games then she lost.\n"; }
 			}
 		else if (roll <= 80)
 			{
@@ -204,13 +169,9 @@ else if (jobperformance >= 145)
 		else
 			{
 				if (g_Girls.HasTrait(girl, "Sexy Air"))
-					{
-					message += "The gamblers always seem surprised that such a lovely piece of ass can beat them at their chosen game.\n";
-					}
+					{ message += "The gamblers always seem surprised that such a lovely piece of ass can beat them at their chosen game.\n"; }
 				else
-					{
-				message += girlName + " shows real promise as a dealer.\n";
-				}
+					{ message += girlName + " shows real promise as a dealer.\n"; }
 			}
 		}
 else if (jobperformance >= 100)
@@ -220,35 +181,23 @@ else if (jobperformance >= 100)
 		if (roll <= 20)
 			{
 				if (g_Girls.HasTrait(girl, "Nervous") || g_Girls.HasTrait(girl, "Meek"))
-					{
-					message += "Despite her uncertain nature, " + girlName + " is holding her own at the card-table.\n";
-					}
+					{ message += "Despite her uncertain nature, " + girlName + " is holding her own at the card-table.\n"; }
 				else
-					{
-				message += "She's no cardsharp, but " + girlName + " can hold her own against the patrons.\n";
-				}
+					{ message += "She's no cardsharp, but " + girlName + " can hold her own against the patrons.\n"; }
 			}
 		else if (roll <= 40)
 			{
 				if (g_Girls.HasTrait(girl, "Quick Learner"))
-					{
-					message += "She could be a good dealer, but " + girlName + " has a lot to learn still.\n";
-					}
+					{ message += "She could be a good dealer, but " + girlName + " has a lot to learn still.\n"; }
 				else
-					{
-				message += girlName + "broke even today, thank the Lady.\n";
-				}
+					{ message += girlName + "broke even today, thank the Lady.\n"; }
 			}
 		else if (roll <= 60)
 			{
 				if (g_Girls.HasTrait(girl, "Sexy Air"))
-					{
-					message += girlName + " isn't a terrible card dealer, but she's much more eye-candy then gambling queen.\n";
-					}
+					{ message += girlName + " isn't a terrible card dealer, but she's much more eye-candy then gambling queen.\n"; }
 				else
-					{
-				message += "Pasteboard isn't her friend as the cards seemed to taunt her.\n";
-				}
+					{ message += "Pasteboard isn't her friend as the cards seemed to taunt her.\n"; }
 			}
 		else if (roll <= 80)
 			{
@@ -256,14 +205,10 @@ else if (jobperformance >= 100)
 			}
 		else
 			{
-				if (g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Abnormally Large Boobs"))
-					{
-					message += "She turned a slight profit, with the help of her not inconsiderable breasts' distraction factor.\n";
-					}
+				if (g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Abnormally Large Boobs"))//zzzzzz FIXME needs new boob tratis added
+					{ message += "She turned a slight profit, with the help of her not inconsiderable breasts' distraction factor.\n"; }
 				else
-				{
-				message += "She's clocked in and clocked out, but nothing spectacular has happened in between.\n";
-				}
+					{ message += "She's clocked in and clocked out, but nothing spectacular has happened in between.\n"; }
 			}
 		}
 else if (jobperformance >= 70)
@@ -273,57 +218,37 @@ else if (jobperformance >= 70)
 		if (roll <= 20)
 			{
 				 if (g_Girls.HasTrait(girl, "Quick Learner"))
-					{
-					message += "She's got a clue, but still has a long way to go to reach competancy.\n";
-					}
+					{ message += "She's got a clue, but still has a long way to go to reach competancy.\n"; }
 				else
-					{
-				message += girlName + " struggles valiently against the forces of chance, and wins! A. Single. Game.\n";
-				}
+					{ message += girlName + " struggles valiently against the forces of chance, and wins! A. Single. Game.\n"; }
 			}
 		else if (roll <= 40)
 			{
 				if (g_Girls.HasTrait(girl, "Nervous") || g_Girls.HasTrait(girl, "Meek"))
-					{
-					message += girlName + "'s weak personality made it easy for clients to bully her out of money.\n";
-					}
+					{ message += girlName + "'s weak personality made it easy for clients to bully her out of money.\n"; }
 				else
-					{
-				message += "Despite her feeble protests, gamblers walked all over " + girlName + ".\n";
-				}
+					{ message += "Despite her feeble protests, gamblers walked all over " + girlName + ".\n"; }
 			}
 		else if (roll <= 60)
 			{
 				if (g_Girls.GetStat(girl, STAT_INTELLIGENCE) >80)
-					{
-					message += girlName + " is smart enough to understand the game.  But seems not to have the luck to win.\n";
-					}
+					{ message += girlName + " is smart enough to understand the game. But seems not to have the luck to win.\n"; }
 				else
-				{
-				message += "As you watch " + girlName + "fold like a house of cards on a royal flush, you idly wonder if she could be replaced with a shaved ape.\n";
-				}
+					{ message += "As you watch " + girlName + "fold like a house of cards on a royal flush, you idly wonder if she could be replaced with a shaved ape.\n"; }
 			}
 		else if (roll <= 80)
 			{
-				if (g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Abnormally Large Boobs"))
-					{
-					message += "While players were distracted by " + girlName + "'s breasts for a few turns, she still lost more then she won.\n";
-					}
+				if (g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Abnormally Large Boobs"))//zzzzzz FIXME needs new boob tratis added
+					{ message += "While players were distracted by " + girlName + "'s breasts for a few turns, she still lost more then she won.\n"; }
 				else
-				{
-				message += "The cards are not in her favor today - the highest hand you saw her with was two pair.\n";
-				}
+					{ message += "The cards are not in her favor today - the highest hand you saw her with was two pair.\n"; }
 			}
 		else
 			{
 				if (g_Girls.HasTrait(girl, "Sexy Air"))
-					{
-					message += girlName + " could make a corpse stand up and beg for a blow-job, but she can't play cards worth a damn.\n";
-					}
+					{ message += girlName + " could make a corpse stand up and beg for a blow-job, but she can't play cards worth a damn.\n"; }
 				else
-					{
-				message += "As " + girlName + "'s shift ends, you struggle mightily against the urge to sigh in relief.\n";
-				}
+					{ message += "As " + girlName + "'s shift ends, you struggle mightily against the urge to sigh in relief.\n"; }
 			}
 		}
 else
@@ -333,13 +258,9 @@ else
 		if (roll <= 20)
 			{
 				if (g_Girls.HasTrait(girl, "Sexy Air"))
-					{
-					message += "It's almost a pity how attractive" + girlName + " is.  If she wasn't so desireable, fewer vultures would alight on her table.\n";
-					}
+					{ message += "It's almost a pity how attractive" + girlName + " is.  If she wasn't so desireable, fewer vultures would alight on her table.\n"; }
 				else
-					{
-				message += girlName + " dropped the deck on the floor, spraying cards everywhere.\n";
-				}
+					{ message += girlName + " dropped the deck on the floor, spraying cards everywhere.\n"; }
 			}
 		else if (roll <= 40)
 			{
@@ -347,145 +268,91 @@ else
 			}
 		else if (roll <= 60)
 			{
-				if (g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Abnormally Large Boobs"))
-					{
-					message += girlName + "'s large breasts pleased the clients as they won over and over again.\n";
-					}
+				if (g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Abnormally Large Boobs"))//zzzzzz FIXME needs new boob tratis added
+					{ message += girlName + "'s large breasts pleased the clients as they won over and over again.\n"; }
 				else
-				{
-				message += girlName + " shrugged with a degree of embarrasment as a chortling patron walked away with a fat moneybag.\n";
-				}
+					{ message += girlName + " shrugged with a degree of embarrasment as a chortling patron walked away with a fat moneybag.\n"; }
 			}
 		else if (roll <= 80)
 			{
 				if (g_Girls.HasTrait(girl, "Nervous") || g_Girls.HasTrait(girl, "Meek"))
-					{
-					message += girlName + "'s weak personality made it easy for clients to bully her out of money.\n";
-					}
+					{ message += girlName + "'s weak personality made it easy for clients to bully her out of money.\n"; }
 				else
-					{
-				message += girlName + " is really, really, bad at this job.\n";
-				}
+					{ message += girlName + " is really, really, bad at this job.\n"; }
 			}
 		else
 			{
 				if (g_Girls.HasTrait(girl, "Quick Learner"))
-					{
-					message += "After a terrible shift, you can only hope that she learned something from it.\n";
-					}
+					{ message += "After a terrible shift, you can only hope that she learned something from it.\n"; }
 				else
-					{
-				message += "You can almost see the profits slipping away as " + girlName + "loses yet another hand of poker.\n";
-				}
+					{ message += "You can almost see the profits slipping away as " + girlName + "loses yet another hand of poker.\n"; }
 			}
 		}
 
 
 	//try and add randomness here
-	if (g_Girls.GetStat(girl, STAT_BEAUTY) >85)
-		if((g_Dice%100) < 20)
-		{
-			message += " Stunned by her beauty a customer was to distracted to notice he was losing.\n";
-			wages += 25;
-		}
+	if (g_Girls.GetStat(girl, STAT_BEAUTY) >85 && g_Dice.percent(20))
+	{ message += "Stunned by her beauty a customer left her a great tip.\n\n"; wages += 25; }
 
-	if (g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Abnormally Large Boobs"))
-		if((g_Dice%100) < 15)
+	if (g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Abnormally Large Boobs") && g_Dice.percent(15))//zzzzzz FIXME needs new boob tratis added
+	{
+		if (jobperformance < 150)
+			{ message += "A patron was staring obviously at her large breasts. But she had no ideal how to take advantage of it.\n"; }
+		else
+			{ message += "A patron was staring obviously at her large breasts. So she used the chance to cheat him out of all his gold.\n"; wages += 35; }
+	}
+
+	if (g_Girls.HasTrait(girl, "Lolita") && g_Dice.percent(15))
+	{
+		if (jobperformance < 125)
+			{ message += "Furious at being outplayed by such a young girl, a couple of gamblers stormed out, and didn't give" + girlName + " any tips.\n"; }
+		else
+			{ message += "One of the gamblers was amused at being outplayed by such a young girl, and gave her an extra-large tip!\n"; wages += 15; }
+	}
+
+	if (g_Girls.HasTrait(girl, "Elegent") || g_Girls.HasTrait(girl, "Princess") || g_Girls.HasTrait(girl, "Queen") && g_Dice.percent(15))
 		{
-			if(jobperformance < 150)
-			{
-			message += " A patron was staring obviously at her large breasts. But she had no ideal how to take advantage of it.\n";
-			}
+			if (jobperformance < 150)
+			{ message += "Surly at her apparently stuck-up attitude, several gamblers refused to tip " + girlName + ".\n"; }
 			else
-			{
-			message += " A patron was staring obviously at her large breasts. So she used the chance to cheat him out of all his gold.\n";
-			wages += 15;
-			}
+			{ message += "Impressed by her elegent demeanor and graceful compartment, several gamblers gave " + girlName + " larger tips then usual.\n"; wages += 20; }
 		}
 
-	if (g_Girls.HasTrait(girl, "Lolita"))
-		if((g_Dice%100) < 15)
+	if (g_Girls.HasTrait(girl, "Assassin") && g_Dice.percent(5))
 		{
-			if(jobperformance < 125)
-			{
-			message += "Furious at being outplayed by such a young girl, a couple of gamblers stormed out, and didn't give" + girlName + " any tips.\n";
-			}
+			if (jobperformance < 150)
+			{ message += "She decided a patron was cheating so she killed him causing a paninc of people running out with your money.\n"; wages -= 50; }
 			else
-			{
-			message += "One of the gamblers was amused at being outplayed by such a young girl, and gave her an extra-large tip!\n";
-			wages += 15;
-			}
+			{ message += "She thought a patron was cheating but decided it was a lucky streak that she would end with her card skills.\n"; }
 		}
 
-	if (g_Girls.HasTrait(girl, "Elegent") || g_Girls.HasTrait(girl, "Princess") || g_Girls.HasTrait(girl, "Queen"))
-		if((g_Dice%100) < 15)
-		{
-			if(jobperformance < 150)
-			{
-			message += "Surly at her apparently stuck-up attitude, several gamblers refused to tip " + girlName + ".\n";
-			}
-			else
-			{
-			message += "Impressed by her elegent demeanor and graceful compartment, several gamblers gave " + girlName + " larger tips then usual.\n";
-			wages += 15;
-			}
-		}
-
-	if (g_Girls.HasTrait(girl, "Assassin"))
-		if((g_Dice%101) < 5)
-		{
-			if(jobperformance < 150)
-			{
-				message += "She decided a patron was cheating so she killed him causing a paninc of people running out with your money.\n";
-				wages -= 50;
-			}
-			else
-			{
-				message += "She thought a patron was cheating but decided it was a luckey strike that she would end with her card skills.\n";
-			}
-		}
-
-	if (g_Girls.HasTrait(girl, "Psychic"))
-		if((g_Dice%100) < 20)
-		{
-			message += "She used her Psychic skills to know excatally what cards was coming up and won a big hand.\n";
-			wages += 15;
-		}
+	if (g_Girls.HasTrait(girl, "Psychic") && g_Dice.percent(20))
+		{ message += "She used her Psychic skills to know excatally what cards was coming up and won a big hand.\n"; wages += 30; }
 
 	if (g_Brothels.GetNumGirlsOnJob(0,JOB_ENTERTAINMENT,false) == 1)
-		if(roll <= 25)
+	{
+		if (roll <= 25)
 		{
-			if(jobperformance < 125)
-			{
-				message += girl->m_Realname + " wasn't good enough at her job to use the entertainment's distraction to make more money.\n";
-			}
+			if (jobperformance < 125)
+			{ message += girlName + " wasn't good enough at her job to use the entertainment's distraction to make more money.\n"; }
 			else
-			{
-			message += girl->m_Realname + " used the enterainment's distraction to make you some extra money.\n";
-			wages += 25;
-			}
+			{ message += girlName + " used the enterainment's distraction to make you some extra money.\n"; wages += 25; }
 		}
+	}
 
 		if(wages < 0)
-			wages = 0;
+		 wages = 0;
 
 
 	//enjoyed the work or not
-	if(roll <= 5)
-	{
-		message += " \nSome of the patrons abused her during the shift.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKHALL, -1, true);
-	}
-	else if(roll <= 25) {
-		message += " \nShe had a pleasant time working.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKHALL, +3, true);
-	}
+	if (roll <= 5)
+	{ message += " \nSome of the patrons abused her during the shift."; work -= 1; }
+	else if (roll <= 25) 
+	{ message += " \nShe had a pleasant time working."; work += 3; }
 	else
-	{
-		message += " \nOtherwise, the shift passed uneventfully.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKHALL, +1, true);
-	}
+	{ message += " \nOtherwise, the shift passed uneventfully."; work += 1; }
 
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKHALL, work, true);
 	girl->m_Events.AddMessage(message, IMGTYPE_CARD, DayNight);
 
 	// work out the pay between the house and the girl

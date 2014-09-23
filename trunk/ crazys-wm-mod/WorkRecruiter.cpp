@@ -58,7 +58,8 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, int DayNight, st
 	int HateLove = 0;
 	HateLove = g_Girls.GetStat(girl, STAT_PCLOVE) - g_Girls.GetStat(girl, STAT_PCHATE);
 	int jobperformance = (HateLove + g_Girls.GetStat(girl, STAT_CHARISMA));
-	int wages = 100;
+	int wages = 100, work = 0;
+	int roll = g_Dice % 100;
 
 	message += "She worked trying to recruit girls for you.";
 
@@ -71,7 +72,7 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, int DayNight, st
 	else if (HateLove <  40)	message += " She finds you to be a good person.\n\n";
 	else if (HateLove <  60)	message += " She finds you to be a good person.\n\n";
 	else if (HateLove <  80)	message += " She has really strong feelings for you so she trys really hard for you.\n\n";
-	else					message += " She loves you more then anything so she gives it her all.\n\n";
+	else						message += " She loves you more then anything so she gives it her all.\n\n";
 
 	//good traits
 	if (g_Girls.HasTrait(girl, "Charismatic"))  jobperformance += 20;
@@ -93,32 +94,32 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, int DayNight, st
 
 	if (jobperformance >= 245)
 	{
-		message += " She must be the perfect recruiter.\n\n";
+		message += "She must be the perfect recruiter.\n\n";
 		findchance = 20;
 	}
 	else if (jobperformance  >= 185)
 	{
-		message += " She's unbelievable at this.\n\n";
+		message += "She's unbelievable at this.\n\n";
 		findchance = 15;
 	}
 	else if (jobperformance >= 135)
 	{
-		message += " She's good at this job.\n\n";
+		message += "She's good at this job.\n\n";
 		findchance = 12;
 	}
 	else if (jobperformance >= 85)
 	{
-		message += " She made a few mistakes but overall she is okay at this.\n\n";
+		message += "She made a few mistakes but overall she is okay at this.\n\n";
 		findchance = 10;
 	}
 	else if (jobperformance >= 65)
 	{
-		message += " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
+		message += "She was nervous and made a few mistakes. She isn't that good at this.\n\n";
 		findchance = 8;
 	}
 	else
 	{
-		message += " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
+		message += "She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
 		findchance = 4;
 	}
 	// `J` add in player's disposition so if the girl has heard of you
@@ -217,23 +218,15 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, int DayNight, st
 
 
 
-//enjoyed the work or not
-	int roll = g_Dice % 100;
+	//enjoyed the work or not
 	if (roll <= 5)
-	{
-		message += " \nSome people abused her during the shift.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKRECRUIT, -1, true);
-	}
-	else if(roll <= 25) {
-		message += " \nShe had a pleasant time working.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKRECRUIT, +3, true);
-	}
+	{ message += "\nSome of the people abused her during the shift."; work -= 1; }
+	else if (roll <= 25) 
+	{ message += "\nShe had a pleasant time working."; work += 3; }
 	else
-	{
-		message += " \nOtherwise, the shift passed uneventfully.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKRECRUIT, +1, true);
-	}
+	{ message += "\nOtherwise, the shift passed uneventfully."; work += 1; }
 
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKRECRUIT, work, true);
 	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
 	int roll_max = (g_Girls.GetStat(girl, STAT_CHARISMA) + g_Girls.GetSkill(girl, SKILL_SERVICE));
 	roll_max /= 4;

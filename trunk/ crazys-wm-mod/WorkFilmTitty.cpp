@@ -69,7 +69,6 @@ bool cJobManager::WorkFilmTitty(sGirl* girl, sBrothel* brothel, int DayNight, st
 	if(roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel)) 
 	{
 		message = girlName + " refused to have her titty's fucked on film today.\n";
-
 		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}

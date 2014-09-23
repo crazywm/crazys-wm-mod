@@ -53,7 +53,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, int DayNig
 							g_Girls.GetStat(girl, STAT_BEAUTY) / 2  +
 							g_Girls.GetSkill(girl, SKILL_MEDICINE) / 2 +
 							g_Girls.GetSkill(girl, SKILL_SERVICE) / 2);
-	int wages = g_Girls.GetStat(girl, STAT_ASKPRICE)+40;
+	int wages = g_Girls.GetStat(girl, STAT_ASKPRICE)+40, work = 0;
 
 	message += "She massaged a customer.";
 
@@ -298,20 +298,14 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, int DayNig
 	}
 
 	//enjoyed the work or not
-	if(roll <= 5)
-	{
-		message += " \nSome of the patrons abused her during the shift.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMASSUSSE, -1, true);
-	}
-	else if(roll <= 25) {
-		message += " \nShe had a pleasant time working.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMASSUSSE, +3, true);
-	}
+	if (roll <= 5)
+	{ message += "\nSome of the patrons abused her during the shift."; work -= 1; }
+	else if (roll <= 25) 
+	{ message += "\nShe had a pleasant time working."; work += 3; }
 	else
-	{
-		message += " \nOtherwise, the shift passed uneventfully.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMASSUSSE, +1, true);
-	}
+	{ message += "\nOtherwise, the shift passed uneventfully."; work += 1; }
+
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKMASSUSSE, work, true);
 
 
 		// Improve stats
