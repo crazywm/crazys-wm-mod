@@ -179,12 +179,12 @@ bool cJobManager::WorkEscort(sGirl* girl, sBrothel* brothel, int DayNight, strin
 	girl->m_Events.AddMessage(message, IMGTYPE_FORMAL, DayNight);
 
 	//gain traits
-	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, ACTION_WORKESCORT, "Dealing with customers and talking with them about their problems has made " + girl->m_Realname + " more Charismatic.", DayNight != 0);
-	g_Girls.PossiblyGainNewTrait(girl, "Elegant", 40, ACTION_WORKESCORT, "Playing the doting girlfriend has given " + girl->m_Realname + " an Elegant nature.", DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, ACTION_WORKESCORT, "Dealing with customers and talking with them about their problems has made " + girlName + " more Charismatic.", DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Elegant", 40, ACTION_WORKESCORT, "Playing the doting girlfriend has given " + girlName + " an Elegant nature.", DayNight != 0);
 
 	//lose traits
-	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 40, ACTION_WORKESCORT, girl->m_Realname + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", DayNight != 0);
-	g_Girls.PossiblyLoseExistingTrait(girl, "Aggressive", 70, ACTION_WORKESCORT, "Controlling her temper has greatly reduced " + girl->m_Realname + "'s Aggressive tendencies.", DayNight != 0);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 40, ACTION_WORKESCORT, girlName + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", DayNight != 0);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Aggressive", 70, ACTION_WORKESCORT, "Controlling her temper has greatly reduced " + girlName + "'s Aggressive tendencies.", DayNight != 0);
 
 	return false;
 }

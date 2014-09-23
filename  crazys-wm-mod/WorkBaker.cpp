@@ -43,8 +43,7 @@ extern cMessageQue g_MessageQue;
 
 bool cJobManager::WorkBaker(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
-	string message = "";
-	string girlName = girl->m_Realname;
+	string message = ""; string girlName = girl->m_Realname;
 
 	if(Preprocessing(ACTION_WORKFARM, girl, brothel, DayNight, summary, message))	// they refuse to have work in the bar
 		return true;
@@ -52,7 +51,7 @@ bool cJobManager::WorkBaker(sGirl* girl, sBrothel* brothel, int DayNight, string
 	// put that shit away, you'll scare off the customers!
 	g_Girls.UnequipCombat(girl);
 
-	int wages = 25;
+	int wages = 25, work = 0;
 	int roll = g_Dice%100;
 
 	message += "She worked as a baker on the farm.";
@@ -109,23 +108,15 @@ bool cJobManager::WorkBaker(sGirl* girl, sBrothel* brothel, int DayNight, string
 		if(wages < 0)
 			wages = 0;
 
-	if(roll <= 5)
-	{
-		message += " Some of the patrons abused her during the shift.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKFARM, -3, true);
-	}
-	else if(roll <= 25) {
-		message += " She had a pleasant time working.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKFARM, +3, true);
-	}
+	//enjoyed the work or not
+	if (roll <= 5)
+	{ message += " \nSome of the patrons abused her during the shift."; work -= 1; }
+	else if (roll <= 25) 
+	{ message += " \nShe had a pleasant time working."; work += 3; }
 	else
-	{
-		message += " Otherwise, the shift passed uneventfully.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKFARM, +1, true);
-	}
+	{ message += " \nOtherwise, the shift passed uneventfully."; work += 1; }
 
-
-
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKFARM, work, true);
 	girl->m_Events.AddMessage(message, IMGTYPE_COOK, DayNight);
 	girl->m_Pay = wages;
 

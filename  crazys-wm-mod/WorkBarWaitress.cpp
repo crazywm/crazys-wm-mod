@@ -41,8 +41,7 @@ extern cMessageQue g_MessageQue;
 
 bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
-	string message = "";
-	string girlName = girl->m_Realname;
+	string message = ""; string girlName = girl->m_Realname;
 
 	if(Preprocessing(ACTION_WORKBAR, girl, brothel, DayNight, summary, message))	// they refuse to have work in the bar
 		return true;
@@ -50,7 +49,7 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 	// put that shit away, you'll scare off the customers!
 	g_Girls.UnequipCombat(girl);
 
-	int wages = 15;
+	int wages = 15, work = 0;
 	message += "She worked as a waitress in the bar.";
 
 	int roll = g_Dice%100;
@@ -115,7 +114,7 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 			}
 		else
 			{
-				message += "People came in from everywhere to see " + girl->m_Realname + " work.  She bounces all around the bar laughing and keeping the patrons happy without messing anything up.\n";
+				message += "People came in from everywhere to see " + girlName + " work.  She bounces all around the bar laughing and keeping the patrons happy without messing anything up.\n";
 				brothel->m_Happiness += 10;
 			}
  }
@@ -159,9 +158,9 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 
 		if (roll <= 14)
 			{
-				if (g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Abnormally Large Boobs"))
+				if (g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Abnormally Large Boobs"))//zzzzzzzz FIXME needs update for the new boob traits
 				{
-					message += "The patrons love been served by " + girl->m_Realname + ".  Due to the fact she's good at her job and they love staring at her Big Boobs.\n";
+					message += "The patrons love been served by " + girlName + ".  Due to the fact she's good at her job and they love staring at her Big Boobs.\n";
 				}
 				else
 				{
@@ -209,7 +208,7 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 		else if (roll <= 28)
 			{
 				message +=  "Trying her best, " + girlName + " made few mistakes but otherwise she had a pleasant day.\n";
-				g_Girls.UpdateEnjoyment(girl, ACTION_WORKBAR, +1, true);
+				work += 1;
 			}
 		else if (roll <= 42)
 			{
@@ -219,7 +218,7 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 		else if (roll <= 56)
 			{
 				message += "Taking orders without mistakes and getting drinks to the tables not spilling a single drop from them. Today was a good day for " + girlName + ".\n";
-				g_Girls.UpdateEnjoyment(girl, ACTION_WORKBAR, +1, true);
+				work += 1;
 			}
 		else if (roll <= 70)
 			{
@@ -314,124 +313,70 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 		
 
 	//try and add randomness here
-	if (g_Girls.GetStat(girl, STAT_BEAUTY) >85)
-		if ((g_Dice%100) < 20)
-		{
-			message += " Stunned by her beauty a customer left her a great tip.\n";
-			wages += 25;
-		}
+	if (g_Girls.GetStat(girl, STAT_BEAUTY) >85 && g_Dice.percent(20))
+	{ message += "Stunned by her beauty a customer left her a great tip.\n\n"; wages += 25; }
 
-	if (g_Girls.HasTrait(girl, "Clumsy"))
-		if ((g_Dice%100) < 15)
-		{
-			message += " Her clumsy nature cause her to spill food on a custmoer resulting in them storming off without paying.\n";
-			wages -= 25;
-		}
+	if (g_Girls.HasTrait(girl, "Clumsy") && g_Dice.percent(15))
+		{ message += "Her clumsy nature cause her to spill food on a custmoer resulting in them storming off without paying.\n"; wages -= 25; }
 
-	if (g_Girls.HasTrait(girl, "Pessimist"))
-		if ((g_Dice%100) < 5)
-		{
-			if (jobperformance < 125)
-			{
-			message += " Her pessimistic mood depressed the customers making them tip less.\n";
-			wages -= 10;
-			}
-			else
-			{
-				message += girl->m_Realname + " was in a poor mood so the patrons gave her a bigger tip to try and cheer her up.\n";
-				wages += 10;
-			}
-		}
-
-	if (g_Girls.HasTrait(girl, "Optimist"))
-		if ((g_Dice%100) < 5)
-		{
-			if(jobperformance < 125)
-			{
-				message += girl->m_Realname + " was in a cheerful mood but the patrons thought she needed to work more on her services.\n";
-				wages -= 10;
-			}
-			else
-			{
-			message += " Her optimistic mood made patrons cheer up increasing the amount they tip.\n";
-			wages += 10;
-			}
-		}
-
-	if (g_Girls.HasTrait(girl, "Psychic"))
-		if ((g_Dice%101) < 20)
-		{
-			message += "She used her Psychic skills to know excatally what the patrons wanted to order making them happy and increasing her tips.\n";
-			wages += 15;
-		}
-
-	if (g_Girls.HasTrait(girl, "Great Arse"))
+	if (g_Girls.HasTrait(girl, "Pessimist") && g_Dice.percent(5))
 	{
-		if((g_Dice%100) < 15)
-		{
+		if (jobperformance < 125)
+			{ message += "Her pessimistic mood depressed the customers making them tip less.\n"; wages -= 10; }
+		else
+			{ message += girlName + " was in a poor mood so the patrons gave her a bigger tip to try and cheer her up.\n"; wages += 10; }
+	}
+
+	if (g_Girls.HasTrait(girl, "Optimist") && g_Dice.percent(5))
+	{
+		if (jobperformance < 125)
+			{ message += girlName + " was in a cheerful mood but the patrons thought she needed to work more on her services.\n"; wages -= 10; }
+		else
+			{ message += "Her optimistic mood made patrons cheer up increasing the amount they tip.\n"; wages += 10; }
+	}
+
+	if (g_Girls.HasTrait(girl, "Psychic") && g_Dice.percent(20))
+		{ message += "She used her Psychic skills to know excatally what the patrons wanted to order making them happy and increasing her tips.\n"; wages += 15; }
+
+	if (g_Girls.HasTrait(girl, "Great Arse") && g_Dice.percent(15))
+	{
 		if (jobperformance >= 185) //great
-			{
-				message += " A patron reached out to grab her ass. But she skillfully avoided it with a laugh and told him that her ass wasn't on the menu.  He laughed so hard he increased her tip\n";
-				wages += 15;
-			}
+			{ message += "A patron reached out to grab her ass. But she skillfully avoided it with a laugh and told him that her ass wasn't on the menu.  He laughed so hard he increased her tip\n"; wages += 15; }
 		else if (jobperformance >= 135) //decent or good
-			{
-				message += " A patron reached out and grabed her ass. She's use to this and skilled enough so she didn't drop anything\n";
-			}
+			{ message += "A patron reached out and grabed her ass. She's use to this and skilled enough so she didn't drop anything\n"; }
 		else if (jobperformance >= 85) //bad
-			{
-				message += " A patron reached out and grabed her ass. She was startled and ended up dropping half an order.\n";
-				wages -= 10;
-			}
+			{ message += "A patron reached out and grabed her ass. She was startled and ended up dropping half an order.\n"; wages -= 10; }
 		else  //very bad
-			{
-				message += " A patron reached out and grabed her ass. She was startled and ended up dropping a whole order\n";
-				wages -= 15;
-			}
-		}
+			{ message += "A patron reached out and grabed her ass. She was startled and ended up dropping a whole order\n"; wages -= 15; }
+	}
 
 
-	if (g_Girls.HasTrait(girl, "Assassin"))
-		if ((g_Dice%101) < 5)
-		{
-			if(jobperformance < 150)
-			{
-				message += " A patron pissed her off and using her Assassin skills she killed him before even thinking about it resulting in patrons storming out without paying.\n";
-				wages -= 50;
-			}
-			else
-			{
-				message += " A patron pissed her off but she just gave them a death stare and walked away.\n";
-			}
-		}
+	if (g_Girls.HasTrait(girl, "Assassin") && g_Dice.percent(5))
+	{
+		if(jobperformance < 150)
+			{ message += "A patron pissed her off and using her Assassin skills she killed him before even thinking about it resulting in patrons storming out without paying.\n"; wages -= 50; }
+		else
+			{ message += "A patron pissed her off but she just gave them a death stare and walked away.\n"; }
+	}
 
-	if (g_Girls.HasTrait(girl, "Horrific Scars"))
-		if ((g_Dice%101) < 15)
-		{
-			if (jobperformance < 150)
-			{
-				message += " A patron gasped at her Horrific Scars making her uneasy.  But they didn't feel sorry for her.\n";
-			}
-			else
-			{
-				message += " A patron gasped at her Horrific Scars making her sad.  Feeling bad about it as she did a wonderful job they left a good tip.\n";
-				wages += 15;
-			}
-		}
+	if (g_Girls.HasTrait(girl, "Horrific Scars") && g_Dice.percent(15))
+	{
+		if (jobperformance < 150)
+			{ message += "A patron gasped at her Horrific Scars making her uneasy. But they didn't feel sorry for her.\n"; }
+		else
+			{ message += "A patron gasped at her Horrific Scars making her sad. Feeling bad about it as she did a wonderful job they left a good tip.\n"; wages += 25; }
+	}
 
 	if (g_Brothels.GetNumGirlsOnJob(0,JOB_BARMAID,false) == 1)
+	{
 		if ((g_Dice%100) < 25)
 		{
 			if (jobperformance < 125)
-			{
-				message += girl->m_Realname + " wasn't good enough at her job to use the barmaid to her advantage.\n";
-			}
+			{ message += girlName + " wasn't good enough at her job to use the barmaid to her advantage.\n"; }
 			else
-			{
-			message += girl->m_Realname + " used the barmaid to great effect speeding up her work and increasing her tips.\n";
-			wages += 25;
-			}
+			{ message += girlName + " used the barmaid to great effect speeding up her work and increasing her tips.\n"; wages += 25; }
 		}
+	}
 
 		if (wages < 0)
 			wages = 0;
@@ -440,20 +385,13 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 
 	//enjoyed the work or not
 	if (roll <= 5)
-	{
-		message += " \nSome of the patrons abused her during the shift.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKBAR, -1, true);
-	}
-	else if (roll <= 25) {
-		message += " \nShe had a pleasant time working.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKBAR, +3, true);
-	}
+	{ message += " \nSome of the patrons abused her during the shift."; work -= 1; }
+	else if (roll <= 25) 
+	{ message += " \nShe had a pleasant time working."; work += 3; }
 	else
-	{
-		message += " \nOtherwise, the shift passed uneventfully.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKBAR, +1, true);
-	}
+	{ message += " \nOtherwise, the shift passed uneventfully."; work += 1; }
 
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKBAR, work, true);
 	girl->m_Events.AddMessage(message, IMGTYPE_WAIT, DayNight);
 
 	int roll_max = (g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA));

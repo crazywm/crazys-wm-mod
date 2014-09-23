@@ -55,10 +55,10 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, int DayNig
 	g_Girls.UnequipCombat(girl);
 
 	int image = IMGTYPE_PROFILE;
-	bool blow = false;
-	bool sex = false;
+	bool blow = false, sex = false;
 	int dispo = 0;
 	int roll = g_Dice % 100;
+	int wages = 100, work = 0;
 	int jobperformance = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) / 2 +
 		g_Girls.GetStat(girl, STAT_CHARISMA) / 2 +
 		g_Girls.GetSkill(girl, SKILL_SERVICE));
@@ -92,17 +92,8 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, int DayNig
 
 
 	//try and add randomness here
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))
-	{
-		if (g_Dice % 100 <= 30)
-		{
-			if (g_Girls.GetStat(girl, STAT_LIBIDO) > 85)
-			{
-				message += "Her Nymphomania got the better of her today and she decide the best way to services her community was on her back!\n";
-				sex = true;
-			}
-		}
-	}
+	if (g_Girls.HasTrait(girl, "Nymphomaniac") && g_Dice.percent(30) && g_Girls.GetStat(girl, STAT_LIBIDO) > 85)
+	{ message += "Her Nymphomania got the better of her today and she decide the best way to services her community was on her back!\n"; sex = true; }
 
 	if (g_Girls.GetStat(girl, STAT_INTELLIGENCE) < 55 && g_Dice.percent(30))
 	{ blow = true;	message += "An elderly fellow managed to convince " + girlName + " that the best way to serve her community was on her knees. She ended up giving him a blow job!\n\n"; }
@@ -110,20 +101,13 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, int DayNig
 
 	//enjoyed the work or not
 	if (roll <= 5)
-	{
-		message += " \nSome of the patrons abused her during the shift.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCENTRE, -1, true);
-	}
-	else if (roll <= 25)
-	{
-		message += " \nShe had a pleasant time working.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCENTRE, +3, true);
-	}
+	{ message += " \nSome of the patrons abused her during the shift."; work -= 1; }
+	else if (roll <= 25) 
+	{ message += " \nShe had a pleasant time working."; work += 3; }
 	else
-	{
-		message += " \nOtherwise, the shift passed uneventfully.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCENTRE, +1, true);
-	}
+	{ message += " \nOtherwise, the shift passed uneventfully."; work += 1; }
+
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKCENTRE, work, true);
 
 
 	if (sex)
@@ -163,7 +147,7 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, int DayNig
 	else
 	{
 		message += " \nThe fact that your paying this girl to do this helps people think your a better person.";
-		girl->m_Pay += 100;
+		girl->m_Pay = wages;
 		g_Gold.staff_wages(100);  // wages come from you
 		dispo = int(dispo*1.5);
 	}

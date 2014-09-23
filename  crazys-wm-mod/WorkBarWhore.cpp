@@ -390,117 +390,119 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, int DayNight, str
 #endif
 			}
 
-			else  // Customer has enough money
+		else  // Customer has enough money
+		{
+			Cust.m_Money -= (unsigned)pay; // WD: ??? not needed Cust record is not saved when this fn ends!  Leave for now just in case ??? // Yes this is necessary for TIP calculation.
+
+			// if he is happy and has some extra gold he will give a tip
+			if ((int)Cust.m_Money >= 20 && Cust.m_Stats[STAT_HAPPINESS] > 90)
 			{
-				Cust.m_Money -= (unsigned)pay; // WD: ??? not needed Cust record is not saved when this fn ends!  Leave for now just in case ??? // Yes this is necessary for TIP calculation.
-
-				// if he is happy and has some extra gold he will give a tip
-				if ((int)Cust.m_Money >= 20 && Cust.m_Stats[STAT_HAPPINESS] > 90)
+				tip = (int)Cust.m_Money;
+				if (tip > 20)
 				{
-					tip = (int)Cust.m_Money;
-					if (tip > 20)
-					{
-						Cust.m_Money -= 20;	// WD: ??? not needed Cust record is not saved when this fn ends!  Leave for now just in case ???
-						tip = 20;
-					}
-					else
-						Cust.m_Money = 0;	// WD: ??? not needed Cust record is not saved when this fn ends!  Leave for now just in case ???
+					Cust.m_Money -= 20;	// WD: ??? not needed Cust record is not saved when this fn ends!  Leave for now just in case ???
+					tip = 20;
+				}
+				else
+					Cust.m_Money = 0;	// WD: ??? not needed Cust record is not saved when this fn ends!  Leave for now just in case ???
 
-					fuckMessage += ("\nShe received a tip of " + intstring(tip) + " gold");
+				fuckMessage += ("\nShe received a tip of " + intstring(tip) + " gold");
 
-					pay += tip;
+				pay += tip;
 
-					// Slaves hand over all money to master
-					if (girl->is_slave())
-					{
-						fuckMessage += ", which you claim";
-						brothel->m_Finance.brothel_work(tip);
-					}
-					else
-						girl->m_Pay += tip;
+				// Slaves hand over all money to master
+				if (girl->is_slave())
+				{
+					fuckMessage += ", which you claim";
+					brothel->m_Finance.brothel_work(tip);
+				}
+				else
+					girl->m_Pay += tip;
 
-					fuckMessage += ".";
+				fuckMessage += ".";
 
-					// If the customer is a government official
-					if (Cust.m_Official == 1)
-					{
-						g_Brothels.GetPlayer()->suspicion(-5);
-						fuckMessage += " It turns out that the customer was a government official, which lowers your suspicion.";
-					}
+				// If the customer is a government official
+				if (Cust.m_Official == 1)
+				{
+					g_Brothels.GetPlayer()->suspicion(-5);
+					fuckMessage += " It turns out that the customer was a government official, which lowers your suspicion.";
 				}
 			}
+		}
 
-			// Match image type to the deed done
-			int imageType = IMGTYPE_SEX;
-			if (SexType == SKILL_ANAL)
-				imageType = IMGTYPE_ANAL;
-			else if (SexType == SKILL_BDSM)
-				imageType = IMGTYPE_BDSM;
-			else if (SexType == SKILL_NORMALSEX)
-				imageType = IMGTYPE_SEX;
-			else if (SexType == SKILL_BEASTIALITY)
-				imageType = IMGTYPE_BEAST;
-			else if (SexType == SKILL_GROUP)
-				imageType = IMGTYPE_GROUP;
-			else if (SexType == SKILL_LESBIAN)
-				imageType = IMGTYPE_LESBIAN;
-			else if (SexType == SKILL_ORALSEX)
-				imageType = IMGTYPE_ORAL;
-			else if (SexType == SKILL_TITTYSEX)
-				imageType = IMGTYPE_TITTY;
-			else if (SexType == SKILL_HANDJOB)
-				imageType = IMGTYPE_HAND;
-			else if(SexType == SKILL_STRIP)
-				imageType = IMGTYPE_STRIP;
+		// Match image type to the deed done
+		int imageType = IMGTYPE_SEX;
+		if (SexType == SKILL_ANAL)
+			imageType = IMGTYPE_ANAL;
+		else if (SexType == SKILL_BDSM)
+			imageType = IMGTYPE_BDSM;
+		else if (SexType == SKILL_NORMALSEX)
+			imageType = IMGTYPE_SEX;
+		else if (SexType == SKILL_BEASTIALITY)
+			imageType = IMGTYPE_BEAST;
+		else if (SexType == SKILL_GROUP)
+			imageType = IMGTYPE_GROUP;
+		else if (SexType == SKILL_LESBIAN)
+			imageType = IMGTYPE_LESBIAN;
+		else if (SexType == SKILL_ORALSEX)
+			imageType = IMGTYPE_ORAL;
+		else if (SexType == SKILL_TITTYSEX)
+			imageType = IMGTYPE_TITTY;
+		else if (SexType == SKILL_HANDJOB)
+			imageType = IMGTYPE_HAND;
+		else if(SexType == SKILL_STRIP)
+			imageType = IMGTYPE_STRIP;
 
-			// chance of customer beating or attempting to beat girl
-			if (work_related_violence(girl, DayNight, false))
-				pay = 0;		// WD TRACE WorkRelatedViloence {girl->m_Name} earns nothing
+		// chance of customer beating or attempting to beat girl
+		if (work_related_violence(girl, DayNight, false))
+			pay = 0;		// WD TRACE WorkRelatedViloence {girl->m_Name} earns nothing
 
-			// if the customer is max happy then give girl some fame
-			// WD:	Note fame is also added in girlfucks
-			//if(Cust.m_Stats[STAT_HAPPINESS] >= 100)
-			//	g_Girls.UpdateStat(girl, STAT_FAME, 2);
+		// if the customer is max happy then give girl some fame
+		// WD:	Note fame is also added in girlfucks
+		//if(Cust.m_Stats[STAT_HAPPINESS] >= 100)
+		//	g_Girls.UpdateStat(girl, STAT_FAME, 2);
 
-			// WD:	Is this being used??
-			if (job == JOB_WHOREGAMBHALL)
-				pay += 30;
-			else if (job == JOB_BARWHORE)
-				pay += 30;
+		// WD:	Is this being used??
+		if (job == JOB_WHOREGAMBHALL)
+			pay += 30;
+		else if (job == JOB_BARWHORE)
+			pay += 30;
 
 
-			// WD:	Save gold earned
-			girl->m_Pay += pay;		// WD TRACE Save Pay {girl->m_Name} earns {pay} totaling {girl->m_Pay}
-			girl->m_Events.AddMessage(fuckMessage, imageType, DayNight);
+		// WD:	Save gold earned
+		girl->m_Pay += pay;		// WD TRACE Save Pay {girl->m_Name} earns {pay} totaling {girl->m_Pay}
+		girl->m_Events.AddMessage(fuckMessage, imageType, DayNight);
 	}
 
 
-		// WD:	Reduce number of availabe customers for next whore
-		iNum = g_Customers.GetNumCustomers();		// WD: Should not happen but lets make sure
-		if (iNum < NumSleptWith)
-			g_Customers.AdjustNumCustomers(-iNum);
-		else
-			g_Customers.AdjustNumCustomers(-NumSleptWith);
+	// WD:	Reduce number of availabe customers for next whore
+	iNum = g_Customers.GetNumCustomers();		// WD: Should not happen but lets make sure
+	if (iNum < NumSleptWith)
+		g_Customers.AdjustNumCustomers(-iNum);
+	else
+		g_Customers.AdjustNumCustomers(-NumSleptWith);
 
-		// WD:	End of shift messages
-		// doc: adding braces - gcc warns of ambiguous if nesting
-		if (g_Customers.GetNumCustomers() == 0)
-		{
-			girl->m_Events.AddMessage("No more customers.", IMGTYPE_PROFILE, DayNight);
-		}
-		else if (NumSleptWith < NumCusts)
-			girl->m_Events.AddMessage(girl->m_Realname + " ran out of customers who like her.", IMGTYPE_PROFILE, DayNight);
+	// WD:	End of shift messages
+	// doc: adding braces - gcc warns of ambiguous if nesting
+	if (g_Customers.GetNumCustomers() == 0)
+	{
+		girl->m_Events.AddMessage("No more customers.", IMGTYPE_PROFILE, DayNight);
+	}
+	else if (NumSleptWith < NumCusts)
+		girl->m_Events.AddMessage(girl->m_Realname + " ran out of customers who like her.", IMGTYPE_PROFILE, DayNight);
 
 
 
-		// WD:	Summary messages
-		ss.str("");
-		ss << girl->m_Realname << " saw " << NumSleptWith << " customers this shift.";
+	// WD:	Summary messages
+	ss.str("");
+	ss << girl->m_Realname << " saw " << NumSleptWith << " customers this shift.";
 
-		summary += ss.str();
-		girl->m_Events.AddMessage(summary, IMGTYPE_PROFILE, DayNight);
+	summary += ss.str();
+	girl->m_Events.AddMessage(summary, IMGTYPE_PROFILE, DayNight);
 
-		g_Girls.PossiblyGainNewTrait(girl, "Nymphomaniac", 60, ACTION_SEX, girl->m_Realname + " has been having so much sex she is now wanting sex all the time.", DayNight != 0);
+	//gain
+	g_Girls.PossiblyGainNewTrait(girl, "Good Kisser", 20, ACTION_SEX, girl->m_Realname + " has had a lot of practice kissing and as such as become a Good Kisser.", DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Nymphomaniac", 60, ACTION_SEX, girl->m_Realname + " has been having so much sex she is now wanting sex all the time.", DayNight != 0);
 
-		return false;
+	return false;
 }

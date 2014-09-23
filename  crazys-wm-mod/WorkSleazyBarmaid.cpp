@@ -117,84 +117,50 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, int DayNight
 
 
 	//try and add randomness here
-	if (g_Girls.GetStat(girl, STAT_BEAUTY) >85)
+	if (g_Girls.GetStat(girl, STAT_BEAUTY) >85 && g_Dice.percent(20))
+	{ message += "Stunned by her beauty a customer left her a great tip.\n\n"; wages += 25; }
+
+	if (g_Girls.HasTrait(girl, "Clumsy") && g_Dice.percent(15))
+	{ message += "Her clumsy nature caused her to spill a drink on a customer resulting in them storming off without paying.\n"; wages -= 15; }
+
+	if (g_Girls.HasTrait(girl, "Pessimist") && g_Dice.percent(5))
 	{
-		if ((g_Dice%100) < 20)
-		{
-			message += "Stunned by her beauty a customer left her a great tip.\n\n";
-			wages += 25;
-		}
+		if (jobperformance < 125)
+			{ message += "Her pessimistic mood depressed the customers making them tip less.\n"; wages -= 10; }
+		else
+			{ message += girlName + " was in a poor mood so the patrons gave her a bigger tip to try and cheer her up.\n"; wages += 10; }
 	}
 
-	if (g_Girls.HasTrait(girl, "Clumsy"))
+	if (g_Girls.HasTrait(girl, "Optimist") && g_Dice.percent(5))
 	{
-		if ((g_Dice%100) < 15)
-		{
-			message += "Her clumsy nature caused her to spill a drink on a custmoer resulting in them storming off without paying.\n";
-			wages -= 15;
-		}
-	}
-
-	if (g_Girls.HasTrait(girl, "Pessimist"))
-	{
-		if ((g_Dice%100) < 5)
-		{
-			if(jobperformance < 125)
-			{
-			message += "Her pessimistic mood depressed the customers making them tip less.\n";
-			wages -= 10;
-			}
+		if (jobperformance < 125)
+			{ message += girlName + " was in a cheerful mood but the patrons thought she needed to work more on her services.\n"; wages -= 10; }
 			else
-			{
-				message += girlName + " was in a poor mood so the patrons gave her a bigger tip to try and cheer her up.\n";
-				wages += 10;
-			}
-		}
+			{ message += "Her optimistic mood made patrons cheer up increasing the amount they tip.\n"; wages += 10; }
 	}
 
-	if (g_Girls.HasTrait(girl, "Optimist"))
+	if (g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Abnormally Large Boobs") && g_Dice.percent(15))//zzzzz FIXME needs updated to include new boob traits
 	{
-		if ((g_Dice%100) < 5)
-		{
-			if(jobperformance < 125)
-			{
-				message += girlName + " was in a cheerful mood but the patrons thought she needed to work more on her services.\n";
-				wages -= 10;
-			}
-			else
-			{
-			message += "Her optimistic mood made patrons cheer up increasing the amount they tip.\n";
-			wages += 10;
-			}
-		}
+		if(jobperformance < 150)
+		{ message += "A patron was staring obviously at her large breasts. But she had no ideal how to take advantage of it.\n"; }
+		else 
+		{ message += "A patron was staring obviously at her large breasts. So she over charged them for drinks while they drooled not paying any mind to the price.\n"; wages += 15; }
 	}
 
-	if (g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Abnormally Large Boobs"))
-	{
-		if ((g_Dice%100) < 15)
-		{
-			if(jobperformance < 150)
-			{
-				message += "A patron was staring obviously at her large breasts. But she had no ideal how to take advantage of it.\n";
-			}
-			else
-			{
-				message += "A patron was staring obviously at her large breasts. So she over charged them for drinks while they drooled not paying any mind to the price.\n";
-				wages += 15;
-			}
-		}
+	if (g_Girls.HasTrait(girl, "Meek") && g_Dice.percent(5) && jobperformance < 125)
+	{ 
+		message += girlName + " spilled a drink all over a mans lap.  He told her she had to lick it up and forced her to clean him up which she Meekly accepted and went about licking his cock clean.\n";
+		imagetype = IMGTYPE_ORAL; work -= 3;
 	}
-
-	if (g_Girls.HasTrait(girl, "Meek"))
+	if ((g_Dice%100) < 5)//may get moved to waitress
 	{
-		if ((g_Dice%100) < 5)
-		{
-			if (jobperformance < 125)
-			{
-				message += girlName + " spilled a drink all over a mans lap.  He told her she had to lick it up and forced her to clean him up which she Meekly accepted and went about licking his cock clean.\n";
-				imagetype = IMGTYPE_ORAL;
-			}
-		}
+		message += "A drunken patron decide to grab " + girlName + "'s boob. ";
+		if (g_Girls.HasTrait(girl, "Meek"))
+		{ message += "She was shocked and didn't react. The man molested her for a few minutes!\n"; }
+		if (g_Girls.HasTrait(girl, "Tough"))
+		{ message += "She knocked him out! You could swear that she knocked a couple of his teeth out too!\n"; }
+		else
+		{ message += "She screamed and shook his hand off.\n"; }
 	}
 
 	if (wages < 0)
@@ -203,11 +169,11 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, int DayNight
 
 	//enjoyed the work or not
 	if (roll <= 5)
-	{ message += " \nSome of the patrons abused her during the shift."; work -= 1; }
+	{ message += "\nSome of the patrons abused her during the shift."; work -= 1; }
 	else if (roll <= 25) 
-	{ message += " \nShe had a pleasant time working."; work += 3; }
+	{ message += "\nShe had a pleasant time working."; work += 3; }
 	else
-	{ message += " \nOtherwise, the shift passed uneventfully."; work += 1; }
+	{ message += "\nOtherwise, the shift passed uneventfully."; work += 1; }
 
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKCLUB, work , true);

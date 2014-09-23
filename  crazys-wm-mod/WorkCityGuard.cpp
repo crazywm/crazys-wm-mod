@@ -48,8 +48,7 @@ extern cGold g_Gold;
 
 bool cJobManager::WorkCityGuard(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
-	string message = "";
-	string girlName = girl->m_Realname;
+	string message = ""; string girlName = girl->m_Realname;
 	if (Preprocessing(ACTION_WORKSECURITY, girl, brothel, DayNight, summary, message))
 		return true;
 

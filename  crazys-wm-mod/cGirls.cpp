@@ -2146,6 +2146,14 @@ string cGirls::GetThirdDetailsString(sGirl* girl)
 		xxx += 10;
 		marketer += 5;
 	}
+	if (g_Girls.HasTrait(girl, "Shy"))  //
+	{
+		brothelstrip -= 20;
+		clubstrip -= 20;
+		entertainer -= 20;
+		peep -= 20;
+		xxx -= 20;
+	}
 	if (g_Girls.HasTrait(girl, "Slow Learner"))
 	{
 		barmaid -= 10;

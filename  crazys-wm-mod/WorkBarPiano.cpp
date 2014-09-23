@@ -41,8 +41,7 @@ extern cMessageQue g_MessageQue;
 
 bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
-	string message = "";
-	string girlName = girl->m_Realname;
+	string message = ""; string girlName = girl->m_Realname;
 
 	if(Preprocessing(ACTION_WORKMUSIC, girl, brothel, DayNight, summary, message))	// they refuse to have work in the bar
 		return true;
@@ -50,7 +49,7 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, int DayNight, str
 	// put that shit away, you'll scare off the customers!
 	g_Girls.UnequipCombat(girl);
 
-	int wages = 20;
+	int wages = 20, work = 0;
 	message += "She played the piano in the bar.";
 
 	int roll = g_Dice%100;
@@ -244,119 +243,68 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, int DayNight, str
 
 
 	//try and add randomness here
-	if (g_Girls.GetStat(girl, STAT_BEAUTY) >85)
-		if((g_Dice%100) < 15)
-		{
-			message += " Stunned by her beauty a customer left her a great tip.\n\n";
-			wages += 15;
-		}
+	if (g_Girls.GetStat(girl, STAT_BEAUTY) >85 && g_Dice.percent(20))
+	{ message += "Stunned by her beauty a customer left her a great tip.\n\n"; wages += 15; }
 
-	if (g_Girls.HasTrait(girl, "Clumsy"))
-		if((g_Dice%100) < 5)
-		{
-			message += " Her clumsy nature caused her to close the lid on her fingers making her have to stop playing for a few hours.\n\n";
-			wages -= 15;
-		}
+	if (g_Girls.HasTrait(girl, "Clumsy") && g_Dice.percent(5))
+		{ message += "Her clumsy nature caused her to close the lid on her fingers making her have to stop playing for a few hours.\n\n"; wages -= 15; }
 
-	if (g_Girls.HasTrait(girl, "Pessimist"))
-		if((g_Dice%100) < 5)
-		{
-			if(jobperformance < 125)
-			{
-			message += " Her pessimistic mood depressed the customers making them tip less.\n\n";
-			wages -= 10;
-			}
-			else
-			{
-				message += girl->m_Realname + " was in a poor mood so the patrons gave her a bigger tip to try and cheer her up.\n\n";
-				wages += 10;
-			}
-		}
+	if (g_Girls.HasTrait(girl, "Pessimist") && g_Dice.percent(20))
+	{
+		if (jobperformance < 125)
+			{ message += "Her pessimistic mood depressed the customers making them tip less.\n\n"; wages -= 10; }
+		else
+			{ message += girlName + " was in a poor mood so the patrons gave her a bigger tip to try and cheer her up.\n\n"; wages += 10; }
+	}
 
-	if (g_Girls.HasTrait(girl, "Optimist"))
-		if((g_Dice%100) < 5)
-		{
-			if(jobperformance < 125)
-			{
-				message += girl->m_Realname + " was in a cheerful mood but the patrons thought she needed to work more on her on her playing.\n\n";
-				wages -= 10;
-			}
-			else
-			{
-			message += " Her optimistic mood made patrons cheer up increasing the amount they tip.\n\n";
-			wages += 10;
-			}
-		}
+	if (g_Girls.HasTrait(girl, "Optimist") && g_Dice.percent(5))
+	{
+		if (jobperformance < 125)
+			{ message += girlName + " was in a cheerful mood but the patrons thought she needed to work more on her on her playing.\n\n"; wages -= 10; }
+		else
+			{ message += "Her optimistic mood made patrons cheer up increasing the amount they tip.\n\n"; wages += 10; }
+	}
 
-	if (g_Girls.HasTrait(girl, "Psychic"))
-		if((g_Dice%101) < 20)
-		{
-			message += "She used her Psychic skills to know excatally what the patrons wanted to hear her play.\n";
-			wages += 15;
-		}
+	if (g_Girls.HasTrait(girl, "Psychic") && g_Dice.percent(20))
+		{ message += "She used her Psychic skills to know excatally what the patrons wanted to hear her play.\n"; wages += 15; }
 
-	if (g_Girls.HasTrait(girl, "Assassin"))
-		if((g_Dice%101) < 5)
-		{
-			if(jobperformance < 150)
-			{
-				message += " A patron bumped into the piano causing her to miss a note.  This pissed her off and using her Assassin skills she killed him before even thinking about it resulting in patrons storming out without paying.\n";
-				wages -= 50;
-			}
-			else
-			{
-				message += " A patron bumped into the piano.  But with her skill she didn't miss a note.  The patron was luck to leave with his life.\n";
-			}
-		}
+	if (g_Girls.HasTrait(girl, "Assassin") && g_Dice.percent(5))
+	{
+		if (jobperformance < 150)
+			{ message += "A patron bumped into the piano causing her to miss a note.  This pissed her off and using her Assassin skills she killed him before even thinking about it resulting in patrons storming out without paying.\n"; wages -= 50; }
+		else
+			{ message += "A patron bumped into the piano.  But with her skill she didn't miss a note.  The patron was luck to leave with his life.\n"; }
+	}
 
-	if (g_Girls.HasTrait(girl, "Horrific Scars"))
-		if((g_Dice%101) < 15)
-		{
-			if(jobperformance < 150)
-			{
-				message += " A patron gasped at her Horrific Scars making her uneasy.  But they didn't feel sorry for her.\n";
-			}
-			else
-			{
-				message += " A patron gasped at her Horrific Scars making her sad.  Feeling bad about it as she did a wonderful job they left a good tip.\n";
-				wages += 15;
-			}
-		}
+	if (g_Girls.HasTrait(girl, "Horrific Scars") && g_Dice.percent(15))
+	{
+		if (jobperformance < 150)
+			{ message += "A patron gasped at her Horrific Scars making her uneasy.  But they didn't feel sorry for her.\n"; }
+		else
+			{ message += "A patron gasped at her Horrific Scars making her sad.  Feeling bad about it as she did a wonderful job they left a good tip.\n"; wages += 15; }
+	}
 
 	if (g_Brothels.GetNumGirlsOnJob(0,JOB_SINGER,false) == 1)
-		if((g_Dice%100) < 25)
+	{
+		if ((g_Dice%100) < 25)
 		{
-			if(jobperformance < 125)
-			{
-				message += girl->m_Realname + " played poorly with the singer making people leave.\n\n";
-				wages -= 10;
-			}
+			if (jobperformance < 125)
+			{ message += girlName + " played poorly with the singer making people leave.\n\n"; wages -= 10; }
 			else
-			{
-			message += girl->m_Realname + " played well with the singer increasing tips.\n\n";
-			wages += 25;
-			}
+			{ message += girlName + " played well with the singer increasing tips.\n\n"; wages += 25; }
 		}
+	}
 
 
 	//enjoyed the work or not
-	if(roll <= 5)
-	{
-		message += " \nSome of the patrons abused her during the shift.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMUSIC, -1, true);
-	}
-	else if(roll <= 25) {
-		message += " \nShe had a pleasant time working.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMUSIC, +3, true);
-		g_Girls.UpdateStat(girl, STAT_CONFIDENCE, 1);
-	}
+	if (roll <= 5)
+	{ message += " \nSome of the patrons abused her during the shift."; work -= 1; }
+	else if (roll <= 25) 
+	{ message += " \nShe had a pleasant time working."; work += 3; }
 	else
-	{
-		message += " \nOtherwise, the shift passed uneventfully.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMUSIC, +1, true);
-	}
+	{ message += " \nOtherwise, the shift passed uneventfully."; work += 1; }
 
-	
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKMUSIC, work, true);
 	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
 	int roll_max = (g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA));
 	roll_max /= 4;
@@ -380,10 +328,10 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, int DayNight, str
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
 	//gain traits
-	g_Girls.PossiblyGainNewTrait(girl, "Elegant", 75, ACTION_WORKMUSIC, "Playing the piano has given " + girl->m_Realname + " an Elegant nature.", DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Elegant", 75, ACTION_WORKMUSIC, "Playing the piano has given " + girlName + " an Elegant nature.", DayNight != 0);
 
 	//lose traits
-	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 30, ACTION_WORKMUSIC, girl->m_Realname + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", DayNight != 0);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 30, ACTION_WORKMUSIC, girlName + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", DayNight != 0);
 
 	return false;
 }

@@ -45,8 +45,7 @@ extern int g_Building;
 
 bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
-	string message = "";
-	string girlName = girl->m_Realname;
+	string message = ""; string girlName = girl->m_Realname;
 	g_Building = BUILDING_CENTRE;
 
 	if(Preprocessing(ACTION_WORKCENTRE, girl, brothel, DayNight, summary, message))	// they refuse to have work
@@ -57,8 +56,8 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, int DayNight, str
 
 	int roll = g_Dice%100;
 	int jobperformance = ((g_Girls.GetStat(girl, STAT_INTELLIGENCE) / 2) + (g_Girls.GetStat(girl, STAT_CHARISMA) / 2) + g_Girls.GetSkill(girl, SKILL_SERVICE));
-	bool blow = false;
-	bool sex = false;
+	bool blow = false, sex = false;
+	int wages = 100, work = 0;
 	
 	message += "She worked feeding the poor.";
 
@@ -233,26 +232,13 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, int DayNight, str
 	}
 
 
-		//try and add randomness here
-	if (g_Girls.GetStat(girl, STAT_INTELLIGENCE) < 55)
-	{
-		if (g_Dice % 100 <= 30)
-		{
-			message += "An elderly fellow managed to convince " + girlName + " that he was full and didn't need anymore food but that she did.  He told her his cock gave a special treat if she would suck on it long enough.  Which she did man she isn't very smart.\n\n";
-			blow = true;
-		}
-	}
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))
-	{
-		if (g_Dice % 100 <= 30)
-		{
-			if (g_Girls.GetStat(girl, STAT_LIBIDO) > 85)
-			{
-				message += "Her Nymphomania got the better of her today and she decide to let them eat her pussy!  After a few minutes they started fucking her.\n";
-				sex = true;
-			}
-		}
-	}
+	//try and add randomness here
+	if (g_Girls.GetStat(girl, STAT_INTELLIGENCE) < 55 && g_Dice.percent(30))
+	{ blow = true;	message += "An elderly fellow managed to convince " + girlName + " that he was full and didn't need anymore food but that she did. He told her his cock gave a special treat if she would suck on it long enough. Which she did man she isn't very smart.\n\n"; }
+	
+	if (g_Girls.HasTrait(girl, "Nymphomaniac") && g_Dice.percent(30) && g_Girls.GetStat(girl, STAT_LIBIDO) > 85)
+	{ sex = true; message += "Her Nymphomania got the better of her today and she decide to let them eat her pussy!  After a few minutes they started fucking her.\n"; }
+
 
 
 	if (girl->m_States&(1 << STATUS_SLAVE))
@@ -263,7 +249,7 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, int DayNight, str
 	else
 	{
 		message += " \nThe fact that your paying this girl to do this helps people think your a better person.";
-		girl->m_Pay += 100;
+		girl->m_Pay = wages;
 		g_Gold.staff_wages(100);  // wages come from you
 		g_Brothels.GetPlayer()->disposition(int(dispo*1.5));
 	}
@@ -271,21 +257,14 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, int DayNight, str
 
 
 	//enjoyed the work or not
-	if(roll <= 5)
-	{
-		message += " \nSome of the patrons abused her during the shift.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCENTRE, -1, true);
-	}
-	else if(roll <= 25) {
-		message += " \nShe had a pleasant time working.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCENTRE, +3, true);
-	}
+	if (roll <= 5)
+	{ message += "\nSome of the patrons abused her during the shift."; work -= 1; }
+	else if (roll <= 25) 
+	{ message += "\nShe had a pleasant time working."; work += 3; }
 	else
-	{
-		message += " \nOtherwise, the shift passed uneventfully.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCENTRE, +1, true);
-	}
+	{ message += "\nOtherwise, the shift passed uneventfully."; work += 1; }
 
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKCENTRE, work, true);
 
 	if (sex)
 	{
