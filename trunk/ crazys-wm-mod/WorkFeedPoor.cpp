@@ -236,7 +236,7 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, int DayNight, str
 	if (g_Girls.GetStat(girl, STAT_INTELLIGENCE) < 55 && g_Dice.percent(30))
 	{ blow = true;	message += "An elderly fellow managed to convince " + girlName + " that he was full and didn't need anymore food but that she did. He told her his cock gave a special treat if she would suck on it long enough. Which she did man she isn't very smart.\n\n"; }
 	
-	if (g_Girls.HasTrait(girl, "Nymphomaniac") && g_Dice.percent(30) && g_Girls.GetStat(girl, STAT_LIBIDO) > 85)
+	if (g_Girls.HasTrait(girl, "Nymphomaniac") && g_Dice.percent(30) && g_Girls.GetStat(girl, STAT_LIBIDO) > 85 &&  !g_Girls.HasTrait(girl, "Lesbian") &&  !g_Girls.HasTrait(girl, "Virgin"))
 	{ sex = true; message += "Her Nymphomania got the better of her today and she decide to let them eat her pussy!  After a few minutes they started fucking her.\n"; }
 
 

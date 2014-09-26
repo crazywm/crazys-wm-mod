@@ -1442,7 +1442,7 @@ string cMovieStudioManager::AddScene(sGirl* girl, int Job, int Bonus)
 	_itoa(quality, performance, 10);
 
 	// Add bonus for Fluffer, CameraMage and CrystalPurifier --PP
-	if (Job != JOB_FILMMAST && Job != JOB_FILMLESBIAN)	// No fluffers needed --PP
+	if (Job != JOB_FILMMAST && Job != JOB_FILMLESBIAN && Job != JOB_FILMSTRIP)	// No fluffers needed --PP no need for strip either CRAZY
 		quality += g_Studios.m_FlufferQuality;
 
 	quality += g_Studios.m_CameraQuality + g_Studios.m_PurifierQaulity + g_Studios.m_DirectorQuality + g_Studios.m_StagehandQuality;

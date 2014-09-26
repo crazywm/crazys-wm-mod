@@ -92,7 +92,7 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, int DayNig
 
 
 	//try and add randomness here
-	if (g_Girls.HasTrait(girl, "Nymphomaniac") && g_Dice.percent(30) && g_Girls.GetStat(girl, STAT_LIBIDO) > 85)
+	if (g_Girls.HasTrait(girl, "Nymphomaniac") && g_Dice.percent(30) &&  !g_Girls.HasTrait(girl, "Virgin") && g_Girls.GetStat(girl, STAT_LIBIDO) > 85)
 	{ message += "Her Nymphomania got the better of her today and she decide the best way to services her community was on her back!\n"; sex = true; }
 
 	if (g_Girls.GetStat(girl, STAT_INTELLIGENCE) < 55 && g_Dice.percent(30))
@@ -123,9 +123,8 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, int DayNig
 			}
 		}
 		else
-		{
-			g_Girls.UpdateSkill(girl, SKILL_ANAL, 2);
-			image = IMGTYPE_ANAL;
+		{ 
+			g_Girls.UpdateSkill(girl, SKILL_ANAL, 2); image = IMGTYPE_ANAL; 
 		}
 		brothel->m_Happiness += 100;
 		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -20);
@@ -141,9 +140,7 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, int DayNig
 	}
 
 	if (girl->m_States&(1 << STATUS_SLAVE))
-	{
-		message += " \nThe fact that she is your slave makes people think its less of a good deed on your part.";
-	}
+	{ message += " \nThe fact that she is your slave makes people think its less of a good deed on your part."; }
 	else
 	{
 		message += " \nThe fact that your paying this girl to do this helps people think your a better person.";

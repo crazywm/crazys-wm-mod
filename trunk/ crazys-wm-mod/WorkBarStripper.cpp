@@ -406,6 +406,7 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, int DayNight, 
 
 	//lose
 	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 20, ACTION_WORKSTRIP, girlName + " has had so many people see her naked she is no longer nervous about anything.", DayNight != 0);
+	if (jobperformance > 150 && g_Girls.GetStat(girl, STAT_CONFIDENCE) > 65)) { g_Girls.PossiblyLoseExistingTrait(girl, "Shy", 60, ACTION_WORKSTRIP, girlName + " has been stripping for so long now that her confidence is super high and she is no longer Shy.", DayNight != 0); }
 
 	return false;
 }
