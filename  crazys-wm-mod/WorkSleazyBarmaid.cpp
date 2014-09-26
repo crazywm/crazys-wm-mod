@@ -117,7 +117,7 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, int DayNight
 
 
 	//try and add randomness here
-	if (g_Girls.GetStat(girl, STAT_BEAUTY) >85 && g_Dice.percent(20))
+	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85 && g_Dice.percent(20))
 	{ message += "Stunned by her beauty a customer left her a great tip.\n\n"; wages += 25; }
 
 	if (g_Girls.HasTrait(girl, "Clumsy") && g_Dice.percent(15))
@@ -152,6 +152,7 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, int DayNight
 		message += girlName + " spilled a drink all over a mans lap.  He told her she had to lick it up and forced her to clean him up which she Meekly accepted and went about licking his cock clean.\n";
 		imagetype = IMGTYPE_ORAL; work -= 3;
 	}
+
 	if ((g_Dice%100) < 5)//may get moved to waitress
 	{
 		message += "A drunken patron decide to grab " + girlName + "'s boob. ";
@@ -161,6 +162,15 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, int DayNight
 		{ message += "She knocked him out! You could swear that she knocked a couple of his teeth out too!\n"; }
 		else
 		{ message += "She screamed and shook his hand off.\n"; }
+	}
+
+	if (g_Girls.HasTrait(girl, "Nymphomaniac") && g_Girls.GetStat(girl, STAT_LIBIDO) > 90 && g_Dice.percent(20) &&  !g_Girls.HasTrait(girl, "Virgin") && !g_Girls.HasTrait(girl, "Lesbian"))
+	{
+		if (roll <= 50)
+		{ message += girlName + " dragged one of the less sober clients outside into a back alley and ordered him to fuck her senseless against a wall. After the deed, the poor fellow passed out and " + girlName + " returned to her job as if nothing happened.\n"; }
+		else
+		{ message += girlName + " spotted a relatively good-looking guy walking into the bathroom alone. She followed him inside, and as he tried to exit the bathroom stall, he got pushed back in by her. " + girlName + " didn't waste any time and in a matter of seconds was vigorously fucking the client. After the deed, the client made sure " + girlName + " had a pretty hefty wad of money stuck behind her skirt.\n"; wages += 50; }
+		imagetype = IMGTYPE_SEX; g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -20);
 	}
 
 	if (wages < 0)
@@ -200,7 +210,7 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, int DayNight
 
 	//gained
 	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, ACTION_WORKBAR, "Dealing with customers at the bar and talking with them about their problems has made " + girlName + " more Charismatic.", DayNight != 0);
-	if (jobperformance < 100 || roll <= 2) { g_Girls.PossiblyGainNewTrait(girl, "Assassin", 10, ACTION_WORKBAR, girlName + "'s lack of skill at mixing drinks has been killing people left and right making her into quite the Assassin.", DayNight != 0); }
+	if (jobperformance < 100 && roll <= 2) { g_Girls.PossiblyGainNewTrait(girl, "Assassin", 10, ACTION_WORKBAR, girlName + "'s lack of skill at mixing drinks has been killing people left and right making her into quite the Assassin.", DayNight != 0); }
 
 	//lose
 	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 20, ACTION_WORKBAR, girlName + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", DayNight != 0);

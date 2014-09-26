@@ -45,14 +45,13 @@ extern cGold g_Gold;
 
 bool cJobManager::WorkArenaJousting(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
-	string message = "";
-	string girlName = girl->m_Realname;
+	string message = ""; string girlName = girl->m_Realname;
 
 	if(Preprocessing(ACTION_COMBAT, girl, brothel, DayNight, summary, message))
 		return true;
 
 	int roll = g_Dice%100;
-	int wages = 50;
+	int wages = 50, work = 0;
 	int jobperformance = ((g_Girls.GetStat(girl, STAT_INTELLIGENCE) / 2) + (g_Girls.GetSkill(girl, SKILL_ANIMALHANDLING) / 2) + g_Girls.GetSkill(girl, SKILL_COMBAT));
 
 
@@ -130,22 +129,15 @@ bool cJobManager::WorkArenaJousting(sGirl* girl, sBrothel* brothel, int DayNight
 			wages = 0;
 
 
-		//enjoyed the work or not
-	if(roll <= 5)
-	{
-		message += " \nSome of the patrons abused her during the shift.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, -1, true);
-	}
-	else if(roll <= 25) {
-		message += " \nShe had a pleasant time working.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, +3, true);
-	}
+	//enjoyed the work or not
+	if (roll <= 5)
+	{ message += "\nSome of the patrons abused her during the shift."; work -= 1; }
+	else if (roll <= 25) 
+	{ message += "\nShe had a pleasant time working."; work += 3; }
 	else
-	{
-		message += " \nOtherwise, the shift passed uneventfully.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, +1, true);
-	}
+	{ message += "\nOtherwise, the shift passed uneventfully."; work += 1; }
 
+	g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, work, true);
 	girl->m_Events.AddMessage(message, IMGTYPE_COMBAT, DayNight);
 	int roll_max = (g_Girls.GetStat(girl, STAT_FAME) + g_Girls.GetStat(girl, STAT_CHARISMA));
 	roll_max /= 4;

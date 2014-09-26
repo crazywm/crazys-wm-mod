@@ -311,8 +311,14 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, int DayNight, stri
 
 
 	//try and add randomness here
-	if (g_Girls.GetStat(girl, STAT_BEAUTY) >85 && g_Dice.percent(20))
+	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85 && g_Dice.percent(20))
 	{ message += "Stunned by her beauty a customer left her a great tip.\n\n"; wages += 25; }
+
+	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 99 && g_Dice.percent(5))
+	{ message += girlName + " looked absolutely stunning during her shift and was unable to hide it. Instead of her ass or tits, the patrons couldn't glue their eyes off her face, and spent a lot more than usual on tipping her.\n"; wages += 50; }
+
+	if (g_Girls.GetStat(girl, STAT_CHARISMA) > 85 && g_Dice.percent(20))
+	{ message += girlName + " surprised a couple of gentlemen discussing some complicated issue by her insightful comments when she was taking her order. They decided her words were worth a heavy tip.\n"; wages += 35; }
 
 	if (g_Girls.HasTrait(girl, "Clumsy") && g_Dice.percent(15))
 		{ message += "Her clumsy nature caused her to spill a drink on a custmoer resulting in them storming off without paying.\n"; wages -= 15; }
@@ -367,6 +373,34 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, int DayNight, stri
 		else
 		{ message += "One of the patrons paid way too much for his order. When " + girlName + " quickly pointed out his mistake, he said not to worry about it and told her to keep the extra as a reward for her honesty.\n"; wages += 25; }
 	}
+
+	if (g_Girls.GetStat(girl, STAT_MORALITY) <= -20 && g_Dice.percent(20))
+	{
+		if (roll <=33)
+		{ message += "During her shift, " + girlName + " spotted a lone fellow passed out from alcohol alone at a table in a corner, his wallet bulging out of his pocket. Without a second thought, she discreetly snatched it out and claimed for herself.\n"; wages += 35; }
+		else if (roll <=66)
+		{ message += "One of the patrons paid way too much for his order... and " + girlName + " didn't really feel like pointing it out, considering the extra money a generous tip.\n"; wages += 25; }
+		else
+		{ message += girlName + " responded to one of the vulgar remarks by a client in a much more vulgar way. Needless to say, this didn't earn her any favors with the patrons that shift, and her tips were a bit less than usual.\n"; wages -= 15; }
+	}
+
+	/*if (g_Girls.GetStat(girl, STAT_MORALITY) <= -20 && g_Girls.GetStat(girl, STAT_DIGNITY) && <= -20 g_Dice.percent(20))
+	{
+		message += "A drunk patron suddenly walked up to " + girlName + " and just started groping her body. Instead of pushing him away immediately, " + girlName + " allowed him to take his time with her tits and butt while she helped herself to his pockets and all the money inside them. The rowdy client left with a dumb glee on his face, probably to find out his fondling was much, much overpriced.\n"; wages += 40;
+	}*/
+
+	/*if (g_Girls.GetStat(girl, STAT_DIGNITY) && <= -20 g_Dice.percent(20))
+	{
+		if (roll <-50)
+			{ message += "When taking an order, " + girlName + " made sure to lean in really close for the client to get a full view of her cleavage. Giving him an eyefull of tits was promptly rewarded with some extra cash in tips.\n"; wages += 15; }
+		else 
+			{ message += "One of the rowdier clients gently slapped the butt of " + girlName + " when she was passing through. Her coy giggle only encouraged more clients to occasionally fondle her butt through the rest of her work, which earned her some extra tips.\n"; wages += 20; }
+	}*/
+
+	/*if (g_Girls.GetStat(girl, STAT_DIGNITY) && <= -20 g_Dice.percent(20) && g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Abnormally Large Boobs"))
+	{
+		 message += girlName + " got an odd request from a client to carry a small drink he ordered between her tits to his table. After pouring the drink in a thin glass, " + girlName + " handled the task with minimal difficulty and earned a bigger tip.\n"; wages += 25;
+	}*/
 
 		if(wages < 0)
 		 wages = 0;
@@ -431,7 +465,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, int DayNight, stri
 
 	//gain traits
 	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, ACTION_WORKBAR, "Dealing with customers at the bar and talking with them about their problems has made " + girlName + " more Charismatic.", DayNight != 0);
-	if (jobperformance < 100 || roll <= 2) { g_Girls.PossiblyGainNewTrait(girl, "Assassin", 10, ACTION_WORKBAR, girlName + "'s lack of skill at mixing drinks has been killing people left and right making her into quite the Assassin.", DayNight != 0); }
+	if (jobperformance < 100 && roll <= 2) { g_Girls.PossiblyGainNewTrait(girl, "Assassin", 10, ACTION_WORKBAR, girlName + "'s lack of skill at mixing drinks has been killing people left and right making her into quite the Assassin.", DayNight != 0); }
 
 	//lose traits
 	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 40, ACTION_WORKBAR, girlName + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", DayNight != 0);

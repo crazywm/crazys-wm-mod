@@ -57,10 +57,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, int DayN
 	// put that shit away, not needed for sex training
 	g_Girls.UnequipCombat(girl);
 
-	int roll_a = g_Dice % 100;
-	int roll_b = g_Dice % 100;
-	int roll_c = g_Dice % 100;
-	int roll_d = g_Dice % 100;
+	int roll_a = g_Dice % 100, roll_b = g_Dice % 100, roll_c = g_Dice % 100, roll_d = g_Dice % 100;
 	int HateLove = 0;
 	HateLove = g_Girls.GetStat(girl, STAT_PCLOVE) - g_Girls.GetStat(girl, STAT_PCHATE);
 	int wages = 150;

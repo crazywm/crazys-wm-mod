@@ -313,9 +313,7 @@ else
 		girl->m_Events.AddMessage(message, IMGTYPE_MAST, DayNight);
 	}
 	else
-	{
-		girl->m_Events.AddMessage(message, IMGTYPE_ECCHI, DayNight);
-	}
+	{ girl->m_Events.AddMessage(message, IMGTYPE_ECCHI, DayNight); }
 
 	if(wages < 0)
 			wages = 0;

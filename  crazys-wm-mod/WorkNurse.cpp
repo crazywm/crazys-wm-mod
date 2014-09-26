@@ -67,6 +67,7 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, int DayNight, string
 
 	int hand = false, sex = false, les = false;
 	int wages = 25, work = 0;
+	int imagetype = IMGTYPE_NURSE;
 	message += "She worked as a nurse.";
 
 	int roll = g_Dice % 100;
@@ -271,13 +272,12 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, int DayNight, string
 	if (g_Girls.GetStat(girl, STAT_INTELLIGENCE) < 55 && g_Dice.percent(30))
 		{ message += "An elderly fellow managed to convince " + girlName + " that her touch can heal! She ended up giving him a hand job!\n"; hand = true; }
 
-	if (g_Girls.HasTrait(girl, "Nymphomaniac") && g_Dice.percent(30) && g_Girls.HasTrait(girl, "Straight") || g_Girls.HasTrait(girl, "Bisexual"))
+	if (g_Girls.HasTrait(girl, "Nymphomaniac") &&  !g_Girls.HasTrait(girl, "Virgin") &&  !g_Girls.HasTrait(girl, "Lesbian") && g_Dice.percent(30))//this makes it easier to show up not many girls will have striaght or bi traits yet
 	{
 		if (g_Girls.GetStat(girl, STAT_LIBIDO) > 65)
 			{
-				message += "When giving a sponge bath to one of her male patients she couldn't look away from his enormous manhood. The man took advantage and fuck her brains out!\n";
-				wages += 50;
-				sex = true;
+				message += "When giving a sponge bath to one of her male patients she couldn't look away from his enormous manhood. The man took advantage and fucked her brains out!\n";
+				wages += 50; sex = true;
 			}
 		else
 			{ message += "When giving a sponge bath to one of her male patients she couldn't look away from his enormous manhood. But she wasn't in the mood so she left.\n"; }
@@ -301,15 +301,9 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, int DayNight, string
 	if (sex)
 	{
 		if (roll <= 50)
-		{
-			girl->m_Events.AddMessage(message, IMGTYPE_SEX, DayNight);
-			g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, 2);
-		}
+		{ imagetype = IMGTYPE_SEX; g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, 2); }
 		else
-		{
-			girl->m_Events.AddMessage(message, IMGTYPE_ANAL, DayNight);
-			g_Girls.UpdateSkill(girl, SKILL_ANAL, 2);
-		}
+		{ imagetype = IMGTYPE_ANAL; g_Girls.UpdateSkill(girl, SKILL_ANAL, 2); }
 		brothel->m_Happiness += 100;
 		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -20);
 		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +3, true);
@@ -327,18 +321,13 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, int DayNight, string
 		roll_max /= 4;
 		wages += 25 + g_Dice%roll_max;
 		g_Girls.UpdateSkill(girl, SKILL_HANDJOB, 2);
-		girl->m_Events.AddMessage(message, IMGTYPE_HAND, DayNight);
+		imagetype = IMGTYPE_HAND;
 	}
 	else if (les)
-	{
-		g_Girls.UpdateSkill(girl, SKILL_LESBIAN, 2);
-		girl->m_Events.AddMessage(message, IMGTYPE_LESBIAN, DayNight);
-	}
-	else
-	{
-		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
-	}
+	{ imagetype = IMGTYPE_LESBIAN; g_Girls.UpdateSkill(girl, SKILL_LESBIAN, 2); }
 
+
+	girl->m_Events.AddMessage(message, imagetype, DayNight);
 	int roll_max = (g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetSkill(girl, SKILL_MEDICINE));
 	roll_max /= 4;
 	wages += 10 + g_Dice%roll_max;

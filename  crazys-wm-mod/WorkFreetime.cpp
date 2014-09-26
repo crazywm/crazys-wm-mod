@@ -46,11 +46,8 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int DayNight, str
 	int roll = g_Dice%100;
 	int roll_a = g_Dice%100; int roll_b = g_Dice%100; int roll_c = g_Dice%100; int roll_d = g_Dice%100;
 	int general = false;
-	int quest = false;
-	int nympo = false;
-	int fight = false;
-	int nothing = false;
-	int happy = 0;
+	int quest = false, nympo = false, fight = false;
+	int happy = 0, health = 0;
 	int HateLove = 0;
 	HateLove = g_Girls.GetStat(girl, STAT_PCLOVE) - g_Girls.GetStat(girl, STAT_PCHATE);
 	int imagetype = IMGTYPE_PROFILE;
@@ -75,12 +72,11 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int DayNight, str
 
 	if(girl->m_Money == 0 || girl->m_NumInventory == 40)
 	{
-	if(g_Girls.GetStat(girl, STAT_TIREDNESS) >= 80) { roll_a = 0; }
-	if(g_Girls.GetStat(girl, STAT_HEALTH) <= 30)   { roll_a = 0; }
+	if(g_Girls.GetStat(girl, STAT_TIREDNESS) >= 80) { roll_b = 93; }
+	if(g_Girls.GetStat(girl, STAT_HEALTH) <= 30)   { roll_b = 93; }
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))	   { roll_a += 30; }
 	if (g_Girls.HasTrait(girl, "Adventurer"))	   { roll_a += 30; }
-		/* if (roll_a <= 0)	{ nothing = true; }
-	else if (roll_a <= 75)	{ general = true; }
+	/* if (roll_a <= 75)	{ general = true; }
 	else if (roll_a <= 90)	{ quest = true; }
 	else if (roll_a <= 110)	{ nympo = true; }
 	else if (roll_a <= 125)	{ fight = true; }*/
@@ -176,27 +172,82 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int DayNight, str
 		message += girlName + " had some free time so she " + gen_type_text + ".\n";
 		if (roll_b <= 6) //temple
 		{
-			/*if(g_Girls.GetStat(girl, STAT_MORALITY) >= 80)
-			{ message += girlName + " prayed hard for hours.\n"; }
-			else if(g_Girls.GetStat(girl, STAT_MORALITY) > 0)
-			{ message += girlName + " said a small prayer.\n"; }
+			if(g_Girls.GetStat(girl, STAT_MORALITY) >= 80)
+				if (roll <= 33)
+				{ message += girlName + " prayed for a couple of hours just to actively participate in the mass. Afterwards she helped cleaning the temple grounds.\n"; }
+				else if (roll <=66)
+				{ message += "She spent almost her entire free time praying! But from her line of work, she got used to being on her knees for long hours.\n"; }
+				else
+				{ message += "Being at the sanctuary for her whole free time, she could swear that she noticed a presents of some sort of holly being.\n"; }
+			else if(g_Girls.GetStat(girl, STAT_MORALITY) >= 60)
+				if (roll <= 33)
+				{ message += girlName + " confessed her shameful actions that she did at work, asking for the God’s forgiveness.\n"; }
+				else if (roll <=66)
+				{ message += "She humbly sit down in the last row. Focused and with lot of interest, she listening to the whole mass.\n"; }
+				else
+				{ message += "Today she cleaned up a road side shrine and decorating it with fresh flowers.\n"; }
+			else if(g_Girls.GetStat(girl, STAT_MORALITY) >= 40)
+				if (roll <= 33)
+				{ message += girlName + " starts to find this way of spending free time being interesting. Wanting to know more she listens to the preacher.\n"; }
+				else if (roll <=66)
+				{ message += "After participating in today’s ceremony she felt happier.\n"; happy += 5; }
+				else
+				{ message += "Being late, she tried to find a place to sit. Happily she noticed some free sits on the other side of the church. Unfortunately her high heels were knocking pretty loud while walking on the churches stone floor, disturbing that part of the mass with silence prays.\n"; }
+			else if(g_Girls.GetStat(girl, STAT_MORALITY) >= 20)
+				if (roll <= 33)
+				{ message += girlName + " made a quick stop at the local temple for a short pray before heading further into town.\n"; }
+				else if (roll <=66)
+				{ message += "On her way back, she gave a short pray  in front of a road side shrine.\n"; }
+				else
+				{ message += "After eavesdropping on a couple of girls at work talking about a nearby temple, she decided to visit this holy place. Listening to the preacher she felt that the girls was right about this place.\n"; }
+			else if(g_Girls.GetStat(girl, STAT_MORALITY) <= -20)
+				if (roll <= 33)
+				{ message += girlName + " tried to listen to the preachers lecture, but she fell asleep halfway thru!\n"; }
+				else if (roll <=66)
+				{ message += "She was about to enter the sanctuary but she noticed a really cut kitten. She spent the time playing with the cat.\n"; }
+				else
+				{ message += "After eavesdropping couple girls at work talking about a nearby temple, she decided to visit this holy place. Listening to the preacher she felt that the girls was wrong about this place. Being bored she left in the middle of the mass.\n"; }
+			else if(g_Girls.GetStat(girl, STAT_MORALITY) <= -40)
+				if (roll <= 33)
+				{ message += girlName + " threw some special weeds from your farm into a goblet of fire, standing in front of one of the side altars. Later on, most of praying at the altar swear that they saw angels!\n"; }
+				else if (roll <=66)
+				{ message += "At the church, she noticed a really young priest hearing to today’s confessions. Feeling mischievous she entered the confessional. After confessing her sins in high detail, she proposed to recreate them with him! The abashed youngster gave her a couple of prays as penance and left right after.\n"; }
+				else
+				{ message += "Getting bored at the mass, she started to whisper things to a man sitting next to her, not bothering with the fact that his wife was sitting next to him!\n"; }
+			else if(g_Girls.GetStat(girl, STAT_MORALITY) <= -60)
+				if (roll <= 33)
+				{ message += girlName + " entered the confessional. Whispering sensually of her job experiences, all in high details, she made the priest have a heart attack! When the man was squirming in pain on the floor, she left the temple laughing.\n"; }
+				else if (roll <=66)
+				{ message += "Dressed really slutty, she parade the mid lane of the church, wearing high hills that were heard all over the place, just to take a sit in the first row. The pose she had sat in, was to expose her pussy to all priests on the altar performing the holy mass.\n"; }
+				else
+				{ message += " In front of a temple she approached a young monk. After a brief chat about god, faith and salvation she gave him a proposal. Claiming that it was such waste for such young and handsome man to live in chastity, she proposed he could spend some quality, fun time with her. The man quickly run inside whispering some kind of manta, while the girl went her own way laughing.\n"; }
 			else if(g_Girls.GetStat(girl, STAT_MORALITY) <= -80)
-			{ message += girlName + " seduced a priest, leading him toward evil.\n"; }
+				if (roll <= 33)
+				{ message += girlName + " came to the temple with one of girls working for you, but her companion flew right after seeing what kind place of worship this was. No human sacrifice provided by " + girlName + " today, sorry.\n"; }
+				else if (roll <=66)
+				{ message += "Scheming against the church, she came with a brilliant idea. Promising local, young tugs to repay a favor with her body, she made them to assault and beat up a group of priests. Not waiting for the outcome of the brawl, she disappear not holding to her end of the deal.\n"; }
+				else
+				{ message += "Not liking the architecture style of the temple she decided to do something about that. Unfortunately for her, the fire was extinguished fairly quickly.\n"; }
 			else
-			{ message += girlName + " laughed at the people there.\n"; }*/
+				if (roll <= 33)
+				{ message += girlName + " was on her way to pray in the local temple, but on the way there, she saw a beautiful bag on display. After entering the shop, she spent several hours, picking out the perfect bag for herself before returning.\n"; }
+				else if (roll <=66)
+				{ message += "Attending the mass she felt some how bored and not focused on the topic. She even yawn couple of times, fighting not to fell asleep.\n"; }
+				else
+				{ message += "She visited the local church feeling some how down. Listening to the preacher didn’t have much impact on improving her mood.\n"; }
 		}
 		else if (roll_b <= 14) //clinic
 		{
 			if (g_Girls.HasTrait(girl, "AIDS") || g_Girls.HasTrait(girl, "Chlamydia") || g_Girls.HasTrait(girl, "Herpes") || g_Girls.HasTrait(girl, "Syphilis"))
 			{ message += "The doctor told her she has an STD.\n"; }
-			 if (g_Girls.GetStat(girl, STAT_HEALTH) >= 90)
+			if (g_Girls.GetStat(girl, STAT_HEALTH) >= 90)
 			{ message += "Her check up went wonderful. She was told she was in near perfect health.\n"; happy += 5; }
 			else if (g_Girls.GetStat(girl, STAT_HEALTH) < 90)
 			{ message += "Her check up went good. She was told she was in very good health.\n"; }
 			else if (g_Girls.GetStat(girl, STAT_HEALTH) <= 50)
 			{ message += "Her check up decent. She was told she was in fair health.\n"; }
 			else if (g_Girls.GetStat(girl, STAT_HEALTH) <= 20)
-			{ message += "Her check up went poorly. She was told she was in bad health.\n"; happy -= 5; roll = 4; }
+			{ message += "Her check up went poorly. She was told she was in bad health.\n"; happy -= 5; roll = 4; }//should hopefully get a booster shot to help her gain health faster
 			if (roll <= 5)
 			{ message += "The doctor decides to give her a booster shot."; g_Girls.UpdateStat(girl, STAT_HEALTH, 10); }
 		}
@@ -216,9 +267,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int DayNight, str
 		}
 		else if (roll_b <= 54) //bath
 		{
-			imagetype = IMGTYPE_BATH;;
-			g_Girls.UpdateStat(girl, STAT_HAPPINESS, 5);
-			g_Girls.UpdateStat(girl, STAT_HEALTH, 5);
+			imagetype = IMGTYPE_BATH; happy += 5; health += 5;
 			if (g_Girls.GetStat(girl, STAT_LIBIDO) > 70)
 			{
 				message += "While in the tub the mood hit her and she proceed to pleasure herself.\n";
@@ -226,7 +275,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int DayNight, str
 			}
 			else
 			{
-				message += "She enjoyed a nice long soak.\n";
+				message += "She enjoyed a nice long soak.\n"; g_Girls.UpdateStat(girl, STAT_TIREDNESS, -5);
 			}
 		}
 		else if (roll_b <= 62) //pool
@@ -239,7 +288,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int DayNight, str
 				g_Girls.UpdateTempStat(girl, STAT_BEAUTY, 5);
 				if (roll < 15)
 				{
-					message += "A rather brave kid seen her laying there and decide to try and remove her top.";
+					message += "A rather brave man saw her laying there and decide to try and remove her top.";
 					if (g_Girls.HasTrait(girl, "Psychic"))
 					{ message += " But using her Psychic skills she stopped him before he could do it."; }
 					else
@@ -279,7 +328,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int DayNight, str
 		}
 		else if (roll_b <= 78) //movies
 		{
-			message += "She watched " + mov_type_text + ".\n";
+			message += "They were playing " + mov_type_text + ".\n";
 			if (roll_c <= 20) //romance
 				{
 					if (g_Girls.HasTrait(girl, "Pessimist"))
@@ -344,7 +393,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int DayNight, str
 					{
 						message += girlName + " loves everything to do with sex so this is her type of movie.\n";
 						g_Girls.UpdateStat(girl, STAT_LIBIDO, 5); roll = 96;
-						if (g_Girls.GetStat(girl, STAT_LIBIDO) > 70)
+						if (g_Girls.GetStat(girl, STAT_LIBIDO) >= 70)
 							{
 								message += "The movie started to turn her on so she started to pleasure herself. ";
 								if (roll_d <= 20)
@@ -353,7 +402,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int DayNight, str
 									if (g_Girls.HasTrait(girl, "Virgin"))
 									{ message += " She informs him she is a Virgin and that she won't be having sex with him."; }
 									else if (g_Girls.HasTrait(girl, "Lesbian"))
-									{ message += " She informs him she is a Lesbian and that she don't be having sex with guys."; }
+									{ message += " She informs him she is a Lesbian and that she doesn't have sex with guys."; }
 									else if (HateLove >= 80 && g_Girls.GetStat(girl, STAT_LIBIDO) > 99)
 									{
 										message += " Despite the fact that she is in love with you she couldn't help herself her lust is to great and she agrees. ";
@@ -373,9 +422,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int DayNight, str
 									}
 								}
 								else
-								{
-								imagetype = IMGTYPE_MAST; g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -15);
-								}
+								{ imagetype = IMGTYPE_MAST; g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -15); }
 							}
 					}
 					if (roll <= 5)
@@ -397,39 +444,41 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int DayNight, str
 		}
 		else if (roll_b <= 86) //club
 		{
-			message += girlName + " puts on her best dress before leaving.\n";
+			message += girlName + " puts on her best dress before leaving.";
 			//message += girlName + " says hi to " + clubbar->m_Realname + ".\n";  zzzzz needs work FIXME just a test to see it worked it didnt
+			if (g_Girls.HasTrait(girl, "Lesbian"))
+			{
+				message += " She takes in some exotic dancing from some of the strippers there.";
+				/*if (roll <= 15)
+				{ message += " She ends up buying a lap dance from "; }*///have it pull up a stripper name here
+			}
 			imagetype = IMGTYPE_FORMAL;;
 		}
 		else if (roll_b <= 93) //bed
 		{
-			imagetype = IMGTYPE_BED;;
-			g_Girls.UpdateStat(girl, STAT_TIREDNESS, -10);
+			//need events for this
+			imagetype = IMGTYPE_BED; health += 10; g_Girls.UpdateStat(girl, STAT_TIREDNESS, -10);
 		}
 		else //bar
 		{
 			if (g_Girls.HasTrait(girl, "Alcoholic"))
-					{
-						message += "As an Alcoholic she loves coming to the bar.\n";
-						g_Girls.UpdateStat(girl, STAT_HAPPINESS, 15);
-					}
+				{
+					message += "As an Alcoholic she loves coming to the bar.\n"; happy += 15;
+				}
 			if(g_Girls.GetStat(girl, STAT_HAPPINESS) < 50)
 			{
-				message += girlName + " feeling a little down, decide to get drunk while she was at the bar.\n";
-				g_Girls.UpdateStat(girl, STAT_HEALTH, -5);
+				message += girlName + " feeling a little down, decide to get drunk while she was at the bar.\n"; health -= 5;
 			}
 			else
 			{
-				message += girlName + " was in a good mood so she had a few drinks and talked to the people around her.\n";
-				g_Girls.UpdateStat(girl, STAT_HAPPINESS, 5);
+				message += girlName + " was in a good mood so she had a few drinks and talked to the people around her.\n"; happy += 5;
 			}
 		}
 	}
-	else if (nothing)
-	{ message += girlName + " was tired so she stayed home today.\n"; }
 
 
 
+		g_Girls.UpdateStat(girl, STAT_HEALTH, health);
 		g_Girls.UpdateStat(girl, STAT_HAPPINESS, happy);
 		girl->m_Events.AddMessage(message, imagetype, DayNight);
 		return false;

@@ -350,7 +350,6 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 			{ message += "A patron reached out and grabed her ass. She was startled and ended up dropping a whole order\n"; wages -= 15; }
 	}
 
-
 	if (g_Girls.HasTrait(girl, "Assassin") && g_Dice.percent(5))
 	{
 		if(jobperformance < 150)
@@ -365,6 +364,12 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 			{ message += "A patron gasped at her Horrific Scars making her uneasy. But they didn't feel sorry for her.\n"; }
 		else
 			{ message += "A patron gasped at her Horrific Scars making her sad. Feeling bad about it as she did a wonderful job they left a good tip.\n"; wages += 25; }
+	}
+
+	if (g_Girls.HasTrait(girl, "Nymphomaniac") && g_Girls.GetStat(girl, STAT_LIBIDO) > 90)
+	{
+		message += "During her shift, " + girlName + " couldn't help but instinctively and excessively rub her ass against the crotches of the clients whenever she got the chance. Her slutty behavior earned her some extra tips, as a couple of patrons noticed her intentional butt grinding.\n";
+		wages += 30;
 	}
 
 	if (g_Brothels.GetNumGirlsOnJob(0,JOB_BARMAID,false) == 1)
