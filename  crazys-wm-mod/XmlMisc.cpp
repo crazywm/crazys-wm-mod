@@ -78,9 +78,9 @@ std::string XMLifyString(const char* XMLName)
 	std::string newName(XMLName);
 	//find characters that we can't put into XML names
 	//and change them to '_' or whatever works in a name
-	for (size_t position = newName.find_first_of(" <>");
+	for (size_t position = newName.find_first_of(" <>\'\"");
 		position != newName.npos;
-		position = newName.find_first_of(" <>", position))
+		position = newName.find_first_of(" <>\'\"", position))
 	{
 		newName.replace(position, 1, 1, '_');
 	}

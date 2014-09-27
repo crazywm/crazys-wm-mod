@@ -50,7 +50,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 	g_Girls.UnequipCombat(girl);
 
 	int wages = 20, work = 0;
-	int roll = g_Dice%100, roll_a = g_Dice%100;
+	int roll = g_Dice.d100(), roll_a = g_Dice.d100();
 	int jobperformance = (g_Girls.GetStat(girl, STAT_CONFIDENCE) + g_Girls.GetSkill(girl, SKILL_PERFORMANCE));
 
 	//good traits

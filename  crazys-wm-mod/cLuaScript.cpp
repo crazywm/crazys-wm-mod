@@ -45,33 +45,17 @@ extern bool g_InitWin;
 typedef int (*lua_func)(lua_State *L);
 
 static const char *stats[] = {
-	"charisma",     "happiness",    "libido",
-	"constitution", "intelligence", "confidence",
-	"mana",         "agility",	"fame",
-	"level",        "askprice",     "house",
-	"exp",          "age",          "obedience",
-	"spirit",	"beauty",       "tiredness",
-	"health",       "pc_fear",	 "pc_love",
-	"pc_hate", "morality",
+	"charisma", "happiness", "libido", "constitution", "intelligence", "confidence", "mana", "agility", "fame",
+	"level", "askprice", "house", "exp", "age", "obedience", "spirit", "beauty", "tiredness",
+	"health", "pc_fear", "pc_love", "pc_hate", "morality", "refinment", "dignity", "lactation",
 	0
 };
-// `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in > Constants.h
+// `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in >> cLuaScript.cpp
 
-/*
- * same again for skill names
- */
-static const char *skills[] = 
+static const char *skills[] = // same again for skill names
 {
-	"anal",
-	"magic",
-	"bdsm",
-	"normal",
-	"beastiality",
-	"group",
-	"lesbian",
-	"service",
-	"strip",
-	"combat",
+	"anal", "magic", "bdsm", "normal", "beastiality", "group", "lesbian", "service", "strip", "combat", "oral",
+	"titty", "medicine", "performance", "handjob", "crafting", "herbalism", "farming", "brewing", "animalhandling",
 	0
 };
 
@@ -746,11 +730,7 @@ void cLuaScript::log_error()
 	CLog log;
 	string errstr = lua_tostring(l, -1);
 	lua_pop(l, 1);
-	log.ss()	<< "Script error in '"
-			<< m_file
-			<< "': "
-			<< errstr
-	;
+	log.ss() << "Script error in '" << m_file << "': " << errstr;
 	log.ssend();
 }
 
@@ -760,11 +740,9 @@ int cLuaScript::get_ref(const char *name)
  *	OK - stick the name on the stack
  */
 	lua_getglobal(l, name);
-	if(lua_isnil(l, -1)) {
-		log.ss()
-			<< "cLuaScript::get_ref - can't find "
-			<< "'" << name << "'"
-		;
+	if(lua_isnil(l, -1)) 
+	{
+		log.ss() << "cLuaScript::get_ref - can't find " << "'" << name << "'";
 		log.ssend();
 		return 0;
 	}
@@ -788,58 +766,59 @@ bool cLuaScript::load(string filename, sGirl *a_girl)
 
 	log.ss() << "cLuaScript::load: " << filename;
 	log.ssend();
-/*
- *	We need to open the file to make sure it exists and can be read
- *	
- *	There doesn't seem to be a better, cross platform way
- *	to do this
- */
+	/*
+	 *	We need to open the file to make sure it exists and can be read
+	 *
+	 *	There doesn't seem to be a better, cross platform way
+	 *	to do this
+	 */
 	ifstream ifs(m_file.c_str(), ifstream::in);
 	bool ok = ifs.good();
 	ifs.close();
-	if(!ok) return false;
-/*
- *	So: slurp the file
- */
+	if (!ok) return false;
+	/*
+	 *	So: slurp the file
+	 */
 	string prog = slurp(m_file);
-/*
- *	load the string
- */
+	/*
+	 *	load the string
+	 */
 	rc = luaL_loadstring(l, prog.c_str());
-/*
- *	a non-zero return code means an error occured
- *	log it, and then return false so the script manager
- *	can recycle the script
- */
-	if(rc != 0) {
+	/*
+	 *	a non-zero return code means an error occured
+	 *	log it, and then return false so the script manager
+	 *	can recycle the script
+	 */
+	if (rc != 0)
+	{
 		log_error();
 		return false;
 	}
-/*
- *	call the chunk
- */
+	/*
+	 *	call the chunk
+	 */
 	rc = lua_pcall(l, 0, 1, 0);
-/*
- *	again, check for errors.
- */
-	if(rc != 0) {
+	/*
+	 *	again, check for errors.
+	 */
+	if (rc != 0) {
 		log_error();
 		return false;
 	}
-/*
- *	OK. the script should have defined two entry points:
- *	init() and run()
- *
- *	we need to find these, convert them into references, and store them
- */
- 	init_ref = get_ref("init");
- 	run_ref = get_ref("run");
+	/*
+	 *	OK. the script should have defined two entry points:
+	 *	init() and run()
+	 *
+	 *	we need to find these, convert them into references, and store them
+	 */
+	init_ref = get_ref("init");
+	run_ref = get_ref("run");
 	log.ss() << "init_ref = " << init_ref << "\n";
 	log.ss() << "run_ref  = " << run_ref;
 	log.ssend();
-/*
- *	check the return code
- */
+	/*
+	 *	check the return code
+	 */
 	rc = lua_toboolean(l, -1);
 	log.ss() << "script ready: return value " << rc;
 	log.ssend();

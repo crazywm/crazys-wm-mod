@@ -8,118 +8,118 @@ extern cGangManager     g_Gangs;
 
 cGirlGangFight::cGirlGangFight(sGirl *girl)
 {
-	m_girl	= girl;
-	m_girl_stats	= 0;
-/*
- *	set this up on the basis that she refuses to fight
- */
-	m_goon_stats	= 0;
-	m_max_goons 	= 0;
-//	m_ratio	 		= 0.0;
-//	m_dead_goons 	= 0;
-	m_girl_fights	= false;
-	m_girl_wins		= false;
-	m_wipeout		= false;
-	m_unopposed		= false;
-	m_player_wins	= false;
-/*
- *	decide if she's going to fight or flee
- */
-	if(!g_Brothels.FightsBack(m_girl)) {
+	m_girl = girl;
+	m_girl_stats = 0;
+	/*
+	 *	set this up on the basis that she refuses to fight
+	 */
+	m_goon_stats = 0;
+	m_max_goons = 0;
+	//	m_ratio	 		= 0.0;
+	//	m_dead_goons 	= 0;
+	m_girl_fights = false;
+	m_girl_wins = false;
+	m_wipeout = false;
+	m_unopposed = false;
+	m_player_wins = false;
+	/*
+	 *	decide if she's going to fight or flee
+	 */
+	if (!g_Brothels.FightsBack(m_girl)) {
 		return;
 	}
-	m_girl_fights	= true;
-/*
- *	ok, she fights. Find all the gangs on guard duty
- */
+	m_girl_fights = true;
+	/*
+	 *	ok, she fights. Find all the gangs on guard duty
+	 */
 	m_girl_wins = false;
 	vector<sGang*> v = g_Gangs.gangs_on_mission(MISS_GUARDING);
-/*
- *	no gang, so girl wins. PC combat is outside this class ATM
- */
-	if(v.size() == 0) {
+	/*
+	 *	no gang, so girl wins. PC combat is outside this class ATM
+	 */
+	if (v.size() == 0) {
 		m_girl_wins = true;
 		m_unopposed = true;
 		return;
 	}
-/*
- *	we'll take goons from a random gang - distributes the casualties a bit
- *	more evenly for multi-select brandings and the like
- */
-	int index = g_Dice.in_range(0, v.size()-1);
+	/*
+	 *	we'll take goons from a random gang - distributes the casualties a bit
+	 *	more evenly for multi-select brandings and the like
+	 */
+	int index = g_Dice.in_range(0, v.size() - 1);
 	l.ss() << gettext("\ncGirlGangFight: random gang index = ") << index;
 	l.ssend();
 	sGang *gang = v[index];
 	l.ss() << gettext("\ncGirlGangFight: gang = ") << gang->m_Name;
 	l.ssend();
-/*
- *	4 + 1 for each gang on guard duty
- *	that way there's a benefit to multiple gangs guarding
- */
- 	m_max_goons = 4 + v.size();
-/*
- *	to the maximum of the number in the gang
- */
-	if(m_max_goons > gang->m_Num) {
+	/*
+	 *	4 + 1 for each gang on guard duty
+	 *	that way there's a benefit to multiple gangs guarding
+	 */
+	m_max_goons = 4 + v.size();
+	/*
+	 *	to the maximum of the number in the gang
+	 */
+	if (m_max_goons > gang->m_Num) {
 		m_max_goons = gang->m_Num;
 	}
-/*
- *	now - sum the girl and gang stats
- *	we're not going to average the gangs.
- *	yes this gives them an unfair advantage
- *	that's the point of having 5:1 odds :)
- */
+	/*
+	 *	now - sum the girl and gang stats
+	 *	we're not going to average the gangs.
+	 *	yes this gives them an unfair advantage
+	 *	that's the point of having 5:1 odds :)
+	 */
 	m_girl_stats = m_girl->combat() + m_girl->magic() + m_girl->intelligence();
-/*
- *	Now the gangs. I'm not factoring the girl's health
- *	because there's something dramatically satisfying
- *	about her breeaking out of the dungeon after being 
- *	tortured near unto death, and then still beating the
- *	thugs up. You'd buy into it in a Hollywood blockbuster...
- *
- *	Annnnyway....
- */
+	/*
+	 *	Now the gangs. I'm not factoring the girl's health
+	 *	because there's something dramatically satisfying
+	 *	about her breeaking out of the dungeon after being
+	 *	tortured near unto death, and then still beating the
+	 *	thugs up. You'd buy into it in a Hollywood blockbuster...
+	 *
+	 *	Annnnyway....
+	 */
 	m_goon_stats = *g_Gangs.GetWeaponLevel() * 5 * m_max_goons;
-	for(int i = 0; i < m_max_goons; i++) {
-		m_goon_stats +=	gang->combat() +
-				gang->magic() +
-				gang->intelligence()
-		;
+	for (int i = 0; i < m_max_goons; i++) {
+		m_goon_stats += gang->combat() +
+			gang->magic() +
+			gang->intelligence()
+			;
 	}
-/*
- *	the girl's base chance of winning is determined by the stat ratio
- */
+	/*
+	 *	the girl's base chance of winning is determined by the stat ratio
+	 */
 	m_odds = 1.0 * m_girl_stats / (m_goon_stats + m_girl_stats);
-/*
- *	let's add some trait based bonuses
- *	I'm not going to do any that are already reflected in stat values
- *	(so no "Psychic" bonus, no "Tough" either)
- *	we can streamline this with the trait overhaul
- */
- 	if(m_girl->has_trait("Clumsy"))		m_odds -= 0.05;
- 	if(m_girl->has_trait("Broken Will"))	m_odds -= 0.10;
- 	if(m_girl->has_trait("Meek"))		m_odds -= 0.05;
- 	if(m_girl->has_trait("Dependant"))	m_odds -= 0.10;
- 	if(m_girl->has_trait("Fearless"))	m_odds += 0.10;
-	if (m_girl->has_trait("Fleet of Foot") || m_girl->has_trait("Fleet Of Foot"))	m_odds += 0.10;
-/*
- *	get it back into the 0 <= N <= 1 range
- */
- 	if(m_odds < 0) m_odds = 0;
- 	if(m_odds > 1) m_odds = 1;
-/*
- *	roll the dice! If it passes then the girl wins
- */
+	/*
+	 *	let's add some trait based bonuses
+	 *	I'm not going to do any that are already reflected in stat values
+	 *	(so no "Psychic" bonus, no "Tough" either)
+	 *	we can streamline this with the trait overhaul
+	 */
+	if (m_girl->has_trait("Clumsy"))		m_odds -= 0.05;
+	if (m_girl->has_trait("Broken Will"))	m_odds -= 0.10;
+	if (m_girl->has_trait("Meek"))		m_odds -= 0.05;
+	if (m_girl->has_trait("Dependant"))	m_odds -= 0.10;
+	if (m_girl->has_trait("Fearless"))	m_odds += 0.10;
+	if (m_girl->has_trait("Fleet of Foot"))	m_odds += 0.10;
+	/*
+	 *	get it back into the 0 <= N <= 1 range
+	 */
+	if (m_odds < 0) m_odds = 0;
+	if (m_odds > 1) m_odds = 1;
+	/*
+	 *	roll the dice! If it passes then the girl wins
+	 */
 	int pc = static_cast <int> (m_odds * 100.0);
 	int roll = g_Dice.in_range(0, 100);
- 	l.ss() << gettext("GirlGangFight: %    = ") << pc << gettext("\n");
- 	l.ss() << gettext("GirlGangFight: roll = ") << roll;
+	l.ss() << gettext("GirlGangFight: %    = ") << pc << gettext("\n");
+	l.ss() << gettext("GirlGangFight: roll = ") << roll;
 	l.ssend();
- 	if(roll >= pc) {
+	if (roll >= pc) {
 		lose_vs_own_gang(gang);
 		return;
 	}
-	if(!g_Brothels.PlayerCombat(girl)) {
+	if (!g_Brothels.PlayerCombat(girl)) {
 		m_girl_wins = false;
 		m_player_wins = true;
 		return;
@@ -237,7 +237,7 @@ void cGirlGangFight::win_vs_own_gang(sGang* gang)
  *	fleet of foot means she gets out by running away more than fighting
  *	so fewer fatalities
  */
-	if (m_girl->has_trait("Fleet of Foot") || m_girl->has_trait("Fleet Of Foot")) casualties -= 2;
+	if (m_girl->has_trait("Fleet of Foot")) casualties -= 2;
 /*
  *	OK, apply the casualties and make sure it doesn't go negative
  *	allow for the effect of potions, first

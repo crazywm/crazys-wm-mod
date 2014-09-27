@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+   <Item 
+      Name="Full Plate Armor"
+      Desc="This heavy suit of steel plate armor is the best battlefield protection money can buy. It is engineered for maximum mobility but is still somewhat cumbersome. (A) (-40 Magic,  +30 Cons, Conf,  -30 Agi,  -20 Cha, Fear) (Removes Fleet of Foot and Agile, Adds Tough)"
+      Type="Armor"
+      Badness="0"
+      Special="None"
+      Cost="3000"
+      Rarity="Shop05"
+      Infinite="false"
+      GirlBuyChance="1">
+   <Effect What="Skill" Name="Magic"                   Amount="-40" />     
+   <Effect What="Stat"  Name="Constitution"            Amount="30" />      
+   <Effect What="Stat"  Name="Confidence"              Amount="30" />      
+   <Effect What="Stat"  Name="Agility"                 Amount="-30" />     
+   <Effect What="Stat"  Name="Charisma"                Amount="-20" />     
+   <Effect What="Stat"  Name="PCFear"                  Amount="-20" />     
+   <Effect What="Trait" Name="Fleet of Foot"           Amount="0" />
+   <Effect What="Trait" Name="Agile"                   Amount="0" />
+   <Effect What="Trait" Name="Tough"                   Amount="1" />
+</Item>                                                                      
+</Items>

@@ -107,6 +107,7 @@ void cClinicManager::UpdateClinic()
 {
 	sBrothel* current = (sBrothel*) m_Parent;
 	current->m_Finance.zero();
+	current->m_AntiPregUsed = 0;
 	// Clear the girls' events from the last turn
 	sGirl* cgirl = current->m_Girls;
 	while(cgirl)
@@ -120,6 +121,22 @@ void cClinicManager::UpdateClinic()
 		cgirl->m_InHouse		= false;
 		cgirl->m_Pay			= 0;
 		cgirl->m_Events.Clear();
+
+		do_food_and_digs(current, cgirl);		// Brothel only update for girls accommodation level
+		g_Girls.CalculateGirlType(cgirl);		// update the fetish traits
+		g_Girls.updateGirlAge(cgirl, true);		// update birthday counter and age the girl
+		g_Girls.updateTempStats(cgirl);			// update temp stats
+		g_Girls.updateTempSkills(cgirl);		// update temp skills
+		g_Girls.updateTempTraits(cgirl);		// update temp traits
+		g_Girls.HandleChildren(cgirl);			// handle pregnancy and children growing up
+		g_Girls.updateSTD(cgirl);				// health loss to STD's				NOTE: Girl can die
+		g_Girls.updateHappyTraits(cgirl);		// Update happiness due to Traits	NOTE: Girl can die
+		updateGirlTurnBrothelStats(cgirl);		// Update daily stats				Now only runs once per day
+		g_Girls.updateGirlTurnStats(cgirl);		// Stat Code common to Dugeon and Brothel
+
+
+
+
 		cgirl = cgirl->m_Next;
 	}
 
@@ -239,17 +256,6 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, int DayNight)
 				}
 			}
 
-			do_food_and_digs(brothel, current);			// Brothel only update for girls accommodation level
-			g_Girls.CalculateGirlType(current);			// update the fetish traits
-			g_Girls.updateGirlAge(current, true);		// update birthday counter and age the girl
-			g_Girls.updateTempStats(current);			// update temp stats
-			g_Girls.updateTempSkills(current);			// update temp skills
-			g_Girls.updateTempTraits(current);			// update temp traits
-			g_Girls.HandleChildren(current, summary);	// handle pregnancy and children growing up
-			g_Girls.updateSTD(current);					// health loss to STD's				NOTE: Girl can die
-			g_Girls.updateHappyTraits(current);			// Update happiness due to Traits	NOTE: Girl can die
-			updateGirlTurnBrothelStats(current);		// Update daily stats				Now only runs once per day
-			g_Girls.updateGirlTurnStats(current);		// Stat Code common to Dugeon and Brothel
 		}
 
 
@@ -469,12 +475,11 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, int DayNight)
 
 
 		// Level the girl up if nessessary
-		if ((g_Girls.GetStat(current, STAT_EXP) >= (g_Girls.GetStat(current, STAT_LEVEL) + 1) * 125) || (g_Girls.GetStat(current, STAT_EXP) >= 32000))
-			g_Girls.LevelUp(current);
+		g_Girls.LevelUp(current);
 
 		// Natural healing, 2% health and 2% tiredness per day
-		current->m_Stats[STAT_HEALTH] = min(current->m_Stats[STAT_HEALTH] + 2, 100);
-		current->m_Stats[STAT_TIREDNESS] = max(current->m_Stats[STAT_TIREDNESS] - 2, 0);
+		g_Girls.UpdateStat(current, STAT_HEALTH, 2, false);
+		g_Girls.UpdateStat(current, STAT_TIREDNESS, -2, false);
 
 
 		// Process next girl
@@ -565,6 +570,7 @@ TiXmlElement* sClinic::SaveClinicXML(TiXmlElement* pRoot)
 	
 	pBrothel->SetAttribute("AdvertisingBudget", m_AdvertisingBudget);
 	pBrothel->SetAttribute("AntiPregPotions", m_AntiPregPotions);
+	pBrothel->SetAttribute("AntiPregUsed", m_AntiPregUsed);
 	pBrothel->SetAttribute("KeepPotionsStocked", m_KeepPotionsStocked);
 	
 	// Save Girls
@@ -659,6 +665,7 @@ bool sClinic::LoadClinicXML(TiXmlHandle hBrothel)
 
 	pBrothel->QueryValueAttribute<unsigned short>("AdvertisingBudget", &m_AdvertisingBudget);
 	pBrothel->QueryIntAttribute("AntiPregPotions", &m_AntiPregPotions);
+	pBrothel->QueryIntAttribute("AntiPregUsed", &m_AntiPregUsed);
 	pBrothel->QueryValueAttribute<bool>("KeepPotionsStocked", &m_KeepPotionsStocked);
 
 	// Load girls

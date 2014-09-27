@@ -44,12 +44,11 @@ static cDungeon* m_Dungeon = g_Brothels.GetDungeon();
 
 bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
-
+	if (DayNight == 1) return false;
 	cTariff tariff;
 	string message = "";
 
-	if(Preprocessing(ACTION_WORKRECRUIT, girl, brothel, DayNight, summary, message))	// they refuse to have work in the bar
-		return true;
+	if(Preprocessing(ACTION_WORKRECRUIT, girl, brothel, DayNight, summary, message))		return true;
 
 
 	// put that shit away, not needed for sex training
@@ -63,7 +62,7 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, int DayNight, st
 
 	message += "She worked trying to recruit girls for you.";
 
-	if      (HateLove < -80)	message += " She hates you more then anything so she doesn't try that hard.\n\n";
+	/* */if (HateLove < -80)	message += " She hates you more then anything so she doesn't try that hard.\n\n";
 	else if (HateLove < -60)	message += " She hates you.\n\n";
 	else if (HateLove < -40)	message += " She doesn't like you.\n\n";
 	else if (HateLove < -20)	message += " She finds you to be annoying.\n\n";

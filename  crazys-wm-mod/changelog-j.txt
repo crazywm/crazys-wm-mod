@@ -646,7 +646,7 @@ Added new image types available for future use: "Foot", "Bed", "Farm", "Herd", "
 Rearranged image alttypes to include new image types.
 City Guards can not be slaves.
 Fixed some jobs not showing up in house.
-Farm Veterinarian is a full time job.
+*********** Farm Veterinarian is a full time job. ** undone for .06.00.05
 Added Farm background image. (Still need Farm Icon for town map.)
 Added to Matron complications and changed Matron wages from skill alone to skill plus number of girls.
 Updated all buildings' Matrons to match.
@@ -780,3 +780,41 @@ Crazy did more fixes to some jobs.
 Removed some of the unneeded traits - "Anal Plug", "Nail Polish", "Pheromones", "Plain Lipstick", "Sexy Lipstick", "Vibrator", "Whoreish Lipstick", "Pregnant 1T", "Pregnant 2T", "Pregnant 3T"
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.04
 !!!!!!!!!!!!!!!!!!!! pushed to SVN - r109
+
+###  Changes 9/16-17/2014
+Added stats "Refinement", "Dignity", "Lactation" minor updates to "Morality" (nothing uses them yet)
+Reworked sRandomGirl in cGirls.h to make it set base stats better
+Fixed "farmer's daughter" trait to "farmers daughter" - save games will not load if a trait has an ' in it 
+ - Fixed XmlMisc.cpp to compensate and InterfaceProcesses.cpp to tell you where the error occurred
+
+
+###  Changes 9/18-21/2014
+Fixed antipreg stock to use what you have before buying more at the higher price
+Added antipreg message to brothel turn summary
+Brothel Matrons will increase antipreg restock order if more were used than normally stocked.
+Moved xp to level up check into levelup() code to reduce lines needed.
+Cleaned and added more traits to levelup to multiples of 5
+If not enough businesses are held to support a brothel, its security level drops by 2 per needed business.
+Fixed items to properly update age and exp and cleaned other stat item update.
+Started reflow of brothel - moved start of shift stuff from UpdateGirls to UpdateBrothels so all girls get updated at the same time.
+Cleaned up and some updates to cGangs.cpp, cJobManager.cpp
+House Recruiter is now full time job.
+Farm Veterinarian is no longer a full time job.
+Condensed clinic surgery jobs in HandleSpecialJobs
+
+Crazy made more changes to jobs - SVN r110 and r111
+
+###  Changes 9/22-26/2014
+Removed Trait effects on stats and skills from add and remove traits. - they will be added back in a separate function.
+Combined UnapplyTraits and ApplyTraits into MutuallyExclusiveTraits
+Added several new traits and removed/renamed a few.
+Fixed antipreg potions when buying they actually cost you money.
+
+*** the removal of the stat/skill mods when converting to MutuallyExclusiveTraits destroyed the rebelliousness calculation.
+*** I put back the old UnapplyTraits and ApplyTraits functions for the stat/skill mods until the MutuallyExclusiveTraits gets the new stat/skill mods
+*** the new traits do not have modifiers 
+
+Crazy made more changes to jobs - SVN r112
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.05
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r113

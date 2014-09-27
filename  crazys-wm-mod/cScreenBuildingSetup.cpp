@@ -87,7 +87,7 @@ void cScreenBuildingSetup::init()
 	Focused();
 	g_InitWin = false;
 
-	int rooms = 20, maxrooms = 200, antipregnum = 0, advert = 0;
+	int rooms = 20, maxrooms = 200, antipregnum = 0, antipregused = 0, advert = 0;
 	string brothel = "";
 	switch (g_Building)
 	{
@@ -96,6 +96,7 @@ void cScreenBuildingSetup::init()
 		rooms = g_Studios.GetBrothel(0)->m_NumRooms;
 		maxrooms = g_Studios.GetBrothel(0)->m_MaxNumRooms;
 		antipregnum = g_Studios.GetBrothel(0)->m_AntiPregPotions;
+		antipregused = g_Studios.GetBrothel(0)->m_AntiPregUsed;
 		advert = g_Studios.GetBrothel(0)->m_AdvertisingBudget / 50;
 
 		// setup check boxes
@@ -115,6 +116,7 @@ void cScreenBuildingSetup::init()
 		rooms = g_Clinic.GetBrothel(0)->m_NumRooms;
 		maxrooms = g_Clinic.GetBrothel(0)->m_MaxNumRooms;
 		antipregnum = g_Clinic.GetBrothel(0)->m_AntiPregPotions;
+		antipregused = g_Clinic.GetBrothel(0)->m_AntiPregUsed;
 		advert = g_Clinic.GetBrothel(0)->m_AdvertisingBudget / 50;
 
 		// setup check boxes
@@ -134,6 +136,7 @@ void cScreenBuildingSetup::init()
 		rooms = g_Arena.GetBrothel(0)->m_NumRooms;
 		maxrooms = g_Arena.GetBrothel(0)->m_MaxNumRooms;
 		antipregnum = g_Arena.GetBrothel(0)->m_AntiPregPotions;
+		antipregused = g_Arena.GetBrothel(0)->m_AntiPregUsed;
 		advert = g_Arena.GetBrothel(0)->m_AdvertisingBudget / 50;
 
 		// setup check boxes
@@ -153,6 +156,7 @@ void cScreenBuildingSetup::init()
 		rooms = g_Centre.GetBrothel(0)->m_NumRooms;
 		maxrooms = g_Centre.GetBrothel(0)->m_MaxNumRooms;
 		antipregnum = g_Centre.GetBrothel(0)->m_AntiPregPotions;
+		antipregused = g_Centre.GetBrothel(0)->m_AntiPregUsed;
 		advert = g_Centre.GetBrothel(0)->m_AdvertisingBudget / 50;
 
 		// setup check boxes
@@ -172,6 +176,7 @@ void cScreenBuildingSetup::init()
 		rooms = g_House.GetBrothel(0)->m_NumRooms;
 		maxrooms = g_House.GetBrothel(0)->m_MaxNumRooms;
 		antipregnum = g_House.GetBrothel(0)->m_AntiPregPotions;
+		antipregused = g_House.GetBrothel(0)->m_AntiPregUsed;
 		advert = g_House.GetBrothel(0)->m_AdvertisingBudget / 50;
 
 		// setup check boxes
@@ -191,6 +196,7 @@ void cScreenBuildingSetup::init()
 		rooms = g_Farm.GetBrothel(0)->m_NumRooms;
 		maxrooms = g_Farm.GetBrothel(0)->m_MaxNumRooms;
 		antipregnum = g_Farm.GetBrothel(0)->m_AntiPregPotions;
+		antipregused = g_Farm.GetBrothel(0)->m_AntiPregUsed;
 		advert = g_House.GetBrothel(0)->m_AdvertisingBudget / 50;
 
 		// setup check boxes
@@ -211,6 +217,7 @@ void cScreenBuildingSetup::init()
 		rooms = g_Brothels.GetBrothel(g_CurrBrothel)->m_NumRooms;
 		maxrooms = g_Brothels.GetBrothel(g_CurrBrothel)->m_MaxNumRooms;
 		antipregnum = g_Brothels.GetBrothel(g_CurrBrothel)->m_AntiPregPotions;
+		antipregused = g_Brothels.GetBrothel(g_CurrBrothel)->m_AntiPregUsed;
 		advert = g_Brothels.GetBrothel(g_CurrBrothel)->m_AdvertisingBudget / 50;
 
 		// setup check boxes
@@ -228,9 +235,8 @@ void cScreenBuildingSetup::init()
 	}
 
 	EditTextItem(brothel, curbrothel_id);
-
 	ss.str("");
-	ss << gettext("Anti-Preg Potions: ") << tariff.anti_preg_price(1) << gettext(" gold each");
+	ss << gettext("Anti-Preg Potions: ") << tariff.anti_preg_price(1) << gettext(" gold each.");
 	EditTextItem(ss.str(), potioncost_id);
 
 	// let's limit advertising budget to multiples of 50 gold (~3 added customers), from 0 - 2000
@@ -239,8 +245,10 @@ void cScreenBuildingSetup::init()
 	ss << "Advertising Budget: " << (advert * 50) << " gold / week";
 	EditTextItem(ss.str(), advertamt_id);
 
+	if (antipregused < 0) antipregused = 0;
 	ss.str("");
-	ss << "You have: " << antipregnum;
+	ss << "         You have: " << antipregnum;
+	ss << "\nUsed Last Turn: " << antipregused;
 	EditTextItem(ss.str(), potionavail_id);
 	DisableCheckBox(autopotions_id, antipregnum < 1);
 
@@ -407,11 +415,11 @@ void cScreenBuildingSetup::check_events()
 				if (buysum > 0)
 				{
 					ss << "\nYou buy " << buysum << " to fill the stock.";
-					g_Gold.girl_support(tariff.anti_preg_price(buysum));
+					g_Gold.item_cost(tariff.anti_preg_price(buysum));
 				}
 				g_MessageQue.AddToQue(ss.str(), 0);
 			}
-			else g_Gold.girl_support(tariff.anti_preg_price(buynum));
+			else g_Gold.item_cost(tariff.anti_preg_price(buynum));
 		}
 		g_InitWin = true;
 		return;

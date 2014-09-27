@@ -28,65 +28,26 @@ static CLog &lf = g_LogFile;
 
 double cTariff::slave_base_price(sGirl *girl)
 {
+	// The ask price is the base price for the girl. It changes with her stats, so we need to refresh it
 	double cost;
-/*
- *	The ask price is the base price for the girl
- *	It changes with her stats, so we need to refresh it
- */
 	g_Girls.CalculateAskPrice(girl, false);
-/*
- *	base price is the girl's ask price stat
- */
-	cost = girl->askprice() * 15;
-/*
- *	add to that the sum of her skills
- */
-	for(u_int i=0; i<NUM_SKILLS; i++) {
-		cost += (unsigned int)girl->m_Skills[i];
+	cost = girl->askprice() * 15;						// base price is the girl's ask price stat
+	for (u_int i = 0; i<NUM_SKILLS; i++)				// add to that the sum of her skills
+	{
+		cost += (unsigned int)girl->m_Skills[i]; 
 	}
-/*
- *	virgins fetch a premium
- *	MOD: not sure of the rationale behind 158
- *	but a multiplier makes more sense to me.
- *	Let's say virgins go for half as much again
- */
-	if (g_Girls.CheckVirginity(girl)) {
-		cost *= 1.5;
-	}
-	lf.ss() << "CTariff: base price for slave '"
-	  	 << girl->m_Name
-		 << "' = "
-		 << int(cost)
-	;
-	lf.ssend();
+	if (g_Girls.CheckVirginity(girl))	cost *= 1.5;	// virgins fetch a premium
+	lf.ss() << "CTariff: base price for slave '" << girl->m_Name << "' = " << int(cost);	lf.ssend();
 	return cost;
 }
 
 int cTariff::slave_buy_price(sGirl *girl)
 {
 	cConfig cfg;
-	double cost = slave_base_price(girl);
-	double factor = cfg.out_fact.slave_cost();
-
-	lf.ss() << "CTariff: buy price config factor '"
-	  	 << girl->m_Name
-		 << "' = "
-		 << factor
-	;
-	lf.ssend();
-/*
- *	multiply by the config factor for buying slaves
- */
-	cost *= cfg.out_fact.slave_cost();
-/*
- *	a bit of debug chatter
- */
-	lf.ss() << "CTariff: buy price for slave '"
-	  	 << girl->m_Name
-		 << "' = "
-		 << int(cost)
-	;
-	lf.ssend();
+	double cost = slave_base_price(girl), factor = cfg.out_fact.slave_cost();
+	lf.ss() << "CTariff: buy price config factor '" << girl->m_Name << "' = " << factor;	lf.ssend();
+	cost *= cfg.out_fact.slave_cost();	// multiply by the config factor for buying slaves
+	lf.ss() << "CTariff: buy price for slave '" << girl->m_Name << "' = " << int(cost);		lf.ssend();
 	return int(cost);
 }
 
@@ -94,10 +55,7 @@ int cTariff::slave_sell_price(sGirl *girl)
 {
 	cConfig cfg;
 	double cost = slave_base_price(girl);
-/*
- *	multiply by the config factor for buying slaves
- */
-	return int(cost * cfg.in_fact.slave_sales());
+	return int(cost * cfg.in_fact.slave_sales());	// multiply by the config factor for buying slaves
 }
 
 int cTariff::empty_room_cost(sBrothel *brothel)
@@ -124,46 +82,42 @@ int cTariff::goon_weapon_upgrade(int level)
 int cTariff::goon_mission_cost(int mission)
 {
 	cConfig cfg;
-	double cost = 0.0;
-	double factor = cfg.out_fact.goon_wages();
-
-	switch(mission) {
-	case MISS_SABOTAGE:	cost = factor * 150;	break;
-	case MISS_SPYGIRLS:	cost = factor * 40;	break;
+	double cost = 0.0, factor = cfg.out_fact.goon_wages();
+	switch (mission)
+	{
+	case MISS_SABOTAGE:		cost = factor * 150;	break;
+	case MISS_SPYGIRLS:		cost = factor * 40;		break;
 	case MISS_CAPTUREGIRL:	cost = factor * 125;	break;
 	case MISS_EXTORTION:	cost = factor * 116;	break;
 	case MISS_PETYTHEFT:	cost = factor * 110;	break;
 	case MISS_GRANDTHEFT:	cost = factor * 250;	break;
-	case MISS_KIDNAPP:	cost = factor *	150;	break;
+	case MISS_KIDNAPP:		cost = factor * 150;	break;
 	case MISS_CATACOMBS:	cost = factor * 300;	break;
-	case MISS_TRAINING:	cost = factor * 90;	break;
-	case MISS_RECRUIT:	cost = factor * 80;	break;
-//	case MISS_SAIGON:	just kidding
+	case MISS_TRAINING:		cost = factor * 90;		break;
+	case MISS_RECRUIT:		cost = factor * 80;		break;
+//	case MISS_SAIGON:		just kidding
+	case MISS_GUARDING:		
 	default:
-		lf.ss() << "Warning: cTariff: unrecogised goon mission "
-			<< mission
-			<< " charging as guard mission"
-		;
+		cost = factor * 60;		
+		if (mission == MISS_GUARDING) break;	// `J` rearranged to make sure it works as intended
+		lf.ss() << "Warning: cTariff: unrecogised goon mission " << mission << " charging as guard mission";
 		lf.ssend();
-		// drop through ...
-	case MISS_GUARDING:	cost = factor * 60;	break;
+		break;
 	}
 
-	if(cost > 0.0) {
+	if (cost > 0.0)
+	{
 		return int(cost);
 	}
 
-/*
- *	if we get here, the default didn't work
- *	which shouldn't happen. I HAVE put it in a
- *	non standard place, but it should be legal.
- *
- *	Still, just to be sure...
- */
-	lf.ss() << "Warning: cTariff: logic error in gang_mission_cost("
-		<< mission
-		<< ") - charging as guard mission"
-	;
+	/*
+	 *	if we get here, the default didn't work
+	 *	which shouldn't happen. I HAVE put it in a
+	 *	non standard place, but it should be legal.
+	 *
+	 *	Still, just to be sure...
+	 */
+	lf.ss() << "Warning: cTariff: logic error in gang_mission_cost(" << mission << ") - charging as guard mission";
 	lf.ssend();
 	return int(factor * 60);
 }

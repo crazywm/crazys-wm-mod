@@ -46,27 +46,27 @@
 //#include "sConfig.h"
 //#include "cTariff.h"
 
-extern cMessageQue      g_MessageQue;
-extern cCustomers       g_Customers;
-extern cGirls           g_Girls;
-extern cInventory       g_InvManager;
-extern cBrothelManager  g_Brothels;
-extern unsigned long    g_Year;
-extern unsigned long    g_Month;
-extern unsigned long    g_Day;
-extern cRng             g_Dice;
-extern cGold            g_Gold;
-extern cGangManager     g_Gangs;
-extern char             buffer[1000];
+extern cMessageQue			g_MessageQue;
+extern cCustomers			g_Customers;
+extern cGirls				g_Girls;
+extern cInventory			g_InvManager;
+extern cBrothelManager		g_Brothels;
+extern unsigned long		g_Year;
+extern unsigned long		g_Month;
+extern unsigned long		g_Day;
+extern cRng					g_Dice;
+extern cGold				g_Gold;
+extern cGangManager			g_Gangs;
+extern char					buffer[1000];
 extern cMovieStudioManager  g_Studios;
-extern cArenaManager g_Arena;
-extern cClinicManager g_Clinic;
-extern cCentreManager g_Centre;
-extern cHouseManager g_House;
-extern cFarmManager g_Farm;
+extern cArenaManager		g_Arena;
+extern cClinicManager		g_Clinic;
+extern cCentreManager		g_Centre;
+extern cHouseManager		g_House;
+extern cFarmManager			g_Farm;
 
 
-//extern CGraphics		g_Graphics;
+//extern CGraphics			g_Graphics;
 
 /*
 * mod - this is a bit big for an inline func
@@ -124,19 +124,15 @@ sBrothel::~sBrothel()			// destructor
 	m_ShowTime = 0;
 	m_ShowQuality = 0;
 
-	if (m_Next)
-		delete m_Next;
+	if (m_Next) delete m_Next;
 	m_Next = 0;
-	if (m_Girls)
-		delete m_Girls;
+	if (m_Girls) delete m_Girls;
 	m_LastGirl = 0;
 	m_Girls = 0;
 	//movie
-	if (m_CurrFilm)
-		delete m_CurrFilm;
+	if (m_CurrFilm) delete m_CurrFilm;
 	m_NumMovies = 0;
-	if (m_Movies)
-		delete m_Movies;
+	if (m_Movies) delete m_Movies;
 	m_Movies = 0;
 	m_LastMovies = 0;
 }
@@ -154,6 +150,7 @@ bool sBrothel::matron_on_shift(int shift, bool isClinic, bool isStudio, bool isA
 	else /*         */	{ if (g_Brothels.GetNumGirlsOnJob(BrothelID, JOB_MATRON, shift) > 0)	return true; }
 	return false;
 }
+
 //int sBrothel::matron_count
 int sBrothel::matron_count(bool isClinic, bool isStudio, bool isArena, bool isCentre, bool isHouse, bool isFarm, int BrothelID)
 {
@@ -171,54 +168,24 @@ int sBrothel::matron_count(bool isClinic, bool isStudio, bool isArena, bool isCe
 	return sum;
 }
 
-bool sBrothel::has_matron()
-{
-	int i;
-	for (i = 0; i < 2; i++) 
-	{
-		if (g_Brothels.GetNumGirlsOnJob(m_id, JOB_MATRON, i) > 0)	return true;
-	}
-	return false;
-}
-
 // ----- Class cBrothelManager Create / destroy
 cBrothelManager::cBrothelManager()			// constructor
 {
 	cConfig cfg;
-	m_NumInventory = 0;
-	for (int i = 0; i<MAXNUM_INVENTORY; i++)
+	for (int i = 0; i < MAXNUM_INVENTORY; i++)
 	{
 		m_Inventory[i] = 0;
 		m_EquipedItems[i] = 0;
 		m_NumItem[i] = 0;
 	}
-	m_Parent = 0;
-	m_Last = 0;
-	m_NumBrothels = 0;
-	//	m_AntiPregPotions	= 0;
-	m_SupplyShedLevel = 1;
-	m_BribeRate = 0;
-	m_Influence = 0;
-	m_Bank = 0;
-
-	m_Objective = 0;
-
-	m_Prison = 0;
-	m_NumPrison = 0;
-	m_LastPrison = 0;
-
-	m_NumRunaways = 0;
-	m_Runaways = 0;
-	m_LastRunaway = 0;
-
-	m_HandmadeGoods = 0;
-	m_Beasts = 0;
-	m_AlchemyIngredients = 0;
-	//	m_KeepPotionsStocked = false;
-
-	m_TortureDoneFlag = false;
-	m_Processing_Shift = -1;
-
+	/* sBrothel */	m_Parent = m_Last = 0;
+	/* int */		m_NumBrothels = m_Influence = m_NumInventory = m_NumPrison = m_NumRunaways = m_HandmadeGoods = m_Beasts = m_AlchemyIngredients = 0;
+	/* int */		m_SupplyShedLevel = 1;
+	/* int */		m_Processing_Shift = -1;
+	/* long */		m_BribeRate = m_Bank = 0;
+	/* sObjective */m_Objective = 0;
+	/* sGirl */		m_Prison = m_LastPrison = m_Runaways = m_LastRunaway = 0;
+	/* bool */		m_TortureDoneFlag = false;
 	m_JobManager.Setup();
 }
 
@@ -234,7 +201,7 @@ void cBrothelManager::Free()
 	if (m_Runaways)		delete m_Runaways;
 	/* sGirls */	m_Prison = m_LastPrison = m_Runaways = m_LastRunaway = 0;
 	/* int    */	m_NumPrison = m_NumRunaways = m_NumInventory = 0;
-	for (int i = 0; i<MAXNUM_INVENTORY; i++)
+	for (int i = 0; i < MAXNUM_INVENTORY; i++)
 	{
 		m_Inventory[i] = 0;
 		m_EquipedItems[i] = 0;
@@ -243,7 +210,7 @@ void cBrothelManager::Free()
 	/* long   */	m_BribeRate = m_Bank = 0;
 	/* int    */	m_NumBrothels = m_Influence = m_HandmadeGoods = m_Beasts = m_AlchemyIngredients = 0;
 	/* int    */	m_SupplyShedLevel = 1;
-	if (m_Objective)		delete m_Objective;
+	if (m_Objective)	delete m_Objective;
 	m_Objective = 0;
 	m_Dungeon.Free();
 	m_Rivals.Free();
@@ -263,7 +230,8 @@ void cBrothelManager::check_raid()
 	*
 	*	see if there exists a rival with infulence
 	*/
-	if (rival_mgr->player_safe() == false) {
+	if (rival_mgr->player_safe() == false)
+	{
 		rival = rival_mgr->get_influential_rival();
 	}
 	/*
@@ -273,7 +241,8 @@ void cBrothelManager::check_raid()
 	*	And then modified back upwards by rival influence
 	*/
 	int pc = m_Player.suspicion() - m_Influence;
-	if (rival) {
+	if (rival)
+	{
 		pc += rival->m_Influence / 4;
 	}
 	/*
@@ -298,7 +267,7 @@ void cBrothelManager::check_raid()
 	*
 	*	Let's make sure the player can tell
 	*/
-	if (g_Dice.percent(m_Influence)) 
+	if (g_Dice.percent(m_Influence))
 	{
 		ss << "the guard captain lectures you on the importance of crime prevention, whilst also passing on the Mayor's heartfelt best wishes.";
 		m_Player.suspicion(-5);
@@ -309,7 +278,7 @@ void cBrothelManager::check_raid()
 	*	if we have a rival influencing things, it might not matter
 	*	if the player is squeaky clean
 	*/
-	if (m_Player.disposition() > 0 && g_Dice.percent(rival->m_Influence / 2)) 
+	if (m_Player.disposition() > 0 && g_Dice.percent(rival->m_Influence / 2))
 	{
 		int fine = (g_Dice % 1000) + 150;
 		g_Gold.fines(fine);
@@ -331,7 +300,7 @@ void cBrothelManager::check_raid()
 	*	he's unlikely to have anything incriminating on
 	*	the premises. 20 disposition should see him
 	*/
-	if (g_Dice.percent(m_Player.disposition() * 5)) 
+	if (g_Dice.percent(m_Player.disposition() * 5))
 	{
 		ss << "they pronounce your operation to be entirely in accordance with the law.";
 		m_Player.suspicion(-5);
@@ -404,14 +373,10 @@ bool cBrothelManager::CheckScripts()
 	while (current)
 	{
 		sGirl* girl;
-
-		for (girl = current->m_Girls; girl; girl = girl->m_Next) {
-			/*
-			*			if no trigger for this girl, skip to the next one
-			*/
-			if (!girl->m_Triggers.GetNextQueItem()) {
-				continue;
-			}
+		for (girl = current->m_Girls; girl; girl = girl->m_Next)
+		{
+			// if no trigger for this girl, skip to the next one
+			if (!girl->m_Triggers.GetNextQueItem()) continue;
 			string fileloc = base.c_str();
 			fileloc += girl->m_Name;
 			girl->m_Triggers.ProcessNextQueItem(fileloc);
@@ -419,15 +384,13 @@ bool cBrothelManager::CheckScripts()
 		}
 		current = current->m_Next;
 	}
-
 	return false;
 }
 
 //bool cBrothelManager::UseAntiPreg(bool use)
 bool UseAntiPreg(bool use, bool isClinic, bool isStudio, bool isArena, bool isCentre, bool isHouse, bool isFarm, int whereisshe)
 {
-	if (!use)
-		return false;
+	if (!use) return false;
 	/*
 	*	anti-preg potions, we probably should allow
 	*	on-the-fly restocks. You can imagine someone
@@ -443,16 +406,25 @@ bool UseAntiPreg(bool use, bool isClinic, bool isStudio, bool isArena, bool isCe
 	*	girls get knocked up.
 	*
 	*	'course, we could do that anyway.. :)
+	*
+	*	`J` adjusted it so it uses your existing stock first
+	*	before it buys extras at a higher cost as emergency stock
+	*
 	*/
+	cTariff tariff;
+	int cost = tariff.anti_preg_price(1);
 	if (isClinic)
 	{
 		if (g_Clinic.GetBrothel(0)->m_KeepPotionsStocked)
 		{
-			g_Gold.consumable_cost(10);
+			if (g_Clinic.GetBrothel(0)->m_AntiPregPotions < g_Clinic.GetBrothel(0)->m_AntiPregUsed) cost *= 5;
+			g_Gold.consumable_cost(cost);
+			g_Clinic.GetBrothel(0)->m_AntiPregUsed++;
 			return true;
 		}
 		if (g_Clinic.GetBrothel(0)->m_AntiPregPotions > 0)
 		{
+			g_Clinic.GetBrothel(0)->m_AntiPregUsed++;
 			g_Clinic.GetBrothel(0)->m_AntiPregPotions--;
 			return true;
 		}
@@ -461,11 +433,14 @@ bool UseAntiPreg(bool use, bool isClinic, bool isStudio, bool isArena, bool isCe
 	{
 		if (g_Studios.GetBrothel(0)->m_KeepPotionsStocked)
 		{
-			g_Gold.consumable_cost(10);
+			if (g_Studios.GetBrothel(0)->m_AntiPregPotions < g_Studios.GetBrothel(0)->m_AntiPregUsed) cost *= 5;
+			g_Gold.consumable_cost(cost);
+			g_Studios.GetBrothel(0)->m_AntiPregUsed++;
 			return true;
 		}
 		if (g_Studios.GetBrothel(0)->m_AntiPregPotions > 0)
 		{
+			g_Studios.GetBrothel(0)->m_AntiPregUsed++;
 			g_Studios.GetBrothel(0)->m_AntiPregPotions--;
 			return true;
 		}
@@ -474,11 +449,14 @@ bool UseAntiPreg(bool use, bool isClinic, bool isStudio, bool isArena, bool isCe
 	{
 		if (g_Arena.GetBrothel(0)->m_KeepPotionsStocked)
 		{
-			g_Gold.consumable_cost(10);
+			if (g_Arena.GetBrothel(0)->m_AntiPregPotions < g_Arena.GetBrothel(0)->m_AntiPregUsed) cost *= 5;
+			g_Gold.consumable_cost(cost);
+			g_Arena.GetBrothel(0)->m_AntiPregUsed++;
 			return true;
 		}
 		if (g_Arena.GetBrothel(0)->m_AntiPregPotions > 0)
 		{
+			g_Arena.GetBrothel(0)->m_AntiPregUsed++;
 			g_Arena.GetBrothel(0)->m_AntiPregPotions--;
 			return true;
 		}
@@ -487,11 +465,14 @@ bool UseAntiPreg(bool use, bool isClinic, bool isStudio, bool isArena, bool isCe
 	{
 		if (g_Centre.GetBrothel(0)->m_KeepPotionsStocked)
 		{
-			g_Gold.consumable_cost(10);
+			if (g_Centre.GetBrothel(0)->m_AntiPregPotions < g_Centre.GetBrothel(0)->m_AntiPregUsed) cost *= 5;
+			g_Gold.consumable_cost(cost);
+			g_Centre.GetBrothel(0)->m_AntiPregUsed++;
 			return true;
 		}
 		if (g_Centre.GetBrothel(0)->m_AntiPregPotions > 0)
 		{
+			g_Centre.GetBrothel(0)->m_AntiPregUsed++;
 			g_Centre.GetBrothel(0)->m_AntiPregPotions--;
 			return true;
 		}
@@ -500,11 +481,14 @@ bool UseAntiPreg(bool use, bool isClinic, bool isStudio, bool isArena, bool isCe
 	{
 		if (g_House.GetBrothel(0)->m_KeepPotionsStocked)
 		{
-			g_Gold.consumable_cost(10);
+			if (g_House.GetBrothel(0)->m_AntiPregPotions < g_House.GetBrothel(0)->m_AntiPregUsed) cost *= 5;
+			g_Gold.consumable_cost(cost);
+			g_House.GetBrothel(0)->m_AntiPregUsed++;
 			return true;
 		}
 		if (g_House.GetBrothel(0)->m_AntiPregPotions > 0)
 		{
+			g_House.GetBrothel(0)->m_AntiPregUsed++;
 			g_House.GetBrothel(0)->m_AntiPregPotions--;
 			return true;
 		}
@@ -513,11 +497,14 @@ bool UseAntiPreg(bool use, bool isClinic, bool isStudio, bool isArena, bool isCe
 	{
 		if (g_Farm.GetBrothel(0)->m_KeepPotionsStocked)
 		{
-			g_Gold.consumable_cost(10);
+			if (g_Farm.GetBrothel(0)->m_AntiPregPotions < g_Farm.GetBrothel(0)->m_AntiPregUsed) cost *= 5;
+			g_Gold.consumable_cost(cost);
+			g_Farm.GetBrothel(0)->m_AntiPregUsed++;
 			return true;
 		}
 		if (g_Farm.GetBrothel(0)->m_AntiPregPotions > 0)
 		{
+			g_Farm.GetBrothel(0)->m_AntiPregUsed++;
 			g_Farm.GetBrothel(0)->m_AntiPregPotions--;
 			return true;
 		}
@@ -526,72 +513,20 @@ bool UseAntiPreg(bool use, bool isClinic, bool isStudio, bool isArena, bool isCe
 	{
 		if (g_Brothels.GetBrothel(whereisshe)->m_KeepPotionsStocked)
 		{
-			g_Gold.consumable_cost(10);
+			if (g_Brothels.GetBrothel(whereisshe)->m_AntiPregPotions < g_Brothels.GetBrothel(whereisshe)->m_AntiPregUsed) cost *= 5;
+			g_Gold.consumable_cost(cost);
+			g_Brothels.GetBrothel(whereisshe)->m_AntiPregUsed++;
 			return true;
 		}
 		if (g_Brothels.GetBrothel(whereisshe)->m_AntiPregPotions > 0)
 		{
+			g_Brothels.GetBrothel(whereisshe)->m_AntiPregUsed++;
 			g_Brothels.GetBrothel(whereisshe)->m_AntiPregPotions--;
 			return true;
 		}
 	}
 	return false;
 }
-
-/*	`J` replaced with building check
-bool cBrothelManager::UseAntiPreg(bool use)
-{
-if (!use)
-return false;
-/*
-*	anti-preg potions, we probably should allow
-*	on-the-fly restocks. You can imagine someone
-*	noticing things are running low and
-*	sending a girl running to the shops to get
-*	a restock
-*
-*	that said, there's a good argument here for
-*	making this the matron's job, and giving it a
-*	chance dependent on skill level. Could have a
-*	comedy event where the matron forgets, or the
-*	girl forgets (or disobeys) and half a dozen
-*	girls get knocked up.
-*
-*	'course, we could do that anyway.. :)
-* /
-if (m_KeepPotionsStocked)
-{
-g_Gold.consumable_cost(10);
-return true;
-}
-
-if (m_AntiPregPotions > 0)
-{
-m_AntiPregPotions--;
-return true;
-}
-
-return false;
-}
-bool cBrothelManager::UseAntiPreg(bool use, int BrothelID)
-{
-if (!use)
-return false;
-if (m_KeepPotionsStocked)
-{
-g_Gold.consumable_cost(10);
-return true;
-}
-
-if (m_AntiPregPotions > 0)
-{
-m_AntiPregPotions--;
-return true;
-}
-
-return false;
-}
-*/
 
 //void cBrothelManager::AddAntiPreg(int amount)
 void sBrothel::AddAntiPreg(int amount) // unused
@@ -613,7 +548,6 @@ void cBrothelManager::AddGirl(int brothelID, sGirl* girl)
 	else if (girl->m_InHouse)	girl->m_DayJob = girl->m_NightJob = JOB_HOUSEREST;
 	else if (girl->m_InFarm)	girl->m_DayJob = girl->m_NightJob = JOB_FARMREST;
 	else						girl->m_DayJob = girl->m_NightJob = JOB_RESTING;
-	//girl->m_DayJob = girl->m_NightJob = JOB_FILMFREETIME;
 
 	sBrothel* current = m_Parent;
 	while (current)
@@ -639,17 +573,13 @@ void cBrothelManager::AddGirl(int brothelID, sGirl* girl)
 
 void cBrothelManager::RemoveGirl(int brothelID, sGirl* girl, bool deleteGirl)
 {
-	if (girl == 0)
-		return;
-
+	if (girl == 0) return;
 	sBrothel* current = m_Parent;
 	while (current)
 	{
-		if (current->m_id == brothelID)
-			break;
+		if (current->m_id == brothelID) break;
 		current = current->m_Next;
 	}
-
 	sGirl* t = current->m_Girls;
 	bool found = false;
 	while (t)
@@ -665,17 +595,11 @@ void cBrothelManager::RemoveGirl(int brothelID, sGirl* girl, bool deleteGirl)
 
 	if (found == true)
 	{
-		if (girl->m_Next)
-			girl->m_Next->m_Prev = girl->m_Prev;
-		if (girl->m_Prev)
-			girl->m_Prev->m_Next = girl->m_Next;
-		if (girl == current->m_Girls)
-			current->m_Girls = girl->m_Next;
-		if (girl == current->m_LastGirl)
-			current->m_LastGirl = girl->m_Prev;
-
+		if (girl->m_Next)					girl->m_Next->m_Prev = girl->m_Prev;
+		if (girl->m_Prev)					girl->m_Prev->m_Next = girl->m_Next;
+		if (girl == current->m_Girls)		current->m_Girls = girl->m_Next;
+		if (girl == current->m_LastGirl)	current->m_LastGirl = girl->m_Prev;
 		girl->m_Next = girl->m_Prev = 0;
-
 		if (deleteGirl)
 		{
 			delete girl;
@@ -692,10 +616,7 @@ bool cBrothelManager::LoadDataXML(TiXmlHandle hBrothelManager)
 	//watch out, this frees dungeon and rivals too
 
 	TiXmlElement* pBrothelManager = hBrothelManager.ToElement();
-	if (pBrothelManager == 0)
-	{
-		return false;
-	}
+	if (pBrothelManager == 0) return false;
 
 	string message = "";
 
@@ -711,10 +632,7 @@ bool cBrothelManager::LoadDataXML(TiXmlHandle hBrothelManager)
 	g_LogFile.write(message);
 	m_Dungeon.LoadDungeonDataXML(hBrothelManager.FirstChild("Dungeon"));
 
-	// load preg potions, supply shed level, other goodies
-	/* `J` moved to individual buildings
-	pBrothelManager->QueryIntAttribute("AntiPregPotions", &m_AntiPregPotions);
-	*/
+	// load supply shed level, other goodies
 	pBrothelManager->QueryIntAttribute("SupplyShedLevel", &m_SupplyShedLevel);
 	pBrothelManager->QueryIntAttribute("HandmadeGoods", &m_HandmadeGoods);
 	pBrothelManager->QueryIntAttribute("Beasts", &m_Beasts);
@@ -725,21 +643,12 @@ bool cBrothelManager::LoadDataXML(TiXmlHandle hBrothelManager)
 	TiXmlElement* pRunaways = pBrothelManager->FirstChildElement("Runaways");
 	if (pRunaways)
 	{
-		for (TiXmlElement* pGirl = pRunaways->FirstChildElement("Girl");
-			pGirl != 0;
-			pGirl = pGirl->NextSiblingElement("Girl"))// load each girl and add her
-		{
+		for (TiXmlElement* pGirl = pRunaways->FirstChildElement("Girl"); pGirl != 0; pGirl = pGirl->NextSiblingElement("Girl"))
+		{	// load each girl and add her
 			sGirl* rgirl = new sGirl();
 			bool success = rgirl->LoadGirlXML(TiXmlHandle(pGirl));
-			if (success == true)
-			{
-				AddGirlToRunaways(rgirl);
-			}
-			else
-			{
-				delete rgirl;
-				continue;
-			}
+			if (success == true) { AddGirlToRunaways(rgirl); }
+			else { delete rgirl; continue; }
 		}
 	}
 
@@ -754,15 +663,7 @@ bool cBrothelManager::LoadDataXML(TiXmlHandle hBrothelManager)
 		{
 			sGirl* pgirl = new sGirl();
 			bool success = pgirl->LoadGirlXML(TiXmlHandle(pGirl));
-			if (success == true)
-			{
-				AddGirlToPrison(pgirl);
-			}
-			else
-			{
-				delete pgirl;
-				continue;
-			}
+			if (success == true) { AddGirlToPrison(pgirl); } else { delete pgirl; continue; }
 		}
 	}
 
@@ -794,13 +695,7 @@ bool cBrothelManager::LoadDataXML(TiXmlHandle hBrothelManager)
 	message = "************ Loading players inventory ************";
 	g_LogFile.write(message);
 	//now would be a great time to move this to cPlayer
-	LoadInventoryXML(hBrothelManager.FirstChild("Inventory"),
-		m_Inventory, m_NumInventory, m_EquipedItems, m_NumItem);
-
-	/* `J` moved to individual buildings
-	// load potions restock
-	pBrothelManager->QueryValueAttribute<bool>("KeepPotionsStocked", &m_KeepPotionsStocked);
-	*/
+	LoadInventoryXML(hBrothelManager.FirstChild("Inventory"), m_Inventory, m_NumInventory, m_EquipedItems, m_NumItem);
 
 	// load alcohol restock
 	//	if (ifs.peek()=='\n') ifs.ignore(1,'\n');
@@ -813,22 +708,12 @@ bool cBrothelManager::LoadDataXML(TiXmlHandle hBrothelManager)
 	TiXmlElement* pBrothels = pBrothelManager->FirstChildElement("Brothels");
 	if (pBrothels)
 	{
-		for (TiXmlElement* pBrothel = pBrothels->FirstChildElement("Brothel");
-			pBrothel != 0;
-			pBrothel = pBrothel->NextSiblingElement("Brothel"))
+		for (TiXmlElement* pBrothel = pBrothels->FirstChildElement("Brothel"); pBrothel != 0; pBrothel = pBrothel->NextSiblingElement("Brothel"))
 		{
 			sBrothel* current = new sBrothel();
 			bool success = current->LoadBrothelXML(TiXmlHandle(pBrothel));
-			if (success == true)
-			{
-				AddBrothel(current);
-			}
-			else
-			{
-				delete current;
-				continue;
-			}
-
+			if (success == true) { AddBrothel(current); }
+			else { delete current; continue; }
 		} // load a brothel
 	}
 	return true;
@@ -838,21 +723,10 @@ bool sBrothel::LoadBrothelXML(TiXmlHandle hBrothel)
 {
 	//no need to init this, we just created it
 	TiXmlElement* pBrothel = hBrothel.ToElement();
-	if (pBrothel == 0)
-	{
-		return false;
-	}
-
-	if (pBrothel->Attribute("Name"))
-	{
-		m_Name = pBrothel->Attribute("Name");
-	}
-
+	if (pBrothel == 0) return false;
+	if (pBrothel->Attribute("Name")) m_Name = pBrothel->Attribute("Name");
 	int tempInt = 0;
-
-	std::string message = "Loading brothel: ";
-	message += m_Name;
-	g_LogFile.write(message);
+	g_LogFile.write("Loading brothel: " + m_Name);
 
 	// load variables for sex restrictions
 	pBrothel->QueryValueAttribute<bool>("RestrictAnal", &m_RestrictAnal);
@@ -867,6 +741,7 @@ bool sBrothel::LoadBrothelXML(TiXmlHandle hBrothel)
 
 	pBrothel->QueryValueAttribute<unsigned short>("AdvertisingBudget", &m_AdvertisingBudget);
 	pBrothel->QueryIntAttribute("AntiPregPotions", &m_AntiPregPotions);
+	pBrothel->QueryIntAttribute("AntiPregUsed", &m_AntiPregUsed);
 	pBrothel->QueryValueAttribute<bool>("KeepPotionsStocked", &m_KeepPotionsStocked);
 
 	pBrothel->QueryIntAttribute("Bar", &tempInt); m_Bar = tempInt; tempInt = 0;
@@ -876,7 +751,6 @@ bool sBrothel::LoadBrothelXML(TiXmlHandle hBrothel)
 	pBrothel->QueryIntAttribute("HasBarStaff", &tempInt); m_HasBarStaff = tempInt; tempInt = 0;
 	pBrothel->QueryIntAttribute("id", &m_id);
 	pBrothel->QueryIntAttribute("HasGambStaff", &tempInt); m_HasGambStaff = tempInt; tempInt = 0;
-	//pBrothel->QueryIntAttribute("MovieRunTime", &m_MovieRunTime);
 	pBrothel->QueryIntAttribute("NumRooms", &tempInt); m_NumRooms = tempInt; tempInt = 0;
 	pBrothel->QueryIntAttribute("MaxNumRooms", &tempInt); m_MaxNumRooms = tempInt; tempInt = 0;
 	if (m_MaxNumRooms < 200)		m_MaxNumRooms = 200;
@@ -893,27 +767,14 @@ bool sBrothel::LoadBrothelXML(TiXmlHandle hBrothel)
 	TiXmlElement* pGirls = pBrothel->FirstChildElement("Girls");
 	if (pGirls)
 	{
-		for (TiXmlElement* pGirl = pGirls->FirstChildElement("Girl");
-			pGirl != 0;
-			pGirl = pGirl->NextSiblingElement("Girl"))// load each girl and add her
-		{
+		for (TiXmlElement* pGirl = pGirls->FirstChildElement("Girl"); pGirl != 0; pGirl = pGirl->NextSiblingElement("Girl"))
+		{	// load each girl and add her
 			sGirl* girl = new sGirl();
 			bool success = girl->LoadGirlXML(TiXmlHandle(pGirl));
-			if (success == true)
-			{
-				girl->where_is_she = m_id;
-				AddGirl(girl);
-			}
-			else
-			{
-				delete girl;
-				continue;
-			}
+			if (success == true) { girl->where_is_she = m_id; AddGirl(girl); }
+			else { delete girl; continue; }
 		}
 	}
-
-	//commented out before the conversion to XML
-	//building.load(ifs);
 	return true;
 }
 
@@ -936,22 +797,14 @@ TiXmlElement* cBrothelManager::SaveDataXML(TiXmlElement* pRoot)
 {
 	TiXmlElement* pBrothelManager = new TiXmlElement("Brothel_Manager");
 	pRoot->LinkEndChild(pBrothelManager);
-	string message;
 
-	// save the Player
-	//         ...................................................
-	message = "************* saving Player data ******************";
-	g_LogFile.write(message);
+	g_LogFile.write("************* saving Player data ******************");
 	m_Player.SavePlayerXML(pBrothelManager);
 
-	// save the dungeon
-	//         ...................................................
-	message = "************* saving dungeon data *****************";
-	g_LogFile.write(message);
+	g_LogFile.write("************* saving dungeon data *****************");
 	m_Dungeon.SaveDungeonDataXML(pBrothelManager);
 
 	// save preg potions, supply shed level, other goodies
-	//	pBrothelManager->SetAttribute("AntiPregPotions", m_AntiPregPotions); // `J` moved antipreg to individual buildings
 	pBrothelManager->SetAttribute("SupplyShedLevel", m_SupplyShedLevel);
 	pBrothelManager->SetAttribute("HandmadeGoods", m_HandmadeGoods);
 	pBrothelManager->SetAttribute("Beasts", m_Beasts);
@@ -994,41 +847,25 @@ TiXmlElement* cBrothelManager::SaveDataXML(TiXmlElement* pRoot)
 		pObjective->SetAttribute("Target", m_Objective->m_Target);
 	}
 
-	// save rivals
-	//         ...................................................
-	message = "***************** Saving rivals *******************";
-	g_LogFile.write(message);
+	g_LogFile.write("***************** Saving rivals *******************");
 	m_Rivals.SaveRivalsXML(pBrothelManager);
 
-	// save inventory
-	//         ...................................................
-	message = "************** Saving players inventory ***********";
-	g_LogFile.write(message);
+	g_LogFile.write("************** Saving players inventory ***********");
 	TiXmlElement* pInventory = new TiXmlElement("Inventory");
 	pBrothelManager->LinkEndChild(pInventory);
 	SaveInventoryXML(pInventory, m_Inventory, MAXNUM_INVENTORY, m_EquipedItems, m_NumItem);
 
-	/* `J` moved to individual buildings
-	// save potions restock
-	pBrothelManager->SetAttribute("KeepPotionsStocked", m_KeepPotionsStocked);
-	*/
-
 	// save alcohol restock
 	//	ofs<<m_KeepAlcStocked<<endl;
 
-	// save brothels
+	g_LogFile.write("***************** Saving brothels *****************");
 	TiXmlElement* pBrothels = new TiXmlElement("Brothels");
 	pBrothelManager->LinkEndChild(pBrothels);
 	sBrothel* current = m_Parent;
-	//         ...................................................
-	message = "***************** Saving brothels *****************";
-	g_LogFile.write(message);
+
 	while (current)
 	{
-		message = "Saving brothel: ";
-		message += current->m_Name;
-		g_LogFile.write(message);
-
+		g_LogFile.write("Saving brothel: " + current->m_Name);
 		current->SaveBrothelXML(pBrothels);
 		current = current->m_Next;
 	}
@@ -1054,6 +891,7 @@ TiXmlElement* sBrothel::SaveBrothelXML(TiXmlElement* pRoot)
 
 	pBrothel->SetAttribute("AdvertisingBudget", m_AdvertisingBudget);
 	pBrothel->SetAttribute("AntiPregPotions", m_AntiPregPotions);
+	pBrothel->SetAttribute("AntiPregUsed", m_AntiPregUsed);
 	pBrothel->SetAttribute("KeepPotionsStocked", m_KeepPotionsStocked);
 
 	pBrothel->SetAttribute("Bar", m_Bar);
@@ -1063,7 +901,6 @@ TiXmlElement* sBrothel::SaveBrothelXML(TiXmlElement* pRoot)
 	pBrothel->SetAttribute("HasBarStaff", m_HasBarStaff);
 	pBrothel->SetAttribute("id", m_id);
 	pBrothel->SetAttribute("HasGambStaff", m_HasGambStaff);
-	//pBrothel->SetAttribute("MovieRunTime", m_MovieRunTime);
 	pBrothel->SetAttribute("NumRooms", m_NumRooms);
 	if (m_MaxNumRooms < 200)		m_MaxNumRooms = 200;
 	else if (m_MaxNumRooms > 600)	m_MaxNumRooms = 600;
@@ -1095,8 +932,6 @@ TiXmlElement* sBrothel::SaveBrothelXML(TiXmlElement* pRoot)
 	/*
 	*		save the building setup
 	*/
-	//this was commented out before the conversion to XML
-	//current->building.save(ofs, current->m_Name);
 	return pBrothel;
 }
 
@@ -1140,20 +975,16 @@ void cBrothelManager::DestroyBrothel(int ID)
 
 	while (current->m_Next)
 	{
-		if (current->m_Next->m_id == ID)
-			break;
+		if (current->m_Next->m_id == ID) break;
 		current = current->m_Next;
 	}
 
 	if (current)
 	{
 		sBrothel* temp = current->m_Next;
-
 		current->m_Next = temp->m_Next;
-
 		temp->m_Next = 0;
 		delete temp;
-
 		m_NumBrothels--;
 	}
 }
@@ -1163,40 +994,16 @@ void cBrothelManager::check_rivals()
 {
 	int num_rivals = m_Rivals.GetNumRivals();
 	static bool peace = false;
-	/*
-	*	a full set of rivals = nothing to do
-	*/
-	if (num_rivals > 5) {
-		return;
-	}
-	/*
-	*	if there are no rivals, and we were not
-	*	at peace last turn, peace has broken out
-	*/
-	if (num_rivals == 0 && !peace)
+	if (num_rivals > 5) return;					// a full set of rivals = nothing to do
+	if (num_rivals == 0 && !peace)				// if there are no rivals, and we were not at peace last turn, peace has broken out
 	{
 		peace = true;
 		peace_breaks_out();
 	}
-	/*
-	*	we only create new rivals after the game has
-	*	been won
-	*/
-	if (m_Player.m_WinGame == false) {
-		return;
-	}
-	/*
-	*	create new random rival
-	*/
-	if (g_Dice.percent(70)) {
-		return;		// or not!
-	}
-	/*
-	*	flag the war as on again, (should be a field somewhere)
-	*	create a new rival and tell the player the good news
-	*/
-	peace = false;
-	m_Rivals.CreateRandomRival();
+	if (m_Player.m_WinGame == false) return;	// we only create new rivals after the game has been won
+	if (g_Dice.percent(70)) return;				// create new random rival or not!
+	peace = false;								// flag the war as on again, (should be a field somewhere)
+	m_Rivals.CreateRandomRival();				// create a new rival and tell the player the good news
 	g_MessageQue.AddToQue(new_rival_text(), COLOR_RED);
 }
 
@@ -1282,239 +1089,6 @@ string cBrothelManager::new_rival_text()
 	case Demon:
 		ss << "Somewhere in Crossgate, a hand trembled inscribing a pentagram; a tongue stumbled over the nine syllables of the charm of binding. A magical being slipped his arcane bonds and slaughtered those mages foolish enough to dream they might command it.\n\nA demon lord now stalks the streets of the city.\n\nWhich, in itself, is not so big a deal. It is not of unheard that the aristocracy of Hell should find themselves stumbling dazed and confused through Crossgate market. They just tend to recover quickly and promptly open a portal home.\n\nBut not this one. This one chooses to briefly linger, to partake of Crossgate society and seek such amusements as the city can offer. Unfortunately, it seems the demon finds amusement trafficking in human misery and human sex. As do you, in the eyes of many.\n\nFor a demon, 'briefly' may be anything from a day to a thousand years. You cannot afford to wait until it grows bored. A demon lord is a formidable opponent, but to ignore this challenge will send entirely the wrong signal to the other would be whore-masters in the city.\n\nLike it or not, this means war.";
 		break;
-
-		/*
-	case Slaver:
-		ss << gettext("A lieutenant reports that one of the ")
-			<< gettext("professional slavers, finding customers ")
-			<< gettext("be scarce, has taken to whoring out ")
-			<< his << gettext(" slavegirls to make ends meet.")
-			<< gettext("Your men arranged a meet with ") << him
-			<< gettext(" in order to explain your position ")
-			<< gettext("on the subject, but the discussion ")
-			<< gettext("did not go well, ending with bared ")
-			<< gettext("steel and threats of blood.")
-			<< gettext("\n\n")
-			<< gettext("It would seem you have a challenger.")
-			;
-		break;
-	case Gladiator:
-		ss << gettext("Ask any Crossgate sports fan who rules the Arenas ");
-		ss << gettext("of the city.  Almost always, the answer will be ");
-		ss << gettext("the same. For five long years one ") << gladiator << gettext(" has ");
-		ss << gettext("stood ") << his << gettext(" ground on the bloody sands and defied ");
-		ss << gettext("all who came before ") << him << gettext(".");
-		ss << gettext("\n\n");
-		ss << gettext("Last week, the ") << gladiator << gettext(" bought ") << his;
-		ss << gettext(" freedom from ");
-		ss << gettext("the arena, and chose to celebrate the occasion at ");
-		ss << gettext("one of your brothels.  Sadly, an overindulgence ");
-		ss << gettext("in wine led to harsh words and a rash vow to ");
-		ss << gettext("show you how a whorehouse SHOULD be run. ");
-		ss << gettext("\n\n");
-		ss << gettext("With anyone else, the matter would have ended ");
-		ss << gettext("when the morning brought sobriety. But this is ");
-		ss << gettext("a ") << man << gettext(" who has never turned ") << his << gettext(" back ");
-		ss << gettext("on any sort of challenge. With wealthy admirers ");
-		ss << gettext("supplying premises and finance, and with a handful ");
-		ss << gettext("of arena veterans to provide the core of ") << his;
-		ss << gettext(" enforcers, this ");
-		ss << gettext("is a challenger you would be foolish to ignore.");
-		break;
-	case Goon:
-		ss << gettext("The ") << boy << gettext(" was just skin and bones; a dull eyed ")
-			<< gettext("waif from gutters of Sleaze Street, a dozen like ")
-			<< him << gettext(" on any street corner. But put a knife in ")
-			<< his << gettext(" hands and the ") << boy << gettext(" became an artist, ")
-			<< gettext("painting effortless masterpieces in blood and ")
-			<< gettext("greased lightning. ")
-			<< gettext("\n\n")
-			<< gettext("Quickly recruited into one of the goon squads, ")
-			<< gettext("it soon became apparent that behind that flat ")
-			<< gettext("unblinking stare, there lurked a mind almost ")
-			<< gettext("as keen as ") << his << gettext(" blades. The ") << boy << gettext(" rose quickly, ")
-			<< gettext("coming to head ") << his << gettext(" own squad before becoming ")
-			<< gettext("one of your trusted lieutenants. If only ") << his << gettext(" ")
-			<< gettext("ambition had stopped there... ")
-			<< gettext("\n\n")
-			<< "" << (male ? gettext("His") : gettext("Her")) << gettext(" challenge ")
-			<< gettext("was almost over before it began; ")
-			<< gettext("for you that is. That you still live says more ")
-			<< gettext("about the skill of your healers than any talent ")
-			<< gettext("you might lay claim to.  Your newest rival is not ")
-			<< gettext("only a deadly fighter and a clever strategist, ")
-			<< gettext("but one who knows your operation, inside and out. ")
-			<< gettext("\n\n")
-			<< gettext("This will not be easy.")
-			;
-		break;
-	case Slave:
-		ss << gettext("There are ways to beat a slaver tattoo. It wouldn't ")
-			<< gettext("do were that to become widely known, of course. ")
-			<< gettext("Nevertheless there are ways around it. ")
-			<< gettext("One such is to find an area of unstable spacetime. ")
-			<< gettext("Do it right, and you can overload the tracking ")
-			<< gettext("spell, and the enchantment just falls apart")
-			<< gettext("This is, of course wildly dangerous, but many ")
-			<< gettext("escapees nevertheless head straight for the ")
-			<< gettext("Crossgate sewers, which on a bad day can give ")
-			<< gettext("the catacombs a run for their money.")
-			<< gettext("\n\n")
-			<< gettext("Over time, a community of ecapees has grown up ")
-			<< gettext("in the sewers, survivor types, grown hardy in ")
-			<< gettext("the most hostile environment. And as long as they ")
-			<< gettext("stay down there, no one much minds. If nothing else ")
-			<< gettext("they keep the monster population down. But now ")
-			<< gettext("they seem to be organising a crusade. Against ")
-			<< gettext("slavery. Against exploitation. Against you.")
-			<< gettext("\n\n")
-			<< gettext("Rumour has it that their leader is one of your ")
-			<< gettext("offspring, conceived of rape, born into slavery. ")
-			<< gettext("True or not, this new factions seems determined ")
-			<< gettext("to bring about your downfall.")
-			<< gettext("\n\n")
-			<< gettext("This time, as the bards would say, it is personal.")
-			;
-		break;
-	case Mage:
-		ss << gettext("The ") << sorcerer << gettext(" blew into town with a travelling ");
-		ss << gettext("entertainer show, promising exotic pleasures ");
-		ss << gettext("and the taste of forbidden fruit. But behind the ");
-		ss << gettext("showman's patter and the coloured smoke, the pleasures ");
-		ss << gettext("on offer were of a distinctly carnal nature, and no ");
-		ss << gettext("more exotic than those you yourself could offer.");
-		ss << gettext("\n\n");
-		ss << gettext("For a travelling show, this need not be a ");
-		ss << gettext("problem. For a week, or even two, you can ");
-		ss << gettext("stand to see a little competition. However, ");
-		ss << gettext("the newcomer has been here a month now and ");
-		ss << gettext("shows no sign of moving on. On the contrary, ");
-		ss << gettext("he appears to be shopping for permanent premises.");
-		ss << gettext("\n\n");
-		ss << gettext("With this in mind, you send some men ");
-		ss << gettext("to explain the situation. ");
-		ss << gettext("To everyone's surprise, it turns out ");
-		ss << gettext("that behind the glib charlatanry, there lies ");
-		ss << gettext("genuine magecraft, most likely tantric in nature.");
-		ss << gettext("\n\n");
-		ss << gettext("In your organisation you have no shortage of ");
-		ss << gettext("mages. Any fighting force in Crossgate needs ");
-		ss << gettext("a battle mage or two. This newcomer however ");
-		ss << gettext("operates on a level far beyond what you are ");
-		ss << gettext("used to. And he seems determined to stay, and ");
-		ss << gettext("challenge you for control of the city.");
-
-
-		break;
-	case Priest:
-		break;
-	case Noble:
-		ss << gettext("They say ") << he << gettext(" is a noble, an exile from ") << his << gettext(" ");
-		ss << gettext("native land. Certainly, ") << he << gettext(" has the manners of a courtier ");
-		ss << gettext("and the amused weariness of the jaded dilettante.");
-		ss << gettext("\n\n");
-		ss << gettext("And yet it seems there is steel behind the foppery, as ");
-		ss << gettext("many a Crossgate duelist has learned. And a wit to ");
-		ss << gettext("match the blade as well. An admirable ") << fellow << gettext(" this, ");
-		ss << gettext("one you would be pleased to call 'friend', if only ...");
-		ss << gettext("\n\n");
-		ss << gettext("Earlier this week, your men were explaining to a handful of ");
-		ss << gettext("freelance scrubbers how ");
-		ss << gettext("prostitution worked in this city. If only ") << he << gettext(" had not chosen ");
-		ss << gettext("to take the women's side against your men. If only ");
-		ss << his << gettext(" rash defiance had not caught the imagination of ");
-		ss << gettext("the city's duellists.");
-		ss << gettext("\n\n");
-		ss << gettext("Alas, such was not to be.");
-		ss << gettext("\n\n");
-		ss << gettext("En Garde!");
-		break;
-	case Technologist:
-		ss << gettext("From the distant city of Abby's Crossing comes a new ");
-		ss << gettext("rival to challenge for your throne, wielding some ");
-		ss << gettext("strange non-magic ") << he << gettext(" calls 'technology', ");
-		ss << gettext("an alien art of smoke and steam and noise and ");
-		ss << gettext("lighting; one they say functions strangely in Mundiga, ");
-		ss << gettext("when it chooses to work at all.");
-		ss << gettext("\n\n");
-		ss << gettext("But the hollow metal men that make up ") << his;
-		ss << gettext(" enforcers would seem to work with deadly efficicency ");
-		ss << gettext("and the strange collapsible maze ") << he << gettext(" calls a ");
-		ss << gettext("'tesseract' seems to share many properties with the ");
-		ss << gettext("catacombs under your headquarters. Then there are ");
-		ss << gettext("rumours of strange procedures that can break a ");
-		ss << gettext("slavegirl's will, far faster than the most skilled of ");
-		ss << gettext("Crossgate's torturers.");
-		ss << gettext("\n\n");
-		ss << gettext("In short, far from unreliable, ") << his << gettext(" arts seem deadly ");
-		ss << gettext("efficient to you. You have no idea what other surprises ");
-		ss << gettext("this otherworldly artisan may have up ") << his << gettext(" sleeve, but ");
-		ss << gettext("one thing is for certain: this challenge may not go ");
-		ss << gettext("unanswered.");
-		break;
-	case Patriarch:
-		ss << gettext("Outside the walls of Crossgate, there is a shanty-town ");
-		ss << gettext("maze of tumbledown hovels, teeming with the poorest ");
-		ss << gettext("and most desperate of the City's inhabitants. Polygamy ");
-		ss << gettext("and incest are rife here, and extended families can ");
-		ss << gettext("run into the hundreds");
-		ss << gettext("\n\n");
-		ss << gettext("One such family is ruled by the iron will of a ");
-		ss << gettext("dreadful old ") << patriarch << gettext(" with a well earned ");
-		ss << gettext("reputation for utter ruthlessness. For years ") << he << gettext(" ");
-		ss << gettext("has sent ") << his << gettext(" progeny to the city markets, to trade, to ");
-		ss << gettext("steal, to bring back money for the clan in any way ");
-		ss << gettext("they can.");
-		ss << gettext("\n\n");
-		ss << gettext("Now it seems they are expanding their operation to ");
-		ss << gettext("include organised prostitution. Bad move.");
-		ss << gettext("\n\n");
-		ss << gettext("Something about the ") << patriarch << gettext("'s operation ");
-		ss << gettext("disturbs you. There is a coldness in the way ") << he << gettext(" ");
-		ss << gettext("sends sons and grandsons out to die for ") << him << gettext("; the way ");
-		ss << he << gettext("casually rapes and enslaves ") << his << gettext(" own daughters and ");
-		ss << gettext("granddaughters before sending them off to whore for ");
-		ss << him << gettext(". This ") << man << gettext(" holds up a mirror to what you are ");
-		ss << gettext("- or perhaps to what you could easily become. The ");
-		ss << gettext("image it presents is far from flattering.");
-		ss << gettext("\n\n");
-		ss << gettext("Personal feelings aside, this is a situation that ");
-		ss << gettext("can only get worse. The time to end this, is now.");
-		break;
-	case Demon:
-		ss << gettext("Somewhere in Crossgate, a hand trembled ");
-		ss << gettext("inscribing a pentagram; a tongue stumbled over ");
-		ss << gettext("the nine syllables of the charm of binding. ");
-		ss << gettext("A magical being slipped his arcane bonds ");
-		ss << gettext("and slaughtered those mages foolish enough to dream ");
-		ss << gettext("they might command it.");
-		ss << gettext("\n\n");
-		ss << gettext("A demon lord now stalks the streets of the city.");
-		ss << gettext("\n\n");
-		ss << gettext("Which, in itself, is not so big a deal. It is not of ");
-		ss << gettext("unheard that the aristocracy of Hell should find ");
-		ss << gettext("themselves stumbling dazed and confused through ");
-		ss << gettext("Crossgate market.  They just tend to recover quickly ");
-		ss << gettext("and promptly open a portal home.");
-		ss << gettext("\n\n");
-		ss << gettext("But not this one. This one chooses to briefly linger, ");
-		ss << gettext("to partake of Crossgate society and seek such ");
-		ss << gettext("amusements as the city can offer. Unfortunately, it ");
-		ss << gettext("seems the demon finds amusement trafficking in human ");
-		ss << gettext("misery and human sex. As do you, in the eyes of many.");
-		ss << gettext("\n\n");
-		ss << gettext("For a demon, 'briefly' may be anything from a ");
-		ss << gettext("day to a thousand years. You cannot afford to wait ");
-		ss << gettext("until it grows bored. A demon lord is a formidable ");
-		ss << gettext("opponent, but to ignore this challenge will send ");
-		ss << gettext("entirely the wrong signal to the other would be ");
-		ss << gettext("whore-masters in the city.");
-		ss << gettext("\n\n");
-		ss << gettext("Like it or not, this means war.");
-		break;
-
-
-		//*/
 	}
 	return ss.str();
 }
@@ -1587,47 +1161,80 @@ void cBrothelManager::UpdateBrothels()
 		current->m_Happiness = current->m_MiscCustomers = current->m_TotalCustomers = 0;
 		current->m_Finance.zero();
 		current->m_Events.Clear();
+		current->m_AntiPregUsed = 0;
 
-		// Clear the girls' events from the last turn
+		// `J` do all the things that the girls do at the start of the turn
 		sGirl* cgirl = current->m_Girls;
 		while (cgirl)
 		{
-			cgirl->where_is_she = current->m_id;
-			cgirl->m_InMovieStudio = cgirl->m_InArena = cgirl->m_InCentre = 
-				cgirl->m_InClinic = cgirl->m_InFarm = cgirl->m_InHouse = false;
-			cgirl->m_Events.Clear();
-			cgirl->m_Pay = cgirl->m_Tips = 0;
-			// `J` Check for out of building jobs and set yesterday jobs for everyone first
-			if (cgirl->m_DayJob < firstjob && cgirl->m_DayJob > lastjob)		cgirl->m_DayJob = restjob;
-			if (cgirl->m_NightJob < firstjob && cgirl->m_NightJob > lastjob)	cgirl->m_NightJob = restjob;
-			cgirl->m_YesterDayJob = cgirl->m_DayJob;
-			cgirl->m_YesterNightJob = cgirl->m_NightJob;
+			string girlName = cgirl->m_Realname;
 
-
-			if (cgirl->m_JustGaveBirth)		// if she gave birth, let her rest this week
+			// Remove any dead bodies from last week
+			if (cgirl->health() <= 0)
 			{
-				if (cgirl->m_DayJob != restjob)		cgirl->m_PrevDayJob = cgirl->m_DayJob;
-				if (cgirl->m_NightJob != restjob)	cgirl->m_PrevNightJob = cgirl->m_NightJob;
-				cgirl->m_DayJob = cgirl->m_NightJob = restjob;
+				sGirl* DeadGirl = cgirl;
+				current = (current->m_Next) ? current->m_Next : 0;
+				UpdateAllGirlsStat(current, STAT_PCFEAR, 2);	// increase all the girls fear of the player for letting her die (weather his fault or not)
+				UpdateAllGirlsStat(current, STAT_PCHATE, 1);	// increase all the girls hate of the player for letting her die (weather his fault or not)
+				// Two messages go into the girl queue...
+				ss.str("");
+				ss << girlName << " has died from her injuries, the other girls all fear and hate you a little more.";
+				DeadGirl->m_Events.AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_DANGER);
+				g_MessageQue.AddToQue(ss.str(), COLOR_RED);
+				ss.str("");
+				ss << girlName << " has died from her injuries.  Her body will be removed by the end of the week.";
+				DeadGirl->m_Events.AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_SUMMARY);
+				RemoveGirl(current->m_id, DeadGirl);
+				DeadGirl = 0;
+				ss.str("");
 			}
+			else
+			{
+				cgirl->where_is_she = current->m_id;
+				cgirl->m_InMovieStudio = cgirl->m_InArena = cgirl->m_InCentre = cgirl->m_InClinic = cgirl->m_InFarm = cgirl->m_InHouse = false;
+				cgirl->m_Events.Clear();
+				cgirl->m_Pay = cgirl->m_Tips = 0;
+				cgirl->m_Tort = false;
+
+				// `J` Check for out of building jobs
+				if (cgirl->m_DayJob < firstjob && cgirl->m_DayJob > lastjob)		cgirl->m_DayJob = restjob;
+				if (cgirl->m_NightJob < firstjob && cgirl->m_NightJob > lastjob)	cgirl->m_NightJob = restjob;
+				// set yesterday jobs for everyone
+				cgirl->m_YesterDayJob = cgirl->m_DayJob;
+				cgirl->m_YesterNightJob = cgirl->m_NightJob;
 
 
+				do_food_and_digs(current, cgirl);		// Brothel only update for girls accommodation level
+				g_Girls.CalculateGirlType(cgirl);		// update the fetish traits
+				g_Girls.updateGirlAge(cgirl, true);		// update birthday counter and age the girl
+				g_Girls.updateTempStats(cgirl);			// update temp stats
+				g_Girls.updateTempSkills(cgirl);		// update temp skills
+				g_Girls.updateTempTraits(cgirl);		// update temp traits
+				g_Girls.HandleChildren(cgirl);			// handle pregnancy and children growing up
+				g_Girls.updateSTD(cgirl);				// health loss to STD's				NOTE: Girl can die
+				g_Girls.updateHappyTraits(cgirl);		// Update happiness due to Traits	NOTE: Girl can die
+				updateGirlTurnBrothelStats(cgirl);		// Update daily stats				Now only runs once per day
+				g_Girls.updateGirlTurnStats(cgirl);		// Stat Code common to Dugeon and Brothel
+
+				if (cgirl->m_JustGaveBirth)		// if she gave birth, let her rest this week
+				{
+					if (cgirl->m_DayJob != restjob)		cgirl->m_PrevDayJob = cgirl->m_DayJob;
+					if (cgirl->m_NightJob != restjob)	cgirl->m_PrevNightJob = cgirl->m_NightJob;
+					cgirl->m_DayJob = cgirl->m_NightJob = restjob;
+				}
 
 
-			cgirl = cgirl->m_Next;
+				cgirl = cgirl->m_Next;
+			}
 		}
 
-		// handle advertising jobs to determine advertising multiplier
-		//m_JobManager.do_advertising(current);
-		/* Night advertising girls aren't going to affect day business. Splitting
-		* this to happen twice, once for day shift and once for night shift, and
-		* before customers are generated in that particular shift */
-
-		// Generate customers for the brothel for the day shift and update girls
-		current->m_SecurityLevel -= 10; // Moved to here so Security drops once per day instead of everytime a girl works security -PP
+		// Moved to here so Security drops once per day instead of everytime a girl works security -PP
+		current->m_SecurityLevel -= 10;
 		current->m_SecurityLevel -= current->m_NumGirls;	//`J` m_SecurityLevel is extremely over powered. Reducing it's power a lot.
 		if (current->m_SecurityLevel <= 0) current->m_SecurityLevel = 0;	 // crazy added
-		
+
+
+		// Generate customers for the brothel for the day shift and update girls
 		m_JobManager.do_advertising(current, 0);
 		g_Customers.GenerateCustomers(current, 0);
 		current->m_TotalCustomers += g_Customers.GetNumCustomers();
@@ -1646,12 +1253,10 @@ void cBrothelManager::UpdateBrothels()
 		// get the misc customers
 		current->m_TotalCustomers += current->m_MiscCustomers;
 
-		string data = "";
-		_itoa(current->m_TotalCustomers, buffer, 10);
-		data += buffer;
-		data += gettext(" customers visited the building.");
+		ss.str("");
+		ss << current->m_TotalCustomers << " customers visited the building.";
 
-		current->m_Events.AddMessage(data, IMGTYPE_PROFILE, EVENT_BROTHEL);
+		current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_BROTHEL);
 
 		// empty rooms cost 2 gold to maintain
 		current->m_Finance.building_upkeep(tariff.empty_room_cost(current));
@@ -1660,37 +1265,88 @@ void cBrothelManager::UpdateBrothels()
 		if (current->m_NumGirls > 0)
 			current->m_Fame = (TotalFame(current) / current->m_NumGirls);
 		if (current->m_Happiness > 0 && g_Customers.GetNumCustomers())
-			current->m_Happiness = current->m_Happiness / current->m_TotalCustomers;
-		if (current->m_Happiness>100)
-			current->m_Happiness = 100;
+			current->m_Happiness = min(100, current->m_Happiness / current->m_TotalCustomers);
+		
 
 		// advertising costs are set independently for each brothel
 		current->m_Finance.advertising_costs(tariff.advertising_costs(current->m_AdvertisingBudget));
 
-		string data2 = "";
-		data2 += gettext("Your advertising budget for this brothel is ");
-		_itoa(current->m_AdvertisingBudget, buffer, 10);
-		data2 += buffer;
-		data2 += gettext(" gold.");
+		ss.str("");
+		ss << "Your advertising budget for this brothel is " << current->m_AdvertisingBudget << " gold.";
 		if (tariff.advertising_costs(current->m_AdvertisingBudget) != current->m_AdvertisingBudget)
 		{
-			data2 += gettext(" However, due to your configuration, you instead had to pay ");
-			_itoa(tariff.advertising_costs(current->m_AdvertisingBudget), buffer, 10);
-			data2 += buffer;
-			data2 += gettext(" gold.");
+			ss << " However, due to your configuration, you instead had to pay " <<
+				tariff.advertising_costs(current->m_AdvertisingBudget) << " gold.";
 		}
-		current->m_Events.AddMessage(data2, IMGTYPE_PROFILE, EVENT_BROTHEL);
+		current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_BROTHEL);
+
+		// `J` include antipreg potions in summary
+		ss.str("");
+		if (current->m_AntiPregPotions > 0 || current->m_AntiPregUsed > 0)
+		{
+			int num = current->m_AntiPregPotions;
+			int used = current->m_AntiPregUsed;
+			bool stocked = current->m_KeepPotionsStocked;
+			bool matron = (GetNumGirlsOnJob(current->m_id, matronjob, false) >= 1) ? true : false;
+			bool skip = false;	// to allow easy skipping of unneeded lines
+			bool error = false;	// in case there is an error this makes for easier debugging
+
+			// first line: previous stock
+			if (stocked && num>0)		ss << "You keep a regular stock of " << num << " Anti-Pregnancy potions in this borthel.\n\n";
+			else if (num + used > 0)	ss << "You " << (used > 0 ? "had" : "have") << " a stock of " << num + used << " Anti-Pregnancy potions in this borthel.\n\n";
+			else { skip = true;			ss << "You have no Anti-Pregnancy potions in this borthel."; }
+
+			// second line: number used
+			/* */if (skip){}	// skip the rest of the lines
+			else if (used == 0)	{ skip = true;	ss << "None were used.\n\n"; }
+			else if (num == 0)	{ skip = true;	ss << "All have been used.\n\n"; }
+			else if (used > 0 && stocked)		ss << used << " were " << (used > num ? "needed" : "used") << " this week.\n\n";
+			else if (used < num && !stocked)	ss << used << " were used this week leaving " << num << " in stock.\n\n";
+			else
+			{	// `J` put this in just in case I missed something
+				ss << "error code::  BAP02|" << current->m_AntiPregPotions << "|" << current->m_AntiPregUsed << "|" << current->m_KeepPotionsStocked << "  :: Please report it to pinkpetal.org so it can be fixed";
+				error = true;
+			}
+
+			// third line: budget
+			if (!skip && stocked)
+			{
+				int cost = 0;
+				if (used > num)
+				{
+					ss << used - num << " more than were in stock were needed so an emergency restock had to be made.\n";
+					ss << "Normally they cost " << tariff.anti_preg_price(1) << " gold, but our supplier charges five times the normal price for unscheduled deliveries.\n\n";
+					cost += tariff.anti_preg_price(num);
+					cost += tariff.anti_preg_price(used - num) * 5;
+				}
+				else
+				{
+					cost += tariff.anti_preg_price(used);
+				}
+
+				ss << "Your budget for Anti-Pregnancy potions for this brothel is " << cost << " gold.";
+				
+				if (matron && used > num)
+				{
+					int newnum = (((used / 10) + 1) * 10) + 10;
+
+					current->AddAntiPreg(newnum - num);
+					ss << "\n\nThe Matron of this brothel has increased the quantity of Anti-Pregnancy potions for further orders to " << current->m_AntiPregPotions << ".";
+				}
+			}
+			if (error) g_LogFile.write("\n\n" + ss.str() + "\n\n");
+			current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_BROTHEL);
+		}
+
+
 
 		// update the global cash
 		g_Gold.brothel_accounts(current->m_Finance, current->m_id);
 
-		/*if(current->m_Filthiness > 100)   // MYR: Lets make this a little harsher
-		current->m_Filthiness=100;
-		else*/ if (current->m_Filthiness < 0)
-	current->m_Filthiness = 0;
+		if (current->m_Filthiness < 0) current->m_Filthiness = 0;
+		if (current->m_SecurityLevel < 0) current->m_SecurityLevel = 0;
 
-		// goto the next brothel
-		current = current->m_Next;
+		current = current->m_Next;		// goto the next brothel
 	}
 
 	// Update the bribe rate
@@ -1742,12 +1398,9 @@ void cBrothelManager::UpdateBrothels()
 	// keep gravitating player suspicion to 0
 	/* */if (m_Player.suspicion() > 0)	m_Player.suspicion(-1);
 	else if (m_Player.suspicion() < 0)	m_Player.suspicion(1);
+	if (m_Player.suspicion() > 20) check_raid();	// is the player under suspision by the authorities
 
-	// is the player under suspision by the authorities
-	if (m_Player.suspicion() > 20)		check_raid();
-
-	// incraese the bank gold by 02%
-	if (m_Bank > 0)
+	if (m_Bank > 0)									// incraese the bank gold by 02%
 	{
 		int amount = (int)(m_Bank*0.002f);
 		m_Bank += amount;
@@ -1759,52 +1412,43 @@ void cBrothelManager::UpdateBrothels()
 	}
 
 	// get money from currently extorted businesses
+	ss.str("");
 	if (g_Gangs.GetNumBusinessExtorted() > 0)
 	{
 		long gold = g_Gangs.GetNumBusinessExtorted()*INCOME_BUSINESS;
 		int num = g_Dice % 15;
-		if (num == 1)
-			gold -= INCOME_BUSINESS;
-		string message = gettext("You gain ");
-		_ltoa(gold, buffer, 10);
-		message += buffer;
-		message += gettext(" gold from the ");
-		_itoa(g_Gangs.GetNumBusinessExtorted(), buffer, 10);
-		message += buffer;
-		message += gettext(" businesses under your control.\n");
+		if (num == 1) gold -= INCOME_BUSINESS;
+		ss << "You gain " << gold << " gold from the " << g_Gangs.GetNumBusinessExtorted() << " businesses under your control.\n";
 		g_Gold.extortion(gold);
 		if (num == 1)
 		{
 			sGirl* girl = g_Girls.CreateRandomGirl(17, false);
-			message += gettext("A man cannot pay so he sells you his daughter ") + girl->m_Realname;
+			ss << "A man cannot pay so he sells you his daughter " << girl->m_Realname;
 			m_Dungeon.AddGirl(girl, DUNGEON_NEWGIRL);
 		}
-		g_MessageQue.AddToQue(message, COLOR_GREEN);
+		g_MessageQue.AddToQue(ss.str(), COLOR_GREEN);
 	}
 
 	do_tax();
-
-	// update the people in the dungeon
-	m_Dungeon.Update();
-
+	m_Dungeon.Update();	// update the people in the dungeon
 	check_rivals();
 
+	ss.str("");
 	long totalProfit = g_Gold.total_profit();
 	if (totalProfit < 0)
 	{
-		stringstream ss;
 		ss << "Your brothel had an overall deficit of " << -totalProfit << " gold.";
 		g_MessageQue.AddToQue(ss.str(), COLOR_RED);
 	}
 	else if (totalProfit > 0)
 	{
-		stringstream ss;
 		ss << "You made a overall profit of " << totalProfit << " gold.";
 		g_MessageQue.AddToQue(ss.str(), COLOR_GREEN);
 	}
 	else
 	{
-		g_MessageQue.AddToQue(gettext("You are breaking even (made as much money as you spent)"), COLOR_DARKBLUE);
+		ss << "You are breaking even (made as much money as you spent)";
+		g_MessageQue.AddToQue(ss.str(), COLOR_DARKBLUE);
 	}
 
 	// MYR: I'm really curious about what goes in these if statements
@@ -1818,33 +1462,41 @@ void cBrothelManager::UpdateBrothels()
 	// Forcing sale of a brothel would be too drastic; maybe allowing sale if player 
 	// wants to would be an option to present.
 
+	// `J` added loss of security if not enough businesses held.
+
 	if (g_Gangs.GetNumBusinessExtorted() < 40 && GetNumBrothels() >= 2)
 	{
+		g_Brothels.GetBrothel(1)->m_SecurityLevel -= (40 - g_Gangs.GetNumBusinessExtorted()) * 2;
 	}
 
 	if (g_Gangs.GetNumBusinessExtorted() < 70 && GetNumBrothels() >= 3)
 	{
+		g_Brothels.GetBrothel(2)->m_SecurityLevel -= (70 - g_Gangs.GetNumBusinessExtorted()) * 2;
 	}
 
 	if (g_Gangs.GetNumBusinessExtorted() < 100 && GetNumBrothels() >= 4)
 	{
+		g_Brothels.GetBrothel(3)->m_SecurityLevel -= (100 - g_Gangs.GetNumBusinessExtorted()) * 2;
 	}
 
 	if (g_Gangs.GetNumBusinessExtorted() < 140 && GetNumBrothels() >= 5)
 	{
+		g_Brothels.GetBrothel(4)->m_SecurityLevel -= (140 - g_Gangs.GetNumBusinessExtorted()) * 2;
 	}
 
 	if (g_Gangs.GetNumBusinessExtorted() < 170 && GetNumBrothels() >= 6)
 	{
+		g_Brothels.GetBrothel(5)->m_SecurityLevel -= (170 - g_Gangs.GetNumBusinessExtorted())*2;
 	}
 
 	if (g_Gangs.GetNumBusinessExtorted() < 220 && GetNumBrothels() >= 7)
 	{
+		g_Brothels.GetBrothel(6)->m_SecurityLevel -= (220 - g_Gangs.GetNumBusinessExtorted())*2;
 	}
 
 	// update objectives or maybe create a new one
-	if (GetObjective())		UpdateObjective();
-	else { if ((g_Dice % 100) + 1 < 45) CreateNewObjective(); }
+	if (GetObjective()) UpdateObjective();
+	else { if (g_Dice.percent(45)) CreateNewObjective(); }
 }
 
 // End of turn stuff is here
@@ -1890,23 +1542,6 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		*/
 		if (DayNight == SHIFT_DAY)
 		{
-			// Remove any dead bodies from last week
-			if (current->health() <= 0)
-			{
-				DeadGirl = current; if (current->m_Next) current = current->m_Next; else current = 0;
-				UpdateAllGirlsStat(brothel, STAT_PCFEAR, 2);	// increase all the girls fear of the player for letting her die (weather his fault or not)
-				UpdateAllGirlsStat(brothel, STAT_PCHATE, 1);	// increase all the girls hate of the player for letting her die (weather his fault or not)
-				// Two messages go into the girl queue...
-				msg += girlName + gettext(" has died from her injuries, the other girls all fear and hate you a little more.");
-				DeadGirl->m_Events.AddMessage(msg, IMGTYPE_DEATH, EVENT_DANGER);
-				g_MessageQue.AddToQue(msg, COLOR_RED);
-				summary += girlName + gettext(" has died from her injuries.  Her body will be removed by the end of the week.");
-				DeadGirl->m_Events.AddMessage(summary, IMGTYPE_DEATH, EVENT_SUMMARY);
-				RemoveGirl(brothel->m_id, DeadGirl);
-				DeadGirl = 0; msg = ""; summary = "";
-				if (current) continue; else break;
-			}
-			current->m_Tort = false;
 
 			// Back to work
 			if ((current->m_NightJob == restjob && current->m_DayJob == restjob) && current->m_PregCooldown < cfg.pregnancy.cool_down() &&
@@ -1935,17 +1570,6 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, int DayNight)
 			}
 
 
-			do_food_and_digs(brothel, current);			// Brothel only update for girls accommodation level
-			g_Girls.CalculateGirlType(current);			// update the fetish traits
-			g_Girls.updateGirlAge(current, true);		// update birthday counter and age the girl
-			g_Girls.updateTempStats(current);			// update temp stats
-			g_Girls.updateTempSkills(current);			// update temp skills
-			g_Girls.updateTempTraits(current);			// update temp traits
-			g_Girls.HandleChildren(current, summary);	// handle pregnancy and children growing up
-			g_Girls.updateSTD(current);					// health loss to STD's				NOTE: Girl can die
-			g_Girls.updateHappyTraits(current);			// Update happiness due to Traits	NOTE: Girl can die
-			updateGirlTurnBrothelStats(current);		// Update daily stats				Now only runs once per day
-			g_Girls.updateGirlTurnStats(current);		// Stat Code common to Dugeon and Brothel
 
 		}
 
@@ -2143,26 +1767,24 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		current->m_Triggers.ProcessTriggers();
 
 
+
 		// Do item check at the end of the day
 		if (DayNight == SHIFT_NIGHT)
 		{
+			// Myr: Automate the use of a number of different items. See the function itself for more comments.
+			//      Enabled or disabled based on config option.
+			if (cfg.initial.auto_use_items()) UsePlayersItems(current);
+
 			// update for girls items that are not used up
 			do_daily_items(brothel, current);					// `J` added
+
+			// Natural healing, 2% health and 2% tiredness per day
+			g_Girls.UpdateStat(current, STAT_HEALTH, 2, false);
+			g_Girls.UpdateStat(current, STAT_TIREDNESS, -2, false);
 		}
 
 		// Level the girl up if nessessary
-		if ((g_Girls.GetStat(current, STAT_EXP) >= (g_Girls.GetStat(current, STAT_LEVEL) + 1) * 125) || (g_Girls.GetStat(current, STAT_EXP) >= 32000))
-			g_Girls.LevelUp(current);
-
-		// Natural healing, 2% health and 2% tiredness per day
-		current->m_Stats[STAT_HEALTH] = min(current->m_Stats[STAT_HEALTH] + 2, 100);
-		current->m_Stats[STAT_TIREDNESS] = max(current->m_Stats[STAT_TIREDNESS] - 2, 0);
-
-
-		// Myr: Automate the use of a number of different items. See the function itself for more comments.
-		//      Enabled or disabled based on config option.
-		if (cfg.initial.auto_use_items())
-			UsePlayersItems(current);
+		g_Girls.LevelUp(current);
 
 		// Process next girl
 		current = current->m_Next;
@@ -2594,7 +2216,7 @@ void cBrothelManager::UsePlayersItems(sGirl* cur)
 	// Fleet of foot (Sandals of Mercury, piece of equipment)
 
 	has = g_Brothels.HasItem("Sandals of Mercury");
-	if (!g_Girls.HasTrait(cur, "Fleet of Foot") && !g_Girls.HasTrait(cur, "Fleet Of Foot") && g_Girls.HasItem(cur, "Glass Shoes") == -1 && has != -1)
+	if (!g_Girls.HasTrait(cur, "Fleet of Foot") && g_Girls.HasItem(cur, "Glass Shoes") == -1 && has != -1)
 		AutomaticItemUse(cur, has, gettext("Put on Sandals of Mercury for the fleet of foot trait."));
 
 	// Fast Orgasms & Nymphomaniac (Organic Lingerie, piece of equipment)
@@ -3248,10 +2870,6 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 			g_Girls.UpdateTempSkill(girl, SKILL_COMBAT, -2);
 		}
 	}
-
-
-
-
 
 	if (message != "")		// only pass the summary if she has any of the items listed
 	{

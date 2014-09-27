@@ -3082,10 +3082,11 @@ bool LoadGame(string directory, string filename)
 	TiXmlDocument doc(thefile.c_str());
 	if (doc.LoadFile() == false)
 	{
-		g_LogFile.write("Tried and failed to parse savegame as XML file, error as follows");
-		g_LogFile.write("(If it says 'Error document empty.' it's probably old format)");
-		g_LogFile.write(doc.ErrorDesc());
-		g_LogFile.write(".06 no longer supports Legacy Savegames. Start a new game.");
+		g_LogFile.ss() << "Tried and failed to parse savegame as XML file, error as follows" << endl;
+		g_LogFile.ss() << "Error: line " << doc.ErrorRow() << ", col " << doc.ErrorCol() << ": " << endl;
+		g_LogFile.ss() << doc.ErrorDesc() << endl;
+		g_LogFile.ss() << "(If it says 'Error document empty.' it's probably old format" << ".06 no longer supports Legacy Savegames. Start a new game.)" << endl;
+		g_LogFile.ssend();
 		return false;
 	}
 	else

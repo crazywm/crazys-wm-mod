@@ -1,39 +1,20 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Items>
-<Item Name="Leather Armor"
-      Desc="This suit of boiled leather plates isn't nearly as resistant as metal armor, but is much lighter and relatively inexpensive. A favorite of militiamen everywhere. (C) (+10 Comb, +10 Cons, +5 Conf, +8 BDSM, -5 Fear, -5 Hate, -5 Agi, -16 Cha, -5 Mag)"
+   <Item
+      Name="Leather Armor"
+      Desc="This suit of boiled leather plates isn't as resistant as metal armor, but it's light and inexpensive. A favorite of militiamen everywhere. (-10 Magic,  +5 Cons, Conf,  -5 Agl, Fear, Cha)"
       Type="Armor"
       Badness="0"
       Special="None"
       Cost="150"
       Rarity="Common"
-      Infinite="true">
-   <Effect What="Skill" Name="Combat"                  Amount="10"    />
-   <Effect What="Stat"  Name="Constitution"            Amount="10"    />
-   <Effect What="Stat"  Name="Confidence"              Amount="5"    />
-   <Effect What="Stat"  Name="PCFear"                  Amount="-5"    />
-   <Effect What="Stat"  Name="PCHate"                  Amount="-5"    />
-   <Effect What="Stat"  Name="Agility"                 Amount="-5"    />
-   <Effect What="Stat"  Name="Charisma"                Amount="-16"    />
-   <Effect What="Skill" Name="Magic"                   Amount="-5"    />
-   <Effect What="Skill" Name="BDSM"                    Amount="8"    />
-</Item>
-<Item Name="Leather Armor"
-      Desc="This suit of boiled leather plates isn't nearly as resistant as metal armor, but is much lighter and relatively inexpensive. A favorite of militiamen everywhere. (C) (+10 Comb, +10 Cons, +5 Conf, +8 BDSM, -5 Fear, -5 Hate, -5 Agi, -16 Cha, -5 Mag)"
-      Type="Armor"
-      Badness="0"
-      Special="None"
-      Cost="150"
-      Rarity="Common"
-      Infinite="true">
-   <Effect What="Skill" Name="Combat"                  Amount="10"    />
-   <Effect What="Stat"  Name="Constitution"            Amount="10"    />
-   <Effect What="Stat"  Name="Confidence"              Amount="5"    />
-   <Effect What="Stat"  Name="PCFear"                  Amount="-5"    />
-   <Effect What="Stat"  Name="PCHate"                  Amount="-5"    />
-   <Effect What="Stat"  Name="Agility"                 Amount="-5"    />
-   <Effect What="Stat"  Name="Charisma"                Amount="-16"    />
-   <Effect What="Skill" Name="Magic"                   Amount="-5"    />
-   <Effect What="Skill" Name="BDSM"                    Amount="8"    />
-</Item>
+      Infinite="false"
+      GirlBuyChance="20">
+   <Effect What="Skill" Name="Magic"                   Amount="-10" />
+   <Effect What="Stat"  Name="Constitution"            Amount="5" />
+   <Effect What="Stat"  Name="Confidence"              Amount="5" />      
+   <Effect What="Stat"  Name="Agility"                 Amount="-5" />
+   <Effect What="Stat"  Name="PCFear"                  Amount="-5" />     
+   <Effect What="Stat"  Name="Charisma"                Amount="-5" />
+   </Item>
 </Items>

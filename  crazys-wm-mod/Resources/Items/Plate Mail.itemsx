@@ -1,37 +1,22 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Items>
-<Item Name="Plate Mail"
-      Desc="This heavy suit of steel plate armor is the best battlefield protection money can buy. It is engineered for maximum mobility but is still somewhat cumbersome. (A) (+20 Comb, +20 Cons, +15 Conf, -15 Fear, -15 Hate, -20 Agi, -40 Cha, -40 Mag)"
+   <Item
+      Name="Plate Mail"
+      Desc="A well made suit of steel Plate Mail, despite it's apperance it is suprisingly flexible and is excedingly tough, however it does heavily impede magical abilities. (-30 Magic,  +20 Cons, Conf,  -20 Agl,  -15 Fear, Cha) (Removes Fleet of Foot,  Adds Tough)"
       Type="Armor"
       Badness="0"
       Special="None"
-      Cost="1500"
-      Rarity="Shop25"
-      Infinite="false">
-   <Effect What="Skill" Name="Combat"                  Amount="20"    />
-   <Effect What="Stat"  Name="Constitution"            Amount="20"    />
-   <Effect What="Stat"  Name="Confidence"              Amount="15"    />
-   <Effect What="Stat"  Name="PCFear"                  Amount="-15"    />
-   <Effect What="Stat"  Name="PCHate"                  Amount="-15"    />
-   <Effect What="Stat"  Name="Agility"                 Amount="-20"    />
-   <Effect What="Stat"  Name="Charisma"                Amount="-40"    />
-   <Effect What="Skill" Name="Magic"                   Amount="-40"    />
-</Item>
-<Item Name="Plate Mail"
-      Desc="This heavy suit of steel plate armor is the best battlefield protection money can buy. It is engineered for maximum mobility but is still somewhat cumbersome. (A) (+20 Comb, +20 Cons, +15 Conf, -15 Fear, -15 Hate, -20 Agi, -40 Cha, -40 Mag)"
-      Type="Armor"
-      Badness="0"
-      Special="None"
-      Cost="1500"
-      Rarity="Shop25"
-      Infinite="false">
-   <Effect What="Skill" Name="Combat"                  Amount="20"    />
-   <Effect What="Stat"  Name="Constitution"            Amount="20"    />
-   <Effect What="Stat"  Name="Confidence"              Amount="15"    />
-   <Effect What="Stat"  Name="PCFear"                  Amount="-15"    />
-   <Effect What="Stat"  Name="PCHate"                  Amount="-15"    />
-   <Effect What="Stat"  Name="Agility"                 Amount="-20"    />
-   <Effect What="Stat"  Name="Charisma"                Amount="-40"    />
-   <Effect What="Skill" Name="Magic"                   Amount="-40"    />
+      Cost="2000"
+      Rarity="Shop05"
+      Infinite="false"
+      GirlBuyChance="3">
+   <Effect What="Skill" Name="Magic"                   Amount="-30" />
+   <Effect What="Stat"  Name="Constitution"            Amount="20" />
+   <Effect What="Stat"  Name="Confidence"              Amount="20" />      
+   <Effect What="Stat"  Name="Agility"                 Amount="-20" />
+   <Effect What="Stat"  Name="PCFear"                  Amount="-15" />     
+   <Effect What="Stat"  Name="Charisma"                Amount="-15" />
+   <Effect What="Trait" Name="Fleet of Foot"           Amount="0" />
+   <Effect What="Trait" Name="Tough"                   Amount="1" />
 </Item>
 </Items>
