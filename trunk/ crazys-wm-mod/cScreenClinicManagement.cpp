@@ -61,6 +61,7 @@ static int lastNum = -1;
 static int ImageNum = -1;
 static bool FireGirl = false;
 static bool FreeGirl = false;
+static int SpecialJobNumber = 0;
 static bool SellGirl = false;
 static int selection = -1;
 static int DayNight = 0;	// 1 is night, 0 is day.
@@ -134,6 +135,30 @@ void cScreenClinicManagement::init()
 		g_ChoiceManager.Free();
 		FreeGirl = false;
 	}
+	if (SpecialJobNumber>0)
+	{
+		if (g_ChoiceManager.GetChoice(0) != 0)
+		{
+			vector<int> girl_array;
+			GetSelectedGirls(&girl_array);  // get and sort array of girls
+
+			// OK, we have the array, now step through it backwards
+			for (int i = girl_array.size(); i-- > 0;)
+			{
+				selected_girl = g_Clinic.GetGirl(g_CurrClinic, girl_array[i]);
+				if (GirlDead(selected_girl)) continue;  // skip if dead 
+				if (selected_girl)
+				{
+
+
+					g_InitWin = true;
+				}
+			}
+		}
+		g_ChoiceManager.Free();
+		SpecialJobNumber = 0;
+	}
+
 	g_CurrentScreen = SCREEN_CLINIC;
 	if(!g_InitWin)
 		return;
@@ -378,6 +403,7 @@ void cScreenClinicManagement::check_events()
 						selection = (day) ? selected_girl->m_DayJob : selected_girl->m_NightJob;
 						SetSelectedItemInList(joblist_id, selection, false);
 					}
+
 					
 
 					if (old_job != selection)

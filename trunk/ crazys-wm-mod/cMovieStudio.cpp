@@ -121,6 +121,7 @@ void cMovieStudioManager::UpdateMovieStudio()
 {
 	sBrothel* current = (sBrothel*) m_Parent;
 	current->m_Finance.zero();
+	current->m_AntiPregUsed = 0;
 	// Clear the girls' events from the last turn
 	sGirl* cgirl = current->m_Girls;
 	while(cgirl)
@@ -861,10 +862,10 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 		do_daily_items(brothel, current);					// `J` added
 
 		// Level the girl up if nessessary
-		if ((g_Girls.GetStat(current, STAT_EXP) >= (g_Girls.GetStat(current, STAT_LEVEL) + 1) * 125) || (g_Girls.GetStat(current, STAT_EXP) >= 32000)) g_Girls.LevelUp(current);
+		g_Girls.LevelUp(current);
 		// Natural healing, 2% health and 2% tiredness per day
-		current->m_Stats[STAT_HEALTH] = min(current->m_Stats[STAT_HEALTH] + 2, 100);
-		current->m_Stats[STAT_TIREDNESS] = max(current->m_Stats[STAT_TIREDNESS] - 2, 0);
+		g_Girls.UpdateStat(current, STAT_HEALTH, 2, false);
+		g_Girls.UpdateStat(current, STAT_TIREDNESS, -2, false);
 
 		MatronMsg = "", MatronWarningMsg = "";
 		if (g_Girls.GetStat(current, STAT_HAPPINESS) < 40)
@@ -1044,6 +1045,7 @@ TiXmlElement* sMovieStudio::SaveMovieStudioXML(TiXmlElement* pRoot)
 	
 	pBrothel->SetAttribute("AdvertisingBudget", m_AdvertisingBudget);
 	pBrothel->SetAttribute("AntiPregPotions", m_AntiPregPotions);
+	pBrothel->SetAttribute("AntiPregUsed", m_AntiPregUsed);
 	pBrothel->SetAttribute("KeepPotionsStocked", m_KeepPotionsStocked);
 	
 	TiXmlElement* pMovies = new TiXmlElement("Movies");
@@ -1154,6 +1156,7 @@ bool sMovieStudio::LoadMovieStudioXML(TiXmlHandle hBrothel)
 
 	pBrothel->QueryValueAttribute<unsigned short>("AdvertisingBudget", &m_AdvertisingBudget);
 	pBrothel->QueryIntAttribute("AntiPregPotions", &m_AntiPregPotions);
+	pBrothel->QueryIntAttribute("AntiPregUsed", &m_AntiPregUsed);
 	pBrothel->QueryValueAttribute<bool>("KeepPotionsStocked", &m_KeepPotionsStocked);
 
 	m_NumMovies = 0;

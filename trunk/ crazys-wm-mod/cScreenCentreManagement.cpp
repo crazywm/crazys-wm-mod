@@ -61,6 +61,7 @@ static int lastNum = -1;
 static int ImageNum = -1;
 static bool FireGirl = false;
 static bool FreeGirl = false;
+static int SpecialJobNumber = 0;
 static bool SellGirl = false;
 static int selection = -1;
 static int DayNight = 0;	// 1 is night, 0 is day.
@@ -117,9 +118,6 @@ void cScreenCentreManagement::init()
 				{
 					selected_girl->m_States&=~(1<<STATUS_SLAVE);
 					g_Brothels.GetPlayer()->disposition(5);
-					//g_Brothels.GetPlayer()->m_Disposition += 5;
-					//if(g_Brothels.GetPlayer()->m_Disposition > 100)
-					//	g_Brothels.GetPlayer()->m_Disposition = 100;
 					g_Girls.UpdateStat(selected_girl, STAT_PCLOVE, 10);
 					g_Girls.UpdateStat(selected_girl, STAT_PCFEAR, -20);
 					g_Girls.UpdateStat(selected_girl, STAT_PCHATE, -25);
@@ -131,10 +129,33 @@ void cScreenCentreManagement::init()
 				}
 			}
 		}
-
 		g_ChoiceManager.Free();
 		FreeGirl = false;
 	}
+	if (SpecialJobNumber>0)
+	{
+		if (g_ChoiceManager.GetChoice(0) != 0)
+		{
+			vector<int> girl_array;
+			GetSelectedGirls(&girl_array);  // get and sort array of girls
+
+			// OK, we have the array, now step through it backwards
+			for (int i = girl_array.size(); i-- > 0;)
+			{
+				selected_girl = g_Centre.GetGirl(g_CurrCentre, girl_array[i]);
+				if (GirlDead(selected_girl)) continue;  // skip if dead 
+				if (selected_girl)
+				{
+
+
+					g_InitWin = true;
+				}
+			}
+		}
+		g_ChoiceManager.Free();
+		SpecialJobNumber = 0;
+	}
+
 	g_CurrentScreen = SCREEN_CENTRE;
 	if(!g_InitWin)
 		return;

@@ -110,6 +110,7 @@ void cHouseManager::UpdateHouse()
 	u_int matronjob = JOB_HEADGIRL;
 	u_int firstjob = JOB_HOUSEREST;
 	u_int lastjob = JOB_CLEANHOUSE;
+	current->m_AntiPregUsed = 0;
 
 	// Clear the girls' events from the last turn and do start of day stuff
 	sGirl* cgirl = current->m_Girls;
@@ -457,12 +458,11 @@ void cHouseManager::UpdateGirls(sBrothel* brothel, int DayNight)
 
 
 		// Level the girl up if nessessary
-		if ((g_Girls.GetStat(current, STAT_EXP) >= (g_Girls.GetStat(current, STAT_LEVEL) + 1) * 125) || (g_Girls.GetStat(current, STAT_EXP) >= 32000))
-			g_Girls.LevelUp(current);
+		g_Girls.LevelUp(current);
 
 		// Natural healing, 2% health and 2% tiredness per day
-		current->m_Stats[STAT_HEALTH] = min(current->m_Stats[STAT_HEALTH] + 2, 100);
-		current->m_Stats[STAT_TIREDNESS] = max(current->m_Stats[STAT_TIREDNESS] - 2, 0);
+		g_Girls.UpdateStat(current, STAT_HEALTH, 2, false);
+		g_Girls.UpdateStat(current, STAT_TIREDNESS, -2, false);
 
 
 		// Process next girl
@@ -477,21 +477,13 @@ TiXmlElement* cHouseManager::SaveDataXML(TiXmlElement* pRoot)
 {
 	TiXmlElement* pBrothelManager = new TiXmlElement("House_Manager");
 	pRoot->LinkEndChild(pBrothelManager);
-	string message;
-
-	// save house
 	TiXmlElement* pBrothels = new TiXmlElement("Houses");
 	pBrothelManager->LinkEndChild(pBrothels);
 	sHouse* current = (sHouse*) m_Parent;
-	//         ...................................................
-	message = "***************** Saving houses *****************";
-	g_LogFile.write(message);
+	g_LogFile.write("***************** Saving houses *****************");
 	while(current)
 	{
-		message = "Saving brothel: ";
-		message += current->m_Name;
-		g_LogFile.write(message);
-
+		g_LogFile.write("Saving brothel: " + current->m_Name);
 		current->SaveHouseXML(pBrothels);
 		current = (sHouse*) current->m_Next;
 	}
@@ -524,6 +516,7 @@ TiXmlElement* sHouse::SaveHouseXML(TiXmlElement* pRoot)
 
 	pBrothel->SetAttribute("AdvertisingBudget", m_AdvertisingBudget);
 	pBrothel->SetAttribute("AntiPregPotions", m_AntiPregPotions);
+	pBrothel->SetAttribute("AntiPregUsed", m_AntiPregUsed);
 	pBrothel->SetAttribute("KeepPotionsStocked", m_KeepPotionsStocked);
 
 	// Save Girls
@@ -542,37 +535,18 @@ bool cHouseManager::LoadDataXML(TiXmlHandle hBrothelManager)
 {
 	Free();//everything should be init even if we failed to load an XML element
 	//watch out, this frees dungeon and rivals too
-
 	TiXmlElement* pBrothelManager = hBrothelManager.ToElement();
-	if (pBrothelManager == 0)
-	{
-		return false;
-	}
-
-	string message = "";
-	//         ...................................................
-	message = "***************** Loading house ****************";
-	g_LogFile.write(message);
+	if (pBrothelManager == 0) return false;
+	g_LogFile.write("***************** Loading house ****************");
 	m_NumHouses = 0;
 	TiXmlElement* pBrothels = pBrothelManager->FirstChildElement("Houses");
 	if (pBrothels)
 	{
-		for(TiXmlElement* pBrothel = pBrothels->FirstChildElement("House");
-			pBrothel != 0;
-			pBrothel = pBrothel->NextSiblingElement("House"))
+		for (TiXmlElement* pBrothel = pBrothels->FirstChildElement("House"); pBrothel != 0; pBrothel = pBrothel->NextSiblingElement("House"))
 		{
 			sHouse* current = new sHouse();
 			bool success = current->LoadHouseXML(TiXmlHandle(pBrothel));
-			if (success == true)
-			{
-				AddBrothel(current);
-			}
-			else
-			{
-				delete current;
-				continue;
-			}
-
+			if (success == true) { AddBrothel(current); } else { delete current; continue; }
 		} // load a house
 	}
 	return true;
@@ -582,16 +556,8 @@ bool sHouse::LoadHouseXML(TiXmlHandle hBrothel)
 {
 	//no need to init this, we just created it
 	TiXmlElement* pBrothel = hBrothel.ToElement();
-	if (pBrothel == 0)
-	{
-		return false;
-	}
-
-	if (pBrothel->Attribute("Name"))
-	{
-		m_Name = pBrothel->Attribute("Name");
-	}
-
+	if (pBrothel == 0) return false;
+	if (pBrothel->Attribute("Name")) m_Name = pBrothel->Attribute("Name");
 	int tempInt = 0;
 
 	std::string message = "Loading house: ";
@@ -618,6 +584,7 @@ bool sHouse::LoadHouseXML(TiXmlHandle hBrothel)
 
 	pBrothel->QueryValueAttribute<unsigned short>("AdvertisingBudget", &m_AdvertisingBudget);
 	pBrothel->QueryIntAttribute("AntiPregPotions", &m_AntiPregPotions);
+	pBrothel->QueryIntAttribute("AntiPregUsed", &m_AntiPregUsed);
 	pBrothel->QueryValueAttribute<bool>("KeepPotionsStocked", &m_KeepPotionsStocked);
 
 	// Load girls
@@ -625,9 +592,7 @@ bool sHouse::LoadHouseXML(TiXmlHandle hBrothel)
 	TiXmlElement* pGirls = pBrothel->FirstChildElement("Girls");
 	if (pGirls)
 	{
-		for(TiXmlElement* pGirl = pGirls->FirstChildElement("Girl");
-			pGirl != 0;
-			pGirl = pGirl->NextSiblingElement("Girl"))// load each girl and add her
+		for (TiXmlElement* pGirl = pGirls->FirstChildElement("Girl"); pGirl != 0; pGirl = pGirl->NextSiblingElement("Girl"))
 		{
 			sGirl* girl = new sGirl();
 			bool success = girl->LoadGirlXML(TiXmlHandle(pGirl));
@@ -643,8 +608,5 @@ bool sHouse::LoadHouseXML(TiXmlHandle hBrothel)
 			}
 		}
 	}
-
-	//commented out before the conversion to XML
-	//building.load(ifs);
 	return true;
 }

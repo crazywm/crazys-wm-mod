@@ -43,11 +43,10 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 {
 	string message = ""; string girlName = girl->m_Realname;
 
-	if(Preprocessing(ACTION_WORKBAR, girl, brothel, DayNight, summary, message))	// they refuse to have work in the bar
-		return true;
+	if(Preprocessing(ACTION_WORKBAR, girl, brothel, DayNight, summary, message)) 		return true;
 
-	// put that shit away, you'll scare off the customers!
-	g_Girls.UnequipCombat(girl);
+	
+	g_Girls.UnequipCombat(girl);  // put that shit away, you'll scare off the customers!
 
 	int wages = 15, work = 0;
 	message += "She worked as a waitress in the bar.";
@@ -65,7 +64,7 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 	if (g_Girls.HasTrait(girl, "Charming"))		jobperformance += 20; //people like charming people
 	if (g_Girls.HasTrait(girl, "Quick Learner"))jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Psychic"))		jobperformance += 10;
-	if (g_Girls.HasTrait(girl, "Fleet of Foot") || g_Girls.HasTrait(girl, "Fleet Of Foot")) jobperformance += 5;//faster at taking orders and droping them off
+	if (g_Girls.HasTrait(girl, "Fleet of Foot")) jobperformance += 5;//faster at taking orders and droping them off
 		
 
 	//bad traits
@@ -422,7 +421,7 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 	
 	//gain traits
 	g_Girls.PossiblyGainNewTrait(girl, "Charming", 70, ACTION_WORKBAR, girlName + " has been flirting with customers to try to get better tips. Enough practice at it has made her quite Charming.", DayNight != 0);
-	if (jobperformance > 150 || g_Girls.GetStat(girl, STAT_CONSTITUTION) > 65) { g_Girls.PossiblyGainNewTrait(girl, "Fleet Of Foot", 60, ACTION_WORKBAR, girlName + " has been doding bewteen tables and avoiding running into customers for so long she has become Fleet Of Foot.", DayNight != 0); }
+	if (jobperformance > 150 || g_Girls.GetStat(girl, STAT_CONSTITUTION) > 65) { g_Girls.PossiblyGainNewTrait(girl, "Fleet of Foot", 60, ACTION_WORKBAR, girlName + " has been doding bewteen tables and avoiding running into customers for so long she has become Fleet of Foot.", DayNight != 0); }
 
 	//lose traits
 	g_Girls.PossiblyLoseExistingTrait(girl, "Clumsy", 30, ACTION_WORKBAR, "It took her break hundreds of dishes, and just as many reprimands, but " + girlName + " has finally stopped being so Clumsy.", DayNight != 0);

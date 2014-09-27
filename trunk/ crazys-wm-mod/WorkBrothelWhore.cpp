@@ -233,29 +233,6 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, int DayNight, string
 
 
 
-#if 0	// WD:	Why is this here we have code lower down for customers that can't / wont pay
-		// if the customer doesn't have enough money, he will only sleep with her if he is stupid
-		if(Cust.m_Money < (unsigned)pay)
-		{
-			brothel->m_Happiness+=100;					
-			g_Customers.AdjustNumCustomers(-1);
-			continue;
-		}
-		else
-			pay *= Cust.m_Amount;
-
-		// WD:	Rejecting this shold not change happiness or number of customers
-		// filter out unwanted sex types (unless it is street work)
-		if(!bStreetWork)
-		{
-			if(!is_sex_type_allowed(Cust.m_SexPref, brothel))
-			{
-				brothel->m_Happiness+=100;
-				g_Customers.AdjustNumCustomers(-1);
-				continue;
-			}
-#endif
-
 		// filter out unwanted sex types (unless it is street work)
 		if(!bStreetWork && !is_sex_type_allowed(Cust.m_SexPref, brothel))
 			continue; 

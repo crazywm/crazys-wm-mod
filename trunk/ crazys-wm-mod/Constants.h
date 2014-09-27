@@ -34,9 +34,7 @@ enum {
 	SHIFT_NIGHT	= 1
 };
 
-// `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in > Constants.h
 // Editable Character Stats and skills (used for traits)
-const int          NUM_STATS			= 23;
 const unsigned int STAT_CHARISMA		= 0;
 const unsigned int STAT_HAPPINESS		= 1;
 const unsigned int STAT_LIBIDO			= 2;
@@ -60,6 +58,12 @@ const unsigned int STAT_PCFEAR			= 19;
 const unsigned int STAT_PCLOVE			= 20;
 const unsigned int STAT_PCHATE			= 21;
 const unsigned int STAT_MORALITY		= 22;
+const unsigned int STAT_REFINMENT		= 23;
+const unsigned int STAT_DIGNITY			= 24;
+const unsigned int STAT_LACTATION		= 25;
+const int					NUM_STATS	= 26;	// 1 more than the last stat
+
+// `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in >> Constants.h
 
 // Skills
 const unsigned int NUM_SKILLS			= 20;
@@ -414,7 +418,7 @@ const unsigned char FETISH_NONHUMAN         = 13;	// likes non human girls
 const unsigned char FETISH_FREAKYGIRLS      = 14;	// likes girls with small boobs
 
 // actions girls can disobey against
-// `J` When modifying Action types, search for "J-Change-Action-Types"  :  found in > Constants.h
+// `J` When modifying Action types, search for "J-Change-Action-Types"  :  found in >> Constants.h
 const unsigned char ACTION_COMBAT           = 0;
 const unsigned char ACTION_SEX              = 1;
 const unsigned char ACTION_WORKESCORT		= 2;
@@ -447,7 +451,7 @@ const unsigned char ACTION_GENERAL          = 27; // ACTION_GENERAL must be the 
 const unsigned char NUM_ACTIONTYPES = ACTION_GENERAL + 1;
 
 // Character image
-// `J` When modifying Image types, search for "J-Change-Image-Types"  :  found in > Constants.h
+// `J` When modifying Image types, search for "J-Change-Image-Types"  :  found in >> Constants.h
 const int IMGTYPE_ANAL      = 0;
 const int IMGTYPE_BDSM      = 1;
 const int IMGTYPE_SEX       = 2;

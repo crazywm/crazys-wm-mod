@@ -161,22 +161,15 @@ void cInterfaceWindow::Draw()
 		clip.h = m_Height-(m_BorderSize*2);
 		m_BackgroundSurface->DrawSurface(clip.x,clip.y,0,&clip,true,false); // `J`
 	}
-	// draw Images
-	for(unsigned int i=0;i< m_Images.size();i++)		m_Images[i]->Draw();
-	// Draw Editboxes
-	for(unsigned int i=0;i<m_EditBoxes.size();i++)		m_EditBoxes[i]->Draw();
-	// Draw Text item boxes
-	for(unsigned int i=0;i<m_TextItems.size();i++)		m_TextItems[i]->Draw();
-	// Draw list boxes
-	for(unsigned int i=0;i<m_ListBoxes.size();i++)		m_ListBoxes[i]->Draw();
-	// Draw sliders
-	for(unsigned int i=0;i<m_Sliders.size();i++)		m_Sliders[i]->Draw();
-	// draw buttons
-	for(unsigned int i=0;i<m_Buttons.size();i++)		m_Buttons[i]->Draw();
-	// draw listbox scroll bars
-	for(unsigned int i=0;i<m_ScrollBars.size();i++)		m_ScrollBars[i]->Draw();
-	// draw check boxes
-	for(unsigned int i=0;i<m_CheckBoxes.size();i++)		m_CheckBoxes[i]->Draw();
+	
+	for(unsigned int i=0;i< m_Images.size();i++)		m_Images[i]->Draw();		// draw Images
+	for(unsigned int i=0;i<m_EditBoxes.size();i++)		m_EditBoxes[i]->Draw();		// Draw Editboxes
+	for(unsigned int i=0;i<m_TextItems.size();i++)		m_TextItems[i]->Draw();		// Draw Text item boxes
+	for(unsigned int i=0;i<m_ListBoxes.size();i++)		m_ListBoxes[i]->Draw();		// Draw list boxes
+	for(unsigned int i=0;i<m_Sliders.size();i++)		m_Sliders[i]->Draw();		// Draw sliders
+	for(unsigned int i=0;i<m_Buttons.size();i++)		m_Buttons[i]->Draw();		// draw buttons
+	for(unsigned int i=0;i<m_ScrollBars.size();i++)		m_ScrollBars[i]->Draw();	// draw listbox scroll bars
+	for(unsigned int i=0;i<m_CheckBoxes.size();i++)		m_CheckBoxes[i]->Draw();	// draw check boxes
 }
 
 void cInterfaceWindow::AddButton(const char *img_name, int & ID,  int x, int y, int width, int height, bool transparency, bool scale,bool cached)
@@ -334,10 +327,8 @@ void cInterfaceWindow::CreateWindow(int x, int y, int width, int height, int Bor
 	m_xRatio = 1.0f;	m_yRatio = 1.0f;
 	// `J` fixed this to allow for nonscaled 800x600 screen sizes
 	cConfig cfg;
-	if (_G.g_ScreenWidth != cfg.resolution.scalewidth())
-		m_xRatio = ((float)_G.g_ScreenWidth / (float)cfg.resolution.scalewidth());
-	if (_G.g_ScreenHeight != cfg.resolution.scaleheight())
-		m_yRatio = ((float)_G.g_ScreenHeight / (float)cfg.resolution.scaleheight());
+	if (_G.g_ScreenWidth != cfg.resolution.scalewidth())	m_xRatio = ((float)_G.g_ScreenWidth / (float)cfg.resolution.scalewidth());
+	if (_G.g_ScreenHeight != cfg.resolution.scaleheight())	m_yRatio = ((float)_G.g_ScreenHeight / (float)cfg.resolution.scaleheight());
 
 	width = (int)((float)width*m_xRatio);
 	height = (int)((float)height*m_yRatio);

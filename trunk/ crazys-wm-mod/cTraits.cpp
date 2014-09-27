@@ -196,7 +196,7 @@ string traittolower(string name)
 
 string cTraits::GetTranslateName(string name)
 {
-	// `J` When adding new traits, search for "J-Add-New-Traits"  :  found in > GetTranslateName
+	// `J` When adding new traits, search for "J-Add-New-Traits"  :  found in >> GetTranslateName
 	string trait = traittolower(name);
 	string first = trait.substr(0, 1);
 	if (first == "a")
@@ -216,6 +216,7 @@ string cTraits::GetTranslateName(string name)
 	else if (first == "b")
 	{
 		/* */if (trait.compare("battery operated") == 0)		return gettext("Battery Operated");
+		else if (trait.compare("bad eyesight") == 0)			return gettext("Bad Eyesight");
 		else if (trait.compare("beauty mark") == 0)				return gettext("Beauty Mark");
 		else if (trait.compare("big boobs") == 0)				return gettext("Big Boobs");
 		else if (trait.compare("bimbo") == 0)					return gettext("Bimbo");
@@ -282,7 +283,7 @@ string cTraits::GetTranslateName(string name)
 		/* */if (trait.compare("fairy dust addict") == 0)		return gettext("Fairy Dust Addict");
 		else if (trait.compare("fake orgasm expert") == 0)		return gettext("Fake Orgasm Expert");
 		else if (trait.compare("fallen goddess") == 0)			return gettext("Fallen Goddess");
-		else if (trait.compare("farmer's daughter") == 0)		return gettext("Farmer's Daughter");
+		else if (trait.compare("farmers daughter") == 0)		return gettext("Farmers Daughter");
 		else if (trait.compare("fast orgasms") == 0)			return gettext("Fast Orgasms");
 		else if (trait.compare("fearless") == 0)				return gettext("Fearless");
 		else if (trait.compare("fertile") == 0)					return gettext("Fertile");
@@ -300,7 +301,6 @@ string cTraits::GetTranslateName(string name)
 		/* */if (trait.compare("gag reflex") == 0)				return gettext("Gag Reflex");
 		else if (trait.compare("giant juggs") == 0)				return gettext("Giant Juggs");
 		else if (trait.compare("giant") == 0)					return gettext("Giant");
-		else if (trait.compare("glasses") == 0)					return gettext("Glasses");
 		else if (trait.compare("goddess") == 0)					return gettext("Goddess");
 		else if (trait.compare("good kisser") == 0)				return gettext("Good Kisser");
 		else if (trait.compare("great arse") == 0)				return gettext("Great Arse");
@@ -355,6 +355,7 @@ string cTraits::GetTranslateName(string name)
 		else if (trait.compare("missing toe") == 0)				return gettext("Missing Toe");
 		else if (trait.compare("missing toes") == 0)			return gettext("Missing Toes");
 		else if (trait.compare("mixologist") == 0)				return gettext("Mixologist");
+		else if (trait.compare("muggle") == 0)					return gettext("Muggle");
 		else if (trait.compare("muscular") == 0)				return gettext("Muscular");
 	}
 	else if (first == "n")
@@ -400,6 +401,8 @@ string cTraits::GetTranslateName(string name)
 		else if (trait.compare("playful tail") == 0)			return gettext("Playful Tail");
 		else if (trait.compare("plump tush") == 0)				return gettext("Plump Tush");
 		else if (trait.compare("plump") == 0)					return gettext("Plump");
+		else if (trait.compare("porn star") == 0)				return gettext("Porn Star");
+		else if (trait.compare("powerful magic") == 0)			return gettext("Powerful Magic");
 		else if (trait.compare("prehensile tail") == 0)			return gettext("Prehensile Tail");
 		else if (trait.compare("priestess") == 0)				return gettext("Priestess");
 		else if (trait.compare("princess") == 0)				return gettext("Princess");
@@ -422,6 +425,7 @@ string cTraits::GetTranslateName(string name)
 		else if (trait.compare("scarce lactation") == 0)		return gettext("Scarce Lactation");
 		else if (trait.compare("sexy air") == 0)				return gettext("Sexy Air");
 		else if (trait.compare("shape shifter") == 0)			return gettext("Shape Shifter");
+		else if (trait.compare("sharp-eyed") == 0)				return gettext("Sharp-Eyed");
 		else if (trait.compare("shroud addict") == 0)			return gettext("Shroud Addict");
 		else if (trait.compare("singer") == 0)					return gettext("Singer");
 		else if (trait.compare("slitherer") == 0)				return gettext("Slitherer");
@@ -464,6 +468,7 @@ string cTraits::GetTranslateName(string name)
 	else if (first == "w")
 	{
 		/* */if (trait.compare("waitress") == 0)				return gettext("Waitress");
+		else if (trait.compare("weak magic") == 0)				return gettext("Weak Magic");
 		else if (trait.compare("whore") == 0)					return gettext("Whore");
 		else if (trait.compare("wide bottom") == 0)				return gettext("Wide Bottom");
 		else if (trait.compare("wings") == 0)					return gettext("Wings");
