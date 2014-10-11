@@ -43,14 +43,13 @@ void cCustomers::Free()
 
 void cCustomers::GetCustomer(sCustomer& customer, sBrothel * brothel)
 {
-	customer.m_SexPrefB = 100;
 
 	// It may be a group of people looking for group sex (5% chance)
 	customer.m_Amount = (g_Dice % 100) + 1;
 	if (customer.m_Amount <= 5) // changed to bring to documented 5%, consider rasing to 10 or 15, was 4. -PP
 	{
 		customer.m_IsWoman = 0;
-		customer.m_Amount = (g_Dice%3) + 2; // was +1 this allowed groups of 1 -PP
+		customer.m_Amount = (g_Dice % 3) + 2; // was +1 this allowed groups of 1 -PP
 	}
 	else	// Then it is just one customer
 	{
@@ -71,42 +70,66 @@ void cCustomers::GetCustomer(sCustomer& customer, sBrothel * brothel)
 	// generate their sex preference
 	if (customer.m_IsWoman)
 	{
-		int b = g_Dice % 4;
-		/* */if (b == 1)	customer.m_SexPref = SKILL_BEASTIALITY;	
-		else if (b == 2)	customer.m_SexPref = SKILL_BDSM;		
-		else /*       */	customer.m_SexPref = SKILL_LESBIAN;
-
-		if (g_Dice%2 == 1)	customer.m_SexPrefB = SKILL_LESBIAN;
+		int b = g_Dice.d100();
+		if (b < 20)
+		{
+			customer.m_SexPref = SKILL_BEASTIALITY;
+			if (g_Dice.percent(80))	customer.m_SexPrefB = SKILL_LESBIAN;
+			else					customer.m_SexPrefB = SKILL_BDSM;
+		}
+		else if (b < 40)
+		{
+			customer.m_SexPref = SKILL_BDSM;
+			if (g_Dice.percent(80))	customer.m_SexPrefB = SKILL_LESBIAN;
+			else					customer.m_SexPrefB = SKILL_BEASTIALITY;
+		}
+		else
+		{
+			customer.m_SexPref = SKILL_LESBIAN;
+			if (g_Dice.percent(40))	customer.m_SexPrefB = SKILL_BEASTIALITY;
+			else					customer.m_SexPrefB = SKILL_BDSM;
+		}
 	}
 	else if (customer.m_Amount > 1)
 	{
-		int b = g_Dice % 10;
-		if (b == 1)	customer.m_SexPref = SKILL_STRIP; // bachelor party
-		else 		customer.m_SexPref = SKILL_GROUP;
-
-		if (g_Dice % 2 == 1)	customer.m_SexPrefB = SKILL_STRIP;
+		int b = g_Dice.d100();
+		if (b < 10)	// bachelor party
+		{
+			customer.m_SexPref = SKILL_STRIP;
+			customer.m_SexPrefB = SKILL_GROUP;
+		}
+		else
+		{
+			customer.m_SexPref = SKILL_GROUP;
+			customer.m_SexPrefB = SKILL_STRIP;
+		}
 	}
 	else
 	{
 		int b = g_Dice.d100();
-		/* */if (b < 20)	customer.m_SexPref = SKILL_NORMALSEX;
-		else if (b < 35)	customer.m_SexPref = SKILL_ANAL;
-		else if (b < 50)	customer.m_SexPref = SKILL_BDSM;
-		else if (b < 60)	customer.m_SexPref = SKILL_BEASTIALITY;
-		else if (b < 70)	customer.m_SexPref = SKILL_ORALSEX;
-		else if (b < 80)	customer.m_SexPref = SKILL_TITTYSEX;
-		else if (b < 90)	customer.m_SexPref = SKILL_HANDJOB;
-		else /*       */	customer.m_SexPref = SKILL_STRIP;
+		/* */if (b < 20)	customer.m_SexPref = SKILL_NORMALSEX;		// 20%
+		else if (b < 38)	customer.m_SexPref = SKILL_ANAL;			// 18%
+		else if (b < 52)	customer.m_SexPref = SKILL_BDSM;			// 14%
+		else if (b < 65)	customer.m_SexPref = SKILL_BEASTIALITY;		// 13%
+		else if (b < 77)	customer.m_SexPref = SKILL_ORALSEX;			// 12%
+		else if (b < 89)	customer.m_SexPref = SKILL_TITTYSEX;		// 11%
+		else if (b < 99)	customer.m_SexPref = SKILL_HANDJOB;			// 10%
+		else /*       */	customer.m_SexPref = SKILL_STRIP;			// 1%
 
 		b = g_Dice.d100();
-		/* */if (b < 20)	customer.m_SexPrefB = SKILL_NORMALSEX;
-		else if (b < 35)	customer.m_SexPrefB = SKILL_ANAL;
-		else if (b < 50)	customer.m_SexPrefB = SKILL_BDSM;
-		else if (b < 60)	customer.m_SexPrefB = SKILL_BEASTIALITY;
-		else if (b < 70)	customer.m_SexPrefB = SKILL_ORALSEX;
-		else if (b < 80)	customer.m_SexPrefB = SKILL_TITTYSEX;
-		else if (b < 90)	customer.m_SexPrefB = SKILL_HANDJOB;
-		else /*       */	customer.m_SexPrefB = SKILL_STRIP;
+		/* */if (b < 20)	customer.m_SexPrefB = SKILL_NORMALSEX;		// 20%
+		else if (b < 38)	customer.m_SexPrefB = SKILL_ANAL;			// 18%
+		else if (b < 52)	customer.m_SexPrefB = SKILL_BDSM;			// 14%
+		else if (b < 65)	customer.m_SexPrefB = SKILL_BEASTIALITY;	// 13%
+		else if (b < 77)	customer.m_SexPrefB = SKILL_ORALSEX;		// 12%
+		else if (b < 89)	customer.m_SexPrefB = SKILL_TITTYSEX;		// 11%
+		else if (b < 99)	customer.m_SexPrefB = SKILL_HANDJOB;		// 10%
+		else /*       */	customer.m_SexPrefB = SKILL_STRIP;			// 1%
+
+		if (customer.m_SexPref == customer.m_SexPrefB)
+		{
+			customer.m_SexPrefB = (customer.m_SexPref == SKILL_NORMALSEX ? SKILL_ANAL : SKILL_NORMALSEX);
+		}
 	}
 
 	customer.m_Official = (g_Dice.percent(2)) ? 1 : 0;	// are they an official
@@ -114,6 +137,23 @@ void cCustomers::GetCustomer(sCustomer& customer, sBrothel * brothel)
 	/* */if (level < m_Rich)	{ customer.m_Class = 1; customer.m_Money = (g_Dice % 2000) + 600; }
 	else if (level < m_Middle)	{ customer.m_Class = 2; customer.m_Money = (g_Dice % 200) + 60; }
 	else /*                 */	{ customer.m_Class = 3; customer.m_Money = (g_Dice % 100) + 20; }
+
+	customer.m_HasAIDS = customer.m_HasChlamydia = customer.m_HasSyphilis = customer.m_HasHerpes = false;
+	if (g_Dice.percent(4 + customer.m_Amount))
+	{
+		int a = g_Dice.d100();
+		/* */if (a < 5)		customer.m_HasAIDS = true;		// 5%
+		else if (a < 15)	customer.m_HasChlamydia = true;	// 10%
+		else if (a < 35)	customer.m_HasSyphilis = true;	// 20%
+		else if (a < 75)	customer.m_HasHerpes = true;	// 40%
+		else												// 25% chance for multiple (or none)
+		{
+			customer.m_HasAIDS = g_Dice.percent(20);
+			customer.m_HasChlamydia = g_Dice.percent(40);
+			customer.m_HasSyphilis = g_Dice.percent(60);
+			customer.m_HasHerpes = g_Dice.percent(80);
+		}
+	}
 	customer.m_Money *= customer.m_Amount;
 	customer.m_Next = 0;
 }

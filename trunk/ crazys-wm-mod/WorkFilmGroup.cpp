@@ -42,132 +42,114 @@ extern cMovieStudioManager g_Studios;
 extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
+// `J` Movie Studio Job - Actress
 bool cJobManager::WorkFilmGroup(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
-	string message = "";
-
-	// No film crew.. then go home
+	// No film crew.. then go home	// `J` this will be taken care of in building flow, leaving it in for now
 	if (g_Studios.GetNumGirlsOnJob(0, JOB_CAMERAMAGE, SHIFT_NIGHT) == 0 || g_Studios.GetNumGirlsOnJob(0, JOB_CRYSTALPURIFIER, SHIFT_NIGHT) == 0)
 	{
-		message = "There was no crew to film the scene, so she took the day off";
-		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_NOWORK);
+		girl->m_Events.AddMessage("There was no crew to film the scene, so she took the day off", IMGTYPE_PROFILE, EVENT_NOWORK);
 		return false;
-		}
+	}
 
-	int jobperformance = 0;
+	cConfig cfg;
+	stringstream ss;
 	string girlName = girl->m_Realname;
-	char buffer[1000];
+	int wages = 50;
+	int enjoy = 0;
+	int jobperformance = 0;
 
-	// not for actress
-	g_Girls.UnequipCombat(girl);
+	g_Girls.UnequipCombat(girl);	// not for actress (yet)
 
-	girl->m_Pay += 50;
-	int guys = g_Dice%100;
+	ss << girlName;
+
+	int guys = g_Dice.d100();
 	if (guys < 50)
 	{
 		guys = 2;
 		jobperformance += 5;
-		message += girlName + (" worked as an actress filming a three-way.\n\n");
+		ss << " worked as an actress filming a three-way.\n\n";
 	}
 	else if (guys < 95)
 	{
 		jobperformance += 10;
-		guys = g_Dice%100;
-		if (guys < 40)
-			guys = 3;
-		else if (guys < 60)
-			guys = 4;
-		else if (guys < 75)
-			guys = 5;
-		else if (guys < 85)
-			guys = 6;
-		else if (guys < 90)
-			guys = 7;
-		else if (guys < 94)
-			guys = 8;
-		else if (guys < 98)
-			guys = 9;
-		else
-			guys = 10;
-		message += girlName + (" worked in a gang-bang film with ");
-		_itoa(guys, buffer, 10);
-			message += buffer;
-			message += (" other people\n\n");
+		guys = g_Dice.d100();
+		/* */if (guys < 40)		guys = 3;
+		else if (guys < 60)		guys = 4;
+		else if (guys < 75)		guys = 5;
+		else if (guys < 85)		guys = 6;
+		else if (guys < 90)		guys = 7;
+		else if (guys < 94)		guys = 8;
+		else if (guys < 98)		guys = 9;
+		else /*          */		guys = 10;
+		ss << " worked in a gang-bang scene with " << guys << " other people.\n\n";
 	}
 	else
 	{
 		jobperformance += 20;
-		guys = g_Dice%80 + 20;
-		message += girlName + (" worked in a orgy scene with ");
-		_itoa(guys, buffer, 10);
-			message += buffer;
-			message += (" other people\n\n");
+		guys = g_Dice % 40 + 11;
+		ss << " worked in a orgy scene with " << guys << " other people.\n\n";
 	}
-	
-	girl->m_Pay += (guys * 10);	// Extra pay per guy
-	
-	for (int i = 0; i < guys; i += 3)	// Extra tiredness per guy
-		g_Girls.AddTiredness(girl);
-	
-	int roll = g_Dice%100;
 
-if(roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel)) 
+	for (int i = 2; i < guys; i++) g_Girls.AddTiredness(girl);	// Extra tiredness per guy
+
+	int roll = g_Dice.d100();
+	if (roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
 	{
-		message = girlName + " refused to do an orgy on film today.\n";
-
-		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_NOWORK);
+		ss << "She refused to do an orgy on film today.\n";
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	else if(roll <= 15)
-	{
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, -3, true);
-		message += girlName + " found it unpleasant fucking that many people.\n\n";
-		jobperformance += -5;
+	else if (roll <= 10) 
+	{ 
+		enjoy -= ((guys > 10 ? (guys / 10) : (guys / 2)) + 1);
+		ss << "She found it unpleasant fucking that many people.\n\n";
 	}
-	else if(roll >=90)
-	{
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, +3, true);
-		message += girlName + " loved getting so much action, and wants more!\n\n";
-		jobperformance += +5;
+	else if (roll >= 90) 
+	{ 
+		enjoy += (guys > 10 ? (guys / 10) : (guys / 2)) + 1;
+		ss << "She loved getting so much action, and wants more!\n\n";
 	}
-	else
-	{
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, +1, true);
-		message += girlName + " wasn't really into having so much sex today, but managed to get through.\n\n";
+	else 
+	{ 
+		enjoy += max(0, g_Dice % 3 - 1);	
+		ss << "She wasn't really into having so much sex today, but managed to get through.\n\n"; 
 	}
-
+	jobperformance = enjoy * 2;
 
 	if (g_Girls.CheckVirginity(girl))
 	{
 		g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
 		jobperformance += 50;
-		message += "She is no longer a virgin.\n";
+		ss << "She is no longer a virgin.\n";
 	}
 
-	if(!girl->calc_group_pregnancy(g_Brothels.GetPlayer(), false, 1.0)) {
+	if (!girl->calc_group_pregnancy(g_Brothels.GetPlayer(), false, 1.0))
+	{
 		g_MessageQue.AddToQue(girl->m_Realname + " has gotten pregnant", 0);
-		}
+	}
 
-	jobperformance += g_Girls.GetSkill(girl, SKILL_PERFORMANCE) / 10;
-	jobperformance += g_Dice % 4 - 1;	// should add a -1 to +3 random element --PP
-	jobperformance += 5; // Modifier for what kind of sex scene it is.. normal sex is the baseline at +0
 	// remaining modifiers are in the AddScene function --PP
-	string finalqual = g_Studios.AddScene(girl, SKILL_GROUP, jobperformance);
-	message += "Her scene us valued at: " + finalqual + " gold.\n";
+	int finalqual = g_Studios.AddScene(girl, SKILL_GROUP, jobperformance);
+	ss << "Her scene is valued at: " << finalqual << " gold.\n";
 
-	girl->m_Events.AddMessage(message, IMGTYPE_GROUP, DayNight);
+	girl->m_Events.AddMessage(ss.str(), IMGTYPE_GROUP, DayNight);
 
-/*
- *	work out the pay between the house and the girl
- *
- *	the original calc took the average of beauty and charisma and halved it
- */
-	int roll_max = girl->beauty() + girl->charisma();
-	roll_max /= 4;
-	girl->m_Pay += 10 + g_Dice%roll_max;
+	// work out the pay between the house and the girl
+	if (girl->is_slave() && !cfg.initial.slave_pay_outofpocket())
+	{
+		wages = 0;	// You own her so you don't have to pay her.
+	}
+	else
+	{
+		wages += (guys * 10);	// Extra pay per guy
+		wages += finalqual*2;
+	}
+	girl->m_Pay += wages;
 
 	// Improve stats
-	int xp = 5, skill = 3;
+	int xp = (((guys > 10 ? (guys / 10) : (guys / 2)) + 1)*5);
+	int skill = ((guys > 10 ? (guys / 10) : (guys / 2)) + 1);
 
 	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
@@ -176,7 +158,10 @@ if(roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
 	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill);
 	g_Girls.UpdateSkill(girl, SKILL_GROUP, g_Dice%skill + 1);
 
-	g_Girls.PossiblyGainNewTrait(girl, "Fake Orgasm Expert", 15, ACTION_WORKMOVIE, "She has become quite the faker.", DayNight != 0);
+	g_Girls.UpdateEnjoyment(girl, ACTION_SEX, enjoy, true);
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, enjoy, true);
+	g_Girls.PossiblyGainNewTrait(girl, "Fake Orgasm Expert", 50, ACTION_SEX, "She has become quite the faker.", DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Porn Star", 80, ACTION_WORKMOVIE, "She has performed in enough sex scenes that she has become a well known Porn Star.", DayNight != 0);
 
 	return false;
 }

@@ -40,6 +40,7 @@ extern cBrothelManager g_Brothels;
 extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
+// `J` Brothel Job - Sleazy Bar
 bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	// put that shit away, you'll scare off the customers!
@@ -142,8 +143,7 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, int DayNight, str
 	{
 		// WD:	Move exit test to top of loop
 		// if she has already slept with the max she can attact then stop processing her fucking routine
-		if (NumSleptWith >= NumCusts)
-			break;
+		if (NumSleptWith >= NumCusts) break;
 
 		// WD:	Init Loop variables
 		pay = AskPrice;
@@ -218,14 +218,8 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, int DayNight, str
 			}
 			else
 			{
-				if (DayNight == 1)	// 50% chance of getting something a little weirder during the night
-				{
-					if (Cust.m_Fetish < NUM_FETISH - 2)
-					{
-						if (g_Dice.percent(50))
-							Cust.m_Fetish += 2;
-					}
-				}
+				// 50% chance of getting something a little weirder during the night
+				if (DayNight == 1 && Cust.m_Fetish < NUM_FETISH - 2 && g_Dice.percent(50)) Cust.m_Fetish += 2;
 
 				// Check for fetish match
 				if (g_Girls.CheckGirlType(girl, Cust.m_Fetish))
@@ -255,31 +249,17 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, int DayNight, str
 					acceptsGirl = true;
 				}
 				// WD:	Use Magic only as last resort
-				else if (g_Girls.GetSkill(girl, SKILL_MAGIC) > 50 && g_Girls.GetStat(girl, STAT_MANA))	// she can use magic to get him
+				else if (g_Girls.GetSkill(girl, SKILL_MAGIC) > 50 && g_Girls.GetStat(girl, STAT_MANA) >= 20)	// she can use magic to get him
 				{
-					fuckMessage = girl->m_Realname + " uses magic to get the customer to choose her.";
-					fuckMessage += "\n\n";
+					fuckMessage = girl->m_Realname + " uses magic to get the customer to choose her.\n\n";
 					g_Girls.UpdateStat(girl, STAT_MANA, -20);
 					acceptsGirl = true;
 				}
-
 			}
+			if (!acceptsGirl) continue;		// will the customer sleep with her?
 
-			// will the customer sleep with her?
-			if (!acceptsGirl)
-				continue;
-
-#if 0	// WD:	Consolidate diffrent HAPPINESS Calcs
-			// set the customers begining happiness/satisfaction
-			Cust.m_Stats[STAT_HAPPINESS] = 40;
-			// he found someone he is attracted to so gets a small bonus
-			Cust.m_Stats[STAT_HAPPINESS] += 20;	
-			if(Cust.m_Stats[STAT_HAPPINESS] > 100)
-				Cust.m_Stats[STAT_HAPPINESS] = 100;
-#else
 			// WD:	Set the customers begining happiness/satisfaction
 			Cust.m_Stats[STAT_HAPPINESS] = 42 + g_Dice % 10 + g_Dice % 10; // WD: average 51 range 42 to 60
-#endif
 
 			// Horizontal boogy
 			g_Girls.GirlFucks(girl, DayNight, &Cust, group, fuckMessage, SexType);
@@ -463,10 +443,8 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, int DayNight, str
 		//	g_Girls.UpdateStat(girl, STAT_FAME, 2);
 
 		// WD:	Is this being used??
-		if (job == JOB_WHOREGAMBHALL)
-			pay += 30;
-		else if (job == JOB_BARWHORE)
-			pay += 30;
+		if (job == JOB_WHOREGAMBHALL) pay += 30;
+		else if (job == JOB_BARWHORE) pay += 30;
 
 
 		// WD:	Save gold earned

@@ -2,7 +2,7 @@
 <Items>
 <Item Name="Magic Underwear"    
       Desc="Arcane symbols cover this underwear. It enhances magical abilities and intelligence, and it also looks good on the wearer. (+5 Magic, +4 Cha, +3 Int, +5 Happiness)" 
-      Type="Under Wear" 
+      Type="Underwear" 
       Badness="0" 
       Special="None" 
       Cost="800" 

@@ -42,73 +42,57 @@ extern cMovieStudioManager g_Studios;
 extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
+// `J` Movie Studio Job - Actress
 bool cJobManager::WorkFilmFootJob(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
-	string message = "";
-
-	// No film crew.. then go home
+	// No film crew.. then go home	// `J` this will be taken care of in building flow, leaving it in for now
 	if (g_Studios.GetNumGirlsOnJob(0, JOB_CAMERAMAGE, SHIFT_NIGHT) == 0 || g_Studios.GetNumGirlsOnJob(0, JOB_CRYSTALPURIFIER, SHIFT_NIGHT) == 0)
 	{
-		message = "There was no crew to film the scene, so she took the day off";
-		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_NOWORK);
+		girl->m_Events.AddMessage("There was no crew to film the scene, so she took the day off", IMGTYPE_PROFILE, EVENT_NOWORK);
 		return false;
 	}
-
+	cConfig cfg;
+	stringstream ss;
 	string girlName = girl->m_Realname;
+	int wages = 50;
+	int enjoy = 0;
 	int jobperformance = 0;
 
-	// not for actress
-	g_Girls.UnequipCombat(girl);
+	g_Girls.UnequipCombat(girl);	// not for actress (yet)
 
-	girl->m_Pay += 60;
-	message = girlName;
-	message += (" worked as an actress filming foot job scenes.\n\n");
-	
-	int roll = g_Dice%100;
+	ss << girlName << " worked as an actress filming foot job scenes.\n\n";
 
-	if(roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel)) 
+	int roll = g_Dice.d100();
+	if (roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
 	{
-		message = girlName + " refused to use her feet on film today.\n";
-		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_NOWORK);
+		ss << "She refused to use her feet on film today.\n";
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	else if(roll <= 15)
+	else if (roll <= 10) { enjoy -= g_Dice % 4 + 1;	ss << "She used her feet on his cock, but didn't like it.\n\n"; }
+	else if (roll >= 90) { enjoy += g_Dice % 4 + 1;	ss << "She loved having his cock slide between her feet.\n\n"; }
+	else /*    */{ enjoy += max(0, g_Dice % 3 - 1);	ss << "She had a pleasant day using her feet to get her co-star off.\n\n"; }
+	jobperformance = enjoy * 2;
+
+	// remaining modifiers are in the AddScene function --PP
+	int finalqual = g_Studios.AddScene(girl, SKILL_SERVICE, jobperformance);
+	ss << "Her scene is valued at: " << finalqual << " gold.\n";
+
+	girl->m_Events.AddMessage(ss.str(), IMGTYPE_FOOT, DayNight);
+
+	// work out the pay between the house and the girl
+	if (girl->is_slave() && !cfg.initial.slave_pay_outofpocket())
 	{
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, -3, true);
-		message += girlName + " used her feet on his cock, but didn't like it.\n\n";
-		jobperformance += -5;
-	}
-	else if(roll >=90)
-	{
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, +3, true);
-		message += girlName + " loved having his cock slide bewteen her feet.\n\n";
-		jobperformance += +5;
+		wages = 0;	// You own her so you don't have to pay her.
 	}
 	else
 	{
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, +1, true);
-		message += girlName + " had a pleasant day using her feet to get her co-star off.\n\n";
+		wages += finalqual * 2;
 	}
-	jobperformance += g_Girls.GetSkill(girl, SKILL_PERFORMANCE) / 10;
-	jobperformance += g_Dice % 4 - 1;	// should add a -1 to +3 random element --PP
-	jobperformance += -5; // Modifier for what kind of sex scene it is.. normal sex is the baseline at +0
-	// remaining modifiers are in the AddScene function --PP
-	string finalqual = g_Studios.AddScene(girl, SKILL_SERVICE, jobperformance);
-	message += "Her scene us valued at: " + finalqual + " gold.\n";
-
-	girl->m_Events.AddMessage(message, IMGTYPE_FOOT, DayNight);
-
-/*
- *	work out the pay between the house and the girl
- *
- *	the original calc took the average of beauty and charisma and halved it
- */
-	int roll_max = girl->beauty() + girl->charisma();
-	roll_max /= 4;
-	girl->m_Pay += 10 + g_Dice%roll_max;
+	girl->m_Pay += wages;
 
 	// Improve stats
-	int xp = 15, skill = 3, libido = 1;
+	int xp = 10, skill = 3, libido = 1;
 
 	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
@@ -119,6 +103,9 @@ bool cJobManager::WorkFilmFootJob(sGirl* girl, sBrothel* brothel, int DayNight, 
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill + 1);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
+	g_Girls.UpdateEnjoyment(girl, ACTION_SEX, enjoy, true);
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, enjoy, true);
+	g_Girls.PossiblyGainNewTrait(girl, "Porn Star", 80, ACTION_WORKMOVIE, "She has performed in enough sex scenes that she has become a well known Porn Star.", DayNight != 0);
 
 	return false;
 }

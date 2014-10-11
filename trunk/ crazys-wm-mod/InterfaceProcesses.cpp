@@ -239,9 +239,6 @@ void NewGame()
 
 	g_Year = 1209; g_Month = 1; g_Day = 1;
 
-
-
-
 	selected_girl = 0;
 	for (int i = 0; i<8; i++)
 	{
@@ -255,7 +252,7 @@ void NewGame()
 	for (u_int i = 0; i<NUM_SKILLS; i++)	g_Brothels.GetPlayer()->m_Skills[i] = 10;
 	g_Brothels.GetPlayer()->SetToZero();
 
-	g_House.NewBrothel(20,250);
+	g_House.NewBrothel(20,200);
 	g_House.SetName(0, "House");
 
 	u_int start_random_gangs = cfg.gangs.start_random();
@@ -265,42 +262,7 @@ void NewGame()
 
 	// update the shop inventory
 	g_InvManager.UpdateShop();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+		
 	// Add the begining rivals
 	g_Brothels.GetRivalManager()->CreateRival(200, 5, 10000, 2, 0, 26, 2, 2);
 	g_Brothels.GetRivalManager()->CreateRival(400, 10, 15000, 2, 1, 30, 2, 3);
@@ -308,12 +270,7 @@ void NewGame()
 	g_Brothels.GetRivalManager()->CreateRival(800, 20, 25000, 4, 2, 74, 4, 8);
 
 	if (g_Cheats) { g_Gold.cheat(); g_InvManager.GivePlayerAllItems(); }
-
-
-
-
-
-
+	
 	g_WinManager.push("Brothel Management");
 
 	DirPath text = DirPath() << "Saves" << (g_Brothels.GetBrothel(0)->m_Name + ".gam").c_str();
@@ -2392,9 +2349,9 @@ void Gallery()
 	sGirl *girl = selected_girl;
 
 	g_CurrentScreen = SCREEN_GALLERY;
-	if(g_InitWin)
+	if (g_InitWin)
 	{
-		if(girl == 0)
+		if (girl == 0)
 		{
 			g_InitWin = true;
 			g_MessageQue.AddToQue("ERROR: No girl selected", 1);
@@ -2418,111 +2375,111 @@ void Gallery()
 		g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYCOMBAT, (girl->m_GirlImages->m_Images[IMGTYPE_COMBAT].m_NumImages == 0));
 		g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYORAL, (girl->m_GirlImages->m_Images[IMGTYPE_ORAL].m_NumImages == 0));
 
-		while(girl->m_GirlImages->m_Images[Mode].m_NumImages == 0 && Mode < NUM_IMGTYPES)
+		while (girl->m_GirlImages->m_Images[Mode].m_NumImages == 0 && Mode < NUM_IMGTYPES)
 		{
 			Mode++;
 		}
 
-		if(Img >= girl->m_GirlImages->m_Images[Mode].m_NumImages)
+		if (Img >= girl->m_GirlImages->m_Images[Mode].m_NumImages)
 			Img = 0;
-		else if(Img < 0)
-			Img = girl->m_GirlImages->m_Images[Mode].m_NumImages-1;
+		else if (Img < 0)
+			Img = girl->m_GirlImages->m_Images[Mode].m_NumImages - 1;
 
 		g_InitWin = false;
 	}
 
-	if(g_InterfaceEvents.GetNumEvents() != 0)
+	if (g_InterfaceEvents.GetNumEvents() != 0)
 	{
-		if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYBACK))
+		if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYBACK))
 		{
 			g_WinManager.Pop();
 			g_InitWin = true;
 			return;
 		}
-		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYANAL))
+		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYANAL))
 		{
 			Mode = IMGTYPE_ANAL;
-			Img=0;
+			Img = 0;
 			return;
 		}
-		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYBDSM))
+		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYBDSM))
 		{
 			Mode = IMGTYPE_BDSM;
-			Img=0;
+			Img = 0;
 			return;
 		}
-		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYSEX))
+		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYSEX))
 		{
 			Mode = IMGTYPE_SEX;
-			Img=0;
+			Img = 0;
 			return;
 		}
-		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYBEAST))
+		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYBEAST))
 		{
 			Mode = IMGTYPE_BEAST;
-			Img=0;
+			Img = 0;
 			return;
 		}
-		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYGROUP))
+		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYGROUP))
 		{
 			Mode = IMGTYPE_GROUP;
-			Img=0;
+			Img = 0;
 			return;
 		}
-		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYLESBIAN))
+		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYLESBIAN))
 		{
 			Mode = IMGTYPE_LESBIAN;
-			Img=0;
+			Img = 0;
 			return;
 		}
-		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYPREGNANT))
+		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYPREGNANT))
 		{
 			Mode = IMGTYPE_PREGNANT;
-			Img=0;
+			Img = 0;
 			return;
 		}
-		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYDEATH))
+		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYDEATH))
 		{
 			Mode = IMGTYPE_DEATH;
-			Img=0;
+			Img = 0;
 			return;
 		}
-		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYPROFILE))
+		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYPROFILE))
 		{
 			Mode = IMGTYPE_PROFILE;
-			Img=0;
+			Img = 0;
 			return;
 		}
-		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYCOMBAT))
+		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYCOMBAT))
 		{
 			Mode = IMGTYPE_COMBAT;
-			Img=0;
+			Img = 0;
 			return;
 		}
-		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYORAL))
+		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYORAL))
 		{
 			Mode = IMGTYPE_ORAL;
-			Img=0;
+			Img = 0;
 			return;
 		}
-		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYPREV))
+		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYPREV))
 		{
 			Img--;
-			if(Img < 0)
-				Img = girl->m_GirlImages->m_Images[Mode].m_NumImages-1;
+			if (Img < 0)
+				Img = girl->m_GirlImages->m_Images[Mode].m_NumImages - 1;
 			return;
 		}
-		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYNEXT))
+		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYNEXT))
 		{
 			Img++;
-			if(Img == girl->m_GirlImages->m_Images[Mode].m_NumImages)
+			if (Img == girl->m_GirlImages->m_Images[Mode].m_NumImages)
 				Img = 0;
 			return;
 		}
-		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_NEXTGALLERY))
+		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_NEXTGALLERY))
 		{
 			g_InitWin = true;
-		g_WinManager.Push(Gallery2, &g_Gallery2);
+			g_WinManager.Push(Gallery2, &g_Gallery2);
 			return;
 		}
 	}
@@ -2531,15 +2488,15 @@ void Gallery()
 	{
 		g_LeftArrow = g_A_Key = false;
 		Img--;
-		if(Img < 0)
-			Img = girl->m_GirlImages->m_Images[Mode].m_NumImages-1;
+		if (Img < 0)
+			Img = girl->m_GirlImages->m_Images[Mode].m_NumImages - 1;
 		return;
 	}
 	else if (g_RightArrow || g_D_Key)
 	{
 		g_RightArrow = g_D_Key = false;
 		Img++;
-		if(Img >= girl->m_GirlImages->m_Images[Mode].m_NumImages)
+		if (Img >= girl->m_GirlImages->m_Images[Mode].m_NumImages)
 			Img = 0;
 		return;
 	}
@@ -2550,24 +2507,24 @@ void Gallery()
 		{
 			g_UpArrow = g_W_Key = false;
 			Mode--; i++;
-			if(Mode < 0)
-				Mode = NUM_IMGTYPES-1;
+			if (Mode < 0)
+				Mode = NUM_IMGTYPES - 1;
 			Img = 0;
-			if(girl->m_GirlImages->m_Images[Mode].m_NumImages > 0)   // This hack will only work as long as the Mode numbers are the same as the IMG type.
+			if (girl->m_GirlImages->m_Images[Mode].m_NumImages > 0)   // This hack will only work as long as the Mode numbers are the same as the IMG type.
 				break;
 		}
 	}
-	else if(g_DownArrow ||g_S_Key)
+	else if (g_DownArrow || g_S_Key)
 	{
 		int i = 0;
-		while (i<=NUM_IMGTYPES)
+		while (i <= NUM_IMGTYPES)
 		{
 			g_DownArrow = g_S_Key = false;
 			Mode++; i++;
 			if (Mode >= NUM_IMGTYPES)
 				Mode = 0;
 			Img = 0;
-			if(girl->m_GirlImages->m_Images[Mode].m_NumImages > 0)   // This hack will only work as long as the Mode numbers are the same as the IMG type.
+			if (girl->m_GirlImages->m_Images[Mode].m_NumImages > 0)   // This hack will only work as long as the Mode numbers are the same as the IMG type.
 				break;
 		}
 	}
@@ -2578,74 +2535,23 @@ void Gallery()
 	}
 	// Set the text for gallery type
 	// `J` reworked to allow all image types
-	string galtxt[] = { "Anal", "BDSM", "Sex", "Beast", "Group", "Lesbian", "Torture", "Death", "Profile", 
-		"Combat", "Oral", "Ecchi", "Strip", "Maid", "Sing", "Wait", "Card", "Bunny", "Nude", "Mast", "Titty", 
-		"Milk", "Hand", "Pregnant", "Pregnant\nAnal", "Pregnant\nBDSM", "Pregnant\nSex", "Pregnant\nBeast", 
-		"Pregnant\nGroup", "Pregnant\nLesbian", "Pregnant\nTorture", "Pregnant\nDeath", "Pregnant\nProfile", 
-		"Pregnant\nCombat", "Pregnant\nOral", "Pregnant\nEcchi", "Pregnant\nStrip", "Pregnant\nMaid", "Pregnant\nSing", 
-		"Pregnant\nWait", "Pregnant\nCard", "Pregnant\nBunny", "Pregnant\nNude", "Pregnant\nMast", "Pregnant\nTitty", 
-		"Pregnant\nMilk", "Pregnant\nHand"};
+	// `J` When modifying Image types, search for "J-Change-Image-Types"  :  found in >> InterfaceProcesses.cpp > Gallery
+	string galtxt[] = { "Anal", "BDSM", "Sex", "Beast", "Group", "Lesbian", "Torture", "Death", "Profile", "Combat",
+		"Oral", "Ecchi", "Strip", "Maid", "Sing", "Wait", "Card", "Bunny", "Nude", "Mast", "Titty", "Milk", "Hand",
+		"Foot", "Bed", "Farm", "Herd", "Cook", "Craft", "Swim", "Bath", "Nurse", "Formal", "Shop",
+		"Pregnant", "Pregnant\nAnal", "Pregnant\nBDSM", "Pregnant\nSex", "Pregnant\nBeast", "Pregnant\nGroup",
+		"Pregnant\nLesbian", "Pregnant\nTorture", "Pregnant\nDeath", "Pregnant\nProfile", "Pregnant\nCombat",
+		"Pregnant\nOral", "Pregnant\nEcchi", "Pregnant\nStrip", "Pregnant\nMaid", "Pregnant\nSing", "Pregnant\nWait",
+		"Pregnant\nCard", "Pregnant\nBunny", "Pregnant\nNude", "Pregnant\nMast", "Pregnant\nTitty", "Pregnant\nMilk",
+		"Pregnant\nHand", "Pregnant\nFoot", "Pregnant\nBed", "Pregnant\nFarm", "Pregnant\nHerd", "Pregnant\nCook",
+		"Pregnant\nCraft", "Pregnant\nSwim", "Pregnant\nBath", "Pregnant\nNurse", "Pregnant\nFormal", "Pregnant\nShop" };
 	g_Gallery.EditTextItem(galtxt[Mode], g_interfaceid.TEXT_GALLERYTYPE);
 
-/* `J` old code
-	switch(Mode)
-	{
-	case 0:
-		galtxt = "Anal";
-		g_Gallery.EditTextItem(galtxt,g_interfaceid.TEXT_GALLERYTYPE);
-		break;
-	case 1:
-		galtxt = "BDSM";
-		g_Gallery.EditTextItem(galtxt,g_interfaceid.TEXT_GALLERYTYPE);
-		break;
-	case 2:
-		galtxt = "Sex";
-		g_Gallery.EditTextItem(galtxt,g_interfaceid.TEXT_GALLERYTYPE);
-		break;
-	case 3:
-		galtxt = "Beastiality";
-		g_Gallery.EditTextItem(galtxt,g_interfaceid.TEXT_GALLERYTYPE);
-		break;
-	case 4:
-		galtxt = "Group";
-		g_Gallery.EditTextItem(galtxt,g_interfaceid.TEXT_GALLERYTYPE);
-		break;
-	case 5:
-		galtxt = "Lesbian";
-		g_Gallery.EditTextItem(galtxt,g_interfaceid.TEXT_GALLERYTYPE);
-		break;
-	case 6:
-		galtxt = "Pregnant";
-		g_Gallery.EditTextItem(galtxt,g_interfaceid.TEXT_GALLERYTYPE);
-		break;
-	case 7:
-		galtxt = "Death";
-		g_Gallery.EditTextItem(galtxt,g_interfaceid.TEXT_GALLERYTYPE);
-		break;
-	case 8:
-		galtxt = "Profile";
-		g_Gallery.EditTextItem(galtxt,g_interfaceid.TEXT_GALLERYTYPE);
-		break;
-	case 9:
-		galtxt = "Combat";
-		g_Gallery.EditTextItem(galtxt,g_interfaceid.TEXT_GALLERYTYPE);
-		break;
-	case 10:
-		galtxt = "Oral";
-		g_Gallery.EditTextItem(galtxt,g_interfaceid.TEXT_GALLERYTYPE);
-		break;
-	default:
-		galtxt = "";
-		g_Gallery.EditTextItem(galtxt,g_interfaceid.TEXT_GALLERYTYPE);
-		break;
-	}
-// */ //
-
 	// Draw the image
-	if(girl)
+	if (girl)
 	{
 		g_Gallery.SetImage(g_interfaceid.IMAGE_TSIMAGE, g_Girls.GetImageSurface(girl, Mode, false, Img, true));
-		if(g_Girls.IsAnimatedSurface(girl, Mode, Img))
+		if (g_Girls.IsAnimatedSurface(girl, Mode, Img))
 			g_Gallery.SetImage(g_interfaceid.IMAGE_TSIMAGE, g_Girls.GetAnimatedSurface(girl, Mode, Img));
 	}
 }
@@ -2825,65 +2731,18 @@ void Gallery2()
 	}
 	// Set the text for gallery type
 	// `J` reworked to allow all image types
-	string galtxt[] = { "Anal", "BDSM", "Sex", "Beast", "Group", "Lesbian", "Torture", "Death", "Profile",
-		"Combat", "Oral", "Ecchi", "Strip", "Maid", "Sing", "Wait", "Card", "Bunny", "Nude", "Mast", "Titty",
-		"Milk", "Hand", "Pregnant", "Pregnant\nAnal", "Pregnant\nBDSM", "Pregnant\nSex", "Pregnant\nBeast",
-		"Pregnant\nGroup", "Pregnant\nLesbian", "Pregnant\nTorture", "Pregnant\nDeath", "Pregnant\nProfile",
-		"Pregnant\nCombat", "Pregnant\nOral", "Pregnant\nEcchi", "Pregnant\nStrip", "Pregnant\nMaid", "Pregnant\nSing",
-		"Pregnant\nWait", "Pregnant\nCard", "Pregnant\nBunny", "Pregnant\nNude", "Pregnant\nMast", "Pregnant\nTitty",
-		"Pregnant\nMilk", "Pregnant\nHand" };
+	// `J` When modifying Image types, search for "J-Change-Image-Types"  :  found in >> InterfaceProcesses.cpp > Gallery2
+	string galtxt[] = { "Anal", "BDSM", "Sex", "Beast", "Group", "Lesbian", "Torture", "Death", "Profile", "Combat",
+		"Oral", "Ecchi", "Strip", "Maid", "Sing", "Wait", "Card", "Bunny", "Nude", "Mast", "Titty", "Milk", "Hand",
+		"Foot", "Bed", "Farm", "Herd", "Cook", "Craft", "Swim", "Bath", "Nurse", "Formal", "Shop",
+		"Pregnant", "Pregnant\nAnal", "Pregnant\nBDSM", "Pregnant\nSex", "Pregnant\nBeast", "Pregnant\nGroup",
+		"Pregnant\nLesbian", "Pregnant\nTorture", "Pregnant\nDeath", "Pregnant\nProfile", "Pregnant\nCombat",
+		"Pregnant\nOral", "Pregnant\nEcchi", "Pregnant\nStrip", "Pregnant\nMaid", "Pregnant\nSing", "Pregnant\nWait",
+		"Pregnant\nCard", "Pregnant\nBunny", "Pregnant\nNude", "Pregnant\nMast", "Pregnant\nTitty", "Pregnant\nMilk",
+		"Pregnant\nHand", "Pregnant\nFoot", "Pregnant\nBed", "Pregnant\nFarm", "Pregnant\nHerd", "Pregnant\nCook",
+		"Pregnant\nCraft", "Pregnant\nSwim", "Pregnant\nBath", "Pregnant\nNurse", "Pregnant\nFormal", "Pregnant\nShop" };
 	g_Gallery.EditTextItem(galtxt[Mode], g_interfaceid.TEXT_GALLERYTYPE);
 
-	/* `J` old code
-	string galtxt = "";
-	switch(Mode)
-	{
-	case 11:
-		galtxt = "Ecchi";
-		g_Gallery2.EditTextItem(galtxt,g_interfaceid.TEXT_GALLERYTYPE);
-		break;
-	case 12:
-		galtxt = "Strip";
-		g_Gallery2.EditTextItem(galtxt,g_interfaceid.TEXT_GALLERYTYPE);
-		break;
-	case 13:
-		galtxt = "Maid";
-		g_Gallery2.EditTextItem(galtxt,g_interfaceid.TEXT_GALLERYTYPE);
-		break;
-	case 14:
-		galtxt = "Sing";
-		g_Gallery2.EditTextItem(galtxt,g_interfaceid.TEXT_GALLERYTYPE);
-		break;
-	case 15:
-		galtxt = "Waitress";
-		g_Gallery2.EditTextItem(galtxt,g_interfaceid.TEXT_GALLERYTYPE);
-		break;
-	case 16:
-		galtxt = "Card";
-		g_Gallery2.EditTextItem(galtxt,g_interfaceid.TEXT_GALLERYTYPE);
-		break;
-	case 17:
-		galtxt = "Bunny";
-		g_Gallery2.EditTextItem(galtxt,g_interfaceid.TEXT_GALLERYTYPE);
-		break;
-	case 18:
-		galtxt = "Nude";
-		g_Gallery2.EditTextItem(galtxt,g_interfaceid.TEXT_GALLERYTYPE);
-		break;
-	case 19:
-		galtxt = "Masturbation";
-		g_Gallery2.EditTextItem(galtxt,g_interfaceid.TEXT_GALLERYTYPE);
-		break;
-	case 20:
-		galtxt = "Titty Fuck";
-		g_Gallery2.EditTextItem(galtxt,g_interfaceid.TEXT_GALLERYTYPE);
-		break;
-	default:
-		galtxt = "";
-		g_Gallery.EditTextItem(galtxt,g_interfaceid.TEXT_GALLERYTYPE);
-		break;
-	}
-	// */ //
 
 	// Draw the image
 	if(girl)

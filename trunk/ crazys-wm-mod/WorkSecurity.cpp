@@ -41,6 +41,7 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
+// `J` Brothel Job - General
 bool cJobManager::WorkSecurity(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	string message = "";

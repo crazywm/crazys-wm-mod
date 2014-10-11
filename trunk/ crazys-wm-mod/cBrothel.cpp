@@ -1144,7 +1144,6 @@ void cBrothelManager::UpdateBrothels()
 	cTariff tariff;
 	stringstream ss;
 	sBrothel* current = m_Parent;
-
 	u_int firstjob = JOB_RESTING;
 	u_int lastjob = JOB_WHORESTREETS;
 	u_int restjob = JOB_RESTING;
@@ -1173,7 +1172,7 @@ void cBrothelManager::UpdateBrothels()
 			if (cgirl->health() <= 0)
 			{
 				sGirl* DeadGirl = cgirl;
-				current = (current->m_Next) ? current->m_Next : 0;
+				cgirl = (cgirl->m_Next) ? cgirl->m_Next : 0;
 				UpdateAllGirlsStat(current, STAT_PCFEAR, 2);	// increase all the girls fear of the player for letting her die (weather his fault or not)
 				UpdateAllGirlsStat(current, STAT_PCHATE, 1);	// increase all the girls hate of the player for letting her die (weather his fault or not)
 				// Two messages go into the girl queue...
@@ -1202,7 +1201,7 @@ void cBrothelManager::UpdateBrothels()
 				// set yesterday jobs for everyone
 				cgirl->m_YesterDayJob = cgirl->m_DayJob;
 				cgirl->m_YesterNightJob = cgirl->m_NightJob;
-
+				cgirl->m_Refused_To_Work = false;
 
 				do_food_and_digs(current, cgirl);		// Brothel only update for girls accommodation level
 				g_Girls.CalculateGirlType(cgirl);		// update the fetish traits
@@ -1509,6 +1508,7 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, int DayNight)
 	u_int matronjob = JOB_MATRON;
 	bool matron = (GetNumGirlsOnJob(brothel->m_id, matronjob, false) >= 1) ? true : false;
 	string MatronMsg = "", MatronWarningMsg = "";
+	stringstream ss;
 
 	cConfig cfg;
 	sGirl* current = brothel->m_Girls;
@@ -1619,6 +1619,7 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		*		Summary Messages
 		*/
 
+		ss.str("");
 		/* */if (sw == JOB_RESTING)			summary += girlName + gettext(" was resting so made no money.");
 		else if (sw == JOB_MATRON && DayNight == SHIFT_NIGHT)
 			summary += girlName + gettext(" continued to help the other girls throughout the night.");
@@ -1627,11 +1628,23 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		else if (sw == JOB_TRAINING || sw == JOB_ADVERTISING)	sum = -1;
 		// WD:	No night shift summary message needed for Torturer job
 		else if (sw == JOB_TORTURER && DayNight == SHIFT_NIGHT)	sum = -1;
+
+		// `J` if a slave does a job that is normally paid by you but you don't pay your slaves...
+		else if (current->is_slave() && !cfg.initial.slave_pay_outofpocket() &&
+#if 0	// `J` until all jobs have this part added to them, use the individual job list instead of this
+			m_JobManager.is_job_Paid_Player(sw))
+#else
+			(
+			sw == JOB_CLEANING
+			))
+#endif
+		{
+			summary += "\nYou own her and you don't pay your slaves.";
+		}
 		// WD:	Bad girl did not work. Moved from cJobManager::Preprocessing()
 		else if (refused) summary += girlName + gettext(" refused to work so made no money.");
 		else if (totalGold > 0)
 		{
-			stringstream ss;
 			ss << girlName << " earned a total of " << totalGold << " gold";
 			u_int job = (DayNight) ? current->m_NightJob : current->m_DayJob;
 			// if it is a player paid job and she is not a slave
@@ -1658,7 +1671,7 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		else if (totalGold == 0)		summary += girlName + gettext(" made no money.");
 		else if (totalGold < 0)
 		{
-			stringstream ss;
+			ss.str("");
 			ss << "ERROR: She has a loss of " << totalGold << " gold\n\n Please report this to the Pink Petal Devloment Team at http://pinkpetal.org";
 			summary += ss.str();
 			sum = EVENT_DEBUG;

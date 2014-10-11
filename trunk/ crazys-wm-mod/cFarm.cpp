@@ -106,8 +106,14 @@ void cFarmManager::Free()
 void cFarmManager::UpdateFarm()
 {
 	sBrothel* current = (sBrothel*) m_Parent;
+	u_int restjob = JOB_FARMREST;
+	u_int matronjob = JOB_FARMMANGER;
+	u_int firstjob = JOB_FARMREST;
+	u_int lastjob = JOB_MAKEPOTIONS;
+
 	current->m_Finance.zero();
 	current->m_AntiPregUsed = 0;
+
 	// Clear the girls' events from the last turn
 	sGirl* cgirl = current->m_Girls;
 	while(cgirl)
@@ -174,7 +180,8 @@ void cFarmManager::UpdateGirls(sBrothel* brothel, int DayNight)
 	u_int lastjob = JOB_MAKEPOTIONS;
 	bool matron = (GetNumGirlsOnJob(brothel->m_id, matronjob, false) >= 1) ? true : false;
 	string MatronMsg = "", MatronWarningMsg = "";
-	
+	stringstream ss;
+
 	cConfig cfg;
 	sGirl* current = brothel->m_Girls;
 	sGirl* DeadGirl = 0;
@@ -191,11 +198,14 @@ void cFarmManager::UpdateGirls(sBrothel* brothel, int DayNight)
 	{
 		while (current)
 		{
-			current->m_Pay = current->m_Tips = 0; 
+			current->m_Pay = current->m_Tips = 0;
 			if (current->m_DayJob < firstjob && current->m_DayJob > lastjob)		current->m_DayJob = restjob;
 			if (current->m_NightJob < firstjob && current->m_NightJob > lastjob)	current->m_NightJob = restjob;
 			current->m_YesterDayJob = current->m_DayJob;		// `J` set what she did yesterday
 			current->m_YesterNightJob = current->m_NightJob;	// `J` set what she did yesternight
+			current->m_Refused_To_Work = false;
+
+
 			if (current->m_JustGaveBirth)		// if she gave birth, let her rest this week
 			{
 				if (current->m_NightJob != restjob)	current->m_PrevNightJob = current->m_NightJob;
@@ -205,7 +215,7 @@ void cFarmManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		}
 	}
 	current = brothel->m_Girls;
-	
+
 
 	while (current)
 	{
@@ -217,7 +227,7 @@ void cFarmManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		if (DayNight == SHIFT_DAY)
 		{
 			// Remove any dead bodies from last week
-			if(current->health() <= 0)
+			if (current->health() <= 0)
 			{
 				DeadGirl = current;
 				// If there are more girls to process
@@ -272,16 +282,16 @@ void cFarmManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		}
 
 
-/*
- *		EVERY SHIFT processing
- */
+		/*
+		 *		EVERY SHIFT processing
+		 */
 
 		// Sanity check! Don't process dead girls
-		if(current->health() <= 0)
+		if (current->health() <= 0)
 		{
 			if (current->m_Next) // If there are more girls to process
 			{
-			    current = current->m_Next;
+				current = current->m_Next;
 				continue;
 			}
 			else
@@ -297,9 +307,9 @@ void cFarmManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		// Calculate the girls asking price
 		g_Girls.CalculateAskPrice(current, true);
 
-/*
- *		JOB PROCESSING
- */
+		/*
+		 *		JOB PROCESSING
+		 */
 		unsigned int restjob = JOB_FARMREST;	// `J` added this to allow for easier copy/paste to other buildings
 		u_int sw = 0;							//	Job type
 
@@ -336,13 +346,26 @@ void cFarmManager::UpdateGirls(sBrothel* brothel, int DayNight)
 
 		brothel->m_Fame += g_Girls.GetStat(current, STAT_FAME);
 
-/*
- *		Summary Messages
- */
+		/*
+		 *		Summary Messages
+		 */
+		ss.str("");
 		if (refused) summary += girlName + gettext(" refused to work so made no money.");
+		// `J` if a slave does a job that is normally paid by you but you don't pay your slaves...
+		else if (current->is_slave() && !cfg.initial.slave_pay_outofpocket() &&
+#if 0	// `J` until all jobs have this part added to them, use the individual job list instead of this
+			m_JobManager.is_job_Paid_Player(sw))
+#else
+			(
+			sw == JOB_FARMHAND ||
+			sw == JOB_GARDENER
+			))
+#endif
+		{
+			summary += "\nYou own her and you don't pay your slaves.";
+		}
 		else if (totalGold > 0)
 		{
-			stringstream ss;
 			ss << girlName << " earned a total of " << totalGold << " gold";
 			u_int job = (DayNight) ? current->m_NightJob : current->m_DayJob;
 			// if it is a player paid job and she is not a slave
@@ -351,7 +374,7 @@ void cFarmManager::UpdateGirls(sBrothel* brothel, int DayNight)
 				(m_JobManager.is_job_Paid_Player(job) && current->is_slave() && cfg.initial.slave_pay_outofpocket()))
 				ss << " directly from you. She gets to keep it all.";
 			else if (current->house() <= 0)				ss << " and she gets to keep it all.";
-			else if (totalTips>0 && ((cfg.initial.girls_keep_tips() && !current->is_slave()) || (cfg.initial.slave_keep_tips() && current->is_slave())))
+			else if (totalTips > 0 && ((cfg.initial.girls_keep_tips() && !current->is_slave()) || (cfg.initial.slave_keep_tips() && current->is_slave())))
 			{
 				int hpay = int(double(totalPay * double(current->m_Stats[STAT_HOUSE] * 0.01)));
 				int gpay = totalPay - hpay;
@@ -368,7 +391,6 @@ void cFarmManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		else if (totalGold == 0)		summary += girlName + gettext(" made no money.");
 		else if (totalGold < 0)
 		{
-			stringstream ss;
 			ss << "ERROR: She has a loss of " << totalGold << " gold\n\n Please report this to the Pink Petal Devloment Team at http://pinkpetal.org";
 			summary += ss.str();
 			sum = EVENT_DEBUG;
@@ -472,7 +494,7 @@ void cFarmManager::UpdateGirls(sBrothel* brothel, int DayNight)
 	}
 
 	// WD: Finished Processing Shift set flag
-	m_Processing_Shift= -1;				
+	m_Processing_Shift = -1;
 }
 
 TiXmlElement* cFarmManager::SaveDataXML(TiXmlElement* pRoot)

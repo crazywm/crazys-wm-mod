@@ -43,103 +43,99 @@ extern cMovieStudioManager g_Studios;
 extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
+// `J` Movie Studio Job - Crew
 bool cJobManager::WorkCrystalPurifier(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
-	string message = "";
-	char buffer[1000];
-	int jobperformance = 0;
-	string girlName = girl->m_Realname;
+	// No film crew.. then go home	// `J` this will be taken care of in building flow, leaving it in for now
+	if (g_Studios.GetNumGirlsOnJob(0, JOB_CAMERAMAGE, SHIFT_NIGHT) == 0 || g_Studios.GetNumGirlsOnJob(0, JOB_CRYSTALPURIFIER, SHIFT_NIGHT) == 0)
+	{
+		girl->m_Events.AddMessage("There was no crew to film the scene, so she took the day off", IMGTYPE_PROFILE, EVENT_NOWORK);
+		return false;
+	}
+	else if (g_Studios.Num_Actress(0) < 1)
+	{
+		girl->m_Events.AddMessage("There were no actresses to film, so she took the day off", IMGTYPE_PROFILE, EVENT_NOWORK);
+		return false;
+	}
 
-	g_Girls.UnequipCombat(girl);
+	cConfig cfg;
+	stringstream ss;
+	string girlName = girl->m_Realname;
+	int wages = 50;
+	int enjoy = 0;
+	int jobperformance = 0;
+
+	g_Girls.UnequipCombat(girl);	// not for studio crew
 
 	// `J` added this to allow the Director to assign someone to this job without making it permanent
 	if (girl->m_DayJob == JOB_FILMFREETIME)	// the director sets the old job to dayjob when changing night job
 	{
-		message = girlName;
-		message += gettext(" worked as a crystal purifier.\n\n");
+		ss << girlName << " worked as a crystal purifier.\n\n";
 	}
 	else
 	{
-		message = "The Director assigned " + girlName + "to edit the scenes for the week ";
+		ss << "The Director assigned " << girlName << "to edit the scenes for the week ";
 	}
 
-	int roll = g_Dice%100;
+	int roll = g_Dice.d100();
 	if (roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
 	{
 		if (girl->m_DayJob == JOB_FILMFREETIME)
 		{
-			message = girl->m_Realname + gettext(" refused to work as a crystal purifier today.");
-			girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_NOWORK);
+			ss << "She refused to work as a crystal purifier today.";
+			girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		}
 		else
 		{
-			if (g_Studios.is_Actress_Job(girl->m_DayJob))	message += "but she wanted to be part of the action instead of just watching it.\n";
-			else if (girl->m_DayJob == JOB_PROMOTER)		message += "but she preferred to sell the movies rather than edit them.\n";
-			else if (girl->m_DayJob == JOB_FLUFFER)			message += "but she wanted to see the action live instead of watching it afterwards.\n";
-			else if (girl->m_DayJob == JOB_STAGEHAND)		message += "but she wanted to clean instead of editing scenes.\n";
-			else if (girl->m_DayJob == JOB_CAMERAMAGE)		message += "but she preferred to film the scenes rather than edit them.\n";
-			girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_BACKTOWORK);
+			if (g_Studios.is_Actress_Job(girl->m_DayJob))	ss << "but she wanted to be part of the action instead of just watching it.\n";
+			else if (girl->m_DayJob == JOB_PROMOTER)		ss << "but she preferred to sell the movies rather than edit them.\n";
+			else if (girl->m_DayJob == JOB_FLUFFER)			ss << "but she wanted to see the action live instead of watching it afterwards.\n";
+			else if (girl->m_DayJob == JOB_STAGEHAND)		ss << "but she wanted to clean instead of editing scenes.\n";
+			else if (girl->m_DayJob == JOB_CAMERAMAGE)		ss << "but she preferred to film the scenes rather than edit them.\n";
+			girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_BACKTOWORK);
 		}
 		return true;
 	}
-	else if(roll <= 15) 
-	{
-		message += gettext(" She did not like working in the studio today.\n\n");
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, -1, true);
-		jobperformance += -5;
-	}
-	else if(roll >=90)
-	{
-		message += gettext(" She had a great time working today.\n\n");
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, +3, true);
-		jobperformance += 5;
-	}
-	else
-	{
-		message += gettext(" Otherwise, the shift passed uneventfully.\n\n");
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, +1, true);
-	}
 
-/*
- *	work out the pay between the house and the girl
- *
- *	the original calc took the average of beauty and charisma and halved it
- */
-	girl->m_Pay += 20;
+	/* */if (roll <= 10) { enjoy -= g_Dice % 3 + 1; ss << "She did not like working in the studio today.\n\n"; }
+	else if (roll >= 90) { enjoy += g_Dice % 3 + 1; ss << "She had a great time working today.\n\n"; }
+	else /*    */{ enjoy += max(0, g_Dice % 3 - 1); ss << "Otherwise, the shift passed uneventfully.\n\n"; }
+	jobperformance = enjoy * 2;
 
-	int roll_max = girl->spirit() + girl->intelligence();
-	roll_max /= 4;
-	girl->m_Pay += 10 + g_Dice%roll_max;
-	
+
 	jobperformance += (girl->spirit() - 50) / 10;
 	jobperformance += (girl->intelligence() - 50) / 10;
 	jobperformance += g_Girls.GetSkill(girl, SKILL_SERVICE) / 10;
 	jobperformance /= 3;
 	jobperformance += g_Girls.GetStat(girl, STAT_LEVEL);
 	jobperformance += g_Girls.GetStat(girl, STAT_FAME) / 20;
-	jobperformance += g_Dice%4 - 1;	// should add a -1 to +3 random element --PP
-	
-	g_Studios.m_PurifierQaulity += jobperformance;
+	jobperformance += g_Dice % 4 - 1;	// should add a -1 to +3 random element --PP
 
-	if (jobperformance > 0)
+	// slave girls not being paid for a job that normally you would pay directly for do less work
+	if ((girl->is_slave() && !cfg.initial.slave_pay_outofpocket()))
 	{
-		message += girlName + gettext(" helped improve the scene ");
-		_itoa(jobperformance, buffer, 10);
-		message += buffer;
-		message += "% with her production skills. \n";
+		jobperformance = int(jobperformance * 0.9);
+		wages = 0;
 	}
-	else if (jobperformance < 0)
-	{
-		message += girlName + gettext(" did a bad job today, she reduced the scene quality ");
-		_itoa(jobperformance, buffer, 10);
-		message += buffer;
-		message += "% with her poor performance. \n";
+	else	// work out the pay between the house and the girl
+	{		
+		// `J` zzzzzz - need to change pay so it better reflects how well she promoted the films
+		wages += 20;
+		int roll_max = girl->spirit() + girl->intelligence();
+		roll_max /= 4;
+		wages += 10 + g_Dice%roll_max;
 	}
-	else
-		message += girlName + gettext(" did not really help the scene quality.\n");
+
+	/* */if (jobperformance > 0)	ss << "She helped improve the scene " << jobperformance << "% with her production skills. \n";
+	else if (jobperformance < 0)	ss << "She did a bad job today, she reduced the scene quality " << jobperformance << "% with her poor performance. \n";
+	else /*                   */	ss << "She did not really help the scene quality.\n";
+	
+	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, DayNight);
+	g_Studios.m_PurifierQaulity += jobperformance;
+	girl->m_Pay = wages;
 
 	// Improve stats
-	int xp = 5, skill = 3, libido = 1;
+	int xp = 10, skill = 3, libido = 1;
 	if (jobperformance > 5)	skill += 1;
 
 	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
@@ -151,7 +147,6 @@ bool cJobManager::WorkCrystalPurifier(sGirl* girl, sBrothel* brothel, int DayNig
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill + 1);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
-	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
 
 	return false;
 }

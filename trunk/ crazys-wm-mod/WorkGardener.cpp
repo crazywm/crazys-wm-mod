@@ -41,24 +41,26 @@ extern cFarmManager g_Farm;
 extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
+// `J` Farm Job - Laborers
 bool cJobManager::WorkGardener(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	string message = "";
 	string girlName = girl->m_Realname;
 
-	if(Preprocessing(ACTION_WORKFARM, girl, brothel, DayNight, summary, message))	// they refuse to have work in the bar
+	if (Preprocessing(ACTION_WORKFARM, girl, brothel, DayNight, summary, message))	// they refuse to have work in the bar
 		return true;
 
 	// put that shit away, you'll scare off the customers!
 	g_Girls.UnequipCombat(girl);
 
+	cConfig cfg;
 	int wages = 15;
 	message += "She worked as a gardener in the farm.";
 
-	int roll = g_Dice%100;
-	int jobperformance = (	g_Girls.GetStat(girl, STAT_INTELLIGENCE)/2 + 
-							g_Girls.GetSkill(girl, SKILL_HERBALISM)/2 +
-							g_Girls.GetSkill(girl, SKILL_FARMING));
+	int roll = g_Dice % 100;
+	int jobperformance = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) / 2 +
+		g_Girls.GetSkill(girl, SKILL_HERBALISM) / 2 +
+		g_Girls.GetSkill(girl, SKILL_FARMING));
 
 
 	//good traits
@@ -76,46 +78,45 @@ bool cJobManager::WorkGardener(sGirl* girl, sBrothel* brothel, int DayNight, str
 
 
 	if (jobperformance >= 245)
-		{
-			message += " She must be the perfect at this.\n\n";
-			wages += 155;
-		}
+	{
+		message += " She must be the perfect at this.\n\n";
+		wages += 155;
+	}
 	else if (jobperformance >= 185)
-		{
-			message += " She's unbelievable at this.\n\n";
-			wages += 95;
-		}
+	{
+		message += " She's unbelievable at this.\n\n";
+		wages += 95;
+	}
 	else if (jobperformance >= 145)
-		{
-			message += " She's good at this job.\n\n";
-			wages += 55;
-		}
+	{
+		message += " She's good at this job.\n\n";
+		wages += 55;
+	}
 	else if (jobperformance >= 100)
-		{
-			message += " She made a few mistakes but overall she is okay at this.\n\n";
-			wages += 15;
-		}
+	{
+		message += " She made a few mistakes but overall she is okay at this.\n\n";
+		wages += 15;
+	}
 	else if (jobperformance >= 70)
-		{
-			message += " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
-			wages -= 5;
-		}
+	{
+		message += " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
+		wages -= 5;
+	}
 	else
-		{
-			message += " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
-			wages -= 15;
-		}
+	{
+		message += " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
+		wages -= 15;
+	}
 
 
-		if(wages < 0)
-			wages = 0;
+	if (wages < 0) wages = 0;
 
-	if(roll <= 5)
+	if (roll <= 5)
 	{
 		message += " Some of the patrons abused her during the shift.";
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKFARM, -3, true);
 	}
-	else if(roll <= 25) {
+	else if (roll <= 25) {
 		message += " She had a pleasant time working.";
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKFARM, +3, true);
 	}
@@ -128,9 +129,15 @@ bool cJobManager::WorkGardener(sGirl* girl, sBrothel* brothel, int DayNight, str
 	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
 
 
-	int roll_max = (g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA));
-	roll_max /= 4;
-	wages += 10 + g_Dice%roll_max;
+	if (girl->is_slave() && !cfg.initial.slave_pay_outofpocket()) wages = 0;    // You own her so you don't have to pay her.
+	else
+	{
+		int roll_max = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) 
+			+ g_Girls.GetStat(girl, SKILL_HERBALISM) 
+			+ g_Girls.GetSkill(girl, SKILL_FARMING));
+		roll_max /= 6;
+		wages += 10 + g_Dice%roll_max;
+	}
 	girl->m_Pay = wages;
 
 
@@ -143,7 +150,9 @@ bool cJobManager::WorkGardener(sGirl* girl, sBrothel* brothel, int DayNight, str
 
 	g_Girls.UpdateStat(girl, STAT_FAME, 1);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_FARMING, skill);
+	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, g_Dice%(skill-1));
+	g_Girls.UpdateSkill(girl, SKILL_HERBALISM, (g_Dice%skill) + 1);
+	g_Girls.UpdateSkill(girl, SKILL_FARMING, (g_Dice%skill) + 1);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
 	return false;

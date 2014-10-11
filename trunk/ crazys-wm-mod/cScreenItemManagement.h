@@ -75,6 +75,7 @@ public:
 
 	void attempt_transfer(Side transfer_from);
 	void refresh_item_list(Side which_list);
+	string GiveItemText(int goodbad, int HateLove, string ItemName = "");
 
 	// XML screen replacement for cSelector, for multi-select listboxes
 	int multi_left_first() {

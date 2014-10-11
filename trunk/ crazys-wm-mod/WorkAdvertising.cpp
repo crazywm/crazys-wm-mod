@@ -42,6 +42,7 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
+// `J` Brothel Job - General
 bool cJobManager::WorkAdvertising(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	string message = "";
@@ -110,9 +111,9 @@ bool cJobManager::WorkAdvertising(sGirl* girl, sBrothel* brothel, int DayNight, 
 	if (girl->has_trait("Malformed"))	multiplier -= 20;
 
 	if (girl->is_slave() && !cfg.initial.slave_pay_outofpocket())
-		multiplier *= 0.95;	// unpaid slaves don't seem to want to advertise as much.
+		multiplier *= 0.9;	// unpaid slaves don't seem to want to advertise as much.
 	if (girl->is_free())
-		multiplier *= 1.05;	// paid free girls seem to attract more business
+		multiplier *= 1.1;	// paid free girls seem to attract more business
 
 
 	// Complications

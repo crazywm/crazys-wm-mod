@@ -2,7 +2,7 @@
 <Items>
 <Item Name="Plain Underwear"    
       Desc="This basic underwear is perfectly functional, although it doesn't do much beyond that. (+3 Happiness)" 
-      Type="Under Wear" 
+      Type="Underwear" 
       Badness="0" 
       Special="None" 
       Cost="20" 

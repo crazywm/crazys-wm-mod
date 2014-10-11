@@ -42,6 +42,7 @@ extern cCentreManager g_Centre;
 extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
+// `J` Centre Job - Rehab
 bool cJobManager::WorkDrugCounselor(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	string message = "";

@@ -40,6 +40,7 @@ extern cBrothelManager g_Brothels;
 extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
+// `J` Brothel Job - Bar
 bool cJobManager::WorkEscort(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	string message = "", girlName = girl->m_Realname;

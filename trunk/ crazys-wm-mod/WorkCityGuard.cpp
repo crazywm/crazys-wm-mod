@@ -46,6 +46,7 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
+// `J` Arena Job - Staff
 bool cJobManager::WorkCityGuard(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	string message = ""; string girlName = girl->m_Realname;

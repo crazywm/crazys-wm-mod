@@ -2,7 +2,7 @@
 <Items>
 <Item Name="Comfortable Underwear"    
       Desc="Made of a silky material, this underwear is comfortable and has a nice look to it. (+5 Happiness, +1 Cha, +1 Beauty)" 
-      Type="Under Wear" 
+      Type="Underwear" 
       Badness="0" 
       Special="None" 
       Cost="80" 

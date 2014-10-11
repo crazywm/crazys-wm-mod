@@ -42,6 +42,7 @@ extern cClinicManager g_Clinic;
 extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
+// `J` Clinic Job - Surgery
 bool cJobManager::WorkHealing(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	string message = "";

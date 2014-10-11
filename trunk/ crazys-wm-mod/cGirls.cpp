@@ -6105,20 +6105,54 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 {
 	bool good = false;
 	bool contraception = false;
-	int happymod = 0; // changed from direct changing of customer->m_Stats[STAT_HAPPINESS] += 15;
-
-	// Start the customers unhappiness/happiness bad sex decreases, good sex inceases
+	int STDchance = 0;
+	int happymod = 0;	// Start the customers unhappiness/happiness bad sex decreases, good sex inceases
 	if (HasTrait(girl, "Fake Orgasm Expert"))		happymod += 20;
 	else if (HasTrait(girl, "Fast Orgasms"))		happymod += 10;
 	else if (HasTrait(girl, "Slow Orgasms"))		happymod -= 10;
-	if (HasTrait(girl, "Psychic"))					happymod += 10;
+	if (HasTrait(girl, "Psychic"))					happymod += 10;	// she knows what the customer wants
 
-	if(HasTrait(girl,"Abnormally Large Boobs"))		happymod += 15;
-	else if(HasTrait(girl,"Big Boobs"))				happymod += 10;
+	if (customer->m_Fetish == FETISH_BIGBOOBS)
+	{
+		/* */if (HasTrait(girl, "Flat Chest"))				happymod -= 15;
+		else if (HasTrait(girl, "Petite Breasts"))			happymod -= 10;
+		else if (HasTrait(girl, "Small Boobs"))				happymod -= 5;
+		else if (HasTrait(girl, "Busty Boobs"))				happymod += 4;
+		else if (HasTrait(girl, "Big Boobs"))				happymod += 8;
+		else if (HasTrait(girl, "Giant Juggs"))				happymod += 12;
+		else if (HasTrait(girl, "Massive Melons"))			happymod += 16;
+		else if (HasTrait(girl, "Abnormally Large Boobs"))	happymod += 20;
+		else if (HasTrait(girl, "Titanic Tits"))			happymod += 25;
+	}
+	else if (customer->m_Fetish == FETISH_SMALLBOOBS)
+	{
+		/* */if (HasTrait(girl, "Flat Chest"))				happymod += 15;
+		else if (HasTrait(girl, "Petite Breasts"))			happymod += 20;
+		else if (HasTrait(girl, "Small Boobs"))				happymod += 10;
+		else if (HasTrait(girl, "Busty Boobs"))				happymod -= 2;
+		else if (HasTrait(girl, "Big Boobs"))				happymod -= 5;
+		else if (HasTrait(girl, "Giant Juggs"))				happymod -= 10;
+		else if (HasTrait(girl, "Massive Melons"))			happymod -= 15;
+		else if (HasTrait(girl, "Abnormally Large Boobs"))	happymod -= 20;
+		else if (HasTrait(girl, "Titanic Tits"))			happymod -= 30;
+	}
+	else
+	{
+		/* */if (HasTrait(girl, "Flat Chest"))				happymod -= 2;
+		else if (HasTrait(girl, "Petite Breasts"))			happymod -= 1;
+		else if (HasTrait(girl, "Small Boobs"))				happymod += 0;
+		else if (HasTrait(girl, "Busty Boobs"))				happymod += 1;
+		else if (HasTrait(girl, "Big Boobs"))				happymod += 2;
+		else if (HasTrait(girl, "Giant Juggs"))				happymod += 1;
+		else if (HasTrait(girl, "Massive Melons"))			happymod += 0;
+		else if (HasTrait(girl, "Abnormally Large Boobs"))	happymod -= 1;
+		else if (HasTrait(girl, "Titanic Tits"))			happymod -= 2;
+
+	}
 
 	girl->m_NumCusts += (int)customer->m_Amount;
-	
-	if(group)
+
+	if (group)
 	{
 		// the customer will be an average in all skills for the customers involved in the sex act
 		SexType = SKILL_GROUP;
@@ -6127,8 +6161,11 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 		SexType = customer->m_SexPref;
 
 	// If the girls skill < 50 then it will be unsatisfying otherwise it will be satisfying
-	if(GetSkill(girl, SexType) < 50)	happymod -= (100 - GetSkill(girl, SexType)) / 5;
+	happymod = (GetSkill(girl, SexType) - 50) / 5;
+	/* `J` replaced with single check
+	if (GetSkill(girl, SexType) < 50)	happymod -= (100 - GetSkill(girl, SexType)) / 5;
 	else happymod += GetSkill(girl, SexType) / 5;
+	//*/
 
 	// If the girl is famous then he will be slightly happier
 	happymod += GetStat(girl, STAT_FAME) / 5;
@@ -6137,17 +6174,17 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 	happymod += GetSkill(girl, SKILL_SERVICE) / 10;
 
 	int value = customer->m_Stats[STAT_HAPPINESS] + happymod;			// `J` now set customers happiness
-	if (value > 100)	{	customer->m_Stats[STAT_HAPPINESS] = 100;}
-	else if (value<0)	{	customer->m_Stats[STAT_HAPPINESS] = 0;	}
-	else				{	customer->m_Stats[STAT_HAPPINESS] += happymod;}
+	if (value > 100)	{ customer->m_Stats[STAT_HAPPINESS] = 100; }
+	else if (value < 0)	{ customer->m_Stats[STAT_HAPPINESS] = 0; }
+	else				{ customer->m_Stats[STAT_HAPPINESS] += happymod; }
 
 	// her magic ability can make him think he enjoyed it more if she has mana
-	
+
 	int happycost = 3 - int(GetSkill(girl, SKILL_MAGIC) / 40);	// `J` how many mana will each point of happy cost her
 	if (happycost < 1) happycost = 1;		// so [magic:cost] [<10:can't] [10-39:3] [40-79:2] [80+:1] (probably, I hate math)
 	if (customer->m_Stats[STAT_HAPPINESS] < 100 &&			// If they are not fully happy
-			GetStat(girl, STAT_MANA) >= happycost &&		// If she has enough mana to actually try
-			GetSkill(girl, SKILL_MAGIC) > 9)				// If she has at least 10 magic
+		GetStat(girl, STAT_MANA) >= happycost &&		// If she has enough mana to actually try
+		GetSkill(girl, SKILL_MAGIC) > 9)				// If she has at least 10 magic
 	{
 		int happymana = GetStat(girl, STAT_MANA);					// check her mana
 		if (happymana > 20) happymana = 20;							// and only max of 20 will be used
@@ -6175,7 +6212,6 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 		break;
 
 	case SKILL_BDSM:
-
 		/* */if (GetSkill(girl, SexType) < 40)	message += gettext(" was frightened by being tied up and having pain inflicted on her.");
 		else if (GetSkill(girl, SexType) < 60)	message += gettext(" was a little turned on by being tied up and having the customer hurting her.");
 		else if (GetSkill(girl, SexType) < 80)	message += gettext(" was highly aroused by the pain and bondage, even more so when fucking at the same time.");
@@ -6191,7 +6227,6 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 		break;
 
 	case SKILL_ORALSEX:
-
 		/* */if (GetSkill(girl, SexType) < 20)	message += " awkwardly licked the customer's cock, and recoiled when he came.";
 		else if (GetSkill(girl, SexType) < 60)	message += " licked and sucked the customer's cock.";
 		else if (GetSkill(girl, SexType) < 80)	message += " loved sucking the customer's cock, and let him cum all over her.";
@@ -6199,7 +6234,6 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 		break;
 
 	case SKILL_TITTYSEX:
-
 		/* */if (GetSkill(girl, SexType) < 20)	message += " awkwardly let the customer's cock fuck her tits, and recoiled when he came.";
 		else if (GetSkill(girl, SexType) < 60)	message += " used her breasts on the customer's cock.";
 		else if (GetSkill(girl, SexType) < 80)	message += " loved using her breasts on the customer's cock, and let him cum all over her.";
@@ -6207,7 +6241,6 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 		break;
 
 	case SKILL_HANDJOB:
-
 		/* */if (GetSkill(girl, SexType) < 20)	message += " awkwardly worked the customer's cock with her hand, and recoiled when he came.";
 		else if (GetSkill(girl, SexType) < 60)	message += " used her hand on the customer's cock.";
 		else if (GetSkill(girl, SexType) < 80)	message += " loved using her hand on the customer's cock, and let him cum all over her.";
@@ -6222,26 +6255,32 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 		}
 		else
 		{
-			if (GetSkill(girl, SexType) < 50)
-			{  // the less skilled she is, the more chance of hurting a beast accidentally
-				int harmchance = -(GetSkill(girl, SexType) - 50);  // 50% chance at 0 skill, 1% chance at 49 skill
-				if (g_Dice.percent(harmchance))
-				{
-					message += gettext(" accidentally harmed some beasts during the act and she");
-					g_Brothels.add_to_beasts(-((g_Dice % 3) + 1));
-				}
+			int harmchance = -(GetSkill(girl, SKILL_BEASTIALITY) + GetSkill(girl, SKILL_ANIMALHANDLING) - 50);  // 50% chance at 0 skill, 1% chance at 49 skill
+			if (g_Dice.percent(harmchance))
+			{
+				message += gettext(" accidentally harmed some beasts during the act and she");
+				g_Brothels.add_to_beasts(-((g_Dice % 3) + 1));
+			}
+			else if (g_Dice.percent(1 +
+				(HasTrait(girl, "Aggressive") ? 3 : 0) +
+				(HasTrait(girl, "Assassin") ? 1 : 0) +
+				(HasTrait(girl, "Merciless") ? 1 : 0) +
+				(HasTrait(girl, "Sadistic") ? 2 : 0) +
+				(HasTrait(girl, "Twisted") ? 1 : 0)))
+			{
+				message += gettext(" 'accidentally' harmed a beast during the act and she");
+				g_Brothels.add_to_beasts(-1);
 			}
 
 			/* */if (GetSkill(girl, SexType) < 20)	message += " was disgusted by the idea but still allowed the customer to watch as she was fucked by some animals.";
 			else if (GetSkill(girl, SexType) < 40)	message += " was a only little put off by the idea but still allowed the customer to watch and help as she was fucked by animals.";
 			else if (GetSkill(girl, SexType) < 60)	message += " took a large animal's cock deep inside her and enjoyed being fucked by it, her cries of pleasure being muffled by the customer's cock in her mouth.";
-			else if (GetSkill(girl, SexType) < 80)	message += " fucked some exotic beasts covered with massive cocks and tentacles, she came over and over alongside with the customer.";
+			else if (GetSkill(girl, SexType) < 80)	message += " fucked some exotic beasts covered with massive cocks and tentacles, she came over and over alongside the customer.";
 			else /*                             */	message += GetRandomBeastString();
 		}
 		break;
 
 	case SKILL_GROUP:
-
 		/* */if (GetSkill(girl, SexType) < 20)	message += gettext(" struggled to service everyone in the group that came to fuck her.");
 		else if (GetSkill(girl, SexType) < 40)	message += gettext(" managed to keep the group of customers fucking her satisfied.");
 		else if (GetSkill(girl, SexType) < 60)	message += gettext(" serviced all of the group of customers that fucked her.");
@@ -6250,7 +6289,6 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 		break;
 
 	case SKILL_LESBIAN:
-
 		/* */if (GetSkill(girl, SexType) < 20)	message += gettext(" licked her female customer's cunt until she came. She didn't want any herself.");
 		else if (GetSkill(girl, SexType) < 40)	message += gettext(" was aroused as she made her female customer cum.");
 		else if (GetSkill(girl, SexType) < 60)	message += gettext(" fucked and was fucked by her female customer.");
@@ -6311,7 +6349,9 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 			UpdateStat(girl, STAT_SPIRIT, -3);
 			UpdateStat(girl, STAT_HEALTH, -3);
 		}
+		UpdateStat(girl, STAT_LIBIDO, -40);
 		UpdateStat(girl, STAT_SPIRIT, -1);
+		STDchance += 40;
 		break;
 
 	case SKILL_BDSM:
@@ -6324,11 +6364,14 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 			UpdateStat(girl, STAT_HEALTH, -3);
 		}
 		contraception = girl->calc_pregnancy(customer, false, 0.75);
+		STDchance += (contraception ?3:30);
+
+		UpdateStat(girl, STAT_LIBIDO, -20);
 		UpdateStat(girl, STAT_SPIRIT, -1);
 		break;
 
 	case SKILL_NORMALSEX:
-		if(GetSkill(girl, SexType) < 15)
+		if (GetSkill(girl, SexType) < 15)
 		{
 			message += gettext("\nHer inexperience hurt her a little.");
 			UpdateStat(girl, STAT_HAPPINESS, -2);
@@ -6339,6 +6382,8 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 		// if they're both happy afterward, it's good sex which modifies the chance of pregnancy
 		good = (customer->happiness() >= 60 && girl->happiness() >= 60);
 		contraception = girl->calc_pregnancy(customer, good);
+		STDchance += (contraception ? 5 : 50);
+		UpdateStat(girl, STAT_LIBIDO, -50);
 		break;
 
 	case SKILL_ORALSEX:
@@ -6350,7 +6395,8 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 			UpdateStat(girl, STAT_CONFIDENCE, -1);
 			//	UpdateStat(girl, STAT_HEALTH, -3);				// Removed... oral doesn't hurt unless you get herpes or something. --PP
 		}
-
+		STDchance += 20;
+		UpdateStat(girl, STAT_LIBIDO, -10);
 		break;
 
 	case SKILL_TITTYSEX:
@@ -6361,6 +6407,8 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 			UpdateStat(girl, STAT_SPIRIT, -3);
 			UpdateStat(girl, STAT_CONFIDENCE, -1);
 		}
+		STDchance += 5;
+		UpdateStat(girl, STAT_LIBIDO, -10);
 		break;
 
 	case SKILL_HANDJOB:
@@ -6371,6 +6419,8 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 			UpdateStat(girl, STAT_SPIRIT, -3);
 			UpdateStat(girl, STAT_CONFIDENCE, -1);
 		}
+		STDchance += 5;
+		UpdateStat(girl, STAT_LIBIDO, -10);
 		break;
 
 	case SKILL_BEASTIALITY:
@@ -6386,7 +6436,12 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 		// if they're both happy afterward, it's good sex which modifies the chance of pregnancy
 		good = (customer->happiness() >= 60 && girl->happiness() >= 60);
 		// mod: added check for number of beasts owned; otherwise, fake beasts could somehow inseminate the girl
-		if (g_Brothels.GetNumBeasts() > 0) contraception = girl->calc_insemination(customer, good);
+		if (g_Brothels.GetNumBeasts() > 0)
+		{
+			contraception = girl->calc_insemination(customer, good);
+			STDchance += (contraception ? 4 : 40);
+		}
+		UpdateStat(girl, STAT_LIBIDO, -40);
 		break;
 
 	case SKILL_GROUP:
@@ -6402,6 +6457,12 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 		good = (customer->happiness() >= 60 && girl->happiness() >= 60);
 		// adding a 50% bonus to the chance of pregnancy since there's more than one partner involved
 		contraception = girl->calc_pregnancy(customer, good, 1.5);
+		STDchance += ((4 + customer->m_Amount) * (contraception ? 1 : 10));
+		UpdateStat(girl, STAT_LIBIDO, -80);
+		break;
+	case SKILL_LESBIAN:
+		STDchance += 10;
+		UpdateStat(girl, STAT_LIBIDO, -50);
 		break;
 
 	case SKILL_STRIP:
@@ -6414,6 +6475,8 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 			UpdateStat(girl, STAT_CONFIDENCE, -1);
 			UpdateStat(girl, STAT_HEALTH, -3);
 		}
+		STDchance += 1;
+		UpdateStat(girl, STAT_LIBIDO, -5);
 		break;
 	}
 
@@ -6444,19 +6507,20 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 	else if (HasTrait(girl, "Slow Learner"))	{ skillgain = 3; exp = 3; }
 	if (SexType == SKILL_GROUP)
 	{
-		UpdateSkill(girl, SKILL_ANAL,		max(0, g_Dice%skillgain + 1));
-		UpdateSkill(girl, SKILL_BDSM,		max(0, g_Dice%skillgain - 1));
-		UpdateSkill(girl, SKILL_NORMALSEX,	max(0, g_Dice%skillgain + 1));
-		UpdateSkill(girl, SKILL_GROUP,		max(0, g_Dice%skillgain + 1));
-		UpdateSkill(girl, SKILL_LESBIAN,	max(0, g_Dice%skillgain - 1));
-		UpdateSkill(girl, SKILL_STRIP,		max(0, g_Dice%skillgain - 1));
-		UpdateSkill(girl, SKILL_ORALSEX,	max(0, g_Dice%skillgain - 1));
-		UpdateSkill(girl, SKILL_TITTYSEX,	max(0, g_Dice%skillgain - 1));
-		UpdateSkill(girl, SKILL_HANDJOB,	max(0, g_Dice%skillgain - 1));
+		UpdateSkill(girl, SKILL_ANAL, max(0, g_Dice%skillgain + 1));
+		UpdateSkill(girl, SKILL_BDSM, max(0, g_Dice%skillgain - 1));
+		UpdateSkill(girl, SKILL_NORMALSEX, max(0, g_Dice%skillgain + 1));
+		UpdateSkill(girl, SKILL_BEASTIALITY, max(0, g_Dice%skillgain - 3));
+		UpdateSkill(girl, SKILL_GROUP, max(0, g_Dice%skillgain + 1));
+		UpdateSkill(girl, SKILL_LESBIAN, max(0, g_Dice%skillgain - 1));
+		UpdateSkill(girl, SKILL_STRIP, max(0, g_Dice%skillgain - 1));
+		UpdateSkill(girl, SKILL_ORALSEX, max(0, g_Dice%skillgain - 1));
+		UpdateSkill(girl, SKILL_TITTYSEX, max(0, g_Dice%skillgain - 1));
+		UpdateSkill(girl, SKILL_HANDJOB, max(0, g_Dice%skillgain - 1));
 	}
 	else	UpdateSkill(girl, SexType, g_Dice%skillgain + 1);
 	UpdateSkill(girl, SKILL_SERVICE, max(0, g_Dice % skillgain - 1));
-	UpdateStat(girl, STAT_EXP, ((g_Dice%exp) * 3));
+	UpdateStat(girl, STAT_EXP, (g_Dice % (exp * 3)));
 
 	int enjoy = 1;
 	if (HasTrait(girl, "Nymphomaniac"))
@@ -6469,8 +6533,8 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 		case SKILL_BDSM:
 		case SKILL_BEASTIALITY:
 		case SKILL_LESBIAN:			enjoy += 1; break;
-		// Nymphomaniac would rather have something inside her so if she can't, she does not enjoy it as much
-		case SKILL_STRIP:			enjoy -= 2; break; 
+			// Nymphomaniac would rather have something inside her so if she can't, she does not enjoy it as much
+		case SKILL_STRIP:			enjoy -= 2; break;
 		case SKILL_TITTYSEX:
 		case SKILL_HANDJOB:			enjoy -= 1; break;
 		case SKILL_ORALSEX:
@@ -6484,7 +6548,7 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 		{
 		case SKILL_LESBIAN:			enjoy += 3; break;
 		case SKILL_STRIP:			enjoy += 1; break;
-		// Lesbian would rather not have sex with a male
+			// Lesbian would rather not have sex with a male
 		case SKILL_NORMALSEX:
 		case SKILL_TITTYSEX:
 		case SKILL_ORALSEX:
@@ -6508,91 +6572,84 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 
 	if (GetStat(girl, STAT_HAPPINESS) > 50)			enjoy += 2;
 	else if (GetStat(girl, STAT_HAPPINESS) <= 5)	enjoy -= 2;
-	g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +2, true);
 
-	bool newdisease = false; // only let her get 1 disease at a time
 	int health = GetStat(girl, STAT_HEALTH);
+	/* */if (health <= 10)	STDchance *= 3;
+	else if (health <= 20)	STDchance *= 2;
+	else if (health >= 80)	STDchance /= 4;
+	else if (health >= 90)	STDchance /= 7;
+	else if (health == 100)	STDchance /= 10;
+	if (STDchance < 1)		STDchance = 1;
 
-	if (HasTrait(girl, "AIDS"))
+	if (HasTrait(girl, "AIDS") && !customer->m_HasAIDS && g_Dice.percent(STDchance))
 	{
-		if ((!contraception && g_Dice.percent(90)) || (contraception && g_Dice.percent(10)))
-		{
-			girl->m_Events.AddMessage(girl->m_Realname + " gave the customer AIDS! They are not happy about this.", IMGTYPE_PROFILE, EVENT_DANGER);
-			customer->m_Stats[STAT_HAPPINESS] -= 100;
-		}
-		else customer->m_Stats[STAT_HAPPINESS] -= 20;
+		girl->m_Events.AddMessage(girl->m_Realname + " gave the customer AIDS! They are not happy about this.", IMGTYPE_PROFILE, EVENT_DANGER);
+		customer->m_HasAIDS = true;
+		customer->m_Stats[STAT_HAPPINESS] -= 100;
+		enjoy -= 3;
 	}
-	else if ((contraception && health <= 20 && g_Dice.percent(1)) ||
-		(!contraception && health <= 80 && g_Dice.percent(((100 - health) / 10) - 2)))
+	else if (!HasTrait(girl, "AIDS") && customer->m_HasAIDS && g_Dice.percent(STDchance))
 	{
 		girl->m_Events.AddMessage(girl->m_Realname + " has caught the disease AIDS! She will likely die, but a rare cure can sometimes be found in the shop.", IMGTYPE_PROFILE, EVENT_DANGER);
 		AddTrait(girl, "AIDS");
 		girl->happiness(-50);
-		newdisease = true;
+		enjoy -= 30;
 	}
-
-	if (HasTrait(girl, "Herpes"))
+	if (HasTrait(girl, "Chlamydia") && !customer->m_HasChlamydia && g_Dice.percent(STDchance))
 	{
-		if ((!contraception && g_Dice.percent(80)) || (contraception && g_Dice.percent(20)))
-		{
-			girl->m_Events.AddMessage(girl->m_Realname + " gave the customer Herpes! They are not happy about this.", IMGTYPE_PROFILE, EVENT_DANGER);
-			customer->m_Stats[STAT_HAPPINESS] -= 30;
-		}
-		else customer->m_Stats[STAT_HAPPINESS] -= 10;
-
+		girl->m_Events.AddMessage(girl->m_Realname + " gave the customer Chlamydia! They are not happy about this.", IMGTYPE_PROFILE, EVENT_DANGER);
+		customer->m_HasChlamydia = true;
+		customer->m_Stats[STAT_HAPPINESS] -= 40;
+		enjoy -= 3;
 	}
-	else if (!newdisease && 
-		((!contraception && health <= 60 && g_Dice.percent(((100 - health) / 10) - 2)) ||
-		(contraception && GetStat(girl, STAT_HEALTH) <= 10 && g_Dice.percent(1))))
+	else if (!HasTrait(girl, "Chlamydia") && customer->m_HasChlamydia && g_Dice.percent(STDchance))
+	{
+		girl->m_Events.AddMessage(girl->m_Realname + " has caught the disease Chlamydia! A cure can sometimes be found in the shop.", IMGTYPE_PROFILE, EVENT_DANGER);
+		AddTrait(girl, "Chlamydia");
+		girl->happiness(-30);
+		enjoy -= 30;
+	}
+
+	if (HasTrait(girl, "Syphilis") && !customer->m_HasSyphilis && g_Dice.percent(STDchance))
+	{
+		girl->m_Events.AddMessage(girl->m_Realname + " gave the customer Syphilis! They are not happy about this.", IMGTYPE_PROFILE, EVENT_DANGER);
+		customer->m_HasSyphilis = true;
+		customer->m_Stats[STAT_HAPPINESS] -= 50;
+		enjoy -= 3;
+	}
+	else if (!HasTrait(girl, "Syphilis") && customer->m_HasSyphilis && g_Dice.percent(STDchance))
+	{
+		girl->m_Events.AddMessage(girl->m_Realname + " has caught the disease Syphilis! This can be deadly, but a cure can sometimes be found in the shop.", IMGTYPE_PROFILE, EVENT_DANGER);
+		AddTrait(girl, "Syphilis");
+		girl->happiness(-30);
+		enjoy -= 30;
+	}
+
+	if (HasTrait(girl, "Herpes") && !customer->m_HasHerpes && g_Dice.percent(STDchance))
+	{
+		girl->m_Events.AddMessage(girl->m_Realname + " gave the customer Herpes! They are not happy about this.", IMGTYPE_PROFILE, EVENT_DANGER);
+		customer->m_HasHerpes = true;
+		customer->m_Stats[STAT_HAPPINESS] -= 30;
+		enjoy -= 3;
+	}
+	else if (!HasTrait(girl, "Herpes") && customer->m_HasHerpes && g_Dice.percent(STDchance))
 	{
 		girl->m_Events.AddMessage(girl->m_Realname + " has caught the disease Herpes! A cure can sometimes be found in the shop.", IMGTYPE_PROFILE, EVENT_DANGER);
 		AddTrait(girl, "Herpes");
 		girl->happiness(-30);
-		newdisease = true;
+		enjoy -= 30;
 	}
 
-	if (HasTrait(girl, "Chlamydia"))	
+	g_Girls.UpdateEnjoyment(girl, ACTION_SEX, enjoy, true);
+
+	cConfig cfg;
+	if (cfg.debug.log_debug())
 	{
-		if ((!contraception && g_Dice.percent(70)) || (contraception && g_Dice.percent(5)))
-
-		{
-			girl->m_Events.AddMessage(girl->m_Realname + " gave the customer Chlamydia! They are not happy about this.", IMGTYPE_PROFILE, EVENT_DANGER);
-			customer->m_Stats[STAT_HAPPINESS] -= 40;
-		}
-		else customer->m_Stats[STAT_HAPPINESS] -= 10;
-	}
-	else if (!newdisease && !contraception && GetStat(girl, STAT_HEALTH) <= 20 && g_Dice.percent(2))
-
-	{
-
-		girl->m_Events.AddMessage(girl->m_Realname + " has caught the disease Chlamydia! A cure can sometimes be found in the shop.", IMGTYPE_PROFILE, EVENT_DANGER);
-
-		AddTrait(girl, "Chlamydia");
-		girl->happiness(-30);
-		newdisease = true;
-
-	}
-
-	if (HasTrait(girl, "Syphilis"))
-	{
-		if ((!contraception && g_Dice.percent(60)) || (contraception && g_Dice.percent(5)))
-
-		{
-			girl->m_Events.AddMessage(girl->m_Realname + " gave the customer Syphilis! They are not happy about this.", IMGTYPE_PROFILE, EVENT_DANGER);
-			customer->m_Stats[STAT_HAPPINESS] -= 50;
-		}
-		else customer->m_Stats[STAT_HAPPINESS] -= 10;
-	}
-	else if (!newdisease && !contraception && GetStat(girl, STAT_HEALTH) <= 20 && g_Dice.percent(2))
-
-	{
-
-		girl->m_Events.AddMessage(girl->m_Realname + " has caught the disease Syphilis! This can be deadly, but a cure can sometimes be found in the shop.", IMGTYPE_PROFILE, EVENT_DANGER);
-
-		AddTrait(girl, "Syphilis");
-		girl->happiness(-30);
-		newdisease = true;
-
+		g_LogFile.os() << "STD Debug ::: Sex Type : " << sGirl::skill_names[SexType]
+			<< " :: Contraception: " << (contraception ? "True" : "False") 
+			<< " :: Health: " << health
+			<< " :: STD Chance: " << STDchance
+			<< endl;
 	}
 }
 
@@ -9726,49 +9783,49 @@ void cGirls::HandleChildren(sGirl* girl, string& summary, bool PlayerControlled)
 {
 	sChild* child;
 	girl->m_JustGaveBirth = false;
-/*
- *	start by advancing pregnancy cooldown time
- */
-	if(girl->m_PregCooldown > 0) girl->m_PregCooldown--;
-/*
- *	now: if the girl has no children
- *	we have nothing to do
- *
- *	logically this can precede the cooldown bump
- *	since if she's on cooldown she must have 
- *	given birth
- *
- *	but I guess this way offers better bugproofing
- */
-	if(girl->m_Children.m_FirstChild == 0) return;
-/*
- *	loop through the girl's children,
- *	and divide them into those growing up
- *	and those still to be born
- */
+	/*
+	 *	start by advancing pregnancy cooldown time
+	 */
+	if (girl->m_PregCooldown > 0) girl->m_PregCooldown--;
+	/*
+	 *	now: if the girl has no children
+	 *	we have nothing to do
+	 *
+	 *	logically this can precede the cooldown bump
+	 *	since if she's on cooldown she must have
+	 *	given birth
+	 *
+	 *	but I guess this way offers better bugproofing
+	 */
+	if (girl->m_Children.m_FirstChild == 0) return;
+	/*
+	 *	loop through the girl's children,
+	 *	and divide them into those growing up
+	 *	and those still to be born
+	 */
 	bool remove_flag;
-	child = girl->m_Children.m_FirstChild; 
-	while(child) 
+	child = girl->m_Children.m_FirstChild;
+	while (child)
 	{
-/*
- *		if the child is yet unborn
- *		see if it is due
- */
-		if(child->m_Unborn) 
+		/*
+		 *		if the child is yet unborn
+		 *		see if it is due
+		 */
+		if (child->m_Unborn)
 		{
-/*
- *			some births (monsters) we do not track to adulthood 
- *			these need removing from the list
- */
+			/*
+			 *			some births (monsters) we do not track to adulthood
+			 *			these need removing from the list
+			 */
 			remove_flag = child_is_due(girl, child, summary, PlayerControlled);
 		}
-		else 
+		else
 		{
-/*
- *			the child has been born already
- *
- *			if it comes of age we remove it from the list
- */
+			/*
+			 *			the child has been born already
+			 *
+			 *			if it comes of age we remove it from the list
+			 */
 			remove_flag = child_is_grown(girl, child, summary, PlayerControlled);
 		}
 		child = girl->next_child(child, remove_flag);
@@ -9812,8 +9869,8 @@ bool cGirls::child_is_due(sGirl* girl, sChild *child, string& summary, bool Play
 		/*
 		 *		format a message
 		 */
-		summary += "Gave birth. ";
-		ss << "She has given birth to a baby " << child->boy_girl_str() << ". You grant her the week off for maternity leave.";
+		//summary += "Gave birth. ";
+		ss << "She has given birth to a baby " << child->boy_girl_str() << ".\n\nYou grant her the week off for maternity leave.";
 		/*
 		 *		check for sterility
 		 */
@@ -9844,10 +9901,10 @@ bool cGirls::child_is_due(sGirl* girl, sChild *child, string& summary, bool Play
 		long gold = tariff.creature_sales();
 		g_Gold.creature_sales(gold);
 
-		summary += gettext("Gave birth to a beast. ");
+		//summary += gettext("Gave birth to a beast. ");
 		ss << gettext("The creature within her has matured and emerged from her womb.\n");
 		ss << gettext("You make ") << gold << gettext(" gold selling the creature.");
-		ss << gettext(" You grant her the week off for her body to recover.");
+		ss << gettext("\n\nYou grant her the week off for her body to recover.");
 	}
 	girl->clear_pregnancy();
 	/*
@@ -9855,7 +9912,7 @@ bool cGirls::child_is_due(sGirl* girl, sChild *child, string& summary, bool Play
 	 */
 	if (g_Dice.percent(1 + healthFactor))
 	{
-		summary += gettext("And died from it. ");
+		//summary += gettext("And died from it. ");
 		ss << gettext("\nSadly, the girl did not survive the experience.");
 		girl->m_Stats[STAT_HEALTH] = 0;
 	}
@@ -10117,22 +10174,18 @@ CSurface* cImageList::GetImageSurface(bool random, int& img)
 	int count = 0;
 	int ImageNum = -1;
 
-	if(!random)
+	if (!random)
 	{
-		if(img == -1)
-			return 0;
-
+		if (img == -1) return 0;
 		ImageNum = img;
 		cImage* current = m_Images;
-		while(current)
+		while (current)
 		{
-			if(count == ImageNum)
-				break;
+			if (count == ImageNum) break;
 			count++;
 			current = current->m_Next;
 		}
-
-		if(current)
+		if (current)
 		{
 			img = ImageNum;
 			return current->m_Surface;
@@ -10140,9 +10193,8 @@ CSurface* cImageList::GetImageSurface(bool random, int& img)
 	}
 	else
 	{
-		if(m_NumImages == 0)
-			return 0;
-		else if(m_NumImages == 1)
+		if (m_NumImages == 0) return 0;
+		else if (m_NumImages == 1)
 		{
 			img = 0;
 			return m_Images->m_Surface;
@@ -10151,15 +10203,13 @@ CSurface* cImageList::GetImageSurface(bool random, int& img)
 		{
 			ImageNum = g_Dice%m_NumImages;
 			cImage* current = m_Images;
-			while(current)
+			while (current)
 			{
-				if(count == ImageNum)
-					break;
+				if (count == ImageNum) break;
 				count++;
 				current = current->m_Next;
 			}
-
-			if(current)
+			if (current)
 			{
 				img = ImageNum;
 				return current->m_Surface;
@@ -10171,7 +10221,6 @@ CSurface* cImageList::GetImageSurface(bool random, int& img)
 			}
 		}
 	}
-
 	img = ImageNum;
 	return 0;
 }
@@ -10180,29 +10229,21 @@ cAnimatedSurface* cImageList::GetAnimatedSurface(int& img)
 {
 	int count = 0;
 	int ImageNum = -1;
-
-	if(img == -1)
-		return 0;
-
+	if (img == -1) return 0;
 	ImageNum = img;
 	cImage* current = m_Images;
-	while(current)
+	while (current)
 	{
-		if(count == ImageNum)
-			break;
+		if (count == ImageNum) break;
 		count++;
 		current = current->m_Next;
 	}
-
-	if(current)
+	if (current)
 	{
 		img = ImageNum;
-		if(current->m_AniSurface)
-			return current->m_AniSurface;
-		else
-			return 0;
+		if (current->m_AniSurface) return current->m_AniSurface;
+		else return 0;
 	}
-
 	return 0;
 }
 
@@ -10210,29 +10251,20 @@ bool cImageList::IsAnimatedSurface(int& img)
 {
 	int count = 0;
 	int ImageNum = -1;
-
-	if(img == -1)
-		return false;
-
+	if (img == -1) return false;
 	ImageNum = img;
 	cImage* current = m_Images;
-	while(current)
+	while (current)
 	{
-		if(count == ImageNum)
-			break;
+		if (count == ImageNum) break;
 		count++;
 		current = current->m_Next;
 	}
-
-	if(current)
+	if (current)
 	{
 		img = ImageNum;
-		if(current->m_AniSurface)
-			return true;
-		else
-			return false;
+		return (current->m_AniSurface) ? true : false;
 	}
-
 	return false;
 }
 
@@ -10330,10 +10362,9 @@ string cImageList::GetName(int i)
 cAImgList* cImgageListManager::ListExists(string name)
 {
 	cAImgList* current = m_First;
-	while(current)
+	while (current)
 	{
-		if(current->m_Name == name)
-			break;
+		if (current->m_Name == name) break;
 		current = current->m_Next;
 	}
 	return current;
@@ -10342,8 +10373,7 @@ cAImgList* cImgageListManager::ListExists(string name)
 cAImgList* cImgageListManager::LoadList(string name)
 {
 	cAImgList* current = ListExists(name);
-	if(current)
-		return current;
+	if (current) return current;
 
 	current = new cAImgList();
 	current->m_Name = name;
@@ -10353,8 +10383,8 @@ cAImgList* cImgageListManager::LoadList(string name)
 	*/
 
 	DirPath imagedir;
-	imagedir<<"Resources"<< "Characters"<<name;
-	string numeric="0123456789 ().,[]-";
+	imagedir << "Resources" << "Characters" << name;
+	string numeric = "0123456789 ().,[]-";
 	string pic_types[] =
 	{
 		// `J` When modifying Image types, search for "J-Change-Image-Types"  :  found in >> LoadList *.*g
@@ -10369,50 +10399,50 @@ cAImgList* cImgageListManager::LoadList(string name)
 		"pregsing*.*g", "pregwait*.*g", "pregcard*.*g", "pregbunny*.*g", "pregnude*.*g", "pregmast*.*g",
 		"pregtitty*.*g", "pregmilk*.*g", "preghand*.*g",
 		// added but not used currently
-		"pregFoot*.*g", "pregBed*.*g", "pregFarm*.*g", "pregHerd*.*g", "pregCook*.*g", "pregCraft*.*g", 
+		"pregFoot*.*g", "pregBed*.*g", "pregFarm*.*g", "pregHerd*.*g", "pregCook*.*g", "pregCraft*.*g",
 		"pregSwim*.*g", "pregBath*.*g", "pregNurse*.*g", "pregFormal*.*g", "pregShop*.*g"
 
 	};
 	int i = 0;
 
 	do {
-		bool to_add=true;
-		FileList the_files(imagedir,pic_types[i].c_str());
-		for(int k=0;k<the_files.size();k++)
+		bool to_add = true;
+		FileList the_files(imagedir, pic_types[i].c_str());
+		for (int k = 0; k < the_files.size(); k++)
 		{
-			bool test=false;
-/* 
- * `J` fixed this by changing 
- *		string numeric="123456789";
- * to	string numeric="0123456789 ().,[]-";
- * Check Preg*.*g filenames [leaf] and accept as non-subtype. ONLY those with number 1--9 in char 5
- * (Allows filename like 'Preg22.jpg' BUT DOESN'T allow like 'Preg (2).jpg' or 'Preg09.jpg')
- * MIGHT BE BETTER to just throw out sub-type filenames in this Preg*.*g section. */
+			bool test = false;
+			/*
+			 * `J` fixed this by changing
+			 *		string numeric="123456789";
+			 * to	string numeric="0123456789 ().,[]-";
+			 * Check Preg*.*g filenames [leaf] and accept as non-subtype. ONLY those with number 1--9 in char 5
+			 * (Allows filename like 'Preg22.jpg' BUT DOESN'T allow like 'Preg (2).jpg' or 'Preg09.jpg')
+			 * MIGHT BE BETTER to just throw out sub-type filenames in this Preg*.*g section. */
 			if (i == IMGTYPE_PREGNANT)
 			{
-				char c=the_files[k].leaf()[4];
+				char c = the_files[k].leaf()[4];
 				for (int j = 0; j < (int)numeric.size(); j++)
 				{
-					if(c==numeric[j])
+					if (c == numeric[j])
 					{
-						test=true;
+						test = true;
 						break;
 					}
 				}
-				if(!test)
+				if (!test)
 				{
-					k=the_files.size();
-					to_add=false;
+					k = the_files.size();
+					to_add = false;
 				}
 			}
-			if(to_add)
+			if (to_add)
 			{
 				current->m_Images[i].AddImage(the_files[k].full());
 				current->m_Images[i].m_NumImages++;
 			}
 		}
 		i++;
-	}while(i<NUM_IMGTYPES);
+	} while (i < NUM_IMGTYPES);
 
 	// Yes this is just a hack to load animations (my bad ;) - Necro
 	string pic_types2[] = {
@@ -10432,49 +10462,47 @@ cAImgList* cImgageListManager::LoadList(string name)
 		"pregShop*.ani",
 
 		// added but not used currently
-		"pregFoot*.ani", "pregBed*.ani", "pregFarm*.ani", "pregHerd*.ani", "pregCook*.ani", "pregCraft*.ani", 
+		"pregFoot*.ani", "pregBed*.ani", "pregFarm*.ani", "pregHerd*.ani", "pregCook*.ani", "pregCraft*.ani",
 		"pregSwim*.ani", "pregBath*.ani", "pregNurse*.ani", "pregFormal*.ani"
 
 	};
 	i = 0;
 	do {
-		bool to_add=true;
-		FileList the_files(imagedir,pic_types2[i].c_str());
-		for(int k=0;k<the_files.size();k++)
+		bool to_add = true;
+		FileList the_files(imagedir, pic_types2[i].c_str());
+		for (int k = 0; k < the_files.size(); k++)
 		{
-			bool test=false;
-/* Check Preg*.*g filenames [leaf] and accept as non-subtypew ONLY those with number 1--9 in char 5
- * (Allows filename like 'Preg22.jpg' BUT DOESN'T allow like 'Preg (2).jpg' or 'Preg09.jpg')
- * MIGHT BE BETTER to just throw out sub-type filenames in this Preg*.*g section. */
+			bool test = false;
+			/* Check Preg*.*g filenames [leaf] and accept as non-subtypew ONLY those with number 1--9 in char 5
+			 * (Allows filename like 'Preg22.jpg' BUT DOESN'T allow like 'Preg (2).jpg' or 'Preg09.jpg')
+			 * MIGHT BE BETTER to just throw out sub-type filenames in this Preg*.*g section. */
 			if (i == IMGTYPE_PREGNANT)
 			{
-				char c=the_files[k].leaf()[4];
-				for(int j = 0; j < 9; j++) {
-				
-					if(c==numeric[j])
+				char c = the_files[k].leaf()[4];
+				for (int j = 0; j < 9; j++) {
+
+					if (c == numeric[j])
 					{
-						test=true;
+						test = true;
 						break;
 					}
 				}
-				if(!test)
+				if (!test)
 				{
-					k=the_files.size();
-					to_add=false;
+					k = the_files.size();
+					to_add = false;
 				}
 			}
-			if(to_add)
+			if (to_add)
 			{
 				current->m_Images[i].AddImage(the_files[k].full(), the_files[k].path(), the_files[k].leaf());
 				current->m_Images[i].m_NumImages++;
 			}
 		}
 		i++;
-	} while(i<NUM_IMGTYPES);
+	} while (i < NUM_IMGTYPES);
 
-//		}while(i<15);  Wasn't checking up to curr 28 image types, 04/07/2013
-
-	if(m_Last)
+	if (m_Last)
 	{
 		m_Last->m_Next = current;
 		m_Last = current;
@@ -10492,31 +10520,31 @@ void cGirls::LoadDefaultImages()	// for now they are hard coded
 
 bool cGirls::IsAnimatedSurface(sGirl* girl, int ImgType, int& img)
 {
-//               Loop thru case stmt(s) for image types; if current imagetype has no images, 
-//               substitute for next loop an image type that has/may have images.
-//               Only substitute more-general image types or those with > 0 image count, 
-//               ending with girl profile or default images, avoiding endless loop. 
-//				 (Simplified 'if' logic by using success/failure 'case" statements, 4-5-2013.)
+	//               Loop thru case stmt(s) for image types; if current imagetype has no images, 
+	//               substitute for next loop an image type that has/may have images.
+	//               Only substitute more-general image types or those with > 0 image count, 
+	//               ending with girl profile or default images, avoiding endless loop. 
+	//				 (Simplified 'if' logic by using success/failure 'case" statements, 4-5-2013.)
 
-//				Also added capability to handle passed ImgType of pregnant subtypes
+	//				Also added capability to handle passed ImgType of pregnant subtypes
 
 	CLog l;
 
-	while(1)
+	while (1)
 	{
-/*
- *		if you sell a girl from the dungeon, and then hotkey back to girl management
- *		it crashes with girl->m_GirlImages == 0
- *
- *		so let's test for that here
- */
-		if(!girl || !girl->m_GirlImages) {
+		/*
+		 *		if you sell a girl from the dungeon, and then hotkey back to girl management
+		 *		it crashes with girl->m_GirlImages == 0
+		 *
+		 *		so let's test for that here
+		 */
+		if (!girl || !girl->m_GirlImages) {
 			break;
 		}
 
-		switch(ImgType)
+		switch (ImgType)
 		{
-//				kept all cases to test for invalid Image Type.
+			//				kept all cases to test for invalid Image Type.
 		case IMGTYPE_TORTURE:
 			if (girl->is_pregnant() && girl->m_GirlImages->m_Images[IMGTYPE_TORTURE + PREG_OFFSET].m_NumImages)
 				return girl->m_GirlImages->m_Images[IMGTYPE_TORTURE + PREG_OFFSET].IsAnimatedSurface(img);
@@ -10535,26 +10563,26 @@ bool cGirls::IsAnimatedSurface(sGirl* girl, int ImgType, int& img)
 		case IMGTYPE_BEAST:
 		case IMGTYPE_GROUP:
 		case IMGTYPE_LESBIAN:
-//				Similar pregnant/non-pregnant 'success' condition and action; uses 'pregnancy offset'
-			if(girl->is_pregnant() && girl->m_GirlImages->m_Images[ImgType + PREG_OFFSET].m_NumImages)
+			//				Similar pregnant/non-pregnant 'success' condition and action; uses 'pregnancy offset'
+			if (girl->is_pregnant() && girl->m_GirlImages->m_Images[ImgType + PREG_OFFSET].m_NumImages)
 				return girl->m_GirlImages->m_Images[ImgType + PREG_OFFSET].IsAnimatedSurface(img);
-			else if(girl->m_GirlImages->m_Images[ImgType].m_NumImages > 0)
+			else if (girl->m_GirlImages->m_Images[ImgType].m_NumImages > 0)
 				return girl->m_GirlImages->m_Images[ImgType].IsAnimatedSurface(img);
 			else
 				ImgType = IMGTYPE_SEX;		// Try this next loop
 			break;
 
 		case IMGTYPE_PROFILE:
-			if(girl->is_pregnant() && girl->m_GirlImages->m_Images[IMGTYPE_PREGNANT].m_NumImages)
+			if (girl->is_pregnant() && girl->m_GirlImages->m_Images[IMGTYPE_PREGNANT].m_NumImages)
 			{
-//				if(girl->m_newRandomFixed >= 0)  // A simiar process had these 2 lines
-//					random = true;
+				//				if(girl->m_newRandomFixed >= 0)  // A simiar process had these 2 lines
+				//					random = true;
 				return girl->m_GirlImages->m_Images[IMGTYPE_PREGNANT].IsAnimatedSurface(img);
 			}
-			else if(girl->m_GirlImages->m_Images[IMGTYPE_PROFILE].m_NumImages > 0)
+			else if (girl->m_GirlImages->m_Images[IMGTYPE_PROFILE].m_NumImages > 0)
 				return girl->m_GirlImages->m_Images[IMGTYPE_PROFILE].IsAnimatedSurface(img);
 			else
-//							Use default images, avoid endless loop
+				//							Use default images, avoid endless loop
 				return m_DefImages->m_Images[IMGTYPE_PROFILE].IsAnimatedSurface(img);
 			break;
 
@@ -10564,7 +10592,7 @@ bool cGirls::IsAnimatedSurface(sGirl* girl, int ImgType, int& img)
 		case IMGTYPE_PREGGROUP:
 		case IMGTYPE_PREGLESBIAN:
 		case IMGTYPE_PREGSEX:
-			if(girl->m_GirlImages->m_Images[ImgType].m_NumImages > 0)
+			if (girl->m_GirlImages->m_Images[ImgType].m_NumImages > 0)
 				return girl->m_GirlImages->m_Images[ImgType].IsAnimatedSurface(img);
 			else
 				ImgType = IMGTYPE_SEX;		// Try this next loop
@@ -10572,16 +10600,16 @@ bool cGirls::IsAnimatedSurface(sGirl* girl, int ImgType, int& img)
 
 		case IMGTYPE_PREGNANT:
 		case IMGTYPE_DEATH:
-			if(girl->m_GirlImages->m_Images[ImgType].m_NumImages > 0)
+			if (girl->m_GirlImages->m_Images[ImgType].m_NumImages > 0)
 				return girl->m_GirlImages->m_Images[ImgType].IsAnimatedSurface(img);
 			else
 				return m_DefImages->m_Images[ImgType].IsAnimatedSurface(img);
 			break;
 
 		case IMGTYPE_SEX:
-			if(girl->is_pregnant() && girl->m_GirlImages->m_Images[IMGTYPE_PREGSEX].m_NumImages)
+			if (girl->is_pregnant() && girl->m_GirlImages->m_Images[IMGTYPE_PREGSEX].m_NumImages)
 				return m_DefImages->m_Images[IMGTYPE_SEX].IsAnimatedSurface(img);
-			else if(girl->m_GirlImages->m_Images[IMGTYPE_SEX].m_NumImages > 0)
+			else if (girl->m_GirlImages->m_Images[IMGTYPE_SEX].m_NumImages > 0)
 				return girl->m_GirlImages->m_Images[IMGTYPE_SEX].IsAnimatedSurface(img);
 			else
 				return m_DefImages->m_Images[IMGTYPE_SEX].IsAnimatedSurface(img);
@@ -10594,8 +10622,8 @@ bool cGirls::IsAnimatedSurface(sGirl* girl, int ImgType, int& img)
 		case IMGTYPE_CARD:
 		case IMGTYPE_BUNNY:
 		case IMGTYPE_MILK:
-//				Similar'success' condition and action; 
-			if(girl->m_GirlImages->m_Images[ImgType].m_NumImages > 0)
+			//				Similar'success' condition and action; 
+			if (girl->m_GirlImages->m_Images[ImgType].m_NumImages > 0)
 				return girl->m_GirlImages->m_Images[ImgType].IsAnimatedSurface(img);
 			else
 				ImgType = IMGTYPE_PROFILE;
@@ -10609,8 +10637,8 @@ bool cGirls::IsAnimatedSurface(sGirl* girl, int ImgType, int& img)
 		case IMGTYPE_MAST:
 		case IMGTYPE_TITTY:
 		case IMGTYPE_HAND:
-//				Similar'success' condition and action  (but no alternative ImgType set); 
-			if(girl->m_GirlImages->m_Images[ImgType].m_NumImages > 0)
+			//				Similar'success' condition and action  (but no alternative ImgType set); 
+			if (girl->m_GirlImages->m_Images[ImgType].m_NumImages > 0)
 				return girl->m_GirlImages->m_Images[ImgType].IsAnimatedSurface(img);
 			break;
 
@@ -10624,57 +10652,57 @@ bool cGirls::IsAnimatedSurface(sGirl* girl, int ImgType, int& img)
 			return 0;
 			break;
 
-		//				And many conditions return early
+			//				And many conditions return early
 		}
 
-//		If not returned to calling module already, have failed to find ImgType images.
-//              If have not already, test a substitute image type that has/may have images,
-//					substitute ImgType and leave processing for nexp loop if simpler.
-//			(First switch testing success, 2nd setting replacement ImgType replaces complicated 'if's.
-		
-		switch(ImgType)
+		//		If not returned to calling module already, have failed to find ImgType images.
+		//              If have not already, test a substitute image type that has/may have images,
+		//					substitute ImgType and leave processing for nexp loop if simpler.
+		//			(First switch testing success, 2nd setting replacement ImgType replaces complicated 'if's.
+
+		switch (ImgType)
 		{
 		case IMGTYPE_ORAL:
-				ImgType = IMGTYPE_SEX;
+			ImgType = IMGTYPE_SEX;
 			break;
 
 		case IMGTYPE_ECCHI:
-			if(girl->m_GirlImages->m_Images[IMGTYPE_STRIP].m_NumImages > 0)
+			if (girl->m_GirlImages->m_Images[IMGTYPE_STRIP].m_NumImages > 0)
 				return girl->m_GirlImages->m_Images[IMGTYPE_STRIP].IsAnimatedSurface(img);
- 			else if(girl->m_GirlImages->m_Images[IMGTYPE_NUDE].m_NumImages > 0)
+			else if (girl->m_GirlImages->m_Images[IMGTYPE_NUDE].m_NumImages > 0)
 				return girl->m_GirlImages->m_Images[IMGTYPE_NUDE].IsAnimatedSurface(img);
-			else	
+			else
 				ImgType = IMGTYPE_PROFILE;
 			break;
 
 		case IMGTYPE_STRIP:
-			if(girl->m_GirlImages->m_Images[IMGTYPE_ECCHI].m_NumImages > 0)
+			if (girl->m_GirlImages->m_Images[IMGTYPE_ECCHI].m_NumImages > 0)
 				return girl->m_GirlImages->m_Images[IMGTYPE_ECCHI].IsAnimatedSurface(img);
-			else if(girl->m_GirlImages->m_Images[IMGTYPE_NUDE].m_NumImages > 0)
+			else if (girl->m_GirlImages->m_Images[IMGTYPE_NUDE].m_NumImages > 0)
 				return girl->m_GirlImages->m_Images[IMGTYPE_NUDE].IsAnimatedSurface(img);
-			else	
+			else
 				ImgType = IMGTYPE_PROFILE;
 			break;
 
 		case IMGTYPE_NUDE:
-			if(girl->m_GirlImages->m_Images[IMGTYPE_STRIP].m_NumImages > 0)
+			if (girl->m_GirlImages->m_Images[IMGTYPE_STRIP].m_NumImages > 0)
 				return girl->m_GirlImages->m_Images[IMGTYPE_STRIP].IsAnimatedSurface(img);
-			else if(girl->m_GirlImages->m_Images[IMGTYPE_ECCHI].m_NumImages > 0)
+			else if (girl->m_GirlImages->m_Images[IMGTYPE_ECCHI].m_NumImages > 0)
 				return girl->m_GirlImages->m_Images[IMGTYPE_ECCHI].IsAnimatedSurface(img);
-			else	
+			else
 				ImgType = IMGTYPE_PROFILE;
 			break;
 
 		case IMGTYPE_MAST:
- 				ImgType = IMGTYPE_NUDE;
+			ImgType = IMGTYPE_NUDE;
 			break;
 
 		case IMGTYPE_TITTY:
-				ImgType = IMGTYPE_ORAL;
+			ImgType = IMGTYPE_ORAL;
 			break;
 
 		case IMGTYPE_HAND:
-				ImgType = IMGTYPE_ORAL;
+			ImgType = IMGTYPE_ORAL;
 			break;
 
 		default:	// `J` return the ImgType if there are any otherwise return 0
@@ -10697,8 +10725,7 @@ CSurface* cGirls::GetImageSurface(sGirl* girl, int ImgType, bool random, int& im
 	if (!girl || !girl->m_GirlImages)	return 0;
 
 	// `J` If the image is for the gallery, just return the images
-	if (gallery)
-		return girl->m_GirlImages->m_Images[ImgType].GetImageSurface(random, img);
+	if (gallery) return girl->m_GirlImages->m_Images[ImgType].GetImageSurface(random, img);
 
 	// `J` check for pregnant profile
 	if (girl->is_pregnant() && ImgType == IMGTYPE_PROFILE &&
@@ -10727,24 +10754,24 @@ CSurface* cGirls::GetImageSurface(sGirl* girl, int ImgType, bool random, int& im
 		// First do sex types
 	case IMGTYPE_ANAL:		alttypes[0] = IMGTYPE_SEX;		break;
 	case IMGTYPE_BDSM:		alttypes[0] = IMGTYPE_SEX;		break;
-	case IMGTYPE_SEX:		alttypes[0] = IMGTYPE_ANAL;		alttypes[1] = IMGTYPE_GROUP;	alttypes[2] = IMGTYPE_LESBIAN;	
-							alttypes[3] = IMGTYPE_ORAL;		alttypes[4] = IMGTYPE_TITTY;	alttypes[5] = IMGTYPE_HAND;
-							alttypes[6] = IMGTYPE_FOOT;		break;
+	case IMGTYPE_SEX:		alttypes[0] = IMGTYPE_ANAL;		alttypes[1] = IMGTYPE_GROUP;	alttypes[2] = IMGTYPE_LESBIAN;
+		alttypes[3] = IMGTYPE_ORAL;		alttypes[4] = IMGTYPE_TITTY;	alttypes[5] = IMGTYPE_HAND;
+		alttypes[6] = IMGTYPE_FOOT;		break;
 	case IMGTYPE_BEAST:		alttypes[0] = IMGTYPE_SEX;		break;
 	case IMGTYPE_GROUP:		alttypes[0] = IMGTYPE_SEX;		break;
 	case IMGTYPE_LESBIAN:	alttypes[0] = IMGTYPE_NUDE;		alttypes[1] = IMGTYPE_SEX;		break;
-	case IMGTYPE_ORAL:		alttypes[0] = IMGTYPE_HAND;		alttypes[1] = IMGTYPE_TITTY;	alttypes[2] = IMGTYPE_FOOT;		
-							alttypes[3] = IMGTYPE_SEX;		break;
+	case IMGTYPE_ORAL:		alttypes[0] = IMGTYPE_HAND;		alttypes[1] = IMGTYPE_TITTY;	alttypes[2] = IMGTYPE_FOOT;
+		alttypes[3] = IMGTYPE_SEX;		break;
 	case IMGTYPE_TITTY:		alttypes[0] = IMGTYPE_HAND;		alttypes[1] = IMGTYPE_ORAL;		alttypes[2] = IMGTYPE_SEX;		break;
 	case IMGTYPE_HAND:		alttypes[0] = IMGTYPE_ORAL;		alttypes[1] = IMGTYPE_TITTY;	alttypes[2] = IMGTYPE_FOOT;
-							alttypes[3] = IMGTYPE_SEX;		break;
+		alttypes[3] = IMGTYPE_SEX;		break;
 	case IMGTYPE_FOOT:		alttypes[0] = IMGTYPE_HAND;		alttypes[1] = IMGTYPE_ORAL;		alttypes[2] = IMGTYPE_TITTY;
-							alttypes[3] = IMGTYPE_SEX;		break;
+		alttypes[3] = IMGTYPE_SEX;		break;
 
-	// torture
+		// torture
 	case IMGTYPE_TORTURE:	alttypes[0] = IMGTYPE_BDSM;		alttypes[1] = IMGTYPE_DEATH;	break;
 
-	// single girl, non sex
+		// single girl, non sex
 	case IMGTYPE_NUDE:		alttypes[0] = IMGTYPE_STRIP;	alttypes[1] = IMGTYPE_ECCHI;	break;
 	case IMGTYPE_MAST:		alttypes[0] = IMGTYPE_NUDE;		alttypes[1] = IMGTYPE_STRIP;	alttypes[2] = IMGTYPE_ECCHI;	break;
 	case IMGTYPE_ECCHI:		alttypes[0] = IMGTYPE_STRIP;	alttypes[1] = IMGTYPE_NUDE;		break;
@@ -10755,21 +10782,21 @@ CSurface* cGirls::GetImageSurface(sGirl* girl, int ImgType, bool random, int& im
 	case IMGTYPE_BATH:
 		alttypes[0] = IMGTYPE_ECCHI;	alttypes[1] = IMGTYPE_NUDE;		break;
 
-	// types that alt to bunny and formal
+		// types that alt to bunny and formal
 	case IMGTYPE_WAIT:
 	case IMGTYPE_MAID:
-	case IMGTYPE_SING:		
+	case IMGTYPE_SING:
 	case IMGTYPE_CARD:		alttypes[0] = IMGTYPE_BUNNY;	break;
-	
-	// Farm types
+
+		// Farm types
 	case IMGTYPE_FARM:		alttypes[0] = -1;				break;
 	case IMGTYPE_COOK:		alttypes[0] = IMGTYPE_WAIT;		alttypes[1] = IMGTYPE_MAID;	break;
 	case IMGTYPE_HERD:		alttypes[0] = IMGTYPE_FARM;		break;
 	case IMGTYPE_CRAFT:		alttypes[0] = IMGTYPE_FARM;		break;
 
-	// these image types have no alt types
-//	case IMGTYPE_NURSE:
-//	case IMGTYPE_FORMAL:
+		// these image types have no alt types
+		//	case IMGTYPE_NURSE:
+		//	case IMGTYPE_FORMAL:
 	case IMGTYPE_BUNNY:
 	case IMGTYPE_DEATH:
 	case IMGTYPE_COMBAT:
@@ -10784,7 +10811,7 @@ CSurface* cGirls::GetImageSurface(sGirl* girl, int ImgType, bool random, int& im
 	// `J` first check if there are preg varients
 	if (girl->is_pregnant() && ImgType != IMGTYPE_PREGNANT)
 	{
-		for (int i = 0; i<10; i++)
+		for (int i = 0; i < 10; i++)
 		{
 			if (alttypes[i] == -1) break;
 			if (girl->m_GirlImages->m_Images[alttypes[i] + PREG_OFFSET].m_NumImages)
@@ -10792,7 +10819,7 @@ CSurface* cGirls::GetImageSurface(sGirl* girl, int ImgType, bool random, int& im
 		}
 	}
 	// `J` then check varients
-	for (int i = 0; i<10; i++)
+	for (int i = 0; i < 10; i++)
 	{
 		if (alttypes[i] == -1) break;
 		if (girl->m_GirlImages->m_Images[alttypes[i]].m_NumImages)
@@ -10841,87 +10868,86 @@ cAnimatedSurface* cGirls::GetAnimatedSurface(sGirl* girl, int ImgType, int& img)
  *
  * if not, returns -1 so the caller can sort it out
  */
+// `J` This is not used anywhere so it is not getting updated at this time
 int cGirls::get_modified_image_type(sGirl *girl, int image_type, int preg_type)
 {
 	bool preg = girl->is_pregnant();
-/*
- *	if she's pregnant, and if there exist pregnant images for 
- *	whatever this action is - use them
- */
-	if(preg && girl->m_GirlImages->m_Images[preg_type].m_NumImages > 0) {
+	/*
+	 *	if she's pregnant, and if there exist pregnant images for
+	 *	whatever this action is - use them
+	 */
+	if (preg && girl->m_GirlImages->m_Images[preg_type].m_NumImages > 0) {
 		return preg_type;
 	}
-/*
- *	if not, pregnant or not, try and find a non pregnant image for this sex type
- *	the alternative would be to use a pregnant vanilla sex image - but 
- *	we're keeping the sex type in preference to the pregnancy
- */
-	if(girl->m_GirlImages->m_Images[image_type].m_NumImages > 0) {
+	/*
+	 *	if not, pregnant or not, try and find a non pregnant image for this sex type
+	 *	the alternative would be to use a pregnant vanilla sex image - but
+	 *	we're keeping the sex type in preference to the pregnancy
+	 */
+	if (girl->m_GirlImages->m_Images[image_type].m_NumImages > 0) {
 		return image_type;
 	}
-/*
- *	rather than try for pregnant straight sex and straight sex
- *	let's just return -1 here and let the caller re-try with
- *	normal sex arguments
- */
+	/*
+	 *	rather than try for pregnant straight sex and straight sex
+	 *	let's just return -1 here and let the caller re-try with
+	 *	normal sex arguments
+	 */
 	return -1;
 }
 
 /*
- * Given an image type, this tries to draw the girls own version
- * of that image if available. If not, it takes one from the default
- * set
+ * Given an image type, this tries to draw the girls own version of that image if available. 
+ * If not, it takes one from the default set
  */
+// `J` This is not used anywhere so it is not getting updated at this time
 int cGirls::draw_with_default(sGirl* girl, int x, int y, int width, int height, int ImgType, bool random, int img)
 {
 	cImageList *images;
-/*
- *	does the girl have her own pics for this image type
- *	or do we need to use the default ones?
- */
-	if(girl->m_GirlImages->m_Images[ImgType].m_NumImages == 0) {
+	/*
+	 *	does the girl have her own pics for this image type
+	 *	or do we need to use the default ones?
+	 */
+	if (girl->m_GirlImages->m_Images[ImgType].m_NumImages == 0) {
 		images = m_DefImages->m_Images + ImgType;
 	}
 	else {
 		images = girl->m_GirlImages->m_Images + ImgType;
 	}
-/*
- *	draw and return
- */
+	/*
+	 *	draw and return
+	 */
 	return images->DrawImage(x, y, width, height, random, img);
 }
 
+// `J` This is not used anywhere so it is not getting updated at this time
 int cGirls::DrawGirl(sGirl* girl, int x, int y, int width, int height, int ImgType, bool random, int img)
 {
 	bool preg = false;
-	if(girl->is_pregnant())
-		preg = true;
-	while(1)
+	if (girl->is_pregnant()) preg = true;
+	while (1)
 	{
-//               Loop thru case stmt(s) for image types; if current imagetype has no images, 
-//               substitute for next loop an image type that has/may have images.
-//               Only substitute more-general image types or those with > 0 image count, 
-//               ending with girl profile or default images, avoiding endless loop. 
-//				 (Simplified 'if' logic by using success/failure 'case" statements, 4-5-2013.)
+		//               Loop thru case stmt(s) for image types; if current imagetype has no images, 
+		//               substitute for next loop an image type that has/may have images.
+		//               Only substitute more-general image types or those with > 0 image count, 
+		//               ending with girl profile or default images, avoiding endless loop. 
+		//				 (Simplified 'if' logic by using success/failure 'case" statements, 4-5-2013.)
 
-//				Also added capability to handle passed ImgType of pregnant subtypes
+		//				Also added capability to handle passed ImgType of pregnant subtypes
 
-/*
- *		if you sell a girl from the dungeon, and then hotkey back to girl management
- *		it crashes with girl->m_GirlImages == 0
- *
- *		so let's test for that here
- */
-		if(!girl || !girl->m_GirlImages) {
-			break;
-		}
-	
-			//			NOTE that this DrawGirl() section does not check if 'gallery' like 
-			//			     GetImageSurface() does.
+		/*
+		 *		if you sell a girl from the dungeon, and then hotkey back to girl management
+		 *		it crashes with girl->m_GirlImages == 0
+		 *
+		 *		so let's test for that here
+		 */
+		if (!girl || !girl->m_GirlImages) break;
 
-		switch(ImgType)
+		//			NOTE that this DrawGirl() section does not check if 'gallery' like 
+		//			     GetImageSurface() does.
+
+		switch (ImgType)
 		{
-//				kept all cases to test for invalid Image Type.
+			//				kept all cases to test for invalid Image Type.
 		case IMGTYPE_TORTURE:
 			if (preg && girl->m_GirlImages->m_Images[IMGTYPE_TORTURE + PREG_OFFSET].m_NumImages > 0)
 				return girl->m_GirlImages->m_Images[IMGTYPE_TORTURE + PREG_OFFSET].DrawImage(x, y, width, height, random, img);
@@ -10940,7 +10966,7 @@ int cGirls::DrawGirl(sGirl* girl, int x, int y, int width, int height, int ImgTy
 		case IMGTYPE_BEAST:
 		case IMGTYPE_GROUP:
 		case IMGTYPE_LESBIAN:
-//				Similar pregnant/non-pregnant 'success' condition and action; uses 'pregnancy offset'
+			//				Similar pregnant/non-pregnant 'success' condition and action; uses 'pregnancy offset'
 			if (preg && girl->m_GirlImages->m_Images[ImgType + PREG_OFFSET].m_NumImages > 0)
 				return girl->m_GirlImages->m_Images[ImgType + PREG_OFFSET].DrawImage(x, y, width, height, random, img);
 			else if (girl->m_GirlImages->m_Images[ImgType].m_NumImages > 0)
@@ -10950,34 +10976,34 @@ int cGirls::DrawGirl(sGirl* girl, int x, int y, int width, int height, int ImgTy
 			break;
 
 		case IMGTYPE_PROFILE:
-			if(preg && girl->m_GirlImages->m_Images[IMGTYPE_PREGNANT].m_NumImages)
+			if (preg && girl->m_GirlImages->m_Images[IMGTYPE_PREGNANT].m_NumImages)
 			{
-				if(girl->m_newRandomFixed >= 0)
+				if (girl->m_newRandomFixed >= 0)
 					random = true;
-				return girl->m_GirlImages->m_Images[IMGTYPE_PREGNANT].DrawImage(x,y,width,height, random, img);
+				return girl->m_GirlImages->m_Images[IMGTYPE_PREGNANT].DrawImage(x, y, width, height, random, img);
 			}
-			else if(girl->m_GirlImages->m_Images[IMGTYPE_PROFILE].m_NumImages > 0)
-				return girl->m_GirlImages->m_Images[IMGTYPE_PROFILE].DrawImage(x,y,width,height, random, img);
+			else if (girl->m_GirlImages->m_Images[IMGTYPE_PROFILE].m_NumImages > 0)
+				return girl->m_GirlImages->m_Images[IMGTYPE_PROFILE].DrawImage(x, y, width, height, random, img);
 			else
-//							Use default images, avoid endless loop
-				return m_DefImages->m_Images[IMGTYPE_PROFILE].DrawImage(x,y,width,height, random, img);
+				//							Use default images, avoid endless loop
+				return m_DefImages->m_Images[IMGTYPE_PROFILE].DrawImage(x, y, width, height, random, img);
 			break;
 
 		case IMGTYPE_PREGNANT:
 		case IMGTYPE_DEATH:
-			if(girl->m_GirlImages->m_Images[ImgType].m_NumImages == 0)
-				return m_DefImages->m_Images[ImgType].DrawImage(x,y,width,height, random, img);
+			if (girl->m_GirlImages->m_Images[ImgType].m_NumImages == 0)
+				return m_DefImages->m_Images[ImgType].DrawImage(x, y, width, height, random, img);
 			else
-				return girl->m_GirlImages->m_Images[ImgType].DrawImage(x,y,width,height, random, img);
+				return girl->m_GirlImages->m_Images[ImgType].DrawImage(x, y, width, height, random, img);
 			break;
 
 		case IMGTYPE_SEX:
-			if(preg && girl->m_GirlImages->m_Images[IMGTYPE_PREGSEX].m_NumImages)
-					return girl->m_GirlImages->m_Images[IMGTYPE_PREGSEX].DrawImage(x,y,width,height, random, img);
-			else if(girl->m_GirlImages->m_Images[IMGTYPE_SEX].m_NumImages > 0)
-				return girl->m_GirlImages->m_Images[IMGTYPE_SEX].DrawImage(x,y,width,height, random, img);
+			if (preg && girl->m_GirlImages->m_Images[IMGTYPE_PREGSEX].m_NumImages)
+				return girl->m_GirlImages->m_Images[IMGTYPE_PREGSEX].DrawImage(x, y, width, height, random, img);
+			else if (girl->m_GirlImages->m_Images[IMGTYPE_SEX].m_NumImages > 0)
+				return girl->m_GirlImages->m_Images[IMGTYPE_SEX].DrawImage(x, y, width, height, random, img);
 			else
-				return m_DefImages->m_Images[IMGTYPE_SEX].DrawImage(x,y,width,height, random, img);
+				return m_DefImages->m_Images[IMGTYPE_SEX].DrawImage(x, y, width, height, random, img);
 			break;
 
 		case IMGTYPE_COMBAT:
@@ -10987,9 +11013,9 @@ int cGirls::DrawGirl(sGirl* girl, int x, int y, int width, int height, int ImgTy
 		case IMGTYPE_CARD:
 		case IMGTYPE_BUNNY:
 		case IMGTYPE_MILK:
-//				Similar'success' condition and action; 
-			if(girl->m_GirlImages->m_Images[ImgType].m_NumImages > 0)
-				return girl->m_GirlImages->m_Images[ImgType].DrawImage(x,y,width,height, random, img);
+			//				Similar'success' condition and action; 
+			if (girl->m_GirlImages->m_Images[ImgType].m_NumImages > 0)
+				return girl->m_GirlImages->m_Images[ImgType].DrawImage(x, y, width, height, random, img);
 			else
 				ImgType = IMGTYPE_PROFILE;
 			break;
@@ -11001,66 +11027,66 @@ int cGirls::DrawGirl(sGirl* girl, int x, int y, int width, int height, int ImgTy
 		case IMGTYPE_MAST:
 		case IMGTYPE_TITTY:
 		case IMGTYPE_HAND:
-//				Similar'success' condition and action  (but no alternative ImgType set); 
-			if(girl->m_GirlImages->m_Images[ImgType].m_NumImages > 0)
-				return girl->m_GirlImages->m_Images[ImgType].DrawImage(x,y,width,height, random, img);
+			//				Similar'success' condition and action  (but no alternative ImgType set); 
+			if (girl->m_GirlImages->m_Images[ImgType].m_NumImages > 0)
+				return girl->m_GirlImages->m_Images[ImgType].DrawImage(x, y, width, height, random, img);
 			break;
 
 		default:
 			//error!
 			break;
 
-		//				And many conditions return early
+			//				And many conditions return early
 		}
 
-//		If not returned to calling module already, have failed to find ImgType images.
-//              If have not already, test a substitute image type that has/may have images,
-//					substitute ImgType and leave processing for nexp loop if simpler.
-//			(First switch testing success, 2nd setting replacement ImgType replaces complicated 'if's.
-		
-		switch(ImgType)
+		//		If not returned to calling module already, have failed to find ImgType images.
+		//              If have not already, test a substitute image type that has/may have images,
+		//					substitute ImgType and leave processing for nexp loop if simpler.
+		//			(First switch testing success, 2nd setting replacement ImgType replaces complicated 'if's.
+
+		switch (ImgType)
 		{
 		case IMGTYPE_ORAL:
-				ImgType = IMGTYPE_SEX;
+			ImgType = IMGTYPE_SEX;
 			break;
 
 		case IMGTYPE_ECCHI:
-			if(girl->m_GirlImages->m_Images[IMGTYPE_STRIP].m_NumImages > 0)
-					return girl->m_GirlImages->m_Images[IMGTYPE_STRIP].DrawImage(x,y,width,height, random, img);
-			else if(girl->m_GirlImages->m_Images[IMGTYPE_NUDE].m_NumImages > 0)
-				return girl->m_GirlImages->m_Images[IMGTYPE_NUDE].DrawImage(x,y,width,height, random, img);
-			else	
+			if (girl->m_GirlImages->m_Images[IMGTYPE_STRIP].m_NumImages > 0)
+				return girl->m_GirlImages->m_Images[IMGTYPE_STRIP].DrawImage(x, y, width, height, random, img);
+			else if (girl->m_GirlImages->m_Images[IMGTYPE_NUDE].m_NumImages > 0)
+				return girl->m_GirlImages->m_Images[IMGTYPE_NUDE].DrawImage(x, y, width, height, random, img);
+			else
 				ImgType = IMGTYPE_PROFILE;
 			break;
 
 		case IMGTYPE_STRIP:
-			if(girl->m_GirlImages->m_Images[IMGTYPE_ECCHI].m_NumImages > 0)
-				return girl->m_GirlImages->m_Images[IMGTYPE_ECCHI].DrawImage(x,y,width,height, random, img);
-			else if(girl->m_GirlImages->m_Images[IMGTYPE_NUDE].m_NumImages > 0)
-				return girl->m_GirlImages->m_Images[IMGTYPE_NUDE].DrawImage(x,y,width,height, random, img);
-			else	
+			if (girl->m_GirlImages->m_Images[IMGTYPE_ECCHI].m_NumImages > 0)
+				return girl->m_GirlImages->m_Images[IMGTYPE_ECCHI].DrawImage(x, y, width, height, random, img);
+			else if (girl->m_GirlImages->m_Images[IMGTYPE_NUDE].m_NumImages > 0)
+				return girl->m_GirlImages->m_Images[IMGTYPE_NUDE].DrawImage(x, y, width, height, random, img);
+			else
 				ImgType = IMGTYPE_PROFILE;
 			break;
 
 		case IMGTYPE_NUDE:
-			if(girl->m_GirlImages->m_Images[IMGTYPE_STRIP].m_NumImages > 0)
-				return girl->m_GirlImages->m_Images[IMGTYPE_STRIP].DrawImage(x,y,width,height, random, img);
-			else 			if(girl->m_GirlImages->m_Images[IMGTYPE_ECCHI].m_NumImages > 0)
-				return girl->m_GirlImages->m_Images[IMGTYPE_ECCHI].DrawImage(x,y,width,height, random, img);
-			else	
+			if (girl->m_GirlImages->m_Images[IMGTYPE_STRIP].m_NumImages > 0)
+				return girl->m_GirlImages->m_Images[IMGTYPE_STRIP].DrawImage(x, y, width, height, random, img);
+			else 			if (girl->m_GirlImages->m_Images[IMGTYPE_ECCHI].m_NumImages > 0)
+				return girl->m_GirlImages->m_Images[IMGTYPE_ECCHI].DrawImage(x, y, width, height, random, img);
+			else
 				ImgType = IMGTYPE_PROFILE;
 			break;
 
 		case IMGTYPE_MAST:
- 				ImgType = IMGTYPE_NUDE;
+			ImgType = IMGTYPE_NUDE;
 			break;
 
 		case IMGTYPE_TITTY:
-				ImgType = IMGTYPE_ORAL;
+			ImgType = IMGTYPE_ORAL;
 			break;
 
 		case IMGTYPE_HAND:
-				ImgType = IMGTYPE_ORAL;
+			ImgType = IMGTYPE_ORAL;
 			break;
 
 		default:
@@ -11086,17 +11112,14 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 	//given a statistic name, set a string to a value that represents that statistic
 	static stringstream ss;
 	ss.str("");
-	
+
 	bool interrupted = false;	// `J` added
 	if ((this) && (this)->m_YesterDayJob != (this)->m_DayJob &&
 		(g_Clinic.is_Surgery_Job((this)->m_YesterDayJob) || (this)->m_YesterDayJob == JOB_REHAB) &&
 		(((this)->m_WorkingDay > 0) || (this)->m_PrevWorkingDay > 0))
 		interrupted = true;
 
-	if (detailName == "Name")
-	{
-		ss << m_Realname;
-	}
+	if (detailName == "Name")					{ ss << m_Realname; }
 	else if (detailName == "Health")
 	{
 		if (get_stat(STAT_HEALTH) == 0)
@@ -11104,30 +11127,9 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 		else
 			ss << get_stat(STAT_HEALTH) << "%";
 	}
-	else if (detailName == "Libido")
-	{
-		ss << libido();
-	}
-	else if (detailName == "Rebel")
-	{
-		ss << rebel();
-	}
-	else if (detailName == "Looks")
-	{
-		ss << ((get_stat(STAT_BEAUTY)+get_stat(STAT_CHARISMA))/2);
-		ss << "%";
-	}
-	else if (detailName == "Tiredness")
-	{
-		ss << get_stat(STAT_TIREDNESS) << "%";
-	}
-	else if (detailName == "Happiness")
-	{
-		ss << get_stat(STAT_HAPPINESS) << "%";
-	}
 	else if (detailName == "Age")
 	{
-		if(get_stat(STAT_AGE) == 100)
+		if (get_stat(STAT_AGE) == 100)
 		{
 			ss << gettext("???");
 		}
@@ -11136,17 +11138,12 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 			ss << get_stat(STAT_AGE);
 		}
 	}
-	else if (detailName == "Virgin")
-	{
-		if (g_Girls.CheckVirginity(this))
-		{
-			ss << gettext("Yes");
-		}
-		else
-		{
-			ss << gettext("No");
-		}
-	}
+	else if (detailName == "Libido")			{ ss << libido(); }
+	else if (detailName == "Rebel")				{ ss << rebel(); }
+	else if (detailName == "Looks")				{ ss << ((get_stat(STAT_BEAUTY) + get_stat(STAT_CHARISMA)) / 2) << "%"; }
+	else if (detailName == "Tiredness")			{ ss << get_stat(STAT_TIREDNESS) << "%"; }
+	else if (detailName == "Happiness")			{ ss << get_stat(STAT_HAPPINESS) << "%"; }
+	else if (detailName == "Virgin")			{ ss << (g_Girls.CheckVirginity(this) ? gettext("Yes") : gettext("No")); }
 	else if (detailName == "Weeks_Due")
 	{
 		if (is_pregnant())
@@ -11160,23 +11157,20 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 			ss << gettext("---");
 		}
 	}
-	else if (detailName == "PregCooldown")
-	{
-		ss << (int)m_PregCooldown;
-	}
+	else if (detailName == "PregCooldown")		{ ss << (int)m_PregCooldown; }
 	else if (detailName == "Accommodation")
 	{
-		if(m_AccLevel == 0)			ss << gettext("Very Poor");
-		else if(m_AccLevel == 1)	ss << gettext("Adequate");
-		else if(m_AccLevel == 2)	ss << gettext("Nice");
-		else if(m_AccLevel == 3)	ss << gettext("Good");
-		else if(m_AccLevel == 4)	ss << gettext("Wonderful");
-		else if(m_AccLevel == 5)	ss << gettext("High Class");
-		else	ss << gettext("Error");
+		/* */if (m_AccLevel == 0)	ss << gettext("Very Poor");
+		else if (m_AccLevel == 1)	ss << gettext("Adequate");
+		else if (m_AccLevel == 2)	ss << gettext("Nice");
+		else if (m_AccLevel == 3)	ss << gettext("Good");
+		else if (m_AccLevel == 4)	ss << gettext("Wonderful");
+		else if (m_AccLevel == 5)	ss << gettext("High Class");
+		else /*                */	ss << gettext("Error");
 	}
 	else if (detailName == "Gold")
 	{
-		if(g_Gangs.GetGangOnMission(MISS_SPYGIRLS))
+		if (g_Gangs.GetGangOnMission(MISS_SPYGIRLS))
 		{
 			ss << m_Money;
 		}
@@ -11185,13 +11179,11 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 			ss << gettext("???");
 		}
 	}
-	else if (detailName == "Pay")
-	{
-			ss << m_Pay;
-	}
+	else if (detailName == "Pay")				{ ss << m_Pay; }
+	
+	// 'J' Girl Table job text
 	else if (detailName == "DayJob" || detailName == "NightJob")
 	{
-// `J` set as day job first then test if it is night
 		int DN_Job = m_DayJob;
 		bool DN_Day = 1;
 		if (detailName == "NightJob")
@@ -11216,7 +11208,7 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 		}
 		else if (DN_Job == JOB_GETHEALING)
 		{
-			if (g_Clinic.GetNumGirlsOnJob(0, JOB_DOCTOR, DN_Day) >0)
+			if (g_Clinic.GetNumGirlsOnJob(0, JOB_DOCTOR, DN_Day) > 0)
 			{
 				ss << g_Brothels.m_JobManager.JobName[DN_Job];
 			}
@@ -11224,7 +11216,6 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 			{
 				ss << g_Brothels.m_JobManager.JobName[DN_Job] << " ***";
 			}
-
 		}
 		else if (DN_Job == JOB_GETREPAIRS)
 		{
@@ -11289,6 +11280,10 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 			ss << " **";
 		}
 	}
+
+
+
+
 	else if (detailName.find("STAT_") != string::npos)
 	{
 		string stat = detailName;
@@ -11324,7 +11319,7 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 		int code = lookup_status_code(status);
 		if (code != -1)
 		{
-			if(m_States&(1<<code))
+			if (m_States&(1 << code))
 			{
 				ss << gettext("Yes");
 			}
@@ -11338,31 +11333,9 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 			ss << gettext("Error");
 		}
 	}
-	else if (detailName == "is_slave")
-	{
-		if(is_slave())
-		{
-			ss << gettext("Yes");
-		}
-		else
-		{
-			ss << gettext("No");
-		}
-	}
-	else if (detailName == "carrying_human")
-	{
-		if(carrying_human())
-		{
-			ss << gettext("Yes");
-		}
-		else
-		{
-			ss << gettext("No");
-		}
-	}
 	else if (detailName == "is_pregnant")
 	{
-		if(is_pregnant())
+		if (is_pregnant())
 		{
 			cConfig cfg;
 			int to_go = cfg.pregnancy.weeks_pregnant() - m_WeeksPreg;
@@ -11376,54 +11349,13 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 				ss << gettext("No") << "(" << (int)m_PregCooldown << ")";
 		}
 	}
-	else if (detailName == "is_addict")
-	{
-		if (is_addict())
-		{
-			ss << gettext("Yes");
-		}
-		else
-		{
-			ss << gettext("No");
-		}
-	}
-	else if (detailName == "has_disease")
-	{
-		if (has_disease())
-		{
-			ss << gettext("Yes");
-		}
-		else
-		{
-			ss << gettext("No");
-		}
-	}
-	else if (detailName == "is_mother")
-	{
-		if(is_mother())
-		{
-			ss << gettext("Yes");
-		}
-		else
-		{
-			ss << gettext("No");
-		}
-	}
-	else if (detailName == "is_poisoned")
-	{
-		if(is_poisoned())
-		{
-			ss << gettext("Yes");
-		}
-		else
-		{
-			ss << gettext("No");
-		}
-	}
-	else
-	{
-		ss << gettext("Not found");
-	}
+	else if (detailName == "is_slave")			{ ss << (is_slave() ? gettext("Yes") : gettext("No")); }
+	else if (detailName == "carrying_human")	{ ss << (carrying_human() ? gettext("Yes") : gettext("No")); }
+	else if (detailName == "is_addict")			{ ss << (is_addict() ? gettext("Yes") : gettext("No")); }
+	else if (detailName == "has_disease")		{ ss << (has_disease() ? gettext("Yes") : gettext("No")); }
+	else if (detailName == "is_mother")			{ ss << (is_mother() ? gettext("Yes") : gettext("No")); }
+	else if (detailName == "is_poisoned")		{ ss << (is_poisoned() ? gettext("Yes") : gettext("No")); }
+	else /*                            */		{ ss << gettext("Not found"); }
 	Data = ss.str();
 }
 
@@ -11450,7 +11382,7 @@ int sGirl::rebel()
 
 string sGirl::JobRatingLetter(int value)
 {
-	     if (value < -500)		return "X";	// Can not do this job
+	/* */if (value < -500)		return "X";	// Can not do this job
 	else if (value >= 350)		return "   I   ";	// Incomparable
 	else if (value >= 245)		return "  S  ";	// Superior
 	else if (value >= 185)		return " A ";	// Amazing

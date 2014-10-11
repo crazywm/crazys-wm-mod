@@ -45,48 +45,45 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
+// `J` Movie Studio Job - Crew
 bool cJobManager::WorkFilmPromoter(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
-	string message = "";
-	char buffer[1000];
-	int jobperformance = 0;
+	cConfig cfg;
+	stringstream ss;
 	string girlName = girl->m_Realname;
+	int wages = 50;
+	int enjoy = 0;
+	int jobperformance = 0;
+	bool movies = g_Studios.m_NumMovies > 0;
 
-	g_Girls.UnequipCombat(girl);
-	
-	girl->m_Pay += 80;
-	
-	message = girlName;	
-	message += gettext(" worked to promote the sales of the studio's films.\n\n");
-	
-	int roll = g_Dice%100;
+	g_Girls.UnequipCombat(girl);	// not for studio crew
+
+	ss << girlName << " worked to promote the sales of the studio's films.\n\n";
+
+	int roll = g_Dice.d100();
 	if (roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
 	{
-		message = girl->m_Realname + gettext(" refused to work as a promoter today.");
-
-		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_NOWORK);
+		ss << "She refused to work as a promoter today.";
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	else if(roll <= 15) {
-		message += gettext(" She had difficulties working with advertisers and theater owners.\n\n");
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, -1, true);
-		jobperformance += -5;
-	}
-	else if(roll >=90)
+
+	if (!movies)
 	{
-		message += gettext(" She found it easier selling the movies today.\n\n");
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, +3, true);
-		jobperformance += 5;
+		ss << "There were no movies for her to promote, so she just promoted the studio in general.\n\n";
 	}
-	else
+
+	if (roll <= 10 || (!movies && roll <= 15))
 	{
-		message += gettext(" Otherwise, the shift passed uneventfully.\n\n");
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, +1, true);
+		enjoy -= g_Dice % 3 + 1;
+		ss << "She had difficulties working with advertisers and theater owners" << (movies ? "" : " without movies to sell them") << ".\n\n";
 	}
+	else if (roll >= 90) { enjoy += g_Dice % 3 + 1; ss << "She found it easier " << (movies ? "selling the movies" : "promoting the studio") << " today.\n\n"; }
+	else /*    */{ enjoy += max(0, g_Dice % 3 - 1); ss << "Otherwise, the shift passed uneventfully.\n\n"; }
+	jobperformance = enjoy * 2;
 
 	// How much will she help stretch your advertising budget? Let's find out
 	double cval, multiplier = 0.0;
-
 	cval = g_Girls.GetSkill(girl, SKILL_SERVICE);
 	if (cval > 0)
 	{
@@ -128,74 +125,63 @@ bool cJobManager::WorkFilmPromoter(sGirl* girl, sBrothel* brothel, int DayNight,
 	{
 		multiplier += (cval / 2);  // add 50% of level to multiplier
 	}
-	
+	jobperformance += (int)multiplier;
+
 	// useful traits
-	if(girl->has_trait("Psychic"))
-		multiplier += 10;  // add 10 to multiplier
-	if(girl->has_trait("Cool Person"))
-		multiplier += 10;  // add 10 to multiplier
-	if(girl->has_trait("Sexy Air"))
-		multiplier += 10;  // add 10 to multiplier
-	if(girl->has_trait("Charismatic"))
-		multiplier += 10;  // add 10 to multiplier
-	if(girl->has_trait("Charming"))
-		multiplier += 10;  // add 10 to multiplier
-
+	if (girl->has_trait("Psychic"))			jobperformance += 10;
+	if (girl->has_trait("Cool Person"))		jobperformance += 10;
+	if (girl->has_trait("Sexy Air"))		jobperformance += 10;
+	if (girl->has_trait("Charismatic"))		jobperformance += 10;
+	if (girl->has_trait("Charming"))		jobperformance += 10;
 	// unhelpful traits
-	if(girl->has_trait("Nervous"))
-		multiplier -= 5;  // subtract 5 from multiplier
-	if(girl->has_trait("Clumsy"))
-		multiplier -= 5;  // subtract 5 from multiplier
-	if(girl->has_trait("Retarded"))
-		multiplier -= 20;  // subtract 20 from multiplier
-	if(girl->has_trait("Malformed"))
-		multiplier -= 20;  // subtract 20 from multiplier
-
-	multiplier += jobperformance;
-	jobperformance = (int)multiplier;
-
-	g_Studios.m_PromoterBonus = (double)(brothel->m_AdvertisingBudget / 10) + multiplier;
-	
-/*
- *	work out the pay between the house and the girl
- *
- *	the original calc took the average of beauty and charisma and halved it
- */
-	int roll_max = girl->spirit() + girl->intelligence();
-	roll_max /= 4;
-	girl->m_Pay += 10 + g_Dice%roll_max;
+	if (girl->has_trait("Nervous"))			jobperformance -= 5; 
+	if (girl->has_trait("Clumsy"))			jobperformance -= 5; 
+	if (girl->has_trait("Retarded"))		jobperformance -= 20;
+	if (girl->has_trait("Malformed"))		jobperformance -= 20;
 
 
-	if(jobperformance > 0)
+	// slave girls not being paid for a job that normally you would pay directly for do less work
+	if ((girl->is_slave() && !cfg.initial.slave_pay_outofpocket()))
 	{
-	message += girlName + gettext(" helped promote the studio's movies, increasing sales ");
-						_itoa(jobperformance,buffer,10);
-						message += buffer;
-						message += "%. \n";
+		jobperformance = int(jobperformance * 0.9);
+		wages = 0;
 	}
-	else if(jobperformance < 0)
+	else	// work out the pay between the house and the girl
 	{
-	message += girlName + gettext(" did a bad job today, she hurt film sales ");
-					_itoa(jobperformance,buffer,10);
-					message += buffer;
-					message += "%. \n";
+		// `J` zzzzzz - need to change pay so it better reflects how well she promoted the films
+		int roll_max = girl->spirit() + girl->intelligence();
+		roll_max /= 4;
+		wages += 10 + g_Dice%roll_max;
+	}
+
+	if (movies)
+	{
+		/* */if (jobperformance > 0)	ss << " She helped promote the studio's movies, increasing sales " << jobperformance << "%. \n";
+		else if (jobperformance < 0)	ss << " She did a bad job today, she hurt film sales " << jobperformance << "%. \n";
+		else /*                   */	ss << " She did not really help film sales.\n";
 	}
 	else
-		message += girlName + gettext(" did not really help film sales.\n");
+	{	// `J` zzzzzz - need some effects for this
+		/* */if (jobperformance > 0)	ss << " She helped promote the studio. \n";
+		else if (jobperformance < 0)	ss << " She did a bad job today, she hurt reputation of the studio. \n";
+		else /*                   */	ss << " She did not really help promote the studio.\n";
+	}
 
-	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, SHIFT_NIGHT);
+	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, SHIFT_NIGHT);
+	girl->m_Pay = wages;
+	g_Studios.m_PromoterBonus = (double)(brothel->m_AdvertisingBudget / 10) + jobperformance;
 
-	// now to boost the brothel's advertising level accordingly
 
 	// Improve girl
-	int xp = 5, skill = 3, libido = 1;
+	int xp = 10, skill = 3, libido = 1;
 
 	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, skill);
+	g_Girls.UpdateStat(girl, STAT_CHARISMA, g_Dice%skill);
+	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
 	return false;

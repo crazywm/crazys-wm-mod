@@ -2,7 +2,7 @@
 <Items>
 <Item Name="Adorable Underwear"    
       Desc="Teddy bears and other childlike images cover this vibrantly pink underwear. The cute patterns and a minor magical effect make the wearer seem slightly younger and very adorable. (+Cute, -1 Age, +4 Cha, +3 Beauty, +5 Happiness)" 
-      Type="Under Wear" 
+      Type="Underwear" 
       Badness="18" 
       Special="None" 
       Cost="800" 

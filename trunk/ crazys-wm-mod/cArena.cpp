@@ -1,21 +1,21 @@
 /*
- * Copyright 2009, 2010, The Pink Petal Development Team.
- * The Pink Petal Devloment Team are defined as the game's coders 
- * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright 2009, 2010, The Pink Petal Development Team.
+* The Pink Petal Devloment Team are defined as the game's coders
+* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 #include <sstream>
 
@@ -42,38 +42,38 @@ extern cGold            g_Gold;
 extern char             buffer[1000];
 
 // // ----- Strut sArena Create / destroy
-sArena::sArena() :	m_Finance(0)	// constructor
+sArena::sArena() : m_Finance(0)	// constructor
 {
-	m_var			= 0;
-	m_Name			= "arena";
-	m_Filthiness	= 0;
-	m_Next			= 0;
-	m_Girls			= 0;
-	m_LastGirl		= 0;
-	m_NumGirls		= 0;
-	m_SecurityLevel	= 0;
+	m_var = 0;
+	m_Name = "arena";
+	m_Filthiness = 0;
+	m_Next = 0;
+	m_Girls = 0;
+	m_LastGirl = 0;
+	m_NumGirls = 0;
+	m_SecurityLevel = 0;
 	for (u_int i = 0; i < NUMJOBTYPES; i++) m_BuildingQuality[i] = 0;
 }
 
 sArena::~sArena()			// destructor
 {
-	m_var			= 0;
+	m_var = 0;
 	if (m_Next)		delete m_Next;
-	m_Next			= 0;
+	m_Next = 0;
 	if (m_Girls)	delete m_Girls;
-	m_LastGirl		= 0;
-	m_Girls			= 0;
+	m_LastGirl = 0;
+	m_Girls = 0;
 }
 
 void cArenaManager::AddGirl(int brothelID, sGirl* girl)
 {
-	girl->where_is_she		= 0;
-	girl->m_InMovieStudio	= false;
-	girl->m_InArena			= true;
-	girl->m_InCentre		= false;
-	girl->m_InClinic		= false;
-	girl->m_InFarm			= false;
-	girl->m_InHouse			= false;
+	girl->where_is_she = 0;
+	girl->m_InMovieStudio = false;
+	girl->m_InArena = true;
+	girl->m_InCentre = false;
+	girl->m_InClinic = false;
+	girl->m_InFarm = false;
+	girl->m_InHouse = false;
 	cBrothelManager::AddGirl(brothelID, girl);
 }
 
@@ -97,29 +97,35 @@ cArenaManager::~cArenaManager()			// destructor
 void cArenaManager::Free()
 {
 	if (m_Parent)	delete m_Parent;
-	m_Parent		= 0;
-	m_Last			= 0;
-	m_NumBrothels	= 0;
+	m_Parent = 0;
+	m_Last = 0;
+	m_NumBrothels = 0;
 }
 
 // ----- Update & end of turn
 void cArenaManager::UpdateArena()
 {
-	sBrothel* current = (sBrothel*) m_Parent;
+	sBrothel* current = (sBrothel*)m_Parent;
+	u_int restjob = JOB_ARENAREST;
+	u_int matronjob = JOB_DOCTORE;
+	u_int firstjob = JOB_FIGHTBEASTS;
+	u_int lastjob = JOB_CLEANARENA;
+
 	current->m_Finance.zero();
 	current->m_AntiPregUsed = 0;
+
 	// Clear the girls' events from the last turn
 	sGirl* cgirl = current->m_Girls;
-	while(cgirl)
+	while (cgirl)
 	{
-		cgirl->where_is_she		= 0;
-		cgirl->m_InMovieStudio	= false;
-		cgirl->m_InArena		= true;
-		cgirl->m_InCentre		= false;
-		cgirl->m_InClinic		= false;
-		cgirl->m_InFarm			= false;
-		cgirl->m_InHouse		= false;
-		cgirl->m_Pay			= 0;
+		cgirl->where_is_she = 0;
+		cgirl->m_InMovieStudio = false;
+		cgirl->m_InArena = true;
+		cgirl->m_InCentre = false;
+		cgirl->m_InClinic = false;
+		cgirl->m_InFarm = false;
+		cgirl->m_InHouse = false;
+		cgirl->m_Pay = 0;
 		cgirl->m_Events.Clear();
 
 		do_food_and_digs(current, cgirl);		// Brothel only update for girls accommodation level
@@ -160,6 +166,7 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, int DayNight)
 	u_int lastjob = JOB_CLEANARENA;
 	bool matron = (GetNumGirlsOnJob(brothel->m_id, matronjob, SHIFT_DAY) >= 1) ? true : false;
 	string MatronMsg = "", MatronWarningMsg = "";
+	stringstream ss;
 
 	cConfig cfg;
 	sGirl* current = brothel->m_Girls;
@@ -181,6 +188,8 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, int DayNight)
 			if (current->m_NightJob < firstjob && current->m_NightJob > lastjob)	current->m_NightJob = restjob;
 			current->m_YesterDayJob = current->m_DayJob;		// `J` set what she did yesterday
 			current->m_YesterNightJob = current->m_NightJob;	// `J` set what she did yesternight
+			current->m_Refused_To_Work = false;
+
 			if (current->m_JustGaveBirth)		// if she gave birth, let her rest this week
 			{
 				if (current->m_NightJob != restjob)	current->m_PrevNightJob = current->m_NightJob;
@@ -199,7 +208,7 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		girlName = current->m_Realname;
 		sum = EVENT_SUMMARY;
 
-// ONCE DAILY processing at start of Day Shift
+		// ONCE DAILY processing at start of Day Shift
 		if (DayNight == SHIFT_DAY)
 		{
 			// Remove any dead bodies from last week
@@ -224,7 +233,7 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, int DayNight)
 				DeadGirl = 0; msg = ""; summary = "";	// cleanup
 
 				// If there are more girls to process
-				if (current) continue; 
+				if (current) continue;
 				else		break;
 			}
 
@@ -258,16 +267,16 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		}
 
 
-/*
- *		EVERY SHIFT processing
- */
+		/*
+		*		EVERY SHIFT processing
+		*/
 
 		// Sanity check! Don't process dead girls
-		if(current->health() <= 0)
+		if (current->health() <= 0)
 		{
 			if (current->m_Next) // If there are more girls to process
 			{
-			    current = current->m_Next;
+				current = current->m_Next;
 				continue;
 			}
 			else
@@ -283,38 +292,18 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		// Calculate the girls asking price
 		g_Girls.CalculateAskPrice(current, true);
 
-/*
- *		JOB PROCESSING
- */
+		/*
+		*		JOB PROCESSING
+		*/
 
-		u_int restjob = JOB_ARENAREST;	// `J` added to allow for easier copy/paste to other buildings
-		u_int matronjob = JOB_DOCTORE;	// `J` added to allow for easier copy/paste to other buildings
-		u_int sw = 0;							//	Job type
 		bool matron = (GetNumGirlsOnJob(brothel->m_id, matronjob, DayNight) >= 1) ? true : false;
 
-		if (current->m_JustGaveBirth)		// if she gave birth, let her rest this week
-		{
-			if (current->m_DayJob != restjob)	current->m_PrevDayJob = current->m_DayJob;
-			if (current->m_NightJob != restjob)	current->m_PrevNightJob = current->m_NightJob;
-			current->m_DayJob = restjob;
-			current->m_NightJob = restjob;
-		}
 		sw = (DayNight == SHIFT_DAY) ? current->m_DayJob : current->m_NightJob;
 
-		// `J` added check to force jobs into the Arena correcting a bug
-		if (sw >= JOB_FIGHTBEASTS && sw <= JOB_CLEANARENA)
-		{
-			refused = m_JobManager.JobFunc[sw](current, brothel, DayNight, summary);
-		}
-		else // Any job not in the Arena will be replaced with JOB_ARENAREST
-		{
-			if (DayNight == SHIFT_DAY) current->m_DayJob = restjob;
-			else current->m_NightJob = restjob;
-			sw = restjob;
-			refused = m_JobManager.JobFunc[restjob](current, brothel, DayNight, summary);
-		}
+		refused = m_JobManager.JobFunc[sw](current, brothel, DayNight, summary);
+
 		// if she refused she still gets tired
-		if(refused) g_Girls.AddTiredness(current);
+		if (refused) g_Girls.AddTiredness(current);
 
 		totalPay += current->m_Pay;
 		totalTips += current->m_Tips;
@@ -325,14 +314,27 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, int DayNight)
 
 		brothel->m_Fame += g_Girls.GetStat(current, STAT_FAME);
 
-/*
- *		Summary Messages
- */
+		/*
+		*		Summary Messages
+		*/
 
+		ss.str("");
 		if (refused) summary += girlName + gettext(" refused to work so made no money.");
-		else if(totalGold > 0)
+		// `J` if a slave does a job that is normally paid by you but you don't pay your slaves...
+		else if (current->is_slave() && !cfg.initial.slave_pay_outofpocket() &&
+#if 0	// `J` until all jobs have this part added to them, use the individual job list instead of this
+			m_JobManager.is_job_Paid_Player(sw))
+#else
+			(
+			sw == JOB_CLEANARENA || 
+			sw==JOB_FIGHTTRAIN
+			))
+#endif
 		{
-			stringstream ss;
+			summary += "\nYou own her and you don't pay your slaves.";
+		}
+		else if (totalGold > 0)
+		{
 			ss << girlName << " earned a total of " << totalGold << " gold";
 			u_int job = (DayNight) ? current->m_NightJob : current->m_DayJob;
 			// if it is a player paid job and she is not a slave
@@ -355,10 +357,9 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, int DayNight)
 			}
 			summary += ss.str();
 		}
-		else if(totalGold == 0)		summary += girlName + gettext(" made no money.");
-		else if(totalGold < 0)										
+		else if (totalGold == 0)		summary += girlName + gettext(" made no money.");
+		else if (totalGold < 0)
 		{
-			stringstream ss;
 			ss << "ERROR: She has a loss of " << totalGold << " gold\n\n Please report this to the Pink Petal Devloment Team at http://pinkpetal.org";
 			summary += ss.str();
 			sum = EVENT_DEBUG;
@@ -464,7 +465,7 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, int DayNight)
 	}
 
 	// WD: Finished Processing Shift set flag
-	m_Processing_Shift= -1;				
+	m_Processing_Shift = -1;
 }
 
 TiXmlElement* cArenaManager::SaveDataXML(TiXmlElement* pRoot)
@@ -476,18 +477,18 @@ TiXmlElement* cArenaManager::SaveDataXML(TiXmlElement* pRoot)
 	// save arena
 	TiXmlElement* pBrothels = new TiXmlElement("Arenas");
 	pBrothelManager->LinkEndChild(pBrothels);
-	sArena* current = (sArena*) m_Parent;
+	sArena* current = (sArena*)m_Parent;
 	//         ...................................................
 	message = "***************** Saving arenas *****************";
 	g_LogFile.write(message);
-	while(current)
+	while (current)
 	{
 		message = "Saving brothel: ";
 		message += current->m_Name;
 		g_LogFile.write(message);
 
 		current->SaveArenaXML(pBrothels);
-		current = (sArena*) current->m_Next;
+		current = (sArena*)current->m_Next;
 	}
 	return pBrothelManager;
 }
@@ -515,17 +516,17 @@ TiXmlElement* sArena::SaveArenaXML(TiXmlElement* pRoot)
 	pBrothel->SetAttribute("RestrictGroup", m_RestrictGroup);
 	pBrothel->SetAttribute("RestrictNormal", m_RestrictNormal);
 	pBrothel->SetAttribute("RestrictLesbian", m_RestrictLesbian);
-	
+
 	pBrothel->SetAttribute("AdvertisingBudget", m_AdvertisingBudget);
 	pBrothel->SetAttribute("AntiPregPotions", m_AntiPregPotions);
 	pBrothel->SetAttribute("AntiPregUsed", m_AntiPregUsed);
 	pBrothel->SetAttribute("KeepPotionsStocked", m_KeepPotionsStocked);
-	
+
 	// Save Girls
 	TiXmlElement* pGirls = new TiXmlElement("Girls");
 	pBrothel->LinkEndChild(pGirls);
 	sGirl* girl = m_Girls;
-	while(girl)
+	while (girl)
 	{
 		girl->SaveGirlXML(pGirls);
 		girl = girl->m_Next;
@@ -552,7 +553,7 @@ bool cArenaManager::LoadDataXML(TiXmlHandle hBrothelManager)
 	TiXmlElement* pBrothels = pBrothelManager->FirstChildElement("Arenas");
 	if (pBrothels)
 	{
-		for(TiXmlElement* pBrothel = pBrothels->FirstChildElement("Arena");
+		for (TiXmlElement* pBrothel = pBrothels->FirstChildElement("Arena");
 			pBrothel != 0;
 			pBrothel = pBrothel->NextSiblingElement("Arena"))
 		{
@@ -610,7 +611,7 @@ bool sArena::LoadArenaXML(TiXmlHandle hBrothel)
 	pBrothel->QueryValueAttribute<bool>("RestrictGroup", &m_RestrictGroup);
 	pBrothel->QueryValueAttribute<bool>("RestrictNormal", &m_RestrictNormal);
 	pBrothel->QueryValueAttribute<bool>("RestrictLesbian", &m_RestrictLesbian);
-	
+
 	pBrothel->QueryValueAttribute<unsigned short>("AdvertisingBudget", &m_AdvertisingBudget);
 	pBrothel->QueryIntAttribute("AntiPregPotions", &m_AntiPregPotions);
 	pBrothel->QueryIntAttribute("AntiPregUsed", &m_AntiPregUsed);

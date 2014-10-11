@@ -1542,7 +1542,7 @@ bool cJobManager::work_related_violence(sGirl* girl, int DayNight, bool streets)
 		// If all defensive measures fail...
 		// subtract 5 security points per gang member left
 		Brothl->m_SecurityLevel = Brothl->m_SecurityLevel - enemy_gang->m_Num * 5;	// `J` moved and doubled m_SecurityLevel loss
-		customer_rape(girl);
+		customer_rape(girl, enemy_gang->m_Num);
 		return true;
 	}
 	g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +1, true);
@@ -1647,17 +1647,18 @@ bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_n
 	if (g_Girls.HasTrait(SecGuard, "Quick Learner"))		xp += 2;
 	else if (g_Girls.HasTrait(SecGuard, "Slow Learner"))	xp -= 2;
 
-	g_Girls.UpdateStat(SecGuard, STAT_EXP, (OrgNumMem - enemy_gang->m_Num) * xp);
+	int num = OrgNumMem - enemy_gang->m_Num;
+	g_Girls.UpdateStat(SecGuard, STAT_EXP, num * xp);
 
 	if (res)  // Security guard wins
 	{
 		g_Girls.UpdateSkill(SecGuard, SKILL_COMBAT, 1);
 		g_Girls.UpdateSkill(SecGuard, SKILL_MAGIC, 1);
-		g_Girls.UpdateStat(SecGuard, STAT_LIBIDO, OrgNumMem - enemy_gang->m_Num);  // There's nothing like killin ta make ya horny!
-		g_Girls.UpdateStat(SecGuard, STAT_CONFIDENCE, OrgNumMem - enemy_gang->m_Num);
-		g_Girls.UpdateStat(SecGuard, STAT_FAME, OrgNumMem - enemy_gang->m_Num);
-		g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, OrgNumMem - enemy_gang->m_Num, true);
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKSECURITY, OrgNumMem - enemy_gang->m_Num, true);
+		g_Girls.UpdateStat(SecGuard, STAT_LIBIDO, num);  // There's nothing like killin ta make ya horny!
+		g_Girls.UpdateStat(SecGuard, STAT_CONFIDENCE, num);
+		g_Girls.UpdateStat(SecGuard, STAT_FAME, num);
+		g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, num, true);
+		g_Girls.UpdateEnjoyment(girl, ACTION_WORKSECURITY, num, true);
 
 		stringstream msg;
 
@@ -1675,17 +1676,23 @@ bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_n
 			msg << gettext("A group of customers tried to attack ") << girl->m_Realname << gettext(". You intercepted and thrashed all ") << OrgNumMem << gettext(" of them.");
 		  else
 			msg << gettext("A group of ") << OrgNumMem << gettext(" customers tried to attack ") << girl->m_Realname << gettext(". They fled after you intercepted and thrashed ")
-			  << (OrgNumMem - enemy_gang->m_Num) << gettext(" of them.");
+			<< num << gettext(" of them.");
 	    
 		}
 		SecGuard->m_Events.AddMessage(msg.str(), IMGTYPE_DEATH, EVENT_WARNING/*day_night*/);
 	} 
 	else  // Loss
 	{
-		stringstream ss;
+		u_int attacktype = SKILL_COMBAT;												// can be anything
+		if (enemy_gang->m_Num > 1 && g_Dice.percent(40)) attacktype = SKILL_GROUP;		// standard group attack
+		else if (enemy_gang->m_Num > 1 && g_Dice.percent(40)) attacktype = SKILL_BDSM;	// special group attack
+		else if (g_Dice.percent(20)) attacktype = SKILL_LESBIAN;						// female attacker
+		else if (g_Dice.percent(40)) attacktype = SKILL_NORMALSEX;						// single male attacker
 
+
+		stringstream ss;
 		ss << gettext("Security Problem:\n") << gettext("Trying to defend ") << girl->m_Realname << gettext(". You defeated ")
-		   << (OrgNumMem - enemy_gang->m_Num) << gettext(" of ") << OrgNumMem << gettext(" before:\n") << SecGuard->m_Realname << GetGirlAttackedString();
+			<< num << gettext(" of ") << OrgNumMem << gettext(" before:\n") << SecGuard->m_Realname << GetGirlAttackedString(attacktype);
 
 		SecGuard->m_Events.AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_DANGER);
 
@@ -1708,53 +1715,53 @@ bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_n
 
 bool cJobManager::gang_stops_rape(sGirl* girl, vector<sGang *> gangs_guarding, sGang *enemy_gang, int coverage, int day_night)
 {
-	if((g_Dice%100 + 1) > coverage) return false;
+	if (!g_Dice.percent(coverage)) return false;
 
 	sGang *guarding_gang = gangs_guarding.at(g_Dice%gangs_guarding.size());
 
 	// GangVsGang returns true if enemy_gang loses
 	bool guards_win = g_Gangs.GangBrawl(guarding_gang, enemy_gang);
 
-	if(!guards_win) {
+	if (!guards_win) {
 		stringstream gang_s, girl_s;
 		gang_s << guarding_gang->m_Name << gettext(" was defeated defending ") << girl->m_Realname << gettext(".");
 		girl_s << guarding_gang->m_Name << gettext(" was defeated defending you from a gang of rapists.");
-		guarding_gang->m_Events.AddMessage(gang_s.str(), IMGTYPE_PROFILE,  EVENT_WARNING);
-		girl->m_Events.AddMessage(girl_s.str(), IMGTYPE_DEATH, EVENT_WARNING /*day_night*/);
+		guarding_gang->m_Events.AddMessage(gang_s.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+		girl->m_Events.AddMessage(girl_s.str(), IMGTYPE_DEATH, EVENT_WARNING);
 		return false;
 	}
 
-/*
- * options: smart guards send them off with a warning
- * dead customers should impact disposition and suspicion
- * might also need a bribe to cover it up
- */
+	/*
+	 * options: smart guards send them off with a warning
+	 * dead customers should impact disposition and suspicion
+	 * might also need a bribe to cover it up
+	 */
 	stringstream gang_ss, girl_ss;
-	int roll = g_Dice.random(100) + 1;
-	if(roll < guarding_gang->intelligence() / 2) 
+	int roll = g_Dice.d100();
+	if (roll < guarding_gang->intelligence() / 2)
 	{
-		gang_ss <<	gettext("One of the ") << guarding_gang->m_Name << gettext(" found a customer getting violent with ")
+		gang_ss << gettext("One of the ") << guarding_gang->m_Name << gettext(" found a customer getting violent with ")
 			<< girl->m_Realname << gettext(" and sent him packing, in fear for his life.");
 		girl_ss << gettext("Customer attempt to rape her, but guards ") << guarding_gang->m_Name << gettext(" scared him off.");
 	}
-	else if(roll < guarding_gang->intelligence())
+	else if (roll < guarding_gang->intelligence())
 	{
-		gang_ss	<< gettext("One of the ") << guarding_gang->m_Name << gettext(" found a customer hurting  ") << girl->m_Realname
+		gang_ss << gettext("One of the ") << guarding_gang->m_Name << gettext(" found a customer hurting  ") << girl->m_Realname
 			<< gettext(" and beat him bloody before sending him away.");
-		girl_ss	<< gettext("Customer attempt to rape her, but guards ") << guarding_gang->m_Name << gettext(" gave him a beating.");
+		girl_ss << gettext("Customer attempt to rape her, but guards ") << guarding_gang->m_Name << gettext(" gave him a beating.");
 	}
-	else 
+	else
 	{
-		gang_ss	<< gettext("One of the ") << guarding_gang->m_Name << gettext(" killed a customer who was trying to rape ")
+		gang_ss << gettext("One of the ") << guarding_gang->m_Name << gettext(" killed a customer who was trying to rape ")
 			<< girl->m_Realname << gettext(".");
-		girl_ss	<< gettext("Customer attempt to rape her, but guards ") << guarding_gang->m_Name << gettext(" killed them.");
+		girl_ss << gettext("Customer attempt to rape her, but guards ") << guarding_gang->m_Name << gettext(" killed them.");
 	}
 	cerr << "gang ss=" << gang_ss.str() << endl;
 	cerr << "girl ss=" << girl_ss.str() << endl;
 
 	girl->m_Events.AddMessage(girl_ss.str(), IMGTYPE_DEATH, day_night);
 	guarding_gang->m_Events.AddMessage(gang_ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
-	
+
 	return true;
 }
 
@@ -1847,24 +1854,23 @@ bool cJobManager::girl_fights_rape(sGirl* girl, sGang *enemy_gang, int day_night
 
 	// Earn xp for all kills, even if defeated
 	int xp = 3;
+	if (g_Girls.HasTrait(girl, "Quick Learner"))		xp += 2;
+	else if (g_Girls.HasTrait(girl, "Slow Learner"))	xp -= 2;
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))
-		xp += 2;
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))
-		xp -= 2;
+	int num = OrgNumMem - enemy_gang->m_Num;
 
-	g_Girls.UpdateStat(girl, STAT_EXP, (OrgNumMem - enemy_gang->m_Num) * xp);
+	g_Girls.UpdateStat(girl, STAT_EXP, num * xp);
 
 	if (res)  // She wins.  Yay!
 	{
 		g_Girls.UpdateSkill(girl, SKILL_COMBAT, 1);
 		g_Girls.UpdateSkill(girl, SKILL_MAGIC, 1);
 		g_Girls.UpdateStat(girl, STAT_AGILITY, 1);
-		g_Girls.UpdateStat(girl, STAT_LIBIDO, OrgNumMem - enemy_gang->m_Num);  // There's nothing like killin ta make ya horny!
-		g_Girls.UpdateStat(girl, STAT_CONFIDENCE, OrgNumMem - enemy_gang->m_Num);
-		g_Girls.UpdateStat(girl, STAT_FAME, OrgNumMem - enemy_gang->m_Num);
+		g_Girls.UpdateStat(girl, STAT_LIBIDO, num);  // There's nothing like killin ta make ya horny!
+		g_Girls.UpdateStat(girl, STAT_CONFIDENCE, num);
+		g_Girls.UpdateStat(girl, STAT_FAME, num);
 
-		g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, OrgNumMem - enemy_gang->m_Num, true);
+		g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, num, true);
 
 		stringstream msg;
 
@@ -1872,12 +1878,7 @@ bool cJobManager::girl_fights_rape(sGirl* girl, sGang *enemy_gang, int day_night
 		//     gang, when it is neither.
 		if (OrgNumMem == 1)
 		{
-		  msg << gettext("A customer tried to attack her. She killed ");
-		  int roll = g_Dice%10 + 1;
-		  if (roll == 5)
-			  msg << gettext("her.");
-		  else
-		      msg << gettext("him.");
+		  msg << gettext("A customer tried to attack her. She killed ") << (g_Dice.percent(20) ? gettext("her.") : gettext("him."));
 		}
 		else
 		{
@@ -1885,10 +1886,9 @@ bool cJobManager::girl_fights_rape(sGirl* girl, sGang *enemy_gang, int day_night
 		    msg << gettext("A group of customers tried to assault her. She thrashed all ") << OrgNumMem << gettext(" of them.");
 		  else
 			msg << gettext("A group of ") << OrgNumMem << gettext(" customers tried to assault her. They fled after she killed ")
-			  << (OrgNumMem - enemy_gang->m_Num) << gettext(" of them.");
-	    
+			<< num << gettext(" of them.");
 		}
-		girl->m_Events.AddMessage(msg.str(), IMGTYPE_DEATH, EVENT_WARNING/*day_night*/);
+		girl->m_Events.AddMessage(msg.str(), IMGTYPE_COMBAT, EVENT_WARNING);
 	}
 
     // Losing is dealt with later in customer_rapes (called from work_related_violence)
@@ -1926,11 +1926,16 @@ bool cJobManager::girl_fights_rape(sGirl* girl, int day_night)
  * I think these next three could use a little detail
  * MYR: Added the requested detail (in GetGirlAttackedString() below)
  */
-void cJobManager::customer_rape(sGirl* girl)
+void cJobManager::customer_rape(sGirl* girl, int numberofattackers)
 {
-	stringstream ss;
+	u_int attacktype = SKILL_COMBAT;												// can be anything
+	/* */if (numberofattackers > 1 && g_Dice.percent(40)) attacktype = SKILL_GROUP;	// standard group attack
+	else if (numberofattackers > 1 && g_Dice.percent(40)) attacktype = SKILL_BDSM;	// special group attack
+	else if (g_Dice.percent(20)) attacktype = SKILL_LESBIAN;						// female attacker
+	else if (g_Dice.percent(40)) attacktype = SKILL_NORMALSEX;						// single male attacker
 
-	ss << girl->m_Realname << GetGirlAttackedString();
+	stringstream ss;
+	ss << girl->m_Realname << GetGirlAttackedString(attacktype);
 
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_DANGER);
 
@@ -1947,31 +1952,178 @@ void cJobManager::customer_rape(sGirl* girl)
 	g_Girls.UpdateStat(girl, STAT_PCHATE, 20);
 	g_Girls.GirlInjured(girl, 10); // MYR: Note
 	g_Girls.UpdateEnjoyment(girl, ACTION_SEX, -30, true);
+
+	// `J` do Pregnancy and/or STDs
+	bool preg = false, std = false, a = false, c = false, h = false, s = false;
+	sCustomer cust;
+	GetMiscCustomer(g_Brothels.GetBrothel(0), cust);
+	cust.m_Amount = numberofattackers;
+
+	if (attacktype == SKILL_GROUP || attacktype == SKILL_NORMALSEX)
+	{
+		cust.m_IsWoman = false;
+		preg = !g_GirlsPtr->CalcPregnancy(girl, 5 + (cust.m_Amount * 5), STATUS_PREGNANT, cust.m_Stats, cust.m_Skills);
+	}
+	if (attacktype == SKILL_LESBIAN)
+	{
+		cust.m_IsWoman = true;
+	}
+	if (cust.m_HasAIDS || cust.m_HasChlamydia || cust.m_HasHerpes || cust.m_HasSyphilis || g_Dice.percent(5))
+	{
+		std = true;
+		if (cust.m_HasAIDS)			a = true;
+		if (cust.m_HasChlamydia)	c = true;
+		if (cust.m_HasSyphilis)		s = true;
+		if (cust.m_HasHerpes)		h = true;
+		if (!a && !c && !s && !h)
+		{
+			/* */if (g_Dice.percent(20))	a = true;
+			else if (g_Dice.percent(20))	c = true;
+			else if (g_Dice.percent(20))	s = true;
+			else /*                   */	h = true;
+		}
+	}
+
+	if (preg || std)
+	{
+		ss.str("");
+		ss << girl->m_Realname << "'s rapist";
+		if (numberofattackers > 1) ss << "s left their";
+		else ss << " left " << (cust.m_IsWoman ? "her" : "his");
+		ss << " calling card behind, ";
+		if (preg)			{ ss << "a baby in her belly"; }
+		if (preg && std)	{ ss << " and "; }
+		else if (preg)		{ ss << ".\n\n"; }
+		if (a || c || s || h)	{ bool _and = false;
+			if (a)	{ g_GirlsPtr->AddTrait(girl, "AIDS");		ss << "AIDS"; }
+			if (a && (c || s || h))							{	ss << " and ";		_and = true; }
+			if (c)	{ g_GirlsPtr->AddTrait(girl, "Chlamydia");	ss << "Chlamydia";	_and = false; }
+			if (!_and && (a || c) && (s || h))				{	ss << " and ";		_and = true; }
+			if (s)	{ g_GirlsPtr->AddTrait(girl, "Syphilis");	ss << "Syphilis";	_and = false; }
+			if (!_and && (a || c || s) && h)				{	ss << " and "; }
+			if (h)	{ g_GirlsPtr->AddTrait(girl, "Herpes");		ss << "Herpes"; }
+			ss << ".\n\n";
+		}
+
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_DANGER);
+	}
 }
-#if 0
-void cJobManager::customer_rape(sGirl* girl)
-{
-	girl->m_Events.AddMessage(girl->m_Realname + " " + GetGirlAttackedString()/*"She was beaten and raped, and the perpetrator escaped"*/, IMGTYPE_DEATH, EVENT_DANGER);
-	g_Girls.UpdateStat(girl, STAT_HEALTH, -2);
-	g_Girls.UpdateStat(girl, STAT_SPIRIT, -1);
-	g_Girls.GirlInjured(girl, 3);
-	g_Girls.UpdateEnjoyment(girl, ACTION_SEX, -8, true);
-}
-#endif
 
 // MYR: Lots of different ways to say the girl had a bad day
 // doc: let's have this return a string, instead of a stringstream:
 // the caller doesn't need the stream and gcc is giving weird type coercion 
 // errors
 
-string cJobManager::GetGirlAttackedString()
+string cJobManager::GetGirlAttackedString(u_int attacktype)
 {
-	int roll1 = 0, roll2 = 0, roll3 = 0;
-	stringstream ss;
+	int roll1 = 0, roll2 = 0, roll3 = 0, rolla = 0;
+	int maxroll1 = 21, maxroll2 = 20, maxroll3 = 21;
 
+	stringstream ss;
 	ss << gettext(" was ");
 
-    roll1 = g_Dice % 21 + 1;   // Remember to update this when new strings are added
+	if (attacktype == SKILL_GROUP)			// standard group attack
+	{
+		roll1 = g_Dice % maxroll1 + 1;
+		roll2 = g_Dice % maxroll2 + 1;
+		rolla = g_Dice % 5 + 1;
+		switch (rolla)
+		{
+		case 1:		roll3 = 1;	break;	// "customers."
+		case 2:		roll3 = 8;	break;	// "priests."
+		case 3:		roll3 = 9;	break;	// "orcs. (What?)"
+		case 4:		roll3 = 18;	break;	// "members of the militia."
+		case 5:		roll3 = 20;	break;	// "tentacles from the sewers."
+		default:	roll3 = g_Dice % maxroll3 + 1;	break;	// fallback just in case
+		}
+	}
+	if (attacktype == SKILL_BDSM)			// special group attack
+	{
+		roll1 = g_Dice % maxroll1 + 1;	// if roll1 is a BDSM text...
+		if (roll1 == 3	||	// "put on the wood horse"
+			roll1 == 4	||	// "tied to the bed"
+			roll1 == 7	||	// "tied up"
+			roll1 == 8	||	// "wrestled to the floor"
+			roll1 == 9	||	// "slapped in irons"
+			roll1 == 10	||	// "cuffed"
+			roll1 == 11	||	// "put in THAT machine"
+			roll1 == 14	||	// "hand-cuffed during kinky play"
+			roll1 == 18	||	// "chained to the porch railing"
+			roll1 == 19	||	// "tied up BDSM-style"
+			roll1 == 20	||	// "stretched out on the torture table"
+			roll1 == 21	)	// "tied up and hung from the rafters"
+		{
+			roll2 = g_Dice % maxroll2 + 1;	// ...then roll2 can be anything
+		}
+		else	// ...otherwise roll2 needs to be BDSM
+		{
+			rolla = g_Dice % 6 + 1;
+			switch (rolla)
+			{
+			case 1:		roll2 = 1;	break;	// "abused"
+			case 2:		roll2 = 2;	break;	// "whipped"
+			case 3:		roll2 = 13;	break;	// "had her fleshy bits pierced"
+			case 4:		roll2 = 15;	break;	// "penetrated by some object"
+			case 5:		roll2 = 17;	break;	// "tortured"
+			case 6:		roll2 = 20;	break;	// "her skin was pierced by sharp things"
+			default:	roll2 = g_Dice % maxroll2 + 1;	break;	// fallback just in case
+			}
+		}
+		roll3 = g_Dice % maxroll3 + 1;
+	}
+	if (attacktype == SKILL_LESBIAN)		// female attacker
+	{
+		roll1 = g_Dice % maxroll1 + 1;
+		roll2 = g_Dice % maxroll2 + 1;
+		rolla = g_Dice % 13 + 1;
+		switch (rolla)
+		{
+		case 1:		roll3 = 1;		break;	// "customers."
+		case 2: 	roll3 = 4;		break;	// "the other girls."
+		case 3: 	roll3 = 6;		break;	// "a ghost (She claims.)"
+		case 4: 	roll3 = 7;		break;	// "an enemy gang member."
+		case 5: 	roll3 = 10;		break;	// "a doppleganger disguised as a human."
+		case 6: 	roll3 = 11;		break;	// "a jealous wife."
+		case 7: 	roll3 = 13;		break;	// "a public health official."
+		case 8: 	roll3 = 15;		break;	// "some raving loonie."
+		case 9: 	roll3 = 16;		break;	// "a ninja!"
+		case 10: 	roll3 = 17;		break;	// "a pirate. (Pirates rule! Ninjas drool!)"
+		case 11: 	roll3 = 18;		break;	// "members of the militia."
+		case 12: 	roll3 = 19;		break;	// "your mom (It runs in the family.)"
+		case 13: 	roll3 = 21;		break;	// "a vengeful family member."
+		default:	roll3 = g_Dice % maxroll3 + 1;	break;	// fallback just in case
+		}
+	}
+	if (attacktype == SKILL_NORMALSEX)		// single male attacker
+	{
+		roll1 = g_Dice % maxroll1 + 1;
+		roll2 = g_Dice % maxroll2 + 1;
+		rolla = g_Dice % 12 + 1;
+		switch (rolla)
+		{
+		case 1: 	roll3 = 2;		break;	// "some sadistic monster."
+		case 2: 	roll3 = 3;		break;	// "a police officer."
+		case 3: 	roll3 = 5;		break;	// "Batman! (Who knew?)"
+		case 4: 	roll3 = 6;		break;	// "a ghost (She claims.)"
+		case 5: 	roll3 = 7;		break;	// "an enemy gang member."
+		case 6: 	roll3 = 10;		break;	// "a doppleganger disguised as a human."
+		case 7: 	roll3 = 12;		break;	// "a jealous husband."
+		case 8: 	roll3 = 13;		break;	// "a public health official."
+		case 9: 	roll3 = 15;		break;	// "some raving loonie."
+		case 10: 	roll3 = 16;		break;	// "a ninja!"
+		case 11: 	roll3 = 17;		break;	// "a pirate. (Pirates rule! Ninjas drool!)"
+		case 12: 	roll3 = 21;		break;	// "a vengeful family member."
+		default:	roll3 = g_Dice % maxroll3 + 1;	break;	// fallback just in case
+		}
+	}
+	// if nothing above worked then just do the default anything goes
+	if (attacktype == SKILL_COMBAT || roll1 == 0 || roll2 == 0 || roll3 == 0)	// can be anything
+	{
+		roll1 = g_Dice % maxroll1 + 1;
+		roll2 = g_Dice % maxroll2 + 1;
+		roll3 = g_Dice % maxroll3 + 1;
+	}
+
 	switch (roll1)
 	{
 	  case 1: ss << gettext("cornered"); break;
@@ -1999,7 +2151,6 @@ string cJobManager::GetGirlAttackedString()
 
 	ss << gettext(" and ");
 
-    roll2 = g_Dice % 20 + 1;
 	switch (roll2)
 	{
 	  case 1: ss << gettext("abused"); break;
@@ -2026,7 +2177,6 @@ string cJobManager::GetGirlAttackedString()
 
 	ss << gettext(" by ");
 
-    roll3 = g_Dice % 21 + 1;
 	switch (roll3)
 	{
 	  case 1: ss << gettext("customers."); break;

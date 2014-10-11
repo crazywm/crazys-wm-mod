@@ -2,7 +2,7 @@
 <Items>
 <Item Name="Designer Lingerie"
       Desc="This unbelievably skimpy underwear was designed by a famous tailor. There's so little actual fabric that you have to wonder what justifies its exorbitant price... but it does look incredibly sexy, and every girl loves being at the height of fashion. (A) (+15 Cha, +20 Lib, +5 Hap, +20 all sex skills)"
-      Type="Under Wear"
+      Type="Underwear"
       Badness="15"
       Special="None"
       Cost="2000"

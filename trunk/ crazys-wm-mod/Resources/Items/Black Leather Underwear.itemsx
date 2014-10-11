@@ -2,7 +2,7 @@
 <Items>
 <Item Name="Black Leather Underwear"    
       Desc="The thick leather that comprises this bra and panties makes them somewhat uncomfortable to wear. The interior is intentionally rough and slightly abrasive. While quite unpleasant, they don't cause any actual harm; however, they make the wearer more capable of tolerating discomfort. They also serve as a reminder of the girl's status. (+20 BDSM, +10 Obedience, +5 Libedo)" 
-      Type="Under Wear" 
+      Type="Underwear" 
       Badness="28" 
       Special="None" 
       Cost="500" 
