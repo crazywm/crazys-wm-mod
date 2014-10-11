@@ -44,51 +44,35 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
+// `J` Movie Studio Job - Crew - Job_is_Matron
 bool cJobManager::WorkFilmDirector(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
-	cTariff tariff;
-	string message = "";
 	cConfig cfg;
-	char buffer[1000];
-	int jobperformance = 0;
+	stringstream ss;
 	string girlName = girl->m_Realname;
 	g_Studios.m_DirectorName = girl->m_Realname;
+	int wages = 50;
+	int enjoy = 0;
+	int jobperformance = 0;
+	int numgirls = brothel->m_NumGirls;
 
-	g_Girls.UnequipCombat(girl);
+	g_Girls.UnequipCombat(girl);	// not for studio crew
 
+	ss << girlName << " worked as a film director.\n\n";
 
-	message = girlName;
-	message += gettext(" worked as a film director.\n\n");
-
-	int roll = g_Dice % 100;
+	int roll = g_Dice.d100();
 	if (roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
 	{
-		message = girl->m_Realname + gettext(" refused to work as a director today.");
-
-		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_NOWORK);
+		ss << "She refused to work as a director today.";
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	else if (roll <= 15) {
-		message += gettext(" She did not like working in the studio today.\n\n");
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, -1, true);
-		jobperformance += -5;
-	}
-	else if (roll >= 90)
-	{
-		message += gettext(" She had a great time working today.\n\n");
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, +3, true);
-		jobperformance += 5;
-	}
-	else
-	{
-		message += gettext(" Otherwise, the shift passed uneventfully.\n\n");
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, +1, true);
-	}
 
-	int roll_max = girl->spirit() + girl->intelligence();
-	roll_max /= 4;
-
-
+	/* */if (roll <= 10) { enjoy -= g_Dice % 3 + 1; ss << "She did not like working in the studio today.\n\n"; }
+	else if (roll >= 90) { enjoy += g_Dice % 3 + 1; ss << "She had a great time working today.\n\n"; }
+	else /*    */{ enjoy += max(0, g_Dice % 3 - 1); ss << "Otherwise, the shift passed uneventfully.\n\n"; }
+	jobperformance = enjoy * 2;
+	
 	jobperformance += (girl->spirit() - 50) / 10;
 	jobperformance += (girl->intelligence() - 50) / 10;
 	jobperformance += g_Girls.GetSkill(girl, SKILL_SERVICE) / 10;
@@ -97,30 +81,15 @@ bool cJobManager::WorkFilmDirector(sGirl* girl, sBrothel* brothel, int DayNight,
 	jobperformance += g_Girls.GetStat(girl, STAT_FAME) / 10;
 	jobperformance += g_Dice % 4 - 1;	// should add a -1 to +3 random element --PP
 
+	/* */if (jobperformance > 0)	ss << "She helped improve the scene " << jobperformance << "% with her Directing skills. \n";
+	else if (jobperformance < 0)	ss << "She did a bad job today, she reduced the scene quality " << jobperformance << "% with her poor performance. \n";
+	else /*                   */	ss << "She did not really help the scene quality.\n";
+
+	girl->m_Pay = int(float(100.0 + (((girl->get_skill(SKILL_SERVICE) + girl->get_stat(STAT_CHARISMA) + girl->get_stat(STAT_INTELLIGENCE) + girl->get_stat(STAT_CONFIDENCE) + girl->get_skill(SKILL_MEDICINE) + 50) / 50)*numgirls) * cfg.out_fact.matron_wages()));
 	g_Studios.m_DirectorQuality += jobperformance;
-
-	if (jobperformance > 0)
-	{
-		message += girlName + gettext(" helped improve the scene ");
-		_itoa(jobperformance, buffer, 10);
-		message += buffer;
-		message += "% with her Directing skills. \n";
-	}
-	else if (jobperformance < 0)
-	{
-		message += girlName + gettext(" did a bad job today, she reduced the scene quality ");
-		_itoa(jobperformance, buffer, 10);
-		message += buffer;
-		message += "% with her poor performance. \n";
-	}
-	else
-		message += girlName + gettext(" did not really help the scene quality.\n");
-
-	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, SHIFT_NIGHT);
-
+	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, SHIFT_NIGHT);
 
 	// Improve girl
-	int numgirls = brothel->m_NumGirls;
 	int xp = 5 + (numgirls / 10), libido = 1, skill = 3, fame = jobperformance / 50;
 
 	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 5; }
@@ -128,14 +97,14 @@ bool cJobManager::WorkFilmDirector(sGirl* girl, sBrothel* brothel, int DayNight,
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			libido += 2;
 	if (g_Girls.HasTrait(girl, "Lesbian"))				libido += numgirls / 20;
 
-	girl->m_Pay = int(float(100.0 + (((girl->get_skill(SKILL_SERVICE) + girl->get_stat(STAT_CHARISMA) + girl->get_stat(STAT_INTELLIGENCE) + girl->get_stat(STAT_CONFIDENCE) + girl->get_skill(SKILL_MEDICINE) + 50) / 50)*numgirls) * cfg.out_fact.matron_wages()));
 	g_Girls.UpdateStat(girl, STAT_EXP, g_Dice%xp + 5);
 	g_Girls.UpdateStat(girl, STAT_FAME, g_Dice%fame);
+	g_Girls.UpdateStat(girl, STAT_CHARISMA, g_Dice%skill);
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill + 2);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, g_Dice%libido);
 
 	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 30, ACTION_WORKMATRON, gettext("She has worked as a matron long enough that she has learned to be more Charismatic."), DayNight != 0);
-	g_Girls.PossiblyGainNewTrait(girl, "Psychic", 60, ACTION_WORKMATRON, gettext("She has learned to handle the girls so well that you'd almost think she was Psychic."), DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Psychic", 90, ACTION_WORKMATRON, gettext("She has learned to handle the girls so well that you'd almost think she was Psychic."), DayNight != 0);
 
 	return false;
 }

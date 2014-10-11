@@ -46,6 +46,7 @@ extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 extern int g_Building;
 
+// `J` House Job - General
 bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	cTariff tariff;

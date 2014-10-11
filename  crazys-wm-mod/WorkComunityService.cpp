@@ -43,6 +43,7 @@ extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 extern int g_Building;
 
+// `J` Centre Job - General
 bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	string message = "", girlName = girl->m_Realname;

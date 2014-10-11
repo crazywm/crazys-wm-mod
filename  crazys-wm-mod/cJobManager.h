@@ -219,8 +219,8 @@ public:
 	static bool gang_stops_rape(sGirl* girl, vector<sGang *> gangs_guarding, sGang *enemy_gang, int coverage, int day_night);
 	//static bool girl_fights_rape(sGirl*, int);
 	static bool girl_fights_rape(sGirl* girl, sGang *enemy_gang, int day_night);
-	static void customer_rape(sGirl*);
-	static string GetGirlAttackedString();
+	static void customer_rape(sGirl* girl, int numberofattackers);
+	static string GetGirlAttackedString(u_int attacktype = SKILL_COMBAT);	// `J` added attacktype to be used with sextype for more specific attacks defaulting to combat
 
 
 	static bool Preprocessing(int action, sGirl* girl, sBrothel* brothel, int DayNight, string& summary, string& message);

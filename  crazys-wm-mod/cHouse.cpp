@@ -110,17 +110,19 @@ void cHouseManager::UpdateHouse()
 	u_int matronjob = JOB_HEADGIRL;
 	u_int firstjob = JOB_HOUSEREST;
 	u_int lastjob = JOB_CLEANHOUSE;
+
+	current->m_Finance.zero();
 	current->m_AntiPregUsed = 0;
 
 	// Clear the girls' events from the last turn and do start of day stuff
 	sGirl* cgirl = current->m_Girls;
-	while(cgirl)
+	while (cgirl)
 	{
 		// Remove any dead bodies from last week
 		if (cgirl->health() <= 0)
 		{
+			current->m_Filthiness++; // `J` Death is messy
 			sGirl* DeadGirl = 0;
-
 			string girlName = cgirl->m_Realname;
 			DeadGirl = cgirl;
 			// If there are more girls to process
@@ -139,55 +141,53 @@ void cHouseManager::UpdateHouse()
 
 			RemoveGirl(0, DeadGirl);
 			DeadGirl = 0; msg = ""; summary = "";	// cleanup
-
-			// If there are more girls to process
-			if (cgirl) continue;
-			else		break;
 		}
-
-		cgirl->where_is_she = 0;
-		cgirl->m_InMovieStudio = false;
-		cgirl->m_InArena = false;
-		cgirl->m_InCentre = false;
-		cgirl->m_InClinic = false;
-		cgirl->m_InFarm = false;
-		cgirl->m_InHouse = true;
-
-		cgirl->m_Events.Clear();
-
-		cgirl->m_Pay = 0;
-		cgirl->m_Tips = 0;
-
-		// `J` Check for out of building jobs and set yesterday jobs for everyone first
-		if (cgirl->m_DayJob	  < firstjob && cgirl->m_DayJob   > lastjob)	cgirl->m_DayJob = restjob;
-		if (cgirl->m_NightJob < firstjob && cgirl->m_NightJob > lastjob)	cgirl->m_NightJob = restjob;
-
-
-		cgirl->m_YesterDayJob = cgirl->m_DayJob;		// `J` set what she did yesterday
-		cgirl->m_YesterNightJob = cgirl->m_NightJob;	// `J` set what she did yesternight
-
-
-		string summary ="";
-		do_food_and_digs(current, cgirl);			// Brothel only update for girls accommodation level
-		g_Girls.CalculateGirlType(cgirl);			// update the fetish traits
-		g_Girls.updateGirlAge(cgirl, true);		// update birthday counter and age the girl
-		g_Girls.updateTempStats(cgirl);			// update temp stats
-		g_Girls.updateTempSkills(cgirl);			// update temp skills
-		g_Girls.updateTempTraits(cgirl);			// update temp traits
-		g_Girls.HandleChildren(cgirl, summary);	// handle pregnancy and children growing up
-		g_Girls.updateSTD(cgirl);					// health loss to STD's				NOTE: Girl can die
-		g_Girls.updateHappyTraits(cgirl);			// Update happiness due to Traits	NOTE: Girl can die
-		updateGirlTurnBrothelStats(cgirl);		// Update daily stats				Now only runs once per day
-		g_Girls.updateGirlTurnStats(cgirl);		// Stat Code common to Dugeon and Brothel
-
-		if (cgirl->m_JustGaveBirth)		// if she gave birth, let her rest this week
+		else
 		{
-			if (cgirl->m_DayJob != restjob)		cgirl->m_PrevDayJob = cgirl->m_DayJob;
-			if (cgirl->m_NightJob != restjob)	cgirl->m_PrevNightJob = cgirl->m_NightJob;
-			cgirl->m_DayJob = cgirl->m_NightJob = restjob;
-		}
+			cgirl->where_is_she = 0;
+			cgirl->m_InMovieStudio = false;
+			cgirl->m_InArena = false;
+			cgirl->m_InCentre = false;
+			cgirl->m_InClinic = false;
+			cgirl->m_InFarm = false;
+			cgirl->m_InHouse = true;
 
-		cgirl = cgirl->m_Next;
+			cgirl->m_Events.Clear();
+
+			cgirl->m_Pay = 0;
+			cgirl->m_Tips = 0;
+
+			// `J` Check for out of building jobs and set yesterday jobs for everyone first
+			if (cgirl->m_DayJob	  < firstjob && cgirl->m_DayJob   > lastjob)	cgirl->m_DayJob = restjob;
+			if (cgirl->m_NightJob < firstjob && cgirl->m_NightJob > lastjob)	cgirl->m_NightJob = restjob;
+
+			cgirl->m_YesterDayJob = cgirl->m_DayJob;		// `J` set what she did yesterday
+			cgirl->m_YesterNightJob = cgirl->m_NightJob;	// `J` set what she did yesternight
+			cgirl->m_Refused_To_Work = false;
+
+
+			string summary = "";
+			do_food_and_digs(current, cgirl);			// Brothel only update for girls accommodation level
+			g_Girls.CalculateGirlType(cgirl);			// update the fetish traits
+			g_Girls.updateGirlAge(cgirl, true);		// update birthday counter and age the girl
+			g_Girls.updateTempStats(cgirl);			// update temp stats
+			g_Girls.updateTempSkills(cgirl);			// update temp skills
+			g_Girls.updateTempTraits(cgirl);			// update temp traits
+			g_Girls.HandleChildren(cgirl, summary);	// handle pregnancy and children growing up
+			g_Girls.updateSTD(cgirl);					// health loss to STD's				NOTE: Girl can die
+			g_Girls.updateHappyTraits(cgirl);			// Update happiness due to Traits	NOTE: Girl can die
+			updateGirlTurnBrothelStats(cgirl);		// Update daily stats				Now only runs once per day
+			g_Girls.updateGirlTurnStats(cgirl);		// Stat Code common to Dugeon and Brothel
+
+			if (cgirl->m_JustGaveBirth)		// if she gave birth, let her rest this week
+			{
+				if (cgirl->m_DayJob != restjob)		cgirl->m_PrevDayJob = cgirl->m_DayJob;
+				if (cgirl->m_NightJob != restjob)	cgirl->m_PrevNightJob = cgirl->m_NightJob;
+				cgirl->m_DayJob = cgirl->m_NightJob = restjob;
+			}
+
+			cgirl = cgirl->m_Next;
+		}
 	}
 
 	if (current->m_Filthiness < 0) current->m_Filthiness = 0;
@@ -211,7 +211,8 @@ void cHouseManager::UpdateGirls(sBrothel* brothel, int DayNight)
 	u_int lastjob = JOB_CLEANHOUSE;
 	bool matron = (GetNumGirlsOnJob(brothel->m_id, matronjob, false) >= 1) ? true : false;
 	string MatronMsg = "", MatronWarningMsg = "";
-		
+	stringstream ss;
+
 	cConfig cfg;
 	sGirl* current = brothel->m_Girls;
 	string summary, msg, girlName;
@@ -329,10 +330,22 @@ void cHouseManager::UpdateGirls(sBrothel* brothel, int DayNight)
 /*
  *		Summary Messages
  */
+		ss.str("");
 		if (refused) summary += girlName + gettext(" refused to work so made no money.");
+		// `J` if a slave does a job that is normally paid by you but you don't pay your slaves...
+		else if (current->is_slave() && !cfg.initial.slave_pay_outofpocket() &&
+#if 0	// `J` until all jobs have this part added to them, use the individual job list instead of this
+			m_JobManager.is_job_Paid_Player(sw))
+#else
+			(
+			sw == JOB_CLEANHOUSE
+			))
+#endif
+		{
+			summary += "\nYou own her and you don't pay your slaves.";
+		}
 		else if (totalGold > 0)
 		{
-			stringstream ss;
 			ss << girlName << " earned a total of " << totalGold << " gold";
 			u_int job = (DayNight) ? current->m_NightJob : current->m_DayJob;
 			// if it is a player paid job and she is not a slave
@@ -358,7 +371,6 @@ void cHouseManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		else if (totalGold == 0)		summary += girlName + gettext(" made no money.");
 		else if (totalGold < 0)
 		{
-			stringstream ss;
 			ss << "ERROR: She has a loss of " << totalGold << " gold\n\n Please report this to the Pink Petal Devloment Team at http://pinkpetal.org";
 			summary += ss.str();
 			sum = EVENT_DEBUG;

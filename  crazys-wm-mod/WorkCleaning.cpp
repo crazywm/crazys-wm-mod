@@ -16,85 +16,122 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "cJobManager.h"
-#include "cBrothel.h"
 #include "cCustomers.h"
-#include "cRng.h"
-#include "cInventory.h"
-#include "sConfig.h"
-#include "cRival.h"
-#include <sstream>
-#include "CLog.h"
-#include "cTrainable.h"
-#include "cTariff.h"
-#include "cGold.h"
 #include "cGangs.h"
+#include "cGold.h"
+#include "cInventory.h"
+#include "cJobManager.h"
+#include "CLog.h"
 #include "cMessageBox.h"
+#include "cRival.h"
+#include "cRng.h"
+#include "cTariff.h"
+#include "cTrainable.h"
 #include "libintl.h"
+#include "sConfig.h"
+#include <sstream>
+#include "cBrothel.h"
+
 
 extern cRng g_Dice;
 extern CLog g_LogFile;
 extern cCustomers g_Customers;
 extern cInventory g_InvManager;
 extern cBrothelManager g_Brothels;
+
 extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
+// `J` Brothel Job - General - job_is_cleaning
 bool cJobManager::WorkCleaning(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	string message = "";
-	if(Preprocessing(ACTION_WORKCLEANING, girl, brothel, DayNight, summary, message))
-		return true;
+	string girlName = girl->m_Realname;
+	stringstream ss;
+	cConfig cfg;
 
-	// put that shit away, you'll scare off the customers!
-	g_Girls.UnequipCombat(girl);
+	g_Girls.UnequipCombat(girl);	// put that shit away
+
+	int CleanAmt = ((g_Girls.GetSkill(girl, SKILL_SERVICE) / 10) + 5) * 10;
+	int enjoy = 0;
+	int wages = 0;
+	int jobperformance = 0;
+	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
+	bool playtime = false;
+
+	message = girlName + gettext(" worked cleaning the brothel.\n\n");
 
 	// Complications
-	if(g_Dice%100 <= 10)
+	if (roll_a <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKCLEANING, brothel))
 	{
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCLEANING, -2, true);
-		message = gettext("Spilled a bucket of something unpleasant all over herself.");
-		girl->m_Events.AddMessage(message, IMGTYPE_MAID, DayNight);
+		message = girl->m_Realname + gettext(" refused to clean the brothel.");
+		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_NOWORK);
+		return true;
+	}
+	else if (roll_a <= 10)
+	{
+		enjoy -= g_Dice % 3 + 1;
+		CleanAmt = int(CleanAmt * 0.8);
+		if (roll_b < 50)
+			message += gettext("She spilled a bucket of something unpleasant all over herself.");
+		else
+			message += gettext("She did not like cleaning the brothel today.\n\n");
+	}
+	else if (roll_a <= 20)
+	{
+		enjoy += g_Dice % 3 + 1;
+		CleanAmt = int(CleanAmt * 1.1);
+		if (roll_b < 50)
+			message += gettext("She cleaned the building while humming a pleasant tune.");
+		else
+			message += gettext("She had a great time working today.\n\n");
 	}
 	else
 	{
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCLEANING, +3, true);
-		message = gettext("Cleaned the building while humming a pleasant tune.");
-		girl->m_Events.AddMessage(message, IMGTYPE_MAID, DayNight);
+		enjoy += g_Dice % 2;
+		message += gettext("The shift passed uneventfully.\n\n");
 	}
-	
-	// cleaning is a service skill
-	int CleanAmt;
-	if(g_Girls.GetSkill(girl, SKILL_SERVICE) >= 10)
-		CleanAmt = ((g_Girls.GetSkill(girl, SKILL_SERVICE)/10)+5) * 10;
-	else
-	   CleanAmt = 50;
 
+	// slave girls not being paid for a job that normally you would pay directly for do less work
+	if ((girl->is_slave() && !cfg.initial.slave_pay_outofpocket()))
+	{
+		CleanAmt = int(CleanAmt * 0.9);
+		wages = 0;
+	}
+	else
+	{
+		wages = CleanAmt; // `J` Pay her based on how much she cleaned
+	}
+
+	if (brothel->m_Filthiness < CleanAmt / 2) playtime = true;
+	ss << gettext("\n\nCleanliness rating improved by ") << CleanAmt;
+	if (playtime)	// `J` needs more variation
+	{
+		ss << "\n\n" << girlName << " finished her cleaning early so she hung out around the brothel a bit.";
+		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, g_Dice % 3 + 1);
+		g_Girls.UpdateStat(girl, STAT_HAPPINESS, (g_Dice % 3) + 1);
+	}
+	message += ss.str();
+
+	// do all the output
+	girl->m_Events.AddMessage(message, IMGTYPE_MAID, DayNight);
 	brothel->m_Filthiness -= CleanAmt;
-	stringstream sstemp;
-    sstemp << gettext("Cleanliness rating improved by ") << CleanAmt;
-	girl->m_Events.AddMessage(sstemp.str(), IMGTYPE_MAID, DayNight);
+	girl->m_Pay = wages;
 
 	// Improve girl
 	int xp = 5, libido = 1, skill = 3;
-
+	if (enjoy > 1)										{ xp += 1; skill += 1; }
 	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
 
-	int pay = 50;
-	if (CleanAmt >= 125)		{ pay += 100; }
-	else if (CleanAmt >= 60)	{ pay += 50; }
-
-	girl->m_Pay += pay;
-	g_Gold.building_upkeep(pay);  // wages come from you
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, skill);
+	g_Girls.UpdateStat(girl, STAT_EXP, (g_Dice % xp) + 2);
+	g_Girls.UpdateSkill(girl, SKILL_SERVICE, (g_Dice % skill) + 2);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
-	//lose traits
-	g_Girls.PossiblyLoseExistingTrait(girl, "Clumsy", 20, ACTION_WORKCLEANING, "It took her spilling hundreds of buckets, and just as many reprimands, but " + girl->m_Realname + " has finally stopped being so Clumsy.", DayNight != 0);
-	
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKCLEANING, enjoy, true);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Clumsy", 30, ACTION_WORKCLEANING, "It took her spilling hundreds of buckets, and just as many reprimands, but " + girl->m_Realname + " has finally stopped being so Clumsy.", DayNight != 0);
+
 	return false;
 }

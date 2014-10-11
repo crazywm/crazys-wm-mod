@@ -16,23 +16,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "cJobManager.h"
-#include "cBrothel.h"
-#include "cClinic.h"
-#include "cMovieStudio.h"
 #include "cCustomers.h"
-#include "cRng.h"
-#include "cInventory.h"
-#include "sConfig.h"
-#include "cRival.h"
-#include <sstream>
-#include "CLog.h"
-#include "cTrainable.h"
-#include "cTariff.h"
-#include "cGold.h"
 #include "cGangs.h"
+#include "cGold.h"
+#include "cInventory.h"
+#include "cJobManager.h"
+#include "CLog.h"
 #include "cMessageBox.h"
+#include "cRival.h"
+#include "cRng.h"
+#include "cTariff.h"
+#include "cTrainable.h"
 #include "libintl.h"
+#include "sConfig.h"
+#include <sstream>
+#include "cBrothel.h"
+#include "cMovieStudio.h"
 
 extern cRng g_Dice;
 extern CLog g_LogFile;
@@ -44,123 +43,97 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
+// `J` Movie Studio Job - Crew - job_is_cleaning
 bool cJobManager::WorkFilmStagehand(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
-	string message = "";
-	
-	// No film crew.. then go home
-	if (g_Studios.GetNumGirlsOnJob(0, JOB_CAMERAMAGE, SHIFT_NIGHT) == 0 || g_Studios.GetNumGirlsOnJob(0, JOB_CRYSTALPURIFIER, SHIFT_NIGHT) == 0)
-	{
-		message = "There was no crew to film the scene, so she just cleaned the set.";
-		brothel->m_Filthiness -= 50;
-		g_Girls.UpdateStat(girl, STAT_EXP, 1);
-		g_Girls.UpdateSkill(girl, SKILL_SERVICE, 1);
-		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_NOWORK);
-		return false;
-	}
-	
-	char buffer[1000];
-	int jobperformance = 0;
+	cConfig cfg;
+	stringstream ss;
 	string girlName = girl->m_Realname;
+	int wages = 50;
+	int enjoy = 0;
+	int jobperformance = 0;
+	int CleanAmt = ((g_Girls.GetSkill(girl, SKILL_SERVICE) / 10) + 5) * 5;
+	bool filming = true;
+	bool playtime = false;
+	u_int imagetype = IMGTYPE_PROFILE;
 
-	g_Girls.UnequipCombat(girl);
-	
-	//girl->m_Pay += 30;
-	
-	message = girlName;	
-	message += gettext(" worked as a stagehand.\n\n");
-	
-	int roll = g_Dice%100;
-	if (roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
+	g_Girls.UnequipCombat(girl);	// not for studio crew
+
+	ss << girlName << " worked as a stagehand.\n\n";
+
+	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
+
+	if (roll_a <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
 	{
-		message = girl->m_Realname + gettext(" refused to work as a stagehand today.");
-
-		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_NOWORK);
+		ss << "She refused to work as a stagehand today.";
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	else if(roll <= 15) {
-		message += gettext(" She did not like working in the studio today.\n\n");
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, -1, true);
-		jobperformance += -5;
-	}
-	else if(roll >=90)
+
+	if (g_Studios.GetNumGirlsOnJob(0, JOB_CAMERAMAGE, SHIFT_NIGHT) == 0 ||
+		g_Studios.GetNumGirlsOnJob(0, JOB_CRYSTALPURIFIER, SHIFT_NIGHT) == 0 ||
+		g_Studios.Num_Actress(0) < 1)
 	{
-		message += gettext(" She had a great time working today.\n\n");
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, +3, true);
-		jobperformance += 5;
+		ss << "There were no scenes being filmed, so she just cleaned the set.\n\n";
+		filming = false;
+		CleanAmt *= 2;
+	}
+
+
+	/* */if (roll_a <= 10) { enjoy -= g_Dice % 3 + 1; ss << "She did not like working in the studio today.\n\n"; }
+	else if (roll_a >= 90) { enjoy += g_Dice % 3 + 1; ss << "She had a great time working today.\n\n"; }
+	else /*      */{ enjoy += max(0, g_Dice % 3 - 1); ss << "Otherwise, the shift passed uneventfully.\n\n"; }
+	jobperformance = enjoy * 2;
+
+
+	if (filming)
+	{
+		jobperformance += (girl->spirit() - 50) / 10;
+		jobperformance += (girl->intelligence() - 50) / 10;
+		jobperformance += g_Girls.GetSkill(girl, SKILL_SERVICE) / 10;
+		jobperformance /= 3;
+		jobperformance += g_Girls.GetStat(girl, STAT_LEVEL);
+		jobperformance += g_Dice % 4 - 1;	// should add a -1 to +3 random element --PP
+
+		if (jobperformance < 0) jobperformance = max(-1, jobperformance / 10);
+		else if (jobperformance > 0) jobperformance = min(1, jobperformance / 10);
+
+		/* */if (jobperformance > 0)	ss << "She helped improve the scene " << jobperformance << "% with her production skills.\n";
+		else if (jobperformance < 0)	ss << "She did a bad job today, reduceing the scene quality " << jobperformance << "% with her poor performance.\n";
+		else /*                   */	ss << "She did not really help the scene quality.\n";
+	}
+
+
+	// slave girls not being paid for a job that normally you would pay directly for do less work
+	if ((girl->is_slave() && !cfg.initial.slave_pay_outofpocket()))
+	{
+		CleanAmt = int(CleanAmt * 0.9);
+		wages = 0;
+	}
+	else if (filming)
+	{
+		wages += CleanAmt + jobperformance;
 	}
 	else
 	{
-		message += gettext(" Otherwise, the shift passed uneventfully.\n\n");
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, +1, true);
+		wages += CleanAmt;
 	}
 
-/*
- *	work out the pay between the house and the girl
- */
-	int roll_max = girl->spirit() + girl->intelligence();
-	roll_max /= 4;
-	girl->m_Pay += 10 + g_Dice%roll_max;
-	g_Gold.building_upkeep(girl->m_Pay);  // wages come from you
+	ss << gettext("\n\nCleanliness rating improved by ") << CleanAmt;
 
-	jobperformance += (girl->spirit() - 50) / 10;
-	jobperformance += (girl->intelligence() - 50) / 10;
-	jobperformance += g_Girls.GetSkill(girl, SKILL_SERVICE) / 10;
-	jobperformance /= 3;
-	jobperformance += g_Girls.GetStat(girl, STAT_LEVEL);
-	jobperformance += g_Dice%4 - 1;	// should add a -1 to +3 random element --PP
-	if (jobperformance  < 0)
-		jobperformance = -1;
-	else if (jobperformance > 0)
-		jobperformance = 1;
-	
-	g_Studios.m_StagehandQuality += jobperformance;
-
-	if(jobperformance > 0)
+	if (!filming && brothel->m_Filthiness < CleanAmt / 2) // `J` needs more variation
 	{
-	message += girlName + gettext(" helped improve the scene ");
-						_itoa(jobperformance,buffer,10);
-						message += buffer;
-						message += "% with her production skills. \n";
+		ss << "\n\n" << girlName << " finished her cleaning early so she hung out around the Studio a bit.";
+		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, g_Dice % 3 + 1);
+		g_Girls.UpdateStat(girl, STAT_HAPPINESS, g_Dice % 3 + 1);
 	}
-	else if(jobperformance < 0)
-	{
-	message += girlName + gettext(" did a bad job today, she reduced the scene quality ");
-					_itoa(jobperformance,buffer,10);
-					message += buffer;
-					message += "% with her poor performance. \n";
-	}
-	else
-		message += girlName + gettext(" did not really help the scene quality.\n");
-	
-	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, SHIFT_NIGHT);
+	imagetype = IMGTYPE_MAID;
 
-	// cleaning is a service skill
-	int CleanAmt;
-	if(g_Girls.GetSkill(girl, SKILL_SERVICE) >= 10)
-		CleanAmt = ((g_Girls.GetSkill(girl, SKILL_SERVICE)/10)+5) * 10;
-	else
-	   CleanAmt = 50;
 
+	girl->m_Events.AddMessage(ss.str(), imagetype, SHIFT_NIGHT);
+	if (filming) g_Studios.m_StagehandQuality += jobperformance;
 	brothel->m_Filthiness -= CleanAmt;
-	stringstream sstemp;
-    sstemp << gettext("Cleanliness rating improved by ") << CleanAmt;
-	girl->m_Events.AddMessage(sstemp.str(), IMGTYPE_MAID, SHIFT_NIGHT);
-
-	if (CleanAmt >= 125)
-	{
-		girl->m_Pay += 150;
-	}
-	else if (CleanAmt >= 60)
-	{
-		girl->m_Pay += 100;
-	}
-	else
-	{
-		girl->m_Pay += 50;
-	}
-
-	g_Gold.building_upkeep(girl->m_Pay);  // wages come from you
+	girl->m_Pay += wages;
 
 
 	// Improve girl
@@ -174,6 +147,8 @@ bool cJobManager::WorkFilmStagehand(sGirl* girl, sBrothel* brothel, int DayNight
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, skill);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
-	g_Girls.PossiblyLoseExistingTrait(girl, "Clumsy", 20, ACTION_WORKMOVIE, "It took her spilling hundreds of buckets, and just as many reprimands, but " + girl->m_Realname + " has finally stopped being so Clumsy.", DayNight != 0);
+	if (filming) g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, enjoy, true);
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKCLEANING, enjoy, true);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Clumsy", 30, ACTION_WORKCLEANING, "It took her spilling hundreds of buckets, and just as many reprimands, but " + girl->m_Realname + " has finally stopped being so Clumsy.", DayNight != 0);
 	return false;
 }

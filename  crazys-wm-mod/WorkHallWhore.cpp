@@ -40,6 +40,7 @@ extern cBrothelManager g_Brothels;
 extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
+// `J` Brothel Job - Hall
 bool cJobManager::WorkHallWhore(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	// put that shit away, you'll scare off the customers!

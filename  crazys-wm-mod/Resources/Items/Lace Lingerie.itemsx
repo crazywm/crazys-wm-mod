@@ -2,7 +2,7 @@
 <Items>
 <Item Name="Lace Lingerie"
       Desc="Your basic set of lace underwear, with matching hose and garters. It looks dainty and delicate but it's robust enough to withstand being torn off in a fit of passion. (C) (+10 Lib, +4 Cha, +10 all sex skills)"
-      Type="Under Wear"
+      Type="Underwear"
       Badness="25"
       Special="None"
       Cost="250"

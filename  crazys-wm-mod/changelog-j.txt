@@ -818,3 +818,33 @@ Crazy made more changes to jobs - SVN r112
 
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.05
 !!!!!!!!!!!!!!!!!!!! pushed to SVN - r113
+
+###  Changes 9/27-28/2014 - Nothing done, Taking a few days off
+
+###  Changes 9/29/2014
+Cleaned cScreenTown.cpp
+Fixed bug in brothel dead girl check.
+
+###  Changes 9/30/2014
+Cleaned and added farm to cScreenItemManagement.cpp
+
+###  Changes 10/1-2/2014
+Fixed gallery to add new image types
+Major rework of cCustomers::GetCustomer with fixes to m_SexPref, m_SexPrefB and added customer chance of STDs
+Major rework of cGirls::GirlFucks fixing STDs and several other things
+Major rework of WorkPeepShow.cpp
+Major rework of cJobManager::customer_rape and cJobManager::GetGirlAttackedString adding variations and Pregnancy/STD chances
+
+###  Changes 10/3-10/2014
+Cleanup of arena
+Reworked WorkCombatTraining.cpp and cleaning jobs
+Fixed bugs in studio where girls were not getting taken off for maternity leave and many jobs were not getting done.
+Reworked all studio jobs and some other jobs
+SlavePayOutOfPocket now works for the studio and cleaning jobs
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.06
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r114
+
+
+
+

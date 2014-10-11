@@ -43,6 +43,7 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
+// `J` Clinic Job - Surgery
 bool cJobManager::WorkGetTubesTied(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	string message = "";

@@ -412,9 +412,10 @@ struct sGirl
 	bool m_InHouse = false;
 	bool m_InFarm = false;
 	int where_is_she = 0;
-	int m_PrevWorkingDay = 0;	// `J` save the last count of the number of working days 
-	int m_WorkingDay = 0;		// count the number of working day 
-	int m_SpecialJobGoal = 0;	// `J` Special Jobs like surgeries will have a specific goal
+	int m_PrevWorkingDay = 0;			// `J` save the last count of the number of working days 
+	int m_WorkingDay = 0;				// count the number of working day 
+	int m_SpecialJobGoal = 0;			// `J` Special Jobs like surgeries will have a specific goal
+	bool m_Refused_To_Work = false;		// `J` to track better if she refused to work her assigned job
 
 	sGirl()
 	{
@@ -471,7 +472,7 @@ struct sGirl
 		m_DayJob = m_NightJob = 0;
 		m_PrevDayJob = m_PrevNightJob = 255;
 		m_YesterDayJob = m_YesterNightJob = 255;
-
+		m_Refused_To_Work = false;
 		m_UseAntiPreg = true;
 
 		for (u_int i = 0; i<NUM_SKILLS; i++)
@@ -795,7 +796,7 @@ struct sGirl
 	void set_slave()		{ m_States |= (1 << STATUS_SLAVE); }
 	bool is_monster()		{ return (m_States & (1 << STATUS_CATACOMBS)) != 0; }
 	bool is_human()			{ return !is_monster(); }
-	bool is_arena()		{ return (m_States & (1 << STATUS_ARENA)) != 0; }
+	bool is_arena()			{ return (m_States & (1 << STATUS_ARENA)) != 0; }
 	bool is_yourdaughter()	{ return (m_States & (1 << STATUS_YOURDAUGHTER)) != 0; }
 	bool is_warrior()		{ return !is_arena(); }
 
@@ -991,18 +992,9 @@ public:
 	/*
 	*	while I'm on, a few funcs to factor out some common code in DrawImages
 	*/
-	int num_images(sGirl *girl, int image_type) {
-		return girl->m_GirlImages->m_Images[image_type].m_NumImages;
-	}
+	int num_images(sGirl *girl, int image_type) { return girl->m_GirlImages->m_Images[image_type].m_NumImages; }
 	int get_modified_image_type(sGirl *girl, int image_type, int preg_type);
-	int draw_with_default(
-		sGirl* girl,
-		int x, int y,
-		int width, int height,
-		int ImgType,
-		bool random,
-		int img
-		);
+	int draw_with_default(sGirl* girl, int x, int y, int width, int height, int ImgType, bool random, int img);
 	int calc_abnormal_pc(sGirl *mom, sGirl *sprog, bool is_players);
 
 	vector<sGirl *>  get_girls(GirlPredicate* pred);

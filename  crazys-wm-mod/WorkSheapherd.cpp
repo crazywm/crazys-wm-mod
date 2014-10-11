@@ -41,6 +41,7 @@ extern cFarmManager g_Farm;
 extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
+// `J` Farm Job - Laborers
 bool cJobManager::WorkSheapherd(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	string message = "";

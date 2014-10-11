@@ -47,6 +47,7 @@ extern cGold g_Gold;
 extern int g_Building;
 static cPlayer* m_Player = g_Brothels.GetPlayer();
 
+// `J` House Job - General
 bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	string message = "";

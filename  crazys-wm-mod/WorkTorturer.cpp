@@ -41,17 +41,13 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
+// `J` Brothel Job - General
 bool cJobManager::WorkTorturer(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
-	if(DayNight == SHIFT_NIGHT)  // Do this only once a day
-		return false;
+	if (DayNight == SHIFT_NIGHT) return false;		// Do this only once a day
 
 	string message = "";
-	if(Preprocessing(ACTION_WORKTORTURER, girl, brothel, DayNight, summary, message))
-		return true;
-
-
-
+	if (Preprocessing(ACTION_WORKTORTURER, girl, brothel, DayNight, summary, message)) return true;
 
 	// ready armor and weapons!
 	g_Girls.EquipCombat(girl);

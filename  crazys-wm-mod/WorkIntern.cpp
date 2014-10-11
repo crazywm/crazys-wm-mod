@@ -43,6 +43,7 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
+// `J` Clinic Job - Staff
 bool cJobManager::WorkIntern(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	if (g_Girls.HasTrait(girl, "AIDS"))

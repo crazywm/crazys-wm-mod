@@ -106,8 +106,14 @@ void cClinicManager::Free()
 void cClinicManager::UpdateClinic()
 {
 	sBrothel* current = (sBrothel*) m_Parent;
+	u_int restjob = JOB_CLINICREST;
+	u_int matronjob = JOB_CHAIRMAN;
+	u_int firstjob = JOB_GETHEALING;
+	u_int lastjob = JOB_JANITOR;
+	
 	current->m_Finance.zero();
 	current->m_AntiPregUsed = 0;
+	
 	// Clear the girls' events from the last turn
 	sGirl* cgirl = current->m_Girls;
 	while(cgirl)
@@ -161,6 +167,7 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, int DayNight)
 	u_int lastjob = JOB_JANITOR;
 	bool matron = (GetNumGirlsOnJob(brothel->m_id, matronjob, false) >= 1) ? true : false;
 	string MatronMsg = "", MatronWarningMsg = "";
+	stringstream ss;
 
 	cConfig cfg;
 	sGirl* current = brothel->m_Girls;
@@ -183,6 +190,8 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, int DayNight)
 			if (current->m_NightJob < firstjob && current->m_NightJob > lastjob)	current->m_NightJob = restjob;
 			current->m_YesterDayJob = current->m_DayJob;		// `J` set what she did yesterday
 			current->m_YesterNightJob = current->m_NightJob;	// `J` set what she did yesternight
+			current->m_Refused_To_Work = false;
+
 			if (current->m_JustGaveBirth)		// if she gave birth, let her rest this week
 			{
 				if (current->m_NightJob != restjob)	current->m_PrevNightJob = current->m_NightJob;
@@ -329,10 +338,22 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, int DayNight)
  *		Summary Messages
  */
 
+		ss.str("");
 		if (refused) summary += girlName + gettext(" refused to work so made no money.");
+		// `J` if a slave does a job that is normally paid by you but you don't pay your slaves...
+		else if (current->is_slave() && !cfg.initial.slave_pay_outofpocket() &&
+#if 0	// `J` until all jobs have this part added to them, use the individual job list instead of this
+			m_JobManager.is_job_Paid_Player(sw))
+#else
+			(
+			false
+			))
+#endif
+		{
+			summary += "\nYou own her and you don't pay your slaves.";
+		}
 		else if (totalGold > 0)
 		{
-			stringstream ss;
 			ss << girlName << " earned a total of " << totalGold << " gold";
 			u_int job = (DayNight) ? current->m_NightJob : current->m_DayJob;
 			// if it is a player paid job and she is not a slave
@@ -358,7 +379,6 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		else if (totalGold == 0)		summary += girlName + gettext(" made no money.");
 		else if (totalGold < 0)
 		{
-			stringstream ss;
 			ss << "ERROR: She has a loss of " << totalGold << " gold\n\n Please report this to the Pink Petal Devloment Team at http://pinkpetal.org";
 			summary += ss.str();
 			sum = EVENT_DEBUG;

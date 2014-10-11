@@ -27,25 +27,30 @@ struct sBrothel;
 typedef struct sCustomer
 {
 	// Regular Stats
-	unsigned char m_IsWoman;	// 0 means a man, 1 means a woman
-	unsigned char m_Amount;		// how many customers this represents
-	unsigned char m_Class;		// is the person rich, poor or middle class
-	unsigned char m_Official;	// is the person an official of the town
+	unsigned char m_IsWoman;		// 0 means a man, 1 means a woman
+	unsigned char m_Amount;			// how many customers this represents
+	unsigned char m_Class;			// is the person rich, poor or middle class
+	unsigned char m_Official;		// is the person an official of the town
 
 	unsigned int m_Money;
+
+	bool m_HasAIDS = false;			// `J` Does the customer have AIDS?
+	bool m_HasChlamydia = false;	// `J` Does the customer have Chlamydia?
+	bool m_HasSyphilis = false;		// `J` Does the customer have Syphilis?
+	bool m_HasHerpes = false;		// `J` Does the customer have Herpes?
 
 	int m_Stats[NUM_STATS];
 	int m_Skills[NUM_SKILLS];
 
 	unsigned char m_Fetish;			// the customers fetish
 	unsigned char m_SexPref;		// their sex preference
-	unsigned char m_SexPrefB = 100;	// their secondary sex preference - 100 if none
+	unsigned char m_SexPrefB;		// their secondary sex preference
 
 	unsigned char m_ParticularGirl;	// the id of the girl he wants
 
 	sCustomer* m_Next;
 	sCustomer* m_Prev;
-	
+
 	sCustomer()
 	{
 		m_Fetish = 0;
@@ -56,12 +61,12 @@ typedef struct sCustomer
 
 	~sCustomer()
 	{
-		if(m_Next)
-			delete m_Next;
+		if (m_Next) delete m_Next;
 		m_Next = 0;
 		m_Prev = 0;
 	}
-	int happiness() {
+	int happiness() 
+	{
 		return m_Stats[STAT_HAPPINESS];
 	}
 }sCustomer;
@@ -93,9 +98,9 @@ public:
 //	int GetHappiness();	//mod
 
 private:
-	int m_Poor;	// percentage of poor people in the town
+	int m_Poor;		// percentage of poor people in the town
 	int m_Middle;	// percentage of middle class people in the town
-	int m_Rich;	// percentage of rich people in the town
+	int m_Rich;		// percentage of rich people in the town
 
 	int m_NumCustomers;
 //	sCustomer* m_Parent;
