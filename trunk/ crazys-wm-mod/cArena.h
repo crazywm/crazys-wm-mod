@@ -62,6 +62,9 @@ public:
 	void Free();
 	int m_NumArenas;
 	cJobManager m_JobManager;
+
+	int Num_Jousting(int brothel);
+	bool is_Jousting_Job(int testjob);
 };
 
 

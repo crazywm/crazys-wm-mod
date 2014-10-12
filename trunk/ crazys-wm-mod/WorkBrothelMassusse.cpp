@@ -55,6 +55,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, int DayNig
 							g_Girls.GetSkill(girl, SKILL_MEDICINE) / 2 +
 							g_Girls.GetSkill(girl, SKILL_SERVICE) / 2);
 	int wages = g_Girls.GetStat(girl, STAT_ASKPRICE)+40, work = 0;
+	int imageType = IMGTYPE_PROFILE;
 
 	message += "She massaged a customer.";
 
@@ -191,7 +192,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, int DayNig
 			}
 		else
 			{
-				message += "Only few customers came today. She didn't earn much.\n";
+				message += "Only a few customers came today. She didn't earn much.\n";
 			}
 		}
 	else if (jobperformance >= 70)
@@ -255,38 +256,35 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, int DayNig
 	if(g_Girls.GetStat(girl, STAT_LIBIDO) > 90)
 	{
 		u_int n;
-		message += "She massaged and ended up fucking the customer as well, making them very happy.\n\n";
+		message += "She massaged and ended up ";
 		sCustomer cust;
-		GetMiscCustomer(brothel, cust);
-		g_Girls.GirlFucks(girl, DayNight, &cust, false,message,n);
 		brothel->m_Happiness += 100;
-		int imageType = IMGTYPE_SEX;
-		if(n == SKILL_ANAL)
-			imageType = IMGTYPE_ANAL;
-		else if(n == SKILL_BDSM)
-			imageType = IMGTYPE_BDSM;
-		else if(n == SKILL_NORMALSEX)
-			imageType = IMGTYPE_SEX;
-		else if(n == SKILL_BEASTIALITY)
-			imageType = IMGTYPE_BEAST;
-		else if(n == SKILL_GROUP)
-			imageType = IMGTYPE_GROUP;
-		else if(n == SKILL_LESBIAN)
-			imageType = IMGTYPE_LESBIAN;
-		else if(n == SKILL_ORALSEX)
-			imageType = IMGTYPE_ORAL;
-		else if(n == SKILL_TITTYSEX)
-			imageType = IMGTYPE_TITTY;
-		else if(n == SKILL_HANDJOB)
-			imageType = IMGTYPE_HAND;
-		else if(n == SKILL_STRIP)
-			imageType = IMGTYPE_STRIP;
-		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -45);
-
+		GetMiscCustomer(brothel, cust);
+		if (cust.m_IsWoman) n = SKILL_LESBIAN, message += "licking the customer pussy until she got off";
+        else
+        {
+            switch (g_Dice % 10)
+            {
+            case 0:        n = SKILL_ORALSEX;   message += "sucking the customer off";					break;
+            case 1:        n = SKILL_TITTYSEX;  message += "using her tits to get the customer off";    break;
+            case 2:        n = SKILL_HANDJOB;   message += "using her hand to get the customer off";    break;
+            case 3:        n = SKILL_ANAL;      message += "letting the customer use her ass";			break;
+            default:	   n = SKILL_NORMALSEX; message += "fucking the customer as well";				break;
+            }
+        }
+		if(n == SKILL_LESBIAN)			imageType = IMGTYPE_LESBIAN;
+		else if(n == SKILL_ORALSEX)		imageType = IMGTYPE_ORAL;
+		else if(n == SKILL_TITTYSEX)	imageType = IMGTYPE_TITTY;
+		else if(n == SKILL_HANDJOB)		imageType = IMGTYPE_HAND;
+		else if(n == SKILL_ANAL)		imageType = IMGTYPE_ANAL;
+		else if(n == SKILL_NORMALSEX)	imageType = IMGTYPE_SEX;
+		g_Girls.UpdateSkill(girl, n, 2);
+		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -25);
+		message += ", making them very happy.\n";
 		// work out the pay between the house and the girl
 		wages += 225;
 		girl->m_Pay = wages;
-		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +3, true);
+		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +1, true);
 		girl->m_Events.AddMessage(message, imageType, DayNight);
 	}
 	else
@@ -295,7 +293,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, int DayNig
 		brothel->m_MiscCustomers++;
 		// work out the pay between the house and the girl
 		girl->m_Pay = wages;
-		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
+		girl->m_Events.AddMessage(message, imageType, DayNight);
 	}
 
 	//enjoyed the work or not

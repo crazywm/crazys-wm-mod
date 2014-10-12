@@ -47,7 +47,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int DayNight, str
 	int roll = g_Dice%100;
 	int roll_a = g_Dice%100; int roll_b = g_Dice%100; int roll_c = g_Dice%100; int roll_d = g_Dice%100;
 	int general = false;
-	int quest = false, nympo = false, fight = false;
+	int quest = false;
 	int happy = 0, health = 0;
 	int HateLove = 0;
 	HateLove = g_Girls.GetStat(girl, STAT_PCLOVE) - g_Girls.GetStat(girl, STAT_PCHATE);
@@ -73,14 +73,11 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int DayNight, str
 
 	if(girl->m_Money == 0 || girl->m_NumInventory == 40)
 	{
-	if(g_Girls.GetStat(girl, STAT_TIREDNESS) >= 80) { roll_b = 93; }
-	if(g_Girls.GetStat(girl, STAT_HEALTH) <= 30)   { roll_b = 93; }
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))	   { roll_a += 30; }
+	if(g_Girls.GetStat(girl, STAT_TIREDNESS) >= 80) { roll_b = 90; }
+	if(g_Girls.GetStat(girl, STAT_HEALTH) <= 30)   { roll_b = 90; }
 	if (g_Girls.HasTrait(girl, "Adventurer"))	   { roll_a += 30; }
 	/* if (roll_a <= 75)	{ general = true; }
-	else if (roll_a <= 90)	{ quest = true; }
-	else if (roll_a <= 110)	{ nympo = true; }
-	else if (roll_a <= 125)	{ fight = true; }*/
+	else if (roll_a <= 90)	{ quest = true; }*/
 
 	/*May be best to handle this differently then this.  Could have it where one of the rolls is do hobby.
 	Hobby would be like girl goes on adventurer or nympho looks for sex or nerd goes to libary or look for fight
@@ -93,17 +90,18 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int DayNight, str
 	/*default*/	int gen_type = 1;    string gen_type_text = "stayed in bed most of the day";
 	/* */if (roll_b <= 6)	{ gen_type = 12; gen_type_text = "went to the local temple"; }
 	else if (roll_b <= 14)	{ gen_type = 11; gen_type_text = "went to the clinic for a checkup"; }
-	else if (roll_b <= 22)	{ gen_type = 10; gen_type_text = "went to the country side"; }
+	else if (roll_b <= 22)	{ gen_type = 10; gen_type_text = "went to a salon"; }
 	else if (roll_b <= 30)	{ gen_type = 9; gen_type_text = "went to have a picnic"; }
-	else if (roll_b <= 38)	{ gen_type = 8; gen_type_text = "went out for a stroll in the city"; }
-	else if (roll_b <= 46)	{ gen_type = 7; gen_type_text = "went to the casino to gamble"; }
+	else if (roll_b <= 38)	{ gen_type = 8; gen_type_text = "decided to do one of her hobby's today"; }
+	else if (roll_b <= 46)	{ gen_type = 7; gen_type_text = "went to a local concert"; }
 	else if (roll_b <= 54)	{ gen_type = 6; gen_type_text = "took a bath"; }
 	else if (roll_b <= 62)	{ gen_type = 5; gen_type_text = "went to the local pool"; }
 	else if (roll_b <= 70)	{ gen_type = 4; gen_type_text = "decided to cook a meal"; }
 	else if (roll_b <= 78)	{ gen_type = 3; gen_type_text = "went to the movies"; }
 	else if (roll_b <= 86)	{ gen_type = 2; gen_type_text = "went to the club"; }
 	else if (roll_b >= 94)	{ gen_type = 0; gen_type_text = "went to the bar"; } 
-	//add salons, concert, do hobby
+	//add country side, casino, stroll in the city, go watch a fight at the arena
+	//casino is gone till i figure out a way for them to actually loose or gain money
 
 	// `CRAZY` This is things she can explore on a quest
 	/*default*/	int adv_type = 1;    string adv_type_text = "a cave";
@@ -119,19 +117,17 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int DayNight, str
 	else if (roll_c <= 60)	{ mov_type = 2; mov_type_text = "a scary movie"; }
 	else if (roll_c >= 80)	{ mov_type = 0; mov_type_text = "an action film"; } 
 
+	// `CRAZY` The type of music at the concert
+	/*default*/	int song_type = 1;    string song_type_text = "Death Metal";
+	/* */if (roll_c <= 14)	{ song_type = 6; song_type_text = "Goth Rock"; }
+	else if (roll_c <= 28)	{ song_type = 5; song_type_text = "Classical"; }
+	else if (roll_c <= 42)	{ song_type = 4; song_type_text = "Metal"; }
+	else if (roll_c <= 56)	{ song_type = 3; song_type_text = "Rock"; }
+	else if (roll_c <= 70)	{ song_type = 2; song_type_text = "Country"; }
+	else if (roll_c >= 88)	{ song_type = 0; song_type_text = "Pop"; }
+
 	
-	if (nympo) //maybe get merged into the do hobby ideal I have
-	{
-		if (g_Girls.HasTrait(girl, "Nymphomaniac"))
-		{
-			message += girlName + " went out nympho.\n";
-		}
-		else
-		{
-			general = true;
-		}
-	}
-	else if (quest) //this may just turn into a job.. hate to have a girl get hurt when on free time
+ if (quest) //this may just turn into a job.. hate to have a girl get hurt when on free time
 	{
 		if (g_Girls.HasTrait(girl, "Adventurer"))
 		{
@@ -152,17 +148,6 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int DayNight, str
 				{
 				}
 			}
-		else
-		{
-			general = true;
-		}
-	}
-	else if (fight)  //this may just be cut.. no point in letting the girls get hurt on free time
-	{
-		if (g_Girls.HasTrait(girl, "Aggressive"))
-		{
-			message += girlName + " went out on the town looking for a fight today.\n";
-		}
 		else
 		{
 			general = true;
@@ -235,7 +220,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int DayNight, str
 				else if (roll <=66)
 				{ message += "Attending the mass she felt some how bored and not focused on the topic. She even yawn couple of times, fighting not to fell asleep.\n"; }
 				else
-				{ message += "She visited the local church feeling some how down. Listening to the preacher didn’t have much impact on improving her mood.\n"; }
+				{ message += "She visited the local church feeling somehow down. Listening to the preacher didn’t have much impact on improving her mood.\n"; }
 		}
 		else if (roll_b <= 14) //clinic
 		{
@@ -252,19 +237,72 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int DayNight, str
 			if (roll <= 5)
 			{ message += "The doctor decides to give her a booster shot."; g_Girls.UpdateStat(girl, STAT_HEALTH, 10); }
 		}
-		else if (roll_b <= 22) //country side
+		else if (roll_b <= 22) //salon
 		{
+			message += "Had her hair and nails done today. She is going look better for a few days.\n";
+			g_Girls.UpdateTempStat(girl, STAT_BEAUTY, 5);
 		}
 		else if (roll_b <= 30) //picnic
 		{
 		}
-		else if (roll_b <= 38) //stroll in the city
+		else if (roll_b <= 38) //hobby
 		{
+			if (g_Girls.HasTrait(girl, "Nymphomaniac") && g_Girls.GetStat(girl, STAT_LIBIDO) > 80))
+			{
+				message += girlName + " went out looking to get laid.\n";
+			}
+			else if (g_Girls.HasTrait(girl, "Nerd"))
+			{
+				message += girlName + " stayed inside and read a book.\n";
+			}
 		}
-		else if (roll_b <= 46) //casino might change this to something else..cant come up with much for it
+		else if (roll_b <= 46) //concert
 		{
-			/*Goes she might gamble might not.. maybe base it off traits.  Take in a show
-			Needs more stuff.*/
+			message += "They were playing " + song_type_text + " music.\n";
+			if (roll_c <= 14) //goth rock
+				{
+				}
+			else if (roll_c <= 28) //classical
+				{
+				}
+			else if (roll_c <= 42) //metal
+				{
+				}
+			else if (roll_c <= 56) //rock
+				{
+				}
+			else if (roll_c <= 70) //country
+				{
+				}
+			else if (roll_c <= 87) //death metal
+				{
+				}
+			else //pop
+				{
+				}
+			if (roll <= 5)
+				{ message += girlName + " thought the conert was crap.\n"; }
+			else if (roll >= 95)
+				{ message += girlName + " thought the concert was amazing she had a really great time.\n"; }
+			else 
+				{ message += girlName + " enjoyed herself. The concert wasn't the best she ever been to but she had a good time.\n"; }
+			if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85)
+			{
+				message += "Having seen her amazing beauty the band invites her to come backstage and meet them.\n";
+				if (roll <= 5)
+					{ message += girlName + " declined as she thought they sucked.\n"; }
+				else if (roll >= 95)
+					{ message += girlName + " accepted with great joy.\n"; happy += 5; }
+				else 
+					{ 
+						if (roll <= 50)
+						{ message += girlName + " told them she had a good time but had to be going.\n"; }
+						else
+						{
+							message += girlName + " enjoyed herself so she accepted.\n";
+						}	
+					}
+			}
 		}
 		else if (roll_b <= 54) //bath
 		{
@@ -283,7 +321,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int DayNight, str
 		{
 			imagetype = IMGTYPE_SWIM;;
 			g_Girls.UpdateStat(girl, STAT_HAPPINESS, 5);
-			if(g_Girls.GetStat(girl, STAT_TIREDNESS) > 50)
+			if(g_Girls.GetStat(girl, STAT_TIREDNESS) > 35)
 			{
 				message += "Begin on the tired side she just decided to lay around the pool and get some sun.  She is going to have a tan for a few days.\n";
 				g_Girls.UpdateTempStat(girl, STAT_BEAUTY, 5);
@@ -316,7 +354,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int DayNight, str
 		else if (roll_b <= 70) //cook
 		{
 			imagetype = IMGTYPE_COOK;;
-			message += "The meal she cooked was .\n";
+			message += "The meal she cooked was \n";
 			if (g_Girls.GetSkill(girl, SKILL_SERVICE) >= 85)//use service for now on how well she can cook.. if cooking skill ever gets added can be changed then
 			{ message += "amazing.  She really knows how to cook.\n"; g_Girls.UpdateStat(girl, STAT_HEALTH, 5); }
 			else if (g_Girls.GetSkill(girl, SKILL_SERVICE) < 85)
@@ -348,12 +386,6 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int DayNight, str
 						{ message += "Being the Optimist she is she loves this kind of movie. She knows one day she will find her true love.\n"; }
 						g_Girls.UpdateStat(girl, STAT_HAPPINESS, 5);  roll = 96;
 					}
-					if (roll <= 5)
-					{ message += girlName + " thought the movie was crap.\n"; }
-					else if (roll >= 95)
-					{ message += girlName + " thought the movie was amazing she had a really great time.\n"; }
-					else 
-					{ message += girlName + " enjoyed herself. The movie wasn't the best she ever seen but she had a good time.\n"; }
 				}
 			else if (roll_c <= 40) //comedy
 				{
@@ -362,12 +394,6 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int DayNight, str
 						message += girlName + "'s aggressive nature makes her wish the movie would have been an action flick.\n";
 						g_Girls.UpdateStat(girl, STAT_HAPPINESS, -5);  roll = 4;
 					}
-					if (roll <= 5)
-					{ message += girlName + " thought the movie was crap.\n"; }
-					else if (roll >= 95)
-					{ message += girlName + " thought the movie was amazing she had a really great time.\n"; }
-					else 
-					{ message += girlName + " enjoyed herself. The movie wasn't the best she ever seen but she had a good time.\n"; }
 				}
 			else if (roll_c <= 60) //scary
 				{
@@ -376,12 +402,6 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int DayNight, str
 						message += girlName + " Meekly ran from the theater crying. Seems she shouldn't have watched this kind of movie.\n";
 						g_Girls.UpdateStat(girl, STAT_HAPPINESS, -5); roll = 4;
 					}
-					if (roll <= 5)
-					{ message += girlName + " thought the movie was crap.\n"; }
-					else if (roll >= 95)
-					{ message += girlName + " thought the movie was amazing she had a really great time.\n"; }
-					else 
-					{ message += girlName + " enjoyed herself. The movie wasn't the best she ever seen but she had a good time.\n"; }
 				}
 			else if (roll_c <= 80) //porno
 				{
@@ -426,22 +446,21 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int DayNight, str
 								{ imagetype = IMGTYPE_MAST; g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -15); }
 							}
 					}
-					if (roll <= 5)
-					{ message += girlName + " thought the movie was crap.\n"; }
-					else if (roll >= 95)
-					{ message += girlName + " thought the movie was amazing she had a really great time.\n"; }
-					else 
-					{ message += girlName + " enjoyed herself. The movie wasn't the best she ever seen but she had a good time.\n"; }
 				}
 			else //action
 				{
-					if (roll <= 5)
-					{ message += girlName + " thought the movie was crap.\n"; }
-					else if (roll >= 95)
-					{ message += girlName + " thought the movie was amazing she had a really great time.\n"; }
-					else 
-					{ message += girlName + " enjoyed herself. The movie wasn't the best she ever seen but she had a good time.\n"; }
+					if (g_Girls.HasTrait(girl, "Aggressive"))
+					{
+						message += girlName + "'s loves this type of movie with all the action it gets her blood pumping.\n";
+						g_Girls.UpdateStat(girl, STAT_HAPPINESS, -5);  roll = 96;
+					}
 				}
+			if (roll <= 5)
+				{ message += girlName + " thought the movie was crap.\n"; }
+			else if (roll >= 95)
+				{ message += girlName + " thought the movie was amazing she had a really great time.\n"; }
+			else 
+				{ message += girlName + " enjoyed herself. The movie wasn't the best she ever seen but she had a good time.\n"; }
 		}
 		else if (roll_b <= 86) //club
 		{
@@ -451,7 +470,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int DayNight, str
 			{
 				message += " She takes in some exotic dancing from some of the strippers there.";
 				/*if (roll <= 15)
-				{ message += " She ends up buying a lap dance from "; }*///have it pull up a stripper name here
+				{ message += " She ends up buying a lap dance from "; }*///have it pull up a club stripper name here
 			}
 			imagetype = IMGTYPE_FORMAL;;
 		}
@@ -463,9 +482,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int DayNight, str
 		else //bar
 		{
 			if (g_Girls.HasTrait(girl, "Alcoholic"))
-				{
-					message += "As an Alcoholic she loves coming to the bar.\n"; happy += 15;
-				}
+				{ message += "As an Alcoholic she loves coming to the bar.\n"; happy += 15; }
 			if(g_Girls.GetStat(girl, STAT_HAPPINESS) < 50)
 			{
 				message += girlName + " feeling a little down, decide to get drunk while she was at the bar.\n"; health -= 5;

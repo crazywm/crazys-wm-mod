@@ -50,7 +50,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 	// put that shit away, you'll scare off the customers!
 	g_Girls.UnequipCombat(girl);
 
-	int wages = 20, work = 0;
+	int wages = 20, work = 0, happy = 0, fame = 0;
 	int roll = g_Dice.d100(), roll_a = g_Dice.d100();
 	int jobperformance = (g_Girls.GetStat(girl, STAT_CONFIDENCE) + g_Girls.GetSkill(girl, SKILL_PERFORMANCE));
 
@@ -65,6 +65,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 	if (g_Girls.HasTrait(girl, "Psychic"))			jobperformance += 10;  //knows what people want to hear
 	if (g_Girls.HasTrait(girl, "Fearless"))			jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Singer"))			jobperformance += 50;
+	if (g_Girls.HasTrait(girl, "Idol"))				jobperformance += 10;
 
 	//bad traits
 	if (g_Girls.HasTrait(girl, "Dependant"))	jobperformance -= 50; //needs others to do the job
@@ -77,6 +78,9 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 	if (g_Girls.HasTrait(girl, "Shy"))			jobperformance -= 10;
 	if (g_Girls.HasTrait(girl, "Construct"))	jobperformance -= 20; //voice would sound funny
 	if (g_Girls.HasTrait(girl, "Tone Deaf"))	jobperformance -= 150; //should never get good at this job
+
+	//dont effect things but what she sings
+	if (g_Girls.HasTrait(girl, "Country Gal") || g_Girls.HasTrait(girl, "Farmers Daughter"))		{ roll_a = 60; }
 
 	// `CRAZY` The type of music she sings
 	/*default*/	int song_type = 1;    string song_type_text = "Various types of music";
@@ -111,7 +115,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 		else if (roll <= 40)
 			{
 				message += "Wanting to have some fun she encouraged some listeners to sing-along with her.\n";
-				brothel->m_Happiness += 10;
+				happy += 10;
 			}
 		else if (roll <= 60)
 			{
@@ -120,7 +124,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 		else if (roll <= 80)
 			{
 				message += "The hole room was quiet when " + girlName + " was singing. After she finished gathered listeners applauses for minutes.\n";
-				brothel->m_Fame += 5;
+				fame += 5;
 			}
 		else
 			{
@@ -134,18 +138,17 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 		if (roll <= 25)
 			{
 				message += girlName + " begun to acquire her own following - a small crowd of people came in just to listen to her and buy drinks\n";
-				brothel->m_Fame += 10;
-				wages += 10;
+				fame += 10; wages += 10;
 			}
 		else if (roll <= 50)
 			{
 				message += "Her performance was really great, giving the listeners a pleasant time.\n";
-				brothel->m_Happiness += 5;
+				happy += 5;
 			}
 		else if (roll <= 75)
 			{
 				message += "When " + girlName + " got on stage the crowd went wild. She didn't disappoint her fans giving one of the best performances in her life.\n";
-				brothel->m_Happiness += 5;
+				happy += 5;
 			}
 		else
 			{
@@ -171,7 +174,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 		else if (roll <= 80)
 			{
 				message += "She is good at this. With some work she could be a star.\n";
-				brothel->m_Fame += 5;
+				fame += 5;
 			}
 		else
 			{
@@ -219,7 +222,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 		else if (roll <= 80)
 			{
 				message +=  girlName + " singing was awful. Not a single line was sang clear.\n";
-				brothel->m_Happiness -= 5;
+				happy -= 5;
 			}
 		else
 			{
@@ -233,7 +236,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 		if (roll <= 14)
 			{
 				message += "Her audience seems paralyzed, as if they couldn't believe that a human body could produce those sounds, much less call them \"singing\".\n";
-				brothel->m_Happiness -= 5;
+				happy -= 5;
 			}
 		else if (roll <= 28)
 			{
@@ -250,16 +253,16 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 		else if (roll <= 70)
 			{
 				message += girlName + " singing was awful. Angry listeners throw random objects at her.\n";
-				brothel->m_Happiness -= 5;
+				happy -= 5;
 			}
 		else if (roll <= 84)
 			{
-				message += "Hearing " + girlName + " singing gave you a thought to use it as a new torture method.\n";
+				message += "Hearing " + girlName + "'s singing gave you a thought to use it as a new torture method.\n";
 			}
 		else
 			{
 				message += girlName + " bellowed out a melody that caused the bar to go into a panic clearing it quickly.\n";
-				brothel->m_Happiness -= 10;
+				happy -= 10;
 			}
 		}
 
@@ -305,15 +308,12 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 			{ message += "A patron gasped at her Horrific Scars making her sad.  Feeling bad about it as she sang wonderful they left her a good tip.\n"; wages += 15; }
 	}
 
-	if (g_Brothels.GetNumGirlsOnJob(0,JOB_PIANO,false) == 1)
+	if (g_Brothels.GetNumGirlsOnJob(0,JOB_PIANO,false) == 1 && g_Dice.percent(25))
 	{
-		if ((g_Dice%100) < 25)
-		{
-			if (jobperformance < 125)
-			{ message += girlName + " she sang very out of tune with the paino player forcing people to leave.\n"; wages -= 10; }
-			else
-			{ message += girlName + " the paino player took her sining to the next level causing the tips to flood in.\n"; wages += 25; }
-		}
+		if (jobperformance < 125)
+			{ message += girlName + " sang very out of tune with the paino player forcing people to leave.\n"; wages -= 10; }
+		else
+			{ message += "The paino player took her singing to the next level causing the tips to flood in.\n"; wages += 40; }
 	}
 
 		if(wages < 0)
@@ -328,6 +328,8 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, int DayNight, st
 	else
 	{ message += " \nOtherwise, the shift passed uneventfully."; work += 1; }
 
+	brothel->m_Fame = fame;
+	brothel->m_Happiness = happy;
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKMUSIC, work, true);
 	girl->m_Events.AddMessage(message, IMGTYPE_SING, DayNight);
 	int roll_max = (g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA));

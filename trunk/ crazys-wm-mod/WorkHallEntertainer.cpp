@@ -346,21 +346,12 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, int DayNig
 			{ message += girlName + " owns the stage, imperious eyes flashing out across the audience.  Tips are very good tonight.\n"; wages += 25; }
 		}
 
-	if (g_Brothels.GetNumGirlsOnJob(0,JOB_DEALER,false) == 1)
+	if (g_Brothels.GetNumGirlsOnJob(0,JOB_DEALER,false) == 1 && g_Dice.percent(25))
 	{
-		if (roll <= 25)
-		{
-			if (jobperformance < 125)
-			{
-				message += girlName + " tried to distract the patrons but due to her lack of skills she distracted your dealer causeing you to lose some money.\n";
-				wages -= 10;
-			}
-			else
-			{
-			message += girlName + " was able to perfectly distract some patrons while the dealer cheated to make some more money.\n";
-			wages += 25;
-			}
-		}
+		if (jobperformance < 125)
+			{ message += girlName + " tried to distract the patrons but due to her lack of skills she distracted your dealer causeing you to lose some money.\n"; wages -= 10; }
+		else
+			{ message += girlName + " was able to perfectly distract some patrons while the dealer cheated to make some more money.\n"; wages += 25; }
 	}
 
 		if(wages < 0)
@@ -377,11 +368,9 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, int DayNig
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKHALL, work, true);
 	girl->m_Events.AddMessage(message, IMGTYPE_BUNNY, DayNight);
-
 	// work out the pay between the house and the girl
 	wages += (g_Dice%((int)(((g_Girls.GetStat(girl, STAT_BEAUTY)+g_Girls.GetStat(girl, STAT_CHARISMA))/2)*0.5f)))+10;
 	girl->m_Pay = wages;
-	string pay = "";
 
 
 	// Improve girl

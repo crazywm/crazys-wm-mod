@@ -69,6 +69,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, int DayNigh
 	if (g_Girls.HasTrait(girl, "Quick Learner"))	jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Psychic"))			jobperformance += 10; //knows what people want to hear
 	if (g_Girls.HasTrait(girl, "Fleet of Foot")) jobperformance += 5;  //faster at taking orders and droping them off
+	if (g_Girls.HasTrait(girl, "Waitress"))			jobperformance += 25;
 
 
 	//bad traits
@@ -316,27 +317,25 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, int DayNigh
 	if (g_Girls.HasTrait(girl, "Nymphomaniac") &&  !g_Girls.HasTrait(girl, "Lesbian") && g_Girls.GetStat(girl, STAT_LIBIDO) > 90 && g_Girls.GetSkill(girl, SKILL_ORALSEX) > 80 && g_Dice.percent(25))
 	{
 		message += girlName + " thought she deserved a short break and disappeared under one of the tables when nobody was looking, in order to give one of the clients a blowjob. Kneeling under the table, she devoured his cock with ease and deepthroated him as he came to make sure she didn't make a mess. The client himself was wasted out of his mind and didn't catch as much as a glimpse of her, but he left the locale with a big tip on the table.\n";
-		wages += 50; imagetype = IMGTYPE_ORAL; oral +=2; g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -10);
+		wages += 50; imagetype = IMGTYPE_ORAL; oral +=2; g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -20);
 	}
 
 	if (g_Girls.HasTrait(girl, "Nymphomaniac") &&  !g_Girls.HasTrait(girl, "Lesbian") && g_Girls.GetStat(girl, STAT_LIBIDO) > 90 && g_Girls.GetSkill(girl, SKILL_HANDJOB) > 80 && g_Dice.percent(25))
 	{
 		message += "During her shift, " + girlName + " unnoticeably dived under the table belonging to a lonely-looking fellow, quickly unzipped his pants and started jacking him off enthusiastically. She skillfully wiped herself when he came all over her face. The whole event took no longer than two minutes, but was well worth the time spent on, since the patron left with a heavy tip.\n";
-		wages += 50; imagetype = IMGTYPE_HAND; hand += 2; g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -10);
+		wages += 50; imagetype = IMGTYPE_HAND; hand += 2; g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -20);
 	}
 
-	/*if (g_Girls.GetStat(girl, STAT_DIGNITY) && <= -20 g_Dice.percent(20))
+	if (g_Girls.GetStat(girl, STAT_DIGNITY) <= -20 && g_Dice.percent(20))
 	{
 		if (roll <-50)
 		{ message += "During her shift, " + girlName + " deliberately dropped the pen she uses to write down orders in front of one of the customers. Exploiting her skimpy outfit, she made sure to bend over to pick it up in a way that allowed her to directly flash her butt on the sitting client's eye level. This earned her an extra tip.\n"; wages += 20; }
 		else 
 		{ message += "An inebriated patron said half-jokingly to " + girlName + " that he'll leave a heavy tip if she takes his order while sitting on his lap. Much to his surprise, " + girlName + " was almost too eager to comply, sitting directly on his crotch instead, making sure to grind her butt into it. The customer lived up to his word and " + girlName + " left the table with some extra cash.\n"; wages += 30; }
-	}*/
+	}
 
-	/*if (g_Girls.GetStat(girl, STAT_DIGNITY) && <= -20 g_Dice.percent(20) && g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Abnormally Large Boobs"))
-	{
-		 message += "A drunk patron \"accidentally\" fell onto " + girlName + " and buried his face between her breasts. To his joy and surprise, " + girlName + " flirtatiously encouraged him to motorboat them for a while, which he gladly did, before slipping some cash between the titties and staggering out on his way.\n"; wages += 40;
-	}*/
+	if (g_Girls.GetStat(girl, STAT_DIGNITY) <= -20 && g_Dice.percent(20) && g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Abnormally Large Boobs"))
+	{ message += "A drunk patron \"accidentally\" fell onto " + girlName + " and buried his face between her breasts. To his joy and surprise, " + girlName + " flirtatiously encouraged him to motorboat them for a while, which he gladly did, before slipping some cash between the titties and staggering out on his way.\n"; wages += 40; }
 
 
 		if(wages < 0)
@@ -379,7 +378,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, int DayNigh
 
 	//gained traits
 	g_Girls.PossiblyGainNewTrait(girl, "Charming", 70, ACTION_WORKCLUB, girlName + " has been flirting with customers to try to get better tips. Enough practice at it has made her quite Charming.", DayNight != 0);
-	if (jobperformance > 150 || g_Girls.GetStat(girl, STAT_CONSTITUTION) > 65) { g_Girls.PossiblyGainNewTrait(girl, "Fleet of Foot", 60, ACTION_WORKBAR, girlName + " has been doding bewteen tables and avoiding running into customers for so long she has become Fleet Of Foot.", DayNight != 0); }
+	if (jobperformance > 150 && g_Girls.GetStat(girl, STAT_CONSTITUTION) > 65) { g_Girls.PossiblyGainNewTrait(girl, "Fleet of Foot", 60, ACTION_WORKBAR, girlName + " has been doding bewteen tables and avoiding running into customers for so long she has become Fleet Of Foot.", DayNight != 0); }
 
 	//lose traits
 	g_Girls.PossiblyLoseExistingTrait(girl, "Clumsy", 30, ACTION_WORKCLUB, "It took her break hundreds of dishes, and just as many reprimands, but " + girlName + " has finally stopped being so Clumsy.", DayNight != 0);

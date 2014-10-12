@@ -67,6 +67,7 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, int DayNight, str
 	if (g_Girls.HasTrait(girl, "Elegant"))		  jobperformance += 15;  //Elegant people usally know how to play the piano lol
 	if (g_Girls.HasTrait(girl, "Quick Learner"))  jobperformance += 5;   //people like charming people
 	if (g_Girls.HasTrait(girl, "Psychic"))		  jobperformance += 10;  //knows what people want to hear
+	if (g_Girls.HasTrait(girl, "Idol"))			  jobperformance += 10;
 		
 
 	//bad traits
@@ -76,6 +77,7 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, int DayNight, str
 	if (g_Girls.HasTrait(girl, "Meek"))			jobperformance -= 20;
 	if (g_Girls.HasTrait(girl, "Broken Will"))  jobperformance -= 50;
 	if (g_Girls.HasTrait(girl, "Slow Learner")) jobperformance -= 10;
+	if (g_Girls.HasTrait(girl, "Tone Deaf"))	jobperformance -= 50; //should never get good at this job
 
 
 	 if (jobperformance >= 245)
@@ -285,15 +287,12 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, int DayNight, str
 			{ message += "A patron gasped at her Horrific Scars making her sad.  Feeling bad about it as she did a wonderful job they left a good tip.\n"; wages += 15; }
 	}
 
-	if (g_Brothels.GetNumGirlsOnJob(0,JOB_SINGER,false) == 1)
+	if (g_Brothels.GetNumGirlsOnJob(0,JOB_SINGER,false) == 1 && g_Dice.percent(25))
 	{
-		if ((g_Dice%100) < 25)
-		{
-			if (jobperformance < 125)
+		if (jobperformance < 125)
 			{ message += girlName + " played poorly with the singer making people leave.\n\n"; wages -= 10; }
-			else
-			{ message += girlName + " played well with the singer increasing tips.\n\n"; wages += 25; }
-		}
+		else
+			{ message += girlName + " played well with the singer increasing tips.\n\n"; wages += 40; }
 	}
 
 
