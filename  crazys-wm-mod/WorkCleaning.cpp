@@ -131,7 +131,9 @@ bool cJobManager::WorkCleaning(sGirl* girl, sBrothel* brothel, int DayNight, str
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKCLEANING, enjoy, true);
-	g_Girls.PossiblyLoseExistingTrait(girl, "Clumsy", 30, ACTION_WORKCLEANING, "It took her spilling hundreds of buckets, and just as many reprimands, but " + girl->m_Realname + " has finally stopped being so Clumsy.", DayNight != 0);
 
-	return false;
+    //lose traits
+    g_Girls.PossiblyLoseExistingTrait(girl, "Clumsy", 30, ACTION_WORKCLEANING, "It took her spilling hundreds of buckets, and just as many reprimands, but " + girlName + " has finally stopped being so Clumsy.", DayNight != 0);
+
+    return false;
 }

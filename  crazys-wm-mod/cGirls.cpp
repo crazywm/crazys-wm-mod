@@ -2006,7 +2006,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)
 	}
 	if (g_Girls.HasTrait(girl, "Mixologist"))
 	{
-		barmaid += 25;
+		barmaid += 40;
 		clubbar += 25;
 	}
 	if (g_Girls.HasTrait(girl, "Nerd"))
@@ -2227,6 +2227,11 @@ string cGirls::GetThirdDetailsString(sGirl* girl)
 	if (g_Girls.HasTrait(girl, "Twisted"))
 	{
 		security -= 5;
+	}
+	if (g_Girls.HasTrait(girl, "Waitress"))
+	{
+		barwait += 40;
+		clubwait += 25;  //reason I made this less is this job is alittle more about looks then skill CRAZY
 	}
 	if (g_Girls.HasTrait(girl, "Yandere"))
 	{
@@ -6298,11 +6303,11 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 
 	case SKILL_STRIP:
 	default:
-		/* */if (GetSkill(girl, SexType) < 20)	message += gettext(" shyly took her clothes off infront of the customer.");
-		else if (GetSkill(girl, SexType) < 40)	message += gettext(" coyly took her clothes off infront of the customer.");
-		else if (GetSkill(girl, SexType) < 60)	message += gettext(" hotly took her clothes off infront of the customer.");
-		else if (GetSkill(girl, SexType) < 80)	message += gettext(" proudly took her clothes off infront of the customer.");
-		else /*                             */	message += gettext(" joyously took her clothes off infront of the customer.");
+		/* */if (GetSkill(girl, SexType) < 20)	message += gettext(" shyly took her clothes off in front of the customer.");
+		else if (GetSkill(girl, SexType) < 40)	message += gettext(" coyly took her clothes off in front of the customer.");
+		else if (GetSkill(girl, SexType) < 60)	message += gettext(" hotly took her clothes off in front of the customer.");
+		else if (GetSkill(girl, SexType) < 80)	message += gettext(" proudly took her clothes off in front of the customer.");
+		else /*                             */	message += gettext(" joyously took her clothes off in front of the customer.");
 		break;
 	}
 
@@ -6467,7 +6472,7 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 
 	case SKILL_STRIP:
 	default:
-		if (GetSkill(girl, SexType) <= 30)	// if inexperienced then will get hurt
+		if (GetSkill(girl, SexType) <= 20)	// if inexperienced then will get hurt
 		{
 			message += gettext("\nShe got tangled in her clothes and fell on her face.");
 			UpdateStat(girl, STAT_HAPPINESS, -2);

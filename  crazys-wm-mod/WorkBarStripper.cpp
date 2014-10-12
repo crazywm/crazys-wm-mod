@@ -295,7 +295,7 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, int DayNight, 
 		
 
 	// lap dance code.. just test stuff for now
-	if (lapdance >= 100)
+	if (lapdance >= 90)
 		{
 			message += girlName + " doesn't have to try to sell private dances the patrons beg her to buy one off her.\n";
 			if (roll < 5)
@@ -311,7 +311,7 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, int DayNight, 
 			if (roll < 40)
 				{
 					message += "She was able to sell a few VIP dances.";
-					wages += 100;
+					wages += 160;
 				}
 			if (roll < 60)
 				{
@@ -321,10 +321,10 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, int DayNight, 
 			else
 				{
 					message += "She sold several lap dances.";
-					wages += 50;
+					wages += 85;
 				}
 			}
-	else if (lapdance >= 75)
+	else if (lapdance >= 65)
 		{
 			message += girlName + "'s skill at selling private dances is impressive.\n";
 			if (roll < 5)
@@ -335,15 +335,15 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, int DayNight, 
 			if (roll < 20)
 				{
 					message += "Sold a VIP dance to a patron.";
-					wages += 50;
+					wages += 70;
 				}
 			else
 				{
 					message += "Sold a few lap dance.";
-					wages += 30;
+					wages += 65;
 				}
 			}
-	else if (lapdance >= 50)
+	else if (lapdance >= 40)
 		{
 			message += girlName + " tried to sell private dances and ";
 			if (roll < 5)
@@ -354,7 +354,7 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, int DayNight, 
 			if (roll < 20)
 				{
 					message += "was able to sell a lap dance.";
-					wages += 15;
+					wages += 25;
 				}
 			else
 				{
@@ -363,8 +363,8 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, int DayNight, 
 			}
 	else 
 		{
-				message += girlName + "'s doesn't seem to understand the real money in stripping is selling private dances.\n";
-			}
+			message += girlName + "'s doesn't seem to understand the real money in stripping is selling private dances.\n";
+		}
 
 		if(wages < 0)
 			wages = 0;

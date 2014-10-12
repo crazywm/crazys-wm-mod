@@ -66,12 +66,12 @@ bool cJobManager::WorkCityGuard(sGirl* girl, sBrothel* brothel, int DayNight, st
 
 	if (roll >= 50)
 	{
-		message += girl->m_Realname + " didn't find any trouble today.";
+		message += girlName + " didn't find any trouble today.";
 		g_Brothels.GetPlayer()->suspicion(-5);
 	}
 	else if (roll >= 25)
 	{
-		message += girl->m_Realname + " spotted a theif and ";
+		message += girlName + " spotted a theif and ";
 		if (agl >= 90)
 		{
 			message += "was on them before they could blink.  Putting a stop to the theft.";
@@ -127,7 +127,7 @@ bool cJobManager::WorkCityGuard(sGirl* girl, sBrothel* brothel, int DayNight, st
 		{
 			g_Girls.UpdateEnjoyment(girl, ACTION_WORKSECURITY, +3, true);
 			g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, +3, true);
-			message = girl->m_Realname + " ran into some trouble and ended up in a fight. She was able to win.";
+			message = girlName + " ran into some trouble and ended up in a fight. She was able to win.";
 			g_Brothels.GetPlayer()->suspicion(-20);
 			trouble = true;
 		}
@@ -135,7 +135,7 @@ bool cJobManager::WorkCityGuard(sGirl* girl, sBrothel* brothel, int DayNight, st
 		{
 			g_Girls.UpdateEnjoyment(girl, ACTION_WORKSECURITY, -1, true);
 			g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, -1, true);
-			message = girl->m_Realname + " ran into some trouble and ended up in a fight. She was unable to win the fight.";
+			message = girlName + " ran into some trouble and ended up in a fight. She was unable to win the fight.";
 			g_Brothels.GetPlayer()->suspicion(+20);
 			trouble = true;
 		}
@@ -147,18 +147,12 @@ bool cJobManager::WorkCityGuard(sGirl* girl, sBrothel* brothel, int DayNight, st
 	tempgirl = 0;
 
 	if (trouble) 
-	{
-		girl->m_Events.AddMessage(message,IMGTYPE_COMBAT,DayNight);
-	}
+	{ girl->m_Events.AddMessage(message,IMGTYPE_COMBAT,DayNight); }
 	else
-	{
-		girl->m_Events.AddMessage(message,IMGTYPE_PROFILE,DayNight);
-	}
+	{ girl->m_Events.AddMessage(message,IMGTYPE_PROFILE,DayNight); }
 
 	if(girl->m_States&(1<<STATUS_SLAVE))
-	{
-		girl->m_Pay += 0;
-	}
+	{ girl->m_Pay += 0; }
 	else
 	{
 		g_Gold.girl_support(wages);  // matron wages come from you
@@ -167,7 +161,7 @@ bool cJobManager::WorkCityGuard(sGirl* girl, sBrothel* brothel, int DayNight, st
 
 	// Improve girl
 	int fightxp = 1;	if (trouble == 1)	fightxp = 3;
-	int xp = 4 * fightxp, libido = 2, skill = 1;
+	int xp = 8 * fightxp, libido = 2, skill = 1;
 
 	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }

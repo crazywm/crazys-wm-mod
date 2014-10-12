@@ -1,0 +1,94 @@
+<Screen>
+
+
+	<Window	Name= "Studio Management Window"
+		XPos	= "10"
+		YPos	= "10"
+		Width	= "880"
+		Height	= "580"
+		Border	= "1"
+	/>
+
+
+  <Text	Name	= "Studio"
+		Text	= ""
+		XPos	= "8"
+		YPos	= "2"
+		Width	= "232"
+		Height	= "30"
+		FontSize= "16"
+	/>
+	
+	<ListBox
+		Name	= "ScenesList"
+		XPos	= "15"
+		YPos	= "26"
+		Width	= "588"
+		Height	= "500"
+		Border	= "1"
+		Events	= "true"
+		Multi	= "true"
+		ShowHeaders = "true"
+		HeaderDiv = "true"
+		HeaderClicksSort = "true"
+	>
+		<Column
+			Name	= "Name"
+			Header	= "Scene name"
+			Offset	= "0"
+		/>
+		<Column
+			Name	= "Quality"
+			Header	= "Quality"
+			Offset	= "130"
+		/>
+		<!--
+		<Column
+			Name	= "Health"
+			Header	= "Health"
+			Offset	= "170"
+		/>
+		<Column
+			Name	= "Happiness"
+			Header	= "Happy"
+			Offset	= "220"
+		/>
+		<Column
+			Name	= "Tiredness"
+			Header	= "Tired"
+			Offset	= "275"
+		/>
+		<Column
+			Name	= "DayJob"
+			Header	= "Day Job"
+			Offset	= "320"
+		/>
+		<Column
+			Name	= "NightJob"
+			Header	= "Night Job"
+			Offset	= "410"
+		/>
+		-->
+	</ListBox>
+	
+	<Button	Name	= "ReleaseMovieButton"
+		Image		= "ReleaseMovie"
+		XPos		= "604"
+		YPos		= "484"
+		Width		= "160"
+		Height		= "32"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+	
+  <Button	Name	= "BackButton"
+		Image		= "Back"
+		XPos		= "604"
+		YPos		= "532"
+		Width		= "160"
+		Height		= "32"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+
+</Screen>

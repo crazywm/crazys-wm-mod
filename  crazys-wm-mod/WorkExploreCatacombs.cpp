@@ -259,7 +259,7 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, int DayNi
 
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_COMBAT, DayNight);
 
-	if (girl->get_stat(STAT_LIBIDO) > 90 && type_monster_girls + type_unique_monster_girls + type_beasts > 0)
+	if (girl->get_stat(STAT_LIBIDO) > 90 && type_monster_girls + type_unique_monster_girls + type_beasts > 0)//maybe need to add a if this is type of sex is allowed check here
 	{
 		ss.str("");
 		ss << girl->m_Realname << " was real horny so she had a little fun with ";

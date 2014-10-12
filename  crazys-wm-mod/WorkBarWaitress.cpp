@@ -50,7 +50,7 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 	g_Girls.UnequipCombat(girl);  // put that shit away, you'll scare off the customers!
 
 	int wages = 15, work = 0;
-	message += "She worked as a waitress in the bar.";
+	message += "She worked as a waitress in the bar.\n";
 
 	int roll = g_Dice%100;
 	int jobperformance = (	g_Girls.GetStat(girl, STAT_INTELLIGENCE)/2 + 
@@ -66,6 +66,7 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 	if (g_Girls.HasTrait(girl, "Quick Learner"))jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Psychic"))		jobperformance += 10;
 	if (g_Girls.HasTrait(girl, "Fleet of Foot")) jobperformance += 5;//faster at taking orders and droping them off
+	if (g_Girls.HasTrait(girl, "Waitress"))		jobperformance += 40;
 		
 
 	//bad traits
@@ -372,15 +373,12 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 		wages += 30;
 	}
 
-	if (g_Brothels.GetNumGirlsOnJob(0,JOB_BARMAID,false) == 1)
+	if (g_Brothels.GetNumGirlsOnJob(0,JOB_BARMAID,false) == 1 && g_Dice.percent(25))
 	{
-		if ((g_Dice%100) < 25)
-		{
-			if (jobperformance < 125)
+		if (jobperformance < 125)
 			{ message += girlName + " wasn't good enough at her job to use the barmaid to her advantage.\n"; }
-			else
+		else
 			{ message += girlName + " used the barmaid to great effect speeding up her work and increasing her tips.\n"; wages += 25; }
-		}
 	}
 
 		if (wages < 0)
@@ -422,7 +420,7 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 	
 	//gain traits
 	g_Girls.PossiblyGainNewTrait(girl, "Charming", 70, ACTION_WORKBAR, girlName + " has been flirting with customers to try to get better tips. Enough practice at it has made her quite Charming.", DayNight != 0);
-	if (jobperformance > 150 || g_Girls.GetStat(girl, STAT_CONSTITUTION) > 65) { g_Girls.PossiblyGainNewTrait(girl, "Fleet of Foot", 60, ACTION_WORKBAR, girlName + " has been doding bewteen tables and avoiding running into customers for so long she has become Fleet of Foot.", DayNight != 0); }
+	if (jobperformance > 150 && g_Girls.GetStat(girl, STAT_CONSTITUTION) > 65) { g_Girls.PossiblyGainNewTrait(girl, "Fleet of Foot", 60, ACTION_WORKBAR, girlName + " has been doding bewteen tables and avoiding running into customers for so long she has become Fleet of Foot.", DayNight != 0); }
 
 	//lose traits
 	g_Girls.PossiblyLoseExistingTrait(girl, "Clumsy", 30, ACTION_WORKBAR, "It took her break hundreds of dishes, and just as many reprimands, but " + girlName + " has finally stopped being so Clumsy.", DayNight != 0);

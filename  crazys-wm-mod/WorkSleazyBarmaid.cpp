@@ -51,6 +51,8 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, int DayNight
 	// put that shit away, you'll scare off the customers!
 	g_Girls.UnequipCombat(girl);
 
+	int HateLove = 0;
+	HateLove = g_Girls.GetStat(girl, STAT_PCLOVE) - g_Girls.GetStat(girl, STAT_PCHATE);
 	int wages = 15, work = 0;
 	int roll = g_Dice%100;
 	int imagetype = IMGTYPE_ECCHI;
@@ -121,6 +123,12 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, int DayNight
 	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85 && g_Dice.percent(20))
 	{ message += "Stunned by her beauty a customer left her a great tip.\n\n"; wages += 25; }
 
+	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 99 && g_Dice.percent(5))
+	{ message += girlName + " looked absolutely stunning during her shift and was unable to hide it. Instead of her ass or tits, the patrons couldn't glue their eyes off her face, and spent a lot more than usual on tipping her.\n"; wages += 50; }
+
+	if (g_Girls.GetStat(girl, STAT_CHARISMA) > 85 && g_Dice.percent(20))
+	{ message += girlName + " surprised a couple of gentlemen discussing some complicated issue by her insightful comments when she was taking her order. They decided her words were worth a heavy tip.\n"; wages += 35; }
+
 	if (g_Girls.HasTrait(girl, "Clumsy") && g_Dice.percent(15))
 	{ message += "Her clumsy nature caused her to spill a drink on a customer resulting in them storming off without paying.\n"; wages -= 15; }
 
@@ -140,9 +148,9 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, int DayNight
 			{ message += "Her optimistic mood made patrons cheer up increasing the amount they tip.\n"; wages += 10; }
 	}
 
-	if (g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Abnormally Large Boobs") && g_Dice.percent(15))//zzzzz FIXME needs updated to include new boob traits
+	if (g_Dice.percent(15) && g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Abnormally Large Boobs"))//zzzzz FIXME needs updated to include new boob traits
 	{
-		if(jobperformance < 150)
+		if (jobperformance < 150)
 		{ message += "A patron was staring obviously at her large breasts. But she had no ideal how to take advantage of it.\n"; }
 		else 
 		{ message += "A patron was staring obviously at her large breasts. So she over charged them for drinks while they drooled not paying any mind to the price.\n"; wages += 15; }
@@ -159,8 +167,12 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, int DayNight
 		message += "A drunken patron decide to grab " + girlName + "'s boob. ";
 		if (g_Girls.HasTrait(girl, "Meek"))
 		{ message += "She was shocked and didn't react. The man molested her for a few minutes!\n"; }
-		if (g_Girls.HasTrait(girl, "Tough"))
+		else if (g_Girls.HasTrait(girl, "Tough"))
 		{ message += "She knocked him out! You could swear that she knocked a couple of his teeth out too!\n"; }
+		else if (g_Girls.HasTrait(girl, "Your Daughter"))
+		{ message += "She screamed do you know who my dad is? He will have your head for this!\n"; }
+		else if (HateLove >= 80) //loves you
+		{ message += "She screamed do you know who my love is? He will have your head for this!\n"; }
 		else
 		{ message += "She screamed and shook his hand off.\n"; }
 	}

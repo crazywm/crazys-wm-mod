@@ -1457,6 +1457,7 @@ int cMovieStudioManager::AddScene(sGirl* girl, int Job, int Bonus)
 	else if (g_Girls.HasTrait(girl, "Slow Orgasms"))		quality -= 2;
 	if (g_Girls.HasTrait(girl, "Abnormally Large Boobs"))	quality += 4;
 	else if (g_Girls.HasTrait(girl, "Big Boobs"))			quality += 2;
+
 	else if (g_Girls.HasTrait(girl, "Small Boobs"))			quality += 1;
 	if (g_Girls.HasTrait(girl, "Great Figure"))				quality += 4;
 	if (g_Girls.HasTrait(girl, "Great Arse"))				quality += 2;
@@ -1471,6 +1472,8 @@ int cMovieStudioManager::AddScene(sGirl* girl, int Job, int Bonus)
 	if (g_Girls.HasTrait(girl, "Cute"))						quality += 2;
 	if (g_Girls.HasTrait(girl, "Sexy Air"))					quality += 2;
 	if (g_Girls.HasTrait(girl, "Psychic"))					quality += 4;
+	if (g_Girls.HasTrait(girl, "Actress"))				quality += 10;//maybe to much CRAZY
+	if (g_Girls.HasTrait(girl, "Porn Star"))			quality += 20;//maybe to much
 
 	if (g_Girls.HasTrait(girl, "Manly"))					quality -= 2;
 	if (g_Girls.HasTrait(girl, "Fragile"))					quality -= 2;
@@ -1482,6 +1485,7 @@ int cMovieStudioManager::AddScene(sGirl* girl, int Job, int Bonus)
 	if (g_Girls.HasTrait(girl, "Aggressive"))				quality -= 2;
 	if (g_Girls.HasTrait(girl, "Broken Will"))				quality -= 4;
 	if (g_Girls.HasTrait(girl, "Dependant"))				quality -= 3;
+	if (g_Girls.HasTrait(girl, "Shy"))					quality -= 3;
 
 
 
@@ -1493,6 +1497,24 @@ int cMovieStudioManager::AddScene(sGirl* girl, int Job, int Bonus)
 		if (g_Girls.HasTrait(girl, "No Gag Reflex"))		quality += 2;
 		if (g_Girls.HasTrait(girl, "Deep Throat"))			quality += 5;
 		if (g_Girls.HasTrait(girl, "Gag Reflex"))			quality -= 3;
+	}
+
+	if (Job == SKILL_TITTYSEX) //Idk if this is needed or not but can't hurt CRAZY
+	{
+		if (g_Girls.HasTrait(girl, "Massive Melons"))				quality += 8;
+		if (g_Girls.HasTrait(girl, "Abnormally Large Boobs"))		quality += 7;
+		if (g_Girls.HasTrait(girl, "Giant Juggs"))					quality += 6;
+		if (g_Girls.HasTrait(girl, "Big Boobs"))					quality += 5;
+		if (g_Girls.HasTrait(girl, "Busty Boobs"))					quality += 4;
+		if (g_Girls.HasTrait(girl, "Small Boobs"))					quality += 2;
+		if (g_Girls.HasTrait(girl, "Petite Breasts"))				quality += 1;
+		if (g_Girls.HasTrait(girl, "Flat Chest"))					quality -= 3;
+		else														quality += 3;
+	}
+
+	if (Job == SKILL_LESBIAN)  //a lesbian would be more into it and give a better show I would think CRAZY
+	{
+		if (g_Girls.HasTrait(girl, "Lesbian"))		quality += 10;
 	}
 
 	//CRAZY added this better looking girls should make better quality movies 

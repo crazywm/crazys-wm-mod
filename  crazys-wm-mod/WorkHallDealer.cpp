@@ -306,7 +306,7 @@ else
 	if (g_Girls.HasTrait(girl, "Lolita") && g_Dice.percent(15))
 	{
 		if (jobperformance < 125)
-			{ message += "Furious at being outplayed by such a young girl, a couple of gamblers stormed out, and didn't give" + girlName + " any tips.\n"; }
+			{ message += "Furious at being outplayed by such a young girl, a couple of gamblers stormed out, and didn't give " + girlName + " any tips.\n"; }
 		else
 			{ message += "One of the gamblers was amused at being outplayed by such a young girl, and gave her an extra-large tip!\n"; wages += 15; }
 	}
@@ -330,15 +330,12 @@ else
 	if (g_Girls.HasTrait(girl, "Psychic") && g_Dice.percent(20))
 		{ message += "She used her Psychic skills to know excatally what cards was coming up and won a big hand.\n"; wages += 30; }
 
-	if (g_Brothels.GetNumGirlsOnJob(0,JOB_ENTERTAINMENT,false) == 1)
+	if (g_Brothels.GetNumGirlsOnJob(0,JOB_ENTERTAINMENT,false) == 1 && g_Dice.percent(25))
 	{
-		if (roll <= 25)
-		{
-			if (jobperformance < 125)
+		if (jobperformance < 125)
 			{ message += girlName + " wasn't good enough at her job to use the entertainment's distraction to make more money.\n"; }
-			else
+		else
 			{ message += girlName + " used the enterainment's distraction to make you some extra money.\n"; wages += 25; }
-		}
 	}
 
 		if(wages < 0)
@@ -355,11 +352,9 @@ else
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKHALL, work, true);
 	girl->m_Events.AddMessage(message, IMGTYPE_CARD, DayNight);
-
 	// work out the pay between the house and the girl
 	wages += (g_Dice%((int)(((g_Girls.GetStat(girl, STAT_BEAUTY)+g_Girls.GetStat(girl, STAT_CHARISMA))/2)*0.5f)))+10;
 	girl->m_Pay = wages;
-	string pay = "";
 
 
 

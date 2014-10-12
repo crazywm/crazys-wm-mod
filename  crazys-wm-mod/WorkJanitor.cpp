@@ -49,43 +49,32 @@ extern cGold g_Gold;
 // `J` Clinic Job - Staff - job_is_cleaning
 bool cJobManager::WorkJanitor(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
-	string message = "";
-	
-	
-//	char buffer[1000];
-	string girlName = girl->m_Realname;
+	string message = ""; string girlName = girl->m_Realname; stringstream sstemp;
+	int work = 0;
 
 	g_Girls.UnequipCombat(girl);
 	
 	
-	message = girlName;	
-	message += gettext(" worked cleaning the clinic.\n\n");
+	sstemp << girlName;	
+	sstemp << gettext(" worked cleaning the clinic.\n\n");
 
 	
 	int roll = g_Dice%100;
 	if (roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKCLEANING, brothel))
 	{
-		message = girl->m_Realname + gettext(" refused to clean the clinic.");
+		message = girlName + gettext(" refused to clean the clinic.");
 		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	else if(roll <= 15) {
-		message += gettext(" She did not like cleaning the clinic today.\n\n");
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCLEANING, -1, true);
-		girl->m_Events.AddMessage(message, IMGTYPE_MAID, DayNight);
-	}
+	else if(roll <= 15) 
+	{ sstemp << gettext(" She did not like cleaning the clinic today.\n\n"); work -= 1; }
 	else if(roll >=90)
-	{
-		message += gettext(" She had a great time working today.\n\n");
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCLEANING, +3, true);
-		girl->m_Events.AddMessage(message, IMGTYPE_MAID, DayNight);
-	}
+	{ sstemp << gettext(" She had a great time working today.\n\n"); work += 3; }
 	else
-	{
-		message += gettext(" Otherwise, the shift passed uneventfully.\n\n");
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCLEANING, +1, true);
-		girl->m_Events.AddMessage(message, IMGTYPE_MAID, DayNight);
-	}
+	{ sstemp << gettext(" Otherwise, the shift passed uneventfully.\n\n"); work += 1; }
+
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKCLEANING, work, true);
+	girl->m_Events.AddMessage(message, IMGTYPE_MAID, DayNight);
 	
 
 	// cleaning is a service skill
@@ -95,8 +84,8 @@ bool cJobManager::WorkJanitor(sGirl* girl, sBrothel* brothel, int DayNight, stri
 	else
 	   CleanAmt = 50;
 
+	if (g_Girls.HasTrait(girl, "Maid"))    CleanAmt += 20;
 	brothel->m_Filthiness -= CleanAmt;
-	stringstream sstemp;
     sstemp << gettext("Cleanliness rating improved by ") << CleanAmt;
 
 	if (CleanAmt >= 125)		{ girl->m_Pay += 150; }
@@ -124,6 +113,6 @@ bool cJobManager::WorkJanitor(sGirl* girl, sBrothel* brothel, int DayNight, stri
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, skill);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
-	g_Girls.PossiblyLoseExistingTrait(girl, "Clumsy", 20, ACTION_WORKHAREM, "It took her spilling hundreds of buckets, and just as many reprimands, but " + girl->m_Realname + " has finally stopped being so Clumsy.", DayNight != 0);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Clumsy", 20, ACTION_WORKCLEANING, "It took her spilling hundreds of buckets, and just as many reprimands, but " + girlName + " has finally stopped being so Clumsy.", DayNight != 0);
 	return false;
 }
