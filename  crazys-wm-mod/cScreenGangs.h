@@ -46,10 +46,14 @@ private:
 	int weaponlevel_id;	// Weapon Level text
 	int weaponup_id;	// Increase Weapon Level button
 	int netdesc_id;		// Nets Description text
-	int netbuy_id;		// Buy 20 Nets button
+	int netbuy_id;		// Buy 1 Net button
+	int netbuy10_id;	// Buy 10 Nets button
+	int netbuy20_id;	// Buy 20 Nets button
 	int netautobuy_id;	// Auto-buy Nets checkbox
 	int healdesc_id;	// Healing Potions Description text
-	int healbuy_id;		// Buy 20 Healing Potions button
+	int healbuy_id;		// Buy 1 Healing Potion button
+	int healbuy10_id;	// Buy 10 Healing Potions button
+	int healbuy20_id;	// Buy 20 Healing Potions button
 	int healautobuy_id;	// Auto-buy Healing Potions checkbox
 	int recruitlist_id;	// Recruitable Gangs list
 

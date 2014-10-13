@@ -35,57 +35,57 @@
 #include "cGangs.h"
 #include "libintl.h"
 
-extern	bool			g_InitWin;
-extern	int			g_CurrBrothel;
-extern	int g_CurrClinic;
-extern	int g_CurrStudio;
-extern	int g_CurrArena;
-extern	int g_CurrCentre;
-extern	int g_CurrFarm;
-extern	cGold			g_Gold;
-extern	cBrothelManager		g_Brothels;
-extern	cClinicManager		g_Clinic;
-extern	cMovieStudioManager		g_Studios;
-extern	cArenaManager		g_Arena;
-extern	cCentreManager		g_Centre;
-extern	cFarmManager		g_Farm;
-extern	cWindowManager		g_WinManager;
-extern	cInterfaceEventManager	g_InterfaceEvents;
-extern bool g_WalkAround;
-extern bool g_Cheats;
-extern	bool	eventrunning;
-extern string g_ReturnText;
-extern cGangManager g_Gangs;
-extern bool g_AllTogle;
-extern	int		g_CurrentScreen;
+extern bool						g_InitWin;
+extern int						g_CurrBrothel;
+extern int						g_CurrClinic;
+extern int						g_CurrStudio;
+extern int						g_CurrArena;
+extern int						g_CurrCentre;
+extern int						g_CurrFarm;
+extern cGold					g_Gold;
+extern cBrothelManager			g_Brothels;
+extern cClinicManager			g_Clinic;
+extern cMovieStudioManager		g_Studios;
+extern cArenaManager			g_Arena;
+extern cCentreManager			g_Centre;
+extern cFarmManager				g_Farm;
+extern cWindowManager			g_WinManager;
+extern cInterfaceEventManager	g_InterfaceEvents;
+extern bool						g_WalkAround;
+extern bool						g_Cheats;
+extern bool						eventrunning;
+extern string					g_ReturnText;
+extern cGangManager				g_Gangs;
+extern bool						g_AllTogle;
+extern int						g_CurrentScreen;
 
 bool cScreenTown::ids_set = false;
 
 void cScreenTown::set_ids()
 {
 	ids_set = true;
-	back_id =		get_id("BackButton");
-	walk_id =		get_id("WalkButton");
-	curbrothel_id =	get_id("CurrentBrothel");
-	slavemarket_id =get_id("SlaveMarket");
-	shop_id =		get_id("Shop");
-	mayor_id =		get_id("MayorsOffice");
-	bank_id =		get_id("Bank");
-	house_id =		get_id("House");
-	clinic_id =		get_id("Clinic");
-	studio_id =		get_id("Studio");
-	arena_id =		get_id("Arena");
-	centre_id =		get_id("Centre");
-	farm_id =		get_id("Farm");
-	prison_id =		get_id("Prison");
-	brothel0_id =	get_id("Brothel0");
-	brothel1_id =	get_id("Brothel1");
-	brothel2_id =	get_id("Brothel2");
-	brothel3_id =	get_id("Brothel3");
-	brothel4_id =	get_id("Brothel4");
-	brothel5_id =	get_id("Brothel5");
-	brothel6_id =	get_id("Brothel6");
-	setup_id =		get_id("SetUp");
+	back_id =			get_id("BackButton");
+	walk_id =			get_id("WalkButton");
+	curbrothel_id =		get_id("CurrentBrothel");
+	slavemarket_id =	get_id("SlaveMarket");
+	shop_id =			get_id("Shop");
+	mayor_id =			get_id("MayorsOffice");
+	bank_id =			get_id("Bank");
+	house_id =			get_id("House");
+	clinic_id =			get_id("Clinic");
+	studio_id =			get_id("Studio");
+	arena_id =			get_id("Arena");
+	centre_id =			get_id("Centre");
+	farm_id =			get_id("Farm");
+	prison_id =			get_id("Prison");
+	brothel0_id =		get_id("Brothel0");
+	brothel1_id =		get_id("Brothel1");
+	brothel2_id =		get_id("Brothel2");
+	brothel3_id =		get_id("Brothel3");
+	brothel4_id =		get_id("Brothel4");
+	brothel5_id =		get_id("Brothel5");
+	brothel6_id =		get_id("Brothel6");
+	setup_id =			get_id("SetUp");
 }
 
 struct static_brothel_data {

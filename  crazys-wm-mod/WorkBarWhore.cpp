@@ -412,7 +412,7 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, int DayNight, str
 
 		// Match image type to the deed done
 		int imageType = IMGTYPE_SEX;
-		if (SexType == SKILL_ANAL)				imageType = IMGTYPE_ANAL;
+		/* */if (SexType == SKILL_ANAL)			imageType = IMGTYPE_ANAL;
 		else if (SexType == SKILL_BDSM)			imageType = IMGTYPE_BDSM;
 		else if (SexType == SKILL_NORMALSEX)	imageType = IMGTYPE_SEX;
 		else if (SexType == SKILL_BEASTIALITY)	imageType = IMGTYPE_BEAST;

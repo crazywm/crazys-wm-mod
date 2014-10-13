@@ -90,7 +90,7 @@ static string sel_name_r = "";
 int HateLove = 0;
 
 static SDL_Color* RarityColor[9];
-
+static bool AutoUseItems = false;
 
 void cScreenItemManagement::set_ids()
 {
@@ -106,6 +106,7 @@ void cScreenItemManagement::set_ids()
 	owners_r_id		= get_id("OwnersRightList");
 	items_r_id		= get_id("ItemsRightList");
 	filter_id		= get_id("FilterList");
+	autouse_id		= get_id("AutoUseItems");
 	equip_l_id		= get_id("EquipLeftButton");
 	unequip_l_id	= get_id("UnequipLeftButton");
 	equip_r_id		= get_id("EquipRightButton");
@@ -331,7 +332,9 @@ void cScreenItemManagement::check_events()
 	if (g_InterfaceEvents.CheckButton(shift_l_id))		{ attempt_transfer(Right); }
 	if (g_InterfaceEvents.CheckListbox(owners_l_id))	{ refresh_item_list(Left); }
 	if (g_InterfaceEvents.CheckListbox(owners_r_id))	{ refresh_item_list(Right); }
-	
+
+	if (g_InterfaceEvents.CheckCheckbox(autouse_id))	AutoUseItems = IsCheckboxOn(autouse_id);
+
 	if (g_InterfaceEvents.CheckListbox(items_l_id))
 	{
 		int selection = GetLastSelectedItemFromList(items_l_id);
@@ -992,7 +995,7 @@ void cScreenItemManagement::attempt_transfer(Side transfer_from)
 				int goodbad = g_Brothels.m_Inventory[selection]->m_Badness;
 				*item_name = g_Brothels.m_Inventory[selection]->m_Name;  // note name of item, for selection tracking in target list
 				u_int type = g_Brothels.m_Inventory[selection]->m_Type;
-				GiveItemText(goodbad, HateLove);
+				g_MessageQue.AddToQue(GiveItemText(goodbad, HateLove), 0);
 
 				if (goodbad < 20)
 				{
@@ -1005,8 +1008,10 @@ void cScreenItemManagement::attempt_transfer(Side transfer_from)
 					g_Girls.UpdateStat(targetGirl, STAT_PCFEAR, -1);
 				}
 
-				if (type == INVFOOD && type == INVMAKEUP) g_Girls.AddInv(targetGirl, g_Brothels.m_Inventory[selection]);
-				else g_InvManager.Equip(targetGirl, g_Girls.AddInv(targetGirl, g_Brothels.m_Inventory[selection]), false);
+				if (!AutoUseItems && (type == INVFOOD || type == INVMAKEUP)) 
+					g_Girls.AddInv(targetGirl, g_Brothels.m_Inventory[selection]);
+				else 
+					g_InvManager.Equip(targetGirl, g_Girls.AddInv(targetGirl, g_Brothels.m_Inventory[selection]), false);
 
 				g_Brothels.m_NumItem[selection]--;
 				if (g_Brothels.m_NumItem[selection] == 0)
@@ -1043,7 +1048,7 @@ void cScreenItemManagement::attempt_transfer(Side transfer_from)
 				*item_name = ShopItem->m_Name;  // note name of item, for selection tracking in target list
 				int goodbad = ShopItem->m_Badness;
 				u_int type = ShopItem->m_Type;
-				GiveItemText(goodbad, HateLove);
+				g_MessageQue.AddToQue(GiveItemText(goodbad, HateLove), 0);
 
 				if (ShopItem->m_Badness < 20)
 				{
@@ -1055,7 +1060,7 @@ void cScreenItemManagement::attempt_transfer(Side transfer_from)
 					g_Girls.UpdateStat(targetGirl, STAT_PCFEAR, -1);
 				}
 
-				if (type == INVFOOD && type == INVMAKEUP) g_Girls.AddInv(targetGirl, ShopItem);
+				if (!AutoUseItems && (type == INVFOOD || type == INVMAKEUP)) g_Girls.AddInv(targetGirl, ShopItem);
 				else g_InvManager.Equip(targetGirl, g_Girls.AddInv(targetGirl, ShopItem), false);
 				g_InvManager.BuyShopItem(selection);
 
@@ -1088,7 +1093,7 @@ void cScreenItemManagement::attempt_transfer(Side transfer_from)
 				*item_name = fromGirl->m_Inventory[selection]->m_Name;  // note name of item, for selection tracking in target list
 				int goodbad = fromGirl->m_Inventory[selection]->m_Badness;
 				u_int type = fromGirl->m_Inventory[selection]->m_Type;
-				GiveItemText(goodbad, HateLove);
+				g_MessageQue.AddToQue(GiveItemText(goodbad, HateLove), 0);
 
 				// add to target Girls inventory
 				if (goodbad < 20)
@@ -1106,7 +1111,7 @@ void cScreenItemManagement::attempt_transfer(Side transfer_from)
 					g_Girls.UpdateStat(fromGirl, STAT_HAPPINESS, 5);  // previous owner happy to see it go
 				}
 
-				if (type == INVFOOD && type == INVMAKEUP) g_Girls.AddInv(targetGirl, fromGirl->m_Inventory[selection]);
+				if (!AutoUseItems && (type == INVFOOD || type == INVMAKEUP)) g_Girls.AddInv(targetGirl, fromGirl->m_Inventory[selection]);
 				else g_InvManager.Equip(targetGirl, g_Girls.AddInv(targetGirl, fromGirl->m_Inventory[selection]), false);
 
 				// remove the item from the girl

@@ -339,11 +339,16 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, int DayNight, stri
 		else
 			{ message += "Her optimistic mood made patrons cheer up increasing the amount they tip.\n"; wages += 10; }
 	}
-
-	if (g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Abnormally Large Boobs") && g_Dice.percent(15)) //zzzzz FIXME needs updated to include new boob traits
+	// `J` slightly lower percent compared to sleazy barmaid, I would think regular barmaid's uniform is less revealing
+	if ((g_Dice.percent(3) && g_Girls.HasTrait(girl, "Busty Boobs")) ||
+		(g_Dice.percent(6) && g_Girls.HasTrait(girl, "Big Boobs")) ||
+		(g_Dice.percent(9) && g_Girls.HasTrait(girl, "Giant Juggs")) ||
+		(g_Dice.percent(12) && g_Girls.HasTrait(girl, "Massive Melons")) ||
+		(g_Dice.percent(16) && g_Girls.HasTrait(girl, "Abnormally Large Boobs")) ||
+		(g_Dice.percent(20) && g_Girls.HasTrait(girl, "Titanic Tits")))
 	{
 		if (jobperformance < 150)
-			{ message += "A patron was staring obviously at her large breasts. But she had no ideal how to take advantage of it.\n"; }
+			{ message += "A patron was staring obviously at her large breasts. But she had no idea how to take advantage of it.\n"; }
 		else
 			{ message += "A patron was staring obviously at her large breasts. So she over charged them for drinks while they drooled not paying any mind to the price.\n"; wages += 15; }
 	}
@@ -384,7 +389,6 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, int DayNight, stri
 		else
 		{ message += girlName + " responded to one of the vulgar remarks by a client in a much more vulgar way. Needless to say, this didn't earn her any favors with the patrons that shift, and her tips were a bit less than usual.\n"; wages -= 15; }
 	}
-
 	if (g_Girls.GetStat(girl, STAT_MORALITY) <= -20 && g_Girls.GetStat(girl, STAT_DIGNITY) <= -20 && g_Dice.percent(20))
 	{ message += "A drunk patron suddenly walked up to " + girlName + " and just started groping her body. Instead of pushing him away immediately, " + girlName + " allowed him to take his time with her tits and butt while she helped herself to his pockets and all the money inside them. The rowdy client left with a dumb glee on his face, probably to find out his fondling was much, much overpriced.\n"; wages += 40; }
 

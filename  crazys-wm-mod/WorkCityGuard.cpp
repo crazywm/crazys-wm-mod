@@ -50,59 +50,51 @@ extern cGold g_Gold;
 bool cJobManager::WorkCityGuard(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	string message = ""; string girlName = girl->m_Realname;
-	if (Preprocessing(ACTION_WORKSECURITY, girl, brothel, DayNight, summary, message))
-		return true;
+	if (Preprocessing(ACTION_WORKSECURITY, girl, brothel, DayNight, summary, message)) return true;
 
 	// ready armor and weapons!
 	g_Girls.EquipCombat(girl);
-	int roll = g_Dice%100;
-	int wages = 150;
-	int trouble = false;
+	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100();
+	int wages = 150, enjoy = 0, enjoyc = 0, sus = 0;
+	u_int imagetype = IMGTYPE_PROFILE;
+
 	int agl = (g_Girls.GetStat(girl, STAT_AGILITY) / 2 + g_Dice%(g_Girls.GetSkill(girl, SKILL_COMBAT) / 2));
 
 	message += "She helps guard the city.\n";
 
 	sGirl* tempgirl = g_Girls.CreateRandomGirl(18, false, false, false, false, false, true);
 
-	if (roll >= 50)
+	if (roll_a >= 50)
 	{
 		message += girlName + " didn't find any trouble today.";
-		g_Brothels.GetPlayer()->suspicion(-5);
+		sus -= 5;
 	}
-	else if (roll >= 25)
+	else if (roll_a >= 25)
 	{
 		message += girlName + " spotted a theif and ";
 		if (agl >= 90)
 		{
 			message += "was on them before they could blink.  Putting a stop to the theft.";
-			g_Brothels.GetPlayer()->suspicion(-20);
-			g_Girls.UpdateEnjoyment(girl, ACTION_WORKSECURITY, +3, true);
+			sus -= 20;
+			enjoy += 3;
 		}
 		else if (agl >= 75)
 		{
 			message += "was on them before they could get away.  She is quick.";
-			g_Brothels.GetPlayer()->suspicion(-15);
-			g_Girls.UpdateEnjoyment(girl, ACTION_WORKSECURITY, +1, true);
+			sus -= 15;
+			enjoy += 1;
 		}
 		else if (agl >= 50)
 		{
 			message += "was able to keep up, ";
-			if (roll >= 50)
-			{
-				message += "but they ended up giving her the slip.";
-				g_Brothels.GetPlayer()->suspicion(+10);
-			}
-			else
-			{
-				message += "and was able to catch them.";
-				g_Brothels.GetPlayer()->suspicion(-10);
-			}
+			if (roll_b >= 50)	{ sus += 5; message += "but they ended up giving her the slip."; }
+			else /*        */	{ sus -= 10; message += "and was able to catch them."; }
 		}
 		else
 		{
 			message += "was left eating dust. Damn is she slow.";
-			g_Brothels.GetPlayer()->suspicion(+10);
-			g_Girls.UpdateEnjoyment(girl, ACTION_WORKSECURITY, -2, true);
+			sus += 10;
+			enjoy -= 3;
 		}
 	}
 	else
@@ -125,55 +117,47 @@ bool cJobManager::WorkCityGuard(sGirl* girl, sBrothel* brothel, int DayNight, st
 		}
 		else if (fight_outcome == 1)	// she won
 		{
-			g_Girls.UpdateEnjoyment(girl, ACTION_WORKSECURITY, +3, true);
-			g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, +3, true);
+			enjoy += 3; enjoyc += 3;
 			message = girlName + " ran into some trouble and ended up in a fight. She was able to win.";
-			g_Brothels.GetPlayer()->suspicion(-20);
-			trouble = true;
+			sus -= 20;
+			imagetype = IMGTYPE_COMBAT;
 		}
 		else  // she lost or it was a draw
 		{
-			g_Girls.UpdateEnjoyment(girl, ACTION_WORKSECURITY, -1, true);
-			g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, -1, true);
 			message = girlName + " ran into some trouble and ended up in a fight. She was unable to win the fight.";
-			g_Brothels.GetPlayer()->suspicion(+20);
-			trouble = true;
+			enjoy -= 1; enjoyc -= 1;
+			sus += 10;
+			imagetype = IMGTYPE_COMBAT;
 		}
 	}
 
-	 // Cleanup
-	if(tempgirl)
-		delete tempgirl;
-	tempgirl = 0;
+	// Cleanup
+	if (tempgirl) delete tempgirl; tempgirl = 0;
 
-	if (trouble) 
-	{ girl->m_Events.AddMessage(message,IMGTYPE_COMBAT,DayNight); }
-	else
-	{ girl->m_Events.AddMessage(message,IMGTYPE_PROFILE,DayNight); }
 
-	if(girl->m_States&(1<<STATUS_SLAVE))
-	{ girl->m_Pay += 0; }
-	else
-	{
-		g_Gold.girl_support(wages);  // matron wages come from you
-		girl->m_Pay += wages;
-	}
+	girl->m_Events.AddMessage(message, imagetype, DayNight);
+	g_Brothels.GetPlayer()->suspicion(sus);
+	girl->m_Pay += wages;
+
 
 	// Improve girl
-	int fightxp = 1;	if (trouble == 1)	fightxp = 3;
-	int xp = 8 * fightxp, libido = 2, skill = 1;
+	// int fightxp = 1;	if (trouble == 1)	fightxp = 3; // `J` fight xp is done in the fight itself
+	int xp = 8, libido = 2, skill = 3;
 
 	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_COMBAT, g_Dice % fightxp + skill);
-	g_Girls.UpdateSkill(girl, SKILL_MAGIC, g_Dice % fightxp + skill);
-	g_Girls.UpdateStat(girl, STAT_AGILITY, g_Dice % fightxp + skill);
-	g_Girls.UpdateStat(girl, STAT_CONSTITUTION, g_Dice % fightxp + skill);
+	g_Girls.UpdateSkill(girl, SKILL_COMBAT, g_Dice % skill);
+	g_Girls.UpdateSkill(girl, SKILL_MAGIC, g_Dice % skill);
+	g_Girls.UpdateStat(girl, STAT_AGILITY, g_Dice % skill);
+	g_Girls.UpdateStat(girl, STAT_CONSTITUTION, g_Dice % skill);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
+	
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKSECURITY, enjoy, true);
+	g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, enjoyc, true);
 	g_Girls.PossiblyGainNewTrait(girl, "Tough", 20, ACTION_WORKSECURITY, "She has become pretty Tough from all of the fights she's been in.", DayNight != 0);
 	g_Girls.PossiblyGainNewTrait(girl, "Aggressive", 60, ACTION_WORKSECURITY, "She is getting rather Aggressive from her enjoyment of combat.", DayNight != 0);
 	g_Girls.PossiblyGainNewTrait(girl, "Fleet of Foot", 30, ACTION_WORKSECURITY, "She is getting rather fast from all the fighting.", DayNight != 0);

@@ -1443,37 +1443,30 @@ int cMovieStudioManager::AddScene(sGirl* girl, int Job, int Bonus)
 	if (Job == SKILL_ORALSEX)		quality -= 5;
 	if (Job == SKILL_TITTYSEX)		quality -= 5;
 	if (Job == SKILL_HANDJOB)		quality -= 5;
-	// foot job needs to be added so will use service until then
-	if (Job == SKILL_SERVICE)		quality -= 5;
+	if (Job == SKILL_SERVICE)		quality -= 5;	// foot job needs to be added so will use service until then
 
 
 	// `J` When adding new traits, search for "J-Add-New-Traits"  :  found in >> cMovieStudioManager::AddScene
 
 	//CRAZY added this to have traits play a bigger part in the movies
-	if (g_Girls.HasTrait(girl, "Actress"))					quality += 15;
-	if (g_Girls.HasTrait(girl, "Porn Star"))				quality += 15;
-	if (g_Girls.HasTrait(girl, "Fake Orgasm Expert"))		quality += 3;
-	else if (g_Girls.HasTrait(girl, "Fast Orgasms"))		quality += 4;
-	else if (g_Girls.HasTrait(girl, "Slow Orgasms"))		quality -= 2;
-	if (g_Girls.HasTrait(girl, "Abnormally Large Boobs"))	quality += 4;
-	else if (g_Girls.HasTrait(girl, "Big Boobs"))			quality += 2;
+	if (g_Girls.HasTrait(girl, "Porn Star"))				quality += 20;
+	if (g_Girls.HasTrait(girl, "Actress"))					quality += 10;
+	if (g_Girls.HasTrait(girl, "Shape Shifter"))			quality += 10;
 
-	else if (g_Girls.HasTrait(girl, "Small Boobs"))			quality += 1;
+	if (g_Girls.HasTrait(girl, "Fake Orgasm Expert"))		quality += 5;
+	else if (g_Girls.HasTrait(girl, "Fast Orgasms"))		quality += 2;
+	else if (g_Girls.HasTrait(girl, "Slow Orgasms"))		quality -= 2;
+	
 	if (g_Girls.HasTrait(girl, "Great Figure"))				quality += 4;
 	if (g_Girls.HasTrait(girl, "Great Arse"))				quality += 2;
 	if (g_Girls.HasTrait(girl, "Charismatic"))				quality += 4;
 	if (g_Girls.HasTrait(girl, "Charming"))					quality += 2;
 	if (g_Girls.HasTrait(girl, "Long Legs"))				quality += 2;
-	if (g_Girls.HasTrait(girl, "Perky Nipples"))			quality += 1;
-	if (g_Girls.HasTrait(girl, "Puffy Nipples"))			quality += 1;
-	if (g_Girls.HasTrait(girl, "Shape Shifter"))			quality += 5;
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))				quality += 4;
 	if (g_Girls.HasTrait(girl, "Good Kisser"))				quality += 2;
 	if (g_Girls.HasTrait(girl, "Cute"))						quality += 2;
 	if (g_Girls.HasTrait(girl, "Sexy Air"))					quality += 2;
 	if (g_Girls.HasTrait(girl, "Psychic"))					quality += 4;
-	if (g_Girls.HasTrait(girl, "Actress"))				quality += 10;//maybe to much CRAZY
-	if (g_Girls.HasTrait(girl, "Porn Star"))			quality += 20;//maybe to much
 
 	if (g_Girls.HasTrait(girl, "Manly"))					quality -= 2;
 	if (g_Girls.HasTrait(girl, "Fragile"))					quality -= 2;
@@ -1485,37 +1478,70 @@ int cMovieStudioManager::AddScene(sGirl* girl, int Job, int Bonus)
 	if (g_Girls.HasTrait(girl, "Aggressive"))				quality -= 2;
 	if (g_Girls.HasTrait(girl, "Broken Will"))				quality -= 4;
 	if (g_Girls.HasTrait(girl, "Dependant"))				quality -= 3;
-	if (g_Girls.HasTrait(girl, "Shy"))					quality -= 3;
+	if (g_Girls.HasTrait(girl, "Shy"))						quality -= 3;
+		
 
-
-
-
-
+	// Idk if this is needed or not but can't hurt CRAZY // `J` breast size quality for non titjob is less importatnt
+	if (g_Girls.HasTrait(girl, "Flat Chest"))					quality -= (Job == SKILL_TITTYSEX ? 10 : 2);
+	if (g_Girls.HasTrait(girl, "Petite Breasts"))				quality -= (Job == SKILL_TITTYSEX ? 5 : 1);
+	if (g_Girls.HasTrait(girl, "Small Boobs"))					quality -= (Job == SKILL_TITTYSEX ? 1 : 0);
+	if (g_Girls.HasTrait(girl, "Busty Boobs"))					quality += (Job == SKILL_TITTYSEX ? 2 : 0);
+	if (g_Girls.HasTrait(girl, "Big Boobs"))					quality += (Job == SKILL_TITTYSEX ? 4 : 1);
+	if (g_Girls.HasTrait(girl, "Giant Juggs"))					quality += (Job == SKILL_TITTYSEX ? 6 : 2);
+	if (g_Girls.HasTrait(girl, "Massive Melons"))				quality += (Job == SKILL_TITTYSEX ? 8 : 3);
+	if (g_Girls.HasTrait(girl, "Abnormally Large Boobs"))		quality += (Job == SKILL_TITTYSEX ? 10 : 4);
+	if (g_Girls.HasTrait(girl, "Titanic Tits"))					quality += (Job == SKILL_TITTYSEX ? 12 : 5);
+	if (g_Girls.HasTrait(girl, "Perky Nipples"))				quality += (Job == SKILL_TITTYSEX ? 2 : 1);
+	if (g_Girls.HasTrait(girl, "Puffy Nipples"))				quality += (Job == SKILL_TITTYSEX ? 2 : 1);
+	if (g_Girls.HasTrait(girl, "Pierced Nipples"))
+	{
+		if (Job == SKILL_BDSM || Job == SKILL_TITTYSEX)
+			quality += 5;
+		if (Job == SKILL_NORMALSEX || Job == SKILL_BEASTIALITY || Job == SKILL_GROUP || Job == SKILL_LESBIAN || Job == SKILL_STRIP)
+			quality += 1;
+	}
+	if (g_Girls.HasTrait(girl, "Pierced Clit"))
+	{
+		if (Job == SKILL_BDSM)		quality += 5;
+		if (Job == SKILL_LESBIAN)	quality += 3;
+		if (Job == SKILL_ANAL || Job == SKILL_NORMALSEX || Job == SKILL_GROUP || Job == SKILL_STRIP)
+			quality += 1;
+	}
 	if (Job == SKILL_ORALSEX)
 	{
 		if (g_Girls.HasTrait(girl, "Pierced Tongue"))		quality += 1;
-		if (g_Girls.HasTrait(girl, "No Gag Reflex"))		quality += 2;
 		if (g_Girls.HasTrait(girl, "Deep Throat"))			quality += 5;
-		if (g_Girls.HasTrait(girl, "Gag Reflex"))			quality -= 3;
+		if (g_Girls.HasTrait(girl, "No Gag Reflex"))		quality += 2;
+		if (g_Girls.HasTrait(girl, "Gag Reflex"))			quality -= 5;
+		if (g_Girls.HasTrait(girl, "Strong Gag Reflex"))	quality -= 10;
 	}
 
-	if (Job == SKILL_TITTYSEX) //Idk if this is needed or not but can't hurt CRAZY
+	if (g_Girls.HasTrait(girl, "Lesbian"))
 	{
-		if (g_Girls.HasTrait(girl, "Massive Melons"))				quality += 8;
-		if (g_Girls.HasTrait(girl, "Abnormally Large Boobs"))		quality += 7;
-		if (g_Girls.HasTrait(girl, "Giant Juggs"))					quality += 6;
-		if (g_Girls.HasTrait(girl, "Big Boobs"))					quality += 5;
-		if (g_Girls.HasTrait(girl, "Busty Boobs"))					quality += 4;
-		if (g_Girls.HasTrait(girl, "Small Boobs"))					quality += 2;
-		if (g_Girls.HasTrait(girl, "Petite Breasts"))				quality += 1;
-		if (g_Girls.HasTrait(girl, "Flat Chest"))					quality -= 3;
-		else														quality += 3;
+		//a lesbian would be more into it and give a better show I would think CRAZY
+		if (Job == SKILL_LESBIAN)		quality += 10;
+		// `J` and she would be less into doing it with a guy
+		if (Job == SKILL_ANAL)			quality -= 10;
+		if (Job == SKILL_GROUP)			quality -= 10;
+		if (Job == SKILL_ORALSEX)		quality -= 10;
+		if (Job == SKILL_NORMALSEX)		quality -= 5;
+		if (Job == SKILL_TITTYSEX)		quality -= 4;
+		if (Job == SKILL_HANDJOB)		quality -= 2;
+		if (Job == SKILL_SERVICE)		quality -= 1;	// foot job needs to be added so will use service until then
+	}
+	if (g_Girls.HasTrait(girl, "Straight"))
+	{
+		// `J` similarly, a straight girl would be less into doing it with another girl (but not as much)
+		if (Job == SKILL_LESBIAN)		quality -= 5;
+		if (Job == SKILL_ANAL)			quality += 2;
+		if (Job == SKILL_NORMALSEX)		quality += 5;
+		if (Job == SKILL_GROUP)			quality += 1;
+		if (Job == SKILL_ORALSEX)		quality += 1;
+		if (Job == SKILL_TITTYSEX)		quality += 2;
+		if (Job == SKILL_HANDJOB)		quality += 2;
+		if (Job == SKILL_SERVICE)		quality += 1;	// foot job needs to be added so will use service until then
 	}
 
-	if (Job == SKILL_LESBIAN)  //a lesbian would be more into it and give a better show I would think CRAZY
-	{
-		if (g_Girls.HasTrait(girl, "Lesbian"))		quality += 10;
-	}
 
 	//CRAZY added this better looking girls should make better quality movies 
 	// Changed to work with new job revision --PP

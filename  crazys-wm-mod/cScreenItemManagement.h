@@ -51,6 +51,7 @@ private:
 	int owners_r_id;	// Owners Right list
 	int items_r_id;		// Items Right list
 	int filter_id;		// Filter list
+	int autouse_id;		// Autouse items checkbox
 	int equip_l_id;		// Equip Left button
 	int unequip_l_id;	// Unequip Left button
 	int equip_r_id;		// Equip Right button

@@ -43,9 +43,9 @@ extern cMessageQue g_MessageQue;
 bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	string message = ""; string girlName = girl->m_Realname;
-	int tex = g_Dice%4;
+	int tex = g_Dice % 4;
 
-	if(Preprocessing(ACTION_WORKCLUB, girl, brothel, DayNight, summary, message))	// they refuse to have work in the bar
+	if (Preprocessing(ACTION_WORKCLUB, girl, brothel, DayNight, summary, message))	// they refuse to have work in the bar
 		return true;
 
 	// put that shit away, you'll scare off the customers!
@@ -54,12 +54,12 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, int DayNight
 	int HateLove = 0;
 	HateLove = g_Girls.GetStat(girl, STAT_PCLOVE) - g_Girls.GetStat(girl, STAT_PCHATE);
 	int wages = 15, work = 0;
-	int roll = g_Dice%100;
+	int roll = g_Dice % 100;
 	int imagetype = IMGTYPE_ECCHI;
-	int jobperformance = ( (g_Girls.GetStat(girl, STAT_CHARISMA) + 
-							g_Girls.GetStat(girl, STAT_BEAUTY) +
-							g_Girls.GetSkill(girl, SKILL_PERFORMANCE))/3 +
-							g_Girls.GetSkill(girl, SKILL_SERVICE));
+	int jobperformance = ((g_Girls.GetStat(girl, STAT_CHARISMA) +
+		g_Girls.GetStat(girl, STAT_BEAUTY) +
+		g_Girls.GetSkill(girl, SKILL_PERFORMANCE)) / 3 +
+		g_Girls.GetSkill(girl, SKILL_SERVICE));
 
 
 	message += "She worked as a bartender in the strip club.";
@@ -88,70 +88,91 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, int DayNight
 
 
 	if (jobperformance >= 245)
-		{
-			message += " She must be the perfect bar tender customers go on and on about her and always come to see her when she works.\n\n";
-			wages += 155;
-		}
+	{
+		message += " She must be the perfect bar tender customers go on and on about her and always come to see her when she works.\n\n";
+		wages += 155;
+	}
 	else if (jobperformance >= 185)
-		{
-			message += " She's unbelievable at this and is always getting praised by the customers for her work.\n\n";
-			wages += 95;
-		}
+	{
+		message += " She's unbelievable at this and is always getting praised by the customers for her work.\n\n";
+		wages += 95;
+	}
 	else if (jobperformance >= 145)
-		{
-			message += " She's good at this job and gets praised by the customers often.\n\n";
-			wages += 55;
-		}
+	{
+		message += " She's good at this job and gets praised by the customers often.\n\n";
+		wages += 55;
+	}
 	else if (jobperformance >= 100)
-		{
-			message += " She made a few mistakes but overall she is okay at this.\n\n";
-			wages += 15;
-		}
+	{
+		message += " She made a few mistakes but overall she is okay at this.\n\n";
+		wages += 15;
+	}
 	else if (jobperformance >= 70)
-		{
-			message += " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
-			wages -= 5;
-		}
+	{
+		message += " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
+		wages -= 5;
+	}
 	else
-		{
-			message += " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
-			wages -= 15;
-		}
+	{
+		message += " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
+		wages -= 15;
+	}
 
 
 	//try and add randomness here
 	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85 && g_Dice.percent(20))
-	{ message += "Stunned by her beauty a customer left her a great tip.\n\n"; wages += 25; }
+	{
+		message += "Stunned by her beauty a customer left her a great tip.\n\n"; wages += 25;
+	}
 
 	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 99 && g_Dice.percent(5))
-	{ message += girlName + " looked absolutely stunning during her shift and was unable to hide it. Instead of her ass or tits, the patrons couldn't glue their eyes off her face, and spent a lot more than usual on tipping her.\n"; wages += 50; }
+	{
+		message += girlName + " looked absolutely stunning during her shift and was unable to hide it. Instead of her ass or tits, the patrons couldn't glue their eyes off her face, and spent a lot more than usual on tipping her.\n"; wages += 50;
+	}
 
 	if (g_Girls.GetStat(girl, STAT_CHARISMA) > 85 && g_Dice.percent(20))
-	{ message += girlName + " surprised a couple of gentlemen discussing some complicated issue by her insightful comments when she was taking her order. They decided her words were worth a heavy tip.\n"; wages += 35; }
+	{
+		message += girlName + " surprised a couple of gentlemen discussing some complicated issue by her insightful comments when she was taking her order. They decided her words were worth a heavy tip.\n"; wages += 35;
+	}
 
 	if (g_Girls.HasTrait(girl, "Clumsy") && g_Dice.percent(15))
-	{ message += "Her clumsy nature caused her to spill a drink on a customer resulting in them storming off without paying.\n"; wages -= 15; }
+	{
+		message += "Her clumsy nature caused her to spill a drink on a customer resulting in them storming off without paying.\n"; wages -= 15;
+	}
 
 	if (g_Girls.HasTrait(girl, "Pessimist") && g_Dice.percent(5))
 	{
 		if (jobperformance < 125)
-			{ message += "Her pessimistic mood depressed the customers making them tip less.\n"; wages -= 10; }
+		{
+			message += "Her pessimistic mood depressed the customers making them tip less.\n"; wages -= 10;
+		}
 		else
-			{ message += girlName + " was in a poor mood so the patrons gave her a bigger tip to try and cheer her up.\n"; wages += 10; }
+		{
+			message += girlName + " was in a poor mood so the patrons gave her a bigger tip to try and cheer her up.\n"; wages += 10;
+		}
 	}
 
 	if (g_Girls.HasTrait(girl, "Optimist") && g_Dice.percent(5))
 	{
 		if (jobperformance < 125)
-			{ message += girlName + " was in a cheerful mood but the patrons thought she needed to work more on her services.\n"; wages -= 10; }
-			else
-			{ message += "Her optimistic mood made patrons cheer up increasing the amount they tip.\n"; wages += 10; }
+		{
+			message += girlName + " was in a cheerful mood but the patrons thought she needed to work more on her services.\n"; wages -= 10;
+		}
+		else
+		{
+			message += "Her optimistic mood made patrons cheer up increasing the amount they tip.\n"; wages += 10;
+		}
 	}
-
-	if (g_Dice.percent(15) && g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Abnormally Large Boobs"))//zzzzz FIXME needs updated to include new boob traits
+	// `J` slightly higher percent compared to regular barmaid, I would think sleazy barmaid's uniform is more revealing
+	if ((g_Dice.percent(5) && g_Girls.HasTrait(girl, "Busty Boobs")) ||
+		(g_Dice.percent(10) && g_Girls.HasTrait(girl, "Big Boobs"))				||
+		(g_Dice.percent(15) && g_Girls.HasTrait(girl, "Giant Juggs"))			||
+		(g_Dice.percent(20) && g_Girls.HasTrait(girl, "Massive Melons"))		||
+		(g_Dice.percent(25) && g_Girls.HasTrait(girl, "Abnormally Large Boobs"))||
+		(g_Dice.percent(30) && g_Girls.HasTrait(girl, "Titanic Tits")))
 	{
 		if (jobperformance < 150)
-		{ message += "A patron was staring obviously at her large breasts. But she had no ideal how to take advantage of it.\n"; }
+		{ message += "A patron was staring obviously at her large breasts. But she had no idea how to take advantage of it.\n"; }
 		else 
 		{ message += "A patron was staring obviously at her large breasts. So she over charged them for drinks while they drooled not paying any mind to the price.\n"; wages += 15; }
 	}
@@ -162,7 +183,7 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, int DayNight
 		imagetype = IMGTYPE_ORAL; work -= 3;
 	}
 
-	if ((g_Dice%100) < 5)//may get moved to waitress
+	if (g_Dice.percent(5)) //may get moved to waitress
 	{
 		message += "A drunken patron decide to grab " + girlName + "'s boob. ";
 		if (g_Girls.HasTrait(girl, "Meek"))
