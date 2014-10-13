@@ -845,6 +845,33 @@ SlavePayOutOfPocket now works for the studio and cleaning jobs
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.06
 !!!!!!!!!!!!!!!!!!!! pushed to SVN - r114
 
+###  Changes 10/11/2014
+Added release to buildings option for dungeon.
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.07
+
+###  Changes 10/12/2014
+Crazy added some changes to several jobs.
+
+Fixed inventory give item to girl text not showing up
+Added autouse consumables checkbox to inventory.
+Updated WorkExploreCatacombs.cpp adding sex restrictions and fixing output text to better count gains. 
+ - Also adjusted munber of monsters encounterable from 1-3 (33% each) to 1-4 (50%=1 then equal chance 2,3or4)
+ - increased the chance of getting a girl instead of a beast from 50% to 55%
+Adjusted breast size and lesbian/straight modifiers in cMovieStudioManager::AddScene
+ - Added more traits to cMovieStudioManager::AddScene
+Cleaned cScreenGangs.cpp and added Buy1 and Buy10 buttons to potions and nets
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.08
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r116
+
+
+
+
+
+
+
+
 
 
 

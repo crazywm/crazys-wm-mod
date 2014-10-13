@@ -298,7 +298,7 @@ else
 	if (g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Abnormally Large Boobs") && g_Dice.percent(15))//zzzzzz FIXME needs new boob tratis added
 	{
 		if (jobperformance < 150)
-			{ message += "A patron was staring obviously at her large breasts. But she had no ideal how to take advantage of it.\n"; }
+			{ message += "A patron was staring obviously at her large breasts. But she had no idea how to take advantage of it.\n"; }
 		else
 			{ message += "A patron was staring obviously at her large breasts. So she used the chance to cheat him out of all his gold.\n"; wages += 35; }
 	}

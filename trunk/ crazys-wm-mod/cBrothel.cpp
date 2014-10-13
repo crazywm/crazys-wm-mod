@@ -1254,7 +1254,6 @@ void cBrothelManager::UpdateBrothels()
 
 		ss.str("");
 		ss << current->m_TotalCustomers << " customers visited the building.";
-
 		current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_BROTHEL);
 
 		// empty rooms cost 2 gold to maintain
@@ -2852,7 +2851,7 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 	}
 	if (g_Girls.HasItemJ(girl, "Disguised Slave Band") != -1)
 	{
-		message += girl->m_Realname + " went around wearing her Disguised Slave Band having no ideal of what it really does to her.\n\n";
+		message += girl->m_Realname + " went around wearing her Disguised Slave Band having no idea of what it really does to her.\n\n";
 	}
 	if (g_Girls.HasItemJ(girl, "Anger Management Tapes") != -1 && g_Dice % 100 < 2)
 	{

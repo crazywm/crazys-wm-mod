@@ -51,6 +51,22 @@ class cScreenDungeon : public cInterfaceWindowXML
 	int viewdetails_id;	// Girl Details button
 	int sellslave_id;	// Sell Slave button
 
+	int releaseto_id;	// Where to release girls to Text
+	int roomsfree_id;	// how many rooms are available 
+	int house_id;		// Player's House button
+	int clinic_id;		// Clinic's House button
+	int studio_id;		// Studio's House button
+	int arena_id;		// Arena's House button
+	int centre_id;		// Centre's House button
+	int farm_id;		// Farm's button
+	int brothel0_id;	// Brothel 0 button
+	int brothel1_id;	// Brothel 1 button
+	int brothel2_id;	// Brothel 2 button
+	int brothel3_id;	// Brothel 3 button
+	int brothel4_id;	// Brothel 4 button
+	int brothel5_id;	// Brothel 5 button
+	int brothel6_id;	// Brothel 6 button
+
 	int	selection;
 	bool	no_guards;
 	enum	{
@@ -90,6 +106,7 @@ public:
 	void	start_feeding();
 	void	torture_customer(int girls_removed);
 	void	torture();
+	void	change_release(string towhere);
 	void	release();
 	void	talk();
 	void	get_selected_girls(vector<int> *girl_array);

@@ -51,7 +51,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, int DayN
 {
 	cTariff tariff;
 	string message = "";
-	stringstream ss; ss.str(message);
+	stringstream ss;
 	g_Building = BUILDING_HOUSE;
 
 	// put that shit away, not needed for sex training

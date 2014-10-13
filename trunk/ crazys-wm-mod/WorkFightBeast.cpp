@@ -53,7 +53,7 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, int DayNight, s
 	Uint8 fight_outcome = 0;
 
 	int roll = g_Dice % 100;
-	int wages = 175, work = 0;
+	int wages = 175, enjoy = 0;
 
 	if (roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_COMBAT, brothel))
 	{
@@ -62,11 +62,11 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, int DayNight, s
 		return true;
 	}
 	else if (roll <= 15)
-	{ message += girlName + " didn't like fighting beasts today.\n\n"; work -= 3; }
+	{ message += girlName + " didn't like fighting beasts today.\n\n"; enjoy -= 3; }
 	else if (roll >= 90)
-	{ message += girlName + " loved fighting beasts today.\n\n"; work += 3; }
+	{ message += girlName + " loved fighting beasts today.\n\n"; enjoy += 3; }
 	else
-	{ message += girlName + " had a pleasant time fighting beats today.\n\n"; work += 1; }
+	{ message += girlName + " had a pleasant time fighting beats today.\n\n"; enjoy += 1; }
 
 
 	if (g_Brothels.GetNumBeasts() == 0)
@@ -97,7 +97,7 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, int DayNight, s
 		}
 		else if (fight_outcome == 1)	// she won
 		{
-			message = "She had fun fighting beasts today."; work += 3;
+			message = "She had fun fighting beasts today."; enjoy += 3;
 			girl->m_Events.AddMessage(message, IMGTYPE_COMBAT, DayNight);
 			int roll_max = girl->fame() + girl->charisma();
 			roll_max /= 4;
@@ -107,7 +107,7 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, int DayNight, s
 		}
 		else  // she lost or it was a draw
 		{
-			message = " She was unable to win the fight."; work -= 1;
+			message = " She was unable to win the fight."; enjoy -= 1;
 			girl->m_Events.AddMessage(message, IMGTYPE_COMBAT, DayNight);
 			g_Girls.UpdateStat(girl, STAT_FAME, -1);
 		}
@@ -124,7 +124,7 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, int DayNight, s
 		tempgirl = 0;
 	}
 
-	g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, work, true);
+	g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, enjoy, true);
 	// Improve girl
 	int fightxp = 1;	if (fight_outcome == 1)	fightxp = 3;
 	int xp = 3 * fightxp, libido = 2, skill = 1;

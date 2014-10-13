@@ -64,7 +64,7 @@ bool cJobManager::WorkEscort(sGirl* girl, sBrothel* brothel, int DayNight, strin
 
 	//CRAZY
 	/*Escort plans
-		General ideal is to have her arrive to an appoiment with a client.  If she is to late they may turn her away 
+		General idea is to have her arrive to an appoiment with a client.  If she is to late they may turn her away 
 		resulting in no money if she is on time it goes to the next part.  Next part is they look her over seeing if
 		she looks good enough for them or not and looks at what she is wearing.  Fancy dresses help while something like 
 		slave rags would hurt and may get her sent away again.  Then they are off to do something like go to dinner, a bar,

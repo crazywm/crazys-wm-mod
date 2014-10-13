@@ -53,7 +53,7 @@ bool cJobManager::WorkFarmer(sGirl* girl, sBrothel* brothel, int DayNight, strin
 	// put that shit away, you'll scare off the customers!
 	g_Girls.UnequipCombat(girl);
 
-	int wages = 15, work = 0;
+	int wages = 15, enjoy = 0;
 	message += "She worked as a farmer on the farm.";
 
 	int roll = g_Dice%100;
@@ -111,14 +111,14 @@ bool cJobManager::WorkFarmer(sGirl* girl, sBrothel* brothel, int DayNight, strin
 
 
 	//enjoyed the work or not
-	if (roll <= 5)
-	{ message += " \nSome of the patrons abused her during the shift."; work -= 1; }
-	else if (roll <= 25) 
-	{ message += " \nShe had a pleasant time working."; work += 3; }
+	if (roll <= 10)
+	{ message += " \nSome of the patrons abused her during the shift."; enjoy -= 1; }
+	else if (roll >= 90) 
+	{ message += " \nShe had a pleasant time working."; enjoy += 3; }
 	else
-	{ message += " \nOtherwise, the shift passed uneventfully."; work += 1; }
+	{ message += " \nOtherwise, the shift passed uneventfully."; enjoy += 1; }
 
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKFARM, work, true);
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKFARM, enjoy, true);
 	girl->m_Events.AddMessage(message, IMGTYPE_FARM, DayNight);
 	girl->m_Pay = wages;
 

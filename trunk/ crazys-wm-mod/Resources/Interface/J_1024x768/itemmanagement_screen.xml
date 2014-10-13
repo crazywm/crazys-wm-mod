@@ -10,11 +10,13 @@
 <ListBox  Name="ItemsRightList"                              XPos="510" YPos="266" Width="250" Height="302" Border="1"          Events="true" Multi="true" />
 <Text     Name="CurrentBrothel"     Text=""                  XPos="266" YPos="0"   Width="500" Height="32"  FontSize="12" />
 <ListBox  Name="FilterList"                                  XPos="325" YPos="20"  Width="120" Height="190" Border="1"          Events="true" Multi="false" />
-<Text     Name="PlayerGold"         Text="Your Gold"         XPos="302" YPos="250" Width="208" Height="32"  FontSize="16" />
-<Text     Name="ShiftHeader"        Text="TransferItem(s)"   XPos="330" YPos="214" Width="150" Height="68"  FontSize="18" />
+<Text     Name="PlayerGold"         Text="Your Gold"         XPos="302" YPos="260" Width="208" Height="32"  FontSize="16" />
+<Text     Name="ShiftHeader"        Text="TransferItem(s)"   XPos="330" YPos="210" Width="150" Height="68"  FontSize="18" />
+<Checkbox Name="AutoUseItems"   Text="Autouse Consumables"   XPos="325" YPos="235" Width="16"  Height="16"	FontSize="12"/>
 <Button   Name="ShiftLeftButton"    Image="ShiftLeft"        XPos="270" YPos="200" Width="48"  Height="48"  Transparency="true" Scale="true" />
 <Button   Name="ShiftRightButton"   Image="ShiftRight"       XPos="450" YPos="200" Width="48"  Height="48"  Transparency="true" Scale="true" />
 <Text     Name="ItemDesc"           Text=""                  XPos="266" YPos="282" Width="236" Height="174" FontSize="10" />
+
 <Image    Name="IndicateLeft"       File="imgArrowLeft.png"  XPos="261" YPos="466" Width="44"  Height="60" />
 <Button   Name="EquipLeftButton"    Image="Equip"            XPos="278" YPos="464" Width="80"  Height="32"  Transparency="true" Scale="true" />
 <Button   Name="UnequipLeftButton"  Image="Unequip"          XPos="278" YPos="496" Width="80"  Height="32"  Transparency="true" Scale="true" />

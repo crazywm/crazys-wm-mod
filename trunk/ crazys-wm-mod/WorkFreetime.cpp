@@ -247,7 +247,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int DayNight, str
 		}
 		else if (roll_b <= 38) //hobby
 		{
-			if (g_Girls.HasTrait(girl, "Nymphomaniac") && g_Girls.GetStat(girl, STAT_LIBIDO) > 80))
+			if (g_Girls.HasTrait(girl, "Nymphomaniac") && g_Girls.GetStat(girl, STAT_LIBIDO) > 80)
 			{
 				message += girlName + " went out looking to get laid.\n";
 			}
