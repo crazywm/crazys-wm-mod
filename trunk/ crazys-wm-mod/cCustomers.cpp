@@ -45,7 +45,7 @@ void cCustomers::GetCustomer(sCustomer& customer, sBrothel * brothel)
 {
 
 	// It may be a group of people looking for group sex (5% chance)
-	customer.m_Amount = (g_Dice % 100) + 1;
+	customer.m_Amount = g_Dice.d100();
 	if (customer.m_Amount <= 5) // changed to bring to documented 5%, consider rasing to 10 or 15, was 4. -PP
 	{
 		customer.m_IsWoman = 0;

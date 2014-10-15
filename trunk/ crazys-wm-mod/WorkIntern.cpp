@@ -46,96 +46,92 @@ extern cGold g_Gold;
 // `J` Clinic Job - Staff
 bool cJobManager::WorkIntern(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
+	string message = "";
+	stringstream ss;
+	string girlName = girl->m_Realname;
+
 	if (g_Girls.HasTrait(girl, "AIDS"))
 	{
-		stringstream ss;
-		ss << "Health laws prohibit anyone with AIDS from working in the Medical profession so " <<
-			girl->m_Realname << " was sent to the waiting room.";
+		ss << "Health laws prohibit anyone with AIDS from working in the Medical profession so " << girl->m_Realname << " was sent to the waiting room.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
 		girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
-		return true;
+		return false;
 	}
 
-	cTariff tariff;
-	string message = "";
+	if (Preprocessing(ACTION_WORKINTERN, girl, brothel, DayNight, summary, message)) return true;
 
-	if(Preprocessing(ACTION_WORKNURSE, girl, brothel, DayNight, summary, message))
-		return true;
-	stringstream ss;
-	ss.str(message);
+	cConfig cfg;
+	int enjoy = 0, wages = 0, skill = 0, train = 0;
+	double roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
 
-	double roll_a = g_Dice % 100; //this is used to determine gain amount
-	int skill = 0;
-	     if (roll_a <= 5){ skill = 5; }
-	else if (roll_a <= 15){ skill = 4; }
-	else if (roll_a <= 30){ skill = 3; }
-	else if (roll_a <= 60){ skill = 2; }
-	else                  { skill = 1; }
-	if (g_Girls.HasTrait(girl, "Quick Learner"))	{ skill += 1; }
+	ss << gettext("She trains in the Medical field.\n\n");
+
+	/* */if (roll_a <= 5)	skill = 7;
+	else if (roll_a <= 15)	skill = 6;
+	else if (roll_a <= 30)	skill = 5;
+	else if (roll_a <= 60)	skill = 4;
+	else /*             */	skill = 3;
+	/* */if (g_Girls.HasTrait(girl, "Quick Learner"))	{ skill += 2; }
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; }
 
-	ss << gettext("She trains to become a nurse for the day.\n\n");
-	int train = 0;
 	int tmed = g_Girls.GetSkill(girl, SKILL_MEDICINE);		// train = 1
-	int tint = g_Girls.GetStat(girl, STAT_INTELLIGENCE);		// train = 2
-	int tcha = g_Girls.GetStat(girl, STAT_CHARISMA);	// train = 3
-	double roll_b = g_Dice % 100;
+	int tint = g_Girls.GetStat(girl, STAT_INTELLIGENCE);	// train = 2
+	int tcha = g_Girls.GetStat(girl, STAT_CHARISMA);		// train = 3
 	do{		// `J` New method of selecting what job to do
-		     if (roll_b < 30 && tmed < 100)	train = 1;
-		else if (roll_b < 60 && tint < 100)	train = 2;
-		else if (roll_b < 80 && tcha < 100)	train = 3;
+		/* */if (roll_b < 40 && tmed < 100)		train = 1;	// medicine
+		else if (roll_b < 70 && tint < 100)		train = 2;	// intelligence
+		else if (roll_b < 100 && tcha < 100)	train = 3;	// charisma
 		roll_b -= 30;
 	} while (train == 0 && roll_b > 0);
 
-	if (train == 0)	// no training today
+	if (train == 0 && girl->medicine() > 70 && girl->intelligence() > 70)
 	{
-		ss << gettext("There is nothing more she can learn here so she takes the rest of the day off.");
-		girl->m_NightJob = girl->m_DayJob = JOB_CLINICREST;
+		ss << girlName << " has completed her Internship and has been promoted to ";
+		if (girl->is_slave())	{ ss << "Nurse.";	girl->m_DayJob = girl->m_NightJob = JOB_NURSE; }
+		else /*            */	{ ss << "Doctor.";	girl->m_DayJob = girl->m_NightJob = JOB_DOCTOR; }
+		return false;
 	}
-
 	if (train == 1)
 	{
 		ss << gettext("She learns how to work with medicine better.\n");
-		ss << gettext("She managed to gain ") << skill << gettext(" medicine skill.\n\n");
+		ss << gettext("She managed to gain ") << skill << gettext(" Medicine skill.\n\n");
 		g_Girls.UpdateSkill(girl, SKILL_MEDICINE, skill);
 	}
+	else g_Girls.UpdateSkill(girl, SKILL_MEDICINE, g_Dice % 2);
 	if (train == 2)
 	{
 		ss << gettext("She got smarter today.\n");
 		ss << gettext("She managed to gain ") << skill << gettext(" Intelligence.\n\n");
 		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, skill);
 	}
+	else g_Girls.UpdateSkill(girl, STAT_INTELLIGENCE, g_Dice % 2);
 	if (train == 3)
 	{
-		ss << gettext("She got more charismatic today.\n\n");
+		ss << gettext("She got more charismatic today.\n");
 		ss << gettext("She managed to gain ") << skill << gettext(" Charisma.\n\n");
 		g_Girls.UpdateStat(girl, STAT_CHARISMA, skill);
 	}
-	
-	int roll = g_Dice%100;
+	else g_Girls.UpdateSkill(girl, STAT_CHARISMA, g_Dice % 2);
+
 	//enjoyed the work or not
-	if (roll <= 5)
+	/* */if (roll_c <= 10)	{ enjoy -= g_Dice % 3 + 1;	ss << "Some of the patrons abused her during the shift."; }
+	else if (roll_c >= 90)	{ enjoy += g_Dice % 3 + 1;	ss << "She had a pleasant time working."; }
+	else /*             */	{ enjoy += g_Dice % 2;		ss << "Otherwise, the shift passed uneventfully."; }
+
+	if ((girl->is_slave() && !cfg.initial.slave_pay_outofpocket()))
 	{
-		message += " \nSome of the patrons abused her during the shift.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKNURSE, -1, true);
-	}
-	else if (roll <= 25) {
-		message += " \nShe had a pleasant time working.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKNURSE, +3, true);
+		wages = 0;
 	}
 	else
 	{
-		message += " \nOtherwise, the shift passed uneventfully.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKNURSE, +1, true);
+		wages = 25 + (skill * 5); // `J` Pay her more if she learns more
 	}
 
-	
-		
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, DayNight);
-	girl->m_Pay = 25 + (skill*5); // `J` Pay her more if she learns more
+	girl->m_Pay = wages;
 
 	// Improve stats
-	int xp = 5 + skill, libido = int(1 + skill/2);
+	int xp = 5 + skill, libido = int(1 + skill / 2);
 
 	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
@@ -144,11 +140,12 @@ bool cJobManager::WorkIntern(sGirl* girl, sBrothel* brothel, int DayNight, strin
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
-	//gain traits
-	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, ACTION_WORKNURSE, "Dealing with patients and talking with them about their problems has made " + girl->m_Realname + " more Charismatic.", DayNight != 0);
 
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKINTERN, enjoy, true);
+	//gain traits
+	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, ACTION_WORKINTERN, "Dealing with patients and talking with them about their problems has made " + girl->m_Realname + " more Charismatic.", DayNight != 0);
 	//lose traits
-	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 20, ACTION_WORKNURSE, girl->m_Realname + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", DayNight != 0);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 30, ACTION_WORKINTERN, girl->m_Realname + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", DayNight != 0);
 
 	return false;
 }

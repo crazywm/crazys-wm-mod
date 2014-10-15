@@ -20,6 +20,7 @@
    <Effect What="Trait" Name="AIDS" Amount="0" />
    <Effect What="Trait" Name="Chlamydia" Amount="0" />
    <Effect What="Trait" Name="Syphilis" Amount="0" />
+   <Effect What="Trait" Name="Herpes"                Amount="0"    />
    <Effect What="Trait" Name="Broken Will" Amount="0" />
    <Effect What="Trait" Name="Meek" Amount="0" />
    <Effect What="Trait" Name="Dependant" Amount="0" />

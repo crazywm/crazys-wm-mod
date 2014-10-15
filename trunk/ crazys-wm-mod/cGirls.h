@@ -64,7 +64,7 @@ public:
 	virtual bool RegainVirginity(sGirl* girl, bool temp = false, bool removeitem = false, bool remember = false) = 0;
 	virtual bool CheckVirginity(sGirl* girl) = 0;
 	virtual void UpdateTempSkill(sGirl* girl, int skill, int amount) = 0;	// updates a skill temporarily
-	virtual void UpdateTempStat(sGirl* girl, int stat, int amount) = 0;
+	virtual void UpdateTempStat(sGirl* girl, int stat, int amount, bool usetraits=true) = 0;
 };
 extern cAbstractGirls *g_GirlsPtr;
 
@@ -867,8 +867,8 @@ public:
 	int GetStat(sGirl* girl, int stat);
 	void SetStat(sGirl* girl, int stat, int amount);
 	void UpdateStat(sGirl* girl, int stat, int amount, bool usetraits = true);	// updates a stat
-	void UpdateStatMod(sGirl* girl, int stat, int amount);	// updates a stat
-	void UpdateTempStat(sGirl* girl, int stat, int amount);	// updates a stat temporarily
+	void UpdateStatMod(sGirl* girl, int stat, int amount, bool usetraits = true);	// updates a stat
+	void UpdateTempStat(sGirl* girl, int stat, int amount, bool usetraits = true);	// updates a stat temporarily
 
 	int GetSkill(sGirl* girl, int skill);
 	void SetSkill(sGirl* girl, int skill, int amount);

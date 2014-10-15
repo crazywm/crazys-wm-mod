@@ -1452,7 +1452,7 @@ void cGangManager::UpdateGangs()
 
 	// update goons combat status
 	int cost = 0;
-	for (gang = m_GangStart; gang; gang = gang->m_Next) 
+	for (gang = m_GangStart; gang; gang = gang->m_Next)
 	{
 		gang->m_Combat = false;
 		gang->m_Events.Clear();
@@ -1502,7 +1502,7 @@ void cGangManager::UpdateGangs()
 			continue;
 		}
 
-		switch (currentGang->m_MissionID) 
+		switch (currentGang->m_MissionID)
 		{
 		case MISS_GUARDING:		// doesn't need updating
 			currentGang->m_Events.AddMessage(gettext("This gang is guarding."), IMGTYPE_PROFILE, EVENT_GANG);
@@ -1512,7 +1512,7 @@ void cGangManager::UpdateGangs()
 			break;
 		case MISS_SABOTAGE:
 			sabotage_mission(currentGang);
-			if (currentGang->m_Num == 0) 
+			if (currentGang->m_Num == 0)
 			{
 				sGang* temp = currentGang->m_Next;
 				RemoveGang(currentGang);
@@ -1522,7 +1522,7 @@ void cGangManager::UpdateGangs()
 			break;
 
 		case MISS_CAPTUREGIRL:
-			if (recapture_mission(currentGang) == true) 
+			if (recapture_mission(currentGang) == true)
 			{
 				currentGang = currentGang->m_Next;
 				continue;
@@ -1906,7 +1906,7 @@ void cGangManager::UpdateGangs()
 			message += currentGang->m_Name;
 			message += ", ";
 
-			if ((g_Dice % 101) < 35)
+			if (g_Dice.percent(35))
 			{
 				sGirl* girl = g_Girls.GetRandomGirl();
 				if (girl)
@@ -1926,7 +1926,7 @@ void cGangManager::UpdateGangs()
 					message += gettext("Your men find a girl, ");
 					message += girl->m_Name;
 					message += gettext("  and ");
-					if (g_Dice % 100 <= currentGang->m_Stats[STAT_CHARISMA])	// convince her
+					if (g_Dice.percent(currentGang->m_Stats[STAT_CHARISMA]))	// convince her
 					{
 						message += gettext("convince her that she should work for you.");
 						m_Dungeon->AddGirl(girl, DUNGEON_GIRLKIDNAPPED);
@@ -1936,10 +1936,8 @@ void cGangManager::UpdateGangs()
 						girl->m_Stats[STAT_OBEDIENCE] = 0;
 						message += gettext("She struggles against the net your men use, but it is pointless.  She is in your dungeon now.");
 						m_Dungeon->AddGirl(girl, DUNGEON_GIRLKIDNAPPED);
-						if (m_NumNets > 0)
-							m_NumNets--;
-						else
-							g_Gold.consumable_cost(5);
+						if (m_NumNets > 0) m_NumNets--;
+						else g_Gold.consumable_cost(5);
 					}
 					else if (g_Brothels.FightsBack(girl))	// kidnap her
 					{
@@ -2114,7 +2112,7 @@ void cGangManager::UpdateGangs()
 				message += buffer;
 				message += gettext(" gold");
 
-				while ((g_Dice % 100) + 1 < 60)
+				while (g_Dice.d100() < 60)
 				{
 					bool quit = false;
 					bool add = false;
@@ -2123,7 +2121,7 @@ void cGangManager::UpdateGangs()
 					sInventoryItem* temp;
 					do { temp = g_InvManager.GetRandomItem(); } while (!temp);
 					//end mod
-					while (temp->m_Rarity < RARITYSHOP25)
+					while (temp->m_Rarity < RARITYSHOP25 || temp->m_Rarity > RARITYCATACOMB01) // `J` added upper limit
 						temp = g_InvManager.GetRandomItem();
 					switch (temp->m_Rarity)
 					{
@@ -2131,19 +2129,19 @@ void cGangManager::UpdateGangs()
 						add = true;
 						break;
 					case RARITYSHOP05:
-						if ((g_Dice % 100) + 1 <= 15)  // 15% or 5%?
+						if (g_Dice.percent(20))
 							add = true;
 						break;
 					case RARITYCATACOMB15:
-						if ((g_Dice % 100) + 1 <= 15)
+						if (g_Dice.percent(15))
 							add = true;
 						break;
 					case RARITYCATACOMB05:
-						if ((g_Dice % 100) + 1 <= 5)
+						if (g_Dice.percent(5))
 							add = true;
 						break;
 					case RARITYCATACOMB01:
-						if ((g_Dice % 100) + 1 <= 1)
+						if (g_Dice.percent(1))
 							add = true;
 						break;
 						/*
@@ -2151,18 +2149,10 @@ void cGangManager::UpdateGangs()
 						 */
 					case RARITYCOMMON:
 					case RARITYSHOP50:
-						g_LogFile.ss() << "Warning: unexpected rarity " << temp->m_Rarity << " in cGangManager::UpdateGangs";
-						g_LogFile.ssend();
-						break;
-						/*
-						 *						I don't know if these are supposed to not happen
-						 *						(therefor reducing the chances of a catacomb item)
-						 *						or if they aren't accounted for by the while loop above
-						 *
-						 *						assuming the latter for now. silently ignore
-						 */
 					case RARITYSCRIPTONLY:
 					case RARITYSCRIPTORREWARD:
+						g_LogFile.ss() << "Warning: unexpected rarity " << temp->m_Rarity << " in cGangManager::UpdateGangs";
+						g_LogFile.ssend();
 						break;
 					default:
 						g_LogFile.ss() << "Warning: cGangManager::UpdateGangs: " << "unexpected enum in switch";

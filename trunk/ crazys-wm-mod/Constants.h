@@ -445,7 +445,8 @@ const unsigned char ACTION_WORKSTRIP		= 23;
 const unsigned char ACTION_WORKMILK 		= 24;
 const unsigned char ACTION_WORKMASSUSSE		= 25;
 const unsigned char ACTION_WORKFARM			= 26;
-const unsigned char ACTION_GENERAL          = 27; // ACTION_GENERAL must be the last sction type
+const unsigned char ACTION_WORKINTERN		= 27;
+const unsigned char ACTION_GENERAL          = 28; // ACTION_GENERAL must be the last sction type
 
 const unsigned char NUM_ACTIONTYPES = ACTION_GENERAL + 1;
 
@@ -485,7 +486,8 @@ const int IMGTYPE_BATH		= 30;
 const int IMGTYPE_NURSE		= 31;
 const int IMGTYPE_FORMAL	= 32;
 const int IMGTYPE_SHOP		= 33;
-const int IMGTYPE_PREGNANT	= 34;	// IMGTYPE_PREGNANT needs to be the last of the nonpregnant image types.
+const int IMGTYPE_MAGIC		= 34;
+const int IMGTYPE_PREGNANT	= 35;	// IMGTYPE_PREGNANT needs to be the last of the nonpregnant image types.
 
 /*
 *	`J` All image types can have a pregnant alternative now
@@ -528,6 +530,7 @@ const int IMGTYPE_PREGBATH		= IMGTYPE_BATH		+ PREG_OFFSET;
 const int IMGTYPE_PREGNURSE		= IMGTYPE_NURSE		+ PREG_OFFSET;
 const int IMGTYPE_PREGFORMAL	= IMGTYPE_FORMAL	+ PREG_OFFSET;
 const int IMGTYPE_PREGSHOP		= IMGTYPE_SHOP		+ PREG_OFFSET;
+const int IMGTYPE_PREGMAGIC		= IMGTYPE_MAGIC		+ PREG_OFFSET;
 
 const int NUM_IMGTYPES = IMGTYPE_PREGNANT + PREG_OFFSET; // `J` All image types can have a pregnant variation (except pregnant-pregnant)
 

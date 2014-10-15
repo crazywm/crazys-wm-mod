@@ -46,29 +46,29 @@ extern cGold g_Gold;
 // `J` Clinic Job - Staff
 bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
-	string message = ""; string girlName = girl->m_Realname;
+	string message = ""; 
+	stringstream ss;
+	string girlName = girl->m_Realname;
 
 	if (g_Girls.HasTrait(girl, "AIDS"))
 	{
-		stringstream ss;
-		ss << "Health laws prohibit anyone with AIDS from working in the Medical profession so " <<
-			girl->m_Realname << " was sent to the waiting room.";
+		ss << "Health laws prohibit anyone with AIDS from working in the Medical profession so " << girlName << " was sent to the waiting room.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
 		girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
-		return true;
+		return false;
 	}
+	if (Preprocessing(ACTION_WORKNURSE, girl, brothel, DayNight, summary, message)) return true;
 
-	if (Preprocessing(ACTION_WORKNURSE, girl, brothel, DayNight, summary, message))
-		return true;
-
-	// put that shit away, you'll scare off the patients!
-	g_Girls.UnequipCombat(girl);
-
-
+	cConfig cfg;
+	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the patients!
 
 	int hand = false, sex = false, les = false;
-	int wages = 25, work = 0;
+	int wages = 25, tips = 0, enjoy = 0;
 	int imagetype = IMGTYPE_NURSE;
+
+	// this will be added to the clinic's code eventually - for now it is just used for her pay
+	int patients = 0;			// `J` how many patients the Doctor can see in a shift
+
 	message += "She worked as a nurse.";
 
 	int roll = g_Dice % 100;
@@ -98,7 +98,7 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, int DayNight, string
 
 	if (jobperformance >= 245)
 	{
-		message += " She must be the perfect nurse patients go on and on about her and always come to see her when she works.\n\n";
+		message += " She must be the perfect nurse, patients go on and on about her and always come to see her when she works.\n\n";
 		wages += 155;
 		if (roll <= 20)
 		{
@@ -249,109 +249,151 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, int DayNight, string
 
 	//try and add randomness here
 	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85 && g_Dice.percent(20))
-	{ message += "Stunned by her beauty a customer left her a great tip.\n\n"; wages += 25; }
+	{
+		tips += 25;
+		message += "Stunned by her beauty a customer left her a great tip.\n\n";
+	}
 
 	if (g_Girls.HasTrait(girl, "Clumsy") && g_Dice.percent(20))
-		{ message += "Her clumsy nature caused her to spill some medicine everywhere.\n"; wages -= 15; }
+	{
+		wages -= 15;
+		message += "Her clumsy nature caused her to spill some medicine everywhere.\n";
+	}
 
 	if (g_Girls.HasTrait(girl, "Pessimist") && g_Dice.percent(5))
 	{
 		if (jobperformance < 125)
-			{ message += "Her pessimistic mood depressed the patients making them tip less.\n"; wages -= 10; }
+		{
+			wages -= 10;
+			message += "Her pessimistic mood depressed the patients making them tip less.\n";
+		}
 		else
-			{ message += girlName + " was in a poor mood so the patients gave her a bigger tip to try and cheer her up.\n"; wages += 10; }
+		{
+			tips += 10;
+			message += girlName + " was in a poor mood so the patients gave her a bigger tip to try and cheer her up.\n";
+		}
 	}
 
 	if (g_Girls.HasTrait(girl, "Optimist") && g_Dice.percent(20))
 	{
 		if (jobperformance < 125)
-			{ message += girlName + " was in a cheerful mood but the patients thought she needed to work more on her services.\n"; wages -= 10; }
+		{
+			wages -= 10;
+			message += girlName + " was in a cheerful mood but the patients thought she needed to work more on her services.\n";
+		}
 		else
-			{ message += "Her optimistic mood made patients cheer up increasing the amount they tip.\n"; wages += 10; }
+		{
+			tips += 10;
+			message += "Her optimistic mood made patients cheer up increasing the amount they tip.\n";
+		}
 	}
 
-	if (g_Girls.GetStat(girl, STAT_INTELLIGENCE) < 55 && g_Dice.percent(30))
-		{ message += "An elderly fellow managed to convince " + girlName + " that her touch can heal! She ended up giving him a hand job!\n"; hand = true; }
+	if (g_Girls.GetStat(girl, STAT_INTELLIGENCE) < 45 && g_Dice.percent(30))
+	{
+		hand = true;
+		message += "An elderly fellow managed to convince " + girlName + " that her touch can heal! She ended up giving him a hand job!\n"; 
+	}
 
-	if (g_Girls.HasTrait(girl, "Nymphomaniac") &&  !g_Girls.HasTrait(girl, "Virgin") &&  !g_Girls.HasTrait(girl, "Lesbian") && g_Dice.percent(30))//this makes it easier to show up not many girls will have striaght or bi traits yet
+	if (g_Girls.HasTrait(girl, "Nymphomaniac") && !g_Girls.HasTrait(girl, "Virgin")
+		&& !g_Girls.HasTrait(girl, "Lesbian") && g_Dice.percent(30))
+		//this makes it easier to show up not many girls will have striaght or bi traits yet
 	{
 		if (g_Girls.GetStat(girl, STAT_LIBIDO) > 65)
-			{
-				message += "When giving a sponge bath to one of her male patients she couldn't look away from his enormous manhood. The man took advantage and fucked her brains out!\n";
-				wages += 50; sex = true;
-			}
+		{
+			tips += 50; 
+			sex = true;
+			enjoy += 1;
+			message += "When giving a sponge bath to one of her male patients she couldn't look away from his enormous manhood. The man took advantage and fucked her brains out!\n";
+		}
 		else
-			{ message += "When giving a sponge bath to one of her male patients she couldn't look away from his enormous manhood. But she wasn't in the mood so she left.\n"; }
+		{
+			message += "When giving a sponge bath to one of her male patients she couldn't look away from his enormous manhood. But she wasn't in the mood so she left.\n";
+		}
 	}
 
-	if (g_Girls.HasTrait(girl, "Lesbian") && g_Girls.HasTrait(girl, "Aggressive") && g_Girls.GetStat(girl, STAT_LIBIDO) > 65 && g_Dice.percent(10))
-		{ message += "When giving a sponge bath to one of her female patients she couldn't help herself and took advantage of the situation.\n"; les = true; }
+	if (g_Girls.HasTrait(girl, "Lesbian") && g_Girls.HasTrait(girl, "Aggressive") && 
+		g_Girls.GetStat(girl, STAT_LIBIDO) > 65 && g_Dice.percent(10))
+	{ 
+		les = true;
+		enjoy += 1;
+		message += "When giving a sponge bath to one of her female patients she couldn't help herself and took advantage of the situation.\n";
+	}
 
 
 	//enjoyed the work or not
 	if (roll <= 5)
-	{ message += "\nSome of the patrons abused her during the shift."; work -= 1; }
+	{
+		enjoy -= g_Dice % 3 + 1;
+		jobperformance = int(jobperformance * 0.9);
+		message += "\nSome of the patrons abused her during the shift.";
+	}
 	else if (roll <= 25) 
-	{ message += "\nShe had a pleasant time working."; work += 3; }
+	{
+		enjoy += g_Dice % 3 + 1;
+		jobperformance = int(jobperformance * 1.1);
+		message += "\nShe had a pleasant time working.";
+	}
 	else
-	{ message += "\nOtherwise, the shift passed uneventfully."; work += 1; }
-
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKNURSE, work, true);
-
+	{
+		enjoy += g_Dice % 2;
+		message += "\nOtherwise, the shift passed uneventfully.";
+	}
 
 	if (sex)
 	{
-		if (roll <= 50)
-		{ imagetype = IMGTYPE_SEX; g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, 2); }
-		else
-		{ imagetype = IMGTYPE_ANAL; g_Girls.UpdateSkill(girl, SKILL_ANAL, 2); }
+		if (roll <= 50) { imagetype = IMGTYPE_SEX; g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, 2); }
+		else /*      */	{ imagetype = IMGTYPE_ANAL; g_Girls.UpdateSkill(girl, SKILL_ANAL, 2); }
 		brothel->m_Happiness += 100;
 		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -20);
 		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +3, true);
-		// work out the pay between the house and the girl
-		wages += g_Girls.GetStat(girl, STAT_ASKPRICE);
-		int roll_max = (g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA));
-		roll_max /= 4;
-		wages += 50 + g_Dice%roll_max;
 	}
 	else if (hand)
 	{
 		brothel->m_Happiness += (g_Dice % 70) + 60;
-		// work out the pay between the house and the girl
-		int roll_max = (g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA));
-		roll_max /= 4;
-		wages += 25 + g_Dice%roll_max;
 		g_Girls.UpdateSkill(girl, SKILL_HANDJOB, 2);
 		imagetype = IMGTYPE_HAND;
 	}
 	else if (les)
-	{ imagetype = IMGTYPE_LESBIAN; g_Girls.UpdateSkill(girl, SKILL_LESBIAN, 2); }
+	{
+		brothel->m_Happiness += (g_Dice % 70) + 30;
+		imagetype = IMGTYPE_LESBIAN;
+		g_Girls.UpdateSkill(girl, SKILL_LESBIAN, 2); 
+	}
 
+	if ((girl->is_slave() && !cfg.initial.slave_pay_outofpocket()))
+	{
+		jobperformance = int(jobperformance * 0.9);
+		patients += jobperformance / 5;		// `J` 1 patient per 5 point of performance
+		wages = 0;
+	}
+	else
+	{
+		patients += jobperformance / 5;		// `J` 1 patient per 5 point of performance
+		wages += patients*2;				// `J` pay her 2 for each patient you send to her
+	}
 
 	girl->m_Events.AddMessage(message, imagetype, DayNight);
-	int roll_max = (g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetSkill(girl, SKILL_MEDICINE));
-	roll_max /= 4;
-	wages += 10 + g_Dice%roll_max;
-
-	int patients = g_Clinic.GetNumGirlsOnJob(0, JOB_GETHEALING, DayNight) +
-		g_Clinic.GetNumGirlsOnJob(0, JOB_GETABORT, DayNight) +
-		g_Clinic.GetNumGirlsOnJob(0, JOB_PHYSICALSURGERY, DayNight) +
-		g_Clinic.GetNumGirlsOnJob(0, JOB_LIPO, DayNight) +
-		g_Clinic.GetNumGirlsOnJob(0, JOB_BREASTREDUCTION, DayNight) +
-		g_Clinic.GetNumGirlsOnJob(0, JOB_BOOBJOB, DayNight) +
-		g_Clinic.GetNumGirlsOnJob(0, JOB_VAGINAREJUV, DayNight) +
-		g_Clinic.GetNumGirlsOnJob(0, JOB_FACELIFT, DayNight) +
-		g_Clinic.GetNumGirlsOnJob(0, JOB_ASSJOB, DayNight);
-
-
-	wages += 5 * patients;		// `J` pay her 5 for each patient you send to her		
-
 	if (wages < 0)	wages = 0;
+	g_Clinic.m_Nurse_Patient_Time += patients;
+	girl->m_Tips = tips;
 	girl->m_Pay = wages;
+
+	/* `J` this will be a place holder until a better payment system gets done
+	*  this does not take into account any of your girls in surgery
+	*/
+	int earned = 0;
+	for (int i = 0; i < patients; i++)
+	{
+		earned += g_Dice % 45 + 5; // 5-50 gold per customer
+	}
+	brothel->m_Finance.clinic_income(earned);
+	ss.str("");
+	ss << girlName << " earned " << earned << " gold from taking care of " << patients << " patients.";
+	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, DayNight);
 
 
 	// Improve stats
-	int xp = 10 + patients * 2, libido = 1, skill = 2 + patients / 3;
+	int xp = 10 + patients/2, libido = 1, skill = 2 + patients / 3;
 
 	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
@@ -365,11 +407,11 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, int DayNight, string
 	g_Girls.UpdateSkill(girl, SKILL_MEDICINE, g_Dice%skill + 1);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKNURSE, enjoy, true);
 	//gain traits
 	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, ACTION_WORKNURSE, "Dealing with patients and talking with them about their problems has made " + girlName + " more Charismatic.", DayNight != 0);
-
 	//lose traits
-	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 20, ACTION_WORKNURSE, girlName + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", DayNight != 0);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 30, ACTION_WORKNURSE, girlName + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", DayNight != 0);
 
 	return false;
 }

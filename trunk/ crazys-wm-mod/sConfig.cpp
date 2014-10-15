@@ -275,6 +275,7 @@ void sConfigData::get_income_factors(TiXmlElement *el)
 	if (pt = el->Attribute("BarmaidIncome"))		get_att(el, "BarmaidIncome",		&in_fact.barmaid_work);
 	if (pt = el->Attribute("SlaveSales"))			get_att(el, "SlaveSales",			&in_fact.slave_sales);
 	if (pt = el->Attribute("ItemSales"))			get_att(el, "ItemSales",			&in_fact.item_sales);
+	if (pt = el->Attribute("ClinicIncome"))			get_att(el, "ClinicIncome",			&in_fact.clinic_income);
 }
 
 void sConfigData::get_expense_factors(TiXmlElement *el)
@@ -453,6 +454,7 @@ void sConfigData::set_defaults()
 	in_fact.barmaid_work			= 1.0;
 	in_fact.slave_sales				= 1.0;
 	in_fact.item_sales				= 1.0;
+	in_fact.clinic_income			= 1.0;
 	
     out_fact.training				= 0.0;
 	out_fact.actress_wages			= 0.0;

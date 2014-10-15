@@ -113,7 +113,9 @@ void cClinicManager::UpdateClinic()
 	
 	current->m_Finance.zero();
 	current->m_AntiPregUsed = 0;
-	
+	m_Doctor_Patient_Time = 0;
+	m_Nurse_Patient_Time = 0;
+
 	// Clear the girls' events from the last turn
 	sGirl* cgirl = current->m_Girls;
 	while(cgirl)
@@ -205,7 +207,7 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, int DayNight)
 
 	while (current)
 	{
-		current->m_Pay = current->m_Tips = totalPay = totalTips = totalGold = 0;
+		totalPay = totalTips = totalGold = 0;
 		refused = false;
 		girlName = current->m_Realname;
 		sum = EVENT_SUMMARY;

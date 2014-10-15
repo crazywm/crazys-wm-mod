@@ -413,7 +413,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int DayNight, str
 					else if (g_Girls.HasTrait(girl, "Nymphomaniac"))
 					{
 						message += girlName + " loves everything to do with sex so this is her type of movie.\n";
-						g_Girls.UpdateStat(girl, STAT_LIBIDO, 5); roll = 96;
+						g_Girls.UpdateTempStat(girl, STAT_LIBIDO, 5); roll = 96;
 						if (g_Girls.GetStat(girl, STAT_LIBIDO) >= 70)
 							{
 								message += "The movie started to turn her on so she started to pleasure herself. ";

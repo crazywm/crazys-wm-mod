@@ -865,10 +865,36 @@ Cleaned cScreenGangs.cpp and added Buy1 and Buy10 buttons to potions and nets
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.08
 !!!!!!!!!!!!!!!!!!!! pushed to SVN - r116
 
+###  Changes 10/13-14/2014
+I made any attempt to modify Health, Happiness, Tiredness, Age, EXP or Level affect the main stat only.
+Updated brothel beast career job 
+ - added chances for the girl adding beasts 
+ - included into SlavePayOutOfPocket group
+ - uses Animalhandling instead of Beastiality
+Changed hardcoded random girl unlisted trait chance from 20% to 1%
+Updated the 3 brothel whore jobs 
+ - added in customer's secondary sex preference
+ - added girl->m_Tips 
+ - increased trait gain thresholds (20 is way too low)
+Updated customers a little
+Updated cleaning jobs again.
+ - added trait modifiers
+ - all cleaner jobs (except stagehand) are basically the same
+ - added playtime for cleaners who clean more than twice that buildings filthiness
+Added image type "Magic" and fixed misordered image type texts
+Updated WorkPersonalTraining.cpp increasing skill gain chances
+Added number of rejected customer count to brothel + whore jobs 
+Changed Intern to be training for "the Medical field" instead of just Nurseing
+ - Interns get promoted to Doctor if freegirl or Nurse if slave
+ - Increased intern main skill gain from 3-7 to 2-14
+ - Interns can gain 1 point in the 2 other skills 
+Updated Doctor and Nurse jobs
+Added m_Doctor_Patient_Time and m_Nurse_Patient_Time to track number of patients the clinic can handle
+Added clinic_income to track how much money the clinic makes.
+Added temporary clinic income for doctor and nurses - (need to make this comprehensive for the entire clinic.)
 
-
-
-
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.09
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r117
 
 
 

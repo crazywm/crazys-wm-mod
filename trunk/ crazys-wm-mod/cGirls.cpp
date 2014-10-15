@@ -753,8 +753,8 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 				if (test == "Mind Fucked")			c = (arena) ? 0 : 5;
 				if (test == "Malformed")			c = (arena) ? 5 : 5;
 				if (test == "Retarded")				c = (arena) ? 2 : 5;
-
-				if (c == -1) c = 20; // set all unlisted to base 20%
+				
+				if (c == -1) c = 1; // set all unlisted to base 1%
 			}
 			if (c > 0)	// after the checks, if c was set, add the trait to the girl
 			{
@@ -1591,7 +1591,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)
 	int massusse = (jr_cha / 2 + jr_bea / 2 + jr_ser / 2 + jr_med / 2);
 	int brothelstrip = (jr_cha / 4 + jr_bea / 4 + jr_stp / 2 + jr_per);
 	int peep = (jr_cha / 2 + jr_bea / 2 + jr_stp / 2 + jr_per / 2);
-	int beastcare = (jr_int / 2 + jr_ser / 2 + jr_bst);
+	int beastcare = (jr_mag / 3 + jr_int / 3 + jr_ser / 3 + jr_anh);
 	// Studio Jobs
 	int director = (((jr_int - 50) / 10 + (jr_spi - 50) / 10 + jr_ser / 10) / 3 + jr_fam / 10 + jr_lev + jr_slave);
 	int promoter = (jr_ser / 3 + jr_cha / 6 + jr_bea / 10 + jr_int / 6 + jr_cnf / 10 + jr_fam / 4 + jr_lev / 2);
@@ -2603,22 +2603,15 @@ void cGirls::UpdateStat(sGirl* girl, int a_stat, int amount, bool usetraits)
 	}
 }
 
-void cGirls::UpdateStatMod(sGirl* girl, int stat, int amount)
+void cGirls::UpdateStatMod(sGirl* girl, int stat, int amount, bool usetraits)
 {
-	bool nomod = (stat == STAT_HEALTH || stat == STAT_HAPPINESS || stat == STAT_TIREDNESS
-		|| stat == STAT_AGE || stat == STAT_EXP
-		) ? true : false;
-	if (nomod)	girl->m_StatMods[stat] = 0; // some stats should not have mod or temp so set them to 0
-	if (amount >= 0)
+	if (stat == STAT_HEALTH || stat == STAT_HAPPINESS || stat == STAT_TIREDNESS || stat == STAT_AGE || stat == STAT_EXP || stat == STAT_LEVEL)
 	{
-		if (nomod)	girl->m_Stats[stat] = min(100, amount + girl->m_Stats[stat]);
-		else		girl->m_StatMods[stat] = min(100, amount + girl->m_StatMods[stat]);
+		UpdateStat(girl, stat, amount);
+		return;
 	}
-	else
-	{
-		if (nomod)	girl->m_Stats[stat] = max(0, amount + girl->m_Stats[stat]);
-		else		girl->m_StatMods[stat] = max(-100, amount + girl->m_StatMods[stat]);
-	}
+	if (amount >= 0)	girl->m_StatMods[stat] = min(100, amount + girl->m_StatMods[stat]);
+	else				girl->m_StatMods[stat] = max(-100, amount + girl->m_StatMods[stat]);
 }
 
 void cGirls::updateTempStats(sGirl* girl)	// Normalise to zero by 30% each week
@@ -2636,22 +2629,15 @@ void cGirls::updateTempStats(sGirl* girl)	// Normalise to zero by 30% each week
 	}
 }
 
-void cGirls::UpdateTempStat(sGirl* girl, int stat, int amount)
+void cGirls::UpdateTempStat(sGirl* girl, int stat, int amount, bool usetraits)
 {
-	bool nomod = (stat == STAT_HEALTH || stat == STAT_HAPPINESS || stat == STAT_TIREDNESS
-		|| stat == STAT_AGE || stat == STAT_EXP
-		) ? true : false;
-	if (nomod)	girl->m_TempStats[stat] = 0; // some stats should not have mod or temp so set them to 0
-	if (amount >= 0)
+	if (stat == STAT_HEALTH || stat == STAT_HAPPINESS || stat == STAT_TIREDNESS || stat == STAT_AGE || stat == STAT_EXP || stat == STAT_LEVEL)
 	{
-		if (nomod)	girl->m_Stats[stat] = min(100, amount + girl->m_Stats[stat]);
-		else		girl->m_TempStats[stat] = min(100, amount + girl->m_TempStats[stat]);
+		UpdateStat(girl, stat, amount);
+		return;
 	}
-	else
-	{
-		if (nomod)	girl->m_Stats[stat] = max(0, amount + girl->m_Stats[stat]);
-		else		girl->m_TempStats[stat] = max(-100, amount + girl->m_TempStats[stat]);
-	}
+	if (amount >= 0)	girl->m_TempStats[stat] = min(100, amount + girl->m_TempStats[stat]);
+	else				girl->m_TempStats[stat] = max(-100, amount + girl->m_TempStats[stat]);
 }
 
 // ----- Skill
@@ -6156,8 +6142,7 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 	}
 
 	girl->m_NumCusts += (int)customer->m_Amount;
-
-	if (group)
+	if (group && (customer->m_SexPref != SKILL_GROUP || customer->m_SexPref != SKILL_STRIP))
 	{
 		// the customer will be an average in all skills for the customers involved in the sex act
 		SexType = SKILL_GROUP;
@@ -6167,10 +6152,6 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 
 	// If the girls skill < 50 then it will be unsatisfying otherwise it will be satisfying
 	happymod = (GetSkill(girl, SexType) - 50) / 5;
-	/* `J` replaced with single check
-	if (GetSkill(girl, SexType) < 50)	happymod -= (100 - GetSkill(girl, SexType)) / 5;
-	else happymod += GetSkill(girl, SexType) / 5;
-	//*/
 
 	// If the girl is famous then he will be slightly happier
 	happymod += GetStat(girl, STAT_FAME) / 5;
@@ -6354,7 +6335,7 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 			UpdateStat(girl, STAT_SPIRIT, -3);
 			UpdateStat(girl, STAT_HEALTH, -3);
 		}
-		UpdateStat(girl, STAT_LIBIDO, -40);
+		UpdateTempStat(girl, STAT_LIBIDO, -20);
 		UpdateStat(girl, STAT_SPIRIT, -1);
 		STDchance += 40;
 		break;
@@ -6371,7 +6352,7 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 		contraception = girl->calc_pregnancy(customer, false, 0.75);
 		STDchance += (contraception ?3:30);
 
-		UpdateStat(girl, STAT_LIBIDO, -20);
+		UpdateTempStat(girl, STAT_LIBIDO, -10);
 		UpdateStat(girl, STAT_SPIRIT, -1);
 		break;
 
@@ -6388,7 +6369,7 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 		good = (customer->happiness() >= 60 && girl->happiness() >= 60);
 		contraception = girl->calc_pregnancy(customer, good);
 		STDchance += (contraception ? 5 : 50);
-		UpdateStat(girl, STAT_LIBIDO, -50);
+		UpdateTempStat(girl, STAT_LIBIDO, -30);
 		break;
 
 	case SKILL_ORALSEX:
@@ -6401,7 +6382,7 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 			//	UpdateStat(girl, STAT_HEALTH, -3);				// Removed... oral doesn't hurt unless you get herpes or something. --PP
 		}
 		STDchance += 20;
-		UpdateStat(girl, STAT_LIBIDO, -10);
+		UpdateTempStat(girl, STAT_LIBIDO, -5);
 		break;
 
 	case SKILL_TITTYSEX:
@@ -6413,7 +6394,7 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 			UpdateStat(girl, STAT_CONFIDENCE, -1);
 		}
 		STDchance += 5;
-		UpdateStat(girl, STAT_LIBIDO, -10);
+		UpdateTempStat(girl, STAT_LIBIDO, -5);
 		break;
 
 	case SKILL_HANDJOB:
@@ -6425,7 +6406,7 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 			UpdateStat(girl, STAT_CONFIDENCE, -1);
 		}
 		STDchance += 5;
-		UpdateStat(girl, STAT_LIBIDO, -10);
+		UpdateTempStat(girl, STAT_LIBIDO, -5);
 		break;
 
 	case SKILL_BEASTIALITY:
@@ -6446,7 +6427,7 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 			contraception = girl->calc_insemination(customer, good);
 			STDchance += (contraception ? 4 : 40);
 		}
-		UpdateStat(girl, STAT_LIBIDO, -40);
+		UpdateTempStat(girl, STAT_LIBIDO, -20);
 		break;
 
 	case SKILL_GROUP:
@@ -6463,11 +6444,11 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 		// adding a 50% bonus to the chance of pregnancy since there's more than one partner involved
 		contraception = girl->calc_pregnancy(customer, good, 1.5);
 		STDchance += ((4 + customer->m_Amount) * (contraception ? 1 : 10));
-		UpdateStat(girl, STAT_LIBIDO, -80);
+		UpdateTempStat(girl, STAT_LIBIDO, -40);
 		break;
 	case SKILL_LESBIAN:
-		STDchance += 10;
-		UpdateStat(girl, STAT_LIBIDO, -50);
+		STDchance += 5;
+		UpdateTempStat(girl, STAT_LIBIDO, -20);
 		break;
 
 	case SKILL_STRIP:
@@ -6481,7 +6462,7 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 			UpdateStat(girl, STAT_HEALTH, -3);
 		}
 		STDchance += 1;
-		UpdateStat(girl, STAT_LIBIDO, -5);
+		UpdateTempStat(girl, STAT_LIBIDO, -2);
 		break;
 	}
 
@@ -6530,6 +6511,7 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 	int enjoy = 1;
 	if (HasTrait(girl, "Nymphomaniac"))
 	{
+		UpdateTempStat(girl, STAT_LIBIDO, 15);		// she just had sex and she wants more
 		switch (SexType)
 		{
 		case SKILL_GROUP:			enjoy += 3; break;
@@ -10396,17 +10378,15 @@ cAImgList* cImgageListManager::LoadList(string name)
 		"Anal*.*g", "BDSM*.*g", "Sex*.*g", "Beast*.*g", "Group*.*g", "Les*.*g", "torture*.*g",
 		"Death*.*g", "Profile*.*g", "Combat*.*g", "Oral*.*g", "Ecchi*.*g", "Strip*.*g", "Maid*.*g", "Sing*.*g",
 		"Wait*.*g", "Card*.*g", "Bunny*.*g", "Nude*.*g", "Mast*.*g", "Titty*.*g", "Milk*.*g", "Hand*.*g",
-		// added but not used currently
-		"Foot*.*g", "Bed*.*g", "Farm*.*g", "Herd*.*g", "Cook*.*g", "Craft*.*g", "Swim*.*g", "Bath*.*g", "Nurse*.*g", "Formal*.*g", "Shop*.*g",
-
-		"Preg*.*g", "PregAnal*.*g", "PregBDSM*.*g", "PregSex*.*g", "pregbeast*.*g", "preggroup*.*g", "pregles*.*g", "pregtorture*.*g", "pregdeath*.*g",
-		"pregprofile*.*g", "pregcombat*.*g", "pregoral*.*g", "pregecchi*.*g", "pregstrip*.*g", "pregmaid*.*g",
-		"pregsing*.*g", "pregwait*.*g", "pregcard*.*g", "pregbunny*.*g", "pregnude*.*g", "pregmast*.*g",
-		"pregtitty*.*g", "pregmilk*.*g", "preghand*.*g",
-		// added but not used currently
-		"pregFoot*.*g", "pregBed*.*g", "pregFarm*.*g", "pregHerd*.*g", "pregCook*.*g", "pregCraft*.*g",
-		"pregSwim*.*g", "pregBath*.*g", "pregNurse*.*g", "pregFormal*.*g", "pregShop*.*g"
-
+		"Foot*.*g", "Bed*.*g", "Farm*.*g", "Herd*.*g", "Cook*.*g", "Craft*.*g", "Swim*.*g", "Bath*.*g", 
+		"Nurse*.*g", "Formal*.*g", "Shop*.*g", "Magic*.*g",
+		// pregnant varients
+		"Preg*.*g", "PregAnal*.*g", "PregBDSM*.*g", "PregSex*.*g", "pregbeast*.*g", "preggroup*.*g", "pregles*.*g", 
+		"pregtorture*.*g", "pregdeath*.*g", "pregprofile*.*g", "pregcombat*.*g", "pregoral*.*g", "pregecchi*.*g", 
+		"pregstrip*.*g", "pregmaid*.*g", "pregsing*.*g", "pregwait*.*g", "pregcard*.*g", "pregbunny*.*g", "pregnude*.*g", 
+		"pregmast*.*g", "pregtitty*.*g", "pregmilk*.*g", "preghand*.*g", "pregFoot*.*g", "pregBed*.*g", "pregFarm*.*g", 
+		"pregHerd*.*g", "pregCook*.*g", "pregCraft*.*g", "pregSwim*.*g", "pregBath*.*g", "pregNurse*.*g", "pregFormal*.*g",
+		"pregShop*.*g", "pregMagic*.*g"
 	};
 	int i = 0;
 
@@ -10455,21 +10435,15 @@ cAImgList* cImgageListManager::LoadList(string name)
 		"Anal*.ani", "BDSM*.ani", "Sex*.ani", "Beast*.ani", "Group*.ani", "Les*.ani", "torture*.ani",
 		"Death*.ani", "Profile*.ani", "Combat*.ani", "Oral*.ani", "Ecchi*.ani", "Strip*.ani", "Maid*.ani",
 		"Sing*.ani", "Wait*.ani", "Card*.ani", "Bunny*.ani", "Nude*.ani", "Mast*.ani", "Titty*.ani",
-		"Milk*.ani", "Hand*.ani", "Nurse*.ani", "Formal*.ani", "Shop*.ani",
-
-		// added but not used currently
-		"Foot*.ani", "Bed*.ani", "Farm*.ani", "Herd*.ani", "Cook*.ani", "Craft*.ani", "Swim*.ani", "Bath*.ani",
-
+		"Milk*.ani", "Hand*.ani", "Foot*.ani", "Bed*.ani", "Farm*.ani", "Herd*.ani", "Cook*.ani", 
+		"Craft*.ani", "Swim*.ani", "Bath*.ani", "Nurse*.ani", "Formal*.ani", "Shop*.ani", "Magic*.ani",
+		// pregnant varients
 		"Preg*.ani", "PregAnal*.ani", "PregBDSM*.ani", "PregSex*.ani", "pregbeast*.ani", "preggroup*.ani",
 		"pregles*.ani", "pregtorture*.ani", "pregdeath*.ani", "pregprofile*.ani", "pregcombat*.ani", "pregoral*.ani",
 		"pregecchi*.ani", "pregstrip*.ani", "pregmaid*.ani", "pregsing*.ani", "pregwait*.ani", "pregcard*.ani",
 		"pregbunny*.ani", "pregnude*.ani", "pregmast*.ani", "pregtitty*.ani", "pregmilk*.ani", "preghand*.ani",
-		"pregShop*.ani",
-
-		// added but not used currently
 		"pregFoot*.ani", "pregBed*.ani", "pregFarm*.ani", "pregHerd*.ani", "pregCook*.ani", "pregCraft*.ani",
-		"pregSwim*.ani", "pregBath*.ani", "pregNurse*.ani", "pregFormal*.ani"
-
+		"pregSwim*.ani", "pregBath*.ani", "pregNurse*.ani", "pregFormal*.ani", "pregShop*.ani", "pregMagic*.ani"
 	};
 	i = 0;
 	do {
@@ -10799,12 +10773,14 @@ CSurface* cGirls::GetImageSurface(sGirl* girl, int ImgType, bool random, int& im
 	case IMGTYPE_HERD:		alttypes[0] = IMGTYPE_FARM;		break;
 	case IMGTYPE_CRAFT:		alttypes[0] = IMGTYPE_FARM;		break;
 
+	case IMGTYPE_COMBAT:	alttypes[0] = IMGTYPE_MAGIC;	break;
+
 		// these image types have no alt types
 		//	case IMGTYPE_NURSE:
 		//	case IMGTYPE_FORMAL:
+	case IMGTYPE_MAGIC:
 	case IMGTYPE_BUNNY:
 	case IMGTYPE_DEATH:
-	case IMGTYPE_COMBAT:
 	case IMGTYPE_PREGNANT:
 	case IMGTYPE_PROFILE:
 	case IMGTYPE_SHOP:
