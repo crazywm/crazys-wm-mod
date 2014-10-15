@@ -52,6 +52,9 @@ public:
 	cClinicManager();					// constructor
 	~cClinicManager();					// destructor
 
+	int m_Doctor_Patient_Time = 0;		// `J` basically how many patients the doctors at the clinic can take care of
+	int m_Nurse_Patient_Time = 0;		// `J` basically how many patients the nurses at the clinic can take care of
+
 	void AddGirl(int brothelID, sGirl* girl);
 	void RemoveGirl(int brothelID, sGirl* girl, bool deleteGirl = false);	// Removes a girl from the list (only used with editor where all girls are available)
 	void UpdateClinic();

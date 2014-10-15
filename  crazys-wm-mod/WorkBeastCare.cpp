@@ -45,51 +45,120 @@ extern cGold g_Gold;
 bool cJobManager::WorkBeastCare(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	string message = "";
-	if(Preprocessing(ACTION_WORKCARING, girl, brothel, DayNight, summary, message))
-		return true;
+	string girlName = girl->m_Realname;
+	stringstream ss;
+	cConfig cfg;
 
-	int jobperformance = (	g_Girls.GetStat(girl, STAT_INTELLIGENCE) / 2+ 
-							g_Girls.GetSkill(girl, SKILL_SERVICE) / 2 + 
-							g_Girls.GetSkill(girl, SKILL_BEASTIALITY));
+	g_Girls.UnequipCombat(girl);	// put that shit away
 
+	int enjoy = 0;
+	int wages = 50;
+	int jobperformance = (g_Girls.GetSkill(girl, SKILL_ANIMALHANDLING) +
+		g_Girls.GetStat(girl, STAT_INTELLIGENCE) / 3 +
+		g_Girls.GetSkill(girl, SKILL_SERVICE) / 3 +
+		g_Girls.GetSkill(girl, SKILL_MAGIC) / 3);
+	int numhandle = girl->animalhandling() * 2;	// `J` first we assume a girl can take care of 2 beasts per point of animalhandling
+	int addbeasts = 0;
+	bool doadd = false;
 
+	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
 
+	ss << girlName << gettext(" worked taking care of beasts.\n\n");
 
-
-
-
-
-	// TODO need better dialog
-	if(g_Dice%100 <= 10)
+	if (roll_a <= 50 && g_Girls.DisobeyCheck(girl, ACTION_WORKCARING, brothel))
 	{
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCARING, -1, true);
-		message = gettext(" The animals were restless and disobedient.");
-		girl->m_Events.AddMessage(message,IMGTYPE_PROFILE,DayNight);
-		g_Brothels.add_to_beasts(-1);
+		ss.str("");
+		ss << girl->m_Realname << gettext(" refused to take care of the beasts in the brothel.");
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
+		return true;
+	}
+	else if (g_Brothels.m_Beasts < 1)
+	{
+		ss << gettext("There were no beasts in the brothel to take care of.\n\n");
+	}
+
+	// `J` if she has time to spare after taking care of the current beasts, she may try to get some new ones.
+	if (numhandle / 2 > g_Brothels.m_Beasts && g_Dice.percent(50))	// `J` these need more options
+	{
+		if (girl->magic() > 70 && girl->mana() >= 30)
+		{
+			doadd = true;
+			addbeasts = (g_Dice % ((girl->mana() / 30) + 1));
+			ss << girlName;
+			ss << (addbeasts > 0 ? " used" : " tried to use") << " her magic to summon ";
+			if (addbeasts < 2) ss << "a beast";
+			else ss << addbeasts << " beasts";
+			ss << " for the brothel" << (addbeasts > 0 ? "." : " but failed.");
+			g_Girls.UpdateSkill(girl, SKILL_MAGIC, addbeasts);
+			g_Girls.UpdateStat(girl, STAT_MANA, -30 * max(1, addbeasts));
+		}
+		else if (girl->animalhandling() > 50 && girl->charisma() > 50)
+		{
+			doadd = true;
+			addbeasts = (g_Dice % ((girl->combat() / 50) + 1));
+			ss << girlName;
+			ss << (addbeasts > 0 ? " lured" : " tried to lure") << " in ";
+			if (addbeasts == 1) ss << "a stray beast";
+			else ss << addbeasts << " stray beasts";
+			ss << " for the brothel" << (addbeasts > 0 ? "." : " but failed.");
+			g_Girls.UpdateSkill(girl, STAT_CONFIDENCE, addbeasts);
+		}
+		else if (girl->combat() > 50 && (g_Girls.HasTrait(girl, "Adventurer") || girl->confidence() > 70))
+		{
+			doadd = true;
+			addbeasts = (g_Dice % 2);
+			ss << girlName << " stood near the entrance to the catacombs, trying to lure out a beast by making noises of an injured animal.\n";
+			if (addbeasts > 0) ss << "After some time, a beast came out of the catacombs. " << girlName << " threw a net over it and wrestled it into submission.\n";
+			else ss << "After a few hours, she gave up.";
+			g_Girls.UpdateSkill(girl, SKILL_COMBAT, addbeasts);
+		}
+	}
+
+	if (doadd) ss << "\n\n";
+	if (roll_a <= 10)
+	{
+		enjoy -= g_Dice % 3 + 1;
+		addbeasts--;
+		ss << gettext("The animals were restless and disobedient.");
+	}
+	else if (roll_a >= 90)
+	{
+		enjoy += g_Dice % 3 + 1;
+		addbeasts++;
+		ss << gettext("She enjoyed her time working with the animals today.");
 	}
 	else
 	{
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCARING, +3, true);
-		message = gettext(" She enjoyed her time working with the animals today.");
-		girl->m_Events.AddMessage(message,IMGTYPE_PROFILE,DayNight);
-		g_Brothels.add_to_beasts(2);
+		enjoy += g_Dice % 2;
+		ss << (doadd ? "Otherwise, the" : "The") << gettext(" shift passed uneventfully.\n\n");
 	}
 
+	g_Brothels.add_to_beasts(addbeasts);
+	wages += g_Brothels.m_Beasts;
+	// slave girls not being paid for a job that normally you would pay directly for do less work
+	if ((girl->is_slave() && !cfg.initial.slave_pay_outofpocket()))
+	{
+		wages = 0;
+	}
+
+
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKCARING, enjoy, true);
+	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, DayNight);
+	girl->m_Pay += wages;
+
 	// Improve girl
-	int xp = 5, libido = 1, skill = 1;
+	int xp = 5 + (g_Brothels.m_Beasts / 10), libido = 1, skill = 2 + (g_Brothels.m_Beasts / 20);
 
 	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
 
-	girl->m_Pay += 65;
-	g_Gold.staff_wages(65);  // wages come from you
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, skill);
+	g_Girls.UpdateSkill(girl, SKILL_SERVICE, max(1, (g_Dice % skill) - 1));
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
-	g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, g_Dice%8);
+	g_Girls.UpdateSkill(girl, SKILL_ANIMALHANDLING, g_Dice % skill);
 
-	g_Girls.PossiblyLoseExistingTrait(girl, "Elegant", 20, ACTION_WORKCARING, " Working with dirty, smelly beasts has damaged " + girl->m_Realname + "'s hair, skin and nails making her less Elegant.", DayNight != 0);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Elegant", 40, ACTION_WORKCARING, " Working with dirty, smelly beasts has damaged " + girl->m_Realname + "'s hair, skin and nails making her less Elegant.", DayNight != 0);
 
 	return false;
 }

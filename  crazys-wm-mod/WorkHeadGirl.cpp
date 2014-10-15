@@ -43,7 +43,7 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
-// `J` House Job - General
+// `J` House Job - General - Matron_Job
 bool cJobManager::WorkHeadGirl(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	if (DayNight == 1) return false;

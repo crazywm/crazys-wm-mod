@@ -1161,6 +1161,7 @@ void cBrothelManager::UpdateBrothels()
 		current->m_Finance.zero();
 		current->m_Events.Clear();
 		current->m_AntiPregUsed = 0;
+		current->m_RejectCustomers = 0;
 
 		// `J` do all the things that the girls do at the start of the turn
 		sGirl* cgirl = current->m_Girls;
@@ -1254,6 +1255,7 @@ void cBrothelManager::UpdateBrothels()
 
 		ss.str("");
 		ss << current->m_TotalCustomers << " customers visited the building.";
+		if (current->m_RejectCustomers > 0) ss << "\n\n" << current->m_RejectCustomers << " were turned away because of your sex restrictions.";
 		current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_BROTHEL);
 
 		// empty rooms cost 2 gold to maintain
@@ -1634,6 +1636,7 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, int DayNight)
 			m_JobManager.is_job_Paid_Player(sw))
 #else
 			(
+			sw == JOB_BEASTCARER ||
 			sw == JOB_CLEANING
 			))
 #endif
@@ -1820,7 +1823,7 @@ void cBrothelManager::UsePlayersItems(sGirl* cur)
 
 	There are a number of things this function specifically DOES NOT do:
 	1. Use skill raising items.
-	2. Cure diseases like aids and syphilus.
+	2. Cure diseases like aids and syphilis.
 	3. Cure addictions like shroud and fairy dust.
 	4. Use temporary items.
 	5. Use items related to pregnancy, insemenation or children

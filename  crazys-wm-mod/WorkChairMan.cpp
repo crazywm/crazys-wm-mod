@@ -43,13 +43,15 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
-// `J` Clinic Job - Staff
+// `J` Clinic Job - Staff - Matron_Job
 bool cJobManager::WorkChairMan(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	if (DayNight == 1) return false;
-	cTariff tariff;
-	cConfig cfg;
 	string message = "";
+	stringstream ss;
+	string girlName = girl->m_Realname;
+	cConfig cfg;
+
 	if (Preprocessing(ACTION_WORKMATRON, girl, brothel, DayNight, summary, message)) return true;
 
 	// Complications

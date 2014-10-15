@@ -44,7 +44,7 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
-// `J` Movie Studio Job - Crew - Job_is_Matron
+// `J` Movie Studio Job - Crew - Matron_Job
 bool cJobManager::WorkFilmDirector(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	cConfig cfg;

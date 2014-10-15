@@ -73,6 +73,7 @@ struct sConfigData
 		double barmaid_work;
 		double slave_sales;
 		double item_sales;
+		double clinic_income;
 	} in_fact;
 /*
  *	outgoings factors
@@ -220,6 +221,7 @@ public:
 		double barmaid_work()	{ return data->in_fact.barmaid_work; }
 		double slave_sales()	{ return data->in_fact.slave_sales; }
 		double item_sales()	    { return data->in_fact.item_sales; }
+		double clinic_income()	{ return data->in_fact.clinic_income; }
 	} in_fact;
 /*
  *	outgoings factors

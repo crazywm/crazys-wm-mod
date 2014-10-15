@@ -50,7 +50,7 @@ bool cJobManager::WorkFilmStagehand(sGirl* girl, sBrothel* brothel, int DayNight
 	stringstream ss;
 	string girlName = girl->m_Realname;
 	int wages = 50;
-	int enjoy = 0;
+	int enjoyc = 0, enjoym = 0;
 	int jobperformance = 0;
 	int CleanAmt = ((g_Girls.GetSkill(girl, SKILL_SERVICE) / 10) + 5) * 5;
 	bool filming = true;
@@ -63,7 +63,7 @@ bool cJobManager::WorkFilmStagehand(sGirl* girl, sBrothel* brothel, int DayNight
 
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
 
-	if (roll_a <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
+	if (roll_a <= 50 && (g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel) || g_Girls.DisobeyCheck(girl, ACTION_WORKCLEANING, brothel)))
 	{
 		ss << "She refused to work as a stagehand today.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
@@ -77,30 +77,90 @@ bool cJobManager::WorkFilmStagehand(sGirl* girl, sBrothel* brothel, int DayNight
 		ss << "There were no scenes being filmed, so she just cleaned the set.\n\n";
 		filming = false;
 		CleanAmt *= 2;
+		imagetype = IMGTYPE_MAID;
 	}
 
+	if (g_Girls.HasTrait(girl, "Director"))					{ CleanAmt -= 10;	jobperformance += 15; }
+	if (g_Girls.HasTrait(girl, "Actress"))					{ CleanAmt += 0;	jobperformance += 10; }
+	if (g_Girls.HasTrait(girl, "Porn Star"))				{ CleanAmt += 0;	jobperformance += 5; }
+	if (g_Girls.HasTrait(girl, "Flight"))					{ CleanAmt += 20;	jobperformance += 10; }
+	if (g_Girls.HasTrait(girl, "Maid"))						{ CleanAmt += 20;	jobperformance += 2; }
+	if (g_Girls.HasTrait(girl, "Powerful Magic"))			{ CleanAmt += 10;	jobperformance += 10; }
+	if (g_Girls.HasTrait(girl, "Strong Magic"))				{ CleanAmt += 5;	jobperformance += 5; }
+	if (g_Girls.HasTrait(girl, "Handyman"))					{ CleanAmt += 5;	jobperformance += 10; }
+	if (g_Girls.HasTrait(girl, "Waitress"))					{ CleanAmt += 5;	jobperformance += 5; }
+	if (g_Girls.HasTrait(girl, "Agile"))					{ CleanAmt += 5;	jobperformance += 10; }
+	if (g_Girls.HasTrait(girl, "Fleet of Foot"))			{ CleanAmt += 2;	jobperformance += 5; }
+	if (g_Girls.HasTrait(girl, "Strong"))					{ CleanAmt += 5;	jobperformance += 10; }
+	if (g_Girls.HasTrait(girl, "Assassin"))					{ CleanAmt += 1;	jobperformance += 1; }
+	if (g_Girls.HasTrait(girl, "Psychic"))					{ CleanAmt += 2;	jobperformance += 5; }
+	if (g_Girls.HasTrait(girl, "Manly"))					{ CleanAmt += 1;	jobperformance += 1; }
+	if (g_Girls.HasTrait(girl, "Tomboy"))					{ CleanAmt += 2;	jobperformance += 2; }
+	if (g_Girls.HasTrait(girl, "Optimist"))					{ CleanAmt += 1;	jobperformance += 1; }
+	if (g_Girls.HasTrait(girl, "Sharp - Eyed"))				{ CleanAmt += 1;	jobperformance += 5; }
+	if (g_Girls.HasTrait(girl, "Giant"))					{ CleanAmt += 2;	jobperformance += 2; }
+	if (g_Girls.HasTrait(girl, "Prehensile Tail"))			{ CleanAmt += 3;	jobperformance += 3; }
 
-	/* */if (roll_a <= 10) { enjoy -= g_Dice % 3 + 1; ss << "She did not like working in the studio today.\n\n"; }
-	else if (roll_a >= 90) { enjoy += g_Dice % 3 + 1; ss << "She had a great time working today.\n\n"; }
-	else /*      */{ enjoy += max(0, g_Dice % 3 - 1); ss << "Otherwise, the shift passed uneventfully.\n\n"; }
-	jobperformance = enjoy * 2;
+	if (g_Girls.HasTrait(girl, "Blind"))					{ CleanAmt -= 20;	jobperformance -= 20; }
+	if (g_Girls.HasTrait(girl, "Queen"))					{ CleanAmt -= 20;	jobperformance -= 10; }
+	if (g_Girls.HasTrait(girl, "Princess"))					{ CleanAmt -= 10;	jobperformance -= 5; }
+	if (g_Girls.HasTrait(girl, "Mind Fucked"))				{ CleanAmt -= 10;	jobperformance -= 5; }
+	if (g_Girls.HasTrait(girl, "Bimbo"))					{ CleanAmt -= 5;	jobperformance -= 5; }
+	if (g_Girls.HasTrait(girl, "Retarded"))					{ CleanAmt -= 5;	jobperformance -= 5; }
+	if (g_Girls.HasTrait(girl, "Smoker"))					{ CleanAmt -= 1;	jobperformance -= 1; }
+	if (g_Girls.HasTrait(girl, "Clumsy"))					{ CleanAmt -= 5;	jobperformance -= 5; }
+	if (g_Girls.HasTrait(girl, "Delicate"))					{ CleanAmt -= 1;	jobperformance -= 1; }
+	if (g_Girls.HasTrait(girl, "Elegant"))					{ CleanAmt -= 5;	jobperformance -= 1; }
+	if (g_Girls.HasTrait(girl, "Malformed"))				{ CleanAmt -= 1;	jobperformance -= 1; }
+	if (g_Girls.HasTrait(girl, "Massive Melons"))			{ CleanAmt -= 1;	jobperformance -= 1; }
+	if (g_Girls.HasTrait(girl, "Abnormally Large Boobs"))	{ CleanAmt -= 3;	jobperformance -= 1; }
+	if (g_Girls.HasTrait(girl, "Titanic Tits"))				{ CleanAmt -= 5;	jobperformance -= 1; }
+	if (g_Girls.HasTrait(girl, "Broken Will"))				{ CleanAmt -= 5;	jobperformance -= 10; }
+	if (g_Girls.HasTrait(girl, "Pessimist"))				{ CleanAmt -= 1;	jobperformance -= 1; }
+	if (g_Girls.HasTrait(girl, "Meek"))						{ CleanAmt -= 2;	jobperformance -= 2; }
+	if (g_Girls.HasTrait(girl, "Nervous"))					{ CleanAmt -= 2;	jobperformance -= 3; }
+	if (g_Girls.HasTrait(girl, "Dependant"))				{ CleanAmt -= 5;	jobperformance -= 5; }
+	if (g_Girls.HasTrait(girl, "Bad Eyesight"))				{ CleanAmt -= 5;	jobperformance -= 5; }
 
+
+	if (roll_a <= 10)
+	{
+		enjoyc -= g_Dice % 3 + 1; if (filming) enjoym -= g_Dice % 3 + 1;
+		CleanAmt = int(CleanAmt * 0.8);
+		ss << "She did not like working in the studio today.";
+	}
+	else if (roll_a >= 90)
+	{
+		enjoyc += g_Dice % 3 + 1; if (filming) enjoym += g_Dice % 3 + 1;
+		CleanAmt = int(CleanAmt * 1.1);
+		ss << "She had a great time working today.";
+	}
+	else
+	{
+		enjoyc += max(0, g_Dice % 3 - 1); if (filming) enjoym += max(0, g_Dice % 3 - 1);
+		ss << "Otherwise, the shift passed uneventfully.";
+	}
+	jobperformance += enjoyc + enjoym;
+	ss << "\n\n";
 
 	if (filming)
 	{
-		jobperformance += (girl->spirit() - 50) / 10;
-		jobperformance += (girl->intelligence() - 50) / 10;
-		jobperformance += g_Girls.GetSkill(girl, SKILL_SERVICE) / 10;
-		jobperformance /= 3;
+		jobperformance += (((girl->spirit() - 50) / 10) + ((girl->intelligence() - 50) / 10) + (girl->service() / 10)) / 3;
 		jobperformance += g_Girls.GetStat(girl, STAT_LEVEL);
 		jobperformance += g_Dice % 4 - 1;	// should add a -1 to +3 random element --PP
 
-		if (jobperformance < 0) jobperformance = max(-1, jobperformance / 10);
-		else if (jobperformance > 0) jobperformance = min(1, jobperformance / 10);
-
-		/* */if (jobperformance > 0)	ss << "She helped improve the scene " << jobperformance << "% with her production skills.\n";
-		else if (jobperformance < 0)	ss << "She did a bad job today, reduceing the scene quality " << jobperformance << "% with her poor performance.\n";
-		else /*                   */	ss << "She did not really help the scene quality.\n";
+		if (jobperformance > 0)
+		{
+			jobperformance = max(-1, jobperformance / 10);
+			ss << "She helped improve the scene " << jobperformance << "% with her production skills.";
+		}
+		else if (jobperformance < 0)
+		{
+			jobperformance = min(1, jobperformance / 10);
+			ss << "She did a bad job today, reduceing the scene quality " << jobperformance << "% with her poor performance.";
+		}
+		else ss << "She did not really help the scene quality.";
+		ss << "\n\n";
 	}
 
 
@@ -119,7 +179,7 @@ bool cJobManager::WorkFilmStagehand(sGirl* girl, sBrothel* brothel, int DayNight
 		wages += CleanAmt;
 	}
 
-	ss << gettext("\n\nCleanliness rating improved by ") << CleanAmt;
+	ss << gettext("Cleanliness rating improved by ") << CleanAmt;
 
 	if (!filming && brothel->m_Filthiness < CleanAmt / 2) // `J` needs more variation
 	{
@@ -127,7 +187,6 @@ bool cJobManager::WorkFilmStagehand(sGirl* girl, sBrothel* brothel, int DayNight
 		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, g_Dice % 3 + 1);
 		g_Girls.UpdateStat(girl, STAT_HAPPINESS, g_Dice % 3 + 1);
 	}
-	imagetype = IMGTYPE_MAID;
 
 
 	girl->m_Events.AddMessage(ss.str(), imagetype, SHIFT_NIGHT);
@@ -137,21 +196,20 @@ bool cJobManager::WorkFilmStagehand(sGirl* girl, sBrothel* brothel, int DayNight
 
 
 	// Improve girl
-	int xp = 10, skill = 3, libido = 1;
-
+	int xp = filming ? 10 : 5, skill = 3, libido = 1;
+	if (enjoyc + enjoym > 2)							{ xp += 1; skill += 1; }
 	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, skill);
+	g_Girls.UpdateSkill(girl, SKILL_SERVICE, (g_Dice % skill) + 2);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
-	if (filming) g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, enjoy, true);
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKCLEANING, enjoy, true);
-
+	if (filming) g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, enjoym, true);
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKCLEANING, enjoyc, true);
 	//lose traits
 	g_Girls.PossiblyLoseExistingTrait(girl, "Clumsy", 30, ACTION_WORKCLEANING, "It took her spilling hundreds of buckets, and just as many reprimands, but " + girl->m_Realname + " has finally stopped being so Clumsy.", DayNight != 0);
-	
+
 	return false;
 }

@@ -43,7 +43,7 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
-// `J` Centre Job - General
+// `J` Centre Job - General - Matron_Job
 bool cJobManager::WorkCentreManager(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	if (DayNight == 1) return false;

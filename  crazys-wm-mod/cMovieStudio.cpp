@@ -153,13 +153,6 @@ void cMovieStudioManager::UpdateMovieStudio()
 	if(current->m_NumMovies > 0)
 	{
 		current->m_MovieRunTime++;
-		/* `J` Replaceing the global MovieRunTime with individual movie->m_RunWeeks below
-		if(current->m_MovieRunTime == 35)
-		{
-			EndMovie(current);
-			current->m_MovieRunTime = 0;
-		}
-		*/
 		long income = 0;
 		if(current->m_NumMovies > 0)
 		{

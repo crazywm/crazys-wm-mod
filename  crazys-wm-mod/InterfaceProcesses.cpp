@@ -2533,19 +2533,20 @@ void Gallery()
 		//we've gone through all categories and could not find a single image!
 		return;
 	}
-	// Set the text for gallery type
-	// `J` reworked to allow all image types
+
 	// `J` When modifying Image types, search for "J-Change-Image-Types"  :  found in >> InterfaceProcesses.cpp > Gallery
 	string galtxt[] = { "Anal", "BDSM", "Sex", "Beast", "Group", "Lesbian", "Torture", "Death", "Profile", "Combat",
 		"Oral", "Ecchi", "Strip", "Maid", "Sing", "Wait", "Card", "Bunny", "Nude", "Mast", "Titty", "Milk", "Hand",
-		"Foot", "Bed", "Farm", "Herd", "Cook", "Craft", "Swim", "Bath", "Nurse", "Formal", "Shop",
+		"Foot", "Bed", "Farm", "Herd", "Cook", "Craft", "Swim", "Bath", "Nurse", "Formal", "Shop", "Magic",
+		// pregnant varients
 		"Pregnant", "Pregnant\nAnal", "Pregnant\nBDSM", "Pregnant\nSex", "Pregnant\nBeast", "Pregnant\nGroup",
 		"Pregnant\nLesbian", "Pregnant\nTorture", "Pregnant\nDeath", "Pregnant\nProfile", "Pregnant\nCombat",
 		"Pregnant\nOral", "Pregnant\nEcchi", "Pregnant\nStrip", "Pregnant\nMaid", "Pregnant\nSing", "Pregnant\nWait",
 		"Pregnant\nCard", "Pregnant\nBunny", "Pregnant\nNude", "Pregnant\nMast", "Pregnant\nTitty", "Pregnant\nMilk",
 		"Pregnant\nHand", "Pregnant\nFoot", "Pregnant\nBed", "Pregnant\nFarm", "Pregnant\nHerd", "Pregnant\nCook",
-		"Pregnant\nCraft", "Pregnant\nSwim", "Pregnant\nBath", "Pregnant\nNurse", "Pregnant\nFormal", "Pregnant\nShop" };
-	g_Gallery.EditTextItem(galtxt[Mode], g_interfaceid.TEXT_GALLERYTYPE);
+		"Pregnant\nCraft", "Pregnant\nSwim", "Pregnant\nBath", "Pregnant\nNurse", "Pregnant\nFormal", "Pregnant\nShop",
+		"Pregnant\nMagic" };
+	g_Gallery.EditTextItem(galtxt[Mode], g_interfaceid.TEXT_GALLERYTYPE);	// Set the text for gallery type
 
 	// Draw the image
 	if (girl)
@@ -2729,19 +2730,19 @@ void Gallery2()
 		//we've gone through all categories and could not find a single image!
 		return;
 	}
-	// Set the text for gallery type
-	// `J` reworked to allow all image types
 	// `J` When modifying Image types, search for "J-Change-Image-Types"  :  found in >> InterfaceProcesses.cpp > Gallery2
 	string galtxt[] = { "Anal", "BDSM", "Sex", "Beast", "Group", "Lesbian", "Torture", "Death", "Profile", "Combat",
 		"Oral", "Ecchi", "Strip", "Maid", "Sing", "Wait", "Card", "Bunny", "Nude", "Mast", "Titty", "Milk", "Hand",
-		"Foot", "Bed", "Farm", "Herd", "Cook", "Craft", "Swim", "Bath", "Nurse", "Formal", "Shop",
+		"Foot", "Bed", "Farm", "Herd", "Cook", "Craft", "Swim", "Bath", "Nurse", "Formal", "Shop", "Magic",
+		// pregnant varients
 		"Pregnant", "Pregnant\nAnal", "Pregnant\nBDSM", "Pregnant\nSex", "Pregnant\nBeast", "Pregnant\nGroup",
 		"Pregnant\nLesbian", "Pregnant\nTorture", "Pregnant\nDeath", "Pregnant\nProfile", "Pregnant\nCombat",
 		"Pregnant\nOral", "Pregnant\nEcchi", "Pregnant\nStrip", "Pregnant\nMaid", "Pregnant\nSing", "Pregnant\nWait",
 		"Pregnant\nCard", "Pregnant\nBunny", "Pregnant\nNude", "Pregnant\nMast", "Pregnant\nTitty", "Pregnant\nMilk",
 		"Pregnant\nHand", "Pregnant\nFoot", "Pregnant\nBed", "Pregnant\nFarm", "Pregnant\nHerd", "Pregnant\nCook",
-		"Pregnant\nCraft", "Pregnant\nSwim", "Pregnant\nBath", "Pregnant\nNurse", "Pregnant\nFormal", "Pregnant\nShop" };
-	g_Gallery.EditTextItem(galtxt[Mode], g_interfaceid.TEXT_GALLERYTYPE);
+		"Pregnant\nCraft", "Pregnant\nSwim", "Pregnant\nBath", "Pregnant\nNurse", "Pregnant\nFormal", "Pregnant\nShop", 
+		"Pregnant\nMagic" };
+	g_Gallery.EditTextItem(galtxt[Mode], g_interfaceid.TEXT_GALLERYTYPE);	// Set the text for gallery type
 
 
 	// Draw the image

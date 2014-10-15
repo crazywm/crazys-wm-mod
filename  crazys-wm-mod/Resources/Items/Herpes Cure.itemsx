@@ -12,7 +12,7 @@
    <Effect What="Stat"  Name="Charisma"                Amount="-10"    />
    <Effect What="Trait" Name="Herpes"                Amount="0"    />
 </Item>
-<Item Name="Syphilis Cure"
+<Item Name="Herpes Cure"
       Desc="This thick balm cures herpes, but also causes the skin to temporarily turn blue. Stock up on makeup! (-10 Cha) (This Seller can get more but he charges more)"
       Type="Food"
       Badness="0"

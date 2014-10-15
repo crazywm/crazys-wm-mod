@@ -43,7 +43,7 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
-// `J` Farm Job - Staff
+// `J` Farm Job - Staff - job_is_cleaning
 bool cJobManager::WorkFarmHand(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	string message = "";
@@ -60,40 +60,90 @@ bool cJobManager::WorkFarmHand(sGirl* girl, sBrothel* brothel, int DayNight, str
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
 	bool playtime = false;
 
-	message = girlName + gettext(" worked cleaning and repairing the farm.\n\n");
+	ss << girlName << " worked cleaning and repairing the farm.\n\n";
 	
-	if (roll_a <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKFARM, brothel))
+	if (roll_a <= 50 && (g_Girls.DisobeyCheck(girl, ACTION_WORKFARM, brothel) || g_Girls.DisobeyCheck(girl, ACTION_WORKCLEANING, brothel)))
 	{
-		message = girl->m_Realname + gettext(" refused to work on the farm.");
-		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_NOWORK);
+		ss << "She refused to work on the farm.";
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	else if (roll_a <= 10)
+
+	if (g_Girls.HasTrait(girl, "Maid"))						CleanAmt += 20;
+	if (g_Girls.HasTrait(girl, "Powerful Magic"))			CleanAmt += 10;
+	if (g_Girls.HasTrait(girl, "Strong Magic"))				CleanAmt += 5;
+	if (g_Girls.HasTrait(girl, "Handyman"))					CleanAmt += 5;
+	if (g_Girls.HasTrait(girl, "Waitress"))					CleanAmt += 5;
+	if (g_Girls.HasTrait(girl, "Agile"))					CleanAmt += 5;
+	if (g_Girls.HasTrait(girl, "Fleet of Foot"))			CleanAmt += 2;
+	if (g_Girls.HasTrait(girl, "Strong"))					CleanAmt += 5;
+	if (g_Girls.HasTrait(girl, "Assassin"))					CleanAmt += 1;
+	if (g_Girls.HasTrait(girl, "Psychic"))					CleanAmt += 2;
+	if (g_Girls.HasTrait(girl, "Manly"))					CleanAmt += 1;
+	if (g_Girls.HasTrait(girl, "Tomboy"))					CleanAmt += 2;
+	if (g_Girls.HasTrait(girl, "Optimist"))					CleanAmt += 1;
+	if (g_Girls.HasTrait(girl, "Sharp - Eyed"))				CleanAmt += 1;
+	if (g_Girls.HasTrait(girl, "Giant"))					CleanAmt += 2;
+	if (g_Girls.HasTrait(girl, "Prehensile Tail"))			CleanAmt += 3;
+	if (g_Girls.HasTrait(girl, "Cow Girl"))					CleanAmt += 1;
+	if (g_Girls.HasTrait(girl, "Equine"))					CleanAmt += 1;
+
+	if (g_Girls.HasTrait(girl, "Blind"))					CleanAmt -= 20;
+	if (g_Girls.HasTrait(girl, "Queen"))					CleanAmt -= 20;
+	if (g_Girls.HasTrait(girl, "Princess"))					CleanAmt -= 10;
+	if (g_Girls.HasTrait(girl, "Mind Fucked"))				CleanAmt -= 10;
+	if (g_Girls.HasTrait(girl, "Bimbo"))					CleanAmt -= 5;
+	if (g_Girls.HasTrait(girl, "Retarded"))					CleanAmt -= 5;
+	if (g_Girls.HasTrait(girl, "Smoker"))					CleanAmt -= 1;
+	if (g_Girls.HasTrait(girl, "Clumsy"))					CleanAmt -= 5;
+	if (g_Girls.HasTrait(girl, "Delicate"))					CleanAmt -= 1;
+	if (g_Girls.HasTrait(girl, "Elegant"))					CleanAmt -= 5;
+	if (g_Girls.HasTrait(girl, "Malformed"))				CleanAmt -= 1;
+	if (g_Girls.HasTrait(girl, "Massive Melons"))			CleanAmt -= 1;
+	if (g_Girls.HasTrait(girl, "Abnormally Large Boobs"))	CleanAmt -= 3;
+	if (g_Girls.HasTrait(girl, "Titanic Tits"))				CleanAmt -= 5;
+	if (g_Girls.HasTrait(girl, "Broken Will"))				CleanAmt -= 5;
+	if (g_Girls.HasTrait(girl, "Pessimist"))				CleanAmt -= 1;
+	if (g_Girls.HasTrait(girl, "Meek"))						CleanAmt -= 2;
+	if (g_Girls.HasTrait(girl, "Nervous"))					CleanAmt -= 2;
+	if (g_Girls.HasTrait(girl, "Dependant"))				CleanAmt -= 5;
+	if (g_Girls.HasTrait(girl, "Bad Eyesight"))				CleanAmt -= 5;
+
+	if (roll_a <= 10)
 	{
-		enjoyC -= g_Dice % 3;
-		enjoyF -= g_Dice % 3;
+		enjoyC -= g_Dice % 3; enjoyF -= g_Dice % 3;
 		CleanAmt = int(CleanAmt * 0.8);
-		/* */if (roll_b < 30)	message += gettext("She spilled a bucket of something unpleasant all over herself.");
-		else if (roll_b < 60)	message += gettext("She stepped in something unpleasant.");
-		else /*            */	message += gettext("She did not like working on the farm today.");
+		/* */if (roll_b < 30)	ss << "She spilled a bucket of something unpleasant all over herself.";
+		else if (roll_b < 60)	ss << "She stepped in something unpleasant.";
+		else /*            */	ss << "She did not like working on the farm today.";
 	}
-	else if (roll_a <= 20)
+	else if (roll_a >= 90)
 	{
-		enjoyC += g_Dice % 3;
-		enjoyF += g_Dice % 3;
+		enjoyC += g_Dice % 3; enjoyF += g_Dice % 3;
 		CleanAmt = int(CleanAmt * 1.1);
-		/* */if (roll_b < 50)	message += gettext("She cleaned the building while humming a pleasant tune.");
-		else /*            */	message += gettext("She had a great time working today.");
+		/* */if (roll_b < 50)	ss << "She cleaned the building while humming a pleasant tune.";
+		else /*            */	ss << "She had a great time working today.";
 	}
 	else
 	{
-		enjoyC += g_Dice % 2;
-		enjoyF += g_Dice % 2;
-		message += gettext("The shift passed uneventfully.");
+		enjoyC += g_Dice % 2; enjoyF += g_Dice % 2;
+		ss << "The shift passed uneventfully.";
+	}
+	ss << "\n\n";
+
+	// slave girls not being paid for a job that normally you would pay directly for do less work
+	if ((girl->is_slave() && !cfg.initial.slave_pay_outofpocket()))
+	{
+		CleanAmt = int(CleanAmt * 0.9);
+		wages = 0;
+	}
+	else
+	{
+		wages = CleanAmt; // `J` Pay her based on how much she cleaned
 	}
 
+	// `J` if she can clean more than is needed, she has a little free time after her shift
 	if (brothel->m_Filthiness < CleanAmt / 2) playtime = true;
-	brothel->m_Filthiness -= CleanAmt;
 	ss << gettext("\n\nCleanliness rating improved by ") << CleanAmt;
 	if (playtime)	// `J` needs more variation
 	{
@@ -101,6 +151,7 @@ bool cJobManager::WorkFarmHand(sGirl* girl, sBrothel* brothel, int DayNight, str
 		if (DayNight == SHIFT_DAY && roll_c % 3 == 1)	// 33% chance she will watch the sunset when working day shift
 		{
 			ss << "sat beneath an oak tree and watched the sunset.";
+			g_Girls.UpdateStat(girl, STAT_TIREDNESS, -((g_Dice % 5) + 2));
 		}
 		else if (roll_c < 25)
 		{
@@ -116,18 +167,15 @@ bool cJobManager::WorkFarmHand(sGirl* girl, sBrothel* brothel, int DayNight, str
 		{
 			ss << "sat in a rocking chair on the farm house front porch whittling.";
 			g_Girls.UpdateSkill(girl, SKILL_CRAFTING, (g_Dice % 3));
+			g_Girls.UpdateStat(girl, STAT_TIREDNESS, -(g_Dice % 3));
 		}
 		g_Girls.UpdateStat(girl, STAT_HAPPINESS, (g_Dice % 4) + 2);
 	}
-	message += ss.str();
+	
 
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKFARM, enjoyF, true);
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKCLEANING, enjoyC, true);
-	girl->m_Events.AddMessage(message, IMGTYPE_MAID, DayNight);
-
-
-	wages = CleanAmt; // `J` Pay her based on how much she cleaned
-	if (girl->is_slave() && !cfg.initial.slave_pay_outofpocket()) wages = 0;	// You own her so you don't have to pay her.
+	// do all the output
+	girl->m_Events.AddMessage(ss.str(), IMGTYPE_MAID, DayNight);
+	brothel->m_Filthiness -= CleanAmt;
 	girl->m_Pay = wages;
 
 	// Improve girl
@@ -143,6 +191,8 @@ bool cJobManager::WorkFarmHand(sGirl* girl, sBrothel* brothel, int DayNight, str
 	g_Girls.UpdateSkill(girl, SKILL_FARMING, (g_Dice % 2));
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKFARM, enjoyF, true);
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKCLEANING, enjoyC, true);
 	//lose traits
 	g_Girls.PossiblyLoseExistingTrait(girl, "Clumsy", 30, ACTION_WORKCLEANING, "It took her spilling hundreds of buckets, and just as many reprimands, but " + girl->m_Realname + " has finally stopped being so Clumsy.", DayNight != 0);
 

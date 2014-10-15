@@ -1098,49 +1098,32 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		else
 			Girl->m_NightJob = Girl->m_DayJob = JOB_CHAIRMAN;
 	}
+
+	else if (g_Girls.HasTrait(Girl, "AIDS") && (u_int(JobID) == JOB_DOCTOR || u_int(JobID) == JOB_NURSE || u_int(JobID) == JOB_INTERN))
+	{
+		g_MessageQue.AddToQue(gettext("Health laws prohibit anyone with AIDS from working in the Medical profession"), 0);
+		if (Girl->m_DayJob == JOB_INTERN || Girl->m_DayJob == JOB_NURSE || Girl->m_DayJob == JOB_DOCTOR)
+			Girl->m_DayJob = JOB_CLINICREST;
+		if (Girl->m_NightJob == JOB_INTERN || Girl->m_NightJob == JOB_NURSE || Girl->m_NightJob == JOB_DOCTOR)
+			Girl->m_NightJob = JOB_CLINICREST;
+	}
 	else if (u_int(JobID) == JOB_DOCTOR)
 	{
 		if (Girl->is_slave())
 		{
-			g_MessageQue.AddToQue(gettext("The doctor cannot be a slave."), 0);
+			g_MessageQue.AddToQue(gettext("The Doctor cannot be a slave."), 0);
 		}
-		else if (g_Girls.HasTrait(Girl, "AIDS"))
+		else if (Girl->medicine() < 50 || Girl->intelligence() < 50)
 		{
-			g_MessageQue.AddToQue(gettext("Health laws prohibit anyone with AIDS from working in the Medical profession"), 0);
-			if (Girl->m_DayJob == JOB_INTERN || Girl->m_DayJob == JOB_NURSE || Girl->m_DayJob == JOB_DOCTOR)
-				Girl->m_DayJob = JOB_CLINICREST;
-			if (Girl->m_NightJob == JOB_INTERN || Girl->m_NightJob == JOB_NURSE || Girl->m_NightJob == JOB_DOCTOR)
-				Girl->m_NightJob = JOB_CLINICREST;
+			stringstream ss;
+			ss << Girl->m_Realname << " does not have enough training to work as a Doctor. Doctors require 50 Medicine and 50 Intelligence.";
+			g_MessageQue.AddToQue(ss.str(), 0);
 		}
-		else
-			Girl->m_NightJob = Girl->m_DayJob = JOB_DOCTOR;
-	}
-	else if (u_int(JobID) == JOB_NURSE)
-	{
-		if (g_Girls.HasTrait(Girl, "AIDS"))
-		{
-			g_MessageQue.AddToQue(gettext("Health laws prohibit anyone with AIDS from working in the Medical profession"),0);
-			if (Girl->m_DayJob == JOB_INTERN || Girl->m_DayJob == JOB_NURSE || Girl->m_DayJob == JOB_DOCTOR)
-				Girl->m_DayJob = JOB_CLINICREST;
-			if (Girl->m_NightJob == JOB_INTERN || Girl->m_NightJob == JOB_NURSE || Girl->m_NightJob == JOB_DOCTOR)
-				Girl->m_NightJob = JOB_CLINICREST;
-		}
-		else
-		{
-			Girl->m_NightJob = Girl->m_DayJob = JOB_NURSE;
-		}
+		else Girl->m_NightJob = Girl->m_DayJob = JOB_DOCTOR;
 	}
 	else if (u_int(JobID) == JOB_INTERN)	// `Crazy` added
 	{
-		if (g_Girls.HasTrait(Girl, "AIDS"))
-		{
-			g_MessageQue.AddToQue(gettext("Health laws prohibit anyone with AIDS from working in the Medical profession"), 0);
-			if (Girl->m_DayJob == JOB_INTERN || Girl->m_DayJob == JOB_NURSE || Girl->m_DayJob == JOB_DOCTOR)	
-				Girl->m_DayJob = JOB_CLINICREST;
-			if (Girl->m_NightJob == JOB_INTERN || Girl->m_NightJob == JOB_NURSE || Girl->m_NightJob == JOB_DOCTOR)	
-				Girl->m_NightJob = JOB_CLINICREST;
-		}
-		else if (g_Girls.GetSkill(Girl, SKILL_MEDICINE) > 99 && g_Girls.GetStat(Girl, STAT_INTELLIGENCE) > 99 && g_Girls.GetStat(Girl, STAT_CHARISMA) > 99)
+		if (g_Girls.GetSkill(Girl, SKILL_MEDICINE) > 99 && g_Girls.GetStat(Girl, STAT_INTELLIGENCE) > 99 && g_Girls.GetStat(Girl, STAT_CHARISMA) > 99)
 		{
 			g_MessageQue.AddToQue(gettext("There is nothing more she can learn here."), 0);
 			if (Girl->m_DayJob == JOB_INTERN)	Girl->m_DayJob = JOB_CLINICREST;
@@ -1555,7 +1538,8 @@ bool cJobManager::work_related_violence(sGirl* girl, int DayNight, bool streets)
 	 *
 	 *	But let's get what we have working first
 	 */
-	if ((girl->has_trait("Yandere") || girl->has_trait("Tsundere") || girl->has_trait("Aggressive")) && g_Dice.percent(30)) {
+	if ((girl->has_trait("Yandere") || girl->has_trait("Tsundere") || girl->has_trait("Aggressive")) && g_Dice.percent(30)) 
+	{
 		girl->m_Events.AddMessage(gettext("She beat the customer silly."), IMGTYPE_COMBAT, DayNight);
 		g_Girls.UpdateStat(girl, STAT_FAME, -1);
 	}
@@ -1654,7 +1638,7 @@ bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_n
 	{
 		g_Girls.UpdateSkill(SecGuard, SKILL_COMBAT, 1);
 		g_Girls.UpdateSkill(SecGuard, SKILL_MAGIC, 1);
-		g_Girls.UpdateStat(SecGuard, STAT_LIBIDO, num);  // There's nothing like killin ta make ya horny!
+		g_Girls.UpdateTempStat(SecGuard, STAT_LIBIDO, num);  // There's nothing like killin ta make ya horny!
 		g_Girls.UpdateStat(SecGuard, STAT_CONFIDENCE, num);
 		g_Girls.UpdateStat(SecGuard, STAT_FAME, num);
 		g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, num, true);
@@ -1701,7 +1685,7 @@ bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_n
 		g_Girls.UpdateStat(SecGuard, STAT_CONFIDENCE, -40);
 		g_Girls.UpdateStat(SecGuard, STAT_OBEDIENCE, -10);
 		g_Girls.UpdateStat(SecGuard, STAT_SPIRIT, -40);
-		g_Girls.UpdateStat(SecGuard, STAT_LIBIDO, -40);
+		g_Girls.UpdateTempStat(SecGuard, STAT_LIBIDO, -40);
 		g_Girls.UpdateStat(SecGuard, STAT_TIREDNESS, 60);
 		g_Girls.UpdateStat(SecGuard, STAT_PCFEAR, 20);
 		g_Girls.UpdateStat(SecGuard, STAT_PCLOVE, -20);
@@ -1866,7 +1850,7 @@ bool cJobManager::girl_fights_rape(sGirl* girl, sGang *enemy_gang, int day_night
 		g_Girls.UpdateSkill(girl, SKILL_COMBAT, 1);
 		g_Girls.UpdateSkill(girl, SKILL_MAGIC, 1);
 		g_Girls.UpdateStat(girl, STAT_AGILITY, 1);
-		g_Girls.UpdateStat(girl, STAT_LIBIDO, num);  // There's nothing like killin ta make ya horny!
+		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, num);  // There's nothing like killin ta make ya horny!
 		g_Girls.UpdateStat(girl, STAT_CONFIDENCE, num);
 		g_Girls.UpdateStat(girl, STAT_FAME, num);
 
@@ -1945,7 +1929,7 @@ void cJobManager::customer_rape(sGirl* girl, int numberofattackers)
 	g_Girls.UpdateStat(girl, STAT_CONFIDENCE, -40);
 	g_Girls.UpdateStat(girl, STAT_OBEDIENCE, -10);
 	g_Girls.UpdateStat(girl, STAT_SPIRIT, -40);
-	g_Girls.UpdateStat(girl, STAT_LIBIDO, -40);
+	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -40);
 	g_Girls.UpdateStat(girl, STAT_TIREDNESS, 60);
 	g_Girls.UpdateStat(girl, STAT_PCFEAR, 20);
 	g_Girls.UpdateStat(girl, STAT_PCLOVE, -20);
