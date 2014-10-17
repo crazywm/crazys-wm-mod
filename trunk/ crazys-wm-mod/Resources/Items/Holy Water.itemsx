@@ -18,6 +18,8 @@
    <Effect What="Skill" Name="NormalSex"               Amount="-5" />
    <Effect What="Skill" Name="Beastiality"             Amount="-5" />
    <Effect What="Skill" Name="Group"                   Amount="-5" />
+   <Effect What="Skill" Name="Handjob"                 Amount="-5"    />
+   <Effect What="Skill" Name="TittySex"                Amount="-5"    />
    <Effect What="Skill" Name="Lesbian"                 Amount="-5" />
    <Effect What="Skill" Name="OralSex"                 Amount="-5" />
    <Effect What="Skill" Name="Strip"                   Amount="-5" />
@@ -43,6 +45,8 @@
    <Effect What="Skill" Name="Group"                   Amount="-10" />
    <Effect What="Skill" Name="Lesbian"                 Amount="-10" />
    <Effect What="Skill" Name="OralSex"                 Amount="-10" />
+   <Effect What="Skill" Name="Handjob"                 Amount="-10"    />
+   <Effect What="Skill" Name="TittySex"                Amount="-10"    />
    <Effect What="Skill" Name="Strip"                   Amount="-10" />
 </Item>
 
@@ -65,6 +69,8 @@
    <Effect What="Skill" Name="Beastiality"             Amount="-20" />
    <Effect What="Skill" Name="Group"                   Amount="-20" />
    <Effect What="Skill" Name="Lesbian"                 Amount="-20" />
+   <Effect What="Skill" Name="Handjob"                 Amount="-20"    />
+   <Effect What="Skill" Name="TittySex"                Amount="-20"    />
    <Effect What="Skill" Name="OralSex"                 Amount="-20" />
    <Effect What="Skill" Name="Strip"                   Amount="-20" />
    <Effect What="Trait" Name="Small Scars"             Amount="0" />
@@ -88,6 +94,8 @@
    <Effect What="Skill" Name="Anal"                    Amount="-30" />
    <Effect What="Skill" Name="BDSM"                    Amount="-30" />
    <Effect What="Skill" Name="NormalSex"               Amount="-30" />
+   <Effect What="Skill" Name="Handjob"                 Amount="-30"    />
+   <Effect What="Skill" Name="TittySex"                Amount="-30"    />
    <Effect What="Skill" Name="Beastiality"             Amount="-30" />
    <Effect What="Skill" Name="Group"                   Amount="-30" />
    <Effect What="Skill" Name="Lesbian"                 Amount="-30" />
@@ -113,6 +121,8 @@
    <Effect What="Stat"  Name="Libido"                  Amount="-30" />
    <Effect What="Skill" Name="Anal"                    Amount="-30" />
    <Effect What="Skill" Name="BDSM"                    Amount="-30" />
+   <Effect What="Skill" Name="Handjob"                 Amount="-30"    />
+   <Effect What="Skill" Name="TittySex"                Amount="-30"    />
    <Effect What="Skill" Name="NormalSex"               Amount="-30" />
    <Effect What="Skill" Name="Beastiality"             Amount="-30" />
    <Effect What="Skill" Name="Group"                   Amount="-30" />
@@ -141,6 +151,8 @@
    <Effect What="Skill" Name="Anal"                    Amount="-40" />
    <Effect What="Skill" Name="BDSM"                    Amount="-40" />
    <Effect What="Skill" Name="NormalSex"               Amount="-40" />
+   <Effect What="Skill" Name="Handjob"                 Amount="-40"    />
+   <Effect What="Skill" Name="TittySex"                Amount="-40"    />
    <Effect What="Skill" Name="Beastiality"             Amount="-40" />
    <Effect What="Skill" Name="Group"                   Amount="-40" />
    <Effect What="Skill" Name="Lesbian"                 Amount="-40" />
@@ -167,6 +179,8 @@
    <Effect What="Skill" Name="Anal"                    Amount="-40" />
    <Effect What="Skill" Name="BDSM"                    Amount="-40" />
    <Effect What="Skill" Name="NormalSex"               Amount="-40" />
+   <Effect What="Skill" Name="Handjob"                 Amount="-40"    />
+   <Effect What="Skill" Name="TittySex"                Amount="-40"    />
    <Effect What="Skill" Name="Beastiality"             Amount="-40" />
    <Effect What="Skill" Name="Group"                   Amount="-40" />
    <Effect What="Skill" Name="Lesbian"                 Amount="-40" />

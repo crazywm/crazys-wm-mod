@@ -128,6 +128,15 @@ void cCentreManager::UpdateCentre()
 		cgirl->m_Pay			= 0;
 		cgirl->m_Events.Clear();
 
+
+		cgirl->m_Pay = cgirl->m_Tips = 0;
+		if (cgirl->m_DayJob < firstjob && cgirl->m_DayJob > lastjob)		cgirl->m_DayJob = restjob;
+		if (cgirl->m_NightJob < firstjob && cgirl->m_NightJob > lastjob)	cgirl->m_NightJob = restjob;
+		cgirl->m_YesterDayJob = cgirl->m_DayJob;		// `J` set what she did yesterday
+		cgirl->m_YesterNightJob = cgirl->m_NightJob;	// `J` set what she did yesternight
+		cgirl->m_Refused_To_Work = false;
+
+
 		do_food_and_digs(current, cgirl);		// Brothel only update for girls accommodation level
 		g_Girls.CalculateGirlType(cgirl);		// update the fetish traits
 		g_Girls.updateGirlAge(cgirl, true);		// update birthday counter and age the girl
@@ -140,6 +149,13 @@ void cCentreManager::UpdateCentre()
 		updateGirlTurnBrothelStats(cgirl);		// Update daily stats				Now only runs once per day
 		g_Girls.updateGirlTurnStats(cgirl);		// Stat Code common to Dugeon and Brothel
 
+		if (cgirl->m_JustGaveBirth)		// if she gave birth, let her rest this week
+		{
+			if (cgirl->m_DayJob != restjob)		cgirl->m_PrevDayJob = cgirl->m_DayJob;
+			if (cgirl->m_NightJob != restjob)	cgirl->m_PrevNightJob = cgirl->m_NightJob;
+			cgirl->m_DayJob = restjob;
+			cgirl->m_NightJob = restjob;
+		}
 
 
 
@@ -180,28 +196,6 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)
 	bool refused = false;
 	m_Processing_Shift = DayNight;		// WD:	Set processing flag to shift type
 
-	// `J` Check for out of building jobs and set yesterday jobs for everyone first
-	if (DayNight == SHIFT_DAY)
-	{
-		while (current)
-		{
-			current->m_Pay = current->m_Tips = 0;
-			if (current->m_DayJob < firstjob && current->m_DayJob > lastjob)		current->m_DayJob = restjob;
-			if (current->m_NightJob < firstjob && current->m_NightJob > lastjob)	current->m_NightJob = restjob;
-			current->m_YesterDayJob = current->m_DayJob;		// `J` set what she did yesterday
-			current->m_YesterNightJob = current->m_NightJob;	// `J` set what she did yesternight
-			current->m_Refused_To_Work = false;
-
-			if (current->m_JustGaveBirth)		// if she gave birth, let her rest this week
-			{
-				if (current->m_NightJob != restjob)	current->m_PrevNightJob = current->m_NightJob;
-				current->m_NightJob = restjob;
-			}
-			current = current->m_Next; // Next Girl
-		}
-	}
-	current = brothel->m_Girls;
-	
 
 	while (current)
 	{
@@ -264,8 +258,6 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)
 					MatronWarningMsg = "";
 				}
 			}
-
-
 		}
 
 
@@ -297,32 +289,12 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)
 /*
  *		JOB PROCESSING
  */
-		unsigned int restjob = JOB_CENTREREST;	// `J` added this to allow for easier copy/paste to other buildings
-		u_int sw = 0;							//	Job type
 
-		if (current->m_JustGaveBirth)		// if she gave birth, let her rest this week
-		{
-			if (current->m_DayJob != restjob)	current->m_PrevDayJob = current->m_DayJob;
-			if (current->m_NightJob != restjob)	current->m_PrevNightJob = current->m_NightJob;
-			current->m_DayJob = restjob;
-			current->m_NightJob = restjob;
-		}
 		sw = (DayNight == SHIFT_DAY) ? current->m_DayJob : current->m_NightJob;
 
-		// `J` added check to force jobs into the Centre correcting a bug
-		if (sw >= JOB_CENTREREST && sw <= JOB_REHAB)
-		{
-			refused = m_JobManager.JobFunc[sw](current, brothel, DayNight, summary);
-		}
-		else // Any job not in the Centre will be replaced with JOB_CENTREREST
-		{
-			if (DayNight == SHIFT_DAY) current->m_DayJob = restjob;
-			else current->m_NightJob = restjob;
-			sw = restjob;
-			refused = m_JobManager.JobFunc[restjob](current, brothel, DayNight, summary);
-		}
-		// if she refused she still gets tired
-		if (refused) g_Girls.AddTiredness(current);
+		refused = m_JobManager.JobFunc[sw](current, brothel, DayNight, summary);
+
+		g_Girls.AddTiredness(current);		// `J` moved all girls add tiredness to one place
 
 		totalPay += current->m_Pay;
 		totalTips += current->m_Tips;
@@ -336,8 +308,13 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)
 /*
  *		Summary Messages
  */
-		ss.str("");
+		ss.str("");		summary = "";
+
 		if (refused) summary += girlName + gettext(" refused to work so made no money.");
+		else if (sw == JOB_REHAB || (sw == JOB_DRUGCOUNSELOR && DayNight == SHIFT_NIGHT))
+		{
+			// nothing to report here
+		}
 		// `J` if a slave does a job that is normally paid by you but you don't pay your slaves...
 		else if (current->is_slave() && !cfg.initial.slave_pay_outofpocket() &&
 #if 0	// `J` until all jobs have this part added to them, use the individual job list instead of this
@@ -350,6 +327,7 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		{
 			summary += "\nYou own her and you don't pay your slaves.";
 		}
+
 		else if (totalGold > 0)
 		{
 			ss << girlName << " earned a total of " << totalGold << " gold";
@@ -381,8 +359,7 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)
 			summary += ss.str();
 			sum = EVENT_DEBUG;
 		}
-
-		current->m_Events.AddMessage(summary, IMGTYPE_PROFILE, sum);
+		if (summary != "") current->m_Events.AddMessage(summary, IMGTYPE_PROFILE, sum);
 		summary = "";
 
 		/*

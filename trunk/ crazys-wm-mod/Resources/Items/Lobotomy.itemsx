@@ -14,7 +14,17 @@
    <Effect What="Stat"  Name="PCFear"                  Amount="10"    />
    <Effect What="Stat"  Name="PCHate"                  Amount="10"    />
    <Effect What="Stat"  Name="PCLove"                  Amount="-100"    />
-   <Effect What="Stat"  Name="Intelligence"            Amount="-20"    />
+   <Effect What="Stat"  Name="Intelligence"            Amount="-50"    />
+   <Effect What="Skill" Name="Magic"                   Amount="-50"    />
+   <Effect What="Skill" Name="Combat"                  Amount="-50"    />
+   <Effect What="Skill" Name="Service"                 Amount="-20"    />
+   <Effect What="Skill" Name="Medicine"                Amount="-50"    />
+   <Effect What="Skill" Name="Performance"             Amount="-20"    />
+   <Effect What="Skill" Name="Crafting"                Amount="-50"    />
+   <Effect What="Skill" Name="Herbalism"               Amount="-50"    />
+   <Effect What="Skill" Name="Farming"                 Amount="-20"    />
+   <Effect What="Skill" Name="Brewing"                 Amount="-50"    />
+   <Effect What="Skill" Name="AnimalHandling"          Amount="-20"    />
    <Effect What="GirlStatus" Name="Controlled"         Amount="1"    />
    <Effect What="Trait" Name="Retarded"                Amount="1"    />
    <Effect What="Trait" Name="Strange Eyes"            Amount="1"    />

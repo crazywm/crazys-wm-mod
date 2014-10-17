@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Items>
 <Item Name="Boob Job"
-      Desc="Give your flat chested girl some help. (-5 health, +5 Tiredness. Removes Small Boobs, adds Big Boobs)"
+      Desc="Give your flat chested girl some help. (-5 health, +5 Tiredness. Increases breast size to Big)"
       Type="Food"
       Badness="5"
       Special="None"
@@ -11,7 +11,10 @@
    <Effect What="Stat"  Name="PCLove"                  Amount="5"    />
    <Effect What="Stat"  Name="Health"                  Amount="-5"    />
    <Effect What="Stat"  Name="Tiredness"               Amount="5"    />
+   <Effect What="Trait" Name="Flat Chest"              Amount="0" />
+   <Effect What="Trait" Name="Petite Breasts"          Amount="0" />
+   <Effect What="Trait" Name="Small Boobs"             Amount="0" />
+   <Effect What="Trait" Name="Busty Boobs"             Amount="0" />
    <Effect What="Trait" Name="Big Boobs"               Amount="1"    />
-   <Effect What="Trait" Name="Small Boobs"             Amount="0"    />
 </Item>
 </Items>

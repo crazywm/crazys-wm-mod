@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Items>
 <Item Name="Adamantine arm fetter"
-      Desc="(+10 con +30 libido/obedience +20 BDSM/group/best/anal -lots service/strip/magic/combat -elegant)"
+      Desc="This device restrains the girls arms. (+10 con +30 libido/obedience +20 BDSM/group/best/anal -lots service/strip/magic/combat -elegant)"
       Type="Misc"
       Badness="40"
       Special="None"
@@ -15,15 +15,17 @@
    <Effect What="Stat"  Name="Happiness"               Amount="-10"    />
    <Effect What="Stat"  Name="Obedience"               Amount="30"    />
    <Effect What="Stat"  Name="Libido"                  Amount="30"    />
+   <Effect What="Skill" Name="Anal"                    Amount="20"    />
    <Effect What="Skill" Name="BDSM"                    Amount="20"    />
-   <Effect What="Skill" Name="NormalSex"               Amount="10"    />
-   <Effect What="Skill" Name="OralSex"                 Amount="10"    />
    <Effect What="Skill" Name="Beastiality"             Amount="20"    />
    <Effect What="Skill" Name="Group"                   Amount="20"    />
+   <Effect What="Skill" Name="Handjob"                 Amount="-200"    />
    <Effect What="Skill" Name="Lesbian"                 Amount="0"    />
-   <Effect What="Skill" Name="Service"                 Amount="-200"    />
+   <Effect What="Skill" Name="NormalSex"               Amount="10"    />
+   <Effect What="Skill" Name="OralSex"                 Amount="10"    />
    <Effect What="Skill" Name="Strip"                   Amount="-500"    />
-   <Effect What="Skill" Name="Anal"                    Amount="20"    />
+   <Effect What="Skill" Name="TittySex"                Amount="10"    />
+   <Effect What="Skill" Name="Service"                 Amount="-200"    />
    <Effect What="Skill" Name="Magic"                   Amount="-500"    />
    <Effect What="Skill" Name="Combat"                  Amount="-500"    />
    <Effect What="Stat"  Name="Constitution"            Amount="20"    />

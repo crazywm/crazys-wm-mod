@@ -34,12 +34,28 @@
 <Button Name="Brothel4"     Image="Brothel5"     Disabled="" XPos="180" YPos="550" Width="32"  Height="32"  Transparency="true" Scale="true" />
 <Button Name="Brothel5"     Image="Brothel6"     Disabled="" XPos="220" YPos="550" Width="32"  Height="32"  Transparency="true" Scale="true" />
 <Button Name="Brothel6"     Image="Brothel7"     Disabled="" XPos="260" YPos="550" Width="32"  Height="32"  Transparency="true" Scale="true" />
-<Button Name="House"        Image="House"        Disabled="" XPos="340" YPos="550" Width="32"  Height="32"  Transparency="true" Scale="true" />
-<Button Name="Centre"       Image="Centre"       Disabled="" XPos="380" YPos="550" Width="32"  Height="32"  Transparency="true" Scale="true" />
-<Button Name="Clinic"       Image="Clinic"       Disabled="" XPos="420" YPos="550" Width="32"  Height="32"  Transparency="true" Scale="true" />      
-<Button Name="Studio"       Image="Studio"       Disabled="" XPos="460" YPos="550" Width="32"  Height="32"  Transparency="true" Scale="true" />
-<Button Name="Arena"        Image="Arena"        Disabled="" XPos="500" YPos="550" Width="32"  Height="32"  Transparency="true" Scale="true" />
-<Button Name="Farm"         Image="Farm"         Disabled="" XPos="540" YPos="550" Width="32"  Height="32"  Transparency="true" Scale="true" />
+<Button Name="Studio"       Image="Studio"       Disabled="" XPos="340" YPos="550" Width="32"  Height="32"  Transparency="true" Scale="true" />
+<Button Name="Arena"        Image="Arena"        Disabled="" XPos="380" YPos="550" Width="32"  Height="32"  Transparency="true" Scale="true" />
+<Button Name="Centre"       Image="Centre"       Disabled="" XPos="420" YPos="550" Width="32"  Height="32"  Transparency="true" Scale="true" />      
+<Button Name="Clinic"       Image="Clinic"       Disabled="" XPos="460" YPos="550" Width="32"  Height="32"  Transparency="true" Scale="true" />
+<Button Name="Farm"         Image="Farm"         Disabled="" XPos="500" YPos="550" Width="32"  Height="32"  Transparency="true" Scale="true" />
+<Button Name="House"        Image="House"        Disabled="" XPos="540" YPos="550" Width="32"  Height="32"  Transparency="true" Scale="true" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 </Screen>

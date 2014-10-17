@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Items>
 <Item Name="Codex of Submission"
-      Desc="Despite looking like an innocent book of romantic poetry, this ancient tome has the power to sap its reader's mental defenses and sense of self. Most of its mind-controlling power is gone now, but it still leaves the reader noticeably more susceptible to the influence of others, and more receptive to submissive sexual acts. (+30 Obed, -30 Spi, +20 BDSM, +10 Anal, +10 Group)"
+      Desc="Despite looking like an innocent book of romantic poetry, this ancient tome has the power to sap its reader's mental defenses and sense of self. Most of its mind-controlling power is gone now, but it still leaves the reader noticeably more susceptible to the influence of others, and more receptive to submissive sexual acts. (+30 Obed, -30 Spi, +20 BDSM, +10 Anal, Group, Oral, Hand)"
       Type="Misc"
       Badness="0"
       Special="None"
@@ -12,6 +12,7 @@
    <Effect What="Skill" Name="BDSM"                    Amount="20"    />
    <Effect What="Skill" Name="Group"                   Amount="10"    />
    <Effect What="Skill" Name="OralSex"                 Amount="10"    />
+   <Effect What="Skill" Name="Handjob"                 Amount="10"    />
    <Effect What="Stat"  Name="Obedience"               Amount="30"    />
    <Effect What="Stat"  Name="Spirit"                  Amount="-30"    />
 </Item>

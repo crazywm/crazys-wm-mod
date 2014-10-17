@@ -43,9 +43,10 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
-// `J` Centre Job - General - Matron_Job
+// `J` Centre Job - General - Matron_Job - Full_Time_Job
 bool cJobManager::WorkCentreManager(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
+	girl->m_DayJob = girl->m_NightJob = JOB_CENTREMANAGER;	// it is a full time job
 	if (DayNight == 1) return false;
 	cTariff tariff;
 	cConfig cfg;

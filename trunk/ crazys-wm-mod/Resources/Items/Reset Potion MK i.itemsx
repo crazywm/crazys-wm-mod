@@ -3,35 +3,57 @@
 <Item Name="Reset Potion MK i"
       Desc="Ever wanted to build a girl from scratch? Well, use this and you can! (All skills and attributes set to 0)"
       Type="Food"
-      Badness="50"
+      Badness="100"
       Special="None"
       Cost="19999"
       Rarity="Shop05"
       Infinite="false">
-   <Effect What="Skill" Name="Anal"                    Amount="-100"    />
-   <Effect What="Skill" Name="Magic"                   Amount="-100"    />
-   <Effect What="Skill" Name="BDSM"                    Amount="-100"    />
-   <Effect What="Skill" Name="NormalSex"               Amount="-100"    />
-   <Effect What="Skill" Name="Beastiality"             Amount="-100"    />
-   <Effect What="Skill" Name="Group"                   Amount="-100"    />
-   <Effect What="Skill" Name="Lesbian"                 Amount="-100"    />
-   <Effect What="Skill" Name="Service"                 Amount="-100"    />
-   <Effect What="Skill" Name="Strip"                   Amount="-100"    />
-   <Effect What="Skill" Name="Combat"                  Amount="-100"    />
-   <Effect What="Stat"  Name="Charisma"                Amount="-100"    />
-   <Effect What="Stat"  Name="Happiness"               Amount="-100"    />
-   <Effect What="Stat"  Name="Libido"                  Amount="-100"    />
-   <Effect What="Stat"  Name="Constitution"            Amount="-100"    />
-   <Effect What="Stat"  Name="Intelligence"            Amount="-100"    />
-   <Effect What="Stat"  Name="Confidence"              Amount="-100"    />
-   <Effect What="Stat"  Name="Mana"                    Amount="-100"    />
-   <Effect What="Stat"  Name="Agility"                 Amount="-100"    />
-   <Effect What="Stat"  Name="Fame"                    Amount="-100"    />
-   <Effect What="Stat"  Name="Obedience"               Amount="-100"    />
-   <Effect What="Stat"  Name="Spirit"                  Amount="-100"    />
-   <Effect What="Stat"  Name="Beauty"                  Amount="-100"    />
-   <Effect What="Stat"  Name="PCFear"                  Amount="-100"    />
-   <Effect What="Stat"  Name="PCLove"                  Amount="-100"    />
-   <Effect What="Stat"  Name="PCHate"                  Amount="-100"    />
+   <Effect What="Skill" Name="Exp"                     Amount="-32000"    />
+   <Effect What="Skill" Name="Age"                     Amount="-32000"    />
+   <Effect What="Skill" Name="Level"                   Amount="-32000"    />
+
+   <!--  Because some skills can go negative, add 500 to the skill to max it at 100 then lower it by 100 to get it to 0 -->
+<Effect What="Skill" Name="Agility"                 Amount="500"    /><Effect What="Skill" Name="Agility"                 Amount="-100"    />
+<Effect What="Skill" Name="Anal"                    Amount="500"    /><Effect What="Skill" Name="Anal"                    Amount="-100"    />
+<Effect What="Skill" Name="AnimalHandling"          Amount="500"    /><Effect What="Skill" Name="AnimalHandling"          Amount="-100"    />
+<Effect What="Skill" Name="BDSM"                    Amount="500"    /><Effect What="Skill" Name="BDSM"                    Amount="-100"    />
+<Effect What="Skill" Name="Beastiality"             Amount="500"    /><Effect What="Skill" Name="Beastiality"             Amount="-100"    />
+<Effect What="Skill" Name="Beauty"                  Amount="500"    /><Effect What="Skill" Name="Beauty"                  Amount="-100"    />
+<Effect What="Skill" Name="Brewing"                 Amount="500"    /><Effect What="Skill" Name="Brewing"                 Amount="-100"    />
+<Effect What="Skill" Name="Charisma"                Amount="500"    /><Effect What="Skill" Name="Charisma"                Amount="-100"    />
+<Effect What="Skill" Name="Combat"                  Amount="500"    /><Effect What="Skill" Name="Combat"                  Amount="-100"    />
+<Effect What="Skill" Name="Confidence"              Amount="500"    /><Effect What="Skill" Name="Confidence"              Amount="-100"    />
+<Effect What="Skill" Name="Constitution"            Amount="500"    /><Effect What="Skill" Name="Constitution"            Amount="-100"    />
+<Effect What="Skill" Name="Crafting"                Amount="500"    /><Effect What="Skill" Name="Crafting"                Amount="-100"    />
+<Effect What="Skill" Name="Dignity"                 Amount="500"    /><Effect What="Skill" Name="Dignity"                 Amount="-100"    />
+<Effect What="Skill" Name="Fame"                    Amount="500"    /><Effect What="Skill" Name="Fame"                    Amount="-100"    />
+<Effect What="Skill" Name="Farming"                 Amount="500"    /><Effect What="Skill" Name="Farming"                 Amount="-100"    />
+<Effect What="Skill" Name="Group"                   Amount="500"    /><Effect What="Skill" Name="Group"                   Amount="-100"    />
+<Effect What="Skill" Name="Handjob"                 Amount="500"    /><Effect What="Skill" Name="Handjob"                 Amount="-100"    />
+<Effect What="Skill" Name="Happiness"               Amount="500"    /><Effect What="Skill" Name="Happiness"               Amount="-100"    />
+<Effect What="Skill" Name="Health"                  Amount="500"    /><Effect What="Skill" Name="Health"                  Amount="-100"    />
+<Effect What="Skill" Name="Herbalism"               Amount="500"    /><Effect What="Skill" Name="Herbalism"               Amount="-100"    />
+<Effect What="Skill" Name="Intelligence"            Amount="500"    /><Effect What="Skill" Name="Intelligence"            Amount="-100"    />
+<Effect What="Skill" Name="Lactation"               Amount="500"    /><Effect What="Skill" Name="Lactation"               Amount="-100"    />
+<Effect What="Skill" Name="Lesbian"                 Amount="500"    /><Effect What="Skill" Name="Lesbian"                 Amount="-100"    />
+<Effect What="Skill" Name="Libido"                  Amount="500"    /><Effect What="Skill" Name="Libido"                  Amount="-100"    />
+<Effect What="Skill" Name="Magic"                   Amount="500"    /><Effect What="Skill" Name="Magic"                   Amount="-100"    />
+<Effect What="Skill" Name="Mana"                    Amount="500"    /><Effect What="Skill" Name="Mana"                    Amount="-100"    />
+<Effect What="Skill" Name="Medicine"                Amount="500"    /><Effect What="Skill" Name="Medicine"                Amount="-100"    />
+<Effect What="Skill" Name="Morality"                Amount="500"    /><Effect What="Skill" Name="Morality"                Amount="-100"    />
+<Effect What="Skill" Name="NormalSex"               Amount="500"    /><Effect What="Skill" Name="NormalSex"               Amount="-100"    />
+<Effect What="Skill" Name="Obedience"               Amount="500"    /><Effect What="Skill" Name="Obedience"               Amount="-100"    />
+<Effect What="Skill" Name="OralSex"                 Amount="500"    /><Effect What="Skill" Name="OralSex"                 Amount="-100"    />
+<Effect What="Skill" Name="PCFear"                  Amount="500"    /><Effect What="Skill" Name="PCFear"                  Amount="-100"    />
+<Effect What="Skill" Name="PCHate"                  Amount="500"    /><Effect What="Skill" Name="PCHate"                  Amount="-100"    />
+<Effect What="Skill" Name="PCLove"                  Amount="500"    /><Effect What="Skill" Name="PCLove"                  Amount="-100"    />
+<Effect What="Skill" Name="Performance"             Amount="500"    /><Effect What="Skill" Name="Performance"             Amount="-100"    />
+<Effect What="Skill" Name="Refinement"              Amount="500"    /><Effect What="Skill" Name="Refinement"              Amount="-100"    />
+<Effect What="Skill" Name="Service"                 Amount="500"    /><Effect What="Skill" Name="Service"                 Amount="-100"    />
+<Effect What="Skill" Name="Spirit"                  Amount="500"    /><Effect What="Skill" Name="Spirit"                  Amount="-100"    />
+<Effect What="Skill" Name="Strip"                   Amount="500"    /><Effect What="Skill" Name="Strip"                   Amount="-100"    />
+<Effect What="Skill" Name="Tiredness"               Amount="500"    /><Effect What="Skill" Name="Tiredness"               Amount="-100"    />
+<Effect What="Skill" Name="TittySex"                Amount="500"    /><Effect What="Skill" Name="TittySex"                Amount="-100"    />
+   
 </Item>
 </Items>

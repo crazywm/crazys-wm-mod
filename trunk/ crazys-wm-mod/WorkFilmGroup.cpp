@@ -51,7 +51,7 @@ bool cJobManager::WorkFilmGroup(sGirl* girl, sBrothel* brothel, int DayNight, st
 		girl->m_Events.AddMessage("There was no crew to film the scene, so she took the day off", IMGTYPE_PROFILE, EVENT_NOWORK);
 		return false;
 	}
-
+	
 	cConfig cfg;
 	stringstream ss;
 	string girlName = girl->m_Realname;
@@ -91,7 +91,7 @@ bool cJobManager::WorkFilmGroup(sGirl* girl, sBrothel* brothel, int DayNight, st
 		ss << " worked in a orgy scene with " << guys << " other people.\n\n";
 	}
 
-	for (int i = 2; i < guys; i++) g_Girls.AddTiredness(girl);	// Extra tiredness per guy
+	girl->tiredness(guys - 2);	// Extra tiredness per guy
 
 	int roll = g_Dice.d100();
 	if (roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
@@ -146,6 +146,7 @@ bool cJobManager::WorkFilmGroup(sGirl* girl, sBrothel* brothel, int DayNight, st
 		wages += finalqual*2;
 	}
 	girl->m_Pay += wages;
+	
 
 	// Improve stats
 	int xp = (((guys > 10 ? (guys / 10) : (guys / 2)) + 1)*5);

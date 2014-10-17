@@ -1605,7 +1605,7 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		}
 		else refused = m_JobManager.JobFunc[sw](current, brothel, DayNight, summary);
 
-		if (refused) g_Girls.AddTiredness(current);
+		g_Girls.AddTiredness(current);		// `J` moved all girls add tiredness to one place
 
 		totalPay += current->m_Pay;
 		totalTips += current->m_Tips;

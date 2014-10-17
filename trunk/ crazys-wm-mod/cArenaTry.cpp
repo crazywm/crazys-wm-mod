@@ -165,7 +165,7 @@ void cArenaTry::do_walk()
 	/*
 	 *	let's get a girl for the player to meet
 	 */
-	sGirl *girl = g_Girls.GetRandomGirl();
+	sGirl *girl = g_Girls.GetRandomGirl(false, false, true);
 	/*
 	 *	if there's no girl, no meeting
 	 */

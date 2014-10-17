@@ -11,15 +11,28 @@
       GirlBuyChance="0">
    <Effect What="Stat"  Name="Age"                     Amount="-10"    />
    <Effect What="Stat"  Name="Tiredness"               Amount="50"    />
-   <Effect What="Skill" Name="Anal"                    Amount="-5"    />
+
    <Effect What="Skill" Name="Magic"                   Amount="-5"    />
+   <Effect What="Skill" Name="Combat"                  Amount="-5"    />
+   <Effect What="Skill" Name="Service"                 Amount="-5"    />
+   <Effect What="Skill" Name="Medicine"                Amount="-5"    />
+   <Effect What="Skill" Name="Performance"             Amount="-5"    />
+   <Effect What="Skill" Name="Crafting"                Amount="-5"    />
+   <Effect What="Skill" Name="Herbalism"               Amount="-5"    />
+   <Effect What="Skill" Name="Farming"                 Amount="-5"    />
+   <Effect What="Skill" Name="Brewing"                 Amount="-5"    />
+   <Effect What="Skill" Name="AnimalHandling"          Amount="-5"    />
+   
+   <Effect What="Skill" Name="Anal"                    Amount="-5"    />
    <Effect What="Skill" Name="BDSM"                    Amount="-5"    />
-   <Effect What="Skill" Name="NormalSex"               Amount="-5"    />
    <Effect What="Skill" Name="Beastiality"             Amount="-5"    />
    <Effect What="Skill" Name="Group"                   Amount="-5"    />
+   <Effect What="Skill" Name="Handjob"                 Amount="-5"    />
    <Effect What="Skill" Name="Lesbian"                 Amount="-5"    />
-   <Effect What="Skill" Name="Service"                 Amount="-5"    />
+   <Effect What="Skill" Name="NormalSex"               Amount="-5"    />
+   <Effect What="Skill" Name="OralSex"                 Amount="-5"    />
    <Effect What="Skill" Name="Strip"                   Amount="-5"    />
-   <Effect What="Skill" Name="Combat"                  Amount="-5"    />
+   <Effect What="Skill" Name="TittySex"                Amount="-5"    />
+
 </Item>
 </Items>

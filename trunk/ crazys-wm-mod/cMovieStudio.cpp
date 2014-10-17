@@ -316,7 +316,6 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 		if (refused)
 		{
 			brothel->m_Fame -= g_Girls.GetStat(current, STAT_FAME);
-			g_Girls.AddTiredness(current);		// if she refused she still gets tired
 			summary += girlName + gettext(" refused to work so made no money.");
 			sum = EVENT_WARNING;
 		}
@@ -552,7 +551,6 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 			else
 			{
 				brothel->m_Fame -= g_Girls.GetStat(current, STAT_FAME);
-				g_Girls.AddTiredness(current);
 				summary += girlName + gettext(" refused to work so made no money.");
 			}
 		}
@@ -706,7 +704,6 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 		girlName = current->m_Realname;
 		summary = "There was no crew to film the scene, so " + girlName + " took the day off";
 		current->m_Events.AddMessage(summary, IMGTYPE_PROFILE, EVENT_NOWORK);
-		g_Girls.AddTiredness(current);
 
 		current = current->m_Next;
 	}
@@ -736,7 +733,6 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 		if (refused)
 		{
 			brothel->m_Fame -= g_Girls.GetStat(current, STAT_FAME);
-			g_Girls.AddTiredness(current);
 			summary += girlName + gettext(" refused to work so made no money.");
 		}
 		else
@@ -836,7 +832,6 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 		if (refused)
 		{
 			brothel->m_Fame -= g_Girls.GetStat(current, STAT_FAME);
-			g_Girls.AddTiredness(current);
 			summary += girlName + gettext(" refused to work so made no money.");
 		}
 		else
@@ -902,6 +897,8 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 			current->m_NightJob = current->m_DayJob;
 			current->m_DayJob = restjob;
 		}
+
+		g_Girls.AddTiredness(current);		// `J` moved all girls add tiredness to one place
 
 		// update for girls items that are not used up
 		do_daily_items(brothel, current);					// `J` added

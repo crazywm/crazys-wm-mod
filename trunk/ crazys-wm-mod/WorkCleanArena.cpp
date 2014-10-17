@@ -68,6 +68,7 @@ bool cJobManager::WorkCleanArena(sGirl* girl, sBrothel* brothel, int DayNight, s
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
+	
 
 	if (g_Girls.HasTrait(girl, "Maid"))						CleanAmt += 20;
 	if (g_Girls.HasTrait(girl, "Powerful Magic"))			CleanAmt += 10;
@@ -159,6 +160,10 @@ bool cJobManager::WorkCleanArena(sGirl* girl, sBrothel* brothel, int DayNight, s
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_MAID, DayNight);
 	brothel->m_Filthiness -= CleanAmt;
 	girl->m_Pay = wages;
+
+
+
+	
 
 	// Improve girl
 	int xp = 5, libido = 1, skill = 3;

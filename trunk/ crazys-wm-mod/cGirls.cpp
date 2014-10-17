@@ -135,8 +135,19 @@ void sGirl::setup_maps()
 
 // `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in >> cGirls.cpp > setup_maps
 
-		skill_lookup["Anal"]				= SKILL_ANAL;
+
 		skill_lookup["Magic"]				= SKILL_MAGIC;
+		skill_lookup["Combat"]				= SKILL_COMBAT;
+		skill_lookup["Service"]				= SKILL_SERVICE;
+		skill_lookup["Medicine"]			= SKILL_MEDICINE;
+		skill_lookup["Performance"]			= SKILL_PERFORMANCE;
+		skill_lookup["Crafting"]			= SKILL_CRAFTING;
+		skill_lookup["Herbalism"]			= SKILL_HERBALISM;
+		skill_lookup["Farming"]				= SKILL_FARMING;
+		skill_lookup["Brewing"]				= SKILL_BREWING;
+		skill_lookup["AnimalHandling"]		= SKILL_ANIMALHANDLING;
+
+		skill_lookup["Anal"]				= SKILL_ANAL;
 		skill_lookup["BDSM"]				= SKILL_BDSM;
 		skill_lookup["NormalSex"]			= SKILL_NORMALSEX;
 		skill_lookup["OralSex"]				= SKILL_ORALSEX;
@@ -145,16 +156,7 @@ void sGirl::setup_maps()
 		skill_lookup["Beastiality"]			= SKILL_BEASTIALITY;
 		skill_lookup["Group"]				= SKILL_GROUP;
 		skill_lookup["Lesbian"]				= SKILL_LESBIAN;
-		skill_lookup["Service"]				= SKILL_SERVICE;
 		skill_lookup["Strip"]				= SKILL_STRIP;
-		skill_lookup["Combat"]				= SKILL_COMBAT;
-		skill_lookup["Medicine"]			= SKILL_MEDICINE;
-		skill_lookup["Performance"]			= SKILL_PERFORMANCE;
-		skill_lookup["Crafting"]			= SKILL_CRAFTING;
-		skill_lookup["Herbalism"]			= SKILL_HERBALISM;
-		skill_lookup["Farming"]				= SKILL_FARMING;
-		skill_lookup["Brewing"]				= SKILL_BREWING;
-		skill_lookup["AnimalHandling"]		= SKILL_ANIMALHANDLING;
 
 		status_lookup["None"]				= STATUS_NONE; 
 		status_lookup["Poisoned"]			= STATUS_POISONED;
@@ -1104,7 +1106,7 @@ void cGirls::AddTiredness(sGirl* girl)
 	if (g_Girls.GetStat(girl, STAT_CONSTITUTION) > 0) 
 		tiredness -= (g_Girls.GetStat(girl, STAT_CONSTITUTION)) / 10;
 	if (tiredness <= 0)	tiredness = 0;
-	g_Girls.UpdateStat(girl, STAT_TIREDNESS, tiredness,false);
+	g_Girls.UpdateStat(girl, STAT_TIREDNESS, tiredness, false);
 	if (g_Girls.GetStat(girl, STAT_TIREDNESS) == 100)
 	{
 		g_Girls.UpdateStat(girl, STAT_HAPPINESS, -1, false);
@@ -1504,6 +1506,8 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 			gettext("having her breasts milked"),
 			gettext("working as a massusse"),
 			gettext("working on the farm"),
+			gettext("training in the medical field"),
+			gettext("drug rehab"),
 			gettext("doing miscellaneous tasks")  // general
 		};
 		string base = gettext("She");

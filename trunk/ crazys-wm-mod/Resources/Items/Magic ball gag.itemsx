@@ -18,14 +18,16 @@
    <Effect What="Skill" Name="BDSM"                    Amount="25"    />
    <Effect What="Skill" Name="NormalSex"               Amount="10"    />
    <Effect What="Skill" Name="Beastiality"             Amount="10"    />
-   <Effect What="Skill" Name="Group"                   Amount="-100"    />
+   <Effect What="Skill" Name="Group"                   Amount="-20"    />
    <Effect What="Skill" Name="OralSex"                 Amount="-100"    />
    <Effect What="Skill" Name="Lesbian"                 Amount="10"    />
-   <Effect What="Skill" Name="Service"                 Amount="-100"    />
    <Effect What="Skill" Name="Strip"                   Amount="10"    />
    <Effect What="Skill" Name="Anal"                    Amount="10"    />
+   <Effect What="Skill" Name="Handjob"                 Amount="10"    />
+   <Effect What="Skill" Name="TittySex"                Amount="10"    />
    <Effect What="Skill" Name="Magic"                   Amount="-500"    />
    <Effect What="Skill" Name="Combat"                  Amount="-500"    />
+   <Effect What="Skill" Name="Service"                 Amount="-50"    />
    <Effect What="Trait" Name="Charming"                Amount="0"    />
    <Effect What="Trait" Name="Elegant"                 Amount="0"    />
 </Item>

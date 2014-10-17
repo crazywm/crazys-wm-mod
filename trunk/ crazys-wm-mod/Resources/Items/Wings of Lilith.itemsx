@@ -14,6 +14,8 @@
    <Effect What="Stat"  Name="PCFear"                  Amount="-60"    />
    <Effect What="Stat"  Name="Intelligence"            Amount="25"    />
    <Effect What="Stat"  Name="Spirit"                  Amount="25"    />
+   <Effect What="Skill" Name="Service"                 Amount="10"    />
+   <Effect What="Skill" Name="Handjob"                 Amount="10"    />
    <Effect What="Skill" Name="BDSM"                    Amount="10"    />
    <Effect What="Skill" Name="NormalSex"               Amount="10"    />
    <Effect What="Skill" Name="OralSex"                 Amount="10"    />
@@ -21,9 +23,9 @@
    <Effect What="Skill" Name="Beastiality"             Amount="10"    />
    <Effect What="Skill" Name="Group"                   Amount="10"    />
    <Effect What="Skill" Name="Lesbian"                 Amount="10"    />
-   <Effect What="Skill" Name="Service"                 Amount="10"    />
    <Effect What="Skill" Name="Strip"                   Amount="10"    />
    <Effect What="Skill" Name="Anal"                    Amount="10"    />
+
    <Effect What="Trait" Name="Quick Learner"           Amount="1"    />
    <Effect What="Trait" Name="Psychic"                 Amount="1"    />
    <Effect What="Trait" Name="Elegant"                 Amount="1"    />
