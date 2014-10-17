@@ -594,7 +594,6 @@ bool cJobManager::WorkVoid(sGirl* girl, sBrothel* brothel, int DayNight, string&
 bool cJobManager::Preprocessing(int action, sGirl* girl, sBrothel* brothel, int DayNight, string& summary, string& message)
 {
 	brothel->m_Filthiness++;
-	g_Girls.AddTiredness(girl);
 	if (g_Girls.DisobeyCheck(girl, action, brothel))			// they refuse to work 
 	{
 		string message = girl->m_Realname + gettext(" refused to work during the ");
@@ -666,12 +665,10 @@ void cJobManager::do_advertising(sBrothel* brothel, int DayNight)
 		if ((current->m_DayJob == JOB_ADVERTISING) && (DayNight == 0)) // Added test for current shift, was running each shift twice -PP
 		{
 			refused = WorkAdvertising(current, brothel, 0, summary);
-			if (refused) g_Girls.AddTiredness(current);
 		}
 		if ((current->m_NightJob == JOB_ADVERTISING) && (DayNight == 1)) // Added test for current shift, was running each shift twice -PP
 		{
 			refused = WorkAdvertising(current, brothel, 1, summary);
-			if (refused) g_Girls.AddTiredness(current);
 		}
 		current = current->m_Next;
 	}
@@ -714,7 +711,6 @@ void cJobManager::do_whorejobs(sBrothel* brothel, int DayNight)
 		default:
 			break;
 		}
-		if (refused) g_Girls.AddTiredness(current);	// if she refused she still gets tired
 		current = current->m_Next;
 	}
 }
@@ -786,7 +782,6 @@ void cJobManager::do_custjobs(sBrothel* brothel, int DayNight)
 		default:
 			break;
 		}
-		if (refused) g_Girls.AddTiredness(current);
 		current = current->m_Next;
 	}
 }
@@ -1328,14 +1323,14 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		else
 			Girl->m_NightJob = Girl->m_DayJob = JOB_CENTREMANAGER;
 	}
+	else if (u_int(JobID) == JOB_DRUGCOUNSELOR && Girl->is_slave())
+	{
+		g_MessageQue.AddToQue(gettext("The Drug Counselor cannot be a slave."), 0);
+	}
 	else if (u_int(JobID) == JOB_DRUGCOUNSELOR)
 	{
-		if (g_Centre.GetNumGirlsOnJob(TargetBrothel, JOB_DRUGCOUNSELOR, DayOrNight) == 1)
-			g_MessageQue.AddToQue(gettext("There can be only one drug counselor!"), 0);
-		else if (Girl->m_States&(1 << STATUS_SLAVE))
-			g_MessageQue.AddToQue(gettext("The Drug Counselor cannot be a slave."), 0);
-		else
-			Girl->m_NightJob = Girl->m_DayJob = JOB_DRUGCOUNSELOR;
+		MadeChanges = false;
+		Girl->m_NightJob = Girl->m_DayJob = JOB_DRUGCOUNSELOR;
 	}
 	else if (u_int(JobID) == JOB_REHAB && g_Centre.GetNumGirlsOnJob(0, JOB_DRUGCOUNSELOR, DayOrNight) == 0)
 	{
@@ -1344,7 +1339,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	else if (u_int(JobID) == JOB_REHAB && !g_Girls.HasTrait(Girl, "Shroud Addict") &&
 		!g_Girls.HasTrait(Girl, "Fairy Dust Addict") && !g_Girls.HasTrait(Girl, "Viras Blood Addict"))
 	{
-		g_MessageQue.AddToQue(gettext("She has no addiction."), 0);
+		g_MessageQue.AddToQue(gettext("She has no addictions."), 0);
 	}
 	else if (u_int(JobID) == JOB_REHAB)
 	{
@@ -2421,7 +2416,6 @@ void cJobManager::do_training(sBrothel* brothel, int DayNight)
 	for (u_int i = 0; i < girls.size(); i++)
 	{
 		sGirl *girl = girls[i];
-		g_Girls.AddTiredness(girl);
 		int libido = (g_Girls.HasTrait(girl, "Nymphomaniac")) ? 4 : 2;
 		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 	}

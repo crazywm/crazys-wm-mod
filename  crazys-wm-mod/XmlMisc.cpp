@@ -55,6 +55,8 @@ const char* actionTypeNames[] =
 	"WORKMILK",
 	"WORKMASSUSSE",
 	"WORKFARM",
+	"WORKINTERN",
+	"WORKREHAB",
 	"GENERAL"
 };
 	

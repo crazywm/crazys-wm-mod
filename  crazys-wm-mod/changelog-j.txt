@@ -896,8 +896,16 @@ Added temporary clinic income for doctor and nurses - (need to make this compreh
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.09
 !!!!!!!!!!!!!!!!!!!! pushed to SVN - r117
 
-
-
-
-
+###  Changes 10/16/2014
+Updated several items adding missing skills and traits
+Added another check for group sex being restricted in 3 whore jobs.
+Fixed arena try to give arena girls
+Updated Drug Counselor and Rehab jobs.
+ - Rehab has a small chance of killing a girl if her health is less than 20
+ - Rehab is now tracked like other jobs where enjoyment is used - girls who go through rehab will make better counselors.
+ - Counselor and Rehab are full time jobs and are only run for day shift.
+Started reflow of Centre - not much done yet.
+ 
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.10
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r118
 

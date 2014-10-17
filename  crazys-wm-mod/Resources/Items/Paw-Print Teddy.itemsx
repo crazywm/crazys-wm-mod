@@ -13,14 +13,16 @@
    <Effect What="Stat"  Name="Libido"                  Amount="10"    />
    <Effect What="Stat"  Name="Constitution"            Amount="5"    />
    <Effect What="Skill" Name="Beastiality"             Amount="25"    />
+   <Effect What="Skill" Name="Anal"                    Amount="10"    />
    <Effect What="Skill" Name="BDSM"                    Amount="10"    />
+   <Effect What="Skill" Name="Group"                   Amount="10"    />
+   <Effect What="Skill" Name="Handjob"                 Amount="10"    />
+   <Effect What="Skill" Name="Lesbian"                 Amount="10"    />
    <Effect What="Skill" Name="NormalSex"               Amount="10"    />
    <Effect What="Skill" Name="OralSex"                 Amount="10"    />
-   <Effect What="Skill" Name="TittySex"                Amount="10"    />
-   <Effect What="Skill" Name="Group"                   Amount="10"    />
-   <Effect What="Skill" Name="Lesbian"                 Amount="10"    />
-   <Effect What="Skill" Name="Service"                 Amount="10"    />
    <Effect What="Skill" Name="Strip"                   Amount="10"    />
+   <Effect What="Skill" Name="TittySex"                Amount="10"    />
+   <Effect What="Skill" Name="Service"                 Amount="10"    />
    <Effect What="Trait" Name="Cute"                    Amount="1"    />
 </Item>
 </Items>

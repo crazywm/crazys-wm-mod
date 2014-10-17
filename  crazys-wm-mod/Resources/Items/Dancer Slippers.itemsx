@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Items>
 <Item Name="Dancer Slippers"
-      Desc="These custom-made silk slippers with supple leather soles are often worn by female dancers while performing. They come with several colorful ribbons that can be tied to the shins and lower legs. (B) (+15 Strip, +5 Cha, +5 Agi, +5 Happ)"
+      Desc="These custom-made silk slippers with supple leather soles are often worn by female dancers while performing. They come with several colorful ribbons that can be tied to the shins and lower legs. (B) (+15 Strip, +5 Cha, +5 Agi, +5 Happ, +Fleet of Foot)"
       Type="Shoes"
       Badness="0"
       Special="None"
@@ -12,5 +12,6 @@
    <Effect What="Stat"  Name="Agility"                 Amount="5"    />
    <Effect What="Stat"  Name="Charisma"                Amount="5"    />
    <Effect What="Skill" Name="Strip"                   Amount="15"    />
+   <Effect What="Trait" Name="Fleet of Foot"           Amount="1" />
 </Item>
 </Items>

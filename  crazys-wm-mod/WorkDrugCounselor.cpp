@@ -42,65 +42,61 @@ extern cCentreManager g_Centre;
 extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
-// `J` Centre Job - Rehab
+// `J` Centre Job - Rehab_Job - Full_Time_Job
 bool cJobManager::WorkDrugCounselor(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
-	string message = "";
-
-	g_Girls.AddTiredness(girl);
-
-	// not for doctor
-	g_Girls.UnequipCombat(girl);
-
 	girl->m_DayJob = girl->m_NightJob = JOB_DRUGCOUNSELOR;	// it is a full time job
+	if (DayNight == 1) return false;
+
+	stringstream ss;
+	string girlName = girl->m_Realname;
+	cConfig cfg;
+
+	g_Girls.UnequipCombat(girl);	// not for doctor
 
 	int wages = 25;
-	message += gettext("She worked as a drug counselor.");
+	int enjoy = 0;
+	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
+
+	ss << girlName << " counceled drug addicts.\n\n";
 	
-	int roll = g_Dice%100;
-
-	if (roll <= 25) {
-		message += gettext(" She had a pleasant time working.");
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCOUNSELOR, +1, true);
-	}
-	else if (roll >= 90) {
-		message += gettext(" The addicts hasseled her.");
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCOUNSELOR, -3, true);
-	}
-	else
+	if (roll_a <= 50 && g_Girls.DisobeyCheck(girl, ACTION_WORKCOUNSELOR, brothel))
 	{
-		message += gettext(" Otherwise, the shift passed uneventfully.");
+		ss << "She refused to counsel anyone.";
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
+		g_Girls.UpdateEnjoyment(girl, ACTION_WORKREHAB, -1, true);
+		return true;
 	}
+	else if (roll_a <= 10)	{ enjoy -= g_Dice % 3 + 1;	ss << "The addicts hasseled her."; }
+	else if (roll_a >= 90)	{ enjoy += g_Dice % 3 + 1;	ss << "She had a pleasant time working."; }
+	else /*             */	{ enjoy += g_Dice % 2;		ss << "Otherwise, the shift passed uneventfully."; }
 
-/*
- *	work out the pay between the house and the girl
- *
- *	the original calc took the average of beauty and charisma and halved it
- */
+	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, DayNight);
 
+	int rehabers = g_Centre.GetNumGirlsOnJob(0, JOB_REHAB, DayNight);
+	// work out the pay between the house and the girl
 	int roll_max = girl->spirit() + girl->intelligence();
 	roll_max /= 4;
 	wages += 10 + g_Dice%roll_max;
-	wages += 5 * g_Centre.GetNumGirlsOnJob(0, JOB_REHAB, DayNight);	// `J` pay her 5 for each patient you send to her
+	wages += 5 * rehabers;	// `J` pay her 5 for each patient you send to her
 	girl->m_Pay = wages;
 
 	// Improve stats
-	int xp = 15, skill = 2, libido = 1;
+	int xp = 15, skill = 2 + (rehabers/2), libido = 1;
 
 	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateStat(girl, STAT_CHARISMA, skill);
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, skill);
-	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
+	g_Girls.UpdateStat(girl, STAT_CHARISMA, (g_Dice%skill) + 1);
+	g_Girls.UpdateSkill(girl, SKILL_SERVICE, (g_Dice%skill) + 1);
 
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKCOUNSELOR, enjoy, true);
 	//gain traits
 	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, ACTION_WORKCOUNSELOR, "Dealing with patients and talking with them about their problems has made " + girl->m_Realname + " more Charismatic.", DayNight != 0);
-
 	//lose traits
-	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 20, ACTION_WORKCOUNSELOR, girl->m_Realname + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", DayNight != 0);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 30, ACTION_WORKCOUNSELOR, girl->m_Realname + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", DayNight != 0);
 
 	return false;
 }

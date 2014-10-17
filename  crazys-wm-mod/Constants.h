@@ -446,7 +446,8 @@ const unsigned char ACTION_WORKMILK 		= 24;
 const unsigned char ACTION_WORKMASSUSSE		= 25;
 const unsigned char ACTION_WORKFARM			= 26;
 const unsigned char ACTION_WORKINTERN		= 27;
-const unsigned char ACTION_GENERAL          = 28; // ACTION_GENERAL must be the last sction type
+const unsigned char ACTION_WORKREHAB		= 28;
+const unsigned char ACTION_GENERAL          = 29; // ACTION_GENERAL must be the last sction type
 
 const unsigned char NUM_ACTIONTYPES = ACTION_GENERAL + 1;
 

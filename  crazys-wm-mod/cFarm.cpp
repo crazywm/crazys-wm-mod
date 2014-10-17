@@ -334,8 +334,8 @@ void cFarmManager::UpdateGirls(sBrothel* brothel, int DayNight)
 			sw = restjob;
 			refused = m_JobManager.JobFunc[restjob](current, brothel, DayNight, summary);
 		}
-		// if she refused she still gets tired
-		if (refused) g_Girls.AddTiredness(current);
+
+		g_Girls.AddTiredness(current);		// `J` moved all girls add tiredness to one place
 
 		totalPay += current->m_Pay;
 		totalTips += current->m_Tips;

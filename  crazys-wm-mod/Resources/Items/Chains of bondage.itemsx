@@ -22,9 +22,10 @@
    <Effect What="Skill" Name="Beastiality"             Amount="30"    />
    <Effect What="Skill" Name="Group"                   Amount="30"    />
    <Effect What="Skill" Name="Lesbian"                 Amount="30"    />
-   <Effect What="Skill" Name="Service"                 Amount="-300"    />
    <Effect What="Skill" Name="Strip"                   Amount="-300"    />
    <Effect What="Skill" Name="Anal"                    Amount="30"    />
+   <Effect What="Skill" Name="Handjob"                 Amount="0"    />
+   <Effect What="Skill" Name="Service"                 Amount="-300"    />
    <Effect What="Skill" Name="Magic"                   Amount="-300"    />
    <Effect What="Skill" Name="Combat"                  Amount="-300"    />
    <Effect What="Stat"  Name="Constitution"            Amount="100"    />

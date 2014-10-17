@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Items>
 <Item Name="Armor of the Berserk"
-      Desc="This armor is possessed by malevolent forces, including the hate, rage, pain, and fear of those who have worn it before.  While its wearer is nigh undefeatable, it runs off the suffering and pain of its wearer.  ("
+      Desc="This armor is possessed by malevolent forces, including the hate, rage, pain, and fear of those who have worn it before.  While its wearer is nigh undefeatable, it runs off the suffering and pain of its wearer."
       Type="Armor"
       Badness="100"
       Special="None"

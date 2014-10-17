@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Items>
 <Item Name="Potion of Androgyny"
-      Desc="This rare potion permanently transforms its user into a half-man, half-woman version of themselves. In the case of a woman, the transformation includes the apparition of a fully functional set of male genitals, a reduction of her breast size, a thinning of the hips, and a slight increase in physical constitution. (+25 Lib, +15 Cons, -10 Cha, removes Big Boobs, Abnormally Large Boobs, Cute, Lolita, Great Figure, Great Arse, adds Small Boobs, Manly, Futanari)"
+      Desc="This rare potion permanently transforms its user into a half-man, half-woman version of themselves. In the case of a woman, the transformation includes the apparition of a fully functional set of male genitals, a reduction of her breast size, a thinning of the hips, and a slight increase in physical constitution. (+25 Lib, +15 Cons, -10 Cha, reduces breasts to Flat Chest, removes  Cute, Lolita, Great Figure, Great Arse, Manly, Futanari)"
       Type="Food"
       Badness="50"
       Special="None"
@@ -12,18 +12,26 @@
    <Effect What="Stat"  Name="Charisma"                Amount="-10"    />
    <Effect What="Stat"  Name="Libido"                  Amount="25"    />
    <Effect What="Stat"  Name="Constitution"            Amount="15"    />
-   <Effect What="Trait" Name="Big Boobs"               Amount="0"    />
    <Effect What="Trait" Name="Cute"                    Amount="0"    />
    <Effect What="Trait" Name="Lolita"                  Amount="0"    />
    <Effect What="Trait" Name="Great Figure"            Amount="0"    />
    <Effect What="Trait" Name="Great Arse"              Amount="0"    />
-   <Effect What="Trait" Name="Small Boobs"             Amount="1"    />
    <Effect What="Trait" Name="Manly"                   Amount="1"    />
    <Effect What="Trait" Name="Futanari"                Amount="1"    />
-   <Effect What="Trait" Name="Abnormally Large Boobs"  Amount="0"    />
+   <Effect What="Trait" Name="Petite Breasts"          Amount="0" />
+   <Effect What="Trait" Name="Small Boobs"             Amount="0" />
+   <Effect What="Trait" Name="Busty Boobs"             Amount="0" />
+   <Effect What="Trait" Name="Big Boobs"               Amount="0" />
+   <Effect What="Trait" Name="Giant Juggs"             Amount="0" />
+   <Effect What="Trait" Name="Massive Melons"          Amount="0" />
+   <Effect What="Trait" Name="Abnormally Large Boobs"  Amount="0" />
+   <Effect What="Trait" Name="Titanic Tits"            Amount="0" />
+   <Effect What="Trait" Name="Flat Chest"              Amount="1" />
+
+   
 </Item>
 <Item Name="Potion of Androgyny"
-      Desc="This rare potion permanently transforms its user into a half-man, half-woman version of themselves. In the case of a woman, the transformation includes the apparition of a fully functional set of male genitals, a reduction of her breast size, a thinning of the hips, and a slight increase in physical constitution. (+25 Lib, +15 Cons, -10 Cha, removes Big Boobs, Abnormally Large Boobs, Cute, Lolita, Great Figure, Great Arse, adds Small Boobs, Manly, Futanari)"
+      Desc="This rare potion permanently transforms its user into a half-man, half-woman version of themselves. In the case of a woman, the transformation includes the apparition of a fully functional set of male genitals, a reduction of her breast size, a thinning of the hips, and a slight increase in physical constitution. (+25 Lib, +15 Cons, -10 Cha, reduces breasts to Flat Chest, removes Cute, Lolita, Great Figure, Great Arse, Manly, Futanari)"
       Type="Food"
       Badness="50"
       Special="None"
@@ -34,14 +42,20 @@
    <Effect What="Stat"  Name="Charisma"                Amount="-10"    />
    <Effect What="Stat"  Name="Libido"                  Amount="25"    />
    <Effect What="Stat"  Name="Constitution"            Amount="15"    />
-   <Effect What="Trait" Name="Big Boobs"               Amount="0"    />
    <Effect What="Trait" Name="Cute"                    Amount="0"    />
    <Effect What="Trait" Name="Lolita"                  Amount="0"    />
    <Effect What="Trait" Name="Great Figure"            Amount="0"    />
    <Effect What="Trait" Name="Great Arse"              Amount="0"    />
-   <Effect What="Trait" Name="Small Boobs"             Amount="1"    />
    <Effect What="Trait" Name="Manly"                   Amount="1"    />
    <Effect What="Trait" Name="Futanari"                Amount="1"    />
-   <Effect What="Trait" Name="Abnormally Large Boobs"  Amount="0"    />
+   <Effect What="Trait" Name="Petite Breasts"          Amount="0" />
+   <Effect What="Trait" Name="Small Boobs"             Amount="0" />
+   <Effect What="Trait" Name="Busty Boobs"             Amount="0" />
+   <Effect What="Trait" Name="Big Boobs"               Amount="0" />
+   <Effect What="Trait" Name="Giant Juggs"             Amount="0" />
+   <Effect What="Trait" Name="Massive Melons"          Amount="0" />
+   <Effect What="Trait" Name="Abnormally Large Boobs"  Amount="0" />
+   <Effect What="Trait" Name="Titanic Tits"            Amount="0" />
+   <Effect What="Trait" Name="Flat Chest"              Amount="1" />
 </Item>
 </Items>

@@ -12,17 +12,25 @@
    <Effect What="Stat" Name="Age" Amount="-3" />
    <Effect What="Stat" Name="Intelligence" Amount="-5" />
    <Effect What="Stat" Name="Constitution" Amount="-5" />
-   <Effect What="Skill" Name="Combat" Amount="-15" />
-   <Effect What="Skill" Name="Magic" Amount="-15" />
-   <Effect What="Skill" Name="Service" Amount="-15" />
-   <Effect What="Skill" Name="Anal" Amount="-15" />
-   <Effect What="Skill" Name="BDSM" Amount="-15" />
-   <Effect What="Skill" Name="Beastiality" Amount="-15" />
-   <Effect What="Skill" Name="Group" Amount="-15" />
-   <Effect What="Skill" Name="Lesbian" Amount="-15" />
-   <Effect What="Skill" Name="NormalSex" Amount="-15" />
-   <Effect What="Skill" Name="OralSex" Amount="-15" />
-   <Effect What="Skill" Name="Strip" Amount="-15" />
-   <Effect What="Skill" Name="TittySex" Amount="-15" />
+   <Effect What="Skill" Name="Magic"                   Amount="-15"    />
+   <Effect What="Skill" Name="Combat"                  Amount="-15"    />
+   <Effect What="Skill" Name="Service"                 Amount="-15"    />
+   <Effect What="Skill" Name="Medicine"                Amount="-15"    />
+   <Effect What="Skill" Name="Performance"             Amount="-15"    />
+   <Effect What="Skill" Name="Crafting"                Amount="-15"    />
+   <Effect What="Skill" Name="Herbalism"               Amount="-15"    />
+   <Effect What="Skill" Name="Farming"                 Amount="-15"    />
+   <Effect What="Skill" Name="Brewing"                 Amount="-15"    />
+   <Effect What="Skill" Name="AnimalHandling"          Amount="-15"    />
+   <Effect What="Skill" Name="Anal"                    Amount="-15"    />
+   <Effect What="Skill" Name="BDSM"                    Amount="-15"    />
+   <Effect What="Skill" Name="Beastiality"             Amount="-15"    />
+   <Effect What="Skill" Name="Group"                   Amount="-15"    />
+   <Effect What="Skill" Name="Handjob"                 Amount="-15"    />
+   <Effect What="Skill" Name="Lesbian"                 Amount="-15"    />
+   <Effect What="Skill" Name="NormalSex"               Amount="-15"    />
+   <Effect What="Skill" Name="OralSex"                 Amount="-15"    />
+   <Effect What="Skill" Name="Strip"                   Amount="-15"    />
+   <Effect What="Skill" Name="TittySex"                Amount="-15"    />
 </Item>
 </Items>

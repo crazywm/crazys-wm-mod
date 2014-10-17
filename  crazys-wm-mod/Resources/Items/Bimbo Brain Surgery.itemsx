@@ -14,6 +14,14 @@
    <Effect What="Stat"  Name="Health"                  Amount="-20"    />
    <Effect What="Stat"  Name="Spirit"                  Amount="-20"    />
    <Effect What="Stat"  Name="Obedience"               Amount="50"    />
+   <Effect What="Skill" Name="Magic"                   Amount="-50"    />
+   <Effect What="Skill" Name="Combat"                  Amount="-10"    />
+   <Effect What="Skill" Name="Medicine"                Amount="-30"    />
+   <Effect What="Skill" Name="Crafting"                Amount="-10"    />
+   <Effect What="Skill" Name="Herbalism"               Amount="-20"    />
+   <Effect What="Skill" Name="Farming"                 Amount="-10"    />
+   <Effect What="Skill" Name="Brewing"                 Amount="-10"    />
+   <Effect What="Trait" Name="Bimbo"                   Amount="1"    />
    <Effect What="Trait" Name="Nymphomaniac"            Amount="1"    />
    <Effect What="Trait" Name="Retarded"                Amount="1"    />
    <Effect What="Trait" Name="Aggressive"              Amount="1"    />

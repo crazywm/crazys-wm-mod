@@ -9,6 +9,7 @@
       Rarity="Shop05"
       Infinite="false"
       GirlBuyChance="0">
+   <Effect What="Skill" Name="Service"                 Amount="-20"    />
    <Effect What="Skill" Name="Anal"                    Amount="-20"    />
    <Effect What="Skill" Name="BDSM"                    Amount="-20"    />
    <Effect What="Skill" Name="NormalSex"               Amount="-20"    />
@@ -17,8 +18,8 @@
    <Effect What="Skill" Name="TittySex"                Amount="-20"    />
    <Effect What="Skill" Name="Group"                   Amount="-20"    />
    <Effect What="Skill" Name="Lesbian"                 Amount="-20"    />
-   <Effect What="Skill" Name="Service"                 Amount="-20"    />
    <Effect What="Skill" Name="Strip"                   Amount="-20"    />
+   <Effect What="Skill" Name="Handjob"                 Amount="-20"    />
    <Effect What="Stat"  Name="Libido"                  Amount="-75"    />
    <Effect What="Trait" Name="AIDS"                    Amount="0"    />
 </Item>
@@ -39,6 +40,7 @@
    <Effect What="Skill" Name="Lesbian"                 Amount="-20"    />
    <Effect What="Skill" Name="Service"                 Amount="-20"    />
    <Effect What="Skill" Name="Strip"                   Amount="-20"    />
+   <Effect What="Skill" Name="Handjob"                 Amount="-20"    />
    <Effect What="Stat"  Name="Libido"                  Amount="-75"    />
    <Effect What="Trait" Name="AIDS"                    Amount="0"    />
 </Item>

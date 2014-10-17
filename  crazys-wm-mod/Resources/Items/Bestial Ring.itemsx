@@ -10,9 +10,9 @@
       Infinite="false"
       GirlBuyChance="10">
    <Effect What="Stat"  Name="Intelligence"            Amount="-50"    />
-   <Effect What="Skill" Name="Beastiality"             Amount="50"    />
    <Effect What="Stat"  Name="Libido"                  Amount="20"    />
    <Effect What="Skill" Name="Service"                 Amount="-50"    />
+   <Effect What="Skill" Name="Beastiality"             Amount="50"    />
    <Effect What="Skill" Name="Strip"                   Amount="-50"    />
    <Effect What="Skill" Name="Anal"                    Amount="10"    />
    <Effect What="Skill" Name="OralSex"                 Amount="10"    />
@@ -20,6 +20,7 @@
    <Effect What="Skill" Name="BDSM"                    Amount="10"    />
    <Effect What="Skill" Name="NormalSex"               Amount="10"    />
    <Effect What="Skill" Name="Group"                   Amount="10"    />
+   <Effect What="Skill" Name="Handjob"                 Amount="10"    />
    <Effect What="Skill" Name="Lesbian"                 Amount="10"    />
    <Effect What="Trait" Name="Elegant"                 Amount="0"    />
 </Item>
