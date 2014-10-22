@@ -47,13 +47,11 @@ extern cGold g_Gold;
 bool cJobManager::WorkChairMan(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	girl->m_DayJob = girl->m_NightJob = JOB_CHAIRMAN;	// it is a full time job
-	if (DayNight == 1) return false;
+	bool night = (DayNight == SHIFT_NIGHT);
 	string message = "";
 	stringstream ss;
 	string girlName = girl->m_Realname;
 	cConfig cfg;
-
-	if (Preprocessing(ACTION_WORKMATRON, girl, brothel, DayNight, summary, message)) return true;
 
 	// Complications
 	int check = g_Dice % 100;

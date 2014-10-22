@@ -176,19 +176,26 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, int DayNi
 		ss << gettext("She managed to gain ") << skill << gettext(" Lesbian.\n\n");
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_LESBIAN, DayNight);
 	}
-	else if (roll_b <= 30 && girl->m_Skills[SKILL_TITTYSEX] < 100 && is_sex_type_allowed(SKILL_TITTYSEX, brothel))
+	else if (roll_b <= 27 && girl->m_Skills[SKILL_TITTYSEX] < 100 && is_sex_type_allowed(SKILL_TITTYSEX, brothel))
 	{
 		g_Girls.UpdateSkill(girl, SKILL_TITTYSEX, skill);
 		ss << gettext("You decide to have her use her tits on you.\n\n");
 		ss << gettext("She managed to gain ") << skill << gettext(" Titty.\n\n");
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_TITTY, DayNight);
 	}
-	else if (roll_b <= 40 && girl->m_Skills[SKILL_HANDJOB] < 100 && is_sex_type_allowed(SKILL_HANDJOB, brothel))
+	else if (roll_b <= 34 && girl->m_Skills[SKILL_HANDJOB] < 100 && is_sex_type_allowed(SKILL_HANDJOB, brothel))
 	{
 		g_Girls.UpdateSkill(girl, SKILL_HANDJOB, skill);
 		ss << gettext("You decide to teach her the art of manual stimulation.\n\n");
 		ss << gettext("She managed to gain ") << skill << gettext(" Hand Job.\n\n");
 		girl->m_Events.AddMessage(ss.str(), SKILL_HANDJOB, DayNight);
+	}
+	else if (roll_b <= 40 && girl->m_Skills[SKILL_FOOTJOB] < 100 && is_sex_type_allowed(SKILL_FOOTJOB, brothel))
+	{
+		g_Girls.UpdateSkill(girl, SKILL_FOOTJOB, skill);
+		ss << gettext("You decide to teach her the art of manual stimulation with her feet.\n\n");
+		ss << gettext("She managed to gain ") << skill << gettext(" Foot Job.\n\n");
+		girl->m_Events.AddMessage(ss.str(), SKILL_FOOTJOB, DayNight);
 	}
 	else if (roll_b <= 50 && girl->m_Skills[SKILL_ORALSEX] < 100 && is_sex_type_allowed(SKILL_ORALSEX, brothel))
 	{

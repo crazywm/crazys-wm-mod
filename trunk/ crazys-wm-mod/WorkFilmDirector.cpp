@@ -61,12 +61,14 @@ bool cJobManager::WorkFilmDirector(sGirl* girl, sBrothel* brothel, int DayNight,
 	ss << girlName << " worked as a film director.\n\n";
 
 	int roll = g_Dice.d100();
+	/* `J` moved disobey check to building flow.
 	if (roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
 	{
-		ss << "She refused to work as a director today.";
+		ss << "She refused to work as a Director today.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
+	//*/
 
 	/* */if (roll <= 10) { enjoy -= g_Dice % 3 + 1; ss << "She did not like working in the studio today.\n\n"; }
 	else if (roll >= 90) { enjoy += g_Dice % 3 + 1; ss << "She had a great time working today.\n\n"; }

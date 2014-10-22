@@ -89,7 +89,8 @@ const char *sGirl::stat_names[] =
 const char *sGirl::skill_names[] =
 {
 	"Anal", "Magic", "BDSM", "NormalSex", "Beastiality", "Group", "Lesbian", "Service", "Strip", "Combat", "OralSex",
-	"TittySex", "Medicine", "Performance", "Handjob", "Crafting", "Herbalism", "Farming", "Brewing", "AnimalHandling"
+	"TittySex", "Medicine", "Performance", "Handjob", "Crafting", "Herbalism", "Farming", "Brewing", "AnimalHandling", "Footjob"
+	,0
 };
 const char *sGirl::status_names[] =
 {
@@ -157,6 +158,7 @@ void sGirl::setup_maps()
 		skill_lookup["Group"]				= SKILL_GROUP;
 		skill_lookup["Lesbian"]				= SKILL_LESBIAN;
 		skill_lookup["Strip"]				= SKILL_STRIP;
+		skill_lookup["Footjob"]				= SKILL_FOOTJOB;
 
 		status_lookup["None"]				= STATUS_NONE; 
 		status_lookup["Poisoned"]			= STATUS_POISONED;
@@ -653,7 +655,7 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 					current->m_MinSkills[i] += 50; current->m_MaxSkills[i] += 100;
 				}
 				if (i == SKILL_ANAL || i == SKILL_NORMALSEX || i == SKILL_GROUP || i == SKILL_LESBIAN ||
-					i == SKILL_STRIP || i == SKILL_ORALSEX || i == SKILL_TITTYSEX || i == SKILL_HANDJOB)
+					i == SKILL_STRIP || i == SKILL_ORALSEX || i == SKILL_TITTYSEX || i == SKILL_HANDJOB || SKILL_FOOTJOB)
 				{
 					current->m_MaxSkills[i] -= 10; current->m_MaxSkills[i] -= 20;
 				}
@@ -1204,21 +1206,22 @@ string cGirls::GetDetailsString(sGirl* girl, bool purchase)
 
 	int skillnum[] = { SKILL_MAGIC, SKILL_COMBAT, SKILL_SERVICE, SKILL_MEDICINE, SKILL_PERFORMANCE, SKILL_CRAFTING, SKILL_HERBALISM, SKILL_FARMING, SKILL_BREWING, SKILL_ANIMALHANDLING, SKILL_ANAL, SKILL_BDSM, SKILL_NORMALSEX, SKILL_BEASTIALITY, SKILL_GROUP, SKILL_LESBIAN, SKILL_ORALSEX, SKILL_TITTYSEX, SKILL_HANDJOB, SKILL_STRIP };
 	string basestr[] = { "Age : ", "Rebelliousness : ", "Looks : ", "Constitution : ", "Health : ", "Happiness : ", "Tiredness : ", "Gold : ", "Worth : " };
-	string skillstr[] = { "Magic Ability : ", "Combat Ability : ", "Service Skills : ", "Medicine Skill : ", "Performance Skill : ", "Crafting Skill : ", "Herbalism Skill : ", "Farming Skill : ", "Brewing Skill : ", "Animal Handling : ", "Anal Sex : ", "BDSM Sex : ", "Normal Sex : ", "Bestiality Sex : ", "Group Sex : ", "Lesbian Sex : ", "Oral Sex : ", "Titty Sex : ", "Hand Job : ", "Stripping Sex : " };
+	string skillstr[] = { "Magic Ability : ", "Combat Ability : ", "Service Skills : ", "Medicine Skill : ", "Performance Skill : ", "Crafting Skill : ", "Herbalism Skill : ", "Farming Skill : ", "Brewing Skill : ", "Animal Handling : ", "Anal Sex : ", "BDSM Sex : ", "Normal Sex : ", "Bestiality Sex : ", "Group Sex : ", "Lesbian Sex : ", "Oral Sex : ", "Titty Sex : ", "Hand Job : ", "Stripping Sex : ", "Foot Job : " };
+	// `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in >> cGirls > GetDetailsString
 
 	if (cfg.fonts.normal() == "segoeui.ttf" && cfg.fonts.detailfontsize() == 9) // `J` if already set to my default
 	{
 		string basesegoeuistr[] = { "Age :                                   ", "Rebelliousness :         ", "Looks :                              ", "Constitution :               ", "Health :                            ", "Happiness :                    ", "Tiredness :                     ", "Gold :                                ", "Worth :                             " };
 		for (int i = 0; i < 9; i++) basestr[i] = basesegoeuistr[i];
-		string skillsegoeuistr[] = { "Magic Ability :              ", "Combat Ability :           ", "Service Skills :              ", "Medicine Skill :            ", "Performance Skill :    ", "Crafting Skill :              ", "Herbalism Skill :         ", "Farming Skill :             ", "Brewing Skill :               ", "Animal Handling :    ", "Anal Sex :                        ", "BDSM Sex :                      ", "Normal Sex :                 ", "Bestiality Sex :              ", "Group Sex :                     ", "Lesbian Sex :                 ", "Oral Sex :                         ", "Titty Sex :                         ", "Hand Job :                      ", "Stripping Sex :               " };
-		for (int i = 0; i < 20; i++) skillstr[i] = skillsegoeuistr[i];
+		string skillsegoeuistr[] = { "Magic Ability :              ", "Combat Ability :           ", "Service Skills :              ", "Medicine Skill :            ", "Performance Skill :    ", "Crafting Skill :              ", "Herbalism Skill :         ", "Farming Skill :             ", "Brewing Skill :               ", "Animal Handling :    ", "Anal Sex :                        ", "BDSM Sex :                      ", "Normal Sex :                 ", "Bestiality Sex :              ", "Group Sex :                     ", "Lesbian Sex :                 ", "Oral Sex :                         ", "Titty Sex :                         ", "Hand Job :                      ", "Stripping Sex :               ", "Foot Job :                      " };
+		for (int i = 0; i < 21; i++) skillstr[i] = skillsegoeuistr[i];
 		size = 90;
 	}
 	else		// `J` otherwise try to align the numbers
 	{
 		// get the widest
 		for (int i = 0; i < 9; i++) { check.GetSize(basestr[i], w, h); if (w > size) size = w; }
-		for (int i = 0; i < 20; i++) { check.GetSize(skillstr[i], w, h); if (w > size) size = w; }
+		for (int i = 0; i < 21; i++) { check.GetSize(skillstr[i], w, h); if (w > size) size = w; }
 		size += 5; // add a little padding
 		// then add extra spaces until it is longer that the widest
 		for (int i = 0; i < 9; i++)
@@ -1230,7 +1233,7 @@ string cGirls::GetDetailsString(sGirl* girl, bool purchase)
 				check.GetSize(basestr[i], w, h);
 			}
 		}
-		for (int i = 0; i < 20; i++)
+		for (int i = 0; i < 21; i++)
 		{
 			check.GetSize(skillstr[i], w, h);
 			while (w < size)
@@ -6237,6 +6240,14 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 		else /*                             */	message += " wouldn't stop using her hand to massage the customer's cock until she had made him spill his entire load.";
 		break;
 
+	case SKILL_FOOTJOB:
+		/* */if (GetSkill(girl, SexType) < 20)	message += " awkwardly worked the customer's cock with her feet, and recoiled when he came.";
+		else if (GetSkill(girl, SexType) < 60)	message += " used her feet on the customer's cock.";
+		else if (GetSkill(girl, SexType) < 80)	message += " loved using her feet on the customer's cock, and let him cum all over her.";
+		else /*                             */	message += " wouldn't stop using her feet to massage the customer's cock until she had made him spill his entire load.";
+		break;
+
+
 	case SKILL_BEASTIALITY:
 		if (g_Brothels.GetNumBeasts() == 0)
 		{
@@ -6339,9 +6350,9 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 			UpdateStat(girl, STAT_SPIRIT, -3);
 			UpdateStat(girl, STAT_HEALTH, -3);
 		}
-		UpdateTempStat(girl, STAT_LIBIDO, -20);
+		UpdateTempStat(girl, STAT_LIBIDO, -10);
 		UpdateStat(girl, STAT_SPIRIT, -1);
-		STDchance += 40;
+		STDchance += 30;
 		break;
 
 	case SKILL_BDSM:
@@ -6354,9 +6365,9 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 			UpdateStat(girl, STAT_HEALTH, -3);
 		}
 		contraception = girl->calc_pregnancy(customer, false, 0.75);
-		STDchance += (contraception ?3:30);
+		STDchance += (contraception ?2:20);
 
-		UpdateTempStat(girl, STAT_LIBIDO, -10);
+		UpdateTempStat(girl, STAT_LIBIDO, -5);
 		UpdateStat(girl, STAT_SPIRIT, -1);
 		break;
 
@@ -6372,8 +6383,8 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 		// if they're both happy afterward, it's good sex which modifies the chance of pregnancy
 		good = (customer->happiness() >= 60 && girl->happiness() >= 60);
 		contraception = girl->calc_pregnancy(customer, good);
-		STDchance += (contraception ? 5 : 50);
-		UpdateTempStat(girl, STAT_LIBIDO, -30);
+		STDchance += (contraception ? 4 : 40);
+		UpdateTempStat(girl, STAT_LIBIDO, -15);
 		break;
 
 	case SKILL_ORALSEX:
@@ -6385,8 +6396,8 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 			UpdateStat(girl, STAT_CONFIDENCE, -1);
 			//	UpdateStat(girl, STAT_HEALTH, -3);				// Removed... oral doesn't hurt unless you get herpes or something. --PP
 		}
-		STDchance += 20;
-		UpdateTempStat(girl, STAT_LIBIDO, -5);
+		STDchance += 10;
+		UpdateTempStat(girl, STAT_LIBIDO, -2);
 		break;
 
 	case SKILL_TITTYSEX:
@@ -6397,8 +6408,8 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 			UpdateStat(girl, STAT_SPIRIT, -3);
 			UpdateStat(girl, STAT_CONFIDENCE, -1);
 		}
-		STDchance += 5;
-		UpdateTempStat(girl, STAT_LIBIDO, -5);
+		STDchance += 1;
+		UpdateTempStat(girl, STAT_LIBIDO, -2);
 		break;
 
 	case SKILL_HANDJOB:
@@ -6409,8 +6420,20 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 			UpdateStat(girl, STAT_SPIRIT, -3);
 			UpdateStat(girl, STAT_CONFIDENCE, -1);
 		}
-		STDchance += 5;
-		UpdateTempStat(girl, STAT_LIBIDO, -5);
+		STDchance += 1;
+		UpdateTempStat(girl, STAT_LIBIDO, -1);
+		break;
+
+	case SKILL_FOOTJOB:
+		if (GetSkill(girl, SexType) <= 20)	// if unexperienced then will get hurt
+		{
+			message += "\nHer inexperience caused her some embarrassment.";	// Changed... being new at footjob doesn't hurt, but can be embarrasing. --PP
+			UpdateStat(girl, STAT_HAPPINESS, -2);
+			UpdateStat(girl, STAT_SPIRIT, -3);
+			UpdateStat(girl, STAT_CONFIDENCE, -1);
+		}
+		STDchance += 1;
+		UpdateTempStat(girl, STAT_LIBIDO, -1);
 		break;
 
 	case SKILL_BEASTIALITY:
@@ -6429,9 +6452,9 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 		if (g_Brothels.GetNumBeasts() > 0)
 		{
 			contraception = girl->calc_insemination(customer, good);
-			STDchance += (contraception ? 4 : 40);
+			STDchance += (contraception ? 2 : 20);
 		}
-		UpdateTempStat(girl, STAT_LIBIDO, -20);
+		UpdateTempStat(girl, STAT_LIBIDO, -10);
 		break;
 
 	case SKILL_GROUP:
@@ -6448,11 +6471,12 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 		// adding a 50% bonus to the chance of pregnancy since there's more than one partner involved
 		contraception = girl->calc_pregnancy(customer, good, 1.5);
 		STDchance += ((4 + customer->m_Amount) * (contraception ? 1 : 10));
-		UpdateTempStat(girl, STAT_LIBIDO, -40);
+		UpdateTempStat(girl, STAT_LIBIDO, -20);
 		break;
+
 	case SKILL_LESBIAN:
 		STDchance += 5;
-		UpdateTempStat(girl, STAT_LIBIDO, -20);
+		UpdateTempStat(girl, STAT_LIBIDO, -10);
 		break;
 
 	case SKILL_STRIP:
@@ -6465,8 +6489,8 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 			UpdateStat(girl, STAT_CONFIDENCE, -1);
 			UpdateStat(girl, STAT_HEALTH, -3);
 		}
-		STDchance += 1;
-		UpdateTempStat(girl, STAT_LIBIDO, -2);
+		STDchance += 0;
+		UpdateTempStat(girl, STAT_LIBIDO, 0);
 		break;
 	}
 
@@ -6484,6 +6508,7 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 		SexType == SKILL_ORALSEX		||
 		SexType == SKILL_TITTYSEX		||
 		SexType == SKILL_HANDJOB		||
+		SexType == SKILL_FOOTJOB		||
 		*/
 		message += gettext(" The customer was overjoyed that she was a virgin.");
 		customer->m_Stats[STAT_HAPPINESS] = 100;
@@ -6507,6 +6532,7 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 		UpdateSkill(girl, SKILL_ORALSEX, max(0, g_Dice%skillgain - 1));
 		UpdateSkill(girl, SKILL_TITTYSEX, max(0, g_Dice%skillgain - 1));
 		UpdateSkill(girl, SKILL_HANDJOB, max(0, g_Dice%skillgain - 1));
+		UpdateSkill(girl, SKILL_FOOTJOB, max(0, g_Dice%skillgain - 1));
 	}
 	else	UpdateSkill(girl, SexType, g_Dice%skillgain + 1);
 	UpdateSkill(girl, SKILL_SERVICE, max(0, g_Dice % skillgain - 1));
@@ -6527,7 +6553,8 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 			// Nymphomaniac would rather have something inside her so if she can't, she does not enjoy it as much
 		case SKILL_STRIP:			enjoy -= 2; break;
 		case SKILL_TITTYSEX:
-		case SKILL_HANDJOB:			enjoy -= 1; break;
+		case SKILL_HANDJOB:			
+		case SKILL_FOOTJOB:			enjoy -= 1; break;
 		case SKILL_ORALSEX:
 		default:
 			break;
@@ -6543,7 +6570,8 @@ void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool grou
 		case SKILL_NORMALSEX:
 		case SKILL_TITTYSEX:
 		case SKILL_ORALSEX:
-		case SKILL_HANDJOB:			enjoy -= 1; break;
+		case SKILL_HANDJOB:
+		case SKILL_FOOTJOB:			enjoy -= 1; break;
 		case SKILL_ANAL:
 		case SKILL_GROUP:			enjoy -= 2; break;
 		default:
@@ -11242,9 +11270,6 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 				if (wdays >= 3)		{ wdays = 3; }
 				else if (wdays > 1)	{ wdays = 2; }
 				else				{ wdays = 1; }
-			}
-			if (g_Clinic.GetNumGirlsOnJob(0, JOB_DOCTOR, DN_Day) > 0)
-			{
 				ss << g_Brothels.m_JobManager.JobName[DN_Job] << " (" << wdays << ")*";
 			}
 			else

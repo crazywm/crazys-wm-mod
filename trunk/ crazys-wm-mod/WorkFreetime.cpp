@@ -43,7 +43,27 @@ extern cMessageQue g_MessageQue;
 // `J` Brothel Job - General
 bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
+	// `J` NOTE: start with just the basic stuff
+	stringstream ss;
 	string girlName = girl->m_Realname;
+
+	g_Girls.UpdateStat(girl, STAT_TIREDNESS, -(10 + g_Dice % 21), false);
+	g_Girls.UpdateStat(girl, STAT_HEALTH, 10 + (girl->constitution() / 10), false);
+	g_Girls.UpdateStat(girl, STAT_HAPPINESS, 10 + g_Dice % 11);
+	g_Girls.UpdateStat(girl, STAT_MANA, 5 + girl->magic() / 5);
+	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, (g_Girls.HasTrait(girl, "Nymphomaniac") ? 15 : 5));
+	g_Girls.UpdateStat(girl, STAT_EXP, 1);   // Just because!
+
+	// `J` NOTE: one message to tell she is resting - use a separate one to tell the anything else she does
+	ss << girlName << gettext(" rested and recovered some energy.");
+	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, DayNight);
+
+	//if (g_Dice % 2 != 1)		//	`J` blocking the rest of the rest stuff until more gets worked out. 
+		return false;
+
+	
+	// `J` NOTE: no need to prepare the rest of this stuff if we are returning without using it
+	string message;
 	int roll = g_Dice%100;
 	int roll_a = g_Dice%100; int roll_b = g_Dice%100; int roll_c = g_Dice%100; int roll_d = g_Dice%100;
 	int general = false;
@@ -54,19 +74,6 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int DayNight, str
 	int imagetype = IMGTYPE_PROFILE;
 	vector<sGirl*> barmaid = girls_on_job(brothel, JOB_BARMAID, DayNight);
 	vector<sGirl*> clubbar = girls_on_job(brothel, JOB_SLEAZYBARMAID, DayNight);
-	//brothel->m_Filthiness++;
-	g_Girls.UpdateStat(girl, STAT_TIREDNESS, -20);
-	g_Girls.UpdateStat(girl, STAT_HAPPINESS, 15);
-	g_Girls.UpdateStat(girl, STAT_HEALTH, 10);
-	g_Girls.UpdateStat(girl, STAT_MANA, 10);
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))	{ g_Girls.UpdateTempStat(girl, STAT_LIBIDO, 15); }
-	else/*									  */{ g_Girls.UpdateTempStat(girl, STAT_LIBIDO, 5); }
-	g_Girls.UpdateStat(girl, STAT_EXP, 1);   // Just because!
-
-	string message = gettext("She rested and recovered some energy.\n");
-
-	if(g_Dice%2 != 1)	// add inventory items since she is going shopping :D
-		return false;
 
 	int v[2] = {-1,-1};
 	girl->m_Triggers.CheckForScript(TRIGGER_SHOPPING, true, v);	// check for and trigger shopping scripts

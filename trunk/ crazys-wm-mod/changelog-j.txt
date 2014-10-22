@@ -905,7 +905,112 @@ Updated Drug Counselor and Rehab jobs.
  - Rehab is now tracked like other jobs where enjoyment is used - girls who go through rehab will make better counselors.
  - Counselor and Rehab are full time jobs and are only run for day shift.
 Started reflow of Centre - not much done yet.
- 
+Reorderd dungeon screen release to icons to match F# keys order
+Consolidated the AddTiredness(girl) function out of jobs and after the job is done
+
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.10
 !!!!!!!!!!!!!!!!!!!! pushed to SVN - r118
+
+###  Changes 10/17-18/2014
+Moved the AddTiredness(girl) function to be used once at the start of the turn for everyone. 
+ - It was missing for some jobs, so some girls never got tired. Now everyone can get tired but not a whole lot.
+ - If a job causes tiredness the AddTiredness(girl) can be added where it is needed. (already in whore jobs)
+Lowered the libido loss for sex work again:
+ - Anal -10, Bdsm -5, Normalsex -15, Oralsex -2, Tittysex -2, Handjob -1, Beastiality -10, Group -20, Lesbian -10, Strip 0,
+ - +12 for nymphos so they will want sex more.
+Lowered the STD chance a bit more
+Fixed a bug where if you click the buy room button when you don't have enough money it resets the room text to base.
+Added m_Refused_To_Work_Day and m_Refused_To_Work_Night to girls for better tracking
+Cleaned up extra m_JustGaveBirth checks and fixed a bug in some buildings
+
+###  Changes 10/19-21/2014
+*** Blocked some of the changes made to freetime until more can be worked out with it
+Reworked how FilmRandom chooses scene type
+Added Skill Footjob
+Added Footjob and Strip restrictions
+Updated several items adding footjob
+Updated sex jobs to include footjob
+Added a GirlPaymentText function to handle all the girls payment text variations in one place.
+Fixed a bug in triggers where it would only allow 1 trigger per girl
+
+Reflow and make similar all non-brothel buildings
+********** There are a lot of changes with this so exact changelog of it would be rather long  so I will just cpoy/paste moy notes from the forum **********
+*                                                                                                                                                          *
+*   .06.00.11 is taking a lot longer to get finished than I anticipated.  :'(                                                                              *
+*                                                                                                                                                          *
+*   I am reflowing the other non-brothel buildings to bring them in line with the movie studio's flow style.                                               *
+*   While I was doing that, I found a few bugs in several places.                                                                                          *
+*   Also I added the Footjob skill to go with the Film Footjob scenes and added sex restriction checkboxes for footjob and strip.                          *
+*    - Footjob is not used by anything yet.                                                                                                                *
+*   I changed the way the Film Random job chooses what to film as well as how the Director assigns actresses if they have no job.                          *
+*    - Both take into account skill levels and sex restrictions in a more efficient way.                                                                   *
+*   I fixed a bug in the out of building check (I had a && instead of an || so it did not work at all)                                                     *
+*    - I also added checking of previous day jobs for out of building so if she gets put back to work, it will not be to an out of building job.           *
+*                                                                                                                                                          *
+*   So far everything runs but only the studio works as it should.                                                                                         *
+*   Very little has been changed with the main brothels yet, just some cleanup and a few of the fixes listed above.                                        *
+*                                                                                                                                                          *
+*                                                                                                                                                          *
+*   The non-brothel building reflow is 80% done.                                                                                                           *
+*                                                                                                                                                          *
+*   The new matron code is in                                                                                                                              *
+*    - Except for the assigning of new jobs part.                                                                                                          *
+*    - The "take a girl off work" and "put a girl back to her old job" works.                                                                              *
+*    - If a girl is on maternity leave, her turn summary will say that.                                                                                    *
+*                                                                                                                                                          *
+*   The jobs still need to be split into groups but all of them get done.                                                                                  *
+*    - The movie studio has been updated and cleaned more.                                                                                                 *
+*    - The house and arena do not need splitting so they are done.                                                                                         *
+*    - I am not sure what to do about the farm at this time so it will not get split much right now.                                                       *
+*    - The Clinic and Centre need the doctor and counselor jobs split and verified.                                                                        *
+*    -  - If either of those are not filled then surgery or rehab can not be done.                                                                         *
+*    -  - Non-slave Interns and Nurses will be able to be promoted to Doctor if there is one needed.                                                       *
+*    -  - Any girl not in rehab will be able to be reassigned to counselor if needed.                                                                      *
+*    -  - Of course any reassigning requires a matron to do it.                                                                                            *
+*                                                                                                                                                          *
+*   Several of the jobs will need to be updated to work better with the new building flow.                                                                 *
+*   If you find a job that is broken, let me know and I will focus on that.                                                                                *
+*                                                                                                                                                          *
+*                                                                                                                                                          *
+*   The clinic reflow is done but it still needs testing.                                                                                                  *
+*                                                                                                                                                          *
+*   Doctors can not be slaves and require 50 intelligence and 50 medicine.                                                                                 *
+*    - If a Doctor does not meet these requirements, she will be either made a Nurse if she is a slave or sent back to Internship.                         *
+*                                                                                                                                                          *
+*   As long as you have a Clinic Chairman on duty:                                                                                                         *
+*    - The Clinic Chairman will send injured or tired girls to get Healing if they are not well                                                            *
+*    -  - health<70 or tired>30 goes to Healing                                                                                                            *
+*    -  - health<80 or tired>20 goes to Resting                                                                                                            *
+*    -  - Anyone else gets assigned a new job                                                                                                              *
+*                                                                                                                                                          *
+*    - The Chairman will assign girls to new jobs in this order:                                                                                           *
+*    -  - Anyone with 70 or more Int and Med will get assigned as a Doctor no mater what.                                                                  *
+*    -  - If there are no Doctors, than the first girl with 50 or more Int and Med will get assigned.                                                      *
+*    -  - One of each Nurse, Mechanic and Janitor will be assigned first.                                                                                  *
+*    -  - If a girl has some Med >30, she will be assigned as a nurse to a ratio of 1 nurse per 10 girls                                                   *
+*    -  - One Janitor and Mechanic will be assigned for every 20 girls in the Clinic.                                                                      *
+*    -  - Anyone else will be assigned as an intern.                                                                                                       *
+*                                                                                                                                                          *
+*    - I have not decided if or how the Chairman will be able to assign girls to surgery                                                                   *
+*    - For every 20 girls in the clinic there should end up being at least 2 nurses, 1 janitor and 1 mechanic                                              *
+*    - If there is not a Doctor on duty, an Intern or a Nurse will be promoted if they qualify.                                                            *
+*                                                                                                                                                          *
+*   Once all the job assignments have been made:                                                                                                           *
+*    - All the Clinic Staff jobs are done.                                                                                                                 *
+*    - Then all the Patient jobs are done.                                                                                                                 *
+*                                                                                                                                                          *
+*   Any of the Matrons will 'borrow' potions to heal themselves if they are injured or tired instead of taking themselves off duty                         *
+*    - The will only take themselves off if their health is <10 or their tiredness is >90                                                                  *
+*    - The Clinic Chairman will heal herself at health<40 or tiredness >60 because she has easier access to the potions                                    *
+*    - The other matrons will heal at health<20 or tiredness >80                                                                                           *
+*    - This is meant to reduce the chances of buildings not having a working Matron.                                                                       *
+************************************************************************************************************************************************************
+ 
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.11
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r119
+
+
+
+
+
 

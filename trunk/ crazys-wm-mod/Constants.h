@@ -66,7 +66,7 @@ const int					NUM_STATS	= 26;	// 1 more than the last stat
 // `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in >> Constants.h
 
 // Skills
-const unsigned int NUM_SKILLS			= 20;
+const unsigned int NUM_SKILLS			= 21;
 const unsigned int SKILL_ANAL			= 0;
 const unsigned int SKILL_MAGIC			= 1;
 const unsigned int SKILL_BDSM			= 2;
@@ -87,6 +87,7 @@ const unsigned int SKILL_HERBALISM		= 16;
 const unsigned int SKILL_FARMING		= 17;
 const unsigned int SKILL_BREWING		= 18;
 const unsigned int SKILL_ANIMALHANDLING	= 19;
+const unsigned int SKILL_FOOTJOB		= 20;
 
 // STATUS
 const unsigned int NUM_STATUS					= 13;

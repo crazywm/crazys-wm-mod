@@ -75,7 +75,7 @@ bool cJobManager::WorkFilmFootJob(sGirl* girl, sBrothel* brothel, int DayNight, 
 	jobperformance = enjoy * 2;
 
 	// remaining modifiers are in the AddScene function --PP
-	int finalqual = g_Studios.AddScene(girl, SKILL_SERVICE, jobperformance);
+	int finalqual = g_Studios.AddScene(girl, SKILL_FOOTJOB, jobperformance);
 	ss << "Her scene is valued at: " << finalqual << " gold.\n";
 
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_FOOT, DayNight);
@@ -100,7 +100,7 @@ bool cJobManager::WorkFilmFootJob(sGirl* girl, sBrothel* brothel, int DayNight, 
 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill);
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill + 1);
+	g_Girls.UpdateSkill(girl, SKILL_FOOTJOB, g_Dice%skill + 1);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_SEX, enjoy, true);

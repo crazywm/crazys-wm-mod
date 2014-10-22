@@ -65,16 +65,16 @@ bool cJobManager::WorkGetAbort(sGirl* girl, sBrothel* brothel, int DayNight, str
 	if (!hasDoctor)
 	{
 		message = girl->m_Realname + gettext(" does nothing. You don't have any Doctor (require 1) ");
-		(DayNight == 0) ? message += gettext("day") : message += gettext("night"); message += gettext(" Shift.");
+		(DayNight == 0) ? message += gettext("day") : message += gettext("night"); message += gettext(" shift.");
 		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_WARNING);
-		return true;
+		return false;	// not refusing
 	}
 	if (!girl->is_pregnant())
 	{
 		message = girl->m_Realname + gettext(" is not pregant so she was sent to the waiting room.");
 		if (DayNight == 0)	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_WARNING);
 		girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
-		return true;
+		return false;	// not refusing
 	}
 
 	if (DayNight == 0)	// the Doctor works on her durring the day

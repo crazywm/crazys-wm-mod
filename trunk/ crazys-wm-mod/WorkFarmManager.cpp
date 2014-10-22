@@ -47,11 +47,10 @@ extern cGold g_Gold;
 bool cJobManager::WorkFarmManager(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	girl->m_DayJob = girl->m_NightJob = JOB_FARMMANGER;	// it is a full time job
-	if (DayNight == 1) return false;
+	bool night = (DayNight == SHIFT_NIGHT);
 	cTariff tariff;
 	cConfig cfg;
 	string message = "";
-	if (Preprocessing(ACTION_WORKMATRON, girl, brothel, DayNight, summary, message)) return true;
 
 	// Complications
 	int check = g_Dice % 100;

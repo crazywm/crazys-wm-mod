@@ -101,13 +101,15 @@ sBrothel::sBrothel() : m_Finance(0)	// constructor
 	m_AntiPregPotions = 0;
 	m_RestrictAnal = false;
 	m_RestrictBDSM = false;
-	m_RestrictOral = false;
-	m_RestrictTitty = false;
-	m_RestrictHand = false;
 	m_RestrictBeast = false;
+	m_RestrictFoot = false;
 	m_RestrictGroup = false;
-	m_RestrictNormal = false;
+	m_RestrictHand = false;
 	m_RestrictLesbian = false;
+	m_RestrictNormal = false;
+	m_RestrictOral = false;
+	m_RestrictStrip = false;
+	m_RestrictTitty = false;
 	for (u_int i = 0; i < NUMJOBTYPES; i++) m_BuildingQuality[i] = 0;
 
 	//movie
@@ -663,7 +665,8 @@ bool cBrothelManager::LoadDataXML(TiXmlHandle hBrothelManager)
 		{
 			sGirl* pgirl = new sGirl();
 			bool success = pgirl->LoadGirlXML(TiXmlHandle(pGirl));
-			if (success == true) { AddGirlToPrison(pgirl); } else { delete pgirl; continue; }
+			if (success == true) { AddGirlToPrison(pgirl); }
+			else { delete pgirl; continue; }
 		}
 	}
 
@@ -731,13 +734,15 @@ bool sBrothel::LoadBrothelXML(TiXmlHandle hBrothel)
 	// load variables for sex restrictions
 	pBrothel->QueryValueAttribute<bool>("RestrictAnal", &m_RestrictAnal);
 	pBrothel->QueryValueAttribute<bool>("RestrictBDSM", &m_RestrictBDSM);
-	pBrothel->QueryValueAttribute<bool>("RestrictOral", &m_RestrictOral);
-	pBrothel->QueryValueAttribute<bool>("RestrictTitty", &m_RestrictTitty);
-	pBrothel->QueryValueAttribute<bool>("RestrictHand", &m_RestrictHand);
 	pBrothel->QueryValueAttribute<bool>("RestrictBeast", &m_RestrictBeast);
+	pBrothel->QueryValueAttribute<bool>("RestrictFoot", &m_RestrictFoot);
 	pBrothel->QueryValueAttribute<bool>("RestrictGroup", &m_RestrictGroup);
-	pBrothel->QueryValueAttribute<bool>("RestrictNormal", &m_RestrictNormal);
+	pBrothel->QueryValueAttribute<bool>("RestrictHand", &m_RestrictHand);
 	pBrothel->QueryValueAttribute<bool>("RestrictLesbian", &m_RestrictLesbian);
+	pBrothel->QueryValueAttribute<bool>("RestrictNormal", &m_RestrictNormal);
+	pBrothel->QueryValueAttribute<bool>("RestrictOral", &m_RestrictOral);
+	pBrothel->QueryValueAttribute<bool>("RestrictStrip", &m_RestrictStrip);
+	pBrothel->QueryValueAttribute<bool>("RestrictTitty", &m_RestrictTitty);
 
 	pBrothel->QueryValueAttribute<unsigned short>("AdvertisingBudget", &m_AdvertisingBudget);
 	pBrothel->QueryIntAttribute("AntiPregPotions", &m_AntiPregPotions);
@@ -881,13 +886,15 @@ TiXmlElement* sBrothel::SaveBrothelXML(TiXmlElement* pRoot)
 	// save variables for sex restrictions
 	pBrothel->SetAttribute("RestrictAnal", m_RestrictAnal);
 	pBrothel->SetAttribute("RestrictBDSM", m_RestrictBDSM);
-	pBrothel->SetAttribute("RestrictOral", m_RestrictOral);
-	pBrothel->SetAttribute("RestrictTitty", m_RestrictTitty);
-	pBrothel->SetAttribute("RestrictHand", m_RestrictHand);
 	pBrothel->SetAttribute("RestrictBeast", m_RestrictBeast);
+	pBrothel->SetAttribute("RestrictFoot", m_RestrictFoot);
 	pBrothel->SetAttribute("RestrictGroup", m_RestrictGroup);
-	pBrothel->SetAttribute("RestrictNormal", m_RestrictNormal);
+	pBrothel->SetAttribute("RestrictHand", m_RestrictHand);
 	pBrothel->SetAttribute("RestrictLesbian", m_RestrictLesbian);
+	pBrothel->SetAttribute("RestrictNormal", m_RestrictNormal);
+	pBrothel->SetAttribute("RestrictOral", m_RestrictOral);
+	pBrothel->SetAttribute("RestrictStrip", m_RestrictStrip);
+	pBrothel->SetAttribute("RestrictTitty", m_RestrictTitty);
 
 	pBrothel->SetAttribute("AdvertisingBudget", m_AdvertisingBudget);
 	pBrothel->SetAttribute("AntiPregPotions", m_AntiPregPotions);
@@ -1031,7 +1038,7 @@ string cBrothelManager::new_rival_text()
 	*	variables. Might make the code cleaner
 	*/
 	string man, boy, He, he, him, his, sorcerer, gladiator, fellow, patriarch;
-	if (male) 
+	if (male)
 	{
 		He = "He";
 		he = "he";
@@ -1044,7 +1051,7 @@ string cBrothelManager::new_rival_text()
 		fellow = "fellow";
 		patriarch = "patriarch ";
 	}
-	else 
+	else
 	{
 		He = "She";
 		he = "she";
@@ -1058,7 +1065,7 @@ string cBrothelManager::new_rival_text()
 		patriarch = "matriarch ";
 	}
 
-	switch (g_Dice.random(MaxChallengers)) 
+	switch (g_Dice.random(MaxChallengers))
 	{
 	case Slaver:
 		ss << "A lieutenant reports that one of the professional slavers, finding customers be scarce, has taken to whoring out " << his << " slavegirls to make ends meet. Your men arranged a meet with " << him << " in order to explain your position on the subject, but the discussion did not go well, ending with bared steel and threats of blood.\n\nIt would seem you have a challenger.";
@@ -1095,60 +1102,33 @@ string cBrothelManager::new_rival_text()
 
 void cBrothelManager::peace_breaks_out()
 {
-	/*
-	*	if the PC already won, this is just an minor outbreak
-	*	of peace in the day-to-day feuding in crossgate
-	*/
+	stringstream ss;
+	// if the PC already won, this is just an minor outbreak of peace in the day-to-day feuding in crossgate
 	if (m_Player.m_WinGame)
 	{
-		string s = gettext("The last of your challengers has been overthrown. ");
-		s += gettext("Your domination of Crossgate is absolute.\n\n");
-		s += gettext("Until the next time that is...");
-		g_MessageQue.AddToQue(s, COLOR_GREEN);
+		ss<<"The last of your challengers has been overthrown. Your domination of Crossgate is absolute.\n\nUntil the next time that is...";
+		g_MessageQue.AddToQue(ss.str(), COLOR_GREEN);
 		return;
 	}
-	/*
-	*	otherwise, the player has just won
-	*	flag it as such
-	*/
+	// otherwise, the player has just won flag it as such
 	m_Player.m_WinGame = true;
-	/*
-	*	let's have a bit of chat to mark the event
-	*/
-	string s = gettext("The last of your father's killers has been ");
-	s += gettext("brought before you for judgement. None ");
-	s += gettext("remain who would dare to oppose you. For all intents ");
-	s += gettext("and purposes, the city is yours.");
-	s += gettext("\n\n");
-	s += gettext("Whether or not your father will rest easier for ");
-	s += gettext("your efforts, you cannot say, but now, with the ");
-	s += gettext("city at your feet, you feel sure he would be proud ");
-	s += gettext("of you at this moment.");
-	s += gettext("\n\n");
-	s += gettext("But pride comes before a fall, and in Crossgate, ");
-	s += gettext("complacency kills. The city's slums and slave markets ");
-	s += gettext("and the fighting pits are full of hungry young bloods ");
-	s += gettext("burning to make their mark on the world, and any one of ");
-	s += gettext("them could rise to challenge you at any time.");
-	s += gettext("\n\n");
-	s += gettext("You may have seized the city, but holding on to it ");
-	s += gettext("is never going to be easy.");
-	;
-	g_MessageQue.AddToQue(s, COLOR_GREEN);
+	// let's have a bit of chat to mark the event
+	ss.str("");
+	ss << "The last of your father's killers has been brought before you for judgement. None remain who would dare to oppose you. For all intents and purposes, the city is yours.\n\nWhether or not your father will rest easier for your efforts, you cannot say, but now, with the city at your feet, you feel sure he would be proud of you at this moment.\n\nBut pride comes before a fall, and in Crossgate, complacency kills. The city's slums and slave markets and the fighting pits are full of hungry young bloods burning to make their mark on the world, and any one of them could rise to challenge you at any time.\n\nYou may have seized the city, but holding on to it is never going to be easy.";
+	g_MessageQue.AddToQue(ss.str(), COLOR_GREEN);
 	return;
 }
 
 // ----- Update & end of turn
-void cBrothelManager::UpdateBrothels()
+void cBrothelManager::UpdateBrothels()	// Start_Building_Process_A
 {
 	cTariff tariff;
 	stringstream ss;
-	sBrothel* current = m_Parent;
-	u_int firstjob = JOB_RESTING;
-	u_int lastjob = JOB_WHORESTREETS;
+	sBrothel* current = (sBrothel*)m_Parent;
 	u_int restjob = JOB_RESTING;
 	u_int matronjob = JOB_MATRON;
-	bool matron = (GetNumGirlsOnJob(current->m_id, matronjob, false) >= 1) ? true : false;
+	u_int firstjob = JOB_RESTING;
+	u_int lastjob = JOB_WHORESTREETS;
 
 	m_TortureDoneFlag = false;							//WD: Reset flag each day is set in WorkTorture()
 
@@ -1162,6 +1142,8 @@ void cBrothelManager::UpdateBrothels()
 		current->m_Events.Clear();
 		current->m_AntiPregUsed = 0;
 		current->m_RejectCustomers = 0;
+
+		bool matron = (GetNumGirlsOnJob(current->m_id, matronjob, false) >= 1) ? true : false;
 
 		// `J` do all the things that the girls do at the start of the turn
 		sGirl* cgirl = current->m_Girls;
@@ -1197,13 +1179,17 @@ void cBrothelManager::UpdateBrothels()
 				cgirl->m_Tort = false;
 
 				// `J` Check for out of building jobs
-				if (cgirl->m_DayJob < firstjob && cgirl->m_DayJob > lastjob)		cgirl->m_DayJob = restjob;
-				if (cgirl->m_NightJob < firstjob && cgirl->m_NightJob > lastjob)	cgirl->m_NightJob = restjob;
+				if (cgirl->m_DayJob	  < firstjob || cgirl->m_DayJob   > lastjob)	cgirl->m_DayJob = restjob;
+				if (cgirl->m_NightJob < firstjob || cgirl->m_NightJob > lastjob)	cgirl->m_NightJob = restjob;
+				if (cgirl->m_PrevDayJob != 255 && (cgirl->m_PrevDayJob	 < firstjob || cgirl->m_PrevDayJob   > lastjob))	cgirl->m_PrevDayJob = 255;
+				if (cgirl->m_PrevNightJob != 255 && (cgirl->m_PrevNightJob < firstjob || cgirl->m_PrevNightJob > lastjob))	cgirl->m_PrevNightJob = 255;
 				// set yesterday jobs for everyone
 				cgirl->m_YesterDayJob = cgirl->m_DayJob;
 				cgirl->m_YesterNightJob = cgirl->m_NightJob;
-				cgirl->m_Refused_To_Work = false;
+				cgirl->m_Refused_To_Work_Day = false;
+				cgirl->m_Refused_To_Work_Night = false;
 
+				g_Girls.AddTiredness(cgirl);			// `J` moved all girls add tiredness to one place
 				do_food_and_digs(current, cgirl);		// Brothel only update for girls accommodation level
 				g_Girls.CalculateGirlType(cgirl);		// update the fetish traits
 				g_Girls.updateGirlAge(cgirl, true);		// update birthday counter and age the girl
@@ -1266,7 +1252,7 @@ void cBrothelManager::UpdateBrothels()
 			current->m_Fame = (TotalFame(current) / current->m_NumGirls);
 		if (current->m_Happiness > 0 && g_Customers.GetNumCustomers())
 			current->m_Happiness = min(100, current->m_Happiness / current->m_TotalCustomers);
-		
+
 
 		// advertising costs are set independently for each brothel
 		current->m_Finance.advertising_costs(tariff.advertising_costs(current->m_AdvertisingBudget));
@@ -1287,7 +1273,7 @@ void cBrothelManager::UpdateBrothels()
 			int num = current->m_AntiPregPotions;
 			int used = current->m_AntiPregUsed;
 			bool stocked = current->m_KeepPotionsStocked;
-			bool matron = (GetNumGirlsOnJob(current->m_id, matronjob, false) >= 1) ? true : false;
+			bool matron = (GetNumGirlsOnJob(current->m_id, matronjob, false) >= 1);
 			bool skip = false;	// to allow easy skipping of unneeded lines
 			bool error = false;	// in case there is an error this makes for easier debugging
 
@@ -1325,7 +1311,7 @@ void cBrothelManager::UpdateBrothels()
 				}
 
 				ss << "Your budget for Anti-Pregnancy potions for this brothel is " << cost << " gold.";
-				
+
 				if (matron && used > num)
 				{
 					int newnum = (((used / 10) + 1) * 10) + 10;
@@ -1486,12 +1472,12 @@ void cBrothelManager::UpdateBrothels()
 
 	if (g_Gangs.GetNumBusinessExtorted() < 170 && GetNumBrothels() >= 6)
 	{
-		g_Brothels.GetBrothel(5)->m_SecurityLevel -= (170 - g_Gangs.GetNumBusinessExtorted())*2;
+		g_Brothels.GetBrothel(5)->m_SecurityLevel -= (170 - g_Gangs.GetNumBusinessExtorted()) * 2;
 	}
 
 	if (g_Gangs.GetNumBusinessExtorted() < 220 && GetNumBrothels() >= 7)
 	{
-		g_Brothels.GetBrothel(6)->m_SecurityLevel -= (220 - g_Gangs.GetNumBusinessExtorted())*2;
+		g_Brothels.GetBrothel(6)->m_SecurityLevel -= (220 - g_Gangs.GetNumBusinessExtorted()) * 2;
 	}
 
 	// update objectives or maybe create a new one
@@ -1500,7 +1486,7 @@ void cBrothelManager::UpdateBrothels()
 }
 
 // End of turn stuff is here
-void cBrothelManager::UpdateGirls(sBrothel* brothel, int DayNight)
+void cBrothelManager::UpdateGirls(sBrothel* brothel, int DayNight)	// Start_Building_Process_B
 {
 	// `J` added to allow for easier copy/paste to other buildings
 	u_int firstjob = JOB_RESTING;
@@ -1518,7 +1504,7 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, int DayNight)
 	int totalPay = 0, totalTips = 0, totalGold = 0;
 
 	int sum = EVENT_SUMMARY;
-	u_int sw = 0;						//	Job type
+	u_int sw = 0, psw = 0;
 	bool refused = false;
 	m_Processing_Shift = DayNight;		// WD:	Set processing flag to shift type
 
@@ -1582,7 +1568,8 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		// Sanity check! Don't process dead girls and check that m_Next points to something
 		if (current->health() <= 0)
 		{
-			if (current->m_Next) { current = current->m_Next; continue; } else { current = 0; break; }
+			if (current->m_Next) { current = current->m_Next; continue; }
+			else { current = 0; break; }
 		}
 		g_Girls.UseItems(current);						// Girl uses items she has
 		g_Girls.CalculateAskPrice(current, true);		// Calculate the girls asking price
@@ -1597,15 +1584,14 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, int DayNight)
 		// Was not testing for some jobs which were already handled, changed to a switch case statement just for ease of reading, and expansion -PP
 		if (sw == JOB_ADVERTISING || sw == JOB_WHOREGAMBHALL || sw == JOB_WHOREBROTHEL ||
 			sw == JOB_BARWHORE || sw == JOB_BARMAID || sw == JOB_WAITRESS ||
-			sw == JOB_SINGER || sw == JOB_DEALER || sw == JOB_ENTERTAINMENT ||
+			sw == JOB_SINGER || sw == JOB_PIANO || sw == JOB_DEALER || sw == JOB_ENTERTAINMENT ||
 			sw == JOB_XXXENTERTAINMENT || sw == JOB_SLEAZYBARMAID || sw == JOB_SLEAZYWAITRESS ||
-			sw == JOB_BARSTRIPPER || sw == JOB_MASSEUSE || sw == JOB_BROTHELSTRIPPER)
+			sw == JOB_BARSTRIPPER || sw == JOB_MASSEUSE || sw == JOB_BROTHELSTRIPPER || sw == JOB_PIANO)
 		{
 			// these jobs are already done so we skip them
 		}
 		else refused = m_JobManager.JobFunc[sw](current, brothel, DayNight, summary);
 
-		g_Girls.AddTiredness(current);		// `J` moved all girls add tiredness to one place
 
 		totalPay += current->m_Pay;
 		totalTips += current->m_Tips;
@@ -1689,7 +1675,7 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, int DayNight)
 
 
 		// Runaway, Depression & Drug checking
-		if (runaway_check(brothel, current) == true) 
+		if (runaway_check(brothel, current) == true)
 		{
 			sGirl* temp = current;
 			current = current->m_Next;
@@ -2506,13 +2492,13 @@ void cBrothelManager::do_tax()
 
 bool is_she_cleaning(sGirl *girl)
 {
-	if (girl->m_DayJob == JOB_CLEANING	  || girl->m_NightJob == JOB_CLEANING ||
-		girl->m_DayJob == JOB_CLEANARENA  || girl->m_NightJob == JOB_CLEANARENA ||
-		girl->m_DayJob == JOB_STAGEHAND	  || girl->m_NightJob == JOB_STAGEHAND ||
-		girl->m_DayJob == JOB_JANITOR	  || girl->m_NightJob == JOB_JANITOR ||
+	if (girl->m_DayJob == JOB_CLEANING || girl->m_NightJob == JOB_CLEANING ||
+		girl->m_DayJob == JOB_CLEANARENA || girl->m_NightJob == JOB_CLEANARENA ||
+		girl->m_DayJob == JOB_STAGEHAND || girl->m_NightJob == JOB_STAGEHAND ||
+		girl->m_DayJob == JOB_JANITOR || girl->m_NightJob == JOB_JANITOR ||
 		girl->m_DayJob == JOB_CLEANCENTRE || girl->m_NightJob == JOB_CLEANCENTRE ||
-		girl->m_DayJob == JOB_FARMHAND	  || girl->m_NightJob == JOB_FARMHAND ||
-		girl->m_DayJob == JOB_CLEANHOUSE  || girl->m_NightJob == JOB_CLEANHOUSE)
+		girl->m_DayJob == JOB_FARMHAND || girl->m_NightJob == JOB_FARMHAND ||
+		girl->m_DayJob == JOB_CLEANHOUSE || girl->m_NightJob == JOB_CLEANHOUSE)
 	{
 		return true;
 	}
@@ -2522,10 +2508,10 @@ bool is_she_resting(sGirl *girl)
 {
 	if ((girl->m_DayJob == JOB_FILMFREETIME	&& girl->m_NightJob == JOB_FILMFREETIME) ||
 		(girl->m_DayJob == JOB_ARENAREST	&& girl->m_NightJob == JOB_ARENAREST) ||
-		(girl->m_DayJob == JOB_CENTREREST	&& girl->m_NightJob == JOB_CENTREREST )||
+		(girl->m_DayJob == JOB_CENTREREST	&& girl->m_NightJob == JOB_CENTREREST) ||
 		(girl->m_DayJob == JOB_CLINICREST	&& girl->m_NightJob == JOB_CLINICREST) ||
-		(girl->m_DayJob == JOB_HOUSEREST	&& girl->m_NightJob == JOB_HOUSEREST )||
-		(girl->m_DayJob == JOB_FARMREST		&& girl->m_NightJob == JOB_FARMREST )||
+		(girl->m_DayJob == JOB_HOUSEREST	&& girl->m_NightJob == JOB_HOUSEREST) ||
+		(girl->m_DayJob == JOB_FARMREST		&& girl->m_NightJob == JOB_FARMREST) ||
 		(girl->m_DayJob == JOB_RESTING		&& girl->m_NightJob == JOB_RESTING))
 	{
 		return true;
@@ -2534,9 +2520,9 @@ bool is_she_resting(sGirl *girl)
 }
 bool is_she_stripping(sGirl *girl)
 {
-	if (girl->m_DayJob == JOB_BARSTRIPPER	   || girl->m_NightJob == JOB_BARSTRIPPER ||
-		girl->m_DayJob == JOB_BROTHELSTRIPPER  || girl->m_NightJob == JOB_BROTHELSTRIPPER ||
-		girl->m_DayJob == JOB_PEEP			   || girl->m_NightJob == JOB_PEEP)
+	if (girl->m_DayJob == JOB_BARSTRIPPER || girl->m_NightJob == JOB_BARSTRIPPER ||
+		girl->m_DayJob == JOB_BROTHELSTRIPPER || girl->m_NightJob == JOB_BROTHELSTRIPPER ||
+		girl->m_DayJob == JOB_PEEP || girl->m_NightJob == JOB_PEEP)
 	{
 		return true;
 	}
@@ -2769,24 +2755,24 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 	if (g_Girls.HasItemJ(girl, "Computer") != -1 && g_Dice % 100 < 15 && is_she_resting(girl))
 	{
 		if (g_Girls.HasTrait(girl, "Nymphomaniac"))
+		{
+			if (g_Girls.GetStat(girl, STAT_LIBIDO) > 65)
 			{
-				if (g_Girls.GetStat(girl, STAT_LIBIDO) > 65)
-					{
-						message += girl->m_Realname + "'s lust got the better of her while she was on the her Computer looking at porn.\n\n";
-						g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -20);
-						mast = true;
-					}
-				else
-					{
-						message += "She spent the day on her Computer looking at porn making her become horny.\n\n";
-						g_Girls.UpdateTempStat(girl, STAT_LIBIDO, 15);
-					}
-				}
-		else
-			{
-				message += "She spent her free time playing on her Computer.\n\n";
-				if (g_Dice % 100<5)		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, 1);
+				message += girl->m_Realname + "'s lust got the better of her while she was on the her Computer looking at porn.\n\n";
+				g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -20);
+				mast = true;
 			}
+			else
+			{
+				message += "She spent the day on her Computer looking at porn making her become horny.\n\n";
+				g_Girls.UpdateTempStat(girl, STAT_LIBIDO, 15);
+			}
+		}
+		else
+		{
+			message += "She spent her free time playing on her Computer.\n\n";
+			if (g_Dice % 100<5)		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, 1);
+		}
 	}
 	if (g_Girls.HasItemJ(girl, "Cat") != -1 && g_Dice % 100 < 10)
 	{
@@ -2888,7 +2874,7 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 
 	if (message != "")		// only pass the summary if she has any of the items listed
 	{
-		if		(mast)   { girl->m_Events.AddMessage(message, IMGTYPE_MAST, EVENT_SUMMARY); }
+		if (mast)   { girl->m_Events.AddMessage(message, IMGTYPE_MAST, EVENT_SUMMARY); }
 		else if (strip)  { girl->m_Events.AddMessage(message, IMGTYPE_STRIP, EVENT_SUMMARY); }
 		else if (combat) { girl->m_Events.AddMessage(message, IMGTYPE_COMBAT, EVENT_SUMMARY); }
 		else if (formal) { girl->m_Events.AddMessage(message, IMGTYPE_FORMAL, EVENT_SUMMARY); }
@@ -3151,7 +3137,7 @@ void cBrothelManager::CalculatePay(sBrothel* brothel, sGirl* girl, u_int Job)
 
 	// so now we are to the house percent.
 	float house_factor = float(girl->m_Stats[STAT_HOUSE]) / 100.0f;
-	
+
 	// work out how much gold (if any) she steals
 	double steal_factor = calc_pilfering(girl);
 	int stolen = int(steal_factor * girl->m_Pay);
@@ -3172,7 +3158,7 @@ void cBrothelManager::CalculatePay(sBrothel* brothel, sGirl* girl, u_int Job)
 	if (!gang) return;
 	int catch_pc = g_Gangs.chance_to_catch(girl);			// work out the % chance that the girl gets caught
 	if (!g_Dice.percent(catch_pc)) return;					// if they don't catch her, we're done
-	
+
 	// OK: she got caught. Tell the player
 	string gmess = "Your Goons spotted " + girl->m_Realname + " taking more gold then she reported.";
 	gang->m_Events.AddMessage(gmess, IMGTYPE_PROFILE, EVENT_GANG);

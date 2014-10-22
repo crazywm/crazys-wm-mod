@@ -46,7 +46,6 @@ extern cMessageQue g_MessageQue;
 bool cJobManager::WorkRehab(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
 	girl->m_DayJob = girl->m_NightJob = JOB_REHAB;	// it is a full time job
-	if (DayNight == 1) return false;
 
 	stringstream ss;
 	string girlName = girl->m_Realname;
@@ -89,17 +88,18 @@ bool cJobManager::WorkRehab(sGirl* girl, sBrothel* brothel, int DayNight, string
 		ss << "She fought with the counselor and did not make any progress this week.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKREHAB, -1, true);
+		if (DayNight == 1) girl->m_WorkingDay--;
 		return true;
 	}
 
 	if (DayNight == 0) girl->m_WorkingDay++;
 
 	g_Girls.UpdateStat(girl, STAT_HAPPINESS, g_Dice % 30 - 20);
-	g_Girls.UpdateStat(girl, STAT_SPIRIT, g_Dice % 10 - 5);
-	g_Girls.UpdateStat(girl, STAT_MANA, g_Dice % 5 - 20);
+	g_Girls.UpdateStat(girl, STAT_SPIRIT, g_Dice % 5 - 10);
+	g_Girls.UpdateStat(girl, STAT_MANA, g_Dice % 5 - 10);
 
-	int healthmod = (g_Dice % 20) - 15;
-	// `J` % chance a counselor will save her if she almost dies - worst case 20% chance she dies.
+	int healthmod = (g_Dice % 10) - 15;
+	// `J` % chance a counselor will save her if she almost dies
 	if (girl->health() + healthmod < 1 && g_Dice.percent(95 + (girl->health() + healthmod))
 		&& (g_Centre.GetNumGirlsOnJob(brothel->m_id, JOB_DRUGCOUNSELOR, true) > 0 || g_Centre.GetNumGirlsOnJob(brothel->m_id, JOB_DRUGCOUNSELOR, false) > 0))
 	{	// Don't kill the girl from rehab if a Drug Counselor is on duty
@@ -125,7 +125,7 @@ bool cJobManager::WorkRehab(sGirl* girl, sBrothel* brothel, int DayNight, string
 		return false;
 	}
 
-	if (girl->m_WorkingDay > 3)
+	if (girl->m_WorkingDay > 3 && DayNight == 1)
 	{
 		enjoy += g_Dice % 10;
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCOUNSELOR, g_Dice%6-2, true);	// `J` She may want to help others with their problems
@@ -158,8 +158,8 @@ bool cJobManager::WorkRehab(sGirl* girl, sBrothel* brothel, int DayNight, string
 		else // get out of rehab
 		{
 			ss << "\nShe has been released from rehab.";
-			girl->m_DayJob = JOB_CENTREREST;
-			girl->m_NightJob = JOB_CENTREREST;
+			girl->m_DayJob = girl->m_NightJob = JOB_CENTREREST;
+			girl->m_PrevDayJob = girl->m_PrevNightJob = 255;
 		}
 	}
 	else

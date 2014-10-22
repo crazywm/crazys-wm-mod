@@ -46,6 +46,7 @@ extern cMessageQue g_MessageQue;
 // `J` Movie Studio Job - Crew
 bool cJobManager::WorkCameraMage(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
+	bool SkipDisobey = (summary == "SkipDisobey");
 	// No film crew.. then go home	// `J` this will be taken care of in building flow, leaving it in for now
 	if (g_Studios.GetNumGirlsOnJob(0, JOB_CAMERAMAGE, SHIFT_NIGHT) == 0 || g_Studios.GetNumGirlsOnJob(0, JOB_CRYSTALPURIFIER, SHIFT_NIGHT) == 0)
 	{
@@ -74,27 +75,30 @@ bool cJobManager::WorkCameraMage(sGirl* girl, sBrothel* brothel, int DayNight, s
 	}
 	else
 	{
-		ss << "The Director assigned " << girlName << "to run the camera for the week ";
+		ss << "The Director assigned " << girlName << "to run the camera for the week.\n\n";
 	}
 
 	int roll = g_Dice.d100();
-	if (roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
+	if (!SkipDisobey)	// `J` skip the disobey check because it has already been done in the building flow
 	{
-		if (girl->m_DayJob == JOB_FILMFREETIME)
+		if (roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
 		{
-			ss << "She refused to work as a cameramage today.";
-			girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
+			if (girl->m_DayJob == JOB_FILMFREETIME)
+			{
+				ss << "She refused to work as a cameramage today.";
+				girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
+			}
+			else
+			{
+				if (g_Studios.is_Actress_Job(girl->m_DayJob))	ss << "but she wanted to be in front of the camera rather than behind it.\n";
+				else if (girl->m_DayJob == JOB_PROMOTER)		ss << "but she preferred to sell the movies instead of make them.\n";
+				else if (girl->m_DayJob == JOB_FLUFFER)			ss << "but she was having a bad hair day and needed some cum in it to make it cooperate.\n";
+				else if (girl->m_DayJob == JOB_STAGEHAND)		ss << "but she wanted to move around more than the camera would allow her.\n";
+				else if (girl->m_DayJob == JOB_CRYSTALPURIFIER) ss << "but she preferred to edit the scenes rather than makeing new ones.\n";
+				girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_BACKTOWORK);
+			}
+			return true;
 		}
-		else
-		{
-			if (g_Studios.is_Actress_Job(girl->m_DayJob))	ss << "but she wanted to be in front of the camera rather than behind it.\n";
-			else if (girl->m_DayJob == JOB_PROMOTER)		ss << "but she preferred to sell the movies instead of make them.\n";
-			else if (girl->m_DayJob == JOB_FLUFFER)			ss << "but she was having a bad hair day and needed some cum in it to make it cooperate.\n";
-			else if (girl->m_DayJob == JOB_STAGEHAND)		ss << "but she wanted to move around more than the camera would allow her.\n";
-			else if (girl->m_DayJob == JOB_CRYSTALPURIFIER) ss << "but she preferred to edit the scenes rather than makeing new ones.\n";
-			girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_BACKTOWORK);
-		}
-		return true;
 	}
 
 	/* */if (roll <= 10) { enjoy -= g_Dice % 3 + 1; ss << "She did not like working in the studio today.\n\n"; }

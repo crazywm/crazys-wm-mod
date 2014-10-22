@@ -64,9 +64,9 @@ bool cJobManager::WorkPhysicalSurgery(sGirl* girl, sBrothel* brothel, int DayNig
 	if (!hasDoctor)
 	{
 		message = girl->m_Realname + gettext(" does nothing. You don't have any Doctor (require 1) ");
-		(DayNight == 0) ? message += gettext("day") : message += gettext("night"); message += gettext(" Shift.");
+		(DayNight == 0) ? message += gettext("day") : message += gettext("night"); message += gettext(" shift.");
 		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_WARNING);
-		return true;
+		return false;	// not refusing
 	}
 
 	if (DayNight == 0)	// the Doctor works on her durring the day

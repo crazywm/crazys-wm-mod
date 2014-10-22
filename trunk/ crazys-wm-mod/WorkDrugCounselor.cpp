@@ -45,8 +45,8 @@ extern cMessageQue g_MessageQue;
 // `J` Centre Job - Rehab_Job - Full_Time_Job
 bool cJobManager::WorkDrugCounselor(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
+	bool SkipDisobey = (summary == "SkipDisobey");
 	girl->m_DayJob = girl->m_NightJob = JOB_DRUGCOUNSELOR;	// it is a full time job
-	if (DayNight == 1) return false;
 
 	stringstream ss;
 	string girlName = girl->m_Realname;
@@ -60,14 +60,18 @@ bool cJobManager::WorkDrugCounselor(sGirl* girl, sBrothel* brothel, int DayNight
 
 	ss << girlName << " counceled drug addicts.\n\n";
 	
-	if (roll_a <= 50 && g_Girls.DisobeyCheck(girl, ACTION_WORKCOUNSELOR, brothel))
+	if (!SkipDisobey)	// `J` skip the disobey check because it has already been done in the building flow
 	{
-		ss << "She refused to counsel anyone.";
-		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKREHAB, -1, true);
-		return true;
+		if (roll_a <= 50 && g_Girls.DisobeyCheck(girl, ACTION_WORKCOUNSELOR, brothel))
+		{
+			ss << "She refused to counsel anyone.";
+			girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
+			g_Girls.UpdateEnjoyment(girl, ACTION_WORKREHAB, -1, true);
+			return true;
+		}
 	}
-	else if (roll_a <= 10)	{ enjoy -= g_Dice % 3 + 1;	ss << "The addicts hasseled her."; }
+
+	/* */if (roll_a <= 10)	{ enjoy -= g_Dice % 3 + 1;	ss << "The addicts hasseled her."; }
 	else if (roll_a >= 90)	{ enjoy += g_Dice % 3 + 1;	ss << "She had a pleasant time working."; }
 	else /*             */	{ enjoy += g_Dice % 2;		ss << "Otherwise, the shift passed uneventfully."; }
 
@@ -82,7 +86,7 @@ bool cJobManager::WorkDrugCounselor(sGirl* girl, sBrothel* brothel, int DayNight
 	girl->m_Pay = wages;
 
 	// Improve stats
-	int xp = 15, skill = 2 + (rehabers/2), libido = 1;
+	int xp = 5 + (rehabers / 2), skill = 2 + (rehabers / 2), libido = 1;
 
 	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }

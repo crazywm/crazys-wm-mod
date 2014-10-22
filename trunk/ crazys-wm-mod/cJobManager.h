@@ -255,4 +255,5 @@ public:
 
 	bool is_job_Paid_Player(u_int Job);		//	WD:	Test for all jobs paid by player
 	bool FullTimeJob(u_int Job);			//	`J`	Test if job is takes both shifts
+	string GirlPaymentText(sBrothel* brothel, sGirl* girl, int totalTips, int totalPay, int totalGold, int DayNight);
 };

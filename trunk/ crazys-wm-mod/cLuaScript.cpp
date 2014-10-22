@@ -55,8 +55,8 @@ static const char *stats[] = {
 static const char *skills[] = // same again for skill names
 {
 	"anal", "magic", "bdsm", "normal", "beastiality", "group", "lesbian", "service", "strip", "combat", "oral",
-	"titty", "medicine", "performance", "handjob", "crafting", "herbalism", "farming", "brewing", "animalhandling",
-	0
+	"titty", "medicine", "performance", "handjob", "crafting", "herbalism", "farming", "brewing", "animalhandling", "footjob"
+	,0
 };
 
 static void add_to_table(lua_State *L, int table, const char *key, lua_func f)
