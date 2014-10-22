@@ -64,6 +64,7 @@ TrainableGirl::TrainableGirl(sGirl *girl)
 	stats.push_back(TrainableSkill(girl, "Oral Sex", SKILL_ORALSEX));
 	stats.push_back(TrainableSkill(girl, "Titty Sex", SKILL_TITTYSEX));
 	stats.push_back(TrainableSkill(girl, "Hand Job", SKILL_HANDJOB));
+	stats.push_back(TrainableSkill(girl, "Foot Job", SKILL_FOOTJOB));
 	stats.push_back(TrainableSkill(girl, "Medicine", SKILL_MEDICINE));
 	stats.push_back(TrainableSkill(girl, "Performance", SKILL_PERFORMANCE));
 

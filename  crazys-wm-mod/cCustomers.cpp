@@ -112,8 +112,9 @@ void cCustomers::GetCustomer(sCustomer& customer, sBrothel * brothel)
 		else if (b < 52)	customer.m_SexPref = SKILL_BDSM;			// 14%
 		else if (b < 65)	customer.m_SexPref = SKILL_BEASTIALITY;		// 13%
 		else if (b < 77)	customer.m_SexPref = SKILL_ORALSEX;			// 12%
-		else if (b < 89)	customer.m_SexPref = SKILL_TITTYSEX;		// 11%
-		else if (b < 99)	customer.m_SexPref = SKILL_HANDJOB;			// 10%
+		else if (b < 87)	customer.m_SexPref = SKILL_TITTYSEX;		// 10%
+		else if (b < 94)	customer.m_SexPref = SKILL_HANDJOB;			// 7%
+		else if (b < 99)	customer.m_SexPref = SKILL_FOOTJOB;			// 5%
 		else /*       */	customer.m_SexPref = SKILL_STRIP;			// 1%
 
 		b = g_Dice.d100();
@@ -122,8 +123,9 @@ void cCustomers::GetCustomer(sCustomer& customer, sBrothel * brothel)
 		else if (b < 52)	customer.m_SexPrefB = SKILL_BDSM;			// 14%
 		else if (b < 65)	customer.m_SexPrefB = SKILL_BEASTIALITY;	// 13%
 		else if (b < 77)	customer.m_SexPrefB = SKILL_ORALSEX;		// 12%
-		else if (b < 89)	customer.m_SexPrefB = SKILL_TITTYSEX;		// 11%
-		else if (b < 99)	customer.m_SexPrefB = SKILL_HANDJOB;		// 10%
+		else if (b < 87)	customer.m_SexPrefB = SKILL_TITTYSEX;		// 10%
+		else if (b < 94)	customer.m_SexPrefB = SKILL_HANDJOB;		// 7%
+		else if (b < 99)	customer.m_SexPrefB = SKILL_FOOTJOB;		// 5%
 		else /*       */	customer.m_SexPrefB = SKILL_STRIP;			// 1%
 
 		if (customer.m_SexPref == customer.m_SexPrefB)

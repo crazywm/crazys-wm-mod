@@ -6,7 +6,7 @@
       Badness="0"
       Special="None"
       Cost="17550"
-      Rarity="Catacomb5"
+      Rarity="Catacomb05"
       Infinite="false">
    <Effect What="Trait" Name="Incorporeal"             Amount="1"    />
 </Item>

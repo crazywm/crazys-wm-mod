@@ -364,6 +364,7 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, int DayNight, str
 		else if (SexType == SKILL_ORALSEX)		imageType = IMGTYPE_ORAL;
 		else if (SexType == SKILL_TITTYSEX)		imageType = IMGTYPE_TITTY;
 		else if (SexType == SKILL_HANDJOB)		imageType = IMGTYPE_HAND;
+		else if (SexType == SKILL_FOOTJOB)		imageType = IMGTYPE_FOOT;
 		else if (SexType == SKILL_STRIP)		imageType = IMGTYPE_STRIP;
 
 		// chance of customer beating or attempting to beat girl

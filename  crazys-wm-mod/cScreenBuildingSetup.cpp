@@ -67,15 +67,19 @@ void cScreenBuildingSetup::set_ids()
 	roomcost_id = get_id("RoomAddCost");
 	buyrooms_id = get_id("BuildRoomsButton");
 	restrict_id = get_id("SexRestrictions");
+	
 	noanal_id = get_id("ProhibitAnalToggleRes");
 	nobdsm_id = get_id("ProhibitBDSMToggleRes");
-	nonormal_id = get_id("ProhibitNormalToggleRes");
 	nobeast_id = get_id("ProhibitBeastToggleRes");
+	nofoot_id = get_id("ProhibitFootJobToggleRes");
 	nogroup_id = get_id("ProhibitGroupToggleRes");
-	nolesbian_id = get_id("ProhibitLesbianToggleRes");
-	nooral_id = get_id("ProhibitOralToggleRes");
-	notitty_id = get_id("ProhibitTittyToggleRes");
 	nohand_id = get_id("ProhibitHandJobToggleRes");
+	nolesbian_id = get_id("ProhibitLesbianToggleRes");
+	nonormal_id = get_id("ProhibitNormalToggleRes");
+	nooral_id = get_id("ProhibitOralToggleRes");
+	nostrip_id = get_id("ProhibitStripToggleRes");
+	notitty_id = get_id("ProhibitTittyToggleRes");
+
 	advertsli_id = get_id("AdvertisingSlider");
 	advertamt_id = get_id("AdvertisingValue");
 }
@@ -103,13 +107,15 @@ void cScreenBuildingSetup::init()
 		SetCheckBox(autopotions_id, g_Studios.GetBrothel(0)->m_KeepPotionsStocked);
 		SetCheckBox(noanal_id, g_Studios.GetBrothel(0)->m_RestrictAnal);
 		SetCheckBox(nobdsm_id, g_Studios.GetBrothel(0)->m_RestrictBDSM);
-		SetCheckBox(nonormal_id, g_Studios.GetBrothel(0)->m_RestrictNormal);
 		SetCheckBox(nobeast_id, g_Studios.GetBrothel(0)->m_RestrictBeast);
+		SetCheckBox(nofoot_id, g_Studios.GetBrothel(0)->m_RestrictFoot);
 		SetCheckBox(nogroup_id, g_Studios.GetBrothel(0)->m_RestrictGroup);
-		SetCheckBox(nolesbian_id, g_Studios.GetBrothel(0)->m_RestrictLesbian);
-		SetCheckBox(nooral_id, g_Studios.GetBrothel(0)->m_RestrictOral);
-		SetCheckBox(notitty_id, g_Studios.GetBrothel(0)->m_RestrictTitty);
 		SetCheckBox(nohand_id, g_Studios.GetBrothel(0)->m_RestrictHand);
+		SetCheckBox(nolesbian_id, g_Studios.GetBrothel(0)->m_RestrictLesbian);
+		SetCheckBox(nonormal_id, g_Studios.GetBrothel(0)->m_RestrictNormal);
+		SetCheckBox(nooral_id, g_Studios.GetBrothel(0)->m_RestrictOral);
+		SetCheckBox(nostrip_id, g_Studios.GetBrothel(0)->m_RestrictStrip);
+		SetCheckBox(notitty_id, g_Studios.GetBrothel(0)->m_RestrictTitty);		
 		break;
 	case BUILDING_CLINIC:
 		brothel = gettext("The Clinic");
@@ -123,13 +129,15 @@ void cScreenBuildingSetup::init()
 		SetCheckBox(autopotions_id, g_Clinic.GetBrothel(0)->m_KeepPotionsStocked);
 		SetCheckBox(noanal_id, g_Clinic.GetBrothel(0)->m_RestrictAnal);
 		SetCheckBox(nobdsm_id, g_Clinic.GetBrothel(0)->m_RestrictBDSM);
-		SetCheckBox(nonormal_id, g_Clinic.GetBrothel(0)->m_RestrictNormal);
 		SetCheckBox(nobeast_id, g_Clinic.GetBrothel(0)->m_RestrictBeast);
+		SetCheckBox(nofoot_id, g_Clinic.GetBrothel(0)->m_RestrictFoot);
 		SetCheckBox(nogroup_id, g_Clinic.GetBrothel(0)->m_RestrictGroup);
-		SetCheckBox(nolesbian_id, g_Clinic.GetBrothel(0)->m_RestrictLesbian);
-		SetCheckBox(nooral_id, g_Clinic.GetBrothel(0)->m_RestrictOral);
-		SetCheckBox(notitty_id, g_Clinic.GetBrothel(0)->m_RestrictTitty);
 		SetCheckBox(nohand_id, g_Clinic.GetBrothel(0)->m_RestrictHand);
+		SetCheckBox(nolesbian_id, g_Clinic.GetBrothel(0)->m_RestrictLesbian);
+		SetCheckBox(nonormal_id, g_Clinic.GetBrothel(0)->m_RestrictNormal);
+		SetCheckBox(nooral_id, g_Clinic.GetBrothel(0)->m_RestrictOral);
+		SetCheckBox(nostrip_id, g_Clinic.GetBrothel(0)->m_RestrictStrip);
+		SetCheckBox(notitty_id, g_Clinic.GetBrothel(0)->m_RestrictTitty);
 		break;
 	case BUILDING_ARENA:
 		brothel = gettext("The Arena");
@@ -143,13 +151,15 @@ void cScreenBuildingSetup::init()
 		SetCheckBox(autopotions_id, g_Arena.GetBrothel(0)->m_KeepPotionsStocked);
 		SetCheckBox(noanal_id, g_Arena.GetBrothel(0)->m_RestrictAnal);
 		SetCheckBox(nobdsm_id, g_Arena.GetBrothel(0)->m_RestrictBDSM);
-		SetCheckBox(nonormal_id, g_Arena.GetBrothel(0)->m_RestrictNormal);
 		SetCheckBox(nobeast_id, g_Arena.GetBrothel(0)->m_RestrictBeast);
+		SetCheckBox(nofoot_id, g_Arena.GetBrothel(0)->m_RestrictFoot);
 		SetCheckBox(nogroup_id, g_Arena.GetBrothel(0)->m_RestrictGroup);
-		SetCheckBox(nolesbian_id, g_Arena.GetBrothel(0)->m_RestrictLesbian);
-		SetCheckBox(nooral_id, g_Arena.GetBrothel(0)->m_RestrictOral);
-		SetCheckBox(notitty_id, g_Arena.GetBrothel(0)->m_RestrictTitty);
 		SetCheckBox(nohand_id, g_Arena.GetBrothel(0)->m_RestrictHand);
+		SetCheckBox(nolesbian_id, g_Arena.GetBrothel(0)->m_RestrictLesbian);
+		SetCheckBox(nonormal_id, g_Arena.GetBrothel(0)->m_RestrictNormal);
+		SetCheckBox(nooral_id, g_Arena.GetBrothel(0)->m_RestrictOral);
+		SetCheckBox(nostrip_id, g_Arena.GetBrothel(0)->m_RestrictStrip);
+		SetCheckBox(notitty_id, g_Arena.GetBrothel(0)->m_RestrictTitty);
 		break;
 	case BUILDING_CENTRE:
 		brothel = gettext("The Community Centre");
@@ -163,13 +173,15 @@ void cScreenBuildingSetup::init()
 		SetCheckBox(autopotions_id, g_Centre.GetBrothel(0)->m_KeepPotionsStocked);
 		SetCheckBox(noanal_id, g_Centre.GetBrothel(0)->m_RestrictAnal);
 		SetCheckBox(nobdsm_id, g_Centre.GetBrothel(0)->m_RestrictBDSM);
-		SetCheckBox(nonormal_id, g_Centre.GetBrothel(0)->m_RestrictNormal);
 		SetCheckBox(nobeast_id, g_Centre.GetBrothel(0)->m_RestrictBeast);
+		SetCheckBox(nofoot_id, g_Centre.GetBrothel(0)->m_RestrictFoot);
 		SetCheckBox(nogroup_id, g_Centre.GetBrothel(0)->m_RestrictGroup);
-		SetCheckBox(nolesbian_id, g_Centre.GetBrothel(0)->m_RestrictLesbian);
-		SetCheckBox(nooral_id, g_Centre.GetBrothel(0)->m_RestrictOral);
-		SetCheckBox(notitty_id, g_Centre.GetBrothel(0)->m_RestrictTitty);
 		SetCheckBox(nohand_id, g_Centre.GetBrothel(0)->m_RestrictHand);
+		SetCheckBox(nolesbian_id, g_Centre.GetBrothel(0)->m_RestrictLesbian);
+		SetCheckBox(nonormal_id, g_Centre.GetBrothel(0)->m_RestrictNormal);
+		SetCheckBox(nooral_id, g_Centre.GetBrothel(0)->m_RestrictOral);
+		SetCheckBox(nostrip_id, g_Centre.GetBrothel(0)->m_RestrictStrip);
+		SetCheckBox(notitty_id, g_Centre.GetBrothel(0)->m_RestrictTitty);
 		break;
 	case BUILDING_HOUSE:
 		brothel = gettext("Your House");
@@ -183,13 +195,15 @@ void cScreenBuildingSetup::init()
 		SetCheckBox(autopotions_id, g_House.GetBrothel(0)->m_KeepPotionsStocked);
 		SetCheckBox(noanal_id, g_House.GetBrothel(0)->m_RestrictAnal);
 		SetCheckBox(nobdsm_id, g_House.GetBrothel(0)->m_RestrictBDSM);
-		SetCheckBox(nonormal_id, g_House.GetBrothel(0)->m_RestrictNormal);
 		SetCheckBox(nobeast_id, g_House.GetBrothel(0)->m_RestrictBeast);
+		SetCheckBox(nofoot_id, g_House.GetBrothel(0)->m_RestrictFoot);
 		SetCheckBox(nogroup_id, g_House.GetBrothel(0)->m_RestrictGroup);
-		SetCheckBox(nolesbian_id, g_House.GetBrothel(0)->m_RestrictLesbian);
-		SetCheckBox(nooral_id, g_House.GetBrothel(0)->m_RestrictOral);
-		SetCheckBox(notitty_id, g_House.GetBrothel(0)->m_RestrictTitty);
 		SetCheckBox(nohand_id, g_House.GetBrothel(0)->m_RestrictHand);
+		SetCheckBox(nolesbian_id, g_House.GetBrothel(0)->m_RestrictLesbian);
+		SetCheckBox(nonormal_id, g_House.GetBrothel(0)->m_RestrictNormal);
+		SetCheckBox(nooral_id, g_House.GetBrothel(0)->m_RestrictOral);
+		SetCheckBox(nostrip_id, g_House.GetBrothel(0)->m_RestrictStrip);
+		SetCheckBox(notitty_id, g_House.GetBrothel(0)->m_RestrictTitty);
 		break;
 	case BUILDING_FARM:
 		brothel = gettext("Your Farm");
@@ -203,13 +217,15 @@ void cScreenBuildingSetup::init()
 		SetCheckBox(autopotions_id, g_Farm.GetBrothel(0)->m_KeepPotionsStocked);
 		SetCheckBox(noanal_id, g_Farm.GetBrothel(0)->m_RestrictAnal);
 		SetCheckBox(nobdsm_id, g_Farm.GetBrothel(0)->m_RestrictBDSM);
-		SetCheckBox(nonormal_id, g_Farm.GetBrothel(0)->m_RestrictNormal);
 		SetCheckBox(nobeast_id, g_Farm.GetBrothel(0)->m_RestrictBeast);
+		SetCheckBox(nofoot_id, g_Farm.GetBrothel(0)->m_RestrictFoot);
 		SetCheckBox(nogroup_id, g_Farm.GetBrothel(0)->m_RestrictGroup);
-		SetCheckBox(nolesbian_id, g_Farm.GetBrothel(0)->m_RestrictLesbian);
-		SetCheckBox(nooral_id, g_Farm.GetBrothel(0)->m_RestrictOral);
-		SetCheckBox(notitty_id, g_Farm.GetBrothel(0)->m_RestrictTitty);
 		SetCheckBox(nohand_id, g_Farm.GetBrothel(0)->m_RestrictHand);
+		SetCheckBox(nolesbian_id, g_Farm.GetBrothel(0)->m_RestrictLesbian);
+		SetCheckBox(nonormal_id, g_Farm.GetBrothel(0)->m_RestrictNormal);
+		SetCheckBox(nooral_id, g_Farm.GetBrothel(0)->m_RestrictOral);
+		SetCheckBox(nostrip_id, g_Farm.GetBrothel(0)->m_RestrictStrip);
+		SetCheckBox(notitty_id, g_Farm.GetBrothel(0)->m_RestrictTitty);
 		break;
 	case BUILDING_BROTHEL:
 	default:
@@ -224,13 +240,15 @@ void cScreenBuildingSetup::init()
 		SetCheckBox(autopotions_id, g_Brothels.GetBrothel(g_CurrBrothel)->m_KeepPotionsStocked);
 		SetCheckBox(noanal_id, g_Brothels.GetBrothel(g_CurrBrothel)->m_RestrictAnal);
 		SetCheckBox(nobdsm_id, g_Brothels.GetBrothel(g_CurrBrothel)->m_RestrictBDSM);
-		SetCheckBox(nonormal_id, g_Brothels.GetBrothel(g_CurrBrothel)->m_RestrictNormal);
 		SetCheckBox(nobeast_id, g_Brothels.GetBrothel(g_CurrBrothel)->m_RestrictBeast);
+		SetCheckBox(nofoot_id, g_Brothels.GetBrothel(g_CurrBrothel)->m_RestrictFoot);
 		SetCheckBox(nogroup_id, g_Brothels.GetBrothel(g_CurrBrothel)->m_RestrictGroup);
-		SetCheckBox(nolesbian_id, g_Brothels.GetBrothel(g_CurrBrothel)->m_RestrictLesbian);
-		SetCheckBox(nooral_id, g_Brothels.GetBrothel(g_CurrBrothel)->m_RestrictOral);
-		SetCheckBox(notitty_id, g_Brothels.GetBrothel(g_CurrBrothel)->m_RestrictTitty);
 		SetCheckBox(nohand_id, g_Brothels.GetBrothel(g_CurrBrothel)->m_RestrictHand);
+		SetCheckBox(nolesbian_id, g_Brothels.GetBrothel(g_CurrBrothel)->m_RestrictLesbian);
+		SetCheckBox(nonormal_id, g_Brothels.GetBrothel(g_CurrBrothel)->m_RestrictNormal);
+		SetCheckBox(nooral_id, g_Brothels.GetBrothel(g_CurrBrothel)->m_RestrictOral);
+		SetCheckBox(nostrip_id, g_Brothels.GetBrothel(g_CurrBrothel)->m_RestrictStrip);
+		SetCheckBox(notitty_id, g_Brothels.GetBrothel(g_CurrBrothel)->m_RestrictTitty);
 		break;
 	}
 
@@ -294,11 +312,15 @@ void cScreenBuildingSetup::check_events()
 	}
 	if (g_InterfaceEvents.CheckButton(buyrooms_id))
 	{
-		int rooms = 20, maxrooms = 200;
 
-		if (!g_Gold.brothel_cost(5000)) g_MessageQue.AddToQue(gettext("You need 5000 gold to add 5 rooms"), COLOR_RED);
+		if (!g_Gold.brothel_cost(5000))
+		{
+			g_MessageQue.AddToQue(gettext("You need 5000 gold to add 5 rooms"), COLOR_RED);
+		}
 		else
 		{
+			int rooms = 20, maxrooms = 200;
+
 			switch (g_Building)
 			{
 			case BUILDING_STUDIO:
@@ -345,11 +367,11 @@ void cScreenBuildingSetup::check_events()
 				rooms += 5;
 				break;
 			}
+			ss.str("");
+			ss << "Add Rooms: " << tariff.add_room_cost(5) << " gold\nCurrent: " << rooms << "\nMaximum: " << maxrooms << endl;
+			EditTextItem(ss.str(), roomcost_id);
+			DisableButton(buyrooms_id, rooms >= maxrooms);
 		}
-		ss.str("");
-		ss << "Add Rooms: " << tariff.add_room_cost(5) << " gold\nCurrent: " << rooms << "\nMaximum: " << maxrooms << endl;
-		EditTextItem(ss.str(), roomcost_id);
-		DisableButton(buyrooms_id, rooms >= maxrooms);
 	}
 	if (g_InterfaceEvents.CheckButton(potions10_id)) buypotions = 10;
 	if (g_InterfaceEvents.CheckButton(potions20_id)) buypotions = 20;
@@ -472,86 +494,100 @@ void cScreenBuildingSetup::check_events()
 		if (g_InterfaceEvents.CheckCheckbox(autopotions_id))	g_Studios.GetBrothel(0)->m_KeepPotionsStocked = IsCheckboxOn(autopotions_id);
 		if (g_InterfaceEvents.CheckCheckbox(noanal_id))			g_Studios.GetBrothel(0)->m_RestrictAnal = IsCheckboxOn(noanal_id);
 		if (g_InterfaceEvents.CheckCheckbox(nobdsm_id))			g_Studios.GetBrothel(0)->m_RestrictBDSM = IsCheckboxOn(nobdsm_id);
-		if (g_InterfaceEvents.CheckCheckbox(nonormal_id))		g_Studios.GetBrothel(0)->m_RestrictNormal = IsCheckboxOn(nonormal_id);
 		if (g_InterfaceEvents.CheckCheckbox(nobeast_id))		g_Studios.GetBrothel(0)->m_RestrictBeast = IsCheckboxOn(nobeast_id);
+		if (g_InterfaceEvents.CheckCheckbox(nofoot_id))			g_Studios.GetBrothel(0)->m_RestrictFoot = IsCheckboxOn(nofoot_id);
 		if (g_InterfaceEvents.CheckCheckbox(nogroup_id))		g_Studios.GetBrothel(0)->m_RestrictGroup = IsCheckboxOn(nogroup_id);
-		if (g_InterfaceEvents.CheckCheckbox(nolesbian_id))		g_Studios.GetBrothel(0)->m_RestrictLesbian = IsCheckboxOn(nolesbian_id);
-		if (g_InterfaceEvents.CheckCheckbox(nooral_id))			g_Studios.GetBrothel(0)->m_RestrictOral = IsCheckboxOn(nooral_id);
-		if (g_InterfaceEvents.CheckCheckbox(notitty_id))		g_Studios.GetBrothel(0)->m_RestrictTitty = IsCheckboxOn(notitty_id);
 		if (g_InterfaceEvents.CheckCheckbox(nohand_id))			g_Studios.GetBrothel(0)->m_RestrictHand = IsCheckboxOn(nohand_id);
+		if (g_InterfaceEvents.CheckCheckbox(nolesbian_id))		g_Studios.GetBrothel(0)->m_RestrictLesbian = IsCheckboxOn(nolesbian_id);
+		if (g_InterfaceEvents.CheckCheckbox(nonormal_id))		g_Studios.GetBrothel(0)->m_RestrictNormal = IsCheckboxOn(nonormal_id);
+		if (g_InterfaceEvents.CheckCheckbox(nooral_id))			g_Studios.GetBrothel(0)->m_RestrictOral = IsCheckboxOn(nooral_id);
+		if (g_InterfaceEvents.CheckCheckbox(nostrip_id))		g_Studios.GetBrothel(0)->m_RestrictStrip = IsCheckboxOn(nostrip_id);
+		if (g_InterfaceEvents.CheckCheckbox(notitty_id))		g_Studios.GetBrothel(0)->m_RestrictTitty = IsCheckboxOn(notitty_id);
 		break;
 	case BUILDING_CLINIC:
 		if (g_InterfaceEvents.CheckCheckbox(autopotions_id))	g_Clinic.GetBrothel(0)->m_KeepPotionsStocked = IsCheckboxOn(autopotions_id);
 		if (g_InterfaceEvents.CheckCheckbox(noanal_id))			g_Clinic.GetBrothel(0)->m_RestrictAnal = IsCheckboxOn(noanal_id);
 		if (g_InterfaceEvents.CheckCheckbox(nobdsm_id))			g_Clinic.GetBrothel(0)->m_RestrictBDSM = IsCheckboxOn(nobdsm_id);
-		if (g_InterfaceEvents.CheckCheckbox(nonormal_id))		g_Clinic.GetBrothel(0)->m_RestrictNormal = IsCheckboxOn(nonormal_id);
 		if (g_InterfaceEvents.CheckCheckbox(nobeast_id))		g_Clinic.GetBrothel(0)->m_RestrictBeast = IsCheckboxOn(nobeast_id);
+		if (g_InterfaceEvents.CheckCheckbox(nofoot_id))			g_Clinic.GetBrothel(0)->m_RestrictFoot = IsCheckboxOn(nofoot_id);
 		if (g_InterfaceEvents.CheckCheckbox(nogroup_id))		g_Clinic.GetBrothel(0)->m_RestrictGroup = IsCheckboxOn(nogroup_id);
-		if (g_InterfaceEvents.CheckCheckbox(nolesbian_id))		g_Clinic.GetBrothel(0)->m_RestrictLesbian = IsCheckboxOn(nolesbian_id);
-		if (g_InterfaceEvents.CheckCheckbox(nooral_id))			g_Clinic.GetBrothel(0)->m_RestrictOral = IsCheckboxOn(nooral_id);
-		if (g_InterfaceEvents.CheckCheckbox(notitty_id))		g_Clinic.GetBrothel(0)->m_RestrictTitty = IsCheckboxOn(notitty_id);
 		if (g_InterfaceEvents.CheckCheckbox(nohand_id))			g_Clinic.GetBrothel(0)->m_RestrictHand = IsCheckboxOn(nohand_id);
+		if (g_InterfaceEvents.CheckCheckbox(nolesbian_id))		g_Clinic.GetBrothel(0)->m_RestrictLesbian = IsCheckboxOn(nolesbian_id);
+		if (g_InterfaceEvents.CheckCheckbox(nonormal_id))		g_Clinic.GetBrothel(0)->m_RestrictNormal = IsCheckboxOn(nonormal_id);
+		if (g_InterfaceEvents.CheckCheckbox(nooral_id))			g_Clinic.GetBrothel(0)->m_RestrictOral = IsCheckboxOn(nooral_id);
+		if (g_InterfaceEvents.CheckCheckbox(nostrip_id))		g_Clinic.GetBrothel(0)->m_RestrictStrip = IsCheckboxOn(nostrip_id);
+		if (g_InterfaceEvents.CheckCheckbox(notitty_id))		g_Clinic.GetBrothel(0)->m_RestrictTitty = IsCheckboxOn(notitty_id);
 		break;
 	case BUILDING_ARENA:
 		if (g_InterfaceEvents.CheckCheckbox(autopotions_id))	g_Arena.GetBrothel(0)->m_KeepPotionsStocked = IsCheckboxOn(autopotions_id);
 		if (g_InterfaceEvents.CheckCheckbox(noanal_id))			g_Arena.GetBrothel(0)->m_RestrictAnal = IsCheckboxOn(noanal_id);
 		if (g_InterfaceEvents.CheckCheckbox(nobdsm_id))			g_Arena.GetBrothel(0)->m_RestrictBDSM = IsCheckboxOn(nobdsm_id);
-		if (g_InterfaceEvents.CheckCheckbox(nonormal_id))		g_Arena.GetBrothel(0)->m_RestrictNormal = IsCheckboxOn(nonormal_id);
 		if (g_InterfaceEvents.CheckCheckbox(nobeast_id))		g_Arena.GetBrothel(0)->m_RestrictBeast = IsCheckboxOn(nobeast_id);
+		if (g_InterfaceEvents.CheckCheckbox(nofoot_id))			g_Arena.GetBrothel(0)->m_RestrictFoot = IsCheckboxOn(nofoot_id);
 		if (g_InterfaceEvents.CheckCheckbox(nogroup_id))		g_Arena.GetBrothel(0)->m_RestrictGroup = IsCheckboxOn(nogroup_id);
-		if (g_InterfaceEvents.CheckCheckbox(nolesbian_id))		g_Arena.GetBrothel(0)->m_RestrictLesbian = IsCheckboxOn(nolesbian_id);
-		if (g_InterfaceEvents.CheckCheckbox(nooral_id))			g_Arena.GetBrothel(0)->m_RestrictOral = IsCheckboxOn(nooral_id);
-		if (g_InterfaceEvents.CheckCheckbox(notitty_id))		g_Arena.GetBrothel(0)->m_RestrictTitty = IsCheckboxOn(notitty_id);
 		if (g_InterfaceEvents.CheckCheckbox(nohand_id))			g_Arena.GetBrothel(0)->m_RestrictHand = IsCheckboxOn(nohand_id);
+		if (g_InterfaceEvents.CheckCheckbox(nolesbian_id))		g_Arena.GetBrothel(0)->m_RestrictLesbian = IsCheckboxOn(nolesbian_id);
+		if (g_InterfaceEvents.CheckCheckbox(nonormal_id))		g_Arena.GetBrothel(0)->m_RestrictNormal = IsCheckboxOn(nonormal_id);
+		if (g_InterfaceEvents.CheckCheckbox(nooral_id))			g_Arena.GetBrothel(0)->m_RestrictOral = IsCheckboxOn(nooral_id);
+		if (g_InterfaceEvents.CheckCheckbox(nostrip_id))		g_Arena.GetBrothel(0)->m_RestrictStrip = IsCheckboxOn(nostrip_id);
+		if (g_InterfaceEvents.CheckCheckbox(notitty_id))		g_Arena.GetBrothel(0)->m_RestrictTitty = IsCheckboxOn(notitty_id);
 		break;
 	case BUILDING_CENTRE:
 		if (g_InterfaceEvents.CheckCheckbox(autopotions_id))	g_Centre.GetBrothel(0)->m_KeepPotionsStocked = IsCheckboxOn(autopotions_id);
 		if (g_InterfaceEvents.CheckCheckbox(noanal_id))			g_Centre.GetBrothel(0)->m_RestrictAnal = IsCheckboxOn(noanal_id);
 		if (g_InterfaceEvents.CheckCheckbox(nobdsm_id))			g_Centre.GetBrothel(0)->m_RestrictBDSM = IsCheckboxOn(nobdsm_id);
-		if (g_InterfaceEvents.CheckCheckbox(nonormal_id))		g_Centre.GetBrothel(0)->m_RestrictNormal = IsCheckboxOn(nonormal_id);
 		if (g_InterfaceEvents.CheckCheckbox(nobeast_id))		g_Centre.GetBrothel(0)->m_RestrictBeast = IsCheckboxOn(nobeast_id);
+		if (g_InterfaceEvents.CheckCheckbox(nofoot_id))			g_Centre.GetBrothel(0)->m_RestrictFoot = IsCheckboxOn(nofoot_id);
 		if (g_InterfaceEvents.CheckCheckbox(nogroup_id))		g_Centre.GetBrothel(0)->m_RestrictGroup = IsCheckboxOn(nogroup_id);
-		if (g_InterfaceEvents.CheckCheckbox(nolesbian_id))		g_Centre.GetBrothel(0)->m_RestrictLesbian = IsCheckboxOn(nolesbian_id);
-		if (g_InterfaceEvents.CheckCheckbox(nooral_id))			g_Centre.GetBrothel(0)->m_RestrictOral = IsCheckboxOn(nooral_id);
-		if (g_InterfaceEvents.CheckCheckbox(notitty_id))		g_Centre.GetBrothel(0)->m_RestrictTitty = IsCheckboxOn(notitty_id);
 		if (g_InterfaceEvents.CheckCheckbox(nohand_id))			g_Centre.GetBrothel(0)->m_RestrictHand = IsCheckboxOn(nohand_id);
+		if (g_InterfaceEvents.CheckCheckbox(nolesbian_id))		g_Centre.GetBrothel(0)->m_RestrictLesbian = IsCheckboxOn(nolesbian_id);
+		if (g_InterfaceEvents.CheckCheckbox(nonormal_id))		g_Centre.GetBrothel(0)->m_RestrictNormal = IsCheckboxOn(nonormal_id);
+		if (g_InterfaceEvents.CheckCheckbox(nooral_id))			g_Centre.GetBrothel(0)->m_RestrictOral = IsCheckboxOn(nooral_id);
+		if (g_InterfaceEvents.CheckCheckbox(nostrip_id))		g_Centre.GetBrothel(0)->m_RestrictStrip = IsCheckboxOn(nostrip_id);
+		if (g_InterfaceEvents.CheckCheckbox(notitty_id))		g_Centre.GetBrothel(0)->m_RestrictTitty = IsCheckboxOn(notitty_id);
 		break;
 	case BUILDING_HOUSE:
 		if (g_InterfaceEvents.CheckCheckbox(autopotions_id))	g_House.GetBrothel(0)->m_KeepPotionsStocked = IsCheckboxOn(autopotions_id);
 		if (g_InterfaceEvents.CheckCheckbox(noanal_id))			g_House.GetBrothel(0)->m_RestrictAnal = IsCheckboxOn(noanal_id);
 		if (g_InterfaceEvents.CheckCheckbox(nobdsm_id))			g_House.GetBrothel(0)->m_RestrictBDSM = IsCheckboxOn(nobdsm_id);
-		if (g_InterfaceEvents.CheckCheckbox(nonormal_id))		g_House.GetBrothel(0)->m_RestrictNormal = IsCheckboxOn(nonormal_id);
 		if (g_InterfaceEvents.CheckCheckbox(nobeast_id))		g_House.GetBrothel(0)->m_RestrictBeast = IsCheckboxOn(nobeast_id);
+		if (g_InterfaceEvents.CheckCheckbox(nofoot_id))			g_House.GetBrothel(0)->m_RestrictFoot = IsCheckboxOn(nofoot_id);
 		if (g_InterfaceEvents.CheckCheckbox(nogroup_id))		g_House.GetBrothel(0)->m_RestrictGroup = IsCheckboxOn(nogroup_id);
-		if (g_InterfaceEvents.CheckCheckbox(nolesbian_id))		g_House.GetBrothel(0)->m_RestrictLesbian = IsCheckboxOn(nolesbian_id);
-		if (g_InterfaceEvents.CheckCheckbox(nooral_id))			g_House.GetBrothel(0)->m_RestrictOral = IsCheckboxOn(nooral_id);
-		if (g_InterfaceEvents.CheckCheckbox(notitty_id))		g_House.GetBrothel(0)->m_RestrictTitty = IsCheckboxOn(notitty_id);
 		if (g_InterfaceEvents.CheckCheckbox(nohand_id))			g_House.GetBrothel(0)->m_RestrictHand = IsCheckboxOn(nohand_id);
+		if (g_InterfaceEvents.CheckCheckbox(nolesbian_id))		g_House.GetBrothel(0)->m_RestrictLesbian = IsCheckboxOn(nolesbian_id);
+		if (g_InterfaceEvents.CheckCheckbox(nonormal_id))		g_House.GetBrothel(0)->m_RestrictNormal = IsCheckboxOn(nonormal_id);
+		if (g_InterfaceEvents.CheckCheckbox(nooral_id))			g_House.GetBrothel(0)->m_RestrictOral = IsCheckboxOn(nooral_id);
+		if (g_InterfaceEvents.CheckCheckbox(nostrip_id))		g_House.GetBrothel(0)->m_RestrictStrip = IsCheckboxOn(nostrip_id);
+		if (g_InterfaceEvents.CheckCheckbox(notitty_id))		g_House.GetBrothel(0)->m_RestrictTitty = IsCheckboxOn(notitty_id);
 		break;
 	case BUILDING_FARM:
 		if (g_InterfaceEvents.CheckCheckbox(autopotions_id))	g_Farm.GetBrothel(0)->m_KeepPotionsStocked = IsCheckboxOn(autopotions_id);
 		if (g_InterfaceEvents.CheckCheckbox(noanal_id))			g_Farm.GetBrothel(0)->m_RestrictAnal = IsCheckboxOn(noanal_id);
 		if (g_InterfaceEvents.CheckCheckbox(nobdsm_id))			g_Farm.GetBrothel(0)->m_RestrictBDSM = IsCheckboxOn(nobdsm_id);
-		if (g_InterfaceEvents.CheckCheckbox(nonormal_id))		g_Farm.GetBrothel(0)->m_RestrictNormal = IsCheckboxOn(nonormal_id);
 		if (g_InterfaceEvents.CheckCheckbox(nobeast_id))		g_Farm.GetBrothel(0)->m_RestrictBeast = IsCheckboxOn(nobeast_id);
+		if (g_InterfaceEvents.CheckCheckbox(nofoot_id))			g_Farm.GetBrothel(0)->m_RestrictFoot = IsCheckboxOn(nofoot_id);
 		if (g_InterfaceEvents.CheckCheckbox(nogroup_id))		g_Farm.GetBrothel(0)->m_RestrictGroup = IsCheckboxOn(nogroup_id);
-		if (g_InterfaceEvents.CheckCheckbox(nolesbian_id))		g_Farm.GetBrothel(0)->m_RestrictLesbian = IsCheckboxOn(nolesbian_id);
-		if (g_InterfaceEvents.CheckCheckbox(nooral_id))			g_Farm.GetBrothel(0)->m_RestrictOral = IsCheckboxOn(nooral_id);
-		if (g_InterfaceEvents.CheckCheckbox(notitty_id))		g_Farm.GetBrothel(0)->m_RestrictTitty = IsCheckboxOn(notitty_id);
 		if (g_InterfaceEvents.CheckCheckbox(nohand_id))			g_Farm.GetBrothel(0)->m_RestrictHand = IsCheckboxOn(nohand_id);
+		if (g_InterfaceEvents.CheckCheckbox(nolesbian_id))		g_Farm.GetBrothel(0)->m_RestrictLesbian = IsCheckboxOn(nolesbian_id);
+		if (g_InterfaceEvents.CheckCheckbox(nonormal_id))		g_Farm.GetBrothel(0)->m_RestrictNormal = IsCheckboxOn(nonormal_id);
+		if (g_InterfaceEvents.CheckCheckbox(nooral_id))			g_Farm.GetBrothel(0)->m_RestrictOral = IsCheckboxOn(nooral_id);
+		if (g_InterfaceEvents.CheckCheckbox(nostrip_id))		g_Farm.GetBrothel(0)->m_RestrictStrip = IsCheckboxOn(nostrip_id);
+		if (g_InterfaceEvents.CheckCheckbox(notitty_id))		g_Farm.GetBrothel(0)->m_RestrictTitty = IsCheckboxOn(notitty_id);
 		break;
 	case BUILDING_BROTHEL:
 	default:
 		if (g_InterfaceEvents.CheckCheckbox(autopotions_id))	g_Brothels.GetBrothel(g_CurrBrothel)->m_KeepPotionsStocked = IsCheckboxOn(autopotions_id);
 		if (g_InterfaceEvents.CheckCheckbox(noanal_id))			g_Brothels.GetBrothel(g_CurrBrothel)->m_RestrictAnal = IsCheckboxOn(noanal_id);
 		if (g_InterfaceEvents.CheckCheckbox(nobdsm_id))			g_Brothels.GetBrothel(g_CurrBrothel)->m_RestrictBDSM = IsCheckboxOn(nobdsm_id);
-		if (g_InterfaceEvents.CheckCheckbox(nonormal_id))		g_Brothels.GetBrothel(g_CurrBrothel)->m_RestrictNormal = IsCheckboxOn(nonormal_id);
 		if (g_InterfaceEvents.CheckCheckbox(nobeast_id))		g_Brothels.GetBrothel(g_CurrBrothel)->m_RestrictBeast = IsCheckboxOn(nobeast_id);
+		if (g_InterfaceEvents.CheckCheckbox(nofoot_id))			g_Brothels.GetBrothel(g_CurrBrothel)->m_RestrictFoot = IsCheckboxOn(nofoot_id);
 		if (g_InterfaceEvents.CheckCheckbox(nogroup_id))		g_Brothels.GetBrothel(g_CurrBrothel)->m_RestrictGroup = IsCheckboxOn(nogroup_id);
-		if (g_InterfaceEvents.CheckCheckbox(nolesbian_id))		g_Brothels.GetBrothel(g_CurrBrothel)->m_RestrictLesbian = IsCheckboxOn(nolesbian_id);
-		if (g_InterfaceEvents.CheckCheckbox(nooral_id))			g_Brothels.GetBrothel(g_CurrBrothel)->m_RestrictOral = IsCheckboxOn(nooral_id);
-		if (g_InterfaceEvents.CheckCheckbox(notitty_id))		g_Brothels.GetBrothel(g_CurrBrothel)->m_RestrictTitty = IsCheckboxOn(notitty_id);
 		if (g_InterfaceEvents.CheckCheckbox(nohand_id))			g_Brothels.GetBrothel(g_CurrBrothel)->m_RestrictHand = IsCheckboxOn(nohand_id);
+		if (g_InterfaceEvents.CheckCheckbox(nolesbian_id))		g_Brothels.GetBrothel(g_CurrBrothel)->m_RestrictLesbian = IsCheckboxOn(nolesbian_id);
+		if (g_InterfaceEvents.CheckCheckbox(nonormal_id))		g_Brothels.GetBrothel(g_CurrBrothel)->m_RestrictNormal = IsCheckboxOn(nonormal_id);
+		if (g_InterfaceEvents.CheckCheckbox(nooral_id))			g_Brothels.GetBrothel(g_CurrBrothel)->m_RestrictOral = IsCheckboxOn(nooral_id);
+		if (g_InterfaceEvents.CheckCheckbox(nostrip_id))		g_Brothels.GetBrothel(g_CurrBrothel)->m_RestrictStrip = IsCheckboxOn(nostrip_id);
+		if (g_InterfaceEvents.CheckCheckbox(notitty_id))		g_Brothels.GetBrothel(g_CurrBrothel)->m_RestrictTitty = IsCheckboxOn(notitty_id);
 		break;
 	}
 }

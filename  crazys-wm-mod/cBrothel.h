@@ -120,6 +120,8 @@ struct sBrothel
 	bool	m_RestrictGroup;
 	bool	m_RestrictNormal;
 	bool	m_RestrictLesbian;
+	bool	m_RestrictFoot;
+	bool	m_RestrictStrip;
 
 	int		m_Filthiness;
 

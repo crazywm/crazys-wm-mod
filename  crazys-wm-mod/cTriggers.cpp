@@ -31,8 +31,8 @@ static map<string, int> trigger_types;
 
 void cTriggerList::AddTrigger(cTrigger* trigger)
 {
-	if (m_Triggers)	{ m_Last->m_Next = m_Last = trigger; }
-	else			{ m_Triggers = m_Last = trigger; }
+	trigger->m_Next = m_Triggers;
+	m_Triggers = trigger;
 	m_NumTriggers++;
 }
 

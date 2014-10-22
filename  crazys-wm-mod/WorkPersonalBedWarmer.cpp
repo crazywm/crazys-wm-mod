@@ -217,37 +217,43 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, int DayN
 
 
 
-	if (roll_d <= 11)
+	if (roll_d <= 10)
 	{
 		g_Girls.UpdateSkill(girl, SKILL_STRIP, 2);
 		ss << gettext("does a little strip show for you.\n\n");
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_STRIP, DayNight);
 	}
-	else if (roll_d <= 22 && is_sex_type_allowed(SKILL_TITTYSEX, brothel))
+	else if (roll_d <= 20 && is_sex_type_allowed(SKILL_TITTYSEX, brothel))
 	{
 		g_Girls.UpdateSkill(girl, SKILL_TITTYSEX, 2);
 		ss << gettext("uses her tits on you.\n\n");
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_TITTY, DayNight);
 	}
-	else if (roll_d <= 33 && is_sex_type_allowed(SKILL_HANDJOB, brothel))
+	else if (roll_d <= 30 && is_sex_type_allowed(SKILL_HANDJOB, brothel))
 	{
 		g_Girls.UpdateSkill(girl, SKILL_HANDJOB, 2);
 		ss << gettext("gives you a hand job.\n\n");
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_HAND, DayNight);
 	}
-	else if (roll_d <= 44 && is_sex_type_allowed(SKILL_ORALSEX, brothel))
+	else if (roll_d <= 40 && is_sex_type_allowed(SKILL_FOOTJOB, brothel))
+	{
+		g_Girls.UpdateSkill(girl, SKILL_FOOTJOB, 2);
+		ss << gettext("gives you a foot job.\n\n");
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_FOOT, DayNight);
+	}
+	else if (roll_d <= 50 && is_sex_type_allowed(SKILL_ORALSEX, brothel))
 	{
 		g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 2);
 		ss << gettext("decided to suck your cock.\n\n");
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_ORAL, DayNight);
 	}
-	else if (roll_d <= 55 && is_sex_type_allowed(SKILL_ANAL, brothel))
+	else if (roll_d <= 60 && is_sex_type_allowed(SKILL_ANAL, brothel))
 	{
 		g_Girls.UpdateSkill(girl, SKILL_ANAL, 2);
 		ss << gettext("lets you use her ass.\n\n");
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_ANAL, DayNight);
 	}
-	else if (roll_d <= 66 && is_sex_type_allowed(SKILL_BDSM, brothel))
+	else if (roll_d <= 70 && is_sex_type_allowed(SKILL_BDSM, brothel))
 	{
 		g_Girls.UpdateSkill(girl, SKILL_BDSM, 2);
 		ss << gettext("lets you tie her up.\n\n");
@@ -264,7 +270,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, int DayN
 			g_MessageQue.AddToQue(message, 0);
 		}
 	}
-	else if (roll_d <= 77 && is_sex_type_allowed(SKILL_NORMALSEX, brothel))
+	else if (roll_d <= 80 && is_sex_type_allowed(SKILL_NORMALSEX, brothel))
 	{
 		g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, 2);
 		ss << gettext("has sex with you.\n\n");
@@ -281,7 +287,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, int DayN
 			g_MessageQue.AddToQue(message, 0);
 		}
 	}
-	else if (roll_d <= 88)
+	else if (roll_d <= 90)
 	{
 		if (HateLove > 20)
 		{

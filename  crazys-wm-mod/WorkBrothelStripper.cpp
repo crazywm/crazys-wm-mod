@@ -226,23 +226,25 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, int DayNig
 		GetMiscCustomer(brothel, cust);
 		int imageType = IMGTYPE_SEX;
 		if (cust.m_IsWoman) n = SKILL_LESBIAN, message += "licking the customer pussy until she got off";
-        else
-        {
-            switch (g_Dice % 10)
-            {
-            case 0:        n = SKILL_ORALSEX;   message += "sucking the customer off";					break;
-            case 1:        n = SKILL_TITTYSEX;  message += "using her tits to get the customer off";    break;
-            case 2:        n = SKILL_HANDJOB;   message += "using her hand to get the customer off";    break;
-            case 3:        n = SKILL_ANAL;      message += "letting the customer use her ass";			break;
-            default:	   n = SKILL_NORMALSEX; message += "fucking the customer as well";				break;
-            }
-        }
-		if(n == SKILL_LESBIAN)			imageType = IMGTYPE_LESBIAN;
-		else if(n == SKILL_ORALSEX)		imageType = IMGTYPE_ORAL;
-		else if(n == SKILL_TITTYSEX)	imageType = IMGTYPE_TITTY;
-		else if(n == SKILL_HANDJOB)		imageType = IMGTYPE_HAND;
-		else if(n == SKILL_ANAL)		imageType = IMGTYPE_ANAL;
-		else if(n == SKILL_NORMALSEX)	imageType = IMGTYPE_SEX;
+		else
+		{
+			switch (g_Dice % 10)
+			{
+			case 0:        n = SKILL_ORALSEX;   message += "sucking the customer off";					break;
+			case 1:        n = SKILL_TITTYSEX;  message += "using her tits to get the customer off";    break;
+			case 2:        n = SKILL_HANDJOB;   message += "using her hand to get the customer off";    break;
+			case 3:        n = SKILL_ANAL;      message += "letting the customer use her ass";			break;
+			case 4:        n = SKILL_FOOTJOB;   message += "using her feet to get the customer off";    break;
+			default:	   n = SKILL_NORMALSEX; message += "fucking the customer as well";				break;
+			}
+		}
+		/* */if (n == SKILL_LESBIAN)	imageType = IMGTYPE_LESBIAN;
+		else if (n == SKILL_ORALSEX)	imageType = IMGTYPE_ORAL;
+		else if (n == SKILL_TITTYSEX)	imageType = IMGTYPE_TITTY;
+		else if (n == SKILL_HANDJOB)	imageType = IMGTYPE_HAND;
+		else if (n == SKILL_FOOTJOB)	imageType = IMGTYPE_FOOT;
+		else if (n == SKILL_ANAL)		imageType = IMGTYPE_ANAL;
+		else if (n == SKILL_NORMALSEX)	imageType = IMGTYPE_SEX;
 		g_Girls.UpdateSkill(girl, n, 2);
 		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -25);
 		message += ", making them very happy.\n";

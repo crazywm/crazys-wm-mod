@@ -598,7 +598,7 @@ bool cJobManager::Preprocessing(int action, sGirl* girl, sBrothel* brothel, int 
 	{
 		string message = girl->m_Realname + gettext(" refused to work during the ");
 		message += (DayNight == 0) ? gettext("day") : gettext("night");
-		message += gettext(" Shift.");
+		message += gettext(" shift.");
 		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
@@ -613,15 +613,18 @@ void cJobManager::GetMiscCustomer(sBrothel* brothel, sCustomer& cust)
 
 bool cJobManager::is_sex_type_allowed(unsigned int sex_type, sBrothel* brothel)
 {
-	if ((sex_type == SKILL_ANAL && brothel->m_RestrictAnal) ||
-		(sex_type == SKILL_BEASTIALITY && brothel->m_RestrictBeast) ||
-		(sex_type == SKILL_BDSM && brothel->m_RestrictBDSM) ||
-		(sex_type == SKILL_NORMALSEX && brothel->m_RestrictNormal) ||
-		(sex_type == SKILL_ORALSEX && brothel->m_RestrictOral) ||
-		(sex_type == SKILL_TITTYSEX && brothel->m_RestrictTitty) ||
-		(sex_type == SKILL_HANDJOB && brothel->m_RestrictHand) ||
-		(sex_type == SKILL_GROUP && brothel->m_RestrictGroup) ||
-		(sex_type == SKILL_LESBIAN && brothel->m_RestrictLesbian))	return false;
+	if ((sex_type == SKILL_ANAL			&& brothel->m_RestrictAnal) ||
+		(sex_type == SKILL_BDSM			&& brothel->m_RestrictBDSM) ||
+		(sex_type == SKILL_BEASTIALITY	&& brothel->m_RestrictBeast) ||
+		(sex_type == SKILL_FOOTJOB		&& brothel->m_RestrictFoot) ||
+		(sex_type == SKILL_GROUP		&& brothel->m_RestrictGroup) ||
+		(sex_type == SKILL_HANDJOB		&& brothel->m_RestrictHand) ||
+		(sex_type == SKILL_LESBIAN		&& brothel->m_RestrictLesbian) ||
+		(sex_type == SKILL_NORMALSEX	&& brothel->m_RestrictNormal) ||
+		(sex_type == SKILL_ORALSEX		&& brothel->m_RestrictOral) ||
+		(sex_type == SKILL_STRIP		&& brothel->m_RestrictStrip) ||
+		(sex_type == SKILL_TITTYSEX		&& brothel->m_RestrictTitty))
+		return false;
 	return true;
 }
 
@@ -664,11 +667,11 @@ void cJobManager::do_advertising(sBrothel* brothel, int DayNight)
 		bool refused = false;
 		if ((current->m_DayJob == JOB_ADVERTISING) && (DayNight == 0)) // Added test for current shift, was running each shift twice -PP
 		{
-			refused = WorkAdvertising(current, brothel, 0, summary);
+			current->m_Refused_To_Work_Day = WorkAdvertising(current, brothel, 0, summary);
 		}
 		if ((current->m_NightJob == JOB_ADVERTISING) && (DayNight == 1)) // Added test for current shift, was running each shift twice -PP
 		{
-			refused = WorkAdvertising(current, brothel, 1, summary);
+			current->m_Refused_To_Work_Night = WorkAdvertising(current, brothel, 1, summary);
 		}
 		current = current->m_Next;
 	}
@@ -682,19 +685,7 @@ void cJobManager::do_whorejobs(sBrothel* brothel, int DayNight)
 	{
 		string summary = "";
 		u_int sw = 0;						//	Job type
-		if (current->m_JustGaveBirth)		// if she gave birth, let her rest this week
-		{
-			if (current->m_InMovieStudio)	sw = JOB_FILMFREETIME;
-			else if (current->m_InArena)	sw = JOB_ARENAREST;
-			else if (current->m_InCentre)	sw = JOB_CENTREREST;
-			else if (current->m_InClinic)	sw = JOB_CLINICREST;
-			else if (current->m_InHouse)	sw = JOB_HOUSEREST;
-			else if (current->m_InFarm)		sw = JOB_FARMREST;
-			else sw = JOB_RESTING;
-			if (current->m_DayJob != sw)	current->m_PrevDayJob = current->m_DayJob;
-			if (current->m_NightJob != sw)	current->m_PrevNightJob = current->m_NightJob;
-		}
-		else	sw = (DayNight == SHIFT_DAY) ? current->m_DayJob : current->m_NightJob;
+		sw = (DayNight == SHIFT_DAY) ? current->m_DayJob : current->m_NightJob;
 
 		bool refused = false;
 		switch (sw)
@@ -711,6 +702,7 @@ void cJobManager::do_whorejobs(sBrothel* brothel, int DayNight)
 		default:
 			break;
 		}
+		if (refused) (DayNight == SHIFT_DAY ? current->m_Refused_To_Work_Day = true : current->m_Refused_To_Work_Night = true);
 		current = current->m_Next;
 	}
 }
@@ -723,19 +715,7 @@ void cJobManager::do_custjobs(sBrothel* brothel, int DayNight)
 	{
 		string summary = "";
 		u_int sw = 0;						//	Job type
-		if (current->m_JustGaveBirth)		// if she gave birth, let her rest this week
-		{
-			if (current->m_InMovieStudio)	sw = JOB_FILMFREETIME;
-			else if (current->m_InArena)	sw = JOB_ARENAREST;
-			else if (current->m_InCentre)	sw = JOB_CENTREREST;
-			else if (current->m_InClinic)	sw = JOB_CLINICREST;
-			else if (current->m_InHouse)	sw = JOB_HOUSEREST;
-			else if (current->m_InFarm)		sw = JOB_FARMREST;
-			else sw = JOB_RESTING;
-			if (current->m_DayJob != sw)	current->m_PrevDayJob = current->m_DayJob;
-			if (current->m_NightJob != sw)	current->m_PrevNightJob = current->m_NightJob;
-		}
-		else	sw = (DayNight == SHIFT_DAY) ? current->m_DayJob : current->m_NightJob;
+		sw = (DayNight == SHIFT_DAY) ? current->m_DayJob : current->m_NightJob;
 
 		bool refused = false;
 		switch (sw)
@@ -749,9 +729,9 @@ void cJobManager::do_custjobs(sBrothel* brothel, int DayNight)
 		case JOB_SINGER:
 			refused = WorkBarSinger(current, brothel, DayNight, summary);
 			break;
-			/*case JOB_PIANO:
-				refused = WorkBarPiano(current,brothel,DayNight,summary);
-				break;*/
+		case JOB_PIANO:
+			refused = WorkBarPiano(current, brothel, DayNight, summary);
+			break;
 		case JOB_DEALER:
 			refused = WorkHallDealer(current, brothel, DayNight, summary);
 			break;
@@ -776,9 +756,9 @@ void cJobManager::do_custjobs(sBrothel* brothel, int DayNight)
 		case JOB_BROTHELSTRIPPER:
 			refused = WorkBrothelStripper(current, brothel, DayNight, summary);
 			break;
-		/*case JOB_PEEP:
+		case JOB_PEEP:
 			refused = WorkPeepShow(current, brothel, DayNight, summary);
-			break;*/
+			break;
 		default:
 			break;
 		}
@@ -2504,4 +2484,55 @@ void cJobManager::load_films(std::ifstream &ifs)
 			ifs >> film_list[i]->scene_quality[i];
 		}
 	}
+}
+
+string cJobManager::GirlPaymentText(sBrothel* brothel, sGirl* girl, int totalTips, int totalPay, int totalGold, int DayNight)
+{
+	cConfig cfg;
+	stringstream ss;
+	string girlName = girl->m_Realname;
+	u_int sw = (DayNight == SHIFT_DAY ? girl->m_DayJob : girl->m_NightJob);
+
+	// `J` if a slave does a job that is normally paid by you but you don't pay your slaves...
+	if (is_job_Paid_Player(sw) && girl->is_slave() && !cfg.initial.slave_pay_outofpocket())
+	{
+		ss << "\nYou own her and you don't pay your slaves.";
+	}
+	else if (totalGold > 0)
+	{
+		ss << girlName << " earned a total of " << totalGold << " gold";
+	
+			// if it is a player paid job and she is not a slave
+		if ((is_job_Paid_Player(sw) && !girl->is_slave()) ||
+			// or if it is a player paid job	and she is a slave		but you pay slaves out of pocket.
+			(is_job_Paid_Player(sw) && girl->is_slave() && cfg.initial.slave_pay_outofpocket()))
+		{
+			ss << " directly from you.\nShe gets to keep it all.";
+		}
+		else if (girl->house() <= 0)
+		{
+			ss << " and she gets to keep it all.";
+		}
+		else if (totalTips > 0 &&										// if there are tips
+			((cfg.initial.girls_keep_tips() && !girl->is_slave()) ||	// and free girls keep tips
+			(cfg.initial.slave_keep_tips() && girl->is_slave())))		// or slave girls keep tips
+		{
+			int hpay = int(double(totalPay * double(girl->m_Stats[STAT_HOUSE] * 0.01)));
+			int gpay = totalPay - hpay;
+			ss << ".\nShe keeps the " << totalTips << " she got in tips and her cut (" 
+				<< 100 - girl->m_Stats[STAT_HOUSE] << "%) of the payment amounting to " << gpay 
+				<< " gold.\n\nYou got " << hpay << " gold (" << girl->m_Stats[STAT_HOUSE] << "%).";
+		}
+		else
+		{
+			int hpay = int(double(totalGold * double(girl->m_Stats[STAT_HOUSE] * 0.01)));
+			int gpay = totalGold - hpay;
+			ss << ".\nShe keeps " << gpay << " gold. (" << 100 - girl->m_Stats[STAT_HOUSE] 
+				<< "%)\nYou keep " << hpay << " gold (" << girl->m_Stats[STAT_HOUSE] << "%).";
+		}
+	}
+	else if (totalGold == 0)	{ ss << girlName << " made no money."; }
+	else if (totalGold < 0)		{ ss << "ERROR: She has a loss of " << totalGold << " gold\n\n Please report this to the Pink Petal Devloment Team at http://pinkpetal.org"; }
+	
+	return ss.str();
 }

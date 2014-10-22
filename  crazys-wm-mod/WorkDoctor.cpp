@@ -45,6 +45,7 @@ extern cMessageQue g_MessageQue;
 // `J` Clinic Job - Staff
 bool cJobManager::WorkDoctor(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
+	bool SkipDisobey = (summary == "SkipDisobey");
 	string message = "";
 	stringstream ss;
 	string girlName = girl->m_Realname;
@@ -71,7 +72,10 @@ bool cJobManager::WorkDoctor(sGirl* girl, sBrothel* brothel, int DayNight, strin
 		return false;
 	}
 
-	if (Preprocessing(ACTION_WORKDOCTOR, girl, brothel, DayNight, summary, message)) return true;
+	if (!SkipDisobey)	// `J` skip the disobey check because it has already been done in the building flow
+	{
+		if (Preprocessing(ACTION_WORKDOCTOR, girl, brothel, DayNight, summary, message)) return true;
+	}
 	cConfig cfg;
 
 	int enjoy = 0, wages = 100;
@@ -84,7 +88,7 @@ bool cJobManager::WorkDoctor(sGirl* girl, sBrothel* brothel, int DayNight, strin
 	// Doctor is a full time job now
 	girl->m_DayJob = girl->m_NightJob = JOB_DOCTOR;
 
-	ss << gettext("She worked as a Doctor.");
+	ss << gettext("She worked as a Doctor.\n");
 
 	int roll = g_Dice.d100();
 	int jobperformance = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) +
@@ -116,18 +120,18 @@ bool cJobManager::WorkDoctor(sGirl* girl, sBrothel* brothel, int DayNight, strin
 	{
 		enjoy -= g_Dice % 3 + 1;
 		jobperformance = int(jobperformance * 0.9);
-		ss << "Some of the patients abused her during the shift.";
+		ss << "Some of the patients abused her during the shift.\n";
 	}
 	else if (roll >= 90)
 	{
 		enjoy += g_Dice % 3 + 1;
 		jobperformance = int(jobperformance * 1.1);
-		ss << "She had a pleasant time working.";
+		ss << "She had a pleasant time working.\n";
 	}
 	else
 	{
 		enjoy += g_Dice % 2;
-		ss << "Otherwise, the shift passed uneventfully.";
+		ss << "Otherwise, the shift passed uneventfully.\n";
 	}
 
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, DayNight);
@@ -144,7 +148,7 @@ bool cJobManager::WorkDoctor(sGirl* girl, sBrothel* brothel, int DayNight, strin
 	}
 	brothel->m_Finance.clinic_income(earned);
 	ss.str("");
-	ss << girlName << " earned " << earned << " gold from taking care of " << patients << " patients.";
+	ss << girlName << " earned " << earned << " gold from taking care of " << patients << " patients.\n";
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, DayNight);
 
 	girl->m_Pay += wages + (patients * 10);

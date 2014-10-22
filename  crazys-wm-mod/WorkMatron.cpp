@@ -46,6 +46,7 @@ extern cGold g_Gold;
 // `J` Brothel Job - General - Matron_Job - Full_Time_Job
 bool cJobManager::WorkMatron(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
 {
+	// `J` zzzzzz - this needs to be updated for building flow
 	girl->m_DayJob = girl->m_NightJob = JOB_MATRON;	// it is a full time job
 	if (DayNight == 1) return false;
 	cTariff tariff;

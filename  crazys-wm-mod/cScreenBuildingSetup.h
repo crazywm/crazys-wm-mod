@@ -49,15 +49,19 @@ private:
 	int roomcost_id;	// Room Cost text
 	int buyrooms_id;	// Add 5 Rooms button
 	int restrict_id;	// Sex Restrictions text
+	
 	int noanal_id;		// Prohibit Anal checkbox
 	int nobdsm_id;		// Prohibit BDSM checkbox
-	int nonormal_id;	// Prohibit Normal Sex checkbox
 	int nobeast_id;		// Prohibit Bestiality checkbox
+	int nofoot_id;		// Prohibit Hand Job checkbox
 	int nogroup_id;		// Prohibit Group Sex checkbox
-	int nolesbian_id;	// Prohibit Lesbian checkbox
-	int nooral_id;		// Prohibit Oral checkbox
-	int notitty_id;		// Prohibit Titty Sex checkbox
 	int nohand_id;		// Prohibit Hand Job checkbox
+	int nolesbian_id;	// Prohibit Lesbian checkbox
+	int nonormal_id;	// Prohibit Normal Sex checkbox
+	int nooral_id;		// Prohibit Oral checkbox
+	int nostrip_id;		// Prohibit Hand Job checkbox
+	int notitty_id;		// Prohibit Titty Sex checkbox
+
 	int advertsli_id;	// Advertising Budget slider
 	int advertamt_id;	// Advertising Budget value output text
 

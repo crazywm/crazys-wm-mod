@@ -1,21 +1,21 @@
 /*
- * Copyright 2009, 2010, The Pink Petal Development Team.
- * The Pink Petal Devloment Team are defined as the game's coders 
- * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright 2009, 2010, The Pink Petal Development Team.
+* The Pink Petal Devloment Team are defined as the game's coders
+* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 #include <sstream>
 
@@ -42,38 +42,38 @@ extern cGold            g_Gold;
 extern char             buffer[1000];
 
 // // ----- Strut sCentre Create / destroy
-sCentre::sCentre() :	m_Finance(0)	// constructor
+sCentre::sCentre() : m_Finance(0)	// constructor
 {
-	m_var			= 0;
-	m_Name			= "centre";
-	m_Filthiness	= 0;
-	m_Next			= 0;
-	m_Girls			= 0;
-	m_LastGirl		= 0;
-	m_NumGirls		= 0;
-	m_SecurityLevel	= 0;
+	m_var = 0;
+	m_Name = "centre";
+	m_Filthiness = 0;
+	m_Next = 0;
+	m_Girls = 0;
+	m_LastGirl = 0;
+	m_NumGirls = 0;
+	m_SecurityLevel = 0;
 	for (u_int i = 0; i < NUMJOBTYPES; i++) m_BuildingQuality[i] = 0;
 }
 
 sCentre::~sCentre()			// destructor
 {
-	m_var			= 0;
+	m_var = 0;
 	if (m_Next)		delete m_Next;
-	m_Next			= 0;
+	m_Next = 0;
 	if (m_Girls)	delete m_Girls;
-	m_LastGirl		= 0;
-	m_Girls			= 0;
+	m_LastGirl = 0;
+	m_Girls = 0;
 }
 
 void cCentreManager::AddGirl(int brothelID, sGirl* girl)
 {
-	girl->where_is_she		= 0;
-	girl->m_InMovieStudio	= false;
-	girl->m_InArena			= false;
-	girl->m_InCentre		= true;
-	girl->m_InClinic		= false;
-	girl->m_InFarm			= false;
-	girl->m_InHouse			= false;
+	girl->where_is_she = 0;
+	girl->m_InMovieStudio = false;
+	girl->m_InArena = false;
+	girl->m_InCentre = true;
+	girl->m_InClinic = false;
+	girl->m_InFarm = false;
+	girl->m_InHouse = false;
 	cBrothelManager::AddGirl(brothelID, girl);
 }
 
@@ -97,15 +97,19 @@ cCentreManager::~cCentreManager()			// destructor
 void cCentreManager::Free()
 {
 	if (m_Parent)	delete m_Parent;
-	m_Parent		= 0;
-	m_Last			= 0;
-	m_NumBrothels	= 0;
+	m_Parent = 0;
+	m_Last = 0;
+	m_NumBrothels = 0;
 }
 
 // ----- Update & end of turn
-void cCentreManager::UpdateCentre()
+void cCentreManager::UpdateCentre()	// Start_Building_Process_A
 {
-	sBrothel* current = (sBrothel*) m_Parent;
+	cTariff tariff;
+	stringstream ss;
+	string girlName;
+
+	sBrothel* current = (sBrothel*)m_Parent;
 	u_int restjob = JOB_CENTREREST;
 	u_int matronjob = JOB_CENTREMANAGER;
 	u_int firstjob = JOB_CENTREREST;
@@ -113,371 +117,586 @@ void cCentreManager::UpdateCentre()
 
 	current->m_Finance.zero();
 	current->m_AntiPregUsed = 0;
+	m_Rehab_Patient_Time = 0;
 
-	// Clear the girls' events from the last turn
 	sGirl* cgirl = current->m_Girls;
-	while(cgirl)
+	while (cgirl)
 	{
-		cgirl->where_is_she		= 0;
-		cgirl->m_InMovieStudio	= false;
-		cgirl->m_InArena		= false;
-		cgirl->m_InCentre		= true;
-		cgirl->m_InClinic		= false;
-		cgirl->m_InFarm			= false;
-		cgirl->m_InHouse		= false;
-		cgirl->m_Pay			= 0;
-		cgirl->m_Events.Clear();
-
-
-		cgirl->m_Pay = cgirl->m_Tips = 0;
-		if (cgirl->m_DayJob < firstjob && cgirl->m_DayJob > lastjob)		cgirl->m_DayJob = restjob;
-		if (cgirl->m_NightJob < firstjob && cgirl->m_NightJob > lastjob)	cgirl->m_NightJob = restjob;
-		cgirl->m_YesterDayJob = cgirl->m_DayJob;		// `J` set what she did yesterday
-		cgirl->m_YesterNightJob = cgirl->m_NightJob;	// `J` set what she did yesternight
-		cgirl->m_Refused_To_Work = false;
-
-
-		do_food_and_digs(current, cgirl);		// Brothel only update for girls accommodation level
-		g_Girls.CalculateGirlType(cgirl);		// update the fetish traits
-		g_Girls.updateGirlAge(cgirl, true);		// update birthday counter and age the girl
-		g_Girls.updateTempStats(cgirl);			// update temp stats
-		g_Girls.updateTempSkills(cgirl);		// update temp skills
-		g_Girls.updateTempTraits(cgirl);		// update temp traits
-		g_Girls.HandleChildren(cgirl);			// handle pregnancy and children growing up
-		g_Girls.updateSTD(cgirl);				// health loss to STD's				NOTE: Girl can die
-		g_Girls.updateHappyTraits(cgirl);		// Update happiness due to Traits	NOTE: Girl can die
-		updateGirlTurnBrothelStats(cgirl);		// Update daily stats				Now only runs once per day
-		g_Girls.updateGirlTurnStats(cgirl);		// Stat Code common to Dugeon and Brothel
-
-		if (cgirl->m_JustGaveBirth)		// if she gave birth, let her rest this week
+		current->m_Filthiness++;
+		if (cgirl->health() <= 0)			// Remove any dead bodies from last week
 		{
-			if (cgirl->m_DayJob != restjob)		cgirl->m_PrevDayJob = cgirl->m_DayJob;
-			if (cgirl->m_NightJob != restjob)	cgirl->m_PrevNightJob = cgirl->m_NightJob;
-			cgirl->m_DayJob = restjob;
-			cgirl->m_NightJob = restjob;
+			current->m_Filthiness++; // `J` Death is messy
+			sGirl* DeadGirl = 0;
+			girlName = cgirl->m_Realname;
+			DeadGirl = cgirl;
+			// If there are more girls to process
+			cgirl = (cgirl->m_Next) ? cgirl->m_Next : 0;
+			// increase all the girls fear and hate of the player for letting her die (weather his fault or not)
+			UpdateAllGirlsStat(current, STAT_PCFEAR, 2);
+			UpdateAllGirlsStat(current, STAT_PCHATE, 1);
+
+			ss.str(""); ss << girlName << " has died from her injuries, the other girls all fear and hate you a little more.";
+			DeadGirl->m_Events.AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_DANGER);
+			g_MessageQue.AddToQue(ss.str(), COLOR_RED);
+			ss.str(""); ss << girlName << " has died from her injuries.  Her body will be removed by the end of the week.";
+			DeadGirl->m_Events.AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_SUMMARY);
+
+			RemoveGirl(0, DeadGirl); DeadGirl = 0;	// cleanup
 		}
+		else
+		{
+			cgirl->m_Events.Clear();			// Clear the girls' events from the last turn
+			cgirl->where_is_she = 0;
+			cgirl->m_InMovieStudio = false;
+			cgirl->m_InArena = false;
+			cgirl->m_InCentre = true;
+			cgirl->m_InClinic = false;
+			cgirl->m_InFarm = false;
+			cgirl->m_InHouse = false;
 
+			cgirl->m_Pay = cgirl->m_Tips = 0;
 
+			// `J` Check for out of building jobs and set yesterday jobs for everyone first
+			if (cgirl->m_DayJob	  < firstjob || cgirl->m_DayJob   > lastjob)	cgirl->m_DayJob = restjob;
+			if (cgirl->m_NightJob < firstjob || cgirl->m_NightJob > lastjob)	cgirl->m_NightJob = restjob;
+			if (cgirl->m_PrevDayJob != 255 && (cgirl->m_PrevDayJob	 < firstjob || cgirl->m_PrevDayJob   > lastjob))	cgirl->m_PrevDayJob = 255;
+			if (cgirl->m_PrevNightJob != 255 && (cgirl->m_PrevNightJob < firstjob || cgirl->m_PrevNightJob > lastjob))	cgirl->m_PrevNightJob = 255;
+			cgirl->m_YesterDayJob = cgirl->m_DayJob;		// `J` set what she did yesterday
+			cgirl->m_YesterNightJob = cgirl->m_NightJob;	// `J` set what she did yesternight
+			cgirl->m_Refused_To_Work_Day = false;
+			cgirl->m_Refused_To_Work_Night = false;
+	
+			g_Girls.AddTiredness(cgirl);			// `J` moved all girls add tiredness to one place
+			do_food_and_digs(current, cgirl);		// Brothel only update for girls accommodation level
+			g_Girls.updateGirlAge(cgirl, true);		// update birthday counter and age the girl
+			g_Girls.updateTempStats(cgirl);			// update temp stats
+			g_Girls.updateTempSkills(cgirl);		// update temp skills
+			g_Girls.updateTempTraits(cgirl);		// update temp traits
+			g_Girls.HandleChildren(cgirl);			// handle pregnancy and children growing up
+			g_Girls.updateSTD(cgirl);				// health loss to STD's				NOTE: Girl can die
+			g_Girls.updateHappyTraits(cgirl);		// Update happiness due to Traits	NOTE: Girl can die
+			updateGirlTurnBrothelStats(cgirl);		// Update daily stats				Now only runs once per day
+			g_Girls.updateGirlTurnStats(cgirl);		// Stat Code common to Dugeon and Brothel
 
-		cgirl = cgirl->m_Next;
+			if (cgirl->m_JustGaveBirth)				// if she gave birth, let her rest this week
+			{
+				if (cgirl->m_DayJob != restjob)		cgirl->m_PrevDayJob = cgirl->m_DayJob;
+				if (cgirl->m_NightJob != restjob)	cgirl->m_PrevNightJob = cgirl->m_NightJob;
+				cgirl->m_DayJob = cgirl->m_NightJob = restjob;
+			}
+
+			cgirl = cgirl->m_Next;
+		}
 	}
 
-	if (current->m_Filthiness < 0) current->m_Filthiness = 0;
+	UpdateGirls(current, 0);	// Run the Day Shift
 
-	// Generate customers for the brothel for the day shift and update girls
-	UpdateGirls(current, 0);
+	UpdateGirls(current, 1);	// Run the Nighty Shift
 
-	// update the girls and satisfy the customers for this brothel during the night
-	UpdateGirls(current, 1);
+	if (current->m_Filthiness < 0)		current->m_Filthiness = 0;
+	if (current->m_SecurityLevel < 0)	current->m_SecurityLevel = 0;
+
 	g_Gold.brothel_accounts(current->m_Finance, current->m_id);
 }
 
-// End of turn stuff is here
-// Same method than Brothel but different job
-void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)
+// Run the shifts
+void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)	// Start_Building_Process_B
 {
-	// `J` added to allow for easier copy/paste to other buildings
+	cConfig cfg;
+
+	stringstream ss;
+	string summary, girlName;
+
 	u_int restjob = JOB_CENTREREST;
 	u_int matronjob = JOB_CENTREMANAGER;
 	u_int firstjob = JOB_CENTREREST;
 	u_int lastjob = JOB_REHAB;
-	bool matron = (GetNumGirlsOnJob(brothel->m_id, matronjob, false) >= 1) ? true : false;
-	string MatronMsg = "", MatronWarningMsg = "";
-	stringstream ss;
+	u_int sw = 0, psw = 0;
 
-	cConfig cfg;
-	sGirl* current = brothel->m_Girls;
-	sGirl* DeadGirl = 0;
-	string summary, msg, girlName;
 	int totalPay = 0, totalTips = 0, totalGold = 0;
-
 	int sum = EVENT_SUMMARY;
-	u_int sw = 0;						//	Job type
+	int numgirls = GetNumGirls(brothel->m_id);
+
+	bool matron = false, matrondone = false;
+	bool counselor = false;
+
 	bool refused = false;
+
 	m_Processing_Shift = DayNight;		// WD:	Set processing flag to shift type
 
-
+	//////////////////////////////////////////////////////
+	//  Handle the start of shift stuff for all girls.  //
+	//////////////////////////////////////////////////////
+	sGirl* current = brothel->m_Girls;
 	while (current)
 	{
-		current->m_Pay = current->m_Tips = totalPay = totalTips = totalGold = 0;
-		refused = false;
+		brothel->m_Filthiness++;
+		if (current->health() <= 0)		// skip dead girls
+		{
+			if (current->m_Next) { current = current->m_Next; continue; }
+			else { current = 0; break; }
+		}
+		else
+		{
+			g_Girls.UseItems(current);				// Girl uses items she has
+			g_Girls.CalculateGirlType(current);		// update the fetish traits
+			g_Girls.CalculateAskPrice(current, true);	// Calculate the girls asking price
+
+			current = current->m_Next; // Next Girl
+		}
+	}
+
+
+	////////////////////////////////////////////////////////
+	//  Process Matron first incase she refuses to work.  //
+	////////////////////////////////////////////////////////
+	current = brothel->m_Girls;
+	while (current && !matrondone)
+	{
+		if (current->health() <= 0 ||
+			(GetNumGirlsOnJob(0, matronjob, DayNight) > 0 && (current->m_DayJob != matronjob || current->m_NightJob != matronjob)) ||
+			(GetNumGirlsOnJob(0, matronjob, DayNight) < 1 && (current->m_PrevDayJob != matronjob || current->m_PrevNightJob != matronjob)))
+		{	// Sanity check! Don't process dead girls and only process those with matron jobs
+			if (current->m_Next) { current = current->m_Next; continue; }
+			else { current = 0; break; }
+		}
+		// `J` so someone is or was a matron
+
 		girlName = current->m_Realname;
-		sum = EVENT_SUMMARY;
-		// ONCE DAILY processing at start of Day Shift
-		if (DayNight == SHIFT_DAY)
+		// if there is no matron on duty, we see who was on duty previously
+		if (GetNumGirlsOnJob(0, matronjob, DayNight) < 1)
 		{
-			// Remove any dead bodies from last week
-			if(current->health() <= 0)
+			// if a matron was found and she is healthy, not tired and not on maternity leave... send her back to work
+			if ((current->m_PrevDayJob == matronjob || current->m_PrevNightJob == matronjob) &&
+				(g_Girls.GetStat(current, STAT_HEALTH) >= 50 && g_Girls.GetStat(current, STAT_TIREDNESS) <= 50) &&
+				current->m_PregCooldown < cfg.pregnancy.cool_down())
+				// Matron job is more important so she will go back to work at 50% instead of regular 80% health and 20% tired
 			{
-				DeadGirl = current;
-				// If there are more girls to process
-				current = (current->m_Next) ? current->m_Next : 0;
-				// increase all the girls fear and hate of the player for letting her die (weather his fault or not)
-				UpdateAllGirlsStat(brothel, STAT_PCFEAR, 2);
-				UpdateAllGirlsStat(brothel, STAT_PCHATE, 1);
-
-				// Two messages go into the girl queue...
-				msg += girlName + " has died from her injuries, the other girls all fear and hate you a little more.";
-				DeadGirl->m_Events.AddMessage(msg, IMGTYPE_DEATH, EVENT_DANGER);
-				summary += girlName + " has died from her injuries.  Her body will be removed by the end of the week.";
-				DeadGirl->m_Events.AddMessage(summary, IMGTYPE_DEATH, EVENT_SUMMARY);
-				// There is also one global message
-				g_MessageQue.AddToQue(msg, COLOR_RED);
-
-				RemoveGirl(0, DeadGirl);
-				DeadGirl = 0; msg = ""; summary = "";	// cleanup
-
-				// If there are more girls to process
-				if (current) continue;
-				else		break;
+				current->m_DayJob = current->m_NightJob = matronjob;
+				current->m_PrevDayJob = current->m_PrevNightJob = 255;
+				current->m_Events.AddMessage("The Centre Manager puts herself back to work.", IMGTYPE_PROFILE, EVENT_BACKTOWORK);
 			}
+			else if (current->m_Next) { current = current->m_Next; continue; }
+			else { current = 0; break; }
+		}
+		// `J` Now we have a matron so lets see if she will work
 
+		totalPay = totalTips = totalGold = 0;
+		sum = EVENT_SUMMARY; summary = ""; ss.str("");
 
-			// Back to work
-			if ((current->m_NightJob == restjob && current->m_DayJob == restjob) && current->m_PregCooldown < cfg.pregnancy.cool_down() &&
-				g_Girls.GetStat(current, STAT_HEALTH) >= 80 && g_Girls.GetStat(current, STAT_TIREDNESS) <= 20)
+		// `J` she can refuse the first shift then decide to work the second shift 
+		if (!current->m_Refused_To_Work_Day)	// but if she worked the first shift she continues the rest of the night
+		{
+			matron = true;
+			ss << girlName << " continued to help the other girls throughout the night.";
+		}
+		else if (g_Girls.DisobeyCheck(current, ACTION_WORKMATRON, brothel))
+		{
+			(DayNight == SHIFT_DAY ? current->m_Refused_To_Work_Day = true : current->m_Refused_To_Work_Night = true);
+			brothel->m_Fame -= g_Girls.GetStat(current, STAT_FAME);
+			ss << girlName << " refused to work as the Centre Manager.";
+			sum = EVENT_NOWORK;
+		}
+		else	// so there is less chance of a matron refusing the entire turn
+		{
+			matron = true;
+			totalPay = totalTips = totalGold = 0;
+			m_JobManager.JobFunc[matronjob](current, brothel, DayNight, summary);
+			totalGold += current->m_Pay + current->m_Tips;
+
+			// She does not get paid for the first shift and gets docked some pay from the second shift if she refused once
+			if (DayNight == SHIFT_NIGHT) totalGold /= 3;
+
+			current->m_Pay += max(0, totalGold);
+			current->m_Pay = current->m_Tips = 0;
+
+			brothel->m_Fame += g_Girls.GetStat(current, STAT_FAME);
+			/* */if (totalGold > 0)		{ ss << girlName << " earned a total of " << totalGold << " gold directly from you. She gets to keep it all."; }
+			else if (totalGold == 0)	{ ss << girlName << " made no money."; }
+			else if (totalGold < 0)		{ sum = EVENT_DEBUG; ss << "ERROR: She has a loss of " << totalGold << " gold\n\n Please report this to the Pink Petal Devloment Team at http://pinkpetal.org"; }
+		}
+		current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
+
+		current = current->m_Next;	// Next Girl
+		matrondone = true;			// there can be only one matron so this ends the while loop
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//  Now If there is a matron and she is not refusing to work, then she can delegate the girls in this building.  //
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	current = brothel->m_Girls;
+	while (current)
+	{
+		sw = (DayNight == SHIFT_DAY ? current->m_DayJob : current->m_NightJob);
+		if (current->health() <= 0 || sw != restjob)
+		{	// skip dead girls and anyone not resting
+			if (current->m_Next) { current = current->m_Next; continue; }
+			else { current = 0; break; }
+		}
+		sum = EVENT_SUMMARY; summary = ""; ss.str("");
+		girlName = current->m_Realname;
+
+		if (current->m_PregCooldown == cfg.pregnancy.cool_down())
+		{
+			ss << girlName << " is on maternity leave.";
+		}
+		else if (current->health() < 80 || current->tiredness() > 20)
+		{
+			m_JobManager.JobFunc[restjob](current, brothel, DayNight, summary);
+		}
+		else
+		{	// if she is healthy enough to go back to work... 
+			if (matron)	// and there is a marton working...
 			{
-				if ((matron || current->m_PrevDayJob == matronjob)					// do we have a director, or was she the director and made herself rest?
-					&& current->m_PrevDayJob != 255 && current->m_PrevNightJob != 255)	// 255 = nothing, in other words no previous job stored
+				psw = (DayNight == SHIFT_DAY ? current->m_PrevDayJob : current->m_PrevNightJob);
+				if (psw == JOB_DRUGCOUNSELOR && current->is_free())
 				{
-					g_Brothels.m_JobManager.HandleSpecialJobs(brothel->m_id, current, current->m_PrevDayJob, current->m_DayJob, true);
-					if (current->m_DayJob == current->m_PrevDayJob)  // only update night job if day job passed HandleSpecialJobs
-						current->m_NightJob = current->m_PrevNightJob;
+					current->m_DayJob = current->m_NightJob = JOB_DRUGCOUNSELOR;
+					ss << "The Centre Manager puts " << girlName << " back to work.\n";
+				}
+				else if (psw == JOB_REHAB)
+				{
+					current->m_DayJob = current->m_NightJob = JOB_REHAB;
+					ss << "The Centre Manager puts " << girlName << " back to work.\n";
+				}
+				else if (psw != restjob && psw != 255 && psw != JOB_DRUGCOUNSELOR)
+				{	// if she had a previous job, put her back to work.
+					if (DayNight == SHIFT_DAY)
+					{
+						current->m_DayJob = current->m_PrevDayJob;
+						if (current->m_NightJob == restjob && current->m_PrevNightJob != restjob && current->m_PrevNightJob != 255)
+							current->m_NightJob = current->m_PrevNightJob;
+					}
 					else
-						current->m_DayJob = restjob;
-					current->m_PrevDayJob = current->m_PrevNightJob = 255;
-					MatronMsg += gettext("The Centre Manager puts ") + girlName + gettext(" back to work.\n");
-					current->m_Events.AddMessage(MatronMsg, IMGTYPE_PROFILE, EVENT_BACKTOWORK);
-					MatronMsg = "";
+					{
+						if (current->m_DayJob == restjob && current->m_PrevDayJob != restjob && current->m_PrevDayJob != 255)
+							current->m_DayJob = current->m_PrevDayJob;
+						current->m_NightJob = current->m_PrevNightJob;
+					}
+					ss << "The Centre Manager puts " << girlName << " back to work.\n";
 				}
-				else
+				else // otherwise give her a new job.
 				{
-					current->m_DayJob = current->m_NightJob = restjob;
-					MatronWarningMsg += gettext("WARNING ") + girlName + gettext(" is doing nothing!\n");
-					current->m_Events.AddMessage(MatronWarningMsg, IMGTYPE_PROFILE, EVENT_WARNING);
-					MatronWarningMsg = "";
+					ss << "The Centre Manager assigns " << girlName << " to ";
+					// first send any addicts to rehab
+					if (current->is_addict())
+					{
+						current->m_DayJob = current->m_NightJob = JOB_REHAB;
+						ss << "go to Rehab.";
+					}
+					// Make sure there is atleast 1 counselor on duty
+					else if (current->is_free() && GetNumGirlsOnJob(0, JOB_DRUGCOUNSELOR, DayNight) < 1)
+					{
+						current->m_DayJob = current->m_NightJob = JOB_DRUGCOUNSELOR;
+						ss << "work as a Drug Counselor.";
+					}
+					// assign 1 cleaner per 20 girls
+					else if (GetNumGirlsOnJob(0, JOB_CLEANCENTRE, DayNight) < max(1,numgirls/20))
+					{
+						current->m_DayJob = current->m_NightJob = JOB_CLEANCENTRE;
+						ss << "clean the Centre.";
+					}
+					// assign 1 counselor per 20 girls
+					else if (current->is_free() && GetNumGirlsOnJob(0, JOB_DRUGCOUNSELOR, DayNight) < numgirls / 20)
+					{
+						current->m_DayJob = current->m_NightJob = JOB_DRUGCOUNSELOR;
+						ss << "work as a Drug Counselor.";
+					}
+					// split all the rest between JOB_COMUNITYSERVICE and JOB_FEEDPOOR
+					else if (GetNumGirlsOnJob(0, JOB_COMUNITYSERVICE, DayNight) < GetNumGirlsOnJob(0, JOB_FEEDPOOR, DayNight))
+					{
+						current->m_DayJob = current->m_NightJob = JOB_COMUNITYSERVICE;
+						ss << "work doing comunity service.";
+					}
+					else
+					{
+						current->m_DayJob = current->m_NightJob = JOB_FEEDPOOR;
+						ss << "work feeding the poor.";
+					}
 				}
+				current->m_PrevDayJob = current->m_PrevNightJob = 255;
+				sum = EVENT_BACKTOWORK;
+			}
+			else	// no one to send her back to work
+			{
+				current->m_DayJob = current->m_NightJob = restjob;
+				ss << "WARNING " << girlName << " is doing nothing!\n";
+				sum = EVENT_WARNING;
 			}
 		}
+		if (ss.str().length() > 0) current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
 
+		current = current->m_Next;
+	}
 
-/*
- *		EVERY SHIFT processing
- */
-
-		// Sanity check! Don't process dead girls
-		if(current->health() <= 0)
+	///////////////////////////////////////////////////////////////
+	//  JOB_DRUGCOUNSELOR needs to be checked before all others  //
+	///////////////////////////////////////////////////////////////
+	current = brothel->m_Girls;
+	while (current)
+	{
+		sw = (DayNight == SHIFT_DAY ? current->m_DayJob : current->m_NightJob);
+		if (current->health() <= 0 || sw != JOB_DRUGCOUNSELOR)
+		{	// skip dead girls and anyone who is not a counselor
+			if (current->m_Next) { current = current->m_Next; continue; }
+			else { current = 0; break; }
+		}
+		totalPay = totalTips = totalGold = 0;
+		sum = EVENT_SUMMARY; summary = ""; ss.str("");
+		girlName = current->m_Realname;
+		
+		if (g_Girls.DisobeyCheck(current, ACTION_WORKCOUNSELOR, brothel))
 		{
-			if (current->m_Next) // If there are more girls to process
-			{
-			    current = current->m_Next;
-				continue;
-			}
-			else
-			{
-				current = 0;
-				break;
-			}
+			(DayNight == SHIFT_DAY ? current->m_Refused_To_Work_Day = true : current->m_Refused_To_Work_Night = true);
+			brothel->m_Fame -= g_Girls.GetStat(current, STAT_FAME);
+			ss << girlName << " refused to work so made no money.";
 		}
+		else
+		{
+			counselor = true;
+		}
+		if (ss.str().length() > 0) current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
 
-		// Girl uses items she has
-		g_Girls.UseItems(current);
+		current = current->m_Next; // Next Girl
+	}
 
-		// Calculate the girls asking price
-		g_Girls.CalculateAskPrice(current, true);
+	////////////////////////////////////////////////////////////////////
+	//  Anyone not in rehab can be assigned to counselor if need be.  //
+	////////////////////////////////////////////////////////////////////
+	current = brothel->m_Girls;
+	while (current && matron && !counselor)
+	{
+		sw = (DayNight == SHIFT_DAY ? current->m_DayJob : current->m_NightJob);
+		if (current->health() <= 0 || (sw != JOB_FEEDPOOR && sw != JOB_COMUNITYSERVICE && sw != JOB_CLEANCENTRE))
+		{	// skip dead girls
+			if (current->m_Next) { current = current->m_Next; continue; }
+			else { current = 0; break; }
+		}
+		sum = EVENT_SUMMARY; summary = ""; ss.str("");
+		girlName = current->m_Realname;
 
-/*
- *		JOB PROCESSING
- */
+		if (!g_Girls.DisobeyCheck(current, ACTION_WORKCOUNSELOR, brothel))
+		{
+			counselor = true;
+			ss << "There was no Drug Counselor available to work so " << girlName << " was assigned to do it.";
+			current->m_DayJob = current->m_NightJob = JOB_DRUGCOUNSELOR;
+		}
+		if (ss.str().length() > 0) current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
 
-		sw = (DayNight == SHIFT_DAY) ? current->m_DayJob : current->m_NightJob;
+		current = current->m_Next; // Next Girl
+	}
 
+	/////////////////////////////////////
+	//  Do all the Centre staff jobs.  //
+	/////////////////////////////////////
+	current = brothel->m_Girls;
+	while (current)
+	{
+		sw = (DayNight == SHIFT_DAY ? current->m_DayJob : current->m_NightJob);
+		if (current->health() <= 0 || (sw != JOB_FEEDPOOR && sw != JOB_COMUNITYSERVICE && sw != JOB_CLEANCENTRE && sw != JOB_DRUGCOUNSELOR) ||
+			// skip dead girls and anyone who is not staff
+			(sw == JOB_DRUGCOUNSELOR && ((DayNight == SHIFT_DAY && current->m_Refused_To_Work_Day) || (DayNight == SHIFT_NIGHT && current->m_Refused_To_Work_Night))))
+		{	// and skip counselors who refused to work in the first check
+			if (current->m_Next) { current = current->m_Next; continue; }
+			else { current = 0; break; }
+		}
+		totalPay = totalTips = totalGold = 0;
+		sum = EVENT_SUMMARY; summary = ""; ss.str("");
+		girlName = current->m_Realname;
+
+		if (current->m_NightJob == JOB_DRUGCOUNSELOR) summary = "SkipDisobey";
+		// do their job
 		refused = m_JobManager.JobFunc[sw](current, brothel, DayNight, summary);
-
-		g_Girls.AddTiredness(current);		// `J` moved all girls add tiredness to one place
 
 		totalPay += current->m_Pay;
 		totalTips += current->m_Tips;
 		totalGold += current->m_Pay + current->m_Tips;
-
-		// work out the pay between the house and the girl 
 		g_Brothels.CalculatePay(brothel, current, sw);
 
-		brothel->m_Fame += g_Girls.GetStat(current, STAT_FAME);
+		//		Summary Messages
+		if (refused)
+		{
+			brothel->m_Fame -= g_Girls.GetStat(current, STAT_FAME);
+			ss << girlName << " refused to work so made no money.";
+		}
+		else
+		{
+			ss << m_JobManager.GirlPaymentText(brothel, current, totalTips, totalPay, totalGold, DayNight);
+			if (totalGold < 0) sum = EVENT_DEBUG;
 
-/*
- *		Summary Messages
- */
-		ss.str("");		summary = "";
+			brothel->m_Fame += g_Girls.GetStat(current, STAT_FAME);
+		}
+		if (ss.str().length() > 0) current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
 
-		if (refused) summary += girlName + gettext(" refused to work so made no money.");
-		else if (sw == JOB_REHAB || (sw == JOB_DRUGCOUNSELOR && DayNight == SHIFT_NIGHT))
-		{
-			// nothing to report here
-		}
-		// `J` if a slave does a job that is normally paid by you but you don't pay your slaves...
-		else if (current->is_slave() && !cfg.initial.slave_pay_outofpocket() &&
-#if 0	// `J` until all jobs have this part added to them, use the individual job list instead of this
-			m_JobManager.is_job_Paid_Player(sw))
-#else
-			(
-			sw == JOB_CLEANCENTRE
-			))
-#endif
-		{
-			summary += "\nYou own her and you don't pay your slaves.";
-		}
+		current = current->m_Next; // Next Girl
+	}
 
-		else if (totalGold > 0)
-		{
-			ss << girlName << " earned a total of " << totalGold << " gold";
-			u_int job = (DayNight) ? current->m_NightJob : current->m_DayJob;
-			// if it is a player paid job and she is not a slave
-			if ((m_JobManager.is_job_Paid_Player(job) && !current->is_slave()) ||
-				// or if it is a player paid job	and she is a slave		but you pay slaves out of pocket.
-				(m_JobManager.is_job_Paid_Player(job) && current->is_slave() && cfg.initial.slave_pay_outofpocket()))
-				ss << " directly from you. She gets to keep it all.";
-			else if (current->house() <= 0)				ss << " and she gets to keep it all.";
-			else if (totalTips>0 && ((cfg.initial.girls_keep_tips() && !current->is_slave()) || (cfg.initial.slave_keep_tips() && current->is_slave())))
-			{
-				int hpay = int(double(totalPay * double(current->m_Stats[STAT_HOUSE] * 0.01)));
-				int gpay = totalPay - hpay;
-				ss << ".\nShe keeps the " << totalTips << " she got in tips and her cut (" << 100 - current->m_Stats[STAT_HOUSE] << "%) of the payment amounting to " << gpay << " gold.\n\nYou got " << hpay << " gold (" << current->m_Stats[STAT_HOUSE] << "%).";
-			}
-			else
-			{
-				int hpay = int(double(totalGold * double(current->m_Stats[STAT_HOUSE] * 0.01)));
-				int gpay = totalGold - hpay;
-				ss << ".\nShe keeps " << gpay << " gold. (" << 100 - current->m_Stats[STAT_HOUSE] << "%)\nYou keep " << hpay << " gold (" << current->m_Stats[STAT_HOUSE] << "%).";
-			}
-			summary += ss.str();
+
+	////////////////////////////////////////////////////////
+	//  Do Rehab last if there is a counselor available.  //
+	////////////////////////////////////////////////////////
+	current = brothel->m_Girls;
+	while (current)
+	{
+		sw = (DayNight == SHIFT_DAY ? current->m_DayJob : current->m_NightJob);
+		if (current->health() <= 0 || sw != JOB_REHAB)
+		{	// skip dead girls, resting girls and the matron
+			if (current->m_Next) { current = current->m_Next; continue; }
+			else { current = 0; break; }
 		}
-		else if (totalGold == 0)		summary += girlName + gettext(" made no money.");
-		else if (totalGold < 0)
-		{
-			ss << "ERROR: She has a loss of " << totalGold << " gold\n\n Please report this to the Pink Petal Devloment Team at http://pinkpetal.org";
-			summary += ss.str();
-			sum = EVENT_DEBUG;
-		}
-		if (summary != "") current->m_Events.AddMessage(summary, IMGTYPE_PROFILE, sum);
 		summary = "";
+		m_JobManager.JobFunc[sw](current, brothel, DayNight, summary);
 
-		/*
-		*		Manager CODE START
-		*/
+		current = current->m_Next; // Next Girl
+	}
 
-		// Lets try to compact multiple messages into one.
-		string ManagerMsg = "";
-		string RecoupMsg = "";
-		string ManagerWarningMsg = "";
+	///////////////////////////////////
+	//  Finaly do end of day stuff.  //
+	///////////////////////////////////
+	current = brothel->m_Girls;
+	while (current)
+	{
+		if (current->health() <= 0)
+		{	// skip dead girls
+			if (current->m_Next) { current = current->m_Next; continue; }
+			else { current = 0; break; }
+		}
+		girlName = current->m_Realname;
+		sum = EVENT_SUMMARY; summary = ""; ss.str("");
 
-		bool manager = false;
-		if (GetNumGirlsOnJob(brothel->m_id, JOB_CENTREMANAGER, true) >= 1 || GetNumGirlsOnJob(brothel->m_id, JOB_CENTREMANAGER, false) >= 1)
-			manager = true;
-
-		if (g_Girls.GetStat(current, STAT_TIREDNESS) > 80)
-		{
-			if (current->m_YesterDayJob == JOB_REHAB)
-			{
-				current->m_DayJob = JOB_CENTREREST;	current->m_NightJob = JOB_CENTREREST;
-				RecoupMsg += girlName + gettext(" is recouperating after her rehab.\n");
-			}
-			else if (manager)
-			{
-				if (current->m_PrevNightJob == 255 && current->m_PrevDayJob == 255)
-				{
-					current->m_PrevDayJob = current->m_DayJob;
-					current->m_PrevNightJob = current->m_NightJob;
-					current->m_DayJob = current->m_NightJob = JOB_CENTREREST;
-					ManagerWarningMsg += gettext("The Manager takes ") + girlName + gettext(" off duty to rest due to her tiredness.\n");
-				}
-				else
-				{
-					if ((g_Dice % 100) + 1 < 70)
-					{
-						ManagerMsg += gettext("The Manager helps ") + girlName + gettext(" to relax.\n");
-						g_Girls.UpdateStat(current, STAT_TIREDNESS, -5);
-					}
-				}
-			}
-			else
-				ManagerWarningMsg += gettext("CAUTION! This girl desparatly need rest. Give her some free time\n");
-		}
-
-		if (g_Girls.GetStat(current, STAT_HAPPINESS) < 40 && manager && (g_Dice % 100) + 1 < 70)
-		{
-			ManagerMsg = gettext("The Manager helps cheer up ") + girlName + gettext(" after she feels sad.\n");
-			g_Girls.UpdateStat(current, STAT_HAPPINESS, 5);
-		}
-
-		if (g_Girls.GetStat(current, STAT_HEALTH) < 40)
-		{
-			if (current->m_YesterDayJob == JOB_REHAB)
-			{
-				current->m_DayJob = JOB_CENTREREST;	current->m_NightJob = JOB_CENTREREST;
-				RecoupMsg += girlName + gettext(" is recouperating after her rehab.\n");
-			}
-			else if (manager)
-			{
-				if (current->m_PrevNightJob == 255 && current->m_PrevDayJob == 255)
-				{
-					current->m_PrevDayJob = current->m_DayJob;
-					current->m_PrevNightJob = current->m_NightJob;
-					current->m_DayJob = current->m_NightJob = JOB_CENTREREST;
-					ManagerWarningMsg += girlName + gettext(" is taken off duty by the Manager to rest due to her low health.\n");
-				}
-				else
-				{
-					ManagerMsg = gettext("The Manager helps heal ") + girlName + gettext(".\n");
-					g_Girls.UpdateStat(current, STAT_HEALTH, 5);
-				}
-			}
-			else
-			{
-				ManagerWarningMsg = gettext("DANGER ") + girlName + gettext("'s health is very low!\nShe must rest or she will die!\n");
-			}
-		}
-
-		// Now print out the consolodated message
-		if (strcmp(ManagerMsg.c_str(), "") != 0)
-		{
-			current->m_Events.AddMessage(ManagerMsg, IMGTYPE_PROFILE, SHIFT_NIGHT);
-			ManagerMsg = "";
-		}
-		if (strcmp(RecoupMsg.c_str(), "") != 0)
-		{
-			current->m_Events.AddMessage(RecoupMsg, IMGTYPE_PROFILE, DayNight);
-			RecoupMsg = "";
-		}
-		if (strcmp(ManagerWarningMsg.c_str(), "") != 0)
-		{
-			current->m_Events.AddMessage(ManagerWarningMsg, IMGTYPE_PROFILE, EVENT_WARNING);
-			ManagerWarningMsg = "";
-		}
-		/*
-		*		Manager CODE END
-		*/
-		// Do item check at the end of the day
-		if (DayNight == SHIFT_NIGHT)
-		{
-			// update for girls items that are not used up
-			do_daily_items(brothel, current);					// `J` added
-		}
+		// update for girls items that are not used up
+		do_daily_items(brothel, current);					// `J` added
 
 		// Level the girl up if nessessary
 		g_Girls.LevelUp(current);
-
 		// Natural healing, 2% health and 2% tiredness per day
 		g_Girls.UpdateStat(current, STAT_HEALTH, 2, false);
 		g_Girls.UpdateStat(current, STAT_TIREDNESS, -2, false);
 
 
-		// Process next girl
-		current = current->m_Next;
+		if (g_Girls.GetStat(current, STAT_HAPPINESS) < 40)
+		{
+			if (current->m_NightJob != matronjob && matron && brothel->m_NumGirls > 1 && g_Dice.percent(70))
+			{
+				ss << "The Centre Manager helps cheer up " << girlName << " when she is feeling sad.\n";
+				g_Girls.UpdateStat(current, STAT_HAPPINESS, g_Dice % 10 + 5);
+			}
+			else if (brothel->m_NumGirls > 10 && g_Dice.percent(50))
+			{
+				ss << "Some of the other girls help cheer up " << girlName << " when she is feeling sad.\n";
+				g_Girls.UpdateStat(current, STAT_HAPPINESS, g_Dice % 8 + 3);
+			}
+			else if (brothel->m_NumGirls > 1 && g_Dice.percent(max(brothel->m_NumGirls, 50)))
+			{
+				ss << "One of the other girls helps cheer up " << girlName << " when she is feeling sad.\n";
+				g_Girls.UpdateStat(current, STAT_HAPPINESS, g_Dice % 6 + 2);
+			}
+			else if (brothel->m_NumGirls == 1 && g_Dice.percent(70))
+			{
+				ss << girlName << " plays around in the empty building until she feels better.\n";
+				g_Girls.UpdateStat(current, STAT_HAPPINESS, g_Dice % 10 + 10);
+			}
+			else if (g_Girls.GetStat(current, STAT_HAPPINESS) < 20) // no one helps her and she is really unhappy
+			{
+				ss << girlName << " is looking very depressed. You may want to do something about that before she does something drastic.\n";
+				sum = EVENT_WARNING;
+			}
+		}
+
+		if (g_Girls.GetStat(current, STAT_TIREDNESS) > 80 || g_Girls.GetStat(current, STAT_HEALTH) < 40)
+		{
+			int t = g_Girls.GetStat(current, STAT_TIREDNESS);
+			int h = g_Girls.GetStat(current, STAT_HEALTH);
+
+			if (!matron)	// do no matron first as it is the easiest
+			{
+				ss << "WARNING! " << girlName;
+				if (t > 80 && h < 20)		ss << " is in real bad shape, she is tired and injured.\nShe should go to the Clinic.\n";
+				else if (t > 80 && h < 40)	ss << " is in bad shape, she is tired and injured.\nShe should rest or she may die!\n";
+				else if (t > 80)			ss << " is desparatly in need of rest.\nGive her some free time\n";
+				else if (h < 20)			ss << " is badly injured.\nShe should rest or go to the Clinic.\n";
+				else if (h < 40)			ss << " is hurt.\nShe should rest and recuperate.\n";
+			}
+			else if (current->m_NightJob == matronjob && matron)	// do matron	
+			{
+				if (t > 90 && h < 10)	// The matron may take herself off work if she is really bad off
+				{
+					current->m_PrevDayJob = current->m_DayJob;
+					current->m_PrevNightJob = current->m_NightJob;
+					current->m_DayJob = current->m_NightJob = restjob;
+					ss << "The Centre Manager takes herself off duty because she is just too damn sore.\n";
+					g_Girls.UpdateEnjoyment(current, ACTION_WORKMOVIE, -10, true);
+				}
+				else
+				{
+					ss << "As Centre Manager, " << girlName << " has the keys to the store room.\nShe used them to 'borrow' ";
+					if (t > 80 && h < 40)
+					{
+						ss << "some potions";
+						g_Gold.consumable_cost(20, true);
+						current->m_Stats[STAT_HEALTH] = min(current->m_Stats[STAT_HEALTH] + 20, 100);
+						current->m_Stats[STAT_TIREDNESS] = max(current->m_Stats[STAT_TIREDNESS] - 20, 0);
+					}
+					else if (t > 80)
+					{
+						ss << "a resting potion";
+						g_Gold.consumable_cost(10, true);
+						current->m_Stats[STAT_TIREDNESS] = max(current->m_Stats[STAT_TIREDNESS] - 20, 0);
+					}
+					else if (h < 40)
+					{
+						ss << "a healing potion";
+						g_Gold.consumable_cost(10, true);
+						current->m_Stats[STAT_HEALTH] = min(current->m_Stats[STAT_HEALTH] + 20, 100);
+					}
+					ss << " for herself.\n";
+				}
+			}
+			else	// do all other girls with a matron working
+			{
+				if (current->m_PrevNightJob == 255 && current->m_PrevDayJob == 255) // the girl has been working
+				{
+					current->m_PrevDayJob = current->m_DayJob;
+					current->m_PrevNightJob = current->m_NightJob;
+					current->m_DayJob = current->m_NightJob = restjob;
+					ss << "The Centre Manager takes " << girlName << " off duty to rest due to her ";
+					if (t > 80 && h < 40)	ss << "exhaustion.\n";
+					else if (t > 80)		ss << "tiredness.\n";
+					else if (h < 40)		ss << "low health.\n";
+					else /*       */		ss << "current state.\n";
+				}
+				else	// the girl has already been taken off duty by the matron
+				{
+					if (g_Dice.percent(70))
+					{
+						ss << "The Centre Manager helps ";
+						if (t > 80 && h < 40)
+						{
+							ss << girlName << " recuperate.\n";
+							g_Girls.UpdateStat(current, STAT_TIREDNESS, -(g_Dice % 4 + 2));
+							g_Girls.UpdateStat(current, STAT_HEALTH, (g_Dice % 4 + 2));
+						}
+						else if (t > 80)
+						{
+							ss << girlName << " to relax.\n";
+							g_Girls.UpdateStat(current, STAT_TIREDNESS, -(g_Dice % 5 + 5));
+						}
+						else if (h < 40)
+						{
+							ss << "heal " << girlName << ".\n";
+							g_Girls.UpdateStat(current, STAT_HEALTH, (g_Dice % 5 + 5));
+						}
+					}
+				}
+			}
+		}
+
+		if (ss.str().length() > 0)	current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
+
+		current = current->m_Next;		// Process next girl
 	}
 
-	// WD: Finished Processing Shift set flag
-	m_Processing_Shift= -1;				
+	m_Processing_Shift = -1;	// WD: Finished Processing Shift set flag
 }
 
 TiXmlElement* cCentreManager::SaveDataXML(TiXmlElement* pRoot)
@@ -489,18 +708,18 @@ TiXmlElement* cCentreManager::SaveDataXML(TiXmlElement* pRoot)
 	// save centre
 	TiXmlElement* pBrothels = new TiXmlElement("Centres");
 	pBrothelManager->LinkEndChild(pBrothels);
-	sCentre* current = (sCentre*) m_Parent;
+	sCentre* current = (sCentre*)m_Parent;
 	//         ...................................................
 	message = "***************** Saving centres *****************";
 	g_LogFile.write(message);
-	while(current)
+	while (current)
 	{
 		message = "Saving brothel: ";
 		message += current->m_Name;
 		g_LogFile.write(message);
 
 		current->SaveCentreXML(pBrothels);
-		current = (sCentre*) current->m_Next;
+		current = (sCentre*)current->m_Next;
 	}
 	return pBrothelManager;
 }
@@ -521,13 +740,15 @@ TiXmlElement* sCentre::SaveCentreXML(TiXmlElement* pRoot)
 	// save variables for sex restrictions
 	pBrothel->SetAttribute("RestrictAnal", m_RestrictAnal);
 	pBrothel->SetAttribute("RestrictBDSM", m_RestrictBDSM);
-	pBrothel->SetAttribute("RestrictOral", m_RestrictOral);
-	pBrothel->SetAttribute("RestrictTitty", m_RestrictTitty);
-	pBrothel->SetAttribute("RestrictHand", m_RestrictHand);
 	pBrothel->SetAttribute("RestrictBeast", m_RestrictBeast);
+	pBrothel->SetAttribute("RestrictFoot", m_RestrictFoot);
 	pBrothel->SetAttribute("RestrictGroup", m_RestrictGroup);
-	pBrothel->SetAttribute("RestrictNormal", m_RestrictNormal);
+	pBrothel->SetAttribute("RestrictHand", m_RestrictHand);
 	pBrothel->SetAttribute("RestrictLesbian", m_RestrictLesbian);
+	pBrothel->SetAttribute("RestrictNormal", m_RestrictNormal);
+	pBrothel->SetAttribute("RestrictOral", m_RestrictOral);
+	pBrothel->SetAttribute("RestrictStrip", m_RestrictStrip);
+	pBrothel->SetAttribute("RestrictTitty", m_RestrictTitty);
 
 	pBrothel->SetAttribute("AdvertisingBudget", m_AdvertisingBudget);
 	pBrothel->SetAttribute("AntiPregPotions", m_AntiPregPotions);
@@ -538,7 +759,7 @@ TiXmlElement* sCentre::SaveCentreXML(TiXmlElement* pRoot)
 	TiXmlElement* pGirls = new TiXmlElement("Girls");
 	pBrothel->LinkEndChild(pGirls);
 	sGirl* girl = m_Girls;
-	while(girl)
+	while (girl)
 	{
 		girl->SaveGirlXML(pGirls);
 		girl = girl->m_Next;
@@ -565,7 +786,7 @@ bool cCentreManager::LoadDataXML(TiXmlHandle hBrothelManager)
 	TiXmlElement* pBrothels = pBrothelManager->FirstChildElement("Centres");
 	if (pBrothels)
 	{
-		for(TiXmlElement* pBrothel = pBrothels->FirstChildElement("Centre");
+		for (TiXmlElement* pBrothel = pBrothels->FirstChildElement("Centre");
 			pBrothel != 0;
 			pBrothel = pBrothel->NextSiblingElement("Centre"))
 		{
@@ -616,14 +837,16 @@ bool sCentre::LoadCentreXML(TiXmlHandle hBrothel)
 	// load variables for sex restrictions
 	pBrothel->QueryValueAttribute<bool>("RestrictAnal", &m_RestrictAnal);
 	pBrothel->QueryValueAttribute<bool>("RestrictBDSM", &m_RestrictBDSM);
-	pBrothel->QueryValueAttribute<bool>("RestrictOral", &m_RestrictOral);
-	pBrothel->QueryValueAttribute<bool>("RestrictTitty", &m_RestrictTitty);
-	pBrothel->QueryValueAttribute<bool>("RestrictHand", &m_RestrictHand);
 	pBrothel->QueryValueAttribute<bool>("RestrictBeast", &m_RestrictBeast);
+	pBrothel->QueryValueAttribute<bool>("RestrictFoot", &m_RestrictFoot);
 	pBrothel->QueryValueAttribute<bool>("RestrictGroup", &m_RestrictGroup);
-	pBrothel->QueryValueAttribute<bool>("RestrictNormal", &m_RestrictNormal);
+	pBrothel->QueryValueAttribute<bool>("RestrictHand", &m_RestrictHand);
 	pBrothel->QueryValueAttribute<bool>("RestrictLesbian", &m_RestrictLesbian);
-	
+	pBrothel->QueryValueAttribute<bool>("RestrictNormal", &m_RestrictNormal);
+	pBrothel->QueryValueAttribute<bool>("RestrictOral", &m_RestrictOral);
+	pBrothel->QueryValueAttribute<bool>("RestrictStrip", &m_RestrictStrip);
+	pBrothel->QueryValueAttribute<bool>("RestrictTitty", &m_RestrictTitty);
+
 	pBrothel->QueryValueAttribute<unsigned short>("AdvertisingBudget", &m_AdvertisingBudget);
 	pBrothel->QueryIntAttribute("AntiPregPotions", &m_AntiPregPotions);
 	pBrothel->QueryIntAttribute("AntiPregUsed", &m_AntiPregUsed);
@@ -634,7 +857,7 @@ bool sCentre::LoadCentreXML(TiXmlHandle hBrothel)
 	TiXmlElement* pGirls = pBrothel->FirstChildElement("Girls");
 	if (pGirls)
 	{
-		for(TiXmlElement* pGirl = pGirls->FirstChildElement("Girl");
+		for (TiXmlElement* pGirl = pGirls->FirstChildElement("Girl");
 			pGirl != 0;
 			pGirl = pGirl->NextSiblingElement("Girl"))// load each girl and add her
 		{

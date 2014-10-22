@@ -57,9 +57,16 @@ bool cJobManager::WorkHealing(sGirl* girl, sBrothel* brothel, int DayNight, stri
 	if (!hasDoctor)
 	{
 		message = girl->m_Realname + gettext(" does nothing. You don't have any Doctor (require 1) ");
-		(DayNight == 0) ? message += gettext("day") : message += gettext("night"); message += gettext(" Shift.");
+		(DayNight == 0) ? message += gettext("day") : message += gettext("night"); message += gettext(" shift.");
+		// send her to the waiting room when she is healthy
+		if (girl->health() > 90 && girl->tiredness() < 10)
+		{
+			message += "\n\nShe has been released from the Clinic.";
+			girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
+		}
+
 		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_WARNING);
-		return true;
+		return false;	// not refusing
 	}
 
 	if (g_Girls.HasTrait(girl, "Construct"))
@@ -67,7 +74,7 @@ bool cJobManager::WorkHealing(sGirl* girl, sBrothel* brothel, int DayNight, stri
 		message = girl->m_Realname + gettext(" has no biological parts so she was sent to the repair shop.");
 		if(DayNight == 0) girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_WARNING);
 		girl->m_DayJob = girl->m_NightJob = JOB_GETREPAIRS;
-		return true;
+		return false;	// not refusing
 	}
 
 	int numdocs = g_Clinic.GetNumGirlsOnJob(0, JOB_DOCTOR, DayNight);
@@ -77,22 +84,22 @@ bool cJobManager::WorkHealing(sGirl* girl, sBrothel* brothel, int DayNight, stri
 
 	if (g_Girls.HasTrait(girl, "Half-Construct") && girl->m_DayJob == JOB_GETHEALING && girl->m_NightJob == JOB_GETHEALING)
 	{
-		g_Girls.UpdateStat(girl, STAT_HEALTH, 30);	// Total 60 healing per day, heals less because Doctor only fixes living tissue.
+		g_Girls.UpdateStat(girl, STAT_HEALTH, 30, false);	// Total 60 healing per day, heals less because Doctor only fixes living tissue.
 	}
 	else
 	{
-		g_Girls.UpdateStat(girl, STAT_HEALTH, 40);
+		g_Girls.UpdateStat(girl, STAT_HEALTH, 40, false);
 	}
 	if (numnurse > 0)
 	{
 		message += gettext(" and Nurse");if (numnurse > 1) message += gettext("s");
-		g_Girls.UpdateStat(girl, STAT_TIREDNESS, -30);
+		g_Girls.UpdateStat(girl, STAT_TIREDNESS, -30, false);
 		g_Girls.UpdateStat(girl, STAT_HAPPINESS, 10);
 		g_Girls.UpdateStat(girl, STAT_MANA, 40);
 	}
 	else 
 	{
-		g_Girls.UpdateStat(girl, STAT_TIREDNESS, -20);
+		g_Girls.UpdateStat(girl, STAT_TIREDNESS, -20, false);
 		g_Girls.UpdateStat(girl, STAT_MANA, 30);
 	}
 	if (numdocs + numnurse >= 4 && DayNight == 1)	// lots of people making sure she is in good health
@@ -101,7 +108,16 @@ bool cJobManager::WorkHealing(sGirl* girl, sBrothel* brothel, int DayNight, stri
 	}
 	((numdocs > 2 && numnurse < 1) || numnurse > 1) ? message += gettext(" take ") : message += gettext(" takes ");
 	message += gettext("care of her.");
+
+	// send her to the waiting room when she is healthy
+	if (girl->health() > 90 && girl->tiredness() < 10)
+	{
+		message += "\n\nShe has been released from the Clinic.";
+		girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
+	}
+
 	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
+
 
 	// Improve girl
 	int libido = 1;

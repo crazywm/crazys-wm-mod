@@ -1,21 +1,21 @@
 /*
- * Copyright 2009, 2010, The Pink Petal Development Team.
- * The Pink Petal Devloment Team are defined as the game's coders 
- * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright 2009, 2010, The Pink Petal Development Team.
+* The Pink Petal Devloment Team are defined as the game's coders
+* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 #include <sstream>
 
@@ -46,48 +46,48 @@ extern bool				g_InitWin;
 extern cMovieStudioManager  g_Studios;
 
 // // ----- Strut sMovieStudio Create / destroy
-sMovieStudio::sMovieStudio() :	m_Finance(0)	// constructor
+sMovieStudio::sMovieStudio() : m_Finance(0)	// constructor
 {
-	m_var				= 0;
-	m_Name				= "studio";
-	m_Filthiness		= 0;
-	m_Next				= 0;
-	m_Girls				= 0;
-	m_LastGirl			= 0;
-	m_NumGirls			= 0;
-	m_SecurityLevel		= 0;
+	m_var = 0;
+	m_Name = "studio";
+	m_Filthiness = 0;
+	m_Next = 0;
+	m_Girls = 0;
+	m_LastGirl = 0;
+	m_NumGirls = 0;
+	m_SecurityLevel = 0;
 	for (u_int i = 0; i < NUMJOBTYPES; i++) m_BuildingQuality[i] = 0;
-	m_CurrFilm			= 0;
-	m_NumMovies			= 0;
-	m_LastMovies		= 0;
-	m_Movies			= 0;
-	m_MovieRunTime		= 0;
+	m_CurrFilm = 0;
+	m_NumMovies = 0;
+	m_LastMovies = 0;
+	m_Movies = 0;
+	m_MovieRunTime = 0;
 }
 
 sMovieStudio::~sMovieStudio()			// destructor
 {
-	m_var			= 0;
+	m_var = 0;
 	if (m_Next)		delete m_Next;
-	m_Next			= 0;
+	m_Next = 0;
 	if (m_Girls)	delete m_Girls;
-	m_LastGirl		= 0;
-	m_Girls			= 0;
-	m_NumMovies		= 0;
+	m_LastGirl = 0;
+	m_Girls = 0;
+	m_NumMovies = 0;
 	if (m_Movies)	delete m_Movies;
-	m_Movies		= 0;
-	m_LastMovies	= 0;
+	m_Movies = 0;
+	m_LastMovies = 0;
 	if (m_CurrFilm)	delete m_CurrFilm;
 }
 
 void cMovieStudioManager::AddGirl(int brothelID, sGirl* girl)
 {
-	girl->where_is_she		= 0;
-	girl->m_InMovieStudio	= true;
-	girl->m_InArena			= false;
-	girl->m_InCentre		= false;
-	girl->m_InClinic		= false;
-	girl->m_InFarm			= false;
-	girl->m_InHouse			= false;
+	girl->where_is_she = 0;
+	girl->m_InMovieStudio = true;
+	girl->m_InArena = false;
+	girl->m_InCentre = false;
+	girl->m_InClinic = false;
+	girl->m_InFarm = false;
+	girl->m_InHouse = false;
 	cBrothelManager::AddGirl(brothelID, girl);
 }
 
@@ -117,174 +117,201 @@ void cMovieStudioManager::Free()
 }
 
 // ----- Update & end of turn
-void cMovieStudioManager::UpdateMovieStudio()
+void cMovieStudioManager::UpdateMovieStudio()	// Start_Building_Process_A
 {
-	sBrothel* current = (sBrothel*) m_Parent;
-	stringstream ss; 
-	current->m_Finance.zero();
-	current->m_AntiPregUsed = 0;
-	// Clear the girls' events from the last turn
-	sGirl* cgirl = current->m_Girls;
-	while(cgirl)
-	{
-		cgirl->where_is_she		= 0;
-		cgirl->m_InMovieStudio	= true;
-		cgirl->m_InArena		= false;
-		cgirl->m_InCentre		= false;
-		cgirl->m_InClinic		= false;
-		cgirl->m_InFarm			= false;
-		cgirl->m_InHouse		= false;
-		cgirl->m_Pay			= 0;
-		cgirl->m_Events.Clear();
-		cgirl = cgirl->m_Next;
-	}
-	m_FlufferQuality	= 0;
-	m_CameraQuality		= 0;
-	m_PurifierQaulity	= 0;
-	m_DirectorQuality	= 0;
-	
-	if (current->m_Filthiness < 0) current->m_Filthiness = 0;
+	cTariff tariff;
+	stringstream ss;
+	string girlName;
 
-	// update the girls and satisfy the customers for this brothel during the night
-	UpdateGirls(current);
-
-	// Update movies currently being sold
-	sMovie* movie = current->m_Movies;
-	if(current->m_NumMovies > 0)
-	{
-		current->m_MovieRunTime++;
-		long income = 0;
-		if(current->m_NumMovies > 0)
-		{
-			double bonusperc = g_Studios.m_PromoterBonus / 100;
-			while (movie)
-			{
-				if (movie->m_RunWeeks > 34)
-				{
-					movie->m_Promo_Quality = 0;
-					movie->m_Quality = 0;
-					movie->m_RunWeeks += 1;
-					movie = movie->m_Next;
-				}
-				else
-				{
-					movie->m_Promo_Quality = (int)(movie->m_Quality * bonusperc);
-					movie->m_Money_Made += movie->m_Promo_Quality;
-					income += movie->m_Promo_Quality;
-					int degrade = (int)((float)(movie->m_Quality)*0.15);
-					movie->m_Quality -= degrade;
-					movie->m_RunWeeks += 1;		// `J` each movie will have its own run tracked
-					movie = movie->m_Next;
-				}
-			}
-			current->m_Finance.movie_income(income);
-			g_Gold.brothel_accounts(current->m_Finance, current->m_id);
-			ss.str("");
-			ss << "You earn " << income << " gold from movie income, at your " << current->m_Name;
-			g_MessageQue.AddToQue(ss.str(), COLOR_GREEN);
-		}
-	}
-}
-
-// End of turn stuff is here
-// Same method than Brothel but different job
-void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
-{
-	// `J` added to allow for easier copy/paste to other buildings
+	sBrothel* current = (sBrothel*)m_Parent;
 	u_int restjob = JOB_FILMFREETIME;
 	u_int matronjob = JOB_DIRECTOR;
 	u_int firstjob = JOB_FILMBEAST;
 	u_int lastjob = JOB_STAGEHAND;
-	string MatronMsg = "", MatronWarningMsg = "";
-	bool matron = false, matrondone = false;
-	bool camera = false, crystal = false;
-	bool readytofilm = true; // changes to false if both camera and crystal jobs are not filled
-	stringstream ss;
-	cConfig cfg;
-	sGirl* current = brothel->m_Girls;
-	sGirl* DeadGirl = 0;
-	string summary, msg, girlName;
-	int totalPay = 0, totalTips = 0, totalGold = 0;
 
-	int sum = EVENT_SUMMARY;
-	int numgirls = GetNumGirls(brothel->m_id);
-	u_int sw = 0;						//	Job type
-	bool refused = false;
-	m_Processing_Shift = SHIFT_NIGHT;	// there is only a night shift in the movie studio.
+	current->m_Finance.zero();
+	current->m_AntiPregUsed = 0;
 
-	// `J` Handle the base checks for all girls first
-	while (current)
+
+	sGirl* cgirl = current->m_Girls;
+	while (cgirl)
 	{
-		brothel->m_Filthiness++;
-		// Remove any dead bodies from last week
-		if (current->health() <= 0)
+		current->m_Filthiness++;
+		if (cgirl->health() <= 0)			// Remove any dead bodies from last week
 		{
-			brothel->m_Filthiness++; // `J` Death is messy
-			DeadGirl = current;
-			if (current->m_Next) current = current->m_Next; else current = 0;
+			current->m_Filthiness++; // `J` Death is messy
+			sGirl* DeadGirl = 0;
+			girlName = cgirl->m_Realname;
+			DeadGirl = cgirl;
+			// If there are more girls to process
+			cgirl = (cgirl->m_Next) ? cgirl->m_Next : 0;
 			// increase all the girls fear and hate of the player for letting her die (weather his fault or not)
-			UpdateAllGirlsStat(brothel, STAT_PCFEAR, 2);
-			UpdateAllGirlsStat(brothel, STAT_PCHATE, 1);
+			UpdateAllGirlsStat(current, STAT_PCFEAR, 2);
+			UpdateAllGirlsStat(current, STAT_PCHATE, 1);
 
-			// Do the messages
-			msg += girlName + gettext(" has died from her injuries, the other girls all fear and hate you a little more.");
-			DeadGirl->m_Events.AddMessage(msg, IMGTYPE_DEATH, EVENT_DANGER);
-			g_MessageQue.AddToQue(msg, COLOR_RED);
-			summary += girlName + gettext(" has died from her injuries.  Her body will be removed by the end of the week.");
-			DeadGirl->m_Events.AddMessage(summary, IMGTYPE_DEATH, EVENT_SUMMARY);
-			msg = ""; summary = "";
+			ss.str(""); ss << girlName << " has died from her injuries, the other girls all fear and hate you a little more.";
+			DeadGirl->m_Events.AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_DANGER);
+			g_MessageQue.AddToQue(ss.str(), COLOR_RED);
+			ss.str(""); ss << girlName << " has died from her injuries.  Her body will be removed by the end of the week.";
+			DeadGirl->m_Events.AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_SUMMARY);
 
-			RemoveGirl(0, DeadGirl, true); DeadGirl = 0;
+			RemoveGirl(0, DeadGirl); DeadGirl = 0;	// cleanup
 		}
 		else
 		{
-			if (current->m_DayJob < firstjob && current->m_DayJob > lastjob)		current->m_DayJob = restjob;
-			if (current->m_NightJob < firstjob && current->m_NightJob > lastjob)	current->m_NightJob = restjob;
-			current->m_YesterDayJob = current->m_DayJob;		// `J` set what she did yesterday
-			current->m_YesterNightJob = current->m_NightJob;	// `J` set what she did yesternight
-			current->m_Refused_To_Work = false;
+			cgirl->m_Events.Clear();			// Clear the girls' events from the last turn
+			cgirl->where_is_she = 0;
+			cgirl->m_InMovieStudio = true;
+			cgirl->m_InArena = false;
+			cgirl->m_InCentre = false;
+			cgirl->m_InClinic = false;
+			cgirl->m_InFarm = false;
+			cgirl->m_InHouse = false;
 
-			current->m_Pay = current->m_Tips = 0;
+			cgirl->m_Pay = cgirl->m_Tips = 0;
 
-			// `J` update stuff. only 1 shift in studio so bunch it all together.
-			g_Girls.UseItems(current);					// Girl uses items she has
-			do_food_and_digs(brothel, current);			// Brothel only update for girls accommodation level
-			g_Girls.updateGirlAge(current, true);		// update birthday counter and age the girl
-			g_Girls.updateTempStats(current);			// update temp stats
-			g_Girls.updateTempSkills(current);			// update temp skills
-			g_Girls.updateTempTraits(current);			// update temp traits
-			g_Girls.HandleChildren(current, summary);	// handle pregnancy and children growing up
-			g_Girls.updateSTD(current);					// health loss to STD's		NOTE: Girl can die
-			g_Girls.updateHappyTraits(current);			// Update happiness due to Traits		NOTE: Girl can die
-			updateGirlTurnBrothelStats(current);		// Update daily stats	Now only runs once per day
-			g_Girls.updateGirlTurnStats(current);		// Stat Code common to Dugeon and Brothel
-			g_Girls.CalculateGirlType(current);			// update the fetish traits
-			g_Girls.CalculateAskPrice(current, true);	// Calculate the girls asking price
+			// `J` Check for out of building jobs and set yesterday jobs for everyone first
+			if (cgirl->m_DayJob	  < firstjob || cgirl->m_DayJob   > lastjob)	cgirl->m_DayJob = restjob;
+			if (cgirl->m_NightJob < firstjob || cgirl->m_NightJob > lastjob)	cgirl->m_NightJob = restjob;
+			if (cgirl->m_PrevDayJob != 255 && (cgirl->m_PrevDayJob	 < firstjob || cgirl->m_PrevDayJob   > lastjob))	cgirl->m_PrevDayJob = 255;
+			if (cgirl->m_PrevNightJob != 255 && (cgirl->m_PrevNightJob < firstjob || cgirl->m_PrevNightJob > lastjob))	cgirl->m_PrevNightJob = 255;
+			cgirl->m_YesterDayJob = cgirl->m_DayJob;		// `J` set what she did yesterday
+			cgirl->m_YesterNightJob = cgirl->m_NightJob;	// `J` set what she did yesternight
+			cgirl->m_Refused_To_Work_Day = false;
+			cgirl->m_Refused_To_Work_Night = false;
 
-			if (current->m_JustGaveBirth)		// if she gave birth, let her rest this week
+			g_Girls.AddTiredness(cgirl);			// `J` moved all girls add tiredness to one place
+			do_food_and_digs(current, cgirl);		// Brothel only update for girls accommodation level
+			g_Girls.updateGirlAge(cgirl, true);		// update birthday counter and age the girl
+			g_Girls.updateTempStats(cgirl);			// update temp stats
+			g_Girls.updateTempSkills(cgirl);		// update temp skills
+			g_Girls.updateTempTraits(cgirl);		// update temp traits
+			g_Girls.HandleChildren(cgirl);			// handle pregnancy and children growing up
+			g_Girls.updateSTD(cgirl);				// health loss to STD's				NOTE: Girl can die
+			g_Girls.updateHappyTraits(cgirl);		// Update happiness due to Traits	NOTE: Girl can die
+			updateGirlTurnBrothelStats(cgirl);		// Update daily stats				Now only runs once per day
+			g_Girls.updateGirlTurnStats(cgirl);		// Stat Code common to Dugeon and Brothel
+
+			if (cgirl->m_JustGaveBirth)				// if she gave birth, let her rest this week
 			{
-				if (current->m_NightJob != restjob)	current->m_PrevNightJob = current->m_NightJob;
-				current->m_NightJob = restjob;
+
+				if (cgirl->m_NightJob != restjob)	cgirl->m_PrevNightJob = cgirl->m_NightJob;
+				cgirl->m_NightJob = restjob;
 			}
+
+			cgirl = cgirl->m_Next;
+		}
+	}
+
+	m_FlufferQuality = m_CameraQuality = m_PurifierQaulity = m_DirectorQuality = 0;
+
+	UpdateGirls(current);		// Run the Nighty Shift
+
+	if (current->m_Filthiness < 0)		current->m_Filthiness = 0;
+	if (current->m_SecurityLevel < 0)	current->m_SecurityLevel = 0;
+
+	// Update movies currently being sold
+	sMovie* movie = current->m_Movies;
+	if (current->m_NumMovies > 0)
+	{
+		long income = 0;
+		double bonusperc = g_Studios.m_PromoterBonus / 100;
+		current->m_MovieRunTime++;	//	track how long the studio has been putting out movies
+
+		while (movie)
+		{
+			if (movie->m_RunWeeks > 34)
+			{
+				movie->m_Promo_Quality = 0;
+				movie->m_Quality = 0;
+				movie->m_RunWeeks++;
+				movie = movie->m_Next;
+			}
+			else
+			{
+				movie->m_Promo_Quality = (int)(movie->m_Quality * bonusperc);
+				movie->m_Money_Made += movie->m_Promo_Quality;
+				income += movie->m_Promo_Quality;
+				int degrade = (int)((float)(movie->m_Quality)*0.15);
+				movie->m_Quality -= degrade;
+				movie->m_RunWeeks++;		// `J` each movie will have its own run tracked
+				movie = movie->m_Next;
+			}
+		}
+		current->m_Finance.movie_income(income);
+		ss.str("");
+		ss << "You earn " << income << " gold from movie income, at your " << current->m_Name;
+		g_MessageQue.AddToQue(ss.str(), COLOR_GREEN);
+	}
+
+	g_Gold.brothel_accounts(current->m_Finance, current->m_id);
+}
+
+// Run the shifts
+void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Process_B
+{
+	cConfig cfg;
+
+	stringstream ss;
+	string summary, girlName;
+
+	u_int restjob = JOB_FILMFREETIME;
+	u_int matronjob = JOB_DIRECTOR;
+	u_int firstjob = JOB_FILMBEAST;
+	u_int lastjob = JOB_STAGEHAND;
+	u_int sw = 0, psw = 0;
+
+	int totalPay = 0, totalTips = 0, totalGold = 0;
+	int sum = EVENT_SUMMARY;
+	int numgirls = GetNumGirls(brothel->m_id);
+
+	bool matron = false, matrondone = false;
+	bool camera = false, crystal = false;
+	bool readytofilm = false; // changes to true if both camera and crystal jobs are filled
+	bool refused = false;
+
+	m_Processing_Shift = SHIFT_NIGHT;	// there is only a night shift in the movie studio.
+
+	//////////////////////////////////////////////////////
+	//  Handle the start of shift stuff for all girls.  //
+	//////////////////////////////////////////////////////
+	sGirl* current = brothel->m_Girls;
+	while (current)
+	{
+		brothel->m_Filthiness++;
+		if (current->health() <= 0)		// skip dead girls
+		{
+			if (current->m_Next) { current = current->m_Next; continue; }
+			else { current = 0; break; }
+		}
+		else
+		{
+			g_Girls.UseItems(current);				// Girl uses items she has
+			g_Girls.CalculateGirlType(current);		// update the fetish traits
+			g_Girls.CalculateAskPrice(current, true);	// Calculate the girls asking price
 
 			current = current->m_Next; // Next Girl
 		}
 	}
 
-	// Process Matron first incase she refuses to work.
-	matron = false;
+	////////////////////////////////////////////////////////
+	//  Process Matron first incase she refuses to work.  //
+	////////////////////////////////////////////////////////
 	current = brothel->m_Girls;
 	while (current && !matrondone)
 	{
-		if (current->health() <= 0 || (brothel->matron_on_shift(SHIFT_NIGHT, false, true) && current->m_NightJob != matronjob) || (!brothel->matron_on_shift(SHIFT_NIGHT, false, true) && current->m_PrevNightJob != matronjob))
+		if (current->health() <= 0 ||
+			(GetNumGirlsOnJob(0, matronjob, SHIFT_NIGHT) > 0 && (current->m_NightJob != matronjob)) ||
+			(GetNumGirlsOnJob(0, matronjob, SHIFT_NIGHT) < 1 && (current->m_PrevNightJob != matronjob)))
 		{	// Sanity check! Don't process dead girls and only process those with matron jobs
 			if (current->m_Next) { current = current->m_Next; continue; }
 			else { current = 0; break; }
 		}
 		// `J` so someone is or was a matron
+
 		girlName = current->m_Realname;
 		// if there is no matron on duty, we see who was on duty previously
-		if (!brothel->matron_on_shift(SHIFT_NIGHT, false, true))
+		if (GetNumGirlsOnJob(0, matronjob, SHIFT_NIGHT) < 1)
 		{
 			// if a matron was found and she is healthy, not tired and not on maternity leave... send her back to work
 			if (current->m_PrevNightJob == matronjob &&
@@ -292,12 +319,9 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 				current->m_PregCooldown < cfg.pregnancy.cool_down())
 				// Matron job is more important so she will go back to work at 50% instead of regular 80% health and 20% tired
 			{
-				g_Brothels.m_JobManager.HandleSpecialJobs(brothel->m_id, current, current->m_PrevNightJob, current->m_NightJob, true);
 				current->m_DayJob = restjob;
 				current->m_PrevDayJob = current->m_PrevNightJob = 255;
-				MatronMsg += gettext("The Director puts herself back to work.\n");
-				current->m_Events.AddMessage(MatronMsg, IMGTYPE_PROFILE, EVENT_BACKTOWORK);
-				MatronMsg = "";
+				current->m_Events.AddMessage("The Director puts herself back to work.", IMGTYPE_PROFILE, EVENT_BACKTOWORK);
 			}
 			else if (current->m_Next) { current = current->m_Next; continue; }
 			else { current = 0; break; }
@@ -305,100 +329,99 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 		// `J` Now we have a matron so lets see if she will work
 
 		totalPay = totalTips = totalGold = 0;
-		sum = EVENT_SUMMARY;
-		refused = m_JobManager.JobFunc[matronjob](current, brothel, SHIFT_NIGHT, summary);
+		sum = EVENT_SUMMARY; summary = ""; ss.str("");
 
-		totalPay += current->m_Pay;
-		totalTips += current->m_Tips;
-		totalGold += current->m_Pay + current->m_Tips;
-		g_Brothels.CalculatePay(brothel, current, matronjob);
-
-		if (refused)
+		if (g_Girls.DisobeyCheck(current, ACTION_WORKMATRON, brothel))
 		{
+			current->m_Refused_To_Work_Night = true;
 			brothel->m_Fame -= g_Girls.GetStat(current, STAT_FAME);
-			summary += girlName + gettext(" refused to work so made no money.");
-			sum = EVENT_WARNING;
+			ss << girlName << " refused to work as the Director.";
+			sum = EVENT_NOWORK;
 		}
 		else
 		{
 			matron = true;
-			ss.str("");
+			totalPay = totalTips = totalGold = 0;
+			m_JobManager.JobFunc[matronjob](current, brothel, SHIFT_NIGHT, summary);
+			totalGold += current->m_Pay + current->m_Tips;
+			current->m_Pay += max(0, totalGold);
+			current->m_Pay = current->m_Tips = 0;
+
 			brothel->m_Fame += g_Girls.GetStat(current, STAT_FAME);
-			if (totalGold > 0) 
-			{ 
-				ss << girlName << " earned a total of " << totalGold << " gold directly from you. She gets to keep it all."; 
-				summary += ss.str();
-			}
-			else if (totalGold == 0) summary += girlName + gettext(" made no money.");
-			else if (totalGold < 0) 
-			{ 
-				sum = EVENT_DEBUG; 
-				ss << "ERROR: She has a loss of " << totalGold << " gold\n\n Please report this to the Pink Petal Devloment Team at http://pinkpetal.org"; 
-				summary += ss.str(); 
-			}
+			/* */if (totalGold > 0)		{ ss << girlName << " earned a total of " << totalGold << " gold directly from you. She gets to keep it all."; }
+			else if (totalGold == 0)	{ ss << girlName << " made no money."; }
+			else if (totalGold < 0)		{ sum = EVENT_DEBUG; ss << "ERROR: She has a loss of " << totalGold << " gold\n\n Please report this to the Pink Petal Devloment Team at http://pinkpetal.org"; }
 		}
-		current->m_Events.AddMessage(summary, IMGTYPE_PROFILE, sum);
-		summary = "";
+		current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
 
 		current = current->m_Next;	// Next Girl
 		matrondone = true;			// there can be only one matron so this ends the while loop
 	}
 
-	// `J` Now If there is a matron and she is not refusing to work, then she can delegate the girls in this building.
-
-	// Back to work
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//  Now If there is a matron and she is not refusing to work, then she can delegate the girls in this building.  //
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	current = brothel->m_Girls;
 	while (current)
 	{
-		if (current->health() <= 0 || current->m_NightJob != restjob)		
+		if (current->health() <= 0 || current->m_NightJob != restjob)
 		{	// skip dead girls and anyone not resting
 			if (current->m_Next) { current = current->m_Next; continue; }
 			else { current = 0; break; }
 		}
+		sum = EVENT_SUMMARY; summary = ""; ss.str("");
 		girlName = current->m_Realname;
 
-		if (current->m_PregCooldown < cfg.pregnancy.cool_down() && current->health() >= 80 && current->tiredness() <= 20)
+		if (current->m_PregCooldown == cfg.pregnancy.cool_down())
+		{
+			ss << girlName << " is on maternity leave.";
+		}
+		else if (current->health() < 80 || current->tiredness() > 20)
+		{
+			m_JobManager.JobFunc[restjob](current, brothel, SHIFT_NIGHT, summary);
+		}
+		else
 		{	// if she is healthy enough to go back to work... 
 			if (matron)	// and there is a marton working...
 			{
-				if (current->m_PrevNightJob != restjob && current->m_PrevNightJob != 255)
+				psw = current->m_PrevNightJob;
+				if (psw != restjob && psw != 255)
 				{	// if she had a previous job, put her back to work.
 					current->m_DayJob = restjob;
-					current->m_NightJob = current->m_PrevNightJob;
-					MatronMsg += "The Director puts " + girlName + " back to work.\n";
+					current->m_NightJob = psw;
+					ss << "The Director puts " << girlName << " back to work.\n";
 				}
 				else // otherwise give her a new job.
 				{
-					MatronMsg += "The Director assigns " + girlName + " to ";
-					string swt = "";
+					ss << "The Director assigns " << girlName << " to ";
 					bool assign_actress = false;
 					current->m_DayJob = restjob;
-					
+
 					// first, if there are not enough girls in the studio to film a scene, put them to work at something else.
 					if (numgirls < 4)	// Director plus only 1 or 2 others
 					{
 						// if there are movies being sold and noone promoting them, assign a promoter.
-						if (brothel->m_NumMovies > 1 && g_Studios.GetNumGirlsOnJob(brothel->m_id, JOB_PROMOTER, 1) < 1)
+						if (brothel->m_NumMovies > 0 && g_Studios.GetNumGirlsOnJob(brothel->m_id, JOB_PROMOTER, 1) < 1)
 						{
 							current->m_NightJob = JOB_PROMOTER;
-							swt = "promote the movies being sold.\n";
+							ss << "promote the movies being sold.";
 						}
 						else // otherwise assign her to clean
 						{
 							current->m_NightJob = JOB_STAGEHAND;
-							swt = "clean the building and take care of the equipment.\n";
+							ss << "clean the building and take care of the equipment.";
 						}
 					}
 					// second, make sure there is at least 1 camera, 1 crystal and 1 actress
 					else if (g_Studios.GetNumGirlsOnJob(brothel->m_id, JOB_CAMERAMAGE, 1) < 1)
 					{
 						current->m_NightJob = JOB_CAMERAMAGE;
-						swt = "film the scenes.\n";
+						ss << "film the scenes.";
 					}
 					else if (g_Studios.GetNumGirlsOnJob(brothel->m_id, JOB_CRYSTALPURIFIER, 1) < 1)
 					{
 						current->m_NightJob = JOB_CRYSTALPURIFIER;
-						swt = "clean up the filmed scenes.\n";
+						ss << "clean up the filmed scenes.";
 					}
 					else if (g_Studios.Num_Actress(brothel->m_id) < 1)
 					{
@@ -409,90 +432,89 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 					else if (g_Studios.GetNumGirlsOnJob(brothel->m_id, JOB_CAMERAMAGE, 1) < (numgirls / 20) + 1)
 					{
 						current->m_NightJob = JOB_CAMERAMAGE;
-						swt = "film the scenes.\n";
+						ss << "film the scenes.";
 					}
 					else if (g_Studios.GetNumGirlsOnJob(brothel->m_id, JOB_CRYSTALPURIFIER, 1) < (numgirls / 20) + 1)
 					{
 						current->m_NightJob = JOB_CRYSTALPURIFIER;
-						swt = "clean up the filmed scenes.\n";
+						ss << "clean up the filmed scenes.";
 					}
 					// if there are more than 20 girls and no promoter, assign one
 					else if (g_Studios.GetNumGirlsOnJob(brothel->m_id, JOB_PROMOTER, 1) < 1 && numgirls > 20)
 					{
 						current->m_NightJob = JOB_PROMOTER;
-						swt = "advertise the movies.\n";
+						ss << "advertise the movies.";
 					}
 					// assign a fluffer and stagehand if there are more than 20 and 1 more for every 20 after that
 					else if (g_Studios.GetNumGirlsOnJob(brothel->m_id, JOB_FLUFFER, 1) < (numgirls / 20))
 					{
 						current->m_NightJob = JOB_FLUFFER;
-						swt = "keep the porn stars aroused.\n";
+						ss << "keep the porn stars aroused.";
 					}
 					else if (g_Studios.GetNumGirlsOnJob(brothel->m_id, JOB_STAGEHAND, 1) < (numgirls / 20))
 					{
 						current->m_NightJob = JOB_STAGEHAND;
-						swt = "setup equipment and keep the studio clean.\n";
+						ss << "setup equipment and keep the studio clean.";
 					}
 					else assign_actress = true;
-						
+
 					if (assign_actress)		// everyone else gets assigned to film something they are good at
 					{
 						sw = JOB_FILMRANDOM;
-						swt = "perform in random sex scenes";
-						// load the girls stats but if banned set to -10
-						int s__b = (m_JobManager.is_sex_type_allowed(SKILL_BEASTIALITY, brothel)) ? current->get_skill(SKILL_BEASTIALITY) : -10;
-						int s__n = (m_JobManager.is_sex_type_allowed(SKILL_NORMALSEX, brothel)) ? current->get_skill(SKILL_NORMALSEX) : -10;
-						int s__a = (m_JobManager.is_sex_type_allowed(SKILL_ANAL, brothel)) ? current->get_skill(SKILL_ANAL) : -10;
-						int s__l = (m_JobManager.is_sex_type_allowed(SKILL_LESBIAN, brothel)) ? current->get_skill(SKILL_LESBIAN) : -10;
-						int s__d = (m_JobManager.is_sex_type_allowed(SKILL_BDSM, brothel)) ? current->get_skill(SKILL_BDSM) : -10;
-						int s__g = (m_JobManager.is_sex_type_allowed(SKILL_GROUP, brothel)) ? current->get_skill(SKILL_GROUP) : -10;
-						int s__o = (m_JobManager.is_sex_type_allowed(SKILL_ORALSEX, brothel)) ? current->get_skill(SKILL_ORALSEX) : -10;
-						int s__t = (m_JobManager.is_sex_type_allowed(SKILL_TITTYSEX, brothel)) ? current->get_skill(SKILL_TITTYSEX) : -10;
-						int s__h = (m_JobManager.is_sex_type_allowed(SKILL_HANDJOB, brothel)) ? current->get_skill(SKILL_HANDJOB) : -10;
-						int s__f = current->get_skill(SKILL_SERVICE);
-						int s__s = current->get_skill(SKILL_STRIP);
-
 						int test = 80;
 						do // now roll a random number and if that skill is higher than the test number set that as her job
 						{
-							switch (g_Dice % 12)
+							int testa = g_Dice % 12;
+							if (testa == 0 && !m_JobManager.is_sex_type_allowed(SKILL_BEASTIALITY, brothel))	testa++;
+							if (testa == 1 && !m_JobManager.is_sex_type_allowed(SKILL_BDSM, brothel))			testa++;
+							if (testa == 2 && !m_JobManager.is_sex_type_allowed(SKILL_GROUP, brothel))			testa++;
+							if (testa == 3 && !m_JobManager.is_sex_type_allowed(SKILL_ANAL, brothel))			testa++;
+							if (testa == 4 && !m_JobManager.is_sex_type_allowed(SKILL_NORMALSEX, brothel))		testa++;
+							if (testa == 5 && !m_JobManager.is_sex_type_allowed(SKILL_LESBIAN, brothel))		testa++;
+							if (testa == 6 && !m_JobManager.is_sex_type_allowed(SKILL_FOOTJOB, brothel))		testa++;
+							if (testa == 7 && !m_JobManager.is_sex_type_allowed(SKILL_HANDJOB, brothel))		testa++;
+							if (testa == 8 && !m_JobManager.is_sex_type_allowed(SKILL_ORALSEX, brothel))		testa++;
+							if (testa == 9 && !m_JobManager.is_sex_type_allowed(SKILL_TITTYSEX, brothel))		testa++;
+							if (testa == 10 && !m_JobManager.is_sex_type_allowed(SKILL_STRIP, brothel))			testa++;
+							switch (testa)
 							{
-							case 0:		if (test <= s__b) { sw = JOB_FILMBEAST;		swt = "perform in bestiality scenes"; }		break;
-							case 1:		if (test <= s__n) { sw = JOB_FILMSEX;		swt = "perform in normal sex scenes"; }		break;
-							case 2:		if (test <= s__a) { sw = JOB_FILMANAL;		swt = "perform in anal scenes"; }			break;
-							case 3:		if (test <= s__l) { sw = JOB_FILMLESBIAN;	swt = "perform in lesbian scenes"; }		break;
-							case 4:		if (test <= s__d) { sw = JOB_FILMBONDAGE;	swt = "perform in bondage scenes"; }		break;
-							case 5:		if (test <= s__g) { sw = JOB_FILMGROUP;		swt = "perform in group sex scenes"; }		break;
-							case 6:		if (test <= s__o) { sw = JOB_FILMORAL;		swt = "perform in oral sex scenes"; }		break;
-							case 7:		if (test <= s__t) { sw = JOB_FILMTITTY;		swt = "perform in titty fuck scenes"; }		break;
-							case 8:		if (test <= s__h) { sw = JOB_FILMHANDJOB;	swt = "perform in hand job scenes"; }		break;
-							case 9:		if (test <= s__s) { sw = JOB_FILMMAST;		swt = "perform in masturbation scenes"; }	break;
-							case 10:	if (test <= s__f) { sw = JOB_FILMFOOTJOB;	swt = "perform in foot job scenes"; }		break;
-							case 11:	if (test <= s__s) { sw = JOB_FILMSTRIP;		swt = "perform in strip tease scenes"; }	break;
+							case 0:		if (test <= current->get_skill(SKILL_BEASTIALITY))	{ sw = JOB_FILMBEAST;	ss << "perform in bestiality scenes."; }		break;
+							case 1:		if (test <= current->get_skill(SKILL_BDSM))			{ sw = JOB_FILMBONDAGE;	ss << "perform in bondage scenes."; }		break;
+							case 2:		if (test <= current->get_skill(SKILL_GROUP))		{ sw = JOB_FILMGROUP;	ss << "perform in group sex scenes."; }		break;
+							case 3:		if (test <= current->get_skill(SKILL_ANAL))			{ sw = JOB_FILMANAL;	ss << "perform in anal scenes."; }			break;
+							case 4:		if (test <= current->get_skill(SKILL_NORMALSEX))	{ sw = JOB_FILMSEX;		ss << "perform in normal sex scenes."; }		break;
+							case 5:		if (test <= current->get_skill(SKILL_LESBIAN))		{ sw = JOB_FILMLESBIAN;	ss << "perform in lesbian scenes."; }		break;
+							case 6:		if (test <= current->get_skill(SKILL_FOOTJOB))		{ sw = JOB_FILMFOOTJOB;	ss << "perform in foot job scenes."; }		break;
+							case 7:		if (test <= current->get_skill(SKILL_HANDJOB))		{ sw = JOB_FILMHANDJOB;	ss << "perform in hand job scenes."; }		break;
+							case 8:		if (test <= current->get_skill(SKILL_ORALSEX))		{ sw = JOB_FILMORAL;	ss << "perform in oral sex scenes."; }		break;
+							case 9:		if (test <= current->get_skill(SKILL_TITTYSEX))		{ sw = JOB_FILMTITTY;	ss << "perform in titty fuck scenes."; }		break;
+							case 10:	if (test <= current->get_skill(SKILL_STRIP))		{ sw = JOB_FILMSTRIP;	ss << "perform in strip tease scenes."; }	break;
+							case 11:	if (test <= current->get_skill(SKILL_PERFORMANCE))	{ sw = JOB_FILMMAST;	ss << "perform in masturbation scenes."; }	break;
 							default: break;
 							}
-							test -= 2;	// after each roll, lower the test number and roll again
-						} while (sw == JOB_FILMRANDOM && test > 0);	// until something is assigned or the test number gets too low
+							test -= 5;	// after each roll, lower the test number and roll again
+						} while (sw == JOB_FILMRANDOM);	// until something is assigned or the test number gets too low
 						current->m_NightJob = sw;	// when done set her job (random if the loop failed)
 					}
-					MatronMsg += swt + ".\n";
 				}
 				current->m_PrevDayJob = current->m_PrevNightJob = 255;
-				current->m_Events.AddMessage(MatronMsg, IMGTYPE_PROFILE, EVENT_BACKTOWORK);
-				MatronMsg = "";
+				sum = EVENT_BACKTOWORK;
 			}
 			else	// no one to send her back to work
 			{
 				current->m_DayJob = current->m_NightJob = restjob;
-				MatronWarningMsg += gettext("WARNING ") + girlName + gettext(" is doing nothing!\n");
-				current->m_Events.AddMessage(MatronWarningMsg, IMGTYPE_PROFILE, EVENT_WARNING);
-				MatronWarningMsg = "";
+				ss << "WARNING " << girlName << " is doing nothing!\n";
+				sum = EVENT_WARNING;
 			}
 		}
+		if (ss.str().length() > 0) current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
+
 		current = current->m_Next;
 	}
 
-	// Pre-Process Crew to make sure there is at least one camera mage and crystal purifier
+	///////////////////////////////////////////////////////////////////////////////////////////
+	// Pre-Process Crew to make sure there is at least one camera mage and crystal purifier. //
+	///////////////////////////////////////////////////////////////////////////////////////////
 	current = brothel->m_Girls;
 	while (current)
 	{
@@ -501,227 +523,177 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 			if (current->m_Next) { current = current->m_Next; continue; }
 			else { current = 0; break; }
 		}
-		summary = ""; ss.str("");
-		totalPay = totalTips = totalGold = 0;
+		sum = EVENT_SUMMARY; summary = ""; ss.str("");
 		girlName = current->m_Realname;
-		sum = EVENT_SUMMARY;
 
-		// do their job
-		sw = current->m_NightJob;
-		refused = m_JobManager.JobFunc[current->m_NightJob](current, brothel, SHIFT_NIGHT, summary);
-
-		//		Summary Messages
-		if (refused)
+		// will they do their job?
+		if (g_Girls.DisobeyCheck(current, ACTION_WORKMOVIE, brothel))
 		{
 			// if there is a Director and a camera or crystal refuses to work the director will not be happy.
 			if (matron)
 			{
+				int test = 0; sw = JOB_FILMRANDOM;
 				// setting day job as an easy way of tracking what the director makes the refuser do
 				current->m_DayJob = current->m_NightJob;
-				string swt = "";
-				summary += "Annoyed by her refusal to ";
-				summary += (current->m_DayJob == JOB_CAMERAMAGE) ? "film" : "edit";
-				summary += " the scenes, the Director ordered " + current->m_Realname + " to ";
-
+				ss << "Annoyed by her refusal to " << (current->m_DayJob == JOB_CAMERAMAGE ? "film" : "edit");
+				ss << " the scenes, the Director ordered " << girlName << " to ";
 				// currently this is random but when the morality system gets added, this will be decided by the director's morality
-				int skill = SKILL_STRIP;
-				do	{
-					int maxroll = JOB_FILMRANDOM - 1 - JOB_FILMBEAST;
-					int roll = g_Dice%maxroll;
-					sw = roll + JOB_FILMBEAST;
-					switch (sw)
+				do // now roll a random number and make sure it is allowed
+				{
+					int testa = g_Dice % 12;
+					if (testa == 0 && !m_JobManager.is_sex_type_allowed(SKILL_BEASTIALITY, brothel))	testa++;
+					if (testa == 1 && !m_JobManager.is_sex_type_allowed(SKILL_BDSM, brothel))			testa++;
+					if (testa == 2 && !m_JobManager.is_sex_type_allowed(SKILL_GROUP, brothel))			testa++;
+					if (testa == 3 && !m_JobManager.is_sex_type_allowed(SKILL_ANAL, brothel))			testa++;
+					if (testa == 4 && !m_JobManager.is_sex_type_allowed(SKILL_NORMALSEX, brothel))		testa++;
+					if (testa == 5 && !m_JobManager.is_sex_type_allowed(SKILL_LESBIAN, brothel))		testa++;
+					if (testa == 6 && !m_JobManager.is_sex_type_allowed(SKILL_FOOTJOB, brothel))		testa++;
+					if (testa == 7 && !m_JobManager.is_sex_type_allowed(SKILL_HANDJOB, brothel))		testa++;
+					if (testa == 8 && !m_JobManager.is_sex_type_allowed(SKILL_ORALSEX, brothel))		testa++;
+					if (testa == 9 && !m_JobManager.is_sex_type_allowed(SKILL_TITTYSEX, brothel))		testa++;
+					if (testa == 10 && !m_JobManager.is_sex_type_allowed(SKILL_STRIP, brothel))			testa++;
+					switch (testa)	// if that skill is lower than the test number have her do that as punishment
 					{
-					case JOB_FILMBEAST:				skill = SKILL_BEASTIALITY;	swt = "have sex with a beast";	break;
-					case JOB_FILMSEX:				skill = SKILL_NORMALSEX;	swt = "have sex with one of the extras";	break;
-					case JOB_FILMANAL:				skill = SKILL_ANAL;			swt = "have anal sex with one of the extras";	break;
-					case JOB_FILMLESBIAN:			skill = SKILL_LESBIAN;		swt = "have sex with one of the other girls";	break;
-					case JOB_FILMBONDAGE:			skill = SKILL_BDSM;			swt = "get tied up and whipped";	break;
-					case JOB_FILMGROUP:				skill = SKILL_GROUP;		swt = "have sex with all the extras";	break;
-					case JOB_FILMORAL:				skill = SKILL_ORALSEX;		swt = "blow one of the extras";	break;
-					case JOB_FILMTITTY:				skill = SKILL_TITTYSEX;		swt = "let one of the extras fuck her tits";	break;
-					case JOB_FILMHANDJOB:			skill = SKILL_HANDJOB;		swt = "jack off one of the extras";	break;
-					case JOB_FILMFOOTJOB:			skill = SKILL_SERVICE;		swt = "use her feet on one of the extras";	break;
-					case JOB_FILMMAST:				skill = SKILL_STRIP;		swt = "get herself off";	break;
-					case JOB_FILMSTRIP:	default:	skill = SKILL_STRIP;		swt = "take her clothes off";	break;
+					case 0:		if (test <= current->get_skill(SKILL_BEASTIALITY))	{ sw = JOB_FILMBEAST;	ss << "have sex with a beast"; }	break;
+					case 1:		if (test <= current->get_skill(SKILL_BDSM))			{ sw = JOB_FILMBONDAGE;	ss << "get tied up and whipped"; }	break;
+					case 2:		if (test <= current->get_skill(SKILL_GROUP))		{ sw = JOB_FILMGROUP;	ss << "have sex with all the extras"; }	break;
+					case 3:		if (test <= current->get_skill(SKILL_ANAL))			{ sw = JOB_FILMANAL;	ss << "have anal sex with one of the extras"; }	break;
+					case 4:		if (test <= current->get_skill(SKILL_NORMALSEX))	{ sw = JOB_FILMSEX;		ss << "have sex with one of the extras"; }	break;
+					case 5:		if (test <= current->get_skill(SKILL_LESBIAN))		{ sw = JOB_FILMLESBIAN;	ss << "have sex with one of the other girls"; }	break;
+					case 6:		if (test <= current->get_skill(SKILL_FOOTJOB))		{ sw = JOB_FILMFOOTJOB;	ss << "use her feet on one of the extras"; }	break;
+					case 7:		if (test <= current->get_skill(SKILL_HANDJOB))		{ sw = JOB_FILMHANDJOB;	ss << "jack off one of the extras"; }	break;
+					case 8:		if (test <= current->get_skill(SKILL_ORALSEX))		{ sw = JOB_FILMORAL;	ss << "blow one of the extras"; }	break;
+					case 9:		if (test <= current->get_skill(SKILL_TITTYSEX))		{ sw = JOB_FILMTITTY;	ss << "let one of the extras fuck her tits"; }	break;
+					case 10:	if (test <= current->get_skill(SKILL_STRIP))		{ sw = JOB_FILMSTRIP;	ss << "take her clothes off"; }	break;
+					case 11:	if (test <= current->get_skill(SKILL_PERFORMANCE))	{ sw = JOB_FILMMAST;	ss << "get herself off"; }	break;
+					default: break;
 					}
-				} while (!(m_JobManager.is_sex_type_allowed(skill, brothel)));
-				current->m_NightJob = sw;
-				summary += swt + " while someone else filmed it.";
+					test += 5;	// after each roll, lower the test number and roll again
+				} while (sw == JOB_FILMRANDOM);	// until something is assigned or the test number gets too low
+				current->m_NightJob = sw;	// when done set her job (random if the loop failed)
+
+				ss << " while someone else filmed it.";
 			}
 			else
 			{
+				current->m_Refused_To_Work_Night = true;
 				brothel->m_Fame -= g_Girls.GetStat(current, STAT_FAME);
-				summary += girlName + gettext(" refused to work so made no money.");
+				ss << girlName << " refused to work so made no money.";
 			}
 		}
 		else	// if she did not refuse to work...
 		{
 			if (current->m_NightJob == JOB_CAMERAMAGE) camera = true;
 			if (current->m_NightJob == JOB_CRYSTALPURIFIER) crystal = true;
-
-			totalPay += current->m_Pay;
-			totalTips += current->m_Tips;
-			totalGold += current->m_Pay + current->m_Tips;
-			g_Brothels.CalculatePay(brothel, current, current->m_NightJob);
-
-
-			brothel->m_Fame += g_Girls.GetStat(current, STAT_FAME);
-			// `J` if a slave does a job that is normally paid by you but you don't pay your slaves...
-			if (m_JobManager.is_job_Paid_Player(sw) && current->is_slave() && !cfg.initial.slave_pay_outofpocket())
-			{
-				summary += "\nYou own her and you don't pay your slaves.";
-			}
-			else if (totalGold > 0)
-			{
-				ss << girlName << " earned a total of " << totalGold << " gold";
-				// if it is a player paid job and she is not a slave
-				if ((m_JobManager.is_job_Paid_Player(current->m_NightJob) && !current->is_slave()) ||
-					// or if it is a player paid job	and she is a slave		but you pay slaves out of pocket.
-					(m_JobManager.is_job_Paid_Player(current->m_NightJob) && current->is_slave() && cfg.initial.slave_pay_outofpocket()))
-					ss << " directly from you. She gets to keep it all.";
-				else if (current->house() <= 0)				ss << " and she gets to keep it all.";
-				else if (totalTips>0 && ((cfg.initial.girls_keep_tips() && !current->is_slave()) || (cfg.initial.slave_keep_tips() && current->is_slave())))
-				{
-					int hpay = int(double(totalPay * double(current->m_Stats[STAT_HOUSE] * 0.01)));
-					int gpay = totalPay - hpay;
-					ss << ".\nShe keeps the " << totalTips << " she got in tips and her cut (" << 100 - current->m_Stats[STAT_HOUSE] << "%) of the payment amounting to " << gpay << " gold.\n\nYou got " << hpay << " gold (" << current->m_Stats[STAT_HOUSE] << "%).";
-				}
-				else
-				{
-					int hpay = int(double(totalGold * double(current->m_Stats[STAT_HOUSE] * 0.01)));
-					int gpay = totalGold - hpay;
-					ss << ".\nShe keeps " << gpay << " gold. (" << 100 - current->m_Stats[STAT_HOUSE] << "%)\nYou keep " << hpay << " gold (" << current->m_Stats[STAT_HOUSE] << "%).";
-				}
-				summary += ss.str();
-			}
-			else if (totalGold == 0) summary += girlName + gettext(" made no money.");
-			else if (totalGold < 0)
-			{
-				ss << "ERROR: She has a loss of " << totalGold << " gold\n\n Please report this to the Pink Petal Devloment Team at http://pinkpetal.org";
-				summary += ss.str();
-				sum = EVENT_DEBUG;
-			}
 		}
-		current->m_Events.AddMessage(summary, IMGTYPE_PROFILE, sum);
+		if (ss.str().length() > 0) current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
 
 		current = current->m_Next; // Next Girl
 	}
 
-	// If after the camera and crystal are processed, one of those jobs is vacant, try to fill it.
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// If after the camera and crystal are processed, one of those jobs is vacant, try to have the Director fill it.  //
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	current = brothel->m_Girls;
 	while (current && matron && (!camera || !crystal))
 	{	// skip dead girls, the director and anyone resting (the director would have assigned them a new job already if they were able to work)
 		if (current->health() <= 0 || current->m_NightJob == matronjob || current->m_NightJob == restjob ||
 			// skip JOB_CAMERAMAGE and JOB_CRYSTALPURIFIER if there is only one of them
 			(current->m_NightJob == JOB_CAMERAMAGE && GetNumGirlsOnJob(brothel->m_id, JOB_CAMERAMAGE, 1) < 2) ||
-			(current->m_NightJob == JOB_CRYSTALPURIFIER && GetNumGirlsOnJob(brothel->m_id, JOB_CRYSTALPURIFIER, 1) < 2))
+			(current->m_NightJob == JOB_CRYSTALPURIFIER && GetNumGirlsOnJob(brothel->m_id, JOB_CRYSTALPURIFIER, 1) < 2) ||
+			// skip anyone if they have refused already
+			(current->m_DayJob != restjob))
 		{
 			if (current->m_Next) { current = current->m_Next; continue; }
 			else { current = 0; break; }
 		}
-		// setting day job as an easy way of tracking what the girl was doing before the director tries to reassign her
-		current->m_DayJob = current->m_NightJob;
-		summary = ""; ss.str("");
-		totalPay = totalTips = totalGold = 0;
-		refused = false;
-		girlName = current->m_Realname;
-		sum = EVENT_SUMMARY;
-
-		// now to assign the new job and see if she will do it
-		if (!camera)		current->m_NightJob = JOB_CAMERAMAGE;
-		else if (!crystal)	current->m_NightJob = JOB_CRYSTALPURIFIER;
-		refused = m_JobManager.JobFunc[current->m_NightJob](current, brothel, SHIFT_NIGHT, summary);
-
 		//		Summary Messages
-		if (refused) // put her back on her other job
+		if (!g_Girls.DisobeyCheck(current, ACTION_WORKMOVIE, brothel))	// if she did not refuse to work...
 		{
-			current->m_NightJob = current->m_DayJob;
-			current->m_DayJob = restjob;
-		}
-		else	// if she did not refuse to work...
-		{
-			totalPay += current->m_Pay;
-			totalTips += current->m_Tips;
-			totalGold += current->m_Pay + current->m_Tips;
-			g_Brothels.CalculatePay(brothel, current, current->m_NightJob);
-
-			brothel->m_Fame += g_Girls.GetStat(current, STAT_FAME);
-			// `J` if a slave does a job that is normally paid by you but you don't pay your slaves...
-			if (m_JobManager.is_job_Paid_Player(sw) && current->is_slave() && !cfg.initial.slave_pay_outofpocket())
+			// setting day job as an easy way of tracking what the girl was doing before the director tries to reassign her
+			current->m_DayJob = current->m_NightJob;
+			if (!camera)
 			{
-				summary += "\nYou own her and you don't pay your slaves.";
+				current->m_NightJob = JOB_CAMERAMAGE;
+				camera = true;
 			}
-			else if (totalGold > 0)
+			else if (!crystal)
 			{
-				ss << girlName << " earned a total of " << totalGold << " gold";
-				// if it is a player paid job and she is not a slave
-				if ((m_JobManager.is_job_Paid_Player(current->m_NightJob) && !current->is_slave()) ||
-					// or if it is a player paid job	and she is a slave		but you pay slaves out of pocket.
-					(m_JobManager.is_job_Paid_Player(current->m_NightJob) && current->is_slave() && cfg.initial.slave_pay_outofpocket()))
-					ss << " directly from you. She gets to keep it all.";
-				else if (current->house() <= 0)				ss << " and she gets to keep it all.";
-				else if (totalTips>0 && ((cfg.initial.girls_keep_tips() && !current->is_slave()) || (cfg.initial.slave_keep_tips() && current->is_slave())))
-				{
-					int hpay = int(double(totalPay * double(current->m_Stats[STAT_HOUSE] * 0.01)));
-					int gpay = totalPay - hpay;
-					ss << ".\nShe keeps the " << totalTips << " she got in tips and her cut (" << 100 - current->m_Stats[STAT_HOUSE] << "%) of the payment amounting to " << gpay << " gold.\n\nYou got " << hpay << " gold (" << current->m_Stats[STAT_HOUSE] << "%).";
-				}
-				else
-				{
-					int hpay = int(double(totalGold * double(current->m_Stats[STAT_HOUSE] * 0.01)));
-					int gpay = totalGold - hpay;
-					ss << ".\nShe keeps " << gpay << " gold. (" << 100 - current->m_Stats[STAT_HOUSE] << "%)\nYou keep " << hpay << " gold (" << current->m_Stats[STAT_HOUSE] << "%).";
-				}
-				summary += ss.str();
+				current->m_NightJob = JOB_CRYSTALPURIFIER;
+				crystal = true;
 			}
-			else if (totalGold == 0) summary += girlName + gettext(" made no money.");
-			else if (totalGold < 0)
-			{
-				ss << "ERROR: She has a loss of " << totalGold << " gold\n\n Please report this to the Pink Petal Devloment Team at http://pinkpetal.org";
-				summary += ss.str();
-				sum = EVENT_DEBUG;
-			}
-			current->m_Events.AddMessage(summary, IMGTYPE_PROFILE, sum);
-			summary = "";
-			if (current->m_NightJob == JOB_CAMERAMAGE) camera = true;
-			if (current->m_NightJob == JOB_CRYSTALPURIFIER) crystal = true;
 		}
 		current = current->m_Next; // Next Girl
 	}
 
 	// last check, is there a crew to film?
-	readytofilm = (camera && crystal) ? true : false;
+	readytofilm = (camera && crystal);
 
-	// if the filming can not procede even after trying to fill the jobs (or there is no Director to fill the jobs)
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// If the filming can not procede even after trying to fill the jobs (or there is no Director to fill the jobs)  //
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	current = brothel->m_Girls;
 	while (current && !readytofilm)
 	{
 		if (current->health() <= 0 || current->m_NightJob == restjob || current->m_NightJob == matronjob)
-		{	// skip dead girls and the director (if there is one)
+		{	// skip dead girls, resting girls and the director (if there is one)
 			if (current->m_Next) { current = current->m_Next; continue; }
 			else { current = 0; break; }
 		}
 		girlName = current->m_Realname;
-		summary = "There was no crew to film the scene, so " + girlName + " took the day off";
-		current->m_Events.AddMessage(summary, IMGTYPE_PROFILE, EVENT_NOWORK);
+		if (current->m_NightJob == JOB_STAGEHAND || current->m_NightJob == JOB_PROMOTER) // these two can still work
+		{
+			totalPay = totalTips = totalGold = 0; 
+			refused = m_JobManager.JobFunc[current->m_NightJob](current, brothel, SHIFT_NIGHT, summary);
+			totalPay += current->m_Pay;
+			totalTips += current->m_Tips;
+			totalGold += current->m_Pay + current->m_Tips;
+			g_Brothels.CalculatePay(brothel, current, current->m_NightJob);
+
+			//		Summary Messages
+			if (refused)
+			{
+				brothel->m_Fame -= g_Girls.GetStat(current, STAT_FAME);
+				ss << girlName << " refused to work so made no money.";
+			}
+			else
+			{
+				ss << m_JobManager.GirlPaymentText(brothel, current, totalTips, totalPay, totalGold, SHIFT_NIGHT);
+				if (totalGold < 0) sum = EVENT_DEBUG;
+				brothel->m_Fame += g_Girls.GetStat(current, STAT_FAME);
+			}
+		}
+		else
+		{
+			ss.str(""); ss << "There was no crew to film the scene, so " << girlName << " took the day off";
+			current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
+		}
+		if (ss.str().length() > 0) current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
 
 		current = current->m_Next;
 	}
 
-	// Process the rest of the Crew
+	////////////////////////
+	// Process the Crew.  //
+	////////////////////////
 	current = brothel->m_Girls;
 	while (current && readytofilm)
 	{
-		if (current->health() <= 0 || (current->m_NightJob != JOB_PROMOTER && current->m_NightJob != JOB_STAGEHAND && current->m_NightJob != JOB_FLUFFER))
-		{	// skip dead girls and anyone not working the jobs we are processing
+		if (current->health() <= 0 || (current->m_NightJob != JOB_PROMOTER && current->m_NightJob != JOB_STAGEHAND &&
+			current->m_NightJob != JOB_FLUFFER && current->m_NightJob != JOB_CAMERAMAGE && current->m_NightJob != JOB_CRYSTALPURIFIER)
+			// skip dead girls and anyone not working the jobs we are processing
+			|| (current->m_NightJob == JOB_CAMERAMAGE && current->m_Refused_To_Work_Night) 
+			// and skip any camera or crystal who refused to work in the first check and were not reassigned
+			|| (current->m_NightJob == JOB_CRYSTALPURIFIER && current->m_Refused_To_Work_Night))
+		{	
 			if (current->m_Next) { current = current->m_Next; continue; }
 			else { current = 0; break; }
 		}
-		current->m_Pay = current->m_Tips = totalPay = totalTips = totalGold = 0;
-		refused = false;
+		totalPay = totalTips = totalGold = 0;
+		sum = EVENT_SUMMARY; summary = ""; ss.str("");
 		girlName = current->m_Realname;
-		sum = EVENT_SUMMARY;
 
+		if (current->m_NightJob == JOB_CAMERAMAGE || current->m_NightJob == JOB_CRYSTALPURIFIER) summary = "SkipDisobey";
 		// do their job
 		refused = m_JobManager.JobFunc[current->m_NightJob](current, brothel, SHIFT_NIGHT, summary);
 
@@ -729,58 +701,28 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 		totalTips += current->m_Tips;
 		totalGold += current->m_Pay + current->m_Tips;
 		g_Brothels.CalculatePay(brothel, current, current->m_NightJob);
+
 		//		Summary Messages
 		if (refused)
 		{
 			brothel->m_Fame -= g_Girls.GetStat(current, STAT_FAME);
-			summary += girlName + gettext(" refused to work so made no money.");
+			ss << girlName << " refused to work so made no money.";
 		}
 		else
 		{
+			ss << m_JobManager.GirlPaymentText(brothel, current, totalTips, totalPay, totalGold, SHIFT_NIGHT);
+			if (totalGold < 0) sum = EVENT_DEBUG;
+
 			brothel->m_Fame += g_Girls.GetStat(current, STAT_FAME);
-			// `J` if a slave does a job that is normally paid by you but you don't pay your slaves...
-			if (m_JobManager.is_job_Paid_Player(sw) && current->is_slave() && !cfg.initial.slave_pay_outofpocket())
-			{
-				summary += "\nYou own her and you don't pay your slaves.";
-			}
-			else if (totalGold > 0)
-			{
-				ss << girlName << " earned a total of " << totalGold << " gold";
-				// if it is a player paid job and she is not a slave
-				if ((m_JobManager.is_job_Paid_Player(current->m_NightJob) && !current->is_slave()) ||
-					// or if it is a player paid job	and she is a slave		but you pay slaves out of pocket.
-					(m_JobManager.is_job_Paid_Player(current->m_NightJob) && current->is_slave() && cfg.initial.slave_pay_outofpocket()))
-					ss << " directly from you. She gets to keep it all.";
-				else if (current->house() <= 0)				ss << " and she gets to keep it all.";
-				else if (totalTips>0 && ((cfg.initial.girls_keep_tips() && !current->is_slave()) || (cfg.initial.slave_keep_tips() && current->is_slave())))
-				{
-					int hpay = int(double(totalPay * double(current->m_Stats[STAT_HOUSE] * 0.01)));
-					int gpay = totalPay - hpay;
-					ss << ".\nShe keeps the " << totalTips << " she got in tips and her cut (" << 100 - current->m_Stats[STAT_HOUSE] << "%) of the payment amounting to " << gpay << " gold.\n\nYou got " << hpay << " gold (" << current->m_Stats[STAT_HOUSE] << "%).";
-				}
-				else
-				{
-					int hpay = int(double(totalGold * double(current->m_Stats[STAT_HOUSE] * 0.01)));
-					int gpay = totalGold - hpay;
-					ss << ".\nShe keeps " << gpay << " gold. (" << 100 - current->m_Stats[STAT_HOUSE] << "%)\nYou keep " << hpay << " gold (" << current->m_Stats[STAT_HOUSE] << "%).";
-				}
-				summary += ss.str();
-			}
-			else if (totalGold == 0) summary += girlName + gettext(" made no money.");
-			else if (totalGold < 0)
-			{
-				ss << "ERROR: She has a loss of " << totalGold << " gold\n\n Please report this to the Pink Petal Devloment Team at http://pinkpetal.org";
-				summary += ss.str();
-				sum = EVENT_DEBUG;
-			}
 		}
-		current->m_Events.AddMessage(summary, IMGTYPE_PROFILE, sum);
-		summary = "";
+		current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
 
 		current = current->m_Next; // Next Girl
 	}
 
-	// Process Stars
+	/////////////////////
+	// Process Stars.  //
+	/////////////////////
 	current = brothel->m_Girls;
 	while (current && readytofilm)
 	{
@@ -791,96 +733,77 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 			else { current = 0; break; }
 		}
 
-		current->m_Pay = current->m_Tips = totalPay = totalTips = totalGold = 0;
+		totalPay = totalTips = totalGold = 0;
+		sum = EVENT_SUMMARY; summary = ""; ss.str("");
 		refused = false;
 		girlName = current->m_Realname;
 
 		// `J` only JOB_FILMRANDOM will check if anything is prohibited. If you put them on a specific job, then it is you breaking the prohibition.
 		if (sw == JOB_FILMRANDOM)
 		{
-			int skill = SKILL_STRIP;
-			do	{
-				int maxroll = JOB_FILMRANDOM - 1 - JOB_FILMBEAST;
-				int roll = g_Dice%maxroll;
-				sw = roll + JOB_FILMBEAST;
-				switch (sw)
+			int test = 80;
+			do // now roll a random number and if that skill is higher than the test number set that as her job
+			{
+				int testa = g_Dice % 12;
+				if (testa == 0 && !m_JobManager.is_sex_type_allowed(SKILL_BEASTIALITY, brothel))	testa++;
+				if (testa == 1 && !m_JobManager.is_sex_type_allowed(SKILL_BDSM, brothel))			testa++;
+				if (testa == 2 && !m_JobManager.is_sex_type_allowed(SKILL_GROUP, brothel))			testa++;
+				if (testa == 3 && !m_JobManager.is_sex_type_allowed(SKILL_ANAL, brothel))			testa++;
+				if (testa == 4 && !m_JobManager.is_sex_type_allowed(SKILL_NORMALSEX, brothel))		testa++;
+				if (testa == 5 && !m_JobManager.is_sex_type_allowed(SKILL_LESBIAN, brothel))		testa++;
+				if (testa == 6 && !m_JobManager.is_sex_type_allowed(SKILL_FOOTJOB, brothel))		testa++;
+				if (testa == 7 && !m_JobManager.is_sex_type_allowed(SKILL_HANDJOB, brothel))		testa++;
+				if (testa == 8 && !m_JobManager.is_sex_type_allowed(SKILL_ORALSEX, brothel))		testa++;
+				if (testa == 9 && !m_JobManager.is_sex_type_allowed(SKILL_TITTYSEX, brothel))		testa++;
+				if (testa == 10 && !m_JobManager.is_sex_type_allowed(SKILL_STRIP, brothel))			testa++;
+				switch (testa)
 				{
-				case JOB_FILMBEAST:		skill = SKILL_BEASTIALITY;	break;
-				case JOB_FILMSEX:		skill = SKILL_NORMALSEX;	break;
-				case JOB_FILMANAL:		skill = SKILL_ANAL;			break;
-				case JOB_FILMLESBIAN:	skill = SKILL_LESBIAN;		break;
-				case JOB_FILMBONDAGE:	skill = SKILL_BDSM;			break;
-				case JOB_FILMGROUP:		skill = SKILL_GROUP;		break;
-				case JOB_FILMORAL:		skill = SKILL_ORALSEX;		break;
-				case JOB_FILMTITTY:		skill = SKILL_TITTYSEX;		break;
-				case JOB_FILMHANDJOB:	skill = SKILL_HANDJOB;		break;
-					// strip and mast are the only ones that can not be prohibited.
-				case JOB_FILMMAST:
-				case JOB_FILMFOOTJOB:
-				case JOB_FILMSTRIP:		skill = SKILL_STRIP;		break;
-				default:					break;
+				case 0:		if (test <= current->get_skill(SKILL_BEASTIALITY))	{ sw = JOB_FILMBEAST;	}	break;
+				case 1:		if (test <= current->get_skill(SKILL_BDSM))			{ sw = JOB_FILMBONDAGE;	}	break;
+				case 2:		if (test <= current->get_skill(SKILL_GROUP))		{ sw = JOB_FILMGROUP;	}	break;
+				case 3:		if (test <= current->get_skill(SKILL_ANAL))			{ sw = JOB_FILMANAL;	}	break;
+				case 4:		if (test <= current->get_skill(SKILL_NORMALSEX))	{ sw = JOB_FILMSEX;		}	break;
+				case 5:		if (test <= current->get_skill(SKILL_LESBIAN))		{ sw = JOB_FILMLESBIAN;	}	break;
+				case 6:		if (test <= current->get_skill(SKILL_FOOTJOB))		{ sw = JOB_FILMFOOTJOB;	}	break;
+				case 7:		if (test <= current->get_skill(SKILL_HANDJOB))		{ sw = JOB_FILMHANDJOB;	}	break;
+				case 8:		if (test <= current->get_skill(SKILL_ORALSEX))		{ sw = JOB_FILMORAL;	}	break;
+				case 9:		if (test <= current->get_skill(SKILL_TITTYSEX))		{ sw = JOB_FILMTITTY;	}	break;
+				case 10:	if (test <= current->get_skill(SKILL_STRIP))		{ sw = JOB_FILMSTRIP;	}	break;
+				case 11:	if (test <= current->get_skill(SKILL_PERFORMANCE))	{ sw = JOB_FILMMAST;	}	break;
+				default: break;
 				}
-			} while (!(m_JobManager.is_sex_type_allowed(skill, brothel)));
+				test -= 5;	// after each roll, lower the test number and roll again
+			} while (sw == JOB_FILMRANDOM);	// until something is assigned or the test number gets too low
 		}
 		refused = m_JobManager.JobFunc[sw](current, brothel, SHIFT_NIGHT, summary);
 
 		totalPay += current->m_Pay;
 		totalTips += current->m_Tips;
 		totalGold += current->m_Pay + current->m_Tips;
-		g_Brothels.CalculatePay(brothel, current, sw);
+		g_Brothels.CalculatePay(brothel, current, current->m_NightJob);
+
 		//	Summary Messages
 		if (refused)
 		{
 			brothel->m_Fame -= g_Girls.GetStat(current, STAT_FAME);
-			summary += girlName + gettext(" refused to work so made no money.");
+			ss << girlName << " refused to work so made no money.";
 		}
 		else
 		{
+			ss << m_JobManager.GirlPaymentText(brothel, current, totalTips, totalPay, totalGold, SHIFT_NIGHT);
+			if (totalGold < 0) sum = EVENT_DEBUG;
+
 			brothel->m_Fame += g_Girls.GetStat(current, STAT_FAME);
-			// `J` if a slave does a job that is normally paid by you but you don't pay your slaves...
-			if (m_JobManager.is_job_Paid_Player(sw) && current->is_slave() && !cfg.initial.slave_pay_outofpocket())
-			{
-				summary += "\nYou own her and you don't pay your slaves.";
-			}
-			else if (totalGold > 0)
-			{
-				ss << girlName << " earned a total of " << totalGold << " gold";
-				// if it is a player paid job and she is not a slave
-				if ((m_JobManager.is_job_Paid_Player(current->m_NightJob) && !current->is_slave()) ||
-					// or if it is a player paid job	and she is a slave		but you pay slaves out of pocket.
-					(m_JobManager.is_job_Paid_Player(current->m_NightJob) && current->is_slave() && cfg.initial.slave_pay_outofpocket()))
-					ss << " directly from you. She gets to keep it all.";
-				else if (current->house() <= 0)				ss << " and she gets to keep it all.";
-				else if (totalTips>0 && ((cfg.initial.girls_keep_tips() && !current->is_slave()) || (cfg.initial.slave_keep_tips() && current->is_slave())))
-				{
-					int hpay = int(double(totalPay * double(current->m_Stats[STAT_HOUSE] * 0.01)));
-					int gpay = totalPay - hpay;
-					ss << ".\nShe keeps the " << totalTips << " she got in tips and her cut (" << 100 - current->m_Stats[STAT_HOUSE] << "%) of the payment amounting to " << gpay << " gold.\n\nYou got " << hpay << " gold (" << current->m_Stats[STAT_HOUSE] << "%).";
-				}
-				else
-				{
-					int hpay = int(double(totalGold * double(current->m_Stats[STAT_HOUSE] * 0.01)));
-					int gpay = totalGold - hpay;
-					ss << ".\nShe keeps " << gpay << " gold. (" << 100 - current->m_Stats[STAT_HOUSE] << "%)\nYou keep " << hpay << " gold (" << current->m_Stats[STAT_HOUSE] << "%).";
-				}
-				summary += ss.str();
-			}
-			else if (totalGold == 0) summary += girlName + gettext(" made no money.");
-			else if (totalGold < 0)
-			{
-				ss << "ERROR: She has a loss of " << totalGold << " gold\n\n Please report this to the Pink Petal Devloment Team at http://pinkpetal.org";
-				summary += ss.str();
-				sum = EVENT_DEBUG;
-			}
 		}
-		current->m_Events.AddMessage(summary, IMGTYPE_PROFILE, sum);
-		summary = "";
+		current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
+
 		current = current->m_Next;	// Process next girl
 	}
 
 
-
-	// Finaly do end of day stuff
+	///////////////////////////////////
+	//  Finaly do end of day stuff.  //
+	///////////////////////////////////
 	current = brothel->m_Girls;
 	while (current)
 	{
@@ -890,6 +813,7 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 			else { current = 0; break; }
 		}
 		girlName = current->m_Realname;
+		sum = EVENT_SUMMARY; summary = ""; ss.str("");
 
 		// reset temporary matron reassignment if any
 		if (current->m_DayJob != restjob)
@@ -897,8 +821,6 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 			current->m_NightJob = current->m_DayJob;
 			current->m_DayJob = restjob;
 		}
-
-		g_Girls.AddTiredness(current);		// `J` moved all girls add tiredness to one place
 
 		// update for girls items that are not used up
 		do_daily_items(brothel, current);					// `J` added
@@ -909,32 +831,32 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 		g_Girls.UpdateStat(current, STAT_HEALTH, 2, false);
 		g_Girls.UpdateStat(current, STAT_TIREDNESS, -2, false);
 
-		MatronMsg = "", MatronWarningMsg = "";
 		if (g_Girls.GetStat(current, STAT_HAPPINESS) < 40)
 		{
 			if (current->m_NightJob != matronjob && matron && brothel->m_NumGirls > 1 && g_Dice.percent(70))
 			{
-				MatronMsg = gettext("The Director helps cheer up ") + girlName + gettext(" when she is feeling sad.\n");
+				ss << "The Director helps cheer up " << girlName << " when she is feeling sad.\n";
 				g_Girls.UpdateStat(current, STAT_HAPPINESS, g_Dice % 10 + 5);
 			}
 			else if (brothel->m_NumGirls > 10 && g_Dice.percent(50))
 			{
-				MatronMsg = gettext("Some of the other girls help cheer up ") + girlName + gettext(" when she is feeling sad.\n");
+				ss << "Some of the other girls help cheer up " << girlName << " when she is feeling sad.\n";
 				g_Girls.UpdateStat(current, STAT_HAPPINESS, g_Dice % 8 + 3);
 			}
 			else if (brothel->m_NumGirls > 1 && g_Dice.percent(max(brothel->m_NumGirls, 50)))
 			{
-				MatronMsg = gettext("One of the other girls helps cheer up ") + girlName + gettext(" when she is feeling sad.\n");
+				ss << "One of the other girls helps cheer up " << girlName << " when she is feeling sad.\n";
 				g_Girls.UpdateStat(current, STAT_HAPPINESS, g_Dice % 6 + 2);
 			}
 			else if (brothel->m_NumGirls == 1 && g_Dice.percent(70))
 			{
-				MatronMsg = girlName + gettext(" plays around in the empty Studio until she feels better.\n");
+				ss << girlName << " plays around in the empty Studio until she feels better.\n";
 				g_Girls.UpdateStat(current, STAT_HAPPINESS, g_Dice % 10 + 10);
 			}
 			else if (g_Girls.GetStat(current, STAT_HAPPINESS) < 20) // no one helps her and she is really unhappy
 			{
-				MatronWarningMsg = girlName + gettext(" is looking very depressed. You may want to do something about that before she does something drastic.\n");
+				ss << girlName << " is looking very depressed. You may want to do something about that before she does something drastic.\n";
+				sum = EVENT_WARNING;
 			}
 		}
 
@@ -945,12 +867,12 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 
 			if (!matron)	// do no matron first as it is the easiest
 			{
-				MatronWarningMsg += gettext("WARNING! ") + girlName;
-				if (t > 80 && h < 20)		MatronWarningMsg += gettext(" is in real bad shape, she is tired and injured.\nShe should go to the Clinic.\n");
-				else if (t > 80 && h < 40)	MatronWarningMsg += gettext(" is in bad shape, she is tired and injured.\nShe should rest or she may die!\n");
-				else if (t > 80)			MatronWarningMsg += gettext(" is desparatly in need of rest.\nGive her some free time\n");
-				else if (h < 20)			MatronWarningMsg += gettext(" is badly injured.\nShe should rest or go to the Clinic.\n");
-				else if (h < 40)			MatronWarningMsg += gettext(" is hurt.\nShe should rest and recuperate.\n");
+				ss << "WARNING! " << girlName;
+				if (t > 80 && h < 20)		ss << " is in real bad shape, she is tired and injured.\nShe should go to the Clinic.\n";
+				else if (t > 80 && h < 40)	ss << " is in bad shape, she is tired and injured.\nShe should rest or she may die!\n";
+				else if (t > 80)			ss << " is desparatly in need of rest.\nGive her some free time\n";
+				else if (h < 20)			ss << " is badly injured.\nShe should rest or go to the Clinic.\n";
+				else if (h < 40)			ss << " is hurt.\nShe should rest and recuperate.\n";
 			}
 			else if (current->m_NightJob == matronjob && matron)	// do matron	
 			{
@@ -959,32 +881,32 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 					current->m_PrevDayJob = current->m_DayJob;
 					current->m_PrevNightJob = current->m_NightJob;
 					current->m_DayJob = current->m_NightJob = restjob;
-					MatronWarningMsg += gettext("The Director takes herself off duty because she is just too damn sore.\n");
+					ss << "The Director takes herself off duty because she is just too damn sore.\n";
 					g_Girls.UpdateEnjoyment(current, ACTION_WORKMOVIE, -10, true);
 				}
 				else
 				{
-					MatronWarningMsg += gettext("As Director, ") + girlName + gettext(" has the keys to the store room.\nShe used them to 'borrow' ");
+					ss << "As Director, " << girlName << " has the keys to the store room.\nShe used them to 'borrow' ";
 					if (t > 80 && h < 40)
 					{
-						MatronWarningMsg += gettext("some potions");
+						ss << "some potions";
 						g_Gold.consumable_cost(20, true);
 						current->m_Stats[STAT_HEALTH] = min(current->m_Stats[STAT_HEALTH] + 20, 100);
 						current->m_Stats[STAT_TIREDNESS] = max(current->m_Stats[STAT_TIREDNESS] - 20, 0);
 					}
 					else if (t > 80)
 					{
-						MatronWarningMsg += gettext("a resting potion");
+						ss << "a resting potion";
 						g_Gold.consumable_cost(10, true);
 						current->m_Stats[STAT_TIREDNESS] = max(current->m_Stats[STAT_TIREDNESS] - 20, 0);
 					}
 					else if (h < 40)
 					{
-						MatronWarningMsg += gettext("a healing potion");
+						ss << "a healing potion";
 						g_Gold.consumable_cost(10, true);
 						current->m_Stats[STAT_HEALTH] = min(current->m_Stats[STAT_HEALTH] + 20, 100);
 					}
-					MatronWarningMsg += gettext(" for herself.\n");
+					ss << " for herself.\n";
 				}
 			}
 			else	// do all other girls with a matron working
@@ -994,41 +916,39 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)
 					current->m_PrevDayJob = current->m_DayJob;
 					current->m_PrevNightJob = current->m_NightJob;
 					current->m_DayJob = current->m_NightJob = restjob;
-					MatronWarningMsg += gettext("The Director takes ") + girlName + gettext(" off duty to rest due to her ");
-					if (t > 80 && h < 40)	MatronWarningMsg += gettext("exhaustion.\n");
-					else if (t > 80)		MatronWarningMsg += gettext("tiredness.\n");
-					else if (h < 40)		MatronWarningMsg += gettext("low health.\n");
-					else MatronWarningMsg += gettext("current state.\n");
+					ss << "The Director takes " << girlName << " off duty to rest due to her ";
+					if (t > 80 && h < 40)	ss << "exhaustion.\n";
+					else if (t > 80)		ss << "tiredness.\n";
+					else if (h < 40)		ss << "low health.\n";
+					else /*       */		ss << "current state.\n";
 				}
 				else	// the girl has already been taken off duty by the matron
 				{
 					if (g_Dice.percent(70))
 					{
-						MatronMsg += gettext("The Director helps ");
+						ss << "The Director helps ";
 						if (t > 80 && h < 40)
 						{
-							MatronMsg += girlName + gettext(" recuperate.\n");
+							ss << girlName << " recuperate.\n";
 							g_Girls.UpdateStat(current, STAT_TIREDNESS, -(g_Dice % 4 + 2));
 							g_Girls.UpdateStat(current, STAT_HEALTH, (g_Dice % 4 + 2));
 						}
 						else if (t > 80)
 						{
-							MatronMsg += girlName + gettext(" to relax.\n");
+							ss << girlName << " to relax.\n";
 							g_Girls.UpdateStat(current, STAT_TIREDNESS, -(g_Dice % 5 + 5));
 						}
 						else if (h < 40)
 						{
-							MatronMsg += gettext(" heal ") + girlName + gettext(".\n");
+							ss << " heal " << girlName << ".\n";
 							g_Girls.UpdateStat(current, STAT_HEALTH, (g_Dice % 5 + 5));
 						}
 					}
 				}
 			}
 		}
-
-		// Now print out the consolodated message
-		if (strcmp(MatronMsg.c_str(), "") != 0)			current->m_Events.AddMessage(MatronMsg, IMGTYPE_PROFILE, SHIFT_NIGHT);
-		if (strcmp(MatronWarningMsg.c_str(), "") != 0)	current->m_Events.AddMessage(MatronWarningMsg, IMGTYPE_PROFILE, EVENT_WARNING);
+		
+		if (ss.str().length() > 0)	current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
 
 		current = current->m_Next;		// Process next girl
 	}
@@ -1044,18 +964,18 @@ TiXmlElement* cMovieStudioManager::SaveDataXML(TiXmlElement* pRoot)
 	// save Studio
 	TiXmlElement* pBrothels = new TiXmlElement("MovieStudios");
 	pBrothelManager->LinkEndChild(pBrothels);
-	sMovieStudio* current = (sMovieStudio*) m_Parent;
+	sMovieStudio* current = (sMovieStudio*)m_Parent;
 	//         ...................................................
 	message = "***************** Saving studios *****************";
 	g_LogFile.write(message);
-	while(current)
+	while (current)
 	{
 		message = "Saving brothel: ";
 		message += current->m_Name;
 		g_LogFile.write(message);
 
 		current->SaveMovieStudioXML(pBrothels);
-		current = (sMovieStudio*) current->m_Next;
+		current = (sMovieStudio*)current->m_Next;
 	}
 	return pBrothelManager;
 }
@@ -1077,23 +997,25 @@ TiXmlElement* sMovieStudio::SaveMovieStudioXML(TiXmlElement* pRoot)
 	// save variables for sex restrictions
 	pBrothel->SetAttribute("RestrictAnal", m_RestrictAnal);
 	pBrothel->SetAttribute("RestrictBDSM", m_RestrictBDSM);
-	pBrothel->SetAttribute("RestrictOral", m_RestrictOral);
-	pBrothel->SetAttribute("RestrictTitty", m_RestrictTitty);
-	pBrothel->SetAttribute("RestrictHand", m_RestrictHand);
 	pBrothel->SetAttribute("RestrictBeast", m_RestrictBeast);
+	pBrothel->SetAttribute("RestrictFoot", m_RestrictFoot);
 	pBrothel->SetAttribute("RestrictGroup", m_RestrictGroup);
-	pBrothel->SetAttribute("RestrictNormal", m_RestrictNormal);
+	pBrothel->SetAttribute("RestrictHand", m_RestrictHand);
 	pBrothel->SetAttribute("RestrictLesbian", m_RestrictLesbian);
-	
+	pBrothel->SetAttribute("RestrictNormal", m_RestrictNormal);
+	pBrothel->SetAttribute("RestrictOral", m_RestrictOral);
+	pBrothel->SetAttribute("RestrictStrip", m_RestrictStrip);
+	pBrothel->SetAttribute("RestrictTitty", m_RestrictTitty);
+
 	pBrothel->SetAttribute("AdvertisingBudget", m_AdvertisingBudget);
 	pBrothel->SetAttribute("AntiPregPotions", m_AntiPregPotions);
 	pBrothel->SetAttribute("AntiPregUsed", m_AntiPregUsed);
 	pBrothel->SetAttribute("KeepPotionsStocked", m_KeepPotionsStocked);
-	
+
 	TiXmlElement* pMovies = new TiXmlElement("Movies");
 	pBrothel->LinkEndChild(pMovies);
 	sMovie* movie = m_Movies;
-	while(movie)
+	while (movie)
 	{
 		TiXmlElement* pMovie = new TiXmlElement("Movie");
 		pMovies->LinkEndChild(pMovie);
@@ -1109,7 +1031,7 @@ TiXmlElement* sMovieStudio::SaveMovieStudioXML(TiXmlElement* pRoot)
 	TiXmlElement* pGirls = new TiXmlElement("Girls");
 	pBrothel->LinkEndChild(pGirls);
 	sGirl* girl = m_Girls;
-	while(girl)
+	while (girl)
 	{
 		girl->SaveGirlXML(pGirls);
 		girl = girl->m_Next;
@@ -1136,7 +1058,7 @@ bool cMovieStudioManager::LoadDataXML(TiXmlHandle hBrothelManager)
 	TiXmlElement* pBrothels = pBrothelManager->FirstChildElement("MovieStudios");
 	if (pBrothels)
 	{
-		for(TiXmlElement* pBrothel = pBrothels->FirstChildElement("MovieStudio");
+		for (TiXmlElement* pBrothel = pBrothels->FirstChildElement("MovieStudio");
 			pBrothel != 0;
 			pBrothel = pBrothel->NextSiblingElement("MovieStudio"))
 		{
@@ -1188,13 +1110,15 @@ bool sMovieStudio::LoadMovieStudioXML(TiXmlHandle hBrothel)
 	// load variables for sex restrictions
 	pBrothel->QueryValueAttribute<bool>("RestrictAnal", &m_RestrictAnal);
 	pBrothel->QueryValueAttribute<bool>("RestrictBDSM", &m_RestrictBDSM);
-	pBrothel->QueryValueAttribute<bool>("RestrictOral", &m_RestrictOral);
-	pBrothel->QueryValueAttribute<bool>("RestrictTitty", &m_RestrictTitty);
-	pBrothel->QueryValueAttribute<bool>("RestrictHand", &m_RestrictHand);
 	pBrothel->QueryValueAttribute<bool>("RestrictBeast", &m_RestrictBeast);
+	pBrothel->QueryValueAttribute<bool>("RestrictFoot", &m_RestrictFoot);
 	pBrothel->QueryValueAttribute<bool>("RestrictGroup", &m_RestrictGroup);
-	pBrothel->QueryValueAttribute<bool>("RestrictNormal", &m_RestrictNormal);
+	pBrothel->QueryValueAttribute<bool>("RestrictHand", &m_RestrictHand);
 	pBrothel->QueryValueAttribute<bool>("RestrictLesbian", &m_RestrictLesbian);
+	pBrothel->QueryValueAttribute<bool>("RestrictNormal", &m_RestrictNormal);
+	pBrothel->QueryValueAttribute<bool>("RestrictOral", &m_RestrictOral);
+	pBrothel->QueryValueAttribute<bool>("RestrictStrip", &m_RestrictStrip);
+	pBrothel->QueryValueAttribute<bool>("RestrictTitty", &m_RestrictTitty);
 
 	pBrothel->QueryValueAttribute<unsigned short>("AdvertisingBudget", &m_AdvertisingBudget);
 	pBrothel->QueryIntAttribute("AntiPregPotions", &m_AntiPregPotions);
@@ -1205,7 +1129,7 @@ bool sMovieStudio::LoadMovieStudioXML(TiXmlHandle hBrothel)
 	TiXmlElement* pMovies = pBrothel->FirstChildElement("Movies");
 	if (pMovies)
 	{
-		for(TiXmlElement* pMovie = pMovies->FirstChildElement("Movie");
+		for (TiXmlElement* pMovie = pMovies->FirstChildElement("Movie");
 			pMovie != 0;
 			pMovie = pMovie->NextSiblingElement("Movie"))
 		{
@@ -1237,7 +1161,7 @@ bool sMovieStudio::LoadMovieStudioXML(TiXmlHandle hBrothel)
 	TiXmlElement* pGirls = pBrothel->FirstChildElement("Girls");
 	if (pGirls)
 	{
-		for(TiXmlElement* pGirl = pGirls->FirstChildElement("Girl");
+		for (TiXmlElement* pGirl = pGirls->FirstChildElement("Girl");
 			pGirl != 0;
 			pGirl = pGirl->NextSiblingElement("Girl"))// load each girl and add her
 		{
@@ -1325,7 +1249,7 @@ void cMovieStudioManager::NewMovie(sMovieStudio* brothel, int Init_Quality, int 
 	newMovie->m_Money_Made = Money_Made;
 	newMovie->m_RunWeeks = RunWeeks;
 
-	if(brothel->m_NumMovies > 0)
+	if (brothel->m_NumMovies > 0)
 	{
 		brothel->m_LastMovies->m_Next = newMovie;
 		brothel->m_LastMovies = newMovie;
@@ -1350,7 +1274,7 @@ void cMovieStudioManager::EndMovie(sBrothel* brothel)
 
 int cMovieStudioManager::Num_Actress(int brothel)
 {
-	return 
+	return
 		g_Studios.GetNumGirlsOnJob(brothel, JOB_FILMBEAST, 1) +
 		g_Studios.GetNumGirlsOnJob(brothel, JOB_FILMSEX, 1) +
 		g_Studios.GetNumGirlsOnJob(brothel, JOB_FILMANAL, 1) +
@@ -1433,6 +1357,7 @@ int cMovieStudioManager::AddScene(sGirl* girl, int Job, int Bonus)
 	if (Job == SKILL_ORALSEX)		quality -= 5;
 	if (Job == SKILL_TITTYSEX)		quality -= 5;
 	if (Job == SKILL_HANDJOB)		quality -= 5;
+	if (Job == SKILL_FOOTJOB)		quality -= 5;
 	if (Job == SKILL_SERVICE)		quality -= 5;	// foot job needs to be added so will use service until then
 
 
@@ -1446,7 +1371,7 @@ int cMovieStudioManager::AddScene(sGirl* girl, int Job, int Bonus)
 	if (g_Girls.HasTrait(girl, "Fake Orgasm Expert"))		quality += 5;
 	else if (g_Girls.HasTrait(girl, "Fast Orgasms"))		quality += 2;
 	else if (g_Girls.HasTrait(girl, "Slow Orgasms"))		quality -= 2;
-	
+
 	if (g_Girls.HasTrait(girl, "Great Figure"))				quality += 4;
 	if (g_Girls.HasTrait(girl, "Great Arse"))				quality += 2;
 	if (g_Girls.HasTrait(girl, "Charismatic"))				quality += 4;
@@ -1469,7 +1394,7 @@ int cMovieStudioManager::AddScene(sGirl* girl, int Job, int Bonus)
 	if (g_Girls.HasTrait(girl, "Broken Will"))				quality -= 4;
 	if (g_Girls.HasTrait(girl, "Dependant"))				quality -= 3;
 	if (g_Girls.HasTrait(girl, "Shy"))						quality -= 3;
-		
+
 
 	// Idk if this is needed or not but can't hurt CRAZY // `J` breast size quality for non titjob is less importatnt
 	if (g_Girls.HasTrait(girl, "Flat Chest"))					quality -= (Job == SKILL_TITTYSEX ? 10 : 2);
@@ -1516,6 +1441,7 @@ int cMovieStudioManager::AddScene(sGirl* girl, int Job, int Bonus)
 		if (Job == SKILL_ORALSEX)		quality -= 10;
 		if (Job == SKILL_NORMALSEX)		quality -= 5;
 		if (Job == SKILL_TITTYSEX)		quality -= 4;
+		if (Job == SKILL_FOOTJOB)		quality -= 2;
 		if (Job == SKILL_HANDJOB)		quality -= 2;
 		if (Job == SKILL_SERVICE)		quality -= 1;	// foot job needs to be added so will use service until then
 	}
@@ -1528,6 +1454,7 @@ int cMovieStudioManager::AddScene(sGirl* girl, int Job, int Bonus)
 		if (Job == SKILL_GROUP)			quality += 1;
 		if (Job == SKILL_ORALSEX)		quality += 1;
 		if (Job == SKILL_TITTYSEX)		quality += 2;
+		if (Job == SKILL_FOOTJOB)		quality += 2;
 		if (Job == SKILL_HANDJOB)		quality += 2;
 		if (Job == SKILL_SERVICE)		quality += 1;	// foot job needs to be added so will use service until then
 	}
@@ -1540,7 +1467,7 @@ int cMovieStudioManager::AddScene(sGirl* girl, int Job, int Bonus)
 	quality += (g_Girls.GetStat(girl, STAT_BEAUTY) - 50) / 10;
 	quality += g_Girls.GetStat(girl, STAT_FAME);
 	quality += g_Girls.GetStat(girl, STAT_LEVEL);
-	
+
 	int performance = quality;
 
 	// Add bonus for Fluffer, CameraMage and CrystalPurifier --PP
@@ -1572,7 +1499,7 @@ long cMovieStudioManager::calc_movie_quality()
 	quality += m_movieScenes.size() * 10;
 	ss << "This movie will sell at " << quality << " gold, for 35 weeks, but it's value will drop over time.\n\n";
 	ss << (g_Studios.GetNumGirlsOnJob(0, JOB_PROMOTER, 0) > 0 ? "Your" : "A");
-		ss <<  " promoter with an advertising budget will help it sell for more.";
+	ss << " promoter with an advertising budget will help it sell for more.";
 	g_MessageQue.AddToQue(ss.str(), COLOR_BLUE);
 	g_InitWin = true;
 	return quality;

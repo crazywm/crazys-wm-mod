@@ -415,7 +415,8 @@ struct sGirl
 	int m_PrevWorkingDay = 0;			// `J` save the last count of the number of working days 
 	int m_WorkingDay = 0;				// count the number of working day 
 	int m_SpecialJobGoal = 0;			// `J` Special Jobs like surgeries will have a specific goal
-	bool m_Refused_To_Work = false;		// `J` to track better if she refused to work her assigned job
+	bool m_Refused_To_Work_Day		= false;		// `J` to track better if she refused to work her assigned job
+	bool m_Refused_To_Work_Night	= false;		// `J` to track better if she refused to work her assigned job
 
 	sGirl()
 	{
@@ -472,7 +473,8 @@ struct sGirl
 		m_DayJob = m_NightJob = 0;
 		m_PrevDayJob = m_PrevNightJob = 255;
 		m_YesterDayJob = m_YesterNightJob = 255;
-		m_Refused_To_Work = false;
+		m_Refused_To_Work_Day = false;
+		m_Refused_To_Work_Night = false;
 		m_UseAntiPreg = true;
 
 		for (u_int i = 0; i<NUM_SKILLS; i++)
@@ -672,6 +674,8 @@ struct sGirl
 	int tittysex(int n)			{ return upd_skill(SKILL_TITTYSEX, n); }
 	int handjob()				{ return get_skill(SKILL_HANDJOB); }
 	int handjob(int n)			{ return upd_skill(SKILL_HANDJOB, n); }
+	int footjob()				{ return get_skill(SKILL_FOOTJOB); }
+	int footjob(int n)			{ return upd_skill(SKILL_FOOTJOB, n); }
 	int	service()				{ return get_skill(SKILL_SERVICE); }
 	int	service(int n)			{ return upd_skill(SKILL_SERVICE, n); }
 	int	strip()					{ return get_skill(SKILL_STRIP); }
