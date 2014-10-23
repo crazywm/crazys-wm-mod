@@ -138,8 +138,8 @@ cSlider* g_DragSlider = 0;  // if a slider is being dragged, this points to it
 
 extern CSurface* g_BrothelImages[7];
 extern bool g_InitWin;
-extern sGirl* MarketSlaveGirls[8];
-extern int MarketSlaveGirlsDel[8];
+extern sGirl* MarketSlaveGirls[12];
+extern int MarketSlaveGirlsDel[12];
 extern string g_ReturnText;
 
 // SDL Graphics interface
