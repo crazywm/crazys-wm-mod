@@ -60,6 +60,7 @@ bool g_TryEr = false;
 bool g_TryCast = false;
 
 int g_TalkCount = 10;
+// g_GenGirls - false means the girls need to be generated
 bool g_GenGirls = false;
 bool g_Cheats = false;
 
@@ -69,8 +70,8 @@ sGirl* selected_girl;  // global pointer for the currently selected girl
 vector<int> cycle_girls;  // globally available sorted list of girl IDs for Girl Details screen to cycle through
 int cycle_pos;  //currently selected girl's position in the cycle_girls vector
 
-sGirl* MarketSlaveGirls[8] = {0,0,0,0,0,0,0,0};
-int MarketSlaveGirlsDel[8] = {-1,-1,-1,-1,-1,-1,-1,-1};
+sGirl* MarketSlaveGirls[12] = {0,0,0,0,0,0,0,0,0,0,0,0};
+int MarketSlaveGirlsDel[12] = {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
 
 CSurface* g_BrothelImages[7] = {0,0,0,0,0,0,0};
 char buffer[1000];

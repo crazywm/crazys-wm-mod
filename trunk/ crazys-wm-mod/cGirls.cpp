@@ -50,7 +50,7 @@ extern cMessageQue g_MessageQue;
 extern cTraits g_Traits;
 extern cEvents g_Events;
 extern cInventory g_InvManager;
-extern sGirl* MarketSlaveGirls[8];
+extern sGirl* MarketSlaveGirls[12];
 extern char buffer[1000];
 extern CGraphics g_Graphics;
 extern cRng g_Dice;
@@ -1204,16 +1204,16 @@ string cGirls::GetDetailsString(sGirl* girl, bool purchase)
 	char buffer[100];
 	string sper = ""; if (cfg.fonts.showpercent()) sper = " %";
 
-	int skillnum[] = { SKILL_MAGIC, SKILL_COMBAT, SKILL_SERVICE, SKILL_MEDICINE, SKILL_PERFORMANCE, SKILL_CRAFTING, SKILL_HERBALISM, SKILL_FARMING, SKILL_BREWING, SKILL_ANIMALHANDLING, SKILL_ANAL, SKILL_BDSM, SKILL_NORMALSEX, SKILL_BEASTIALITY, SKILL_GROUP, SKILL_LESBIAN, SKILL_ORALSEX, SKILL_TITTYSEX, SKILL_HANDJOB, SKILL_STRIP };
+	// `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in >> cGirls.cpp > GetDetailsString
+	int skillnum[] = { SKILL_MAGIC, SKILL_COMBAT, SKILL_SERVICE, SKILL_MEDICINE, SKILL_PERFORMANCE, SKILL_CRAFTING, SKILL_HERBALISM, SKILL_FARMING, SKILL_BREWING, SKILL_ANIMALHANDLING, SKILL_ANAL, SKILL_BDSM, SKILL_NORMALSEX, SKILL_BEASTIALITY, SKILL_GROUP, SKILL_LESBIAN, SKILL_ORALSEX, SKILL_TITTYSEX, SKILL_HANDJOB, SKILL_STRIP, SKILL_FOOTJOB };
 	string basestr[] = { "Age : ", "Rebelliousness : ", "Looks : ", "Constitution : ", "Health : ", "Happiness : ", "Tiredness : ", "Gold : ", "Worth : " };
 	string skillstr[] = { "Magic Ability : ", "Combat Ability : ", "Service Skills : ", "Medicine Skill : ", "Performance Skill : ", "Crafting Skill : ", "Herbalism Skill : ", "Farming Skill : ", "Brewing Skill : ", "Animal Handling : ", "Anal Sex : ", "BDSM Sex : ", "Normal Sex : ", "Bestiality Sex : ", "Group Sex : ", "Lesbian Sex : ", "Oral Sex : ", "Titty Sex : ", "Hand Job : ", "Stripping Sex : ", "Foot Job : " };
-	// `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in >> cGirls > GetDetailsString
 
 	if (cfg.fonts.normal() == "segoeui.ttf" && cfg.fonts.detailfontsize() == 9) // `J` if already set to my default
 	{
 		string basesegoeuistr[] = { "Age :                                   ", "Rebelliousness :         ", "Looks :                              ", "Constitution :               ", "Health :                            ", "Happiness :                    ", "Tiredness :                     ", "Gold :                                ", "Worth :                             " };
 		for (int i = 0; i < 9; i++) basestr[i] = basesegoeuistr[i];
-		string skillsegoeuistr[] = { "Magic Ability :              ", "Combat Ability :           ", "Service Skills :              ", "Medicine Skill :            ", "Performance Skill :    ", "Crafting Skill :              ", "Herbalism Skill :         ", "Farming Skill :             ", "Brewing Skill :               ", "Animal Handling :    ", "Anal Sex :                        ", "BDSM Sex :                      ", "Normal Sex :                 ", "Bestiality Sex :              ", "Group Sex :                     ", "Lesbian Sex :                 ", "Oral Sex :                         ", "Titty Sex :                         ", "Hand Job :                      ", "Stripping Sex :               ", "Foot Job :                      " };
+		string skillsegoeuistr[] = { "Magic Ability :              ", "Combat Ability :           ", "Service Skills :              ", "Medicine Skill :            ", "Performance Skill :    ", "Crafting Skill :              ", "Herbalism Skill :         ", "Farming Skill :             ", "Brewing Skill :               ", "Animal Handling :    ", "Anal Sex :                        ", "BDSM Sex :                      ", "Normal Sex :                 ", "Bestiality Sex :              ", "Group Sex :                     ", "Lesbian Sex :                 ", "Oral Sex :                         ", "Titty Sex :                         ", "Hand Job :                      ", "Stripping Sex :               ", "Foot Job :                         " };
 		for (int i = 0; i < 21; i++) skillstr[i] = skillsegoeuistr[i];
 		size = 90;
 	}
@@ -1392,7 +1392,7 @@ string cGirls::GetDetailsString(sGirl* girl, bool purchase)
 	ss << "\n\nSKILLS";
 	if (cfg.debug.log_extradetails() && !purchase) ss << "           ( base + mod + temp )";
 
-	for (int i = 0; i < 20; i++)
+	for (int i = 0; i < 21; i++)
 	{
 		if (i == 10)
 		{
@@ -1416,6 +1416,7 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 	cFont check; int w, h, size = 0;
 	check.LoadFont(cfg.fonts.normal(), cfg.fonts.detailfontsize());
 
+	// `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in >> cGirls.cpp > GetMoreDetailsString
 	ss << "STATS";
 	if (cfg.debug.log_extradetails() && !purchase) ss << "           ( base + mod + temp )";
 	int statnum[] = { STAT_CHARISMA, STAT_BEAUTY, STAT_LIBIDO, STAT_MANA, STAT_INTELLIGENCE, STAT_CONFIDENCE, STAT_OBEDIENCE, STAT_SPIRIT, STAT_AGILITY, STAT_FAME, STAT_PCFEAR, STAT_PCLOVE, STAT_PCHATE };
@@ -1534,6 +1535,10 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 		if (count > 0)	data += gettext("\nShe is indifferent to all other tasks.\n\n");
 		else			data += gettext("At the moment, she is indifferent to all tasks.\n\n");
 	}
+
+	data += "\n\n\nBased on:  ";
+	data += girl->m_Name;
+
 	return data;
 }
 

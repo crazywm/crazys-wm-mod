@@ -30,8 +30,8 @@ extern	cGold			g_Gold;
 extern	cBrothelManager		g_Brothels;
 extern	cWindowManager		g_WinManager;
 extern	cInterfaceEventManager	g_InterfaceEvents;
-extern sGirl* MarketSlaveGirls[8];
-extern int MarketSlaveGirlsDel[8];
+extern sGirl* MarketSlaveGirls[12];
+extern int MarketSlaveGirlsDel[12];
 extern bool g_GenGirls;
 extern bool g_Cheats;
 extern cTraits g_Traits;
@@ -94,14 +94,28 @@ void cScreenSlaveMarket::init()
 	// clear the list
 	ClearListBox(slave_list_id);
 
+	int numgirls=g_Dice.d100();
+	/* */if (numgirls < 5)	numgirls = 5;	// 5%
+	else if (numgirls < 15)	numgirls = 6;	// 10%
+	else if (numgirls < 30)	numgirls = 7;	// 15%
+	else if (numgirls < 70)	numgirls = 8;	// 40%
+	else if (numgirls < 85)	numgirls = 9;	// 15%
+	else if (numgirls < 95)	numgirls = 10;	// 10%
+	else /*              */	numgirls = 11;	// 5%
+
+
+
+
+
+
 	// Check if any slave girls
-	for (int i = 0; i < 8; i++)
+	for (int i = 0; i < 12; i++)
 	{
 		bool unique = false;
 		// easiest case is if the girs have already been generated
 		if (g_GenGirls != false)
 		{
-			// first of all, if there isn't a girl in this slot the rest doesn't matter much
+			// first of all, if there isn't a girl in this slot the reset doesn't matter much
 			if (MarketSlaveGirls[i] == 0) continue;
 			/*
 			* I'm going to assume that -1 here means "OK to delete". Which means non -1 means
@@ -129,12 +143,34 @@ void cScreenSlaveMarket::init()
 			// in any case, mark the slot as empty
 			MarketSlaveGirls[i] = 0;
 		}
+		if (i >= numgirls) continue;
 		// now try and generate a unique girl for the slot
 		generate_unique_girl(i, unique);
 		// if the id for this slot is zero, then we didn't make a unique girl so we need a random one
 		if (MarketSlaveGirls[i] == 0)
 		{
-			MarketSlaveGirls[i] = g_Girls.CreateRandomGirl(0, false, true);
+			int n = 0;
+			sGirl* testgirl = 0;
+			while (testgirl == 0&& n<20)
+			{
+				testgirl = g_Girls.CreateRandomGirl(0, false, true);
+				for (int j = 0; j < 12; j++)
+				{
+					if (MarketSlaveGirls[j] == 0) continue;
+					else if (string(testgirl->m_Name) == string(MarketSlaveGirls[j]->m_Name))
+					{
+						testgirl = 0;
+						break;
+					}
+				}
+				n++;
+			}
+			if (testgirl == 0)
+			{
+				testgirl = g_Girls.CreateRandomGirl(0, false, true);
+			}
+
+			MarketSlaveGirls[i] = testgirl;
 			MarketSlaveGirlsDel[i] = -1;
 		}
 		/*
@@ -164,7 +200,7 @@ void cScreenSlaveMarket::init()
 	EditTextItem(message, header_id);
 
 	// Finds the first girl in the selection, so she is highlighted. This stops the No girl selected that was normal before. --PP
-	for (int i = 7; i > -1; i--)
+	for (int i = numgirls-1; i > -1; i--)
 	{
 		if (MarketSlaveGirls[i] == 0) continue;
 		selection = i;

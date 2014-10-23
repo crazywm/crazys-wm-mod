@@ -1009,8 +1009,13 @@ Reflow and make similar all non-brothel buildings
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.11
 !!!!!!!!!!!!!!!!!!!! pushed to SVN - r119
 
+###  Changes 10/22/2014
+Added footjob to girl details skill list
+Added check in slave market to greatly reduce the chance of duplicate rgirls in the same market turn
+Changed the number of girls the slave market has available to a random amount of 5-11 each market turn
+Added info for who the girl is based on in the second details page
 
-
-
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.12
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r120
 
 
