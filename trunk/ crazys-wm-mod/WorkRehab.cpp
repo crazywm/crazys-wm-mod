@@ -125,7 +125,7 @@ bool cJobManager::WorkRehab(sGirl* girl, sBrothel* brothel, int DayNight, string
 		return false;
 	}
 
-	if (girl->m_WorkingDay > 3 && DayNight == 1)
+	if (girl->m_WorkingDay >= 3 && DayNight == 1)
 	{
 		enjoy += g_Dice % 10;
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCOUNSELOR, g_Dice%6-2, true);	// `J` She may want to help others with their problems

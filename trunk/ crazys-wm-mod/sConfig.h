@@ -202,8 +202,10 @@ class cConfig
 {
 static	sConfigData	*data;
 public:
-	cConfig() {
-		if(!data) {
+	cConfig()
+	{
+		if (!data)
+		{
 			data = new sConfigData();
 		}
 	}

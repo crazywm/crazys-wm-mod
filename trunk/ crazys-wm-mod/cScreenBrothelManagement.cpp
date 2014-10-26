@@ -23,6 +23,8 @@ extern cScreenGetInput g_GetInput;
 extern void Turnsummary();
 extern void SaveGameXML();
 
+extern bool g_CTRLDown;
+
 bool cScreenBrothelManagement::id_set = false;
 
 void cScreenBrothelManagement::set_ids()
@@ -124,19 +126,15 @@ void cScreenBrothelManagement::check_events()
 		}
 		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, id_save))
 		{
+			if (g_CTRLDown)SaveGirlsCSV(DirPath() << "Saves" << (g_Brothels.GetBrothel(0)->m_Name + ".csv").c_str());
 			g_MessageQue.AddToQue("Game Saved", COLOR_GREEN);
-			SaveGameXML(DirPath()
-			<< "Saves"
-			<< (g_Brothels.GetBrothel(0)->m_Name + ".gam").c_str()
-			);
+			SaveGameXML(DirPath() << "Saves" << (g_Brothels.GetBrothel(0)->m_Name + ".gam").c_str());
 			return;
 		}
 		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, id_week))
 		{
 			g_InitWin = true;
-			SaveGameXML(DirPath()
-			<< "Saves"
-			<< "autosave.gam");
+			SaveGameXML(DirPath() << "Saves" << "autosave.gam");
 			NextWeek();
 			g_WinManager.Push(Turnsummary, &g_Turnsummary);
 			return;

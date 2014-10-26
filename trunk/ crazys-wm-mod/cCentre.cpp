@@ -285,7 +285,7 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)	// Start_Build
 		sum = EVENT_SUMMARY; summary = ""; ss.str("");
 
 		// `J` she can refuse the first shift then decide to work the second shift 
-		if (!current->m_Refused_To_Work_Day)	// but if she worked the first shift she continues the rest of the night
+		if (!current->m_Refused_To_Work_Day && DayNight == SHIFT_NIGHT)	// but if she worked the first shift she continues the rest of the night
 		{
 			matron = true;
 			ss << girlName << " continued to help the other girls throughout the night.";
@@ -608,7 +608,11 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)	// Start_Build
 			int t = g_Girls.GetStat(current, STAT_TIREDNESS);
 			int h = g_Girls.GetStat(current, STAT_HEALTH);
 
-			if (!matron)	// do no matron first as it is the easiest
+			if (current->m_WorkingDay > 0)
+			{
+				ss << girlName << " is not faring well in rehab.\n";
+			}
+			else if (!matron)	// do no matron first as it is the easiest
 			{
 				ss << "WARNING! " << girlName;
 				if (t > 80 && h < 20)		ss << " is in real bad shape, she is tired and injured.\nShe should go to the Clinic.\n";
@@ -625,7 +629,7 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)	// Start_Build
 					current->m_PrevNightJob = current->m_NightJob;
 					current->m_DayJob = current->m_NightJob = restjob;
 					ss << "The Centre Manager takes herself off duty because she is just too damn sore.\n";
-					g_Girls.UpdateEnjoyment(current, ACTION_WORKMOVIE, -10, true);
+					g_Girls.UpdateEnjoyment(current, ACTION_WORKMATRON, -10, true);
 				}
 				else
 				{

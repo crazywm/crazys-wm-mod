@@ -21,6 +21,7 @@
 
 #include <string>
 #include "tinyxml.h"
+#include "cBrothel.h"
 using namespace std;
 
 void MainMenu();
@@ -45,4 +46,7 @@ void LoadGirlsFiles();
 void TransferGirls();
 void TransferGirlsRightToLeft(int rightBrothel, int leftBrothel);
 void TransferGirlsLeftToRight(int rightBrothel, int leftBrothel);
+void SaveGirlsCSV(string filename);
+string Girl2CSV(sGirl* girl);
+string CSVifyString(string name);
 #endif

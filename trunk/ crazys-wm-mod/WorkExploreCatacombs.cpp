@@ -223,15 +223,15 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, int DayNi
 		}
 	}
 
-	ss << girl->m_Realname << " adventured in the catacombs.\n";
+	ss << girl->m_Realname << " adventured in the catacombs.\n\n";
 	if (num_monsters > 0)
 	{
-		ss << "She encountered " << num_monsters << " monster" << (num_monsters > 1 ? "s" : "") << " and captured : \n";
+		ss << "She encountered " << num_monsters << " monster" << (num_monsters > 1 ? "s" : "") << " and captured:\n";
 		if (type_monster_girls > 0)
 		{
 			ss << type_monster_girls << " catacomb girl" << (type_monster_girls > 1 ? "s" : "");
 			if (type_unique_monster_girls + type_beasts == 0)
-				ss << ".\n";
+				ss << ".";
 			else if (type_unique_monster_girls > 0 && type_beasts > 0)
 			ss << ",\n";
 			else
@@ -241,20 +241,20 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, int DayNi
 		{
 			ss << type_unique_monster_girls << " unique girl" << (type_unique_monster_girls > 1 ? "s" : "");
 			if (type_beasts == 0)
-				ss << ".\n";
+				ss << ".";
 			else
 				ss << " and\n";
 		}
 		if (type_beasts > 0) 
-			ss << type_beasts << " beast" << (type_beasts > 1 ? "s." : ".\n");
-
+			ss << type_beasts << " beast" << (type_beasts > 1 ? "s." : ".");
+		ss << "\n\n";
 	}
 	if (num_items > 0)
 	{
 		ss << (num_monsters > 0 ? "Further, she" : "She") << " came out with ";
-		if (num_items == 1) ss << "a ";
+		if (num_items == 1) ss << "one ";
 		else	ss << num_items << " items: ";
-		ss << item_list << ".\n";
+		ss << item_list << ".\n\n";
 	}
 	if (gold > 0) ss << "She " << (num_monsters + num_items > 0 ? "also " : "") << "came out with " << gold << " gold.";
 

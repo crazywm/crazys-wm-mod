@@ -2839,9 +2839,6 @@ void SaveGameXML(string filename)
 	TiXmlElement* pRoot = new TiXmlElement("Root");
 	doc.LinkEndChild(pRoot);
 
-	//this replaces the "master file"
-	loadedGirlsFiles.SaveXML(pRoot);
-
 	// output game version
 	pRoot->SetAttribute("MajorVersion", g_MajorVersion);
 	pRoot->SetAttribute("MinorVersionA", g_MinorVersionA);
@@ -2861,16 +2858,19 @@ void SaveGameXML(string filename)
 	pRoot->SetAttribute("TryEr", g_TryEr);
 	pRoot->SetAttribute("TryCast", g_TryCast);
 
-	// output player gold
-	g_Gold.saveGoldXML(pRoot);
-
 	// output year, month and day
 	pRoot->SetAttribute("Year", g_Year);
 	pRoot->SetAttribute("Month", g_Month);
 	pRoot->SetAttribute("Day", g_Day);
 
+	//this replaces the "master file"
+	loadedGirlsFiles.SaveXML(pRoot);
+
+	// output player gold
+	g_Gold.saveGoldXML(pRoot);
+
 	// output girls
-	g_Girls.SaveGirlsXML(pRoot);
+	g_Girls.SaveGirlsXML(pRoot);	// this is all the girls that have not been acquired
 
 	// output gangs
 	g_Gangs.SaveGangsXML(pRoot);
@@ -3092,7 +3092,7 @@ void TransferGirls()
 	static int leftBrothel = 0;
 	static int rightBrothel = 0;
 	g_CurrentScreen = SCREEN_TRANSFERGIRLS;
-	if(g_InitWin)
+	if (g_InitWin)
 	{
 		leftBrothel = rightBrothel = 0;
 		// clear list boxes
@@ -3103,8 +3103,8 @@ void TransferGirls()
 
 		// list all the brothels
 		sBrothel* current = g_Brothels.GetBrothel(0);
-		int i=6;
-		while(current)
+		int i = 6;
+		while (current)
 		{
 			g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGLEFTBROTHEL, i, current->m_Name);
 			g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGRIGHTBROTHEL, i, current->m_Name);
@@ -3116,96 +3116,103 @@ void TransferGirls()
 		g_TransferGirls.SetSelectedItemInList(g_interfaceid.LIST_TRANSGRIGHTBROTHEL, 6);
 
 		// add the movie studio studio
-		sMovieStudio* currentStudio = (sMovieStudio*) g_Studios.GetBrothel(0);
-		while(currentStudio)
+		sMovieStudio* currentStudio = (sMovieStudio*)g_Studios.GetBrothel(0);
+		while (currentStudio)
 		{
 			g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGLEFTBROTHEL, 0, currentStudio->m_Name);
 			g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGRIGHTBROTHEL, 0, currentStudio->m_Name);
-			currentStudio = (sMovieStudio*) currentStudio->m_Next;
-		} 
+			currentStudio = (sMovieStudio*)currentStudio->m_Next;
+		}
 		// add the clinic
-		sClinic* currentClinic = (sClinic*) g_Clinic.GetBrothel(0);
-		while(currentClinic)
+		sClinic* currentClinic = (sClinic*)g_Clinic.GetBrothel(0);
+		while (currentClinic)
 		{
 			g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGLEFTBROTHEL, 1, currentClinic->m_Name);
 			g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGRIGHTBROTHEL, 1, currentClinic->m_Name);
-			currentClinic = (sClinic*) currentClinic->m_Next;
+			currentClinic = (sClinic*)currentClinic->m_Next;
 		}
 
 		// add the arena
-		sArena* currentArena = (sArena*) g_Arena.GetBrothel(0);
-		while(currentArena)
+		sArena* currentArena = (sArena*)g_Arena.GetBrothel(0);
+		while (currentArena)
 		{
 			g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGLEFTBROTHEL, 2, currentArena->m_Name);
 			g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGRIGHTBROTHEL, 2, currentArena->m_Name);
-			currentArena = (sArena*) currentArena->m_Next;
+			currentArena = (sArena*)currentArena->m_Next;
 		}
 
 		// add the centre
-		sCentre* currentCentre = (sCentre*) g_Centre.GetBrothel(0);
-		while(currentCentre)
+		sCentre* currentCentre = (sCentre*)g_Centre.GetBrothel(0);
+		while (currentCentre)
 		{
 			g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGLEFTBROTHEL, 3, currentCentre->m_Name);
 			g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGRIGHTBROTHEL, 3, currentCentre->m_Name);
-			currentCentre = (sCentre*) currentCentre->m_Next;
+			currentCentre = (sCentre*)currentCentre->m_Next;
 		}
 
 		// add the house
-		sHouse* currentHouse = (sHouse*) g_House.GetBrothel(0);
-		while(currentHouse)
+		sHouse* currentHouse = (sHouse*)g_House.GetBrothel(0);
+		while (currentHouse)
 		{
 			g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGLEFTBROTHEL, 4, currentHouse->m_Name);
 			g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGRIGHTBROTHEL, 4, currentHouse->m_Name);
-			currentHouse = (sHouse*) currentHouse->m_Next;
+			currentHouse = (sHouse*)currentHouse->m_Next;
 		}
 
 		// add the farm
-		sFarm* currentFarm = (sFarm*) g_Farm.GetBrothel(0);
-		while(currentFarm)
+		sFarm* currentFarm = (sFarm*)g_Farm.GetBrothel(0);
+		while (currentFarm)
 		{
 			g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGLEFTBROTHEL, 5, currentFarm->m_Name);
 			g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGRIGHTBROTHEL, 5, currentFarm->m_Name);
-			currentFarm = (sFarm*) currentFarm->m_Next;
+			currentFarm = (sFarm*)currentFarm->m_Next;
 		}
 
 		g_InitWin = false;
 	}
 
-	if(g_InterfaceEvents.GetNumEvents() != 0)
+	if (g_InterfaceEvents.GetNumEvents() != 0)
 	{
-		if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_TRANSGBACK))
+		if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_TRANSGBACK))
 		{
 			g_InitWin = true;
 			g_WinManager.Pop();
 			return;
 		}
-		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_TRANSGSHIFTR))
+		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_TRANSGSHIFTR))
 		{
-			if((rightBrothel != -1 && leftBrothel != -1))
+			if ((rightBrothel != -1 && leftBrothel != -1))
 			{
 				TransferGirlsRightToLeft(rightBrothel, leftBrothel);
 			}
 		}
-		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_TRANSGSHIFTL))
+		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_TRANSGSHIFTL))
 		{
-			if((rightBrothel != -1 && leftBrothel != -1))
+			if ((rightBrothel != -1 && leftBrothel != -1))
 			{
 				TransferGirlsLeftToRight(rightBrothel, leftBrothel);
 			}
 		}
-		else if(g_InterfaceEvents.CheckEvent(EVENT_SELECTIONCHANGE, g_interfaceid.LIST_TRANSGLEFTBROTHEL))
+		else if (g_InterfaceEvents.CheckEvent(EVENT_SELECTIONCHANGE, g_interfaceid.LIST_TRANSGLEFTBROTHEL))
 		{
+			int color = COLOR_BLUE;
 			g_TransferGirls.ClearListBox(g_interfaceid.LIST_TRANSGLEFTGIRLS);
 			leftBrothel = g_TransferGirls.GetSelectedItemFromList(g_interfaceid.LIST_TRANSGLEFTBROTHEL);
-			if(leftBrothel != -1)
+			if (leftBrothel != -1)
 			{
 				if (leftBrothel > 5){
 					// add the girls to the list
 					sGirl* temp = g_Brothels.GetGirl(leftBrothel - 6, 0);
-					int i=0;
-					while(temp)
+					int i = 0;
+					while (temp)
 					{
-						g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGLEFTGIRLS, i, temp->m_Realname);
+						if (temp->m_DayJob == JOB_MATRON || temp->m_NightJob == JOB_MATRON)
+							color = COLOR_RED;
+						else if (temp->m_DayJob == JOB_RESTING && temp->m_NightJob == JOB_RESTING)
+							color = COLOR_GREEN;
+						else color = COLOR_BLUE;
+						
+						g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGLEFTGIRLS, i, temp->m_Realname, color);
 						i++;
 						temp = temp->m_Next;
 					}
@@ -3215,10 +3222,16 @@ void TransferGirls()
 
 					// add the girls to the list
 					sGirl* temp = g_Farm.GetGirl(0, 0);
-					int i=0;
-					while(temp)
+					int i = 0;
+					while (temp)
 					{
-						g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGLEFTGIRLS, i, temp->m_Realname);
+						if (temp->m_DayJob == JOB_FARMMANGER || temp->m_NightJob == JOB_FARMMANGER)
+							color = COLOR_RED;
+						else if (temp->m_DayJob == JOB_FARMREST && temp->m_NightJob == JOB_FARMREST)
+							color = COLOR_GREEN;
+						else color = COLOR_BLUE;
+						
+						g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGLEFTGIRLS, i, temp->m_Realname, color);
 						i++;
 						temp = temp->m_Next;
 					}
@@ -3227,10 +3240,16 @@ void TransferGirls()
 				{
 					// add the girls to the list
 					sGirl* temp = g_House.GetGirl(0, 0);
-					int i=0;
-					while(temp)
+					int i = 0;
+					while (temp)
 					{
-						g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGLEFTGIRLS, i, temp->m_Realname);
+						if (temp->m_DayJob == JOB_HEADGIRL || temp->m_NightJob == JOB_HEADGIRL)
+							color = COLOR_RED;
+						else if (temp->m_DayJob == JOB_HOUSEREST && temp->m_NightJob == JOB_HOUSEREST)
+							color = COLOR_GREEN;
+						else color = COLOR_BLUE;
+
+						g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGLEFTGIRLS, i, temp->m_Realname, color);
 						i++;
 						temp = temp->m_Next;
 					}
@@ -3239,10 +3258,26 @@ void TransferGirls()
 				{
 					// add the girls to the list
 					sGirl* temp = g_Centre.GetGirl(0, 0);
-					int i=0;
-					while(temp)
+					int i = 0;
+					while (temp)
 					{
-						g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGLEFTGIRLS, i, temp->m_Realname);
+						if (temp->m_DayJob == JOB_CENTREMANAGER || temp->m_NightJob == JOB_CENTREMANAGER)
+							color = COLOR_RED;
+						else if (temp->m_DayJob == JOB_DRUGCOUNSELOR || temp->m_NightJob == JOB_DRUGCOUNSELOR)
+						{
+							if (g_Centre.GetNumGirlsOnJob(0, JOB_REHAB, SHIFT_NIGHT) < 1) color = COLOR_DARKBLUE;
+							else color = COLOR_RED;
+						}
+						else if (temp->m_DayJob == JOB_CENTREREST && temp->m_NightJob == JOB_CENTREREST)
+							color = COLOR_GREEN;
+						else if (temp->m_DayJob == JOB_REHAB || temp->m_NightJob == JOB_REHAB)
+						{
+							if (temp->m_WorkingDay == 0) color = COLOR_DARKBLUE;
+							else color = COLOR_RED;
+						}
+						else color = COLOR_BLUE;
+
+						g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGLEFTGIRLS, i, temp->m_Realname, color);
 						i++;
 						temp = temp->m_Next;
 					}
@@ -3251,10 +3286,15 @@ void TransferGirls()
 				{
 					// add the girls to the list
 					sGirl* temp = g_Arena.GetGirl(0, 0);
-					int i=0;
-					while(temp)
+					int i = 0;
+					while (temp)
 					{
-						g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGLEFTGIRLS, i, temp->m_Realname);
+						if (temp->m_DayJob == JOB_DOCTORE || temp->m_NightJob == JOB_DOCTORE)
+							color = COLOR_RED;
+						else if (temp->m_DayJob == JOB_ARENAREST && temp->m_NightJob == JOB_ARENAREST)
+							color = COLOR_GREEN;
+						else color = COLOR_BLUE;
+						g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGLEFTGIRLS, i, temp->m_Realname, color);
 						i++;
 						temp = temp->m_Next;
 					}
@@ -3263,10 +3303,48 @@ void TransferGirls()
 				{
 					// add the girls to the list
 					sGirl* temp = g_Clinic.GetGirl(0, 0);
-					int i=0;
-					while(temp)
+					int i = 0;
+					while (temp)
 					{
-						g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGLEFTGIRLS, i, temp->m_Realname);
+						if (temp->m_DayJob == JOB_CHAIRMAN || temp->m_NightJob == JOB_CHAIRMAN)
+							color = COLOR_RED;
+						else if (temp->m_DayJob == JOB_CLINICREST && temp->m_NightJob == JOB_CLINICREST)
+							color = COLOR_GREEN;
+						else if (temp->m_DayJob == JOB_DOCTOR || temp->m_NightJob == JOB_DOCTOR)
+						{
+							if (g_Clinic.GetNumberPatients(0) < 1 && g_Clinic.GetNumberPatients(1) < 1)
+								color = COLOR_DARKBLUE;
+							else color = COLOR_RED;
+						}
+						else if (temp->m_DayJob == JOB_MECHANIC || temp->m_NightJob == JOB_MECHANIC)
+						{
+							if (g_Clinic.GetNumGirlsOnJob(0, JOB_GETREPAIRS, 0) < 1 && g_Clinic.GetNumGirlsOnJob(0, JOB_GETREPAIRS, 1) < 1)
+								color = COLOR_DARKBLUE;
+							else color = COLOR_RED;
+						}
+						else if (temp->m_DayJob == JOB_GETHEALING || temp->m_NightJob == JOB_GETHEALING
+							|| temp->m_DayJob == JOB_GETREPAIRS || temp->m_NightJob == JOB_GETREPAIRS)
+						{
+							if (temp->health() > 70 && temp->tiredness() < 30) color = COLOR_DARKBLUE;
+							else color = COLOR_RED;
+						}
+						else if (temp->m_DayJob == JOB_GETABORT || temp->m_NightJob == JOB_GETABORT
+							|| temp->m_DayJob == JOB_PHYSICALSURGERY || temp->m_NightJob == JOB_PHYSICALSURGERY
+							|| temp->m_DayJob == JOB_LIPO || temp->m_NightJob == JOB_LIPO
+							|| temp->m_DayJob == JOB_BREASTREDUCTION || temp->m_NightJob == JOB_BREASTREDUCTION
+							|| temp->m_DayJob == JOB_BOOBJOB || temp->m_NightJob == JOB_BOOBJOB
+							|| temp->m_DayJob == JOB_VAGINAREJUV || temp->m_NightJob == JOB_VAGINAREJUV
+							|| temp->m_DayJob == JOB_FACELIFT || temp->m_NightJob == JOB_FACELIFT
+							|| temp->m_DayJob == JOB_ASSJOB || temp->m_NightJob == JOB_ASSJOB
+							|| temp->m_DayJob == JOB_TUBESTIED || temp->m_NightJob == JOB_TUBESTIED
+							|| temp->m_DayJob == JOB_FERTILITY || temp->m_NightJob == JOB_FERTILITY)
+						{
+							if (temp->m_WorkingDay == 0) color = COLOR_DARKBLUE;
+							else color = COLOR_RED;
+						}
+						else color = COLOR_BLUE;
+
+						g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGLEFTGIRLS, i, temp->m_Realname, color);
 						i++;
 						temp = temp->m_Next;
 					}
@@ -3275,30 +3353,47 @@ void TransferGirls()
 				{
 					// add the girls to the list
 					sGirl* temp = g_Studios.GetGirl(0, 0);
-					int i=0;
-					while(temp)
+					int i = 0;
+					while (temp)
 					{
-						g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGLEFTGIRLS, i, temp->m_Realname);
+						if (temp->m_NightJob == JOB_DIRECTOR)					color = COLOR_RED;
+						else if (temp->m_NightJob == JOB_FILMFREETIME)			color = COLOR_GREEN;
+						else if (temp->m_NightJob == JOB_CAMERAMAGE)
+						{
+							if (g_Studios.GetNumGirlsOnJob(0, JOB_CAMERAMAGE, SHIFT_NIGHT) > 1) color = COLOR_DARKBLUE;
+							else color = COLOR_RED;
+						}
+						else if (temp->m_NightJob == JOB_CRYSTALPURIFIER)
+						{
+							if (g_Studios.GetNumGirlsOnJob(0, JOB_CRYSTALPURIFIER, SHIFT_NIGHT) > 1) color = COLOR_DARKBLUE;
+							else color = COLOR_RED;
+						}
+						else color = COLOR_BLUE;
+
+						g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGLEFTGIRLS, i, temp->m_Realname, color);
 						i++;
 						temp = temp->m_Next;
 					}
-
 				}
 			}
 		}
-		else if(g_InterfaceEvents.CheckEvent(EVENT_SELECTIONCHANGE, g_interfaceid.LIST_TRANSGRIGHTBROTHEL))
+		else if (g_InterfaceEvents.CheckEvent(EVENT_SELECTIONCHANGE, g_interfaceid.LIST_TRANSGRIGHTBROTHEL))
 		{
+			int color = COLOR_BLUE;
 			g_TransferGirls.ClearListBox(g_interfaceid.LIST_TRANSGRIGHTGIRLS);
 			rightBrothel = g_TransferGirls.GetSelectedItemFromList(g_interfaceid.LIST_TRANSGRIGHTBROTHEL);
-			if(rightBrothel != -1)
+			if (rightBrothel != -1)
 			{
 				if (rightBrothel > 5){
 					// add the girls to the list
 					sGirl* temp = g_Brothels.GetGirl(rightBrothel - 6, 0);
-					int i=0;
-					while(temp)
+					int i = 0;
+					while (temp)
 					{
-						g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGRIGHTGIRLS, i, temp->m_Realname);
+						if (temp->m_DayJob == JOB_MATRON || temp->m_NightJob == JOB_MATRON)			color = COLOR_RED;
+						else if (temp->m_DayJob == JOB_RESTING && temp->m_NightJob == JOB_RESTING)	color = COLOR_GREEN;
+						else color = COLOR_BLUE;
+						g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGRIGHTGIRLS, i, temp->m_Realname, color);
 						i++;
 						temp = temp->m_Next;
 					}
@@ -3307,10 +3402,18 @@ void TransferGirls()
 				{
 					// add the girls to the list
 					sGirl* temp = g_Farm.GetGirl(0, 0);
-					int i=0;
-					while(temp)
+					int i = 0;
+					while (temp)
 					{
-						g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGRIGHTGIRLS, i, temp->m_Realname);
+
+
+						if (temp->m_DayJob == JOB_FARMMANGER || temp->m_NightJob == JOB_FARMMANGER)
+							color = COLOR_RED;
+						else if (temp->m_DayJob == JOB_FARMREST && temp->m_NightJob == JOB_FARMREST)
+							color = COLOR_GREEN;
+						else color = COLOR_BLUE;
+
+						g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGRIGHTGIRLS, i, temp->m_Realname, color);
 						i++;
 						temp = temp->m_Next;
 					}
@@ -3319,10 +3422,16 @@ void TransferGirls()
 				{
 					// add the girls to the list
 					sGirl* temp = g_House.GetGirl(0, 0);
-					int i=0;
-					while(temp)
+					int i = 0;
+					while (temp)
 					{
-						g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGRIGHTGIRLS, i, temp->m_Realname);
+						if (temp->m_DayJob == JOB_HEADGIRL || temp->m_NightJob == JOB_HEADGIRL)
+							color = COLOR_RED;
+						else if (temp->m_DayJob == JOB_HOUSEREST && temp->m_NightJob == JOB_HOUSEREST)
+							color = COLOR_GREEN;
+						else color = COLOR_BLUE;
+
+						g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGRIGHTGIRLS, i, temp->m_Realname, color);
 						i++;
 						temp = temp->m_Next;
 					}
@@ -3331,10 +3440,26 @@ void TransferGirls()
 				{
 					// add the girls to the list
 					sGirl* temp = g_Centre.GetGirl(0, 0);
-					int i=0;
-					while(temp)
+					int i = 0;
+					while (temp)
 					{
-						g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGRIGHTGIRLS, i, temp->m_Realname);
+						if (temp->m_DayJob == JOB_CENTREMANAGER || temp->m_NightJob == JOB_CENTREMANAGER)
+							color = COLOR_RED;
+						else if (temp->m_DayJob == JOB_DRUGCOUNSELOR || temp->m_NightJob == JOB_DRUGCOUNSELOR)
+						{
+							if (g_Centre.GetNumGirlsOnJob(0, JOB_REHAB, SHIFT_NIGHT) < 1) color = COLOR_DARKBLUE;
+							else color = COLOR_RED;
+						}
+						else if (temp->m_DayJob == JOB_CENTREREST && temp->m_NightJob == JOB_CENTREREST)
+							color = COLOR_GREEN;
+						else if (temp->m_DayJob == JOB_REHAB || temp->m_NightJob == JOB_REHAB)
+						{
+							if (temp->m_WorkingDay == 0) color = COLOR_DARKBLUE;
+							else color = COLOR_RED;
+						}
+						else color = COLOR_BLUE;
+
+						g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGRIGHTGIRLS, i, temp->m_Realname, color);
 						i++;
 						temp = temp->m_Next;
 					}
@@ -3343,10 +3468,15 @@ void TransferGirls()
 				{
 					// add the girls to the list
 					sGirl* temp = g_Arena.GetGirl(0, 0);
-					int i=0;
-					while(temp)
+					int i = 0;
+					while (temp)
 					{
-						g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGRIGHTGIRLS, i, temp->m_Realname);
+						if (temp->m_DayJob == JOB_DOCTORE || temp->m_NightJob == JOB_DOCTORE)
+							color = COLOR_RED;
+						else if (temp->m_DayJob == JOB_ARENAREST && temp->m_NightJob == JOB_ARENAREST)
+							color = COLOR_GREEN;
+						else color = COLOR_BLUE;
+						g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGRIGHTGIRLS, i, temp->m_Realname, color);
 						i++;
 						temp = temp->m_Next;
 					}
@@ -3355,10 +3485,48 @@ void TransferGirls()
 				{
 					// add the girls to the list
 					sGirl* temp = g_Clinic.GetGirl(0, 0);
-					int i=0;
-					while(temp)
+					int i = 0;
+					while (temp)
 					{
-						g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGRIGHTGIRLS, i, temp->m_Realname);
+						if (temp->m_DayJob == JOB_CHAIRMAN || temp->m_NightJob == JOB_CHAIRMAN)
+							color = COLOR_RED;
+						else if (temp->m_DayJob == JOB_CLINICREST && temp->m_NightJob == JOB_CLINICREST)
+							color = COLOR_GREEN;
+						else if (temp->m_DayJob == JOB_DOCTOR || temp->m_NightJob == JOB_DOCTOR)
+						{
+							if (g_Clinic.GetNumberPatients(0) < 1 && g_Clinic.GetNumberPatients(1) < 1)
+								color = COLOR_DARKBLUE;
+							else color = COLOR_RED;
+						}
+						else if (temp->m_DayJob == JOB_MECHANIC || temp->m_NightJob == JOB_MECHANIC)
+						{
+							if (g_Clinic.GetNumGirlsOnJob(0, JOB_GETREPAIRS, 0) < 1 && g_Clinic.GetNumGirlsOnJob(0, JOB_GETREPAIRS, 1) < 1)
+								color = COLOR_DARKBLUE;
+							else color = COLOR_RED;
+						}
+						else if (temp->m_DayJob == JOB_GETHEALING || temp->m_NightJob == JOB_GETHEALING
+							|| temp->m_DayJob == JOB_GETREPAIRS || temp->m_NightJob == JOB_GETREPAIRS)
+						{
+							if (temp->health() > 70 && temp->tiredness() < 30) color = COLOR_DARKBLUE;
+							else color = COLOR_RED;
+						}
+						else if (temp->m_DayJob == JOB_GETABORT || temp->m_NightJob == JOB_GETABORT
+							|| temp->m_DayJob == JOB_PHYSICALSURGERY || temp->m_NightJob == JOB_PHYSICALSURGERY
+							|| temp->m_DayJob == JOB_LIPO || temp->m_NightJob == JOB_LIPO
+							|| temp->m_DayJob == JOB_BREASTREDUCTION || temp->m_NightJob == JOB_BREASTREDUCTION
+							|| temp->m_DayJob == JOB_BOOBJOB || temp->m_NightJob == JOB_BOOBJOB
+							|| temp->m_DayJob == JOB_VAGINAREJUV || temp->m_NightJob == JOB_VAGINAREJUV
+							|| temp->m_DayJob == JOB_FACELIFT || temp->m_NightJob == JOB_FACELIFT
+							|| temp->m_DayJob == JOB_ASSJOB || temp->m_NightJob == JOB_ASSJOB
+							|| temp->m_DayJob == JOB_TUBESTIED || temp->m_NightJob == JOB_TUBESTIED
+							|| temp->m_DayJob == JOB_FERTILITY || temp->m_NightJob == JOB_FERTILITY)
+						{
+							if (temp->m_WorkingDay == 0) color = COLOR_DARKBLUE;
+							else color = COLOR_RED;
+						}
+						else color = COLOR_BLUE;
+
+						g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGRIGHTGIRLS, i, temp->m_Realname, color);
 						i++;
 						temp = temp->m_Next;
 					}
@@ -3367,15 +3535,30 @@ void TransferGirls()
 				{
 					// add the girls to the list
 					sGirl* temp = g_Studios.GetGirl(0, 0);
-					int i=0;
-					while(temp)
+					int i = 0;
+					while (temp)
 					{
-						g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGRIGHTGIRLS, i, temp->m_Realname);
+
+						if (temp->m_NightJob == JOB_DIRECTOR)					color = COLOR_RED;
+						else if (temp->m_NightJob == JOB_FILMFREETIME)			color = COLOR_GREEN;
+						else if (temp->m_NightJob == JOB_CAMERAMAGE)
+						{
+							if (g_Studios.GetNumGirlsOnJob(0, JOB_CAMERAMAGE, SHIFT_NIGHT) > 1) color = COLOR_DARKBLUE;
+							else color = COLOR_RED;
+						}
+						else if (temp->m_NightJob == JOB_CRYSTALPURIFIER)
+						{
+							if (g_Studios.GetNumGirlsOnJob(0, JOB_CRYSTALPURIFIER, SHIFT_NIGHT) > 1) color = COLOR_DARKBLUE;
+							else color = COLOR_RED;
+						}
+						else color = COLOR_BLUE;
+
+						g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGRIGHTGIRLS, i, temp->m_Realname, color);
 						i++;
 						temp = temp->m_Next;
 					}
 				}
-			}				
+			}
 		}
 	}
 }
@@ -3724,3 +3907,110 @@ void confirm_exit()
 	}
 }
 
+void SaveGirlsCSV(string filename)
+{
+	ofstream GirlsCSV;
+	sGirl* cgirl;
+	sBrothel* building;
+	string eol = "\n";
+	int buildingnum = 0;
+	GirlsCSV.open(filename);
+	GirlsCSV << "'Building','Girl Name','Based on','Slave?','Day Job','Night Job','Age','Level','Exp','Askprice','House','Fame','Tiredness','Health','Happiness','Constitution','Charisma','Beauty','Intelligence','Confidence','Agility','Obedience','Spirit','Morality','Refinement','Dignity','Mana','Libido','Lactation','PCFear','PCLove','PCHate','Magic','Combat','Service','Medicine','Performance','Crafting','Herbalism','Farming','Brewing','Animalhandling','Normalsex','Anal','Bdsm','Beastiality','Group','Lesbian','Strip','Oralsex','Tittysex','Handjob','Footjob'"<<eol;
+	building = g_Brothels.GetBrothel(0);
+	while (building)
+	{
+		cgirl = building->m_Girls;
+		while (cgirl)
+		{
+			GirlsCSV << "'" << building->m_Name << "'," << Girl2CSV(cgirl) << eol;
+			cgirl = cgirl->m_Next;
+		}
+		building = building->m_Next;
+		if (building == 0) buildingnum++;
+		if (buildingnum == 1)	{ building = g_House.GetBrothel(0);		if (building == 0) buildingnum++; }
+		if (buildingnum == 2)	{ building = g_Arena.GetBrothel(0);		if (building == 0) buildingnum++; }
+		if (buildingnum == 3)	{ building = g_Centre.GetBrothel(0);	if (building == 0) buildingnum++; }
+		if (buildingnum == 4)	{ building = g_Clinic.GetBrothel(0);	if (building == 0) buildingnum++; }
+		if (buildingnum == 5)	{ building = g_Studios.GetBrothel(0);	if (building == 0) buildingnum++; }
+		if (buildingnum == 6)	{ building = g_Farm.GetBrothel(0);		if (building == 0) buildingnum++; }
+	}
+	GirlsCSV.close();
+}
+
+string Girl2CSV(sGirl* girl)
+{
+	cJobManager m_JobManager;
+	stringstream ss;
+	ss << "'" << CSVifyString(girl->m_Realname) << "'"
+		<< ",'" << CSVifyString(girl->m_Name) << "'"
+		<< "," << (girl->is_slave() ? "'Slave'" : "'Free'")
+		<< ",'" << m_JobManager.JobName[girl->m_DayJob] << "'"
+		<< ",'" << m_JobManager.JobName[girl->m_NightJob] << "'"
+
+		<< "," << g_Girls.GetStat(girl, STAT_AGE)
+		<< "," << g_Girls.GetStat(girl, STAT_LEVEL)
+		<< "," << g_Girls.GetStat(girl, STAT_EXP)
+		<< "," << g_Girls.GetStat(girl, STAT_ASKPRICE)
+		<< "," << g_Girls.GetStat(girl, STAT_HOUSE)
+		<< "," << g_Girls.GetStat(girl, STAT_FAME)
+		<< "," << g_Girls.GetStat(girl, STAT_TIREDNESS)
+		<< "," << g_Girls.GetStat(girl, STAT_HEALTH)
+		<< "," << g_Girls.GetStat(girl, STAT_HAPPINESS)
+		<< "," << g_Girls.GetStat(girl, STAT_CONSTITUTION)
+		<< "," << g_Girls.GetStat(girl, STAT_CHARISMA)
+		<< "," << g_Girls.GetStat(girl, STAT_BEAUTY)
+		<< "," << g_Girls.GetStat(girl, STAT_INTELLIGENCE)
+		<< "," << g_Girls.GetStat(girl, STAT_CONFIDENCE)
+		<< "," << g_Girls.GetStat(girl, STAT_AGILITY)
+		<< "," << g_Girls.GetStat(girl, STAT_OBEDIENCE)
+		<< "," << g_Girls.GetStat(girl, STAT_SPIRIT)
+		<< "," << g_Girls.GetStat(girl, STAT_MORALITY)
+		<< "," << g_Girls.GetStat(girl, STAT_REFINEMENT)
+		<< "," << g_Girls.GetStat(girl, STAT_DIGNITY)
+		<< "," << g_Girls.GetStat(girl, STAT_MANA)
+		<< "," << g_Girls.GetStat(girl, STAT_LIBIDO)
+		<< "," << g_Girls.GetStat(girl, STAT_LACTATION)
+		<< "," << g_Girls.GetStat(girl, STAT_PCFEAR)
+		<< "," << g_Girls.GetStat(girl, STAT_PCLOVE)
+		<< "," << g_Girls.GetStat(girl, STAT_PCHATE)
+
+		<< "," << g_Girls.GetSkill(girl, SKILL_MAGIC)
+		<< "," << g_Girls.GetSkill(girl, SKILL_COMBAT)
+		<< "," << g_Girls.GetSkill(girl, SKILL_SERVICE)
+		<< "," << g_Girls.GetSkill(girl, SKILL_MEDICINE)
+		<< "," << g_Girls.GetSkill(girl, SKILL_PERFORMANCE)
+		<< "," << g_Girls.GetSkill(girl, SKILL_CRAFTING)
+		<< "," << g_Girls.GetSkill(girl, SKILL_HERBALISM)
+		<< "," << g_Girls.GetSkill(girl, SKILL_FARMING)
+		<< "," << g_Girls.GetSkill(girl, SKILL_BREWING)
+		<< "," << g_Girls.GetSkill(girl, SKILL_ANIMALHANDLING)
+
+		<< "," << g_Girls.GetSkill(girl, SKILL_NORMALSEX)
+		<< "," << g_Girls.GetSkill(girl, SKILL_ANAL)
+		<< "," << g_Girls.GetSkill(girl, SKILL_BDSM)
+		<< "," << g_Girls.GetSkill(girl, SKILL_BEASTIALITY)
+		<< "," << g_Girls.GetSkill(girl, SKILL_GROUP)
+		<< "," << g_Girls.GetSkill(girl, SKILL_LESBIAN)
+		<< "," << g_Girls.GetSkill(girl, SKILL_STRIP)
+		<< "," << g_Girls.GetSkill(girl, SKILL_ORALSEX)
+		<< "," << g_Girls.GetSkill(girl, SKILL_TITTYSEX)
+		<< "," << g_Girls.GetSkill(girl, SKILL_HANDJOB)
+		<< "," << g_Girls.GetSkill(girl, SKILL_FOOTJOB)
+		;
+
+	return ss.str();
+}
+
+std::string CSVifyString(string name)
+{
+	std::string newName(name);
+	//find characters that we can't put into XML names
+	//and change them to '_' or whatever works in a name
+	for (size_t position = newName.find_first_of("\'\",");
+		position != newName.npos;
+		position = newName.find_first_of("\'\",", position))
+	{
+		newName.replace(position, 1, 1, '_');
+	}
+	return newName;
+}

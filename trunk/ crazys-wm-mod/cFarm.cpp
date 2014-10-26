@@ -285,7 +285,7 @@ void cFarmManager::UpdateGirls(sBrothel* brothel, int DayNight)		// Start_Buildi
 		sum = EVENT_SUMMARY; summary = ""; ss.str("");
 
 		// `J` she can refuse the first shift then decide to work the second shift 
-		if (!current->m_Refused_To_Work_Day)	// but if she worked the first shift she continues the rest of the night
+		if (!current->m_Refused_To_Work_Day && DayNight == SHIFT_NIGHT)	// but if she worked the first shift she continues the rest of the night
 		{
 			matron = true;
 			ss << girlName << " continued to help the other girls throughout the night.";
@@ -551,7 +551,7 @@ void cFarmManager::UpdateGirls(sBrothel* brothel, int DayNight)		// Start_Buildi
 					current->m_PrevNightJob = current->m_NightJob;
 					current->m_DayJob = current->m_NightJob = restjob;
 					ss << "The Farm Manager takes herself off duty because she is just too damn sore.\n";
-					g_Girls.UpdateEnjoyment(current, ACTION_WORKMOVIE, -10, true);
+					g_Girls.UpdateEnjoyment(current, ACTION_WORKMATRON, -10, true);
 				}
 				else
 				{

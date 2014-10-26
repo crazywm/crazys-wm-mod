@@ -71,6 +71,7 @@ public:
 
 	bool is_Surgery_Job(int testjob);
 	bool DoctorNeeded();
+	int GetNumberPatients(int DayNight = SHIFT_DAY);
 
 };
 

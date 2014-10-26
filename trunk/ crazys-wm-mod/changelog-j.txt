@@ -1013,9 +1013,73 @@ Reflow and make similar all non-brothel buildings
 Added footjob to girl details skill list
 Added check in slave market to greatly reduce the chance of duplicate rgirls in the same market turn
 Changed the number of girls the slave market has available to a random amount of 5-11 each market turn
+ - 5=5%, 6=10%, 7=15%, 8=40%, 9=15%, 10=10%, 11=5%
 Added info for who the girl is based on in the second details page
 
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.12
 !!!!!!!!!!!!!!!!!!!! pushed to SVN - r120
+
+###  Changes 10/23/2014
+Fixed a bug in new matron text
+Added color to transfer screen - Red = don't move, Dark Blue = probably don't move, Light Blue = working,  Green = freetime
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.13
+
+Fixed minor bug in transfer screen colors - resting green changed from day OR night to day AND night
+Adjusted number of girls in the slave market 
+ - 5=3%, 6=7%, 7=15%, 8=45%, 9=15%, 10=10%, 11=5%
+
+###  Changes 10/24/2014
+Tried checking for memory leaks:
+ - Visual Leak Detector - https://vld.codeplex.com/ 
+ - #include "vld.h" in main.cpp with it commented out so if anyone does not have it, it will not crash them
+ - little success fixing them at this time.
+
+
+###  Changes 10/25/2014
+Fixed a few bugs in matron code: 
+ - matrons no longer take girls off work if in rehab or surgery.
+ - some enjoyment was using workmovie instead of workmatron
+Fixed a text problem with explore catacombs.
+Fixed a bug with rehab days left >3 instead of >=3
+Added CSV export for girls - hold <ctrl> when clicking the save game button
+Started cleanup of cGangs.cpp
+Updated gang explore catacombs
+ - added a 2% chance that the healing potion can not revive a member. (no more immortal gangs)
+ - changed the limits of gold obtained from 300-1000 to 1-1500 (1-100 per gang member who returned)
+ - limited number of items to 1 item per 3 gang members while increasing the odds of getting items a little
+ - added chance of gang members returning with beasts
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.14
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r121
+
+
+
+
+Whore Master Editor:
+Increased size of program window to 1000x700 to fit more stuff
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

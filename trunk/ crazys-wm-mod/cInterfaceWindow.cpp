@@ -59,7 +59,7 @@ void cInterfaceWindow::Free()
 	//there is a special case where a picture may have already been deleted by something prior
 	//and it seems like way too much effort to include smart pointers
 	//so just detect any pointers that have been deleted already
-	for(unsigned int i=0;i<m_Images.size();i++)
+	for (unsigned int i = 0; i < m_Images.size(); i++)
 	{
 		if (m_Images[i])
 		{
@@ -68,6 +68,7 @@ void cInterfaceWindow::Free()
 				delete m_Images[i];
 		}
 	}
+
 	m_Images.clear();
 	for(unsigned int i=0;i<m_CheckBoxes.size();i++)		delete m_CheckBoxes[i];
 	m_CheckBoxes.clear();
