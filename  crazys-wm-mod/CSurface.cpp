@@ -95,7 +95,7 @@ void CSurface::Free()
 	if(m_SaveSurface)
 		return;
 
-	if(m_Temp)
+	if (m_Temp)
 		SDL_FreeSurface(m_Temp);
 	m_Temp = 0;
 

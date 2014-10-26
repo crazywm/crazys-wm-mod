@@ -297,7 +297,7 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, int DayNight)	// Start_Build
 		sum = EVENT_SUMMARY; summary = ""; ss.str("");
 
 		// `J` she can refuse the first shift then decide to work the second shift 
-		if (!current->m_Refused_To_Work_Day)	// but if she worked the first shift she continues the rest of the night
+		if (!current->m_Refused_To_Work_Day && DayNight == SHIFT_NIGHT)	// but if she worked the first shift she continues the rest of the night
 		{
 			matron = true;
 			ss << girlName << " continued to help the other girls throughout the night.";
@@ -682,7 +682,7 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, int DayNight)	// Start_Build
 				current->m_PrevNightJob = current->m_NightJob;
 				current->m_DayJob = current->m_NightJob = JOB_GETHEALING;
 				ss << "The Chairman admits herself to get Healing because she is just too damn sore.\n";
-				g_Girls.UpdateEnjoyment(current, ACTION_WORKMOVIE, -10, true);
+				g_Girls.UpdateEnjoyment(current, ACTION_WORKMATRON, -10, true);
 			}
 			else
 			{
@@ -715,7 +715,11 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, int DayNight)	// Start_Build
 			int t = g_Girls.GetStat(current, STAT_TIREDNESS);
 			int h = g_Girls.GetStat(current, STAT_HEALTH);
 
-			if (!matron)	// do no matron first as it is the easiest
+			if (current->m_WorkingDay > 0)
+			{
+				ss << girlName << " is not faring well in surgery.\n";
+			}
+			else if (!matron)	// do no matron first as it is the easiest
 			{
 				ss << "WARNING! " << girlName;
 				if (t > 80 && h < 20)		ss << " is in real bad shape, she is tired and injured.\nShe should go to the Clinic.\n";
@@ -984,4 +988,32 @@ bool cClinicManager::DoctorNeeded()	// `J` added, if there is a doctor already o
 		GetNumGirlsOnJob(0, JOB_ASSJOB, 0) < 1)
 		return false;	// a Doctor is not Needed
 	return true;	// Otherwise a Doctor is Needed
+}
+
+int cClinicManager::GetNumberPatients(int DayNight)	// `J` added, if there is a doctor already on duty or there is no one needing surgery, return false
+{
+	if (DayNight == SHIFT_DAY)
+		return (GetNumGirlsOnJob(0, JOB_GETHEALING, 0) +
+		GetNumGirlsOnJob(0, JOB_GETABORT, 0) +
+		GetNumGirlsOnJob(0, JOB_PHYSICALSURGERY, 0) +
+		GetNumGirlsOnJob(0, JOB_LIPO, 0) +
+		GetNumGirlsOnJob(0, JOB_BREASTREDUCTION, 0) +
+		GetNumGirlsOnJob(0, JOB_BOOBJOB, 0) +
+		GetNumGirlsOnJob(0, JOB_VAGINAREJUV, 0) +
+		GetNumGirlsOnJob(0, JOB_FACELIFT, 0) +
+		GetNumGirlsOnJob(0, JOB_ASSJOB, 0) +
+		GetNumGirlsOnJob(0, JOB_TUBESTIED, 0) +
+		GetNumGirlsOnJob(0, JOB_FERTILITY, 0));
+	else
+		return (GetNumGirlsOnJob(0, JOB_GETHEALING, 1) +
+		GetNumGirlsOnJob(0, JOB_GETABORT, 1) +
+		GetNumGirlsOnJob(0, JOB_PHYSICALSURGERY, 1) +
+		GetNumGirlsOnJob(0, JOB_LIPO, 1) +
+		GetNumGirlsOnJob(0, JOB_BREASTREDUCTION, 1) +
+		GetNumGirlsOnJob(0, JOB_BOOBJOB, 1) +
+		GetNumGirlsOnJob(0, JOB_VAGINAREJUV, 1) +
+		GetNumGirlsOnJob(0, JOB_FACELIFT, 1) +
+		GetNumGirlsOnJob(0, JOB_ASSJOB, 1) +
+		GetNumGirlsOnJob(0, JOB_TUBESTIED, 1) +
+		GetNumGirlsOnJob(0, JOB_FERTILITY, 1));
 }

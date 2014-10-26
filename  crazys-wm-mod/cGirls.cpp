@@ -130,7 +130,7 @@ void sGirl::setup_maps()
 		stat_lookup["PCLove"]				= STAT_PCLOVE;
 		stat_lookup["PCHate"]				= STAT_PCHATE;
 		stat_lookup["Morality"]				= STAT_MORALITY;
-		stat_lookup["Refinement"]			= STAT_REFINMENT;
+		stat_lookup["Refinement"]			= STAT_REFINEMENT;
 		stat_lookup["Dignity"]				= STAT_DIGNITY;
 		stat_lookup["Lactation"]			= STAT_LACTATION;
 
@@ -1207,13 +1207,13 @@ string cGirls::GetDetailsString(sGirl* girl, bool purchase)
 	// `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in >> cGirls.cpp > GetDetailsString
 	int skillnum[] = { SKILL_MAGIC, SKILL_COMBAT, SKILL_SERVICE, SKILL_MEDICINE, SKILL_PERFORMANCE, SKILL_CRAFTING, SKILL_HERBALISM, SKILL_FARMING, SKILL_BREWING, SKILL_ANIMALHANDLING, SKILL_ANAL, SKILL_BDSM, SKILL_NORMALSEX, SKILL_BEASTIALITY, SKILL_GROUP, SKILL_LESBIAN, SKILL_ORALSEX, SKILL_TITTYSEX, SKILL_HANDJOB, SKILL_STRIP, SKILL_FOOTJOB };
 	string basestr[] = { "Age : ", "Rebelliousness : ", "Looks : ", "Constitution : ", "Health : ", "Happiness : ", "Tiredness : ", "Gold : ", "Worth : " };
-	string skillstr[] = { "Magic Ability : ", "Combat Ability : ", "Service Skills : ", "Medicine Skill : ", "Performance Skill : ", "Crafting Skill : ", "Herbalism Skill : ", "Farming Skill : ", "Brewing Skill : ", "Animal Handling : ", "Anal Sex : ", "BDSM Sex : ", "Normal Sex : ", "Bestiality Sex : ", "Group Sex : ", "Lesbian Sex : ", "Oral Sex : ", "Titty Sex : ", "Hand Job : ", "Stripping Sex : ", "Foot Job : " };
+	string skillstr[] = { "Magic Ability : ", "Combat Ability : ", "Service Skills : ", "Medicine Skill : ", "Performance Skill : ", "Crafting Skill : ", "Herbalism Skill : ", "Farming Skill : ", "Brewing Skill : ", "Animal Handling : ", "Anal Sex : ", "BDSM Sex : ", "Normal Sex : ", "Bestiality Sex : ", "Group Sex : ", "Lesbian Sex : ", "Oral Sex : ", "Titty Sex : ", "Hand Job : ", "Stripping : ", "Foot Job : " };
 
 	if (cfg.fonts.normal() == "segoeui.ttf" && cfg.fonts.detailfontsize() == 9) // `J` if already set to my default
 	{
 		string basesegoeuistr[] = { "Age :                                   ", "Rebelliousness :         ", "Looks :                              ", "Constitution :               ", "Health :                            ", "Happiness :                    ", "Tiredness :                     ", "Gold :                                ", "Worth :                             " };
 		for (int i = 0; i < 9; i++) basestr[i] = basesegoeuistr[i];
-		string skillsegoeuistr[] = { "Magic Ability :              ", "Combat Ability :           ", "Service Skills :              ", "Medicine Skill :            ", "Performance Skill :    ", "Crafting Skill :              ", "Herbalism Skill :         ", "Farming Skill :             ", "Brewing Skill :               ", "Animal Handling :    ", "Anal Sex :                        ", "BDSM Sex :                      ", "Normal Sex :                 ", "Bestiality Sex :              ", "Group Sex :                     ", "Lesbian Sex :                 ", "Oral Sex :                         ", "Titty Sex :                         ", "Hand Job :                      ", "Stripping Sex :               ", "Foot Job :                         " };
+		string skillsegoeuistr[] = { "Magic Ability :              ", "Combat Ability :           ", "Service Skills :              ", "Medicine Skill :            ", "Performance Skill :    ", "Crafting Skill :              ", "Herbalism Skill :         ", "Farming Skill :             ", "Brewing Skill :               ", "Animal Handling :    ", "Anal Sex :                        ", "BDSM Sex :                      ", "Normal Sex :                 ", "Bestiality Sex :              ", "Group Sex :                     ", "Lesbian Sex :                 ", "Oral Sex :                         ", "Titty Sex :                         ", "Hand Job :                      ", "Stripping :                       ", "Foot Job :                         " };
 		for (int i = 0; i < 21; i++) skillstr[i] = skillsegoeuistr[i];
 		size = 90;
 	}
@@ -2492,7 +2492,7 @@ int cGirls::GetStat(sGirl* girl, int a_stat)
 	else if (stat == STAT_HEALTH	&& g_Girls.HasTrait(girl, "Incorporeal"))	return 100;
 	else if (stat == STAT_TIREDNESS && g_Girls.HasTrait(girl, "Incorporeal"))	return 0;
 	else if (stat == STAT_PCLOVE || stat == STAT_PCFEAR || stat == STAT_PCHATE || stat == STAT_MORALITY || 
-		stat == STAT_REFINMENT || stat == STAT_DIGNITY || stat == STAT_LACTATION) min = -100;
+		stat == STAT_REFINEMENT || stat == STAT_DIGNITY || stat == STAT_LACTATION) min = -100;
 	// Generic calculation
 	value = girl->m_Stats[stat] + girl->m_StatMods[stat] + girl->m_TempStats[stat] + girl->m_StatTr[stat];
 
@@ -2538,7 +2538,7 @@ void cGirls::SetStat(sGirl* girl, int a_stat, int amount)
 	case STAT_PCHATE:
 	case STAT_PCLOVE:
 	case STAT_MORALITY:
-	case STAT_REFINMENT:
+	case STAT_REFINEMENT:
 	case STAT_DIGNITY:
 	case STAT_LACTATION:
 		min = -100;
@@ -2597,7 +2597,7 @@ void cGirls::UpdateStat(sGirl* girl, int a_stat, int amount, bool usetraits)
 	case STAT_PCLOVE:
 	case STAT_PCHATE:
 	case STAT_MORALITY:
-	case STAT_REFINMENT:
+	case STAT_REFINEMENT:
 	case STAT_DIGNITY:
 	case STAT_LACTATION:
 		min = -100;

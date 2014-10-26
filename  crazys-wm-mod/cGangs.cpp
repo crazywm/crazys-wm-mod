@@ -1,21 +1,21 @@
 /*
- * Copyright 2009, 2010, The Pink Petal Development Team.
- * The Pink Petal Devloment Team are defined as the game's coders 
- * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright 2009, 2010, The Pink Petal Development Team.
+* The Pink Petal Devloment Team are defined as the game's coders
+* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 #include <sstream>
 #include <algorithm>
 
@@ -200,20 +200,20 @@ void cGangManager::HireGang(int gangID)
 {
 	sGang* currentGang = m_HireableGangStart;
 	int count = 0;
-	while(currentGang)
+	while (currentGang)
 	{
-		if(count == gangID) break;
+		if (count == gangID) break;
 		count++;
 		currentGang = currentGang->m_Next;
 	}
-	if(currentGang)
+	if (currentGang)
 	{
 		sGang* copyGang = new sGang();
 		*copyGang = *currentGang;
 		copyGang->m_Next = copyGang->m_Prev = 0;
 		copyGang->m_Combat = copyGang->m_AutoRecruit = false;
 		copyGang->m_LastMissID = -1;
-		if(copyGang->m_Num <= 5)
+		if (copyGang->m_Num <= 5)
 			copyGang->m_MissionID = MISS_RECRUIT;
 
 		AddGang(copyGang);
@@ -226,17 +226,16 @@ void cGangManager::FireGang(int gangID)
 {
 	sGang* currentGang = m_GangStart;
 	int count = 0;
-	while(currentGang)
+	while (currentGang)
 	{
-		if(count == gangID)
-			break;
+		if (count == gangID)	break;
 		count++;
 		currentGang = currentGang->m_Next;
 	}
-	if(currentGang)
+	if (currentGang)
 	{
 		cConfig cfg;
-		if(m_NumHireableGangs < cfg.gangs.max_recruit_list())
+		if (m_NumHireableGangs < cfg.gangs.max_recruit_list())
 		{
 			sGang* copyGang = new sGang();
 			*copyGang = *currentGang;
@@ -259,29 +258,22 @@ void cGangManager::AddNewGang(bool boosted)
 	cConfig cfg;
 	int max_members = cfg.gangs.init_member_max();
 	int min_members = cfg.gangs.init_member_min();
-	newGang->m_Num = min_members + g_Dice%(max_members + 1 - min_members);
-	if(boosted)
-		newGang->m_Num += 5;
-	if(newGang->m_Num > 15)
-		newGang->m_Num = 15;
+	newGang->m_Num = min_members + g_Dice % (max_members + 1 - min_members);
+	if (boosted) newGang->m_Num = min(15, newGang->m_Num + 5);
 
 	int new_val;
-	for(u_int i=0; i<NUM_SKILLS; i++)
+	for (u_int i = 0; i<NUM_SKILLS; i++)
 	{
-		new_val = (1+(g_Dice%30))+20;
-		if(g_Dice%5 == 1)
-			new_val += 1+g_Dice%10;
-		if(boosted)
-			new_val += 10+g_Dice%11;
+		new_val = (g_Dice % 30) + 21;
+		if (g_Dice % 5 == 1)	new_val += 1 + g_Dice % 10;
+		if (boosted)			new_val += 10 + g_Dice % 11;
 		newGang->m_Skills[i] = new_val;
 	}
-	for(int i=0; i<NUM_STATS; i++)
+	for (int i = 0; i<NUM_STATS; i++)
 	{
-		new_val = (1+(g_Dice%30))+20;
-		if(g_Dice%5 == 1)
-			new_val += g_Dice%10;
-		if(boosted)
-			new_val += 10+g_Dice%10;
+		new_val = (g_Dice % 30) + 21;
+		if (g_Dice % 5 == 1)	new_val += g_Dice % 10;
+		if (boosted)			new_val += 10 + g_Dice % 11;
 		newGang->m_Stats[i] = new_val;
 	}
 
@@ -289,24 +281,24 @@ void cGangManager::AddNewGang(bool boosted)
 	bool done = false;
 	ifstream in;
 	// WD: Typecast to resolve ambiguous call in VS 2010
-	DirPath dp = DirPath() <<	"Resources" << "Data" << "HiredGangNames.txt";
+	DirPath dp = DirPath() << "Resources" << "Data" << "HiredGangNames.txt";
 	in.open(dp.c_str());
 	//in.open(DirPath() <<	"Resources" << "Data" << "HiredGangNames.txt");
-	while(!done)
+	while (!done)
 	{
 		in.seekg(0);
 		int name = g_Dice%m_NumGangNames;
-		in>>m_NumGangNames;	// ignore the first line
-		for(int i=0; i<=name; i++)
+		in >> m_NumGangNames;	// ignore the first line
+		for (int i = 0; i <= name; i++)
 		{
-			if (in.peek()=='\n') in.ignore(1,'\n');
+			if (in.peek() == '\n') in.ignore(1, '\n');
 			in.getline(buffer, sizeof(buffer), '\n');
 		}
 		done = true;
 		sGang* curr = m_GangStart;
-		while(curr)
+		while (curr)
 		{
-			if(curr->m_Name == buffer)
+			if (curr->m_Name == buffer)
 			{
 				done = false;
 				break;
@@ -314,9 +306,9 @@ void cGangManager::AddNewGang(bool boosted)
 			curr = curr->m_Next;
 		}
 		curr = m_HireableGangStart;
-		while(curr)
+		while (curr)
 		{
-			if(curr->m_Name == buffer)
+			if (curr->m_Name == buffer)
 			{
 				done = false;
 				break;
@@ -327,7 +319,7 @@ void cGangManager::AddNewGang(bool boosted)
 	newGang->m_Name = buffer;
 	in.close();
 
-	if(m_HireableGangStart)
+	if (m_HireableGangStart)
 	{
 		m_HireableGangEnd->m_Next = newGang;
 		newGang->m_Prev = m_HireableGangEnd;
@@ -340,7 +332,7 @@ void cGangManager::AddNewGang(bool boosted)
 void cGangManager::AddHireableGang(sGang* newGang)
 {
 	m_NumHireableGangs++;
-	if(m_HireableGangStart)
+	if (m_HireableGangStart)
 	{
 		m_HireableGangEnd->m_Next = newGang;
 		newGang->m_Prev = m_HireableGangEnd;
@@ -353,7 +345,7 @@ void cGangManager::AddHireableGang(sGang* newGang)
 void cGangManager::AddGang(sGang* newGang)
 {
 	m_NumGangs++;
-	if(m_GangStart)
+	if (m_GangStart)
 	{
 		m_GangEnd->m_Next = newGang;
 		newGang->m_Prev = m_GangEnd;
@@ -368,10 +360,9 @@ void cGangManager::RemoveHireableGang(int gangID)
 	// find the gang by id
 	sGang* currentGang = m_HireableGangStart;
 	int count = 0;
-	while(currentGang)
+	while (currentGang)
 	{
-		if(count == gangID)
-			break;
+		if (count == gangID) break;
 		count++;
 		currentGang = currentGang->m_Next;
 	}
@@ -381,12 +372,12 @@ void cGangManager::RemoveHireableGang(int gangID)
 
 void cGangManager::RemoveHireableGang(sGang* gang)
 {
-	if(gang)
+	if (gang)
 	{
-		if(gang->m_Prev == 0)
+		if (gang->m_Prev == 0)
 		{
 			m_HireableGangStart = gang->m_Next;
-			if(m_HireableGangStart)
+			if (m_HireableGangStart)
 				m_HireableGangStart->m_Prev = 0;
 			else
 				m_HireableGangEnd = 0;
@@ -394,7 +385,7 @@ void cGangManager::RemoveHireableGang(sGang* gang)
 			delete gang;
 			gang = 0;
 		}
-		else if(gang->m_Next == 0)
+		else if (gang->m_Next == 0)
 		{
 			m_HireableGangEnd = gang->m_Prev;
 			m_HireableGangEnd->m_Next = 0;
@@ -415,12 +406,12 @@ void cGangManager::RemoveHireableGang(sGang* gang)
 
 void cGangManager::RemoveGang(sGang* gang)
 {
-	if(gang)
+	if (gang)
 	{
-		if(gang->m_Prev == 0)
+		if (gang->m_Prev == 0)
 		{
 			m_GangStart = gang->m_Next;
-			if(m_GangStart)
+			if (m_GangStart)
 				m_GangStart->m_Prev = 0;
 			else
 				m_GangEnd = 0;
@@ -428,7 +419,7 @@ void cGangManager::RemoveGang(sGang* gang)
 			delete gang;
 			gang = 0;
 		}
-		else if(gang->m_Next == 0)
+		else if (gang->m_Next == 0)
 		{
 			m_GangEnd = gang->m_Prev;
 			m_GangEnd->m_Next = 0;
@@ -452,9 +443,9 @@ void cGangManager::RemoveGang(int gangID)
 	// find the gang by id
 	sGang* currentGang = m_GangStart;
 	int count = 0;
-	while(currentGang)
+	while (currentGang)
 	{
-		if(count == gangID)
+		if (count == gangID)
 			break;
 		count++;
 		currentGang = currentGang->m_Next;
@@ -480,10 +471,8 @@ sGang* cGangManager::GetTempGang()
 {
 	sGang* newGang = new sGang();
 	newGang->m_Num = 15;
-	for(u_int i=0; i<NUM_SKILLS; i++)
-		newGang->m_Skills[i] = (1+(g_Dice%30))+20;
-	for(int i=0; i<NUM_STATS; i++)
-		newGang->m_Stats[i] = (1+(g_Dice%30))+20;
+	for (int i = 0; i<NUM_SKILLS; i++)	newGang->m_Skills[i] = (g_Dice % 30) + 21;
+	for (int i = 0; i<NUM_STATS; i++)	newGang->m_Stats[i] = (g_Dice % 30) + 21;
 	return newGang;
 }
 
@@ -492,29 +481,27 @@ sGang* cGangManager::GetGang(int gangID)
 	// first find the gang
 	sGang* currentGang = m_GangStart;
 	int count = 0;
-	while(currentGang)
+	while (currentGang)
 	{
-		if(count == gangID)
-			break;
+		if (count == gangID)	break;
 		count++;
-/*
- *		no next gang surely means the end of the list
- *		so therefore "gang not found"
- *
- *		or has the way it works changed? 
- *
- *		Anyway, all there was where was a local variable
- *		x which was set to 1 and then ignored
- *
- *		-- doc
- */
-		if(currentGang->m_Next == 0)
+		/*
+		*		no next gang surely means the end of the list
+		*		so therefore "gang not found"
+		*
+		*		or has the way it works changed?
+		*
+		*		Anyway, all there was where was a local variable
+		*		x which was set to 1 and then ignored
+		*
+		*		-- doc
+		*/
+		if (currentGang->m_Next == 0)
 		{//uh oh, bad pointer.... crap
 			return 0;
 		}
 		currentGang = currentGang->m_Next;
 	}
-
 	return currentGang;
 }
 
@@ -523,12 +510,11 @@ sGang* cGangManager::GetHireableGang(int gangID)
 	// first find the gang
 	sGang* currentGang = m_HireableGangStart;
 	int count = 0;
-	while(currentGang)
+	while (currentGang)
 	{
-		if(count == gangID)
-			break;
+		if (count == gangID)	break;
 		count++;
-		if(currentGang->m_Next == 0)
+		if (currentGang->m_Next == 0)
 		{//uh oh, bad pointer.... crap
 			//int x = 1;
 			return 0;	// gang not found? -- doc
@@ -544,42 +530,38 @@ sGang* cGangManager::GetTempWeakGang()
 	// MYR: Weak gangs attack girls when they work
 	sGang* newGang = new sGang();
 	newGang->m_Num = 15;
-	for(u_int i=0; i<NUM_SKILLS; i++)
-		newGang->m_Skills[i] = g_Dice%30 + 51; 
-	for(int i=0; i<NUM_STATS; i++)
-		newGang->m_Stats[i] = g_Dice%30 + 51; 
-
+	for (u_int i = 0; i<NUM_SKILLS; i++)	newGang->m_Skills[i] = g_Dice % 30 + 51;
+	for (int i = 0; i<NUM_STATS; i++)		newGang->m_Stats[i] = g_Dice % 30 + 51;
 	newGang->m_Stats[STAT_HEALTH] = 100;
-
 	return newGang;
 }
 
 sGang *cGangManager::random_gang(vector<sGang*>& v)
 {
 	vector<sGang*> list;
-/*
- *	we're going to make a table that has one
- *	row for each gang member, and each row will
- *	contain a pointer to that member's gang
- */
-	for(u_int i = 0; i < v.size(); i++) {
+	/*
+	*	we're going to make a table that has one
+	*	row for each gang member, and each row will
+	*	contain a pointer to that member's gang
+	*/
+	for (u_int i = 0; i < v.size(); i++) 
+	{
 		sGang *gang = v[i];
-		for(int j = 0; j < gang->m_Num; j++) {
+		for (int j = 0; j < gang->m_Num; j++) 
+		{
 			list.push_back(gang);
 		}
 	}
-/*
- *	make sure the list isn't empty
- */
-	if(list.size() == 0) {
-		return 0;
-	}
-/*
- *	now we randomly select from the list.
- *
- *	this means the chance of a gang getting chosen
- *	is proportional to the number of gang members
- */
+	/*
+	*	make sure the list isn't empty
+	*/
+	if (list.size() == 0) 	return 0;
+	/*
+	*	now we randomly select from the list.
+	*
+	*	this means the chance of a gang getting chosen
+	*	is proportional to the number of gang members
+	*/
 	return list[g_Dice.random(list.size())];
 }
 
@@ -598,21 +580,21 @@ void cGangManager::BoostGangCombatSkills(sGang* gang, int count)
 
 void cGangManager::BoostGangRandomSkill(vector<int*>* possible_skills, int count, int boost_count)
 {
-/*
- *	Which of the passed skills/stats will be raised this time?
- *	Hopefully they'll tend to focus a bit more on what they're already good at...
- *	that way, they will have strengths instead of becoming entirely homogenized
- *
- *	ex. 60 combat, 50 magic, and 40 intelligence: squared, that comes to 3600, 2500 and 1600...
- *		so: ~46.75% chance combat, ~32.46% chance magic, ~20.78% chance intelligence
- */
-	for(int j = 0; j < count; j++)  // we'll pick and boost a skill/stat "count" number of times
+	/*
+	*	Which of the passed skills/stats will be raised this time?
+	*	Hopefully they'll tend to focus a bit more on what they're already good at...
+	*	that way, they will have strengths instead of becoming entirely homogenized
+	*
+	*	ex. 60 combat, 50 magic, and 40 intelligence: squared, that comes to 3600, 2500 and 1600...
+	*		so: ~46.75% chance combat, ~32.46% chance magic, ~20.78% chance intelligence
+	*/
+	for (int j = 0; j < count; j++)  // we'll pick and boost a skill/stat "count" number of times
 	{
 		int *affect_skill = 0;
 		int total_chance = 0;
 		vector<int> chance;
 
-		for(int i = 0; i < (int)possible_skills->size(); i++)
+		for (int i = 0; i < (int)possible_skills->size(); i++)
 		{  // figure chances for each skill/stat; more likely to choose those they're better at
 			chance.push_back((int)pow((float)*possible_skills->at(i), 2));
 			total_chance += chance[i];
@@ -620,57 +602,54 @@ void cGangManager::BoostGangRandomSkill(vector<int*>* possible_skills, int count
 		int choice = g_Dice.random(total_chance);
 
 		total_chance = 0;
-		for(int i = 0; i < (int)chance.size(); i++)
+		for (int i = 0; i < (int)chance.size(); i++)
 		{
-			if(choice < (chance[i] + total_chance))
+			if (choice < (chance[i] + total_chance))
 			{
 				affect_skill = possible_skills->at(i);
 				break;
 			}
 			total_chance += chance[i];
 		}
-/*
- *	OK, we've picked a skill/stat. Now to boost it however many times were specified
- */
+		/*
+		*	OK, we've picked a skill/stat. Now to boost it however many times were specified
+		*/
 		BoostGangSkill(affect_skill, boost_count);
 	}
 }
 
 void cGangManager::BoostGangSkill(int* affect_skill, int count)
 {
-/*
- *	OK, we've been passed a skill/stat. Now to raise it an amount depending on how high the
- *	skill/stat already is. The formula is fairly simple.
- *	Where x = current skill level, and y = median boost amount:
- *	y = (70/x)^2
- *	If y > 5, y = 5.
- *	Then, we get a random number ranging from (y/2) to (y*1.5) for the actual boost
- *	amount.
- *	Of course, we can't stick a floating point number into a char/int, so instead we
- *	use the remaining decimal value as a percentage chance for 1 more point. For
- *	example, 3.57 would be 3 points guaranteed, with 57% chance to instead get 4 points.
- *
- *	ex. 1: 50 points in skill. (70/50)^2 = 1.96. Possible point range: 0.98 to 2.94
- *	ex. 2: 30 points in skill. (70/30)^2 = 5.44. Possible point range: 2.72 to 8.16
- *	ex. 3: 75 points in skill. (70/75)^2 = 0.87. Possible point range: 0.44 to 1.31
- */
-	for(int j = 0; j < count; j++)  // we'll boost the skill/stat "count" number of times
+	/*
+	*	OK, we've been passed a skill/stat. Now to raise it an amount depending on how high the
+	*	skill/stat already is. The formula is fairly simple.
+	*	Where x = current skill level, and y = median boost amount:
+	*	y = (70/x)^2
+	*	If y > 5, y = 5.
+	*	Then, we get a random number ranging from (y/2) to (y*1.5) for the actual boost
+	*	amount.
+	*	Of course, we can't stick a floating point number into a char/int, so instead we
+	*	use the remaining decimal value as a percentage chance for 1 more point. For
+	*	example, 3.57 would be 3 points guaranteed, with 57% chance to instead get 4 points.
+	*
+	*	ex. 1: 50 points in skill. (70/50)^2 = 1.96. Possible point range: 0.98 to 2.94
+	*	ex. 2: 30 points in skill. (70/30)^2 = 5.44. Possible point range: 2.72 to 8.16
+	*	ex. 3: 75 points in skill. (70/75)^2 = 0.87. Possible point range: 0.44 to 1.31
+	*/
+	for (int j = 0; j < count; j++)  // we'll boost the skill/stat "count" number of times
 	{
-		if(*affect_skill < 1)
-			*affect_skill = 1;
+		if (*affect_skill < 1) *affect_skill = 1;
 
 		double boost_amount = pow(70 / (double)*affect_skill, 2);
-		if(boost_amount > 5)
-			boost_amount = 5;
+		if (boost_amount > 5) boost_amount = 5;
 
-		boost_amount = (double)g_Dice.in_range(int((boost_amount/2)*100), int((boost_amount*1.5)*100)) / 100;
+		boost_amount = (double)g_Dice.in_range(int((boost_amount / 2) * 100), int((boost_amount*1.5) * 100)) / 100;
 		char one_more = g_Dice.percent(int((boost_amount - (int)boost_amount) * 100)) ? 1 : 0;
 		char final_boost = (char)boost_amount + one_more;
 
 		*affect_skill += final_boost;
 
-		if(*affect_skill > 100)
-			*affect_skill = 100;
+		if (*affect_skill > 100) *affect_skill = 100;
 	}
 }
 
@@ -688,10 +667,8 @@ bool cGangManager::GangBrawl(sGang* gang1, sGang* gang2)
 	int g2dodge = 0;
 	int g2HealPot = 10;
 
-	if(gang1 == 0 || gang2 == 0)
-		return true;
-	else if(gang1->m_Num == 0)
-		return false;
+	if (gang1 == 0 || gang2 == 0)	return true;
+	else if (gang1->m_Num == 0)		return false;
 
 	initalNumber1 = gang1->m_Num;
 	initalNumber2 = gang1->m_Num;
@@ -701,35 +678,31 @@ bool cGangManager::GangBrawl(sGang* gang1, sGang* gang2)
 	g1dodge = gang1->m_Stats[STAT_AGILITY];
 	g2dodge = gang2->m_Stats[STAT_AGILITY];
 
-	int tmp = 0;
-	if(gang1->m_Num > gang2->m_Num)
-		tmp = gang1->m_Num;
-	else
-		tmp = gang2->m_Num;
+	int tmp = (gang1->m_Num > gang2->m_Num) ? gang1->m_Num : gang2->m_Num;
 
 	gang1->m_Combat = true;
 
 	int heal_lim = healing_limit();
-	for(int i=0; i<tmp; i++)
+	for (int i = 0; i<tmp; i++)
 	{
-		int g1Health = 100;		
+		int g1Health = 100;
 		int g1Mana = 100;
 
-		int g2Health = 100;		
+		int g2Health = 100;
 		int g2Mana = 100;
 
 		g1attack = SKILL_MAGIC;
 		g2attack = SKILL_MAGIC;
 
-		while(g1Health > 0 && g2Health > 0)
+		while (g1Health > 0 && g2Health > 0)
 		{
 			// gang1 attacks
-			if((g_Dice%100)+1 <= gang1->m_Skills[g1attack])
+			if (g_Dice.percent(gang1->m_Skills[g1attack]))
 			{
-				int damage = (m_SwordLevel+1)*5;
-				if(g1attack == SKILL_MAGIC)
+				int damage = (m_SwordLevel + 1) * 5;
+				if (g1attack == SKILL_MAGIC)
 				{
-					if(g1Mana <= 0)
+					if (g1Mana <= 0)
 						g1attack = SKILL_COMBAT;
 					else
 					{
@@ -739,27 +712,27 @@ bool cGangManager::GangBrawl(sGang* gang1, sGang* gang2)
 				}
 
 				// gang 2 attempts Dodge
-				if((g_Dice%100)+1 >= g2dodge)
+				if (!g_Dice.percent(g2dodge))
 				{
-					damage = (damage-(gang2->m_Stats[STAT_CONSTITUTION]/15));
+					damage = (damage - (gang2->m_Stats[STAT_CONSTITUTION] / 15));
 					g2Health -= damage;
 				}
 			}
 
 			// gang2 use healing potions
-			if(g2HealPot > 0 && g2Health <= 40)
+			if (g2HealPot > 0 && g2Health <= 40)
 			{
 				g2HealPot--;
 				g2Health += 30;
 			}
 
 			// gang2 Attacks
-			if((g_Dice%100)+1 <= gang2->m_Skills[g2attack])
+			if (g_Dice.percent(gang2->m_Skills[g2attack]))
 			{
-				int damage = (m_SwordLevel+1)*5;
-				if(g2attack == SKILL_MAGIC)
+				int damage = (m_SwordLevel + 1) * 5;
+				if (g2attack == SKILL_MAGIC)
 				{
-					if(g2Mana <= 0)
+					if (g2Mana <= 0)
 						g2attack = SKILL_COMBAT;
 					else
 					{
@@ -768,62 +741,51 @@ bool cGangManager::GangBrawl(sGang* gang1, sGang* gang2)
 					}
 				}
 
-				if((g_Dice%100)+1 >= g1dodge)
+				if (!g_Dice.percent(g1dodge))
 				{
-					damage = (damage-(gang1->m_Stats[STAT_CONSTITUTION]/15));
+					damage = (damage - (gang1->m_Stats[STAT_CONSTITUTION] / 15));
 					g1Health -= damage;
 				}
 			}
 
 			// gang1 use healing potions
-			if(heal_lim > 0 && g1Health <= 40)
+			if (heal_lim > 0 && g1Health <= 40)
 			{
-				heal_lim --;
+				heal_lim--;
 				m_NumHealingPotions--;
 				g1Health += 30;
 			}
 
-			// update gang1 dodge ability
-			if((g1dodge - 1) < 0)
-				g1dodge = 0;
-			else
-				g1dodge--;
-
-			// update gang2 dodge ability
-			if((g2dodge - 1) < 0)
-				g2dodge = 0;
-			else
-				g2dodge--;
+			g1dodge = max(0, g1dodge - 1);		// degrade gang1 dodge ability
+			g2dodge = max(0, g2dodge - 1);		// degrade gang2 dodge ability
 		}
 
-		if(g2Health <= 0)
-			gang2->m_Num--;
-		if(gang2->m_Num == 0)
+		if (g2Health <= 0) gang2->m_Num--;
+		if (gang2->m_Num == 0)
 		{
 			BoostGangCombatSkills(gang1, 2);
 			return true;
 		}
 
-		if(g1Health <= 0)
-			gang1->m_Num--;
-		if(gang1->m_Num == 0)
+		if (g1Health <= 0) gang1->m_Num--;
+		if (gang1->m_Num == 0)
 		{
 			BoostGangCombatSkills(gang2, 2);
 			return false;
 		}
 
-		if((initalNumber2/2) > gang2->m_Num)	// if the gang2 has lost half its number there is a 40% chance they will run away
+		if ((initalNumber2 / 2) > gang2->m_Num)	// if the gang2 has lost half its number there is a 40% chance they will run away
 		{
-			if((1+(g_Dice%100)) < 40)
+			if (g_Dice.percent(40))
 			{
 				BoostGangCombatSkills(gang1, 2);
 				return true;	// the men run away
 			}
 		}
 
-		if((initalNumber1/2) > gang1->m_Num)	// if the gang has lost half its number there is a 40% chance they will run away
+		if ((initalNumber1 / 2) > gang1->m_Num)	// if the gang has lost half its number there is a 40% chance they will run away
 		{
-			if((1+(g_Dice%100)) < 40)
+			if (g_Dice.percent(40))
 			{
 				BoostGangCombatSkills(gang2, 2);
 				return false;	// the men run away
@@ -839,19 +801,17 @@ bool cGangManager::GangCombat(sGirl* girl, sGang* gang)
 	CLog l;
 
 	// MYR: Sanity check: Incorporeal is an auto-win.
-	if(girl->has_trait("Incorporeal"))
+	if (girl->has_trait("Incorporeal"))
 	{
 		girl->m_Stats[STAT_HEALTH] = 100;
-		l.ss()	<< gettext("\nGirl vs. Goons: ") << girl->m_Realname << gettext(" is incorporeal, so she wins.\n");
-		gang->m_Num = (int) gang->m_Num / 2;
+		l.ss() << gettext("\nGirl vs. Goons: ") << girl->m_Realname << gettext(" is incorporeal, so she wins.\n");
+		gang->m_Num = (int)gang->m_Num / 2;
 		while (gang->m_Num > 0)   // Do the casualty calculation
 		{
-			if (g_Dice%100 <= 40)
-				gang->m_Num--;
-			else
-				break;
+			if (g_Dice.percent(40))	gang->m_Num--;
+			else break;
 		}
-		l.ss()	<< gettext("  ") << gang->m_Num << gettext(" goons escaped with their lives.\n");
+		l.ss() << gettext("  ") << gang->m_Num << gettext(" goons escaped with their lives.\n");
 		return true;
 	}
 
@@ -859,171 +819,117 @@ bool cGangManager::GangCombat(sGirl* girl, sGang* gang)
 	u_int attack = SKILL_COMBAT;	// determined later, defaults to combat
 	u_int gattack = SKILL_COMBAT;
 
-	if(gang == 0)
-		return true;
-	else if(gang->m_Num == 0)
-		return true;
+	if (gang == 0 || gang->m_Num == 0) return true;
 
 	int initalNumber = gang->m_Num;
 
-	// first determine what she will fight with
-	if(g_Girls.GetSkill(girl, SKILL_COMBAT) >= g_Girls.GetSkill(girl, SKILL_MAGIC))
-		attack = SKILL_COMBAT;
-	else
-		attack = SKILL_MAGIC;
+	attack = (girl->combat() >= girl->magic()) ? SKILL_COMBAT : SKILL_MAGIC;	// first determine what she will fight with
+	gattack = (gang->combat() >= gang->magic())?SKILL_COMBAT:SKILL_MAGIC;		// determine how gang will fight
 
-	// determine how gang will fight
-	if(gang->m_Skills[SKILL_COMBAT] >= gang->m_Skills[SKILL_MAGIC])
-		gattack = SKILL_COMBAT;
-	else
-		gattack = SKILL_MAGIC;
-
-	if((g_Girls.GetStat(girl, STAT_AGILITY) - g_Girls.GetStat(girl, STAT_TIREDNESS)) < 0)
-		dodge = 0;
-	else
-		dodge = (g_Girls.GetStat(girl, STAT_AGILITY) - g_Girls.GetStat(girl, STAT_TIREDNESS));
+	dodge = max(0, (girl->agility()) - girl->tiredness());
 
 	int num_goons = gang->m_Num;
 	gang->m_Combat = true;
 
-/*
- *	don't let a gang use up more than their
- *	fair share in any one combat
- *
- *	limit is recalcualted each time on the number
- *	of potions remaining, restock is at end-of-turn
- *
- *	this means that gangs in combats later in the turn
- *	have fewer potions available.
- */
+	/*
+	*	don't let a gang use up more than their
+	*	fair share in any one combat
+	*
+	*	limit is recalcualted each time on the number
+	*	of potions remaining, restock is at end-of-turn
+	*
+	*	this means that gangs in combats later in the turn
+	*	have fewer potions available.
+	*/
 	int heal_lim = healing_limit();
 
-	l.ss()	<< gettext("Girl vs. Goons: ")
-		<< girl->m_Realname
-		<< gettext(" fights ")
-		<< num_goons 
-		<< gettext(" opponents!")
-	;
-	l.ss()	<< girl->m_Realname 
-		<< gettext(": Health ") << girl->health()
-		<< gettext(", Dodge ") << dodge
-		<< gettext(", Mana ") << girl->mana()
-	;
+	l.ss() << gettext("Girl vs. Goons: ") << girl->m_Realname << gettext(" fights ") << num_goons << gettext(" opponents!");
+	l.ss() << girl->m_Realname << gettext(": Health ") << girl->health() << gettext(", Dodge ") << dodge << gettext(", Mana ") << girl->mana();
 	l.ssend();
 
-	for(int i=0; i<num_goons; i++)
+	for (int i = 0; i<num_goons; i++)
 	{
 		int gHealth = 100;
 		int gDodge = gang->m_Stats[STAT_AGILITY];
 		int gMana = 100;
 
-		l.ss()	<< gettext("	Goon #") << i
-			<< gettext(": Health 100, Dodge ") << gDodge
-			<< gettext(", Mana ");
+		l.ss() << gettext("	Goon #") << i << gettext(": Health 100, Dodge ") << gDodge << gettext(", Mana ");
 		l.ssend();
 
-		while(g_Girls.GetStat(girl, STAT_HEALTH) >= 20 && gHealth > 0)
+		while (girl->health() >= 20 && gHealth > 0)
 		{
-
 			// Girl attacks
-			l.ss()	<< gettext("\t\t")
-				<< girl->m_Realname
-				<< gettext(" attacks the goon.")
-			;
+			l.ss() << gettext("\t\t") << girl->m_Realname << gettext(" attacks the goon.");
 			l.ssend();
 
-			if(attack == SKILL_MAGIC) {
-
-				if(girl->mana() < 7) {
-					l.ss()	<< gettext("\t\t")
-						<< girl->m_Realname
-						<< gettext(" insufficient mana: using combat")
-					;
+			if (attack == SKILL_MAGIC) 
+			{
+				if (girl->mana() < 7) 
+				{
+					l.ss() << gettext("\t\t") << girl->m_Realname << gettext(" insufficient mana: using combat");
 					l.ssend();
 				}
-				else {
-
+				else 
+				{
 					girl->mana(-7);
-					l.ss()	<< gettext("\t\t")
-						<< girl->m_Realname
-						<< gettext(" casts a spell; mana now ")
-						<< girl->mana()
-					;
+					l.ss() << gettext("\t\t") << girl->m_Realname << gettext(" casts a spell; mana now ") << girl->mana();
 					l.ssend();
 				}
 			}
-			else {
-				l.ss()	<< gettext("\t\t")
-					<< girl->m_Realname
-					<< gettext(" using physical attack")
-				;
+			else 
+			{
+				l.ss() << gettext("\t\t") << girl->m_Realname << gettext(" using physical attack");
 				l.ssend();
 			}
 
 			int girl_attack_chance = g_Girls.GetSkill(girl, attack);
 			int die_roll = g_Dice.d100();
 
-			l.ss()	<< gettext("\t\t")
-				<< gettext(" attack chance = ")
-				<< girl_attack_chance
-			;
+			l.ss() << gettext("\t\t") << gettext(" attack chance = ") << girl_attack_chance;
 			l.ssend();
 
-			l.ss()	<< gettext("\t\t")
-				<< gettext(" die roll = ")
-				<< die_roll
-			;
+			l.ss() << gettext("\t\t") << gettext(" die roll = ") << die_roll;
 			l.ssend();
 
-
-			if(die_roll > girl_attack_chance) {
-				l.ss()	<< gettext("\t\t\t")
-					<< gettext(" attack fails")
-				;
+			if (die_roll > girl_attack_chance) 
+			{
+				l.ss() << gettext("\t\t\t") << gettext(" attack fails");
 			}
-			else {
+			else 
+			{
 				int damage = 5;
 
-				l.ss()	<< gettext("\t\t\t")
-					<< gettext(" attack hits! base damage is")
-					<< damage
-					<< gettext(".")
-				;
+				l.ss() << gettext("\t\t\t") << gettext(" attack hits! base damage is") << damage << gettext(".");
 				l.ssend();
 
-/*
- *				she has hit now calculate how much damage will be done
- *
- *				magic works better than conventional violence.
- *				Link this amount of mana remaining?
- */
+				/*
+				*				she has hit now calculate how much damage will be done
+				*
+				*				magic works better than conventional violence.
+				*				Link this amount of mana remaining?
+				*/
 				int bonus = 0;
-				if(attack == SKILL_MAGIC) {
-					bonus = girl->magic()/5 + 2;
+				if (attack == SKILL_MAGIC) 
+				{
+					bonus = girl->magic() / 5 + 2;
 				}
-				else {
-					bonus = girl-> combat()/10;
+				else 
+				{
+					bonus = girl->combat() / 10;
 				}
 
-				l.ss()	<< gettext("\t\t")
-					<< bonus 
-					<< gettext(" points damage bonus.")
-				;
+				l.ss() << gettext("\t\t") << bonus << gettext(" points damage bonus.");
 				l.ssend();
 				damage += bonus;
 
-/*
- *				she may improve a little
- *				(checked every round of combat? seems excessive)
- */
+				/*
+				*				she may improve a little
+				*				(checked every round of combat? seems excessive)
+				*/
 				int gain = g_Dice % 2;
-				if(gain) {
-					l.ss()	<< gettext("\t\t")
-						<<  girl->m_Realname
-						<< gettext(" gains +")
-						<< gain 
-						<< gettext(" to attack skill")
-					;
+				if (gain) 
+				{
+					l.ss() << gettext("\t\t") << girl->m_Realname << gettext(" gains +") << gain << gettext(" to attack skill");
 					l.ssend();
 					g_Girls.UpdateSkill(girl, attack, gain);
 				}
@@ -1031,49 +937,31 @@ bool cGangManager::GangCombat(sGirl* girl, sGang* gang)
 				die_roll = g_Dice.d100();
 
 				// Goon attempts Dodge
-				l.ss()	<< gettext("\t\t")
-					<< gettext("Goon tries to dodge: needs ")
-					<< gDodge
-					<< gettext(", gets ")
-					<< die_roll
-					<< gettext(": ")
-				;
+				l.ss() << gettext("\t\t") << gettext("Goon tries to dodge: needs ") << gDodge << gettext(", gets ") << die_roll << gettext(": ");
 				l.ssend();
 
-				if(die_roll <= gDodge) {
-					l.ss()	<< gettext("\t\t")
-						<< gettext("success!");
+				if (die_roll <= gDodge) 
+				{
+					l.ss() << gettext("\t\t") << gettext("success!");
 				}
-				else {
+				else 
+				{
 					int con_mod = gang->m_Stats[STAT_CONSTITUTION] / 10;
 					gHealth -= con_mod;
-					l.ss()	<< gettext("\t\t")
-						<< gettext("failure!\n")
-						<< gettext("\t\t")
-						<< gettext("Goon takes ")
-						<< damage 
-						<< gettext(" damage, less ")
-						<< con_mod
-						<< gettext(" for CON\n")
-						<< gettext("\t\t")
-						<< gettext("New health value = ")
-						<< con_mod
-					;
+					l.ss() << gettext("\t\t") << gettext("failure!\n")
+						<< gettext("\t\t") << gettext("Goon takes ") << damage << gettext(" damage, less ") << con_mod << gettext(" for CON\n")
+						<< gettext("\t\t") << gettext("New health value = ") << con_mod;
 				}
 			}
 			l.ssend();
 
 			// goons use healing potions
-			if(heal_lim > 0 && gHealth <= 40) {
+			if (heal_lim > 0 && gHealth <= 40) 
+			{
 				m_NumHealingPotions--;
-				heal_lim --;
+				heal_lim--;
 				gHealth += 30;
-				l.ss()	<< gettext("Goon drinks healing potion: ")
-					<< gettext("new health value = ") << gHealth
-					<< gettext(". Gang has ")
-					<< heal_lim
-					<< gettext(" remaining.")
-					;
+				l.ss() << gettext("Goon drinks healing potion: ") << gettext("new health value = ") << gHealth << gettext(". Gang has ") << heal_lim << gettext(" remaining.");
 				l.ssend();
 			}
 
@@ -1081,29 +969,24 @@ bool cGangManager::GangCombat(sGirl* girl, sGang* gang)
 
 			die_roll = g_Dice.d100();
 			int goon_attack_chance = gang->m_Skills[gattack];
-			l.ss()	<< gettext("\tGoon Attack: ");
+			l.ss() << gettext("\tGoon Attack: ");
 			l.ssend();
 
-
-			l.ss()	<< gettext("\t\t")
-				<< gettext("chance = ")
-				<< goon_attack_chance
-				<< gettext(", die roll = ")
-				<< die_roll
-				<< gettext(": ")
-			;
-			if(die_roll > goon_attack_chance) {
-				l.ss() 	<< gettext(" attack fails!");
+			l.ss() << gettext("\t\t") << gettext("chance = ") << goon_attack_chance << gettext(", die roll = ") << die_roll << gettext(": ");
+			if (die_roll > goon_attack_chance) 
+			{
+				l.ss() << gettext(" attack fails!");
 				l.ssend();
 			}
-			else {
-				l.ss() 	<< gettext(" attack succeeds!");
+			else 
+			{
+				l.ss() << gettext(" attack succeeds!");
 				l.ssend();
 
-				int damage = (m_SwordLevel+1)*5;
-				if(gattack == SKILL_MAGIC)
+				int damage = (m_SwordLevel + 1) * 5;
+				if (gattack == SKILL_MAGIC)
 				{
-					if(gMana <= 0)
+					if (gMana <= 0)
 						gattack = SKILL_COMBAT;
 					else
 					{
@@ -1113,28 +996,19 @@ bool cGangManager::GangCombat(sGirl* girl, sGang* gang)
 				}
 
 				// girl attempts Dodge
-				if((g_Dice%100)+1 >= dodge)
+				if (!g_Dice.percent(dodge))
 				{
-					damage = (damage-(g_Girls.GetStat(girl, STAT_CONSTITUTION)/10));
-					g_Girls.UpdateStat(girl,STAT_HEALTH,-damage);
+					damage = (damage - (g_Girls.GetStat(girl, STAT_CONSTITUTION) / 10));
+					g_Girls.UpdateStat(girl, STAT_HEALTH, -damage);
 				}
 			}
-			
-			// update girls dodge ability
-			if((dodge - 1) < 0)
-				dodge = 0;
-			else
-				dodge--;
 
-			// update goons dodge ability
-			if((gDodge - 1) < 0)
-				gDodge = 0;
-			else
-				gDodge--;
+			dodge = max(0, (dodge - 1));	// degrade girls dodge ability
+			gDodge = max(0, (gDodge - 1));	// degrade goons dodge ability
 
-			if(g_Girls.GetStat(girl, STAT_HEALTH) < 30 && g_Girls.GetStat(girl, STAT_HEALTH) > 20)
+			if (girl->health() < 30 && girl->health() > 20)
 			{
-				if(g_Dice%100 < g_Girls.GetStat(girl, STAT_AGILITY))
+				if (g_Dice.percent(girl->agility()))
 				{
 					BoostGangCombatSkills(gang, 2);
 					g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, -1, true);
@@ -1143,7 +1017,7 @@ bool cGangManager::GangCombat(sGirl* girl, sGang* gang)
 			}
 		}
 
-		if(g_Girls.GetStat(girl, STAT_HEALTH) <= 20)
+		if (g_Girls.GetStat(girl, STAT_HEALTH) <= 20)
 		{
 			BoostGangCombatSkills(gang, 2);
 			g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, -1, true);
@@ -1152,25 +1026,22 @@ bool cGangManager::GangCombat(sGirl* girl, sGang* gang)
 		else
 			gang->m_Num--;
 
-		if((initalNumber/2) > gang->m_Num)	// if the gang has lost half its number there is a 40% chance they will run away
+		if ((initalNumber / 2) > gang->m_Num)	// if the gang has lost half its number there is a 40% chance they will run away
 		{
-			if((1+(g_Dice%100)) <= 40)
+			if (g_Dice.percent(40))
 			{
 				g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, +1, true);
 				return true;	// the men run away
 			}
 		}
-		if(gang->m_Num == 0)
+		if (gang->m_Num == 0)
 		{
 			g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, +1, true);
 			return true;
 		}
 	}
 
-	l.ss()	<< gettext("No more opponents: ")
-		<< girl->m_Realname
-		<< gettext(" WINS!")
-	;
+	l.ss() << gettext("No more opponents: ") << girl->m_Realname << gettext(" WINS!");
 	l.ssend();
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, +1, true);
@@ -1190,19 +1061,17 @@ bool cGangManager::GirlVsEnemyGang(sGirl* girl, sGang* enemy_gang)
 	CLog l;
 
 	// MYR: Sanity check: Incorporeal is an auto-win.
-	if(girl->has_trait("Incorporeal"))
+	if (girl->has_trait("Incorporeal"))
 	{
 		girl->m_Stats[STAT_HEALTH] = 100;
-		l.ss()	<< gettext("\nGirl vs. Goons: ") << girl->m_Realname << gettext(" is incorporeal, so she wins.\n");
-		enemy_gang->m_Num = (int) enemy_gang->m_Num / 2;
+		l.ss() << gettext("\nGirl vs. Goons: ") << girl->m_Realname << gettext(" is incorporeal, so she wins.\n");
+		enemy_gang->m_Num = (int)enemy_gang->m_Num / 2;
 		while (enemy_gang->m_Num > 0)   // Do the casualty calculation
 		{
-			if (g_Dice%100 <= 40)
-				enemy_gang->m_Num--;
-			else
-				break;
+			if (g_Dice.percent(40)) enemy_gang->m_Num--;
+			else break;
 		}
-		l.ss()	<< gettext("  ") << enemy_gang->m_Num << gettext(" goons escaped with their lives.\n");
+		l.ss() << gettext("  ") << enemy_gang->m_Num << gettext(" goons escaped with their lives.\n");
 		return true;
 	}
 
@@ -1212,61 +1081,61 @@ bool cGangManager::GirlVsEnemyGang(sGirl* girl, sGang* enemy_gang)
 	u_int attack = SKILL_COMBAT;	// determined later, defaults to combat
 	u_int goon_attack = SKILL_COMBAT;
 
-	if(enemy_gang == 0)
+	if (enemy_gang == 0)
 		return true;
-	else if(enemy_gang->m_Num == 0)
+	else if (enemy_gang->m_Num == 0)
 		return true;
 
 	// first determine what she will fight with
-	if(g_Girls.GetSkill(girl, SKILL_COMBAT) > g_Girls.GetSkill(girl, SKILL_MAGIC))
+	if (g_Girls.GetSkill(girl, SKILL_COMBAT) > g_Girls.GetSkill(girl, SKILL_MAGIC))
 		attack = SKILL_COMBAT;
 	else
 		attack = SKILL_MAGIC;
 
 	// determine how gang will fight
-	if(enemy_gang->m_Skills[SKILL_COMBAT] > enemy_gang->m_Skills[SKILL_MAGIC])
+	if (enemy_gang->m_Skills[SKILL_COMBAT] > enemy_gang->m_Skills[SKILL_MAGIC])
 		goon_attack = SKILL_COMBAT;
 	else
 		goon_attack = SKILL_MAGIC;
 
 	int initial_num = enemy_gang->m_Num;
-	
+
 	enemy_gang->m_Combat = true;
 
 
-	l.ss()	<< gettext("\nGirl vs. Goons: ") << girl->m_Realname << gettext(" fights ") << initial_num << gettext(" opponents!");
+	l.ss() << gettext("\nGirl vs. Goons: ") << girl->m_Realname << gettext(" fights ") << initial_num << gettext(" opponents!");
 	l.ssend();
-	l.ss()	<< girl->m_Realname << gettext(": Health ") << girl->health() << gettext(", Dodge ") << g_Girls.GetStat(girl, STAT_AGILITY) 
-	<< gettext(", Mana ") << girl->mana();
+	l.ss() << girl->m_Realname << gettext(": Health ") << girl->health() << gettext(", Dodge ") << g_Girls.GetStat(girl, STAT_AGILITY)
+		<< gettext(", Mana ") << girl->mana();
 	l.ssend();
 
-	for(int i=0; i< initial_num; i++)
+	for (int i = 0; i< initial_num; i++)
 	{
-		l.ss() << gettext("Goon #") << i << gettext(": Health: ") << (int) enemy_gang->m_Stats[STAT_HEALTH] << gettext(" Mana: ")
-			<< (int) enemy_gang->m_Stats[STAT_MANA] << gettext(" Dodge: ") << (int) enemy_gang->m_Stats[STAT_AGILITY] 
-			<< gettext(" Attack: ") << (int) enemy_gang->m_Skills[goon_attack] << gettext(" Constitution: ") << (int) enemy_gang->m_Stats[STAT_CONSTITUTION];
+		l.ss() << gettext("Goon #") << i << gettext(": Health: ") << (int)enemy_gang->m_Stats[STAT_HEALTH] << gettext(" Mana: ")
+			<< (int)enemy_gang->m_Stats[STAT_MANA] << gettext(" Dodge: ") << (int)enemy_gang->m_Stats[STAT_AGILITY]
+			<< gettext(" Attack: ") << (int)enemy_gang->m_Skills[goon_attack] << gettext(" Constitution: ") << (int)enemy_gang->m_Stats[STAT_CONSTITUTION];
 		l.ssend();
 
 		int gHealth = enemy_gang->m_Stats[STAT_HEALTH];
 		int gDodge = enemy_gang->m_Stats[STAT_AGILITY];
 		int gMana = enemy_gang->m_Stats[STAT_MANA];
 
-		while(g_Girls.GetStat(girl, STAT_HEALTH) >= 20 && gHealth > 0)
+		while (g_Girls.GetStat(girl, STAT_HEALTH) >= 20 && gHealth > 0)
 		{
 			// Girl attacks
 			//l.ss()	<< "\t" << girl->m_Realname << " attacks the goon.";
 			//l.ssend();
 
-			if(attack == SKILL_MAGIC) {
+			if (attack == SKILL_MAGIC) {
 
-				if(mana < 5) {
+				if (mana < 5) {
 					attack = SKILL_COMBAT;
 					//l.ss() << "\t\t" << girl->m_Realname << " insufficient mana: using combat";
 					//l.ssend();
 				}
 				else {
 
-					mana = mana -5;
+					mana = mana - 5;
 					//l.ss() << "\t\t" << girl->m_Realname << " casts a spell; mana now " << mana;
 					//l.ssend();
 				}
@@ -1283,7 +1152,7 @@ bool cGangManager::GirlVsEnemyGang(sGirl* girl, sGang* enemy_gang)
 			//l.ss() << "\t\t" << " attack chance: " << girl_attack_chance << "\t\t" << " die roll:" << die_roll;
 			//l.ssend();
 
-			if(die_roll > girl_attack_chance) {
+			if (die_roll > girl_attack_chance) {
 				//l.ss() << "\t\t\t" << " attack misses";
 			}
 			else {
@@ -1296,20 +1165,20 @@ bool cGangManager::GirlVsEnemyGang(sGirl* girl, sGang* enemy_gang)
 				//l.ssend();
 
 				// Dodge maxes out at 95%
-				if(die_roll <= gDodge && die_roll <= 95) {
+				if (die_roll <= gDodge && die_roll <= 95) {
 					//l.ss() << "\t\t" << "success!";
 				}
 				else {
 					int con_mod = enemy_gang->m_Stats[STAT_CONSTITUTION] / 20;
 					damage -= con_mod;
 					if (damage <= 0)  // MYR: Minimum 1 damage on hit
-					  damage = 1;
-                    gHealth -= damage;
+						damage = 1;
+					gHealth -= damage;
 					l.ss() << gettext("\t\tGoon takes ") << damage << gettext(". New health value: ") << gHealth;
 					l.ssend();
 				}
 			}
-			
+
 
 			if (gHealth <= 0) // Goon may have been killed by damage above
 				continue;
@@ -1322,8 +1191,8 @@ bool cGangManager::GirlVsEnemyGang(sGirl* girl, sGang* enemy_gang)
 
 
 			//l.ss() << "\t\t" << "chance:" << (int) enemy_gang->m_Skills[goon_attack] << ", die roll:" << die_roll << ": ";
-			
-			if(die_roll > enemy_gang->m_Skills[goon_attack]) {
+
+			if (die_roll > enemy_gang->m_Skills[goon_attack]) {
 				//l.ss() << " attack fails!";
 				//l.ssend();
 			}
@@ -1333,10 +1202,10 @@ bool cGangManager::GirlVsEnemyGang(sGirl* girl, sGang* enemy_gang)
 
 				// MYR: Goon damage calculation is different from girl's.  Do we care?
 				int damage = 5 + enemy_gang->m_Skills[goon_attack] / 10;
-				
-				if(goon_attack == SKILL_MAGIC)
+
+				if (goon_attack == SKILL_MAGIC)
 				{
-					if(gMana < 10)
+					if (gMana < 10)
 						goon_attack = SKILL_COMBAT;
 					else
 					{
@@ -1353,37 +1222,37 @@ bool cGangManager::GirlVsEnemyGang(sGirl* girl, sGang* enemy_gang)
 				//l.ssend();
 
 				// MYR: Girl dodge maxes out at 90 (Gang dodge at 95).  It's a bit of a hack
-				if(die_roll <= dodge && die_roll <= 90) {
+				if (die_roll <= dodge && die_roll <= 90) {
 					//l.ss() << "\t\t" << "success!";
 					//l.ssend();
 				}
 				else
 				{
-				  g_Girls.TakeCombatDamage(girl, -damage); // MYR: Note change
+					g_Girls.TakeCombatDamage(girl, -damage); // MYR: Note change
 
-				  l.ss() << gettext("\t") << girl->m_Realname << gettext(" takes ") << damage << gettext(". New health value: ") << girl->health();
-				  if (girl->has_trait("Incorporeal"))
-					  l.ss() << gettext(" (Girl is Incorporeal)");
-				  l.ssend();
+					l.ss() << gettext("\t") << girl->m_Realname << gettext(" takes ") << damage << gettext(". New health value: ") << girl->health();
+					if (girl->has_trait("Incorporeal"))
+						l.ss() << gettext(" (Girl is Incorporeal)");
+					l.ssend();
 				}
 			}
-			
+
 			// update girls dodge ability
-			if((dodge - 1) < 0)
+			if ((dodge - 1) < 0)
 				dodge = 0;
 			else
 				dodge--;
 
 			// update goons dodge ability
-			if((gDodge - 1) < 0)
+			if ((gDodge - 1) < 0)
 				gDodge = 0;
 			else
 				gDodge--;
 		}  // While loop
 
-		if(g_Girls.GetStat(girl, STAT_HEALTH) <= 20)
+		if (g_Girls.GetStat(girl, STAT_HEALTH) <= 20)
 		{
-			l.ss() << gettext("The gang overwhelmed and defeated ") << girl->m_Realname << gettext(". She lost the battle.") ;
+			l.ss() << gettext("The gang overwhelmed and defeated ") << girl->m_Realname << gettext(". She lost the battle.");
 			l.ssend();
 			g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, -5, true);
 			return false;
@@ -1393,27 +1262,27 @@ bool cGangManager::GirlVsEnemyGang(sGirl* girl, sGang* enemy_gang)
 
 		// if the gang has lost half its number there is a chance they will run away
 		// This is checked for every member killed over 50%
-		if((initial_num/2) > enemy_gang->m_Num)	
+		if ((initial_num / 2) > enemy_gang->m_Num)
 		{
-			if((1+(g_Dice%100)) <= 50) // MYR: Adjusting this has a big effect
+			if ((1 + (g_Dice % 100)) <= 50) // MYR: Adjusting this has a big effect
 			{
-				l.ss() << gettext("The gang ran away after losing too many members. ") << girl->m_Realname << gettext(" WINS!") ;
+				l.ss() << gettext("The gang ran away after losing too many members. ") << girl->m_Realname << gettext(" WINS!");
 				l.ssend();
 				g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, +5, true);
 				return true;	// the men run away
 			}
 		}
 		// Gang fought to the death
-		if(enemy_gang->m_Num == 0)
+		if (enemy_gang->m_Num == 0)
 		{
-			l.ss() << gettext("The gang fought to bitter end. They are all dead. ") << girl->m_Realname << gettext(" WINS!") ;
+			l.ss() << gettext("The gang fought to bitter end. They are all dead. ") << girl->m_Realname << gettext(" WINS!");
 			l.ssend();
 			g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, +5, true);
 			return true;
 		}
 	}
 
-	l.ss()	<< gettext("No more opponents: ") << girl->m_Realname << gettext(" WINS!");
+	l.ss() << gettext("No more opponents: ") << girl->m_Realname << gettext(" WINS!");
 	l.ssend();
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, +5, true);
@@ -1424,16 +1293,16 @@ bool cGangManager::GirlVsEnemyGang(sGirl* girl, sGang* enemy_gang)
 int cGangManager::healing_limit()
 {
 	int limit;
-/*
- *	take the number of potions and divide by the
- *	the number of gangs
- */
+	/*
+	*	take the number of potions and divide by the
+	*	the number of gangs
+	*/
 	limit = m_NumHealingPotions / m_NumGangs;
-/*
- *	if that rounds to less than zero, and there are still 
- *	potions available, make sure they get at least one to use
- */
-	if(limit == 0 && m_NumHealingPotions) {
+	/*
+	*	if that rounds to less than zero, and there are still
+	*	potions available, make sure they get at least one to use
+	*/
+	if (limit == 0 && m_NumHealingPotions) {
 		limit = 1;
 	}
 	return limit;
@@ -1919,8 +1788,8 @@ void cGangManager::UpdateGangs()
 					}
 
 					/* MYR: For some reason I can't figure out, a number of girl's house percentages
-							are at zero or set to zero when they are sent to the dungeon. I'm not sure
-							how to fix it, so I'm explicitly setting the percentage to 60 here */
+					are at zero or set to zero when they are sent to the dungeon. I'm not sure
+					how to fix it, so I'm explicitly setting the percentage to 60 here */
 					girl->m_Stats[STAT_HOUSE] = 60;
 
 					message += gettext("Your men find a girl, ");
@@ -2036,17 +1905,17 @@ void cGangManager::UpdateGangs()
 			message += ss.str();
 
 #else			// Original Code
-			for(u_int i=0; i<NUM_SKILLS; i++)
+			for (u_int i = 0; i<NUM_SKILLS; i++)
 			{
-				currentGang->m_Skills[i] += (g_Dice%2)+2;
-				if(currentGang->m_Skills[i] > 100)
+				currentGang->m_Skills[i] += (g_Dice % 2) + 2;
+				if (currentGang->m_Skills[i] > 100)
 					currentGang->m_Skills[i] = 100;
 			}
 
-			for(int i=0; i<NUM_STATS; i++)
+			for (int i = 0; i<NUM_STATS; i++)
 			{
-				currentGang->m_Stats[i] += (g_Dice%2)+2;
-				if(currentGang->m_Stats[i] > 100)
+				currentGang->m_Stats[i] += (g_Dice % 2) + 2;
+				if (currentGang->m_Stats[i] > 100)
 					currentGang->m_Stats[i] = 100;
 			}
 #endif
@@ -2071,86 +1940,64 @@ void cGangManager::UpdateGangs()
 
 		case MISS_CATACOMBS:
 		{
-			string message = gettext("This gang is exploring the catacombs.");
-			currentGang->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_GANG);
-
-			message = gettext("Gang: ");
-			message += currentGang->m_Name;
-			message += gettext(", Your men venture into the catacombs to explore. And ");
+			stringstream ss;
+			ss << gettext("This gang is exploring the catacombs.");
+			currentGang->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
+			ss.str("");
+			ss << "Gang: " << currentGang->m_Name << ":\n\nYour men venture into the catacombs to explore.  ";
 
 			// determine losses
 			int heal_lim = healing_limit();
 			int num = currentGang->m_Num;
 			for (int i = 0; i < num; i++)
 			{
-				int D100Roll;
-				D100Roll = g_Dice.d100();
-				if (D100Roll <= currentGang->combat()) {
-					//if(g_Dice.percent(40)) {
+				if (g_Dice.percent(currentGang->combat()))
+				{
 					continue;
 				}
-				if (heal_lim == 0) {
+				if (heal_lim == 0)
+				{
 					currentGang->m_Num--;
 					continue;
+				}
+				if (g_Dice.percent(2))		// `J` 2% chance they will not get the healing potion in time.
+				{
+					currentGang->m_Num--;	// needed to have atleast some chance or else they are totally invincable.
 				}
 				heal_lim--;
 				m_NumHealingPotions--;
 			}
-			_itoa(currentGang->m_Num, buffer, 10);
-			message += buffer;
-			message += gettext(" return.");
-			if (num > currentGang->m_Num)
-				currentGang->m_Combat = true;
+			if (num > currentGang->m_Num)	currentGang->m_Combat = true;
 
 			if (currentGang->m_Num > 0)
 			{
-				// determine loot
-				message += gettext(" They return carrying ");
-				long gold = (g_Dice % 700) + 300;
-				_ltoa(gold, buffer, 10);
-				g_Gold.catacomb_loot(gold);
-				message += buffer;
-				message += gettext(" gold");
+				if (num == currentGang->m_Num)	ss << "All ";
+				ss << currentGang->m_Num << " of them return.\n\n";
 
-				while (g_Dice.d100() < 60)
+				// determine loot
+				int gold = currentGang->m_Num;
+				gold += g_Dice % (currentGang->m_Num * 100);
+				ss << "They bring back with them:   " << gold << " gold";
+				g_Gold.catacomb_loot(gold);
+
+				int items = 0;
+				while (g_Dice.percent(60) && items <= (currentGang->m_Num / 3))	// item chance
 				{
-					bool quit = false;
-					bool add = false;
-					//mod
-					//hopefully fix a crash
+					bool quit = false; bool add = false;
 					sInventoryItem* temp;
-					do { temp = g_InvManager.GetRandomItem(); } while (!temp);
-					//end mod
-					while (temp->m_Rarity < RARITYSHOP25 || temp->m_Rarity > RARITYCATACOMB01) // `J` added upper limit
+					do {
 						temp = g_InvManager.GetRandomItem();
+					} while (!temp || temp->m_Rarity < RARITYSHOP25 || temp->m_Rarity > RARITYCATACOMB01);
+
 					switch (temp->m_Rarity)
 					{
-					case RARITYSHOP25:
-						add = true;
-						break;
-					case RARITYSHOP05:
-						if (g_Dice.percent(20))
-							add = true;
-						break;
-					case RARITYCATACOMB15:
-						if (g_Dice.percent(15))
-							add = true;
-						break;
-					case RARITYCATACOMB05:
-						if (g_Dice.percent(5))
-							add = true;
-						break;
-					case RARITYCATACOMB01:
-						if (g_Dice.percent(1))
-							add = true;
-						break;
-						/*
-						 *						adding these cases to shut the compiler up
-						 */
-					case RARITYCOMMON:
-					case RARITYSHOP50:
-					case RARITYSCRIPTONLY:
-					case RARITYSCRIPTORREWARD:
+					case RARITYSHOP25:								add = true;		break;
+					case RARITYSHOP05:		if (g_Dice.percent(25))	add = true;		break;
+					case RARITYCATACOMB15:	if (g_Dice.percent(15))	add = true;		break;
+					case RARITYCATACOMB05:	if (g_Dice.percent(5))	add = true;		break;
+					case RARITYCATACOMB01:	if (g_Dice.percent(1))	add = true;		break;
+						// adding these cases to shut the compiler up
+					case RARITYCOMMON:	case RARITYSHOP50:	case RARITYSCRIPTONLY:	case RARITYSCRIPTORREWARD:
 						g_LogFile.ss() << "Warning: unexpected rarity " << temp->m_Rarity << " in cGangManager::UpdateGangs";
 						g_LogFile.ssend();
 						break;
@@ -2162,7 +2009,7 @@ void cGangManager::UpdateGangs()
 
 					if (add)
 					{
-						message += ", ";
+						ss << ",\n";
 						int curI = g_Brothels.HasItem(temp->m_Name, -1);
 						bool loop = true;
 						while (loop)
@@ -2171,20 +2018,18 @@ void cGangManager::UpdateGangs()
 							{
 								if (g_Brothels.m_NumItem[curI] >= 999)
 									curI = g_Brothels.HasItem(temp->m_Name, curI + 1);
-								else
-									loop = false;
+								else loop = false;
 							}
-							else
-								loop = false;
+							else loop = false;
 						}
 
 						if (g_Brothels.m_NumInventory < MAXNUM_INVENTORY || curI != -1)
 						{
 							if (curI != -1)
 							{
-								message += gettext("a ");
-								message += temp->m_Name;
+								ss << gettext("a ") << temp->m_Name;
 								g_Brothels.m_NumItem[curI]++;
+								items++;
 							}
 							else
 							{
@@ -2192,9 +2037,9 @@ void cGangManager::UpdateGangs()
 								{
 									if (g_Brothels.m_Inventory[j] == 0)
 									{
-										message += gettext("a ");
-										message += temp->m_Name;
+										ss << gettext("a ") << temp->m_Name;
 										g_Brothels.m_Inventory[j] = temp;
+										items++;
 										g_Brothels.m_EquipedItems[j] = 0;
 										g_Brothels.m_NumInventory++;
 										g_Brothels.m_NumItem[j]++;
@@ -2206,28 +2051,25 @@ void cGangManager::UpdateGangs()
 						else
 						{
 							quit = true;
-							message += gettext(" Your inventory is full\n");
+							ss << gettext("Your inventory is full\n");
 						}
 					}
 
-					if (quit)
-						break;
+					if (quit) break;
 				}
-				message += gettext(".");
+				ss << gettext(".");
 
+				int girl = 0;
 				// determine if get a catacomb girl (is "monster" if trait not human)
-				if ((g_Dice % 100) + 1 < 40)
+				if (g_Dice.percent(40))
 				{
 					sGirl* ugirl = 0;
 					bool unique = false;
-					if ((g_Dice % 100) + 1 < 50)	// chance of getting unique girl
-						unique = true;
-
+					if (g_Dice.percent(50))	unique = true;	// chance of getting unique girl
 					if (unique)
 					{
 						ugirl = g_Girls.GetRandomGirl(false, true);
-						if (ugirl == 0)
-							unique = false;
+						if (ugirl == 0) unique = false;
 					}
 
 					if (g_Brothels.GetObjective())
@@ -2238,8 +2080,9 @@ void cGangManager::UpdateGangs()
 
 					if (unique)
 					{
-						message += gettext(" Your men also captured a girl named ");
-						message += ugirl->m_Realname;
+						girl++;
+						ss << gettext("\n\nYour men also captured a girl named ");
+						ss << ugirl->m_Realname;
 						ugirl->m_States &= ~(1 << STATUS_CATACOMBS);
 						m_Dungeon->AddGirl(ugirl, DUNGEON_GIRLCAPTURED);
 					}
@@ -2248,23 +2091,32 @@ void cGangManager::UpdateGangs()
 						ugirl = g_Girls.CreateRandomGirl(0, false, false, true, true);
 						if (ugirl != 0)  // make sure a girl was returned
 						{
-							message += gettext(" Your men also captured a girl.");
+							girl++;
+							ss << gettext("\n\nYour men also captured a girl.");
 							m_Dungeon->AddGirl(ugirl, DUNGEON_GIRLCAPTURED);
 						}
 					}
 				}
+				// `J` determine if they bring back any beasts
+				int beasts = max(0, (g_Dice % 5) - 2);
+				if (girl==0 && currentGang->m_Num > 13) beasts++;
+				if (beasts > 0 && g_Dice.percent(currentGang->m_Num*5))
+				{
+					ss << "\n\nYour men also bring back " << beasts << " beasts.";
+					g_Brothels.add_to_beasts(beasts);
+				}
 			}
 			else
 			{
-				message += gettext(" The men were wiped out.");
-				g_MessageQue.AddToQue(message, COLOR_RED);
+				ss << gettext("The men were wiped out.");
+				g_MessageQue.AddToQue(ss.str(), COLOR_RED);
 				sGang* temp = currentGang->m_Next;
 				RemoveGang(currentGang);
 				currentGang = temp;
 				continue;
 			}
 
-			currentGang->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_GANG);
+			currentGang->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
 		}break;
 		}
 
@@ -2327,15 +2179,15 @@ void cGangManager::SendGang(int gangID, int missID)
 	// first find the gang
 	sGang* currentGang = m_GangStart;
 	int count = 0;
-	while(currentGang)
+	while (currentGang)
 	{
-		if(count == gangID)
+		if (count == gangID)
 			break;
 		count++;
 		currentGang = currentGang->m_Next;
 	}
 
-	if(currentGang)
+	if (currentGang)
 		currentGang->m_MissionID = missID;
 }
 
@@ -2344,9 +2196,9 @@ sGang* cGangManager::GetGangOnMission(u_int missID)
 	// first find the gang with some men
 	sGang* currentGang = m_GangStart;
 	int count = 0;
-	while(currentGang)
+	while (currentGang)
 	{
-		if(currentGang->m_MissionID == missID && currentGang->m_Num > 0)
+		if (currentGang->m_MissionID == missID && currentGang->m_Num > 0)
 			break;
 		count++;
 		currentGang = currentGang->m_Next;
@@ -2355,19 +2207,19 @@ sGang* cGangManager::GetGangOnMission(u_int missID)
 }
 
 /*
- * Get a vector with all the gangs doing MISS_FOO
- */
+* Get a vector with all the gangs doing MISS_FOO
+*/
 vector<sGang*> cGangManager::gangs_on_mission(u_int mission_id)
 {
 	vector<sGang*> v;
-/*
- *	loop through the gangs
- */
-	for(sGang *gang = m_GangStart; gang; gang = gang->m_Next) {
-/*
- *		if they're not spying, disregard them
- */
-		if(gang->m_MissionID != mission_id) {
+	/*
+	*	loop through the gangs
+	*/
+	for (sGang *gang = m_GangStart; gang; gang = gang->m_Next) {
+		/*
+		*		if they're not spying, disregard them
+		*/
+		if (gang->m_MissionID != mission_id) {
 			continue;
 		}
 		v.push_back(gang);
@@ -2376,51 +2228,51 @@ vector<sGang*> cGangManager::gangs_on_mission(u_int mission_id)
 }
 
 /*
- * two objectives here:
- *
- * A: multiple squads spying on the girls improves
- *    the chance of catching thieves
- * B: The intelligence of the girl and the goons
- *    affects the result
- */
+* two objectives here:
+*
+* A: multiple squads spying on the girls improves
+*    the chance of catching thieves
+* B: The intelligence of the girl and the goons
+*    affects the result
+*/
 int cGangManager::chance_to_catch(sGirl* girl)
 {
 	int pc = 0;
 	sGang* gang = m_GangStart;
-/*
- *	get a vector containing all the spying gangs
- */
+	/*
+	*	get a vector containing all the spying gangs
+	*/
 	vector<sGang*> gvec = gangs_on_mission(MISS_SPYGIRLS);
-/*
- *	bit of debug chatter
- */
+	/*
+	*	bit of debug chatter
+	*/
 	g_LogFile.ss()
 		<< "cGangManager::chance_to_catch: "
 		<< gvec.size()
 		<< " gangs spying"
-	;
+		;
 	g_LogFile.ssend();
-/*
- *	whizz down the vector adding probability as we go
- */
-	for(u_int i = 0; i < gvec.size(); i++) {
+	/*
+	*	whizz down the vector adding probability as we go
+	*/
+	for (u_int i = 0; i < gvec.size(); i++) {
 		gang = gvec[i];
-/*
- *		now then: the basic chance is 5 * number of goons
- *		but I want to modify that for the intelligence
- *		of the girl, and that of the squad
- */
- 		float mod = float(100 + gang->intelligence()) ;
+		/*
+		*		now then: the basic chance is 5 * number of goons
+		*		but I want to modify that for the intelligence
+		*		of the girl, and that of the squad
+		*/
+		float mod = float(100 + gang->intelligence());
 		mod -= girl->intelligence();
 		mod /= 100.0;
-/*
- *		that should give us a multiplier that can 
- *		at one extreme, double the chances of the sqaud
- *		catching her, and at the other, reduce it to zero
- */
- 		pc += int(5 * gang->m_Num * mod);
+		/*
+		*		that should give us a multiplier that can
+		*		at one extreme, double the chances of the sqaud
+		*		catching her, and at the other, reduce it to zero
+		*/
+		pc += int(5 * gang->m_Num * mod);
 	}
-	if(pc > 100) pc = 100;
+	if (pc > 100) pc = 100;
 	BoostGangSkill(&gang->m_Stats[STAT_INTELLIGENCE], 1);
 	return pc;
 }
@@ -2432,49 +2284,49 @@ void cGangManager::sabotage_mission(sGang* gang)
 	gang->m_Events.AddMessage(gettext("This gang is attacking rivals."), IMGTYPE_PROFILE, EVENT_GANG);
 
 	ss << gettext("Gang: ") << gang->m_Name << ", ";
-/*
- *	See if they can find any enemy assets to attack
- *
- *	I'd like to add a little more intelligence to this.
- *	Modifiers based on gang intelligence, for instance
- *	Allow a "scout" activity for gangs that improves the
- *	chances of a raid. That sort of thing.
- */
-	if(g_Dice.percent(30)) {
+	/*
+	*	See if they can find any enemy assets to attack
+	*
+	*	I'd like to add a little more intelligence to this.
+	*	Modifiers based on gang intelligence, for instance
+	*	Allow a "scout" activity for gangs that improves the
+	*	chances of a raid. That sort of thing.
+	*/
+	if (g_Dice.percent(30)) {
 		gang->m_Events.AddMessage(gettext("Failed to attack any enemy assets."), IMGTYPE_PROFILE, EVENT_GANG);
 		return;
 	}
-/*
- *	if yes then do damage to a random rival
- *
- *	Something else to consider: rival choice should be
- *	weighted by number of territories controlled
- *	(or - if we go with the ward idea - by territories
- *	controlled in the ward in question
- *
- *	of course, if there is no rival, it's academic
- */
+	/*
+	*	if yes then do damage to a random rival
+	*
+	*	Something else to consider: rival choice should be
+	*	weighted by number of territories controlled
+	*	(or - if we go with the ward idea - by territories
+	*	controlled in the ward in question
+	*
+	*	of course, if there is no rival, it's academic
+	*/
 	cRival* rival = m_Rivals->GetRandomRival();
-	if(!rival) {
+	if (!rival) {
 		gang->m_Events.AddMessage(gettext("Scouted the city in vain, seeking would-be challengers to your dominance."), IMGTYPE_PROFILE, EVENT_GANG);
 		return;
 	}
 
-	if(rival->m_NumGangs > 0)
+	if (rival->m_NumGangs > 0)
 	{
 
-/*
- *		I'd like to see a bit more intelligence here, too.
- *		bigger rivals should have tougher gangs, and better armed,
- *		as well.
- */
+		/*
+		*		I'd like to see a bit more intelligence here, too.
+		*		bigger rivals should have tougher gangs, and better armed,
+		*		as well.
+		*/
 
 		rival_gang = GetTempGang();
-		
-		ss << gettext("Your men run into a gang from ") << rival->m_Name << gettext(" and a brawl breaks out.\n"); 
 
-		if(GangBrawl(gang, rival_gang) == false) {
-			if(gang->m_Num > 0) {
+		ss << gettext("Your men run into a gang from ") << rival->m_Name << gettext(" and a brawl breaks out.\n");
+
+		if (GangBrawl(gang, rival_gang) == false) {
+			if (gang->m_Num > 0) {
 				delete rival_gang;
 				rival_gang = 0;
 				ss << gettext("Your men lost. The ") << gang->m_Num << gettext(" survivor(s) fight their way back to friendly territory.");
@@ -2489,11 +2341,11 @@ void cGangManager::sabotage_mission(sGang* gang)
 			return;
 		} // if GangBrawl = false
 		else // GangBrawl = true
-		ss << gettext("Your men win.") << endl;
-/*
- *	clean up the rival gang
- */
-		if(rival_gang->m_Num <= 0)
+			ss << gettext("Your men win.") << endl;
+		/*
+		*	clean up the rival gang
+		*/
+		if (rival_gang->m_Num <= 0)
 		{
 			rival->m_NumGangs--;
 			ss << gettext("The enemy gang is destroyed. ");
@@ -2510,26 +2362,26 @@ void cGangManager::sabotage_mission(sGang* gang)
 	else // rival->m_NumGangs = 0
 		ss << gettext("\nYour men encounter no resistance when you go after ") << rival->m_Name << ".";
 
-/*
- *	if we had an objective to attack a rival
- *	we just achieved it
- */
+	/*
+	*	if we had an objective to attack a rival
+	*	we just achieved it
+	*/
 	sObjective *obj = g_Brothels.GetObjective();
-	if(obj && obj->m_Objective == OBJECTIVE_LAUNCHSUCCESSFULATTACK)
+	if (obj && obj->m_Objective == OBJECTIVE_LAUNCHSUCCESSFULATTACK)
 		g_Brothels.PassObjective();
 
-/*
- *	If the rival has some businesses under his control
- *	he's going to lose some of them
- */
-	if(rival->m_BusinessesExtort > 0)
+	/*
+	*	If the rival has some businesses under his control
+	*	he's going to lose some of them
+	*/
+	if (rival->m_BusinessesExtort > 0)
 	{
 		// mod: brighter goons do better damage
 		// they need 100% to be better than before however
 		int spread = gang->intelligence() / 4;
-/*
- *		get the number of businesses lost
- */
+		/*
+		*		get the number of businesses lost
+		*/
 		int num = 1 + g_Dice.random(spread);
 		if (rival->m_BusinessesExtort < num)  // Can't destroy more businesses than they have
 			num = rival->m_BusinessesExtort;
@@ -2549,16 +2401,16 @@ void cGangManager::sabotage_mission(sGang* gang)
 	else  // No businesses
 		ss << rival->m_Name << gettext(" have no businesses to attack.\n");
 
-	if(rival->m_Gold > 0)
+	if (rival->m_Gold > 0)
 	{
 		// mod: brighter goons are better thieves
 		// they need 100% to be better than before however
 		int factor = 2 + gang->intelligence() / 4;
 
-		long gold = g_Dice.random(factor * 400)+44;
+		long gold = g_Dice.random(factor * 400) + 44;
 		if (gold > rival->m_Gold)
 			gold = rival->m_Gold;
-			rival->m_Gold -= gold;
+		rival->m_Gold -= gold;
 
 		ss << gettext("\nYour men steal ") << gold << gettext(" gold from them. ");
 		if (rival->m_Gold == 0)
@@ -2570,9 +2422,9 @@ void cGangManager::sabotage_mission(sGang* gang)
 		g_Gold.plunder(gold);
 	}
 	else // No gold
-	  ss << gettext("The losers have no gold to take.\n");
+		ss << gettext("The losers have no gold to take.\n");
 
-	if(rival->m_NumBrothels > 0 && ((g_Dice%100) < (gang->intelligence() / 5)))
+	if (rival->m_NumBrothels > 0 && ((g_Dice % 100) < (gang->intelligence() / 5)))
 	{
 		rival->m_NumBrothels--;
 		ss << gettext("\nYour men burn down one of ") << rival->m_Name << gettext("'s brothels. ");
@@ -2598,7 +2450,7 @@ void cGangManager::sabotage_mission(sGang* gang)
 
 	if (VictoryPoints >= 3)
 	{
-	    stringstream ssVic;
+		stringstream ssVic;
 		ssVic << gettext("You have dealt ") << rival->m_Name << gettext(" a fatal blow.  Their criminal organization crumbles to nothing before you.");
 		m_Rivals->RemoveRival(rival);
 		gang->m_Events.AddMessage(ssVic.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
@@ -2618,14 +2470,14 @@ bool cGangManager::recapture_mission(sGang* gang)
 
 	ss << gettext("Gang: ") << gang->m_Name << ": ";
 	/*
-	 *	if yes then combat the girl and attempt capture then
-	 *	return on success or keep hunting her
-	 *
-	 *	if have a net then just capture her easy
-	 *
-	 *	I'd do a deferred restock here, but since i've never actually
-	 *	run out of nets, it's probably ok to do it on the fly
-	 */
+	*	if yes then combat the girl and attempt capture then
+	*	return on success or keep hunting her
+	*
+	*	if have a net then just capture her easy
+	*
+	*	I'd do a deferred restock here, but since i've never actually
+	*	run out of nets, it's probably ok to do it on the fly
+	*/
 	if (m_NumNets > 0 || m_KeepNetsStocked)	// Case #1: Use a net
 	{
 		ss << gettext("Your goons find and net ") << runnaway->m_Realname << gettext(". She struggles but can't escape, and has been returned to your dungeon.");
@@ -2672,8 +2524,3 @@ bool cGangManager::recapture_mission(sGang* gang)
 	g_MessageQue.AddToQue(ss.str(), COLOR_RED);
 	return false;
 }
-
-
-
-
-

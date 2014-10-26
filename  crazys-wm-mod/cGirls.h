@@ -147,7 +147,7 @@ typedef struct sRandomGirl
 				m_MinStats[i] = 17; m_MaxStats[i] = 25;
 				break;
 			case STAT_MORALITY:
-			case STAT_REFINMENT:
+			case STAT_REFINEMENT:
 			case STAT_DIGNITY:
 				m_MinStats[i] = -10; m_MaxStats[i] = 10;
 				break;

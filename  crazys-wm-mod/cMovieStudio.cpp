@@ -882,7 +882,7 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 					current->m_PrevNightJob = current->m_NightJob;
 					current->m_DayJob = current->m_NightJob = restjob;
 					ss << "The Director takes herself off duty because she is just too damn sore.\n";
-					g_Girls.UpdateEnjoyment(current, ACTION_WORKMOVIE, -10, true);
+					g_Girls.UpdateEnjoyment(current, ACTION_WORKMATRON, -10, true);
 				}
 				else
 				{

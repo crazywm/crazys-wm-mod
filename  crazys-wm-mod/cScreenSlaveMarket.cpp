@@ -95,10 +95,10 @@ void cScreenSlaveMarket::init()
 	ClearListBox(slave_list_id);
 
 	int numgirls=g_Dice.d100();
-	/* */if (numgirls < 5)	numgirls = 5;	// 5%
-	else if (numgirls < 15)	numgirls = 6;	// 10%
-	else if (numgirls < 30)	numgirls = 7;	// 15%
-	else if (numgirls < 70)	numgirls = 8;	// 40%
+	/* */if (numgirls < 3)	numgirls = 5;	// 3%
+	else if (numgirls < 10)	numgirls = 6;	// 7%
+	else if (numgirls < 25)	numgirls = 7;	// 15%
+	else if (numgirls < 70)	numgirls = 8;	// 45%
 	else if (numgirls < 85)	numgirls = 9;	// 15%
 	else if (numgirls < 95)	numgirls = 10;	// 10%
 	else /*              */	numgirls = 11;	// 5%
