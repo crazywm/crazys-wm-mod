@@ -40,7 +40,7 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
 // `J` Farm Job - Laborers
-bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
 {
 	string message = "";
 	string girlName = girl->m_Realname;
@@ -48,7 +48,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, int DayNight, string&
 	void AddItem(sInventoryItem* item);
 	sInventoryItem* GetItem(string name);
 
-	if(Preprocessing(ACTION_WORKMILK, girl, brothel, DayNight, summary, message))	// they refuse to have work
+	if(Preprocessing(ACTION_WORKMILK, girl, brothel, Day0Night1, summary, message))	// they refuse to have work
 		return true;
 
 	// put that shit away, you'll scare off the customers!
@@ -110,7 +110,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, int DayNight, string&
 		}
 	}
 
-	girl->m_Events.AddMessage(message, IMGTYPE_MILK, DayNight);
+	girl->m_Events.AddMessage(message, IMGTYPE_MILK, Day0Night1);
 
 	// Improve stats
 	int xp = 15, libido = 1, skill = 3;

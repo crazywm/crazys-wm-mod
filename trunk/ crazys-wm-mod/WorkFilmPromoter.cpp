@@ -46,7 +46,7 @@ extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
 // `J` Movie Studio Job - Crew
-bool cJobManager::WorkFilmPromoter(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkFilmPromoter(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
 {
 	cConfig cfg;
 	stringstream ss;

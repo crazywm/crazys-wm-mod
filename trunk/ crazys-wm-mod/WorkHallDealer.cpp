@@ -41,10 +41,10 @@ extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
 // `J` Brothel Job - Hall
-bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
 {
 	string message = ""; string girlName = girl->m_Realname;
-	if(Preprocessing(ACTION_WORKHALL, girl, brothel, DayNight, summary, message))	// they refuse to have work in the hall
+	if(Preprocessing(ACTION_WORKHALL, girl, brothel, Day0Night1, summary, message))	// they refuse to have work in the hall
 		return true;
 
 	// put that shit away, you'll scare off the customers!
@@ -351,7 +351,7 @@ else
 	{ message += " \nOtherwise, the shift passed uneventfully."; work += 1; }
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKHALL, work, true);
-	girl->m_Events.AddMessage(message, IMGTYPE_CARD, DayNight);
+	girl->m_Events.AddMessage(message, IMGTYPE_CARD, Day0Night1);
 	// work out the pay between the house and the girl
 	wages += (g_Dice%((int)(((g_Girls.GetStat(girl, STAT_BEAUTY)+g_Girls.GetStat(girl, STAT_CHARISMA))/2)*0.5f)))+10;
 	girl->m_Pay = wages;

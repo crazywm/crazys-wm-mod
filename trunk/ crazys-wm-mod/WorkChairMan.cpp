@@ -44,10 +44,10 @@ extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
 // `J` Clinic Job - Staff - Matron_Job - Full_Time_Job
-bool cJobManager::WorkChairMan(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkChairMan(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
 {
 	girl->m_DayJob = girl->m_NightJob = JOB_CHAIRMAN;	// it is a full time job
-	bool night = (DayNight == SHIFT_NIGHT);
+	bool night = (Day0Night1 == SHIFT_NIGHT);
 	string message = "";
 	stringstream ss;
 	string girlName = girl->m_Realname;
@@ -64,7 +64,7 @@ bool cJobManager::WorkChairMan(sGirl* girl, sBrothel* brothel, int DayNight, str
 			message += gettext(" was overwhelmed by the number of girls she was required to manage and broke down crying.");
 			g_Girls.UpdateStat(girl, STAT_HAPPINESS, -10);
 			g_Girls.UpdateStat(girl, STAT_CONFIDENCE, -5);
-			girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
+			girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, Day0Night1);
 		}
 		else
 		{
@@ -72,7 +72,7 @@ bool cJobManager::WorkChairMan(sGirl* girl, sBrothel* brothel, int DayNight, str
 			message = gettext("Had trouble dealing with some of the girls.");
 			g_Girls.UpdateStat(girl, STAT_HAPPINESS, -3);
 			g_Girls.UpdateStat(girl, STAT_CONFIDENCE, -1);
-			girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
+			girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, Day0Night1);
 		}
 	}
 	else if (check > 90)
@@ -81,13 +81,13 @@ bool cJobManager::WorkChairMan(sGirl* girl, sBrothel* brothel, int DayNight, str
 		message = gettext("Enjoyed helping the girls with their lives.");
 		g_Girls.UpdateStat(girl, STAT_HAPPINESS, 3);
 		g_Girls.UpdateStat(girl, STAT_CONFIDENCE, 1);
-		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
+		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, Day0Night1);
 	}
 	else
 	{
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMATRON, +1, true);
 		message = gettext("Went about her day as usual.");
-		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
+		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, Day0Night1);
 	}
 
 
@@ -105,8 +105,8 @@ bool cJobManager::WorkChairMan(sGirl* girl, sBrothel* brothel, int DayNight, str
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill + 2);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, g_Dice%libido);
 
-	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 30, ACTION_WORKMATRON, gettext("She has worked as a matron long enough that she has learned to be more Charismatic."), DayNight != 0);
-	g_Girls.PossiblyGainNewTrait(girl, "Psychic", 60, ACTION_WORKMATRON, gettext("She has learned to handle the girls so well that you'd almost think she was Psychic."), DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 30, ACTION_WORKMATRON, gettext("She has worked as a matron long enough that she has learned to be more Charismatic."), Day0Night1 == SHIFT_NIGHT);
+	g_Girls.PossiblyGainNewTrait(girl, "Psychic", 60, ACTION_WORKMATRON, gettext("She has learned to handle the girls so well that you'd almost think she was Psychic."), Day0Night1 == SHIFT_NIGHT);
 
 	return false;
 }

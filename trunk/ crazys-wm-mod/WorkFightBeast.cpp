@@ -43,7 +43,7 @@ extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
 // `J` Arena Job - Fighting
-bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
 {
 	string message = ""; string girlName = girl->m_Realname;
 
@@ -72,7 +72,7 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, int DayNight, s
 	if (g_Brothels.GetNumBeasts() == 0)
 	{
 		message = "There are no beasts to fight.";
-		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
+		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, Day0Night1);
 	}
 	else
 	{
@@ -93,12 +93,12 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, int DayNight, s
 		{
 			message = "The beasts were not cooperating and refused to fight.\n\n";
 			message += "(Error: You need a Non-Human Random Girl to allow WorkFightBeast randomness)";
-			girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
+			girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, Day0Night1);
 		}
 		else if (fight_outcome == 1)	// she won
 		{
 			message = "She had fun fighting beasts today."; enjoy += 3;
-			girl->m_Events.AddMessage(message, IMGTYPE_COMBAT, DayNight);
+			girl->m_Events.AddMessage(message, IMGTYPE_COMBAT, Day0Night1);
 			int roll_max = girl->fame() + girl->charisma();
 			roll_max /= 4;
 			wages += 10 + g_Dice%roll_max;
@@ -108,7 +108,7 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, int DayNight, s
 		else  // she lost or it was a draw
 		{
 			message = " She was unable to win the fight."; enjoy -= 1;
-			girl->m_Events.AddMessage(message, IMGTYPE_COMBAT, DayNight);
+			girl->m_Events.AddMessage(message, IMGTYPE_COMBAT, Day0Night1);
 			g_Girls.UpdateStat(girl, STAT_FAME, -1);
 		}
 
@@ -141,12 +141,12 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, int DayNight, s
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 	g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, g_Dice%fightxp * 2 + skill);
 
-	g_Girls.PossiblyGainNewTrait(girl, "Tough", 20, ACTION_COMBAT, "She has become pretty Tough from all of the fights she's been in.", DayNight != 0);
-	g_Girls.PossiblyGainNewTrait(girl, "Aggressive", 60, ACTION_COMBAT, "She is getting rather Aggressive from her enjoyment of combat.", DayNight != 0);
-	g_Girls.PossiblyGainNewTrait(girl, "Fleet of Foot", 30, ACTION_COMBAT, "She is getting rather fast from all the fighting.", DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Tough", 20, ACTION_COMBAT, "She has become pretty Tough from all of the fights she's been in.", Day0Night1 == SHIFT_NIGHT);
+	g_Girls.PossiblyGainNewTrait(girl, "Aggressive", 60, ACTION_COMBAT, "She is getting rather Aggressive from her enjoyment of combat.", Day0Night1 == SHIFT_NIGHT);
+	g_Girls.PossiblyGainNewTrait(girl, "Fleet of Foot", 30, ACTION_COMBAT, "She is getting rather fast from all the fighting.", Day0Night1 == SHIFT_NIGHT);
 
 	//lose traits
-	g_Girls.PossiblyLoseExistingTrait(girl, "Fragile", 75, ACTION_COMBAT, girl->m_Realname + " has had to heal from so many injuries you can't say she is fragile anymore.", DayNight != 0);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Fragile", 75, ACTION_COMBAT, girl->m_Realname + " has had to heal from so many injuries you can't say she is fragile anymore.", Day0Night1 == SHIFT_NIGHT);
 
 	return false;
 }

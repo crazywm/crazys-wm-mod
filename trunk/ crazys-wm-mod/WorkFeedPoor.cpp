@@ -44,12 +44,12 @@ extern cGold g_Gold;
 extern int g_Building;
 
 // `J` Centre Job - General
-bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
 {
 	string message = ""; string girlName = girl->m_Realname;
 	g_Building = BUILDING_CENTRE;
 
-	if(Preprocessing(ACTION_WORKCENTRE, girl, brothel, DayNight, summary, message))	// they refuse to have work
+	if(Preprocessing(ACTION_WORKCENTRE, girl, brothel, Day0Night1, summary, message))	// they refuse to have work
 		return true;
 
 	// put that shit away, you'll scare off the customers!
@@ -271,7 +271,7 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, int DayNight, str
 	{
 		if(roll <= 50)
 		{
-			girl->m_Events.AddMessage(message, IMGTYPE_SEX, DayNight);
+			girl->m_Events.AddMessage(message, IMGTYPE_SEX, Day0Night1);
 			g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, 2);
 			if (g_Girls.CheckVirginity(girl))
 			{
@@ -281,7 +281,7 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, int DayNight, str
 		}
 		else
 		{
-			girl->m_Events.AddMessage(message, IMGTYPE_ANAL, DayNight);
+			girl->m_Events.AddMessage(message, IMGTYPE_ANAL, Day0Night1);
 			g_Girls.UpdateSkill(girl, SKILL_ANAL, 2);
 		}
 		brothel->m_Happiness += 100;
@@ -294,11 +294,11 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, int DayNight, str
 		brothel->m_Happiness += (g_Dice%70)+60;
 		dispo += 4;
 		g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 2);
-		girl->m_Events.AddMessage(message, IMGTYPE_ORAL, DayNight);
+		girl->m_Events.AddMessage(message, IMGTYPE_ORAL, Day0Night1);
 	}
 	else
 	{
-		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
+		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, Day0Night1);
 	}
 
 	// Improve stats

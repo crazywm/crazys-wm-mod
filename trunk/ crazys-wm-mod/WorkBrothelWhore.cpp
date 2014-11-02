@@ -42,7 +42,7 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
 // `J` Brothel Job - Brothel
-bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
 {
 	// put that shit away, you'll scare off the customers!
 	g_Girls.UnequipCombat(girl);
@@ -116,7 +116,7 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, int DayNight, string
 	bool bStreetWork;				// Girl Doing StreetWork
 
 	u_int SexType = 0;
-	u_int job = (DayNight == 0) ? girl->m_DayJob : girl->m_NightJob;
+	u_int job = (Day0Night1 == SHIFT_DAY ? girl->m_DayJob : girl->m_NightJob);
 	bStreetWork = (job == JOB_WHORESTREETS);
 	stringstream ss;
 
@@ -285,7 +285,7 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, int DayNight, string
 		else
 		{
 			// 50% chance of getting something a little weirder during the night
-			if (DayNight == 1 && Cust.m_Fetish < NUM_FETISH - 2 && g_Dice.percent(50)) Cust.m_Fetish += 2;
+			if (Day0Night1 == SHIFT_NIGHT && Cust.m_Fetish < NUM_FETISH - 2 && g_Dice.percent(50)) Cust.m_Fetish += 2;
 
 			// Check for fetish match
 			if (g_Girls.CheckGirlType(girl, Cust.m_Fetish))
@@ -325,7 +325,7 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, int DayNight, string
 		if (!acceptsGirl) continue;		// will the customer sleep with her?
 
 		// Horizontal boogy
-		g_Girls.GirlFucks(girl, DayNight, &Cust, group, fuckMessage, SexType);
+		g_Girls.GirlFucks(girl, Day0Night1, &Cust, group, fuckMessage, SexType);
 		NumSleptWith++;
 		if (!bStreetWork) brothel->m_Filthiness++;
 
@@ -445,12 +445,12 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, int DayNight, string
 		else if (SexType == SKILL_STRIP)		imageType = IMGTYPE_STRIP;
 
 		// chance of customer beating or attempting to beat girl
-		if (work_related_violence(girl, DayNight, bStreetWork))
+		if (work_related_violence(girl, Day0Night1, bStreetWork))
 			pay = 0;		// WD TRACE WorkRelatedViloence {girl->m_Name} earns nothing
 
 		// WD:	Save gold earned
 		girl->m_Pay += pay;		// WD TRACE Save Pay {girl->m_Name} earns {pay} totaling {girl->m_Pay}
-		girl->m_Events.AddMessage(fuckMessage, imageType, DayNight);
+		girl->m_Events.AddMessage(fuckMessage, imageType, Day0Night1);
 	}
 
 
@@ -467,8 +467,8 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, int DayNight, string
 	// doc: adding braces - gcc warns of ambiguous if nesting
 	if (!bStreetWork)  
 	{
-		if (g_Customers.GetNumCustomers() == 0)	{ girl->m_Events.AddMessage("No more customers.", IMGTYPE_PROFILE, DayNight); }
-		else if (NumSleptWith < NumCusts)		{ girl->m_Events.AddMessage(girl->m_Realname + " ran out of customers who like her.", IMGTYPE_PROFILE, DayNight); }
+		if (g_Customers.GetNumCustomers() == 0)	{ girl->m_Events.AddMessage("No more customers.", IMGTYPE_PROFILE, Day0Night1); }
+		else if (NumSleptWith < NumCusts)		{ girl->m_Events.AddMessage(girl->m_Realname + " ran out of customers who like her.", IMGTYPE_PROFILE, Day0Night1); }
 	}
 
 	// WD:	Summary messages
@@ -476,11 +476,11 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, int DayNight, string
 	ss << girl->m_Realname << (bStreetWork ? " worked the streets and" : "") << " saw " << NumSleptWith << " customers this shift.";
 	summary += ss.str();
 
-	girl->m_Events.AddMessage(summary, IMGTYPE_PROFILE, DayNight);
+	girl->m_Events.AddMessage(summary, IMGTYPE_PROFILE, Day0Night1);
 
 	//gain
-	g_Girls.PossiblyGainNewTrait(girl, "Good Kisser", 50, ACTION_SEX, girl->m_Realname + " has had a lot of practice kissing and as such as become a Good Kisser.", DayNight != 0);
-	g_Girls.PossiblyGainNewTrait(girl, "Nymphomaniac", 70, ACTION_SEX, girl->m_Realname + " has been having so much sex she is now wanting sex all the time.", DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Good Kisser", 50, ACTION_SEX, girl->m_Realname + " has had a lot of practice kissing and as such as become a Good Kisser.", Day0Night1 == SHIFT_NIGHT);
+	g_Girls.PossiblyGainNewTrait(girl, "Nymphomaniac", 70, ACTION_SEX, girl->m_Realname + " has been having so much sex she is now wanting sex all the time.", Day0Night1 == SHIFT_NIGHT);
 
 	return false;
 }

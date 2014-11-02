@@ -44,7 +44,7 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
 // `J` Movie Studio Job - Crew
-bool cJobManager::WorkCrystalPurifier(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkCrystalPurifier(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
 {
 	bool SkipDisobey = (summary == "SkipDisobey");
 	// No film crew.. then go home	// `J` this will be taken care of in building flow, leaving it in for now
@@ -134,7 +134,7 @@ bool cJobManager::WorkCrystalPurifier(sGirl* girl, sBrothel* brothel, int DayNig
 	else if (jobperformance < 0)	ss << "She did a bad job today, she reduced the scene quality " << jobperformance << "% with her poor performance. \n";
 	else /*                   */	ss << "She did not really help the scene quality.\n";
 	
-	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, DayNight);
+	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 	g_Studios.m_PurifierQaulity += jobperformance;
 	girl->m_Pay = wages;
 

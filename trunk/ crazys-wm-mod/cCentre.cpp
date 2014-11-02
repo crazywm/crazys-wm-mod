@@ -169,9 +169,6 @@ void cCentreManager::UpdateCentre()	// Start_Building_Process_A
 			g_Girls.AddTiredness(cgirl);			// `J` moved all girls add tiredness to one place
 			do_food_and_digs(current, cgirl);		// Brothel only update for girls accommodation level
 			g_Girls.updateGirlAge(cgirl, true);		// update birthday counter and age the girl
-			g_Girls.updateTempStats(cgirl);			// update temp stats
-			g_Girls.updateTempSkills(cgirl);		// update temp skills
-			g_Girls.updateTempTraits(cgirl);		// update temp traits
 			g_Girls.HandleChildren(cgirl);			// handle pregnancy and children growing up
 			g_Girls.updateSTD(cgirl);				// health loss to STD's				NOTE: Girl can die
 			g_Girls.updateHappyTraits(cgirl);		// Update happiness due to Traits	NOTE: Girl can die
@@ -197,10 +194,20 @@ void cCentreManager::UpdateCentre()	// Start_Building_Process_A
 	if (current->m_SecurityLevel < 0)	current->m_SecurityLevel = 0;
 
 	g_Gold.brothel_accounts(current->m_Finance, current->m_id);
+
+	cgirl = current->m_Girls;
+	while (cgirl)
+	{
+		g_Girls.updateTempStats(cgirl);			// update temp stats
+		g_Girls.updateTempSkills(cgirl);		// update temp skills
+		g_Girls.updateTempTraits(cgirl);		// update temp traits
+		g_Girls.DegradeGirls(current, cgirl);
+		cgirl = cgirl->m_Next;
+	}
 }
 
 // Run the shifts
-void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)	// Start_Building_Process_B
+void cCentreManager::UpdateGirls(sBrothel* brothel, int Day0Night1)	// Start_Building_Process_B
 {
 	cConfig cfg;
 
@@ -222,7 +229,7 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)	// Start_Build
 
 	bool refused = false;
 
-	m_Processing_Shift = DayNight;		// WD:	Set processing flag to shift type
+	m_Processing_Shift = Day0Night1;		// WD:	Set processing flag to shift type
 
 	//////////////////////////////////////////////////////
 	//  Handle the start of shift stuff for all girls.  //
@@ -230,7 +237,6 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)	// Start_Build
 	sGirl* current = brothel->m_Girls;
 	while (current)
 	{
-		brothel->m_Filthiness++;
 		if (current->health() <= 0)		// skip dead girls
 		{
 			if (current->m_Next) { current = current->m_Next; continue; }
@@ -254,8 +260,8 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)	// Start_Build
 	while (current && !matrondone)
 	{
 		if (current->health() <= 0 ||
-			(GetNumGirlsOnJob(0, matronjob, DayNight) > 0 && (current->m_DayJob != matronjob || current->m_NightJob != matronjob)) ||
-			(GetNumGirlsOnJob(0, matronjob, DayNight) < 1 && (current->m_PrevDayJob != matronjob || current->m_PrevNightJob != matronjob)))
+			(GetNumGirlsOnJob(0, matronjob, Day0Night1) > 0 && (current->m_DayJob != matronjob || current->m_NightJob != matronjob)) ||
+			(GetNumGirlsOnJob(0, matronjob, Day0Night1) < 1 && (current->m_PrevDayJob != matronjob || current->m_PrevNightJob != matronjob)))
 		{	// Sanity check! Don't process dead girls and only process those with matron jobs
 			if (current->m_Next) { current = current->m_Next; continue; }
 			else { current = 0; break; }
@@ -264,7 +270,7 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)	// Start_Build
 
 		girlName = current->m_Realname;
 		// if there is no matron on duty, we see who was on duty previously
-		if (GetNumGirlsOnJob(0, matronjob, DayNight) < 1)
+		if (GetNumGirlsOnJob(0, matronjob, Day0Night1) < 1)
 		{
 			// if a matron was found and she is healthy, not tired and not on maternity leave... send her back to work
 			if ((current->m_PrevDayJob == matronjob || current->m_PrevNightJob == matronjob) &&
@@ -285,14 +291,14 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)	// Start_Build
 		sum = EVENT_SUMMARY; summary = ""; ss.str("");
 
 		// `J` she can refuse the first shift then decide to work the second shift 
-		if (!current->m_Refused_To_Work_Day && DayNight == SHIFT_NIGHT)	// but if she worked the first shift she continues the rest of the night
+		if (!current->m_Refused_To_Work_Day && Day0Night1 == SHIFT_NIGHT)	// but if she worked the first shift she continues the rest of the night
 		{
 			matron = true;
 			ss << girlName << " continued to help the other girls throughout the night.";
 		}
 		else if (g_Girls.DisobeyCheck(current, ACTION_WORKMATRON, brothel))
 		{
-			(DayNight == SHIFT_DAY ? current->m_Refused_To_Work_Day = true : current->m_Refused_To_Work_Night = true);
+			(Day0Night1 == SHIFT_DAY ? current->m_Refused_To_Work_Day = true : current->m_Refused_To_Work_Night = true);
 			brothel->m_Fame -= g_Girls.GetStat(current, STAT_FAME);
 			ss << girlName << " refused to work as the Centre Manager.";
 			sum = EVENT_NOWORK;
@@ -301,11 +307,11 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)	// Start_Build
 		{
 			matron = true;
 			totalPay = totalTips = totalGold = 0;
-			m_JobManager.JobFunc[matronjob](current, brothel, DayNight, summary);
+			m_JobManager.JobFunc[matronjob](current, brothel, Day0Night1, summary);
 			totalGold += current->m_Pay + current->m_Tips;
 
 			// She does not get paid for the first shift and gets docked some pay from the second shift if she refused once
-			if (DayNight == SHIFT_NIGHT) totalGold /= 3;
+			if (Day0Night1 == SHIFT_NIGHT) totalGold /= 3;
 
 			current->m_Pay += max(0, totalGold);
 			current->m_Pay = current->m_Tips = 0;
@@ -327,7 +333,7 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)	// Start_Build
 	current = brothel->m_Girls;
 	while (current)
 	{
-		sw = (DayNight == SHIFT_DAY ? current->m_DayJob : current->m_NightJob);
+		sw = (Day0Night1 == SHIFT_DAY ? current->m_DayJob : current->m_NightJob);
 		if (current->health() <= 0 || sw != restjob)
 		{	// skip dead girls and anyone not resting
 			if (current->m_Next) { current = current->m_Next; continue; }
@@ -342,13 +348,13 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)	// Start_Build
 		}
 		else if (current->health() < 80 || current->tiredness() > 20)
 		{
-			m_JobManager.JobFunc[restjob](current, brothel, DayNight, summary);
+			m_JobManager.JobFunc[restjob](current, brothel, Day0Night1, summary);
 		}
 		else
 		{	// if she is healthy enough to go back to work... 
 			if (matron)	// and there is a marton working...
 			{
-				psw = (DayNight == SHIFT_DAY ? current->m_PrevDayJob : current->m_PrevNightJob);
+				psw = (Day0Night1 == SHIFT_DAY ? current->m_PrevDayJob : current->m_PrevNightJob);
 				if (psw == JOB_DRUGCOUNSELOR && current->is_free())
 				{
 					current->m_DayJob = current->m_NightJob = JOB_DRUGCOUNSELOR;
@@ -357,11 +363,11 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)	// Start_Build
 				else if (psw == JOB_REHAB)
 				{
 					current->m_DayJob = current->m_NightJob = JOB_REHAB;
-					ss << "The Centre Manager puts " << girlName << " back to work.\n";
+					ss << "The Centre Manager puts " << girlName << " back into Rehab.\n";
 				}
 				else if (psw != restjob && psw != 255 && psw != JOB_DRUGCOUNSELOR)
 				{	// if she had a previous job, put her back to work.
-					if (DayNight == SHIFT_DAY)
+					if (Day0Night1 == SHIFT_DAY)
 					{
 						current->m_DayJob = current->m_PrevDayJob;
 						if (current->m_NightJob == restjob && current->m_PrevNightJob != restjob && current->m_PrevNightJob != 255)
@@ -375,8 +381,8 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)	// Start_Build
 					}
 					ss << "The Centre Manager puts " << girlName << " back to work.\n";
 				}
-				else // otherwise give her a new job.
-				{
+				else if (current->m_DayJob == restjob && current->m_NightJob == restjob)
+				{	// if they have no job at all, assign them a job
 					ss << "The Centre Manager assigns " << girlName << " to ";
 					// first send any addicts to rehab
 					if (current->is_addict())
@@ -385,25 +391,25 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)	// Start_Build
 						ss << "go to Rehab.";
 					}
 					// Make sure there is atleast 1 counselor on duty
-					else if (current->is_free() && GetNumGirlsOnJob(0, JOB_DRUGCOUNSELOR, DayNight) < 1)
+					else if (current->is_free() && GetNumGirlsOnJob(0, JOB_DRUGCOUNSELOR, Day0Night1) < 1)
 					{
 						current->m_DayJob = current->m_NightJob = JOB_DRUGCOUNSELOR;
 						ss << "work as a Drug Counselor.";
 					}
 					// assign 1 cleaner per 20 girls
-					else if (GetNumGirlsOnJob(0, JOB_CLEANCENTRE, DayNight) < max(1,numgirls/20))
+					else if (GetNumGirlsOnJob(0, JOB_CLEANCENTRE, Day0Night1) < max(1,numgirls/20))
 					{
 						current->m_DayJob = current->m_NightJob = JOB_CLEANCENTRE;
 						ss << "clean the Centre.";
 					}
 					// assign 1 counselor per 20 girls
-					else if (current->is_free() && GetNumGirlsOnJob(0, JOB_DRUGCOUNSELOR, DayNight) < numgirls / 20)
+					else if (current->is_free() && GetNumGirlsOnJob(0, JOB_DRUGCOUNSELOR, Day0Night1) < numgirls / 20)
 					{
 						current->m_DayJob = current->m_NightJob = JOB_DRUGCOUNSELOR;
 						ss << "work as a Drug Counselor.";
 					}
 					// split all the rest between JOB_COMUNITYSERVICE and JOB_FEEDPOOR
-					else if (GetNumGirlsOnJob(0, JOB_COMUNITYSERVICE, DayNight) < GetNumGirlsOnJob(0, JOB_FEEDPOOR, DayNight))
+					else if (GetNumGirlsOnJob(0, JOB_COMUNITYSERVICE, Day0Night1) < GetNumGirlsOnJob(0, JOB_FEEDPOOR, Day0Night1))
 					{
 						current->m_DayJob = current->m_NightJob = JOB_COMUNITYSERVICE;
 						ss << "work doing comunity service.";
@@ -419,7 +425,6 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)	// Start_Build
 			}
 			else	// no one to send her back to work
 			{
-				current->m_DayJob = current->m_NightJob = restjob;
 				ss << "WARNING " << girlName << " is doing nothing!\n";
 				sum = EVENT_WARNING;
 			}
@@ -435,7 +440,7 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)	// Start_Build
 	current = brothel->m_Girls;
 	while (current)
 	{
-		sw = (DayNight == SHIFT_DAY ? current->m_DayJob : current->m_NightJob);
+		sw = (Day0Night1 == SHIFT_DAY ? current->m_DayJob : current->m_NightJob);
 		if (current->health() <= 0 || sw != JOB_DRUGCOUNSELOR)
 		{	// skip dead girls and anyone who is not a counselor
 			if (current->m_Next) { current = current->m_Next; continue; }
@@ -447,7 +452,7 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)	// Start_Build
 		
 		if (g_Girls.DisobeyCheck(current, ACTION_WORKCOUNSELOR, brothel))
 		{
-			(DayNight == SHIFT_DAY ? current->m_Refused_To_Work_Day = true : current->m_Refused_To_Work_Night = true);
+			(Day0Night1 == SHIFT_DAY ? current->m_Refused_To_Work_Day = true : current->m_Refused_To_Work_Night = true);
 			brothel->m_Fame -= g_Girls.GetStat(current, STAT_FAME);
 			ss << girlName << " refused to work so made no money.";
 		}
@@ -464,9 +469,9 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)	// Start_Build
 	//  Anyone not in rehab can be assigned to counselor if need be.  //
 	////////////////////////////////////////////////////////////////////
 	current = brothel->m_Girls;
-	while (current && matron && !counselor)
+	while (current && matron && !counselor && GetNumGirlsOnJob(0, JOB_REHAB, Day0Night1) > 0)
 	{
-		sw = (DayNight == SHIFT_DAY ? current->m_DayJob : current->m_NightJob);
+		sw = (Day0Night1 == SHIFT_DAY ? current->m_DayJob : current->m_NightJob);
 		if (current->health() <= 0 || (sw != JOB_FEEDPOOR && sw != JOB_COMUNITYSERVICE && sw != JOB_CLEANCENTRE))
 		{	// skip dead girls
 			if (current->m_Next) { current = current->m_Next; continue; }
@@ -492,10 +497,10 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)	// Start_Build
 	current = brothel->m_Girls;
 	while (current)
 	{
-		sw = (DayNight == SHIFT_DAY ? current->m_DayJob : current->m_NightJob);
+		sw = (Day0Night1 == SHIFT_DAY ? current->m_DayJob : current->m_NightJob);
 		if (current->health() <= 0 || (sw != JOB_FEEDPOOR && sw != JOB_COMUNITYSERVICE && sw != JOB_CLEANCENTRE && sw != JOB_DRUGCOUNSELOR) ||
 			// skip dead girls and anyone who is not staff
-			(sw == JOB_DRUGCOUNSELOR && ((DayNight == SHIFT_DAY && current->m_Refused_To_Work_Day) || (DayNight == SHIFT_NIGHT && current->m_Refused_To_Work_Night))))
+			(sw == JOB_DRUGCOUNSELOR && ((Day0Night1 == SHIFT_DAY && current->m_Refused_To_Work_Day) || (Day0Night1 == SHIFT_NIGHT && current->m_Refused_To_Work_Night))))
 		{	// and skip counselors who refused to work in the first check
 			if (current->m_Next) { current = current->m_Next; continue; }
 			else { current = 0; break; }
@@ -506,7 +511,7 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)	// Start_Build
 
 		if (current->m_NightJob == JOB_DRUGCOUNSELOR) summary = "SkipDisobey";
 		// do their job
-		refused = m_JobManager.JobFunc[sw](current, brothel, DayNight, summary);
+		refused = m_JobManager.JobFunc[sw](current, brothel, Day0Night1, summary);
 
 		totalPay += current->m_Pay;
 		totalTips += current->m_Tips;
@@ -521,7 +526,7 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)	// Start_Build
 		}
 		else
 		{
-			ss << m_JobManager.GirlPaymentText(brothel, current, totalTips, totalPay, totalGold, DayNight);
+			ss << m_JobManager.GirlPaymentText(brothel, current, totalTips, totalPay, totalGold, Day0Night1);
 			if (totalGold < 0) sum = EVENT_DEBUG;
 
 			brothel->m_Fame += g_Girls.GetStat(current, STAT_FAME);
@@ -538,14 +543,14 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, int DayNight)	// Start_Build
 	current = brothel->m_Girls;
 	while (current)
 	{
-		sw = (DayNight == SHIFT_DAY ? current->m_DayJob : current->m_NightJob);
+		sw = (Day0Night1 == SHIFT_DAY ? current->m_DayJob : current->m_NightJob);
 		if (current->health() <= 0 || sw != JOB_REHAB)
 		{	// skip dead girls, resting girls and the matron
 			if (current->m_Next) { current = current->m_Next; continue; }
 			else { current = 0; break; }
 		}
 		summary = "";
-		m_JobManager.JobFunc[sw](current, brothel, DayNight, summary);
+		m_JobManager.JobFunc[sw](current, brothel, Day0Night1, summary);
 
 		current = current->m_Next; // Next Girl
 	}

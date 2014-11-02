@@ -41,10 +41,10 @@ extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
 // `J` Brothel Job - Hall
-bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
 {
 	string message = ""; string girlName = girl->m_Realname;
-	if (Preprocessing(ACTION_WORKSTRIP, girl, brothel, DayNight, summary, message))	// they refuse to have work in the hall
+	if (Preprocessing(ACTION_WORKSTRIP, girl, brothel, Day0Night1, summary, message))	// they refuse to have work in the hall
 		return true;
 
 	// put that shit away, you'll scare off the customers!
@@ -311,10 +311,10 @@ else
 		// work out the pay between the house and the girl
 		wages += g_Girls.GetStat(girl, STAT_ASKPRICE)+60;
 		imagetype = IMGTYPE_MAST;
-		girl->m_Events.AddMessage(message, IMGTYPE_MAST, DayNight);
+		girl->m_Events.AddMessage(message, IMGTYPE_MAST, Day0Night1);
 	}
 	else
-	{ girl->m_Events.AddMessage(message, IMGTYPE_ECCHI, DayNight); }
+	{ girl->m_Events.AddMessage(message, IMGTYPE_ECCHI, Day0Night1); }
 
 	if(wages < 0)
 			wages = 0;
@@ -353,7 +353,7 @@ else
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
 	//gain traits
-	g_Girls.PossiblyGainNewTrait(girl, "Nymphomaniac", 75, ACTION_WORKSTRIP, "Having to preform sexual entertainment for patrons every day has made " + girlName + " quite the nympho.", DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Nymphomaniac", 75, ACTION_WORKSTRIP, "Having to preform sexual entertainment for patrons every day has made " + girlName + " quite the nympho.", Day0Night1 == SHIFT_NIGHT);
 
 	return false;
 }

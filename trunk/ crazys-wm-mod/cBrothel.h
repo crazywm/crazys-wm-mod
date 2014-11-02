@@ -171,7 +171,7 @@ public:
 	void NewBrothel(int NumRooms, int MaxNumRooms = 200);
 	void DestroyBrothel(int ID);
 	void UpdateBrothels();
-	void UpdateGirls(sBrothel* brothel, int DayNight);
+	void UpdateGirls(sBrothel* brothel, int Day0Night1);
 
 	// MYR: Start of my automation functions
 	void UsePlayersItems(sGirl* cur);
@@ -346,7 +346,7 @@ public:
 	cRivalManager m_Rivals;			// all of the players compedators
 
 	bool m_TortureDoneFlag;			// WD:	Have we got a torturer working today
-	int  m_Processing_Shift;		// WD:	Store DayNight value when processing girls
+	int  m_Processing_Shift;		// WD:	Store Day0Night1 value when processing girls
 
 	void AddBrothel(sBrothel* newBroth);
 };

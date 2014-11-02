@@ -40,11 +40,11 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
 // `J` Brothel Job - Bar
-bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
 {
 	string message = ""; string girlName = girl->m_Realname;
 
-	if(Preprocessing(ACTION_WORKMUSIC, girl, brothel, DayNight, summary, message))	// they refuse to have work in the bar
+	if(Preprocessing(ACTION_WORKMUSIC, girl, brothel, Day0Night1, summary, message))	// they refuse to have work in the bar
 		return true;
 
 	// put that shit away, you'll scare off the customers!
@@ -305,7 +305,7 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, int DayNight, str
 	{ message += " \nOtherwise, the shift passed uneventfully."; work += 1; }
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKMUSIC, work, true);
-	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
+	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, Day0Night1);
 	int roll_max = (g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA));
 	roll_max /= 4;
 	wages += 10 + g_Dice%roll_max;
@@ -328,10 +328,10 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, int DayNight, str
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
 	//gain traits
-	g_Girls.PossiblyGainNewTrait(girl, "Elegant", 75, ACTION_WORKMUSIC, "Playing the piano has given " + girlName + " an Elegant nature.", DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Elegant", 75, ACTION_WORKMUSIC, "Playing the piano has given " + girlName + " an Elegant nature.", Day0Night1 == SHIFT_NIGHT);
 
 	//lose traits
-	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 30, ACTION_WORKMUSIC, girlName + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", DayNight != 0);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 30, ACTION_WORKMUSIC, girlName + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", Day0Night1 == SHIFT_NIGHT);
 
 	return false;
 }

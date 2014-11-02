@@ -44,13 +44,13 @@ extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
 // `J` Clinic Job - Staff
-bool cJobManager::WorkMechanic(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkMechanic(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
 {
 	string message = "";
 	stringstream ss;
 	string girlName = girl->m_Realname;
 
-	if (Preprocessing(ACTION_WORKMECHANIC, girl, brothel, DayNight, summary, message)) return true;
+	if (Preprocessing(ACTION_WORKMECHANIC, girl, brothel, Day0Night1, summary, message)) return true;
 	cConfig cfg;
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
@@ -126,11 +126,11 @@ bool cJobManager::WorkMechanic(sGirl* girl, sBrothel* brothel, int DayNight, str
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMECHANIC, +1, true);
 	}
 
-	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
+	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, Day0Night1);
 	int roll_max = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) + g_Girls.GetSkill(girl, SKILL_SERVICE));
 	roll_max /= 4;
 	wages += 10 + g_Dice%roll_max;
-	wages += 5 * g_Clinic.GetNumGirlsOnJob(0, JOB_GETREPAIRS, DayNight);	// `J` pay her 5 for each patient you send to her		
+	wages += 5 * g_Clinic.GetNumGirlsOnJob(0, JOB_GETREPAIRS, Day0Night1);	// `J` pay her 5 for each patient you send to her		
 	if (wages < 0)	wages = 0;
 	girl->m_Pay = wages;
 
@@ -150,11 +150,11 @@ bool cJobManager::WorkMechanic(sGirl* girl, sBrothel* brothel, int DayNight, str
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
 	//gain traits
-	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, ACTION_WORKMECHANIC, "Dealing with patients and talking with them about their problems has made " + girl->m_Realname + " more Charismatic.", DayNight != 0);
-	g_Girls.PossiblyGainNewTrait(girl, "Strong", 60, ACTION_WORKMECHANIC, "Handling heavy parts and working with heavy tools has made " + girl->m_Realname + " much Stronger.", DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, ACTION_WORKMECHANIC, "Dealing with patients and talking with them about their problems has made " + girl->m_Realname + " more Charismatic.", Day0Night1 == SHIFT_NIGHT);
+	g_Girls.PossiblyGainNewTrait(girl, "Strong", 60, ACTION_WORKMECHANIC, "Handling heavy parts and working with heavy tools has made " + girl->m_Realname + " much Stronger.", Day0Night1 == SHIFT_NIGHT);
 
 	//lose traits
-	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 20, ACTION_WORKMECHANIC, girl->m_Realname + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", DayNight != 0);
-	g_Girls.PossiblyLoseExistingTrait(girl, "Elegant", 40, ACTION_WORKMECHANIC, " Working with dirty, greasy equipment has damaged " + girl->m_Realname + "'s hair, skin and nails making her less Elegant.", DayNight != 0);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 20, ACTION_WORKMECHANIC, girl->m_Realname + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", Day0Night1 == SHIFT_NIGHT);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Elegant", 40, ACTION_WORKMECHANIC, " Working with dirty, greasy equipment has damaged " + girl->m_Realname + "'s hair, skin and nails making her less Elegant.", Day0Night1 == SHIFT_NIGHT);
 	return false;
 }

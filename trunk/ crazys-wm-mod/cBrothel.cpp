@@ -1193,9 +1193,6 @@ void cBrothelManager::UpdateBrothels()	// Start_Building_Process_A
 				do_food_and_digs(current, cgirl);		// Brothel only update for girls accommodation level
 				g_Girls.CalculateGirlType(cgirl);		// update the fetish traits
 				g_Girls.updateGirlAge(cgirl, true);		// update birthday counter and age the girl
-				g_Girls.updateTempStats(cgirl);			// update temp stats
-				g_Girls.updateTempSkills(cgirl);		// update temp skills
-				g_Girls.updateTempTraits(cgirl);		// update temp traits
 				g_Girls.HandleChildren(cgirl);			// handle pregnancy and children growing up
 				g_Girls.updateSTD(cgirl);				// health loss to STD's				NOTE: Girl can die
 				g_Girls.updateHappyTraits(cgirl);		// Update happiness due to Traits	NOTE: Girl can die
@@ -1331,6 +1328,16 @@ void cBrothelManager::UpdateBrothels()	// Start_Building_Process_A
 
 		if (current->m_Filthiness < 0) current->m_Filthiness = 0;
 		if (current->m_SecurityLevel < 0) current->m_SecurityLevel = 0;
+
+		cgirl = current->m_Girls;
+		while (cgirl)
+		{
+			g_Girls.updateTempStats(cgirl);			// update temp stats
+			g_Girls.updateTempSkills(cgirl);		// update temp skills
+			g_Girls.updateTempTraits(cgirl);		// update temp traits
+			g_Girls.DegradeGirls(current, cgirl);
+			cgirl = cgirl->m_Next;
+		}
 
 		current = current->m_Next;		// goto the next brothel
 	}
@@ -1483,10 +1490,11 @@ void cBrothelManager::UpdateBrothels()	// Start_Building_Process_A
 	// update objectives or maybe create a new one
 	if (GetObjective()) UpdateObjective();
 	else { if (g_Dice.percent(45)) CreateNewObjective(); }
+
 }
 
 // End of turn stuff is here
-void cBrothelManager::UpdateGirls(sBrothel* brothel, int DayNight)	// Start_Building_Process_B
+void cBrothelManager::UpdateGirls(sBrothel* brothel, int Day0Night1)	// Start_Building_Process_B
 {
 	// `J` added to allow for easier copy/paste to other buildings
 	u_int firstjob = JOB_RESTING;
@@ -1506,13 +1514,13 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, int DayNight)	// Start_Buil
 	int sum = EVENT_SUMMARY;
 	u_int sw = 0, psw = 0;
 	bool refused = false;
-	m_Processing_Shift = DayNight;		// WD:	Set processing flag to shift type
+	m_Processing_Shift = Day0Night1;		// WD:	Set processing flag to shift type
 
 
 	/*
 	*	handle any girls training during this shift
 	*/
-	m_JobManager.do_training(brothel, DayNight);
+	m_JobManager.do_training(brothel, Day0Night1);
 	/*
 	*	as for the rest of them...
 	*/
@@ -1527,7 +1535,7 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, int DayNight)	// Start_Buil
 		*		ONCE DAILY processing
 		*		at start of Day Shift
 		*/
-		if (DayNight == SHIFT_DAY)
+		if (Day0Night1 == SHIFT_DAY)
 		{
 
 			// Back to work
@@ -1549,7 +1557,6 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, int DayNight)	// Start_Buil
 				}
 				else
 				{
-					current->m_DayJob = current->m_NightJob = restjob;
 					MatronWarningMsg += gettext("WARNING ") + girlName + gettext(" is doing nothing!\n");
 					current->m_Events.AddMessage(MatronWarningMsg, IMGTYPE_PROFILE, EVENT_WARNING);
 					MatronWarningMsg = "";
@@ -1577,7 +1584,7 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, int DayNight)	// Start_Buil
 		/*
 		*		JOB PROCESSING
 		*/
-		u_int sw = (DayNight == SHIFT_DAY) ? current->m_DayJob : current->m_NightJob;
+		u_int sw = (Day0Night1 == SHIFT_DAY ? current->m_DayJob : current->m_NightJob);
 
 		// do their job
 		//	if((sw != JOB_ADVERTISING) && (sw != JOB_WHOREGAMBHALL) && (sw != JOB_WHOREBROTHEL) && (sw != JOB_BARWHORE))		// advertising and whoring are handled earlier.
@@ -1586,11 +1593,11 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, int DayNight)	// Start_Buil
 			sw == JOB_BARWHORE || sw == JOB_BARMAID || sw == JOB_WAITRESS ||
 			sw == JOB_SINGER || sw == JOB_PIANO || sw == JOB_DEALER || sw == JOB_ENTERTAINMENT ||
 			sw == JOB_XXXENTERTAINMENT || sw == JOB_SLEAZYBARMAID || sw == JOB_SLEAZYWAITRESS ||
-			sw == JOB_BARSTRIPPER || sw == JOB_MASSEUSE || sw == JOB_BROTHELSTRIPPER || sw == JOB_PIANO)
+			sw == JOB_BARSTRIPPER || sw == JOB_MASSEUSE || sw == JOB_BROTHELSTRIPPER || sw == JOB_PIANO || sw == JOB_PEEP)
 		{
 			// these jobs are already done so we skip them
 		}
-		else refused = m_JobManager.JobFunc[sw](current, brothel, DayNight, summary);
+		else refused = m_JobManager.JobFunc[sw](current, brothel, Day0Night1, summary);
 
 
 		totalPay += current->m_Pay;
@@ -1608,13 +1615,13 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, int DayNight)	// Start_Buil
 
 		ss.str("");
 		/* */if (sw == JOB_RESTING)			summary += girlName + gettext(" was resting so made no money.");
-		else if (sw == JOB_MATRON && DayNight == SHIFT_NIGHT)
+		else if (sw == JOB_MATRON && Day0Night1 == SHIFT_NIGHT)
 			summary += girlName + gettext(" continued to help the other girls throughout the night.");
 
 		// `J` temporary -1 until I reflow brothel jobs
 		else if (sw == JOB_TRAINING || sw == JOB_ADVERTISING)	sum = -1;
 		// WD:	No night shift summary message needed for Torturer job
-		else if (sw == JOB_TORTURER && DayNight == SHIFT_NIGHT)	sum = -1;
+		else if (sw == JOB_TORTURER && Day0Night1 == SHIFT_NIGHT)	sum = -1;
 
 		// `J` if a slave does a job that is normally paid by you but you don't pay your slaves...
 		else if (current->is_slave() && !cfg.initial.slave_pay_outofpocket() &&
@@ -1634,7 +1641,7 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, int DayNight)	// Start_Buil
 		else if (totalGold > 0)
 		{
 			ss << girlName << " earned a total of " << totalGold << " gold";
-			u_int job = (DayNight) ? current->m_NightJob : current->m_DayJob;
+			u_int job = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
 			// if it is a player paid job and she is not a slave
 			if ((m_JobManager.is_job_Paid_Player(job) && !current->is_slave()) ||
 				// or if it is a player paid job	and she is a slave		but you pay slaves out of pocket.
@@ -1751,7 +1758,7 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, int DayNight)	// Start_Buil
 
 		if (strcmp(MatronMsg.c_str(), "") != 0)
 		{
-			current->m_Events.AddMessage(MatronMsg, IMGTYPE_PROFILE, DayNight);
+			current->m_Events.AddMessage(MatronMsg, IMGTYPE_PROFILE, Day0Night1);
 			MatronMsg = "";
 		}
 
@@ -1770,7 +1777,7 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, int DayNight)	// Start_Buil
 
 
 		// Do item check at the end of the day
-		if (DayNight == SHIFT_NIGHT)
+		if (Day0Night1 == SHIFT_NIGHT)
 		{
 			// Myr: Automate the use of a number of different items. See the function itself for more comments.
 			//      Enabled or disabled based on config option.
@@ -1786,6 +1793,8 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, int DayNight)	// Start_Buil
 
 		// Level the girl up if nessessary
 		g_Girls.LevelUp(current);
+
+
 
 		// Process next girl
 		current = current->m_Next;
@@ -4213,10 +4222,10 @@ string cBrothelManager::disposition_text()
 	if (m_Player.disposition() >= 100)	return gettext("Saint");
 	if (m_Player.disposition() >= 80)	return gettext("Benevolent");
 	if (m_Player.disposition() >= 50)	return gettext("Nice");
-	if (m_Player.disposition() > 10)	return gettext("Pleasant");
+	if (m_Player.disposition() >= 10)	return gettext("Pleasant");
 	if (m_Player.disposition() >= -10)	return gettext("Neutral");
-	if (m_Player.disposition() > -50)	return gettext("Not nice");
-	if (m_Player.disposition() > -80)	return gettext("Mean");
+	if (m_Player.disposition() >= -50)	return gettext("Not nice");
+	if (m_Player.disposition() >= -80)	return gettext("Mean");
 	return gettext("Evil");
 }
 

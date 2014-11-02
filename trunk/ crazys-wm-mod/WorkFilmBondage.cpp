@@ -44,7 +44,7 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
 // `J` Movie Studio Job - Actress
-bool cJobManager::WorkFilmBondage(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkFilmBondage(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
 {
 	// No film crew.. then go home	// `J` this will be taken care of in building flow, leaving it in for now
 	if (g_Studios.GetNumGirlsOnJob(0, JOB_CAMERAMAGE, SHIFT_NIGHT) == 0 || g_Studios.GetNumGirlsOnJob(0, JOB_CRYSTALPURIFIER, SHIFT_NIGHT) == 0)
@@ -91,7 +91,7 @@ bool cJobManager::WorkFilmBondage(sGirl* girl, sBrothel* brothel, int DayNight, 
 	int finalqual = g_Studios.AddScene(girl, SKILL_BDSM, jobperformance);
 	ss << "Her scene is valued at: " << finalqual << " gold.\n";
 
-	girl->m_Events.AddMessage(ss.str(), IMGTYPE_BDSM, DayNight);
+	girl->m_Events.AddMessage(ss.str(), IMGTYPE_BDSM, Day0Night1);
 
 	// work out the pay between the house and the girl
 	if (girl->is_slave() && !cfg.initial.slave_pay_outofpocket())
@@ -116,8 +116,8 @@ bool cJobManager::WorkFilmBondage(sGirl* girl, sBrothel* brothel, int DayNight, 
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_SEX, enjoy, true);
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, enjoy, true);
-	g_Girls.PossiblyGainNewTrait(girl, "Fake Orgasm Expert", 50, ACTION_SEX, "She has become quite the faker.", DayNight != 0);
-	g_Girls.PossiblyGainNewTrait(girl, "Porn Star", 80, ACTION_WORKMOVIE, "She has performed in enough sex scenes that she has become a well known Porn Star.", DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Fake Orgasm Expert", 50, ACTION_SEX, "She has become quite the faker.", Day0Night1 == SHIFT_NIGHT);
+	g_Girls.PossiblyGainNewTrait(girl, "Porn Star", 80, ACTION_WORKMOVIE, "She has performed in enough sex scenes that she has become a well known Porn Star.", Day0Night1 == SHIFT_NIGHT);
 
 	return false;
 }

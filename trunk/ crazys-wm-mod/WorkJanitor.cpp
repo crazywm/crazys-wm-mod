@@ -44,7 +44,7 @@ extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
 // `J` Clinic Job - Staff - job_is_cleaning
-bool cJobManager::WorkJanitor(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkJanitor(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
 {
 	string message = "";
 	stringstream ss;
@@ -172,8 +172,8 @@ bool cJobManager::WorkJanitor(sGirl* girl, sBrothel* brothel, int DayNight, stri
 		}
 		else
 		{
-			int d = g_Clinic.GetNumGirlsOnJob(brothel->m_id, JOB_DOCTOR, DayNight);
-			int n = g_Clinic.GetNumGirlsOnJob(brothel->m_id, JOB_NURSE, DayNight);
+			int d = g_Clinic.GetNumGirlsOnJob(brothel->m_id, JOB_DOCTOR, Day0Night1);
+			int n = g_Clinic.GetNumGirlsOnJob(brothel->m_id, JOB_NURSE, Day0Night1);
 			ss << "watched the ";
 			if (d + n < 1)
 			{
@@ -192,7 +192,7 @@ bool cJobManager::WorkJanitor(sGirl* girl, sBrothel* brothel, int DayNight, stri
 	}
 
 	// do all the output
-	girl->m_Events.AddMessage(ss.str(), IMGTYPE_MAID, DayNight);
+	girl->m_Events.AddMessage(ss.str(), IMGTYPE_MAID, Day0Night1);
 	brothel->m_Filthiness -= CleanAmt;
 	girl->m_Pay = wages;
 
@@ -209,7 +209,7 @@ bool cJobManager::WorkJanitor(sGirl* girl, sBrothel* brothel, int DayNight, stri
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKCLEANING, enjoy, true);
 	//lose traits
-	g_Girls.PossiblyLoseExistingTrait(girl, "Clumsy", 20, ACTION_WORKCLEANING, "It took her spilling hundreds of buckets, and just as many reprimands, but " + girlName + " has finally stopped being so Clumsy.", DayNight != 0);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Clumsy", 20, ACTION_WORKCLEANING, "It took her spilling hundreds of buckets, and just as many reprimands, but " + girlName + " has finally stopped being so Clumsy.", Day0Night1 == SHIFT_NIGHT);
 
 	return false;
 }

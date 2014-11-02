@@ -43,10 +43,10 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
 // `J` Clinic Job - Surgery
-bool cJobManager::WorkBreastReduction(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkBreastReduction(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
 {
 	string message = "";
-	int msgtype = DayNight;
+	int msgtype = Day0Night1;
 
 	if (girl->m_YesterDayJob != JOB_BREASTREDUCTION)	// if she was not in surgery yesterday, 
 	{
@@ -64,20 +64,19 @@ bool cJobManager::WorkBreastReduction(sGirl* girl, sBrothel* brothel, int DayNig
 
 	if (!hasDoctor)
 	{
-		message = girl->m_Realname + gettext(" does nothing. You don't have any Doctor (require 1) ");
-		(DayNight == 0) ? message += gettext("day") : message += gettext("night"); message += gettext(" shift.");
+		message = girl->m_Realname + gettext(" does nothing. You don't have any Doctors working. (require 1) ");
 		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_WARNING);
 		return false;	// not refusing
 	}
 	if (g_Girls.HasTrait(girl, "Small Boobs"))
 	{
 		message = girl->m_Realname + gettext(" already has Small Boobs so she was sent to the waiting room.");
-		if (DayNight == 0)	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_WARNING);
+		if (Day0Night1 == SHIFT_DAY)	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_WARNING);
 		girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
 		return false;	// not refusing
 	}
 
-	if (DayNight == 0)	// the Doctor works on her durring the day
+	if (Day0Night1 == SHIFT_DAY)	// the Doctor works on her durring the day
 	{
 		girl->m_WorkingDay++;
 	}
@@ -91,7 +90,7 @@ bool cJobManager::WorkBreastReduction(sGirl* girl, sBrothel* brothel, int DayNig
 		}
 	}
 
-	int numnurse = g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, DayNight);
+	int numnurse = g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, Day0Night1);
 
 	stringstream ss;
 	if (girl->m_WorkingDay >= 5)

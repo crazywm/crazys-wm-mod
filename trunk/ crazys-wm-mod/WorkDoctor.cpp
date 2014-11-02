@@ -43,7 +43,7 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
 // `J` Clinic Job - Staff
-bool cJobManager::WorkDoctor(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkDoctor(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
 {
 	bool SkipDisobey = (summary == "SkipDisobey");
 	string message = "";
@@ -74,7 +74,7 @@ bool cJobManager::WorkDoctor(sGirl* girl, sBrothel* brothel, int DayNight, strin
 
 	if (!SkipDisobey)	// `J` skip the disobey check because it has already been done in the building flow
 	{
-		if (Preprocessing(ACTION_WORKDOCTOR, girl, brothel, DayNight, summary, message)) return true;
+		if (Preprocessing(ACTION_WORKDOCTOR, girl, brothel, Day0Night1, summary, message)) return true;
 	}
 	cConfig cfg;
 
@@ -134,7 +134,7 @@ bool cJobManager::WorkDoctor(sGirl* girl, sBrothel* brothel, int DayNight, strin
 		ss << "Otherwise, the shift passed uneventfully.\n";
 	}
 
-	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, DayNight);
+	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 	patients = jobperformance / 10;		// `J` 1 patient per 10 point of performance
 	g_Clinic.m_Doctor_Patient_Time += patients;
 
@@ -149,7 +149,7 @@ bool cJobManager::WorkDoctor(sGirl* girl, sBrothel* brothel, int DayNight, strin
 	brothel->m_Finance.clinic_income(earned);
 	ss.str("");
 	ss << girlName << " earned " << earned << " gold from taking care of " << patients << " patients.\n";
-	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, DayNight);
+	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 
 	girl->m_Pay += wages + (patients * 10);
 

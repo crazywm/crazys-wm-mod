@@ -571,9 +571,9 @@ struct sGirl
 	{
 		return g_GirlsPtr->GetStat(this, stat_id);
 	}
-	int upd_temp_stat(int stat_id, int amount)
+	int upd_temp_stat(int stat_id, int amount, bool usetraits = true)
 	{
-		g_GirlsPtr->UpdateTempStat(this, stat_id, amount);
+		g_GirlsPtr->UpdateTempStat(this, stat_id, amount, usetraits);
 		return g_GirlsPtr->GetStat(this, stat_id);
 	}
 	int upd_stat(int stat_id, int amount, bool usetraits = true)
@@ -852,7 +852,7 @@ public:
 
 	sGirl* GetGirl(int girl);	// gets the girl by count
 
-	void GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool group, string& message, u_int& SexType);	// does the logic for fucking
+	void GirlFucks(sGirl* girl, int Day0Night1, sCustomer* customer, bool group, string& message, u_int& SexType);	// does the logic for fucking
 	// MYR: Millions of ways to say, [girl] does [act] to [customer]
 	string GetRandomGroupString();
 	string GetRandomSexString();
@@ -867,6 +867,8 @@ public:
 
 	void LevelUp(sGirl* girl);	// advances a girls level
 	void LevelUpStats(sGirl* girl); // Functionalized stat increase for LevelUp
+	
+	void DegradeGirls(sBrothel* brothel, sGirl* girl);
 
 	int GetStat(sGirl* girl, int stat);
 	void SetStat(sGirl* girl, int stat, int amount);
@@ -893,8 +895,8 @@ public:
 
 	void UpdateSSTraits(sGirl* girl);	// updates skills and stats from traits
 
-	bool PossiblyGainNewTrait(sGirl* girl, string Trait, int Threshold, int ActionType, string Message, bool DayNight);
-	bool PossiblyLoseExistingTrait(sGirl* girl, string Trait, int Threshold, int ActionType, string Message, bool DayNight);
+	bool PossiblyGainNewTrait(sGirl* girl, string Trait, int Threshold, int ActionType, string Message, bool Day0Night1);
+	bool PossiblyLoseExistingTrait(sGirl* girl, string Trait, int Threshold, int ActionType, string Message, bool Day0Night1);
 
 	void UpdateEnjoyment(sGirl* girl, int whatSheEnjoys, int amount, bool wrapTo100 = false); //updates what she enjoys
 

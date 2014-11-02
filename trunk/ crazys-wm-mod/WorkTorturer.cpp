@@ -42,28 +42,28 @@ extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
 // `J` Brothel Job - General
-bool cJobManager::WorkTorturer(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkTorturer(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
 {
-	if (DayNight == SHIFT_NIGHT) return false;		// Do this only once a day
+	if (Day0Night1 == SHIFT_NIGHT) return false;		// Do this only once a day
 
 	string message = "";
-	if (Preprocessing(ACTION_WORKTORTURER, girl, brothel, DayNight, summary, message)) return true;
+	if (Preprocessing(ACTION_WORKTORTURER, girl, brothel, Day0Night1, summary, message)) return true;
 
 	// ready armor and weapons!
 	g_Girls.EquipCombat(girl);
 
 	// Complications
-	if(g_Dice%100 <= 10)
+	if(g_Dice.percent(10))
 	{
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKTORTURER, -3, true);
 		message = girl->m_Realname + gettext(" hurt herself while torturing someone.");
-		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
+		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, Day0Night1);
 	}
 	else
 	{
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKTORTURER, +3, true);
 		message = girl->m_Realname + gettext(" enjoyed her job working in the dungeon.");
-		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
+		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, Day0Night1);
 	}
 	
 	// Improve girl
@@ -83,8 +83,8 @@ bool cJobManager::WorkTorturer(sGirl* girl, sBrothel* brothel, int DayNight, str
 	g_Brothels.TortureDone(true);	
 
 	// Check for new traits
-	g_Girls.PossiblyGainNewTrait(girl, "Sadistic", 30, ACTION_WORKTORTURER, girl->m_Realname + gettext(" has come to enjoy her job so much that she has become rather Sadistic."), DayNight != 0);
-	g_Girls.PossiblyGainNewTrait(girl, "Merciless", 50, ACTION_WORKTORTURER, girl->m_Realname + gettext(" extensive experience with torture has made her absolutely Merciless."), DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Sadistic", 30, ACTION_WORKTORTURER, girl->m_Realname + gettext(" has come to enjoy her job so much that she has become rather Sadistic."), Day0Night1 == SHIFT_NIGHT);
+	g_Girls.PossiblyGainNewTrait(girl, "Merciless", 50, ACTION_WORKTORTURER, girl->m_Realname + gettext(" extensive experience with torture has made her absolutely Merciless."), Day0Night1 == SHIFT_NIGHT);
 
 	return false;
 }

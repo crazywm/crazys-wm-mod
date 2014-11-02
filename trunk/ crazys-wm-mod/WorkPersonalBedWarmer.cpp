@@ -47,7 +47,7 @@ extern cGold g_Gold;
 extern int g_Building;
 
 // `J` House Job - General
-bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
 {
 	cTariff tariff;
 	string message = "";
@@ -221,37 +221,37 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, int DayN
 	{
 		g_Girls.UpdateSkill(girl, SKILL_STRIP, 2);
 		ss << gettext("does a little strip show for you.\n\n");
-		girl->m_Events.AddMessage(ss.str(), IMGTYPE_STRIP, DayNight);
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_STRIP, Day0Night1);
 	}
 	else if (roll_d <= 20 && is_sex_type_allowed(SKILL_TITTYSEX, brothel))
 	{
 		g_Girls.UpdateSkill(girl, SKILL_TITTYSEX, 2);
 		ss << gettext("uses her tits on you.\n\n");
-		girl->m_Events.AddMessage(ss.str(), IMGTYPE_TITTY, DayNight);
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_TITTY, Day0Night1);
 	}
 	else if (roll_d <= 30 && is_sex_type_allowed(SKILL_HANDJOB, brothel))
 	{
 		g_Girls.UpdateSkill(girl, SKILL_HANDJOB, 2);
 		ss << gettext("gives you a hand job.\n\n");
-		girl->m_Events.AddMessage(ss.str(), IMGTYPE_HAND, DayNight);
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_HAND, Day0Night1);
 	}
 	else if (roll_d <= 40 && is_sex_type_allowed(SKILL_FOOTJOB, brothel))
 	{
 		g_Girls.UpdateSkill(girl, SKILL_FOOTJOB, 2);
 		ss << gettext("gives you a foot job.\n\n");
-		girl->m_Events.AddMessage(ss.str(), IMGTYPE_FOOT, DayNight);
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_FOOT, Day0Night1);
 	}
 	else if (roll_d <= 50 && is_sex_type_allowed(SKILL_ORALSEX, brothel))
 	{
 		g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 2);
 		ss << gettext("decided to suck your cock.\n\n");
-		girl->m_Events.AddMessage(ss.str(), IMGTYPE_ORAL, DayNight);
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_ORAL, Day0Night1);
 	}
 	else if (roll_d <= 60 && is_sex_type_allowed(SKILL_ANAL, brothel))
 	{
 		g_Girls.UpdateSkill(girl, SKILL_ANAL, 2);
 		ss << gettext("lets you use her ass.\n\n");
-		girl->m_Events.AddMessage(ss.str(), IMGTYPE_ANAL, DayNight);
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_ANAL, Day0Night1);
 	}
 	else if (roll_d <= 70 && is_sex_type_allowed(SKILL_BDSM, brothel))
 	{
@@ -262,7 +262,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, int DayN
 			g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
 			ss << gettext("She is no longer a virgin.\n");
 		}
-		girl->m_Events.AddMessage(ss.str(), IMGTYPE_BDSM, DayNight);
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_BDSM, Day0Night1);
 		if (!girl->calc_pregnancy(g_Brothels.GetPlayer(), false, 1.0))
 		{
 			message = girl->m_Realname;
@@ -279,7 +279,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, int DayN
 			g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
 			ss << gettext("She is no longer a virgin.\n");
 		}
-		girl->m_Events.AddMessage(ss.str(), IMGTYPE_SEX, DayNight);
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_SEX, Day0Night1);
 		if (!girl->calc_pregnancy(g_Brothels.GetPlayer(), false, 1.0))
 		{
 			message = girl->m_Realname;
@@ -299,7 +299,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, int DayN
 		}
 		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +1, true);
 		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -15);
-		girl->m_Events.AddMessage(ss.str(), IMGTYPE_MAST, DayNight);
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_MAST, Day0Night1);
 	}
 	else
 	{
@@ -311,7 +311,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, int DayN
 		{
 			ss << gettext("just goes to sleep.\n\n");
 		}
-		girl->m_Events.AddMessage(ss.str(), IMGTYPE_ECCHI, DayNight);
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_ECCHI, Day0Night1);
 	}
 
 
@@ -323,7 +323,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, int DayN
 	//		message += "She was horney but she doesn't care for you much so she just Masturbated.\n\n";
 	//		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +1, true);	
 	//		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -35);
-	//		girl->m_Events.AddMessage(message, IMGTYPE_MAST, DayNight);
+	//		girl->m_Events.AddMessage(message, IMGTYPE_MAST, Day0Night1);
 	//	}
 	//	else 
 	//	{
@@ -332,13 +332,13 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, int DayN
 	//		{
 	//			message += "decided to suck your cock.\n\n";
 	//			g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 2);
-	//			girl->m_Events.AddMessage(message, IMGTYPE_ORAL, DayNight);
+	//			girl->m_Events.AddMessage(message, IMGTYPE_ORAL, Day0Night1);
 	//		}
 	//		else if (roll_b <= 50)
 	//		{
 	//			message += "lets you tie her up.\n\n";
 	//			g_Girls.UpdateSkill(girl, SKILL_BDSM, 2);
-	//			girl->m_Events.AddMessage(message, IMGTYPE_BDSM, DayNight);
+	//			girl->m_Events.AddMessage(message, IMGTYPE_BDSM, Day0Night1);
 	//			if(g_Girls.CheckVirginity(girl))
 	//			{
 	//				g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
@@ -354,13 +354,13 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, int DayN
 	//		{
 	//			message += "lets you use her ass.\n\n";
 	//			g_Girls.UpdateSkill(girl, SKILL_ANAL, 2);
-	//			girl->m_Events.AddMessage(message, IMGTYPE_ANAL, DayNight);
+	//			girl->m_Events.AddMessage(message, IMGTYPE_ANAL, Day0Night1);
 	//		}
 	//		else
 	//		{
 	//			message += "has sex with you.\n\n";
 	//			g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, 2);
-	//			girl->m_Events.AddMessage(message, IMGTYPE_SEX, DayNight);
+	//			girl->m_Events.AddMessage(message, IMGTYPE_SEX, Day0Night1);
 	//			if(g_Girls.CheckVirginity(girl))
 	//			{
 	//				g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
@@ -378,7 +378,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, int DayN
 	//}
 	//else
 	//{
-	//	girl->m_Events.AddMessage(message, IMGTYPE_ECCHI, DayNight);
+	//	girl->m_Events.AddMessage(message, IMGTYPE_ECCHI, Day0Night1);
 	//}
 
 	if (wages < 0)

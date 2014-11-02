@@ -44,10 +44,10 @@ extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
 // `J` Arena Job - Fighting
-bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
 {
 	string message = "";
-	if (Preprocessing(ACTION_COMBAT, girl, brothel, DayNight, summary, message))
+	if (Preprocessing(ACTION_COMBAT, girl, brothel, Day0Night1, summary, message))
 		return true;
 	int wages = 0, fight_outcome = 0, enjoyment = 0, fame = 0, imagetype = IMGTYPE_COMBAT;
 	stringstream ss;
@@ -125,7 +125,7 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, int DayNig
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
 
 	girl->m_Pay = wages;
-	girl->m_Events.AddMessage(message, imagetype, DayNight);
+	girl->m_Events.AddMessage(message, imagetype, Day0Night1);
 	g_Girls.UpdateStat(girl, STAT_FAME, fame);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateSkill(girl, SKILL_COMBAT, g_Dice%fightxp + skill);
@@ -137,10 +137,10 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, int DayNig
 
 
 	//gain traits
-	g_Girls.PossiblyGainNewTrait(girl, "Tough", 65, ACTION_COMBAT, "She has become pretty Tough from all of the fights she's been in.", DayNight != 0);
-	g_Girls.PossiblyGainNewTrait(girl, "Fleet of Foot", 55, ACTION_COMBAT, "She is getting rather fast from all the fighting.", DayNight != 0);
-	g_Girls.PossiblyGainNewTrait(girl, "Aggressive", 70, ACTION_COMBAT, "She is getting rather Aggressive from her enjoyment of combat.", DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Tough", 65, ACTION_COMBAT, "She has become pretty Tough from all of the fights she's been in.", Day0Night1 == SHIFT_NIGHT);
+	g_Girls.PossiblyGainNewTrait(girl, "Fleet of Foot", 55, ACTION_COMBAT, "She is getting rather fast from all the fighting.", Day0Night1 == SHIFT_NIGHT);
+	g_Girls.PossiblyGainNewTrait(girl, "Aggressive", 70, ACTION_COMBAT, "She is getting rather Aggressive from her enjoyment of combat.", Day0Night1 == SHIFT_NIGHT);
 	//lose traits
-	g_Girls.PossiblyLoseExistingTrait(girl, "Fragile", 35, ACTION_COMBAT, girl->m_Realname + " has had to heal from so many injuries you can't say she is fragile anymore.", DayNight != 0);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Fragile", 35, ACTION_COMBAT, girl->m_Realname + " has had to heal from so many injuries you can't say she is fragile anymore.", Day0Night1 == SHIFT_NIGHT);
 	return false;
 }

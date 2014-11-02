@@ -43,90 +43,90 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
 // `J` Clinic Job - Surgery
-bool cJobManager::WorkHealing(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkHealing(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
 {
-	string message = "";
-
-	// not for patient
-	g_Girls.UnequipCombat(girl);
-
-	bool hasDoctor = false;
-	if (g_Clinic.GetNumGirlsOnJob(brothel->m_id, JOB_DOCTOR, true) > 0 || g_Clinic.GetNumGirlsOnJob(brothel->m_id, JOB_DOCTOR, false) > 0)
-		hasDoctor = true;
-
-	if (!hasDoctor)
-	{
-		message = girl->m_Realname + gettext(" does nothing. You don't have any Doctor (require 1) ");
-		(DayNight == 0) ? message += gettext("day") : message += gettext("night"); message += gettext(" shift.");
-		// send her to the waiting room when she is healthy
-		if (girl->health() > 90 && girl->tiredness() < 10)
-		{
-			message += "\n\nShe has been released from the Clinic.";
-			girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
-		}
-
-		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_WARNING);
-		return false;	// not refusing
-	}
+	stringstream ss;
+	string girlName = girl->m_Realname;
+	g_Girls.UnequipCombat(girl);	// not for patients
 
 	if (g_Girls.HasTrait(girl, "Construct"))
 	{
-		message = girl->m_Realname + gettext(" has no biological parts so she was sent to the repair shop.");
-		if(DayNight == 0) girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_WARNING);
-		girl->m_DayJob = girl->m_NightJob = JOB_GETREPAIRS;
+		ss << girlName << " has no biological parts so she was sent to the repair shop.";
+		if (Day0Night1 == SHIFT_DAY) girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+		if (girl->m_DayJob == JOB_GETHEALING)	girl->m_DayJob = JOB_GETREPAIRS;
+		if (girl->m_NightJob == JOB_GETHEALING)	girl->m_NightJob = JOB_GETREPAIRS;
 		return false;	// not refusing
 	}
 
-	int numdocs = g_Clinic.GetNumGirlsOnJob(0, JOB_DOCTOR, DayNight);
-	int numnurse = g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, DayNight);
-	
-	message = gettext("She does nothing while the Doctor");if (numdocs > 1) message += gettext("s");
+	int numdocs = g_Clinic.GetNumGirlsOnJob(0, JOB_DOCTOR, Day0Night1);
+	int numnurse = g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, Day0Night1);
 
-	if (g_Girls.HasTrait(girl, "Half-Construct") && girl->m_DayJob == JOB_GETHEALING && girl->m_NightJob == JOB_GETHEALING)
+	// `J` base recovery copied freetime recovery
+	int health		= 10 + (girl->constitution() / 10);
+	int tiredness	= 10 + g_Dice % 21;	// build up as positive then apply as negative
+	int happy		= 10 + g_Dice % 11;
+	int mana		= 5 + (girl->magic() / 5);
+	int libido		= (g_Girls.HasTrait(girl, "Nymphomaniac") ? 15 : 5);
+
+	if (numdocs + numnurse < 1)
 	{
-		g_Girls.UpdateStat(girl, STAT_HEALTH, 30, false);	// Total 60 healing per day, heals less because Doctor only fixes living tissue.
+		ss << "You don't have any Doctors or Nurses on duty so " << girlName << " just rests in a hospital bed.";
 	}
 	else
 	{
-		g_Girls.UpdateStat(girl, STAT_HEALTH, 40, false);
+		ss << girlName << " does nothing while ";
 	}
+	if (numdocs > 0)
+	{
+		ss << "the Doctor" << (numdocs > 1 ? "s" : "");
+		if (g_Girls.HasTrait(girl, "Half-Construct") && girl->m_DayJob == JOB_GETHEALING && girl->m_NightJob == JOB_GETHEALING)
+		{	// if fixed by Doctor for both shifts.
+			health += 20;	// Total 40 healing per day, heals less because Doctor only fixes living tissue.
+		}
+		else
+		{
+			health += 30;
+		}
+	}
+	if (numdocs > 0 && numnurse > 0) { ss << " and"; }
 	if (numnurse > 0)
 	{
-		message += gettext(" and Nurse");if (numnurse > 1) message += gettext("s");
-		g_Girls.UpdateStat(girl, STAT_TIREDNESS, -30, false);
-		g_Girls.UpdateStat(girl, STAT_HAPPINESS, 10);
-		g_Girls.UpdateStat(girl, STAT_MANA, 40);
+		ss << " the Nurse" << (numnurse > 1 ? "s" : "");
+		health		+= 10;
+		tiredness	+= 10;
+		happy		+= 10;
+		mana		+= (girl->magic() / 5);
 	}
-	else 
-	{
-		g_Girls.UpdateStat(girl, STAT_TIREDNESS, -20, false);
-		g_Girls.UpdateStat(girl, STAT_MANA, 30);
-	}
-	if (numdocs + numnurse >= 4 && DayNight == 1)	// lots of people making sure she is in good health
+	if (numdocs + numnurse >= 4 && g_Dice.percent(50))	// lots of people making sure she is in good working order
 	{
 		g_Girls.UpdateStat(girl, STAT_CONSTITUTION, 1);
 	}
-	((numdocs > 2 && numnurse < 1) || numnurse > 1) ? message += gettext(" take ") : message += gettext(" takes ");
-	message += gettext("care of her.");
+	ss << (((numdocs > 1 && numnurse < 1) || numnurse > 1) ? " take" : " takes") << " care of her.";
+
+	// Improve girl
+	if (g_Girls.HasTrait(girl, "Lesbian"))		libido += numnurse;
+	if (g_Girls.HasTrait(girl, "Masochist"))	libido += 1;
+	if (g_Girls.HasTrait(girl, "Nymphomaniac"))	libido += 2;
+
+	g_Girls.UpdateStat(girl, STAT_HEALTH, health, false);
+	g_Girls.UpdateStat(girl, STAT_TIREDNESS, -tiredness, false);
+	g_Girls.UpdateStat(girl, STAT_HAPPINESS, happy);
+	g_Girls.UpdateStat(girl, STAT_MANA, mana);
+	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	if (g_Dice % 10 == 0) g_Girls.UpdateSkill(girl, SKILL_MEDICINE, 1);	// `J` she watched what the doctors and nurses were doing
+
+	g_Girls.UpdateStat(girl, STAT_EXP, 1);   // Just because!
 
 	// send her to the waiting room when she is healthy
 	if (girl->health() > 90 && girl->tiredness() < 10)
 	{
-		message += "\n\nShe has been released from the Clinic.";
-		girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
+		if (numdocs + numnurse < 1)	ss << "\n\nShe wanders out of the Clinic when she is feeling better.";
+		else						ss << "\n\nShe has been released from the Clinic.";
+		if (girl->m_DayJob == JOB_GETHEALING)	girl->m_DayJob = JOB_CLINICREST;
+		if (girl->m_NightJob == JOB_GETHEALING)	girl->m_NightJob = JOB_CLINICREST;
 	}
 
-	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
-
-
-	// Improve girl
-	int libido = 1;
-	if (g_Girls.HasTrait(girl, "Lesbian"))		libido += numnurse;
-	if (g_Girls.HasTrait(girl, "Masochist"))	libido += 1;
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))	libido += 2;
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
-	if (g_Dice % 10 == 0)
-		g_Girls.UpdateSkill(girl, SKILL_MEDICINE, 1);	// `J` she watched what the doctors and nurses were doing
+	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 
 	return false;
 }

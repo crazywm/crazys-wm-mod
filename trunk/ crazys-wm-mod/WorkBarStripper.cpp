@@ -40,11 +40,11 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
 // `J` Brothel Job - Sleazy Bar
-bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
 {
 	string message = ""; string girlName = girl->m_Realname;
 
-	if(Preprocessing(ACTION_WORKSTRIP, girl, brothel, DayNight, summary, message))	// they refuse to have work in the bar
+	if(Preprocessing(ACTION_WORKSTRIP, girl, brothel, Day0Night1, summary, message))	// they refuse to have work in the bar
 		return true;
 
 	// put that shit away, you'll scare off the customers!
@@ -381,7 +381,7 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, int DayNight, 
 
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKSTRIP, work , true);
-	girl->m_Events.AddMessage(message, IMGTYPE_STRIP, DayNight);
+	girl->m_Events.AddMessage(message, IMGTYPE_STRIP, Day0Night1);
 
 
 	int roll_max = (g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA));
@@ -403,11 +403,11 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, int DayNight, 
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
 	//gained
-	g_Girls.PossiblyGainNewTrait(girl, "Sexy Air", 70, ACTION_WORKSTRIP, girlName + " has been stripping and having to be sexy for so long she now reeks of sexyness.", DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Sexy Air", 70, ACTION_WORKSTRIP, girlName + " has been stripping and having to be sexy for so long she now reeks of sexyness.", Day0Night1 == SHIFT_NIGHT);
 
 	//lose
-	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 20, ACTION_WORKSTRIP, girlName + " has had so many people see her naked she is no longer nervous about anything.", DayNight != 0);
-	if (jobperformance > 150 && g_Girls.GetStat(girl, STAT_CONFIDENCE) > 65) { g_Girls.PossiblyLoseExistingTrait(girl, "Shy", 60, ACTION_WORKSTRIP, girlName + " has been stripping for so long now that her confidence is super high and she is no longer Shy.", DayNight != 0); }
+	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 20, ACTION_WORKSTRIP, girlName + " has had so many people see her naked she is no longer nervous about anything.", Day0Night1 == SHIFT_NIGHT);
+	if (jobperformance > 150 && g_Girls.GetStat(girl, STAT_CONFIDENCE) > 65) { g_Girls.PossiblyLoseExistingTrait(girl, "Shy", 60, ACTION_WORKSTRIP, girlName + " has been stripping for so long now that her confidence is super high and she is no longer Shy.", Day0Night1 == SHIFT_NIGHT); }
 
 	return false;
 }

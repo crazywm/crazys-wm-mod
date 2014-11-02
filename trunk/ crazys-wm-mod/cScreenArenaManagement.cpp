@@ -1,21 +1,21 @@
 /*
- * Copyright 2009, 2010, The Pink Petal Development Team.
- * The Pink Petal Devloment Team are defined as the game's coders 
- * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright 2009, 2010, The Pink Petal Development Team.
+* The Pink Petal Devloment Team are defined as the game's coders
+* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 #include <algorithm>
 #include "cArena.h"
 #include "cBrothel.h"
@@ -43,6 +43,7 @@ extern	bool	g_UpArrow;
 extern	bool	g_DownArrow;
 extern	bool	g_AltKeys;	// New hotkeys --PP
 extern	bool	g_SpaceKey;
+extern	bool	g_CTRLDown;
 extern	bool	g_Q_Key;
 extern	bool	g_W_Key;
 extern	bool	g_E_Key;
@@ -63,7 +64,7 @@ static bool FireGirl = false;
 static bool FreeGirl = false;
 static bool SellGirl = false;
 static int selection = -1;
-static int DayNight = 0;	// 1 is night, 0 is day.
+static int Day0Night1 = SHIFT_DAY;	// 1 is night, 0 is day.
 static bool SetJob = false;
 
 extern sGirl *selected_girl;
@@ -80,7 +81,7 @@ void cScreenArenaManagement::set_ids()
 	curarena_id = get_id("Arena");
 	girllist_id = get_id("GirlList");
 	girlimage_id = get_id("GirlImage");
-	walk_id =	get_id("WalkButton");
+	walk_id = get_id("WalkButton");
 	girldesc_id = get_id("GirlDescription");
 	viewdetails_id = get_id("ViewDetailsButton");
 	freeslave_id = get_id("FreeSlaveButton");
@@ -100,23 +101,23 @@ void cScreenArenaManagement::set_ids()
 
 void cScreenArenaManagement::init()
 {
-	
-	if(FreeGirl)
+
+	if (FreeGirl)
 	{
-		if(g_ChoiceManager.GetChoice(0) == 0)
+		if (g_ChoiceManager.GetChoice(0) == 0)
 		{
 			vector<int> girl_array;
 			GetSelectedGirls(&girl_array);  // get and sort array of girls
 
 			// OK, we have the array, now step through it backwards
-			for(int i = girl_array.size(); i --> 0; )
+			for (int i = girl_array.size(); i--> 0;)
 			{
 				selected_girl = g_Arena.GetGirl(g_CurrArena, girl_array[i]);
-				if(GirlDead(selected_girl) || !selected_girl->is_slave())
+				if (GirlDead(selected_girl) || !selected_girl->is_slave())
 					continue;  // if dead or not a slave, can't free her
-				if(selected_girl)
+				if (selected_girl)
 				{
-					selected_girl->m_States&=~(1<<STATUS_SLAVE);
+					selected_girl->m_States &= ~(1 << STATUS_SLAVE);
 					g_Brothels.GetPlayer()->disposition(5);
 					g_Girls.UpdateStat(selected_girl, STAT_PCLOVE, 10);
 					g_Girls.UpdateStat(selected_girl, STAT_PCFEAR, -20);
@@ -134,14 +135,14 @@ void cScreenArenaManagement::init()
 		FreeGirl = false;
 	}
 	g_CurrentScreen = SCREEN_ARENA;
-	if(!g_InitWin)
+	if (!g_InitWin)
 		return;
 
 	Focused();
 	g_InitWin = false;
 
 
-////////////////////
+	////////////////////
 
 	selection = GetSelectedItemFromList(girllist_id);
 	string arena;
@@ -155,7 +156,7 @@ void cScreenArenaManagement::init()
 	ClearListBox(jobtypelist_id);
 
 	// add the job filters
-//	for(int i=0; i<NUMJOBTYPES; i++)  // loop through all job types
+	//	for(int i=0; i<NUMJOBTYPES; i++)  // loop through all job types
 	AddToListBox(jobtypelist_id, JOBFILTER_ARENASTAFF, g_Arena.m_JobManager.JobFilterName[JOBFILTER_ARENASTAFF]);
 	AddToListBox(jobtypelist_id, JOBFILTER_ARENA, g_Arena.m_JobManager.JobFilterName[JOBFILTER_ARENA]);
 	RefreshJobList();
@@ -168,36 +169,36 @@ void cScreenArenaManagement::init()
 	string* Data = new string[numColumns];
 
 	// Add girls to list
-	for(int i=0; i<g_Arena.GetNumGirls(g_CurrArena); i++)
+	for (int i = 0; i<g_Arena.GetNumGirls(g_CurrArena); i++)
 	{
 		sGirl* gir = g_Arena.GetGirl(g_CurrArena, i);
 		if (selected_girl == gir)
 			selection = i;
 
 		unsigned int item_color = COLOR_BLUE;
-		if(g_Girls.GetStat(gir, STAT_HEALTH) <= 30 || g_Girls.GetStat(gir, STAT_TIREDNESS) >= 80 || g_Girls.GetStat(gir, STAT_HAPPINESS) <= 30)
+		if (g_Girls.GetStat(gir, STAT_HEALTH) <= 30 || g_Girls.GetStat(gir, STAT_TIREDNESS) >= 80 || g_Girls.GetStat(gir, STAT_HAPPINESS) <= 30)
 			item_color = COLOR_RED;
 
 		gir->OutputGirlRow(Data, columnNames);
 		AddToListBox(girllist_id, i, Data, numColumns, item_color);
 	}
-	delete [] Data;
+	delete[] Data;
 
 	lastNum = -1;
 	g_InitWin = false;
 
-	if(selection >= 0)
+	if (selection >= 0)
 	{
-		while(selection > GetListBoxSize(girllist_id) && selection != -1)
+		while (selection > GetListBoxSize(girllist_id) && selection != -1)
 			selection--;
 	}
-	if(selection >= 0)
+	if (selection >= 0)
 		SetSelectedItemInList(girllist_id, selection);
 	else
 		SetSelectedItemInList(girllist_id, 0);
 
-	DisableButton(day_id, (DayNight == 0));
-	DisableButton(night_id, (DayNight != 0));
+	DisableButton(day_id, (Day0Night1 == SHIFT_DAY));
+	DisableButton(night_id, (Day0Night1 == SHIFT_NIGHT));
 
 	update_image();
 }
@@ -259,10 +260,10 @@ bool cScreenArenaManagement::check_keys()
 void cScreenArenaManagement::update_image()
 {
 	// Draw a girls profile picture and description when selected
-	if(selected_girl)
+	if (selected_girl)
 	{
 		bool Rand = false;
-		if(lastNum != selection)
+		if (lastNum != selection)
 		{
 			string text = g_Girls.GetGirlMood(selected_girl);
 			text += "\n\n";
@@ -280,7 +281,7 @@ void cScreenArenaManagement::update_image()
 		}
 
 		SetImage(girlimage_id, g_Girls.GetImageSurface(selected_girl, IMGTYPE_PROFILE, Rand, ImageNum));
-		if(g_Girls.IsAnimatedSurface(selected_girl, IMGTYPE_PROFILE, ImageNum))
+		if (g_Girls.IsAnimatedSurface(selected_girl, IMGTYPE_PROFILE, ImageNum))
 			SetImage(girlimage_id, g_Girls.GetAnimatedSurface(selected_girl, IMGTYPE_PROFILE, ImageNum));
 
 		HideImage(girlimage_id, false);
@@ -296,36 +297,36 @@ void cScreenArenaManagement::update_image()
 void cScreenArenaManagement::check_events()
 {
 	// no events means we can go home
-	if(g_InterfaceEvents.GetNumEvents() == 0)
+	if (g_InterfaceEvents.GetNumEvents() == 0)
 		return;
 
 	// if it's the back button, pop the window off the stack and we're done
-	if(g_InterfaceEvents.CheckButton(back_id)) {
+	if (g_InterfaceEvents.CheckButton(back_id)) {
 		g_InitWin = true;
 		g_WinManager.Pop();
 		return;
 	}
-	if(g_InterfaceEvents.CheckButton(viewdetails_id))
+	if (g_InterfaceEvents.CheckButton(viewdetails_id))
 	{
 		ViewSelectedGirl();
 	}
 
 
-	if(g_InterfaceEvents.CheckButton(day_id))
+	if (g_InterfaceEvents.CheckButton(day_id))
 	{
 		DisableButton(day_id, true);
 		DisableButton(night_id, false);
-		DayNight = 0;
+		Day0Night1 = SHIFT_DAY;
 		RefreshSelectedJobType();
 	}
-	if(g_InterfaceEvents.CheckButton(night_id))
+	if (g_InterfaceEvents.CheckButton(night_id))
 	{
 		DisableButton(day_id, false);
 		DisableButton(night_id, true);
-		DayNight = 1;
+		Day0Night1 = SHIFT_NIGHT;
 		RefreshSelectedJobType();
 	}
-	if(g_InterfaceEvents.CheckListbox(jobtypelist_id))
+	if (g_InterfaceEvents.CheckListbox(jobtypelist_id))
 	{
 		selection = GetSelectedItemFromList(jobtypelist_id);
 
@@ -338,10 +339,12 @@ void cScreenArenaManagement::check_events()
 			EditTextItem(g_Arena.m_JobManager.JobFilterDesc[selection], jobtypedesc_id);
 		}
 	}
-	if(g_InterfaceEvents.CheckListbox(joblist_id))
+	if (g_InterfaceEvents.CheckListbox(joblist_id))
 	{
+		bool fulltime = g_CTRLDown;
+
 		selection = GetSelectedItemFromList(joblist_id);
-		if(selection != -1)
+		if (selection != -1)
 		{
 			// first handle the descriptions
 			EditTextItem(g_Arena.m_JobManager.JobDesc[selection], jobdesc_id);
@@ -349,56 +352,53 @@ void cScreenArenaManagement::check_events()
 			// Now assign the job to all the selected girls
 			int pos = 0;
 			int GSelection = GetNextSelectedItemFromList(girllist_id, 0, pos);
-			while(GSelection != -1)
+			while (GSelection != -1)
 			{
+				u_int new_job = selection;
 				selected_girl = g_Arena.GetGirl(g_CurrArena, GSelection);
-				if(selected_girl)
+				if (selected_girl)
 				{
-					bool day = (DayNight == 0) ? true : false;
-					int old_job = (day) ? selected_girl->m_DayJob : selected_girl->m_NightJob;
+					int old_job = (Day0Night1 == SHIFT_DAY ? selected_girl->m_DayJob : selected_girl->m_NightJob);
 
 					// handle special job requirements and assign
 					// if HandleSpecialJobs returns true, the job assignment was modified or cancelled
-					
-					if(g_Arena.m_JobManager.HandleSpecialJobs(g_CurrArena, selected_girl, selection, old_job, day))
-					{
-						selection = (day) ? selected_girl->m_DayJob : selected_girl->m_NightJob;
-						SetSelectedItemInList(joblist_id, selection, false);
-					}
-					
 
-					if (old_job != selection)
+					if (g_Arena.m_JobManager.HandleSpecialJobs(g_CurrArena, selected_girl, new_job, old_job, Day0Night1 == SHIFT_NIGHT, fulltime))
 					{
-						// update the girl's listing to reflect the job change
-						ss.str("");
-						ss << g_Arena.m_JobManager.JobName[selected_girl->m_DayJob];
-						SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->DayJobColumn());
-						ss.str("");
-						ss << g_Arena.m_JobManager.JobName[selected_girl->m_NightJob];
-						SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->NightJobColumn());
-
-						// refresh job worker counts for former job and current job
-						SetSelectedItemText(joblist_id, old_job, g_Arena.m_JobManager.JobDescriptionCount(old_job, 0, DayNight, false, false, true));
-						SetSelectedItemText(joblist_id, selection, g_Arena.m_JobManager.JobDescriptionCount(selection, 0, DayNight, false, false, true));
+						new_job = (Day0Night1 == SHIFT_DAY ? selected_girl->m_DayJob : selected_girl->m_NightJob);
+						SetSelectedItemInList(joblist_id, new_job, false);
 					}
+
+					// update the girl's listing to reflect the job change
+					ss.str("");
+					ss << g_Arena.m_JobManager.JobName[selected_girl->m_DayJob];
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->DayJobColumn());
+					ss.str("");
+					ss << g_Arena.m_JobManager.JobName[selected_girl->m_NightJob];
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->NightJobColumn());
+
+					// refresh job worker counts for former job and current job
+					SetSelectedItemText(joblist_id, old_job, g_Arena.m_JobManager.JobDescriptionCount(old_job, 0, Day0Night1, false, false, true));
+					SetSelectedItemText(joblist_id, new_job, g_Arena.m_JobManager.JobDescriptionCount(new_job, 0, Day0Night1, false, false, true));
+
 				}
-				GSelection = GetNextSelectedItemFromList(girllist_id, pos+1, pos);
+				GSelection = GetNextSelectedItemFromList(girllist_id, pos + 1, pos);
 			}
 		}
 		else	EditTextItem("Nothing Selected", jobdesc_id);
 	}
 
-	if(g_InterfaceEvents.CheckListbox(girllist_id))
+	if (g_InterfaceEvents.CheckListbox(girllist_id))
 	{
 		selection = GetSelectedItemFromList(girllist_id);
-		if(selection != -1)
+		if (selection != -1)
 		{
 			selected_girl = g_Arena.GetGirl(g_CurrArena, selection);
 			//// If double-clicked, try to bring up girl details
-			if(ListDoubleClicked(girllist_id))
+			if (ListDoubleClicked(girllist_id))
 				ViewSelectedGirl();
 			////
-			if(selected_girl->m_States&(1<<STATUS_SLAVE))
+			if (selected_girl->m_States&(1 << STATUS_SLAVE))
 			{
 				DisableButton(freeslave_id, false);
 			}
@@ -420,11 +420,11 @@ void cScreenArenaManagement::check_events()
 		update_image();
 		return;
 	}
-	if(g_InterfaceEvents.CheckButton(freeslave_id))
+	if (g_InterfaceEvents.CheckButton(freeslave_id))
 	{
-		if(selected_girl)
+		if (selected_girl)
 		{
-			if(IsMultiSelected(girllist_id))
+			if (IsMultiSelected(girllist_id))
 			{  // multiple girls selected
 				g_MessageQue.AddToQue("Are you sure you wish to give these girls their freedom?", 0);
 				g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, strlen("Keep as a slaves"));
@@ -435,7 +435,7 @@ void cScreenArenaManagement::check_events()
 			}
 			else  // only one girl selected
 			{
-				if(GirlDead(selected_girl))
+				if (GirlDead(selected_girl))
 					return;
 				g_MessageQue.AddToQue("Are you sure you wish to give " + selected_girl->m_Realname + " her freedom?", 0);
 				g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, strlen("Keep as a slave"));
@@ -447,7 +447,7 @@ void cScreenArenaManagement::check_events()
 		}
 		return;
 	}
-	if(g_InterfaceEvents.CheckButton(transfer_id))
+	if (g_InterfaceEvents.CheckButton(transfer_id))
 	{
 		g_InitWin = true;
 		g_WinManager.Push(TransferGirls, &g_TransferGirls);
@@ -458,7 +458,7 @@ void cScreenArenaManagement::check_events()
 
 bool cScreenArenaManagement::GirlDead(sGirl *dgirl)
 {
-	if(g_Girls.GetStat(dgirl, STAT_HEALTH) <= 0)
+	if (g_Girls.GetStat(dgirl, STAT_HEALTH) <= 0)
 	{
 		g_MessageQue.AddToQue("This girl is dead. She isn't going to work anymore and her body will be removed by the end of the week.", COLOR_RED);
 		return true;
@@ -472,7 +472,7 @@ void cScreenArenaManagement::RefreshSelectedJobType()
 	selection = GetSelectedItemFromList(girllist_id);
 	if (selection < 0) return;
 	selected_girl = g_Arena.GetGirl(g_CurrArena, selection);
-	u_int job = (DayNight == 0) ? selected_girl->m_DayJob : selected_girl->m_NightJob;
+	u_int job = (Day0Night1 == SHIFT_DAY ? selected_girl->m_DayJob : selected_girl->m_NightJob);
 	// set the job filter
 	if (job >= g_Arena.m_JobManager.JobFilterIndex[JOBFILTER_ARENA] && job < g_Arena.m_JobManager.JobFilterIndex[JOBFILTER_ARENA + 1])
 		SetSelectedItemInList(jobtypelist_id, JOBFILTER_ARENA);
@@ -489,20 +489,18 @@ void cScreenArenaManagement::RefreshJobList()
 		return;
 
 	string text = "";
-	bool day = (DayNight == 0) ? true : false;
-
 	// populate Jobs listbox with jobs in the selected category
 	for (unsigned int i = g_Arena.m_JobManager.JobFilterIndex[job_filter]; i < g_Arena.m_JobManager.JobFilterIndex[job_filter + 1]; i++)
 	{
 		if (g_Arena.m_JobManager.JobName[i] == "")
 			continue;
-		text = g_Arena.m_JobManager.JobDescriptionCount(i, g_CurrArena, DayNight, false, false, true);
+		text = g_Arena.m_JobManager.JobDescriptionCount(i, g_CurrArena, Day0Night1, false, false, true);
 		AddToListBox(joblist_id, i, text);
 	}
 
 	if (selected_girl)
 	{
-		int sel_job = (DayNight == 0) ? selected_girl->m_DayJob : selected_girl->m_NightJob;
+		int sel_job = (Day0Night1 == SHIFT_DAY ? selected_girl->m_DayJob : selected_girl->m_NightJob);
 		SetSelectedItemInList(joblist_id, sel_job, false);
 		EditTextItem(g_Arena.m_JobManager.JobDesc[sel_job], jobdesc_id);
 	}
@@ -512,27 +510,27 @@ void cScreenArenaManagement::GetSelectedGirls(vector<int> *girl_array)
 {  // take passed vector and fill it with sorted list of selected girl IDs
 	int pos = 0;
 	int GSelection = GetNextSelectedItemFromList(girllist_id, 0, pos);
-	while(GSelection != -1)
+	while (GSelection != -1)
 	{
 		girl_array->push_back(GSelection);
-		GSelection = GetNextSelectedItemFromList(girllist_id, pos+1, pos);
+		GSelection = GetNextSelectedItemFromList(girllist_id, pos + 1, pos);
 	}
 	sort(girl_array->begin(), girl_array->end());
 }
 
 void cScreenArenaManagement::ViewSelectedGirl()
 {
-	if(selected_girl)
+	if (selected_girl)
 	{
-		if(GirlDead(selected_girl))
+		if (GirlDead(selected_girl))
 			return;
 
 		//load up the cycle_girls vector with the ordered list of girl IDs
 		FillSortedIDList(girllist_id, &cycle_girls, &cycle_pos);
-		for(int i = cycle_girls.size(); i --> 0; )
+		for (int i = cycle_girls.size(); i--> 0;)
 		{  // no viewing dead girls
-			if(g_Arena.GetGirl(g_CurrArena, cycle_girls[i])->health() <= 0)
-				cycle_girls.erase(cycle_girls.begin()+i);
+			if (g_Arena.GetGirl(g_CurrArena, cycle_girls[i])->health() <= 0)
+				cycle_girls.erase(cycle_girls.begin() + i);
 		}
 
 		g_InitWin = true;

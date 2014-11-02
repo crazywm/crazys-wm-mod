@@ -42,10 +42,10 @@ extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
 // `J` Brothel Job - General
-bool cJobManager::WorkSecurity(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkSecurity(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
 {
 	string message = "";
-	if(Preprocessing(ACTION_WORKSECURITY, girl, brothel, DayNight, summary, message))
+	if(Preprocessing(ACTION_WORKSECURITY, girl, brothel, Day0Night1, summary, message))
 		return true;
 
 	// ready armor and weapons!
@@ -56,7 +56,7 @@ bool cJobManager::WorkSecurity(sGirl* girl, sBrothel* brothel, int DayNight, str
 	{
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKSECURITY, -1, true);
 		message = gettext("Had to deal with some very unruly patrons that gave her a hard time.");
-		girl->m_Events.AddMessage(message, IMGTYPE_COMBAT, DayNight);
+		girl->m_Events.AddMessage(message, IMGTYPE_COMBAT, Day0Night1);
 	}
 	else
 	{
@@ -66,7 +66,7 @@ bool cJobManager::WorkSecurity(sGirl* girl, sBrothel* brothel, int DayNight, str
 		// Just 'cause  CRAZY FIXME works now but needs to be better if its going be here
 		if (g_Girls.HasTrait(girl, "Nymphomaniac") && g_Dice%100 <= 10)
 			message += gettext("\nGave some bonus service to the well behaved patrons.");
-		girl->m_Events.AddMessage(message, IMGTYPE_COMBAT, DayNight);
+		girl->m_Events.AddMessage(message, IMGTYPE_COMBAT, Day0Night1);
 	}
 
 	// First lets decay the previous security level somewhat.  Lets not have too much banking
@@ -182,7 +182,7 @@ bool cJobManager::WorkSecurity(sGirl* girl, sBrothel* brothel, int DayNight, str
 
 	stringstream sstemp;
     sstemp << "Patrolling the building. Security level up by " << SecLev << ".";
-	girl->m_Events.AddMessage(sstemp.str(), IMGTYPE_COMBAT, DayNight);
+	girl->m_Events.AddMessage(sstemp.str(), IMGTYPE_COMBAT, Day0Night1);
 
 	// Improve girl
 	int xp = 15, libido = 1, skill = 2;
@@ -198,8 +198,8 @@ bool cJobManager::WorkSecurity(sGirl* girl, sBrothel* brothel, int DayNight, str
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
 	// Copy-pasta from WorkExploreCatacombs
-	g_Girls.PossiblyGainNewTrait(girl, "Tough", 15, ACTION_WORKSECURITY,  gettext("She has become pretty Tough from all of the fights she's been in."), DayNight != 0);
-	g_Girls.PossiblyGainNewTrait(girl, "Adventurer", 45, ACTION_WORKSECURITY,  gettext("She has been in enough tough spots to consider herself Adventurer."), DayNight != 0);
-	g_Girls.PossiblyGainNewTrait(girl, "Aggressive", 60, ACTION_WORKSECURITY,  gettext("She is getting rather Aggressive from her enjoyment of combat."), DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Tough", 15, ACTION_WORKSECURITY, gettext("She has become pretty Tough from all of the fights she's been in."), Day0Night1 == SHIFT_NIGHT);
+	g_Girls.PossiblyGainNewTrait(girl, "Adventurer", 45, ACTION_WORKSECURITY, gettext("She has been in enough tough spots to consider herself Adventurer."), Day0Night1 == SHIFT_NIGHT);
+	g_Girls.PossiblyGainNewTrait(girl, "Aggressive", 60, ACTION_WORKSECURITY, gettext("She is getting rather Aggressive from her enjoyment of combat."), Day0Night1 == SHIFT_NIGHT);
 	return false;
 }
