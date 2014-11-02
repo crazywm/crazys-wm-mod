@@ -45,7 +45,7 @@ extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
 // `J` Movie Studio Job - Crew - Matron_Job - Full_Time_Job
-bool cJobManager::WorkFilmDirector(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkFilmDirector(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
 {
 	cConfig cfg;
 	stringstream ss;
@@ -105,8 +105,8 @@ bool cJobManager::WorkFilmDirector(sGirl* girl, sBrothel* brothel, int DayNight,
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill + 2);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, g_Dice%libido);
 
-	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 30, ACTION_WORKMATRON, gettext("She has worked as a matron long enough that she has learned to be more Charismatic."), DayNight != 0);
-	g_Girls.PossiblyGainNewTrait(girl, "Psychic", 90, ACTION_WORKMATRON, gettext("She has learned to handle the girls so well that you'd almost think she was Psychic."), DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 30, ACTION_WORKMATRON, gettext("She has worked as a matron long enough that she has learned to be more Charismatic."), Day0Night1 == SHIFT_NIGHT);
+	g_Girls.PossiblyGainNewTrait(girl, "Psychic", 90, ACTION_WORKMATRON, gettext("She has learned to handle the girls so well that you'd almost think she was Psychic."), Day0Night1 == SHIFT_NIGHT);
 
 	return false;
 }

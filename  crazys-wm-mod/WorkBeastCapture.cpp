@@ -41,10 +41,10 @@ extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
 // `J` Farm Job - Laborers
-bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
 {
 	string message = "";
-	if(Preprocessing(ACTION_COMBAT, girl, brothel, DayNight, summary, message))
+	if(Preprocessing(ACTION_COMBAT, girl, brothel, Day0Night1, summary, message))
 		return true;
 
 	// ready armor and weapons!
@@ -69,7 +69,7 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, int DayNight,
 		message = "She came back with one animal today.\n\n";
 		message += "(Error: You need a Non-Human Random Girl to allow WorkBeastCapture randomness)";
 		gain = 1;
-		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
+		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, Day0Night1);
 	}
 	else if (fight_outcome == 1)	// she won
 	{
@@ -80,13 +80,13 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, int DayNight,
 		else if (gain == 4)	{ message += "four"; }
 		else   { gain = 5;    message += "five"; } // shouldn't happen but just in case
 		message += " of them.";
-		girl->m_Events.AddMessage(message,IMGTYPE_COMBAT,DayNight);
+		girl->m_Events.AddMessage(message,IMGTYPE_COMBAT,Day0Night1);
 	}
 	else		// she lost or it was a draw
 	{
 		g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, -1, true);
 		message = " The animals were difficult to track, but she did manage to capture one.";
-		girl->m_Events.AddMessage(message,IMGTYPE_COMBAT,DayNight);
+		girl->m_Events.AddMessage(message,IMGTYPE_COMBAT,Day0Night1);
 		gain = 1;
 	}
 	g_Brothels.add_to_beasts(gain);
@@ -113,12 +113,12 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, int DayNight,
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 	g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, gain + skill);
 
-	g_Girls.PossiblyGainNewTrait(girl, "Tough", 30, ACTION_COMBAT, "She has become pretty Tough from all of the fights she's been in.", DayNight != 0);
-	g_Girls.PossiblyGainNewTrait(girl, "Adventurer", 40, ACTION_COMBAT, "She has been in enough tough spots to consider herself Adventurer.", DayNight != 0);
-	g_Girls.PossiblyGainNewTrait(girl, "Aggressive", 60, ACTION_COMBAT, "She is getting rather Aggressive from her enjoyment of combat.", DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Tough", 30, ACTION_COMBAT, "She has become pretty Tough from all of the fights she's been in.", Day0Night1 == SHIFT_NIGHT);
+	g_Girls.PossiblyGainNewTrait(girl, "Adventurer", 40, ACTION_COMBAT, "She has been in enough tough spots to consider herself Adventurer.", Day0Night1 == SHIFT_NIGHT);
+	g_Girls.PossiblyGainNewTrait(girl, "Aggressive", 60, ACTION_COMBAT, "She is getting rather Aggressive from her enjoyment of combat.", Day0Night1 == SHIFT_NIGHT);
 
 	//lose traits
-	g_Girls.PossiblyLoseExistingTrait(girl, "Fragile", 15, ACTION_COMBAT, girl->m_Realname + " has had to heal from so many injuries you can't say she is fragile anymore.", DayNight != 0);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Fragile", 15, ACTION_COMBAT, girl->m_Realname + " has had to heal from so many injuries you can't say she is fragile anymore.", Day0Night1 == SHIFT_NIGHT);
 
 	return false;
 }

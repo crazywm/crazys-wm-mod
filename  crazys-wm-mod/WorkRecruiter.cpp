@@ -43,13 +43,13 @@ extern cMessageQue g_MessageQue;
 static cDungeon* m_Dungeon = g_Brothels.GetDungeon();
 
 // `J` House Job - General
-bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
 {
-	if (DayNight == 1) return false;
+	if (Day0Night1 == SHIFT_NIGHT) return false;
 	cTariff tariff;
 	string message = "";
 
-	if(Preprocessing(ACTION_WORKRECRUIT, girl, brothel, DayNight, summary, message))		return true;
+	if(Preprocessing(ACTION_WORKRECRUIT, girl, brothel, Day0Night1, summary, message))		return true;
 
 
 	// put that shit away, not needed for sex training
@@ -129,10 +129,10 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, int DayNight, st
 	     if (m_Player.disposition() >= 100)	dispmod = 3;	// "Saint"
 	else if (m_Player.disposition() >= 80)	dispmod = 2;	// "Benevolent"
 	else if (m_Player.disposition() >= 50)	dispmod = 1;	// "Nice"
-	else if (m_Player.disposition() > 10)	dispmod = 0;	// "Pleasant"
+	else if (m_Player.disposition() >= 10)	dispmod = 0;	// "Pleasant"
 	else if (m_Player.disposition() >= -10)	dispmod = 0;	// "Neutral"
-	else if (m_Player.disposition() > -50)	dispmod = -1;	// "Not nice"
-	else if (m_Player.disposition() > -80)	dispmod = -2;	// "Mean"
+	else if (m_Player.disposition() >= -50)	dispmod = -1;	// "Not nice"
+	else if (m_Player.disposition() >= -80)	dispmod = -2;	// "Mean"
 	else /*								*/	dispmod = -3;	// "Evil"
 
 	if (findroll < findchance + 10)	// `J` While out recruiting she does find someone...
@@ -227,7 +227,7 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, int DayNight, st
 	{ message += "\nOtherwise, the shift passed uneventfully."; work += 1; }
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKRECRUIT, work, true);
-	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
+	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, Day0Night1);
 	int roll_max = (g_Girls.GetStat(girl, STAT_CHARISMA) + g_Girls.GetSkill(girl, SKILL_SERVICE));
 	roll_max /= 4;
 	wages += 10 + g_Dice%roll_max;
@@ -250,10 +250,10 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, int DayNight, st
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
 	//gain traits
-	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, ACTION_WORKRECRUIT, "Dealing with people all day has made " + girl->m_Realname + " more Charismatic.", DayNight != 0);
-	g_Girls.PossiblyGainNewTrait(girl, "Psychic", 80, ACTION_WORKRECRUIT, girl->m_Realname + " has been doing this for so long it's as if she can read minds now.", DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, ACTION_WORKRECRUIT, "Dealing with people all day has made " + girl->m_Realname + " more Charismatic.", Day0Night1 == SHIFT_NIGHT);
+	g_Girls.PossiblyGainNewTrait(girl, "Psychic", 80, ACTION_WORKRECRUIT, girl->m_Realname + " has been doing this for so long it's as if she can read minds now.", Day0Night1 == SHIFT_NIGHT);
 
 	//lose traits
-	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 20, ACTION_WORKRECRUIT, girl->m_Realname + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", DayNight != 0);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 20, ACTION_WORKRECRUIT, girl->m_Realname + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", Day0Night1 == SHIFT_NIGHT);
 	return false;
 	}

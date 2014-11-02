@@ -98,7 +98,7 @@ public:
 
 	int DayJobColumn();				// `J` returns the column number of "DayJob"
 	int NightJobColumn();			// `J` returns the column number of "NightJob"
-	int JobColumn(bool daynight);	// `J` returns the column number of either 0="DayJob" 1="NightJob"
+	int JobColumn(bool Day0Night1);	// `J` returns the column number of either 0="DayJob" 1="NightJob"
 
 
 	int m_ID;

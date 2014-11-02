@@ -1286,13 +1286,12 @@ int cListBox::NightJobColumn()
 	return -1;
 }
 
-int cListBox::JobColumn(bool daynight)
+int cListBox::JobColumn(bool Day0Night1)
 {
-
 	for (int i = 0; i < m_ColumnCount; i++)
 	{
-		if (m_ColumnName[i] == "DayJob" && daynight == 0) return i;
-		if (m_ColumnName[i] == "NightJob" && daynight == 1) return i;
+		if (m_ColumnName[i] == "DayJob" && Day0Night1 == SHIFT_DAY) return i;
+		if (m_ColumnName[i] == "NightJob" && Day0Night1 == SHIFT_NIGHT) return i;
 	}
 	return -1;
 }

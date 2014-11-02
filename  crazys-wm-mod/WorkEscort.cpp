@@ -41,12 +41,12 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
 // `J` Brothel Job - Bar
-bool cJobManager::WorkEscort(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkEscort(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
 {
 	string message = "", girlName = girl->m_Realname;
 	int jobperformance = 0, wages = 0, tips = 0;
 
-	if (Preprocessing(ACTION_WORKESCORT, girl, brothel, DayNight, summary, message))	// they refuse to have work in the bar
+	if (Preprocessing(ACTION_WORKESCORT, girl, brothel, Day0Night1, summary, message))	// they refuse to have work in the bar
 		return true;
 
 
@@ -177,15 +177,15 @@ bool cJobManager::WorkEscort(sGirl* girl, sBrothel* brothel, int DayNight, strin
 	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill + 1);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
-	girl->m_Events.AddMessage(message, IMGTYPE_FORMAL, DayNight);
+	girl->m_Events.AddMessage(message, IMGTYPE_FORMAL, Day0Night1);
 
 	//gain traits
-	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, ACTION_WORKESCORT, "Dealing with customers and talking with them about their problems has made " + girlName + " more Charismatic.", DayNight != 0);
-	g_Girls.PossiblyGainNewTrait(girl, "Elegant", 40, ACTION_WORKESCORT, "Playing the doting girlfriend has given " + girlName + " an Elegant nature.", DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, ACTION_WORKESCORT, "Dealing with customers and talking with them about their problems has made " + girlName + " more Charismatic.", Day0Night1 == SHIFT_NIGHT);
+	g_Girls.PossiblyGainNewTrait(girl, "Elegant", 40, ACTION_WORKESCORT, "Playing the doting girlfriend has given " + girlName + " an Elegant nature.", Day0Night1 == SHIFT_NIGHT);
 
 	//lose traits
-	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 40, ACTION_WORKESCORT, girlName + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", DayNight != 0);
-	g_Girls.PossiblyLoseExistingTrait(girl, "Aggressive", 70, ACTION_WORKESCORT, "Controlling her temper has greatly reduced " + girlName + "'s Aggressive tendencies.", DayNight != 0);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 40, ACTION_WORKESCORT, girlName + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", Day0Night1 == SHIFT_NIGHT);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Aggressive", 70, ACTION_WORKESCORT, "Controlling her temper has greatly reduced " + girlName + "'s Aggressive tendencies.", Day0Night1 == SHIFT_NIGHT);
 
 	return false;
 }

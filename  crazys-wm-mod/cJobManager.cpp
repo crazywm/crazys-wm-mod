@@ -584,20 +584,20 @@ void cJobManager::free()
 
 // ----- Misc
 
-bool cJobManager::WorkVoid(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkVoid(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
 {
 	summary += gettext("This job isn't implemented yet");
 	girl->m_Events.AddMessage(gettext("This job isn't implemented yet"), IMGTYPE_PROFILE, EVENT_DEBUG);
 	return false;
 }
 
-bool cJobManager::Preprocessing(int action, sGirl* girl, sBrothel* brothel, int DayNight, string& summary, string& message)
+bool cJobManager::Preprocessing(int action, sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary, string& message)
 {
 	brothel->m_Filthiness++;
 	if (g_Girls.DisobeyCheck(girl, action, brothel))			// they refuse to work 
 	{
 		string message = girl->m_Realname + gettext(" refused to work during the ");
-		message += (DayNight == 0) ? gettext("day") : gettext("night");
+		message += (Day0Night1 == SHIFT_DAY ? gettext("day") : gettext("night"));
 		message += gettext(" shift.");
 		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
@@ -657,7 +657,7 @@ bool cJobManager::is_job_employed(sBrothel * brothel, u_int job_wanted, int day_
 	return false;
 }
 
-void cJobManager::do_advertising(sBrothel* brothel, int DayNight)
+void cJobManager::do_advertising(sBrothel* brothel, int Day0Night1)
 {  // advertising jobs are handled before other jobs, more particularly before customer generation
 	brothel->m_AdvertisingLevel = 1.0;  // base multiplier
 	sGirl* current = brothel->m_Girls;
@@ -665,11 +665,11 @@ void cJobManager::do_advertising(sBrothel* brothel, int DayNight)
 	{
 		string summary = "";
 		bool refused = false;
-		if ((current->m_DayJob == JOB_ADVERTISING) && (DayNight == 0)) // Added test for current shift, was running each shift twice -PP
+		if ((current->m_DayJob == JOB_ADVERTISING) && (Day0Night1 == SHIFT_DAY)) // Added test for current shift, was running each shift twice -PP
 		{
 			current->m_Refused_To_Work_Day = WorkAdvertising(current, brothel, 0, summary);
 		}
-		if ((current->m_NightJob == JOB_ADVERTISING) && (DayNight == 1)) // Added test for current shift, was running each shift twice -PP
+		if ((current->m_NightJob == JOB_ADVERTISING) && (Day0Night1 == SHIFT_NIGHT)) // Added test for current shift, was running each shift twice -PP
 		{
 			current->m_Refused_To_Work_Night = WorkAdvertising(current, brothel, 1, summary);
 		}
@@ -677,7 +677,7 @@ void cJobManager::do_advertising(sBrothel* brothel, int DayNight)
 	}
 }
 
-void cJobManager::do_whorejobs(sBrothel* brothel, int DayNight)
+void cJobManager::do_whorejobs(sBrothel* brothel, int Day0Night1)
 { // Whores get first crack at any customers.
 	sGirl* current = brothel->m_Girls;
 
@@ -685,29 +685,29 @@ void cJobManager::do_whorejobs(sBrothel* brothel, int DayNight)
 	{
 		string summary = "";
 		u_int sw = 0;						//	Job type
-		sw = (DayNight == SHIFT_DAY) ? current->m_DayJob : current->m_NightJob;
+		sw = (Day0Night1 == SHIFT_DAY ? current->m_DayJob : current->m_NightJob);
 
 		bool refused = false;
 		switch (sw)
 		{
 		case JOB_WHOREBROTHEL:
-			refused = WorkWhore(current, brothel, DayNight, summary);
+			refused = WorkWhore(current, brothel, Day0Night1, summary);
 			break;
 		case JOB_BARWHORE:
-			refused = WorkBarWhore(current, brothel, DayNight, summary);
+			refused = WorkBarWhore(current, brothel, Day0Night1, summary);
 			break;
 		case JOB_WHOREGAMBHALL:
-			refused = WorkHallWhore(current, brothel, DayNight, summary);
+			refused = WorkHallWhore(current, brothel, Day0Night1, summary);
 			break;
 		default:
 			break;
 		}
-		if (refused) (DayNight == SHIFT_DAY ? current->m_Refused_To_Work_Day = true : current->m_Refused_To_Work_Night = true);
+		if (refused) (Day0Night1 == SHIFT_DAY ? current->m_Refused_To_Work_Day = true : current->m_Refused_To_Work_Night = true);
 		current = current->m_Next;
 	}
 }
 
-void cJobManager::do_custjobs(sBrothel* brothel, int DayNight)
+void cJobManager::do_custjobs(sBrothel* brothel, int Day0Night1)
 { // Customer taking jobs get first crack at any customers before customer service.
 	sGirl* current = brothel->m_Girls;
 
@@ -715,49 +715,49 @@ void cJobManager::do_custjobs(sBrothel* brothel, int DayNight)
 	{
 		string summary = "";
 		u_int sw = 0;						//	Job type
-		sw = (DayNight == SHIFT_DAY) ? current->m_DayJob : current->m_NightJob;
+		sw = (Day0Night1 == SHIFT_DAY ? current->m_DayJob : current->m_NightJob);
 
 		bool refused = false;
 		switch (sw)
 		{
 		case JOB_BARMAID:
-			refused = WorkBarmaid(current, brothel, DayNight, summary);
+			refused = WorkBarmaid(current, brothel, Day0Night1, summary);
 			break;
 		case JOB_WAITRESS:
-			refused = WorkBarWaitress(current, brothel, DayNight, summary);
+			refused = WorkBarWaitress(current, brothel, Day0Night1, summary);
 			break;
 		case JOB_SINGER:
-			refused = WorkBarSinger(current, brothel, DayNight, summary);
+			refused = WorkBarSinger(current, brothel, Day0Night1, summary);
 			break;
 		case JOB_PIANO:
-			refused = WorkBarPiano(current, brothel, DayNight, summary);
+			refused = WorkBarPiano(current, brothel, Day0Night1, summary);
 			break;
 		case JOB_DEALER:
-			refused = WorkHallDealer(current, brothel, DayNight, summary);
+			refused = WorkHallDealer(current, brothel, Day0Night1, summary);
 			break;
 		case JOB_ENTERTAINMENT:
-			refused = WorkHallEntertainer(current, brothel, DayNight, summary);
+			refused = WorkHallEntertainer(current, brothel, Day0Night1, summary);
 			break;
 		case JOB_XXXENTERTAINMENT:
-			refused = WorkHallXXXEntertainer(current, brothel, DayNight, summary);
+			refused = WorkHallXXXEntertainer(current, brothel, Day0Night1, summary);
 			break;
 		case JOB_SLEAZYBARMAID:
-			refused = WorkSleazyBarmaid(current, brothel, DayNight, summary);
+			refused = WorkSleazyBarmaid(current, brothel, Day0Night1, summary);
 			break;
 		case JOB_SLEAZYWAITRESS:
-			refused = WorkSleazyWaitress(current, brothel, DayNight, summary);
+			refused = WorkSleazyWaitress(current, brothel, Day0Night1, summary);
 			break;
 		case JOB_BARSTRIPPER:
-			refused = WorkBarStripper(current, brothel, DayNight, summary);
+			refused = WorkBarStripper(current, brothel, Day0Night1, summary);
 			break;
 		case JOB_MASSEUSE:
-			refused = WorkBrothelMasseuse(current, brothel, DayNight, summary);
+			refused = WorkBrothelMasseuse(current, brothel, Day0Night1, summary);
 			break;
 		case JOB_BROTHELSTRIPPER:
-			refused = WorkBrothelStripper(current, brothel, DayNight, summary);
+			refused = WorkBrothelStripper(current, brothel, Day0Night1, summary);
 			break;
 		case JOB_PEEP:
-			refused = WorkPeepShow(current, brothel, DayNight, summary);
+			refused = WorkPeepShow(current, brothel, Day0Night1, summary);
 			break;
 		default:
 			break;
@@ -977,10 +977,11 @@ string cJobManager::JobDescriptionCount(int job_id, int brothel_id, int day, boo
 	return text.str();
 }
 
-bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, int OldJobID, bool DayOrNight)
+bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, int OldJobID, bool Day0Night1, bool fulltime)
 {
 	bool MadeChanges = true;  // whether a special case applies to specified job or not
-	
+	bool refresh = g_InitWin;
+
 	/*	`J` added to reset working days only if her job actually changes
 	 * m_WorkingDay is only used for full time jobs that take more than 1 day to complete
 	 * such as getting surgerys or rehab
@@ -1003,7 +1004,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 // Special Brothel Jobs
 	if (u_int(JobID) == JOB_MATRON)
 	{
-		if (g_Brothels.GetNumGirlsOnJob(TargetBrothel, JOB_MATRON, DayOrNight) == 1)
+		if (g_Brothels.GetNumGirlsOnJob(TargetBrothel, JOB_MATRON, Day0Night1) > 0)
 			g_MessageQue.AddToQue(gettext("You can only have one matron per brothel."), 0);
 		else if (Girl->is_slave())
 			g_MessageQue.AddToQue(gettext("The matron cannot be a slave."), 0);
@@ -1012,7 +1013,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	}
 	else if (u_int(JobID) == JOB_TORTURER)
 	{
-		if (g_Brothels.GetNumGirlsOnJob(-1, JOB_TORTURER, DayOrNight) == 1)
+		if (g_Brothels.GetNumGirlsOnJob(-1, JOB_TORTURER, Day0Night1) > 0)
 			g_MessageQue.AddToQue(gettext("You can only have one torturer among all of your brothels."), 0);
 		else if (Girl->is_slave())
 			g_MessageQue.AddToQue(gettext("The torturer cannot be a slave."), 0);
@@ -1022,7 +1023,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 // Special House Jobs
 	else if (u_int(JobID) == JOB_HEADGIRL)
 	{
-		if (g_House.GetNumGirlsOnJob(TargetBrothel, JOB_HEADGIRL, DayOrNight) == 1)
+		if (g_House.GetNumGirlsOnJob(TargetBrothel, JOB_HEADGIRL, Day0Night1) > 0)
 			g_MessageQue.AddToQue(gettext("There can be only one Head Girl!"), 0);
 		else if (Girl->is_slave())	g_MessageQue.AddToQue(gettext("The Head Girl cannot be a slave."), 0);
 		else						Girl->m_NightJob = Girl->m_DayJob = JOB_HEADGIRL;
@@ -1035,7 +1036,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	// Special Farm Jobs
 	else if (u_int(JobID) == JOB_FARMMANGER)
 	{
-		if (g_Farm.GetNumGirlsOnJob(TargetBrothel, JOB_FARMMANGER, DayOrNight) == 1)
+		if (g_Farm.GetNumGirlsOnJob(TargetBrothel, JOB_FARMMANGER, Day0Night1) > 0)
 			g_MessageQue.AddToQue(gettext("There can be only one Farm Manager!"), 0);
 		else if (Girl->is_slave())
 			g_MessageQue.AddToQue(gettext("The Farm Manager cannot be a slave."), 0);
@@ -1045,7 +1046,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	// Special Arena Jobs
 	else if (u_int(JobID) == JOB_DOCTORE)
 	{
-		if (g_Arena.GetNumGirlsOnJob(TargetBrothel, JOB_DOCTORE, DayOrNight) == 1)
+		if (g_Arena.GetNumGirlsOnJob(TargetBrothel, JOB_DOCTORE, Day0Night1) > 0)
 			g_MessageQue.AddToQue(gettext("There can be only one Doctore!"), 0);
 		else if (Girl->is_slave())
 			g_MessageQue.AddToQue(gettext("The Doctore cannot be a slave."), 0);
@@ -1066,7 +1067,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 // Special Clinic Jobs
 	else if (u_int(JobID) == JOB_CHAIRMAN)
 	{
-		if (g_Clinic.GetNumGirlsOnJob(TargetBrothel, JOB_CHAIRMAN, DayOrNight) == 1)
+		if (g_Clinic.GetNumGirlsOnJob(TargetBrothel, JOB_CHAIRMAN, Day0Night1)>0)
 			g_MessageQue.AddToQue(gettext("There can be only one Chairman!"), 0);
 		else if (Girl->is_slave())
 			g_MessageQue.AddToQue(gettext("The Chairman cannot be a slave."), 0);
@@ -1096,104 +1097,50 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		}
 		else Girl->m_NightJob = Girl->m_DayJob = JOB_DOCTOR;
 	}
-	else if (u_int(JobID) == JOB_INTERN)	// `Crazy` added
+	else if (u_int(JobID) == JOB_INTERN && g_Girls.GetSkill(Girl, SKILL_MEDICINE) > 99 && g_Girls.GetStat(Girl, STAT_INTELLIGENCE) > 99 && g_Girls.GetStat(Girl, STAT_CHARISMA) > 99)
 	{
-		if (g_Girls.GetSkill(Girl, SKILL_MEDICINE) > 99 && g_Girls.GetStat(Girl, STAT_INTELLIGENCE) > 99 && g_Girls.GetStat(Girl, STAT_CHARISMA) > 99)
+		stringstream ss;
+		ss << "There is nothing more she can learn here.\n";
+		if (Girl->is_free())
 		{
-			g_MessageQue.AddToQue(gettext("There is nothing more she can learn here."), 0);
-			if (Girl->m_DayJob == JOB_INTERN)	Girl->m_DayJob = JOB_CLINICREST;
-			if (Girl->m_NightJob == JOB_INTERN)	Girl->m_NightJob = JOB_CLINICREST;
+			Girl->m_DayJob = Girl->m_NightJob = JOB_DOCTOR;
+			ss << Girl->m_Realname << " has been assigned as a Doctor instead.";
 		}
-		else if (DayOrNight){Girl->m_DayJob = JOB_INTERN;}
-		else				{Girl->m_NightJob = JOB_INTERN;}
+		else
+		{
+			if (fulltime)
+				Girl->m_DayJob = Girl->m_NightJob = JOB_NURSE;
+			else if (Day0Night1 == SHIFT_DAY)
+				Girl->m_DayJob = JOB_NURSE;
+			else
+				Girl->m_NightJob = JOB_NURSE;
+			ss << Girl->m_Realname << " has been assigned as a Nurse instead.";
+		}
+		g_MessageQue.AddToQue(ss.str(), 0);
 	}
 	else if (u_int(JobID) == JOB_MECHANIC)
 	{
 		Girl->m_NightJob = Girl->m_DayJob = JOB_MECHANIC;
 	}
-	else if (g_Girls.HasTrait(Girl, "Half-Construct") && (u_int(JobID) == JOB_GETHEALING || u_int(JobID) == JOB_GETREPAIRS))
+	else if (u_int(JobID) == JOB_GETHEALING && g_Girls.HasTrait(Girl, "Construct"))
 	{
-		if (g_Clinic.GetNumGirlsOnJob(-1, JOB_MECHANIC, DayOrNight) > 0 && g_Clinic.GetNumGirlsOnJob(-1, JOB_DOCTOR, DayOrNight) > 0)
-		{
-			string hctext;
-			hctext = gettext("As a Half-Construct, ") + Girl->m_Realname + gettext(" will have her ");
-			if ((DayOrNight && u_int(JobID) == JOB_GETHEALING) || (!DayOrNight && u_int(JobID) == JOB_GETREPAIRS))
-			{
-				hctext += gettext("living tissue healed durring the day\nand her constructed parts repaired at night.");
-				Girl->m_DayJob = JOB_GETHEALING;
-				Girl->m_NightJob = JOB_GETREPAIRS;
-			}
-			else
-			{
-				hctext += gettext("constructed parts repaired durring the day\nand her living tissue healed at night.");
-				Girl->m_DayJob = JOB_GETREPAIRS;
-				Girl->m_NightJob = JOB_GETHEALING;
-			}
-			g_MessageQue.AddToQue(hctext, 0);
-		}
-		else if (g_Clinic.GetNumGirlsOnJob(-1, JOB_MECHANIC, DayOrNight) > 0 && u_int(JobID) == JOB_GETREPAIRS)
-		{
+		if (fulltime)
 			Girl->m_DayJob = Girl->m_NightJob = JOB_GETREPAIRS;
-		}
-		else if (g_Clinic.GetNumGirlsOnJob(-1, JOB_DOCTOR, DayOrNight) > 0 && u_int(JobID) == JOB_GETHEALING)
-		{
-			Girl->m_DayJob = Girl->m_NightJob = JOB_GETHEALING;
-		}
-		else
-		{
-			Girl->m_DayJob = Girl->m_NightJob = JOB_CLINICREST;
-			g_MessageQue.AddToQue(gettext("You need a Doctor or Mechanic on duty to heal or repair a Half-Construct."), 0);
-		}
+		else if (Day0Night1 == SHIFT_DAY)
+			Girl->m_DayJob = JOB_GETREPAIRS;
+		else 
+			Girl->m_NightJob = JOB_GETREPAIRS;
+		g_MessageQue.AddToQue(gettext("The Doctor does not work on Constructs so she sends ") + Girl->m_Realname + gettext(" to the Mechanic."), 0);
 	}
-	else if (u_int(JobID) == JOB_GETHEALING)
+	else if (u_int(JobID) == JOB_GETREPAIRS && !g_Girls.HasTrait(Girl, "Construct") && !g_Girls.HasTrait(Girl, "Half-Construct"))
 	{
-		if (g_Girls.HasTrait(Girl, "Construct"))
-		{
-			if (g_Clinic.GetNumGirlsOnJob(-1, JOB_MECHANIC, DayOrNight) > 0)
-			{
-				Girl->m_DayJob = Girl->m_NightJob = JOB_GETREPAIRS;
-				g_MessageQue.AddToQue(gettext("The Doctor does not work on Constructs so she sends ") + Girl->m_Realname + gettext(" to the Mechanic."), 0);
-			}
-			else
-			{
-				Girl->m_DayJob = Girl->m_NightJob = JOB_CLINICREST;
-				g_MessageQue.AddToQue(gettext("The Doctor does not work on Constructs.\nYou need a Mechanic on duty to repair a Construct."), 0);
-			}
-		}
-		else if (g_Clinic.GetNumGirlsOnJob(-1, JOB_DOCTOR, DayOrNight) > 0)
-		{
+		if (fulltime)
 			Girl->m_DayJob = Girl->m_NightJob = JOB_GETHEALING;
-		}
+		else if (Day0Night1 == SHIFT_DAY)
+			Girl->m_DayJob = JOB_GETHEALING;
 		else
-		{
-			Girl->m_NightJob = Girl->m_DayJob = JOB_CLINICREST;
-			g_MessageQue.AddToQue(gettext("You must have a Doctor for healing."), 0);
-		}
-	}
-	else if (u_int(JobID) == JOB_GETREPAIRS)
-	{
-		if (!g_Girls.HasTrait(Girl, "Construct"))	// Half-Constructs were taken care of above
-		{
-			if (g_Clinic.GetNumGirlsOnJob(-1, JOB_DOCTOR, DayOrNight) > 0)
-			{
-				Girl->m_DayJob = Girl->m_NightJob = JOB_GETHEALING;
-				g_MessageQue.AddToQue(gettext("The Mechanic only works on Constructs so she sends ") + Girl->m_Realname + gettext(" to the Doctor."), 0);
-			}
-			else
-			{
-				Girl->m_DayJob = Girl->m_NightJob = JOB_CLINICREST;
-				g_MessageQue.AddToQue(gettext("The Mechanic only works on Constructs.\nYou need a Doctor on duty to heal her."), 0);
-			}
-		}
-		else if (g_Clinic.GetNumGirlsOnJob(-1, JOB_MECHANIC, DayOrNight) > 0)
-		{
-			Girl->m_DayJob = Girl->m_NightJob = JOB_GETREPAIRS;
-		}
-		else
-		{
-			Girl->m_NightJob = Girl->m_DayJob = JOB_CLINICREST;
-			g_MessageQue.AddToQue(gettext("You must have a mechanic for that operation."), 0);
-		}
+			Girl->m_NightJob = JOB_GETHEALING;
+		g_MessageQue.AddToQue(gettext("The Mechanic only works on Constructs so she sends ") + Girl->m_Realname + gettext(" to the Doctor."), 0);
 	}
 	// `J` condensed clinic surgery jobs into one check
 	else if (
@@ -1209,7 +1156,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		u_int(JobID) == JOB_FERTILITY)
 	{
 		bool jobgood = true;
-		if (g_Clinic.GetNumGirlsOnJob(-1, JOB_DOCTOR, DayOrNight) == 0)
+		if (g_Clinic.GetNumGirlsOnJob(TargetBrothel, JOB_DOCTOR, Day0Night1) == 0)
 		{
 			Girl->m_DayJob = Girl->m_NightJob = JOB_CLINICREST;
 			g_MessageQue.AddToQue(gettext("You must have a Doctor on duty to perform surgery."), 0);
@@ -1296,53 +1243,47 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 // Special Centre Jobs
 	else if (u_int(JobID) == JOB_CENTREMANAGER)
 	{
-		if (g_Centre.GetNumGirlsOnJob(TargetBrothel, JOB_CENTREMANAGER, DayOrNight) == 1)
+		if (g_Centre.GetNumGirlsOnJob(TargetBrothel, JOB_CENTREMANAGER, Day0Night1) >0)
 			g_MessageQue.AddToQue(gettext("There can be only one Centre Manager!"), 0);
-		else if (Girl->m_States&(1 << STATUS_SLAVE))
+		else if (Girl->is_slave())
 			g_MessageQue.AddToQue(gettext("The Centre Manager cannot be a slave."), 0);
 		else
 			Girl->m_NightJob = Girl->m_DayJob = JOB_CENTREMANAGER;
 	}
-	else if (u_int(JobID) == JOB_DRUGCOUNSELOR && Girl->is_slave())
-	{
-		g_MessageQue.AddToQue(gettext("The Drug Counselor cannot be a slave."), 0);
-	}
 	else if (u_int(JobID) == JOB_DRUGCOUNSELOR)
 	{
-		MadeChanges = false;
-		Girl->m_NightJob = Girl->m_DayJob = JOB_DRUGCOUNSELOR;
-	}
-	else if (u_int(JobID) == JOB_REHAB && g_Centre.GetNumGirlsOnJob(0, JOB_DRUGCOUNSELOR, DayOrNight) == 0)
-	{
-		g_MessageQue.AddToQue(gettext("You must have a drug counselor for rehab."), 0);
-	}
-	else if (u_int(JobID) == JOB_REHAB && !g_Girls.HasTrait(Girl, "Shroud Addict") &&
-		!g_Girls.HasTrait(Girl, "Fairy Dust Addict") && !g_Girls.HasTrait(Girl, "Viras Blood Addict"))
-	{
-		g_MessageQue.AddToQue(gettext("She has no addictions."), 0);
+		if (Girl->is_slave())
+			g_MessageQue.AddToQue(gettext("The Drug Counselor cannot be a slave."), 0);
+		else
+			Girl->m_NightJob = Girl->m_DayJob = JOB_DRUGCOUNSELOR;
 	}
 	else if (u_int(JobID) == JOB_REHAB)
 	{
-		MadeChanges = false;
-		Girl->m_DayJob = Girl->m_NightJob = JOB_REHAB;
+		if (g_Centre.GetNumGirlsOnJob(TargetBrothel, JOB_DRUGCOUNSELOR, Day0Night1) < 1)
+			g_MessageQue.AddToQue(gettext("You must have a drug counselor for rehab."), 0);
+		else if (!g_Girls.HasTrait(Girl, "Shroud Addict")
+			&& !g_Girls.HasTrait(Girl, "Fairy Dust Addict")
+			&& !g_Girls.HasTrait(Girl, "Viras Blood Addict"))
+			g_MessageQue.AddToQue(gettext("She has no addictions."), 0);
+		else
+			Girl->m_DayJob = Girl->m_NightJob = JOB_REHAB;
 	}
-
 // Special Movie Studio Jobs
-	else if (u_int(JobID) == JOB_DIRECTOR && g_Studios.GetNumGirlsOnJob(TargetBrothel, JOB_DIRECTOR, DayOrNight) == 1)
+	else if (u_int(JobID) == JOB_DIRECTOR && g_Studios.GetNumGirlsOnJob(TargetBrothel, JOB_DIRECTOR, SHIFT_NIGHT) >0)
 	{
 		g_MessageQue.AddToQue(gettext("There can be only one Director!"), 0);
 	}
-	else if (u_int(JobID) == JOB_DIRECTOR && Girl->m_States&(1 << STATUS_SLAVE))
+	else if (u_int(JobID) == JOB_DIRECTOR && Girl->is_slave())
 	{
 		g_MessageQue.AddToQue(gettext("The Director cannot be a slave."), 0);
 	}
-	else if (u_int(JobID) == JOB_PROMOTER && g_Studios.GetNumGirlsOnJob(TargetBrothel, JOB_PROMOTER, DayOrNight) == 1)
+	else if (u_int(JobID) == JOB_PROMOTER && g_Studios.GetNumGirlsOnJob(TargetBrothel, JOB_PROMOTER, SHIFT_NIGHT) > 0)
 	{
-			g_MessageQue.AddToQue(gettext("There can be only one Promoter."), 0);
+		g_MessageQue.AddToQue(gettext("There can be only one Promoter."), 0);
 	}
-	else if(g_Studios.is_Actress_Job(JobID) &&
-		(g_Studios.GetNumGirlsOnJob(0, JOB_CAMERAMAGE, SHIFT_NIGHT) == 0 ||
-		g_Studios.GetNumGirlsOnJob(0, JOB_CRYSTALPURIFIER, SHIFT_NIGHT) == 0))
+	else if (g_Studios.is_Actress_Job(JobID) &&
+		(g_Studios.GetNumGirlsOnJob(0, JOB_CAMERAMAGE, SHIFT_NIGHT) < 1 ||
+		g_Studios.GetNumGirlsOnJob(0, JOB_CRYSTALPURIFIER, SHIFT_NIGHT) < 1))
 	{
 		g_MessageQue.AddToQue("You must have one cameramage and one crystal purifier.", 0);
 		Girl->m_DayJob = Girl->m_NightJob = JOB_FILMFREETIME;
@@ -1358,75 +1299,91 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	else
 	{
 		MadeChanges = false;
-		if (DayOrNight)	Girl->m_DayJob = JobID;
-		else			Girl->m_NightJob = JobID;
+		if (fulltime)
+			Girl->m_DayJob = Girl->m_NightJob = JobID;
+		else if (Day0Night1 == SHIFT_DAY)
+			Girl->m_DayJob = JobID;
+		else
+			Girl->m_NightJob = JobID;
 	}
 
-	bool refresh = false;
 // handle instances where special job has been removed, specifically where it actually matters
 	if (JobID != OldJobID)
 	{
-		// brothel jobs - 
-		if ((u_int(OldJobID) == JOB_MATRON	||	u_int(OldJobID) == JOB_TORTURER) &&
-			(u_int(JobID) != JOB_MATRON		&&	u_int(JobID) != JOB_TORTURER))
-		{	// if old job was full time but new job is not, switch leftover day or night job back to resting
-			(DayOrNight) ? Girl->m_NightJob = JOB_RESTING : Girl->m_DayJob = JOB_RESTING;
-		}
-		
-		else if (u_int(OldJobID) == JOB_DOCTORE && u_int(JobID) != JOB_DOCTORE)
-		{	// if old job was full time but new job is not, switch leftover day or night job back to resting
-			(DayOrNight) ? Girl->m_NightJob = JOB_ARENAREST : Girl->m_DayJob = JOB_ARENAREST;
-		}
-		
-		else if (Girl->m_InClinic)
+		if (!fulltime)	// if old job was full time but new job is not, switch leftover day or night job back to resting
 		{
-			if ((g_Clinic.is_Surgery_Job(OldJobID) ||
-				u_int(OldJobID) == JOB_GETHEALING  || u_int(OldJobID) == JOB_GETREPAIRS ||
-				u_int(OldJobID) == JOB_DOCTOR      || u_int(OldJobID) == JOB_MECHANIC ||
-				u_int(OldJobID) == JOB_CHAIRMAN    || u_int(OldJobID) == JOB_NURSE	) &&
-				(!g_Clinic.is_Surgery_Job(JobID)   &&
-				u_int(JobID) != JOB_GETHEALING     && u_int(JobID) != JOB_GETREPAIRS &&
-				u_int(JobID) != JOB_DOCTOR         && u_int(JobID) != JOB_MECHANIC &&
-				u_int(JobID) != JOB_CHAIRMAN       && u_int(JobID) != JOB_NURSE))
+			// brothel jobs - 
+			if ((u_int(OldJobID) == JOB_MATRON || u_int(OldJobID) == JOB_TORTURER) &&
+				(u_int(JobID) != JOB_MATRON		&&	u_int(JobID) != JOB_TORTURER))
 			{	// if old job was full time but new job is not, switch leftover day or night job back to resting
-				(DayOrNight) ? Girl->m_NightJob = JOB_CLINICREST : Girl->m_DayJob = JOB_CLINICREST;
+				(Day0Night1 == SHIFT_DAY ? Girl->m_NightJob = JOB_RESTING : Girl->m_DayJob = JOB_RESTING);
 			}
-			if ((u_int(OldJobID) == JOB_DOCTOR || u_int(JobID) == JOB_DOCTOR) &&
-				g_Clinic.DoctorNeeded())
-			{	// `J` if adding or removing doctor, check if a doctor is needed and refresh only if true
+			// arena jobs
+			else if (u_int(OldJobID) == JOB_DOCTORE && u_int(JobID) != JOB_DOCTORE)
+			{	// if old job was full time but new job is not, switch leftover day or night job back to resting
+				(Day0Night1 == SHIFT_DAY ? Girl->m_NightJob = JOB_ARENAREST : Girl->m_DayJob = JOB_ARENAREST);
+			}
+			// clinic jobs
+			else if (Girl->m_InClinic)
+			{
+				if ((g_Clinic.is_Surgery_Job(OldJobID) || u_int(OldJobID) == JOB_DOCTOR
+					|| u_int(OldJobID) == JOB_MECHANIC || u_int(OldJobID) == JOB_CHAIRMAN)
+					&& (!g_Clinic.is_Surgery_Job(JobID) && u_int(JobID) != JOB_DOCTOR
+					&& u_int(JobID) != JOB_MECHANIC && u_int(JobID) != JOB_CHAIRMAN))
+				{	// if old job was full time but new job is not, switch leftover day or night job back to resting
+					(Day0Night1 == SHIFT_DAY ? Girl->m_NightJob = JOB_CLINICREST : Girl->m_DayJob = JOB_CLINICREST);
+				}
+			}
+			// centre jobs
+			else if (Girl->m_InCentre)
+			{
+				if ((u_int(OldJobID) == JOB_CENTREMANAGER || u_int(OldJobID) == JOB_DRUGCOUNSELOR || u_int(OldJobID) == JOB_REHAB) &&
+					(u_int(JobID) != JOB_CENTREMANAGER && u_int(JobID) != JOB_DRUGCOUNSELOR && u_int(JobID) != JOB_REHAB))
+				{	// if old job was full time but new job is not, switch leftover day or night job back to resting
+					(Day0Night1 == SHIFT_DAY ? Girl->m_NightJob = JOB_CENTREREST : Girl->m_DayJob = JOB_CENTREREST);
+				}
+			}
+			// house jobs
+			else if ((u_int(OldJobID) == JOB_HEADGIRL || u_int(OldJobID) == JOB_RECRUITER) &&
+				(u_int(JobID) != JOB_HEADGIRL || u_int(JobID) != JOB_RECRUITER))
+			{	// if old job was full time but new job is not, switch leftover day or night job back to resting
+				(Day0Night1 == SHIFT_DAY ? Girl->m_NightJob = JOB_HOUSEREST : Girl->m_DayJob = JOB_HOUSEREST);
+			}
+			// farm jobs
+			else if (u_int(OldJobID) == JOB_FARMMANGER && u_int(JobID) != JOB_FARMMANGER)
+			{	
+				(Day0Night1 == SHIFT_DAY ? Girl->m_NightJob = JOB_FARMREST : Girl->m_DayJob = JOB_FARMREST);
+			}
+		}
+
+		// `J` check for refresh
+
+		// `J` we only need to refresh the clinic list if there are any patients
+		if (Girl->m_InClinic && g_Clinic.GetNumberPatients(0) + g_Clinic.GetNumberPatients(1) > 0)
+		{	// `J` if removing the last or adding the first doctor or nurse
+			if ((u_int(OldJobID) == JOB_DOCTOR && g_Clinic.GetNumGirlsOnJob(0, JOB_DOCTOR, Day0Night1) < 1) ||
+				(u_int(JobID) == JOB_DOCTOR && g_Clinic.GetNumGirlsOnJob(0, JOB_DOCTOR, Day0Night1) < 2) ||
+				(u_int(OldJobID) == JOB_NURSE && g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, Day0Night1) < 1) ||
+				(u_int(JobID) == JOB_NURSE && g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, Day0Night1) < 2))
+			{
 				refresh = true;
 			}
 		}
-		else if (Girl->m_InCentre)
-		{
-			if ((u_int(OldJobID) == JOB_CENTREMANAGER || u_int(OldJobID) == JOB_DRUGCOUNSELOR || u_int(OldJobID) == JOB_REHAB) &&
-				(u_int(JobID) != JOB_CENTREMANAGER && u_int(JobID) != JOB_DRUGCOUNSELOR && u_int(JobID) != JOB_REHAB))
-			{	// if old job was full time but new job is not, switch leftover day or night job back to resting
-				(DayOrNight) ? Girl->m_NightJob = JOB_CENTREREST : Girl->m_DayJob = JOB_CENTREREST;
-			}
-			if ((u_int(OldJobID) == JOB_DRUGCOUNSELOR || u_int(JobID) == JOB_DRUGCOUNSELOR) &&
-				g_Clinic.GetNumGirlsOnJob(0, JOB_REHAB, 0) + g_Clinic.GetNumGirlsOnJob(0, JOB_REHAB, 1) > 0)
-			{	// `J` if adding or removing coounselor, check if any girls are in rehab and refresh only if true
+		if (Girl->m_InMovieStudio)
+		{	// `J` if removing the last or adding the first camera or crystal
+			if ((u_int(OldJobID) == JOB_CAMERAMAGE && g_Studios.GetNumGirlsOnJob(0, JOB_CAMERAMAGE, SHIFT_NIGHT) < 1) ||
+				(u_int(JobID) == JOB_CAMERAMAGE  && g_Studios.GetNumGirlsOnJob(0, JOB_CAMERAMAGE, SHIFT_NIGHT) < 2) ||
+				(u_int(OldJobID) == JOB_CRYSTALPURIFIER && g_Studios.GetNumGirlsOnJob(0, JOB_CRYSTALPURIFIER, SHIFT_NIGHT) < 1) ||
+				(u_int(JobID) == JOB_CRYSTALPURIFIER && g_Studios.GetNumGirlsOnJob(0, JOB_CRYSTALPURIFIER, SHIFT_NIGHT) < 2))
+			{
 				refresh = true;
 			}
 		}
-		else if ((u_int(OldJobID) == JOB_HEADGIRL || u_int(OldJobID) == JOB_RECRUITER) &&
-			(u_int(JobID) != JOB_HEADGIRL || u_int(JobID) != JOB_RECRUITER))
-		{	// if old job was full time but new job is not, switch leftover day or night job back to resting
-			(DayOrNight) ? Girl->m_NightJob = JOB_HOUSEREST : Girl->m_DayJob = JOB_HOUSEREST;
-		}
-		else if (u_int(OldJobID) == JOB_FARMMANGER && u_int(JobID) != JOB_FARMMANGER)
-		{	// if old job was full time but new job is not, switch leftover day or night job back to resting
-			(DayOrNight) ? Girl->m_NightJob = JOB_FARMREST : Girl->m_DayJob = JOB_FARMREST;
-		}
-		
-		else if (	// `J` if a CAMERAMAGE or CRYSTALPURIFIER is added or removed...
-			u_int(OldJobID) == JOB_CAMERAMAGE || u_int(OldJobID) == JOB_CRYSTALPURIFIER ||
-			u_int(JobID) == JOB_CAMERAMAGE    || u_int(JobID) == JOB_CRYSTALPURIFIER)
-		{			// `J` ...check if there is at least 1 of each to allow for filming...
-			if (g_Studios.GetNumGirlsOnJob(0, JOB_CAMERAMAGE, SHIFT_NIGHT) == 0 ||
-				g_Studios.GetNumGirlsOnJob(0, JOB_CRYSTALPURIFIER, SHIFT_NIGHT) == 0)
-			{		// `J` ...if not refresh the studio.
+		if (Girl->m_InCentre && g_Centre.GetNumGirlsOnJob(0, JOB_REHAB, 0) + g_Centre.GetNumGirlsOnJob(0, JOB_REHAB, 1) > 0)
+		{	// `J` if removing the last or adding the first counselor
+			if ((u_int(OldJobID) == JOB_DRUGCOUNSELOR && g_Studios.GetNumGirlsOnJob(0, JOB_DRUGCOUNSELOR, Day0Night1) < 1) ||
+				(u_int(JobID) == JOB_DRUGCOUNSELOR  && g_Studios.GetNumGirlsOnJob(0, JOB_DRUGCOUNSELOR, Day0Night1) < 2))
+			{
 				refresh = true;
 			}
 		}
@@ -1450,7 +1407,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
  * false if nothing happened, or if violence was committed
  * against the customer.
  */
-bool cJobManager::work_related_violence(sGirl* girl, int DayNight, bool streets)
+bool cJobManager::work_related_violence(sGirl* girl, int Day0Night1, bool streets)
 {
 	cConfig cfg;
 	int rape_chance = (int)cfg.prostitution.rape_brothel();
@@ -1465,7 +1422,7 @@ bool cJobManager::work_related_violence(sGirl* girl, int DayNight, bool streets)
 	if (streets) rape_chance = (int)cfg.prostitution.rape_streets();
 
 	// night time doubles the chance of attempted rape and reduces the chance for a gang to catch it by ten
-	if (DayNight == 1) { rape_chance *= 2; gang_coverage = (int)((float)gang_coverage*0.8f); }
+	if (Day0Night1 == SHIFT_NIGHT) { rape_chance *= 2; gang_coverage = (int)((float)gang_coverage*0.8f); }
 
 	// if the player has a -ve disposition, this can scare the would-be rapist into behaving himself
 	if (g_Dice.percent(g_Brothels.GetPlayer()->disposition() * -1)) rape_chance = 0;
@@ -1474,9 +1431,9 @@ bool cJobManager::work_related_violence(sGirl* girl, int DayNight, bool streets)
 	{
 		/*sGang *gang = g_Gangs.random_gang(gang_v);
 
-		if(gang_stops_rape(girl, gang, gang_chance, DayNight))
+		if(gang_stops_rape(girl, gang, gang_chance, Day0Night1))
 		return false;
-		if(girl_fights_rape(girl, DayNight))
+		if(girl_fights_rape(girl, Day0Night1))
 		return false; */
 
 		// Get a random weak gang. These are street toughs looking to abuse a girl.
@@ -1492,11 +1449,11 @@ bool cJobManager::work_related_violence(sGirl* girl, int DayNight, bool streets)
 		// first subtract 5 security point per gang member that is attacking
 		Brothl->m_SecurityLevel = Brothl->m_SecurityLevel - enemy_gang->m_Num * 5;	// `J` moved and doubled m_SecurityLevel loss
 		// 1. Brothel security
-		if (security_stops_rape(girl, enemy_gang, DayNight)) return false;
+		if (security_stops_rape(girl, enemy_gang, Day0Night1)) return false;
 		// 2. Defending gangs
-		if (gang_stops_rape(girl, gangs_guarding, enemy_gang, gang_coverage, DayNight)) return false;
+		if (gang_stops_rape(girl, gangs_guarding, enemy_gang, gang_coverage, Day0Night1)) return false;
 		// 3. The attacked girl herself
-		if (girl_fights_rape(girl, enemy_gang, DayNight)) return false;
+		if (girl_fights_rape(girl, enemy_gang, Day0Night1)) return false;
 		// If all defensive measures fail...
 		// subtract 5 security points per gang member left
 		Brothl->m_SecurityLevel = Brothl->m_SecurityLevel - enemy_gang->m_Num * 5;	// `J` moved and doubled m_SecurityLevel loss
@@ -1515,7 +1472,7 @@ bool cJobManager::work_related_violence(sGirl* girl, int DayNight, bool streets)
 	 */
 	if ((girl->has_trait("Yandere") || girl->has_trait("Tsundere") || girl->has_trait("Aggressive")) && g_Dice.percent(30)) 
 	{
-		girl->m_Events.AddMessage(gettext("She beat the customer silly."), IMGTYPE_COMBAT, DayNight);
+		girl->m_Events.AddMessage(gettext("She beat the customer silly."), IMGTYPE_COMBAT, Day0Night1);
 		g_Girls.UpdateStat(girl, STAT_FAME, -1);
 	}
 	return false;
@@ -2212,15 +2169,15 @@ void cJobManager::get_training_set(vector<sGirl*> &v, vector<sGirl*> &t_set)
 	}
 }
 
-bool cJobManager::WorkTraining(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkTraining(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
 {
 	return false;
 }
 
-void cJobManager::do_solo_training(sGirl *girl, int DayNight)
+void cJobManager::do_solo_training(sGirl *girl, int Day0Night1)
 {
 	TrainableGirl trainee(girl);
-	girl->m_Events.AddMessage(gettext("She trained during this shift by herself, so learning anything worthwhile was difficult."), IMGTYPE_PROFILE, DayNight);
+	girl->m_Events.AddMessage(gettext("She trained during this shift by herself, so learning anything worthwhile was difficult."), IMGTYPE_PROFILE, Day0Night1);
 /*
  *	50% chance nothing happens
  */
@@ -2240,7 +2197,7 @@ void cJobManager::do_solo_training(sGirl *girl, int DayNight)
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_SUMMARY);
 }
 
-void cJobManager::do_training_set(vector<sGirl*> girls, int DayNight)
+void cJobManager::do_training_set(vector<sGirl*> girls, int Day0Night1)
 {
 	sGirl *girl;
 	stringstream ss;
@@ -2256,7 +2213,7 @@ void cJobManager::do_training_set(vector<sGirl*> girls, int DayNight)
 	}
 	else if (girls.size() == 1)
 	{  // special case for only one girl
-		do_solo_training(girls[0], DayNight);
+		do_solo_training(girls[0], Day0Night1);
 		return;
 	}
 	/*
@@ -2339,7 +2296,7 @@ void cJobManager::do_training_set(vector<sGirl*> girls, int DayNight)
 		}
 		ss << gettext(".");
 
-		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, DayNight);
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 		ss.str("");
 		ss << gettext("She trained during this shift");
 
@@ -2364,16 +2321,16 @@ void cJobManager::do_training_set(vector<sGirl*> girls, int DayNight)
 	}
 }
 
-void cJobManager::do_training(sBrothel* brothel, int DayNight)
+void cJobManager::do_training(sBrothel* brothel, int Day0Night1)
 {
 	cTariff tariff;
 	cConfig cfg;
 	vector<sGirl*> t_set;
-	vector<sGirl*> girls = girls_on_job(brothel, JOB_TRAINING, DayNight);
+	vector<sGirl*> girls = girls_on_job(brothel, JOB_TRAINING, Day0Night1);
 
 	for (u_int i = girls.size(); i-- > 0;)
 	{  // no girls sneaking in training if she gave birth
-		if ((girls[i]->m_WeeksPreg > 0 && girls[i]->m_WeeksPreg + 1 >= cfg.pregnancy.weeks_pregnant()) || (girls[i]->m_JustGaveBirth && DayNight == 1))
+		if ((girls[i]->m_WeeksPreg > 0 && girls[i]->m_WeeksPreg + 1 >= cfg.pregnancy.weeks_pregnant()) || (girls[i]->m_JustGaveBirth && Day0Night1 == SHIFT_NIGHT))
 			girls.erase(girls.begin() + i);
 	}
 	random_shuffle(girls.begin(), girls.end());
@@ -2381,7 +2338,7 @@ void cJobManager::do_training(sBrothel* brothel, int DayNight)
 	{
 		get_training_set(girls, t_set);
 		if (t_set.empty()) break;
-		do_training_set(t_set, DayNight);
+		do_training_set(t_set, Day0Night1);
 	}
 	/*
 	*	a few bookkeeping details here
@@ -2486,12 +2443,12 @@ void cJobManager::load_films(std::ifstream &ifs)
 	}
 }
 
-string cJobManager::GirlPaymentText(sBrothel* brothel, sGirl* girl, int totalTips, int totalPay, int totalGold, int DayNight)
+string cJobManager::GirlPaymentText(sBrothel* brothel, sGirl* girl, int totalTips, int totalPay, int totalGold, int Day0Night1)
 {
 	cConfig cfg;
 	stringstream ss;
 	string girlName = girl->m_Realname;
-	u_int sw = (DayNight == SHIFT_DAY ? girl->m_DayJob : girl->m_NightJob);
+	u_int sw = (Day0Night1 == SHIFT_DAY ? girl->m_DayJob : girl->m_NightJob);
 
 	// `J` if a slave does a job that is normally paid by you but you don't pay your slaves...
 	if (is_job_Paid_Player(sw) && girl->is_slave() && !cfg.initial.slave_pay_outofpocket())

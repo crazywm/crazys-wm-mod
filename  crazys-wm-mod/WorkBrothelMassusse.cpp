@@ -40,10 +40,10 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
 // `J` Brothel Job - Brothel
-bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
 {
 	string message = ""; string girlName = girl->m_Realname;
-	if(Preprocessing(ACTION_WORKMASSUSSE, girl, brothel, DayNight, summary, message))
+	if(Preprocessing(ACTION_WORKMASSUSSE, girl, brothel, Day0Night1, summary, message))
 		return true;
 
 	// put that shit away, you'll scare off the customers!
@@ -287,7 +287,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, int DayNig
 		wages += 225;
 		girl->m_Pay = wages;
 		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +1, true);
-		girl->m_Events.AddMessage(message, imageType, DayNight);
+		girl->m_Events.AddMessage(message, imageType, Day0Night1);
 	}
 	else
 	{
@@ -295,7 +295,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, int DayNig
 		brothel->m_MiscCustomers++;
 		// work out the pay between the house and the girl
 		girl->m_Pay = wages;
-		girl->m_Events.AddMessage(message, imageType, DayNight);
+		girl->m_Events.AddMessage(message, imageType, Day0Night1);
 	}
 
 	//enjoyed the work or not

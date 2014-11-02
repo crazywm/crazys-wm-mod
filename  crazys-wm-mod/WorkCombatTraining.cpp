@@ -43,11 +43,11 @@ extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
 // `J` Arena Job - Fighting
-bool cJobManager::WorkCombatTraining(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkCombatTraining(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
 {
 
 	string message = "";
-	if (Preprocessing(ACTION_COMBAT, girl, brothel, DayNight, summary, message)) return true;
+	if (Preprocessing(ACTION_COMBAT, girl, brothel, Day0Night1, summary, message)) return true;
 	cConfig cfg;
 	stringstream ss;
 	ss.str(message);
@@ -242,7 +242,7 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, sBrothel* brothel, int DayNigh
 	ss << "ttttttttt";
 	}
 
-	"Nervous", 20, ACTION_WORKDOCTOR, girl->m_Realname + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", DayNight != 0);
+	"Nervous", 20, ACTION_WORKDOCTOR, girl->m_Realname + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", Day0Night1 == SHIFT_NIGHT);
 
 	/*
 
@@ -313,7 +313,7 @@ Great Figure
 
 	*/
 
-	girl->m_Events.AddMessage(ss.str(), IMGTYPE_COMBAT, DayNight);
+	girl->m_Events.AddMessage(ss.str(), IMGTYPE_COMBAT, Day0Night1);
 
 	brothel->m_Filthiness += 2;	// fighting is dirty
 

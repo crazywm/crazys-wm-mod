@@ -1036,6 +1036,38 @@ void cGirls::LevelUpStats(sGirl* girl)
 	for (u_int i = 0; i < NUM_SKILLS; i++)	UpdateSkill(girl, i, g_Dice%DiceSize);
 }
 
+/*
+*   `J` degrade the girls skills at the end of the turn.
+*	if a sex type is banned, 10% chance she will loose 1 point in it
+*   all other skills have a 5% chance to loose 1 point
+*/
+void cGirls::DegradeGirls(sBrothel* brothel, sGirl* girl)
+{
+	cJobManager m_JobManager;				
+	int a = g_Dice % 100;	if (a < 5 || (a < 10 && !m_JobManager.is_sex_type_allowed(SKILL_BEASTIALITY, brothel)))	UpdateSkill(girl, SKILL_BEASTIALITY, -1);
+	int b = g_Dice % 100;	if (b < 5 || (b < 10 && !m_JobManager.is_sex_type_allowed(SKILL_BDSM, brothel)))		UpdateSkill(girl, SKILL_BDSM, -1);
+	int c = g_Dice % 100;	if (c < 5 || (c < 10 && !m_JobManager.is_sex_type_allowed(SKILL_GROUP, brothel)))		UpdateSkill(girl, SKILL_GROUP, -1);
+	int d = g_Dice % 100;	if (d < 5 || (d < 10 && !m_JobManager.is_sex_type_allowed(SKILL_NORMALSEX, brothel)))	UpdateSkill(girl, SKILL_NORMALSEX, -1);
+	int e = g_Dice % 100;	if (e < 5 || (e < 10 && !m_JobManager.is_sex_type_allowed(SKILL_ANAL, brothel)))		UpdateSkill(girl, SKILL_ANAL, -1);
+	int f = g_Dice % 100;	if (f < 5 || (f < 10 && !m_JobManager.is_sex_type_allowed(SKILL_LESBIAN, brothel)))		UpdateSkill(girl, SKILL_LESBIAN, -1);
+	int g = g_Dice % 100;	if (g < 5 || (g < 10 && !m_JobManager.is_sex_type_allowed(SKILL_FOOTJOB, brothel)))		UpdateSkill(girl, SKILL_FOOTJOB, -1);
+	int h = g_Dice % 100;	if (h < 5 || (h < 10 && !m_JobManager.is_sex_type_allowed(SKILL_HANDJOB, brothel)))		UpdateSkill(girl, SKILL_HANDJOB, -1);
+	int i = g_Dice % 100;	if (i < 5 || (i < 10 && !m_JobManager.is_sex_type_allowed(SKILL_ORALSEX, brothel)))		UpdateSkill(girl, SKILL_ORALSEX, -1);
+	int j = g_Dice % 100;	if (j < 5 || (j < 10 && !m_JobManager.is_sex_type_allowed(SKILL_TITTYSEX, brothel)))	UpdateSkill(girl, SKILL_TITTYSEX, -1);
+	int k = g_Dice % 100;	if (k < 5 || (k < 10 && !m_JobManager.is_sex_type_allowed(SKILL_STRIP, brothel)))		UpdateSkill(girl, SKILL_STRIP, -1);
+
+	if (g_Dice.percent(5))	UpdateSkill(girl, SKILL_MAGIC, -1);
+	if (g_Dice.percent(5))	UpdateSkill(girl, SKILL_SERVICE, -1);
+	if (g_Dice.percent(5))	UpdateSkill(girl, SKILL_COMBAT, -1);
+	if (g_Dice.percent(5))	UpdateSkill(girl, SKILL_MEDICINE, -1);
+	if (g_Dice.percent(5))	UpdateSkill(girl, SKILL_PERFORMANCE, -1);
+	if (g_Dice.percent(5))	UpdateSkill(girl, SKILL_CRAFTING, -1);
+	if (g_Dice.percent(5))	UpdateSkill(girl, SKILL_HERBALISM, -1);
+	if (g_Dice.percent(5))	UpdateSkill(girl, SKILL_FARMING, -1);
+	if (g_Dice.percent(5))	UpdateSkill(girl, SKILL_BREWING, -1);
+	if (g_Dice.percent(5))	UpdateSkill(girl, SKILL_ANIMALHANDLING, -1);
+}
+
 // ----- Add remove
 
 void cGirls::AddRandomGirl(sRandomGirl* girl)
@@ -4024,7 +4056,7 @@ int cGirls::GetNumItemEquiped(sGirl* girl, int Type)
 // ----- Traits
 
 // If a girl enjoys a job enough, she has a chance of gaining traits associated with it
-bool cGirls::PossiblyGainNewTrait(sGirl* girl, string Trait, int Threshold, int ActionType, string Message, bool DayNight)
+bool cGirls::PossiblyGainNewTrait(sGirl* girl, string Trait, int Threshold, int ActionType, string Message, bool Day0Night1)
 {
 	if (girl->m_Enjoyment[ActionType] > Threshold && !girl->has_trait(Trait))
 	{
@@ -4040,7 +4072,7 @@ bool cGirls::PossiblyGainNewTrait(sGirl* girl, string Trait, int Threshold, int 
 }
 
 // If a girl enjoys a job enough, she has a chance of losing bad traits associated with it
-bool cGirls::PossiblyLoseExistingTrait(sGirl* girl, string Trait, int Threshold, int ActionType, string Message, bool DayNight)
+bool cGirls::PossiblyLoseExistingTrait(sGirl* girl, string Trait, int Threshold, int ActionType, string Message, bool Day0Night1)
 {
 	if (girl->m_Enjoyment[ActionType] > Threshold && girl->has_trait(Trait))
 	{
@@ -6104,7 +6136,7 @@ void cGirls::updateHappyTraits(sGirl* girl)
 
 // ----- Sex
 
-void cGirls::GirlFucks(sGirl* girl, int DayNight, sCustomer* customer, bool group, string& message, u_int& SexType)
+void cGirls::GirlFucks(sGirl* girl, int Day0Night1, sCustomer* customer, bool group, string& message, u_int& SexType)
 {
 	bool good = false;
 	bool contraception = false;
@@ -11203,11 +11235,11 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 	else if (detailName == "DayJob" || detailName == "NightJob")
 	{
 		int DN_Job = m_DayJob;
-		bool DN_Day = 1;
+		bool DN_Day = 0;
 		if (detailName == "NightJob")
 		{
 			DN_Job = m_NightJob;
-			DN_Day = 0;
+			DN_Day = 1;
 		}
 		if (DN_Job >= NUM_JOBS)
 		{
@@ -11275,6 +11307,9 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 				if (wdays >= 3)		{ wdays = 3; }
 				else if (wdays > 1)	{ wdays = 2; }
 				else				{ wdays = 1; }
+			}
+			if (g_Clinic.GetNumGirlsOnJob(0, JOB_DOCTOR, DN_Day) > 0)
+			{
 				ss << g_Brothels.m_JobManager.JobName[DN_Job] << " (" << wdays << ")*";
 			}
 			else

@@ -41,7 +41,7 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
 // `J` Brothel Job - General
-bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
 {
 	// `J` NOTE: start with just the basic stuff
 	stringstream ss;
@@ -56,7 +56,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int DayNight, str
 
 	// `J` NOTE: one message to tell she is resting - use a separate one to tell the anything else she does
 	ss << girlName << gettext(" rested and recovered some energy.");
-	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, DayNight);
+	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 
 	//if (g_Dice % 2 != 1)		//	`J` blocking the rest of the rest stuff until more gets worked out. 
 		return false;
@@ -72,8 +72,8 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int DayNight, str
 	int HateLove = 0;
 	HateLove = g_Girls.GetStat(girl, STAT_PCLOVE) - g_Girls.GetStat(girl, STAT_PCHATE);
 	int imagetype = IMGTYPE_PROFILE;
-	vector<sGirl*> barmaid = girls_on_job(brothel, JOB_BARMAID, DayNight);
-	vector<sGirl*> clubbar = girls_on_job(brothel, JOB_SLEAZYBARMAID, DayNight);
+	vector<sGirl*> barmaid = girls_on_job(brothel, JOB_BARMAID, Day0Night1);
+	vector<sGirl*> clubbar = girls_on_job(brothel, JOB_SLEAZYBARMAID, Day0Night1);
 
 	int v[2] = {-1,-1};
 	girl->m_Triggers.CheckForScript(TRIGGER_SHOPPING, true, v);	// check for and trigger shopping scripts
@@ -505,23 +505,23 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int DayNight, str
 
 		g_Girls.UpdateStat(girl, STAT_HEALTH, health);
 		g_Girls.UpdateStat(girl, STAT_HAPPINESS, happy);
-		girl->m_Events.AddMessage(message, imagetype, DayNight);
+		girl->m_Events.AddMessage(message, imagetype, Day0Night1);
 		return false;
 	}
 
 	// 1. if she is addicted she will first attempt to purchase drugs until she has no money
 	if(g_Girls.HasTrait(girl, "Viras Blood Addict"))
-      AddictBuysDrugs("Viras Blood Addict", "Viras Blood", girl, brothel, DayNight);
+      AddictBuysDrugs("Viras Blood Addict", "Viras Blood", girl, brothel, Day0Night1);
 
 	if(g_Girls.HasTrait(girl, "Fairy Dust Addict"))
-      AddictBuysDrugs("Fairy Dust Addict", "Fairy Dust", girl, brothel, DayNight);
+      AddictBuysDrugs("Fairy Dust Addict", "Fairy Dust", girl, brothel, Day0Night1);
 
 	if(g_Girls.HasTrait(girl, "Shroud Addict"))
-      AddictBuysDrugs("Shroud Addict", "Shroud Mushroom", girl, brothel, DayNight);
+      AddictBuysDrugs("Shroud Addict", "Shroud Mushroom", girl, brothel, Day0Night1);
 
 	if(girl->m_Money == 0 || girl->m_NumInventory == 40)
 	{
-		girl->m_Events.AddMessage(message, imagetype, DayNight);
+		girl->m_Events.AddMessage(message, imagetype, Day0Night1);
 		return false;
 	}
 
@@ -685,11 +685,11 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int DayNight, str
 		message += gettext(" She did some shopping, and bought: ") + buyList + ".";
 	}
 
-	girl->m_Events.AddMessage(message, IMGTYPE_SHOP, DayNight);
+	girl->m_Events.AddMessage(message, IMGTYPE_SHOP, Day0Night1);
 	return false;
 }
 
-bool cJobManager::AddictBuysDrugs(string Addiction, string Drug, sGirl* girl, sBrothel* brothel, int DayNight)
+bool cJobManager::AddictBuysDrugs(string Addiction, string Drug, sGirl* girl, sBrothel* brothel, int Day0Night1)
 {
 	int id = g_InvManager.CheckShopItem(Drug);
 	if(id == -1)

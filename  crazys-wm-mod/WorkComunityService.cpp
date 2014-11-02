@@ -44,12 +44,12 @@ extern cGold g_Gold;
 extern int g_Building;
 
 // `J` Centre Job - General
-bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
 {
 	string message = "", girlName = girl->m_Realname;
 	g_Building = BUILDING_CENTRE;
 
-	if (Preprocessing(ACTION_WORKCENTRE, girl, brothel, DayNight, summary, message))	// they refuse to have work
+	if (Preprocessing(ACTION_WORKCENTRE, girl, brothel, Day0Night1, summary, message))	// they refuse to have work
 		return true;
 
 	// put that shit away, you'll scare off the customers!
@@ -151,7 +151,7 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, int DayNig
 	}
 
 	g_Brothels.GetPlayer()->disposition(dispo);
-	girl->m_Events.AddMessage(message, image, DayNight);
+	girl->m_Events.AddMessage(message, image, Day0Night1);
 
 
 	// Improve stats

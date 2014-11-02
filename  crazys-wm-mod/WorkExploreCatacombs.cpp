@@ -42,14 +42,14 @@ extern cGold g_Gold;
 cJobManager m_JobManager;
 
 // `J` Brothel Job - General
-bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
 {
 	string message = "";
-	if (Preprocessing(ACTION_COMBAT, girl, brothel, DayNight, summary, message)) return true;
+	if (Preprocessing(ACTION_COMBAT, girl, brothel, Day0Night1, summary, message)) return true;
 	// determine if they fight any monsters
 	if (!g_Dice.percent(max(girl->combat(), girl->magic())))	// WD:	Allow best of Combat or Magic skill 
 	{
-		girl->m_Events.AddMessage("Nobody wants to play with her today in the catacombs :(", IMGTYPE_COMBAT, DayNight);
+		girl->m_Events.AddMessage("Nobody wants to play with her today in the catacombs :(", IMGTYPE_COMBAT, Day0Night1);
 		return false;
 	}
 
@@ -88,7 +88,7 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, int DayNi
 			{
 				message = "She came back with one animal today.\n\n";
 				message += "(Error: You need a Non-Human Random Girl to allow WorkExploreCatacombs randomness)";
-				girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
+				girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, Day0Night1);
 				g_Brothels.add_to_beasts(1);
 				type_beasts++;
 			}
@@ -197,7 +197,7 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, int DayNi
 			ItemPlace = g_Brothels.HasItem(TempItem->m_Name, -1);
 			if ((ItemPlace != -1) && (g_Brothels.m_NumItem[ItemPlace] <= 999))
 			{
-				item_list += ((item_list == "") ? "" : ", ") + TempItem->m_Name;
+				item_list += ((item_list == "") ? "" : ",\n") + TempItem->m_Name;
 				g_Brothels.m_NumItem[ItemPlace]++;
 				num_items++;
 			}
@@ -209,7 +209,7 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, int DayNi
 				{
 					if (g_Brothels.m_Inventory[j] == 0) // Empty slot
 					{
-						item_list += ((item_list == "") ? "" : ", ") + TempItem->m_Name;
+						item_list += ((item_list == "") ? "" : ",\n") + TempItem->m_Name;
 						g_Brothels.m_Inventory[j] = TempItem;
 						g_Brothels.m_EquipedItems[j] = 0;
 						g_Brothels.m_NumInventory++;
@@ -253,14 +253,14 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, int DayNi
 	{
 		ss << (num_monsters > 0 ? "Further, she" : "She") << " came out with ";
 		if (num_items == 1) ss << "one ";
-		else	ss << num_items << " items: ";
+		else	ss << num_items << " items:\n";
 		ss << item_list << ".\n\n";
 	}
 	if (gold > 0) ss << "She " << (num_monsters + num_items > 0 ? "also " : "") << "came out with " << gold << " gold.";
 
 	if (num_monsters + num_items + gold < 1) ss << "She came out empty handed.";
 
-	girl->m_Events.AddMessage(ss.str(), IMGTYPE_COMBAT, DayNight);
+	girl->m_Events.AddMessage(ss.str(), IMGTYPE_COMBAT, Day0Night1);
 
 	ss.str("");
 	if (girl->get_stat(STAT_LIBIDO) > 90 && type_monster_girls + type_unique_monster_girls > 0 && m_JobManager.is_sex_type_allowed(SKILL_LESBIAN, brothel))
@@ -270,7 +270,7 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, int DayNi
 		ss << " she captured.";
 		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -50);
 		g_Girls.UpdateSkill(girl, SKILL_LESBIAN, type_monster_girls + type_unique_monster_girls);
-		girl->m_Events.AddMessage(ss.str(), IMGTYPE_LESBIAN, DayNight);
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_LESBIAN, Day0Night1);
 	}
 	else if (girl->get_stat(STAT_LIBIDO) > 90 && type_beasts > 0 && m_JobManager.is_sex_type_allowed(SKILL_BEASTIALITY, brothel))
 	{
@@ -279,7 +279,7 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, int DayNi
 		ss << " she captured.";
 		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -50);
 		g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, type_beasts);
-		girl->m_Events.AddMessage(ss.str(), IMGTYPE_BEAST, DayNight);
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_BEAST, Day0Night1);
 		if (!girl->calc_insemination(g_Brothels.GetPlayer(), false, 1.0))
 		{
 			g_MessageQue.AddToQue(girl->m_Realname + " has gotten inseminated", 0);
@@ -298,20 +298,20 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, int DayNi
 	if (g_Girls.HasTrait(girl, "Lesbian"))				libido += type_monster_girls + type_unique_monster_girls;
 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_COMBAT, g_Dice % skill);
-	g_Girls.UpdateSkill(girl, SKILL_MAGIC, g_Dice % skill);
+	g_Girls.UpdateSkill(girl, SKILL_COMBAT, (g_Dice % skill)+1);
+	g_Girls.UpdateSkill(girl, SKILL_MAGIC,  (g_Dice % skill)+1);
 	g_Girls.UpdateStat(girl, STAT_AGILITY, g_Dice % skill);
 	g_Girls.UpdateStat(girl, STAT_CONSTITUTION, g_Dice % skill);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
-	g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, +8, true);
+	g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, (g_Dice % skill)+2, true);
 
 	// Myr: Turned trait gains into functions
-	g_Girls.PossiblyGainNewTrait(girl, "Tough", 30, ACTION_COMBAT, "She has become pretty Tough from all of the fights she's been in.", DayNight != 0);
-	g_Girls.PossiblyGainNewTrait(girl, "Adventurer", 40, ACTION_COMBAT, "She has been in enough tough spots to consider herself an Adventurer.", DayNight != 0);
-	g_Girls.PossiblyGainNewTrait(girl, "Aggressive", 60, ACTION_COMBAT, "She is getting rather Aggressive from her enjoyment of combat.", DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Tough", 30, ACTION_COMBAT, "She has become pretty Tough from all of the fights she's been in.", Day0Night1 == SHIFT_NIGHT);
+	g_Girls.PossiblyGainNewTrait(girl, "Adventurer", 40, ACTION_COMBAT, "She has been in enough tough spots to consider herself an Adventurer.", Day0Night1 == SHIFT_NIGHT);
+	g_Girls.PossiblyGainNewTrait(girl, "Aggressive", 60, ACTION_COMBAT, "She is getting rather Aggressive from her enjoyment of combat.", Day0Night1 == SHIFT_NIGHT);
 
 	//lose traits
-	g_Girls.PossiblyLoseExistingTrait(girl, "Fragile", 75, ACTION_COMBAT, girl->m_Realname + " has had to heal from so many injuries you can't say she is fragile anymore.", DayNight != 0);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Fragile", 75, ACTION_COMBAT, girl->m_Realname + " has had to heal from so many injuries you can't say she is fragile anymore.", Day0Night1 == SHIFT_NIGHT);
 
 	return false;
 }

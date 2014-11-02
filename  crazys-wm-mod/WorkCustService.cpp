@@ -42,14 +42,14 @@ extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
 // `J` Brothel Job - General
-bool cJobManager::WorkCustService(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkCustService(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
 {
 	int numCusts = 0; // The number of customers she can handle
 	int serviced = 0;
 	sCustomer Cust;
 	
 	string message = "";
-	if(Preprocessing(ACTION_WORKCUSTSERV, girl, brothel, DayNight, summary, message))	// they refuse to work in customer service
+	if(Preprocessing(ACTION_WORKCUSTSERV, girl, brothel, Day0Night1, summary, message))	// they refuse to work in customer service
 		return true;
 
 	// put that shit away, you'll scare off the customers!
@@ -131,7 +131,7 @@ bool cJobManager::WorkCustService(sGirl* girl, sBrothel* brothel, int DayNight, 
 		else
 		{
 			//If there aren't enough customers to take care of, time to quit.
-			girl->m_Events.AddMessage(girl->m_Realname + " ran out of customers to take care of.", IMGTYPE_PROFILE, DayNight);
+			girl->m_Events.AddMessage(girl->m_Realname + " ran out of customers to take care of.", IMGTYPE_PROFILE, Day0Night1);
 			break;
 		}
 	}
@@ -154,7 +154,7 @@ bool cJobManager::WorkCustService(sGirl* girl, sBrothel* brothel, int DayNight, 
 	// Now pay the girl.
 	girl->m_Pay += 50;
 	g_Gold.staff_wages(50);  // wages come from you
-	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
+	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, Day0Night1);
 	
 	// Raise skills
 	int xp = 5 + (serviced / 5), libido = 1, skill = 2 + (serviced / 10);

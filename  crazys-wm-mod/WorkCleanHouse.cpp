@@ -44,7 +44,7 @@ extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
 // `J` House Job - General - job_is_cleaning
-bool cJobManager::WorkCleanHouse(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkCleanHouse(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
 {
 	string message = "";
 	string girlName = girl->m_Realname;
@@ -153,7 +153,7 @@ bool cJobManager::WorkCleanHouse(sGirl* girl, sBrothel* brothel, int DayNight, s
 	}
 	
 	// do all the output
-	girl->m_Events.AddMessage(ss.str(), IMGTYPE_MAID, DayNight);
+	girl->m_Events.AddMessage(ss.str(), IMGTYPE_MAID, Day0Night1);
 	brothel->m_Filthiness -= CleanAmt;
 	girl->m_Pay = wages;
 
@@ -170,7 +170,7 @@ bool cJobManager::WorkCleanHouse(sGirl* girl, sBrothel* brothel, int DayNight, s
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKCLEANING, enjoy, true);
 	//lose traits
-	g_Girls.PossiblyLoseExistingTrait(girl, "Clumsy", 30, ACTION_WORKCLEANING, "It took her spilling hundreds of buckets, and just as many reprimands, but " + girl->m_Realname + " has finally stopped being so Clumsy.", DayNight != 0);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Clumsy", 30, ACTION_WORKCLEANING, "It took her spilling hundreds of buckets, and just as many reprimands, but " + girl->m_Realname + " has finally stopped being so Clumsy.", Day0Night1 == SHIFT_NIGHT);
 
 	return false;
 }

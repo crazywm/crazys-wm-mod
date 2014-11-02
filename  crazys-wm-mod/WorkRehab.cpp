@@ -43,7 +43,7 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
 // `J` Centre Job - Rehab_Job - Full_Time_Job
-bool cJobManager::WorkRehab(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkRehab(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
 {
 	girl->m_DayJob = girl->m_NightJob = JOB_REHAB;	// it is a full time job
 
@@ -55,7 +55,7 @@ bool cJobManager::WorkRehab(sGirl* girl, sBrothel* brothel, int DayNight, string
 
 	int enjoy = 0;
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
-	int msgtype = DayNight, imagetype = IMGTYPE_PROFILE;
+	int msgtype = Day0Night1, imagetype = IMGTYPE_PROFILE;
 
 	ss << girlName << " underwent rehab for her addiction.\n\n";
 
@@ -69,7 +69,7 @@ bool cJobManager::WorkRehab(sGirl* girl, sBrothel* brothel, int DayNight, string
 	{
 		ss.str("");
 		ss << girlName << " is not addicted to anything so she was sent to the waiting room.";
-		if (DayNight == 0)	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+		if (Day0Night1 == SHIFT_DAY)	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
 		girl->m_YesterDayJob = girl->m_YesterNightJob = JOB_CENTREREST;
 		girl->m_DayJob = girl->m_NightJob = JOB_CENTREREST;
 		girl->m_PrevWorkingDay = girl->m_WorkingDay = 0;
@@ -88,11 +88,11 @@ bool cJobManager::WorkRehab(sGirl* girl, sBrothel* brothel, int DayNight, string
 		ss << "She fought with the counselor and did not make any progress this week.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKREHAB, -1, true);
-		if (DayNight == 1) girl->m_WorkingDay--;
+		if (Day0Night1 == SHIFT_NIGHT) girl->m_WorkingDay--;
 		return true;
 	}
 
-	if (DayNight == 0) girl->m_WorkingDay++;
+	if (Day0Night1 == SHIFT_DAY) girl->m_WorkingDay++;
 
 	g_Girls.UpdateStat(girl, STAT_HAPPINESS, g_Dice % 30 - 20);
 	g_Girls.UpdateStat(girl, STAT_SPIRIT, g_Dice % 5 - 10);
@@ -125,7 +125,7 @@ bool cJobManager::WorkRehab(sGirl* girl, sBrothel* brothel, int DayNight, string
 		return false;
 	}
 
-	if (girl->m_WorkingDay >= 3 && DayNight == 1)
+	if (girl->m_WorkingDay >= 3 && Day0Night1 == SHIFT_NIGHT)
 	{
 		enjoy += g_Dice % 10;
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCOUNSELOR, g_Dice%6-2, true);	// `J` She may want to help others with their problems

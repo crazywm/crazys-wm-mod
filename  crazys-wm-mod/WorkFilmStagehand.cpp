@@ -44,7 +44,7 @@ extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
 // `J` Movie Studio Job - Crew - job_is_cleaning
-bool cJobManager::WorkFilmStagehand(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkFilmStagehand(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
 {
 	cConfig cfg;
 	stringstream ss;
@@ -209,7 +209,7 @@ bool cJobManager::WorkFilmStagehand(sGirl* girl, sBrothel* brothel, int DayNight
 	if (filming) g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, enjoym, true);
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKCLEANING, enjoyc, true);
 	//lose traits
-	g_Girls.PossiblyLoseExistingTrait(girl, "Clumsy", 30, ACTION_WORKCLEANING, "It took her spilling hundreds of buckets, and just as many reprimands, but " + girl->m_Realname + " has finally stopped being so Clumsy.", DayNight != 0);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Clumsy", 30, ACTION_WORKCLEANING, "It took her spilling hundreds of buckets, and just as many reprimands, but " + girl->m_Realname + " has finally stopped being so Clumsy.", Day0Night1 == SHIFT_NIGHT);
 
 	return false;
 }

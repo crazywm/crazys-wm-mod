@@ -44,10 +44,10 @@ extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
 // `J` Farm Job - Producers
-bool cJobManager::WorkMakeItem(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkMakeItem(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
 {
 	string message = "";
-	if (Preprocessing(ACTION_WORKCENTRE, girl, brothel, DayNight, summary, message))
+	if (Preprocessing(ACTION_WORKCENTRE, girl, brothel, Day0Night1, summary, message))
 		return true;
 
 	int jobperformance = (	g_Girls.GetSkill(girl, SKILL_CRAFTING) +
@@ -60,13 +60,13 @@ bool cJobManager::WorkMakeItem(sGirl* girl, sBrothel* brothel, int DayNight, str
 	{
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCENTRE, -1, true);
 		message = gettext(" She wasn't able to make anything.");
-		girl->m_Events.AddMessage(message, IMGTYPE_CRAFT, DayNight);
+		girl->m_Events.AddMessage(message, IMGTYPE_CRAFT, Day0Night1);
 	}
 	else
 	{
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCENTRE, +3, true);
 		message = gettext(" She enjoyed her time working and made two items.");
-		girl->m_Events.AddMessage(message, IMGTYPE_CRAFT, DayNight);
+		girl->m_Events.AddMessage(message, IMGTYPE_CRAFT, Day0Night1);
 		g_Brothels.add_to_goods(2);
 	}
 

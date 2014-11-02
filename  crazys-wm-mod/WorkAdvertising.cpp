@@ -43,16 +43,16 @@ extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
 // `J` Brothel Job - General
-bool cJobManager::WorkAdvertising(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkAdvertising(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
 {
 	string message = "";
-	if (Preprocessing(ACTION_WORKADVERTISING, girl, brothel, DayNight, summary, message)) return true;
+	if (Preprocessing(ACTION_WORKADVERTISING, girl, brothel, Day0Night1, summary, message)) return true;
 	
 	cConfig cfg;
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
 	// How much will she help stretch your advertising budget? Let's find out
-	double cval, multiplier = 0.0;
+	double cval = 0.0, multiplier = 0.0;
 
 	cval = g_Girls.GetSkill(girl, SKILL_PERFORMANCE);	// `J` added
 	if (cval > 0)
@@ -122,20 +122,20 @@ bool cJobManager::WorkAdvertising(sGirl* girl, sBrothel* brothel, int DayNight, 
 	{
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKADVERTISING, -1, true);
 		message = gettext("She was harassed and made fun of while advertising.");
-		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
+		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, Day0Night1);
 		multiplier *= 0.8;
 	}
 	else if (b >= 90)
 	{
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKADVERTISING, +3, true);
 		message = gettext("She made sure many people were interested in the buildings facilities.");
-		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
+		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, Day0Night1);
 	}
 	else
 	{
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKADVERTISING, +1, true);
 		message = gettext("She had an uneventful day advertising.");
-		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, DayNight);
+		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, Day0Night1);
 	}
 
 
@@ -170,9 +170,9 @@ bool cJobManager::WorkAdvertising(sGirl* girl, sBrothel* brothel, int DayNight, 
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill + 1);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
-	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 70, ACTION_WORKADVERTISING, "Advertising on a daily basis has made " + girl->m_Realname + " more Charismatic.", DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 70, ACTION_WORKADVERTISING, "Advertising on a daily basis has made " + girl->m_Realname + " more Charismatic.", Day0Night1 == SHIFT_NIGHT);
 	
-	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 40, ACTION_WORKADVERTISING, girl->m_Realname + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", DayNight != 0);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 40, ACTION_WORKADVERTISING, girl->m_Realname + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", Day0Night1 == SHIFT_NIGHT);
 
 	return false;
 }

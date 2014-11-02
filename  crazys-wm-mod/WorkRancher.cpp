@@ -42,12 +42,12 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
 // `J` Farm Job - Laborers
-bool cJobManager::WorkRancher(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkRancher(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
 {
 	string message = "";
 	string girlName = girl->m_Realname;
 
-	if(Preprocessing(ACTION_WORKFARM, girl, brothel, DayNight, summary, message))	// they refuse to have work in the bar
+	if(Preprocessing(ACTION_WORKFARM, girl, brothel, Day0Night1, summary, message))	// they refuse to have work in the bar
 		return true;
 
 	// put that shit away, you'll scare off the customers!
@@ -126,7 +126,7 @@ bool cJobManager::WorkRancher(sGirl* girl, sBrothel* brothel, int DayNight, stri
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKFARM, +1, true);
 	}
 
-	girl->m_Events.AddMessage(message, IMGTYPE_HERD, DayNight);
+	girl->m_Events.AddMessage(message, IMGTYPE_HERD, Day0Night1);
 
 
 	int roll_max = (g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA));

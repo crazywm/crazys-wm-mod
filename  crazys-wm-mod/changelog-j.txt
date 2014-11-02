@@ -1053,6 +1053,38 @@ Updated gang explore catacombs
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.14
 !!!!!!!!!!!!!!!!!!!! pushed to SVN - r121
 
+###  Changes 10/26-28/2014
+Fixed bug in items where healing potions do not work on constructs.
+Increased the ammount of Animalhandling beast careres gain
+Updated WorkExploreCatacombs a little
+Updated WorkHealing and WorkRepairShop 
+
+###  Changes 10/29/2014
+
+Added DegradeGirls() to lower girls skills a little each turn
+Updated WorkPersonalBedWarmer and WorkPersonalTraining to use sex restrictions
+
+###  Changes 11/1/2014
+Fixed bugs in marton assigning girls new jobs
+ - matron will only assign a new job if both day and night are free.
+Changed get healing and get repairs
+ - both are now single shift jobs.
+ - both can be assigned even with no staff to work on them.
+ - they heal differently based on the staff available.
+Cleaned and fixed a few bugs in the clinic.
+Multiselect continues changing all girls jobs if one girl can not do that job instead of stopping on that girl.
+Replaced all variables that handle day/night with "Day0Night1" to reduce confusion 
+ - (Day0Night1 == 0) is always day, (Day0Night1 == 1) is always night
+ - use "if (Day0Night1 == SHIFT_DAY)" or "if (Day0Night1 == SHIFT_NIGHT)"
+Added day and night assignment with CTRL held while clicking the new job
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.15
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r122
+
+
+
+
+
 
 
 

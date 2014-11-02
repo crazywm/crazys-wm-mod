@@ -58,7 +58,7 @@ public:
 	void AddGirl(int brothelID, sGirl* girl);
 	void RemoveGirl(int brothelID, sGirl* girl, bool deleteGirl = false);	// Removes a girl from the list (only used with editor where all girls are available)
 	void UpdateClinic();
-	void UpdateGirls(sBrothel* brothel, int DayNight);
+	void UpdateGirls(sBrothel* brothel, int Day0Night1);
 	//void	AddBrothel(sBrothel* newBroth);
 	TiXmlElement* SaveDataXML(TiXmlElement* pRoot);
 	bool LoadDataXML(TiXmlHandle hBrothelManager);
@@ -71,7 +71,7 @@ public:
 
 	bool is_Surgery_Job(int testjob);
 	bool DoctorNeeded();
-	int GetNumberPatients(int DayNight = SHIFT_DAY);
+	int GetNumberPatients(int Day0Night1 = SHIFT_DAY);
 
 };
 

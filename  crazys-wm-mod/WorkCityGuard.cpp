@@ -47,10 +47,10 @@ extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
 // `J` Arena Job - Staff
-bool cJobManager::WorkCityGuard(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkCityGuard(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
 {
 	string message = ""; string girlName = girl->m_Realname;
-	if (Preprocessing(ACTION_WORKSECURITY, girl, brothel, DayNight, summary, message)) return true;
+	if (Preprocessing(ACTION_WORKSECURITY, girl, brothel, Day0Night1, summary, message)) return true;
 
 	// ready armor and weapons!
 	g_Girls.EquipCombat(girl);
@@ -135,7 +135,7 @@ bool cJobManager::WorkCityGuard(sGirl* girl, sBrothel* brothel, int DayNight, st
 	if (tempgirl) delete tempgirl; tempgirl = 0;
 
 
-	girl->m_Events.AddMessage(message, imagetype, DayNight);
+	girl->m_Events.AddMessage(message, imagetype, Day0Night1);
 	g_Brothels.GetPlayer()->suspicion(sus);
 	girl->m_Pay += wages;
 
@@ -158,9 +158,9 @@ bool cJobManager::WorkCityGuard(sGirl* girl, sBrothel* brothel, int DayNight, st
 	
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKSECURITY, enjoy, true);
 	g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, enjoyc, true);
-	g_Girls.PossiblyGainNewTrait(girl, "Tough", 20, ACTION_WORKSECURITY, "She has become pretty Tough from all of the fights she's been in.", DayNight != 0);
-	g_Girls.PossiblyGainNewTrait(girl, "Aggressive", 60, ACTION_WORKSECURITY, "She is getting rather Aggressive from her enjoyment of combat.", DayNight != 0);
-	g_Girls.PossiblyGainNewTrait(girl, "Fleet of Foot", 30, ACTION_WORKSECURITY, "She is getting rather fast from all the fighting.", DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Tough", 20, ACTION_WORKSECURITY, "She has become pretty Tough from all of the fights she's been in.", Day0Night1 == SHIFT_NIGHT);
+	g_Girls.PossiblyGainNewTrait(girl, "Aggressive", 60, ACTION_WORKSECURITY, "She is getting rather Aggressive from her enjoyment of combat.", Day0Night1 == SHIFT_NIGHT);
+	g_Girls.PossiblyGainNewTrait(girl, "Fleet of Foot", 30, ACTION_WORKSECURITY, "She is getting rather fast from all the fighting.", Day0Night1 == SHIFT_NIGHT);
 
 
 	return false;

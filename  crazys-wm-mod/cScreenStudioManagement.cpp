@@ -61,7 +61,7 @@ static bool FireGirl = false;
 static bool FreeGirl = false;
 static bool SellGirl = false;
 static int selection = -1;
-static int DayNight = 1;	// 1 is night, 0 is day.
+static int Day0Night1 = SHIFT_NIGHT;	// 1 is night, 0 is day.
 static bool SetJob = false;
 
 extern sGirl *selected_girl;
@@ -286,14 +286,14 @@ void cScreenStudioManagement::check_events()
 	{
 		DisableButton(day_id, true);
 		DisableButton(night_id, false);
-		DayNight = SHIFT_NIGHT; // We only want night shifts in studio.. just a sanity check --PP
+		Day0Night1 = SHIFT_NIGHT; // We only want night shifts in studio.. just a sanity check --PP
 		RefreshSelectedJobType();
 	}
 	if(g_InterfaceEvents.CheckButton(night_id))
 	{
 		DisableButton(day_id, false);
 		DisableButton(night_id, true);
-		DayNight = 1;
+		Day0Night1 = SHIFT_NIGHT;
 		RefreshSelectedJobType();
 	}
 	if(g_InterfaceEvents.CheckListbox(jobtypelist_id))

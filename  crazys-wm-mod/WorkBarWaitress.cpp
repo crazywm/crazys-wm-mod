@@ -40,11 +40,11 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
 // `J` Brothel Job - Bar
-bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
 {
 	string message = ""; string girlName = girl->m_Realname;
 
-	if(Preprocessing(ACTION_WORKBAR, girl, brothel, DayNight, summary, message)) 		return true;
+	if(Preprocessing(ACTION_WORKBAR, girl, brothel, Day0Night1, summary, message)) 		return true;
 
 	
 	g_Girls.UnequipCombat(girl);  // put that shit away, you'll scare off the customers!
@@ -395,7 +395,7 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 	{ message += " \nOtherwise, the shift passed uneventfully."; work += 1; }
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKBAR, work, true);
-	girl->m_Events.AddMessage(message, IMGTYPE_WAIT, DayNight);
+	girl->m_Events.AddMessage(message, IMGTYPE_WAIT, Day0Night1);
 
 	int roll_max = (g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA));
 	roll_max /= 4;
@@ -419,10 +419,10 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, int DayNight, 
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 	
 	//gain traits
-	g_Girls.PossiblyGainNewTrait(girl, "Charming", 70, ACTION_WORKBAR, girlName + " has been flirting with customers to try to get better tips. Enough practice at it has made her quite Charming.", DayNight != 0);
-	if (jobperformance > 150 && g_Girls.GetStat(girl, STAT_CONSTITUTION) > 65) { g_Girls.PossiblyGainNewTrait(girl, "Fleet of Foot", 60, ACTION_WORKBAR, girlName + " has been doding bewteen tables and avoiding running into customers for so long she has become Fleet of Foot.", DayNight != 0); }
+	g_Girls.PossiblyGainNewTrait(girl, "Charming", 70, ACTION_WORKBAR, girlName + " has been flirting with customers to try to get better tips. Enough practice at it has made her quite Charming.", Day0Night1 == SHIFT_NIGHT);
+	if (jobperformance > 150 && g_Girls.GetStat(girl, STAT_CONSTITUTION) > 65) { g_Girls.PossiblyGainNewTrait(girl, "Fleet of Foot", 60, ACTION_WORKBAR, girlName + " has been doding bewteen tables and avoiding running into customers for so long she has become Fleet of Foot.", Day0Night1 == SHIFT_NIGHT); }
 
 	//lose traits
-	g_Girls.PossiblyLoseExistingTrait(girl, "Clumsy", 30, ACTION_WORKBAR, "It took her break hundreds of dishes, and just as many reprimands, but " + girlName + " has finally stopped being so Clumsy.", DayNight != 0);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Clumsy", 30, ACTION_WORKBAR, "It took her break hundreds of dishes, and just as many reprimands, but " + girlName + " has finally stopped being so Clumsy.", Day0Night1 == SHIFT_NIGHT);
 	return false;
 }

@@ -43,7 +43,7 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
 // `J` Centre Job - Rehab_Job - Full_Time_Job
-bool cJobManager::WorkDrugCounselor(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkDrugCounselor(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
 {
 	bool SkipDisobey = (summary == "SkipDisobey");
 	girl->m_DayJob = girl->m_NightJob = JOB_DRUGCOUNSELOR;	// it is a full time job
@@ -75,9 +75,9 @@ bool cJobManager::WorkDrugCounselor(sGirl* girl, sBrothel* brothel, int DayNight
 	else if (roll_a >= 90)	{ enjoy += g_Dice % 3 + 1;	ss << "She had a pleasant time working."; }
 	else /*             */	{ enjoy += g_Dice % 2;		ss << "Otherwise, the shift passed uneventfully."; }
 
-	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, DayNight);
+	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 
-	int rehabers = g_Centre.GetNumGirlsOnJob(0, JOB_REHAB, DayNight);
+	int rehabers = g_Centre.GetNumGirlsOnJob(0, JOB_REHAB, Day0Night1);
 	// work out the pay between the house and the girl
 	int roll_max = girl->spirit() + girl->intelligence();
 	roll_max /= 4;
@@ -98,9 +98,9 @@ bool cJobManager::WorkDrugCounselor(sGirl* girl, sBrothel* brothel, int DayNight
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKCOUNSELOR, enjoy, true);
 	//gain traits
-	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, ACTION_WORKCOUNSELOR, "Dealing with patients and talking with them about their problems has made " + girl->m_Realname + " more Charismatic.", DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, ACTION_WORKCOUNSELOR, "Dealing with patients and talking with them about their problems has made " + girl->m_Realname + " more Charismatic.", Day0Night1 == SHIFT_NIGHT);
 	//lose traits
-	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 30, ACTION_WORKCOUNSELOR, girl->m_Realname + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", DayNight != 0);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 30, ACTION_WORKCOUNSELOR, girl->m_Realname + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", Day0Night1 == SHIFT_NIGHT);
 
 	return false;
 }

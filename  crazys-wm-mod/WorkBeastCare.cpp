@@ -42,7 +42,7 @@ extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
 // `J` Brothel Job - General
-bool cJobManager::WorkBeastCare(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkBeastCare(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
 {
 	string message = "";
 	string girlName = girl->m_Realname;
@@ -143,7 +143,7 @@ bool cJobManager::WorkBeastCare(sGirl* girl, sBrothel* brothel, int DayNight, st
 
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKCARING, enjoy, true);
-	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, DayNight);
+	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 	girl->m_Pay += wages;
 
 	// Improve girl
@@ -156,9 +156,9 @@ bool cJobManager::WorkBeastCare(sGirl* girl, sBrothel* brothel, int DayNight, st
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, max(1, (g_Dice % skill) - 1));
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
-	g_Girls.UpdateSkill(girl, SKILL_ANIMALHANDLING, g_Dice % skill);
+	g_Girls.UpdateSkill(girl, SKILL_ANIMALHANDLING, max(1, (g_Dice % skill) + 1));
 
-	g_Girls.PossiblyLoseExistingTrait(girl, "Elegant", 40, ACTION_WORKCARING, " Working with dirty, smelly beasts has damaged " + girl->m_Realname + "'s hair, skin and nails making her less Elegant.", DayNight != 0);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Elegant", 40, ACTION_WORKCARING, " Working with dirty, smelly beasts has damaged " + girl->m_Realname + "'s hair, skin and nails making her less Elegant.", Day0Night1 == SHIFT_NIGHT);
 
 	return false;
 }

@@ -44,7 +44,7 @@ extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
 // `J` Clinic Job - Staff
-bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
 {
 	string message = ""; 
 	stringstream ss;
@@ -57,7 +57,7 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, int DayNight, string
 		girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
 		return false;
 	}
-	if (Preprocessing(ACTION_WORKNURSE, girl, brothel, DayNight, summary, message)) return true;
+	if (Preprocessing(ACTION_WORKNURSE, girl, brothel, Day0Night1, summary, message)) return true;
 
 	cConfig cfg;
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the patients!
@@ -372,7 +372,7 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, int DayNight, string
 		wages += patients*2;				// `J` pay her 2 for each patient you send to her
 	}
 
-	girl->m_Events.AddMessage(message, imagetype, DayNight);
+	girl->m_Events.AddMessage(message, imagetype, Day0Night1);
 	if (wages < 0)	wages = 0;
 	g_Clinic.m_Nurse_Patient_Time += patients;
 	girl->m_Tips = tips;
@@ -389,7 +389,7 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, int DayNight, string
 	brothel->m_Finance.clinic_income(earned);
 	ss.str("");
 	ss << girlName << " earned " << earned << " gold from taking care of " << patients << " patients.";
-	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, DayNight);
+	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 
 
 	// Improve stats
@@ -409,9 +409,9 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, int DayNight, string
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKNURSE, enjoy, true);
 	//gain traits
-	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, ACTION_WORKNURSE, "Dealing with patients and talking with them about their problems has made " + girlName + " more Charismatic.", DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, ACTION_WORKNURSE, "Dealing with patients and talking with them about their problems has made " + girlName + " more Charismatic.", Day0Night1 == SHIFT_NIGHT);
 	//lose traits
-	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 30, ACTION_WORKNURSE, girlName + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", DayNight != 0);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 30, ACTION_WORKNURSE, girlName + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", Day0Night1 == SHIFT_NIGHT);
 
 	return false;
 }

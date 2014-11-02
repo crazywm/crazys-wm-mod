@@ -48,10 +48,10 @@ extern int g_Building;
 static cPlayer* m_Player = g_Brothels.GetPlayer();
 
 // `J` House Job - General
-bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
 {
 	string message = "";
-	if (Preprocessing(ACTION_SEX, girl, brothel, DayNight, summary, message)) return true;	// they refuse to have work
+	if (Preprocessing(ACTION_SEX, girl, brothel, Day0Night1, summary, message)) return true;	// they refuse to have work
 
 	g_Building = BUILDING_HOUSE;
 	stringstream ss;
@@ -167,42 +167,42 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, int DayNi
 		g_Girls.UpdateSkill(girl, SKILL_STRIP, skill); 
 		ss << gettext("You decide to have her strip for you.\n\n");
 		ss << gettext("She managed to gain ") << skill << gettext(" Strip.\n\n");
-		girl->m_Events.AddMessage(ss.str(), IMGTYPE_STRIP, DayNight);
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_STRIP, Day0Night1);
 	}
 	else if (roll_b <= 20 && girl->m_Skills[SKILL_LESBIAN] < 100 && is_sex_type_allowed(SKILL_LESBIAN, brothel))
 	{
 		g_Girls.UpdateSkill(girl, SKILL_LESBIAN, skill);
 		ss << gettext("You decide to bring in another girl for her.\n\n");
 		ss << gettext("She managed to gain ") << skill << gettext(" Lesbian.\n\n");
-		girl->m_Events.AddMessage(ss.str(), IMGTYPE_LESBIAN, DayNight);
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_LESBIAN, Day0Night1);
 	}
 	else if (roll_b <= 27 && girl->m_Skills[SKILL_TITTYSEX] < 100 && is_sex_type_allowed(SKILL_TITTYSEX, brothel))
 	{
 		g_Girls.UpdateSkill(girl, SKILL_TITTYSEX, skill);
 		ss << gettext("You decide to have her use her tits on you.\n\n");
 		ss << gettext("She managed to gain ") << skill << gettext(" Titty.\n\n");
-		girl->m_Events.AddMessage(ss.str(), IMGTYPE_TITTY, DayNight);
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_TITTY, Day0Night1);
 	}
 	else if (roll_b <= 34 && girl->m_Skills[SKILL_HANDJOB] < 100 && is_sex_type_allowed(SKILL_HANDJOB, brothel))
 	{
 		g_Girls.UpdateSkill(girl, SKILL_HANDJOB, skill);
 		ss << gettext("You decide to teach her the art of manual stimulation.\n\n");
 		ss << gettext("She managed to gain ") << skill << gettext(" Hand Job.\n\n");
-		girl->m_Events.AddMessage(ss.str(), SKILL_HANDJOB, DayNight);
+		girl->m_Events.AddMessage(ss.str(), SKILL_HANDJOB, Day0Night1);
 	}
 	else if (roll_b <= 40 && girl->m_Skills[SKILL_FOOTJOB] < 100 && is_sex_type_allowed(SKILL_FOOTJOB, brothel))
 	{
 		g_Girls.UpdateSkill(girl, SKILL_FOOTJOB, skill);
 		ss << gettext("You decide to teach her the art of manual stimulation with her feet.\n\n");
 		ss << gettext("She managed to gain ") << skill << gettext(" Foot Job.\n\n");
-		girl->m_Events.AddMessage(ss.str(), SKILL_FOOTJOB, DayNight);
+		girl->m_Events.AddMessage(ss.str(), SKILL_FOOTJOB, Day0Night1);
 	}
 	else if (roll_b <= 50 && girl->m_Skills[SKILL_ORALSEX] < 100 && is_sex_type_allowed(SKILL_ORALSEX, brothel))
 	{
 		g_Girls.UpdateSkill(girl, SKILL_ORALSEX, skill);
 		ss << gettext("You decide to teach her the art of sucking a cock.\n\n");
 		ss << gettext("She managed to gain ") << skill << gettext(" Oral.\n\n");
-		girl->m_Events.AddMessage(ss.str(), IMGTYPE_ORAL, DayNight);
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_ORAL, Day0Night1);
 	}
 	else if (roll_b <= 70 && girl->m_Skills[SKILL_NORMALSEX] < 100 && is_sex_type_allowed(SKILL_NORMALSEX, brothel))
 	{
@@ -214,7 +214,7 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, int DayNi
 			g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
 			ss << gettext("She is no longer a virgin.\n");
 		}
-		girl->m_Events.AddMessage(ss.str(), IMGTYPE_SEX, DayNight);
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_SEX, Day0Night1);
 		if (!girl->calc_pregnancy(g_Brothels.GetPlayer(), false, 1.0))
 		{
 			g_MessageQue.AddToQue(girl->m_Realname + " has gotten pregnant", 0);
@@ -225,7 +225,7 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, int DayNi
 		g_Girls.UpdateSkill(girl, SKILL_ANAL, skill);
 		ss << gettext("You decide to teach her how to use her ass.\n\n");
 		ss << gettext("She managed to gain ") << skill << gettext(" Anal Sex.\n\n");
-		girl->m_Events.AddMessage(ss.str(), IMGTYPE_ANAL, DayNight);
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_ANAL, Day0Night1);
 	}
 	else if (roll_b <= 90 && girl->m_Skills[SKILL_GROUP] < 100 && is_sex_type_allowed(SKILL_GROUP, brothel))
 	{
@@ -237,7 +237,7 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, int DayNi
 			g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
 			ss << gettext("She is no longer a virgin.\n");
 		}
-		girl->m_Events.AddMessage(ss.str(), IMGTYPE_GROUP, DayNight);
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_GROUP, Day0Night1);
 		if (!girl->calc_group_pregnancy(g_Brothels.GetPlayer(), false, 1.0))
 		{
 			g_MessageQue.AddToQue(girl->m_Realname + " has gotten pregnant", 0);
@@ -253,7 +253,7 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, int DayNi
 			g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
 			ss << gettext("She is no longer a virgin.\n");
 		}
-		girl->m_Events.AddMessage(ss.str(), IMGTYPE_BDSM, DayNight);
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_BDSM, Day0Night1);
 		if (!girl->calc_pregnancy(g_Brothels.GetPlayer(), false, 1.0))
 		{
 			g_MessageQue.AddToQue(girl->m_Realname + " has gotten pregnant", 0);
@@ -269,7 +269,7 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, int DayNi
 			g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
 			ss << gettext("She is no longer a virgin.\n");
 		}
-		girl->m_Events.AddMessage(ss.str(), IMGTYPE_BEAST, DayNight);
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_BEAST, Day0Night1);
 	}
 	else															
 	{
@@ -282,7 +282,7 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, int DayNi
 		if (is_sex_type_allowed(SKILL_ANAL, brothel))			g_Girls.UpdateSkill(girl, SKILL_ANAL, (g_Dice % 3));
 		if (is_sex_type_allowed(SKILL_BDSM, brothel))			g_Girls.UpdateSkill(girl, SKILL_BDSM, (g_Dice % 3));
 		ss << gettext("You couldn't decide what to teach her so you just fooled around with her.\n\n");
-		girl->m_Events.AddMessage(ss.str(), IMGTYPE_ECCHI, DayNight);
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_ECCHI, Day0Night1);
 	}
 
 	if (girl->m_States&(1 << STATUS_SLAVE))

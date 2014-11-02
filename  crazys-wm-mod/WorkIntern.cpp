@@ -44,7 +44,7 @@ extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
 // `J` Clinic Job - Staff
-bool cJobManager::WorkIntern(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkIntern(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
 {
 	string message = "";
 	stringstream ss;
@@ -58,7 +58,7 @@ bool cJobManager::WorkIntern(sGirl* girl, sBrothel* brothel, int DayNight, strin
 		return false;
 	}
 
-	if (Preprocessing(ACTION_WORKINTERN, girl, brothel, DayNight, summary, message)) return true;
+	if (Preprocessing(ACTION_WORKINTERN, girl, brothel, Day0Night1, summary, message)) return true;
 
 	cConfig cfg;
 	int enjoy = 0, wages = 0, skill = 0, train = 0;
@@ -127,7 +127,7 @@ bool cJobManager::WorkIntern(sGirl* girl, sBrothel* brothel, int DayNight, strin
 		wages = 25 + (skill * 5); // `J` Pay her more if she learns more
 	}
 
-	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, DayNight);
+	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 	girl->m_Pay = wages;
 
 	// Improve stats
@@ -143,9 +143,9 @@ bool cJobManager::WorkIntern(sGirl* girl, sBrothel* brothel, int DayNight, strin
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKINTERN, enjoy, true);
 	//gain traits
-	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, ACTION_WORKINTERN, "Dealing with patients and talking with them about their problems has made " + girl->m_Realname + " more Charismatic.", DayNight != 0);
+	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, ACTION_WORKINTERN, "Dealing with patients and talking with them about their problems has made " + girl->m_Realname + " more Charismatic.", Day0Night1 == SHIFT_NIGHT);
 	//lose traits
-	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 30, ACTION_WORKINTERN, girl->m_Realname + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", DayNight != 0);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 30, ACTION_WORKINTERN, girl->m_Realname + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", Day0Night1 == SHIFT_NIGHT);
 
 	return false;
 }
