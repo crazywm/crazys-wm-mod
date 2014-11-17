@@ -629,6 +629,15 @@ struct sGirl
 	int pclove(int n)			{ return upd_stat(STAT_PCLOVE, n); }
 	int pchate()				{ return get_stat(STAT_PCHATE); }
 	int pchate(int n)			{ return upd_stat(STAT_PCHATE, n); }
+	int morality()				{ return get_stat(STAT_MORALITY); }
+	int morality(int n)			{ return upd_stat(STAT_MORALITY, n); }
+	int refinement()			{ return get_stat(STAT_REFINEMENT); }
+	int refinement(int n)		{ return upd_stat(STAT_REFINEMENT, n); }
+	int dignity()				{ return get_stat(STAT_DIGNITY); }
+	int dignity(int n)			{ return upd_stat(STAT_DIGNITY, n); }
+	int lactation()				{ return get_stat(STAT_LACTATION); }
+	int lactation(int n)		{ return upd_stat(STAT_LACTATION, n); }
+
 
 	int rebel();
 	string JobRatingLetter(int value);
@@ -868,7 +877,7 @@ public:
 	void LevelUp(sGirl* girl);	// advances a girls level
 	void LevelUpStats(sGirl* girl); // Functionalized stat increase for LevelUp
 	
-	void DegradeGirls(sBrothel* brothel, sGirl* girl);
+	void EndDayGirls(sBrothel* brothel, sGirl* girl);
 
 	int GetStat(sGirl* girl, int stat);
 	void SetStat(sGirl* girl, int stat, int amount);

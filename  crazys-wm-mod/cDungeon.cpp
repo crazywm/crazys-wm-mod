@@ -718,7 +718,7 @@ void cDungeon::Update()
 			// update temp traits
 			g_Girls.updateTempTraits(girl);
 
-			g_Girls.DegradeGirls(g_Brothels.GetBrothel(0), girl);
+			g_Girls.EndDayGirls(g_Brothels.GetBrothel(0), girl);
 
 			// handle pregnancy and children growing up
 			g_Girls.HandleChildren(girl, summary);

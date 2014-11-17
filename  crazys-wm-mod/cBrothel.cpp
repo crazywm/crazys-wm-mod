@@ -1335,7 +1335,7 @@ void cBrothelManager::UpdateBrothels()	// Start_Building_Process_A
 			g_Girls.updateTempStats(cgirl);			// update temp stats
 			g_Girls.updateTempSkills(cgirl);		// update temp skills
 			g_Girls.updateTempTraits(cgirl);		// update temp traits
-			g_Girls.DegradeGirls(current, cgirl);
+			g_Girls.EndDayGirls(current, cgirl);
 			cgirl = cgirl->m_Next;
 		}
 
@@ -2644,7 +2644,7 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 		else
 		{
 			message += "She spent her free time at the libary reading.\n\n";
-			if (g_Dice % 100<5)		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, 1);
+			if (g_Dice.percent(5))		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, 1);
 		}
 	}
 	if (g_Girls.HasItemJ(girl, "Rejuvenation Bed") != -1)

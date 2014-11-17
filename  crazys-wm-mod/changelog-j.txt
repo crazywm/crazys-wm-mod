@@ -1081,9 +1081,30 @@ Added day and night assignment with CTRL held while clicking the new job
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.15
 !!!!!!!!!!!!!!!!!!!! pushed to SVN - r122
 
+###  Changes 11/2/2014
+Updated ./Resources/Data/(names txt files) mergeing in Whitetooth's lists in with the current
+ - http://www.pinkpetal.org/index.php?topic=3446.msg30543#msg30543
 
+Renamed DegradeGirls() to EndDayGirls() and added more to it:
+ - Added mana gain based on traits and magic skill.
+ - Added base libido adjustment based on total libido.
+ - Added lactation increase.
+Started updating girl milking job but it became too complex so commented it out - I will send it to Crazy because he is better with text options
 
+###  Changes 11/3-16/2014
+****** Not much done to the game because I am learning how to updrade the SDL from 1.2 to 2.0 ******
 
+Fixed a bug with Fragile/Tough traits affecting health and tiredness
+ - Added Delicate trait to this check
+ - All 3 traits affect health or tiredness by 10% for one and 20% for the other
+
+Disabled the console window
+ - Doing so increased the game speed a bit because it is one less thing to render.
+ - It can be reenabled when compiled if there are complaints
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.16
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r123
+ 
 
 
 
