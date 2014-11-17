@@ -43,19 +43,104 @@ extern cMessageQue g_MessageQue;
 bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
 {
 	string message = "";
+
+	if (Preprocessing(ACTION_WORKMILK, girl, brothel, Day0Night1, summary, message))	// they refuse to have work
+		return true;
+
 	string girlName = girl->m_Realname;
+	stringstream ss;
+	cConfig cfg;
+
+	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
+
+	int enjoy = 0;
+	int wages = 0;
+
+	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
+
+	message = "She let her breasts be milked.\n\n";
+
+
+
+
+#if 0	// `J` New job function - needs work - commenting out for now
+	/*
+	100 lactation + preg + notrait = volume should be 20-30oz per day, 140-210oz per week
+
+	*Breast size*			*L*		*P*		*B*		*ml*	*oz*	*pt*			*L* = Lactation
+	Flat Chest				100		2		1		200		 6.8	0.4				*P* = Pregnant
+	Petite Breasts			100		2		2		400		13.5	0.8				*B* = Breast size multiplier
+	Small Boobs				100		2		3		600		20.3	1.3				*ml* = milliliters
+	(Normal)				100		2		4		800		27.1	1.7				*oz* = ounces
+	Busty Boobs				100		2		5		1000	33.8	2.1				*Pt* = pints
+	Big Boobs				100		2		6		1200	40.6	2.5
+	Giant Juggs				100		2		7		1400	47.3	3.0
+	Massive Melons			100		2		8		1600	54.1	3.4
+	Abnormally Large Boobs	100		2		9		1800	60.9	3.8
+	Titanic Tits			100		2		10		2000	67.6	4.2
+
+	//*/
+
+	int volume = 0;		// in milliliters
+	int breastsize = 4;
+	/* */if (g_Girls.HasTrait(girl, "Flat Chest"))				breastsize = 1;
+	else if (g_Girls.HasTrait(girl, "Petite Breasts"))			breastsize = 2;
+	else if (g_Girls.HasTrait(girl, "Small Boobs"))				breastsize = 3;
+	else if (g_Girls.HasTrait(girl, "Busty Boobs"))				breastsize = 5;
+	else if (g_Girls.HasTrait(girl, "Big Boobs"))				breastsize = 6;
+	else if (g_Girls.HasTrait(girl, "Giant Juggs"))				breastsize = 7;
+	else if (g_Girls.HasTrait(girl, "Massive Melons"))			breastsize = 8;
+	else if (g_Girls.HasTrait(girl, "Abnormally Large Boobs"))	breastsize = 9;
+	else if (g_Girls.HasTrait(girl, "Titanic Tits"))			breastsize = 10;
+
+	// Nipples affects roll_a which is used to adjust the girls enjoyment and damage
+	if (g_Girls.HasTrait(girl, "Inverted Nipples"))				roll_a -= 5;
+	if (g_Girls.HasTrait(girl, "Puffy Nipples"))				roll_a += 1;
+	if (g_Girls.HasTrait(girl, "Perky Nipples"))				roll_a += 2;
+
+
+	// Milk - not used here yet
+	//	if (g_Girls.HasTrait(girl, "Dry Milk"))					
+	//	if (g_Girls.HasTrait(girl, "Scarce Lactation"))			
+	//	if (g_Girls.HasTrait(girl, "Abundant Lactation"))		
+	//	if (g_Girls.HasTrait(girl, "Cow Tits"))					
+
+	volume = girl->lactation()*breastsize;
+
+	if (roll_a <= 10)
+	{
+		enjoy -= g_Dice % 3 + 1;
+
+	}
+	else if (roll_a >= 90)
+	{
+		enjoy += g_Dice % 3 + 1;
+	}
+	else
+	{
+		enjoy += g_Dice % 2;
+		ss << "The shift passed uneventfully.";
+	}
+	ss << "\n\n";
+
+
+
+
+
+
+
+
+
+
+
+	
+#else	// `J` old job function
+
 	int num_items = 0;
 	void AddItem(sInventoryItem* item);
 	sInventoryItem* GetItem(string name);
 
-	if(Preprocessing(ACTION_WORKMILK, girl, brothel, Day0Night1, summary, message))	// they refuse to have work
-		return true;
-
-	// put that shit away, you'll scare off the customers!
-	g_Girls.UnequipCombat(girl);
-
 	girl->m_Pay += 15;
-		message = "She let her breasts be milked.\n\n";
 
 	if (g_Girls.HasTrait(girl, "Small Boobs"))
 	{
@@ -109,11 +194,14 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, int Day0Night1, strin
 		girl->m_Pay += 30;
 		}
 	}
+#endif
+
+
 
 	girl->m_Events.AddMessage(message, IMGTYPE_MILK, Day0Night1);
 
 	// Improve stats
-	int xp = 15, libido = 1, skill = 3;
+	int xp = 5, libido = 1, skill = 3;
 
 	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }

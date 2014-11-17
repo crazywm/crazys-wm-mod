@@ -201,7 +201,7 @@ void cCentreManager::UpdateCentre()	// Start_Building_Process_A
 		g_Girls.updateTempStats(cgirl);			// update temp stats
 		g_Girls.updateTempSkills(cgirl);		// update temp skills
 		g_Girls.updateTempTraits(cgirl);		// update temp traits
-		g_Girls.DegradeGirls(current, cgirl);
+		g_Girls.EndDayGirls(current, cgirl);
 		cgirl = cgirl->m_Next;
 	}
 }

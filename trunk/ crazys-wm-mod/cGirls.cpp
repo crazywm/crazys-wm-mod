@@ -1041,9 +1041,50 @@ void cGirls::LevelUpStats(sGirl* girl)
 *	if a sex type is banned, 10% chance she will loose 1 point in it
 *   all other skills have a 5% chance to loose 1 point
 */
-void cGirls::DegradeGirls(sBrothel* brothel, sGirl* girl)
+void cGirls::EndDayGirls(sBrothel* brothel, sGirl* girl)
 {
-	cJobManager m_JobManager;				
+	cJobManager m_JobManager;
+
+	int E_mana = 0, E_libido = 0, E_lactation = 0;
+
+	/* */if (HasTrait(girl, "Muggle"))			E_mana = girl->magic() / 50;	// max 2 per day
+	else if (HasTrait(girl, "Weak Magic"))		E_mana = girl->magic() / 20;	// max 5 per day
+	else if (HasTrait(girl, "Strong Magic"))	E_mana = girl->magic() / 5;		// max 20 per day
+	else if (HasTrait(girl, "Powerful Magic"))	E_mana = girl->magic() / 2;		// max 50 per day
+	else /*                                 */	E_mana = girl->magic() / 10;	// max 10 per day
+	UpdateStat(girl, STAT_MANA, E_mana);
+
+
+	// `J` update the girls base libido
+	int total_libido = girl->libido();				// total_libido
+	int base_libido = girl->m_Stats[STAT_LIBIDO];	// base_libido
+	if (total_libido > (base_libido*1.5)) E_libido++;
+	if (total_libido > 90)	E_libido++;
+	if (total_libido < 10)	E_libido--;
+	if (total_libido < (base_libido / 3)) E_libido--;
+	UpdateStat(girl, STAT_LIBIDO, E_libido);
+
+
+	/* `J` lactation is not really thought out fully
+	*	lactation traits affect how quickly she refills
+	*	breast size affects how much she produces
+	*	pregnancy doubles lactation
+	*	pregnant cow girl will alwasy be ready to milk
+	//*/
+	if (!HasTrait(girl, "No Nipples"))	// no nipples = no lactation
+	{
+		/* */if (HasTrait(girl, "Dry Milk"))			E_lactation = 1;
+		else if (HasTrait(girl, "Scarce Lactation"))	E_lactation = 5;
+		else if (HasTrait(girl, "Abundant Lactation"))	E_lactation = 25;
+		else if (HasTrait(girl, "Cow Tits"))			E_lactation = 50;
+		else /*                                     */	E_lactation = 10;
+		/* */if (girl->is_pregnant())					E_lactation *= 2;
+		else if (girl->m_PregCooldown>0)				E_lactation = int((float)E_lactation * 2.5f);
+		UpdateStat(girl, STAT_LACTATION, E_lactation);
+	}	
+
+
+
 	int a = g_Dice % 100;	if (a < 5 || (a < 10 && !m_JobManager.is_sex_type_allowed(SKILL_BEASTIALITY, brothel)))	UpdateSkill(girl, SKILL_BEASTIALITY, -1);
 	int b = g_Dice % 100;	if (b < 5 || (b < 10 && !m_JobManager.is_sex_type_allowed(SKILL_BDSM, brothel)))		UpdateSkill(girl, SKILL_BDSM, -1);
 	int c = g_Dice % 100;	if (c < 5 || (c < 10 && !m_JobManager.is_sex_type_allowed(SKILL_GROUP, brothel)))		UpdateSkill(girl, SKILL_GROUP, -1);
@@ -2609,9 +2650,174 @@ void cGirls::UpdateStat(sGirl* girl, int a_stat, int amount, bool usetraits)
 			girl->m_Stats[STAT_TIREDNESS] = 0;	// WD: Sanity - Incorporeal Tiredness should allways be at 0%
 			return;
 		}
-		if (HasTrait(girl, "Fragile") && usetraits)		amount -= 3;
-		if (HasTrait(girl, "Tough") && usetraits)		amount += 2;
-		if (HasTrait(girl, "Construct") && usetraits)	amount = (int)ceil((float)amount*0.1); // constructs take 10% damage
+		if (!usetraits) break;
+
+		if (HasTrait(girl, "Fragile"))	// 20% health and 10% tired penalties
+		{
+			if (stat == STAT_HEALTH)
+			{
+				if (amount > 0)			// gain health - a little less than normal
+				{	// reduce the intended amount healed by 20% or at least 1 except keeping at least 1 point healed
+					int mod = amount/5;	
+					if (mod < 1) mod = 1;
+					amount -= mod;
+					if (amount < 1) amount = 1;
+				}
+				else if (amount < 0)	// loose health - a little more than normal
+				{	// increase the amound of damage taken by 20% or at least 1 extra point lost
+					int mod = -amount / 5;
+					if (mod < 1) mod = 1;
+					amount -= mod;
+				}
+				else // (amount == 0)	// no change intended but possibly injure her anyway
+				{	// based on her constitution
+					if (!g_Dice.percent(girl->constitution()))
+						amount -= 1;
+				}
+			}
+			else	// STAT_TIREDNESS
+			{
+				if (amount > 0)			// gain tiredness
+				{	// increase the amound of tiredness gained by 10% (+0 ok)
+					int mod = amount / 10;
+					amount += mod;
+				}
+				else if (amount < 0)	// loose tiredness
+				{	// reduce the intended rest gained by 10% (-0 ok)
+					int mod = -amount / 10;
+					amount += mod;
+				}
+				else // (amount == 0)	// no change intended but possibly tire her anyway
+				{	// based on her constitution but only 50% of the time
+					if (!g_Dice.percent(girl->constitution()) && g_Dice.percent(50))
+						amount += 1;
+				}
+			}
+		}
+		if (HasTrait(girl, "Delicate"))	// 20% tired and 10% health penalties
+		{
+			if (stat == STAT_HEALTH)
+			{
+				if (amount > 0)			// gain health - a little less than normal
+				{	// reduce the intended amount healed by 10% (-0 ok) keeping at least 1 point healed
+					int mod = amount / 10;
+					amount -= mod;
+					if (amount < 1) amount = 1;
+				}
+				else if (amount < 0)	// loose health - a little more than normal
+				{	// increase the amound of damage taken by 10% (+0 ok) 
+					int mod = -amount / 10;
+					amount -= mod;
+				}
+				else // (amount == 0)	// no change intended but possibly injure her anyway
+				{	// based on her constitution but only 50% of the time
+					if (!g_Dice.percent(girl->constitution()) && g_Dice.percent(50))
+						amount -= 1;
+				}
+			}
+			else	// STAT_TIREDNESS
+			{
+				if (amount > 0)			// gain tiredness
+				{	// increase the amound of tiredness gained by 20% and at least 1 
+					int mod = amount / 5;
+					if (mod < 1) mod = 1;
+					amount += mod;
+				}
+				else if (amount < 0)	// loose tiredness
+				{	// decrease the amound of tiredness recovered by 20% and at least 1 but recovering at least 1 
+					int mod = -amount / 5;
+					if (mod < 1) mod = 1;
+					amount += mod;
+					if (amount > -1) amount = -1;
+				}
+				else // (amount == 0)	// no change intended but possibly tire her anyway
+				{	// based on her constitution
+					if (!g_Dice.percent(girl->constitution()))
+						amount += 1;
+				}
+			}
+		}
+		if (HasTrait(girl, "Tough"))	// 20% health and 10% tired bonuses
+		{
+			if (stat == STAT_HEALTH)
+			{
+				if (amount > 0)			// gain health
+				{	// increase the amount of health gained by 20% and at least 1 point
+					int mod = amount / 5;
+					if (mod < 1) mod = 1;
+					amount += mod;
+				}
+				else if (amount < 0)	// loose health
+				{	// reduce the amount of health lost by 20% and at least 1 but loose at least 1
+					int mod = -amount / 5;
+					if (mod < 1) mod = 1;
+					amount += mod;
+					if (amount > -1) amount = -1;
+				}
+				else // (amount == 0)	// no change intended but possibly heal her anyway
+				{	// based on her constitution
+					if (g_Dice.percent(girl->constitution()))
+						amount += 1;
+				}
+			}
+			else	// STAT_TIREDNESS
+			{
+				if (amount > 0)			// gain tiredness
+				{	// decrease the amount of tiredness gained by 10% (-0 ok) but gain at least 1
+					int mod = amount / 10;
+					amount -= mod;
+					if (amount < 1) amount = 1;
+				}
+				else if (amount < 0)	// loose tiredness
+				{	// increase the amount of tiredness lost by 10% (+0 ok)
+					int mod = -amount / 10;
+					amount -= mod;
+				}
+				else // (amount == 0)	// no change intended but possibly rest her anyway
+				{	// based on her constitution but only 50% of the time
+					if (g_Dice.percent(girl->constitution()) && g_Dice.percent(50))
+						amount -= 1;
+				}
+			}
+		}
+		/*		`J` need another trait that will cover this
+		if (HasTrait(girl, "????????????"))		// 20% tired and 10% health bonuses
+		{
+			if (stat == STAT_HEALTH)
+			{
+				if (amount > 0)			// gain health
+				{
+
+				}
+				else if (amount < 0)	// loose health
+				{
+
+				}
+				else // (amount == 0)	// no change
+				{
+
+				}
+				amount -= 2;
+			}
+			else	// STAT_TIREDNESS
+			{
+				if (amount > 0)			// gain tiredness
+				{
+
+				}
+				else if (amount < 0)	// loose tiredness
+				{
+
+				}
+				else // (amount == 0)	// no change
+				{
+
+				}
+				amount += 2;
+			}
+		}
+		//*/
+		if (HasTrait(girl, "Construct"))	amount = (int)ceil((float)amount*0.1); // constructs take 10% damage
 		break;
 
 	case STAT_HAPPINESS:

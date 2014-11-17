@@ -1617,6 +1617,7 @@ bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_n
 		g_Girls.UpdateStat(SecGuard, STAT_CONFIDENCE, -40);
 		g_Girls.UpdateStat(SecGuard, STAT_OBEDIENCE, -10);
 		g_Girls.UpdateStat(SecGuard, STAT_SPIRIT, -40);
+		g_Girls.UpdateStat(SecGuard, STAT_LIBIDO, -4);
 		g_Girls.UpdateTempStat(SecGuard, STAT_LIBIDO, -40);
 		g_Girls.UpdateStat(SecGuard, STAT_TIREDNESS, 60);
 		g_Girls.UpdateStat(SecGuard, STAT_PCFEAR, 20);
@@ -1861,6 +1862,7 @@ void cJobManager::customer_rape(sGirl* girl, int numberofattackers)
 	g_Girls.UpdateStat(girl, STAT_CONFIDENCE, -40);
 	g_Girls.UpdateStat(girl, STAT_OBEDIENCE, -10);
 	g_Girls.UpdateStat(girl, STAT_SPIRIT, -40);
+	g_Girls.UpdateStat(girl, STAT_LIBIDO, -4);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -40);
 	g_Girls.UpdateStat(girl, STAT_TIREDNESS, 60);
 	g_Girls.UpdateStat(girl, STAT_PCFEAR, 20);
