@@ -177,6 +177,7 @@ public:
 	static bool WorkCleanArena(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary);
 	static bool WorkCityGuard(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary);
 	static bool WorkArenaJousting(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary);
+	static bool WorkArenaRacing(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
 
 	//Comunity Centre
 	static bool WorkComunityService(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary);
