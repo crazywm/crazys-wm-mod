@@ -374,7 +374,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, int Day0Night1, st
 
 	if (g_Girls.GetStat(girl, STAT_MORALITY) >= 80 && g_Dice.percent(20))
 	{
-		if (roll <=50)
+		if (roll <= 50)
 		{ message += "During her shift " + girlName + " spotted a depressed-looking lone man sinking his sorrows in alcohol. She spent a short while cheering him up. Surprised with her kindness, the client left her a generous tip.\n"; wages += 35; }
 		else
 		{ message += "One of the patrons paid way too much for his order. When " + girlName + " quickly pointed out his mistake, he said not to worry about it and told her to keep the extra as a reward for her honesty.\n"; wages += 25; }
@@ -382,9 +382,9 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, int Day0Night1, st
 
 	if (g_Girls.GetStat(girl, STAT_MORALITY) <= -20 && g_Dice.percent(20))
 	{
-		if (roll <=33)
+		if (roll <= 33)
 		{ message += "During her shift, " + girlName + " spotted a lone fellow passed out from alcohol alone at a table in a corner, his wallet bulging out of his pocket. Without a second thought, she discreetly snatched it out and claimed for herself.\n"; wages += 35; }
-		else if (roll <=66)
+		else if (roll <= 66)
 		{ message += "One of the patrons paid way too much for his order... and " + girlName + " didn't really feel like pointing it out, considering the extra money a generous tip.\n"; wages += 25; }
 		else
 		{ message += girlName + " responded to one of the vulgar remarks by a client in a much more vulgar way. Needless to say, this didn't earn her any favors with the patrons that shift, and her tips were a bit less than usual.\n"; wages -= 15; }
@@ -394,7 +394,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, int Day0Night1, st
 
 	if (g_Girls.GetStat(girl, STAT_DIGNITY) <= -20 && g_Dice.percent(20))
 	{
-		if (roll <-50)
+		if (roll <= 50)
 			{ message += "When taking an order, " + girlName + " made sure to lean in really close for the client to get a full view of her cleavage. Giving him an eyefull of tits was promptly rewarded with some extra cash in tips.\n"; wages += 15; }
 		else 
 			{ message += "One of the rowdier clients gently slapped the butt of " + girlName + " when she was passing through. Her coy giggle only encouraged more clients to occasionally fondle her butt through the rest of her work, which earned her some extra tips.\n"; wages += 20; }

@@ -353,6 +353,14 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, int Day0Night1, s
 			}
 		}
 
+	if (g_Girls.HasTrait(girl, "Your Daughter") && g_Dice.percent(15))//may need to be moved to work right
+	{
+		if (g_Dice.percent(50))
+			{ message += "Learning that she was your daughter the customer tosses some extra gold down saying no dad should do this to there daughter.\n"; tip += 20; }
+		else
+			{ message += "A smile crossed the customers face ypon learning that she is your daughter and they threw some extra gold down. They seem to enjoy the thought of fucking the bosses daughter.\n"; tip += 20; }
+	}
+
 		// Match image type to the deed done
 		int imageType = IMGTYPE_SEX;
 		/* */if (SexType == SKILL_ANAL)			imageType = IMGTYPE_ANAL;

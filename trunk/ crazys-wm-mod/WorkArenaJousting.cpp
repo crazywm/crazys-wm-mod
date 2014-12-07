@@ -162,7 +162,7 @@ bool cJobManager::WorkArenaJousting(sGirl* girl, sBrothel* brothel, int DayNight
 	
 
 	//lose
-	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 30, ACTION_COMBAT, girl->m_Realname + " has went into battle so many times she is no longer nervous.", DayNight != 0);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 30, ACTION_COMBAT, girlName + " has went into battle so many times she is no longer nervous.", DayNight != 0);
 
 	return false;
 }

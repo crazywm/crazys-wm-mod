@@ -234,13 +234,33 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, int Day0Night1, s
 			if (g_Girls.HasTrait(girl, "AIDS") || g_Girls.HasTrait(girl, "Chlamydia") || g_Girls.HasTrait(girl, "Herpes") || g_Girls.HasTrait(girl, "Syphilis"))
 			{ message += "The doctor told her she has an STD.\n"; }
 			if (g_Girls.GetStat(girl, STAT_HEALTH) >= 90)
-			{ message += "Her check up went wonderful. She was told she was in near perfect health.\n"; happy += 5; }
+			{
+				if (girl->is_pregnant())
+					{ message += "Her check up went wonderful. She was told she was in near perfect health and her unborn child was growing as expected.\n"; happy += 5; }
+				else
+					{ message += "Her check up went wonderful. She was told she was in near perfect health.\n"; happy += 5; }
+			}
 			else if (g_Girls.GetStat(girl, STAT_HEALTH) < 90)
-			{ message += "Her check up went good. She was told she was in very good health.\n"; }
+			{
+				if (girl->is_pregnant())
+					{ message += "Her check up went well. She was told she was in very good health and her unborn child was doing well.\n"; }
+				else
+					{ message += "Her check up went well. She was told she was in very good health.\n"; }
+			}
 			else if (g_Girls.GetStat(girl, STAT_HEALTH) <= 50)
-			{ message += "Her check up decent. She was told she was in fair health.\n"; }
+			{
+				if (girl->is_pregnant())
+					{ message += "Her check up decent. She was told she was in fair health. He also told her she better start taking better care of herself for her babys sake.\n"; }
+				else
+					{ message += "Her check up decent. She was told she was in fair health.\n"; }
+			}
 			else if (g_Girls.GetStat(girl, STAT_HEALTH) <= 20)
-			{ message += "Her check up went poorly. She was told she was in bad health.\n"; happy -= 5; roll = 4; }//should hopefully get a booster shot to help her gain health faster
+			{
+				if (girl->is_pregnant())
+					{ message += "Her check up went poorly. She was told she was in bad health and that they are considened for her unborn childs saftey.\n"; happy -= 5; roll = 4; }//should hopefully get a booster shot to help her gain health faster
+				else
+					{ message += "Her check up went poorly. She was told she was in bad health.\n"; happy -= 5; roll = 4; }//should hopefully get a booster shot to help her gain health faster
+			}
 			if (roll <= 5)
 			{ message += "The doctor decides to give her a booster shot."; g_Girls.UpdateStat(girl, STAT_HEALTH, 10); }
 		}
