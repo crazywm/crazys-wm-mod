@@ -43,7 +43,7 @@ extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
 // `J` Brothel Job - General
-bool cJobManager::WorkAdvertising(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
+bool cJobManager::WorkAdvertising(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	string message = "";
 	if (Preprocessing(ACTION_WORKADVERTISING, girl, brothel, Day0Night1, summary, message)) return true;

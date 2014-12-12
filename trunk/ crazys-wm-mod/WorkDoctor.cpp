@@ -43,7 +43,7 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
 // `J` Clinic Job - Staff
-bool cJobManager::WorkDoctor(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
+bool cJobManager::WorkDoctor(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	bool SkipDisobey = (summary == "SkipDisobey");
 	string message = "";

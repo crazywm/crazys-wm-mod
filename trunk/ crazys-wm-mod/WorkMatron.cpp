@@ -44,7 +44,7 @@ extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
 // `J` Brothel Job - General - Matron_Job - Full_Time_Job
-bool cJobManager::WorkMatron(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
+bool cJobManager::WorkMatron(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	// `J` zzzzzz - this needs to be updated for building flow
 	girl->m_DayJob = girl->m_NightJob = JOB_MATRON;	// it is a full time job

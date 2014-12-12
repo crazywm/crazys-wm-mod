@@ -41,7 +41,7 @@ extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
 // `J` Brothel Job - Hall
-bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
+bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	string message = ""; string girlName = girl->m_Realname;
 	if (Preprocessing(ACTION_WORKSTRIP, girl, brothel, Day0Night1, summary, message))	// they refuse to have work in the hall

@@ -40,7 +40,7 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
 // `J` Brothel Job - Sleazy Bar
-bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
+bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	string message = ""; string girlName = girl->m_Realname;
 	if(Preprocessing(ACTION_WORKCLUB, girl, brothel, Day0Night1, summary, message))			return true;

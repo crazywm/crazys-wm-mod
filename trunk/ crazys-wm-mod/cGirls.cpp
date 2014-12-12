@@ -3682,7 +3682,7 @@ string stringtolowerj(string name)
 	string s = "", t = "";
 	for (u_int i = 0; i < name.length(); i++)
 	{
-		if (tolower(name[i]) != tolower(" "[0]) || tolower(name[i]) != tolower("."[0]) || tolower(name[i]) != tolower(","[0]))
+		if (tolower(name[i]) != tolower(" "[0]) && tolower(name[i]) != tolower("."[0]) && tolower(name[i]) != tolower(","[0]))
 		{
 			t[0] = tolower(name[i]);
 			s += t[0];
@@ -6342,7 +6342,7 @@ void cGirls::updateHappyTraits(sGirl* girl)
 
 // ----- Sex
 
-void cGirls::GirlFucks(sGirl* girl, int Day0Night1, sCustomer* customer, bool group, string& message, u_int& SexType)
+void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool group, string& message, u_int& SexType)
 {
 	bool good = false;
 	bool contraception = false;

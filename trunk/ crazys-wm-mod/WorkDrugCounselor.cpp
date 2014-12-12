@@ -43,7 +43,7 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
 // `J` Centre Job - Rehab_Job - Full_Time_Job
-bool cJobManager::WorkDrugCounselor(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
+bool cJobManager::WorkDrugCounselor(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	bool SkipDisobey = (summary == "SkipDisobey");
 	girl->m_DayJob = girl->m_NightJob = JOB_DRUGCOUNSELOR;	// it is a full time job

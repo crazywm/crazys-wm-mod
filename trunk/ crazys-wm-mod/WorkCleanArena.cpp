@@ -44,7 +44,7 @@ extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
 // `J` Arena Job - Staff - job_is_cleaning
-bool cJobManager::WorkCleanArena(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
+bool cJobManager::WorkCleanArena(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	string message = "";
 	string girlName = girl->m_Realname;

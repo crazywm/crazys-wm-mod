@@ -171,7 +171,7 @@ public:
 	void NewBrothel(int NumRooms, int MaxNumRooms = 200);
 	void DestroyBrothel(int ID);
 	void UpdateBrothels();
-	void UpdateGirls(sBrothel* brothel, int Day0Night1);
+	void UpdateGirls(sBrothel* brothel, bool Day0Night1);
 
 	// MYR: Start of my automation functions
 	void UsePlayersItems(sGirl* cur);

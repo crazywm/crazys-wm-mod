@@ -44,7 +44,7 @@ extern cGold g_Gold;
 extern int g_Building;
 
 // `J` Centre Job - General
-bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
+bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	string message = "", girlName = girl->m_Realname;
 	g_Building = BUILDING_CENTRE;

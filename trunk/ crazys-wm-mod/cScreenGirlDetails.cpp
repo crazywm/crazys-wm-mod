@@ -81,7 +81,7 @@ static stringstream ss;
 
 static int ImageNum = -1;
 static int DetailLevel = 0;
-static int Day0Night1 = SHIFT_DAY;
+static bool Day0Night1 = SHIFT_DAY;
 static bool SetJob = true;
 
 extern sGirl *selected_girl;

@@ -42,7 +42,7 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
 // `J` Farm Job - Laborers
-bool cJobManager::WorkGardener(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
+bool cJobManager::WorkGardener(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	string message = "";
 	string girlName = girl->m_Realname;

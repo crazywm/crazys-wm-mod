@@ -861,7 +861,7 @@ public:
 
 	sGirl* GetGirl(int girl);	// gets the girl by count
 
-	void GirlFucks(sGirl* girl, int Day0Night1, sCustomer* customer, bool group, string& message, u_int& SexType);	// does the logic for fucking
+	void GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool group, string& message, u_int& SexType);	// does the logic for fucking
 	// MYR: Millions of ways to say, [girl] does [act] to [customer]
 	string GetRandomGroupString();
 	string GetRandomSexString();

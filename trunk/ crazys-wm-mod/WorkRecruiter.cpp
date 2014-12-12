@@ -43,7 +43,7 @@ extern cMessageQue g_MessageQue;
 static cDungeon* m_Dungeon = g_Brothels.GetDungeon();
 
 // `J` House Job - General
-bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
+bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	if (Day0Night1 == SHIFT_NIGHT) return false;
 	cTariff tariff;
