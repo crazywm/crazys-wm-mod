@@ -44,7 +44,7 @@ extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
 // `J` Arena Job - Staff - Matron_Job - Full_Time_Job
-bool cJobManager::WorkDoctore(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
+bool cJobManager::WorkDoctore(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	girl->m_DayJob = girl->m_NightJob = JOB_DOCTORE;	// it is a full time job
 	bool night = (Day0Night1 == SHIFT_NIGHT);

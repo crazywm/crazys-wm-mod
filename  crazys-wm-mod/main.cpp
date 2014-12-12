@@ -97,6 +97,7 @@ bool g_D_Key = false;
 bool g_Z_Key = false;
 bool g_X_Key = false;
 bool g_C_Key = false;
+bool g_O_Key = false;
 
 bool g_R_Key = false;
 bool g_F_Key = false;
@@ -243,6 +244,7 @@ void handle_hotkeys()
 	else if (vent.key.keysym.sym == SDLK_z)     g_Z_Key = true;
 	else if (vent.key.keysym.sym == SDLK_x)     g_X_Key = true;
 	else if (vent.key.keysym.sym == SDLK_c)     g_C_Key = true;
+	else if (vent.key.keysym.sym == SDLK_o)     g_O_Key = true;
 
 	else if (vent.key.keysym.sym == SDLK_r)     g_R_Key = true;
 	else if (vent.key.keysym.sym == SDLK_f)     g_F_Key = true;
@@ -563,6 +565,7 @@ void handle_hotkeys()
 					msg += "Space Change current picture\n\n";
 					break;
 				case SCREEN_GALLERY:
+				case SCREEN_GALLERY2:
 					msg += "Gallery:\n";
 					msg += "Left Arrow     Previous Picture\n";
 					msg += "Right Arrow    Next Picture\n";
@@ -730,18 +733,6 @@ void handle_hotkeys()
 					msg += "D     Next Girl\n";
 					msg += "S     More Details\n";
 					msg += "Space   Purchase Girl\n\n";
-					break;
-				case SCREEN_GALLERY2:
-					msg += "Second Gallery:\n";
-					msg += "Left Arrow     Previous Picture\n";
-					msg += "Right Arrow    Next Picture\n";
-					msg += "Up Arrow     Previous Gallery\n";
-					msg += "Down Arrow     Next Gallery\n\n";
-					msg += "For left handed control:\n";
-					msg += "A     Previous Picture\n";
-					msg += "D     Next Picture\n";
-					msg += "W     Previous Gallery\n";
-					msg += "S     Next Gallery\n\n";
 					break;
 				}
 			}

@@ -48,7 +48,7 @@ extern int g_Building;
 static cPlayer* m_Player = g_Brothels.GetPlayer();
 
 // `J` House Job - General
-bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
+bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	string message = "";
 	if (Preprocessing(ACTION_SEX, girl, brothel, Day0Night1, summary, message)) return true;	// they refuse to have work

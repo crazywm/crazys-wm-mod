@@ -584,14 +584,14 @@ void cJobManager::free()
 
 // ----- Misc
 
-bool cJobManager::WorkVoid(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
+bool cJobManager::WorkVoid(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	summary += gettext("This job isn't implemented yet");
 	girl->m_Events.AddMessage(gettext("This job isn't implemented yet"), IMGTYPE_PROFILE, EVENT_DEBUG);
 	return false;
 }
 
-bool cJobManager::Preprocessing(int action, sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary, string& message)
+bool cJobManager::Preprocessing(int action, sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary, string& message)
 {
 	brothel->m_Filthiness++;
 	if (g_Girls.DisobeyCheck(girl, action, brothel))			// they refuse to work 
@@ -630,7 +630,7 @@ bool cJobManager::is_sex_type_allowed(unsigned int sex_type, sBrothel* brothel)
 
 // ----- Job related
 
-vector<sGirl*> cJobManager::girls_on_job(sBrothel *brothel, u_int job_wanted, int day_or_night)
+vector<sGirl*> cJobManager::girls_on_job(sBrothel *brothel, u_int job_wanted, bool Day0Night1)
 {
 	u_int job_id;
 	sGirl* girl;
@@ -638,26 +638,26 @@ vector<sGirl*> cJobManager::girls_on_job(sBrothel *brothel, u_int job_wanted, in
 
 	for (girl = brothel->m_Girls; girl; girl = girl->m_Next)
 	{
-		job_id = (day_or_night == 0) ? girl->m_DayJob : girl->m_NightJob;
+		job_id = (Day0Night1 == 0) ? girl->m_DayJob : girl->m_NightJob;
 		if (job_id != job_wanted) continue;
 		v.push_back(girl);
 	}
 	return v;
 }
 
-bool cJobManager::is_job_employed(sBrothel * brothel, u_int job_wanted, int day_or_night)
+bool cJobManager::is_job_employed(sBrothel * brothel, u_int job_wanted, bool Day0Night1)
 {
 	u_int job_id;
 	sGirl* girl;
 	for (girl = brothel->m_Girls; girl; girl = girl->m_Next)
 	{
-		job_id = (day_or_night == 0) ? girl->m_DayJob : girl->m_NightJob;
+		job_id = (Day0Night1 == 0) ? girl->m_DayJob : girl->m_NightJob;
 		if (job_id == job_wanted) return true;
 	}
 	return false;
 }
 
-void cJobManager::do_advertising(sBrothel* brothel, int Day0Night1)
+void cJobManager::do_advertising(sBrothel* brothel, bool Day0Night1)
 {  // advertising jobs are handled before other jobs, more particularly before customer generation
 	brothel->m_AdvertisingLevel = 1.0;  // base multiplier
 	sGirl* current = brothel->m_Girls;
@@ -677,7 +677,7 @@ void cJobManager::do_advertising(sBrothel* brothel, int Day0Night1)
 	}
 }
 
-void cJobManager::do_whorejobs(sBrothel* brothel, int Day0Night1)
+void cJobManager::do_whorejobs(sBrothel* brothel, bool Day0Night1)
 { // Whores get first crack at any customers.
 	sGirl* current = brothel->m_Girls;
 
@@ -707,7 +707,7 @@ void cJobManager::do_whorejobs(sBrothel* brothel, int Day0Night1)
 	}
 }
 
-void cJobManager::do_custjobs(sBrothel* brothel, int Day0Night1)
+void cJobManager::do_custjobs(sBrothel* brothel, bool Day0Night1)
 { // Customer taking jobs get first crack at any customers before customer service.
 	sGirl* current = brothel->m_Girls;
 
@@ -766,7 +766,7 @@ void cJobManager::do_custjobs(sBrothel* brothel, int Day0Night1)
 	}
 }
 
-int cJobManager::get_num_on_job(int job, int brothel_id, bool day_or_night)
+int cJobManager::get_num_on_job(int job, int brothel_id, bool Day0Night1)
 {
 	return 0;
 }
@@ -1407,7 +1407,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
  * false if nothing happened, or if violence was committed
  * against the customer.
  */
-bool cJobManager::work_related_violence(sGirl* girl, int Day0Night1, bool streets)
+bool cJobManager::work_related_violence(sGirl* girl, bool Day0Night1, bool streets)
 {
 	cConfig cfg;
 	int rape_chance = (int)cfg.prostitution.rape_brothel();
@@ -2171,12 +2171,12 @@ void cJobManager::get_training_set(vector<sGirl*> &v, vector<sGirl*> &t_set)
 	}
 }
 
-bool cJobManager::WorkTraining(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
+bool cJobManager::WorkTraining(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	return false;
 }
 
-void cJobManager::do_solo_training(sGirl *girl, int Day0Night1)
+void cJobManager::do_solo_training(sGirl *girl, bool Day0Night1)
 {
 	TrainableGirl trainee(girl);
 	girl->m_Events.AddMessage(gettext("She trained during this shift by herself, so learning anything worthwhile was difficult."), IMGTYPE_PROFILE, Day0Night1);
@@ -2199,7 +2199,7 @@ void cJobManager::do_solo_training(sGirl *girl, int Day0Night1)
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_SUMMARY);
 }
 
-void cJobManager::do_training_set(vector<sGirl*> girls, int Day0Night1)
+void cJobManager::do_training_set(vector<sGirl*> girls, bool Day0Night1)
 {
 	sGirl *girl;
 	stringstream ss;
@@ -2323,7 +2323,7 @@ void cJobManager::do_training_set(vector<sGirl*> girls, int Day0Night1)
 	}
 }
 
-void cJobManager::do_training(sBrothel* brothel, int Day0Night1)
+void cJobManager::do_training(sBrothel* brothel, bool Day0Night1)
 {
 	cTariff tariff;
 	cConfig cfg;
@@ -2445,7 +2445,7 @@ void cJobManager::load_films(std::ifstream &ifs)
 	}
 }
 
-string cJobManager::GirlPaymentText(sBrothel* brothel, sGirl* girl, int totalTips, int totalPay, int totalGold, int Day0Night1)
+string cJobManager::GirlPaymentText(sBrothel* brothel, sGirl* girl, int totalTips, int totalPay, int totalGold, bool Day0Night1)
 {
 	cConfig cfg;
 	stringstream ss;

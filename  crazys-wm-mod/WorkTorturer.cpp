@@ -42,7 +42,7 @@ extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
 // `J` Brothel Job - General
-bool cJobManager::WorkTorturer(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
+bool cJobManager::WorkTorturer(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	if (Day0Night1 == SHIFT_NIGHT) return false;		// Do this only once a day
 

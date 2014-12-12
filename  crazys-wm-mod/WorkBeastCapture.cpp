@@ -41,7 +41,7 @@ extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
 // `J` Farm Job - Laborers
-bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
+bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	string message = "";
 	if(Preprocessing(ACTION_COMBAT, girl, brothel, Day0Night1, summary, message))

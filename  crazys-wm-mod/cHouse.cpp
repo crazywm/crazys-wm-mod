@@ -207,7 +207,7 @@ void cHouseManager::UpdateHouse()	// Start_Building_Process_A
 }
 
 // Run the shifts
-void cHouseManager::UpdateGirls(sBrothel* brothel, int Day0Night1)	// Start_Building_Process_B
+void cHouseManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Building_Process_B
 {
 	cConfig cfg;
 

@@ -47,7 +47,7 @@ extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
 // `J` Arena Job - Staff
-bool cJobManager::WorkCityGuard(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
+bool cJobManager::WorkCityGuard(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	string message = ""; string girlName = girl->m_Realname;
 	if (Preprocessing(ACTION_WORKSECURITY, girl, brothel, Day0Night1, summary, message)) return true;

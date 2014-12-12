@@ -42,7 +42,7 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
 // `J` Brothel Job - Brothel
-bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
+bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	// put that shit away, you'll scare off the customers!
 	g_Girls.UnequipCombat(girl);
@@ -314,7 +314,7 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, int Day0Night1, stri
 				acceptsGirl = true;
 			}
 			// WD:	Use Magic only as last resort
-			else if (g_Girls.GetSkill(girl, SKILL_MAGIC) > 50 && g_Girls.GetStat(girl, STAT_MANA))	// she can use magic to get him
+			else if (g_Girls.GetSkill(girl, SKILL_MAGIC) > 50 && g_Girls.GetStat(girl, STAT_MANA) >= 20)	// she can use magic to get him
 			{
 				fuckMessage = girl->m_Realname + " uses magic to get the customer to choose her.\n\n";
 				g_Girls.UpdateStat(girl, STAT_MANA, -20);
@@ -402,6 +402,19 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, int Day0Night1, stri
 		else  // Customer has enough money
 		{
 			Cust.m_Money -= (unsigned)pay; // WD: ??? not needed Cust record is not saved when this fn ends!  Leave for now just in case ???
+			if (g_Girls.HasTrait(girl, "Your Daughter") && Cust.m_Money >= 20 && g_Dice.percent(15))//may need to be moved to work right
+			{
+				if (g_Dice.percent(50))
+				{
+					message += "Learning that she was your daughter the customer tosses some extra gold down saying no dad should do this to there daughter.\n";
+				}
+				else
+				{
+					message += "A smile crossed the customers face ypon learning that she is your daughter and they threw some extra gold down. They seem to enjoy the thought of fucking the bosses daughter.\n";
+				}
+				Cust.m_Money -= 20;
+				girl->m_Tips += 20;
+			}
 
 			// if he is happy and has some extra gold he will give a tip
 			if ((int)Cust.m_Money >= 20 && Cust.m_Stats[STAT_HAPPINESS] > 90)
@@ -430,13 +443,6 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, int Day0Night1, stri
 			}
 		}
 
-	if (g_Girls.HasTrait(girl, "Your Daughter") && g_Dice.percent(15))//may need to be moved to work right
-	{
-		if (g_Dice.percent(50))
-			{ message += "Learning that she was your daughter the customer tosses some extra gold down saying no dad should do this to there daughter.\n"; tip += 20; }
-		else
-			{ message += "A smile crossed the customers face ypon learning that she is your daughter and they threw some extra gold down. They seem to enjoy the thought of fucking the bosses daughter.\n"; tip += 20; }
-	}
 
 		// Match image type to the deed done
 		int imageType = IMGTYPE_SEX;

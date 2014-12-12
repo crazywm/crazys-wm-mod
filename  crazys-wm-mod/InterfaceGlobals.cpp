@@ -592,7 +592,7 @@ void LoadInterface()
 			if (name == "Turn Summary")		g_Turnsummary.CreateWindow(a, b, c, d, e);
 			if (name == "CurrentBrothel")	g_Turnsummary.AddTextItem(g_interfaceid.TEXT_CURRENTBROTHEL, a, b, c, d, text, fontsize);
 			if (name == "LabelCategory")	g_Turnsummary.AddTextItem(g_interfaceid.STATIC_STATIC, a, b, c, d, text, fontsize);
-			if (name == "LabelItem")		g_Turnsummary.AddTextItem(g_interfaceid.STATIC_STATIC, a, b, c, d, text, fontsize);
+			if (name == "LabelItem")		g_Turnsummary.AddTextItem(g_interfaceid.TEXT_LABELITEM, a, b, c, d, text, fontsize);
 			if (name == "LabelEvent")		g_Turnsummary.AddTextItem(g_interfaceid.STATIC_STATIC, a, b, c, d, text, fontsize);
 			if (name == "LabelDesc")		g_Turnsummary.AddTextItem(g_interfaceid.TEXT_TSEVENTDESC, a, b, c, d, text, fontsize);
 			if (name == "GoTo")				g_Turnsummary.AddButton(image, g_interfaceid.BUTTON_TSGOTO, a, b, c, d, Transparency, Scale);

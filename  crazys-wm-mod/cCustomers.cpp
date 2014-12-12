@@ -160,7 +160,7 @@ void cCustomers::GetCustomer(sCustomer& customer, sBrothel * brothel)
 	customer.m_Next = 0;
 }
 
-void cCustomers::GenerateCustomers(sBrothel * brothel, int Day0Night1)
+void cCustomers::GenerateCustomers(sBrothel * brothel, bool Day0Night1)
 {
 	Free();	// Free any existing customers
 

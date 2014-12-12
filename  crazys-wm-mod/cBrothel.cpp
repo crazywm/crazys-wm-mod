@@ -1494,7 +1494,7 @@ void cBrothelManager::UpdateBrothels()	// Start_Building_Process_A
 }
 
 // End of turn stuff is here
-void cBrothelManager::UpdateGirls(sBrothel* brothel, int Day0Night1)	// Start_Building_Process_B
+void cBrothelManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Building_Process_B
 {
 	// `J` added to allow for easier copy/paste to other buildings
 	u_int firstjob = JOB_RESTING;

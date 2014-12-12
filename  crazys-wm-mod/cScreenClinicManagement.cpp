@@ -65,7 +65,7 @@ static bool FreeGirl = false;
 static int SpecialJobNumber = 0;
 static bool SellGirl = false;
 static int selection = -1;
-static int Day0Night1 = SHIFT_DAY;	// 1 is night, 0 is day.
+static bool Day0Night1 = SHIFT_DAY;	// 1 is night, 0 is day.
 static bool SetJob = false;
 
 extern sGirl *selected_girl;

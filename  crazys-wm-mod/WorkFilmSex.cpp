@@ -45,7 +45,7 @@ extern cMessageQue g_MessageQue;
 extern int g_Building;
 
 // `J` Movie Studio Job - Actress
-bool cJobManager::WorkFilmSex(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
+bool cJobManager::WorkFilmSex(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	// No film crew.. then go home	// `J` this will be taken care of in building flow, leaving it in for now
 	if (g_Studios.GetNumGirlsOnJob(0, JOB_CAMERAMAGE, SHIFT_NIGHT) == 0 || g_Studios.GetNumGirlsOnJob(0, JOB_CRYSTALPURIFIER, SHIFT_NIGHT) == 0)

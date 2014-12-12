@@ -41,7 +41,7 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
 // `J` Brothel Job - Bar
-bool cJobManager::WorkEscort(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
+bool cJobManager::WorkEscort(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	string message = "", girlName = girl->m_Realname;
 	int jobperformance = 0, wages = 0, tips = 0;

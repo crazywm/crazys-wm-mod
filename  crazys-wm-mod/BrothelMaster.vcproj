@@ -1087,10 +1087,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\WorkArenaRacing.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\WorkBaker.cpp"
 				>
 			</File>

@@ -44,7 +44,7 @@ extern cMessageQue g_MessageQue;
 extern int g_Building;
 
 // `J` Movie Studio Job - Unused
-bool cJobManager::WorkFilmRandom(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
+bool cJobManager::WorkFilmRandom(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	bool refused = false;
 	int sw;

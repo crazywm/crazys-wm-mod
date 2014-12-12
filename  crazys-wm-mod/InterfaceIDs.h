@@ -304,5 +304,6 @@ struct sInterfaceIDs
 
 // misc
   int TEXT_CURRENTBROTHEL;  
+  int TEXT_LABELITEM;
 };
 #endif

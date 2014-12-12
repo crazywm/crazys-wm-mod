@@ -44,7 +44,7 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
 // `J` Movie Studio Job - Crew
-bool cJobManager::WorkCrystalPurifier(sGirl* girl, sBrothel* brothel, int Day0Night1, string& summary)
+bool cJobManager::WorkCrystalPurifier(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	bool SkipDisobey = (summary == "SkipDisobey");
 	// No film crew.. then go home	// `J` this will be taken care of in building flow, leaving it in for now

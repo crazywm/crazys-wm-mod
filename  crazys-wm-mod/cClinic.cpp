@@ -207,7 +207,7 @@ void cClinicManager::UpdateClinic()	// Start_Building_Process_A
 }
 
 // Run the shifts
-void cClinicManager::UpdateGirls(sBrothel* brothel, int Day0Night1)	// Start_Building_Process_B
+void cClinicManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Building_Process_B
 {
 	cConfig cfg;
 
@@ -1001,7 +1001,7 @@ bool cClinicManager::DoctorNeeded()	// `J` added, if there is a doctor already o
 	return true;	// Otherwise a Doctor is Needed
 }
 
-int cClinicManager::GetNumberPatients(int Day0Night1)	// `J` added, if there is a doctor already on duty or there is no one needing surgery, return false
+int cClinicManager::GetNumberPatients(bool Day0Night1)	// `J` added, if there is a doctor already on duty or there is no one needing surgery, return false
 {
 	return (GetNumGirlsOnJob(0, JOB_GETHEALING, Day0Night1) +
 		GetNumGirlsOnJob(0, JOB_GETABORT, Day0Night1) +

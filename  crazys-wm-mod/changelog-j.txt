@@ -1105,10 +1105,40 @@ Disabled the console window
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.16
 !!!!!!!!!!!!!!!!!!!! pushed to SVN - r123
  
+###  Changes 11/20-22/2014
+Updated Freetime to make the options flow better
+ - spellchecked and updated many options.
+Combined gallery screens help message
+ 
+###  Changes 11/23-30/2014
+Updated turn summary window
+ - If you don't own a building, it will not be listed.
+ - Added alternate sorting option with the "O" key
+ -  - Clinic > Triage = Patients in order of when they will finish treatment, then Doctors, then Nurses, then everyone else.
+ -  - Studio > Jobs = Director [red], Crew (Crystal, Camera) [dark blue], Other Staff [blue], Actresses [green], Freetime [red]
+ - Re-Ordered sections to realign numbers
 
+ 
+###  No Changes 12/1-10/2014
+Real life taking over.
 
+###  Changes 12/7/2014
+Crazy pushed r124
 
+###  Changes 12/11/2014
+Updating WorkFreetime.cpp more.
+Changed all instances of Day0Night1 from int to bool.
+Did some file cleanup:
+ - Added the Copyright section to some files that were missing it.
+ - Did an EOL check on all files and fixed bad EOLs. 
 
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.17
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r125
+
+ 
+ 
+ 
+ 
 Whore Master Editor:
 Increased size of program window to 1000x700 to fit more stuff
 
