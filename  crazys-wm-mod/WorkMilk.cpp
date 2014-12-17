@@ -17,27 +17,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "cJobManager.h"
-#include "cBrothel.h"
-#include "cCustomers.h"
 #include "cRng.h"
-#include "cInventory.h"
-#include "sConfig.h"
-#include "cRival.h"
-#include <sstream>
 #include "CLog.h"
-#include "cTrainable.h"
-#include "cTariff.h"
-#include "cGold.h"
-#include "cGangs.h"
 #include "cMessageBox.h"
+#include "cGold.h"
+#include "cBrothel.h"
+#include "cFarm.h"
 
-extern cRng g_Dice;
+
 extern CLog g_LogFile;
-extern cCustomers g_Customers;
-extern cInventory g_InvManager;
-extern cBrothelManager g_Brothels;
-extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
+extern cRng g_Dice;
+extern cGold g_Gold;
+extern cBrothelManager g_Brothels;
+extern cFarmManager g_Farm;
+
+
+
 
 // `J` Farm Job - Laborers
 bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
@@ -133,7 +129,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 
 
 
-	
+
 #else	// `J` old job function
 
 	int num_items = 0;
@@ -144,54 +140,54 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 
 	if (g_Girls.HasTrait(girl, "Small Boobs"))
 	{
-		if (girl->m_States&(1<<STATUS_PREGNANT) || girl->m_States&(1<<STATUS_PREGNANT_BY_PLAYER))
+		if (girl->m_States&(1 << STATUS_PREGNANT) || girl->m_States&(1 << STATUS_PREGNANT_BY_PLAYER))
 		{
 			message += girl->m_Realname + " has small breasts, but her body still gives plenty of milk in anticipation of nursing!.";
 			girl->m_Pay += 125;
 		}
 		else
 		{
-		message += girl->m_Realname + " has small breasts, which only yield a small amount of milk.";
-		girl->m_Pay += 25;
+			message += girl->m_Realname + " has small breasts, which only yield a small amount of milk.";
+			girl->m_Pay += 25;
 		}
 	}
 	else if (g_Girls.HasTrait(girl, "Big Boobs"))
+	{
+		if (girl->m_States&(1 << STATUS_PREGNANT) || girl->m_States&(1 << STATUS_PREGNANT_BY_PLAYER))
 		{
-			if (girl->m_States&(1<<STATUS_PREGNANT) || girl->m_States&(1<<STATUS_PREGNANT_BY_PLAYER))
-			{
 			message += girl->m_Realname + "'s already sizable breasts have become fat and swollen with milk in preparation for her child.";
 			girl->m_Pay += 135;
 		}
 		else
 		{
-		message += girl->m_Realname + " has large breasts, that yield a good amount of milk to the suction machine even without pregnancy.";
-		girl->m_Pay += 35;
+			message += girl->m_Realname + " has large breasts, that yield a good amount of milk to the suction machine even without pregnancy.";
+			girl->m_Pay += 35;
 		}
 	}
 	else if (g_Girls.HasTrait(girl, "Abnormally Large Boobs"))
+	{
+		if (girl->m_States&(1 << STATUS_PREGNANT) || girl->m_States&(1 << STATUS_PREGNANT_BY_PLAYER))
 		{
-		if (girl->m_States&(1<<STATUS_PREGNANT) || girl->m_States&(1<<STATUS_PREGNANT_BY_PLAYER))
-			{
 			message += girl->m_Realname + " has ridiculously large breasts, even without a baby in development.  With a bun in the oven, her tits are each larger than her head, and leak milk near continuously.";
 			girl->m_Pay += 140;
 		}
 		else
 		{
-		message += girl->m_Realname + "'s massive globes don't need pregnancy to yield a profitable quantity of milk!";
-		girl->m_Pay += 40;
-			}
+			message += girl->m_Realname + "'s massive globes don't need pregnancy to yield a profitable quantity of milk!";
+			girl->m_Pay += 40;
 		}
+	}
 	else
 	{
-		if (girl->m_States&(1<<STATUS_PREGNANT) || girl->m_States&(1<<STATUS_PREGNANT_BY_PLAYER))
+		if (girl->m_States&(1 << STATUS_PREGNANT) || girl->m_States&(1 << STATUS_PREGNANT_BY_PLAYER))
 		{
 			message += girl->m_Realname + " has average sized breasts, which yield a fair amount of milk with the help of pregnancy.";
 			girl->m_Pay += 130;
 		}
 		else
 		{
-		message += girl->m_Realname + " has average sized breasts, perfect handfuls, which yield an okay amount of milk.";
-		girl->m_Pay += 30;
+			message += girl->m_Realname + " has average sized breasts, perfect handfuls, which yield an okay amount of milk.";
+			girl->m_Pay += 30;
 		}
 	}
 #endif
@@ -211,6 +207,6 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, skill);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
-	
-return false;
+
+	return false;
 }

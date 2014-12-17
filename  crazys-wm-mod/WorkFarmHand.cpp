@@ -16,32 +16,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "cCustomers.h"
-#include "cGangs.h"
-#include "cGold.h"
-#include "cInventory.h"
 #include "cJobManager.h"
+#include "cRng.h"
 #include "CLog.h"
 #include "cMessageBox.h"
-#include "cRival.h"
-#include "cRng.h"
-#include "cTariff.h"
-#include "cTrainable.h"
-#include "libintl.h"
-#include "sConfig.h"
-#include <sstream>
+#include "cGold.h"
 #include "cBrothel.h"
 #include "cFarm.h"
 
-extern cRng g_Dice;
+
 extern CLog g_LogFile;
-extern cCustomers g_Customers;
-extern cInventory g_InvManager;
+extern cMessageQue g_MessageQue;
+extern cRng g_Dice;
+extern cGold g_Gold;
 extern cBrothelManager g_Brothels;
 extern cFarmManager g_Farm;
-extern cGangManager g_Gangs;
-extern cMessageQue g_MessageQue;
-extern cGold g_Gold;
+
+
+
 
 // `J` Farm Job - Staff - job_is_cleaning
 bool cJobManager::WorkFarmHand(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
@@ -52,7 +44,7 @@ bool cJobManager::WorkFarmHand(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	cConfig cfg;
 
 	g_Girls.UnequipCombat(girl);	// put that shit away
-	
+
 	int CleanAmt = ((g_Girls.GetSkill(girl, SKILL_SERVICE) / 10) + 5) * 10;
 	int enjoyC = 0, enjoyF = 0;
 	int wages = 0;
@@ -61,7 +53,7 @@ bool cJobManager::WorkFarmHand(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	bool playtime = false;
 
 	ss << girlName << " worked cleaning and repairing the farm.\n\n";
-	
+
 	if (roll_a <= 50 && (g_Girls.DisobeyCheck(girl, ACTION_WORKFARM, brothel) || g_Girls.DisobeyCheck(girl, ACTION_WORKCLEANING, brothel)))
 	{
 		ss << "She refused to work on the farm.";
@@ -144,7 +136,7 @@ bool cJobManager::WorkFarmHand(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 	// `J` if she can clean more than is needed, she has a little free time after her shift
 	if (brothel->m_Filthiness < CleanAmt / 2) playtime = true;
-	ss << gettext("\n\nCleanliness rating improved by ") << CleanAmt;
+	ss << "\n\nCleanliness rating improved by " << CleanAmt;
 	if (playtime)	// `J` needs more variation
 	{
 		ss << "\n\n" << girlName << " finished her cleaning early so she ";
@@ -156,7 +148,7 @@ bool cJobManager::WorkFarmHand(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		else if (roll_c < 25)
 		{
 			ss << "played with the baby animals a bit.";
-			g_Girls.UpdateSkill(girl, SKILL_ANIMALHANDLING, (g_Dice % 2)+1);
+			g_Girls.UpdateSkill(girl, SKILL_ANIMALHANDLING, (g_Dice % 2) + 1);
 		}
 		else if (roll_c < 50)
 		{
@@ -171,7 +163,7 @@ bool cJobManager::WorkFarmHand(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		}
 		g_Girls.UpdateStat(girl, STAT_HAPPINESS, (g_Dice % 4) + 2);
 	}
-	
+
 
 	// do all the output
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_MAID, Day0Night1);

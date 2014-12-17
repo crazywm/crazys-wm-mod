@@ -17,31 +17,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "cJobManager.h"
-#include "cBrothel.h"
-#include "cCentre.h"
-#include "cCustomers.h"
 #include "cRng.h"
-#include "cInventory.h"
-#include "sConfig.h"
-#include "cRival.h"
-#include <sstream>
 #include "CLog.h"
-#include "cTrainable.h"
-#include "cTariff.h"
-#include "cGold.h"
-#include "cGangs.h"
 #include "cMessageBox.h"
-#include "libintl.h"
+#include "cGold.h"
+#include "cBrothel.h"
+#include "cFarm.h"
 
-extern cRng g_Dice;
+
 extern CLog g_LogFile;
-extern cCustomers g_Customers;
-extern cInventory g_InvManager;
-extern cBrothelManager g_Brothels;
-extern cCentreManager g_Centre;
-extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
+extern cRng g_Dice;
 extern cGold g_Gold;
+extern cBrothelManager g_Brothels;
+extern cFarmManager g_Farm;
+
+
+
 
 // `J` Farm Job - Producers
 bool cJobManager::WorkMakeItem(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
@@ -50,8 +42,8 @@ bool cJobManager::WorkMakeItem(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	if (Preprocessing(ACTION_WORKCENTRE, girl, brothel, Day0Night1, summary, message))
 		return true;
 
-	int jobperformance = (	g_Girls.GetSkill(girl, SKILL_CRAFTING) +
-							g_Girls.GetSkill(girl, SKILL_SERVICE));
+	int jobperformance = (g_Girls.GetSkill(girl, SKILL_CRAFTING) +
+		g_Girls.GetSkill(girl, SKILL_SERVICE));
 
 
 
@@ -59,13 +51,13 @@ bool cJobManager::WorkMakeItem(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	if (g_Dice % 100 <= 10)
 	{
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCENTRE, -1, true);
-		message = gettext(" She wasn't able to make anything.");
+		message = " She wasn't able to make anything.";
 		girl->m_Events.AddMessage(message, IMGTYPE_CRAFT, Day0Night1);
 	}
 	else
 	{
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCENTRE, +3, true);
-		message = gettext(" She enjoyed her time working and made two items.");
+		message = " She enjoyed her time working and made two items.";
 		girl->m_Events.AddMessage(message, IMGTYPE_CRAFT, Day0Night1);
 		g_Brothels.add_to_goods(2);
 	}

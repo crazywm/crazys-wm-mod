@@ -17,29 +17,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "cJobManager.h"
+#include "cRng.h"
+#include "CLog.h"
+#include "cMessageBox.h"
+#include "cGold.h"
 #include "cBrothel.h"
 #include "cFarm.h"
-#include "cCustomers.h"
-#include "cRng.h"
-#include "cInventory.h"
-#include "sConfig.h"
-#include "cRival.h"
-#include <sstream>
-#include "CLog.h"
-#include "cTrainable.h"
-#include "cTariff.h"
-#include "cGold.h"
-#include "cGangs.h"
-#include "cMessageBox.h"
 
-extern cRng g_Dice;
+
 extern CLog g_LogFile;
-extern cCustomers g_Customers;
-extern cInventory g_InvManager;
+extern cMessageQue g_MessageQue;
+extern cRng g_Dice;
+extern cGold g_Gold;
 extern cBrothelManager g_Brothels;
 extern cFarmManager g_Farm;
-extern cGangManager g_Gangs;
-extern cMessageQue g_MessageQue;
+
+
+
 
 // `J` Farm Job - Laborers
 bool cJobManager::WorkGardener(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
@@ -132,8 +126,8 @@ bool cJobManager::WorkGardener(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	if (girl->is_slave() && !cfg.initial.slave_pay_outofpocket()) wages = 0;    // You own her so you don't have to pay her.
 	else
 	{
-		int roll_max = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) 
-			+ g_Girls.GetStat(girl, SKILL_HERBALISM) 
+		int roll_max = (g_Girls.GetStat(girl, STAT_INTELLIGENCE)
+			+ g_Girls.GetStat(girl, SKILL_HERBALISM)
 			+ g_Girls.GetSkill(girl, SKILL_FARMING));
 		roll_max /= 6;
 		wages += 10 + g_Dice%roll_max;
@@ -150,7 +144,7 @@ bool cJobManager::WorkGardener(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 	g_Girls.UpdateStat(girl, STAT_FAME, 1);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, g_Dice%(skill-1));
+	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, g_Dice % (skill - 1));
 	g_Girls.UpdateSkill(girl, SKILL_HERBALISM, (g_Dice%skill) + 1);
 	g_Girls.UpdateSkill(girl, SKILL_FARMING, (g_Dice%skill) + 1);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);

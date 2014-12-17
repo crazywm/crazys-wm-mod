@@ -17,34 +17,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "cJobManager.h"
-#include "cBrothel.h"
-#include "cCustomers.h"
 #include "cRng.h"
-#include "cInventory.h"
-#include "sConfig.h"
-#include "cRival.h"
-#include <sstream>
 #include "CLog.h"
-#include "cTrainable.h"
-#include "cTariff.h"
-#include "cGold.h"
-#include "cGangs.h"
 #include "cMessageBox.h"
+#include "cGold.h"
+#include "cBrothel.h"
+#include "cFarm.h"
 
-extern cRng g_Dice;
+
 extern CLog g_LogFile;
-extern cCustomers g_Customers;
-extern cInventory g_InvManager;
-extern cBrothelManager g_Brothels;
-extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
+extern cRng g_Dice;
 extern cGold g_Gold;
+extern cBrothelManager g_Brothels;
+extern cFarmManager g_Farm;
+
+
+
 
 // `J` Farm Job - Laborers
 bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	string message = "";
-	if(Preprocessing(ACTION_COMBAT, girl, brothel, Day0Night1, summary, message))
+	if (Preprocessing(ACTION_COMBAT, girl, brothel, Day0Night1, summary, message))
 		return true;
 
 	// ready armor and weapons!
@@ -75,24 +70,24 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	{
 		g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, +3, true);
 		message = "She had fun hunting down animals today and came back with ";
-		if      (gain <= 2)	{ message += "two";  gain = 2; }
+		if (gain <= 2)	{ message += "two";  gain = 2; }
 		else if (gain == 3)	{ message += "three"; }
 		else if (gain == 4)	{ message += "four"; }
 		else   { gain = 5;    message += "five"; } // shouldn't happen but just in case
 		message += " of them.";
-		girl->m_Events.AddMessage(message,IMGTYPE_COMBAT,Day0Night1);
+		girl->m_Events.AddMessage(message, IMGTYPE_COMBAT, Day0Night1);
 	}
 	else		// she lost or it was a draw
 	{
 		g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, -1, true);
 		message = " The animals were difficult to track, but she did manage to capture one.";
-		girl->m_Events.AddMessage(message,IMGTYPE_COMBAT,Day0Night1);
+		girl->m_Events.AddMessage(message, IMGTYPE_COMBAT, Day0Night1);
 		gain = 1;
 	}
 	g_Brothels.add_to_beasts(gain);
 
-    // Cleanup
-	if(tempgirl)
+	// Cleanup
+	if (tempgirl)
 		delete tempgirl;
 	tempgirl = 0;
 
@@ -104,12 +99,12 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
 
 	girl->m_Pay += 50 + (gain * 10);	// you catch more you get paid more
-	g_Gold.staff_wages(50+(gain*10));	// wages come from you
+	g_Gold.staff_wages(50 + (gain * 10));	// wages come from you
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateSkill(girl, SKILL_COMBAT, g_Dice % gain + skill);
 	g_Girls.UpdateSkill(girl, SKILL_MAGIC, g_Dice % gain + skill);
 	g_Girls.UpdateStat(girl, STAT_AGILITY, g_Dice % gain + skill);
-	g_Girls.UpdateStat(girl, STAT_CONSTITUTION, g_Dice %2 + skill);
+	g_Girls.UpdateStat(girl, STAT_CONSTITUTION, g_Dice % 2 + skill);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 	g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, gain + skill);
 
