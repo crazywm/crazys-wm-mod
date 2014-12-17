@@ -225,7 +225,7 @@ public:
 
 	sGirl* GetGirl(int brothelID, int num);
 	int    GetGirlPos(int brothelID, sGirl* girl);
-	sGirl* GetGirlByName(int brothelID, string name); // MYR: Used by new end of turn code in InerfaceProcesses::TurnSummary
+	sGirl* GetGirlByName(int brothelID, string name); // MYR: Used by new end of turn code in InterfaceProcesses::TurnSummary
 
 	sBrothel*	GetBrothel(int brothelID);
 	int			GetNumBrothels()			{ return m_NumBrothels; }

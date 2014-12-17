@@ -61,16 +61,38 @@ extern	int		g_CurrentScreen;
 
 bool cScreenItemManagement::ids_set = false;
 
+/* `J` how many special slots at the top of the girls list:
+* Currently only Player and Shop
+* To be added: Store Room and Vault
+//*/
+static int NumberSpecialSlots = 2;
 static int leftOwner = 0;
 static int rightOwner = 1;
-static int NumBrothelGirls = 0;
-static int NumDungeonGirls = 0;
-static int NumCentreGirls = 0;
-static int NumArenaGirls = 0;
-static int NumClinicGirls = 0;
+
+static int NumBrothelGirls = 0;		// all brothel girls
+static int NumBrothelGirls0 = 0;
+static int NumBrothelGirls1 = 0;
+static int NumBrothelGirls2 = 0;
+static int NumBrothelGirls3 = 0;
+static int NumBrothelGirls4 = 0;
+static int NumBrothelGirls5 = 0;
+static int NumBrothelGirls6 = 0;
+
 static int NumStudioGirls = 0;
-static int NumHouseGirls = 0;
+static int NumArenaGirls = 0;
+static int NumCentreGirls = 0;
+static int NumClinicGirls = 0;
 static int NumFarmGirls = 0;
+static int NumHouseGirls = 0;
+static int NumDungeonGirls = 0;
+
+static int Brothel1Index = 0;
+static int Brothel2Index = 0;
+static int Brothel3Index = 0;
+static int Brothel4Index = 0;
+static int Brothel5Index = 0;
+static int Brothel6Index = 0;
+
 static int CentreIndex = 0;
 static int ArenaIndex = 0;
 static int ClinicIndex = 0;
@@ -128,8 +150,12 @@ void cScreenItemManagement::init()
 	string brothel = gettext("Current Brothel: ");
 	brothel += g_Brothels.GetName(g_CurrBrothel);
 	EditTextItem(brothel, curbrothel_id);
-	NumDungeonGirls = NumBrothelGirls = leftOwner = NumCentreGirls = NumArenaGirls = NumClinicGirls = NumStudioGirls = NumFarmGirls = NumHouseGirls = 0;
+
+	NumBrothelGirls = NumBrothelGirls0 = NumBrothelGirls1 = NumBrothelGirls2 = NumBrothelGirls3 = NumBrothelGirls4 = NumBrothelGirls5 = NumBrothelGirls6 = 0;
+	NumStudioGirls = NumArenaGirls = NumCentreGirls = NumClinicGirls = NumFarmGirls = NumHouseGirls = NumDungeonGirls = 0;
+	leftOwner = 0;
 	rightOwner = 1;
+
 	// clear list boxes
 	ClearListBox(owners_l_id);
 	ClearListBox(owners_r_id);
@@ -161,28 +187,119 @@ void cScreenItemManagement::init()
 	AddToListBox(owners_r_id, 1, gettext("Shop"));
 
 	// and girls from current brothel to list
-	int i = 2;
-	sGirl* temp = g_Brothels.GetGirl(g_CurrBrothel, 0);
+	int i = NumberSpecialSlots;
+	sGirl* temp;
+	temp = g_Brothels.GetGirl(0, 0);
 	while (temp)
 	{
 		if (temp == 0) break;
 		if (g_AllTogle && selected_girl == temp) rightOwner = i;
 		AddToListBox(owners_l_id, i, temp->m_Realname);
 		AddToListBox(owners_r_id, i, temp->m_Realname);
+		NumBrothelGirls0++;
 		NumBrothelGirls++;
 		temp = temp->m_Next;
 		i++;
 	}
-
-	// Add girls from centre
-	temp = g_Centre.GetGirl(0, 0);
+	if (g_Brothels.GetNumBrothels() > 1)
+	{
+		temp = g_Brothels.GetGirl(1, 0);
+		while (temp)
+		{
+			if (temp == 0) break;
+			if (g_AllTogle && selected_girl == temp) rightOwner = i;
+			AddToListBox(owners_l_id, i, temp->m_Realname);
+			AddToListBox(owners_r_id, i, temp->m_Realname);
+			NumBrothelGirls1++;
+			NumBrothelGirls++;
+			temp = temp->m_Next;
+			i++;
+		}
+	}
+	if (g_Brothels.GetNumBrothels() > 2)
+	{
+		temp = g_Brothels.GetGirl(2, 0);
+		while (temp)
+		{
+			if (temp == 0) break;
+			if (g_AllTogle && selected_girl == temp) rightOwner = i;
+			AddToListBox(owners_l_id, i, temp->m_Realname);
+			AddToListBox(owners_r_id, i, temp->m_Realname);
+			NumBrothelGirls2++;
+			NumBrothelGirls++;
+			temp = temp->m_Next;
+			i++;
+		}
+	}
+	if (g_Brothels.GetNumBrothels() > 3)
+	{
+		temp = g_Brothels.GetGirl(3, 0);
+		while (temp)
+		{
+			if (temp == 0) break;
+			if (g_AllTogle && selected_girl == temp) rightOwner = i;
+			AddToListBox(owners_l_id, i, temp->m_Realname);
+			AddToListBox(owners_r_id, i, temp->m_Realname);
+			NumBrothelGirls3++;
+			NumBrothelGirls++;
+			temp = temp->m_Next;
+			i++;
+		}
+	}
+	if (g_Brothels.GetNumBrothels() > 4)
+	{
+		temp = g_Brothels.GetGirl(4, 0);
+		while (temp)
+		{
+			if (temp == 0) break;
+			if (g_AllTogle && selected_girl == temp) rightOwner = i;
+			AddToListBox(owners_l_id, i, temp->m_Realname);
+			AddToListBox(owners_r_id, i, temp->m_Realname);
+			NumBrothelGirls4++;
+			NumBrothelGirls++;
+			temp = temp->m_Next;
+			i++;
+		}
+	}
+	if (g_Brothels.GetNumBrothels() > 5)
+	{
+		temp = g_Brothels.GetGirl(5, 0);
+		while (temp)
+		{
+			if (temp == 0) break;
+			if (g_AllTogle && selected_girl == temp) rightOwner = i;
+			AddToListBox(owners_l_id, i, temp->m_Realname);
+			AddToListBox(owners_r_id, i, temp->m_Realname);
+			NumBrothelGirls5++;
+			NumBrothelGirls++;
+			temp = temp->m_Next;
+			i++;
+		}
+	}
+	if (g_Brothels.GetNumBrothels() > 6)
+	{
+		temp = g_Brothels.GetGirl(6, 0);
+		while (temp)
+		{
+			if (temp == 0) break;
+			if (g_AllTogle && selected_girl == temp) rightOwner = i;
+			AddToListBox(owners_l_id, i, temp->m_Realname);
+			AddToListBox(owners_r_id, i, temp->m_Realname);
+			NumBrothelGirls6++;
+			NumBrothelGirls++;
+			temp = temp->m_Next;
+			i++;
+		}
+	}
+	//add girls from Studio
+	temp = g_Studios.GetGirl(0, 0);
 	while (temp)
 	{
 		if (temp == 0) break;
 		if (g_AllTogle && selected_girl == temp) rightOwner = i;
 		AddToListBox(owners_l_id, i, temp->m_Realname);
 		AddToListBox(owners_r_id, i, temp->m_Realname);
-		NumCentreGirls++;
+		NumStudioGirls++;
 		temp = temp->m_Next;
 		i++;
 	}
@@ -200,6 +317,19 @@ void cScreenItemManagement::init()
 		i++;
 	}
 
+	// Add girls from centre
+	temp = g_Centre.GetGirl(0, 0);
+	while (temp)
+	{
+		if (temp == 0) break;
+		if (g_AllTogle && selected_girl == temp) rightOwner = i;
+		AddToListBox(owners_l_id, i, temp->m_Realname);
+		AddToListBox(owners_r_id, i, temp->m_Realname);
+		NumCentreGirls++;
+		temp = temp->m_Next;
+		i++;
+	}
+
 	//add girls from Clinic
 	temp = g_Clinic.GetGirl(0, 0);
 	while (temp)
@@ -209,32 +339,6 @@ void cScreenItemManagement::init()
 		AddToListBox(owners_l_id, i, temp->m_Realname);
 		AddToListBox(owners_r_id, i, temp->m_Realname);
 		NumClinicGirls++;
-		temp = temp->m_Next;
-		i++;
-	}
-
-	//add girls from Studio
-	temp = g_Studios.GetGirl(0, 0);
-	while (temp)
-	{
-		if (temp == 0) break;
-		if (g_AllTogle && selected_girl == temp) rightOwner = i;
-		AddToListBox(owners_l_id, i, temp->m_Realname);
-		AddToListBox(owners_r_id, i, temp->m_Realname);
-		NumStudioGirls++;
-		temp = temp->m_Next;
-		i++;
-	}
-
-	//add girls from House
-	temp = g_House.GetGirl(0, 0);
-	while (temp)
-	{
-		if (temp == 0) break;
-		if (g_AllTogle && selected_girl == temp) rightOwner = i;
-		AddToListBox(owners_l_id, i, temp->m_Realname);
-		AddToListBox(owners_r_id, i, temp->m_Realname);
-		NumHouseGirls++;
 		temp = temp->m_Next;
 		i++;
 	}
@@ -252,6 +356,19 @@ void cScreenItemManagement::init()
 		i++;
 	}
 
+	//add girls from House
+	temp = g_House.GetGirl(0, 0);
+	while (temp)
+	{
+		if (temp == 0) break;
+		if (g_AllTogle && selected_girl == temp) rightOwner = i;
+		AddToListBox(owners_l_id, i, temp->m_Realname);
+		AddToListBox(owners_r_id, i, temp->m_Realname);
+		NumHouseGirls++;
+		temp = temp->m_Next;
+		i++;
+	}
+
 	// add current dungeon girls to list
 	sDungeonGirl* temp2 = g_Brothels.GetDungeon()->GetGirl(0);
 	while (temp2)
@@ -264,13 +381,22 @@ void cScreenItemManagement::init()
 		temp2 = temp2->m_Next;
 		i++;
 	}
-	CentreIndex = NumBrothelGirls;
-	ArenaIndex = NumBrothelGirls + NumCentreGirls;
-	ClinicIndex = NumBrothelGirls + NumCentreGirls + NumArenaGirls;
-	StudioIndex = NumBrothelGirls + NumCentreGirls + NumArenaGirls + NumClinicGirls;
-	HouseIndex = NumBrothelGirls + NumCentreGirls + NumArenaGirls + NumClinicGirls + NumStudioGirls;
-	FarmIndex = NumBrothelGirls + NumCentreGirls + NumArenaGirls + NumClinicGirls + NumStudioGirls + NumHouseGirls;
-	DungeonIndex = NumBrothelGirls + NumCentreGirls + NumArenaGirls + NumClinicGirls + NumStudioGirls + NumHouseGirls + NumFarmGirls;
+
+	Brothel1Index = NumBrothelGirls0;
+	Brothel2Index = NumBrothelGirls0 + NumBrothelGirls1;
+	Brothel3Index = NumBrothelGirls0 + NumBrothelGirls1 + NumBrothelGirls2;
+	Brothel4Index = NumBrothelGirls0 + NumBrothelGirls1 + NumBrothelGirls2 + NumBrothelGirls3;
+	Brothel5Index = NumBrothelGirls0 + NumBrothelGirls1 + NumBrothelGirls2 + NumBrothelGirls3 + NumBrothelGirls4;
+	Brothel6Index = NumBrothelGirls0 + NumBrothelGirls1 + NumBrothelGirls2 + NumBrothelGirls3 + NumBrothelGirls4 + NumBrothelGirls5;
+
+	StudioIndex = NumBrothelGirls;
+	ArenaIndex = NumBrothelGirls + NumStudioGirls;
+	CentreIndex = NumBrothelGirls + NumStudioGirls + NumArenaGirls;
+	ClinicIndex = NumBrothelGirls + NumStudioGirls + NumArenaGirls + NumCentreGirls;
+	FarmIndex = NumBrothelGirls + NumStudioGirls + NumArenaGirls + NumCentreGirls + NumClinicGirls;
+	HouseIndex = NumBrothelGirls + NumStudioGirls + NumArenaGirls + NumCentreGirls + NumClinicGirls + NumFarmGirls;
+	DungeonIndex = NumBrothelGirls + NumStudioGirls + NumArenaGirls + NumCentreGirls + NumClinicGirls + NumFarmGirls + NumHouseGirls;
+
 	g_ReturnText = "";
 	g_AllTogle = false;
 
@@ -366,22 +492,7 @@ void cScreenItemManagement::check_events()
 			else
 			{
 				sGirl* targetGirl = 0;
-				if (leftOwner <= g_Brothels.GetNumGirls(g_CurrBrothel) + 1)	// brothel girl
-					targetGirl = g_Brothels.GetGirl(g_CurrBrothel, leftOwner - 2);
-				else if (leftOwner <= NumBrothelGirls + NumCentreGirls + 1)	// Centre
-					targetGirl = g_Centre.GetGirl(0, (leftOwner - CentreIndex) - 2);
-				else if (leftOwner <= NumBrothelGirls + NumCentreGirls + NumArenaGirls + 1)	// Arena
-					targetGirl = g_Arena.GetGirl(0, (leftOwner - ArenaIndex) - 2);
-				else if (leftOwner <= NumBrothelGirls + NumCentreGirls + NumArenaGirls + NumClinicGirls + 1)	// Clinic
-					targetGirl = g_Clinic.GetGirl(0, (leftOwner - ClinicIndex) - 2);
-				else if (leftOwner <= NumBrothelGirls + NumCentreGirls + NumArenaGirls + NumClinicGirls + NumStudioGirls + 1)	//Studio
-					targetGirl = g_Studios.GetGirl(0, (leftOwner - StudioIndex) - 2);
-				else if (leftOwner <= NumBrothelGirls + NumCentreGirls + NumArenaGirls + NumClinicGirls + NumStudioGirls + NumHouseGirls + 1)	//House
-					targetGirl = g_House.GetGirl(0, (leftOwner - HouseIndex) - 2);
-				else if (leftOwner <= NumBrothelGirls + NumCentreGirls + NumArenaGirls + NumClinicGirls + NumStudioGirls + NumHouseGirls + NumFarmGirls + 1)	//Farm
-					targetGirl = g_Farm.GetGirl(0, (leftOwner - FarmIndex) - 2);
-				else // dungeon girl
-					targetGirl = (g_Brothels.GetDungeon()->GetGirl((leftOwner - DungeonIndex) - 2))->m_Girl;
+				targetGirl = GirlSelectedFromList(leftOwner);
 
 				HateLove = g_Girls.GetStat(targetGirl, STAT_PCLOVE) - g_Girls.GetStat(targetGirl, STAT_PCHATE);
 
@@ -436,22 +547,7 @@ void cScreenItemManagement::check_events()
 			else
 			{
 				sGirl* targetGirl = 0;
-				if (rightOwner <= (g_Brothels.GetNumGirls(g_CurrBrothel) + 1))	// brothel girl
-					targetGirl = g_Brothels.GetGirl(g_CurrBrothel, rightOwner - 2);
-				else if (rightOwner <= NumBrothelGirls + NumCentreGirls + 1)	// Centre
-					targetGirl = g_Centre.GetGirl(0, (rightOwner - CentreIndex) - 2);
-				else if (rightOwner <= NumBrothelGirls + NumCentreGirls + NumArenaGirls + 1)	// Arena
-					targetGirl = g_Arena.GetGirl(0, (rightOwner - ArenaIndex) - 2);
-				else if (rightOwner <= NumBrothelGirls + NumCentreGirls + NumArenaGirls + NumClinicGirls + 1)	// Clinic
-					targetGirl = g_Clinic.GetGirl(0, (rightOwner - ClinicIndex) - 2);
-				else if (rightOwner <= NumBrothelGirls + NumCentreGirls + NumArenaGirls + NumClinicGirls + NumStudioGirls + 1)	//Studio
-					targetGirl = g_Studios.GetGirl(0, (rightOwner - StudioIndex) - 2);
-				else if (rightOwner <= NumBrothelGirls + NumCentreGirls + NumArenaGirls + NumClinicGirls + NumStudioGirls + NumHouseGirls + 1)	//House
-					targetGirl = g_House.GetGirl(0, (rightOwner - HouseIndex) - 2);
-				else if (rightOwner <= NumBrothelGirls + NumCentreGirls + NumArenaGirls + NumClinicGirls + NumStudioGirls + NumHouseGirls + NumFarmGirls + 1)	//Farm
-					targetGirl = g_Farm.GetGirl(0, (rightOwner - FarmIndex) - 2);
-				else // dungeon girl
-					targetGirl = (g_Brothels.GetDungeon()->GetGirl((rightOwner - DungeonIndex) - 2))->m_Girl;
+				targetGirl = GirlSelectedFromList(rightOwner);
 
 				HateLove = g_Girls.GetStat(targetGirl, STAT_PCLOVE) - g_Girls.GetStat(targetGirl, STAT_PCHATE);
 
@@ -484,22 +580,7 @@ void cScreenItemManagement::check_events()
 	if (g_InterfaceEvents.CheckButton(equip_l_id))
 	{
 		sGirl* targetGirl = 0;
-		if (leftOwner <= (g_Brothels.GetNumGirls(g_CurrBrothel) + 1))	// brothel girl
-			targetGirl = g_Brothels.GetGirl(g_CurrBrothel, leftOwner - 2);
-		else if (leftOwner <= NumBrothelGirls + NumCentreGirls + 1)	// Centre
-			targetGirl = g_Centre.GetGirl(0, (leftOwner - CentreIndex) - 2);
-		else if (leftOwner <= NumBrothelGirls + NumCentreGirls + NumArenaGirls + 1)	// Arena
-			targetGirl = g_Arena.GetGirl(0, (leftOwner - ArenaIndex) - 2);
-		else if (leftOwner <= NumBrothelGirls + NumCentreGirls + NumArenaGirls + NumClinicGirls + 1)	// Clinic
-			targetGirl = g_Clinic.GetGirl(0, (leftOwner - ClinicIndex) - 2);
-		else if (leftOwner <= NumBrothelGirls + NumCentreGirls + NumArenaGirls + NumClinicGirls + NumStudioGirls + 1)	//Studio
-			targetGirl = g_Studios.GetGirl(0, (leftOwner - StudioIndex) - 2);
-		else if (leftOwner <= NumBrothelGirls + NumCentreGirls + NumArenaGirls + NumClinicGirls + NumStudioGirls + NumHouseGirls + 1)	//House
-			targetGirl = g_House.GetGirl(0, (leftOwner - HouseIndex) - 2);
-		else if (leftOwner <= NumBrothelGirls + NumCentreGirls + NumArenaGirls + NumClinicGirls + NumStudioGirls + NumHouseGirls + NumFarmGirls + 1)	//Farm
-			targetGirl = g_Farm.GetGirl(0, (leftOwner - FarmIndex) - 2);
-		else // dungeon girl
-			targetGirl = (g_Brothels.GetDungeon()->GetGirl((leftOwner - DungeonIndex) - 2))->m_Girl;
+		targetGirl = GirlSelectedFromList(leftOwner);
 
 		HateLove = g_Girls.GetStat(targetGirl, STAT_PCLOVE) - g_Girls.GetStat(targetGirl, STAT_PCHATE);
 
@@ -516,22 +597,7 @@ void cScreenItemManagement::check_events()
 	if (g_InterfaceEvents.CheckButton(unequip_l_id))
 	{
 		sGirl* targetGirl = 0;
-		if (leftOwner <= (g_Brothels.GetNumGirls(g_CurrBrothel) + 1))	// brothel girl
-			targetGirl = g_Brothels.GetGirl(g_CurrBrothel, leftOwner - 2);
-		else if (leftOwner <= NumBrothelGirls + NumCentreGirls + 1)	// Centre
-			targetGirl = g_Centre.GetGirl(0, (leftOwner - CentreIndex) - 2);
-		else if (leftOwner <= NumBrothelGirls + NumCentreGirls + NumArenaGirls + 1)	// Arena
-			targetGirl = g_Arena.GetGirl(0, (leftOwner - ArenaIndex) - 2);
-		else if (leftOwner <= NumBrothelGirls + NumCentreGirls + NumArenaGirls + NumClinicGirls + 1)	// Clinic
-			targetGirl = g_Clinic.GetGirl(0, (leftOwner - ClinicIndex) - 2);
-		else if (leftOwner <= NumBrothelGirls + NumCentreGirls + NumArenaGirls + NumClinicGirls + NumStudioGirls + 1)	//Studio
-			targetGirl = g_Studios.GetGirl(0, (leftOwner - StudioIndex) - 2);
-		else if (leftOwner <= NumBrothelGirls + NumCentreGirls + NumArenaGirls + NumClinicGirls + NumStudioGirls + NumHouseGirls + 1)	//House
-			targetGirl = g_House.GetGirl(0, (leftOwner - HouseIndex) - 2);
-		else if (leftOwner <= NumBrothelGirls + NumCentreGirls + NumArenaGirls + NumClinicGirls + NumStudioGirls + NumHouseGirls + NumFarmGirls + 1)	//Farm
-			targetGirl = g_Farm.GetGirl(0, (leftOwner - FarmIndex) - 2);
-		else // dungeon girl
-			targetGirl = (g_Brothels.GetDungeon()->GetGirl((leftOwner - DungeonIndex) - 2))->m_Girl;
+		targetGirl = GirlSelectedFromList(leftOwner);
 
 		HateLove = g_Girls.GetStat(targetGirl, STAT_PCLOVE) - g_Girls.GetStat(targetGirl, STAT_PCHATE);
 
@@ -548,22 +614,7 @@ void cScreenItemManagement::check_events()
 	if (g_InterfaceEvents.CheckButton(equip_r_id))
 	{
 		sGirl* targetGirl = 0;
-		if (rightOwner <= (g_Brothels.GetNumGirls(g_CurrBrothel) + 1))	// brothel girl
-			targetGirl = g_Brothels.GetGirl(g_CurrBrothel, rightOwner - 2);
-		else if (rightOwner <= NumBrothelGirls + NumCentreGirls + 1)	// Centre
-			targetGirl = g_Centre.GetGirl(0, (rightOwner - CentreIndex) - 2);
-		else if (rightOwner <= NumBrothelGirls + NumCentreGirls + NumArenaGirls + 1)	// Arena
-			targetGirl = g_Arena.GetGirl(0, (rightOwner - ArenaIndex) - 2);
-		else if (rightOwner <= NumBrothelGirls + NumCentreGirls + NumArenaGirls + NumClinicGirls + 1)	// Clinic
-			targetGirl = g_Clinic.GetGirl(0, (rightOwner - ClinicIndex) - 2);
-		else if (rightOwner <= NumBrothelGirls + NumCentreGirls + NumArenaGirls + NumClinicGirls + NumStudioGirls + 1)	//Studio
-			targetGirl = g_Studios.GetGirl(0, (rightOwner - StudioIndex) - 2);
-		else if (rightOwner <= NumBrothelGirls + NumCentreGirls + NumArenaGirls + NumClinicGirls + NumStudioGirls + NumHouseGirls + 1)	//House
-			targetGirl = g_House.GetGirl(0, (rightOwner - HouseIndex) - 2);
-		else if (rightOwner <= NumBrothelGirls + NumCentreGirls + NumArenaGirls + NumClinicGirls + NumStudioGirls + NumHouseGirls + NumFarmGirls + 1)	//Farm
-			targetGirl = g_Farm.GetGirl(0, (rightOwner - FarmIndex) - 2);
-		else // dungeon girl
-			targetGirl = (g_Brothels.GetDungeon()->GetGirl((rightOwner - DungeonIndex) - 2))->m_Girl;
+		targetGirl = GirlSelectedFromList(rightOwner);
 
 		HateLove = g_Girls.GetStat(targetGirl, STAT_PCLOVE) - g_Girls.GetStat(targetGirl, STAT_PCHATE);
 
@@ -580,22 +631,7 @@ void cScreenItemManagement::check_events()
 	if (g_InterfaceEvents.CheckButton(unequip_r_id))
 	{
 		sGirl* targetGirl = 0;
-		if (rightOwner <= (g_Brothels.GetNumGirls(g_CurrBrothel) + 1))	// brothel girl
-			targetGirl = g_Brothels.GetGirl(g_CurrBrothel, rightOwner - 2);
-		else if (rightOwner <= NumBrothelGirls + NumCentreGirls + 1)	// Centre
-			targetGirl = g_Centre.GetGirl(0, (rightOwner - CentreIndex) - 2);
-		else if (rightOwner <= NumBrothelGirls + NumCentreGirls + NumArenaGirls + 1)	// Arena
-			targetGirl = g_Arena.GetGirl(0, (rightOwner - ArenaIndex) - 2);
-		else if (rightOwner <= NumBrothelGirls + NumCentreGirls + NumArenaGirls + NumClinicGirls + 1)	// Clinic
-			targetGirl = g_Clinic.GetGirl(0, (rightOwner - ClinicIndex) - 2);
-		else if (rightOwner <= NumBrothelGirls + NumCentreGirls + NumArenaGirls + NumClinicGirls + NumStudioGirls + 1)	//Studio
-			targetGirl = g_Studios.GetGirl(0, (rightOwner - StudioIndex) - 2);
-		else if (rightOwner <= NumBrothelGirls + NumCentreGirls + NumArenaGirls + NumClinicGirls + NumStudioGirls + NumHouseGirls + 1)	//House
-			targetGirl = g_House.GetGirl(0, (rightOwner - HouseIndex) - 2);
-		else if (rightOwner <= NumBrothelGirls + NumCentreGirls + NumArenaGirls + NumClinicGirls + NumStudioGirls + NumHouseGirls + NumFarmGirls + 1)	//Farm
-			targetGirl = g_Farm.GetGirl(0, (rightOwner - FarmIndex) - 2);
-		else // dungeon girl
-			targetGirl = (g_Brothels.GetDungeon()->GetGirl((rightOwner - DungeonIndex) - 2))->m_Girl;
+		targetGirl = GirlSelectedFromList(rightOwner);
 
 		HateLove = g_Girls.GetStat(targetGirl, STAT_PCLOVE) - g_Girls.GetStat(targetGirl, STAT_PCHATE);
 
@@ -695,22 +731,7 @@ void cScreenItemManagement::refresh_item_list(Side which_list)
 		else	// girl items
 		{
 			sGirl* targetGirl = 0;
-			if (*owner <= g_Brothels.GetNumGirls(g_CurrBrothel) + 1)	// brothel girl
-				targetGirl = g_Brothels.GetGirl(g_CurrBrothel, *owner - 2);
-			else if (*owner <= NumBrothelGirls + NumCentreGirls + 1)	// Centre
-				targetGirl = g_Centre.GetGirl(0, (*owner - CentreIndex) - 2);
-			else if (*owner <= NumBrothelGirls + NumCentreGirls + NumArenaGirls + 1)	// Arena
-				targetGirl = g_Arena.GetGirl(0, (*owner - ArenaIndex) - 2);
-			else if (*owner <= NumBrothelGirls + NumCentreGirls + NumArenaGirls + NumClinicGirls + 1)	// Clinic
-				targetGirl = g_Clinic.GetGirl(0, (*owner - ClinicIndex) - 2);
-			else if (*owner <= NumBrothelGirls + NumCentreGirls + NumArenaGirls + NumClinicGirls + NumStudioGirls + 1)	//Studio
-				targetGirl = g_Studios.GetGirl(0, (*owner - StudioIndex) - 2);
-			else if (*owner <= NumBrothelGirls + NumCentreGirls + NumArenaGirls + NumClinicGirls + NumStudioGirls + NumHouseGirls + 1)	//House
-				targetGirl = g_House.GetGirl(0, (*owner - HouseIndex) - 2);
-			else if (*owner <= NumBrothelGirls + NumCentreGirls + NumArenaGirls + NumClinicGirls + NumStudioGirls + NumHouseGirls + NumFarmGirls + 1)	//Farm
-				targetGirl = g_Farm.GetGirl(0, (*owner - FarmIndex) - 2);
-			else // dungeon girl
-				targetGirl = (g_Brothels.GetDungeon()->GetGirl((*owner - DungeonIndex) - 2))->m_Girl;
+			targetGirl = GirlSelectedFromList(*owner);
 
 			for (int i = 0; i<40; i++)
 			{
@@ -796,22 +817,8 @@ void cScreenItemManagement::attempt_transfer(Side transfer_from)
 		sGirl* targetGirl = 0;
 		if (source_owner > 1)	// taking from a girl and selling to shop
 		{
-			if (source_owner <= g_Brothels.GetNumGirls(g_CurrBrothel) + 1)	// brothel girl
-				targetGirl = g_Brothels.GetGirl(g_CurrBrothel, GetSelectedItemFromList(source_owner_list) - 2);
-			else if (source_owner <= NumBrothelGirls + NumCentreGirls + 1)	// Centre
-				targetGirl = g_Centre.GetGirl(0, (GetSelectedItemFromList(source_owner_list) - CentreIndex) - 2);
-			else if (source_owner <= NumBrothelGirls + NumCentreGirls + NumArenaGirls + 1)	// Arena
-				targetGirl = g_Arena.GetGirl(0, (GetSelectedItemFromList(source_owner_list) - ArenaIndex) - 2);
-			else if (source_owner <= NumBrothelGirls + NumCentreGirls + NumArenaGirls + NumClinicGirls + 1)	// Clinic
-				targetGirl = g_Clinic.GetGirl(0, (GetSelectedItemFromList(source_owner_list) - ClinicIndex) - 2);
-			else if (source_owner <= NumBrothelGirls + NumCentreGirls + NumArenaGirls + NumClinicGirls + NumStudioGirls + 1)	//Studio
-				targetGirl = g_Studios.GetGirl(0, (GetSelectedItemFromList(source_owner_list) - StudioIndex) - 2);
-			else if (source_owner <= NumBrothelGirls + NumCentreGirls + NumArenaGirls + NumClinicGirls + NumStudioGirls + NumHouseGirls + 1)	//House
-				targetGirl = g_House.GetGirl(0, (GetSelectedItemFromList(source_owner_list) - HouseIndex) - 2);
-			else if (source_owner <= NumBrothelGirls + NumCentreGirls + NumArenaGirls + NumClinicGirls + NumStudioGirls + NumHouseGirls + NumFarmGirls + 1)	//Farm
-				targetGirl = g_Farm.GetGirl(0, (GetSelectedItemFromList(source_owner_list) - FarmIndex) - 2);
-			else	// dungeon girl
-				targetGirl = (g_Brothels.GetDungeon()->GetGirl((GetSelectedItemFromList(source_owner_list) - DungeonIndex) + 2))->m_Girl;
+			int selectedfromlist = GetSelectedItemFromList(source_owner_list);
+			targetGirl = GirlSelectedFromList(source_owner, selectedfromlist);
 
 			HateLove = g_Girls.GetStat(targetGirl, STAT_PCLOVE) - g_Girls.GetStat(targetGirl, STAT_PCHATE);
 
@@ -907,22 +914,8 @@ void cScreenItemManagement::attempt_transfer(Side transfer_from)
 		{
 			// take items from girl and give to player
 			sGirl* targetGirl = 0;
-			if (source_owner <= g_Brothels.GetNumGirls(g_CurrBrothel) + 1)	// brothel girl
-				targetGirl = g_Brothels.GetGirl(g_CurrBrothel, GetSelectedItemFromList(source_owner_list) - 2);
-			else if (source_owner <= NumBrothelGirls + NumCentreGirls + 1)	// Centre
-				targetGirl = g_Centre.GetGirl(0, (GetSelectedItemFromList(source_owner_list) - CentreIndex) - 2);
-			else if (source_owner <= NumBrothelGirls + NumCentreGirls + NumArenaGirls + 1)	// Arena
-				targetGirl = g_Arena.GetGirl(0, (GetSelectedItemFromList(source_owner_list) - ArenaIndex) - 2);
-			else if (source_owner <= NumBrothelGirls + NumCentreGirls + NumArenaGirls + NumClinicGirls + 1)	// Clinic
-				targetGirl = g_Clinic.GetGirl(0, (GetSelectedItemFromList(source_owner_list) - ClinicIndex) - 2);
-			else if (source_owner <= NumBrothelGirls + NumCentreGirls + NumArenaGirls + NumClinicGirls + NumStudioGirls + 1)	//Studio
-				targetGirl = g_Studios.GetGirl(0, (GetSelectedItemFromList(source_owner_list) - StudioIndex) - 2);
-			else if (source_owner <= NumBrothelGirls + NumCentreGirls + NumArenaGirls + NumClinicGirls + NumStudioGirls + NumHouseGirls + 1)	//House
-				targetGirl = g_House.GetGirl(0, (GetSelectedItemFromList(source_owner_list) - HouseIndex) - 2);
-			else if (source_owner <= NumBrothelGirls + NumCentreGirls + NumArenaGirls + NumClinicGirls + NumStudioGirls + NumHouseGirls + NumFarmGirls + 1)	//Farm
-				targetGirl = g_Farm.GetGirl(0, (GetSelectedItemFromList(source_owner_list) - FarmIndex) - 2);
-			else	// dungeon girl
-				targetGirl = (g_Brothels.GetDungeon()->GetGirl((GetSelectedItemFromList(source_owner_list) - DungeonIndex) - 2))->m_Girl;
+			int selectedfromlist = GetSelectedItemFromList(source_owner_list);
+			targetGirl = GirlSelectedFromList(source_owner, selectedfromlist);
 
 			HateLove = g_Girls.GetStat(targetGirl, STAT_PCLOVE) - g_Girls.GetStat(targetGirl, STAT_PCHATE);
 
@@ -961,22 +954,8 @@ void cScreenItemManagement::attempt_transfer(Side transfer_from)
 	else	// target is girl
 	{
 		sGirl* targetGirl = 0;
-		if (target_owner <= g_Brothels.GetNumGirls(g_CurrBrothel) + 1)	// brothel girl
-			targetGirl = g_Brothels.GetGirl(g_CurrBrothel, GetSelectedItemFromList(target_owner_list) - 2);
-		else if (target_owner <= NumBrothelGirls + NumCentreGirls + 1)	// Centre
-			targetGirl = g_Centre.GetGirl(0, (GetSelectedItemFromList(target_owner_list) - CentreIndex) - 2);
-		else if (target_owner <= NumBrothelGirls + NumCentreGirls + NumArenaGirls + 1)	// Arena
-			targetGirl = g_Arena.GetGirl(0, (GetSelectedItemFromList(target_owner_list) - ArenaIndex) - 2);
-		else if (target_owner <= NumBrothelGirls + NumCentreGirls + NumArenaGirls + NumClinicGirls + 1)	// Clinic
-			targetGirl = g_Clinic.GetGirl(0, (GetSelectedItemFromList(target_owner_list) - ClinicIndex) - 2);
-		else if (target_owner <= NumBrothelGirls + NumCentreGirls + NumArenaGirls + NumClinicGirls + NumStudioGirls + 1)	//Studio
-			targetGirl = g_Studios.GetGirl(0, (GetSelectedItemFromList(target_owner_list) - StudioIndex) - 2);
-		else if (target_owner <= NumBrothelGirls + NumCentreGirls + NumArenaGirls + NumClinicGirls + NumStudioGirls + NumHouseGirls + 1)	//House
-			targetGirl = g_House.GetGirl(0, (GetSelectedItemFromList(target_owner_list) - HouseIndex) - 2);
-		else if (target_owner <= NumBrothelGirls + NumCentreGirls + NumArenaGirls + NumClinicGirls + NumStudioGirls + NumHouseGirls + NumFarmGirls + 1)	//Farm
-			targetGirl = g_Farm.GetGirl(0, (GetSelectedItemFromList(target_owner_list) - FarmIndex) - 2);
-		else // dungeon girl
-			targetGirl = (g_Brothels.GetDungeon()->GetGirl((GetSelectedItemFromList(target_owner_list) - DungeonIndex) - 2))->m_Girl;
+		int selectedfromlist = GetSelectedItemFromList(target_owner_list);
+		targetGirl = GirlSelectedFromList(target_owner, selectedfromlist);
 
 		HateLove = g_Girls.GetStat(targetGirl, STAT_PCLOVE) - g_Girls.GetStat(targetGirl, STAT_PCHATE);
 
@@ -1070,10 +1049,8 @@ void cScreenItemManagement::attempt_transfer(Side transfer_from)
 		else	// player forcing a girl to give to another girl
 		{
 			sGirl* fromGirl = 0;
-			if (source_owner <= g_Brothels.GetNumGirls(g_CurrBrothel) + 1)	// brothel girl
-				fromGirl = g_Brothels.GetGirl(g_CurrBrothel, GetSelectedItemFromList(source_owner_list) - 2);
-			else // dungeon girl
-				fromGirl = (g_Brothels.GetDungeon()->GetGirl(GetSelectedItemFromList(source_owner_list) - (2 + g_Brothels.GetNumGirls(g_CurrBrothel))))->m_Girl;
+			int selectedfromlist = GetSelectedItemFromList(source_owner_list);
+			fromGirl = GirlSelectedFromList(source_owner, selectedfromlist);
 
 			int HateLove = g_Girls.GetStat(targetGirl, STAT_PCLOVE) - g_Girls.GetStat(targetGirl, STAT_PCHATE);
 
@@ -1166,4 +1143,43 @@ string cScreenItemManagement::GiveItemText(int goodbad, int HateLove, string Ite
 		else /*              */		message = gettext("She can't belive you would give her such a gift and runs off crying.");
 	}
 	return message;
+}
+
+// `J` This if/else check was written out in several places - combined into one.
+sGirl* cScreenItemManagement::GirlSelectedFromList(int owner, int selectedfromlist)
+{
+	sGirl* targetGirl;
+	if (selectedfromlist == -100)	selectedfromlist = owner;
+
+	if (owner <= NumBrothelGirls0 + 1)
+		targetGirl = g_Brothels.GetGirl(0, selectedfromlist - NumberSpecialSlots);
+	else if (owner <= NumBrothelGirls0 + NumBrothelGirls1 + 1)
+		targetGirl = g_Brothels.GetGirl(1, (selectedfromlist - Brothel1Index) - NumberSpecialSlots);
+	else if (owner <= NumBrothelGirls0 + NumBrothelGirls1 + NumBrothelGirls2 + 1)
+		targetGirl = g_Brothels.GetGirl(2, (selectedfromlist - Brothel2Index) - NumberSpecialSlots);
+	else if (owner <= NumBrothelGirls0 + NumBrothelGirls1 + NumBrothelGirls2 + NumBrothelGirls3 + 1)
+		targetGirl = g_Brothels.GetGirl(3, (selectedfromlist - Brothel3Index) - NumberSpecialSlots);
+	else if (owner <= NumBrothelGirls0 + NumBrothelGirls1 + NumBrothelGirls2 + NumBrothelGirls3 + NumBrothelGirls4 + 1)
+		targetGirl = g_Brothels.GetGirl(4, (selectedfromlist - Brothel4Index) - NumberSpecialSlots);
+	else if (owner <= NumBrothelGirls0 + NumBrothelGirls1 + NumBrothelGirls2 + NumBrothelGirls3 + NumBrothelGirls4 + NumBrothelGirls5 + 1)
+		targetGirl = g_Brothels.GetGirl(5, (selectedfromlist - Brothel5Index) - NumberSpecialSlots);
+	else if (owner <= NumBrothelGirls0 + NumBrothelGirls1 + NumBrothelGirls2 + NumBrothelGirls3 + NumBrothelGirls4 + NumBrothelGirls5 + NumBrothelGirls6 + 1)
+		targetGirl = g_Brothels.GetGirl(6, (selectedfromlist - Brothel6Index) - NumberSpecialSlots);
+
+	else if (owner <= NumBrothelGirls + NumStudioGirls + 1)
+		targetGirl = g_Studios.GetGirl(0, (selectedfromlist - StudioIndex) - NumberSpecialSlots);
+	else if (owner <= NumBrothelGirls + NumStudioGirls + NumArenaGirls + 1)
+		targetGirl = g_Arena.GetGirl(0, (selectedfromlist - ArenaIndex) - NumberSpecialSlots);
+	else if (owner <= NumBrothelGirls + NumStudioGirls + NumArenaGirls + NumCentreGirls + 1)
+		targetGirl = g_Centre.GetGirl(0, (selectedfromlist - CentreIndex) - NumberSpecialSlots);
+	else if (owner <= NumBrothelGirls + NumStudioGirls + NumArenaGirls + NumCentreGirls + NumClinicGirls + 1)
+		targetGirl = g_Clinic.GetGirl(0, (selectedfromlist - ClinicIndex) - NumberSpecialSlots);
+	else if (owner <= NumBrothelGirls + NumStudioGirls + NumArenaGirls + NumCentreGirls + NumClinicGirls + NumFarmGirls + 1)
+		targetGirl = g_Farm.GetGirl(0, (selectedfromlist - FarmIndex) - NumberSpecialSlots);
+	else if (owner <= NumBrothelGirls + NumStudioGirls + NumArenaGirls + NumCentreGirls + NumClinicGirls + NumFarmGirls + NumHouseGirls + 1)
+		targetGirl = g_House.GetGirl(0, (selectedfromlist - HouseIndex) - NumberSpecialSlots);
+	else
+		targetGirl = (g_Brothels.GetDungeon()->GetGirl((selectedfromlist - DungeonIndex) - NumberSpecialSlots))->m_Girl;
+
+	return targetGirl;
 }

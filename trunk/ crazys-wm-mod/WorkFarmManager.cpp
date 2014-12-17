@@ -16,32 +16,24 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include <sstream>
 #include "cJobManager.h"
+#include "cRng.h"
+#include "CLog.h"
+#include "cMessageBox.h"
+#include "cGold.h"
 #include "cBrothel.h"
 #include "cFarm.h"
-#include "cCustomers.h"
-#include "cRng.h"
-#include "cInventory.h"
-#include "sConfig.h"
-#include "cRival.h"
-#include "CLog.h"
-#include "cTrainable.h"
-#include "cTariff.h"
-#include "cGold.h"
-#include "cGangs.h"
-#include "cMessageBox.h"
-#include "libintl.h"
 
-extern cRng g_Dice;
+
 extern CLog g_LogFile;
-extern cCustomers g_Customers;
-extern cInventory g_InvManager;
+extern cMessageQue g_MessageQue;
+extern cRng g_Dice;
+extern cGold g_Gold;
 extern cBrothelManager g_Brothels;
 extern cFarmManager g_Farm;
-extern cGangManager g_Gangs;
-extern cMessageQue g_MessageQue;
-extern cGold g_Gold;
+
+
+
 
 // `J` Farm Job - Staff - Matron_Job - Full_Time_Job
 bool cJobManager::WorkFarmManager(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
@@ -60,7 +52,7 @@ bool cJobManager::WorkFarmManager(sGirl* girl, sBrothel* brothel, bool Day0Night
 		{
 			g_Girls.UpdateEnjoyment(girl, ACTION_WORKMATRON, -10, true);
 			message = girl->m_Realname;
-			message += gettext(" was overwhelmed by the number of girls she was required to manage and broke down crying.");
+			message += " was overwhelmed by the number of girls she was required to manage and broke down crying.";
 			g_Girls.UpdateStat(girl, STAT_HAPPINESS, -10);
 			g_Girls.UpdateStat(girl, STAT_CONFIDENCE, -5);
 			girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, Day0Night1);
@@ -68,7 +60,7 @@ bool cJobManager::WorkFarmManager(sGirl* girl, sBrothel* brothel, bool Day0Night
 		else
 		{
 			g_Girls.UpdateEnjoyment(girl, ACTION_WORKMATRON, -3, true);
-			message = gettext("Had trouble dealing with some of the girls.");
+			message = "Had trouble dealing with some of the girls.";
 			g_Girls.UpdateStat(girl, STAT_HAPPINESS, -3);
 			g_Girls.UpdateStat(girl, STAT_CONFIDENCE, -1);
 			girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, Day0Night1);
@@ -77,7 +69,7 @@ bool cJobManager::WorkFarmManager(sGirl* girl, sBrothel* brothel, bool Day0Night
 	else if (check > 90)
 	{
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMATRON, +3, true);
-		message = gettext("Enjoyed helping the girls with their lives.");
+		message = "Enjoyed helping the girls with their lives.";
 		g_Girls.UpdateStat(girl, STAT_HAPPINESS, 3);
 		g_Girls.UpdateStat(girl, STAT_CONFIDENCE, 1);
 		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, Day0Night1);
@@ -85,7 +77,7 @@ bool cJobManager::WorkFarmManager(sGirl* girl, sBrothel* brothel, bool Day0Night
 	else
 	{
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMATRON, +1, true);
-		message = gettext("Went about her day as usual.");
+		message = "Went about her day as usual.";
 		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, Day0Night1);
 	}
 
@@ -104,8 +96,8 @@ bool cJobManager::WorkFarmManager(sGirl* girl, sBrothel* brothel, bool Day0Night
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill + 2);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, g_Dice%libido);
 
-	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 30, ACTION_WORKMATRON, gettext("She has worked as a matron long enough that she has learned to be more Charismatic."), Day0Night1 == SHIFT_NIGHT);
-	g_Girls.PossiblyGainNewTrait(girl, "Psychic", 60, ACTION_WORKMATRON, gettext("She has learned to handle the girls so well that you'd almost think she was Psychic."), Day0Night1 == SHIFT_NIGHT);
+	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 30, ACTION_WORKMATRON, "She has worked as a matron long enough that she has learned to be more Charismatic.", Day0Night1 == SHIFT_NIGHT);
+	g_Girls.PossiblyGainNewTrait(girl, "Psychic", 60, ACTION_WORKMATRON, "She has learned to handle the girls so well that you'd almost think she was Psychic.", Day0Night1 == SHIFT_NIGHT);
 
 	return false;
 }

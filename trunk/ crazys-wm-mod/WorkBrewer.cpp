@@ -17,29 +17,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "cJobManager.h"
+#include "cRng.h"
+#include "CLog.h"
+#include "cMessageBox.h"
+#include "cGold.h"
 #include "cBrothel.h"
 #include "cFarm.h"
-#include "cCustomers.h"
-#include "cRng.h"
-#include "cInventory.h"
-#include "sConfig.h"
-#include "cRival.h"
-#include <sstream>
-#include "CLog.h"
-#include "cTrainable.h"
-#include "cTariff.h"
-#include "cGold.h"
-#include "cGangs.h"
-#include "cMessageBox.h"
 
-extern cRng g_Dice;
+
 extern CLog g_LogFile;
-extern cCustomers g_Customers;
-extern cInventory g_InvManager;
+extern cMessageQue g_MessageQue;
+extern cRng g_Dice;
+extern cGold g_Gold;
 extern cBrothelManager g_Brothels;
 extern cFarmManager g_Farm;
-extern cGangManager g_Gangs;
-extern cMessageQue g_MessageQue;
+
+
+
 
 // `J` Farm Job - Producers
 bool cJobManager::WorkBrewer(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
@@ -47,7 +41,7 @@ bool cJobManager::WorkBrewer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	string message = "";
 	string girlName = girl->m_Realname;
 
-	if(Preprocessing(ACTION_WORKFARM, girl, brothel, Day0Night1, summary, message))	// they refuse to have work in the bar
+	if (Preprocessing(ACTION_WORKFARM, girl, brothel, Day0Night1, summary, message))	// they refuse to have work in the bar
 		return true;
 
 	// put that shit away, you'll scare off the customers!
@@ -56,8 +50,8 @@ bool cJobManager::WorkBrewer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	int wages = 25;
 	message += "She worked as a brewer on the farm.";
 
-	int roll = g_Dice%100;
-	int jobperformance = (	g_Girls.GetStat(girl, STAT_INTELLIGENCE) + g_Girls.GetSkill(girl, SKILL_BREWING));
+	int roll = g_Dice % 100;
+	int jobperformance = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) + g_Girls.GetSkill(girl, SKILL_BREWING));
 
 
 	//good traits
@@ -76,48 +70,48 @@ bool cJobManager::WorkBrewer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 
 
 	if (jobperformance >= 245)
-		{
-			message += " She must be the perfect at this.\n\n";
-			wages += 155;
-		}
+	{
+		message += " She must be the perfect at this.\n\n";
+		wages += 155;
+	}
 	else if (jobperformance >= 185)
-		{
-			message += " She's unbelievable at this.\n\n";
-			wages += 95;
-		}
+	{
+		message += " She's unbelievable at this.\n\n";
+		wages += 95;
+	}
 	else if (jobperformance >= 145)
-		{
-			message += " She's good at this job.\n\n";
-			wages += 55;
-		}
+	{
+		message += " She's good at this job.\n\n";
+		wages += 55;
+	}
 	else if (jobperformance >= 100)
-		{
-			message += " She made a few mistakes but overall she is okay at this.\n\n";
-			wages += 15;
-		}
+	{
+		message += " She made a few mistakes but overall she is okay at this.\n\n";
+		wages += 15;
+	}
 	else if (jobperformance >= 70)
-		{
-			message += " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
-			wages -= 5;
-		}
+	{
+		message += " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
+		wages -= 5;
+	}
 	else
-		{
-			message += " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
-			wages -= 15;
-		}
+	{
+		message += " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
+		wages -= 15;
+	}
 
 
 
 
-		if(wages < 0)
-			wages = 0;
+	if (wages < 0)
+		wages = 0;
 
-	if(roll <= 5)
+	if (roll <= 5)
 	{
 		message += " Some of the patrons abused her during the shift.";
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKFARM, -3, true);
 	}
-	else if(roll <= 25) {
+	else if (roll <= 25) {
 		message += " She had a pleasant time working.";
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKFARM, +3, true);
 	}

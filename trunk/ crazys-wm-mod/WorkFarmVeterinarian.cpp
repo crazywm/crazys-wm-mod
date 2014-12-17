@@ -17,29 +17,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "cJobManager.h"
+#include "cRng.h"
+#include "CLog.h"
+#include "cMessageBox.h"
+#include "cGold.h"
 #include "cBrothel.h"
 #include "cFarm.h"
-#include "cCustomers.h"
-#include "cRng.h"
-#include "cInventory.h"
-#include "sConfig.h"
-#include "cRival.h"
-#include <sstream>
-#include "CLog.h"
-#include "cTrainable.h"
-#include "cTariff.h"
-#include "cGold.h"
-#include "cGangs.h"
-#include "cMessageBox.h"
 
-extern cRng g_Dice;
+
 extern CLog g_LogFile;
-extern cCustomers g_Customers;
-extern cInventory g_InvManager;
+extern cMessageQue g_MessageQue;
+extern cRng g_Dice;
+extern cGold g_Gold;
 extern cBrothelManager g_Brothels;
 extern cFarmManager g_Farm;
-extern cGangManager g_Gangs;
-extern cMessageQue g_MessageQue;
+
+
+
 
 // `J` Farm Job - Staff
 bool cJobManager::WorkFarmVeterinarian(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
@@ -56,8 +50,8 @@ bool cJobManager::WorkFarmVeterinarian(sGirl* girl, sBrothel* brothel, bool Day0
 	int wages = 25;
 	int roll = g_Dice % 100;
 	message += "She worked as a Veterinarian on the farm.";
-	int jobperformance = (	g_Girls.GetSkill(girl, SKILL_MEDICINE) +
-							g_Girls.GetSkill(girl, SKILL_ANIMALHANDLING));
+	int jobperformance = (g_Girls.GetSkill(girl, SKILL_MEDICINE) +
+		g_Girls.GetSkill(girl, SKILL_ANIMALHANDLING));
 
 
 	//good traits
@@ -78,7 +72,7 @@ bool cJobManager::WorkFarmVeterinarian(sGirl* girl, sBrothel* brothel, bool Day0
 		wages += 155;	fame += 2;
 		message += " She must be the perfect at this.\n\n";
 	}
-	else if (jobperformance >= 185)	
+	else if (jobperformance >= 185)
 	{
 		wages += 95;	fame += 1;
 		message += " She's unbelievable at this.\n\n";
@@ -111,7 +105,7 @@ bool cJobManager::WorkFarmVeterinarian(sGirl* girl, sBrothel* brothel, bool Day0
 		message += " Some of the patrons abused her during the shift.";
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKFARM, -3, true);
 	}
-	else if (roll <= 25) 
+	else if (roll <= 25)
 	{
 		message += " She had a pleasant time working.";
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKFARM, +3, true);
@@ -135,7 +129,7 @@ bool cJobManager::WorkFarmVeterinarian(sGirl* girl, sBrothel* brothel, bool Day0
 
 	g_Girls.UpdateStat(girl, STAT_FAME, fame);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_MEDICINE, g_Dice%skill+1);
+	g_Girls.UpdateSkill(girl, SKILL_MEDICINE, g_Dice%skill + 1);
 	g_Girls.UpdateSkill(girl, SKILL_ANIMALHANDLING, g_Dice%skill + 1);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 

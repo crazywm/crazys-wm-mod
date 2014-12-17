@@ -1620,7 +1620,6 @@ string cGirls::GetThirdDetailsString(sGirl* girl)
 	// `J` zzzzzz I will come back to this when I start editing jobs
 
 	if (girl == 0)		return string("");
-	string data = "";
 	// `J` instead of repeatedly calling the girl, call her once and store her stat
 	int jr_cha = GetStat(girl, STAT_CHARISMA);
 	int jr_bea = GetStat(girl, STAT_BEAUTY);
@@ -2323,73 +2322,128 @@ string cGirls::GetThirdDetailsString(sGirl* girl)
 		security += 5;
 	}
 
-	data += gettext("Brothel Job Ratings\n\n");
-	data += girl->JobRatingLetter(security) + gettext("  -  Security\n");
-	data += girl->JobRatingLetter(advertising) + gettext("  -  Advertising\n");
-	data += girl->JobRatingLetter(custservice) + gettext("  -  Customer Service\n");
-	data += girl->JobRatingLetter(matron) + gettext("  -  Matron\n");
-	data += girl->JobRatingLetter(catacombs) + gettext("  -  Explore Catacombs\n");
-	data += girl->JobRatingLetter(beastcare) + gettext("  -  Beast Care\n\n");
-	data += girl->JobRatingLetter(barmaid) + gettext("  -  Barmaid\n");
-	data += girl->JobRatingLetter(barwait) + gettext("  -  Bar Waitress\n");
-	data += girl->JobRatingLetter(barsing) + gettext("  -  Singer\n");
-	data += girl->JobRatingLetter(barpiano) + gettext("  -  Piano\n\n");
-	data += girl->JobRatingLetter(dealer) + gettext("  -  Dealer\n");
-	data += girl->JobRatingLetter(entertainer) + gettext("  -  Entertainer\n");
-	data += girl->JobRatingLetter(xxx) + gettext("  -  XXX Entertainer\n\n");
-	data += girl->JobRatingLetter(clubbar) + gettext("  -  Club Barmaid\n");
-	data += girl->JobRatingLetter(clubwait) + gettext("  -  Club Waitress\n");
-	data += girl->JobRatingLetter(clubstrip) + gettext("  -  Stripper\n\n");
-	data += girl->JobRatingLetter(massusse) + gettext("  -  Massusse\n");
-	data += girl->JobRatingLetter(brothelstrip) + gettext("  -  Brothel Stripper\n");
-	data += girl->JobRatingLetter(peep) + gettext("  -  Peep Show\n\n");
-	//STUDIO
-	data += gettext("\nStudio Job Ratings\n");
-	data += girl->JobRatingLetter(director) + gettext("  -  Director\n");
-	data += girl->JobRatingLetter(promoter) + gettext("  -  Promoter\n");
-	data += girl->JobRatingLetter(cameramage) + gettext("  -  Camera Mage\n");
-	data += girl->JobRatingLetter(crystalpurifier) + gettext("  -  Crystal Purifier\n");
-	//ARENA
-	data += gettext("\nArena Job Ratings\n");
-	data += girl->JobRatingLetter(doctore) + gettext("  -  Doctore\n");
-	data += girl->JobRatingLetter(fightbeast) + gettext("  -  Fight Beast\n");
-	data += girl->JobRatingLetter(cagematch) + gettext("  -  Cage Match\n");
-	data += girl->JobRatingLetter(cityguard) + gettext("  -  City Guard\n");
-	//CENTRE
-	data += gettext("\nCentre Job Ratings\n");
-	data += girl->JobRatingLetter(centremanager) + gettext("  -  Centre Manager\n");
-	data += girl->JobRatingLetter(drugcounselor) + gettext("  -  Drug Counselor\n");
-	data += girl->JobRatingLetter(feedpoor) + gettext("  -  Feed Poor\n");
-	data += girl->JobRatingLetter(comunityservice) + gettext("  -  Comunity Service\n");
-	//CLINIC
-	data += gettext("\nClinic Job Ratings\n");
-	data += girl->JobRatingLetter(chairman) + gettext("  -  Chairman\n");
-	data += girl->JobRatingLetter(doctor) + gettext("  -  Doctor\n");
-	data += girl->JobRatingLetter(nurse) + gettext("  -  Nurse\n");
-	data += girl->JobRatingLetter(mechanic) + gettext("  -  Mechanic\n");
-	//HOUSE
-	data += gettext("\nHouse Job Ratings\n");
-	data += girl->JobRatingLetter(headgirl) + gettext("  -  Head Girl\n");
-	data += girl->JobRatingLetter(recruiter) + gettext("  -  Recruiter\n");
-	//FARM
-	data += gettext("\nFarm Job Ratings\n");
-	data += girl->JobRatingLetter(farmmanger) + gettext("  -  Farm Manger\n");
-	data += girl->JobRatingLetter(veterinarian) + gettext("  -  Veterinarian\n");
-	data += girl->JobRatingLetter(marketer) + gettext("  -  Marketer\n");
-	data += girl->JobRatingLetter(researcher) + gettext("  -  Researcher\n");
-	data += girl->JobRatingLetter(farmer) + gettext("  -  Farmer\n");
-	data += girl->JobRatingLetter(gardener) + gettext("  -  Gardener\n");
-	data += girl->JobRatingLetter(sheapherd) + gettext("  -   Sheapherd\n");
-	data += girl->JobRatingLetter(rancher) + gettext("  -  Rancher\n");
-	data += girl->JobRatingLetter(catarancher) + gettext("  -  Catacombs Rancher\n");
-	data += girl->JobRatingLetter(milker) + gettext("  -  Milker\n");
-	data += girl->JobRatingLetter(butcher) + gettext("  -  Butcher\n");
-	data += girl->JobRatingLetter(baker) + gettext("  -  Baker\n");
-	data += girl->JobRatingLetter(brewer) + gettext("  -  Brewer\n");
-	data += girl->JobRatingLetter(makeitem) + gettext("  -  Make Item\n");
-	data += girl->JobRatingLetter(makepot) + gettext("  -  Make Potion\n");
+	// `J` spiltting the buildings so they can be sorted
+	string Brothel_Data = "";
+	Brothel_Data += gettext("Brothel Job Ratings\n");
+	Brothel_Data += girl->JobRatingLetter(security) + gettext("  -  Security\n");
+	Brothel_Data += girl->JobRatingLetter(advertising) + gettext("  -  Advertising\n");
+	Brothel_Data += girl->JobRatingLetter(custservice) + gettext("  -  Customer Service\n");
+	Brothel_Data += girl->JobRatingLetter(matron) + gettext("  -  Matron\n");
+	Brothel_Data += girl->JobRatingLetter(catacombs) + gettext("  -  Explore Catacombs\n");
+	Brothel_Data += girl->JobRatingLetter(beastcare) + gettext("  -  Beast Care\n\n");
+	Brothel_Data += girl->JobRatingLetter(barmaid) + gettext("  -  Barmaid\n");
+	Brothel_Data += girl->JobRatingLetter(barwait) + gettext("  -  Bar Waitress\n");
+	Brothel_Data += girl->JobRatingLetter(barsing) + gettext("  -  Singer\n");
+	Brothel_Data += girl->JobRatingLetter(barpiano) + gettext("  -  Piano\n\n");
+	Brothel_Data += girl->JobRatingLetter(dealer) + gettext("  -  Dealer\n");
+	Brothel_Data += girl->JobRatingLetter(entertainer) + gettext("  -  Entertainer\n");
+	Brothel_Data += girl->JobRatingLetter(xxx) + gettext("  -  XXX Entertainer\n\n");
+	Brothel_Data += girl->JobRatingLetter(clubbar) + gettext("  -  Club Barmaid\n");
+	Brothel_Data += girl->JobRatingLetter(clubwait) + gettext("  -  Club Waitress\n");
+	Brothel_Data += girl->JobRatingLetter(clubstrip) + gettext("  -  Stripper\n\n");
+	Brothel_Data += girl->JobRatingLetter(massusse) + gettext("  -  Massusse\n");
+	Brothel_Data += girl->JobRatingLetter(brothelstrip) + gettext("  -  Brothel Stripper\n");
+	Brothel_Data += girl->JobRatingLetter(peep) + gettext("  -  Peep Show\n");
+	Brothel_Data += "\n------------------------------------\n\n";
 
-	data += gettext("\n\nJob Ratings range from\n'I' The absolute best, 'S' Superior,\nThen 'A'-'E' with 'E' being the worst.\n'X' means they can not do the job.");
+	//STUDIO
+	string Studio_Data = "";
+	if (g_Studios.GetNumBrothels() > 0)
+	{
+		Studio_Data += gettext("Studio Job Ratings\n");
+		Studio_Data += girl->JobRatingLetter(director) + gettext("  -  Director\n");
+		Studio_Data += girl->JobRatingLetter(promoter) + gettext("  -  Promoter\n");
+		Studio_Data += girl->JobRatingLetter(cameramage) + gettext("  -  Camera Mage\n");
+		Studio_Data += girl->JobRatingLetter(crystalpurifier) + gettext("  -  Crystal Purifier\n");
+		Studio_Data += "\n------------------------------------\n\n";
+	}
+	//ARENA
+	string Arena_Data = "";
+	if (g_Arena.GetNumBrothels() > 0)
+	{
+		Arena_Data += gettext("Arena Job Ratings\n");
+		Arena_Data += girl->JobRatingLetter(doctore) + gettext("  -  Doctore\n");
+		Arena_Data += girl->JobRatingLetter(fightbeast) + gettext("  -  Fight Beast\n");
+		Arena_Data += girl->JobRatingLetter(cagematch) + gettext("  -  Cage Match\n");
+		Arena_Data += girl->JobRatingLetter(cityguard) + gettext("  -  City Guard\n");
+		Arena_Data += "\n------------------------------------\n\n";
+	}
+	//CENTRE
+	string Centre_Data = ""; 
+	if (g_Centre.GetNumBrothels() > 0)
+	{
+		Centre_Data += gettext("Centre Job Ratings\n");
+		Centre_Data += girl->JobRatingLetter(centremanager) + gettext("  -  Centre Manager\n");
+		Centre_Data += girl->JobRatingLetter(drugcounselor) + gettext("  -  Drug Counselor\n");
+		Centre_Data += girl->JobRatingLetter(feedpoor) + gettext("  -  Feed Poor\n");
+		Centre_Data += girl->JobRatingLetter(comunityservice) + gettext("  -  Comunity Service\n");
+		Centre_Data += "\n------------------------------------\n\n";
+	}
+	//CLINIC
+	string Clinic_Data = "";
+	if (g_Clinic.GetNumBrothels() > 0)
+	{
+		Clinic_Data += gettext("Clinic Job Ratings\n");
+		Clinic_Data += girl->JobRatingLetter(chairman) + gettext("  -  Chairman\n");
+		Clinic_Data += girl->JobRatingLetter(doctor) + gettext("  -  Doctor\n");
+		Clinic_Data += girl->JobRatingLetter(nurse) + gettext("  -  Nurse\n");
+		Clinic_Data += girl->JobRatingLetter(mechanic) + gettext("  -  Mechanic\n");
+		Clinic_Data += "\n------------------------------------\n\n";
+	}
+	//FARM
+	string Farm_Data = "";
+	if (g_Farm.GetNumBrothels() > 0)
+	{
+		Farm_Data += gettext("Farm Job Ratings\n");
+		Farm_Data += girl->JobRatingLetter(farmmanger) + gettext("  -  Farm Manger\n");
+		Farm_Data += girl->JobRatingLetter(veterinarian) + gettext("  -  Veterinarian\n");
+		Farm_Data += girl->JobRatingLetter(marketer) + gettext("  -  Marketer\n");
+		Farm_Data += girl->JobRatingLetter(researcher) + gettext("  -  Researcher\n");
+		Farm_Data += girl->JobRatingLetter(farmer) + gettext("  -  Farmer\n");
+		Farm_Data += girl->JobRatingLetter(gardener) + gettext("  -  Gardener\n");
+		Farm_Data += girl->JobRatingLetter(sheapherd) + gettext("  -   Sheapherd\n");
+		Farm_Data += girl->JobRatingLetter(rancher) + gettext("  -  Rancher\n");
+		Farm_Data += girl->JobRatingLetter(catarancher) + gettext("  -  Catacombs Rancher\n");
+		Farm_Data += girl->JobRatingLetter(milker) + gettext("  -  Milker\n");
+		Farm_Data += girl->JobRatingLetter(butcher) + gettext("  -  Butcher\n");
+		Farm_Data += girl->JobRatingLetter(baker) + gettext("  -  Baker\n");
+		Farm_Data += girl->JobRatingLetter(brewer) + gettext("  -  Brewer\n");
+		Farm_Data += girl->JobRatingLetter(makeitem) + gettext("  -  Make Item\n");
+		Farm_Data += girl->JobRatingLetter(makepot) + gettext("  -  Make Potion\n");
+		Farm_Data += "\n------------------------------------\n\n";
+	}
+	//HOUSE
+	string House_Data = "";
+	House_Data += gettext("House Job Ratings\n");
+	House_Data += girl->JobRatingLetter(headgirl) + gettext("  -  Head Girl\n");
+	House_Data += girl->JobRatingLetter(recruiter) + gettext("  -  Recruiter\n");
+	House_Data += "\n------------------------------------\n\n";
+
+	// `J` Show the current building first
+	string data = "";
+	/* */if (girl->m_InArena)		data += Arena_Data;
+	else if (girl->m_InMovieStudio)	data += Studio_Data;
+	else if (girl->m_InCentre)		data += Centre_Data;
+	else if (girl->m_InClinic)		data += Clinic_Data;
+	else if (girl->m_InFarm)		data += Farm_Data;
+	else if (girl->m_InHouse)		data += House_Data;
+	else /*                    */	data += Brothel_Data;
+
+	// `J` show all the other buildings
+	data += "------------------------------------\n\n";
+	if (girl->m_InMovieStudio || girl->m_InArena || girl->m_InCentre || girl->m_InClinic || girl->m_InFarm || girl->m_InHouse)
+	/*                       */	data += Brothel_Data;
+	if (!girl->m_InMovieStudio)	data += Studio_Data;
+	if (!girl->m_InArena)		data += Arena_Data;
+	if (!girl->m_InCentre)		data += Centre_Data;
+	if (!girl->m_InClinic)		data += Clinic_Data;
+	if (!girl->m_InFarm)		data += Farm_Data;
+	if (!girl->m_InHouse)		data += House_Data;
+	
+	// `J` finish with the explanation
+	data += "------------------------------------\n\n";
+	data += "Job Ratings range from\n'I' The absolute best, 'S' Superior,\n";
+	data += "Then 'A'-'E' with 'E' being the worst.\n'X' means they can not do the job.";
 
 	return data;
 }

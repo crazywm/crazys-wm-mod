@@ -487,7 +487,7 @@ void LoadGirlsFiles()
 //      then everything else.
 // WD:	Copy sort code to Dungeon Girls
 
-void Turnsummary()
+void Turnsummary()		// `J` Bookmark
 {
 	static int ImageType = -1, lastNum = -1, ImageNum = -1, LastType = -1, category = 0, category_last = 0, Item = 0;
 	sGirl *girl;
@@ -3262,49 +3262,45 @@ void TransferGirls()
 			g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGRIGHTBROTHEL, 0, currentStudio->m_Name);
 			currentStudio = (sMovieStudio*)currentStudio->m_Next;
 		}
-		// add the clinic
-		sClinic* currentClinic = (sClinic*)g_Clinic.GetBrothel(0);
-		while (currentClinic)
-		{
-			g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGLEFTBROTHEL, 1, currentClinic->m_Name);
-			g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGRIGHTBROTHEL, 1, currentClinic->m_Name);
-			currentClinic = (sClinic*)currentClinic->m_Next;
-		}
-
 		// add the arena
 		sArena* currentArena = (sArena*)g_Arena.GetBrothel(0);
 		while (currentArena)
 		{
-			g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGLEFTBROTHEL, 2, currentArena->m_Name);
-			g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGRIGHTBROTHEL, 2, currentArena->m_Name);
+			g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGLEFTBROTHEL, 1, currentArena->m_Name);
+			g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGRIGHTBROTHEL, 1, currentArena->m_Name);
 			currentArena = (sArena*)currentArena->m_Next;
 		}
-
 		// add the centre
 		sCentre* currentCentre = (sCentre*)g_Centre.GetBrothel(0);
 		while (currentCentre)
 		{
-			g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGLEFTBROTHEL, 3, currentCentre->m_Name);
-			g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGRIGHTBROTHEL, 3, currentCentre->m_Name);
+			g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGLEFTBROTHEL, 2, currentCentre->m_Name);
+			g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGRIGHTBROTHEL, 2, currentCentre->m_Name);
 			currentCentre = (sCentre*)currentCentre->m_Next;
 		}
-
-		// add the house
-		sHouse* currentHouse = (sHouse*)g_House.GetBrothel(0);
-		while (currentHouse)
+		// add the clinic
+		sClinic* currentClinic = (sClinic*)g_Clinic.GetBrothel(0);
+		while (currentClinic)
 		{
-			g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGLEFTBROTHEL, 4, currentHouse->m_Name);
-			g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGRIGHTBROTHEL, 4, currentHouse->m_Name);
-			currentHouse = (sHouse*)currentHouse->m_Next;
+			g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGLEFTBROTHEL, 3, currentClinic->m_Name);
+			g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGRIGHTBROTHEL, 3, currentClinic->m_Name);
+			currentClinic = (sClinic*)currentClinic->m_Next;
 		}
-
 		// add the farm
 		sFarm* currentFarm = (sFarm*)g_Farm.GetBrothel(0);
 		while (currentFarm)
 		{
-			g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGLEFTBROTHEL, 5, currentFarm->m_Name);
-			g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGRIGHTBROTHEL, 5, currentFarm->m_Name);
+			g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGLEFTBROTHEL, 4, currentFarm->m_Name);
+			g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGRIGHTBROTHEL, 4, currentFarm->m_Name);
 			currentFarm = (sFarm*)currentFarm->m_Next;
+		}
+		// add the house
+		sHouse* currentHouse = (sHouse*)g_House.GetBrothel(0);
+		while (currentHouse)
+		{
+			g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGLEFTBROTHEL, 5, currentHouse->m_Name);
+			g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGRIGHTBROTHEL, 5, currentHouse->m_Name);
+			currentHouse = (sHouse*)currentHouse->m_Next;
 		}
 
 		g_InitWin = false;
@@ -3356,9 +3352,8 @@ void TransferGirls()
 						temp = temp->m_Next;
 					}
 				}
-				else if (leftBrothel == 5)
+				else if (leftBrothel == 4)
 				{
-
 					// add the girls to the list
 					sGirl* temp = g_Farm.GetGirl(0, 0);
 					int i = 0;
@@ -3375,7 +3370,7 @@ void TransferGirls()
 						temp = temp->m_Next;
 					}
 				}
-				else if (leftBrothel == 4)
+				else if (leftBrothel == 5)
 				{
 					// add the girls to the list
 					sGirl* temp = g_House.GetGirl(0, 0);
@@ -3393,7 +3388,7 @@ void TransferGirls()
 						temp = temp->m_Next;
 					}
 				}
-				else if (leftBrothel == 3)
+				else if (leftBrothel == 2)
 				{
 					// add the girls to the list
 					sGirl* temp = g_Centre.GetGirl(0, 0);
@@ -3421,7 +3416,7 @@ void TransferGirls()
 						temp = temp->m_Next;
 					}
 				}
-				else if (leftBrothel == 2)
+				else if (leftBrothel == 1)
 				{
 					// add the girls to the list
 					sGirl* temp = g_Arena.GetGirl(0, 0);
@@ -3438,7 +3433,7 @@ void TransferGirls()
 						temp = temp->m_Next;
 					}
 				}
-				else if (leftBrothel == 1)
+				else if (leftBrothel == 3)
 				{
 					// add the girls to the list
 					sGirl* temp = g_Clinic.GetGirl(0, 0);
@@ -3537,15 +3532,13 @@ void TransferGirls()
 						temp = temp->m_Next;
 					}
 				}
-				else if (rightBrothel == 5)
+				else if (rightBrothel == 4)
 				{
 					// add the girls to the list
 					sGirl* temp = g_Farm.GetGirl(0, 0);
 					int i = 0;
 					while (temp)
 					{
-
-
 						if (temp->m_DayJob == JOB_FARMMANGER || temp->m_NightJob == JOB_FARMMANGER)
 							color = COLOR_RED;
 						else if (temp->m_DayJob == JOB_FARMREST && temp->m_NightJob == JOB_FARMREST)
@@ -3557,7 +3550,7 @@ void TransferGirls()
 						temp = temp->m_Next;
 					}
 				}
-				else if (rightBrothel == 4)
+				else if (rightBrothel == 5)
 				{
 					// add the girls to the list
 					sGirl* temp = g_House.GetGirl(0, 0);
@@ -3575,7 +3568,7 @@ void TransferGirls()
 						temp = temp->m_Next;
 					}
 				}
-				else if (rightBrothel == 3)
+				else if (rightBrothel == 2)
 				{
 					// add the girls to the list
 					sGirl* temp = g_Centre.GetGirl(0, 0);
@@ -3603,7 +3596,7 @@ void TransferGirls()
 						temp = temp->m_Next;
 					}
 				}
-				else if (rightBrothel == 2)
+				else if (rightBrothel == 1)
 				{
 					// add the girls to the list
 					sGirl* temp = g_Arena.GetGirl(0, 0);
@@ -3620,7 +3613,7 @@ void TransferGirls()
 						temp = temp->m_Next;
 					}
 				}
-				else if (rightBrothel == 1)
+				else if (rightBrothel == 3)
 				{
 					// add the girls to the list
 					sGirl* temp = g_Clinic.GetGirl(0, 0);
@@ -3706,11 +3699,11 @@ static void TransferGirlsLeftToRight(int rightBrothel, int leftBrothel)
 {
 	sBrothel* brothel;
 	/* */if (leftBrothel > 5)	{ brothel = g_Brothels.GetBrothel(leftBrothel - 6); }
-	else if (leftBrothel == 5)	{ brothel = g_Farm.GetBrothel(0); }
-	else if (leftBrothel == 4)	{ brothel = g_House.GetBrothel(0); }
-	else if (leftBrothel == 3)	{ brothel = g_Centre.GetBrothel(0); }
-	else if (leftBrothel == 2)	{ brothel = g_Arena.GetBrothel(0); }
-	else if (leftBrothel == 1)	{ brothel = g_Clinic.GetBrothel(0); }
+	else if (leftBrothel == 5)	{ brothel = g_House.GetBrothel(0); }
+	else if (leftBrothel == 4)	{ brothel = g_Farm.GetBrothel(0); }
+	else if (leftBrothel == 3)	{ brothel = g_Clinic.GetBrothel(0); }
+	else if (leftBrothel == 2)	{ brothel = g_Centre.GetBrothel(0); }
+	else if (leftBrothel == 1)	{ brothel = g_Arena.GetBrothel(0); }
 	else if (leftBrothel == 0)	{ brothel = g_Studios.GetBrothel(0); }
 
 	if (brothel->m_NumGirls == brothel->m_NumRooms)
@@ -3727,11 +3720,11 @@ static void TransferGirlsLeftToRight(int rightBrothel, int leftBrothel)
 			sGirl* temp;
 			// get the girl
 			/* */if (rightBrothel > 5)	{ temp = g_Brothels.GetGirl(rightBrothel - 6, girlSelection - NumRemoved); }
-			else if (rightBrothel == 5)	{ temp = g_Farm.GetGirl(0, girlSelection - NumRemoved); }
-			else if (rightBrothel == 4)	{ temp = g_House.GetGirl(0, girlSelection - NumRemoved); }
-			else if (rightBrothel == 3)	{ temp = g_Centre.GetGirl(0, girlSelection - NumRemoved); }
-			else if (rightBrothel == 2)	{ temp = g_Arena.GetGirl(0, girlSelection - NumRemoved); }
-			else if (rightBrothel == 1)	{ temp = g_Clinic.GetGirl(0, girlSelection - NumRemoved); }
+			else if (rightBrothel == 5)	{ temp = g_House.GetGirl(0, girlSelection - NumRemoved); }
+			else if (rightBrothel == 4)	{ temp = g_Farm.GetGirl(0, girlSelection - NumRemoved); }
+			else if (rightBrothel == 3)	{ temp = g_Clinic.GetGirl(0, girlSelection - NumRemoved); }
+			else if (rightBrothel == 2)	{ temp = g_Centre.GetGirl(0, girlSelection - NumRemoved); }
+			else if (rightBrothel == 1)	{ temp = g_Arena.GetGirl(0, girlSelection - NumRemoved); }
 			else if (rightBrothel == 0)	{ temp = g_Studios.GetGirl(0, girlSelection - NumRemoved); }
 
 			// check there is still room
@@ -3744,20 +3737,20 @@ static void TransferGirlsLeftToRight(int rightBrothel, int leftBrothel)
 			// remove girl from right side
 			NumRemoved++;
 			/* */if (rightBrothel > 5)	{ g_Brothels.RemoveGirl(rightBrothel - 6, temp, false); }
-			else if (rightBrothel == 5)	{ g_Farm.RemoveGirl(0, temp, false); }
-			else if (rightBrothel == 4)	{ g_House.RemoveGirl(0, temp, false); }
-			else if (rightBrothel == 3)	{ g_Centre.RemoveGirl(0, temp, false); }
-			else if (rightBrothel == 2)	{ g_Arena.RemoveGirl(0, temp, false); }
-			else if (rightBrothel == 1)	{ g_Clinic.RemoveGirl(0, temp, false); }
+			else if (rightBrothel == 5)	{ g_House.RemoveGirl(0, temp, false); }
+			else if (rightBrothel == 4)	{ g_Farm.RemoveGirl(0, temp, false); }
+			else if (rightBrothel == 3)	{ g_Clinic.RemoveGirl(0, temp, false); }
+			else if (rightBrothel == 2)	{ g_Centre.RemoveGirl(0, temp, false); }
+			else if (rightBrothel == 1)	{ g_Arena.RemoveGirl(0, temp, false); }
 			else if (rightBrothel == 0)	{ g_Studios.RemoveGirl(0, temp, false); }
 
 			// add to left side
 			/* */if (leftBrothel > 5)	{ g_Brothels.AddGirl(leftBrothel - 6, temp); }
-			else if (leftBrothel == 5)	{ g_Farm.AddGirl(0, temp); }
-			else if (leftBrothel == 4)	{ g_House.AddGirl(0, temp); }
-			else if (leftBrothel == 3)	{ g_Centre.AddGirl(0, temp); }
-			else if (leftBrothel == 2)	{ g_Arena.AddGirl(0, temp); }
-			else if (leftBrothel == 1)	{ g_Clinic.AddGirl(0, temp); }
+			else if (leftBrothel == 5)	{ g_House.AddGirl(0, temp); }
+			else if (leftBrothel == 4)	{ g_Farm.AddGirl(0, temp); }
+			else if (leftBrothel == 3)	{ g_Clinic.AddGirl(0, temp); }
+			else if (leftBrothel == 2)	{ g_Centre.AddGirl(0, temp); }
+			else if (leftBrothel == 1)	{ g_Arena.AddGirl(0, temp); }
 			else if (leftBrothel == 0)	{ g_Studios.AddGirl(0, temp); }
 
 			// get next girl
@@ -3774,11 +3767,11 @@ static void TransferGirlsRightToLeft(int rightBrothel, int leftBrothel)
 {
 	sBrothel* brothel;
 	/* */if (rightBrothel > 5)	{ brothel = g_Brothels.GetBrothel(rightBrothel - 6); }
-	else if (rightBrothel == 5)	{ brothel = g_Farm.GetBrothel(0); }
-	else if (rightBrothel == 4)	{ brothel = g_House.GetBrothel(0); }
-	else if (rightBrothel == 3)	{ brothel = g_Centre.GetBrothel(0);	}
-	else if (rightBrothel == 2)	{ brothel = g_Arena.GetBrothel(0); }
-	else if (rightBrothel == 1)	{ brothel = g_Clinic.GetBrothel(0); }
+	else if (rightBrothel == 5)	{ brothel = g_House.GetBrothel(0); }
+	else if (rightBrothel == 4)	{ brothel = g_Farm.GetBrothel(0); }
+	else if (rightBrothel == 3)	{ brothel = g_Clinic.GetBrothel(0); }
+	else if (rightBrothel == 2)	{ brothel = g_Centre.GetBrothel(0); }
+	else if (rightBrothel == 1)	{ brothel = g_Arena.GetBrothel(0); }
 	else if (rightBrothel == 0)	{ brothel = g_Studios.GetBrothel(0); }
 
 	if (brothel->m_NumGirls == brothel->m_NumRooms)
@@ -3794,11 +3787,11 @@ static void TransferGirlsRightToLeft(int rightBrothel, int leftBrothel)
 		{
 			sGirl* temp;
 			/* */if (leftBrothel > 5)	{ temp = g_Brothels.GetGirl(leftBrothel - 6, girlSelection - NumRemoved); }
-			else if (leftBrothel == 5)	{ temp = g_Farm.GetGirl(0, girlSelection - NumRemoved); }
-			else if (leftBrothel == 4)	{ temp = g_House.GetGirl(0, girlSelection - NumRemoved); }
-			else if (leftBrothel == 3)	{ temp = g_Centre.GetGirl(0, girlSelection - NumRemoved); }
-			else if (leftBrothel == 2)	{ temp = g_Arena.GetGirl(0, girlSelection - NumRemoved); }
-			else if (leftBrothel == 1)	{ temp = g_Clinic.GetGirl(0, girlSelection - NumRemoved); }
+			else if (leftBrothel == 5)	{ temp = g_House.GetGirl(0, girlSelection - NumRemoved); }
+			else if (leftBrothel == 4)	{ temp = g_Farm.GetGirl(0, girlSelection - NumRemoved); }
+			else if (leftBrothel == 3)	{ temp = g_Clinic.GetGirl(0, girlSelection - NumRemoved); }
+			else if (leftBrothel == 2)	{ temp = g_Centre.GetGirl(0, girlSelection - NumRemoved); }
+			else if (leftBrothel == 1)	{ temp = g_Arena.GetGirl(0, girlSelection - NumRemoved); }
 			else if (leftBrothel == 0)	{ temp = g_Studios.GetGirl(0, girlSelection - NumRemoved); }
 
 			// check there is still room
@@ -3811,20 +3804,20 @@ static void TransferGirlsRightToLeft(int rightBrothel, int leftBrothel)
 			// remove girl from left side
 			NumRemoved++;
 			/* */if (leftBrothel > 5)	{ g_Brothels.RemoveGirl(leftBrothel - 6, temp, false); }
-			else if (leftBrothel == 5)	{ g_Farm.RemoveGirl(0, temp, false); }
-			else if (leftBrothel == 4)	{ g_House.RemoveGirl(0, temp, false); }
-			else if (leftBrothel == 3)	{ g_Centre.RemoveGirl(0, temp, false); }
-			else if (leftBrothel == 2)	{ g_Arena.RemoveGirl(0, temp, false); }
-			else if (leftBrothel == 1)	{ g_Clinic.RemoveGirl(0, temp, false); }
+			else if (leftBrothel == 5)	{ g_House.RemoveGirl(0, temp, false); }
+			else if (leftBrothel == 4)	{ g_Farm.RemoveGirl(0, temp, false); }
+			else if (leftBrothel == 3)	{ g_Clinic.RemoveGirl(0, temp, false); }
+			else if (leftBrothel == 2)	{ g_Centre.RemoveGirl(0, temp, false); }
+			else if (leftBrothel == 1)	{ g_Arena.RemoveGirl(0, temp, false); }
 			else if (leftBrothel == 0)	{ g_Studios.RemoveGirl(0, temp, false); }
 
 			// add to right side
 			/* */if (rightBrothel > 5)	{ g_Brothels.AddGirl(rightBrothel - 6, temp); }
-			else if (rightBrothel == 5)	{ g_Farm.AddGirl(0, temp); }
-			else if (rightBrothel == 4)	{ g_House.AddGirl(0, temp); }
-			else if (rightBrothel == 3)	{ g_Centre.AddGirl(0, temp); }
-			else if (rightBrothel == 2)	{ g_Arena.AddGirl(0, temp); }
-			else if (rightBrothel == 1)	{ g_Clinic.AddGirl(0, temp); }
+			else if (rightBrothel == 5)	{ g_House.AddGirl(0, temp); }
+			else if (rightBrothel == 4)	{ g_Farm.AddGirl(0, temp); }
+			else if (rightBrothel == 3)	{ g_Clinic.AddGirl(0, temp); }
+			else if (rightBrothel == 2)	{ g_Centre.AddGirl(0, temp); }
+			else if (rightBrothel == 1)	{ g_Arena.AddGirl(0, temp); }
 			else if (rightBrothel == 0)	{ g_Studios.AddGirl(0, temp); }
 
 			// get next girl
@@ -3892,12 +3885,12 @@ void SaveGirlsCSV(string filename)
 		}
 		building = building->m_Next;
 		if (building == 0) buildingnum++;
-		if (buildingnum == 1)	{ building = g_House.GetBrothel(0);		if (building == 0) buildingnum++; }
+		if (buildingnum == 1)	{ building = g_Studios.GetBrothel(0);	if (building == 0) buildingnum++; }
 		if (buildingnum == 2)	{ building = g_Arena.GetBrothel(0);		if (building == 0) buildingnum++; }
 		if (buildingnum == 3)	{ building = g_Centre.GetBrothel(0);	if (building == 0) buildingnum++; }
 		if (buildingnum == 4)	{ building = g_Clinic.GetBrothel(0);	if (building == 0) buildingnum++; }
-		if (buildingnum == 5)	{ building = g_Studios.GetBrothel(0);	if (building == 0) buildingnum++; }
-		if (buildingnum == 6)	{ building = g_Farm.GetBrothel(0);		if (building == 0) buildingnum++; }
+		if (buildingnum == 5)	{ building = g_Farm.GetBrothel(0);		if (building == 0) buildingnum++; }
+		if (buildingnum == 6)	{ building = g_House.GetBrothel(0);		if (building == 0) buildingnum++; }
 	}
 	GirlsCSV.close();
 }

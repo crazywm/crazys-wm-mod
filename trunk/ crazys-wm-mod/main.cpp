@@ -1219,7 +1219,7 @@ void Shutdown()
 	g_LogFile.write("Shutdown Complete");
 }
 
-bool Init()
+bool Init()		// `J` Bookmark
 {
 	g_LogFile.write("Initializing Graphics");
 	/*

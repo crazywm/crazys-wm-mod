@@ -1135,6 +1135,26 @@ Did some file cleanup:
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.17
 !!!!!!!!!!!!!!!!!!!! pushed to SVN - r125
 
+###  Changes 12/12-16/2014
+Started rewrite of WorkPersonalTraining.cpp
+Cleanup of Farm jobs.
+Reorganized Job Raitings list to put current building at the top and dividing the buildings better.
+ - Unowned buildings are not listed.
+Condensed inventory selection if/else checks into one.
+ - Fixed a bug causing a crash if you try to transfer an item from a non-brothel girl to another girl.
+ - Expanded girl list so every brothel girl is listed instead of only the current brothel girls.
+ - Reordered the lists to conform with F# order.
+ - Prepared it to be split with building selection
+ - Prepared it to add Store Room and Vault
+Reordered Transfer Screen to conform with F# order.
+ 
+###  Changes 12/17/2014
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.18
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r126
+ 
+ 
+ 
+ 
  
  
  
