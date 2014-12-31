@@ -56,6 +56,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 							g_Girls.GetSkill(girl, SKILL_SERVICE) / 2);
 	int wages = g_Girls.GetStat(girl, STAT_ASKPRICE)+40, work = 0;
 	int imageType = IMGTYPE_PROFILE;
+	bool bannedCustomer = false; //ANON: in case she bans cust as per msg
 
 	message += "She massaged a customer.";
 
@@ -82,7 +83,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 
 	if (jobperformance >= 245)
 		{
-			message += " She must be the perfect massusse she never goes to hard but never to soft she knows just what to do and the customers can't get enough of her.\n\n";
+			message += " She must be the perfect massusse she never goes too hard but never too soft. She knows just what to do and the customers can't get enough of her.\n\n";
 			wages += 155;
 
 			if (roll <= 20)
@@ -118,11 +119,12 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 
 		if (roll <= 20)
 			{
-				message += "Knowing most of masseurs techniques, she is one of the best.\n";
+				message += "Knowing most of masseur's techniques, she is one of the best.\n";
 			}
 		else if (roll <= 40)
 			{
-				message += "One of her customers wanted something more than the usual service. She declined and banned him from her customers list.\n";
+				message += "Her customer wanted something more than the usual service. She declined and banned him from her customers list.\n";
+				bannedCustomer = true;
 			}
 		else if (roll <= 60)
 			{
@@ -130,7 +132,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 			}
 		else if (roll <= 80)
 			{
-				message +=  "She certainly knows how and where to  press on a man's body. Today, customers moans was heard on the corridor.\n";
+				message +=  "She certainly knows how and where to press on a man's body. Today, customer moans were heard in the corridor.\n";
 				brothel->m_Happiness += 5;
 			}
 		else
@@ -180,7 +182,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 			}
 		else if (roll <= 40)
 			{
-				message += "She got the job done. No complains was noted.\n";
+				message += "She got the job done. No complaints were noted.\n";
 			}
 		else if (roll <= 60)
 			{
@@ -239,7 +241,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 			}
 		else if (roll <= 60)
 			{
-				message += "A loud scream was heard in your building short after " + girlName + " started her shift.\n";
+				message += "A loud scream was heard in your building shortly after " + girlName + " started her shift.\n";
 				brothel->m_Happiness -= 5;
 			}
 		else if (roll <= 80)
@@ -253,25 +255,27 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 			}
 		}
 
-	if (g_Girls.GetStat(girl, STAT_LIBIDO) > 90)
+	if ((g_Girls.GetStat(girl, STAT_LIBIDO) > 90) && !bannedCustomer)
+		//ANON: sanity check: not gonna give 'perks' to the cust she just banned for wanting perks!
 	{
 		u_int n;
-		message += "She massaged and ended up ";
+		message += "Because she was quite horny, she ended up ";
 		sCustomer cust;
 		brothel->m_Happiness += 100;
 		GetMiscCustomer(brothel, cust);
-		if (cust.m_IsWoman) n = SKILL_LESBIAN, message += "licking the customer pussy until she got off";
+		if (cust.m_IsWoman) { n = SKILL_LESBIAN, message += "intensely licking the female customer's clit until she got off, making the lady very happy.\n"; }
 		else
 		{
 			switch (g_Dice % 10)
 			{
-			case 0:        n = SKILL_ORALSEX;   message += "sucking the customer off";					break;
-			case 1:        n = SKILL_TITTYSEX;  message += "using her tits to get the customer off";    break;
-			case 2:        n = SKILL_HANDJOB;   message += "using her hand to get the customer off";    break;
-			case 3:        n = SKILL_ANAL;      message += "letting the customer use her ass";			break;
-			case 4:        n = SKILL_FOOTJOB;   message += "using her feet to get the customer off";    break;
-			default:	   n = SKILL_NORMALSEX; message += "fucking the customer as well";				break;
+			case 0:        n = SKILL_ORALSEX;   message += "massaging the customer's cock with her tongue";			break;
+			case 1:        n = SKILL_TITTYSEX;  message += "using her tits to get the customer off";					break;
+			case 2:        n = SKILL_HANDJOB;   message += "giving him a cock-rub as well";							break;
+			case 3:        n = SKILL_ANAL;      message += "oiling the customer's cock and massaging it with her asshole.";	break;
+			case 4:        n = SKILL_FOOTJOB;   message += "using her feet to get the customer off";					break;
+			default:	   n = SKILL_NORMALSEX; message += "covered in massage oil and riding the customer's cock";	break;
 			}
+			message += ", making him very happy.\n";
 		}
 		/* */if (n == SKILL_LESBIAN)	imageType = IMGTYPE_LESBIAN;
 		else if (n == SKILL_ORALSEX)	imageType = IMGTYPE_ORAL;
@@ -282,7 +286,6 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 		else if (n == SKILL_NORMALSEX)	imageType = IMGTYPE_SEX;
 		g_Girls.UpdateSkill(girl, n, 2);
 		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -25);
-		message += ", making them very happy.\n";
 		// work out the pay between the house and the girl
 		wages += 225;
 		girl->m_Pay = wages;

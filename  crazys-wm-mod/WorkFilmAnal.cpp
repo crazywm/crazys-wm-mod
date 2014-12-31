@@ -98,7 +98,7 @@ bool cJobManager::WorkFilmAnal(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	{
 		wages += finalqual * 2;
 	}
-	girl->m_Pay += wages;
+	girl->m_Pay = wages;
 
 	// Improve stats
 	int xp = 10, skill = 3;

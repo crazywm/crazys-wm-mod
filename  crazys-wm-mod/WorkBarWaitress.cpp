@@ -82,16 +82,16 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 
 	 if(jobperformance >= 245)
 		{
-			message += " She must be the perfect waitress customers go on and on about her and always come to see her when she works.\n\n";
+			message += " She's the perfect waitress. Customers go on about her and many seem to come more for her than for the drinks or entertainment.\n\n";
 			wages += 155;
 
 		if (roll <= 14)
 			{
-				message += girlName + " danced around the bar dropping orders off as if she dosen't even have to think to do this anymore.\n";
+				message += girlName + " danced around the bar dropping orders off as if she didn't even have to think about it.\n";
 			}
 		else if (roll <= 28)
 			{
-				message +=  "Knowing how to speak with customers, she always gets the clients to order something extra or more pricy then their wanted at the beginning, making you a nice profit.\n";
+				message +=  "Knowing how to speak with customers, " + girlName + " always gets the clients to order something extra or more pricy then they wanted at the beginning, making you a tidy profit.\n";
 				wages += 10;
 			}
 		else if (roll <= 42)
@@ -111,7 +111,7 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 			}
 		else if (roll <= 84)
 			{
-				message +=  "Today she saved your place from a mayor disturbance. When greeting clients, " + girlName + " noticed that the newly arrived group was part of a gang that was at war with another group of men which were already inside your place. She politely apologized and explained that your place was full and couldn't take such a large group. The men left unhappy but without giving her any trouble.\n";
+				message +=  "Today she saved your place from a major disturbance. When greeting clients, " + girlName + " noticed that the newly arrived group was part of a gang that was at war with another group of men which were already inside your place. She politely apologized and explained that your place was full and couldn't take such a large group. The men left unhappy but without giving her any trouble.\n";
 			}
 		else
 			{
@@ -135,7 +135,7 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 			}
 		else if (roll <= 48)
 			{
-				message += "When placing drink on the table she got slapped on the ass by one of the customers. " + girlName + " scolded them in a flirty way, saying that this kind of behavior could get them kicked out by the security and that she didn't want to lose her favorite customers. The client apologies, ensuring her that he didn't meant any harm.\n";
+				message += "When placing drink on the table she got slapped on the ass by one of the customers. " + girlName + " scolded them in a flirty way, saying that this kind of behavior could get them kicked out by the security and that she didn't want to lose her favorite customers. The client apologies, assuring her that he didn't mean any harm.\n";
 			}
 		else if (roll <= 64)
 			{
@@ -148,7 +148,7 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 			}
 		else
 			{
-				message += girlName + " is a town favriote and knows most of the patrons by name and what they order.\n";
+				message += girlName + " is a town favourite and knows most of the patrons by name and what they order.\n";
 				brothel->m_Happiness += 5;
 			}
 		}
@@ -158,16 +158,20 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 			wages += 55;
 
 		if (roll <= 14)
-			{
-				if (g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Abnormally Large Boobs"))//zzzzzzzz FIXME needs update for the new boob traits
+			{   //SIN - implement code for new boob traits
+			if (g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Giant Juggs") || g_Girls.HasTrait(girl, "Massive Melons"))
 				{
-					message += "The patrons love been served by " + girlName + ".  Due to the fact she's good at her job and they love staring at her Big Boobs.\n";
+					message += "The patrons love being served by " + girlName + ".  Due to her skill at this job and the chance to stare at her Big Boobs.\n";
 				}
+			else if (g_Girls.HasTrait(girl, "Abnormally Large Boobs") || g_Girls.HasTrait(girl, "Titanic Tits"))
+					{
+						message += "The patrons love being served by " + girlName + ".  Due to her skill at this job and the chance to stare at her legendary boobs.\n";
+					}
 				else
-				{
-				message += girlName + " didn't mess up any order this shift.  Keeping the patrons happy.\n";
-				brothel->m_Happiness += 5;
-				}
+					{
+						message += girlName + " didn't mess up any order this shift.  Keeping the patrons happy.\n";
+						brothel->m_Happiness += 5;
+					}
 			}
 		else if (roll <= 28)
 			{
@@ -176,7 +180,7 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 			}
 		else if (roll <= 42)
 			{
-				message += "She spend her shift greeting customers and showing them to their tables.\n";
+				message += "She spends her shift greeting customers and showing them to their tables.\n";
 			}
 		else if (roll <= 56)
 			{
@@ -204,7 +208,7 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 
 		if (roll <= 14)
 			{
-				message += girlName + " forgot to take an order to a table for over a hour.  But they were in a forgiving mood and stuck around.\n";
+				message += girlName + " forgot to take an order to a table for over an hour.  But they were in a forgiving mood and stuck around.\n";
 			}
 		else if (roll <= 28)
 			{
@@ -227,7 +231,7 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 			}
 		else if (roll <= 84)
 			{
-				message += girlName + " spent her shift on clean duty. Mopping the floor, wiping tables and getting sure that the bathroom is accessible. She did a decent job.\n";
+				message += girlName + " spent her shift on cleaning duty. Mopping the floor, wiping tables and ensuring that the bathrooms were accessible. She did a decent job.\n";
 				brothel->m_Filthiness -= 5;
 			}
 		else
@@ -257,7 +261,7 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 			}
 		else if (roll <= 56)
 			{
-				message += "Holding the tray firmly in her hands, " + girlName + " successfully delivered the order to designated table. She was so nervous and focused about not failing this time, that she jump scared when the customer thanked her.\n";
+				message += "Holding the tray firmly in her hands, " + girlName + " successfully delivered the order to designated table. She was so nervous and focused on not failing this time, that she jumped scared when the customer thanked her.\n";
 			}
 		else if (roll <= 70)
 			{
@@ -265,7 +269,7 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 			}
 		else if (roll <= 84)
 			{
-				message += "Still learning to do her job right, " + girlName + " gets some orders wrong making a lot people really angry.\n";
+				message += "Still learning to do her job, " + girlName + " gets some orders wrong making a lot of people really angry.\n";
 				brothel->m_Happiness -= 5;
 			}
 		else
@@ -280,12 +284,13 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 			wages -= 15;
 		if (roll <= 14)
 			{
-				message += girlName + " was taking orders to the wrong tables and letting a lot of people walk out without paying there tab.\n";
+				message += girlName + " was taking orders to the wrong tables and letting a lot of people walk out without paying their tab.\n";
 			}
 		else if (roll <= 28)
 			{
-				message += girlName + " was presenting the ordered dish when she sneezed in it. Outraged customer demanded a new serving, that he got on the house.\n";
+				message += girlName + " was presenting the ordered dish when she sneezed in it. The outraged customer demanded a new serving, that he got on the house.\n";
 				brothel->m_Happiness -= 5;
+				wages -= 15;
 			}
 		else if (roll <= 42)
 			{
@@ -318,7 +323,7 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 	{ message += "Stunned by her beauty a customer left her a great tip.\n\n"; wages += 25; }
 
 	if (g_Girls.HasTrait(girl, "Clumsy") && g_Dice.percent(15))
-		{ message += "Her clumsy nature cause her to spill food on a custmoer resulting in them storming off without paying.\n"; wages -= 25; }
+		{ message += "Her clumsy nature cause her to spill food on a customer resulting in them storming off without paying.\n"; wages -= 25; }
 
 	if (g_Girls.HasTrait(girl, "Pessimist") && g_Dice.percent(5))
 	{
@@ -337,7 +342,7 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 	}
 
 	if (g_Girls.HasTrait(girl, "Psychic") && g_Dice.percent(20))
-		{ message += "She used her Psychic skills to know excatally what the patrons wanted to order making them happy and increasing her tips.\n"; wages += 15; }
+		{ message += "She used her Psychic skills to know exactly what the patrons wanted to order making them happy and increasing her tips.\n"; wages += 15; }
 
 	if (g_Girls.HasTrait(girl, "Great Arse") && g_Dice.percent(15))
 	{
@@ -423,6 +428,6 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 	if (jobperformance > 150 && g_Girls.GetStat(girl, STAT_CONSTITUTION) > 65) { g_Girls.PossiblyGainNewTrait(girl, "Fleet of Foot", 60, ACTION_WORKBAR, girlName + " has been doding bewteen tables and avoiding running into customers for so long she has become Fleet of Foot.", Day0Night1 == SHIFT_NIGHT); }
 
 	//lose traits
-	g_Girls.PossiblyLoseExistingTrait(girl, "Clumsy", 30, ACTION_WORKBAR, "It took her break hundreds of dishes, and just as many reprimands, but " + girlName + " has finally stopped being so Clumsy.", Day0Night1 == SHIFT_NIGHT);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Clumsy", 30, ACTION_WORKBAR, "It took her breaking hundreds of dishes, and just as many reprimands, but " + girlName + " has finally stopped being so Clumsy.", Day0Night1 == SHIFT_NIGHT);
 	return false;
 }

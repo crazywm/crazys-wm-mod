@@ -385,7 +385,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 		wages = 0;
 
 	g_Gold.girl_support(wages);  // wages come from you
-	girl->m_Pay += wages;
+	girl->m_Pay = wages;
 
 	// Improve stats
 	int xp = 10, libido = 3;

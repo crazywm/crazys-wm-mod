@@ -82,11 +82,11 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 	 if (jobperformance >= 245)
 		{
-			message += " She plays with the grace of an angel the customers go on and on about her and always come to listen to her when she works.\n\n";
+			message += " She plays with the grace of an angel. Customers come from miles around to listen to her play.\n\n";
 			wages += 155;
 		if (roll <= 20)
 			{
-				message += girlName + "'s playing brought many patron's to tears as she played a song full of sadness.\n";
+				message += girlName + "'s playing brought many patrons to tears as she played a song full of sadness.\n";
 				brothel->m_Happiness += 5;
 			}
 		else if (roll <= 40)
@@ -101,7 +101,7 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			}
 		else if (roll <= 80)
 			{
-				message += girlName + " being confident in her skill, " + girlName + " played today using only one hand.\n";
+				message += "Being confident in her skill, " + girlName + " played today using only one hand.\n";
 				brothel->m_Fame += 10;
 			}
 		else
@@ -149,7 +149,7 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			}
 		else if (roll <= 40)
 			{
-				message += girlName + " don't have any trouble playing the piano.\n";
+				message += girlName + " doesn't have any trouble playing the piano.\n";
 			}
 		else if (roll <= 60)
 			{
@@ -175,7 +175,7 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			}
 		else if (roll <= 40)
 			{
-				message += girlName + "'s performance today was good. She seems to you as a promising pianist.\n";
+				message += girlName + "'s performance today was good. She is a promising pianist.\n";
 			}
 		else if (roll <= 60)
 			{
@@ -183,7 +183,7 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			}
 		else if (roll <= 80)
 			{
-				message += "You could tell that there was something like a melody, but " + girlName + " still need a lot of practice.\n";
+				message += "You could tell that there was something like a melody, but " + girlName + " still needs a lot of practice.\n";
 			}
 		else
 			{
@@ -192,7 +192,7 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		}
  else if (jobperformance >= 70)
 		{
-			message += " She almost never hits a right note. Luck for you most of your customers are drunks.\n\n";
+			message += "She almost never hits a right note. Lucky for you most of the customers are too drunk and horny to care.\n\n";
 			wages -= 5;
 		if (roll <= 20)
 			{
@@ -227,21 +227,23 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			}
 		else if (roll <= 40)
 			{
-				message += "After ten seconds you wanted to grab an axe and ends the instruments misery being tortured by " + girlName + " attempt to play.\n";
+				message += "After ten seconds you wanted to grab an axe and end the instrument's misery under " + girlName + "'s attempt to play.\n";
 				brothel->m_Happiness -= 5;
 			}
 		else if (roll <= 60)
 			{
-				message += "Hitting keys at random nobody wouldn't call playing, but " + girlName + " thinks otherwise.\n";
+				message += "Noone else would call this random key-mashing 'playing', but " + girlName + " thinks otherwise.\n";
 			}
 		else if (roll <= 80)
 			{
-				message += "You could swear that a rat running inside the piano would bring better sounds then " + girlName + ".\n";
+				message += "When " + girlName + " started to play, the bar emptied almost instantly. This could be useful in a fire.\n";
 			}
 		else
 			{
-				message += girlName + " banged on the piano clearly having no clue what a note was.\n";
+				message += girlName + " banged on the piano clearly having no clue which note was which.\n";
 			}
+		//SIN - bit of randomness.
+		if (g_Dice.percent(brothel->m_Filthiness / 50)) message += "Soon after she started her set, some rats jumped out of the piano and fled the building. Patrons could be heard laughing.\n\n";
 		}
 
 
@@ -269,22 +271,22 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	}
 
 	if (g_Girls.HasTrait(girl, "Psychic") && g_Dice.percent(20))
-		{ message += "She used her Psychic skills to know excatally what the patrons wanted to hear her play.\n"; wages += 15; }
+		{ message += "She used her Psychic skills to know exactly what the patrons wanted to hear her play.\n"; wages += 15; }
 
 	if (g_Girls.HasTrait(girl, "Assassin") && g_Dice.percent(5))
 	{
 		if (jobperformance < 150)
-			{ message += "A patron bumped into the piano causing her to miss a note.  This pissed her off and using her Assassin skills she killed him before even thinking about it resulting in patrons storming out without paying.\n"; wages -= 50; }
+			{ message += "A patron bumped into the piano causing her to miss a note. This pissed her off and using her Assassin skills she killed him before even thinking about it, resulting in patrons fleeing the building.\n"; wages -= 50; }
 		else
-			{ message += "A patron bumped into the piano.  But with her skill she didn't miss a note.  The patron was luck to leave with his life.\n"; }
+			{ message += "A patron bumped into the piano, but with her skill she didn't miss a note. The patron was lucky to leave with his life.\n"; }
 	}
 
 	if (g_Girls.HasTrait(girl, "Horrific Scars") && g_Dice.percent(15))
 	{
 		if (jobperformance < 150)
-			{ message += "A patron gasped at her Horrific Scars making her uneasy.  But they didn't feel sorry for her.\n"; }
+			{ message += "A patron gasped at her Horrific Scars making her uneasy. But they didn't feel sorry for her.\n"; }
 		else
-			{ message += "A patron gasped at her Horrific Scars making her sad.  Feeling bad about it as she did a wonderful job they left a good tip.\n"; wages += 15; }
+			{ message += "A patron gasped at her Horrific Scars making her sad. Feeling bad about it as she played so well, they left a good tip.\n"; wages += 15; }
 	}
 
 	if (g_Brothels.GetNumGirlsOnJob(0,JOB_SINGER,false) == 1 && g_Dice.percent(25))

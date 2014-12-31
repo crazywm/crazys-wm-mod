@@ -602,6 +602,7 @@
     <ClCompile Include="lua\src\lundump.c" />
     <ClCompile Include="lua\src\lvm.c" />
     <ClCompile Include="lua\src\lzio.c" />
+    <ClCompile Include="WorkArenaJousting.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cButton.h">

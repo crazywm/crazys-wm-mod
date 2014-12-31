@@ -1152,9 +1152,87 @@ Reordered Transfer Screen to conform with F# order.
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.18
 !!!!!!!!!!!!!!!!!!!! pushed to SVN - r126
  
+###  Changes 12/18-21/2014 - preholiday stuff and work taking most of my time
+
+###  Changes 12/22/2014
+!! bsin posted several spell checks and additions
+[from his readme.txt included with the updates]
+Few notes on changes in these files:
+
+cGirls.cpp
+Changed the action texts for sex activities to make them a little less copy/pastey.
+
+cInventory.cpp
+Added a bit to give the player some kindness for giving girls expensive cures. Given the scarcity and cost of cures (relative to cost of just buying a new girl), this should be a "kind" act imho
+
+WorkBrothelStripper.cpp
+WorkBarStripper.cpp
+Typo fixes and new events, INCLUDING a new event where addicts are exploited by a customer who gives them drugs. I haven't yet tested this and am not 100% confident it will work - **please check**
+
+WorkBarmaid.cpp
+WorkBarPiano.cpp
+WorkBarSinger.cpp
+WorkBarWaitress.cpp
+WorkBrothelMassusse.cpp
+WorkBrothelWhore.cpp
+Typo fixes, cleanup, some rephrasing and some new 'random'ish events.
+
+BugFix: **WorkBarSinger.cpp**
+Fixed some lines of code near the end that overwrite (using =) the happiness/fame instead of incrementing/decrementing (using +=)
+
+Hope this helps...
+[end]
+ - I got all the work updates added in 99% as is (a few fixes of my own in there)
+ - cGirls.cpp texts added in as random options 
+ - cInventory.cpp part added in with fixes to make it work smoother.
  
- 
- 
+
+###  Changes 12/22-30/2014 - preholiday stuff and work taking most of my time
+
+###  Changes 12/30/2014
+!! bsin posted more additions
+[excerpt from his readme.txt included with the updates]
+#Core changes
+cGirls.cpp
++ A comment indicated that the list of "traits" used in customer decisions on girltype needed to be sorted.
++++ Now ALL traits are sorted and grouped into types (large groups are also ordered alphebetically)
++++ Updated to include ALL current traits (as of v126).
++++ Values added so that customer decision is influence by many new traits.
++++ Unused/invisible traits commented out to optimise performance.
++ Some new traits (the one I wanted to use) now have ApplyTrait and UnapplyTrait values, meaning they affect skills, stats and likes.
++ New xxx events and dialogues based on new and existing traits.
+
+
+#Gambling hall -
+WorkHallDealer.cpp
+WorkHallXXXEntertainer.cpp
+WorkHallEntertainer.cpp
++BUGFIX: Fixed a recurring logic bug that was causing certain events to be much more likely than intended (logical operator precedence means that ANDs are processed before ORs - see example code below)
++New skill-levelled events.
++New random/trait-based after-events for both types of entertainment and dealer.
++New random/trait-based *PRE*-events for both types of entertainment - e.g. if she has high libido today it may affect her performance.
+
+
+#Whorking Girls
+WorkHallWhore.cpp
+WorkBrothelWhore.cpp
++ Some additional PossiblyGainTrait gains, to bring some of the new traits into action.
+
+#ALL
++General Typo fixes
+[end]
+ - I got all the work updates added in 95% as is (a few fixes of my own in there)
+ - cGirls.cpp stuff added in and cleaned up
+
+I started reworking how mutually exclusive traits are changed, adding a function group "AdjustTraitGroup..."
+ - AdjustTraitGroupGagReflex is in and is used in the three whore jobs so far.
+ - AdjustTraitGroupBreastSize should work but is not used in anything yet.
+
+Cleaned some other things but forgot to log them.
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.19
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r127
+
  
  
  

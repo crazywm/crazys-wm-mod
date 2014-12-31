@@ -144,7 +144,7 @@ bool cJobManager::WorkBeastCare(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKCARING, enjoy, true);
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
-	girl->m_Pay += wages;
+	girl->m_Pay = wages;
 
 	// Improve girl
 	int xp = 5 + (g_Brothels.m_Beasts / 10), libido = 1, skill = 2 + (g_Brothels.m_Beasts / 20);
