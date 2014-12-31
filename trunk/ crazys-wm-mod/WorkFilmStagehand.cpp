@@ -192,7 +192,7 @@ bool cJobManager::WorkFilmStagehand(sGirl* girl, sBrothel* brothel, bool Day0Nig
 	girl->m_Events.AddMessage(ss.str(), imagetype, SHIFT_NIGHT);
 	if (filming) g_Studios.m_StagehandQuality += jobperformance;
 	brothel->m_Filthiness -= CleanAmt;
-	girl->m_Pay += wages;
+	girl->m_Pay = wages;
 
 
 	// Improve girl

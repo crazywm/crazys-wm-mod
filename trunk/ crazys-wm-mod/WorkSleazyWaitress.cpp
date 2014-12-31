@@ -361,7 +361,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	int roll_max = (g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA));
 	roll_max /= 4;
 	wages += 10 + g_Dice%roll_max;
-	girl->m_Pay += wages;
+	girl->m_Pay = wages;
 
 	// Improve stats
 	int xp = 15, libido = 1, skill = 3;

@@ -43,11 +43,11 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
-bool cJobManager::WorkArenaJousting(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkArenaJousting(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	string message = ""; string girlName = girl->m_Realname;
 
-	if(Preprocessing(ACTION_COMBAT, girl, brothel, DayNight, summary, message))
+	if (Preprocessing(ACTION_COMBAT, girl, brothel, Day0Night1, summary, message))
 		return true;
 
 	int roll = g_Dice%100;
@@ -138,7 +138,7 @@ bool cJobManager::WorkArenaJousting(sGirl* girl, sBrothel* brothel, int DayNight
 	{ message += "\nOtherwise, the shift passed uneventfully."; work += 1; }
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, work, true);
-	girl->m_Events.AddMessage(message, IMGTYPE_COMBAT, DayNight);
+	girl->m_Events.AddMessage(message, IMGTYPE_COMBAT, Day0Night1);
 	int roll_max = (g_Girls.GetStat(girl, STAT_FAME) + g_Girls.GetStat(girl, STAT_CHARISMA));
 	roll_max /= 4;
 	wages += 10 + g_Dice%roll_max;
@@ -162,7 +162,7 @@ bool cJobManager::WorkArenaJousting(sGirl* girl, sBrothel* brothel, int DayNight
 	
 
 	//lose
-	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 30, ACTION_COMBAT, girlName + " has went into battle so many times she is no longer nervous.", DayNight != 0);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 30, ACTION_COMBAT, girlName + " has went into battle so many times she is no longer nervous.", Day0Night1 != 0);
 
 	return false;
 }

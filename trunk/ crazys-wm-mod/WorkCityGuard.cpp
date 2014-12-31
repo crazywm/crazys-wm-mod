@@ -137,7 +137,7 @@ bool cJobManager::WorkCityGuard(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 
 	girl->m_Events.AddMessage(message, imagetype, Day0Night1);
 	g_Brothels.GetPlayer()->suspicion(sus);
-	girl->m_Pay += wages;
+	girl->m_Pay = wages;
 
 
 	// Improve girl

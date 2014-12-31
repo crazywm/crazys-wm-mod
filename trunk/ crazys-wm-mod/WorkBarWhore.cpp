@@ -410,6 +410,37 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	//gain
 	g_Girls.PossiblyGainNewTrait(girl, "Good Kisser", 50, ACTION_SEX, girl->m_Realname + " has had a lot of practice kissing and as such as become a Good Kisser.", Day0Night1 == SHIFT_NIGHT);
 	g_Girls.PossiblyGainNewTrait(girl, "Nymphomaniac", 70, ACTION_SEX, girl->m_Realname + " has been having so much sex she is now wanting sex all the time.", Day0Night1 == SHIFT_NIGHT);
+	
+	//SIN: use a few of the new traits
+	if (g_Dice.percent(10) || (g_Girls.HasTrait(girl, "Nymphomaniac")))
+		g_Girls.PossiblyGainNewTrait(girl, "Cum Addict", 90, ACTION_SEX, girl->m_Realname + " has tasted so much cum she now craves it at all times.", Day0Night1);
+
+
+#if 1 // `J` I am working on upgrading this but I have not finished it yet - but it seems to work with generic texts
+	if (g_Dice.percent(min(50, girl->oralsex() - 30)))
+		g_Girls.AdjustTraitGroupGagReflex(girl, +1, true, Day0Night1);
+
+#else
+	/* `J` I have a couple of problems with doing it this way:
+	*	First - the checks flow in a way that it is possible to change several traits at once
+	*	Second - these traits don't really depend on if the girl "likes" what she is doing
+	*		so the threshold check in the 'Possibly...' functions is bad for this
+	*	Third - the function that changes the traits changes the skills so they don't need to be done here
+	*/
+	if (g_Girls.HasTrait(girl, "Strong Gag Reflex") || g_Girls.HasTrait(girl, "Gag Reflex"))
+	{
+		if (g_Girls.PossiblyLoseExistingTrait(girl, "Strong Gag Reflex", 20, ACTION_SEX, girl->m_Realname + " is getting over sucking cocks. She no longer gags at the first taste of one.", Day0Night1))
+		{
+			if (g_Dice.percent(min((70 - g_Girls.GetSkill(girl, SKILL_ORALSEX)), 0))) g_Girls.AddTrait(girl, "Gag Reflex");
+		}
+	}
+	if (g_Girls.HasTrait(girl, "Gag Reflex"))
+		g_Girls.PossiblyLoseExistingTrait(girl, "Gag Reflex", 40, ACTION_SEX, girl->m_Realname + " has enough experience now that putting a cock in her mouth no longer makes her gag.", Day0Night1);
+	else if (g_Girls.PossiblyGainNewTrait(girl, "No Gag Reflex", 60, ACTION_SEX, girl->m_Realname + " has entirely lost her gag reflex, meaning she can now use her throat to give much sexier blowjobs.", Day0Night1))
+		g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 5);
+	g_Girls.PossiblyGainNewTrait(girl, "Deepthroat", 90, ACTION_SEX, "Wow! " + girl->m_Realname + " has overcome her gag reflex such that she can comfortably take a large cock fucking her throat, while licking his balls in time.", Day0Night1);
+
+#endif
 
 	return false;
 }

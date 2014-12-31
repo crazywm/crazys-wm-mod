@@ -27,7 +27,7 @@ extern cInventory g_InvManager;
 
 const char* actionTypeNames[] = 
 {
-// `J` When adding or changing this section, search for "J-Change-Action-Types"
+	// `J` When modifying Action types, search for "J-Change-Action-Types"  :  found in > XmlMisc.cpp
 	"COMBAT",
 	"SEX",
 	"WORKESCORT",

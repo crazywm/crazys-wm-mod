@@ -352,6 +352,8 @@ void cGirls::CalculateGirlType(sGirl* girl)
 	// zzzzzz -  the traits with /**/ in front of the mods have not been updated
 
 
+	//SIN: Traits all sorted - see below
+#if 0
 	/****** Physical Traits ******/
 	// Breasts
 	if (HasTrait(girl, "Flat Chest"))				{ BigBoobs -= 120;	SmallBoobs += 80;	CuteGirl += 20;	Lolita += 30;	Sexy -= 10;	NiceFigure -= 10; }
@@ -480,8 +482,294 @@ void cGirls::CalculateGirlType(sGirl* girl)
 	if (HasTrait(girl, "Sterile"))					{}
 	if (HasTrait(girl, "Fertile"))					{}
 
+#else
+	//SIN: sorted ALL traits and included ALL new traits from current CoreTraits.traitsx file (v126)
+	// Included code for traits that don't do anything for completeness, but these are commented out for performance.
+	// Newly added traits from the CoreTraits.traitsx file are tagged with /**/
+	/****** Physical Traits ******/
+	// Breasts
+	/* */if (HasTrait(girl, "Flat Chest"))				{ BigBoobs -= 120;	SmallBoobs += 80;	CuteGirl += 20;	Lolita += 30;	Sexy -= 10;	NiceFigure -= 10; }
+	else if (HasTrait(girl, "Petite Breasts"))			{ BigBoobs -= 80;	SmallBoobs += 100;	CuteGirl += 15;	Lolita += 20;	Sexy -= 5;	NiceFigure -= 5; }
+	else if (HasTrait(girl, "Small Boobs"))				{ BigBoobs -= 40;	SmallBoobs += 50;	CuteGirl += 10;	Lolita += 10;	Sexy += 5;	NiceFigure -= 0; }
+	else if (HasTrait(girl, "Busty Boobs"))				{ BigBoobs += 20;	SmallBoobs -= 20;	CuteGirl += 5;	Lolita += 0; 	Sexy += 10;	NiceFigure += 5; }
+	else if (HasTrait(girl, "Big Boobs"))				{ BigBoobs += 40;	SmallBoobs -= 40;	CuteGirl -= 5;	Lolita -= 20;	Sexy += 20;	NiceFigure += 10; }
+	else if (HasTrait(girl, "Giant Juggs"))				{ BigBoobs += 60;	SmallBoobs -= 60;	CuteGirl -= 25;	Lolita -= 40;	Sexy += 20;	NiceFigure += 5; }
+	else if (HasTrait(girl, "Massive Melons"))			{ BigBoobs += 80;	SmallBoobs -= 80;	CuteGirl -= 25;	Lolita -= 60;	Sexy += 10;	NiceFigure -= 5;	Freak += 5; }
+	else if (HasTrait(girl, "Abnormally Large Boobs"))	{ BigBoobs += 100;	SmallBoobs -= 100;	CuteGirl -= 15;	Lolita -= 80;	Sexy += 0;	NiceFigure -= 10;	Freak += 10;	NonHuman += 5; }
+	else if (HasTrait(girl, "Titanic Tits"))			{ BigBoobs += 120;	SmallBoobs -= 120;	CuteGirl -= 25;	Lolita -= 100;	Sexy -= 10;	NiceFigure -= 20;	Freak += 20;	NonHuman += 10; }
+	
+	// Nipples
+	if (HasTrait(girl, "Inverted Nipples"))				{ BigBoobs -= 5;	SmallBoobs += 5;	CuteGirl -= 5;	Freak += 5; }
+	if (HasTrait(girl, "Perky Nipples"))				{ BigBoobs += 10;	SmallBoobs += 5;	CuteGirl += 5;	Lolita += 5; }
+	if (HasTrait(girl, "Puffy Nipples"))				{ BigBoobs += 10;	SmallBoobs -= 5;	CuteGirl += 5; }
+	
+	// Milk
+	if (HasTrait(girl, "Dry Milk"))						{ BigBoobs -= 10;	SmallBoobs += 10;	CuteGirl += 5;	Lolita += 10;	}
+	if (HasTrait(girl, "Scarce Lactation"))				{ BigBoobs -= 5;	SmallBoobs += 5;	CuteGirl += 0;	Lolita += 5;	}
+	if (HasTrait(girl, "Abundant Lactation"))			{ BigBoobs += 10;	SmallBoobs -= 10;	CuteGirl -= 0;	Lolita -= 10;	}
+	if (HasTrait(girl, "Cow Tits"))						{ BigBoobs += 20;	SmallBoobs -= 20;	CuteGirl -= 5;	Lolita -= 20;	Freak += 5; }
+	
+	//Body
+	if (HasTrait(girl, "Fleet of Foot"))				{ Dangerous += 10; Sexy += 20; }
+	if (HasTrait(girl, "Fragile"))						{ CuteGirl += 10; Nerd += 5; Freak += 10; Lolita += 10; }
+	if (HasTrait(girl, "Great Arse"))					{ Sexy += 10; NiceArse += 60; }
+	if (HasTrait(girl, "Great Figure"))					{ BigBoobs += 10; Sexy += 10; NiceFigure += 60; }
+	if (HasTrait(girl, "Long Legs"))					{ Sexy += 20; NiceFigure += 20; }
+	if (HasTrait(girl, "Strong"))						{ Dangerous += 20; Cool += 20; Nerd -= 30; NiceFigure += 20; NiceArse += 20; Lolita -= 5; }
+	if (HasTrait(girl, "Tough"))						{ CuteGirl -= 5; Dangerous += 10; Cool += 10; Nerd -= 5; Elegant -= 5; }
+	//Following traits marked /**/ are newly added from CoreTraits.traitsx - delete this comment if these are ok and the numbers are reasonable
+	if (HasTrait(girl, "Agile"))					/**/{ Dangerous += 20; Sexy += 5; Freak += 10; }
+	if (HasTrait(girl, "Delicate"))					/**/{ CuteGirl += 5; Nerd += 5; Freak += 5; Lolita += 10; }
+	if (HasTrait(girl, "Deluxe Derriere"))			/**/{ Lolita -= 25; Sexy += 20; NiceArse += 40; }
+	if (HasTrait(girl, "Dick-Sucking Lips"))		/**/{ Sexy += 20; CuteGirl += 20; }
+	if (HasTrait(girl, "Exotic"))					/**/{ Sexy += 10; CuteGirl += 10; Freak += 10; }
+	if (HasTrait(girl, "Flat Ass"))					/**/{ Lolita += 20; Sexy -= 20; NiceArse -= 50; }
+	if (HasTrait(girl, "Giant"))					/**/{ Freak += 20; Lolita -= 30; }
+	if (HasTrait(girl, "Hourglass Figure"))			/**/{ Sexy += 25; Lolita -= 30; NiceFigure += 20; }
+	if (HasTrait(girl, "Large Hips"))				/**/{ Sexy += 15; Lolita -= 20; NiceArse += 20; }
+	if (HasTrait(girl, "Mature Body"))				/**/{ Lolita -= 50; CuteGirl -= 20; Sexy += 10; }
+	if (HasTrait(girl, "Muscular"))					/**/{ Lolita -= 30; Sexy -= 30; Dangerous += 25; Freak += 25; }
+	if (HasTrait(girl, "Old"))						/**/{ Lolita -= 60; CuteGirl -= 40; Sexy -= 20; Freak += 30; Elegant += 15; }	
+	if (HasTrait(girl, "Phat Booty"))				/**/{ Lolita -= 20; Sexy += 15; NiceArse += 30; }
+	if (HasTrait(girl, "Plump Tush"))				/**/{ Lolita -= 20; Sexy += 30; NiceArse += 10; }
+	if (HasTrait(girl, "Plump"))					/**/{ Lolita -= 10; NiceFigure -= 10; Freak += 20; }
+	if (HasTrait(girl, "Tight Butt"))				/**/{ Lolita += 5; Sexy += 20; NiceArse += 40; }
+	if (HasTrait(girl, "Whore"))					/**/{ Lolita -= 50; CuteGirl -= 40; Cool += 10; Sexy += 10; }
+	if (HasTrait(girl, "Wide Bottom"))				/**/{ Lolita -= 20; Sexy += 15; NiceArse += 20; }
+			
+	//Piercings, Brandings & Tattoos
+	if (HasTrait(girl, "Pierced Clit"))					{ Elegant -= 20; Sexy += 20; Freak += 15; }
+	if (HasTrait(girl, "Pierced Nipples"))				{ Elegant -= 20; Sexy += 20; Freak += 15; }
+	if (HasTrait(girl, "Pierced Tongue"))				{ Elegant -= 20; Sexy += 20; Freak += 15; }
+	//Following traits marked /**/ are newly added from CoreTraits.traitsx - delete this comment if these are ok and the numbers are reasonable
+	if (HasTrait(girl, "Pierced Nose"))				/**/{ Elegant -= 20; Sexy += 20; Dangerous += 5; }
+	if (HasTrait(girl, "Tattooed"))					/**/{ Cool += 10; Dangerous += 5; }
+	if (HasTrait(girl, "Small Tattoos"))			/**/{ Cool += 25; Elegant -= 5; Dangerous += 5; }
+	if (HasTrait(girl, "Heavily Tattooed"))			/**/{ Cool += 30; Dangerous += 15; Elegant -= 20; }
+	if (HasTrait(girl, "Branded on the Ass"))		/**/{ Freak += 25; Elegant -= 20; NiceArse -= 10; }
+	if (HasTrait(girl, "Branded on the Forehead"))	/**/{ Cool -= 30; Elegant -= 30; Freak += 25; }
+
+	
+	/*********  Scars, Mutilations, Amputations, Disabilities, etc.  ***************/
+	//Born this way...
+	if (HasTrait(girl, "Malformed"))					{ NonHuman += 10; Freak += 50; }
+	//Following traits marked /**/ are newly added from CoreTraits.traitsx - delete this comment if these are ok and the numbers are reasonable
+	if (HasTrait(girl, "Beauty Mark"))				/**/{ Cool += 5; Freak += 5; Sexy += 5; }
+	if (HasTrait(girl, "Blind"))					/**/{ Freak += 10; Dangerous -= 15; }
+	if (HasTrait(girl, "Deaf"))						/**/{ Freak += 10; Dangerous -= 5; }
+//	if (HasTrait(girl, "Bad Eyesight"))				/**/{} // Not visible to customer
+//	if (HasTrait(girl, "Sharp-Eyed"))				/**/{} // Not visible to customer
+//	if (HasTrait(girl, "Incest"))					/**/{} // Not visible to customer
+	//Scars and wounds
+	if (HasTrait(girl, "Small Scars"))					{ CuteGirl -= 5; Dangerous += 5; Cool += 2; Freak += 2; }
+	if (HasTrait(girl, "Cool Scars"))					{ CuteGirl -= 10; Dangerous += 20; Cool += 30; Freak += 5; }
+	if (HasTrait(girl, "Horrific Scars"))				{ CuteGirl -= 15; Dangerous += 30; Freak += 20; }
+	//Missing Parts
+	if (HasTrait(girl, "One Eye"))						{ CuteGirl -= 20; Cool += 5; Dangerous += 10; Sexy -= 20; NiceFigure -= 10; Freak += 20; }
+	if (HasTrait(girl, "Eye Patch"))					{ CuteGirl -= 5; Dangerous += 5; Cool += 20; Sexy -= 5; Freak += 20; }
+	//Following traits marked /**/ are newly added from CoreTraits.traitsx - delete this comment if these are ok and the numbers are reasonable
+	if (HasTrait(girl, "Missing Finger"))			/**/{ Freak += 5; }
+	if (HasTrait(girl, "Missing Fingers"))			/**/{ Freak += 10; }
+	if (HasTrait(girl, "One Hand"))					/**/{ Freak += 20; Dangerous -= 10; }
+	if (HasTrait(girl, "No Hands"))					/**/{ Freak += 40; Dangerous -= 20; }
+	if (HasTrait(girl, "One Arm"))					/**/{ Freak += 40; Dangerous -= 20; }
+	if (HasTrait(girl, "No Arms"))					/**/{ Freak += 60; Dangerous -= 30; }
+	if (HasTrait(girl, "Missing Toe"))				/**/{ Freak += 5; }
+	if (HasTrait(girl, "Missing Toes"))				/**/{ Freak += 10; }
+	if (HasTrait(girl, "One Foot"))					/**/{ Freak += 20; Dangerous -= 10; }
+	if (HasTrait(girl, "No Feet"))					/**/{ Freak += 40; Dangerous -= 20; }
+	if (HasTrait(girl, "One Leg"))					/**/{ Freak += 40; Dangerous -= 20; }
+	if (HasTrait(girl, "No Legs"))					/**/{ Freak += 60; Dangerous -= 30; }
+	if (HasTrait(girl, "No Clit"))					/**/{ Freak += 5; Sexy -= 10; }
+	if (HasTrait(girl, "Missing Teeth"))			/**/{ Freak += 5; Elegant -= 10; Dangerous += 10; Sexy -= 5; }
+	if (HasTrait(girl, "No Teeth"))					/**/{ Freak += 40; Elegant -= 40; Dangerous -= 5; Sexy -= 15; }
+	if (HasTrait(girl, "Missing Nipple"))			/**/{ Freak += 20; Dangerous += 10; Sexy -= 10; }
+	if (HasTrait(girl, "No Nipples"))				/**/{ Freak += 20; NonHuman += 10; }
+	if (HasTrait(girl, "Cyclops"))					/**/{ CuteGirl -= 20; Sexy -= 10; Freak += 30; }
+	
+	
+	/****** Magic Traits ******/
+	if (HasTrait(girl, "Psychic"))						{ Dangerous += 10; Nerd += 10; NonHuman += 10; Freak += 10; }
+	if (HasTrait(girl, "Strong Magic"))					{ Dangerous += 20; Nerd += 5; NonHuman += 5; Freak += 20; }
+	//Following traits marked /**/ are newly added from CoreTraits.traitsx - delete this comment if these are ok and the numbers are reasonable	
+	if (HasTrait(girl, "Muggle"))					/**/{ Dangerous -= 5; Nerd += 5; }
+	if (HasTrait(girl, "Weak Magic"))				/**/{ Dangerous += 5; Freak += 5; }
+	if (HasTrait(girl, "Powerful Magic"))			/**/{ Dangerous += 25; Nerd += 15; NonHuman += 10; Freak += 35; }
+	if (HasTrait(girl, "Natural Pheromones"))		/**/{ NonHuman += 10; Sexy += 40; }  // they'll see her as far more sexy for this
+	if (HasTrait(girl, "Flight"))					/**/{ Dangerous += 15; NonHuman += 20; Freak += 20; }
+	
+
+	/****** Sexual Traits ******/
+	// Performance
+	if (HasTrait(girl, "Strong Gag Reflex"))			{ Elegant += 20; Sexy -= 20; Freak += 5;	Lolita += 20; }
+	if (HasTrait(girl, "Gag Reflex"))					{ Elegant += 10; Sexy -= 10; Freak += 0;	Lolita += 10; }
+	if (HasTrait(girl, "No Gag Reflex"))				{ Elegant -= 10; Sexy += 10; Freak += 15;	Lolita -= 5; }
+	if (HasTrait(girl, "Deep Throat"))					{ Elegant -= 20; Sexy += 20; Freak += 30;	Lolita -= 10; }
+	if (HasTrait(girl, "Slow Orgasms"))					{ CuteGirl -= 5; Cool -= 5; Elegant += 5; Sexy -= 10; Freak += 5; }
+	if (HasTrait(girl, "Fake Orgasm Expert"))			{ Sexy += 5; }
+	if (HasTrait(girl, "Fast Orgasms"))					{ Cool += 10; Sexy += 30; }
+	if (HasTrait(girl, "Good Kisser"))					{ Cool += 10; Sexy += 20; }
+	//Following traits marked /**/ are newly added from CoreTraits.traitsx - delete this comment if these are ok and the numbers are reasonable
+	if (HasTrait(girl, "Dominatrix"))				/**/{ Dangerous += 30; Elegant += 5; Freak += 40; }
+	if (HasTrait(girl, "Nimble Tongue"))			/**/{ Sexy += 25; }
+	if (HasTrait(girl, "Open Minded"))				/**/{ Sexy += 30; Cool += 20; Elegant -= 10; }
+	if (HasTrait(girl, "Virgin"))					/**/{ Lolita += 50; }
+		
+
+	/****** Social Traits ******/
+	//Types
+	if (HasTrait(girl, "Aggressive"))					{ CuteGirl -= 15; Dangerous += 20; Lolita -= 5; Elegant -= 10; Freak += 10; }
+	if (HasTrait(girl, "Adventurer"))					{ Dangerous += 20; Cool += 10; Nerd -= 20; Elegant -= 5; }
+	if (HasTrait(girl, "Charismatic"))					{ Elegant += 30; Sexy += 30; Freak -= 20; }
+	if (HasTrait(girl, "Charming"))						{ Elegant += 20; Sexy += 20; Freak -= 15; }
+	if (HasTrait(girl, "Clumsy"))						{ CuteGirl += 10; Dangerous -= 20; Cool -= 10; Nerd += 20; Freak += 5; }
+	if (HasTrait(girl, "Cool Person"))					{ Dangerous += 5; Cool += 60; Nerd -= 10; }
+	if (HasTrait(girl, "Cute"))							{ CuteGirl += 60; Lolita += 20; SmallBoobs += 5; }
+	if (HasTrait(girl, "Elegant"))						{ Dangerous -= 30; Nerd -= 20; NonHuman -= 20; Elegant += 60; Freak -= 30; }
+	if (HasTrait(girl, "Lolita"))						{ BigBoobs -= 30; CuteGirl += 30; Dangerous -= 5; Lolita += 60; SmallBoobs += 15; }
+	if (HasTrait(girl, "Manly"))						{ CuteGirl -= 15; Dangerous += 5; Elegant -= 20; Sexy -= 20; NiceFigure -= 20; SmallBoobs += 10; Freak += 5; Lolita -= 10; }
+	if (HasTrait(girl, "Meek"))							{ CuteGirl += 15; Dangerous -= 30; Cool -= 30; Nerd += 30; Lolita += 10; }
+	if (HasTrait(girl, "MILF"))							{ Freak += 15; Lolita -= 50; }
+	if (HasTrait(girl, "Nerd"))							{ CuteGirl += 10; Dangerous -= 30; Cool -= 30; Nerd += 60; SmallBoobs += 5; }
+	if (HasTrait(girl, "Nervous"))						{ CuteGirl += 10; Nerd += 15; }
+	if (HasTrait(girl, "Optimist"))						{ Elegant += 5; }
+	if (HasTrait(girl, "Pessimist"))					{ Elegant -= 5; }
+	if (HasTrait(girl, "Princess"))						{ Elegant += 40; Sexy += 20; Freak -= 15; }
+	if (HasTrait(girl, "Queen"))						{ Elegant += 60; Sexy += 20; Freak -= 15; }
+	if (HasTrait(girl, "Sexy Air"))						{ Cool += 5; Elegant -= 5; Sexy += 10; }
+	//Following traits marked /**/ are newly added from CoreTraits.traitsx - delete this comment if these are ok and the numbers are reasonable
+	if (HasTrait(girl, "Audacity"))					/**/{ Dangerous += 20; Cool += 25; Nerd -= 10; }
+	if (HasTrait(girl, "Brawler"))					/**/{ Dangerous += 30; Freak += 10; }
+	if (HasTrait(girl, "Dojikko"))					/**/{ CuteGirl += 20; Dangerous -= 20; Nerd += 10; Freak += 5; }
+	if (HasTrait(girl, "Exhibitionist"))			/**/{ CuteGirl += 20; Freak += 20; Sexy += 10; }
+	if (HasTrait(girl, "Idol"))						/**/{ Cool += 30; CuteGirl += 10; }
+	if (HasTrait(girl, "Noble"))					/**/{ Elegant += 15; Sexy += 5; Freak -= 5; }
+	if (HasTrait(girl, "Shy"))						/**/{ Cool -= 20; Nerd += 10; }
+	if (HasTrait(girl, "Slut"))						/**/{ Sexy += 25; Cool += 15; Elegant -= 30; }
+	if (HasTrait(girl, "Social Drinker"))			/**/{ Elegant -= 5; Cool += 15; Sexy += 10; }
+	if (HasTrait(girl, "Tomboy"))					/**/{ CuteGirl -= 15; Elegant -= 20; Sexy -= 10; SmallBoobs += 10; Freak += 5; Lolita -= 10; }
+	
+	
+	/****** Mental Traits ******/
+	//Learning
+	if (HasTrait(girl, "Quick Learner"))				{ Cool -= 20; Nerd += 30; }
+	if (HasTrait(girl, "Slow Learner"))					{ CuteGirl += 10; Cool += 10; Nerd -= 20; }
+	if (HasTrait(girl, "Retarded"))						{ NonHuman += 2; Freak += 45; }
+	//Following traits marked /**/ are newly added from CoreTraits.traitsx - delete this comment if these are ok and the numbers are reasonable	
+	if (HasTrait(girl, "Bimbo"))					/**/{ CuteGirl += 10; Cool += 10; Nerd -= 20; }
+	if (HasTrait(girl, "Idiot Savant"))				/**/{ Freak += 10; Nerd += 20; Cool -= 30; Sexy -= 20; }
+	
+	//Weak Mind
+	if (HasTrait(girl, "Mind Fucked"))					{ CuteGirl -= 60; Dangerous -= 60; Cool -= 60; Nerd -= 60; Elegant -= 60; Sexy -= 60; Freak += 40; }
+	if (HasTrait(girl, "Broken Will"))					{ Cool -= 40; Nerd -= 40; Elegant -= 40; Sexy -= 40; Freak += 40; }
+	if (HasTrait(girl, "Dependant"))					{ CuteGirl += 5; Dangerous -= 20; Cool -= 5; Nerd += 5; Elegant -= 20; Sexy -= 20; Freak += 10; }
+
+	//Strong Mind
+	if (HasTrait(girl, "Merciless"))					{ CuteGirl -= 20; Dangerous += 20; Nerd -= 10; Elegant -= 5; Lolita -= 10; }
+	if (HasTrait(girl, "Fearless"))						{ Dangerous += 20; Cool += 15; Nerd -= 10; Elegant -= 10; Lolita -= 5; }
+	if (HasTrait(girl, "Iron Will"))					{ Dangerous += 10; Cool += 10; Nerd -= 5; Elegant -= 10; }
+	
+	//Messed up mind
+	if (HasTrait(girl, "Twisted"))						{ CuteGirl -= 40; Dangerous += 30; Elegant -= 30; Sexy -= 20; Freak += 40; }
+	if (HasTrait(girl, "Masochist"))					{ CuteGirl -= 10; Nerd -= 10; CuteGirl -= 15; Dangerous += 10; Elegant -= 10; Freak += 30; }
+	if (HasTrait(girl, "Sadistic"))						{ CuteGirl -= 20; Dangerous += 15; Nerd -= 10; Elegant -= 30; Sexy -= 10; Freak += 30; }
+	if (HasTrait(girl, "Tsundere"))						{ Dangerous += 5; Cool += 5; Nerd -= 5; Elegant -= 20; Freak += 10; }
+	if (HasTrait(girl, "Yandere"))						{ Dangerous += 5; Cool += 5; Nerd -= 5; Elegant -= 20; Freak += 10; }
+	
+	// Addictions
+	if (HasTrait(girl, "Shroud Addict"))				{ Dangerous += 5; Cool += 15; Nerd -= 10; Elegant -= 20; Sexy -= 20; Freak += 10; }
+	if (HasTrait(girl, "Fairy Dust Addict"))			{ Dangerous += 10; Cool += 20; Nerd -= 15; Elegant -= 25; Sexy -= 25; Freak += 15; }
+	if (HasTrait(girl, "Viras Blood Addict"))			{ Dangerous += 15; Cool += 25; Nerd -= 20; Elegant -= 30; Sexy -= 30; Freak += 20; }
+	if (HasTrait(girl, "Nymphomaniac"))					{ Sexy += 15; Freak += 20; Elegant -= 5; } //kind of an addiction!
+	//Following traits marked /**/ are newly added from CoreTraits.traitsx - delete this comment if these are ok and the numbers are reasonable
+	if (HasTrait(girl, "Smoker"))					/**/{ Elegant -= 5; Cool += 5; }
+	if (HasTrait(girl, "Alchoholic"))				/**/{ Elegant -= 10; Cool += 5; Dangerous += 5; }
+	if (HasTrait(girl, "Cum Addict"))				/**/{ Sexy += 20; Freak += 20; }
 
 
+	/****** Job Skills ******/
+	if (HasTrait(girl, "Assassin"))						{ Dangerous += 25; Cool += 15; Nerd -= 25; Freak += 10; }
+	//Following traits marked /**/ are newly added from CoreTraits.traitsx - delete this comment if these are ok and the numbers are reasonable
+	if (HasTrait(girl, "Actress"))					/**/{ Sexy += 10; Cool += 10; }
+	if (HasTrait(girl, "Porn Star"))				/**/{ Sexy += 40; Cool += 40; Elegant -= 40; }
+//	if (HasTrait(girl, "Chef"))						/**/{}								// Not visible to customer
+	if (HasTrait(girl, "Country Gal"))				/**/{ Sexy += 10; Cool -= 10; }		//simple country charm!
+	if (HasTrait(girl, "Director"))					/**/{ Elegant += 10; }				//Composure under pressure
+	if (HasTrait(girl, "Doctor"))					/**/{ Elegant += 5; Freak += 15; }	//rubber gloves
+	if (HasTrait(girl, "Farmers Daughter"))			/**/{ Sexy += 5; Cool -= 5; }		//simple country charm!
+	if (HasTrait(girl, "Former Official"))			/**/{ Elegant += 10; Freak += 10; } //F* the government!
+	if (HasTrait(girl, "Handyman"))					/**/{ Nerd += 10; }
+	if (HasTrait(girl, "Heroine"))					/**/{ Dangerous += 50; }
+	if (HasTrait(girl, "Homeless"))					/**/{ Dangerous += 10; }
+	if (HasTrait(girl, "Maid"))						/**/{ Sexy += 10; Freak += 20; }
+	if (HasTrait(girl, "Mixologist"))				/**/{ Nerd += 10; }
+	if (HasTrait(girl, "Priestess"))				/**/{ Freak += 30; Elegant += 10; Sexy -= 20; }
+	if (HasTrait(girl, "Singer"))					/**/{ Sexy += 5; Cool += 5; }
+//	if (HasTrait(girl, "Tone Deaf"))				/**/{}								// Not visible to customer
+	if (HasTrait(girl, "Teacher"))					/**/{ Elegant += 5; Nerd += 20; }
+//	if (HasTrait(girl, "Waitress"))					/**/{}								// Not visible to customer
+
+
+	/****** Species Traits ******/
+	if (HasTrait(girl, "Cat Girl"))						{ CuteGirl += 20; NonHuman += 60; Freak += 5; }
+	if (HasTrait(girl, "Construct"))					{ Dangerous += 10; NonHuman += 60; Freak += 20; }
+	if (HasTrait(girl, "Demon"))						{ Dangerous += 10; NonHuman += 60; Freak += 5; }
+	if (HasTrait(girl, "Different Colored Eyes"))		{ NonHuman += 5; Freak += 10; }
+	if (HasTrait(girl, "Futanari"))						{ CuteGirl -= 15; NonHuman += 10; Freak += 30; }
+	if (HasTrait(girl, "Half-Construct"))				{ Dangerous += 5; NonHuman += 20; Freak += 20; }
+	if (HasTrait(girl, "Incorporeal"))					{ NonHuman += 60; Freak += 40; }
+	if (HasTrait(girl, "Not Human"))					{ NonHuman += 60; Freak += 10; }
+	if (HasTrait(girl, "Shape Shifter"))				{ NonHuman += 35; Sexy += 20; NiceFigure += 40; Freak += 40; }
+	if (HasTrait(girl, "Strange Eyes"))					{ NonHuman += 10; Freak += 15; }
+	//Following traits marked /**/ are newly added from CoreTraits.traitsx - delete this comment if these are ok and the numbers are reasonable
+	if (HasTrait(girl, "Canine"))					/**/{ NonHuman += 60; CuteGirl += 10; Freak += 15; }
+	if (HasTrait(girl, "Cow Girl"))					/**/{ NonHuman += 60; CuteGirl -= 20; Freak += 25; BigBoobs += 20; SmallBoobs -= 20; }
+	if (HasTrait(girl, "Dryad"))					/**/{ NonHuman += 70; CuteGirl -= 10; Freak += 20; }
+	if (HasTrait(girl, "Egg Layer"))				/**/{ NonHuman += 60; Sexy -= 20; Freak += 40; }
+	if (HasTrait(girl, "Elf"))						/**/{ NonHuman += 30; Lolita += 10; Freak += 10; }
+	if (HasTrait(girl, "Equine"))					/**/{ NonHuman += 70; Freak += 40; }
+	if (HasTrait(girl, "Fallen Goddess"))			/**/{ NonHuman += 40; Elegant += 30; Freak -= 10; Sexy += 25; }
+	if (HasTrait(girl, "Furry"))					/**/{ NonHuman += 60; Sexy += 15; Freak += 30; }
+	if (HasTrait(girl, "Goddess"))					/**/{ NonHuman += 40; Elegant += 50; Freak -= 20; Sexy += 20; }
+	if (HasTrait(girl, "Half-Breed"))				/**/{ NonHuman += 20; Freak += 20; }
+	if (HasTrait(girl, "Playful Tail"))				/**/{ NonHuman += 10; Freak += 25; }
+	if (HasTrait(girl, "Prehensile Tail"))			/**/{ NonHuman += 20; Freak += 40; }
+	if (HasTrait(girl, "Reptilian"))				/**/{ NonHuman += 50; Freak += 20; Dangerous += 10; CuteGirl -= 20; }
+	if (HasTrait(girl, "Slitherer"))				/**/{ NonHuman += 60; Freak += 25; CuteGirl -= 30; }
+	if (HasTrait(girl, "Solar Powered"))			/**/{ NonHuman += 30; }
+	if (HasTrait(girl, "Succubus"))					/**/{ NonHuman += 60; Freak += 30; Sexy += 30; }
+	if (HasTrait(girl, "Wings"))					/**/{ NonHuman += 15; Freak += 10; }
+	
+
+	// Other Invisible Traits (which do not affect customer decision, but are here for completeness)
+#if 0
+	//Fertility
+	if (HasTrait(girl, "Sterile"))					{}
+	if (HasTrait(girl, "Fertile"))					{}
+	if (HasTrait(girl, "Broodmother"))				/**/{}
+	// Sexuality
+	if (HasTrait(girl, "Straight"))					{}
+	if (HasTrait(girl, "Bisexual"))					{}
+	if (HasTrait(girl, "Lesbian"))					{}
+	//STDs
+	if (HasTrait(girl, "AIDS"))						/**/{}
+	if (HasTrait(girl, "Chlamydia"))				/**/{}
+	if (HasTrait(girl, "Herpes"))					/**/{}
+	if (HasTrait(girl, "Syphilis"))					/**/{}
+	//Other
+	if (HasTrait(girl, "Your Daughter"))			/**/{}
+	
+	//Temporary Traits
+	//Have ignored these four temp traits for now - not yet familiar with how/when applied
+	if (HasTrait(girl, "Botox Treatment"))			/**/{}
+	if (HasTrait(girl, "Bruises"))					/**/{}
+	if (HasTrait(girl, "Demon Possessed"))			/**/{}
+	if (HasTrait(girl, "Out-Patient Surgery"))		/**/{}
+	if (HasTrait(girl, "Spirit Possessed"))			/**/{}
+
+#endif	// end unused traits
+
+#endif	// end sorted traits by Sin
 
 
 
@@ -4347,6 +4635,216 @@ bool cGirls::PossiblyLoseExistingTrait(sGirl* girl, string Trait, int Threshold,
 	return false;
 }
 
+// `J` When adding new traits, search for "J-Add-New-Traits"  :  found in >> cGirls.cpp > AdjustTraitGroup
+
+// `J` adding these to allow single step adjustment of linked traits
+bool cGirls::AdjustTraitGroupGagReflex(sGirl* girl, int adjustment, bool showmessage, bool Day0Night1)
+{
+	if (girl == 0 || adjustment == 0) return false;	// no girl or not changing anything so quit
+	int newGR = 0;
+	stringstream ss;
+	ss << girl->m_Realname;
+
+	// zzzzzz - These need better texts
+
+
+	// first we check what she has and remove it if it is changing
+	if (g_Girls.HasTrait(girl, "Strong Gag Reflex"))	// step -2
+	{
+		if (adjustment < 0) return false;	// can't go lower
+		newGR = -2 + adjustment;
+		g_Girls.RemoveTrait(girl, "Strong Gag Reflex", true, true);
+		ss << " has lost the trait 'Strong Gag Reflex' ";
+	}
+	else if (g_Girls.HasTrait(girl, "Gag Reflex"))		// step -1
+	{
+		newGR = -1 + adjustment;
+		g_Girls.RemoveTrait(girl, "Gag Reflex", true, true);
+		ss << " has lost the trait 'Gag Reflex' ";
+	}
+	else if (g_Girls.HasTrait(girl, "No Gag Reflex"))	// step +1
+	{
+		newGR = 1 + adjustment;
+		g_Girls.RemoveTrait(girl, "No Gag Reflex", true, true);
+		ss << " has lost the trait 'No Gag Reflex' ";
+	}
+	else if (g_Girls.HasTrait(girl, "Deepthroat"))		// step +2
+	{
+		if (adjustment > 0) return false;	// can't go higher
+		newGR = 2 + adjustment;
+		g_Girls.RemoveTrait(girl, "Deepthroat", true, true);
+		ss << " has lost the trait 'Deepthroat' ";
+	}
+	else /* No trait                              */	// step 0
+	{
+		newGR = adjustment;
+	}
+
+	// then we add the new trait if it has changed
+	/* */if (newGR <= -2)
+	{
+		newGR = -2;
+		g_Girls.AddTrait(girl, "Strong Gag Reflex");
+		ss << " has gained the trait 'Strong Gag Reflex'";
+	}
+	else if (newGR == -1)
+	{
+		g_Girls.AddTrait(girl, "Gag Reflex");
+		ss << " has gained the trait 'Gag Reflex'";
+	}
+	else if (newGR == 0)
+	{
+
+	}
+	else if (newGR == 1)
+	{
+		g_Girls.AddTrait(girl, "No Gag Reflex");
+		ss << " has gained the trait 'No Gag Reflex'";
+	}
+	else // if (newGR >= 2)
+	{
+		newGR = 2;
+		g_Girls.AddTrait(girl, "Deepthroat");
+		ss << " has gained the trait 'Deepthroat'";
+	}
+
+	// only send a message if called for
+	if (showmessage)	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+	return true;
+}
+
+bool cGirls::AdjustTraitGroupBreastSize(sGirl* girl, int adjustment, bool showmessage, bool Day0Night1)
+{
+	if (girl == 0 || adjustment == 0) return false;	// no girl or not changing anything so quit
+	int newGR = 0;
+	stringstream ss;
+	ss << girl->m_Realname;
+
+	// zzzzzz - These need better texts
+
+	if (g_Girls.HasTrait(girl, "Flat Chest"))						// step -3
+	{
+		if (adjustment < 0) return false;	// can't go lower
+		newGR = -3 + adjustment;
+		g_Girls.RemoveTrait(girl, "Flat Chest", true, true);
+		ss << " breast size has changed from 'Flat Chest' ";			
+	}
+	else if (g_Girls.HasTrait(girl, "Petite Breasts"))				// step -2
+	{
+		newGR = -2 + adjustment;
+		g_Girls.RemoveTrait(girl, "Petite Breasts", true, true);
+		ss << " breast size has changed from 'Petite Breasts' ";			
+	}
+	else if (g_Girls.HasTrait(girl, "Small Boobs"))					// step -1
+	{
+		newGR = -1 + adjustment;
+		g_Girls.RemoveTrait(girl, "Small Boobs", true, true);
+		ss << " breast size has changed from 'Small Boobs' ";			
+	}
+	else if (g_Girls.HasTrait(girl, "Busty Boobs"))					// step +1
+	{
+		newGR = 1 + adjustment;
+		g_Girls.RemoveTrait(girl, "Busty Boobs", true, true);
+		ss << " breast size has changed from 'Busty Boobs' ";			
+	}
+	else if (g_Girls.HasTrait(girl, "Big Boobs"))					// step +2
+	{
+		newGR = 2 + adjustment;
+		g_Girls.RemoveTrait(girl, "Big Boobs", true, true);	
+		ss << " breast size has changed from 'Big Boobs' ";			
+	}
+	else if (g_Girls.HasTrait(girl, "Giant Juggs"))					// step +3
+	{
+		newGR = 3 + adjustment;
+		g_Girls.RemoveTrait(girl, "Giant Juggs", true, true);
+		ss << " breast size has changed from 'Giant Juggs' ";			
+	}
+	else if (g_Girls.HasTrait(girl, "Massive Melons"))				// step +4
+	{
+		newGR = 4 + adjustment;
+		g_Girls.RemoveTrait(girl, "Massive Melons", true, true);
+		ss << " breast size has changed from 'Massive Melons' ";
+	}
+	else if (g_Girls.HasTrait(girl, "Abnormally Large Boobs"))		// step +5
+	{
+		newGR = 5 + adjustment;
+		g_Girls.RemoveTrait(girl, "Abnormally Large Boobs", true, true);
+		ss << " breast size has changed from 'Abnormally Large Boobs' ";
+	}
+	else if (g_Girls.HasTrait(girl, "Titanic Tits"))				// step +6
+	{
+		if (adjustment > 0) return false;	// can't go higher
+		newGR = 6 + adjustment;
+		g_Girls.RemoveTrait(girl, "Titanic Tits", true, true);
+		ss << " breast size has changed from 'Titanic Tits' ";
+	}
+	else /* No trait                                          */	// step 0
+	{
+		newGR = adjustment;
+		ss << " breast size has changed from 'Average' ";
+
+	}
+
+	// then we add the new trait if it has changed
+	if (newGR <= -3)
+	{
+		newGR = -3;
+		g_Girls.AddTrait(girl, "Flat Chest");
+		ss << " to 'Flat Chest'";
+	}
+	else if (newGR == -2)
+	{
+		g_Girls.AddTrait(girl, "Petite Breasts");
+		ss << " to 'Petite Breasts'";
+	}
+	else if (newGR == -1)
+	{
+		g_Girls.AddTrait(girl, "Small Boobs");
+		ss << " to 'Small Boobs'";
+	}
+	else if (newGR == 0)
+	{
+		g_Girls.AddTrait(girl, "Average");
+		ss << " to 'Average'";
+	}
+	else if (newGR == +1)
+	{
+		g_Girls.AddTrait(girl, "Busty Boobs");
+		ss << " to 'Busty Boobs'";
+	}
+	else if (newGR == +2)
+	{
+		g_Girls.AddTrait(girl, "Big Boobs");
+		ss << " to 'Big Boobs'";
+	}
+	else if (newGR == +3)
+	{
+		g_Girls.AddTrait(girl, "Giant Juggs");
+		ss << " to 'Giant Juggs'";
+	}
+	else if (newGR == +4)
+	{
+		g_Girls.AddTrait(girl, "Massive Melons");
+		ss << " to 'Massive Melons'";
+	}
+	else if (newGR == +5)
+	{
+		g_Girls.AddTrait(girl, "Abnormally Large Boobs");
+		ss << " to 'Abnormally Large Boobs'";
+	}
+	else if (newGR >= +6)
+	{
+		newGR = 6;
+		g_Girls.AddTrait(girl, "Titanic Tits");
+		ss << " to 'Titanic Tits'";
+	}
+
+
+	// only send a message if called for
+	if (showmessage)	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+	return true;
+}
+
 void cGirls::ApplyTraits(sGirl* girl, sTrait* trait, bool rememberflag)
 {
 	// `J` When adding new traits, search for "J-Add-New-Traits"  :  found in > ApplyTraits
@@ -4853,9 +5351,14 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait, bool rememberflag)
 			UpdateSkill(girl, SKILL_NORMALSEX, 10);
 			UpdateEnjoyment(girl, ACTION_SEX, 10, true);
  		}
-		else if(strcmp(tr->m_Name, "Gag Reflex") == 0)
+		//SIN: Adjusted for missing/new traits
+		else if (strcmp(tr->m_Name, "Strong Gag Reflex") == 0)
 		{
 			UpdateSkill(girl, SKILL_ORALSEX, -50);
+		}
+		else if (strcmp(tr->m_Name, "Gag Reflex") == 0)
+		{
+			UpdateSkill(girl, SKILL_ORALSEX, -30);
 		}
 		else if (strcmp(tr->m_Name, "No Gag Reflex") == 0)
 		{
@@ -4864,6 +5367,14 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait, bool rememberflag)
 		else if (strcmp(tr->m_Name, "Deep Throat") == 0)
 		{
 			UpdateSkill(girl, SKILL_ORALSEX, 50);
+		}
+		else if (strcmp(tr->m_Name, "Cum Addict") == 0)
+		{
+			UpdateStat(girl, SKILL_ORALSEX, 30);
+			UpdateSkill(girl, SKILL_GROUP, 10);
+			UpdateStat(girl, STAT_OBEDIENCE, 20);
+			UpdateStat(girl, STAT_SPIRIT, -10);
+			UpdateEnjoyment(girl, ACTION_SEX, 20, true);
 		}
 
 		if(doOnce)
@@ -5334,9 +5845,15 @@ void cGirls::UnapplyTraits(sGirl* girl, sTrait* trait)
  			UpdateStat(girl,STAT_LIBIDO,-20);
 			UpdateSkill(girl, SKILL_NORMALSEX, -10);
  		}
-		else if(strcmp(tr->m_Name, "Gag Reflex") == 0)
+
+		//SIN: Adjusted for missing/new traits
+		else if (strcmp(tr->m_Name, "Strong Gag Reflex") == 0)
 		{
 			UpdateSkill(girl, SKILL_ORALSEX, 50);
+		}
+		else if (strcmp(tr->m_Name, "Gag Reflex") == 0)
+		{
+			UpdateSkill(girl, SKILL_ORALSEX, 30);
 		}
 		else if (strcmp(tr->m_Name, "No Gag Reflex") == 0)
 		{
@@ -5345,6 +5862,14 @@ void cGirls::UnapplyTraits(sGirl* girl, sTrait* trait)
 		else if (strcmp(tr->m_Name, "Deep Throat") == 0)
 		{
 			UpdateSkill(girl, SKILL_ORALSEX, -50);
+		}
+		else if (strcmp(tr->m_Name, "Cum Addict") == 0)
+		{
+			UpdateStat(girl, SKILL_ORALSEX, -30);
+			UpdateSkill(girl, SKILL_GROUP, -10);
+			UpdateStat(girl, STAT_OBEDIENCE, -20);
+			UpdateStat(girl, STAT_SPIRIT, 10);
+			UpdateEnjoyment(girl, ACTION_SEX, -20, true);
 		}
 
 		if(doOnce)
@@ -6491,61 +7016,174 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 	}
 
 	message += girl->m_Realname;
+	int check = GetSkill(girl, SexType);
 	switch (SexType)
 	{
 	case SKILL_ANAL:
-		/* */if (GetSkill(girl, SexType) < 20)	message += gettext(" found it difficult to get it in but painfully allowed the customer to fuck her in her tight ass.");
-		else if (GetSkill(girl, SexType) < 40)	message += gettext(" had to relax somewhat but had the customer fucking her in her ass.");
-		else if (GetSkill(girl, SexType) < 60)	message += gettext(" found it easier going with the customer fucking her in her ass.");
-		else if (GetSkill(girl, SexType) < 80)	message += gettext(" had the customer's cock go in easy. She found his cock in her ass a very pleasurable experience.");
-		else /*                             */	message += gettext(" came hard as the customer fucked her ass.");
-		break;
+	{
+		//SIN: Trying to use some of the new traits.
+		if (HasTrait(girl, "Great Arse") || HasTrait(girl, "Deluxe Derriere")) message += "'s behind is a thing of beauty. She ";
+		else if (HasTrait(girl, "Phat Booty") || HasTrait(girl, "Plump Tush")) message += "'s big round booty was up in the air. She ";
+		else if (HasTrait(girl, "Tight Butt")) message += " has a tight, round firm little butt. She ";
+		if (check < 20)
+		{
+			if (g_Dice.percent(30)) message += gettext(" found it difficult to get it in but painfully allowed the customer to fuck her in her tight ass.");
+			else /*              */	message += gettext(" bit the pillow to muffle her cries as the customer managed to squeeze his cock into her ass.");
+		}
+		else if (check < 40)
+		{
+			if (g_Dice.percent(30)) message += gettext(" had to relax somewhat but had the customer fucking her in her ass.");
+			else /*              */	message += gettext(" struggled to relax, but was okay with the customer gently screwing her ass.");
+		}
+		else if (check < 60)
+		{
+			if (g_Dice.percent(30)) message += gettext(" found it easier going with the customer fucking her in her ass.");
+			else /*              */	message += gettext(" was comfortable with the customer fucking her in her ass.");
+		}
+		else if (check < 80)
+		{
+			/*                   */	message += gettext(" had the customer's cock go in easy. She found his cock in her ass a very pleasurable experience.");
+		}
+		else
+		{
+			if (g_Dice.percent(30)) message += gettext(" came hard as the customer fucked her ass.");
+			else /*              */	message += gettext(" came hard as the customer pounded her ass.");
+		}
+	}	break;
 
 	case SKILL_BDSM:
-		/* */if (GetSkill(girl, SexType) < 40)	message += gettext(" was frightened by being tied up and having pain inflicted on her.");
-		else if (GetSkill(girl, SexType) < 60)	message += gettext(" was a little turned on by being tied up and having the customer hurting her.");
-		else if (GetSkill(girl, SexType) < 80)	message += gettext(" was highly aroused by the pain and bondage, even more so when fucking at the same time.");
-		else /*                             */	message += GetRandomBDSMString();
-		break;
+	{
+		/* */if (check < 40) /*  */	message += gettext(" was frightened by being tied up and having pain inflicted on her.");
+		else if (check < 60) /*  */	message += gettext(" was a little turned on by being tied up and having the customer hurting her.");
+		else if (check < 80) /*  */	message += gettext(" was highly aroused by the pain and bondage, even more so when fucking at the same time.");
+		else /*                  */	message += GetRandomBDSMString();
+		//SIN: added traits
+		if (HasTrait(girl, "Masochist"))
+		{
+			if (g_Dice.percent(50)) message += " She kept encouraging the customer to get more and more extreme on her.";
+			else /*              */	message += " Despite everything, she got off on the pain and degradation.";
+		}
+		if (HasTrait(girl, "Sadist"))
+		{
+			if (g_Dice.percent(50)) message += " She prefers to be in charge, but the customer wouldn't have it.";
+			else /*              */	message += " She took charge for a while, which the customer enjoyed.";
+		}
+	}	break;
 
 	case SKILL_NORMALSEX:
-		/* */if (GetSkill(girl, SexType) < 20)	message += gettext(" didn't do much as she allowed the customer to fuck her pussy.");
-		else if (GetSkill(girl, SexType) < 40)	message += gettext(" fucked the customer back while their cock was embedded in her cunt.");
-		else if (GetSkill(girl, SexType) < 60)	message += gettext(" liked the feeling of having a cock buried in her cunt and fucked back as much as she got.");
-		else if (GetSkill(girl, SexType) < 80)	message += gettext(" fucked like a wild animal, cumming several times and ending with her and the customer covered in sweat.");
-		else /*                             */	message += GetRandomSexString();
-		break;
+	{
+		if (check < 20)
+		{
+			if (g_Dice.percent(30)) message += gettext(" didn't do much as she allowed the customer to fuck her pussy.");
+			else /*              */	message += gettext(" just lay back and let the customer fuck her.");
+		}
+		else if (check < 40)
+		{
+			if (g_Dice.percent(30)) message += gettext(" fucked the customer back while their cock was embedded in her cunt.");
+			else /*              */	message += gettext(" made the right noises and held the customer as he fucked her.");
+		}
+		else if (check < 60)
+		{
+			if (g_Dice.percent(30)) message += gettext(" liked the feeling of having a cock buried in her cunt and fucked back as much as she got.");
+			else /*              */	message += gettext(" loved having a cock buried in her cunt and fucked back as much as she got.");
+		}
+		else if (check < 80) /*  */	message += gettext(" fucked like a wild animal, cumming several times and ending with her and the customer covered in sweat.");
+		else /*                  */	message += GetRandomSexString();
+	}	break;
 
 	case SKILL_ORALSEX:
-		/* */if (GetSkill(girl, SexType) < 20)	message += " awkwardly licked the customer's cock, and recoiled when he came.";
-		else if (GetSkill(girl, SexType) < 60)	message += " licked and sucked the customer's cock.";
-		else if (GetSkill(girl, SexType) < 80)	message += " loved sucking the customer's cock, and let him cum all over her.";
-		else /*                             */	message += " wouldn't stop licking and sucking the customer's cock until she had swallowed his entire load.";
-		break;
+	{
+		if (HasTrait(girl, "Cum Addict")) message += " is clearly aroused when the customer asks for oral. She";
+		if (check < 20)
+		{
+			if (HasTrait(girl, "Cum Addict"))	message += " and greedily sucked down every bit of cum when he finally came.";
+			else if (g_Dice.percent(40)) /**/	message += " awkwardly licked the customer's cock, and recoiled when he came.";
+			else /*                        */	message += " awkwardly sucked the customer's cock, and recoiled when he finally came.";
+		}
+		else if (check < 60)
+		{
+			if (g_Dice.percent(40))	message += " licked and sucked the customer's cock.";
+			else /*              */	message += " licked and sucked the customer's cock with some skill.";
+		}
+		else if (check < 80) /*  */	message += " loved sucking the customer's cock, and let him cum all over her.";
+		else /*                  */	message += " wouldn't stop licking and sucking the customer's cock until she had swallowed his entire load.";
+	}	break;
 
 	case SKILL_TITTYSEX:
-		/* */if (GetSkill(girl, SexType) < 20)	message += " awkwardly let the customer's cock fuck her tits, and recoiled when he came.";
-		else if (GetSkill(girl, SexType) < 60)	message += " used her breasts on the customer's cock.";
-		else if (GetSkill(girl, SexType) < 80)	message += " loved using her breasts on the customer's cock, and let him cum all over her.";
-		else /*                             */	message += " wouldn't stop using her breasts to massage the customer's cock until she had made him spill his entire load.";
-		break;
+	{
+		if (check < 20)
+		{
+			if (g_Dice.percent(40))	message += " awkwardly let the customer's cock fuck her tits, and recoiled when he came.";
+			else /*              */	message += " awkwardly let the customer fuck her tits, and recoiled when he came.";
+		}
+		else if (check < 60) /*  */	message += " used her breasts on the customer's cock.";
+		else if (check < 80)
+		{
+			if (g_Dice.percent(40))	message += " loved using her breasts on the customer's cock, and let him cum all over her.";
+			else /*              */	message += " loved using her breasts on the customer's cock, and made him cum all over her.";
+		}
+		else
+		{
+			if (g_Dice.percent(40))	message += " wouldn't stop using her breasts to massage the customer's cock until she had made him spill his entire load.";
+			else /*              */	message += " expertly used her breasts to massage the customer's cock until his entire load exploded over her.";
+		}
+	}	break;
 
 	case SKILL_HANDJOB:
-		/* */if (GetSkill(girl, SexType) < 20)	message += " awkwardly worked the customer's cock with her hand, and recoiled when he came.";
-		else if (GetSkill(girl, SexType) < 60)	message += " used her hand on the customer's cock.";
-		else if (GetSkill(girl, SexType) < 80)	message += " loved using her hand on the customer's cock, and let him cum all over her.";
-		else /*                             */	message += " wouldn't stop using her hand to massage the customer's cock until she had made him spill his entire load.";
-		break;
+	{
+		if (check < 20)
+		{
+			if (g_Dice.percent(40))	message += " awkwardly worked the customer's cock with her hand, and recoiled when he came.";
+			else /*              */	message += " clumsily pulled the customer's cock around with her hand until, in the end, he gave up and finished himself off.";
+		}
+		else if (check < 60) /*  */	message += " used her hand on the customer's cock.";
+		else if (check < 80)
+		{
+			if (g_Dice.percent(40))	message += " loved using her hand on the customer's cock, and let him cum all over her.";
+			else /*              */	message += " enjoyed using her hand on the customer's cock to make him cum.";
+		}
+		else
+		{
+			if (g_Dice.percent(40))	message += " wouldn't stop using her hand to massage the customer's cock until she had made him spill his entire load.";
+			else /*              */	message += " wouldn't stop using her hand on the customer's cock until she was licking hot cum off her fingers.";
+		}
+	}	break;
 
 	case SKILL_FOOTJOB:
-		/* */if (GetSkill(girl, SexType) < 20)	message += " awkwardly worked the customer's cock with her feet, and recoiled when he came.";
-		else if (GetSkill(girl, SexType) < 60)	message += " used her feet on the customer's cock.";
-		else if (GetSkill(girl, SexType) < 80)	message += " loved using her feet on the customer's cock, and let him cum all over her.";
-		else /*                             */	message += " wouldn't stop using her feet to massage the customer's cock until she had made him spill his entire load.";
-		break;
-
+	{
+		if (check < 20)
+		{
+			if (g_Dice.percent(40))	message += " awkwardly worked the customer's cock with her feet, and recoiled when he came.";
+			else /*              */	message += " awkwardly squashed the customer's cock around with her feet, recoiling when he finally came.";
+		}
+		else if (check < 60) /*  */	message += " used her feet on the customer's cock.";
+		else if (check < 80) /*  */	message += " loved using her feet on the customer's cock, and let him cum all over her.";
+		else /*                  */	message += " wouldn't stop using her feet to massage the customer's cock until she had made him spill his entire load.";
+		
+		if (g_Dice.percent(20) && (HasTrait(girl, "Alcoholic") || HasTrait(girl, "Social Drinker")))
+		{
+			message += "\n\n" + girl->m_Realname + " had a few drinks, and ";
+			int roll = g_Dice % 3;
+			switch (roll)
+			{
+			case 0:
+				message += "was a little rough with her feet, causing the customer some pain.";
+				customer->m_Stats[STAT_HAPPINESS] -= 5;
+				break;
+			case 1:
+				message += "was a little more charming than usual.";
+				customer->m_Stats[STAT_HAPPINESS] += 5;
+				break;
+			case 2:
+				message += "accidentally stepped on a sensitive part of him.";
+				customer->m_Stats[STAT_HAPPINESS] -= 10;
+				break;
+			}
+		}
+	}	break;
 
 	case SKILL_BEASTIALITY:
+	{
 		if (g_Brothels.GetNumBeasts() == 0)
 		{
 			message += gettext(" found that there were no beasts available, so some fake ones were used. This disapointed the customer somewhat.");
@@ -6570,39 +7208,62 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				g_Brothels.add_to_beasts(-1);
 			}
 
-			/* */if (GetSkill(girl, SexType) < 20)	message += " was disgusted by the idea but still allowed the customer to watch as she was fucked by some animals.";
-			else if (GetSkill(girl, SexType) < 40)	message += " was a only little put off by the idea but still allowed the customer to watch and help as she was fucked by animals.";
-			else if (GetSkill(girl, SexType) < 60)	message += " took a large animal's cock deep inside her and enjoyed being fucked by it, her cries of pleasure being muffled by the customer's cock in her mouth.";
-			else if (GetSkill(girl, SexType) < 80)	message += " fucked some exotic beasts covered with massive cocks and tentacles, she came over and over alongside the customer.";
-			else /*                             */	message += GetRandomBeastString();
+			/* */if (check < 20)	message += " was disgusted by the idea but still allowed the customer to watch as she was fucked by some animals.";
+			else if (check < 40)	message += " was a only little put off by the idea but still allowed the customer to watch and help as she was fucked by animals.";
+			else if (check < 60)	message += " took a large animal's cock deep inside her and enjoyed being fucked by it, her cries of pleasure being muffled by the customer's cock in her mouth.";
+			else if (check < 80)	message += " fucked some exotic beasts covered with massive cocks and tentacles, she came over and over alongside the customer.";
+			else /*           */	message += GetRandomBeastString();
 		}
-		break;
+	}	break;
 
 	case SKILL_GROUP:
-		/* */if (GetSkill(girl, SexType) < 20)	message += gettext(" struggled to service everyone in the group that came to fuck her.");
-		else if (GetSkill(girl, SexType) < 40)	message += gettext(" managed to keep the group of customers fucking her satisfied.");
-		else if (GetSkill(girl, SexType) < 60)	message += gettext(" serviced all of the group of customers that fucked her.");
-		else if (GetSkill(girl, SexType) < 80)	message += gettext(" fucked and came many times with everyone in the group of customers.");
+	{
+		/* */if (check < 20)	message += gettext(" struggled to service everyone in the group that came to fuck her.");
+		else if (check < 40)	message += gettext(" managed to keep the group of customers fucking her satisfied.");
+		else if (check < 60)	message += gettext(" serviced all of the group of customers that fucked her.");
+		else if (check < 80)	message += gettext(" fucked and came many times with everyone in the group of customers.");
 		else /*                             */	message += GetRandomGroupString();
-		break;
+	}	break;
 
 	case SKILL_LESBIAN:
-		/* */if (GetSkill(girl, SexType) < 20)	message += gettext(" licked her female customer's cunt until she came. She didn't want any herself.");
-		else if (GetSkill(girl, SexType) < 40)	message += gettext(" was aroused as she made her female customer cum.");
-		else if (GetSkill(girl, SexType) < 60)	message += gettext(" fucked and was fucked by her female customer.");
-		else if (GetSkill(girl, SexType) < 80)	message += gettext(" and her female customer's cumming could be heard thoughout the building.");
+	{
+		/* */if (check < 20)	message += gettext(" licked her female customer's cunt until she came. She didn't want any herself.");
+		else if (check < 40)	message += gettext(" was aroused as she made her female customer cum.");
+		else if (check < 60)	message += gettext(" fucked and was fucked by her female customer.");
+		else if (check < 80)	message += gettext(" and her female customer's cumming could be heard thoughout the building.");
 		else /*                             */	message += GetRandomLesString();
-		break;
+	}	break;
 
 	case SKILL_STRIP:
 	default:
-		/* */if (GetSkill(girl, SexType) < 20)	message += gettext(" shyly took her clothes off in front of the customer.");
-		else if (GetSkill(girl, SexType) < 40)	message += gettext(" coyly took her clothes off in front of the customer.");
-		else if (GetSkill(girl, SexType) < 60)	message += gettext(" hotly took her clothes off in front of the customer.");
-		else if (GetSkill(girl, SexType) < 80)	message += gettext(" proudly took her clothes off in front of the customer.");
-		else /*                             */	message += gettext(" joyously took her clothes off in front of the customer.");
-		break;
-	}
+	{
+		if (check < 20)
+		{
+			if (g_Dice.percent(30)) message += gettext(" shyly took her clothes off in front of the customer.");
+			else /*              */	message += gettext(" stared at the floor as she stood there awkwardly taking off her clothes in front of the customer. She was embarrassed and kept covering herself with her arms and hands.");
+		}
+		else if (check < 40)
+		{
+			if (g_Dice.percent(30)) message += gettext(" coyly took her clothes off in front of the customer.");
+			else /*              */	message += gettext(" made occasional eye contact as she coyly took her clothes off in front of the customer, moving around a little so the customer could see better.");
+		}
+		else if (check < 60)
+		{
+			if (g_Dice.percent(30)) message += gettext(" hotly took her clothes off in front of the customer.");
+			else /*              */	message += gettext(" moved around and stripped off her clothes in front of the customer.");
+		}
+		else if (check < 80)
+		{
+			if (g_Dice.percent(30)) message += gettext(" proudly took her clothes off in front of the customer.");
+			else /*              */	message += gettext(" sexily danced around the customer stripping off her clothes.");
+		}
+		else
+		{
+			if (g_Dice.percent(30)) message += gettext(" joyously took her clothes off in front of the customer.");
+			else /*              */	message += gettext(" sensuously prowled around the customer stripping off her clothes, while caressing herself, always making sure the customer had the best possible view.");
+		}
+	}	break;
+	}	//end switch
 
 	// WD:	customer HAPPINESS changes complete now cap the stat to 100
 	customer->m_Stats[STAT_HAPPINESS] = min(100, (int)customer->m_Stats[STAT_HAPPINESS]);
@@ -6622,11 +7283,11 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 	// if the girl likes sex and the sex type then increase her happiness otherwise decrease it
 	if (GetStat(girl, STAT_LIBIDO) > 5)
 	{
-		/* */if (GetSkill(girl, SexType) < 20)	message += gettext("\nThough she had a tough time with it, she was horny and still managed to gain some little enjoyment.");
-		else if (GetSkill(girl, SexType) < 40)	message += gettext("\nShe considered it a learning experience and enjoyed it a bit.");
-		else if (GetSkill(girl, SexType) < 60)	message += gettext("\nShe enjoyed it a lot and wanted more.");
-		else if (GetSkill(girl, SexType) < 80)	message += gettext("\nIt was nothing new for her, but she really does appreciate such work.");
-		else /*                             */	message += gettext("\nIt seems that she lives for this sort of thing.");
+		/* */if (check < 20)	message += gettext("\nThough she had a tough time with it, she was horny and still managed to gain some little enjoyment.");
+		else if (check < 40)	message += gettext("\nShe considered it a learning experience and enjoyed it a bit.");
+		else if (check < 60)	message += gettext("\nShe enjoyed it a lot and wanted more.");
+		else if (check < 80)	message += gettext("\nIt was nothing new for her, but she really does appreciate such work.");
+		else /*           */	message += gettext("\nIt seems that she lives for this sort of thing.");
 		UpdateStat(girl, STAT_HAPPINESS, GetStat(girl, STAT_LIBIDO) / 5);
 	}
 	else
@@ -6639,9 +7300,11 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 	switch (SexType)
 	{
 	case SKILL_ANAL:
-		if (GetSkill(girl, SexType) <= 20)	// if unexperienced then will get hurt
+	{
+		if (check <= 20)	// if unexperienced then will get hurt
 		{
-			message += gettext("\nHer inexperience hurt her a little.");
+			if (g_Dice.percent(30)) message += gettext("\nHer inexperience hurt her a little.");
+			else /*              */	message += gettext("\nHer inexperience hurt her. It's now quite painful to sit down.");
 			UpdateStat(girl, STAT_HAPPINESS, -3);
 			UpdateStat(girl, STAT_CONFIDENCE, -1);
 			UpdateStat(girl, STAT_SPIRIT, -3);
@@ -6650,28 +7313,32 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		UpdateTempStat(girl, STAT_LIBIDO, -10);
 		UpdateStat(girl, STAT_SPIRIT, -1);
 		STDchance += 30;
-		break;
+	}	break;
 
 	case SKILL_BDSM:
-		if (GetSkill(girl, SexType) <= 30)	// if unexperienced then will get hurt
+	{
+		if (check <= 30)	// if unexperienced then will get hurt
 		{
-			message += gettext("\nHer inexperience hurt her a little.");
+			if (g_Dice.percent(30)) message += gettext("\nHer inexperience hurt her a little.");
+			else /*              */	message += gettext("\nHer inexperience hurt her a little. She's not used to haveing pain in those places.");
 			UpdateStat(girl, STAT_HAPPINESS, -2);
 			UpdateStat(girl, STAT_SPIRIT, -3);
 			UpdateStat(girl, STAT_CONFIDENCE, -1);
 			UpdateStat(girl, STAT_HEALTH, -3);
 		}
 		contraception = girl->calc_pregnancy(customer, false, 0.75);
-		STDchance += (contraception ?2:20);
+		STDchance += (contraception ? 2 : 20);
 
 		UpdateTempStat(girl, STAT_LIBIDO, -5);
 		UpdateStat(girl, STAT_SPIRIT, -1);
-		break;
+	}	break;
 
 	case SKILL_NORMALSEX:
-		if (GetSkill(girl, SexType) < 15)
+	{
+		if (check < 15)
 		{
-			message += gettext("\nHer inexperience hurt her a little.");
+			if (g_Dice.percent(30)) message += gettext("\nHer inexperience hurt her a little.");
+			else /*              */	message += gettext("\nShe's inexperienced and got rubbed pretty raw.");
 			UpdateStat(girl, STAT_HAPPINESS, -2);
 			UpdateStat(girl, STAT_SPIRIT, -3);
 			UpdateStat(girl, STAT_CONFIDENCE, -1);
@@ -6679,26 +7346,52 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		}
 		// if they're both happy afterward, it's good sex which modifies the chance of pregnancy
 		good = (customer->happiness() >= 60 && girl->happiness() >= 60);
-		contraception = girl->calc_pregnancy(customer, good);
-		STDchance += (contraception ? 4 : 40);
+		//SIN: added traits
+		if (g_Dice.percent(GetStat(girl, STAT_LIBIDO)) && girl->m_UseAntiPreg && HasTrait(girl, "Cum Addict"))
+		{
+			message += "\n\nShe got over-excited by her desire for cum, and failed to use her anti-preg. ";
+			girl->m_UseAntiPreg = false;	// turn off anti
+			contraception = girl->calc_pregnancy(customer, good);
+			STDchance += (contraception ? 4 : 40);
+			if (contraception) message += "Luckily she didn't get pregnant.\n";
+			else message += "Sure enough, she got pregnant.";
+			girl->m_UseAntiPreg = true;		// return to normal (as checked in initial if condition)
+		}
+		else
+		{
+			contraception = girl->calc_pregnancy(customer, good);
+			STDchance += (contraception ? 4 : 40);
+		}
 		UpdateTempStat(girl, STAT_LIBIDO, -15);
-		break;
+	}	break;
 
 	case SKILL_ORALSEX:
+	{
 		if (GetSkill(girl, SexType) <= 20)	// if unexperienced then will get hurt
 		{
-			message += "\nHer inexperience caused her some embarrassment.";	// Changed... being new at oral doesn't hurt, but can be embarrasing. --PP
-			UpdateStat(girl, STAT_HAPPINESS, -2);
-			UpdateStat(girl, STAT_SPIRIT, -3);
-			UpdateStat(girl, STAT_CONFIDENCE, -1);
-			//	UpdateStat(girl, STAT_HEALTH, -3);				// Removed... oral doesn't hurt unless you get herpes or something. --PP
+			if (HasTrait(girl, "Gag Reflex") || HasTrait(girl, "Strong Gag Reflex"))
+			{
+				message += "\nHer throat is raw from gagging on the customer's cock. She was nearly sick.";
+				UpdateStat(girl, STAT_HAPPINESS, -2);
+				UpdateStat(girl, STAT_SPIRIT, -3);
+				UpdateStat(girl, STAT_CONFIDENCE, -1);
+				UpdateStat(girl, STAT_HEALTH, -3);
+			}
+			else
+			{
+				message += "\nHer inexperience caused her some embarrassment.";	// Changed... being new at oral doesn't hurt, but can be embarrasing. --PP
+				UpdateStat(girl, STAT_HAPPINESS, -2);
+				UpdateStat(girl, STAT_SPIRIT, -3);
+				UpdateStat(girl, STAT_CONFIDENCE, -1);
+			}
 		}
 		STDchance += 10;
 		UpdateTempStat(girl, STAT_LIBIDO, -2);
-		break;
+	}	break;
 
 	case SKILL_TITTYSEX:
-		if (GetSkill(girl, SexType) <= 20)	// if unexperienced then will get hurt
+	{
+		if (check <= 20)	// if unexperienced then will get hurt
 		{
 			message += "\nHer inexperience caused her some embarrassment.";	// Changed... being new at oral doesn't hurt, but can be embarrasing. --PP
 			UpdateStat(girl, STAT_HAPPINESS, -2);
@@ -6707,10 +7400,11 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		}
 		STDchance += 1;
 		UpdateTempStat(girl, STAT_LIBIDO, -2);
-		break;
+	}	break;
 
 	case SKILL_HANDJOB:
-		if (GetSkill(girl, SexType) <= 20)	// if unexperienced then will get hurt
+	{
+		if (check <= 20)	// if unexperienced then will get hurt
 		{
 			message += "\nHer inexperience caused her some embarrassment.";	// Changed... being new at handjob doesn't hurt, but can be embarrasing. --PP
 			UpdateStat(girl, STAT_HAPPINESS, -2);
@@ -6719,10 +7413,11 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		}
 		STDchance += 1;
 		UpdateTempStat(girl, STAT_LIBIDO, -1);
-		break;
+	}	break;
 
 	case SKILL_FOOTJOB:
-		if (GetSkill(girl, SexType) <= 20)	// if unexperienced then will get hurt
+	{
+		if (check <= 20)	// if unexperienced then will get hurt
 		{
 			message += "\nHer inexperience caused her some embarrassment.";	// Changed... being new at footjob doesn't hurt, but can be embarrasing. --PP
 			UpdateStat(girl, STAT_HAPPINESS, -2);
@@ -6731,10 +7426,11 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		}
 		STDchance += 1;
 		UpdateTempStat(girl, STAT_LIBIDO, -1);
-		break;
+	}	break;
 
 	case SKILL_BEASTIALITY:
-		if (GetSkill(girl, SexType) <= 30)	// if unexperienced then will get hurt
+	{
+		if (check <= 30)	// if unexperienced then will get hurt
 		{
 			message += gettext("\nHer inexperience hurt her a little.");
 			UpdateStat(girl, STAT_HAPPINESS, -2);
@@ -6752,10 +7448,11 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			STDchance += (contraception ? 2 : 20);
 		}
 		UpdateTempStat(girl, STAT_LIBIDO, -10);
-		break;
+	}	break;
 
 	case SKILL_GROUP:
-		if (GetSkill(girl, SexType) <= 30)	// if unexperienced then will get hurt
+	{
+		if (check <= 30)	// if unexperienced then will get hurt
 		{
 			message += gettext("\nHer inexperience hurt her a little.");
 			UpdateStat(girl, STAT_HAPPINESS, -2);
@@ -6765,20 +7462,37 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		}
 		// if they're both happy afterward, it's good sex which modifies the chance of pregnancy
 		good = (customer->happiness() >= 60 && girl->happiness() >= 60);
-		// adding a 50% bonus to the chance of pregnancy since there's more than one partner involved
-		contraception = girl->calc_pregnancy(customer, good, 1.5);
-		STDchance += ((4 + customer->m_Amount) * (contraception ? 1 : 10));
+
+		//SIN: added traits
+		if (g_Dice.percent(GetStat(girl, STAT_LIBIDO)) && girl->m_UseAntiPreg && HasTrait(girl, "Cum Addict"))
+		{
+			message += "\n\nShe got over-excited by her desire for cum, and failed to use her anti-preg. ";
+			girl->m_UseAntiPreg = false;	// turn off anti
+			contraception = girl->calc_pregnancy(customer, good, 1.5);
+			STDchance += ((4 + customer->m_Amount) * (contraception ? 1 : 10));
+			if (contraception) message += "Luckily she didn't get pregnant.\n";
+			else message += "Sure enough, she got pregnant.";
+			girl->m_UseAntiPreg = true;		// return to normal (as checked in initial if condition)
+		}
+		else
+		{
+			//50% bonus to the chance of pregnancy since there's more than one partner involved
+			contraception = girl->calc_pregnancy(customer, good, 1.5);
+			STDchance += ((4 + customer->m_Amount) * (contraception ? 1 : 10));
+		}
 		UpdateTempStat(girl, STAT_LIBIDO, -20);
-		break;
+	}	break;
 
 	case SKILL_LESBIAN:
+	{
 		STDchance += 5;
 		UpdateTempStat(girl, STAT_LIBIDO, -10);
-		break;
+	}	break;
 
 	case SKILL_STRIP:
 	default:
-		if (GetSkill(girl, SexType) <= 20)	// if inexperienced then will get hurt
+	{
+		if (check <= 20)	// if inexperienced then will get hurt
 		{
 			message += gettext("\nShe got tangled in her clothes and fell on her face.");
 			UpdateStat(girl, STAT_HAPPINESS, -2);
@@ -6788,8 +7502,8 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		}
 		STDchance += 0;
 		UpdateTempStat(girl, STAT_LIBIDO, 0);
-		break;
-	}
+	}	break;
+	}	// end switch
 
 	// lose virginity unless it was anal sex -- or lesbian, or Oral also customer is happy no matter what. -PP
 	if (g_Girls.CheckVirginity(girl))

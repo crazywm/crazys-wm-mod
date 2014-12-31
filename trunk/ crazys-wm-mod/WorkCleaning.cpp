@@ -56,9 +56,11 @@ bool cJobManager::WorkCleaning(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	int CleanAmt = ((g_Girls.GetSkill(girl, SKILL_SERVICE) / 10) + 5) * 10;
 	int enjoy = 0;
 	int wages = 0;
+	int tips = 0;
 	int jobperformance = 0;
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
 	bool playtime = false;
+	int imagetype = IMGTYPE_MAID;
 
 	ss << girlName << " worked cleaning the brothel.\n\n";
 
@@ -115,7 +117,6 @@ bool cJobManager::WorkCleaning(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		CleanAmt = int(CleanAmt * 0.8);
 		if (roll_b < 50)	ss << "She spilled a bucket of something unpleasant all over herself.";
 		else				ss << "She did not like cleaning the brothel today.";
-
 	}
 	else if (roll_a >= 90)
 	{
@@ -145,16 +146,115 @@ bool cJobManager::WorkCleaning(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	// `J` if she can clean more than is needed, she has a little free time after her shift
 	if (brothel->m_Filthiness < CleanAmt / 2) playtime = true;
 	ss << gettext("\n\nCleanliness rating improved by ") << CleanAmt;
-	if (playtime)	// `J` needs more variation
+	if (playtime)	//SIN: a bit more variation
 	{
-		ss << "\n\n" << girlName << " finished her cleaning early so she hung out around the brothel a bit.";
-		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, g_Dice % 3 + 1);
-		g_Girls.UpdateStat(girl, STAT_HAPPINESS, (g_Dice % 3) + 1);
+		ss << "\n\n" << girlName << " finished her cleaning early so ";
+		roll_a = g_Dice % 6;
+		if (roll_a == 1 && brothel->m_RestrictOral) roll_a = 0;
+
+		switch (roll_a)
+		{
+		case 1:
+		{
+			ss << "she hung out at the brothel, offering to 'clean off' finished customers with her mouth.\n";
+			tips = g_Dice % 6 - 1; //how many 'tips' she clean? <6 for now, considered adjusting to amount playtime - didn't seem worth complexity
+			if (tips > 0)
+			{
+				brothel->m_Happiness += (tips);
+				g_Girls.UpdateSkill(girl, SKILL_ORALSEX, tips / 2);
+				tips *= 5; //customers tip 5 gold each
+				ss << "She got " << tips << " in tips for this extra service.\n";
+				imagetype = IMGTYPE_ORAL;
+			}
+			else
+			{
+				ss << "No one was interested.";
+			}
+		}	break;
+
+		case 2:
+		{
+			ss << "she had a rest.";
+			g_Girls.UpdateStat(girl, STAT_TIREDNESS, -(g_Dice % 10 + 1));
+		}	break;
+
+		case 3:
+		{
+			ss << "she hung out around the brothel chatting with staff and patrons.\n";
+			g_Girls.UpdateStat(girl, STAT_CHARISMA, (g_Dice % 3) + 1);
+			g_Girls.UpdateStat(girl, STAT_CONFIDENCE, (g_Dice % 2) + 1);
+		}	break;
+
+		case 4:
+		{
+			ss << "she spent some time training and getting herself fitter.\n";
+			g_Girls.UpdateStat(girl, STAT_CONSTITUTION, g_Dice % 2);
+			g_Girls.UpdateStat(girl, STAT_AGILITY, g_Dice % 2);
+			g_Girls.UpdateStat(girl, STAT_BEAUTY, g_Dice % 2);
+			g_Girls.UpdateStat(girl, STAT_SPIRIT, g_Dice % 2);
+			g_Girls.UpdateSkill(girl, SKILL_COMBAT, g_Dice % 2);
+		}	break;
+
+		case 5:
+		{
+			if (g_Dice.percent(70))
+			{
+				ss << "she hung out around the brothel, watching the other girls and trying to learn tricks and techniques.\n";
+				g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, g_Dice % 2);
+				g_Girls.UpdateSkill(girl, SKILL_ANAL, g_Dice % 2);
+				g_Girls.UpdateSkill(girl, SKILL_ORALSEX, g_Dice % 2);
+				g_Girls.UpdateSkill(girl, SKILL_BDSM, g_Dice % 2);
+				g_Girls.UpdateSkill(girl, SKILL_LESBIAN, g_Dice % 2);
+			}
+			else
+			{
+				tips = 20; // you tip her for cleaning you
+				ss << "she came to your room and cleaned you.\n\n" << girlName << " ran you a hot bath and bathed naked with you.";
+				imagetype = IMGTYPE_BATH;
+
+				if (!brothel->m_RestrictTitty)
+				{
+					ss << " Taking care to clean your whole body carefully, She rubbed cleansing oils over your back and chest with her ";
+					if (g_Girls.HasTrait(girl, "Massive Melons") || g_Girls.HasTrait(girl, "Abnormally Large Boobs") || g_Girls.HasTrait(girl, "Titanic Tits"))
+						ss << "enormous, heaving ";
+					else if (g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Busty Boobs") || g_Girls.HasTrait(girl, "Giant Juggs"))
+						ss << "big, round ";
+					else if (g_Girls.HasTrait(girl, "Flat Chest") || g_Girls.HasTrait(girl, "Petite Breasts") || g_Girls.HasTrait(girl, "Small Boobs"))
+						ss << "cute little ";
+					else ss << "nice, firm ";
+					ss << "breasts. ";
+				}
+				if (!brothel->m_RestrictOral)
+				{
+					ss << "She finished by cleaning your cock with her " << (g_Girls.HasTrait(girl, "Dick-Sucking Lips") ? "amazing dick-sucking lips" : "mouth") << ". ";
+					if (g_Girls.HasTrait(girl, "Cum Addict"))
+					{
+						ss << "She didn't stop 'cleaning' until you came in her mouth.\nAfterward, you notice her carefully "
+							<< "crawling around and licking up every stray drop of cum. She must really love cleaning.\n";
+						g_Girls.UpdateSkill(girl, SKILL_ORALSEX, g_Dice % 2);
+						g_Girls.UpdateStat(girl, STAT_SPIRIT, -(g_Dice % 2));
+						tips += (g_Dice % 20);  // tip her for hotness
+					}
+					imagetype = IMGTYPE_ORAL;
+				}
+				g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice % 5);
+				g_Girls.UpdateSkill(girl, SKILL_MEDICINE, g_Dice % 2);
+				g_Girls.UpdateStat(girl, STAT_OBEDIENCE, g_Dice % 4);
+				g_Girls.UpdateStat(girl, STAT_PCLOVE, g_Dice % 5);
+			}
+		}	break;
+		
+		default:
+			ss << "she hung out around the brothel a bit.";
+			g_Girls.UpdateTempStat(girl, STAT_LIBIDO, g_Dice % 3 + 1);
+			g_Girls.UpdateStat(girl, STAT_HAPPINESS, (g_Dice % 3) + 1);
+			break;
+		}
 	}
-	
-	// do all the output
-	girl->m_Events.AddMessage(ss.str(), IMGTYPE_MAID, Day0Night1);
+	girl->m_Events.AddMessage(ss.str(), imagetype, Day0Night1);
 	brothel->m_Filthiness -= CleanAmt;
+
+	girl->m_Tips = tips;  //job is classed as player-paid, so this is only way to give her tip
 	girl->m_Pay = wages;
 
 	// Improve girl

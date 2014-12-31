@@ -642,16 +642,38 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 				 *
 				 *		EQUIP Normal Item
 				 */
+				string trait = girl->m_Inventory[num]->m_Effects[i].m_Trait; // avoids repeat calls
 
 				if (amount == 0)				// remove trait from equiping an item
-					g_Girls.RemoveTrait(girl, girl->m_Inventory[num]->m_Effects[i].m_Trait,
-					girl->m_Inventory[num]->m_Type != INVFOOD && girl->m_Inventory[num]->m_Type != INVMAKEUP);		// addrememberlist = true only if not consumable
-
+				{
+					//SIN: I know it's kinda player's fault anyway, but given cost of medicines and difficulty to
+					//source player should get some kindness rep for this. Prob cheaper and easier to let them die
+					//and replace, but if we get here, player is looking out for staff.
+					if (trait == "AIDS" || trait == "Syphilis" || trait == "Herpes" || trait == "Chlamydia")
+					{
+						cPlayer * player = g_Brothels.GetPlayer();
+						if (girl->is_slave())
+						{		//SIN: just protecting investment in property
+							if (trait == "AIDS") player->evil(-4);
+							if (trait == "Syphilis") player->evil(-3);
+							if (trait == "Herpes") player->evil(-2);
+							if (trait == "Chlamydia") player->evil(-1);
+						}
+						else   //SIN: a genuinely kind act to support staff
+						{
+							if (trait == "AIDS") player->evil(-8);
+							if (trait == "Syphilis") player->evil(-6);
+							if (trait == "Herpes") player->evil(-4);
+							if (trait == "Chlamydia") player->evil(-2);
+						}
+					}
+					g_Girls.RemoveTrait(girl, trait, girl->m_Inventory[num]->m_Type != INVFOOD && girl->m_Inventory[num]->m_Type != INVMAKEUP);		// addrememberlist = true only if not consumable
+				}
 				else if (amount == 1)			// add normal trait	from equiping an item
-					g_Girls.AddTrait(girl, girl->m_Inventory[num]->m_Effects[i].m_Trait, false,
-					girl->m_Inventory[num]->m_Type != INVFOOD && girl->m_Inventory[num]->m_Type != INVMAKEUP);		// Temp = false Normal Item, removeitem = true only if not consumable
-
-				if (girl->m_Inventory[num]->m_Effects[i].m_Trait == "Virgin")
+				{
+					g_Girls.AddTrait(girl, trait, false, girl->m_Inventory[num]->m_Type != INVFOOD && girl->m_Inventory[num]->m_Type != INVMAKEUP);		// Temp = false Normal Item, removeitem = true only if not consumable
+				}
+				if (trait == "Virgin")
 				{
 					girl->m_Virgin = (amount == 1);
 				}

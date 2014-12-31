@@ -106,11 +106,11 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 
 	if(jobperformance >= 245)
 		{
-			message += "She must have the voice of an angel the customers go on and on about her and always come to listen to her when she works.\n\n";
+			message += "She must have the voice of an angel, the customers go on and on about her and always come to listen when she sings.\n\n";
 			wages += 155;
 		if (roll <= 20)
 			{
-				message += girlName + "'s voice brought many patron's to tears as she sang a song full of sadness.\n";
+				message += girlName + "'s voice brought many patrons to tears as she sang a song full of sadness.\n";
 			}
 		else if (roll <= 40)
 			{
@@ -123,7 +123,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 			}
 		else if (roll <= 80)
 			{
-				message += "The hole room was quiet when " + girlName + " was singing. After she finished gathered listeners applauses for minutes.\n";
+				message += "The whole room was quiet when " + girlName + " was singing. After she finished, she gathered listeners applauded for minutes.\n";
 				fame += 5;
 			}
 		else
@@ -165,11 +165,11 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 			}
 		else if (roll <= 40)
 			{
-				message += "She sang every part of the song clear. " + girlName + " is a really good singer.\n";
+				message += "She sang every part of the song clearly. " + girlName + " is a really good singer.\n";
 			}
 		else if (roll <= 60)
 			{
-				message += "This wasn't the best performance of her life time, but in general she did good.\n";
+				message += "This wasn't the best performance of her life time, but in general she did well.\n";
 			}
 		else if (roll <= 80)
 			{
@@ -191,7 +191,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 			}
 		else if (roll <= 50)
 			{
-				message += "She didn't sing every part clear but overall she was good.\n";
+				message += "She didn't sing every part clearly but overall she was good.\n";
 			}
 		else if (roll <= 75)
 			{
@@ -199,12 +199,12 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 			}
 		else
 			{
-				message += "The slow song " + girlName + " sang at the end of shift really had her full emotion and heart.  A pity that she felt so bored and tired.\n";
+				message += "The slow song " + girlName + " sang at the end of shift really had her full emotion and heart.  A pity she was bored and tired.\n";
 			}
 		}
 	else if(jobperformance >= 70)
 		{
-			message += "She almost never hits a right note. Luck for you most of your customers are drunks.\n\n";
+			message += "She almost never hits a right note. Lucky for you most of your customers are drunks.\n\n";
 			wages -= 5;
 		if (roll <= 20)
 			{
@@ -221,12 +221,12 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 			}
 		else if (roll <= 80)
 			{
-				message +=  girlName + " singing was awful. Not a single line was sang clear.\n";
+				message +=  girlName + " singing was awful. Not a single line was sung clearly.\n";
 				happy -= 5;
 			}
 		else
 			{
-				message += girlName + " voice is all over the place as she sings.\n";
+				message += girlName + "'s voice is all over the place as she sings.\n";
 			}
 		}
 	else
@@ -240,7 +240,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 			}
 		else if (roll <= 28)
 			{
-				message += "She just can't do it right.\n";
+				message += "It's tragic, " + girlName + " really can't sing.\n";
 			}
 		else if (roll <= 42)
 			{
@@ -270,6 +270,9 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	if (g_Girls.GetStat(girl, STAT_BEAUTY) >85 && g_Dice.percent(20))
 	{ message += "Stunned by her beauty a customer left her a great tip.\n\n"; wages += 15; }
 
+	if (g_Girls.GetStat(girl, STAT_CHARISMA) > 80 && g_Dice.percent(15))
+	{ message += "Her charisma shone through as she chatted to customers between songs.\n\n"; wages += 15; happy += 5; }
+
 	if (g_Girls.HasTrait(girl, "Clumsy") && g_Dice.percent(5))
 		{ message += "Her clumsy nature caused her to trip coming on stage causing the crowed to go wild with laughter. She went to the back and hide refusing to take the stage for her song set.\n"; wages -= 15; }
 
@@ -295,7 +298,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	if (g_Girls.HasTrait(girl, "Assassin") && g_Dice.percent(5))
 	{
 		if( jobperformance < 150)
-			{ message += "A patron booed her making her mad and using her Assassin skills she killed him before even thinking about it resulting in patrons storming out without paying.\n"; wages -= 50; }
+			{ message += "A patron booed her. She saw red and using her Assassin skills killed him instantly. Other patrons fled out without paying.\n"; wages -= 50; }
 		else
 			{ message += "A patron booed her. But was drunk and started crying a moment later so she ignored them.\n"; }
 	}
@@ -303,17 +306,17 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	if (g_Girls.HasTrait(girl, "Horrific Scars") && g_Dice.percent(15))
 	{
 		if (jobperformance < 150)
-			{ message += "A patron gasped at her Horrific Scars making her uneasy.  But they didn't feel sorry for her.\n"; }
+			{ message += "A patron gasped and pointed at her Horrific Scars making her uneasy. But they didn't feel sorry for her.\n"; }
 		else
-			{ message += "A patron gasped at her Horrific Scars making her sad.  Feeling bad about it as she sang wonderful they left her a good tip.\n"; wages += 15; }
+			{ message += "A patron gasped and pointed at her Horrific Scars making her sad. Her singing was so wonderful that at the end of the performance they personally apologized and thanked her, leaving her a good tip.\n"; wages += 15; }
 	}
 
-	if (g_Brothels.GetNumGirlsOnJob(0,JOB_PIANO,false) == 1 && g_Dice.percent(25))
+	if (g_Brothels.GetNumGirlsOnJob(0,JOB_PIANO,Day0Night1) == 1 && g_Dice.percent(25))
 	{
 		if (jobperformance < 125)
-			{ message += girlName + " sang very out of tune with the paino player forcing people to leave.\n"; wages -= 10; }
+			{ message += girlName + "'s singing was out of tune with the piano player causing customers to leave with their fingers in their ears.\n"; wages -= 10; }
 		else
-			{ message += "The paino player took her singing to the next level causing the tips to flood in.\n"; wages += 40; }
+			{ message += "The piano player took her singing to the next level causing the tips to flood in.\n"; wages += 40; }
 	}
 
 		if(wages < 0)
@@ -328,8 +331,9 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	else
 	{ message += " \nOtherwise, the shift passed uneventfully."; work += 1; }
 
-	brothel->m_Fame = fame;
-	brothel->m_Happiness = happy;
+	brothel->m_Fame += fame;
+	brothel->m_Happiness += happy;
+
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKMUSIC, work, true);
 	girl->m_Events.AddMessage(message, IMGTYPE_SING, Day0Night1);
 	int roll_max = (g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA));

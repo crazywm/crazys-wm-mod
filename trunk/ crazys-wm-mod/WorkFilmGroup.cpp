@@ -145,7 +145,7 @@ bool cJobManager::WorkFilmGroup(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 		wages += (guys * 10);	// Extra pay per guy
 		wages += finalqual*2;
 	}
-	girl->m_Pay += wages;
+	girl->m_Pay = wages;
 	
 
 	// Improve stats
