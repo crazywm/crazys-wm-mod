@@ -4668,12 +4668,12 @@ bool cGirls::AdjustTraitGroupGagReflex(sGirl* girl, int adjustment, bool showmes
 		g_Girls.RemoveTrait(girl, "No Gag Reflex", true, true);
 		ss << " has lost the trait 'No Gag Reflex' ";
 	}
-	else if (g_Girls.HasTrait(girl, "Deepthroat"))		// step +2
+	else if (g_Girls.HasTrait(girl, "Deep Throat"))		// step +2
 	{
 		if (adjustment > 0) return false;	// can't go higher
 		newGR = 2 + adjustment;
-		g_Girls.RemoveTrait(girl, "Deepthroat", true, true);
-		ss << " has lost the trait 'Deepthroat' ";
+		g_Girls.RemoveTrait(girl, "Deep Throat", true, true);
+		ss << " has lost the trait 'Deep Throat' ";
 	}
 	else /* No trait                              */	// step 0
 	{
@@ -4704,8 +4704,8 @@ bool cGirls::AdjustTraitGroupGagReflex(sGirl* girl, int adjustment, bool showmes
 	else // if (newGR >= 2)
 	{
 		newGR = 2;
-		g_Girls.AddTrait(girl, "Deepthroat");
-		ss << " has gained the trait 'Deepthroat'";
+		g_Girls.AddTrait(girl, "Deep Throat");
+		ss << " has gained the trait 'Deep Throat'";
 	}
 
 	// only send a message if called for
@@ -6925,7 +6925,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 {
 	bool good = false;
 	bool contraception = false;
-	int STDchance = 0;
+	double STDchance = 0.001;		// `J` added new percent that allows 3 decimal check so setting a 0.001% base chance
 	int happymod = 0;	// Start the customers unhappiness/happiness bad sex decreases, good sex inceases
 	if (HasTrait(girl, "Fake Orgasm Expert"))		happymod += 20;
 	else if (HasTrait(girl, "Fast Orgasms"))		happymod += 10;
@@ -7159,7 +7159,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		else if (check < 60) /*  */	message += " used her feet on the customer's cock.";
 		else if (check < 80) /*  */	message += " loved using her feet on the customer's cock, and let him cum all over her.";
 		else /*                  */	message += " wouldn't stop using her feet to massage the customer's cock until she had made him spill his entire load.";
-		
+
 		if (g_Dice.percent(20) && (HasTrait(girl, "Alcoholic") || HasTrait(girl, "Social Drinker")))
 		{
 			message += "\n\n" + girl->m_Realname + " had a few drinks, and ";
@@ -7529,25 +7529,28 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 
 	// Now calculate other skill increases
 	int skillgain = 4;	int exp = 5;
-	if (HasTrait(girl, "Quick Learner"))		{ skillgain = 5; exp = 7; }
-	else if (HasTrait(girl, "Slow Learner"))	{ skillgain = 3; exp = 3; }
+	if (HasTrait(girl, "Quick Learner"))		{ skillgain += 1; exp += 2; }
+	else if (HasTrait(girl, "Slow Learner"))	{ skillgain -= 1; exp -= 2; }
 	if (SexType == SKILL_GROUP)
 	{
-		UpdateSkill(girl, SKILL_ANAL, max(0, g_Dice%skillgain + 1));
-		UpdateSkill(girl, SKILL_BDSM, max(0, g_Dice%skillgain - 1));
-		UpdateSkill(girl, SKILL_NORMALSEX, max(0, g_Dice%skillgain + 1));
-		UpdateSkill(girl, SKILL_BEASTIALITY, max(0, g_Dice%skillgain - 3));
-		UpdateSkill(girl, SKILL_GROUP, max(0, g_Dice%skillgain + 1));
-		UpdateSkill(girl, SKILL_LESBIAN, max(0, g_Dice%skillgain - 1));
-		UpdateSkill(girl, SKILL_STRIP, max(0, g_Dice%skillgain - 1));
-		UpdateSkill(girl, SKILL_ORALSEX, max(0, g_Dice%skillgain - 1));
-		UpdateSkill(girl, SKILL_TITTYSEX, max(0, g_Dice%skillgain - 1));
-		UpdateSkill(girl, SKILL_HANDJOB, max(0, g_Dice%skillgain - 1));
-		UpdateSkill(girl, SKILL_FOOTJOB, max(0, g_Dice%skillgain - 1));
+		UpdateSkill(girl, SKILL_ANAL, max(0, g_Dice % skillgain + 1));
+		UpdateSkill(girl, SKILL_BDSM, max(0, g_Dice % skillgain - 1));
+		UpdateSkill(girl, SKILL_NORMALSEX, max(0, g_Dice % skillgain + 1));
+		UpdateSkill(girl, SKILL_BEASTIALITY, max(0, g_Dice % skillgain - 3));
+		UpdateSkill(girl, SKILL_GROUP, max(2, g_Dice % skillgain + 2));
+		UpdateSkill(girl, SKILL_LESBIAN, max(0, g_Dice % skillgain - 2));
+		UpdateSkill(girl, SKILL_STRIP, max(0, g_Dice % skillgain - 2));
+		UpdateSkill(girl, SKILL_ORALSEX, max(0, g_Dice % skillgain + 0));
+		UpdateSkill(girl, SKILL_TITTYSEX, max(0, g_Dice % skillgain - 1));
+		UpdateSkill(girl, SKILL_HANDJOB, max(0, g_Dice % skillgain + 0));
+		UpdateSkill(girl, SKILL_FOOTJOB, max(0, g_Dice % skillgain - 1));
 	}
-	else	UpdateSkill(girl, SexType, g_Dice%skillgain + 1);
-	UpdateSkill(girl, SKILL_SERVICE, max(0, g_Dice % skillgain - 1));
-	UpdateStat(girl, STAT_EXP, (g_Dice % (exp * 3)));
+	else	// single sex act focus gets more base gain
+	{
+		UpdateSkill(girl, SexType, g_Dice % (skillgain + 2) + 1);
+	}
+	UpdateSkill(girl, SKILL_SERVICE, max(0, g_Dice % skillgain - 1));	// everyone gets some service gain
+	UpdateStat(girl, STAT_EXP, max(1, (g_Dice % (exp * 3))));
 
 	int enjoy = 1;
 	if (HasTrait(girl, "Nymphomaniac"))
@@ -7564,7 +7567,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			// Nymphomaniac would rather have something inside her so if she can't, she does not enjoy it as much
 		case SKILL_STRIP:			enjoy -= 2; break;
 		case SKILL_TITTYSEX:
-		case SKILL_HANDJOB:			
+		case SKILL_HANDJOB:
 		case SKILL_FOOTJOB:			enjoy -= 1; break;
 		case SKILL_ORALSEX:
 		default:
@@ -7604,12 +7607,18 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 	else if (GetStat(girl, STAT_HAPPINESS) <= 5)	enjoy -= 2;
 
 	int health = GetStat(girl, STAT_HEALTH);
+#if 1	// updating this because of new decimal percent 
+	/* */if (health > 95)	{ STDchance = 1; }
+	else if (health > 30)	{ STDchance /= (health - 25)/5; }
+	else if (health < 30)	{ STDchance *= (35 - health) / 10; }
+#else
 	/* */if (health <= 10)	STDchance *= 3;
 	else if (health <= 20)	STDchance *= 2;
 	else if (health >= 80)	STDchance /= 4;
 	else if (health >= 90)	STDchance /= 7;
 	else if (health == 100)	STDchance /= 10;
-	if (STDchance < 1)		STDchance = 1;
+#endif
+	if (STDchance < 0.1)	STDchance = 0.1;
 
 	if (HasTrait(girl, "AIDS") && !customer->m_HasAIDS && g_Dice.percent(STDchance))
 	{

@@ -541,7 +541,7 @@ void cScreenGirlDetails::check_events()
 		{
 			int old_job = (Day0Night1 == SHIFT_DAY ? selected_girl->m_DayJob : selected_girl->m_NightJob);
 			// handle special job requirements and assign - if HandleSpecialJobs returns true, the job assignment was modified or cancelled
-			if (g_Brothels.m_JobManager.HandleSpecialJobs(g_CurrBrothel, selected_girl, selection, old_job, Day0Night1 == SHIFT_NIGHT, fulltime))
+			if (g_Brothels.m_JobManager.HandleSpecialJobs(g_CurrBrothel, selected_girl, selection, old_job, Day0Night1, fulltime))
 			{
 				selection = (Day0Night1 == SHIFT_DAY ? selected_girl->m_DayJob : selected_girl->m_NightJob);
 				SetSelectedItemInList(joblist_id, selection, false);

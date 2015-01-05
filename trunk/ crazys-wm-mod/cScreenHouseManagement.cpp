@@ -361,7 +361,7 @@ void cScreenHouseManagement::check_events()
 					int old_job = (Day0Night1 == SHIFT_DAY ? selected_girl->m_DayJob : selected_girl->m_NightJob);
 
 					// handle special job requirements and assign - if HandleSpecialJobs returns true, the job assignment was modified or cancelled
-					if (g_House.m_JobManager.HandleSpecialJobs(g_CurrHouse, selected_girl, new_job, old_job, Day0Night1 == SHIFT_NIGHT, fulltime))
+					if (g_House.m_JobManager.HandleSpecialJobs(g_CurrHouse, selected_girl, new_job, old_job, Day0Night1, fulltime))
 					{
 						new_job = (Day0Night1 == SHIFT_DAY ? selected_girl->m_DayJob : selected_girl->m_NightJob);
 						SetSelectedItemInList(joblist_id, new_job, false);
