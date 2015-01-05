@@ -60,6 +60,12 @@ struct cRng
  */
 	bool percent(int n) { return (1 + random(100)) < n; }
 /*
+*	`J` added percent allowing double input up to 3 decimal
+*	returns true n percent of the time.
+*	so g_Dice.percent(20.005) will return true 20.005% of the time
+*/
+	bool percent(double n) { return (1 + random(100000)) < (n * 1000.0); }
+/*
  *	a couple of shorthand methods for decding the sex of
  *	children
  */

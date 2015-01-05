@@ -378,7 +378,7 @@ void cScreenClinicManagement::check_events()
 					// handle special job requirements and assign
 					// if HandleSpecialJobs returns true, the job assignment was modified or cancelled
 
-					if (g_Clinic.m_JobManager.HandleSpecialJobs(g_CurrClinic, selected_girl, new_job, old_job, Day0Night1 == SHIFT_NIGHT, fulltime))
+					if (g_Clinic.m_JobManager.HandleSpecialJobs(g_CurrClinic, selected_girl, new_job, old_job, Day0Night1, fulltime))
 					{
 						new_job = (Day0Night1 == SHIFT_DAY ? selected_girl->m_DayJob : selected_girl->m_NightJob);
 						SetSelectedItemInList(joblist_id, new_job, false);
