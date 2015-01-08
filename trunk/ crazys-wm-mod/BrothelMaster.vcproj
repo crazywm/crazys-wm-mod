@@ -1159,7 +1159,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\WorkCentreAngerManagement.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\WorkCentreExTherapy.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\WorkCentreManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\WorkCentreTherapy.cpp"
 				>
 			</File>
 			<File
@@ -1376,6 +1388,10 @@
 			</File>
 			<File
 				RelativePath=".\WorkHealing.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\WorkHouseVacation.cpp"
 				>
 			</File>
 			<File

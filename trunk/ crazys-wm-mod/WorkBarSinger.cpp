@@ -47,12 +47,18 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	if(Preprocessing(ACTION_WORKMUSIC, girl, brothel, Day0Night1, summary, message))	// they refuse to have work in the bar
 		return true;
 
-	// put that shit away, you'll scare off the customers!
-	g_Girls.UnequipCombat(girl);
+	g_Girls.UnequipCombat(girl); // put that shit away, you'll scare off the customers!
 
 	int wages = 20, work = 0, happy = 0, fame = 0;
 	int roll = g_Dice.d100(), roll_a = g_Dice.d100();
 	int jobperformance = (g_Girls.GetStat(girl, STAT_CONFIDENCE) + g_Girls.GetSkill(girl, SKILL_PERFORMANCE));
+
+	sGirl* pianoonduty = NULL;
+	string pianoname = "the Piano";	// Who?
+	vector<sGirl *> piano = g_Brothels.GirlsOnJob(0, JOB_PIANO, Day0Night1);
+	if (piano.size() > 0) pianoonduty = piano[g_Dice%piano.size()];
+	if (pianoonduty)	pianoname = "Pianost " + pianoonduty->m_Realname + "";
+	else pianoname = "";	// no piano
 
 	//good traits
 	if (g_Girls.HasTrait(girl, "Charismatic"))		jobperformance += 15;
@@ -311,12 +317,12 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 			{ message += "A patron gasped and pointed at her Horrific Scars making her sad. Her singing was so wonderful that at the end of the performance they personally apologized and thanked her, leaving her a good tip.\n"; wages += 15; }
 	}
 
-	if (g_Brothels.GetNumGirlsOnJob(0,JOB_PIANO,Day0Night1) == 1 && g_Dice.percent(25))
+	if (g_Brothels.GetNumGirlsOnJob(0,JOB_PIANO,Day0Night1) >= 1 && g_Dice.percent(25))
 	{
 		if (jobperformance < 125)
-			{ message += girlName + "'s singing was out of tune with the piano player causing customers to leave with their fingers in their ears.\n"; wages -= 10; }
+			{ message += girlName + "'s singing was out of tune with " + pianoname + " causing customers to leave with their fingers in their ears.\n"; wages -= 10; }
 		else
-			{ message += "The piano player took her singing to the next level causing the tips to flood in.\n"; wages += 40; }
+			{ message += pianoname + " took her singing to the next level causing the tips to flood in.\n"; wages += 40; }
 	}
 
 		if(wages < 0)
@@ -325,11 +331,11 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 
 	//enjoyed the work or not
 	if (roll <= 5)
-	{ message += " \nSome of the patrons abused her during the shift."; work -= 1; }
+	{ message += "\nSome of the patrons abused her during the shift."; work -= 1; }
 	else if (roll <= 25) 
-	{ message += " \nShe had a pleasant time working."; work += 3; g_Girls.UpdateStat(girl, STAT_CONFIDENCE, 1); }
+	{ message += "\nShe had a pleasant time working."; work += 3; g_Girls.UpdateStat(girl, STAT_CONFIDENCE, 1); }
 	else
-	{ message += " \nOtherwise, the shift passed uneventfully."; work += 1; }
+	{ message += "\nOtherwise, the shift passed uneventfully."; work += 1; }
 
 	brothel->m_Fame += fame;
 	brothel->m_Happiness += happy;

@@ -103,20 +103,11 @@ bool cJobManager::WorkBaker(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 
 	//enjoyed the work or not
 	if (roll <= 5)
-	{
-		message += " \nSome of the patrons abused her during the shift.";
-		work -= 1;
-	}
+	{ message += "\nSome of the patrons abused her during the shift."; work -= 1; }
 	else if (roll <= 25)
-	{
-		message += " \nShe had a pleasant time working.";
-		work += 3;
-	}
+	{ message += "\nShe had a pleasant time working."; work += 3; }
 	else
-	{
-		message += " \nOtherwise, the shift passed uneventfully.";
-		work += 1;
-	}
+	{ message += "\nOtherwise, the shift passed uneventfully."; work += 1; }
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKFARM, work, true);
 	girl->m_Events.AddMessage(message, IMGTYPE_COOK, Day0Night1);

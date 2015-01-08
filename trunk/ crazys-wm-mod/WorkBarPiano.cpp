@@ -50,6 +50,13 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	// put that shit away, you'll scare off the customers!
 	g_Girls.UnequipCombat(girl);
 
+	sGirl* singeronduty = NULL;
+	string singername = "the Singer";	// Who?
+	vector<sGirl *> singer = g_Brothels.GirlsOnJob(0, JOB_SINGER, Day0Night1);
+	if (singer.size() > 0) singeronduty = singer[g_Dice%singer.size()];
+	if (singeronduty)	singername = "Singer " + singeronduty->m_Realname + "";
+	else singername = "";	// no singer
+
 	int wages = 20, work = 0;
 	message += "She played the piano in the bar.";
 
@@ -289,22 +296,22 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			{ message += "A patron gasped at her Horrific Scars making her sad. Feeling bad about it as she played so well, they left a good tip.\n"; wages += 15; }
 	}
 
-	if (g_Brothels.GetNumGirlsOnJob(0,JOB_SINGER,false) == 1 && g_Dice.percent(25))
+	if (g_Brothels.GetNumGirlsOnJob(0,JOB_SINGER,false) >= 1 && g_Dice.percent(25))
 	{
 		if (jobperformance < 125)
-			{ message += girlName + " played poorly with the singer making people leave.\n\n"; wages -= 10; }
+			{ message += girlName + " played poorly with " + singername + " making people leave.\n\n"; wages -= 10; }
 		else
-			{ message += girlName + " played well with the singer increasing tips.\n\n"; wages += 40; }
+			{ message += girlName + " played well with " + singername + " increasing tips.\n\n"; wages += 40; }
 	}
 
 
 	//enjoyed the work or not
 	if (roll <= 5)
-	{ message += " \nSome of the patrons abused her during the shift."; work -= 1; }
+	{ message += "\nSome of the patrons abused her during the shift."; work -= 1; }
 	else if (roll <= 25) 
-	{ message += " \nShe had a pleasant time working."; work += 3; }
+	{ message += "\nShe had a pleasant time working."; work += 3; }
 	else
-	{ message += " \nOtherwise, the shift passed uneventfully."; work += 1; }
+	{ message += "\nOtherwise, the shift passed uneventfully."; work += 1; }
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKMUSIC, work, true);
 	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, Day0Night1);

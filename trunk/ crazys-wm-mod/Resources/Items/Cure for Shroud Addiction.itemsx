@@ -1,27 +1,49 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Items>
-<Item Name="Cure for Shroud Addiction"
-      Desc="This cures addiction to Shroud Mushrooms."
-      Type="Food"
-      Badness="0"
-      Special="None"
-      Cost="1000"
-      Rarity="Shop25"
-      Infinite="false"
-      GirlBuyChance="0">
-   <Effect What="Stat"  Name="Happiness"               Amount="20"    />
-   <Effect What="Trait" Name="Shroud Addict"           Amount="0"    />
-</Item>
-<Item Name="Cure for Shroud Addiction"
-      Desc="This cures addiction to Shroud Mushrooms. (This Seller can get more but he charges more)"
-      Type="Food"
-      Badness="0"
-      Special="None"
-      Cost="2000"
-      Rarity="Shop50"
-      Infinite="false"
-      GirlBuyChance="0">
-   <Effect What="Stat"  Name="Happiness"               Amount="20"    />
-   <Effect What="Trait" Name="Shroud Addict"           Amount="0"    />
-</Item>
+	<Item
+		Name="Cure for Shroud Addiction"
+		Desc="This cures addiction to Shroud Mushrooms."
+		Type="Food"
+		Badness="0"
+		Special="None"
+		Cost="1000"
+		Rarity="Shop25"
+		Infinite="false"
+		GirlBuyChance="0">
+		<Effect
+			What="Stat"
+			Name="Happiness"
+			Amount="20" />
+		<Effect
+			What="Trait"
+			Name="Shroud Addict"
+			Amount="0" />
+		<Effect
+			What="Trait"
+			Name="Former Addict"
+			Amount="1" />
+	</Item>
+	<Item
+		Name="Cure for Shroud Addiction"
+		Desc="This cures addiction to Shroud Mushrooms. (This Seller can get more but he charges more)"
+		Type="Food"
+		Badness="0"
+		Special="None"
+		Cost="2000"
+		Rarity="Shop50"
+		Infinite="false"
+		GirlBuyChance="0">
+		<Effect
+			What="Stat"
+			Name="Happiness"
+			Amount="20" />
+		<Effect
+			What="Trait"
+			Name="Shroud Addict"
+			Amount="0" />
+		<Effect
+			What="Trait"
+			Name="Former Addict"
+			Amount="1" />
+	</Item>
 </Items>

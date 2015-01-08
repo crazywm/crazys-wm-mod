@@ -46,7 +46,7 @@ extern int g_Building;
 // `J` Centre Job - General
 bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-	string message = "", girlName = girl->m_Realname;
+	string message = "", girlName = girl->m_Realname; stringstream ss;
 	g_Building = BUILDING_CENTRE;
 
 	if (Preprocessing(ACTION_WORKCENTRE, girl, brothel, Day0Night1, summary, message))	// they refuse to have work
@@ -59,7 +59,7 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0N
 	bool blow = false, sex = false;
 	int dispo = 0;
 	int roll = g_Dice % 100;
-	int wages = 100, work = 0;
+	int wages = 100, work = 0, help = 0;
 	int jobperformance = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) / 2 +
 		g_Girls.GetStat(girl, STAT_CHARISMA) / 2 +
 		g_Girls.GetSkill(girl, SKILL_SERVICE));
@@ -141,10 +141,10 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0N
 	}
 
 	if (girl->m_States&(1 << STATUS_SLAVE))
-	{ message += " \nThe fact that she is your slave makes people think its less of a good deed on your part."; }
+	{ message += "\nThe fact that she is your slave makes people think its less of a good deed on your part."; }
 	else
 	{
-		message += " \nThe fact that your paying this girl to do this helps people think your a better person.";
+		message += "\nThe fact that your paying this girl to do this helps people think your a better person.";
 		girl->m_Pay = wages;
 		g_Gold.staff_wages(100);  // wages come from you
 		dispo = int(dispo*1.5);
@@ -152,6 +152,13 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0N
 
 	g_Brothels.GetPlayer()->disposition(dispo);
 	girl->m_Events.AddMessage(message, image, Day0Night1);
+
+	help += jobperformance / 10;		//  1 helped per 10 point of performance
+
+	ss.str("");
+	ss << girlName << " helped " << help << " people today.";
+	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
+
 
 
 	// Improve stats

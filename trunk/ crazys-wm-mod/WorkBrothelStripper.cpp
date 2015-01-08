@@ -86,7 +86,7 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 	if (g_Girls.HasTrait(girl, "Psychic"))		 jobperformance += 10; //knows what people want
 	if (g_Girls.HasTrait(girl, "Long Legs"))	 jobperformance += 10;
 	if (g_Girls.HasTrait(girl, "Exhibitionist")) jobperformance += 10; //SIN - likes showing off her body
-	if (g_Girls.GetStat(girl, STAT_FAME) >85)	 jobperformance += 10; //more people willing to see her
+	if (g_Girls.GetStat(girl, STAT_FAME) > 85)	 jobperformance += 10; //more people willing to see her
 
 
 	//bad traits
@@ -260,6 +260,51 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 		message += girlName + "'s doesn't seem to understand the real money in stripping is selling private dances.\n";
 	}
 
+
+	//try and add randomness here
+	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85 && g_Dice.percent(20))
+	{ message += "Stunned by her beauty a customer left her a great tip.\n\n"; wages += 25; }
+
+	if (g_Girls.HasTrait(girl, "Clumsy") && g_Dice.percent(5))
+		{ message += " Her clumsy nature caused her to slide off the pole causing her to have to stop stripping for a few hours.\n"; wages -= 15; }
+
+	if (g_Girls.HasTrait(girl, "Pessimist") && g_Dice.percent(5))
+	{
+		if (jobperformance < 125)
+			{ message += " Her pessimistic mood depressed the customers making them tip less.\n"; wages -= 10; }
+		else
+			{ message += girlName + " was in a poor mood so the patrons gave her a bigger tip to try and cheer her up.\n"; wages += 10; }
+	}
+
+	if (g_Girls.HasTrait(girl, "Optimist") && g_Dice.percent(5))
+	{
+		if (jobperformance < 125)
+			{ message += girlName + " was in a cheerful mood but the patrons thought she needed to work more on her stripping.\n"; wages -= 10; }
+		else
+			{ message += " Her optimistic mood made patrons cheer up increasing the amount they tip.\n"; wages += 10; }
+	}
+
+	if (g_Girls.HasTrait(girl, "Great Figure") && g_Dice.percent(20))
+	{
+		if (jobperformance < 125)
+			{ message += girlName + " has a great figure so she draws a few extra patrons even if she needed to work more on her stripping.\n"; wages += 5; }
+		else
+			{ message += girlName + "'s great figure draws a large crowed to the stage and her skill at stripping makes them pay up to see the show up close.\n"; wages += 15; }
+	}
+
+	//if (g_Dice.percent(10))//ruffe event
+	//{
+	//	message += "A patron keep buying her drinks \n";
+	//	if (g_Girls.GetStat(girl, SKILL_HERBALISM) > 35)
+	//	{
+	//		message += "but she noticed an extra taste that she knew was a drug to make her pass out. She reported him to secuirty and he was escorted out. Good news is she made a good amount of money off him before this.\n"; wages += 25;
+	//	}
+	//	else
+	//	{
+	//		//guy gets to have his way with her
+	//	}
+	//}
+
 	if (girl->is_addict() && !sex && !mast && g_Dice.percent(60)) //not going to get money or drugs any other way
 	{
 		message += "\nNoticing her addiction, a customer offered her drugs for a blowjob. She accepted, taking him out of sight of security and sucking him off for no money.\n";
@@ -281,26 +326,6 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 
 	if (wages < 0)
 		wages = 0;
-
-
-	//enjoyed the work or not
-	if (roll <= 5)
-	{
-		message += " \nSome of the patrons abused her during the shift.";
-		work -= 1;
-	}
-	else if (roll <= 25)
-	{
-		message += " \nShe had a pleasant time working.";
-		work += 3;
-	}
-	else
-	{
-		message += " \nOtherwise, the shift passed uneventfully.";
-		work += 1;
-	}
-
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKSTRIP, work, true);
 
 
 	if (sex)
@@ -367,6 +392,17 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 		girl->m_Pay = wages;
 		girl->m_Events.AddMessage(message, IMGTYPE_STRIP, Day0Night1);
 	}
+
+
+	//enjoyed the work or not
+	if (roll <= 5)
+	{ message += "\nSome of the patrons abused her during the shift."; work -= 1; }
+	else if (roll <= 25)
+	{ message += "\nShe had a pleasant time working."; work += 3; }
+	else
+	{ message += "\nOtherwise, the shift passed uneventfully."; work += 1; }
+
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKSTRIP, work, true);
 
 
 	// Improve stats

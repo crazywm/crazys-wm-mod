@@ -209,7 +209,7 @@ bool cJobManager::WorkCleaning(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			else
 			{
 				tips = 20; // you tip her for cleaning you
-				ss << "she came to your room and cleaned you.\n\n" << girlName << " ran you a hot bath and bathed naked with you.";
+				ss << "she came to your room and cleaned you.\n\n" << girlName << " ran you a hot bath and bathed naked with you.";/* Need a check here so your daughters won't do this zzzzzzzz FIXME*/ 
 				imagetype = IMGTYPE_BATH;
 
 				if (!brothel->m_RestrictTitty)
@@ -269,6 +269,7 @@ bool cJobManager::WorkCleaning(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKCLEANING, enjoy, true);
+
     //lose traits
     g_Girls.PossiblyLoseExistingTrait(girl, "Clumsy", 30, ACTION_WORKCLEANING, "It took her spilling hundreds of buckets, and just as many reprimands, but " + girlName + " has finally stopped being so Clumsy.", Day0Night1 == SHIFT_NIGHT);
 

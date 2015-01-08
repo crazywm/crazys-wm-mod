@@ -82,6 +82,9 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	int roll_a = g_Dice.d100();
 	int roll_b = g_Dice.d100();
 	int roll_c = g_Dice.d100();
+	int roll_d = g_Dice.d100();
+	int HateLove = 0;
+	HateLove = g_Girls.GetStat(girl, STAT_PCLOVE) - g_Girls.GetStat(girl, STAT_PCHATE);
 
 
 
@@ -120,6 +123,10 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			// Suggestions to be added
 			FT_Counseling,		// she goes to counseling
 			FT_WatchFights,		// she goes to the arena as a spectator
+			FT_StrollInCity,	//she goes for a walk in the city
+			FT_Casino,			//she goes to the casino and gambles
+			FT_CountrySide,		//she goes out into the country side for a walk
+			FT_WorkOut,			//she works out to stay in shape
 
 
 
@@ -208,10 +215,17 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 						choicemade = true;	// if she is a good girl, she will go to help out
 					}
 					break;
+				case FT_WatchMovie:
+					if (girl->m_Money >= 10)
+					{
+						choicemade = true;	// She has enough money for it, so continue
+					}
+					// if she can not afford it, reroll.
+					break;
 
 
 					// These are not ready so reroll.
-				case FT_WatchMovie:
+				//case FT_WatchMovie:
 				case FT_Concert:
 				case FT_Picnic:
 				case FT_VisitBar:
@@ -243,7 +257,11 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			imagetype = IMGTYPE_BATH;
 			U_Happiness += 5;
 			U_Health += 5;
-			if (girl->libido() > 70 || (g_Girls.HasTrait(girl, "Nymphomaniac") && girl->libido() > 30))
+			if (HateLove >= 80 && g_Dice.percent(10))//loves you
+			{
+				ss << "She invites you to join her in the tube.\n";//will get around to adding sex options later
+			}
+			else if (girl->libido() > 70 || (g_Girls.HasTrait(girl, "Nymphomaniac") && girl->libido() > 30))
 			{
 				ss << "While in the tub the mood hit her and she proceed to pleasure herself.\n";
 				imagetype = IMGTYPE_MAST;
@@ -282,15 +300,37 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		case FT_Salon:
 		{
 			// add more options for more money
-			ss << girlName << " had her hair and nails done today. She is going look better for a few days.\n";
-			U_Beauty += 5;
-			U_Money -= 10;
+			ss << girlName << " went to the salon ";
+			if (girl->m_Money >= 35 && girl->tiredness() > 60)
+			{
+				ss << "decide to get a message. She is now not as tried.\n";
+				U_Money -= 35;
+				U_Tiredness -= 10;
+			}
+			else if (girl->m_Money >= 25)
+			{
+				ss << "and had her nails and hair done. She is going look better for a few days.\n";
+				U_Beauty += 6;
+				U_Money -= 25;
+			}
+			else if (girl->m_Money >= 15)
+			{
+				ss << "and had her hair done. She is going look better for a few days.\n";
+				U_Beauty += 4;
+				U_Money -= 15;
+			}
+			else
+			{
+				ss << "and had her nails done. She is going look better for a few days.\n";
+				U_Beauty += 2;
+				U_Money -= 10;
+			}
 		}
 		break;	// end FT_Salon
 
 		case FT_Church:
 		{
-			ss << girlName << " had some free time so she went to church.\n";
+			ss << girlName << " had some free time so she went to the local temple.\n";
 			/* `J` use U_Morality to increase or decrease Morality
 			*	Try to make multiple options that either increase or decrease morality
 			*	right now there is not much done with morality so anything that can be added would be good.
@@ -317,6 +357,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				if (roll <= 33)
 				{
 					ss << girlName + " confessed her shameful actions that she did at work, asking for the God's forgiveness.\n";
+					U_Morality += 2;
 				}
 				else if (roll <= 66)
 				{
@@ -441,7 +482,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			imagetype = IMGTYPE_SWIM;
 			U_Happiness += 5;
 			ss << girlName << " went to the local pool.\n";
-			if (g_Girls.GetStat(girl, STAT_TIREDNESS) > 35)
+			if (g_Girls.GetStat(girl, STAT_TIREDNESS) > 25)
 			{
 				ss << "Being on the tired side, she just decided to lay around the pool and get some sun.  She is going to have a tan for a few days.\n";
 				U_Beauty += 5;
@@ -540,11 +581,17 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				AddictBuysDrugs("Shroud Addict", "Shroud Mushroom", girl, brothel, Day0Night1);
 				break;
 			}
+			if (g_Girls.HasTrait(girl, "Alcoholic") || (girl->happiness() < 30))
+			{
+				AddictBuysDrugs("Alcoholic", "Alcohol", girl, brothel, Day0Night1);
+				break;
+			}
 		}
 		break;	// end FT_BuyDrugs
 
 		case FT_WindowShopping:
 		{
+			imagetype = IMGTYPE_SHOP;
 			int hap = g_Dice % 10 - 4;
 			U_Happiness += hap;
 			ss << girlName << " wandered around the shops trying things on that she knew she could not afford. Though she wasted the shop girl's time, ";
@@ -559,6 +606,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			int numberToBuy = g_Dice % 10;	// try to buy up to 10 things
 			int itemsBought = 0;
 			string buyList = "";
+			imagetype = IMGTYPE_SHOP;
 
 			for (int i = 0; i < numberToBuy && girl->m_NumInventory < 40; i++)
 			{
@@ -620,7 +668,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			if (itemsBought > 0)
 			{
 				U_Happiness += 5 + (itemsBought * 2);
-				ss << " She did some shopping, and bought: " << buyList << ".";
+				ss << "She did some shopping, and bought: " << buyList << ".";
 				imagetype = IMGTYPE_SHOP;
 			}
 			else
@@ -637,9 +685,22 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 		case FT_ClinicVisit:
 		{
-			ss <<girlName<< " goes to the Clinic to cheer up the patients.";
+			ss << girlName << " goes to the Clinic";
+			if (g_Girls.GetStat(girl, STAT_MORALITY) >= 40)
+			{
+				ss << " to cheer up the patients.";
+				U_Morality += 5;
+			}
+			else if (g_Girls.GetStat(girl, STAT_MORALITY) <= -40)
+			{
+				ss << " to mock the patients for been sick.";
+				U_Morality -= 2;
+			}
+			else
+			{
+				ss << " to check on one of her friends.";//not the best
+			}
 			U_Happiness += 5;
-			U_Morality += 5;
 			// needs more options
 		}
 		break;	// end FT_ClinicVisit
@@ -715,7 +776,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					ss << "\n" << girlName << " was charged " << cost << " gold for her checkup";
 					if (girl->m_Money - cost < 0)
 					{
-						ss << " but she did not have enough money. The Doctor unzipped his pants and allowed her to work in off";
+						ss << " but she did not have enough money. The Doctor unzipped his pants and allowed her to work it off";
 						imagetype = IMGTYPE_ORAL;
 					}
 					else
@@ -735,23 +796,281 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 
 		case FT_WatchMovie:
-			break;	// end FT_WatchMovie	
+		{
+			// `CRAZY` This is movies she can watch
+			/*default*/	int mov_type = 1;    string mov_type_text = "a porno";
+			/* */if (roll_c <= 20)	{ mov_type = 4; mov_type_text = "a romance movie"; }
+			else if (roll_c <= 40)	{ mov_type = 3; mov_type_text = "a comedy"; }
+			else if (roll_c <= 60)	{ mov_type = 2; mov_type_text = "a scary movie"; }
+			else if (roll_c >= 80)	{ mov_type = 0; mov_type_text = "an action film"; }
+
+			ss << girlName << " decides to go watch a movie.";
+			ss << "They were playing " << mov_type_text << ".\n";
+			U_Money -= 10;
+				if (roll_c <= 20) //romance
+					{
+						if (g_Girls.HasTrait(girl, "Pessimist"))
+						{
+							if (HateLove >= 80) //loves you
+							{
+								ss << "Even though " << girlName << " loves you greatly this kind of movie always make her Pessiistic nature show up. She thinks the two of you will never get a happy ending like in this movie.\n";
+							}
+							else
+							{
+								ss << "Being the Pessimist she is she hates sappy love movies as she don't believe she will ever find her true love.\n";
+							}
+							U_Happiness -= 5;  roll = 4;
+						}
+				else if (g_Girls.HasTrait(girl, "Optimist"))
+						{
+							if (HateLove >= 80) //loves you
+							{
+								ss << girlName << " loves you greatly and her Optimistic nature makes her know that one day the two of you will have a happy ending just like in this movie.\n";
+							}
+							else
+							{
+								ss << "Being the Optimist she is she loves this kind of movie. She knows one day she will find her true love.\n";
+							}
+							U_Happiness += 5;  roll = 96;
+						}
+					}
+				else if (roll_c <= 40) //comedy
+					{
+						if (g_Girls.HasTrait(girl, "Aggressive"))
+						{
+							ss << girlName << "'s aggressive nature makes her wish the movie would have been an action flick.\n";
+							U_Happiness -= 5;  roll = 4;
+						}
+					}
+				else if (roll_c <= 60) //scary
+					{
+						if (g_Girls.HasTrait(girl, "Meek"))
+						{
+							ss << girlName << " Meekly ran from the theater crying. Seems she shouldn't have watched this kind of movie.\n";
+							U_Happiness -= 5; roll = 4;
+						}
+					}
+				else if (roll_c <= 80) //porno
+					{
+						if (g_Girls.HasTrait(girl, "Shy"))
+						{
+							ss << girlName << " face turned blood red when the movie got going. She snuck out of the movie and ran home.\n";
+							U_Happiness -= 5; roll = 4;
+						}
+						else if (g_Girls.HasTrait(girl, "Nymphomaniac"))
+						{
+							ss << girlName << " loves everything to do with sex so this is her type of movie.\n";
+							U_Libido += 5; roll = 96;
+							if (g_Girls.GetStat(girl, STAT_LIBIDO) >= 70)
+							{
+								ss << "The movie started to turn her on so she started to pleasure herself. ";
+								if (roll_d <= 20)
+								{
+									ss << "A man noticed and approched her asking if she wanted the real thing instead of her fingers.";
+									if (g_Girls.HasTrait(girl, "Virgin"))
+									{
+										ss << " She informs him she is a Virgin and that she won't be having sex with him.";
+									}
+									else if (g_Girls.HasTrait(girl, "Lesbian"))
+									{
+										ss << " She informs him she is a Lesbian and that she doesn't have sex with guys.";
+									}
+									else if (HateLove >= 80 && g_Girls.GetStat(girl, STAT_LIBIDO) > 99)
+									{
+										ss <<" Despite the fact that she is in love with you she couldn't help herself her lust is to great and she agrees. ";
+										imagetype = IMGTYPE_SEX; U_Libido -= 15;
+										g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, 1);
+									}
+									else if (HateLove >= 80 && g_Girls.GetStat(girl, STAT_LIBIDO) <= 99)
+									{
+										ss << " She tells him she is in love and that he can't compare to her love. She finishes herself off then leaves with a smile on her face.";
+										imagetype = IMGTYPE_MAST; U_Libido -= 15;
+									}
+									else
+									{
+										ss << " She takes him up on the offer as she prefers the real thing.";
+										imagetype = IMGTYPE_SEX; U_Libido -= 15;
+										g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, 1);
+									}
+								}
+								else
+								{
+									imagetype = IMGTYPE_MAST; U_Libido -= 15;
+								}
+							}
+						}
+					}
+				else //action
+					{
+						if (g_Girls.HasTrait(girl, "Aggressive"))
+						{
+							ss << girlName + "'s loves this type of movie with all the action it gets her blood pumping.\n";
+							U_Happiness += 5;  roll = 96;
+						}
+					}
+				if (roll <= 5)
+					{ ss << girlName << " thought the movie was crap.\n"; }
+				else if (roll >= 95)
+					{ ss << girlName << " thought the movie was amazing she had a really great time.\n"; }
+				else
+					{ ss << girlName << " enjoyed herself. The movie wasn't the best she ever seen but she had a good time.\n"; }
+				}
+			break;	// end FT_WatchMovie
+
 		case FT_Concert:
+		{
+			// `CRAZY` The type of music at the concert
+			/*default*/	int song_type = 1;    string song_type_text = "Death Metal";
+			/* */if (roll_c <= 14)	{ song_type = 6; song_type_text = "Goth Rock"; }
+			else if (roll_c <= 28)	{ song_type = 5; song_type_text = "Classical"; }
+			else if (roll_c <= 42)	{ song_type = 4; song_type_text = "Metal"; }
+			else if (roll_c <= 56)	{ song_type = 3; song_type_text = "Rock"; }
+			else if (roll_c <= 70)	{ song_type = 2; song_type_text = "Country"; }
+			else if (roll_c >= 88)	{ song_type = 0; song_type_text = "Pop"; }
+
+			ss << girlName << " decides to go watch a movie.";
+			ss << "They were playing " + song_type_text + " music.\n";
+				if (roll_c <= 14) //goth rock
+					{
+					}
+				else if (roll_c <= 28) //classical
+					{
+					}
+				else if (roll_c <= 42) //metal
+					{
+					}
+				else if (roll_c <= 56) //rock
+					{
+					}
+				else if (roll_c <= 70) //country
+					{
+					}
+				else if (roll_c <= 87) //death metal
+					{
+					}
+				else //pop
+					{
+					}
+				if (roll <= 5)//did she enjoy it or not?
+					{ ss << girlName << " thought the conert was crap.\n"; }
+				else if (roll >= 95)
+					{ ss << girlName << " thought the concert was amazing she had a really great time.\n"; }
+				else
+					{ ss << girlName << " enjoyed herself. The concert wasn't the best she ever been to but she had a good time.\n"; }
+
+				if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85)
+					{
+						ss << "Having seen her amazing beauty the band invites her to come backstage and meet them.\n";
+						if (roll <= 5)
+						{
+							ss << girlName << " declined as she thought they sucked.\n";
+						}
+						else if (roll >= 95)
+						{
+							ss << girlName << " accepted with great joy.\n"; U_Happiness += 5;
+						}
+						else
+						{
+							if (roll <= 50)
+							{
+								ss << girlName << " told them she had a good time but had to be going.\n";
+							}
+							else
+							{
+								ss << girlName << " enjoyed herself so she accepted.\n";
+							}
+						}
+					}
+				}
 			break;	// end FT_Concert
+
 		case FT_Picnic:
-			break;	// end FT_Picnic		
+			break;	// end FT_Picnic	
+
 		case FT_VisitBar:
+			{
+				if (g_Girls.HasTrait(girl, "Alcoholic"))
+					{
+						ss << "As an Alcoholic she loves coming to the bar.\n"; U_Happiness += 15;
+					}
+				if (g_Girls.GetStat(girl, STAT_HAPPINESS) < 50)
+					{
+						ss << girlName << " feeling a little down, decide to get drunk while she was at the bar.\n"; U_Health -= 5;
+					}
+				else
+					{
+						ss << girlName << " was in a good mood so she had a few drinks and talked to the people around her.\n"; U_Happiness += 5;
+					}
+			}
 			break;	// end FT_VisitBar
+
 		case FT_Club:
+			{
+			sGirl* clubbaronduty = NULL;
+			sGirl* stripperonduty = NULL;
+			string clubbarname = "the Bartender";	// Who?
+			string strippername = "the Stripper";
+			vector<sGirl *> clubbar = g_Brothels.GirlsOnJob(0, JOB_SLEAZYBARMAID, Day0Night1);
+			if (clubbar.size() > 0) clubbaronduty = clubbar[g_Dice%clubbar.size()];
+			if (clubbaronduty)	clubbarname = "Bartender " + clubbaronduty->m_Realname + "";
+			else clubbarname = "";	// no clubbar
+			vector<sGirl *> stripper = g_Brothels.GirlsOnJob(0, JOB_BARSTRIPPER, Day0Night1);
+			if (stripper.size() > 0) stripperonduty = stripper[g_Dice%stripper.size()];
+			if (stripperonduty) strippername = "Stripper " + stripperonduty->m_Realname + "";
+			else strippername = "";
+			
+				ss << girlName << " puts on her best dress before leaving.";
+				if (clubbaronduty)
+				{
+				ss << girlName << " says hi to " << clubbarname << ".\n"; //
+				}
+				if (g_Girls.HasTrait(girl, "Lesbian"))
+					{
+						ss << " She takes in some exotic dancing from some of the strippers there.";
+						/*if (roll <= 15 && stripperonduty)
+						{ 
+							ss << " She ends up buying a lap dance from << strippername << ".\n""; 
+						}*/
+					}
+				imagetype = IMGTYPE_FORMAL;;
+			}
 			break;	// end FT_Club
+
 		case FT_Quest:
 			break;	// end FT_Quest
+
 		case FT_Hobby:
+			/*{
+				ss << girlName << " decided to do her hobby today.";
+				if (g_Girls.HasTrait(girl, "Nymphomaniac") && g_Girls.GetStat(girl, STAT_LIBIDO) > 80)
+					{
+						message += girlName + " went out looking to get laid.\n";
+					}
+				else if (g_Girls.HasTrait(girl, "Nerd"))
+					{
+						message += girlName + " stayed inside and read a book.\n";
+					}
+			}*/
 			break;	// end FT_Hobby
+
 		case FT_Counseling:
 			break;	// end FT_Counseling
 		case FT_WatchFights:
 			break;	// end FT_WatchFights
+		case FT_StrollInCity:
+			break;	// end FT_StrollInCity
+		case FT_Casino:
+			break;	// end FT_Casino
+		case FT_CountrySide:
+			break;	// end FT_CountrySide
+		case FT_WorkOut:
+			ss << girlName << " decided to workout today.";
+			g_Girls.UpdateStat(girl, STAT_CONSTITUTION, g_Dice % 2);
+			g_Girls.UpdateStat(girl, STAT_AGILITY, g_Dice % 2);
+			g_Girls.UpdateStat(girl, STAT_BEAUTY, g_Dice % 2);
+			break;	// end FT_WorkOut
+		
+
 
 
 		case FT_Nothing:
@@ -782,35 +1101,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 		if (girl->m_Money < 1 || girl->m_NumInventory >= 40)
 		{
-			if (g_Girls.GetStat(girl, STAT_TIREDNESS) >= 80) { roll_b = 90; }
-			if (g_Girls.GetStat(girl, STAT_HEALTH) <= 30)   { roll_b = 90; }
-			if (g_Girls.HasTrait(girl, "Adventurer"))	   { roll_a += 30; }
-			/* if (roll_a <= 75)	{ general = true; }
-			else if (roll_a <= 90)	{ quest = true; }*/
-
-			/*May be best to handle this differently then this.  Could have it where one of the rolls is do hobby.
-			Hobby would be like girl goes on adventurer or nympho looks for sex or nerd goes to libary or look for fight
-			May make it much easier then all of this.
-
-			Try and figure out how you could make the girls apper to talk to each other..  Figure just have it look for girl
-			on certain jobs.  Have it like girl talks to the barmaid while she works... not sure how to do this yet.*/
-
-			// `CRAZY` This is general things any girl can do
-			/*default*/	int gen_type = 1;    string gen_type_text = "stayed in bed most of the day";
-			/* */if (roll_b <= 6)	{ gen_type = 12; gen_type_text = "went to the local temple"; }
-			else if (roll_b <= 14)	{ gen_type = 11; gen_type_text = "went to the clinic for a checkup"; }
-			else if (roll_b <= 22)	{ gen_type = 10; gen_type_text = "went to a salon"; }
-			else if (roll_b <= 30)	{ gen_type = 9; gen_type_text = "went to have a picnic"; }
-			else if (roll_b <= 38)	{ gen_type = 8; gen_type_text = "decided to do one of her hobby's today"; }
-			else if (roll_b <= 46)	{ gen_type = 7; gen_type_text = "went to a local concert"; }
-			else if (roll_b <= 54)	{ gen_type = 6; gen_type_text = "took a bath"; }
-			else if (roll_b <= 62)	{ gen_type = 5; gen_type_text = "went to the local pool"; }
-			else if (roll_b <= 70)	{ gen_type = 4; gen_type_text = "decided to cook a meal"; }
-			else if (roll_b <= 78)	{ gen_type = 3; gen_type_text = "went to the movies"; }
-			else if (roll_b <= 86)	{ gen_type = 2; gen_type_text = "went to the club"; }
-			else if (roll_b >= 94)	{ gen_type = 0; gen_type_text = "went to the bar"; }
 			//add country side, casino, stroll in the city, go watch a fight at the arena
-			//casino is gone till i figure out a way for them to actually loose or gain money
 
 			// `CRAZY` This is things she can explore on a quest
 			/*default*/	int adv_type = 1;    string adv_type_text = "a cave";
@@ -818,38 +1109,6 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			else if (roll_b <= 40)	{ adv_type = 3; adv_type_text = "the country side"; }
 			else if (roll_b <= 60)	{ adv_type = 2; adv_type_text = "an old temple"; }
 			else if (roll_b >= 80)	{ adv_type = 0; adv_type_text = "a local mountain"; }
-
-			// `CRAZY` This is movies she can watch
-			/*default*/	int mov_type = 1;    string mov_type_text = "a porno";
-			/* */if (roll_c <= 20)	{ mov_type = 4; mov_type_text = "a romance movie"; }
-			else if (roll_c <= 40)	{ mov_type = 3; mov_type_text = "a comedy"; }
-			else if (roll_c <= 60)	{ mov_type = 2; mov_type_text = "a scary movie"; }
-			else if (roll_c >= 80)	{ mov_type = 0; mov_type_text = "an action film"; }
-
-			// `CRAZY` The type of music at the concert
-			/*default*/	int song_type = 1;    string song_type_text = "Death Metal";
-			/* */if (roll_c <= 14)	{ song_type = 6; song_type_text = "Goth Rock"; }
-			else if (roll_c <= 28)	{ song_type = 5; song_type_text = "Classical"; }
-			else if (roll_c <= 42)	{ song_type = 4; song_type_text = "Metal"; }
-			else if (roll_c <= 56)	{ song_type = 3; song_type_text = "Rock"; }
-			else if (roll_c <= 70)	{ song_type = 2; song_type_text = "Country"; }
-			else if (roll_c >= 88)	{ song_type = 0; song_type_text = "Pop"; }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -874,479 +1133,6 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					{
 					}
 				}
-				else
-				{
-					general = true;
-				}
-			}
-			else if (general)
-			{
-				message += girlName + " had some free time so she " + gen_type_text + ".\n";
-				if (roll_b <= 6) //temple
-				{
-					if (g_Girls.GetStat(girl, STAT_MORALITY) >= 80)
-						if (roll <= 33)
-						{
-							message += girlName + " prayed for a couple of hours just to actively participate in the mass. Afterwards she helped cleaning the temple grounds.\n";
-						}
-						else if (roll <= 66)
-						{
-							message += "She spent almost her entire free time praying! But from her line of work, she got used to being on her knees for long hours.\n";
-						}
-						else
-						{
-							message += "Being at the sanctuary for her whole free time, she could swear that she noticed a presents of some sort of holly being.\n";
-						}
-					else if (g_Girls.GetStat(girl, STAT_MORALITY) >= 60)
-						if (roll <= 33)
-						{
-							message += girlName + " confessed her shameful actions that she did at work, asking for the God's forgiveness.\n";
-						}
-						else if (roll <= 66)
-						{
-							message += "She humbly sit down in the last row. Focused and with lot of interest, she listening to the whole mass.\n";
-						}
-						else
-						{
-							message += "Today she cleaned up a road side shrine and decorating it with fresh flowers.\n";
-						}
-					else if (g_Girls.GetStat(girl, STAT_MORALITY) >= 40)
-						if (roll <= 33)
-						{
-							message += girlName + " starts to find this way of spending free time being interesting. Wanting to know more she listens to the preacher.\n";
-						}
-						else if (roll <= 66)
-						{
-							message += "After participating in today's ceremony she felt happier.\n"; happy += 5;
-						}
-						else
-						{
-							message += "Being late, she tried to find a place to sit. Happily she noticed some free sits on the other side of the church. Unfortunately her high heels were knocking pretty loud while walking on the churches stone floor, disturbing that part of the mass with silence prays.\n";
-						}
-					else if (g_Girls.GetStat(girl, STAT_MORALITY) >= 20)
-						if (roll <= 33)
-						{
-							message += girlName + " made a quick stop at the local temple for a short pray before heading further into town.\n";
-						}
-						else if (roll <= 66)
-						{
-							message += "On her way back, she gave a short pray  in front of a road side shrine.\n";
-						}
-						else
-						{
-							message += "After eavesdropping on a couple of girls at work talking about a nearby temple, she decided to visit this holy place. Listening to the preacher she felt that the girls was right about this place.\n";
-						}
-					else if (g_Girls.GetStat(girl, STAT_MORALITY) <= -20)
-						if (roll <= 33)
-						{
-							message += girlName + " tried to listen to the preachers lecture, but she fell asleep halfway thru!\n";
-						}
-						else if (roll <= 66)
-						{
-							message += "She was about to enter the sanctuary but she noticed a really cut kitten. She spent the time playing with the cat.\n";
-						}
-						else
-						{
-							message += "After eavesdropping couple girls at work talking about a nearby temple, she decided to visit this holy place. Listening to the preacher she felt that the girls was wrong about this place. Being bored she left in the middle of the mass.\n";
-						}
-					else if (g_Girls.GetStat(girl, STAT_MORALITY) <= -40)
-						if (roll <= 33)
-						{
-							message += girlName + " threw some special weeds from your farm into a goblet of fire, standing in front of one of the side altars. Later on, most of praying at the altar swear that they saw angels!\n";
-						}
-						else if (roll <= 66)
-						{
-							message += "At the church, she noticed a really young priest hearing to today's confessions. Feeling mischievous she entered the confessional. After confessing her sins in high detail, she proposed to recreate them with him! The abashed youngster gave her a couple of prays as penance and left right after.\n";
-						}
-						else
-						{
-							message += "Getting bored at the mass, she started to whisper things to a man sitting next to her, not bothering with the fact that his wife was sitting next to him!\n";
-						}
-					else if (g_Girls.GetStat(girl, STAT_MORALITY) <= -60)
-						if (roll <= 33)
-						{
-							message += girlName + " entered the confessional. Whispering sensually of her job experiences, all in high details, she made the priest have a heart attack! When the man was squirming in pain on the floor, she left the temple laughing.\n";
-						}
-						else if (roll <= 66)
-						{
-							message += "Dressed really slutty, she parade the mid lane of the church, wearing high hills that were heard all over the place, just to take a sit in the first row. The pose she had sat in, was to expose her pussy to all priests on the altar performing the holy mass.\n";
-						}
-						else
-						{
-							message += " In front of a temple she approached a young monk. After a brief chat about god, faith and salvation she gave him a proposal. Claiming that it was such waste for such young and handsome man to live in chastity, she proposed he could spend some quality, fun time with her. The man quickly run inside whispering some kind of manta, while the girl went her own way laughing.\n";
-						}
-					else if (g_Girls.GetStat(girl, STAT_MORALITY) <= -80)
-						if (roll <= 33)
-						{
-							message += girlName + " came to the temple with one of girls working for you, but her companion flew right after seeing what kind place of worship this was. No human sacrifice provided by " + girlName + " today, sorry.\n";
-						}
-						else if (roll <= 66)
-						{
-							message += "Scheming against the church, she came with a brilliant idea. Promising local, young tugs to repay a favor with her body, she made them to assault and beat up a group of priests. Not waiting for the outcome of the brawl, she disappear not holding to her end of the deal.\n";
-						}
-						else
-						{
-							message += "Not liking the architecture style of the temple she decided to do something about that. Unfortunately for her, the fire was extinguished fairly quickly.\n";
-						}
-					else
-						if (roll <= 33)
-						{
-							message += girlName + " was on her way to pray in the local temple, but on the way there, she saw a beautiful bag on display. After entering the shop, she spent several hours, picking out the perfect bag for herself before returning.\n";
-						}
-						else if (roll <= 66)
-						{
-							message += "Attending the mass she felt some how bored and not focused on the topic. She even yawn couple of times, fighting not to fell asleep.\n";
-						}
-						else
-						{
-							message += "She visited the local church feeling somehow down. Listening to the preacher didn't have much impact on improving her mood.\n";
-						}
-				}
-				else if (roll_b <= 14) //clinic
-				{
-					if (g_Girls.HasTrait(girl, "AIDS") || g_Girls.HasTrait(girl, "Chlamydia") || g_Girls.HasTrait(girl, "Herpes") || g_Girls.HasTrait(girl, "Syphilis"))
-					{
-						message += "The doctor told her she has an STD.\n";
-					}
-					if (g_Girls.GetStat(girl, STAT_HEALTH) >= 90)
-					{
-						message += "Her check up went wonderful. She was told she was in near perfect health.\n"; happy += 5;
-					}
-					else if (g_Girls.GetStat(girl, STAT_HEALTH) < 90)
-					{
-						message += "Her check up went good. She was told she was in very good health.\n";
-					}
-					else if (g_Girls.GetStat(girl, STAT_HEALTH) <= 50)
-					{
-						message += "Her check up decent. She was told she was in fair health.\n";
-					}
-					else if (g_Girls.GetStat(girl, STAT_HEALTH) <= 20)
-					{
-						message += "Her check up went poorly. She was told she was in bad health.\n"; happy -= 5; roll = 4;
-					}//should hopefully get a booster shot to help her gain health faster
-					if (roll <= 5)
-					{
-						message += "The doctor decides to give her a booster shot."; g_Girls.UpdateStat(girl, STAT_HEALTH, 10);
-					}
-				}
-				else if (roll_b <= 22) //salon
-				{
-					message += "Had her hair and nails done today. She is going look better for a few days.\n";
-					g_Girls.UpdateTempStat(girl, STAT_BEAUTY, 5);
-				}
-				else if (roll_b <= 30) //picnic
-				{
-				}
-				else if (roll_b <= 38) //hobby
-				{
-					if (g_Girls.HasTrait(girl, "Nymphomaniac") && g_Girls.GetStat(girl, STAT_LIBIDO) > 80)
-					{
-						message += girlName + " went out looking to get laid.\n";
-					}
-					else if (g_Girls.HasTrait(girl, "Nerd"))
-					{
-						message += girlName + " stayed inside and read a book.\n";
-					}
-				}
-				else if (roll_b <= 46) //concert
-				{
-					message += "They were playing " + song_type_text + " music.\n";
-					if (roll_c <= 14) //goth rock
-					{
-					}
-					else if (roll_c <= 28) //classical
-					{
-					}
-					else if (roll_c <= 42) //metal
-					{
-					}
-					else if (roll_c <= 56) //rock
-					{
-					}
-					else if (roll_c <= 70) //country
-					{
-					}
-					else if (roll_c <= 87) //death metal
-					{
-					}
-					else //pop
-					{
-					}
-					if (roll <= 5)
-					{
-						message += girlName + " thought the conert was crap.\n";
-					}
-					else if (roll >= 95)
-					{
-						message += girlName + " thought the concert was amazing she had a really great time.\n";
-					}
-					else
-					{
-						message += girlName + " enjoyed herself. The concert wasn't the best she ever been to but she had a good time.\n";
-					}
-					if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85)
-					{
-						message += "Having seen her amazing beauty the band invites her to come backstage and meet them.\n";
-						if (roll <= 5)
-						{
-							message += girlName + " declined as she thought they sucked.\n";
-						}
-						else if (roll >= 95)
-						{
-							message += girlName + " accepted with great joy.\n"; happy += 5;
-						}
-						else
-						{
-							if (roll <= 50)
-							{
-								message += girlName + " told them she had a good time but had to be going.\n";
-							}
-							else
-							{
-								message += girlName + " enjoyed herself so she accepted.\n";
-							}
-						}
-					}
-				}
-				else if (roll_b <= 54) //bath
-				{
-					imagetype = IMGTYPE_BATH; happy += 5; health += 5;
-					if (g_Girls.GetStat(girl, STAT_LIBIDO) > 70)
-					{
-						message += "While in the tub the mood hit her and she proceed to pleasure herself.\n";
-						imagetype = IMGTYPE_MAST; g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -15);
-					}
-					else
-					{
-						message += "She enjoyed a nice long soak.\n"; g_Girls.UpdateStat(girl, STAT_TIREDNESS, -5);
-					}
-				}
-				else if (roll_b <= 62) //pool
-				{
-					imagetype = IMGTYPE_SWIM;;
-					g_Girls.UpdateStat(girl, STAT_HAPPINESS, 5);
-					if (g_Girls.GetStat(girl, STAT_TIREDNESS) > 35)
-					{
-						message += "Begin on the tired side she just decided to lay around the pool and get some sun.  She is going to have a tan for a few days.\n";
-						g_Girls.UpdateTempStat(girl, STAT_BEAUTY, 5);
-						if (roll < 15)
-						{
-							message += "A rather brave man saw her laying there and decide to try and remove her top.";
-							if (g_Girls.HasTrait(girl, "Psychic"))
-							{
-								message += " But using her Psychic skills she stopped him before he could do it.";
-							}
-							else
-							{
-								if (g_Girls.HasTrait(girl, "Massive Melons") || g_Girls.HasTrait(girl, "Abnormally Large Boobs") || g_Girls.HasTrait(girl, "Titanic Tits"))
-								{
-									message += " He succeed and was able to expose her gigantic boobs.";
-								}
-								else if (g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Busty Boobs") || g_Girls.HasTrait(girl, "Giant Juggs"))
-								{
-									message += " He succeed and was able to expose her large breasts.";
-								}
-								else if (g_Girls.HasTrait(girl, "Small boobs") || g_Girls.HasTrait(girl, "Petite Breasts"))
-								{
-									message += " He succeed and was able to expose her small and perky tits.";
-								}
-								else if (g_Girls.HasTrait(girl, "Flat Chest"))
-								{
-									message += " He succeed and was able to expose her rather Flat Chest.";
-								}
-								else
-								{
-									message += " He was able to do it exposing her breasts.";
-								}
-								imagetype = IMGTYPE_NUDE;
-							}
-						}
-					}
-					else
-					{
-						message += "She took a dive into the pool and swam for awhile enjoying herself.\n";
-					}
-				}
-				else if (roll_b <= 70) //cook
-				{
-					imagetype = IMGTYPE_COOK;;
-					message += "The meal she cooked was \n";
-					if (g_Girls.GetSkill(girl, SKILL_SERVICE) >= 85)//use service for now on how well she can cook.. if cooking skill ever gets added can be changed then
-					{
-						message += "amazing.  She really knows how to cook.\n"; g_Girls.UpdateStat(girl, STAT_HEALTH, 5);
-					}
-					else if (g_Girls.GetSkill(girl, SKILL_SERVICE) < 85)
-					{
-						message += "pretty good. She isn't the best but with some work she could be.\n";
-					}
-					else if (g_Girls.GetSkill(girl, SKILL_SERVICE) < 50)
-					{
-						message += "plain. She really needs some practice at this.\n";
-					}
-					else
-					{
-						message += "awful. It can't really be called food it was so bad.\n";
-					}
-					g_Girls.UpdateSkill(girl, SKILL_SERVICE, 1);
-				}
-				else if (roll_b <= 78) //movies
-				{
-					message += "They were playing " + mov_type_text + ".\n";
-					if (roll_c <= 20) //romance
-					{
-						if (g_Girls.HasTrait(girl, "Pessimist"))
-						{
-							if (HateLove >= 80) //loves you
-							{
-								message += "Even though " + girlName + " loves you greatly this kind of movie always make her Pessiistic nature show up. She thinks the two of you will never get a happy ending like in this movie.\n";
-							}
-							else
-							{
-								message += "Being the Pessimist she is she hates sappy love movies as she don't believe she will ever find her true love.\n";
-							}
-							g_Girls.UpdateStat(girl, STAT_HAPPINESS, -5);  roll = 4;
-						}
-						else if (g_Girls.HasTrait(girl, "Optimist"))
-						{
-							if (HateLove >= 80) //loves you
-							{
-								message += girlName + " loves you greatly and her Optimistic nature makes her know that one day the two of you will have a happy ending just like in this movie.\n";
-							}
-							else
-							{
-								message += "Being the Optimist she is she loves this kind of movie. She knows one day she will find her true love.\n";
-							}
-							g_Girls.UpdateStat(girl, STAT_HAPPINESS, 5);  roll = 96;
-						}
-					}
-					else if (roll_c <= 40) //comedy
-					{
-						if (g_Girls.HasTrait(girl, "Aggressive"))
-						{
-							message += girlName + "'s aggressive nature makes her wish the movie would have been an action flick.\n";
-							g_Girls.UpdateStat(girl, STAT_HAPPINESS, -5);  roll = 4;
-						}
-					}
-					else if (roll_c <= 60) //scary
-					{
-						if (g_Girls.HasTrait(girl, "Meek"))
-						{
-							message += girlName + " Meekly ran from the theater crying. Seems she shouldn't have watched this kind of movie.\n";
-							g_Girls.UpdateStat(girl, STAT_HAPPINESS, -5); roll = 4;
-						}
-					}
-					else if (roll_c <= 80) //porno
-					{
-						if (g_Girls.HasTrait(girl, "Shy"))
-						{
-							message += girlName + " face turned blood red when the movie got going. She snuck out of the movie and ran home.\n";
-							g_Girls.UpdateStat(girl, STAT_HAPPINESS, -5); roll = 4;
-						}
-						else if (g_Girls.HasTrait(girl, "Nymphomaniac"))
-						{
-							message += girlName + " loves everything to do with sex so this is her type of movie.\n";
-							g_Girls.UpdateTempStat(girl, STAT_LIBIDO, 5); roll = 96;
-							if (g_Girls.GetStat(girl, STAT_LIBIDO) >= 70)
-							{
-								message += "The movie started to turn her on so she started to pleasure herself. ";
-								if (roll_d <= 20)
-								{
-									message += "A man noticed and approched her asking if she wanted the real thing instead of her fingers.";
-									if (g_Girls.HasTrait(girl, "Virgin"))
-									{
-										message += " She informs him she is a Virgin and that she won't be having sex with him.";
-									}
-									else if (g_Girls.HasTrait(girl, "Lesbian"))
-									{
-										message += " She informs him she is a Lesbian and that she doesn't have sex with guys.";
-									}
-									else if (HateLove >= 80 && g_Girls.GetStat(girl, STAT_LIBIDO) > 99)
-									{
-										message += " Despite the fact that she is in love with you she couldn't help herself her lust is to great and she agrees. ";
-										imagetype = IMGTYPE_SEX; g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -15);
-										g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, 1);
-									}
-									else if (HateLove >= 80 && g_Girls.GetStat(girl, STAT_LIBIDO) <= 99)
-									{
-										message += " She tells him she is in love and that he can't compare to her love. She finishes herself off then leaves with a smile on her face.";
-										imagetype = IMGTYPE_MAST; g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -15);
-									}
-									else
-									{
-										message += " She takes him up on the offer as she prefers the real thing.";
-										imagetype = IMGTYPE_SEX; g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -15);
-										g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, 1);
-									}
-								}
-								else
-								{
-									imagetype = IMGTYPE_MAST; g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -15);
-								}
-							}
-						}
-					}
-					else //action
-					{
-						if (g_Girls.HasTrait(girl, "Aggressive"))
-						{
-							message += girlName + "'s loves this type of movie with all the action it gets her blood pumping.\n";
-							g_Girls.UpdateStat(girl, STAT_HAPPINESS, -5);  roll = 96;
-						}
-					}
-					if (roll <= 5)
-					{
-						message += girlName + " thought the movie was crap.\n";
-					}
-					else if (roll >= 95)
-					{
-						message += girlName + " thought the movie was amazing she had a really great time.\n";
-					}
-					else
-					{
-						message += girlName + " enjoyed herself. The movie wasn't the best she ever seen but she had a good time.\n";
-					}
-				}
-				else if (roll_b <= 86) //club
-				{
-					message += girlName + " puts on her best dress before leaving.";
-					//message += girlName + " says hi to " + clubbar->m_Realname + ".\n";  zzzzz needs work FIXME just a test to see it worked it didnt
-					if (g_Girls.HasTrait(girl, "Lesbian"))
-					{
-						message += " She takes in some exotic dancing from some of the strippers there.";
-						/*if (roll <= 15)
-						{ message += " She ends up buying a lap dance from "; }*///have it pull up a club stripper name here
-					}
-					imagetype = IMGTYPE_FORMAL;;
-				}
-				else if (roll_b <= 93) //bed
-				{
-					//need events for this
-					imagetype = IMGTYPE_BED; health += 10; g_Girls.UpdateStat(girl, STAT_TIREDNESS, -10);
-				}
-				else //bar
-				{
-					if (g_Girls.HasTrait(girl, "Alcoholic"))
-					{
-						message += "As an Alcoholic she loves coming to the bar.\n"; happy += 15;
-					}
-					if (g_Girls.GetStat(girl, STAT_HAPPINESS) < 50)
-					{
-						message += girlName + " feeling a little down, decide to get drunk while she was at the bar.\n"; health -= 5;
-					}
-					else
-					{
-						message += girlName + " was in a good mood so she had a few drinks and talked to the people around her.\n"; happy += 5;
-					}
-				}
-			}
-
-
-
-			g_Girls.UpdateStat(girl, STAT_HEALTH, health);
-			g_Girls.UpdateStat(girl, STAT_HAPPINESS, happy);
-			girl->m_Events.AddMessage(message, imagetype, Day0Night1);
-			return false;
-		}
 
 		// 1. if she is addicted she will first attempt to purchase drugs until she has no money
 		if (g_Girls.HasTrait(girl, "Viras Blood Addict"))

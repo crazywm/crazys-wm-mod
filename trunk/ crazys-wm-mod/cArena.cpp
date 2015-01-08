@@ -377,7 +377,7 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 				{	// if they have no job at all, assign them a job
 					ss << "The Doctore assigns " << girlName << " to ";
 					// `J` zzzzzz need to add this in
-					ss << "do nothing because this part of the code has not been added yet.";
+					//ss << "do nothing because this part of the code has not been added yet.";
 					/*
 					JOB_FIGHTBEASTS
 					JOB_FIGHTARENAGIRLS
@@ -385,6 +385,57 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 					JOB_CITYGUARD
 					JOB_CLEANARENA
 					//*/
+					if (GetNumGirlsOnJob(0, JOB_CLEANARENA, Day0Night1) < 1)
+					{
+						current->m_DayJob = current->m_NightJob = JOB_CLEANARENA;
+						ss << "work cleaning the arena.";
+					}
+					else if ((current->is_free() && current->magic() < 50 && current->combat() < 50))
+					{
+						current->m_DayJob = current->m_NightJob = JOB_FIGHTTRAIN;
+						ss << "train for the arena.";
+					}
+					else if (GetNumGirlsOnJob(0, JOB_FIGHTBEASTS, Day0Night1) < 1 && g_Brothels.GetNumBeasts() >= 1)
+					{
+						current->m_DayJob = current->m_NightJob = JOB_FIGHTBEASTS;
+						ss << "work fighting beast in the arena.";
+					}
+					else if (GetNumGirlsOnJob(0, JOB_FIGHTARENAGIRLS, Day0Night1) < 1)
+					{
+						current->m_DayJob = current->m_NightJob = JOB_FIGHTARENAGIRLS;
+						ss << "work fighting other girls in the arena.";
+					}
+					else if (GetNumGirlsOnJob(0, JOB_CITYGUARD, Day0Night1) < 1)
+					{
+						current->m_DayJob = current->m_NightJob = JOB_CITYGUARD;
+						ss << "work helping the city guard.";
+					}
+					// then add more of each job as numbers permit
+					else if (GetNumGirlsOnJob(0, JOB_CLEANARENA, Day0Night1) < numgirls / 20)
+					{
+						current->m_DayJob = current->m_NightJob = JOB_CLEANARENA;
+						ss << "work cleaning the arena.";
+					}
+					else if (current->magic() > 50 && current->combat() > 50 && GetNumGirlsOnJob(0, JOB_FIGHTARENAGIRLS, Day0Night1) < numgirls / 20)
+					{
+						current->m_DayJob = current->m_NightJob = JOB_FIGHTARENAGIRLS;
+						ss << "work fighting other girls in the arena.";
+					}
+					else if (g_Brothels.GetNumBeasts() >= 15 && GetNumGirlsOnJob(0, JOB_FIGHTBEASTS, Day0Night1) < numgirls / 20) //more girls doing this so you should need more beasts
+					{
+						current->m_DayJob = current->m_NightJob = JOB_FIGHTBEASTS;
+						ss << "work fighting other girls in the arena.";
+					}
+					else if (current->magic() > 50 && current->combat() > 50 && GetNumGirlsOnJob(0, JOB_CITYGUARD, Day0Night1) < numgirls / 20)
+					{
+						current->m_DayJob = current->m_NightJob = JOB_CITYGUARD;
+						ss << "work helping the city guard.";
+					}
+					else	// assign anyone else to Traning
+					{
+						current->m_DayJob = current->m_NightJob = JOB_FIGHTTRAIN;
+						ss << "train for the arena.";
+					}
 				}
 				current->m_PrevDayJob = current->m_PrevNightJob = 255;
 				sum = EVENT_BACKTOWORK;
@@ -427,6 +478,13 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 		totalPay = totalTips = totalGold = 0;
 		sum = EVENT_SUMMARY; summary = ""; ss.str("");
 		girlName = current->m_Realname;
+
+		//fight beasts so if there is no beasts dont want them doing nothing
+		if (g_Brothels.GetNumBeasts() == 0)
+		{
+			ss << "There are no beasts so " << girlName << " was sent back to training.";
+			current->m_DayJob = current->m_NightJob = JOB_FIGHTTRAIN;
+		}
 
 		// do their job
 		refused = m_JobManager.JobFunc[sw](current, brothel, Day0Night1, summary);

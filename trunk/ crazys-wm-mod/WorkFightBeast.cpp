@@ -41,6 +41,7 @@ extern cArenaManager g_Arena;
 extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
+cJobManager m_JobManager;
 
 // `J` Arena Job - Fighting
 bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
@@ -107,9 +108,25 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		}
 		else  // she lost or it was a draw
 		{
-			message = " She was unable to win the fight."; enjoy -= 1;
+			message = "She was unable to win the fight."; enjoy -= 1;
+			//Crazy i feel there needs be more of a bad outcome for losses added this... Maybe could use some more
+			if (m_JobManager.is_sex_type_allowed(SKILL_BEASTIALITY, brothel) &&  !g_Girls.HasTrait(girl, "Virgin"))
+			{
+				message = " So as punishment you allow the beast to have its way with her."; enjoy -= 1;
+				g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -50);
+				g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, 2);
+				girl->m_Events.AddMessage(message, IMGTYPE_BEAST, Day0Night1);
+				if (!girl->calc_insemination(g_Brothels.GetPlayer(), false, 1.0))
+				{
+					g_MessageQue.AddToQue(girl->m_Realname + " has gotten inseminated", 0);
+				}
+			}
+			else
+			{
+			message = " So you send your men in to cage the beast before it can harm her.";
 			girl->m_Events.AddMessage(message, IMGTYPE_COMBAT, Day0Night1);
 			g_Girls.UpdateStat(girl, STAT_FAME, -1);
+			}
 		}
 
 		int kills = g_Dice % 6 - 4;		 		// `J` how many beasts she kills 0-2

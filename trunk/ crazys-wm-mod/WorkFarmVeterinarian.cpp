@@ -47,7 +47,7 @@ bool cJobManager::WorkFarmVeterinarian(sGirl* girl, sBrothel* brothel, bool Day0
 	g_Girls.UnequipCombat(girl);
 
 	int fame = 0;
-	int wages = 25;
+	int wages = 25, work = 0;
 	int roll = g_Dice % 100;
 	message += "She worked as a Veterinarian on the farm.";
 	int jobperformance = (g_Girls.GetSkill(girl, SKILL_MEDICINE) +
@@ -100,23 +100,15 @@ bool cJobManager::WorkFarmVeterinarian(sGirl* girl, sBrothel* brothel, bool Day0
 
 
 
+	//enjoyed the work or not
 	if (roll <= 5)
-	{
-		message += " Some of the patrons abused her during the shift.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKFARM, -3, true);
-	}
+	{ message += "\nSome of the patrons abused her during the shift."; work -= 1; }
 	else if (roll <= 25)
-	{
-		message += " She had a pleasant time working.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKFARM, +3, true);
-	}
+	{ message += "\nShe had a pleasant time working."; work += 3; }
 	else
-	{
-		message += " Otherwise, the shift passed uneventfully.";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKFARM, +1, true);
-	}
+	{ message += "\nOtherwise, the shift passed uneventfully."; work += 1; }
 
-
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKFARM, work, true);
 	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, Day0Night1);
 	girl->m_Pay = max(wages, 0);
 

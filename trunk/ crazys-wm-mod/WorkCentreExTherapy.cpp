@@ -43,11 +43,11 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
 // `J` Centre Job - ExTherapy
-bool cJobManager::WorkCentreExTherapy(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkCentreExTherapy(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	string message = "";
 	u_int job = 0;	
-	int msgtype = DayNight;
+	int msgtype = Day0Night1;
 
 
 	if (girl->m_YesterDayJob != JOB_EXTHERAPY)	// if she was not in thearpy yesterday, 
@@ -66,18 +66,18 @@ bool cJobManager::WorkCentreExTherapy(sGirl* girl, sBrothel* brothel, int DayNig
 	if (!hasDoctor)
 	{
 		string message = girl->m_Realname + gettext(" you must have a counselor (require 1)");
-		if(DayNight == 0)	message += gettext("day");
+		if(Day0Night1 == 0)	message += gettext("day");
 		else				message += gettext("night");
 		message += gettext(" Shift.");
 
 		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_WARNING);
 		return true;
 	}
-	if (!g_Girls.HasTrait(girl, "Mind Fucked") &&		// `J` if the girl is not an addict
+	if (!g_Girls.HasTrait(girl, "Mind Fucked") &&		// if the girl dosent need this
 		!g_Girls.HasTrait(girl, "Broken Will"))
 	{
 		message = girl->m_Realname + gettext(" doesn't need extreme therapy for anything so she was sent to the waiting room.");
-		if (DayNight == 0)	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_WARNING);
+		if (Day0Night1 == 0)	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_WARNING);
 		girl->m_YesterDayJob = girl->m_YesterNightJob = JOB_CENTREREST;
 		girl->m_DayJob = girl->m_NightJob = JOB_CENTREREST;
 		girl->m_PrevWorkingDay = girl->m_WorkingDay = 0;
@@ -85,7 +85,7 @@ bool cJobManager::WorkCentreExTherapy(sGirl* girl, sBrothel* brothel, int DayNig
 	}
 
 
-	if(DayNight == 0)
+	if(Day0Night1 == 0)
 	{
 		girl->m_WorkingDay++;
 		job	= girl->m_DayJob;
@@ -101,7 +101,7 @@ bool cJobManager::WorkCentreExTherapy(sGirl* girl, sBrothel* brothel, int DayNig
 		g_Girls.UpdateStat(girl, STAT_HAPPINESS, -5);
 		g_Girls.UpdateStat(girl, STAT_SPIRIT, -5);
 		if (girl->health() - 20 < 1 && (g_Centre.GetNumGirlsOnJob(brothel->m_id, JOB_DRUGCOUNSELOR, true) >= 1 || g_Centre.GetNumGirlsOnJob(brothel->m_id, JOB_DRUGCOUNSELOR, false) >= 1))
-		{	// Don't kill the girl from rehab if a Drug Counselor is on duty
+		{	// Don't kill the girl from therapy if a Drug Counselor is on duty
 			g_Girls.SetStat(girl, STAT_HEALTH, 1);
 			g_Girls.UpdateStat(girl, STAT_PCFEAR, 1);
 			g_Girls.UpdateStat(girl, STAT_PCLOVE, -1);
@@ -140,10 +140,10 @@ bool cJobManager::WorkCentreExTherapy(sGirl* girl, sBrothel* brothel, int DayNig
 
 		if (g_Girls.HasTrait(girl, "Mind Fucked") || g_Girls.HasTrait(girl, "Broken Will"))
 		{
-			// stay in rehab for another session
+			// stay in therapy for another session
 			ss << "\nShe should stay in extreme therapy to treat her other disorders.";
 		}
-		else // get out of rehab
+		else // get out of therapy
 		{
 			ss << "\nShe has been released from therapy.";
 			girl->m_DayJob = JOB_CENTREREST;

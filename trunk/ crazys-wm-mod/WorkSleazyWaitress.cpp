@@ -148,7 +148,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	{
 		if (jobperformance >= 185) //great
 			{ message += "A patron reached out to grab her ass. But she skillfully avoided it" ;
-				if (g_Girls.GetStat(girl, STAT_LIBIDO) > 70)
+				if (g_Girls.GetStat(girl, STAT_LIBIDO) > 70 && !g_Girls.HasTrait(girl, "Lesbian"))
 				{
 					message += " and said that's only on the menu if your willing to pay up. He jumped at the chance to get to try her ass out and bent her over the table and whiping out his " + dick_type_text + " dick."; 
 					wages += g_Girls.GetStat(girl, STAT_ASKPRICE) + 50; imagetype = IMGTYPE_ANAL; g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -20);
@@ -322,7 +322,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 
 	if (g_Girls.HasTrait(girl, "Nymphomaniac") &&  !g_Girls.HasTrait(girl, "Lesbian") && g_Girls.GetStat(girl, STAT_LIBIDO) > 90 && g_Girls.GetSkill(girl, SKILL_HANDJOB) > 80 && g_Dice.percent(25))
 	{
-		message += "During her shift, " + girlName + " unnoticeably dived under the table belonging to a lonely-looking fellow, quickly unzipped his pants and started jacking him off enthusiastically. She skillfully wiped herself when he came all over her face. The whole event took no longer than two minutes, but was well worth the time spent on, since the patron left with a heavy tip.\n";
+		message += "During her shift, " + girlName + " unnoticeably dived under the table belonging to a lonely-looking fellow, quickly unzipped his pants and started jacking him off enthusiastically. She skillfully wiped herself when he came all over her face. The whole event took no longer than two minutes, but was well worth the time spent on it, since the patron left with a heavy tip.\n";
 		wages += 50; imagetype = IMGTYPE_HAND; hand += 2; g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -20);
 	}
 

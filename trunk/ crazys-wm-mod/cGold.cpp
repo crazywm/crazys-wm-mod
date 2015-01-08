@@ -119,11 +119,18 @@ void cGoldBase::movie_income(double income)
 	detail_in.movie_income += income;
 }
 
-// income from movie crystals
+// income from the clinic
 void cGoldBase::clinic_income(double income)
 {
 	m_income += income;
 	detail_in.clinic_income += income;
+}
+
+// income from the arena
+void cGoldBase::arena_income(double income)
+{
+	m_income += income;
+	detail_in.arena_income += income;
 }
 
 // income from the bar
@@ -288,6 +295,11 @@ void cGoldBase::casino_upkeep(double cost)
 }
 
 void cGoldBase::advertising_costs(double cost)
+{
+	m_upkeep += cost;
+}
+
+void cGoldBase::centre_costs(double cost)
 {
 	m_upkeep += cost;
 }

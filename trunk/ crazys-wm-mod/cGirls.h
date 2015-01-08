@@ -769,6 +769,7 @@ struct sGirl
 	{
 		return	has_trait("Shroud Addict") ||
 			has_trait("Fairy Dust Addict") ||
+			has_trait("Alcoholic") ||
 			has_trait("Viras Blood Addict");
 	}
 	bool has_disease()

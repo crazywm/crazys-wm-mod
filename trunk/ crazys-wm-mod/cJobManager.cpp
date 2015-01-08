@@ -290,6 +290,15 @@ void cJobManager::Setup()
 	JobName[JOB_REHAB] = gettext("Rehab");
 	JobDesc[JOB_REHAB] = gettext("She will go to rehab to get over her drug addiction.");
 	JobFunc[JOB_REHAB] = &WorkRehab;
+	//JobName[JOB_THERAPY] = gettext("Therapy");
+	//JobDesc[JOB_THERAPY] = gettext("She will go to therapy to get over her mental problems.");
+	//JobFunc[JOB_THERAPY] = &WorkCentreTherapy;
+	//JobName[JOB_EXTHERAPY] = gettext("Extreme Therapy");
+	//JobDesc[JOB_EXTHERAPY] = gettext("She will go to extreme therapy to get over her hardcore mental problems.");
+	//JobFunc[JOB_EXTHERAPY] = &WorkCentreExTherapy;
+	//JobName[JOB_ANGER] = gettext("Anger Management");
+	//JobDesc[JOB_ANGER] = gettext("She will go to anger management to get over her anger problems.");
+	//JobFunc[JOB_ANGER] = &WorkCentreAngerManagement;
 
 	// - Clinic Surgeries
 	JobFilterName[JOBFILTER_CLINIC] = gettext("Medical Clinic");
@@ -801,6 +810,9 @@ bool cJobManager::FullTimeJob(u_int Job)
 		// - drug centre
 		Job == JOB_DRUGCOUNSELOR ||
 		Job == JOB_REHAB ||
+		Job == JOB_ANGER ||
+		Job == JOB_EXTHERAPY ||
+		Job == JOB_THERAPY ||
 		// - House
 		Job == JOB_HEADGIRL ||
 		Job == JOB_RECRUITER ||
@@ -1263,10 +1275,43 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 			g_MessageQue.AddToQue(gettext("You must have a drug counselor for rehab."), 0);
 		else if (!g_Girls.HasTrait(Girl, "Shroud Addict")
 			&& !g_Girls.HasTrait(Girl, "Fairy Dust Addict")
+			&& !g_Girls.HasTrait(Girl, "Alcoholic")
 			&& !g_Girls.HasTrait(Girl, "Viras Blood Addict"))
 			g_MessageQue.AddToQue(gettext("She has no addictions."), 0);
 		else
 			Girl->m_DayJob = Girl->m_NightJob = JOB_REHAB;
+	}
+	else if (u_int(JobID) == JOB_ANGER)
+	{
+		if (g_Centre.GetNumGirlsOnJob(TargetBrothel, JOB_DRUGCOUNSELOR, Day0Night1) < 1)
+			g_MessageQue.AddToQue(gettext("You must have a counselor for anger management."), 0);
+		else if (!g_Girls.HasTrait(Girl, "Aggressive")
+			&& !g_Girls.HasTrait(Girl, "Tsundere")
+			&& !g_Girls.HasTrait(Girl, "Yandere"))
+			g_MessageQue.AddToQue(gettext("She has no anger issues."), 0);
+		else
+			Girl->m_DayJob = Girl->m_NightJob = JOB_ANGER;
+	}
+	else if (u_int(JobID) == JOB_EXTHERAPY)
+	{
+		if (g_Centre.GetNumGirlsOnJob(TargetBrothel, JOB_DRUGCOUNSELOR, Day0Night1) < 1)
+			g_MessageQue.AddToQue(gettext("You must have a counselor for extreme therapy."), 0);
+		else if (!g_Girls.HasTrait(Girl, "Mind Fucked")
+			&& !g_Girls.HasTrait(Girl, "Broken Will"))
+			g_MessageQue.AddToQue(gettext("She has no extreme issues."), 0);
+		else
+			Girl->m_DayJob = Girl->m_NightJob = JOB_EXTHERAPY;
+	}
+	else if (u_int(JobID) == JOB_THERAPY)
+	{
+		if (g_Centre.GetNumGirlsOnJob(TargetBrothel, JOB_DRUGCOUNSELOR, Day0Night1) < 1)
+			g_MessageQue.AddToQue(gettext("You must have a counselor for therapy."), 0);
+		else if (!g_Girls.HasTrait(Girl, "Nervous")
+			&& !g_Girls.HasTrait(Girl, "Dependant")
+			&& !g_Girls.HasTrait(Girl, "Pessimist"))
+			g_MessageQue.AddToQue(gettext("She has no need of therapy."), 0);
+		else
+			Girl->m_DayJob = Girl->m_NightJob = JOB_THERAPY;
 	}
 // Special Movie Studio Jobs
 	else if (u_int(JobID) == JOB_DIRECTOR && g_Studios.GetNumGirlsOnJob(TargetBrothel, JOB_DIRECTOR, SHIFT_NIGHT) >0)
@@ -1337,8 +1382,8 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 			// centre jobs
 			else if (Girl->m_InCentre)
 			{
-				if ((u_int(OldJobID) == JOB_CENTREMANAGER || u_int(OldJobID) == JOB_DRUGCOUNSELOR || u_int(OldJobID) == JOB_REHAB) &&
-					(u_int(JobID) != JOB_CENTREMANAGER && u_int(JobID) != JOB_DRUGCOUNSELOR && u_int(JobID) != JOB_REHAB))
+				if ((u_int(OldJobID) == JOB_CENTREMANAGER || u_int(OldJobID) == JOB_DRUGCOUNSELOR || u_int(OldJobID) == JOB_REHAB || u_int(OldJobID) == JOB_ANGER || u_int(OldJobID) == JOB_EXTHERAPY || u_int(OldJobID) == JOB_THERAPY) &&
+					(u_int(JobID) != JOB_CENTREMANAGER && u_int(JobID) != JOB_DRUGCOUNSELOR && u_int(JobID) != JOB_REHAB) && u_int(JobID) != JOB_ANGER && u_int(JobID) != JOB_EXTHERAPY && u_int(JobID) != JOB_THERAPY)
 				{	// if old job was full time but new job is not, switch leftover day or night job back to resting
 					(Day0Night1 == SHIFT_DAY ? Girl->m_NightJob = JOB_CENTREREST : Girl->m_DayJob = JOB_CENTREREST);
 				}

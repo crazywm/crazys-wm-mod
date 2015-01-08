@@ -75,7 +75,7 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, bool Day0Night
 	if (g_Girls.HasTrait(girl, "Psychic"))		  jobperformance += 10;
 	if (g_Girls.HasTrait(girl, "Long Legs"))	  jobperformance += 10;
 	if (g_Girls.HasTrait(girl, "Exhibitionist"))  jobperformance += 10; //SIN - likes showing off her body
-	if (g_Girls.GetStat(girl, STAT_FAME) >85)	  jobperformance += 10;
+	if (g_Girls.GetStat(girl, STAT_FAME) > 85)	  jobperformance += 10;
 
 	//bad traits
 	if (g_Girls.HasTrait(girl, "Dependant"))		jobperformance -= 50; //needs others to do the job	
@@ -87,8 +87,59 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, bool Day0Night
 	if (g_Girls.HasTrait(girl, "Slow Learner"))		jobperformance -= 10;
 	if (g_Girls.HasTrait(girl, "Horrific Scars"))   jobperformance -= 20;
 	if (g_Girls.HasTrait(girl, "Small Scars"))		jobperformance -= 5;
-	//SIN
 	if (girl->is_pregnant())						jobperformance -= 10; //can't move so well
+
+	//what is she wearing?
+	if (g_Girls.HasItemJ(girl, "Rainbow Underwear") != -1)
+		{
+			message += girlName + " stripped down to reveal her Rainbow Underwear to the approval of the patrons watching her.\n\n";
+			brothel->m_Happiness += 5; jobperformance += 5; wages += 10;
+		}
+	else if (g_Girls.HasItemJ(girl, "Black Leather Underwear") != -1)
+		{
+			message += girlName + " stripped down to reveal her Black Leather Underwear ";
+			if (g_Girls.HasTrait(girl, "Sadistic"))
+			{
+				message += "and broke out a whip asking who wanted to join her on stage for a spanking.\n\n";
+			}
+			if (g_Girls.HasTrait(girl, "Masochist"))
+			{
+				message += "and asked a patron to come on stage and give her a spanking.\n\n";
+			}
+			else
+			{
+				message += "which the patrons seemed to enjoy.\n\n";
+			}
+		}
+	else if (g_Girls.HasItemJ(girl, "Adorable Underwear") != -1)
+		{
+			message += girlName + " stripped down to reveal her Adorable Underwear which slightly help her out on tips.\n\n";
+			wages += 5;
+		}
+	else if (g_Girls.HasItemJ(girl, "Classy Underwear") != -1)
+		{
+			message += girlName + " stripped down to reveal her Classy Underwear which some people seemed to like ";
+			if (roll <= 50)
+			{ message += "but others didn't seem to care for.\n\n"; }
+			else
+			{ message += "and it helped her tips.\n\n"; wages += 20; }
+		}
+	else if (g_Girls.HasItemJ(girl, "Comfortable Underwear") != -1)
+		{
+			message += girlName + "'s Comfortable Underwear help her move better while on stage.\n\n";
+			jobperformance += 5;
+		}
+	else if (g_Girls.HasItemJ(girl, "Plain Underwear") != -1)
+		{
+			message += girlName + " stripped down to reveal her Plain Underwear which didn't help her performance as the pastrons found them boring.\n\n";
+			jobperformance -= 5;
+		}
+	else if (g_Girls.HasItemJ(girl, "Sexy Underwear") != -1)
+		{
+			message += girlName + " stripped down to reveal her Sexy Underwear which brought many people to the stage to watch her.\n\n";
+			jobperformance += 5; wages += 15;
+		}
+
 
 	if (jobperformance >= 245)
 	{
@@ -271,57 +322,33 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, bool Day0Night
 
 	//try and add randomness here
 	if (g_Girls.GetStat(girl, STAT_BEAUTY) >85 && g_Dice.percent(20))
-	{
-		message += "Stunned by her beauty a customer left her a great tip.\n\n";
-		wages += 25;
-	}
+	{ message += "Stunned by her beauty a customer left her a great tip.\n\n"; wages += 25; }
 
 	if (g_Girls.HasTrait(girl, "Clumsy") && g_Dice.percent(5))
-	{
-		message += " Her clumsy nature caused her to slide off the pole causing her to have to stop stripping for a few hours.\n";
-		wages -= 15;
-	}
+	{ message += "Her clumsy nature caused her to slide off the pole causing her to have to stop stripping for a few hours.\n"; wages -= 15; }
 
 	if (g_Girls.HasTrait(girl, "Pessimist") && g_Dice.percent(5))
 	{
 		if (jobperformance < 125)
-		{
-			message += " Her pessimistic mood depressed the customers making them tip less.\n";
-			wages -= 10;
-		}
+		{ message += "Her pessimistic mood depressed the customers making them tip less.\n"; wages -= 10; }
 		else
-		{
-			message += girlName + " was in a poor mood so the patrons gave her a bigger tip to try and cheer her up.\n";
-			wages += 10;
-		}
+		{ message += girlName + " was in a poor mood so the patrons gave her a bigger tip to try and cheer her up.\n"; wages += 10; }
 	}
 
 	if (g_Girls.HasTrait(girl, "Optimist") && g_Dice.percent(5))
 	{
 		if (jobperformance < 125)
-		{
-			message += girlName + " was in a cheerful mood but the patrons thought she needed to work more on her stripping.\n";
-			wages -= 10;
-		}
+		{ message += girlName + " was in a cheerful mood but the patrons thought she needed to work more on her stripping.\n"; wages -= 10; }
 		else
-		{
-			message += " Her optimistic mood made patrons cheer up increasing the amount they tip.\n";
-			wages += 10;
-		}
+		{ message += "Her optimistic mood made patrons cheer up increasing the amount they tip.\n"; wages += 10; }
 	}
 
 	if (g_Girls.HasTrait(girl, "Great Figure") && g_Dice.percent(20))
 	{
 		if (jobperformance < 125)
-		{
-			message += girlName + " has a great figure so she draws a few extra patrons even if she needed to work more on her stripping.\n";
-			wages += 5;
-		}
+		{ message += girlName + " has a great figure so she draws a few extra patrons even if she needed to work more on her stripping.\n"; wages += 5; }
 		else
-		{
-			message += girlName + "'s great figure draws a large crowed to the stage and her skill at stripping makes them pay up to see the show up close.\n";
-			wages += 15;
-		}
+		{ message += girlName + "'s great figure draws a large crowed to the stage and her skill at stripping makes them pay up to see the show up close.\n"; wages += 15; }
 	}
 
 
@@ -421,20 +448,11 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, bool Day0Night
 
 	//enjoyed the work or not
 	if (roll <= 5)
-	{
-		message += " \nSome of the patrons abused her during the shift.";
-		work -= 1;
-	}
+	{ message += "\nSome of the patrons abused her during the shift."; work -= 1; }
 	else if (roll <= 25)
-	{
-		message += " \nShe had a pleasant time working.";
-		work += 3;
-	}
+	{ message += "\nShe had a pleasant time working."; work += 3; }
 	else
-	{
-		message += " \nOtherwise, the shift passed uneventfully.";
-		work += 1;
-	}
+	{ message += "\nOtherwise, the shift passed uneventfully."; work += 1; }
 
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKSTRIP, work, true);

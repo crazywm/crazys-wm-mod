@@ -49,8 +49,9 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
-	int enjoy = 0;
+	int enjoy = 0, work = 0;
 	int wages = 0;
+	int roll = g_Dice % 100;
 
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
 
@@ -193,6 +194,15 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 #endif
 
 
+	//enjoyed the work or not
+	if (roll <= 5)
+	{ message += "\nShe had a bad time letting her breasts be milked."; work -= 1; } //zzzzzz FIXME this needs better text
+	else if (roll <= 25)
+	{ message += "\nShe had a pleasant time letting her breasts be milked."; work += 3; }
+	else
+	{ message += "\nOtherwise, the shift passed uneventfully."; work += 1; }
+
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKMILK, work, true);
 
 	girl->m_Events.AddMessage(message, IMGTYPE_MILK, Day0Night1);
 

@@ -268,12 +268,12 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 		{
 			switch (g_Dice % 10)
 			{
-			case 0:        n = SKILL_ORALSEX;   message += "massaging the customer's cock with her tongue";			break;
-			case 1:        n = SKILL_TITTYSEX;  message += "using her tits to get the customer off";					break;
-			case 2:        n = SKILL_HANDJOB;   message += "giving him a cock-rub as well";							break;
+			case 0:        n = SKILL_ORALSEX;   message += "massaging the customer's cock with her tongue";					break;
+			case 1:        n = SKILL_TITTYSEX;  message += "using her tits to get the customer off";						break;
+			case 2:        n = SKILL_HANDJOB;   message += "giving him a cock-rub as well";									break;
 			case 3:        n = SKILL_ANAL;      message += "oiling the customer's cock and massaging it with her asshole.";	break;
-			case 4:        n = SKILL_FOOTJOB;   message += "using her feet to get the customer off";					break;
-			default:	   n = SKILL_NORMALSEX; message += "covered in massage oil and riding the customer's cock";	break;
+			case 4:        n = SKILL_FOOTJOB;   message += "using her feet to get the customer off";						break;
+			default:	   n = SKILL_NORMALSEX; message += "covered in massage oil and riding the customer's cock";			break;
 			}
 			message += ", making him very happy.\n";
 		}
