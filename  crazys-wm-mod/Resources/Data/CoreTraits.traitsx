@@ -337,6 +337,10 @@
 		Desc="Fear has no effect. (will more likely defend herself)"
 		Type="Mental" />
 	<Trait
+		Name="Former Addict"
+		Desc="This girl has had an addiction in the past."
+		Type="Mental" />
+	<Trait
 		Name="Idiot Savant"
 		Desc="This girl isn't the brightest bulb and her personality is lacking, but her skills are extremely good"
 		Type="Mental" />
@@ -723,6 +727,10 @@
 	<Trait
 		Name="Your Daughter"
 		Desc="This girl is a child of your loins"
+		Type="Social" />
+	<Trait
+		Name="Your Wife"
+		Desc="This girl is one of your wives"
 		Type="Social" />
 	<Trait
 		Name="Angel"

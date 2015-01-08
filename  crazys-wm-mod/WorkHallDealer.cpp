@@ -50,6 +50,13 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	// put that shit away, you'll scare off the customers!
 	g_Girls.UnequipCombat(girl);
 
+	sGirl* enteronduty = NULL;
+	string entername = "the Entertainer";	// Who?
+	vector<sGirl *> enter = g_Brothels.GirlsOnJob(0, JOB_ENTERTAINMENT, Day0Night1);
+	if (enter.size() > 0) enteronduty = enter[g_Dice%enter.size()];
+	if (enteronduty)	entername = "Entertainer " + enteronduty->m_Realname + "";
+	else entername = "";	// no enter
+
 	int roll = g_Dice % 100;
 	int jobperformance = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) / 2 + 	// intel makes her smart enough to know when to cheat
 		g_Girls.GetStat(girl, STAT_AGILITY) / 2 +			// agility makes her fast enough to cheat
@@ -95,6 +102,24 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 			message += " " + girlName + " skillfully used her feet under the table to break customers' concentration.";
 			jobperformance += 5;
 		}
+	}
+	if (girl->is_addict() && g_Dice.percent(20))
+	{
+		message += "\nNoticing her addiction, a customer offered her drugs. She accepted, and had an awful day at the card table.\n";
+		//warning = "Noticing her addiction, a customer offered her drugs. She accepted, and had an awful day at the card table.\n";
+		if (g_Girls.HasTrait(girl, "Shroud Addict"))
+		{
+			g_Girls.AddInv(girl, g_InvManager.GetItem("Shroud Mushroom"));
+		}
+		if (g_Girls.HasTrait(girl, "Fairy Dust Addict"))
+		{
+			g_Girls.AddInv(girl, g_InvManager.GetItem("Fairy Dust"));
+		}
+		if (g_Girls.HasTrait(girl, "Viras Blood Addict"))
+		{
+			g_Girls.AddInv(girl, g_InvManager.GetItem("Vira Blood"));
+		}
+		jobperformance -= 50;
 	}
 
 
@@ -327,7 +352,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		}
 		else if (roll <= 60)
 		{
-			if (g_Girls.GetStat(girl, STAT_INTELLIGENCE) >80)
+			if (g_Girls.GetStat(girl, STAT_INTELLIGENCE) > 70)
 			{
 				message += girlName + " is smart enough to understand the game. But seems not to have the luck to win.\n";
 			}
@@ -419,11 +444,8 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 
 
 	//try and add randomness here
-	if (g_Girls.GetStat(girl, STAT_BEAUTY) >85 && g_Dice.percent(20))
-	{
-		message += "Stunned by her beauty a customer left her a great tip.\n\n"; 
-		wages += 25;
-	}
+	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85 && g_Dice.percent(20))
+	{ message += "Stunned by her beauty a customer left her a great tip.\n\n"; wages += 25; }
 
 	//SIN: Fixed - add all traits and moved dice roll to start so that if this returns false, the bulky bit won't be evaluated (will be short-circuited)
 	if (g_Dice.percent(15) && (g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Abnormally Large Boobs")
@@ -431,27 +453,17 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		|| g_Girls.HasTrait(girl, "Busty Boobs") || g_Girls.HasTrait(girl, "Giant Juggs")))
 	{
 		if (jobperformance < 150)
-		{
-			message += "A patron was staring obviously at her large breasts. But she had no idea how to take advantage of it.\n";
-		}
+		{ message += "A patron was staring obviously at her large breasts. But she had no idea how to take advantage of it.\n"; }
 		else
-		{
-			message += "A patron was staring obviously at her large breasts. So she used the chance to cheat him out of all his gold.\n"; 
-			wages += 35;
-		}
+		{ message += "A patron was staring obviously at her large breasts. So she used the chance to cheat him out of all his gold.\n";  wages += 35; }
 	}
 
 	if (g_Girls.HasTrait(girl, "Lolita") && g_Dice.percent(15))
 	{
 		if (jobperformance < 125)
-		{
-			message += "Furious at being outplayed by such a young girl, a couple of gamblers stormed out, and didn't give " + girlName + " any tips.\n";
-		}
+		{ message += "Furious at being outplayed by such a young girl, a couple of gamblers stormed out, and didn't give " + girlName + " any tips.\n"; }
 		else
-		{
-			message += "One of the gamblers was amused at being outplayed by such a young girl, and gave her an extra-large tip!\n"; 
-			wages += 15;
-		}
+		{ message += "One of the gamblers was amused at being outplayed by such a young girl, and gave her an extra-large tip!\n"; wages += 15; }
 	}
 
 	//SIN - typo on "Elegant" which would cause it to always fail - fixed.
@@ -461,50 +473,32 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	if (g_Dice.percent(15) && (g_Girls.HasTrait(girl, "Elegant") || g_Girls.HasTrait(girl, "Princess") || g_Girls.HasTrait(girl, "Queen")))
 	{
 		if (jobperformance < 150)
-		{
-			message += "Surly at her apparently stuck-up attitude, several gamblers refused to tip " + girlName + ".\n";
-		}
+		{ message += "Surly at her apparently stuck-up attitude, several gamblers refused to tip " + girlName + ".\n"; }
 		else
-		{
-			message += "Impressed by her elegent demeanor and graceful compartment, several gamblers gave " + girlName + " larger tips then usual.\n"; 
-			wages += 20;
-		}
+		{ message += "Impressed by her elegent demeanor and graceful compartment, several gamblers gave " + girlName + " larger tips then usual.\n";  wages += 20; }
 	}
 
 	if (g_Girls.HasTrait(girl, "Assassin") && g_Dice.percent(5))
 	{
 		if (jobperformance < 150)
-		{
-			message += "She decided a patron was cheating so she killed him causing a paninc of people running out with your money.\n"; 
-			wages -= 50;
-		}
+		{ message += "She decided a patron was cheating so she killed him causing a paninc of people running out with your money.\n";  wages -= 50; }
 		else
-		{
-			message += "She thought a patron was cheating but decided it was a lucky streak that she would end with her card skills.\n";
-		}
+		{ message += "She thought a patron was cheating but decided it was a lucky streak that she would end with her card skills.\n"; }
 	}
 
 	if (g_Girls.HasTrait(girl, "Psychic") && g_Dice.percent(20))
-	{
-		message += "She used her Psychic skills to know exactly what cards were coming up and won a big hand.\n"; 
-		wages += 30;
-	}
+	{ message += "She used her Psychic skills to know exactly what cards were coming up and won a big hand.\n"; wages += 30; }
 
-	if (g_Brothels.GetNumGirlsOnJob(0, JOB_ENTERTAINMENT, false) == 1 && g_Dice.percent(25))
+	if (g_Brothels.GetNumGirlsOnJob(0, JOB_ENTERTAINMENT, false) >= 1 && g_Dice.percent(25))
 	{
 		if (jobperformance < 125)
-		{
-			message += girlName + " wasn't good enough at her job to use the entertainment's distraction to make more money.\n";
-		}
+		{ message += girlName + " wasn't good enough at her job to use " + entername + "'s distraction to make more money.\n"; }
 		else
-		{
-			message += girlName + " used the enterainment's distraction to make you some extra money.\n"; 
-			wages += 25;
-		}
+		{ message += girlName + " used " + entername + "'s distraction to make you some extra money.\n"; wages += 25; }
 	}
 
 	//SIN: a bit more randomness
-	if (g_Dice.percent(20) && wages<20 && g_Girls.GetStat(girl, STAT_CHARISMA)>60)
+	if (g_Dice.percent(20) && wages < 20 && g_Girls.GetStat(girl, STAT_CHARISMA) > 60)
 	{
 		message += girlName + " did so badly, a customer felt sorry for her and left her a few coins from his winnings.\n";
 		wages += ((g_Dice % 18) + 3);
@@ -558,20 +552,11 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 
 	//enjoyed the work or not
 	if (roll <= 5)
-	{
-		message += " \nSome of the patrons abused her during the shift."; 
-		work -= 1;
-	}
+	{ message += "\nSome of the patrons abused her during the shift."; work -= 1; }
 	else if (roll <= 25)
-	{
-		message += " \nShe had a pleasant time working."; 
-		work += 3;
-	}
+	{ message += "\nShe had a pleasant time working."; work += 3; }
 	else
-	{
-		message += " \nOtherwise, the shift passed uneventfully."; 
-		work += 1;
-	}
+	{ message += "\nOtherwise, the shift passed uneventfully."; work += 1; }
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKHALL, work, true);
 	girl->m_Events.AddMessage(message, IMGTYPE_CARD, Day0Night1);

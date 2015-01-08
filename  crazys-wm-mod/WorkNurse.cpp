@@ -306,9 +306,7 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 			message += "When giving a sponge bath to one of her male patients she couldn't look away from his enormous manhood. The man took advantage and fucked her brains out!\n";
 		}
 		else
-		{
-			message += "When giving a sponge bath to one of her male patients she couldn't look away from his enormous manhood. But she wasn't in the mood so she left.\n";
-		}
+		{ message += "When giving a sponge bath to one of her male patients she couldn't look away from his enormous manhood. But she wasn't in the mood so she left.\n"; }
 	}
 
 	if (g_Girls.HasTrait(girl, "Lesbian") && g_Girls.HasTrait(girl, "Aggressive") && 

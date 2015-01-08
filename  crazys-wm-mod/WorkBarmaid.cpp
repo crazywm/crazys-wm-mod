@@ -79,6 +79,30 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	if (g_Girls.HasTrait(girl, "Alcoholic"))	jobperformance -= 40;  //bad idea let an alcoholic near booze
 
 
+	//what is she wearing?
+	if (g_Girls.HasItemJ(girl, "Bourgeoise Gown") != -1)
+		{
+			message += girlName + "'s Bourgeoise Gown didn't really help or hurt her tips.\n\n";
+		}
+	else if (g_Girls.HasItemJ(girl, "Maid Uniform") != -1)
+		{
+			if (roll <= 50)
+			{ message += girlName + "'s Maid Uniform didn't do much to help her.\n\n"; }
+			else
+			{ message += girlName + "'s Maid Uniform didn't do much for most of the patrons, but a few of them seemed to really like it and tipped her extra.\n\n"; wages += 35; brothel->m_Happiness += 5; }
+		}
+
+
+	//a little pre-game randomness
+	if (g_Dice.percent(10))
+	{
+		if (g_Girls.HasTrait(girl, "Alcoholic"))
+		{
+			message += girlName + "'s alcoholic nature caused her to drink serveral bottles of booze becoming drunk and her serving suffered cause of it.";
+			jobperformance -= 50;
+		}
+	}
+
 	if (jobperformance >= 245)
 		{
 			message += " She must be the perfect bar tender customers go on and on about her and always come to see her when she works.\n\n";
@@ -352,14 +376,9 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	{
 		message += "A patron was obviously staring at her large breasts. ";
 		if (jobperformance < 150)
-			{ 
-				message += "But she had no idea how to take advantage of it.\n";
-			}
+			{  message += "But she had no idea how to take advantage of it.\n"; }
 		else
-			{ 
-				message += "So she over-charged them for drinks while they were too busy drooling to notice the price.\n"; 
-				wages += 15; 
-			}
+			{ message += "So she over-charged them for drinks while they were too busy drooling to notice the price.\n"; wages += 15; }
 	}
 
 	if (g_Girls.HasTrait(girl, "Psychic") && g_Dice.percent(20))
@@ -398,6 +417,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 		else
 		{ message += girlName + " responded to one of the vulgar remarks by a client in a much more vulgar way. Needless to say, this didn't earn her any favors with the patrons that shift, and her tips were a bit less than usual.\n"; wages -= 15; }
 	}
+
 	if (g_Girls.GetStat(girl, STAT_MORALITY) <= -20 && g_Girls.GetStat(girl, STAT_DIGNITY) <= -20 && g_Dice.percent(20))
 	{ message += "A drunk patron suddenly walked up to " + girlName + " and just started groping her body. Instead of pushing him away immediately, " + girlName + " allowed him to take his time with her tits and butt while she helped herself to his pockets and all the money inside them. The rowdy client left with a dumb glee on his face, probably to find out his fondling was much, much overpriced.\n"; wages += 40; }
 
@@ -412,6 +432,15 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	if (g_Girls.GetStat(girl, STAT_DIGNITY) <= -20 && g_Dice.percent(20) && g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Abnormally Large Boobs"))
 	{ message += girlName + " got an odd request from a client to carry a small drink he ordered between her tits to his table. After pouring the drink in a thin glass, " + girlName + " handled the task with minimal difficulty and earned a bigger tip.\n"; wages += 25; }
 
+	if (g_Girls.GetStat(girl, STAT_MORALITY) <= -20 && g_Dice.percent(10))
+	{ 
+		message += "A patron came up to her and said he wanted to order some milk but that he wanted it straight from the source. "; 
+		if (g_Girls.GetStat(girl, STAT_LACTATION) >= 20)
+			{ message += "With a smile she said she was willing to do it for an extra charge. The patron quickly agreed and " + girlName + " proceed to take out one of her tits and let the patron suck out some milk.\n"; wages += 40; }
+		else
+			{ message += "She was willing to do it but didn't have enough milk production."; }
+	}
+
 	if (girl->is_pregnant() && g_Dice.percent(10))
 	{	message += "A customer tried to buy " + girlName + " a drink, but she refused for the sake of her unborn child.";	}
 
@@ -424,6 +453,18 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 			message += "Her talent at getting things down her throat meant she could pour the drink straight down. She won easily, earning quite a bit of gold.";
 			wages += 30;
 		}
+	}
+
+	if (g_Girls.HasItemJ(girl, "Golden Pendant") != -1 && g_Dice.percent(10))
+	{
+			message += "A patron complimented her gold necklace your not sure if it was an actual compliment or ";
+			if (g_Girls.HasTrait(girl, "Massive Melons") || g_Girls.HasTrait(girl, "Abnormally Large Boobs")
+				|| g_Girls.HasTrait(girl, "Titanic Tits") || g_Girls.HasTrait(girl, "Big Boobs")
+				|| g_Girls.HasTrait(girl, "Busty Boobs") || g_Girls.HasTrait(girl, "Giant Juggs"))
+			{ message += "an excuse to stare at her ampale cleavage."; }
+			else
+			{ message += "an attempt to get a discount on their bill."; }
+			g_Girls.UpdateStat(girl, STAT_HAPPINESS, 5);//girls like compliments
 	}
 
 		if(wages < 0)

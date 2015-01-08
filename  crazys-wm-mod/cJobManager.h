@@ -177,7 +177,7 @@ public:
 	static bool WorkCleanArena(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
 	static bool WorkCityGuard(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
 	static bool WorkArenaJousting(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static bool WorkArenaRacing(sGirl* girl, sBrothel* brothel, int DayNight, string& summary);
+	static bool WorkArenaRacing(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
 
 	//Comunity Centre
 	static bool WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
@@ -189,12 +189,16 @@ public:
 	//drug Centre
 	static bool WorkDrugCounselor(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
 	static bool WorkRehab(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static bool WorkCentreAngerManagement(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static bool WorkCentreExTherapy(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static bool WorkCentreTherapy(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
 
 	// house
 	static bool WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
 	static bool WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
 	static bool WorkCleanHouse(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
 	static bool WorkHeadGirl(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static bool WorkHouseVacation(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
 
 	// laborers
 	static bool WorkGardener(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);

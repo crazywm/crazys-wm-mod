@@ -4640,18 +4640,50 @@ bool cBrothelManager::runaway_check(sBrothel *brothel, sGirl *girl)
 	*	if she is unhappy she may turn to drugs
 	*/
 	bool starts_drugs = false;
+	#if 0
 	if (!g_Girls.HasTrait(girl, "Shroud Addict")) {
 		g_Girls.AddTrait(girl, "Shroud Addict");
 		starts_drugs = true;
 	}
+	#else
+	//Crazy changed it to this might not be the best
+	int d = g_Dice % 4;	// 
+	if (girl->happiness() <= 25 && g_Girls.HasTrait(girl, "Former Addict")) 
+	{
+		if (d == 1)
+		{ g_Girls.AddTrait(girl, "Shroud Addict"); }
+		else if (d == 2)
+		{ g_Girls.AddTrait(girl, "Fairy Dust Addict"); }
+		else if (d == 3)
+		{ g_Girls.AddTrait(girl, "Viras Blood Addict"); }
+		else
+		{ g_Girls.AddTrait(girl, "Alcoholic"); }
+		g_Girls.RemoveTrait(girl, "Former Addict");
+		starts_drugs = true;
+	}
+	else if (girl->happiness() <= 10 && !g_Girls.HasTrait(girl, "Alcoholic")) 
+	{
+		g_Girls.AddTrait(girl, "Alcoholic");
+		g_Girls.RemoveTrait(girl, "Former Addict");
+		starts_drugs = true;
+	}
+	else if (girl->happiness() <= 8 && !g_Girls.HasTrait(girl, "Shroud Addict")) 
+	{
+		g_Girls.AddTrait(girl, "Shroud Addict");
+		g_Girls.RemoveTrait(girl, "Former Addict");
+		starts_drugs = true;
+	}
+	#endif
 	else if (girl->happiness() <= 5 && !g_Girls.HasTrait(girl, "Fairy Dust Addict"))
 	{
 		g_Girls.AddTrait(girl, "Fairy Dust Addict");
+		g_Girls.RemoveTrait(girl, "Former Addict");
 		starts_drugs = true;
 	}
 	else if (girl->happiness() <= 2 && !g_Girls.HasTrait(girl, "Viras Blood Addict"))
 	{
 		g_Girls.AddTrait(girl, "Viras Blood Addict");
+		g_Girls.RemoveTrait(girl, "Former Addict");
 		starts_drugs = true;
 	}
 	/*

@@ -49,6 +49,13 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 	
 	g_Girls.UnequipCombat(girl);  // put that shit away, you'll scare off the customers!
 
+	sGirl* barmaidonduty = NULL;
+	string barmaidname = "the Barmaid";	// Who?
+	vector<sGirl *> barmaid = g_Brothels.GirlsOnJob(0, JOB_BARMAID, Day0Night1);
+	if (barmaid.size() > 0) barmaidonduty = barmaid[g_Dice%barmaid.size()];
+	if (barmaidonduty)	barmaidname = "Barmaid " + barmaidonduty->m_Realname + "";
+	else barmaidname = "";	// no barmaid
+
 	int wages = 15, work = 0;
 	message += "She worked as a waitress in the bar.\n";
 
@@ -319,7 +326,7 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 		
 
 	//try and add randomness here
-	if (g_Girls.GetStat(girl, STAT_BEAUTY) >85 && g_Dice.percent(20))
+	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85 && g_Dice.percent(20))
 	{ message += "Stunned by her beauty a customer left her a great tip.\n\n"; wages += 25; }
 
 	if (g_Girls.HasTrait(girl, "Clumsy") && g_Dice.percent(15))
@@ -378,12 +385,27 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 		wages += 30;
 	}
 
-	if (g_Brothels.GetNumGirlsOnJob(0,JOB_BARMAID,false) == 1 && g_Dice.percent(25))
+	if (g_Dice.percent(5))
+	{
+		/*if (g_Girls.GetSkill(girl, SKILL_MEDICINE) >= 90)
+		{ message += "She used her Psychic skills to know excatally what the patrons wanted to order making them happy and increasing her tips.\n"; wages += 15; }
+		else if (g_Girls.GetSkill(girl, SKILL_MEDICINE) >= 60)
+		{ message += "She used her Psychic skills to know excatally what the patrons wanted to order making them happy and increasing her tips.\n"; wages += 15; }
+		else*/ if (g_Girls.GetSkill(girl, SKILL_MEDICINE) >= 30)
+		{ message += "A customer started chocking on his food so " + girlName + " performed the heimlich maneuver on him. Grateful the man left her a better tip.\n"; wages += 15; }
+		else
+		{ message += "A customer started chocking on his food so " + girlName + " not knowing what to do started screaming for help.\n"; }
+	}
+
+	if (g_Girls.GetSkill(girl, SKILL_HERBALISM) >= 40 && g_Dice.percent(5))
+	{ message += "Added a litte something extra to the patrons order to spice it up. They enjoyed it greatly and she recieved some nice tips.\n\n"; wages += 25; }
+
+	if (g_Brothels.GetNumGirlsOnJob(0,JOB_BARMAID,false) >= 1 && g_Dice.percent(25))
 	{
 		if (jobperformance < 125)
-			{ message += girlName + " wasn't good enough at her job to use the barmaid to her advantage.\n"; }
+			{ message += girlName + " wasn't good enough at her job to use " + barmaidname + " to her advantage.\n"; }
 		else
-			{ message += girlName + " used the barmaid to great effect speeding up her work and increasing her tips.\n"; wages += 25; }
+			{ message += girlName + " used " + barmaidname + " to great effect speeding up her work and increasing her tips.\n"; wages += 25; }
 	}
 
 		if (wages < 0)
@@ -393,11 +415,11 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 
 	//enjoyed the work or not
 	if (roll <= 5)
-	{ message += " \nSome of the patrons abused her during the shift."; work -= 1; }
+	{ message += "\nSome of the patrons abused her during the shift."; work -= 1; }
 	else if (roll <= 25) 
-	{ message += " \nShe had a pleasant time working."; work += 3; }
+	{ message += "\nShe had a pleasant time working."; work += 3; }
 	else
-	{ message += " \nOtherwise, the shift passed uneventfully."; work += 1; }
+	{ message += "\nOtherwise, the shift passed uneventfully."; work += 1; }
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKBAR, work, true);
 	girl->m_Events.AddMessage(message, IMGTYPE_WAIT, Day0Night1);

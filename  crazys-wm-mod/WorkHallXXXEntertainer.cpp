@@ -449,53 +449,31 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, bool Da
 
 	//try and add randomness here
 	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85 && g_Dice.percent(20))
-	{
-		message += "Stunned by her beauty a customer left her a great tip.\n\n";
-		wages += 25;
-	}
+	{ message += "Stunned by her beauty a customer left her a great tip.\n\n"; wages += 25; }
 
 	if (g_Girls.HasTrait(girl, "Clumsy") && g_Dice.percent(15))
 	{
 		message += "Her clumsy nature caused her to lose one of her 'toys' up a hole. ";
 		if (g_Dice.percent(20) || g_Girls.HasTrait(girl, "Psychic") || g_Girls.HasTrait(girl, "Exhibitionist") || g_Girls.GetSkill(girl, SKILL_MEDICINE) > 25)
-		{
-			message += "She put on a damn sexy show of getting it back out.\n";
-			wages += 10;
-		}
+		{ message += "She put on a damn sexy show of getting it back out.\n"; wages += 10; }
 		else
-		{
-			message += "She panicked and ran off stage to go find a doctor.\n";
-			wages -= 15;
-		}
+		{ message += "She panicked and ran off stage to go find a doctor.\n"; wages -= 15; }
 	}
 
 	if (g_Girls.HasTrait(girl, "Pessimist") && g_Dice.percent(5))
 	{
 		if (jobperformance < 125)
-		{
-			message += "Her pessimism made her unadventurous. The customers were unimpressed and the tips were lower.\n";
-			wages -= 10;
-		}
+		{ message += "Her pessimism made her unadventurous. The customers were unimpressed and the tips were lower.\n"; wages -= 10; }
 		else
-		{
-			message += girlName + " performed well despite her mood. The customers enjoy the darker, sultry nature of her sex shows.\n";
-			wages += 10;
-		}
+		{ message += girlName + " performed well despite her mood. The customers enjoy the darker, sultry nature of her sex shows.\n"; wages += 10; }
 	}
 
 	if (g_Girls.HasTrait(girl, "Optimist") && g_Dice.percent(5))
 	{
 		if (jobperformance < 125)
-		{
-			message += girlName + " smiled far too much to look seductive.\n";
-			wages -= 10;
-		}
+		{ message += girlName + " smiled far too much to look seductive.\n"; wages -= 10; }
 		else
-		{
-			message += girlName + " showed endless energy, agility and enthusiasm as she rucked around the stage.\n";
-			wages += 10;
-			g_Girls.UpdateStat(girl, STAT_AGILITY, 1);
-		}
+		{ message += girlName + " showed endless energy, agility and enthusiasm as she rucked around the stage.\n"; wages += 10; g_Girls.UpdateStat(girl, STAT_AGILITY, 1); }
 	}
 
 	if (g_Girls.HasTrait(girl, "Cat Girl") && g_Dice.percent(10))
@@ -554,20 +532,11 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, bool Da
 
 	//enjoyed the work or not
 	if (roll <= 5)
-	{
-		message += " \nSome of the patrons abused her during the shift.";
-		work -= 1;
-	}
+	{ message += "\nSome of the patrons abused her during the shift."; work -= 1; }
 	else if (roll <= 25)
-	{
-		message += " \nShe had a pleasant time working.";
-		work += 3;
-	}
+	{ message += "\nShe had a pleasant time working."; work += 3; }
 	else
-	{
-		message += " \nOtherwise, the shift passed uneventfully.";
-		work += 1;
-	}
+	{ message += "\nOtherwise, the shift passed uneventfully."; work += 1; }
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKHALL, work, true);
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKSTRIP, work, true);
@@ -596,7 +565,7 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, bool Da
 	//gain traits
 	g_Girls.PossiblyGainNewTrait(girl, "Nymphomaniac", 75, ACTION_WORKSTRIP, "Having to perform sexual entertainment for patrons every day has made " + girlName + " quite the nympho.", Day0Night1);
 	//SIN: new trait
-	g_Girls.PossiblyGainNewTrait(girl, "Exhibitionist", 75, ACTION_WORKSTRIP, "Performing sexual entertainment for strangers every day has made " + girlName + " quite keen to show off her sexuality.", Day0Night1);
+	g_Girls.PossiblyGainNewTrait(girl, "Exhibitionist", 50, ACTION_WORKSTRIP, "Performing sexual entertainment for strangers every day has made " + girlName + " quite keen to show off her sexuality.", Day0Night1);
 
 	return false;
 }

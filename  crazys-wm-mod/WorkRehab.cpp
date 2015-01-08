@@ -65,6 +65,7 @@ bool cJobManager::WorkRehab(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 	// `J` this will be taken care of in the centre reflow - leaving it in anyway
 	if (!g_Girls.HasTrait(girl, "Fairy Dust Addict") &&		// `J` if the girl is not an addict
 		!g_Girls.HasTrait(girl, "Shroud Addict") &&
+		!g_Girls.HasTrait(girl, "Alcoholic") &&
 		!g_Girls.HasTrait(girl, "Viras Blood Addict"))
 	{
 		ss.str("");
@@ -148,9 +149,14 @@ bool cJobManager::WorkRehab(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 			g_Girls.RemoveTrait(girl, "Viras Blood Addict");
 			ss << "She is no longer a viras blood addict.\n";
 		}
+		else if (g_Girls.HasTrait(girl, "Alcoholic"))
+		{
+			g_Girls.RemoveTrait(girl, "Alcoholic");
+			ss << "She is no longer an alcoholic.\n";
+		}
 		girl->m_PrevWorkingDay = girl->m_WorkingDay = 0;
 
-		if (g_Girls.HasTrait(girl, "Fairy Dust Addict") || g_Girls.HasTrait(girl, "Shroud Addict") || g_Girls.HasTrait(girl, "Viras Blood Addict"))
+		if (g_Girls.HasTrait(girl, "Fairy Dust Addict") || g_Girls.HasTrait(girl, "Shroud Addict") || g_Girls.HasTrait(girl, "Viras Blood Addict") || g_Girls.HasTrait(girl, "Alcoholic"))
 		{
 			// stay in rehab for another session
 			ss << "\nShe should stay in rehab to treat her other addictions.";
@@ -160,6 +166,7 @@ bool cJobManager::WorkRehab(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 			ss << "\nShe has been released from rehab.";
 			girl->m_DayJob = girl->m_NightJob = JOB_CENTREREST;
 			girl->m_PrevDayJob = girl->m_PrevNightJob = 255;
+			g_Girls.AddTrait(girl, "Former Addict");
 		}
 	}
 	else

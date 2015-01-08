@@ -54,6 +54,7 @@ class cGoldBase
 		double bank_interest;
 		double misc;
 		double clinic_income;
+		double arena_income;
 
 
 //01234567890123456789012345678901234567890123456789012345678901234567890123456789
@@ -65,7 +66,7 @@ class cGoldBase
 			ss <<	"  --- Whores ---                              --- Sales ---";
 			ss <<	"# Brothel  Street   Movie     Bar  Casino   Items  "
 				"Monster Loc'Biz   Raids P.Theft G.Theft C'combs  "
-				"Reward Intr'st    Misc      Clinic"
+				"Reward Intr'st    Misc      Clinic		Arena"
 			;
 			if(brothel_no == -1) {
 				ss << brothel_no << " ";
@@ -90,6 +91,7 @@ class cGoldBase
 			ss << setw(7) << bank_interest	<< " ";
 			ss << setw(7) << misc		<< " ";
 			ss << setw(7) << clinic_income << " ";
+			ss << setw(7) << arena_income << " ";
 			ss << endl;
 			return ss.str();
 		}
@@ -109,6 +111,7 @@ class cGoldBase
 		double bar_upkeep;
 		double casino_upkeep;
 		double advertising_costs;
+		double centre_costs;
 		double bribes;
 		double fines;
 		double tax;
@@ -201,6 +204,7 @@ friend	istream &operator>>(istream& is, cGoldBase &g);
 	void bar_upkeep(double cost);
 	void casino_upkeep(double cost);
 	void advertising_costs(double cost);
+	void centre_costs(double cost);
 	void bribes(double cost);
 	void fines(double cost);
 	void tax(double cost);
@@ -214,6 +218,7 @@ friend	istream &operator>>(istream& is, cGoldBase &g);
 	void creature_sales(double income);
 	void movie_income(double income);
 	void clinic_income(double income);
+	void arena_income(double income);
 	void bar_income(double income);
 	void gambling_profits(double income);
 	void extortion(double income);

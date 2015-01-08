@@ -48,7 +48,7 @@ extern int g_Building;
 static cPlayer* m_Player = g_Brothels.GetPlayer();
 
 // `J` House Job - General
-bool cJobManager::WorkHouseVacation(sGirl* girl, sBrothel* brothel, int DayNight, string& summary)
+bool cJobManager::WorkHouseVacation(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	string message = ""; string girlName = girl->m_Realname;
 	g_Building = BUILDING_HOUSE;

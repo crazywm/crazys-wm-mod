@@ -291,6 +291,7 @@ string cTraits::GetTranslateName(string name)
 		else if (trait.compare("flat chest") == 0)				return gettext("Flat Chest");
 		else if (trait.compare("fleet of foot") == 0)			return gettext("Fleet of Foot");
 		else if (trait.compare("flight") == 0)					return gettext("Flight");
+		else if (trait.compare("former addict") == 0)			return gettext("Former Addict");
 		else if (trait.compare("former official") == 0)			return gettext("Former Official");
 		else if (trait.compare("fragile") == 0)					return gettext("Fragile");
 		else if (trait.compare("furry") == 0)					return gettext("Furry");
@@ -477,6 +478,7 @@ string cTraits::GetTranslateName(string name)
 	{
 		/* */if (trait.compare("yandere") == 0)					return gettext("Yandere");
 		else if (trait.compare("your daughter") == 0)			return gettext("Your Daughter");
+		else if (trait.compare("your wife") == 0)				return gettext("Your Wife");
 	}
 	return name;
 }

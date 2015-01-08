@@ -50,6 +50,13 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 	// put that shit away, you'll scare off the customers!
 	g_Girls.UnequipCombat(girl);
 
+	sGirl* dealeronduty = NULL;
+	string dealername = "the Dealer";	// Who?
+	vector<sGirl *> dealer = g_Brothels.GirlsOnJob(0, JOB_DEALER, Day0Night1);
+	if (dealer.size() > 0) dealeronduty = dealer[g_Dice%dealer.size()];
+	if (dealeronduty)	dealername = "Dealer " + dealeronduty->m_Realname + "";
+	else dealername = "";	// no dealer
+
 	int roll = g_Dice % 100;
 	int jobperformance = ((g_Girls.GetStat(girl, STAT_CHARISMA) +
 		g_Girls.GetStat(girl, STAT_BEAUTY) +
@@ -436,84 +443,49 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 
 	//try and add randomness here
 	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85 && g_Dice.percent(20))
-	{
-		message += "Stunned by her beauty a customer left her a great tip.\n\n";
-		wages += 25;
-	}
+	{ message += "Stunned by her beauty a customer left her a great tip.\n\n"; wages += 25; }
 
 	if (g_Girls.HasTrait(girl, "Clumsy") && g_Dice.percent(15))
-	{
-		message += "Her clumsy nature caused her to spill a drink on a customer resulting in them storming off without paying.\n"; 
-		wages -= 15;
-	}
+	{ message += "Her clumsy nature caused her to spill a drink on a customer resulting in them storming off without paying.\n"; wages -= 15; }
 
 	if (g_Girls.HasTrait(girl, "Pessimist") && g_Dice.percent(5))
 	{
 		if (jobperformance < 125)
-		{
-			message += "Her pessimistic mood depressed the customers making them tip less.\n"; 
-			wages -= 10;
-		}
+		{ message += "Her pessimistic mood depressed the customers making them tip less.\n";  wages -= 10; }
 		else
-		{
-			message += girlName + " was in a poor mood so the patrons gave her a bigger tip to try and cheer her up.\n"; 
-			wages += 10;
-		}
+		{ message += girlName + " was in a poor mood so the patrons gave her a bigger tip to try and cheer her up.\n"; wages += 10; }
 	}
 
 	if (g_Girls.HasTrait(girl, "Optimist") && g_Dice.percent(5))
 	{
 		if (jobperformance < 125)
-		{
-			message += girlName + " was in a cheerful mood but the patrons thought she needed to work more on her services.\n"; 
-			wages -= 10;
-		}
+		{ message += girlName + " was in a cheerful mood but the patrons thought she needed to work more on her services.\n"; wages -= 10; }
 		else
-		{
-			message += " Her optimistic mood made patrons cheer up increasing the amount they tip.\n"; 
-			wages += 10;
-		}
+		{ message += " Her optimistic mood made patrons cheer up increasing the amount they tip.\n"; wages += 10; }
 	}
 
 	if (g_Dice.percent(5) && (g_Girls.HasTrait(girl, "Charming") || g_Girls.HasTrait(girl, "Charismatic")))
 	{
 		if (jobperformance < 125)
-		{
-			message += "Despite her poor performance, people still applaud loudly for her.\n"; 
-			wages -= 10;
-		}
+		{ message += "Despite her poor performance, people still applaud loudly for her.\n"; wages -= 10; }
 		else
-		{
-			message += "People love to see her perform, and " + girlName + " collects a massive tip!.\n"; 
-			wages += 100;
-		}
+		{ message += "People love to see her perform, and " + girlName + " collects a massive tip!.\n"; wages += 100; }
 	}
+
 	if (g_Dice.percent(5) && (g_Girls.HasTrait(girl, "Princess") || g_Girls.HasTrait(girl, "Queen")))
 	{
 		if (jobperformance < 125)
-		{
-			message += "Her royal bitchiness combined with the poor entertainment pisses the audience off.\n"; 
-			wages -= 15;
-		}
+		{ message += "Her royal bitchiness combined with the poor entertainment pisses the audience off.\n"; wages -= 15; }
 		else
-		{
-			message += girlName + " owns the stage, imperious eyes flashing out across the audience.  Tips are very good tonight.\n"; 
-			wages += 25;
-		}
+		{ message += girlName + " owns the stage, imperious eyes flashing out across the audience.  Tips are very good tonight.\n"; wages += 25; }
 	}
 
-	if (g_Brothels.GetNumGirlsOnJob(0, JOB_DEALER, false) == 1 && g_Dice.percent(25))
+	if (g_Brothels.GetNumGirlsOnJob(0, JOB_DEALER, false) >= 1 && g_Dice.percent(25))
 	{
 		if (jobperformance < 125)
-		{
-			message += girlName + " tried to distract the patrons but due to her lack of skills she distracted your dealer causing you to lose some money.\n"; 
-			wages -= 10;
-		}
+		{ message += girlName + " tried to distract the patrons but due to her lack of skills she distracted " + dealername + " causing you to lose some money.\n"; wages -= 10; }
 		else
-		{
-			message += girlName + " was able to perfectly distract some patrons while the dealer cheated to make some more money.\n"; 
-			wages += 25;
-		}
+		{ message += girlName + " was able to perfectly distract some patrons while the " + dealername + " cheated to make some more money.\n"; wages += 25; }
 	}
 
 	if (wages < 0) wages = 0;
@@ -521,20 +493,11 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 
 	//enjoyed the work or not
 	if (roll <= 5)
-	{
-		message += " \nSeveral patrons heckled her and made her shift generally unpleasant."; 
-		work -= 1;
-	}
+	{ message += "\nSeveral patrons heckled her and made her shift generally unpleasant."; work -= 1; }
 	else if (roll <= 25)
-	{
-		message += " \nShe had a great time working."; 
-		work += 3;
-	}
+	{ message += "\nShe had a great time working."; work += 3; }
 	else
-	{
-		message += " \nOtherwise, the shift passed uneventfully."; 
-		work += 1;
-	}
+	{ message += "\nOtherwise, the shift passed uneventfully."; work += 1; }
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKHALL, work, true);
 	girl->m_Events.AddMessage(message, IMGTYPE_BUNNY, Day0Night1);

@@ -113,7 +113,7 @@ void cCentreManager::UpdateCentre()	// Start_Building_Process_A
 	u_int restjob = JOB_CENTREREST;
 	u_int matronjob = JOB_CENTREMANAGER;
 	u_int firstjob = JOB_CENTREREST;
-	u_int lastjob = JOB_REHAB;
+	u_int lastjob = JOB_THERAPY;
 
 	current->m_Finance.zero();
 	current->m_AntiPregUsed = 0;
@@ -217,7 +217,7 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 	u_int restjob = JOB_CENTREREST;
 	u_int matronjob = JOB_CENTREMANAGER;
 	u_int firstjob = JOB_CENTREREST;
-	u_int lastjob = JOB_REHAB;
+	u_int lastjob = JOB_THERAPY;
 	u_int sw = 0, psw = 0;
 
 	int totalPay = 0, totalTips = 0, totalGold = 0;

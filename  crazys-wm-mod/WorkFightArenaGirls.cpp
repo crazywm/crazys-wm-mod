@@ -46,13 +46,15 @@ extern cGold g_Gold;
 // `J` Arena Job - Fighting
 bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-	string message = "";
+	string message = ""; string girlName = girl->m_Realname;
 	if (Preprocessing(ACTION_COMBAT, girl, brothel, Day0Night1, summary, message))
 		return true;
 	int wages = 0, fight_outcome = 0, enjoyment = 0, fame = 0, imagetype = IMGTYPE_COMBAT;
+	int jobperformance = (g_Girls.GetStat(girl, STAT_FAME) + g_Girls.GetStat(girl, STAT_CHARISMA))/2;
 	stringstream ss;
 	bool unique = false;
 
+	cConfig cfg;
 	g_Girls.EquipCombat(girl);		// ready armor and weapons!
 
 	sGirl* tempgirl = g_Girls.CreateRandomGirl(18, false, false, false, false, false, true);
@@ -106,6 +108,7 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 		enjoyment = -(g_Dice % 3 + 1);
 		fame = -(g_Dice % 3 + 1);
 		message = "She lost the fight.";
+		/* Need a way to cost you gold for your girl losing..  or some kind of outcome here zzzzzzzz FIXME*/ 
 	}
 	else if (fight_outcome == 0)  // it was a draw
 	{
@@ -116,6 +119,7 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 
 	if (tempgirl) delete tempgirl; tempgirl = 0;	// Cleanup
 
+
 	// Improve girl
 	int fightxp = (fight_outcome == 1) ? 3 : 1;
 	int xp = 5 * fightxp, libido = 5, skill = 1;
@@ -123,6 +127,11 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 5; }
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 5; }
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
+
+	if ((girl->is_slave() && !cfg.initial.slave_pay_outofpocket()))
+	{
+		wages = 0;
+	}
 
 	girl->m_Pay = wages;
 	girl->m_Events.AddMessage(message, imagetype, Day0Night1);
@@ -134,6 +143,19 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 	g_Girls.UpdateStat(girl, STAT_CONSTITUTION, g_Dice%fightxp + skill);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 	g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, enjoyment, true);
+
+	/* `J` this will be a place holder until a better payment system gets done
+	* 
+	*/
+	int earned = 0;
+	for (int i = 0; i < jobperformance; i++)
+	{
+		earned += g_Dice % 15 + 5; // 5-20 gold per customer  This may need tweaked to get it where it should be for the pay
+	}
+	brothel->m_Finance.arena_income(earned);
+	ss.str("");
+	ss << girlName << " drew in " << jobperformance << " people to watch her and you earned " << earned << " from it.";
+	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 
 
 	//gain traits

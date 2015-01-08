@@ -46,7 +46,7 @@ extern int g_Building;
 // `J` Centre Job - General
 bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-	string message = ""; string girlName = girl->m_Realname;
+	string message = ""; string girlName = girl->m_Realname; stringstream ss;
 	g_Building = BUILDING_CENTRE;
 
 	if(Preprocessing(ACTION_WORKCENTRE, girl, brothel, Day0Night1, summary, message))	// they refuse to have work
@@ -58,7 +58,7 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	int roll = g_Dice%100;
 	int jobperformance = ((g_Girls.GetStat(girl, STAT_INTELLIGENCE) / 2) + (g_Girls.GetStat(girl, STAT_CHARISMA) / 2) + g_Girls.GetSkill(girl, SKILL_SERVICE));
 	bool blow = false, sex = false;
-	int wages = 100, work = 0;
+	int wages = 100, work = 0, feed = 0;
 	
 	message += "She worked feeding the poor.";
 
@@ -244,12 +244,12 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 	if (girl->m_States&(1 << STATUS_SLAVE))
 	{
-		message += " \nThe fact that she is your slave makes people think its less of a good deed on your part.";
+		message += "\nThe fact that she is your slave makes people think its less of a good deed on your part.";
 		g_Brothels.GetPlayer()->disposition(dispo);
 	}
 	else
 	{
-		message += " \nThe fact that your paying this girl to do this helps people think your a better person.";
+		message += "\nThe fact that your paying this girl to do this helps people think your a better person.";
 		girl->m_Pay = wages;
 		g_Gold.staff_wages(100);  // wages come from you
 		g_Brothels.GetPlayer()->disposition(int(dispo*1.5));
@@ -300,6 +300,19 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	{
 		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, Day0Night1);
 	}
+
+	feed += jobperformance / 10;		//  1 feed per 10 point of performance
+
+	int cost = 0;
+	for (int i = 0; i < feed; i++)
+	{
+		cost += g_Dice % 5 + 5; // 5-10 gold per customer
+	}
+	brothel->m_Finance.centre_costs(cost);
+	ss.str("");
+	ss << girlName << " feed " << feed << " costing you " << cost << " gold.";
+	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
+
 
 	// Improve stats
 	int xp = 10, libido = 1, skill = 3;

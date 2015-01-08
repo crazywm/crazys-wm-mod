@@ -179,7 +179,7 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Nig
 
 	if (g_Girls.HasTrait(girl, "Meek") && g_Dice.percent(5) && jobperformance < 125)
 	{ 
-		message += girlName + " spilled a drink all over a mans lap.  He told her she had to lick it up and forced her to clean him up which she Meekly accepted and went about licking his cock clean.\n";
+		message += girlName + " spilled a drink all over a mans lap. He told her she had to lick it up and forced her to clean him up which she Meekly accepted and went about licking his cock clean.\n";
 		imagetype = IMGTYPE_ORAL; work -= 3;
 	}
 
@@ -198,7 +198,7 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Nig
 		{ message += "She screamed and shook his hand off.\n"; }
 	}
 
-	if (g_Girls.HasTrait(girl, "Nymphomaniac") && g_Girls.GetStat(girl, STAT_LIBIDO) > 90 && g_Dice.percent(20) &&  !g_Girls.HasTrait(girl, "Virgin") && !g_Girls.HasTrait(girl, "Lesbian"))
+	if (g_Girls.HasTrait(girl, "Nymphomaniac") && g_Girls.GetStat(girl, STAT_LIBIDO) > 80 && g_Dice.percent(20) &&  !g_Girls.HasTrait(girl, "Virgin") && !g_Girls.HasTrait(girl, "Lesbian"))
 	{
 		if (roll <= 50)
 		{ message += girlName + " dragged one of the less sober clients outside into a back alley and ordered him to fuck her senseless against a wall. After the deed, the poor fellow passed out and " + girlName + " returned to her job as if nothing happened.\n"; }

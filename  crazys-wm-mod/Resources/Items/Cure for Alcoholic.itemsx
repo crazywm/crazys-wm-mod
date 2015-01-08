@@ -1,35 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Items>
 	<Item
-		Name="Cure for Fairy Dust Addiction"
-		Desc="This cures addiction to Fairy Dust."
+		Name="Cure for Alcoholic"
+		Desc="This cures addiction to Alcohol. (This Seller can get more but he charges more)"
 		Type="Food"
 		Badness="0"
 		Special="None"
-		Cost="2000"
-		Rarity="Shop25"
-		Infinite="false"
-		GirlBuyChance="0">
-		<Effect
-			What="Stat"
-			Name="Happiness"
-			Amount="20" />
-		<Effect
-			What="Trait"
-			Name="Fairy Dust Addict"
-			Amount="0" />
-		<Effect
-			What="Trait"
-			Name="Former Addict"
-			Amount="1" />
-	</Item>
-	<Item
-		Name="Cure for Fairy Dust Addiction"
-		Desc="This cures addiction to Fairy Dust. (This Seller can get more but he charges more)"
-		Type="Food"
-		Badness="0"
-		Special="None"
-		Cost="4000"
+		Cost="6000"
 		Rarity="Shop50"
 		Infinite="false"
 		GirlBuyChance="0">
@@ -39,11 +16,34 @@
 			Amount="20" />
 		<Effect
 			What="Trait"
-			Name="Fairy Dust Addict"
+			Name="Former Addict"
+			Amount="1" />
+		<Effect
+			What="Trait"
+			Name="Alcoholic"
 			Amount="0" />
+	</Item>
+	<Item
+		Name="Cure for Alcoholic"
+		Desc="This cures addiction to Alcohol."
+		Type="Food"
+		Badness="0"
+		Special="None"
+		Cost="4000"
+		Rarity="Shop25"
+		Infinite="false"
+		GirlBuyChance="0">
+		<Effect
+			What="Stat"
+			Name="Happiness"
+			Amount="20" />
 		<Effect
 			What="Trait"
 			Name="Former Addict"
 			Amount="1" />
+		<Effect
+			What="Trait"
+			Name="Alcoholic"
+			Amount="0" />
 	</Item>
 </Items>

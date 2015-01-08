@@ -758,6 +758,7 @@ void cGirls::CalculateGirlType(sGirl* girl)
 	if (HasTrait(girl, "Syphilis"))					/**/{}
 	//Other
 	if (HasTrait(girl, "Your Daughter"))			/**/{}
+	if (HasTrait(girl, "Your Wife"))				/**/{}
 	
 	//Temporary Traits
 	//Have ignored these four temp traits for now - not yet familiar with how/when applied
@@ -1141,9 +1142,10 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 	}
 	if (newGirl->m_Stats[STAT_AGE] < 18) newGirl->m_Stats[STAT_AGE] = 18;
 
-	if (g_Dice % 100 <= 3)	AddTrait(newGirl, "Shroud Addict");
-	if (g_Dice % 100 <= 2)	AddTrait(newGirl, "Fairy Dust Addict");
-	if (g_Dice % 100 == 1)	AddTrait(newGirl, "Viras Blood Addict");
+	if (g_Dice % 100 <= 4)	AddTrait(newGirl, "Alcoholic");//changed this to else if... seems like it should have been
+	else if (g_Dice % 100 <= 3)	AddTrait(newGirl, "Shroud Addict");
+	else if (g_Dice % 100 <= 2)	AddTrait(newGirl, "Fairy Dust Addict");
+	else if (g_Dice % 100 == 1)	AddTrait(newGirl, "Viras Blood Addict");
 
 	if (daughter)				newGirl->m_Stats[STAT_HOUSE] = 0;	// your daughter gets to keep all she gets
 	else if (!slave && !arena)	newGirl->m_Stats[STAT_HOUSE] = cfg.initial.girls_house_perc();	// 60% is the norm
@@ -4139,6 +4141,7 @@ void cGirls::UseItems(sGirl* girl)
 			if (girl->m_Withdrawals >= 30)
 			{
 				RemoveTrait(girl, "Viras Blood Addict");
+				AddTrait(girl, "Former Addict");
 				stringstream goodnews;
 				goodnews << "Good News, " << girl->m_Realname << " has overcome her addiction to Viras Blood.";
 				girl->m_Events.AddMessage(goodnews.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
@@ -4171,6 +4174,7 @@ void cGirls::UseItems(sGirl* girl)
 			if (girl->m_Withdrawals >= 20)
 			{
 				RemoveTrait(girl, "Fairy Dust Addict");
+				AddTrait(girl, "Former Addict");
 				stringstream goodnews;
 				goodnews << "Good News, " << girl->m_Realname << " has overcome her addiction to Fairy Dust.";
 				girl->m_Events.AddMessage(goodnews.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
@@ -4203,6 +4207,7 @@ void cGirls::UseItems(sGirl* girl)
 			if (girl->m_Withdrawals >= 20)
 			{
 				RemoveTrait(girl, "Shroud Addict");
+				AddTrait(girl, "Former Addict");
 				stringstream goodnews;
 				goodnews << "Good News, " << girl->m_Realname << " has overcome her addiction to Shroud Mushrooms.";
 				girl->m_Events.AddMessage(goodnews.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
@@ -4211,6 +4216,39 @@ void cGirls::UseItems(sGirl* girl)
 			{
 				UpdateStat(girl, STAT_HAPPINESS, -30);
 				UpdateStat(girl, STAT_OBEDIENCE, -30);
+				UpdateStat(girl, STAT_HEALTH, -4);
+				if (!withdraw)
+				{
+					girl->m_Withdrawals++;
+					withdraw = true;
+				}
+			}
+		}
+		else
+		{
+			UpdateStat(girl, STAT_HAPPINESS, 10);
+			UpdateTempStat(girl, STAT_LIBIDO, 2);
+			g_InvManager.Equip(girl, temp, false);
+			girl->m_Withdrawals = 0;
+		}
+	}
+	if (HasTrait(girl, "Alcoholic"))
+	{
+		int temp = HasItem(girl, "Alcohol");
+		if (temp == -1)	// withdrawals for a week
+		{
+			if (girl->m_Withdrawals >= 15)
+			{
+				RemoveTrait(girl, "Alcoholic");
+				AddTrait(girl, "Former Addict");
+				stringstream goodnews;
+				goodnews << "Good News, " << girl->m_Realname << " has overcome her addiction to Alcohol.";
+				girl->m_Events.AddMessage(goodnews.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
+			}
+			else
+			{
+				UpdateStat(girl, STAT_HAPPINESS, -10);
+				UpdateStat(girl, STAT_OBEDIENCE, -10);
 				UpdateStat(girl, STAT_HEALTH, -4);
 				if (!withdraw)
 				{
@@ -7063,7 +7101,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			if (g_Dice.percent(50)) message += " She kept encouraging the customer to get more and more extreme on her.";
 			else /*              */	message += " Despite everything, she got off on the pain and degradation.";
 		}
-		if (HasTrait(girl, "Sadist"))
+		if (HasTrait(girl, "Sadist"))//zzzzz FIXME this trait doesn't exist
 		{
 			if (g_Dice.percent(50)) message += " She prefers to be in charge, but the customer wouldn't have it.";
 			else /*              */	message += " She took charge for a while, which the customer enjoyed.";
@@ -10649,6 +10687,8 @@ bool cGirls::CalcPregnancy(sGirl* girl, int chance, int type, int stats[NUM_STAT
 	 *	is failing the dice roll. Let's check the chance of
 	 *	her NOT getting preggers here
 	 */
+	if (g_Girls.HasTrait(girl, "Fertile") && chance > 0)	chance += 40;//this should work CRAZY
+
 	if (g_Dice.percent(100 - chance)) return true;
 	/*
 	 *	narrative depends on what it was that Did The Deed
@@ -10710,6 +10750,7 @@ int cGirls::calc_abnormal_pc(sGirl *mom, sGirl *sprog, bool is_players)
 
 bool cGirls::child_is_grown(sGirl* mom, sChild *child, string& summary, bool PlayerControlled)
 {
+	string playersurname = "XXXXXXX";
 	cConfig cfg;
 	cTariff tariff;
 	stringstream ss;
@@ -10789,6 +10830,35 @@ bool cGirls::child_is_grown(sGirl* mom, sChild *child, string& summary, bool Pla
 		sprog->m_Skills[i] = g_Dice%max(s, 20);
 	}
 
+	int playerfather = child->m_IsPlayers; // is 1 if father is player 	string playersurname = "XXXXXXX";
+	string daughtername = sprog->m_Realname; string surnamemom = ""; string biography = "";
+	int posspace = 0; 
+	posspace = mom->m_Realname.find(' ');
+	if (playerfather !=1)
+		{
+			if (posspace >= 0)
+				{
+					surnamemom = mom->m_Realname.substr(posspace+1); 
+					daughtername = daughtername + " " + surnamemom;
+					sprog->m_Realname = daughtername;
+					biography = sprog->m_Desc + " Daughter of " + mom->m_Realname + " and " + " anonymous brothel client ";
+					sprog->m_Desc = biography;
+				}
+			else
+				{
+					daughtername = daughtername + " Smith";
+					sprog->m_Realname = daughtername;
+					biography = sprog->m_Desc + " Daughter of " + mom->m_Realname + " and " + " anonymous brothel client ";
+					sprog->m_Desc = biography;
+				}
+		}
+	else	
+		{
+			daughtername = daughtername + " " + playersurname;
+			sprog->m_Realname = daughtername;
+			biography = sprog->m_Desc + " Daughter of " + mom->m_Realname + " and " + " the Brothel owner Mr. " + playersurname;
+			sprog->m_Desc = biography;
+		}
 	// make sure slave daughters have house perc. set to 100, otherwise 60
 	sprog->m_Stats[STAT_HOUSE] = (slave) ? cfg.initial.slave_house_perc() : cfg.initial.girls_house_perc();
 
