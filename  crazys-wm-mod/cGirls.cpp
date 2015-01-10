@@ -1448,6 +1448,20 @@ string cGirls::GetGirlMood(sGirl* girl)
 	else if (variable > 40)	ss << gettext("unhappy.");
 	else		ss << gettext("showing signs of depression.");
 
+
+	/*morality = GetStat(girl, STAT_MORALITY); //zzzzz FIXME needs better text
+	ss << gettext("\nShe is ");
+		 if (morality <= -80)	ss << gettext("pure evil.");
+	else if (morality <= -60)	ss << gettext("evil.");
+	else if (morality <= -40)	ss << gettext("mean.");
+	else if (morality <= -20)	ss << gettext("not nice.");
+	else if (morality <=   0)	ss << gettext("neutral.");
+	else if (morality <=  20)	ss << gettext("is lawful.");
+	else if (morality <=  40)	ss << gettext("is nice");
+	else if (morality <=  60)	ss << gettext("is good.");
+	else if (morality <=  80)	ss << gettext("is very good.");
+	else 						ss << gettext("angel like.");*/
+
 	return ss.str();
 }
 
