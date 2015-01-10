@@ -136,22 +136,22 @@ bool cJobManager::WorkRehab(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 		msgtype = EVENT_GOODNEWS;
 		if (g_Girls.HasTrait(girl, "Fairy Dust Addict"))
 		{
-			g_Girls.RemoveTrait(girl, "Fairy Dust Addict");
+			g_Girls.RemoveTrait(girl, "Fairy Dust Addict",true);
 			ss << "She is no longer a fairy dust addict.\n";
 		}
 		else if (g_Girls.HasTrait(girl, "Shroud Addict"))
 		{
-			g_Girls.RemoveTrait(girl, "Shroud Addict");
+			g_Girls.RemoveTrait(girl, "Shroud Addict", true);
 			ss << "She is no longer a shroud addict.\n";
 		}
 		else if (g_Girls.HasTrait(girl, "Viras Blood Addict"))
 		{
-			g_Girls.RemoveTrait(girl, "Viras Blood Addict");
+			g_Girls.RemoveTrait(girl, "Viras Blood Addict",true);
 			ss << "She is no longer a viras blood addict.\n";
 		}
 		else if (g_Girls.HasTrait(girl, "Alcoholic"))
 		{
-			g_Girls.RemoveTrait(girl, "Alcoholic");
+			g_Girls.RemoveTrait(girl, "Alcoholic", true);
 			ss << "She is no longer an alcoholic.\n";
 		}
 		girl->m_PrevWorkingDay = girl->m_WorkingDay = 0;

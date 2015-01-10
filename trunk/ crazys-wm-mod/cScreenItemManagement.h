@@ -76,7 +76,7 @@ public:
 
 	void attempt_transfer(Side transfer_from);
 	void refresh_item_list(Side which_list);
-	string GiveItemText(int goodbad, int HateLove, string ItemName = "");
+	string GiveItemText(int goodbad, int HateLove, sGirl* targetgirl, string ItemName = "");
 	sGirl* GirlSelectedFromList(int owner, int selectedfromlist = -100);
 
 	// XML screen replacement for cSelector, for multi-select listboxes

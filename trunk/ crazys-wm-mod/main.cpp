@@ -88,27 +88,32 @@ bool g_DownArrow = false;
 bool g_EnterKey = false;
 // New Locally defined keys --PP
 bool g_SpaceKey = false;
-bool g_Q_Key = false;
-bool g_W_Key = false;
-bool g_E_Key = false;
 bool g_A_Key = false;
-bool g_S_Key = false;
-bool g_D_Key = false;
-bool g_Z_Key = false;
-bool g_X_Key = false;
+bool g_B_Key = false;
 bool g_C_Key = false;
-bool g_O_Key = false;
-
-bool g_R_Key = false;
+bool g_D_Key = false;
+bool g_E_Key = false;
 bool g_F_Key = false;
-bool g_T_Key = false;
 bool g_G_Key = false;
-bool g_Y_Key = false;
 bool g_H_Key = false;
-bool g_U_Key = false;
-bool g_J_Key = false;
 bool g_I_Key = false;
+bool g_J_Key = false;
 bool g_K_Key = false;
+bool g_L_Key = false;
+bool g_M_Key = false;
+bool g_N_Key = false;
+bool g_O_Key = false;
+bool g_P_Key = false;
+bool g_Q_Key = false;
+bool g_R_Key = false;
+bool g_S_Key = false;
+bool g_T_Key = false;
+bool g_U_Key = false;
+bool g_V_Key = false;
+bool g_W_Key = false;
+bool g_X_Key = false;
+bool g_Y_Key = false;
+bool g_Z_Key = false;
 
 /*                      // Alternate hotkeys (g is global keys, L is function defined locally) Ironically local keys must have global scope. --PP
 g               Tab     cycle brothels
@@ -230,32 +235,37 @@ void handle_hotkeys()
 	else if (vent.key.keysym.sym == SDLK_RCTRL || vent.key.keysym.sym == SDLK_LCTRL)        // enable multi select
 		g_CTRLDown = true;
 
-	if (vent.key.keysym.sym == SDLK_UP)			g_UpArrow = true;
+	/* */if (vent.key.keysym.sym == SDLK_UP)	g_UpArrow = true;
 	else if (vent.key.keysym.sym == SDLK_DOWN)  g_DownArrow = true;
 	else if (vent.key.keysym.sym == SDLK_LEFT)  g_LeftArrow = true;
 	else if (vent.key.keysym.sym == SDLK_RIGHT) g_RightArrow = true;
 	else if (vent.key.keysym.sym == SDLK_SPACE) g_SpaceKey = true;
-	else if (vent.key.keysym.sym == SDLK_q)     g_Q_Key = true;
-	else if (vent.key.keysym.sym == SDLK_w)     g_W_Key = true;
-	else if (vent.key.keysym.sym == SDLK_e)     g_E_Key = true;
 	else if (vent.key.keysym.sym == SDLK_a)     g_A_Key = true;
-	else if (vent.key.keysym.sym == SDLK_s)     g_S_Key = true;
-	else if (vent.key.keysym.sym == SDLK_d)     g_D_Key = true;
-	else if (vent.key.keysym.sym == SDLK_z)     g_Z_Key = true;
-	else if (vent.key.keysym.sym == SDLK_x)     g_X_Key = true;
+	else if (vent.key.keysym.sym == SDLK_b)     g_B_Key = true;
 	else if (vent.key.keysym.sym == SDLK_c)     g_C_Key = true;
-	else if (vent.key.keysym.sym == SDLK_o)     g_O_Key = true;
-
-	else if (vent.key.keysym.sym == SDLK_r)     g_R_Key = true;
+	else if (vent.key.keysym.sym == SDLK_d)     g_D_Key = true;
+	else if (vent.key.keysym.sym == SDLK_e)     g_E_Key = true;
 	else if (vent.key.keysym.sym == SDLK_f)     g_F_Key = true;
-	else if (vent.key.keysym.sym == SDLK_t)     g_T_Key = true;
 	else if (vent.key.keysym.sym == SDLK_g)     g_G_Key = true;
-	else if (vent.key.keysym.sym == SDLK_y)     g_Y_Key = true;
 	else if (vent.key.keysym.sym == SDLK_h)     g_H_Key = true;
-	else if (vent.key.keysym.sym == SDLK_u)     g_U_Key = true;
-	else if (vent.key.keysym.sym == SDLK_j)     g_J_Key = true;
 	else if (vent.key.keysym.sym == SDLK_i)     g_I_Key = true;
+	else if (vent.key.keysym.sym == SDLK_j)     g_J_Key = true;
 	else if (vent.key.keysym.sym == SDLK_k)     g_K_Key = true;
+	else if (vent.key.keysym.sym == SDLK_l)     g_L_Key = true;
+	else if (vent.key.keysym.sym == SDLK_m)     g_M_Key = true;
+	else if (vent.key.keysym.sym == SDLK_n)     g_N_Key = true;
+	else if (vent.key.keysym.sym == SDLK_o)     g_O_Key = true;
+	else if (vent.key.keysym.sym == SDLK_p)     g_P_Key = true;
+	else if (vent.key.keysym.sym == SDLK_q)     g_Q_Key = true;
+	else if (vent.key.keysym.sym == SDLK_r)     g_R_Key = true;
+	else if (vent.key.keysym.sym == SDLK_s)     g_S_Key = true;
+	else if (vent.key.keysym.sym == SDLK_t)     g_T_Key = true;
+	else if (vent.key.keysym.sym == SDLK_u)     g_U_Key = true;
+	else if (vent.key.keysym.sym == SDLK_v)     g_V_Key = true;
+	else if (vent.key.keysym.sym == SDLK_w)     g_W_Key = true;
+	else if (vent.key.keysym.sym == SDLK_x)     g_X_Key = true;
+	else if (vent.key.keysym.sym == SDLK_y)     g_Y_Key = true;
+	else if (vent.key.keysym.sym == SDLK_z)     g_Z_Key = true;
 
 	if (g_WinManager.GetWindow() != &g_MainMenu && g_WinManager.GetWindow() != &g_LoadGame)
 	{
@@ -1259,9 +1269,9 @@ bool Init()		// `J` Bookmark
 		*               I think this should work - kept the old line below
 		*               reference
 		*/
-		char buffer[32];
-		_itoa(i, buffer, 10);
-		g_BrothelImages[i] = new ImageSurface("Brothel", buffer);
+		stringstream ci;
+		ci << i;
+		g_BrothelImages[i] = new ImageSurface("Brothel", ci.str().c_str());
 		//g_BrothelImages[i]->LoadImage(file,false);
 	}
 	g_LogFile.write("Brothel Images Set");

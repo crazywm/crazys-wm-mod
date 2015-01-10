@@ -1248,6 +1248,39 @@ Adjusted STD chance again to allow exponential health to chance ratio.
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.20
 !!!!!!!!!!!!!!!!!!!! pushed to SVN - r128
  
+###  Changes 1/5/2015
+Added update to scroll bars by Dagoth
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.21
+
+###  Changes 1/6/2015
+!! Attempted SDL2 conversion but it threw too many errors - will have to rewrite SDL2 upgrade from scratch
+
+###  Changes 1/7-9/2015
+Started removing all microsoft code (_itoa, ltoa, etc.) and related code (char buffer[10];)
+ - Cleaned cBrothels.cpp updating a few things in the process.
+ - Cleaned cDungeon.cpp
+ - Cleaned cGangs.cpp and fixed a few things
+ - Cleaned cScreenGangs.cpp fixing a few things
+ - Cleaned cGirls.cpp
+ - Cleaned cScreenPrison.(cpp,h) fixing a few things and adding PrisonReleaseCost function
+ - Cleaned cScreenHouse.cpp
+ - Cleaned cScreenMayor.cpp
+ 
+Crazy pushed r129 - lots of changes to jobs and added a few traits
+ - I checked most of it and fixed a few things so they worked better
+ -  - expanded GiveItemText to include sGirl so girl's traits can affect the output text
+ -  - Added girl->m_Surname so family trees can be tracked a little - not fully implemented yet
+ -  - Akab's original surname code was almost completely rewritten but was a good framework
+ -  - Existing names should automatically be converted to the new first/last name with one named girls given "" as surname
+ - Added Player stuff: m_Title, m_FirstName, m_Surname, m_RealName, m_BirthYear, m_BirthMonth, m_BirthDay
+ - Made m_RealName = m_FirstName + " " + m_Surname;
+ - Added Surname loading from RandomLastNames.txt
+ - 10% chance of a girl not being given a surname
+ - Reworked "Former Addict" check and made loosing any addictions save in remembered traits to be brought back if needed.
+ - Rearranged arena matron assigning and made girls fighting beasts fight other girls if there are no beasts available
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.22
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r130
  
  
 Whore Master Editor:

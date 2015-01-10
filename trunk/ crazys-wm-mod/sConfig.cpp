@@ -242,11 +242,13 @@ void sConfigData::get_resolution_data(TiXmlElement *el)
 		l.ssend();
 
 	}
-	if (pt = el->Attribute("Width"))	{	get_att(el, "Width",		&resolution.width);		resolution.configXML = true; }
-	if (pt = el->Attribute("Height"))	{	get_att(el, "Height",		&resolution.height);	resolution.configXML = true; }
-	if (pt = el->Attribute("ScaleWidth"))	get_att(el, "ScaleWidth",	&resolution.scalewidth);
-	if (pt = el->Attribute("ScaleHeight"))	get_att(el, "ScaleHeight",	&resolution.scaleheight);
-	if (pt = el->Attribute("FullScreen"))	get_att(el, "FullScreen",	resolution.fullscreen);
+	if (pt = el->Attribute("Width"))			{	get_att(el, "Width",		&resolution.width);		resolution.configXML = true; }
+	if (pt = el->Attribute("Height"))			{	get_att(el, "Height",		&resolution.height);	resolution.configXML = true; }
+	if (pt = el->Attribute("ScaleWidth"))		{	get_att(el, "ScaleWidth",	&resolution.scalewidth); }
+	if (pt = el->Attribute("ScaleHeight"))		{	get_att(el, "ScaleHeight",	&resolution.scaleheight); }
+	if (pt = el->Attribute("FullScreen"))		{	get_att(el, "FullScreen",	resolution.fullscreen); }
+	if (pt = el->Attribute("ListScrollAmount"))	{	get_att(el, "ListScrollAmount", &resolution.list_scroll); }	else { resolution.list_scroll = 3; }
+	if (pt = el->Attribute("TextScrollAmount"))	{	get_att(el, "TextScrollAmount", &resolution.text_scroll); }	else { resolution.text_scroll = 3; }
 }
 
 void sConfigData::get_initial_values(TiXmlElement *el)

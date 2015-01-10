@@ -1,21 +1,21 @@
 /*
- * Copyright 2009, 2010, The Pink Petal Development Team.
- * The Pink Petal Devloment Team are defined as the game's coders 
- * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright 2009, 2010, The Pink Petal Development Team.
+* The Pink Petal Devloment Team are defined as the game's coders
+* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 #include <sstream>
 
 #ifdef LINUX
@@ -35,12 +35,12 @@ extern cGirls			g_Girls;
 extern cBrothelManager	g_Brothels;
 extern cRng				g_Dice;
 extern cGangManager		g_Gangs;
-extern char				buffer[1000];
+
 
 // strut sDungeonCust
 sDungeonCust::sDungeonCust()		// constructor 
-{ 
-	m_Prev=m_Next = 0; 
+{
+	m_Prev = m_Next = 0;
 	m_Weeks = 0;
 	m_Tort = false;
 	m_Feeding = true;
@@ -48,38 +48,35 @@ sDungeonCust::sDungeonCust()		// constructor
 }
 
 sDungeonCust::~sDungeonCust()		// destructor
-{ 
-	if (m_Next) 
-		delete m_Next; 
+{
+	if (m_Next) delete m_Next;
 	m_Next = 0;
 }
 
 // strut sDungeonGirl
 sDungeonGirl::sDungeonGirl()		// constructor
-{ 
+{
 	m_Girl = 0;
-	m_Prev=m_Next = 0;
+	m_Prev = m_Next = 0;
 	m_Weeks = 0;
 	m_Feeding = true;
 }
 
 sDungeonGirl::~sDungeonGirl() 		// destructor
 {
-    if (m_Girl)
-        delete m_Girl;
-    m_Girl = 0;
-    if (m_Next)
-        delete m_Next;
-    m_Next = 0;
+	if (m_Girl) delete m_Girl;
+	m_Girl = 0;
+	if (m_Next) delete m_Next;
+	m_Next = 0;
 }
 
 // class cDungeon
 cDungeon::cDungeon()		// constructor
 {
-    m_LastDGirl = m_Girls = 0; 
-    m_LastDCusts = m_Custs = 0; 
-    m_NumberDied = 0; 
-    m_NumGirls = m_NumCusts = 0;
+	m_LastDGirl = m_Girls = 0;
+	m_LastDCusts = m_Custs = 0;
+	m_NumberDied = 0;
+	m_NumGirls = m_NumCusts = 0;
 }
 
 cDungeon::~cDungeon()		// destructor
@@ -88,15 +85,13 @@ cDungeon::~cDungeon()		// destructor
 }
 
 void cDungeon::Free()
-{ 
-    if (m_Girls)
-        delete m_Girls;
-    m_LastDGirl = m_Girls = 0;
-    if (m_Custs)
-        delete m_Custs;
-    m_LastDCusts = m_Custs = 0;
-    m_NumberDied=0; 
-    m_NumGirls = m_NumCusts = 0;
+{
+	if (m_Girls) delete m_Girls;
+	m_LastDGirl = m_Girls = 0;
+	if (m_Custs) delete m_Custs;
+	m_LastDCusts = m_Custs = 0;
+	m_NumberDied = 0;
+	m_NumGirls = m_NumCusts = 0;
 }
 
 TiXmlElement* cDungeon::SaveDungeonDataXML(TiXmlElement* pRoot)// saves all the people (they are stored with the dungeon)
@@ -111,13 +106,12 @@ TiXmlElement* cDungeon::SaveDungeonDataXML(TiXmlElement* pRoot)// saves all the 
 	TiXmlElement* pDungeonGirls = new TiXmlElement("Dungeon_Girls");
 	pDungeon->LinkEndChild(pDungeonGirls);
 	sDungeonGirl* girl = m_Girls;
-	string message = "";
-	while(girl)
+	stringstream ss;
+	while (girl)
 	{
-		message = "Saving Dungeon Girl: ";
-		message += girl->m_Girl->m_Realname;
-		g_LogFile.write(message);
-			
+		ss << "Saving Dungeon Girl: " << girl->m_Girl->m_Realname;
+		g_LogFile.write(ss.str()); ss.str("");
+
 		TiXmlElement* pGirl = girl->m_Girl->SaveGirlXML(pDungeonGirls);
 
 		TiXmlElement* pDungeonData = new TiXmlElement("Dungeon_Data");
@@ -129,13 +123,13 @@ TiXmlElement* cDungeon::SaveDungeonDataXML(TiXmlElement* pRoot)// saves all the 
 		girl = girl->m_Next;
 	}
 
-	message = "Saving Customers";
-	g_LogFile.write(message);
+	ss << "Saving Customers";
+	g_LogFile.write(ss.str()); ss.str("");
 	// save customers
 	TiXmlElement* pDungeonCustomers = new TiXmlElement("Dungeon_Customers");
 	pDungeon->LinkEndChild(pDungeonCustomers);
 	sDungeonCust* cust = m_Custs;
-	while(cust)
+	while (cust)
 	{
 		TiXmlElement* pCustomer = new TiXmlElement("Customer");
 		pDungeonCustomers->LinkEndChild(pCustomer);
@@ -157,32 +151,27 @@ bool cDungeon::LoadDungeonDataXML(TiXmlHandle hDungeon)	// loads all the people 
 {
 	Free();//everything should be init even if we failed to load an XML element
 	TiXmlElement* pDungeon = hDungeon.ToElement();
-	if (pDungeon == 0)
-	{
-		return false;
-	}
+	if (pDungeon == 0) { return false; }
 
 	// load number died
 	pDungeon->QueryValueAttribute<unsigned long>("NumberDied", &m_NumberDied);
 
 	// load girls
 	m_NumGirls = 0;
-	string message = "";
+	stringstream ss;
 	TiXmlElement* pDungeonGirls = pDungeon->FirstChildElement("Dungeon_Girls");
 	if (pDungeonGirls)
 	{
-		for(TiXmlElement* pGirl = pDungeonGirls->FirstChildElement("Girl");
-			pGirl != 0;
-			pGirl = pGirl->NextSiblingElement("Girl"))// load each girl and add her
+		// load each girl and add her
+		for (TiXmlElement* pGirl = pDungeonGirls->FirstChildElement("Girl"); pGirl != 0; pGirl = pGirl->NextSiblingElement("Girl"))
 		{
 			sDungeonGirl* girl = new sDungeonGirl();
 			girl->m_Girl = new sGirl();
 			bool success = girl->m_Girl->LoadGirlXML(TiXmlHandle(pGirl));
 			if (success == true)
 			{
-				message = "Loading Dungeon Girl: ";
-				message += girl->m_Girl->m_Realname;
-				g_LogFile.write(message);
+				ss << "Loading Dungeon Girl: " << girl->m_Girl->m_Realname;
+				g_LogFile.write(ss.str()); ss.str("");
 
 				TiXmlElement* pDungeonData = pGirl->FirstChildElement("Dungeon_Data");
 				if (pDungeonData)
@@ -204,14 +193,13 @@ bool cDungeon::LoadDungeonDataXML(TiXmlHandle hDungeon)	// loads all the people 
 
 	// load customers
 	m_NumCusts = 0;
-	message = "Loading customers";
-	g_LogFile.write(message);
+	ss.str("");
+	ss << "Loading customers";
+	g_LogFile.write(ss.str());
 	TiXmlElement* pDungeonCustomers = pDungeon->FirstChildElement("Dungeon_Customers");
 	if (pDungeonCustomers)
 	{
-		for(TiXmlElement* pCustomer = pDungeonCustomers->FirstChildElement("Customer");
-			pCustomer != 0;
-			pCustomer = pCustomer->NextSiblingElement("Customer"))
+		for (TiXmlElement* pCustomer = pDungeonCustomers->FirstChildElement("Customer"); pCustomer != 0; pCustomer = pCustomer->NextSiblingElement("Customer"))
 		{
 			sDungeonCust* customer = new sDungeonCust();
 
@@ -240,11 +228,10 @@ void cDungeon::AddGirl(sGirl* girl, int reason)
 		}
 	}
 
-	// by this stage they should no longer be apart of any other lists of girls
-	//	girl->m_Next = girl->m_Prev = 0;
+	// by this stage they should no longer be a part of any other lists of girls
 	sDungeonGirl* newPerson = new sDungeonGirl();
-	newPerson->m_Reason		= reason;
-	newPerson->m_Girl		= girl;
+	newPerson->m_Reason = reason;
+	newPerson->m_Girl = girl;
 	girl->m_InMovieStudio = girl->m_InCentre = girl->m_InClinic = girl->m_InHouse = girl->m_InArena = false;	// `J`
 	girl->where_is_she = 0;	// `J`
 	girl->m_DayJob = girl->m_NightJob = JOB_INDUNGEON;
@@ -253,8 +240,10 @@ void cDungeon::AddGirl(sGirl* girl, int reason)
 	g_Girls.RemoveGirl(girl);
 
 	// remove girl from brothels if she is there
-	for(int i=0; i<g_Brothels.GetNumBrothels(); i++)
+	for (int i = 0; i < g_Brothels.GetNumBrothels(); i++)
+	{
 		g_Brothels.RemoveGirl(i, girl, false);
+	}
 
 	PlaceDungeonGirl(newPerson);
 }
@@ -263,9 +252,9 @@ void cDungeon::PlaceDungeonGirl(sDungeonGirl* newGirl)
 {
 	if (m_Girls)
 	{
-		m_LastDGirl->m_Next	= newGirl;
-		newGirl->m_Prev	= m_LastDGirl;
-		m_LastDGirl			= newGirl;
+		m_LastDGirl->m_Next = newGirl;
+		newGirl->m_Prev = m_LastDGirl;
+		m_LastDGirl = newGirl;
 	}
 	else
 	{
@@ -279,8 +268,8 @@ void cDungeon::AddCust(int reason, int numDaughters, bool hasWife)
 {
 	sDungeonCust* newPerson = new sDungeonCust();
 	newPerson->m_NumDaughters = numDaughters;
-	newPerson->m_HasWife	= hasWife;
-	newPerson->m_Reason		= reason;
+	newPerson->m_HasWife = hasWife;
+	newPerson->m_Reason = reason;
 
 	PlaceDungeonCustomer(newPerson);
 }
@@ -289,9 +278,9 @@ void cDungeon::PlaceDungeonCustomer(sDungeonCust *newCust)
 {
 	if (m_Custs)
 	{
-		newCust->m_Prev	= m_LastDCusts;
+		newCust->m_Prev = m_LastDCusts;
 		m_LastDCusts->m_Next = newCust;
-		m_LastDCusts		= newCust;
+		m_LastDCusts = newCust;
 	}
 	else
 	{
@@ -303,52 +292,39 @@ void cDungeon::PlaceDungeonCustomer(sDungeonCust *newCust)
 
 int cDungeon::GetGirlPos(sGirl* girl)
 {
-	if (girl == 0 || m_Girls == 0)
-		return -1;
+	if (girl == 0 || m_Girls == 0) return -1;
 
 	sDungeonGirl* current = m_Girls;
 	int count = 0;
-	while(current)
+	while (current)
 	{
-		if (current->m_Girl == girl)
-			break;
+		if (current->m_Girl == girl) break;
 		count++;
 		current = current->m_Next;
 	}
-
-	if (current == 0)
-		return -1;
-
+	if (current == 0) return -1;
 	return count;
 }
 
 sGirl* cDungeon::RemoveGirl(sGirl* girl)	// this returns the girl, it must be placed somewhere or deleted
 {
 	sDungeonGirl* current = m_Girls;
-	while(current)
+	while (current)
 	{
-		if (current->m_Girl == girl)
-			break;
+		if (current->m_Girl == girl) break;
 		current = current->m_Next;
 	}
-
-	if (current)
-		return RemoveGirl(current);
-
+	if (current) return RemoveGirl(current);
 	return 0;
 }
 
 sGirl* cDungeon::RemoveGirl(sDungeonGirl* girl)	// this returns the girl, it must be placed somewhere or deleted
 {
 	girl->m_Girl->m_DayJob = girl->m_Girl->m_NightJob = JOB_RESTING;
-	if (girl->m_Next)
-		girl->m_Next->m_Prev = girl->m_Prev;
-	if (girl->m_Prev)
-		girl->m_Prev->m_Next = girl->m_Next;
-	if (girl == m_LastDGirl)
-		m_LastDGirl = girl->m_Prev;
-	if (girl == m_Girls)
-		m_Girls = girl->m_Next;
+	if (girl->m_Next)			girl->m_Next->m_Prev = girl->m_Prev;
+	if (girl->m_Prev)			girl->m_Prev->m_Next = girl->m_Next;
+	if (girl == m_LastDGirl)	m_LastDGirl = girl->m_Prev;
+	if (girl == m_Girls)		m_Girls = girl->m_Next;
 
 	sGirl* girlData = girl->m_Girl;
 	girl->m_Next = girl->m_Prev = 0;
@@ -364,21 +340,14 @@ sGirl* cDungeon::RemoveGirl(sDungeonGirl* girl)	// this returns the girl, it mus
 
 void cDungeon::RemoveCust(sDungeonCust* cust)
 {
-	if (cust == 0)
-		return;
-
-	if (cust->m_Prev)
-		cust->m_Prev->m_Next = cust->m_Next;
-	if (cust->m_Next)
-		cust->m_Next->m_Prev = cust->m_Prev;
-	if (cust == m_LastDCusts)
-		m_LastDCusts = cust->m_Prev;
-	if (cust == m_Custs)
-		m_Custs = cust->m_Next;
+	if (cust == 0) return;
+	if (cust->m_Prev)			cust->m_Prev->m_Next = cust->m_Next;
+	if (cust->m_Next)			cust->m_Next->m_Prev = cust->m_Prev;
+	if (cust == m_LastDCusts)	m_LastDCusts = cust->m_Prev;
+	if (cust == m_Custs)		m_Custs = cust->m_Next;
 	cust->m_Next = cust->m_Prev = 0;
 	delete cust;
 	cust = 0;
-
 	m_NumCusts--;
 }
 
@@ -386,10 +355,9 @@ void cDungeon::OutputGirlRow(int i, string* Data, const vector<string>& columnNa
 {
 	sDungeonGirl* girl = m_Girls;
 	int tmp = 0;
-	while(girl)
+	while (girl)
 	{
-		if (tmp == i)
-			break;
+		if (tmp == i) break;
 		tmp++;
 		girl = girl->m_Next;
 	}
@@ -409,7 +377,7 @@ void sDungeonGirl::OutputGirlDetailString(string& Data, const string& detailName
 	static stringstream ss;
 	ss.str("");
 	if (detailName == "Rebelliousness")	// `J` Dungeon "Matron" can be a Torturer from any brothel
-	{	
+	{
 		ss << g_Girls.GetRebelValue(m_Girl, (
 			g_Brothels.GetNumGirlsOnJob(0, JOB_TORTURER, 0) > 0 ||
 			g_Brothels.GetNumGirlsOnJob(1, JOB_TORTURER, 0) > 0 ||
@@ -417,36 +385,20 @@ void sDungeonGirl::OutputGirlDetailString(string& Data, const string& detailName
 			g_Brothels.GetNumGirlsOnJob(3, JOB_TORTURER, 0) > 0 ||
 			g_Brothels.GetNumGirlsOnJob(4, JOB_TORTURER, 0) > 0 ||
 			g_Brothels.GetNumGirlsOnJob(5, JOB_TORTURER, 0) > 0 ||
-			g_Brothels.GetNumGirlsOnJob(6, JOB_TORTURER, 0) > 0 ));
+			g_Brothels.GetNumGirlsOnJob(6, JOB_TORTURER, 0) > 0));
 	}
 	else if (detailName == "Reason")
 	{
-		switch(m_Reason)
+		switch (m_Reason)
 		{
-		case DUNGEON_GIRLCAPTURED:
-			ss << gettext("Newly Captured.");
-			break;
-		case DUNGEON_GIRLKIDNAPPED:
-			ss << gettext("Taken from her family.");
-			break;
-		case DUNGEON_GIRLWHIM:
-			ss << gettext("Your whim.");
-			break;
-		case DUNGEON_GIRLSTEAL:
-			ss << gettext("Not reporting true earnings.");
-			break;
-		case DUNGEON_GIRLRUNAWAY:
-			ss << gettext("Ran away and re-captured.");
-			break;
-		case DUNGEON_NEWSLAVE:
-			ss << gettext("This is a new slave.");
-			break;
-		case DUNGEON_NEWGIRL:
-			ss << gettext("This is a new girl.");
-			break;
-		case DUNGEON_KID:
-			ss << gettext("Child of one of your girls.");
-			break;
+		case DUNGEON_GIRLCAPTURED:			ss << gettext("Newly Captured.");					break;
+		case DUNGEON_GIRLKIDNAPPED:			ss << gettext("Taken from her family.");			break;
+		case DUNGEON_GIRLWHIM:				ss << gettext("Your whim.");						break;
+		case DUNGEON_GIRLSTEAL:				ss << gettext("Not reporting true earnings.");		break;
+		case DUNGEON_GIRLRUNAWAY:			ss << gettext("Ran away and re-captured.");			break;
+		case DUNGEON_NEWSLAVE:				ss << gettext("This is a new slave.");				break;
+		case DUNGEON_NEWGIRL:				ss << gettext("This is a new girl.");				break;
+		case DUNGEON_KID:					ss << gettext("Child of one of your girls.");		break;
 		}
 	}
 	else if (detailName == "Duration")
@@ -473,10 +425,9 @@ void cDungeon::OutputCustRow(int i, string* Data, const vector<string>& columnNa
 {
 	sDungeonCust* cust = m_Custs;
 	int tmp = 0;
-	while(cust)
+	while (cust)
 	{
-		if (tmp == i)
-			break;
+		if (tmp == i) break;
 		tmp++;
 		cust = cust->m_Next;
 	}
@@ -508,20 +459,12 @@ void sDungeonCust::OutputCustDetailString(string& Data, const string& detailName
 	}
 	else if (detailName == "Reason")
 	{
-		switch(m_Reason)
+		switch (m_Reason)
 		{
-		case DUNGEON_CUSTNOPAY:
-			ss << gettext("Not paying.");
-			break;
-		case DUNGEON_CUSTBEATGIRL:
-			ss << gettext("Beating your girls.");
-			break;
-		case DUNGEON_CUSTSPY:
-			ss << gettext("Being a rival's spy.");
-			break;
-		case DUNGEON_RIVAL:
-			ss << gettext("Is a rival.");
-			break;
+		case DUNGEON_CUSTNOPAY:			ss << gettext("Not paying.");			break;
+		case DUNGEON_CUSTBEATGIRL:		ss << gettext("Beating your girls.");	break;
+		case DUNGEON_CUSTSPY:			ss << gettext("Being a rival's spy.");	break;
+		case DUNGEON_RIVAL:				ss << gettext("Is a rival.");			break;
 		}
 	}
 	else if (detailName == "Duration")
@@ -545,33 +488,24 @@ void sDungeonCust::OutputCustDetailString(string& Data, const string& detailName
 
 sDungeonGirl* cDungeon::GetGirl(int i)
 {
-	if (i < 0)
-	{
-		i = i + m_NumGirls;
-	}
-
-	if (i >= m_NumGirls)
-	{
-		i = i - m_NumGirls;
-	}
+	if (i < 0)				{ i = i + m_NumGirls; }
+	if (i >= m_NumGirls)	{ i = i - m_NumGirls; }
 
 	sDungeonGirl* girl = m_Girls;
 	int tmp = 0;
-	while(girl)
+	while (girl)
 	{
-		if (tmp == i)
-			break;
+		if (tmp == i) break;
 		tmp++;
 		girl = girl->m_Next;
 	}
-
 	return girl;
 }
 
 sDungeonGirl* cDungeon::GetGirlByName(string name)
 {
 	sDungeonGirl* currentGirl = m_Girls;
-	while(currentGirl)
+	while (currentGirl)
 	{
 		if (strnatcmp(name.c_str(), currentGirl->m_Girl->m_Realname.c_str()) == 0)
 			return currentGirl;
@@ -584,14 +518,12 @@ int cDungeon::GetDungeonPos(sGirl* girl)
 {
 	sDungeonGirl* tgirl = m_Girls;
 	int tmp = 0;
-	while(tgirl)
+	while (tgirl)
 	{
-		if (tgirl->m_Girl == girl)
-			break;
+		if (tgirl->m_Girl == girl) break;
 		tmp++;
 		tgirl = tgirl->m_Next;
 	}
-
 	return tmp;
 }
 
@@ -599,160 +531,113 @@ sDungeonCust* cDungeon::GetCust(int i)
 {
 	sDungeonCust* cust = m_Custs;
 	int tmp = 0;
-	while(cust)
+	while (cust)
 	{
-		if (tmp == i)
-			break;
+		if (tmp == i) break;
 		tmp++;
 		cust = cust->m_Next;
 	}
-
 	return cust;
 }
 
 void cDungeon::Update()
 {
-/*
- *	WD: GetNumGirlsOnJob() not testing if the girl worked 
- *
- */
+	/*
+	*	WD: GetNumGirlsOnJob() not testing if the girl worked
+	*
+	*/
 	sGirl* TorturerGirlref = 0;
-	string msg, summary, girlName;
+	string girlName;
+	stringstream msg;
+	stringstream ss;
 
 	// Reser counters
 	m_NumGirlsTort = m_NumCustsTort = 0;
 
 	// WD:	Did we torture the girls
-	bool tort = g_Brothels.TortureDone();							
-
+	bool tort = g_Brothels.TortureDone();
+	// WD: If so, who is the Torturer
 	if (tort)
 	{
-		// WD:	Who is the Torturer
-		TorturerGirlref = g_Brothels.WhoHasTorturerJob();				
+		TorturerGirlref = g_Brothels.WhoHasTorturerJob();
 	}
 
-/*********************************
- *	DO ALL DUNGEON GIRLS
- *********************************/
+	/*********************************
+	*	DO ALL DUNGEON GIRLS
+	*********************************/
 	if (m_Girls)
 	{
 
 		sDungeonGirl* current = m_Girls;
-		while(current)
+		while (current)
 		{
 			sGirl* girl = current->m_Girl;
 			// Clear the girls' events from the last turn
 			girl->m_Events.Clear();
 
-//			girl->m_Tort = false;// WD: Move till after Girls have been tortured so that we dont torture twice week
-			girlName	= girl->m_Realname;
-			summary		= "";
-			msg			= "";
+			//			girl->m_Tort = false;// WD: Move till after Girls have been tortured so that we dont torture twice week
+			girlName = girl->m_Realname;
+			ss.str("");
+			msg.str("");
 
-#if 0		// original dead girls Code
-			if (g_Girls.GetStat(girl, STAT_HEALTH) <= 0)
-			{
-				m_NumberDied++;
-				current->m_Reason = DUNGEON_DEAD;
-				SetGameFlag(FLAG_DUNGEONGIRLDIE);
-			}
-
-			if (current->m_Reason == DUNGEON_DEAD)
-			{
-				sDungeonGirl* temp = current;
-				current = current->m_Next;
-				delete RemoveGirl(temp);
-				continue;
-			}
-#else
 			// Check for dead girls
 			if (girl->health() <= 0)
-			{	
+			{
 				// remove dead bodies from last week
-				// doc: changed this from a single to double "="
-				// since that appears to be the intention
 				if (current->m_Reason == DUNGEON_DEAD)
 				{
 					sDungeonGirl* temp = current;
 					current = current->m_Next;
-
-					msg =  girlName + "'s body has been removed from the dungeon since she was dead.";
-					g_MessageQue.AddToQue(msg, COLOR_RED);
-
+					msg << girlName << "'s body has been removed from the dungeon since she was dead.";
+					g_MessageQue.AddToQue(msg.str(), COLOR_RED);
 					delete RemoveGirl(temp);
-					continue;	
+					continue;
 				}
-
 				// Mark as dead
 				else
 				{
 					m_NumberDied++;
 					current->m_Reason = DUNGEON_DEAD;
 					SetGameFlag(FLAG_DUNGEONGIRLDIE);
-					continue;	
+					continue;
 				}
 			}
-#endif
-/*
- *			DAILY Processing
- */
+			/*
+			*			DAILY Processing
+			*/
 
-			// the number of weeks they have been in the dungeon
-			current->m_Weeks++;
-
-			// update the fetish traits
-			g_Girls.CalculateGirlType(girl);
-
-			// update birthday counter and age the girl
-			g_Girls.updateGirlAge(girl, true);
-
-			// add the girls acc level costs to the brothen upkeep and adjust happiness
-			//do_food_and_digs(brothel, girl);		// BROTHEL ONLY
-
-			// update temp stats
-			g_Girls.updateTempStats(girl);
-
-			// update temp skills
-			g_Girls.updateTempSkills(girl);
-
-			// update temp traits
-			g_Girls.updateTempTraits(girl);
-
+			current->m_Weeks++;						// the number of weeks they have been in the dungeon
+			g_Girls.CalculateGirlType(girl);		// update the fetish traits
+			g_Girls.updateGirlAge(girl, true);		// update birthday counter and age the girl
+			g_Girls.updateTempStats(girl);			// update temp stats
+			g_Girls.updateTempSkills(girl);			// update temp skills
+			g_Girls.updateTempTraits(girl);			// update temp traits
 			g_Girls.EndDayGirls(g_Brothels.GetBrothel(0), girl);
+			g_Girls.HandleChildren(girl);			// handle pregnancy and children growing up
+			g_Girls.updateSTD(girl);				// health loss to STD's - NOTE: Girl can die
+			g_Girls.updateHappyTraits(girl);		// Update happiness due to Traits - NOTE: Girl can die
+			updateGirlTurnDungeonStats(current);	// Update stats
+			g_Girls.updateGirlTurnStats(girl);		// Stat Code common to Dugeon and Brothel
 
-			// handle pregnancy and children growing up
-			g_Girls.HandleChildren(girl, summary);
-			
-			// health loss to STD's							NOTE: Girl can die
-			g_Girls.updateSTD(girl);
-
-			// Update happiness due to Traits				NOTE: Girl can die
-			g_Girls.updateHappyTraits(girl);
-
-			//	Update stats
-			updateGirlTurnDungeonStats(current);
-
-			//	Stat Code common to Dugeon and Brothel
-			g_Girls.updateGirlTurnStats(girl);
-
-			// Check for dead girls
+			// Check again for dead girls
 			if (g_Girls.GetStat(girl, STAT_HEALTH) <= 0)
 			{
-
 				m_NumberDied++;
 				current->m_Reason = DUNGEON_DEAD;
 				SetGameFlag(FLAG_DUNGEONGIRLDIE);
 
-				msg = girlName + gettext(" has died in the dungeon.");
-				girl->m_Events.AddMessage(msg, IMGTYPE_DEATH, EVENT_DANGER);
-				summary += girlName + gettext(" has died.  Her body will be removed by the end of the week.\n");
-				girl->m_Events.AddMessage(summary, IMGTYPE_DEATH, EVENT_SUMMARY);
-			
+				msg.str(""); ss.str("");
+				msg << girlName << gettext(" has died in the dungeon.");
+				girl->m_Events.AddMessage(msg.str(), IMGTYPE_DEATH, EVENT_DANGER);
+				ss << girlName << gettext(" has died.  Her body will be removed by the end of the week.\n");
+				girl->m_Events.AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_SUMMARY);
+
 				// if there is a torturer send her a message
-				if (tort)						
+				if (tort)
 				{
-					msg	= girlName + gettext(" has died in the dungeon under her care!");
-					TorturerGirlref->m_Events.AddMessage( msg, IMGTYPE_PROFILE, EVENT_DUNGEON);
+					msg.str("");
+					msg << girlName << gettext(" has died in the dungeon under her care!");
+					TorturerGirlref->m_Events.AddMessage(msg.str(), IMGTYPE_PROFILE, EVENT_DUNGEON);
 				}
 
 				current = current->m_Next;
@@ -762,34 +647,29 @@ void cDungeon::Update()
 			// Have dungeon girls tortured by the Torturer
 			if (tort)
 			{
-				// Code moved to class cGirlTorture
-				//doTorturer(current, TorturerGirlref, summary);
 				cGirlTorture gt(current, TorturerGirlref);
 			}
-			/*	`J` moved to the end to allow for torture images to be added
-			girl->m_Tort = false;// WD: Move till after Girls have been tortured so that we dont torture twice week
-			*/
 
-/*		`J` merged WARNING MESSAGES and SUMMARY MESSAGES
- *			Allow girl sorting in turn summary
- */
+			/*		`J` merged WARNING MESSAGES and SUMMARY MESSAGES
+			*			Allow girl sorting in turn summary
+			*/
 			//	`J` set the basics
-			msg = girlName + gettext(" is languish in the dungeon.");
+			msg.str(""); ss.str("");
+			msg << girlName << gettext(" is languish in the dungeon.\n\n");
 			int msgtype = EVENT_DUNGEON;
 			int imgtype = IMGTYPE_PROFILE;
-			int	nHealth = girl->health();	_itoa(nHealth, buffer, 10);	string ghealth = buffer;
-			int	nTired = girl->tiredness();	_itoa(nTired, buffer, 10);	string gtired = buffer;
+			int	nHealth = girl->health();
+			int	nTired = girl->tiredness();
 
 			//	`J` check them for dangers or warnings
 			if (nHealth < 20 || nTired > 80)
 			{
-				msg = gettext("DANGER: ") + girlName;
+				msg << gettext("DANGER: ") << girlName;
 				msgtype = EVENT_DANGER;
-				imgtype = IMGTYPE_DEATH;
 			}
 			else if (nHealth < 40 || nTired > 60)
 			{
-				msg = gettext("WARNING: ") + girlName;
+				msg << gettext("WARNING: ") << girlName;
 				msgtype = EVENT_WARNING;
 			}
 
@@ -798,45 +678,20 @@ void cDungeon::Update()
 			{
 				if (girl->m_Tort)
 				{
-					msg += gettext(" was tortured this week");
+					msg << gettext(" was tortured this week.");
 					imgtype = IMGTYPE_TORTURE;
-					if (nHealth < 40 || nTired > 60)
-					{
-						msg += gettext(".\nShe");
-					}
+					if (nHealth < 40 || nTired > 60)	{ msg << gettext("\nShe"); }
 				}
-
-				if (nHealth < 20)
-				{
-					msg += gettext(" is severely injured");
-				}
-				else if (nHealth < 40)
-				{
-					msg += gettext(" is injured");
-				}
-				if (nHealth < 40 && nTired > 60)
-				{
-					msg += gettext(" and");
-				}
-				else if (nTired > 60)
-				{
-					msg += gettext(" is");
-				}
-				else
-				{
-					msg += gettext(".");
-				}
-				if (nTired > 80)
-				{
-					msg += gettext(" exhausted, it may effect her health.");
-				}
-				else if (nTired > 60)
-				{
-					msg += girlName + gettext(" tired.");
-				}
-				msg += gettext("\n\nHer health is ") + ghealth + gettext(".\nHer tiredness is ") + gtired + gettext(".");
+				if (nHealth < 20)						{ msg << gettext(" is severely injured"); }
+				else if (nHealth < 40)					{ msg << gettext(" is injured"); }
+				if (nHealth < 40 && nTired > 60)		{ msg << gettext(" and"); }
+				else if (nTired > 60)					{ msg << gettext(" is"); }
+				else									{ msg << gettext("."); }
+				if (nTired > 80)						{ msg << gettext(" exhausted, it may effect her health."); }
+				else if (nTired > 60)					{ msg << girlName + gettext(" tired."); }
+				msg << gettext("\n\nHer health is ") << nHealth << gettext(".\nHer tiredness is ") << nTired << ".";
 			}
-			girl->m_Events.AddMessage(msg, imgtype, msgtype);
+			girl->m_Events.AddMessage(msg.str(), imgtype, msgtype);
 
 			girl->m_Tort = false;
 
@@ -844,33 +699,29 @@ void cDungeon::Update()
 			current = current->m_Next;
 		}
 
-/*
- *			WD:  Torturer Girl summary
- *				Processed after all dGirls
- */
+		/*
+		*			WD:  Torturer Girl summary
+		*				Processed after all dGirls
+		*/
 		if (tort)
 		{
-			msg	= TorturerGirlref->m_Realname + gettext(" has tortured ");
-			_itoa(m_NumGirlsTort, buffer, 10);
-			msg += buffer;
-			msg += gettext(" girls in the Dungeon.");
-			TorturerGirlref->m_Events.AddMessage( msg, IMGTYPE_PROFILE, EVENT_DUNGEON);
+			msg.str("");
+			msg << TorturerGirlref->m_Realname << gettext(" has tortured ") << m_NumGirlsTort << gettext(" girls in the Dungeon.");
+			TorturerGirlref->m_Events.AddMessage(msg.str(), IMGTYPE_PROFILE, EVENT_DUNGEON);
 		}
-
-
 	}
 
 
-/*********************************
- *	DO ALL CUSTOMERS
- *********************************/
+	/*********************************
+	*	DO ALL CUSTOMERS
+	*********************************/
 	if (m_Custs)
 	{
 		sDungeonCust* current = m_Custs;
-		while(current)
+		while (current)
 		{
 			current->m_Tort = false;
-						if (current->m_Health <= 0)
+			if (current->m_Health <= 0)
 			{
 				m_NumberDied++;
 				current->m_Reason = DUNGEON_DEAD;
@@ -884,14 +735,13 @@ void cDungeon::Update()
 				continue;
 			}
 
-/*
- *			lose health if not feeding
- *
- *			Mod: removed "no-effect" branch to silence
- *			compiler
- */
-			if (!current->m_Feeding)
-				current->m_Health -= 5;
+			/*
+			*			lose health if not feeding
+			*
+			*			Mod: removed "no-effect" branch to silence
+			*			compiler
+			*/
+			if (!current->m_Feeding) current->m_Health -= 5;
 
 			current->m_Weeks++;
 			if (current->m_Health <= 0)
@@ -907,15 +757,15 @@ void cDungeon::Update()
 
 void cDungeon::updateGirlTurnDungeonStats(sDungeonGirl* d_girl)
 {
-/*
- *	WD: Update each turn the stats for girls in dudgeon
- */
+	/*
+	*	WD: Update each turn the stats for girls in dudgeon
+	*/
 //#define WDTEST // debuging
 #undef WDTEST
 
 	sGirl* girl = d_girl->m_Girl;
 	string msg;
-	string girlName	= girl->m_Realname;
+	string girlName = girl->m_Realname;
 
 	// Sanity check. Abort on dead girl
 	if (girl->health() <= 0)
@@ -924,36 +774,21 @@ void cDungeon::updateGirlTurnDungeonStats(sDungeonGirl* d_girl)
 	}
 
 #ifdef WDTEST // debuging
-
-	string sum = "Start\n";
-	_itoa(girl->happiness(), buffer, 10);
-	sum	+= "   h=";
-	sum	+= buffer;
-	_itoa(girl->obedience(), buffer, 10);
-	sum	+= "   o=";
-	sum	+= buffer;
-	_itoa(girl->pclove(), buffer, 10);
-	sum	+= "   l=";
-	sum	+= buffer;
-	_itoa(girl->pcfear(), buffer, 10);
-	sum	+= "   f=";
-	sum	+= buffer;
-	_itoa(girl->pchate(), buffer, 10);
-	sum	+= "   h=";
-	sum	+= buffer;
-	_itoa(girl->health(), buffer, 10);
-	sum	+= "   HP=";
-	sum	+= buffer;
-	_itoa(girl->tiredness(), buffer, 10);
-	sum	+= "  TD=";
-	sum	+= buffer;
-
+	stringstream sum;
+	sum << "Start\n"
+		<< "   h=" << girl->happiness()
+		<< "   o=" << girl->obedience()
+		<< "   l=" << girl->pclove()
+		<< "   f=" << girl->pcfear()
+		<< "   h=" << girl->pchate()
+		<< "  HP=" << girl->health()
+		<< "  TD=" << girl->tiredness();
 #endif
 
 	if (d_girl->m_Feeding)
 	{
-		if (girl->is_slave())
-		{	// Slave being fed
+		if (girl->is_slave())	// Slave being fed
+		{
 			girl->confidence(-2);
 			girl->obedience(2);
 			girl->spirit(-2);
@@ -966,9 +801,8 @@ void cDungeon::updateGirlTurnDungeonStats(sDungeonGirl* d_girl)
 			girl->mana(5);
 			girl->bdsm(1);
 		}
-
-		else
-		{	// Free girl being fed
+		else	// Free girl being fed
+		{
 			girl->confidence(-1);
 			girl->obedience(1);
 			girl->spirit(-1);
@@ -982,12 +816,10 @@ void cDungeon::updateGirlTurnDungeonStats(sDungeonGirl* d_girl)
 			girl->bdsm(1);
 		}
 	}
-
-	// feeding off
-	else
+	else	// feeding off
 	{
-		if (girl->is_slave())
-		{	// Slave being starved
+		if (girl->is_slave())	// Slave being starved
+		{
 			girl->confidence(-2);
 			girl->obedience(2);
 			girl->spirit(-2);
@@ -1000,10 +832,8 @@ void cDungeon::updateGirlTurnDungeonStats(sDungeonGirl* d_girl)
 			girl->mana(1);
 			girl->bdsm(2);
 		}
-
-		// Free Girl
-		else
-		{	// Free girl being starved
+		else	// Free girl being starved
+		{
 			girl->confidence(-2);
 			girl->obedience(2);
 			girl->spirit(-2);
@@ -1019,185 +849,15 @@ void cDungeon::updateGirlTurnDungeonStats(sDungeonGirl* d_girl)
 	}
 
 #ifdef WDTEST // debuging
-
-	sum += "\n\nFinal\n";
-	_itoa(girl->happiness(), buffer, 10);
-	sum	+= "   h=";
-	sum	+= buffer;
-	_itoa(girl->obedience(), buffer, 10);
-	sum	+= "   o=";
-	sum	+= buffer;
-	_itoa(girl->pclove(), buffer, 10);
-	sum	+= "   l=";
-	sum	+= buffer;
-	_itoa(girl->pcfear(), buffer, 10);
-	sum	+= "   f=";
-	sum	+= buffer;
-	_itoa(girl->pchate(), buffer, 10);
-	sum	+= "   h=";
-	sum	+= buffer;
-	_itoa(girl->health(), buffer, 10);
-	sum	+= "   HP=";
-	sum	+= buffer;
-	_itoa(girl->tiredness(), buffer, 10);
-	sum	+= "  TD=";
-	sum	+= buffer;
-
-	girl->m_Events.AddMessage(sum, IMGTYPE_PROFILE, EVENT_DEBUG);
-
+	sum << "\n\nFinal\n"
+		<< "   h=" << girl->happiness()
+		<< "   o=" << girl->obedience()
+		<< "   l=" << girl->pclove()
+		<< "   f=" << girl->pcfear()
+		<< "   h=" << girl->pchate()
+		<< "  HP=" << girl->health()
+		<< "  TD=" << girl->tiredness();
+	girl->m_Events.AddMessage(sum.str(), IMGTYPE_PROFILE, EVENT_DEBUG);
 #undef WDTEST
 #endif
 }
-
-#if 0		// WD	Moved to cGirlTorture class
-void cDungeon::doTorturer(sDungeonGirl* d_girl, sGirl* t_girl, string& summary)
-{
-/*
- *	WD:	Torturer tortures dungeon girl
- *
- *	Will be moved to cTorture class when Doclox merges hie shanges to branch.
- *
- *	d_girl	:	Dungeon Girl to be tortured
- *	t_girl	:	Girl assigned to be the Torturer
- *	summary :	Summary messages are appended
- */
-
-	sGirl *girl		= d_girl->m_Girl;
-	string girlName = girl->m_Realname;
-	string msg		= "";
-	int chance		= 0;
-	cConfig cfg;
-	int chance_div	=  cfg.initial.torture_mod();
-
-	// Sanity check. Abort on dead girl
-	if (girl->health() <= 0)
-	{
-		return;
-	}
-
-	// Don't tourture new mums
-	if (girl->m_JustGaveBirth)
-	{
-		msg = girlName + gettext(" gave birth so was not tortured this week.");
-		summary += gettext("Since she gave birth she was not tortured this week.\n");
-		girl->m_Events.AddMessage(msg, IMGTYPE_DEATH, EVENT_DUNGEON);
-		t_girl->m_Events.AddMessage( msg, IMGTYPE_PROFILE, EVENT_DUNGEON);
-		return;
-
-	}
-	
-	// Number of girls tortured today
-	m_NumGirlsTort++;					
-
-	// do heavy torture
-	if (girl->health() > 10)		
-	{
-		girl->health(-5);
-		girl->happiness(-5);
-		girl->constitution(1);
-		girl->confidence(-5);
-		girl->obedience(10);
-		girl->spirit(-5);
-		girl->tiredness(-5);
-		girl->pchate(3);
-		girl->pclove(-5);
-		girl->pcfear(7);
-		girl->bdsm(1);
-	}
-
-	// do safer torture
-	else	//	(girl->health() <= 10)						
-	{
-		girl->happiness(-2);
-		girl->confidence(-2);
-		girl->obedience(4);
-		girl->spirit(-2);
-		girl->tiredness(-2);
-		girl->pchate(1);
-		girl->pclove(-2);
-		girl->pcfear(3);
-/*
-*		Danger Messages starving / Low health
-*/
-		// if she is on this low health the tortuer will start feeding again
-		if (!d_girl->m_Feeding)
-		{
-			d_girl->m_Feeding = true;
-			msg	= girlName + gettext("  health is low from ongoing torture and starvation.\nFeeding has been permitted.");
-			summary += t_girl->m_Realname + gettext(" allows food as her health is low.\n");
-			girl->m_Events.AddMessage(msg, IMGTYPE_DEATH, EVENT_DANGER);
-			t_girl->m_Events.AddMessage( msg, IMGTYPE_PROFILE, EVENT_DUNGEON);
-		}				
-		else
-		{
-			msg	= girlName + gettext("  health is low from ongoing torture.");
-			girl->m_Events.AddMessage(msg, IMGTYPE_DEATH, EVENT_DANGER);
-			t_girl->m_Events.AddMessage( msg, IMGTYPE_PROFILE, EVENT_DUNGEON);
-		}
-	}
-
-#if 1
-/*
-*	Random Trait Gain
-*/
-
-	if (!girl->has_trait("Broken Will")) 
-	{
-		chance	= d_girl->m_Weeks * 10;							// Number of weeks in dungeon  
-		chance 	+= 200 - girl->spirit() - girl->health();
-		chance	/= chance_div;
-		if (girl->has_trait("Iron Will")) 
-		{
-			chance /= 2;
-		}
-
-		if (g_Dice.percent(chance)) 
-		{
-			girl->add_trait("Broken Will", false);
-
-			msg	= girlName + gettext(" has gained the trait \"Broken Will\".");
-			summary += msg + gettext("\n");
-			girl->m_Events.AddMessage( msg, IMGTYPE_BDSM, EVENT_WARNING);
-			t_girl->m_Events.AddMessage( msg, IMGTYPE_PROFILE, EVENT_DUNGEON);
-		}
-	}
-
-
-	if (!girl->has_trait("Masochist"))							// Nearly twice as likley as broken will as 4 stats instead of 2					
-	{
-		chance	= d_girl->m_Weeks * 10;							// Number of weeks in dungeon  
-		chance 	+= 200 - girl->spirit() - girl->health();
-		chance 	+= girl->bdsm() + girl->libido();
-		chance	/= chance_div;
-
-
-		if (g_Dice.percent(chance)) 
-		{
-			girl->add_trait("Masochist", false);
-
-			msg	= girlName + gettext(" has gained the trait \"Masochist\".");
-			summary += msg + gettext("\n");
-			girl->m_Events.AddMessage( msg, IMGTYPE_BDSM, EVENT_WARNING);
-			t_girl->m_Events.AddMessage( msg, IMGTYPE_PROFILE, EVENT_DUNGEON);
-		}
-	}
-
-	if (!girl->has_trait("Mind Fucked")) 
-	{
-		chance	= d_girl->m_Weeks * 10;							// Number of weeks in dungeon  
-		chance 	+= 200 - girl->health() - girl->happiness();
-		chance	/= chance_div;
-
-		if (g_Dice.percent(chance)) 
-		{
-			girl->add_trait("Mind Fucked", false);
-
-			msg	= girlName + gettext(" has gained the trait \"Mind Fucked\".");
-			summary += msg + gettext("\n");
-			girl->m_Events.AddMessage( msg, IMGTYPE_BDSM, EVENT_WARNING);
-			t_girl->m_Events.AddMessage( msg, IMGTYPE_PROFILE, EVENT_DUNGEON);
-		}
-	}
-#endif
-}
-#endif

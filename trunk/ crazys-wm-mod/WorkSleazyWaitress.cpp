@@ -322,8 +322,22 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 
 	if (g_Girls.HasTrait(girl, "Nymphomaniac") &&  !g_Girls.HasTrait(girl, "Lesbian") && g_Girls.GetStat(girl, STAT_LIBIDO) > 90 && g_Girls.GetSkill(girl, SKILL_HANDJOB) > 80 && g_Dice.percent(25))
 	{
-		message += "During her shift, " + girlName + " unnoticeably dived under the table belonging to a lonely-looking fellow, quickly unzipped his pants and started jacking him off enthusiastically. She skillfully wiped herself when he came all over her face. The whole event took no longer than two minutes, but was well worth the time spent on it, since the patron left with a heavy tip.\n";
-		wages += 50; imagetype = IMGTYPE_HAND; hand += 2; g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -20);
+		message += "During her shift, " + girlName + " unnoticeably dove under the table belonging to a lonely-looking fellow. She quickly unzipped his pants and started ";
+		if (g_Dice.percent(50))
+		{
+			message += "jacking";
+			imagetype = IMGTYPE_HAND;
+			hand += 2;
+		}
+		else
+		{
+			message += "sucking";
+			imagetype = IMGTYPE_ORAL;
+			oral += 2;
+		}
+		message += " him off enthusiastically. She skillfully wiped herself when he came all over her face. The whole event took no longer than two minutes, but was well worth the time spent on it, since the patron left a heavy tip.\n";
+		wages += 50; 
+		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -20);
 	}
 
 	if (g_Girls.GetStat(girl, STAT_DIGNITY) <= -20 && g_Dice.percent(20))

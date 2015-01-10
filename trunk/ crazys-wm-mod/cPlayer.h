@@ -53,6 +53,17 @@ private:
 	int m_CustomerFear;
 
 public:
+	string m_Title		= "Mr.";		// basic title - need to add more titles with more power gained
+	string m_FirstName	= "";			// no first name
+	string m_Surname	= "Player";		// basic surname
+	string m_RealName	= "Player";		// m_FirstName + " " + m_Surname
+	
+	int m_BirthYear		= 1190;			// the game starts in year 1209 so default start age is 18
+	int m_BirthMonth	= 1;			// there are 12 month in the year
+	int m_BirthDay		= 1;			// there are 30 days in every month
+
+
+
 	bool m_WinGame;
 	int m_Skills[NUM_SKILLS];
 	int m_Stats[NUM_STATS];

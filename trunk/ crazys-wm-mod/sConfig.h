@@ -59,6 +59,8 @@ struct sConfigData
 		int scaleheight;
 		bool fullscreen;
 		bool configXML;
+		int list_scroll;
+		int text_scroll;
 	} resolution;
 /*
  *	income factors
@@ -324,6 +326,8 @@ public:
 		int scaleheight()		{ return data->resolution.scaleheight; }
 		bool fullscreen()		{ return data->resolution.fullscreen; }
 		bool configXML()		{ return data->resolution.configXML; }
+		int list_scroll()		{ return data->resolution.list_scroll; }
+		int text_scroll()		{ return data->resolution.text_scroll; }
 	} resolution;
 
  	struct Debug{

@@ -2,12 +2,66 @@
 <Items>
 	<Item
 		Name="Alcohol"
-		Desc="Used to get drunk. (+7 Hap, +7 Obed, -7 Spi,  -2 HP, addictive)"
+		Desc="Used to get drunk, (+7 Hap, +7 Obed, -7 Spi,  -2 HP, Can be addictive)"
 		Type="Food"
-		Badness="40"
+		Badness="10"
 		Special="None"
 		Cost="50"
-		Rarity="Shop50"
+		Rarity="Common"
+		Infinite="false"
+		GirlBuyChance="2">
+		<Effect
+			What="Stat"
+			Name="Happiness"
+			Amount="7" />
+		<Effect
+			What="Stat"
+			Name="Obedience"
+			Amount="7" />
+		<Effect
+			What="Stat"
+			Name="Spirit"
+			Amount="-7" />
+		<Effect
+			What="Stat"
+			Name="Health"
+			Amount="-2" />
+	</Item>
+	<Item
+		Name="Alcohol"
+		Desc="Used to get drunk, (+7 Hap, +7 Obed, -7 Spi,  -2 HP, Can be addictive)"
+		Type="Food"
+		Badness="10"
+		Special="None"
+		Cost="50"
+		Rarity="Common"
+		Infinite="false"
+		GirlBuyChance="2">
+		<Effect
+			What="Stat"
+			Name="Happiness"
+			Amount="7" />
+		<Effect
+			What="Stat"
+			Name="Obedience"
+			Amount="7" />
+		<Effect
+			What="Stat"
+			Name="Spirit"
+			Amount="-7" />
+		<Effect
+			What="Stat"
+			Name="Health"
+			Amount="-2" />
+	</Item>
+	<Item
+		Name="Alcohol "
+		Desc="Used to get drunk. (+7 Hap, +7 Obed, -7 Spi,  -2 HP, Can be addictive)"
+		Type="Food"
+		Badness="20"
+		Special="None"
+		Cost="50"
+		Rarity="Common"
 		Infinite="false"
 		GirlBuyChance="2">
 		<Effect

@@ -56,9 +56,7 @@ void cScreenPrison::init()
 {
 	stringstream ss;
 	g_CurrentScreen = SCREEN_JAIL;
-	if(!g_InitWin) {
-		return;
-	}
+	if(!g_InitWin) { return; }
 	Focused();
 	g_InitWin = false;
 
@@ -75,22 +73,10 @@ void cScreenPrison::init()
 	sGirl* pgirls = g_Brothels.GetPrison();
 	while(pgirls)
 	{
-		//sGirls * girl = mg.girl;
-		string data = "";
-		data += pgirls->m_Realname;
-		data += gettext("  (release cost: ");
-
-		g_Girls.CalculateAskPrice(pgirls, false);
-		int cost = g_Girls.GetStat(pgirls, STAT_ASKPRICE)*15;
-		cost += g_Girls.GetSkillWorth(pgirls);
-		if (g_Girls.CheckVirginity(pgirls))
-			cost += int(cost / 2);	//	`J` fixed virgin adds half cost more
-		cost *= 2;
-		_itoa(cost,buffer,10);
-		data += buffer;
-		data += gettext(" gold)");
-
-		AddToListBox(prison_list_id, i, data);
+		stringstream ss;
+		int cost = PrisonReleaseCost(pgirls);
+		ss << pgirls->m_Realname << gettext("  (release cost: ") << cost << gettext(" gold)");
+		AddToListBox(prison_list_id, i, ss.str());
 		i++;
 		pgirls = pgirls->m_Next;
 	}
@@ -102,46 +88,35 @@ void cScreenPrison::set_ids()
 {
 	stringstream ss;
 
-	ids_set		= true;
-	header_id	= get_id("ScreenHeader");
-	back_id		= get_id("BackButton");
-	more_id	= get_id("ShowMoreButton");
-	release_id	= get_id("ReleaseButton");
-	prison_list_id = get_id("PrisonList");
-	girl_desc_id = get_id("GirlDescription");
-	DetailLevel = 0;
+	ids_set			= true;
+	header_id		= get_id("ScreenHeader");
+	back_id			= get_id("BackButton");
+	more_id			= get_id("ShowMoreButton");
+	release_id		= get_id("ReleaseButton");
+	prison_list_id	= get_id("PrisonList");
+	girl_desc_id	= get_id("GirlDescription");
+	DetailLevel		= 0;
 }
 
 bool cScreenPrison::check_keys()
 {
-	if(g_UpArrow) {
+	if (g_UpArrow || (g_AltKeys && g_A_Key))
+	{
 		selection = ArrowUpListBox(prison_list_id);
 		g_UpArrow = false;
+		g_A_Key = false;
 		//g_InitWin = true;
 		SetSelectedItemInList(prison_list_id, selection);
 		return true;
 	}
-	if(g_DownArrow) {
+	if (g_DownArrow || (g_AltKeys && g_D_Key))
+	{
 		selection = ArrowDownListBox(prison_list_id);
 		g_DownArrow = false;
+		g_D_Key = false;
 		//g_InitWin = true;
 		SetSelectedItemInList(prison_list_id, selection);
 		return true;
-	}
-	if(g_AltKeys)
-	{
-	if(g_A_Key) {
-		selection = ArrowUpListBox(prison_list_id);
-		g_A_Key = false;
-		SetSelectedItemInList(prison_list_id, selection);
-		return true;
-	}
-	if(g_D_Key) {
-		selection = ArrowDownListBox(prison_list_id);
-		g_D_Key = false;
-		SetSelectedItemInList(prison_list_id, selection);
-		return true;
-	}
 	}
 	return false;
 }
@@ -151,23 +126,17 @@ void cScreenPrison::process()
 /*
  *	we need to make sure the ID variables are set
  */
-	if(!ids_set) {
-		set_ids();
-	}
+	if(!ids_set) { set_ids(); }
 /*
  *	handle arrow keys
  */
- 	if(check_keys()) {
-		return;
-	}
+ 	if(check_keys()) { return; }
 
 	init();
 /* 
  *	no events means we can go home
  */
-	if(g_InterfaceEvents.GetNumEvents() == 0) {
-		return;
-	}
+	if(g_InterfaceEvents.GetNumEvents() == 0) { return; }
 
 /*
  *	otherwise, compare event IDs 
@@ -175,7 +144,8 @@ void cScreenPrison::process()
  *	if it's the back button, pop the window off the stack
  *	and we're done
  */
-	if(g_InterfaceEvents.CheckButton(back_id)) {
+	if(g_InterfaceEvents.CheckButton(back_id)) 
+	{
 		g_InitWin = true;
 		g_WinManager.Pop();
 		return;
@@ -183,7 +153,8 @@ void cScreenPrison::process()
 /*
  *	The More button to switch between girl details
  */
-	if(g_InterfaceEvents.CheckButton(more_id)) {
+	if(g_InterfaceEvents.CheckButton(more_id)) 
+	{
 		more_button();
 		//g_InitWin = true;
 		return;
@@ -191,7 +162,8 @@ void cScreenPrison::process()
 /*
  *	The Release button to release selected girl from prison
  */
-	if(g_InterfaceEvents.CheckButton(release_id)) {
+	if(g_InterfaceEvents.CheckButton(release_id))
+	{
 		release_button();
 		g_InitWin = true;
 		return;
@@ -199,7 +171,8 @@ void cScreenPrison::process()
 /*
  *	catch a selection change event for the listbox
  */
-	if(g_InterfaceEvents.CheckListbox(prison_list_id)) {
+	if(g_InterfaceEvents.CheckListbox(prison_list_id))
+	{
 		selection = GetSelectedItemFromList(prison_list_id);
 		selection_change();
 		//g_InitWin = true;
@@ -219,12 +192,10 @@ void cScreenPrison::update_details()
 {
 	EditTextItem(gettext("No Prisoner Selected"), girl_desc_id);
 
-	if(selection == -1)
-		return;
+	if(selection == -1) return;
 
 	sGirl* pgirls = get_selected_girl();
-	if(!pgirls)
-		return;
+	if(!pgirls) return;
 
 	if (DetailLevel == 1)		EditTextItem(g_Girls.GetMoreDetailsString(pgirls, true), girl_desc_id);
 	else if (DetailLevel == 2)	EditTextItem(g_Girls.GetThirdDetailsString(pgirls), girl_desc_id);
@@ -233,15 +204,13 @@ void cScreenPrison::update_details()
 
 sGirl* cScreenPrison::get_selected_girl()
 {
-	if(selection == -1)
-		return 0;
+	if (selection == -1) return 0;
 
 	sGirl* pgirls = g_Brothels.GetPrison();
-	int i=0;
-	while(pgirls)
+	int i = 0;
+	while (pgirls)
 	{
-		if(i==selection)
-			break;
+		if (i == selection) break;
 		i++;
 		pgirls = pgirls->m_Next;
 	}
@@ -259,19 +228,12 @@ void cScreenPrison::more_button()
 
 void cScreenPrison::release_button()
 {
-	if(selection == -1)
-		return;
+	if(selection == -1) return;
 
 	sGirl* pgirls = get_selected_girl();
-	if(!pgirls)
-		return;
+	if(!pgirls) return;
 
-	g_Girls.CalculateAskPrice(pgirls, false);
-	int cost = g_Girls.GetStat(pgirls, STAT_ASKPRICE)*15;
-	cost += g_Girls.GetSkillWorth(pgirls);
-	if(g_Girls.CheckVirginity(pgirls))
-		cost += int(cost / 2);	//	`J` fixed virgin adds half cost more
-	cost *= 2;
+	int cost = PrisonReleaseCost(pgirls);
 
 	if(!g_Gold.afford((double)cost))
 	{
@@ -296,4 +258,14 @@ void cScreenPrison::release_button()
 		g_MessageQue.AddToQue(text, 0);
 		g_Brothels.AddGirl(g_CurrBrothel, pgirls);
 	}
+}
+
+int cScreenPrison::PrisonReleaseCost(sGirl* girl)
+{
+	g_Girls.CalculateAskPrice(girl, false);
+	int cost = g_Girls.GetStat(girl, STAT_ASKPRICE) * 15;
+	cost += g_Girls.GetSkillWorth(girl);
+	if (g_Girls.CheckVirginity(girl)) cost += int(cost / 2);	//	`J` fixed virgin adds half cost more
+	cost *= 2;
+	return cost;
 }

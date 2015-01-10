@@ -211,7 +211,7 @@ bool cActionTemplate::ExpandActionText(char *Buffer, sScript *Script)
 }
 
 // ----- Load save
-
+#if 0
 bool cActionTemplate::Load()
 {
 	FILE *fp;
@@ -348,7 +348,7 @@ bool cActionTemplate::Load()
 	fclose(fp);
 	return true;
 }
-
+#endif
 bool cScript::Load(string filename)
 {
 	m_NumActions = 0;

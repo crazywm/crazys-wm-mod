@@ -73,6 +73,7 @@ bool cScrollBar::CreateScrollBar(int ID, int x, int y, int width, int height, in
 	m_SectionHeight = height - m_ImgButtonDownOff->h - m_ImgButtonDownOff->h;
 	m_BarHeight = m_SectionHeight;
 	m_ItemsVisible = visibleitems;
+	m_PageAmount = visibleitems - 1;
 
 	// set up SDL_Rects indicating top and bottom halves of displayed background from source background images
 	m_RectBGTop->x = m_RectBGTop->y = m_RectBGBottom->x = 0;

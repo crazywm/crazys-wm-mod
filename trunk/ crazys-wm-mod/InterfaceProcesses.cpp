@@ -3695,7 +3695,7 @@ void TransferGirls()
 	}
 }
 
-static void TransferGirlsLeftToRight(int rightBrothel, int leftBrothel)
+void TransferGirlsLeftToRight(int rightBrothel, int leftBrothel)
 {
 	sBrothel* brothel;
 	/* */if (leftBrothel > 5)	{ brothel = g_Brothels.GetBrothel(leftBrothel - 6); }
@@ -3763,7 +3763,7 @@ static void TransferGirlsLeftToRight(int rightBrothel, int leftBrothel)
 	}
 }
 
-static void TransferGirlsRightToLeft(int rightBrothel, int leftBrothel)
+void TransferGirlsRightToLeft(int rightBrothel, int leftBrothel)
 {
 	sBrothel* brothel;
 	/* */if (rightBrothel > 5)	{ brothel = g_Brothels.GetBrothel(rightBrothel - 6); }

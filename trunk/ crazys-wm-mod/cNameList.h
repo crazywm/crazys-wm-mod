@@ -29,9 +29,18 @@ public:
 	void load(std::string file);
 };
 
+class cSurnameList {
+	std::vector<std::string> names;
+public:
+	cSurnameList() {}
+	cSurnameList(std::string file);
+	std::string random();
+	void load(std::string file);
+};
+
 class cDoubleNameList {
 	cNameList m_first;
-	cNameList m_last;
+	cSurnameList m_last;
 public:
 	cDoubleNameList() {}
 	cDoubleNameList(std::string first, std::string last)

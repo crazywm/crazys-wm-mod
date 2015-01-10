@@ -541,7 +541,6 @@
     <ClCompile Include="WorkLiposuction.cpp" />
     <ClCompile Include="WorkBreastReduction.cpp" />
     <ClCompile Include="WorkBoobJob.cpp" />
-    <ClCompile Include="cScreenPropertyManagement.cpp" />
     <ClCompile Include="WorkGetAssJob.cpp" />
     <ClCompile Include="sFacility.cpp" />
     <ClCompile Include="sFacilityList.cpp" />
@@ -603,6 +602,7 @@
     <ClCompile Include="lua\src\lvm.c" />
     <ClCompile Include="lua\src\lzio.c" />
     <ClCompile Include="WorkArenaJousting.cpp" />
+    <ClCompile Include="cScreenPropertyManagement.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cButton.h">
@@ -932,9 +932,6 @@
     <ClInclude Include="cScriptUtils.h">
       <Filter>Lua</Filter>
     </ClInclude>
-    <ClInclude Include="cScreenPropertyManagement.h">
-      <Filter>Misc</Filter>
-    </ClInclude>
     <ClInclude Include="sFacility.h">
       <Filter>Misc</Filter>
     </ClInclude>
@@ -1017,6 +1014,9 @@
       <Filter>Misc</Filter>
     </ClInclude>
     <ClInclude Include="lua\src\lzio.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="cScreenPropertyManagement.h">
       <Filter>Misc</Filter>
     </ClInclude>
   </ItemGroup>

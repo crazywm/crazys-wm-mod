@@ -49,7 +49,6 @@ extern	bool	g_C_Key;
 extern	int		g_CurrentScreen;
 
 static cTariff tariff;
-static stringstream ss;
 
 static int selection = -1;
 static int sel_recruit = -1;
@@ -90,6 +89,7 @@ void cScreenGangs::set_ids()
 
 void cScreenGangs::init()
 {
+	stringstream ss;
 	g_CurrentScreen = SCREEN_GANGMANAGEMENT;
 	if (!g_InitWin) return;
 
@@ -125,23 +125,21 @@ void cScreenGangs::init()
 		EnableButton(weaponup_id);
 		ss << gettext(" Next: ") << tariff.goon_weapon_upgrade(*wlev) << gettext("g");
 	}
-	else
-		DisableButton(weaponup_id);
-	string s = ss.str();
-	cerr << "weapon text = '" << s << "'" << endl;
-	EditTextItem(s, weaponlevel_id);
+	else DisableButton(weaponup_id);
+	cerr << "weapon text = '" << ss.str() << "'" << endl;
+	EditTextItem(ss.str(), weaponlevel_id);
 
-	int *nets = g_Gangs.GetNets();
 	ss.str("");
+	int *nets = g_Gangs.GetNets();
 	ss << gettext("Nets (") << tariff.nets_price(1) << gettext("g each): ") << *nets;
+	EditTextItem(ss.str(), netdesc_id);
 	DisableButton(netbuy_id, *nets >= 60);
 	DisableButton(netbuy10_id, *nets >= 60);
 	DisableButton(netbuy20_id, *nets >= 60);
 	DisableCheckBox(netautobuy_id, *nets < 1);
-	EditTextItem(ss.str(), netdesc_id);
 
-	int *potions = g_Gangs.GetHealingPotions();
 	ss.str("");
+	int *potions = g_Gangs.GetHealingPotions();
 	ss << gettext("Heal Potions (") << tariff.healing_price(1) << gettext("g each): ") << *potions;
 	EditTextItem(ss.str(), healdesc_id);
 	DisableButton(healbuy_id, *potions >= 200);
@@ -149,6 +147,7 @@ void cScreenGangs::init()
 	DisableButton(healbuy20_id, *potions >= 200);
 	DisableCheckBox(healautobuy_id, *potions < 1);
 
+	ss.str("");
 	int cost = 0;
 	if (g_Gangs.GetNumGangs() > 0)
 	{
@@ -159,7 +158,6 @@ void cScreenGangs::init()
 			cost += tariff.goon_mission_cost(g->m_MissionID);
 		}
 	}
-	ss.str("");
 	ss << gettext("Weekly Cost: ") << cost;
 	EditTextItem(ss.str(), totalcost_id);
 
@@ -183,22 +181,22 @@ void cScreenGangs::init()
 		ss << short_mission_desc(current->m_MissionID);
 		Data[2] = ss.str();
 		ss.str("");
-		ss << (int)current->m_Skills[SKILL_COMBAT] << "%";
+		ss << current->m_Skills[SKILL_COMBAT] << "%";
 		Data[3] = ss.str();
 		ss.str("");
-		ss << (int)current->m_Skills[SKILL_MAGIC] << "%";
+		ss << current->m_Skills[SKILL_MAGIC] << "%";
 		Data[4] = ss.str();
 		ss.str("");
-		ss << (int)current->m_Stats[STAT_INTELLIGENCE] << "%";
+		ss << current->m_Stats[STAT_INTELLIGENCE] << "%";
 		Data[5] = ss.str();
 		ss.str("");
-		ss << (int)current->m_Stats[STAT_AGILITY] << "%";
+		ss << current->m_Stats[STAT_AGILITY] << "%";
 		Data[6] = ss.str();
 		ss.str("");
-		ss << (int)current->m_Stats[STAT_CONSTITUTION] << "%";
+		ss << current->m_Stats[STAT_CONSTITUTION] << "%";
 		Data[7] = ss.str();
 		ss.str("");
-		ss << (int)current->m_Stats[STAT_CHARISMA] << "%";
+		ss << current->m_Stats[STAT_CHARISMA] << "%";
 		Data[8] = ss.str();
 
 		//		cerr << "Gang:\t" << Data[0] << "\t" << Data[1] << "\t" << Data[2]
@@ -227,22 +225,22 @@ void cScreenGangs::init()
 		ss << current->m_Num;
 		Data[1] = ss.str();
 		ss.str("");
-		ss << (int)current->m_Skills[SKILL_COMBAT] << "%";
+		ss << current->m_Skills[SKILL_COMBAT] << "%";
 		Data[2] = ss.str();
 		ss.str("");
-		ss << (int)current->m_Skills[SKILL_MAGIC] << "%";
+		ss << current->m_Skills[SKILL_MAGIC] << "%";
 		Data[3] = ss.str();
 		ss.str("");
-		ss << (int)current->m_Stats[STAT_INTELLIGENCE] << "%";
+		ss << current->m_Stats[STAT_INTELLIGENCE] << "%";
 		Data[4] = ss.str();
 		ss.str("");
-		ss << (int)current->m_Stats[STAT_AGILITY] << "%";
+		ss << current->m_Stats[STAT_AGILITY] << "%";
 		Data[5] = ss.str();
 		ss.str("");
-		ss << (int)current->m_Stats[STAT_CONSTITUTION] << "%";
+		ss << current->m_Stats[STAT_CONSTITUTION] << "%";
 		Data[6] = ss.str();
 		ss.str("");
-		ss << (int)current->m_Stats[STAT_CHARISMA] << "%";
+		ss << current->m_Stats[STAT_CHARISMA] << "%";
 		Data[7] = ss.str();
 
 		//		cerr << "Recruitable\t" << Data[0] << "\t" << Data[1] << "\t" << Data[2]
@@ -345,6 +343,7 @@ void cScreenGangs::check_events()
 {
 	int buynets = 0;
 	int buypots = 0;
+	stringstream ss;
 
 	if (g_InterfaceEvents.GetNumEvents() == 0) return;	// no events means we can go home
 
@@ -377,7 +376,7 @@ void cScreenGangs::check_events()
 	if (g_InterfaceEvents.CheckButton(netbuy_id))	buynets = 1;
 	if (g_InterfaceEvents.CheckButton(netbuy10_id))	buynets = 10;
 	if (g_InterfaceEvents.CheckButton(netbuy20_id))	buynets = 20;
-	if (buynets>0)
+	if (buynets > 0)
 	{
 		int cost = 0;
 		int amount = buynets;
@@ -398,7 +397,7 @@ void cScreenGangs::check_events()
 	if (g_InterfaceEvents.CheckButton(healbuy_id))		buypots = 1;
 	if (g_InterfaceEvents.CheckButton(healbuy10_id))	buypots = 10;
 	if (g_InterfaceEvents.CheckButton(healbuy20_id))	buypots = 20;
-	if (buypots>0)
+	if (buypots > 0)
 	{
 		int cost = 0;
 		int amount = buypots;
@@ -471,26 +470,13 @@ void cScreenGangs::check_events()
 		{
 			sGang* gang = g_Gangs.GetGang(selection);
 
-			string text = gettext("Name: ");
-			text += gang->m_Name;
-			text += "\n";
-			text += gettext("Number: ");
-			_itoa((int)gang->m_Num, buffer, 10);
-			text += buffer;
-			text += "\n";
-			text += gettext("Combat: ");
-			_itoa((int)gang->m_Skills[SKILL_COMBAT], buffer, 10);
-			text += buffer;
-			text += "%\n";
-			text += gettext("Magic: ");
-			_itoa((int)gang->m_Skills[SKILL_MAGIC], buffer, 10);
-			text += buffer;
-			text += "%\n";
-			text += gettext("Intelligence: ");
-			_itoa((int)gang->m_Stats[STAT_INTELLIGENCE], buffer, 10);
-			text += buffer;
-			text += "%\n";
-			EditTextItem(text, gangdesc_id);
+			ss.str("");
+			ss << gettext("Name: ") << gang->m_Name << "\n"
+				<< gettext("Number: ") << gang->m_Num << "\n"
+				<< gettext("Combat: ") << gang->m_Skills[SKILL_COMBAT] << "%\n"
+				<< gettext("Magic: ") << gang->m_Skills[SKILL_MAGIC] << "%\n"
+				<< gettext("Intelligence: ") << gang->m_Stats[STAT_INTELLIGENCE] << "%\n";
+			EditTextItem(ss.str(), gangdesc_id);
 
 			SetSelectedItemInList(missionlist_id, gang->m_MissionID, false);
 			/*
@@ -523,10 +509,9 @@ void cScreenGangs::check_events()
 			*				make sure we found the gang - pretty catastrophic
 			*				if not, so log it if we do
 			*/
-			if (gang == 0) {
-				g_LogFile.ss() << "Error: No gang for index "
-					<< selection
-					;
+			if (gang == 0)
+			{
+				g_LogFile.ss() << "Error: No gang for index " << selection;
 				g_LogFile.ssend();
 				continue;
 			}
@@ -536,16 +521,12 @@ void cScreenGangs::check_events()
 			*				since -1 most likely means nothing selected in
 			*				the missions list)
 			*/
-			if (mission_id == -1) {
-				continue;
-			}
+			if (mission_id == -1) { continue; }
 			/*
 			*				if the gang is already doing <whatever>
 			*				then let them get on with it
 			*/
-			if (gang->m_MissionID == u_int(mission_id)) {
-				continue;
-			}
+			if (gang->m_MissionID == u_int(mission_id)) { continue; }
 			/*
 			*				if they were recruiting, turn off the
 			*				auto-recruit flag
@@ -560,24 +541,12 @@ void cScreenGangs::check_events()
 			*				format the display line
 			*/
 			string Data[6];
-			ss.str("");
-			ss << gang->m_Name;
-			Data[0] = ss.str();
-			ss.str("");
-			ss << gang->m_Num;
-			Data[1] = ss.str();
-			ss.str("");
-			ss << short_mission_desc(mission_id);
-			Data[2] = ss.str();
-			ss.str("");
-			ss << (int)gang->m_Skills[SKILL_COMBAT] << "%";
-			Data[3] = ss.str();
-			ss.str("");
-			ss << (int)gang->m_Skills[SKILL_MAGIC] << "%";
-			Data[4] = ss.str();
-			ss.str("");
-			ss << (int)gang->m_Stats[STAT_INTELLIGENCE] << "%";
-			Data[5] = ss.str();
+			ss.str("");	ss << gang->m_Name;								Data[0] = ss.str();
+			ss.str("");	ss << gang->m_Num;								Data[1] = ss.str();
+			ss.str("");	ss << short_mission_desc(mission_id);			Data[2] = ss.str();
+			ss.str("");	ss << gang->m_Skills[SKILL_COMBAT] << "%";		Data[3] = ss.str();
+			ss.str("");	ss << gang->m_Skills[SKILL_MAGIC] << "%";		Data[4] = ss.str();
+			ss.str("");	ss << gang->m_Stats[STAT_INTELLIGENCE] << "%";	Data[5] = ss.str();
 
 			//		cerr << "Gang:\t" << Data[0] << "\t" << Data[1] << "\t" << Data[2]
 			//			<< "\t" << Data[3] << "\t" << Data[4] << "\t" << Data[5] << "\t" << Data[6] << endl;
@@ -589,63 +558,41 @@ void cScreenGangs::check_events()
 			SetSelectedItemText(ganglist_id, selection, Data, 6);
 		}
 
-		string message = "";
+		ss.str("");
+		int cost = 0;
 		if (g_Gangs.GetNumGangs() > 0)
 		{
-			int cost = 0;
 			for (int i = 0; i < g_Gangs.GetNumGangs(); i++)
 			{
 				sGang* g = g_Gangs.GetGang(i);
-				cost += tariff.goon_mission_cost(
-					g->m_MissionID
-					);
+				cost += tariff.goon_mission_cost(g->m_MissionID);
 			}
-			_itoa(cost, buffer, 10);
-			message = gettext("Weekly Cost: ");
-			message += buffer;
 		}
-		else
-			message = gettext("Weekly Cost: 0");
-
-		EditTextItem(message, totalcost_id);
+		ss << gettext("Weekly Cost: ") << cost;
+		EditTextItem(ss.str(), totalcost_id);
 	}
-
 }
 
 
 string cScreenGangs::mission_desc(int mid)
 {
 	switch (mid) {
-	case MISS_GUARDING:
-		return	gettext("Your men will guard your property.");
-	case MISS_SABOTAGE:
-		return	gettext("Your men will move about town and destroy and loot enemy businesses.");
-	case MISS_SPYGIRLS:
-		return	gettext("Your men will spy on your working girls, looking for the ones who take extra for themselves.");
-	case MISS_CAPTUREGIRL:
-		return
-			gettext("Your men will set out to re-capture any girls who have recently run away.");
-	case MISS_EXTORTION:
-		return
-			gettext("Sends your men out to force local gangs out of their areas of town.");
-	case MISS_PETYTHEFT:
-		return "Your men will mug people in the street.";
-	case MISS_GRANDTHEFT:
-		return
-			gettext("Your men will attempt to rob a bank or other risky place with high rewards.");
-	case MISS_KIDNAPP:
-		return
-			gettext("Your men will kidnap beggar, homeless or lost girls from the street and also lure other girls into working for you.");
-	case MISS_CATACOMBS:
-		return gettext("Your men will explore the catacombs for treasure.");
-	case MISS_TRAINING:
-		return gettext("Your men will improve their skills slightly.");
-	case MISS_RECRUIT:
-		return gettext("Your men will replace their missing men (up to 15).");
+	case MISS_GUARDING:		return gettext("Your men will guard your property.");
+	case MISS_SABOTAGE:		return gettext("Your men will move about town and destroy and loot enemy businesses.");
+	case MISS_SPYGIRLS:		return gettext("Your men will spy on your working girls, looking for the ones who take extra for themselves.");
+	case MISS_CAPTUREGIRL:	return gettext("Your men will set out to re-capture any girls who have recently run away.");
+	case MISS_EXTORTION:	return gettext("Sends your men out to force local gangs out of their areas of town.");
+	case MISS_PETYTHEFT:	return gettext("Your men will mug people in the street.");
+	case MISS_GRANDTHEFT:	return gettext("Your men will attempt to rob a bank or other risky place with high rewards.");
+	case MISS_KIDNAPP:		return gettext("Your men will kidnap beggar, homeless or lost girls from the street and also lure other girls into working for you.");
+	case MISS_CATACOMBS:	return gettext("Your men will explore the catacombs for treasure.");
+	case MISS_TRAINING:		return gettext("Your men will improve their skills slightly.");
+	case MISS_RECRUIT:		return gettext("Your men will replace their missing men (up to 15).");
 	default:
 		break;
 	}
 
+	stringstream ss;
 	ss << "Error: unexpected mission ID: " << mid;
 	return ss.str();
 }
@@ -656,23 +603,24 @@ string cScreenGangs::short_mission_desc(int mid)
 	cerr << "short_mission_desc(" << mid << ")" << endl;
 	switch (mid)
 	{
-	case MISS_GUARDING:	return gettext("Guarding");
-	case MISS_SABOTAGE:	return gettext("Sabotaging");
-	case MISS_SPYGIRLS:	return gettext("Watching Girls");
+	case MISS_GUARDING:		return gettext("Guarding");
+	case MISS_SABOTAGE:		return gettext("Sabotaging");
+	case MISS_SPYGIRLS:		return gettext("Watching Girls");
 	case MISS_CAPTUREGIRL:	return gettext("Finding escaped girls");
 	case MISS_EXTORTION:	return gettext("Acquiring Territory");
 	case MISS_PETYTHEFT:	return gettext("Mugging people");
 	case MISS_GRANDTHEFT:	return gettext("Robbing places");
-	case MISS_KIDNAPP:	return gettext("Kidnapping Girls");
+	case MISS_KIDNAPP:		return gettext("Kidnapping Girls");
 	case MISS_CATACOMBS:	return gettext("Exploring Catacombs");
-	case MISS_TRAINING:	return gettext("Training Skills");
-	case MISS_RECRUIT:	return gettext("Recruiting Men");
-	default:		return gettext("Error: Unknown");
+	case MISS_TRAINING:		return gettext("Training Skills");
+	case MISS_RECRUIT:		return gettext("Recruiting Men");
+	default:				return gettext("Error: Unknown");
 	}
 }
 
 int cScreenGangs::set_mission_desc(int mid)
 {
+	stringstream ss;
 	/*
 	*	OK: get the difficulty-adjusted price for this mission
 	*/
