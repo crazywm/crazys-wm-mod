@@ -1502,7 +1502,10 @@ long cMovieStudioManager::calc_movie_quality()
 {
 	stringstream ss;
 	long quality = 0;
-	for each (sMovieScene* scene in m_movieScenes) { quality += scene->m_Quality; }
+	for (int i=0; i < (int)m_movieScenes.size(); i++)
+	{
+		quality += m_movieScenes[i]->m_Quality;
+	}
 	quality += m_movieScenes.size() * 10;
 	ss << "This movie will sell at " << quality << " gold, for 35 weeks, but it's value will drop over time.\n\n";
 	ss << (g_Studios.GetNumGirlsOnJob(0, JOB_PROMOTER, 0) > 0 ? "Your" : "A");

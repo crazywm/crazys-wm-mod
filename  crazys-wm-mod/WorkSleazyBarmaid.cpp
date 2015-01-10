@@ -179,7 +179,7 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Nig
 
 	if (g_Girls.HasTrait(girl, "Meek") && g_Dice.percent(5) && jobperformance < 125)
 	{ 
-		message += girlName + " spilled a drink all over a mans lap. He told her she had to lick it up and forced her to clean him up which she Meekly accepted and went about licking his cock clean.\n";
+		message += girlName + " spilled a drink all over a mans lap. He told her she had to lick it up and forced her to clean him up which she meekly accepted and went about licking his cock clean.\n";
 		imagetype = IMGTYPE_ORAL; work -= 3;
 	}
 

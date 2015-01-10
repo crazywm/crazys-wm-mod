@@ -49,8 +49,6 @@ extern CGraphics g_Graphics;
 extern cRng g_Dice;
 extern cGold g_Gold;
 
-extern char buffer[1000];
-
 static cPlayer* m_Player = g_Brothels.GetPlayer();
 static cRivalManager* m_Rivals = g_Brothels.GetRivalManager();
 static cDungeon* m_Dungeon = g_Brothels.GetDungeon();
@@ -101,7 +99,7 @@ bool cGangManager::LoadGangsXML(TiXmlHandle hGangManager)
 		{
 			sGang* gang = new sGang();
 			bool success = gang->LoadGangXML(TiXmlHandle(pGang));
-			if (success == true) { AddGang(gang); }
+			if (success) { AddGang(gang); }
 			else { delete gang; continue; }
 		}
 	}
@@ -113,7 +111,7 @@ bool cGangManager::LoadGangsXML(TiXmlHandle hGangManager)
 		{
 			sGang* hgang = new sGang();
 			bool success = hgang->LoadGangXML(TiXmlHandle(pGang));
-			if (success == true) { AddHireableGang(hgang); }
+			if (success) { AddHireableGang(hgang); }
 			else { delete hgang; continue; }
 		}
 	}
@@ -213,11 +211,8 @@ void cGangManager::HireGang(int gangID)
 		copyGang->m_Next = copyGang->m_Prev = 0;
 		copyGang->m_Combat = copyGang->m_AutoRecruit = false;
 		copyGang->m_LastMissID = -1;
-		if (copyGang->m_Num <= 5)
-			copyGang->m_MissionID = MISS_RECRUIT;
-
+		if (copyGang->m_Num <= 5) copyGang->m_MissionID = MISS_RECRUIT;
 		AddGang(copyGang);
-
 		RemoveHireableGang(gangID);
 	}
 }
@@ -445,8 +440,7 @@ void cGangManager::RemoveGang(int gangID)
 	int count = 0;
 	while (currentGang)
 	{
-		if (count == gangID)
-			break;
+		if (count == gangID) break;
 		count++;
 		currentGang = currentGang->m_Next;
 	}
@@ -544,10 +538,10 @@ sGang *cGangManager::random_gang(vector<sGang*>& v)
 	*	row for each gang member, and each row will
 	*	contain a pointer to that member's gang
 	*/
-	for (u_int i = 0; i < v.size(); i++) 
+	for (u_int i = 0; i < v.size(); i++)
 	{
 		sGang *gang = v[i];
-		for (int j = 0; j < gang->m_Num; j++) 
+		for (int j = 0; j < gang->m_Num; j++)
 		{
 			list.push_back(gang);
 		}
@@ -824,7 +818,7 @@ bool cGangManager::GangCombat(sGirl* girl, sGang* gang)
 	int initalNumber = gang->m_Num;
 
 	attack = (girl->combat() >= girl->magic()) ? SKILL_COMBAT : SKILL_MAGIC;	// first determine what she will fight with
-	gattack = (gang->combat() >= gang->magic())?SKILL_COMBAT:SKILL_MAGIC;		// determine how gang will fight
+	gattack = (gang->combat() >= gang->magic()) ? SKILL_COMBAT : SKILL_MAGIC;		// determine how gang will fight
 
 	dodge = max(0, (girl->agility()) - girl->tiredness());
 
@@ -862,21 +856,21 @@ bool cGangManager::GangCombat(sGirl* girl, sGang* gang)
 			l.ss() << gettext("\t\t") << girl->m_Realname << gettext(" attacks the goon.");
 			l.ssend();
 
-			if (attack == SKILL_MAGIC) 
+			if (attack == SKILL_MAGIC)
 			{
-				if (girl->mana() < 7) 
+				if (girl->mana() < 7)
 				{
 					l.ss() << gettext("\t\t") << girl->m_Realname << gettext(" insufficient mana: using combat");
 					l.ssend();
 				}
-				else 
+				else
 				{
 					girl->mana(-7);
 					l.ss() << gettext("\t\t") << girl->m_Realname << gettext(" casts a spell; mana now ") << girl->mana();
 					l.ssend();
 				}
 			}
-			else 
+			else
 			{
 				l.ss() << gettext("\t\t") << girl->m_Realname << gettext(" using physical attack");
 				l.ssend();
@@ -891,11 +885,11 @@ bool cGangManager::GangCombat(sGirl* girl, sGang* gang)
 			l.ss() << gettext("\t\t") << gettext(" die roll = ") << die_roll;
 			l.ssend();
 
-			if (die_roll > girl_attack_chance) 
+			if (die_roll > girl_attack_chance)
 			{
 				l.ss() << gettext("\t\t\t") << gettext(" attack fails");
 			}
-			else 
+			else
 			{
 				int damage = 5;
 
@@ -909,11 +903,11 @@ bool cGangManager::GangCombat(sGirl* girl, sGang* gang)
 				*				Link this amount of mana remaining?
 				*/
 				int bonus = 0;
-				if (attack == SKILL_MAGIC) 
+				if (attack == SKILL_MAGIC)
 				{
 					bonus = girl->magic() / 5 + 2;
 				}
-				else 
+				else
 				{
 					bonus = girl->combat() / 10;
 				}
@@ -927,7 +921,7 @@ bool cGangManager::GangCombat(sGirl* girl, sGang* gang)
 				*				(checked every round of combat? seems excessive)
 				*/
 				int gain = g_Dice % 2;
-				if (gain) 
+				if (gain)
 				{
 					l.ss() << gettext("\t\t") << girl->m_Realname << gettext(" gains +") << gain << gettext(" to attack skill");
 					l.ssend();
@@ -940,11 +934,11 @@ bool cGangManager::GangCombat(sGirl* girl, sGang* gang)
 				l.ss() << gettext("\t\t") << gettext("Goon tries to dodge: needs ") << gDodge << gettext(", gets ") << die_roll << gettext(": ");
 				l.ssend();
 
-				if (die_roll <= gDodge) 
+				if (die_roll <= gDodge)
 				{
 					l.ss() << gettext("\t\t") << gettext("success!");
 				}
-				else 
+				else
 				{
 					int con_mod = gang->m_Stats[STAT_CONSTITUTION] / 10;
 					gHealth -= con_mod;
@@ -956,7 +950,7 @@ bool cGangManager::GangCombat(sGirl* girl, sGang* gang)
 			l.ssend();
 
 			// goons use healing potions
-			if (heal_lim > 0 && gHealth <= 40) 
+			if (heal_lim > 0 && gHealth <= 40)
 			{
 				m_NumHealingPotions--;
 				heal_lim--;
@@ -973,12 +967,12 @@ bool cGangManager::GangCombat(sGirl* girl, sGang* gang)
 			l.ssend();
 
 			l.ss() << gettext("\t\t") << gettext("chance = ") << goon_attack_chance << gettext(", die roll = ") << die_roll << gettext(": ");
-			if (die_roll > goon_attack_chance) 
+			if (die_roll > goon_attack_chance)
 			{
 				l.ss() << gettext(" attack fails!");
 				l.ssend();
 			}
-			else 
+			else
 			{
 				l.ss() << gettext(" attack succeeds!");
 				l.ssend();
@@ -1302,9 +1296,7 @@ int cGangManager::healing_limit()
 	*	if that rounds to less than zero, and there are still
 	*	potions available, make sure they get at least one to use
 	*/
-	if (limit == 0 && m_NumHealingPotions) {
-		limit = 1;
-	}
+	if (limit == 0 && m_NumHealingPotions) { limit = 1; }
 	return limit;
 }
 
@@ -1361,10 +1353,9 @@ void cGangManager::UpdateGangs()
 	{
 		if (currentGang->m_Num <= 0)
 		{
-			string message = gettext("All of the men in gang ");
-			message += currentGang->m_Name;
-			message += gettext(" have died.");
-			g_MessageQue.AddToQue(message, COLOR_RED);
+			stringstream ss;
+			ss << gettext("All of the men in gang ") << currentGang->m_Name << gettext(" have died.");
+			g_MessageQue.AddToQue(ss.str(), COLOR_RED);
 			sGang* temp = currentGang->m_Next;
 			RemoveGang(currentGang);
 			currentGang = temp;
@@ -1396,7 +1387,8 @@ void cGangManager::UpdateGangs()
 				currentGang = currentGang->m_Next;
 				continue;
 			}
-			if (currentGang->m_Num == 0) {
+			if (currentGang->m_Num == 0)
+			{
 				sGang* temp = currentGang->m_Next;
 				RemoveGang(currentGang);
 				currentGang = temp;
@@ -1406,12 +1398,11 @@ void cGangManager::UpdateGangs()
 
 		case MISS_EXTORTION:
 		{
-			string message = gettext("This gang is capturing territory.");
-			currentGang->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_GANG);
-
-			message = gettext("Gang: ");
-			message += currentGang->m_Name;
-			message += ", ";
+			stringstream ss;
+			ss << gettext("This gang is capturing territory.");
+			currentGang->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
+			ss.str("");
+			ss << gettext("Gang: ") << currentGang->m_Name << ", ";
 			bool ok = false;
 
 			// WD: fix to force limits of -100 to +100
@@ -1423,20 +1414,13 @@ void cGangManager::UpdateGangs()
 			int numB = m_Rivals->GetNumBusinesses();
 			if ((m_BusinessesExtort + numB) < TOWN_NUMBUSINESSES)
 			{
-				ok = true;
 				int n = g_Dice % 3;
-
 				if ((m_BusinessesExtort + numB) + n > TOWN_NUMBUSINESSES)
 					n = TOWN_NUMBUSINESSES - (m_BusinessesExtort + numB);
-
-				if (n == 0)
-					message += gettext("You don't gain any more neutral territory.");
+				if (n == 0) ss << gettext("You don't gain any more neutral territory.");
 				else
 				{
-					message += gettext(" You gain control of ");
-					_itoa(n, buffer, 10);
-					message += buffer;
-					message += gettext(" more neutral territory.");
+					ss << gettext(" You gain control of ") << n << gettext(" more neutral territory.");
 					m_BusinessesExtort += n;
 					g_Gold.extortion(n * 20);
 					if (g_Brothels.GetObjective())
@@ -1458,17 +1442,13 @@ void cGangManager::UpdateGangs()
 						if (rival->m_NumGangs > 0)
 						{
 							sGang* rival_gang = GetTempGang();
-							ok = true;
-							message += gettext("Your men run into one of your rival's gangs from ");
-							message += rival->m_Name;
-							message += gettext(" and a brawl breaks out.\n");
+							ss << gettext("Your men run into one of your rival's gangs from ") << rival->m_Name << gettext(" and a brawl breaks out.\n");
 
 							if (GangBrawl(currentGang, rival_gang))
 							{
-								if (rival_gang->m_Num <= 0)
-									rival->m_NumGangs--;
+								if (rival_gang->m_Num <= 0) rival->m_NumGangs--;
 
-								message += gettext("\nYou defeat the gang and take control of one of their territories.");
+								ss << gettext("\nYou defeat the gang and take control of one of their territories.");
 								rival->m_BusinessesExtort--;
 								m_BusinessesExtort++;
 								if (g_Brothels.GetObjective())
@@ -1479,14 +1459,13 @@ void cGangManager::UpdateGangs()
 							}
 							else
 							{
-								message += gettext("\nYou fail to take control of any of their territory.");
+								ss << gettext("\nYou fail to take control of any of their territory.");
 							}
 							delete rival_gang;
 							rival_gang = 0;
 						}
 						else // Rival has no gangs
 						{
-							ok = true;
 							rival->m_BusinessesExtort--;
 							m_BusinessesExtort++;
 							if (g_Brothels.GetObjective())
@@ -1494,41 +1473,41 @@ void cGangManager::UpdateGangs()
 								if (g_Brothels.GetObjective()->m_Objective == OBJECTIVE_EXTORTXNEWBUSINESS)
 									g_Brothels.GetObjective()->m_SoFar++;
 							}
-							message += gettext("\nYou gain control of a rival's territory that was left undefended");
+							ss << gettext("\nYou gain control of a rival's territory that was left undefended");
 						}
+						ok = true;
+
 					}
 				}
 			}
 
 			if (currentGang->m_Num <= 0)
 			{
-				message += gettext("\nThe gang on this mission has been killed.");
-				g_MessageQue.AddToQue(message, COLOR_RED);
+				ss << gettext("\nThe gang on this mission has been killed.");
+				g_MessageQue.AddToQue(ss.str(), COLOR_RED);
 				sGang* temp = currentGang->m_Next;
 				RemoveGang(currentGang);
 				currentGang = temp;
 				continue;
 			}
 
-			if (ok)
-				currentGang->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_GANG);
-		}break;
+			if (ok) currentGang->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
+		}	break;
 
 		case MISS_PETYTHEFT:
 		{
-			string message = gettext("This gang is performing petty theft.");
-			currentGang->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_GANG);
-
-			message = gettext("Gang: ");
-			message += currentGang->m_Name;
-			message += gettext(", ");
+			stringstream ss;
+			ss << gettext("This gang is performing petty theft.");
+			currentGang->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
+			ss.str("");
+			ss << gettext("Gang: ") << currentGang->m_Name << gettext(", ");
 			bool lost = false;
 			m_Player->disposition(-1);
 			m_Player->customerfear(1);
 			m_Player->suspicion(1);
 
 			// 30% chance to take losses
-			int ev = (g_Dice % 100) + 1;
+			int ev = g_Dice.d100();
 			if (ev > 60 && ev < 90)
 			{
 				// determine losses
@@ -1536,30 +1515,24 @@ void cGangManager::UpdateGangs()
 				int num = currentGang->m_Num;
 				for (int i = 0; i<num; i++)
 				{
-					if (g_Dice % 100 > currentGang->combat())
-						continue;
-
-					if (heal_lim == 0) {
-						currentGang->m_Num--;
-						continue;
-					}
+					if (g_Dice.percent(currentGang->combat())) continue;
+					if (heal_lim <= 0) { currentGang->m_Num--; continue; }
 					heal_lim--;
 					m_NumHealingPotions--;
 				}
 				int number = num - currentGang->m_Num;
-				message += gettext(". You lose ");
+				ss << gettext(". You lose ");
 				if (currentGang->m_Num <= 0)
 				{
-					message += gettext("all your");
+					ss << gettext("all your");
 					currentGang->m_Num = 0;
 				}
 				else
 				{
-					_itoa(number, buffer, 10);
-					message += buffer;
+					ss << number;
 					currentGang->m_Num -= number;
 				}
-				message += gettext(" men.\n");
+				ss << gettext(" men.\n");
 			}
 			// 10% chance of running into a rival gang
 			else if (ev >= 90)
@@ -1569,17 +1542,13 @@ void cGangManager::UpdateGangs()
 				{
 					if (rival->m_NumGangs > 0)
 					{
-						message += gettext("Your men run into a gang from ");
-						message += rival->m_Name;
-						message += gettext(" and a brawl breaks out.\n");
+						ss << gettext("Your men run into a gang from ") << rival->m_Name << gettext(" and a brawl breaks out.\n");
 						sGang* rival_gang = GetTempGang();
-						if (GangBrawl(currentGang, rival_gang))
-							message += gettext("Your men win.");
+						if (GangBrawl(currentGang, rival_gang)) ss << gettext("Your men win.");
 						else
 						{
-							message += gettext("Your men lose the fight.");
-							if (rival_gang->m_Num <= 0)
-								rival->m_NumGangs--;
+							ss << gettext("Your men lose the fight.");
+							if (rival_gang->m_Num <= 0) rival->m_NumGangs--;
 							lost = true;
 						}
 						delete rival_gang;
@@ -1590,8 +1559,8 @@ void cGangManager::UpdateGangs()
 
 			if (currentGang->m_Num <= 0)
 			{
-				message += gettext("The gang was killed.");
-				g_MessageQue.AddToQue(message, COLOR_RED);
+				ss << gettext("The gang was killed.");
+				g_MessageQue.AddToQue(ss.str(), COLOR_RED);
 				sGang* temp = currentGang->m_Next;
 				RemoveGang(currentGang);
 				currentGang = temp;
@@ -1599,39 +1568,37 @@ void cGangManager::UpdateGangs()
 			}
 			else if (!lost)
 			{
-				message += gettext(". Your rob some ");
+				ss << gettext(". Your rob some ");
 				int tmp = g_Dice % 5;
 				long gold = 0;
 				if (tmp == 0)
 				{
-					message += gettext("little old ladies, and get ");
+					ss << gettext("little old ladies, and get ");
 					gold = (g_Dice % 130) + 1;
 				}
 				else if (tmp == 1)
 				{
-					message += gettext("kids, and get ");
+					ss << gettext("kids, and get ");
 					gold = (g_Dice % 160) + 1;
 				}
 				else if (tmp == 2)
 				{
-					message += gettext("noble men and women, and get ");
+					ss << gettext("noble men and women, and get ");
 					gold = (g_Dice % 500) + 1;
 				}
 				else if (tmp == 3)
 				{
-					message += gettext("small stalls, and get ");
+					ss << gettext("small stalls, and get ");
 					gold = (g_Dice % 600) + 1;
 				}
 				else if (tmp == 4)
 				{
-					message += gettext("traders, and get ");
+					ss << gettext("traders, and get ");
 					gold = (g_Dice % 800) + 1;
 				}
-				_ltoa(gold, buffer, 10);
-				message += buffer;
-				message += gettext(" gold from them.");
+				ss << gold << gettext(" gold from them.");
 				g_Gold.petty_theft(gold);
-				currentGang->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_GANG);
+				currentGang->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
 
 				if (g_Brothels.GetObjective())
 				{
@@ -1639,23 +1606,21 @@ void cGangManager::UpdateGangs()
 						g_Brothels.GetObjective()->m_SoFar += gold;
 				}
 			}
-		}
-			break;
+		}	break;
 
 		case MISS_GRANDTHEFT:
 		{
-			string message = gettext("This gang is performing a grand theft.");
-			currentGang->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_GANG);
-
-			message = gettext("Gang: ");
-			message += currentGang->m_Name;
-			message += ", ";
+			stringstream ss;
+			ss << gettext("This gang is performing a grand theft.");
+			currentGang->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
+			ss.str("");
+			ss << gettext("Gang: ") << currentGang->m_Name << ", ";
 			bool lost = false;
 			m_Player->disposition(-1);
 			m_Player->customerfear(1);
 			m_Player->suspicion(1);
 
-			int ev = (g_Dice % 100) + 1;
+			int ev = g_Dice.d100();
 			if (ev > 40 && ev < 90)
 			{
 				// determine losses
@@ -1663,29 +1628,24 @@ void cGangManager::UpdateGangs()
 				int num = currentGang->m_Num;
 				for (int i = 0; i<num; i++)
 				{
-					if (g_Dice % 100 > currentGang->combat())
-						continue;
-					if (heal_lim == 0) {
-						currentGang->m_Num--;
-						continue;
-					}
+					if (g_Dice.percent(currentGang->combat())) continue;
+					if (heal_lim == 0) { currentGang->m_Num--; continue; }
 					heal_lim--;
 					m_NumHealingPotions--;
 				}
 				int number = num - currentGang->m_Num;
-				message += gettext(". You lose ");
+				ss << gettext(". You lose ");
 				if (currentGang->m_Num <= 0)
 				{
-					message += gettext("all your");
+					ss << gettext("all your");
 					currentGang->m_Num = 0;
 				}
 				else
 				{
-					_itoa(number, buffer, 10);
-					message += buffer;
+					ss << number;
 					currentGang->m_Num -= number;
 				}
-				message += " men.\n";
+				ss << " men.\n";
 			}
 			else if (ev >= 90)	// ran into a rivals goons
 			{
@@ -1694,17 +1654,13 @@ void cGangManager::UpdateGangs()
 				{
 					if (rival->m_NumGangs > 0)
 					{
-						message += gettext("Your men run into a gang from ");
-						message += rival->m_Name;
-						message += gettext(" and a brawl breaks out.\n");
+						ss << gettext("Your men run into a gang from ") << rival->m_Name << gettext(" and a brawl breaks out.\n");
 						sGang* rival_gang = GetTempGang();
-						if (GangBrawl(currentGang, rival_gang))
-							message += gettext("Your men win.");
+						if (GangBrawl(currentGang, rival_gang))							ss << gettext("Your men win.");
 						else
 						{
-							message += gettext("Your men lose the fight.");
-							if (rival_gang->m_Num <= 0)
-								rival->m_NumGangs--;
+							ss << gettext("Your men lose the fight.");
+							if (rival_gang->m_Num <= 0) rival->m_NumGangs--;
 							lost = true;
 						}
 						delete rival_gang;
@@ -1715,8 +1671,8 @@ void cGangManager::UpdateGangs()
 
 			if (currentGang->m_Num <= 0)
 			{
-				message += gettext("\nAll your men on this mission have died.");
-				g_MessageQue.AddToQue(message, COLOR_RED);
+				ss << gettext("\nAll your men on this mission have died.");
+				g_MessageQue.AddToQue(ss.str(), COLOR_RED);
 				sGang* temp = currentGang->m_Next;
 				RemoveGang(currentGang);
 				currentGang = temp;
@@ -1724,39 +1680,18 @@ void cGangManager::UpdateGangs()
 			}
 			else if (!lost)
 			{
-				message += gettext(". Your men rob ");
-				int tmp = g_Dice % 5;
-				long gold = 0;
-				if (tmp == 0)
-				{
-					message += gettext("small shop, and get ");
-					gold = (g_Dice % 400) + 1;
-				}
-				else if (tmp == 1)
-				{
-					message += gettext("a smithy, and get ");
-					gold = (g_Dice % 600) + 1;
-				}
-				else if (tmp == 2)
-				{
-					message += gettext("a jeweler, and get ");
-					gold = (g_Dice % 800) + 1;
-				}
-				else if (tmp == 3)
-				{
-					message += gettext("a trade caravan, and get ");
-					gold = (g_Dice % 1000) + 1;
-				}
-				else if (tmp == 4)
-				{
-					message += gettext("a bank, and get ");
-					gold = (g_Dice % 2000) + 1;
-				}
-				_ltoa(gold, buffer, 10);
-				message += buffer;
-				message += gettext(" gold.");
+				ss << gettext(". Your men rob a ");
+				int tmp = g_Dice.d100();
+				long gold = 1;
+				/* */if (tmp < 10)	{ ss << gettext("bank");			gold += g_Dice % 2000; }
+				else if (tmp < 20)	{ ss << gettext("trade caravan");	gold += g_Dice % 1000; }
+				else if (tmp < 40)	{ ss << gettext("jeweler");			gold += g_Dice % 800; }
+				else if (tmp < 70)	{ ss << gettext("smithy");			gold += g_Dice % 600; }
+				else /*         */	{ ss << gettext("small shop");		gold += g_Dice % 400; }
+
+				ss << gettext(", and get") << gold << gettext(" gold.");
 				g_Gold.grand_theft(gold);
-				currentGang->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_GANG);
+				currentGang->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
 
 				if (g_Brothels.GetObjective())
 				{
@@ -1764,16 +1699,15 @@ void cGangManager::UpdateGangs()
 						g_Brothels.GetObjective()->m_SoFar += gold;
 				}
 			}
-		}break;
+		}	break;
 
 		case MISS_KIDNAPP:
 		{
-			string message = gettext("This gang is kidnapping girls.");
-			currentGang->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_GANG);
-
-			message = gettext("Gang: ");
-			message += currentGang->m_Name;
-			message += ", ";
+			stringstream ss;
+			ss << gettext("This gang is kidnapping girls.");
+			currentGang->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
+			ss.str("");
+			ss << gettext("Gang: ") << currentGang->m_Name << ", ";
 
 			if (g_Dice.percent(35))
 			{
@@ -1792,76 +1726,72 @@ void cGangManager::UpdateGangs()
 					how to fix it, so I'm explicitly setting the percentage to 60 here */
 					girl->m_Stats[STAT_HOUSE] = 60;
 
-					message += gettext("Your men find a girl, ");
-					message += girl->m_Name;
-					message += gettext("  and ");
+					ss << gettext("Your men find a girl, ") << girl->m_Name << gettext("  and ");
 					if (g_Dice.percent(currentGang->m_Stats[STAT_CHARISMA]))	// convince her
 					{
-						message += gettext("convince her that she should work for you.");
+						ss << gettext("convince her that she should work for you.");
 						m_Dungeon->AddGirl(girl, DUNGEON_GIRLKIDNAPPED);
 					}
 					else if (m_NumNets > 0 || m_KeepNetsStocked)	// capture using net
 					{
 						girl->m_Stats[STAT_OBEDIENCE] = 0;
-						message += gettext("She struggles against the net your men use, but it is pointless.  She is in your dungeon now.");
+						ss << gettext("She struggles against the net your men use, but it is pointless.  She is in your dungeon now.");
 						m_Dungeon->AddGirl(girl, DUNGEON_GIRLKIDNAPPED);
 						if (m_NumNets > 0) m_NumNets--;
 						else g_Gold.consumable_cost(5);
 					}
 					else if (g_Brothels.FightsBack(girl))	// kidnap her
 					{
-						message += gettext("attempt to kidnap her.");
+						ss << gettext("attempt to kidnap her.");
 						if (!GangCombat(girl, currentGang))
 						{
 							girl->m_Stats[STAT_OBEDIENCE] = 0;
-							message += gettext("\nShe fights back but your men succeed in kidnapping her.");
+							ss << gettext("\nShe fights back but your men succeed in kidnapping her.");
 							m_Dungeon->AddGirl(girl, DUNGEON_GIRLKIDNAPPED);
 						}
 						else
 						{
 							if (currentGang->m_Num <= 0)
 							{
-								message += gettext("\nThe girl fights back and kills your men before escaping into the crowd.");
-								g_MessageQue.AddToQue(message, COLOR_RED);
+								ss << gettext("\nThe girl fights back and kills your men before escaping into the crowd.");
+								g_MessageQue.AddToQue(ss.str(), COLOR_RED);
 								sGang* temp = currentGang->m_Next;
 								RemoveGang(currentGang);
 								currentGang = temp;
 								continue;
 							}
 							else
-								message += gettext("\nThe girl fights back and defeats your men before escaping into the crowd.");
+								ss << gettext("\nThe girl fights back and defeats your men before escaping into the crowd.");
 						}
 					}
 					else
 					{
-						message += gettext("kidnap her successfully without a fuss.  She is in your dungeon now.");
+						ss << gettext("kidnap her successfully without a fuss.  She is in your dungeon now.");
 						m_Dungeon->AddGirl(girl, DUNGEON_GIRLKIDNAPPED);
 					}
 					BoostGangSkill(&currentGang->m_Stats[STAT_CHARISMA], 3);
-					currentGang->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_GANG);
+					currentGang->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
 				}
 				else
 				{
-					message += gettext("failed to find any girls to kidnap.");
-					currentGang->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_GANG);
+					ss << gettext("failed to find any girls to kidnap.");
+					currentGang->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
 				}
 			}
 			else
 			{
-				message += gettext("failed to find any girls to kidnap.");
-				currentGang->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_GANG);
+				ss << gettext("failed to find any girls to kidnap.");
+				currentGang->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
 			}
-		}break;
+		}	break;
 
 		case MISS_TRAINING:
 		{
-			string message = gettext("This gang is training.");
-			currentGang->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_GANG);
+			stringstream ss;
+			ss << gettext("This gang is training.");
+			currentGang->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
 
-			message = gettext("Gang: ");
-			message += currentGang->m_Name;
-			message += gettext(", ");
-			message += gettext(" Your men spend the week training and improving their skills.");
+			ss << gettext("Gang: ") << currentGang->m_Name << gettext(", Your men spend the week training and improving their skills.");
 
 #if 1			// New gang training code
 			int old_combat = currentGang->m_Skills[SKILL_COMBAT];
@@ -1887,8 +1817,6 @@ void cGangManager::UpdateGangs()
 			}
 			possible_skills.clear();
 
-			stringstream ss;
-			ss.str("");
 			if (currentGang->m_Skills[SKILL_COMBAT] > old_combat)
 				ss << gettext("\n+") << (currentGang->m_Skills[SKILL_COMBAT] - old_combat) << gettext(" Combat");
 			if (currentGang->m_Skills[SKILL_MAGIC] > old_magic)
@@ -1902,7 +1830,6 @@ void cGangManager::UpdateGangs()
 			if (currentGang->m_Stats[STAT_CHARISMA] > old_char)
 				ss << gettext("\n+") << (currentGang->m_Stats[STAT_CHARISMA] - old_char) << gettext(" Charisma");
 
-			message += ss.str();
 
 #else			// Original Code
 			for (u_int i = 0; i<NUM_SKILLS; i++)
@@ -1920,14 +1847,15 @@ void cGangManager::UpdateGangs()
 			}
 #endif
 
-			currentGang->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_GANG);
+			currentGang->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
 			currentGang->m_Combat = false;
 		}break;
 
 		case MISS_RECRUIT:
 		{
-			string message = gettext("This gang is recruiting.");
-			currentGang->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_GANG);
+			stringstream ss;
+			ss << gettext("This gang is recruiting.");
+			currentGang->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
 
 			if (currentGang->m_Num < 15)
 			{
@@ -2099,8 +2027,8 @@ void cGangManager::UpdateGangs()
 				}
 				// `J` determine if they bring back any beasts
 				int beasts = max(0, (g_Dice % 5) - 2);
-				if (girl==0 && currentGang->m_Num > 13) beasts++;
-				if (beasts > 0 && g_Dice.percent(currentGang->m_Num*5))
+				if (girl == 0 && currentGang->m_Num > 13) beasts++;
+				if (beasts > 0 && g_Dice.percent(currentGang->m_Num * 5))
 				{
 					ss << "\n\nYour men also bring back " << beasts << " beasts.";
 					g_Brothels.add_to_beasts(beasts);
@@ -2128,10 +2056,9 @@ void cGangManager::UpdateGangs()
 
 		if (currentGang->m_Num <= 5 && currentGang->m_MissionID != MISS_RECRUIT)
 		{
-			string message = gettext("Gang: ");
-			message += currentGang->m_Name;
-			message += gettext(", were also put on recruit mission due to low numbers");
-			currentGang->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_WARNING);
+			stringstream ss;
+			ss << gettext("Gang: ") << currentGang->m_Name << gettext(", were also put on recruit mission due to low numbers");
+			currentGang->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
 			currentGang->m_AutoRecruit = true;
 			currentGang->m_LastMissID = currentGang->m_MissionID;
 			currentGang->m_MissionID = MISS_RECRUIT;
@@ -2140,19 +2067,17 @@ void cGangManager::UpdateGangs()
 		{
 			if (currentGang->m_AutoRecruit)
 			{
-				string message = gettext("Gang: ");
-				message += currentGang->m_Name;
-				message += gettext(", were placed back on their previous mission now that their numbers are back to normal.");
-				currentGang->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_WARNING);
+				stringstream ss;
+				ss << gettext("Gang: ") << currentGang->m_Name << gettext(", were placed back on their previous mission now that their numbers are back to normal.");
+				currentGang->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
 				currentGang->m_MissionID = currentGang->m_LastMissID;
 				currentGang->m_AutoRecruit = false;
 			}
 			else
 			{
-				string message = gettext("Gang: ");
-				message += currentGang->m_Name;
-				message += gettext(", were placed on guard duty from recruitment as their numbers are full.");
-				currentGang->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_WARNING);
+				stringstream ss;
+				ss << gettext("Gang: ") << currentGang->m_Name << gettext(", were placed on guard duty from recruitment as their numbers are full.");
+				currentGang->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
 				currentGang->m_MissionID = MISS_GUARDING;
 			}
 		}

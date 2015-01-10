@@ -974,7 +974,7 @@ void cScreenItemManagement::attempt_transfer(Side transfer_from)
 				int goodbad = g_Brothels.m_Inventory[selection]->m_Badness;
 				*item_name = g_Brothels.m_Inventory[selection]->m_Name;  // note name of item, for selection tracking in target list
 				u_int type = g_Brothels.m_Inventory[selection]->m_Type;
-				g_MessageQue.AddToQue(GiveItemText(goodbad, HateLove), 0);
+				g_MessageQue.AddToQue(GiveItemText(goodbad, HateLove, targetGirl), 0);
 
 				if (goodbad < 20)
 				{
@@ -1027,7 +1027,7 @@ void cScreenItemManagement::attempt_transfer(Side transfer_from)
 				*item_name = ShopItem->m_Name;  // note name of item, for selection tracking in target list
 				int goodbad = ShopItem->m_Badness;
 				u_int type = ShopItem->m_Type;
-				g_MessageQue.AddToQue(GiveItemText(goodbad, HateLove), 0);
+				g_MessageQue.AddToQue(GiveItemText(goodbad, HateLove, targetGirl), 0);
 
 				if (ShopItem->m_Badness < 20)
 				{
@@ -1070,7 +1070,7 @@ void cScreenItemManagement::attempt_transfer(Side transfer_from)
 				*item_name = fromGirl->m_Inventory[selection]->m_Name;  // note name of item, for selection tracking in target list
 				int goodbad = fromGirl->m_Inventory[selection]->m_Badness;
 				u_int type = fromGirl->m_Inventory[selection]->m_Type;
-				g_MessageQue.AddToQue(GiveItemText(goodbad, HateLove), 0);
+				g_MessageQue.AddToQue(GiveItemText(goodbad, HateLove, targetGirl), 0);
 
 				// add to target Girls inventory
 				if (goodbad < 20)
@@ -1113,28 +1113,43 @@ void cScreenItemManagement::attempt_transfer(Side transfer_from)
 	SetSelectedItemInList(target_owner_list, target_owner);
 }
 
-string cScreenItemManagement::GiveItemText(int goodbad, int HateLove, string ItemName)
+string cScreenItemManagement::GiveItemText(int goodbad, int HateLove, sGirl* targetgirl, string ItemName)
 {
-	sGirl* girl;
+	sGirl* girl = targetgirl;
 	string message = "";
 	if (goodbad < 20)
 	{
 		/* */if (HateLove < -80)	message = gettext("She grudgingly accepts the gift, but makes it clear that she still thinks that you rate slightly below a toad in her worldview.");
 		else if (HateLove < -60)	message = gettext("She takes your gift in hand, looks at it, looks at you, than walks away without a word.");
-		else if (HateLove < -40)	
-		{ if (g_Girls.HasTrait(girl, "Your Daughter")) message = gettext("Are you trying to make up for begin an ass dad?"); //hopefully this works.. will add more
-		else message = gettext("You know, if you wanted to fuck, you shoulda just said.  So that way I'd have had more fun saying no."); }
-		else if (HateLove < -20)	
-		{ if (g_Girls.HasTrait(girl, "Your Daughter")) message = gettext("You still have a long way to go if you want me to like you dad."); //hopefully this works.. will add more
-		else message = gettext("If you think giving me pretty things will get you between my legs, you're wrong!"); }
+		else if (HateLove < -40)
+		{
+			if (g_Girls.HasTrait(girl, "Your Daughter"))
+			{
+				message = gettext("Are you trying to make up for being an ass dad?"); //hopefully this works.. will add more
+			}
+			else message = gettext("You know, if you wanted to fuck, you shoulda just said.  So that way I'd have had more fun saying no.");
+		}
+		else if (HateLove < -20)
+		{
+			if (g_Girls.HasTrait(girl, "Your Daughter"))
+			{
+				message = gettext("You still have a long way to go if you want me to like you dad."); //hopefully this works.. will add more
+			}
+			else message = gettext("If you think giving me pretty things will get you between my legs, you're wrong!");
+		}
 		else if (HateLove < 0)		message = gettext("She is shocked you would give her anything nice.");
 		else if (HateLove < 20)		message = gettext("She is happy with the gift.");
 		else if (HateLove < 40)		message = gettext("She is happy with the gift and thanks you.");
 		else if (HateLove < 60)		message = gettext("She is happy with the gift and gives you a big hug.");
 		else if (HateLove < 80)		message = gettext("She is happy with the gift and gives you a big hug and a kiss on the cheek.");
-		else /*               */	
-		{ if (g_Girls.HasTrait(girl, "Your Daughter")) message = gettext("She is happy with the gift and gives you a big hug and kisses you on the cheek saying she loves her daddy."); //hopefully this works.. will add more
-		else message = gettext("She is happy with the gift and gives you a big hug and kisses you hard.  After the kiss she whispers to you to see her later so she can thank you \"properly\"."); }
+		else
+		{
+			if (g_Girls.HasTrait(girl, "Your Daughter"))
+			{
+				message = gettext("She is happy with the gift and gives you a big hug and a kiss on the cheek saying she loves her daddy."); //hopefully this works.. will add more
+			}
+			else message = gettext("She is happy with the gift and gives you a big hug and kisses you hard.  After the kiss she whispers to you to see her later so she can thank you \"properly\".");
+		}
 	}
 	else
 	{
@@ -1147,9 +1162,14 @@ string cScreenItemManagement::GiveItemText(int goodbad, int HateLove, string Ite
 		else if (HateLove < 40)		message = gettext("She doesn't seem happy with the gift and looks a little sad.");
 		else if (HateLove < 60)		message = gettext("She doesn't seem happy with the gift and looks sad.");
 		else if (HateLove < 80)		message = gettext("She doesn't seem happy with the gift and tears can be seen in her eyes.");
-		else /*              */		
-		{ if (g_Girls.HasTrait(girl, "Your Daughter")) message = gettext("She looks at you and says \"Why would you buy me such a thing daddy?\"."); //hopefully this works.. will add more
-		else message = gettext("She can't belive you would give her such a gift and runs off crying."); }
+		else
+		{
+			if (g_Girls.HasTrait(girl, "Your Daughter"))
+			{
+				message = gettext("She looks at you and says \"Why would you buy me such a thing daddy?\"."); //hopefully this works.. will add more
+			}
+			else message = gettext("She can't belive you would give her such a gift and runs off crying.");
+		}
 	}
 	return message;
 }

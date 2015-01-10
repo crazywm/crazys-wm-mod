@@ -80,8 +80,8 @@ public:
 
 	bool HasMultiSelected();
 
-	void ScrollDown(int amount = 1, bool updatebar = true);
-	void ScrollUp(int amount = 1, bool updatebar = true);
+	void ScrollDown(int amount = 0, bool updatebar = true);
+	void ScrollUp(int amount = 0, bool updatebar = true);
 	int m_ScrollChange;  // scrollbar changes will update this value
 
 	int GetSelected();	// returns the id for the first selected element

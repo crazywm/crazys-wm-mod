@@ -110,7 +110,7 @@ public:
 	
 	int Num_Actress(int brothel);
 	bool is_Actress_Job(int testjob);
-	bool cMovieStudioManager::CrewNeeded();
+	bool CrewNeeded();
 };
 
 

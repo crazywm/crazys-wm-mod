@@ -259,7 +259,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			U_Health += 5;
 			if (HateLove >= 80 && g_Dice.percent(10))//loves you
 			{
-				ss << "She invites you to join her in the tube.\n";//will get around to adding sex options later
+				ss << "She invites you to join her in the tub.\n";//will get around to adding sex options later
 			}
 			else if (girl->libido() > 70 || (g_Girls.HasTrait(girl, "Nymphomaniac") && girl->libido() > 30))
 			{

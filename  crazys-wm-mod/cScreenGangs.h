@@ -27,7 +27,6 @@ class cScreenGangs : public cInterfaceWindowXML
 public:
 
 private:
-	char	buffer[256];
 	int		sel_pos;
 
 	static bool ids_set;

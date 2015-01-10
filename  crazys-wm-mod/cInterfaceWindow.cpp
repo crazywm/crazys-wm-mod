@@ -230,12 +230,15 @@ void cInterfaceWindow::AddButton(string OffImage, string DisabledImage, string O
 
 void cInterfaceWindow::AddScrollBar(int & ID, int x, int y, int width, int height, int visibleitems)
 {
-	ID=m_ScrollBars.size();
+	cConfig cfg;
+
+	ID = m_ScrollBars.size();
 	// create scroll bar
 	g_LogFile.write("initializing scrollbar");
 	cScrollBar* newScrollBar = new cScrollBar();
 	g_LogFile.write("creating scrollbar");
 	newScrollBar->CreateScrollBar(ID, x+m_XPos, y+m_YPos, width, height, visibleitems);
+	newScrollBar->m_ScrollAmount = cfg.resolution.list_scroll();
 
 	// Store scroll bar
 	g_LogFile.write("storing scrollbar");
@@ -244,6 +247,8 @@ void cInterfaceWindow::AddScrollBar(int & ID, int x, int y, int width, int heigh
 
 void cInterfaceWindow::AddTextItemScrollBar(int id)
 {	// adding scrollbar to a TextItem
+	cConfig cfg;
+
 	int x = m_TextItems[id]->GetXPos();
 	int y = m_TextItems[id]->GetYPos();
 	int width = m_TextItems[id]->GetWidth();
@@ -252,8 +257,8 @@ void cInterfaceWindow::AddTextItemScrollBar(int id)
 	AddScrollBar(newID, x+width-m_XPos-15, y-m_YPos, 16, height, height);
 	m_TextItems[id]->m_ScrollBar = m_ScrollBars[newID];  // give TextItem pointer to scrollbar
 	m_ScrollBars[newID]->ParentPosition = &m_TextItems[id]->m_ScrollChange;  // give scrollbar pointer to value it should update
-	m_ScrollBars[newID]->m_ScrollAmount = m_TextItems[id]->m_Font.GetFontHeight();
-	m_ScrollBars[newID]->m_PageAmount = height - m_TextItems[id]->m_Font.GetFontHeight();
+	m_ScrollBars[newID]->m_ScrollAmount = cfg.resolution.text_scroll() * m_TextItems[id]->m_Font.GetFontHeight();
+	m_ScrollBars[newID]->m_PageAmount = m_ScrollBars[newID]->m_PageAmount - m_TextItems[id]->m_Font.GetFontHeight();
 }
 
 void cInterfaceWindow::HideImage(int id, bool hide)

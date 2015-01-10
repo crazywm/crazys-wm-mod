@@ -41,7 +41,7 @@ extern cArenaManager g_Arena;
 extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
-cJobManager m_JobManager;
+extern cJobManager m_JobManager;
 
 // `J` Arena Job - Fighting
 bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)

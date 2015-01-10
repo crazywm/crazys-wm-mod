@@ -1,21 +1,21 @@
 /*
- * Copyright 2009, 2010, The Pink Petal Development Team.
- * The Pink Petal Devloment Team are defined as the game's coders 
- * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright 2009, 2010, The Pink Petal Development Team.
+* The Pink Petal Devloment Team are defined as the game's coders
+* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 #include "cBrothel.h"
 #include "cScreenHouse.h"
 #include "cWindowManager.h"
@@ -36,26 +36,21 @@ extern cGangManager g_Gangs;
 
 extern	int		g_CurrentScreen;
 
-static string fmt_objective(stringstream &ss, string desc, int limit, int sofar=-1)
+static string fmt_objective(stringstream &ss, string desc, int limit, int sofar = -1)
 {
 	ss << desc;
-	if(limit != -1) {
-		ss << gettext(" in ") << limit << gettext(" weeks");
-	}
-	if(sofar > -1) {
-		ss << gettext(", ") << sofar << gettext(" acquired so far");
-	}
+	if (limit != -1) { ss << gettext(" in ") << limit << gettext(" weeks"); }
+	if (sofar > -1) { ss << gettext(", ") << sofar << gettext(" acquired so far"); }
 	ss << gettext(".");
 	return ss.str();
 }
-
 
 bool cScreenHouse::ids_set = false;
 
 void cScreenHouse::set_ids()
 {
 	ids_set = true;
-	back_id	= get_id("BackButton");
+	back_id = get_id("BackButton");
 	details_id = get_id("HouseDetails");
 	header_id = get_id("ScreenHeader");
 }
@@ -63,9 +58,7 @@ void cScreenHouse::set_ids()
 void cScreenHouse::init()
 {
 	g_CurrentScreen = SCREEN_HOUSE;
-	if(!g_InitWin) {
-		return;
-	}
+	if (!g_InitWin) { return; }
 	Focused();
 	g_InitWin = false;
 
@@ -75,12 +68,13 @@ void cScreenHouse::init()
 
 	ss << gettext("CURRENT OBJECTIVE: ");
 	sObjective* obj = g_Brothels.GetObjective();
-	if(obj)
+	if (obj)
 	{
-		switch(obj->m_Objective) {
+		switch (obj->m_Objective)
+		{
 		case OBJECTIVE_REACHGOLDTARGET:
 			ss << gettext("Gather ") << obj->m_Target << gettext(" gold");
-			if(obj->m_Limit != -1) {
+			if (obj->m_Limit != -1) {
 				ss << gettext(" in ") << obj->m_Limit << gettext(" weeks");
 			}
 			ss << gettext(", ") << g_Gold.ival() << gettext(" gathered so far.");
@@ -88,14 +82,14 @@ void cScreenHouse::init()
 		case OBJECTIVE_GETNEXTBROTHEL:
 			fmt_objective(ss, gettext("Purchase the next brothel"), obj->m_Limit);
 			break;
-/*----
-		case OBJECTIVE_PURCHASENEWGAMBLINGHALL:
+			/*----
+			case OBJECTIVE_PURCHASENEWGAMBLINGHALL:
 			fmt_objective(ss, "Purchase a gambling hall", obj->m_Limit);
 			break;
-		case OBJECTIVE_PURCHASENEWBAR:
+			case OBJECTIVE_PURCHASENEWBAR:
 			fmt_objective(ss, "Purchase a bar", obj->m_Limit);
 			break;
-----*/
+			----*/
 		case OBJECTIVE_LAUNCHSUCCESSFULATTACK:
 			fmt_objective(ss, gettext("Launch a successful attack"), obj->m_Limit);
 			break;
@@ -132,29 +126,25 @@ void cScreenHouse::init()
 	else ss << gettext("NONE\n");
 
 	ss << gettext("\n")
-	   << gettext("Current gold: ") << g_Gold.ival() << gettext("\n")
-	   << gettext("Bank account: ") << g_Brothels.GetBankMoney() << gettext("\n")
-	   << gettext("Businesses controlled: ")
-	   << g_Gangs.GetNumBusinessExtorted()
-	   << gettext("\n")
-	;
+		<< gettext("Current gold: ") << g_Gold.ival() << gettext("\n")
+		<< gettext("Bank account: ") << g_Brothels.GetBankMoney() << gettext("\n")
+		<< gettext("Businesses controlled: ")
+		<< g_Gangs.GetNumBusinessExtorted()
+		<< gettext("\n")
+		;
 
 	ss << gettext("\nCurrent number of runaways: ") << g_Brothels.GetNumRunaways() << gettext("\n");
 	//	`J` added while loop to add runaway's names to the list 
 	if (g_Brothels.GetNumRunaways() > 0)
 	{
-		char buffer[1000];
 		sGirl* rgirl = g_Brothels.m_Runaways;
 		while (rgirl)
 		{
-			_itoa(rgirl->m_RunAway, buffer, 10);
-			ss << rgirl->m_Realname << gettext(" (") << buffer << gettext(")");
+			ss << rgirl->m_Realname << gettext(" (") << rgirl->m_RunAway << gettext(")");
 			rgirl = rgirl->m_Next;
 			if (rgirl)	ss << gettext(" ,   ");
 		}
 	}
-
-
 
 	EditTextItem(ss.str(), details_id);
 	obj = 0;
@@ -162,40 +152,21 @@ void cScreenHouse::init()
 
 void cScreenHouse::process()
 {
-/*
- *	we need to make sure the ID variables are set
- */
-	if(!ids_set)
-		set_ids();
-
-/*
- *	set up the window if needed
- */
-	init();
-
-/*
- *	check to see if there's a button event needing handling
- */
-	check_events();
+	if (!ids_set) set_ids();	// we need to make sure the ID variables are set
+	init();						// set up the window if needed
+	check_events();				// check to see if there's a button event needing handling
 }
 
 
 void cScreenHouse::check_events()
 {
-/* 
- *	no events means we can go home
- */
-	if(g_InterfaceEvents.GetNumEvents() == 0)
-		return;
+	if (g_InterfaceEvents.GetNumEvents() == 0) return;	// no events means we can go home
 
-/*
- *	if it's the back button, pop the window off the stack
- *	and we're done
- */
-	if(g_InterfaceEvents.CheckButton(back_id)) {
+	// if it's the back button, pop the window off the stack and we're done
+	if (g_InterfaceEvents.CheckButton(back_id))
+	{
 		g_InitWin = true;
 		g_WinManager.Pop();
 		return;
 	}
-
 }

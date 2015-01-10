@@ -319,8 +319,14 @@ struct sGirl
 {
 	int m_newRandomFixed;
 
-	char* m_Name;								// The girls name
+	string m_Name;								// The girls name
 	string m_Realname;							// this is the name displayed in text
+	/*	`J` adding first and surnames for future use.
+	*	m_Realname will be used for girl tracking until first and surnames are fully integrated
+	*	a girl id number system may be added in the future to allow for absolute tracking
+	*/
+	string m_FirstName;							// this is the girl's first name
+	string m_Surname;							// this is the girl's surname
 	/*
 	*	MOD: changed from char* -- easier to change from lua -- doc
 	*/
@@ -402,8 +408,8 @@ struct sGirl
 	sGirl* m_Next;
 	sGirl* m_Prev;
 
-	unsigned char m_WeeksPreg;					// number of weeks pregnant or inseminated
-	unsigned char m_PregCooldown;				// number of weeks until can get pregnant again
+	int m_WeeksPreg;					// number of weeks pregnant or inseminated
+	int m_PregCooldown;					// number of weeks until can get pregnant again
 	cChildList m_Children;
 	bool m_InClinic = false;
 	bool m_InMovieStudio = false;
@@ -412,8 +418,8 @@ struct sGirl
 	bool m_InHouse = false;
 	bool m_InFarm = false;
 	int where_is_she = 0;
-	int m_PrevWorkingDay = 0;			// `J` save the last count of the number of working days 
-	int m_WorkingDay = 0;				// count the number of working day 
+	int m_PrevWorkingDay = 0;			// `J` save the last count of the number of working days
+	int m_WorkingDay = 0;				// count the number of working day
 	int m_SpecialJobGoal = 0;			// `J` Special Jobs like surgeries will have a specific goal
 	bool m_Refused_To_Work_Day		= false;		// `J` to track better if she refused to work her assigned job
 	bool m_Refused_To_Work_Night	= false;		// `J` to track better if she refused to work her assigned job
@@ -467,7 +473,7 @@ struct sGirl
 
 		m_Prev = 0;
 		m_Next = 0;
-		m_Name = 0;
+		m_Name = "";
 		m_Desc = "";
 		m_States = 0;
 		m_DayJob = m_NightJob = 0;
@@ -501,8 +507,8 @@ struct sGirl
 	~sGirl()
 	{
 		m_GirlImages = 0;
-		if (m_Name)		delete[] m_Name;
-		m_Name = 0;
+		//if (m_Name)		delete[] m_Name;
+		m_Name = "";
 		m_Events.Free();
 		if (m_Next)		delete m_Next;
 		m_Next = 0;
@@ -877,7 +883,7 @@ public:
 
 	void LevelUp(sGirl* girl);	// advances a girls level
 	void LevelUpStats(sGirl* girl); // Functionalized stat increase for LevelUp
-	
+
 	void EndDayGirls(sBrothel* brothel, sGirl* girl);
 
 	int GetStat(sGirl* girl, int stat);
@@ -953,6 +959,7 @@ public:
 	sGirl* GetRandomGirl(bool slave = false, bool catacomb = false, bool arena = false, bool daughter = false);
 
 	bool NameExists(string name);
+	bool SurnameExists(string surname);
 
 	bool CheckInvSpace(sGirl* girl) { if (girl->m_NumInventory == 40)return false; return true; }
 	int AddInv(sGirl* girl, sInventoryItem* item);
@@ -1006,7 +1013,7 @@ public:
 	void HandleChild_CheckIncest(sGirl* mum, sGirl *sprog, sChild* child, string& summary);
 	bool child_is_grown(sGirl* girl, sChild* child, string& summary, bool PlayerControlled = true);
 	bool child_is_due(sGirl* girl, sChild* child, string& summary, bool PlayerControlled = true);
-	void HandleChildren(sGirl* girl, string& summary = string(""), bool PlayerControlled = true);	// ages children and handles pregnancy
+	void HandleChildren(sGirl* girl, string& summary = (string&)"", bool PlayerControlled = true);	// ages children and handles pregnancy
 	bool CalcPregnancy(sGirl* girl, int chance, int type, int stats[NUM_STATS], int skills[NUM_SKILLS]);	// checks if a girl gets pregnant
 	void UncontrolledPregnancies();	// ages children and handles pregnancy for all girls not controlled by player
 
@@ -1048,6 +1055,7 @@ private:
 	cAImgList* m_DefImages;
 	cImgageListManager m_ImgListManager;
 	cNameList names;
+	cSurnameList surnames;
 };
 
 #endif  /* __CGIRL_H */

@@ -165,14 +165,14 @@ void cScreenDungeon::init()
 
 	string sub = ReleaseGirlToWhere.substr(0, 2);
 	sBrothel *releaseto = g_Brothels.GetBrothel(g_CurrBrothel);
-	int a = stoi(ReleaseGirlToWhere.substr(2, 1));
-	/* */if (sub == "Br") releaseto = g_Brothels.GetBrothel(a);
-	else if (sub == "Ho") releaseto = g_House.GetBrothel(a);
-	else if (sub == "Cl") releaseto = g_Clinic.GetBrothel(a);
-	else if (sub == "St") releaseto = g_Studios.GetBrothel(a);
-	else if (sub == "Ar") releaseto = g_Arena.GetBrothel(a);
-	else if (sub == "Ce") releaseto = g_Centre.GetBrothel(a);
-	else if (sub == "Fa") releaseto = g_Farm.GetBrothel(a);
+	char a = ReleaseGirlToWhere[2]; char b = "0"[0]; int sendtonum = a - b;	// `J` cheap fix to get brothel number
+	/* */if (sub == "Br") releaseto = g_Brothels.GetBrothel(sendtonum);
+	else if (sub == "Ho") releaseto = g_House.GetBrothel(sendtonum);
+	else if (sub == "Cl") releaseto = g_Clinic.GetBrothel(sendtonum);
+	else if (sub == "St") releaseto = g_Studios.GetBrothel(sendtonum);
+	else if (sub == "Ar") releaseto = g_Arena.GetBrothel(sendtonum);
+	else if (sub == "Ce") releaseto = g_Centre.GetBrothel(sendtonum);
+	else if (sub == "Fa") releaseto = g_Farm.GetBrothel(sendtonum);
 
 	ss.str("");
 	ss << gettext("Release Girl to: ") << releaseto->m_Name;
@@ -480,14 +480,14 @@ void cScreenDungeon::release_all_girls()
 {
 	string sub = ReleaseGirlToWhere.substr(0, 2);
 	sBrothel *brothel = g_Brothels.GetBrothel(g_CurrBrothel);
-	int a = stoi(ReleaseGirlToWhere.substr(2, 1));
-	/* */if (sub == "Br") brothel = g_Brothels.GetBrothel(a);
-	else if (sub == "Ho") brothel = g_House.GetBrothel(a);
-	else if (sub == "Cl") brothel = g_Clinic.GetBrothel(a);
-	else if (sub == "St") brothel = g_Studios.GetBrothel(a);
-	else if (sub == "Ar") brothel = g_Arena.GetBrothel(a);
-	else if (sub == "Ce") brothel = g_Centre.GetBrothel(a);
-	else if (sub == "Fa") brothel = g_Farm.GetBrothel(a);
+	char a = ReleaseGirlToWhere[2]; char b = "0"[0]; int sendtonum = a - b;	// `J` cheap fix to get brothel number
+	/* */if (sub == "Br") brothel = g_Brothels.GetBrothel(sendtonum);
+	else if (sub == "Ho") brothel = g_House.GetBrothel(sendtonum);
+	else if (sub == "Cl") brothel = g_Clinic.GetBrothel(sendtonum);
+	else if (sub == "St") brothel = g_Studios.GetBrothel(sendtonum);
+	else if (sub == "Ar") brothel = g_Arena.GetBrothel(sendtonum);
+	else if (sub == "Ce") brothel = g_Centre.GetBrothel(sendtonum);
+	else if (sub == "Fa") brothel = g_Farm.GetBrothel(sendtonum);
 
 	if (brothel->free_rooms() <= 0) 	// Is there room?
 	{
@@ -499,13 +499,13 @@ void cScreenDungeon::release_all_girls()
 		if (brothel->free_rooms() > 0) 		// make sure there's room for another girl
 		{
 			sGirl* girl = dungeon->RemoveGirl(dungeon->GetGirl(0));
-			/* */if (sub == "Br") g_Brothels.AddGirl(a, girl);
-			else if (sub == "Ho") g_House.AddGirl(a, girl);
-			else if (sub == "Cl") g_Clinic.AddGirl(a, girl);
-			else if (sub == "St") g_Studios.AddGirl(a, girl);
-			else if (sub == "Ar") g_Arena.AddGirl(a, girl);
-			else if (sub == "Ce") g_Centre.AddGirl(a, girl);
-			else if (sub == "Fa") g_Farm.AddGirl(a, girl);
+			/* */if (sub == "Br") g_Brothels.AddGirl(sendtonum, girl);
+			else if (sub == "Ho") g_House.AddGirl(sendtonum, girl);
+			else if (sub == "Cl") g_Clinic.AddGirl(sendtonum, girl);
+			else if (sub == "St") g_Studios.AddGirl(sendtonum, girl);
+			else if (sub == "Ar") g_Arena.AddGirl(sendtonum, girl);
+			else if (sub == "Ce") g_Centre.AddGirl(sendtonum, girl);
+			else if (sub == "Fa") g_Farm.AddGirl(sendtonum, girl);
 			continue;
 		}
 		// we only get here if we run out of space
@@ -651,14 +651,14 @@ void cScreenDungeon::release()
 	cPlayer* player = g_Brothels.GetPlayer();
 	string sub = ReleaseGirlToWhere.substr(0, 2);
 	sBrothel *brothel = g_Brothels.GetBrothel(g_CurrBrothel);
-	int a = stoi(ReleaseGirlToWhere.substr(2, 1));
-	/* */if (sub == "Br") brothel = g_Brothels.GetBrothel(a);
-	else if (sub == "Ho") brothel = g_House.GetBrothel(a);
-	else if (sub == "Cl") brothel = g_Clinic.GetBrothel(a);
-	else if (sub == "St") brothel = g_Studios.GetBrothel(a);
-	else if (sub == "Ar") brothel = g_Arena.GetBrothel(a);
-	else if (sub == "Ce") brothel = g_Centre.GetBrothel(a);
-	else if (sub == "Fa") brothel = g_Farm.GetBrothel(a);
+	char a = ReleaseGirlToWhere[2]; char b = "0"[0]; int sendtonum = a - b;	// `J` cheap fix to get brothel number
+	/* */if (sub == "Br") brothel = g_Brothels.GetBrothel(sendtonum);
+	else if (sub == "Ho") brothel = g_House.GetBrothel(sendtonum);
+	else if (sub == "Cl") brothel = g_Clinic.GetBrothel(sendtonum);
+	else if (sub == "St") brothel = g_Studios.GetBrothel(sendtonum);
+	else if (sub == "Ar") brothel = g_Arena.GetBrothel(sendtonum);
+	else if (sub == "Ce") brothel = g_Centre.GetBrothel(sendtonum);
+	else if (sub == "Fa") brothel = g_Farm.GetBrothel(sendtonum);
 
 	vector<int> girl_array;
 	get_selected_girls(&girl_array);			// get and sort array of girls/customers
@@ -682,13 +682,13 @@ void cScreenDungeon::release()
 		if ((brothel->free_rooms()) > 0)
 		{
 			sGirl* girl = dungeon->RemoveGirl(dungeon->GetGirl(num));
-			/* */if (sub == "Br") g_Brothels.AddGirl(a, girl); 
-			else if (sub == "Ho") g_House.AddGirl(a, girl);
-			else if (sub == "Cl") g_Clinic.AddGirl(a, girl);
-			else if (sub == "St") g_Studios.AddGirl(a, girl);
-			else if (sub == "Ar") g_Arena.AddGirl(a, girl);
-			else if (sub == "Ce") g_Centre.AddGirl(a, girl);
-			else if (sub == "Fa") g_Farm.AddGirl(a, girl);
+			/* */if (sub == "Br") g_Brothels.AddGirl(sendtonum, girl);
+			else if (sub == "Ho") g_House.AddGirl(sendtonum, girl);
+			else if (sub == "Cl") g_Clinic.AddGirl(sendtonum, girl);
+			else if (sub == "St") g_Studios.AddGirl(sendtonum, girl);
+			else if (sub == "Ar") g_Arena.AddGirl(sendtonum, girl);
+			else if (sub == "Ce") g_Centre.AddGirl(sendtonum, girl);
+			else if (sub == "Fa") g_Farm.AddGirl(sendtonum, girl);
 			continue;
 		}
 		// if we run out of space

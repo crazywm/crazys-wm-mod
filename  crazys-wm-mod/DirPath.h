@@ -55,9 +55,19 @@ public:
 /*
  *	copy contstructor, probably not needed...
  */
+#if 0
 	DirPath(DirPath& dp) {
 		path = dp.path;
 	}
+
+#else
+	// `J` zzzzzz // not sure if this will work but it shuts up the compiler
+	DirPath(const DirPath& dp) {
+		path = dp.path;
+	}
+#endif
+
+
 /*
  *	to build the path we use the << operator
  *	since that lets us cope with char * and string
