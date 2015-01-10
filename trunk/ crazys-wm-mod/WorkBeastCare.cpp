@@ -44,9 +44,7 @@ extern cGold g_Gold;
 // `J` Brothel Job - General
 bool cJobManager::WorkBeastCare(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-	string message = "";
-	string girlName = girl->m_Realname;
-	stringstream ss;
+	stringstream ss; string girlName = girl->m_Realname;
 	cConfig cfg;
 
 	g_Girls.UnequipCombat(girl);	// put that shit away
@@ -158,7 +156,7 @@ bool cJobManager::WorkBeastCare(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 	g_Girls.UpdateSkill(girl, SKILL_ANIMALHANDLING, max(1, (g_Dice % skill) + 1));
 
-	g_Girls.PossiblyLoseExistingTrait(girl, "Elegant", 40, ACTION_WORKCARING, " Working with dirty, smelly beasts has damaged " + girl->m_Realname + "'s hair, skin and nails making her less Elegant.", Day0Night1 == SHIFT_NIGHT);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Elegant", 40, ACTION_WORKCARING, " Working with dirty, smelly beasts has damaged " + girlName + "'s hair, skin and nails making her less Elegant.", Day0Night1 == SHIFT_NIGHT);
 
 	return false;
 }

@@ -43,10 +43,10 @@ extern cMessageQue g_MessageQue;
 // `J` Brothel Job - Bar
 bool cJobManager::WorkEscort(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-	string message = "", girlName = girl->m_Realname;
+	stringstream ss; string girlName = girl->m_Realname;
 	int jobperformance = 0, wages = 0, tips = 0;
 
-	if (Preprocessing(ACTION_WORKESCORT, girl, brothel, Day0Night1, summary, message))	// they refuse to have work in the bar
+	if (Preprocessing(ACTION_WORKESCORT, girl, brothel, Day0Night1, summary, ss.str()))	// they refuse to have work in the bar
 		return true;
 
 
@@ -99,13 +99,13 @@ bool cJobManager::WorkEscort(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	else if (roll_b >= 98)	{ cust_wealth = 0; cust_wealth_text = "broke "; }
 
 	// `J` do job performance
-	message = girlName;
-	/* */if (roll_c >= 150)	{ jobperformance += 20;	message += " arrived early"; }
-	else if (roll_c >= 100)	{ jobperformance += 10;	message += " was on time"; }
-	else if (roll_c >= 80)	{ jobperformance += 0;	message += " was a few minutes late"; }
-	else if (roll_c >= 50)	{ jobperformance -= 5;	message += " was late"; }
-	else /*             */	{ jobperformance -= 10;	message += " was very late"; }
-	message += " to her appointment with a " + cust_wealth_text + cust_type_text + ".\n";
+	ss << girlName;
+	/* */if (roll_c >= 150)	{ jobperformance += 20;	ss << " arrived early"; }
+	else if (roll_c >= 100)	{ jobperformance += 10;	ss << " was on time"; }
+	else if (roll_c >= 80)	{ jobperformance += 0;	ss << " was a few minutes late"; }
+	else if (roll_c >= 50)	{ jobperformance -= 5;	ss << " was late"; }
+	else /*             */	{ jobperformance -= 10;	ss << " was very late"; }
+	ss << " to her appointment with a " + cust_wealth_text + cust_type_text + ".\n";
 
 	//// Where do they go?
 	//*default*/	int loc_type = 1;    string loc_type_text = "a Restaurant";
@@ -117,7 +117,7 @@ bool cJobManager::WorkEscort(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	//else if (roll_d <= 45)	{ loc_type = 3; loc_type_text = "the Strip Club"; }
 	//else if (roll_d <= 65)	{ loc_type = 2; loc_type_text = "the Bar"; }
 	//else if (roll_d >= 98)	{ loc_type = 0; loc_type_text = "the Park"; }
-	//message += "They went to " + loc_type_text + " together.\n";
+	//ss << "They went to " + loc_type_text + " together.\n";
 
 
 	// `J` do wages and tips
@@ -131,13 +131,13 @@ bool cJobManager::WorkEscort(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 				sGang* gang = g_Gangs.GetGangOnMission(MISS_GUARDING);
 				if (g_Dice.percent(gang->m_Skills[STAT_AGILITY]))
 				{
-					message += " The customer tried to run off without paying. Your men caught him before he got away.";
+					ss << " The customer tried to run off without paying. Your men caught him before he got away.";
 					SetGameFlag(FLAG_CUSTNOPAY);
 					wages = max(g_Dice%girl->askprice(), girl->askprice() * cust_type * cust_wealth);	// Take what customer has
 				}
-				else	message += " The customer couldn't pay and managed to elude your guards.";
+				else	ss << " The customer couldn't pay and managed to elude your guards.";
 			}
-			else	message += " The customer couldn't pay and ran off. There were no guards!";
+			else	ss << " The customer couldn't pay and ran off. There were no guards!";
 		}
 		else
 		{
@@ -145,10 +145,10 @@ bool cJobManager::WorkEscort(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 			if (g_Dice.percent(g_Girls.GetStat(girl, STAT_INTELLIGENCE)))
 			{
 				// she turns him over to the goons
-				message += " The customer couldn't pay the full amount, so your girl turned them over to your men.";
+				ss << " The customer couldn't pay the full amount, so your girl turned them over to your men.";
 				SetGameFlag(FLAG_CUSTNOPAY);
 			}
-			else	message += " The customer couldn't pay the full amount.";
+			else	ss << " The customer couldn't pay the full amount.";
 			wages = max(g_Dice%girl->askprice(), g_Dice%(girl->askprice() * cust_type * cust_wealth));	// Take what customer has
 		}
 	}
@@ -177,7 +177,7 @@ bool cJobManager::WorkEscort(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill + 1);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
-	girl->m_Events.AddMessage(message, IMGTYPE_FORMAL, Day0Night1);
+	girl->m_Events.AddMessage(ss.str(), IMGTYPE_FORMAL, Day0Night1);
 
 	//gain traits
 	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, ACTION_WORKESCORT, "Dealing with customers and talking with them about their problems has made " + girlName + " more Charismatic.", Day0Night1 == SHIFT_NIGHT);

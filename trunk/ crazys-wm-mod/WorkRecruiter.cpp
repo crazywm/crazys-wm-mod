@@ -47,9 +47,9 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 {
 	if (Day0Night1 == SHIFT_NIGHT) return false;
 	cTariff tariff;
-	string message = "";
+	stringstream ss;
 
-	if(Preprocessing(ACTION_WORKRECRUIT, girl, brothel, Day0Night1, summary, message))		return true;
+	if(Preprocessing(ACTION_WORKRECRUIT, girl, brothel, Day0Night1, summary, ss.str()))		return true;
 
 
 	// put that shit away, not needed for sex training
@@ -61,18 +61,18 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	int wages = 100, work = 0;
 	int roll = g_Dice % 100;
 
-	message += "She worked trying to recruit girls for you.";
+	ss << "She worked trying to recruit girls for you.";
 
-	/* */if (HateLove < -80)	message += " She hates you more then anything so she doesn't try that hard.\n\n";
-	else if (HateLove < -60)	message += " She hates you.\n\n";
-	else if (HateLove < -40)	message += " She doesn't like you.\n\n";
-	else if (HateLove < -20)	message += " She finds you to be annoying.\n\n";
-	else if (HateLove <   0)	message += " She finds you to be annoying.\n\n";
-	else if (HateLove <  20)	message += " She finds you to be decent.\n\n";
-	else if (HateLove <  40)	message += " She finds you to be a good person.\n\n";
-	else if (HateLove <  60)	message += " She finds you to be a good person.\n\n";
-	else if (HateLove <  80)	message += " She has really strong feelings for you so she trys really hard for you.\n\n";
-	else						message += " She loves you more then anything so she gives it her all.\n\n";
+	/* */if (HateLove < -80)	ss << " She hates you more then anything so she doesn't try that hard.\n\n";
+	else if (HateLove < -60)	ss << " She hates you.\n\n";
+	else if (HateLove < -40)	ss << " She doesn't like you.\n\n";
+	else if (HateLove < -20)	ss << " She finds you to be annoying.\n\n";
+	else if (HateLove <   0)	ss << " She finds you to be annoying.\n\n";
+	else if (HateLove <  20)	ss << " She finds you to be decent.\n\n";
+	else if (HateLove <  40)	ss << " She finds you to be a good person.\n\n";
+	else if (HateLove <  60)	ss << " She finds you to be a good person.\n\n";
+	else if (HateLove <  80)	ss << " She has really strong feelings for you so she trys really hard for you.\n\n";
+	else						ss << " She loves you more then anything so she gives it her all.\n\n";
 
 	//good traits
 	if (g_Girls.HasTrait(girl, "Charismatic"))  jobperformance += 20;
@@ -94,32 +94,32 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 
 	if (jobperformance >= 245)
 	{
-		message += "She must be the perfect recruiter.\n\n";
+		ss << "She must be the perfect recruiter.\n\n";
 		findchance = 20;
 	}
 	else if (jobperformance  >= 185)
 	{
-		message += "She's unbelievable at this.\n\n";
+		ss << "She's unbelievable at this.\n\n";
 		findchance = 15;
 	}
 	else if (jobperformance >= 135)
 	{
-		message += "She's good at this job.\n\n";
+		ss << "She's good at this job.\n\n";
 		findchance = 12;
 	}
 	else if (jobperformance >= 85)
 	{
-		message += "She made a few mistakes but overall she is okay at this.\n\n";
+		ss << "She made a few mistakes but overall she is okay at this.\n\n";
 		findchance = 10;
 	}
 	else if (jobperformance >= 65)
 	{
-		message += "She was nervous and made a few mistakes. She isn't that good at this.\n\n";
+		ss << "She was nervous and made a few mistakes. She isn't that good at this.\n\n";
 		findchance = 8;
 	}
 	else
 	{
-		message += "She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
+		ss << "She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
 		findchance = 4;
 	}
 	// `J` add in player's disposition so if the girl has heard of you
@@ -142,12 +142,12 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 		if (girl)
 		{
 			bool add = false;
-			message += "She finds a girl, ";
-			message += girl->m_Name;
+			ss << "She finds a girl, ";
+			ss << girl->m_Name;
 			if (findroll < findchance - 5)
 			{		// `J` ... and your disposition did not come up.
 				add = true;
-				message += " and convinces her that she should work for you.";
+				ss << " and convinces her that she should work for you.";
 			}
 			else if (findroll < findchance + 5)	// `J` ... and your disposition did come up...
 			{
@@ -156,15 +156,15 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 					add = true;
 					if (dispmod > 0)
 					{
-						message += "\nYour nice reputation has helped you today as she agrees to come work for you.";
+						ss << "\nYour nice reputation has helped you today as she agrees to come work for you.";
 					}
 					else if (dispmod < 0)
 					{
-						message += "\nScared of what you might to do to her if you don't come work for her she agrees to taking the job.";
+						ss << "\nScared of what you might to do to her if you don't come work for her she agrees to taking the job.";
 					}
 					else
 					{
-						message += "\nThe fact that your neither good nor evil seems to have helped you today.  As the girl doesn't think your evil nor a \"pussy\" and comes to work for you.";
+						ss << "\nThe fact that your neither good nor evil seems to have helped you today.  As the girl doesn't think your evil nor a \"pussy\" and comes to work for you.";
 					}
 					if (dispmod == 3)
 					{
@@ -183,21 +183,21 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 
 					if (dispmod > 0)
 					{
-						message += "\nBeing so nice she is worried you will get yourself killed and someone else will take over that she won't like.  So she won't come work for you.";
+						ss << "\nBeing so nice she is worried you will get yourself killed and someone else will take over that she won't like.  So she won't come work for you.";
 					}
 					else if (dispmod < 0)
 					{
-						message += "\nShe fears you to much to come and work for you.";
+						ss << "\nShe fears you to much to come and work for you.";
 					}
 					else
 					{
-						message += "\nAs you are on the fence with your reputation she doesn't know what to think about you and won't work for you.";
+						ss << "\nAs you are on the fence with your reputation she doesn't know what to think about you and won't work for you.";
 					}
 				}
 			}
 			else	// `J` ... She was not recruited.
 			{
-				message += gettext(" but was unable to convince her that she should work for you.");
+				ss << gettext(" but was unable to convince her that she should work for you.");
 			}
 			if (add)
 			{
@@ -208,26 +208,26 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 		}
 		else
 		{
-			message += "But was unable to find anyone to join.";
+			ss << "But was unable to find anyone to join.";
 		}
 	}
 	else
 	{
-		message += "But was unable to find anyone to join.";
+		ss << "But was unable to find anyone to join.";
 	}
 
 
 
 	//enjoyed the work or not
 	if (roll <= 5)
-	{ message += "\nSome of the people abused her during the shift."; work -= 1; }
+	{ ss << "\nSome of the people abused her during the shift."; work -= 1; }
 	else if (roll <= 25) 
-	{ message += "\nShe had a pleasant time working."; work += 3; }
+	{ ss << "\nShe had a pleasant time working."; work += 3; }
 	else
-	{ message += "\nOtherwise, the shift passed uneventfully."; work += 1; }
+	{ ss << "\nOtherwise, the shift passed uneventfully."; work += 1; }
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKRECRUIT, work, true);
-	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, Day0Night1);
+	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 	int roll_max = (g_Girls.GetStat(girl, STAT_CHARISMA) + g_Girls.GetSkill(girl, SKILL_SERVICE));
 	roll_max /= 4;
 	wages += 10 + g_Dice%roll_max;

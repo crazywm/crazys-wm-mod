@@ -45,7 +45,7 @@ extern cMessageQue g_MessageQue;
 // `J` Centre Job - Anger Management
 bool cJobManager::WorkCentreAngerManagement(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-	string message = "";
+	stringstream ss;
 	u_int job = 0;	
 	int msgtype = Day0Night1;
 
@@ -65,20 +65,20 @@ bool cJobManager::WorkCentreAngerManagement(sGirl* girl, sBrothel* brothel, bool
 
 	if (!hasDoctor)
 	{
-		string message = girl->m_Realname + gettext(" you must have a counselor (require 1)");
-		if(Day0Night1 == 0)	message += gettext("day");
-		else				message += gettext("night");
-		message += gettext(" Shift.");
+		ss << girl->m_Realname + gettext(" you must have a counselor (require 1)");
+		if(Day0Night1 == 0)	ss << gettext("day");
+		else				ss << gettext("night");
+		ss << gettext(" Shift.");
 
-		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_WARNING);
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
 		return true;
 	}
 	if (!g_Girls.HasTrait(girl, "Aggressive") &&		// if the girl doesnt need this
 		!g_Girls.HasTrait(girl, "Tsundere") &&
 		!g_Girls.HasTrait(girl, "Yandere"))
 	{
-		message = girl->m_Realname + gettext(" doesn't need anger management so she was sent to the waiting room.");
-		if (Day0Night1 == 0)	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_WARNING);
+		ss << girl->m_Realname + gettext(" doesn't need anger management so she was sent to the waiting room.");
+		if (Day0Night1 == 0)	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
 		girl->m_YesterDayJob = girl->m_YesterNightJob = JOB_CENTREREST;
 		girl->m_DayJob = girl->m_NightJob = JOB_CENTREREST;
 		girl->m_PrevWorkingDay = girl->m_WorkingDay = 0;
@@ -96,7 +96,6 @@ bool cJobManager::WorkCentreAngerManagement(sGirl* girl, sBrothel* brothel, bool
 		job	= girl->m_NightJob;
 	}
 
-	stringstream ss;
 	if(girl->m_WorkingDay == 3)
 	{
 		g_Girls.UpdateStat(girl, STAT_HAPPINESS, -5);

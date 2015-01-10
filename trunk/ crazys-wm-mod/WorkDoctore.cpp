@@ -50,7 +50,7 @@ bool cJobManager::WorkDoctore(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	bool night = (Day0Night1 == SHIFT_NIGHT);
 	cTariff tariff;
 	cConfig cfg;
-	string message = "";
+	stringstream ss; string girlName = girl->m_Realname;
 
 	// Complications
 	int check = g_Dice % 100;
@@ -59,34 +59,33 @@ bool cJobManager::WorkDoctore(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 		if (brothel->m_NumGirls > girl->get_skill(SKILL_SERVICE) * 2)
 		{
 			g_Girls.UpdateEnjoyment(girl, ACTION_WORKMATRON, -10, true);
-			message = girl->m_Realname;
-			message += gettext(" was overwhelmed by the number of girls she was required to manage and broke down crying.");
+			ss << girlName + gettext(" was overwhelmed by the number of girls she was required to manage and broke down crying.");
 			g_Girls.UpdateStat(girl, STAT_HAPPINESS, -10);
 			g_Girls.UpdateStat(girl, STAT_CONFIDENCE, -5);
-			girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, Day0Night1);
+			girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 		}
 		else
 		{
 			g_Girls.UpdateEnjoyment(girl, ACTION_WORKMATRON, -3, true);
-			message = gettext("Had trouble dealing with some of the girls.");
+			ss << gettext("Had trouble dealing with some of the girls.");
 			g_Girls.UpdateStat(girl, STAT_HAPPINESS, -3);
 			g_Girls.UpdateStat(girl, STAT_CONFIDENCE, -1);
-			girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, Day0Night1);
+			girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 		}
 	}
 	else if (check > 90)
 	{
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMATRON, +3, true);
-		message = gettext("Enjoyed helping the girls with their lives.");
+		ss << gettext("Enjoyed helping the girls with their lives.");
 		g_Girls.UpdateStat(girl, STAT_HAPPINESS, 3);
 		g_Girls.UpdateStat(girl, STAT_CONFIDENCE, 1);
-		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, Day0Night1);
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 	}
 	else
 	{
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMATRON, +1, true);
-		message = gettext("Went about her day as usual.");
-		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, Day0Night1);
+		ss << gettext("Went about her day as usual.");
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 	}
 
 

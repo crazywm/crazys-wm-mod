@@ -46,8 +46,8 @@ bool cJobManager::WorkTorturer(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 {
 	if (Day0Night1 == SHIFT_NIGHT) return false;		// Do this only once a day
 
-	string message = "";
-	if (Preprocessing(ACTION_WORKTORTURER, girl, brothel, Day0Night1, summary, message)) return true;
+	stringstream ss;
+	if (Preprocessing(ACTION_WORKTORTURER, girl, brothel, Day0Night1, summary, ss.str())) return true;
 
 	// ready armor and weapons!
 	g_Girls.EquipCombat(girl);
@@ -57,13 +57,13 @@ bool cJobManager::WorkTorturer(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	if(g_Dice.percent(10))
 	{
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKTORTURER, -3, true);
-		message = girl->m_Realname + gettext(" hurt herself while torturing someone.");
+		ss << girl->m_Realname + gettext(" hurt herself while torturing someone.");
 		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, Day0Night1);
 	}
 	else
 	{
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKTORTURER, +3, true);
-		message = girl->m_Realname + gettext(" enjoyed her job working in the dungeon.");
+		ss << girl->m_Realname + gettext(" enjoyed her job working in the dungeon.");
 		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, Day0Night1);
 	}
 #else
@@ -74,17 +74,17 @@ bool cJobManager::WorkTorturer(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	{
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKTORTURER, -3, true);
 		if (g_Girls.HasTrait(girl, "Sadistic") || g_Girls.HasTrait(girl, "Merciless") || g_Girls.GetStat(girl, STAT_MORALITY) < 30)
-			message = girl->m_Realname + gettext(" hurt herself while torturing someone.\n");
+			ss << girl->m_Realname + gettext(" hurt herself while torturing someone.\n");
 		else
 		{
 			switch (roll)
 			{
-			case 0: message = girl->m_Realname + gettext(" felt bad torturing people as she could easily see herself in the victim.\n"); break;
-			case 1: message = girl->m_Realname + gettext(" doesn't like this as she feels it is wrong to torture people.\n"); break;
-			case 2: message = girl->m_Realname + gettext(" feels like a bitch after one of her torture victims wept the entire time and kept begging her to stop.\n"); break;
-			case 3: message = girl->m_Realname + gettext(" feels awful after accidentally whipping someone in an excruciating place.\n"); break;
-			case 4: message = girl->m_Realname + gettext(" didn't enjoy this as she felt sorry for the victim.\n"); break;
-			default: message = girl->m_Realname + gettext(" didn't enjoy this for some illogical reason. [error]\n"); break; //shouldn't happen
+			case 0: ss << girl->m_Realname + gettext(" felt bad torturing people as she could easily see herself in the victim.\n"); break;
+			case 1: ss << girl->m_Realname + gettext(" doesn't like this as she feels it is wrong to torture people.\n"); break;
+			case 2: ss << girl->m_Realname + gettext(" feels like a bitch after one of her torture victims wept the entire time and kept begging her to stop.\n"); break;
+			case 3: ss << girl->m_Realname + gettext(" feels awful after accidentally whipping someone in an excruciating place.\n"); break;
+			case 4: ss << girl->m_Realname + gettext(" didn't enjoy this as she felt sorry for the victim.\n"); break;
+			default: ss << girl->m_Realname + gettext(" didn't enjoy this for some illogical reason. [error]\n"); break; //shouldn't happen
 			}
 			//And a little randomness
 			if (g_Dice.percent(40))
@@ -112,19 +112,19 @@ bool cJobManager::WorkTorturer(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				}
 			}
 		}
-		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, Day0Night1);
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 	}
 	else
 	{
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKTORTURER, +3, true);
 		switch (roll)
 		{
-		case 0: message = girl->m_Realname + gettext(" enjoyed her job working in the dungeon.\n"); break;
-		case 1: message = girl->m_Realname + gettext(" is turned on by the power of torturing people.\n"); break;
-		case 2: message = girl->m_Realname + gettext(" enjoyed trying out different torture devices and watching the effects on the victim.\n"); break;
-		case 3: message = girl->m_Realname + gettext(" spent her time in the dungeon whipping her victim in time to music to make amusing sound effects.\n"); break;
-		case 4: message = girl->m_Realname + gettext(" uses the victim's cries and screams to to figure out the 'best' areas to torture.\n"); break;
-		default: message = girl->m_Realname + gettext(" enjoyed this for some illogical reason. [error]\n"); break;
+		case 0: ss << girl->m_Realname + gettext(" enjoyed her job working in the dungeon.\n"); break;
+		case 1: ss << girl->m_Realname + gettext(" is turned on by the power of torturing people.\n"); break;
+		case 2: ss << girl->m_Realname + gettext(" enjoyed trying out different torture devices and watching the effects on the victim.\n"); break;
+		case 3: ss << girl->m_Realname + gettext(" spent her time in the dungeon whipping her victim in time to music to make amusing sound effects.\n"); break;
+		case 4: ss << girl->m_Realname + gettext(" uses the victim's cries and screams to to figure out the 'best' areas to torture.\n"); break;
+		default: ss << girl->m_Realname + gettext(" enjoyed this for some illogical reason. [error]\n"); break;
 		}
 				
 		//And a little randomness
@@ -164,7 +164,7 @@ bool cJobManager::WorkTorturer(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				break;
 			}
 		}
-		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, Day0Night1);
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 	}
 #endif
 	

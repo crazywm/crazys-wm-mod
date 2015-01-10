@@ -50,7 +50,6 @@ extern int g_Building;
 bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	cTariff tariff;
-	string message = "";
 	stringstream ss;
 	g_Building = BUILDING_HOUSE;
 
@@ -93,25 +92,25 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 
 	if (roll_a <= 100 && g_Girls.DisobeyCheck(girl, ACTION_WORKHAREM, brothel))
 	{
-		message = girl->m_Realname + gettext(" refused to lay with you today.");
-		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_NOWORK);
+		ss << girl->m_Realname + gettext(" refused to lay with you today.");
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
 	else if (roll_a <= 15)
 	{
-		message += gettext(" \nYou did something to piss her off.\n\n");
+		ss << gettext("\nYou did something to piss her off.\n\n");
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKHAREM, -1, true);
 		g_Girls.UpdateStat(girl, STAT_PCLOVE, -1);
 	}
 	else if (roll_a >= 90)
 	{
-		message += gettext(" \nShe had a pleasant time with you.\n\n");
+		ss << gettext("\nShe had a pleasant time with you.\n\n");
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKHAREM, +3, true);
 		g_Girls.UpdateStat(girl, STAT_PCLOVE, 2);
 	}
 	else
 	{
-		message += gettext(" \nOtherwise, nothing of note happened.\n\n");
+		ss << gettext("\nOtherwise, nothing of note happened.\n\n");
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKHAREM, +1, true);
 	}
 
@@ -265,9 +264,9 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_BDSM, Day0Night1);
 		if (!girl->calc_pregnancy(g_Brothels.GetPlayer(), false, 1.0))
 		{
-			message = girl->m_Realname;
-			message += " has gotten pregnant";
-			g_MessageQue.AddToQue(message, 0);
+			ss << girl->m_Realname;
+			ss << " has gotten pregnant";
+			g_MessageQue.AddToQue(ss.str(), 0);
 		}
 	}
 	else if (roll_d <= 80 && is_sex_type_allowed(SKILL_NORMALSEX, brothel))
@@ -282,9 +281,9 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_SEX, Day0Night1);
 		if (!girl->calc_pregnancy(g_Brothels.GetPlayer(), false, 1.0))
 		{
-			message = girl->m_Realname;
-			message += " has gotten pregnant";
-			g_MessageQue.AddToQue(message, 0);
+			ss << girl->m_Realname;
+			ss << " has gotten pregnant";
+			g_MessageQue.AddToQue(ss.str(), 0);
 		}
 	}
 	else if (roll_d <= 90)
@@ -314,72 +313,6 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_ECCHI, Day0Night1);
 	}
 
-
-
-	//if(g_Girls.GetStat(girl, STAT_LIBIDO) > 60)
-	//{
-	//	if (HateLove < 40)
-	//	{
-	//		message += "She was horney but she doesn't care for you much so she just Masturbated.\n\n";
-	//		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +1, true);	
-	//		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -35);
-	//		girl->m_Events.AddMessage(message, IMGTYPE_MAST, Day0Night1);
-	//	}
-	//	else 
-	//	{
-	//		message += "She was horney and she likes you so she ";
-	//		if (roll_b <= 25)
-	//		{
-	//			message += "decided to suck your cock.\n\n";
-	//			g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 2);
-	//			girl->m_Events.AddMessage(message, IMGTYPE_ORAL, Day0Night1);
-	//		}
-	//		else if (roll_b <= 50)
-	//		{
-	//			message += "lets you tie her up.\n\n";
-	//			g_Girls.UpdateSkill(girl, SKILL_BDSM, 2);
-	//			girl->m_Events.AddMessage(message, IMGTYPE_BDSM, Day0Night1);
-	//			if(g_Girls.CheckVirginity(girl))
-	//			{
-	//				g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
-	//				message += "She was a virgin.\n";
-	//			}
-	//			g_Building = BUILDING_HOUSE;
-	//			if(!girl->calc_pregnancy(g_Brothels.GetPlayer(), false, 1.0)) 
-	//			{
-	//				g_MessageQue.AddToQue("She has gotten pregnant", 0);
-	//			}
-	//		}
-	//		else if (roll_b <= 75)
-	//		{
-	//			message += "lets you use her ass.\n\n";
-	//			g_Girls.UpdateSkill(girl, SKILL_ANAL, 2);
-	//			girl->m_Events.AddMessage(message, IMGTYPE_ANAL, Day0Night1);
-	//		}
-	//		else
-	//		{
-	//			message += "has sex with you.\n\n";
-	//			g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, 2);
-	//			girl->m_Events.AddMessage(message, IMGTYPE_SEX, Day0Night1);
-	//			if(g_Girls.CheckVirginity(girl))
-	//			{
-	//				g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
-	//				message += "She was a virgin.\n";
-	//			}
-	//			g_Building = BUILDING_HOUSE;
-	//			if(!girl->calc_pregnancy(g_Brothels.GetPlayer(), false, 1.0)) 
-	//			{
-	//				g_MessageQue.AddToQue("She has gotten pregnant", 0);
-	//			}
-	//		}
-	//		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -35);
-	//		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +3, true);
-	//	}
-	//}
-	//else
-	//{
-	//	girl->m_Events.AddMessage(message, IMGTYPE_ECCHI, Day0Night1);
-	//}
 
 	if (wages < 0)
 		wages = 0;

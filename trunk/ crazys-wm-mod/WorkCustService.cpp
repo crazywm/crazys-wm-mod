@@ -48,8 +48,8 @@ bool cJobManager::WorkCustService(sGirl* girl, sBrothel* brothel, bool Day0Night
 	int serviced = 0;
 	sCustomer Cust;
 	
-	string message = "";
-	if(Preprocessing(ACTION_WORKCUSTSERV, girl, brothel, Day0Night1, summary, message))	// they refuse to work in customer service
+	stringstream ss;
+	if(Preprocessing(ACTION_WORKCUSTSERV, girl, brothel, Day0Night1, summary, ss.str()))	// they refuse to work in customer service
 		return true;
 
 	// put that shit away, you'll scare off the customers!
@@ -58,22 +58,22 @@ bool cJobManager::WorkCustService(sGirl* girl, sBrothel* brothel, bool Day0Night
 	// Note: Customer service needs to be done last, after all the whores have worked.
 	
 	
-	message += "She worked as Customer Service.";
+	ss << "She worked as Customer Service.";
 	// Complications
 	int roll = g_Dice%100;
 	if (roll <= 5)
 	{
-		message += " Some of the patrons abused her during the shift.";
+		ss << " Some of the patrons abused her during the shift.";
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCUSTSERV, -1, true);
 	}
 
 	else if (roll >= 75) {
-		message += " She had a pleasant time working.";
+		ss << " She had a pleasant time working.";
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCUSTSERV, +3, true);
 	}
 	else
 	{
-		message += " The shift passed uneventfully.";
+		ss << " The shift passed uneventfully.";
 	}
 	// Decide how many customers the girl can handle
 	if (g_Girls.GetStat(girl, STAT_CONFIDENCE) > 0) 
@@ -106,7 +106,7 @@ bool cJobManager::WorkCustService(sGirl* girl, sBrothel* brothel, bool Day0Night
 	if (bonus < 5)
 	{
 		bonus = -20;
-		message += "\n\nHer efforts only made the customers angrier.";
+		ss << "\n\nHer efforts only made the customers angrier.";
 		//And she's REALLY not going to like this job if she's failing at it, so...
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCUSTSERV, -5, true);
 	}
@@ -137,7 +137,7 @@ bool cJobManager::WorkCustService(sGirl* girl, sBrothel* brothel, bool Day0Night
 	}
 	// So in the end, customer service can take care of lots of customers, but won't do it 
 	// as well as good service from a whore. This is acceptable to me.
-	message += ("\n\n" + girl->m_Realname + " took care of " + intstring(serviced) + " customers this shift.");
+	ss << ("\n\n" + girl->m_Realname + " took care of " + intstring(serviced) + " customers this shift.");
 	
 	/* Note that any customers that aren't handled by either customer service or a whore count as a 0 in the
 	 * average for the brothel's customer happiness. So customer service leaving customers with 27-60 in their
@@ -154,7 +154,7 @@ bool cJobManager::WorkCustService(sGirl* girl, sBrothel* brothel, bool Day0Night
 	// Now pay the girl.
 	girl->m_Pay += 50;
 	g_Gold.staff_wages(50);  // wages come from you
-	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, Day0Night1);
+	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 	
 	// Raise skills
 	int xp = 5 + (serviced / 5), libido = 1, skill = 2 + (serviced / 10);

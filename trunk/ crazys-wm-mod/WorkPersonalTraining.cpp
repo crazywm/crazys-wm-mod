@@ -35,11 +35,10 @@ extern cJobManager m_JobManager;
 // `J` House Job - General
 bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-	string message = "";
-	if (Preprocessing(ACTION_SEX, girl, brothel, Day0Night1, summary, message)) return true;	// they refuse to have work
+	stringstream ss;
+	if (Preprocessing(ACTION_SEX, girl, brothel, Day0Night1, summary, ss.str())) return true;	// they refuse to have work
 
 	g_Building = BUILDING_HOUSE;
-	stringstream ss;
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, not needed for sex training
 
@@ -564,7 +563,7 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0
 
 	if (girl->m_States&(1 << STATUS_SLAVE))
 	{
-		message += " \nYou own her so you don't have to pay her.";
+		ss << "\nYou own her so you don't have to pay her.";
 	}
 	else
 	{

@@ -38,9 +38,9 @@ extern cFarmManager g_Farm;
 // `J` Farm Job - Staff
 bool cJobManager::WorkFarmVeterinarian(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-	string message = "", girlName = girl->m_Realname;
+	stringstream ss; string girlName = girl->m_Realname;
 
-	if (Preprocessing(ACTION_WORKFARM, girl, brothel, Day0Night1, summary, message))	// they refuse to have work in the bar
+	if (Preprocessing(ACTION_WORKFARM, girl, brothel, Day0Night1, summary, ss.str()))	// they refuse to have work in the bar
 		return true;
 
 	// put that shit away, you'll scare off the customers!
@@ -49,7 +49,7 @@ bool cJobManager::WorkFarmVeterinarian(sGirl* girl, sBrothel* brothel, bool Day0
 	int fame = 0;
 	int wages = 25, work = 0;
 	int roll = g_Dice % 100;
-	message += "She worked as a Veterinarian on the farm.";
+	ss << "She worked as a Veterinarian on the farm.";
 	int jobperformance = (g_Girls.GetSkill(girl, SKILL_MEDICINE) +
 		g_Girls.GetSkill(girl, SKILL_ANIMALHANDLING));
 
@@ -70,31 +70,31 @@ bool cJobManager::WorkFarmVeterinarian(sGirl* girl, sBrothel* brothel, bool Day0
 	if (jobperformance >= 245)
 	{
 		wages += 155;	fame += 2;
-		message += " She must be the perfect at this.\n\n";
+		ss << " She must be the perfect at this.\n\n";
 	}
 	else if (jobperformance >= 185)
 	{
 		wages += 95;	fame += 1;
-		message += " She's unbelievable at this.\n\n";
+		ss << " She's unbelievable at this.\n\n";
 	}
 	else if (jobperformance >= 145)
 	{
 		wages += 55;
-		message += " She's good at this job.\n\n";
+		ss << " She's good at this job.\n\n";
 	}
 	else if (jobperformance >= 100)
 	{
 		wages += 15;
-		message += " She made a few mistakes but overall she is okay at this.\n\n";
+		ss << " She made a few mistakes but overall she is okay at this.\n\n";
 	}
 	else if (jobperformance >= 70)
 	{
-		message += " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
+		ss << " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
 		wages -= 5;
 	}
 	else
 	{
-		message += " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
+		ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
 		wages -= 15;
 	}
 
@@ -102,14 +102,14 @@ bool cJobManager::WorkFarmVeterinarian(sGirl* girl, sBrothel* brothel, bool Day0
 
 	//enjoyed the work or not
 	if (roll <= 5)
-	{ message += "\nSome of the patrons abused her during the shift."; work -= 1; }
+	{ ss << "\nSome of the patrons abused her during the shift."; work -= 1; }
 	else if (roll <= 25)
-	{ message += "\nShe had a pleasant time working."; work += 3; }
+	{ ss << "\nShe had a pleasant time working."; work += 3; }
 	else
-	{ message += "\nOtherwise, the shift passed uneventfully."; work += 1; }
+	{ ss << "\nOtherwise, the shift passed uneventfully."; work += 1; }
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKFARM, work, true);
-	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, Day0Night1);
+	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 	girl->m_Pay = max(wages, 0);
 
 	// Improve stats

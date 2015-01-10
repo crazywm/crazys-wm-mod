@@ -46,12 +46,11 @@ extern cGold g_Gold;
 // `J` Arena Job - Fighting
 bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-	string message = ""; string girlName = girl->m_Realname;
-	if (Preprocessing(ACTION_COMBAT, girl, brothel, Day0Night1, summary, message))
+	stringstream ss; string girlName = girl->m_Realname;
+	if (Preprocessing(ACTION_COMBAT, girl, brothel, Day0Night1, summary, ss.str()))
 		return true;
 	int wages = 0, fight_outcome = 0, enjoyment = 0, fame = 0, imagetype = IMGTYPE_COMBAT;
 	int jobperformance = (g_Girls.GetStat(girl, STAT_FAME) + g_Girls.GetStat(girl, STAT_CHARISMA))/2;
-	stringstream ss;
 	bool unique = false;
 
 	cConfig cfg;
@@ -64,7 +63,7 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 	{
 		g_LogFile.write("Error: You have no Arena Girls for your girls to fight\n");
 		g_LogFile.write("Error: You need an Arena Girl to allow WorkFightArenaGirls randomness");
-		message = "There were no Arena Girls for her to fight.\n\n(Error: You need an Arena Girl to allow WorkFightArenaGirls randomness)";
+		ss << "There were no Arena Girls for her to fight.\n\n(Error: You need an Arena Girl to allow WorkFightArenaGirls randomness)";
 		imagetype = IMGTYPE_PROFILE;
 	}
 	else if (fight_outcome == 1)	// she won
@@ -83,23 +82,23 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 			ugirl->m_Stats[STAT_HAPPINESS] = g_Dice % 80 + 1;
 			ugirl->m_Stats[STAT_TIREDNESS] = g_Dice % 50 + 50;
 			ugirl->m_States |= (1 << STATUS_ARENA);
-			message = girl->m_Realname + " won her fight against " + ugirl->m_Realname + ".\n";
+			ss << girl->m_Realname + " won her fight against " + ugirl->m_Realname + ".\n";
 			if (g_Dice.percent(50))
 			{
 				ugirl->m_States |= (1 << STATUS_SLAVE);
-				message += ugirl->m_Realname + "'s owner could not afford to pay you your winnings so he gave her to you instead.";
+				ss << ugirl->m_Realname + "'s owner could not afford to pay you your winnings so he gave her to you instead.";
 			}
 			else
 			{
-				message += ugirl->m_Realname + " put up a good fight so you let her live as long as she came work for you.";
+				ss << ugirl->m_Realname + " put up a good fight so you let her live as long as she came work for you.";
 				wages = 100 + g_Dice % (girl->fame() + girl->charisma());
 			}
-			g_MessageQue.AddToQue(message, 0);
+			g_MessageQue.AddToQue(ss.str(), 0);
 			g_Brothels.GetDungeon()->AddGirl(ugirl, DUNGEON_NEWGIRL);
 		}
 		else
 		{
-			message = "She won the fight.";
+			ss << "She won the fight.";
 			wages = 100 + g_Dice % (girl->fame() + girl->charisma());
 		}
 	}
@@ -107,14 +106,14 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 	{
 		enjoyment = -(g_Dice % 3 + 1);
 		fame = -(g_Dice % 3 + 1);
-		message = "She lost the fight.";
+		ss << "She lost the fight.";
 		/* Need a way to cost you gold for your girl losing..  or some kind of outcome here zzzzzzzz FIXME*/ 
 	}
 	else if (fight_outcome == 0)  // it was a draw
 	{
 		enjoyment = g_Dice % 3 - 2;
 		fame = g_Dice % 3 - 2;
-		message = "The fight ended in a draw.";
+		ss << "The fight ended in a draw.";
 	}
 
 	if (tempgirl) delete tempgirl; tempgirl = 0;	// Cleanup
@@ -134,7 +133,7 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 	}
 
 	girl->m_Pay = wages;
-	girl->m_Events.AddMessage(message, imagetype, Day0Night1);
+	girl->m_Events.AddMessage(ss.str(), imagetype, Day0Night1);
 	g_Girls.UpdateStat(girl, STAT_FAME, fame);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateSkill(girl, SKILL_COMBAT, g_Dice%fightxp + skill);

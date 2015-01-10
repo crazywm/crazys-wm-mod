@@ -38,8 +38,8 @@ extern cFarmManager g_Farm;
 // `J` Farm Job - Producers
 bool cJobManager::WorkMakeItem(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-	string message = "";
-	if (Preprocessing(ACTION_WORKCENTRE, girl, brothel, Day0Night1, summary, message))
+	stringstream ss;
+	if (Preprocessing(ACTION_WORKCENTRE, girl, brothel, Day0Night1, summary, ss.str()))
 		return true;
 
 	int jobperformance = (g_Girls.GetSkill(girl, SKILL_CRAFTING) +
@@ -51,14 +51,14 @@ bool cJobManager::WorkMakeItem(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	if (g_Dice % 100 <= 10)
 	{
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCENTRE, -1, true);
-		message = " She wasn't able to make anything.";
-		girl->m_Events.AddMessage(message, IMGTYPE_CRAFT, Day0Night1);
+		ss << " She wasn't able to make anything.";
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_CRAFT, Day0Night1);
 	}
 	else
 	{
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCENTRE, +3, true);
-		message = " She enjoyed her time working and made two items.";
-		girl->m_Events.AddMessage(message, IMGTYPE_CRAFT, Day0Night1);
+		ss << " She enjoyed her time working and made two items.";
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_CRAFT, Day0Night1);
 		g_Brothels.add_to_goods(2);
 	}
 

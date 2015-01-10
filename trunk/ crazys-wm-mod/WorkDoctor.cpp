@@ -46,9 +46,7 @@ extern cMessageQue g_MessageQue;
 bool cJobManager::WorkDoctor(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	bool SkipDisobey = (summary == "SkipDisobey");
-	string message = "";
-	stringstream ss;
-	string girlName = girl->m_Realname;
+	stringstream ss; string girlName = girl->m_Realname;
 
 	if (g_Girls.HasTrait(girl, "AIDS"))
 	{
@@ -74,7 +72,7 @@ bool cJobManager::WorkDoctor(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 
 	if (!SkipDisobey)	// `J` skip the disobey check because it has already been done in the building flow
 	{
-		if (Preprocessing(ACTION_WORKDOCTOR, girl, brothel, Day0Night1, summary, message)) return true;
+		if (Preprocessing(ACTION_WORKDOCTOR, girl, brothel, Day0Night1, summary, ss.str())) return true;
 	}
 	cConfig cfg;
 

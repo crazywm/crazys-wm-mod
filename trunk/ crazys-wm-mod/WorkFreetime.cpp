@@ -123,10 +123,10 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			// Suggestions to be added
 			FT_Counseling,		// she goes to counseling
 			FT_WatchFights,		// she goes to the arena as a spectator
-			FT_StrollInCity,	//she goes for a walk in the city
-			FT_Casino,			//she goes to the casino and gambles
-			FT_CountrySide,		//she goes out into the country side for a walk
-			FT_WorkOut,			//she works out to stay in shape
+			FT_StrollInCity,	// she goes for a walk in the city
+			FT_Casino,			// she goes to the casino and gambles
+			FT_CountrySide,		// she goes out into the country side for a walk
+			FT_WorkOut,			// she works out to stay in shape
 
 
 
@@ -806,6 +806,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 			ss << girlName << " decides to go watch a movie.";
 			ss << "They were playing " << mov_type_text << ".\n";
+			/*May add different ways for the girl to get into the movie CRAZY*/ 
 			U_Money -= 10;
 				if (roll_c <= 20) //romance
 					{
@@ -877,7 +878,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 									}
 									else if (HateLove >= 80 && g_Girls.GetStat(girl, STAT_LIBIDO) > 99)
 									{
-										ss <<" Despite the fact that she is in love with you she couldn't help herself her lust is to great and she agrees. ";
+										ss << " Despite the fact that she is in love with you she couldn't help herself her lust is to great and she agrees. ";
 										imagetype = IMGTYPE_SEX; U_Libido -= 15;
 										g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, 1);
 									}
@@ -930,11 +931,17 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 			ss << girlName << " decides to go watch a movie.";
 			ss << "They were playing " + song_type_text + " music.\n";
+			U_Money -= 20;
 				if (roll_c <= 14) //goth rock
 					{
 					}
 				else if (roll_c <= 28) //classical
 					{
+						if (g_Girls.HasTrait(girl, "Elegant"))
+						{
+							ss << girlName + " seems to really enjoy this type of music.\n";
+							U_Happiness += 5;  roll = 96;
+						}
 					}
 				else if (roll_c <= 42) //metal
 					{
@@ -944,13 +951,47 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					}
 				else if (roll_c <= 70) //country
 					{
+						if (g_Girls.HasTrait(girl, "Farmers Daughter") || g_Girls.HasTrait(girl, "Country Gal"))
+						{
+							ss << girlName + " loves this type of music as she grew up listen to it.\n";
+							U_Happiness += 5;  roll = 96;
+						}
 					}
 				else if (roll_c <= 87) //death metal
 					{
+						if (g_Girls.HasTrait(girl, "Aggressive"))
+						{
+							ss << girlName + " loves this type of music it gets her blood pumping.\n";
+							U_Happiness += 5;  roll = 96;
+						}
 					}
 				else //pop
 					{
+						if (g_Girls.HasTrait(girl, "Idol"))
+						{
+							ss << "The crowd keep chanting " << girlName << " wanting her to take the stage and sing for them.\n";
+							U_Happiness += 5;  roll = 96; /*could add a way for her to make gold off this, and need to add if she takes the stage or not*/ 
+						}
 					}
+
+				//random things that can happen at any show type
+				if (g_Girls.HasTrait(girl, "Exhibitionist") && g_Dice.percent(30))
+				{
+					ss << "Before the show was over " << girlName << " had thrown all her clothes on stage and was now walking around naked.\n";
+					imagetype = IMGTYPE_NUDE;/*May add them inviting her to meet the band..  girl walking around naked is something most would want to meet*/ 
+				}
+				if (girl->is_addict() && g_Dice.percent(20))
+				{
+					ss << "\nNoticing her addiction, someone offered her some drugs. She accepted, and got baked for the concert.\n";
+					if (g_Girls.HasTrait(girl, "Shroud Addict"))
+					{ g_Girls.AddInv(girl, g_InvManager.GetItem("Shroud Mushroom")); }
+					if (g_Girls.HasTrait(girl, "Fairy Dust Addict"))
+					{ g_Girls.AddInv(girl, g_InvManager.GetItem("Fairy Dust")); }
+					if (g_Girls.HasTrait(girl, "Viras Blood Addict"))
+					{ g_Girls.AddInv(girl, g_InvManager.GetItem("Vira Blood")); }
+					/* May added in a sex event here where they try to take advatage of the high girl*/ 
+				}
+
 				if (roll <= 5)//did she enjoy it or not?
 					{ ss << girlName << " thought the conert was crap.\n"; }
 				else if (roll >= 95)
@@ -962,22 +1003,20 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					{
 						ss << "Having seen her amazing beauty the band invites her to come backstage and meet them.\n";
 						if (roll <= 5)
-						{
-							ss << girlName << " declined as she thought they sucked.\n";
-						}
+						{ ss << girlName << " declined as she thought they sucked.\n"; }/*nothing needed she goes home*/ 
 						else if (roll >= 95)
 						{
 							ss << girlName << " accepted with great joy.\n"; U_Happiness += 5;
+							/* add anything from them trying to have sex with her to just talking*/ 
 						}
 						else
 						{
 							if (roll <= 50)
-							{
-								ss << girlName << " told them she had a good time but had to be going.\n";
-							}
+							{ ss << girlName << " told them she had a good time but had to be going.\n"; }/*nothing needed she goes home*/ 
 							else
 							{
 								ss << girlName << " enjoyed herself so she accepted.\n";
+								/* add anything from them trying to have sex with her to just talking*/ 
 							}
 						}
 					}
@@ -1019,7 +1058,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			if (stripperonduty) strippername = "Stripper " + stripperonduty->m_Realname + "";
 			else strippername = "";
 			
-				ss << girlName << " puts on her best dress before leaving.";
+				ss << girlName << " puts on her best dress before leaving and going to the club.";
 				if (clubbaronduty)
 				{
 				ss << girlName << " says hi to " << clubbarname << ".\n"; //
@@ -1027,10 +1066,10 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				if (g_Girls.HasTrait(girl, "Lesbian"))
 					{
 						ss << " She takes in some exotic dancing from some of the strippers there.";
-						/*if (roll <= 15 && stripperonduty)
+						if (roll <= 15 && stripperonduty)
 						{ 
-							ss << " She ends up buying a lap dance from << strippername << ".\n""; 
-						}*/
+							ss << " She ends up buying a lap dance from " << strippername << ".\n"; 
+						}
 					}
 				imagetype = IMGTYPE_FORMAL;;
 			}
@@ -1041,14 +1080,14 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 		case FT_Hobby:
 			/*{
-				ss << girlName << " decided to do her hobby today.";
+				ss << girlName << " decided to do something she really enjoys so she ";
 				if (g_Girls.HasTrait(girl, "Nymphomaniac") && g_Girls.GetStat(girl, STAT_LIBIDO) > 80)
 					{
-						message += girlName + " went out looking to get laid.\n";
+						ss << " went out looking to get laid.\n";
 					}
 				else if (g_Girls.HasTrait(girl, "Nerd"))
 					{
-						message += girlName + " stayed inside and read a book.\n";
+						ss << " stayed inside and read a book.\n";
 					}
 			}*/
 			break;	// end FT_Hobby
@@ -1065,6 +1104,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			break;	// end FT_CountrySide
 		case FT_WorkOut:
 			ss << girlName << " decided to workout today.";
+			/*add different types of workouts.. the type she does will affect the stat gain and maybe give a trait gain*/ 
 			g_Girls.UpdateStat(girl, STAT_CONSTITUTION, g_Dice % 2);
 			g_Girls.UpdateStat(girl, STAT_AGILITY, g_Dice % 2);
 			g_Girls.UpdateStat(girl, STAT_BEAUTY, g_Dice % 2);

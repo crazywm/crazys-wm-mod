@@ -45,8 +45,7 @@ extern cMessageQue g_MessageQue;
 // `J` Clinic Job - Surgery
 bool cJobManager::WorkRepairShop(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-	stringstream ss;
-	string girlName = girl->m_Realname;
+	stringstream ss; string girlName = girl->m_Realname;
 	g_Girls.UnequipCombat(girl);	// not for patients
 
 	if (!g_Girls.HasTrait(girl, "Construct") && !g_Girls.HasTrait(girl, "Half-Construct"))

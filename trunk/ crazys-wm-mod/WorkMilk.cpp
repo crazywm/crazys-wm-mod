@@ -38,14 +38,12 @@ extern cFarmManager g_Farm;
 // `J` Farm Job - Laborers
 bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-	string message = "";
+	stringstream ss; string girlName = girl->m_Realname;
+	cConfig cfg;
 
-	if (Preprocessing(ACTION_WORKMILK, girl, brothel, Day0Night1, summary, message))	// they refuse to have work
+	if (Preprocessing(ACTION_WORKMILK, girl, brothel, Day0Night1, summary, ss.str()))	// they refuse to have work
 		return true;
 
-	string girlName = girl->m_Realname;
-	stringstream ss;
-	cConfig cfg;
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
@@ -55,7 +53,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
 
-	message = "She let her breasts be milked.\n\n";
+	ss << "She let her breasts be milked.\n\n";
 
 
 
@@ -143,12 +141,12 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 	{
 		if (girl->m_States&(1 << STATUS_PREGNANT) || girl->m_States&(1 << STATUS_PREGNANT_BY_PLAYER))
 		{
-			message += girl->m_Realname + " has small breasts, but her body still gives plenty of milk in anticipation of nursing!.";
+			ss << girl->m_Realname + " has small breasts, but her body still gives plenty of milk in anticipation of nursing!.";
 			girl->m_Pay += 125;
 		}
 		else
 		{
-			message += girl->m_Realname + " has small breasts, which only yield a small amount of milk.";
+			ss << girl->m_Realname + " has small breasts, which only yield a small amount of milk.";
 			girl->m_Pay += 25;
 		}
 	}
@@ -156,12 +154,12 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 	{
 		if (girl->m_States&(1 << STATUS_PREGNANT) || girl->m_States&(1 << STATUS_PREGNANT_BY_PLAYER))
 		{
-			message += girl->m_Realname + "'s already sizable breasts have become fat and swollen with milk in preparation for her child.";
+			ss << girl->m_Realname + "'s already sizable breasts have become fat and swollen with milk in preparation for her child.";
 			girl->m_Pay += 135;
 		}
 		else
 		{
-			message += girl->m_Realname + " has large breasts, that yield a good amount of milk to the suction machine even without pregnancy.";
+			ss << girl->m_Realname + " has large breasts, that yield a good amount of milk to the suction machine even without pregnancy.";
 			girl->m_Pay += 35;
 		}
 	}
@@ -169,12 +167,12 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 	{
 		if (girl->m_States&(1 << STATUS_PREGNANT) || girl->m_States&(1 << STATUS_PREGNANT_BY_PLAYER))
 		{
-			message += girl->m_Realname + " has ridiculously large breasts, even without a baby in development.  With a bun in the oven, her tits are each larger than her head, and leak milk near continuously.";
+			ss << girl->m_Realname + " has ridiculously large breasts, even without a baby in development.  With a bun in the oven, her tits are each larger than her head, and leak milk near continuously.";
 			girl->m_Pay += 140;
 		}
 		else
 		{
-			message += girl->m_Realname + "'s massive globes don't need pregnancy to yield a profitable quantity of milk!";
+			ss << girl->m_Realname + "'s massive globes don't need pregnancy to yield a profitable quantity of milk!";
 			girl->m_Pay += 40;
 		}
 	}
@@ -182,12 +180,12 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 	{
 		if (girl->m_States&(1 << STATUS_PREGNANT) || girl->m_States&(1 << STATUS_PREGNANT_BY_PLAYER))
 		{
-			message += girl->m_Realname + " has average sized breasts, which yield a fair amount of milk with the help of pregnancy.";
+			ss << girl->m_Realname + " has average sized breasts, which yield a fair amount of milk with the help of pregnancy.";
 			girl->m_Pay += 130;
 		}
 		else
 		{
-			message += girl->m_Realname + " has average sized breasts, perfect handfuls, which yield an okay amount of milk.";
+			ss << girl->m_Realname + " has average sized breasts, perfect handfuls, which yield an okay amount of milk.";
 			girl->m_Pay += 30;
 		}
 	}
@@ -196,15 +194,15 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 
 	//enjoyed the work or not
 	if (roll <= 5)
-	{ message += "\nShe had a bad time letting her breasts be milked."; work -= 1; } //zzzzzz FIXME this needs better text
+	{ ss << "\nShe had a bad time letting her breasts be milked."; work -= 1; } //zzzzzz FIXME this needs better text
 	else if (roll <= 25)
-	{ message += "\nShe had a pleasant time letting her breasts be milked."; work += 3; }
+	{ ss << "\nShe had a pleasant time letting her breasts be milked."; work += 3; }
 	else
-	{ message += "\nOtherwise, the shift passed uneventfully."; work += 1; }
+	{ ss << "\nOtherwise, the shift passed uneventfully."; work += 1; }
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKMILK, work, true);
 
-	girl->m_Events.AddMessage(message, IMGTYPE_MILK, Day0Night1);
+	girl->m_Events.AddMessage(ss.str(), IMGTYPE_MILK, Day0Night1);
 
 	// Improve stats
 	int xp = 5, libido = 1, skill = 3;
