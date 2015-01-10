@@ -45,7 +45,7 @@ extern cMessageQue g_MessageQue;
 // `J` Clinic Job - Surgery
 bool cJobManager::WorkGetAbort(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-	string message = "";
+	stringstream ss;
 	int msgtype = Day0Night1;
 
 	if (girl->m_YesterDayJob != JOB_GETABORT)	// if she was not in surgery yesterday, 
@@ -64,14 +64,14 @@ bool cJobManager::WorkGetAbort(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 	if (!hasDoctor)
 	{
-		message = girl->m_Realname + gettext(" does nothing. You don't have any Doctors working. (require 1) ");
-		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_WARNING);
+		ss << girl->m_Realname + gettext(" does nothing. You don't have any Doctors working. (require 1) ");
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
 		return false;	// not refusing
 	}
 	if (!girl->is_pregnant())
 	{
-		message = girl->m_Realname + gettext(" is not pregant so she was sent to the waiting room.");
-		if (Day0Night1 == SHIFT_DAY)	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_WARNING);
+		ss << girl->m_Realname + gettext(" is not pregant so she was sent to the waiting room.");
+		if (Day0Night1 == SHIFT_DAY)	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
 		girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
 		return false;	// not refusing
 	}
@@ -91,7 +91,6 @@ bool cJobManager::WorkGetAbort(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 	int numnurse = g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, Day0Night1);
 
-	stringstream ss;
 	if (girl->m_WorkingDay >= 2)
 	{
 		ss << "The girl had an abortion.\n";

@@ -45,9 +45,9 @@ extern cGold g_Gold;
 
 bool cJobManager::WorkArenaJousting(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-	string message = ""; string girlName = girl->m_Realname;
+	string girlName = girl->m_Realname; stringstream ss;
 
-	if (Preprocessing(ACTION_COMBAT, girl, brothel, Day0Night1, summary, message))
+	if (Preprocessing(ACTION_COMBAT, girl, brothel, Day0Night1, summary, ss.str()))
 		return true;
 
 	int roll = g_Dice%100;
@@ -55,7 +55,7 @@ bool cJobManager::WorkArenaJousting(sGirl* girl, sBrothel* brothel, bool Day0Nig
 	int jobperformance = ((g_Girls.GetStat(girl, STAT_INTELLIGENCE) / 2) + (g_Girls.GetSkill(girl, SKILL_ANIMALHANDLING) / 2) + g_Girls.GetSkill(girl, SKILL_COMBAT));
 
 
-	message += "She worked as a jouster in the arena.";
+	ss << "She worked as a jouster in the arena.";
 
 	//CRAZY
 	/*Jousting plans
@@ -96,32 +96,32 @@ bool cJobManager::WorkArenaJousting(sGirl* girl, sBrothel* brothel, bool Day0Nig
 
 	if (jobperformance >= 245)
 		{
-			message += " She must be perfect at this.\n\n";
+			ss << " She must be perfect at this.\n\n";
 			wages += 155;
 		}
 	else if (jobperformance >= 185)
 		{
-			message += " She's unbelievable at this and is always getting praised by people for her work.\n\n";
+			ss << " She's unbelievable at this and is always getting praised by people for her work.\n\n";
 			wages += 95;
 		}
 	else if (jobperformance >= 145)
 		{
-			message += " She's good at this job and gets praised by the customers often.\n\n";
+			ss << " She's good at this job and gets praised by the customers often.\n\n";
 			wages += 55;
 		}
 	else if (jobperformance >= 100)
 		{
-			message += " She made a few mistakes but overall she is okay at this.\n\n";
+			ss << " She made a few mistakes but overall she is okay at this.\n\n";
 			wages += 15;
 		}
 	else if (jobperformance >= 70)
 		{
-			message += " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
+			ss << " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
 			wages -= 5;
 		}
 	else
 		{
-			message += " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
+			ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
 			wages -= 15;
 		}
 
@@ -131,14 +131,14 @@ bool cJobManager::WorkArenaJousting(sGirl* girl, sBrothel* brothel, bool Day0Nig
 
 	//enjoyed the work or not
 	if (roll <= 5)
-	{ message += "\nSome of the patrons abused her during the shift."; work -= 1; }
+	{ ss << "\nSome of the patrons abused her during the shift."; work -= 1; }
 	else if (roll <= 25) 
-	{ message += "\nShe had a pleasant time working."; work += 3; }
+	{ ss << "\nShe had a pleasant time working."; work += 3; }
 	else
-	{ message += "\nOtherwise, the shift passed uneventfully."; work += 1; }
+	{ ss << "\nOtherwise, the shift passed uneventfully."; work += 1; }
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, work, true);
-	girl->m_Events.AddMessage(message, IMGTYPE_COMBAT, Day0Night1);
+	girl->m_Events.AddMessage(ss.str(), IMGTYPE_COMBAT, Day0Night1);
 	int roll_max = (g_Girls.GetStat(girl, STAT_FAME) + g_Girls.GetStat(girl, STAT_CHARISMA));
 	roll_max /= 4;
 	wages += 10 + g_Dice%roll_max;

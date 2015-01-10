@@ -49,8 +49,8 @@ extern cGold g_Gold;
 // `J` Arena Job - Staff
 bool cJobManager::WorkCityGuard(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-	string message = ""; string girlName = girl->m_Realname;
-	if (Preprocessing(ACTION_WORKSECURITY, girl, brothel, Day0Night1, summary, message)) return true;
+	stringstream ss; string girlName = girl->m_Realname;
+	if (Preprocessing(ACTION_WORKSECURITY, girl, brothel, Day0Night1, summary, ss.str())) return true;
 
 	// ready armor and weapons!
 	g_Girls.EquipCombat(girl);
@@ -60,39 +60,39 @@ bool cJobManager::WorkCityGuard(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 
 	int agl = (g_Girls.GetStat(girl, STAT_AGILITY) / 2 + g_Dice%(g_Girls.GetSkill(girl, SKILL_COMBAT) / 2));
 
-	message += "She helps guard the city.\n";
+	ss << "She helps guard the city.\n";
 
 	sGirl* tempgirl = g_Girls.CreateRandomGirl(18, false, false, false, false, false, true);
 
 	if (roll_a >= 50)
 	{
-		message += girlName + " didn't find any trouble today.";
+		ss << girlName + " didn't find any trouble today.";
 		sus -= 5;
 	}
 	else if (roll_a >= 25)
 	{
-		message += girlName + " spotted a theif and ";
+		ss << girlName + " spotted a theif and ";
 		if (agl >= 90)
 		{
-			message += "was on them before they could blink.  Putting a stop to the theft.";
+			ss << "was on them before they could blink.  Putting a stop to the theft.";
 			sus -= 20;
 			enjoy += 3;
 		}
 		else if (agl >= 75)
 		{
-			message += "was on them before they could get away.  She is quick.";
+			ss << "was on them before they could get away.  She is quick.";
 			sus -= 15;
 			enjoy += 1;
 		}
 		else if (agl >= 50)
 		{
-			message += "was able to keep up, ";
-			if (roll_b >= 50)	{ sus += 5; message += "but they ended up giving her the slip."; }
-			else /*        */	{ sus -= 10; message += "and was able to catch them."; }
+			ss << "was able to keep up, ";
+			if (roll_b >= 50)	{ sus += 5; ss << "but they ended up giving her the slip."; }
+			else /*        */	{ sus -= 10; ss << "and was able to catch them."; }
 		}
 		else
 		{
-			message += "was left eating dust. Damn is she slow.";
+			ss << "was left eating dust. Damn is she slow.";
 			sus += 10;
 			enjoy -= 3;
 		}
@@ -112,19 +112,19 @@ bool cJobManager::WorkCityGuard(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 		}
 		if (fight_outcome == 7)
 		{
-			message = "There were no criminals around for her to fight.\n\n";
-			message += "(Error: You need a Random Girl to allow WorkCityGuard randomness)";
+			ss << "There were no criminals around for her to fight.\n\n";
+			ss << "(Error: You need a Random Girl to allow WorkCityGuard randomness)";
 		}
 		else if (fight_outcome == 1)	// she won
 		{
 			enjoy += 3; enjoyc += 3;
-			message = girlName + " ran into some trouble and ended up in a fight. She was able to win.";
+			ss << girlName + " ran into some trouble and ended up in a fight. She was able to win.";
 			sus -= 20;
 			imagetype = IMGTYPE_COMBAT;
 		}
 		else  // she lost or it was a draw
 		{
-			message = girlName + " ran into some trouble and ended up in a fight. She was unable to win the fight.";
+			ss << girlName + " ran into some trouble and ended up in a fight. She was unable to win the fight.";
 			enjoy -= 1; enjoyc -= 1;
 			sus += 10;
 			imagetype = IMGTYPE_COMBAT;
@@ -135,7 +135,7 @@ bool cJobManager::WorkCityGuard(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	if (tempgirl) delete tempgirl; tempgirl = 0;
 
 
-	girl->m_Events.AddMessage(message, imagetype, Day0Night1);
+	girl->m_Events.AddMessage(ss.str(), imagetype, Day0Night1);
 	g_Brothels.GetPlayer()->suspicion(sus);
 	girl->m_Pay = wages;
 

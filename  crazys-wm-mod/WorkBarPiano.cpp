@@ -42,9 +42,9 @@ extern cMessageQue g_MessageQue;
 // `J` Brothel Job - Bar
 bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-	string message = ""; string girlName = girl->m_Realname;
+	stringstream ss; string girlName = girl->m_Realname;
 
-	if(Preprocessing(ACTION_WORKMUSIC, girl, brothel, Day0Night1, summary, message))	// they refuse to have work in the bar
+	if(Preprocessing(ACTION_WORKMUSIC, girl, brothel, Day0Night1, summary, ss.str()))	// they refuse to have work in the bar
 		return true;
 
 	// put that shit away, you'll scare off the customers!
@@ -58,7 +58,7 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	else singername = "";	// no singer
 
 	int wages = 20, work = 0;
-	message += "She played the piano in the bar.";
+	ss << "She played the piano in the bar.";
 
 	int roll = g_Dice%100;
 	int jobperformance = (	g_Girls.GetStat(girl, STAT_CONFIDENCE)/2 + 
@@ -89,232 +89,232 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 	 if (jobperformance >= 245)
 		{
-			message += " She plays with the grace of an angel. Customers come from miles around to listen to her play.\n\n";
+			ss << " She plays with the grace of an angel. Customers come from miles around to listen to her play.\n\n";
 			wages += 155;
 		if (roll <= 20)
 			{
-				message += girlName + "'s playing brought many patrons to tears as she played a song full of sadness.\n";
+				ss << girlName << "'s playing brought many patrons to tears as she played a song full of sadness.\n";
 				brothel->m_Happiness += 5;
 			}
 		else if (roll <= 40)
 			{
-				message += "Nice melody fills the room when " + girlName + " is behind the piano.\n";
+				ss << "Nice melody fills the room when " + girlName + " is behind the piano.\n";
 				brothel->m_Happiness += 10;
 			}
 		else if (roll <= 60)
 			{
-				message += "Knowing that she is good, " + girlName + " played all the tunes blindfolded.\n";
+				ss << "Knowing that she is good, " + girlName + " played all the tunes blindfolded.\n";
 				brothel->m_Fame += 10;
 			}
 		else if (roll <= 80)
 			{
-				message += "Being confident in her skill, " + girlName + " played today using only one hand.\n";
+				ss << "Being confident in her skill, " + girlName + " played today using only one hand.\n";
 				brothel->m_Fame += 10;
 			}
 		else
 			{
-				message += girlName + "'s soothing playing seems to glide over the noise and bustling of the bar.\n";
+				ss << girlName + "'s soothing playing seems to glide over the noise and bustling of the bar.\n";
 				brothel->m_Happiness += 10;
 			}
 		}
  else if (jobperformance >= 185)
 		{
-			message += " She's unbelievable at this and is always getting praised by the customers for her playing skills.\n\n";
+			ss << " She's unbelievable at this and is always getting praised by the customers for her playing skills.\n\n";
 			wages += 95;
 		if (roll <= 20)
 			{
-				message += girlName + " begun to acquire her own following - a small crowd of people came in just to listen to her and buy drinks\n";
+				ss << girlName + " begun to acquire her own following - a small crowd of people came in just to listen to her and buy drinks\n";
 				brothel->m_Fame += 5;
 				wages += 10;
 			}
 		else if (roll <= 40)
 			{
-				message += "Her playing fills the room. Some customers hum the melody under their noses.\n";
+				ss << "Her playing fills the room. Some customers hum the melody under their noses.\n";
 				brothel->m_Happiness += 5;
 			}
 		else if (roll <= 60)
 			{
-				message += "After making a mistake she improvised a passage to the next song.\n";
+				ss << "After making a mistake she improvised a passage to the next song.\n";
 			}
 		else if (roll <= 80)
 			{
-				message += "She plays without music sheets having all the songs memorized.\n";
+				ss << "She plays without music sheets having all the songs memorized.\n";
 				brothel->m_Fame += 5;
 			}
 		else
 			{
-				message += girlName + "'s soothing playing seems to glide over the noise and bustling of the bar.\n";
+				ss << girlName << "'s soothing playing seems to glide over the noise and bustling of the bar.\n";
 			}
 		}
  else if (jobperformance >= 145)
 		{
-			message += " Her playing is really good and gets praised by the customers often.\n\n";
+			ss << " Her playing is really good and gets praised by the customers often.\n\n";
 			wages += 55;
 		if (roll <= 20)
 			{
-				message += "Her playing was pleasing, if bland.  Her rythem was nice, if slightly untrained.\n";
+				ss << "Her playing was pleasing, if bland.  Her rythem was nice, if slightly untrained.\n";
 			}
 		else if (roll <= 40)
 			{
-				message += girlName + " doesn't have any trouble playing the piano.\n";
+				ss << girlName << " doesn't have any trouble playing the piano.\n";
 			}
 		else if (roll <= 60)
 			{
-				message += "Give " + girlName + " any kind of music sheet and she will play it. She is really good at this.\n";
+				ss << "Give " + girlName + " any kind of music sheet and she will play it. She is really good at this.\n";
 				brothel->m_Happiness += 5;
 			}
 		else if (roll <= 80)
 			{
-				message += "When asked to play one of the more complicated tunes she gave her all.\n";
+				ss << "When asked to play one of the more complicated tunes she gave her all.\n";
 			}
 		else
 			{
-				message += "The slow song " + girlName + " played at the end of shift really had her full emotion and heart.\n";
+				ss << "The slow song " + girlName + " played at the end of shift really had her full emotion and heart.\n";
 			}
 		}
  else if (jobperformance >= 100)
 		{
-			message += " She hits a few right notes but she still has room to improve.\n\n";
+			ss << " She hits a few right notes but she still has room to improve.\n\n";
 			wages += 15;
 		if (roll <= 20)
 			{
-				message += "While she won't win any contests, " + girlName + " isn't a terrible pianist.\n";
+				ss << "While she won't win any contests, " + girlName + " isn't a terrible pianist.\n";
 			}
 		else if (roll <= 40)
 			{
-				message += girlName + "'s performance today was good. She is a promising pianist.\n";
+				ss << girlName + "'s performance today was good. She is a promising pianist.\n";
 			}
 		else if (roll <= 60)
 			{
-				message += "She gets the key order right most of the time.\n";
+				ss << "She gets the key order right most of the time.\n";
 			}
 		else if (roll <= 80)
 			{
-				message += "You could tell that there was something like a melody, but " + girlName + " still needs a lot of practice.\n";
+				ss << "You could tell that there was something like a melody, but " + girlName + " still needs a lot of practice.\n";
 			}
 		else
 			{
-				message += "The slow song " + girlName + " played at the end of shift really had her full emotion and heart.  A pity that she felt so bored and tired.\n";
+				ss << "The slow song " + girlName + " played at the end of shift really had her full emotion and heart.  A pity that she felt so bored and tired.\n";
 			}
 		}
  else if (jobperformance >= 70)
 		{
-			message += "She almost never hits a right note. Lucky for you most of the customers are too drunk and horny to care.\n\n";
+			ss << " She almost never hits a right note. Lucky for you most of the customers are too drunk and horny to care.\n\n";
 			wages -= 5;
 		if (roll <= 20)
 			{
-				message += "Her playing is barely acceptable, but fortunately the bustling of the bar drowns " + girlName + " out for the most part.\n";
+				ss << "Her playing is barely acceptable, but fortunately the bustling of the bar drowns " + girlName + " out for the most part.\n";
 			}
 		else if (roll <= 40)
 			{
-				message += "She is terrible at this. Some customers left after she started to play.\n";
+				ss << "She is terrible at this. Some customers left after she started to play.\n";
 				brothel->m_Happiness -= 5;
 			}
 		else if (roll <= 60)
 			{
-				message += "You could count on the fingers of one hand the part in her play that was clean.\n";
+				ss << "You could count on the fingers of one hand the part in her play that was clean.\n";
 			}
 		else if (roll <= 80)
 			{
-				message += "She is bad at playing the piano.\n";
+				ss << "She is bad at playing the piano.\n";
 			}
 		else
 			{
-				message += girlName + " knows a note.  To bad its the only one she knows and plays it over and over.\n";
+				ss << girlName << " knows a note.  To bad its the only one she knows and plays it over and over.\n";
 			}
 		}
  else
 		{
-			message += " She didn't play the piano so much as banged on it.\n\n";
+			ss << " She didn't play the piano so much as banged on it.\n\n";
 			wages -= 15;
 		if (roll <= 20)
 			{
-				message += "Her audience seems paralyzed, as if they couldn't believe that a piano was capable of making such noise.\n";
+				ss << "Her audience seems paralyzed, as if they couldn't believe that a piano was capable of making such noise.\n";
 				brothel->m_Happiness -= 10;
 			}
 		else if (roll <= 40)
 			{
-				message += "After ten seconds you wanted to grab an axe and end the instrument's misery under " + girlName + "'s attempt to play.\n";
+				ss << "After ten seconds you wanted to grab an axe and end the instrument's misery under " + girlName + "'s attempt to play.\n";
 				brothel->m_Happiness -= 5;
 			}
 		else if (roll <= 60)
 			{
-				message += "Noone else would call this random key-mashing 'playing', but " + girlName + " thinks otherwise.\n";
+				ss << "Noone else would call this random key-mashing 'playing', but " + girlName + " thinks otherwise.\n";
 			}
 		else if (roll <= 80)
 			{
-				message += "When " + girlName + " started to play, the bar emptied almost instantly. This could be useful in a fire.\n";
+				ss << "When " + girlName + " started to play, the bar emptied almost instantly. This could be useful in a fire.\n";
 			}
 		else
 			{
-				message += girlName + " banged on the piano clearly having no clue which note was which.\n";
+				ss << girlName << " banged on the piano clearly having no clue which note was which.\n";
 			}
 		//SIN - bit of randomness.
-		if (g_Dice.percent(brothel->m_Filthiness / 50)) message += "Soon after she started her set, some rats jumped out of the piano and fled the building. Patrons could be heard laughing.\n\n";
+		if (g_Dice.percent(brothel->m_Filthiness / 50)) ss << "Soon after she started her set, some rats jumped out of the piano and fled the building. Patrons could be heard laughing.\n\n";
 		}
 
 
 	//try and add randomness here
 	if (g_Girls.GetStat(girl, STAT_BEAUTY) >85 && g_Dice.percent(20))
-	{ message += "Stunned by her beauty a customer left her a great tip.\n\n"; wages += 15; }
+	{ ss << "Stunned by her beauty a customer left her a great tip.\n\n"; wages += 15; }
 
 	if (g_Girls.HasTrait(girl, "Clumsy") && g_Dice.percent(5))
-		{ message += "Her clumsy nature caused her to close the lid on her fingers making her have to stop playing for a few hours.\n\n"; wages -= 15; }
+		{ ss << "Her clumsy nature caused her to close the lid on her fingers making her have to stop playing for a few hours.\n\n"; wages -= 15; }
 
 	if (g_Girls.HasTrait(girl, "Pessimist") && g_Dice.percent(20))
 	{
 		if (jobperformance < 125)
-			{ message += "Her pessimistic mood depressed the customers making them tip less.\n\n"; wages -= 10; }
+			{ ss << "Her pessimistic mood depressed the customers making them tip less.\n\n"; wages -= 10; }
 		else
-			{ message += girlName + " was in a poor mood so the patrons gave her a bigger tip to try and cheer her up.\n\n"; wages += 10; }
+			{ ss << girlName << " was in a poor mood so the patrons gave her a bigger tip to try and cheer her up.\n\n"; wages += 10; }
 	}
 
 	if (g_Girls.HasTrait(girl, "Optimist") && g_Dice.percent(5))
 	{
 		if (jobperformance < 125)
-			{ message += girlName + " was in a cheerful mood but the patrons thought she needed to work more on her on her playing.\n\n"; wages -= 10; }
+			{ ss << girlName << " was in a cheerful mood but the patrons thought she needed to work more on her on her playing.\n\n"; wages -= 10; }
 		else
-			{ message += "Her optimistic mood made patrons cheer up increasing the amount they tip.\n\n"; wages += 10; }
+			{ ss << "Her optimistic mood made patrons cheer up increasing the amount they tip.\n\n"; wages += 10; }
 	}
 
 	if (g_Girls.HasTrait(girl, "Psychic") && g_Dice.percent(20))
-		{ message += "She used her Psychic skills to know exactly what the patrons wanted to hear her play.\n"; wages += 15; }
+		{ ss << "She used her Psychic skills to know exactly what the patrons wanted to hear her play.\n"; wages += 15; }
 
 	if (g_Girls.HasTrait(girl, "Assassin") && g_Dice.percent(5))
 	{
 		if (jobperformance < 150)
-			{ message += "A patron bumped into the piano causing her to miss a note. This pissed her off and using her Assassin skills she killed him before even thinking about it, resulting in patrons fleeing the building.\n"; wages -= 50; }
+			{ ss << "A patron bumped into the piano causing her to miss a note. This pissed her off and using her Assassin skills she killed him before even thinking about it, resulting in patrons fleeing the building.\n"; wages -= 50; }
 		else
-			{ message += "A patron bumped into the piano, but with her skill she didn't miss a note. The patron was lucky to leave with his life.\n"; }
+			{ ss << "A patron bumped into the piano, but with her skill she didn't miss a note. The patron was lucky to leave with his life.\n"; }
 	}
 
 	if (g_Girls.HasTrait(girl, "Horrific Scars") && g_Dice.percent(15))
 	{
 		if (jobperformance < 150)
-			{ message += "A patron gasped at her Horrific Scars making her uneasy. But they didn't feel sorry for her.\n"; }
+			{ ss << "A patron gasped at her Horrific Scars making her uneasy. But they didn't feel sorry for her.\n"; }
 		else
-			{ message += "A patron gasped at her Horrific Scars making her sad. Feeling bad about it as she played so well, they left a good tip.\n"; wages += 15; }
+			{ ss << "A patron gasped at her Horrific Scars making her sad. Feeling bad about it as she played so well, they left a good tip.\n"; wages += 15; }
 	}
 
 	if (g_Brothels.GetNumGirlsOnJob(0,JOB_SINGER,false) >= 1 && g_Dice.percent(25))
 	{
 		if (jobperformance < 125)
-			{ message += girlName + " played poorly with " + singername + " making people leave.\n\n"; wages -= 10; }
+			{ ss << girlName << " played poorly with " + singername + " making people leave.\n\n"; wages -= 10; }
 		else
-			{ message += girlName + " played well with " + singername + " increasing tips.\n\n"; wages += 40; }
+			{ ss << girlName << " played well with " + singername + " increasing tips.\n\n"; wages += 40; }
 	}
 
 
 	//enjoyed the work or not
 	if (roll <= 5)
-	{ message += "\nSome of the patrons abused her during the shift."; work -= 1; }
+	{ ss << "\nSome of the patrons abused her during the shift."; work -= 1; }
 	else if (roll <= 25) 
-	{ message += "\nShe had a pleasant time working."; work += 3; }
+	{ ss << "\nShe had a pleasant time working."; work += 3; }
 	else
-	{ message += "\nOtherwise, the shift passed uneventfully."; work += 1; }
+	{ ss << "\nOtherwise, the shift passed uneventfully."; work += 1; }
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKMUSIC, work, true);
-	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, Day0Night1);
+	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 	int roll_max = (g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA));
 	roll_max /= 4;
 	wages += 10 + g_Dice%roll_max;

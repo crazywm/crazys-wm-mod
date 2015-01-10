@@ -44,8 +44,8 @@ extern cGold g_Gold;
 // `J` Brothel Job - General
 bool cJobManager::WorkSecurity(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-	string message = "";
-	if(Preprocessing(ACTION_WORKSECURITY, girl, brothel, Day0Night1, summary, message))
+	stringstream ss;
+	if(Preprocessing(ACTION_WORKSECURITY, girl, brothel, Day0Night1, summary, ss.str()))
 		return true;
 
 	// ready armor and weapons!
@@ -55,18 +55,18 @@ bool cJobManager::WorkSecurity(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	if(g_Dice%100 <= 10)
 	{
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKSECURITY, -1, true);
-		message = gettext("Had to deal with some very unruly patrons that gave her a hard time.");
-		girl->m_Events.AddMessage(message, IMGTYPE_COMBAT, Day0Night1);
+		ss << gettext("Had to deal with some very unruly patrons that gave her a hard time.");
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_COMBAT, Day0Night1);
 	}
 	else
 	{
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKSECURITY, +3, true);
-		message = gettext("Successfully handled unruly patrons.");
+		ss << gettext("Successfully handled unruly patrons.");
 
 		// Just 'cause  CRAZY FIXME works now but needs to be better if its going be here
 		if (g_Girls.HasTrait(girl, "Nymphomaniac") && g_Dice%100 <= 10)
-			message += gettext("\nGave some bonus service to the well behaved patrons.");
-		girl->m_Events.AddMessage(message, IMGTYPE_COMBAT, Day0Night1);
+			ss << gettext("\nGave some bonus service to the well behaved patrons.");
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_COMBAT, Day0Night1);
 	}
 
 	// First lets decay the previous security level somewhat.  Lets not have too much banking

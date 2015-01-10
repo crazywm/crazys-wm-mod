@@ -46,19 +46,17 @@ extern cGold g_Gold;
 // `J` Clinic Job - Staff
 bool cJobManager::WorkIntern(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-	string message = "";
-	stringstream ss;
-	string girlName = girl->m_Realname;
+	stringstream ss; string girlName = girl->m_Realname;
 
 	if (g_Girls.HasTrait(girl, "AIDS"))
 	{
-		ss << "Health laws prohibit anyone with AIDS from working in the Medical profession so " << girl->m_Realname << " was sent to the waiting room.";
+		ss << "Health laws prohibit anyone with AIDS from working in the Medical profession so " << girlName << " was sent to the waiting room.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
 		girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
 		return false;
 	}
 
-	if (Preprocessing(ACTION_WORKINTERN, girl, brothel, Day0Night1, summary, message)) return true;
+	if (Preprocessing(ACTION_WORKINTERN, girl, brothel, Day0Night1, summary, ss.str())) return true;
 
 	cConfig cfg;
 	int enjoy = 0, wages = 0, skill = 0, train = 0;

@@ -46,7 +46,7 @@ extern cJobManager m_JobManager;
 // `J` Arena Job - Fighting
 bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-	string message = ""; string girlName = girl->m_Realname;
+	stringstream ss; string girlName = girl->m_Realname;
 
 	// ready armor and weapons!
 	g_Girls.EquipCombat(girl);
@@ -58,22 +58,22 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1
 
 	if (roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_COMBAT, brothel))
 	{
-		message = girlName + " refused to fight beasts today.\n";
-		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_NOWORK);
+		ss << girlName + " refused to fight beasts today.\n";
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
 	else if (roll <= 15)
-	{ message += girlName + " didn't like fighting beasts today.\n\n"; enjoy -= 3; }
+	{ ss << girlName + " didn't like fighting beasts today.\n\n"; enjoy -= 3; }
 	else if (roll >= 90)
-	{ message += girlName + " loved fighting beasts today.\n\n"; enjoy += 3; }
+	{ ss << girlName + " loved fighting beasts today.\n\n"; enjoy += 3; }
 	else
-	{ message += girlName + " had a pleasant time fighting beats today.\n\n"; enjoy += 1; }
+	{ ss << girlName + " had a pleasant time fighting beats today.\n\n"; enjoy += 1; }
 
 
 	if (g_Brothels.GetNumBeasts() == 0)
 	{
-		message = "There are no beasts to fight.";
-		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, Day0Night1);
+		ss << "There are no beasts to fight.";
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 	}
 	else
 	{
@@ -92,14 +92,14 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		}
 		if (fight_outcome == 7)
 		{
-			message = "The beasts were not cooperating and refused to fight.\n\n";
-			message += "(Error: You need a Non-Human Random Girl to allow WorkFightBeast randomness)";
-			girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, Day0Night1);
+			ss << "The beasts were not cooperating and refused to fight.\n\n";
+			ss << "(Error: You need a Non-Human Random Girl to allow WorkFightBeast randomness)";
+			girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 		}
 		else if (fight_outcome == 1)	// she won
 		{
-			message = "She had fun fighting beasts today."; enjoy += 3;
-			girl->m_Events.AddMessage(message, IMGTYPE_COMBAT, Day0Night1);
+			ss << "She had fun fighting beasts today."; enjoy += 3;
+			girl->m_Events.AddMessage(ss.str(), IMGTYPE_COMBAT, Day0Night1);
 			int roll_max = girl->fame() + girl->charisma();
 			roll_max /= 4;
 			wages += 10 + g_Dice%roll_max;
@@ -108,14 +108,14 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		}
 		else  // she lost or it was a draw
 		{
-			message = "She was unable to win the fight."; enjoy -= 1;
+			ss << "She was unable to win the fight."; enjoy -= 1;
 			//Crazy i feel there needs be more of a bad outcome for losses added this... Maybe could use some more
 			if (m_JobManager.is_sex_type_allowed(SKILL_BEASTIALITY, brothel) &&  !g_Girls.HasTrait(girl, "Virgin"))
 			{
-				message = " So as punishment you allow the beast to have its way with her."; enjoy -= 1;
+				ss << " So as punishment you allow the beast to have its way with her."; enjoy -= 1;
 				g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -50);
 				g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, 2);
-				girl->m_Events.AddMessage(message, IMGTYPE_BEAST, Day0Night1);
+				girl->m_Events.AddMessage(ss.str(), IMGTYPE_BEAST, Day0Night1);
 				if (!girl->calc_insemination(g_Brothels.GetPlayer(), false, 1.0))
 				{
 					g_MessageQue.AddToQue(girl->m_Realname + " has gotten inseminated", 0);
@@ -123,9 +123,9 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1
 			}
 			else
 			{
-			message = " So you send your men in to cage the beast before it can harm her.";
-			girl->m_Events.AddMessage(message, IMGTYPE_COMBAT, Day0Night1);
-			g_Girls.UpdateStat(girl, STAT_FAME, -1);
+				ss << " So you send your men in to cage the beast before it can harm her.";
+				girl->m_Events.AddMessage(ss.str(), IMGTYPE_COMBAT, Day0Night1);
+				g_Girls.UpdateStat(girl, STAT_FAME, -1);
 			}
 		}
 

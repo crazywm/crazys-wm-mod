@@ -45,12 +45,9 @@ extern cGold g_Gold;
 // `J` Arena Job - Fighting
 bool cJobManager::WorkCombatTraining(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-
-	string message = "";
-	if (Preprocessing(ACTION_COMBAT, girl, brothel, Day0Night1, summary, message)) return true;
-	cConfig cfg;
 	stringstream ss;
-	ss.str(message);
+	if (Preprocessing(ACTION_COMBAT, girl, brothel, Day0Night1, summary, ss.str())) return true;
+	cConfig cfg;
 	int wages = 0;
 	int dirtyloss = 0;
 	int roll_a, roll_b, roll_c;

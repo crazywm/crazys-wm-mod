@@ -48,8 +48,7 @@ bool cJobManager::WorkDrugCounselor(sGirl* girl, sBrothel* brothel, bool Day0Nig
 	bool SkipDisobey = (summary == "SkipDisobey");
 	girl->m_DayJob = girl->m_NightJob = JOB_DRUGCOUNSELOR;	// it is a full time job
 
-	stringstream ss;
-	string girlName = girl->m_Realname;
+	stringstream ss; string girlName = girl->m_Realname;
 	cConfig cfg;
 
 	g_Girls.UnequipCombat(girl);	// not for doctor

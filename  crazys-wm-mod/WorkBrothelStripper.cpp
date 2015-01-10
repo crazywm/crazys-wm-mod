@@ -43,8 +43,8 @@ extern cMessageQue g_MessageQue;
 // `J` Brothel Job - Brothel
 bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-	string message = ""; string warning = ""; string girlName = girl->m_Realname;
-	if (Preprocessing(ACTION_WORKSTRIP, girl, brothel, Day0Night1, summary, message))
+	stringstream ss; string warning = ""; string girlName = girl->m_Realname;
+	if (Preprocessing(ACTION_WORKSTRIP, girl, brothel, Day0Night1, summary, ss.str()))
 		return true;
 
 	// put that shit away, you'll scare off the customers!
@@ -61,18 +61,18 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 	int mast = false, sex = false;
 	int wages = 45, work = 0;
 
-	message = girlName + " was stripping in the brothel.";
+	ss << girlName + " was stripping in the brothel.";
 	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 90)
 	{
-		message += " She is so hot, customers were waving money to attract her to dance for them.";
+		ss << " She is so hot, customers were waving money to attract her to dance for them.";
 		wages += 20;
 	}
 	if (g_Girls.GetStat(girl, STAT_INTELLIGENCE) > 75)
 	{
-		message += " She was smart enough to boost her pay by playing two customers off against one another.";
+		ss << " She was smart enough to boost her pay by playing two customers off against one another.";
 		wages += 25;
 	}
-	message += "\nShe stripped for a customer.\n\n";
+	ss << "\nShe stripped for a customer.\n\n";
 
 	//good traits
 	if (g_Girls.HasTrait(girl, "Charismatic"))   jobperformance += 15;
@@ -108,52 +108,52 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 	//A little more randomness
 	if ((cust.m_IsWoman) && ((g_Girls.HasTrait(girl, "Lesbian") || g_Girls.GetSkill(girl, SKILL_LESBIAN) > 60)))
 	{
-		message += girlName + " was overjoyed to perform for a woman, and gave a much more sensual, personal performance.";
+		ss << girlName + " was overjoyed to perform for a woman, and gave a much more sensual, personal performance.";
 		jobperformance += 25;
 	}
 	if (g_Girls.GetStat(girl, STAT_TIREDNESS) > 70)
 	{
-		message += girlName + " was too exhausted to give her best tonight";
+		ss << girlName + " was too exhausted to give her best tonight";
 		if (jobperformance >= 120)
 		{
-			message += ", but she did a fairly good job of hiding her exhaustion.\n";
+			ss << ", but she did a fairly good job of hiding her exhaustion.\n";
 			jobperformance -= 10;
 		}
 		else
 		{
-			message += ". Unable to even mask her tiredness, she moved clumsily and openly yawned around customers.\n";
+			ss << ". Unable to even mask her tiredness, she moved clumsily and openly yawned around customers.\n";
 			jobperformance -= 30;
 		}
 	}
 
 	if (jobperformance >= 245)
 	{
-		message += " She must be the perfect stripper - customers go on and on about her and always come to see her when she works.\n\n";
+		ss << " She must be the perfect stripper - customers go on and on about her and always come to see her when she works.\n\n";
 		wages += 155;
 	}
 	else if (jobperformance >= 185)
 	{
-		message += " She's unbelievable at this and is always getting praised by the customers for her work.\n\n";
+		ss << " She's unbelievable at this and is always getting praised by the customers for her work.\n\n";
 		wages += 95;
 	}
 	else if (jobperformance >= 145)
 	{
-		message += " She's good at this job and gets praised by the customers often.\n\n";
+		ss << " She's good at this job and gets praised by the customers often.\n\n";
 		wages += 55;
 	}
 	else if (jobperformance >= 100)
 	{
-		message += " She made a few mistakes but overall she is okay at this.\n\n";
+		ss << " She made a few mistakes but overall she is okay at this.\n\n";
 		wages += 15;
 	}
 	else if (jobperformance >= 70)
 	{
-		message += " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
+		ss << " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
 		wages -= 5;
 	}
 	else
 	{
-		message += " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
+		ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
 		wages -= 15;
 	}
 
@@ -161,19 +161,19 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 	// lap dance code.. just test stuff for now
 	if (lapdance >= 90)
 	{
-		message += girlName + " doesn't have to try to sell private dances the patrons beg her to buy one off her.\n";
+		ss << girlName + " doesn't have to try to sell private dances the patrons beg her to buy one off her.\n";
 		if (roll < 5)
 		{
-			message += "She sold a champagne dance.";
+			ss << "She sold a champagne dance.";
 			wages += 250;
 		}
 		if (roll < 20)
 		{
-			message += "She sold a shower dance.\n";
+			ss << "She sold a shower dance.\n";
 			wages += 125;
 			if (g_Girls.GetStat(girl, STAT_LIBIDO) > 70)
 			{
-				message += "She was in the mood so she put on quite a show, taking herself to orgasm right in front of the customer.";
+				ss << "She was in the mood so she put on quite a show, taking herself to orgasm right in front of the customer.";
 				g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -20);
 				wages += 50;
 				mast = true;
@@ -181,7 +181,7 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 		}
 		if (roll < 40)
 		{
-			message += "She was able to sell a few VIP dances.\n";
+			ss << "She was able to sell a few VIP dances.\n";
 			wages += 160;
 			if (g_Dice.percent(20))
 			{
@@ -190,7 +190,7 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 		}
 		if (roll < 60)
 		{
-			message += "She sold a VIP dance.\n";
+			ss << "She sold a VIP dance.\n";
 			wages += 75;
 			if (g_Dice.percent(15))
 			{
@@ -199,20 +199,20 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 		}
 		else
 		{
-			message += "She sold several lap dances.";
+			ss << "She sold several lap dances.";
 			wages += 85;
 		}
 	}
 	else if (lapdance >= 65)
 	{
-		message += girlName + "'s skill at selling private dances is impressive.\n";
+		ss << girlName + "'s skill at selling private dances is impressive.\n";
 		if (roll < 10)
 		{
-			message += "She convinced a patron to buy a shower dance.\n";
+			ss << "She convinced a patron to buy a shower dance.\n";
 			wages += 75;
 			if (g_Girls.GetStat(girl, STAT_LIBIDO) > 70)
 			{
-				message += "She was in the mood so she put on quite a show, taking herself to orgasm right in front of the customer.";
+				ss << "She was in the mood so she put on quite a show, taking herself to orgasm right in front of the customer.";
 				g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -20);
 				wages += 50;
 				mast = true;
@@ -220,7 +220,7 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 		}
 		if (roll < 40)
 		{
-			message += "Sold a VIP dance to a patron.\n";
+			ss << "Sold a VIP dance to a patron.\n";
 			wages += 75;
 			if (g_Dice.percent(20))
 			{
@@ -229,16 +229,16 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 		}
 		else
 		{
-			message += "Sold a few lap dances.";
+			ss << "Sold a few lap dances.";
 			wages += 65;
 		}
 	}
 	else if (lapdance >= 40)
 	{
-		message += girlName + " tried to sell private dances and ";
+		ss << girlName + " tried to sell private dances and ";
 		if (roll < 5)
 		{
-			message += "was able to sell a vip dance againts all odds.\n";
+			ss << "was able to sell a vip dance againts all odds.\n";
 			wages += 75;
 			if (g_Dice.percent(10))
 			{
@@ -247,57 +247,57 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 		}
 		if (roll < 20)
 		{
-			message += "was able to sell a lap dance.";
+			ss << "was able to sell a lap dance.";
 			wages += 25;
 		}
 		else
 		{
-			message += "wasn't able to sell any.";
+			ss << "wasn't able to sell any.";
 		}
 	}
 	else
 	{
-		message += girlName + "'s doesn't seem to understand the real money in stripping is selling private dances.\n";
+		ss << girlName + "'s doesn't seem to understand the real money in stripping is selling private dances.\n";
 	}
 
 
 	//try and add randomness here
 	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85 && g_Dice.percent(20))
-	{ message += "Stunned by her beauty a customer left her a great tip.\n\n"; wages += 25; }
+	{ ss << "Stunned by her beauty a customer left her a great tip.\n\n"; wages += 25; }
 
 	if (g_Girls.HasTrait(girl, "Clumsy") && g_Dice.percent(5))
-		{ message += " Her clumsy nature caused her to slide off the pole causing her to have to stop stripping for a few hours.\n"; wages -= 15; }
+	{ ss << " Her clumsy nature caused her to slide off the pole causing her to have to stop stripping for a few hours.\n"; wages -= 15; }
 
 	if (g_Girls.HasTrait(girl, "Pessimist") && g_Dice.percent(5))
 	{
 		if (jobperformance < 125)
-			{ message += " Her pessimistic mood depressed the customers making them tip less.\n"; wages -= 10; }
+			{ ss << " Her pessimistic mood depressed the customers making them tip less.\n"; wages -= 10; }
 		else
-			{ message += girlName + " was in a poor mood so the patrons gave her a bigger tip to try and cheer her up.\n"; wages += 10; }
+			{ ss << girlName + " was in a poor mood so the patrons gave her a bigger tip to try and cheer her up.\n"; wages += 10; }
 	}
 
 	if (g_Girls.HasTrait(girl, "Optimist") && g_Dice.percent(5))
 	{
 		if (jobperformance < 125)
-			{ message += girlName + " was in a cheerful mood but the patrons thought she needed to work more on her stripping.\n"; wages -= 10; }
+			{ ss << girlName + " was in a cheerful mood but the patrons thought she needed to work more on her stripping.\n"; wages -= 10; }
 		else
-			{ message += " Her optimistic mood made patrons cheer up increasing the amount they tip.\n"; wages += 10; }
+			{ ss << " Her optimistic mood made patrons cheer up increasing the amount they tip.\n"; wages += 10; }
 	}
 
 	if (g_Girls.HasTrait(girl, "Great Figure") && g_Dice.percent(20))
 	{
 		if (jobperformance < 125)
-			{ message += girlName + " has a great figure so she draws a few extra patrons even if she needed to work more on her stripping.\n"; wages += 5; }
+			{ ss << girlName + " has a great figure so she draws a few extra patrons even if she needed to work more on her stripping.\n"; wages += 5; }
 		else
-			{ message += girlName + "'s great figure draws a large crowed to the stage and her skill at stripping makes them pay up to see the show up close.\n"; wages += 15; }
+			{ ss << girlName + "'s great figure draws a large crowed to the stage and her skill at stripping makes them pay up to see the show up close.\n"; wages += 15; }
 	}
 
 	//if (g_Dice.percent(10))//ruffe event
 	//{
-	//	message += "A patron keep buying her drinks \n";
+	//	ss << "A patron keep buying her drinks \n";
 	//	if (g_Girls.GetStat(girl, SKILL_HERBALISM) > 35)
 	//	{
-	//		message += "but she noticed an extra taste that she knew was a drug to make her pass out. She reported him to secuirty and he was escorted out. Good news is she made a good amount of money off him before this.\n"; wages += 25;
+	//		ss << "but she noticed an extra taste that she knew was a drug to make her pass out. She reported him to secuirty and he was escorted out. Good news is she made a good amount of money off him before this.\n"; wages += 25;
 	//	}
 	//	else
 	//	{
@@ -307,7 +307,7 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 
 	if (girl->is_addict() && !sex && !mast && g_Dice.percent(60)) //not going to get money or drugs any other way
 	{
-		message += "\nNoticing her addiction, a customer offered her drugs for a blowjob. She accepted, taking him out of sight of security and sucking him off for no money.\n";
+		ss << "\nNoticing her addiction, a customer offered her drugs for a blowjob. She accepted, taking him out of sight of security and sucking him off for no money.\n";
 		warning = "Noticing her addiction, a customer offered her drugs for a blowjob. She accepted, taking him out of sight of security and sucking him off for no money.\n";
 		if (g_Girls.HasTrait(girl, "Shroud Addict"))
 		{
@@ -331,7 +331,7 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 	if (sex)
 	{
 		u_int n;
-		message += "In one of the private shows, she ended up ";
+		ss << "In one of the private shows, she ended up ";
 		//sCustomer cust;  //SIN moved this to earlier.
 		brothel->m_Happiness += 100;
 		//GetMiscCustomer(brothel, cust);
@@ -339,20 +339,20 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 		if (cust.m_IsWoman)
 		{
 			n = SKILL_LESBIAN;
-			message += "licking the customer's clit until she screamed out in pleasure, making her very happy.";
+			ss << "licking the customer's clit until she screamed out in pleasure, making her very happy.";
 		}
 		else
 		{
 			switch (g_Dice % 10)
 			{
-			case 0:        n = SKILL_ORALSEX;   message += "sucking the customer off";					break;
-			case 1:        n = SKILL_TITTYSEX;  message += "using her tits to get the customer off";    break;
-			case 2:        n = SKILL_HANDJOB;   message += "using her hand to get the customer off";    break;
-			case 3:        n = SKILL_ANAL;      message += "letting the customer use her ass";			break;
-			case 4:        n = SKILL_FOOTJOB;   message += "using her feet to get the customer off";    break;
-			default:	   n = SKILL_NORMALSEX; message += "fucking the customer as well";				break;
+			case 0:        n = SKILL_ORALSEX;   ss << "sucking the customer off";					break;
+			case 1:        n = SKILL_TITTYSEX;  ss << "using her tits to get the customer off";		break;
+			case 2:        n = SKILL_HANDJOB;   ss << "using her hand to get the customer off";     break;
+			case 3:        n = SKILL_ANAL;      ss << "letting the customer use her ass";			break;
+			case 4:        n = SKILL_FOOTJOB;   ss << "using her feet to get the customer off";     break;
+			default:	   n = SKILL_NORMALSEX; ss << "fucking the customer as well";				break;
 			}
-			message += ", making him very happy.\n";
+			ss << ", making him very happy.\n";
 		}
 		/* */if (n == SKILL_LESBIAN)	imageType = IMGTYPE_LESBIAN;
 		else if (n == SKILL_ORALSEX)	imageType = IMGTYPE_ORAL;
@@ -370,7 +370,7 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 		roll_max /= 4;
 		wages += 50 + g_Dice%roll_max;
 		girl->m_Pay = wages;
-		girl->m_Events.AddMessage(message, imageType, Day0Night1);
+		girl->m_Events.AddMessage(ss.str(), imageType, Day0Night1);
 	}
 	else if (mast)
 	{
@@ -380,7 +380,7 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 		roll_max /= 4;
 		wages += 50 + g_Dice%roll_max;
 		girl->m_Pay = wages;
-		girl->m_Events.AddMessage(message, IMGTYPE_MAST, Day0Night1);
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_MAST, Day0Night1);
 	}
 	else
 	{
@@ -390,17 +390,17 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 		roll_max /= 4;
 		wages += 10 + g_Dice%roll_max;
 		girl->m_Pay = wages;
-		girl->m_Events.AddMessage(message, IMGTYPE_STRIP, Day0Night1);
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_STRIP, Day0Night1);
 	}
 
 
 	//enjoyed the work or not
 	if (roll <= 5)
-	{ message += "\nSome of the patrons abused her during the shift."; work -= 1; }
+	{ ss << "\nSome of the patrons abused her during the shift."; work -= 1; }
 	else if (roll <= 25)
-	{ message += "\nShe had a pleasant time working."; work += 3; }
+	{ ss << "\nShe had a pleasant time working."; work += 3; }
 	else
-	{ message += "\nOtherwise, the shift passed uneventfully."; work += 1; }
+	{ ss << "\nOtherwise, the shift passed uneventfully."; work += 1; }
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKSTRIP, work, true);
 

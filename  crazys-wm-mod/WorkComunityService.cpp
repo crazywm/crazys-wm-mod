@@ -46,10 +46,10 @@ extern int g_Building;
 // `J` Centre Job - General
 bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-	string message = "", girlName = girl->m_Realname; stringstream ss;
+	stringstream ss; string girlName = girl->m_Realname;
 	g_Building = BUILDING_CENTRE;
 
-	if (Preprocessing(ACTION_WORKCENTRE, girl, brothel, Day0Night1, summary, message))	// they refuse to have work
+	if (Preprocessing(ACTION_WORKCENTRE, girl, brothel, Day0Night1, summary, ss.str()))	// they refuse to have work
 		return true;
 
 	// put that shit away, you'll scare off the customers!
@@ -65,7 +65,7 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0N
 		g_Girls.GetSkill(girl, SKILL_SERVICE));
 
 
-	message += "She worked doing comunity services.";
+	ss << "She worked doing comunity services.";
 
 	//good traits
 	if (g_Girls.HasTrait(girl, "Charismatic"))		jobperformance += 20;
@@ -83,30 +83,30 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0N
 	if (g_Girls.HasTrait(girl, "Meek"))				jobperformance -= 20;
 
 	// `J` merged slave/free messages and moved actual dispo change to after
-	/* */if (jobperformance >= 245)	{ dispo = 12;	message += " She must be perfect at this.\n\n"; }
-	else if (jobperformance >= 185)	{ dispo = 10;	message += " She's unbelievable at this and is always getting praised by people for her work.\n\n"; }
-	else if (jobperformance >= 145)	{ dispo = 8;	message += " She's good at this job and gets praised by people often.\n\n"; }
-	else if (jobperformance >= 100)	{ dispo = 6;	message += " She made a few mistakes but overall she is okay at this.\n\n"; }
-	else if (jobperformance >= 70)	{ dispo = 4;	message += " She was nervous and made a few mistakes. She isn't that good at this.\n\n"; }
-	else /*                       */{ dispo = 2;	message += " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n"; }
+	/* */if (jobperformance >= 245)	{ dispo = 12;	ss << " She must be perfect at this.\n\n"; }
+	else if (jobperformance >= 185)	{ dispo = 10;	ss << " She's unbelievable at this and is always getting praised by people for her work.\n\n"; }
+	else if (jobperformance >= 145)	{ dispo = 8;	ss << " She's good at this job and gets praised by people often.\n\n"; }
+	else if (jobperformance >= 100)	{ dispo = 6;	ss << " She made a few mistakes but overall she is okay at this.\n\n"; }
+	else if (jobperformance >= 70)	{ dispo = 4;	ss << " She was nervous and made a few mistakes. She isn't that good at this.\n\n"; }
+	else /*                       */{ dispo = 2;	ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n"; }
 
 
 
 	//try and add randomness here
 	if (g_Girls.HasTrait(girl, "Nymphomaniac") && g_Dice.percent(30) &&  !g_Girls.HasTrait(girl, "Virgin") && g_Girls.GetStat(girl, STAT_LIBIDO) > 85)
-	{ message += "Her Nymphomania got the better of her today and she decide the best way to services her community was on her back!\n"; sex = true; }
+	{ ss << "Her Nymphomania got the better of her today and she decide the best way to services her community was on her back!\n"; sex = true; }
 
 	if (g_Girls.GetStat(girl, STAT_INTELLIGENCE) < 55 && g_Dice.percent(30))
-	{ blow = true;	message += "An elderly fellow managed to convince " + girlName + " that the best way to serve her community was on her knees. She ended up giving him a blow job!\n\n"; }
+	{ blow = true;	ss << "An elderly fellow managed to convince " + girlName + " that the best way to serve her community was on her knees. She ended up giving him a blow job!\n\n"; }
 
 
 	//enjoyed the work or not
 	if (roll <= 5)
-	{ message += " \nSome of the patrons abused her during the shift."; work -= 1; }
+	{ ss << "\nSome of the patrons abused her during the shift."; work -= 1; }
 	else if (roll <= 25) 
-	{ message += " \nShe had a pleasant time working."; work += 3; }
+	{ ss << "\nShe had a pleasant time working."; work += 3; }
 	else
-	{ message += " \nOtherwise, the shift passed uneventfully."; work += 1; }
+	{ ss << "\nOtherwise, the shift passed uneventfully."; work += 1; }
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKCENTRE, work, true);
 
@@ -120,7 +120,7 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0N
 			if (g_Girls.CheckVirginity(girl))
 			{
 				g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
-				message += "She is no longer a virgin.\n";
+				ss << "She is no longer a virgin.\n";
 			}
 		}
 		else
@@ -141,17 +141,17 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0N
 	}
 
 	if (girl->m_States&(1 << STATUS_SLAVE))
-	{ message += "\nThe fact that she is your slave makes people think its less of a good deed on your part."; }
+	{ ss << "\nThe fact that she is your slave makes people think its less of a good deed on your part."; }
 	else
 	{
-		message += "\nThe fact that your paying this girl to do this helps people think your a better person.";
+		ss << "\nThe fact that your paying this girl to do this helps people think your a better person.";
 		girl->m_Pay = wages;
 		g_Gold.staff_wages(100);  // wages come from you
 		dispo = int(dispo*1.5);
 	}
 
 	g_Brothels.GetPlayer()->disposition(dispo);
-	girl->m_Events.AddMessage(message, image, Day0Night1);
+	girl->m_Events.AddMessage(ss.str(), image, Day0Night1);
 
 	help += jobperformance / 10;		//  1 helped per 10 point of performance
 

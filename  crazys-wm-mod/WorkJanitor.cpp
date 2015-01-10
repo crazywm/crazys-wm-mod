@@ -46,10 +46,7 @@ extern cGold g_Gold;
 // `J` Clinic Job - Staff - job_is_cleaning
 bool cJobManager::WorkJanitor(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-	string message = "";
-	stringstream ss;
-	string girlName = girl->m_Realname;
-
+	stringstream ss; string girlName = girl->m_Realname;
 	cConfig cfg;
 
 	g_Girls.UnequipCombat(girl);	// put that shit away

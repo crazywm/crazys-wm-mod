@@ -44,8 +44,8 @@ extern cJobManager m_JobManager;
 // `J` Brothel Job - General
 bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-	string message = "";
-	if (Preprocessing(ACTION_COMBAT, girl, brothel, Day0Night1, summary, message)) return true;
+	stringstream ss;
+	if (Preprocessing(ACTION_COMBAT, girl, brothel, Day0Night1, summary, ss.str())) return true;
 	// determine if they fight any monsters
 	if (!g_Dice.percent(max(girl->combat(), girl->magic())))	// WD:	Allow best of Combat or Magic skill 
 	{
@@ -60,7 +60,6 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 	int num_items = 0;
 	long gold = 0;
 	bool raped = false;
-	stringstream ss;
 
 	g_Girls.EquipCombat(girl);	// ready armor and weapons!
 
@@ -86,9 +85,9 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 			if (g_Dice%girl->get_skill(SKILL_COMBAT) < 5) raped = true;
 			else
 			{
-				message = "She came back with one animal today.\n\n";
-				message += "(Error: You need a Non-Human Random Girl to allow WorkExploreCatacombs randomness)";
-				girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, Day0Night1);
+				ss << "She came back with one animal today.\n\n";
+				ss << "(Error: You need a Non-Human Random Girl to allow WorkExploreCatacombs randomness)";
+				girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 				g_Brothels.add_to_beasts(1);
 				type_beasts++;
 			}
