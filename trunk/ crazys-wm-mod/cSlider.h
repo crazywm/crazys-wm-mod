@@ -64,6 +64,7 @@ public:
 	bool CreateSlider(int ID, int x, int y, int width, int min = 0, int max = 100, int increment = 5, int value = 0, float height = 1.0);
 
 	bool IsOver(int x, int y);  // determine if mouse is over control, switch button image accordingly
+	bool IsActive(bool active = false);  // determine if keyboard is in control, switch button image accordingly
 	bool MouseDown(int x, int y);  // user clicked mouse down; determine if mouse is over button itself so that we need to initiate drag
 	void DragMove(int x);  // slider button is being dragged and has moved, so update offset and value
 	void EndDrag();  // slider button is no longer being dragged

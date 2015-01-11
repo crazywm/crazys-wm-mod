@@ -1303,8 +1303,13 @@ Added the Player's m_FirstName, m_Surname, m_RealName, m_BirthMonth, m_BirthDay 
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.23
 !!!!!!!!!!!!!!!!!!!! pushed to SVN - r133
 
-
-
+###  Changes 1/11/2015
+All new New Game page
+ - Added Player Name and Surname boxes as well as birthday selection.
+ - Added NewGame.xml to the interface folder
+ 
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.24
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r134
 
 
 

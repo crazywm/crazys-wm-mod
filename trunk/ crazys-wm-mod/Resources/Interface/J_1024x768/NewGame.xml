@@ -1,0 +1,18 @@
+<Screen>
+<Window  Name="NewGame"                             XPos="200" YPos="100" Width="400" Height="400" Border="1" />
+<Button  Name="Ok"      Image="Ok"                  XPos="50"  YPos="318" Width="128" Height="32"  Transparency="true" Scale="true" />
+<Button  Name="Cancel"  Image="Cancel"              XPos="222" YPos="318" Width="128" Height="32"  Transparency="true" Scale="true" />
+<Text    Name="Label1"  Text="Brothel Name"         XPos="32"  YPos="32"  Width="128" Height="32"  FontSize="16" />
+<EditBox Name="BrothelName"                         XPos="160" YPos="32"  Width="208" Height="32"  Border="1" />
+<Text    Name="Label2"  Text="Player First Name"    XPos="32"  YPos="96"  Width="128" Height="32"  FontSize="16" />
+<EditBox Name="PlayerName"                          XPos="160" YPos="96"  Width="208" Height="32"  Border="1" />
+<Text    Name="Label3"  Text="Player Last Name"     XPos="32"  YPos="128" Width="128" Height="32"  FontSize="16" />
+<EditBox Name="PlayerSurname"                       XPos="160" YPos="128" Width="208" Height="32"  Border="1" />
+<Text    Name="Label4"  Text="Player Birth Month"   XPos="32"  YPos="192" Width="128" Height="32"  FontSize="16" />
+<Slider  Name="PlayerBirthMonth"                    XPos="160" YPos="198" Width="144" Height="32"  MinValue="1"        MaxValue="12" Value="1" Increment="1" LiveUpdate="true" Hidden="false" Disabled="false" />
+<Text    Name="PlayerBirthMonthNum" Text="January"  XPos="304" YPos="192" Width="96" Height="32"  FontSize="16" />
+<Text    Name="Label5"  Text="Player Birth Day"     XPos="32"  YPos="224" Width="128" Height="32"  FontSize="16" />
+<Slider  Name="PlayerBirthDay"                      XPos="160" YPos="230" Width="176" Height="32"  MinValue="1"        MaxValue="30" Value="1" Increment="1" LiveUpdate="true" Hidden="false" Disabled="false" />
+<Text    Name="PlayerBirthDayNum" Text="1"          XPos="336" YPos="224" Width="32" Height="32"  FontSize="16" />
+
+</Screen>

@@ -124,6 +124,7 @@
     <ClCompile Include="cListBox.cpp" />
     <ClCompile Include="cMessageBox.cpp" />
     <ClCompile Include="cScreenFarmManagement.cpp" />
+    <ClCompile Include="cScreenNewGame.cpp" />
     <ClCompile Include="cScreenPropertyManagement.cpp" />
     <ClCompile Include="cScrollBar.cpp" />
     <ClCompile Include="cSlider.cpp" />
@@ -360,6 +361,7 @@
     <ClInclude Include="cListBox.h" />
     <ClInclude Include="cMessageBox.h" />
     <ClInclude Include="cScreenFarmManagement.h" />
+    <ClInclude Include="cScreenNewGame.h" />
     <ClInclude Include="cScreenPropertyManagement.h" />
     <ClInclude Include="cScrollBar.h" />
     <ClInclude Include="cSlider.h" />

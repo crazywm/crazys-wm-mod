@@ -61,6 +61,7 @@
 #include "cScreenGirlDetails.h"
 #include "cScreenDungeon.h"
 #include "cScreenMainMenu.h"
+#include "cScreenNewGame.h"
 #include "cScreenBrothelManagement.h"
 #include "cScreenGetInput.h"
 #include "sConfig.h"
@@ -74,6 +75,8 @@ extern cWindowManager g_WinManager;
 
 cInterfaceEventManager g_InterfaceEvents;
 cScreenMainMenu g_MainMenu;
+cScreenNewGame g_NewGame;			// NewGame.xml
+
 cScreenBrothelManagement g_BrothelManagement;
 cScreenGirlManagement g_GirlManagement;
 cScreenClinicManagement g_ClinicManagement;
@@ -109,13 +112,13 @@ cScreenPropertyManagement g_PropertyManagementScreen;	// `J` added
 
 cScreenGetInput g_GetInput;
 
-cInterfaceWindow g_GetString;     // GetString.txt
-cInterfaceWindow g_LoadGame;      // LoadMenu.txt
-cInterfaceWindow g_TransferGirls; // Hard coded
-cInterfaceWindow g_Gallery;       // Hard coded
-cInterfaceWindow g_Gallery2;      // Hard coded
-cInterfaceWindow g_ChangeJobs;    // Hard coded
-cInterfaceWindow g_Turnsummary;   // Hard coded
+cInterfaceWindow g_GetString;		// GetString.txt
+cInterfaceWindow g_LoadGame;		// LoadMenu.txt
+cInterfaceWindow g_TransferGirls;	// Hard coded
+cInterfaceWindow g_Gallery;			// Hard coded
+cInterfaceWindow g_Gallery2;		// Hard coded
+cInterfaceWindow g_ChangeJobs;		// Hard coded
+cInterfaceWindow g_Turnsummary;		// Hard coded
 
 cMessageBox g_MessageBox;
 cChoiceManager g_ChoiceManager;
@@ -261,9 +264,10 @@ void LoadInterface()
 {
 	cTariff tariff;
 	stringstream ss;
-	int r = 0, g = 0, b = 0, a = 0, c = 0, d = 0, e = 0, fontsize=16;
+	int r = 0, g = 0, b = 0, a = 0, c = 0, d = 0, e = 0, fontsize = 16,
+		increment = 0, min = 0, max = 0, value = 0;
 	string image = ""; string text = ""; string file = "";
-	bool Transparency = false; bool Scale = true; bool multi = false; bool events = false;
+	bool Transparency = false, Scale = true, multi = false, events = false, liveUpdate = false;
 	ifstream incol;
 	cConfig cfg;
 
@@ -553,6 +557,7 @@ void LoadInterface()
 		g_GetString.AddEditBox(g_interfaceid.EDITBOX_NAME, 160, 32, 160, 32, 1);
 	}
 
+
 	// `J` This is never used so not updating it now
 	// Change Jobs Screen
 	g_LogFile.write("Loading Change Jobs Screen");
@@ -722,6 +727,11 @@ void LoadInterface()
 	g_LogFile.write("Loading MainMenu");
 	g_MainMenu.load();
 	g_WinManager.add_window("Main Menu", &g_MainMenu);
+
+	// New Game
+	g_LogFile.write("Loading NewGame");
+	g_NewGame.load();
+	g_WinManager.add_window("New Game", &g_NewGame);
 
 	// Get Input Screen
 	g_LogFile.write("Loading Input Screen");
