@@ -603,6 +603,7 @@
     <ClCompile Include="lua\src\lzio.c" />
     <ClCompile Include="WorkArenaJousting.cpp" />
     <ClCompile Include="cScreenPropertyManagement.cpp" />
+    <ClCompile Include="cScreenNewGame.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cButton.h">
@@ -1017,6 +1018,9 @@
       <Filter>Misc</Filter>
     </ClInclude>
     <ClInclude Include="cScreenPropertyManagement.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="cScreenNewGame.h">
       <Filter>Misc</Filter>
     </ClInclude>
   </ItemGroup>

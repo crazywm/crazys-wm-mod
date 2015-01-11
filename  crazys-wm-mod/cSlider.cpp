@@ -181,6 +181,22 @@ bool cSlider::IsOver(int x, int y)
 	return over;
 }
 
+bool cSlider::IsActive(bool active)
+{
+	if (m_Disabled || m_Hidden)
+		return false;
+
+	if (active)
+	{
+		m_ImgButton = m_ImgButtonOn;
+	}
+	else
+		m_ImgButton = m_ImgButtonOff;
+
+	return active;
+}
+
+
 bool cSlider::MouseDown(int x, int y)
 {  // this function is needed to initiate dragging of the slider
 	if(m_Disabled || m_Hidden)

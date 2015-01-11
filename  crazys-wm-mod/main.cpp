@@ -23,6 +23,7 @@
 
 #include "main.h"
 #include "cScreenMainMenu.h"
+#include "cScreenNewGame.h"
 #include "cScreenBrothelManagement.h"
 #include "InterfaceGlobals.h"
 #include "GameFlags.h"
@@ -55,6 +56,7 @@
 Globals _G;
 
 extern cScreenMainMenu g_MainMenu;
+extern cScreenNewGame g_NewGame;
 extern cScreenBrothelManagement g_BrothelManagement;
 sInterfaceIDs g_interfaceid;
 
@@ -88,6 +90,13 @@ bool g_DownArrow = false;
 bool g_EnterKey = false;
 // New Locally defined keys --PP
 bool g_SpaceKey = false;
+bool g_HomeKey = false;
+bool g_EndKey = false;
+bool g_PageUpKey = false;
+bool g_PageDownKey = false;
+bool g_TabKey = false;
+bool g_EscapeKey = false;
+
 bool g_A_Key = false;
 bool g_B_Key = false;
 bool g_C_Key = false;
@@ -114,6 +123,27 @@ bool g_W_Key = false;
 bool g_X_Key = false;
 bool g_Y_Key = false;
 bool g_Z_Key = false;
+
+string monthnames[13]
+{
+	"No Month",
+	"January",
+	"February",
+	"March",
+	"April",
+	"May",
+	"June",
+	"July",
+	"August",
+	"September",
+	"October",
+	"November",
+	"December"
+};
+
+
+
+
 
 /*                      // Alternate hotkeys (g is global keys, L is function defined locally) Ironically local keys must have global scope. --PP
 g               Tab     cycle brothels
@@ -238,11 +268,19 @@ void handle_hotkeys()
 	else if (vent.key.keysym.sym == SDLK_RCTRL || vent.key.keysym.sym == SDLK_LCTRL)        // enable multi select
 		g_CTRLDown = true;
 
-	/* */if (vent.key.keysym.sym == SDLK_UP)	g_UpArrow = true;
-	else if (vent.key.keysym.sym == SDLK_DOWN)  g_DownArrow = true;
-	else if (vent.key.keysym.sym == SDLK_LEFT)  g_LeftArrow = true;
-	else if (vent.key.keysym.sym == SDLK_RIGHT) g_RightArrow = true;
-	else if (vent.key.keysym.sym == SDLK_SPACE) g_SpaceKey = true;
+	/* */if (vent.key.keysym.sym == SDLK_UP)		g_UpArrow = true;
+	else if (vent.key.keysym.sym == SDLK_DOWN)		g_DownArrow = true;
+	else if (vent.key.keysym.sym == SDLK_LEFT)		g_LeftArrow = true;
+	else if (vent.key.keysym.sym == SDLK_RIGHT)		g_RightArrow = true;
+	else if (vent.key.keysym.sym == SDLK_SPACE)		g_SpaceKey = true;
+	else if (vent.key.keysym.sym == SDLK_HOME)		g_HomeKey = true;
+	else if (vent.key.keysym.sym == SDLK_END)		g_EndKey = true;
+	else if (vent.key.keysym.sym == SDLK_PAGEUP)	g_PageUpKey = true;
+	else if (vent.key.keysym.sym == SDLK_PAGEDOWN)	g_PageDownKey = true;
+	else if (vent.key.keysym.sym == SDLK_TAB)		g_TabKey = true;
+	else if (vent.key.keysym.sym == SDLK_ESCAPE)	g_EscapeKey = true;
+
+
 	else if (vent.key.keysym.sym == SDLK_a)     g_A_Key = true;
 	else if (vent.key.keysym.sym == SDLK_b)     g_B_Key = true;
 	else if (vent.key.keysym.sym == SDLK_c)     g_C_Key = true;
@@ -270,7 +308,7 @@ void handle_hotkeys()
 	else if (vent.key.keysym.sym == SDLK_y)     g_Y_Key = true;
 	else if (vent.key.keysym.sym == SDLK_z)     g_Z_Key = true;
 
-	if (g_WinManager.GetWindow() != &g_MainMenu && g_WinManager.GetWindow() != &g_LoadGame)
+	if (g_WinManager.GetWindow() != &g_MainMenu && g_WinManager.GetWindow() != &g_LoadGame&& g_WinManager.GetWindow() != &g_NewGame)
 	{
 		int br_no = 0;
 		string msg = "";
@@ -1049,6 +1087,14 @@ int main(int ac, char* av[])
 					else if (vent.key.keysym.sym == SDLK_LEFT)		g_LeftArrow = false;
 					else if (vent.key.keysym.sym == SDLK_RIGHT)		g_RightArrow = false;
 					else if (vent.key.keysym.sym == SDLK_SPACE)		g_SpaceKey = false;
+					else if (vent.key.keysym.sym == SDLK_HOME)		g_HomeKey = false;
+					else if (vent.key.keysym.sym == SDLK_END)		g_EndKey = false;
+					else if (vent.key.keysym.sym == SDLK_PAGEUP)	g_PageUpKey = false;
+					else if (vent.key.keysym.sym == SDLK_PAGEDOWN)	g_PageDownKey = false;
+					else if (vent.key.keysym.sym == SDLK_TAB)		g_TabKey = false;
+					else if (vent.key.keysym.sym == SDLK_ESCAPE)	g_EscapeKey = false;
+
+
 					else if (vent.key.keysym.sym == SDLK_q)			g_Q_Key = false;
 					else if (vent.key.keysym.sym == SDLK_w)			g_W_Key = false;
 					else if (vent.key.keysym.sym == SDLK_e)			g_E_Key = false;
@@ -1077,6 +1123,20 @@ int main(int ac, char* av[])
 				{
 					if (g_WinManager.HasEditBox())
 					{
+						if (g_WinManager.GetWindow() == &g_NewGame)
+						{
+							if (vent.key.keysym.sym == SDLK_UP
+								|| vent.key.keysym.sym == SDLK_DOWN
+								|| vent.key.keysym.sym == SDLK_LEFT
+								|| vent.key.keysym.sym == SDLK_RIGHT
+								|| vent.key.keysym.sym == SDLK_TAB
+								|| vent.key.keysym.sym == SDLK_ESCAPE
+								|| vent.key.keysym.sym == SDLK_HOME
+								|| vent.key.keysym.sym == SDLK_END
+								|| vent.key.keysym.sym == SDLK_PAGEUP
+								|| vent.key.keysym.sym == SDLK_PAGEDOWN)
+								handle_hotkeys();
+						}
 						if (vent.key.keysym.sym == SDLK_BACKSPACE)		g_WinManager.UpdateKeyInput('-');
 						else if (vent.key.keysym.sym == SDLK_RETURN)	g_EnterKey = true;
 						else if ((vent.key.keysym.sym >= 97 && vent.key.keysym.sym <= 122) || vent.key.keysym.sym == 39 || vent.key.keysym.sym == 32 || (vent.key.keysym.sym >= 48 && vent.key.keysym.sym <= 57) || ((vent.key.keysym.sym >= 256 && vent.key.keysym.sym <= 265)))

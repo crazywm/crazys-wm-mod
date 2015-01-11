@@ -43,6 +43,7 @@
 extern cScreenGirlDetails g_GirlDetails;
 extern cScreenBrothelManagement g_BrothelManagement;
 extern sInterfaceIDs g_interfaceid;
+extern cPlayer m_Player;
 
 // globals used for the interface
 string g_ReturnText = "";
@@ -84,6 +85,11 @@ extern bool g_DownArrow;
 extern bool g_EnterKey;
 extern bool g_AltKeys;
 extern bool g_SpaceKey;
+extern bool g_HomeKey;
+extern bool g_EndKey;
+extern bool g_PageUpKey;
+extern bool g_PageDownKey;
+
 extern bool g_Q_Key;
 extern bool g_W_Key;
 extern bool g_E_Key;

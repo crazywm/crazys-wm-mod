@@ -25,7 +25,6 @@ cGetStringScreenManager_Inner *cGetStringScreenManager::instance = 0;
 
 extern sInterfaceIDs g_interfaceid;
 extern bool g_InitWin ;
-extern bool g_NewGame ;
 extern string g_ReturnText;
 
 void cGetStringScreenManager_Inner::process()

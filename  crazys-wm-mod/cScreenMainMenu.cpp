@@ -76,11 +76,17 @@ void cScreenMainMenu::check_events()
 
 	if (g_InterfaceEvents.CheckButton(new_id))
 	{
+#if 0
+		// the old new game code
 		cGetStringScreenManager gssm;
 		gssm.empty_allowed(false);
 		gssm.set_handler(NewGame);
 		g_WinManager.Push(GetString, &g_GetString);
 		g_MessageQue.AddToQue("Enter a name for your first brothel.", 0);
+#else
+		// the new new game code
+		g_WinManager.push("New Game");
+#endif
 		g_InitWin = true;
 		return;
 	}

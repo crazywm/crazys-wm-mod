@@ -52,15 +52,18 @@ private:
  */
 	int m_CustomerFear;
 
+
+	int m_BirthYear = 1190;			// the game starts in year 1209 so default start age is 18
+	int m_BirthMonth = 1;			// there are 12 month in the year
+	int m_BirthDay = 1;				// there are 30 days in every month
+
 public:
-	string m_Title		= "Mr.";		// basic title - need to add more titles with more power gained
-	string m_FirstName	= "";			// no first name
-	string m_Surname	= "Player";		// basic surname
-	string m_RealName	= "Player";		// m_FirstName + " " + m_Surname
+	string m_Title		= "Mr.";			// basic title - need to add more titles with more power gained
+	string m_FirstName	= "Master";			// no first name
+	string m_Surname	= "Player";			// basic surname
+	string m_RealName	= "Master Player";	// m_FirstName + " " + m_Surname
 	
-	int m_BirthYear		= 1190;			// the game starts in year 1209 so default start age is 18
-	int m_BirthMonth	= 1;			// there are 12 month in the year
-	int m_BirthDay		= 1;			// there are 30 days in every month
+	
 
 
 
@@ -83,6 +86,16 @@ public:
 	int suspicion(int n);
 	int customerfear()		{ return m_CustomerFear; }
 	int customerfear(int n);
+	int BirthYear()		{ return m_BirthYear; }
+	int BirthMonth()	{ return m_BirthMonth; }
+	int BirthDay()		{ return m_BirthDay; }
+	int BirthYear(int n);
+	int BirthMonth(int n);
+	int BirthDay(int n);
+	int SetBirthYear(int n);
+	int SetBirthMonth(int n);
+	int SetBirthDay(int n);
+
 };
 
 

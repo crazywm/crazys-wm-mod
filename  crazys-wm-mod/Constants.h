@@ -603,6 +603,7 @@ const int SCREEN_GALLERY2			= 25;
 const int SCREEN_GETINPUT           = 26;
 const int SCREEN_PROPERTYMANAGEMENT = 27; // `J` added for managing all properties on 1 page
 const int SCREEN_FARM				= 28;
+const int SCREEN_NEWGAME			= 29;
 
 // The following constants are used with g_CurrBrothel to determine if we are currently working with a brothel or a new building. --PP
 const int BUILDING_BROTHEL			= 0;

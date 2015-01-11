@@ -124,6 +124,48 @@ int cPlayer::disposition(int n)
 	return m_Disposition;
 }
 
+
+int cPlayer::BirthYear(int n)
+{
+	m_BirthYear = m_BirthYear + n;
+	return m_BirthYear;
+}
+int cPlayer::BirthMonth(int n)
+{
+	m_BirthMonth = m_BirthMonth + n;
+	if (m_BirthMonth > 12)		m_BirthMonth = 12;
+	if (m_BirthMonth < 1)		m_BirthMonth = 1;
+	return m_BirthMonth;
+}
+int cPlayer::BirthDay(int n)
+{
+	m_BirthDay = m_BirthDay + n;
+	if (m_BirthDay > 30)	m_BirthDay = 30;
+	if (m_BirthDay < 1)		m_BirthDay = 1;
+	return m_BirthDay;
+}
+int cPlayer::SetBirthYear(int n)
+{
+	m_BirthYear = m_BirthYear + n;
+	return m_BirthYear;
+}
+int cPlayer::SetBirthMonth(int n)
+{
+	m_BirthMonth = n;
+	if (m_BirthMonth > 12)		m_BirthMonth = 12;
+	if (m_BirthMonth < 1)		m_BirthMonth = 1;
+	return m_BirthMonth;
+}
+int cPlayer::SetBirthDay(int n)
+{
+	m_BirthDay = n;
+	if (m_BirthDay > 30)	m_BirthDay = 30;
+	if (m_BirthDay < 1)		m_BirthDay = 1;
+	return m_BirthDay;
+}
+
+
+
 int cPlayer::suspicion(int n)
 {
 	n = Scale200(n, m_Suspicion);
