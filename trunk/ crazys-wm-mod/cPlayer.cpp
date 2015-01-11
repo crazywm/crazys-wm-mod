@@ -43,7 +43,12 @@ TiXmlElement* cPlayer::SavePlayerXML(TiXmlElement* pRoot)
 	TiXmlElement* pPlayer = new TiXmlElement("Player");
 	pRoot->LinkEndChild(pPlayer);
 	// save the player
-	pPlayer->SetAttribute("WinGame", m_WinGame);// have they won the game
+	pPlayer->SetAttribute("RealName", m_RealName);
+	pPlayer->SetAttribute("FirstName", m_FirstName);
+	pPlayer->SetAttribute("Surname", m_Surname);
+	pPlayer->SetAttribute("BirthMonth", m_BirthMonth);
+	pPlayer->SetAttribute("BirthDay", m_BirthDay);
+
 	// Save their stats
 	SaveStatsXML(pPlayer, m_Stats);
 	// skills
@@ -52,6 +57,7 @@ TiXmlElement* cPlayer::SavePlayerXML(TiXmlElement* pRoot)
 	pPlayer->SetAttribute("Suspicion", m_Suspicion);
 	pPlayer->SetAttribute("Disposition", m_Disposition);
 	pPlayer->SetAttribute("CustomerFear", m_CustomerFear);
+	pPlayer->SetAttribute("WinGame", m_WinGame);// have they won the game
 	return pPlayer;
 }
 
@@ -61,7 +67,12 @@ bool cPlayer::LoadPlayerXML(TiXmlHandle hPlayer)
 	SetToZero();//init to 0
 	TiXmlElement* pPlayer = hPlayer.ToElement();
 	if (pPlayer == 0) return false;
-	pPlayer->QueryValueAttribute<bool>("WinGame", &m_WinGame);// have they won the game
+	if (pPlayer->Attribute("RealName"))		m_RealName		= pPlayer->Attribute("RealName");
+	if (pPlayer->Attribute("FirstName"))	m_FirstName		= pPlayer->Attribute("FirstName");
+	if (pPlayer->Attribute("Surname"))		m_Surname		= pPlayer->Attribute("Surname");
+	if (pPlayer->Attribute("BirthMonth"))	pPlayer->QueryIntAttribute("BirthMonth", &m_BirthMonth);
+	if (pPlayer->Attribute("BirthDay"))		pPlayer->QueryIntAttribute("BirthDay", &m_BirthDay);
+
 	// stats
 	LoadStatsXML(hPlayer.FirstChild("Stats"), m_Stats);
 	// skills
@@ -70,6 +81,7 @@ bool cPlayer::LoadPlayerXML(TiXmlHandle hPlayer)
 	pPlayer->QueryIntAttribute("Suspicion", &m_Suspicion);
 	pPlayer->QueryIntAttribute("Disposition", &m_Disposition);
 	pPlayer->QueryIntAttribute("CustomerFear", &m_CustomerFear);
+	pPlayer->QueryValueAttribute<bool>("WinGame", &m_WinGame);// have they won the game
 	return true;
 }
 

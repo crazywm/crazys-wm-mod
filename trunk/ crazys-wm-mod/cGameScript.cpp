@@ -47,6 +47,8 @@ extern cGold g_Gold;
 extern cGangManager g_Gangs;
 extern cScreenGirlDetails g_GirlDetails;
 
+extern cSurnameList g_SurnameList;
+
 sScript *cGameScript::Process(sScript *Script)
 {
 	// Jump to function based on action type
@@ -122,7 +124,8 @@ sScript *cGameScript::Process(sScript *Script)
 	case 67: return Script_BathTarget(Script);
 	case 68: return Script_NurseTarget(Script);
 	case 69: return Script_FormalTarget(Script);
-	//case 60: return Script_GirlNameTarget(Script);
+	case 70: return Script_AddFamilyToDungeon(Script);
+		//case 60: return Script_GirlNameTarget(Script);
 	}
 
 	return 0; // Error executing
@@ -652,80 +655,201 @@ sScript *cGameScript::Script_AddRandomValueToGold(sScript *Script)
 sScript *cGameScript::Script_AddManyRandomGirlsToDungeon(sScript *Script)
 {
 	int value[7];
-	if(Script->m_Entries[0].m_Var == 1)
+	if (Script->m_Entries[0].m_Var == 1)							// [0] = how many girls?
 		value[0] = m_Vars[Script->m_Entries[0].m_lValue];
 	else
 		value[0] = Script->m_Entries[0].m_lValue;
 
-	if(Script->m_Entries[1].m_Var == 1)
+	if (Script->m_Entries[1].m_Var == 1)							// [1] = kidnaped or captured?
 		value[1] = m_Vars[Script->m_Entries[1].m_Selection];
 	else
 		value[1] = Script->m_Entries[1].m_Selection;
 
-	if(Script->m_Entries[2].m_Var == 1)
+	if (Script->m_Entries[2].m_Var == 1)							// [2] = min age
 		value[2] = m_Vars[Script->m_Entries[2].m_lValue];
 	else
 		value[2] = Script->m_Entries[2].m_lValue;
 
-	if(Script->m_Entries[3].m_Var == 1)
+	if (Script->m_Entries[3].m_Var == 1)							// [3] = max age
 		value[3] = m_Vars[Script->m_Entries[3].m_lValue];
 	else
 		value[3] = Script->m_Entries[3].m_lValue;
 
-	if(Script->m_Entries[4].m_Var == 1)
+	if (Script->m_Entries[4].m_Var == 1)							// [4] = slave
 		value[4] = m_Vars[Script->m_Entries[4].m_lValue];
 	else
 		value[4] = Script->m_Entries[4].m_lValue;
 
-	if(Script->m_Entries[5].m_Var == 1)
+	if (Script->m_Entries[5].m_Var == 1)							// [5] = nonhuman
 		value[5] = m_Vars[Script->m_Entries[5].m_lValue];
 	else
 		value[5] = Script->m_Entries[5].m_lValue;
 
-	if(Script->m_Entries[6].m_Var == 1)
+	if (Script->m_Entries[6].m_Var == 1)							// [6] = arena
 		value[6] = m_Vars[Script->m_Entries[6].m_lValue];
 	else
 		value[6] = Script->m_Entries[6].m_lValue;
 
 	bool kidnaped = false;
 	int reason = 0;
-	if(value[1] == 0)
+	if (value[1] == 0)
 	{
 		kidnaped = true;
 		reason = DUNGEON_GIRLKIDNAPPED;
 	}
-	else if(value[1] == 1)
+	else if (value[1] == 1)
 	{
 		kidnaped = true;
 		reason = DUNGEON_GIRLCAPTURED;
 	}
 
 	bool slave = false;
-	if(value[4] == 1)
+	if (value[4] == 1)
 		slave = true;
 
 	bool allowNonHuman = false;
-	if(value[5] == 1)
+	if (value[5] == 1)
 		allowNonHuman = true;
 
 	bool arena = false;
-	if(value[6] == 1)
+	if (value[6] == 1)
 		arena = true;
 
-	for(int i=0; i<value[0]; i++)
+	for (int i = 0; i < value[0]; i++)
 	{
 		int age = 0;
-		if(value[2] == 0)
-			age = (g_Dice%(value[3]+1))+value[2];
+		if (value[2] == 0)
+			age = (g_Dice % (value[3] + 1)) + value[2];
 		else
-			age = (g_Dice%(value[3]+1))+value[2]-1;
+			age = (g_Dice % (value[3] + 1)) + value[2] - 1;
 
-		//g_Brothels.GetDungeon()->AddGirl(g_Girls.CreateRandomGirl(age, false, "", slave, allowNonHuman, kidnaped, arena), reason);
 		g_Brothels.GetDungeon()->AddGirl(g_Girls.CreateRandomGirl(age, false, slave, "", allowNonHuman, kidnaped, arena), reason);
 	}
 
 	return Script->m_Next;
 }
+
+// 
+sScript *cGameScript::Script_AddFamilyToDungeon(sScript *Script)
+{
+	int value[6];
+	if (Script->m_Entries[0].m_Var == 1)					// [0] = how many daughters? Base age 18-25
+		value[0] = m_Vars[Script->m_Entries[0].m_lValue];
+	else
+		value[0] = Script->m_Entries[0].m_lValue;
+
+	if (Script->m_Entries[1].m_Var == 1)					// [1] = mother taken also?
+		value[1] = m_Vars[Script->m_Entries[1].m_Selection];
+	else
+		value[1] = Script->m_Entries[1].m_Selection;
+
+	if (Script->m_Entries[2].m_Var == 1)					// [2] = kidnaped or captured?
+		value[2] = m_Vars[Script->m_Entries[2].m_lValue];
+	else
+		value[2] = Script->m_Entries[2].m_lValue;
+
+	if (Script->m_Entries[3].m_Var == 1)					// [3] = slave
+		value[3] = m_Vars[Script->m_Entries[3].m_lValue];
+	else
+		value[3] = Script->m_Entries[3].m_lValue;
+
+	if (Script->m_Entries[4].m_Var == 1)					// [4] = nonhuman
+		value[4] = m_Vars[Script->m_Entries[4].m_lValue];
+	else
+		value[4] = Script->m_Entries[4].m_lValue;
+
+	if (Script->m_Entries[5].m_Var == 1)					// [5] = arena
+		value[5] = m_Vars[Script->m_Entries[5].m_lValue];
+	else
+		value[5] = Script->m_Entries[5].m_lValue;
+
+
+	bool kidnaped = false;
+	int reason = 0;
+	if (value[3] == 0)
+	{
+		kidnaped = true;
+		reason = DUNGEON_GIRLKIDNAPPED;
+	}
+	else if (value[3] == 1)
+	{
+		kidnaped = true;
+		reason = DUNGEON_GIRLCAPTURED;
+	}
+
+	bool slave = (value[4] == 1);
+	bool allowNonHuman = (value[5] == 1);
+	bool arena = (value[6] == 1);
+
+
+	// Set the surname for the family
+	string surname;
+	for (int i = 0; i < 5; i++)
+	{
+		surname = g_SurnameList.random();
+		if (i>3) surname = surname + "-" + g_SurnameList.random();
+		if (g_Girls.SurnameExists(surname)) continue;
+		break;
+	}
+
+	// `J` zzzzzz - this can probably be done easier
+	sGirl* Daughter1;
+	sGirl* Daughter2;
+	sGirl* Daughter3;
+	sGirl* Mother;
+	
+	int oldest = 18;
+	if (value[0] > 0)
+	{
+		Daughter1 = g_Girls.CreateRandomGirl((g_Dice % 13) + 13, false, slave, "", allowNonHuman, kidnaped, arena);
+		if (Daughter1->age() > oldest) oldest = Daughter1->age();
+		Daughter1->m_Surname = surname;
+		Daughter1->m_Realname = Daughter1->m_FirstName + " " + Daughter1->m_Surname;
+	}
+	if (value[0] > 1)
+	{
+		Daughter2 = g_Girls.CreateRandomGirl((g_Dice % 13) + 13, false, slave, "", allowNonHuman, kidnaped, arena);
+		if (Daughter2->age() == Daughter1->age())	// if only 2 daughters and their ages are the same, change that
+		{											// if there is a third daughter, her age can be anything (to allow twins)
+			if (Daughter1->age() > 20) Daughter2->age(-(g_Dice % 3 + 1));
+			else Daughter2->age((g_Dice % 3 + 1));
+		}
+		if (Daughter2->age() > oldest) oldest = Daughter2->age();
+		Daughter2->m_Surname = surname;
+		Daughter2->m_Realname = Daughter2->m_FirstName + " " + Daughter2->m_Surname;
+	}
+	if (value[0] > 2)
+	{
+		Daughter3 = g_Girls.CreateRandomGirl((g_Dice % 13) + 13, false, slave, "", allowNonHuman, kidnaped, arena);
+		if (Daughter3->age() > oldest) oldest = Daughter3->age();
+		Daughter3->m_Surname = surname;
+		Daughter3->m_Realname = Daughter3->m_FirstName + " " + Daughter3->m_Surname;
+	}
+
+	if (value[1])	// there is a mother
+	{
+		Mother = g_Girls.CreateRandomGirl((g_Dice % (50 - (oldest + 18))) + oldest + 18, false, slave, "", allowNonHuman, kidnaped, arena);
+		Mother->m_Surname = surname;
+		Mother->m_Realname = Mother->m_FirstName + " " + Mother->m_Surname;
+		if (!g_Dice.percent(Mother->age())) g_Girls.AddTrait(Mother, "MILF");	// the younger the mother the more likely she will be a MILF
+		g_Girls.LoseVirginity(Mother);
+
+		string biography = "Daughter of " + Mother->m_Realname + " and a deadbeat brothel client.";
+
+		if (value[0] > 0)	Daughter1->m_Desc = Daughter1->m_Desc + "\n\n" + biography;
+		if (value[0] > 1)	Daughter2->m_Desc = Daughter2->m_Desc + "\n\n" + biography;
+		if (value[0] > 2)	Daughter3->m_Desc = Daughter3->m_Desc + "\n\n" + biography;
+	}
+
+	if (value[0] > 0)	g_Brothels.GetDungeon()->AddGirl(Daughter1, reason);
+	if (value[0] > 1)	g_Brothels.GetDungeon()->AddGirl(Daughter2, reason);
+	if (value[0] > 2)	g_Brothels.GetDungeon()->AddGirl(Daughter3, reason);
+	if (value[1])		g_Brothels.GetDungeon()->AddGirl(Mother, reason);
+
+	return Script->m_Next;
+}
+
+
 
 sScript *cGameScript::Script_AddTargetGirl(sScript *Script)
 {

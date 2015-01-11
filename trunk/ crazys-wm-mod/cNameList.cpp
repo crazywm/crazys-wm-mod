@@ -41,12 +41,9 @@ void cNameList::load(string file)
 	*	open the file
 	*/
 	in.open(file.c_str());
-	if (!in) {
-		g_LogFile.ss()
-			<< "Error: unable to open file '"
-			<< file
-			<< "'"
-			;
+	if (!in)
+	{
+		g_LogFile.ss() << "Error: unable to open file '" << file << "'";
 		g_LogFile.ssend();
 		return;
 	}
@@ -54,20 +51,23 @@ void cNameList::load(string file)
 	/*
 	*	loop until the stream breaks
 	*/
-	for (;;) {
+	for (;;)
+	{
 		in.getline(buff, sizeof(buff) - 1);
 		/*
 		*		before we do anythign with the string
 		*		test to see if there's an error flag
 		*/
-		if (!in.good()) {
+		if (!in.good())
+		{
 			break;		// ok, we're done
 		}
 		/*
 		*		the first line is the number of names
 		*		we don't need it any more, so skip over it
 		*/
-		if (first) {
+		if (first)
+		{
 			first = false;
 			continue;
 		}
@@ -78,7 +78,8 @@ void cNameList::load(string file)
 		*		end of the line and remove it if found
 		*/
 		int last = s.length() - 1;
-		if (s[last] == '\r') {
+		if (s[last] == '\r')
+		{
 			s.erase(last);
 		}
 		/*
@@ -89,12 +90,9 @@ void cNameList::load(string file)
 	/*
 	*	quick sanity check
 	*/
-	if (names.size() == 0) {
-		g_LogFile.ss()
-			<< "Error: zero names found in file '"
-			<< file
-			<< "'"
-			;
+	if (names.size() == 0)
+	{
+		g_LogFile.ss() << "Error: zero names found in file '" << file << "'";
 		g_LogFile.ssend();
 		return;
 	}
@@ -107,16 +105,14 @@ string cNameList::random()
 	*	subscripting an empty vector causes a crash
 	*	let's make sure that doesn't happen
 	*/
-	if (size == 0) {
-		g_LogFile.ss()
-			<< "Error: no names in cNameList: "
-			<< "Returning name 'error'"
-			;
+	if (size == 0) 
+	{
+		g_LogFile.ss() << "Error: no names in cNameList: " << "Returning name 'error'";
 		g_LogFile.ssend();
 		/*
 		*		make sure we see the bug reports ...
 		*/
-		return "error";
+		return "";
 	}
 	/*
 	*	otherwise, pick a random name
@@ -200,7 +196,7 @@ string cSurnameList::random()
 		/*
 		*		make sure we see the bug reports ...
 		*/
-		return "error";
+		return "";
 	}
 	/*
 	*	otherwise, pick a random name

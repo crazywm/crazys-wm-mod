@@ -150,10 +150,7 @@ void cMovieScreen::process()
 	else if(g_InterfaceEvents.CheckButton (weeks_id))
 		{
 			g_InitWin = true;
-			SaveGameXML(DirPath()
-				<< "Saves"
-				<< "autosave.gam"
-			);
+			SaveGameXML(DirPath() << "Saves" << "autosave.gam");
 			NextWeek();
 			g_WinManager.Push(Turnsummary, &g_Turnsummary);
 			return;

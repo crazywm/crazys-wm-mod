@@ -214,7 +214,10 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 	if (!bStreetWork && LoopCount >g_Customers.GetNumCustomers())
 		LoopCount = g_Customers.GetNumCustomers();
 
-
+#if 0 
+	// `J` - set to 1 to debug "CustNoPay.script"
+	SetGameFlag(FLAG_CUSTNOPAY);
+#endif
 
 	for (int i = 0; i < LoopCount; i++)	// Go through all customers
 	{

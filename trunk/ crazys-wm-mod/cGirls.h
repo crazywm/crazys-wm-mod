@@ -34,7 +34,7 @@
 #include "cEvents.h"
 #include "CSurface.h"
 #include "cTriggers.h"
-#include "cNameList.h"
+//#include "cNameList.h"
 #include "cAnimatedSurface.h"
 #include "cFont.h"
 
@@ -327,6 +327,9 @@ struct sGirl
 	*/
 	string m_FirstName;							// this is the girl's first name
 	string m_Surname;							// this is the girl's surname
+	//	`J` added mother and father names
+	string m_MotherName = "";
+	string m_FatherName = "";
 	/*
 	*	MOD: changed from char* -- easier to change from lua -- doc
 	*/
@@ -1041,7 +1044,6 @@ public:
 	void updateHappyTraits(sGirl* girl);
 	void updateGirlTurnStats(sGirl* girl);
 
-
 private:
 	unsigned int m_NumGirls;	// number of girls in the class
 	sGirl* m_Parent;	// first in the list of girls who are dead, gone or in use
@@ -1054,8 +1056,7 @@ private:
 	// These are the default images used when a character is missing images for that particular purpose
 	cAImgList* m_DefImages;
 	cImgageListManager m_ImgListManager;
-	cNameList names;
-	cSurnameList surnames;
+
 };
 
 #endif  /* __CGIRL_H */

@@ -4478,9 +4478,9 @@ bool cBrothelManager::runaway_check(sBrothel *brothel, sGirl *girl)
 	bool starts_drugs = false;
 	//Crazy changed it to this might not be the best // `J` made it better :p
 	string drug = "";
+	int i = 0;
 	if (girl->happiness() <= 20 && g_Girls.HasTrait(girl, "Former Addict"))
 	{
-		int i = 0;
 		while (!starts_drugs && i<10)		// `J` She will try to find a drug she used to be addicted to
 		{									// and if she can't find it in 10 tries she will take what is available
 			int d = g_Dice % 8;				// with a slight advantage to alcohol and fairy dust
@@ -4495,6 +4495,7 @@ bool cBrothelManager::runaway_check(sBrothel *brothel, sGirl *girl)
 			{
 				starts_drugs = true;
 			}
+			i++;
 		}
 	}
 	else if (girl->happiness() <= 3 && g_Dice.percent(50) && !g_Girls.HasTrait(girl, "Viras Blood Addict"))

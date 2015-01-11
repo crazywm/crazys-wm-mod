@@ -1281,32 +1281,37 @@ Crazy pushed r129 - lots of changes to jobs and added a few traits
 
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.22
 !!!!!!!!!!!!!!!!!!!! pushed to SVN - r130
- 
- 
+
+
+
+###  Changes 1/10/2015
+Crazy pushed r131 and r132 - lots of changes to jobs - mostly code cleaning
+
+Fixed a bug in "Former Addict" check causing a infinite loop.
+Expanded more on Names and Surnames making them their own externs: 
+ - "extern cNameList g_NameList" and "extern cSurnameList g_SurnameList"
+ - Both lists load only once and are accessable to everything that may need it.
+Added a new script function "Script_AddFamilyToDungeon" and added it to the script editor.
+ - I changed "CustNoPay.script" to use this instead of 2 separate functions when kidnapping a customer's wife and daughters.
+ - This function gives them all the same surname and adds the parent biography to the daughters.
+ - The mother will not have the Virgin trait and may or may not have the MILF trait.
+ - The mother's age is calculated from the oldest daughters age.
+Added the Player's m_FirstName, m_Surname, m_RealName, m_BirthMonth, m_BirthDay to the save game.
+ - If you want to change them you need to edit the savegame file. - Once loaded, they stay.
+
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.23
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r133
+
+
+
+
+
+
+
+
+
+
+
 Whore Master Editor:
 Increased size of program window to 1000x700 to fit more stuff
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

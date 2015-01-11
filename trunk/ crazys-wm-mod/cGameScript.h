@@ -57,6 +57,7 @@ private:
 	sScript* Script_SetGirlFlag(sScript *Script);
 	sScript* Script_AddRandomValueToGold(sScript *Script);
 	sScript* Script_AddManyRandomGirlsToDungeon(sScript *Script);
+	sScript* Script_AddFamilyToDungeon(sScript *Script);			// `J` new
 	sScript* Script_AddTargetGirl(sScript *Script);
 	sScript* Script_AdjustTargetGirlStat(sScript *Script);
 	sScript* Script_PlayerRapeTargetGirl(sScript *Script);
