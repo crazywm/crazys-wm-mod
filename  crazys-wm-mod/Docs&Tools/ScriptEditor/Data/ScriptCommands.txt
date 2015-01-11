@@ -261,3 +261,12 @@ TEXT
 "Have Bath"
 "Have Nurse"
 "Have Formal"
+"AddFamilyToDungeon ~ ~ ~ ~ ~ ~"
+INT 0 3
+BOOL
+CHOICE 2
+"Kidnaped"
+"Captured"
+BOOL
+BOOL
+BOOL

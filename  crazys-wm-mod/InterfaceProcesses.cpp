@@ -431,6 +431,14 @@ void LoadGameInfoFiles()
 	FileList fl_i(location_i, "*.itemsx");
 	if (cfg.debug.log_items())	g_LogFile.os() << "Found " << fl_i.size() << " itemsx files" << endl;
 	LoadXMLItems(fl_i);
+
+	// `J` load names lists
+	DirPath location_N = DirPath() << "Resources" << "Data" << "RandomGirlNames.txt";
+	g_NameList.load(location_N);
+	DirPath location_SN = DirPath() << "Resources" << "Data" << "RandomLastNames.txt";
+	g_SurnameList.load(location_SN);
+
+
 }
 
 void LoadGirlsFiles()

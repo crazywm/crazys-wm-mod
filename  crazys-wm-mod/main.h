@@ -102,6 +102,10 @@ extern cCustomers g_Customers;
 // The global trigger manager
 extern cTriggerList g_GlobalTriggers;
 
+extern cNameList	g_NameList;
+extern cSurnameList g_SurnameList;
+
+
 // Keeping time in the game
 extern unsigned long g_Year;
 extern unsigned long g_Month;

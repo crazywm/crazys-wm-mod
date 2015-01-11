@@ -227,6 +227,9 @@ cInventory g_InvManager;
 int IDS = 0;
 cRng g_Dice;
 
+cNameList		g_NameList;
+cSurnameList g_SurnameList;
+
 void handle_hotkeys()
 {
 

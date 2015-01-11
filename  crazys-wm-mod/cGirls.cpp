@@ -68,6 +68,10 @@ extern cHouseManager g_House;
 extern cFarmManager g_Farm;
 extern cFont m_Font;
 
+
+extern cNameList	g_NameList;
+extern cSurnameList g_SurnameList;
+
 /*
 * MOD: DocClox: Stuff for the XML loader code
 *
@@ -242,8 +246,6 @@ cGirls::cGirls()
 	m_NumRandomGirls = m_NumGirls = 0;
 	m_RandomGirls = 0;
 	m_LastRandomGirls = 0;
-	names.load(DirPath() << "Resources" << "Data" << "RandomGirlNames.txt");
-	surnames.load(DirPath() << "Resources" << "Data" << "RandomLastNames.txt");
 }
 
 cGirls::~cGirls()
@@ -1080,8 +1082,8 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 	string name;
 	for (int i = 0; i < 5; i++)
 	{
-		name = names.random();
-		if (i>3) name = name + " " + names.random(); // `J` added second name to further reduce chance of multiple names
+		name = g_NameList.random();
+		if (i>3) name = name + " " + g_NameList.random(); // `J` added second name to further reduce chance of multiple names
 		if (NameExists(name)) continue;
 		break;
 	}
@@ -1090,8 +1092,8 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 	{
 		for (int i = 0; i < 5; i++)
 		{
-			surname = surnames.random();
-			if (i>3) surname = surname + "-" + surnames.random(); // `J` added second name to further reduce chance of multiple names
+			surname = g_SurnameList.random();
+			if (i>3) surname = surname + "-" + g_SurnameList.random(); // `J` added second name to further reduce chance of multiple names
 			if (SurnameExists(surname)) continue;
 			break;
 		}
