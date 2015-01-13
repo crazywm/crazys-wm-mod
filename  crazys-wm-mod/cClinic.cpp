@@ -165,11 +165,12 @@ void cClinicManager::UpdateClinic()	// Start_Building_Process_A
 			cgirl->m_YesterNightJob = cgirl->m_NightJob;	// `J` set what she did yesternight
 			cgirl->m_Refused_To_Work_Day = false;
 			cgirl->m_Refused_To_Work_Night = false;
+			string summary = "";
 
 			g_Girls.AddTiredness(cgirl);			// `J` moved all girls add tiredness to one place
 			do_food_and_digs(current, cgirl);		// Brothel only update for girls accommodation level
 			g_Girls.updateGirlAge(cgirl, true);		// update birthday counter and age the girl
-			g_Girls.HandleChildren(cgirl);			// handle pregnancy and children growing up
+			g_Girls.HandleChildren(cgirl, summary);			// handle pregnancy and children growing up
 			g_Girls.updateSTD(cgirl);				// health loss to STD's				NOTE: Girl can die
 			g_Girls.updateHappyTraits(cgirl);		// Update happiness due to Traits	NOTE: Girl can die
 			updateGirlTurnBrothelStats(cgirl);		// Update daily stats				Now only runs once per day

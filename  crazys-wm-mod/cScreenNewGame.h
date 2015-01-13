@@ -43,6 +43,7 @@ public:
 	int pbm1_id;
 	int pbd_id;
 	int pbd1_id;
+	int phn_id;
 
 	void set_ids();
 
