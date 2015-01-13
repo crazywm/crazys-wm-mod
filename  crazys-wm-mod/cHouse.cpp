@@ -384,6 +384,16 @@ void cHouseManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 					JOB_PERSONALBEDWARMER
 
 					//*/
+					if (current->is_free() && GetNumGirlsOnJob(0, JOB_RECRUITER, Day0Night1) < 1)
+					{
+						current->m_DayJob = current->m_NightJob = JOB_RECRUITER;
+						ss << "work recruiting girls for you.";
+					}
+					else if (GetNumGirlsOnJob(0, JOB_CLEANHOUSE, Day0Night1) < 1)
+					{
+						current->m_DayJob = current->m_NightJob = JOB_CLEANHOUSE;
+						ss << "work cleaning the house.";
+					}
 				}
 				current->m_PrevDayJob = current->m_PrevNightJob = 255;
 				sum = EVENT_BACKTOWORK;

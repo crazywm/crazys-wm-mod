@@ -1019,6 +1019,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\cScreenNewGame.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\cScreenNewGame.h"
+				>
+			</File>
+			<File
 				RelativePath=".\cScreenPrison.cpp"
 				>
 			</File>

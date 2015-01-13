@@ -154,7 +154,7 @@ bool cJobManager::WorkCleaning(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		{
 		case 1:
 		{
-			ss << "she hung out at the brothel, offering to 'clean off' finished customers with her mouth.\n";
+			ss << "she hung out at the brothel, offering to \"clean off\" finished customers with her mouth.\n";//Made it actually use quote marks CRAZY
 			tips = g_Dice % 6 - 1; //how many 'tips' she clean? <6 for now, considered adjusting to amount playtime - didn't seem worth complexity
 			if (tips > 0)
 			{
@@ -207,7 +207,7 @@ bool cJobManager::WorkCleaning(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			else
 			{
 				tips = 20; // you tip her for cleaning you
-				ss << "she came to your room and cleaned you.\n\n" << girlName << " ran you a hot bath and bathed naked with you.";/* Need a check here so your daughters won't do this zzzzzzzz FIXME*/ 
+				ss << "she came to your room and cleaned you.\n\n" << girlName << " ran you a hot bath and bathed naked with you.";/* Need a check here so your daughters won't do this zzzzz FIXME*/ 
 				imagetype = IMGTYPE_BATH;
 
 				if (!brothel->m_RestrictTitty)
