@@ -179,11 +179,12 @@ void cMovieStudioManager::UpdateMovieStudio()	// Start_Building_Process_A
 			cgirl->m_YesterNightJob = cgirl->m_NightJob;	// `J` set what she did yesternight
 			cgirl->m_Refused_To_Work_Day = false;
 			cgirl->m_Refused_To_Work_Night = false;
+			string summary = "";
 
 			g_Girls.AddTiredness(cgirl);			// `J` moved all girls add tiredness to one place
 			do_food_and_digs(current, cgirl);		// Brothel only update for girls accommodation level
 			g_Girls.updateGirlAge(cgirl, true);		// update birthday counter and age the girl
-			g_Girls.HandleChildren(cgirl);			// handle pregnancy and children growing up
+			g_Girls.HandleChildren(cgirl, summary);	// handle pregnancy and children growing up
 			g_Girls.updateSTD(cgirl);				// health loss to STD's				NOTE: Girl can die
 			g_Girls.updateHappyTraits(cgirl);		// Update happiness due to Traits	NOTE: Girl can die
 			updateGirlTurnBrothelStats(cgirl);		// Update daily stats				Now only runs once per day
@@ -1442,12 +1443,12 @@ int cMovieStudioManager::AddScene(sGirl* girl, int Job, int Bonus)
 
 	if (Job == SKILL_ANAL) //May need work FIXME CRAZY
 	{
-		if (HasTrait(girl, "Great Arse"))				quality += 10;
-		if (HasTrait(girl, "Tight Butt"))				quality += 8;
-		if (HasTrait(girl, "Phat Booty"))				quality += 6;
-		if (HasTrait(girl, "Wide Bottom"))				quality += 4;
-		if (HasTrait(girl, "Plump Tush"))				quality += 2;
-		if (HasTrait(girl, "Flat Ass"))					quality -= 10;
+		if (g_Girls.HasTrait(girl, "Great Arse"))				quality += 10;
+		if (g_Girls.HasTrait(girl, "Tight Butt"))				quality += 8;
+		if (g_Girls.HasTrait(girl, "Phat Booty"))				quality += 6;
+		if (g_Girls.HasTrait(girl, "Wide Bottom"))				quality += 4;
+		if (g_Girls.HasTrait(girl, "Plump Tush"))				quality += 2;
+		if (g_Girls.HasTrait(girl, "Flat Ass"))					quality -= 10;
 	}
 
 	if (g_Girls.HasTrait(girl, "Lesbian"))

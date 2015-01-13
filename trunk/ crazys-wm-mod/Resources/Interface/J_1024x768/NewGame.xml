@@ -14,5 +14,7 @@
 <Text    Name="Label5"  Text="Player Birth Day"     XPos="32"  YPos="224" Width="128" Height="32"  FontSize="16" />
 <Slider  Name="PlayerBirthDay"                      XPos="160" YPos="230" Width="176" Height="32"  MinValue="1"        MaxValue="30" Value="1" Increment="1" LiveUpdate="true" Hidden="false" Disabled="false" />
 <Text    Name="PlayerBirthDayNum" Text="1"          XPos="336" YPos="224" Width="32" Height="32"  FontSize="16" />
+<Text    Name="PlayerHoroscope" Text="Capricorn"    XPos="180" YPos="208" Width="128" Height="32"  FontSize="16" />
+
 
 </Screen>

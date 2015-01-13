@@ -46,6 +46,7 @@ struct sConfigData
 		bool auto_use_items;
 		bool auto_combat_equip;
 		int torture_mod;
+		int horoscopetype;
 	} initial;
 
 /*
@@ -316,6 +317,7 @@ public:
 		bool auto_use_items()		{ return data->initial.auto_use_items; }
 		bool auto_combat_equip()	{ return data->initial.auto_combat_equip; }
 		int	torture_mod()			{ return data->initial.torture_mod; }
+		int horoscopetype()			{ return data->initial.horoscopetype; }
 	} initial;
 
 	struct Resolution{

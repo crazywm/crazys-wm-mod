@@ -62,7 +62,7 @@ void cScreenNewGame::set_ids()
 	pbm1_id = get_id("PlayerBirthMonthNum");
 	pbd_id = get_id("PlayerBirthDay");
 	pbd1_id = get_id("PlayerBirthDayNum");
-
+	phn_id = get_id("PlayerHoroscope");
 
 }
 
@@ -111,24 +111,23 @@ void cScreenNewGame::check_events()
 		return;
 	}
 
-	if (g_InterfaceEvents.CheckSlider(pbd_id))
+	if (g_InterfaceEvents.CheckSlider(pbd_id) || g_InterfaceEvents.CheckSlider(pbm_id))
 	{
 		stringstream ss;
 		g_Brothels.GetPlayer()->SetBirthDay(SliderValue(pbd_id));
 		SliderValue(pbd_id, g_Brothels.GetPlayer()->BirthDay());
-		ss << g_Brothels.GetPlayer()->BirthDay();
-		EditTextItem(ss.str(), pbd1_id);
-		return;
-	}
-	if (g_InterfaceEvents.CheckSlider(pbm_id))
-	{
-		stringstream ss;
 		g_Brothels.GetPlayer()->SetBirthMonth(SliderValue(pbm_id));
 		SliderValue(pbm_id, g_Brothels.GetPlayer()->BirthMonth());
+
+		ss << g_Brothels.GetPlayer()->BirthDay();
+		EditTextItem(ss.str(), pbd1_id);
+		ss.str("");
 		ss << monthnames[g_Brothels.GetPlayer()->BirthMonth()];
 		EditTextItem(ss.str(), pbm1_id);
+		EditTextItem(g_Girls.GetHoroscopeName(g_Brothels.GetPlayer()->BirthMonth(), g_Brothels.GetPlayer()->BirthDay()), phn_id);
 		return;
 	}
+
 
 
 	if (g_InterfaceEvents.CheckButton(ok_id)) 
@@ -181,25 +180,25 @@ bool cScreenNewGame::check_keys()
 		m_EditBoxes[currentbox]->ClearText();
 		return true;
 	}
-	if (g_HomeKey || (currentbox == 4 && g_RightArrow))
+	if (g_PageDownKey || (currentbox == 3 && g_LeftArrow))
 	{
-		mod = g_RightArrow = g_HomeKey = false;
-		g_Brothels.GetPlayer()->BirthDay(1);
-	}
-	if (g_EndKey || (currentbox == 4 && g_LeftArrow))
-	{
-		mod = g_LeftArrow = g_EndKey = false;
-		g_Brothels.GetPlayer()->BirthDay(-1);
+		mod = g_LeftArrow = g_PageDownKey = false;
+		g_Brothels.GetPlayer()->BirthMonth(-1);
 	}
 	if (g_PageUpKey || (currentbox == 3 && g_RightArrow))
 	{
 		mod = g_RightArrow = g_PageUpKey = false;
 		g_Brothels.GetPlayer()->BirthMonth(1);
 	}
-	if (g_PageDownKey || (currentbox == 3 && g_LeftArrow))
+	if (g_EndKey || (currentbox == 4 && g_LeftArrow))
 	{
-		mod = g_LeftArrow = g_PageDownKey = false;
-		g_Brothels.GetPlayer()->BirthMonth(-1);
+		mod = g_LeftArrow = g_EndKey = false;
+		g_Brothels.GetPlayer()->BirthDay(-1);
+	}
+	if (g_HomeKey || (currentbox == 4 && g_RightArrow))
+	{
+		mod = g_RightArrow = g_HomeKey = false;
+		g_Brothels.GetPlayer()->BirthDay(1);
 	}
 
 	if (!mod)
@@ -221,8 +220,7 @@ bool cScreenNewGame::check_keys()
 
 		m_Sliders[0]->IsActive(currentbox == 3);
 		m_Sliders[1]->IsActive(currentbox == 4);
-
-
+		EditTextItem(g_Girls.GetHoroscopeName(g_Brothels.GetPlayer()->BirthMonth(), g_Brothels.GetPlayer()->BirthDay()), phn_id);
 		return true;
 	}
 

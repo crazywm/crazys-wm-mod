@@ -1311,11 +1311,19 @@ All new New Game page
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.24
 !!!!!!!!!!!!!!!!!!!! pushed to SVN - r134
 
+###  Changes 1/12/2015
+Added Horoscope Name function cGirls::GetHoroscopeName(int month, int day)
+Added Horoscope Type to config.xml in Initial section: "HoroscopeType"=(1=Western(default), 2=Hindu)
+Added Horoscope to player creation page.
 
+###  Changes 1/13/2015
+Crazy pushed r135 - several minor changes to a few things - Major update to Security job
 
+Fixed a bug in handlechildren function.
+Cleaned up a few things.
 
-
-
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.25
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r136
 
 
 Whore Master Editor:

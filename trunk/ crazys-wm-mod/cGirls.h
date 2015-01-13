@@ -964,6 +964,9 @@ public:
 	bool NameExists(string name);
 	bool SurnameExists(string surname);
 
+	string GetHoroscopeName(int month, int day);
+
+
 	bool CheckInvSpace(sGirl* girl) { if (girl->m_NumInventory == 40)return false; return true; }
 	int AddInv(sGirl* girl, sInventoryItem* item);
 	bool EquipItem(sGirl* girl, int num, bool force);
@@ -1016,7 +1019,7 @@ public:
 	void HandleChild_CheckIncest(sGirl* mum, sGirl *sprog, sChild* child, string& summary);
 	bool child_is_grown(sGirl* girl, sChild* child, string& summary, bool PlayerControlled = true);
 	bool child_is_due(sGirl* girl, sChild* child, string& summary, bool PlayerControlled = true);
-	void HandleChildren(sGirl* girl, string& summary = (string&)"", bool PlayerControlled = true);	// ages children and handles pregnancy
+	void HandleChildren(sGirl* girl, string& summary, bool PlayerControlled = true);	// ages children and handles pregnancy
 	bool CalcPregnancy(sGirl* girl, int chance, int type, int stats[NUM_STATS], int skills[NUM_SKILLS]);	// checks if a girl gets pregnant
 	void UncontrolledPregnancies();	// ages children and handles pregnancy for all girls not controlled by player
 

@@ -606,6 +606,7 @@ void cDungeon::Update()
 			/*
 			*			DAILY Processing
 			*/
+			string summary = "";
 
 			current->m_Weeks++;						// the number of weeks they have been in the dungeon
 			g_Girls.CalculateGirlType(girl);		// update the fetish traits
@@ -614,7 +615,7 @@ void cDungeon::Update()
 			g_Girls.updateTempSkills(girl);			// update temp skills
 			g_Girls.updateTempTraits(girl);			// update temp traits
 			g_Girls.EndDayGirls(g_Brothels.GetBrothel(0), girl);
-			g_Girls.HandleChildren(girl);			// handle pregnancy and children growing up
+			g_Girls.HandleChildren(girl, summary);	// handle pregnancy and children growing up
 			g_Girls.updateSTD(girl);				// health loss to STD's - NOTE: Girl can die
 			g_Girls.updateHappyTraits(girl);		// Update happiness due to Traits - NOTE: Girl can die
 			updateGirlTurnDungeonStats(current);	// Update stats

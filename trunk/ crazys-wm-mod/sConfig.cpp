@@ -264,6 +264,7 @@ void sConfigData::get_initial_values(TiXmlElement *el)
 	if (pt = el->Attribute("AutoUseItems"))			get_att(el, "AutoUseItems",			initial.auto_use_items);
 	if (pt = el->Attribute("AutoCombatEquip"))		get_att(el, "AutoCombatEquip",		initial.auto_combat_equip);	// `J` moved from items
 	if (pt = el->Attribute("TortureTraitWeekMod"))	get_att(el, "TortureTraitWeekMod",	&initial.torture_mod);
+	if (pt = el->Attribute("HoroscopeType"))		get_att(el, "HoroscopeType",		&initial.horoscopetype);
 }
 
 void sConfigData::get_income_factors(TiXmlElement *el)
@@ -446,8 +447,8 @@ void sConfigData::set_defaults()
 	initial.slave_keep_tips			= false;	// `J` added
 	initial.auto_use_items			= false;
 	initial.auto_combat_equip		= true;
-
 	initial.torture_mod				= 1;	// `J` added
+	initial.horoscopetype			= 1;	// `J` added
 
 	in_fact.extortion				= 1.0;
 	in_fact.brothel_work			= 1.0;

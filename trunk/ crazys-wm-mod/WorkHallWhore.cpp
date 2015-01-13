@@ -425,7 +425,7 @@ bool cJobManager::WorkHallWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	g_Girls.PossiblyGainNewTrait(girl, "Nymphomaniac", 70, ACTION_SEX, girl->m_Realname + " has been having so much sex she is now wanting sex all the time.", Day0Night1);
 
 	//SIN: use a few of the new traits
-	if (g_Dice.percent(10) && (g_Girls.HasTrait(girl, "Nymphomaniac")))
+	if (g_Dice.percent(1) && g_Dice.percent(girl->oralsex()) && (g_Girls.HasTrait(girl, "Nymphomaniac")))
 		g_Girls.PossiblyGainNewTrait(girl, "Cum Addict", 90, ACTION_SEX, girl->m_Realname + " has tasted so much cum she now craves it at all times.", Day0Night1);
 
 
