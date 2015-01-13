@@ -25,6 +25,7 @@
 #include "cArena.h"
 #include "cCentre.h"
 #include "cHouse.h"
+#include "cFarm.h"
 #include "libintl.h"
 
 extern cGirls g_Girls;
@@ -35,6 +36,7 @@ extern cClinicManager g_Clinic;
 extern cArenaManager g_Arena;
 extern cCentreManager g_Centre;
 extern cHouseManager g_House;
+extern cFarmManager g_Farm;
 extern int g_CurrBrothel;
 extern int g_Building;
 
@@ -93,6 +95,10 @@ void cScriptUtils::add_girl_to_brothel(sGirl *girl)
 		total_rooms = g_House.GetBrothel(0)->m_NumRooms;
 		rooms_used  = g_House.GetBrothel(0)->m_NumGirls;
 		break;
+	case BUILDING_FARM:
+		total_rooms = g_Farm.GetBrothel(0)->m_NumRooms;
+		rooms_used  = g_Farm.GetBrothel(0)->m_NumGirls;
+		break;
 	case BUILDING_BROTHEL:
 	default: // regular brothel
 		total_rooms = g_Brothels.GetBrothel(g_CurrBrothel)->m_NumRooms;
@@ -131,6 +137,9 @@ void cScriptUtils::add_girl_to_brothel(sGirl *girl)
 		break;
 	case BUILDING_HOUSE:
 		g_House.AddGirl(0, girl);
+		break;
+	case BUILDING_FARM:
+		g_Farm.AddGirl(0, girl);
 		break;
 	case BUILDING_BROTHEL:
 	default: // regular brothel

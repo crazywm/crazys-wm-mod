@@ -137,7 +137,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 
 	girl->m_Pay += 15;
 
-	if (g_Girls.HasTrait(girl, "Small Boobs"))
+	if (g_Girls.HasTrait(girl, "Small Boobs") || g_Girls.HasTrait(girl, "Flat Chest") || g_Girls.HasTrait(girl, "Petite Breasts"))
 	{
 		if (girl->m_States&(1 << STATUS_PREGNANT) || girl->m_States&(1 << STATUS_PREGNANT_BY_PLAYER))
 		{
@@ -150,7 +150,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 			girl->m_Pay += 25;
 		}
 	}
-	else if (g_Girls.HasTrait(girl, "Big Boobs"))
+	else if (g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Busty Boobs") || g_Girls.HasTrait(girl, "Giant Juggs"))
 	{
 		if (girl->m_States&(1 << STATUS_PREGNANT) || girl->m_States&(1 << STATUS_PREGNANT_BY_PLAYER))
 		{
@@ -163,7 +163,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 			girl->m_Pay += 35;
 		}
 	}
-	else if (g_Girls.HasTrait(girl, "Abnormally Large Boobs"))
+	else if (g_Girls.HasTrait(girl, "Abnormally Large Boobs") || g_Girls.HasTrait(girl, "Massive Melons") || g_Girls.HasTrait(girl, "Titanic Tits"))
 	{
 		if (girl->m_States&(1 << STATUS_PREGNANT) || girl->m_States&(1 << STATUS_PREGNANT_BY_PLAYER))
 		{
@@ -194,7 +194,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 
 	//enjoyed the work or not
 	if (roll <= 5)
-	{ ss << "\nShe had a bad time letting her breasts be milked."; work -= 1; } //zzzzzz FIXME this needs better text
+	{ ss << "\nShe had a bad time letting her breasts be milked."; work -= 1; } //zzzzz FIXME this needs better text
 	else if (roll <= 25)
 	{ ss << "\nShe had a pleasant time letting her breasts be milked."; work += 3; }
 	else

@@ -72,7 +72,7 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 	if (g_Girls.HasTrait(girl, "Charming"))		jobperformance += 20; //people like charming people
 	if (g_Girls.HasTrait(girl, "Quick Learner"))jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Psychic"))		jobperformance += 10;
-	if (g_Girls.HasTrait(girl, "Fleet of Foot")) jobperformance += 5;//faster at taking orders and droping them off
+	if (g_Girls.HasTrait(girl, "Fleet of Foot"))jobperformance += 5;//faster at taking orders and droping them off
 	if (g_Girls.HasTrait(girl, "Waitress"))		jobperformance += 40;
 		
 

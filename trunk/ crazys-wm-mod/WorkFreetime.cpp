@@ -222,11 +222,16 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					}
 					// if she can not afford it, reroll.
 					break;
+				case FT_Concert:
+					if (girl->m_Money >= 50)
+					{
+						choicemade = true;	// She has enough money for it, so continue
+					}
+					// if she can not afford it, reroll.
+					break;
 
 
 					// These are not ready so reroll.
-				//case FT_WatchMovie:
-				case FT_Concert:
 				case FT_Picnic:
 				case FT_VisitBar:
 				case FT_Club:
@@ -805,9 +810,18 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			else if (roll_c >= 80)	{ mov_type = 0; mov_type_text = "an action film"; }
 
 			ss << girlName << " decides to go watch a movie.";
-			ss << "They were playing " << mov_type_text << ".\n";
 			/*May add different ways for the girl to get into the movie CRAZY*/ 
-			U_Money -= 10;
+			if (g_Dice.percent(20) && g_Girls.GetSkill(girl, SKILL_ORALSEX) >= 50)
+			{
+				ss << " Instead of paying for her ticket she slides under the ticket booth and sucks off the guy selling the tickets to get in for free.";
+				imagetype = IMGTYPE_ORAL;
+			}
+			else
+			{
+				ss << " She buys her ticket and goes in.";
+				U_Money -= 10;
+			}
+			ss << " They were playing " << mov_type_text << ".\n";
 				if (roll_c <= 20) //romance
 					{
 						if (g_Girls.HasTrait(girl, "Pessimist"))
@@ -931,7 +945,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 			ss << girlName << " decides to go watch a movie.";
 			ss << "They were playing " + song_type_text + " music.\n";
-			U_Money -= 20;
+			U_Money -= 50;
 				if (roll_c <= 14) //goth rock
 					{
 					}
@@ -1028,6 +1042,13 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 		case FT_VisitBar:
 			{
+			sGirl* barmaidonduty = NULL;
+			string barmaidname = "the Barmaid";	// Who?
+			vector<sGirl *> barmaid = g_Brothels.GirlsOnJob(0, JOB_BARMAID, Day0Night1);
+			if (barmaid.size() > 0) barmaidonduty = barmaid[g_Dice%barmaid.size()];
+			if (barmaidonduty)	barmaidname = "Barmaid " + barmaidonduty->m_Realname + "";
+			else barmaidname = "";	// no barmaid
+				ss << girlName << " decides to go to the bar.\n";
 				if (g_Girls.HasTrait(girl, "Alcoholic"))
 					{
 						ss << "As an Alcoholic she loves coming to the bar.\n"; U_Happiness += 15;
@@ -1035,6 +1056,14 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				if (g_Girls.GetStat(girl, STAT_HAPPINESS) < 50)
 					{
 						ss << girlName << " feeling a little down, decide to get drunk while she was at the bar.\n"; U_Health -= 5;
+						if (barmaidonduty)
+						{
+							ss << "She sits and talks to " << barmaidname << " most of the night while getting drunk.\n"; //
+						}
+						else
+						{
+							ss << "She sits and talks to the bartender while getting drunk.\n"; //
+						}
 					}
 				else
 					{

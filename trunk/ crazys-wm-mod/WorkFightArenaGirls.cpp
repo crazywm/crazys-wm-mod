@@ -94,7 +94,7 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 				wages = 100 + g_Dice % (girl->fame() + girl->charisma());
 			}
 			g_MessageQue.AddToQue(ss.str(), 0);
-			g_Brothels.GetDungeon()->AddGirl(ugirl, DUNGEON_NEWGIRL);
+			g_Brothels.GetDungeon()->AddGirl(ugirl, DUNGEON_NEWARENA);
 		}
 		else
 		{
@@ -107,7 +107,7 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 		enjoyment = -(g_Dice % 3 + 1);
 		fame = -(g_Dice % 3 + 1);
 		ss << "She lost the fight.";
-		/* Need a way to cost you gold for your girl losing..  or some kind of outcome here zzzzzzzz FIXME*/ 
+		/* Need a way to cost you gold for your girl losing..  or some kind of outcome here zzzzz FIXME*/ 
 	}
 	else if (fight_outcome == 0)  // it was a draw
 	{

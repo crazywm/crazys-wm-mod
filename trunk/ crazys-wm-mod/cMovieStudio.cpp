@@ -1389,6 +1389,7 @@ int cMovieStudioManager::AddScene(sGirl* girl, int Job, int Bonus)
 	if (g_Girls.HasTrait(girl, "Cute"))						quality += 2;
 	if (g_Girls.HasTrait(girl, "Sexy Air"))					quality += 2;
 	if (g_Girls.HasTrait(girl, "Psychic"))					quality += 4;
+	if (g_Girls.HasTrait(girl, "Dick-Sucking Lips"))		quality += 1;
 
 	if (g_Girls.HasTrait(girl, "Manly"))					quality -= 2;
 	if (g_Girls.HasTrait(girl, "Fragile"))					quality -= 2;
@@ -1432,10 +1433,21 @@ int cMovieStudioManager::AddScene(sGirl* girl, int Job, int Bonus)
 	if (Job == SKILL_ORALSEX)
 	{
 		if (g_Girls.HasTrait(girl, "Pierced Tongue"))		quality += 1;
+		if (g_Girls.HasTrait(girl, "Dick-Sucking Lips"))	quality += 2;
 		if (g_Girls.HasTrait(girl, "Deep Throat"))			quality += 5;
 		if (g_Girls.HasTrait(girl, "No Gag Reflex"))		quality += 2;
 		if (g_Girls.HasTrait(girl, "Gag Reflex"))			quality -= 5;
 		if (g_Girls.HasTrait(girl, "Strong Gag Reflex"))	quality -= 10;
+	}
+
+	if (Job == SKILL_ANAL) //May need work FIXME CRAZY
+	{
+		if (HasTrait(girl, "Great Arse"))				quality += 10;
+		if (HasTrait(girl, "Tight Butt"))				quality += 8;
+		if (HasTrait(girl, "Phat Booty"))				quality += 6;
+		if (HasTrait(girl, "Wide Bottom"))				quality += 4;
+		if (HasTrait(girl, "Plump Tush"))				quality += 2;
+		if (HasTrait(girl, "Flat Ass"))					quality -= 10;
 	}
 
 	if (g_Girls.HasTrait(girl, "Lesbian"))

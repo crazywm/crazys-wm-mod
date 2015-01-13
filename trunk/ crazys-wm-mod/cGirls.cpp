@@ -383,7 +383,6 @@ void cGirls::CalculateGirlType(sGirl* girl)
 	//Body
 	if (HasTrait(girl, "Fleet of Foot"))				{ Dangerous += 10; Sexy += 20; }
 	if (HasTrait(girl, "Fragile"))						{ CuteGirl += 10; Nerd += 5; Freak += 10; Lolita += 10; }
-	if (HasTrait(girl, "Great Arse"))					{ Sexy += 10; NiceArse += 60; }
 	if (HasTrait(girl, "Great Figure"))					{ BigBoobs += 10; Sexy += 10; NiceFigure += 60; }
 	if (HasTrait(girl, "Long Legs"))					{ Sexy += 20; NiceFigure += 20; }
 	if (HasTrait(girl, "Strong"))						{ Dangerous += 20; Cool += 20; Nerd -= 30; NiceFigure += 20; NiceArse += 20; Lolita -= 5; }
@@ -394,19 +393,22 @@ void cGirls::CalculateGirlType(sGirl* girl)
 	if (HasTrait(girl, "Deluxe Derriere"))			/**/{ Lolita -= 25; Sexy += 20; NiceArse += 40; }
 	if (HasTrait(girl, "Dick-Sucking Lips"))		/**/{ Sexy += 20; CuteGirl += 20; }
 	if (HasTrait(girl, "Exotic"))					/**/{ Sexy += 10; CuteGirl += 10; Freak += 10; }
-	if (HasTrait(girl, "Flat Ass"))					/**/{ Lolita += 20; Sexy -= 20; NiceArse -= 50; }
 	if (HasTrait(girl, "Giant"))					/**/{ Freak += 20; Lolita -= 30; }
 	if (HasTrait(girl, "Hourglass Figure"))			/**/{ Sexy += 25; Lolita -= 30; NiceFigure += 20; }
 	if (HasTrait(girl, "Large Hips"))				/**/{ Sexy += 15; Lolita -= 20; NiceArse += 20; }
 	if (HasTrait(girl, "Mature Body"))				/**/{ Lolita -= 50; CuteGirl -= 20; Sexy += 10; }
 	if (HasTrait(girl, "Muscular"))					/**/{ Lolita -= 30; Sexy -= 30; Dangerous += 25; Freak += 25; }
-	if (HasTrait(girl, "Old"))						/**/{ Lolita -= 60; CuteGirl -= 40; Sexy -= 20; Freak += 30; Elegant += 15; }
-	if (HasTrait(girl, "Phat Booty"))				/**/{ Lolita -= 20; Sexy += 15; NiceArse += 30; }
-	if (HasTrait(girl, "Plump Tush"))				/**/{ Lolita -= 20; Sexy += 30; NiceArse += 10; }
-	if (HasTrait(girl, "Plump"))					/**/{ Lolita -= 10; NiceFigure -= 10; Freak += 20; }
-	if (HasTrait(girl, "Tight Butt"))				/**/{ Lolita += 5; Sexy += 20; NiceArse += 40; }
+	if (HasTrait(girl, "Old"))						/**/{ Lolita -= 75; CuteGirl -= 40; Sexy -= 20; Freak += 30; Elegant += 15; }
+	if (HasTrait(girl, "Plump"))					/**/{ Lolita -= 10; NiceFigure -= 20; Freak += 20; }
 	if (HasTrait(girl, "Whore"))					/**/{ Lolita -= 50; CuteGirl -= 40; Cool += 10; Sexy += 10; }
+	
+	//Ass
+	if (HasTrait(girl, "Great Arse"))					{ Sexy += 10; NiceArse += 60; }
+	if (HasTrait(girl, "Tight Butt"))				/**/{ Lolita += 5; Sexy += 20; NiceArse += 40; }
+	if (HasTrait(girl, "Phat Booty"))				/**/{ Lolita -= 20; Sexy += 15; NiceArse += 30; }
 	if (HasTrait(girl, "Wide Bottom"))				/**/{ Lolita -= 20; Sexy += 15; NiceArse += 20; }
+	if (HasTrait(girl, "Plump Tush"))				/**/{ Lolita -= 20; Sexy += 30; NiceArse += 10; }
+	if (HasTrait(girl, "Flat Ass"))					/**/{ Lolita += 20; Sexy -= 20; NiceArse -= 50; }
 
 	//Piercings, Brandings & Tattoos
 	if (HasTrait(girl, "Pierced Clit"))					{ Elegant -= 20; Sexy += 20; Freak += 15; }
@@ -484,7 +486,7 @@ void cGirls::CalculateGirlType(sGirl* girl)
 	if (HasTrait(girl, "Dominatrix"))				/**/{ Dangerous += 30; Elegant += 5; Freak += 40; }
 	if (HasTrait(girl, "Nimble Tongue"))			/**/{ Sexy += 25; }
 	if (HasTrait(girl, "Open Minded"))				/**/{ Sexy += 30; Cool += 20; Elegant -= 10; }
-	if (HasTrait(girl, "Virgin"))					/**/{ Lolita += 50; }
+	if (HasTrait(girl, "Virgin"))					/**/{ Lolita += 15; }//Plus 50 for begin a virgin?  Seems odd to me so changed it CRAZY
 
 
 	/****** Social Traits ******/
@@ -555,7 +557,7 @@ void cGirls::CalculateGirlType(sGirl* girl)
 	//Following traits marked /**/ are newly added from CoreTraits.traitsx - delete this comment if these are ok and the numbers are reasonable
 	if (HasTrait(girl, "Smoker"))					/**/{ Elegant -= 5; Cool += 5; }
 	if (HasTrait(girl, "Alchoholic"))				/**/{ Elegant -= 10; Cool += 5; Dangerous += 5; }
-	if (HasTrait(girl, "Cum Addict"))				/**/{ Sexy += 20; Freak += 20; }
+	if (HasTrait(girl, "Cum Addict"))				/**/{ Sexy += 20; Freak += 20; Elegant -= 15; }
 
 
 	/****** Job Skills ******/
@@ -1451,7 +1453,7 @@ string cGirls::GetGirlMood(sGirl* girl)
 	else		ss << gettext("showing signs of depression.");
 
 
-	/*morality = GetStat(girl, STAT_MORALITY); //zzzzz FIXME needs better text
+	morality = GetStat(girl, STAT_MORALITY); //zzzzz FIXME needs better text
 	ss << gettext("\nShe is ");
 		 if (morality <= -80)	ss << gettext("pure evil.");
 	else if (morality <= -60)	ss << gettext("evil.");
@@ -1462,7 +1464,7 @@ string cGirls::GetGirlMood(sGirl* girl)
 	else if (morality <=  40)	ss << gettext("is nice");
 	else if (morality <=  60)	ss << gettext("is good.");
 	else if (morality <=  80)	ss << gettext("is very good.");
-	else 						ss << gettext("angel like.");*/
+	else 						ss << gettext("holy.");
 
 	return ss.str();
 }
@@ -1839,7 +1841,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)
 	if (g_Girls.HasTrait(girl, "Incorporeal")) combat += 100;
 
 	// Brothel Jobs
-	int security = ((jr_mag * 2 + jr_cmb * 2 + jr_ser) / 3); // `J` estimate - needs work
+	int security = ((jr_mag * 2 + jr_cmb * 2 + jr_agi) / 3); // `J` estimate - needs work
 	int advertising = (jr_per / 6 + jr_ser / 6 + jr_cha / 6 + jr_bea / 10 + jr_int / 6 + jr_cnf / 10 + jr_fam / 10);
 	int custservice = ((jr_cha + jr_bea + jr_per) / 3 + (jr_cnf + jr_spi) / 3 + jr_ser); // `J` estimate - needs work
 	int matron = ((jr_cha + jr_cnf + jr_spi) / 3 + (jr_ser + jr_int + jr_med) / 3 + jr_lev + jr_slave); // `J` estimate - needs work
@@ -1902,9 +1904,9 @@ string cGirls::GetThirdDetailsString(sGirl* girl)
 	{
 		if (girl->is_pregnant()) milk += 100; // preg rating | non-preg rating
 		//zzzzzz boobs
-		if (g_Girls.HasTrait(girl, "Abnormally Large Boobs")) milk += 150; // S | B
-		else if (g_Girls.HasTrait(girl, "Big Boobs")) milk += 100; // A | C
-		else if (g_Girls.HasTrait(girl, "Small Boobs")) milk += 25; // C | E
+		if (g_Girls.HasTrait(girl, "Abnormally Large Boobs") || g_Girls.HasTrait(girl, "Massive Melons") || g_Girls.HasTrait(girl, "Titanic Tits")) milk += 150; // S | B
+		else if (g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Busty Boobs") || g_Girls.HasTrait(girl, "Giant Juggs")) milk += 100; // A | C
+		else if (g_Girls.HasTrait(girl, "Small Boobs") || g_Girls.HasTrait(girl, "Flat Chest") || g_Girls.HasTrait(girl, "Petite Breasts")) milk += 25; // C | E
 		else milk += 75; // B | D
 	}
 
@@ -4017,7 +4019,7 @@ void cGirls::UnequipCombat(sGirl* girl)
 	if (girl->has_trait("Aggressive"))	refusal += 30;
 	if (girl->has_trait("Yandere"))		refusal += 30;
 	if (girl->has_trait("Twisted"))		refusal += 30;
-	if (girl->has_trait("Retarded"))		refusal += 30;
+	if (girl->has_trait("Retarded"))	refusal += 30;
 	if (g_Dice.percent(refusal))			return;
 
 	for (int i = 0; i < 40; i++)
@@ -6891,6 +6893,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 	else if (HasTrait(girl, "Fast Orgasms"))		happymod += 10;
 	else if (HasTrait(girl, "Slow Orgasms"))		happymod -= 10;
 	if (HasTrait(girl, "Psychic"))					happymod += 10;	// she knows what the customer wants
+	if (HasTrait(girl, "Shape Shifter"))			happymod += 10;	// she can be anything the customer wants
 
 	if (customer->m_Fetish == FETISH_BIGBOOBS)
 	{
@@ -6927,7 +6930,25 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		else if (HasTrait(girl, "Massive Melons"))			happymod += 0;
 		else if (HasTrait(girl, "Abnormally Large Boobs"))	happymod -= 1;
 		else if (HasTrait(girl, "Titanic Tits"))			happymod -= 2;
+	}
 
+	if (customer->m_Fetish == FETISH_ARSE)
+	{
+		/* */if (HasTrait(girl, "Great Arse"))				happymod += 25;
+		else if (HasTrait(girl, "Tight Butt"))				happymod += 20;
+		else if (HasTrait(girl, "Phat Booty"))				happymod += 15;
+		else if (HasTrait(girl, "Wide Bottom"))				happymod += 10;
+		else if (HasTrait(girl, "Plump Tush"))				happymod += 5;
+		else if (HasTrait(girl, "Flat Ass"))				happymod -= 30;
+	}
+	else
+	{
+		/* */if (HasTrait(girl, "Great Arse"))				happymod += 3;
+		else if (HasTrait(girl, "Tight Butt"))				happymod += 2;
+		else if (HasTrait(girl, "Phat Booty"))				happymod += 1;
+		else if (HasTrait(girl, "Wide Bottom"))				happymod += 0;
+		else if (HasTrait(girl, "Plump Tush"))				happymod += 0;
+		else if (HasTrait(girl, "Flat Ass"))				happymod -= 2;
 	}
 
 	girl->m_NumCusts += (int)customer->m_Amount;
@@ -7164,7 +7185,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				(HasTrait(girl, "Sadistic") ? 2 : 0) +
 				(HasTrait(girl, "Twisted") ? 1 : 0)))
 			{
-				message += gettext(" 'accidentally' harmed a beast during the act and she");
+				message += gettext(" \"accidentally\" harmed a beast during the act and she");//Made it actually use quote marks CRAZY
 				g_Brothels.add_to_beasts(-1);
 			}
 
@@ -7558,6 +7579,16 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		{
 		case SKILL_NORMALSEX:		enjoy += 1; break;
 		case SKILL_LESBIAN:			enjoy -= 1; break;
+		default:
+			break;
+		}
+	}
+	if (HasTrait(girl, "Cum Addict"))
+	{
+		switch (SexType)
+		{
+		case SKILL_ORALSEX:			enjoy += 5; break;
+		case SKILL_GROUP:			enjoy += 5; break;
 		default:
 			break;
 		}
@@ -11033,8 +11064,14 @@ bool cGirls::InheritTrait(sTrait* trait)
 			//zzzzzz boobs
 
 			name == "Big Boobs" ||
+			name == "Busty Boobs" ||
+			name == "Giant Juggs" ||
 			name == "Abnormally Large Boobs" ||
+			name == "Massive Melons" ||
+			name == "Titanic Tits" ||
 			name == "Small Boobs" ||
+			name == "Petite Breasts" ||
+			name == "Flat Chest" ||
 			name == "Great Arse" ||
 			name == "Great Figure" ||
 			name == "AIDS" ||
