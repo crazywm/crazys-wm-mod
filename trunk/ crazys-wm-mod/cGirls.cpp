@@ -404,7 +404,7 @@ void cGirls::CalculateGirlType(sGirl* girl)
 	if (HasTrait(girl, "Old"))						/**/{ Lolita -= 75; CuteGirl -= 40; Sexy -= 20; Freak += 30; Elegant += 15; }
 	if (HasTrait(girl, "Plump"))					/**/{ Lolita -= 10; NiceFigure -= 20; Freak += 20; }
 	if (HasTrait(girl, "Whore"))					/**/{ Lolita -= 50; CuteGirl -= 40; Cool += 10; Sexy += 10; }
-	
+
 	//Ass
 	if (HasTrait(girl, "Great Arse"))					{ Sexy += 10; NiceArse += 60; }
 	if (HasTrait(girl, "Tight Butt"))				/**/{ Lolita += 5; Sexy += 20; NiceArse += 40; }
@@ -844,7 +844,7 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 
 		// `J` When adding new traits, search for "J-Add-New-Traits"  :  found in >> CreateRandomGirl > hardcoded rgirl
 		current->m_NumTraits = 0;
-		for (int i = 0; i < g_Traits.GetNumTraits() && current->m_NumTraits < 50; i++)
+		for (int i = 0; i < g_Traits.GetNumTraits() && current->m_NumTraits < MAXNUM_TRAITS - 10; i++)
 		{
 			int c = -1;
 			string test = g_Traits.GetTraitNum(i)->m_Name;
@@ -962,26 +962,26 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 		else	newGirl->m_Stats[i] = (g_Dice % (current->m_MaxStats[i] - current->m_MinStats[i])) + current->m_MinStats[i];
 	}
 
-	for (int i = 0; i < current->m_NumTraits; i++)	// add the traits
+	for (int i = 0; i < current->m_NumTraitNames && newGirl->m_NumTraits < MAXNUM_TRAITS; i++)	// add the traits
 	{
 		int chance = g_Dice % 100 + 1;
-		if (g_Traits.GetTrait(g_Traits.GetTranslateName(current->m_Traits[i]->m_Name))) // `J` added translation check
+		if (chance <= (int)current->m_TraitChanceB[i])
 		{
-			if (current->m_Traits[i]->m_Name == "Virgin") newGirl->m_Virgin = (chance <= (int)current->m_TraitChance[i]) ? 1 : 0;
-			if (chance <= (int)current->m_TraitChance[i])
+			string name = current->m_TraitNames[i];
+			if (g_Traits.GetTrait(g_Traits.GetTranslateName(name))) // `J` added translation check
 			{
-				if (!HasTrait(newGirl, current->m_Traits[i]->m_Name))
-					AddTrait(newGirl, current->m_Traits[i]->m_Name);
+				if (name == "Virgin") newGirl->m_Virgin = 1;
+				if (!HasTrait(newGirl, name))
+					AddTrait(newGirl, name);
+			}
+			else
+			{
+				stringstream ss;
+				ss << "cGirls::CreateRandomGirl: ERROR: Trait '" << name << "' from girl template " << current->m_Name << " doesn't exist or is spelled incorrectly.";
+				g_MessageQue.AddToQue(ss.str(), COLOR_RED);
 			}
 		}
-		else
-		{
-			stringstream ss;
-			ss << "cGirls::CreateRandomGirl: ERROR: Trait '" << current->m_Traits[i]->m_Name << "' from girl template " << current->m_Name << " doesn't exist or is spelled incorrectly.";
-			g_MessageQue.AddToQue(ss.str(), COLOR_RED);
-		}
 	}
-
 	if (current->m_Human == 0)			AddTrait(newGirl, "Not Human");
 	if (current->m_YourDaughter == 1)	AddTrait(newGirl, "Your Daughter");
 
@@ -1229,8 +1229,8 @@ void cGirls::LevelUpStats(sGirl* girl)
 
 /*
 *   `J` degrade the girls skills at the end of the turn.
-*	if a sex type is banned, 10% chance she will loose 1 point in it
-*   all other skills have a 5% chance to loose 1 point
+*	if a sex type is banned, 10% chance she will lose 1 point in it
+*   all other skills have a 5% chance to lose 1 point
 */
 void cGirls::EndDayGirls(sBrothel* brothel, sGirl* girl)
 {
@@ -1462,11 +1462,11 @@ string cGirls::GetGirlMood(sGirl* girl)
 	else if (morality <= -60)	ss << gettext("evil.");
 	else if (morality <= -40)	ss << gettext("mean.");
 	else if (morality <= -20)	ss << gettext("not nice.");
-	else if (morality <=   0)	ss << gettext("neutral.");
-	else if (morality <=  20)	ss << gettext("is lawful.");
-	else if (morality <=  40)	ss << gettext("is nice");
-	else if (morality <=  60)	ss << gettext("is good.");
-	else if (morality <=  80)	ss << gettext("is very good.");
+	else if (morality <= 0)	ss << gettext("neutral.");
+	else if (morality <= 20)	ss << gettext("is lawful.");
+	else if (morality <= 40)	ss << gettext("is nice");
+	else if (morality <= 60)	ss << gettext("is good.");
+	else if (morality <= 80)	ss << gettext("is very good.");
 	else 						ss << gettext("holy.");
 
 	return ss.str();
@@ -2905,7 +2905,7 @@ void cGirls::UpdateStat(sGirl* girl, int a_stat, int amount, bool usetraits)
 					amount -= mod;
 					if (amount < 1) amount = 1;
 				}
-				else if (amount < 0)	// loose health - a little more than normal
+				else if (amount < 0)	// lose health - a little more than normal
 				{	// increase the amound of damage taken by 20% or at least 1 extra point lost
 					int mod = -amount / 5;
 					if (mod < 1) mod = 1;
@@ -2924,7 +2924,7 @@ void cGirls::UpdateStat(sGirl* girl, int a_stat, int amount, bool usetraits)
 					int mod = amount / 10;
 					amount += mod;
 				}
-				else if (amount < 0)	// loose tiredness
+				else if (amount < 0)	// lose tiredness
 				{	// reduce the intended rest gained by 10% (-0 ok)
 					int mod = -amount / 10;
 					amount += mod;
@@ -2946,7 +2946,7 @@ void cGirls::UpdateStat(sGirl* girl, int a_stat, int amount, bool usetraits)
 					amount -= mod;
 					if (amount < 1) amount = 1;
 				}
-				else if (amount < 0)	// loose health - a little more than normal
+				else if (amount < 0)	// lose health - a little more than normal
 				{	// increase the amound of damage taken by 10% (+0 ok) 
 					int mod = -amount / 10;
 					amount -= mod;
@@ -2965,7 +2965,7 @@ void cGirls::UpdateStat(sGirl* girl, int a_stat, int amount, bool usetraits)
 					if (mod < 1) mod = 1;
 					amount += mod;
 				}
-				else if (amount < 0)	// loose tiredness
+				else if (amount < 0)	// lose tiredness
 				{	// decrease the amound of tiredness recovered by 20% and at least 1 but recovering at least 1 
 					int mod = -amount / 5;
 					if (mod < 1) mod = 1;
@@ -2989,8 +2989,8 @@ void cGirls::UpdateStat(sGirl* girl, int a_stat, int amount, bool usetraits)
 					if (mod < 1) mod = 1;
 					amount += mod;
 				}
-				else if (amount < 0)	// loose health
-				{	// reduce the amount of health lost by 20% and at least 1 but loose at least 1
+				else if (amount < 0)	// lose health
+				{	// reduce the amount of health lost by 20% and at least 1 but lose at least 1
 					int mod = -amount / 5;
 					if (mod < 1) mod = 1;
 					amount += mod;
@@ -3010,7 +3010,7 @@ void cGirls::UpdateStat(sGirl* girl, int a_stat, int amount, bool usetraits)
 					amount -= mod;
 					if (amount < 1) amount = 1;
 				}
-				else if (amount < 0)	// loose tiredness
+				else if (amount < 0)	// lose tiredness
 				{	// increase the amount of tiredness lost by 10% (+0 ok)
 					int mod = -amount / 10;
 					amount -= mod;
@@ -3031,7 +3031,7 @@ void cGirls::UpdateStat(sGirl* girl, int a_stat, int amount, bool usetraits)
 		{
 
 		}
-		else if (amount < 0)	// loose health
+		else if (amount < 0)	// lose health
 		{
 
 		}
@@ -3047,7 +3047,7 @@ void cGirls::UpdateStat(sGirl* girl, int a_stat, int amount, bool usetraits)
 		{
 
 		}
-		else if (amount < 0)	// loose tiredness
+		else if (amount < 0)	// lose tiredness
 		{
 
 		}
@@ -3667,7 +3667,7 @@ void sGirl::load_from_xml(TiXmlElement *el)
 void sRandomGirl::load_from_xml(TiXmlElement *el)
 {
 	const char *pt;
-	m_NumTraits = 0;
+	m_NumTraits = 0; m_NumTraitNames = 0;
 	// name and description are easy
 	if (pt = el->Attribute("Name")) 		m_Name = pt;
 	g_LogFile.os() << "Loading Rgirl : " << pt << endl;
@@ -3868,10 +3868,21 @@ void sRandomGirl::process_trait_xml(TiXmlElement *el)
 {
 	int ival; const char *pt;
 	sTrait *trait = new sTrait();													// we need to allocate a new sTrait scruct,
-	if ((pt = el->Attribute("Name"))) trait->m_Name = n_strdup(pt);					// get the trait name
-	m_Traits[m_NumTraits] = trait;													// store that in the next free index slot
-	if ((pt = el->Attribute("Percent", &ival))) m_TraitChance[m_NumTraits] = ival;	// get the percentage chance
-	m_NumTraits++;																	// and whack up the trait count.
+	if ((pt = el->Attribute("Name")))
+	{
+		trait->m_Name = n_strdup(pt);					// get the trait name
+		stringstream ss;
+		ss << trait->m_Name;
+		m_TraitNames[m_NumTraitNames] = ss.str();
+	}
+	if (m_NumTraitNames<MAXNUM_TRAITS) m_Traits[m_NumTraits] = trait;					// store that in the next free index slot
+	if ((pt = el->Attribute("Percent", &ival)))							// get the percentage chance
+	{
+		if (m_NumTraitNames<MAXNUM_TRAITS)	m_TraitChance[m_NumTraits] = ival;
+		m_TraitChanceB[m_NumTraitNames] = ival;
+	}
+	if (m_NumTraitNames<MAXNUM_TRAITS) m_NumTraits++;
+	m_NumTraitNames++;											// and whack up the trait count.
 }
 
 void sRandomGirl::process_stat_xml(TiXmlElement *el)
@@ -3926,7 +3937,7 @@ void sRandomGirl::process_cash_xml(TiXmlElement *el)
 
 int cGirls::HasItem(sGirl* girl, string name)
 {
-	for (int i = 0; i < 40; i++)
+	for (int i = 0; i < MAXNUM_GIRL_INVENTORY; i++)
 	{
 		if (girl->m_Inventory[i])
 		{
@@ -3963,7 +3974,7 @@ string stringtolowerj(string name)
 int cGirls::HasItemJ(sGirl* girl, string name)	// `J` added to compare item names removing spaces commas and periods
 {
 	string s = stringtolowerj(name);
-	for (int i = 0; i < 40; i++)
+	for (int i = 0; i < MAXNUM_GIRL_INVENTORY; i++)
 	{
 		if (girl->m_Inventory[i])
 		{
@@ -3983,7 +3994,7 @@ void cGirls::EquipCombat(sGirl* girl)
 	if (g_Dice.percent(refusal)) return;
 
 	int Armor = -1, Weap1 = -1, Weap2 = -1;
-	for (int i = 0; i < 40; i++)
+	for (int i = 0; i < MAXNUM_GIRL_INVENTORY; i++)
 	{
 		if (girl->m_Inventory[i] != 0)
 		{
@@ -4025,7 +4036,7 @@ void cGirls::UnequipCombat(sGirl* girl)
 	if (girl->has_trait("Retarded"))	refusal += 30;
 	if (g_Dice.percent(refusal))			return;
 
-	for (int i = 0; i < 40; i++)
+	for (int i = 0; i < MAXNUM_GIRL_INVENTORY; i++)
 	{
 		if (girl->m_Inventory[i] != 0)
 		{
@@ -4065,7 +4076,7 @@ void cGirls::UseItems(sGirl* girl)
 		{
 			if (girl->m_Withdrawals >= 30)
 			{
-				RemoveTrait(girl, "Viras Blood Addict",true);
+				RemoveTrait(girl, "Viras Blood Addict", true);
 				AddTrait(girl, "Former Addict");
 				stringstream goodnews;
 				goodnews << "Good News, " << girl->m_Realname << " has overcome her addiction to Viras Blood.";
@@ -4098,7 +4109,7 @@ void cGirls::UseItems(sGirl* girl)
 		{
 			if (girl->m_Withdrawals >= 20)
 			{
-				RemoveTrait(girl, "Fairy Dust Addict",true);
+				RemoveTrait(girl, "Fairy Dust Addict", true);
 				AddTrait(girl, "Former Addict");
 				stringstream goodnews;
 				goodnews << "Good News, " << girl->m_Realname << " has overcome her addiction to Fairy Dust.";
@@ -4174,9 +4185,9 @@ void cGirls::UseItems(sGirl* girl)
 			{
 				UpdateStat(girl, STAT_HAPPINESS, -10);
 				UpdateStat(girl, STAT_OBEDIENCE, -10);
-				
+
 				// `J` alchohol withdrawl should not really harm her health, changed it to (-2, -1, 0 or +1) instead
-				UpdateStat(girl, STAT_HEALTH, g_Dice%4-2);	
+				UpdateStat(girl, STAT_HEALTH, g_Dice % 4 - 2);
 				if (!withdraw)
 				{
 					girl->m_Withdrawals++;
@@ -4470,7 +4481,7 @@ bool cGirls::IsInvFull(sGirl* girl)
 	bool full = true;
 	if (girl)
 	{
-		for (int i = 0; i < 40; i++)
+		for (int i = 0; i < MAXNUM_GIRL_INVENTORY; i++)
 		{
 			if (girl->m_Inventory[i] == 0)
 			{
@@ -4485,7 +4496,7 @@ bool cGirls::IsInvFull(sGirl* girl)
 int cGirls::AddInv(sGirl* girl, sInventoryItem* item)
 {
 	int i;
-	for (i = 0; i < 40; i++)
+	for (i = 0; i < MAXNUM_GIRL_INVENTORY; i++)
 	{
 		if (girl->m_Inventory[i] == 0)
 		{
@@ -4523,7 +4534,7 @@ int cGirls::GetWorseItem(sGirl* girl, int type, int cost)
 {
 	int ret = -1;
 	if (girl->m_NumInventory == 0) return -1;
-	for (int i = 0; i < 40; i++)
+	for (int i = 0; i < MAXNUM_GIRL_INVENTORY; i++)
 	{
 		if (girl->m_Inventory[i])
 		{
@@ -4541,7 +4552,7 @@ int cGirls::GetNumItemType(sGirl* girl, int Type)
 {
 	if (girl->m_NumInventory == 0) return 0;
 	int num = 0;
-	for (int i = 0; i < 40; i++)
+	for (int i = 0; i < MAXNUM_GIRL_INVENTORY; i++)
 	{
 		if (girl->m_Inventory[i])
 		{
@@ -4556,7 +4567,7 @@ int cGirls::GetNumItemEquiped(sGirl* girl, int Type)
 {
 	if (girl->m_NumInventory == 0) return 0;
 	int num = 0;
-	for (int i = 0; i < 40; i++)
+	for (int i = 0; i < MAXNUM_GIRL_INVENTORY; i++)
 	{
 		if (girl->m_Inventory[i])
 		{
@@ -4822,1093 +4833,1092 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait, bool rememberflag)
 	for (int i = 0; i<girl->m_NumTraits || doOnce; i++)
 	{
 		sTrait* tr = 0;
-		if (doOnce)
-			tr = trait;
-		else
-			tr = girl->m_Traits[i];
-		if (tr == 0)
-			continue;
-
-		//zzzzzz boobs
-		if (strcmp(tr->m_Name, "Flat Chest") == 0)
-		{
-			UpdateStat(girl, STAT_AGILITY, 5);
-			UpdateStat(girl, STAT_CHARISMA, 5);
-			UpdateSkill(girl, SKILL_TITTYSEX, -25);
-		}
-		else if (strcmp(tr->m_Name, "Petite Breasts") == 0)
-		{
-			UpdateStat(girl, STAT_AGILITY, 5);
-			UpdateStat(girl, STAT_CHARISMA, 5);
-			UpdateSkill(girl, SKILL_TITTYSEX, -20);
-		}
-
-		else if (strcmp(tr->m_Name, "Small Boobs") == 0)
-		{
-			UpdateStat(girl, STAT_AGILITY, 5);
-			UpdateStat(girl, STAT_CHARISMA, 5);
-			UpdateSkill(girl, SKILL_TITTYSEX, -15);
-		}
-
-		else if (strcmp(tr->m_Name, "Busty Boobs") == 0)
-		{
-			UpdateStat(girl, STAT_BEAUTY, 8);
-			UpdateStat(girl, STAT_CONSTITUTION, 5);
-			UpdateStat(girl, STAT_AGILITY, -5);
-			UpdateStat(girl, STAT_CHARISMA, 2);
-			UpdateSkill(girl, SKILL_TITTYSEX, 10);
-		}
-
-		else if (strcmp(tr->m_Name, "Big Boobs") == 0)
-		{
-			UpdateStat(girl, STAT_BEAUTY, 10);
-			UpdateStat(girl, STAT_CONSTITUTION, 5);
-			UpdateStat(girl, STAT_AGILITY, -5);
-			UpdateStat(girl, STAT_CHARISMA, 2);
-			UpdateSkill(girl, SKILL_TITTYSEX, 15);
-		}
-
-		else if (strcmp(tr->m_Name, "Giant Juggs") == 0)
-		{
-			UpdateStat(girl, STAT_BEAUTY, 10);
-			UpdateStat(girl, STAT_CONSTITUTION, 8);
-			UpdateStat(girl, STAT_AGILITY, -5);
-			UpdateStat(girl, STAT_CHARISMA, 2);
-			UpdateSkill(girl, SKILL_TITTYSEX, 15);
-		}
-
-		else if (strcmp(tr->m_Name, "Massive Melons") == 0)
-		{
-			UpdateStat(girl, STAT_BEAUTY, 10);
-			UpdateStat(girl, STAT_CONSTITUTION, 10);
-			UpdateStat(girl, STAT_AGILITY, -10);
-			UpdateSkill(girl, SKILL_TITTYSEX, 18);
-		}
-
-		else if (strcmp(tr->m_Name, "Abnormally Large Boobs") == 0)
-		{
-			UpdateStat(girl, STAT_BEAUTY, 10);
-			UpdateStat(girl, STAT_CONSTITUTION, 10);
-			UpdateStat(girl, STAT_AGILITY, -10);
-			UpdateSkill(girl, SKILL_TITTYSEX, 20);
-		}
-
-		else if (strcmp(tr->m_Name, "Titanic Tits") == 0)
-		{
-			UpdateStat(girl, STAT_BEAUTY, 10);
-			UpdateStat(girl, STAT_CONSTITUTION, 10);
-			UpdateStat(girl, STAT_AGILITY, -15);
-			UpdateSkill(girl, SKILL_TITTYSEX, 25);
-		}
-
-		else if (strcmp(tr->m_Name, "Fast Orgasms") == 0)
-		{
-			UpdateStat(girl, STAT_LIBIDO, 10);
-			UpdateSkill(girl, SKILL_ANAL, 10);
-			UpdateSkill(girl, SKILL_BDSM, 10);
-			UpdateSkill(girl, SKILL_NORMALSEX, 10);
-			UpdateSkill(girl, SKILL_ORALSEX, 10);
-			UpdateSkill(girl, SKILL_BEASTIALITY, 10);
-			UpdateSkill(girl, SKILL_GROUP, 10);
-			UpdateSkill(girl, SKILL_LESBIAN, 10);
-			UpdateStat(girl, STAT_CONFIDENCE, 10);
-			UpdateEnjoyment(girl, ACTION_SEX, +10, true);
-		}
-
-		else if (strcmp(tr->m_Name, "Fake Orgasm Expert") == 0)
-		{
-			UpdateSkill(girl, SKILL_ANAL, 2);
-			UpdateSkill(girl, SKILL_BDSM, 2);
-			UpdateSkill(girl, SKILL_NORMALSEX, 2);
-			UpdateSkill(girl, SKILL_BEASTIALITY, 2);
-			UpdateSkill(girl, SKILL_ORALSEX, 2);
-			UpdateSkill(girl, SKILL_GROUP, 2);
-			UpdateSkill(girl, SKILL_LESBIAN, 2);
-		}
-
-		else if (strcmp(tr->m_Name, "Slow Orgasms") == 0)
-		{
-			UpdateSkill(girl, SKILL_ANAL, -2);
-			UpdateSkill(girl, SKILL_BDSM, -2);
-			UpdateSkill(girl, SKILL_NORMALSEX, -2);
-			UpdateSkill(girl, SKILL_BEASTIALITY, -2);
-			UpdateSkill(girl, SKILL_ORALSEX, -2);
-			UpdateSkill(girl, SKILL_GROUP, -2);
-			UpdateSkill(girl, SKILL_LESBIAN, -2);
-			UpdateStat(girl, STAT_CONFIDENCE, -2);
-			UpdateEnjoyment(girl, ACTION_SEX, -10, true);
-		}
-
-		else if (strcmp(tr->m_Name, "Eye Patch") == 0)
-		{
-			UpdateStat(girl, STAT_BEAUTY, -5);
-			UpdateStat(girl, STAT_CONSTITUTION, 5);
-		}
-
-		else if (strcmp(tr->m_Name, "One Eye") == 0)
-		{
-			UpdateStat(girl, STAT_BEAUTY, -20);
-			UpdateStat(girl, STAT_CHARISMA, -5);
-			UpdateStat(girl, STAT_CONSTITUTION, 5);
-			UpdateStat(girl, STAT_SPIRIT, -10);
-		}
-
-		else if (strcmp(tr->m_Name, "Fearless") == 0)
-		{
-			UpdateStat(girl, STAT_PCFEAR, -200);
-			UpdateStat(girl, STAT_SPIRIT, 30);
-			UpdateSkill(girl, SKILL_PERFORMANCE, 5);
-			UpdateEnjoyment(girl, ACTION_COMBAT, +20, true);
-		}
-
-		else if (strcmp(tr->m_Name, "Meek") == 0)
-		{
-			UpdateStat(girl, STAT_CONFIDENCE, -20);
-			UpdateStat(girl, STAT_OBEDIENCE, 20);
-			UpdateStat(girl, STAT_SPIRIT, -20);
-			UpdateSkill(girl, SKILL_PERFORMANCE, -10);
-			UpdateEnjoyment(girl, ACTION_COMBAT, -20, true);
-			UpdateEnjoyment(girl, ACTION_SEX, -20, true);
-		}
-
-
-		/////////////////////////////////////////////////////////////
-		else if (strcmp(tr->m_Name, "Good Kisser") == 0)
-		{
-			UpdateStat(girl, STAT_LIBIDO, 2);
-			UpdateStat(girl, STAT_CONFIDENCE, 2);
-			UpdateStat(girl, STAT_CHARISMA, 2);
-			UpdateSkill(girl, SKILL_SERVICE, 5);
-			UpdateEnjoyment(girl, ACTION_SEX, +5, true);
-		}
-
-		else if (strcmp(tr->m_Name, "Retarded") == 0)
-		{
-			UpdateStat(girl, STAT_SPIRIT, -20);
-			UpdateStat(girl, STAT_INTELLIGENCE, -50);
-			UpdateStat(girl, STAT_CONFIDENCE, -60);
-		}
-
-		else if (strcmp(tr->m_Name, "Malformed") == 0)
-		{
-			UpdateStat(girl, STAT_CONFIDENCE, -20);
-			UpdateStat(girl, STAT_SPIRIT, -20);
-			UpdateStat(girl, STAT_INTELLIGENCE, -10);
-			UpdateStat(girl, STAT_BEAUTY, -20);
-		}
-
-		else if (strcmp(tr->m_Name, "Long Legs") == 0)
-		{
-			UpdateStat(girl, STAT_BEAUTY, 10);
-		}
-
-		else if (strcmp(tr->m_Name, "Perky Nipples") == 0)
-		{
-			UpdateStat(girl, STAT_BEAUTY, 5);
-			UpdateSkill(girl, SKILL_TITTYSEX, 5);
-		}
-
-		else if (strcmp(tr->m_Name, "Puffy Nipples") == 0)
-		{
-			UpdateStat(girl, STAT_BEAUTY, 5);
-			UpdateSkill(girl, SKILL_TITTYSEX, 5);
-		}
-
-		else if (strcmp(tr->m_Name, "Charismatic") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, 50);
-			UpdateStat(girl, STAT_BEAUTY, 10);
-		}
-
-		else if (strcmp(tr->m_Name, "Charming") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, 30);
-			UpdateStat(girl, STAT_BEAUTY, 15);
-			UpdateEnjoyment(girl, ACTION_WORKBAR, +20, true);
-			UpdateEnjoyment(girl, ACTION_WORKHALL, +20, true);
-		}
-
-
-		else if (strcmp(tr->m_Name, "Half-Construct") == 0)
-		{
-			UpdateStat(girl, STAT_CONSTITUTION, 20);
-			UpdateSkill(girl, SKILL_COMBAT, 20);
-		}
-
-
-		else if (strcmp(tr->m_Name, "Fleet Of Foot") == 0)
-		{
-			UpdateStat(girl, STAT_AGILITY, 50);
-		}
-
-		else if (strcmp(tr->m_Name, "Dependant") == 0)
-		{
-			UpdateStat(girl, STAT_SPIRIT, -30);
-			UpdateStat(girl, STAT_OBEDIENCE, 50);
-			UpdateSkill(girl, SKILL_PERFORMANCE, -10);
-			UpdateEnjoyment(girl, ACTION_COMBAT, -20, true);
-			UpdateEnjoyment(girl, ACTION_WORKHALL, -20, true);
-			UpdateEnjoyment(girl, ACTION_WORKBAR, -20, true);
-			UpdateEnjoyment(girl, ACTION_WORKCLUB, -20, true);
-		}
-
-		else if (strcmp(tr->m_Name, "Pessimist") == 0)
-		{
-			UpdateStat(girl, STAT_SPIRIT, -60);
-			UpdateEnjoyment(girl, ACTION_WORKADVERTISING, -20, true);
-		}
-
-		else if (strcmp(tr->m_Name, "Optimist") == 0)
-		{
-			UpdateEnjoyment(girl, ACTION_WORKADVERTISING, +20, true);
-		}
-
-		else if (strcmp(tr->m_Name, "Iron Will") == 0)
-		{
-			UpdateStat(girl, STAT_PCFEAR, -60);
-			UpdateStat(girl, STAT_SPIRIT, 60);
-			UpdateStat(girl, STAT_OBEDIENCE, -90);
-		}
-
-		else if (strcmp(tr->m_Name, "Merciless") == 0)
-		{
-			UpdateSkill(girl, SKILL_COMBAT, 20);
-			UpdateEnjoyment(girl, ACTION_COMBAT, +20, true);
-		}
-
-		else if (strcmp(tr->m_Name, "Manly") == 0)
-		{
-			UpdateStat(girl, STAT_CONSTITUTION, 10);
-			UpdateStat(girl, STAT_CONFIDENCE, 10);
-			UpdateStat(girl, STAT_OBEDIENCE, -10);
-			UpdateStat(girl, STAT_SPIRIT, 10);
-		}
-
-		else if (strcmp(tr->m_Name, "Mind Fucked") == 0)
-		{
-			UpdateStat(girl, STAT_CONFIDENCE, -50);
-			UpdateStat(girl, STAT_OBEDIENCE, 100);
-			UpdateStat(girl, STAT_SPIRIT, -50);
-		}
-
-		else if (strcmp(tr->m_Name, "Tsundere") == 0)
-		{
-			UpdateStat(girl, STAT_CONFIDENCE, 20);
-			UpdateStat(girl, STAT_OBEDIENCE, -20);
-		}
-
-		else if (strcmp(tr->m_Name, "Yandere") == 0)
-		{
-			UpdateStat(girl, STAT_SPIRIT, 20);
-		}
-
-		else if (strcmp(tr->m_Name, "Lesbian") == 0)
-		{
-			UpdateSkill(girl, SKILL_LESBIAN, 40);
-			UpdateSkill(girl, SKILL_NORMALSEX, -10);
-		}
-
-		else if (strcmp(tr->m_Name, "Masochist") == 0)
-		{
-			UpdateSkill(girl, SKILL_BDSM, 50);
-			UpdateStat(girl, STAT_CONSTITUTION, 50);
-			UpdateStat(girl, STAT_OBEDIENCE, 30);
-		}
-
-		else if (strcmp(tr->m_Name, "Sadistic") == 0)
-		{
-			UpdateSkill(girl, SKILL_BDSM, 20);
-		}
-
-		else if (strcmp(tr->m_Name, "Broken Will") == 0)
-		{
-			UpdateStat(girl, STAT_SPIRIT, -100);
-			UpdateStat(girl, STAT_OBEDIENCE, 100);
-		}
-
-		else if (strcmp(tr->m_Name, "Nymphomaniac") == 0)
-		{
-			UpdateStat(girl, STAT_LIBIDO, 20);
-			UpdateStat(girl, STAT_CONFIDENCE, 5);
-			UpdateStat(girl, STAT_CHARISMA, 5);
-			UpdateStat(girl, STAT_CONSTITUTION, 5);
-			UpdateEnjoyment(girl, ACTION_SEX, +25, true);
-		}
-
-		else if (strcmp(tr->m_Name, "Elegant") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, 10);
-			UpdateStat(girl, STAT_CONFIDENCE, 5);
-			UpdateSkill(girl, SKILL_PERFORMANCE, 5);
-			UpdateEnjoyment(girl, ACTION_SEX, -20, true);
-			UpdateEnjoyment(girl, ACTION_WORKMATRON, +20, true);
-		}
-
-		else if (strcmp(tr->m_Name, "Sexy Air") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, 5);
-			UpdateStat(girl, STAT_BEAUTY, 10);
-			UpdateStat(girl, STAT_CONFIDENCE, 2);
-		}
-
-		else if (strcmp(tr->m_Name, "Great Arse") == 0)
-		{
-			UpdateStat(girl, STAT_CONSTITUTION, 5);
-			UpdateStat(girl, STAT_BEAUTY, 5);
-			UpdateStat(girl, STAT_CHARISMA, 5);
-			UpdateSkill(girl, SKILL_ANAL, 10);
-		}
-
-		else if (strcmp(tr->m_Name, "Small Scars") == 0)
-		{
-			UpdateStat(girl, STAT_BEAUTY, -2);
-			UpdateStat(girl, STAT_CONSTITUTION, 2);
-			UpdateStat(girl, STAT_SPIRIT, -2);
-		}
-
-		else if (strcmp(tr->m_Name, "Cool Scars") == 0)
-		{
-			UpdateStat(girl, STAT_BEAUTY, 2);
-			UpdateStat(girl, STAT_CONSTITUTION, 5);
-			UpdateStat(girl, STAT_SPIRIT, 5);
-			UpdateStat(girl, STAT_CHARISMA, 2);
-		}
-
-		else if (strcmp(tr->m_Name, "Horrific Scars") == 0)
-		{
-			UpdateStat(girl, STAT_BEAUTY, -5);
-			UpdateStat(girl, STAT_CONSTITUTION, 10);
-			UpdateStat(girl, STAT_SPIRIT, -10);
-		}
-
-		else if (strcmp(tr->m_Name, "Cool Person") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, 5);
-			UpdateStat(girl, STAT_SPIRIT, 10);
-			UpdateStat(girl, STAT_CONFIDENCE, 10);
-		}
-
-		else if (strcmp(tr->m_Name, "Nerd") == 0)
-		{
-			UpdateStat(girl, STAT_CONFIDENCE, -10);
-			UpdateStat(girl, STAT_INTELLIGENCE, 10);
-			UpdateSkill(girl, SKILL_MEDICINE, 10);
-		}
-
-		else if (strcmp(tr->m_Name, "Clumsy") == 0)
-		{
-			UpdateSkill(girl, SKILL_ANAL, -10);
-			UpdateSkill(girl, SKILL_BDSM, -10);
-			UpdateSkill(girl, SKILL_NORMALSEX, -10);
-			UpdateSkill(girl, SKILL_BEASTIALITY, -10);
-			UpdateSkill(girl, SKILL_ORALSEX, -10);
-			UpdateSkill(girl, SKILL_GROUP, -10);
-			UpdateSkill(girl, SKILL_LESBIAN, -10);
-			UpdateStat(girl, STAT_CONFIDENCE, -10);
-			UpdateEnjoyment(girl, ACTION_WORKCLEANING, -20, true);
-		}
-
-		else if (strcmp(tr->m_Name, "Cute") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, 10);
-			UpdateStat(girl, STAT_BEAUTY, 5);
-			UpdateEnjoyment(girl, ACTION_WORKCLUB, +10, true);
-			UpdateEnjoyment(girl, ACTION_WORKBAR, +20, true);
-			UpdateEnjoyment(girl, ACTION_WORKHALL, +15, true);
-		}
-
-		else if (strcmp(tr->m_Name, "Strong") == 0)
-		{
-			UpdateSkill(girl, SKILL_COMBAT, 10);
-			UpdateStat(girl, STAT_CONFIDENCE, 10);
-		}
-
-		else if (strcmp(tr->m_Name, "Strong Magic") == 0)
-		{
-			UpdateSkill(girl, SKILL_MAGIC, 20);
-			UpdateStat(girl, STAT_MANA, 20);
-		}
-
-		else if (strcmp(tr->m_Name, "Shroud Addict") == 0)
-		{
-			UpdateStat(girl, STAT_CONFIDENCE, -5);
-			UpdateStat(girl, STAT_OBEDIENCE, 5);
-		}
-
-		else if (strcmp(tr->m_Name, "Fairy Dust Addict") == 0)
-		{
-			UpdateStat(girl, STAT_CONFIDENCE, -10);
-			UpdateStat(girl, STAT_OBEDIENCE, 5);
-		}
-
-		else if (strcmp(tr->m_Name, "Viras Blood Addict") == 0)
-		{
-			UpdateStat(girl, STAT_CONFIDENCE, -15);
-			UpdateStat(girl, STAT_OBEDIENCE, 20);
-			UpdateStat(girl, STAT_CHARISMA, -10);
-		}
-
-		else if (strcmp(tr->m_Name, "Aggressive") == 0)
-		{
-			UpdateSkill(girl, SKILL_COMBAT, 10);
-			UpdateStat(girl, STAT_SPIRIT, 10);
-			UpdateStat(girl, STAT_CONFIDENCE, 5);
-			UpdateEnjoyment(girl, ACTION_COMBAT, +10, true);
-			UpdateEnjoyment(girl, ACTION_WORKSECURITY, +20, true);
-		}
-
-		else if (strcmp(tr->m_Name, "Adventurer") == 0)
-		{
-			UpdateSkill(girl, SKILL_COMBAT, 10);
-			UpdateEnjoyment(girl, ACTION_COMBAT, +10, true);
-		}
-
-		else if (strcmp(tr->m_Name, "Assassin") == 0)
-		{
-			UpdateSkill(girl, SKILL_COMBAT, 15);
-			UpdateEnjoyment(girl, ACTION_COMBAT, +15, true);
-			UpdateEnjoyment(girl, ACTION_WORKSECURITY, +20, true);
-		}
-
-		else if (strcmp(tr->m_Name, "Lolita") == 0)
-		{
-			UpdateStat(girl, STAT_OBEDIENCE, 5);
-			UpdateStat(girl, STAT_CHARISMA, 10);
-			UpdateStat(girl, STAT_BEAUTY, 20);
-		}
-
-
-		else if (strcmp(tr->m_Name, "Nervous") == 0)
-		{
-			UpdateStat(girl, STAT_OBEDIENCE, 10);
-			UpdateStat(girl, STAT_CONFIDENCE, -10);
-			UpdateSkill(girl, SKILL_PERFORMANCE, -20);
-			UpdateEnjoyment(girl, ACTION_WORKCLUB, -10, true);
-			UpdateEnjoyment(girl, ACTION_SEX, -20, true);
-			UpdateEnjoyment(girl, ACTION_WORKBAR, -5, true);
-			UpdateEnjoyment(girl, ACTION_WORKHALL, -5, true);
-		}
-
-		else if (strcmp(tr->m_Name, "Great Figure") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, 10);
-			UpdateStat(girl, STAT_BEAUTY, 20);
-			UpdateEnjoyment(girl, ACTION_WORKCLUB, +20, true);
-			UpdateEnjoyment(girl, ACTION_WORKBAR, +20, true);
-			UpdateEnjoyment(girl, ACTION_WORKHALL, +20, true);
-		}
-
-		else if (strcmp(tr->m_Name, "Incorporeal") == 0)
-		{
-			UpdateEnjoyment(girl, ACTION_COMBAT, +20, true);
-		}
-
-
-		else if (strcmp(tr->m_Name, "Shape Shifter") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, 20);
-			UpdateStat(girl, STAT_BEAUTY, 20);
-		}
-
-		else if (strcmp(tr->m_Name, "Queen") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, 20);
-			UpdateStat(girl, STAT_BEAUTY, 20);
-			UpdateStat(girl, STAT_CONFIDENCE, 10);
-			UpdateStat(girl, STAT_OBEDIENCE, -15);
-			UpdateEnjoyment(girl, ACTION_SEX, -20, true);
-		}
-
-		else if (strcmp(tr->m_Name, "Princess") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, 10);
-			UpdateStat(girl, STAT_BEAUTY, 10);
-			UpdateStat(girl, STAT_CONFIDENCE, 10);
-			UpdateStat(girl, STAT_OBEDIENCE, -5);
-			UpdateEnjoyment(girl, ACTION_SEX, -20, true);
-		}
-
-		else if (strcmp(tr->m_Name, "Pierced Nipples") == 0)
-		{
-			UpdateStat(girl, STAT_LIBIDO, 10);
-			UpdateSkill(girl, SKILL_TITTYSEX, 10);
-		}
-
-		else if (strcmp(tr->m_Name, "Pierced Tongue") == 0)
-		{
-			UpdateSkill(girl, SKILL_ORALSEX, 10);
-		}
-
-		else if (strcmp(tr->m_Name, "Pierced Clit") == 0)
-		{
-			UpdateStat(girl, STAT_LIBIDO, 20);
-			UpdateSkill(girl, SKILL_NORMALSEX, 10);
-			UpdateEnjoyment(girl, ACTION_SEX, 10, true);
-		}
-		//SIN: Adjusted for missing/new traits
-		else if (strcmp(tr->m_Name, "Strong Gag Reflex") == 0)
-		{
-			UpdateSkill(girl, SKILL_ORALSEX, -50);
-		}
-		else if (strcmp(tr->m_Name, "Gag Reflex") == 0)
-		{
-			UpdateSkill(girl, SKILL_ORALSEX, -30);
-		}
-		else if (strcmp(tr->m_Name, "No Gag Reflex") == 0)
-		{
-			UpdateSkill(girl, SKILL_ORALSEX, 25);
-		}
-		else if (strcmp(tr->m_Name, "Deep Throat") == 0)
-		{
-			UpdateSkill(girl, SKILL_ORALSEX, 50);
-		}
-		else if (strcmp(tr->m_Name, "Cum Addict") == 0)
-		{
-			UpdateStat(girl, SKILL_ORALSEX, 30);
-			UpdateSkill(girl, SKILL_GROUP, 10);
-			UpdateStat(girl, STAT_OBEDIENCE, 20);
-			UpdateStat(girl, STAT_SPIRIT, -10);
-			UpdateEnjoyment(girl, ACTION_SEX, 20, true);
-		}
-		//Start of CRAZY adding traits
-		else if (strcmp(tr->m_Name, "Agile") == 0)
-		{
-			UpdateStat(girl, STAT_AGILITY, 20);
-		}
-		else if (strcmp(tr->m_Name, "Actress") == 0)
-		{
-			UpdateSkill(girl, SKILL_PERFORMANCE, 10);
-		}
-		else if (strcmp(tr->m_Name, "Audacity") == 0)
-		{
-			UpdateStat(girl, STAT_PCFEAR, -30);
-			UpdateStat(girl, STAT_SPIRIT, 30);
-			UpdateStat(girl, STAT_OBEDIENCE, -40);
-		}
-		else if (strcmp(tr->m_Name, "Angel") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Battery Operated") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Bad Eyesight") == 0)
-		{
-			UpdateSkill(girl, SKILL_CRAFTING, -10);
-		}
-		else if (strcmp(tr->m_Name, "Beauty Mark") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, 5);
-			UpdateStat(girl, STAT_BEAUTY, 5);
-		}
-		else if (strcmp(tr->m_Name, "Bimbo") == 0)
-		{
-			UpdateStat(girl, STAT_CONFIDENCE, 10);
-			UpdateStat(girl, STAT_INTELLIGENCE, -10);
-			UpdateSkill(girl, SKILL_MEDICINE, -10);
-		}
-		else if (strcmp(tr->m_Name, "Blind") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Branded on the Ass") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Branded on the Forehead") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, -10);
-			UpdateStat(girl, STAT_BEAUTY, -10);
-		}
-		else if (strcmp(tr->m_Name, "Brawler") == 0)
-		{
-			UpdateSkill(girl, SKILL_COMBAT, 10);
-			UpdateStat(girl, STAT_CONSTITUTION, 5);
-		}
-		else if (strcmp(tr->m_Name, "Broodmother") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Bruises") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, -5);
-			UpdateStat(girl, STAT_BEAUTY, -5);
-		}
-		else if (strcmp(tr->m_Name, "Canine") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Chef") == 0)
-		{
-			UpdateSkill(girl, SKILL_SERVICE, 10);//change to cook if ever added
-		}
-		else if (strcmp(tr->m_Name, "Country Gal") == 0)
-		{
-			UpdateSkill(girl, SKILL_FARMING, 10);
-			UpdateSkill(girl, SKILL_ANIMALHANDLING, 5);
-		}
-		else if (strcmp(tr->m_Name, "Cow Girl") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Cow Tits") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Cyclops") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Deaf") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Delicate") == 0)
-		{
-			UpdateStat(girl, STAT_CONSTITUTION, -15);
-		}
-		else if (strcmp(tr->m_Name, "Deluxe Derriere") == 0)
-		{
-			UpdateStat(girl, STAT_BEAUTY, 5);
-			UpdateStat(girl, STAT_CHARISMA, 5);
-			UpdateSkill(girl, SKILL_ANAL, 10);
-		}
-		else if (strcmp(tr->m_Name, "Demon") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Demon Possessed") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Dick-Sucking Lips") == 0)
-		{
-			UpdateStat(girl, STAT_BEAUTY, 5);
-		}
-		else if (strcmp(tr->m_Name, "Director") == 0)
-		{
-			UpdateStat(girl, STAT_INTELLIGENCE, 5);
-			UpdateSkill(girl, SKILL_PERFORMANCE, 10);
-		}
-		else if (strcmp(tr->m_Name, "Doctor") == 0)
-		{
-			UpdateStat(girl, STAT_INTELLIGENCE, 15);
-			UpdateSkill(girl, SKILL_MEDICINE, 10);
-		}
-		else if (strcmp(tr->m_Name, "Dojikko") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Dominatrix") == 0)
-		{
-			UpdateSkill(girl, SKILL_BDSM, 10);
-		}
-		else if (strcmp(tr->m_Name, "Dry Milk") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Dryad") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Egg Layer") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Elf") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Equine") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Exhibitionist") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Exotic") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, 5);
-			UpdateStat(girl, STAT_BEAUTY, 10);
-		}
-		//starts with F
-		else if (strcmp(tr->m_Name, "Fallen Goddess") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Farmers Daughter") == 0)
-		{
-			UpdateSkill(girl, SKILL_FARMING, 15);
-			UpdateSkill(girl, SKILL_ANIMALHANDLING, 10);
-		}
-		else if (strcmp(tr->m_Name, "Fertile") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Flat Ass") == 0)
-		{
-			UpdateStat(girl, STAT_BEAUTY, -5);
-			UpdateStat(girl, STAT_CHARISMA, -5);
-			UpdateSkill(girl, SKILL_ANAL, -10);
-		}
-		else if (strcmp(tr->m_Name, "Flight") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Former Addict") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Former Official") == 0)
-		{
-			UpdateStat(girl, STAT_FAME, 5);
-		}
-		else if (strcmp(tr->m_Name, "Furry") == 0)
-		{
-			//
-		}
-		//starts with G
-		else if (strcmp(tr->m_Name, "Giant") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Goddess") == 0)
-		{
-			//
-		}
-		//starts with H
-		else if (strcmp(tr->m_Name, "Half-Breed") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Handyman") == 0)
-		{
-			UpdateSkill(girl, SKILL_SERVICE, 10);
-			UpdateSkill(girl, SKILL_CRAFTING, 10);
-		}
-		else if (strcmp(tr->m_Name, "Heavily Tattooed") == 0)
-		{
-			UpdateStat(girl, STAT_BEAUTY, -15);
-			UpdateStat(girl, STAT_CHARISMA, -15);
-		}
-		else if (strcmp(tr->m_Name, "Heroine") == 0)
-		{
-			UpdateSkill(girl, SKILL_COMBAT, 10);
-			UpdateStat(girl, STAT_CONSTITUTION, 5);
-		}
-		else if (strcmp(tr->m_Name, "Homeless") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Hourglass Figure") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, 5);
-			UpdateStat(girl, STAT_BEAUTY, 10);
-			UpdateEnjoyment(girl, ACTION_WORKCLUB, +10, true);
-			UpdateEnjoyment(girl, ACTION_WORKBAR, +10, true);
-			UpdateEnjoyment(girl, ACTION_WORKHALL, +10, true);
-		}
-		//Starts with I
-		else if (strcmp(tr->m_Name, "Idiot Savant") == 0)
-		{
-			UpdateStat(girl, STAT_INTELLIGENCE, -15);
-		}
-		else if (strcmp(tr->m_Name, "Idol") == 0)
-		{
-			UpdateStat(girl, STAT_FAME, 15);
-			UpdateSkill(girl, SKILL_PERFORMANCE, 10);
-		}
-		//starts with L
-		else if (strcmp(tr->m_Name, "Large Hips") == 0)
-		{
-			UpdateStat(girl, STAT_AGILITY, 5);
-			UpdateStat(girl, STAT_BEAUTY, 5);
-			UpdateSkill(girl, SKILL_ANAL, 5);
-		}
-		//starts with M
-		else if (strcmp(tr->m_Name, "Maid") == 0)
-		{
-			UpdateSkill(girl, SKILL_SERVICE, 20);
-		}
-		else if (strcmp(tr->m_Name, "Middle Aged") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, -5);
-			UpdateStat(girl, STAT_BEAUTY, -5);
-		}
-		else if (strcmp(tr->m_Name, "Mixologist") == 0)
-		{
-			UpdateSkill(girl, SKILL_SERVICE, 5);
-			UpdateSkill(girl, SKILL_BREWING, 15);
-		}
-		else if (strcmp(tr->m_Name, "Muggle") == 0)
-		{
-			UpdateSkill(girl, SKILL_MAGIC, -30);
-			UpdateStat(girl, STAT_MANA, -30);
-		}
-		else if (strcmp(tr->m_Name, "Muscular") == 0)
-		{
-			UpdateSkill(girl, SKILL_COMBAT, 5);
-			UpdateStat(girl, STAT_AGILITY, 10);
-			UpdateStat(girl, STAT_CONSTITUTION, 10);
-		}
-		//starts with N
-		else if (strcmp(tr->m_Name, "Natural Pheromones") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, 10);
-		}
-		else if (strcmp(tr->m_Name, "Nimble Tongue") == 0)
-		{
-			UpdateStat(girl, STAT_LIBIDO, 2);
-			UpdateStat(girl, STAT_CONFIDENCE, 2);
-			UpdateStat(girl, STAT_CHARISMA, 2);
-			UpdateEnjoyment(girl, ACTION_SEX, +5, true);
-		}
-		else if (strcmp(tr->m_Name, "No Arms") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, -30);
-			UpdateStat(girl, STAT_BEAUTY, -30);
-			UpdateSkill(girl, SKILL_HANDJOB, -100);
-			UpdateSkill(girl, SKILL_COMBAT, -50);
-			UpdateSkill(girl, SKILL_GROUP, -20);
-		}
-		else if (strcmp(tr->m_Name, "No Clit") == 0)
-		{
-			UpdateEnjoyment(girl, ACTION_SEX, -10, true);
-		}
-		else if (strcmp(tr->m_Name, "No Feet") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, -10);
-			UpdateStat(girl, STAT_BEAUTY, -10);
-			UpdateSkill(girl, SKILL_FOOTJOB, -100);
-			UpdateSkill(girl, SKILL_COMBAT, -50);
-			UpdateSkill(girl, SKILL_GROUP, -20);
-			UpdateStat(girl, STAT_AGILITY, -30);
-		}
-		else if (strcmp(tr->m_Name, "No Hands") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, -10);
-			UpdateStat(girl, STAT_BEAUTY, -10);
-			UpdateSkill(girl, SKILL_HANDJOB, -100);
-			UpdateSkill(girl, SKILL_COMBAT, -20);
-			UpdateSkill(girl, SKILL_GROUP, -10);
-		}
-		else if (strcmp(tr->m_Name, "No Legs") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, -40);
-			UpdateStat(girl, STAT_BEAUTY, -40);
-			UpdateSkill(girl, SKILL_FOOTJOB, -100);
-			UpdateSkill(girl, SKILL_COMBAT, -75);
-			UpdateSkill(girl, SKILL_GROUP, -20);
-			UpdateStat(girl, STAT_AGILITY, -70);
-		}
-		else if (strcmp(tr->m_Name, "No Nipples") == 0)
-		{
-			UpdateSkill(girl, SKILL_TITTYSEX, -5);
-		}
-		else if (strcmp(tr->m_Name, "No Teeth") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, -10);
-			UpdateStat(girl, STAT_BEAUTY, -10);
-			UpdateSkill(girl, SKILL_ORALSEX, 10);
-		}
-		else if (strcmp(tr->m_Name, "Noble") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, 5);
-			UpdateStat(girl, STAT_BEAUTY, 5);
-			UpdateStat(girl, STAT_CONFIDENCE, 5);
-			UpdateStat(girl, STAT_OBEDIENCE, -5);
-			UpdateEnjoyment(girl, ACTION_SEX, -15, true);
-		}
-		//starts with O
-		else if (strcmp(tr->m_Name, "Old") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, -15);
-			UpdateStat(girl, STAT_BEAUTY, -15);
-		}
-		else if (strcmp(tr->m_Name, "One Arm") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, -15);
-			UpdateStat(girl, STAT_BEAUTY, -15);
-		}
-		else if (strcmp(tr->m_Name, "One Eye") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, -5);
-			UpdateStat(girl, STAT_BEAUTY, -5);
-		}
-		else if (strcmp(tr->m_Name, "One Foot") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, -10);
-			UpdateStat(girl, STAT_BEAUTY, -10);
-			UpdateSkill(girl, SKILL_FOOTJOB, -15);
-		}
-		else if (strcmp(tr->m_Name, "One Hand") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, -10);
-			UpdateStat(girl, STAT_BEAUTY, -10);
-		}
-		else if (strcmp(tr->m_Name, "One Leg") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, -15);
-			UpdateStat(girl, STAT_BEAUTY, -15);
-			UpdateSkill(girl, SKILL_FOOTJOB, -20);
-		}
-		else if (strcmp(tr->m_Name, "Open Minded") == 0)
-		{
-			//
-			UpdateStat(girl, STAT_LIBIDO, 15);
-			UpdateEnjoyment(girl, ACTION_SEX, 10, true);
-		}
-		//starts with P
-		else if (strcmp(tr->m_Name, "Phat Booty") == 0)
-		{
-			UpdateStat(girl, STAT_AGILITY, -5);
-			UpdateStat(girl, STAT_BEAUTY, 5);
-			UpdateStat(girl, STAT_CHARISMA, 5);
-			UpdateSkill(girl, SKILL_ANAL, 10);
-		}
-		else if (strcmp(tr->m_Name, "Playful Tail") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Plump Tush") == 0)
-		{
-			UpdateStat(girl, STAT_AGILITY, -10);
-			UpdateStat(girl, STAT_BEAUTY, 5);
-			UpdateSkill(girl, SKILL_ANAL, 10);
-		}
-		else if (strcmp(tr->m_Name, "Plump") == 0)
-		{
-			UpdateStat(girl, STAT_AGILITY, -10);
-		}
-		else if (strcmp(tr->m_Name, "Porn Star") == 0)
-		{
-			UpdateStat(girl, STAT_FAME, 20);
-			UpdateSkill(girl, SKILL_PERFORMANCE, 10);
-		}
-		else if (strcmp(tr->m_Name, "Powerful Magic") == 0)
-		{
-			UpdateSkill(girl, SKILL_MAGIC, 30);
-			UpdateStat(girl, STAT_MANA, 30);
-		}
-		else if (strcmp(tr->m_Name, "Prehensile Tail") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Priestess") == 0)
-		{
-			UpdateStat(girl, STAT_MORALITY, 20);
-			//
-		}
-		//starts with S
-		else if (strcmp(tr->m_Name, "Scarce Lactation") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Sharp-Eyed") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Singer") == 0)
-		{
-			UpdateSkill(girl, SKILL_PERFORMANCE, 30);
-			UpdateStat(girl, STAT_CONFIDENCE, 30);
-		}
-		else if (strcmp(tr->m_Name, "Slitherer") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Slut") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, -10);
-			UpdateEnjoyment(girl, ACTION_SEX, 10, true);
-		}
-		else if (strcmp(tr->m_Name, "Small Tattoos") == 0)
-		{
-			UpdateStat(girl, STAT_BEAUTY, -5);
-			UpdateStat(girl, STAT_CHARISMA, -5);
-		}
-		else if (strcmp(tr->m_Name, "Smoker") == 0)
-		{
-			UpdateStat(girl, STAT_BEAUTY, -5);
-			UpdateStat(girl, STAT_CHARISMA, -5);
-			UpdateStat(girl, STAT_AGILITY, -10);
-			UpdateStat(girl, STAT_CONSTITUTION, -5);
-		}
-		else if (strcmp(tr->m_Name, "Social Drinker") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Solar Powered") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Spirit Possessed") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Straight") == 0)
-		{
-			UpdateSkill(girl, SKILL_NORMALSEX, 10);
-			UpdateSkill(girl, SKILL_LESBIAN, -15);
-		}
-		else if (strcmp(tr->m_Name, "Succubus") == 0)
-		{
-			//
-		}
-		//starts with T
-		else if (strcmp(tr->m_Name, "Tattooed") == 0)
-		{
-			UpdateStat(girl, STAT_BEAUTY, -10);
-			UpdateStat(girl, STAT_CHARISMA, -10);
-		}
-		else if (strcmp(tr->m_Name, "Teacher") == 0)
-		{
-			UpdateStat(girl, STAT_INTELLIGENCE, 10);
-		}
-		else if (strcmp(tr->m_Name, "Tight Butt") == 0)
-		{
-			UpdateStat(girl, STAT_CONSTITUTION, 5);
-			UpdateStat(girl, STAT_BEAUTY, 5);
-			UpdateStat(girl, STAT_CHARISMA, 5);
-			UpdateSkill(girl, SKILL_ANAL, 8);
-		}
-		else if (strcmp(tr->m_Name, "Tomboy") == 0)
-		{
-			UpdateStat(girl, STAT_CONSTITUTION, 10);
-			UpdateStat(girl, STAT_CHARISMA, -15);
-		}
-		else if (strcmp(tr->m_Name, "Tone Deaf") == 0)
-		{
-			UpdateSkill(girl, SKILL_PERFORMANCE, -30);
-			UpdateStat(girl, STAT_CONFIDENCE, -30);
-		}
-		else if (strcmp(tr->m_Name, "Waitress") == 0)
-		{
-			UpdateSkill(girl, SKILL_SERVICE, 30);
-		}
-		else if (strcmp(tr->m_Name, "Weak Magic") == 0)
-		{
-			UpdateSkill(girl, SKILL_MAGIC, -20);
-			UpdateStat(girl, STAT_MANA, -20);
-		}
-		else if (strcmp(tr->m_Name, "Whore") == 0)
-		{
-			UpdateStat(girl, STAT_CONSTITUTION, -5);
-			UpdateStat(girl, STAT_BEAUTY, -10);
-			UpdateStat(girl, STAT_CHARISMA, -10);
-			UpdateEnjoyment(girl, ACTION_SEX, 10, true);
-		}
-		else if (strcmp(tr->m_Name, "Wide Bottom") == 0)
-		{
-			UpdateStat(girl, STAT_CONSTITUTION, 5);
-			UpdateStat(girl, STAT_BEAUTY, 5);
-			UpdateSkill(girl, SKILL_ANAL, 5);
-		}
-		else if (strcmp(tr->m_Name, "Wings") == 0)
-		{
-			//
+		tr = (doOnce) ? trait : girl->m_Traits[i];
+		if (tr == 0) continue;
+		stringstream ss;
+		ss << tr->m_Name;
+		string Name = ss.str();
+		string first = ""; first[0] = tolower(Name[0]);
+
+		if (first == "a")
+		{
+			/* */if (Name == "Abnormally Large Boobs")
+			{
+				UpdateStat(girl, STAT_BEAUTY, 10);
+				UpdateStat(girl, STAT_CONSTITUTION, 10);
+				UpdateStat(girl, STAT_AGILITY, -10);
+				UpdateSkill(girl, SKILL_TITTYSEX, 20);
+			}
+			else if (Name == "Actress")
+			{
+				UpdateSkill(girl, SKILL_PERFORMANCE, 10);
+			}
+			else if (Name == "Adventurer")
+			{
+				UpdateSkill(girl, SKILL_COMBAT, 10);
+				UpdateEnjoyment(girl, ACTION_COMBAT, +10, true);
+			}
+			else if (Name == "Aggressive")
+			{
+				UpdateSkill(girl, SKILL_COMBAT, 10);
+				UpdateStat(girl, STAT_SPIRIT, 10);
+				UpdateStat(girl, STAT_CONFIDENCE, 5);
+				UpdateEnjoyment(girl, ACTION_COMBAT, +10, true);
+				UpdateEnjoyment(girl, ACTION_WORKSECURITY, +20, true);
+			}
+			else if (Name == "Agile")
+			{
+				UpdateStat(girl, STAT_AGILITY, 20);
+			}
+			else if (Name == "Angel")
+			{
+				//
+			}
+			else if (Name == "Assassin")
+			{
+				UpdateSkill(girl, SKILL_COMBAT, 15);
+				UpdateEnjoyment(girl, ACTION_COMBAT, +15, true);
+				UpdateEnjoyment(girl, ACTION_WORKSECURITY, +20, true);
+			}
+			else if (Name == "Audacity")
+			{
+				UpdateStat(girl, STAT_PCFEAR, -30);
+				UpdateStat(girl, STAT_SPIRIT, 30);
+				UpdateStat(girl, STAT_OBEDIENCE, -40);
+			}
+		}
+		else if (first == "b")
+		{
+			/* */if (Name == "Bad Eyesight")
+			{
+				UpdateSkill(girl, SKILL_CRAFTING, -10);
+			}
+			else if (Name == "Battery Operated")
+			{
+				//
+			}
+			else if (Name == "Beauty Mark")
+			{
+				UpdateStat(girl, STAT_CHARISMA, 5);
+				UpdateStat(girl, STAT_BEAUTY, 5);
+			}
+			else if (Name == "Big Boobs")
+			{
+				UpdateStat(girl, STAT_BEAUTY, 10);
+				UpdateStat(girl, STAT_CONSTITUTION, 5);
+				UpdateStat(girl, STAT_AGILITY, -5);
+				UpdateStat(girl, STAT_CHARISMA, 2);
+				UpdateSkill(girl, SKILL_TITTYSEX, 15);
+			}
+			else if (Name == "Bimbo")
+			{
+				UpdateStat(girl, STAT_CONFIDENCE, 10);
+				UpdateStat(girl, STAT_INTELLIGENCE, -10);
+				UpdateSkill(girl, SKILL_MEDICINE, -10);
+			}
+			else if (Name == "Blind")
+			{
+				//
+			}
+			else if (Name == "Branded on the Ass")
+			{
+				//
+			}
+			else if (Name == "Branded on the Forehead")
+			{
+				UpdateStat(girl, STAT_CHARISMA, -10);
+				UpdateStat(girl, STAT_BEAUTY, -10);
+			}
+			else if (Name == "Brawler")
+			{
+				UpdateSkill(girl, SKILL_COMBAT, 10);
+				UpdateStat(girl, STAT_CONSTITUTION, 5);
+			}
+			else if (Name == "Broken Will")
+			{
+				UpdateStat(girl, STAT_SPIRIT, -100);
+				UpdateStat(girl, STAT_OBEDIENCE, 100);
+			}
+			else if (Name == "Broodmother")
+			{
+				//
+			}
+			else if (Name == "Bruises")
+			{
+				UpdateStat(girl, STAT_CHARISMA, -5);
+				UpdateStat(girl, STAT_BEAUTY, -5);
+			}
+			else if (Name == "Busty Boobs")
+			{
+				UpdateStat(girl, STAT_BEAUTY, 8);
+				UpdateStat(girl, STAT_CONSTITUTION, 5);
+				UpdateStat(girl, STAT_AGILITY, -5);
+				UpdateStat(girl, STAT_CHARISMA, 2);
+				UpdateSkill(girl, SKILL_TITTYSEX, 10);
+			}
+		}
+		else if (first == "c")
+		{
+			/* */if (Name == "Canine")
+			{
+				//
+			}
+			else if (Name == "Charismatic")
+			{
+				UpdateStat(girl, STAT_CHARISMA, 50);
+				UpdateStat(girl, STAT_BEAUTY, 10);
+			}
+			else if (Name == "Charming")
+			{
+				UpdateStat(girl, STAT_CHARISMA, 30);
+				UpdateStat(girl, STAT_BEAUTY, 15);
+				UpdateEnjoyment(girl, ACTION_WORKBAR, +20, true);
+				UpdateEnjoyment(girl, ACTION_WORKHALL, +20, true);
+			}
+			else if (Name == "Chef")
+			{
+				UpdateSkill(girl, SKILL_SERVICE, 10);//change to cook if ever added
+			}
+			else if (Name == "Clumsy")
+			{
+				UpdateSkill(girl, SKILL_ANAL, -10);
+				UpdateSkill(girl, SKILL_BDSM, -10);
+				UpdateSkill(girl, SKILL_NORMALSEX, -10);
+				UpdateSkill(girl, SKILL_BEASTIALITY, -10);
+				UpdateSkill(girl, SKILL_ORALSEX, -10);
+				UpdateSkill(girl, SKILL_GROUP, -10);
+				UpdateSkill(girl, SKILL_LESBIAN, -10);
+				UpdateStat(girl, STAT_CONFIDENCE, -10);
+				UpdateEnjoyment(girl, ACTION_WORKCLEANING, -20, true);
+			}
+			else if (Name == "Cool Person")
+			{
+				UpdateStat(girl, STAT_CHARISMA, 5);
+				UpdateStat(girl, STAT_SPIRIT, 10);
+				UpdateStat(girl, STAT_CONFIDENCE, 10);
+			}
+			else if (Name == "Cool Scars")
+			{
+				UpdateStat(girl, STAT_BEAUTY, 2);
+				UpdateStat(girl, STAT_CONSTITUTION, 5);
+				UpdateStat(girl, STAT_SPIRIT, 5);
+				UpdateStat(girl, STAT_CHARISMA, 2);
+			}
+			else if (Name == "Country Gal")
+			{
+				UpdateSkill(girl, SKILL_FARMING, 10);
+				UpdateSkill(girl, SKILL_ANIMALHANDLING, 5);
+			}
+			else if (Name == "Cow Girl")
+			{
+				//
+			}
+			else if (Name == "Cow Tits")
+			{
+				//
+			}
+			else if (Name == "Cum Addict")
+			{
+				UpdateStat(girl, SKILL_ORALSEX, 30);
+				UpdateSkill(girl, SKILL_GROUP, 10);
+				UpdateStat(girl, STAT_OBEDIENCE, 20);
+				UpdateStat(girl, STAT_SPIRIT, -10);
+				UpdateEnjoyment(girl, ACTION_SEX, 20, true);
+			}
+			else if (Name == "Cute")
+			{
+				UpdateStat(girl, STAT_CHARISMA, 10);
+				UpdateStat(girl, STAT_BEAUTY, 5);
+				UpdateEnjoyment(girl, ACTION_WORKCLUB, +10, true);
+				UpdateEnjoyment(girl, ACTION_WORKBAR, +20, true);
+				UpdateEnjoyment(girl, ACTION_WORKHALL, +15, true);
+			}
+			else if (Name == "Cyclops")
+			{
+				//
+			}
+		}
+		else if (first == "d")
+		{
+			/* */if (Name == "Deaf")
+			{
+				//
+			}
+			else if (Name == "Deep Throat")
+			{
+				UpdateSkill(girl, SKILL_ORALSEX, 50);
+			}
+			else if (Name == "Delicate")
+			{
+				UpdateStat(girl, STAT_CONSTITUTION, -15);
+			}
+			else if (Name == "Deluxe Derriere")
+			{
+				UpdateStat(girl, STAT_BEAUTY, 5);
+				UpdateStat(girl, STAT_CHARISMA, 5);
+				UpdateSkill(girl, SKILL_ANAL, 10);
+			}
+			else if (Name == "Demon Possessed")
+			{
+				//
+			}
+			else if (Name == "Demon")
+			{
+				//
+			}
+			else if (Name == "Dependant")
+			{
+				UpdateStat(girl, STAT_SPIRIT, -30);
+				UpdateStat(girl, STAT_OBEDIENCE, 50);
+				UpdateSkill(girl, SKILL_PERFORMANCE, -10);
+				UpdateEnjoyment(girl, ACTION_COMBAT, -20, true);
+				UpdateEnjoyment(girl, ACTION_WORKHALL, -20, true);
+				UpdateEnjoyment(girl, ACTION_WORKBAR, -20, true);
+				UpdateEnjoyment(girl, ACTION_WORKCLUB, -20, true);
+			}
+			else if (Name == "Dick-Sucking Lips")
+			{
+				UpdateStat(girl, STAT_BEAUTY, 5);
+			}
+			else if (Name == "Director")
+			{
+				UpdateStat(girl, STAT_INTELLIGENCE, 5);
+				UpdateSkill(girl, SKILL_PERFORMANCE, 10);
+			}
+			else if (Name == "Doctor")
+			{
+				UpdateStat(girl, STAT_INTELLIGENCE, 15);
+				UpdateSkill(girl, SKILL_MEDICINE, 10);
+			}
+			else if (Name == "Dojikko")
+			{
+				//
+			}
+			else if (Name == "Dominatrix")
+			{
+				UpdateSkill(girl, SKILL_BDSM, 10);
+			}
+			else if (Name == "Dry Milk")
+			{
+				//
+			}
+			else if (Name == "Dryad")
+			{
+				//
+			}
+		}
+		else if (first == "e")
+		{
+			/* */if (Name == "Egg Layer")
+			{
+				//
+			}
+			else if (Name == "Elegant")
+			{
+				UpdateStat(girl, STAT_CHARISMA, 10);
+				UpdateStat(girl, STAT_CONFIDENCE, 5);
+				UpdateSkill(girl, SKILL_PERFORMANCE, 5);
+				UpdateEnjoyment(girl, ACTION_SEX, -20, true);
+				UpdateEnjoyment(girl, ACTION_WORKMATRON, +20, true);
+			}
+			else if (Name == "Elf")
+			{
+				//
+			}
+			else if (Name == "Equine")
+			{
+				//
+			}
+			else if (Name == "Exhibitionist")
+			{
+				//
+			}
+			else if (Name == "Exotic")
+			{
+				UpdateStat(girl, STAT_CHARISMA, 5);
+				UpdateStat(girl, STAT_BEAUTY, 10);
+			}
+		}
+		else if (first == "f")
+		{
+			/* */if (Name == "Eye Patch")
+			{
+				UpdateStat(girl, STAT_BEAUTY, -5);
+				UpdateStat(girl, STAT_CONSTITUTION, 5);
+			}
+			else if (Name == "Fairy Dust Addict")
+			{
+				UpdateStat(girl, STAT_CONFIDENCE, -10);
+				UpdateStat(girl, STAT_OBEDIENCE, 5);
+			}
+			else if (Name == "Fake Orgasm Expert")
+			{
+				UpdateSkill(girl, SKILL_ANAL, 2);
+				UpdateSkill(girl, SKILL_BDSM, 2);
+				UpdateSkill(girl, SKILL_NORMALSEX, 2);
+				UpdateSkill(girl, SKILL_BEASTIALITY, 2);
+				UpdateSkill(girl, SKILL_ORALSEX, 2);
+				UpdateSkill(girl, SKILL_GROUP, 2);
+				UpdateSkill(girl, SKILL_LESBIAN, 2);
+			}
+			else if (Name == "Fallen Goddess")
+			{
+				//
+			}
+			else if (Name == "Farmers Daughter")
+			{
+				UpdateSkill(girl, SKILL_FARMING, 15);
+				UpdateSkill(girl, SKILL_ANIMALHANDLING, 10);
+			}
+			else if (Name == "Fast Orgasms")
+			{
+				UpdateStat(girl, STAT_LIBIDO, 10);
+				UpdateSkill(girl, SKILL_ANAL, 10);
+				UpdateSkill(girl, SKILL_BDSM, 10);
+				UpdateSkill(girl, SKILL_NORMALSEX, 10);
+				UpdateSkill(girl, SKILL_ORALSEX, 10);
+				UpdateSkill(girl, SKILL_BEASTIALITY, 10);
+				UpdateSkill(girl, SKILL_GROUP, 10);
+				UpdateSkill(girl, SKILL_LESBIAN, 10);
+				UpdateStat(girl, STAT_CONFIDENCE, 10);
+				UpdateEnjoyment(girl, ACTION_SEX, +10, true);
+			}
+			else if (Name == "Fearless")
+			{
+				UpdateStat(girl, STAT_PCFEAR, -200);
+				UpdateStat(girl, STAT_SPIRIT, 30);
+				UpdateSkill(girl, SKILL_PERFORMANCE, 5);
+				UpdateEnjoyment(girl, ACTION_COMBAT, +20, true);
+			}
+			else if (Name == "Fertile")
+			{
+				//
+			}
+			else if (Name == "Flat Ass")
+			{
+				UpdateStat(girl, STAT_BEAUTY, -5);
+				UpdateStat(girl, STAT_CHARISMA, -5);
+				UpdateSkill(girl, SKILL_ANAL, -10);
+			}
+			else if (Name == "Flat Chest")
+			{
+				UpdateStat(girl, STAT_AGILITY, 5);
+				UpdateStat(girl, STAT_CHARISMA, 5);
+				UpdateSkill(girl, SKILL_TITTYSEX, -25);
+			}
+			else if (Name == "Fleet Of Foot")
+			{
+				UpdateStat(girl, STAT_AGILITY, 50);
+			}
+			else if (Name == "Flight")
+			{
+				//
+			}
+			else if (Name == "Former Addict")
+			{
+				//
+			}
+			else if (Name == "Former Official")
+			{
+				UpdateStat(girl, STAT_FAME, 5);
+			}
+			else if (Name == "Furry")
+			{
+				//
+			}
+		}
+		else if (first == "g")
+		{
+			/* */if (Name == "Gag Reflex")
+			{
+				UpdateSkill(girl, SKILL_ORALSEX, -30);
+			}
+			else if (Name == "Giant Juggs")
+			{
+				UpdateStat(girl, STAT_BEAUTY, 10);
+				UpdateStat(girl, STAT_CONSTITUTION, 8);
+				UpdateStat(girl, STAT_AGILITY, -5);
+				UpdateStat(girl, STAT_CHARISMA, 2);
+				UpdateSkill(girl, SKILL_TITTYSEX, 15);
+			}
+			else if (Name == "Giant")
+			{
+				//
+			}
+			else if (Name == "Goddess")
+			{
+				//
+			}
+			else if (Name == "Good Kisser")
+			{
+				UpdateStat(girl, STAT_LIBIDO, 2);
+				UpdateStat(girl, STAT_CONFIDENCE, 2);
+				UpdateStat(girl, STAT_CHARISMA, 2);
+				UpdateSkill(girl, SKILL_SERVICE, 5);
+				UpdateEnjoyment(girl, ACTION_SEX, +5, true);
+			}
+			else if (Name == "Great Arse")
+			{
+				UpdateStat(girl, STAT_CONSTITUTION, 5);
+				UpdateStat(girl, STAT_BEAUTY, 5);
+				UpdateStat(girl, STAT_CHARISMA, 5);
+				UpdateSkill(girl, SKILL_ANAL, 10);
+			}
+			else if (Name == "Great Figure")
+			{
+				UpdateStat(girl, STAT_CHARISMA, 10);
+				UpdateStat(girl, STAT_BEAUTY, 20);
+				UpdateEnjoyment(girl, ACTION_WORKCLUB, +20, true);
+				UpdateEnjoyment(girl, ACTION_WORKBAR, +20, true);
+				UpdateEnjoyment(girl, ACTION_WORKHALL, +20, true);
+			}
+		}
+		else if (first == "h")
+		{
+			/* */if (Name == "Half-Breed")
+			{
+				//
+			}
+			else if (Name == "Half-Construct")
+			{
+				UpdateStat(girl, STAT_CONSTITUTION, 20);
+				UpdateSkill(girl, SKILL_COMBAT, 20);
+			}
+			else if (Name == "Handyman")
+			{
+				UpdateSkill(girl, SKILL_SERVICE, 10);
+				UpdateSkill(girl, SKILL_CRAFTING, 10);
+			}
+			else if (Name == "Heavily Tattooed")
+			{
+				UpdateStat(girl, STAT_BEAUTY, -15);
+				UpdateStat(girl, STAT_CHARISMA, -15);
+			}
+			else if (Name == "Heroine")
+			{
+				UpdateSkill(girl, SKILL_COMBAT, 10);
+				UpdateStat(girl, STAT_CONSTITUTION, 5);
+			}
+			else if (Name == "Homeless")
+			{
+				//
+			}
+			else if (Name == "Horrific Scars")
+			{
+				UpdateStat(girl, STAT_BEAUTY, -5);
+				UpdateStat(girl, STAT_CONSTITUTION, 10);
+				UpdateStat(girl, STAT_SPIRIT, -10);
+			}
+			else if (Name == "Hourglass Figure")
+			{
+				UpdateStat(girl, STAT_CHARISMA, 5);
+				UpdateStat(girl, STAT_BEAUTY, 10);
+				UpdateEnjoyment(girl, ACTION_WORKCLUB, +10, true);
+				UpdateEnjoyment(girl, ACTION_WORKBAR, +10, true);
+				UpdateEnjoyment(girl, ACTION_WORKHALL, +10, true);
+			}
+		}
+		else if (first == "i")
+		{
+			/* */if (Name == "Idiot Savant")
+			{
+				UpdateStat(girl, STAT_INTELLIGENCE, -15);
+			}
+			else if (Name == "Idol")
+			{
+				UpdateStat(girl, STAT_FAME, 15);
+				UpdateSkill(girl, SKILL_PERFORMANCE, 10);
+			}
+			else if (Name == "Incorporeal")
+			{
+				UpdateEnjoyment(girl, ACTION_COMBAT, +20, true);
+			}
+			else if (Name == "Iron Will")
+			{
+				UpdateStat(girl, STAT_PCFEAR, -60);
+				UpdateStat(girl, STAT_SPIRIT, 60);
+				UpdateStat(girl, STAT_OBEDIENCE, -90);
+			}
+		}
+		else if (first == "j")
+		{
+			/* */
+		}
+		else if (first == "k")
+		{
+			/* */
+		}
+		else if (first == "l")
+		{
+			/* */ if (Name == "Large Hips")
+			{
+				UpdateStat(girl, STAT_AGILITY, 5);
+				UpdateStat(girl, STAT_BEAUTY, 5);
+				UpdateSkill(girl, SKILL_ANAL, 5);
+			}
+			//starts with M
+			else if (Name == "Lesbian")
+			{
+				UpdateSkill(girl, SKILL_LESBIAN, 40);
+				UpdateSkill(girl, SKILL_NORMALSEX, -10);
+			}
+			else if (Name == "Lolita")
+			{
+				UpdateStat(girl, STAT_OBEDIENCE, 5);
+				UpdateStat(girl, STAT_CHARISMA, 10);
+				UpdateStat(girl, STAT_BEAUTY, 20);
+			}
+			else if (Name == "Long Legs")
+			{
+				UpdateStat(girl, STAT_BEAUTY, 10);
+			}
+		}
+		else if (first == "m")
+		{
+			/* */if (Name == "Maid")
+			{
+				UpdateSkill(girl, SKILL_SERVICE, 20);
+			}
+			else if (Name == "Malformed")
+			{
+				UpdateStat(girl, STAT_CONFIDENCE, -20);
+				UpdateStat(girl, STAT_SPIRIT, -20);
+				UpdateStat(girl, STAT_INTELLIGENCE, -10);
+				UpdateStat(girl, STAT_BEAUTY, -20);
+			}
+			else if (Name == "Manly")
+			{
+				UpdateStat(girl, STAT_CONSTITUTION, 10);
+				UpdateStat(girl, STAT_CONFIDENCE, 10);
+				UpdateStat(girl, STAT_OBEDIENCE, -10);
+				UpdateStat(girl, STAT_SPIRIT, 10);
+			}
+			else if (Name == "Masochist")
+			{
+				UpdateSkill(girl, SKILL_BDSM, 50);
+				UpdateStat(girl, STAT_CONSTITUTION, 50);
+				UpdateStat(girl, STAT_OBEDIENCE, 30);
+			}
+			else if (Name == "Massive Melons")
+			{
+				UpdateStat(girl, STAT_BEAUTY, 10);
+				UpdateStat(girl, STAT_CONSTITUTION, 10);
+				UpdateStat(girl, STAT_AGILITY, -10);
+				UpdateSkill(girl, SKILL_TITTYSEX, 18);
+			}
+			else if (Name == "Meek")
+			{
+				UpdateStat(girl, STAT_CONFIDENCE, -20);
+				UpdateStat(girl, STAT_OBEDIENCE, 20);
+				UpdateStat(girl, STAT_SPIRIT, -20);
+				UpdateSkill(girl, SKILL_PERFORMANCE, -10);
+				UpdateEnjoyment(girl, ACTION_COMBAT, -20, true);
+				UpdateEnjoyment(girl, ACTION_SEX, -20, true);
+			}
+			else if (Name == "Merciless")
+			{
+				UpdateSkill(girl, SKILL_COMBAT, 20);
+				UpdateEnjoyment(girl, ACTION_COMBAT, +20, true);
+			}
+			else if (Name == "Middle Aged")
+			{
+				UpdateStat(girl, STAT_CHARISMA, -5);
+				UpdateStat(girl, STAT_BEAUTY, -5);
+			}
+			else if (Name == "Mind Fucked")
+			{
+				UpdateStat(girl, STAT_CONFIDENCE, -50);
+				UpdateStat(girl, STAT_OBEDIENCE, 100);
+				UpdateStat(girl, STAT_SPIRIT, -50);
+			}
+			else if (Name == "Mixologist")
+			{
+				UpdateSkill(girl, SKILL_SERVICE, 5);
+				UpdateSkill(girl, SKILL_BREWING, 15);
+			}
+			else if (Name == "Muggle")
+			{
+				UpdateSkill(girl, SKILL_MAGIC, -30);
+				UpdateStat(girl, STAT_MANA, -30);
+			}
+			else if (Name == "Muscular")
+			{
+				UpdateSkill(girl, SKILL_COMBAT, 5);
+				UpdateStat(girl, STAT_AGILITY, 10);
+				UpdateStat(girl, STAT_CONSTITUTION, 10);
+			}
+		}
+		else if (first == "n")
+		{
+			/* */if (Name == "Natural Pheromones")
+			{
+				UpdateStat(girl, STAT_CHARISMA, 10);
+			}
+			else if (Name == "Nerd")
+			{
+				UpdateStat(girl, STAT_CONFIDENCE, -10);
+				UpdateStat(girl, STAT_INTELLIGENCE, 10);
+				UpdateSkill(girl, SKILL_MEDICINE, 10);
+			}
+			else if (Name == "Nervous")
+			{
+				UpdateStat(girl, STAT_OBEDIENCE, 10);
+				UpdateStat(girl, STAT_CONFIDENCE, -10);
+				UpdateSkill(girl, SKILL_PERFORMANCE, -20);
+				UpdateEnjoyment(girl, ACTION_WORKCLUB, -10, true);
+				UpdateEnjoyment(girl, ACTION_SEX, -20, true);
+				UpdateEnjoyment(girl, ACTION_WORKBAR, -5, true);
+				UpdateEnjoyment(girl, ACTION_WORKHALL, -5, true);
+			}
+			else if (Name == "Nimble Tongue")
+			{
+				UpdateStat(girl, STAT_LIBIDO, 2);
+				UpdateStat(girl, STAT_CONFIDENCE, 2);
+				UpdateStat(girl, STAT_CHARISMA, 2);
+				UpdateEnjoyment(girl, ACTION_SEX, +5, true);
+			}
+			else if (Name == "No Arms")
+			{
+				UpdateStat(girl, STAT_CHARISMA, -30);
+				UpdateStat(girl, STAT_BEAUTY, -30);
+				UpdateSkill(girl, SKILL_HANDJOB, -100);
+				UpdateSkill(girl, SKILL_COMBAT, -50);
+				UpdateSkill(girl, SKILL_GROUP, -20);
+			}
+			else if (Name == "No Clit")
+			{
+				UpdateEnjoyment(girl, ACTION_SEX, -10, true);
+			}
+			else if (Name == "No Feet")
+			{
+				UpdateStat(girl, STAT_CHARISMA, -10);
+				UpdateStat(girl, STAT_BEAUTY, -10);
+				UpdateSkill(girl, SKILL_FOOTJOB, -100);
+				UpdateSkill(girl, SKILL_COMBAT, -50);
+				UpdateSkill(girl, SKILL_GROUP, -20);
+				UpdateStat(girl, STAT_AGILITY, -30);
+			}
+			else if (Name == "No Gag Reflex")
+			{
+				UpdateSkill(girl, SKILL_ORALSEX, 25);
+			}
+			else if (Name == "No Hands")
+			{
+				UpdateStat(girl, STAT_CHARISMA, -10);
+				UpdateStat(girl, STAT_BEAUTY, -10);
+				UpdateSkill(girl, SKILL_HANDJOB, -100);
+				UpdateSkill(girl, SKILL_COMBAT, -20);
+				UpdateSkill(girl, SKILL_GROUP, -10);
+			}
+			else if (Name == "No Legs")
+			{
+				UpdateStat(girl, STAT_CHARISMA, -40);
+				UpdateStat(girl, STAT_BEAUTY, -40);
+				UpdateSkill(girl, SKILL_FOOTJOB, -100);
+				UpdateSkill(girl, SKILL_COMBAT, -75);
+				UpdateSkill(girl, SKILL_GROUP, -20);
+				UpdateStat(girl, STAT_AGILITY, -70);
+			}
+			else if (Name == "No Nipples")
+			{
+				UpdateSkill(girl, SKILL_TITTYSEX, -5);
+			}
+			else if (Name == "No Teeth")
+			{
+				UpdateStat(girl, STAT_CHARISMA, -10);
+				UpdateStat(girl, STAT_BEAUTY, -10);
+				UpdateSkill(girl, SKILL_ORALSEX, 10);
+			}
+			else if (Name == "Noble")
+			{
+				UpdateStat(girl, STAT_CHARISMA, 5);
+				UpdateStat(girl, STAT_BEAUTY, 5);
+				UpdateStat(girl, STAT_CONFIDENCE, 5);
+				UpdateStat(girl, STAT_OBEDIENCE, -5);
+				UpdateEnjoyment(girl, ACTION_SEX, -15, true);
+			}
+			else if (Name == "Nymphomaniac")
+			{
+				UpdateStat(girl, STAT_LIBIDO, 20);
+				UpdateStat(girl, STAT_CONFIDENCE, 5);
+				UpdateStat(girl, STAT_CHARISMA, 5);
+				UpdateStat(girl, STAT_CONSTITUTION, 5);
+				UpdateEnjoyment(girl, ACTION_SEX, +25, true);
+			}
+		}
+		else if (first == "o")
+		{
+			/* */if (Name == "Old")
+			{
+				UpdateStat(girl, STAT_CHARISMA, -15);
+				UpdateStat(girl, STAT_BEAUTY, -15);
+			}
+			else if (Name == "One Arm")
+			{
+				UpdateStat(girl, STAT_CHARISMA, -15);
+				UpdateStat(girl, STAT_BEAUTY, -15);
+			}
+			else if (Name == "One Eye")
+			{
+				UpdateStat(girl, STAT_BEAUTY, -20);
+				UpdateStat(girl, STAT_CHARISMA, -5);
+				UpdateStat(girl, STAT_CONSTITUTION, 5);
+				UpdateStat(girl, STAT_SPIRIT, -10);
+			}
+			else if (Name == "One Eye")
+			{
+				UpdateStat(girl, STAT_CHARISMA, -5);
+				UpdateStat(girl, STAT_BEAUTY, -5);
+			}
+			else if (Name == "One Foot")
+			{
+				UpdateStat(girl, STAT_CHARISMA, -10);
+				UpdateStat(girl, STAT_BEAUTY, -10);
+				UpdateSkill(girl, SKILL_FOOTJOB, -15);
+			}
+			else if (Name == "One Hand")
+			{
+				UpdateStat(girl, STAT_CHARISMA, -10);
+				UpdateStat(girl, STAT_BEAUTY, -10);
+			}
+			else if (Name == "One Leg")
+			{
+				UpdateStat(girl, STAT_CHARISMA, -15);
+				UpdateStat(girl, STAT_BEAUTY, -15);
+				UpdateSkill(girl, SKILL_FOOTJOB, -20);
+			}
+			else if (Name == "Open Minded")
+			{
+				//
+				UpdateStat(girl, STAT_LIBIDO, 15);
+				UpdateEnjoyment(girl, ACTION_SEX, 10, true);
+			}
+			else if (Name == "Optimist")
+			{
+				UpdateEnjoyment(girl, ACTION_WORKADVERTISING, +20, true);
+			}
+		}
+		else if (first == "p")
+		{
+			/* */if (Name == "Perky Nipples")
+			{
+				UpdateStat(girl, STAT_BEAUTY, 5);
+				UpdateSkill(girl, SKILL_TITTYSEX, 5);
+			}
+			else if (Name == "Pessimist")
+			{
+				UpdateStat(girl, STAT_SPIRIT, -60);
+				UpdateEnjoyment(girl, ACTION_WORKADVERTISING, -20, true);
+			}
+			else if (Name == "Petite Breasts")
+			{
+				UpdateStat(girl, STAT_AGILITY, 5);
+				UpdateStat(girl, STAT_CHARISMA, 5);
+				UpdateSkill(girl, SKILL_TITTYSEX, -20);
+			}
+			else if (Name == "Phat Booty")
+			{
+				UpdateStat(girl, STAT_AGILITY, -5);
+				UpdateStat(girl, STAT_BEAUTY, 5);
+				UpdateStat(girl, STAT_CHARISMA, 5);
+				UpdateSkill(girl, SKILL_ANAL, 10);
+			}
+			else if (Name == "Pierced Clit")
+			{
+				UpdateStat(girl, STAT_LIBIDO, 20);
+				UpdateSkill(girl, SKILL_NORMALSEX, 10);
+				UpdateEnjoyment(girl, ACTION_SEX, 10, true);
+			}
+			//SIN: Adjusted for missing/new traits
+			else if (Name == "Pierced Nipples")
+			{
+				UpdateStat(girl, STAT_LIBIDO, 10);
+				UpdateSkill(girl, SKILL_TITTYSEX, 10);
+			}
+			else if (Name == "Pierced Tongue")
+			{
+				UpdateSkill(girl, SKILL_ORALSEX, 10);
+			}
+			else if (Name == "Playful Tail")
+			{
+				//
+			}
+			else if (Name == "Plump Tush")
+			{
+				UpdateStat(girl, STAT_AGILITY, -10);
+				UpdateStat(girl, STAT_BEAUTY, 5);
+				UpdateSkill(girl, SKILL_ANAL, 10);
+			}
+			else if (Name == "Plump")
+			{
+				UpdateStat(girl, STAT_AGILITY, -10);
+			}
+			else if (Name == "Porn Star")
+			{
+				UpdateStat(girl, STAT_FAME, 20);
+				UpdateSkill(girl, SKILL_PERFORMANCE, 10);
+			}
+			else if (Name == "Powerful Magic")
+			{
+				UpdateSkill(girl, SKILL_MAGIC, 30);
+				UpdateStat(girl, STAT_MANA, 30);
+			}
+			else if (Name == "Prehensile Tail")
+			{
+				//
+			}
+			else if (Name == "Priestess")
+			{
+				UpdateStat(girl, STAT_MORALITY, 20);
+				//
+			}
+			else if (Name == "Princess")
+			{
+				UpdateStat(girl, STAT_CHARISMA, 10);
+				UpdateStat(girl, STAT_BEAUTY, 10);
+				UpdateStat(girl, STAT_CONFIDENCE, 10);
+				UpdateStat(girl, STAT_OBEDIENCE, -5);
+				UpdateEnjoyment(girl, ACTION_SEX, -20, true);
+			}
+			else if (Name == "Puffy Nipples")
+			{
+				UpdateStat(girl, STAT_BEAUTY, 5);
+				UpdateSkill(girl, SKILL_TITTYSEX, 5);
+			}
+		}
+		else if (first == "q")
+		{
+			/* */if (Name == "Queen")
+			{
+				UpdateStat(girl, STAT_CHARISMA, 20);
+				UpdateStat(girl, STAT_BEAUTY, 20);
+				UpdateStat(girl, STAT_CONFIDENCE, 10);
+				UpdateStat(girl, STAT_OBEDIENCE, -15);
+				UpdateEnjoyment(girl, ACTION_SEX, -20, true);
+			}
+		}
+		else if (first == "r")
+		{
+			/* */if (Name == "Retarded")
+			{
+				UpdateStat(girl, STAT_SPIRIT, -20);
+				UpdateStat(girl, STAT_INTELLIGENCE, -50);
+				UpdateStat(girl, STAT_CONFIDENCE, -60);
+			}
+		}
+		else if (first == "s")
+		{
+			/* */if (Name == "Sadistic")
+			{
+				UpdateSkill(girl, SKILL_BDSM, 20);
+			}
+			else if (Name == "Scarce Lactation")
+			{
+				//
+			}
+			else if (Name == "Sexy Air")
+			{
+				UpdateStat(girl, STAT_CHARISMA, 5);
+				UpdateStat(girl, STAT_BEAUTY, 10);
+				UpdateStat(girl, STAT_CONFIDENCE, 2);
+			}
+			else if (Name == "Shape Shifter")
+			{
+				UpdateStat(girl, STAT_CHARISMA, 20);
+				UpdateStat(girl, STAT_BEAUTY, 20);
+			}
+			else if (Name == "Sharp-Eyed")
+			{
+				//
+			}
+			else if (Name == "Shroud Addict")
+			{
+				UpdateStat(girl, STAT_CONFIDENCE, -5);
+				UpdateStat(girl, STAT_OBEDIENCE, 5);
+			}
+			else if (Name == "Singer")
+			{
+				UpdateSkill(girl, SKILL_PERFORMANCE, 30);
+				UpdateStat(girl, STAT_CONFIDENCE, 30);
+			}
+			else if (Name == "Slitherer")
+			{
+				//
+			}
+			else if (Name == "Slow Orgasms")
+			{
+				UpdateSkill(girl, SKILL_ANAL, -2);
+				UpdateSkill(girl, SKILL_BDSM, -2);
+				UpdateSkill(girl, SKILL_NORMALSEX, -2);
+				UpdateSkill(girl, SKILL_BEASTIALITY, -2);
+				UpdateSkill(girl, SKILL_ORALSEX, -2);
+				UpdateSkill(girl, SKILL_GROUP, -2);
+				UpdateSkill(girl, SKILL_LESBIAN, -2);
+				UpdateStat(girl, STAT_CONFIDENCE, -2);
+				UpdateEnjoyment(girl, ACTION_SEX, -10, true);
+			}
+			else if (Name == "Slut")
+			{
+				UpdateStat(girl, STAT_CHARISMA, -10);
+				UpdateEnjoyment(girl, ACTION_SEX, 10, true);
+			}
+			else if (Name == "Small Boobs")
+			{
+				UpdateStat(girl, STAT_AGILITY, 5);
+				UpdateStat(girl, STAT_CHARISMA, 5);
+				UpdateSkill(girl, SKILL_TITTYSEX, -15);
+			}
+			else if (Name == "Small Scars")
+			{
+				UpdateStat(girl, STAT_BEAUTY, -2);
+				UpdateStat(girl, STAT_CONSTITUTION, 2);
+				UpdateStat(girl, STAT_SPIRIT, -2);
+			}
+			else if (Name == "Small Tattoos")
+			{
+				UpdateStat(girl, STAT_BEAUTY, -5);
+				UpdateStat(girl, STAT_CHARISMA, -5);
+			}
+			else if (Name == "Smoker")
+			{
+				UpdateStat(girl, STAT_BEAUTY, -5);
+				UpdateStat(girl, STAT_CHARISMA, -5);
+				UpdateStat(girl, STAT_AGILITY, -10);
+				UpdateStat(girl, STAT_CONSTITUTION, -5);
+			}
+			else if (Name == "Social Drinker")
+			{
+				//
+			}
+			else if (Name == "Solar Powered")
+			{
+				//
+			}
+			else if (Name == "Spirit Possessed")
+			{
+				//
+			}
+			else if (Name == "Straight")
+			{
+				UpdateSkill(girl, SKILL_NORMALSEX, 10);
+				UpdateSkill(girl, SKILL_LESBIAN, -15);
+			}
+			else if (Name == "Strong Gag Reflex")
+			{
+				UpdateSkill(girl, SKILL_ORALSEX, -50);
+			}
+			else if (Name == "Strong Magic")
+			{
+				UpdateSkill(girl, SKILL_MAGIC, 20);
+				UpdateStat(girl, STAT_MANA, 20);
+			}
+			else if (Name == "Strong")
+			{
+				UpdateSkill(girl, SKILL_COMBAT, 10);
+				UpdateStat(girl, STAT_CONFIDENCE, 10);
+			}
+			else if (Name == "Succubus")
+			{
+				//
+			}
+		}
+		else if (first == "t")
+		{
+			/* */if (Name == "Tattooed")
+			{
+				UpdateStat(girl, STAT_BEAUTY, -10);
+				UpdateStat(girl, STAT_CHARISMA, -10);
+			}
+			else if (Name == "Teacher")
+			{
+				UpdateStat(girl, STAT_INTELLIGENCE, 10);
+			}
+			else if (Name == "Tight Butt")
+			{
+				UpdateStat(girl, STAT_CONSTITUTION, 5);
+				UpdateStat(girl, STAT_BEAUTY, 5);
+				UpdateStat(girl, STAT_CHARISMA, 5);
+				UpdateSkill(girl, SKILL_ANAL, 8);
+			}
+			else if (Name == "Titanic Tits")
+			{
+				UpdateStat(girl, STAT_BEAUTY, 10);
+				UpdateStat(girl, STAT_CONSTITUTION, 10);
+				UpdateStat(girl, STAT_AGILITY, -15);
+				UpdateSkill(girl, SKILL_TITTYSEX, 25);
+			}
+			else if (Name == "Tomboy")
+			{
+				UpdateStat(girl, STAT_CONSTITUTION, 10);
+				UpdateStat(girl, STAT_CHARISMA, -15);
+			}
+			else if (Name == "Tone Deaf")
+			{
+				UpdateSkill(girl, SKILL_PERFORMANCE, -30);
+				UpdateStat(girl, STAT_CONFIDENCE, -30);
+			}
+			else if (Name == "Tsundere")
+			{
+				UpdateStat(girl, STAT_CONFIDENCE, 20);
+				UpdateStat(girl, STAT_OBEDIENCE, -20);
+			}
+		}
+		else if (first == "u")
+		{
+			/* */
+		}
+		else if (first == "v")
+		{
+			/* */if (Name == "Viras Blood Addict")
+			{
+				UpdateStat(girl, STAT_CONFIDENCE, -15);
+				UpdateStat(girl, STAT_OBEDIENCE, 20);
+				UpdateStat(girl, STAT_CHARISMA, -10);
+			}
+		}
+		else if (first == "w")
+		{
+			/* */if (Name == "Waitress")
+			{
+				UpdateSkill(girl, SKILL_SERVICE, 30);
+			}
+			else if (Name == "Weak Magic")
+			{
+				UpdateSkill(girl, SKILL_MAGIC, -20);
+				UpdateStat(girl, STAT_MANA, -20);
+			}
+			else if (Name == "Whore")
+			{
+				UpdateStat(girl, STAT_CONSTITUTION, -5);
+				UpdateStat(girl, STAT_BEAUTY, -10);
+				UpdateStat(girl, STAT_CHARISMA, -10);
+				UpdateEnjoyment(girl, ACTION_SEX, 10, true);
+			}
+			else if (Name == "Wide Bottom")
+			{
+				UpdateStat(girl, STAT_CONSTITUTION, 5);
+				UpdateStat(girl, STAT_BEAUTY, 5);
+				UpdateSkill(girl, SKILL_ANAL, 5);
+			}
+			else if (Name == "Wings")
+			{
+				//
+			}
+		}
+		else if (first == "x")
+		{
+			/* */
+		}
+		else if (first == "y")
+		{
+			/* */if (Name == "Yandere")
+			{
+				UpdateStat(girl, STAT_SPIRIT, 20);
+			}
+		}
+		else if (first == "z")
+		{
+			/* */
 		}
 
 		if (doOnce)
@@ -5934,1042 +5944,1048 @@ void cGirls::UnapplyTraits(sGirl* girl, sTrait* trait)
 		sTrait* tr = 0;
 		tr = (doOnce) ? trait : girl->m_Traits[i];
 		if (tr == 0) continue;
-
-		//zzzzzz boobs
-		if (strcmp(tr->m_Name, "Flat Chest") == 0)
-		{
-			UpdateStat(girl, STAT_AGILITY, -5);
-			UpdateStat(girl, STAT_CHARISMA, -5);
-			UpdateSkill(girl, SKILL_TITTYSEX, 25);
-		}
-		else if (strcmp(tr->m_Name, "Petite Breasts") == 0)
-		{
-			UpdateStat(girl, STAT_AGILITY, -5);
-			UpdateStat(girl, STAT_CHARISMA, -5);
-			UpdateSkill(girl, SKILL_TITTYSEX, 20);
-		}
-
-		else if (strcmp(tr->m_Name, "Small Boobs") == 0)
-		{
-			UpdateStat(girl, STAT_AGILITY, -5);
-			UpdateStat(girl, STAT_CHARISMA, -5);
-			UpdateSkill(girl, SKILL_TITTYSEX, 15);
-		}
-
-		else if (strcmp(tr->m_Name, "Busty Boobs") == 0)
-		{
-			UpdateStat(girl, STAT_BEAUTY, -8);
-			UpdateStat(girl, STAT_CONSTITUTION, -5);
-			UpdateStat(girl, STAT_AGILITY, 5);
-			UpdateStat(girl, STAT_CHARISMA, -2);
-			UpdateSkill(girl, SKILL_TITTYSEX, -10);
-		}
-
-		else if (strcmp(tr->m_Name, "Big Boobs") == 0)
-		{
-			UpdateStat(girl, STAT_BEAUTY, -10);
-			UpdateStat(girl, STAT_CONSTITUTION, -5);
-			UpdateStat(girl, STAT_AGILITY, 5);
-			UpdateStat(girl, STAT_CHARISMA, -2);
-			UpdateSkill(girl, SKILL_TITTYSEX, -15);
-		}
-
-		else if (strcmp(tr->m_Name, "Giant Juggs") == 0)
-		{
-			UpdateStat(girl, STAT_BEAUTY, -10);
-			UpdateStat(girl, STAT_CONSTITUTION, -8);
-			UpdateStat(girl, STAT_AGILITY, 5);
-			UpdateStat(girl, STAT_CHARISMA, -2);
-			UpdateSkill(girl, SKILL_TITTYSEX, -15);
-		}
-
-		else if (strcmp(tr->m_Name, "Massive Melons") == 0)
-		{
-			UpdateStat(girl, STAT_BEAUTY, -10);
-			UpdateStat(girl, STAT_CONSTITUTION, -10);
-			UpdateStat(girl, STAT_AGILITY, 10);
-			UpdateSkill(girl, SKILL_TITTYSEX, -18);
-		}
-
-		else if (strcmp(tr->m_Name, "Abnormally Large Boobs") == 0)
-		{
-			UpdateStat(girl, STAT_BEAUTY, -10);
-			UpdateStat(girl, STAT_CONSTITUTION, -10);
-			UpdateStat(girl, STAT_AGILITY, 10);
-			UpdateSkill(girl, SKILL_TITTYSEX, -20);
-		}
-
-		else if (strcmp(tr->m_Name, "Titanic Tits") == 0)
-		{
-			UpdateStat(girl, STAT_BEAUTY, -10);
-			UpdateStat(girl, STAT_CONSTITUTION, -10);
-			UpdateStat(girl, STAT_AGILITY, 15);
-			UpdateSkill(girl, SKILL_TITTYSEX, -25);
-		}
-
-		else if (strcmp(tr->m_Name, "Fast Orgasms") == 0)
-		{
-			UpdateStat(girl, STAT_LIBIDO, -10);
-			UpdateSkill(girl, SKILL_ANAL, -10);
-			UpdateSkill(girl, SKILL_BDSM, -10);
-			UpdateSkill(girl, SKILL_NORMALSEX, -10);
-			UpdateSkill(girl, SKILL_ORALSEX, -10);
-			UpdateSkill(girl, SKILL_BEASTIALITY, -10);
-			UpdateSkill(girl, SKILL_GROUP, -10);
-			UpdateSkill(girl, SKILL_LESBIAN, -10);
-			UpdateStat(girl, STAT_CONFIDENCE, -10);
-		}
-
-		else if (strcmp(tr->m_Name, "Fake Orgasm Expert") == 0)
-		{
-			UpdateSkill(girl, SKILL_ANAL, -2);
-			UpdateSkill(girl, SKILL_BDSM, -2);
-			UpdateSkill(girl, SKILL_NORMALSEX, -2);
-			UpdateSkill(girl, SKILL_BEASTIALITY, -2);
-			UpdateSkill(girl, SKILL_ORALSEX, -2);
-			UpdateSkill(girl, SKILL_GROUP, -2);
-			UpdateSkill(girl, SKILL_LESBIAN, -2);
-		}
-
-		else if (strcmp(tr->m_Name, "Slow Orgasms") == 0)
-		{
-			UpdateSkill(girl, SKILL_ANAL, 2);
-			UpdateSkill(girl, SKILL_BDSM, 2);
-			UpdateSkill(girl, SKILL_NORMALSEX, 2);
-			UpdateSkill(girl, SKILL_BEASTIALITY, 2);
-			UpdateSkill(girl, SKILL_ORALSEX, 2);
-			UpdateSkill(girl, SKILL_GROUP, 2);
-			UpdateSkill(girl, SKILL_LESBIAN, 2);
-			UpdateStat(girl, STAT_CONFIDENCE, 2);
-		}
-
-
-		else if (strcmp(tr->m_Name, "Eye Patch") == 0)
-		{
-			UpdateStat(girl, STAT_BEAUTY, 5);
-			UpdateStat(girl, STAT_CONSTITUTION, -5);
-		}
-
-		else if (strcmp(tr->m_Name, "One Eye") == 0)
-		{
-			UpdateStat(girl, STAT_BEAUTY, 20);
-			UpdateStat(girl, STAT_CHARISMA, 5);
-			UpdateStat(girl, STAT_CONSTITUTION, -5);
-			UpdateStat(girl, STAT_SPIRIT, 10);
-		}
-
-		else if (strcmp(tr->m_Name, "Fearless") == 0)
-		{
-			UpdateStat(girl, STAT_PCFEAR, -200);
-			UpdateStat(girl, STAT_SPIRIT, 30);
-			UpdateSkill(girl, SKILL_PERFORMANCE, -5);
-		}
-
-		else if (strcmp(tr->m_Name, "Meek") == 0)
-		{
-			UpdateStat(girl, STAT_CONFIDENCE, 20);
-			UpdateStat(girl, STAT_OBEDIENCE, -20);
-			UpdateStat(girl, STAT_SPIRIT, 20);
-			UpdateSkill(girl, SKILL_PERFORMANCE, 10);
-		}
-
-		/////////////////////////////////////////////////////////////
-		else if (strcmp(tr->m_Name, "Good Kisser") == 0)
-		{
-			UpdateStat(girl, STAT_LIBIDO, -2);
-			UpdateStat(girl, STAT_CONFIDENCE, -2);
-			UpdateStat(girl, STAT_CHARISMA, -2);
-			UpdateSkill(girl, SKILL_SERVICE, -5);
-		}
-
-		else if (strcmp(tr->m_Name, "Long Legs") == 0)
-		{
-			UpdateStat(girl, STAT_BEAUTY, -10);
-		}
-
-		else if (strcmp(tr->m_Name, "Perky Nipples") == 0)
-		{
-			UpdateStat(girl, STAT_BEAUTY, -5);
-			UpdateSkill(girl, SKILL_TITTYSEX, -5);
-		}
-
-		else if (strcmp(tr->m_Name, "Retarded") == 0)
-		{
-			UpdateStat(girl, STAT_SPIRIT, 20);
-			UpdateStat(girl, STAT_INTELLIGENCE, 50);
-			UpdateStat(girl, STAT_CONFIDENCE, 60);
-		}
-
-		else if (strcmp(tr->m_Name, "Malformed") == 0)
-		{
-			UpdateStat(girl, STAT_CONFIDENCE, 20);
-			UpdateStat(girl, STAT_SPIRIT, 20);
-			UpdateStat(girl, STAT_INTELLIGENCE, 10);
-			UpdateStat(girl, STAT_BEAUTY, 20);
-		}
-
-		else if (strcmp(tr->m_Name, "Puffy Nipples") == 0)
-		{
-			UpdateStat(girl, STAT_BEAUTY, -5);
-			UpdateSkill(girl, SKILL_TITTYSEX, -5);
-		}
-
-		else if (strcmp(tr->m_Name, "Charming") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, -30);
-			UpdateStat(girl, STAT_BEAUTY, -15);
-		}
-
-		else if (strcmp(tr->m_Name, "Charismatic") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, -50);
-			UpdateStat(girl, STAT_BEAUTY, -10);
-		}
-
-
-		else if (strcmp(tr->m_Name, "Half-Construct") == 0)
-		{
-			UpdateStat(girl, STAT_CONSTITUTION, -20);
-			UpdateSkill(girl, SKILL_COMBAT, -20);
-		}
-
-
-		else if (strcmp(tr->m_Name, "Mind Fucked") == 0)
-		{
-			UpdateStat(girl, STAT_CONFIDENCE, 50);
-			UpdateStat(girl, STAT_OBEDIENCE, -100);
-			UpdateStat(girl, STAT_SPIRIT, 50);
-		}
-
-		else if (strcmp(tr->m_Name, "Fleet of Foot") == 0 || strcmp(tr->m_Name, "Fleet Of Foot") == 0)
-		{
-			UpdateStat(girl, STAT_AGILITY, -50);
-		}
-
-		else if (strcmp(tr->m_Name, "Dependant") == 0)
-		{
-			UpdateStat(girl, STAT_SPIRIT, 30);
-			UpdateStat(girl, STAT_OBEDIENCE, -50);
-			UpdateSkill(girl, SKILL_PERFORMANCE, 10);
-		}
-
-		else if (strcmp(tr->m_Name, "Pessimist") == 0)
-		{
-			UpdateStat(girl, STAT_SPIRIT, 60);
-		}
-
-
-		else if (strcmp(tr->m_Name, "Iron Will") == 0)
-		{
-			UpdateStat(girl, STAT_PCFEAR, 60);
-			UpdateStat(girl, STAT_SPIRIT, -60);
-			UpdateStat(girl, STAT_OBEDIENCE, 90);
-		}
-
-		else if (strcmp(tr->m_Name, "Merciless") == 0)
-		{
-			UpdateSkill(girl, SKILL_COMBAT, -20);
-		}
-
-		else if (strcmp(tr->m_Name, "Manly") == 0)
-		{
-			UpdateStat(girl, STAT_CONSTITUTION, -10);
-			UpdateStat(girl, STAT_CONFIDENCE, -10);
-			UpdateStat(girl, STAT_OBEDIENCE, 10);
-			UpdateStat(girl, STAT_SPIRIT, -10);
-		}
-
-		else if (strcmp(tr->m_Name, "Tsundere") == 0)
-		{
-			UpdateStat(girl, STAT_CONFIDENCE, -20);
-			UpdateStat(girl, STAT_OBEDIENCE, 20);
-		}
-
-		else if (strcmp(tr->m_Name, "Yandere") == 0)
-		{
-			UpdateStat(girl, STAT_SPIRIT, -20);
-		}
-
-		else if (strcmp(tr->m_Name, gettext("Lesbian")) == 0)
-		{
-			UpdateSkill(girl, SKILL_LESBIAN, -40);
+		stringstream ss;
+		ss << tr->m_Name;
+		string Name = ss.str();
+		string first = ""; first[0] = tolower(Name[0]);
+
+		if (first == "a")
+		{
+			/* */if (Name == "Abnormally Large Boobs")
+			{
+				UpdateStat(girl, STAT_BEAUTY, -10);
+				UpdateStat(girl, STAT_CONSTITUTION, -10);
+				UpdateStat(girl, STAT_AGILITY, 10);
+				UpdateSkill(girl, SKILL_TITTYSEX, -20);
+			}
+			else if (Name == "Actress")
+			{
+				UpdateSkill(girl, SKILL_PERFORMANCE, 10);
+			}
+			else if (Name == "Adventurer")
+			{
+				UpdateSkill(girl, SKILL_COMBAT, -10);
+			}
+			else if (Name == "Aggressive")
+			{
+				UpdateSkill(girl, SKILL_COMBAT, -10);
+				UpdateStat(girl, STAT_SPIRIT, -10);
+				UpdateStat(girl, STAT_CONFIDENCE, -5);
+			}
+			else if (Name == "Agile")
+			{
+				UpdateStat(girl, STAT_AGILITY, -20);
+			}
+			else if (Name == "Angel")
+			{
+				//
+			}
+			else if (Name == "Assassin")
+			{
+				UpdateSkill(girl, SKILL_COMBAT, -15);
+			}
+			else if (Name == "Audacity")
+			{
+				UpdateStat(girl, STAT_PCFEAR, 30);
+				UpdateStat(girl, STAT_SPIRIT, -30);
+				UpdateStat(girl, STAT_OBEDIENCE, 40);
+			}
+		}
+		else if (first == "b")
+		{
+			/* */if (Name == "Bad Eyesight")
+			{
+				UpdateSkill(girl, SKILL_CRAFTING, 10);
+			}
+			else if (Name == "Battery Operated")
+			{
+				//
+			}
+			else if (Name == "Beauty Mark")
+			{
+				UpdateStat(girl, STAT_CHARISMA, -5);
+				UpdateStat(girl, STAT_BEAUTY, -5);
+			}
+			else if (Name == "Big Boobs")
+			{
+				UpdateStat(girl, STAT_BEAUTY, -10);
+				UpdateStat(girl, STAT_CONSTITUTION, -5);
+				UpdateStat(girl, STAT_AGILITY, 5);
+				UpdateStat(girl, STAT_CHARISMA, -2);
+				UpdateSkill(girl, SKILL_TITTYSEX, -15);
+			}
+			else if (Name == "Bimbo")
+			{
+				UpdateStat(girl, STAT_CONFIDENCE, -10);
+				UpdateStat(girl, STAT_INTELLIGENCE, 10);
+				UpdateSkill(girl, SKILL_MEDICINE, 10);
+			}
+			else if (Name == "Blind")
+			{
+				//
+			}
+			else if (Name == "Branded on the Ass")
+			{
+				//
+			}
+			else if (Name == "Branded on the Forehead")
+			{
+				UpdateStat(girl, STAT_CHARISMA, 10);
+				UpdateStat(girl, STAT_BEAUTY, 10);
+			}
+			else if (Name == "Brawler")
+			{
+				UpdateSkill(girl, SKILL_COMBAT, -10);
+				UpdateStat(girl, STAT_CONSTITUTION, -5);
+			}
+			else if (Name == "Broken Will")
+			{
+				UpdateStat(girl, STAT_SPIRIT, 20);
+				UpdateStat(girl, STAT_OBEDIENCE, 10);
+			}
+			else if (Name == "Broodmother")
+			{
+				//
+			}
+			else if (Name == "Bruises")
+			{
+				UpdateStat(girl, STAT_CHARISMA, 5);
+				UpdateStat(girl, STAT_BEAUTY, 5);
+			}
+			else if (Name == "Busty Boobs")
+			{
+				UpdateStat(girl, STAT_BEAUTY, -8);
+				UpdateStat(girl, STAT_CONSTITUTION, -5);
+				UpdateStat(girl, STAT_AGILITY, 5);
+				UpdateStat(girl, STAT_CHARISMA, -2);
+				UpdateSkill(girl, SKILL_TITTYSEX, -10);
+			}
+		}
+		else if (first == "c")
+		{
+			/* */if (Name == "Canine")
+			{
+				//
+			}
+			else if (Name == "Charismatic")
+			{
+				UpdateStat(girl, STAT_CHARISMA, -50);
+				UpdateStat(girl, STAT_BEAUTY, -10);
+			}
+			else if (Name == "Charming")
+			{
+				UpdateStat(girl, STAT_CHARISMA, -30);
+				UpdateStat(girl, STAT_BEAUTY, -15);
+			}
+			else if (Name == "Chef")
+			{
+				UpdateSkill(girl, SKILL_SERVICE, -10);//change to cook if ever added
+			}
+			else if (Name == "Clumsy")
+			{
+				UpdateSkill(girl, SKILL_ANAL, 10);
+				UpdateSkill(girl, SKILL_BDSM, 10);
+				UpdateSkill(girl, SKILL_NORMALSEX, 10);
+				UpdateSkill(girl, SKILL_ORALSEX, 10);
+				UpdateSkill(girl, SKILL_BEASTIALITY, 10);
+				UpdateSkill(girl, SKILL_GROUP, 10);
+				UpdateSkill(girl, SKILL_LESBIAN, 10);
+				UpdateStat(girl, STAT_CONFIDENCE, 10);
+			}
+			else if (Name == "Cool Person")
+			{
+				UpdateStat(girl, STAT_CHARISMA, -5);
+				UpdateStat(girl, STAT_SPIRIT, -10);
+				UpdateStat(girl, STAT_CONFIDENCE, -10);
+			}
+			else if (Name == "Cool Scars")
+			{
+				UpdateStat(girl, STAT_BEAUTY, 2);
+				UpdateStat(girl, STAT_CONSTITUTION, 5);
+				UpdateStat(girl, STAT_SPIRIT, 5);
+				UpdateStat(girl, STAT_CHARISMA, 2);
+			}
+			else if (Name == "Country Gal")
+			{
+				UpdateSkill(girl, SKILL_FARMING, -10);
+				UpdateSkill(girl, SKILL_ANIMALHANDLING, -5);
+			}
+			else if (Name == "Cow Girl")
+			{
+				//
+			}
+			else if (Name == "Cow Tits")
+			{
+				//
+			}
+			else if (Name == "Cum Addict")
+			{
+				UpdateStat(girl, SKILL_ORALSEX, -30);
+				UpdateSkill(girl, SKILL_GROUP, -10);
+				UpdateStat(girl, STAT_OBEDIENCE, -20);
+				UpdateStat(girl, STAT_SPIRIT, 10);
+				UpdateEnjoyment(girl, ACTION_SEX, -20, true);
+			}
+			else if (Name == "Cute")
+			{
+				UpdateStat(girl, STAT_CHARISMA, -10);
+				UpdateStat(girl, STAT_BEAUTY, -5);
+			}
+			else if (Name == "Cyclops")
+			{
+				//
+			}
+		}
+		else if (first == "d")
+		{
+			/* */if (Name == "Deaf")
+			{
+				//
+			}
+			else if (Name == "Deep Throat")
+			{
+				UpdateSkill(girl, SKILL_ORALSEX, -50);
+			}
+			else if (Name == "Delicate")
+			{
+				UpdateStat(girl, STAT_CONSTITUTION, 15);
+			}
+			else if (Name == "Deluxe Derriere")
+			{
+				UpdateStat(girl, STAT_BEAUTY, -5);
+				UpdateStat(girl, STAT_CHARISMA, -5);
+				UpdateSkill(girl, SKILL_ANAL, -10);
+			}
+			else if (Name == "Demon Possessed")
+			{
+				//
+			}
+			else if (Name == "Demon")
+			{
+				//
+			}
+			else if (Name == "Dependant")
+			{
+				UpdateStat(girl, STAT_SPIRIT, 30);
+				UpdateStat(girl, STAT_OBEDIENCE, -50);
+				UpdateSkill(girl, SKILL_PERFORMANCE, 10);
+			}
+			else if (Name == "Dick-Sucking Lips")
+			{
+				UpdateStat(girl, STAT_BEAUTY, -5);
+			}
+			else if (Name == "Director")
+			{
+				UpdateStat(girl, STAT_INTELLIGENCE, -5);
+				UpdateSkill(girl, SKILL_PERFORMANCE, -10);
+			}
+			else if (Name == "Doctor")
+			{
+				UpdateStat(girl, STAT_INTELLIGENCE, -15);
+				UpdateSkill(girl, SKILL_MEDICINE, -10);
+			}
+			else if (Name == "Dojikko")
+			{
+				//
+			}
+			else if (Name == "Dominatrix")
+			{
+				UpdateSkill(girl, SKILL_BDSM, -10);
+			}
+			else if (Name == "Dry Milk")
+			{
+				//
+			}
+			else if (Name == "Dryad")
+			{
+				//
+			}
+		}
+		else if (first == "e")
+		{
+			/* */if (Name == "Egg Layer")
+			{
+				//
+			}
+			else if (Name == "Elegant")
+			{
+				UpdateStat(girl, STAT_CHARISMA, -10);
+				UpdateStat(girl, STAT_CONFIDENCE, -5);
+				UpdateSkill(girl, SKILL_PERFORMANCE, -5);
+			}
+			else if (Name == "Elf")
+			{
+				//
+			}
+			else if (Name == "Equine")
+			{
+				//
+			}
+			else if (Name == "Exhibitionist")
+			{
+				//
+			}
+			else if (Name == "Exotic")
+			{
+				UpdateStat(girl, STAT_CHARISMA, -5);
+				UpdateStat(girl, STAT_BEAUTY, -10);
+			}
+			//starts with F
+			else if (Name == "Eye Patch")
+			{
+				UpdateStat(girl, STAT_BEAUTY, 5);
+				UpdateStat(girl, STAT_CONSTITUTION, -5);
+			}
+		}
+		else if (first == "f")
+		{
+			/* */if (Name == "Fairy Dust Addict")
+			{
+				UpdateStat(girl, STAT_CONFIDENCE, 10);
+				UpdateStat(girl, STAT_OBEDIENCE, -5);
+			}
+			else if (Name == "Fake Orgasm Expert")
+			{
+				UpdateSkill(girl, SKILL_ANAL, -2);
+				UpdateSkill(girl, SKILL_BDSM, -2);
+				UpdateSkill(girl, SKILL_NORMALSEX, -2);
+				UpdateSkill(girl, SKILL_BEASTIALITY, -2);
+				UpdateSkill(girl, SKILL_ORALSEX, -2);
+				UpdateSkill(girl, SKILL_GROUP, -2);
+				UpdateSkill(girl, SKILL_LESBIAN, -2);
+			}
+			else if (Name == "Fallen Goddess")
+			{
+				//
+			}
+			else if (Name == "Farmers Daughter")
+			{
+				UpdateSkill(girl, SKILL_FARMING, -15);
+				UpdateSkill(girl, SKILL_ANIMALHANDLING, -10);
+			}
+			else if (Name == "Fast Orgasms")
+			{
+				UpdateStat(girl, STAT_LIBIDO, -10);
+				UpdateSkill(girl, SKILL_ANAL, -10);
+				UpdateSkill(girl, SKILL_BDSM, -10);
+				UpdateSkill(girl, SKILL_NORMALSEX, -10);
+				UpdateSkill(girl, SKILL_ORALSEX, -10);
+				UpdateSkill(girl, SKILL_BEASTIALITY, -10);
+				UpdateSkill(girl, SKILL_GROUP, -10);
+				UpdateSkill(girl, SKILL_LESBIAN, -10);
+				UpdateStat(girl, STAT_CONFIDENCE, -10);
+			}
+			else if (Name == "Fearless")
+			{
+				UpdateStat(girl, STAT_PCFEAR, -200);
+				UpdateStat(girl, STAT_SPIRIT, 30);
+				UpdateSkill(girl, SKILL_PERFORMANCE, -5);
+			}
+			else if (Name == "Fertile")
+			{
+				//
+			}
+			else if (Name == "Flat Ass")
+			{
+				UpdateStat(girl, STAT_BEAUTY, 5);
+				UpdateStat(girl, STAT_CHARISMA, 5);
+				UpdateSkill(girl, SKILL_ANAL, 10);
+			}
+			else if (Name == "Flat Chest")
+			{
+				UpdateStat(girl, STAT_AGILITY, -5);
+				UpdateStat(girl, STAT_CHARISMA, -5);
+				UpdateSkill(girl, SKILL_TITTYSEX, 25);
+			}
+			else if (Name == "Fleet of Foot")
+			{
+				UpdateStat(girl, STAT_AGILITY, -50);
+			}
+			else if (Name == "Flight")
+			{
+				//
+			}
+			else if (Name == "Former Addict")
+			{
+				//
+			}
+			else if (Name == "Former Official")
+			{
+				UpdateStat(girl, STAT_FAME, -5);
+			}
+			else if (Name == "Furry")
+			{
+				//
+			}
+		}
+		else if (first == "g")
+		{
+			/* */if (Name == "Gag Reflex")
+			{
+				UpdateSkill(girl, SKILL_ORALSEX, 30);
+			}
+			else if (Name == "Giant Juggs")
+			{
+				UpdateStat(girl, STAT_BEAUTY, -10);
+				UpdateStat(girl, STAT_CONSTITUTION, -8);
+				UpdateStat(girl, STAT_AGILITY, 5);
+				UpdateStat(girl, STAT_CHARISMA, -2);
+				UpdateSkill(girl, SKILL_TITTYSEX, -15);
+			}
+			else if (Name == "Giant")
+			{
+				//
+			}
+			else if (Name == "Goddess")
+			{
+				//
+			}
+			else if (Name == "Good Kisser")
+			{
+				UpdateStat(girl, STAT_LIBIDO, -2);
+				UpdateStat(girl, STAT_CONFIDENCE, -2);
+				UpdateStat(girl, STAT_CHARISMA, -2);
+				UpdateSkill(girl, SKILL_SERVICE, -5);
+			}
+			else if (Name == "Great Arse")
+			{
+				UpdateStat(girl, STAT_CONSTITUTION, -5);
+				UpdateStat(girl, STAT_BEAUTY, -5);
+				UpdateStat(girl, STAT_CHARISMA, -5);
+				UpdateSkill(girl, SKILL_ANAL, -10);
+			}
+			else if (Name == "Great Figure")
+			{
+				UpdateStat(girl, STAT_CHARISMA, -10);
+				UpdateStat(girl, STAT_BEAUTY, -20);
+			}
+		}
+		else if (first == "h")
+		{
+			/* */if (Name == "Half-Breed")
+			{
+				//
+			}
+			else if (Name == "Half-Construct")
+			{
+				UpdateStat(girl, STAT_CONSTITUTION, -20);
+				UpdateSkill(girl, SKILL_COMBAT, -20);
+			}
+			else if (Name == "Handyman")
+			{
+				UpdateSkill(girl, SKILL_SERVICE, -10);
+				UpdateSkill(girl, SKILL_CRAFTING, -10);
+			}
+			else if (Name == "Heavily Tattooed")
+			{
+				UpdateStat(girl, STAT_BEAUTY, 15);
+				UpdateStat(girl, STAT_CHARISMA, 15);
+			}
+			else if (Name == "Heroine")
+			{
+				UpdateSkill(girl, SKILL_COMBAT, -10);
+				UpdateStat(girl, STAT_CONSTITUTION, -5);
+			}
+			else if (Name == "Homeless")
+			{
+				//
+			}
+			else if (Name == "Horrific Scars")
+			{
+				UpdateStat(girl, STAT_BEAUTY, 5);
+				UpdateStat(girl, STAT_CONSTITUTION, -10);
+				UpdateStat(girl, STAT_SPIRIT, 10);
+			}
+			else if (Name == "Hourglass Figure")
+			{
+				UpdateStat(girl, STAT_CHARISMA, -5);
+				UpdateStat(girl, STAT_BEAUTY, -10);
+				UpdateEnjoyment(girl, ACTION_WORKCLUB, -10, true);
+				UpdateEnjoyment(girl, ACTION_WORKBAR, -10, true);
+				UpdateEnjoyment(girl, ACTION_WORKHALL, -10, true);
+			}
+		}
+		else if (first == "i")
+		{
+			/* */if (Name == "Idiot Savant")
+			{
+				UpdateStat(girl, STAT_INTELLIGENCE, 15);
+			}
+			else if (Name == "Idol")
+			{
+				UpdateStat(girl, STAT_FAME, -15);
+				UpdateSkill(girl, SKILL_PERFORMANCE, -10);
+			}
+			//starts with L
+			else if (Name == "Incorporeal")
+			{
+				UpdateEnjoyment(girl, ACTION_COMBAT, -20, true);
+			}
+			else if (Name == "Iron Will")
+			{
+				UpdateStat(girl, STAT_PCFEAR, 60);
+				UpdateStat(girl, STAT_SPIRIT, -60);
+				UpdateStat(girl, STAT_OBEDIENCE, 90);
+			}
+		}
+		else if (first == "j")
+		{
+			/* */
+		}
+		else if (first == "k")
+		{
+			/* */
+		}
+		else if (first == "l")
+		{
+			/* */if (Name == "Large Hips")
+			{
+				UpdateStat(girl, STAT_AGILITY, -5);
+				UpdateStat(girl, STAT_BEAUTY, -5);
+				UpdateSkill(girl, SKILL_ANAL, -5);
+			}
+			else if (Name == "Lesbian")
+			{
+				UpdateSkill(girl, SKILL_LESBIAN, -40);
+			}
+			else if (Name == "Lolita")
+			{
+				UpdateStat(girl, STAT_OBEDIENCE, -5);
+				UpdateStat(girl, STAT_CHARISMA, -10);
+				UpdateStat(girl, STAT_BEAUTY, -20);
+			}
+			else if (Name == "Long Legs")
+			{
+				UpdateStat(girl, STAT_BEAUTY, -10);
+			}
+		}
+		else if (first == "m")
+		{
+			/* */if (Name == "Maid")
+			{
+				UpdateSkill(girl, SKILL_SERVICE, -20);
+			}
+			else if (Name == "Malformed")
+			{
+				UpdateStat(girl, STAT_CONFIDENCE, 20);
+				UpdateStat(girl, STAT_SPIRIT, 20);
+				UpdateStat(girl, STAT_INTELLIGENCE, 10);
+				UpdateStat(girl, STAT_BEAUTY, 20);
+			}
+			else if (Name == "Manly")
+			{
+				UpdateStat(girl, STAT_CONSTITUTION, -10);
+				UpdateStat(girl, STAT_CONFIDENCE, -10);
+				UpdateStat(girl, STAT_OBEDIENCE, 10);
+				UpdateStat(girl, STAT_SPIRIT, -10);
+			}
+			else if (Name == "Masochist")
+			{
+				UpdateSkill(girl, SKILL_BDSM, -50);
+				UpdateStat(girl, STAT_CONSTITUTION, -50);
+				UpdateStat(girl, STAT_OBEDIENCE, -30);
+			}
+			else if (Name == "Massive Melons")
+			{
+				UpdateStat(girl, STAT_BEAUTY, -10);
+				UpdateStat(girl, STAT_CONSTITUTION, -10);
+				UpdateStat(girl, STAT_AGILITY, 10);
+				UpdateSkill(girl, SKILL_TITTYSEX, -18);
+			}
+			else if (Name == "Meek")
+			{
+				UpdateStat(girl, STAT_CONFIDENCE, 20);
+				UpdateStat(girl, STAT_OBEDIENCE, -20);
+				UpdateStat(girl, STAT_SPIRIT, 20);
+				UpdateSkill(girl, SKILL_PERFORMANCE, 10);
+			}
+			else if (Name == "Merciless")
+			{
+				UpdateSkill(girl, SKILL_COMBAT, -20);
+			}
+			else if (Name == "Middle Aged")
+			{
+				UpdateStat(girl, STAT_CHARISMA, 5);
+				UpdateStat(girl, STAT_BEAUTY, 5);
+			}
+			else if (Name == "Mind Fucked")
+			{
+				UpdateStat(girl, STAT_CONFIDENCE, 50);
+				UpdateStat(girl, STAT_OBEDIENCE, -100);
+				UpdateStat(girl, STAT_SPIRIT, 50);
+			}
+			else if (Name == "Mixologist")
+			{
+				UpdateSkill(girl, SKILL_SERVICE, -5);
+				UpdateSkill(girl, SKILL_BREWING, -15);
+			}
+			else if (Name == "Muggle")
+			{
+				UpdateSkill(girl, SKILL_MAGIC, -0);
+				UpdateStat(girl, STAT_MANA, 30);
+			}
+			else if (Name == "Muscular")
+			{
+				UpdateSkill(girl, SKILL_COMBAT, -5);
+				UpdateStat(girl, STAT_AGILITY, -10);
+				UpdateStat(girl, STAT_CONSTITUTION, -10);
+			}
+		}
+		else if (first == "n")
+		{
+			/* */if (Name == "Natural Pheromones")
+			{
+				UpdateStat(girl, STAT_CHARISMA, -10);
+			}
+			else if (Name == "Nerd")
+			{
+				UpdateStat(girl, STAT_CONFIDENCE, 10);
+				UpdateSkill(girl, SKILL_MEDICINE, -10);
+			}
+			else if (Name == "Nervous")
+			{
+				UpdateStat(girl, STAT_OBEDIENCE, -10);
+				UpdateStat(girl, STAT_CONFIDENCE, 10);
+				UpdateSkill(girl, SKILL_PERFORMANCE, 20);
+			}
+			else if (Name == "Nimble Tongue")
+			{
+				UpdateStat(girl, STAT_LIBIDO, -2);
+				UpdateStat(girl, STAT_CONFIDENCE, -2);
+				UpdateStat(girl, STAT_CHARISMA, -2);
+				UpdateEnjoyment(girl, ACTION_SEX, -5, true);
+			}
+			else if (Name == "No Arms")
+			{
+				UpdateStat(girl, STAT_CHARISMA, 30);
+				UpdateStat(girl, STAT_BEAUTY, 30);
+				UpdateSkill(girl, SKILL_HANDJOB, 100);
+				UpdateSkill(girl, SKILL_COMBAT, 50);
+				UpdateSkill(girl, SKILL_GROUP, 20);
+			}
+			else if (Name == "No Clit")
+			{
+				UpdateEnjoyment(girl, ACTION_SEX, +10, true);
+			}
+			else if (Name == "No Feet")
+			{
+				UpdateStat(girl, STAT_CHARISMA, 10);
+				UpdateStat(girl, STAT_BEAUTY, 10);
+				UpdateSkill(girl, SKILL_FOOTJOB, 100);
+				UpdateSkill(girl, SKILL_COMBAT, 50);
+				UpdateSkill(girl, SKILL_GROUP, 20);
+				UpdateStat(girl, STAT_AGILITY, 30);
+			}
+			else if (Name == "No Gag Reflex")
+			{
+				UpdateSkill(girl, SKILL_ORALSEX, -25);
+			}
+			else if (Name == "No Hands")
+			{
+				UpdateStat(girl, STAT_CHARISMA, 10);
+				UpdateStat(girl, STAT_BEAUTY, 10);
+				UpdateSkill(girl, SKILL_HANDJOB, 100);
+				UpdateSkill(girl, SKILL_COMBAT, 20);
+				UpdateSkill(girl, SKILL_GROUP, 10);
+			}
+			else if (Name == "No Legs")
+			{
+				UpdateStat(girl, STAT_CHARISMA, 40);
+				UpdateStat(girl, STAT_BEAUTY, 40);
+				UpdateSkill(girl, SKILL_FOOTJOB, 100);
+				UpdateSkill(girl, SKILL_COMBAT, 75);
+				UpdateSkill(girl, SKILL_GROUP, 20);
+				UpdateStat(girl, STAT_AGILITY, 70);
+			}
+			else if (Name == "No Nipples")
+			{
+				UpdateSkill(girl, SKILL_TITTYSEX, 5);
+			}
+			else if (Name == "No Teeth")
+			{
+				UpdateStat(girl, STAT_CHARISMA, 10);
+				UpdateStat(girl, STAT_BEAUTY, 10);
+				UpdateSkill(girl, SKILL_ORALSEX, -10);
+			}
+			else if (Name == "Noble")
+			{
+				UpdateStat(girl, STAT_CHARISMA, -5);
+				UpdateStat(girl, STAT_BEAUTY, -5);
+				UpdateStat(girl, STAT_CONFIDENCE, -5);
+				UpdateStat(girl, STAT_OBEDIENCE, 5);
+				UpdateEnjoyment(girl, ACTION_SEX, +15, true);
+			}
+			else if (Name == "Nymphomaniac")
+			{
+				UpdateStat(girl, STAT_LIBIDO, -20);
+				UpdateStat(girl, STAT_CONFIDENCE, -5);
+				UpdateStat(girl, STAT_CHARISMA, -5);
+				UpdateStat(girl, STAT_CONSTITUTION, -5);
+				UpdateEnjoyment(girl, ACTION_SEX, -25, true);
+			}
+		}
+		else if (first == "o")
+		{
+			/* */if (Name == "Old")
+			{
+				UpdateStat(girl, STAT_CHARISMA, 15);
+				UpdateStat(girl, STAT_BEAUTY, 15);
+			}
+			else if (Name == "One Eye")
+			{
+				UpdateStat(girl, STAT_BEAUTY, 20);
+				UpdateStat(girl, STAT_CHARISMA, 5);
+				UpdateStat(girl, STAT_CONSTITUTION, -5);
+				UpdateStat(girl, STAT_SPIRIT, 10);
+			}
+			else if (Name == "One Eye")
+			{
+				UpdateStat(girl, STAT_CHARISMA, 5);
+				UpdateStat(girl, STAT_BEAUTY, 5);
+			}
+			else if (Name == "One Foot")
+			{
+				UpdateStat(girl, STAT_CHARISMA, 10);
+				UpdateStat(girl, STAT_BEAUTY, 10);
+				UpdateSkill(girl, SKILL_FOOTJOB, 15);
+			}
+			else if (Name == "One Hand")
+			{
+				UpdateStat(girl, STAT_CHARISMA, 10);
+				UpdateStat(girl, STAT_BEAUTY, 10);
+			}
+			else if (Name == "One Leg")
+			{
+				UpdateStat(girl, STAT_CHARISMA, 15);
+				UpdateStat(girl, STAT_BEAUTY, 15);
+				UpdateSkill(girl, SKILL_FOOTJOB, 20);
+			}
+			else if (Name == "Open Minded")
+			{
+				//
+				UpdateStat(girl, STAT_LIBIDO, -15);
+				UpdateEnjoyment(girl, ACTION_SEX, -10, true);
+			}
+		}
+		else if (first == "p")
+		{
+			/* */if (Name == "Perky Nipples")
+			{
+				UpdateStat(girl, STAT_BEAUTY, -5);
+				UpdateSkill(girl, SKILL_TITTYSEX, -5);
+			}
+			else if (Name == "Pessimist")
+			{
+				UpdateStat(girl, STAT_SPIRIT, 60);
+			}
+			else if (Name == "Petite Breasts")
+			{
+				UpdateStat(girl, STAT_AGILITY, -5);
+				UpdateStat(girl, STAT_CHARISMA, -5);
+				UpdateSkill(girl, SKILL_TITTYSEX, 20);
+			}
+			else if (Name == "Phat Booty")
+			{
+				UpdateStat(girl, STAT_AGILITY, 5);
+				UpdateStat(girl, STAT_BEAUTY, -5);
+				UpdateStat(girl, STAT_CHARISMA, -5);
+				UpdateSkill(girl, SKILL_ANAL, -10);
+			}
+			else if (Name == "Pierced Clit")
+			{
+				UpdateStat(girl, STAT_LIBIDO, -20);
+				UpdateSkill(girl, SKILL_NORMALSEX, -10);
+			}
+			else if (Name == "Pierced Nipples")
+			{
+				UpdateStat(girl, STAT_LIBIDO, -10);
+				UpdateSkill(girl, SKILL_TITTYSEX, -10);
+			}
+			else if (Name == "Pierced Tongue")
+			{
+				UpdateSkill(girl, SKILL_ORALSEX, -10);
+			}
+			else if (Name == "Playful Tail")
+			{
+				//
+			}
+			else if (Name == "Plump Tush")
+			{
+				UpdateStat(girl, STAT_AGILITY, 10);
+				UpdateStat(girl, STAT_BEAUTY, -5);
+				UpdateSkill(girl, SKILL_ANAL, -10);
+			}
+			else if (Name == "Plump")
+			{
+				UpdateStat(girl, STAT_AGILITY, 10);
+			}
+			else if (Name == "Porn Star")
+			{
+				UpdateStat(girl, STAT_FAME, -20);
+				UpdateSkill(girl, SKILL_PERFORMANCE, -10);
+			}
+			else if (Name == "Powerful Magic")
+			{
+				UpdateSkill(girl, SKILL_MAGIC, -30);
+				UpdateStat(girl, STAT_MANA, -30);
+			}
+			else if (Name == "Prehensile Tail")
+			{
+				//
+			}
+			else if (Name == "Priestess")
+			{
+				UpdateStat(girl, STAT_MORALITY, -20);
+				//
+			}
+			//starts with S
+			else if (Name == "Princess")
+			{
+				UpdateStat(girl, STAT_CHARISMA, -10);
+				UpdateStat(girl, STAT_BEAUTY, -10);
+				UpdateStat(girl, STAT_CONFIDENCE, -10);
+				UpdateStat(girl, STAT_OBEDIENCE, 5);
+			}
+			else if (Name == "Puffy Nipples")
+			{
+				UpdateStat(girl, STAT_BEAUTY, -5);
+				UpdateSkill(girl, SKILL_TITTYSEX, -5);
+			}
+		}
+		else if (first == "q")
+		{
+			/* */if (Name == "Queen")
+			{
+				UpdateStat(girl, STAT_CHARISMA, -20);
+				UpdateStat(girl, STAT_BEAUTY, -20);
+				UpdateStat(girl, STAT_CONFIDENCE, -10);
+				UpdateStat(girl, STAT_OBEDIENCE, 15);
+			}
+		}
+		else if (first == "r")
+		{
+			/* */if (Name == "Retarded")
+			{
+				UpdateStat(girl, STAT_SPIRIT, 20);
+				UpdateStat(girl, STAT_INTELLIGENCE, 50);
+				UpdateStat(girl, STAT_CONFIDENCE, 60);
+			}
+		}
+		else if (first == "s")
+		{
+			/* */if (Name == "Sadistic")
+			{
+				UpdateSkill(girl, SKILL_BDSM, -20);
+			}
+			else if (Name == "Scarce Lactation")
+			{
+				//
+			}
+			else if (Name == "Sexy Air")
+			{
+				UpdateStat(girl, STAT_CHARISMA, 5);
+				UpdateStat(girl, STAT_BEAUTY, 10);
+				UpdateStat(girl, STAT_CONFIDENCE, 2);
+			}
+			else if (Name == "Shape Shifter")
+			{
+				UpdateStat(girl, STAT_CHARISMA, -20);
+				UpdateStat(girl, STAT_BEAUTY, -20);
+			}
+			else if (Name == "Sharp-Eyed")
+			{
+				//
+			}
+			else if (Name == "Shroud Addict")
+			{
+				UpdateStat(girl, STAT_CONFIDENCE, 5);
+				UpdateStat(girl, STAT_CONFIDENCE, -5);
+			}
+			else if (Name == "Singer")
+			{
+				UpdateSkill(girl, SKILL_PERFORMANCE, -30);
+				UpdateStat(girl, STAT_CONFIDENCE, -30);
+			}
+			else if (Name == "Slitherer")
+			{
+				//
+			}
+			else if (Name == "Slow Orgasms")
+			{
+				UpdateSkill(girl, SKILL_ANAL, 2);
+				UpdateSkill(girl, SKILL_BDSM, 2);
+				UpdateSkill(girl, SKILL_NORMALSEX, 2);
+				UpdateSkill(girl, SKILL_BEASTIALITY, 2);
+				UpdateSkill(girl, SKILL_ORALSEX, 2);
+				UpdateSkill(girl, SKILL_GROUP, 2);
+				UpdateSkill(girl, SKILL_LESBIAN, 2);
+				UpdateStat(girl, STAT_CONFIDENCE, 2);
+			}
+			else if (Name == "Slut")
+			{
+				UpdateStat(girl, STAT_CHARISMA, 10);
+				UpdateEnjoyment(girl, ACTION_SEX, -10, true);
+			}
+			else if (Name == "Small Boobs")
+			{
+				UpdateStat(girl, STAT_AGILITY, -5);
+				UpdateStat(girl, STAT_CHARISMA, -5);
+				UpdateSkill(girl, SKILL_TITTYSEX, 15);
+			}
+			else if (Name == "Small Scars")
+			{
+				UpdateStat(girl, STAT_BEAUTY, 2);
+				UpdateStat(girl, STAT_CONSTITUTION, -2);
+				UpdateStat(girl, STAT_SPIRIT, 2);
+			}
+			else if (Name == "Small Tattoos")
+			{
+				UpdateStat(girl, STAT_BEAUTY, 5);
+				UpdateStat(girl, STAT_CHARISMA, 5);
+			}
+			else if (Name == "Smoker")
+			{
+				UpdateStat(girl, STAT_BEAUTY, 5);
+				UpdateStat(girl, STAT_CHARISMA, 5);
+				UpdateStat(girl, STAT_AGILITY, 10);
+				UpdateStat(girl, STAT_CONSTITUTION, 5);
+			}
+			else if (Name == "Social Drinker")
+			{
+				//
+			}
+			else if (Name == "Solar Powered")
+			{
+				//
+			}
+			else if (Name == "Spirit Possessed")
+			{
+				//
+			}
+			else if (Name == "Straight")
+			{
+				UpdateSkill(girl, SKILL_NORMALSEX, -10);
+				UpdateSkill(girl, SKILL_LESBIAN, 15);
+			}
+			else if (Name == "Strong Gag Reflex")
+			{
+				UpdateSkill(girl, SKILL_ORALSEX, 50);
+			}
+			else if (Name == "Strong Magic")
+			{
+				UpdateSkill(girl, SKILL_MAGIC, -20);
+				UpdateStat(girl, STAT_MANA, -20);
+			}
+			else if (Name == "Strong")
+			{
+				UpdateSkill(girl, SKILL_COMBAT, -10);
+				UpdateStat(girl, STAT_CONFIDENCE, -10);
+			}
+			else if (Name == "Succubus")
+			{
+				//
+			}
+		}
+		else if (first == "t")
+		{
+			/* */if (Name == "Tattooed")
+			{
+				UpdateStat(girl, STAT_BEAUTY, 10);
+				UpdateStat(girl, STAT_CHARISMA, 10);
+			}
+			else if (Name == "Teacher")
+			{
+				UpdateStat(girl, STAT_INTELLIGENCE, -10);
+			}
+			else if (Name == "Tight Butt")
+			{
+				UpdateStat(girl, STAT_CONSTITUTION, -5);
+				UpdateStat(girl, STAT_BEAUTY, -5);
+				UpdateStat(girl, STAT_CHARISMA, -5);
+				UpdateSkill(girl, SKILL_ANAL, -8);
+			}
+			else if (Name == "Titanic Tits")
+			{
+				UpdateStat(girl, STAT_BEAUTY, -10);
+				UpdateStat(girl, STAT_CONSTITUTION, -10);
+				UpdateStat(girl, STAT_AGILITY, 15);
+				UpdateSkill(girl, SKILL_TITTYSEX, -25);
+			}
+			else if (Name == "Tomboy")
+			{
+				UpdateStat(girl, STAT_CONSTITUTION, -10);
+				UpdateStat(girl, STAT_CHARISMA, 15);
+			}
+			else if (Name == "Tone Deaf")
+			{
+				UpdateSkill(girl, SKILL_PERFORMANCE, 30);
+				UpdateStat(girl, STAT_CONFIDENCE, 30);
+			}
+			else if (Name == "Tsundere")
+			{
+				UpdateStat(girl, STAT_CONFIDENCE, -20);
+				UpdateStat(girl, STAT_OBEDIENCE, 20);
+			}
+		}
+		else if (first == "u")
+		{
+			/* */
+		}
+		else if (first == "v")
+		{
+			/* */if (Name == "Viras Blood Addict")
+			{
+				UpdateStat(girl, STAT_CONFIDENCE, 15);
+				UpdateStat(girl, STAT_OBEDIENCE, -20);
+				UpdateStat(girl, STAT_CHARISMA, 10);
+			}
+		}
+		else if (first == "w")
+		{
+			/* */if (Name == "Waitress")
+			{
+				UpdateSkill(girl, SKILL_SERVICE, -30);
+			}
+			else if (Name == "Weak Magic")
+			{
+				UpdateSkill(girl, SKILL_MAGIC, 20);
+				UpdateStat(girl, STAT_MANA, 20);
+			}
+			else if (Name == "Whore")
+			{
+				UpdateStat(girl, STAT_CONSTITUTION, 5);
+				UpdateStat(girl, STAT_BEAUTY, 10);
+				UpdateStat(girl, STAT_CHARISMA, 10);
+				UpdateEnjoyment(girl, ACTION_SEX, -10, true);
+			}
+			else if (Name == "Wide Bottom")
+			{
+				UpdateStat(girl, STAT_CONSTITUTION, -5);
+				UpdateStat(girl, STAT_BEAUTY, -5);
+				UpdateSkill(girl, SKILL_ANAL, -5);
+			}
+			else if (Name == "Wings")
+			{
+				//
+			}
+		}
+		else if (first == "x")
+		{
+			/* */
+		}
+		else if (first == "y")
+		{
+			/* */if (Name == "Yandere")
+			{
+				UpdateStat(girl, STAT_SPIRIT, -20);
+			}
+		}
+		else if (first == "z")
+		{
+			/* */
 		}
 
-		else if (strcmp(tr->m_Name, "Masochist") == 0)
-		{
-			UpdateSkill(girl, SKILL_BDSM, -50);
-			UpdateStat(girl, STAT_CONSTITUTION, -50);
-			UpdateStat(girl, STAT_OBEDIENCE, -30);
-		}
-
-		else if (strcmp(tr->m_Name, "Sadistic") == 0)
-		{
-			UpdateSkill(girl, SKILL_BDSM, -20);
-		}
-
-		else if (strcmp(tr->m_Name, "Broken Will") == 0)
-		{
-			UpdateStat(girl, STAT_SPIRIT, 20);
-			UpdateStat(girl, STAT_OBEDIENCE, 10);
-		}
-
-		else if (strcmp(tr->m_Name, "Nymphomaniac") == 0)
-		{
-			UpdateStat(girl, STAT_LIBIDO, -20);
-			UpdateStat(girl, STAT_CONFIDENCE, -5);
-			UpdateStat(girl, STAT_CHARISMA, -5);
-			UpdateStat(girl, STAT_CONSTITUTION, -5);
-			UpdateEnjoyment(girl, ACTION_SEX, -25, true);
-		}
-
-		else if (strcmp(tr->m_Name, "Elegant") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, -10);
-			UpdateStat(girl, STAT_CONFIDENCE, -5);
-			UpdateSkill(girl, SKILL_PERFORMANCE, -5);
-		}
-
-		else if (strcmp(tr->m_Name, "Sexy Air") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, 5);
-			UpdateStat(girl, STAT_BEAUTY, 10);
-			UpdateStat(girl, STAT_CONFIDENCE, 2);
-		}
-
-		else if (strcmp(tr->m_Name, "Great Arse") == 0)
-		{
-			UpdateStat(girl, STAT_CONSTITUTION, -5);
-			UpdateStat(girl, STAT_BEAUTY, -5);
-			UpdateStat(girl, STAT_CHARISMA, -5);
-			UpdateSkill(girl, SKILL_ANAL, -10);
-		}
-
-		else if (strcmp(tr->m_Name, "Small Scars") == 0)
-		{
-			UpdateStat(girl, STAT_BEAUTY, 2);
-			UpdateStat(girl, STAT_CONSTITUTION, -2);
-			UpdateStat(girl, STAT_SPIRIT, 2);
-		}
-
-		else if (strcmp(tr->m_Name, "Cool Scars") == 0)
-		{
-			UpdateStat(girl, STAT_BEAUTY, 2);
-			UpdateStat(girl, STAT_CONSTITUTION, 5);
-			UpdateStat(girl, STAT_SPIRIT, 5);
-			UpdateStat(girl, STAT_CHARISMA, 2);
-		}
-
-		else if (strcmp(tr->m_Name, "Horrific Scars") == 0)
-		{
-			UpdateStat(girl, STAT_BEAUTY, 5);
-			UpdateStat(girl, STAT_CONSTITUTION, -10);
-			UpdateStat(girl, STAT_SPIRIT, 10);
-		}
-
-		else if (strcmp(tr->m_Name, "Cool Person") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, -5);
-			UpdateStat(girl, STAT_SPIRIT, -10);
-			UpdateStat(girl, STAT_CONFIDENCE, -10);
-		}
-
-		else if (strcmp(tr->m_Name, "Nerd") == 0)
-		{
-			UpdateStat(girl, STAT_CONFIDENCE, 10);
-			UpdateSkill(girl, SKILL_MEDICINE, -10);
-		}
-
-		else if (strcmp(tr->m_Name, "Clumsy") == 0)
-		{
-			UpdateSkill(girl, SKILL_ANAL, 10);
-			UpdateSkill(girl, SKILL_BDSM, 10);
-			UpdateSkill(girl, SKILL_NORMALSEX, 10);
-			UpdateSkill(girl, SKILL_ORALSEX, 10);
-			UpdateSkill(girl, SKILL_BEASTIALITY, 10);
-			UpdateSkill(girl, SKILL_GROUP, 10);
-			UpdateSkill(girl, SKILL_LESBIAN, 10);
-			UpdateStat(girl, STAT_CONFIDENCE, 10);
-		}
-
-		else if (strcmp(tr->m_Name, "Cute") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, -10);
-			UpdateStat(girl, STAT_BEAUTY, -5);
-		}
-
-		else if (strcmp(tr->m_Name, "Strong") == 0)
-		{
-			UpdateSkill(girl, SKILL_COMBAT, -10);
-			UpdateStat(girl, STAT_CONFIDENCE, -10);
-		}
-
-		else if (strcmp(tr->m_Name, "Strong Magic") == 0)
-		{
-			UpdateSkill(girl, SKILL_MAGIC, -20);
-			UpdateStat(girl, STAT_MANA, -20);
-		}
-
-		else if (strcmp(tr->m_Name, "Shroud Addict") == 0)
-		{
-			UpdateStat(girl, STAT_CONFIDENCE, 5);
-			UpdateStat(girl, STAT_CONFIDENCE, -5);
-		}
-
-		else if (strcmp(tr->m_Name, "Fairy Dust Addict") == 0)
-		{
-			UpdateStat(girl, STAT_CONFIDENCE, 10);
-			UpdateStat(girl, STAT_OBEDIENCE, -5);
-		}
 
-		else if (strcmp(tr->m_Name, "Viras Blood Addict") == 0)
-		{
-			UpdateStat(girl, STAT_CONFIDENCE, 15);
-			UpdateStat(girl, STAT_OBEDIENCE, -20);
-			UpdateStat(girl, STAT_CHARISMA, 10);
-		}
-
-		else if (strcmp(tr->m_Name, "Aggressive") == 0)
-		{
-			UpdateSkill(girl, SKILL_COMBAT, -10);
-			UpdateStat(girl, STAT_SPIRIT, -10);
-			UpdateStat(girl, STAT_CONFIDENCE, -5);
-		}
-
-		else if (strcmp(tr->m_Name, "Adventurer") == 0)
-		{
-			UpdateSkill(girl, SKILL_COMBAT, -10);
-		}
-
-		else if (strcmp(tr->m_Name, "Assassin") == 0)
-		{
-			UpdateSkill(girl, SKILL_COMBAT, -15);
-		}
-
-		else if (strcmp(tr->m_Name, "Lolita") == 0)
-		{
-			UpdateStat(girl, STAT_OBEDIENCE, -5);
-			UpdateStat(girl, STAT_CHARISMA, -10);
-			UpdateStat(girl, STAT_BEAUTY, -20);
-		}
-
-
-		else if (strcmp(tr->m_Name, "Nervous") == 0)
-		{
-			UpdateStat(girl, STAT_OBEDIENCE, -10);
-			UpdateStat(girl, STAT_CONFIDENCE, 10);
-			UpdateSkill(girl, SKILL_PERFORMANCE, 20);
-		}
-
-		else if (strcmp(tr->m_Name, "Great Figure") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, -10);
-			UpdateStat(girl, STAT_BEAUTY, -20);
-		}
-
-		else if (strcmp(tr->m_Name, "Incorporeal") == 0)
-		{
-			UpdateEnjoyment(girl, ACTION_COMBAT, -20, true);
-		}
-
-
-		else if (strcmp(tr->m_Name, "Shape Shifter") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, -20);
-			UpdateStat(girl, STAT_BEAUTY, -20);
-		}
-
-		else if (strcmp(tr->m_Name, "Queen") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, -20);
-			UpdateStat(girl, STAT_BEAUTY, -20);
-			UpdateStat(girl, STAT_CONFIDENCE, -10);
-			UpdateStat(girl, STAT_OBEDIENCE, 15);
-		}
-
-		else if (strcmp(tr->m_Name, "Princess") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, -10);
-			UpdateStat(girl, STAT_BEAUTY, -10);
-			UpdateStat(girl, STAT_CONFIDENCE, -10);
-			UpdateStat(girl, STAT_OBEDIENCE, 5);
-		}
-
-		else if (strcmp(tr->m_Name, "Pierced Nipples") == 0)
-		{
-			UpdateStat(girl, STAT_LIBIDO, -10);
-			UpdateSkill(girl, SKILL_TITTYSEX, -10);
-		}
-
-		else if (strcmp(tr->m_Name, "Pierced Tongue") == 0)
-		{
-			UpdateSkill(girl, SKILL_ORALSEX, -10);
-		}
-
-		else if (strcmp(tr->m_Name, "Pierced Clit") == 0)
-		{
-			UpdateStat(girl, STAT_LIBIDO, -20);
-			UpdateSkill(girl, SKILL_NORMALSEX, -10);
-		}
-
-		//SIN: Adjusted for missing/new traits
-		else if (strcmp(tr->m_Name, "Strong Gag Reflex") == 0)
-		{
-			UpdateSkill(girl, SKILL_ORALSEX, 50);
-		}
-		else if (strcmp(tr->m_Name, "Gag Reflex") == 0)
-		{
-			UpdateSkill(girl, SKILL_ORALSEX, 30);
-		}
-		else if (strcmp(tr->m_Name, "No Gag Reflex") == 0)
-		{
-			UpdateSkill(girl, SKILL_ORALSEX, -25);
-		}
-		else if (strcmp(tr->m_Name, "Deep Throat") == 0)
-		{
-			UpdateSkill(girl, SKILL_ORALSEX, -50);
-		}
-		else if (strcmp(tr->m_Name, "Cum Addict") == 0)
-		{
-			UpdateStat(girl, SKILL_ORALSEX, -30);
-			UpdateSkill(girl, SKILL_GROUP, -10);
-			UpdateStat(girl, STAT_OBEDIENCE, -20);
-			UpdateStat(girl, STAT_SPIRIT, 10);
-			UpdateEnjoyment(girl, ACTION_SEX, -20, true);
-		}
-		else if (strcmp(tr->m_Name, "Agile") == 0)
-		{
-			UpdateStat(girl, STAT_AGILITY, -20);
-		}
-		else if (strcmp(tr->m_Name, "Actress") == 0)
-		{
-			UpdateSkill(girl, SKILL_PERFORMANCE, 10);
-		}
-		else if (strcmp(tr->m_Name, "Audacity") == 0)
-		{
-			UpdateStat(girl, STAT_PCFEAR, 30);
-			UpdateStat(girl, STAT_SPIRIT, -30);
-			UpdateStat(girl, STAT_OBEDIENCE, 40);
-		}
-		else if (strcmp(tr->m_Name, "Angel") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Battery Operated") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Bad Eyesight") == 0)
-		{
-			UpdateSkill(girl, SKILL_CRAFTING, 10);
-		}
-		else if (strcmp(tr->m_Name, "Beauty Mark") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, -5);
-			UpdateStat(girl, STAT_BEAUTY, -5);
-		}
-		else if (strcmp(tr->m_Name, "Bimbo") == 0)
-		{
-			UpdateStat(girl, STAT_CONFIDENCE, -10);
-			UpdateStat(girl, STAT_INTELLIGENCE, 10);
-			UpdateSkill(girl, SKILL_MEDICINE, 10);
-		}
-		else if (strcmp(tr->m_Name, "Blind") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Branded on the Ass") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Branded on the Forehead") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, 10);
-			UpdateStat(girl, STAT_BEAUTY, 10);
-		}
-		else if (strcmp(tr->m_Name, "Brawler") == 0)
-		{
-			UpdateSkill(girl, SKILL_COMBAT, -10);
-			UpdateStat(girl, STAT_CONSTITUTION, -5);
-		}
-		else if (strcmp(tr->m_Name, "Broodmother") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Bruises") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, 5);
-			UpdateStat(girl, STAT_BEAUTY, 5);
-		}
-		else if (strcmp(tr->m_Name, "Canine") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Chef") == 0)
-		{
-			UpdateSkill(girl, SKILL_SERVICE, -10);//change to cook if ever added
-		}
-		else if (strcmp(tr->m_Name, "Country Gal") == 0)
-		{
-			UpdateSkill(girl, SKILL_FARMING, -10);
-			UpdateSkill(girl, SKILL_ANIMALHANDLING, -5);
-		}
-		else if (strcmp(tr->m_Name, "Cow Girl") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Cow Tits") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Cyclops") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Deaf") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Delicate") == 0)
-		{
-			UpdateStat(girl, STAT_CONSTITUTION, 15);
-		}
-		else if (strcmp(tr->m_Name, "Deluxe Derriere") == 0)
-		{
-			UpdateStat(girl, STAT_BEAUTY, -5);
-			UpdateStat(girl, STAT_CHARISMA, -5);
-			UpdateSkill(girl, SKILL_ANAL, -10);
-		}
-		else if (strcmp(tr->m_Name, "Demon") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Demon Possessed") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Dick-Sucking Lips") == 0)
-		{
-			UpdateStat(girl, STAT_BEAUTY, -5);
-		}
-		else if (strcmp(tr->m_Name, "Director") == 0)
-		{
-			UpdateStat(girl, STAT_INTELLIGENCE, -5);
-			UpdateSkill(girl, SKILL_PERFORMANCE, -10);
-		}
-		else if (strcmp(tr->m_Name, "Doctor") == 0)
-		{
-			UpdateStat(girl, STAT_INTELLIGENCE, -15);
-			UpdateSkill(girl, SKILL_MEDICINE, -10);
-		}
-		else if (strcmp(tr->m_Name, "Dojikko") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Dominatrix") == 0)
-		{
-			UpdateSkill(girl, SKILL_BDSM, -10);
-		}
-		else if (strcmp(tr->m_Name, "Dry Milk") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Dryad") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Egg Layer") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Elf") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Equine") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Exhibitionist") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Exotic") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, -5);
-			UpdateStat(girl, STAT_BEAUTY, -10);
-		}
-		//starts with F
-		else if (strcmp(tr->m_Name, "Fallen Goddess") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Farmers Daughter") == 0)
-		{
-			UpdateSkill(girl, SKILL_FARMING, -15);
-			UpdateSkill(girl, SKILL_ANIMALHANDLING, -10);
-		}
-		else if (strcmp(tr->m_Name, "Fertile") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Flat Ass") == 0)
-		{
-			UpdateStat(girl, STAT_BEAUTY, 5);
-			UpdateStat(girl, STAT_CHARISMA, 5);
-			UpdateSkill(girl, SKILL_ANAL, 10);
-		}
-		else if (strcmp(tr->m_Name, "Flight") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Former Addict") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Former Official") == 0)
-		{
-			UpdateStat(girl, STAT_FAME, -5);
-		}
-		else if (strcmp(tr->m_Name, "Furry") == 0)
-		{
-			//
-		}
-		//starts with G
-		else if (strcmp(tr->m_Name, "Giant") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Goddess") == 0)
-		{
-			//
-		}
-		//starts with H
-		else if (strcmp(tr->m_Name, "Half-Breed") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Handyman") == 0)
-		{
-			UpdateSkill(girl, SKILL_SERVICE, -10);
-			UpdateSkill(girl, SKILL_CRAFTING, -10);
-		}
-		else if (strcmp(tr->m_Name, "Heavily Tattooed") == 0)
-		{
-			UpdateStat(girl, STAT_BEAUTY, 15);
-			UpdateStat(girl, STAT_CHARISMA, 15);
-		}
-		else if (strcmp(tr->m_Name, "Heroine") == 0)
-		{
-			UpdateSkill(girl, SKILL_COMBAT, -10);
-			UpdateStat(girl, STAT_CONSTITUTION, -5);
-		}
-		else if (strcmp(tr->m_Name, "Homeless") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Hourglass Figure") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, -5);
-			UpdateStat(girl, STAT_BEAUTY, -10);
-			UpdateEnjoyment(girl, ACTION_WORKCLUB, -10, true);
-			UpdateEnjoyment(girl, ACTION_WORKBAR, -10, true);
-			UpdateEnjoyment(girl, ACTION_WORKHALL, -10, true);
-		}
-		//Starts with I
-		else if (strcmp(tr->m_Name, "Idiot Savant") == 0)
-		{
-			UpdateStat(girl, STAT_INTELLIGENCE, 15);
-		}
-		else if (strcmp(tr->m_Name, "Idol") == 0)
-		{
-			UpdateStat(girl, STAT_FAME, -15);
-			UpdateSkill(girl, SKILL_PERFORMANCE, -10);
-		}
-		//starts with L
-		else if (strcmp(tr->m_Name, "Large Hips") == 0)
-		{
-			UpdateStat(girl, STAT_AGILITY, -5);
-			UpdateStat(girl, STAT_BEAUTY, -5);
-			UpdateSkill(girl, SKILL_ANAL, -5);
-		}
-		//starts with M
-		else if (strcmp(tr->m_Name, "Maid") == 0)
-		{
-			UpdateSkill(girl, SKILL_SERVICE, -20);
-		}
-		else if (strcmp(tr->m_Name, "Middle Aged") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, 5);
-			UpdateStat(girl, STAT_BEAUTY, 5);
-		}
-		else if (strcmp(tr->m_Name, "Mixologist") == 0)
-		{
-			UpdateSkill(girl, SKILL_SERVICE, -5);
-			UpdateSkill(girl, SKILL_BREWING, -15);
-		}
-		else if (strcmp(tr->m_Name, "Muggle") == 0)
-		{
-			UpdateSkill(girl, SKILL_MAGIC, -0);
-			UpdateStat(girl, STAT_MANA, 30);
-		}
-		else if (strcmp(tr->m_Name, "Muscular") == 0)
-		{
-			UpdateSkill(girl, SKILL_COMBAT, -5);
-			UpdateStat(girl, STAT_AGILITY, -10);
-			UpdateStat(girl, STAT_CONSTITUTION, -10);
-		}
-		//starts with N
-		else if (strcmp(tr->m_Name, "Natural Pheromones") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, -10);
-		}
-		else if (strcmp(tr->m_Name, "Nimble Tongue") == 0)
-		{
-			UpdateStat(girl, STAT_LIBIDO, -2);
-			UpdateStat(girl, STAT_CONFIDENCE, -2);
-			UpdateStat(girl, STAT_CHARISMA, -2);
-			UpdateEnjoyment(girl, ACTION_SEX, -5, true);
-		}
-		else if (strcmp(tr->m_Name, "No Arms") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, 30);
-			UpdateStat(girl, STAT_BEAUTY, 30);
-			UpdateSkill(girl, SKILL_HANDJOB, 100);
-			UpdateSkill(girl, SKILL_COMBAT, 50);
-			UpdateSkill(girl, SKILL_GROUP, 20);
-		}
-		else if (strcmp(tr->m_Name, "No Clit") == 0)
-		{
-			UpdateEnjoyment(girl, ACTION_SEX, +10, true);
-		}
-		else if (strcmp(tr->m_Name, "No Feet") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, 10);
-			UpdateStat(girl, STAT_BEAUTY, 10);
-			UpdateSkill(girl, SKILL_FOOTJOB, 100);
-			UpdateSkill(girl, SKILL_COMBAT, 50);
-			UpdateSkill(girl, SKILL_GROUP, 20);
-			UpdateStat(girl, STAT_AGILITY, 30);
-		}
-		else if (strcmp(tr->m_Name, "No Hands") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, 10);
-			UpdateStat(girl, STAT_BEAUTY, 10);
-			UpdateSkill(girl, SKILL_HANDJOB, 100);
-			UpdateSkill(girl, SKILL_COMBAT, 20);
-			UpdateSkill(girl, SKILL_GROUP, 10);
-		}
-		else if (strcmp(tr->m_Name, "No Legs") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, 40);
-			UpdateStat(girl, STAT_BEAUTY, 40);
-			UpdateSkill(girl, SKILL_FOOTJOB, 100);
-			UpdateSkill(girl, SKILL_COMBAT, 75);
-			UpdateSkill(girl, SKILL_GROUP, 20);
-			UpdateStat(girl, STAT_AGILITY, 70);
-		}
-		else if (strcmp(tr->m_Name, "No Nipples") == 0)
-		{
-			UpdateSkill(girl, SKILL_TITTYSEX, 5);
-		}
-		else if (strcmp(tr->m_Name, "No Teeth") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, 10);
-			UpdateStat(girl, STAT_BEAUTY, 10);
-			UpdateSkill(girl, SKILL_ORALSEX, -10);
-		}
-		else if (strcmp(tr->m_Name, "Noble") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, -5);
-			UpdateStat(girl, STAT_BEAUTY, -5);
-			UpdateStat(girl, STAT_CONFIDENCE, -5);
-			UpdateStat(girl, STAT_OBEDIENCE, 5);
-			UpdateEnjoyment(girl, ACTION_SEX, +15, true);
-		}
-		//starts with O
-		else if (strcmp(tr->m_Name, "Old") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, 15);
-			UpdateStat(girl, STAT_BEAUTY, 15);
-		}
-		else if (strcmp(tr->m_Name, "One Eye") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, 5);
-			UpdateStat(girl, STAT_BEAUTY, 5);
-		}
-		else if (strcmp(tr->m_Name, "One Foot") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, 10);
-			UpdateStat(girl, STAT_BEAUTY, 10);
-			UpdateSkill(girl, SKILL_FOOTJOB, 15);
-		}
-		else if (strcmp(tr->m_Name, "One Hand") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, 10);
-			UpdateStat(girl, STAT_BEAUTY, 10);
-		}
-		else if (strcmp(tr->m_Name, "One Leg") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, 15);
-			UpdateStat(girl, STAT_BEAUTY, 15);
-			UpdateSkill(girl, SKILL_FOOTJOB, 20);
-		}
-		else if (strcmp(tr->m_Name, "Open Minded") == 0)
-		{
-			//
-			UpdateStat(girl, STAT_LIBIDO, -15);
-			UpdateEnjoyment(girl, ACTION_SEX, -10, true);
-		}
-		//starts with P
-		else if (strcmp(tr->m_Name, "Phat Booty") == 0)
-		{
-			UpdateStat(girl, STAT_AGILITY, 5);
-			UpdateStat(girl, STAT_BEAUTY, -5);
-			UpdateStat(girl, STAT_CHARISMA, -5);
-			UpdateSkill(girl, SKILL_ANAL, -10);
-		}
-		else if (strcmp(tr->m_Name, "Playful Tail") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Plump Tush") == 0)
-		{
-			UpdateStat(girl, STAT_AGILITY, 10);
-			UpdateStat(girl, STAT_BEAUTY, -5);
-			UpdateSkill(girl, SKILL_ANAL, -10);
-		}
-		else if (strcmp(tr->m_Name, "Plump") == 0)
-		{
-			UpdateStat(girl, STAT_AGILITY, 10);
-		}
-		else if (strcmp(tr->m_Name, "Porn Star") == 0)
-		{
-			UpdateStat(girl, STAT_FAME, -20);
-			UpdateSkill(girl, SKILL_PERFORMANCE, -10);
-		}
-		else if (strcmp(tr->m_Name, "Powerful Magic") == 0)
-		{
-			UpdateSkill(girl, SKILL_MAGIC, -30);
-			UpdateStat(girl, STAT_MANA, -30);
-		}
-		else if (strcmp(tr->m_Name, "Prehensile Tail") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Priestess") == 0)
-		{
-			UpdateStat(girl, STAT_MORALITY, -20);
-			//
-		}
-		//starts with S
-		else if (strcmp(tr->m_Name, "Scarce Lactation") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Sharp-Eyed") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Singer") == 0)
-		{
-			UpdateSkill(girl, SKILL_PERFORMANCE, -30);
-			UpdateStat(girl, STAT_CONFIDENCE, -30);
-		}
-		else if (strcmp(tr->m_Name, "Slitherer") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Slut") == 0)
-		{
-			UpdateStat(girl, STAT_CHARISMA, 10);
-			UpdateEnjoyment(girl, ACTION_SEX, -10, true);
-		}
-		else if (strcmp(tr->m_Name, "Small Tattoos") == 0)
-		{
-			UpdateStat(girl, STAT_BEAUTY, 5);
-			UpdateStat(girl, STAT_CHARISMA, 5);
-		}
-		else if (strcmp(tr->m_Name, "Smoker") == 0)
-		{
-			UpdateStat(girl, STAT_BEAUTY, 5);
-			UpdateStat(girl, STAT_CHARISMA, 5);
-			UpdateStat(girl, STAT_AGILITY, 10);
-			UpdateStat(girl, STAT_CONSTITUTION, 5);
-		}
-		else if (strcmp(tr->m_Name, "Social Drinker") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Solar Powered") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Spirit Possessed") == 0)
-		{
-			//
-		}
-		else if (strcmp(tr->m_Name, "Straight") == 0)
-		{
-			UpdateSkill(girl, SKILL_NORMALSEX, -10);
-			UpdateSkill(girl, SKILL_LESBIAN, 15);
-		}
-		else if (strcmp(tr->m_Name, "Succubus") == 0)
-		{
-			//
-		}
-		//starts with T
-		else if (strcmp(tr->m_Name, "Tattooed") == 0)
-		{
-			UpdateStat(girl, STAT_BEAUTY, 10);
-			UpdateStat(girl, STAT_CHARISMA, 10);
-		}
-		else if (strcmp(tr->m_Name, "Teacher") == 0)
-		{
-			UpdateStat(girl, STAT_INTELLIGENCE, -10);
-		}
-		else if (strcmp(tr->m_Name, "Tight Butt") == 0)
-		{
-			UpdateStat(girl, STAT_CONSTITUTION, -5);
-			UpdateStat(girl, STAT_BEAUTY, -5);
-			UpdateStat(girl, STAT_CHARISMA, -5);
-			UpdateSkill(girl, SKILL_ANAL, -8);
-		}
-		else if (strcmp(tr->m_Name, "Tomboy") == 0)
-		{
-			UpdateStat(girl, STAT_CONSTITUTION, -10);
-			UpdateStat(girl, STAT_CHARISMA, 15);
-		}
-		else if (strcmp(tr->m_Name, "Tone Deaf") == 0)
-		{
-			UpdateSkill(girl, SKILL_PERFORMANCE, 30);
-			UpdateStat(girl, STAT_CONFIDENCE, 30);
-		}
-		else if (strcmp(tr->m_Name, "Waitress") == 0)
-		{
-			UpdateSkill(girl, SKILL_SERVICE, -30);
-		}
-		else if (strcmp(tr->m_Name, "Weak Magic") == 0)
-		{
-			UpdateSkill(girl, SKILL_MAGIC, 20);
-			UpdateStat(girl, STAT_MANA, 20);
-		}
-		else if (strcmp(tr->m_Name, "Whore") == 0)
-		{
-			UpdateStat(girl, STAT_CONSTITUTION, 5);
-			UpdateStat(girl, STAT_BEAUTY, 10);
-			UpdateStat(girl, STAT_CHARISMA, 10);
-			UpdateEnjoyment(girl, ACTION_SEX, -10, true);
-		}
-		else if (strcmp(tr->m_Name, "Wide Bottom") == 0)
-		{
-			UpdateStat(girl, STAT_CONSTITUTION, -5);
-			UpdateStat(girl, STAT_BEAUTY, -5);
-			UpdateSkill(girl, SKILL_ANAL, -5);
-		}
-		else if (strcmp(tr->m_Name, "Wings") == 0)
-		{
-			//
-		}
 
 		if (doOnce)
 		{
@@ -8167,7 +8183,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			if (g_Dice.percent(30)) message += gettext(" came hard as the customer fucked her ass.");
 			else /*              */	message += gettext(" came hard as the customer pounded her ass.");
 		}
-	}	break;
+	}break;
 
 	case SKILL_BDSM:
 	{
@@ -8186,7 +8202,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			if (g_Dice.percent(50)) message += " She prefers to be in charge, but the customer wouldn't have it.";
 			else /*              */	message += " She took charge for a while, which the customer enjoyed.";
 		}
-	}	break;
+	}break;
 
 	case SKILL_NORMALSEX:
 	{
@@ -8207,7 +8223,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		}
 		else if (check < 80) /*  */	message += gettext(" fucked like a wild animal, cumming several times and ending with her and the customer covered in sweat.");
 		else /*                  */	message += GetRandomSexString();
-	}	break;
+	}break;
 
 	case SKILL_ORALSEX:
 	{
@@ -8225,7 +8241,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		}
 		else if (check < 80) /*  */	message += " loved sucking the customer's cock, and let him cum all over her.";
 		else /*                  */	message += " wouldn't stop licking and sucking the customer's cock until she had swallowed his entire load.";
-	}	break;
+	}break;
 
 	case SKILL_TITTYSEX:
 	{
@@ -8245,7 +8261,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			if (g_Dice.percent(40))	message += " wouldn't stop using her breasts to massage the customer's cock until she had made him spill his entire load.";
 			else /*              */	message += " expertly used her breasts to massage the customer's cock until his entire load exploded over her.";
 		}
-	}	break;
+	}break;
 
 	case SKILL_HANDJOB:
 	{
@@ -8265,7 +8281,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			if (g_Dice.percent(40))	message += " wouldn't stop using her hand to massage the customer's cock until she had made him spill his entire load.";
 			else /*              */	message += " wouldn't stop using her hand on the customer's cock until she was licking hot cum off her fingers.";
 		}
-	}	break;
+	}break;
 
 	case SKILL_FOOTJOB:
 	{
@@ -8298,7 +8314,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				break;
 			}
 		}
-	}	break;
+	}break;
 
 	case SKILL_BEASTIALITY:
 	{
@@ -8332,7 +8348,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			else if (check < 80)	message += " fucked some exotic beasts covered with massive cocks and tentacles, she came over and over alongside the customer.";
 			else /*           */	message += GetRandomBeastString();
 		}
-	}	break;
+	}break;
 
 	case SKILL_GROUP:
 	{
@@ -8341,7 +8357,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		else if (check < 60)	message += gettext(" serviced all of the group of customers that fucked her.");
 		else if (check < 80)	message += gettext(" fucked and came many times with everyone in the group of customers.");
 		else /*                             */	message += GetRandomGroupString();
-	}	break;
+	}break;
 
 	case SKILL_LESBIAN:
 	{
@@ -8350,7 +8366,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		else if (check < 60)	message += gettext(" fucked and was fucked by her female customer.");
 		else if (check < 80)	message += gettext(" and her female customer's cumming could be heard thoughout the building.");
 		else /*                             */	message += GetRandomLesString();
-	}	break;
+	}break;
 
 	case SKILL_STRIP:
 	default:
@@ -8380,7 +8396,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			if (g_Dice.percent(30)) message += gettext(" joyously took her clothes off in front of the customer.");
 			else /*              */	message += gettext(" sensuously prowled around the customer stripping off her clothes, while caressing herself, always making sure the customer had the best possible view.");
 		}
-	}	break;
+	}break;
 	}	//end switch
 
 	// WD:	customer HAPPINESS changes complete now cap the stat to 100
@@ -8431,7 +8447,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		UpdateTempStat(girl, STAT_LIBIDO, -10);
 		UpdateStat(girl, STAT_SPIRIT, -1);
 		STDchance += 30;
-	}	break;
+	}break;
 
 	case SKILL_BDSM:
 	{
@@ -8449,14 +8465,14 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 
 		UpdateTempStat(girl, STAT_LIBIDO, -5);
 		UpdateStat(girl, STAT_SPIRIT, -1);
-	}	break;
+	}break;
 
 	case SKILL_NORMALSEX:
 	{
 		if (check < 15)
 		{
 			if (g_Dice.percent(30)) message += gettext("\nHer inexperience hurt her a little.");
-			else /*              */	message += gettext("\nShe's inexperienced and got rubbed pretty raw.");
+			else /*              */	message += gettext("\nShe's inexperienced and got poked in the eye.");
 			UpdateStat(girl, STAT_HAPPINESS, -2);
 			UpdateStat(girl, STAT_SPIRIT, -3);
 			UpdateStat(girl, STAT_CONFIDENCE, -1);
@@ -8464,9 +8480,14 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		}
 		// if they're both happy afterward, it's good sex which modifies the chance of pregnancy
 		good = (customer->happiness() >= 60 && girl->happiness() >= 60);
+		if (HasTrait(girl, "Sterile"))
+		{
+			contraception = false;							// none needed
+			STDchance += 16;								// less chance than not using but more chance than using
+		}
 		//SIN: added traits
-		if (g_Dice.percent(GetStat(girl, STAT_LIBIDO)) && !g_Dice.percent(GetStat(girl, STAT_INTELLIGENCE))
-			&& girl->m_UseAntiPreg && HasTrait(girl, "Cum Addict"))
+		else if (HasTrait(girl, "Cum Addict") && girl->m_UseAntiPreg &&
+			g_Dice.percent(GetStat(girl, STAT_LIBIDO)) && !g_Dice.percent(GetStat(girl, STAT_INTELLIGENCE)))
 		{
 			message += "\n\nShe got over-excited by her desire for cum, and failed to use her anti-preg. ";
 			girl->m_UseAntiPreg = false;	// turn off anti
@@ -8482,7 +8503,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			STDchance += (contraception ? 4 : 40);
 		}
 		UpdateTempStat(girl, STAT_LIBIDO, -15);
-	}	break;
+	}break;
 
 	case SKILL_ORALSEX:
 	{
@@ -8506,7 +8527,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		}
 		STDchance += 10;
 		UpdateTempStat(girl, STAT_LIBIDO, -2);
-	}	break;
+	}break;
 
 	case SKILL_TITTYSEX:
 	{
@@ -8519,7 +8540,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		}
 		STDchance += 1;
 		UpdateTempStat(girl, STAT_LIBIDO, -2);
-	}	break;
+	}break;
 
 	case SKILL_HANDJOB:
 	{
@@ -8532,7 +8553,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		}
 		STDchance += 1;
 		UpdateTempStat(girl, STAT_LIBIDO, -1);
-	}	break;
+	}break;
 
 	case SKILL_FOOTJOB:
 	{
@@ -8545,7 +8566,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		}
 		STDchance += 1;
 		UpdateTempStat(girl, STAT_LIBIDO, -1);
-	}	break;
+	}break;
 
 	case SKILL_BEASTIALITY:
 	{
@@ -8567,13 +8588,14 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			STDchance += (contraception ? 2 : 20);
 		}
 		UpdateTempStat(girl, STAT_LIBIDO, -10);
-	}	break;
+	}break;
 
 	case SKILL_GROUP:
 	{
 		if (check <= 30)	// if unexperienced then will get hurt
 		{
-			message += gettext("\nHer inexperience hurt her a little.");
+			if (g_Dice.percent(30)) message += gettext("\nHer inexperience hurt her a little.");
+			else /*              */	message += gettext("\nShe's inexperienced and got rubbed pretty raw.");
 			UpdateStat(girl, STAT_HAPPINESS, -2);
 			UpdateStat(girl, STAT_SPIRIT, -3);
 			UpdateStat(girl, STAT_CONFIDENCE, -1);
@@ -8581,10 +8603,14 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		}
 		// if they're both happy afterward, it's good sex which modifies the chance of pregnancy
 		good = (customer->happiness() >= 60 && girl->happiness() >= 60);
-
+		if (HasTrait(girl, "Sterile"))
+		{
+			contraception = false;							// none needed
+			STDchance += ((4 + customer->m_Amount) * 4);	// less chance than not using but more chance than using
+		}
 		//SIN: added traits
-		if (g_Dice.percent(GetStat(girl, STAT_LIBIDO)) && !g_Dice.percent(GetStat(girl, STAT_INTELLIGENCE))
-			&& girl->m_UseAntiPreg && HasTrait(girl, "Cum Addict"))
+		else if (HasTrait(girl, "Cum Addict") && girl->m_UseAntiPreg &&
+			g_Dice.percent(GetStat(girl, STAT_LIBIDO)) && !g_Dice.percent(GetStat(girl, STAT_INTELLIGENCE)))
 		{
 			message += "\n\nShe got over-excited by her desire for cum, and failed to use her anti-preg. ";
 			girl->m_UseAntiPreg = false;	// turn off anti
@@ -8601,13 +8627,13 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			STDchance += ((4 + customer->m_Amount) * (contraception ? 1 : 10));
 		}
 		UpdateTempStat(girl, STAT_LIBIDO, -20);
-	}	break;
+	}break;
 
 	case SKILL_LESBIAN:
 	{
 		STDchance += 5;
 		UpdateTempStat(girl, STAT_LIBIDO, -10);
-	}	break;
+	}break;
 
 	case SKILL_STRIP:
 	default:
@@ -8622,7 +8648,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		}
 		STDchance += 0;
 		UpdateTempStat(girl, STAT_LIBIDO, 0);
-	}	break;
+	}break;
 	}	// end switch
 
 	// lose virginity unless it was anal sex -- or lesbian, or Oral also customer is happy no matter what. -PP
@@ -11539,28 +11565,16 @@ ostream& operator<<(ostream &os, sRandomGirl &g)
 	*/
 	for (unsigned int i = 0; i < sGirl::max_stats; i++)
 	{
-		os << setw(14) << left << sGirl::stat_names[i]
-			<< gettext(": Min = ") << (g.m_MinStats[i])
-			<< endl
-			;
-		os << setw(14) << ""
-			<< gettext(": Max = ") << (g.m_MaxStats[i])
-			<< endl
-			;
+		os << setw(14) << left << sGirl::stat_names[i] << gettext(": Min = ") << (g.m_MinStats[i]) << endl;
+		os << setw(14) << "" << gettext(": Max = ") << (g.m_MaxStats[i]) << endl;
 	}
 	/*
 	*	loop through skills
 	*/
 	for (unsigned int i = 0; i < sGirl::max_skills; i++)
 	{
-		os << setw(14) << left << sGirl::skill_names[i]
-			<< gettext(": Min = ") << int(g.m_MinSkills[i])
-			<< endl
-			;
-		os << setw(14) << ""
-			<< gettext(": Max = ") << int(g.m_MaxSkills[i])
-			<< endl
-			;
+		os << setw(14) << left << sGirl::skill_names[i] << gettext(": Min = ") << int(g.m_MinSkills[i]) << endl;
+		os << setw(14) << "" << gettext(": Max = ") << int(g.m_MaxSkills[i]) << endl;
 	}
 	/*
 	*	loop through traits
@@ -11569,12 +11583,7 @@ ostream& operator<<(ostream &os, sRandomGirl &g)
 	{
 		string name = g.m_Traits[i]->m_Name;
 		int percent = int(g.m_TraitChance[i]);
-		os << gettext("Trait: ")
-			<< setw(14) << left << name
-			<< ": " << percent
-			<< gettext("%")
-			<< endl
-			;
+		os << gettext("Trait: ") << setw(14) << left << name << ": " << percent << gettext("%") << endl;
 	}
 	/*
 	*	important to return the stream, so the next
@@ -11911,7 +11920,7 @@ bool cGirls::child_is_grown(sGirl* mom, sChild *child, string& summary, bool Pla
 		{
 			sprog->m_Surname = "Playerchild";	// generic name
 		}
-		biography = "Daughter of " + mom->m_Realname + " and the Brothel owner, Mr. " + m_Player.m_RealName+".";
+		biography = "Daughter of " + mom->m_Realname + " and the Brothel owner, Mr. " + m_Player.m_RealName + ".";
 	}
 	else
 	{
@@ -11937,12 +11946,12 @@ bool cGirls::child_is_grown(sGirl* mom, sChild *child, string& summary, bool Pla
 	}
 	sprog->m_Realname = sprog->m_FirstName + " " + sprog->m_Surname;
 	sprog->m_Desc = sprog->m_Desc + "\n\n" + biography;
-	
+
 #else
 	// original code by akab
 	int playerfather = child->m_IsPlayers; // is 1 if father is player 	string playersurname = "XXXXXXX";
 	string daughtername = sprog->m_Realname; string surnamemom = ""; string biography = "";
-	int posspace = 0; 
+	int posspace = 0;
 	posspace = mom->m_Realname.find(' ');
 	if (playerfather != 1)
 	{

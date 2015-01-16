@@ -106,30 +106,28 @@ static static_brothel_data brothel_data[] = {
 	{ 1000000, 80, 600, 220 }
 };
 
-static static_brothel_data clinic_data[] = {
-	{ 10000, 20, 200, 10 }
-	//{000, 10, 0, 0 }
-};
 
 static static_brothel_data centre_data[] = {
 	{ 5000, 20, 200, 5 }
 	//{000, 10, 0 }
 };
-
+static static_brothel_data farm_data[] = {
+	{ 10000, 20, 200, 10 }
+	//{000, 10, 0 }
+};
 static static_brothel_data arena_data[] = {
 		{ 15000, 20, 200, 15 }
 	//{000, 10, 0 }
 };
-
 static static_brothel_data studio_data[] = {
 		{ 20000, 20, 200, 20 }
 	//{000, 10, 0 }
 };
-
-static static_brothel_data farm_data[] = {
-		{ 20000, 20, 200, 20 }
-	//{000, 10, 0 }
+static static_brothel_data clinic_data[] = {
+	{ 25000, 20, 200, 25 }
+	//{000, 10, 0, 0 }
 };
+
 
 void cScreenTown::init()
 {

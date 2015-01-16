@@ -548,6 +548,9 @@ const int NUM_IMGTYPES = IMGTYPE_PREGNANT + PREG_OFFSET; // `J` All image types 
 const int NUM_GIRLFLAGS				= 30;
 const int MAXNUM_TRAITS				= 60;		// Maximum number of traits a girl can have
 const int MAXNUM_INVENTORY			= 3000;		// Maximum number of items in inventory
+const int MAXNUM_GIRL_INVENTORY		= 40;		// Maximum number of items a Girl can have in inventory
+const int MAXNUM_RIVAL_INVENTORY	= 40;		// Maximum number of items a Rival can have in inventory
+
 const int LISTBOX_ITEMHEIGHT = 20;		//how tall (in pixels) each list item is
 const unsigned int LISTBOX_COLUMNS = 15;		//how many columns are allowed
 

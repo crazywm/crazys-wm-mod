@@ -76,41 +76,18 @@ sGirl* MarketSlaveGirls[12] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 int MarketSlaveGirlsDel[12] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
 
 CSurface* g_BrothelImages[7] = { 0, 0, 0, 0, 0, 0, 0 };
-char buffer[1000];
 
-extern bool g_LeftArrow;
-extern bool g_RightArrow;
-extern bool g_UpArrow;
-extern bool g_DownArrow;
-extern bool g_EnterKey;
-extern bool g_AltKeys;
-extern bool g_SpaceKey;
-extern bool g_HomeKey;
-extern bool g_EndKey;
-extern bool g_PageUpKey;
-extern bool g_PageDownKey;
+extern bool g_LeftArrow;	extern bool g_RightArrow;	extern bool g_UpArrow;		extern bool g_DownArrow;	
+extern bool g_EnterKey;		extern bool g_AltKeys;		extern bool g_SpaceKey;
+extern bool g_HomeKey;		extern bool g_EndKey;		extern bool g_PageUpKey;	extern bool g_PageDownKey;
 
-extern bool g_Q_Key;
-extern bool g_W_Key;
-extern bool g_E_Key;
-extern bool g_A_Key;
-extern bool g_S_Key;
-extern bool g_D_Key;
-extern bool g_Z_Key;
-extern bool g_X_Key;
-extern bool g_C_Key;
-extern bool g_O_Key;
-
-extern bool g_R_Key;
-extern bool g_F_Key;
-extern bool g_T_Key;
-extern bool g_G_Key;
-extern bool g_Y_Key;
-extern bool g_H_Key;
-extern bool g_U_Key;
-extern bool g_J_Key;
-extern bool g_I_Key;
-extern bool g_K_Key;
+extern bool g_A_Key;		extern bool g_B_Key;		extern bool g_C_Key;		extern bool g_D_Key;
+extern bool g_E_Key;		extern bool g_F_Key;		extern bool g_G_Key;		extern bool g_H_Key;
+extern bool g_I_Key;		extern bool g_J_Key;		extern bool g_K_Key;		extern bool g_L_Key;
+extern bool g_M_Key;		extern bool g_N_Key;		extern bool g_O_Key;		extern bool g_P_Key;
+extern bool g_Q_Key;		extern bool g_R_Key;		extern bool g_S_Key;		extern bool g_T_Key;
+extern bool g_U_Key;		extern bool g_V_Key;		extern bool g_W_Key;		extern bool g_X_Key;
+extern bool g_Y_Key;		extern bool g_Z_Key;
 
 extern int g_CurrentScreen;
 
@@ -135,7 +112,8 @@ void LoadGameScreen()
 		/*
 		*		loop through the files, adding them to the box
 		*/
-		for (int i = 0; i < fl.size(); i++) {
+		for (int i = 0; i < fl.size(); i++) 
+		{
 			g_LoadGame.AddToListBox(g_interfaceid.LIST_LOADGSAVES, i, fl[i].leaf());
 		}
 		g_InitWin = false;
@@ -202,13 +180,9 @@ void NewGame()
 	cConfig cfg;
 	cScriptManager sm;
 
-	g_Cheats = false;
 	g_GenGirls = g_Cheats = false;
 	// for keeping track of weather have walked around town today
 	g_WalkAround = g_TryOuts = g_TryCentre = g_TryEr = g_TryCast = false;
-
-
-
 
 	g_TalkCount = 10;
 	g_Brothels.Free();
@@ -239,7 +213,6 @@ void NewGame()
 
 	g_Girls.LoadDefaultImages();
 
-
 	g_GlobalTriggers.LoadList(DirPath() << "Resources" << "Scripts" << "GlobalTriggers.xml");
 
 	g_CurrBrothel = 0;
@@ -249,7 +222,7 @@ void NewGame()
 	g_Year = 1209; g_Month = 1; g_Day = 1;
 
 	selected_girl = 0;
-	for (int i = 0; i<8; i++)
+	for (int i = 0; i<12; i++)
 	{
 		MarketSlaveGirls[i] = 0;
 		MarketSlaveGirlsDel[i] = -1;
@@ -273,10 +246,20 @@ void NewGame()
 	g_InvManager.UpdateShop();
 
 	// Add the begining rivals
-	g_Brothels.GetRivalManager()->CreateRival(200, 5, 10000, 2, 0, 26, 2, 2);
-	g_Brothels.GetRivalManager()->CreateRival(400, 10, 15000, 2, 1, 30, 2, 3);
-	g_Brothels.GetRivalManager()->CreateRival(600, 15, 20000, 3, 1, 56, 3, 5);
-	g_Brothels.GetRivalManager()->CreateRival(800, 20, 25000, 4, 2, 74, 4, 8);
+	for (int i = 0; i < 5; i++)
+	{
+		g_Brothels.GetRivalManager()->CreateRival(
+			(g_Dice % 10 + 1) * 100,					// BribeRate	= 100-1000
+			(g_Dice % 21 + 5), 							// Businesses	= 5-25
+			(g_Dice % 10 + 1) * 5000, 					// Gold			= 5000-50000
+			(g_Dice % 5 + 1), 							// Bars			= 1-5
+			(g_Dice % 4), 								// GambHalls	= 0-3
+			(g_Dice % 81 + 20), 						// Girls		= 20-100
+			(g_Dice % 6 + 1), 							// Brothels		= 1-6
+			(g_Dice % 10 + 1), 							// Gangs		= 1-10
+			(g_Dice % 11)	 							// Age			= 0-10	// how long the Rival has been operating before start of game
+			);
+	}
 
 	if (g_Cheats) { g_Gold.cheat(); g_InvManager.GivePlayerAllItems(); }
 
@@ -501,7 +484,7 @@ void LoadGirlsFiles()
 //      then everything else.
 // WD:	Copy sort code to Dungeon Girls
 
-void Turnsummary()		// `J` Bookmark
+void Turnsummary()		// `J` Bookmark - starting the turn summary page
 {
 	static int ImageType = -1, lastNum = -1, ImageNum = -1, LastType = -1, category = 0, category_last = 0, Item = 0;
 	sGirl *girl;
@@ -767,11 +750,11 @@ void Turnsummary()		// `J` Bookmark
 					pTmpGirl = g_Studios.GetGirl(0, i);
 					switch (pTmpGirl->m_NightJob)
 					{
-					case JOB_DIRECTOR:			
+					case JOB_DIRECTOR:
 						tmpStudioDirector.push_back(pTmpGirl);
 						break;
 					case JOB_CAMERAMAGE:
-					case JOB_CRYSTALPURIFIER:	
+					case JOB_CRYSTALPURIFIER:
 						tmpStudioCrew.push_back(pTmpGirl);
 						break;
 					case JOB_PROMOTER:
@@ -1482,7 +1465,7 @@ void Turnsummary()		// `J` Bookmark
 			}
 
 			// -------- Dungeons item display
-			else if (category == Summary_DUNGEON) 
+			else if (category == Summary_DUNGEON)
 			{
 				if (selected != -1)
 				{
@@ -2098,7 +2081,7 @@ void Turnsummary()		// `J` Bookmark
 	if (g_O_Key)
 	{
 		g_O_Key = false;
-		if (summarysortorder==0) summarysortorder = 1;
+		if (summarysortorder == 0) summarysortorder = 1;
 		else summarysortorder = 0;
 		g_InitWin = true;
 		return;
@@ -2249,7 +2232,7 @@ void Turnsummary()		// `J` Bookmark
 	*	Draw a girls picture and description when selected
 	*	Category 1 is easier, so let's get that out of the way first
 	*/
-	if (category == Summary_GANGS) 
+	if (category == Summary_GANGS)
 	{
 		g_Turnsummary.SetImage(g_interfaceid.IMAGE_TSIMAGE, g_BrothelImages[g_CurrBrothel]);
 		return;
@@ -3070,7 +3053,7 @@ void SaveGameXML(string filename)
 
 }
 
-bool LoadGame(string directory, string filename)
+bool LoadGame(string directory, string filename)	// `J` Bookmark - Loading a game
 {
 	// FREE ANYTHING
 	//other stuff will be freed as it is loaded

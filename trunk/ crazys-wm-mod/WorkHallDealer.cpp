@@ -525,7 +525,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		}
 		else if (jobperformance >= 99)
 		{
-			ss << "\nShe managed to hold her own, and in the end was just happy not to loose to a guy like this.";
+			ss << "\nShe managed to hold her own, and in the end was just happy not to lose to a guy like this.";
 		}
 		else 
 		{

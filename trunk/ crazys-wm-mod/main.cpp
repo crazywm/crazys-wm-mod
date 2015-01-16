@@ -982,7 +982,7 @@ void handle_hotkeys()
 	}
 }
 
-int main(int ac, char* av[])
+int main(int ac, char* av[])	// `J` Bookmark - #1 - Entering the game
 {
 #ifndef LINUX
 #ifdef _DEBUG
@@ -1292,7 +1292,7 @@ void Shutdown()
 	g_LogFile.write("Shutdown Complete");
 }
 
-bool Init()		// `J` Bookmark
+bool Init()		// `J` Bookmark	- Initializing the game
 {
 	g_LogFile.write("Initializing Graphics");
 	/*

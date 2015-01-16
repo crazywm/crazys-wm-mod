@@ -20,6 +20,9 @@
 #define __CRIVAL_H
 
 #include <string>
+#include "Constants.h"
+#include "cInventory.h"
+
 #include "cNameList.h"
 #include "tinyxml.h"
 using namespace std;
@@ -27,10 +30,32 @@ using namespace std;
 class cRival
 {
 public:
-	cRival(){m_Next=m_Prev=0;m_Name="";m_Influence=0;m_BribeRate=0;m_Gold=5000;m_NumBrothels=1;m_NumGangs=3;m_NumGirls=8;m_NumBars=0;m_NumGamblingHalls=0;m_BusinessesExtort=0;}
-	~cRival(){if(m_Next)delete m_Next;m_Next=0;m_Prev=0;}
-	
+	cRival()
+	{
+		m_Next = m_Prev = 0;
+		m_Name = "";
+		m_Age = 0;					// `J` added
+		m_Influence = 0;
+		m_BribeRate = 0;
+		m_Gold = 5000;
+		m_NumBrothels = 1;
+		m_NumGangs = 3;
+		m_NumGirls = 8;
+		m_NumBars = 0;
+		m_NumGamblingHalls = 0;
+		m_BusinessesExtort = 0;
+		m_Inventory[MAXNUM_RIVAL_INVENTORY];
+	}
+	~cRival()
+	{
+		if (m_Next) delete m_Next;
+		m_Next = 0;
+		m_Prev = 0;
+	}
+
 	// variables
+	string m_Name;
+	int m_Age;						// `J` added
 	int m_NumGangs;
 	int m_NumBrothels;
 	int m_NumGirls;
@@ -40,7 +65,9 @@ public:
 	int m_BusinessesExtort;
 	long m_BribeRate;
 	int m_Influence;	// based on the bribe rate this is the percentage of influence you have
-	string m_Name;
+	int m_NumInventory;										// current amount of inventory the brothel has
+	sInventoryItem* m_Inventory[MAXNUM_RIVAL_INVENTORY];	// List of inventory items they have (40 max)
+
 
 	cRival* m_Next;
 	cRival* m_Prev;
@@ -50,41 +77,59 @@ class cRivalManager
 {
 public:
 	cRivalManager();
-	~cRivalManager(){Free();}
-
-	void Free() {if(m_Rivals)delete m_Rivals;m_Rivals=0;m_Last=0;m_NumRivals=0;}
-
+	~cRivalManager()
+	{
+		Free();
+	}
+	void Free()
+	{
+		if (m_Rivals) delete m_Rivals;
+		m_Rivals = 0;
+		m_Last = 0;
+		m_NumRivals = 0;
+	}
 	void Update(int& NumPlayerBussiness);
 	cRival* GetRandomRival();
-	cRival* GetRivals() {return m_Rivals;}
+	cRival* GetRivals()
+	{
+		return m_Rivals;
+	}
 	cRival* GetRival(string name);
 	cRival* GetRival(int number);
-
 	TiXmlElement* SaveRivalsXML(TiXmlElement* pRoot);
 	bool LoadRivalsXML(TiXmlHandle hRivalManager);
-
-	void CreateRival(long bribeRate, int extort, long gold, int bars, int gambHalls, int Girls, int brothels, int goons);
+	void CreateRival(long bribeRate, int extort, long gold, int bars, int gambHalls, int Girls, int brothels, int gangs, int age);
 	void AddRival(cRival* rival);
 	void RemoveRival(cRival* rival);
 	void CreateRandomRival();
-	
+
+
+	// `J` New - rival inventory
+	int AddInv(cRival* rival, sInventoryItem* item);	// add item
+	bool RemoveInvByNumber(cRival* rival, int num);	// remove item
+	void SellInvItem(cRival* rival, int num);		// sell item
+	sInventoryItem* GetRandomItem(cRival* rival);
+	sInventoryItem* GetItem(cRival* rival, int num);
+	int GetRandomItemNum(cRival* rival);
+
+
 	int GetNumBusinesses();
-
-	int GetNumRivals() {return m_NumRivals;}
-
+	int GetNumRivals()
+	{
+		return m_NumRivals;
+	}
 	bool NameExists(string name);
-
-	bool player_safe() { return m_PlayerSafe; }
+	bool player_safe()
+	{
+		return m_PlayerSafe;
+	}
 	cRival* get_influential_rival();
-	void rivals_plunder_pc_gold(cRival* rival, string& message);
-
+	string rivals_plunder_pc_gold(cRival* rival);
 private:
 	int m_NumRivals;
 	cRival* m_Rivals;
 	cRival* m_Last;
-
 	bool m_PlayerSafe;
-
 	cDoubleNameList names;
 };
 

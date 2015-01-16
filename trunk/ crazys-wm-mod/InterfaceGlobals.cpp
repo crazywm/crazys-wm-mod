@@ -723,6 +723,8 @@ void LoadInterface()
 	g_Gallery2.AddImage(g_interfaceid.IMAGE_GALLERYIMAGE, "", 8, 8, 584, 560);
 	g_Gallery2.AddTextItem(g_interfaceid.TEXT_GALLERYTYPE, 600, 528, 160, 32, "", 16, true, false);
 
+	// `J` Bookmark - Loading the screens
+
 	// Main Menu
 	g_LogFile.write("Loading MainMenu");
 	g_MainMenu.load();

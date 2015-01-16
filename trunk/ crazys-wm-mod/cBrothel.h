@@ -241,9 +241,8 @@ public:
 	int HasItem(string name, int countFrom = -1);
 
 	// Some public members for ease of use
-	//ADB needs to be int because player might have more than 256, look, MAXNUM_INVENTORY == 300!
 	int m_NumInventory;								// current amount of inventory the brothel has
-	sInventoryItem* m_Inventory[MAXNUM_INVENTORY];	// List of inventory items they have (300 max)
+	sInventoryItem* m_Inventory[MAXNUM_INVENTORY];	// List of inventory items they have (3000 max)
 	unsigned char m_EquipedItems[MAXNUM_INVENTORY];	// value of > 0 means equipped (wearing) the item
 	int m_NumItem[MAXNUM_INVENTORY];		// the number of items there are stacked
 	cJobManager m_JobManager;						// manages all the jobs

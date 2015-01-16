@@ -96,16 +96,17 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, bool Da
 			ss << girlName + "'s horniness improved her performance. ";
 			jobperformance += 10;
 		}
-		if (g_Girls.HasTrait(girl, "Demon") || g_Girls.HasTrait(girl, "Shape Shifter") || g_Girls.HasTrait(girl, "Construct")
-			|| g_Girls.HasTrait(girl, "Cat Girl"))
+		
+		if (g_Girls.HasTrait(girl, "Demon") || g_Girls.HasTrait(girl, "Shape Shifter") || g_Girls.HasTrait(girl, "Construct") || 
+			g_Girls.HasTrait(girl, "Cat Girl") || g_Girls.HasTrait(girl, "Succubus") || g_Girls.HasTrait(girl, "Reptilian"))
 		{
 			ss << "Customers are surprised to see such an unusual girl giving sexual entertainment. ";
 			ss << "Some are disgusted, some are turned on, but many can't help watching.\n";
 			ss << "The dealers at the tables make a small fortune from distracted guests. ";
 			wages += 30;
 		}
-		else if (g_Dice.percent(min(max((g_Girls.GetStat(girl, STAT_AGE) - 28) * 4, 0), 100)))
-		{	//"Too old!" - chance of heckle: age<28y= 0%, then 4%/year (30y - 8%, 40y - 48%...) from 53 = 100%... (but only a 20% chance this bit even runs)
+		else if (girl->age() > 30 && g_Dice.percent(min(90, max((girl->age() - 30) * 3, 1))))
+		{	//"Too old!" - chance of heckle: age<30y= 0%, then 4%/year (32y - 6%, 40y - 30%...) max 90%... (but only a 20% chance this bit even runs)
 			//Note: demons are exempt as they age differently
 			ss << "Some customers heckle " + girlName + " over her age.";
 			ss << "\n\"Gross!\" \"Grandma is that you!?\"\n";
