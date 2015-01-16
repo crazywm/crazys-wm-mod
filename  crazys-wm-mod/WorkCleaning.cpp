@@ -168,20 +168,20 @@ bool cJobManager::WorkCleaning(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			{
 				ss << "No one was interested.";
 			}
-		}	break;
+		}break;
 
 		case 2:
 		{
 			ss << "she had a rest.";
 			g_Girls.UpdateStat(girl, STAT_TIREDNESS, -(g_Dice % 10 + 1));
-		}	break;
+		}break;
 
 		case 3:
 		{
 			ss << "she hung out around the brothel chatting with staff and patrons.\n";
 			g_Girls.UpdateStat(girl, STAT_CHARISMA, (g_Dice % 3) + 1);
 			g_Girls.UpdateStat(girl, STAT_CONFIDENCE, (g_Dice % 2) + 1);
-		}	break;
+		}break;
 
 		case 4:
 		{
@@ -191,7 +191,7 @@ bool cJobManager::WorkCleaning(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			g_Girls.UpdateStat(girl, STAT_BEAUTY, g_Dice % 2);
 			g_Girls.UpdateStat(girl, STAT_SPIRIT, g_Dice % 2);
 			g_Girls.UpdateSkill(girl, SKILL_COMBAT, g_Dice % 2);
-		}	break;
+		}break;
 
 		case 5:
 		{
@@ -240,7 +240,7 @@ bool cJobManager::WorkCleaning(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				g_Girls.UpdateStat(girl, STAT_OBEDIENCE, g_Dice % 4);
 				g_Girls.UpdateStat(girl, STAT_PCLOVE, g_Dice % 5);
 			}
-		}	break;
+		}break;
 		
 		default:
 			ss << "she hung out around the brothel a bit.";

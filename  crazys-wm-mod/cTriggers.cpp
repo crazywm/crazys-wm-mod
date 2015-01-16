@@ -460,7 +460,7 @@ void cTriggerList::ProcessTriggers()
 		{
 			if (curr->m_Chance == 100 || ((g_Dice % 100) + 1) <= curr->m_Chance)
 				AddToQue(curr);
-		}	break;
+		}break;
 
 		case TRIGGER_SKILL:
 		{
@@ -468,7 +468,7 @@ void cTriggerList::ProcessTriggers()
 				&& g_Girls.GetSkill(m_GirlTarget, curr->m_Values[0]) >= curr->m_Values[1]
 				&& (curr->m_Chance == 100 || ((g_Dice % 100) + 1) <= curr->m_Chance))
 				AddToQue(curr);
-		}	break;
+		}break;
 
 		case TRIGGER_STAT:
 		{
@@ -476,7 +476,7 @@ void cTriggerList::ProcessTriggers()
 				&& g_Girls.GetStat(m_GirlTarget, curr->m_Values[0]) >= curr->m_Values[1]
 				&& (curr->m_Chance == 100 || ((g_Dice % 100) + 1) <= curr->m_Chance))
 				AddToQue(curr);
-		}	break;
+		}break;
 
 		case TRIGGER_PLAYERMONEY:
 		{
@@ -502,7 +502,7 @@ void cTriggerList::ProcessTriggers()
 			*/
 			if (doit && g_Dice.percent(curr->m_Chance))
 				AddToQue(curr);
-		}	break;
+		}break;
 
 		case TRIGGER_MONEY:
 		{
@@ -513,7 +513,7 @@ void cTriggerList::ProcessTriggers()
 			else
 				doit = (m_GirlTarget->m_Money >= curr->m_Values[1]);
 			if (doit && g_Dice.percent(curr->m_Chance)) AddToQue(curr);
-		}	break;
+		}break;
 
 		case TRIGGER_WEEKSPAST:
 		{
@@ -521,14 +521,14 @@ void cTriggerList::ProcessTriggers()
 				&& m_GirlTarget->m_WeeksPast >= (unsigned long)curr->m_Values[0]
 				&& (curr->m_Chance == 100 || ((g_Dice % 100) + 1) <= curr->m_Chance))
 				AddToQue(curr);
-		}	break;
+		}break;
 
 		case TRIGGER_SCRIPTRUN:
 		{
 			if (HasRun(curr->m_Values[0]) && HasRun(curr->m_Values[1])
 				&& (curr->m_Chance == 100 || ((g_Dice % 100) + 1) <= curr->m_Chance))
 				AddToQue(curr);
-		}	break;
+		}break;
 
 		case TRIGGER_STATUS:
 		{
@@ -538,13 +538,13 @@ void cTriggerList::ProcessTriggers()
 				if (curr->m_Values[1] == t && (curr->m_Chance == 100 || ((g_Dice % 100) + 1) <= curr->m_Chance))
 					AddToQue(curr);
 			}
-		}	break;
+		}break;
 
 		case TRIGGER_GLOBALFLAG:
 		{
 			if (CheckGameFlag(curr->m_Values[0]) && (curr->m_Chance == 100 || ((g_Dice % 100) + 1) <= curr->m_Chance))
 				AddToQue(curr);
-		}	break;
+		}break;
 		}
 		curr = curr->m_Next;
 	}

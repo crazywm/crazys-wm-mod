@@ -103,7 +103,8 @@ public:
 	int GetNumHireableGangs();
 	bool GangCombat(sGirl* girl, sGang* gang);	// returns true if the girl wins
 	bool GangBrawl(sGang* gang1, sGang* gang2);	// returns true if gang1 wins
-	sGang* GetTempGang();	// creates a new gang
+	sGang* GetTempGang();			// creates a new gang
+	sGang* GetTempGang(int mod);	// creates a new gang with stat/skill mod
 	void BoostGangSkill(int* affect_skill, int count = 1);  // increases a specific skill/stat the specified number of times
 	void BoostGangRandomSkill(vector<int*>* possible_skills, int count = 1, int boost_count = 1);  // chooses from the passed skills/stats and raises one or more of them
 	void BoostGangCombatSkills(sGang* gang, int count = 1);  // simple function to increase a gang's combat skills a bit

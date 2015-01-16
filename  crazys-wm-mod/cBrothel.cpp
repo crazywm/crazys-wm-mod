@@ -1100,7 +1100,7 @@ void cBrothelManager::peace_breaks_out()
 	// if the PC already won, this is just an minor outbreak of peace in the day-to-day feuding in crossgate
 	if (m_Player.m_WinGame)
 	{
-		ss<<"The last of your challengers has been overthrown. Your domination of Crossgate is absolute.\n\nUntil the next time that is...";
+		ss << "The last of your challengers has been overthrown. Your domination of Crossgate is absolute.\n\nUntil the next time that is...";
 		g_MessageQue.AddToQue(ss.str(), COLOR_GREEN);
 		return;
 	}
@@ -1532,19 +1532,18 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_B
 		*/
 		if (Day0Night1 == SHIFT_DAY)
 		{
-
 			// Back to work
-			if ((current->m_NightJob == restjob && current->m_DayJob == restjob) && current->m_PregCooldown < cfg.pregnancy.cool_down() &&
+			if (current->m_NightJob == restjob && current->m_DayJob == restjob && current->m_PregCooldown < cfg.pregnancy.cool_down() &&
 				g_Girls.GetStat(current, STAT_HEALTH) >= 80 && g_Girls.GetStat(current, STAT_TIREDNESS) <= 20)
 			{
 				if ((matron || current->m_PrevDayJob == matronjob)					// do we have a director, or was she the director and made herself rest?
 					&& current->m_PrevDayJob != 255 && current->m_PrevNightJob != 255)	// 255 = nothing, in other words no previous job stored
 				{
-					g_Brothels.m_JobManager.HandleSpecialJobs(brothel->m_id, current, current->m_PrevDayJob, current->m_DayJob, true);
+					g_Brothels.m_JobManager.HandleSpecialJobs(brothel->m_id, current, current->m_PrevDayJob, current->m_DayJob, false);
 					if (current->m_DayJob == current->m_PrevDayJob)  // only update night job if day job passed HandleSpecialJobs
 						current->m_NightJob = current->m_PrevNightJob;
 					else
-						current->m_DayJob = restjob;
+						current->m_NightJob = restjob;
 					current->m_PrevDayJob = current->m_PrevNightJob = 255;
 					MatronMsg += gettext("The Matron puts ") + girlName + gettext(" back to work.\n");
 					current->m_Events.AddMessage(MatronMsg, IMGTYPE_PROFILE, EVENT_BACKTOWORK);
@@ -2543,32 +2542,32 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 
 	if (g_Girls.HasItemJ(girl, "Android, Assistance") != -1)
 	{
-		ss <<  "Her Assistance Android swept up and took out the trash for her.\n\n";
+		ss << "Her Assistance Android swept up and took out the trash for her.\n\n";
 		brothel->m_Filthiness -= 5;
 	}
 	if (g_Girls.HasItemJ(girl, "Television Set") != -1)
 	{
 		if (is_she_resting(girl))
 		{
-			ss <<  girl->m_Realname + " spent most of her day lounging in front of her Television Set.\n\n";
+			ss << girl->m_Realname + " spent most of her day lounging in front of her Television Set.\n\n";
 			girl->tiredness(-5);
 			if (g_Dice % 100<5)		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, 1);
 		}
 		else
 		{
-			ss <<  "At the end of her long day, " + girl->m_Realname + " flopped down in front of her Television Set and relaxed.\n\n";
+			ss << "At the end of her long day, " + girl->m_Realname + " flopped down in front of her Television Set and relaxed.\n\n";
 			girl->tiredness(-3);
 		}
 	}
 	if (g_Girls.HasItemJ(girl, "Appreciation Trophy") != -1 && is_she_cleaning(girl) && g_Dice % 100 < 5 && girl->pclove() > girl->pchate() - 10)
 	{
-		ss <<  "While cleaning, " + girl->m_Realname + " came across her Appreciation Trophy and smiled.\n\n";
+		ss << "While cleaning, " + girl->m_Realname + " came across her Appreciation Trophy and smiled.\n\n";
 		girl->pclove(1);
 	}
 	if (g_Girls.HasItemJ(girl, "Art Easel") != -1 && g_Dice % 100 < 2)
 	{
 		int sale = g_Dice % 30 + 1;
-		ss <<  girl->m_Realname + " managed to sell one of her paintings for " << sale <<  " gold.\n\n";
+		ss << girl->m_Realname + " managed to sell one of her paintings for " << sale << " gold.\n\n";
 		girl->m_Money += sale;
 		girl->happiness(sale / 5);
 		girl->fame(1);
@@ -2577,7 +2576,7 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 	{
 		if (is_she_resting(girl))
 		{
-			ss <<  girl->m_Realname + " decide to spend her time working out with her Free Weights.\n\n";
+			ss << girl->m_Realname + " decide to spend her time working out with her Free Weights.\n\n";
 			if (g_Dice % 100<5)		g_Girls.UpdateStat(girl, STAT_BEAUTY, 1);  //working out will help her look better
 		}
 	}
@@ -2585,7 +2584,7 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 	{
 		if (g_Girls.GetStat(girl, STAT_LIBIDO) > 65 && is_she_resting(girl))
 		{
-			ss <<  girl->m_Realname + "'s lust got the better of her and she spent the day using her Compelling Dildo.\n\n";
+			ss << girl->m_Realname + "'s lust got the better of her and she spent the day using her Compelling Dildo.\n\n";
 			g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -20);
 			mast = true;
 		}
@@ -2594,66 +2593,66 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 	{
 		if (g_Girls.HasTrait(girl, "Nerd"))
 		{
-			ss <<  "She decide to write on her novel some today.\n\n";
+			ss << "She decide to write on her novel some today.\n\n";
 		}
 		else
 		{
-			ss <<  "She used her Journal to write some of her thoughts down today.\n\n";
+			ss << "She used her Journal to write some of her thoughts down today.\n\n";
 		}
 	}
 	if (g_Girls.HasItemJ(girl, "Pet Spider") != -1 && g_Dice % 100 < 15)
 	{
 		if (g_Girls.HasTrait(girl, "Meek"))
 		{
-			ss <<  girl->m_Realname + "'s Meek nature makes her cover her Pet Spiders cage so it doesn't scare her.\n\n";
+			ss << girl->m_Realname + "'s Meek nature makes her cover her Pet Spiders cage so it doesn't scare her.\n\n";
 		}
 		else if (g_Girls.HasTrait(girl, "Aggressive"))
 		{
-			ss <<  girl->m_Realname + " throws in some food to her Pet Spider and smiles while she watchs it kill its prey.\n\n";
+			ss << girl->m_Realname + " throws in some food to her Pet Spider and smiles while she watchs it kill its prey.\n\n";
 		}
 		else
 		{
-			ss <<  girl->m_Realname + " plays with her pet spider.\n\n";
+			ss << girl->m_Realname + " plays with her pet spider.\n\n";
 		}
 	}
 	if (g_Girls.HasItemJ(girl, "Room Decorations") != -1 && g_Dice % 100 < 3)
 	{
-		ss <<  "She looks around at her Room Decorations and smiles, she really likes that her room is a little better then most the other girls.\n\n";
+		ss << "She looks around at her Room Decorations and smiles, she really likes that her room is a little better then most the other girls.\n\n";
 		girl->happiness(5);
 	}
 	if (g_Girls.HasItemJ(girl, "Libary Card") != -1 && g_Dice % 100 < 15 && is_she_resting(girl))
 	{
 		if (g_Girls.HasTrait(girl, "Nymphomaniac"))
 		{
-			ss <<  "She spent the day at the Libary looking at porn making her become horny.\n\n";
+			ss << "She spent the day at the Libary looking at porn making her become horny.\n\n";
 			g_Girls.UpdateTempStat(girl, STAT_LIBIDO, 15);
 		}
 		else
 		{
-			ss <<  "She spent her free time at the libary reading.\n\n";
+			ss << "She spent her free time at the libary reading.\n\n";
 			if (g_Dice.percent(5))		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, 1);
 		}
 	}
 	if (g_Girls.HasItemJ(girl, "Rejuvenation Bed") != -1)
 	{
-		ss <<  "Thanks to her Rejuvenation Bed she got a great nights sleep and woke up feeling better.\n\n";
+		ss << "Thanks to her Rejuvenation Bed she got a great nights sleep and woke up feeling better.\n\n";
 		girl->health(5);
 	}
 	if (g_Girls.HasItemJ(girl, "Chrono Bed") != -1)
 	{
-		ss <<  "Thanks to her Chrono Bed she got a great nights sleep and woke up feeling wonderful.\n\n";
+		ss << "Thanks to her Chrono Bed she got a great nights sleep and woke up feeling wonderful.\n\n";
 		girl->health(50);
 	}
 	if (g_Girls.HasItemJ(girl, "Claptrap") != -1 && g_Dice % 100 < 10)
 	{
-		ss <<  "Thanks to Claptrap's sense of humor she is a better mood.\n\n";
+		ss << "Thanks to Claptrap's sense of humor she is a better mood.\n\n";
 		girl->happiness(5);
 	}
 	if (g_Girls.HasItemJ(girl, "Manual of Sex") != -1 && g_Dice % 100 < 2)
 	{
 		if (is_she_resting(girl))
 		{
-			ss <<  "Spent her time off reading her Manual of Sex.\n\n";
+			ss << "Spent her time off reading her Manual of Sex.\n\n";
 			g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, 2);
 		}
 	}
@@ -2661,7 +2660,7 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 	{
 		if (is_she_resting(girl))
 		{
-			ss <<  "Spent her time off reading her Manual of Bondage.\n\n";
+			ss << "Spent her time off reading her Manual of Bondage.\n\n";
 			g_Girls.UpdateSkill(girl, SKILL_BDSM, 2);
 		}
 	}
@@ -2669,7 +2668,7 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 	{
 		if (is_she_resting(girl))
 		{
-			ss <<  "Spent her time off reading her Manual of Two Roses.\n\n";
+			ss << "Spent her time off reading her Manual of Two Roses.\n\n";
 			g_Girls.UpdateSkill(girl, SKILL_LESBIAN, 2);
 		}
 	}
@@ -2677,7 +2676,7 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 	{
 		if (is_she_resting(girl))
 		{
-			ss <<  "Spent her time off reading her Manual of Arms.\n\n";
+			ss << "Spent her time off reading her Manual of Arms.\n\n";
 			g_Girls.UpdateSkill(girl, SKILL_COMBAT, 2);
 		}
 	}
@@ -2685,7 +2684,7 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 	{
 		if (is_she_resting(girl))
 		{
-			ss <<  "Spent her time off reading her Manual of the Dacer.\n\n";
+			ss << "Spent her time off reading her Manual of the Dacer.\n\n";
 			g_Girls.UpdateSkill(girl, SKILL_STRIP, 2);
 		}
 	}
@@ -2693,7 +2692,7 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 	{
 		if (is_she_resting(girl))
 		{
-			ss <<  "Spent her time off reading her Manual of Magic.\n\n";
+			ss << "Spent her time off reading her Manual of Magic.\n\n";
 			g_Girls.UpdateSkill(girl, SKILL_MAGIC, 2);
 		}
 	}
@@ -2701,7 +2700,7 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 	{
 		if (is_she_resting(girl))
 		{
-			ss <<  "Spent her time off reading her Manual of Health.\n\n";
+			ss << "Spent her time off reading her Manual of Health.\n\n";
 			g_Girls.UpdateStat(girl, STAT_CONSTITUTION, 1);
 		}
 	}
@@ -2709,7 +2708,7 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 	{
 		if (is_she_resting(girl))
 		{
-			ss <<  "Spent her time playing The Realm of Darthon wiht some of the other girls.\n\n";
+			ss << "Spent her time playing The Realm of Darthon wiht some of the other girls.\n\n";
 			girl->happiness(5);
 		}
 	}
@@ -2717,7 +2716,7 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 	{
 		if (is_she_resting(girl))
 		{
-			ss <<  "Spent her time off practicing on her Stripper Pole.\n\n";
+			ss << "Spent her time off practicing on her Stripper Pole.\n\n";
 			g_Girls.UpdateSkill(girl, SKILL_STRIP, 2);
 			strip = true;
 		}
@@ -2726,7 +2725,7 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 	{
 		if (is_she_resting(girl))
 		{
-			ss <<  "Spent her time off training with her Android, Combat MK I.\n\n";
+			ss << "Spent her time off training with her Android, Combat MK I.\n\n";
 			g_Girls.UpdateSkill(girl, SKILL_COMBAT, 1);
 			combat = true;
 		}
@@ -2735,7 +2734,7 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 	{
 		if (is_she_resting(girl))
 		{
-			ss <<  "Spent her time off training with her Android, Combat MK II.\n\n";
+			ss << "Spent her time off training with her Android, Combat MK II.\n\n";
 			g_Girls.UpdateSkill(girl, SKILL_COMBAT, 2);
 			combat = true;
 		}
@@ -2744,7 +2743,7 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 	{
 		if (is_she_resting(girl))
 		{
-			ss <<  "Spent her time off with her Compelling Buttplug in.\n\n";
+			ss << "Spent her time off with her Compelling Buttplug in.\n\n";
 			g_Girls.UpdateSkill(girl, SKILL_ANAL, 2);
 		}
 	}
@@ -2754,19 +2753,19 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 		{
 			if (g_Girls.GetStat(girl, STAT_LIBIDO) > 65)
 			{
-				ss <<  girl->m_Realname + "'s lust got the better of her while she was on the her Computer looking at porn.\n\n";
+				ss << girl->m_Realname + "'s lust got the better of her while she was on the her Computer looking at porn.\n\n";
 				g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -20);
 				mast = true;
 			}
 			else
 			{
-				ss <<  "She spent the day on her Computer looking at porn making her become horny.\n\n";
+				ss << "She spent the day on her Computer looking at porn making her become horny.\n\n";
 				g_Girls.UpdateTempStat(girl, STAT_LIBIDO, 15);
 			}
 		}
 		else
 		{
-			ss <<  "She spent her free time playing on her Computer.\n\n";
+			ss << "She spent her free time playing on her Computer.\n\n";
 			if (g_Dice % 100<5)		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, 1);
 		}
 	}
@@ -2774,7 +2773,7 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 	{
 		if (is_she_resting(girl))
 		{
-			ss <<  "Spent her time off with her pet Cat.\n\n";
+			ss << "Spent her time off with her pet Cat.\n\n";
 			girl->happiness(5);
 		}
 	}
@@ -2782,36 +2781,36 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 	{
 		if (g_Girls.HasTrait(girl, "Meek"))
 		{
-			ss <<  girl->m_Realname + "'s Meek nature makes her scared of her pet Guard Dog.\n\n";
+			ss << girl->m_Realname + "'s Meek nature makes her scared of her pet Guard Dog.\n\n";
 		}
 		else if (g_Girls.HasTrait(girl, "Aggressive"))
 		{
-			ss <<  girl->m_Realname + " seeks her Guard Dog on some random patrons and laughs while they run scared.\n\n";
+			ss << girl->m_Realname + " seeks her Guard Dog on some random patrons and laughs while they run scared.\n\n";
 		}
 		else
 		{
-			ss <<  girl->m_Realname + " plays with her pet Guard Dog.\n\n";
+			ss << girl->m_Realname + " plays with her pet Guard Dog.\n\n";
 		}
 	}
 	if (g_Girls.HasItemJ(girl, "Noble Gown") != -1)
 	{
-		ss <<  girl->m_Realname + " went around wearing her Noble Gown today making her look quite formal.\n\n";
+		ss << girl->m_Realname + " went around wearing her Noble Gown today making her look quite formal.\n\n";
 		formal = true;
 	}
 	if (g_Girls.HasItemJ(girl, "Fishnet Stocking") != -1)
 	{
-		ss <<  girl->m_Realname + " went around wearing her Fishnet Stocking today making her sexy even if it did make her feel a litte trashy.\n\n";
+		ss << girl->m_Realname + " went around wearing her Fishnet Stocking today making her sexy even if it did make her feel a litte trashy.\n\n";
 	}
 	if (g_Girls.HasItemJ(girl, "White String Bikini") != -1)
 	{
-		ss <<  girl->m_Realname + " went around wearing her White String Bikini today.\n\n";
+		ss << girl->m_Realname + " went around wearing her White String Bikini today.\n\n";
 		swim = true;
 	}
 	if (g_Girls.HasItemJ(girl, "White String Bikini") != -1 && g_Dice % 100 < 10)
 	{
 		if (is_she_resting(girl))
 		{
-			ss <<  "Spent her time off at the local pool in her White String Bikini.\n\n";
+			ss << "Spent her time off at the local pool in her White String Bikini.\n\n";
 			girl->happiness(5);
 			swim = true;
 		}
@@ -2820,7 +2819,7 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 	{
 		if (is_she_resting(girl))
 		{
-			ss <<  "She put on her Apron and cooked a meal for some of the girls.\n\n";
+			ss << "She put on her Apron and cooked a meal for some of the girls.\n\n";
 			girl->happiness(5);
 			cook = true;
 		}
@@ -2829,20 +2828,20 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 	{
 		if (is_she_resting(girl))
 		{
-			ss <<  "She put on her Maid Uniform and clean up.\n\n";
+			ss << "She put on her Maid Uniform and clean up.\n\n";
 			brothel->m_Filthiness -= 5;
 			maid = true;
 		}
 	}
 	if (g_Girls.HasItemJ(girl, "Disguised Slave Band") != -1)
 	{
-		ss <<  girl->m_Realname + " went around wearing her Disguised Slave Band having no idea of what it really does to her.\n\n";
+		ss << girl->m_Realname + " went around wearing her Disguised Slave Band having no idea of what it really does to her.\n\n";
 	}
 	if (g_Girls.HasItemJ(girl, "Anger Management Tapes") != -1 && g_Dice % 100 < 2)
 	{
 		if (is_she_resting(girl))
 		{
-			ss <<  "Spent her time off listen to her Anger Management Tapes.\n\n";
+			ss << "Spent her time off listen to her Anger Management Tapes.\n\n";
 			g_Girls.UpdateStat(girl, STAT_SPIRIT, -2);
 		}
 	}
@@ -2850,7 +2849,7 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 	{
 		if (is_she_stripping(girl))  //not sure this will work like i want it to might be that i need to added them to the jobs
 		{
-			ss <<  girl->m_Realname + " stripped down to reveal her Rainbow Underwear to the approval of the patrons watching her.\n\n";
+			ss << girl->m_Realname + " stripped down to reveal her Rainbow Underwear to the approval of the patrons watching her.\n\n";
 			brothel->m_Happiness += 5;
 		}
 	}
@@ -2858,12 +2857,12 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 	{
 		if (g_Girls.GetStat(girl, STAT_INTELLIGENCE) > 65 && is_she_resting(girl))
 		{
-			ss <<  girl->m_Realname + " sharpened her Short Sword making it more ready for combat.\n\n";
+			ss << girl->m_Realname + " sharpened her Short Sword making it more ready for combat.\n\n";
 			g_Girls.UpdateTempSkill(girl, SKILL_COMBAT, 2);
 		}
 		else
 		{
-			ss <<  girl->m_Realname + " tried to sharpen her Short Sword but doesn't have the brains to do it right.\n\n";
+			ss << girl->m_Realname + " tried to sharpen her Short Sword but doesn't have the brains to do it right.\n\n";
 			g_Girls.UpdateTempSkill(girl, SKILL_COMBAT, -2);
 		}
 	}
@@ -3224,7 +3223,7 @@ void cBrothelManager::CreateNewObjective()
 	{
 		stringstream ss;
 
-		ss<<gettext("You have a new objective, you must ");
+		ss << gettext("You have a new objective, you must ");
 		bool done = false;
 		m_Objective->m_Difficulty = g_Year - 1209;
 		m_Objective->m_SoFar = 0;
@@ -3252,7 +3251,7 @@ void cBrothelManager::CreateNewObjective()
 					ss << m_Objective->m_Target << gettext(" gold.");
 				}
 				done = true;
-			}	break;
+			}break;
 
 			case OBJECTIVE_LAUNCHSUCCESSFULATTACK:
 			{
@@ -3260,7 +3259,7 @@ void cBrothelManager::CreateNewObjective()
 				m_Objective->m_Limit = (m_Objective->m_Difficulty >= 3 ? (g_Dice % 5) + 3 : (g_Dice % 10) + 10);
 				ss << m_Objective->m_Limit << gettext(" weeks.");
 				done = true;
-			}	break;
+			}break;
 
 			case OBJECTIVE_HAVEXGOONS:
 			{
@@ -3272,7 +3271,7 @@ void cBrothelManager::CreateNewObjective()
 					ss << gettext("Have ") << m_Objective->m_Target << gettext(" gangs within ") << m_Objective->m_Limit << gettext(" weeks.");
 					done = true;
 				}
-			}	break;
+			}break;
 
 			case OBJECTIVE_STEALXAMOUNTOFGOLD:
 			{
@@ -3288,7 +3287,7 @@ void cBrothelManager::CreateNewObjective()
 					ss << gettext("Steal ") << m_Objective->m_Target << gettext(" gold.");
 				}
 				done = true;
-			}	break;
+			}break;
 
 			case OBJECTIVE_CAPTUREXCATACOMBGIRLS:
 			{
@@ -3305,7 +3304,7 @@ void cBrothelManager::CreateNewObjective()
 					ss << m_Objective->m_Target << gettext(" girls from the catacombs.");
 				}
 				done = true;
-			}	break;
+			}break;
 
 			case OBJECTIVE_HAVEXMONSTERGIRLS:
 			{
@@ -3322,11 +3321,11 @@ void cBrothelManager::CreateNewObjective()
 					ss << m_Objective->m_Target << gettext(" monster (non-human) girls.");
 				}
 				done = true;
-			}	break;
+			}break;
 
 			case OBJECTIVE_KIDNAPXGIRLS:
 			{
-				ss <<  gettext("Kidnap ");
+				ss << gettext("Kidnap ");
 				if (m_Objective->m_Difficulty >= 2)
 				{
 					m_Objective->m_Limit = (g_Dice % 5) + 1;
@@ -3339,11 +3338,11 @@ void cBrothelManager::CreateNewObjective()
 					ss << m_Objective->m_Target << gettext(" girls from the streets.");
 				}
 				done = true;
-			}	break;
+			}break;
 
 			case OBJECTIVE_EXTORTXNEWBUSINESS:
 			{
-				ss <<  gettext("Gain control of ");
+				ss << gettext("Gain control of ");
 				if (m_Objective->m_Difficulty >= 2)
 				{
 					m_Objective->m_Limit = (g_Dice % 5) + 1;
@@ -3356,7 +3355,7 @@ void cBrothelManager::CreateNewObjective()
 					ss << m_Objective->m_Target << gettext(" new businesses.");
 				}
 				done = true;
-			}	break;
+			}break;
 
 			case OBJECTIVE_HAVEXAMOUNTOFGIRLS:
 			{
@@ -3373,7 +3372,7 @@ void cBrothelManager::CreateNewObjective()
 					ss << m_Objective->m_Target << gettext(" girls.");
 				}
 				done = true;
-			}	break;
+			}break;
 
 			case OBJECTIVE_GETNEXTBROTHEL:
 			{
@@ -3388,7 +3387,7 @@ void cBrothelManager::CreateNewObjective()
 					ss << gettext(".");
 					done = true;
 				}
-			}	break;
+			}break;
 			}
 		}
 
@@ -3401,14 +3400,14 @@ void cBrothelManager::PassObjective()
 	if (m_Objective)
 	{
 		stringstream ss;
-		ss<< gettext("You have completed your objective and you get ");
+		ss << gettext("You have completed your objective and you get ");
 		switch (m_Objective->m_Reward)
 		{
 		case REWARD_GOLD:
 		{
 			long gold = (g_Dice % 200) + 33;
 			if (m_Objective->m_Difficulty > 0) gold *= m_Objective->m_Difficulty;
-			ss << gold<< gettext(" gold.");
+			ss << gold << gettext(" gold.");
 			g_Gold.objective_reward(gold);
 		}break;
 
@@ -3422,7 +3421,7 @@ void cBrothelManager::PassObjective()
 				m_Dungeon.AddGirl(g_Girls.CreateRandomGirl(0, false, true, true, g_Dice % 3 == 1), DUNGEON_NEWGIRL);
 				girls--;
 			}
-		}	break;
+		}break;
 
 		case REWARD_RIVALHINDER:
 		{
@@ -3438,10 +3437,10 @@ void cBrothelManager::PassObjective()
 			{
 				ss.str("");
 				m_Objective->m_Reward = REWARD_GOLD;
-// `J` - zzzzzz - need to fix this so it does not have to recall itself
+				// `J` - zzzzzz - need to fix this so it does not have to recall itself
 				PassObjective();
 			}
-		}	break;
+		}break;
 
 		case REWARD_ITEM:
 		{
@@ -3479,9 +3478,9 @@ void cBrothelManager::PassObjective()
 					{
 						if (curI != -1)
 						{
-							ss <<  gettext("a ");
-							ss <<  item->m_Name;
-							ss <<  gettext(", ");
+							ss << gettext("a ");
+							ss << item->m_Name;
+							ss << gettext(", ");
 							g_Brothels.m_NumItem[curI]++;
 						}
 						else
@@ -3490,9 +3489,9 @@ void cBrothelManager::PassObjective()
 							{
 								if (g_Brothels.m_Inventory[j] == 0)
 								{
-									ss <<  gettext("a ");
-									ss <<  item->m_Name;
-									ss <<  gettext(", ");
+									ss << gettext("a ");
+									ss << item->m_Name;
+									ss << gettext(", ");
 									g_Brothels.m_Inventory[j] = item;
 									g_Brothels.m_EquipedItems[j] = 0;
 									g_Brothels.m_NumInventory++;
@@ -3506,11 +3505,11 @@ void cBrothelManager::PassObjective()
 					else
 					{
 						numItems = 0;
-						ss <<  gettext(" Your inventory is full\n");
+						ss << gettext(" Your inventory is full\n");
 					}
 				}
 			}
-		}	break;
+		}break;
 		}
 
 		if (ss.str().length()>0) g_MessageQue.AddToQue(ss.str(), COLOR_DARKBLUE);
@@ -3805,7 +3804,7 @@ int cBrothelManager::GetTotalNumGirls(bool monster)
 	int total = 0;
 	if (!monster)
 	{
-		for (int i = 0; i<m_NumBrothels; i++) 
+		for (int i = 0; i<m_NumBrothels; i++)
 			total += GetNumGirls(i);
 		total += GetDungeon()->GetNumGirls();
 	}
@@ -4421,7 +4420,7 @@ bool cBrothelManager::runaway_check(sBrothel *brothel, sGirl *girl)
 	*
 	*	WD: added m_DaysUnhappy tracking
 	*/
-	if (girl->happiness() > 10) 
+	if (girl->happiness() > 10)
 	{
 		girl->m_DaysUnhappy = 0;
 		return false;
@@ -4445,7 +4444,7 @@ bool cBrothelManager::runaway_check(sBrothel *brothel, sGirl *girl)
 	*/
 	//	int matron_chance = brothel->matron_count() * 35;
 	int matron_chance = brothel->matron_count(girl->m_InClinic, girl->m_InMovieStudio, girl->m_InArena, girl->m_InCentre, girl->m_InHouse, girl->m_InFarm, girl->where_is_she) * 35;
-	
+
 	if (g_Dice.percent(matron_chance)) return false;	// if there is a matron 70%
 
 	if (girl->m_DayJob == JOB_REHAB && (g_Clinic.GetNumGirlsOnJob(0, JOB_DRUGCOUNSELOR, true) > 0) || (g_Clinic.GetNumGirlsOnJob(0, JOB_DRUGCOUNSELOR, false) > 0))
@@ -4519,7 +4518,7 @@ bool cBrothelManager::runaway_check(sBrothel *brothel, sGirl *girl)
 	/*
 	*	if she Just Said No then we're done
 	*/
-	if (drug=="")
+	if (drug == "")
 	{
 		return false;
 	}

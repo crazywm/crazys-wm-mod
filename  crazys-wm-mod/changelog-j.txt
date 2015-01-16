@@ -1016,6 +1016,10 @@ Changed the number of girls the slave market has available to a random amount of
  - 5=5%, 6=10%, 7=15%, 8=40%, 9=15%, 10=10%, 11=5%
 Added info for who the girl is based on in the second details page
 
+
+Whore Master Editor:
+Increased size of program window to 1000x700 to fit more stuff
+
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.12
 !!!!!!!!!!!!!!!!!!!! pushed to SVN - r120
 
@@ -1321,10 +1325,32 @@ Crazy pushed r135 - several minor changes to a few things - Major update to Secu
 
 Fixed a bug in handlechildren function.
 Cleaned up a few things.
+Changed Cum Addict trait because it was causing problems for some.
 
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.25
 !!!!!!!!!!!!!!!!!!!! pushed to SVN - r136
 
-
-Whore Master Editor:
-Increased size of program window to 1000x700 to fit more stuff
+###  Changes 1/14-16/2015
+Changed prices to buy buildings Clinic 10k->25k, Farm 20k->10k
+Fixed a bug that crashes when .rgirlsx files try to load more than the allowed number of traits.
+ - Updated .rgirlsx so they can have up to 200 traits to choose from but girls can still only have 60 traits.
+Fixed a text bug for girls with "Cum Addict" and "Sterile"
+??? Possibly fixed a bug that brothel girls don't always get reassigned to their old job by matrons (needs testing)
+Changed starting rivals to be randomly created
+Cleaned and updated cRival.cpp
+ - Changed when rivals start attacking from 7th month to 3rd month
+ - Changed entirely how rival's money is made and how they spend it
+ - Updated rival gang missions and added some new ones
+ -  - Extortion, Petty Theft, Grand Theft, Sabotage, Kidnap Girl and Catacombs are done.
+ -  - Capture Girl - take a girl from you or another rival - will be done later. 
+ - Added Rival Inventory - items you can steal from them
+Added stealing items from rivals in sabotage gang missions
+Added a little more to old age variation in WorkHallXXXEntertainer.cpp
+Crazy pushed r137 - Added more traits to apply and unapply traits
+ - Split traits alphabetically to reduce if/else length
+ 
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.26
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r138
+ 
+ 
+ 

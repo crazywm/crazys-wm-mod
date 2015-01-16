@@ -89,9 +89,12 @@ typedef struct sRandomGirl
 	int m_MinSkills[NUM_SKILLS];	    // min and max skills they may start with
 	int m_MaxSkills[NUM_SKILLS];
 
-	unsigned char m_NumTraits;	                // number of traits they are assigned
-	sTrait* m_Traits[MAXNUM_TRAITS];	        // List of traits they may start with
-	unsigned char m_TraitChance[MAXNUM_TRAITS];	// the percentage change for each trait
+	int m_NumTraits;						// number of traits they are assigned
+	int m_NumTraitNames;						// number of traits they are assigned
+	sTrait* m_Traits[MAXNUM_TRAITS];		// List of traits they may start with
+	int m_TraitChance[MAXNUM_TRAITS];		// the percentage change for each trait
+	int m_TraitChanceB[200];
+	string m_TraitNames[200];		// `J` fix for more than MAXNUM_TRAITS in .rgirlsx files
 
 	int m_MinMoney = 0;	// min and max money they can start with
 	int m_MaxMoney = 0;
@@ -168,7 +171,11 @@ typedef struct sRandomGirl
 		m_MinMoney = 0;
 		m_MaxMoney = 10;
 	}
-	~sRandomGirl() { if (m_Next)delete m_Next; m_Next = 0; }
+	~sRandomGirl() 
+	{
+		if (m_Next) delete m_Next; 
+		m_Next = 0; 
+	}
 }sRandomGirl;
 
 
@@ -351,8 +358,8 @@ struct sGirl
 
 	//ADB needs to be int because player might have more than 256
 	int m_NumInventory;							// current amount of inventory they have
-	sInventoryItem* m_Inventory[40];			// List of inventory items they have (40 max)
-	unsigned char m_EquipedItems[40];			// value of > 0 means equipped (wearing) the item
+	sInventoryItem* m_Inventory[MAXNUM_GIRL_INVENTORY];		// List of inventory items they have (40 max)
+	unsigned char m_EquipedItems[MAXNUM_GIRL_INVENTORY];	// value of > 0 means equipped (wearing) the item
 
 	long m_States;								// Holds the states the girl has
 	long m_BaseStates;							// `J` Holds base states the girl has for use with equipable items

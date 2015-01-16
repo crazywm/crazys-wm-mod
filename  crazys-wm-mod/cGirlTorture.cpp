@@ -525,7 +525,7 @@ bool cGirlTorture::IsGirlInjured(unsigned int unModifier)
 		}
 	}
 
-	// or loose tough or become fragile
+	// or lose tough or become fragile
 	if (m_Girl->has_trait("Tough"))
 	{
 		if (g_Dice.percent(nMod))
