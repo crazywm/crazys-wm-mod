@@ -42,6 +42,7 @@ extern cClinicManager g_Clinic;
 extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
+extern int g_Building;
 
 // `J` Clinic Job - Staff
 bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
@@ -300,7 +301,7 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 	if (g_Girls.HasTrait(girl, "Nymphomaniac") && !g_Girls.HasTrait(girl, "Virgin")
 		&& !g_Girls.HasTrait(girl, "Lesbian") && g_Dice.percent(30))
 	{
-		if (g_Girls.GetStat(girl, STAT_LIBIDO) > 65 && !brothel->m_RestrictNormal || !brothel->m_RestrictAnal)
+		if (g_Girls.GetStat(girl, STAT_LIBIDO) > 65 && (!brothel->m_RestrictNormal || !brothel->m_RestrictAnal))
 		{
 			tips += 50; 
 			sex = true;

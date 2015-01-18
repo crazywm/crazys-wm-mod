@@ -478,14 +478,17 @@ static int create_random_girl(lua_State *L)
 {
 	CLog log;
 
-	int age		= 17;		// if age is less than 18, virgin is set to true and age gets reset to 18
-	bool global	= false;	// set to true to add her to the pool
-	bool undead	= false;	// unused by CreateRandomGirl
-	bool slave	= false;	// set to true to create her as a slave
+	int age			= 17;		// if age is less than 18, virgin is set to true and age gets reset to 18
+	bool global		= false;	// set to true to add her to the pool
+	bool slave		= false;	// set to true to create her as a slave
+	bool undead		= false;	// unused by CreateRandomGirl
 	bool inhuman	= false;	// set to true for a non-human girl
-					// really should allow "both" 
 	bool kidnapped	= false;	// set to true to create an abductee
-/*
+	bool arena		= false;	// set to true for an arena girl
+	bool daughter	= false;	// set to true if she will be player's daughter
+	bool isdaughter	= false;	// set to true if is she a Canonical_Daughter of another girl?
+	string name		= "";		// specific name search
+	/*
  *	now - let's have an arg table
  */
  	int argtab = lua_gettop(L);
@@ -504,10 +507,14 @@ static int create_random_girl(lua_State *L)
  */
 	get_from_table(L, argtab, "age", age);
 	get_from_table(L, argtab, "global", global);
-	get_from_table(L, argtab, "undead", undead);
 	get_from_table(L, argtab, "slave",  slave);
-	get_from_table(L, argtab, "inhuman",  inhuman);
+	get_from_table(L, argtab, "undead", undead);
+	get_from_table(L, argtab, "inhuman", inhuman);
 	get_from_table(L, argtab, "kidnapped",  kidnapped);
+	get_from_table(L, argtab, "arena", arena);
+	get_from_table(L, argtab, "daughter", daughter);
+	get_from_table(L, argtab, "isdaughter", isdaughter);
+
 /*
  *	now create the girl
  */
@@ -517,7 +524,11 @@ static int create_random_girl(lua_State *L)
 		slave,		// create as slave flag
 		undead,		// undead flag
 		inhuman,	// true if non-humans are possible
-		kidnapped	// true if kidnapped
+		kidnapped,	// true if kidnapped
+		arena,		// is the girl from the arena
+		daughter,	// is she going to be the player's daughter?
+		isdaughter,	// is she a Canonical_Daughter of another girl?
+		""			// used to find a specific rgirl by name
 	);
 /*
  *	now create a lua table with the girl data

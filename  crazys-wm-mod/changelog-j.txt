@@ -1352,5 +1352,38 @@ Crazy pushed r137 - Added more traits to apply and unapply traits
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.26
 !!!!!!!!!!!!!!!!!!!! pushed to SVN - r138
  
+###  Changes 1/17/2015
+Updated GangBrawl to allow rival gangs to work properly - Fixing a bug when rival gang is fighting rival gang.
+ - Enemy gang was using player's gang weapon level, now they get their own based on combat skill.
+ - Cleaned up combat/magic choice and made magic level affect magic damage.
+ - Mana was only being spent if the attack succeeded, now any magic attack uses mana.
+ - Skill gain for the winner was 2 across the board, increased win by kill all to 3, win by runaway still 2.
+Updated Rival's Power (was rival->m_Age now rival->m_Power) and made it more dynamic
+ - Added it to save/load
+Cut gang sabotauge gold theft massively, from ~10.8k max to ~4.8k max
+ - being able to damage rivals' bars and halls should make up for this as well as being able to steal items from them.
+Adjusted gang recruitment from flat 3 to random 2-4
+Adjusted gang catacomb chances for getting items from 60 to (int/2)+30 and girls from 40 to (int/4)+25
  
+Cleaned and updated Brothel Security job
+Added two section to security_stops_rape, one for male customers and one for female customers.
+ - If a single male customer is defeated by a girl working security and she has a dildo in her inv, she will punish the customer.
+ - If a single female customer is defeated by a girl working security and the brothel has one of 3 items in inv, the customer will become your slave.
+ -  - Those items are "Brainwashing Oil", "Necklace of Control" and "Slave Band"
+
+!!! Added 18 items by ShoHaFa !!!
+Added "Black String Bikini" to do_daily_items list
+Fixed "Chrono Bed" and "Rejuvenation Bed" in do_daily_items list adding tiredness adj and only 1 will be used if both are owned.
+Started subdividing the do_daily_items list
+
+Crazy pushed r139
+ - Updates to several jobs and added in some old code (commented out)
+ - Added old code for Canonical_Daughters (I gave it that name 8p ) We'll see if it works.
+ 
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.27
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r140
+
+
+
+
  

@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item
+        Name="FlipFlops"
+        Desc="Beach slippers might not look too great, but they're only meant to keep your feet free from the hot sand and prevent cuts from the sharper sea shells. Throw-away quality made from recycled materials. (Cha -2, Bea -3, HAP +2, Spir +3)"
+        Type="Shoes"
+        Badness="5"
+        Special="None"
+        Cost="5"
+        Rarity="Common"
+        Infinite="true">
+    <Effect     What="Stat"     Name="Charisma"         Amount="-2" />
+    <Effect     What="Stat"     Name="Beauty"           Amount="-3" />
+    <Effect     What="Stat"     Name="Happiness"        Amount="2" />
+    <Effect     What="Stat"     Name="Spirit"           Amount="3" />
+    </Item>
+</Items>

@@ -34,7 +34,7 @@ public:
 	{
 		m_Next = m_Prev = 0;
 		m_Name = "";
-		m_Age = 0;					// `J` added
+		m_Power = 0;					// `J` added
 		m_Influence = 0;
 		m_BribeRate = 0;
 		m_Gold = 5000;
@@ -55,7 +55,7 @@ public:
 
 	// variables
 	string m_Name;
-	int m_Age;						// `J` added
+	int m_Power;						// `J` added
 	int m_NumGangs;
 	int m_NumBrothels;
 	int m_NumGirls;

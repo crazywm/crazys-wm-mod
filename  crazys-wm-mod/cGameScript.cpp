@@ -828,7 +828,7 @@ sScript *cGameScript::Script_AddFamilyToDungeon(sScript *Script)
 
 	if (value[1])	// there is a mother
 	{
-		Mother = g_Girls.CreateRandomGirl((g_Dice % (50 - (oldest + 18))) + oldest + 18, false, slave, "", allowNonHuman, kidnaped, arena);
+		Mother = g_Girls.CreateRandomGirl((g_Dice % (50 - (oldest + 18))) + oldest + 18, false, slave, false, allowNonHuman, kidnaped, arena);
 		Mother->m_Surname = surname;
 		Mother->m_Realname = Mother->m_FirstName + " " + Mother->m_Surname;
 		if (!g_Dice.percent(Mother->age())) g_Girls.AddTrait(Mother, "MILF");	// the younger the mother the more likely she will be a MILF

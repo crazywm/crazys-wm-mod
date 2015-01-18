@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item
+        Name="Black String Bikini"
+        Desc="Water doesn't affect this bikini as it does white swimwear. (+Great Figure, Great Arse, +30 agil +10 cha +10 happy +5 love/conf/int -5 fear)"
+        Type="Misc"
+        Badness="0"
+        Special="None"
+        Cost="2500"
+        Rarity="Common"
+        Infinite="false">
+    <Effect     What="Stat"     Name="Agility"          Amount="30" />
+    <Effect     What="Stat"     Name="Happiness"        Amount="10" />
+    <Effect     What="Stat"     Name="PCLove"           Amount="5" />
+    <Effect     What="Stat"     Name="PCFear"           Amount="-5" />
+    <Effect     What="Stat"     Name="Charisma"         Amount="10" />
+    <Effect     What="Stat"     Name="Confidence"       Amount="5" />
+    <Effect     What="Stat"     Name="Intelligence"     Amount="5" />
+    <Effect     What="Trait"    Name="Great Figure"     Amount="1" />
+    <Effect     What="Trait"    Name="Great Arse"       Amount="1" />
+    </Item>
+</Items>

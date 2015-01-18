@@ -165,10 +165,10 @@ static void do_effects(TiXmlElement *parent, sInventoryItem *item)
 				}
 				break;
 			case sEffect::GirlStatus:
-				ept->set_girl_status(pt);
+				if (!ept->set_girl_status(pt)) g_LogFile.os() << " Error in item " << item->m_Name << endl;
 				break;
 			case sEffect::Skill:
-				ept->set_skill(pt);
+				if (!ept->set_skill(pt)) g_LogFile.os() << " Error in item " << item->m_Name << endl;
 				break;
 			default:
 				g_LogFile.os() << " can't handle effect type " << ept->m_Affects << endl;
@@ -862,7 +862,7 @@ static sInventoryItem* handle_element(TiXmlElement *el)
 	if (pt = el->Attribute("Special"))					item->set_special(pt);
 	if (pt = el->Attribute("Cost", &ival))				item->m_Cost = ival;
 	if (pt = el->Attribute("Rarity"))					item->set_rarity(pt);
-	if (pt = el->Attribute("Infinite"))					item->m_Infinite = (string(pt) == "true");
+	if (pt = el->Attribute("Infinite"))					item->m_Infinite = ((string(pt) == "true") || (string(pt) == "True"));
 	else												item->m_Infinite = false;
 	do_effects(el, item);
 	//	do_tests(el, item);		//	`J` will be added in the future (hopefully)
