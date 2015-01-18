@@ -52,7 +52,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	g_Girls.UnequipCombat(girl);
 
 	int wages = 15, work = 0;
-	ss << "She worked as a barmaid.";
+	ss << "She worked as a barmaid. ";
 
 	int roll = g_Dice%100;
 	int jobperformance = (	g_Girls.GetStat(girl, STAT_INTELLIGENCE)/2 + 

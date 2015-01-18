@@ -98,7 +98,7 @@ const char *sGirl::skill_names[] =
 const char *sGirl::status_names[] =
 {
 	"None", "Poisoned", "Badly Poisoned", "Pregnant", "Pregnant By Player", "Slave", "Has Daughter", "Has Son",
-	"Inseminated", "Controlled", "Catacombs", "Arena", "Your Daughter"
+	"Inseminated", "Controlled", "Catacombs", "Arena", "Your Daughter", "Is Daughter"
 };
 // calculate the max like this, and it's self-maintaining
 const unsigned int sGirl::max_stats = (sizeof(sGirl::stat_names) / sizeof(sGirl::stat_names[0]));
@@ -176,6 +176,7 @@ void sGirl::setup_maps()
 	status_lookup["Catacombs"] = STATUS_CATACOMBS;
 	status_lookup["Arena"] = STATUS_ARENA;
 	status_lookup["Your Daughter"] = STATUS_YOURDAUGHTER;
+	status_lookup["Is Daughter"] = STATUS_ISDAUGHTER;
 }
 
 int sGirl::lookup_skill_code(string s)
@@ -219,20 +220,23 @@ class GirlPredicate_GRG : public GirlPredicate
 	bool m_catacomb = false;
 	bool m_arena = false;
 	bool m_yourdaughter = false;
+	bool m_isdaughter = false;
 public:
-	GirlPredicate_GRG(bool slave, bool catacomb, bool arena, bool daughter)
+	GirlPredicate_GRG(bool slave, bool catacomb, bool arena, bool daughter, bool isdaughter)
 	{
 		m_slave = slave;
 		m_catacomb = catacomb;
 		m_arena = arena;
 		m_yourdaughter = daughter;
+		m_isdaughter = isdaughter;
 	}
 	virtual bool test(sGirl *girl)
 	{
 		return  girl->is_slave() == m_slave
 			&&	girl->is_monster() == m_catacomb
 			&&	girl->is_arena() == m_arena
-			&&	girl->is_yourdaughter() == m_yourdaughter;
+			&&	girl->is_yourdaughter() == m_yourdaughter
+			&&	girl->is_isdaughter() == m_isdaughter;
 	}
 };
 
@@ -633,6 +637,8 @@ void cGirls::CalculateGirlType(sGirl* girl)
 	if (HasTrait(girl, "Herpes"))					/**/{}
 	if (HasTrait(girl, "Syphilis"))					/**/{}
 	//Other
+	if (HasTrait(girl, "Has Boy Friend"))			/**/{}
+	if (HasTrait(girl, "Has Girl Friend"))			/**/{}
 	if (HasTrait(girl, "Your Daughter"))			/**/{}
 	if (HasTrait(girl, "Your Wife"))				/**/{}
 
@@ -741,7 +747,7 @@ sRandomGirl* cGirls::random_girl_at(u_int n)
 	return current;		// and there we (hopefully) are
 }
 
-sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool undead, bool NonHuman, bool childnaped, bool arena, bool daughter)
+sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool undead, bool NonHuman, bool childnaped, bool arena, bool daughter, bool isdaughter)
 {
 	cConfig cfg;
 	sRandomGirl* current;
@@ -1047,6 +1053,13 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 		{		// you made sure she stayed pure
 			// `J` needs work
 		}
+	}
+	if (isdaughter || newGirl->m_States&(1 << STATUS_ISDAUGHTER))
+	{
+		newGirl->m_States |= (1 << STATUS_ISDAUGHTER);
+		newGirl->m_AccLevel = 0;
+		newGirl->m_Money = 0;
+		newGirl->m_Stats[STAT_OBEDIENCE] = min(newGirl->m_Stats[STAT_OBEDIENCE] + 20, 100);
 	}
 
 	// Load any girl images if available
@@ -1425,6 +1438,34 @@ string cGirls::GetGirlMood(sGirl* girl)
 	int HateLove = GetStat(girl, STAT_PCLOVE) - GetStat(girl, STAT_PCHATE);
 	ss << gettext(" feels the player ");
 
+	if (g_Girls.HasTrait(girl, "Your Daughter"))
+	{
+	/* */if (HateLove <= -80)	ss << gettext("should die ");
+	else if (HateLove <= -60)	ss << gettext("is better off dead ");
+	else if (HateLove <= -40)	ss << gettext("is mean ");
+	else if (HateLove <= -20)	ss << gettext("isn't nice ");
+	else if (HateLove <= 0)		ss << gettext("is annoying ");
+	else if (HateLove <= 20)	ss << gettext("is ok ");
+	else if (HateLove <= 40)	ss << gettext("is easy going ");
+	else if (HateLove <= 60)	ss << gettext("is a good dad ");
+	else if (HateLove <= 80)	ss << gettext("is a great dad ");
+	else 						ss << gettext("is an awesome daddy ");
+	}
+	else if (g_Girls.HasTrait(girl, "Lesbian"))//lesbian shouldn't fall in love with you
+	{
+	/* */if (HateLove <= -80)	ss << gettext("should die ");
+	else if (HateLove <= -60)	ss << gettext("is better off dead ");
+	else if (HateLove <= -40)	ss << gettext("is mean ");
+	else if (HateLove <= -20)	ss << gettext("isn't nice ");
+	else if (HateLove <= 0)		ss << gettext("is annoying ");
+	else if (HateLove <= 20)	ss << gettext("is ok ");
+	else if (HateLove <= 40)	ss << gettext("is easy going ");
+	else if (HateLove <= 60)	ss << gettext("is good ");
+	else if (HateLove <= 80)	ss << gettext("is a nice guy ");
+	else 						ss << gettext("is an awesome guy ");
+	}
+	else
+	{
 	/* */if (HateLove <= -80)	ss << gettext("should die ");
 	else if (HateLove <= -60)	ss << gettext("is better off dead ");
 	else if (HateLove <= -40)	ss << gettext("is mean ");
@@ -1435,6 +1476,7 @@ string cGirls::GetGirlMood(sGirl* girl)
 	else if (HateLove <= 60)	ss << gettext("is good ");
 	else if (HateLove <= 80)	ss << gettext("is attractive ");
 	else 						ss << gettext("is her true love ");
+	}
 
 	if (GetStat(girl, STAT_PCFEAR) > 20)
 	{
@@ -1462,7 +1504,7 @@ string cGirls::GetGirlMood(sGirl* girl)
 	else if (morality <= -60)	ss << gettext("evil.");
 	else if (morality <= -40)	ss << gettext("mean.");
 	else if (morality <= -20)	ss << gettext("not nice.");
-	else if (morality <= 0)	ss << gettext("neutral.");
+	else if (morality <= 0)		ss << gettext("neutral.");
 	else if (morality <= 20)	ss << gettext("is lawful.");
 	else if (morality <= 40)	ss << gettext("is nice");
 	else if (morality <= 60)	ss << gettext("is good.");
@@ -2636,10 +2678,10 @@ string cGirls::GetThirdDetailsString(sGirl* girl)
 	return data;
 }
 
-sGirl* cGirls::GetRandomGirl(bool slave, bool catacomb, bool arena, bool daughter)
+sGirl* cGirls::GetRandomGirl(bool slave, bool catacomb, bool arena, bool daughter, bool isdaughter)
 {
 	int num_girls = m_NumGirls;
-	if ((num_girls == GetNumSlaveGirls() + GetNumCatacombGirls() + GetNumArenaGirls() + GetNumYourDaughterGirls()) || num_girls == 0)
+	if ((num_girls == GetNumSlaveGirls() + GetNumCatacombGirls() + GetNumArenaGirls() + GetNumYourDaughterGirls() + GetNumIsDaughterGirls()) || num_girls == 0)
 	{
 		int r = 3;
 		while (r)
@@ -2648,7 +2690,7 @@ sGirl* cGirls::GetRandomGirl(bool slave, bool catacomb, bool arena, bool daughte
 			r--;
 		}
 	}
-	GirlPredicate_GRG pred(slave, catacomb, arena, daughter);
+	GirlPredicate_GRG pred(slave, catacomb, arena, daughter, isdaughter);
 	vector<sGirl *> girls = get_girls(&pred);
 	if (girls.size() == 0) return 0;
 	return girls[g_Dice.random(girls.size())];
@@ -2787,6 +2829,19 @@ int cGirls::GetNumYourDaughterGirls()
 	while (current)
 	{
 		if (current->m_States&(1 << STATUS_YOURDAUGHTER))
+			number++;
+		current = current->m_Next;
+	}
+	return number;
+}
+
+int cGirls::GetNumIsDaughterGirls()
+{
+	int number = 0;
+	sGirl* current = m_Parent;
+	while (current)
+	{
+		if (current->m_States&(1 << STATUS_ISDAUGHTER))
 			number++;
 		current = current->m_Next;
 	}
@@ -3416,6 +3471,14 @@ bool sGirl::LoadGirlXML(TiXmlHandle hGirl)
 	g_Girls.LoadGirlImages(this);
 	g_Girls.CalculateGirlType(this);
 
+	// get the number of daugher names
+	/*ifs  >>  temp >> ws;
+	for(int i = 0; i < temp; i++) {
+		string s;
+
+		ifs >> s >> ws;
+		current->daughter_names.push_back(s);*/
+
 	return true;
 }
 
@@ -3551,6 +3614,11 @@ TiXmlElement* sGirl::SaveGirlXML(TiXmlElement* pRoot)
 	// save their triggers
 	m_Triggers.SaveTriggersXML(pGirl);
 	return pGirl;
+
+	/*unsigned int lim = current->daughter_names.size();
+	ofs << lim << "\n";
+	for(unsigned int i = 0; i < lim; i++) {
+		ofs << current->daughter_names[i] << "\n";*/
 }
 
 bool sChild::LoadChildXML(TiXmlHandle hChild)
@@ -3654,6 +3722,11 @@ void sGirl::load_from_xml(TiXmlElement *el)
 	TiXmlElement * child;
 	for (child = el->FirstChildElement(); child; child = child->NextSiblingElement())
 	{
+		if(child->ValueStr() == "Daughter") 
+		{
+			string s = child->Attribute("Name");
+			daughter_names.push_back(s);
+		}
 		if (child->ValueStr() == "Trait")	//get the trait name 
 		{
 			pt = child->Attribute("Name");
@@ -11818,6 +11891,132 @@ int cGirls::calc_abnormal_pc(sGirl *mom, sGirl *sprog, bool is_players)
 	if (mom->has_trait("Incest")) return 10;				// if mom is also incestuous, that adds 5% to the odds
 	return 5;
 }
+
+//sGirl *cGirls::find_girl_by_name(string name, int *index_pt)
+//{
+//	int count = 0;
+//	sGirl* current = m_Parent;
+//
+//	if(index_pt) {
+//		*index_pt = -1;
+//	}
+//
+//	while(current) {
+//		if(current->m_Name == name) {
+//			if(index_pt) {
+//				*index_pt = count;
+//			}
+//			return current;
+//		}
+//		count ++;
+//		current = current->m_Next;
+//	}
+//	return 0;
+//}
+//
+//sRandomGirl *cGirls::find_random_girl_by_name(string name, int *index_pt)
+//{
+//	int count = 0;
+//	sRandomGirl* current = m_RandomGirls;
+//
+//	if(index_pt) {
+//		*index_pt = -1;
+//	}
+//
+//	while(current) {
+//		if(current->m_Name == name) {
+//			if(index_pt) {
+//				*index_pt = count;
+//			}
+//			return current;
+//		}
+//		count ++;
+//		current = current->m_Next;
+//	}
+//	return 0;
+//}
+//
+//sGirl *cGirls::test_child_name(string name)
+//{
+//	sGirl* current = find_girl_by_name(name);
+///*
+// *	did we get a girl?
+// */
+// 	if(current) {
+//		return current;		// yes, we did!
+//	}
+///*
+// *	OK, we need to search for a random girl
+// */
+//	sRandomGirl *rgirl = find_random_girl_by_name(name);
+//	if(!rgirl) {
+//		return 0;
+//	}
+//	return init_random_girl(rgirl, 17, false, false, false, false);
+//}
+//
+//sGirl *cGirls::make_girl_child(sGirl* mom)
+//{
+//	sGirl* sprog;
+//	bool slave = mom->is_slave();
+//	bool non_human = mom->has_trait("Not Human");
+///*
+// *	if there are no entries in the duaghter_names list
+// *	we just create a random girl
+// */
+//	int n_names = mom->daughter_names.size();
+//	if(n_names == 0) {
+//		return  g_Girls.CreateRandomGirl(
+//			17, false, "", slave, non_human
+//		);
+//	}
+///*
+// *	OK, we get to work for our living in which case.
+// *
+// *	we'll need a retry loop
+// */
+// 	for(;;) {
+///*
+// *		get a random index into the daughter list
+// *		(some people might prefer them to be born in order
+// *		we'll see ... )
+// */
+//		int index = g_Dice.random(n_names);
+///*
+// *		get the name at that index
+// */
+//		string name = mom->daughter_names[index];
+///*
+// *		see if we can find or create a girl based on that name
+// */
+//		sprog = test_child_name(name);
+///*
+// *		success! break out of the retry loop
+// */
+//		if(sprog) {
+//			return sprog;
+//		}
+///*
+// *		OK - that name is not usable - remove it
+// */
+//		mom->daughter_names.erase( mom->daughter_names.begin() + index);
+///*
+// *		check the size of the list - if empty, break out of the loop
+// */
+//		n_names = mom->daughter_names.size();
+//		if(n_names == 0) {
+//			break;
+//		}
+//	}
+///*
+// *	If the above palaver resulted in a sprog, return it
+// */
+///* 
+// *	otherwise, back to the random girls
+// */
+//	return  g_Girls.CreateRandomGirl(17, false, "", slave, non_human
+//);
+//}
 
 bool cGirls::child_is_grown(sGirl* mom, sChild *child, string& summary, bool PlayerControlled)
 {

@@ -454,7 +454,7 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, bool Da
 
 	if (g_Girls.HasTrait(girl, "Clumsy") && g_Dice.percent(15))
 	{
-		ss << "Her clumsy nature caused her to lose one of her 'toys' up a hole. ";
+		ss << "Her clumsy nature caused her to lose one of her \"toys\" up a hole. ";
 		if (g_Dice.percent(20) || g_Girls.HasTrait(girl, "Psychic") || g_Girls.HasTrait(girl, "Exhibitionist") || g_Girls.GetSkill(girl, SKILL_MEDICINE) > 25)
 		{ ss << "She put on a damn sexy show of getting it back out.\n"; wages += 10; }
 		else
@@ -527,7 +527,6 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, bool Da
 		imagetype = IMGTYPE_MAST;
 	}
 
-	girl->m_Events.AddMessage(ss.str(), imagetype, Day0Night1);
 
 	if (wages < 0) wages = 0;
 
@@ -541,6 +540,8 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, bool Da
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKHALL, work, true);
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKSTRIP, work, true);
+
+	girl->m_Events.AddMessage(ss.str(), imagetype, Day0Night1);
 
 
 

@@ -312,6 +312,8 @@ string cTraits::GetTranslateName(string name)
 		/* */if (trait.compare("half-breed") == 0)				return gettext("Half-Breed");
 		else if (trait.compare("half-construct") == 0)			return gettext("Half-Construct");
 		else if (trait.compare("handyman") == 0)				return gettext("Handyman");
+		else if (trait.compare("has boy friend") == 0)			return gettext("Has Boy Friend");
+		else if (trait.compare("has girl friend") == 0)			return gettext("Has Girl Friend");
 		else if (trait.compare("heavily tattooed") == 0)		return gettext("Heavily Tattooed");
 		else if (trait.compare("heroine") == 0)					return gettext("Heroine");
 		else if (trait.compare("herpes") == 0)					return gettext("Herpes");

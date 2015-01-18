@@ -1148,6 +1148,10 @@ string cScreenItemManagement::GiveItemText(int goodbad, int HateLove, sGirl* tar
 			{
 				message = gettext("She is happy with the gift and gives you a big hug and a kiss on the cheek saying she loves her daddy."); //hopefully this works.. will add more
 			}
+			else if (g_Girls.HasTrait(girl, "Lesbian"))
+			{
+				message = gettext("She is happy with the gift and gives you a big hug and a kiss on the cheek and says that if you weren't a \"man\" she might have to show you how much she loved that gift.");
+			}
 			else message = gettext("She is happy with the gift and gives you a big hug and kisses you hard.  After the kiss she whispers to you to see her later so she can thank you \"properly\".");
 		}
 	}

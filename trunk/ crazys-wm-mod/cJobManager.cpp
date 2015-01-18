@@ -884,6 +884,7 @@ bool cJobManager::is_job_Paid_Player(u_int Job)
 		Job ==	JOB_CLEANARENA		    ||	//
 		Job ==	JOB_FIGHTTRAIN		    ||	//
 		Job ==	JOB_FIGHTARENAGIRLS		||	//
+		Job ==	JOB_FIGHTBEASTS			||	//
 
 
 		//house

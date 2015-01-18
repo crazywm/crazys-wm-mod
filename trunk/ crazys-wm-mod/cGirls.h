@@ -421,6 +421,9 @@ struct sGirl
 	int m_WeeksPreg;					// number of weeks pregnant or inseminated
 	int m_PregCooldown;					// number of weeks until can get pregnant again
 	cChildList m_Children;
+
+	vector<string> daughter_names;
+
 	bool m_InClinic = false;
 	bool m_InMovieStudio = false;
 	bool m_InArena = false;
@@ -828,6 +831,7 @@ struct sGirl
 	bool is_human()			{ return !is_monster(); }
 	bool is_arena()			{ return (m_States & (1 << STATUS_ARENA)) != 0; }
 	bool is_yourdaughter()	{ return (m_States & (1 << STATUS_YOURDAUGHTER)) != 0; }
+	bool is_isdaughter()	{ return (m_States & (1 << STATUS_ISDAUGHTER)) != 0; }
 	bool is_warrior()		{ return !is_arena(); }
 
 	void fight_own_gang(bool &girl_wins);
@@ -944,6 +948,7 @@ public:
 	int GetNumCatacombGirls();
 	int GetNumArenaGirls();
 	int GetNumYourDaughterGirls();
+	int GetNumIsDaughterGirls();
 	int GetSlaveGirl(int from);
 	int GetRebelValue(sGirl* girl, bool matron);
 	void EquipCombat(sGirl* girl);  // girl makes sure best armor and weapons are equipped, ready for combat
@@ -964,9 +969,9 @@ public:
 	void LoadRandomGirlXML(string filename);
 	// end mod
 
-	sGirl* CreateRandomGirl(int age, bool addToGGirls, bool slave = false, bool undead = false, bool NonHuman = false, bool childnaped = false, bool arena = false, bool daughter = false);
+	sGirl* CreateRandomGirl(int age, bool addToGGirls, bool slave = false, bool undead = false, bool NonHuman = false, bool childnaped = false, bool arena = false, bool daughter = false, bool isdaughter = false);
 
-	sGirl* GetRandomGirl(bool slave = false, bool catacomb = false, bool arena = false, bool daughter = false);
+	sGirl* GetRandomGirl(bool slave = false, bool catacomb = false, bool arena = false, bool daughter = false, bool isdaughter = false);
 
 	bool NameExists(string name);
 	bool SurnameExists(string surname);
@@ -1066,6 +1071,14 @@ private:
 	// These are the default images used when a character is missing images for that particular purpose
 	cAImgList* m_DefImages;
 	cImgageListManager m_ImgListManager;
+
+	sGirl *make_girl_child(sGirl* mom);
+	sGirl *test_child_name(string name);
+	sGirl *find_girl_by_name(string name, int *index_pt=0);
+
+	sRandomGirl *select_random_girl(bool NonHuman, bool childnapped);
+	sGirl* init_random_girl(sRandomGirl *archetype, int age, bool addToGGirls, bool slave, bool undead, bool childnaped);
+	sRandomGirl *find_random_girl_by_name(string name, int *index_pt=0);
 
 };
 

@@ -38,6 +38,7 @@ extern cInventory g_InvManager;
 extern cBrothelManager g_Brothels;
 extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
+extern cJobManager m_JobManager;
 
 
 // `J` Brothel Job - Brothel
@@ -59,7 +60,8 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 		g_Girls.GetSkill(girl, SKILL_PERFORMANCE) / 2 +
 		g_Girls.GetSkill(girl, SKILL_STRIP)) / 2;
 	int mast = false, sex = false;
-	int wages = 45, work = 0;
+	int wages = 45, work = 0, imageType = IMGTYPE_STRIP;
+	bool contraception = false;
 
 	ss << girlName + " was stripping in the brothel.";
 	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 90)
@@ -332,11 +334,9 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 	{
 		u_int n;
 		ss << "In one of the private shows, she ended up ";
-		//sCustomer cust;  //SIN moved this to earlier.
 		brothel->m_Happiness += 100;
-		//GetMiscCustomer(brothel, cust);
-		int imageType = IMGTYPE_SEX;
-		if (cust.m_IsWoman)
+		//int imageType = IMGTYPE_SEX;
+		if (cust.m_IsWoman && m_JobManager.is_sex_type_allowed(SKILL_LESBIAN, brothel))
 		{
 			n = SKILL_LESBIAN;
 			ss << "licking the customer's clit until she screamed out in pleasure, making her very happy.";
@@ -361,6 +361,10 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 		else if (n == SKILL_FOOTJOB)	imageType = IMGTYPE_FOOT;
 		else if (n == SKILL_ANAL)		imageType = IMGTYPE_ANAL;
 		else if (n == SKILL_NORMALSEX)	imageType = IMGTYPE_SEX;
+		if (n == SKILL_NORMALSEX && !girl->calc_pregnancy(&cust,  false, 1.0))
+		{
+			g_MessageQue.AddToQue(girlName + " has gotten pregnant", 0);
+		}
 		g_Girls.UpdateSkill(girl, n, 2);
 		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -25);
 		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +1, true);
@@ -370,7 +374,7 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 		roll_max /= 4;
 		wages += 50 + g_Dice%roll_max;
 		girl->m_Pay = wages;
-		girl->m_Events.AddMessage(ss.str(), imageType, Day0Night1);
+		//girl->m_Events.AddMessage(ss.str(), imageType, Day0Night1);
 	}
 	else if (mast)
 	{
@@ -380,7 +384,8 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 		roll_max /= 4;
 		wages += 50 + g_Dice%roll_max;
 		girl->m_Pay = wages;
-		girl->m_Events.AddMessage(ss.str(), IMGTYPE_MAST, Day0Night1);
+		imageType = IMGTYPE_MAST;
+		//girl->m_Events.AddMessage(ss.str(), IMGTYPE_MAST, Day0Night1);
 	}
 	else
 	{
@@ -390,7 +395,7 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 		roll_max /= 4;
 		wages += 10 + g_Dice%roll_max;
 		girl->m_Pay = wages;
-		girl->m_Events.AddMessage(ss.str(), IMGTYPE_STRIP, Day0Night1);
+		//girl->m_Events.AddMessage(ss.str(), IMGTYPE_STRIP, Day0Night1);
 	}
 
 
@@ -403,6 +408,8 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 	{ ss << "\nOtherwise, the shift passed uneventfully."; work += 1; }
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKSTRIP, work, true);
+
+	girl->m_Events.AddMessage(ss.str(), imageType, Day0Night1);
 
 
 	// Improve stats

@@ -82,6 +82,10 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0N
 	if (g_Girls.HasTrait(girl, "Nervous"))			jobperformance -= 30;	//don't like to be around people
 	if (g_Girls.HasTrait(girl, "Meek"))				jobperformance -= 20;
 
+	//Adding cust here for use in scripts...
+	sCustomer cust;
+	GetMiscCustomer(brothel, cust);
+
 	// `J` merged slave/free messages and moved actual dispo change to after
 	/* */if (jobperformance >= 245)	{ dispo = 12;	ss << " She must be perfect at this.\n\n"; }
 	else if (jobperformance >= 185)	{ dispo = 10;	ss << " She's unbelievable at this and is always getting praised by people for her work.\n\n"; }
@@ -93,10 +97,10 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0N
 
 
 	//try and add randomness here
-	if (g_Girls.HasTrait(girl, "Nymphomaniac") && g_Dice.percent(30) &&  !g_Girls.HasTrait(girl, "Virgin") && g_Girls.GetStat(girl, STAT_LIBIDO) > 85)
+	if (g_Girls.HasTrait(girl, "Nymphomaniac") && g_Dice.percent(30) &&  !g_Girls.HasTrait(girl, "Virgin") &&  !g_Girls.HasTrait(girl, "Lesbian") && g_Girls.GetStat(girl, STAT_LIBIDO) > 75 && !brothel->m_RestrictNormal || !brothel->m_RestrictAnal)
 	{ ss << "Her Nymphomania got the better of her today and she decide the best way to services her community was on her back!\n"; sex = true; }
 
-	if (g_Girls.GetStat(girl, STAT_INTELLIGENCE) < 55 && g_Dice.percent(30))
+	if (g_Girls.GetStat(girl, STAT_INTELLIGENCE) < 55 && g_Dice.percent(30))//didnt put a check on this one as we could use some randomness and its an intel check... guess we can if people keep bitching
 	{ blow = true;	ss << "An elderly fellow managed to convince " + girlName + " that the best way to serve her community was on her knees. She ended up giving him a blow job!\n\n"; }
 
 
@@ -113,7 +117,7 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0N
 
 	if (sex)
 	{
-		if(roll <= 50)
+		if(roll <= 50 && !brothel->m_RestrictNormal)
 		{
 			g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, 2);
 			image = IMGTYPE_SEX;
@@ -122,8 +126,12 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0N
 				g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
 				ss << "She is no longer a virgin.\n";
 			}
+			if (!girl->calc_pregnancy(&cust,  false, 1.0))
+			{
+				g_MessageQue.AddToQue(girl->m_Realname + " has gotten pregnant", 0);
+			}
 		}
-		else
+		else if (!brothel->m_RestrictAnal)
 		{ 
 			g_Girls.UpdateSkill(girl, SKILL_ANAL, 2); image = IMGTYPE_ANAL; 
 		}
