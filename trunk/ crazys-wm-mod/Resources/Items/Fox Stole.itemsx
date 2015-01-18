@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item
+        Name="Fox Stole"
+        Desc="It's a dead fox! But, for some reason, girls love wrapping this around their neck. (Cha/Bea/Conf/Lib +5, HAP +10)"
+        Type="Armor"
+        Badness="5"
+        Special="None"
+        Cost="1200"
+        Rarity="Shop25"
+        Infinite="false">
+    <Effect     What="Stat"     Name="Confidence"       Amount="5" />
+    <Effect     What="Stat"     Name="Happiness"        Amount="10" />
+    <Effect     What="Stat"     Name="Beauty"           Amount="5" />
+    <Effect     What="Stat"     Name="Charisma"         Amount="5" />
+    <Effect     What="Stat"     Name="Libido"           Amount="5" />
+    </Item>
+</Items>

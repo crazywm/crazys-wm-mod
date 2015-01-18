@@ -473,16 +473,16 @@ sGang* cGangManager::GetTempGang()
 sGang* cGangManager::GetTempGang(int mod)
 {
 	sGang* newGang = new sGang();
-	newGang->m_Num = g_Dice%6+10;
+	newGang->m_Num = min(15, g_Dice % 8 + 10);
 	for (int i = 0; i < NUM_SKILLS; i++)
 	{
-		newGang->m_Skills[i] = (g_Dice % 30) + 21 + ((g_Dice % mod + mod) / 2);
+		newGang->m_Skills[i] = (g_Dice % 40) + 21 + (g_Dice % mod + mod);
 		if (newGang->m_Skills[i] < 1)	newGang->m_Skills[i] = 1;
 		if (newGang->m_Skills[i] > 100)	newGang->m_Skills[i] = 100;
 	}
 	for (int i = 0; i < NUM_STATS; i++)
 	{
-		newGang->m_Stats[i] = (g_Dice % 30) + 21 + ((g_Dice % mod + mod) / 2);
+		newGang->m_Stats[i] = (g_Dice % 40) + 21 + (g_Dice % mod + mod);
 		if (newGang->m_Stats[i] < 1)	newGang->m_Stats[i] = 1;
 		if (newGang->m_Stats[i] > 100)	newGang->m_Stats[i] = 100;
 	}
@@ -668,61 +668,53 @@ void cGangManager::BoostGangSkill(int* affect_skill, int count)
 
 // ----- Combat
 
-// GangBrawl - returns true if gang1 wins and false if gang2 wins
-bool cGangManager::GangBrawl(sGang* gang1, sGang* gang2)
+/*	GangBrawl - returns true if gang1 wins and false if gang2 wins
+*	If the Player's gang is in the fight, make sure it is the first gang
+*	If two Rivals are fighting set rivalVrival to true
+*/
+bool cGangManager::GangBrawl(sGang* gang1, sGang* gang2, bool rivalVrival)
 {
+	if (!gang1 || gang1->m_Num < 1) return false;	// gang1 does not exist
+	if (!gang2 || gang2->m_Num < 1) return true;	// gang2 does not exist
+
 	cTariff tariff;
-
-	u_int g2attack = SKILL_COMBAT;	// determined later, defaults to combat
+	// Player's gang or first gang if rivalVrival = true
+	gang1->m_Combat = true;
 	u_int g1attack = SKILL_COMBAT;
-	int initalNumber1 = 0;
-	int initalNumber2 = 0;
-	int g1dodge = 0;
-	int g2dodge = 0;
+	int initalNumber1 = gang1->m_Num;
+	int g1dodge = gang1->m_Stats[STAT_AGILITY];
+	int g1HealPot = (rivalVrival ? 10 : healing_limit());
+	int g1SwordLevel = (rivalVrival ? min(5, (g_Dice % (gang1->m_Stats[SKILL_COMBAT] / 20) + 1)) : m_SwordLevel);
+
+	gang2->m_Combat = true;
+	u_int g2attack = SKILL_COMBAT;
+	int initalNumber2 = gang2->m_Num;
+	int g2dodge = gang2->m_Stats[STAT_AGILITY];
 	int g2HealPot = 10;
+	int g2SwordLevel = min(5, (g_Dice % (gang2->m_Stats[SKILL_COMBAT] / 20) + 1));
 
-	if (gang1 == 0 || gang2 == 0)	return true;
-	else if (gang1->m_Num == 0)		return false;
+	int tmp = (gang1->m_Num > gang2->m_Num) ? gang1->m_Num : gang2->m_Num;	// get the largest gang's number
 
-	initalNumber1 = gang1->m_Num;
-	initalNumber2 = gang1->m_Num;
-
-	gang1->m_Combat = true;
-
-	g1dodge = gang1->m_Stats[STAT_AGILITY];
-	g2dodge = gang2->m_Stats[STAT_AGILITY];
-
-	int tmp = (gang1->m_Num > gang2->m_Num) ? gang1->m_Num : gang2->m_Num;
-
-	gang1->m_Combat = true;
-
-	int heal_lim = healing_limit();
-	for (int i = 0; i<tmp; i++)
+	for (int i = 0; i < tmp; i++)						// for each gang member in the largest gang
 	{
-		int g1Health = 100;
-		int g1Mana = 100;
-
-		int g2Health = 100;
-		int g2Mana = 100;
-
-		g1attack = SKILL_MAGIC;
-		g2attack = SKILL_MAGIC;
+		int g1Health = 100;		int g1Mana = 100;
+		int g2Health = 100;		int g2Mana = 100;
+		g1attack = SKILL_MAGIC;	g2attack = SKILL_MAGIC;
 
 		while (g1Health > 0 && g2Health > 0)
 		{
+			// set what they attack with
+			g1attack = (g1Mana <= 0 ? SKILL_COMBAT : SKILL_MAGIC);
+			g2attack = (g2Mana <= 0 ? SKILL_COMBAT : SKILL_MAGIC);
+
 			// gang1 attacks
+			if (g1attack == SKILL_MAGIC) g1Mana -= 7;	// spend the mana before attacking
 			if (g_Dice.percent(gang1->m_Skills[g1attack]))
 			{
-				int damage = (m_SwordLevel + 1) * 5;
+				int damage = (g1SwordLevel + 1) * 5;
 				if (g1attack == SKILL_MAGIC)
 				{
-					if (g1Mana <= 0)
-						g1attack = SKILL_COMBAT;
-					else
-					{
-						damage += 10;
-						g1Mana -= 7;
-					}
+					damage += gang1->m_Skills[SKILL_MAGIC] / 10 + 3;
 				}
 
 				// gang 2 attempts Dodge
@@ -741,18 +733,13 @@ bool cGangManager::GangBrawl(sGang* gang1, sGang* gang2)
 			}
 
 			// gang2 Attacks
+			if (g2attack == SKILL_MAGIC) g2Mana -= 7;	// spend the mana before attacking
 			if (g_Dice.percent(gang2->m_Skills[g2attack]))
 			{
-				int damage = (m_SwordLevel + 1) * 5;
+				int damage = (g2SwordLevel + 1) * 5;
 				if (g2attack == SKILL_MAGIC)
 				{
-					if (g2Mana <= 0)
-						g2attack = SKILL_COMBAT;
-					else
-					{
-						damage += 10;
-						g2Mana -= 7;
-					}
+					damage += gang2->m_Skills[SKILL_MAGIC] / 10 + 3;
 				}
 
 				if (!g_Dice.percent(g1dodge))
@@ -763,10 +750,10 @@ bool cGangManager::GangBrawl(sGang* gang1, sGang* gang2)
 			}
 
 			// gang1 use healing potions
-			if (heal_lim > 0 && g1Health <= 40)
+			if (g1HealPot > 0 && g1Health <= 40)
 			{
-				heal_lim--;
-				m_NumHealingPotions--;
+				g1HealPot--;
+				if (!rivalVrival) m_NumHealingPotions--;
 				g1Health += 30;
 			}
 
@@ -777,14 +764,14 @@ bool cGangManager::GangBrawl(sGang* gang1, sGang* gang2)
 		if (g2Health <= 0) gang2->m_Num--;
 		if (gang2->m_Num == 0)
 		{
-			BoostGangCombatSkills(gang1, 2);
+			BoostGangCombatSkills(gang1, 3);	// win by KO, boost 3 skills
 			return true;
 		}
 
 		if (g1Health <= 0) gang1->m_Num--;
 		if (gang1->m_Num == 0)
 		{
-			BoostGangCombatSkills(gang2, 2);
+			BoostGangCombatSkills(gang2, 3);	// win by KO, boost 3 skills
 			return false;
 		}
 
@@ -792,7 +779,7 @@ bool cGangManager::GangBrawl(sGang* gang1, sGang* gang2)
 		{
 			if (g_Dice.percent(40))
 			{
-				BoostGangCombatSkills(gang1, 2);
+				BoostGangCombatSkills(gang1, 2);	// win by runaway, boost 2 skills
 				return true;	// the men run away
 			}
 		}
@@ -801,7 +788,7 @@ bool cGangManager::GangBrawl(sGang* gang1, sGang* gang2)
 		{
 			if (g_Dice.percent(40))
 			{
-				BoostGangCombatSkills(gang2, 2);
+				BoostGangCombatSkills(gang2, 2);	// win by runaway, boost 2 skills
 				return false;	// the men run away
 			}
 		}
@@ -1306,17 +1293,15 @@ bool cGangManager::GirlVsEnemyGang(sGirl* girl, sGang* enemy_gang)
 
 int cGangManager::healing_limit()
 {
+	if (m_NumGangs < 1 || m_NumHealingPotions < 1) return 0;
 	int limit;
-	/*
-	*	take the number of potions and divide by the
-	*	the number of gangs
-	*/
+	// take the number of potions and divide by the the number of gangs
 	limit = m_NumHealingPotions / m_NumGangs;
 	/*
 	*	if that rounds to less than zero, and there are still
 	*	potions available, make sure they get at least one to use
 	*/
-	if (limit == 0 && m_NumHealingPotions) { limit = 1; }
+	if (limit < 1 && m_NumHealingPotions) limit = 1;
 	return limit;
 }
 
@@ -1857,7 +1842,7 @@ void cGangManager::UpdateGangs()
 
 			if (currentGang->m_Num < 15)
 			{
-				currentGang->m_Num += 3; // MYR
+				currentGang->m_Num += g_Dice % 3 + 2;
 				if (currentGang->m_Num > 15)
 					currentGang->m_Num = 15;
 			}
@@ -1907,7 +1892,7 @@ void cGangManager::UpdateGangs()
 				g_Gold.catacomb_loot(gold);
 
 				int items = 0;
-				while (g_Dice.percent(60) && items <= (currentGang->m_Num / 3))	// item chance
+				while (g_Dice.percent((gang->intelligence()/2)+30) && items <= (currentGang->m_Num / 3))	// item chance
 				{
 					bool quit = false; bool add = false;
 					sInventoryItem* temp;
@@ -1987,7 +1972,7 @@ void cGangManager::UpdateGangs()
 
 				int girl = 0;
 				// determine if get a catacomb girl (is "monster" if trait not human)
-				if (g_Dice.percent(40))
+				if (g_Dice.percent((gang->intelligence() / 4) + 25))
 				{
 					sGirl* ugirl = 0;
 					bool unique = false;
@@ -2014,7 +1999,7 @@ void cGangManager::UpdateGangs()
 					}
 					else
 					{
-						ugirl = g_Girls.CreateRandomGirl(0, false, false, true, true);
+						ugirl = g_Girls.CreateRandomGirl(0, false, false, "", true);
 						if (ugirl != 0)  // make sure a girl was returned
 						{
 							girl++;
@@ -2086,10 +2071,10 @@ void cGangManager::UpdateGangs()
 	m_Rivals->Update(m_BusinessesExtort);	// Update the rivals
 
 	// restock on healing potions
-	g_LogFile.ss() << "Time to restock heal potions\n" << "Flag = " << bool(m_KeepHealStocked != 0) << "\n" << "Target = " << int(m_KeepHealStocked) << "\n" << "Current = " << m_KeepHealStocked;
+	g_LogFile.ss() << "Time to restock heal potions\n" << "Flag = " << bool(m_KeepHealStocked != 0) << "\n" << "Target = " << m_KeepHealStocked << "\n" << "Current = " << m_KeepHealStocked;
 	g_LogFile.ssend();
 
-	if (m_KeepHealStocked && int(m_KeepHealStocked) > m_NumHealingPotions)
+	if (m_KeepHealStocked && m_KeepHealStocked > m_NumHealingPotions)
 	{
 		int diff = m_KeepHealStocked - m_NumHealingPotions;
 		m_NumHealingPotions = m_KeepHealStocked;
@@ -2242,11 +2227,11 @@ void cGangManager::sabotage_mission(sGang* gang)
 
 		/*
 		*		I'd like to see a bit more intelligence here, too.
-		*		bigger rivals should have tougher gangs, and better armed,
-		*		as well.
+		*		bigger rivals should have tougher gangs, and better armed, as well.
+		*	`J` started this with rival->m_Power and higher random stats/skills
 		*/
 
-		rival_gang = GetTempGang(rival->m_Age);
+		rival_gang = GetTempGang(rival->m_Power);
 
 		ss << "Your men run into a gang from " << rival->m_Name << " and a brawl breaks out.\n";
 
@@ -2326,15 +2311,15 @@ void cGangManager::sabotage_mission(sGang* gang)
 	{
 		// mod: brighter goons are better thieves
 		// they need 100% to be better than before however
-		int factor = 2 + gang->intelligence() / 4;
+		int factor = 2 + (gang->intelligence() / 10);
 
-		long gold = g_Dice.random(factor * 400) + 44;
+		long gold = g_Dice.random(factor * ((gang->m_Num+5)*20)) + 44;
 		if (gold > rival->m_Gold) gold = rival->m_Gold;
 		rival->m_Gold -= gold;
 
 		ss << "\nYour men steal " << gold << " gold from them. ";
 		if (rival->m_Gold == 0)				ss << "Mu-hahahaha!  They're penniless now!\n";
-		else if (rival->m_Gold <= 20000)	ss << rival->m_Name << " is looking pretty poor.\n";
+		else if (rival->m_Gold <= 10000)	ss << rival->m_Name << " is looking pretty poor.\n";
 		else			ss << "It looks like " << rival->m_Name << " still has a lot of gold.\n";
 		g_Gold.plunder(gold);
 	}
@@ -2356,6 +2341,7 @@ void cGangManager::sabotage_mission(sGang* gang)
 	if (rival->m_NumBrothels > 0 && (g_Dice.percent(gang->intelligence() / 10)))
 	{
 		rival->m_NumBrothels--;
+		rival->m_Power--;
 		ss << "\nYour men burn down one of " << rival->m_Name << "'s Brothels. " << rival->m_Name;
 
 		if (rival->m_NumBrothels == 0)				ss << " has no Brothels left.\n";

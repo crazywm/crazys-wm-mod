@@ -422,7 +422,7 @@ struct sGirl
 	int m_PregCooldown;					// number of weeks until can get pregnant again
 	cChildList m_Children;
 
-	vector<string> daughter_names;
+	vector<string> m_Canonical_Daughters;
 
 	bool m_InClinic = false;
 	bool m_InMovieStudio = false;
@@ -585,7 +585,6 @@ struct sGirl
 	*	but I'm not sure what else the cGirls method does.
 	*	So this is safer, if a bit inefficient.
 	*/
-	bool calc_pregnancy(int, cPlayer *);
 	int get_stat(int stat_id)
 	{
 		return g_GirlsPtr->GetStat(this, stat_id);
@@ -762,12 +761,18 @@ struct sGirl
 		m_States &= ~(1 << STATUS_INSEMINATED);
 		m_WeeksPreg = 0;
 	}
+
 	int preg_chance(int base_pc, bool good = false, double factor = 1.0);
+
+	bool calc_pregnancy(int, cPlayer *);
 	bool calc_pregnancy(cPlayer *player, bool good = false, double factor = 1.0);
-	bool calc_pregnancy(sCustomer *cust, bool good = false, double factor = 1.0);
-	bool calc_group_pregnancy(cPlayer *player, bool good = false, double factor = 1.0);
-	bool calc_insemination(sCustomer *cust, bool good = false, double factor = 1.0);
 	bool calc_insemination(cPlayer *player, bool good = false, double factor = 1.0);
+	bool calc_group_pregnancy(cPlayer *player, bool good = false, double factor = 1.0);
+
+	bool calc_pregnancy(int, sCustomer *);
+	bool calc_pregnancy(sCustomer *cust, bool good = false, double factor = 1.0);
+	bool calc_insemination(sCustomer *cust, bool good = false, double factor = 1.0);
+	bool calc_group_pregnancy(sCustomer *cust, bool good = false, double factor = 1.0);
 	/*
 	*	let's overload that...
 	*	should be able to do the same using sCustomer as well...
@@ -969,7 +974,7 @@ public:
 	void LoadRandomGirlXML(string filename);
 	// end mod
 
-	sGirl* CreateRandomGirl(int age, bool addToGGirls, bool slave = false, bool undead = false, bool NonHuman = false, bool childnaped = false, bool arena = false, bool daughter = false, bool isdaughter = false);
+	sGirl* CreateRandomGirl(int age, bool addToGGirls, bool slave = false, bool undead = false, bool NonHuman = false, bool childnaped = false, bool arena = false, bool daughter = false, bool isdaughter = false, string findbyname = "");
 
 	sGirl* GetRandomGirl(bool slave = false, bool catacomb = false, bool arena = false, bool daughter = false, bool isdaughter = false);
 
@@ -1072,12 +1077,13 @@ private:
 	cAImgList* m_DefImages;
 	cImgageListManager m_ImgListManager;
 
-	sGirl *make_girl_child(sGirl* mom);
-	sGirl *test_child_name(string name);
+
+	int test_child_name(string name);
+
+	sGirl *make_girl_child(sGirl* mom, bool playerisdad=false);
 	sGirl *find_girl_by_name(string name, int *index_pt=0);
 
 	sRandomGirl *select_random_girl(bool NonHuman, bool childnapped);
-	sGirl* init_random_girl(sRandomGirl *archetype, int age, bool addToGGirls, bool slave, bool undead, bool childnaped);
 	sRandomGirl *find_random_girl_by_name(string name, int *index_pt=0);
 
 };

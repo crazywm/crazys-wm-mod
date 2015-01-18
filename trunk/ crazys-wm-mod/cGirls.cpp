@@ -747,11 +747,16 @@ sRandomGirl* cGirls::random_girl_at(u_int n)
 	return current;		// and there we (hopefully) are
 }
 
-sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool undead, bool NonHuman, bool childnaped, bool arena, bool daughter, bool isdaughter)
+sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool undead, bool NonHuman, bool childnaped, bool arena, bool daughter, bool isdaughter, string findbyname)
 {
 	cConfig cfg;
-	sRandomGirl* current;
-	if (m_NumRandomGirls == 0)	current = false;
+	sRandomGirl* current = 0;
+	if (findbyname != "")
+	{
+		current = find_random_girl_by_name(findbyname, 0);
+	}
+	if (current){}	// if findbyname succeded - skip random check
+	else if (m_NumRandomGirls == 0)	current = 0;
 	else
 	{
 		int i = 0;
@@ -1440,42 +1445,42 @@ string cGirls::GetGirlMood(sGirl* girl)
 
 	if (g_Girls.HasTrait(girl, "Your Daughter"))
 	{
-	/* */if (HateLove <= -80)	ss << gettext("should die ");
-	else if (HateLove <= -60)	ss << gettext("is better off dead ");
-	else if (HateLove <= -40)	ss << gettext("is mean ");
-	else if (HateLove <= -20)	ss << gettext("isn't nice ");
-	else if (HateLove <= 0)		ss << gettext("is annoying ");
-	else if (HateLove <= 20)	ss << gettext("is ok ");
-	else if (HateLove <= 40)	ss << gettext("is easy going ");
-	else if (HateLove <= 60)	ss << gettext("is a good dad ");
-	else if (HateLove <= 80)	ss << gettext("is a great dad ");
-	else 						ss << gettext("is an awesome daddy ");
+		/* */if (HateLove <= -80)	ss << gettext("should die ");
+		else if (HateLove <= -60)	ss << gettext("is better off dead ");
+		else if (HateLove <= -40)	ss << gettext("is mean ");
+		else if (HateLove <= -20)	ss << gettext("isn't nice ");
+		else if (HateLove <= 0)		ss << gettext("is annoying ");
+		else if (HateLove <= 20)	ss << gettext("is ok ");
+		else if (HateLove <= 40)	ss << gettext("is easy going ");
+		else if (HateLove <= 60)	ss << gettext("is a good dad ");
+		else if (HateLove <= 80)	ss << gettext("is a great dad ");
+		else 						ss << gettext("is an awesome daddy ");
 	}
 	else if (g_Girls.HasTrait(girl, "Lesbian"))//lesbian shouldn't fall in love with you
 	{
-	/* */if (HateLove <= -80)	ss << gettext("should die ");
-	else if (HateLove <= -60)	ss << gettext("is better off dead ");
-	else if (HateLove <= -40)	ss << gettext("is mean ");
-	else if (HateLove <= -20)	ss << gettext("isn't nice ");
-	else if (HateLove <= 0)		ss << gettext("is annoying ");
-	else if (HateLove <= 20)	ss << gettext("is ok ");
-	else if (HateLove <= 40)	ss << gettext("is easy going ");
-	else if (HateLove <= 60)	ss << gettext("is good ");
-	else if (HateLove <= 80)	ss << gettext("is a nice guy ");
-	else 						ss << gettext("is an awesome guy ");
+		/* */if (HateLove <= -80)	ss << gettext("should die ");
+		else if (HateLove <= -60)	ss << gettext("is better off dead ");
+		else if (HateLove <= -40)	ss << gettext("is mean ");
+		else if (HateLove <= -20)	ss << gettext("isn't nice ");
+		else if (HateLove <= 0)		ss << gettext("is annoying ");
+		else if (HateLove <= 20)	ss << gettext("is ok ");
+		else if (HateLove <= 40)	ss << gettext("is easy going ");
+		else if (HateLove <= 60)	ss << gettext("is good ");
+		else if (HateLove <= 80)	ss << gettext("is a nice guy ");
+		else 						ss << gettext("is an awesome guy ");
 	}
 	else
 	{
-	/* */if (HateLove <= -80)	ss << gettext("should die ");
-	else if (HateLove <= -60)	ss << gettext("is better off dead ");
-	else if (HateLove <= -40)	ss << gettext("is mean ");
-	else if (HateLove <= -20)	ss << gettext("isn't nice ");
-	else if (HateLove <= 0)		ss << gettext("is annoying ");
-	else if (HateLove <= 20)	ss << gettext("is ok ");
-	else if (HateLove <= 40)	ss << gettext("is easy going ");
-	else if (HateLove <= 60)	ss << gettext("is good ");
-	else if (HateLove <= 80)	ss << gettext("is attractive ");
-	else 						ss << gettext("is her true love ");
+		/* */if (HateLove <= -80)	ss << gettext("should die ");
+		else if (HateLove <= -60)	ss << gettext("is better off dead ");
+		else if (HateLove <= -40)	ss << gettext("is mean ");
+		else if (HateLove <= -20)	ss << gettext("isn't nice ");
+		else if (HateLove <= 0)		ss << gettext("is annoying ");
+		else if (HateLove <= 20)	ss << gettext("is ok ");
+		else if (HateLove <= 40)	ss << gettext("is easy going ");
+		else if (HateLove <= 60)	ss << gettext("is good ");
+		else if (HateLove <= 80)	ss << gettext("is attractive ");
+		else 						ss << gettext("is her true love ");
 	}
 
 	if (GetStat(girl, STAT_PCFEAR) > 20)
@@ -3477,7 +3482,7 @@ bool sGirl::LoadGirlXML(TiXmlHandle hGirl)
 		string s;
 
 		ifs >> s >> ws;
-		current->daughter_names.push_back(s);*/
+		current->m_Canonical_Daughters.push_back(s);*/
 
 	return true;
 }
@@ -3615,10 +3620,10 @@ TiXmlElement* sGirl::SaveGirlXML(TiXmlElement* pRoot)
 	m_Triggers.SaveTriggersXML(pGirl);
 	return pGirl;
 
-	/*unsigned int lim = current->daughter_names.size();
+	/*unsigned int lim = current->m_Canonical_Daughters.size();
 	ofs << lim << "\n";
 	for(unsigned int i = 0; i < lim; i++) {
-		ofs << current->daughter_names[i] << "\n";*/
+		ofs << current->m_Canonical_Daughters[i] << "\n";*/
 }
 
 bool sChild::LoadChildXML(TiXmlHandle hChild)
@@ -3722,10 +3727,10 @@ void sGirl::load_from_xml(TiXmlElement *el)
 	TiXmlElement * child;
 	for (child = el->FirstChildElement(); child; child = child->NextSiblingElement())
 	{
-		if(child->ValueStr() == "Daughter") 
+		if(child->ValueStr() == "Canonical_Daughters") 
 		{
 			string s = child->Attribute("Name");
-			daughter_names.push_back(s);
+			m_Canonical_Daughters.push_back(s);
 		}
 		if (child->ValueStr() == "Trait")	//get the trait name 
 		{
@@ -11718,6 +11723,10 @@ bool sGirl::calc_pregnancy(int chance, cPlayer *player)
 {
 	return g_GirlsPtr->CalcPregnancy(this, chance, STATUS_PREGNANT_BY_PLAYER, player->m_Stats, player->m_Skills);
 }
+bool sGirl::calc_pregnancy(int chance, sCustomer *cust)
+{
+	return g_GirlsPtr->CalcPregnancy(this, chance, STATUS_PREGNANT, cust->m_Stats, cust->m_Skills);
+}
 
 sChild::sChild(bool is_players, Gender gender)
 {
@@ -11788,6 +11797,13 @@ bool sGirl::calc_group_pregnancy(cPlayer *player, bool good, double factor)
 	if (g_Dice.percent(25)) father = STATUS_PREGNANT_BY_PLAYER;
 	// now do the calculation
 	return g_GirlsPtr->CalcPregnancy(this, int(chance), father, player->m_Stats, player->m_Skills);
+}
+bool sGirl::calc_group_pregnancy(sCustomer *cust, bool good, double factor)
+{
+	cConfig cfg;
+	double chance = preg_chance(cfg.pregnancy.player_chance(), good, factor);
+	// now do the calculation
+	return g_GirlsPtr->CalcPregnancy(this, int(chance), STATUS_PREGNANT, cust->m_Stats, cust->m_Skills);
 }
 bool sGirl::calc_pregnancy(sCustomer *cust, bool good, double factor)
 {
@@ -11892,131 +11908,140 @@ int cGirls::calc_abnormal_pc(sGirl *mom, sGirl *sprog, bool is_players)
 	return 5;
 }
 
-//sGirl *cGirls::find_girl_by_name(string name, int *index_pt)
-//{
-//	int count = 0;
-//	sGirl* current = m_Parent;
-//
-//	if(index_pt) {
-//		*index_pt = -1;
-//	}
-//
-//	while(current) {
-//		if(current->m_Name == name) {
-//			if(index_pt) {
-//				*index_pt = count;
-//			}
-//			return current;
-//		}
-//		count ++;
-//		current = current->m_Next;
-//	}
-//	return 0;
-//}
-//
-//sRandomGirl *cGirls::find_random_girl_by_name(string name, int *index_pt)
-//{
-//	int count = 0;
-//	sRandomGirl* current = m_RandomGirls;
-//
-//	if(index_pt) {
-//		*index_pt = -1;
-//	}
-//
-//	while(current) {
-//		if(current->m_Name == name) {
-//			if(index_pt) {
-//				*index_pt = count;
-//			}
-//			return current;
-//		}
-//		count ++;
-//		current = current->m_Next;
-//	}
-//	return 0;
-//}
-//
-//sGirl *cGirls::test_child_name(string name)
-//{
-//	sGirl* current = find_girl_by_name(name);
-///*
-// *	did we get a girl?
-// */
-// 	if(current) {
-//		return current;		// yes, we did!
-//	}
-///*
-// *	OK, we need to search for a random girl
-// */
-//	sRandomGirl *rgirl = find_random_girl_by_name(name);
-//	if(!rgirl) {
-//		return 0;
-//	}
-//	return init_random_girl(rgirl, 17, false, false, false, false);
-//}
-//
-//sGirl *cGirls::make_girl_child(sGirl* mom)
-//{
-//	sGirl* sprog;
-//	bool slave = mom->is_slave();
-//	bool non_human = mom->has_trait("Not Human");
-///*
-// *	if there are no entries in the duaghter_names list
-// *	we just create a random girl
-// */
-//	int n_names = mom->daughter_names.size();
-//	if(n_names == 0) {
-//		return  g_Girls.CreateRandomGirl(
-//			17, false, "", slave, non_human
-//		);
-//	}
-///*
-// *	OK, we get to work for our living in which case.
-// *
-// *	we'll need a retry loop
-// */
-// 	for(;;) {
-///*
-// *		get a random index into the daughter list
-// *		(some people might prefer them to be born in order
-// *		we'll see ... )
-// */
-//		int index = g_Dice.random(n_names);
-///*
-// *		get the name at that index
-// */
-//		string name = mom->daughter_names[index];
-///*
-// *		see if we can find or create a girl based on that name
-// */
-//		sprog = test_child_name(name);
-///*
-// *		success! break out of the retry loop
-// */
-//		if(sprog) {
-//			return sprog;
-//		}
-///*
-// *		OK - that name is not usable - remove it
-// */
-//		mom->daughter_names.erase( mom->daughter_names.begin() + index);
-///*
-// *		check the size of the list - if empty, break out of the loop
-// */
-//		n_names = mom->daughter_names.size();
-//		if(n_names == 0) {
-//			break;
-//		}
-//	}
-///*
-// *	If the above palaver resulted in a sprog, return it
-// */
-///* 
-// *	otherwise, back to the random girls
-// */
-//	return  g_Girls.CreateRandomGirl(17, false, "", slave, non_human
-//);
-//}
+
+// Crazy found some old code to allow Canonical_Daughters
+#if 1
+sGirl *cGirls::find_girl_by_name(string name, int *index_pt)
+{
+	int count = 0;
+	sGirl* current = m_Parent;
+
+	if (index_pt) 
+	{
+		*index_pt = -1;
+	}
+
+	while (current) 
+	{
+		if (current->m_Name == name) 
+		{
+			if (index_pt) 
+			{
+				*index_pt = count;
+			}
+			return current;
+		}
+		count++;
+		current = current->m_Next;
+	}
+	return 0;
+}
+
+sRandomGirl *cGirls::find_random_girl_by_name(string name, int *index_pt)
+{
+	int count = 0;
+	sRandomGirl* current = m_RandomGirls;
+
+	if (index_pt) {
+		*index_pt = -1;
+	}
+
+	while (current) {
+		if (current->m_Name == name) {
+			if (index_pt) {
+				*index_pt = count;
+			}
+			return current;
+		}
+		count++;
+		current = current->m_Next;
+	}
+	return 0;
+}
+
+// returns 0 if not found, 1 if girl found, 2 if rgirl found.
+int cGirls::test_child_name(string name)
+{
+	sGirl* current = find_girl_by_name(name);
+	// did we get a girl?
+	if (current)	return 1;		// yes, we did!
+
+	//	OK, we need to search for a random girl
+	sRandomGirl *rgirl = find_random_girl_by_name(name);
+	if (!rgirl)		return 2;
+	return 0;
+}
+
+sGirl *cGirls::make_girl_child(sGirl* mom, bool playerisdad)
+{
+	sGirl* sprog;
+	bool slave = mom->is_slave();
+	bool non_human = mom->is_human();
+
+	// if there are no entries in the duaghter_names list we just create a random girl
+	int n_names = mom->m_Canonical_Daughters.size();
+	if (n_names == 0) 
+	{
+		return sprog = CreateRandomGirl(17, false, slave, false, non_human, false, false, playerisdad, true, "");
+
+	}
+	/*
+	*	OK, we get to work for our living in which case.
+	*
+	*	we'll need a retry loop
+	*/
+	for (;;) {
+		/*
+		*		get a random index into the daughter list
+		*		(some people might prefer them to be born in order
+		*		we'll see ... )
+		*/
+		int index = g_Dice.random(n_names);
+		/*
+		*		get the name at that index
+		*/
+		string name = mom->m_Canonical_Daughters[index];
+		/*
+		*		see if we can find or create a girl based on that name
+		*/
+		int found = test_child_name(name);
+		
+		if (found > 0)		// success! break out of the retry loop
+		{
+			if (found == 1)			// found a girl
+			{
+				sprog = find_girl_by_name(name);
+			}
+			else if (found == 2)	// found a rgirl
+			{
+				sprog = CreateRandomGirl(17, false, slave, false, non_human, false, false, playerisdad, true, name);
+			}
+			if (sprog) 
+			{
+				return sprog;
+			}
+		}
+		/*
+		*		OK - that name is not usable - remove it
+		*/
+		mom->m_Canonical_Daughters.erase(mom->m_Canonical_Daughters.begin() + index);
+		/*
+		*		check the size of the list - if empty, break out of the loop
+		*/
+		n_names = mom->m_Canonical_Daughters.size();
+		if (n_names == 0) {
+			break;
+		}
+	}
+	/*
+	*	If the above palaver resulted in a sprog, return it
+	*	otherwise, back to the random girls
+	*/
+	return  g_Girls.CreateRandomGirl(17, false, slave, false, non_human);
+}
+#endif
+
+
 
 bool cGirls::child_is_grown(sGirl* mom, sChild *child, string& summary, bool PlayerControlled)
 {

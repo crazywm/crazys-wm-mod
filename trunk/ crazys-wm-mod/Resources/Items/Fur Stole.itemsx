@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item
+        Name="Fur Stole"
+        Desc="A genuine fur stole. The quality of the material sets it totally apart from the cheaper fabricated variations, but this also means girls will not want to use these as mere tools for rough play. Now just keep PETA activists away from your girl. (Strip +10, Perf +3, Cha/Bea +10, Conf +5, HAP +10, Love +20, Hate/Fear -20, adds Elegant)"
+        Type="Armor"
+        Badness="5"
+        Special="None"
+        Cost="3000"
+        Rarity="Shop05"
+        Infinite="false"
+        GirlBuyChance="35">
+    <Effect     What="Skill"    Name="Strip"            Amount="10" />
+    <Effect     What="Skill"    Name="Performance"      Amount="3" />
+    <Effect     What="Stat"     Name="Charisma"         Amount="10" />
+    <Effect     What="Stat"     Name="Beauty"           Amount="10" />
+    <Effect     What="Stat"     Name="Confidence"       Amount="5" />
+    <Effect     What="Stat"     Name="Happiness"        Amount="10" />
+    <Effect     What="Stat"     Name="PCLove"           Amount="20" />
+    <Effect     What="Stat"     Name="PCFear"           Amount="-20" />
+    <Effect     What="Stat"     Name="PCHate"           Amount="-20" />
+    <Effect     What="Trait"    Name="Elegant"          Amount="1" />
+    </Item>
+</Items>

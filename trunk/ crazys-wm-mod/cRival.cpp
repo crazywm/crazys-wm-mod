@@ -87,7 +87,11 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 	while (curr)
 	{
 		int income = 0; int upkeep = 0;
-		curr->m_Age++;	// `J` added - age rival
+
+		// `J` added - rival power
+		if (curr->m_Power < 0) curr->m_Power = 0;				// if they are negative on power, set it to 0
+		else if (curr->m_NumBrothels <= 0) curr->m_Power--;		// if they have no brothels, reduce power
+		else curr->m_Power++;									// otherwise increase power
 
 		// check if rival is killed
 		if (curr->m_Gold <= 0 && curr->m_NumBrothels <= 0 && curr->m_NumGangs <= 0 &&
@@ -337,7 +341,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 				upkeep += 550;
 			}
 			// hire gangs
-			int gangsavailable = (g_Dice % 4) + 1;
+			int gangsavailable = (max(0, (g_Dice % 5) - 2));
 			while (curr->m_Gold - 90 >= 0 && gangsavailable > 0 && curr->m_NumGangs < 8)
 			{
 				curr->m_NumGangs++;
@@ -364,7 +368,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 		int cGangs = curr->m_NumGangs;
 		for (int i = 0; i < cGangs; i++)
 		{
-			sGang* cG1 = g_Gangs.GetTempGang(curr->m_Age);	// create a random gang for this rival
+			sGang* cG1 = g_Gangs.GetTempGang(curr->m_Power);	// create a random gang for this rival
 			int missionid = -1;
 			int tries = 0;
 			while (missionid == -1 && tries < 10)	// choose a mission
@@ -430,7 +434,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 							{
 								ss << gettext("Your guards encounter ") << curr->m_Name << gettext(" going after some of your territory.");
 
-								sGang* rGang = g_Gangs.GetTempGang(curr->m_Age);
+								sGang* rGang = g_Gangs.GetTempGang(curr->m_Power);
 								if (g_Gangs.GangBrawl(miss1, rGang))	// if you win
 								{
 									if (rGang->m_Num == 0) curr->m_NumGangs--;
@@ -465,8 +469,8 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 							ss << rival->m_Name;
 							if (rival->m_NumGangs > 0)
 							{
-								sGang* rG1 = g_Gangs.GetTempGang(rival->m_Age);
-								if (g_Gangs.GangBrawl(cG1, rG1))
+								sGang* rG1 = g_Gangs.GetTempGang(rival->m_Power);
+								if (g_Gangs.GangBrawl(cG1, rG1, true))
 								{
 									rival->m_NumGangs--;
 									rival->m_BusinessesExtort--;
@@ -588,8 +592,8 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 							ss << rival->m_Name;
 							if (rival->m_NumGangs > 0)
 							{
-								sGang* rG1 = g_Gangs.GetTempGang(rival->m_Age);
-								if (g_Gangs.GangBrawl(cG1, rG1))
+								sGang* rG1 = g_Gangs.GetTempGang(rival->m_Power);
+								if (g_Gangs.GangBrawl(cG1, rG1, true))
 								{
 									rival->m_NumGangs--;
 									ss << gettext(" and won.");
@@ -634,6 +638,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 								if (buildinghit < 10 && rival->m_NumBrothels > 0)			// 10% brothel
 								{
 									rival->m_NumBrothels--;
+									rival->m_Power--;
 									ss << "\nThey destroyed one of their Brothels.";
 								}
 								else if (buildinghit < 30 && rival->m_NumGamblingHalls > 0)	// 20% hall
@@ -662,7 +667,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 			}break;
 			case MISS_KIDNAPP:			// get new girls
 			{
-				if (g_Dice.percent(35))			// chance to find a girl
+				if (g_Dice.percent(cG1->intelligence()))			// chance to find a girl
 				{
 					bool addgirl = false;
 					sGirl* girl = g_Girls.GetRandomGirl();
@@ -674,7 +679,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 						}
 						else if (g_Brothels.FightsBack(girl))				// try to kidnap her
 						{
-							if (!g_Gangs.GangCombat(girl, cG1)) addgirl = true;
+							if (!g_Gangs.GirlVsEnemyGang(girl, cG1)) addgirl = true;
 							else if (cG1->m_Num <= 0) curr->m_NumGangs--;
 						}
 						else { addgirl = true; }							// she goes willingly
@@ -851,14 +856,15 @@ TiXmlElement* cRivalManager::SaveRivalsXML(TiXmlElement* pRoot)
 		TiXmlElement* pRival = new TiXmlElement("Rival");
 		pRivals->LinkEndChild(pRival);
 		pRival->SetAttribute("Name", current->m_Name);
-		pRival->SetAttribute("BribeRate", current->m_BribeRate);
-		pRival->SetAttribute("BusinessesExtort", current->m_BusinessesExtort);
+		pRival->SetAttribute("Power", current->m_Power);
 		pRival->SetAttribute("Gold", current->m_Gold);
-		pRival->SetAttribute("NumBars", current->m_NumBars);
+		pRival->SetAttribute("NumGirls", current->m_NumGirls);
 		pRival->SetAttribute("NumBrothels", current->m_NumBrothels);
 		pRival->SetAttribute("NumGamblingHalls", current->m_NumGamblingHalls);
-		pRival->SetAttribute("NumGirls", current->m_NumGirls);
+		pRival->SetAttribute("NumBars", current->m_NumBars);
 		pRival->SetAttribute("NumGangs", current->m_NumGangs);
+		pRival->SetAttribute("BribeRate", current->m_BribeRate);
+		pRival->SetAttribute("BusinessesExtort", current->m_BusinessesExtort);
 		current = current->m_Next;
 	}
 	return pRivalManager;
@@ -883,7 +889,7 @@ bool cRivalManager::LoadRivalsXML(TiXmlHandle hRivalManager)
 			{
 				current->m_Name = pRival->Attribute("Name");
 			}
-
+			pRival->QueryIntAttribute("Power", &current->m_Power);
 			pRival->QueryValueAttribute<long>("BribeRate", &current->m_BribeRate);
 			pRival->QueryIntAttribute("BusinessesExtort", &current->m_BusinessesExtort);
 			pRival->QueryValueAttribute<long>("Gold", &current->m_Gold);
@@ -903,7 +909,7 @@ bool cRivalManager::LoadRivalsXML(TiXmlHandle hRivalManager)
 	return true;
 }
 
-void cRivalManager::CreateRival(long bribeRate, int extort, long gold, int bars, int gambHalls, int Girls, int brothels, int gangs, int age)
+void cRivalManager::CreateRival(long bribeRate, int extort, long gold, int bars, int gambHalls, int Girls, int brothels, int gangs, int power)
 {
 	ifstream in;
 	cRival* rival = new cRival();
@@ -911,7 +917,7 @@ void cRivalManager::CreateRival(long bribeRate, int extort, long gold, int bars,
 	DirPath first_names = DirPath() << "Resources" << "Data" << "RivalGangFirstNames.txt";
 	DirPath last_names = DirPath() << "Resources" << "Data" << "RivalGangLastNames.txt";
 
-	rival->m_Age = age;						// `J` added
+	rival->m_Power = power;						// `J` added
 	rival->m_Gold = gold;
 	rival->m_NumBrothels = brothels;
 	rival->m_NumGirls = Girls;
@@ -948,7 +954,7 @@ void cRivalManager::CreateRandomRival()
 	DirPath first_names = DirPath() << "Resources" << "Data" << "RivalGangFirstNames.txt";
 	DirPath last_names = DirPath() << "Resources" << "Data" << "RivalGangLastNames.txt";
 
-	rival->m_Age = 0;
+	rival->m_Power = max(0, g_Dice % 11 - 5);
 	rival->m_Gold = (g_Dice % 20000) + 5000;
 	rival->m_NumBrothels = (g_Dice % 3) + 1;
 	rival->m_NumGirls = 0;

@@ -257,7 +257,7 @@ void NewGame()
 			(g_Dice % 81 + 20), 						// Girls		= 20-100
 			(g_Dice % 6 + 1), 							// Brothels		= 1-6
 			(g_Dice % 10 + 1), 							// Gangs		= 1-10
-			(g_Dice % 11)	 							// Age			= 0-10	// how long the Rival has been operating before start of game
+			(g_Dice % 11)	 							// Power		= 0-10	// `J` added - The rivals power level
 			);
 	}
 

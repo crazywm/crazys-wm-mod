@@ -395,7 +395,7 @@ void cHouseManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 						current->m_DayJob = current->m_NightJob = JOB_CLEANHOUSE;
 						ss << "work cleaning the house.";
 					}
-					else if (GetNumGirlsOnJob(0, JOB_CLEANHOUSE, Day0Night1) < 1 && !g_Girls.HasTrait(girl, "Virgin"))//did so that it wont set virgins to this
+					else if (GetNumGirlsOnJob(0, JOB_CLEANHOUSE, Day0Night1) < 1 && !g_Girls.HasTrait(current, "Virgin"))//did so that it wont set virgins to this
 					{
 						current->m_DayJob = current->m_NightJob = JOB_PERSONALBEDWARMER;
 						ss << "work warming your bed.";
