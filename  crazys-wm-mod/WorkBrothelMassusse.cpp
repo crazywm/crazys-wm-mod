@@ -38,6 +38,7 @@ extern cInventory g_InvManager;
 extern cBrothelManager g_Brothels;
 extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
+extern cJobManager m_JobManager;
 
 // `J` Brothel Job - Brothel
 bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
@@ -263,7 +264,8 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 		sCustomer cust;
 		brothel->m_Happiness += 100;
 		GetMiscCustomer(brothel, cust);
-		if (cust.m_IsWoman) { n = SKILL_LESBIAN, ss << "intensely licking the female customer's clit until she got off, making the lady very happy.\n"; }
+		if (cust.m_IsWoman && m_JobManager.is_sex_type_allowed(SKILL_LESBIAN, brothel)) 
+		{ n = SKILL_LESBIAN, ss << "intensely licking the female customer's clit until she got off, making the lady very happy.\n"; }
 		else
 		{
 			switch (g_Dice % 10)
@@ -284,13 +286,17 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 		else if (n == SKILL_FOOTJOB)	imageType = IMGTYPE_FOOT;
 		else if (n == SKILL_ANAL)		imageType = IMGTYPE_ANAL;
 		else if (n == SKILL_NORMALSEX)	imageType = IMGTYPE_SEX;
+		if (n == SKILL_NORMALSEX && !girl->calc_pregnancy(&cust,  false, 1.0))
+		{
+			g_MessageQue.AddToQue(girl->m_Realname + " has gotten pregnant", 0);
+		}
 		g_Girls.UpdateSkill(girl, n, 2);
 		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -25);
 		// work out the pay between the house and the girl
 		wages += 225;
 		girl->m_Pay = wages;
 		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +1, true);
-		girl->m_Events.AddMessage(ss.str(), imageType, Day0Night1);
+		//girl->m_Events.AddMessage(ss.str(), imageType, Day0Night1);
 	}
 	else
 	{
@@ -298,7 +304,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 		brothel->m_MiscCustomers++;
 		// work out the pay between the house and the girl
 		girl->m_Pay = wages;
-		girl->m_Events.AddMessage(ss.str(), imageType, Day0Night1);
+		//girl->m_Events.AddMessage(ss.str(), imageType, Day0Night1);
 	}
 
 	//enjoyed the work or not
@@ -310,6 +316,8 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 	{ ss << "\nOtherwise, the shift passed uneventfully."; work += 1; }
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKMASSUSSE, work, true);
+
+	girl->m_Events.AddMessage(ss.str(), imageType, Day0Night1);
 
 
 		// Improve stats

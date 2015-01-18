@@ -88,9 +88,11 @@ const unsigned int SKILL_FARMING		= 17;
 const unsigned int SKILL_BREWING		= 18;
 const unsigned int SKILL_ANIMALHANDLING	= 19;
 const unsigned int SKILL_FOOTJOB		= 20;
+//const unsigned int SKILL_COOKING		= ;
+//const unsigned int SKILL_MAST		= ;
 
 // STATUS
-const unsigned int NUM_STATUS					= 13;
+const unsigned int NUM_STATUS					= 14;
 const unsigned int STATUS_NONE					= 0;
 const unsigned int STATUS_POISONED				= 1;
 const unsigned int STATUS_BADLY_POISONED		= 2;
@@ -104,6 +106,7 @@ const unsigned int STATUS_CONTROLLED			= 9;
 const unsigned int STATUS_CATACOMBS				= 10;
 const unsigned int STATUS_ARENA					= 11;
 const unsigned int STATUS_YOURDAUGHTER			= 12;
+const unsigned int STATUS_ISDAUGHTER			= 13;
 
 // Jobs
 const unsigned int NUMJOBTYPES			= 18;
@@ -198,6 +201,8 @@ const unsigned int JOB_CLEANARENA		= 54;
 //const unsigned int JOB_VENDOR			= ;
 //const unsigned int JOB_BOOKIE			= ;
 //const unsigned int JOB_GROUNDSKEEPER	= ;
+//const unsigned int JOB_MINER			= ;
+//const unsigned int JOB_SMITH			= ;
 
 // `J` Centre Job - General
 const unsigned int JOBFILTER_COMMUNITYCENTRE = 9;
@@ -373,6 +378,9 @@ const unsigned int INVMISC          = 9;    // these items don't usually do anyt
 const unsigned int INVARMBAND       = 10;	// (max 2), worn around arms
 const unsigned int INVSMWEAPON      = 11;   // small weapon which can be hidden on body, (max 2)
 const unsigned int INVUNDERWEAR     = 12;   //CRAZY added this underwear (max 1)
+//const unsigned int INVLEGS     = ;   //CRAZY added this
+//const unsigned int INVHEAD     = ;   //CRAZY added this
+//const unsigned int INVSWIMSUIT     = ;   //CRAZY added this
 
 // Item Rarity
 const int NUM_ITEM_RARITY = 9;	// number of items that the shop may hold at one time

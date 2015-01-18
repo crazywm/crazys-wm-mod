@@ -149,7 +149,7 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 	int earned = 0;
 	for (int i = 0; i < jobperformance; i++)
 	{
-		earned += g_Dice % 15 + 5; // 5-20 gold per customer  This may need tweaked to get it where it should be for the pay
+		earned += g_Dice % 10 + 5; // 5-15 gold per customer  This may need tweaked to get it where it should be for the pay
 	}
 	brothel->m_Finance.arena_income(earned);
 	ss.str("");

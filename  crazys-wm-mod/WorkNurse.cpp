@@ -47,6 +47,7 @@ extern cGold g_Gold;
 bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	stringstream ss; string girlName = girl->m_Realname;
+	g_Building = BUILDING_CLINIC;
 
 	if (g_Girls.HasTrait(girl, "AIDS"))
 	{
@@ -92,6 +93,10 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 	if (g_Girls.HasTrait(girl, "Nervous"))			jobperformance -= 30;
 	if (g_Girls.HasTrait(girl, "Retarded"))			jobperformance -= 50;
 	if (g_Girls.HasTrait(girl, "Meek"))				jobperformance -= 20;
+
+	//Adding cust here for use in scripts...
+	sCustomer cust;
+	GetMiscCustomer(brothel, cust);
 
 
 	if (jobperformance >= 245)
@@ -286,7 +291,7 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 		}
 	}
 
-	if (g_Girls.GetStat(girl, STAT_INTELLIGENCE) < 45 && g_Dice.percent(30))
+	if (g_Girls.GetStat(girl, STAT_INTELLIGENCE) < 45 && g_Dice.percent(30))//didnt put a check on this one as we could use some randomness and its an intel check... guess we can if people keep bitching
 	{
 		hand = true;
 		ss << "An elderly fellow managed to convince " + girlName + " that her touch can heal! She ended up giving him a hand job!\n"; 
@@ -294,9 +299,8 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 
 	if (g_Girls.HasTrait(girl, "Nymphomaniac") && !g_Girls.HasTrait(girl, "Virgin")
 		&& !g_Girls.HasTrait(girl, "Lesbian") && g_Dice.percent(30))
-		//this makes it easier to show up not many girls will have striaght or bi traits yet
 	{
-		if (g_Girls.GetStat(girl, STAT_LIBIDO) > 65)
+		if (g_Girls.GetStat(girl, STAT_LIBIDO) > 65 && !brothel->m_RestrictNormal || !brothel->m_RestrictAnal)
 		{
 			tips += 50; 
 			sex = true;
@@ -337,8 +341,15 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 
 	if (sex)
 	{
-		if (roll <= 50) { imagetype = IMGTYPE_SEX; g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, 2); }
-		else /*      */	{ imagetype = IMGTYPE_ANAL; g_Girls.UpdateSkill(girl, SKILL_ANAL, 2); }
+		if (roll <= 50 && !brothel->m_RestrictNormal) 
+		{ 
+			imagetype = IMGTYPE_SEX; g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, 2); 
+			if (!girl->calc_pregnancy(&cust,  false, 1.0))
+			{
+				g_MessageQue.AddToQue(girl->m_Realname + " has gotten pregnant", 0);
+			}
+		}
+		else if (!brothel->m_RestrictAnal) /*      */	{ imagetype = IMGTYPE_ANAL; g_Girls.UpdateSkill(girl, SKILL_ANAL, 2); }
 		brothel->m_Happiness += 100;
 		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -20);
 		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +3, true);

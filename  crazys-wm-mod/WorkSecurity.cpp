@@ -101,6 +101,7 @@ bool cJobManager::WorkSecurity(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		{
 			ss << gettext(" She flashed them."); imagetype = IMGTYPE_STRIP;
 		}
+		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -10);
 		girl->m_Events.AddMessage(ss.str(), imagetype, Day0Night1);
 	}
 

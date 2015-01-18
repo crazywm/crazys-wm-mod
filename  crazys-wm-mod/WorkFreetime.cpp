@@ -943,7 +943,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			else if (roll_c <= 70)	{ song_type = 2; song_type_text = "Country"; }
 			else if (roll_c >= 88)	{ song_type = 0; song_type_text = "Pop"; }
 
-			ss << girlName << " decides to go watch a movie.";
+			ss << girlName << " decides to go to a concert.";
 			ss << "They were playing " + song_type_text + " music.\n";
 			U_Money -= 50;
 				if (roll_c <= 14) //goth rock
@@ -1137,6 +1137,15 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			g_Girls.UpdateStat(girl, STAT_CONSTITUTION, g_Dice % 2);
 			g_Girls.UpdateStat(girl, STAT_AGILITY, g_Dice % 2);
 			g_Girls.UpdateStat(girl, STAT_BEAUTY, g_Dice % 2);
+			/*
+			*Crunches
+			*squats
+			*sit ups
+			*push ups
+			*pull ups
+			*go for a run
+			*yoga
+			*/
 			break;	// end FT_WorkOut
 		
 

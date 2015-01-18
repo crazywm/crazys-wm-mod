@@ -47,6 +47,7 @@ extern cJobManager m_JobManager;
 bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	stringstream ss; string girlName = girl->m_Realname;
+	cConfig cfg;
 
 	// ready armor and weapons!
 	g_Girls.EquipCombat(girl);
@@ -55,6 +56,7 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1
 
 	int roll = g_Dice % 100;
 	int wages = 175, enjoy = 0;
+	int jobperformance = (g_Girls.GetStat(girl, STAT_FAME) + g_Girls.GetStat(girl, STAT_CHARISMA))/2;
 
 	if (roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_COMBAT, brothel))
 	{
@@ -140,6 +142,21 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1
 			delete tempgirl;
 		tempgirl = 0;
 	}
+
+	if ((girl->is_slave() && !cfg.initial.slave_pay_outofpocket()))
+	{
+		wages = 0;
+	}
+
+	int earned = 0;
+	for (int i = 0; i < jobperformance; i++)
+	{
+		earned += g_Dice % 10 + 5; // 5-15 gold per customer  This may need tweaked to get it where it should be for the pay
+	}
+	brothel->m_Finance.arena_income(earned);
+	ss.str("");
+	ss << girlName << " drew in " << jobperformance << " people to watch her and you earned " << earned << " from it.";
+	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, enjoy, true);
 	// Improve girl

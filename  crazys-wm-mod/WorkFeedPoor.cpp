@@ -79,6 +79,10 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	if (g_Girls.HasTrait(girl, "Nervous"))		jobperformance -= 30; //don't like to be around people
 	if (g_Girls.HasTrait(girl, "Meek"))			jobperformance -= 20;
 
+	//Adding cust here for use in scripts...
+	sCustomer cust;
+	GetMiscCustomer(brothel, cust);
+
 
 	int dispo; // `J` merged slave/free messages and moved actual dispo change to after
 	if (jobperformance >= 245)
@@ -234,10 +238,10 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 
 	//try and add randomness here
-	if (g_Girls.GetStat(girl, STAT_INTELLIGENCE) < 55 && g_Dice.percent(30))
+	if (g_Girls.GetStat(girl, STAT_INTELLIGENCE) < 55 && g_Dice.percent(30))//didnt put a check on this one as we could use some randomness and its an intel check... guess we can if people keep bitching
 	{ blow = true;	ss << "An elderly fellow managed to convince " + girlName + " that he was full and didn't need anymore food but that she did. He told her his cock gave a special treat if she would suck on it long enough. Which she did man she isn't very smart.\n\n"; }
 	
-	if (g_Girls.HasTrait(girl, "Nymphomaniac") && g_Dice.percent(30) && g_Girls.GetStat(girl, STAT_LIBIDO) > 85 &&  !g_Girls.HasTrait(girl, "Lesbian") &&  !g_Girls.HasTrait(girl, "Virgin"))
+	if (g_Girls.HasTrait(girl, "Nymphomaniac") && g_Dice.percent(30) && g_Girls.GetStat(girl, STAT_LIBIDO) > 75 &&  !g_Girls.HasTrait(girl, "Lesbian") &&  !g_Girls.HasTrait(girl, "Virgin") && !brothel->m_RestrictNormal || !brothel->m_RestrictAnal)
 	{ sex = true; ss << "Her Nymphomania got the better of her today and she decide to let them eat her pussy!  After a few minutes they started fucking her.\n"; }
 
 
@@ -269,7 +273,7 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 	if (sex)
 	{
-		if(roll <= 50)
+		if(roll <= 50 && !brothel->m_RestrictNormal)
 		{
 			girl->m_Events.AddMessage(ss.str(), IMGTYPE_SEX, Day0Night1);
 			g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, 2);
@@ -278,8 +282,12 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
 				ss << "She is no longer a virgin.\n";
 			}
+			if (!girl->calc_pregnancy(&cust,  false, 1.0))
+			{
+				g_MessageQue.AddToQue(girl->m_Realname + " has gotten pregnant", 0);
+			}
 		}
-		else
+		else if (!brothel->m_RestrictAnal)
 		{
 			girl->m_Events.AddMessage(ss.str(), IMGTYPE_ANAL, Day0Night1);
 			g_Girls.UpdateSkill(girl, SKILL_ANAL, 2);
@@ -306,7 +314,7 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	int cost = 0;
 	for (int i = 0; i < feed; i++)
 	{
-		cost += g_Dice % 5 + 5; // 5-10 gold per customer
+		cost += g_Dice % 3 + 2; // 2-5 gold per customer
 	}
 	brothel->m_Finance.centre_costs(cost);
 	ss.str("");
