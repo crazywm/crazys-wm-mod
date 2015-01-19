@@ -918,6 +918,10 @@ public:
 	void UpdateSkillMod(sGirl* girl, int skill, int amount);	// updates a skillmods
 	void UpdateTempSkill(sGirl* girl, int skill, int amount);	// updates a skill temporarily
 
+	double GetAveragOfAllSkills(sGirl* girl);	// `J` added
+	double GetAveragOfSexSkills(sGirl* girl);	// `J` added
+	double GetAveragOfNSxSkills(sGirl* girl);	// `J` added
+
 	bool HasTrait(sGirl* girl, string trait);
 	bool HasRememberedTrait(sGirl* girl, string trait);
 

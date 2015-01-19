@@ -1823,7 +1823,7 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 		};
 		string base = gettext("She");
 		string text;
-		unsigned char count = 0;
+		int enjcount = 0;
 		for (int i = 0; i < NUM_ACTIONTYPES; ++i)
 		{
 			if (jobs[i] == "")			continue;
@@ -1831,16 +1831,21 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 			else if (girl->m_Enjoyment[i] < -50)	{ text = gettext(" really dislikes "); }
 			else if (girl->m_Enjoyment[i] < -30)	{ text = gettext(" dislikes "); }
 			else if (girl->m_Enjoyment[i] < -20)	{ text = gettext(" doesn't particularly enjoy "); }
-			else if (girl->m_Enjoyment[i] < 15)		{ continue; } // if she's indifferent, why specify it? Let's instead skip it.
+			else if (girl->m_Enjoyment[i] < 15)		{ 
+				if (cfg.debug.log_extradetails())	{ text = gettext(" is indifferent to "); }
+				else continue; } // if she's indifferent, why specify it? Let's instead skip it.
 			else if (girl->m_Enjoyment[i] < 30)		{ text = gettext(" is happy enough with "); }
 			else if (girl->m_Enjoyment[i] < 50)		{ text = gettext(" likes "); }
 			else if (girl->m_Enjoyment[i] < 70)		{ text = gettext(" really enjoys "); }
 			else									{ text = gettext(" loves "); }
-			ss << base + text + jobs[i] + gettext(".\n");
-			count++;
+			ss << base << text << jobs[i] << ".";
+			if (cfg.debug.log_extradetails())		{ ss << "  (" << girl->m_Enjoyment[i] << ")"; }
+				ss << "\n";
+			enjcount++;
 		}
-		if (count > 0)	ss << gettext("\nShe is indifferent to all other tasks.\n\n");
-		else			ss << gettext("At the moment, she is indifferent to all tasks.\n\n");
+		if (cfg.debug.log_extradetails())			{ ss << "\n"; }
+		else if (enjcount > 0)						{ ss << gettext("\nShe is indifferent to all other tasks.\n\n"); }
+		else										{ ss << gettext("At the moment, she is indifferent to all tasks.\n\n"); }
 	}
 
 	ss << "\n\n\nBased on:  ";
@@ -1962,7 +1967,6 @@ string cGirls::GetThirdDetailsString(sGirl* girl)
 
 	// `J` When adding new traits, search for "J-Add-New-Traits"  :  found in >> GetThirdDetailsString > trait adjustments for jobs
 	// Traits in alphabetical order
-	//zzzzzz boobs
 	if (g_Girls.GetStat(girl, STAT_FAME) > 85)
 	{
 		clubstrip += 10;
@@ -3202,6 +3206,26 @@ int cGirls::GetSkill(sGirl* girl, int skill)
 	else if (value > 100)	value = 100;
 	return value;
 }
+double cGirls::GetAveragOfAllSkills(sGirl* girl)
+{
+	return ((girl->anal() + girl->animalhandling() + girl->bdsm() + girl->beastiality() + girl->brewing()
+		+ girl->combat() + girl->crafting() + girl->farming() + girl->footjob() + girl->group() + girl->handjob()
+		+ girl->herbalism() + girl->lesbian() + girl->magic() + girl->medicine() + girl->normalsex() + girl->oralsex()
+		+ girl->performance() + girl->service() + girl->strip() + girl->tittysex()) / 21.0);
+}
+double cGirls::GetAveragOfNSxSkills(sGirl* girl)
+{
+	return ((girl->animalhandling() + girl->brewing() + girl->combat() + girl->crafting() + girl->farming()
+		+ girl->herbalism() + girl->magic() + girl->medicine() + girl->performance() + girl->service()
+		) / 10.0);
+}
+double cGirls::GetAveragOfSexSkills(sGirl* girl)
+{
+	return ((girl->anal() + girl->bdsm() + girl->beastiality() + girl->footjob() + girl->group() + girl->handjob()
+		+ girl->lesbian() + girl->normalsex() + girl->oralsex() + girl->strip() + girl->tittysex()) / 11.0);
+}
+
+
 // set the skill to amount
 void cGirls::SetSkill(sGirl* girl, int skill, int amount)
 {
@@ -8732,23 +8756,56 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 	// lose virginity unless it was anal sex -- or lesbian, or Oral also customer is happy no matter what. -PP
 	if (g_Girls.CheckVirginity(girl))
 	{
-		/*zzzzzz - adjust customer happiness for virgins by the sex job
-		SexType == SKILL_ANAL			||
-		SexType == SKILL_BDSM			||
-		SexType == SKILL_NORMALSEX		||
-		SexType == SKILL_BEASTIALITY	||
-		SexType == SKILL_GROUP			||
-		SexType == SKILL_LESBIAN		||
-		SexType == SKILL_STRIP			||
-		SexType == SKILL_ORALSEX		||
-		SexType == SKILL_TITTYSEX		||
-		SexType == SKILL_HANDJOB		||
-		SexType == SKILL_FOOTJOB		||
-		*/
-		message += gettext(" The customer was overjoyed that she was a virgin.");
-		customer->m_Stats[STAT_HAPPINESS] = 100;
-		if (SexType == SKILL_BDSM || SexType == SKILL_NORMALSEX || SexType == SKILL_BEASTIALITY || SexType == SKILL_GROUP)
-			g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
+		bool virgincheck = false;
+		int chappy = 0;
+		if (SexType == SKILL_ORALSEX || SexType == SKILL_TITTYSEX || SexType == SKILL_HANDJOB || SexType == SKILL_FOOTJOB)
+		{
+			// virginity does not matter at all
+			chappy = 2;	// but lets give a little anyway
+		}
+		else if (SexType == SKILL_STRIP)
+		{
+			message += gettext(" The customer was excited to have a virgin stripping for them.");
+			chappy = 10;
+			virgincheck = true;
+		}
+		else if (SexType == SKILL_BEASTIALITY)
+		{
+			message += gettext(" The customer was excited that she was a virgin as he pushed the beast onto her.");
+			chappy = 25;
+			virgincheck = true;
+		}
+		else if (SexType == SKILL_ANAL)
+		{
+			message += gettext(" The customer was overjoyed that she was a virgin, but that was not what he was into.");
+			chappy = 50;
+		}
+		else if (SexType == SKILL_LESBIAN)
+		{
+			message += gettext(" The customer was happy that she had never been with a \"man\" and was still a virgin.");
+			chappy = 69;
+		}
+		else if (SexType == SKILL_GROUP)
+		{
+			message += gettext(" The customers were overjoyed that she was a virgin. Well... the first one was at least.");
+			chappy = 80;
+			virgincheck = true;
+		}
+		else if (SexType == SKILL_BDSM)
+		{
+			message += gettext(" The customer was overjoyed that she was a virgin.");
+			chappy = 90;
+			if (g_Dice.percent(70)) virgincheck = true;
+		}
+		else if (SexType == SKILL_NORMALSEX)
+		{
+			message += gettext(" The customer was overjoyed that she was a virgin.");
+			chappy = 100;
+			virgincheck = true;
+		}
+		if (chappy > 0) customer->m_Stats[STAT_HAPPINESS] += chappy;
+		if (girl->is_pregnant()) virgincheck = true;
+		if (virgincheck) g_Girls.LoseVirginity(girl);
 	}
 
 	// Now calculate other skill increases

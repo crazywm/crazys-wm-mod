@@ -375,8 +375,7 @@ void cHouseManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 				else if (current->m_DayJob == restjob && current->m_NightJob == restjob)
 				{	// if they have no job at all, assign them a job
 					ss << "The Head Girl assigns " << girlName << " to ";
-					// `J` zzzzzz need to add this in
-					ss << "do nothing because this part of the code has not been added yet.";
+					// `J` zzzzzz need to add more in
 					/*
 					JOB_CLEANHOUSE
 
@@ -385,20 +384,42 @@ void cHouseManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 					JOB_PERSONALBEDWARMER
 
 					//*/
-					if (current->is_free() && GetNumGirlsOnJob(0, JOB_RECRUITER, Day0Night1) < 1)
-					{
-						current->m_DayJob = current->m_NightJob = JOB_RECRUITER;
-						ss << "work recruiting girls for you.";
-					}
-					else if (GetNumGirlsOnJob(0, JOB_CLEANHOUSE, Day0Night1) < 1)
+
+					// start with a slave to clean
+					if (current->is_slave() && GetNumGirlsOnJob(0, JOB_CLEANHOUSE, Day0Night1) < 1)
 					{
 						current->m_DayJob = current->m_NightJob = JOB_CLEANHOUSE;
 						ss << "work cleaning the house.";
 					}
-					else if (GetNumGirlsOnJob(0, JOB_CLEANHOUSE, Day0Night1) < 1 && !g_Girls.HasTrait(current, "Virgin"))//did so that it wont set virgins to this
+					// and a free girl to recruit for you
+					else if (current->is_free() && GetNumGirlsOnJob(0, JOB_RECRUITER, Day0Night1) < 1)
+					{
+						current->m_DayJob = current->m_NightJob = JOB_RECRUITER;
+						ss << "work recruiting girls for you.";
+					}
+					// set at least 1 bed warmer
+					else if (GetNumGirlsOnJob(0, JOB_PERSONALBEDWARMER, Day0Night1) < 1
+						&& !g_Girls.HasTrait(current, "Virgin"))	// Crazy added this so that it wont set virgins to this
 					{
 						current->m_DayJob = current->m_NightJob = JOB_PERSONALBEDWARMER;
 						ss << "work warming your bed.";
+					}
+					// Put every one else who is not a virgin and needs some training
+					else if (!g_Girls.HasTrait(current, "Virgin") && g_Girls.GetAveragOfSexSkills(current) < 99)
+					{
+						current->m_DayJob = current->m_NightJob = JOB_PERSONALTRAINING;
+						ss << "get personal training from you.";
+					}
+					// Set any other free girls to recruit for you
+					else if (current->is_free())
+					{
+						current->m_DayJob = current->m_NightJob = JOB_RECRUITER;
+						ss << "work recruiting girls for you.";
+					}
+
+					else
+					{
+						ss << "do nothing because this part of the code has not been finished yet.";
 					}
 				}
 				current->m_PrevDayJob = current->m_PrevNightJob = 255;

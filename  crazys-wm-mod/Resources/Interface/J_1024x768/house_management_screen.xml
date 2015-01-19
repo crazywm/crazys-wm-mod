@@ -17,6 +17,7 @@
 <Button   Name="BackButton"         Image="Back"          XPos="600" YPos="540" Width="160" Height="32"  Transparency="true" Scale="true" />
 <ListBox  Name="GirlList"                                 XPos="8"   YPos="26"  Width="588" Height="408" Border="1"          Events="true"      Multi="true"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
 <Column   Name="Name"               Header="Girl Name"    Offset="0"/>
+<Column   Name="Virgin"             Header="Virgin"       Offset="100"/>
 <Column   Name="Age"                Header="Age"          Offset="140"/>
 <Column   Name="Health"             Header="Health"       Offset="180"/>
 <Column   Name="Happiness"          Header="Happy"        Offset="220"/>

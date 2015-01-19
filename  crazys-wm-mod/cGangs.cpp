@@ -1892,7 +1892,7 @@ void cGangManager::UpdateGangs()
 				g_Gold.catacomb_loot(gold);
 
 				int items = 0;
-				while (g_Dice.percent((gang->intelligence()/2)+30) && items <= (currentGang->m_Num / 3))	// item chance
+				while (g_Dice.percent((currentGang->intelligence() / 2) + 30) && items <= (currentGang->m_Num / 3))	// item chance
 				{
 					bool quit = false; bool add = false;
 					sInventoryItem* temp;
@@ -1972,7 +1972,7 @@ void cGangManager::UpdateGangs()
 
 				int girl = 0;
 				// determine if get a catacomb girl (is "monster" if trait not human)
-				if (g_Dice.percent((gang->intelligence() / 4) + 25))
+				if (g_Dice.percent((currentGang->intelligence() / 4) + 25))
 				{
 					sGirl* ugirl = 0;
 					bool unique = false;

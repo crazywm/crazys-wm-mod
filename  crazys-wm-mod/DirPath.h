@@ -59,9 +59,8 @@ public:
 	DirPath(DirPath& dp) {
 		path = dp.path;
 	}
-
 #else
-	// `J` zzzzzz // not sure if this will work but it shuts up the compiler
+	// `J` - not sure if this will work but it shuts up the compiler
 	DirPath(const DirPath& dp) {
 		path = dp.path;
 	}
