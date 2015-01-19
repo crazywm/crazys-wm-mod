@@ -123,7 +123,7 @@ bool cJobManager::WorkCrystalPurifier(sGirl* girl, sBrothel* brothel, bool Day0N
 	}
 	else	// work out the pay between the house and the girl
 	{		
-		// `J` zzzzzz - need to change pay so it better reflects how well she promoted the films
+		// `J` zzzzzz - need to change pay so it better reflects how well she edited the films
 		wages += 20;
 		int roll_max = girl->spirit() + girl->intelligence();
 		roll_max /= 4;

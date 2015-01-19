@@ -9,7 +9,6 @@ Allow for subfolders in "Resources" folders. Would allow:
    Subfolders for each image type to cleanup massive image count girls
 Items page - Add location filter
 ? Items page - Add (does the girl have this item?) filter - if an item is selected, (who has one of these)'s line changes color?
-Girl Detail page - add +/- buttons to "House Percentage" (slider can sometimes be difficult)
 Brothel page - Add "Manage Inventory" button
 
 
@@ -1383,7 +1382,19 @@ Crazy pushed r139
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.27
 !!!!!!!!!!!!!!!!!!!! pushed to SVN - r140
 
+###  Changes 1/18/2015
+Fixed a bug in gang catacombs
+Added a little more to House matron assigning.
+Added "Virgin" column to house list.
+Added "GetAveragOfAllSkills", "GetAveragOfSexSkills" and "GetAveragOfNSxSkills" functions for girls
+Nerfed "sex worker is a virgin" customer happiness gain
+ - Now happiness increases an amount based on the type of sex.
+ - oralsex, tittysex, handjob, footjob +2 | strip +10 | beastiality +25 | anal +50 | lesbian +69 | group +80 | bdsm +90 | normalsex +100
+ - BDSM should now only take virginity 70% of the time.
+ - If she gets pregnant, she will loose virginity.
+Added mission Guarding to rival gangs so that gang does nothing that turn. (~33% chance)
+Cleaned up girl detail list enjoyment section adding cfg.debug.log_extradetails() for testing
 
-
-
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.28
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r142
  

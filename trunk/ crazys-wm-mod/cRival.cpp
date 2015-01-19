@@ -373,7 +373,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 			int tries = 0;
 			while (missionid == -1 && tries < 10)	// choose a mission
 			{
-				switch (g_Dice % 7)	// `J` zzzzzz - need to add checks into this
+				switch (g_Dice % 9)	// `J` zzzzzz - need to add checks into this
 				{
 				case 0:
 					missionid = MISS_EXTORTION;		// gain territory
@@ -394,8 +394,11 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 				case 5:
 					missionid = MISS_KIDNAPP;		// get new girls
 					break;
-				case 6:		default:
+				case 6:
 					missionid = MISS_CATACOMBS;		// random but dangerous
+					break;
+				default:	
+					missionid = MISS_GUARDING;		// don't do anything but guard
 					break;
 				}
 				tries++;

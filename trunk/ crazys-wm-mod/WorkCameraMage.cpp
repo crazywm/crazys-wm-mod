@@ -122,7 +122,7 @@ bool cJobManager::WorkCameraMage(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	}
 	else		// work out the pay between the house and the girl
 	{
-		// `J` zzzzzz - need to change pay so it better reflects how well she promoted the films
+		// `J` zzzzzz - need to change pay so it better reflects how well she filmed the films
 		wages += 20;
 		int roll_max = girl->spirit() + girl->intelligence();
 		roll_max /= 4;
