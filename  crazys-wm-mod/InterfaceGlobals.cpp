@@ -115,6 +115,7 @@ cScreenGetInput g_GetInput;
 cInterfaceWindow g_GetString;		// GetString.txt
 cInterfaceWindow g_LoadGame;		// LoadMenu.txt
 cInterfaceWindow g_TransferGirls;	// Hard coded
+cInterfaceWindow g_Preparing;		// preparing game screen
 cInterfaceWindow g_Gallery;			// Hard coded
 cInterfaceWindow g_Gallery2;		// Hard coded
 cInterfaceWindow g_ChangeJobs;		// Hard coded
@@ -680,6 +681,13 @@ void LoadInterface()
 		g_TransferGirls.AddTextItem(g_interfaceid.STATIC_STATIC, 632, 8, 160, 32, "BROTHELS");
 	}
 
+
+	g_LogFile.write("Loading Preparing Game Screen");
+	g_Preparing.CreateWindow(300, 200, 200, 200, 1);
+	g_Preparing.AddTextItem(g_interfaceid.STATIC_STATIC, 50, 20, 180, 30, "Preparing", 25, true, false);
+	g_Preparing.AddTextItem(g_interfaceid.STATIC_STATIC, 65, 65, 180, 30, "Game", 25, true, false);
+	g_Preparing.AddTextItem(g_interfaceid.STATIC_STATIC, 65, 110, 180, 30, "Please", 25, true, false);
+	g_Preparing.AddTextItem(g_interfaceid.STATIC_STATIC, 70, 155, 180, 30, "Wait", 25, true, false);
 
 
 	// gallery screen

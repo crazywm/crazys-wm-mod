@@ -22,12 +22,11 @@
 #include "cWindowManager.h"
 #include "cBrothel.h"
 
-extern void NewGame();
-extern void LoadGameScreen();
-extern void GetString();
+extern void PreparingNew();
 
 extern cWindowManager g_WinManager;
 extern cBrothelManager  g_Brothels;
+extern cInterfaceWindow g_Preparing;
 
 extern bool g_InitWin;
 extern int g_CurrentScreen;
@@ -42,6 +41,30 @@ extern bool g_PageUpKey;
 extern bool g_PageDownKey;
 extern bool g_TabKey;
 extern bool g_EscapeKey;
+
+extern bool g_1_Key;
+extern bool g_2_Key;
+extern bool g_3_Key;
+extern bool g_4_Key;
+extern bool g_5_Key;
+extern bool g_6_Key;
+extern bool g_7_Key;
+extern bool g_8_Key;
+extern bool g_9_Key;
+extern bool g_0_Key;
+
+extern bool g_F1_Key;
+extern bool g_F2_Key;
+extern bool g_F3_Key;
+extern bool g_F4_Key;
+extern bool g_F5_Key;
+extern bool g_F6_Key;
+extern bool g_F7_Key;
+extern bool g_F8_Key;
+extern bool g_F9_Key;
+extern bool g_F10_Key;
+extern bool g_F11_Key;
+extern bool g_F12_Key;
 
 extern string monthnames[13];
 extern string g_ReturnText;
@@ -80,23 +103,14 @@ void cScreenNewGame::init()
 
 	Focused();
 	g_InitWin = false;
-
-
 }
 
 void cScreenNewGame::process()
 {
-	// we need to make sure the ID variables are set
-	if (!ids_set) set_ids();
-
-	// handle arrow keys
-	if (check_keys()) return;
-
-	// set up the window if needed
-	init();
-
-	// check to see if there's a button event needing handling
-	check_events();
+	if (!ids_set) set_ids();	// we need to make sure the ID variables are set
+	if (check_keys()) return;	// handle arrow keys
+	init();						// set up the window if needed
+	check_events();				// check to see if there's a button event needing handling
 }
 
 void cScreenNewGame::check_events()
@@ -143,26 +157,21 @@ void cScreenNewGame::check_events()
 		else	// ready to start the game now
 		{
 			g_ReturnText = b;
-			g_Brothels.GetPlayer()->m_FirstName = p;
-			g_Brothels.GetPlayer()->m_Surname = s;
-			g_Brothels.GetPlayer()->m_RealName = p+" "+s;
+			g_Brothels.GetPlayer()->SetFirstName(p);
+			g_Brothels.GetPlayer()->SetSurname(s);
+			g_Brothels.GetPlayer()->SetRealName(p + " " + s);
 
 			g_InitWin = true;
 			g_WinManager.Pop();
-			NewGame();
+			g_WinManager.Push(PreparingNew, &g_Preparing);
+			return;
 		}
-
 	}
 }
 
 bool cScreenNewGame::check_keys()
 {
 	bool mod = true;
-//	g_UpArrow;
-//	g_DownArrow;
-//	g_LeftArrow;
-//	g_RightArrow;
-
 	if (g_TabKey || g_DownArrow)
 	{
 		mod = g_DownArrow = g_TabKey = false;
@@ -200,6 +209,50 @@ bool cScreenNewGame::check_keys()
 		mod = g_RightArrow = g_HomeKey = false;
 		g_Brothels.GetPlayer()->BirthDay(1);
 	}
+	if (currentbox == 4 && (g_1_Key || g_2_Key || g_3_Key || g_4_Key || g_5_Key || g_6_Key || g_7_Key || g_8_Key || g_9_Key || g_0_Key))
+	{
+		// `J` I'm sure this can be done better but this will do for now.
+		mod = false;
+		int tmp = 0;
+		int cur = g_Brothels.GetPlayer()->BirthDay();
+		int fin = 0;
+
+		if (g_1_Key)	{ g_1_Key = false; tmp = 1; }
+		if (g_2_Key)	{ g_2_Key = false; tmp = 2; }
+		if (g_3_Key)	{ g_3_Key = false; tmp = 3; }
+		if (g_4_Key)	{ g_4_Key = false; tmp = 4; }
+		if (g_5_Key)	{ g_5_Key = false; tmp = 5; }
+		if (g_6_Key)	{ g_6_Key = false; tmp = 6; }
+		if (g_7_Key)	{ g_7_Key = false; tmp = 7; }
+		if (g_8_Key)	{ g_8_Key = false; tmp = 8; }
+		if (g_9_Key)	{ g_9_Key = false; tmp = 9; }
+		if (g_0_Key)	{ g_0_Key = false; tmp = 0; }
+
+		/* */if (cur == 0)	fin = tmp;
+		else if (cur > 9)	fin = ((cur % 10) * 10) + tmp;
+		else if (cur < 10)	fin = (cur * 10) + tmp;
+		if (fin>30)fin = 30;
+
+		g_Brothels.GetPlayer()->SetBirthDay(fin);
+	}
+
+	if (g_F1_Key)	{ mod = g_F1_Key = false; g_Brothels.GetPlayer()->SetBirthMonth(1); }
+	if (g_F2_Key)	{ mod = g_F2_Key = false; g_Brothels.GetPlayer()->SetBirthMonth(2); }
+	if (g_F3_Key)	{ mod = g_F3_Key = false; g_Brothels.GetPlayer()->SetBirthMonth(3); }
+	if (g_F4_Key)	{ mod = g_F4_Key = false; g_Brothels.GetPlayer()->SetBirthMonth(4); }
+	if (g_F5_Key)	{ mod = g_F5_Key = false; g_Brothels.GetPlayer()->SetBirthMonth(5); }
+	if (g_F6_Key)	{ mod = g_F6_Key = false; g_Brothels.GetPlayer()->SetBirthMonth(6); }
+	if (g_F7_Key)	{ mod = g_F7_Key = false; g_Brothels.GetPlayer()->SetBirthMonth(7); }
+	if (g_F8_Key)	{ mod = g_F8_Key = false; g_Brothels.GetPlayer()->SetBirthMonth(8); }
+	if (g_F9_Key)	{ mod = g_F9_Key = false; g_Brothels.GetPlayer()->SetBirthMonth(9); }
+	if (g_F10_Key)	{ mod = g_F10_Key = false;  g_Brothels.GetPlayer()->SetBirthMonth(10); }
+	if (g_F11_Key)	{ mod = g_F11_Key = false;  g_Brothels.GetPlayer()->SetBirthMonth(11); }
+	if (g_F12_Key)	{ mod = g_F12_Key = false;  g_Brothels.GetPlayer()->SetBirthMonth(12); }
+
+
+
+
+
 
 	if (!mod)
 	{

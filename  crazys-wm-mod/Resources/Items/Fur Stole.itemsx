@@ -3,7 +3,7 @@
     <Item
         Name="Fur Stole"
         Desc="A genuine fur stole. The quality of the material sets it totally apart from the cheaper fabricated variations, but this also means girls will not want to use these as mere tools for rough play. Now just keep PETA activists away from your girl. (Strip +10, Perf +3, Cha/Bea +10, Conf +5, HAP +10, Love +20, Hate/Fear -20, adds Elegant)"
-        Type="Armor"
+        Type="Misc"
         Badness="5"
         Special="None"
         Cost="3000"

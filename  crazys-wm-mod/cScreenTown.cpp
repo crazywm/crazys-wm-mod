@@ -58,6 +58,7 @@ extern string					g_ReturnText;
 extern cGangManager				g_Gangs;
 extern bool						g_AllTogle;
 extern int						g_CurrentScreen;
+extern int						g_Building;
 
 bool cScreenTown::ids_set = false;
 
@@ -275,7 +276,7 @@ void cScreenTown::process()
 	else if (g_InterfaceEvents.CheckButton(mayor_id))		{ g_InitWin = true;		g_WinManager.push("Mayor");	return; }
 	else if (g_InterfaceEvents.CheckButton(bank_id))		{ g_InitWin = true;		g_WinManager.push("Bank");	return; }
 	else if (g_InterfaceEvents.CheckButton(shop_id))		{ g_InitWin = true;		g_AllTogle = false;	g_WinManager.push("Item Management");	return; }
-	else if (g_InterfaceEvents.CheckButton(brothel0_id))	{ g_CurrBrothel = 0;	g_InitWin = true;	g_WinManager.Pop();						return; }
+	else if (g_InterfaceEvents.CheckButton(brothel0_id))	{ check_brothel(0);		g_InitWin = true;	return; }
 	else if (g_InterfaceEvents.CheckButton(brothel1_id))	{ check_brothel(1);		g_InitWin = true;	return; }
 	else if (g_InterfaceEvents.CheckButton(brothel2_id))	{ check_brothel(2);		g_InitWin = true;	return;	}
 	else if (g_InterfaceEvents.CheckButton(brothel3_id))	{ check_brothel(3);		g_InitWin = true;	return;	}
@@ -429,6 +430,7 @@ void cScreenTown::check_brothel(int BrothelNum)
 	}
 	else	// player owns this brothel... go to it
 	{
+		g_Building = BUILDING_BROTHEL;
 		g_CurrBrothel = BrothelNum;
 		g_WinManager.Pop();
 	}

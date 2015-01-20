@@ -68,6 +68,9 @@ extern cHouseManager g_House;
 extern cFarmManager g_Farm;
 extern cFont m_Font;
 
+extern unsigned long    g_Year;
+extern unsigned long    g_Month;
+extern unsigned long    g_Day;
 
 extern cNameList	g_NameList;
 extern cSurnameList g_SurnameList;
@@ -1111,7 +1114,12 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 		break;
 	}
 	string surname;
-	if (g_Dice.percent(90))		// 10% chance of no last name
+	if (daughter || newGirl->m_States&(1 << STATUS_YOURDAUGHTER))	// `J` if she is your daughter...
+	{
+		cPlayer m_Player;
+		surname = m_Player.Surname();	// give her your last name
+	}
+	else if (g_Dice.percent(90))		// 10% chance of no last name
 	{
 		for (int i = 0; i < 5; i++)
 		{
@@ -1131,7 +1139,7 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 	newGirl->m_Triggers.SetGirlTarget(newGirl);
 
 	// `J` more usefull log for rgirl
-	g_LogFile.os() << gettext("Random girl ") << newGirl->m_Realname << gettext(" created from template ") << newGirl->m_Name << gettext(".rgirlsx") << endl;
+	g_LogFile.os() << "Random girl " << newGirl->m_Realname << " created from template " << newGirl->m_Name << ".rgirlsx" << endl;
 
 	if (addToGGirls)	AddGirl(newGirl);
 
@@ -1192,7 +1200,7 @@ void cGirls::LevelUp(sGirl* girl)
 	if (GetStat(girl, STAT_LEVEL) <= 20)	LevelUpStats(girl);
 
 	stringstream ss;
-	ss << girl->m_Realname << gettext(" levelled up to ") << girl->level() << ".";
+	ss << girl->m_Realname << " levelled up to " << girl->level() << ".";
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
 	ss.str("");
 
@@ -1441,80 +1449,80 @@ string cGirls::GetGirlMood(sGirl* girl)
 	int variable = 0;
 
 	int HateLove = GetStat(girl, STAT_PCLOVE) - GetStat(girl, STAT_PCHATE);
-	ss << gettext(" feels the player ");
+	ss << " feels the player ";
 
 	if (g_Girls.HasTrait(girl, "Your Daughter"))
 	{
-		/* */if (HateLove <= -80)	ss << gettext("should die ");
-		else if (HateLove <= -60)	ss << gettext("is better off dead ");
-		else if (HateLove <= -40)	ss << gettext("is mean ");
-		else if (HateLove <= -20)	ss << gettext("isn't nice ");
-		else if (HateLove <= 0)		ss << gettext("is annoying ");
-		else if (HateLove <= 20)	ss << gettext("is ok ");
-		else if (HateLove <= 40)	ss << gettext("is easy going ");
-		else if (HateLove <= 60)	ss << gettext("is a good dad ");
-		else if (HateLove <= 80)	ss << gettext("is a great dad ");
-		else 						ss << gettext("is an awesome daddy ");
+		/* */if (HateLove <= -80)	ss << "should die ";
+		else if (HateLove <= -60)	ss << "is better off dead ";
+		else if (HateLove <= -40)	ss << "is mean ";
+		else if (HateLove <= -20)	ss << "isn't nice ";
+		else if (HateLove <= 0)		ss << "is annoying ";
+		else if (HateLove <= 20)	ss << "is ok ";
+		else if (HateLove <= 40)	ss << "is easy going ";
+		else if (HateLove <= 60)	ss << "is a good dad ";
+		else if (HateLove <= 80)	ss << "is a great dad ";
+		else 						ss << "is an awesome daddy ";
 	}
 	else if (g_Girls.HasTrait(girl, "Lesbian"))//lesbian shouldn't fall in love with you
 	{
-		/* */if (HateLove <= -80)	ss << gettext("should die ");
-		else if (HateLove <= -60)	ss << gettext("is better off dead ");
-		else if (HateLove <= -40)	ss << gettext("is mean ");
-		else if (HateLove <= -20)	ss << gettext("isn't nice ");
-		else if (HateLove <= 0)		ss << gettext("is annoying ");
-		else if (HateLove <= 20)	ss << gettext("is ok ");
-		else if (HateLove <= 40)	ss << gettext("is easy going ");
-		else if (HateLove <= 60)	ss << gettext("is good ");
-		else if (HateLove <= 80)	ss << gettext("is a nice guy ");
-		else 						ss << gettext("is an awesome guy ");
+		/* */if (HateLove <= -80)	ss << "should die ";
+		else if (HateLove <= -60)	ss << "is better off dead ";
+		else if (HateLove <= -40)	ss << "is mean ";
+		else if (HateLove <= -20)	ss << "isn't nice ";
+		else if (HateLove <= 0)		ss << "is annoying ";
+		else if (HateLove <= 20)	ss << "is ok ";
+		else if (HateLove <= 40)	ss << "is easy going ";
+		else if (HateLove <= 60)	ss << "is good ";
+		else if (HateLove <= 80)	ss << "is a nice guy ";
+		else 						ss << "is an awesome guy ";
 	}
 	else
 	{
-		/* */if (HateLove <= -80)	ss << gettext("should die ");
-		else if (HateLove <= -60)	ss << gettext("is better off dead ");
-		else if (HateLove <= -40)	ss << gettext("is mean ");
-		else if (HateLove <= -20)	ss << gettext("isn't nice ");
-		else if (HateLove <= 0)		ss << gettext("is annoying ");
-		else if (HateLove <= 20)	ss << gettext("is ok ");
-		else if (HateLove <= 40)	ss << gettext("is easy going ");
-		else if (HateLove <= 60)	ss << gettext("is good ");
-		else if (HateLove <= 80)	ss << gettext("is attractive ");
-		else 						ss << gettext("is her true love ");
+		/* */if (HateLove <= -80)	ss << "should die ";
+		else if (HateLove <= -60)	ss << "is better off dead ";
+		else if (HateLove <= -40)	ss << "is mean ";
+		else if (HateLove <= -20)	ss << "isn't nice ";
+		else if (HateLove <= 0)		ss << "is annoying ";
+		else if (HateLove <= 20)	ss << "is ok ";
+		else if (HateLove <= 40)	ss << "is easy going ";
+		else if (HateLove <= 60)	ss << "is good ";
+		else if (HateLove <= 80)	ss << "is attractive ";
+		else 						ss << "is her true love ";
 	}
 
 	if (GetStat(girl, STAT_PCFEAR) > 20)
 	{
-		if (HateLove > 0)	ss << gettext("but she is also ");
-		else				ss << gettext("and she is ");
-		if (GetStat(girl, STAT_PCFEAR) < 40)		ss << gettext("afraid of him.");
-		else if (GetStat(girl, STAT_PCFEAR) < 60)	ss << gettext("fearful of him.");
-		else if (GetStat(girl, STAT_PCFEAR) < 80)	ss << gettext("afraid he will hurt her.");
-		else										ss << gettext("afraid he will kill her.");
+		if (HateLove > 0)	ss << "but she is also ";
+		else				ss << "and she is ";
+		if (GetStat(girl, STAT_PCFEAR) < 40)		ss << "afraid of him.";
+		else if (GetStat(girl, STAT_PCFEAR) < 60)	ss << "fearful of him.";
+		else if (GetStat(girl, STAT_PCFEAR) < 80)	ss << "afraid he will hurt her.";
+		else										ss << "afraid he will kill her.";
 	}
-	else	ss << gettext("and he isn't scary.");
+	else	ss << "and he isn't scary.";
 
 	int happy = GetStat(girl, STAT_HAPPINESS);
-	ss << gettext("\nShe is ");
-	/* */if (happy > 90)	ss << gettext("happy.");
-	else if (happy > 80)	ss << gettext("joyful.");
-	else if (happy > 60)	ss << gettext("reasonably happy.");
-	else if (happy > 40)	ss << gettext("unhappy.");
-	else		ss << gettext("showing signs of depression.");
+	ss << "\nShe is ";
+	/* */if (happy > 90)	ss << "happy.";
+	else if (happy > 80)	ss << "joyful.";
+	else if (happy > 60)	ss << "reasonably happy.";
+	else if (happy > 40)	ss << "unhappy.";
+	else		ss << "showing signs of depression.";
 
 
 	int morality = GetStat(girl, STAT_MORALITY); //zzzzz FIXME needs better text
-	ss << gettext("\nShe is ");
-	/* */if (morality <= -80)	ss << gettext("pure evil.");
-	else if (morality <= -60)	ss << gettext("evil.");
-	else if (morality <= -40)	ss << gettext("mean.");
-	else if (morality <= -20)	ss << gettext("not nice.");
-	else if (morality <= 0)		ss << gettext("neutral.");
-	else if (morality <= 20)	ss << gettext("is lawful.");
-	else if (morality <= 40)	ss << gettext("is nice");
-	else if (morality <= 60)	ss << gettext("is good.");
-	else if (morality <= 80)	ss << gettext("is very good.");
-	else 						ss << gettext("holy.");
+	ss << "\nShe is ";
+	/* */if (morality <= -80)	ss << "pure evil.";
+	else if (morality <= -60)	ss << "evil.";
+	else if (morality <= -40)	ss << "mean.";
+	else if (morality <= -20)	ss << "not nice.";
+	else if (morality <= 0)		ss << "neutral.";
+	else if (morality <= 20)	ss << "is lawful.";
+	else if (morality <= 40)	ss << "is nice";
+	else if (morality <= 60)	ss << "is good.";
+	else if (morality <= 80)	ss << "is very good.";
+	else 						ss << "holy.";
 
 	return ss.str();
 }
@@ -1638,7 +1646,7 @@ string cGirls::GetDetailsString(sGirl* girl, bool purchase)
 		}
 	}
 	int cost = int(tariff.slave_price(girl, purchase));
-	g_LogFile.ss() << gettext("slave ") << (purchase ? gettext("buy") : gettext("sell")) << gettext("price = ") << cost;
+	g_LogFile.ss() << "slave " << (purchase ? "buy" : "sell") << "price = " << cost;
 	g_LogFile.ssend();
 	ss << "\n" << basestr[8] << cost << " Gold";
 	CalculateAskPrice(girl, false);
@@ -1646,56 +1654,56 @@ string cGirls::GetDetailsString(sGirl* girl, bool purchase)
 	ss << "\nAvg Pay per Customer : " << cost << " gold\n";
 
 	// display status
-	if (girl->m_States&(1 << STATUS_SLAVE))			ss << gettext("Is Branded a Slave\n");
-	else if (cfg.debug.log_extradetails())			ss << gettext("( She Is Not a Slave )\n");
-	else ss << gettext("\n");
+	if (girl->m_States&(1 << STATUS_SLAVE))			ss << "Is Branded a Slave\n";
+	else if (cfg.debug.log_extradetails())			ss << "( She Is Not a Slave )\n";
+	else ss << "\n";
 
-	if (g_Girls.CheckVirginity(girl))				ss << gettext("She is a Virgin\n");
-	else if (cfg.debug.log_extradetails())			ss << gettext("( She Is Not a Virgin )\n");
-	else ss << gettext("\n");
+	if (g_Girls.CheckVirginity(girl))				ss << "She is a Virgin\n";
+	else if (cfg.debug.log_extradetails())			ss << "( She Is Not a Virgin )\n";
+	else ss << "\n";
 
 	if (!purchase)
 	{
 		int to_go = cfg.pregnancy.weeks_pregnant() - girl->m_WeeksPreg;
 		if (girl->m_States&(1 << STATUS_PREGNANT))
 		{
-			ss << gettext("Is pregnant, due: ") << to_go << gettext(" weeks\n");
+			ss << "Is pregnant, due: " << to_go << " weeks\n";
 		}
 		else if (girl->m_States&(1 << STATUS_PREGNANT_BY_PLAYER))
 		{
-			ss << gettext("Is pregnant with your child, due: ") << to_go << gettext(" weeks\n");
+			ss << "Is pregnant with your child, due: " << to_go << " weeks\n";
 		}
 		else if (girl->m_States&(1 << STATUS_INSEMINATED))
 		{
-			ss << gettext("Is inseminated, due: ") << to_go << gettext(" weeks\n");
+			ss << "Is inseminated, due: " << to_go << " weeks\n";
 		}
 		else if (girl->m_PregCooldown != 0)
 		{
-			ss << gettext("Cannot get pregnant for: ") << girl->m_PregCooldown << gettext(" weeks\n");
+			ss << "Cannot get pregnant for: " << girl->m_PregCooldown << " weeks\n";
 		}
-		else if (cfg.debug.log_extradetails())			ss << gettext("( She Is not Pregnant )\n");
-		else ss << gettext("\n");
+		else if (cfg.debug.log_extradetails())			ss << "( She Is not Pregnant )\n";
+		else ss << "\n";
 
-		if (girl->m_States&(1 << STATUS_HAS_DAUGHTER))	ss << gettext("Has Daughter\n");
-		else if (cfg.debug.log_extradetails())			ss << gettext("( She Has No Daughters )\n");
-		else											ss << gettext("\n");
-		if (girl->m_States&(1 << STATUS_HAS_SON))		ss << gettext("Has Son\n");
-		else if (cfg.debug.log_extradetails())			ss << gettext("( She Has No Sons )\n");
-		else											ss << gettext("\n");
+		if (girl->m_States&(1 << STATUS_HAS_DAUGHTER))	ss << "Has Daughter\n";
+		else if (cfg.debug.log_extradetails())			ss << "( She Has No Daughters )\n";
+		else											ss << "\n";
+		if (girl->m_States&(1 << STATUS_HAS_SON))		ss << "Has Son\n";
+		else if (cfg.debug.log_extradetails())			ss << "( She Has No Sons )\n";
+		else											ss << "\n";
 	}
 
-	if (girl->is_addict() && !girl->has_disease())		ss << gettext("Has an addiciton\n");
-	else if (!girl->is_addict() && girl->has_disease())	ss << gettext("Has a disease\n");
-	else if (girl->is_addict() && girl->has_disease())	ss << gettext("Has an addiciton and a disease\n");
-	else if (cfg.debug.log_extradetails())				ss << gettext("( She Has No Addicitons or Diseases )\n");
-	else												ss << gettext("\n");
+	if (girl->is_addict() && !girl->has_disease())		ss << "Has an addiciton\n";
+	else if (!girl->is_addict() && girl->has_disease())	ss << "Has a disease\n";
+	else if (girl->is_addict() && girl->has_disease())	ss << "Has an addiciton and a disease\n";
+	else if (cfg.debug.log_extradetails())				ss << "( She Has No Addicitons or Diseases )\n";
+	else												ss << "\n";
 
 	if (!purchase)
 	{
-		if (girl->m_States&(1 << STATUS_BADLY_POISONED))ss << gettext("Is badly poisoned\n");
-		else if (girl->m_States&(1 << STATUS_POISONED))	ss << gettext("Is poisoned\n");
-		else if (cfg.debug.log_extradetails())			ss << gettext("( She Is Not Poisoned )\n");
-		else											ss << gettext("\n");
+		if (girl->m_States&(1 << STATUS_BADLY_POISONED))ss << "Is badly poisoned\n";
+		else if (girl->m_States&(1 << STATUS_POISONED))	ss << "Is poisoned\n";
+		else if (cfg.debug.log_extradetails())			ss << "( She Is Not Poisoned )\n";
+		else											ss << "\n";
 	}
 
 	// display Skills
@@ -1787,65 +1795,65 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 
 	if (!purchase)
 	{
-		ss << gettext("\n\nJOB PREFERENCES\n");
+		ss << "\n\nJOB PREFERENCES\n";
 		// `J` When modifying Action types, search for "J-Change-Action-Types"  :  found in >> GetMoreDetailsString
 		string jobs[] = {
-			gettext("combat"),
-			gettext("working as a whore"),
-			gettext("working as an Escort"),
-			gettext("cleaning"),
-			gettext("acting as a matron"),
-			gettext("working in the bar"),
-			gettext("working in the gambling hall"),
-			gettext("producing movies"),
-			gettext("providing security"),
-			gettext("doing advertising"),
-			gettext("torturing people"),
-			gettext("caring for beasts"),
-			gettext("working as a doctor"),
-			gettext("producing movies"),
-			gettext("providing customer service"),
-			gettext("working in the centre"),
-			gettext("working in the club"),
-			gettext("being in your harem"),
-			gettext("being a recruiter"),
-			gettext("working as a nurse"),
-			gettext("fixing things"),
-			gettext("counseling people"),
-			gettext("performing music"),
-			gettext("striping"),
-			gettext("having her breasts milked"),
-			gettext("working as a massusse"),
-			gettext("working on the farm"),
-			gettext("training in the medical field"),
-			gettext("drug rehab"),
-			gettext("doing miscellaneous tasks")  // general
+			"combat",
+			"working as a whore",
+			"working as an Escort",
+			"cleaning",
+			"acting as a matron",
+			"working in the bar",
+			"working in the gambling hall",
+			"producing movies",
+			"providing security",
+			"doing advertising",
+			"torturing people",
+			"caring for beasts",
+			"working as a doctor",
+			"producing movies",
+			"providing customer service",
+			"working in the centre",
+			"working in the club",
+			"being in your harem",
+			"being a recruiter",
+			"working as a nurse",
+			"fixing things",
+			"counseling people",
+			"performing music",
+			"striping",
+			"having her breasts milked",
+			"working as a massusse",
+			"working on the farm",
+			"training in the medical field",
+			"drug rehab",
+			"doing miscellaneous tasks"  // general
 		};
-		string base = gettext("She");
+		string base = "She";
 		string text;
 		int enjcount = 0;
 		for (int i = 0; i < NUM_ACTIONTYPES; ++i)
 		{
 			if (jobs[i] == "")			continue;
-			/* */if (girl->m_Enjoyment[i] < -70)	{ text = gettext(" hates "); }
-			else if (girl->m_Enjoyment[i] < -50)	{ text = gettext(" really dislikes "); }
-			else if (girl->m_Enjoyment[i] < -30)	{ text = gettext(" dislikes "); }
-			else if (girl->m_Enjoyment[i] < -20)	{ text = gettext(" doesn't particularly enjoy "); }
+			/* */if (girl->m_Enjoyment[i] < -70)	{ text = " hates "; }
+			else if (girl->m_Enjoyment[i] < -50)	{ text = " really dislikes "; }
+			else if (girl->m_Enjoyment[i] < -30)	{ text = " dislikes "; }
+			else if (girl->m_Enjoyment[i] < -20)	{ text = " doesn't particularly enjoy "; }
 			else if (girl->m_Enjoyment[i] < 15)		{ 
-				if (cfg.debug.log_extradetails())	{ text = gettext(" is indifferent to "); }
+				if (cfg.debug.log_extradetails())	{ text = " is indifferent to "; }
 				else continue; } // if she's indifferent, why specify it? Let's instead skip it.
-			else if (girl->m_Enjoyment[i] < 30)		{ text = gettext(" is happy enough with "); }
-			else if (girl->m_Enjoyment[i] < 50)		{ text = gettext(" likes "); }
-			else if (girl->m_Enjoyment[i] < 70)		{ text = gettext(" really enjoys "); }
-			else									{ text = gettext(" loves "); }
+			else if (girl->m_Enjoyment[i] < 30)		{ text = " is happy enough with "; }
+			else if (girl->m_Enjoyment[i] < 50)		{ text = " likes "; }
+			else if (girl->m_Enjoyment[i] < 70)		{ text = " really enjoys "; }
+			else									{ text = " loves "; }
 			ss << base << text << jobs[i] << ".";
 			if (cfg.debug.log_extradetails())		{ ss << "  (" << girl->m_Enjoyment[i] << ")"; }
 				ss << "\n";
 			enjcount++;
 		}
 		if (cfg.debug.log_extradetails())			{ ss << "\n"; }
-		else if (enjcount > 0)						{ ss << gettext("\nShe is indifferent to all other tasks.\n\n"); }
-		else										{ ss << gettext("At the moment, she is indifferent to all tasks.\n\n"); }
+		else if (enjcount > 0)						{ ss << "\nShe is indifferent to all other tasks.\n\n"; }
+		else										{ ss << "At the moment, she is indifferent to all tasks.\n\n"; }
 	}
 
 	ss << "\n\n\nBased on:  ";
@@ -2563,99 +2571,99 @@ string cGirls::GetThirdDetailsString(sGirl* girl)
 	// `J` spiltting the buildings so they can be sorted
 	string div = "\n------------------------------------\n\n";
 	string Brothel_Data = "";
-	Brothel_Data += gettext("Brothel Job Ratings\n");
-	Brothel_Data += girl->JobRatingLetter(security) + gettext("  -  Security\n");
-	Brothel_Data += girl->JobRatingLetter(advertising) + gettext("  -  Advertising\n");
-	Brothel_Data += girl->JobRatingLetter(custservice) + gettext("  -  Customer Service\n");
-	Brothel_Data += girl->JobRatingLetter(matron) + gettext("  -  Matron\n");
-	Brothel_Data += girl->JobRatingLetter(catacombs) + gettext("  -  Explore Catacombs\n");
-	Brothel_Data += girl->JobRatingLetter(beastcare) + gettext("  -  Beast Care\n\n");
-	Brothel_Data += girl->JobRatingLetter(barmaid) + gettext("  -  Barmaid\n");
-	Brothel_Data += girl->JobRatingLetter(barwait) + gettext("  -  Bar Waitress\n");
-	Brothel_Data += girl->JobRatingLetter(barsing) + gettext("  -  Singer\n");
-	Brothel_Data += girl->JobRatingLetter(barpiano) + gettext("  -  Piano\n\n");
-	Brothel_Data += girl->JobRatingLetter(dealer) + gettext("  -  Dealer\n");
-	Brothel_Data += girl->JobRatingLetter(entertainer) + gettext("  -  Entertainer\n");
-	Brothel_Data += girl->JobRatingLetter(xxx) + gettext("  -  XXX Entertainer\n\n");
-	Brothel_Data += girl->JobRatingLetter(clubbar) + gettext("  -  Club Barmaid\n");
-	Brothel_Data += girl->JobRatingLetter(clubwait) + gettext("  -  Club Waitress\n");
-	Brothel_Data += girl->JobRatingLetter(clubstrip) + gettext("  -  Stripper\n\n");
-	Brothel_Data += girl->JobRatingLetter(massusse) + gettext("  -  Massusse\n");
-	Brothel_Data += girl->JobRatingLetter(brothelstrip) + gettext("  -  Brothel Stripper\n");
-	Brothel_Data += girl->JobRatingLetter(peep) + gettext("  -  Peep Show\n");
+	Brothel_Data += "Brothel Job Ratings\n";
+	Brothel_Data += girl->JobRatingLetter(security) + "  -  Security\n";
+	Brothel_Data += girl->JobRatingLetter(advertising) + "  -  Advertising\n";
+	Brothel_Data += girl->JobRatingLetter(custservice) + "  -  Customer Service\n";
+	Brothel_Data += girl->JobRatingLetter(matron) + "  -  Matron\n";
+	Brothel_Data += girl->JobRatingLetter(catacombs) + "  -  Explore Catacombs\n";
+	Brothel_Data += girl->JobRatingLetter(beastcare) + "  -  Beast Care\n\n";
+	Brothel_Data += girl->JobRatingLetter(barmaid) + "  -  Barmaid\n";
+	Brothel_Data += girl->JobRatingLetter(barwait) + "  -  Bar Waitress\n";
+	Brothel_Data += girl->JobRatingLetter(barsing) + "  -  Singer\n";
+	Brothel_Data += girl->JobRatingLetter(barpiano) + "  -  Piano\n\n";
+	Brothel_Data += girl->JobRatingLetter(dealer) + "  -  Dealer\n";
+	Brothel_Data += girl->JobRatingLetter(entertainer) + "  -  Entertainer\n";
+	Brothel_Data += girl->JobRatingLetter(xxx) + "  -  XXX Entertainer\n\n";
+	Brothel_Data += girl->JobRatingLetter(clubbar) + "  -  Club Barmaid\n";
+	Brothel_Data += girl->JobRatingLetter(clubwait) + "  -  Club Waitress\n";
+	Brothel_Data += girl->JobRatingLetter(clubstrip) + "  -  Stripper\n\n";
+	Brothel_Data += girl->JobRatingLetter(massusse) + "  -  Massusse\n";
+	Brothel_Data += girl->JobRatingLetter(brothelstrip) + "  -  Brothel Stripper\n";
+	Brothel_Data += girl->JobRatingLetter(peep) + "  -  Peep Show\n";
 	Brothel_Data += div;
 
 	//STUDIO
 	string Studio_Data = "";
 	if (g_Studios.GetNumBrothels() > 0)
 	{
-		Studio_Data += gettext("Studio Job Ratings\n");
-		Studio_Data += girl->JobRatingLetter(director) + gettext("  -  Director\n");
-		Studio_Data += girl->JobRatingLetter(promoter) + gettext("  -  Promoter\n");
-		Studio_Data += girl->JobRatingLetter(cameramage) + gettext("  -  Camera Mage\n");
-		Studio_Data += girl->JobRatingLetter(crystalpurifier) + gettext("  -  Crystal Purifier\n");
+		Studio_Data += "Studio Job Ratings\n";
+		Studio_Data += girl->JobRatingLetter(director) + "  -  Director\n";
+		Studio_Data += girl->JobRatingLetter(promoter) + "  -  Promoter\n";
+		Studio_Data += girl->JobRatingLetter(cameramage) + "  -  Camera Mage\n";
+		Studio_Data += girl->JobRatingLetter(crystalpurifier) + "  -  Crystal Purifier\n";
 		Studio_Data += div;
 	}
 	//ARENA
 	string Arena_Data = "";
 	if (g_Arena.GetNumBrothels() > 0)
 	{
-		Arena_Data += gettext("Arena Job Ratings\n");
-		Arena_Data += girl->JobRatingLetter(doctore) + gettext("  -  Doctore\n");
-		Arena_Data += girl->JobRatingLetter(fightbeast) + gettext("  -  Fight Beast\n");
-		Arena_Data += girl->JobRatingLetter(cagematch) + gettext("  -  Cage Match\n");
-		Arena_Data += girl->JobRatingLetter(cityguard) + gettext("  -  City Guard\n");
+		Arena_Data += "Arena Job Ratings\n";
+		Arena_Data += girl->JobRatingLetter(doctore) + "  -  Doctore\n";
+		Arena_Data += girl->JobRatingLetter(fightbeast) + "  -  Fight Beast\n";
+		Arena_Data += girl->JobRatingLetter(cagematch) + "  -  Cage Match\n";
+		Arena_Data += girl->JobRatingLetter(cityguard) + "  -  City Guard\n";
 		Arena_Data += div;
 	}
 	//CENTRE
 	string Centre_Data = "";
 	if (g_Centre.GetNumBrothels() > 0)
 	{
-		Centre_Data += gettext("Centre Job Ratings\n");
-		Centre_Data += girl->JobRatingLetter(centremanager) + gettext("  -  Centre Manager\n");
-		Centre_Data += girl->JobRatingLetter(drugcounselor) + gettext("  -  Drug Counselor\n");
-		Centre_Data += girl->JobRatingLetter(feedpoor) + gettext("  -  Feed Poor\n");
-		Centre_Data += girl->JobRatingLetter(comunityservice) + gettext("  -  Comunity Service\n");
+		Centre_Data += "Centre Job Ratings\n";
+		Centre_Data += girl->JobRatingLetter(centremanager) + "  -  Centre Manager\n";
+		Centre_Data += girl->JobRatingLetter(drugcounselor) + "  -  Drug Counselor\n";
+		Centre_Data += girl->JobRatingLetter(feedpoor) + "  -  Feed Poor\n";
+		Centre_Data += girl->JobRatingLetter(comunityservice) + "  -  Comunity Service\n";
 		Centre_Data += div;
 	}
 	//CLINIC
 	string Clinic_Data = "";
 	if (g_Clinic.GetNumBrothels() > 0)
 	{
-		Clinic_Data += gettext("Clinic Job Ratings\n");
-		Clinic_Data += girl->JobRatingLetter(chairman) + gettext("  -  Chairman\n");
-		Clinic_Data += girl->JobRatingLetter(doctor) + gettext("  -  Doctor\n");
-		Clinic_Data += girl->JobRatingLetter(nurse) + gettext("  -  Nurse\n");
-		Clinic_Data += girl->JobRatingLetter(mechanic) + gettext("  -  Mechanic\n");
+		Clinic_Data += "Clinic Job Ratings\n";
+		Clinic_Data += girl->JobRatingLetter(chairman) + "  -  Chairman\n";
+		Clinic_Data += girl->JobRatingLetter(doctor) + "  -  Doctor\n";
+		Clinic_Data += girl->JobRatingLetter(nurse) + "  -  Nurse\n";
+		Clinic_Data += girl->JobRatingLetter(mechanic) + "  -  Mechanic\n";
 		Clinic_Data += div;
 	}
 	//FARM
 	string Farm_Data = "";
 	if (g_Farm.GetNumBrothels() > 0)
 	{
-		Farm_Data += gettext("Farm Job Ratings\n");
-		Farm_Data += girl->JobRatingLetter(farmmanger) + gettext("  -  Farm Manger\n");
-		Farm_Data += girl->JobRatingLetter(veterinarian) + gettext("  -  Veterinarian\n");
-		Farm_Data += girl->JobRatingLetter(marketer) + gettext("  -  Marketer\n");
-		Farm_Data += girl->JobRatingLetter(researcher) + gettext("  -  Researcher\n");
-		Farm_Data += girl->JobRatingLetter(farmer) + gettext("  -  Farmer\n");
-		Farm_Data += girl->JobRatingLetter(gardener) + gettext("  -  Gardener\n");
-		Farm_Data += girl->JobRatingLetter(sheapherd) + gettext("  -   Sheapherd\n");
-		Farm_Data += girl->JobRatingLetter(rancher) + gettext("  -  Rancher\n");
-		Farm_Data += girl->JobRatingLetter(catarancher) + gettext("  -  Catacombs Rancher\n");
-		Farm_Data += girl->JobRatingLetter(milker) + gettext("  -  Milker\n");
-		Farm_Data += girl->JobRatingLetter(butcher) + gettext("  -  Butcher\n");
-		Farm_Data += girl->JobRatingLetter(baker) + gettext("  -  Baker\n");
-		Farm_Data += girl->JobRatingLetter(brewer) + gettext("  -  Brewer\n");
-		Farm_Data += girl->JobRatingLetter(makeitem) + gettext("  -  Make Item\n");
-		Farm_Data += girl->JobRatingLetter(makepot) + gettext("  -  Make Potion\n");
+		Farm_Data += "Farm Job Ratings\n";
+		Farm_Data += girl->JobRatingLetter(farmmanger) + "  -  Farm Manger\n";
+		Farm_Data += girl->JobRatingLetter(veterinarian) + "  -  Veterinarian\n";
+		Farm_Data += girl->JobRatingLetter(marketer) + "  -  Marketer\n";
+		Farm_Data += girl->JobRatingLetter(researcher) + "  -  Researcher\n";
+		Farm_Data += girl->JobRatingLetter(farmer) + "  -  Farmer\n";
+		Farm_Data += girl->JobRatingLetter(gardener) + "  -  Gardener\n";
+		Farm_Data += girl->JobRatingLetter(sheapherd) + "  -   Sheapherd\n";
+		Farm_Data += girl->JobRatingLetter(rancher) + "  -  Rancher\n";
+		Farm_Data += girl->JobRatingLetter(catarancher) + "  -  Catacombs Rancher\n";
+		Farm_Data += girl->JobRatingLetter(milker) + "  -  Milker\n";
+		Farm_Data += girl->JobRatingLetter(butcher) + "  -  Butcher\n";
+		Farm_Data += girl->JobRatingLetter(baker) + "  -  Baker\n";
+		Farm_Data += girl->JobRatingLetter(brewer) + "  -  Brewer\n";
+		Farm_Data += girl->JobRatingLetter(makeitem) + "  -  Make Item\n";
+		Farm_Data += girl->JobRatingLetter(makepot) + "  -  Make Potion\n";
 		Farm_Data += div;
 	}
 	//HOUSE
 	string House_Data = "";
-	House_Data += gettext("House Job Ratings\n");
-	House_Data += girl->JobRatingLetter(headgirl) + gettext("  -  Head Girl\n");
-	House_Data += girl->JobRatingLetter(recruiter) + gettext("  -  Recruiter\n");
+	House_Data += "House Job Ratings\n";
+	House_Data += girl->JobRatingLetter(headgirl) + "  -  Head Girl\n";
+	House_Data += girl->JobRatingLetter(recruiter) + "  -  Recruiter\n";
 	House_Data += div;
 
 	// `J` Show the current building first
@@ -3659,8 +3667,8 @@ bool sChild::LoadChildXML(TiXmlHandle hChild)
 	}
 
 	int tempInt = 0;
-	pChild->QueryIntAttribute(gettext("Age"), &tempInt); m_Age = tempInt; tempInt = 0;
-	pChild->QueryIntAttribute("IsPlayers", &tempInt); m_IsPlayers = tempInt; tempInt = 0;
+	pChild->QueryIntAttribute("Age", &tempInt); m_Age = tempInt; tempInt = 0;
+	pChild->QueryValueAttribute<bool>("IsPlayers", &m_IsPlayers);
 	pChild->QueryIntAttribute("Sex", &tempInt);
 	m_Sex = sChild::Gender(tempInt); tempInt = 0;
 	pChild->QueryIntAttribute("Unborn", &tempInt); m_Unborn = tempInt; tempInt = 0;
@@ -3741,10 +3749,10 @@ void sGirl::load_from_xml(TiXmlElement *el)
 
 	if (pt = el->Attribute("Status"))
 	{
-		/* */if (strcmp(pt, gettext("Catacombs")) == 0)		m_States |= (1 << STATUS_CATACOMBS);
-		else if (strcmp(pt, gettext("Slave")) == 0)			m_States |= (1 << STATUS_SLAVE);
-		else if (strcmp(pt, gettext("Arena")) == 0)			m_States |= (1 << STATUS_ARENA);
-		else if (strcmp(pt, gettext("Your Daughter")) == 0)	m_States |= (1 << STATUS_YOURDAUGHTER);
+		/* */if (strcmp(pt, "Catacombs") == 0)		m_States |= (1 << STATUS_CATACOMBS);
+		else if (strcmp(pt, "Slave") == 0)			m_States |= (1 << STATUS_SLAVE);
+		else if (strcmp(pt, "Arena") == 0)			m_States |= (1 << STATUS_ARENA);
+		else if (strcmp(pt, "Your Daughter") == 0)	m_States |= (1 << STATUS_YOURDAUGHTER);
 		//		else	m_States = 0;
 	}
 
@@ -4940,7 +4948,9 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait, bool rememberflag)
 		stringstream ss;
 		ss << tr->m_Name;
 		string Name = ss.str();
-		string first = ""; first[0] = tolower(Name[0]);
+		string first = ""; 
+		first = tolower(Name[0]);
+
 
 		if (first == "a")
 		{
@@ -6049,7 +6059,8 @@ void cGirls::UnapplyTraits(sGirl* girl, sTrait* trait)
 		stringstream ss;
 		ss << tr->m_Name;
 		string Name = ss.str();
-		string first = ""; first[0] = tolower(Name[0]);
+		string first = ""; 
+		first = tolower(Name[0]);
 
 		if (first == "a")
 		{
@@ -8127,7 +8138,7 @@ void cGirls::updateHappyTraits(sGirl* girl)
 			}
 			else
 			{
-				string msg = girl->m_Realname + gettext(" has killed herself since she was unhappy and depressed.");
+				string msg = girl->m_Realname + " has killed herself since she was unhappy and depressed.";
 				girl->m_Events.AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_DANGER);
 				g_MessageQue.AddToQue(ss.str(), COLOR_RED);
 				girl->health(-1000);
@@ -8140,6 +8151,8 @@ void cGirls::updateHappyTraits(sGirl* girl)
 
 void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool group, string& message, u_int& SexType)
 {
+	int check = GetSkill(girl, SexType);
+
 	bool good = false;
 	bool contraception = false;
 	double STDchance = 0.001;		// `J` added new percent that allows 3 decimal check so setting a 0.001% base chance
@@ -8251,47 +8264,106 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		UpdateStat(girl, STAT_MANA, -happymana);					// and apply mana
 	}
 
-	message += girl->m_Realname;
-	int check = GetSkill(girl, SexType);
+
+	string introtext = girl->m_Realname;
+	// `J` not sure if all of the options will come up in appropriate order but it is a good start.
+	int intro = g_Dice % 15;
+	intro += girl->libido() / 20;
+	intro += check / 20;
+	// need to add more traits
+	if (HasTrait(girl, "Nymphomaniac"))	intro += 2;
+	if (HasTrait(girl, "Aggressive"))	intro += 1;
+	if (HasTrait(girl, "Open Minded"))	intro += 1;
+	if (HasTrait(girl, "Optimist"))		intro += 1;
+	if (HasTrait(girl, "Pessimist"))	intro -= 1;
+	if (HasTrait(girl, "Meek"))			intro -= 1;
+	if (HasTrait(girl, "Nervous"))		intro -= 2;
+	if (HasTrait(girl, "Shy"))			intro -= 2;
+
+	/* */if (intro < 2)		introtext += " reluctantly leads";
+	else if (intro < 4)		introtext += " hesitantly leads";
+	else if (intro < 8)		introtext += " quickly leads";
+	else if (intro < 12)	introtext += " leads";
+	else if (intro < 18)	introtext += " casually leads";
+	else if (intro < 22)	introtext += " eagerly leads";
+	else if (intro < 25)	introtext += " casually drags";
+	else					introtext += " eagerly drags";
+	
+	if (SexType == SKILL_GROUP)	introtext += " her customers ";
+	else introtext += " her customer ";
+		
+	int currentjob = (Day0Night1 ? girl->m_NightJob : girl->m_DayJob);
+	if (currentjob == JOB_WHOREBROTHEL || currentjob == JOB_BARWHORE || currentjob == JOB_WHOREGAMBHALL)
+	{
+		if (SexType == SKILL_GROUP && g_Dice.percent(30))
+			introtext += "to an Orgy room.\n";
+		else if (SexType == SKILL_BDSM && g_Dice.percent(30))
+			introtext += "to a Bondage room.\n";
+		else introtext += "to her room.\n";
+	}
+	else if (currentjob == JOB_WHORESTREETS)
+		introtext += "to a secluded alley way.\n";
+	else if (currentjob == JOB_PEEP) 
+		introtext = "";		// intro is handled in peep show job
+	else
+		introtext += "to a secluded spot.\n";
+
+	if (currentjob == JOB_PEEP){}
+	else if ((HasTrait(girl, "Nervous") && girl->m_Enjoyment[ACTION_SEX] < 10 ) ||
+		girl->m_Enjoyment[ACTION_SEX] < -20)
+	{
+		introtext += "She is clearly uncomfortable with the arrangement, and it makes the customer feel uncomfortable.\n\n";
+		customer->m_Stats[STAT_HAPPINESS] -= 5;
+	}
+	else if (g_Dice.percent(10))
+	{
+		introtext += "She smiles slightly and makes the effort to arouse the customer.\n\n";
+	}
+	else introtext += "\n\n";
+
+	message += introtext;
+
 	switch (SexType)
 	{
 	case SKILL_ANAL:
 	{
+		message += girl->m_Realname;
 		//SIN: Trying to use some of the new traits.
 		if (HasTrait(girl, "Great Arse") || HasTrait(girl, "Deluxe Derriere")) message += "'s behind is a thing of beauty. She ";
 		else if (HasTrait(girl, "Phat Booty") || HasTrait(girl, "Plump Tush")) message += "'s big round booty was up in the air. She ";
 		else if (HasTrait(girl, "Tight Butt")) message += " has a tight, round firm little butt. She ";
 		if (check < 20)
 		{
-			if (g_Dice.percent(30)) message += gettext(" found it difficult to get it in but painfully allowed the customer to fuck her in her tight ass.");
-			else /*              */	message += gettext(" bit the pillow to muffle her cries as the customer managed to squeeze his cock into her ass.");
+			if (g_Dice.percent(30)) message += " found it difficult to get it in but painfully allowed the customer to fuck her in her tight ass.";
+			else /*              */	message += " bit the pillow to muffle her cries as the customer managed to squeeze his cock into her ass.";
 		}
 		else if (check < 40)
 		{
-			if (g_Dice.percent(30)) message += gettext(" had to relax somewhat but had the customer fucking her in her ass.");
-			else /*              */	message += gettext(" struggled to relax, but was okay with the customer gently screwing her ass.");
+			if (g_Dice.percent(30)) message += " had to relax somewhat but had the customer fucking her in her ass.";
+			else /*              */	message += " struggled to relax, but was okay with the customer gently screwing her ass.";
 		}
 		else if (check < 60)
 		{
-			if (g_Dice.percent(30)) message += gettext(" found it easier going with the customer fucking her in her ass.");
-			else /*              */	message += gettext(" was comfortable with the customer fucking her in her ass.");
+			if (g_Dice.percent(30)) message += " found it easier going with the customer fucking her in her ass.";
+			else /*              */	message += " was comfortable with the customer fucking her in her ass.";
 		}
 		else if (check < 80)
 		{
-			/*                   */	message += gettext(" had the customer's cock go in easy. She found his cock in her ass a very pleasurable experience.");
+			/*                   */	message += " had the customer's cock go in easy. She found his cock in her ass a very pleasurable experience.";
 		}
 		else
 		{
-			if (g_Dice.percent(30)) message += gettext(" came hard as the customer fucked her ass.");
-			else /*              */	message += gettext(" came hard as the customer pounded her ass.");
+			if (g_Dice.percent(30)) message += " came hard as the customer fucked her ass.";
+			else /*              */	message += " came hard as the customer pounded her ass.";
 		}
 	}break;
 
 	case SKILL_BDSM:
 	{
-		/* */if (check < 40) /*  */	message += gettext(" was frightened by being tied up and having pain inflicted on her.");
-		else if (check < 60) /*  */	message += gettext(" was a little turned on by being tied up and having the customer hurting her.");
-		else if (check < 80) /*  */	message += gettext(" was highly aroused by the pain and bondage, even more so when fucking at the same time.");
+		message += girl->m_Realname;
+		/* */if (check < 40) /*  */	message += " was frightened by being tied up and having pain inflicted on her.";
+		else if (check < 60) /*  */	message += " was a little turned on by being tied up and having the customer hurting her.";
+		else if (check < 80) /*  */	message += " was highly aroused by the pain and bondage, even more so when fucking at the same time.";
 		else /*                  */	message += GetRandomBDSMString();
 		//SIN: added traits
 		if (HasTrait(girl, "Masochist"))
@@ -8308,31 +8380,122 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 
 	case SKILL_NORMALSEX:
 	{
+		int choice = g_Dice.d100();
 		if (check < 20)
 		{
-			if (g_Dice.percent(30)) message += gettext(" didn't do much as she allowed the customer to fuck her pussy.");
-			else /*              */	message += gettext(" just lay back and let the customer fuck her.");
+			int tries = 10;
+			while (tries > 2)
+			{
+				switch (g_Dice % 6)
+				{
+				case 0:
+					tries = 0;
+					message += "She didn't do much as she allowed the customer to fuck her pussy.";
+					break;
+				case 2:
+					message += "The customer's inexperience combined with ";
+					message += girl->m_Realname;
+					message += "'s inexperience leads to lots of painful grabbing of breasts, aggressive thrusts, and a quick finish. Everyone is clearly unhappy.";
+					customer->m_Stats[STAT_HAPPINESS] -= 5;
+					tries = 0;
+					break;
+				case 3:
+					message += "\"You get what you pay for.\" the customer grumbles as he throws a few wads of money on the jizz covered floor.";
+					customer->m_Stats[STAT_HAPPINESS] -= 5;
+					tries = 0;
+					break;
+				case 4:
+					message += "Her forced smile and awkward demeanor makes the whole ordeal more awkward than necessary, but the deed gets done.";
+					tries = 0;
+					break;
+				case 5:
+					message += "She just lay back and let the customer fuck her.";
+					tries = 0;
+					break;
+
+				default:	// anything that requires a check
+					if (HasTrait(girl, "Aggressive"))
+					{
+						message += "She stares angrily at the customer as she tears the clothes off of her body. It makes the customer feel uncomfortable.";
+						customer->m_Stats[STAT_HAPPINESS] -= 5;
+						tries = 0;
+					}
+					else if (HasTrait(girl, "Nervous"))
+					{
+						message += "She is clearly uncomfortable with the arrangement, and it makes the customer feel uncomfortable.\n";
+						customer->m_Stats[STAT_HAPPINESS] -= 5;
+						tries = 0;
+					}
+					else if (!HasTrait(girl, "Fake Orgasm Expert") && g_Dice.percent(10))
+					{
+						message += "Her robotic moans along with her tearful eyes ruins the customer's boner. He doesn't even manage to finish before angrily stomping out of the room.";
+						customer->m_Stats[STAT_HAPPINESS] -= 15;
+						tries = 0;
+					}
+					break;
+				}
+				tries--;
+			}
+			if (tries > 0)
+			{
+				message += "She just lay back and let the customer fuck her.";
+			}
 		}
 		else if (check < 40)
 		{
-			if (g_Dice.percent(30)) message += gettext(" fucked the customer back while their cock was embedded in her cunt.");
-			else /*              */	message += gettext(" made the right noises and held the customer as he fucked her.");
+			if (choice < 30)
+			{
+				message += "She fucked the customer back while their cock was embedded in her cunt.";
+			}
+			else if (choice < 60)
+			{
+				message += "She lets the customer push her down and paw at her breasts, allowing a few fake moans to escape.";
+			}
+			else
+			{
+				message += "She made the right noises and held the customer as he fucked her.";
+			}
 		}
 		else if (check < 60)
 		{
-			if (g_Dice.percent(30)) message += gettext(" liked the feeling of having a cock buried in her cunt and fucked back as much as she got.");
-			else /*              */	message += gettext(" loved having a cock buried in her cunt and fucked back as much as she got.");
+			if (choice < 30)
+			{
+				message += "She liked the feeling of having a cock buried in her cunt and fucked back as much as she got.";
+			}
+			else if (choice < 60)
+			{
+				message += "She allows the customer's hands to roam along her soft curves as she compliments his \"great\" skill.";
+			}
+			else
+			{
+				message += "She loved having a cock buried in her cunt and fucked back as much as she got.";
+			}
 		}
-		else if (check < 80) /*  */	message += gettext(" fucked like a wild animal, cumming several times and ending with her and the customer covered in sweat.");
-		else /*                  */	message += GetRandomSexString();
+		else if (check < 80)
+		{
+			if (choice < 30)
+			{
+				message += "She manages to keep the customer going until he finished, but forgot to fake her own orgasm.Despite that, the customer left pleased with the experience.";
+			}
+			else
+			{
+				message += "She fucked like a wild animal, cumming several times and ending with her and the customer covered in sweat.";
+			}
+		}
+		else
+		{
+			message += GetRandomSexString();
+		}
 	}break;
 
 	case SKILL_ORALSEX:
 	{
+		message += girl->m_Realname;
+
 		if (HasTrait(girl, "Cum Addict")) message += " is clearly aroused when the customer asks for oral. She";
 		if (check < 20)
 		{
-			if (HasTrait(girl, "Cum Addict"))	message += " and greedily sucked down every bit of cum when he finally came.";
+			if (HasTrait(girl, "Cum Addict"))	message += " greedily sucked down every bit of cum when he finally came.";
 			else if (g_Dice.percent(40)) /**/	message += " awkwardly licked the customer's cock, and recoiled when he came.";
 			else /*                        */	message += " awkwardly sucked the customer's cock, and recoiled when he finally came.";
 		}
@@ -8347,6 +8510,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 
 	case SKILL_TITTYSEX:
 	{
+		message += girl->m_Realname;
 		if (check < 20)
 		{
 			if (g_Dice.percent(40))	message += " awkwardly let the customer's cock fuck her tits, and recoiled when he came.";
@@ -8367,6 +8531,8 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 
 	case SKILL_HANDJOB:
 	{
+		message += girl->m_Realname;
+
 		if (check < 20)
 		{
 			if (g_Dice.percent(40))	message += " awkwardly worked the customer's cock with her hand, and recoiled when he came.";
@@ -8387,6 +8553,8 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 
 	case SKILL_FOOTJOB:
 	{
+		message += girl->m_Realname;
+
 		if (check < 20)
 		{
 			if (g_Dice.percent(40))	message += " awkwardly worked the customer's cock with her feet, and recoiled when he came.";
@@ -8420,9 +8588,11 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 
 	case SKILL_BEASTIALITY:
 	{
+		message += girl->m_Realname;
+
 		if (g_Brothels.GetNumBeasts() == 0)
 		{
-			message += gettext(" found that there were no beasts available, so some fake ones were used. This disapointed the customer somewhat.");
+			message += " found that there were no beasts available, so some fake ones were used. This disapointed the customer somewhat.";
 			customer->m_Stats[STAT_HAPPINESS] -= 10;
 		}
 		else
@@ -8430,7 +8600,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			int harmchance = -(GetSkill(girl, SKILL_BEASTIALITY) + GetSkill(girl, SKILL_ANIMALHANDLING) - 50);  // 50% chance at 0 skill, 1% chance at 49 skill
 			if (g_Dice.percent(harmchance))
 			{
-				message += gettext(" accidentally harmed some beasts during the act and she");
+				message += " accidentally harmed some beasts during the act and she";
 				g_Brothels.add_to_beasts(-((g_Dice % 3) + 1));
 			}
 			else if (g_Dice.percent(1 +
@@ -8440,7 +8610,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				(HasTrait(girl, "Sadistic") ? 2 : 0) +
 				(HasTrait(girl, "Twisted") ? 1 : 0)))
 			{
-				message += gettext(" \"accidentally\" harmed a beast during the act and she");//Made it actually use quote marks CRAZY
+				message += " \"accidentally\" harmed a beast during the act and she";//Made it actually use quote marks CRAZY
 				g_Brothels.add_to_beasts(-1);
 			}
 
@@ -8454,49 +8624,55 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 
 	case SKILL_GROUP:
 	{
-		/* */if (check < 20)	message += gettext(" struggled to service everyone in the group that came to fuck her.");
-		else if (check < 40)	message += gettext(" managed to keep the group of customers fucking her satisfied.");
-		else if (check < 60)	message += gettext(" serviced all of the group of customers that fucked her.");
-		else if (check < 80)	message += gettext(" fucked and came many times with everyone in the group of customers.");
+		message += girl->m_Realname;
+
+		/* */if (check < 20)	message += " struggled to service everyone in the group that came to fuck her.";
+		else if (check < 40)	message += " managed to keep the group of customers fucking her satisfied.";
+		else if (check < 60)	message += " serviced all of the group of customers that fucked her.";
+		else if (check < 80)	message += " fucked and came many times with everyone in the group of customers.";
 		else /*                             */	message += GetRandomGroupString();
 	}break;
 
 	case SKILL_LESBIAN:
 	{
-		/* */if (check < 20)	message += gettext(" licked her female customer's cunt until she came. She didn't want any herself.");
-		else if (check < 40)	message += gettext(" was aroused as she made her female customer cum.");
-		else if (check < 60)	message += gettext(" fucked and was fucked by her female customer.");
-		else if (check < 80)	message += gettext(" and her female customer's cumming could be heard thoughout the building.");
+		message += girl->m_Realname;
+
+		/* */if (check < 20)	message += " licked her female customer's cunt until she came. She didn't want any herself.";
+		else if (check < 40)	message += " was aroused as she made her female customer cum.";
+		else if (check < 60)	message += " fucked and was fucked by her female customer.";
+		else if (check < 80)	message += " and her female customer's cumming could be heard thoughout the building.";
 		else /*                             */	message += GetRandomLesString();
 	}break;
 
 	case SKILL_STRIP:
 	default:
 	{
+		message += girl->m_Realname;
+
 		if (check < 20)
 		{
-			if (g_Dice.percent(30)) message += gettext(" shyly took her clothes off in front of the customer.");
-			else /*              */	message += gettext(" stared at the floor as she stood there awkwardly taking off her clothes in front of the customer. She was embarrassed and kept covering herself with her arms and hands.");
+			if (g_Dice.percent(30)) message += " shyly took her clothes off in front of the customer.";
+			else /*              */	message += " stared at the floor as she stood there awkwardly taking off her clothes in front of the customer. She was embarrassed and kept covering herself with her arms and hands.";
 		}
 		else if (check < 40)
 		{
-			if (g_Dice.percent(30)) message += gettext(" coyly took her clothes off in front of the customer.");
-			else /*              */	message += gettext(" made occasional eye contact as she coyly took her clothes off in front of the customer, moving around a little so the customer could see better.");
+			if (g_Dice.percent(30)) message += " coyly took her clothes off in front of the customer.";
+			else /*              */	message += " made occasional eye contact as she coyly took her clothes off in front of the customer, moving around a little so the customer could see better.";
 		}
 		else if (check < 60)
 		{
-			if (g_Dice.percent(30)) message += gettext(" hotly took her clothes off in front of the customer.");
-			else /*              */	message += gettext(" moved around and stripped off her clothes in front of the customer.");
+			if (g_Dice.percent(30)) message += " hotly took her clothes off in front of the customer.";
+			else /*              */	message += " moved around and stripped off her clothes in front of the customer.";
 		}
 		else if (check < 80)
 		{
-			if (g_Dice.percent(30)) message += gettext(" proudly took her clothes off in front of the customer.");
-			else /*              */	message += gettext(" sexily danced around the customer stripping off her clothes.");
+			if (g_Dice.percent(30)) message += " proudly took her clothes off in front of the customer.";
+			else /*              */	message += " sexily danced around the customer stripping off her clothes.";
 		}
 		else
 		{
-			if (g_Dice.percent(30)) message += gettext(" joyously took her clothes off in front of the customer.");
-			else /*              */	message += gettext(" sensuously prowled around the customer stripping off her clothes, while caressing herself, always making sure the customer had the best possible view.");
+			if (g_Dice.percent(30)) message += " joyously took her clothes off in front of the customer.";
+			else /*              */	message += " sensuously prowled around the customer stripping off her clothes, while caressing herself, always making sure the customer had the best possible view.";
 		}
 	}break;
 	}	//end switch
@@ -8505,10 +8681,10 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 	customer->m_Stats[STAT_HAPPINESS] = min(100, (int)customer->m_Stats[STAT_HAPPINESS]);
 
 	message += (SexType == SKILL_GROUP) ? "\nThe customers " : "\nThe customer ";
-	/* */if (customer->m_Stats[STAT_HAPPINESS] > 80)	message += gettext("swore they would come back.");
-	else if (customer->m_Stats[STAT_HAPPINESS] > 50)	message += gettext("enjoyed the experience.");
-	else if (customer->m_Stats[STAT_HAPPINESS] > 30)	message += gettext("didn't enjoy it.");
-	else /*                                       */	message += gettext("thought it was crap.");
+	/* */if (customer->m_Stats[STAT_HAPPINESS] > 80)	message += "swore they would come back.";
+	else if (customer->m_Stats[STAT_HAPPINESS] > 50)	message += "enjoyed the experience.";
+	else if (customer->m_Stats[STAT_HAPPINESS] > 30)	message += "didn't enjoy it.";
+	else /*                                       */	message += "thought it was crap.";
 
 	// WD: update Fame based on Customer HAPPINESS
 	UpdateStat(girl, STAT_FAME, (customer->m_Stats[STAT_HAPPINESS] - 1) / 33);
@@ -8519,16 +8695,16 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 	// if the girl likes sex and the sex type then increase her happiness otherwise decrease it
 	if (GetStat(girl, STAT_LIBIDO) > 5)
 	{
-		/* */if (check < 20)	message += gettext("\nThough she had a tough time with it, she was horny and still managed to gain some little enjoyment.");
-		else if (check < 40)	message += gettext("\nShe considered it a learning experience and enjoyed it a bit.");
-		else if (check < 60)	message += gettext("\nShe enjoyed it a lot and wanted more.");
-		else if (check < 80)	message += gettext("\nIt was nothing new for her, but she really does appreciate such work.");
-		else /*           */	message += gettext("\nIt seems that she lives for this sort of thing.");
+		/* */if (check < 20)	message += "\nThough she had a tough time with it, she was horny and still managed to gain some little enjoyment.";
+		else if (check < 40)	message += "\nShe considered it a learning experience and enjoyed it a bit.";
+		else if (check < 60)	message += "\nShe enjoyed it a lot and wanted more.";
+		else if (check < 80)	message += "\nIt was nothing new for her, but she really does appreciate such work.";
+		else /*           */	message += "\nIt seems that she lives for this sort of thing.";
 		UpdateStat(girl, STAT_HAPPINESS, GetStat(girl, STAT_LIBIDO) / 5);
 	}
 	else
 	{
-		message += gettext("\nShe wasn't really in the mood.");
+		message += "\nShe wasn't really in the mood.";
 		UpdateStat(girl, STAT_HAPPINESS, -1);
 	}
 
@@ -8539,8 +8715,8 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 	{
 		if (check <= 20)	// if unexperienced then will get hurt
 		{
-			if (g_Dice.percent(30)) message += gettext("\nHer inexperience hurt her a little.");
-			else /*              */	message += gettext("\nHer inexperience hurt her. It's now quite painful to sit down.");
+			if (g_Dice.percent(30)) message += "\nHer inexperience hurt her a little.";
+			else /*              */	message += "\nHer inexperience hurt her. It's now quite painful to sit down.";
 			UpdateStat(girl, STAT_HAPPINESS, -3);
 			UpdateStat(girl, STAT_CONFIDENCE, -1);
 			UpdateStat(girl, STAT_SPIRIT, -3);
@@ -8555,8 +8731,8 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 	{
 		if (check <= 30)	// if unexperienced then will get hurt
 		{
-			if (g_Dice.percent(30)) message += gettext("\nHer inexperience hurt her a little.");
-			else /*              */	message += gettext("\nHer inexperience hurt her a little. She's not used to haveing pain in those places.");
+			if (g_Dice.percent(30)) message += "\nHer inexperience hurt her a little.";
+			else /*              */	message += "\nHer inexperience hurt her a little. She's not used to haveing pain in those places.";
 			UpdateStat(girl, STAT_HAPPINESS, -2);
 			UpdateStat(girl, STAT_SPIRIT, -3);
 			UpdateStat(girl, STAT_CONFIDENCE, -1);
@@ -8573,8 +8749,8 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 	{
 		if (check < 15)
 		{
-			if (g_Dice.percent(30)) message += gettext("\nHer inexperience hurt her a little.");
-			else /*              */	message += gettext("\nShe's inexperienced and got poked in the eye.");
+			if (g_Dice.percent(30)) message += "\nHer inexperience hurt her a little.";
+			else /*              */	message += "\nShe's inexperienced and got poked in the eye.";
 			UpdateStat(girl, STAT_HAPPINESS, -2);
 			UpdateStat(girl, STAT_SPIRIT, -3);
 			UpdateStat(girl, STAT_CONFIDENCE, -1);
@@ -8674,7 +8850,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 	{
 		if (check <= 30)	// if unexperienced then will get hurt
 		{
-			message += gettext("\nHer inexperience hurt her a little.");
+			message += "\nHer inexperience hurt her a little.";
 			UpdateStat(girl, STAT_HAPPINESS, -2);
 			UpdateStat(girl, STAT_SPIRIT, -3);
 			UpdateStat(girl, STAT_CONFIDENCE, -1);
@@ -8696,8 +8872,8 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 	{
 		if (check <= 30)	// if unexperienced then will get hurt
 		{
-			if (g_Dice.percent(30)) message += gettext("\nHer inexperience hurt her a little.");
-			else /*              */	message += gettext("\nShe's inexperienced and got rubbed pretty raw.");
+			if (g_Dice.percent(30)) message += "\nHer inexperience hurt her a little.";
+			else /*              */	message += "\nShe's inexperienced and got rubbed pretty raw.";
 			UpdateStat(girl, STAT_HAPPINESS, -2);
 			UpdateStat(girl, STAT_SPIRIT, -3);
 			UpdateStat(girl, STAT_CONFIDENCE, -1);
@@ -8742,7 +8918,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 	{
 		if (check <= 20)	// if inexperienced then will get hurt
 		{
-			message += gettext("\nShe got tangled in her clothes and fell on her face.");
+			message += "\nShe got tangled in her clothes and fell on her face.";
 			UpdateStat(girl, STAT_HAPPINESS, -2);
 			UpdateStat(girl, STAT_SPIRIT, -3);
 			UpdateStat(girl, STAT_CONFIDENCE, -1);
@@ -8765,41 +8941,41 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		}
 		else if (SexType == SKILL_STRIP)
 		{
-			message += gettext(" The customer was excited to have a virgin stripping for them.");
+			message += " The customer was excited to have a virgin stripping for them.";
 			chappy = 10;
 			virgincheck = true;
 		}
 		else if (SexType == SKILL_BEASTIALITY)
 		{
-			message += gettext(" The customer was excited that she was a virgin as he pushed the beast onto her.");
+			message += " The customer was excited that she was a virgin as he pushed the beast onto her.";
 			chappy = 25;
 			virgincheck = true;
 		}
 		else if (SexType == SKILL_ANAL)
 		{
-			message += gettext(" The customer was overjoyed that she was a virgin, but that was not what he was into.");
+			message += " The customer was overjoyed that she was a virgin, but that was not what he was into.";
 			chappy = 50;
 		}
 		else if (SexType == SKILL_LESBIAN)
 		{
-			message += gettext(" The customer was happy that she had never been with a \"man\" and was still a virgin.");
+			message += " The customer was happy that she had never been with a \"man\" and was still a virgin.";
 			chappy = 69;
 		}
 		else if (SexType == SKILL_GROUP)
 		{
-			message += gettext(" The customers were overjoyed that she was a virgin. Well... the first one was at least.");
+			message += " The customers were overjoyed that she was a virgin. Well... the first one was at least.";
 			chappy = 80;
 			virgincheck = true;
 		}
 		else if (SexType == SKILL_BDSM)
 		{
-			message += gettext(" The customer was overjoyed that she was a virgin.");
+			message += " The customer was overjoyed that she was a virgin.";
 			chappy = 90;
 			if (g_Dice.percent(70)) virgincheck = true;
 		}
 		else if (SexType == SKILL_NORMALSEX)
 		{
-			message += gettext(" The customer was overjoyed that she was a virgin.");
+			message += " The customer was overjoyed that she was a virgin.";
 			chappy = 100;
 			virgincheck = true;
 		}
@@ -8898,17 +9074,9 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 	else if (GetStat(girl, STAT_HAPPINESS) <= 5)	enjoy -= 2;
 
 	int health = GetStat(girl, STAT_HEALTH);
-#if 1	// updating this because of new decimal percent 
 	/* */if (health > 95)	{ STDchance = 1; }
 	else if (health > 30)	{ STDchance /= (health - 25) / 5; }
 	else if (health < 30)	{ STDchance *= (35 - health) / 10; }
-#else
-	/* */if (health <= 10)	STDchance *= 3;
-	else if (health <= 20)	STDchance *= 2;
-	else if (health >= 80)	STDchance /= 4;
-	else if (health >= 90)	STDchance /= 7;
-	else if (health == 100)	STDchance /= 10;
-#endif
 	if (STDchance < 0.1)	STDchance = 0.1;
 
 	if (HasTrait(girl, "AIDS") && !customer->m_HasAIDS && g_Dice.percent(STDchance))
@@ -12094,7 +12262,7 @@ sGirl *cGirls::make_girl_child(sGirl* mom, bool playerisdad)
 	*	If the above palaver resulted in a sprog, return it
 	*	otherwise, back to the random girls
 	*/
-	return  g_Girls.CreateRandomGirl(17, false, slave, false, non_human);
+	return  g_Girls.CreateRandomGirl(17, false, slave, false, non_human, false, false, playerisdad);
 }
 #endif
 
@@ -12135,14 +12303,23 @@ bool cGirls::child_is_grown(sGirl* mom, sChild *child, string& summary, bool Pla
 		return true;
 	}
 
+	bool playerfather = child->m_IsPlayers;		// is 1 if father is player
 	summary += gettext("A daughter grew of age. ");
 	mom->m_States |= (1 << STATUS_HAS_DAUGHTER);
 	bool slave = mom->is_slave();
-	bool AllowNonHuman = mom->has_trait("Not Human");
+	bool AllowNonHuman = mom->is_human();
 	// create a new girl for the barn
-	sGirl* sprog = g_Girls.CreateRandomGirl(12, false, slave, false, AllowNonHuman);
+	sGirl* sprog = 0;
+	if (mom->m_Canonical_Daughters.size() > 0)
+	{
+		sprog = make_girl_child(mom, playerfather);
+	}
+	else
+	{
+		sprog = g_Girls.CreateRandomGirl(17, false, slave, false, AllowNonHuman, false, false, playerfather);
+	}
 	// check for incest, get the odds on abnormality
-	int abnormal_pc = calc_abnormal_pc(mom, sprog, (child->m_IsPlayers != 0));
+	int abnormal_pc = calc_abnormal_pc(mom, sprog, child->m_IsPlayers);
 	if (g_Dice.percent(abnormal_pc))
 	{
 		if (g_Dice.percent(50)) g_Girls.AddTrait(sprog, "Malformed");
@@ -12151,9 +12328,16 @@ bool cGirls::child_is_grown(sGirl* mom, sChild *child, string& summary, bool Pla
 	// loop throught the mom's traits, inheriting where appropriate
 	for (int i = 0; i < mom->m_NumTraits && sprog->m_NumTraits < 30; i++)
 	{
-		string tname = mom->m_Traits[i]->m_Name;
-		if (g_Girls.InheritTrait(mom->m_Traits[i]) && tname != "")
-			g_Girls.AddTrait(sprog, mom->m_Traits[i]->m_Name);
+		if (mom->m_Traits[i])
+		{
+			string tname = mom->m_Traits[i]->m_Name;
+			if (g_Girls.InheritTrait(mom->m_Traits[i]) && tname != "")
+				g_Girls.AddTrait(sprog, mom->m_Traits[i]->m_Name);
+		}
+	}
+	if (playerfather)
+	{
+		g_Girls.AddTrait(sprog, "Your Daughter");
 	}
 
 	// inherit stats
@@ -12173,6 +12357,18 @@ bool cGirls::child_is_grown(sGirl* mom, sChild *child, string& summary, bool Pla
 	sprog->m_Stats[STAT_LEVEL] = 0;
 	sprog->m_Stats[STAT_EXP] = 0;
 
+
+	// `J` set her birthday
+	int m0 = g_Month;
+	int d0 = g_Day;
+	d0 -= g_Dice % 7;
+	if (d0 < 1) { d0 += 30; m0--; }
+	if (m0 < 1) { m0 = 12; }
+	sprog->BirthMonth = m0;
+	sprog->BirthDay = d0;
+
+
+
 	// inherit skills
 	for (u_int i = 0; i < NUM_SKILLS; i++)
 	{
@@ -12184,24 +12380,22 @@ bool cGirls::child_is_grown(sGirl* mom, sChild *child, string& summary, bool Pla
 
 
 	// new code to add first and last name to girls
-#if 1
-	// at this point the sprog should have temporary firstname, surname, and realname
-	cPlayer m_Player;
-	string prevsurname = sprog->m_Surname;		// save the temporary surname incase it is needed later
-	int playerfather = child->m_IsPlayers;		// is 1 if father is player
-	string biography = "";
 
-	if (playerfather == 1)
+	// at this point the sprog should have temporary firstname, surname, and realname
+	string prevsurname = sprog->m_Surname;		// save the temporary surname incase it is needed later
+	string biography = "";
+	cPlayer* m_Player = g_Brothels.GetPlayer();
+	if (playerfather)
 	{
-		if (m_Player.m_Surname.size() > 0)
+		if (m_Player->Surname().size() > 0)
 		{
-			sprog->m_Surname = m_Player.m_Surname;
+			sprog->m_Surname = m_Player->Surname();
 		}
 		else	// probably shouldn't happen because there is a default surname
 		{
 			sprog->m_Surname = "Playerchild";	// generic name
 		}
-		biography = "Daughter of " + mom->m_Realname + " and the Brothel owner, Mr. " + m_Player.m_RealName + ".";
+		biography = "Daughter of " + mom->m_Realname + " and the Brothel owner, Mr. " + m_Player->RealName() + ".";
 	}
 	else
 	{
@@ -12228,38 +12422,6 @@ bool cGirls::child_is_grown(sGirl* mom, sChild *child, string& summary, bool Pla
 	sprog->m_Realname = sprog->m_FirstName + " " + sprog->m_Surname;
 	sprog->m_Desc = sprog->m_Desc + "\n\n" + biography;
 
-#else
-	// original code by akab
-	int playerfather = child->m_IsPlayers; // is 1 if father is player 	string playersurname = "XXXXXXX";
-	string daughtername = sprog->m_Realname; string surnamemom = ""; string biography = "";
-	int posspace = 0;
-	posspace = mom->m_Realname.find(' ');
-	if (playerfather != 1)
-	{
-		if (posspace >= 0)
-		{
-			surnamemom = mom->m_Realname.substr(posspace + 1);
-			daughtername = daughtername + " " + surnamemom;
-			sprog->m_Realname = daughtername;
-			biography = sprog->m_Desc + " Daughter of " + mom->m_Realname + " and " + " anonymous brothel client ";
-			sprog->m_Desc = biography;
-		}
-		else
-		{
-			daughtername = daughtername + " Smith";
-			sprog->m_Realname = daughtername;
-			biography = sprog->m_Desc + " Daughter of " + mom->m_Realname + " and " + " anonymous brothel client ";
-			sprog->m_Desc = biography;
-		}
-	}
-	else
-	{
-		daughtername = daughtername + " " + playersurname;
-		sprog->m_Realname = daughtername;
-		biography = sprog->m_Desc + " Daughter of " + mom->m_Realname + " and " + " the Brothel owner Mr. " + playersurname;
-		sprog->m_Desc = biography;
-	}
-#endif
 	// make sure slave daughters have house perc. set to 100, otherwise 60
 	sprog->m_Stats[STAT_HOUSE] = (slave) ? cfg.initial.slave_house_perc() : cfg.initial.girls_house_perc();
 

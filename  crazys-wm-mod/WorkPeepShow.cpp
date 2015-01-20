@@ -179,7 +179,8 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	}
 	else if (g_Dice.percent(5))  //glory hole event
 	{
-		ss << "A man manged to cut a hole out from his booth and made himself a glory hole, " + girlName + " saw his cock sticking out and ";
+		ss << "A man manged to cut a hole out from his booth and made himself a glory hole, " << girlName 
+			<< " saw his cock sticking out and ";
 		{
 			if (g_Girls.HasTrait(girl, "Meek") || g_Girls.HasTrait(girl, "Shy"))
 			{
@@ -192,26 +193,33 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -10);
 				ss << "she doesn't understand the appeal of them, which turned her off.\n";
 			}
-			else if (g_Girls.HasTrait(girl, "Nymphomaniac") && !g_Girls.HasTrait(girl, "Lesbian") && !g_Girls.HasTrait(girl, "Virgin") && g_Girls.GetStat(girl, STAT_LIBIDO) >= 80) //sex
+			else if (!brothel->m_RestrictNormal && !g_Girls.HasTrait(girl, "Virgin") && 
+				g_Girls.HasTrait(girl, "Nymphomaniac") && g_Girls.GetStat(girl, STAT_LIBIDO) >= 80) //sex
 			{
 				sextype = SKILL_NORMALSEX;
 				ss << "decided she needed to use it for her own entertainment.\n";
 			}
-			else if (g_Girls.HasTrait(girl, "Nymphomaniac") && !g_Girls.HasTrait(girl, "Lesbian") && g_Girls.GetStat(girl, STAT_LIBIDO) >= 60) //oral
+			else if (!brothel->m_RestrictOral &&
+				g_Girls.HasTrait(girl, "Nymphomaniac") && g_Girls.GetStat(girl, STAT_LIBIDO) >= 60) //oral
 			{
 				sextype = SKILL_ORALSEX;
 				ss << "decided she needed to taste it.\n";
 			}
-			else if (g_Girls.HasTrait(girl, "Nymphomaniac") && !g_Girls.HasTrait(girl, "Lesbian") && g_Girls.GetStat(girl, STAT_LIBIDO) >= 40) //foot
+			else if (!brothel->m_RestrictFoot &&
+				g_Girls.HasTrait(girl, "Nymphomaniac") && g_Girls.GetStat(girl, STAT_LIBIDO) >= 40) //foot
 			{
-				//sextype = SKILL_FOOT;	// not in yet
+				sextype = SKILL_FOOTJOB;
 				imagetype = IMGTYPE_FOOT;
-				ss << "decided she would give him a foot job for been so brave.\n";
+				ss << "decided she would give him a foot job for being so brave.\n";
 			}
-			else	//hand job
+			else if (!brothel->m_RestrictHand)	//hand job
 			{
 				sextype = SKILL_HANDJOB;
-				ss << "decided she would give him a hand job for been so brave.\n";
+				ss << "decided she would give him a hand job for being so brave.\n";
+			}
+			else
+			{
+				ss << "pointed and laughed.\n";
 			}
 
 			/* `J` suggest adding bad stuff,
@@ -234,7 +242,7 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85 && g_Dice.percent(20))
 	{
-		ss << "Stunned by her beauty a customer left her a great tip.\n\n";
+		ss << "Stunned by her beauty, a customer left her a great tip.\n\n";
 		tips += g_Dice % 50 + 10;
 	}
 

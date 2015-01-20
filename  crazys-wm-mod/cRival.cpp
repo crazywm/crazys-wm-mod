@@ -184,19 +184,23 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 		{
 			// If a rival has more girls than their brothels can handle, the rest work on the streets
 			double rapechance = (i > curr->m_NumBrothels * 20 ? cfg.prostitution.rape_brothel() : cfg.prostitution.rape_streets());
-			int girlcost = g_Dice % 41 + 10;				// 10-50 gold per cust
-			int Customers = g_Dice % 6;						// 0-5 cust per girl
-			if (Customers > 0 && g_Dice.percent(rapechance))
+			int Customers = g_Dice % 6;				// 0-5 cust per girl
+			for (int i = 0; i < Customers;i++)
 			{
-				Customers--;								// they killed the rapist
-				upkeep += girlcost + 100;					// and paid off the girl and the officials to keep it quiet
+				if (g_Dice.percent(rapechance))
+				{
+					upkeep += 100;					// pay off the girl and the officials after killing the rapist
+				}
+				else
+				{
+					income += g_Dice % 46 + 5;		// 5-50 gold per cust
+				}
 			}
-			income += (girlcost * Customers) + (g_Dice % (girlcost * 2) - girlcost);
 		}
 		// from halls
 		for (int i = 0; i < curr->m_NumGamblingHalls; i++)
 		{
-			int Customers = ((g_Dice%curr->m_NumGirls) + curr->m_NumGirls + 1)*((g_Dice % 2) + 1);
+			int Customers = (g_Dice%curr->m_NumGirls)*((g_Dice % 2) + 1);
 			if (g_Dice.percent(5))
 			{
 				upkeep += ((g_Dice % 101) + 200);			// Big Winner
@@ -207,18 +211,18 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 				income += ((g_Dice % 601) + 400);			// Big Loser
 				Customers -= g_Dice % (Customers / 5);		// scares off some customers
 			}
-			// they will kick a customer out if they win too much so they can win up to 400 but only lose 50
+			// they will kick a customer out if they win too much so they can win up to 100 but only lose 50
 			for (int j = 0; j < Customers; j++)
 			{
-				int winloss = (g_Dice % 451 - 50);
+				int winloss = (g_Dice % 151 - 50);
 				if (winloss > 0) income += winloss;
-				else /*       */ upkeep += winloss;
+				else /*       */ upkeep -= winloss;
 			}
 		}
 		// from bars
 		for (int i = 0; i < curr->m_NumBars; i++)
 		{
-			int Customers = ((g_Dice%curr->m_NumGirls) + curr->m_NumGirls + 1)*((g_Dice % 2) + 1);
+			int Customers = (g_Dice%curr->m_NumGirls)*((g_Dice % 2) + 1);
 			if (g_Dice.percent(5))
 			{
 				upkeep += ((g_Dice % 250) + 1);				// bar fight - cost to repair
@@ -231,7 +235,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 			}
 			for (int j = 0; j < Customers; j++)
 			{
-				income += (g_Dice % 38) + 3;				// customers spend 3-40 per visit
+				income += (g_Dice % 19) + 2;				// customers spend 2-20 per visit
 			}
 
 		}
@@ -261,108 +265,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 			upkeep += tax;
 		}
 
-		curr->m_Gold += income;
-		curr->m_Gold -= upkeep;
 
-		// Determine if their profits
-		int profit = income - upkeep;
-
-		bool danger = false;
-		bool sellfail = false;
-		// if they are loosing money and they will be bankrupt in 2 turns or less
-		if (profit <= 0 && curr->m_Gold - (profit * 2) < 0)		// sell off some stuff
-		{
-			danger = true;						// this will make sure AI doesn't replace them this turn
-			while (curr->m_Gold - (profit * 2) < 0 && !sellfail)
-			{
-				// sell extra stuff first - hall or bar
-				if (curr->m_NumGamblingHalls > curr->m_NumBrothels)
-				{
-					curr->m_NumGamblingHalls--;
-					curr->m_Gold += 5000;
-				}
-				else if (curr->m_NumBars > curr->m_NumBrothels)
-				{
-					curr->m_NumBars--;
-					curr->m_Gold += 1250;
-				}
-				// if they have an empty brothel, sell it
-				else if (curr->m_NumBrothels > 1 && (curr->m_NumBrothels - 1) * 20 > curr->m_NumGirls + 1)
-				{
-					curr->m_NumBrothels--;
-					curr->m_Gold += 10000;
-				}
-				// sell extra girls
-				else if (curr->m_NumGirls > curr->m_NumBrothels*20)
-				{
-					curr->m_NumGirls--;
-					curr->m_Gold += g_Dice% 401 +300;	// variable price 300-700
-				}
-				// sell a hall or bar keeping at least 1 of each
-				else if (curr->m_NumGamblingHalls > 1 && curr->m_NumBars <= curr->m_NumGamblingHalls)
-				{
-					curr->m_NumGamblingHalls--;
-					curr->m_Gold += 5000;
-				}
-				else if (curr->m_NumBars > 1)
-				{
-					curr->m_NumBars--;
-					curr->m_Gold += 1250;
-				}
-				// Finally - sell a girl
-				else if (curr->m_NumGirls > 1)
-				{
-					curr->m_NumGirls--;
-					curr->m_Gold += g_Dice % 401 + 300;	// variable price 300-700
-				}
-				else
-				{
-					sellfail = true;	// could not sell anything so break out of the while loop
-				}
-			}
-		}
-
-		if (!danger)
-		{
-			// buy a new brothel
-			if (curr->m_Gold - 20000 > 0 && curr->m_NumGirls + 2 >= curr->m_NumBrothels * 20 && curr->m_NumBrothels < 6)
-			{
-				curr->m_NumBrothels++;
-				curr->m_Gold -= 20000;
-				upkeep += 20000;
-			}
-			// buy new girls
-			int girlsavailable = (g_Dice % 6) + 1;
-			while (curr->m_Gold - 550 >= 0 && girlsavailable > 0 && curr->m_NumGirls < curr->m_NumBrothels * 20)
-			{
-				curr->m_NumGirls++;
-				girlsavailable--;
-				curr->m_Gold -= 550;
-				upkeep += 550;
-			}
-			// hire gangs
-			int gangsavailable = (max(0, (g_Dice % 5) - 2));
-			while (curr->m_Gold - 90 >= 0 && gangsavailable > 0 && curr->m_NumGangs < 8)
-			{
-				curr->m_NumGangs++;
-				curr->m_Gold -= 90;
-				upkeep += 90;
-			}
-			// buy a gambling hall 
-			if (g_Dice.percent(30) && curr->m_Gold - 10000 >= 0 && curr->m_NumGamblingHalls < curr->m_NumBrothels)
-			{
-				curr->m_NumGamblingHalls++;
-				curr->m_Gold -= 10000;
-				upkeep += 10000;
-			}
-			// buy a new bar
-			if (g_Dice.percent(60) && curr->m_Gold - 2500 >= 0 && curr->m_NumBars < curr->m_NumBrothels)
-			{
-				curr->m_NumBars++;
-				curr->m_Gold -= 2500;
-				upkeep += 2500;
-			}
-		}
 
 		// Work out gang missions
 		int cGangs = curr->m_NumGangs;
@@ -419,9 +322,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 							n = TOWN_NUMBUSINESSES - numB;
 
 						curr->m_BusinessesExtort += n;
-						int extraIncome = n * 20;
-						curr->m_Gold += extraIncome;
-						income += extraIncome;
+						income += n * 20;
 					}
 				}
 				else			// if there are no uncontrolled businesses
@@ -502,9 +403,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 			{
 				if (g_Dice.percent(70))
 				{
-					int extraIncome = g_Dice % 800 + 1;
-					curr->m_Gold += extraIncome;
-					income += extraIncome;
+					income += g_Dice % 400 + 1;
 				}
 				else if (g_Dice.percent(10))	// they may lose the gang
 				{
@@ -515,9 +414,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 			{
 				if (g_Dice.percent(30))
 				{
-					int extraIncome = (g_Dice % 20 + 1) * 100;
-					curr->m_Gold += extraIncome;
-					income += extraIncome;
+					income += (g_Dice % 20 + 1) * 100;
 				}
 				else if (g_Dice.percent(30))	// they may lose the gang
 				{
@@ -635,7 +532,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 										gold = rival->m_Gold;			// take all they have
 										rival->m_Gold = 0;
 									}
-									curr->m_Gold += gold;
+									income += gold;
 								}
 								int buildinghit = g_Dice.d100();
 								if (buildinghit < 10 && rival->m_NumBrothels > 0)			// 10% brothel
@@ -702,7 +599,6 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 					// determine loot
 					int gold = cG1->m_Num;
 					gold += g_Dice % (cG1->m_Num * 100);
-					curr->m_Gold += gold;
 					income += gold;
 
 					int items = 0;
@@ -745,14 +641,108 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 			delete cG1; cG1 = 0;	// cleanup
 		}	// end Gang Missions
 
-		profit = income - upkeep;
-
 //		// handicap super profits
 //		if (income - upkeep > 10000)
 //		{
 //			income = 0;
 //			curr->m_Gold -= 10000;
 //		}
+		// Determine if their profits and loses
+		int profit = income - upkeep;
+		curr->m_Gold += income;
+		curr->m_Gold -= upkeep;
+
+		bool danger = false;
+		bool sellfail = false;
+		// if they are loosing money and they will be bankrupt in 2 turns or less
+		if (profit <= 0 && curr->m_Gold - (profit * 2) < 0)		// sell off some stuff
+		{
+			danger = true;						// this will make sure AI doesn't replace them this turn
+			while (curr->m_Gold - (profit * 2) < 0 && !sellfail)
+			{
+				// sell extra stuff first - hall or bar
+				if (curr->m_NumGamblingHalls > curr->m_NumBrothels)
+				{
+					curr->m_NumGamblingHalls--;
+					curr->m_Gold += 5000;
+				}
+				else if (curr->m_NumBars > curr->m_NumBrothels)
+				{
+					curr->m_NumBars--;
+					curr->m_Gold += 1250;
+				}
+				// if they have an empty brothel, sell it
+				else if (curr->m_NumBrothels > 1 && (curr->m_NumBrothels - 1) * 20 > curr->m_NumGirls + 1)
+				{
+					curr->m_NumBrothels--;
+					curr->m_Gold += 10000;
+				}
+				// sell extra girls
+				else if (curr->m_NumGirls > curr->m_NumBrothels * 20)
+				{
+					curr->m_NumGirls--;
+					curr->m_Gold += g_Dice % 401 + 300;	// variable price 300-700
+				}
+				// sell a hall or bar keeping at least 1 of each
+				else if (curr->m_NumGamblingHalls > 1 && curr->m_NumBars <= curr->m_NumGamblingHalls)
+				{
+					curr->m_NumGamblingHalls--;
+					curr->m_Gold += 5000;
+				}
+				else if (curr->m_NumBars > 1)
+				{
+					curr->m_NumBars--;
+					curr->m_Gold += 1250;
+				}
+				// Finally - sell a girl
+				else if (curr->m_NumGirls > 1)
+				{
+					curr->m_NumGirls--;
+					curr->m_Gold += g_Dice % 401 + 300;	// variable price 300-700
+				}
+				else
+				{
+					sellfail = true;	// could not sell anything so break out of the while loop
+				}
+			}
+		}
+
+		if (!danger)
+		{
+			// buy a new brothel
+			if (curr->m_Gold - 20000 > 0 && curr->m_NumGirls + 2 >= curr->m_NumBrothels * 20 && curr->m_NumBrothels < 6)
+			{
+				curr->m_NumBrothels++;
+				curr->m_Gold -= 20000;
+			}
+			// buy new girls
+			int girlsavailable = (g_Dice % 6) + 1;
+			while (curr->m_Gold - 550 >= 0 && girlsavailable > 0 && curr->m_NumGirls < curr->m_NumBrothels * 20)
+			{
+				curr->m_NumGirls++;
+				girlsavailable--;
+				curr->m_Gold -= 550;
+			}
+			// hire gangs
+			int gangsavailable = (max(0, (g_Dice % 5) - 2));
+			while (curr->m_Gold - 90 >= 0 && gangsavailable > 0 && curr->m_NumGangs < 8)
+			{
+				curr->m_NumGangs++;
+				curr->m_Gold -= 90;
+			}
+			// buy a gambling hall 
+			if (g_Dice.percent(30) && curr->m_Gold - 10000 >= 0 && curr->m_NumGamblingHalls < curr->m_NumBrothels)
+			{
+				curr->m_NumGamblingHalls++;
+				curr->m_Gold -= 10000;
+			}
+			// buy a new bar
+			if (g_Dice.percent(60) && curr->m_Gold - 2500 >= 0 && curr->m_NumBars < curr->m_NumBrothels)
+			{
+				curr->m_NumBars++;
+				curr->m_Gold -= 2500;
+			}
+		}
 
 		// adjust their bribe rate		
 		if (profit > 1000)		curr->m_BribeRate += (long)(50);	// if doing well financially then increase 

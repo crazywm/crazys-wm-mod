@@ -281,7 +281,7 @@ typedef struct sChild
 	bool is_girl()	{ return m_Sex == Girl; }
 
 	int m_Age;	// grows up at 60 weeks
-	unsigned char m_IsPlayers;	// 1 when players
+	bool m_IsPlayers;	// 1 when players
 	unsigned char m_Unborn;	// 1 when child is unborn (for when stats are inherited from customers)
 
 	// skills and stats from the father
@@ -393,6 +393,10 @@ struct sGirl
 
 	unsigned long m_WeeksPast;					// number of weeks in your service
 	unsigned int m_BDay;						// number of weeks in your service since last aging
+	
+	int BirthMonth;
+	int BirthDay;
+
 
 	unsigned long m_NumCusts;					// number of customers this girl has slept with
 
