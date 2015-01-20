@@ -1398,3 +1398,23 @@ Cleaned up girl detail list enjoyment section adding cfg.debug.log_extradetails(
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.28
 !!!!!!!!!!!!!!!!!!!! pushed to SVN - r142
  
+###  Changes 1/19-20/2015
+Fixed a bug in Player's Child Surname and trait.
+Fixed a bug in Child growing up breaking on mothers trait missing.
+Fixed a bug with building setup not setting the correct building.
+Fixed a bug in apply and unapply traits that broke its functionality.
+Added more text into GirlFucks function including intro and several submissions by Naturalrice
+Added hotkeys in New Game page for month (F1-F12) and day (0-9) - the days are a little messy but they work.
+Added Preparing Game page
+
+WME - Added all of the new stats, skills, statuses and game configs.
+
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.29
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r143
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.15
+
+
+
+
+

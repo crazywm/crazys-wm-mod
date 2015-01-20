@@ -53,26 +53,16 @@ void cScreenMainMenu::init()
 
 void cScreenMainMenu::process()
 {
-	// we need to make sure the ID variables are set
-	if (!ids_set)
-		set_ids();
-
-	// handle arrow keys
-	if (check_keys())
-		return;
-
-	// set up the window if needed
-	init();
-
-	// check to see if there's a button event needing handling
-	check_events();
+	if (!ids_set) set_ids();	// we need to make sure the ID variables are set
+	if (check_keys()) return;	// handle arrow keys
+	init();						// set up the window if needed
+	check_events();				// check to see if there's a button event needing handling
 }
 
 void cScreenMainMenu::check_events()
 {
 	// no events means we can go home
-	if (g_InterfaceEvents.GetNumEvents() == 0)
-		return;
+	if (g_InterfaceEvents.GetNumEvents() == 0) return;
 
 	if (g_InterfaceEvents.CheckButton(new_id))
 	{

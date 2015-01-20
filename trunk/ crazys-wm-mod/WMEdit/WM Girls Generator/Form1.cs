@@ -32,7 +32,7 @@ namespace WM_Girls_Generator
         string sTraitsPath = "";
         Random rnd = new Random();							//creates new random object to generate random values where needed
         bool LogAllCheckBoxes = false; bool LogOtherCheckBoxes = false;
-        string[] sexskills = { "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"};
+        string[] sexskills = { "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"};
 
         public Form1()
         {
@@ -41,6 +41,8 @@ namespace WM_Girls_Generator
             comboBox_ItemType_01.SelectedIndex = 3;
             comboBox_Rarity_05.SelectedIndex = 0;
             comboBox_ItemDuration.SelectedIndex = 0;
+            comboBox_Horoscope_Type.SelectedIndex = 0;
+
             checkBox_ToggleTraitTooltips.Visible = false;	//hides traits checkbox by default
             StatusLabel1.Text = "";							//clears text in status bar
 
@@ -170,6 +172,13 @@ namespace WM_Girls_Generator
         */
         private string J_Rand(int min = 0, int max = 100, int skew = 0, int type = 0, int bonus = 0, string round = "")
         {
+            int negadj = 0;
+            if (min<0)
+            {
+                negadj -= min;
+                min += negadj;
+                max += negadj;
+            }
             int ss = rnd.Next(min, max + 1);
             if (type == 0) ss += skew;
             else if (type == 4 && skew < 0) ss += rnd.Next(skew, 0);
@@ -253,7 +262,7 @@ namespace WM_Girls_Generator
             if (ss < min) ss = min;
             if (ss > max) ss = max;
             if (ss < 0) ss = 0;     // nothing should be negative
-
+            ss -= negadj;           // unless min was negative
             return ss.ToString();
         }
 
@@ -486,6 +495,8 @@ namespace WM_Girls_Generator
                         case "ScaleWidth": textBox_Config_Screen_Width_Scale.Text = nv; break;
                         case "ScaleHeight": textBox_Config_Screen_Height_Scale.Text = nv; break;
                         case "FullScreen": checkBox_Config_FullScreen.Checked = nvtf; break;
+                        case "ListScrollAmount": textBox_Config_List_Scroll_Amount.Text = nv; break;
+                        case "TextScrollAmount": textBox_Config_Text_Scroll_Amount.Text = nv; break;
                     }
                 }
                 if (textBox_Config_Screen_Width_Scale.Text == "") textBox_Config_Screen_Width_Scale.Text = "800";
@@ -506,6 +517,8 @@ namespace WM_Girls_Generator
                         case "AutoUseItems": checkBox_Config_AutoUseItems.Checked = nvtf; break;
                         case "AutoCombatEquip": checkBox_Config_AutoEquipCombat.Checked = nvtf; break;
                         case "TortureTraitWeekMod": textBox_Torture_Mod.Text = nv; break;
+                        case "HoroscopeType": comboBox_Horoscope_Type.SelectedIndex = nv=="2" ? 1 : 0; break;
+
                     }
                 }
 
@@ -523,6 +536,8 @@ namespace WM_Girls_Generator
                         case "BarmaidIncome": textBox_Config_IncomeBarmaid.Text = nv; break;
                         case "SlaveSales": textBox_Config_IncomeSlaveSales.Text = nv; break;
                         case "ItemSales": textBox_Config_IncomeItemSales.Text = nv; break;
+                        case "ClinicIncome": textBox_Config_IncomeClinic.Text = nv; break;
+                        case "ArenaIncome": textBox_Config_IncomeArena.Text = nv; break;
                     }
                 }
 
@@ -688,7 +703,7 @@ namespace WM_Girls_Generator
             XmlElement xeFonts = xmldoc.CreateElement("Fonts");
             XmlElement xeDebug = xmldoc.CreateElement("Debug");
 
-            XmlComment xcResolution = xmldoc.CreateComment("\n\tResolution     = the name of your interface folder\n\tWidth          = screen width\n\tHeight         = screen height\n\tScaleWidth     = screen scale width\n\tScaleHeight    = screen scale height\n\t\t\tThe old code of the game scaled all windows down to 800x600\n\t\t\tThis has been fixed but any old interfaces will not display correctly\n\t\t\t\tif the scale width and height are not set to 800x600.\n\tFullScreen     = 'true' or 'false'\n\t"); 
+            XmlComment xcResolution = xmldoc.CreateComment("\n\tResolution     = the name of your interface folder\n\tWidth          = screen width\n\tHeight         = screen height\n\tScaleWidth     = screen scale width\n\tScaleHeight    = screen scale height\n\t\t\tThe old code of the game scaled all windows down to 800x600\n\t\t\tThis has been fixed but any old interfaces will not display correctly\n\t\t\t\tif the scale width and height are not set to 800x600.\n\tFullScreen     = 'true' or 'false'\n\tListScrollAmount = The number of lines to scroll in List boxes.\n\tTextScrollAmount = The number of lines to scroll in Text boxes.\n\t"); 
             XmlComment xcInitial = xmldoc.CreateComment("\n\tGold is how much gold you start the game with.\n\tGirlMeet is the %chance you'll meet a girl when walking around town.\n\tGirlsHousePerc and SlaveHousePerc is the default House Percentage for free girls and slave girls.\n\tGirlsKeepTips and GirlsKeepTips is whether they keep tips separate from house percent.\n\tSlavePayOutOfPocket is wether or not slave girls get paid by the player directly for certain jobs\n\t\tie. Cleaning, Advertising, Farming jobs, Film jobs, etc.\n\tAutoUseItems is whether or not the game will try to automatically use\n\t\tthe player's items intelligently on girls each week.\n\t\tThis feature needs more testing.\n\tAutoCombatEquip determines whether girls will automatically equip their best weapon and\n\t\tarmor for combat jobs and also automatically unequip weapon and armor for regular\n\t\tjobs where such gear would be considered inappropriate (i.e. whores-with-swords).\n\t\tSet to \"false\" to disable this feature.\n\n\tTortureTraitWeekMod affects multiplying the duration that they will\n\t\tkeep a temporary trait that they get from being tortured.\n\t\tIt is multiplied by the number of weeks in the dungeon.\n`J` added\t\tIf TortureTraitWeekMod is set to -1 then torture is harsher.\n\t\tThis doubles the chance of injuring the girls and doubles evil gain.\n\t\tDamage is increased by half. It also makes breaking the girls wills permanent.\n\t");
             XmlComment xcIncome = xmldoc.CreateComment("\n\tThese are the numbers that will multiply the money from various sources of income.\n\t\tSo setting \"GirlsWorkBrothel\" to \"0.5\" will reduce the cash your girls generate in the brothel by half.\n\t\tYou can also use numbers >1 to increase income if you are so inclined.\n\t");
             XmlComment xcExpenses = xmldoc.CreateComment("\n\tThese are the multipliers for your expenses.\n\n\tTraining doesn't currently have a cost, so I'm setting it to 1 gold per girl per week\n\t\tand defaulting the multiplier to 0 (so no change by default).\n\tSet it higher and training begins to cost beyond the simple loss of income.\n\n\tActressWages are like training costs:\n\tA per-girl expense nominally 1 gold per girl, but with a default factor of 0,\n\t\tso no change to the current scheme unless you alter that.\n\n\tMakingMovies is the setup cost for a movie:\n\tI'm going to make this 1000 gold per movie, but again, with a zero factor by default.\n\n\tOtherwise, same as above, except you probably want numbers > 1 to make things more expensive here.\n\n\t* not all are used but are retained just in case.\n\t");
@@ -702,14 +717,16 @@ namespace WM_Girls_Generator
             XmlComment xcLogging = xmldoc.CreateComment("\n\tHow much logging is needed?\n\t* They currently don't really work all that much but they will be improved.\n\t");
 
             xeConfig.AppendChild(xcResolution);
-            xeResolution.SetAttribute("Resolution", textBox_Config_Resolution.Text);        // `J` added
-            xeResolution.SetAttribute("Width", textBox_Config_Screen_Width.Text);           // `J` added
-            xeResolution.SetAttribute("Height", textBox_Config_Screen_Height.Text);         // `J` added
+            xeResolution.SetAttribute("Resolution", textBox_Config_Resolution.Text);
+            xeResolution.SetAttribute("Width", textBox_Config_Screen_Width.Text);
+            xeResolution.SetAttribute("Height", textBox_Config_Screen_Height.Text);
             if (textBox_Config_Screen_Width_Scale.Text == "") xeResolution.SetAttribute("ScaleWidth", "800");
-            else xeResolution.SetAttribute("ScaleWidth", textBox_Config_Screen_Width_Scale.Text);     // `J` added
+            else xeResolution.SetAttribute("ScaleWidth", textBox_Config_Screen_Width_Scale.Text);
             if (textBox_Config_Screen_Height_Scale.Text == "") xeResolution.SetAttribute("ScaleHeight", "600");
-            else xeResolution.SetAttribute("ScaleHeight", textBox_Config_Screen_Height_Scale.Text);    // `J` added
-            if (checkBox_Config_FullScreen.Checked == true) xeResolution.SetAttribute("FullScreen", "true"); else xeResolution.SetAttribute("FullScreen", "false");  // `J` added
+            else xeResolution.SetAttribute("ScaleHeight", textBox_Config_Screen_Height_Scale.Text);
+            if (checkBox_Config_FullScreen.Checked == true) xeResolution.SetAttribute("FullScreen", "true"); else xeResolution.SetAttribute("FullScreen", "false");
+            xeResolution.SetAttribute("ListScrollAmount", textBox_Config_List_Scroll_Amount.Text);
+            xeResolution.SetAttribute("TextScrollAmount", textBox_Config_Text_Scroll_Amount.Text);
             xeConfig.AppendChild(xeResolution);
 
             xeConfig.AppendChild(xcInitial);
@@ -723,6 +740,7 @@ namespace WM_Girls_Generator
             if (checkBox_Config_AutoUseItems.Checked == true) xeInitial.SetAttribute("AutoUseItems", "true"); else xeInitial.SetAttribute("AutoUseItems", "false");
             if (checkBox_Config_AutoEquipCombat.Checked == true) xeInitial.SetAttribute("AutoCombatEquip", "true"); else xeInitial.SetAttribute("AutoCombatEquip", "false");    // `J` added
             xeInitial.SetAttribute("TortureTraitWeekMod", textBox_Torture_Mod.Text);    // `J` added
+            xeInitial.SetAttribute("HoroscopeType", (comboBox_Horoscope_Type.SelectedIndex+1).ToString());    // `J` added
             xeConfig.AppendChild(xeInitial);
 
             xeConfig.AppendChild(xcIncome);
@@ -734,6 +752,8 @@ namespace WM_Girls_Generator
             xeIncome.SetAttribute("BarmaidIncome", textBox_Config_IncomeBarmaid.Text);
             xeIncome.SetAttribute("SlaveSales", textBox_Config_IncomeSlaveSales.Text);
             xeIncome.SetAttribute("ItemSales", textBox_Config_IncomeItemSales.Text);
+            xeIncome.SetAttribute("ClinicIncome", textBox_Config_IncomeClinic.Text);
+            xeIncome.SetAttribute("ArenaIncome", textBox_Config_IncomeArena.Text);
             xeConfig.AppendChild(xeIncome);
 
             xeConfig.AppendChild(xcExpenses);
@@ -854,6 +874,8 @@ namespace WM_Girls_Generator
             textBox_Config_Screen_Width_Scale.Text = "800";
             textBox_Config_Screen_Height_Scale.Text = "600";
             checkBox_Config_FullScreen.Checked = false;
+            textBox_Config_List_Scroll_Amount.Text = "3";
+            textBox_Config_Text_Scroll_Amount.Text = "3";
 
             textBox_Initial_Gold.Text = "4000";
             textBox_Config_InitialGirlMeet.Text = "30";
@@ -865,6 +887,7 @@ namespace WM_Girls_Generator
             checkBox_Config_AutoUseItems.Checked = false;
             checkBox_Config_AutoEquipCombat.Checked = true;
             textBox_Torture_Mod.Text = "1";
+            comboBox_Horoscope_Type.SelectedIndex = 0;
 
             textBox_Config_IncomeExtortion.Text = "1.0";
             textBox_Config_IncomeBrothel.Text = "1.0";
@@ -874,6 +897,8 @@ namespace WM_Girls_Generator
             textBox_Config_IncomeBarmaid.Text = "1.0";
             textBox_Config_IncomeSlaveSales.Text = "1.0";
             textBox_Config_IncomeItemSales.Text = "1.0";
+            textBox_Config_IncomeClinic.Text = "1.0";
+            textBox_Config_IncomeArena.Text = "1.0";
 
             textBox_Config_ExpenseTraining.Text = "0.0";
             textBox_Config_ExpenseMovie.Text = "0.0";
@@ -930,7 +955,7 @@ namespace WM_Girls_Generator
             textBox_Config_FontNormal.Text = "segoeui.ttf";
             textBox_config_FontFixed.Text = "segoeui.ttf";
             checkBox_Config_Antialias.Checked = true;
-            checkBox_Config_Show_Percent.Checked = true;
+            checkBox_Config_Show_Percent.Checked = false;
 
             checkBox_config_LogAll.Checked = false;
             checkBox_config_LogItems.Checked = false;
@@ -1162,8 +1187,8 @@ namespace WM_Girls_Generator
             if (sGDesc.Length == 0) sGDesc = "-";
 
             //next two lines are collection of numbers from stats and skills textboxes,and this is where that "sp" comes in handy, it's easier to type sp than " " every time
-            sStats = StatsTBox_01.Text + sp + StatsTBox_02.Text + sp + StatsTBox_03.Text + sp + StatsTBox_04.Text + sp + StatsTBox_05.Text + sp + StatsTBox_06.Text + sp + StatsTBox_07.Text + sp + StatsTBox_08.Text + sp + StatsTBox_09.Text + sp + StatsTBox_G_Level.Text + sp + StatsTBox_11.Text + sp + StatsTBox_12.Text + sp + "0" + sp + StatsTBox_14.Text + sp + StatsTBox_15.Text + sp + StatsTBox_16.Text + sp + StatsTBox_17.Text + sp + StatsTBox_18.Text + sp + StatsTBox_19.Text + sp + StatsTBox_20.Text + sp + StatsTBox_21.Text + sp + StatsTBox_22.Text + sp + textBox_G_Morality.Text;
-            sSkills = SkillTBox_01.Text + sp + SkillTBox_02.Text + sp + SkillTBox_03.Text + sp + SkillTBox_04.Text + sp + SkillTBox_05.Text + sp + SkillTBox_06.Text + sp + SkillTBox_07.Text + sp + SkillTBox_08.Text + sp + SkillTBox_09.Text + sp + SkillTBox_10.Text + sp + SkillTBox_11.Text + sp + SkillTBox_12.Text + sp + SkillTBox_13.Text + sp + SkillTBox_14.Text + sp + SkillTBox_15.Text + sp + SkillTBox_16.Text + sp + SkillTBox_17.Text + sp + SkillTBox_18.Text + sp + SkillTBox_19.Text + sp + SkillTBox_20.Text;
+            sStats = StatsTBox_01.Text + sp + StatsTBox_02.Text + sp + StatsTBox_03.Text + sp + StatsTBox_04.Text + sp + StatsTBox_05.Text + sp + StatsTBox_06.Text + sp + StatsTBox_07.Text + sp + StatsTBox_08.Text + sp + StatsTBox_09.Text + sp + StatsTBox_10.Text + sp + StatsTBox_11.Text + sp + StatsTBox_12.Text + sp + StatsTBox_13.Text + sp + StatsTBox_14.Text + sp + StatsTBox_15.Text + sp + StatsTBox_16.Text + sp + StatsTBox_17.Text + sp + StatsTBox_18.Text + sp + StatsTBox_19.Text + sp + StatsTBox_20.Text + sp + StatsTBox_21.Text + sp + StatsTBox_22.Text + sp + StatsTBox_23.Text + sp + StatsTBox_24.Text + sp + StatsTBox_25.Text + sp + StatsTBox_26.Text;
+            sSkills = SkillTBox_01.Text + sp + SkillTBox_02.Text + sp + SkillTBox_03.Text + sp + SkillTBox_04.Text + sp + SkillTBox_05.Text + sp + SkillTBox_06.Text + sp + SkillTBox_07.Text + sp + SkillTBox_08.Text + sp + SkillTBox_09.Text + sp + SkillTBox_10.Text + sp + SkillTBox_11.Text + sp + SkillTBox_12.Text + sp + SkillTBox_13.Text + sp + SkillTBox_14.Text + sp + SkillTBox_15.Text + sp + SkillTBox_16.Text + sp + SkillTBox_17.Text + sp + SkillTBox_18.Text + sp + SkillTBox_19.Text + sp + SkillTBox_20.Text + sp + SkillTBox_21.Text;
             if (comboBox_Girl_Type.SelectedIndex == 1) sSlave = "1";		//if check to see if slave checkbox is checked or not, and to set slave flag accordingly
             else if (comboBox_Girl_Type.SelectedIndex == 2) sSlave = "2";	//maybe I should have simply said "sSlave = comboBox_GirlType.SelectedIndex.ToString();" that would eliminate ifs, but this way it's more obvious, and it's not necessary to have these items in specific order in dropbox (although they are at the moment)
             else if (comboBox_Girl_Type.SelectedIndex == 3) sSlave = "3";    // arena girls
@@ -1185,11 +1210,14 @@ namespace WM_Girls_Generator
         {
             StatsTBox_14.Text = J_Rand(18, 81);	    	//Age
             StatsTBox_01.Text = J_Rand(1, 100);			//Charisma
-            StatsTBox_17.Text = J_Rand(1, 100);			//Beauty		  
+            StatsTBox_17.Text = J_Rand(1, 100);			//Beauty
+            StatsTBox_24.Text = J_Rand(-100, 100);			//Refinement
             StatsTBox_08.Text = J_Rand(1, 100);			//Agility
             StatsTBox_04.Text = J_Rand(1, 100);			//Constitution
             StatsTBox_05.Text = J_Rand(1, 100);			//Intelligence
             StatsTBox_07.Text = J_Rand(1, 100);			//Mana
+            StatsTBox_23.Text = J_Rand(-100, 100);			//Morality
+            StatsTBox_25.Text = J_Rand(-100, 100);			//Dignity
             StatsTBox_06.Text = J_Rand(1, 100);			//Confidence
             StatsTBox_15.Text = J_Rand(1, 100);			//Obedience
             StatsTBox_16.Text = J_Rand(1, 100);			//Spirit
@@ -1201,10 +1229,13 @@ namespace WM_Girls_Generator
             StatsTBox_14.Text = J_Rand(18, 81, 18, 6);			//Age
             StatsTBox_01.Text = J_Rand(1, 100, 10, 2);			//Charisma
             StatsTBox_17.Text = J_Rand(1, 100, 10, 2);			//Beauty
+            StatsTBox_24.Text = J_Rand(-50, 50, 10, 2);			//Refinement
             StatsTBox_08.Text = J_Rand(1, 100, 10, 2);			//Agility
             StatsTBox_04.Text = J_Rand(1, 100, 10, 2);			//Constitution
             StatsTBox_05.Text = J_Rand(1, 100, 10, 2);	    	//Intelligence
             StatsTBox_07.Text = J_Rand(1, 100, 10, 2);			//Mana
+            StatsTBox_23.Text = J_Rand(-20, 20, 10, 2);			//Morality
+            StatsTBox_25.Text = J_Rand(-20, 20, 10, 2);			//Dignity
             StatsTBox_06.Text = J_Rand(1, 100, 10, 2);			//Confidence
             StatsTBox_15.Text = J_Rand(1, 100, 10, 2);			//Obedience
             StatsTBox_16.Text = J_Rand(1, 100, 10, 2);			//Spirit
@@ -1217,9 +1248,12 @@ namespace WM_Girls_Generator
             StatsTBox_14.Text = J_Rand(18, 70, 18, 6);  //Age, I'll limit it from 18 to 70
             StatsTBox_01.Text = J_Rand(20, 50, 5, 3);   //Charisma
             StatsTBox_17.Text = J_Rand(40, 77, 5, 3);   //Beauty
+            StatsTBox_24.Text = J_Rand(-50, 50, 5, 3);			//Refinement
             StatsTBox_08.Text = J_Rand(30, 100, 5, 3);  //Agility
             StatsTBox_05.Text = J_Rand(10, 90, 5, 3);   //Intelligence
             StatsTBox_07.Text = J_Rand(0, 20, 5, 3);    //Mana
+            StatsTBox_23.Text = J_Rand(-20, 20, 5, 3);			//Morality
+            StatsTBox_25.Text = J_Rand(-20, 20, 5, 3);			//Dignity
             StatsTBox_06.Text = J_Rand(20, 90, 5, 3);   //Confidence
             StatsTBox_15.Text = J_Rand(20, 70, 5, 3);   //Obedience
             StatsTBox_16.Text = J_Rand(30, 70, 5, 3);   //Spirit
@@ -1231,12 +1265,12 @@ namespace WM_Girls_Generator
             if (age < 18) age = rnd.Next(18, 25);
             if (age > 80) age = 100;
             StatsTBox_14.Text = age.ToString();	    	//Age
-
         }
         private void button_St_Appearance_Click(object sender, EventArgs e)
         {
             StatsTBox_01.Text = J_Rand(1, 100);			//Charisma
             StatsTBox_17.Text = J_Rand(1, 100);			//Beauty		  
+            StatsTBox_24.Text = J_Rand(-100, 100);			//Refinement
         }
         private void button_St_Physical_Click(object sender, EventArgs e)
         {
@@ -1247,6 +1281,8 @@ namespace WM_Girls_Generator
         {
             StatsTBox_05.Text = J_Rand(1, 100);			//Intelligence
             StatsTBox_07.Text = J_Rand(1, 100);			//Mana
+            StatsTBox_23.Text = J_Rand(-100, 100);			//Morality
+            StatsTBox_25.Text = J_Rand(-100, 100);			//Dignity
             StatsTBox_06.Text = J_Rand(1, 100);			//Confidence
             StatsTBox_15.Text = J_Rand(1, 100);			//Obedience
             StatsTBox_16.Text = J_Rand(1, 100);			//Spirit
@@ -1300,10 +1336,13 @@ namespace WM_Girls_Generator
         {
             StatsTBox_01.Text = J_Rand(0, 100);             //Charisma
             StatsTBox_17.Text = J_Rand(0, 100);             //Beauty                      
+            StatsTBox_24.Text = J_Rand(-10, 50);			//Refinement
             StatsTBox_08.Text = J_Rand(0, 80);              //Agility
             StatsTBox_04.Text = J_Rand(0, 60);              //Constitution
             StatsTBox_05.Text = J_Rand(50, 100);            //Intelligence
             StatsTBox_07.Text = J_Rand(50, 100);            //Mana
+            StatsTBox_23.Text = J_Rand(-40, 40);			//Morality
+            StatsTBox_25.Text = J_Rand(-10, 50);			//Dignity
             StatsTBox_06.Text = J_Rand(30, 100);            //Confidence
             StatsTBox_15.Text = J_Rand(0, 80);              //Obedience
             StatsTBox_16.Text = J_Rand(30, 100);            //Spirit
@@ -1324,10 +1363,13 @@ namespace WM_Girls_Generator
         {                                                   
             StatsTBox_01.Text = J_Rand(0, 80);              //Charisma
             StatsTBox_17.Text = J_Rand(0, 80);              //Beauty                      
+            StatsTBox_24.Text = J_Rand(-40, 40);			//Refinement
             StatsTBox_08.Text = J_Rand(40, 100);            //Agility
             StatsTBox_04.Text = J_Rand(50, 100);            //Constitution
             StatsTBox_05.Text = J_Rand(0, 70);              //Intelligence
             StatsTBox_07.Text = J_Rand(0, 50);              //Mana
+            StatsTBox_23.Text = J_Rand(-50, 50);			//Morality
+            StatsTBox_25.Text = J_Rand(-10, 50);			//Dignity
             StatsTBox_06.Text = J_Rand(20, 100);            //Confidence
             StatsTBox_15.Text = J_Rand(0, 80);              //Obedience
             StatsTBox_16.Text = J_Rand(20, 100);            //Spirit
@@ -1348,10 +1390,13 @@ namespace WM_Girls_Generator
         {                                                   
             StatsTBox_01.Text = J_Rand(0, 100);             //Charisma
             StatsTBox_17.Text = J_Rand(0, 100);             //Beauty                      
+            StatsTBox_24.Text = J_Rand(-20, 50);			//Refinement
             StatsTBox_08.Text = J_Rand(0, 80);              //Agility
             StatsTBox_04.Text = J_Rand(0, 50);              //Constitution
             StatsTBox_05.Text = J_Rand(0, 80);              //Intelligence
             StatsTBox_07.Text = J_Rand(0, 40);              //Mana
+            StatsTBox_23.Text = J_Rand(-20, 20);			//Morality
+            StatsTBox_25.Text = J_Rand(-40, 20);			//Dignity
             StatsTBox_06.Text = J_Rand(0, 80);              //Confidence
             StatsTBox_15.Text = J_Rand(0, 100);             //Obedience
             StatsTBox_16.Text = J_Rand(0, 80);              //Spirit
@@ -1372,10 +1417,13 @@ namespace WM_Girls_Generator
         {                                                   
             StatsTBox_01.Text = J_Rand(21, 100);            //Charisma
             StatsTBox_17.Text = J_Rand(0, 100);             //Beauty                      
+            StatsTBox_24.Text = J_Rand(0, 50);			//Refinement
             StatsTBox_08.Text = J_Rand(0, 100);             //Agility
             StatsTBox_04.Text = J_Rand(0, 100);             //Constitution
             StatsTBox_05.Text = J_Rand(50, 100);            //Intelligence
             StatsTBox_07.Text = J_Rand(0, 100);             //Mana
+            StatsTBox_23.Text = J_Rand(0, 70);			//Morality
+            StatsTBox_25.Text = J_Rand(1, 70);			//Dignity
             StatsTBox_06.Text = J_Rand(20, 100);            //Confidence
             StatsTBox_15.Text = J_Rand(0, 80);              //Obedience
             StatsTBox_16.Text = J_Rand(20, 100);            //Spirit
@@ -1395,10 +1443,13 @@ namespace WM_Girls_Generator
         {                                                   
             StatsTBox_01.Text = J_Rand(30, 100);            //Charisma
             StatsTBox_17.Text = J_Rand(30, 100);            //Beauty                      
+            StatsTBox_24.Text = J_Rand(10, 100);			//Refinement
             StatsTBox_08.Text = J_Rand(30, 100);            //Agility
             StatsTBox_04.Text = J_Rand(30, 100);            //Constitution
             StatsTBox_05.Text = J_Rand(0, 100);             //Intelligence
             StatsTBox_07.Text = J_Rand(0, 100);             //Mana
+            StatsTBox_23.Text = J_Rand(-50, 50);			//Morality
+            StatsTBox_25.Text = J_Rand(-30, 80);			//Dignity
             StatsTBox_06.Text = J_Rand(30, 100);            //Confidence
             StatsTBox_15.Text = J_Rand(0, 100);             //Obedience
             StatsTBox_16.Text = J_Rand(0, 100);             //Spirit
@@ -1418,10 +1469,13 @@ namespace WM_Girls_Generator
         {                                                   
             StatsTBox_01.Text = J_Rand(0, 80);              //Charisma
             StatsTBox_17.Text = J_Rand(0, 100);             //Beauty                      
+            StatsTBox_24.Text = J_Rand(-40, 60);			//Refinement
             StatsTBox_08.Text = J_Rand(0, 100);             //Agility
             StatsTBox_04.Text = J_Rand(0, 100);             //Constitution
             StatsTBox_05.Text = J_Rand(40, 100);            //Intelligence
             StatsTBox_07.Text = J_Rand(0, 100);             //Mana
+            StatsTBox_23.Text = J_Rand(-20, 70);			//Morality
+            StatsTBox_25.Text = J_Rand(-50, 50);			//Dignity
             StatsTBox_06.Text = J_Rand(20, 80);             //Confidence
             StatsTBox_15.Text = J_Rand(0, 80);              //Obedience
             StatsTBox_16.Text = J_Rand(20, 100);            //Spirit
@@ -1441,10 +1495,13 @@ namespace WM_Girls_Generator
         {                                                   
             StatsTBox_01.Text = J_Rand(0, 80);              //Charisma
             StatsTBox_17.Text = J_Rand(0, 80);              //Beauty                      
+            StatsTBox_24.Text = J_Rand(-100, 30);			//Refinement
             StatsTBox_08.Text = J_Rand(11, 100);            //Agility
             StatsTBox_04.Text = J_Rand(21, 100);            //Constitution
             StatsTBox_05.Text = J_Rand(0, 80);              //Intelligence
             StatsTBox_07.Text = J_Rand(0, 50);              //Mana
+            StatsTBox_23.Text = J_Rand(-50, 50);			//Morality
+            StatsTBox_25.Text = J_Rand(-30, 50);			//Dignity
             StatsTBox_06.Text = J_Rand(0, 80);              //Confidence
             StatsTBox_15.Text = J_Rand(11, 80);             //Obedience
             StatsTBox_16.Text = J_Rand(10, 90);             //Spirit
@@ -1475,6 +1532,7 @@ namespace WM_Girls_Generator
             SkillTBox_11.Text = rnd.Next(0, 101).ToString();		//OralSex
             SkillTBox_12.Text = rnd.Next(0, 101).ToString();		//TittySex
             SkillTBox_15.Text = rnd.Next(0, 101).ToString();		//Handjob
+            SkillTBox_21.Text = rnd.Next(0, 101).ToString();		//Footjob
         }
         //Normalized sex randomize skills button
         private void button_SS_NR_Click(object sender, EventArgs e)
@@ -1489,6 +1547,7 @@ namespace WM_Girls_Generator
             SkillTBox_11.Text = (rnd.Next(0, 21) * 5).ToString();		//OralSex
             SkillTBox_12.Text = (rnd.Next(0, 21) * 5).ToString();		//TittySex
             SkillTBox_15.Text = (rnd.Next(0, 21) * 5).ToString();		//Handjob
+            SkillTBox_21.Text = (rnd.Next(0, 21) * 5).ToString();		//Footjob
         }
         //Conditional sex randomize skills button
         private void button_SS_CR_Click(object sender, EventArgs e)
@@ -1503,6 +1562,7 @@ namespace WM_Girls_Generator
             SkillTBox_11.Text = (rnd.Next(0, 9) * 5).ToString();		//OralSex
             SkillTBox_12.Text = (rnd.Next(0, 9) * 5).ToString();		//TittySex
             SkillTBox_15.Text = (rnd.Next(0, 9) * 5).ToString();		//Handjob
+            SkillTBox_21.Text = (rnd.Next(0, 9) * 5).ToString();		//Footjob
         }
         private void button_SS_Virgin_Click(object sender, EventArgs e)
         {
@@ -1516,6 +1576,7 @@ namespace WM_Girls_Generator
             SkillTBox_11.Text = J_Rand(0, 15, -5, 6);		//OralSex
             SkillTBox_12.Text = J_Rand(0, 15, -5, 6);		//TittySex
             SkillTBox_15.Text = J_Rand(0, 15, -5, 6);		//Handjob
+            SkillTBox_21.Text = J_Rand(0, 15, -5, 6);		//Footjob
         }
         private void button_SS_Les_Click(object sender, EventArgs e)
         {
@@ -1529,6 +1590,7 @@ namespace WM_Girls_Generator
             SkillTBox_11.Text = J_Rand(0, 50);              //OralSex
             SkillTBox_12.Text = J_Rand(0, 50);              //TittySex
             SkillTBox_15.Text = J_Rand(0, 50);              //Handjob
+            SkillTBox_21.Text = J_Rand(0, 50);              //Footjob
         }
         private void button_SS_Milf_Click(object sender, EventArgs e)
         {
@@ -1542,6 +1604,7 @@ namespace WM_Girls_Generator
             SkillTBox_11.Text = J_Rand(0, 50);		//OralSex
             SkillTBox_12.Text = J_Rand(0, 50);		//TittySex
             SkillTBox_15.Text = J_Rand(0, 50);		//Handjob
+            SkillTBox_21.Text = J_Rand(0, 50);		//Footjob
         }
         private void button_SS_Whore_Click(object sender, EventArgs e)
         {
@@ -1555,6 +1618,7 @@ namespace WM_Girls_Generator
             SkillTBox_11.Text = J_Rand(30, 101);	//OralSex
             SkillTBox_12.Text = J_Rand(30, 101);	//TittySex
             SkillTBox_15.Text = J_Rand(30, 101);	//Handjob
+            SkillTBox_21.Text = J_Rand(30, 101);	//Footjob
         }
         private void button_G_UnZero_Sex_Skills_Click(object sender, EventArgs e)
         {
@@ -1569,6 +1633,7 @@ namespace WM_Girls_Generator
             if (SkillTBox_11.TextLength > 0) sexskills[7] = SkillTBox_11.Text;	//OralSex
             if (SkillTBox_12.TextLength > 0) sexskills[8] = SkillTBox_12.Text;	//TittySex
             if (SkillTBox_15.TextLength > 0) sexskills[9] = SkillTBox_15.Text;	//Handjob
+            if (SkillTBox_21.TextLength > 0) sexskills[10] = SkillTBox_21.Text;	//Footjob
 
             int testnum = 0; int testhigh = 0; int testlow = 0; int testaveragediv = 0; int testaveragesum = 0; int testnumzeros = 10;
             bool test5round = true; bool test10round = true;    string teststring = "";
@@ -1651,6 +1716,7 @@ namespace WM_Girls_Generator
             SkillTBox_11.Text = sexskills[7];	//OralSex
             SkillTBox_12.Text = sexskills[8];	//TittySex
             SkillTBox_15.Text = sexskills[9];	//Handjob
+            SkillTBox_21.Text = sexskills[10];	//Footjob
         }
 
         //Resets values in girl tab, I think this doesn't need any expalantion, it resets all values to starting point, and also deselects any girl on girls list, if any is selected
@@ -1666,9 +1732,12 @@ namespace WM_Girls_Generator
                 TraitCollection.Rows[i]["Checked"] = "false";
             }
 
-            GoldTBox1.Text = StatsTBox_09.Text = StatsTBox_G_Level.Text = StatsTBox_11.Text = StatsTBox_20.Text = StatsTBox_21.Text = StatsTBox_22.Text = StatsTBox_18.Text = textBox_G_Morality.Text = "0";
-            StatsTBox_12.Text = "60"; StatsTBox_02.Text = StatsTBox_19.Text = "100";
-            StatsTBox_01.Text = StatsTBox_03.Text = StatsTBox_04.Text = StatsTBox_05.Text = StatsTBox_06.Text = StatsTBox_07.Text = StatsTBox_08.Text = StatsTBox_14.Text = StatsTBox_15.Text = StatsTBox_16.Text = StatsTBox_17.Text = SkillTBox_01.Text = SkillTBox_02.Text = SkillTBox_03.Text = SkillTBox_04.Text = SkillTBox_05.Text = SkillTBox_06.Text = SkillTBox_07.Text = SkillTBox_08.Text = SkillTBox_09.Text = SkillTBox_10.Text = SkillTBox_11.Text = SkillTBox_12.Text = SkillTBox_13.Text = SkillTBox_14.Text = SkillTBox_15.Text = SkillTBox_16.Text = SkillTBox_17.Text = SkillTBox_18.Text = SkillTBox_19.Text = SkillTBox_20.Text = "";
+            GoldTBox1.Text = "0";
+            StatsTBox_14.Text = "18";
+            StatsTBox_12.Text = "60";
+            StatsTBox_02.Text = StatsTBox_19.Text = "100";
+            StatsTBox_01.Text = StatsTBox_03.Text = StatsTBox_04.Text = StatsTBox_05.Text = StatsTBox_06.Text = StatsTBox_07.Text = StatsTBox_08.Text = StatsTBox_09.Text = StatsTBox_10.Text = StatsTBox_11.Text = StatsTBox_13.Text = StatsTBox_15.Text = StatsTBox_16.Text = StatsTBox_17.Text = StatsTBox_18.Text = StatsTBox_20.Text = StatsTBox_21.Text = StatsTBox_22.Text = StatsTBox_23.Text = StatsTBox_24.Text = StatsTBox_25.Text = StatsTBox_26.Text = "0";
+            SkillTBox_01.Text = SkillTBox_02.Text = SkillTBox_03.Text = SkillTBox_04.Text = SkillTBox_05.Text = SkillTBox_06.Text = SkillTBox_07.Text = SkillTBox_08.Text = SkillTBox_09.Text = SkillTBox_10.Text = SkillTBox_11.Text = SkillTBox_12.Text = SkillTBox_13.Text = SkillTBox_14.Text = SkillTBox_15.Text = SkillTBox_16.Text = SkillTBox_17.Text = SkillTBox_18.Text = SkillTBox_19.Text = SkillTBox_20.Text = SkillTBox_21.Text = "0";
             comboBox_Girl_Type.SelectedIndex = 0;
             this.listBox_GirlsList.SelectedIndexChanged -= new System.EventHandler(this.listBox_GirlsList_SelectedIndexChanged);		//turns off SelectedIndexChanged handler, if this isn't used when we delete item at current index, new index would be CHANGED to -1, this would of course activate handler who would try to parse data at index -1, problem is, there is no data at -1 so this would produce an error, so it's best to simply turn this handler off while we delete stuff
             listBox_GirlsList.SelectedItem = null;
@@ -1765,8 +1834,8 @@ namespace WM_Girls_Generator
                     string sStatus = "";			        //girl status
                     ArrayList alTraits = new ArrayList();	//ArrayList to store parsed traits, later on in the code of this method
 
-                    string[] jStats = new string[23];
-                    string[] jSkills = new string[20];
+                    string[] jStats = new string[26];
+                    string[] jSkills = new string[21];
 
                     //now, reason why editor turned out to support conversion to new format is because I made this XML support as a wrapper, data get's read from XML it's stored
                     //in memory in old format, this is what next two lines do, they're that long line with bunch of numbers, internally program works the same as before, only new is this XML wrapper
@@ -1805,6 +1874,10 @@ namespace WM_Girls_Generator
                         if (node.Attributes[i].Name == "PCLove") jStats[20] = node.Attributes["PCLove"].Value;
                         if (node.Attributes[i].Name == "PCHate") jStats[21] = node.Attributes["PCHate"].Value;
                         if (node.Attributes[i].Name == "Morality") jStats[22] = node.Attributes["Morality"].Value;
+                        if (node.Attributes[i].Name == "Refinement") jStats[23] = node.Attributes["Refinement"].Value;
+                        if (node.Attributes[i].Name == "Dignity") jStats[24] = node.Attributes["Dignity"].Value;
+                        if (node.Attributes[i].Name == "Lactation") jStats[25] = node.Attributes["Lactation"].Value;
+
                         if (node.Attributes[i].Name == "Anal") jSkills[0] = node.Attributes["Anal"].Value;
                         if (node.Attributes[i].Name == "Magic") jSkills[1] = node.Attributes["Magic"].Value;
                         if (node.Attributes[i].Name == "BDSM") jSkills[2] = node.Attributes["BDSM"].Value;
@@ -1825,6 +1898,7 @@ namespace WM_Girls_Generator
                         if (node.Attributes[i].Name == "Farming") jSkills[17] = node.Attributes["Farming"].Value;
                         if (node.Attributes[i].Name == "Brewing") jSkills[18] = node.Attributes["Brewing"].Value;
                         if (node.Attributes[i].Name == "AnimalHandling") jSkills[19] = node.Attributes["AnimalHandling"].Value;
+                        if (node.Attributes[i].Name == "Footjob") jSkills[20] = node.Attributes["Footjob"].Value;
 
                         if (node.Attributes[i].Name == "Status")
                         {
@@ -1853,7 +1927,7 @@ namespace WM_Girls_Generator
                     // `J` this sets sex skills if they are not in the girlsx file, non-sex skills are are left as 0
                     if (checkBox_Add_Missing_Sex_Skills_On_Load.Checked)
                     {
-                        for (int i = 0; i < 10; i++) { sexskills[i] = null; } // reset all to null before checking
+                        for (int i = 0; i < 11; i++) { sexskills[i] = null; } // reset all to null before checking
                         sexskills[0] = jSkills[0];	    //Anal Sex
                         sexskills[1] = jSkills[2];	    //BDSM Sex
                         sexskills[2] = jSkills[3];	    //Normal Sex
@@ -1864,6 +1938,7 @@ namespace WM_Girls_Generator
                         sexskills[7] = jSkills[10];	    //OralSex
                         sexskills[8] = jSkills[11];	    //TittySex
                         sexskills[9] = jSkills[14];	    //Handjob
+                        sexskills[10] = jSkills[20];    //Footjob
 
                         int testnum = 0; int testnumnulls = 10; int testuniquenums = 0;
                         int testhigh = 0; int testlow = 0; int testaveragediv = 0; int testaveragesum = 0;
@@ -1899,7 +1974,7 @@ namespace WM_Girls_Generator
                             }
                         }
 
-                        if (testnumnulls == 10)     // if no numbers are in the girlsx file, we set everything to 0
+                        if (testnumnulls == 11)     // if no numbers are in the girlsx file, we set everything to 0
                         {
                             for (int i = 0; i < sexskills.Length; i++)
                             {
@@ -1914,10 +1989,10 @@ namespace WM_Girls_Generator
                             }
                         }
                         // check if it is a pre.05 girlsx and the numbers are similar
-                        else if (testnumnulls == 3 && sexskills[7] == null && sexskills[8] == null && sexskills[9] == null && testuniquenums < 4)
+                        else if (testnumnulls == 3 && sexskills[7] == null && sexskills[8] == null && sexskills[9] == null && sexskills[10] == null && testuniquenums < 4)
                         {
-                                //set oral and hand to group
-                                sexskills[7] = sexskills[9] = sexskills[4];
+                                //set oral, hand and foot to group
+                                sexskills[7] = sexskills[9] = sexskills[10] = sexskills[4];
                                 //set titty to normal
                                 sexskills[8] = sexskills[2];
                         }
@@ -1938,7 +2013,7 @@ namespace WM_Girls_Generator
                                 skewnum = testlow;
                                 skewtype = 6;
                             }
-                            for (int i = 0; i < 10; i++)  // change all that are missing
+                            for (int i = 0; i < 11; i++)  // change all that are missing
                             {
                                 if (sexskills[i] == null) sexskills[i] = J_Rand(testlow, testhigh, skewnum, skewtype, 0, teststring);
                             }
@@ -1954,6 +2029,7 @@ namespace WM_Girls_Generator
                         jSkills[10] = sexskills[7];  //OralSex
                         jSkills[11] = sexskills[8];  //TittySex
                         jSkills[14] = sexskills[9];  //Handjob
+                        jSkills[20] = sexskills[10]; //Footjob
                     }   // end of if (checkBox_Add_Missing_Sex_Skills_On_Load.Checked)
 
                     for (int i = 0; i < jSkills.Length; i++)    // default all others to 0
@@ -2145,6 +2221,9 @@ namespace WM_Girls_Generator
                 girl.SetAttribute("PCLove", sStats[20]);
                 girl.SetAttribute("PCHate", sStats[21]);
                 girl.SetAttribute("Morality", sStats[22]);
+                girl.SetAttribute("Refinement", sStats[23]);
+                girl.SetAttribute("Dignity", sStats[24]);
+                girl.SetAttribute("Lactation", sStats[25]);
 
                 girl.SetAttribute("Anal", sSkills[0]);
                 girl.SetAttribute("Magic", sSkills[1]);
@@ -2166,6 +2245,7 @@ namespace WM_Girls_Generator
                 girl.SetAttribute("Farming", sSkills[17]);
                 girl.SetAttribute("Brewing", sSkills[18]);
                 girl.SetAttribute("AnimalHandling", sSkills[19]);
+                girl.SetAttribute("Footjob", sSkills[20]);
 
                 girl.SetAttribute("Gold", sGold);
                 girl.SetAttribute("Virgin", sVirgin);
@@ -2253,9 +2333,10 @@ namespace WM_Girls_Generator
             StatsTBox_07.Text = (values.Length > 06) ? values[6] : "0";
             StatsTBox_08.Text = (values.Length > 07) ? values[7] : "0";
             StatsTBox_09.Text = (values.Length > 08) ? values[8] : "0";
-            StatsTBox_G_Level.Text = (values.Length > 09) ? values[9] : "0";
+            StatsTBox_10.Text = (values.Length > 09) ? values[9] : "0";
             StatsTBox_11.Text = (values.Length > 10) ? values[10] : "0";
             StatsTBox_12.Text = (values.Length > 11) ? values[11] : "0";
+            StatsTBox_13.Text = (values.Length > 12) ? values[12] : "0";
             StatsTBox_14.Text = (values.Length > 13) ? values[13] : "0";
             StatsTBox_15.Text = (values.Length > 14) ? values[14] : "0";
             StatsTBox_16.Text = (values.Length > 15) ? values[15] : "0";
@@ -2265,7 +2346,10 @@ namespace WM_Girls_Generator
             StatsTBox_20.Text = (values.Length > 19) ? values[19] : "0";
             StatsTBox_21.Text = (values.Length > 20) ? values[20] : "0";
             StatsTBox_22.Text = (values.Length > 21) ? values[21] : "0";
-            textBox_G_Morality.Text = (values.Length > 22) ? values[22] : "0";
+            StatsTBox_23.Text = (values.Length > 22) ? values[22] : "0";
+            StatsTBox_24.Text = (values.Length > 23) ? values[23] : "0";
+            StatsTBox_25.Text = (values.Length > 24) ? values[24] : "0";
+            StatsTBox_26.Text = (values.Length > 25) ? values[25] : "0";
 
             //again for skills
             values = data.ReadLine().Split(separator);
@@ -2289,6 +2373,7 @@ namespace WM_Girls_Generator
             SkillTBox_18.Text = (values.Length > 17) ? values[17] : "0";
             SkillTBox_19.Text = (values.Length > 18) ? values[18] : "0";
             SkillTBox_20.Text = (values.Length > 19) ? values[19] : "0";
+            SkillTBox_21.Text = (values.Length > 20) ? values[20] : "0";
 
             GoldTBox1.Text = data.ReadLine();	//gold
             string sVirgin = data.ReadLine();	//virgin
@@ -2490,11 +2575,11 @@ namespace WM_Girls_Generator
                 i++;
             }
 
-            sRStatsMin = StatRGMinTBox1.Text + sp + StatRGMinTBox2.Text + sp + StatRGMinTBox3.Text + sp + StatRGMinTBox4.Text + sp + StatRGMinTBox5.Text + sp + StatRGMinTBox6.Text + sp + StatRGMinTBox7.Text + sp + StatRGMinTBox8.Text + sp + StatRGMinTBox9.Text + sp + StatRGMinTBox10.Text + sp + StatRGMinTBox11.Text + sp + StatRGMinTBox12.Text + sp + "0" + sp + StatRGMinTBox14.Text + sp + StatRGMinTBox15.Text + sp + StatRGMinTBox16.Text + sp + StatRGMinTBox17.Text + sp + StatRGMinTBox18.Text + sp + StatRGMinTBox19.Text + sp + StatRGMinTBox20.Text + sp + StatRGMinTBox21.Text + sp + StatRGMinTBox22.Text + sp + textBox_RG_Morality_Min.Text;
-            sRStatsMax = StatRGMaxTBox1.Text + sp + StatRGMaxTBox2.Text + sp + StatRGMaxTBox3.Text + sp + StatRGMaxTBox4.Text + sp + StatRGMaxTBox5.Text + sp + StatRGMaxTBox6.Text + sp + StatRGMaxTBox7.Text + sp + StatRGMaxTBox8.Text + sp + StatRGMaxTBox9.Text + sp + StatRGMaxTBox10.Text + sp + StatRGMaxTBox11.Text + sp + StatRGMaxTBox12.Text + sp + "0" + sp + StatRGMaxTBox14.Text + sp + StatRGMaxTBox15.Text + sp + StatRGMaxTBox16.Text + sp + StatRGMaxTBox17.Text + sp + StatRGMaxTBox18.Text + sp + StatRGMaxTBox19.Text + sp + StatRGMaxTBox20.Text + sp + StatRGMaxTBox21.Text + sp + StatRGMaxTBox22.Text + sp + textBox_RG_Morality_Max.Text;
+            sRStatsMin = StatRGMinTBox1.Text + sp + StatRGMinTBox2.Text + sp + StatRGMinTBox3.Text + sp + StatRGMinTBox4.Text + sp + StatRGMinTBox5.Text + sp + StatRGMinTBox6.Text + sp + StatRGMinTBox7.Text + sp + StatRGMinTBox8.Text + sp + StatRGMinTBox9.Text + sp + StatRGMinTBox10.Text + sp + StatRGMinTBox11.Text + sp + StatRGMinTBox12.Text + sp + "0" + sp + StatRGMinTBox14.Text + sp + StatRGMinTBox15.Text + sp + StatRGMinTBox16.Text + sp + StatRGMinTBox17.Text + sp + StatRGMinTBox18.Text + sp + StatRGMinTBox19.Text + sp + StatRGMinTBox20.Text + sp + StatRGMinTBox21.Text + sp + StatRGMinTBox22.Text + sp + StatRGMinTBox23.Text;
+            sRStatsMax = StatRGMaxTBox1.Text + sp + StatRGMaxTBox2.Text + sp + StatRGMaxTBox3.Text + sp + StatRGMaxTBox4.Text + sp + StatRGMaxTBox5.Text + sp + StatRGMaxTBox6.Text + sp + StatRGMaxTBox7.Text + sp + StatRGMaxTBox8.Text + sp + StatRGMaxTBox9.Text + sp + StatRGMaxTBox10.Text + sp + StatRGMaxTBox11.Text + sp + StatRGMaxTBox12.Text + sp + "0" + sp + StatRGMaxTBox14.Text + sp + StatRGMaxTBox15.Text + sp + StatRGMaxTBox16.Text + sp + StatRGMaxTBox17.Text + sp + StatRGMaxTBox18.Text + sp + StatRGMaxTBox19.Text + sp + StatRGMaxTBox20.Text + sp + StatRGMaxTBox21.Text + sp + StatRGMaxTBox22.Text + sp + StatRGMaxTBox23.Text;
 
-            sRSkillsMin = SkillRGMinTBox1.Text + sp + SkillRGMinTBox2.Text + sp + SkillRGMinTBox3.Text + sp + SkillRGMinTBox4.Text + sp + SkillRGMinTBox5.Text + sp + SkillRGMinTBox6.Text + sp + SkillRGMinTBox7.Text + sp + SkillRGMinTBox8.Text + sp + SkillRGMinTBox9.Text + sp + SkillRGMinTBox10.Text + sp + SkillRGMinTBox11.Text + sp + SkillRGMinTBox12.Text + sp + SkillRGMinTBox13.Text + sp + SkillRGMinTBox14.Text + sp + SkillRGMinTBox15.Text + sp + SkillRGMinTBox16.Text + sp + SkillRGMinTBox17.Text + sp + SkillRGMinTBox18.Text + sp + SkillRGMinTBox19.Text + sp + SkillRGMinTBox20.Text;
-            sRSkillsMax = SkillRGMaxTBox1.Text + sp + SkillRGMaxTBox2.Text + sp + SkillRGMaxTBox3.Text + sp + SkillRGMaxTBox4.Text + sp + SkillRGMaxTBox5.Text + sp + SkillRGMaxTBox6.Text + sp + SkillRGMaxTBox7.Text + sp + SkillRGMaxTBox8.Text + sp + SkillRGMaxTBox9.Text + sp + SkillRGMaxTBox10.Text + sp + SkillRGMaxTBox11.Text + sp + SkillRGMaxTBox12.Text + sp + SkillRGMaxTBox13.Text + sp + SkillRGMaxTBox14.Text + sp + SkillRGMaxTBox15.Text + sp + SkillRGMaxTBox16.Text + sp + SkillRGMaxTBox17.Text + sp + SkillRGMaxTBox18.Text + sp + SkillRGMaxTBox19.Text + sp + SkillRGMaxTBox20.Text;
+            sRSkillsMin = SkillRGMinTBox1.Text + sp + SkillRGMinTBox2.Text + sp + SkillRGMinTBox3.Text + sp + SkillRGMinTBox4.Text + sp + SkillRGMinTBox5.Text + sp + SkillRGMinTBox6.Text + sp + SkillRGMinTBox7.Text + sp + SkillRGMinTBox8.Text + sp + SkillRGMinTBox9.Text + sp + SkillRGMinTBox10.Text + sp + SkillRGMinTBox11.Text + sp + SkillRGMinTBox12.Text + sp + SkillRGMinTBox13.Text + sp + SkillRGMinTBox14.Text + sp + SkillRGMinTBox15.Text + sp + SkillRGMinTBox16.Text + sp + SkillRGMinTBox17.Text + sp + SkillRGMinTBox18.Text + sp + SkillRGMinTBox19.Text + sp + SkillRGMinTBox20.Text + sp + SkillRGMinTBox21.Text;
+            sRSkillsMax = SkillRGMaxTBox1.Text + sp + SkillRGMaxTBox2.Text + sp + SkillRGMaxTBox3.Text + sp + SkillRGMaxTBox4.Text + sp + SkillRGMaxTBox5.Text + sp + SkillRGMaxTBox6.Text + sp + SkillRGMaxTBox7.Text + sp + SkillRGMaxTBox8.Text + sp + SkillRGMaxTBox9.Text + sp + SkillRGMaxTBox10.Text + sp + SkillRGMaxTBox11.Text + sp + SkillRGMaxTBox12.Text + sp + SkillRGMaxTBox13.Text + sp + SkillRGMaxTBox14.Text + sp + SkillRGMaxTBox15.Text + sp + SkillRGMaxTBox16.Text + sp + SkillRGMaxTBox17.Text + sp + SkillRGMaxTBox18.Text + sp + SkillRGMaxTBox19.Text + sp + SkillRGMaxTBox20.Text + sp + SkillRGMaxTBox21.Text;
 
             if (descRTBox1.Text.Length == 0) sRGDesc = "-";
             else sRGDesc = descRTBox1.Text;
@@ -2557,6 +2642,7 @@ namespace WM_Girls_Generator
             ValidateRG(SkillRGMinTBox18, SkillRGMaxTBox18);
             ValidateRG(SkillRGMinTBox19, SkillRGMaxTBox19);
             ValidateRG(SkillRGMinTBox20, SkillRGMaxTBox20);
+            ValidateRG(SkillRGMinTBox21, SkillRGMaxTBox21);
             
             ValidateRG(GoldRMinTBox1, GoldRMaxTBox1);
         }
@@ -2568,8 +2654,19 @@ namespace WM_Girls_Generator
         */
         private void RandomRG(TextBox min, TextBox max, int x, int y, Random rnd)
         {
-            min.Text = rnd.Next(x, y).ToString();
-            max.Text = rnd.Next(Convert.ToInt32(min.Text), y).ToString();
+            int negadj = 0;
+            if (x<0)
+            {
+                negadj -= x;
+                x += negadj;
+                y += negadj;
+            }
+            int xa = rnd.Next(x, y);
+            int ya = rnd.Next(xa, y);
+            xa -= negadj;
+            ya -= negadj;
+            min.Text = xa.ToString();
+            max.Text = ya.ToString();
         }
         //resets values in input boxes on random girls tab
         private void button_RG_Reset_Click(object sender, EventArgs e)
@@ -2578,11 +2675,10 @@ namespace WM_Girls_Generator
             descRTBox1.Text = "";
             rgTable.Clear();
             GoldRMinTBox1.Text = "0"; GoldRMaxTBox1.Text = "10";
-            StatRGMinTBox1.Text = ""; StatRGMinTBox2.Text = "100"; StatRGMinTBox3.Text = ""; StatRGMinTBox4.Text = ""; StatRGMinTBox5.Text = ""; StatRGMinTBox6.Text = ""; StatRGMinTBox7.Text = ""; StatRGMinTBox8.Text = ""; StatRGMinTBox9.Text = "0"; StatRGMinTBox10.Text = "0"; StatRGMinTBox11.Text = "0"; StatRGMinTBox12.Text = "100"; StatRGMinTBox14.Text = ""; StatRGMinTBox15.Text = ""; StatRGMinTBox16.Text = ""; StatRGMinTBox17.Text = ""; StatRGMinTBox18.Text = "0"; StatRGMinTBox19.Text = "100"; StatRGMinTBox20.Text = "0"; StatRGMinTBox21.Text = "0"; StatRGMinTBox22.Text = "0";
-            SkillRGMinTBox1.Text = ""; SkillRGMinTBox2.Text = ""; SkillRGMinTBox3.Text = ""; SkillRGMinTBox4.Text = ""; SkillRGMinTBox5.Text = ""; SkillRGMinTBox6.Text = ""; SkillRGMinTBox7.Text = ""; SkillRGMinTBox8.Text = ""; SkillRGMinTBox9.Text = ""; SkillRGMinTBox10.Text = ""; SkillRGMinTBox11.Text = ""; SkillRGMinTBox12.Text = ""; SkillRGMinTBox13.Text = ""; SkillRGMinTBox14.Text = ""; SkillRGMinTBox15.Text = ""; SkillRGMinTBox16.Text = ""; SkillRGMinTBox17.Text = ""; SkillRGMinTBox18.Text = ""; SkillRGMinTBox19.Text = ""; SkillRGMinTBox20.Text = "";
-            StatRGMaxTBox1.Text = ""; StatRGMaxTBox2.Text = "100"; StatRGMaxTBox3.Text = ""; StatRGMaxTBox4.Text = ""; StatRGMaxTBox5.Text = ""; StatRGMaxTBox6.Text = ""; StatRGMaxTBox7.Text = ""; StatRGMaxTBox8.Text = ""; StatRGMaxTBox9.Text = "0"; StatRGMaxTBox10.Text = "0"; StatRGMaxTBox11.Text = "0"; StatRGMaxTBox12.Text = "100"; StatRGMaxTBox14.Text = ""; StatRGMaxTBox15.Text = ""; StatRGMaxTBox16.Text = ""; StatRGMaxTBox17.Text = ""; StatRGMaxTBox18.Text = "0"; StatRGMaxTBox19.Text = "100"; StatRGMaxTBox20.Text = "0"; StatRGMaxTBox21.Text = "0"; StatRGMaxTBox22.Text = "0";
-            SkillRGMaxTBox1.Text = ""; SkillRGMaxTBox2.Text = ""; SkillRGMaxTBox3.Text = ""; SkillRGMaxTBox4.Text = ""; SkillRGMaxTBox5.Text = ""; SkillRGMaxTBox6.Text = ""; SkillRGMaxTBox7.Text = ""; SkillRGMaxTBox8.Text = ""; SkillRGMaxTBox9.Text = ""; SkillRGMaxTBox10.Text = ""; SkillRGMaxTBox11.Text = ""; SkillRGMaxTBox12.Text = ""; SkillRGMaxTBox13.Text = ""; SkillRGMaxTBox14.Text = ""; SkillRGMaxTBox15.Text = ""; SkillRGMaxTBox16.Text = ""; SkillRGMaxTBox17.Text = ""; SkillRGMaxTBox18.Text = ""; SkillRGMaxTBox19.Text = ""; SkillRGMaxTBox20.Text = "";
-            textBox_RG_Morality_Min.Text = "0"; textBox_RG_Morality_Max.Text = "0";
+            StatRGMinTBox1.Text = "0"; StatRGMinTBox2.Text = "100"; StatRGMinTBox3.Text = "0"; StatRGMinTBox4.Text = "0"; StatRGMinTBox5.Text = "0"; StatRGMinTBox6.Text = "0"; StatRGMinTBox7.Text = "0"; StatRGMinTBox8.Text = "0"; StatRGMinTBox9.Text = "0"; StatRGMinTBox10.Text = "0"; StatRGMinTBox11.Text = "0"; StatRGMinTBox12.Text = "100"; StatRGMinTBox13.Text = "0"; StatRGMinTBox14.Text = "18"; StatRGMinTBox15.Text = "0"; StatRGMinTBox16.Text = "0"; StatRGMinTBox17.Text = "0"; StatRGMinTBox18.Text = "0"; StatRGMinTBox19.Text = "100"; StatRGMinTBox20.Text = "0"; StatRGMinTBox21.Text = "0"; StatRGMinTBox22.Text = "0"; StatRGMinTBox23.Text = "0"; StatRGMinTBox24.Text = "0"; StatRGMinTBox25.Text = "0"; StatRGMinTBox26.Text = "0";
+            StatRGMaxTBox1.Text = "0"; StatRGMaxTBox2.Text = "100"; StatRGMaxTBox3.Text = "0"; StatRGMaxTBox4.Text = "0"; StatRGMaxTBox5.Text = "0"; StatRGMaxTBox6.Text = "0"; StatRGMaxTBox7.Text = "0"; StatRGMaxTBox8.Text = "0"; StatRGMaxTBox9.Text = "0"; StatRGMaxTBox10.Text = "0"; StatRGMaxTBox11.Text = "0"; StatRGMaxTBox12.Text = "100"; StatRGMaxTBox13.Text = "0"; StatRGMaxTBox14.Text = "18"; StatRGMaxTBox15.Text = "0"; StatRGMaxTBox16.Text = "0"; StatRGMaxTBox17.Text = "0"; StatRGMaxTBox18.Text = "0"; StatRGMaxTBox19.Text = "100"; StatRGMaxTBox20.Text = "0"; StatRGMaxTBox21.Text = "0"; StatRGMaxTBox22.Text = "0"; StatRGMaxTBox23.Text = "0"; StatRGMaxTBox24.Text = "0"; StatRGMaxTBox25.Text = "0"; StatRGMaxTBox26.Text = "0";
+            SkillRGMinTBox1.Text = "0"; SkillRGMinTBox2.Text = "0"; SkillRGMinTBox3.Text = "0"; SkillRGMinTBox4.Text = "0"; SkillRGMinTBox5.Text = "0"; SkillRGMinTBox6.Text = "0"; SkillRGMinTBox7.Text = "0"; SkillRGMinTBox8.Text = "0"; SkillRGMinTBox9.Text = "0"; SkillRGMinTBox10.Text = "0"; SkillRGMinTBox11.Text = "0"; SkillRGMinTBox12.Text = "0"; SkillRGMinTBox13.Text = "0"; SkillRGMinTBox14.Text = "0"; SkillRGMinTBox15.Text = "0"; SkillRGMinTBox16.Text = "0"; SkillRGMinTBox17.Text = "0"; SkillRGMinTBox18.Text = "0"; SkillRGMinTBox19.Text = "0"; SkillRGMinTBox20.Text = "0"; SkillRGMinTBox21.Text = "0";
+            SkillRGMaxTBox1.Text = "0"; SkillRGMaxTBox2.Text = "0"; SkillRGMaxTBox3.Text = "0"; SkillRGMaxTBox4.Text = "0"; SkillRGMaxTBox5.Text = "0"; SkillRGMaxTBox6.Text = "0"; SkillRGMaxTBox7.Text = "0"; SkillRGMaxTBox8.Text = "0"; SkillRGMaxTBox9.Text = "0"; SkillRGMaxTBox10.Text = "0"; SkillRGMaxTBox11.Text = "0"; SkillRGMaxTBox12.Text = "0"; SkillRGMaxTBox13.Text = "0"; SkillRGMaxTBox14.Text = "0"; SkillRGMaxTBox15.Text = "0"; SkillRGMaxTBox16.Text = "0"; SkillRGMaxTBox17.Text = "0"; SkillRGMaxTBox18.Text = "0"; SkillRGMaxTBox19.Text = "0"; SkillRGMaxTBox20.Text = "0"; SkillRGMaxTBox21.Text = "0";
             this.listBox_RGirlsList.SelectedIndexChanged -= new System.EventHandler(this.listBox_RGirlsList_SelectedIndexChanged);		//turns off SelectedIndexChanged handler, if this isn't used when we delete item at current index, new index would be CHANGED to -1, this would of course activate handler who would try to parse data at index -1, problem is, there is no data at -1 so this would produce an error, so it's best to simply turn this handler off while we delete stuff
             listBox_RGirlsList.SelectedItem = null;
             this.listBox_RGirlsList.SelectedIndexChanged += new System.EventHandler(this.listBox_RGirlsList_SelectedIndexChanged);		//turns SelectedIndexChanged handler back on
@@ -2592,24 +2688,69 @@ namespace WM_Girls_Generator
         //random "function" for normalized values for random girls
         private void RandomRGNorm(TextBox min, TextBox max, int x, int y, Random rnd, int multi)
         {
-            min.Text = (rnd.Next(x, y) * multi).ToString();
-            max.Text = (rnd.Next(Convert.ToInt32(min.Text) / multi, y) * multi).ToString();
+            int negadj = 0;
+            if (x < 0) { negadj -= x; x += negadj; y += negadj; }
+            int xa = rnd.Next(x, y); int ya = rnd.Next(xa, y);
+            xa -= negadj; ya -= negadj; xa *= multi; ya *= multi;
+            min.Text = xa.ToString();
+            max.Text = ya.ToString();
         }
         //Randomize stats on random girl tab
         private void buttonRandomizeRG1_Click(object sender, EventArgs e)
         {
-            RandomRG(StatRGMinTBox1, StatRGMaxTBox1, 1, 101, rnd);		//Charisma
-            RandomRG(StatRGMinTBox3, StatRGMaxTBox3, 1, 101, rnd);		//Libido
-            RandomRG(StatRGMinTBox4, StatRGMaxTBox4, 1, 101, rnd);		//Constitution
-            RandomRG(StatRGMinTBox5, StatRGMaxTBox5, 1, 101, rnd);		//Intelligence
-            RandomRG(StatRGMinTBox6, StatRGMaxTBox6, 1, 101, rnd);		//Confidence
-            RandomRG(StatRGMinTBox7, StatRGMaxTBox7, 1, 101, rnd);		//Mana
-            RandomRG(StatRGMinTBox8, StatRGMaxTBox8, 1, 101, rnd);		//Agility
-            RandomRG(StatRGMinTBox14, StatRGMaxTBox14, 18, 81, rnd);	//Age
-            RandomRG(StatRGMinTBox15, StatRGMaxTBox15, 1, 101, rnd);	//Obedience
-            RandomRG(StatRGMinTBox16, StatRGMaxTBox16, 1, 101, rnd);	//Spirit
-            RandomRG(StatRGMinTBox17, StatRGMaxTBox17, 1, 101, rnd);	//Beauty  
+            RandomRG(StatRGMinTBox14, StatRGMaxTBox14, 18, 81, rnd);	        //Age
+            RandomRG(StatRGMinTBox1,  StatRGMaxTBox1, 1, 101, rnd);		        //Charisma
+            RandomRG(StatRGMinTBox17, StatRGMaxTBox17, 1, 101, rnd);	        //Beauty  
+            RandomRG(StatRGMinTBox24, StatRGMaxTBox24, -100, 101, rnd);	        //Refinement
+            RandomRG(StatRGMinTBox8,  StatRGMaxTBox8, 1, 101, rnd);		        //Agility
+            RandomRG(StatRGMinTBox4,  StatRGMaxTBox4, 1, 101, rnd);		        //Constitution
+            RandomRG(StatRGMinTBox5,  StatRGMaxTBox5, 1, 101, rnd);		        //Intelligence
+            RandomRG(StatRGMinTBox7,  StatRGMaxTBox7, 1, 101, rnd);		        //Mana
+            RandomRG(StatRGMinTBox23, StatRGMaxTBox23, -100, 101, rnd);	        //Morality
+            RandomRG(StatRGMinTBox25, StatRGMaxTBox25, -100, 101, rnd);	        //Dignity
+            RandomRG(StatRGMinTBox6,  StatRGMaxTBox6, 1, 101, rnd);		        //Confidence
+            RandomRG(StatRGMinTBox15, StatRGMaxTBox15, 1, 101, rnd);	        //Obedience
+            RandomRG(StatRGMinTBox16, StatRGMaxTBox16, 1, 101, rnd);	        //Spirit
+            RandomRG(StatRGMinTBox3,  StatRGMaxTBox3, 1, 101, rnd);		        //Libido
         }
+        //Stats normalized randomize, rounded to 10
+        private void buttonRGNormRand1_Click(object sender, EventArgs e)
+        {
+            RandomRG(StatRGMinTBox14, StatRGMaxTBox14, 18, 81, rnd);		    //Age
+
+            RandomRGNorm(StatRGMinTBox1, StatRGMaxTBox1, 1, 11, rnd, 10);		//Charisma
+            RandomRGNorm(StatRGMinTBox17, StatRGMaxTBox17, 1, 11, rnd, 10);	    //Beauty  
+            RandomRGNorm(StatRGMinTBox24, StatRGMaxTBox24, -10, 11, rnd, 10);	//Refinement
+            RandomRGNorm(StatRGMinTBox8, StatRGMaxTBox8, 1, 11, rnd, 10);		//Agility
+            RandomRGNorm(StatRGMinTBox4, StatRGMaxTBox4, 1, 11, rnd, 10);		//Constitution
+            RandomRGNorm(StatRGMinTBox5, StatRGMaxTBox5, 1, 11, rnd, 10);		//Intelligence
+            RandomRGNorm(StatRGMinTBox7, StatRGMaxTBox7, 1, 11, rnd, 10);		//Mana
+            RandomRGNorm(StatRGMinTBox23, StatRGMaxTBox23, -10, 11, rnd, 10);	//Morality
+            RandomRGNorm(StatRGMinTBox25, StatRGMaxTBox25, -10, 11, rnd, 10);	//Dignity
+            RandomRGNorm(StatRGMinTBox6, StatRGMaxTBox6, 1, 11, rnd, 10);		//Confidence
+            RandomRGNorm(StatRGMinTBox15, StatRGMaxTBox15, 1, 11, rnd, 10);	    //Obedience
+            RandomRGNorm(StatRGMinTBox16, StatRGMaxTBox16, 1, 11, rnd, 10);	    //Spirit
+            RandomRGNorm(StatRGMinTBox3, StatRGMaxTBox3, 1, 11, rnd, 10);		//Libido
+        }
+        //Stats conditional randomize
+        private void buttonRGCondRand1_Click(object sender, EventArgs e)
+        {
+            RandomRG(StatRGMinTBox14, StatRGMaxTBox14, 18, 71, rnd);		    //Age
+            RandomRGNorm(StatRGMinTBox1, StatRGMaxTBox1, 1, 6, rnd, 10);		//Charisma
+            RandomRGNorm(StatRGMinTBox17, StatRGMaxTBox17, 3, 8, rnd, 10);	    //Beauty  
+            RandomRGNorm(StatRGMinTBox24, StatRGMaxTBox24, -2, 3, rnd, 10);	    //Refinement
+            RandomRGNorm(StatRGMinTBox8, StatRGMaxTBox8, 3, 10, rnd, 10);		//Agility
+            RandomRGNorm(StatRGMinTBox4, StatRGMaxTBox4, 3, 6, rnd, 10);		//Constitution
+            RandomRGNorm(StatRGMinTBox5, StatRGMaxTBox5, 3, 10, rnd, 10);		//Intelligence
+            RandomRGNorm(StatRGMinTBox7, StatRGMaxTBox7, 0, 4, rnd, 10);		//Mana
+            RandomRGNorm(StatRGMinTBox23, StatRGMaxTBox23, -2, 3, rnd, 10);	    //Morality
+            RandomRGNorm(StatRGMinTBox25, StatRGMaxTBox25, -2, 5, rnd, 10);	    //Dignity
+            RandomRGNorm(StatRGMinTBox6, StatRGMaxTBox6, 2, 9, rnd, 10);		//Confidence
+            RandomRGNorm(StatRGMinTBox15, StatRGMaxTBox15, 1, 8, rnd, 10);	    //Obedience
+            RandomRGNorm(StatRGMinTBox16, StatRGMaxTBox16, 2, 8, rnd, 10);	    //Spirit
+            RandomRGNorm(StatRGMinTBox3, StatRGMaxTBox3, 1, 7, rnd, 10);		//Libido
+        }
+
         //Randomize skills on random girl tab
         private void buttonRandomizeRG2_Click(object sender, EventArgs e)
         {
@@ -2623,35 +2764,6 @@ namespace WM_Girls_Generator
             RandomRG(SkillRGMinTBox18, SkillRGMaxTBox18, 0, 101, rnd);	//Farming
             RandomRG(SkillRGMinTBox19, SkillRGMaxTBox19, 0, 101, rnd);	//Brewing
             RandomRG(SkillRGMinTBox20, SkillRGMaxTBox20, 0, 101, rnd);	//Animal Handling
-        }
-        //Randomize sex skills on random girl tab
-        private void button_RSS_R_Click(object sender, EventArgs e)
-        {
-            RandomRG(SkillRGMinTBox1, SkillRGMaxTBox1, 0, 101, rnd);		//Anal Sex
-            RandomRG(SkillRGMinTBox3, SkillRGMaxTBox3, 0, 101, rnd);		//BDSM Sex
-            RandomRG(SkillRGMinTBox4, SkillRGMaxTBox4, 0, 101, rnd);		//Normal Sex
-            RandomRG(SkillRGMinTBox5, SkillRGMaxTBox5, 0, 101, rnd);		//Bestiality Sex
-            RandomRG(SkillRGMinTBox6, SkillRGMaxTBox6, 0, 101, rnd);		//Group Sex
-            RandomRG(SkillRGMinTBox7, SkillRGMaxTBox7, 0, 101, rnd);		//Lesbian Sex
-            RandomRG(SkillRGMinTBox9, SkillRGMaxTBox9, 0, 101, rnd);		//Stripping Sex
-            RandomRG(SkillRGMinTBox11, SkillRGMaxTBox11, 0, 101, rnd);		//OralSex
-            RandomRG(SkillRGMinTBox12, SkillRGMaxTBox12, 0, 101, rnd);		//TittySex
-            RandomRG(SkillRGMinTBox15, SkillRGMaxTBox15, 0, 101, rnd);		//Handjob
-        }
-        //Stats normalized randomize, rounded to 10
-        private void buttonRGNormRand1_Click(object sender, EventArgs e)
-        {
-            RandomRGNorm(StatRGMinTBox1, StatRGMaxTBox1, 1, 11, rnd, 10);	//Charisma
-            RandomRGNorm(StatRGMinTBox3, StatRGMaxTBox3, 1, 11, rnd, 10);	//Libido
-            RandomRGNorm(StatRGMinTBox4, StatRGMaxTBox4, 1, 11, rnd, 10);	//Constitution
-            RandomRGNorm(StatRGMinTBox5, StatRGMaxTBox5, 1, 11, rnd, 10);	//Intelligence
-            RandomRGNorm(StatRGMinTBox6, StatRGMaxTBox6, 1, 11, rnd, 10);	//Confidence
-            RandomRGNorm(StatRGMinTBox7, StatRGMaxTBox7, 1, 11, rnd, 10);	//Mana
-            RandomRGNorm(StatRGMinTBox8, StatRGMaxTBox8, 1, 11, rnd, 10);	//Agility
-            RandomRG(StatRGMinTBox14, StatRGMaxTBox14, 18, 81, rnd);		//Age
-            RandomRGNorm(StatRGMinTBox15, StatRGMaxTBox15, 1, 11, rnd, 10);	//Obedience
-            RandomRGNorm(StatRGMinTBox16, StatRGMaxTBox16, 1, 11, rnd, 10);	//Spirit
-            RandomRGNorm(StatRGMinTBox17, StatRGMaxTBox17, 1, 11, rnd, 10);	//Beauty
         }
         //Skills normalized randomize, rounded to 5
         private void buttonRGNormRand2_Click(object sender, EventArgs e)
@@ -2667,6 +2779,36 @@ namespace WM_Girls_Generator
             RandomRGNorm(SkillRGMinTBox19, SkillRGMaxTBox19, 0, 21, rnd, 5);	//Brewing
             RandomRGNorm(SkillRGMinTBox20, SkillRGMaxTBox20, 0, 21, rnd, 5);	//Animal Handling
         }
+        //Skills conditional randomize
+        private void buttonRGCondRand2_Click(object sender, EventArgs e)
+        {
+            RandomRGNorm(SkillRGMinTBox2, SkillRGMaxTBox2, 0, 9, rnd, 5);       //Magic
+            RandomRGNorm(SkillRGMinTBox10, SkillRGMaxTBox10, 0, 9, rnd, 5);     //Combat
+            RandomRGNorm(SkillRGMinTBox8, SkillRGMaxTBox8, 0, 9, rnd, 5);	    //Service Skill
+            RandomRGNorm(SkillRGMinTBox13, SkillRGMaxTBox13, 0, 5, rnd, 5);	    //Medicine
+            RandomRGNorm(SkillRGMinTBox14, SkillRGMaxTBox14, 0, 9, rnd, 5);	    //Performance
+            RandomRGNorm(SkillRGMinTBox16, SkillRGMaxTBox16, 0, 9, rnd, 5);	    //Crafting
+            RandomRGNorm(SkillRGMinTBox17, SkillRGMaxTBox17, 0, 5, rnd, 5);	    //Herbalism
+            RandomRGNorm(SkillRGMinTBox18, SkillRGMaxTBox18, 0, 5, rnd, 5);	    //Farming
+            RandomRGNorm(SkillRGMinTBox19, SkillRGMaxTBox19, 0, 5, rnd, 5);	    //Brewing
+            RandomRGNorm(SkillRGMinTBox20, SkillRGMaxTBox20, 0, 9, rnd, 5);	    //Animal Handling
+        }
+
+        //Randomize sex skills on random girl tab
+        private void button_RSS_R_Click(object sender, EventArgs e)
+        {
+            RandomRG(SkillRGMinTBox1, SkillRGMaxTBox1, 0, 101, rnd);		//Anal Sex
+            RandomRG(SkillRGMinTBox3, SkillRGMaxTBox3, 0, 101, rnd);		//BDSM Sex
+            RandomRG(SkillRGMinTBox4, SkillRGMaxTBox4, 0, 101, rnd);		//Normal Sex
+            RandomRG(SkillRGMinTBox5, SkillRGMaxTBox5, 0, 101, rnd);		//Bestiality Sex
+            RandomRG(SkillRGMinTBox6, SkillRGMaxTBox6, 0, 101, rnd);		//Group Sex
+            RandomRG(SkillRGMinTBox7, SkillRGMaxTBox7, 0, 101, rnd);		//Lesbian Sex
+            RandomRG(SkillRGMinTBox9, SkillRGMaxTBox9, 0, 101, rnd);		//Stripping Sex
+            RandomRG(SkillRGMinTBox11, SkillRGMaxTBox11, 0, 101, rnd);		//OralSex
+            RandomRG(SkillRGMinTBox12, SkillRGMaxTBox12, 0, 101, rnd);		//TittySex
+            RandomRG(SkillRGMinTBox15, SkillRGMaxTBox15, 0, 101, rnd);		//Handjob
+            RandomRG(SkillRGMinTBox21, SkillRGMaxTBox21, 0, 101, rnd);		//Footjob
+        }
         //Sex Skills normalized randomize, rounded to 5
         private void button_RSS_NR_Click(object sender, EventArgs e)
         {
@@ -2680,91 +2822,22 @@ namespace WM_Girls_Generator
             RandomRGNorm(SkillRGMinTBox11, SkillRGMaxTBox11, 0, 21, rnd, 5);	//OralSex
             RandomRGNorm(SkillRGMinTBox12, SkillRGMaxTBox12, 0, 21, rnd, 5);	//TittySex
             RandomRGNorm(SkillRGMinTBox15, SkillRGMaxTBox15, 0, 21, rnd, 5);	//Handjob
-        }
-        //Stats conditional randomize
-        private void buttonRGCondRand1_Click(object sender, EventArgs e)
-        {
-            RandomRGNorm(StatRGMinTBox1, StatRGMaxTBox1, 1, 6, rnd, 10);		//Charisma
-
-            RandomRGNorm(StatRGMinTBox3, StatRGMaxTBox3, 1, 7, rnd, 10);		//Libido
-
-            //check if some of "constitution" traits are selected, if they are constitution has chance to get higher than without them
-
-            bool bStats = false;
-            for (int i = 0; i < rgTable.Rows.Count; i++)
-            {
-                if (rgTable.Rows[i][0].ToString() == "Adventurer" || rgTable.Rows[i][0].ToString() == "Assassin" || rgTable.Rows[i][0].ToString() == "Cool Scars")
-                {
-                    bStats = true;
-                    break;
-                }
-            }
-
-            if (bStats == true) RandomRGNorm(StatRGMinTBox4, StatRGMaxTBox4, 5, 10, rnd, 10);
-            else RandomRGNorm(StatRGMinTBox4, StatRGMaxTBox4, 3, 6, rnd, 10);
-
-            RandomRGNorm(StatRGMinTBox5, StatRGMaxTBox5, 3, 10, rnd, 10);	//Intelligence
-            RandomRGNorm(StatRGMinTBox6, StatRGMaxTBox6, 2, 9, rnd, 10);	//Confidence
-            RandomRGNorm(StatRGMinTBox7, StatRGMaxTBox7, 0, 4, rnd, 10);	//Mana
-            RandomRGNorm(StatRGMinTBox8, StatRGMaxTBox8, 3, 10, rnd, 10);	//Agility
-            RandomRG(StatRGMinTBox14, StatRGMaxTBox14, 18, 71, rnd);		//Age
-            RandomRGNorm(StatRGMinTBox15, StatRGMaxTBox15, 1, 8, rnd, 10);	//Obedience
-            RandomRGNorm(StatRGMinTBox16, StatRGMaxTBox16, 2, 8, rnd, 10);	//Spirit
-            RandomRGNorm(StatRGMinTBox17, StatRGMaxTBox17, 3, 8, rnd, 10);	//Beauty
-        }
-        //Skills conditional randomize
-        private void buttonRGCondRand2_Click(object sender, EventArgs e)
-        {
-            //again as with constitution, if she has Strong Magic trait, she'll have higher chance of having higher Magic Ability
-            bool bStats = false;
-            for (int i = 0; i < rgTable.Rows.Count; i++)
-            {
-                if (rgTable.Rows[i][0].ToString() == "Strong Magic")
-                {
-                    bStats = true;
-                    break;
-                }
-            }
-            if (bStats == true) RandomRGNorm(SkillRGMinTBox2, SkillRGMaxTBox2, 8, 16, rnd, 5);
-            else RandomRGNorm(SkillRGMinTBox2, SkillRGMaxTBox2, 0, 9, rnd, 5);
-
-            //Combat ability check
-            bStats = false;
-            for (int i = 0; i < rgTable.Rows.Count; i++)
-            {
-                if (rgTable.Rows[i][0].ToString() == "Adventurer" || rgTable.Rows[i][0].ToString() == "Assassin" || rgTable.Rows[i][0].ToString() == "Cool Scars")
-                {
-                    bStats = true;
-                    break;
-                }
-            }
-            if (bStats == true) RandomRGNorm(SkillRGMinTBox10, SkillRGMaxTBox10, 8, 16, rnd, 5);
-            else RandomRGNorm(SkillRGMinTBox10, SkillRGMaxTBox10, 0, 9, rnd, 5);
-
-            RandomRGNorm(SkillRGMinTBox8, SkillRGMaxTBox8, 0, 9, rnd, 5);	//Service Skill
-            RandomRGNorm(SkillRGMinTBox13, SkillRGMaxTBox13, 0, 5, rnd, 5);	//Medicine
-            RandomRGNorm(SkillRGMinTBox14, SkillRGMaxTBox14, 0, 9, rnd, 5);	//Performance
-            RandomRGNorm(SkillRGMinTBox16, SkillRGMaxTBox16, 0, 9, rnd, 5);	//Crafting
-            RandomRGNorm(SkillRGMinTBox17, SkillRGMaxTBox17, 0, 5, rnd, 5);	//Herbalism
-            RandomRGNorm(SkillRGMinTBox18, SkillRGMaxTBox18, 0, 5, rnd, 5);	//Farming
-            RandomRGNorm(SkillRGMinTBox19, SkillRGMaxTBox19, 0, 5, rnd, 5);	//Brewing
-            RandomRGNorm(SkillRGMinTBox20, SkillRGMaxTBox20, 0, 9, rnd, 5);	//Animal Handling
-
-
+            RandomRGNorm(SkillRGMinTBox21, SkillRGMaxTBox21, 0, 21, rnd, 5);	//Footjob
         }
         //Sex Skills conditional randomize
         private void button_RSS_CR_Click(object sender, EventArgs e)
         {
-            RandomRGNorm(SkillRGMinTBox1, SkillRGMaxTBox1, 0, 9, rnd, 5);	//Anal Sex
-            RandomRGNorm(SkillRGMinTBox3, SkillRGMaxTBox3, 0, 9, rnd, 5);	//BDSM Sex
-            RandomRGNorm(SkillRGMinTBox4, SkillRGMaxTBox4, 0, 9, rnd, 5);	//Normal Sex
-            RandomRGNorm(SkillRGMinTBox5, SkillRGMaxTBox5, 0, 9, rnd, 5);	//Bestiality Sex
-            RandomRGNorm(SkillRGMinTBox6, SkillRGMaxTBox6, 0, 9, rnd, 5);	//Group Sex
-            RandomRGNorm(SkillRGMinTBox7, SkillRGMaxTBox7, 0, 9, rnd, 5);	//Lesbian Sex
-            RandomRGNorm(SkillRGMinTBox9, SkillRGMaxTBox9, 0, 9, rnd, 5);	//Stripping Skill
-            RandomRGNorm(SkillRGMinTBox11, SkillRGMaxTBox11, 0, 9, rnd, 5);	//OralSex
-            RandomRGNorm(SkillRGMinTBox12, SkillRGMaxTBox12, 0, 9, rnd, 5);	//TittySex
-            RandomRGNorm(SkillRGMinTBox15, SkillRGMaxTBox15, 0, 9, rnd, 5);	//Handjob
+            RandomRGNorm(SkillRGMinTBox1, SkillRGMaxTBox1, 0, 9, rnd, 5);	    //Anal Sex
+            RandomRGNorm(SkillRGMinTBox3, SkillRGMaxTBox3, 0, 9, rnd, 5);	    //BDSM Sex
+            RandomRGNorm(SkillRGMinTBox4, SkillRGMaxTBox4, 0, 9, rnd, 5);	    //Normal Sex
+            RandomRGNorm(SkillRGMinTBox5, SkillRGMaxTBox5, 0, 9, rnd, 5);	    //Bestiality Sex
+            RandomRGNorm(SkillRGMinTBox6, SkillRGMaxTBox6, 0, 9, rnd, 5);	    //Group Sex
+            RandomRGNorm(SkillRGMinTBox7, SkillRGMaxTBox7, 0, 9, rnd, 5);	    //Lesbian Sex
+            RandomRGNorm(SkillRGMinTBox9, SkillRGMaxTBox9, 0, 9, rnd, 5);	    //Stripping Skill
+            RandomRGNorm(SkillRGMinTBox11, SkillRGMaxTBox11, 0, 9, rnd, 5);	    //OralSex
+            RandomRGNorm(SkillRGMinTBox12, SkillRGMaxTBox12, 0, 9, rnd, 5);	    //TittySex
+            RandomRGNorm(SkillRGMinTBox15, SkillRGMaxTBox15, 0, 9, rnd, 5);	    //Handjob
+            RandomRGNorm(SkillRGMinTBox21, SkillRGMaxTBox21, 0, 9, rnd, 5);	    //Footjob
         }
 
         //button that loads existing random girls file
@@ -2877,6 +2950,9 @@ namespace WM_Girls_Generator
                     string[] aPCLove = new string[2];
                     string[] aPCHate = new string[2];
                     string[] aMorality = new string[2];
+                    string[] aRefinement = new string[2];
+                    string[] aDignity = new string[2];
+                    string[] aLactation = new string[2];
 
                     string[] aAnal = new string[2];
                     string[] aMagic = new string[2];
@@ -2898,6 +2974,7 @@ namespace WM_Girls_Generator
                     string[] aFarming = new string[2];
                     string[] aBrewing = new string[2];
                     string[] aAnimalHandling = new string[2];
+                    string[] aFootjob = new string[2];
 
                     //ArrayList alTraits = new ArrayList();
                     //ArrayList alTraitChance = new ArrayList();
@@ -2906,10 +2983,6 @@ namespace WM_Girls_Generator
                     {
                         switch (stat.Attributes["Name"].Value)
                         {
-                            case "Morality":
-                                aMorality[0] = stat.Attributes["Min"].Value;
-                                aMorality[1] = stat.Attributes["Max"].Value;
-                                break;
                             case "Charisma":
                                 aCharisma[0] = stat.Attributes["Min"].Value;
                                 aCharisma[1] = stat.Attributes["Max"].Value;
@@ -2998,6 +3071,22 @@ namespace WM_Girls_Generator
                                 aPCHate[0] = stat.Attributes["Min"].Value;
                                 aPCHate[1] = stat.Attributes["Max"].Value;
                                 break;
+                            case "Morality":
+                                aMorality[0] = stat.Attributes["Min"].Value;
+                                aMorality[1] = stat.Attributes["Max"].Value;
+                                break;
+                            case "Refinement":
+                                aMorality[0] = stat.Attributes["Min"].Value;
+                                aMorality[1] = stat.Attributes["Max"].Value;
+                                break;
+                            case "Dignity":
+                                aMorality[0] = stat.Attributes["Min"].Value;
+                                aMorality[1] = stat.Attributes["Max"].Value;
+                                break;
+                            case "Lactation":
+                                aMorality[0] = stat.Attributes["Min"].Value;
+                                aMorality[1] = stat.Attributes["Max"].Value;
+                                break;
                         }
                     }
 
@@ -3085,6 +3174,10 @@ namespace WM_Girls_Generator
                                 aAnimalHandling[0] = skill.Attributes["Min"].Value;
                                 aAnimalHandling[1] = skill.Attributes["Max"].Value;
                                 break;
+                            case "Footjob":
+                                aFootjob[0] = skill.Attributes["Min"].Value;
+                                aFootjob[1] = skill.Attributes["Max"].Value;
+                                break;
                         }
                     }
 
@@ -3169,8 +3262,8 @@ namespace WM_Girls_Generator
             XmlElement skill = xmldoc.CreateElement("Skill");
             XmlElement trait = xmldoc.CreateElement("Trait");
 
-            string[] sStats = new string[23] { "Charisma", "Happiness", "Libido", "Constitution", "Intelligence", "Confidence", "Mana", "Agility", "Fame", "Level", "AskPrice", "House", "Exp", "Age", "Obedience", "Spirit", "Beauty", "Tiredness", "Health", "PCFear", "PCLove", "PCHate", "Morality" };
-            string[] sSkills = new string[20] { "Anal", "Magic", "BDSM", "NormalSex", "Beastiality", "Group", "Lesbian", "Service", "Strip", "Combat", "OralSex", "TittySex", "Medicine", "Performance", "Handjob", "Crafting", "Herbalism", "Farming", "Brewing", "AnimalHandling" };
+            string[] sStats = new string[26] { "Charisma", "Happiness", "Libido", "Constitution", "Intelligence", "Confidence", "Mana", "Agility", "Fame", "Level", "AskPrice", "House", "Exp", "Age", "Obedience", "Spirit", "Beauty", "Tiredness", "Health", "PCFear", "PCLove", "PCHate", "Morality", "Refinement", "Dignity", "Lactation" };
+            string[] sSkills = new string[21] { "Anal", "Magic", "BDSM", "NormalSex", "Beastiality", "Group", "Lesbian", "Service", "Strip", "Combat", "OralSex", "TittySex", "Medicine", "Performance", "Handjob", "Crafting", "Herbalism", "Farming", "Brewing", "AnimalHandling", "Footjob" };
 
             xmldoc.AppendChild(girls);
 
@@ -3271,12 +3364,14 @@ namespace WM_Girls_Generator
 
             char[] separator = { ' ' };											//data in item data is space delimited, so to begin extraction from it we create an array of separator characters
             string[] values = data.ReadLine().Split(separator);					//use Split function to put every value that's "between" spaces to array
-            StatRGMinTBox1.Text = values[0]; StatRGMinTBox2.Text = values[1]; StatRGMinTBox3.Text = values[2]; StatRGMinTBox4.Text = values[3]; StatRGMinTBox5.Text = values[4]; StatRGMinTBox6.Text = values[5]; StatRGMinTBox7.Text = values[6]; StatRGMinTBox8.Text = values[7]; StatRGMinTBox9.Text = values[8]; StatRGMinTBox10.Text = values[9]; StatRGMinTBox11.Text = values[10]; StatRGMinTBox12.Text = values[11]; StatRGMinTBox14.Text = values[13]; StatRGMinTBox15.Text = values[14]; StatRGMinTBox16.Text = values[15]; StatRGMinTBox17.Text = values[16]; StatRGMinTBox18.Text = values[17]; StatRGMinTBox19.Text = values[18]; StatRGMinTBox20.Text = values[19]; StatRGMinTBox21.Text = values[20]; StatRGMinTBox22.Text = values[21]; 
-            textBox_RG_Morality_Min.Text = (values.Length > 22) ? values[22] : "0";
+            StatRGMinTBox1.Text = values[0]; StatRGMinTBox2.Text = values[1]; StatRGMinTBox3.Text = values[2]; StatRGMinTBox4.Text = values[3]; StatRGMinTBox5.Text = values[4]; StatRGMinTBox6.Text = values[5]; StatRGMinTBox7.Text = values[6]; StatRGMinTBox8.Text = values[7]; StatRGMinTBox9.Text = values[8]; StatRGMinTBox10.Text = values[9]; StatRGMinTBox11.Text = values[10]; StatRGMinTBox12.Text = values[11]; StatRGMinTBox14.Text = values[13]; StatRGMinTBox15.Text = values[14]; StatRGMinTBox16.Text = values[15]; StatRGMinTBox17.Text = values[16]; StatRGMinTBox18.Text = values[17]; StatRGMinTBox19.Text = values[18]; StatRGMinTBox20.Text = values[19]; StatRGMinTBox21.Text = values[20]; 
+            StatRGMinTBox22.Text = values[21]; 
+            StatRGMinTBox23.Text = (values.Length > 22) ? values[22] : "0";
 
             values = data.ReadLine().Split(separator);
-            StatRGMaxTBox1.Text = values[0]; StatRGMaxTBox2.Text = values[1]; StatRGMaxTBox3.Text = values[2]; StatRGMaxTBox4.Text = values[3]; StatRGMaxTBox5.Text = values[4]; StatRGMaxTBox6.Text = values[5]; StatRGMaxTBox7.Text = values[6]; StatRGMaxTBox8.Text = values[7]; StatRGMaxTBox9.Text = values[8]; StatRGMaxTBox10.Text = values[9]; StatRGMaxTBox11.Text = values[10]; StatRGMaxTBox12.Text = values[11]; StatRGMaxTBox14.Text = values[13]; StatRGMaxTBox15.Text = values[14]; StatRGMaxTBox16.Text = values[15]; StatRGMaxTBox17.Text = values[16]; StatRGMaxTBox18.Text = values[17]; StatRGMaxTBox19.Text = values[18]; StatRGMaxTBox20.Text = values[19]; StatRGMaxTBox21.Text = values[20]; StatRGMaxTBox22.Text = values[21];
-            textBox_RG_Morality_Max.Text = (values.Length > 22) ? values[22] : "0";
+            StatRGMaxTBox1.Text = values[0]; StatRGMaxTBox2.Text = values[1]; StatRGMaxTBox3.Text = values[2]; StatRGMaxTBox4.Text = values[3]; StatRGMaxTBox5.Text = values[4]; StatRGMaxTBox6.Text = values[5]; StatRGMaxTBox7.Text = values[6]; StatRGMaxTBox8.Text = values[7]; StatRGMaxTBox9.Text = values[8]; StatRGMaxTBox10.Text = values[9]; StatRGMaxTBox11.Text = values[10]; StatRGMaxTBox12.Text = values[11]; StatRGMaxTBox14.Text = values[13]; StatRGMaxTBox15.Text = values[14]; StatRGMaxTBox16.Text = values[15]; StatRGMaxTBox17.Text = values[16]; StatRGMaxTBox18.Text = values[17]; StatRGMaxTBox19.Text = values[18]; StatRGMaxTBox20.Text = values[19]; StatRGMaxTBox21.Text = values[20]; 
+            StatRGMaxTBox22.Text = values[21];
+            StatRGMaxTBox23.Text = (values.Length > 22) ? values[22] : "0";
 
 
             values = data.ReadLine().Split(separator);
@@ -3300,6 +3395,7 @@ namespace WM_Girls_Generator
             SkillRGMinTBox18.Text = (values.Length > 17) ? values[17] : "0";
             SkillRGMinTBox19.Text = (values.Length > 18) ? values[18] : "0";
             SkillRGMinTBox20.Text = (values.Length > 19) ? values[19] : "0";
+            SkillRGMinTBox21.Text = (values.Length > 20) ? values[20] : "0";
 
             values = data.ReadLine().Split(separator);
             SkillRGMaxTBox1.Text = (values.Length > 00) ? values[0] : "0";
@@ -3469,6 +3565,9 @@ namespace WM_Girls_Generator
                 girl.SetAttribute("PCLove", sStats[20]);
                 girl.SetAttribute("PCHate", sStats[21]);
                 girl.SetAttribute("Morality", sStats[22]);
+                girl.SetAttribute("Refinement", sStats[23]);
+                girl.SetAttribute("Dignity", sStats[24]);
+                girl.SetAttribute("Lactation", sStats[25]);
 
                 girl.SetAttribute("Anal", sSkills[0]);
                 girl.SetAttribute("Magic", sSkills[1]);
@@ -3490,6 +3589,7 @@ namespace WM_Girls_Generator
                 girl.SetAttribute("Farming", sSkills[17]);
                 girl.SetAttribute("Brewing", sSkills[18]);
                 girl.SetAttribute("AnimalHandling", sSkills[19]);
+                girl.SetAttribute("Footjob", sSkills[20]);
 
                 girl.SetAttribute("Gold", sGold);
                 girl.SetAttribute("Virgin", sVirgin);
@@ -3540,8 +3640,8 @@ namespace WM_Girls_Generator
                 XmlElement skill = xmldoc.CreateElement("Skill");
                 XmlElement trait = xmldoc.CreateElement("Trait");
 
-                string[] sStats = new string[23] { "Charisma", "Happiness", "Libido", "Constitution", "Intelligence", "Confidence", "Mana", "Agility", "Fame", "Level", "AskPrice", "House", "Exp", "Age", "Obedience", "Spirit", "Beauty", "Tiredness", "Health", "PCFear", "PCLove", "PCHate", "Morality" };
-                string[] sSkills = new string[20] { "Anal", "Magic", "BDSM", "NormalSex", "Beastiality", "Group", "Lesbian", "Service", "Strip", "Combat", "OralSex", "TittySex", "Medicine", "Performance", "Handjob", "Crafting", "Herbalism", "Farming", "Brewing", "AnimalHandling" };
+                string[] sStats = new string[26] { "Charisma", "Happiness", "Libido", "Constitution", "Intelligence", "Confidence", "Mana", "Agility", "Fame", "Level", "AskPrice", "House", "Exp", "Age", "Obedience", "Spirit", "Beauty", "Tiredness", "Health", "PCFear", "PCLove", "PCHate", "Morality", "Refinement", "Dignity", "Lactation" };
+                string[] sSkills = new string[21] { "Anal", "Magic", "BDSM", "NormalSex", "Beastiality", "Group", "Lesbian", "Service", "Strip", "Combat", "OralSex", "TittySex", "Medicine", "Performance", "Handjob", "Crafting", "Herbalism", "Farming", "Brewing", "AnimalHandling", "Footjob" };
 
                 xmldoc.AppendChild(girls);
 
@@ -3671,6 +3771,7 @@ namespace WM_Girls_Generator
                 comboBox_affects_02.Items.Add("Farming");
                 comboBox_affects_02.Items.Add("Brewing");
                 comboBox_affects_02.Items.Add("AnimalHandling");
+                comboBox_affects_02.Items.Add("Footjob");
                 affects_textBox_value.Text = "";
             }
             if (comboBox_affects_01.SelectedIndex == 1)			//Stats
@@ -3703,6 +3804,9 @@ namespace WM_Girls_Generator
                 comboBox_affects_02.Items.Add("PC Love");
                 comboBox_affects_02.Items.Add("PC Hate");
                 comboBox_affects_02.Items.Add("Morality");
+                comboBox_affects_02.Items.Add("Refinement");
+                comboBox_affects_02.Items.Add("Dignity");
+                comboBox_affects_02.Items.Add("Lactation");
                 affects_textBox_value.Text = "";
             }
             if (comboBox_affects_01.SelectedIndex == 2)			//Status
@@ -3722,6 +3826,9 @@ namespace WM_Girls_Generator
                 comboBox_affects_02.Items.Add("Inseminated");
                 comboBox_affects_02.Items.Add("Controlled");
                 comboBox_affects_02.Items.Add("Catacombs");
+                comboBox_affects_02.Items.Add("Arena");
+                comboBox_affects_02.Items.Add("Your Daughter");
+                comboBox_affects_02.Items.Add("Is Daughter");
             }
 
             //not all combinations are possible, this takes care of that, duration is disabled in these cases
@@ -3890,9 +3997,9 @@ namespace WM_Girls_Generator
             string sEf03 = "";	//value
 
             string[,] aTypes = new string[3, 2] { { "Skill", "0" }, { "Stat", "1" }, { "Status", "3" } };
-            string[,] aSkills = new string[20, 2] { { "Anal", "0" }, { "Magic", "1" }, { "BDSM", "2" }, { "Normal Sex", "3" }, { "Bestiality", "4" }, { "Group", "5" }, { "Lesbian", "6" }, { "Service", "7" }, { "Strip", "8" }, { "Combat", "9" }, { "OralSex", "10" }, { "TittySex", "11" }, { "Medicine", "12" }, { "Performance", "13" }, { "Handjob", "14" }, { "Crafting", "15" }, { "Herbalism", "16" }, { "Farming", "17" }, { "Brewing", "18" }, { "AnimalHandling", "19" } };
-            string[,] aStats = new string[23, 2] { { "Charisma", "0" }, { "Happiness", "1" }, { "Libedo", "2" }, { "Constitution", "3" }, { "Intelligence", "4" }, { "Confidence", "5" }, { "Mana", "6" }, { "Agility", "7" }, { "Fame", "8" }, { "Level", "9" }, { "AskPrice", "10" }, { "House", "11" }, { "Experience", "12" }, { "Age", "13" }, { "Obedience", "14" }, { "Spirit", "15" }, { "Beauty", "16" }, { "Tiredness", "17" }, { "Health", "18" }, { "PC Fear", "19" }, { "PC Love", "20" }, { "PC Hate", "21" }, { "Morality", "22" } };
-            string[,] aStatus = new string[10, 2] { { "Poisoned", "1" }, { "Badly Poisoned", "2" }, { "Pregnant", "3" }, { "Pregnant By Player", "4" }, { "Slave", "5" }, { "Has daughter", "6" }, { "Has son", "7" }, { "Inseminated", "8" }, { "Controlled", "9" }, { "Catacombs", "10" } };
+            string[,] aSkills = new string[21, 2] { { "Anal", "0" }, { "Magic", "1" }, { "BDSM", "2" }, { "Normal Sex", "3" }, { "Bestiality", "4" }, { "Group", "5" }, { "Lesbian", "6" }, { "Service", "7" }, { "Strip", "8" }, { "Combat", "9" }, { "OralSex", "10" }, { "TittySex", "11" }, { "Medicine", "12" }, { "Performance", "13" }, { "Handjob", "14" }, { "Crafting", "15" }, { "Herbalism", "16" }, { "Farming", "17" }, { "Brewing", "18" }, { "AnimalHandling", "19" }, { "Footjob", "20" } };
+            string[,] aStats = new string[26, 2] { { "Charisma", "0" }, { "Happiness", "1" }, { "Libedo", "2" }, { "Constitution", "3" }, { "Intelligence", "4" }, { "Confidence", "5" }, { "Mana", "6" }, { "Agility", "7" }, { "Fame", "8" }, { "Level", "9" }, { "AskPrice", "10" }, { "House", "11" }, { "Experience", "12" }, { "Age", "13" }, { "Obedience", "14" }, { "Spirit", "15" }, { "Beauty", "16" }, { "Tiredness", "17" }, { "Health", "18" }, { "PC Fear", "19" }, { "PC Love", "20" }, { "PC Hate", "21" }, { "Morality", "22" }, { "Refinement", "23" }, { "Dignity", "24" }, { "Lactation", "25" } };
+            string[,] aStatus = new string[13, 2] { { "Poisoned", "1" }, { "Badly Poisoned", "2" }, { "Pregnant", "3" }, { "Pregnant By Player", "4" }, { "Slave", "5" }, { "Has daughter", "6" }, { "Has son", "7" }, { "Inseminated", "8" }, { "Controlled", "9" }, { "Catacombs", "10" }, { "Arena", "11" }, { "Your Daughter", "12" }, { "Is Daughter", "13" } };
 
             //first check type against aTypes array, when it coresponds to one then we found our type, store number of that type to sEf01 string
             //that's why array's are two dimensional, easy to access value linked with text
@@ -4159,6 +4266,7 @@ namespace WM_Girls_Generator
                                         case "Farming":         sEffect = sEffect + " " + "17"; break;
                                         case "Brewing":         sEffect = sEffect + " " + "18"; break;
                                         case "AnimalHandling":  sEffect = sEffect + " " + "19"; break;
+                                        case "Footjob":         sEffect = sEffect + " " + "20"; break;
                                     }
                                     sEffect = sEffect + " " + node.ChildNodes[x].Attributes["Amount"].Value;
                                     break;
@@ -4166,28 +4274,32 @@ namespace WM_Girls_Generator
                                     sEffect = "1";
                                     switch (node.ChildNodes[x].Attributes["Name"].Value)
                                     {
-                                        case "Charisma":     sEffect = sEffect + " " + "0";                                            break;
-                                        case "Happiness":    sEffect = sEffect + " " + "1";                                            break;
-                                        case "Libido":       sEffect = sEffect + " " + "2";                                            break;
-                                        case "Constitution": sEffect = sEffect + " " + "3";                                            break;
-                                        case "Intelligence": sEffect = sEffect + " " + "4";                                            break;
-                                        case "Confidence":   sEffect = sEffect + " " + "5";                                            break;
-                                        case "Mana":         sEffect = sEffect + " " + "6";                                            break;
-                                        case "Agility":      sEffect = sEffect + " " + "7";                                            break;
-                                        case "Fame":         sEffect = sEffect + " " + "8";                                            break;
-                                        case "Level":        sEffect = sEffect + " " + "9";                                            break;
-                                        case "AskPrice":     sEffect = sEffect + " " + "10";                                            break;
-                                        case "House":        sEffect = sEffect + " " + "11";                                            break;
-                                        case "Exp":          sEffect = sEffect + " " + "12";                                            break;
-                                        case "Age":          sEffect = sEffect + " " + "13";                                            break;
-                                        case "Obedience":    sEffect = sEffect + " " + "14";                                            break;
-                                        case "Spirit":       sEffect = sEffect + " " + "15";                                            break;
-                                        case "Beauty":       sEffect = sEffect + " " + "16";                                            break;
-                                        case "Tiredness":    sEffect = sEffect + " " + "17";                                            break;
-                                        case "Health":       sEffect = sEffect + " " + "18";                                            break;
-                                        case "PCFear":       sEffect = sEffect + " " + "19";                                            break;
-                                        case "PCLove":       sEffect = sEffect + " " + "20";                                            break;
-                                        case "PCHate":       sEffect = sEffect + " " + "21";                                            break;
+                                        case "Charisma":     sEffect = sEffect + " " + "0";  break;
+                                        case "Happiness":    sEffect = sEffect + " " + "1";  break;
+                                        case "Libido":       sEffect = sEffect + " " + "2";  break;
+                                        case "Constitution": sEffect = sEffect + " " + "3";  break;
+                                        case "Intelligence": sEffect = sEffect + " " + "4";  break;
+                                        case "Confidence":   sEffect = sEffect + " " + "5";  break;
+                                        case "Mana":         sEffect = sEffect + " " + "6";  break;
+                                        case "Agility":      sEffect = sEffect + " " + "7";  break;
+                                        case "Fame":         sEffect = sEffect + " " + "8";  break;
+                                        case "Level":        sEffect = sEffect + " " + "9";  break;
+                                        case "AskPrice":     sEffect = sEffect + " " + "10"; break;
+                                        case "House":        sEffect = sEffect + " " + "11"; break;
+                                        case "Exp":          sEffect = sEffect + " " + "12"; break;
+                                        case "Age":          sEffect = sEffect + " " + "13"; break;
+                                        case "Obedience":    sEffect = sEffect + " " + "14"; break;
+                                        case "Spirit":       sEffect = sEffect + " " + "15"; break;
+                                        case "Beauty":       sEffect = sEffect + " " + "16"; break;
+                                        case "Tiredness":    sEffect = sEffect + " " + "17"; break;
+                                        case "Health":       sEffect = sEffect + " " + "18"; break;
+                                        case "PCFear":       sEffect = sEffect + " " + "19"; break;
+                                        case "PCLove":       sEffect = sEffect + " " + "20"; break;
+                                        case "PCHate":       sEffect = sEffect + " " + "21"; break;
+                                        case "Morality":     sEffect = sEffect + " " + "22"; break;
+                                        case "Refinement":   sEffect = sEffect + " " + "23"; break;
+                                        case "Dignity":      sEffect = sEffect + " " + "24"; break;
+                                        case "Lactation":    sEffect = sEffect + " " + "25"; break;
                                     }
                                     sEffect = sEffect + " " + node.ChildNodes[x].Attributes["Amount"].Value;
                                     break;
@@ -4198,16 +4310,19 @@ namespace WM_Girls_Generator
                                     sEffect = "3";
                                     switch (node.ChildNodes[x].Attributes["Name"].Value)
                                     {
-                                        case "Poisoned":           sEffect = sEffect + " " + "1";                                            break;
-                                        case "Badly Poisoned":     sEffect = sEffect + " " + "2";                                            break;
-                                        case "Pregnant":           sEffect = sEffect + " " + "3";                                            break;
-                                        case "Pregnant By Player": sEffect = sEffect + " " + "4";                                            break;
-                                        case "Slave":              sEffect = sEffect + " " + "5";                                            break;
-                                        case "Has Daughter":       sEffect = sEffect + " " + "6";                                            break;
-                                        case "Has Son":            sEffect = sEffect + " " + "7";                                            break;
-                                        case "Inseminated":        sEffect = sEffect + " " + "8";                                            break;
-                                        case "Controlled":         sEffect = sEffect + " " + "9";                                            break;
-                                        case "Catacombs":          sEffect = sEffect + " " + "10";                                            break;
+                                        case "Poisoned":           sEffect = sEffect + " " + "1";  break;
+                                        case "Badly Poisoned":     sEffect = sEffect + " " + "2";  break;
+                                        case "Pregnant":           sEffect = sEffect + " " + "3";  break;
+                                        case "Pregnant By Player": sEffect = sEffect + " " + "4";  break;
+                                        case "Slave":              sEffect = sEffect + " " + "5";  break;
+                                        case "Has Daughter":       sEffect = sEffect + " " + "6";  break;
+                                        case "Has Son":            sEffect = sEffect + " " + "7";  break;
+                                        case "Inseminated":        sEffect = sEffect + " " + "8";  break;
+                                        case "Controlled":         sEffect = sEffect + " " + "9";  break;
+                                        case "Catacombs":          sEffect = sEffect + " " + "10"; break;
+                                        case "Arena":              sEffect = sEffect + " " + "11"; break;
+                                        case "Your Daughter":      sEffect = sEffect + " " + "12"; break;
+                                        case "Is Daughter":        sEffect = sEffect + " " + "13"; break;
                                     }
                                     sEffect = sEffect + " " + node.ChildNodes[x].Attributes["Amount"].Value;
                                     break;
@@ -4266,8 +4381,8 @@ namespace WM_Girls_Generator
             string sEf03 = "";
 
             string[,] aTypes = new string[3, 2] { { "Skill", "0" }, { "Stat", "1" }, { "Status", "3" } };
-            string[,] aSkills = new string[20, 2] { { "Anal", "0" }, { "Magic", "1" }, { "BDSM", "2" }, { "Normal Sex", "3" }, { "Bestiality", "4" }, { "Group", "5" }, { "Lesbian", "6" }, { "Service", "7" }, { "Strip", "8" }, { "Combat", "9" }, { "OralSex", "10" }, { "TittySex", "11" }, { "Medicine", "12" }, { "Performance", "13" }, { "Handjob", "14" }, { "Crafting", "15" }, { "Herbalism", "16" }, { "Farming", "17" }, { "Brewing", "18" }, { "AnimalHandling", "19" } };
-            string[,] aStats = new string[23, 2] { { "Charisma", "0" }, { "Happiness", "1" }, { "Libedo", "2" }, { "Constitution", "3" }, { "Intelligence", "4" }, { "Confidence", "5" }, { "Mana", "6" }, { "Agility", "7" }, { "Fame", "8" }, { "Level", "9" }, { "AskPrice", "10" }, { "House", "11" }, { "Experience", "12" }, { "Age", "13" }, { "Obedience", "14" }, { "Spirit", "15" }, { "Beauty", "16" }, { "Tiredness", "17" }, { "Health", "18" }, { "PC Fear", "19" }, { "PC Love", "20" }, { "PC Hate", "21" }, { "Morality", "22" } };
+            string[,] aSkills = new string[21, 2] { { "Anal", "0" }, { "Magic", "1" }, { "BDSM", "2" }, { "Normal Sex", "3" }, { "Bestiality", "4" }, { "Group", "5" }, { "Lesbian", "6" }, { "Service", "7" }, { "Strip", "8" }, { "Combat", "9" }, { "OralSex", "10" }, { "TittySex", "11" }, { "Medicine", "12" }, { "Performance", "13" }, { "Handjob", "14" }, { "Crafting", "15" }, { "Herbalism", "16" }, { "Farming", "17" }, { "Brewing", "18" }, { "AnimalHandling", "19" }, { "Footjob", "20" } };
+            string[,] aStats = new string[26, 2] { { "Charisma", "0" }, { "Happiness", "1" }, { "Libedo", "2" }, { "Constitution", "3" }, { "Intelligence", "4" }, { "Confidence", "5" }, { "Mana", "6" }, { "Agility", "7" }, { "Fame", "8" }, { "Level", "9" }, { "AskPrice", "10" }, { "House", "11" }, { "Experience", "12" }, { "Age", "13" }, { "Obedience", "14" }, { "Spirit", "15" }, { "Beauty", "16" }, { "Tiredness", "17" }, { "Health", "18" }, { "PC Fear", "19" }, { "PC Love", "20" }, { "PC Hate", "21" }, { "Morality", "22" }, { "Refinement", "23" }, { "Dignity", "24" }, { "Lactation", "25" } };
             string[,] aStatus = new string[10, 2] { { "Poisoned", "1" }, { "Badly Poisoned", "2" }, { "Pregnant", "3" }, { "Pregnant By Player", "4" }, { "Slave", "5" }, { "Has daughter", "6" }, { "Has son", "7" }, { "Inseminated", "8" }, { "Controlled", "9" }, { "Catacombs", "10" } };
 
             textBox_ItemName.Text = ItemsCollection.Rows[listBox_ItemsList.SelectedIndex][0].ToString();	//name is already isolated so it's trivial to assign it to required textbox, it's in first cell ([0]) of datatable, only selected index is required, and since combobox is synchronised (or at least should be synchronized) with datatable it's easy to get name out
@@ -4518,6 +4633,7 @@ namespace WM_Girls_Generator
                                     case "17":  sEffects[1] = "Farming";        break;
                                     case "18":  sEffects[1] = "Brewing";        break;
                                     case "19":  sEffects[1] = "AnimalHandling"; break;
+                                    case "20":  sEffects[1] = "Footjob";        break;
                                 }
                                 break;
                             case "1":
@@ -4546,6 +4662,10 @@ namespace WM_Girls_Generator
                                     case "19":  sEffects[1] = "PCFear";       break;
                                     case "20":  sEffects[1] = "PCLove";       break;
                                     case "21":  sEffects[1] = "PCHate";       break;
+                                    case "22":  sEffects[1] = "Morality";     break;
+                                    case "23":  sEffects[1] = "Refinement";   break;
+                                    case "24":  sEffects[1] = "Dignity";      break;
+                                    case "25":  sEffects[1] = "Lactation";    break;
                                 }
                                 break;
                             case "2":
@@ -4565,6 +4685,9 @@ namespace WM_Girls_Generator
                                     case "8":   sEffects[1] = "Inseminated";        break;
                                     case "9":   sEffects[1] = "Controlled";         break;
                                     case "10":  sEffects[1] = "Catacombs";          break;
+                                    case "11":  sEffects[1] = "Arena";              break;
+                                    case "12":  sEffects[1] = "Your Daughter";      break;
+                                    case "13":  sEffects[1] = "Is Daughter";        break;
                                 }
                                 break;
                             case "4":
@@ -4743,5 +4866,6 @@ namespace WM_Girls_Generator
              * and can probably be removed
              */
         }
+
     }
 }

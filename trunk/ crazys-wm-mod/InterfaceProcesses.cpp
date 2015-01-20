@@ -44,6 +44,7 @@ extern cScreenGirlDetails g_GirlDetails;
 extern cScreenBrothelManagement g_BrothelManagement;
 extern sInterfaceIDs g_interfaceid;
 extern cPlayer m_Player;
+extern void PreparingLoad();
 
 // globals used for the interface
 string g_ReturnText = "";
@@ -112,7 +113,7 @@ void LoadGameScreen()
 		/*
 		*		loop through the files, adding them to the box
 		*/
-		for (int i = 0; i < fl.size(); i++) 
+		for (int i = 0; i < fl.size(); i++)
 		{
 			g_LoadGame.AddToListBox(g_interfaceid.LIST_LOADGSAVES, i, fl[i].leaf());
 		}
@@ -157,22 +158,17 @@ void LoadGameScreen()
 		return;
 	}
 	string temp = fl[selection].leaf();
+	g_ReturnText = temp;
 	/*
 	*	enable cheat mode for a cheat brothel
 	*/
 	g_Cheats = (temp == "Cheat.gam");
 
-	if (LoadGame(location, fl[selection].leaf()))
-	{
-		g_WinManager.Pop();
-		g_WinManager.push("Brothel Management");
-		g_InitWin = true;
-	}
-	else
-	{
-		g_InitWin = true;
-		g_WinManager.Pop();
-	}
+
+	g_InitWin = true;
+	g_WinManager.Pop();
+	g_WinManager.Push(PreparingLoad, &g_Preparing);
+	return;
 }
 
 void NewGame()
@@ -254,9 +250,9 @@ void NewGame()
 			(g_Dice % 10 + 1) * 5000, 					// Gold			= 5000-50000
 			(g_Dice % 5 + 1), 							// Bars			= 1-5
 			(g_Dice % 4), 								// GambHalls	= 0-3
-			(g_Dice % 81 + 20), 						// Girls		= 20-100
-			(g_Dice % 6 + 1), 							// Brothels		= 1-6
-			(g_Dice % 10 + 1), 							// Gangs		= 1-10
+			(g_Dice % 71 + 10), 						// Girls		= 10-80
+			(g_Dice % 4 + 1), 							// Brothels		= 1-4
+			(g_Dice % 6 + 1), 							// Gangs		= 1-6
 			(g_Dice % 11)	 							// Power		= 0-10	// `J` added - The rivals power level
 			);
 	}
@@ -2480,6 +2476,56 @@ void GameEvents()
 		ClearGameFlag(FLAG_DUNGEONCUSTDIE);
 	}
 }
+
+
+void PreparingNew()
+{
+	g_CurrentScreen = SCREEN_PREPARING;
+	if (g_InitWin)
+	{
+		g_InitWin = false;
+		g_Preparing.Focused();
+	}
+	else
+	{
+		g_WinManager.Pop();
+		NewGame();
+	}
+}
+void PreparingLoad()
+{
+	g_CurrentScreen = SCREEN_PREPARING;
+	if (g_InitWin)
+	{
+		g_InitWin = false;
+		g_Preparing.Focused();
+	}
+	else
+	{
+		DirPath location = DirPath() << "Saves";
+		const char *pattern = "*.gam";
+		FileList fl(location, pattern);
+		if (LoadGame(location, g_ReturnText))
+		{
+			g_WinManager.Pop();
+			g_WinManager.push("Brothel Management");
+			g_InitWin = true;
+		}
+		else
+		{
+			g_InitWin = true;
+			g_WinManager.Pop();
+		}
+
+
+
+
+
+
+
+	}
+}
+
 
 void Gallery()
 {

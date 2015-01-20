@@ -10,6 +10,8 @@
 			This has been fixed but any old interfaces will not display correctly
 				if the scale width and height are not set to 800x600.
 	FullScreen     = 'true' or 'false'
+	ListScrollAmount = The number of lines to scroll in List boxes.
+	TextScrollAmount = The number of lines to scroll in Text boxes.
 	-->
 	<Resolution
 		Resolution="J_1024x768"
@@ -18,9 +20,8 @@
 		ScaleWidth="800"
 		ScaleHeight="600"
 		FullScreen="false"
-    ListScrollAmount="3"
-    TextScrollAmount="3"
-    />
+		ListScrollAmount="3"
+		TextScrollAmount="3" />
 	<!--
 	Gold is how much gold you start the game with.
 	GirlMeet is the %chance you'll meet a girl when walking around town.
@@ -53,7 +54,8 @@
 		SlaveKeepTips="false"
 		AutoUseItems="false"
 		AutoCombatEquip="true"
-		TortureTraitWeekMod="1" />
+		TortureTraitWeekMod="1"
+		HoroscopeType="1" />
 	<!--
 	These are the numbers that will multiply the money from various sources of income.
 		So setting "GirlsWorkBrothel" to "0.5" will reduce the cash your girls generate in the brothel by half.
@@ -67,7 +69,9 @@
 		StripperIncome="1.0"
 		BarmaidIncome="1.0"
 		SlaveSales="1.0"
-		ItemSales="1.0" />
+		ItemSales="1.0"
+		ClinicIncome="1.0"
+		ArenaIncome="1.0" />
 	<!--
 	These are the multipliers for your expenses.
 

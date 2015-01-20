@@ -57,14 +57,22 @@ private:
 	int m_BirthMonth = 1;			// there are 12 month in the year
 	int m_BirthDay = 1;				// there are 30 days in every month
 
-public:
-	string m_Title		= "Mr.";			// basic title - need to add more titles with more power gained
-	string m_FirstName	= "Master";			// no first name
-	string m_Surname	= "Player";			// basic surname
-	string m_RealName	= "Master Player";	// m_FirstName + " " + m_Surname
-	
-	
+	string m_Title;			// basic title - need to add more titles with more power gained
+	string m_FirstName;			// no first name
+	string m_Surname;			// basic surname
+	string m_RealName;	// m_FirstName + " " + m_Surname
 
+public:
+	
+	string Title()		{ return m_Title; }
+	string FirstName()	{ return m_FirstName; }
+	string Surname()	{ return m_Surname; }
+	string RealName()	{ return m_RealName; }
+
+	string SetTitle(string title);
+	string SetFirstName(string firstname);
+	string SetSurname(string surname);
+	string SetRealName(string realname);
 
 
 	bool m_WinGame;

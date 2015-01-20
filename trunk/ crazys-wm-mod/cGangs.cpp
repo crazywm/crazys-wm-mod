@@ -2310,10 +2310,12 @@ void cGangManager::sabotage_mission(sGang* gang)
 	if (rival->m_Gold > 0)
 	{
 		// mod: brighter goons are better thieves
-		// they need 100% to be better than before however
-		int factor = 2 + (gang->intelligence() / 10);
+		// `J` changed it // they need 100% to be better than before however	
+		// `J` now based on rival's gold
 
-		long gold = g_Dice.random(factor * ((gang->m_Num+5)*20)) + 44;
+		int gold = g_Dice.random(
+			(int)(((double)gang->intelligence() / 1000.0) * (double)rival->m_Gold))		// 0-10% of rival's gold
+			+ g_Dice.random(gang->intelligence() * gang->m_Num);						// plus int*num
 		if (gold > rival->m_Gold) gold = rival->m_Gold;
 		rival->m_Gold -= gold;
 

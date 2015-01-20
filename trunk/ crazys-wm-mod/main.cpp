@@ -80,98 +80,33 @@ unsigned int g_LastSeed = 0;            // for seeding the random number generat
 bool eventrunning = false;
 bool newWeek = false;
 
-bool g_ShiftDown = false;
-bool g_CTRLDown = false;
+bool g_ShiftDown = false;	bool g_CTRLDown = false;
 
-bool g_LeftArrow = false;
-bool g_RightArrow = false;
-bool g_UpArrow = false;
-bool g_DownArrow = false;
-bool g_EnterKey = false;
-// New Locally defined keys --PP
-bool g_SpaceKey = false;
-bool g_HomeKey = false;
-bool g_EndKey = false;
-bool g_PageUpKey = false;
-bool g_PageDownKey = false;
-bool g_TabKey = false;
-bool g_EscapeKey = false;
+bool g_LeftArrow = false;	bool g_RightArrow = false;	bool g_UpArrow = false;		bool g_DownArrow = false;
+bool g_EnterKey = false;	bool g_SpaceKey = false;	bool g_TabKey = false;		bool g_EscapeKey = false;
+bool g_HomeKey = false;		bool g_EndKey = false;		bool g_PageUpKey = false;	bool g_PageDownKey = false;
 
-bool g_A_Key = false;
-bool g_B_Key = false;
-bool g_C_Key = false;
-bool g_D_Key = false;
-bool g_E_Key = false;
-bool g_F_Key = false;
-bool g_G_Key = false;
-bool g_H_Key = false;
-bool g_I_Key = false;
-bool g_J_Key = false;
-bool g_K_Key = false;
-bool g_L_Key = false;
-bool g_M_Key = false;
-bool g_N_Key = false;
-bool g_O_Key = false;
-bool g_P_Key = false;
-bool g_Q_Key = false;
-bool g_R_Key = false;
-bool g_S_Key = false;
-bool g_T_Key = false;
-bool g_U_Key = false;
-bool g_V_Key = false;
-bool g_W_Key = false;
-bool g_X_Key = false;
-bool g_Y_Key = false;
-bool g_Z_Key = false;
+bool g_1_Key = false;		bool g_2_Key = false;		bool g_3_Key = false;		bool g_4_Key = false;		
+bool g_5_Key = false;		bool g_6_Key = false;		bool g_7_Key = false;		bool g_8_Key = false;		
+bool g_9_Key = false;		bool g_0_Key = false;
+
+bool g_F1_Key = false;		bool g_F2_Key = false;		bool g_F3_Key = false;		bool g_F4_Key = false;
+bool g_F5_Key = false;		bool g_F6_Key = false;		bool g_F7_Key = false;		bool g_F8_Key = false;
+bool g_F9_Key = false;		bool g_F10_Key = false;		bool g_F11_Key = false;		bool g_F12_Key = false;
+
+bool g_A_Key = false;		bool g_B_Key = false;		bool g_C_Key = false;		bool g_D_Key = false;
+bool g_E_Key = false;		bool g_F_Key = false;		bool g_G_Key = false;		bool g_H_Key = false;
+bool g_I_Key = false;		bool g_J_Key = false;		bool g_K_Key = false;		bool g_L_Key = false;
+bool g_M_Key = false;		bool g_N_Key = false;		bool g_O_Key = false;		bool g_P_Key = false;
+bool g_Q_Key = false;		bool g_R_Key = false;		bool g_S_Key = false;		bool g_T_Key = false;
+bool g_U_Key = false;		bool g_V_Key = false;		bool g_W_Key = false;		bool g_X_Key = false;
+bool g_Y_Key = false;		bool g_Z_Key = false;
 
 string monthnames[13]
 {
-	"No Month",
-	"January",
-	"February",
-	"March",
-	"April",
-	"May",
-	"June",
-	"July",
-	"August",
-	"September",
-	"October",
-	"November",
-	"December"
+	"No Month", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
 };
 
-
-
-
-
-/*                      // Alternate hotkeys (g is global keys, L is function defined locally) Ironically local keys must have global scope. --PP
-g               Tab     cycle brothels
-L               space   next in list.
-g               0               Display hotkeys
-g               Esc             Back
-g               Home    AltKeys
-g               End             NormalKeys
-
-L               qwe
-L               asd             Navigation
-L               zxc
-g               1-6 Brothels
-g               F1      Girl Management
-g               F2      Gang Management
-g               F3      Brothel Management
-g               F4      Dungeon
-
-g               F5      Slave market
-g               F6      Town
-g               F7      Bank
-g               F8      Mayors Office
-
-g               F9      Turn Summary
-g               F10     Shop screen
-g               F11     Clinic
-g               F12     Arena
-*/
 bool g_AltKeys = true;          // Toggles the alternate hotkeys --PP
 
 cScrollBar* g_DragScrollBar = 0;  // if a scrollbar is being dragged, this points to it
@@ -262,53 +197,87 @@ cSurnameList g_SurnameList;
 
 void handle_hotkeys()
 {
+	switch (vent.key.keysym.sym)
+	{
+	case SDLK_RSHIFT:
+	case SDLK_LSHIFT:
+		g_ShiftDown = true;		// enable multi select
+		break;
+	case SDLK_RCTRL:
+	case SDLK_LCTRL:
+		g_CTRLDown = true;		// enable multi select
+		break;
 
-	if (vent.key.keysym.sym == SDLK_RSHIFT || vent.key.keysym.sym == SDLK_LSHIFT)   // enable multi select
-		g_ShiftDown = true;
-	else if (vent.key.keysym.sym == SDLK_RCTRL || vent.key.keysym.sym == SDLK_LCTRL)        // enable multi select
-		g_CTRLDown = true;
+	case SDLK_UP:		g_UpArrow = true;		break;
+	case SDLK_DOWN:		g_DownArrow = true;		break;
+	case SDLK_LEFT:		g_LeftArrow = true;		break;
+	case SDLK_RIGHT:	g_RightArrow = true;	break;
+	case SDLK_SPACE:	g_SpaceKey = true;		break;
+	case SDLK_HOME:		g_HomeKey = true;		break;
+	case SDLK_END:		g_EndKey = true;		break;
+	case SDLK_PAGEUP:	g_PageUpKey = true;		break;
+	case SDLK_PAGEDOWN:	g_PageDownKey = true;	break;
+	case SDLK_TAB:		g_TabKey = true;		break;
+	case SDLK_ESCAPE:	g_EscapeKey = true;		break;
 
-	/* */if (vent.key.keysym.sym == SDLK_UP)		g_UpArrow = true;
-	else if (vent.key.keysym.sym == SDLK_DOWN)		g_DownArrow = true;
-	else if (vent.key.keysym.sym == SDLK_LEFT)		g_LeftArrow = true;
-	else if (vent.key.keysym.sym == SDLK_RIGHT)		g_RightArrow = true;
-	else if (vent.key.keysym.sym == SDLK_SPACE)		g_SpaceKey = true;
-	else if (vent.key.keysym.sym == SDLK_HOME)		g_HomeKey = true;
-	else if (vent.key.keysym.sym == SDLK_END)		g_EndKey = true;
-	else if (vent.key.keysym.sym == SDLK_PAGEUP)	g_PageUpKey = true;
-	else if (vent.key.keysym.sym == SDLK_PAGEDOWN)	g_PageDownKey = true;
-	else if (vent.key.keysym.sym == SDLK_TAB)		g_TabKey = true;
-	else if (vent.key.keysym.sym == SDLK_ESCAPE)	g_EscapeKey = true;
+	case SDLK_1:		g_1_Key = true;			break; 
+	case SDLK_2:		g_2_Key = true;			break; 
+	case SDLK_3:		g_3_Key = true;			break;
+	case SDLK_4:		g_4_Key = true;			break; 
+	case SDLK_5:		g_5_Key = true;			break; 
+	case SDLK_6:		g_6_Key = true;			break;
+	case SDLK_7:		g_7_Key = true;			break;
+	case SDLK_8:		g_8_Key = true;			break;
+	case SDLK_9:		g_9_Key = true;			break;
+	case SDLK_0:		g_0_Key = true;			break;
+
+	case SDLK_F1:		g_F1_Key = true;		break;
+	case SDLK_F2:		g_F2_Key = true;		break;
+	case SDLK_F3:		g_F3_Key = true;		break;
+	case SDLK_F4:		g_F4_Key = true;		break;
+	case SDLK_F5:		g_F5_Key = true;		break;
+	case SDLK_F6:		g_F6_Key = true;		break;
+	case SDLK_F7:		g_F7_Key = true;		break;
+	case SDLK_F8:		g_F8_Key = true;		break;
+	case SDLK_F9:		g_F9_Key = true;		break;
+	case SDLK_F10:		g_F10_Key = true;		break;
+	case SDLK_F11:		g_F11_Key = true;		break;
+	case SDLK_F12:		g_F12_Key = true;		break;
+
+	case SDLK_a:		g_A_Key = true;			break;
+	case SDLK_b:		g_B_Key = true;			break;
+	case SDLK_c:		g_C_Key = true;			break;
+	case SDLK_d:		g_D_Key = true;			break;
+	case SDLK_e:		g_E_Key = true;			break;
+	case SDLK_f:		g_F_Key = true;			break;
+	case SDLK_g:		g_G_Key = true;			break;
+	case SDLK_h:		g_H_Key = true;			break;
+	case SDLK_i:		g_I_Key = true;			break;
+	case SDLK_j:		g_J_Key = true;			break;
+	case SDLK_k:		g_K_Key = true;			break;
+	case SDLK_l:		g_L_Key = true;			break;
+	case SDLK_m:		g_M_Key = true;			break;
+	case SDLK_n:		g_N_Key = true;			break;
+	case SDLK_o:		g_O_Key = true;			break;
+	case SDLK_p:		g_P_Key = true;			break;
+	case SDLK_q:		g_Q_Key = true;			break;
+	case SDLK_r:		g_R_Key = true;			break;
+	case SDLK_s:		g_S_Key = true;			break;
+	case SDLK_t:		g_T_Key = true;			break;
+	case SDLK_u:		g_U_Key = true;			break;
+	case SDLK_v:		g_V_Key = true;			break;
+	case SDLK_w:		g_W_Key = true;			break;
+	case SDLK_x:		g_X_Key = true;			break;
+	case SDLK_y:		g_Y_Key = true;			break;
+	case SDLK_z:		g_Z_Key = true;			break;
+	default:	break;
+	}
 
 
-	else if (vent.key.keysym.sym == SDLK_a)     g_A_Key = true;
-	else if (vent.key.keysym.sym == SDLK_b)     g_B_Key = true;
-	else if (vent.key.keysym.sym == SDLK_c)     g_C_Key = true;
-	else if (vent.key.keysym.sym == SDLK_d)     g_D_Key = true;
-	else if (vent.key.keysym.sym == SDLK_e)     g_E_Key = true;
-	else if (vent.key.keysym.sym == SDLK_f)     g_F_Key = true;
-	else if (vent.key.keysym.sym == SDLK_g)     g_G_Key = true;
-	else if (vent.key.keysym.sym == SDLK_h)     g_H_Key = true;
-	else if (vent.key.keysym.sym == SDLK_i)     g_I_Key = true;
-	else if (vent.key.keysym.sym == SDLK_j)     g_J_Key = true;
-	else if (vent.key.keysym.sym == SDLK_k)     g_K_Key = true;
-	else if (vent.key.keysym.sym == SDLK_l)     g_L_Key = true;
-	else if (vent.key.keysym.sym == SDLK_m)     g_M_Key = true;
-	else if (vent.key.keysym.sym == SDLK_n)     g_N_Key = true;
-	else if (vent.key.keysym.sym == SDLK_o)     g_O_Key = true;
-	else if (vent.key.keysym.sym == SDLK_p)     g_P_Key = true;
-	else if (vent.key.keysym.sym == SDLK_q)     g_Q_Key = true;
-	else if (vent.key.keysym.sym == SDLK_r)     g_R_Key = true;
-	else if (vent.key.keysym.sym == SDLK_s)     g_S_Key = true;
-	else if (vent.key.keysym.sym == SDLK_t)     g_T_Key = true;
-	else if (vent.key.keysym.sym == SDLK_u)     g_U_Key = true;
-	else if (vent.key.keysym.sym == SDLK_v)     g_V_Key = true;
-	else if (vent.key.keysym.sym == SDLK_w)     g_W_Key = true;
-	else if (vent.key.keysym.sym == SDLK_x)     g_X_Key = true;
-	else if (vent.key.keysym.sym == SDLK_y)     g_Y_Key = true;
-	else if (vent.key.keysym.sym == SDLK_z)     g_Z_Key = true;
 
-	if (g_WinManager.GetWindow() != &g_MainMenu && g_WinManager.GetWindow() != &g_LoadGame&& g_WinManager.GetWindow() != &g_NewGame)
+
+	// Process the keys for every screen except MainMenu, LoadGame and NewGame - they have their own keys
+	if (g_WinManager.GetWindow() != &g_MainMenu && g_WinManager.GetWindow() != &g_LoadGame && g_WinManager.GetWindow() != &g_NewGame)
 	{
 		int br_no = 0;
 		string msg = "";
@@ -951,33 +920,80 @@ void handle_hotkeys()
 			// do nothing, but the "default" clause silences an irritating warning
 			break;
 		}
-		if (g_AltKeys)
+		switch (vent.key.keysym.sym)
 		{
-			switch (vent.key.keysym.sym)
-			{
-			case SDLK_q:    g_Q_Key = true;         break;
-			case SDLK_w:    g_W_Key = true;         break;
-			case SDLK_e:    g_E_Key = true;         break;
-			case SDLK_a:    g_A_Key = true;         break;
-			case SDLK_s:    g_S_Key = true;         break;
-			case SDLK_d:    g_D_Key = true;         break;
-			case SDLK_z:    g_Z_Key = true;         break;
-			case SDLK_x:    g_X_Key = true;         break;
-			case SDLK_c:    g_C_Key = true;         break;
+		case SDLK_RSHIFT:
+		case SDLK_LSHIFT:
+			g_ShiftDown = true;		// enable multi select
+			break;
+		case SDLK_RCTRL:
+		case SDLK_LCTRL:
+			g_CTRLDown = true;		// enable multi select
+			break;
 
-			case SDLK_r:    g_R_Key = true;         break;
-			case SDLK_f:    g_F_Key = true;         break;
-			case SDLK_t:    g_T_Key = true;         break;
-			case SDLK_g:    g_G_Key = true;         break;
-			case SDLK_y:    g_Y_Key = true;         break;
-			case SDLK_h:    g_H_Key = true;         break;
-			case SDLK_u:    g_U_Key = true;         break;
-			case SDLK_j:    g_J_Key = true;         break;
-			case SDLK_i:    g_I_Key = true;         break;
-			case SDLK_k:    g_K_Key = true;         break;
-			default:
-				break;
-			}
+		case SDLK_UP:		g_UpArrow = true;		break;
+		case SDLK_DOWN:		g_DownArrow = true;		break;
+		case SDLK_LEFT:		g_LeftArrow = true;		break;
+		case SDLK_RIGHT:	g_RightArrow = true;	break;
+		case SDLK_SPACE:	g_SpaceKey = true;		break;
+		case SDLK_HOME:		g_HomeKey = true;		break;
+		case SDLK_END:		g_EndKey = true;		break;
+		case SDLK_PAGEUP:	g_PageUpKey = true;		break;
+		case SDLK_PAGEDOWN:	g_PageDownKey = true;	break;
+		case SDLK_TAB:		g_TabKey = true;		break;
+		case SDLK_ESCAPE:	g_EscapeKey = true;		break;
+
+		case SDLK_1:		g_1_Key = true;			break;
+		case SDLK_2:		g_2_Key = true;			break;
+		case SDLK_3:		g_3_Key = true;			break;
+		case SDLK_4:		g_4_Key = true;			break;
+		case SDLK_5:		g_5_Key = true;			break;
+		case SDLK_6:		g_6_Key = true;			break;
+		case SDLK_7:		g_7_Key = true;			break;
+		case SDLK_8:		g_8_Key = true;			break;
+		case SDLK_9:		g_9_Key = true;			break;
+		case SDLK_0:		g_0_Key = true;			break;
+
+		case SDLK_F1:		g_F1_Key = true;		break;
+		case SDLK_F2:		g_F2_Key = true;		break;
+		case SDLK_F3:		g_F3_Key = true;		break;
+		case SDLK_F4:		g_F4_Key = true;		break;
+		case SDLK_F5:		g_F5_Key = true;		break;
+		case SDLK_F6:		g_F6_Key = true;		break;
+		case SDLK_F7:		g_F7_Key = true;		break;
+		case SDLK_F8:		g_F8_Key = true;		break;
+		case SDLK_F9:		g_F9_Key = true;		break;
+		case SDLK_F10:		g_F10_Key = true;		break;
+		case SDLK_F11:		g_F11_Key = true;		break;
+		case SDLK_F12:		g_F12_Key = true;		break;
+
+		case SDLK_a:		g_A_Key = true;		break;
+		case SDLK_b:		g_B_Key = true;		break;
+		case SDLK_c:		g_C_Key = true;		break;
+		case SDLK_d:		g_D_Key = true;		break;
+		case SDLK_e:		g_E_Key = true;		break;
+		case SDLK_f:		g_F_Key = true;		break;
+		case SDLK_g:		g_G_Key = true;		break;
+		case SDLK_h:		g_H_Key = true;		break;
+		case SDLK_i:		g_I_Key = true;		break;
+		case SDLK_j:		g_J_Key = true;		break;
+		case SDLK_k:		g_K_Key = true;		break;
+		case SDLK_l:		g_L_Key = true;		break;
+		case SDLK_m:		g_M_Key = true;		break;
+		case SDLK_n:		g_N_Key = true;		break;
+		case SDLK_o:		g_O_Key = true;		break;
+		case SDLK_p:		g_P_Key = true;		break;
+		case SDLK_q:		g_Q_Key = true;		break;
+		case SDLK_r:		g_R_Key = true;		break;
+		case SDLK_s:		g_S_Key = true;		break;
+		case SDLK_t:		g_T_Key = true;		break;
+		case SDLK_u:		g_U_Key = true;		break;
+		case SDLK_v:		g_V_Key = true;		break;
+		case SDLK_w:		g_W_Key = true;		break;
+		case SDLK_x:		g_X_Key = true;		break;
+		case SDLK_y:		g_Y_Key = true;		break;
+		case SDLK_z:		g_Z_Key = true;		break;
+		default:	break;
 		}
 	}
 }
@@ -1077,44 +1093,80 @@ int main(int ac, char* av[])	// `J` Bookmark - #1 - Entering the game
 			{
 				if (!g_MessageBox.IsActive() && !g_ChoiceManager.IsActive())
 				{
-					if (vent.key.keysym.sym == SDLK_RSHIFT || vent.key.keysym.sym == SDLK_LSHIFT)   // enable multi select
-						g_ShiftDown = false;
-					else if (vent.key.keysym.sym == SDLK_RCTRL || vent.key.keysym.sym == SDLK_LCTRL)        // enable multi select
-						g_CTRLDown = false;
+					switch (vent.key.keysym.sym)
+					{
+					case SDLK_RSHIFT:
+					case SDLK_LSHIFT:
+						g_ShiftDown = false;	// enable multi select
+						break;
+					case SDLK_RCTRL:
+					case SDLK_LCTRL:
+						g_CTRLDown = false;		// enable multi select
+						break;
 
-					if (vent.key.keysym.sym == SDLK_UP)				g_UpArrow = false;
-					else if (vent.key.keysym.sym == SDLK_DOWN)		g_DownArrow = false;
-					else if (vent.key.keysym.sym == SDLK_LEFT)		g_LeftArrow = false;
-					else if (vent.key.keysym.sym == SDLK_RIGHT)		g_RightArrow = false;
-					else if (vent.key.keysym.sym == SDLK_SPACE)		g_SpaceKey = false;
-					else if (vent.key.keysym.sym == SDLK_HOME)		g_HomeKey = false;
-					else if (vent.key.keysym.sym == SDLK_END)		g_EndKey = false;
-					else if (vent.key.keysym.sym == SDLK_PAGEUP)	g_PageUpKey = false;
-					else if (vent.key.keysym.sym == SDLK_PAGEDOWN)	g_PageDownKey = false;
-					else if (vent.key.keysym.sym == SDLK_TAB)		g_TabKey = false;
-					else if (vent.key.keysym.sym == SDLK_ESCAPE)	g_EscapeKey = false;
+					case SDLK_UP:		g_UpArrow = false;		break;
+					case SDLK_DOWN:		g_DownArrow = false;	break;
+					case SDLK_LEFT:		g_LeftArrow = false;	break;
+					case SDLK_RIGHT:	g_RightArrow = false;	break;
+					case SDLK_SPACE:	g_SpaceKey = false;		break;
+					case SDLK_HOME:		g_HomeKey = false;		break;
+					case SDLK_END:		g_EndKey = false;		break;
+					case SDLK_PAGEUP:	g_PageUpKey = false;	break;
+					case SDLK_PAGEDOWN:	g_PageDownKey = false;	break;
+					case SDLK_TAB:		g_TabKey = false;		break;
+					case SDLK_ESCAPE:	g_EscapeKey = false;	break;
 
+					case SDLK_1:		g_1_Key = false;		break;
+					case SDLK_2:		g_2_Key = false;		break;
+					case SDLK_3:		g_3_Key = false;		break;
+					case SDLK_4:		g_4_Key = false;		break;
+					case SDLK_5:		g_5_Key = false;		break;
+					case SDLK_6:		g_6_Key = false;		break;
+					case SDLK_7:		g_7_Key = false;		break;
+					case SDLK_8:		g_8_Key = false;		break;
+					case SDLK_9:		g_9_Key = false;		break;
+					case SDLK_0:		g_0_Key = false;		break;
 
-					else if (vent.key.keysym.sym == SDLK_q)			g_Q_Key = false;
-					else if (vent.key.keysym.sym == SDLK_w)			g_W_Key = false;
-					else if (vent.key.keysym.sym == SDLK_e)			g_E_Key = false;
-					else if (vent.key.keysym.sym == SDLK_a)			g_A_Key = false;
-					else if (vent.key.keysym.sym == SDLK_s)			g_S_Key = false;
-					else if (vent.key.keysym.sym == SDLK_d)			g_D_Key = false;
-					else if (vent.key.keysym.sym == SDLK_z)			g_Z_Key = false;
-					else if (vent.key.keysym.sym == SDLK_x)			g_X_Key = false;
-					else if (vent.key.keysym.sym == SDLK_c)			g_C_Key = false;
+					case SDLK_F1:		g_F1_Key = false;		break;
+					case SDLK_F2:		g_F2_Key = false;		break;
+					case SDLK_F3:		g_F3_Key = false;		break;
+					case SDLK_F4:		g_F4_Key = false;		break;
+					case SDLK_F5:		g_F5_Key = false;		break;
+					case SDLK_F6:		g_F6_Key = false;		break;
+					case SDLK_F7:		g_F7_Key = false;		break;
+					case SDLK_F8:		g_F8_Key = false;		break;
+					case SDLK_F9:		g_F9_Key = false;		break;
+					case SDLK_F10:		g_F10_Key = false;		break;
+					case SDLK_F11:		g_F11_Key = false;		break;
+					case SDLK_F12:		g_F12_Key = false;		break;
 
-					else if (vent.key.keysym.sym == SDLK_r)			g_R_Key = false;
-					else if (vent.key.keysym.sym == SDLK_f)			g_F_Key = false;
-					else if (vent.key.keysym.sym == SDLK_t)			g_T_Key = false;
-					else if (vent.key.keysym.sym == SDLK_g)			g_G_Key = false;
-					else if (vent.key.keysym.sym == SDLK_y)			g_Y_Key = false;
-					else if (vent.key.keysym.sym == SDLK_h)			g_H_Key = false;
-					else if (vent.key.keysym.sym == SDLK_u)			g_U_Key = false;
-					else if (vent.key.keysym.sym == SDLK_j)			g_J_Key = false;
-					else if (vent.key.keysym.sym == SDLK_i)			g_I_Key = false;
-					else if (vent.key.keysym.sym == SDLK_k)			g_K_Key = false;
+					case SDLK_a:		g_A_Key = false;		break;
+					case SDLK_b:		g_B_Key = false;		break;
+					case SDLK_c:		g_C_Key = false;		break;
+					case SDLK_d:		g_D_Key = false;		break;
+					case SDLK_e:		g_E_Key = false;		break;
+					case SDLK_f:		g_F_Key = false;		break;
+					case SDLK_g:		g_G_Key = false;		break;
+					case SDLK_h:		g_H_Key = false;		break;
+					case SDLK_i:		g_I_Key = false;		break;
+					case SDLK_j:		g_J_Key = false;		break;
+					case SDLK_k:		g_K_Key = false;		break;
+					case SDLK_l:		g_L_Key = false;		break;
+					case SDLK_m:		g_M_Key = false;		break;
+					case SDLK_n:		g_N_Key = false;		break;
+					case SDLK_o:		g_O_Key = false;		break;
+					case SDLK_p:		g_P_Key = false;		break;
+					case SDLK_q:		g_Q_Key = false;		break;
+					case SDLK_r:		g_R_Key = false;		break;
+					case SDLK_s:		g_S_Key = false;		break;
+					case SDLK_t:		g_T_Key = false;		break;
+					case SDLK_u:		g_U_Key = false;		break;
+					case SDLK_v:		g_V_Key = false;		break;
+					case SDLK_w:		g_W_Key = false;		break;
+					case SDLK_x:		g_X_Key = false;		break;
+					case SDLK_y:		g_Y_Key = false;		break;
+					case SDLK_z:		g_Z_Key = false;		break;
+				}
 				}
 			}
 			else if (vent.type == SDL_KEYDOWN)
@@ -1125,16 +1177,26 @@ int main(int ac, char* av[])	// `J` Bookmark - #1 - Entering the game
 					{
 						if (g_WinManager.GetWindow() == &g_NewGame)
 						{
-							if (vent.key.keysym.sym == SDLK_UP
-								|| vent.key.keysym.sym == SDLK_DOWN
-								|| vent.key.keysym.sym == SDLK_LEFT
-								|| vent.key.keysym.sym == SDLK_RIGHT
-								|| vent.key.keysym.sym == SDLK_TAB
-								|| vent.key.keysym.sym == SDLK_ESCAPE
-								|| vent.key.keysym.sym == SDLK_HOME
-								|| vent.key.keysym.sym == SDLK_END
-								|| vent.key.keysym.sym == SDLK_PAGEUP
-								|| vent.key.keysym.sym == SDLK_PAGEDOWN)
+							if (vent.key.keysym.sym == SDLK_UP			|| vent.key.keysym.sym == SDLK_DOWN
+								|| vent.key.keysym.sym == SDLK_LEFT		|| vent.key.keysym.sym == SDLK_RIGHT
+								|| vent.key.keysym.sym == SDLK_TAB		|| vent.key.keysym.sym == SDLK_ESCAPE
+								|| vent.key.keysym.sym == SDLK_HOME		|| vent.key.keysym.sym == SDLK_END
+								|| vent.key.keysym.sym == SDLK_PAGEUP	|| vent.key.keysym.sym == SDLK_PAGEDOWN
+
+								|| vent.key.keysym.sym == SDLK_1		|| vent.key.keysym.sym == SDLK_2
+								|| vent.key.keysym.sym == SDLK_3		|| vent.key.keysym.sym == SDLK_4
+								|| vent.key.keysym.sym == SDLK_5		|| vent.key.keysym.sym == SDLK_6
+								|| vent.key.keysym.sym == SDLK_7		|| vent.key.keysym.sym == SDLK_8
+								|| vent.key.keysym.sym == SDLK_9		|| vent.key.keysym.sym == SDLK_0
+
+								|| vent.key.keysym.sym == SDLK_F1		|| vent.key.keysym.sym == SDLK_F2
+								|| vent.key.keysym.sym == SDLK_F3		|| vent.key.keysym.sym == SDLK_F4
+								|| vent.key.keysym.sym == SDLK_F5		|| vent.key.keysym.sym == SDLK_F6
+								|| vent.key.keysym.sym == SDLK_F7		|| vent.key.keysym.sym == SDLK_F8
+								|| vent.key.keysym.sym == SDLK_F9		|| vent.key.keysym.sym == SDLK_F10
+								|| vent.key.keysym.sym == SDLK_F11		|| vent.key.keysym.sym == SDLK_F12
+								
+								)
 								handle_hotkeys();
 						}
 						if (vent.key.keysym.sym == SDLK_BACKSPACE)		g_WinManager.UpdateKeyInput('-');

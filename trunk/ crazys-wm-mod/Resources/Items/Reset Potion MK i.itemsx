@@ -12,7 +12,7 @@
    <Effect What="Stat"  Name="Age"                     Amount="-32000"    />
    <Effect What="Stat"  Name="Level"                   Amount="-32000"    />
 
-   <!--  Because some skills can go negative, add 500 to the skill to max it at 100 then lower it by 100 to get it to 0 -->
+
 <Effect What="Skill" Name="Anal"                    Amount="500"    /><Effect What="Skill" Name="Anal"                    Amount="-100"    />
 <Effect What="Skill" Name="AnimalHandling"          Amount="500"    /><Effect What="Skill" Name="AnimalHandling"          Amount="-100"    />
 <Effect What="Skill" Name="BDSM"                    Amount="500"    /><Effect What="Skill" Name="BDSM"                    Amount="-100"    />

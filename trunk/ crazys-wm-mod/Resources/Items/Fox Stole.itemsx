@@ -3,7 +3,7 @@
     <Item
         Name="Fox Stole"
         Desc="It's a dead fox! But, for some reason, girls love wrapping this around their neck. (Cha/Bea/Conf/Lib +5, HAP +10)"
-        Type="Armor"
+        Type="Misc"
         Badness="5"
         Special="None"
         Cost="1200"

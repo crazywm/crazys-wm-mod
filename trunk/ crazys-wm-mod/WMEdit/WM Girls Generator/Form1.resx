@@ -210,10 +210,8 @@ If you enter unsuported values (like "fasdsadfgdfvd" and like) you can
 expect that Whore Master will crash.</value>
   </data>
   <data name="label_Load_Config.Text" xml:space="preserve">
-    <value>The WME will try to find config.xml by itself.
-If it does not find it, you will have to find it manually.
-Starting in version .05t it is in the root game folder.
-In older versions, it was in \Resources\Data\ folder.</value>
+    <value>The WME will try to find config.xml by itself.    If it does not find it, you will have to find it manually.
+Starting in version .05t it is in the root game folder.    In older versions, it was in \Resources\Data\ folder.</value>
   </data>
   <metadata name="dataGridView_Traits_Trait_Name.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -246,6 +244,9 @@ It checks for 'round to 5 or 10' and 'number spreads'.
   </data>
   <metadata name="statusStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>121, 26</value>
+  </metadata>
+  <metadata name="backgroundWorker1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>237, 26</value>
   </metadata>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>25</value>

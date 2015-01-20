@@ -13,4 +13,3 @@ C:\SVN\WMEdit\WM Girls Generator\obj\Release\WM_Girls_Generator.Properties.Resou
 C:\SVN\WMEdit\WM Girls Generator\obj\Release\WM Girls Generator.csproj.GenerateResource.Cache
 C:\SVN\WMEdit\WM Girls Generator\obj\Release\WMEdit.exe
 C:\SVN\WMEdit\WM Girls Generator\obj\Release\WMEdit.pdb
-C:\SVN\WMEdit\WM Girls Generator\obj\Release\WM Girls Generator.csprojResolveAssemblyReference.cache

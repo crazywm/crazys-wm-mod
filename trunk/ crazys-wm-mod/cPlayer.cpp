@@ -124,6 +124,26 @@ int cPlayer::disposition(int n)
 	return m_Disposition;
 }
 
+string cPlayer::SetTitle(string title)
+{
+	m_Title = title;
+	return m_Title;
+}
+string cPlayer::SetFirstName(string firstname)
+{
+	m_FirstName = firstname;
+	return m_FirstName;
+}
+string cPlayer::SetSurname(string surname)
+{
+	m_Surname = surname;
+	return 	m_Surname;
+}
+string cPlayer::SetRealName(string realname)
+{
+	m_RealName = realname;
+	return 	m_RealName;
+}
 
 int cPlayer::BirthYear(int n)
 {
