@@ -244,16 +244,17 @@ void NewGame()
 	// Add the begining rivals
 	for (int i = 0; i < 5; i++)
 	{
+		int str = g_Dice % 10 + 1;
 		g_Brothels.GetRivalManager()->CreateRival(
-			(g_Dice % 10 + 1) * 100,					// BribeRate	= 100-1000
-			(g_Dice % 21 + 5), 							// Businesses	= 5-25
-			(g_Dice % 10 + 1) * 5000, 					// Gold			= 5000-50000
-			(g_Dice % 5 + 1), 							// Bars			= 1-5
-			(g_Dice % 4), 								// GambHalls	= 0-3
-			(g_Dice % 71 + 10), 						// Girls		= 10-80
-			(g_Dice % 4 + 1), 							// Brothels		= 1-4
-			(g_Dice % 6 + 1), 							// Gangs		= 1-6
-			(g_Dice % 11)	 							// Power		= 0-10	// `J` added - The rivals power level
+			str * 100,								// BribeRate	= 100-1000
+			(str * 3) + (g_Dice % 11),	 			// Businesses	= 3-40
+			str * 5000, 							// Gold			= 5000-50000
+			(str / 2) + 1, 							// Bars			= 1-6
+			(str / 4) + 1, 							// GambHalls	= 1-3
+			(str * 5) + (g_Dice % (str * 5)), 		// Girls		= 5-100
+			(str / 2) + 1, 							// Brothels		= 1-6
+			g_Dice % 6 + 1, 						// Gangs		= 1-6
+			str	 									// Power		= 1-10	// `J` added - The rivals power level
 			);
 	}
 
@@ -264,6 +265,8 @@ void NewGame()
 	DirPath text = DirPath() << "Saves" << (g_Brothels.GetBrothel(0)->m_Name + ".gam").c_str();
 	sm.Load(ScriptPath("Intro.lua"), 0);
 	SaveGameXML(text);
+	g_InitWin = true;
+
 }
 
 void GetString()

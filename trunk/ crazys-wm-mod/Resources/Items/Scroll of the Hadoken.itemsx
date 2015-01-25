@@ -2,7 +2,7 @@
 <Items>
 <Item Name="Scroll of the Hadoken"
       Desc="A uber-rare scroll that makes the reader become a legendary street fighter. It will steel their mind to become the strongest to fight their rivals. Even though no one but them will own them, they will still help you. (Frees from Slavery, Repairs the Body and Mind, +Cool Person/Strong, -Abnormally Large Boobs)"
-      Type="Misc"
+      Type="Food"
       Badness="0"
       Special="None"
       Cost="15000"

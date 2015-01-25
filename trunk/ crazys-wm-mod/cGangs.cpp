@@ -476,13 +476,13 @@ sGang* cGangManager::GetTempGang(int mod)
 	newGang->m_Num = min(15, g_Dice % 8 + 10);
 	for (int i = 0; i < NUM_SKILLS; i++)
 	{
-		newGang->m_Skills[i] = (g_Dice % 40) + 21 + (g_Dice % mod + mod);
+		newGang->m_Skills[i] = (g_Dice % 40) + 21 + (g_Dice % mod);
 		if (newGang->m_Skills[i] < 1)	newGang->m_Skills[i] = 1;
 		if (newGang->m_Skills[i] > 100)	newGang->m_Skills[i] = 100;
 	}
 	for (int i = 0; i < NUM_STATS; i++)
 	{
-		newGang->m_Stats[i] = (g_Dice % 40) + 21 + (g_Dice % mod + mod);
+		newGang->m_Stats[i] = (g_Dice % 40) + 21 + (g_Dice % mod);
 		if (newGang->m_Stats[i] < 1)	newGang->m_Stats[i] = 1;
 		if (newGang->m_Stats[i] > 100)	newGang->m_Stats[i] = 100;
 	}
@@ -2312,30 +2312,105 @@ void cGangManager::sabotage_mission(sGang* gang)
 		// mod: brighter goons are better thieves
 		// `J` changed it // they need 100% to be better than before however	
 		// `J` now based on rival's gold
-
+		// `J` bookmark - your gang sabotage mission gold taken
 		int gold = g_Dice.random(
-			(int)(((double)gang->intelligence() / 1000.0) * (double)rival->m_Gold))		// 0-10% of rival's gold
-			+ g_Dice.random(gang->intelligence() * gang->m_Num);						// plus int*num
+			(int)(((double)gang->intelligence() / 2000.0) * (double)rival->m_Gold))		// 0-5% of rival's gold
+			+ g_Dice.random((gang->intelligence() / 5) * gang->m_Num);					// plus (int/5)*num
 		if (gold > rival->m_Gold) gold = rival->m_Gold;
 		rival->m_Gold -= gold;
+		
+		// some of the money taken 'dissappears' before the gang reports it.
+		if (g_Dice.percent(20) && gold > 1000) gold -= g_Dice % 1000;	
 
 		ss << "\nYour men steal " << gold << " gold from them. ";
 		if (rival->m_Gold == 0)				ss << "Mu-hahahaha!  They're penniless now!\n";
 		else if (rival->m_Gold <= 10000)	ss << rival->m_Name << " is looking pretty poor.\n";
 		else			ss << "It looks like " << rival->m_Name << " still has a lot of gold.\n";
+
+		/*
+		`J` zzzzzz - need to add more and better limiters
+		Suggestions from Whitetooth:
+			I'm guessing those factors are based on there skills which make sense. For Example:
+			Men - Overall number of people able to carry gold after sabotage.
+			Combat - total amount of gold each man can hold.
+			Magic - Amount of extra gold the gang can carry with magic not relying on combat or men. Magic could be bonus gold that can't be dropped, bribed, or stolen on the way back.
+			Intel - Could be a overall factor to check if the gang knows what is valuable and what isn't.
+			Agility - Could be a check for clumsiness of the gang; they could drop valuables on the way back.
+			Tough - Checks if there tough enough to intimidate any guards or protect the money they have.
+			Charisma - Factors how much gold they have to bribe to guards if they get caught and can't intimidate them.
+			The order of checks could be -> Intel -> Magic -> Men - > Combat -> Agility -> Tough -> Charisma
+		*/
+
+		// `J` bookmark - limit gold taken by gang sabotage
+		bool limit = false;
+		if (gold > 15000)
+		{
+			limit = true;
+			int burnedbonds = (gold / 10000);
+			int bbcost = burnedbonds * 10000;
+			gold -= bbcost;
+			ss << "\nAs your men are fleeing, one of them has to jump through a wall of fire. When he does, he drops ";
+			if (burnedbonds == 1)		ss << "a";
+			else if (burnedbonds > 4)	ss << "a stack of ";
+			else						ss << burnedbonds;
+			ss << " Gold Bearer Bond" << (burnedbonds > 1 ? "s" : "") << " worth 10k gold each. " << bbcost << " gold just went up in smoke.\n";
+		}
+		
+		if (gold > 5000 && g_Dice.percent(50))
+		{
+			limit = true;
+			int spill = (g_Dice % 4500) + 500;
+			gold -= spill;
+			ss << "\nAs they are being chased through the streets by " << rival->m_Name << "'s people, one of your gang members cuts open a sack of gold spilling its contents in the street. "
+				<< "As the throngs of civilians stream in to collect the coins, they block the pursuers and allow you men to get away safely.\n";
+		}
+
+		if (gold > 5000)
+		{
+			limit = true;
+			int bribeperc = ((g_Dice % 15) * 5) + 10;
+			int bribe = (int)(gold * ((double)bribeperc/100.0));
+			gold -= bribe;
+			ss << "\nAs your gang leave your rival's territory on the way back to your brothel, they come upon a band of local police that are hunting them. Their boss demands "
+				<< bribeperc << "% of what your gang is carrying in order to let them go.  They pay them " << bribe << " gold and continue on home.\n";
+		}
+
+		if (limit)
+		{
+			ss << "\n" << gang->m_Name << " returns with " << gold << " gold.\n";
+		}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 		g_Gold.plunder(gold);
 	}
 	else ss << "The losers have no gold to take.\n";
 
-	if (rival->m_NumInventory > 0 && g_Dice.percent((gang->intelligence() * 10)))
+	if (rival->m_NumInventory > 0 && g_Dice.percent(min(75, gang->intelligence())))
 	{
 		cRivalManager r;
-		int num = r.GetRandomItemNum(rival);
-		sInventoryItem* item = r.GetItem(rival, num);
+		int num = r.GetRandomRivalItemNum(rival);
+		sInventoryItem* item = r.GetRivalItem(rival, num);
 		if (item)
 		{
 			ss << "\nYour men steal an item from them, one " << item->m_Name << ".";
-			r.RemoveInvByNumber(rival, num);
+			r.RemoveRivalInvByNumber(rival, num);
 			g_Brothels.AddItemToInventory(item);
 		}
 	}
@@ -2372,7 +2447,7 @@ void cGangManager::sabotage_mission(sGang* gang)
 	BoostGangSkill(&gang->m_Stats[STAT_INTELLIGENCE], 1);
 	gang->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
 
-	// See if the rival is eliminated:  If 5 or more of {gold, gangs, businesses, brothels, halls, bars}
+	// See if the rival is eliminated:  If 4 or more of {gold, gangs, businesses, brothels, halls, bars}
 	// are zero or less, the rival is eliminated
 	int VictoryPoints = 0;
 	if (rival->m_Gold <= 0)					VictoryPoints++;
@@ -2382,7 +2457,7 @@ void cGangManager::sabotage_mission(sGang* gang)
 	if (rival->m_NumGamblingHalls <= 0)		VictoryPoints++;
 	if (rival->m_NumBars <= 0)				VictoryPoints++;
 
-	if (VictoryPoints >= 5)
+	if (VictoryPoints >= 4)
 	{
 		stringstream ssVic;
 		ssVic << "You have dealt " << rival->m_Name << " a fatal blow.  Their criminal organization crumbles to nothing before you.";

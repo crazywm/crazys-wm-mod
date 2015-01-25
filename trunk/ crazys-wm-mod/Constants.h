@@ -368,7 +368,7 @@ const int INCOME_BUSINESS           = 10;
 const int NUM_SHOPITEMS             = 40;	// number of items that the shop may hold at one time
 const unsigned int INVRING          = 1;	// worn on fingers (max 8)
 const unsigned int INVDRESS         = 2;	// Worn on body, (max 1)
-const unsigned int INVSHOES         = 3;	// worn on feet, (max 1)
+const unsigned int INVSHOES         = 3;	// worn on feet, (max 1) often unequipped when going into combat
 const unsigned int INVFOOD          = 4;	// Eaten, single use
 const unsigned int INVNECKLACE      = 5;	// worn on neck, (max 1)
 const unsigned int INVWEAPON        = 6;	// equipped on body, often unequipped outside of combat, (max 2)
@@ -377,10 +377,14 @@ const unsigned int INVARMOR         = 8;	// worn on body over dresses, often une
 const unsigned int INVMISC          = 9;    // these items don't usually do anythinig just random stuff girls might buy. The ones that do, cause a constant effect without having to be equiped
 const unsigned int INVARMBAND       = 10;	// (max 2), worn around arms
 const unsigned int INVSMWEAPON      = 11;   // small weapon which can be hidden on body, (max 2)
-const unsigned int INVUNDERWEAR     = 12;   //CRAZY added this underwear (max 1)
-//const unsigned int INVLEGS     = ;   //CRAZY added this
-//const unsigned int INVHEAD     = ;   //CRAZY added this
-//const unsigned int INVSWIMSUIT     = ;   //CRAZY added this
+const unsigned int INVUNDERWEAR     = 12;   // CRAZY added this - underwear (max 1)
+const unsigned int INVHAT			= 13;	// CRAZY added this - Noncombat worn on the head (max 1)
+const unsigned int INVHELMET		= 14;	// CRAZY added this	- Combat worn on the head (max 1)
+const unsigned int INVGLASSES		= 15;	// CRAZY added this	- Glasses (max 1)
+const unsigned int INVSWIMSUIT		= 16;	// CRAZY added this - Swimsuit (max 1 in use but can have as many as they want)
+const unsigned int INVCOMBATSHOES	= 17;	// `J`   added this - Combat Shoes (max 1) often unequipped outside of combat
+const unsigned int INVSHIELD		= 18;	// `J`   added this - Shields (max 1) often unequipped outside of combat
+//const unsigned int INVLEGS = ;		//CRAZY added this
 
 // Item Rarity
 const int NUM_ITEM_RARITY = 9;	// number of items that the shop may hold at one time

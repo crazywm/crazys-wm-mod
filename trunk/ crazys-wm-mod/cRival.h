@@ -105,12 +105,12 @@ public:
 
 
 	// `J` New - rival inventory
-	int AddInv(cRival* rival, sInventoryItem* item);	// add item
-	bool RemoveInvByNumber(cRival* rival, int num);	// remove item
-	void SellInvItem(cRival* rival, int num);		// sell item
-	sInventoryItem* GetRandomItem(cRival* rival);
-	sInventoryItem* GetItem(cRival* rival, int num);
-	int GetRandomItemNum(cRival* rival);
+	int AddRivalInv(cRival* rival, sInventoryItem* item);	// add item
+	bool RemoveRivalInvByNumber(cRival* rival, int num);	// remove item
+	void SellRivalInvItem(cRival* rival, int num);		// sell item
+	sInventoryItem* GetRandomRivalItem(cRival* rival);
+	sInventoryItem* GetRivalItem(cRival* rival, int num);
+	int GetRandomRivalItemNum(cRival* rival);
 
 
 	int GetNumBusinesses();

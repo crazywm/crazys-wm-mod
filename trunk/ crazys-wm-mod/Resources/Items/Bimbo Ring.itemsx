@@ -13,5 +13,6 @@
    <Effect What="Stat"  Name="Beauty"                  Amount="50"    />
    <Effect What="Skill" Name="Service"                 Amount="-20"    />
    <Effect What="Trait" Name="Cool Person"             Amount="0"    />
+   <Effect What="Trait" Name="Bimbo"                   Amount="1"    />
 </Item>
 </Items>

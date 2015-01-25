@@ -1414,6 +1414,42 @@ WME - Added all of the new stats, skills, statuses and game configs.
 !!!!!!!!!!!!!!!!!!!! pushed to SVN - r143
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.15
 
+###  Changes 1/21/2015
+Reworked rivals again to reduce gold earned and spent.
+Added ability for rivals to buy random items.
+Reduced the amount player's gangs can steal from rivals.
+Fixed a bug when starting a new game after quitting the current game and starting a new one without closing the game entirely, the text on the first page would display the gold from the previous game.
+Added debug messages for rivals.
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.30
+
+###  Changes 1/21-25/2015
+WME - Fixed a bug stopping .rgirlsx from saving
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.16
+
+Added limiters for player gang sabotage gold.
+Doubled m_SecurityLevel reduction for number of girls in the brothels and in work_related_violence
+Added catches into interface functions to prevent missing items from breaking the game.
+Inventory screen updates:
+ - Added "Buy 10" button for infinite shop items only if the player is getting it and they can afford 10 of the item.
+ - Set it so if you can not afford an item from the shop, the buy button will turn off.
+ - Fixed buttons so they turn off when they are supposed to.
+ - Added colums to owner lists showing how many total items they have ans how many of the selected category they have. (blank is none)
+Other Item related updates
+ - Added new item types: Hats, Helmets, Glasses, Swimsuits, Combatshoes and Shields
+ - Added Hats, Helmets, Combatshoes and Shields to (un)equipcombat checks.
+Updated 36 items - mostly for the new categories but some needed other updates.
+ 
+WME - Added the new item types: Hats, Helmets, Glasses, Swimsuits, Combatshoes and Shields
+WME - Added First, Middle and Last names - if not set, it will fix them
+WME - Added a bunch of error checks to pass the error messages to the Extras tab error list.
+
+Started "Changes that need to be done.txt"
+
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r144
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.31
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.17
+
 
 
 

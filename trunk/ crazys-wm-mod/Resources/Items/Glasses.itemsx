@@ -2,7 +2,7 @@
 <Items>
 <Item Name="Glasses"
       Desc="A cheap pair of glasses. (Adds Nerd)"
-      Type="Misc"
+      Type="Glasses"
       Badness="0"
       Special="None"
       Cost="100"

@@ -2,7 +2,7 @@
 <Items>
 <Item Name="Yummy Cookie Bra"
       Desc="This bra may be made of food, but it's surprisingly sturdy. (Strip, Spirit, Charisma +5, Health +45)"
-      Type="Misc"
+      Type="Food"
       Badness="0"
       Special="None"
       Cost="10"

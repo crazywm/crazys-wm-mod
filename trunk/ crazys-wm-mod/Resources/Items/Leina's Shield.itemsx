@@ -2,7 +2,7 @@
 <Items>
 <Item Name="Leina's Shield"
       Desc="The shield worn by the warrior Leina. (Constitution +40. Adds Iron Will.)"
-      Type="Armband"
+      Type="Shield"
       Badness="0"
       Special="None"
       Cost="13400"

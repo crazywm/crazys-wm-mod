@@ -2,7 +2,7 @@
 <Items>
 <Item Name="Hime Tiara"
       Desc="A cute little crown to complete a princess's ensemble. Teaches her to act like a perfect little girl. (+10 Beauty. Removes Yandere, Iron Will, Assassin. Adds Meek, Charming.)"
-      Type="Misc"
+      Type="Hat"
       Badness="0"
       Special="None"
       Cost="14500"

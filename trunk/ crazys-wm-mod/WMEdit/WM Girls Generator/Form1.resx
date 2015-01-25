@@ -156,6 +156,16 @@ Temporary effects apply to traits, stats and skills, they don't apply to status'
 
 Traits that were added through this temporary mechanics will fade after 20 days, stats/skills that were added as temporary will fade by 1 point each day, until they're gone completely.</value>
   </data>
+  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>24, 26</value>
+  </metadata>
+  <data name="button_G_Divide_Real_Name.ToolTip" xml:space="preserve">
+    <value>Click to divide the Girl's Real Name into First, Middle and Last
+This looks for the first and last names and anything between becomes the middle.
+If it only finds 1 name, that becomes the first.
+If it finds 2, they become first and last.
+</value>
+  </data>
   <metadata name="dataGridView_G_Traits_Has.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -167,9 +177,6 @@ Traits that were added through this temporary mechanics will fade after 20 days,
   </metadata>
   <metadata name="hidden_has.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
-  </metadata>
-  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>24, 26</value>
   </metadata>
   <data name="button_G_UnZero_Sex_Skills.ToolTip" xml:space="preserve">
     <value>If the girl you are editing does not have some of the sex skills set in it, 

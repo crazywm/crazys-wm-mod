@@ -804,7 +804,7 @@ sScript *cGameScript::Script_AddFamilyToDungeon(sScript *Script)
 		Daughter1 = g_Girls.CreateRandomGirl((g_Dice % 13) + 13, false, slave, "", allowNonHuman, kidnaped, arena);
 		if (Daughter1->age() > oldest) oldest = Daughter1->age();
 		Daughter1->m_Surname = surname;
-		Daughter1->m_Realname = Daughter1->m_FirstName + " " + Daughter1->m_Surname;
+		g_Girls.CreateRealName(Daughter1);
 	}
 	if (value[0] > 1)
 	{
@@ -816,21 +816,21 @@ sScript *cGameScript::Script_AddFamilyToDungeon(sScript *Script)
 		}
 		if (Daughter2->age() > oldest) oldest = Daughter2->age();
 		Daughter2->m_Surname = surname;
-		Daughter2->m_Realname = Daughter2->m_FirstName + " " + Daughter2->m_Surname;
+		g_Girls.CreateRealName(Daughter2);
 	}
 	if (value[0] > 2)
 	{
 		Daughter3 = g_Girls.CreateRandomGirl((g_Dice % 13) + 13, false, slave, "", allowNonHuman, kidnaped, arena);
 		if (Daughter3->age() > oldest) oldest = Daughter3->age();
 		Daughter3->m_Surname = surname;
-		Daughter3->m_Realname = Daughter3->m_FirstName + " " + Daughter3->m_Surname;
+		g_Girls.CreateRealName(Daughter3);
 	}
 
 	if (value[1])	// there is a mother
 	{
 		Mother = g_Girls.CreateRandomGirl((g_Dice % (50 - (oldest + 18))) + oldest + 18, false, slave, false, allowNonHuman, kidnaped, arena);
 		Mother->m_Surname = surname;
-		Mother->m_Realname = Mother->m_FirstName + " " + Mother->m_Surname;
+		g_Girls.CreateRealName(Mother);
 		if (!g_Dice.percent(Mother->age())) g_Girls.AddTrait(Mother, "MILF");	// the younger the mother the more likely she will be a MILF
 		g_Girls.LoseVirginity(Mother);
 

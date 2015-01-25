@@ -119,6 +119,8 @@ void cScreenItemManagement::set_ids()
 	ids_set = true;
 	curbrothel_id	= get_id("CurrentBrothel");
 	back_id			= get_id("BackButton");
+	buy10_l_id		= get_id("Buy10LeftButton");
+	buy10_r_id		= get_id("Buy10RightButton");
 	shift_l_id		= get_id("ShiftLeftButton");
 	shift_r_id		= get_id("ShiftRightButton");
 	gold_id			= get_id("PlayerGold");
@@ -134,8 +136,33 @@ void cScreenItemManagement::set_ids()
 	equip_r_id		= get_id("EquipRightButton");
 	unequip_r_id	= get_id("UnequipRightButton");
 
+	string ORColumns[] = { "ORLName", "ORLNumber", "ORLCatNum" };
+	SortColumns(owners_r_id, ORColumns, 3);
+	string OLColumns[] = { "OLLName", "OLLNumber", "OLLCatNum" };
+	SortColumns(owners_l_id, OLColumns, 3);
+
+
+
 	cConfig cfg;
 	for (int i = 0; i < 9; i++) RarityColor[i] = cfg.items.rarity_color(i);
+}
+
+string* ownerdata(sGirl* girl)
+{
+	string* data = new string[3];
+	stringstream ss;
+
+	data[0] = girl->m_Realname;
+
+	if (girl->m_NumInventory > 0)  ss << girl->m_NumInventory;
+	data[1] = ss.str();
+
+	ss.str("");
+	int numtype = g_Girls.GetNumItemType(girl, filter);
+	if (numtype > 0) ss << numtype;
+	data[2] = ss.str();
+
+	return data;
 }
 
 void cScreenItemManagement::init()
@@ -153,8 +180,8 @@ void cScreenItemManagement::init()
 
 	NumBrothelGirls = NumBrothelGirls0 = NumBrothelGirls1 = NumBrothelGirls2 = NumBrothelGirls3 = NumBrothelGirls4 = NumBrothelGirls5 = NumBrothelGirls6 = 0;
 	NumStudioGirls = NumArenaGirls = NumCentreGirls = NumClinicGirls = NumFarmGirls = NumHouseGirls = NumDungeonGirls = 0;
-	leftOwner = 0;
-	rightOwner = 1;
+	if (leftOwner < 0)	leftOwner = 0;
+	if (rightOwner < 0)	rightOwner = 1;
 
 	// clear list boxes
 	ClearListBox(owners_l_id);
@@ -164,27 +191,45 @@ void cScreenItemManagement::init()
 	ClearListBox(filter_id);
 
 	// setup the filter
-	AddToListBox(filter_id, 0, gettext("All"));
-	AddToListBox(filter_id, 1, gettext("Rings"));
-	AddToListBox(filter_id, 2, gettext("Dress"));
-	AddToListBox(filter_id, 12, gettext("Underwear"));
-	AddToListBox(filter_id, 3, gettext("Shoes"));
-	AddToListBox(filter_id, 4, gettext("Consumables"));
-	AddToListBox(filter_id, 5, gettext("Necklaces"));
-	AddToListBox(filter_id, 6, gettext("Large Weapons"));
-	AddToListBox(filter_id, 11, gettext("Small Weapons"));
-	AddToListBox(filter_id, 8, gettext("Armor"));
-	AddToListBox(filter_id, 9, gettext("Misc"));
-	AddToListBox(filter_id, 10, gettext("Armbands"));
+	AddToListBox(filter_id, 0,				gettext("All"));
+	AddToListBox(filter_id, INVFOOD,		gettext("Consumables"));
+	AddToListBox(filter_id, INVMISC,		gettext("Misc"));
+	AddToListBox(filter_id, INVHAT,			gettext("Hats"));
+	AddToListBox(filter_id, INVGLASSES,		gettext("Glasses"));
+	AddToListBox(filter_id, INVNECKLACE,	gettext("Necklaces"));
+	AddToListBox(filter_id, INVARMBAND,		gettext("Armbands"));
+	AddToListBox(filter_id, INVRING,		gettext("Rings"));
+	AddToListBox(filter_id, INVDRESS,		gettext("Dress"));
+	AddToListBox(filter_id, INVUNDERWEAR,	gettext("Underwear"));
+	AddToListBox(filter_id, INVSWIMSUIT,	gettext("Swimsuits"));
+	AddToListBox(filter_id, INVSHOES,		gettext("Shoes"));
+	AddToListBox(filter_id, INVSMWEAPON,	gettext("Small Weapons"));
+	AddToListBox(filter_id, INVWEAPON,		gettext("Large Weapons"));
+	AddToListBox(filter_id, INVHELMET,		gettext("Helmets"));
+	AddToListBox(filter_id, INVARMOR,		gettext("Armor"));
+	AddToListBox(filter_id, INVSHIELD,		gettext("Shields"));
+	AddToListBox(filter_id, INVCOMBATSHOES, gettext("Combat Shoes"));
+	
+
+
 	if (filter == -1) filter = 0;
 	SetSelectedItemInList(filter_id, filter, false);
 
 	// add shop and player to list
-	AddToListBox(owners_l_id, 0, gettext("Player"));
-	AddToListBox(owners_l_id, 1, gettext("Shop"));
 
-	AddToListBox(owners_r_id, 0, gettext("Player"));
-	AddToListBox(owners_r_id, 1, gettext("Shop"));
+	if (true)
+	{
+		stringstream ss, ss2;
+		if (g_Brothels.m_NumInventory > 0) ss << g_Brothels.m_NumInventory;
+		int numtype = g_Brothels.GetNumberOfItemsOfType(filter);
+		if (numtype > 0) ss2 << numtype;
+		string dataP[] = { "Player", ss.str(), ss2.str() };
+		AddToListBox(owners_l_id, 0, dataP, 3);
+		AddToListBox(owners_r_id, 0, dataP, 3);
+		string dataS[] = { "Shop", "", "" };
+		AddToListBox(owners_l_id, 1, dataS, 3);
+		AddToListBox(owners_r_id, 1, dataS, 3);
+	}
 
 	// and girls from current brothel to list
 	int i = NumberSpecialSlots;
@@ -194,8 +239,8 @@ void cScreenItemManagement::init()
 	{
 		if (temp == 0) break;
 		if (g_AllTogle && selected_girl == temp) rightOwner = i;
-		AddToListBox(owners_l_id, i, temp->m_Realname);
-		AddToListBox(owners_r_id, i, temp->m_Realname);
+		AddToListBox(owners_l_id, i, ownerdata(temp), 3);
+		AddToListBox(owners_r_id, i, ownerdata(temp), 3);
 		NumBrothelGirls0++;
 		NumBrothelGirls++;
 		temp = temp->m_Next;
@@ -208,8 +253,8 @@ void cScreenItemManagement::init()
 		{
 			if (temp == 0) break;
 			if (g_AllTogle && selected_girl == temp) rightOwner = i;
-			AddToListBox(owners_l_id, i, temp->m_Realname);
-			AddToListBox(owners_r_id, i, temp->m_Realname);
+			AddToListBox(owners_l_id, i, ownerdata(temp), 3);
+			AddToListBox(owners_r_id, i, ownerdata(temp), 3);
 			NumBrothelGirls1++;
 			NumBrothelGirls++;
 			temp = temp->m_Next;
@@ -223,8 +268,8 @@ void cScreenItemManagement::init()
 		{
 			if (temp == 0) break;
 			if (g_AllTogle && selected_girl == temp) rightOwner = i;
-			AddToListBox(owners_l_id, i, temp->m_Realname);
-			AddToListBox(owners_r_id, i, temp->m_Realname);
+			AddToListBox(owners_l_id, i, ownerdata(temp), 3);
+			AddToListBox(owners_r_id, i, ownerdata(temp), 3);
 			NumBrothelGirls2++;
 			NumBrothelGirls++;
 			temp = temp->m_Next;
@@ -238,8 +283,8 @@ void cScreenItemManagement::init()
 		{
 			if (temp == 0) break;
 			if (g_AllTogle && selected_girl == temp) rightOwner = i;
-			AddToListBox(owners_l_id, i, temp->m_Realname);
-			AddToListBox(owners_r_id, i, temp->m_Realname);
+			AddToListBox(owners_l_id, i, ownerdata(temp), 3);
+			AddToListBox(owners_r_id, i, ownerdata(temp), 3);
 			NumBrothelGirls3++;
 			NumBrothelGirls++;
 			temp = temp->m_Next;
@@ -253,8 +298,8 @@ void cScreenItemManagement::init()
 		{
 			if (temp == 0) break;
 			if (g_AllTogle && selected_girl == temp) rightOwner = i;
-			AddToListBox(owners_l_id, i, temp->m_Realname);
-			AddToListBox(owners_r_id, i, temp->m_Realname);
+			AddToListBox(owners_l_id, i, ownerdata(temp), 3);
+			AddToListBox(owners_r_id, i, ownerdata(temp), 3);
 			NumBrothelGirls4++;
 			NumBrothelGirls++;
 			temp = temp->m_Next;
@@ -268,8 +313,8 @@ void cScreenItemManagement::init()
 		{
 			if (temp == 0) break;
 			if (g_AllTogle && selected_girl == temp) rightOwner = i;
-			AddToListBox(owners_l_id, i, temp->m_Realname);
-			AddToListBox(owners_r_id, i, temp->m_Realname);
+			AddToListBox(owners_l_id, i, ownerdata(temp), 3);
+			AddToListBox(owners_r_id, i, ownerdata(temp), 3);
 			NumBrothelGirls5++;
 			NumBrothelGirls++;
 			temp = temp->m_Next;
@@ -283,8 +328,8 @@ void cScreenItemManagement::init()
 		{
 			if (temp == 0) break;
 			if (g_AllTogle && selected_girl == temp) rightOwner = i;
-			AddToListBox(owners_l_id, i, temp->m_Realname);
-			AddToListBox(owners_r_id, i, temp->m_Realname);
+			AddToListBox(owners_l_id, i, ownerdata(temp), 3);
+			AddToListBox(owners_r_id, i, ownerdata(temp), 3);
 			NumBrothelGirls6++;
 			NumBrothelGirls++;
 			temp = temp->m_Next;
@@ -297,8 +342,8 @@ void cScreenItemManagement::init()
 	{
 		if (temp == 0) break;
 		if (g_AllTogle && selected_girl == temp) rightOwner = i;
-		AddToListBox(owners_l_id, i, temp->m_Realname);
-		AddToListBox(owners_r_id, i, temp->m_Realname);
+		AddToListBox(owners_l_id, i, ownerdata(temp), 3);
+		AddToListBox(owners_r_id, i, ownerdata(temp), 3);
 		NumStudioGirls++;
 		temp = temp->m_Next;
 		i++;
@@ -310,8 +355,8 @@ void cScreenItemManagement::init()
 	{
 		if (temp == 0) break;
 		if (g_AllTogle && selected_girl == temp) rightOwner = i;
-		AddToListBox(owners_l_id, i, temp->m_Realname);
-		AddToListBox(owners_r_id, i, temp->m_Realname);
+		AddToListBox(owners_l_id, i, ownerdata(temp), 3);
+		AddToListBox(owners_r_id, i, ownerdata(temp), 3);
 		NumArenaGirls++;
 		temp = temp->m_Next;
 		i++;
@@ -323,8 +368,8 @@ void cScreenItemManagement::init()
 	{
 		if (temp == 0) break;
 		if (g_AllTogle && selected_girl == temp) rightOwner = i;
-		AddToListBox(owners_l_id, i, temp->m_Realname);
-		AddToListBox(owners_r_id, i, temp->m_Realname);
+		AddToListBox(owners_l_id, i, ownerdata(temp), 3);
+		AddToListBox(owners_r_id, i, ownerdata(temp), 3);
 		NumCentreGirls++;
 		temp = temp->m_Next;
 		i++;
@@ -336,8 +381,8 @@ void cScreenItemManagement::init()
 	{
 		if (temp == 0) break;
 		if (g_AllTogle && selected_girl == temp) rightOwner = i;
-		AddToListBox(owners_l_id, i, temp->m_Realname);
-		AddToListBox(owners_r_id, i, temp->m_Realname);
+		AddToListBox(owners_l_id, i, ownerdata(temp), 3);
+		AddToListBox(owners_r_id, i, ownerdata(temp), 3);
 		NumClinicGirls++;
 		temp = temp->m_Next;
 		i++;
@@ -349,8 +394,8 @@ void cScreenItemManagement::init()
 	{
 		if (temp == 0) break;
 		if (g_AllTogle && selected_girl == temp) rightOwner = i;
-		AddToListBox(owners_l_id, i, temp->m_Realname);
-		AddToListBox(owners_r_id, i, temp->m_Realname);
+		AddToListBox(owners_l_id, i, ownerdata(temp), 3);
+		AddToListBox(owners_r_id, i, ownerdata(temp), 3);
 		NumFarmGirls++;
 		temp = temp->m_Next;
 		i++;
@@ -362,8 +407,8 @@ void cScreenItemManagement::init()
 	{
 		if (temp == 0) break;
 		if (g_AllTogle && selected_girl == temp) rightOwner = i;
-		AddToListBox(owners_l_id, i, temp->m_Realname);
-		AddToListBox(owners_r_id, i, temp->m_Realname);
+		AddToListBox(owners_l_id, i, ownerdata(temp), 3);
+		AddToListBox(owners_r_id, i, ownerdata(temp), 3);
 		NumHouseGirls++;
 		temp = temp->m_Next;
 		i++;
@@ -375,8 +420,8 @@ void cScreenItemManagement::init()
 	{
 		if (temp2 == 0) break;
 		if (g_AllTogle && selected_girl == temp2->m_Girl) rightOwner = i;
-		AddToListBox(owners_l_id, i, temp2->m_Girl->m_Realname, COLOR_RED);
-		AddToListBox(owners_r_id, i, temp2->m_Girl->m_Realname, COLOR_RED);
+		AddToListBox(owners_l_id, i, ownerdata(temp), 3);
+		AddToListBox(owners_r_id, i, ownerdata(temp), 3);
 		NumDungeonGirls++;
 		temp2 = temp2->m_Next;
 		i++;
@@ -402,12 +447,37 @@ void cScreenItemManagement::init()
 
 	DisableButton(shift_l_id, true);
 	DisableButton(shift_r_id, true);
+	DisableButton(buy10_l_id, true);
+	DisableButton(buy10_r_id, true);
 
 	SetSelectedItemInList(owners_l_id, leftOwner);
 	SetSelectedItemInList(owners_r_id, rightOwner);
 
 	SetSelectedItemInList(items_l_id, leftItem);
 	SetSelectedItemInList(items_r_id, rightItem);
+
+	// check the shop for infinite items
+	bool disablebuy10L = true; bool disablebuy10R = true;
+	if ((GetSelectedItemFromList(owners_r_id) == 1 && GetSelectedItemFromList(owners_l_id) == 0) ||
+		(GetSelectedItemFromList(owners_l_id) == 1 && GetSelectedItemFromList(owners_r_id) == 0))
+	{
+		if (GetSelectedItemFromList(owners_r_id) == 1 && GetLastSelectedItemFromList(items_r_id) > -1
+			&& g_InvManager.GetShopItem(GetSelectedItemFromList(items_r_id)) &&
+			g_InvManager.GetShopItem(GetLastSelectedItemFromList(items_r_id))->m_Infinite &&
+			g_Gold.afford(g_InvManager.GetShopItem(GetSelectedItemFromList(items_r_id))->m_Cost * 10))
+		{
+			disablebuy10R = false;
+		}
+		if (GetSelectedItemFromList(owners_l_id) == 1 && GetLastSelectedItemFromList(items_l_id) > -1 &&
+			g_InvManager.GetShopItem(GetSelectedItemFromList(items_l_id)) &&
+			g_InvManager.GetShopItem(GetLastSelectedItemFromList(items_l_id))->m_Infinite &&
+			g_Gold.afford(g_InvManager.GetShopItem(GetSelectedItemFromList(items_l_id))->m_Cost * 10))
+		{
+			disablebuy10L = false;
+		}
+	}
+	DisableButton(buy10_l_id, disablebuy10L);
+	DisableButton(buy10_r_id, disablebuy10R);
 
 	// disable the equip/unequip buttons
 	DisableButton(equip_l_id, true);
@@ -450,12 +520,16 @@ void cScreenItemManagement::check_events()
 	{
 		sel_pos_l = -2;
 		sel_pos_r = -2;
+		leftOwner = -2;
+		rightOwner = -2;
 		g_InitWin = true;
 		g_WinManager.Pop();
 		return;
 	}
-	if (g_InterfaceEvents.CheckButton(shift_r_id))		{ attempt_transfer(Left); }
-	if (g_InterfaceEvents.CheckButton(shift_l_id))		{ attempt_transfer(Right); }
+	if (g_InterfaceEvents.CheckButton(buy10_r_id))		{ attempt_transfer(Left, 10); }
+	if (g_InterfaceEvents.CheckButton(buy10_l_id))		{ attempt_transfer(Right, 10); }
+	if (g_InterfaceEvents.CheckButton(shift_r_id))		{ attempt_transfer(Left); g_InitWin = true; }
+	if (g_InterfaceEvents.CheckButton(shift_l_id))		{ attempt_transfer(Right); g_InitWin = true; }
 	if (g_InterfaceEvents.CheckListbox(owners_l_id))	{ refresh_item_list(Left); }
 	if (g_InterfaceEvents.CheckListbox(owners_r_id))	{ refresh_item_list(Right); }
 
@@ -464,7 +538,17 @@ void cScreenItemManagement::check_events()
 	if (g_InterfaceEvents.CheckListbox(items_l_id))
 	{
 		int selection = GetLastSelectedItemFromList(items_l_id);
-		DisableButton(shift_r_id, (selection < 0));
+		DisableButton(shift_r_id, (selection < 0) || (leftOwner == 1 && !g_Gold.afford(g_InvManager.GetShopItem(selection)->m_Cost)));
+		
+		bool disablebuy10R = true;
+		if (leftOwner == 1 && rightOwner == 0)
+		{
+			if (selection > -1 && g_InvManager.GetShopItem(selection) && g_Gold.afford(g_InvManager.GetShopItem(selection)->m_Cost * 10))
+			{
+				disablebuy10R = !g_InvManager.GetShopItem(selection)->m_Infinite;
+			}
+		}
+		DisableButton(buy10_r_id, disablebuy10R);
 
 		if (selection != -1)
 		{
@@ -479,6 +563,7 @@ void cScreenItemManagement::check_events()
 
 				DisableButton(equip_l_id, true);
 				DisableButton(unequip_l_id, true);
+
 			}
 			else if (leftOwner == 1)	//Player
 			{
@@ -514,12 +599,26 @@ void cScreenItemManagement::check_events()
 			}
 			EditTextItem(ss.str(), desc_id);
 		}
+		else
+		{
+			DisableButton(equip_l_id, true);
+			DisableButton(unequip_l_id, true);
+		}
 	}
 	if (g_InterfaceEvents.CheckListbox(items_r_id))
 	{
 		int selection = GetLastSelectedItemFromList(items_r_id);
+		DisableButton(shift_l_id, (selection < 0) || (rightOwner == 1 && !g_Gold.afford(g_InvManager.GetShopItem(selection)->m_Cost)));
 
-		DisableButton(shift_l_id, (selection < 0));
+		bool disablebuy10L = true;
+		if (leftOwner == 0 && rightOwner == 1 && selection > -1 &&
+			g_InvManager.GetShopItem(selection) &&
+			g_Gold.afford(g_InvManager.GetShopItem(selection)->m_Cost * 10))
+		{
+			disablebuy10L = !g_InvManager.GetShopItem(selection)->m_Infinite;
+		}
+		DisableButton(buy10_l_id, disablebuy10L);
+
 
 		if (selection != -1)
 		{
@@ -543,6 +642,7 @@ void cScreenItemManagement::check_events()
 
 				DisableButton(equip_r_id, true);
 				DisableButton(unequip_r_id, true);
+
 			}
 			else
 			{
@@ -569,6 +669,11 @@ void cScreenItemManagement::check_events()
 			}
 			EditTextItem(ss.str(), desc_id);
 		}
+		else
+		{
+			DisableButton(equip_r_id, true);
+			DisableButton(unequip_r_id, true);
+		}
 	}
 	if (g_InterfaceEvents.CheckListbox(filter_id))
 	{
@@ -576,6 +681,7 @@ void cScreenItemManagement::check_events()
 		filter = selection;
 		SetSelectedItemInList(owners_l_id, leftOwner);
 		SetSelectedItemInList(owners_r_id, rightOwner);
+		g_InitWin = true;
 	}
 	if (g_InterfaceEvents.CheckButton(equip_l_id))
 	{
@@ -645,6 +751,7 @@ void cScreenItemManagement::check_events()
 			SetSelectedItemInList(owners_r_id, rightOwner);
 		}
 	}
+
 }
 
 void cScreenItemManagement::refresh_item_list(Side which_list)
@@ -681,7 +788,6 @@ void cScreenItemManagement::refresh_item_list(Side which_list)
 	else if (selection != -1)
 	{
 		*owner = selection;
-
 		if (*owner == 0)	// player items
 		{
 			for (int i = 0; i < MAXNUM_INVENTORY; i++)
@@ -760,16 +866,12 @@ void cScreenItemManagement::refresh_item_list(Side which_list)
 
 	if (which_list == Left)
 	{
-		DisableButton(equip_r_id, true);
-		DisableButton(unequip_r_id, true);
 		if (GetSelectedItemFromList(item_list) < 0) SetSelectedItemInList(item_list, sel_next_l);
 		leftItem = GetSelectedItemFromList(item_list);
 		sel_next_l = -2;
 	}
 	else
 	{
-		DisableButton(equip_l_id, true);
-		DisableButton(unequip_l_id, true);
 		if (GetSelectedItemFromList(item_list) < 0) SetSelectedItemInList(item_list, sel_next_r);
 		rightItem = GetSelectedItemFromList(item_list);
 		sel_next_r = -2;
@@ -780,9 +882,39 @@ void cScreenItemManagement::refresh_item_list(Side which_list)
 		EditTextItem("", desc_id);
 		DisableButton((which_list == Left) ? shift_r_id : shift_l_id, true);
 	}
+
+	if (GetSelectedItemFromList(items_r_id)<0)
+	{
+		DisableButton(equip_r_id, true);
+		DisableButton(unequip_r_id, true);
+	}
+	if (GetSelectedItemFromList(items_l_id)<0)
+	{
+		DisableButton(equip_l_id, true);
+		DisableButton(unequip_l_id, true);
+	}
+
+	bool disablebuy10L = true; bool disablebuy10R = true;
+	if ((leftOwner == 0 && rightOwner == 1) || (leftOwner == 1 && rightOwner == 0))
+	{
+		if (leftOwner == 0 && rightOwner == 1 && GetSelectedItemFromList(items_r_id)>-1 && 
+			g_InvManager.GetShopItem(GetSelectedItemFromList(items_r_id)) &&
+			g_Gold.afford(g_InvManager.GetShopItem(GetSelectedItemFromList(items_r_id))->m_Cost * 10))
+		{
+			disablebuy10L = !g_InvManager.GetShopItem(GetSelectedItemFromList(items_r_id))->m_Infinite;
+		}
+		if (leftOwner == 1 && rightOwner == 0 && GetSelectedItemFromList(items_l_id)>-1 && 
+			g_InvManager.GetShopItem(GetSelectedItemFromList(items_l_id)) &&
+			g_Gold.afford(g_InvManager.GetShopItem(GetSelectedItemFromList(items_l_id))->m_Cost * 10))
+		{
+			disablebuy10R = !g_InvManager.GetShopItem(GetSelectedItemFromList(items_l_id))->m_Infinite;
+		}
+	}
+	DisableButton(buy10_r_id, disablebuy10R);
+	DisableButton(buy10_l_id, disablebuy10L);
 }
 
-void cScreenItemManagement::attempt_transfer(Side transfer_from)
+void cScreenItemManagement::attempt_transfer(Side transfer_from, int num)
 {
 	leftOwner = GetSelectedItemFromList(owners_l_id);
 	rightOwner = GetSelectedItemFromList(owners_r_id);
@@ -879,26 +1011,34 @@ void cScreenItemManagement::attempt_transfer(Side transfer_from)
 	{
 		if (source_owner == 1)	// buying from shop
 		{
+			int buynum = num;
 			int pos = 0;
 			int selection = GetNextSelectedItemFromList(source_list, 0, pos);
 			while (selection != -1)
 			{
+				if (!g_InvManager.GetShopItem(selection)->m_Infinite) buynum = 1;
 				int cost = g_InvManager.GetShopItem(selection)->m_Cost;
-				if (g_Gold.afford(cost))
+				if (g_Gold.afford(cost*buynum))
 				{
 					*item_name = g_InvManager.GetShopItem(selection)->m_Name;  // note name of item, for selection tracking in target list
 
-					if (g_Brothels.AddItemToInventory(g_InvManager.GetShopItem(selection)))
+					for (int i = 0; i < buynum; i++)
 					{
-						long gold = (int)(g_InvManager.GetShopItem(selection)->m_Cost);
-						g_InvManager.BuyShopItem(selection);
-						g_Gold.item_cost(gold);
-					}
-					else
-					{
-						*item_name = "";
-						g_MessageQue.AddToQue(gettext("Your inventory is full."), 1);
-						break;
+						if (g_Brothels.AddItemToInventory(g_InvManager.GetShopItem(selection)))
+						{
+							long gold = (int)(g_InvManager.GetShopItem(selection)->m_Cost);
+							g_InvManager.BuyShopItem(selection);
+							g_Gold.item_cost(gold);
+						}
+						else
+						{
+							*item_name = "";
+							stringstream ss;
+							ss << "Your inventory is full.";
+							if (i < buynum && i > 0) ss << "\nYou were able to buy " << i;
+							g_MessageQue.AddToQue(ss.str(), 1);
+							break;
+						}
 					}
 				}
 				else
@@ -1105,6 +1245,8 @@ void cScreenItemManagement::attempt_transfer(Side transfer_from)
 	int pos = 0;
 	sel_pos_l = GetNextSelectedItemFromList(items_l_id, 0, pos);
 	sel_pos_r = GetNextSelectedItemFromList(items_r_id, 0, pos);
+	leftOwner = GetNextSelectedItemFromList(owners_l_id, 0, pos);
+	rightOwner = GetNextSelectedItemFromList(owners_r_id, 0, pos);
 	sel_next_l = GetAfterSelectedItemFromList(items_l_id);
 	sel_next_r = GetAfterSelectedItemFromList(items_r_id);
 

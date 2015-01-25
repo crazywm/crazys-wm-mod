@@ -2,7 +2,7 @@
 <Items>
 <Item Name="Eggscellent Hat"
       Desc="A trucker cap that says I'm Eggscellent. You can't just buy this with money. (Happiness, Charisma, Constitution, Fame, Beauty +10.)"
-      Type="Misc"
+      Type="Hat"
       Badness="0"
       Special="None"
       Cost="9990"

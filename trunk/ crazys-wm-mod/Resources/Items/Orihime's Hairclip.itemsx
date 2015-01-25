@@ -2,7 +2,7 @@
 <Items>
 <Item Name="Orihime's Hairclip"
       Desc="A hairclip worn by Orihime Inoue. It has some magical powers in it. (Magic +30, Intelligence -10. Adds Abnormally Large Boobs.)"
-      Type="Misc"
+      Type="Hat"
       Badness="5"
       Special="None"
       Cost="9200"

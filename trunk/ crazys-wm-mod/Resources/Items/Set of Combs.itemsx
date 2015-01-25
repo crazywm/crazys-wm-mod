@@ -2,7 +2,7 @@
 <Items>
 <Item Name="Set of Combs"
       Desc="A small set of combs and brushes so your girl can keep her hair looking its best. (Beauty +3)"
-      Type="Food"
+      Type="Hat"
       Badness="0"
       Special="None"
       Cost="180"

@@ -16,12 +16,12 @@ namespace WM_Girls_Generator
     public partial class Form1
     {
 
-        private void TBox_G_Name_TextChanged(object sender, EventArgs e)
+        private void TBox_G_RealName_TextChanged(object sender, EventArgs e)
         {
             bool imagesfound = false;
             string sCharactersPath = "Resources\\Characters\\";
             string b = sCharactersPath;
-            string c = TBox_G_Name.Text;
+            string c = TBox_G_RealName.Text;
             string d = b + c;
             string f = "";
             if (Directory.Exists(d))
@@ -64,10 +64,6 @@ namespace WM_Girls_Generator
             }
             else
                 label_G_Images_Found.Text = "Images Found: 0";
-
-
-
-
         }
 
 
@@ -144,8 +140,7 @@ namespace WM_Girls_Generator
             int test = 0;
             if (textBox.Text.Length > 0)
             {
-                try { test = int.Parse(textBox.Text); }
-                catch { test = 0; }
+                try { test = int.Parse(textBox.Text); } catch { test = 0; }
             }
             if (test < 0) test = 0;
             textBox.Text = test.ToString();
@@ -180,8 +175,7 @@ namespace WM_Girls_Generator
             int test = 0;
             if (textBox.Text.Length > 0)
             {
-                try { test = int.Parse(textBox.Text); }
-                catch { test = 0; }
+                try { test = int.Parse(textBox.Text); } catch { test = 0; }
             }
             if (test < -100) test = -100; if (test > 100) test = 100;
             textBox.Text = test.ToString();
@@ -234,8 +228,7 @@ namespace WM_Girls_Generator
             double test = 0.0;
             if (textBox.Text.Length > 0)
             {
-                try { test = double.Parse(textBox.Text); }
-                catch { test = 0.0; }
+                try { test = double.Parse(textBox.Text); } catch { test = 0.0; }
             }
             if (test < 0.0 || test > 100.0)
             {
@@ -277,8 +270,7 @@ namespace WM_Girls_Generator
                     if (char.IsDigit(e.KeyChar) || (!dotfound && e.KeyChar == '.')) teststr += e.KeyChar;
                     if (textBox.Text.Length > 0)
                     {
-                        try { testnum = double.Parse(textBox.Text); }
-                        catch { testnum = 0.0; }
+                        try { testnum = double.Parse(textBox.Text); } catch { testnum = 0.0; }
                     }
                     if (testnum < 0.0 || testnum > 100.0)
                     {

@@ -2,7 +2,7 @@
 <Items>
 <Item Name="Sunglasses"
       Desc="The coolest form of eyewear. (Adds Cool Person. Removes Nerd.)"
-      Type="Misc"
+      Type="Glasses"
       Badness="0"
       Special="None"
       Cost="155"

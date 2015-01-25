@@ -42,6 +42,8 @@ private:
  */
 	int curbrothel_id;	// Current Brothel text
 	int back_id;		// Back button
+	int buy10_l_id;		// Buy 10 Items Left button
+	int buy10_r_id;		// Buy 10 Items Right button
 	int shift_l_id;		// Shift Item Left button
 	int shift_r_id;		// Shift Item Right button
 	int gold_id;		// Player Gold text
@@ -74,7 +76,7 @@ public:
 	void check_events();
 	bool check_keys();
 
-	void attempt_transfer(Side transfer_from);
+	void attempt_transfer(Side transfer_from, int num = 1);
 	void refresh_item_list(Side which_list);
 	string GiveItemText(int goodbad, int HateLove, sGirl* targetgirl, string ItemName = "");
 	sGirl* GirlSelectedFromList(int owner, int selectedfromlist = -100);

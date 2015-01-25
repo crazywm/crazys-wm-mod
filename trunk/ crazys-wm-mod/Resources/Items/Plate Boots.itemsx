@@ -2,7 +2,7 @@
 <Items>
 <Item Name="Plate Boots"
       Desc="These padded iron boots are part of a suit of plate armor. They're warm and durable, but not exactly sexy. (+5 Combat, +5 Cons, +5 Conf, -5 Fear, -5 Hate, -5 Cha, -10 Agi)"
-      Type="Shoes"
+      Type="Combat Shoes"
       Badness="0"
       Special="None"
       Cost="500"

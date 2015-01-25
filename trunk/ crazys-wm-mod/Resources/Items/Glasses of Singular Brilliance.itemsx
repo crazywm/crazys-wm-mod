@@ -2,7 +2,7 @@
 <Items>
 <Item Name="Glasses of Singular Brilliance"    
       Desc="These glasses look perfectly normal to anyone except the wearer, but they affect a person's vision rather uniquely. They cause complete blindness in one eye -- but at the same time, they give extraordinary vision in the other. The wearer's remaining sight shows the world as intensely more vibrant and beautiful. The glasses never come off unintentionally, and their enthralling nature keeps most people from ever removing them. However, taking them off causes the effects to fade within a few hours. (+One Eye, +Optimist)" 
-      Type="Misc" 
+      Type="Glasses" 
       Badness="10" 
       Special="None" 
       Cost="2000" 

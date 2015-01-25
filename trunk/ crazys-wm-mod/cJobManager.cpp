@@ -1457,7 +1457,9 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 bool cJobManager::work_related_violence(sGirl* girl, bool Day0Night1, bool streets)
 {
 	cConfig cfg;
-	int rape_chance = (int)cfg.prostitution.rape_brothel();
+	// the base chance of an attempted rape is higher on the streets
+	int rape_chance = (streets ? (int)cfg.prostitution.rape_streets() : (int)cfg.prostitution.rape_brothel());
+
 	int GirlsBrothelNo = g_Brothels.GetGirlsCurrentBrothel(girl);
 	sBrothel * Brothl = g_Brothels.GetBrothel(GirlsBrothelNo);
 
@@ -1465,15 +1467,13 @@ bool cJobManager::work_related_violence(sGirl* girl, bool Day0Night1, bool stree
 
 	int gang_coverage = guard_coverage(&gangs_guarding);
 
-	// the base chance of an attempted rape is higher on the streets
-	if (streets) rape_chance = (int)cfg.prostitution.rape_streets();
-
-	// night time doubles the chance of attempted rape and reduces the chance for a gang to catch it by ten
-	if (Day0Night1 == SHIFT_NIGHT) { rape_chance *= 2; gang_coverage = (int)((float)gang_coverage*0.8f); }
+	// night time doubles the chance of attempted rape and reduces the chance for a gang to catch it by 20%
+	if (Day0Night1) { rape_chance *= 2; gang_coverage = (int)((float)gang_coverage*0.8f); }
 
 	// if the player has a -ve disposition, this can scare the would-be rapist into behaving himself
-	if (g_Dice.percent(g_Brothels.GetPlayer()->disposition() * -1)) rape_chance = 0;
+	if (g_Dice.percent(g_Brothels.GetPlayer()->disposition() * -1)) rape_chance = 1;
 
+	if (rape_chance < 1) rape_chance = 1;	// minimum of 1%
 	if (g_Dice.percent(rape_chance))
 	{
 		/*sGang *gang = g_Gangs.random_gang(gang_v);
@@ -1488,13 +1488,13 @@ bool cJobManager::work_related_violence(sGirl* girl, bool Day0Night1, bool stree
 		// the security girl or defending gang is defeated, any casualties they inflicts
 		// carry over to the next layer of defense.
 		sGang *enemy_gang = g_Gangs.GetTempWeakGang();
-		// There is also between 1 and 10 of them, not 15 every time
-		enemy_gang->m_Num = (max(1, g_Dice % 13 - 2));
+		// There is also between 1 and 15 of them, not 15 every time
+		enemy_gang->m_Num = (max(1, g_Dice % 20 - 4));
 
 		// Three more lines of defense
 
-		// first subtract 5 security point per gang member that is attacking
-		Brothl->m_SecurityLevel = Brothl->m_SecurityLevel - enemy_gang->m_Num * 5;	// `J` moved and doubled m_SecurityLevel loss
+		// first subtract 10 security point per gang member that is attacking
+		Brothl->m_SecurityLevel = Brothl->m_SecurityLevel - enemy_gang->m_Num * 10;	// `J` moved and doubled m_SecurityLevel loss
 		// 1. Brothel security
 		if (security_stops_rape(girl, enemy_gang, Day0Night1)) return false;
 		// 2. Defending gangs
@@ -1502,8 +1502,8 @@ bool cJobManager::work_related_violence(sGirl* girl, bool Day0Night1, bool stree
 		// 3. The attacked girl herself
 		if (girl_fights_rape(girl, enemy_gang, Day0Night1)) return false;
 		// If all defensive measures fail...
-		// subtract 5 security points per gang member left
-		Brothl->m_SecurityLevel = Brothl->m_SecurityLevel - enemy_gang->m_Num * 5;	// `J` moved and doubled m_SecurityLevel loss
+		// subtract 10 security points per gang member left
+		Brothl->m_SecurityLevel = Brothl->m_SecurityLevel - enemy_gang->m_Num * 10;	// `J` moved and doubled m_SecurityLevel loss
 		customer_rape(girl, enemy_gang->m_Num);
 		return true;
 	}

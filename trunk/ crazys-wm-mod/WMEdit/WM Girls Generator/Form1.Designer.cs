@@ -35,6 +35,12 @@
             this.tabPage0_Info = new System.Windows.Forms.TabPage();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.tabPage1_Girls = new System.Windows.Forms.TabPage();
+            this.button_G_Divide_Real_Name = new System.Windows.Forms.Button();
+            this.button_G_Create_Real_Name = new System.Windows.Forms.Button();
+            this.TBox_G_FirstName = new System.Windows.Forms.TextBox();
+            this.label181 = new System.Windows.Forms.Label();
+            this.TBox_G_SurName = new System.Windows.Forms.TextBox();
+            this.TBox_G_MiddleName = new System.Windows.Forms.TextBox();
             this.dataGridView_G_Traits = new System.Windows.Forms.DataGridView();
             this.dataGridView_G_Traits_Has = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.dataGridView_G_Traits_List = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -108,7 +114,7 @@
             this.label_G_Traits = new System.Windows.Forms.Label();
             this.TBox_G_Desc = new System.Windows.Forms.TextBox();
             this.label_G_Desc = new System.Windows.Forms.Label();
-            this.TBox_G_Name = new System.Windows.Forms.TextBox();
+            this.TBox_G_RealName = new System.Windows.Forms.TextBox();
             this.label_Girl_Name = new System.Windows.Forms.Label();
             this.groupBox12 = new System.Windows.Forms.GroupBox();
             this.button_G_UnZero_Sex_Skills = new System.Windows.Forms.Button();
@@ -593,6 +599,10 @@
             this.textBox_Config_GamblingBase = new System.Windows.Forms.TextBox();
             this.textBox_Config_GamblingOdds = new System.Windows.Forms.TextBox();
             this.groupBox_C_Income_Multipliers = new System.Windows.Forms.GroupBox();
+            this.textBox_Config_IncomeArena = new System.Windows.Forms.TextBox();
+            this.textBox_Config_IncomeClinic = new System.Windows.Forms.TextBox();
+            this.label179 = new System.Windows.Forms.Label();
+            this.label180 = new System.Windows.Forms.Label();
             this.textBox_Config_IncomeItemSales = new System.Windows.Forms.TextBox();
             this.textBox_Config_IncomeSlaveSales = new System.Windows.Forms.TextBox();
             this.textBox_Config_IncomeBarmaid = new System.Windows.Forms.TextBox();
@@ -638,10 +648,6 @@
             this.button24 = new System.Windows.Forms.Button();
             this.checkBox_ToggleTraitTooltips = new System.Windows.Forms.CheckBox();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.textBox_Config_IncomeArena = new System.Windows.Forms.TextBox();
-            this.textBox_Config_IncomeClinic = new System.Windows.Forms.TextBox();
-            this.label179 = new System.Windows.Forms.Label();
-            this.label180 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage0_Info.SuspendLayout();
             this.tabPage1_Girls.SuspendLayout();
@@ -730,6 +736,12 @@
             // 
             // tabPage1_Girls
             // 
+            this.tabPage1_Girls.Controls.Add(this.button_G_Divide_Real_Name);
+            this.tabPage1_Girls.Controls.Add(this.button_G_Create_Real_Name);
+            this.tabPage1_Girls.Controls.Add(this.TBox_G_FirstName);
+            this.tabPage1_Girls.Controls.Add(this.label181);
+            this.tabPage1_Girls.Controls.Add(this.TBox_G_SurName);
+            this.tabPage1_Girls.Controls.Add(this.TBox_G_MiddleName);
             this.tabPage1_Girls.Controls.Add(this.dataGridView_G_Traits);
             this.tabPage1_Girls.Controls.Add(this.label_G_Images_Found);
             this.tabPage1_Girls.Controls.Add(this.checkBox_G_Virgin);
@@ -743,7 +755,7 @@
             this.tabPage1_Girls.Controls.Add(this.label_G_Traits);
             this.tabPage1_Girls.Controls.Add(this.TBox_G_Desc);
             this.tabPage1_Girls.Controls.Add(this.label_G_Desc);
-            this.tabPage1_Girls.Controls.Add(this.TBox_G_Name);
+            this.tabPage1_Girls.Controls.Add(this.TBox_G_RealName);
             this.tabPage1_Girls.Controls.Add(this.label_Girl_Name);
             this.tabPage1_Girls.Controls.Add(this.groupBox12);
             this.tabPage1_Girls.Controls.Add(this.groupBox_G_Stats);
@@ -756,6 +768,63 @@
             this.tabPage1_Girls.TabIndex = 1;
             this.tabPage1_Girls.Text = "  Girl Data  ";
             this.tabPage1_Girls.UseVisualStyleBackColor = true;
+            // 
+            // button_G_Divide_Real_Name
+            // 
+            this.button_G_Divide_Real_Name.Location = new System.Drawing.Point(185, 65);
+            this.button_G_Divide_Real_Name.Name = "button_G_Divide_Real_Name";
+            this.button_G_Divide_Real_Name.Size = new System.Drawing.Size(75, 35);
+            this.button_G_Divide_Real_Name.TabIndex = 26;
+            this.button_G_Divide_Real_Name.Text = "Divide\r\nReal Name";
+            this.toolTip1.SetToolTip(this.button_G_Divide_Real_Name, resources.GetString("button_G_Divide_Real_Name.ToolTip"));
+            this.button_G_Divide_Real_Name.UseVisualStyleBackColor = true;
+            this.button_G_Divide_Real_Name.Click += new System.EventHandler(this.button_G_Divide_Real_Name_Click);
+            // 
+            // button_G_Create_Real_Name
+            // 
+            this.button_G_Create_Real_Name.Location = new System.Drawing.Point(185, 30);
+            this.button_G_Create_Real_Name.Name = "button_G_Create_Real_Name";
+            this.button_G_Create_Real_Name.Size = new System.Drawing.Size(75, 35);
+            this.button_G_Create_Real_Name.TabIndex = 25;
+            this.button_G_Create_Real_Name.Text = "Make\r\nReal Name";
+            this.toolTip1.SetToolTip(this.button_G_Create_Real_Name, "Click to make the Girl\'s Real Name\r\nThis combines the First, Middle and Last name" +
+        "s adding spaces where needed.\r\nIt will overwrite the existing real name.");
+            this.button_G_Create_Real_Name.UseVisualStyleBackColor = true;
+            this.button_G_Create_Real_Name.Click += new System.EventHandler(this.button_G_Create_Real_Name_Click);
+            // 
+            // TBox_G_FirstName
+            // 
+            this.TBox_G_FirstName.Location = new System.Drawing.Point(50, 30);
+            this.TBox_G_FirstName.Name = "TBox_G_FirstName";
+            this.TBox_G_FirstName.Size = new System.Drawing.Size(125, 20);
+            this.TBox_G_FirstName.TabIndex = 24;
+            // 
+            // label181
+            // 
+            this.label181.AutoSize = true;
+            this.label181.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.label181.Location = new System.Drawing.Point(8, 31);
+            this.label181.Name = "label181";
+            this.label181.Size = new System.Drawing.Size(38, 65);
+            this.label181.TabIndex = 22;
+            this.label181.Text = "First\r\n\r\nMiddle\r\n\r\nLast";
+            this.label181.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.toolTip1.SetToolTip(this.label181, "Though all the names are optional, at least one name should be used.\r\nIf using 2 " +
+        "names, use First and Last.");
+            // 
+            // TBox_G_SurName
+            // 
+            this.TBox_G_SurName.Location = new System.Drawing.Point(50, 80);
+            this.TBox_G_SurName.Name = "TBox_G_SurName";
+            this.TBox_G_SurName.Size = new System.Drawing.Size(125, 20);
+            this.TBox_G_SurName.TabIndex = 21;
+            // 
+            // TBox_G_MiddleName
+            // 
+            this.TBox_G_MiddleName.Location = new System.Drawing.Point(50, 55);
+            this.TBox_G_MiddleName.Name = "TBox_G_MiddleName";
+            this.TBox_G_MiddleName.Size = new System.Drawing.Size(125, 20);
+            this.TBox_G_MiddleName.TabIndex = 20;
             // 
             // dataGridView_G_Traits
             // 
@@ -820,7 +889,7 @@
             // 
             this.label_G_Images_Found.AutoSize = true;
             this.label_G_Images_Found.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label_G_Images_Found.Location = new System.Drawing.Point(137, 55);
+            this.label_G_Images_Found.Location = new System.Drawing.Point(117, 110);
             this.label_G_Images_Found.Name = "label_G_Images_Found";
             this.label_G_Images_Found.Size = new System.Drawing.Size(101, 13);
             this.label_G_Images_Found.TabIndex = 18;
@@ -1582,11 +1651,11 @@
             // 
             // TBox_G_Desc
             // 
-            this.TBox_G_Desc.Location = new System.Drawing.Point(5, 75);
+            this.TBox_G_Desc.Location = new System.Drawing.Point(5, 128);
             this.TBox_G_Desc.Multiline = true;
             this.TBox_G_Desc.Name = "TBox_G_Desc";
             this.TBox_G_Desc.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.TBox_G_Desc.Size = new System.Drawing.Size(250, 165);
+            this.TBox_G_Desc.Size = new System.Drawing.Size(250, 112);
             this.TBox_G_Desc.TabIndex = 3;
             this.toolTip1.SetToolTip(this.TBox_G_Desc, "DO NOT use enter here, just write in one line");
             // 
@@ -1594,19 +1663,19 @@
             // 
             this.label_G_Desc.AutoSize = true;
             this.label_G_Desc.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F, System.Drawing.FontStyle.Bold);
-            this.label_G_Desc.Location = new System.Drawing.Point(5, 55);
+            this.label_G_Desc.Location = new System.Drawing.Point(5, 105);
             this.label_G_Desc.Name = "label_G_Desc";
             this.label_G_Desc.Size = new System.Drawing.Size(106, 20);
             this.label_G_Desc.TabIndex = 2;
             this.label_G_Desc.Text = "Description";
             // 
-            // TBox_G_Name
+            // TBox_G_RealName
             // 
-            this.TBox_G_Name.Location = new System.Drawing.Point(5, 25);
-            this.TBox_G_Name.Name = "TBox_G_Name";
-            this.TBox_G_Name.Size = new System.Drawing.Size(250, 20);
-            this.TBox_G_Name.TabIndex = 1;
-            this.TBox_G_Name.TextChanged += new System.EventHandler(this.TBox_G_Name_TextChanged);
+            this.TBox_G_RealName.Location = new System.Drawing.Point(60, 5);
+            this.TBox_G_RealName.Name = "TBox_G_RealName";
+            this.TBox_G_RealName.Size = new System.Drawing.Size(200, 20);
+            this.TBox_G_RealName.TabIndex = 1;
+            this.TBox_G_RealName.TextChanged += new System.EventHandler(this.TBox_G_RealName_TextChanged);
             // 
             // label_Girl_Name
             // 
@@ -1614,9 +1683,9 @@
             this.label_Girl_Name.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F, System.Drawing.FontStyle.Bold);
             this.label_Girl_Name.Location = new System.Drawing.Point(5, 5);
             this.label_Girl_Name.Name = "label_Girl_Name";
-            this.label_Girl_Name.Size = new System.Drawing.Size(94, 20);
+            this.label_Girl_Name.Size = new System.Drawing.Size(57, 20);
             this.label_Girl_Name.TabIndex = 0;
-            this.label_Girl_Name.Text = "Girl Name";
+            this.label_Girl_Name.Text = "Name";
             // 
             // groupBox12
             // 
@@ -5382,7 +5451,13 @@
             "Miscellaneous",
             "Arm/Wristband",
             "Small Weapon",
-            "Underwear"});
+            "Underwear",
+            "Hat",
+            "Helmet",
+            "Glasses",
+            "Swimsuit",
+            "Combatshoes",
+            "Shield"});
             this.comboBox_ItemType_01.Location = new System.Drawing.Point(86, 280);
             this.comboBox_ItemType_01.Name = "comboBox_ItemType_01";
             this.comboBox_ItemType_01.Size = new System.Drawing.Size(165, 21);
@@ -7395,6 +7470,50 @@
             this.groupBox_C_Income_Multipliers.TabStop = false;
             this.groupBox_C_Income_Multipliers.Text = "Income Multipliers";
             // 
+            // textBox_Config_IncomeArena
+            // 
+            this.textBox_Config_IncomeArena.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.textBox_Config_IncomeArena.Location = new System.Drawing.Point(130, 240);
+            this.textBox_Config_IncomeArena.MaxLength = 5;
+            this.textBox_Config_IncomeArena.Name = "textBox_Config_IncomeArena";
+            this.textBox_Config_IncomeArena.Size = new System.Drawing.Size(40, 20);
+            this.textBox_Config_IncomeArena.TabIndex = 19;
+            this.textBox_Config_IncomeArena.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_IncomeArena.TextChanged += new System.EventHandler(this.ValidateTextBoxDouble);
+            this.textBox_Config_IncomeArena.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxDouble);
+            // 
+            // textBox_Config_IncomeClinic
+            // 
+            this.textBox_Config_IncomeClinic.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.textBox_Config_IncomeClinic.Location = new System.Drawing.Point(130, 215);
+            this.textBox_Config_IncomeClinic.MaxLength = 5;
+            this.textBox_Config_IncomeClinic.Name = "textBox_Config_IncomeClinic";
+            this.textBox_Config_IncomeClinic.Size = new System.Drawing.Size(40, 20);
+            this.textBox_Config_IncomeClinic.TabIndex = 17;
+            this.textBox_Config_IncomeClinic.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_IncomeClinic.TextChanged += new System.EventHandler(this.ValidateTextBoxDouble);
+            this.textBox_Config_IncomeClinic.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxDouble);
+            // 
+            // label179
+            // 
+            this.label179.AutoSize = true;
+            this.label179.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label179.Location = new System.Drawing.Point(5, 243);
+            this.label179.Name = "label179";
+            this.label179.Size = new System.Drawing.Size(76, 13);
+            this.label179.TabIndex = 18;
+            this.label179.Text = "Arena Income:";
+            // 
+            // label180
+            // 
+            this.label180.AutoSize = true;
+            this.label180.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label180.Location = new System.Drawing.Point(5, 218);
+            this.label180.Name = "label180";
+            this.label180.Size = new System.Drawing.Size(73, 13);
+            this.label180.TabIndex = 16;
+            this.label180.Text = "Clinic Income:";
+            // 
             // textBox_Config_IncomeItemSales
             // 
             this.textBox_Config_IncomeItemSales.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
@@ -7712,7 +7831,7 @@
             this.Error_Message});
             this.dataGridView_Bad_Files.Location = new System.Drawing.Point(6, 326);
             this.dataGridView_Bad_Files.Name = "dataGridView_Bad_Files";
-            this.dataGridView_Bad_Files.Size = new System.Drawing.Size(940, 160);
+            this.dataGridView_Bad_Files.Size = new System.Drawing.Size(940, 260);
             this.dataGridView_Bad_Files.TabIndex = 13;
             // 
             // Bad_Files
@@ -7869,50 +7988,6 @@
             this.checkBox_ToggleTraitTooltips.UseVisualStyleBackColor = true;
             this.checkBox_ToggleTraitTooltips.CheckedChanged += new System.EventHandler(this.checkBox_ToggleTraitTooltips_CheckedChanged);
             // 
-            // textBox_Config_IncomeArena
-            // 
-            this.textBox_Config_IncomeArena.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.textBox_Config_IncomeArena.Location = new System.Drawing.Point(130, 240);
-            this.textBox_Config_IncomeArena.MaxLength = 5;
-            this.textBox_Config_IncomeArena.Name = "textBox_Config_IncomeArena";
-            this.textBox_Config_IncomeArena.Size = new System.Drawing.Size(40, 20);
-            this.textBox_Config_IncomeArena.TabIndex = 19;
-            this.textBox_Config_IncomeArena.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.textBox_Config_IncomeArena.TextChanged += new System.EventHandler(this.ValidateTextBoxDouble);
-            this.textBox_Config_IncomeArena.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxDouble);
-            // 
-            // textBox_Config_IncomeClinic
-            // 
-            this.textBox_Config_IncomeClinic.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.textBox_Config_IncomeClinic.Location = new System.Drawing.Point(130, 215);
-            this.textBox_Config_IncomeClinic.MaxLength = 5;
-            this.textBox_Config_IncomeClinic.Name = "textBox_Config_IncomeClinic";
-            this.textBox_Config_IncomeClinic.Size = new System.Drawing.Size(40, 20);
-            this.textBox_Config_IncomeClinic.TabIndex = 17;
-            this.textBox_Config_IncomeClinic.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.textBox_Config_IncomeClinic.TextChanged += new System.EventHandler(this.ValidateTextBoxDouble);
-            this.textBox_Config_IncomeClinic.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxDouble);
-            // 
-            // label179
-            // 
-            this.label179.AutoSize = true;
-            this.label179.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label179.Location = new System.Drawing.Point(5, 243);
-            this.label179.Name = "label179";
-            this.label179.Size = new System.Drawing.Size(76, 13);
-            this.label179.TabIndex = 18;
-            this.label179.Text = "Arena Income:";
-            // 
-            // label180
-            // 
-            this.label180.AutoSize = true;
-            this.label180.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label180.Location = new System.Drawing.Point(5, 218);
-            this.label180.Name = "label180";
-            this.label180.Size = new System.Drawing.Size(73, 13);
-            this.label180.TabIndex = 16;
-            this.label180.Text = "Clinic Income:";
-            // 
             // Form1
             // 
             this.AllowDrop = true;
@@ -7929,7 +8004,7 @@
             this.MaximumSize = new System.Drawing.Size(1000, 700);
             this.MinimumSize = new System.Drawing.Size(1000, 700);
             this.Name = "Form1";
-            this.Text = "Whore Master Editor 0.8.15";
+            this.Text = "Whore Master Editor 0.8.17";
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.App_FileDrop);
             this.DragEnter += new System.Windows.Forms.DragEventHandler(this.App_DragEnter);
             this.tabControl1.ResumeLayout(false);
@@ -8011,7 +8086,7 @@
 
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1_Girls;
-        private System.Windows.Forms.TextBox TBox_G_Name;
+        private System.Windows.Forms.TextBox TBox_G_RealName;
         private System.Windows.Forms.Label label_Girl_Name;
         private System.Windows.Forms.Label label_G_Traits;
         private System.Windows.Forms.TextBox TBox_G_Desc;
@@ -8620,6 +8695,12 @@
         private System.Windows.Forms.TextBox textBox_Config_IncomeClinic;
         private System.Windows.Forms.Label label179;
         private System.Windows.Forms.Label label180;
+        private System.Windows.Forms.Label label181;
+        private System.Windows.Forms.TextBox TBox_G_SurName;
+        private System.Windows.Forms.TextBox TBox_G_MiddleName;
+        private System.Windows.Forms.TextBox TBox_G_FirstName;
+        private System.Windows.Forms.Button button_G_Create_Real_Name;
+        private System.Windows.Forms.Button button_G_Divide_Real_Name;
     }
 }
 

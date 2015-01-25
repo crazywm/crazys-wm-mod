@@ -177,7 +177,7 @@ bool cScreenNewGame::check_keys()
 		mod = g_DownArrow = g_TabKey = false;
 		currentbox++;
 	}
-	if (g_TabKey || g_UpArrow)
+	if (g_UpArrow)
 	{
 		mod = g_UpArrow = false;
 		currentbox--;

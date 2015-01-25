@@ -3,7 +3,7 @@
     <Item
         Name="Rose-tinted Glasses"
         Desc="They make the whole world look better. (B) +5 Hap/Lib/Conf/Spir/Mor, -15 Int, adds Open Minded, Optimist."
-        Type="Misc"
+        Type="Glasses"
         Badness="5"
         Special="None"
         Cost="210"

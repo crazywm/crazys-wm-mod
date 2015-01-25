@@ -2,7 +2,7 @@
 <Items>
 <Item Name="Elegant Combs"
       Desc="A fancy set of combs for your girl's hairt. (Beauty +10. Adds Elegant)"
-      Type="Food"
+      Type="Hat"
       Badness="0"
       Special="None"
       Cost="880"

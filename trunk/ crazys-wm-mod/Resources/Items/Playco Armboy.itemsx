@@ -2,7 +2,7 @@
 <Items>
 <Item Name="Playco Armboy"
       Desc="An attachment that goes on your arm and makes you a good deal stronger. (Combat +10)"
-      Type="Misc"
+      Type="Armband"
       Badness="0"
       Special="None"
       Cost="100"
