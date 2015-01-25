@@ -249,18 +249,24 @@ typedef struct sInventoryItem
  *	item type: let's make an enum
  */
 	enum Type {
-		Ring	= 1,	// worn on fingers (max 8)
-		Dress	= 2,	// Worn on body, (max 1)
-		Shoes	= 3,	// worn on feet, (max 1)
-		Food	= 4,	// Eaten, single use
-		Necklace= 5,	// worn on neck, (max 1)
-		Weapon	= 6,	// equiped on body, (max 2)
-		Makeup	= 7,	// worn on face, single use
-		Armor	= 8,	// worn on body over dresses (max 1)
-		Misc	= 9,	// random stuff. may cause a constant effect without having to be equiped
-		Armband	= 10,	// (max 2), worn around arms
-		SmWeapon= 11,	// (max 2), hidden on body
-		Underwear= 12  // (max 1) worn under dress
+		Ring		= 1,		// worn on fingers (max 8)
+		Dress		= 2,		// Worn on body, (max 1)
+		Shoes		= 3,		// worn on feet, (max 1)
+		Food		= 4,		// Eaten, single use
+		Necklace	= 5,		// worn on neck, (max 1)
+		Weapon		= 6,		// equiped on body, (max 2)
+		Makeup		= 7,		// worn on face, single use
+		Armor		= 8,		// worn on body over dresses (max 1)
+		Misc		= 9,		// random stuff. may cause a constant effect without having to be equiped
+		Armband		= 10,		// (max 2), worn around arms
+		SmWeapon	= 11,		// (max 2), hidden on body
+		Underwear	= 12,		// (max 1) worn under dress
+		Hat			= 13,		// CRAZY added this - Noncombat worn on the head (max 1)
+		Helmet		= 14,		// CRAZY added this	- Combat worn on the head (max 1)
+		Glasses		= 15,		// CRAZY added this	- Glasses (max 1)
+		Swimsuit	= 16,		// CRAZY added this - Swimsuit (max 1 in use but can have as many as they want)
+		Combatshoes	= 17,		// `J`   added this - Combat Shoes (max 1) often unequipped outside of combat
+		Shield		= 18		// `J`   added this - Shields (max 1) often unequipped outside of combat
 	};
 	Type m_Type;
 /*
@@ -343,18 +349,25 @@ typedef struct sInventoryItem
 
 	void set_type(string s)
 	{
-		if (s == "Ring") { m_Type = Ring; }
-		else if (s == "Dress") { m_Type = Dress; }
-		else if (s == "Under Wear" || s == "Underwear") { m_Type = Underwear; }
-		else if (s == "Shoes") { m_Type = Shoes; }
-		else if (s == "Food") { m_Type = Food; }
-		else if (s == "Necklace") { m_Type = Necklace; }
-		else if (s == "Weapon") { m_Type = Weapon; }
-		else if (s == "Small Weapon") { m_Type = SmWeapon; }
-		else if (s == "Makeup") { m_Type = Makeup; }
-		else if (s == "Armor") { m_Type = Armor; }
-		else if (s == "Misc") { m_Type = Misc; }
-		else if (s == "Armband") { m_Type = Armband; }
+		/* */if (s == "Ring")							{ m_Type = Ring; }
+		else if (s == "Dress")							{ m_Type = Dress; }
+		else if (s == "Under Wear" || s == "Underwear")	{ m_Type = Underwear; }
+		else if (s == "Shoes")							{ m_Type = Shoes; }
+		else if (s == "Food")							{ m_Type = Food; }
+		else if (s == "Necklace")						{ m_Type = Necklace; }
+		else if (s == "Weapon")							{ m_Type = Weapon; }
+		else if (s == "Small Weapon")					{ m_Type = SmWeapon; }
+		else if (s == "Makeup")							{ m_Type = Makeup; }
+		else if (s == "Armor")							{ m_Type = Armor; }
+		else if (s == "Misc")							{ m_Type = Misc; }
+		else if (s == "Armband")						{ m_Type = Armband; }
+		else if (s == "Hat")							{ m_Type = Hat; }
+		else if (s == "Glasses")						{ m_Type = Glasses; }
+		else if (s == "Swimsuit")						{ m_Type = Swimsuit; }
+		else if (s == "Helmet")							{ m_Type = Helmet; }
+		else if (s == "Shield")							{ m_Type = Shield; }
+		else if (s == "Combat Shoes")					{ m_Type = Combatshoes;
+		}
 		else { m_Type = Misc; cerr << "Error: unexpected item type: " << s << endl; }
 	}
 
@@ -400,30 +413,24 @@ typedef struct sInventoryItem
 
 	friend ostream& operator << (ostream& os, sInventoryItem::Type &typ) {
 		switch(typ) {
-		case Ring:
-			return os << "Ring";
-		case Dress:
-			return os << "Dress";
-		case Underwear:
-			return os << "Underwear";
-		case Shoes:
-			return os << "Shoes";
-		case Food:
-			return os << "Food";
-		case Necklace:
-			return os << "Necklace";
-		case Weapon:
-			return os << "Weapon";
-		case SmWeapon:
-			return os << "Small Weapon";
-		case Makeup:
-			return os << "Makeup";
-		case Armor:
-			return os << "Armor";
-		case Misc:
-			return os << "Misc";
-		case Armband:
-			return os << "Armband";
+		case Ring:			return os << "Ring";
+		case Dress:			return os << "Dress";
+		case Underwear:		return os << "Underwear";
+		case Shoes:			return os << "Shoes";
+		case Food:			return os << "Food";
+		case Necklace:		return os << "Necklace";
+		case Weapon:		return os << "Weapon";
+		case SmWeapon:		return os << "Small Weapon";
+		case Makeup:		return os << "Makeup";
+		case Armor:			return os << "Armor";
+		case Misc:			return os << "Misc";
+		case Armband:		return os << "Armband";
+		case Hat:			return os << "Hat";
+		case Helmet:		return os << "Glasses";
+		case Glasses:		return os << "Swimsuit";
+		case Swimsuit:		return os << "Helmet";
+		case Combatshoes:	return os << "Shield";
+		case Shield:		return os << "Combat Shoes";
 		default:
 			cerr << "Unexpected type value: " << int(typ) << endl;
 			return os << "Error";

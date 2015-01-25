@@ -414,7 +414,7 @@ void cInventory::UpdateShop()
 		while (item == 0) item = GetRandomItem();
 		if (item == 0) break;	// should never happen but left in anyway
 
-		int chance = (g_Dice % 100) + 1;
+		int chance = g_Dice.d100();
 		if ((item->m_Rarity == RARITYCOMMON ||
 			(item->m_Rarity == RARITYSHOP50 && chance <= 50) ||
 			(item->m_Rarity == RARITYSHOP25 && chance <= 25) ||
@@ -828,6 +828,12 @@ bool cInventory::ok_2_equip(sGirl *girl, int num, bool force)
 	case sInventoryItem::Necklace:
 	case sInventoryItem::Armor:
 	case sInventoryItem::Underwear:
+	case sInventoryItem::Hat:
+	case sInventoryItem::Helmet:
+	case sInventoryItem::Glasses:
+	case sInventoryItem::Swimsuit:
+	case sInventoryItem::Combatshoes:
+	case sInventoryItem::Shield:
 		if (equip_singleton_ok(girl, num, force) == false) return false;
 		break;
 	case sInventoryItem::SmWeapon:	// doc: added missing enum

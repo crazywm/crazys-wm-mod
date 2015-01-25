@@ -247,6 +247,10 @@ public:
 	int m_NumItem[MAXNUM_INVENTORY];		// the number of items there are stacked
 	cJobManager m_JobManager;						// manages all the jobs
 
+	int GetNumberOfItemsOfType(int type, bool splitsubtype=false);
+
+
+
 	long GetBribeRate()					{ return m_BribeRate; }
 	void SetBribeRate(long rate)		{ m_BribeRate = rate; }
 	void UpdateBribeInfluence();

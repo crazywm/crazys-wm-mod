@@ -2,7 +2,7 @@
 <Items>
 <Item Name="Death Mullet"
       Desc="This hairstyle is required to practice Death Kwon Do, unattractive as it may be. (Combat +20, Constitution +10. Removes Cool Person.)"
-      Type="Misc"
+      Type="Helmet"
       Badness="0"
       Special="None"
       Cost="1750"

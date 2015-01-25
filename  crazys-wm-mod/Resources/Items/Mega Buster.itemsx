@@ -2,7 +2,7 @@
 <Items>
 <Item Name="Mega Buster"
       Desc="No Way! A real working Mega Buster! I thought they were destroyed! Oh wait....this lets a girl obliterate her target but it also attaches to the arm as long as they have it. Many people will be fans of you if you have this item. For some reason, it has 25 on the side... (+20 Agi, +10 Spirit, -20 Fear/Hate, +20 Combat, +30 Magic, +Cool/Half-Construct)"
-      Type="Misc"
+      Type="Weapon"
       Badness="0"
       Special="None"
       Cost="7500"

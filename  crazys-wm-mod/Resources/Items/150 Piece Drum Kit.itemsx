@@ -2,7 +2,7 @@
 <Items>
 <Item Name="150 Piece Drum Kit"
       Desc="A 150 piece percussion set, including 360 degree ascending sky cage. (+10 Happiness, Charisma, Confidence, +5 Spirit.)"
-      Type="Food"
+      Type="Misc"
       Badness="0"
       Special="None"
       Cost="15000"

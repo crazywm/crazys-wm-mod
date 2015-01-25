@@ -255,6 +255,6 @@
 		LogItems="false"
 		LogFonts="false"
 		LogTorture="false"
-		LogDebug="false"
+		LogDebug="true"
 		LogExtraDetails="false" />
 </config>

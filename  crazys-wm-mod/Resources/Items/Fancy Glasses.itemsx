@@ -2,7 +2,7 @@
 <Items>
 <Item Name="Fancy Glasses"
       Desc="A fancy pair of glasses. (+10 Charisma. Adds Nerd)"
-      Type="Misc"
+      Type="Glasses"
       Badness="0"
       Special="None"
       Cost="140"

@@ -2,7 +2,7 @@
 <Items>
 <Item Name="Bayonetta's Heels"
       Desc="The high heels worn by Bayonetta. They have guns hidden in the heels. (Combat +20, Agility +10. Adds Sexy Air.)"
-      Type="Shoes"
+      Type="Combat Shoes"
       Badness="0"
       Special="None"
       Cost="9750"

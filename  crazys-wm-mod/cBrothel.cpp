@@ -3170,6 +3170,28 @@ bool cBrothelManager::RemoveItemFromInventoryByNumber(int Pos)
 	return removed;
 }
 
+int cBrothelManager::GetNumberOfItemsOfType(int type, bool splitsubtype)
+{
+	if (m_NumInventory < 1) return 0;
+
+	int num = 0;
+	int found = 0;	// to reduce loops
+	for (int i = 0; i < MAXNUM_INVENTORY && found < m_NumInventory; i++)
+	{
+		if (m_Inventory[i])
+		{
+			found++;
+			if (m_Inventory[i]->m_Type == type)
+				num++;
+			// if we are looking for consumables (INVFOOD) but we are not splitting subtypes, accept INVMAKEUP as INVFOOD.
+			if (type == INVFOOD && !splitsubtype && m_Inventory[i]->m_Type == INVMAKEUP)
+				num++;
+		}
+	}
+	return num;
+}
+
+
 // ----- Bank & money
 void cBrothelManager::WithdrawFromBank(long amount)
 {

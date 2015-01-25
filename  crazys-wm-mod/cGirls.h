@@ -333,6 +333,7 @@ struct sGirl
 	*	a girl id number system may be added in the future to allow for absolute tracking
 	*/
 	string m_FirstName;							// this is the girl's first name
+	string m_MiddleName;						// this is the girl's middle name
 	string m_Surname;							// this is the girl's surname
 	//	`J` added mother and father names
 	string m_MotherName = "";
@@ -988,6 +989,7 @@ public:
 
 	bool NameExists(string name);
 	bool SurnameExists(string surname);
+	void CreateRealName(sGirl* girl);
 
 	string GetHoroscopeName(int month, int day);
 
@@ -997,7 +999,7 @@ public:
 	bool EquipItem(sGirl* girl, int num, bool force);
 	bool CanEquip(sGirl* girl, int num, bool force);
 	int GetWorseItem(sGirl* girl, int type, int cost);
-	int GetNumItemType(sGirl* girl, int Type);
+	int GetNumItemType(sGirl* girl, int Type, bool splitsubtype = false);
 	void SellInvItem(sGirl* girl, int num);
 	void UseItems(sGirl* girl);
 	int HasItem(sGirl* girl, string name);

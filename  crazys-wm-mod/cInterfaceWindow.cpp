@@ -325,6 +325,7 @@ void cInterfaceWindow::HideEditBox(int id, bool hide)
 
 void cInterfaceWindow::DisableButton(int id, bool disable)
 {
+	if (id>-1)
 	 m_Buttons[id]->SetDisabled(disable);
 }
 

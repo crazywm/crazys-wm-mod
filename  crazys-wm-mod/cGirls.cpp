@@ -1105,14 +1105,19 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 	*
 	*	So I'm assuming non-unique names are ok
 	*/
-	string name;
+	string name = "", name1 = "", name2 = "";
 	for (int i = 0; i < 5; i++)
 	{
-		name = g_NameList.random();
-		if (i>3) name = name + " " + g_NameList.random(); // `J` added second name to further reduce chance of multiple names
+		name = name1 = g_NameList.random();
+		if (i > 3)
+		{
+			name2 = g_NameList.random();
+			name = name1 + " " + name2; // `J` added second name to further reduce chance of multiple names
+		}
 		if (NameExists(name)) continue;
 		break;
 	}
+
 	string surname;
 	if (daughter || newGirl->m_States&(1 << STATUS_YOURDAUGHTER))	// `J` if she is your daughter...
 	{
@@ -1130,9 +1135,10 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 		}
 	}
 	else surname = "";
-	newGirl->m_FirstName = name;
+	newGirl->m_FirstName = name1;
+	newGirl->m_MiddleName = name2;
 	newGirl->m_Surname = surname;
-	newGirl->m_Realname = (surname.size() > 0 ? name + " " + surname : name);
+	CreateRealName(newGirl);
 
 	DirPath dp = DirPath() << "Resources" << "Characters" << newGirl->m_Name << "triggers.xml";
 	newGirl->m_Triggers.LoadList(dp);
@@ -1184,6 +1190,28 @@ bool cGirls::SurnameExists(string name)
 	}
 	return false;
 }
+
+// `J` added to simplify first, middle and surname combining into realname
+void cGirls::CreateRealName(sGirl* girl)
+{
+	stringstream ss;
+	int numnames = 0;
+	if (girl->m_FirstName.size() > 0)	numnames++;
+	if (girl->m_MiddleName.size() > 0)	numnames++;
+	if (girl->m_Surname.size() > 0)		numnames++;
+
+	if (numnames == 0) return;
+	else if (numnames == 1) ss << girl->m_FirstName << girl->m_MiddleName << girl->m_Surname;
+	else if (numnames == 2)
+	{
+		if (girl->m_FirstName.size() > 0) ss << girl->m_FirstName << " " << girl->m_MiddleName << girl->m_Surname;
+		else ss << girl->m_MiddleName << " " << girl->m_Surname;
+	}
+	else  ss << girl->m_FirstName << " " << girl->m_MiddleName << " " << girl->m_Surname;
+
+	girl->m_Realname = ss.str();
+}
+
 
 // `J` moved exp check into levelup to reduce coding
 void cGirls::LevelUp(sGirl* girl)
@@ -3331,30 +3359,33 @@ bool sGirl::LoadGirlXML(TiXmlHandle hGirl)
 	}
 	else m_Realname = m_Name;
 
-	if (pGirl->Attribute("FirstName"))		// `J` New - the girls First Name - not fully implemented
-	{
-		m_FirstName = pGirl->Attribute("FirstName");
-	}
-	else m_FirstName = "";
+	m_FirstName	=	(pGirl->Attribute("FirstName")	? pGirl->Attribute("FirstName") :	"");	// `J` New
+	m_MiddleName =	(pGirl->Attribute("MiddleName")	? pGirl->Attribute("MiddleName") :	"");	// `J` New
+	m_Surname =		(pGirl->Attribute("Surname")	? pGirl->Attribute("Surname") :		"");	// `J` New
 
-	if (pGirl->Attribute("Surname"))		// `J` New - the girls Surname (last name) - not fully implemented
+	if (m_FirstName == "" && m_MiddleName=="" && m_Surname == "")
 	{
-		m_Surname = pGirl->Attribute("Surname");
-	}
-	else m_Surname = "";
-
-	if (m_FirstName == "" && m_Surname == "")
-	{
+		string test = m_Realname;
 		int posspace = 0;
-		posspace = m_Realname.find(' ');
-		if (posspace >= 0)
-		{
-			m_FirstName = m_Realname.substr(0, posspace);
-			m_Surname = m_Realname.substr(posspace + 1);
-		}
-		else	// only 1 name found so making it the first name
+		posspace = test.find(' ');
+		if (posspace < 0)		// only 1 name found so making it the first name
 		{
 			m_FirstName = m_Realname;
+		}
+		else					// Set the first name found and test the rest
+		{
+			m_FirstName = test.substr(0, posspace);
+			test = test.substr(posspace + 1);
+		}
+		posspace = test.find_last_of(' ');
+		if (posspace < 0)		// only 1 name found so making it the last name
+		{
+			m_Surname = test;
+		}
+		else					// Set the middle and last names
+		{
+			m_MiddleName = test.substr(0, posspace);
+			m_Surname = test.substr(posspace + 1);
 		}
 	}
 
@@ -3525,32 +3556,20 @@ TiXmlElement* sGirl::SaveGirlXML(TiXmlElement* pRoot)
 {
 	TiXmlElement* pGirl = new TiXmlElement("Girl");
 	pRoot->LinkEndChild(pGirl);
-	// save the name
-	pGirl->SetAttribute("Name", m_Name);
-
-	// save the real name
-	pGirl->SetAttribute("Realname", m_Realname);
-
-	// save the first name
-	pGirl->SetAttribute("FirstName", m_FirstName);
-
-	// save the surname
-	pGirl->SetAttribute("Surname", m_Surname);
-
-	// save the description
-	pGirl->SetAttribute("Desc", m_Desc);
-
-	// save the amount of days they are unhappy
-	pGirl->SetAttribute("DaysUnhappy", m_DaysUnhappy);
+	pGirl->SetAttribute("Name", m_Name);						// save the name
+	pGirl->SetAttribute("Realname", m_Realname);				// save the real name
+	pGirl->SetAttribute("FirstName", m_FirstName);				// save the first name
+	pGirl->SetAttribute("MiddleName", m_MiddleName);			// save the first name
+	pGirl->SetAttribute("Surname", m_Surname);					// save the surname
+	pGirl->SetAttribute("Desc", m_Desc);						// save the description
+	pGirl->SetAttribute("DaysUnhappy", m_DaysUnhappy);			// save the amount of days they are unhappy
 
 	// Save their traits
-	if (m_NumTraits > MAXNUM_TRAITS)
-		g_LogFile.write("---- ERROR - Saved more traits then girls can have");
+	if (m_NumTraits > MAXNUM_TRAITS) g_LogFile.write("---- ERROR - Saved more traits then girls can have");
 	SaveTraitsXML(pGirl, "Traits", MAXNUM_TRAITS, m_Traits, m_TempTrait);
 
 	// Save their remembered traits
-	if (m_NumRememTraits > MAXNUM_TRAITS * 2)
-		g_LogFile.write("---- ERROR - Saved more remembered traits then girls can have");
+	if (m_NumRememTraits > MAXNUM_TRAITS * 2) g_LogFile.write("---- ERROR - Saved more remembered traits then girls can have");
 	SaveTraitsXML(pGirl, "Remembered_Traits", MAXNUM_TRAITS * 2, m_RememTraits, 0);
 
 	// Save inventory items
@@ -3558,34 +3577,20 @@ TiXmlElement* sGirl::SaveGirlXML(TiXmlElement* pRoot)
 	pGirl->LinkEndChild(pInventory);
 	SaveInventoryXML(pInventory, m_Inventory, 40, m_EquipedItems);
 
-	// save their states
-	pGirl->SetAttribute("States", m_States);
+	pGirl->SetAttribute("States", m_States);					// save their states
+	SaveStatsXML(pGirl, m_Stats, m_StatMods, m_TempStats);		// Save their stats
+	SaveSkillsXML(pGirl, m_Skills, m_SkillMods, m_TempSkills);	// save their skills
 
-	// Save their stats
-	SaveStatsXML(pGirl, m_Stats, m_StatMods, m_TempStats);
-
-	// save their skills
-	SaveSkillsXML(pGirl, m_Skills, m_SkillMods, m_TempSkills);
-
-	// save virginity
-	pGirl->SetAttribute("Virgin", m_Virgin);
-
-	// save using antipreg
-	pGirl->SetAttribute("UseAntiPreg", m_UseAntiPreg);
-
-	// save withdrawals
-	pGirl->SetAttribute("Withdrawals", m_Withdrawals);
-
-	// save money
-	pGirl->SetAttribute("Money", m_Money);
+	pGirl->SetAttribute("Virgin", m_Virgin);					// save virginity
+	pGirl->SetAttribute("UseAntiPreg", m_UseAntiPreg);			// save using antipreg
+	pGirl->SetAttribute("Withdrawals", m_Withdrawals);			// save withdrawals
+	pGirl->SetAttribute("Money", m_Money);						// save money
+	pGirl->SetAttribute("AccLevel", m_AccLevel);				// save acom level
 
 	// save working day counter
 	pGirl->SetAttribute("WorkingDay", m_WorkingDay);
 	pGirl->SetAttribute("PrevWorkingDay", m_PrevWorkingDay);	// `J` added
 	pGirl->SetAttribute("SpecialJobGoal", m_SpecialJobGoal);	// `J` added
-
-	// save acom level
-	pGirl->SetAttribute("AccLevel", m_AccLevel);
 
 	// save day/night jobs
 	pGirl->SetAttribute("DayJob", m_DayJob);
@@ -3596,27 +3601,20 @@ TiXmlElement* sGirl::SaveGirlXML(TiXmlElement* pRoot)
 	pGirl->SetAttribute("PrevNightJob", m_PrevNightJob);
 
 	// save prev day/night jobs
-	if (m_YesterDayJob < 0)m_YesterDayJob = 255;
-	pGirl->SetAttribute("YesterDayJob", m_YesterDayJob);
-	if (m_YesterNightJob < 0)m_YesterNightJob = 255;
-	pGirl->SetAttribute("YesterNightJob", m_YesterNightJob);
+	if (m_YesterDayJob < 0)		m_YesterDayJob = 255;	pGirl->SetAttribute("YesterDayJob", m_YesterDayJob);
+	if (m_YesterNightJob < 0)	m_YesterNightJob = 255;	pGirl->SetAttribute("YesterNightJob", m_YesterNightJob);
 
-	// save runnayway vale
-	pGirl->SetAttribute("RunAway", m_RunAway);
+	pGirl->SetAttribute("RunAway", m_RunAway);					// save runnayway vale
+	pGirl->SetAttribute("Spotted", m_Spotted);					// save spotted
 
-	// save spotted
-	pGirl->SetAttribute("Spotted", m_Spotted);
-
-	if (m_newRandomFixed >= 0)
-		pGirl->SetAttribute("NewRandomFixed", m_newRandomFixed);
+	if (m_newRandomFixed >= 0)	pGirl->SetAttribute("NewRandomFixed", m_newRandomFixed);
 
 	// save weeks past, birth day, and pregant time
 	pGirl->SetAttribute("WeeksPast", m_WeeksPast);
 	pGirl->SetAttribute("BDay", m_BDay);
 	pGirl->SetAttribute("WeeksPreg", m_WeeksPreg);
 
-	// number of customers slept with
-	pGirl->SetAttribute("NumCusts", m_NumCusts);
+	pGirl->SetAttribute("NumCusts", m_NumCusts);				// number of customers slept with
 
 	// girl flags
 	TiXmlElement* pFlags = new TiXmlElement("Flags");
@@ -3631,8 +3629,7 @@ TiXmlElement* sGirl::SaveGirlXML(TiXmlElement* pRoot)
 		pFlags->SetAttribute(flagNumber, m_Flags[i]);
 	}
 
-	// save their torture value
-	pGirl->SetAttribute("Tort", m_Tort);
+	pGirl->SetAttribute("Tort", m_Tort);						// save their torture value
 
 	// save their children
 	pGirl->SetAttribute("PregCooldown", m_PregCooldown);
@@ -3645,11 +3642,9 @@ TiXmlElement* sGirl::SaveGirlXML(TiXmlElement* pRoot)
 		child = child->m_Next;
 	}
 
-	// save their enjoyment values
-	SaveActionsXML(pGirl, m_Enjoyment);
+	SaveActionsXML(pGirl, m_Enjoyment);							// save their enjoyment values
+	m_Triggers.SaveTriggersXML(pGirl);							// save their triggers
 
-	// save their triggers
-	m_Triggers.SaveTriggersXML(pGirl);
 	return pGirl;
 
 	/*unsigned int lim = current->m_Canonical_Daughters.size();
@@ -4103,11 +4098,13 @@ void cGirls::EquipCombat(sGirl* girl)
 	if (girl->has_trait("Retarded")) refusal += 30;	// if she's retarded, she might refuse or forget
 	if (g_Dice.percent(refusal)) return;
 
-	int Armor = -1, Weap1 = -1, Weap2 = -1;
-	for (int i = 0; i < MAXNUM_GIRL_INVENTORY; i++)
+	int found = 0;
+	int Armor = -1, Weap1 = -1, Weap2 = -1, Helm = -1, Shield = -1, Boot = -1;
+	for (int i = 0; i < MAXNUM_GIRL_INVENTORY && found<girl->m_NumInventory; i++)
 	{
 		if (girl->m_Inventory[i] != 0)
 		{
+			found++;
 			if (girl->m_Inventory[i]->m_Type == INVWEAPON)
 			{
 				g_InvManager.Unequip(girl, i);
@@ -4127,11 +4124,49 @@ void cGirls::EquipCombat(sGirl* girl)
 				if (Armor == -1) Armor = i;
 				else if (girl->m_Inventory[i]->m_Cost > girl->m_Inventory[Armor]->m_Cost) Armor = i;
 			}
+			if (girl->m_Inventory[i]->m_Type == INVHELMET)
+			{											 
+				g_InvManager.Unequip(girl, i);
+				if (Helm == -1) Helm = i;
+				else if (girl->m_Inventory[i]->m_Cost > girl->m_Inventory[Helm]->m_Cost) Helm = i;
+			}
+			if (girl->m_Inventory[i]->m_Type == INVCOMBATSHOES)
+			{
+				g_InvManager.Unequip(girl, i);
+				if (Boot == -1) Boot = i;
+				else if (girl->m_Inventory[i]->m_Cost > girl->m_Inventory[Boot]->m_Cost) Boot = i;
+			}
+			if (girl->m_Inventory[i]->m_Type == INVSHIELD)
+			{
+				g_InvManager.Unequip(girl, i);
+				if (Shield == -1) Shield = i;
+				else if (girl->m_Inventory[i]->m_Cost > girl->m_Inventory[Shield]->m_Cost) Shield = i;
+			}
 		}
 	}
-	if (Armor > -1) g_InvManager.Equip(girl, Armor, false);
-	if (Weap1 > -1) g_InvManager.Equip(girl, Weap1, false);
-	if (Weap2 > -1) g_InvManager.Equip(girl, Weap2, false);
+
+	// unequip hats and shoes if boots and helms were found
+	if (Helm > -1 || Boot > -1)
+	{
+		found = 0;
+		for (int i = 0; i < MAXNUM_GIRL_INVENTORY && found<girl->m_NumInventory; i++)
+		{
+			if (girl->m_Inventory[i] != 0)
+			{
+				found++;
+				sInventoryItem* curItem = girl->m_Inventory[i];
+				if (Helm > -1 && curItem->m_Type == INVHAT)		g_InvManager.Unequip(girl, i);
+				if (Boot > -1 && curItem->m_Type == INVSHOES)	g_InvManager.Unequip(girl, i);
+			}
+		}
+	}
+
+	if (Armor > -1)		g_InvManager.Equip(girl, Armor, false);
+	if (Weap1 > -1)		g_InvManager.Equip(girl, Weap1, false);
+	if (Weap2 > -1)		g_InvManager.Equip(girl, Weap2, false);
+	if (Helm > -1)		g_InvManager.Equip(girl, Helm, false);
+	if (Boot > -1)		g_InvManager.Equip(girl, Boot, false);
+	if (Shield > -1)	g_InvManager.Equip(girl, Shield, false);
 }
 
 void cGirls::UnequipCombat(sGirl* girl)
@@ -4146,33 +4181,35 @@ void cGirls::UnequipCombat(sGirl* girl)
 	if (girl->has_trait("Retarded"))	refusal += 30;
 	if (g_Dice.percent(refusal))			return;
 
-	for (int i = 0; i < MAXNUM_GIRL_INVENTORY; i++)
+	int found = 0;
+	for (int i = 0; i < MAXNUM_GIRL_INVENTORY && found<girl->m_NumInventory; i++)
 	{
 		if (girl->m_Inventory[i] != 0)
 		{
+			found++;
 			sInventoryItem* curItem = girl->m_Inventory[i];
-			if (curItem->m_Type == INVWEAPON)
+			if (curItem->m_Type == INVWEAPON
+				|| curItem->m_Type == INVARMOR
+				|| curItem->m_Type == INVHELMET
+				|| curItem->m_Type == INVCOMBATSHOES
+				|| curItem->m_Type == INVSHIELD)
 				g_InvManager.Unequip(girl, i);
-			else if (curItem->m_Type == INVARMOR)
-			{
-#if 0  // code to only unequip armor if it has bad effects... unfinished and disabled for the time being; not sure it should be used anyway
-				bool badEffects = false;
-				for (u_int j = 0; j < curItem->m_Effects.size(); j++)
-				{
-					sEffect* curEffect = &curItem->m_Effects[j];
-					if (curEffect->m_Affects == sEffect::Stat && curEffect->m_Amount < 0)
-					{
-					}
-					else if (curEffect->m_Affects == sEffect::Skill && curEffect->m_Amount < 0)
-					{
-					}
-				}
-				if (badEffects)
-#endif
-					g_InvManager.Unequip(girl, i);
-			}
 		}
 	}
+	found = 0;
+	// reequip shoes and hats
+	for (int i = 0; i < MAXNUM_GIRL_INVENTORY && found<girl->m_NumInventory; i++)
+	{
+		if (girl->m_Inventory[i] != 0)
+		{
+			found++;
+			sInventoryItem* curItem = girl->m_Inventory[i];
+			if (curItem->m_Type == INVSHOES || curItem->m_Type == INVHAT)
+				g_InvManager.Equip(girl, i, false);
+		}
+	}
+
+
 }
 
 void cGirls::UseItems(sGirl* girl)
@@ -4331,6 +4368,11 @@ void cGirls::UseItems(sGirl* girl)
 			case INVSMWEAPON:			if (max == 0)	max = 2;
 			case INVARMOR:				if (max == 0)	max = 1;
 			case INVARMBAND:			if (max == 0)	max = 2;
+			case INVHAT:				if (max == 0)	max = 1;
+			case INVHELMET:				if (max == 0)	max = 1;
+			case INVGLASSES:			if (max == 0)	max = 1;
+			case INVCOMBATSHOES:		if (max == 0)	max = 1;
+			case INVSHIELD:				if (max == 0)	max = 1;
 				if (g_Girls.GetNumItemType(girl, girl->m_Inventory[i]->m_Type) > max) // MYR: Bug fix, was >=
 				{
 					int nicerThan = g_Girls.GetWorseItem(girl, girl->m_Inventory[i]->m_Type, girl->m_Inventory[i]->m_Cost);	// find a worse item of the same type
@@ -4338,6 +4380,8 @@ void cGirls::UseItems(sGirl* girl)
 						// `J` zzzzzzzz Add an option to have the girls put the item into "Store Room" instead of selling it
 						g_Girls.SellInvItem(girl, nicerThan);
 				}
+				break;
+			default:
 				break;
 			}
 		}
@@ -4514,41 +4558,35 @@ bool cGirls::CanEquip(sGirl* girl, int num, bool force)
 	if (force) return true;
 	switch (girl->m_Inventory[num]->m_Type)
 	{
-	case INVRING:	// worn on fingers (max 8)
+	case INVRING:			// worn on fingers (max 8)
 		if (GetNumItemEquiped(girl, girl->m_Inventory[num]->m_Type) >= 8) return false;
 		break;
-	case INVDRESS:	// Worn on body, (max 1)
+
+	case INVWEAPON:			// equiped on body, (max 2)
+	case INVSMWEAPON:		// hidden on body, (max 2)
+	case INVARMBAND:		// (max 2), worn around arms
+		if (GetNumItemEquiped(girl, girl->m_Inventory[num]->m_Type) >= 2) return false;
+		break;
+
+	case INVDRESS:			// Worn on body, (max 1)
+	case INVUNDERWEAR:		// Worn on body, (max 1)
+	case INVSHOES:			// worn on feet, (max 1)
+	case INVNECKLACE:		// worn on neck, (max 1)
+	case INVARMOR:			// worn on body over dresses (max 1)
+	case INVHAT:			// 
+	case INVHELMET:			// 
+	case INVGLASSES:		// 
+	case INVSWIMSUIT:		// 
+	case INVCOMBATSHOES:	// 
+	case INVSHIELD:			//
 		if (GetNumItemEquiped(girl, girl->m_Inventory[num]->m_Type) >= 1) return false;
 		break;
-	case INVUNDERWEAR:	// Worn on body, (max 1)
-		if (GetNumItemEquiped(girl, girl->m_Inventory[num]->m_Type) >= 1) return false;
-		break;
-	case INVSHOES:	// worn on feet, (max 1)
-		if (GetNumItemEquiped(girl, girl->m_Inventory[num]->m_Type) >= 1) return false;
-		break;
+
 	case INVFOOD:	// Eaten, single use
-		return true;
-		break;
-	case INVNECKLACE:	// worn on neck, (max 1)
-		if (GetNumItemEquiped(girl, girl->m_Inventory[num]->m_Type) >= 1) return false;
-		break;
-	case INVWEAPON:	// equiped on body, (max 2)
-		if (GetNumItemEquiped(girl, girl->m_Inventory[num]->m_Type) >= 2) return false;
-		break;
-	case INVSMWEAPON: // hidden on body, (max 2)
-		if (GetNumItemEquiped(girl, girl->m_Inventory[num]->m_Type) >= 2) return false;
-		break;
 	case INVMAKEUP:	// worn on face, single use
-		return true;
-		break;
-	case INVARMOR:	// worn on body over dresses (max 1)
-		if (GetNumItemEquiped(girl, girl->m_Inventory[num]->m_Type) >= 1) return false;
-		break;
 	case INVMISC:	// these items don't usually do anything just random stuff girls might buy. The ones that do, cause a constant effect without having to be equiped
+	default:
 		return true;
-		break;
-	case INVARMBAND:	// (max 2), worn around arms
-		if (GetNumItemEquiped(girl, girl->m_Inventory[num]->m_Type) >= 2) return false;
 		break;
 	}
 	return true;
@@ -4567,6 +4605,12 @@ bool cGirls::IsItemEquipable(sGirl* girl, int num)
 	case sInventoryItem::Armor:
 	case sInventoryItem::Armband:
 	case sInventoryItem::SmWeapon:
+	case sInventoryItem::Hat:
+	case sInventoryItem::Helmet:
+	case sInventoryItem::Glasses:
+	case sInventoryItem::Swimsuit:
+	case sInventoryItem::Combatshoes:
+	case sInventoryItem::Shield:
 		return true;
 	case sInventoryItem::Food:
 	case sInventoryItem::Makeup:
@@ -4658,15 +4702,20 @@ int cGirls::GetWorseItem(sGirl* girl, int type, int cost)
 	return ret;
 }
 
-int cGirls::GetNumItemType(sGirl* girl, int Type)
+int cGirls::GetNumItemType(sGirl* girl, int Type, bool splitsubtype)
 {
 	if (girl->m_NumInventory == 0) return 0;
 	int num = 0;
-	for (int i = 0; i < MAXNUM_GIRL_INVENTORY; i++)
+	int found = 0;
+	for (int i = 0; i < MAXNUM_GIRL_INVENTORY && found<girl->m_NumInventory; i++)
 	{
 		if (girl->m_Inventory[i])
 		{
+			found++;
 			if (girl->m_Inventory[i]->m_Type == Type)
+				num++;
+			// if we are looking for consumables (INVFOOD) but we are not splitting subtypes, accept INVMAKEUP as INVFOOD.
+			if (Type == INVFOOD && !splitsubtype && girl->m_Inventory[i]->m_Type == INVMAKEUP)
 				num++;
 		}
 	}
@@ -5318,7 +5367,7 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait, bool rememberflag)
 				UpdateStat(girl, STAT_CHARISMA, 5);
 				UpdateSkill(girl, SKILL_TITTYSEX, -25);
 			}
-			else if (Name == "Fleet Of Foot")
+			else if (Name == "Fleet of Foot")
 			{
 				UpdateStat(girl, STAT_AGILITY, 50);
 			}
@@ -12316,7 +12365,7 @@ bool cGirls::child_is_grown(sGirl* mom, sChild *child, string& summary, bool Pla
 	}
 	else
 	{
-		sprog = g_Girls.CreateRandomGirl(17, false, slave, false, AllowNonHuman, false, false, playerfather);
+		sprog = g_Girls.CreateRandomGirl(17, false, slave, false, !AllowNonHuman, false, false, playerfather);
 	}
 	// check for incest, get the odds on abnormality
 	int abnormal_pc = calc_abnormal_pc(mom, sprog, child->m_IsPlayers);
@@ -12419,7 +12468,7 @@ bool cGirls::child_is_grown(sGirl* mom, sChild *child, string& summary, bool Pla
 		}
 		biography = "Daughter of " + mom->m_Realname + " and an anonymous brothel client.";
 	}
-	sprog->m_Realname = sprog->m_FirstName + " " + sprog->m_Surname;
+	g_Girls.CreateRealName(sprog);
 	sprog->m_Desc = sprog->m_Desc + "\n\n" + biography;
 
 	// make sure slave daughters have house perc. set to 100, otherwise 60
@@ -14082,8 +14131,8 @@ string cGirls::GetHoroscopeName(int month, int day)
 		case 6:		if (day <= 15) return "Taurus";			else return "Gemini";
 		case 7:		if (day <= 15) return "Gemini";			else return "Cancer";
 		case 8:		if (day <= 15) return "Cancer";			else return "Leo";
-		case 9:		if (day <= 15) return "Leo";			else return "Vergo";
-		case 10:	if (day <= 15) return "Vergo";			else return "Libra";
+		case 9:		if (day <= 15) return "Leo";			else return "Virgo";
+		case 10:	if (day <= 15) return "Virgo";			else return "Libra";
 		case 11:	if (day <= 15) return "Libra";			else return "Scorpio";
 		case 12:	if (day <= 15) return "Scorpio";		else return "Sagittarius";
 		default:	return "";	break;
@@ -14100,8 +14149,8 @@ string cGirls::GetHoroscopeName(int month, int day)
 		case 5:		if (day <= 20) return "Taurus";			else return "Gemini";
 		case 6:		if (day <= 20) return "Gemini";			else return "Cancer";
 		case 7:		if (day <= 22) return "Cancer";			else return "Leo";
-		case 8:		if (day <= 22) return "Leo";			else return "Vergo";
-		case 9:		if (day <= 22) return "Vergo";			else return "Libra";
+		case 8:		if (day <= 22) return "Leo";			else return "Virgo";
+		case 9:		if (day <= 22) return "Virgo";			else return "Libra";
 		case 10:	if (day <= 22) return "Libra";			else return "Scorpio";
 		case 11:	if (day <= 21) return "Scorpio";		else return "Sagittarius";
 		case 12:	if (day <= 21) return "Sagittarius";	else return "Capricorn";

@@ -32,7 +32,7 @@ namespace WM_Girls_Generator
         string sTraitsPath = "";
         Random rnd = new Random();							//creates new random object to generate random values where needed
         bool LogAllCheckBoxes = false; bool LogOtherCheckBoxes = false;
-        string[] sexskills = { "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"};
+        string[] sexskills = { "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0" };
 
         public Form1()
         {
@@ -76,7 +76,7 @@ namespace WM_Girls_Generator
             else if (File.Exists("..\\" + sTraitsPath)) { LoadTraitsXML("..\\" + sTraitsPath); traitsloaded = true; }
             else if (File.Exists("..\\..\\" + sTraitsPath)) { LoadTraitsXML("..\\..\\" + sTraitsPath); traitsloaded = true; }
             //Try the Default path to CoreTraits.traits file
-            if (!traitsloaded) 
+            if (!traitsloaded)
             {
                 sTraitsPath = "Resources\\Data\\CoreTraits.traits";
                 if (File.Exists(sTraitsPath)) { LoadTraits(sTraitsPath); traitsloaded = true; }
@@ -173,7 +173,7 @@ namespace WM_Girls_Generator
         private string J_Rand(int min = 0, int max = 100, int skew = 0, int type = 0, int bonus = 0, string round = "")
         {
             int negadj = 0;
-            if (min<0)
+            if (min < 0)
             {
                 negadj -= min;
                 min += negadj;
@@ -290,6 +290,7 @@ namespace WM_Girls_Generator
             }
             catch (Exception err)
             {
+                dataGridView_Bad_Files.Rows.Add(openTraits.FileName, err.Message);
                 MessageBox.Show("You have to Select CoreTraits.traits file to use for traits database!\n\rOr if you did and you still got this message there could be a problem with file permissions.\n\rNext is the \"official\" error:\n\r\n\r" + err.Message, "Traits file error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
@@ -318,7 +319,11 @@ namespace WM_Girls_Generator
                 }
                 StatusLabel1.Text = "Traits XML saved...";
             }
-            catch { }
+            catch (Exception err)
+            {
+                dataGridView_Bad_Files.Rows.Add(saveTraits.FileName, err.Message);
+                StatusLabel1.Text = "XML Trait save error...";
+            }
         }
         private void LoadTraits(string path)
         {
@@ -329,7 +334,7 @@ namespace WM_Girls_Generator
                 {
                     string temp1 = Convert.ToString(Import.ReadLine());	//reads first line from traits file (this is trait name), it could be added directly to trait trait list, but this way I can use it multiple times (to fill traits tab and trait tooltips)
                     string temp2 = Convert.ToString(Import.ReadLine());	//second line this is trait description
-//                    ListBox_G_Traits.Items.Add(temp1);					//adds trait to checkedListBox for girls
+                    //                    ListBox_G_Traits.Items.Add(temp1);					//adds trait to checkedListBox for girls
                     TraitCollection.Rows.Add(temp1, temp2);
                     comboBox_ItemTraits.Items.Add(temp1);				//fills droplist on item tab with traits
                     comboBox_RGTraits.Items.Add(temp1);					//same with droplist on random girls tab
@@ -364,7 +369,7 @@ namespace WM_Girls_Generator
                         if (node.Attributes[i].Name == "Desc") sDesc = node.Attributes["Desc"].Value;
                         if (node.Attributes[i].Name == "Type") sType = node.Attributes["Type"].Value;
                     }
-//                    ListBox_G_Traits.Items.Add(sName);
+                    //                    ListBox_G_Traits.Items.Add(sName);
                     TraitCollection.Rows.Add(sName, sDesc, sType);
                     comboBox_ItemTraits.Items.Add(sName);
                     comboBox_RGTraits.Items.Add(sName);
@@ -396,7 +401,7 @@ namespace WM_Girls_Generator
         }
         private void button_Clear_Traits_Click(object sender, EventArgs e)
         {
-        // zzzzzzzzzzzz needs work
+            // zzzzzzzzzzzz needs work
             TraitCollection.Clear();
         }
         private void SaveTraitsXML(string path)
@@ -443,7 +448,11 @@ namespace WM_Girls_Generator
                 openConfig.ShowDialog();
                 LoadConfigXML(openConfig.FileName);
             }
-            catch { }
+            catch (Exception err)
+            {
+                dataGridView_Bad_Files.Rows.Add(openConfig.FileName, err.Message);
+                StatusLabel1.Text = "Load Error.";
+            }
         }
         private void button_Config_Save_Click(object sender, EventArgs e)
         {
@@ -462,7 +471,11 @@ namespace WM_Girls_Generator
                 SaveConfigXML(saveConfig.FileName);
                 StatusLabel1.Text = "Config.xml saved...";
             }
-            catch { }
+            catch (Exception err)
+            {
+                dataGridView_Bad_Files.Rows.Add(saveConfig.FileName, err.Message);
+                StatusLabel1.Text = "Save Config Error...";
+            }
         }
         private void button_Config_Reset_Click(object sender, EventArgs e)
         {
@@ -517,7 +530,7 @@ namespace WM_Girls_Generator
                         case "AutoUseItems": checkBox_Config_AutoUseItems.Checked = nvtf; break;
                         case "AutoCombatEquip": checkBox_Config_AutoEquipCombat.Checked = nvtf; break;
                         case "TortureTraitWeekMod": textBox_Torture_Mod.Text = nv; break;
-                        case "HoroscopeType": comboBox_Horoscope_Type.SelectedIndex = nv=="2" ? 1 : 0; break;
+                        case "HoroscopeType": comboBox_Horoscope_Type.SelectedIndex = nv == "2" ? 1 : 0; break;
 
                     }
                 }
@@ -682,7 +695,11 @@ namespace WM_Girls_Generator
                         break;
                 }
             }
-            catch { }
+            catch (Exception err)
+            {
+                dataGridView_Bad_Files.Rows.Add(sConfigPath, err.Message);
+                StatusLabel1.Text = "LoadConfigXML Error...";
+            }
         }
         //saves config.xml
         private void SaveConfigXML(string path)
@@ -703,7 +720,7 @@ namespace WM_Girls_Generator
             XmlElement xeFonts = xmldoc.CreateElement("Fonts");
             XmlElement xeDebug = xmldoc.CreateElement("Debug");
 
-            XmlComment xcResolution = xmldoc.CreateComment("\n\tResolution     = the name of your interface folder\n\tWidth          = screen width\n\tHeight         = screen height\n\tScaleWidth     = screen scale width\n\tScaleHeight    = screen scale height\n\t\t\tThe old code of the game scaled all windows down to 800x600\n\t\t\tThis has been fixed but any old interfaces will not display correctly\n\t\t\t\tif the scale width and height are not set to 800x600.\n\tFullScreen     = 'true' or 'false'\n\tListScrollAmount = The number of lines to scroll in List boxes.\n\tTextScrollAmount = The number of lines to scroll in Text boxes.\n\t"); 
+            XmlComment xcResolution = xmldoc.CreateComment("\n\tResolution     = the name of your interface folder\n\tWidth          = screen width\n\tHeight         = screen height\n\tScaleWidth     = screen scale width\n\tScaleHeight    = screen scale height\n\t\t\tThe old code of the game scaled all windows down to 800x600\n\t\t\tThis has been fixed but any old interfaces will not display correctly\n\t\t\t\tif the scale width and height are not set to 800x600.\n\tFullScreen     = 'true' or 'false'\n\tListScrollAmount = The number of lines to scroll in List boxes.\n\tTextScrollAmount = The number of lines to scroll in Text boxes.\n\t");
             XmlComment xcInitial = xmldoc.CreateComment("\n\tGold is how much gold you start the game with.\n\tGirlMeet is the %chance you'll meet a girl when walking around town.\n\tGirlsHousePerc and SlaveHousePerc is the default House Percentage for free girls and slave girls.\n\tGirlsKeepTips and GirlsKeepTips is whether they keep tips separate from house percent.\n\tSlavePayOutOfPocket is wether or not slave girls get paid by the player directly for certain jobs\n\t\tie. Cleaning, Advertising, Farming jobs, Film jobs, etc.\n\tAutoUseItems is whether or not the game will try to automatically use\n\t\tthe player's items intelligently on girls each week.\n\t\tThis feature needs more testing.\n\tAutoCombatEquip determines whether girls will automatically equip their best weapon and\n\t\tarmor for combat jobs and also automatically unequip weapon and armor for regular\n\t\tjobs where such gear would be considered inappropriate (i.e. whores-with-swords).\n\t\tSet to \"false\" to disable this feature.\n\n\tTortureTraitWeekMod affects multiplying the duration that they will\n\t\tkeep a temporary trait that they get from being tortured.\n\t\tIt is multiplied by the number of weeks in the dungeon.\n`J` added\t\tIf TortureTraitWeekMod is set to -1 then torture is harsher.\n\t\tThis doubles the chance of injuring the girls and doubles evil gain.\n\t\tDamage is increased by half. It also makes breaking the girls wills permanent.\n\t");
             XmlComment xcIncome = xmldoc.CreateComment("\n\tThese are the numbers that will multiply the money from various sources of income.\n\t\tSo setting \"GirlsWorkBrothel\" to \"0.5\" will reduce the cash your girls generate in the brothel by half.\n\t\tYou can also use numbers >1 to increase income if you are so inclined.\n\t");
             XmlComment xcExpenses = xmldoc.CreateComment("\n\tThese are the multipliers for your expenses.\n\n\tTraining doesn't currently have a cost, so I'm setting it to 1 gold per girl per week\n\t\tand defaulting the multiplier to 0 (so no change by default).\n\tSet it higher and training begins to cost beyond the simple loss of income.\n\n\tActressWages are like training costs:\n\tA per-girl expense nominally 1 gold per girl, but with a default factor of 0,\n\t\tso no change to the current scheme unless you alter that.\n\n\tMakingMovies is the setup cost for a movie:\n\tI'm going to make this 1000 gold per movie, but again, with a zero factor by default.\n\n\tOtherwise, same as above, except you probably want numbers > 1 to make things more expensive here.\n\n\t* not all are used but are retained just in case.\n\t");
@@ -740,7 +757,7 @@ namespace WM_Girls_Generator
             if (checkBox_Config_AutoUseItems.Checked == true) xeInitial.SetAttribute("AutoUseItems", "true"); else xeInitial.SetAttribute("AutoUseItems", "false");
             if (checkBox_Config_AutoEquipCombat.Checked == true) xeInitial.SetAttribute("AutoCombatEquip", "true"); else xeInitial.SetAttribute("AutoCombatEquip", "false");    // `J` added
             xeInitial.SetAttribute("TortureTraitWeekMod", textBox_Torture_Mod.Text);    // `J` added
-            xeInitial.SetAttribute("HoroscopeType", (comboBox_Horoscope_Type.SelectedIndex+1).ToString());    // `J` added
+            xeInitial.SetAttribute("HoroscopeType", (comboBox_Horoscope_Type.SelectedIndex + 1).ToString());    // `J` added
             xeConfig.AppendChild(xeInitial);
 
             xeConfig.AppendChild(xcIncome);
@@ -838,20 +855,20 @@ namespace WM_Girls_Generator
             xeConfig.AppendChild(xcFonts);
             xeFonts.SetAttribute("Normal", textBox_Config_FontNormal.Text);
             xeFonts.SetAttribute("Fixed", textBox_config_FontFixed.Text);
-            if (checkBox_Config_Antialias.Checked == true) xeFonts.SetAttribute("Antialias", "true");   else xeFonts.SetAttribute("Antialias", "false");
+            if (checkBox_Config_Antialias.Checked == true) xeFonts.SetAttribute("Antialias", "true"); else xeFonts.SetAttribute("Antialias", "false");
             if (checkBox_Config_Show_Percent.Checked == true) xeFonts.SetAttribute("ShowPercent", "true"); else xeFonts.SetAttribute("ShowPercent", "false");
             xeConfig.AppendChild(xeFonts);
 
             xeConfig.AppendChild(xcLogging);
-            if (checkBox_config_LogAll.Checked == true) xeDebug.SetAttribute("LogAll", "true");                     else xeDebug.SetAttribute("LogAll", "false");
-            if (checkBox_config_LogGirls.Checked == true) xeDebug.SetAttribute("LogGirls", "true");                 else xeDebug.SetAttribute("LogGirls", "false");
-            if (checkBox_config_LogRGirls.Checked == true) xeDebug.SetAttribute("LogRGirls", "true");               else xeDebug.SetAttribute("LogRGirls", "false");
-            if (checkBox_config_LogGirlFights.Checked == true) xeDebug.SetAttribute("LogGirlFights", "true");       else xeDebug.SetAttribute("LogGirlFights", "false");   // `J` added
-            if (checkBox_config_LogItems.Checked == true) xeDebug.SetAttribute("LogItems", "true");                 else xeDebug.SetAttribute("LogItems", "false");
-            if (checkBox_config_LogFonts.Checked == true) xeDebug.SetAttribute("LogFonts", "true");                 else xeDebug.SetAttribute("LogFonts", "false");
-            if (checkBox_config_LogTorture.Checked == true) xeDebug.SetAttribute("LogTorture", "true");             else xeDebug.SetAttribute("LogTorture", "false");   // `J` added
-            if (checkBox_config_LogDebug.Checked == true) xeDebug.SetAttribute("LogDebug", "true");                 else xeDebug.SetAttribute("LogDebug", "false");   // `J` added
-            if (checkBox_config_LogExtraDetails.Checked == true) xeDebug.SetAttribute("LogExtraDetails", "true");   else xeDebug.SetAttribute("LogExtraDetails", "false");   // `J` added
+            if (checkBox_config_LogAll.Checked == true) xeDebug.SetAttribute("LogAll", "true"); else xeDebug.SetAttribute("LogAll", "false");
+            if (checkBox_config_LogGirls.Checked == true) xeDebug.SetAttribute("LogGirls", "true"); else xeDebug.SetAttribute("LogGirls", "false");
+            if (checkBox_config_LogRGirls.Checked == true) xeDebug.SetAttribute("LogRGirls", "true"); else xeDebug.SetAttribute("LogRGirls", "false");
+            if (checkBox_config_LogGirlFights.Checked == true) xeDebug.SetAttribute("LogGirlFights", "true"); else xeDebug.SetAttribute("LogGirlFights", "false");   // `J` added
+            if (checkBox_config_LogItems.Checked == true) xeDebug.SetAttribute("LogItems", "true"); else xeDebug.SetAttribute("LogItems", "false");
+            if (checkBox_config_LogFonts.Checked == true) xeDebug.SetAttribute("LogFonts", "true"); else xeDebug.SetAttribute("LogFonts", "false");
+            if (checkBox_config_LogTorture.Checked == true) xeDebug.SetAttribute("LogTorture", "true"); else xeDebug.SetAttribute("LogTorture", "false");   // `J` added
+            if (checkBox_config_LogDebug.Checked == true) xeDebug.SetAttribute("LogDebug", "true"); else xeDebug.SetAttribute("LogDebug", "false");   // `J` added
+            if (checkBox_config_LogExtraDetails.Checked == true) xeDebug.SetAttribute("LogExtraDetails", "true"); else xeDebug.SetAttribute("LogExtraDetails", "false");   // `J` added
             xeConfig.AppendChild(xeDebug);
 
             xmldoc.AppendChild(xeConfig);
@@ -1038,14 +1055,14 @@ namespace WM_Girls_Generator
         {
             if (checkBox_ToggleTraitTooltips.Checked == false)
             {
-//                ListBox_G_Traits.MouseMove -= new System.Windows.Forms.MouseEventHandler(checkedListBox1_MouseMove);
+                //                ListBox_G_Traits.MouseMove -= new System.Windows.Forms.MouseEventHandler(checkedListBox1_MouseMove);
                 dataGridView_G_Traits.CellMouseMove -= new System.Windows.Forms.DataGridViewCellMouseEventHandler(DataGridView_G_Traits_MouseMove);
-//                toolTip1.SetToolTip(ListBox_G_Traits, "");
+                //                toolTip1.SetToolTip(ListBox_G_Traits, "");
                 toolTip1.SetToolTip(dataGridView_G_Traits, "");
             }
             else
             {
-//                ListBox_G_Traits.MouseMove += new System.Windows.Forms.MouseEventHandler(checkedListBox1_MouseMove);
+                //                ListBox_G_Traits.MouseMove += new System.Windows.Forms.MouseEventHandler(checkedListBox1_MouseMove);
                 dataGridView_G_Traits.CellMouseMove += new System.Windows.Forms.DataGridViewCellMouseEventHandler(DataGridView_G_Traits_MouseMove);
             }
         }
@@ -1060,38 +1077,38 @@ namespace WM_Girls_Generator
             if (comboBox_SortByType.SelectedItem.ToString() == "All")
             {
                 GirlsCollection.Rows.Add(CompileGirl().ElementAt(0), CompileGirl().ElementAt(1), Convert.ToInt32(CompileGirl().ElementAt(2)));//adds girl entry to Girls DataTable via CompileGirl function, that function returns array of strings, .ElementAt accesses one of these array elements, first element could have been copied directly from name textbox but...
-                SortDataTable(ref GirlsCollection, ref listBox_GirlsList, TBox_G_Name.Text);		//Resorts the DataTable with girls so list will be in alphabetical order
+                SortDataTable(ref GirlsCollection, ref listBox_GirlsList, TBox_G_RealName.Text);		//Resorts the DataTable with girls so list will be in alphabetical order
                 StatusLabel1.Text = "Added girl " + "\"" + GirlsCollection.Rows[listBox_GirlsList.SelectedIndex][0] + "\"" + " to list...";	//changes status line text to this
             }
             else if (comboBox_SortByType.SelectedItem.ToString() == "Normal girls")
             {
                 GirlsCollection.Rows.Add(CompileGirl().ElementAt(0), CompileGirl().ElementAt(1), Convert.ToInt32(CompileGirl().ElementAt(2)));//adds girl entry to Girls DataTable via CompileGirl function, that function returns array of strings, .ElementAt accesses one of these array elements, first element could have been copied directly from name textbox but...
-                FilterGirls(GirlsCollection, ref GirlsCollectionTemp, ref listBox_GirlsList, "0", TBox_G_Name.Text);		//since filtering is already selected we simply run it again to filter main list again and build filtered list
-                StatusLabel1.Text = "Added girl " + "\"" + TBox_G_Name.Text + "\"" + " to list...";	//changes status line text to this
+                FilterGirls(GirlsCollection, ref GirlsCollectionTemp, ref listBox_GirlsList, "0", TBox_G_RealName.Text);		//since filtering is already selected we simply run it again to filter main list again and build filtered list
+                StatusLabel1.Text = "Added girl " + "\"" + TBox_G_RealName.Text + "\"" + " to list...";	//changes status line text to this
             }
             else if (comboBox_SortByType.SelectedItem.ToString() == "Slave girls")
             {
                 GirlsCollection.Rows.Add(CompileGirl().ElementAt(0), CompileGirl().ElementAt(1), Convert.ToInt32(CompileGirl().ElementAt(2)));//adds girl entry to Girls DataTable via CompileGirl function, that function returns array of strings, .ElementAt accesses one of these array elements, first element could have been copied directly from name textbox but...
-                FilterGirls(GirlsCollection, ref GirlsCollectionTemp, ref listBox_GirlsList, "1", TBox_G_Name.Text);		//since filtering is already selected we simply run it again to filter main list again and build filtered list
-                StatusLabel1.Text = "Added girl " + "\"" + TBox_G_Name.Text + "\"" + " to list...";	//changes status line text to this
+                FilterGirls(GirlsCollection, ref GirlsCollectionTemp, ref listBox_GirlsList, "1", TBox_G_RealName.Text);		//since filtering is already selected we simply run it again to filter main list again and build filtered list
+                StatusLabel1.Text = "Added girl " + "\"" + TBox_G_RealName.Text + "\"" + " to list...";	//changes status line text to this
             }
             else if (comboBox_SortByType.SelectedItem.ToString() == "Catacombs girls")
             {
                 GirlsCollection.Rows.Add(CompileGirl().ElementAt(0), CompileGirl().ElementAt(1), Convert.ToInt32(CompileGirl().ElementAt(2)));//adds girl entry to Girls DataTable via CompileGirl function, that function returns array of strings, .ElementAt accesses one of these array elements, first element could have been copied directly from name textbox but...
-                FilterGirls(GirlsCollection, ref GirlsCollectionTemp, ref listBox_GirlsList, "2", TBox_G_Name.Text);		//since filtering is already selected we simply run it again to filter main list again and build filtered list
-                StatusLabel1.Text = "Added girl " + "\"" + TBox_G_Name.Text + "\"" + " to list...";	//changes status line text to this
+                FilterGirls(GirlsCollection, ref GirlsCollectionTemp, ref listBox_GirlsList, "2", TBox_G_RealName.Text);		//since filtering is already selected we simply run it again to filter main list again and build filtered list
+                StatusLabel1.Text = "Added girl " + "\"" + TBox_G_RealName.Text + "\"" + " to list...";	//changes status line text to this
             }
             else if (comboBox_SortByType.SelectedItem.ToString() == "Arena girls")
             {
                 GirlsCollection.Rows.Add(CompileGirl().ElementAt(0), CompileGirl().ElementAt(1), Convert.ToInt32(CompileGirl().ElementAt(2)));//adds girl entry to Girls DataTable via CompileGirl function, that function returns array of strings, .ElementAt accesses one of these array elements, first element could have been copied directly from name textbox but...
-                FilterGirls(GirlsCollection, ref GirlsCollectionTemp, ref listBox_GirlsList, "3", TBox_G_Name.Text);		//since filtering is already selected we simply run it again to filter main list again and build filtered list
-                StatusLabel1.Text = "Added girl " + "\"" + TBox_G_Name.Text + "\"" + " to list...";	//changes status line text to this
+                FilterGirls(GirlsCollection, ref GirlsCollectionTemp, ref listBox_GirlsList, "3", TBox_G_RealName.Text);		//since filtering is already selected we simply run it again to filter main list again and build filtered list
+                StatusLabel1.Text = "Added girl " + "\"" + TBox_G_RealName.Text + "\"" + " to list...";	//changes status line text to this
             }
             else if (comboBox_SortByType.SelectedItem.ToString() == "Your Daughter")
             {
                 GirlsCollection.Rows.Add(CompileGirl().ElementAt(0), CompileGirl().ElementAt(1), Convert.ToInt32(CompileGirl().ElementAt(2)));//adds girl entry to Girls DataTable via CompileGirl function, that function returns array of strings, .ElementAt accesses one of these array elements, first element could have been copied directly from name textbox but...
-                FilterGirls(GirlsCollection, ref GirlsCollectionTemp, ref listBox_GirlsList, "4", TBox_G_Name.Text);		//since filtering is already selected we simply run it again to filter main list again and build filtered list
-                StatusLabel1.Text = "Added girl " + "\"" + TBox_G_Name.Text + "\"" + " to list...";	//changes status line text to this
+                FilterGirls(GirlsCollection, ref GirlsCollectionTemp, ref listBox_GirlsList, "4", TBox_G_RealName.Text);		//since filtering is already selected we simply run it again to filter main list again and build filtered list
+                StatusLabel1.Text = "Added girl " + "\"" + TBox_G_RealName.Text + "\"" + " to list...";	//changes status line text to this
             }
         }
 
@@ -1103,7 +1120,7 @@ namespace WM_Girls_Generator
                 GirlsCollection.Rows[listBox_GirlsList.SelectedIndex][0] = CompileGirl().ElementAt(0);	//overwrite selected cell in dataTable with new name
                 GirlsCollection.Rows[listBox_GirlsList.SelectedIndex][1] = CompileGirl().ElementAt(1);	//overwrite selected cell in dataTable with new data
                 GirlsCollection.Rows[listBox_GirlsList.SelectedIndex][2] = CompileGirl().ElementAt(2);	//overwrite selected cell in dataTable with new data
-                SortDataTable(ref GirlsCollection, ref listBox_GirlsList, TBox_G_Name.Text);				//Resorts the DataTable with girls so list will be in alphabetical order
+                SortDataTable(ref GirlsCollection, ref listBox_GirlsList, TBox_G_RealName.Text);				//Resorts the DataTable with girls so list will be in alphabetical order
                 StatusLabel1.Text = "Updated item entry No" + (listBox_GirlsList.SelectedIndex + 1).ToString() + " " + "(\"" + GirlsCollection.Rows[listBox_GirlsList.SelectedIndex][0] + "\")...";
             }
             else if (comboBox_SortByType.SelectedItem.ToString() == "Normal girls")
@@ -1112,7 +1129,7 @@ namespace WM_Girls_Generator
                 GirlsCollection.Rows[(int)GirlsCollectionTemp.Rows[listBox_GirlsList.SelectedIndex][3]][1] = CompileGirl().ElementAt(1);	//that's the "GirlsCollectionTemp.Rows[listBox_GirlsList.SelectedIndex][3]" part
                 GirlsCollection.Rows[(int)GirlsCollectionTemp.Rows[listBox_GirlsList.SelectedIndex][3]][2] = CompileGirl().ElementAt(2);	//in filter case listBox is in sync with temp DT so we use index of listBox to access coresponding row in temp DT, ID is fourth column, this corresponds to 3 since counting goes from 0
                 FilterGirls(GirlsCollection, ref GirlsCollectionTemp, ref listBox_GirlsList, "0");		//since filtering is already selected we simply run it again to filter main list again and build filtered list
-                StatusLabel1.Text = "Updated item entry " + "(\"" + TBox_G_Name.Text + "\")...";
+                StatusLabel1.Text = "Updated item entry " + "(\"" + TBox_G_RealName.Text + "\")...";
             }
             else if (comboBox_SortByType.SelectedItem.ToString() == "Slave girls")
             {
@@ -1120,7 +1137,7 @@ namespace WM_Girls_Generator
                 GirlsCollection.Rows[(int)GirlsCollectionTemp.Rows[listBox_GirlsList.SelectedIndex][3]][1] = CompileGirl().ElementAt(1);	//that's the "GirlsCollectionTemp.Rows[listBox_GirlsList.SelectedIndex][3]" part
                 GirlsCollection.Rows[(int)GirlsCollectionTemp.Rows[listBox_GirlsList.SelectedIndex][3]][2] = CompileGirl().ElementAt(2);	//in filter case listBox is in sync with temp DT so we use index of listBox to access coresponding row in temp DT, ID is fourth column, this corresponds to 3 since counting goes from 0
                 FilterGirls(GirlsCollection, ref GirlsCollectionTemp, ref listBox_GirlsList, "1");		//since filtering is already selected we simply run it again to filter main list again and build filtered list
-                StatusLabel1.Text = "Updated item entry " + "(\"" + TBox_G_Name.Text + "\")...";
+                StatusLabel1.Text = "Updated item entry " + "(\"" + TBox_G_RealName.Text + "\")...";
             }
             else if (comboBox_SortByType.SelectedItem.ToString() == "Catacombs girls")
             {
@@ -1128,7 +1145,7 @@ namespace WM_Girls_Generator
                 GirlsCollection.Rows[(int)GirlsCollectionTemp.Rows[listBox_GirlsList.SelectedIndex][3]][1] = CompileGirl().ElementAt(1);	//that's the "GirlsCollectionTemp.Rows[listBox_GirlsList.SelectedIndex][3]" part
                 GirlsCollection.Rows[(int)GirlsCollectionTemp.Rows[listBox_GirlsList.SelectedIndex][3]][2] = CompileGirl().ElementAt(2);	//in filter case listBox is in sync with temp DT so we use index of listBox to access coresponding row in temp DT, ID is fourth column, this corresponds to 3 since counting goes from 0
                 FilterGirls(GirlsCollection, ref GirlsCollectionTemp, ref listBox_GirlsList, "2");		//since filtering is already selected we simply run it again to filter main list again and build filtered list
-                StatusLabel1.Text = "Updated item entry " + "(\"" + TBox_G_Name.Text + "\")...";
+                StatusLabel1.Text = "Updated item entry " + "(\"" + TBox_G_RealName.Text + "\")...";
             }
             else if (comboBox_SortByType.SelectedItem.ToString() == "Arena girls")
             {
@@ -1136,7 +1153,7 @@ namespace WM_Girls_Generator
                 GirlsCollection.Rows[(int)GirlsCollectionTemp.Rows[listBox_GirlsList.SelectedIndex][3]][1] = CompileGirl().ElementAt(1);	//that's the "GirlsCollectionTemp.Rows[listBox_GirlsList.SelectedIndex][3]" part
                 GirlsCollection.Rows[(int)GirlsCollectionTemp.Rows[listBox_GirlsList.SelectedIndex][3]][2] = CompileGirl().ElementAt(2);	//in filter case listBox is in sync with temp DT so we use index of listBox to access coresponding row in temp DT, ID is fourth column, this corresponds to 3 since counting goes from 0
                 FilterGirls(GirlsCollection, ref GirlsCollectionTemp, ref listBox_GirlsList, "3");		//since filtering is already selected we simply run it again to filter main list again and build filtered list
-                StatusLabel1.Text = "Updated item entry " + "(\"" + TBox_G_Name.Text + "\")...";
+                StatusLabel1.Text = "Updated item entry " + "(\"" + TBox_G_RealName.Text + "\")...";
             }
             else if (comboBox_SortByType.SelectedItem.ToString() == "Your Daughter")
             {
@@ -1144,7 +1161,7 @@ namespace WM_Girls_Generator
                 GirlsCollection.Rows[(int)GirlsCollectionTemp.Rows[listBox_GirlsList.SelectedIndex][3]][1] = CompileGirl().ElementAt(1);	//that's the "GirlsCollectionTemp.Rows[listBox_GirlsList.SelectedIndex][3]" part
                 GirlsCollection.Rows[(int)GirlsCollectionTemp.Rows[listBox_GirlsList.SelectedIndex][3]][2] = CompileGirl().ElementAt(2);	//in filter case listBox is in sync with temp DT so we use index of listBox to access coresponding row in temp DT, ID is fourth column, this corresponds to 3 since counting goes from 0
                 FilterGirls(GirlsCollection, ref GirlsCollectionTemp, ref listBox_GirlsList, "4");		//since filtering is already selected we simply run it again to filter main list again and build filtered list
-                StatusLabel1.Text = "Updated item entry " + "(\"" + TBox_G_Name.Text + "\")...";
+                StatusLabel1.Text = "Updated item entry " + "(\"" + TBox_G_RealName.Text + "\")...";
             }
 
         }
@@ -1166,11 +1183,11 @@ namespace WM_Girls_Generator
             string sGDesc = "";			    // girl description
 
             int i = 0;
-//            while (i < ListBox_G_Traits.CheckedItems.Count)	//this while loop goes through selected traits and puts them in sTraits string
-//            {
-//                sTraits = sTraits + ListBox_G_Traits.CheckedItems[i].ToString() + nln;		//since every trait is in separate line I need to add carraige return at the end, this is where that "nln" comes in
-//                i++;
-//            }
+            //            while (i < ListBox_G_Traits.CheckedItems.Count)	//this while loop goes through selected traits and puts them in sTraits string
+            //            {
+            //                sTraits = sTraits + ListBox_G_Traits.CheckedItems[i].ToString() + nln;		//since every trait is in separate line I need to add carraige return at the end, this is where that "nln" comes in
+            //                i++;
+            //            }
             int numberoftraits = 0;
             while (i < TraitCollection.Rows.Count)
             {
@@ -1195,9 +1212,9 @@ namespace WM_Girls_Generator
             else if (comboBox_Girl_Type.SelectedIndex == 4) sSlave = "4";    // your daughter
             else sSlave = "0";
             if (checkBox_G_Virgin.Checked) sVirgin = "1";
-            
+
             //first element in array is name
-            sGirl[0] = TBox_G_Name.Text;
+            sGirl[0] = TBox_G_RealName.Text;
             //second is girl data, this is where nln comes handy, easier to type nln than "\n\r" every time, and less error prone
             sGirl[1] = sGDesc + nln + numberoftraits + nln + sTraits + "0" + nln + sStats + nln + sSkills + nln + GoldTBox1.Text + nln + sVirgin + nln + sSlave;
             sGirl[2] = sSlave;
@@ -1357,10 +1374,10 @@ namespace WM_Girls_Generator
             SkillTBox_18.Text = J_Rand(0, 30);              //Farming
             SkillTBox_19.Text = J_Rand(0, 30);              //Brewing
             SkillTBox_20.Text = J_Rand(0, 30);              //Animal Handling
-                                                            
-        }                                                   
+
+        }
         private void button_Sk_Focus_Combat_Click(object sender, EventArgs e)
-        {                                                   
+        {
             StatsTBox_01.Text = J_Rand(0, 80);              //Charisma
             StatsTBox_17.Text = J_Rand(0, 80);              //Beauty                      
             StatsTBox_24.Text = J_Rand(-40, 40);			//Refinement
@@ -1384,10 +1401,10 @@ namespace WM_Girls_Generator
             SkillTBox_18.Text = J_Rand(0, 50);              //Farming
             SkillTBox_19.Text = J_Rand(0, 30);              //Brewing
             SkillTBox_20.Text = J_Rand(0, 50);              //Animal Handling
-                                                            
-        }                                                   
+
+        }
         private void button_Sk_Focus_Serv_Click(object sender, EventArgs e)
-        {                                                   
+        {
             StatsTBox_01.Text = J_Rand(0, 100);             //Charisma
             StatsTBox_17.Text = J_Rand(0, 100);             //Beauty                      
             StatsTBox_24.Text = J_Rand(-20, 50);			//Refinement
@@ -1411,10 +1428,10 @@ namespace WM_Girls_Generator
             SkillTBox_18.Text = J_Rand(0, 100);             //Farming
             SkillTBox_19.Text = J_Rand(0, 100);             //Brewing
             SkillTBox_20.Text = J_Rand(0, 100);             //Animal Handling
-                                                            
-        }                                                   
+
+        }
         private void button_Sk_Focus_Medic_Click(object sender, EventArgs e)
-        {                                                   
+        {
             StatsTBox_01.Text = J_Rand(21, 100);            //Charisma
             StatsTBox_17.Text = J_Rand(0, 100);             //Beauty                      
             StatsTBox_24.Text = J_Rand(0, 50);			//Refinement
@@ -1438,9 +1455,9 @@ namespace WM_Girls_Generator
             SkillTBox_18.Text = J_Rand(0, 20);              //Farming
             SkillTBox_19.Text = J_Rand(0, 50);              //Brewing
             SkillTBox_20.Text = J_Rand(0, 50);              //Animal Handling
-        }                                                   
+        }
         private void button_Sk_Focus_Perf_Click(object sender, EventArgs e)
-        {                                                   
+        {
             StatsTBox_01.Text = J_Rand(30, 100);            //Charisma
             StatsTBox_17.Text = J_Rand(30, 100);            //Beauty                      
             StatsTBox_24.Text = J_Rand(10, 100);			//Refinement
@@ -1464,9 +1481,9 @@ namespace WM_Girls_Generator
             SkillTBox_18.Text = J_Rand(0, 20);              //Farming
             SkillTBox_19.Text = J_Rand(0, 30);              //Brewing
             SkillTBox_20.Text = J_Rand(0, 60);              //Animal Handling
-        }                                                   
+        }
         private void button_Sk_Focus_Vet_Click(object sender, EventArgs e)
-        {                                                   
+        {
             StatsTBox_01.Text = J_Rand(0, 80);              //Charisma
             StatsTBox_17.Text = J_Rand(0, 100);             //Beauty                      
             StatsTBox_24.Text = J_Rand(-40, 60);			//Refinement
@@ -1490,9 +1507,9 @@ namespace WM_Girls_Generator
             SkillTBox_18.Text = J_Rand(0, 20);              //Farming
             SkillTBox_19.Text = J_Rand(0, 30);              //Brewing
             SkillTBox_20.Text = J_Rand(50, 100);            //Animal Handling
-        }                                                   
+        }
         private void button_Sk_Focus_Farmer_Click(object sender, EventArgs e)
-        {                                                   
+        {
             StatsTBox_01.Text = J_Rand(0, 80);              //Charisma
             StatsTBox_17.Text = J_Rand(0, 80);              //Beauty                      
             StatsTBox_24.Text = J_Rand(-100, 30);			//Refinement
@@ -1636,7 +1653,7 @@ namespace WM_Girls_Generator
             if (SkillTBox_21.TextLength > 0) sexskills[10] = SkillTBox_21.Text;	//Footjob
 
             int testnum = 0; int testhigh = 0; int testlow = 0; int testaveragediv = 0; int testaveragesum = 0; int testnumzeros = 10;
-            bool test5round = true; bool test10round = true;    string teststring = "";
+            bool test5round = true; bool test10round = true; string teststring = "";
             for (int i = 0; i < sexskills.Length; i++)
             {
                 if (sexskills[i] != "0")  // only test nonzero numbers for now
@@ -1655,7 +1672,7 @@ namespace WM_Girls_Generator
                     testaveragediv++; testaveragesum += testnum;
                 }
             }
-            if (testnumzeros == 0){}        // none were zero so do nothing
+            if (testnumzeros == 0) { }        // none were zero so do nothing
             else if (testnumzeros == 10)    // all were zero so change to 1-10
             {
                 for (int i = 0; i < sexskills.Length; i++)
@@ -1667,8 +1684,8 @@ namespace WM_Girls_Generator
             {
                 for (int i = 0; i < sexskills.Length; i++)
                 {
-                    int low = testlow-20;       if (low < 0) low = 0;
-                    int high = testhigh + 20;   if (high > 100) high = 100;
+                    int low = testlow - 20; if (low < 0) low = 0;
+                    int high = testhigh + 20; if (high > 100) high = 100;
                     if (sexskills[i] == "0") sexskills[i] = J_Rand(low, high, testhigh, 6);
                 }
             }
@@ -1688,12 +1705,12 @@ namespace WM_Girls_Generator
                 else if (test5round) { teststring = "N5"; }
                 int skewnum = 0; int skewtype = 0;
 
-                if (testmedian < testaverage - testaveragediv*2)          // skew up
+                if (testmedian < testaverage - testaveragediv * 2)          // skew up
                 {
                     skewnum = testhigh;
                     skewtype = 6;
                 }
-                else if (testmedian > testaverage + testaveragediv*2)     // skew down
+                else if (testmedian > testaverage + testaveragediv * 2)     // skew down
                 {
                     skewnum = testlow;
                     skewtype = 6;
@@ -1722,11 +1739,11 @@ namespace WM_Girls_Generator
         //Resets values in girl tab, I think this doesn't need any expalantion, it resets all values to starting point, and also deselects any girl on girls list, if any is selected
         private void button_G_Reset_Click(object sender, EventArgs e)
         {
-            TBox_G_Name.Text = TBox_G_Desc.Text = "";
-//            for (int i = 0; i < ListBox_G_Traits.Items.Count; i++)			//loop that unchecks every trait in the list
-//            {
-//                ListBox_G_Traits.SetItemCheckState(i, CheckState.Unchecked);
-//            }
+            TBox_G_FirstName.Text = TBox_G_MiddleName.Text = TBox_G_SurName.Text = TBox_G_RealName.Text = TBox_G_Desc.Text = "";
+            //            for (int i = 0; i < ListBox_G_Traits.Items.Count; i++)			//loop that unchecks every trait in the list
+            //            {
+            //                ListBox_G_Traits.SetItemCheckState(i, CheckState.Unchecked);
+            //            }
             for (int i = 0; i < TraitCollection.Rows.Count; i++)
             {
                 TraitCollection.Rows[i]["Checked"] = "false";
@@ -1826,6 +1843,9 @@ namespace WM_Girls_Generator
                 {
                     x++;									//here's where we increment our girl counter, getting that number after loading (like geting count of entries in the list) won't work since list may not be empty before this
                     string sName = "";				        //girl name, each girl value has it's attribute within it's node, this is how they're read
+                    string sFName = "";
+                    string sMName = "";
+                    string sLName = "";
                     string sDesc = "";				        //girl description
                     string sData = "";				        //string that will store girl data
                     string sSkills = "";			        //girl skills
@@ -1847,6 +1867,10 @@ namespace WM_Girls_Generator
                     for (int i = 0; i < node.Attributes.Count; i++)
                     {
                         if (node.Attributes[i].Name == "Name") sName = node.Attributes["Name"].Value;
+                        if (node.Attributes[i].Name == "FirstName") sFName = node.Attributes["Name"].Value;
+                        if (node.Attributes[i].Name == "MiddleName") sMName = node.Attributes["Name"].Value;
+                        if (node.Attributes[i].Name == "Surname") sLName = node.Attributes["Name"].Value;
+
                         if (node.Attributes[i].Name == "Desc") sDesc = node.Attributes["Desc"].Value;
                         if (node.Attributes[i].Name == "Gold") sGold = node.Attributes["Gold"].Value;
                         if (node.Attributes[i].Name == "Virgin") sVirgin = node.Attributes["Virgin"].Value;
@@ -1904,14 +1928,30 @@ namespace WM_Girls_Generator
                         {
                             switch (node.Attributes["Status"].Value)		//check to read girl status flag (and translate that to old format)
                             {
-                                case "Slave":           sStatus = "1";  break;
-                                case "Catacombs":       sStatus = "2";  break;
-                                case "Arena":           sStatus = "3";  break;
-                                case "Your Daughter":   sStatus = "4";  break;
-                                case "Normal": default: sStatus = "0";  break;
+                                case "Slave": sStatus = "1"; break;
+                                case "Catacombs": sStatus = "2"; break;
+                                case "Arena": sStatus = "3"; break;
+                                case "Your Daughter": sStatus = "4"; break;
+                                case "Normal":
+                                default: sStatus = "0"; break;
                             }
                         }
                     }
+
+                    // fix names if not set
+                    if (sName.Length < 1 && (sFName.Length > 1 || sMName.Length > 1 || sLName.Length < 1))
+                    {
+                        sName = G_Create_Real_Name(sFName, sMName, sLName);
+                    }
+                    else if (sName.Length > 0 && sFName.Length < 1 && sMName.Length < 1 && sLName.Length < 1)
+                    {
+                        string[] names = new string[3];
+                        names = G_Divide_Real_Name(sName);
+                        sFName = names[0];
+                        sMName = names[1];
+                        sLName = names[2];
+                    }
+
                     // `J` set defaults if they are not in the girlsx file
                     if (sDesc == null) sDesc = "-";
                     if (sGold == null) sGold = "0";
@@ -1991,13 +2031,13 @@ namespace WM_Girls_Generator
                         // check if it is a pre.05 girlsx and the numbers are similar
                         else if (testnumnulls == 3 && sexskills[7] == null && sexskills[8] == null && sexskills[9] == null && sexskills[10] == null && testuniquenums < 4)
                         {
-                                //set oral, hand and foot to group
-                                sexskills[7] = sexskills[9] = sexskills[10] = sexskills[4];
-                                //set titty to normal
-                                sexskills[8] = sexskills[2];
+                            //set oral, hand and foot to group
+                            sexskills[7] = sexskills[9] = sexskills[10] = sexskills[4];
+                            //set titty to normal
+                            sexskills[8] = sexskills[2];
                         }
                         // otherwise randomize the missing
-                        else 
+                        else
                         {
                             double testaverage = (float)testaveragesum / (float)testaveragediv;             // the average of set values
                             double testmedian = (((float)testhigh - (float)testlow) / 2) + (float)testlow;  // the average of high and low
@@ -2019,13 +2059,13 @@ namespace WM_Girls_Generator
                             }
                         }
                         // set the numbers
-                        jSkills[0]  = sexskills[0];  //Anal Sex
-                        jSkills[2]  = sexskills[1];  //BDSM Sex
-                        jSkills[3]  = sexskills[2];  //Normal Sex
-                        jSkills[4]  = sexskills[3];  //Bestiality Sex
-                        jSkills[5]  = sexskills[4];  //Group Sex
-                        jSkills[6]  = sexskills[5];  //Lesbian Sex
-                        jSkills[8]  = sexskills[6];  //Stripping Sex
+                        jSkills[0] = sexskills[0];  //Anal Sex
+                        jSkills[2] = sexskills[1];  //BDSM Sex
+                        jSkills[3] = sexskills[2];  //Normal Sex
+                        jSkills[4] = sexskills[3];  //Bestiality Sex
+                        jSkills[5] = sexskills[4];  //Group Sex
+                        jSkills[6] = sexskills[5];  //Lesbian Sex
+                        jSkills[8] = sexskills[6];  //Stripping Sex
                         jSkills[10] = sexskills[7];  //OralSex
                         jSkills[11] = sexskills[8];  //TittySex
                         jSkills[14] = sexskills[9];  //Handjob
@@ -2063,7 +2103,7 @@ namespace WM_Girls_Generator
                     }
 
                     //when we get to this part one girl has been read from XML and data collected, now we only need to store that data in DataTable in old format, this is what next line does, the one behind it adds her name to girls list
-                    GirlsCollection.Rows.Add(sName, sDesc + "\r\n" + sTraits + "\r\n" + "0" + "\r\n" + sData + "\r\n" + sSkills + "\r\n" + sGold + "\r\n" + sVirgin + "\r\n" + sStatus, sStatus);
+                    GirlsCollection.Rows.Add(sName, sDesc + "\r\n" + sTraits + "\r\n" + "0" + "\r\n" + sData + "\r\n" + sSkills + "\r\n" + sGold + "\r\n" + sVirgin + "\r\n" + sStatus + "\r\n" + sFName + "\r\n" + sMName + "\r\n" + sLName, sStatus);
                     listBox_GirlsList.Items.Add(sName);
                 }
                 xmlread.Close();
@@ -2071,7 +2111,7 @@ namespace WM_Girls_Generator
             }
             catch (Exception err)
             {
-                dataGridView_Bad_Files.Rows.Add(path,err.Message);
+                dataGridView_Bad_Files.Rows.Add(path, err.Message);
                 MessageBox.Show("XML load error in file \n\n" + path + "\n\n" + err.Message + "\n\nSee the Extras tab for details.", "XML load error error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 StatusLabel1.Text = "XML load error...";
             }
@@ -2092,6 +2132,8 @@ namespace WM_Girls_Generator
                 }
                 catch (Exception err)
                 {
+                    dataGridView_Bad_Files.Rows.Add(listBox_GirlsList.SelectedIndex, err.Message);
+
                     MessageBox.Show("It's probably nothing serious, i.e. you pressed Delete button\n\rwhile list was empty or nothing was selected, now for \"official\" error:\n\r\n\r" + err.Message, "Delete error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     StatusLabel1.Text = "Delete item error...";
                 }
@@ -2109,6 +2151,7 @@ namespace WM_Girls_Generator
                 }
                 catch (Exception err)
                 {
+                    dataGridView_Bad_Files.Rows.Add(listBox_GirlsList.SelectedIndex, err.Message);
                     MessageBox.Show("It's probably nothing serious, i.e. you pressed Delete button\n\rwhile list was empty or nothing was selected, now for \"official\" error:\n\r\n\r" + err.Message, "Delete error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     StatusLabel1.Text = "Delete item error...";
                 }
@@ -2138,8 +2181,9 @@ namespace WM_Girls_Generator
                 SaveGirlsXML(Filesave.FileName);
                 StatusLabel1.Text = "Successfully compiled " + listBox_GirlsList.Items.Count.ToString() + " girls...";
             }
-            catch
+            catch (Exception err)
             {
+                dataGridView_Bad_Files.Rows.Add(Filesave.FileName, err.Message);
                 StatusLabel1.Text = "Save Error.";
             }
         }
@@ -2187,16 +2231,23 @@ namespace WM_Girls_Generator
                 }
                 switch (sStatus)											//and here's where it gets "translated" to old XML, on old format it's represented with number, in new with string, so this simple replaces that number with string
                 {
-                    case "1":           sStatus = "Slave";          break;
-                    case "2":           sStatus = "Catacombs";      break;
-                    case "3":           sStatus = "Arena";          break;
-                    case "4":           sStatus = "Your Daughter";  break;
-                    case "0": default:  sStatus = "Normal";         break;
+                    case "1": sStatus = "Slave"; break;
+                    case "2": sStatus = "Catacombs"; break;
+                    case "3": sStatus = "Arena"; break;
+                    case "4": sStatus = "Your Daughter"; break;
+                    case "0":
+                    default: sStatus = "Normal"; break;
                 }
+                string sFName = sData.ReadLine();
+                string sMName = sData.ReadLine();
+                string sLName = sData.ReadLine();
 
                 //now that we have all that data isolated it should be assigned to their respective attributes in "Girl" node, this is what's done here, bunch of attributes getting assingned their values
 
                 girl.SetAttribute("Name", sName);
+                girl.SetAttribute("FirstName", sFName);
+                girl.SetAttribute("MiddleName", sMName);
+                girl.SetAttribute("Surname", sLName);
                 girl.SetAttribute("Desc", sDesc);
                 girl.SetAttribute("Charisma", sStats[0]);
                 girl.SetAttribute("Happiness", sStats[1]);
@@ -2267,40 +2318,40 @@ namespace WM_Girls_Generator
         //this happens when you select something from girl list listBox, that invokes SelectedIndexChanged event and values from entry with this index get filled to item tab boxes
         private void listBox_GirlsList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (comboBox_SortByType.SelectedItem.ToString() == "All")                   GirlChanged(ref GirlsCollection);
-            else if (comboBox_SortByType.SelectedItem.ToString() == "Normal girls")     GirlChanged(ref GirlsCollectionTemp);
-            else if (comboBox_SortByType.SelectedItem.ToString() == "Slave girls")      GirlChanged(ref GirlsCollectionTemp);
-            else if (comboBox_SortByType.SelectedItem.ToString() == "Catacombs girls")  GirlChanged(ref GirlsCollectionTemp);
-            else if (comboBox_SortByType.SelectedItem.ToString() == "Arena girls")      GirlChanged(ref GirlsCollectionTemp);
-            else if (comboBox_SortByType.SelectedItem.ToString() == "Your Daughter")    GirlChanged(ref GirlsCollectionTemp);
+            if (comboBox_SortByType.SelectedItem.ToString() == "All") GirlChanged(ref GirlsCollection);
+            else if (comboBox_SortByType.SelectedItem.ToString() == "Normal girls") GirlChanged(ref GirlsCollectionTemp);
+            else if (comboBox_SortByType.SelectedItem.ToString() == "Slave girls") GirlChanged(ref GirlsCollectionTemp);
+            else if (comboBox_SortByType.SelectedItem.ToString() == "Catacombs girls") GirlChanged(ref GirlsCollectionTemp);
+            else if (comboBox_SortByType.SelectedItem.ToString() == "Arena girls") GirlChanged(ref GirlsCollectionTemp);
+            else if (comboBox_SortByType.SelectedItem.ToString() == "Your Daughter") GirlChanged(ref GirlsCollectionTemp);
         }
         //to allow the previous event to function with different DataTables I've moved it to separate function that gets called with DataTable as parameter, this was needed because of sorting feature
         private void GirlChanged(ref DataTable dt)
         {
             if (listBox_GirlsList.SelectedIndex < 0) return;
-            TBox_G_Name.Text = dt.Rows[listBox_GirlsList.SelectedIndex][0].ToString();	//what goes on is basically compiling in reverse, name is already isolated so it just needs to be put in it's place
+            TBox_G_RealName.Text = dt.Rows[listBox_GirlsList.SelectedIndex][0].ToString();	//what goes on is basically compiling in reverse, name is already isolated so it just needs to be put in it's place
             StringReader data = new StringReader(dt.Rows[listBox_GirlsList.SelectedIndex][1].ToString());	//data is basically chunk of text, as it's in file, so we construct StringReader around that data, and proceed to read it and parse it line by line
             TBox_G_Desc.Text = data.ReadLine();					        //first line is description, just pass it through to it's textbox
 
             int traitNum = Convert.ToInt32(data.ReadLine());	        //next is number of traits, this isn't entered anywhere, upon compiling it's caluculated anew, it's used for following for loop to read all traits from data
 
-//            for (int i = 0; i < ListBox_G_Traits.Items.Count; i++)	    //well, not this "for" loop... this "for" loop set's every trait to unchecked state, or else they would get mixed while browsing the girls, or you'd have to click reset button before selecting new girl
-//            {
-//                ListBox_G_Traits.SetItemChecked(i, false);
-//            }
-//
-//            for (int i = 0; i < traitNum; i++)                          //two nested for loops, first one reads trait, second one looks in trait list for that trait, when it finds it it checks it, and then first one loads next one, so this one checks it and so on...
-//            {
-//                string trait = data.ReadLine();
-//                for (int j = 0; j < ListBox_G_Traits.Items.Count; j++)
-//                {
-//                    if (ListBox_G_Traits.Items[j].ToString() == trait)
-//                    {
-//                        ListBox_G_Traits.SetItemChecked(j, true);
-//                        break;
-//                    }
-//                }
-//            }
+            //            for (int i = 0; i < ListBox_G_Traits.Items.Count; i++)	    //well, not this "for" loop... this "for" loop set's every trait to unchecked state, or else they would get mixed while browsing the girls, or you'd have to click reset button before selecting new girl
+            //            {
+            //                ListBox_G_Traits.SetItemChecked(i, false);
+            //            }
+            //
+            //            for (int i = 0; i < traitNum; i++)                          //two nested for loops, first one reads trait, second one looks in trait list for that trait, when it finds it it checks it, and then first one loads next one, so this one checks it and so on...
+            //            {
+            //                string trait = data.ReadLine();
+            //                for (int j = 0; j < ListBox_G_Traits.Items.Count; j++)
+            //                {
+            //                    if (ListBox_G_Traits.Items[j].ToString() == trait)
+            //                    {
+            //                        ListBox_G_Traits.SetItemChecked(j, true);
+            //                        break;
+            //                    }
+            //                }
+            //            }
             for (int i = 0; i < TraitCollection.Rows.Count; i++)
             {
                 TraitCollection.Rows[i]["Checked"] = "false";
@@ -2383,13 +2434,17 @@ namespace WM_Girls_Generator
             if (Convert.ToInt32(gtype) < 0 || Convert.ToInt32(gtype) > 4)		//Originaly there wasn't an "if" planned here, which works fine if input data is correct, but in the case it's out of bounds you get an error, so to prevent these from scaring users this if defaults the droplist to "Normal Girl" if value is out of bounds
             {
                 comboBox_Girl_Type.SelectedIndex = 0;
-                StatusLabel1.Text = "\"" + TBox_G_Name.Text + "\"" + " parsed successfully, girl type value was out of bounds, defaulted to \"Normal girl\"...";
+                StatusLabel1.Text = "\"" + TBox_G_RealName.Text + "\"" + " parsed successfully, girl type value was out of bounds, defaulted to \"Normal girl\"...";
             }
             else
             {
                 comboBox_Girl_Type.SelectedIndex = Convert.ToInt32(gtype);		//if it's "within bounds" just convert string to number and make that item in droplist selected
-                StatusLabel1.Text = "\"" + TBox_G_Name.Text + "\"" + " parsed successfully...";
+                StatusLabel1.Text = "\"" + TBox_G_RealName.Text + "\"" + " parsed successfully...";
             }
+
+            TBox_G_FirstName.Text = data.ReadLine();
+            TBox_G_MiddleName.Text = data.ReadLine();
+            TBox_G_SurName.Text = data.ReadLine();
         }
 
         //displays tooltip on trait entries on girls tab, something I scrounged from the internet
@@ -2414,15 +2469,15 @@ namespace WM_Girls_Generator
             if (checkBox_ToggleTraitTooltips.Checked && e.RowIndex > -1 && e.RowIndex < dataGridView_G_Traits.RowCount)
             {
                 string tip = dataGridView_G_Traits.Rows[e.RowIndex].Cells["Desc"].Value.ToString();
-                if (tip != lastTip)							
+                if (tip != lastTip)
                 {
                     toolTip1.SetToolTip(dataGridView_G_Traits, dataGridView_G_Traits.Rows[e.RowIndex].Cells["Desc"].Value.ToString());
-                    lastTip = tip;											
+                    lastTip = tip;
                 }
             }
         }
 
-        
+
         //displays tooltips with girl descriptions on girls list, same as above with traits
         private void listBox_GirlsList_MouseMove(object sender, MouseEventArgs e)
         {
@@ -2444,12 +2499,13 @@ namespace WM_Girls_Generator
         {
             switch (comboBox_SortByType.SelectedItem.ToString())
             {
-                case "Normal girls":    FilterGirls(GirlsCollection, ref GirlsCollectionTemp, ref listBox_GirlsList, "0"); break;
-                case "Slave girls":     FilterGirls(GirlsCollection, ref GirlsCollectionTemp, ref listBox_GirlsList, "1"); break;
+                case "Normal girls": FilterGirls(GirlsCollection, ref GirlsCollectionTemp, ref listBox_GirlsList, "0"); break;
+                case "Slave girls": FilterGirls(GirlsCollection, ref GirlsCollectionTemp, ref listBox_GirlsList, "1"); break;
                 case "Catacombs girls": FilterGirls(GirlsCollection, ref GirlsCollectionTemp, ref listBox_GirlsList, "2"); break;
-                case "Arena girls":     FilterGirls(GirlsCollection, ref GirlsCollectionTemp, ref listBox_GirlsList, "3"); break;
-                case "Your Daughter":   FilterGirls(GirlsCollection, ref GirlsCollectionTemp, ref listBox_GirlsList, "4"); break;
-                case "All": default:    SortDataTable(ref GirlsCollection, ref listBox_GirlsList); break;
+                case "Arena girls": FilterGirls(GirlsCollection, ref GirlsCollectionTemp, ref listBox_GirlsList, "3"); break;
+                case "Your Daughter": FilterGirls(GirlsCollection, ref GirlsCollectionTemp, ref listBox_GirlsList, "4"); break;
+                case "All":
+                default: SortDataTable(ref GirlsCollection, ref listBox_GirlsList); break;
             }
         }
         //this is filtering function that previous event uses, I'll probably upgrade it to filter everything needed
@@ -2525,8 +2581,10 @@ namespace WM_Girls_Generator
             {
                 rgTable.Rows[dataGridView1.CurrentRow.Index].Delete();
             }
-            catch
+            catch (Exception err)
             {
+                dataGridView_Bad_Files.Rows.Add(dataGridView1.CurrentRow.Index, err.Message);
+                StatusLabel1.Text = "Error...";
                 MessageBox.Show("Nothing is selected or list is empty.", "Delete error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
@@ -2575,8 +2633,8 @@ namespace WM_Girls_Generator
                 i++;
             }
 
-            sRStatsMin = StatRGMinTBox1.Text + sp + StatRGMinTBox2.Text + sp + StatRGMinTBox3.Text + sp + StatRGMinTBox4.Text + sp + StatRGMinTBox5.Text + sp + StatRGMinTBox6.Text + sp + StatRGMinTBox7.Text + sp + StatRGMinTBox8.Text + sp + StatRGMinTBox9.Text + sp + StatRGMinTBox10.Text + sp + StatRGMinTBox11.Text + sp + StatRGMinTBox12.Text + sp + "0" + sp + StatRGMinTBox14.Text + sp + StatRGMinTBox15.Text + sp + StatRGMinTBox16.Text + sp + StatRGMinTBox17.Text + sp + StatRGMinTBox18.Text + sp + StatRGMinTBox19.Text + sp + StatRGMinTBox20.Text + sp + StatRGMinTBox21.Text + sp + StatRGMinTBox22.Text + sp + StatRGMinTBox23.Text;
-            sRStatsMax = StatRGMaxTBox1.Text + sp + StatRGMaxTBox2.Text + sp + StatRGMaxTBox3.Text + sp + StatRGMaxTBox4.Text + sp + StatRGMaxTBox5.Text + sp + StatRGMaxTBox6.Text + sp + StatRGMaxTBox7.Text + sp + StatRGMaxTBox8.Text + sp + StatRGMaxTBox9.Text + sp + StatRGMaxTBox10.Text + sp + StatRGMaxTBox11.Text + sp + StatRGMaxTBox12.Text + sp + "0" + sp + StatRGMaxTBox14.Text + sp + StatRGMaxTBox15.Text + sp + StatRGMaxTBox16.Text + sp + StatRGMaxTBox17.Text + sp + StatRGMaxTBox18.Text + sp + StatRGMaxTBox19.Text + sp + StatRGMaxTBox20.Text + sp + StatRGMaxTBox21.Text + sp + StatRGMaxTBox22.Text + sp + StatRGMaxTBox23.Text;
+            sRStatsMin = StatRGMinTBox1.Text + sp + StatRGMinTBox2.Text + sp + StatRGMinTBox3.Text + sp + StatRGMinTBox4.Text + sp + StatRGMinTBox5.Text + sp + StatRGMinTBox6.Text + sp + StatRGMinTBox7.Text + sp + StatRGMinTBox8.Text + sp + StatRGMinTBox9.Text + sp + StatRGMinTBox10.Text + sp + StatRGMinTBox11.Text + sp + StatRGMinTBox12.Text + sp + "0" + sp + StatRGMinTBox14.Text + sp + StatRGMinTBox15.Text + sp + StatRGMinTBox16.Text + sp + StatRGMinTBox17.Text + sp + StatRGMinTBox18.Text + sp + StatRGMinTBox19.Text + sp + StatRGMinTBox20.Text + sp + StatRGMinTBox21.Text + sp + StatRGMinTBox22.Text + sp + StatRGMinTBox23.Text + sp + StatRGMinTBox24.Text + sp + StatRGMinTBox25.Text + sp + StatRGMinTBox26.Text;
+            sRStatsMax = StatRGMaxTBox1.Text + sp + StatRGMaxTBox2.Text + sp + StatRGMaxTBox3.Text + sp + StatRGMaxTBox4.Text + sp + StatRGMaxTBox5.Text + sp + StatRGMaxTBox6.Text + sp + StatRGMaxTBox7.Text + sp + StatRGMaxTBox8.Text + sp + StatRGMaxTBox9.Text + sp + StatRGMaxTBox10.Text + sp + StatRGMaxTBox11.Text + sp + StatRGMaxTBox12.Text + sp + "0" + sp + StatRGMaxTBox14.Text + sp + StatRGMaxTBox15.Text + sp + StatRGMaxTBox16.Text + sp + StatRGMaxTBox17.Text + sp + StatRGMaxTBox18.Text + sp + StatRGMaxTBox19.Text + sp + StatRGMaxTBox20.Text + sp + StatRGMaxTBox21.Text + sp + StatRGMaxTBox22.Text + sp + StatRGMaxTBox23.Text + sp + StatRGMaxTBox24.Text + sp + StatRGMaxTBox25.Text + sp + StatRGMaxTBox26.Text;
 
             sRSkillsMin = SkillRGMinTBox1.Text + sp + SkillRGMinTBox2.Text + sp + SkillRGMinTBox3.Text + sp + SkillRGMinTBox4.Text + sp + SkillRGMinTBox5.Text + sp + SkillRGMinTBox6.Text + sp + SkillRGMinTBox7.Text + sp + SkillRGMinTBox8.Text + sp + SkillRGMinTBox9.Text + sp + SkillRGMinTBox10.Text + sp + SkillRGMinTBox11.Text + sp + SkillRGMinTBox12.Text + sp + SkillRGMinTBox13.Text + sp + SkillRGMinTBox14.Text + sp + SkillRGMinTBox15.Text + sp + SkillRGMinTBox16.Text + sp + SkillRGMinTBox17.Text + sp + SkillRGMinTBox18.Text + sp + SkillRGMinTBox19.Text + sp + SkillRGMinTBox20.Text + sp + SkillRGMinTBox21.Text;
             sRSkillsMax = SkillRGMaxTBox1.Text + sp + SkillRGMaxTBox2.Text + sp + SkillRGMaxTBox3.Text + sp + SkillRGMaxTBox4.Text + sp + SkillRGMaxTBox5.Text + sp + SkillRGMaxTBox6.Text + sp + SkillRGMaxTBox7.Text + sp + SkillRGMaxTBox8.Text + sp + SkillRGMaxTBox9.Text + sp + SkillRGMaxTBox10.Text + sp + SkillRGMaxTBox11.Text + sp + SkillRGMaxTBox12.Text + sp + SkillRGMaxTBox13.Text + sp + SkillRGMaxTBox14.Text + sp + SkillRGMaxTBox15.Text + sp + SkillRGMaxTBox16.Text + sp + SkillRGMaxTBox17.Text + sp + SkillRGMaxTBox18.Text + sp + SkillRGMaxTBox19.Text + sp + SkillRGMaxTBox20.Text + sp + SkillRGMaxTBox21.Text;
@@ -2643,7 +2701,7 @@ namespace WM_Girls_Generator
             ValidateRG(SkillRGMinTBox19, SkillRGMaxTBox19);
             ValidateRG(SkillRGMinTBox20, SkillRGMaxTBox20);
             ValidateRG(SkillRGMinTBox21, SkillRGMaxTBox21);
-            
+
             ValidateRG(GoldRMinTBox1, GoldRMaxTBox1);
         }
         /* random "function" for random girls, 
@@ -2655,7 +2713,7 @@ namespace WM_Girls_Generator
         private void RandomRG(TextBox min, TextBox max, int x, int y, Random rnd)
         {
             int negadj = 0;
-            if (x<0)
+            if (x < 0)
             {
                 negadj -= x;
                 x += negadj;
@@ -2699,19 +2757,19 @@ namespace WM_Girls_Generator
         private void buttonRandomizeRG1_Click(object sender, EventArgs e)
         {
             RandomRG(StatRGMinTBox14, StatRGMaxTBox14, 18, 81, rnd);	        //Age
-            RandomRG(StatRGMinTBox1,  StatRGMaxTBox1, 1, 101, rnd);		        //Charisma
+            RandomRG(StatRGMinTBox1, StatRGMaxTBox1, 1, 101, rnd);		        //Charisma
             RandomRG(StatRGMinTBox17, StatRGMaxTBox17, 1, 101, rnd);	        //Beauty  
             RandomRG(StatRGMinTBox24, StatRGMaxTBox24, -100, 101, rnd);	        //Refinement
-            RandomRG(StatRGMinTBox8,  StatRGMaxTBox8, 1, 101, rnd);		        //Agility
-            RandomRG(StatRGMinTBox4,  StatRGMaxTBox4, 1, 101, rnd);		        //Constitution
-            RandomRG(StatRGMinTBox5,  StatRGMaxTBox5, 1, 101, rnd);		        //Intelligence
-            RandomRG(StatRGMinTBox7,  StatRGMaxTBox7, 1, 101, rnd);		        //Mana
+            RandomRG(StatRGMinTBox8, StatRGMaxTBox8, 1, 101, rnd);		        //Agility
+            RandomRG(StatRGMinTBox4, StatRGMaxTBox4, 1, 101, rnd);		        //Constitution
+            RandomRG(StatRGMinTBox5, StatRGMaxTBox5, 1, 101, rnd);		        //Intelligence
+            RandomRG(StatRGMinTBox7, StatRGMaxTBox7, 1, 101, rnd);		        //Mana
             RandomRG(StatRGMinTBox23, StatRGMaxTBox23, -100, 101, rnd);	        //Morality
             RandomRG(StatRGMinTBox25, StatRGMaxTBox25, -100, 101, rnd);	        //Dignity
-            RandomRG(StatRGMinTBox6,  StatRGMaxTBox6, 1, 101, rnd);		        //Confidence
+            RandomRG(StatRGMinTBox6, StatRGMaxTBox6, 1, 101, rnd);		        //Confidence
             RandomRG(StatRGMinTBox15, StatRGMaxTBox15, 1, 101, rnd);	        //Obedience
             RandomRG(StatRGMinTBox16, StatRGMaxTBox16, 1, 101, rnd);	        //Spirit
-            RandomRG(StatRGMinTBox3,  StatRGMaxTBox3, 1, 101, rnd);		        //Libido
+            RandomRG(StatRGMinTBox3, StatRGMaxTBox3, 1, 101, rnd);		        //Libido
         }
         //Stats normalized randomize, rounded to 10
         private void buttonRGNormRand1_Click(object sender, EventArgs e)
@@ -2848,8 +2906,8 @@ namespace WM_Girls_Generator
             Open.ShowDialog();
             switch (Path.GetExtension(Open.FileName))
             {
-                case ".rgirlsx":    LoadRGirlsXML(Open.FileName);   break;
-                case ".rgirls":     LoadRGirls(Open.FileName);      break;
+                case ".rgirlsx": LoadRGirlsXML(Open.FileName); break;
+                case ".rgirls": LoadRGirls(Open.FileName); break;
             }
             SortDataTable(ref RGirlsCollection, ref listBox_RGirlsList);
         }
@@ -2912,21 +2970,29 @@ namespace WM_Girls_Generator
                     string sCatacombs = "";
                     switch (node.Attributes["Human"].Value)
                     {
-                        case "No": case "no": case "N": case "n": case "0":
-                                    sHuman = "0"; break;
-                        default:    sHuman = "1"; break;
+                        case "No":
+                        case "no":
+                        case "N":
+                        case "n":
+                        case "0":
+                            sHuman = "0"; break;
+                        default: sHuman = "1"; break;
                     }
                     switch (node.Attributes["Catacomb"].Value)
                     {
-                        case "Yes": case "yes": case "Y": case "y": case "1": 
-                                    sCatacombs = "1"; break;
-                        default:    sCatacombs = "0"; break;
+                        case "Yes":
+                        case "yes":
+                        case "Y":
+                        case "y":
+                        case "1":
+                            sCatacombs = "1"; break;
+                        default: sCatacombs = "0"; break;
                     }
 
                     string sMinMoney = node["Gold"].Attributes["Min"].Value;
                     string sMaxMoney = node["Gold"].Attributes["Max"].Value;
-                    
-                    
+
+
                     string[] aCharisma = new string[2];
                     string[] aHappiness = new string[2];
                     string[] aLibido = new string[2];
@@ -3231,6 +3297,7 @@ namespace WM_Girls_Generator
             }
             catch (Exception err)
             {
+                dataGridView_Bad_Files.Rows.Add(listBox_RGirlsList.SelectedIndex, err.Message);
                 MessageBox.Show("It's probably nothing serious, i.e. you pressed Delete button\n\rwhile list was empty or nothing was selected, now for \"official\" error:\n\r\n\r" + err.Message, "Delete error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 StatusLabel1.Text = "Delete item error...";
             }
@@ -3248,7 +3315,11 @@ namespace WM_Girls_Generator
                 SaveRGirlsXML(Filesave.FileName);
                 StatusLabel1.Text = "Successfully compiled " + listBox_RGirlsList.Items.Count.ToString() + " random girls...";
             }
-            catch { }
+            catch (Exception err)
+            {
+                dataGridView_Bad_Files.Rows.Add(Filesave.FileName, err.Message);
+                StatusLabel1.Text = "Save Error.";
+            }
         }
         //save girls in xml file function
         private void SaveRGirlsXML(string path)
@@ -3288,8 +3359,8 @@ namespace WM_Girls_Generator
 
                 switch (sData.ReadLine())
                 {
-                    case "0":   sHuman = "No";  break;
-                    default:    sHuman = "Yes"; break;
+                    case "0": sHuman = "No"; break;
+                    default: sHuman = "Yes"; break;
                 }
                 girl.SetAttribute("Name", sName);
                 girl.SetAttribute("Desc", sDesc);
@@ -3318,8 +3389,8 @@ namespace WM_Girls_Generator
                 string sCatacombs = "";
                 switch (sData.ReadLine())
                 {
-                    case "0":   sCatacombs = "No";  break;
-                    case "1":   sCatacombs = "Yes"; break;
+                    case "0": sCatacombs = "No"; break;
+                    case "1": sCatacombs = "Yes"; break;
                 }
                 girl.SetAttribute("Catacomb", sCatacombs);
                 int iTraitNum = Convert.ToInt32(sData.ReadLine());
@@ -3364,12 +3435,12 @@ namespace WM_Girls_Generator
 
             char[] separator = { ' ' };											//data in item data is space delimited, so to begin extraction from it we create an array of separator characters
             string[] values = data.ReadLine().Split(separator);					//use Split function to put every value that's "between" spaces to array
-            StatRGMinTBox1.Text = values[0]; StatRGMinTBox2.Text = values[1]; StatRGMinTBox3.Text = values[2]; StatRGMinTBox4.Text = values[3]; StatRGMinTBox5.Text = values[4]; StatRGMinTBox6.Text = values[5]; StatRGMinTBox7.Text = values[6]; StatRGMinTBox8.Text = values[7]; StatRGMinTBox9.Text = values[8]; StatRGMinTBox10.Text = values[9]; StatRGMinTBox11.Text = values[10]; StatRGMinTBox12.Text = values[11]; StatRGMinTBox14.Text = values[13]; StatRGMinTBox15.Text = values[14]; StatRGMinTBox16.Text = values[15]; StatRGMinTBox17.Text = values[16]; StatRGMinTBox18.Text = values[17]; StatRGMinTBox19.Text = values[18]; StatRGMinTBox20.Text = values[19]; StatRGMinTBox21.Text = values[20]; 
-            StatRGMinTBox22.Text = values[21]; 
+            StatRGMinTBox1.Text = values[0]; StatRGMinTBox2.Text = values[1]; StatRGMinTBox3.Text = values[2]; StatRGMinTBox4.Text = values[3]; StatRGMinTBox5.Text = values[4]; StatRGMinTBox6.Text = values[5]; StatRGMinTBox7.Text = values[6]; StatRGMinTBox8.Text = values[7]; StatRGMinTBox9.Text = values[8]; StatRGMinTBox10.Text = values[9]; StatRGMinTBox11.Text = values[10]; StatRGMinTBox12.Text = values[11]; StatRGMinTBox14.Text = values[13]; StatRGMinTBox15.Text = values[14]; StatRGMinTBox16.Text = values[15]; StatRGMinTBox17.Text = values[16]; StatRGMinTBox18.Text = values[17]; StatRGMinTBox19.Text = values[18]; StatRGMinTBox20.Text = values[19]; StatRGMinTBox21.Text = values[20];
+            StatRGMinTBox22.Text = values[21];
             StatRGMinTBox23.Text = (values.Length > 22) ? values[22] : "0";
 
             values = data.ReadLine().Split(separator);
-            StatRGMaxTBox1.Text = values[0]; StatRGMaxTBox2.Text = values[1]; StatRGMaxTBox3.Text = values[2]; StatRGMaxTBox4.Text = values[3]; StatRGMaxTBox5.Text = values[4]; StatRGMaxTBox6.Text = values[5]; StatRGMaxTBox7.Text = values[6]; StatRGMaxTBox8.Text = values[7]; StatRGMaxTBox9.Text = values[8]; StatRGMaxTBox10.Text = values[9]; StatRGMaxTBox11.Text = values[10]; StatRGMaxTBox12.Text = values[11]; StatRGMaxTBox14.Text = values[13]; StatRGMaxTBox15.Text = values[14]; StatRGMaxTBox16.Text = values[15]; StatRGMaxTBox17.Text = values[16]; StatRGMaxTBox18.Text = values[17]; StatRGMaxTBox19.Text = values[18]; StatRGMaxTBox20.Text = values[19]; StatRGMaxTBox21.Text = values[20]; 
+            StatRGMaxTBox1.Text = values[0]; StatRGMaxTBox2.Text = values[1]; StatRGMaxTBox3.Text = values[2]; StatRGMaxTBox4.Text = values[3]; StatRGMaxTBox5.Text = values[4]; StatRGMaxTBox6.Text = values[5]; StatRGMaxTBox7.Text = values[6]; StatRGMaxTBox8.Text = values[7]; StatRGMaxTBox9.Text = values[8]; StatRGMaxTBox10.Text = values[9]; StatRGMaxTBox11.Text = values[10]; StatRGMaxTBox12.Text = values[11]; StatRGMaxTBox14.Text = values[13]; StatRGMaxTBox15.Text = values[14]; StatRGMaxTBox16.Text = values[15]; StatRGMaxTBox17.Text = values[16]; StatRGMaxTBox18.Text = values[17]; StatRGMaxTBox19.Text = values[18]; StatRGMaxTBox20.Text = values[19]; StatRGMaxTBox21.Text = values[20];
             StatRGMaxTBox22.Text = values[21];
             StatRGMaxTBox23.Text = (values.Length > 22) ? values[22] : "0";
 
@@ -3419,20 +3490,20 @@ namespace WM_Girls_Generator
             SkillRGMaxTBox19.Text = (values.Length > 18) ? values[18] : "0";
             SkillRGMaxTBox20.Text = (values.Length > 19) ? values[19] : "0";
 
-            GoldRMinTBox1.Text = data.ReadLine(); 
+            GoldRMinTBox1.Text = data.ReadLine();
             GoldRMaxTBox1.Text = data.ReadLine();
 
             string line9 = data.ReadLine();     // "is human" flag
             switch (line9)
             {
-                case "0":   checkBox_RGHuman.Checked = false;   break;
-                default:    checkBox_RGHuman.Checked = true;    break;
+                case "0": checkBox_RGHuman.Checked = false; break;
+                default: checkBox_RGHuman.Checked = true; break;
             }
             string line10 = data.ReadLine();    // "is catacomb" flag
             switch (line10)
             {
-                case "1":   checkBox_RGCatacombs.Checked = true;    break;
-                default:    checkBox_RGCatacombs.Checked = false;   break;
+                case "1": checkBox_RGCatacombs.Checked = true; break;
+                default: checkBox_RGCatacombs.Checked = false; break;
             }
 
             int traitNum = Convert.ToInt32(data.ReadLine());
@@ -3477,13 +3548,14 @@ namespace WM_Girls_Generator
             {
                 SaveIndividualGirlsXML(".\\" + create + "\\");
                 SaveIndividualRGirlsXML(".\\" + create + "\\");
-                StatusLabel1.Text = "Successfully compiled " + listBox_GirlsList.Items.Count.ToString() + 
-                    " girls and "+
-                    listBox_RGirlsList.Items.Count.ToString() +                 
+                StatusLabel1.Text = "Successfully compiled " + listBox_GirlsList.Items.Count.ToString() +
+                    " girls and " +
+                    listBox_RGirlsList.Items.Count.ToString() +
                 " rgirls to folder " + create;
             }
-            catch
+            catch (Exception err)
             {
+                dataGridView_Bad_Files.Rows.Add(Filesave.FileName, err.Message);
                 StatusLabel1.Text = "Save Error.";
             }
         }
@@ -3539,8 +3611,29 @@ namespace WM_Girls_Generator
                     case "0":
                     default: sStatus = "Normal"; break;
                 }
+                string sFName = sData.ReadLine();
+                string sMName = sData.ReadLine();
+                string sLName = sData.ReadLine();
+
+                if (sName.Length < 1 && (sFName.Length > 1 || sMName.Length > 1 || sLName.Length < 1))
+                {
+                    sName = G_Create_Real_Name(sFName, sMName, sLName);
+                }
+                else if (sName.Length > 0 && sFName.Length < 1 && sMName.Length < 1 && sLName.Length < 1)
+                {
+                    string[] names = new string[3];
+                    names = G_Divide_Real_Name(sName);
+                    sFName= names[0];
+                    sMName= names[1];
+                    sLName = names[2];
+
+                }
+
                 //now that we have all that data isolated it should be assigned to their respective attributes in "Girl" node, this is what's done here, bunch of attributes getting assingned their values
                 girl.SetAttribute("Name", sName);
+                girl.SetAttribute("FirstName", sFName);
+                girl.SetAttribute("MiddleName", sMName);
+                girl.SetAttribute("Surname", sLName);
                 girl.SetAttribute("Desc", sDesc);
                 girl.SetAttribute("Charisma", sStats[0]);
                 girl.SetAttribute("Happiness", sStats[1]);
@@ -3853,8 +3946,9 @@ namespace WM_Girls_Generator
                 if (comboBox_affects_01.SelectedIndex == 2) iTable.Rows.Add(comboBox_affects_01.SelectedItem.ToString(), comboBox_affects_02.SelectedItem.ToString(), affects_comboBox_status.SelectedItem.ToString());
                 else iTable.Rows.Add(comboBox_affects_01.SelectedItem.ToString(), comboBox_affects_02.SelectedItem.ToString(), affects_textBox_value.Text);
             }
-            catch
+            catch (Exception err)
             {
+                dataGridView_Bad_Files.Rows.Add(comboBox_affects_01.SelectedItem.ToString(), err.Message);
                 MessageBox.Show("One or more drop fields are empty", "Add error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
@@ -3865,8 +3959,9 @@ namespace WM_Girls_Generator
             {
                 iTable.Rows[dataGridView2.CurrentRow.Index].Delete();
             }
-            catch
+            catch (Exception err)
             {
+                dataGridView_Bad_Files.Rows.Add(dataGridView2.CurrentRow.Index, err.Message);
                 MessageBox.Show("Nothing is selected or list is empty.", "Delete error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
@@ -3878,8 +3973,9 @@ namespace WM_Girls_Generator
             {
                 iTTable.Rows.Add(comboBox_ItemTraits.SelectedItem.ToString(), comboBox_ItemTraitsEffect.SelectedItem.ToString());
             }
-            catch
+            catch (Exception err)
             {
+                dataGridView_Bad_Files.Rows.Add(comboBox_ItemTraits.SelectedItem.ToString(), err.Message);
                 MessageBox.Show("One or more fields are empty", "Add error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
@@ -3890,8 +3986,9 @@ namespace WM_Girls_Generator
             {
                 iTTable.Rows[dataGridView3.CurrentRow.Index].Delete();
             }
-            catch
+            catch (Exception err)
             {
+                dataGridView_Bad_Files.Rows.Add(dataGridView3.CurrentRow.Index, err.Message);
                 MessageBox.Show("Nothing is selected or list is empty.", "Delete error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
@@ -4192,43 +4289,55 @@ namespace WM_Girls_Generator
 
                     switch (node.Attributes["Type"].Value)						//testing for item type, 1st number in "old" format
                     {
-                        case "Ring":                         sData = "1";  break;
-                        case "Dress":                        sData = "2";  break;
-                        case "Shoes":                        sData = "3";  break;
-                        case "Food":                         sData = "4";  break;
-                        case "Necklace":                     sData = "5";  break;
-                        case "Weapon":                       sData = "6";  break;
-                        case "Makeup":                       sData = "7";  break;
-                        case "Armor":                        sData = "8";  break;
-                        case "Armband":                      sData = "10"; break;
-                        case "Small Weapon":                 sData = "11"; break;
-                        case "Under Wear": case "Underwear": sData = "12"; break;
-                        case "Misc": default:                sData = "9";  break;
+                        case "Ring": sData = "1"; break;
+                        case "Dress": sData = "2"; break;
+                        case "Shoes": sData = "3"; break;
+                        case "Food": sData = "4"; break;
+                        case "Necklace": sData = "5"; break;
+                        case "Weapon": sData = "6"; break;
+                        case "Makeup": sData = "7"; break;
+                        case "Armor": sData = "8"; break;
+                        case "Armband": sData = "10"; break;
+                        case "Small Weapon": sData = "11"; break;
+                        case "Under Wear":
+                        case "Underwear": sData = "12"; break;
+                        case "Hat": sData = "13"; break;
+                        case "Helmet": sData = "14"; break;
+                        case "Glasses": sData = "15"; break;
+                        case "Swimsuit": sData = "16"; break;
+                        case "Combat Shoes": sData = "17"; break;
+                        case "Shield": sData = "18"; break;
+                        case "Misc":
+                        default: sData = "9"; break;
                     }
                     sData = sData + " " + node.Attributes["Badness"].Value;		//item "badness" value, 2nd value
                     switch (node.Attributes["Special"].Value)					//item special value, how it effects girl(s), 3nd value
                     {
-                        case "AffectsAll":      sData = sData + " " + "1";  break;
-                        case "Temporary":       sData = sData + " " + "2";  break;
-                        case "None": default:   sData = sData + " " + "0";  break;
+                        case "AffectsAll": sData = sData + " " + "1"; break;
+                        case "Temporary": sData = sData + " " + "2"; break;
+                        case "None":
+                        default: sData = sData + " " + "0"; break;
                     }
                     sData = sData + " " + node.Attributes["Cost"].Value;			//item cost, 4th value
                     switch (node.Attributes["Rarity"].Value)						//item rarity, 5th value
                     {
-                        case "Uncommon": case "Shop50": sData = sData + " " + "1";  break;
-                        case "Shop25":                  sData = sData + " " + "2";  break;
-                        case "Shop05":                  sData = sData + " " + "3";  break;
-                        case "Catacomb15":              sData = sData + " " + "4";  break;
-                        case "Catacomb05":              sData = sData + " " + "5";  break;
-                        case "Catacomb01":              sData = sData + " " + "6";  break;
-                        case "ScriptOnly":              sData = sData + " " + "7";  break;
-                        case "ScriptOrReward":          sData = sData + " " + "8";  break;
-                        case "Common":  default:        sData = sData + " " + "0";  break;
+                        case "Uncommon":
+                        case "Shop50": sData = sData + " " + "1"; break;
+                        case "Shop25": sData = sData + " " + "2"; break;
+                        case "Shop05": sData = sData + " " + "3"; break;
+                        case "Catacomb15": sData = sData + " " + "4"; break;
+                        case "Catacomb05": sData = sData + " " + "5"; break;
+                        case "Catacomb01": sData = sData + " " + "6"; break;
+                        case "ScriptOnly": sData = sData + " " + "7"; break;
+                        case "ScriptOrReward": sData = sData + " " + "8"; break;
+                        case "Common":
+                        default: sData = sData + " " + "0"; break;
                     }
                     switch (node.Attributes["Infinite"].Value)					//item is infinite, 6th value
                     {
-                        case "true":            sData = sData + " " + "1";  break;
-                        case "false": default:  sData = sData + " " + "0";  break;
+                        case "true": sData = sData + " " + "1"; break;
+                        case "false":
+                        default: sData = sData + " " + "0"; break;
                     }
                     if (node.Attributes["GirlBuyChance"] != null)				//this will be 7th value, it doesn't exist in original items
                     {
@@ -4242,31 +4351,31 @@ namespace WM_Girls_Generator
 
                             switch (node.ChildNodes[x].Attributes["What"].Value)	//what item affects, 1st of 3 numbers that define items
                             {
-                                case "Skill":   
+                                case "Skill":
                                     sEffect = "0";
                                     switch (node.ChildNodes[x].Attributes["Name"].Value)		//2nd number, in this case what skill it affects, I have to nest them since each of the types has different choices (i.e. anal as skill and intelligence as stat) so they won't get mixed
                                     {
-                                        case "Anal":            sEffect = sEffect + " " + "0"; break;
-                                        case "Magic":           sEffect = sEffect + " " + "1"; break;
-                                        case "BDSM":            sEffect = sEffect + " " + "2"; break;
-                                        case "NormalSex":       sEffect = sEffect + " " + "3"; break;
-                                        case "Beastiality":     sEffect = sEffect + " " + "4"; break;
-                                        case "Group":           sEffect = sEffect + " " + "5"; break;
-                                        case "Lesbian":         sEffect = sEffect + " " + "6"; break;
-                                        case "Service":         sEffect = sEffect + " " + "7"; break;
-                                        case "Strip":           sEffect = sEffect + " " + "8"; break;
-                                        case "Combat":          sEffect = sEffect + " " + "9"; break;
-                                        case "OralSex":         sEffect = sEffect + " " + "10"; break;
-                                        case "TittySex":        sEffect = sEffect + " " + "11"; break;
-                                        case "Medicine":        sEffect = sEffect + " " + "12"; break;
-                                        case "Performance":     sEffect = sEffect + " " + "13"; break;
-                                        case "Handjob":         sEffect = sEffect + " " + "14"; break;
-                                        case "Crafting":        sEffect = sEffect + " " + "15"; break;
-                                        case "Herbalism":       sEffect = sEffect + " " + "16"; break;
-                                        case "Farming":         sEffect = sEffect + " " + "17"; break;
-                                        case "Brewing":         sEffect = sEffect + " " + "18"; break;
-                                        case "AnimalHandling":  sEffect = sEffect + " " + "19"; break;
-                                        case "Footjob":         sEffect = sEffect + " " + "20"; break;
+                                        case "Anal": sEffect = sEffect + " " + "0"; break;
+                                        case "Magic": sEffect = sEffect + " " + "1"; break;
+                                        case "BDSM": sEffect = sEffect + " " + "2"; break;
+                                        case "NormalSex": sEffect = sEffect + " " + "3"; break;
+                                        case "Beastiality": sEffect = sEffect + " " + "4"; break;
+                                        case "Group": sEffect = sEffect + " " + "5"; break;
+                                        case "Lesbian": sEffect = sEffect + " " + "6"; break;
+                                        case "Service": sEffect = sEffect + " " + "7"; break;
+                                        case "Strip": sEffect = sEffect + " " + "8"; break;
+                                        case "Combat": sEffect = sEffect + " " + "9"; break;
+                                        case "OralSex": sEffect = sEffect + " " + "10"; break;
+                                        case "TittySex": sEffect = sEffect + " " + "11"; break;
+                                        case "Medicine": sEffect = sEffect + " " + "12"; break;
+                                        case "Performance": sEffect = sEffect + " " + "13"; break;
+                                        case "Handjob": sEffect = sEffect + " " + "14"; break;
+                                        case "Crafting": sEffect = sEffect + " " + "15"; break;
+                                        case "Herbalism": sEffect = sEffect + " " + "16"; break;
+                                        case "Farming": sEffect = sEffect + " " + "17"; break;
+                                        case "Brewing": sEffect = sEffect + " " + "18"; break;
+                                        case "AnimalHandling": sEffect = sEffect + " " + "19"; break;
+                                        case "Footjob": sEffect = sEffect + " " + "20"; break;
                                     }
                                     sEffect = sEffect + " " + node.ChildNodes[x].Attributes["Amount"].Value;
                                     break;
@@ -4274,32 +4383,32 @@ namespace WM_Girls_Generator
                                     sEffect = "1";
                                     switch (node.ChildNodes[x].Attributes["Name"].Value)
                                     {
-                                        case "Charisma":     sEffect = sEffect + " " + "0";  break;
-                                        case "Happiness":    sEffect = sEffect + " " + "1";  break;
-                                        case "Libido":       sEffect = sEffect + " " + "2";  break;
-                                        case "Constitution": sEffect = sEffect + " " + "3";  break;
-                                        case "Intelligence": sEffect = sEffect + " " + "4";  break;
-                                        case "Confidence":   sEffect = sEffect + " " + "5";  break;
-                                        case "Mana":         sEffect = sEffect + " " + "6";  break;
-                                        case "Agility":      sEffect = sEffect + " " + "7";  break;
-                                        case "Fame":         sEffect = sEffect + " " + "8";  break;
-                                        case "Level":        sEffect = sEffect + " " + "9";  break;
-                                        case "AskPrice":     sEffect = sEffect + " " + "10"; break;
-                                        case "House":        sEffect = sEffect + " " + "11"; break;
-                                        case "Exp":          sEffect = sEffect + " " + "12"; break;
-                                        case "Age":          sEffect = sEffect + " " + "13"; break;
-                                        case "Obedience":    sEffect = sEffect + " " + "14"; break;
-                                        case "Spirit":       sEffect = sEffect + " " + "15"; break;
-                                        case "Beauty":       sEffect = sEffect + " " + "16"; break;
-                                        case "Tiredness":    sEffect = sEffect + " " + "17"; break;
-                                        case "Health":       sEffect = sEffect + " " + "18"; break;
-                                        case "PCFear":       sEffect = sEffect + " " + "19"; break;
-                                        case "PCLove":       sEffect = sEffect + " " + "20"; break;
-                                        case "PCHate":       sEffect = sEffect + " " + "21"; break;
-                                        case "Morality":     sEffect = sEffect + " " + "22"; break;
-                                        case "Refinement":   sEffect = sEffect + " " + "23"; break;
-                                        case "Dignity":      sEffect = sEffect + " " + "24"; break;
-                                        case "Lactation":    sEffect = sEffect + " " + "25"; break;
+                                        case "Charisma": sEffect = sEffect + " " + "0"; break;
+                                        case "Happiness": sEffect = sEffect + " " + "1"; break;
+                                        case "Libido": sEffect = sEffect + " " + "2"; break;
+                                        case "Constitution": sEffect = sEffect + " " + "3"; break;
+                                        case "Intelligence": sEffect = sEffect + " " + "4"; break;
+                                        case "Confidence": sEffect = sEffect + " " + "5"; break;
+                                        case "Mana": sEffect = sEffect + " " + "6"; break;
+                                        case "Agility": sEffect = sEffect + " " + "7"; break;
+                                        case "Fame": sEffect = sEffect + " " + "8"; break;
+                                        case "Level": sEffect = sEffect + " " + "9"; break;
+                                        case "AskPrice": sEffect = sEffect + " " + "10"; break;
+                                        case "House": sEffect = sEffect + " " + "11"; break;
+                                        case "Exp": sEffect = sEffect + " " + "12"; break;
+                                        case "Age": sEffect = sEffect + " " + "13"; break;
+                                        case "Obedience": sEffect = sEffect + " " + "14"; break;
+                                        case "Spirit": sEffect = sEffect + " " + "15"; break;
+                                        case "Beauty": sEffect = sEffect + " " + "16"; break;
+                                        case "Tiredness": sEffect = sEffect + " " + "17"; break;
+                                        case "Health": sEffect = sEffect + " " + "18"; break;
+                                        case "PCFear": sEffect = sEffect + " " + "19"; break;
+                                        case "PCLove": sEffect = sEffect + " " + "20"; break;
+                                        case "PCHate": sEffect = sEffect + " " + "21"; break;
+                                        case "Morality": sEffect = sEffect + " " + "22"; break;
+                                        case "Refinement": sEffect = sEffect + " " + "23"; break;
+                                        case "Dignity": sEffect = sEffect + " " + "24"; break;
+                                        case "Lactation": sEffect = sEffect + " " + "25"; break;
                                     }
                                     sEffect = sEffect + " " + node.ChildNodes[x].Attributes["Amount"].Value;
                                     break;
@@ -4310,19 +4419,19 @@ namespace WM_Girls_Generator
                                     sEffect = "3";
                                     switch (node.ChildNodes[x].Attributes["Name"].Value)
                                     {
-                                        case "Poisoned":           sEffect = sEffect + " " + "1";  break;
-                                        case "Badly Poisoned":     sEffect = sEffect + " " + "2";  break;
-                                        case "Pregnant":           sEffect = sEffect + " " + "3";  break;
-                                        case "Pregnant By Player": sEffect = sEffect + " " + "4";  break;
-                                        case "Slave":              sEffect = sEffect + " " + "5";  break;
-                                        case "Has Daughter":       sEffect = sEffect + " " + "6";  break;
-                                        case "Has Son":            sEffect = sEffect + " " + "7";  break;
-                                        case "Inseminated":        sEffect = sEffect + " " + "8";  break;
-                                        case "Controlled":         sEffect = sEffect + " " + "9";  break;
-                                        case "Catacombs":          sEffect = sEffect + " " + "10"; break;
-                                        case "Arena":              sEffect = sEffect + " " + "11"; break;
-                                        case "Your Daughter":      sEffect = sEffect + " " + "12"; break;
-                                        case "Is Daughter":        sEffect = sEffect + " " + "13"; break;
+                                        case "Poisoned": sEffect = sEffect + " " + "1"; break;
+                                        case "Badly Poisoned": sEffect = sEffect + " " + "2"; break;
+                                        case "Pregnant": sEffect = sEffect + " " + "3"; break;
+                                        case "Pregnant By Player": sEffect = sEffect + " " + "4"; break;
+                                        case "Slave": sEffect = sEffect + " " + "5"; break;
+                                        case "Has Daughter": sEffect = sEffect + " " + "6"; break;
+                                        case "Has Son": sEffect = sEffect + " " + "7"; break;
+                                        case "Inseminated": sEffect = sEffect + " " + "8"; break;
+                                        case "Controlled": sEffect = sEffect + " " + "9"; break;
+                                        case "Catacombs": sEffect = sEffect + " " + "10"; break;
+                                        case "Arena": sEffect = sEffect + " " + "11"; break;
+                                        case "Your Daughter": sEffect = sEffect + " " + "12"; break;
+                                        case "Is Daughter": sEffect = sEffect + " " + "13"; break;
                                     }
                                     sEffect = sEffect + " " + node.ChildNodes[x].Attributes["Amount"].Value;
                                     break;
@@ -4368,6 +4477,7 @@ namespace WM_Girls_Generator
             }
             catch (Exception err)
             {
+                dataGridView_Bad_Files.Rows.Add(listBox_ItemsList.SelectedIndex, err.Message);
                 MessageBox.Show("It's probably nothing serious, i.e. you pressed Delete button\n\rwhile list was empty or nothing was selected, now for \"official\" error:\n\r\n\r" + err.Message, "Delete error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 StatusLabel1.Text = "Delete item error...";
             }
@@ -4396,7 +4506,7 @@ namespace WM_Girls_Generator
             char[] separator = { ' ' };											//data in item data is space delimited, so to begin extraction from it we create an array of separator characters
             string[] values = sIDesc.Split(separator);							//use Split function to put every value that's "between" spaces to array
             //now that we have all 6 of required values safely tucked in their array spot we assign each value to it's place on item tab
-            if (int.Parse(values[0]) < 1 || int.Parse(values[0]) > 12) comboBox_ItemType_01.SelectedIndex = 3;	//Originaly there wasn't an "if" planned here, which works fine if input data is correct, but in the case it's out of bounds you get an error, so to prevent these from scaring users this if defaults the droplist to "Food/Consumable" if value is out of bounds
+            if (int.Parse(values[0]) < 1 || int.Parse(values[0]) > 18) comboBox_ItemType_01.SelectedIndex = 3;	//Originaly there wasn't an "if" planned here, which works fine if input data is correct, but in the case it's out of bounds you get an error, so to prevent these from scaring users this if defaults the droplist to "Food/Consumable" if value is out of bounds
             else comboBox_ItemType_01.SelectedIndex = int.Parse(values[0]) - 1;	//item type comboBox, it's "value - 1" because combobox index' go from 0 to 9, and item type index in game goes from 1 to 10, so to lower it to editor level... similarly when parsing items from tab values there's +1 for item type value
 
             trackBar_bad_02.Value = int.Parse(values[1]);						//how bad is item for the girl trackbar
@@ -4516,7 +4626,11 @@ namespace WM_Girls_Generator
                 SaveItemsXML(Filesave.FileName);
                 StatusLabel1.Text = "Successfully compiled " + listBox_ItemsList.Items.Count.ToString() + " items...";
             }
-            catch { }
+            catch (Exception err)
+            {
+                dataGridView_Bad_Files.Rows.Add(Filesave.FileName, err.Message);
+                StatusLabel1.Text = "Save Error.";
+            }
         }
         //save in XML format
         private void SaveItemsXML(string path)
@@ -4540,41 +4654,48 @@ namespace WM_Girls_Generator
 
                 switch (sValues[0])
                 {
-                    case "1":   sValues[0] = "Ring";            break;
-                    case "2":   sValues[0] = "Dress";           break;
-                    case "3":   sValues[0] = "Shoes";           break;
-                    case "4":   sValues[0] = "Food";            break;
-                    case "5":   sValues[0] = "Necklace";        break;
-                    case "6":   sValues[0] = "Weapon";          break;
-                    case "7":   sValues[0] = "Makeup";          break;
-                    case "8":   sValues[0] = "Armor";           break;
-                    case "9":   sValues[0] = "Misc";            break;
-                    case "10":  sValues[0] = "Armband";         break;
-                    case "11":  sValues[0] = "Small Weapon";    break;
-                    case "12":  sValues[0] = "Underwear";       break;
+                    case "1": sValues[0] = "Ring"; break;
+                    case "2": sValues[0] = "Dress"; break;
+                    case "3": sValues[0] = "Shoes"; break;
+                    case "4": sValues[0] = "Food"; break;
+                    case "5": sValues[0] = "Necklace"; break;
+                    case "6": sValues[0] = "Weapon"; break;
+                    case "7": sValues[0] = "Makeup"; break;
+                    case "8": sValues[0] = "Armor"; break;
+                    case "9": sValues[0] = "Misc"; break;
+                    case "10": sValues[0] = "Armband"; break;
+                    case "11": sValues[0] = "Small Weapon"; break;
+                    case "12": sValues[0] = "Underwear"; break;
+                    case "13": sValues[0] = "Hat"; break;
+                    case "14": sValues[0] = "Helmet"; break;
+                    case "15": sValues[0] = "Glasses"; break;
+                    case "16": sValues[0] = "Swimsuit"; break;
+                    case "17": sValues[0] = "Combat Shoes"; break;
+                    case "18": sValues[0] = "Shield"; break;
                 }
                 switch (sValues[2])
                 {
-                    case "0":   sValues[2] = "None";            break;
-                    case "1":   sValues[2] = "AffectsAll";      break;
-                    case "2":   sValues[2] = "Temporary";       break;
+                    case "0": sValues[2] = "None"; break;
+                    case "1": sValues[2] = "AffectsAll"; break;
+                    case "2": sValues[2] = "Temporary"; break;
                 }
                 switch (sValues[4])
                 {
-                    case "0":   sValues[4] = "Common";          break;
-                    case "1":   sValues[4] = "Shop50";          break;
-                    case "2":   sValues[4] = "Shop25";          break;
-                    case "3":   sValues[4] = "Shop05";          break;
-                    case "4":   sValues[4] = "Catacomb15";      break;
-                    case "5":   sValues[4] = "Catacomb05";      break;
-                    case "6":   sValues[4] = "Catacomb01";      break;
-                    case "7":   sValues[4] = "ScriptOnly";      break;
-                    case "8":   sValues[4] = "ScriptOrReward";  break;
+                    case "0": sValues[4] = "Common"; break;
+                    case "1": sValues[4] = "Shop50"; break;
+                    case "2": sValues[4] = "Shop25"; break;
+                    case "3": sValues[4] = "Shop05"; break;
+                    case "4": sValues[4] = "Catacomb15"; break;
+                    case "5": sValues[4] = "Catacomb05"; break;
+                    case "6": sValues[4] = "Catacomb01"; break;
+                    case "7": sValues[4] = "ScriptOnly"; break;
+                    case "8": sValues[4] = "ScriptOrReward"; break;
                 }
                 switch (sValues[5])
                 {
-                    case "1":           sValues[5] = "true";    break;
-                    case "0": default:  sValues[5] = "false";   break;
+                    case "1": sValues[5] = "true"; break;
+                    case "0":
+                    default: sValues[5] = "false"; break;
                 }
                 item.SetAttribute("Name", sName);
                 item.SetAttribute("Desc", sDesc);
@@ -4613,59 +4734,59 @@ namespace WM_Girls_Generator
                                 sEffects[0] = "Skill";
                                 switch (sEffects[1])
                                 {
-                                    case "0":   sEffects[1] = "Anal";           break;
-                                    case "1":   sEffects[1] = "Magic";          break;
-                                    case "2":   sEffects[1] = "BDSM";           break;
-                                    case "3":   sEffects[1] = "NormalSex";      break;
-                                    case "4":   sEffects[1] = "Beastiality";    break;
-                                    case "5":   sEffects[1] = "Group";          break;
-                                    case "6":   sEffects[1] = "Lesbian";        break;
-                                    case "7":   sEffects[1] = "Service";        break;
-                                    case "8":   sEffects[1] = "Strip";          break;
-                                    case "9":   sEffects[1] = "Combat";         break;
-                                    case "10":  sEffects[1] = "OralSex";        break;
-                                    case "11":  sEffects[1] = "TittySex";       break;
-                                    case "12":  sEffects[1] = "Medicine";       break;
-                                    case "13":  sEffects[1] = "Performance";    break;
-                                    case "14":  sEffects[1] = "Handjob";        break;
-                                    case "15":  sEffects[1] = "Crafting";       break;
-                                    case "16":  sEffects[1] = "Herbalism";      break;
-                                    case "17":  sEffects[1] = "Farming";        break;
-                                    case "18":  sEffects[1] = "Brewing";        break;
-                                    case "19":  sEffects[1] = "AnimalHandling"; break;
-                                    case "20":  sEffects[1] = "Footjob";        break;
+                                    case "0": sEffects[1] = "Anal"; break;
+                                    case "1": sEffects[1] = "Magic"; break;
+                                    case "2": sEffects[1] = "BDSM"; break;
+                                    case "3": sEffects[1] = "NormalSex"; break;
+                                    case "4": sEffects[1] = "Beastiality"; break;
+                                    case "5": sEffects[1] = "Group"; break;
+                                    case "6": sEffects[1] = "Lesbian"; break;
+                                    case "7": sEffects[1] = "Service"; break;
+                                    case "8": sEffects[1] = "Strip"; break;
+                                    case "9": sEffects[1] = "Combat"; break;
+                                    case "10": sEffects[1] = "OralSex"; break;
+                                    case "11": sEffects[1] = "TittySex"; break;
+                                    case "12": sEffects[1] = "Medicine"; break;
+                                    case "13": sEffects[1] = "Performance"; break;
+                                    case "14": sEffects[1] = "Handjob"; break;
+                                    case "15": sEffects[1] = "Crafting"; break;
+                                    case "16": sEffects[1] = "Herbalism"; break;
+                                    case "17": sEffects[1] = "Farming"; break;
+                                    case "18": sEffects[1] = "Brewing"; break;
+                                    case "19": sEffects[1] = "AnimalHandling"; break;
+                                    case "20": sEffects[1] = "Footjob"; break;
                                 }
                                 break;
                             case "1":
                                 sEffects[0] = "Stat";
                                 switch (sEffects[1])
                                 {
-                                    case "0":   sEffects[1] = "Charisma";     break;
-                                    case "1":   sEffects[1] = "Happiness";    break;
-                                    case "2":   sEffects[1] = "Libido";       break;
-                                    case "3":   sEffects[1] = "Constitution"; break;
-                                    case "4":   sEffects[1] = "Intelligence"; break;
-                                    case "5":   sEffects[1] = "Confidence";   break;
-                                    case "6":   sEffects[1] = "Mana";         break;
-                                    case "7":   sEffects[1] = "Agility";      break;
-                                    case "8":   sEffects[1] = "Fame";         break;
-                                    case "9":   sEffects[1] = "Level";        break;
-                                    case "10":  sEffects[1] = "AskPrice";     break;
-                                    case "11":  sEffects[1] = "House";        break;
-                                    case "12":  sEffects[1] = "Exp";          break;
-                                    case "13":  sEffects[1] = "Age";          break;
-                                    case "14":  sEffects[1] = "Obedience";    break;
-                                    case "15":  sEffects[1] = "Spirit";       break;
-                                    case "16":  sEffects[1] = "Beauty";       break;
-                                    case "17":  sEffects[1] = "Tiredness";    break;
-                                    case "18":  sEffects[1] = "Health";       break;
-                                    case "19":  sEffects[1] = "PCFear";       break;
-                                    case "20":  sEffects[1] = "PCLove";       break;
-                                    case "21":  sEffects[1] = "PCHate";       break;
-                                    case "22":  sEffects[1] = "Morality";     break;
-                                    case "23":  sEffects[1] = "Refinement";   break;
-                                    case "24":  sEffects[1] = "Dignity";      break;
-                                    case "25":  sEffects[1] = "Lactation";    break;
+                                    case "0": sEffects[1] = "Charisma"; break;
+                                    case "1": sEffects[1] = "Happiness"; break;
+                                    case "2": sEffects[1] = "Libido"; break;
+                                    case "3": sEffects[1] = "Constitution"; break;
+                                    case "4": sEffects[1] = "Intelligence"; break;
+                                    case "5": sEffects[1] = "Confidence"; break;
+                                    case "6": sEffects[1] = "Mana"; break;
+                                    case "7": sEffects[1] = "Agility"; break;
+                                    case "8": sEffects[1] = "Fame"; break;
+                                    case "9": sEffects[1] = "Level"; break;
+                                    case "10": sEffects[1] = "AskPrice"; break;
+                                    case "11": sEffects[1] = "House"; break;
+                                    case "12": sEffects[1] = "Exp"; break;
+                                    case "13": sEffects[1] = "Age"; break;
+                                    case "14": sEffects[1] = "Obedience"; break;
+                                    case "15": sEffects[1] = "Spirit"; break;
+                                    case "16": sEffects[1] = "Beauty"; break;
+                                    case "17": sEffects[1] = "Tiredness"; break;
+                                    case "18": sEffects[1] = "Health"; break;
+                                    case "19": sEffects[1] = "PCFear"; break;
+                                    case "20": sEffects[1] = "PCLove"; break;
+                                    case "21": sEffects[1] = "PCHate"; break;
+                                    case "22": sEffects[1] = "Morality"; break;
+                                    case "23": sEffects[1] = "Refinement"; break;
+                                    case "24": sEffects[1] = "Dignity"; break;
+                                    case "25": sEffects[1] = "Lactation"; break;
                                 }
                                 break;
                             case "2":
@@ -4675,19 +4796,19 @@ namespace WM_Girls_Generator
                                 sEffects[0] = "GirlStatus";
                                 switch (sEffects[1])
                                 {
-                                    case "1":   sEffects[1] = "Poisoned";           break;
-                                    case "2":   sEffects[1] = "Badly Poisoned";     break;
-                                    case "3":   sEffects[1] = "Pregnant";           break;
-                                    case "4":   sEffects[1] = "Pregnant By Player"; break;
-                                    case "5":   sEffects[1] = "Slave";              break;
-                                    case "6":   sEffects[1] = "Has Daughter";       break;
-                                    case "7":   sEffects[1] = "Has Son";            break;
-                                    case "8":   sEffects[1] = "Inseminated";        break;
-                                    case "9":   sEffects[1] = "Controlled";         break;
-                                    case "10":  sEffects[1] = "Catacombs";          break;
-                                    case "11":  sEffects[1] = "Arena";              break;
-                                    case "12":  sEffects[1] = "Your Daughter";      break;
-                                    case "13":  sEffects[1] = "Is Daughter";        break;
+                                    case "1": sEffects[1] = "Poisoned"; break;
+                                    case "2": sEffects[1] = "Badly Poisoned"; break;
+                                    case "3": sEffects[1] = "Pregnant"; break;
+                                    case "4": sEffects[1] = "Pregnant By Player"; break;
+                                    case "5": sEffects[1] = "Slave"; break;
+                                    case "6": sEffects[1] = "Has Daughter"; break;
+                                    case "7": sEffects[1] = "Has Son"; break;
+                                    case "8": sEffects[1] = "Inseminated"; break;
+                                    case "9": sEffects[1] = "Controlled"; break;
+                                    case "10": sEffects[1] = "Catacombs"; break;
+                                    case "11": sEffects[1] = "Arena"; break;
+                                    case "12": sEffects[1] = "Your Daughter"; break;
+                                    case "13": sEffects[1] = "Is Daughter"; break;
                                 }
                                 break;
                             case "4":
@@ -4860,12 +4981,77 @@ namespace WM_Girls_Generator
                 }
 
             }
+        }
+
+        string G_Create_Real_Name(string FN, string MN, string LN)
+        {
+            string name;
+            int name1 = 0; int name2 = 0; int name3 = 0; int names = 0;
+            if (FN.Length > 0) { names++; name1++; }
+            if (MN.Length > 0) { names++; name2++; }
+            if (LN.Length > 0) { names++; name3++; }
+
+            if (names == 3)         name = FN + " " + MN + " " + LN;
+            else if (names == 2)
+            {
+                if (name1 == 1)     name = FN + " " + MN + LN;
+                else                name = MN + " " + LN;
+            }
+            else                    name = FN + MN + LN;
+            return name;
+        }
+        string[] G_Divide_Real_Name(string name)
+        {
+            string[] ret = new string[3];
+            ret[0] = ""; ret[1] = ""; ret[2] = "";
+            string[] splitname = name.Split(' ');
+            string rename = "";
+            // first we remove any extra spaces
+            for (int i = 0; i < splitname.Length; i++)
+            {
+                if (splitname[i].Length > 0)
+                {
+                    if (rename.Length > 0) rename += " ";
+                    rename += splitname[i];
+                }
+            }
+            splitname = rename.Split(' ');
+            if (splitname.Length < 1) return ret;
+
+            ret[0] = splitname[0];
+
+            if (splitname.Length == 2) ret[2] = splitname[1];
+            else if (splitname.Length > 2)
+            {
+                for (int i = 1; i < splitname.Length - 1; i++)
+                {
+                    if (ret[1].Length > 0) ret[1] += " ";
+                    ret[1] += splitname[i];
+                }
+                ret[2] = splitname[splitname.Length - 1];
+            }
+            return ret;
+        }
+
+        private void button_G_Create_Real_Name_Click(object sender, EventArgs e)
+        {
+            TBox_G_RealName.Text = G_Create_Real_Name(TBox_G_FirstName.Text, TBox_G_MiddleName.Text, TBox_G_SurName.Text);
+        }
+
+        private void button_G_Divide_Real_Name_Click(object sender, EventArgs e)
+        {
+            string[] names = new string[3];
+            names = G_Divide_Real_Name(TBox_G_RealName.Text);
+            TBox_G_FirstName.Text = names[0];
+            TBox_G_MiddleName.Text = names[1];
+            TBox_G_SurName.Text = names[2];
+
+    
             /*
              * `J` end of file 
              * Anything after this line was added by the editing program
              * and can probably be removed
              */
         }
-
     }
 }

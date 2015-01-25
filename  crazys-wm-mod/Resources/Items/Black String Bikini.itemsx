@@ -3,7 +3,7 @@
     <Item
         Name="Black String Bikini"
         Desc="Water doesn't affect this bikini as it does white swimwear. (+Great Figure, Great Arse, +30 agil +10 cha +10 happy +5 love/conf/int -5 fear)"
-        Type="Misc"
+        Type="Swimsuit"
         Badness="0"
         Special="None"
         Cost="2500"

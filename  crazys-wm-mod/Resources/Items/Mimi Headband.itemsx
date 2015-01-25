@@ -2,7 +2,7 @@
 <Items>
 <Item Name="Mimi Headband"
       Desc="A magical headband that turns your girl into a cat girl. (Adds Cat Girl)"
-      Type="Misc"
+      Type="Hat"
       Badness="6"
       Special="None"
       Cost="1900"

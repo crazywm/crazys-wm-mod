@@ -2,7 +2,7 @@
 <Items>
 <Item Name="Velma's Glasses"
       Desc="Glasses worn by the legendary detective Velma Dinkley. Unfortunately, the owner is blind without them. (Adds Nerd and Dependant.)"
-      Type="Misc"
+      Type="Glasses"
       Badness="0"
       Special="None"
       Cost="7500"

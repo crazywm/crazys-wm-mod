@@ -97,8 +97,13 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0N
 
 
 	//try and add randomness here
-	if (g_Girls.HasTrait(girl, "Nymphomaniac") && g_Dice.percent(30) &&  !g_Girls.HasTrait(girl, "Virgin") &&  !g_Girls.HasTrait(girl, "Lesbian") && g_Girls.GetStat(girl, STAT_LIBIDO) > 75 && !brothel->m_RestrictNormal || !brothel->m_RestrictAnal)
-	{ ss << "Her Nymphomania got the better of her today and she decide the best way to services her community was on her back!\n"; sex = true; }
+	if (g_Girls.HasTrait(girl, "Nymphomaniac") && g_Dice.percent(30) && !g_Girls.HasTrait(girl, "Virgin") 
+		&& !g_Girls.HasTrait(girl, "Lesbian") && g_Girls.GetStat(girl, STAT_LIBIDO) > 75 
+		&& !brothel->m_RestrictNormal)
+	{
+		sex = true;
+		ss << "Her Nymphomania got the better of her today and she decide the best way to services her community was on her back!\n";
+	}
 
 	if (g_Girls.GetStat(girl, STAT_INTELLIGENCE) < 55 && g_Dice.percent(30))//didnt put a check on this one as we could use some randomness and its an intel check... guess we can if people keep bitching
 	{ blow = true;	ss << "An elderly fellow managed to convince " + girlName + " that the best way to serve her community was on her knees. She ended up giving him a blow job!\n\n"; }

@@ -2,7 +2,7 @@
 <Items>
 <Item Name="Vexing blindfold"
       Desc="Confuses and disorients the wearer as well as taking their sight. (+30 obedience/libido +20 bdsm  -lots group/service/magic/combat)"
-      Type="Misc"
+      Type="Glasses"
       Badness="30"
       Special="None"
       Cost="10000"

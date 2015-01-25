@@ -23,7 +23,7 @@
       Desc="This video will help women with their confidence and physical properties. (Depending on the quality of it, It could affect the girl Permanetly, Temporary, or all the girls you have could get in on the workout.)"
       Type="Food"
       Badness="0"
-      Special="AffectsAll"
+      Special="None"
       Cost="890"
       Rarity="Shop25"
       Infinite="false">

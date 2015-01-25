@@ -4,7 +4,7 @@
       Desc="Every woman loves Zone-Tan! Just watching her news report on Crystal-View gives women happiness. Just throw out the crystal because she makes a report any time she can. (All Girl's Happiness, Spirit, Conf +10)"
       Type="Food"
       Badness="0"
-      Special="AffectsAll"
+      Special="None"
       Cost="550"
       Rarity="Shop05"
       Infinite="false"

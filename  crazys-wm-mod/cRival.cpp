@@ -33,6 +33,7 @@ using namespace std;
 #include "DirPath.h"
 #include "cGangs.h"
 #include "libintl.h"
+#include "cInventory.h"
 
 extern cMessageQue g_MessageQue;
 extern cBrothelManager g_Brothels;
@@ -86,13 +87,6 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 
 	while (curr)
 	{
-		int income = 0; int upkeep = 0;
-
-		// `J` added - rival power
-		if (curr->m_Power < 0) curr->m_Power = 0;				// if they are negative on power, set it to 0
-		else if (curr->m_NumBrothels <= 0) curr->m_Power--;		// if they have no brothels, reduce power
-		else curr->m_Power++;									// otherwise increase power
-
 		// check if rival is killed
 		if (curr->m_Gold <= 0 && curr->m_NumBrothels <= 0 && curr->m_NumGangs <= 0 &&
 			curr->m_NumGirls <= 0 && curr->m_NumGamblingHalls <= 0 && curr->m_NumBars <= 0 &&
@@ -105,82 +99,75 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 			continue;
 		}
 
-		// sell or use items
-		if (curr->m_NumInventory > 0)
-		{
-			for (int i = 0; i < MAXNUM_RIVAL_INVENTORY; i++)
-			{
-				sInventoryItem* temp = curr->m_Inventory[i];
-				if (temp)
-				{
-					switch (g_Dice % 4)
-					{
-					case 0:		// use
-						RemoveInvByNumber(curr, i);
-						break;
-					case 1:		// sell
-						curr->m_Gold += (temp->m_Cost / 2);
-						income += (temp->m_Cost / 2);
-						RemoveInvByNumber(curr, i);
-						break;
-					default:	// keep
-						break;
-					}
-				}
-			}
-		}
+		int income = 0; int upkeep = 0; int profit = 0;
+		int totalincome = 0; int totalupkeep = 0;
+		int startinggold = curr->m_Gold;
 
-
-
-
+		// `J` added - rival power
+		if (curr->m_Power < 0) curr->m_Power = 0;				// if they are negative on power, set it to 0
+		else if (curr->m_NumBrothels <= 0) curr->m_Power--;		// if they have no brothels, reduce power
+		else curr->m_Power++;									// otherwise increase power
 
 		// check if a rival is in danger
-		if (curr->m_Gold <= 0 || curr->m_NumBrothels <= 0 ||
-			curr->m_NumGirls <= 0 || curr->m_NumGamblingHalls <= 0 || curr->m_NumBars <= 0)
+		if (curr->m_Gold <= 0 || curr->m_NumBrothels <= 0 || curr->m_NumGirls <= 0 || curr->m_NumGamblingHalls <= 0 || curr->m_NumBars <= 0)
 		{
 			// The AI is in danger so will stop extra spending
 			curr->m_BribeRate = 0;
 			curr->m_Influence = 0;
 
-			// try to buy at least one of each to make up for losses
-			if (curr->m_NumBrothels <= 0 && curr->m_Gold - 20000 >= 0)
+			// first try to sell any items
+			if (curr->m_NumInventory > 0)
 			{
-				curr->m_Gold -= 20000;
+				for (int i = 0; i < MAXNUM_RIVAL_INVENTORY && curr->m_Gold + income + upkeep < 1000; i++)
+				{
+					sInventoryItem* temp = curr->m_Inventory[i];
+					if (temp)
+					{
+						income += (temp->m_Cost / 2);
+						RemoveRivalInvByNumber(curr, i);
+					}
+				}
+			}
+
+			// try to buy at least one of each to make up for losses
+			if (curr->m_NumBrothels <= 0 && curr->m_Gold + income + upkeep - 20000 >= 0)
+			{
+				upkeep -= 20000;
 				curr->m_NumBrothels++;
 			}
-			if (curr->m_NumGirls <= 0 && curr->m_Gold - 550 >= 0)
+			if (curr->m_NumGirls <= 0 && curr->m_Gold + income + upkeep - 550 >= 0)
 			{
-				curr->m_Gold -= 550;
+				upkeep -= 550;
 				curr->m_NumGirls++;
 			}
-			if (curr->m_NumGamblingHalls <= 0 && curr->m_Gold - 10000 >= 0)
+			if (curr->m_NumGamblingHalls <= 0 && curr->m_Gold + income + upkeep - 10000 >= 0)
 			{
 				curr->m_NumGamblingHalls++;
-				curr->m_Gold -= 10000;
+				upkeep -= 10000;
 			}
-			if (curr->m_NumBars <= 0 && curr->m_Gold - 2500 >= 0)
+			if (curr->m_NumBars <= 0 && curr->m_Gold + income + upkeep - 2500 >= 0)
 			{
 				curr->m_NumBars++;
-				curr->m_Gold -= 2500;
+				upkeep -= 2500;
 			}
 			// buy more girls if there is enough money left (save at least 1000 in reserve)
-			if (curr->m_Gold >= 1550 && (curr->m_NumGirls < 5 || curr->m_NumGirls < curr->m_NumBrothels * 20))
+			if (curr->m_Gold + income + upkeep >= 1550 && (curr->m_NumGirls < 5 || curr->m_NumGirls < curr->m_NumBrothels * 20))
 			{
 				int i = 0;
-				while (curr->m_Gold >= 1550 && i < (g_Dice % 5) + 1)	// buy up to 5 girls if they can afford it.
+				while (curr->m_Gold + income + upkeep >= 1550 && i < (g_Dice % 5) + 1)	// buy up to 5 girls if they can afford it.
 				{
-					curr->m_Gold -= 550;
+					upkeep -= 550;
 					curr->m_NumGirls++;
 					i++;
 				}
 			}
-
 		}
 
-		// Get their income and upkeep
-
-		// from girls
-		for (int i = 0; i < curr->m_NumGirls; i++)
+		// process money
+		totalincome += income; totalupkeep += upkeep; curr->m_Gold += income; curr->m_Gold += upkeep; profit = totalincome + totalupkeep; 
+		income = upkeep = 0;
+		
+		for (int i = 0; i < curr->m_NumGirls; i++)	// from girls
 		{
 			// If a rival has more girls than their brothels can handle, the rest work on the streets
 			double rapechance = (i > curr->m_NumBrothels * 20 ? cfg.prostitution.rape_brothel() : cfg.prostitution.rape_streets());
@@ -189,21 +176,21 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 			{
 				if (g_Dice.percent(rapechance))
 				{
-					upkeep += 100;					// pay off the girl and the officials after killing the rapist
+					upkeep -= 50;					// pay off the girl and the officials after killing the rapist
 				}
 				else
 				{
-					income += g_Dice % 46 + 5;		// 5-50 gold per cust
+					income += g_Dice % 38 + 2;		// 2-40 gold per cust
 				}
 			}
 		}
 		// from halls
 		for (int i = 0; i < curr->m_NumGamblingHalls; i++)
 		{
-			int Customers = (g_Dice%curr->m_NumGirls)*((g_Dice % 2) + 1);
+			int Customers = ((g_Dice%curr->m_NumGirls) + curr->m_NumGirls / 5);
 			if (g_Dice.percent(5))
 			{
-				upkeep += ((g_Dice % 101) + 200);			// Big Winner
+				upkeep -= ((g_Dice % 101) + 200);			// Big Winner
 				Customers += g_Dice % 10;					// attracts more customers
 			}
 			if (g_Dice.percent(5))
@@ -216,16 +203,16 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 			{
 				int winloss = (g_Dice % 151 - 50);
 				if (winloss > 0) income += winloss;
-				else /*       */ upkeep -= winloss;
+				else /*       */ upkeep += winloss;
 			}
 		}
 		// from bars
 		for (int i = 0; i < curr->m_NumBars; i++)
 		{
-			int Customers = (g_Dice%curr->m_NumGirls)*((g_Dice % 2) + 1);
+			int Customers = ((g_Dice%curr->m_NumGirls) + curr->m_NumGirls/5);
 			if (g_Dice.percent(5))
 			{
-				upkeep += ((g_Dice % 250) + 1);				// bar fight - cost to repair
+				upkeep -= ((g_Dice % 250) + 1);				// bar fight - cost to repair
 				Customers -= g_Dice % (Customers / 5);		// scare off some customers
 			}
 			if (g_Dice.percent(5))
@@ -235,7 +222,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 			}
 			for (int j = 0; j < Customers; j++)
 			{
-				income += (g_Dice % 19) + 2;				// customers spend 2-20 per visit
+				income += (g_Dice % 9) + 1;				// customers spend 1-10 per visit
 			}
 
 		}
@@ -243,12 +230,12 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 		if (curr->m_BusinessesExtort > 0) income += (curr->m_BusinessesExtort * INCOME_BUSINESS);
 
 		// Calc their upkeep
-		upkeep += curr->m_BribeRate;
-		upkeep += curr->m_NumGirls * 5;
-		upkeep += curr->m_NumBars * 20;
-		upkeep += curr->m_NumGamblingHalls * 80;
-		upkeep += (curr->m_NumBars)*((g_Dice % 100) + 30);	// upkeep for buying barrels of booze
-		upkeep += (curr->m_NumGangs * 90);
+		upkeep -= curr->m_BribeRate;
+		upkeep -= curr->m_NumGirls * 5;
+		upkeep -= curr->m_NumBars * 20;
+		upkeep -= curr->m_NumGamblingHalls * 80;
+		upkeep -= (curr->m_NumBars)*((g_Dice % 50) + 30);	// upkeep for buying barrels of booze
+		upkeep -= (curr->m_NumGangs * 90);
 
 		float taxRate = 0.06f;	// normal tax rate is 6%
 		if (curr->m_Influence > 0)	// can you influence it lower
@@ -262,10 +249,12 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 		{
 			int tmp = income - (g_Dice % (int)(income*0.25f));	// launder up to 25% of gold
 			int tax = (int)(tmp*taxRate);
-			upkeep += tax;
+			upkeep -= tax;
 		}
 
-
+		// process money
+		totalincome += income; totalupkeep += upkeep; curr->m_Gold += income; curr->m_Gold += upkeep; profit = totalincome + totalupkeep; 
+		income = upkeep = 0;
 
 		// Work out gang missions
 		int cGangs = curr->m_NumGangs;
@@ -488,7 +477,6 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 						if (rival && rival != curr)
 						{
 							int num = 0;
-							bool damage = false;
 							ss << rival->m_Name;
 							if (rival->m_NumGangs > 0)
 							{
@@ -497,7 +485,6 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 								{
 									rival->m_NumGangs--;
 									ss << gettext(" and won.");
-									damage = true;
 									num = (g_Dice % 2) + 1;
 								}
 								else
@@ -509,10 +496,9 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 							}
 							else
 							{
-								damage = true;
-								num = (g_Dice % 3) + 1;
+								num = (g_Dice % 4) + 1;	// can do more damage if not fighting another gang
 							}
-							if (damage)
+							if (num > 0)
 							{
 								if (rival->m_BusinessesExtort > 0)
 								{
@@ -534,20 +520,20 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 									}
 									income += gold;
 								}
-								int buildinghit = g_Dice.d100();
-								if (buildinghit < 10 && rival->m_NumBrothels > 0)			// 10% brothel
-								{
+								int buildinghit = g_Dice.d100() - num;
+								if (rival->m_NumBrothels > 0 && buildinghit < 10 + (rival->m_NumBrothels * 2))
+								{		// 10% base + 2% per brothel
 									rival->m_NumBrothels--;
 									rival->m_Power--;
 									ss << "\nThey destroyed one of their Brothels.";
 								}
-								else if (buildinghit < 30 && rival->m_NumGamblingHalls > 0)	// 20% hall
-								{
+								else if (rival->m_NumGamblingHalls > 0 && buildinghit < 30 + (rival->m_NumGamblingHalls * 2))
+								{		// 20% base + 2% per hall
 									rival->m_NumGamblingHalls--;
 									ss << "\nThey destroyed one of their Gambling Halls.";
 								}
-								else if (buildinghit < 60 && rival->m_NumBars > 0)			// 30% bar
-								{
+								else if (rival->m_NumBars > 0 && buildinghit < 60 + (rival->m_NumBars * 2))
+								{		// 60% base + 2% per bar
 									rival->m_NumBars--;
 									ss << "\nThey destroyed one of their Bars.";
 								}
@@ -571,6 +557,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 				{
 					bool addgirl = false;
 					sGirl* girl = g_Girls.GetRandomGirl();
+					g_Girls.SetStat(girl, STAT_HEALTH, 100);		// make sure she is at full health
 					if (girl)
 					{
 						if (g_Dice.percent(cG1->m_Stats[STAT_CHARISMA]))	// convince her
@@ -606,7 +593,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 					{
 						bool quit = false; bool add = false;
 						sInventoryItem* temp;
-						do { temp = g_InvManager.GetRandomItem();
+						do { temp = g_InvManager.GetRandomItem(); 
 						} while (!temp || temp->m_Rarity < RARITYSHOP25 || temp->m_Rarity > RARITYCATACOMB01);
 
 						switch (temp->m_Rarity)
@@ -623,8 +610,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 						}
 						if (add)
 						{
-							AddInv(curr, temp);
-							curr->m_NumInventory++;
+							AddRivalInv(curr, temp);
 						}
 					}
 
@@ -641,16 +627,9 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 			delete cG1; cG1 = 0;	// cleanup
 		}	// end Gang Missions
 
-//		// handicap super profits
-//		if (income - upkeep > 10000)
-//		{
-//			income = 0;
-//			curr->m_Gold -= 10000;
-//		}
-		// Determine if their profits and loses
-		int profit = income - upkeep;
-		curr->m_Gold += income;
-		curr->m_Gold -= upkeep;
+		// process money
+		totalincome += income; totalupkeep += upkeep; curr->m_Gold += income; curr->m_Gold += upkeep; profit = totalincome + totalupkeep; 
+		income = upkeep = 0;
 
 		bool danger = false;
 		bool sellfail = false;
@@ -658,47 +637,61 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 		if (profit <= 0 && curr->m_Gold - (profit * 2) < 0)		// sell off some stuff
 		{
 			danger = true;						// this will make sure AI doesn't replace them this turn
-			while (curr->m_Gold - (profit * 2) < 0 && !sellfail)
+			while (curr->m_Gold + income + upkeep - (profit * 2) < 0 && !sellfail)
 			{
-				// sell extra stuff first - hall or bar
+				// first try to sell any items
+				if (curr->m_NumInventory > 0)
+				{
+					for (int i = 0; i < MAXNUM_RIVAL_INVENTORY && curr->m_Gold + income + upkeep - (profit * 2) < 0; i++)
+					{
+						sInventoryItem* temp = curr->m_Inventory[i];
+						if (temp)
+						{
+							income += (temp->m_Cost / 2);
+							RemoveRivalInvByNumber(curr, i);
+						}
+					}
+				}
+
+				// sell extra stuff - hall or bar
 				if (curr->m_NumGamblingHalls > curr->m_NumBrothels)
 				{
 					curr->m_NumGamblingHalls--;
-					curr->m_Gold += 5000;
+					income += 5000;
 				}
 				else if (curr->m_NumBars > curr->m_NumBrothels)
 				{
 					curr->m_NumBars--;
-					curr->m_Gold += 1250;
+					income += 1250;
 				}
 				// if they have an empty brothel, sell it
 				else if (curr->m_NumBrothels > 1 && (curr->m_NumBrothels - 1) * 20 > curr->m_NumGirls + 1)
 				{
 					curr->m_NumBrothels--;
-					curr->m_Gold += 10000;
+					income += 10000;
 				}
 				// sell extra girls
 				else if (curr->m_NumGirls > curr->m_NumBrothels * 20)
 				{
 					curr->m_NumGirls--;
-					curr->m_Gold += g_Dice % 401 + 300;	// variable price 300-700
+					income += g_Dice % 401 + 300;	// variable price 300-700
 				}
 				// sell a hall or bar keeping at least 1 of each
 				else if (curr->m_NumGamblingHalls > 1 && curr->m_NumBars <= curr->m_NumGamblingHalls)
 				{
 					curr->m_NumGamblingHalls--;
-					curr->m_Gold += 5000;
+					income += 5000;
 				}
 				else if (curr->m_NumBars > 1)
 				{
 					curr->m_NumBars--;
-					curr->m_Gold += 1250;
+					income += 1250;
 				}
 				// Finally - sell a girl
 				else if (curr->m_NumGirls > 1)
 				{
 					curr->m_NumGirls--;
-					curr->m_Gold += g_Dice % 401 + 300;	// variable price 300-700
+					income += g_Dice % 401 + 300;	// variable price 300-700
 				}
 				else
 				{
@@ -707,48 +700,99 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 			}
 		}
 
+		// process money
+		totalincome += income; totalupkeep += upkeep; curr->m_Gold += income; curr->m_Gold += upkeep; profit = totalincome + totalupkeep; 
+		income = upkeep = 0;
+
 		if (!danger)
 		{
-			// buy a new brothel
-			if (curr->m_Gold - 20000 > 0 && curr->m_NumGirls + 2 >= curr->m_NumBrothels * 20 && curr->m_NumBrothels < 6)
+			// use or sell items
+			if (curr->m_NumInventory > 0)
+			{
+				for (int i = 0; i < MAXNUM_RIVAL_INVENTORY; i++)
+				{
+					sInventoryItem* temp = curr->m_Inventory[i];
+					if (temp && g_Dice.percent(50))
+					{
+						if (g_Dice.percent(50)) income += (temp->m_Cost / 2);
+						RemoveRivalInvByNumber(curr, i);
+					}
+				}
+			}
+
+			// buy a new brothel if they have enough money
+			if (curr->m_Gold + income + upkeep - 20000 > 0 && curr->m_NumGirls + 2 >= curr->m_NumBrothels * 20 && curr->m_NumBrothels < 6)
 			{
 				curr->m_NumBrothels++;
-				curr->m_Gold -= 20000;
+				upkeep -= 20000;
 			}
 			// buy new girls
 			int girlsavailable = (g_Dice % 6) + 1;
-			while (curr->m_Gold - 550 >= 0 && girlsavailable > 0 && curr->m_NumGirls < curr->m_NumBrothels * 20)
+			while (curr->m_Gold + income + upkeep - 550 >= 0 && girlsavailable > 0 && curr->m_NumGirls < curr->m_NumBrothels * 20)
 			{
 				curr->m_NumGirls++;
 				girlsavailable--;
-				curr->m_Gold -= 550;
+				upkeep -= 550;
 			}
 			// hire gangs
 			int gangsavailable = (max(0, (g_Dice % 5) - 2));
-			while (curr->m_Gold - 90 >= 0 && gangsavailable > 0 && curr->m_NumGangs < 8)
+			while (curr->m_Gold + income + upkeep - 90 >= 0 && gangsavailable > 0 && curr->m_NumGangs < 8)
 			{
 				curr->m_NumGangs++;
-				curr->m_Gold -= 90;
+				upkeep -= 90;
 			}
 			// buy a gambling hall 
-			if (g_Dice.percent(30) && curr->m_Gold - 10000 >= 0 && curr->m_NumGamblingHalls < curr->m_NumBrothels)
+			if (g_Dice.percent(30) && curr->m_Gold + income + upkeep - 10000 >= 0 && curr->m_NumGamblingHalls < curr->m_NumBrothels)
 			{
 				curr->m_NumGamblingHalls++;
-				curr->m_Gold -= 10000;
+				upkeep -= 10000;
 			}
 			// buy a new bar
-			if (g_Dice.percent(60) && curr->m_Gold - 2500 >= 0 && curr->m_NumBars < curr->m_NumBrothels)
+			if (g_Dice.percent(60) && curr->m_Gold + income + upkeep - 2500 >= 0 && curr->m_NumBars < curr->m_NumBrothels)
 			{
 				curr->m_NumBars++;
-				curr->m_Gold -= 2500;
+				upkeep -= 2500;
+			}
+
+			// buy items
+			int rper[7] = { 90, 70, 50, 30, 10, 5, 1 };
+			int i = 0;
+			while (i < 6)
+			{
+				sInventoryItem* item = g_InvManager.GetRandomItem();
+				if (item && item->m_Rarity <= RARITYCATACOMB01 && g_Dice.percent(rper[item->m_Rarity])
+					&& curr->m_Gold + income + upkeep > item->m_Cost)
+				{
+					if (g_Dice.percent(50))
+					{
+						AddRivalInv(curr, item);	// buy 50%, use 50%
+					}
+					upkeep -= item->m_Cost;
+				}
+				i++;
+
 			}
 		}
+
+		// process money
+		totalincome += income; totalupkeep += upkeep; curr->m_Gold += income; curr->m_Gold += upkeep; profit = totalincome + totalupkeep; 
+		income = upkeep = 0;
 
 		// adjust their bribe rate		
 		if (profit > 1000)		curr->m_BribeRate += (long)(50);	// if doing well financially then increase 
 		else if (profit < 0)	curr->m_BribeRate -= (long)(50);	// if loosing money decrease
 		if (curr->m_BribeRate < 0) curr->m_BribeRate = 0;			// check 0
 		g_Brothels.UpdateBribeInfluence();							// update influence
+
+
+		// `J` bookmark - rival money at the end of their turn
+		if (cfg.debug.log_debug())
+		g_LogFile.os() << "Processing Rival: " << curr->m_Name
+			<< " | Starting Gold: " << startinggold
+			<< " | Income: " << totalincome
+			<< " | Upkeep: " << totalupkeep
+			<< " | Profit: " << totalincome + totalupkeep
+			<< " | Ending Gold: " << curr->m_Gold <<"\n";
 
 		curr = curr->m_Next;
 	}
@@ -905,6 +949,8 @@ bool cRivalManager::LoadRivalsXML(TiXmlHandle hRivalManager)
 void cRivalManager::CreateRival(long bribeRate, int extort, long gold, int bars, int gambHalls, int Girls, int brothels, int gangs, int power)
 {
 	ifstream in;
+	cConfig cfg;
+
 	cRival* rival = new cRival();
 
 	DirPath first_names = DirPath() << "Resources" << "Data" << "RivalGangFirstNames.txt";
@@ -925,6 +971,18 @@ void cRivalManager::CreateRival(long bribeRate, int extort, long gold, int bars,
 		rival->m_Name = names.random();
 		if (!NameExists(rival->m_Name)) break;
 	}
+	if (cfg.debug.log_debug())
+	g_LogFile.os() << "Creating New Rival: " << rival->m_Name
+		<< "     | Power: " << rival->m_Power
+		<< "     | Gold : " << rival->m_Gold
+		<< "     | Brthl: " << rival->m_NumBrothels
+		<< "     | Girls: " << rival->m_NumGirls
+		<< "     | Gangs: " << rival->m_NumGangs
+		<< "     | Bribe: " << rival->m_BribeRate
+		<< "     | Busns: " << rival->m_BusinessesExtort
+		<< "     | Bars : " << rival->m_NumBars
+		<< "     | Halls: " << rival->m_NumGamblingHalls
+		<< "\n";
 	AddRival(rival);
 }
 
@@ -989,7 +1047,7 @@ void cRivalManager::RemoveRival(cRival* rival)
 
 
 
-int cRivalManager::AddInv(cRival* rival, sInventoryItem* item)
+int cRivalManager::AddRivalInv(cRival* rival, sInventoryItem* item)
 {
 	int i;
 	for (i = 0; i < MAXNUM_RIVAL_INVENTORY; i++)
@@ -1004,7 +1062,7 @@ int cRivalManager::AddInv(cRival* rival, sInventoryItem* item)
 	return -1;
 }
 
-bool cRivalManager::RemoveInvByNumber(cRival* rival, int num)
+bool cRivalManager::RemoveRivalInvByNumber(cRival* rival, int num)
 {
 	// rivals inventories don't stack items
 	if (rival->m_Inventory[num] != 0)
@@ -1016,7 +1074,7 @@ bool cRivalManager::RemoveInvByNumber(cRival* rival, int num)
 	return false;
 }
 
-void cRivalManager::SellInvItem(cRival* rival, int num)
+void cRivalManager::SellRivalInvItem(cRival* rival, int num)
 {
 	if (rival->m_Inventory[num] != 0)
 	{
@@ -1026,14 +1084,14 @@ void cRivalManager::SellInvItem(cRival* rival, int num)
 	}
 }
 
-sInventoryItem* cRivalManager::GetItem(cRival* rival, int num)
+sInventoryItem* cRivalManager::GetRivalItem(cRival* rival, int num)
 {
 	sInventoryItem *ipt;
 	ipt = rival->m_Inventory[num];
 	return ipt;
 }
 
-sInventoryItem* cRivalManager::GetRandomItem(cRival* rival)
+sInventoryItem* cRivalManager::GetRandomRivalItem(cRival* rival)
 {
 	sInventoryItem *ipt;
 	if (rival->m_NumInventory <= 0) return 0;
@@ -1055,7 +1113,7 @@ sInventoryItem* cRivalManager::GetRandomItem(cRival* rival)
 	return 0;
 }
 
-int cRivalManager::GetRandomItemNum(cRival* rival)
+int cRivalManager::GetRandomRivalItemNum(cRival* rival)
 {
 	sInventoryItem *ipt;
 	if (rival->m_NumInventory <= 0) return -1;
