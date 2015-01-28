@@ -939,6 +939,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\cScreenGallery.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\cScreenGallery.h"
+				>
+			</File>
+			<File
 				RelativePath=".\cScreenGangs.cpp"
 				>
 			</File>

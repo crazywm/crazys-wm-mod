@@ -288,7 +288,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 		else if (n == SKILL_NORMALSEX)	imageType = IMGTYPE_SEX;
 		if (n == SKILL_NORMALSEX && !girl->calc_pregnancy(&cust,  false, 1.0))
 		{
-			g_MessageQue.AddToQue(girl->m_Realname + " has gotten pregnant", 0);
+			g_MessageQue.AddToQue(girlName + " has gotten pregnant", 0);
 		}
 		g_Girls.UpdateSkill(girl, n, 2);
 		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -25);

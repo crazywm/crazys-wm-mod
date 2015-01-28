@@ -304,6 +304,11 @@ void cGoldBase::centre_costs(double cost)
 	m_upkeep += cost;
 }
 
+void cGoldBase::arena_costs(double cost)
+{
+	m_upkeep += cost;
+}
+
 void cGoldBase::rival_raids(double cost)
 {
 	m_value -= cost;

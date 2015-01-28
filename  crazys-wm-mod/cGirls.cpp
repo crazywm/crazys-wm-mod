@@ -3718,6 +3718,7 @@ void sGirl::load_from_xml(TiXmlElement *el)
 	if (pt = el->Attribute("Slave"))		m_States |= (strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0) ? (1 << STATUS_SLAVE) : (0 << STATUS_SLAVE);
 	if (pt = el->Attribute("Arena"))		m_States |= (strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0) ? (1 << STATUS_ARENA) : (0 << STATUS_ARENA);
 	if (pt = el->Attribute("YourDaughter"))	m_States |= (strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0) ? (1 << STATUS_YOURDAUGHTER) : (0 << STATUS_YOURDAUGHTER);
+	if (pt = el->Attribute("IsDaughter"))	m_States |= (strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0) ? (1 << STATUS_ISDAUGHTER) : (0 << STATUS_ISDAUGHTER);
 
 	for (int i = 0; i < NUM_STATS; i++) // loop through stats
 	{
@@ -3748,6 +3749,7 @@ void sGirl::load_from_xml(TiXmlElement *el)
 		else if (strcmp(pt, "Slave") == 0)			m_States |= (1 << STATUS_SLAVE);
 		else if (strcmp(pt, "Arena") == 0)			m_States |= (1 << STATUS_ARENA);
 		else if (strcmp(pt, "Your Daughter") == 0)	m_States |= (1 << STATUS_YOURDAUGHTER);
+		else if (strcmp(pt, "Is Daughter") == 0)	m_States |= (1 << STATUS_ISDAUGHTER);
 		//		else	m_States = 0;
 	}
 
@@ -3786,6 +3788,7 @@ void sRandomGirl::load_from_xml(TiXmlElement *el)
 	if (pt = el->Attribute("Catacomb"))			m_Catacomb = (strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0) ? 1 : 0;
 	if (pt = el->Attribute("Arena"))			m_Arena = (strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0) ? 1 : 0;
 	if (pt = el->Attribute("Your Daughter"))	m_YourDaughter = (strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0) ? 1 : 0;
+	if (pt = el->Attribute("Is Daughter"))		m_IsDaughter = (strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0) ? 1 : 0;
 
 	// loop through children
 	TiXmlElement *child;
@@ -4415,6 +4418,7 @@ void cGirls::UseItems(sGirl* girl)
 						case STATUS_NONE:
 						case STATUS_CATACOMBS:
 						case STATUS_ARENA:
+						case STATUS_ISDAUGHTER:
 							break;
 						case STATUS_HAS_DAUGHTER:
 						case STATUS_HAS_SON:
@@ -5980,6 +5984,7 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait, bool rememberflag)
 			}
 			else if (Name == "Succubus")
 			{
+				UpdateEnjoyment(girl, ACTION_SEX, +40, true);
 				//
 			}
 		}
@@ -7045,6 +7050,7 @@ void cGirls::UnapplyTraits(sGirl* girl, sTrait* trait)
 			}
 			else if (Name == "Succubus")
 			{
+				UpdateEnjoyment(girl, ACTION_SEX, -40, true);
 				//
 			}
 		}
@@ -8742,7 +8748,13 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 	AddTiredness(girl);
 
 	// if the girl likes sex and the sex type then increase her happiness otherwise decrease it
-	if (GetStat(girl, STAT_LIBIDO) > 5)
+	if (HasTrait(girl, "Succubus"))
+	{
+		message += "\nIt seems that she lives for this sort of thing.";//succubus does live for sex lol.. Idk if this will work like i want it to CRAZY
+		UpdateStat(girl, STAT_HEALTH, 10);//Idk where I should put this really but succubus gain live force or whatever from sex
+		UpdateStat(girl, STAT_HAPPINESS, 5);
+	}
+	else if (GetStat(girl, STAT_LIBIDO) > 5)
 	{
 		/* */if (check < 20)	message += "\nThough she had a tough time with it, she was horny and still managed to gain some little enjoyment.";
 		else if (check < 40)	message += "\nShe considered it a learning experience and enjoyed it a bit.";
@@ -8839,7 +8851,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			if (HasTrait(girl, "Gag Reflex") || HasTrait(girl, "Strong Gag Reflex"))
 			{
 				message += "\nHer throat is raw from gagging on the customer's cock. She was nearly sick.";
-				UpdateStat(girl, STAT_HAPPINESS, -2);
+				UpdateStat(girl, STAT_HAPPINESS, -4);
 				UpdateStat(girl, STAT_SPIRIT, -3);
 				UpdateStat(girl, STAT_CONFIDENCE, -1);
 				UpdateStat(girl, STAT_HEALTH, -3);
@@ -8958,6 +8970,13 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 
 	case SKILL_LESBIAN:
 	{
+		if (check <= 20)	// if unexperienced then will get hurt
+		{
+			message += "\nHer inexperience caused her some embarrassment.";	// Changed... being new at lesbian doesn't hurt, but can be embarrasing. --PP
+			UpdateStat(girl, STAT_HAPPINESS, -2);
+			UpdateStat(girl, STAT_SPIRIT, -3);
+			UpdateStat(girl, STAT_CONFIDENCE, -1);
+		}
 		STDchance += 5;
 		UpdateTempStat(girl, STAT_LIBIDO, -10);
 	}break;
@@ -9087,9 +9106,9 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		case SKILL_LESBIAN:			enjoy += 3; break;
 		case SKILL_STRIP:			enjoy += 1; break;
 			// Lesbian would rather not have sex with a male
-		case SKILL_NORMALSEX:
+		case SKILL_NORMALSEX:		enjoy -= 3; break;
 		case SKILL_TITTYSEX:
-		case SKILL_ORALSEX:
+		case SKILL_ORALSEX:			enjoy -= 1; break;
 		case SKILL_HANDJOB:
 		case SKILL_FOOTJOB:			enjoy -= 1; break;
 		case SKILL_ANAL:
@@ -9102,7 +9121,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 	{
 		switch (SexType)
 		{
-		case SKILL_NORMALSEX:		enjoy += 1; break;
+		case SKILL_NORMALSEX:		enjoy += 2; break;
 		case SKILL_LESBIAN:			enjoy -= 1; break;
 		default:
 			break;
@@ -11909,6 +11928,7 @@ ostream& operator<<(ostream &os, sRandomGirl &g)
 	os << gettext("Catacomb Dweller? ") << (g.m_Catacomb ? gettext("Yes") : gettext("No")) << endl;
 	os << gettext("Arena Girl? ") << (g.m_Arena ? gettext("Yes") : gettext("No")) << endl;
 	os << gettext("Your Daughter? ") << (g.m_YourDaughter ? gettext("Yes") : gettext("No")) << endl;
+	os << gettext("Is Daughter? ") << (g.m_IsDaughter ? gettext("Yes") : gettext("No")) << endl;
 	os << gettext("Money: Min = ") << g.m_MinMoney << gettext(". Max = ") << g.m_MaxMoney << endl;
 	/*
 	*	loop through stats

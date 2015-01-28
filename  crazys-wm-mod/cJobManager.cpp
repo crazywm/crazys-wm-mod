@@ -290,15 +290,15 @@ void cJobManager::Setup()
 	JobName[JOB_REHAB] = gettext("Rehab");
 	JobDesc[JOB_REHAB] = gettext("She will go to rehab to get over her drug addiction.");
 	JobFunc[JOB_REHAB] = &WorkRehab;
-	//JobName[JOB_THERAPY] = gettext("Therapy");
-	//JobDesc[JOB_THERAPY] = gettext("She will go to therapy to get over her mental problems.");
-	//JobFunc[JOB_THERAPY] = &WorkCentreTherapy;
-	//JobName[JOB_EXTHERAPY] = gettext("Extreme Therapy");
-	//JobDesc[JOB_EXTHERAPY] = gettext("She will go to extreme therapy to get over her hardcore mental problems.");
-	//JobFunc[JOB_EXTHERAPY] = &WorkCentreExTherapy;
-	//JobName[JOB_ANGER] = gettext("Anger Management");
-	//JobDesc[JOB_ANGER] = gettext("She will go to anger management to get over her anger problems.");
-	//JobFunc[JOB_ANGER] = &WorkCentreAngerManagement;
+	JobName[JOB_THERAPY] = gettext("Therapy");
+	JobDesc[JOB_THERAPY] = gettext("She will go to therapy to get over her mental problems.");
+	JobFunc[JOB_THERAPY] = &WorkCentreTherapy;
+	JobName[JOB_EXTHERAPY] = gettext("Extreme Therapy");
+	JobDesc[JOB_EXTHERAPY] = gettext("She will go to extreme therapy to get over her hardcore mental problems.");
+	JobFunc[JOB_EXTHERAPY] = &WorkCentreExTherapy;
+	JobName[JOB_ANGER] = gettext("Anger Management");
+	JobDesc[JOB_ANGER] = gettext("She will go to anger management to get over her anger problems.");
+	JobFunc[JOB_ANGER] = &WorkCentreAngerManagement;
 
 	// - Clinic Surgeries
 	JobFilterName[JOBFILTER_CLINIC] = gettext("Medical Clinic");

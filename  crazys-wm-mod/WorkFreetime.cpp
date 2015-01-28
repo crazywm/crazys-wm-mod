@@ -110,6 +110,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			FT_Cook,			// cook herself dinner
 			FT_ClinicCheckup,	// go to the Clinic
 			FT_ClinicVisit,		// go to the Clinic to visit
+			FT_WorkOut,			// she works out to stay in shape
 
 			// Crazy started adding these but didn't finish them yet
 			FT_WatchMovie,		// go to see a movie
@@ -126,7 +127,6 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			FT_StrollInCity,	// she goes for a walk in the city
 			FT_Casino,			// she goes to the casino and gambles
 			FT_CountrySide,		// she goes out into the country side for a walk
-			FT_WorkOut,			// she works out to stay in shape
 
 
 
@@ -171,6 +171,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				case FT_Cook:
 				case FT_WindowShopping:
 				case FT_ClinicVisit:
+				case FT_WorkOut:
 					choicemade = true;	// ready so continue
 					break;
 
@@ -268,7 +269,13 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			}
 			else if (girl->libido() > 70 || (g_Girls.HasTrait(girl, "Nymphomaniac") && girl->libido() > 30))
 			{
-				ss << "While in the tub the mood hit her and she proceed to pleasure herself.\n";
+				ss << "While in the tub the mood hit her and she proceed to pleasure herself with ";
+				if (g_Girls.HasItemJ(girl, "Compelling Dildo") != -1)
+					{
+						U_Libido -= 10; ss << "her Compelling Dildo helping her get off much easier.\n";
+					}
+				else
+					{ ss << "her fingers.\n"; }
 				imagetype = IMGTYPE_MAST;
 				U_Libido -= 15;
 				U_Happiness += 5;
@@ -294,7 +301,13 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			U_Tiredness -= 10;
 			if (girl->libido() > 70 || (g_Girls.HasTrait(girl, "Nymphomaniac") && girl->libido() > 30))
 			{
-				ss << "While in bed the mood hit her and she proceed to pleasure herself.\n";
+				ss << "While in bed the mood hit her and she proceed to pleasure herself with ";
+				if (g_Girls.HasItemJ(girl, "Compelling Dildo") != -1)
+					{
+						U_Libido -= 10; ss << "her Compelling Dildo helping her get off much easier.\n";
+					}
+				else
+					{ ss << "her fingers.\n"; }
 				imagetype = IMGTYPE_MAST;
 				U_Libido -= 15;
 				U_Happiness += 5;
@@ -306,9 +319,32 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		{
 			// add more options for more money
 			ss << girlName << " went to the salon ";
-			if (girl->m_Money >= 35 && girl->tiredness() > 60)
+			if (girl->libido() > 70 && girl->m_Money >= 100 &&  !g_Girls.HasTrait(girl, "Virgin"))
 			{
-				ss << "decide to get a message. She is now not as tried.\n";
+				u_int n;
+				int choice = g_Dice % 2;
+				ss << "and decide to get a \"special\" message.\n";
+				if (g_Girls.HasTrait(girl, "Lesbian")) 
+				{ n = SKILL_LESBIAN; ss << "She paid the woman massusse to intensely lick her clit until she got off.\n"; }
+				else
+				{
+					switch (choice)
+					{
+						case 0:        n = SKILL_ANAL;      ss << "She oiled up her ass and had the massusse fuck her.";	break;
+						case 1:
+						default:	   n = SKILL_NORMALSEX; ss << "She told the massusse to fuck her silly.";			break;
+					}
+				}
+				/* */if (n == SKILL_LESBIAN)	imagetype = IMGTYPE_LESBIAN;
+				else if (n == SKILL_ANAL)		imagetype = IMGTYPE_ANAL;
+				else if (n == SKILL_NORMALSEX)	imagetype = IMGTYPE_SEX;
+				U_Money -= 100;
+				U_Libido -= 25;
+				U_Happiness += 5;
+			}
+			else if (girl->m_Money >= 35 && girl->tiredness() > 60)
+			{
+				ss << "and decide to get a message. She is now feeling relaxed.\n";
 				U_Money -= 35;
 				U_Tiredness -= 10;
 			}
@@ -561,6 +597,10 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			{
 				ss << "awful. It can't really be called food it was so bad.\n";
 				U_Health -= 2;
+			}
+			if (HateLove >= 80 && g_Dice.percent(10))//loves you
+			{
+				ss << "She invites you to eat with her.\n";//FIXME add in different things here
 			}
 			g_Girls.UpdateSkill(girl, SKILL_SERVICE, 1);
 		}
@@ -942,6 +982,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			else if (roll_c <= 56)	{ song_type = 3; song_type_text = "Rock"; }
 			else if (roll_c <= 70)	{ song_type = 2; song_type_text = "Country"; }
 			else if (roll_c >= 88)	{ song_type = 0; song_type_text = "Pop"; }
+			bool invite = false;
 
 			ss << girlName << " decides to go to a concert.";
 			ss << "They were playing " + song_type_text + " music.\n";
@@ -992,7 +1033,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				if (g_Girls.HasTrait(girl, "Exhibitionist") && g_Dice.percent(30))
 				{
 					ss << "Before the show was over " << girlName << " had thrown all her clothes on stage and was now walking around naked.\n";
-					imagetype = IMGTYPE_NUDE;/*May add them inviting her to meet the band..  girl walking around naked is something most would want to meet*/ 
+					imagetype = IMGTYPE_NUDE; invite = true; 
 				}
 				if (girl->is_addict() && g_Dice.percent(20))
 				{
@@ -1131,21 +1172,66 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			break;	// end FT_Casino
 		case FT_CountrySide:
 			break;	// end FT_CountrySide
+
 		case FT_WorkOut:
-			ss << girlName << " decided to workout today.";
-			/*add different types of workouts.. the type she does will affect the stat gain and maybe give a trait gain*/ 
-			g_Girls.UpdateStat(girl, STAT_CONSTITUTION, g_Dice % 2);
-			g_Girls.UpdateStat(girl, STAT_AGILITY, g_Dice % 2);
-			g_Girls.UpdateStat(girl, STAT_BEAUTY, g_Dice % 2);
-			/*
-			*Crunches
-			*squats
-			*sit ups
-			*push ups
-			*pull ups
-			*go for a run
-			*yoga
-			*/
+			{
+				int workout = 0;
+				bool ass = false, str = false, flex = false, jog = false;
+				ss << girlName << " decided to workout today. She ";
+				/*add different types of workouts.. the type she does will affect the stat gain and maybe give a trait gain*/ 
+				switch (g_Dice % 10)
+					{
+						case 0:         ss << "did crunches working on her abs";			jog = true;	 break;
+						case 1:         ss << "did squats working on her ass";				ass = true;	 break;
+						case 2:			ss << "did push ups working her chest out";			str = true;  break;
+						case 3:         ss << "went for a run";								jog = true;  break;
+						case 4:         ss << "did some pull ups working her biceps";		str = true;	 break;
+						default:	    ss << "did some yoga working on her flexibility";	flex = true; break;
+					}
+				///* */if (roll_c <= 14)	{ ss << "did crunches working on her abs";			jog = true; }
+				//else if (roll_c <= 28)	{ ss << "did squats working on her ass";			ass = true; }
+				//else if (roll_c <= 42)	{ ss << "did push ups working her chest out";		str = true; }
+				//else if (roll_c <= 56)	{ ss << "went for a run";							jog = true; }
+				//else if (roll_c <= 70)	{ ss << "did some pull ups working her biceps";		str = true; }
+				//else if (roll_c >= 88)	{ ss << "did some yoga working on her flexibility";	flex = true; }
+				if (g_Girls.HasItemJ(girl, "Free Weights") != -1)
+				{
+					ss << " and with the help of her Free Weights she got a better workout.\n"; workout += 2;
+				}
+				else if (roll <= 5)//did she get a good work out?
+					{ ss << "\nHer workout went really poorly.\n"; workout -= 2; }
+				else if (roll >= 95)
+					{ ss << "\nHer workout went greatly.\n"; workout += 2; }
+				else
+					{ ss << "\nHer workout was nothing special.\n"; workout += 1; }
+				if (workout >= 2)
+				{
+					if (jog && !g_Girls.HasTrait(girl, "Great Figure") && g_Dice.percent(5))
+					{
+						ss << "With the help of her workouts she has got quite a Great Figure now.";
+						g_Girls.AddTrait(girl, "Strong");
+					}
+					else if (ass && !g_Girls.HasTrait(girl, "Great Arse") && g_Dice.percent(5))
+					{
+						ss << "With the help of crunches her ass has become a sight to behold.";
+						g_Girls.AddTrait(girl, "Great Arse");
+					}
+					else if (str && !g_Girls.HasTrait(girl, "Strong") && g_Dice.percent(5))
+					{
+						ss << "With the help of her work out she has become Strong.";
+						g_Girls.AddTrait(girl, "Strong");
+					}
+					else if (flex && !g_Girls.HasTrait(girl, "Flexible") && g_Dice.percent(15))
+					{
+						ss << "With the help of yoga she has become quite Flexible.";
+						g_Girls.AddTrait(girl, "Flexible");
+					}
+				}
+				if (workout < 0) workout = 0;
+				g_Girls.UpdateStat(girl, STAT_CONSTITUTION, g_Dice % workout);
+				g_Girls.UpdateStat(girl, STAT_AGILITY, g_Dice % workout);
+				g_Girls.UpdateStat(girl, STAT_BEAUTY, g_Dice % workout);
+			}
 			break;	// end FT_WorkOut
 		
 

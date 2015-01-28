@@ -82,6 +82,7 @@ typedef struct sRandomGirl
 	bool m_Catacomb = false;		// 1 means they are a monster found in catacombs, 0 means wanderer
 	bool m_Arena = false;			// 1 means they are fighter found in arena
 	bool m_YourDaughter = false;	// `J` 1 means they are your daughter
+	bool m_IsDaughter = false;		// 1 means they are a set daughter
 
 	int m_MinStats[NUM_STATS];	    // min and max stats they may start with
 	int m_MaxStats[NUM_STATS];
