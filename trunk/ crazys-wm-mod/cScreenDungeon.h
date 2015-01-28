@@ -112,7 +112,7 @@ public:
 	void	get_selected_girls(vector<int> *girl_array);
 	void	store_selected_girls();
 	void	check_gang_for_survivors(sGirl *girl, sGang *gang, string &message, int start_count);
-	void update_image();
+	void	update_image();
 
 // WD	Replaced by Doclox's cGirlTorture and cGirlGangFight code.
 //	int		girl_fights_gang(sGirl *girl, sGang *&gang);					

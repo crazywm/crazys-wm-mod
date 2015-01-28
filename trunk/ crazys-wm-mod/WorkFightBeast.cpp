@@ -138,9 +138,7 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		g_Brothels.add_to_beasts(kills);
 
 		// Cleanup
-		if (tempgirl)
-			delete tempgirl;
-		tempgirl = 0;
+		if (tempgirl) delete tempgirl; tempgirl = 0;
 	}
 
 	if ((girl->is_slave() && !cfg.initial.slave_pay_outofpocket()))

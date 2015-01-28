@@ -60,10 +60,11 @@ bool cScreenMovieMaker::ids_set = false;
 void cScreenMovieMaker::set_ids()
 {
 	ids_set = true;
-	curstudio_id = get_id("Studio");
-	back_id = get_id("BackButton");
-	sceneslist_id = get_id("ScenesList");
-	releasemovie_id = get_id("ReleaseMovieButton");
+	curstudio_id =		get_id("Studio");
+	back_id =			get_id("BackButton");
+	sceneslist_id =		get_id("ScenesList");
+	releasemovie_id =	get_id("ReleaseMovieButton");
+	girlimage_id =		get_id("GirlImage");
 }
 
 void cScreenMovieMaker::init()

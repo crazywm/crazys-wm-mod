@@ -290,6 +290,7 @@ string cTraits::GetTranslateName(string name)
 		else if (trait.compare("flat ass") == 0)				return gettext("Flat Ass");
 		else if (trait.compare("flat chest") == 0)				return gettext("Flat Chest");
 		else if (trait.compare("fleet of foot") == 0)			return gettext("Fleet of Foot");
+		else if (trait.compare("flexible") == 0)				return gettext("Flexible");
 		else if (trait.compare("flight") == 0)					return gettext("Flight");
 		else if (trait.compare("former addict") == 0)			return gettext("Former Addict");
 		else if (trait.compare("former official") == 0)			return gettext("Former Official");

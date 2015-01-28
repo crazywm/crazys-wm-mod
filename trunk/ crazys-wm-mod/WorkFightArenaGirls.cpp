@@ -82,7 +82,7 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 			ugirl->m_Stats[STAT_HAPPINESS] = g_Dice % 80 + 1;
 			ugirl->m_Stats[STAT_TIREDNESS] = g_Dice % 50 + 50;
 			ugirl->m_States |= (1 << STATUS_ARENA);
-			ss << girl->m_Realname + " won her fight against " + ugirl->m_Realname + ".\n";
+			ss << girlName + " won her fight against " + ugirl->m_Realname + ".\n";
 			if (g_Dice.percent(50))
 			{
 				ugirl->m_States |= (1 << STATUS_SLAVE);
@@ -107,7 +107,10 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 		enjoyment = -(g_Dice % 3 + 1);
 		fame = -(g_Dice % 3 + 1);
 		ss << "She lost the fight.";
-		/* Need a way to cost you gold for your girl losing..  or some kind of outcome here zzzzz FIXME*/ 
+		int cost = 150;
+		brothel->m_Finance.arena_costs(cost);
+		ss << " You had to pay " << cost << " gold cause your girl lost.";
+		/*that should work but now need to make if you lose the girl if you dont have the gold zzzzz FIXME*/ 
 	}
 	else if (fight_outcome == 0)  // it was a draw
 	{
@@ -162,6 +165,6 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 	g_Girls.PossiblyGainNewTrait(girl, "Fleet of Foot", 55, ACTION_COMBAT, "She is getting rather fast from all the fighting.", Day0Night1 == SHIFT_NIGHT);
 	g_Girls.PossiblyGainNewTrait(girl, "Aggressive", 70, ACTION_COMBAT, "She is getting rather Aggressive from her enjoyment of combat.", Day0Night1 == SHIFT_NIGHT);
 	//lose traits
-	g_Girls.PossiblyLoseExistingTrait(girl, "Fragile", 35, ACTION_COMBAT, girl->m_Realname + " has had to heal from so many injuries you can't say she is fragile anymore.", Day0Night1 == SHIFT_NIGHT);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Fragile", 35, ACTION_COMBAT, girlName + " has had to heal from so many injuries you can't say she is fragile anymore.", Day0Night1 == SHIFT_NIGHT);
 	return false;
 }

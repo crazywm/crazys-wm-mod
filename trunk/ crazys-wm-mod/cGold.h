@@ -112,6 +112,7 @@ class cGoldBase
 		double casino_upkeep;
 		double advertising_costs;
 		double centre_costs;
+		double arena_costs;
 		double bribes;
 		double fines;
 		double tax;
@@ -205,6 +206,7 @@ friend	istream &operator>>(istream& is, cGoldBase &g);
 	void casino_upkeep(double cost);
 	void advertising_costs(double cost);
 	void centre_costs(double cost);
+	void arena_costs(double cost);
 	void bribes(double cost);
 	void fines(double cost);
 	void tax(double cost);

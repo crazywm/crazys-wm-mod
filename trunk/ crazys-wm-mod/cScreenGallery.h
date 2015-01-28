@@ -22,36 +22,53 @@
 #include "cInterfaceWindow.h"
 #include "InterfaceGlobals.h"
 
-class cScreenMovieMaker : public cInterfaceWindowXML 
+
+class cScreenGallery : public cInterfaceWindowXML 
 {
 public:
 
 private:
-	char	buffer[256];
+	int BuyBrothel;
+	bool GetName;
 
-	static bool ids_set;
+	static	bool		ids_set;
 /*
  *	interface/event IDs
  */
-	int curstudio_id;		// Current Brothel text
-	int back_id;			// Back button
-	int sceneslist_id;		// Scenes listbox
-	int releasemovie_id;	// Release movie
-	int girlimage_id;		// Girl image
+	int		back_id;		// Back button
+	int		next_id;		// next button
+	int		prev_id;		// prev button
+	int		anal_id;		// Anal button
+	int		bdsm_id;		// BDSM button
+	int		sex_id;			// Sex button
+	int		beast_id;		// Beast button
+	int		group_id;		// Group button
+	int		les_id;			// Les button
+	int		preg_id;		// Preg button
+	int		death_id;		// Death button
+	int		pro_id;			// Profile button
+	int		combat_id;		// Combat button
+	int		oral_id;		// Oral button
 
 	void set_ids();
 public:
-	cScreenMovieMaker()
+	cScreenGallery()
 	{
 		cConfig cfg;
-		DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "movie_maker_screen.xml";
+		DirPath dp = DirPath()
+			<< "Resources" << "Interface" << cfg.resolution.resolution() << "gallery_screen.xml";
 		m_filename = dp.c_str();
 	}
-	~cScreenMovieMaker() {}
+	~cScreenGallery() {}
 
-	void init();
+	//void init();
 	void process();
-	void check_events();
+	void more_button();
+	void release_button();
+	void update_details();
+	sGirl* get_selected_girl();
+	void selection_change();
 	bool check_keys();
 	void update_image();
+
 };

@@ -64,6 +64,7 @@
 #include "cScreenNewGame.h"
 #include "cScreenBrothelManagement.h"
 #include "cScreenGetInput.h"
+#include "cScreenGallery.h"
 #include "sConfig.h"
 #include "XmlUtil.h"
 
@@ -91,6 +92,7 @@ cScreenGirlDetails g_GirlDetails;
 cScreenDungeon g_Dungeon;
 cScreenSlaveMarket g_SlaveMarket;
 cScreenTown g_TownScreen;
+cScreenGallery g_GalleryScreen;
 cArenaTry g_ArenaTry;
 cClinicScreen g_ClinicScreen;
 cCentreScreen g_CentreScreen;
@@ -115,7 +117,6 @@ cScreenGetInput g_GetInput;
 cInterfaceWindow g_GetString;		// GetString.txt
 cInterfaceWindow g_LoadGame;		// LoadMenu.txt
 cInterfaceWindow g_TransferGirls;	// Hard coded
-cInterfaceWindow g_Preparing;		// preparing game screen
 cInterfaceWindow g_Gallery;			// Hard coded
 cInterfaceWindow g_Gallery2;		// Hard coded
 cInterfaceWindow g_ChangeJobs;		// Hard coded
@@ -189,6 +190,7 @@ void FreeInterface()
 	g_Dungeon.Free();
 	g_SlaveMarket.Free();
 	g_TownScreen.Free();
+	g_GalleryScreen.Free();
 	g_ArenaTry.Free();
 	g_CentreScreen.Free();
 	g_ClinicScreen.Free();
@@ -235,6 +237,7 @@ void ResetInterface()
 	g_Dungeon.Reset();
 	g_SlaveMarket.Reset();
 	g_TownScreen.Reset();
+	g_GalleryScreen.Reset();
 	g_ArenaTry.Reset();
 	g_CentreScreen.Reset();
 	g_ClinicScreen.Reset();
@@ -812,6 +815,11 @@ void LoadInterface()
 	g_LogFile.write("Loading Town Screen");
 	g_TownScreen.load();
 	g_WinManager.add_window("Town", &g_TownScreen);
+
+	// Gallery screen
+	g_LogFile.write("Loading Test Gallery Screen");
+	g_GalleryScreen.load();
+	g_WinManager.add_window("Gallery", &g_GalleryScreen);
 
 	// clinic screen
 	g_LogFile.write("Loading Clinic Screen");
