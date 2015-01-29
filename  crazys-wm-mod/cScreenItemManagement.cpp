@@ -164,6 +164,25 @@ string* ownerdata(sGirl* girl)
 
 	return data;
 }
+string* ownerdata(sDungeonGirl* girl)
+{
+	string* data = new string[3];
+	stringstream ss;
+	sGirl* dg = girl->m_Girl;
+
+
+	data[0] = dg->m_Realname;
+
+	if (dg->m_NumInventory > 0)  ss << dg->m_NumInventory;
+	data[1] = ss.str();
+
+	ss.str("");
+	int numtype = g_Girls.GetNumItemType(dg, filter);
+	if (numtype > 0) ss << numtype;
+	data[2] = ss.str();
+
+	return data;
+}
 
 void cScreenItemManagement::init()
 {
@@ -420,8 +439,8 @@ void cScreenItemManagement::init()
 	{
 		if (temp2 == 0) break;
 		if (g_AllTogle && selected_girl == temp2->m_Girl) rightOwner = i;
-		AddToListBox(owners_l_id, i, ownerdata(temp), 3);
-		AddToListBox(owners_r_id, i, ownerdata(temp), 3);
+		AddToListBox(owners_l_id, i, ownerdata(temp2), 3 , COLOR_RED);
+		AddToListBox(owners_r_id, i, ownerdata(temp2), 3 , COLOR_RED);
 		NumDungeonGirls++;
 		temp2 = temp2->m_Next;
 		i++;
@@ -839,7 +858,7 @@ void cScreenItemManagement::refresh_item_list(Side which_list)
 			sGirl* targetGirl = 0;
 			targetGirl = GirlSelectedFromList(*owner);
 
-			for (int i = 0; i<40; i++)
+			for (int i = 0; i<MAXNUM_GIRL_INVENTORY; i++)
 			{
 				int ItemColor = -1;
 				if (targetGirl->m_Inventory[i])

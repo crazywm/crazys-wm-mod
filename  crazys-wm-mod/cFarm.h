@@ -62,11 +62,18 @@ public:
 	void Free();
 	int m_NumFarms;
 	cJobManager m_JobManager;
-	/*int FoodAnimal[6] = {0,0,0,0,0,0};
-	string FoodAnimalName[6] = {"Egg","Chicken","Goat","Sheep","Ostrich","Cow"}
-	int FoodAnimalFoodValue[6] = {1,2,3,3,6,10}
-	int GardenPlant[10] = {10,0,0,0,0,0,0,0,0,0};
-	string GardenPlantName[10] = {"Weeds","Easy","Simple","Common","Uncommon","Special","Very Special","Rare","Very Rare","Unique"};*/
+	
+	/*
+	int FoodAnimal[6] = { 0, 0, 0, 0, 0, 0 };
+	string FoodAnimalName[6] = { "Egg", "Chicken", "Goat", "Sheep", "Ostrich", "Cow" };
+	int FoodAnimalFoodValue[6] = { 1, 2, 3, 3, 6, 10 };
+	
+	int FoodPlant[6] = { 0, 0, 0, 0, 0, 0 };
+	string FoodPlantName[6] = { "Wheat", "Corn", "Potato", "Tomato", "Lettuce", "Hops" };
+
+	int GardenPlant[10] = { 10, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+	string GardenPlantName[10] = { "Weeds", "Easy", "Simple", "Common", "Uncommon", "Special", "Very Special", "Rare", "Very Rare", "Unique" };
+	*/
 
 };
 

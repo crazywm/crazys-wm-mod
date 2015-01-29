@@ -31,6 +31,7 @@ extern cRng g_Dice;
 extern cGold g_Gold;
 extern cBrothelManager g_Brothels;
 extern cFarmManager g_Farm;
+extern cInventory g_InvManager;
 
 
 
@@ -137,6 +138,87 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 			gain--;
 		}
 	}
+
+
+
+	// `J` Farm Bookmark - adding in items that can be gathered in the farm
+#if 1
+
+	if (g_Dice.percent(5))
+	{
+		string itemfound = ""; string itemfoundtext = "";
+		int chooseitem = g_Dice.d100();
+
+		if (chooseitem < 25)
+		{
+			itemfound = (g_Dice % 2) ? "Black Cat" : "Cat";
+			itemfoundtext = "a stray cat and brought it back with her.";
+		}
+		else if (chooseitem < 50)
+		{
+			itemfound = "Guard Dog";
+			itemfoundtext = "a tough looking stray dog and brought it back with her.";
+		}
+		else if (chooseitem < 60)
+		{
+			itemfound = "A Bunch of Baby Ducks";
+			itemfoundtext = "a bunch of baby ducks without a mother, so she gathered them up in her shirt and brought them home.";
+		}
+		else if (chooseitem < 65)
+		{
+			itemfound = "Death Bear";
+			itemfoundtext = "a large bear that seems to have had some training, so she brought it home.";
+		}
+		else if (chooseitem < 80)
+		{
+			itemfound = "Pet Spider";
+			itemfoundtext = "a strange looking spider so she collected it in a bottle and brought it back with her.";
+		}
+		else if (chooseitem < 95)
+		{
+			itemfound = (g_Dice % 4 == 1) ? "Fox Stole" : "Fur Stole";
+			itemfoundtext = "a dead animal that was not too badly damaged. She brought it home, skinned it, cleaned it up and made a lovely stole from it.";
+		}
+		else if (chooseitem < 98)
+		{
+			itemfound = "Echidna's Snake";
+			itemfoundtext = "a rather obedient and psychic snake. It wrapped itself around her crotch and let her take it home.";
+		}
+		else
+		{
+			itemfound = "Tiger Shark Tooth";
+			itemfoundtext = "a rather large shark tooth and brought it home.";
+		}
+
+		sInventoryItem* item = g_InvManager.GetItem(itemfound);
+		if (item)
+		{
+			ss << girlName << " found " << itemfoundtext;
+			g_Brothels.AddItemToInventory(item);
+		}
+
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+#endif
+
+
+
+
+
+
+
 	// Improve girl
 	int xp = 8, libido = 2, skill = 1;
 

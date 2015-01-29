@@ -35,7 +35,7 @@
 	<Effect What="Stat" Name="PCLove" Amount="5" />
 </Item>
 <Item
-		Name="Cold Turkey"
+		Name="Cold Turkey "
 		Desc="They say cutting Cold Turkey will cure you of your addictions, well this Cold Turkey may just do it with a little magical help. Its power to cure may fade over time as leftovers soon spoil. (+20 Health, Happiness, Tiredness, +10 Love, -5 Fear, Hate) (May or may not cure Viras Blood Addiction, Shroud Addiction, Fairy Dust Addiction orAlcoholism."
 		Type="Food"
 		Badness="0"
@@ -56,7 +56,7 @@
 	What="Trait" Name="Alcoholic" Amount="0" />
 </Item>
 <Item
-		Name="Cold Turkey"
+		Name="Cold Turkey  "
 		Desc="They say cutting Cold Turkey will cure you of your addictions, well this Cold Turkey may just do it with a little magical help. Its power to cure may fade over time as leftovers soon spoil. (+20 Health, Happiness, Tiredness, +10 Love, -5 Fear, Hate) (May or may not cure Viras BloodAddiction, Shroud Addiction, Fairy Dust Addiction or Alcoholism."
 		Type="Food"
 		Badness="0"
@@ -76,7 +76,7 @@
 	<Effect What="Trait" Name="Viras Blood Addict" Amount="0" />
 </Item>
 <Item
-		Name="Cold Turkey"
+		Name="Cold  Turkey"
 		Desc="They say cutting Cold Turkey will cure you of your addictions, well this Cold Turkey may just do it with a little magical help. Its power to cure may fade over time as leftovers soon spoil. (+20 Health, Happiness, Tiredness, +10 Love, -5 Fear, Hate) (May or may not cure Viras Blood Addiction, ShroudAddiction, Fairy Dust Addiction or Alcoholism."
 		Type="Food"
 		Badness="0"
@@ -96,7 +96,7 @@
 	<Effect What="Trait" Name="Shroud Addict" Amount="0" />
 </Item>
 <Item
-		Name="Cold Turkey"
+		Name="Cold  Turkey "
 		Desc="They say cutting Cold Turkey will cure you of your addictions, well this Cold Turkey may just do it with a little magical help. Its power to cure may fade over time as leftovers soon spoil. (+20 Health, Happiness, Tiredness, +10 Love, -5 Fear, Hate) (May or may not cure Viras Blood Addiction, Shroud Addiction, Fairy DustAddiction or Alcoholism."
 		Type="Food"
 		Badness="0"

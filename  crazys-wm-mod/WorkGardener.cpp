@@ -31,6 +31,7 @@ extern cRng g_Dice;
 extern cGold g_Gold;
 extern cBrothelManager g_Brothels;
 extern cFarmManager g_Farm;
+extern cInventory g_InvManager;
 
 
 
@@ -47,7 +48,11 @@ bool cJobManager::WorkGardener(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	g_Girls.UnequipCombat(girl);
 
 	cConfig cfg;
-	int wages = 15, work = 0;
+	int enjoy = 0;
+	int wages = 25;
+	int tips = 0;
+	int imagetype = IMGTYPE_PROFILE;
+	int msgtype = Day0Night1;
 	ss << "She worked as a gardener in the farm.";
 
 	int roll = g_Dice % 100;
@@ -106,15 +111,97 @@ bool cJobManager::WorkGardener(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 	//enjoyed the work or not
 	if (roll <= 5)
-	{ ss << "\nSome of the patrons abused her during the shift."; work -= 1; }
+	{
+		ss << "\nSome of the patrons abused her during the shift.";
+		enjoy -= 1;
+	}
 	else if (roll <= 25)
-	{ ss << "\nShe had a pleasant time working."; work += 3; }
+	{
+		ss << "\nShe had a pleasant time working.";
+		enjoy += 3;
+	}
 	else
-	{ ss << "\nOtherwise, the shift passed uneventfully."; work += 1; }
+	{
+		ss << "\nOtherwise, the shift passed uneventfully.";
+		enjoy += 1;
+	}
 
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKFARM, work, true);
 
-	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
+	// `J` Farm Bookmark - adding in items that can be gathered in the farm
+#if 1
+
+	int flowerpower = g_Dice % 3;
+	/* */if (jobperformance < 70)	flowerpower -= 1;
+	else if (jobperformance < 100)	flowerpower += 0;
+	else if (jobperformance < 145)	flowerpower += 1;
+	else if (jobperformance < 185)	flowerpower += 2;
+	else if (jobperformance < 245)	flowerpower += 3;
+	else /*                     */	flowerpower += 4;
+
+	string additems[8] = { "", "", "", "", "", "", "", "" };
+	int additemnum = 0;
+	while (flowerpower > 0)
+	{
+		string additem = "";
+		switch (g_Dice % 14)
+		{
+		case 0:		if (flowerpower >= 5) { flowerpower -= 5;	additem = "Bouquet of Enchanted Roses"; } break;
+		case 1:		if (flowerpower >= 5) { flowerpower -= 5;	additem = "Chatty Flowers"; }			  break;
+		case 2:		if (flowerpower >= 4) { flowerpower -= 4;	additem = "Watermelon of Knowledge"; }	  break;
+		case 3:		if (flowerpower >= 3) { flowerpower -= 3;	additem = "Mango of Knowledge"; }		  break;
+		case 4:		if (flowerpower >= 3) { flowerpower -= 3;	additem = "Red Rose Extravaganza"; }	  break;
+		case 5:		if (flowerpower >= 3) { flowerpower -= 3;	additem = "Vira Blood"; }				  break;
+		case 6:		if (flowerpower >= 3) { flowerpower -= 3;	additem = "Whitewillow Sap"; }			  break;
+		case 7:		if (flowerpower >= 2) { flowerpower -= 2;	additem = "Rose of Enchantment"; }		  break;
+		case 8:		if (flowerpower >= 2) { flowerpower -= 2;	additem = "Sinspice"; }					  break;
+		case 9:		if (flowerpower >= 2) { flowerpower -= 2;	additem = "Nut of Knowledge"; }			  break;
+		case 10:	if (flowerpower >= 2) { flowerpower -= 2;	additem = "Willbreaker Spice"; }		  break;
+		case 11:	if (flowerpower >= 1) { flowerpower -= 1;	additem = "Shroud Mushroom"; }			  break;
+		case 12:	if (flowerpower >= 1) { flowerpower -= 1;	additem = "Wild Flowers"; }				  break;
+		default:	flowerpower -= 1; break;
+		}
+		if (additem != "")
+		{
+			additems[additemnum] = additem;
+			additemnum++;
+		}
+	}
+	if (additemnum > 0)
+	{
+		msgtype = EVENT_GOODNEWS;
+		ss << "\n\n" << girlName << " was able to harvest ";
+		if (additemnum == 1)
+		{
+			ss << "one " << additems[0] << ".";
+		}
+		else
+		{
+			ss << additemnum << " items: ";
+			for (int i=0; i < additemnum; i++)
+			{
+				ss << additems[i];
+				if (i == additemnum - 1) ss << ".";
+				else ss << ", ";
+			}
+		}
+		for (int i = 0; i < additemnum; i++)
+		{
+			sInventoryItem* item = g_InvManager.GetItem(additems[i]);
+			if (item) g_Brothels.AddItemToInventory(item);
+		}
+	}
+
+
+
+
+
+
+#endif
+
+
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKFARM, enjoy, true);
+
+	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, msgtype);
 
 
 	if (girl->is_slave() && !cfg.initial.slave_pay_outofpocket()) wages = 0;    // You own her so you don't have to pay her.

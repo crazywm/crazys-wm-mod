@@ -31,6 +31,7 @@ extern cRng g_Dice;
 extern cGold g_Gold;
 extern cBrothelManager g_Brothels;
 extern cFarmManager g_Farm;
+extern cInventory g_InvManager;
 
 
 
@@ -108,6 +109,50 @@ bool cJobManager::WorkBaker(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 	{ ss << "\nShe had a pleasant time working."; work += 3; }
 	else
 	{ ss << "\nOtherwise, the shift passed uneventfully."; work += 1; }
+
+
+	// `J` Farm Bookmark - adding in items that can be created in the farm
+#if 0
+
+		"Apple Tart"
+		"Box of Chocolate Chip Cookies"
+		"Box of Cookies"
+		"Box of Sugar Cookies"
+		"Chocolate Cake"
+		"Chocolate Cake "
+		"Death Sandwich"
+		"Death Sandwich "
+		"Eggscellent Challenge"
+		"Fancy Breath Mints"
+		"Fruitcake"
+		"Grilled Cheese Deluxe"
+		"Pizza Cake"
+		"Whole Wheat Donut"
+		"Yummi Gummi Lingere"
+		"Yummy Cookie Bra"
+		"Double Glazed Donut"
+
+
+
+		"Eldritch Cookie"
+		"Honeypuff Scones"
+
+		"Leprechaun Biscuit"
+
+		"Heaven-and-Earth Cake"
+
+
+
+
+
+
+
+
+
+
+
+#endif
+
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKFARM, work, true);
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_COOK, Day0Night1);

@@ -604,6 +604,10 @@
     <ClCompile Include="WorkArenaJousting.cpp" />
     <ClCompile Include="cScreenPropertyManagement.cpp" />
     <ClCompile Include="cScreenNewGame.cpp" />
+    <ClCompile Include="cScreenGallery.cpp" />
+    <ClCompile Include="WorkCentreAngerManagement.cpp" />
+    <ClCompile Include="WorkCentreExTherapy.cpp" />
+    <ClCompile Include="WorkCentreTherapy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cButton.h">
@@ -939,9 +943,6 @@
     <ClInclude Include="sFacilityList.h">
       <Filter>Misc</Filter>
     </ClInclude>
-    <ClInclude Include="cFarm.h">
-      <Filter>Misc</Filter>
-    </ClInclude>
     <ClInclude Include="cFarmScreen.h">
       <Filter>Misc</Filter>
     </ClInclude>
@@ -1021,6 +1022,12 @@
       <Filter>Misc</Filter>
     </ClInclude>
     <ClInclude Include="cScreenNewGame.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="cScreenGallery.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="cFarm.h">
       <Filter>Misc</Filter>
     </ClInclude>
   </ItemGroup>

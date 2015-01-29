@@ -112,13 +112,35 @@ bool cJobManager::WorkFarmResearch(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	else
 	{ ss << "\nOtherwise, the shift passed uneventfully."; work += 1; }
 
+
+#if 0
+
+	// `J` Farm Bookmark - adding in items that can be created in the farm
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#endif
+
+
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKFARM, work, true);
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 	girl->m_Pay = wages;
 
 
 	// Improve stats
-	int xp = 15, libido = 1, skill = 3;
+	int xp = 15, libido = 1, skill = 5;
 
 	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
@@ -126,7 +148,11 @@ bool cJobManager::WorkFarmResearch(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 
 	g_Girls.UpdateStat(girl, STAT_FAME, 1);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_HERBALISM, skill);
+	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, (g_Dice % skill) + 1);
+	g_Girls.UpdateSkill(girl, SKILL_MAGIC, max(0, ((g_Dice % skill) - 1)));
+	g_Girls.UpdateSkill(girl, SKILL_CRAFTING, max(0, ((g_Dice % skill) - 1)));
+	g_Girls.UpdateSkill(girl, SKILL_HERBALISM, (g_Dice % skill));
+	g_Girls.UpdateSkill(girl, SKILL_ANIMALHANDLING, (g_Dice % skill));
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
 	return false;

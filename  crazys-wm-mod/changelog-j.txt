@@ -1450,7 +1450,31 @@ Started "Changes that need to be done.txt"
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.31
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.17
 
+###  Changes 1/26/2015
+WME - Fixed several bugs with missing stats/skills not saving and/or loading
+WME - Fixed first/middle/last names so they save/load properly
 
+Fixed a bug in inventory screen with dungeon girls breaking the game.
 
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.18
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.32
+
+###  Changes 1/27-28/2015  - I didn't do much.
+
+Crazy pushed r145 - some updates to free time and other jobs.
+
+Fixed a bug in inventory screen with dungeon girls not showing item numbers or color.
+
+###  Changes 1/29/2015
+Fixed a bug with Stat_House bugging out on mod or temp stats. Added House, Fame and Ask Price to the list of stats without mod or temp stats.
+Updated Make Potions on the Farm to actually Make Potions.
+Added some random animals or animal based items to Beast Capture job.
+Added items to Gardener jobs.
+Started adding items to Butcher, Baker, Brewer. (needs work)
+Increased learning from farm research (this will need to be updated like Intern)
+Fixed a few items.
+
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r146
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.33
 
 

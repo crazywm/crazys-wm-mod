@@ -31,6 +31,7 @@ extern cRng g_Dice;
 extern cGold g_Gold;
 extern cBrothelManager g_Brothels;
 extern cFarmManager g_Farm;
+extern cInventory g_InvManager;
 
 
 
@@ -110,6 +111,39 @@ bool cJobManager::WorkButcher(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	{ ss << "\nShe had a pleasant time working."; work += 3; }
 	else
 	{ ss << "\nOtherwise, the shift passed uneventfully."; work += 1; }
+
+
+	// `J` Farm Bookmark - adding in items that can be created in the farm
+#if 0
+
+		"C.G. Bacon Cheese Burger"
+		"C.G. Burger"
+		"C.G. Cheese Burger"
+		"Premium Hot Dogs"
+		"Turducken"
+		"Aoshima BEEF!!"
+		"Cold Turkey"
+		"Cold Turkey "
+		"Cold Turkey  "
+		"Cold  Turkey"
+		"Cold  Turkey "
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#endif
+
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKFARM, work, true);
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);

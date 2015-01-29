@@ -80,6 +80,28 @@ bool cJobManager::WorkFarmManager(sGirl* girl, sBrothel* brothel, bool Day0Night
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 	}
 
+#if 0
+
+	// `J` Farm Bookmark - adding in items that can be created in the farm
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#endif
+
+
+
 
 	// Improve girl
 	int numgirls = brothel->m_NumGirls;

@@ -200,6 +200,28 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 	else
 	{ ss << "\nOtherwise, the shift passed uneventfully."; work += 1; }
 
+
+#if 0
+
+	// `J` Farm Bookmark - adding in items that can be created in the farm
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#endif
+
+
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKMILK, work, true);
 
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_MILK, Day0Night1);
