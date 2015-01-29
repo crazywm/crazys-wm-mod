@@ -124,6 +124,7 @@
     <ClCompile Include="cListBox.cpp" />
     <ClCompile Include="cMessageBox.cpp" />
     <ClCompile Include="cScreenFarmManagement.cpp" />
+    <ClCompile Include="cScreenGallery.cpp" />
     <ClCompile Include="cScreenNewGame.cpp" />
     <ClCompile Include="cScreenPropertyManagement.cpp" />
     <ClCompile Include="cScrollBar.cpp" />
@@ -158,6 +159,9 @@
     <ClCompile Include="WorkBrewer.cpp" />
     <ClCompile Include="WorkButcher.cpp" />
     <ClCompile Include="WorkCatacombRancher.cpp" />
+    <ClCompile Include="WorkCentreAngerManagement.cpp" />
+    <ClCompile Include="WorkCentreExTherapy.cpp" />
+    <ClCompile Include="WorkCentreTherapy.cpp" />
     <ClCompile Include="WorkEscort.cpp" />
     <ClCompile Include="WorkFarmer.cpp" />
     <ClCompile Include="WorkFarmHand.cpp" />
@@ -361,6 +365,7 @@
     <ClInclude Include="cListBox.h" />
     <ClInclude Include="cMessageBox.h" />
     <ClInclude Include="cScreenFarmManagement.h" />
+    <ClInclude Include="cScreenGallery.h" />
     <ClInclude Include="cScreenNewGame.h" />
     <ClInclude Include="cScreenPropertyManagement.h" />
     <ClInclude Include="cScrollBar.h" />

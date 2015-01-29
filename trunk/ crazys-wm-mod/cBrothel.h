@@ -261,11 +261,16 @@ public:
 
 	void WithdrawFromBank(long amount);
 	void DepositInBank(long amount);
-	long GetBankMoney() { return m_Bank; }
-	void add_to_beasts(int i)			{ m_Beasts += i; if (m_Beasts < 0)m_Beasts = 0; }
-	int  GetNumBeasts(){ return m_Beasts; }
-	void add_to_goods(int i)			{ m_HandmadeGoods += i; if (m_HandmadeGoods < 0)m_HandmadeGoods = 0; }
-	int  GetNumGoods(){ return m_HandmadeGoods; }
+	long GetBankMoney()					{ return m_Bank; }
+	int  GetNumFood()					{ return m_Food; }
+	int  GetNumDrinks()					{ return m_Drinks; }
+	int  GetNumBeasts()					{ return m_Beasts; }
+	int  GetNumGoods()					{ return m_HandmadeGoods; }
+	void add_to_food(int i)				{ m_Food += i; if (m_Food < 0) m_Food = 0; }
+	void add_to_drinks(int i)			{ m_Drinks += i; if (m_Drinks < 0) m_Drinks = 0; }
+	void add_to_beasts(int i)			{ m_Beasts += i; if (m_Beasts < 0) m_Beasts = 0; }
+	void add_to_goods(int i)			{ m_HandmadeGoods += i; if (m_HandmadeGoods < 0) m_HandmadeGoods = 0; }
+
 	bool CheckScripts();
 
 	void UpdateObjective();				// updates an objective and checks for compleation
@@ -329,6 +334,8 @@ public:
 	// brothel resources
 	int m_HandmadeGoods;			// used with the community centre
 	int m_Beasts;					// used for beastiality scenes
+	int m_Food;						// food produced at the farm
+	int m_Drinks;					// drinks produced at the farm
 	int m_AlchemyIngredients;
 
 	int		m_NumPrison;

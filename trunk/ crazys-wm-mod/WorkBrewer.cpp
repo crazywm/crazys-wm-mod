@@ -31,6 +31,7 @@ extern cRng g_Dice;
 extern cGold g_Gold;
 extern cBrothelManager g_Brothels;
 extern cFarmManager g_Farm;
+extern cInventory g_InvManager;
 
 
 
@@ -102,8 +103,7 @@ bool cJobManager::WorkBrewer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 
 
 
-	if (wages < 0)
-		wages = 0;
+	if (wages < 0) wages = 0;
 
 	//enjoyed the work or not
 	if (roll <= 5)
@@ -112,6 +112,53 @@ bool cJobManager::WorkBrewer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	{ ss << "\nShe had a pleasant time working."; work += 3; }
 	else
 	{ ss << "\nOtherwise, the shift passed uneventfully."; work += 1; }
+
+
+	// `J` Farm Bookmark - adding in items that can be created in the farm
+#if 0
+
+		"Alcohol"
+		"Alcohol "
+		"Black Cat Beer"
+		"Crossgate Egg Nog"
+		"Bimbo Liqueur"
+		"Nightmare Fuel"
+		"Nightmare Fuel X"
+		"Nightmare Fuel XY"
+		"Nightmare Fuel XYZ"
+		"RigJuice"
+		"Radicola"
+		"Mississippi Queen (Ch)"
+		"Mississippi Queen (De)"
+		"Mississippi Queen (FF)"
+		"Mississippi Queen (Fg)"
+		"Mississippi Queen (Fl)"
+		"Mississippi Queen (IW)"
+		"Mississippi Queen (MF)"
+		"Mississippi Queen (Mk)"
+		"Mississippi Queen (Ml)"
+		"Mississippi Queen (Op)"
+		"Mississippi Queen (Ps)"
+		"Mississippi Queen (Rt)"
+		"Mississippi Queen (St)"
+		"Mississippi Queen (To)"
+		"Mississippi Queen (Tw)"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#endif
+
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKFARM, work, true);
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);

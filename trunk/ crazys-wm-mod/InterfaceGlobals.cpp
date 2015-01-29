@@ -121,6 +121,7 @@ cInterfaceWindow g_Gallery;			// Hard coded
 cInterfaceWindow g_Gallery2;		// Hard coded
 cInterfaceWindow g_ChangeJobs;		// Hard coded
 cInterfaceWindow g_Turnsummary;		// Hard coded
+cInterfaceWindow g_Preparing;
 
 cMessageBox g_MessageBox;
 cChoiceManager g_ChoiceManager;

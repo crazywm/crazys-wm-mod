@@ -62,6 +62,34 @@ bool cJobManager::WorkMakeItem(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		g_Brothels.add_to_goods(2);
 	}
 
+
+
+
+#if 0
+
+	// `J` Farm Bookmark - adding in items that can be created in the farm
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#endif
+
+
+
+
+
+
 	// Improve girl
 	int xp = 10, libido = 1, skill = 2;
 

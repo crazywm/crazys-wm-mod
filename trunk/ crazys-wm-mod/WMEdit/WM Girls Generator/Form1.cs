@@ -1181,6 +1181,9 @@ namespace WM_Girls_Generator
             string sSlave = "";			    // ex is slave/isn't slave option, now has one more state
             string sVirgin = "";
             string sGDesc = "";			    // girl description
+            string sFName = TBox_G_FirstName.Text;
+            string sMName = TBox_G_MiddleName.Text;
+            string sLName = TBox_G_SurName.Text;
 
             int i = 0;
             //            while (i < ListBox_G_Traits.CheckedItems.Count)	//this while loop goes through selected traits and puts them in sTraits string
@@ -1216,7 +1219,7 @@ namespace WM_Girls_Generator
             //first element in array is name
             sGirl[0] = TBox_G_RealName.Text;
             //second is girl data, this is where nln comes handy, easier to type nln than "\n\r" every time, and less error prone
-            sGirl[1] = sGDesc + nln + numberoftraits + nln + sTraits + "0" + nln + sStats + nln + sSkills + nln + GoldTBox1.Text + nln + sVirgin + nln + sSlave;
+            sGirl[1] = sGDesc + nln + numberoftraits + nln + sTraits + "0" + nln + sStats + nln + sSkills + nln + GoldTBox1.Text + nln + sVirgin + nln + sSlave + nln + sFName + nln + sMName + nln + sLName;
             sGirl[2] = sSlave;
 
             return sGirl;
@@ -1867,9 +1870,9 @@ namespace WM_Girls_Generator
                     for (int i = 0; i < node.Attributes.Count; i++)
                     {
                         if (node.Attributes[i].Name == "Name") sName = node.Attributes["Name"].Value;
-                        if (node.Attributes[i].Name == "FirstName") sFName = node.Attributes["Name"].Value;
-                        if (node.Attributes[i].Name == "MiddleName") sMName = node.Attributes["Name"].Value;
-                        if (node.Attributes[i].Name == "Surname") sLName = node.Attributes["Name"].Value;
+                        if (node.Attributes[i].Name == "FirstName") sFName = node.Attributes["FirstName"].Value;
+                        if (node.Attributes[i].Name == "MiddleName") sMName = node.Attributes["MiddleName"].Value;
+                        if (node.Attributes[i].Name == "Surname") sLName = node.Attributes["Surname"].Value;
 
                         if (node.Attributes[i].Name == "Desc") sDesc = node.Attributes["Desc"].Value;
                         if (node.Attributes[i].Name == "Gold") sGold = node.Attributes["Gold"].Value;
@@ -3142,16 +3145,16 @@ namespace WM_Girls_Generator
                                 aMorality[1] = stat.Attributes["Max"].Value;
                                 break;
                             case "Refinement":
-                                aMorality[0] = stat.Attributes["Min"].Value;
-                                aMorality[1] = stat.Attributes["Max"].Value;
+                                aRefinement[0] = stat.Attributes["Min"].Value;
+                                aRefinement[1] = stat.Attributes["Max"].Value;
                                 break;
                             case "Dignity":
-                                aMorality[0] = stat.Attributes["Min"].Value;
-                                aMorality[1] = stat.Attributes["Max"].Value;
+                                aDignity[0] = stat.Attributes["Min"].Value;
+                                aDignity[1] = stat.Attributes["Max"].Value;
                                 break;
                             case "Lactation":
-                                aMorality[0] = stat.Attributes["Min"].Value;
-                                aMorality[1] = stat.Attributes["Max"].Value;
+                                aLactation[0] = stat.Attributes["Min"].Value;
+                                aLactation[1] = stat.Attributes["Max"].Value;
                                 break;
                         }
                     }
@@ -3259,11 +3262,11 @@ namespace WM_Girls_Generator
                         tcount++;
                     }
 
-                    string sMinStat = aCharisma[0] + " " + aHappiness[0] + " " + aLibido[0] + " " + aConstitution[0] + " " + aIntelligence[0] + " " + aConfidence[0] + " " + aMana[0] + " " + aAgility[0] + " " + aFame[0] + " " + aLevel[0] + " " + aAskPrice[0] + " " + aHouse[0] + " " + aExp[0] + " " + aAge[0] + " " + aObedience[0] + " " + aSpirit[0] + " " + aBeauty[0] + " " + aTiredness[0] + " " + aHealth[0] + " " + aPCFear[0] + " " + aPCLove[0] + " " + aPCHate[0] + " " + aMorality[0];
-                    string sMaxStat = aCharisma[1] + " " + aHappiness[1] + " " + aLibido[1] + " " + aConstitution[1] + " " + aIntelligence[1] + " " + aConfidence[1] + " " + aMana[1] + " " + aAgility[1] + " " + aFame[1] + " " + aLevel[1] + " " + aAskPrice[1] + " " + aHouse[1] + " " + aExp[1] + " " + aAge[1] + " " + aObedience[1] + " " + aSpirit[1] + " " + aBeauty[1] + " " + aTiredness[1] + " " + aHealth[1] + " " + aPCFear[1] + " " + aPCLove[1] + " " + aPCHate[1] + " " + aMorality[1];
+                    string sMinStat = aCharisma[0] + " " + aHappiness[0] + " " + aLibido[0] + " " + aConstitution[0] + " " + aIntelligence[0] + " " + aConfidence[0] + " " + aMana[0] + " " + aAgility[0] + " " + aFame[0] + " " + aLevel[0] + " " + aAskPrice[0] + " " + aHouse[0] + " " + aExp[0] + " " + aAge[0] + " " + aObedience[0] + " " + aSpirit[0] + " " + aBeauty[0] + " " + aTiredness[0] + " " + aHealth[0] + " " + aPCFear[0] + " " + aPCLove[0] + " " + aPCHate[0] + " " + aMorality[0] + " " + aRefinement[0] + " " + aDignity[0] + " " + aLactation[0];
+                    string sMaxStat = aCharisma[1] + " " + aHappiness[1] + " " + aLibido[1] + " " + aConstitution[1] + " " + aIntelligence[1] + " " + aConfidence[1] + " " + aMana[1] + " " + aAgility[1] + " " + aFame[1] + " " + aLevel[1] + " " + aAskPrice[1] + " " + aHouse[1] + " " + aExp[1] + " " + aAge[1] + " " + aObedience[1] + " " + aSpirit[1] + " " + aBeauty[1] + " " + aTiredness[1] + " " + aHealth[1] + " " + aPCFear[1] + " " + aPCLove[1] + " " + aPCHate[1] + " " + aMorality[1] + " " + aRefinement[1] + " " + aDignity[1] + " " + aLactation[1];
 
-                    string sMinSkill = aAnal[0] + " " + aMagic[0] + " " + aBDSM[0] + " " + aNormalSex[0] + " " + aBeastiality[0] + " " + aGroup[0] + " " + aLesbian[0] + " " + aService[0] + " " + aStrip[0] + " " + aCombat[0] + " " + aOralSex[0] + " " + aTittySex[0] + " " + aMedicine[0] + " " + aPerformance[0] + " " + aHandjob[0] + " " + aCrafting[0] + " " + aHerbalism[0] + " " + aFarming[0] + " " + aBrewing[0] + " " + aAnimalHandling[0];
-                    string sMaxSkill = aAnal[1] + " " + aMagic[1] + " " + aBDSM[1] + " " + aNormalSex[1] + " " + aBeastiality[1] + " " + aGroup[1] + " " + aLesbian[1] + " " + aService[1] + " " + aStrip[1] + " " + aCombat[1] + " " + aOralSex[1] + " " + aTittySex[1] + " " + aMedicine[1] + " " + aPerformance[1] + " " + aHandjob[1] + " " + aCrafting[1] + " " + aHerbalism[1] + " " + aFarming[1] + " " + aBrewing[1] + " " + aAnimalHandling[1];
+                    string sMinSkill = aAnal[0] + " " + aMagic[0] + " " + aBDSM[0] + " " + aNormalSex[0] + " " + aBeastiality[0] + " " + aGroup[0] + " " + aLesbian[0] + " " + aService[0] + " " + aStrip[0] + " " + aCombat[0] + " " + aOralSex[0] + " " + aTittySex[0] + " " + aMedicine[0] + " " + aPerformance[0] + " " + aHandjob[0] + " " + aCrafting[0] + " " + aHerbalism[0] + " " + aFarming[0] + " " + aBrewing[0] + " " + aAnimalHandling[0] + " " + aFootjob[0];
+                    string sMaxSkill = aAnal[1] + " " + aMagic[1] + " " + aBDSM[1] + " " + aNormalSex[1] + " " + aBeastiality[1] + " " + aGroup[1] + " " + aLesbian[1] + " " + aService[1] + " " + aStrip[1] + " " + aCombat[1] + " " + aOralSex[1] + " " + aTittySex[1] + " " + aMedicine[1] + " " + aPerformance[1] + " " + aHandjob[1] + " " + aCrafting[1] + " " + aHerbalism[1] + " " + aFarming[1] + " " + aBrewing[1] + " " + aAnimalHandling[1] + " " + aFootjob[1];
 
                     string sTraits = tnum.ToString();
                     for (int y = 0; y < tnum; y++)
@@ -3438,11 +3441,17 @@ namespace WM_Girls_Generator
             StatRGMinTBox1.Text = values[0]; StatRGMinTBox2.Text = values[1]; StatRGMinTBox3.Text = values[2]; StatRGMinTBox4.Text = values[3]; StatRGMinTBox5.Text = values[4]; StatRGMinTBox6.Text = values[5]; StatRGMinTBox7.Text = values[6]; StatRGMinTBox8.Text = values[7]; StatRGMinTBox9.Text = values[8]; StatRGMinTBox10.Text = values[9]; StatRGMinTBox11.Text = values[10]; StatRGMinTBox12.Text = values[11]; StatRGMinTBox14.Text = values[13]; StatRGMinTBox15.Text = values[14]; StatRGMinTBox16.Text = values[15]; StatRGMinTBox17.Text = values[16]; StatRGMinTBox18.Text = values[17]; StatRGMinTBox19.Text = values[18]; StatRGMinTBox20.Text = values[19]; StatRGMinTBox21.Text = values[20];
             StatRGMinTBox22.Text = values[21];
             StatRGMinTBox23.Text = (values.Length > 22) ? values[22] : "0";
+            StatRGMinTBox24.Text = (values.Length > 23) ? values[23] : "0";
+            StatRGMinTBox25.Text = (values.Length > 24) ? values[24] : "0";
+            StatRGMinTBox26.Text = (values.Length > 25) ? values[25] : "0";
 
             values = data.ReadLine().Split(separator);
             StatRGMaxTBox1.Text = values[0]; StatRGMaxTBox2.Text = values[1]; StatRGMaxTBox3.Text = values[2]; StatRGMaxTBox4.Text = values[3]; StatRGMaxTBox5.Text = values[4]; StatRGMaxTBox6.Text = values[5]; StatRGMaxTBox7.Text = values[6]; StatRGMaxTBox8.Text = values[7]; StatRGMaxTBox9.Text = values[8]; StatRGMaxTBox10.Text = values[9]; StatRGMaxTBox11.Text = values[10]; StatRGMaxTBox12.Text = values[11]; StatRGMaxTBox14.Text = values[13]; StatRGMaxTBox15.Text = values[14]; StatRGMaxTBox16.Text = values[15]; StatRGMaxTBox17.Text = values[16]; StatRGMaxTBox18.Text = values[17]; StatRGMaxTBox19.Text = values[18]; StatRGMaxTBox20.Text = values[19]; StatRGMaxTBox21.Text = values[20];
             StatRGMaxTBox22.Text = values[21];
             StatRGMaxTBox23.Text = (values.Length > 22) ? values[22] : "0";
+            StatRGMaxTBox24.Text = (values.Length > 23) ? values[23] : "0";
+            StatRGMaxTBox25.Text = (values.Length > 24) ? values[24] : "0";
+            StatRGMaxTBox26.Text = (values.Length > 25) ? values[25] : "0";
 
 
             values = data.ReadLine().Split(separator);
@@ -3489,6 +3498,7 @@ namespace WM_Girls_Generator
             SkillRGMaxTBox18.Text = (values.Length > 17) ? values[17] : "0";
             SkillRGMaxTBox19.Text = (values.Length > 18) ? values[18] : "0";
             SkillRGMaxTBox20.Text = (values.Length > 19) ? values[19] : "0";
+            SkillRGMaxTBox21.Text = (values.Length > 20) ? values[20] : "0";
 
             GoldRMinTBox1.Text = data.ReadLine();
             GoldRMaxTBox1.Text = data.ReadLine();

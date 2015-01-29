@@ -1855,6 +1855,7 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 			"working on the farm",
 			"training in the medical field",
 			"drug rehab",
+			"making potions",
 			"doing miscellaneous tasks"  // general
 		};
 		string base = "She";
@@ -1890,7 +1891,7 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 	return ss.str();
 }
 
-string cGirls::GetThirdDetailsString(sGirl* girl)
+string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 {
 	// `J` zzzzzz I will come back to this when I start editing jobs
 
@@ -1990,7 +1991,8 @@ string cGirls::GetThirdDetailsString(sGirl* girl)
 	int baker = (jr_int + jr_her);
 	int brewer = (jr_int + jr_bre);
 	int makeitem = (jr_cra + jr_ser);
-	int makepot = ((jr_int / 2) + (jr_her / 2) + (jr_bre / 2) + (jr_cra / 2));
+	int makepot = (((jr_int + jr_her) / 2) + (jr_bre + jr_cra + jr_mag) / 2) + jr_lev;	// `J` updated 1/29/15
+		
 	int milk = 0;
 	{
 		if (girl->is_pregnant()) milk += 100; // preg rating | non-preg rating
@@ -3197,7 +3199,8 @@ void cGirls::UpdateStat(sGirl* girl, int a_stat, int amount, bool usetraits)
 
 void cGirls::UpdateStatMod(sGirl* girl, int stat, int amount, bool usetraits)
 {
-	if (stat == STAT_HEALTH || stat == STAT_HAPPINESS || stat == STAT_TIREDNESS || stat == STAT_AGE || stat == STAT_EXP || stat == STAT_LEVEL)
+	if (stat == STAT_HEALTH || stat == STAT_HAPPINESS || stat == STAT_TIREDNESS || stat == STAT_AGE || stat == STAT_EXP ||
+		stat == STAT_LEVEL || stat == STAT_HOUSE || stat == STAT_FAME || stat == STAT_ASKPRICE)
 	{
 		UpdateStat(girl, stat, amount);
 		return;
@@ -3223,7 +3226,8 @@ void cGirls::updateTempStats(sGirl* girl)	// Normalise to zero by 30% each week
 
 void cGirls::UpdateTempStat(sGirl* girl, int stat, int amount, bool usetraits)
 {
-	if (stat == STAT_HEALTH || stat == STAT_HAPPINESS || stat == STAT_TIREDNESS || stat == STAT_AGE || stat == STAT_EXP || stat == STAT_LEVEL)
+	if (stat == STAT_HEALTH || stat == STAT_HAPPINESS || stat == STAT_TIREDNESS || stat == STAT_AGE || stat == STAT_EXP || 
+		stat == STAT_LEVEL || stat == STAT_HOUSE || stat == STAT_FAME || stat == STAT_ASKPRICE)
 	{
 		UpdateStat(girl, stat, amount);
 		return;

@@ -162,6 +162,28 @@ bool cJobManager::WorkFarmHand(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		g_Girls.UpdateStat(girl, STAT_HAPPINESS, (g_Dice % 4) + 2);
 	}
 
+#if 0
+
+	// `J` Farm Bookmark - adding in items that can be created in the farm
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#endif
+
+
+
 
 	// do all the output
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_MAID, Day0Night1);

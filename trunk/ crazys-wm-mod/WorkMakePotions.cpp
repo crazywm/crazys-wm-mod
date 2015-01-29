@@ -31,31 +31,34 @@ extern cRng g_Dice;
 extern cGold g_Gold;
 extern cBrothelManager g_Brothels;
 extern cFarmManager g_Farm;
+extern cInventory g_InvManager;
 
 
 
 
-// `J` Farm Job - Producers
+// `J` Farm Job - Producers - updated 1/29/15
 bool cJobManager::WorkMakePotions(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	stringstream ss; string girlName = girl->m_Realname;
 
-	if (Preprocessing(ACTION_WORKFARM, girl, brothel, Day0Night1, summary, ss.str()))	// they refuse to have work in the bar
+	if (Preprocessing(ACTION_WORKMAKEPOTIONS, girl, brothel, Day0Night1, summary, ss.str()))	// they refuse to have work in the bar
 		return true;
 
-	// put that shit away, you'll scare off the customers!
-	g_Girls.UnequipCombat(girl);
+	ss << girlName << " worked as a potions maker on the farm.";
 
-	int wages = 25, work = 0;
-	ss << "She worked as a potions maker on the farm.";
+	g_Girls.UnequipCombat(girl);	// weapons and armor can get in the way
 
-	int roll = g_Dice % 100;
-	int jobperformance = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) / 2 +
-		g_Girls.GetSkill(girl, SKILL_HERBALISM) / 2 +
-		g_Girls.GetSkill(girl, SKILL_BREWING) / 2 +
-		g_Girls.GetSkill(girl, SKILL_CRAFTING) / 2);
+	int enjoy = 0;
+	int wages = 25;
+	int tips = 0;
+	int imagetype = IMGTYPE_CRAFT;
+	int msgtype = Day0Night1;
+	int danger = g_Dice.d100();	// chance that something bad will happen.
 
-
+	int jobperformance =
+		((girl->intelligence() + girl->herbalism()) / 2) +
+		((girl->brewing() + girl->crafting() + girl->magic()) / 3) +
+		girl->level();
 
 	//good traits
 	if (g_Girls.HasTrait(girl, "Quick Learner"))  jobperformance += 5;
@@ -70,17 +73,17 @@ bool cJobManager::WorkMakePotions(sGirl* girl, sBrothel* brothel, bool Day0Night
 	if (g_Girls.HasTrait(girl, "Meek"))			jobperformance -= 20;
 
 
-
-
 	if (jobperformance >= 245)
 	{
 		ss << " She must be the perfect at this.\n\n";
 		wages += 155;
+		danger -= 20;
 	}
 	else if (jobperformance >= 185)
 	{
 		ss << " She's unbelievable at this.\n\n";
 		wages += 95;
+		danger -= 10;
 	}
 	else if (jobperformance >= 145)
 	{
@@ -91,47 +94,194 @@ bool cJobManager::WorkMakePotions(sGirl* girl, sBrothel* brothel, bool Day0Night
 	{
 		ss << " She made a few mistakes but overall she is okay at this.\n\n";
 		wages += 15;
+		danger += 5;
 	}
 	else if (jobperformance >= 70)
 	{
 		ss << " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
 		wages -= 5;
+		danger += 10;
 	}
 	else
 	{
 		ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
 		wages -= 15;
+		danger += 20;
 	}
 
 
-
-	if (wages < 0)
-		wages = 0;
-
 	//enjoyed the work or not
-	if (roll <= 5)
-	{ ss << "\nSome of the patrons abused her during the shift."; work -= 1; }
-	else if (roll <= 25)
-	{ ss << "\nShe had a pleasant time working."; work += 3; }
-	else
-	{ ss << "\nOtherwise, the shift passed uneventfully."; work += 1; }
+	if (danger <= 10)
+	{
+		enjoy += g_Dice % 3 + 1;
+		ss << "She had a great time making potions today.";
+	}
+	else if (danger >= 90)
+	{
+		enjoy -= (g_Dice % 5 + 1);
+		ss << "Some potions blew up in her face today.";
+		girl->health(-(g_Dice % 10));
+		girl->happiness(-(g_Dice % 20));
+		girl->beauty(-(g_Dice % 3));
 
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKFARM, work, true);
-	girl->m_Events.AddMessage(ss.str(), IMGTYPE_CRAFT, Day0Night1);
-	girl->m_Pay = wages;
+	}
+	else if (danger >= 80)
+	{
+		enjoy -= (g_Dice % 3 + 1);
+		ss << "She did not like making potions today.";
+	}
+	else
+	{
+		enjoy += g_Dice % 2;
+		ss << "The shift passed uneventfully.";
+	}
+	ss << "\n\n";
+
+
+	// `J` Farm Bookmark - adding in potions that can be created in the farm
+#if 1
+
+	stringstream ssitem;
+	int numitemsmade = 1;	// counts down
+	int totalitemsmade = 0;	// counts up
+	int choosequality = g_Dice % jobperformance;
+	// more girls working can help out a bit, but too many can hurt so limit it to 10
+	choosequality += min(10, (g_Farm.GetNumGirlsOnJob(0, JOB_MAKEPOTIONS, Day0Night1) - 1));
+
+	while (numitemsmade > 0)
+	{
+		numitemsmade--;
+		string itemmade = "";
+		if (choosequality < 70)	{}	// she made nothing
+		else if (choosequality < 100)	// Common items
+		{
+			int chooseitem = g_Dice % 36;
+			/* */if (chooseitem < 6)	itemmade = "Healing Salve (T)";
+			else if (chooseitem < 10)	itemmade = "Healing Salve (S)";
+			else if (chooseitem < 16)	itemmade = "Incense of Serenity (T)";
+			else if (chooseitem < 20)	itemmade = "Incense of Serenity (S)";
+			else if (chooseitem < 23)	itemmade = "Cheap Perfume";
+			else if (chooseitem < 26)	itemmade = "Basic Makeup";
+			else if (chooseitem < 29)	itemmade = "Mana Potion";
+			else if (chooseitem < 32)	itemmade = "Booty Lube";
+			else if (chooseitem < 34)	itemmade = "NO MORE SLEEP! Brand Sleeping Pills";
+			else /*                */	itemmade = "Stim pack";
+		}
+		else if (choosequality < 145)	// Uncommon items
+		{
+			int chooseitem = g_Dice % 40;
+			/* */if (chooseitem < 5)	itemmade = "Incense of Serenity (M)";
+			else if (chooseitem < 10)	itemmade = "Healing Salve (M)";
+			else if (chooseitem < 15)	itemmade = "Quality Perfume";
+			else if (chooseitem < 20)	itemmade = "Quality Makeup";
+			else if (chooseitem < 22)	{ switch (g_Dice % 9) { case 1: itemmade = "Philtre of Abortion ,"; case 2: itemmade = "Philtre of Abortion ."; case 3: itemmade = "Philtre of Abortion, "; case 4: itemmade = "Philtre of Abortion,,"; case 5: itemmade = "Philtre of Abortion. "; case 6: itemmade = "Philtre of Abortion.."; default: itemmade = "Philtre of Abortion  "; } }
+			else if (chooseitem < 24)	{ switch (g_Dice % 4) { case 0: itemmade = "Anti-age cream,"; case 1: itemmade = "Anti-age cream."; default: itemmade = "Anti-age cream "; } }
+			else if (chooseitem < 26)	itemmade = "Magic Makeup";
+			else if (chooseitem < 28)	itemmade = "Dark Magic Makeup";
+			else if (chooseitem < 30)	itemmade = "Deluxe Booty Lube";
+			else if (chooseitem < 31)	itemmade = "Stoneskin Elixir";
+			else if (chooseitem < 32)	itemmade = "Enchanting Perfume";
+			else if (chooseitem < 33)	itemmade = "Oil of Lesser Breast Growth";
+			else if (chooseitem < 34)	itemmade = "Oil of Lesser Scar Removing";
+			else if (chooseitem < 35)	itemmade = "Breast Reduction Pill A";
+			else if (chooseitem < 36)	itemmade = "Breast Reduction Pill B";
+			else if (chooseitem < 37)	itemmade = "Humanity Elixir";
+			else if (chooseitem < 38)	itemmade = "Hybrid Injection";
+			else if (chooseitem < 39)	itemmade = "Potion of Broken Ascendance";
+			else /*                */	itemmade = "BrainMax";
+		}
+		else if (choosequality < 185)	// rare items
+		{
+			int chooseitem = g_Dice % 50;
+			/* */if (chooseitem < 5)	itemmade = "Incense of Serenity (L)";
+			else if (chooseitem < 10)	itemmade = "Healing Salve (L)";
+			else if (chooseitem < 13)	itemmade = "Cure for Alcoholic";
+			else if (chooseitem < 16)	itemmade = "Cure for Fairy Dust Addiction";
+			else if (chooseitem < 19)	itemmade = "Cure for Shroud Addiction";
+			else if (chooseitem < 22)	itemmade = "Cure for Viras Blood Addiction";
+			else if (chooseitem < 25)	itemmade = "Perfect Philtre of Abortion";
+			else if (chooseitem < 26)	itemmade = "Super Stim pack";
+			else if (chooseitem < 27)	itemmade = "Seductive Perfume";
+			else if (chooseitem < 28)	itemmade = "Pills of Regression";
+			else if (chooseitem < 29)	itemmade = "Potion of Tightness";
+			else if (chooseitem < 30)	itemmade = "Love Potion";
+			else if (chooseitem < 31)	itemmade = "Elixir of Conviction";
+			else if (chooseitem < 32)	itemmade = "Elixir of Youth";
+			else if (chooseitem < 33)	itemmade = "Hearts and Hooves Potion";
+			else /*                */	{ numitemsmade += 2; choosequality = 140; }		// make 2 items of lesser quality
+
+		}
+		else if (choosequality < 245)	// Very rare items
+		{
+			int chooseitem = g_Dice % 40;
+			/* */if (chooseitem < 3)	itemmade = "Herpes Cure";
+			else if (chooseitem < 6)	itemmade = "Syphilis Cure";
+			else if (chooseitem < 9)	itemmade = "Chlamydia Cure";
+			else if (chooseitem < 12)	itemmade = "AIDS Cure";
+			else if (chooseitem < 13)	itemmade = "Brainwashing Oil";
+			else if (chooseitem < 14)	itemmade = "Potion of Androgyny";
+			else if (chooseitem < 15)	itemmade = "Oil of Greater Breast Growth";
+			else if (chooseitem < 16)	itemmade = "Oil of Greater Scar Removing";
+			else if (chooseitem < 17)	itemmade = "Starfish Elixir";
+			else if (chooseitem < 18)	itemmade = "Elixir of Ultimate Regeneration";
+			else if (chooseitem < 19)	itemmade = "Oil of Extreme Breast Growth";
+			else if (chooseitem < 20)	itemmade = "Oil of Redemption";
+			else if (chooseitem < 21)	itemmade = "Unguent of Intense Desire";
+			else if (chooseitem < 22)	itemmade = "Attitude Reajustor";
+			else { numitemsmade += 2; choosequality = 180; }		// make 2 items of lesser quality
+		}
+		else							// unique items
+		{
+			int chooseitem = g_Dice % 100;
+			/* */if (chooseitem < 5)	itemmade = "Potion of Oppai Loli";
+			else if (chooseitem < 10)	itemmade = "Refined Mandragora Extract";
+			else if (chooseitem < 11)	itemmade = "Reset Potion MK i";
+			else if (chooseitem < 12)	itemmade = "Reset Potion MK ii";
+			else { numitemsmade += 2; choosequality = 240; }		// make 2 items of lesser quality
+		}
+
+		if (itemmade != "")
+		{
+			if (totalitemsmade > 0) ssitem << ", ";
+			ssitem << itemmade;
+			totalitemsmade++;
+			sInventoryItem* item = g_InvManager.GetItem(itemmade);
+			g_Brothels.AddItemToInventory(item);
+
+		}
+	}
+
+	if (totalitemsmade > 0)
+	{
+		ss << "\n\n" << girlName << " was able to make ";
+		if (totalitemsmade == 1) ss << "one ";
+		else ss << totalitemsmade << " items: ";
+		ss << ssitem.str();
+		msgtype = EVENT_GOODNEWS;
+	}
+
+
+#endif
+
+
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKMAKEPOTIONS, enjoy, true);
+	girl->m_Events.AddMessage(ss.str(), IMGTYPE_CRAFT, msgtype);
+	girl->m_Pay = max(0, wages);
 
 
 	// Improve stats
-	int xp = 10, libido = 1, skill = 3;
+	int xp = 5, libido = 1, skill = 3;
 
 	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
 
-	g_Girls.UpdateStat(girl, STAT_FAME, 1);
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_BREWING, skill);
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStat(girl, STAT_FAME, totalitemsmade);
+	g_Girls.UpdateStat(girl, STAT_EXP, (g_Dice % xp) + 1);
+	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, (g_Dice % skill) + 1);
+	g_Girls.UpdateSkill(girl, SKILL_BREWING, (g_Dice % skill));
+	g_Girls.UpdateSkill(girl, SKILL_HERBALISM, (g_Dice % skill) + 1);
+	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, (g_Dice % libido) + 1);
 
 	return false;
 }
