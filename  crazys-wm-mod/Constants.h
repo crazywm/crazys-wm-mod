@@ -468,7 +468,9 @@ const unsigned char ACTION_WORKFARM			= 26;
 const unsigned char ACTION_WORKINTERN		= 27;
 const unsigned char ACTION_WORKREHAB		= 28;
 const unsigned char ACTION_WORKMAKEPOTIONS	= 29;
-const unsigned char ACTION_GENERAL          = 30; // ACTION_GENERAL must be the last sction type
+const unsigned char ACTION_WORKMAKEITEMS	= 30;
+const unsigned char ACTION_WORKCOOKING		= 31;
+const unsigned char ACTION_GENERAL			= 32; // ACTION_GENERAL must be the last sction type
 
 const unsigned char NUM_ACTIONTYPES = ACTION_GENERAL + 1;
 

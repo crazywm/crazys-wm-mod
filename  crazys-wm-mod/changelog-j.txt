@@ -1477,4 +1477,14 @@ Fixed a few items.
 !!!!!!!!!!!!!!!!!!!! pushed to SVN - r146
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.33
 
+###  Changes 1/30-2/4/2015
+Fixed a bug in security guard item use.
+Finished adding items to Butcher, Baker, Brewer.
+Added "ShoHaFa Items Collection 2" and 15 items from R565
+
+WME - Fixed a bug with "Your Daughter" and "Is Daughter" breaking items.
+
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r147
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.34
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.19
 

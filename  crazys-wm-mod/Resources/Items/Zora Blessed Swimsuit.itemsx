@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+	<Item
+		Name="Zora Blessed Swimsuit"
+		Desc="It's blue and allows you to swim underwater for a long time (might as well live in the water). Plus it gives you a slight speed boost."
+		Type="Swimsuit"	Badness="0"	Special="None"	Cost="3500"	Rarity="Shop05"	Infinite="false"	GirlBuyChance="0">
+		<Effect			What="Skill"		Name="Magic"		Amount="20" />
+		<Effect			What="Skill"		Name="Combat"		Amount="5" />
+		<Effect			What="Skill"		Name="Performance"	Amount="5" />
+		<Effect			What="Stat"			Name="Agility"		Amount="20" />
+		<Effect			What="Trait"		Name="Agile"		Amount="1" />
+	</Item>
+</Items>

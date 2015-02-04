@@ -41,13 +41,18 @@ bool cJobManager::WorkButcher(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 {
 	stringstream ss; string girlName = girl->m_Realname;
 
-	if (Preprocessing(ACTION_WORKFARM, girl, brothel, Day0Night1, summary, ss.str()))	// they refuse to have work in the bar
+	if (Preprocessing(ACTION_WORKCOOKING, girl, brothel, Day0Night1, summary, ss.str()))	// they refuse to have work in the bar
 		return true;
 
 	// put that shit away, you'll scare off the customers!
 	g_Girls.UnequipCombat(girl);
 
-	int wages = 15, work = 0;
+	int enjoy = 0;
+	int wages = 25;
+	int tips = 0;
+	int imagetype = IMGTYPE_COOK;
+	int msgtype = Day0Night1;
+
 	ss << "She worked as a butcher on the farm.";
 
 	int roll = g_Dice % 100;
@@ -103,50 +108,89 @@ bool cJobManager::WorkButcher(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	if (wages < 0)
 		wages = 0;
 
-
+#if 1
 	//enjoyed the work or not
 	if (roll <= 5)
-	{ ss << "\nSome of the patrons abused her during the shift."; work -= 1; }
+	{
+		ss << "\nSome of the patrons abused her during the shift.";
+		enjoy -= 1;
+	}
 	else if (roll <= 25)
-	{ ss << "\nShe had a pleasant time working."; work += 3; }
+	{
+		ss << "\nShe had a pleasant time working.";
+		enjoy += 3;
+	}
 	else
-	{ ss << "\nOtherwise, the shift passed uneventfully."; work += 1; }
+	{
+		ss << "\nOtherwise, the shift passed uneventfully.";
+		enjoy += 1;
+	}
+#else
+if (roll_a <= 10)
+{
+	enjoyC -= g_Dice % 3; enjoyF -= g_Dice % 3;
+	CleanAmt = int(CleanAmt * 0.8);
+	/* */if (roll_b < 30)	ss << "She spilled a bucket of something unpleasant all over herself.";
+	else if (roll_b < 60)	ss << "She stepped in something unpleasant.";
+	else /*            */	ss << "She did not like working on the farm today.";
+}
+else if (roll_a >= 90)
+{
+	enjoyC += g_Dice % 3; enjoyF += g_Dice % 3;
+	CleanAmt = int(CleanAmt * 1.1);
+	/* */if (roll_b < 50)	ss << "She cleaned the building while humming a pleasant tune.";
+	else /*            */	ss << "She had a great time working today.";
+}
+else
+{
+	enjoyC += g_Dice % 2; enjoyF += g_Dice % 2;
+	ss << "The shift passed uneventfully.";
+}
+ss << "\n\n";
+#endif
 
 
 	// `J` Farm Bookmark - adding in items that can be created in the farm
-#if 0
+#if 1
 
-		"C.G. Bacon Cheese Burger"
-		"C.G. Burger"
-		"C.G. Cheese Burger"
-		"Premium Hot Dogs"
-		"Turducken"
-		"Aoshima BEEF!!"
-		"Cold Turkey"
-		"Cold Turkey "
-		"Cold Turkey  "
-		"Cold  Turkey"
-		"Cold  Turkey "
+	string itemmade = "";
+	sInventoryItem* item = NULL;
+	int totalitemsmade = 1;
+	if (g_Dice.percent(min(90, jobperformance / 2)))
+	{
+		int chooseitem = g_Dice % (girl->magic() < 50 ? 50 : 60);	// limit some of the more magical items
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+		/* */if (chooseitem < 10)	itemmade = "C.G. Burger";
+		else if (chooseitem < 20)	itemmade = "Premium Hot Dogs";
+		else if (chooseitem < 28)	itemmade = "C.G. Cheese Burger";
+		else if (chooseitem < 36)	itemmade = "C.G. Bacon Cheese Burger";
+		else if (chooseitem < 43)	itemmade = "Turducken";
+		else if (chooseitem < 50)	itemmade = "Cold Turkey";
+		else if (chooseitem < 52)	itemmade = "Cold Turkey ";
+		else if (chooseitem < 54)	itemmade = "Cold Turkey  ";
+		else if (chooseitem < 56)	itemmade = "Cold  Turkey";
+		else if (chooseitem < 58)	itemmade = "Cold  Turkey ";
+		else /*                */	itemmade = "Aoshima BEEF!!";
+		
+		if (chooseitem < 40) totalitemsmade += g_Dice % 3;
+		item = g_InvManager.GetItem(itemmade);
+	}
+	if (item)
+	{
+		msgtype = EVENT_GOODNEWS;
+		ss << "\n\n" << girlName << " made ";
+		if (totalitemsmade == 1) ss << "one ";
+		else ss << totalitemsmade << " ";
+		ss << itemmade << " for you.";
+		for (int i = 0; i < totalitemsmade;i++)
+			g_Brothels.AddItemToInventory(item);
+	}
 
 #endif
 
 
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKFARM, work, true);
-	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKCOOKING, enjoy, true);
+	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
 
 
 	int roll_max = (g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA));

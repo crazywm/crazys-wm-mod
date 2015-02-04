@@ -41,13 +41,17 @@ bool cJobManager::WorkBaker(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 {
 	stringstream ss; string girlName = girl->m_Realname;
 
-	if (Preprocessing(ACTION_WORKFARM, girl, brothel, Day0Night1, summary, ss.str()))	// they refuse to have work in the bar
+	if (Preprocessing(ACTION_WORKCOOKING, girl, brothel, Day0Night1, summary, ss.str()))	// they refuse to have work in the bar
 		return true;
 
 	// put that shit away, you'll scare off the customers!
 	g_Girls.UnequipCombat(girl);
 
-	int wages = 25, work = 0;
+	int enjoy = 0;
+	int wages = 25;
+	int tips = 0;
+	int imagetype = IMGTYPE_COOK;
+	int msgtype = Day0Night1;
 	int roll = g_Dice % 100;
 
 	ss << "She worked as a baker on the farm.";
@@ -101,47 +105,86 @@ bool cJobManager::WorkBaker(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 	}
 
 
-
+#if 1
 	//enjoyed the work or not
 	if (roll <= 5)
-	{ ss << "\nSome of the patrons abused her during the shift."; work -= 1; }
+	{
+		ss << "\nSome of the patrons abused her during the shift.";
+		enjoy -= 1;
+	}
 	else if (roll <= 25)
-	{ ss << "\nShe had a pleasant time working."; work += 3; }
+	{
+		ss << "\nShe had a pleasant time working.";
+		enjoy += 3;
+	}
 	else
-	{ ss << "\nOtherwise, the shift passed uneventfully."; work += 1; }
+	{
+		ss << "\nOtherwise, the shift passed uneventfully.";
+		enjoy += 1;
+	}
+#else
+if (roll_a <= 10)
+{
+	enjoy -= g_Dice % 3;
+	/* */if (roll_b < 30)	ss << "She spilled a bucket of something unpleasant all over herself.";
+	else if (roll_b < 60)	ss << "She stepped in something unpleasant.";
+	else /*            */	ss << "She did not like working on the farm today.";
+}
+else if (roll_a >= 90)
+{
+	enjoy += g_Dice % 3;
+	/* */if (roll_b < 50)	ss << "She cleaned the building while humming a pleasant tune.";
+	else /*            */	ss << "She had a great time working today.";
+}
+else
+{
+	enjoy += g_Dice % 2;
+	ss << "The shift passed uneventfully.";
+}
+ss << "\n\n";
+#endif
 
 
 	// `J` Farm Bookmark - adding in items that can be created in the farm
-#if 0
+#if 1
 
-		"Apple Tart"
-		"Box of Chocolate Chip Cookies"
-		"Box of Cookies"
-		"Box of Sugar Cookies"
-		"Chocolate Cake"
-		"Chocolate Cake "
-		"Death Sandwich"
-		"Death Sandwich "
-		"Eggscellent Challenge"
-		"Fancy Breath Mints"
-		"Fruitcake"
-		"Grilled Cheese Deluxe"
-		"Pizza Cake"
-		"Whole Wheat Donut"
-		"Yummi Gummi Lingere"
-		"Yummy Cookie Bra"
-		"Double Glazed Donut"
+	string itemmade = "";
+	bool a0an1 = 0;
+	sInventoryItem* item = NULL;
+	if (g_Dice.percent(min(90, jobperformance / 2)))
+	{
+		int chooseitem = g_Dice % (girl->magic() < 80 ? 96 : 100);	// limit some of the more magical items
 
-
-
-		"Eldritch Cookie"
-		"Honeypuff Scones"
-
-		"Leprechaun Biscuit"
-
-		"Heaven-and-Earth Cake"
-
-
+		/* */if (chooseitem < 10) { itemmade = "Apple Tart";			a0an1 = 1; }
+		else if (chooseitem < 12) { itemmade = "Chocolate Cake"; }
+		else if (chooseitem < 20) { itemmade = "Chocolate Cake "; }
+		else if (chooseitem < 30) { itemmade = "Fancy Breath Mints"; }
+		else if (chooseitem < 35) { itemmade = "Fruitcake"; }
+		else if (chooseitem < 40) { itemmade = "Grilled Cheese Deluxe"; }
+		else if (chooseitem < 45) { itemmade = "Pizza Cake"; }
+		else if (chooseitem < 50) { itemmade = "Whole Wheat Donut"; }
+		else if (chooseitem < 55) { itemmade = "Double Glazed Donut"; }
+		else if (chooseitem < 66) { itemmade = "Box of Cookies"; }
+		else if (chooseitem < 72) { itemmade = "Box of Sugar Cookies"; }
+		else if (chooseitem < 77) { itemmade = "Box of Chocolate Chip Cookies"; }
+		else if (chooseitem < 82) { itemmade = "Eggscellent Challenge";	a0an1 = 1; }
+		else if (chooseitem < 87) { itemmade = "Yummi Gummi Lingere"; }
+		else if (chooseitem < 92) { itemmade = "Yummy Cookie Bra"; }
+		else if (chooseitem < 94) { itemmade = "Death Sandwich"; }
+		else if (chooseitem < 96) { itemmade = "Death Sandwich "; }
+		else if (chooseitem < 97) { itemmade = "Eldritch Cookie";		a0an1 = 1; }
+		else if (chooseitem < 98) { itemmade = "Honeypuff Scones"; }
+		else if (chooseitem < 99) { itemmade = "Leprechaun Biscuit"; }
+		else /*                */ { itemmade = "Heaven-and-Earth Cake"; }
+	
+		item = g_InvManager.GetItem(itemmade);
+	}
+	if (item)
+	{
+		msgtype = EVENT_GOODNEWS;
+		ss << "\n\n" << girlName << " made " << (a0an1?"an ":"a ") << itemmade << " for you.";
+		g_Brothels.AddItemToInventory(item);
+	}
 
 
 
@@ -154,8 +197,8 @@ bool cJobManager::WorkBaker(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 #endif
 
 
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKFARM, work, true);
-	girl->m_Events.AddMessage(ss.str(), IMGTYPE_COOK, Day0Night1);
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKCOOKING, enjoy, true);
+	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
 
 	if (wages < 0) wages = 0;
 	girl->m_Pay = wages;

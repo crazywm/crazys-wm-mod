@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+	<Item
+		Name="Ornamental Heater"
+		Desc="With your brothels logo painted on in bright colors, it's almost a shame if the girls get this damaged in battle. (Cha +15, Cons/Conf +5, adds Tough)"
+		Type="Shield"
+		Badness="10"
+		Special="None"
+		Cost="190"
+		Rarity="Shop25"
+		Infinite="false"
+		GirlBuyChance="6">
+		<Effect
+			What="Stat"
+			Name="Charisma"
+			Amount="15" />
+		<Effect
+			What="Stat"
+			Name="Constitution"
+			Amount="5" />
+		<Effect
+			What="Stat"
+			Name="Confidence"
+			Amount="5" />
+		<Effect
+			What="Trait"
+			Name="Tough"
+			Amount="1" />
+	</Item>
+</Items>

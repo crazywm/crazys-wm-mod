@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+	<Item
+		Name="Armor of the Lost"
+		Desc="This armor.......I can even feel the demonic spirit within....( It makes you into a part-demon, not much but combined with the other pieces of the set....scary thoughts....)"
+		Type="Armor"	Badness="0"	Special="None"	Cost="10000"	Rarity="Common"	Infinite="false"	GirlBuyChance="0">
+		<Effect		What="Skill"		Name="Magic"			Amount="35" />
+		<Effect		What="Skill"		Name="Combat"			Amount="15" />
+		<Effect		What="Skill"		Name="Performance"		Amount="15" />
+		<Effect		What="GirlStatus"	Name="Controlled"		Amount="1" />
+		<Effect		What="Trait"		Name="Demon Possessed"	Amount="1" />
+		<Effect		What="Trait"		Name="Demon"			Amount="1" />
+		<Effect		What="Trait"		Name="Half-Breed"		Amount="1" />
+	</Item>
+</Items>

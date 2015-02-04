@@ -39,29 +39,56 @@ extern cFarmManager g_Farm;
 bool cJobManager::WorkMakeItem(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	stringstream ss;
-	if (Preprocessing(ACTION_WORKCENTRE, girl, brothel, Day0Night1, summary, ss.str()))
+	if (Preprocessing(ACTION_WORKMAKEITEMS, girl, brothel, Day0Night1, summary, ss.str()))
 		return true;
 
 	int jobperformance = (g_Girls.GetSkill(girl, SKILL_CRAFTING) +
 		g_Girls.GetSkill(girl, SKILL_SERVICE));
 
+	int enjoy = 0;
+	int wages = 25;
+	int tips = 0;
+	int imagetype = IMGTYPE_CRAFT;
+	int msgtype = Day0Night1;
 
-
+#if 1
 	// TODO need better dialog
 	if (g_Dice % 100 <= 10)
 	{
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCENTRE, -1, true);
+		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMAKEITEMS, -1, true);
 		ss << " She wasn't able to make anything.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_CRAFT, Day0Night1);
 	}
 	else
 	{
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCENTRE, +3, true);
+		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMAKEITEMS, +3, true);
 		ss << " She enjoyed her time working and made two items.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_CRAFT, Day0Night1);
 		g_Brothels.add_to_goods(2);
 	}
-
+#else
+	if (roll_a <= 10)
+	{
+		enjoyC -= g_Dice % 3; enjoyF -= g_Dice % 3;
+		CleanAmt = int(CleanAmt * 0.8);
+		/* */if (roll_b < 30)	ss << "She spilled a bucket of something unpleasant all over herself.";
+		else if (roll_b < 60)	ss << "She stepped in something unpleasant.";
+		else /*            */	ss << "She did not like working on the farm today.";
+	}
+	else if (roll_a >= 90)
+	{
+		enjoyC += g_Dice % 3; enjoyF += g_Dice % 3;
+		CleanAmt = int(CleanAmt * 1.1);
+		/* */if (roll_b < 50)	ss << "She cleaned the building while humming a pleasant tune.";
+		else /*            */	ss << "She had a great time working today.";
+	}
+	else
+	{
+		enjoyC += g_Dice % 2; enjoyF += g_Dice % 2;
+		ss << "The shift passed uneventfully.";
+	}
+	ss << "\n\n";
+#endif
 
 
 

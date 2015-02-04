@@ -4496,6 +4496,7 @@ namespace WM_Girls_Generator
         //this happens when you select something from item list listbox, that invokes SelectedIndexChanged event and values from entry with this index get filled to item tab boxes
         private void listBox_ItemsList_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (listBox_ItemsList.SelectedIndex < 0) return;
             string sEf01 = "";
             string sEf02 = "";
             string sEf03 = "";
@@ -4503,7 +4504,8 @@ namespace WM_Girls_Generator
             string[,] aTypes = new string[3, 2] { { "Skill", "0" }, { "Stat", "1" }, { "Status", "3" } };
             string[,] aSkills = new string[21, 2] { { "Anal", "0" }, { "Magic", "1" }, { "BDSM", "2" }, { "Normal Sex", "3" }, { "Bestiality", "4" }, { "Group", "5" }, { "Lesbian", "6" }, { "Service", "7" }, { "Strip", "8" }, { "Combat", "9" }, { "OralSex", "10" }, { "TittySex", "11" }, { "Medicine", "12" }, { "Performance", "13" }, { "Handjob", "14" }, { "Crafting", "15" }, { "Herbalism", "16" }, { "Farming", "17" }, { "Brewing", "18" }, { "AnimalHandling", "19" }, { "Footjob", "20" } };
             string[,] aStats = new string[26, 2] { { "Charisma", "0" }, { "Happiness", "1" }, { "Libedo", "2" }, { "Constitution", "3" }, { "Intelligence", "4" }, { "Confidence", "5" }, { "Mana", "6" }, { "Agility", "7" }, { "Fame", "8" }, { "Level", "9" }, { "AskPrice", "10" }, { "House", "11" }, { "Experience", "12" }, { "Age", "13" }, { "Obedience", "14" }, { "Spirit", "15" }, { "Beauty", "16" }, { "Tiredness", "17" }, { "Health", "18" }, { "PC Fear", "19" }, { "PC Love", "20" }, { "PC Hate", "21" }, { "Morality", "22" }, { "Refinement", "23" }, { "Dignity", "24" }, { "Lactation", "25" } };
-            string[,] aStatus = new string[10, 2] { { "Poisoned", "1" }, { "Badly Poisoned", "2" }, { "Pregnant", "3" }, { "Pregnant By Player", "4" }, { "Slave", "5" }, { "Has daughter", "6" }, { "Has son", "7" }, { "Inseminated", "8" }, { "Controlled", "9" }, { "Catacombs", "10" } };
+            string[,] aStatus = new string[13, 2] { { "Poisoned", "1" }, { "Badly Poisoned", "2" }, { "Pregnant", "3" }, { "Pregnant By Player", "4" }, { "Slave", "5" }, { "Has daughter", "6" }, { "Has son", "7" }, { "Inseminated", "8" }, { "Controlled", "9" }, { "Catacombs", "10" }, { "Arena", "11" }, { "Your Daughter", "12" }, { "Is Daughter", "13" } };
+
 
             textBox_ItemName.Text = ItemsCollection.Rows[listBox_ItemsList.SelectedIndex][0].ToString();	//name is already isolated so it's trivial to assign it to required textbox, it's in first cell ([0]) of datatable, only selected index is required, and since combobox is synchronised (or at least should be synchronized) with datatable it's easy to get name out
             string sData = ItemsCollection.Rows[listBox_ItemsList.SelectedIndex][1].ToString();				//this where it gets complicated, item data is in separate cell (this time [1]) from name so we need to parse it, first we'll put it in temp string, and after that disassemble it. Since this data isn't fixed length it would prove too complicated (my guess would be more to the line of impossible when considering DataTable nature) to put each line in separate column

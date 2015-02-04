@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+	<Item
+		Name="Pillbox Hat"
+		Desc="It does look a bit like a gun placement. Without the guns. In an elegant manner. (+5 Cha, adds Elegant)"
+		Type="Hat"
+		Badness="0"
+		Special="None"
+		Cost="100"
+		Rarity="Shop50"
+		Infinite="false"
+		GirlBuyChance="15">
+		<Effect
+			What="Stat"
+			Name="Charisma"
+			Amount="5" />
+		<Effect
+			What="Trait"
+			Name="Elegant"
+			Amount="1" />
+	</Item>
+</Items>

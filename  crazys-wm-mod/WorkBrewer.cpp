@@ -41,13 +41,17 @@ bool cJobManager::WorkBrewer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 {
 	stringstream ss; string girlName = girl->m_Realname;
 
-	if (Preprocessing(ACTION_WORKFARM, girl, brothel, Day0Night1, summary, ss.str()))	// they refuse to have work in the bar
+	if (Preprocessing(ACTION_WORKCOOKING, girl, brothel, Day0Night1, summary, ss.str()))	// they refuse to have work in the bar
 		return true;
 
 	// put that shit away, you'll scare off the customers!
 	g_Girls.UnequipCombat(girl);
 
-	int wages = 25, work = 0;
+	int enjoy = 0;
+	int wages = 25;
+	int tips = 0;
+	int imagetype = IMGTYPE_COOK;
+	int msgtype = Day0Night1;
 	ss << "She worked as a brewer on the farm.";
 
 	int roll = g_Dice % 100;
@@ -104,64 +108,107 @@ bool cJobManager::WorkBrewer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 
 
 	if (wages < 0) wages = 0;
-
+#if 1
 	//enjoyed the work or not
 	if (roll <= 5)
-	{ ss << "\nSome of the patrons abused her during the shift."; work -= 1; }
+	{
+		ss << "\nSome of the patrons abused her during the shift.";
+		enjoy -= 1;
+	}
 	else if (roll <= 25)
-	{ ss << "\nShe had a pleasant time working."; work += 3; }
+	{
+		ss << "\nShe had a pleasant time working.";
+		enjoy += 3;
+	}
 	else
-	{ ss << "\nOtherwise, the shift passed uneventfully."; work += 1; }
+	{
+		ss << "\nOtherwise, the shift passed uneventfully.";
+		enjoy += 1;
+	}
+#else
+if (roll_a <= 10)
+{
+	enjoyC -= g_Dice % 3; enjoyF -= g_Dice % 3;
+	CleanAmt = int(CleanAmt * 0.8);
+	/* */if (roll_b < 30)	ss << "She spilled a bucket of something unpleasant all over herself.";
+	else if (roll_b < 60)	ss << "She stepped in something unpleasant.";
+	else /*            */	ss << "She did not like working on the farm today.";
+}
+else if (roll_a >= 90)
+{
+	enjoyC += g_Dice % 3; enjoyF += g_Dice % 3;
+	CleanAmt = int(CleanAmt * 1.1);
+	/* */if (roll_b < 50)	ss << "She cleaned the building while humming a pleasant tune.";
+	else /*            */	ss << "She had a great time working today.";
+}
+else
+{
+	enjoyC += g_Dice % 2; enjoyF += g_Dice % 2;
+	ss << "The shift passed uneventfully.";
+}
+ss << "\n\n";
+#endif
 
 
 	// `J` Farm Bookmark - adding in items that can be created in the farm
-#if 0
+#if 1
+	string itemmade = "";
+	string itemtext="";
+	int numbermade = 0;
+	sInventoryItem* item = NULL;
 
-		"Alcohol"
-		"Alcohol "
-		"Black Cat Beer"
-		"Crossgate Egg Nog"
-		"Bimbo Liqueur"
-		"Nightmare Fuel"
-		"Nightmare Fuel X"
-		"Nightmare Fuel XY"
-		"Nightmare Fuel XYZ"
-		"RigJuice"
-		"Radicola"
-		"Mississippi Queen (Ch)"
-		"Mississippi Queen (De)"
-		"Mississippi Queen (FF)"
-		"Mississippi Queen (Fg)"
-		"Mississippi Queen (Fl)"
-		"Mississippi Queen (IW)"
-		"Mississippi Queen (MF)"
-		"Mississippi Queen (Mk)"
-		"Mississippi Queen (Ml)"
-		"Mississippi Queen (Op)"
-		"Mississippi Queen (Ps)"
-		"Mississippi Queen (Rt)"
-		"Mississippi Queen (St)"
-		"Mississippi Queen (To)"
-		"Mississippi Queen (Tw)"
+	if (g_Dice.percent(min(90, jobperformance/2)))
+	{
+		int chooseitem = g_Dice % (girl->magic() < 80 ? 80 : 100);	// limit some of the more magical items
 
+		/* */if (chooseitem < 25) { itemmade = "Alcohol";					numbermade = (g_Dice % 5) + 2;	itemtext = " bottles of Alcohol "; }
+		else if (chooseitem < 50) { itemmade = "Alcohol ";					numbermade = (g_Dice % 5) + 2;	itemtext = " bottles of Alcohol "; }
+		else if (chooseitem < 55) { itemmade = "RigJuice";					numbermade = (g_Dice % 5) + 2;	itemtext = " bottles of RigJuice "; }
+		else if (chooseitem < 60) { itemmade = "Radicola";					numbermade = (g_Dice % 5) + 2;	itemtext = " bottles of Radicola "; }
+		else if (chooseitem < 65) { itemmade = "Black Cat Beer";			numbermade = 1;	itemtext = " bottle of Black Cat Beer "; }
+		else if (chooseitem < 70) { itemmade = "Crossgate Egg Nog";			numbermade = 1;	itemtext = " bottle of Crossgate Egg Nog "; }
+		else if (chooseitem < 75) { itemmade = "Nightmare Fuel";			numbermade = 1;	itemtext = " bottle of Nightmare Fuel "; }
+		else if (chooseitem < 80) { itemmade = "Nightmare Fuel X";			numbermade = 1;	itemtext = " bottle of Nightmare Fuel "; }
+		else if (chooseitem < 83) { itemmade = "Nightmare Fuel XY";			numbermade = 1;	itemtext = " bottle of Nightmare Fuel "; }
+		else if (chooseitem < 84) { itemmade = "Nightmare Fuel XYZ";		numbermade = 1;	itemtext = " bottle of Nightmare Fuel "; }
+		else if (chooseitem < 85) { itemmade = "Bimbo Liqueur";				numbermade = 1;	itemtext = " bottle of Bimbo Liqueur "; }
+		else if (chooseitem < 86) { itemmade = "Mississippi Queen (Ch)";	numbermade = 1;	itemtext = " Mississippi Queen "; }
+		else if (chooseitem < 87) { itemmade = "Mississippi Queen (De)";	numbermade = 1;	itemtext = " Mississippi Queen "; }
+		else if (chooseitem < 88) { itemmade = "Mississippi Queen (FF)";	numbermade = 1;	itemtext = " Mississippi Queen "; }
+		else if (chooseitem < 89) { itemmade = "Mississippi Queen (Fg)";	numbermade = 1;	itemtext = " Mississippi Queen "; }
+		else if (chooseitem < 90) { itemmade = "Mississippi Queen (Fl)";	numbermade = 1;	itemtext = " Mississippi Queen "; }
+		else if (chooseitem < 91) { itemmade = "Mississippi Queen (IW)";	numbermade = 1;	itemtext = " Mississippi Queen "; }
+		else if (chooseitem < 92) { itemmade = "Mississippi Queen (MF)";	numbermade = 1;	itemtext = " Mississippi Queen "; }
+		else if (chooseitem < 93) { itemmade = "Mississippi Queen (Mk)";	numbermade = 1;	itemtext = " Mississippi Queen "; }
+		else if (chooseitem < 94) { itemmade = "Mississippi Queen (Ml)";	numbermade = 1;	itemtext = " Mississippi Queen "; }
+		else if (chooseitem < 95) { itemmade = "Mississippi Queen (Op)";	numbermade = 1;	itemtext = " Mississippi Queen "; }
+		else if (chooseitem < 96) { itemmade = "Mississippi Queen (Ps)";	numbermade = 1;	itemtext = " Mississippi Queen "; }
+		else if (chooseitem < 97) { itemmade = "Mississippi Queen (Rt)";	numbermade = 1;	itemtext = " Mississippi Queen "; }
+		else if (chooseitem < 98) { itemmade = "Mississippi Queen (St)";	numbermade = 1;	itemtext = " Mississippi Queen "; }
+		else if (chooseitem < 99) { itemmade = "Mississippi Queen (To)";	numbermade = 1;	itemtext = " Mississippi Queen "; }
+		else /*                */ { itemmade = "Mississippi Queen (Tw)";	numbermade = 1;	itemtext = " Mississippi Queen "; }
 
+		item = g_InvManager.GetItem(itemmade);
 
-
-
-
-
-
-
-
-
+	}
+	if (item)
+	{
+		msgtype = EVENT_GOODNEWS;
+		ss << "\n\n" << girlName << " made ";
+		if (numbermade == 1) ss << "one ";
+		else ss << numbermade << " ";
+		ss << itemmade << " for you.";
+		for (int i = 0; i < numbermade; i++)
+			g_Brothels.AddItemToInventory(item);
+	}
 
 
 
 #endif
 
 
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKFARM, work, true);
-	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKCOOKING, enjoy, true);
+	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
 	girl->m_Pay = wages;
 
 
