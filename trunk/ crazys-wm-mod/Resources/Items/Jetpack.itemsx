@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+	<Item
+		Name="Jetpack"
+		Desc="A contraption worn on the back, allowing its wearer to fly or charge into battle. The volatile propellant is extremely unstable, requiring constant control of the user, which in turn prevents the use of shields, whether of physical, mechanical or magical nature. (Agi/Fear +10, Fam +3, adds Flight)"
+		Type="Shield"
+		Badness="25"
+		Special="None"
+		Cost="15000"
+		Rarity="Catacomb01"
+		Infinite="false"
+		GirlBuyChance="0">
+		<Effect
+			What="Stat"
+			Name="Agility"
+			Amount="10" />
+		<Effect
+			What="Stat"
+			Name="Fame"
+			Amount="3" />
+		<Effect
+			What="Stat"
+			Name="PCFear"
+			Amount="10" />
+		<Effect
+			What="Trait"
+			Name="Flight"
+			Amount="1" />
+	</Item>
+</Items>

@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+	<Item
+		Name="Red Swimsuit"
+		Desc="It's actually a little bit too tight for her, making her boobs almost spill out of the top, while pulling tightly into her nether regions. But, it was a bargain, and it came with that neat little floater she can carry with her while jogging down the beach. (Serv/Med +5, Cha/Bea/Hap +5, adds Big Boobs, Great Figure)"
+		Type="Swimsuit"
+		Badness="0"
+		Special="None"
+		Cost="120"
+		Rarity="Common"
+		Infinite="false"
+		GirlBuyChance="70">
+		<Effect
+			What="Stat"
+			Name="Charisma"
+			Amount="5" />
+		<Effect
+			What="Stat"
+			Name="Happiness"
+			Amount="5" />
+		<Effect
+			What="Stat"
+			Name="Beauty"
+			Amount="5" />
+		<Effect
+			What="Skill"
+			Name="Service"
+			Amount="5" />
+		<Effect
+			What="Skill"
+			Name="Medicine"
+			Amount="5" />
+		<Effect
+			What="Trait"
+			Name="Big Boobs"
+			Amount="1" />
+		<Effect
+			What="Trait"
+			Name="Great Figure"
+			Amount="1" />
+	</Item>
+</Items>

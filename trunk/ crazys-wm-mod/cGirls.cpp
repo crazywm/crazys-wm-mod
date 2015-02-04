@@ -1856,6 +1856,8 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 			"training in the medical field",
 			"drug rehab",
 			"making potions",
+			"making items",
+			"cooking",
 			"doing miscellaneous tasks"  // general
 		};
 		string base = "She";
@@ -5146,7 +5148,7 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait, bool rememberflag)
 			}
 			else if (Name == "Chef")
 			{
-				UpdateSkill(girl, SKILL_SERVICE, 10);//change to cook if ever added
+				UpdateSkill(girl, SKILL_SERVICE, 10);	// change to cook if ever added
 			}
 			else if (Name == "Clumsy")
 			{

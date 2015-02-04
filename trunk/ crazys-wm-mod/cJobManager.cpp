@@ -1638,19 +1638,19 @@ bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_n
 				msg << "her.";
 				string item = "";
 				int itemnum = -1;
-				if (g_Brothels.HasItem("Brainwashing Oil", -1))
+				if (g_Brothels.HasItem("Brainwashing Oil", -1) != -1)
 				{
 					itemnum = g_Brothels.HasItem("Brainwashing Oil", -1);
 					item = "Brainwashing Oil";
 					msg << "\n\n" << SecName << " forced a bottle of Brainwashing Oil down her throat. After a few minutes of struggling, your new slave, ";
 				}
-				else if (g_Brothels.HasItem("Necklace of Control", -1))
+				else if (g_Brothels.HasItem("Necklace of Control", -1) != -1)
 				{
 					itemnum = g_Brothels.HasItem("Necklace of Control", -1);
 					item = "Necklace of Control";
 					msg << "\n\n" << SecName << " placed a Necklace of Control around her neck. After a few minutes of struggling, the magic in the necklace activated and your new slave, ";
 				}
-				else if (g_Brothels.HasItem("Slave Band", -1))
+				else if (g_Brothels.HasItem("Slave Band", -1) != -1)
 				{
 					itemnum = g_Brothels.HasItem("Slave Band", -1);
 					item = "Slave Band";
@@ -1684,9 +1684,9 @@ bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_n
 			{
 				msg << "him.";
 				int dildo = 0;
-				/* */if (g_Girls.HasItem(SecGuard, "Compelling Dildo"))	dildo = 1;
-				else if (g_Girls.HasItem(SecGuard, "Dreidel Dildo"))	dildo = 2;
-				else if (g_Girls.HasItem(SecGuard, "Double Dildo"))		dildo = 3;
+				/* */if (g_Girls.HasItem(SecGuard, "Compelling Dildo")!=-1)	dildo = 1;
+				else if (g_Girls.HasItem(SecGuard, "Dreidel Dildo") != -1)	dildo = 2;
+				else if (g_Girls.HasItem(SecGuard, "Double Dildo") != -1)		dildo = 3;
 				if (dildo > 0)
 				{
 					msg << "\n\n" << SecName << " decided to give this customer a taste of his own medicine and shoved her ";

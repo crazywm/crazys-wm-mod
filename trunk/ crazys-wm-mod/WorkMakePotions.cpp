@@ -148,14 +148,15 @@ bool cJobManager::WorkMakePotions(sGirl* girl, sBrothel* brothel, bool Day0Night
 	// more girls working can help out a bit, but too many can hurt so limit it to 10
 	choosequality += min(10, (g_Farm.GetNumGirlsOnJob(0, JOB_MAKEPOTIONS, Day0Night1) - 1));
 
-	while (numitemsmade > 0)
+	while (numitemsmade > 0 && choosequality >= 70)
 	{
 		numitemsmade--;
+		sInventoryItem* item = NULL;
 		string itemmade = "";
 		if (choosequality < 70)	{}	// she made nothing
 		else if (choosequality < 100)	// Common items
 		{
-			int chooseitem = g_Dice % 36;
+			int chooseitem = g_Dice % 46;
 			/* */if (chooseitem < 6)	itemmade = "Healing Salve (T)";
 			else if (chooseitem < 10)	itemmade = "Healing Salve (S)";
 			else if (chooseitem < 16)	itemmade = "Incense of Serenity (T)";
@@ -165,6 +166,11 @@ bool cJobManager::WorkMakePotions(sGirl* girl, sBrothel* brothel, bool Day0Night
 			else if (chooseitem < 29)	itemmade = "Mana Potion";
 			else if (chooseitem < 32)	itemmade = "Booty Lube";
 			else if (chooseitem < 34)	itemmade = "NO MORE SLEEP! Brand Sleeping Pills";
+			else if (chooseitem < 36)	itemmade = "Dar-E-Pills (Red)";
+			else if (chooseitem < 38)	itemmade = "Dar-E-Pills (Orange)";
+			else if (chooseitem < 40)	itemmade = "Dar-E-Pills (Yellow)";
+			else if (chooseitem < 42)	itemmade = "Dar-E-Pills (Green)";
+			else if (chooseitem < 44)	itemmade = "Dar-E-Pills (Blue)";
 			else /*                */	itemmade = "Stim pack";
 		}
 		else if (choosequality < 145)	// Uncommon items
@@ -242,12 +248,14 @@ bool cJobManager::WorkMakePotions(sGirl* girl, sBrothel* brothel, bool Day0Night
 
 		if (itemmade != "")
 		{
-			if (totalitemsmade > 0) ssitem << ", ";
-			ssitem << itemmade;
-			totalitemsmade++;
-			sInventoryItem* item = g_InvManager.GetItem(itemmade);
-			g_Brothels.AddItemToInventory(item);
-
+			item = g_InvManager.GetItem(itemmade);
+			if (item)
+			{
+				if (totalitemsmade > 0) ssitem << ", ";
+				ssitem << itemmade;
+				totalitemsmade++;
+				g_Brothels.AddItemToInventory(item);
+			}
 		}
 	}
 

@@ -2913,6 +2913,7 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 		if (is_she_resting(girl))
 		{
 			ss << "She put on her Apron and cooked a meal for some of the girls.\n\n";
+			g_Girls.UpdateEnjoyment(girl, ACTION_WORKCOOKING, 1, true);
 			girl->happiness(5);
 			cook = true;
 		}

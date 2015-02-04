@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+	<Item
+		Name="Gold Helmet"
+		Desc="It's more to present the wearers' wealth than to protect his head  (Cha +10, Cons +5, adds Tough.)"
+		Type="Helmet"
+		Badness="10"
+		Special="None"
+		Cost="2000"
+		Rarity="Shop05"
+		Infinite="false"
+		GirlBuyChance="10">
+		<Effect
+			What="Stat"
+			Name="Charisma"
+			Amount="10" />
+		<Effect
+			What="Stat"
+			Name="Constitution"
+			Amount="5" />
+		<Effect
+			What="Trait"
+			Name="Tough"
+			Amount="1" />
+	</Item>
+	<Item
+		Name="Gold Helmet"
+		Desc="It's more to present the wearers' wealth than to protect his head  (Cha +10, Cons +5, adds Tough.)"
+		Type="Helmet"
+		Badness="10"
+		Special="None"
+		Cost="2000"
+		Rarity="Catacomb05"
+		Infinite="false"
+		GirlBuyChance="10">
+		<Effect
+			What="Stat"
+			Name="Charisma"
+			Amount="10" />
+		<Effect
+			What="Stat"
+			Name="Constitution"
+			Amount="5" />
+		<Effect
+			What="Trait"
+			Name="Tough"
+			Amount="1" />
+	</Item>
+</Items>

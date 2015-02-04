@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+	<Item
+		Name="Helmet of the Lost"
+		Desc="This will make you absolutely crazy. (Both in smarts, and mentality.....)"
+		Type="Helmet"		Badness="0"		Special="None"		Cost="10000"		Rarity="Catacomb01"		Infinite="false"		GirlBuyChance="0">
+		<Effect			What="Stat"			Name="Mana"			Amount="15" />
+		<Effect			What="Stat"			Name="Intelligence"			Amount="75" />
+		<Effect			What="Trait"			Name="Open Minded"			Amount="1" />
+		<Effect			What="Trait"			Name="Mind Fucked"			Amount="1" />
+		<Effect			What="Trait"			Name="Twisted"			Amount="1" />
+		<Effect			What="Trait"			Name="Nerd"			Amount="1" />
+	</Item>
+</Items>
