@@ -1,21 +1,21 @@
 /*
- * Copyright 2009, 2010, The Pink Petal Development Team.
- * The Pink Petal Devloment Team are defined as the game's coders 
- * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright 2009, 2010, The Pink Petal Development Team.
+* The Pink Petal Devloment Team are defined as the game's coders
+* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 #include "cJobManager.h"
 #include "cBrothel.h"
 #include "cClinic.h"
@@ -45,7 +45,7 @@ extern cMessageQue g_MessageQue;
 // `J` Clinic Job - Surgery
 bool cJobManager::WorkRepairShop(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-	stringstream ss; string girlName = girl->m_Realname;
+	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 	g_Girls.UnequipCombat(girl);	// not for patients
 
 	if (!g_Girls.HasTrait(girl, "Construct") && !g_Girls.HasTrait(girl, "Half-Construct"))
@@ -61,11 +61,11 @@ bool cJobManager::WorkRepairShop(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	int numnurse = g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, Day0Night1);
 
 	// `J` base recovery copied freetime recovery
-	int health		= 10 + (girl->constitution() / 10);
-	int tiredness	= 10 + g_Dice % 21;	// build up as positive then apply as negative
-	int happy		= 10 + g_Dice % 11;
-	int mana		= 5 + (girl->magic() / 5);
-	int libido		= (g_Girls.HasTrait(girl, "Nymphomaniac") ? 15 : 5);
+	int health = 10 + (girl->constitution() / 10);
+	int tiredness = 10 + g_Dice % 21;	// build up as positive then apply as negative
+	int happy = 10 + g_Dice % 11;
+	int mana = 5 + (girl->magic() / 5);
+	int libido = (g_Girls.HasTrait(girl, "Nymphomaniac") ? 15 : 5);
 
 	if (nummecs + numnurse < 1)
 	{
@@ -91,10 +91,10 @@ bool cJobManager::WorkRepairShop(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	if (numnurse > 0)
 	{
 		ss << " the Nurse" << (numnurse > 1 ? "s" : "");
-		health		+= 10;
-		tiredness	+= 10;
-		happy		+= 10;
-		mana		+= (girl->magic() / 5);
+		health += 10;
+		tiredness += 10;
+		happy += 10;
+		mana += (girl->magic() / 5);
 	}
 	if (nummecs + numnurse >= 4 && g_Dice.percent(50))	// lots of people making sure she is in good working order
 	{
@@ -129,4 +129,17 @@ bool cJobManager::WorkRepairShop(sGirl* girl, sBrothel* brothel, bool Day0Night1
 
 
 	return false;
+}
+
+double cJobManager::JP_RepairShop(sGirl* girl, bool estimate)
+{
+	double jobperformance = 0.0;
+	if (estimate)	// for third detail string - how much do they need this?
+	{
+		if (!g_Girls.HasTrait(girl, "Construct") && !g_Girls.HasTrait(girl, "Half-Construct")) return -1000;
+		jobperformance += (100 - girl->health());
+		jobperformance += (100 - girl->happiness());
+		jobperformance += girl->tiredness();
+	}
+	return jobperformance;
 }

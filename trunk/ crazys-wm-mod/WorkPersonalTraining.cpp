@@ -1,27 +1,26 @@
 /*
- * Copyright 2009, 2010, The Pink Petal Development Team.
- * The Pink Petal Devloment Team are defined as the game's coders 
- * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright 2009, 2010, The Pink Petal Development Team.
+* The Pink Petal Devloment Team are defined as the game's coders
+* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 #include <sstream>
 #include "cJobManager.h"
 #include "cBrothel.h"
 #include "cHouse.h"
 #include "cMessageBox.h"
-
 
 extern cBrothelManager g_Brothels;
 extern cHouseManager g_House;
@@ -30,35 +29,39 @@ extern int g_Building;
 static cPlayer* m_Player = g_Brothels.GetPlayer();
 extern cJobManager m_JobManager;
 
-
-
 // `J` House Job - General
 bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-	stringstream ss;
-	if (Preprocessing(ACTION_SEX, girl, brothel, Day0Night1, summary, ss.str())) return true;	// they refuse to have work
+	int actiontype = ACTION_SEX;
+	stringstream ss; string girlName = girl->m_Realname;
+	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work 
+	{
+		ss << girlName << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
+		return true;
+	}
+	ss << "You oversee " << girlName << "'s traning.\n\n";
 
 	g_Building = BUILDING_HOUSE;
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, not needed for sex training
 
-	ss << "You oversee her traning for the day.\n\n";
 
 	// first set sex restrictions
-	bool Allow_BEAST		= m_JobManager.is_sex_type_allowed(SKILL_BEASTIALITY, brothel);
-	bool Allow_BDSM			= m_JobManager.is_sex_type_allowed(SKILL_BDSM, brothel);
-	bool Allow_GROUP		= m_JobManager.is_sex_type_allowed(SKILL_GROUP, brothel);
-	bool Allow_NORMALSEX	= m_JobManager.is_sex_type_allowed(SKILL_NORMALSEX, brothel);
-	bool Allow_ANAL			= m_JobManager.is_sex_type_allowed(SKILL_ANAL, brothel);
-	bool Allow_LESBIAN		= m_JobManager.is_sex_type_allowed(SKILL_LESBIAN, brothel);
-	bool Allow_FOOTJOB		= m_JobManager.is_sex_type_allowed(SKILL_FOOTJOB, brothel);
-	bool Allow_HANDJOB		= m_JobManager.is_sex_type_allowed(SKILL_HANDJOB, brothel);
-	bool Allow_ORALSEX		= m_JobManager.is_sex_type_allowed(SKILL_ORALSEX, brothel);
-	bool Allow_TITTYSEX		= m_JobManager.is_sex_type_allowed(SKILL_TITTYSEX, brothel);
-	bool Allow_STRIP		= m_JobManager.is_sex_type_allowed(SKILL_STRIP, brothel);
+	bool Allow_BEAST = m_JobManager.is_sex_type_allowed(SKILL_BEASTIALITY, brothel);
+	bool Allow_BDSM = m_JobManager.is_sex_type_allowed(SKILL_BDSM, brothel);
+	bool Allow_GROUP = m_JobManager.is_sex_type_allowed(SKILL_GROUP, brothel);
+	bool Allow_NORMALSEX = m_JobManager.is_sex_type_allowed(SKILL_NORMALSEX, brothel);
+	bool Allow_ANAL = m_JobManager.is_sex_type_allowed(SKILL_ANAL, brothel);
+	bool Allow_LESBIAN = m_JobManager.is_sex_type_allowed(SKILL_LESBIAN, brothel);
+	bool Allow_FOOTJOB = m_JobManager.is_sex_type_allowed(SKILL_FOOTJOB, brothel);
+	bool Allow_HANDJOB = m_JobManager.is_sex_type_allowed(SKILL_HANDJOB, brothel);
+	bool Allow_ORALSEX = m_JobManager.is_sex_type_allowed(SKILL_ORALSEX, brothel);
+	bool Allow_TITTYSEX = m_JobManager.is_sex_type_allowed(SKILL_TITTYSEX, brothel);
+	bool Allow_STRIP = m_JobManager.is_sex_type_allowed(SKILL_STRIP, brothel);
 
 	// if everything is banned do nothing
-	if (!Allow_BEAST && !Allow_BDSM && !Allow_GROUP && !Allow_NORMALSEX && !Allow_ANAL && !Allow_LESBIAN && 
+	if (!Allow_BEAST && !Allow_BDSM && !Allow_GROUP && !Allow_NORMALSEX && !Allow_ANAL && !Allow_LESBIAN &&
 		!Allow_FOOTJOB && !Allow_HANDJOB && !Allow_ORALSEX && !Allow_TITTYSEX && !Allow_STRIP)
 	{
 		ss << "All sex is banned in this building so you just talk to her.";
@@ -70,21 +73,21 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0
 	}
 
 	int choice = -1;
-	enum { 
-		PT_BEAST, 
-		PT_BDSM, 
-		PT_GROUP, 
-		PT_NORMALSEX, 
-		PT_ANAL, 
-		PT_LESBIAN, 
-		PT_FOOTJOB, 
-		PT_HANDJOB, 
-		PT_ORALSEX, 
-		PT_TITTYSEX, 
+	enum {
+		PT_BEAST,
+		PT_BDSM,
+		PT_GROUP,
+		PT_NORMALSEX,
+		PT_ANAL,
+		PT_LESBIAN,
+		PT_FOOTJOB,
+		PT_HANDJOB,
+		PT_ORALSEX,
+		PT_TITTYSEX,
 		PT_STRIP
 	};
 
-	
+
 
 	double roll_a = g_Dice.d100();
 	double roll_b = g_Dice.d100();
@@ -109,7 +112,7 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0
 
 
 
-	int xp = g_Dice%8+4;
+	int xp = g_Dice % 8 + 4;
 	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ xp += 3; }
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ xp -= 3; }
 
@@ -127,7 +130,7 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0
 	else if (roll_a <= 70)	skill = 4;
 	else if (roll_a <= 83)	skill = 3;
 	else /*             */	skill = 2;
-	
+
 	/* */if (g_Girls.HasTrait(girl, "Quick Learner"))	skill += 1;
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	skill -= 1;
 
@@ -160,7 +163,7 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0
 		if (girl->pclove() > 50
 			&& (Allow_NORMALSEX || Allow_BDSM)	// remove this check when it gets more options and is fully independent
 			)
-		{	
+		{
 			ss << girl->m_Realname << " tells you she loves you and she wants you to be her first. ";
 
 			// `J` zzzzzz - these need texts and other variables.
@@ -193,10 +196,10 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0
 			if (Allow_GROUP)		choice = PT_GROUP;
 			if (Allow_NORMALSEX)	choice = PT_NORMALSEX;
 
-			
-			
-			
-			
+
+
+
+
 
 		}
 
@@ -211,8 +214,8 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0
 				if (g_Dice.percent(min(Disp, 95)))	// always at least 5% decline
 				{
 					PT_Fear -= 5;
-					PT_Love	+= 5;
-					PT_Hate	-= 5;
+					PT_Love += 5;
+					PT_Hate -= 5;
 					choice = PT_NORMALSEX;
 					ss << "agrees so ";
 				}
@@ -242,13 +245,13 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0
 			}
 			if (declines)
 			{
-				if ((Allow_LESBIAN	&&	girl->m_Skills[SKILL_LESBIAN] < 100	) ||
-					(Allow_FOOTJOB	&&	girl->m_Skills[SKILL_FOOTJOB] < 100	) ||
-					(Allow_HANDJOB	&&	girl->m_Skills[SKILL_HANDJOB] < 100	) ||
-					(Allow_ORALSEX	&&	girl->m_Skills[SKILL_ORALSEX] < 100	) ||
+				if ((Allow_LESBIAN	&&	girl->m_Skills[SKILL_LESBIAN] < 100) ||
+					(Allow_FOOTJOB	&&	girl->m_Skills[SKILL_FOOTJOB] < 100) ||
+					(Allow_HANDJOB	&&	girl->m_Skills[SKILL_HANDJOB] < 100) ||
+					(Allow_ORALSEX	&&	girl->m_Skills[SKILL_ORALSEX] < 100) ||
 					(Allow_TITTYSEX	&&	girl->m_Skills[SKILL_TITTYSEX] < 100) ||
-					(Allow_STRIP	&&	girl->m_Skills[SKILL_STRIP] < 100	)
-				)
+					(Allow_STRIP	&&	girl->m_Skills[SKILL_STRIP] < 100)
+					)
 				{
 					while (choice == -1)
 					{
@@ -277,17 +280,17 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0
 
 
 		}
-//		Allow_BEAST
-//		Allow_BDSM
-//		Allow_GROUP
-//		Allow_NORMALSEX
-//		Allow_ANAL
-//		Allow_LESBIAN
-//		Allow_FOOTJOB
-//		Allow_HANDJOB
-//		Allow_ORALSEX
-//		Allow_TITTYSEX
-//		Allow_STRIP
+		//		Allow_BEAST
+		//		Allow_BDSM
+		//		Allow_GROUP
+		//		Allow_NORMALSEX
+		//		Allow_ANAL
+		//		Allow_LESBIAN
+		//		Allow_FOOTJOB
+		//		Allow_HANDJOB
+		//		Allow_ORALSEX
+		//		Allow_TITTYSEX
+		//		Allow_STRIP
 
 
 
@@ -356,17 +359,17 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0
 
 #else
 
-// roll_b random from 1-100 then is modified by player disposition and if is less than:
-// 7 strip | 15 les | 30 tit | 50 oral | 70 normal | 80 anal | 90 group | 100 bdsm | +beast
-// the nicer the player, the lower the roll, meaner is higher, only evil will do beast
-// will also skip down the list if the girl has 100 in the skill
+	// roll_b random from 1-100 then is modified by player disposition and if is less than:
+	// 7 strip | 15 les | 30 tit | 50 oral | 70 normal | 80 anal | 90 group | 100 bdsm | +beast
+	// the nicer the player, the lower the roll, meaner is higher, only evil will do beast
+	// will also skip down the list if the girl has 100 in the skill
 	if (Disp >= 80)				//Benevolent
 	{
 		if (g_Girls.CheckVirginity(girl))		// 25% decline
 		{
 			ss << "She is a virgin so you ask her if she wants to let you be her first.\nShe ";
 			if (roll_b <= 25)	{ ss << "declines so "; roll_b *= 2; }
-			else				{	ss << "agrees so "; roll_b = 60;	} // normal sex
+			else				{ ss << "agrees so "; roll_b = 60; } // normal sex
 		}
 		else if (roll_b > 75) roll_b -= 8;
 	}
@@ -375,8 +378,8 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0
 		if (g_Girls.CheckVirginity(girl))		// 50 % decline
 		{
 			ss << "She is a virgin so you ask her if she wants to let you be her first.\nShe ";
-			if (roll_b <= 50)		{	ss << "declines so ";	}
-			else					{	ss << "agrees so ";	roll_b = 60;	} // normal sex
+			if (roll_b <= 50)		{ ss << "declines so "; }
+			else					{ ss << "agrees so ";	roll_b = 60; } // normal sex
 		}
 		else if (roll_b > 90) roll_b -= 3;
 	}
@@ -385,9 +388,9 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0
 		if (g_Girls.CheckVirginity(girl))		// 70% decline
 		{
 			ss << "She is a virgin so you ask her if she wants to let you be her first.\n";
-			if (roll_b <= 50)		{	ss << "She declines so ";						}
-			else if (roll_b <= 80)	{	ss << "She agrees so ";			roll_b = 60;} // normal sex
-			else					{	ss << "She declines so ";			roll_b = 75;} // anal sex
+			if (roll_b <= 50)		{ ss << "She declines so "; }
+			else if (roll_b <= 80)	{ ss << "She agrees so ";			roll_b = 60; } // normal sex
+			else					{ ss << "She declines so ";			roll_b = 75; } // anal sex
 		}
 		else if (roll_b > 95) roll_b *= 0.98;
 	}
@@ -440,7 +443,7 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0
 
 	if (roll_b <= 10 && girl->m_Skills[SKILL_STRIP] < 100)
 	{
-		g_Girls.UpdateSkill(girl, SKILL_STRIP, skill); 
+		g_Girls.UpdateSkill(girl, SKILL_STRIP, skill);
 		ss << "You decide to have her strip for you.\n\n";
 		ss << "She managed to gain " << skill << " Strip.\n\n";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_STRIP, Day0Night1);
@@ -547,7 +550,7 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0
 		}
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_BEAST, Day0Night1);
 	}
-	else															
+	else
 	{
 		g_Girls.UpdateSkill(girl, SKILL_STRIP, (g_Dice % 3));
 		if (is_sex_type_allowed(SKILL_HANDJOB, brothel))		g_Girls.UpdateSkill(girl, SKILL_HANDJOB, (g_Dice % 3));
@@ -584,9 +587,21 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0
 	if (PT_Love != 0) g_Girls.UpdateStat(girl, STAT_PCLOVE, PT_Love);
 	if (PT_Hate != 0) g_Girls.UpdateStat(girl, STAT_PCHATE, PT_Hate);
 
-				
-				
-				
+
+
+
 
 	return false;
+}
+
+double cJobManager::JP_PersonalTraining(sGirl* girl, bool estimate)// not used
+{
+	double jobperformance = 0.0;
+	if (estimate)// for third detail string
+	{
+	}
+	else// for the actual check
+	{
+	}
+	return jobperformance;
 }

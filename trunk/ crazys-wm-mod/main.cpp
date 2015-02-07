@@ -34,6 +34,7 @@
 #include "Revision.h"
 #include "libintl.h"
 #include "locale.h"
+#include "FileList.h"
 
 #ifndef LINUX
 #ifdef _DEBUG
@@ -1017,6 +1018,14 @@ int main(int ac, char* av[])	// `J` Bookmark - #1 - Entering the game
 	bool running = true;
 	bool quitPending = false;
 	bool mouseDown = false;
+
+	DirPath locationch = DirPath() << "..\\";
+	XMLFileList test(locationch, "config.xml");
+	if (test.size() > 0)
+	{
+		cfg.reload("..\\config.xml");
+	}
+
 
 	g_LogFile.ss()
 		<< "Startup: checking for variant config: argc = " << ac << ".\n";

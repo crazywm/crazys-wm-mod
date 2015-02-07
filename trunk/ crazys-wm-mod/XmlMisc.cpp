@@ -60,6 +60,7 @@ const char* actionTypeNames[] =
 	"MAKEPOTIONS",
 	"MAKEITEMS",
 	"COOKING",
+	"GETTHERAPY",
 	"GENERAL"
 };
 	

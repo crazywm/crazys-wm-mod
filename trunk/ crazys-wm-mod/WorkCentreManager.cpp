@@ -1,21 +1,21 @@
 /*
- * Copyright 2009, 2010, The Pink Petal Development Team.
- * The Pink Petal Devloment Team are defined as the game's coders 
- * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright 2009, 2010, The Pink Petal Development Team.
+* The Pink Petal Devloment Team are defined as the game's coders
+* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 #include <sstream>
 #include "cJobManager.h"
 #include "cBrothel.h"
@@ -46,67 +46,86 @@ extern cGold g_Gold;
 // `J` Centre Job - General - Matron_Job - Full_Time_Job
 bool cJobManager::WorkCentreManager(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
+	int actiontype = ACTION_WORKMATRON;
+	// DisobeyCheck is done in the building flow.
 	girl->m_DayJob = girl->m_NightJob = JOB_CENTREMANAGER;	// it is a full time job
-	bool night = (Day0Night1 == SHIFT_NIGHT);
-	cTariff tariff;
+
+	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 	cConfig cfg;
-	stringstream ss; string girlName = girl->m_Realname;
+
+	int numgirls = brothel->m_NumGirls;
+	int enjoy = 0;
+	int conf = 0;
+	int happy = 0;
 
 	// Complications
-	int check = g_Dice % 100;
-	if (check < 10)
+	int check = g_Dice.d100();
+	if (check < 10 && numgirls >(girl->service() + girl->confidence()) * 3)
 	{
-		if (brothel->m_NumGirls > girl->get_skill(SKILL_SERVICE) * 2)
-		{
-			g_Girls.UpdateEnjoyment(girl, ACTION_WORKMATRON, -10, true);
-			ss << girlName + gettext(" was overwhelmed by the number of girls she was required to manage and broke down crying.");
-			g_Girls.UpdateStat(girl, STAT_HAPPINESS, -10);
-			g_Girls.UpdateStat(girl, STAT_CONFIDENCE, -5);
-			girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
-		}
-		else
-		{
-			g_Girls.UpdateEnjoyment(girl, ACTION_WORKMATRON, -3, true);
-			ss << gettext("Had trouble dealing with some of the girls.");
-			g_Girls.UpdateStat(girl, STAT_HAPPINESS, -3);
-			g_Girls.UpdateStat(girl, STAT_CONFIDENCE, -1);
-			girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
-		}
+		enjoy -= (g_Dice % 6 + 5);
+		conf -= 5; happy -= 10;
+		ss << " was overwhelmed by the number of girls she was required to manage and broke down crying.";
+	}
+	else if (check < 10)
+	{
+		enjoy -= (g_Dice % 3 + 1);
+		conf -= -1; happy -= -3;
+		ss << " had trouble dealing with some of the girls.";
 	}
 	else if (check > 90)
 	{
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMATRON, +3, true);
-		ss << gettext("Enjoyed helping the girls with their lives.");
-		g_Girls.UpdateStat(girl, STAT_HAPPINESS, 3);
-		g_Girls.UpdateStat(girl, STAT_CONFIDENCE, 1);
-		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
+		enjoy += (g_Dice % 3 + 1);
+		conf -= 1; happy -= 3;
+		ss << " enjoyed helping the girls with their lives.";
 	}
 	else
 	{
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMATRON, +1, true);
-		ss << gettext("Went about her day as usual.");
-		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
+		enjoy += (g_Dice % 3 - 1);
+		ss << " went about her day as usual.";
 	}
 
+	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 
 	// Improve girl
-	int numgirls = brothel->m_NumGirls;
-	int xp = 5 + (numgirls / 10), libido = 1, skill = 3;
+	int xp = numgirls / 10, libido = 1, skill = 3;
 
 	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 5; }
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 5; }
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			libido += 2;
 	if (g_Girls.HasTrait(girl, "Lesbian"))				libido += numgirls / 20;
 
-	cfg.out_fact.matron_wages();
-
 	girl->m_Pay = int(float(100.0 + (((girl->get_skill(SKILL_SERVICE) + girl->get_stat(STAT_CHARISMA) + girl->get_stat(STAT_INTELLIGENCE) + girl->get_stat(STAT_CONFIDENCE) + girl->get_skill(SKILL_MEDICINE) + 50) / 50)*numgirls) * cfg.out_fact.matron_wages()));
+
+	if (conf>-1) conf += g_Dice%skill;
+	g_Girls.UpdateStat(girl, STAT_CONFIDENCE, conf);
+	g_Girls.UpdateStat(girl, STAT_HAPPINESS, happy);
+
 	g_Girls.UpdateStat(girl, STAT_EXP, g_Dice%xp + 5);
+	g_Girls.UpdateSkill(girl, SKILL_MEDICINE, g_Dice%skill);
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill + 2);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, g_Dice%libido);
 
-	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 30, ACTION_WORKMATRON, gettext("She has worked as a matron long enough that she has learned to be more Charismatic."), Day0Night1 == SHIFT_NIGHT);
-	g_Girls.PossiblyGainNewTrait(girl, "Psychic", 60, ACTION_WORKMATRON, gettext("She has learned to handle the girls so well that you'd almost think she was Psychic."), Day0Night1 == SHIFT_NIGHT);
+	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy, true);
+	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 30, actiontype, "She has worked as a matron long enough that she has learned to be more Charismatic.", Day0Night1);
+	g_Girls.PossiblyGainNewTrait(girl, "Psychic", 60, actiontype, "She has learned to handle the girls so well that you'd almost think she was Psychic.", Day0Night1);
 
 	return false;
+}
+
+double cJobManager::JP_CentreManager(sGirl* girl, bool estimate)// not used
+{
+	double jobperformance = 0.0;
+	if (estimate)// for third detail string
+	{		// `J` estimate - needs work
+		jobperformance = ((girl->charisma() + girl->confidence() + girl->spirit()) / 3) +
+			((girl->service() + girl->intelligence() + girl->medicine()) / 3) +
+			girl->level();
+
+		if (girl->is_slave()) jobperformance -= 1000;
+
+	}
+	else// for the actual check
+	{
+	}
+	return jobperformance;
 }

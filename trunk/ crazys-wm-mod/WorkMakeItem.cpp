@@ -1,21 +1,21 @@
 /*
- * Copyright 2009, 2010, The Pink Petal Development Team.
- * The Pink Petal Devloment Team are defined as the game's coders 
- * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright 2009, 2010, The Pink Petal Development Team.
+* The Pink Petal Devloment Team are defined as the game's coders
+* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 #include "cJobManager.h"
 #include "cRng.h"
 #include "CLog.h"
@@ -24,7 +24,6 @@
 #include "cBrothel.h"
 #include "cFarm.h"
 
-
 extern CLog g_LogFile;
 extern cMessageQue g_MessageQue;
 extern cRng g_Dice;
@@ -32,18 +31,20 @@ extern cGold g_Gold;
 extern cBrothelManager g_Brothels;
 extern cFarmManager g_Farm;
 
-
-
-
 // `J` Farm Job - Producers
 bool cJobManager::WorkMakeItem(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-	stringstream ss;
-	if (Preprocessing(ACTION_WORKMAKEITEMS, girl, brothel, Day0Night1, summary, ss.str()))
+	int actiontype = ACTION_WORKMAKEITEMS;
+	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
+	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work 
+	{
+		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
+	}
+	ss << " was assigned to make items at the farm.\n\n";
 
-	int jobperformance = (g_Girls.GetSkill(girl, SKILL_CRAFTING) +
-		g_Girls.GetSkill(girl, SKILL_SERVICE));
+	double jobperformance = JP_MakeItem(girl, false);
 
 	int enjoy = 0;
 	int wages = 25;
@@ -55,13 +56,13 @@ bool cJobManager::WorkMakeItem(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	// TODO need better dialog
 	if (g_Dice % 100 <= 10)
 	{
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMAKEITEMS, -1, true);
+		g_Girls.UpdateEnjoyment(girl, actiontype, -1, true);
 		ss << " She wasn't able to make anything.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_CRAFT, Day0Night1);
 	}
 	else
 	{
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKMAKEITEMS, +3, true);
+		g_Girls.UpdateEnjoyment(girl, actiontype, +3, true);
 		ss << " She enjoyed her time working and made two items.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_CRAFT, Day0Night1);
 		g_Brothels.add_to_goods(2);
@@ -132,4 +133,13 @@ bool cJobManager::WorkMakeItem(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
 	return false;
+}
+
+double cJobManager::JP_MakeItem(sGirl* girl, bool estimate)// not used
+{
+	double jobperformance =
+		(g_Girls.GetSkill(girl, SKILL_CRAFTING) +
+		g_Girls.GetSkill(girl, SKILL_SERVICE));
+
+	return jobperformance;
 }

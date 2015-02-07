@@ -78,7 +78,7 @@ int MarketSlaveGirlsDel[12] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 }
 
 CSurface* g_BrothelImages[7] = { 0, 0, 0, 0, 0, 0, 0 };
 
-extern bool g_LeftArrow;	extern bool g_RightArrow;	extern bool g_UpArrow;		extern bool g_DownArrow;	
+extern bool g_LeftArrow;	extern bool g_RightArrow;	extern bool g_UpArrow;		extern bool g_DownArrow;
 extern bool g_EnterKey;		extern bool g_AltKeys;		extern bool g_SpaceKey;
 extern bool g_HomeKey;		extern bool g_EndKey;		extern bool g_PageUpKey;	extern bool g_PageDownKey;
 
@@ -99,7 +99,12 @@ void confirm_exit();
 
 void LoadGameScreen()
 {
-	DirPath location = DirPath() << "Saves";
+	cConfig cfg;
+	DirPath location;
+	if (cfg.folders.configXMLsa())
+		location = DirPath() << cfg.folders.saves();
+	else
+		location = DirPath() << "Saves";
 	const char *pattern = "*.gam";
 	FileList fl(location, pattern);
 
@@ -218,7 +223,7 @@ void NewGame()
 	g_Year = 1209; g_Month = 1; g_Day = 1;
 
 	selected_girl = 0;
-	for (int i = 0; i<12; i++)
+	for (int i = 0; i < 12; i++)
 	{
 		MarketSlaveGirls[i] = 0;
 		MarketSlaveGirlsDel[i] = -1;
@@ -226,8 +231,8 @@ void NewGame()
 
 	g_Brothels.NewBrothel(20, 250);
 	g_Brothels.SetName(0, g_ReturnText);
-	for (int i = 0; i<NUM_STATS; i++)		g_Brothels.GetPlayer()->m_Stats[i] = 60;
-	for (u_int i = 0; i<NUM_SKILLS; i++)	g_Brothels.GetPlayer()->m_Skills[i] = 10;
+	for (int i = 0; i < NUM_STATS; i++)		g_Brothels.GetPlayer()->m_Stats[i] = 60;
+	for (u_int i = 0; i < NUM_SKILLS; i++)	g_Brothels.GetPlayer()->m_Skills[i] = 10;
 	g_Brothels.GetPlayer()->SetToZero();
 
 	g_House.NewBrothel(20, 200);
@@ -235,8 +240,8 @@ void NewGame()
 
 	u_int start_random_gangs = cfg.gangs.start_random();
 	u_int start_boosted_gangs = cfg.gangs.start_boosted();
-	for (u_int i = 0; i<start_random_gangs; i++)	g_Gangs.AddNewGang(false);
-	for (u_int i = 0; i<start_boosted_gangs; i++)	g_Gangs.AddNewGang(true);
+	for (u_int i = 0; i < start_random_gangs; i++)	g_Gangs.AddNewGang(false);
+	for (u_int i = 0; i < start_boosted_gangs; i++)	g_Gangs.AddNewGang(true);
 
 	// update the shop inventory
 	g_InvManager.UpdateShop();
@@ -262,7 +267,11 @@ void NewGame()
 
 	g_WinManager.push("Brothel Management");
 
-	DirPath text = DirPath() << "Saves" << (g_Brothels.GetBrothel(0)->m_Name + ".gam").c_str();
+	DirPath text;
+	if (cfg.folders.configXMLsa())
+		text = DirPath() << cfg.folders.saves() << (g_Brothels.GetBrothel(0)->m_Name + ".gam").c_str();
+	if (!cfg.folders.configXMLsa() || cfg.folders.backupsaves())
+		text = DirPath() << "Saves" << (g_Brothels.GetBrothel(0)->m_Name + ".gam").c_str();
 	sm.Load(ScriptPath("Intro.lua"), 0);
 	SaveGameXML(text);
 	g_InitWin = true;
@@ -435,7 +444,11 @@ void LoadGirlsFiles()
 	*	now get a list of all the file in the Characters folder
 	*	start by building a path...
 	*/
-	DirPath location = DirPath() << "Resources" << "Characters";
+	DirPath location; cConfig cfg;
+	if (cfg.folders.configXMLch())
+		location = DirPath() << cfg.folders.characters();
+	else
+		location = DirPath() << "Resources" << "Characters";
 	/*
 	*	now scan for matching files. The XMLFileList
 	*	will look for ".girls" and ".girlx" files
@@ -1967,7 +1980,11 @@ void Turnsummary()		// `J` Bookmark - starting the turn summary page
 		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_TSNEWWEEK))
 		{
 			g_InitWin = true;
-			SaveGameXML(DirPath() << "Saves" << "autosave.gam");
+			cConfig cfg;
+			if (cfg.folders.configXMLsa())
+				SaveGameXML(DirPath() << cfg.folders.saves() << "autosave.gam");
+			else
+				SaveGameXML(DirPath() << "Saves" << "autosave.gam");
 			NextWeek();
 			return;
 		}
@@ -2505,7 +2522,12 @@ void PreparingLoad()
 	}
 	else
 	{
-		DirPath location = DirPath() << "Saves";
+		cConfig cfg;
+		DirPath location;
+		if (cfg.folders.configXMLsa())
+			location = DirPath() << cfg.folders.saves();
+		else
+			location = DirPath() << "Saves";
 		const char *pattern = "*.gam";
 		FileList fl(location, pattern);
 		if (LoadGame(location, g_ReturnText))
@@ -3443,7 +3465,7 @@ void TransferGirls()
 					{
 						if (temp->m_DayJob == JOB_CENTREMANAGER || temp->m_NightJob == JOB_CENTREMANAGER)
 							color = COLOR_RED;
-						else if (temp->m_DayJob == JOB_DRUGCOUNSELOR || temp->m_NightJob == JOB_DRUGCOUNSELOR)
+						else if (temp->m_DayJob == JOB_COUNSELOR || temp->m_NightJob == JOB_COUNSELOR)
 						{
 							if (g_Centre.GetNumGirlsOnJob(0, JOB_REHAB, SHIFT_NIGHT) < 1) color = COLOR_DARKBLUE;
 							else color = COLOR_RED;
@@ -3623,7 +3645,7 @@ void TransferGirls()
 					{
 						if (temp->m_DayJob == JOB_CENTREMANAGER || temp->m_NightJob == JOB_CENTREMANAGER)
 							color = COLOR_RED;
-						else if (temp->m_DayJob == JOB_DRUGCOUNSELOR || temp->m_NightJob == JOB_DRUGCOUNSELOR)
+						else if (temp->m_DayJob == JOB_COUNSELOR || temp->m_NightJob == JOB_COUNSELOR)
 						{
 							if (g_Centre.GetNumGirlsOnJob(0, JOB_REHAB, SHIFT_NIGHT) < 1) color = COLOR_DARKBLUE;
 							else color = COLOR_RED;

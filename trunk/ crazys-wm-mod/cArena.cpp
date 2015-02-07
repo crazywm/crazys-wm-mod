@@ -41,6 +41,11 @@ extern cRng             g_Dice;
 extern cGold            g_Gold;
 extern char             buffer[1000];
 
+u_int restjob = JOB_ARENAREST;
+u_int matronjob = JOB_DOCTORE;
+u_int firstjob = JOB_FIGHTBEASTS;
+u_int lastjob = JOB_CLEANARENA;
+
 // // ----- Strut sArena Create / destroy
 sArena::sArena() : m_Finance(0)	// constructor
 {
@@ -110,10 +115,6 @@ void cArenaManager::UpdateArena()	// Start_Building_Process_A
 	string girlName;
 
 	sBrothel* current = (sBrothel*)m_Parent;
-	u_int restjob = JOB_ARENAREST;
-	u_int matronjob = JOB_DOCTORE;
-	u_int firstjob = JOB_FIGHTBEASTS;
-	u_int lastjob = JOB_CLEANARENA;
 
 	current->m_Finance.zero();
 	current->m_AntiPregUsed = 0;
@@ -215,10 +216,6 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 	stringstream ss;
 	string summary, girlName;
 
-	u_int restjob = JOB_ARENAREST;
-	u_int matronjob = JOB_DOCTORE;
-	u_int firstjob = JOB_FIGHTBEASTS;
-	u_int lastjob = JOB_CLEANARENA;
 	u_int sw = 0, psw = 0;
 
 	int totalPay = 0, totalTips = 0, totalGold = 0;
@@ -335,7 +332,7 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 	current = brothel->m_Girls;
 	while (current)
 	{
-		sw = (Day0Night1 == SHIFT_DAY ? current->m_DayJob : current->m_NightJob);
+		sw = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
 		if (current->health() <= 0 || sw != restjob)
 		{	// skip dead girls and anyone not resting
 			if (current->m_Next) { current = current->m_Next; continue; }
@@ -460,7 +457,7 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 	current = brothel->m_Girls;
 	while (current)
 	{
-		sw = (Day0Night1 == SHIFT_DAY ? current->m_DayJob : current->m_NightJob);
+		sw = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
 		if (current->health() <= 0 || sw == restjob || sw == matronjob)
 		{	// skip dead girls, resting girls and the matron
 			if (current->m_Next) { current = current->m_Next; continue; }

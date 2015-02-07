@@ -1,21 +1,21 @@
 /*
- * Copyright 2009, 2010, The Pink Petal Development Team.
- * The Pink Petal Devloment Team are defined as the game's coders 
- * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright 2009, 2010, The Pink Petal Development Team.
+* The Pink Petal Devloment Team are defined as the game's coders
+* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 #include "cJobManager.h"
 #include "cBrothel.h"
 #include "cMovieStudio.h"
@@ -46,14 +46,27 @@ extern int g_Building;
 // `J` Movie Studio Job - Unused
 bool cJobManager::WorkFilmRandom(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
+	int actiontype = ACTION_WORKMOVIE;
 	bool refused = false;
 	int sw;
 	do
-		{
-		int roll  = g_Dice%7;
+	{
+		int roll = g_Dice % 7;
 		sw = roll + JOB_FILMBEAST;
-		} while(!is_sex_type_allowed(sw, brothel));
+	} while (!is_sex_type_allowed(sw, brothel));
 
-//	refused = jobmng.JobFunc[sw](girl,brothel,SHIFT_NIGHT,summary);
+	//	refused = jobmng.JobFunc[sw](girl,brothel,SHIFT_NIGHT,summary);
 	return refused;
+}
+
+double cJobManager::JP_FilmRandom(sGirl* girl, bool estimate)// not used
+{
+	double jobperformance = 0.0;
+	if (estimate)// for third detail string
+	{
+	}
+	else// for the actual check
+	{
+	}
+	return jobperformance;
 }

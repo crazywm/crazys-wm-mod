@@ -334,7 +334,7 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 	current = brothel->m_Girls;
 	while (current)
 	{
-		sw = (Day0Night1 == SHIFT_DAY ? current->m_DayJob : current->m_NightJob);
+		sw = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
 		if (current->health() <= 0 || sw != restjob)
 		{	// skip dead girls and anyone not resting
 			if (current->m_Next) { current = current->m_Next; continue; }
@@ -356,17 +356,22 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 			if (matron)	// and there is a marton working...
 			{
 				psw = (Day0Night1 == SHIFT_DAY ? current->m_PrevDayJob : current->m_PrevNightJob);
-				if (psw == JOB_DRUGCOUNSELOR && current->is_free())
+				if (psw == JOB_COUNSELOR && current->is_free())
 				{
-					current->m_DayJob = current->m_NightJob = JOB_DRUGCOUNSELOR;
+					current->m_DayJob = current->m_NightJob = JOB_COUNSELOR;
 					ss << "The Centre Manager puts " << girlName << " back to work.\n";
 				}
 				else if (psw == JOB_REHAB)
 				{
-					current->m_DayJob = current->m_NightJob = JOB_REHAB;
+					current->m_DayJob = current->m_NightJob = psw;
 					ss << "The Centre Manager puts " << girlName << " back into Rehab.\n";
 				}
-				else if (psw != restjob && psw != 255 && psw != JOB_DRUGCOUNSELOR)
+				else if (psw == JOB_ANGER || psw == JOB_EXTHERAPY || psw == JOB_THERAPY)
+				{
+					current->m_DayJob = current->m_NightJob = psw;
+					ss << "The Centre Manager puts " << girlName << " back into Therapy.\n";
+				}
+				else if (psw != restjob && psw != 255 && psw != JOB_COUNSELOR)
 				{	// if she had a previous job, put her back to work.
 					if (Day0Night1 == SHIFT_DAY)
 					{
@@ -392,10 +397,10 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 						ss << "go to Rehab.";
 					}
 					// Make sure there is atleast 1 counselor on duty
-					else if (current->is_free() && GetNumGirlsOnJob(0, JOB_DRUGCOUNSELOR, Day0Night1) < 1)
+					else if (current->is_free() && GetNumGirlsOnJob(0, JOB_COUNSELOR, Day0Night1) < 1)
 					{
-						current->m_DayJob = current->m_NightJob = JOB_DRUGCOUNSELOR;
-						ss << "work as a Drug Counselor.";
+						current->m_DayJob = current->m_NightJob = JOB_COUNSELOR;
+						ss << "work as a Counselor.";
 					}
 					// assign 1 cleaner per 20 girls
 					else if (GetNumGirlsOnJob(0, JOB_CLEANCENTRE, Day0Night1) < max(1,numgirls/20))
@@ -404,10 +409,10 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 						ss << "clean the Centre.";
 					}
 					// assign 1 counselor per 20 girls
-					else if (current->is_free() && GetNumGirlsOnJob(0, JOB_DRUGCOUNSELOR, Day0Night1) < numgirls / 20)
+					else if (current->is_free() && GetNumGirlsOnJob(0, JOB_COUNSELOR, Day0Night1) < numgirls / 20)
 					{
-						current->m_DayJob = current->m_NightJob = JOB_DRUGCOUNSELOR;
-						ss << "work as a Drug Counselor.";
+						current->m_DayJob = current->m_NightJob = JOB_COUNSELOR;
+						ss << "work as a Counselor.";
 					}
 					// split all the rest between JOB_COMUNITYSERVICE and JOB_FEEDPOOR
 					else if (GetNumGirlsOnJob(0, JOB_COMUNITYSERVICE, Day0Night1) < GetNumGirlsOnJob(0, JOB_FEEDPOOR, Day0Night1))
@@ -435,14 +440,14 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 		current = current->m_Next;
 	}
 
-	///////////////////////////////////////////////////////////////
-	//  JOB_DRUGCOUNSELOR needs to be checked before all others  //
-	///////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////
+	//  JOB_COUNSELOR needs to be checked before all others //
+	//////////////////////////////////////////////////////////
 	current = brothel->m_Girls;
 	while (current)
 	{
-		sw = (Day0Night1 == SHIFT_DAY ? current->m_DayJob : current->m_NightJob);
-		if (current->health() <= 0 || sw != JOB_DRUGCOUNSELOR)
+		sw = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
+		if (current->health() <= 0 || sw != JOB_COUNSELOR)
 		{	// skip dead girls and anyone who is not a counselor
 			if (current->m_Next) { current = current->m_Next; continue; }
 			else { current = 0; break; }
@@ -466,13 +471,13 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 		current = current->m_Next; // Next Girl
 	}
 
-	////////////////////////////////////////////////////////////////////
-	//  Anyone not in rehab can be assigned to counselor if need be.  //
-	////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////
+	//  Anyone not in the Therapy Cantre can be assigned to counselor if need be.  //
+	/////////////////////////////////////////////////////////////////////////////////
 	current = brothel->m_Girls;
-	while (current && matron && !counselor && GetNumGirlsOnJob(0, JOB_REHAB, Day0Night1) > 0)
+	while (current && matron && !counselor && GetNumberPatients(Day0Night1) > 0)
 	{
-		sw = (Day0Night1 == SHIFT_DAY ? current->m_DayJob : current->m_NightJob);
+		sw = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
 		if (current->health() <= 0 || (sw != JOB_FEEDPOOR && sw != JOB_COMUNITYSERVICE && sw != JOB_CLEANCENTRE))
 		{	// skip dead girls
 			if (current->m_Next) { current = current->m_Next; continue; }
@@ -484,24 +489,95 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 		if (!g_Girls.DisobeyCheck(current, ACTION_WORKCOUNSELOR, brothel))
 		{
 			counselor = true;
-			ss << "There was no Drug Counselor available to work so " << girlName << " was assigned to do it.";
-			current->m_DayJob = current->m_NightJob = JOB_DRUGCOUNSELOR;
+			ss << "There was no Counselor available to work so " << girlName << " was assigned to do it.";
+			current->m_DayJob = current->m_NightJob = JOB_COUNSELOR;
 		}
 		if (ss.str().length() > 0) current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
 
 		current = current->m_Next; // Next Girl
 	}
 
+	/////////////////////////////////////////////////////////////////////////////
+	//  Anyone in the Therapy Cantre can be assigned to counselor if need be.  //
+	//  Try them in order of who can better go without their therapy.          //
+	/////////////////////////////////////////////////////////////////////////////
+	current = brothel->m_Girls;
+	while (current && matron && !counselor && GetNumberPatients(Day0Night1) > 0)
+	{
+		sw = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
+		if (current->health() <= 0 || sw != JOB_THERAPY)
+		{	// skip dead girls
+			if (current->m_Next) { current = current->m_Next; continue; }
+			else { current = 0; break; }
+		}
+		sum = EVENT_SUMMARY; summary = ""; ss.str("");
+		girlName = current->m_Realname;
+
+		if (!g_Girls.DisobeyCheck(current, ACTION_WORKCOUNSELOR, brothel))
+		{
+			counselor = true;
+			ss << "There was no Counselor available to work so " << girlName << " was assigned to do it.";
+			current->m_DayJob = current->m_NightJob = JOB_COUNSELOR;
+		}
+		if (ss.str().length() > 0) current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
+
+		current = current->m_Next; // Next Girl
+	}
+	current = brothel->m_Girls;
+	while (current && matron && !counselor && GetNumberPatients(Day0Night1) > 0)
+	{
+		sw = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
+		if (current->health() <= 0 || (sw != JOB_ANGER && sw != JOB_EXTHERAPY))
+		{	// skip dead girls
+			if (current->m_Next) { current = current->m_Next; continue; }
+			else { current = 0; break; }
+		}
+		sum = EVENT_SUMMARY; summary = ""; ss.str("");
+		girlName = current->m_Realname;
+
+		if (!g_Girls.DisobeyCheck(current, ACTION_WORKCOUNSELOR, brothel))
+		{
+			counselor = true;
+			ss << "There was no Counselor available to work so " << girlName << " was assigned to do it.";
+			current->m_DayJob = current->m_NightJob = JOB_COUNSELOR;
+		}
+		if (ss.str().length() > 0) current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
+
+		current = current->m_Next; // Next Girl
+	}
+	current = brothel->m_Girls;
+	while (current && matron && !counselor && GetNumberPatients(Day0Night1) > 0)
+	{
+		sw = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
+		if (current->health() <= 0 || sw != JOB_REHAB)
+		{	// skip dead girls
+			if (current->m_Next) { current = current->m_Next; continue; }
+			else { current = 0; break; }
+		}
+		sum = EVENT_SUMMARY; summary = ""; ss.str("");
+		girlName = current->m_Realname;
+
+		if (!g_Girls.DisobeyCheck(current, ACTION_WORKCOUNSELOR, brothel))
+		{
+			counselor = true;
+			ss << "There was no Counselor available to work so " << girlName << " was assigned to do it.";
+			current->m_DayJob = current->m_NightJob = JOB_COUNSELOR;
+		}
+		if (ss.str().length() > 0) current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
+
+		current = current->m_Next; // Next Girl
+	}
+	
 	/////////////////////////////////////
 	//  Do all the Centre staff jobs.  //
 	/////////////////////////////////////
 	current = brothel->m_Girls;
 	while (current)
 	{
-		sw = (Day0Night1 == SHIFT_DAY ? current->m_DayJob : current->m_NightJob);
-		if (current->health() <= 0 || (sw != JOB_FEEDPOOR && sw != JOB_COMUNITYSERVICE && sw != JOB_CLEANCENTRE && sw != JOB_DRUGCOUNSELOR) ||
+		sw = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
+		if (current->health() <= 0 || (sw != JOB_FEEDPOOR && sw != JOB_COMUNITYSERVICE && sw != JOB_CLEANCENTRE && sw != JOB_COUNSELOR) ||
 			// skip dead girls and anyone who is not staff
-			(sw == JOB_DRUGCOUNSELOR && ((Day0Night1 == SHIFT_DAY && current->m_Refused_To_Work_Day) || (Day0Night1 == SHIFT_NIGHT && current->m_Refused_To_Work_Night))))
+			(sw == JOB_COUNSELOR && ((Day0Night1 == SHIFT_DAY && current->m_Refused_To_Work_Day) || (Day0Night1 == SHIFT_NIGHT && current->m_Refused_To_Work_Night))))
 		{	// and skip counselors who refused to work in the first check
 			if (current->m_Next) { current = current->m_Next; continue; }
 			else { current = 0; break; }
@@ -510,7 +586,7 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 		sum = EVENT_SUMMARY; summary = ""; ss.str("");
 		girlName = current->m_Realname;
 
-		if (current->m_NightJob == JOB_DRUGCOUNSELOR) summary = "SkipDisobey";
+		if (current->m_NightJob == JOB_COUNSELOR) summary = "SkipDisobey";
 		// do their job
 		refused = m_JobManager.JobFunc[sw](current, brothel, Day0Night1, summary);
 
@@ -538,14 +614,14 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 	}
 
 
-	////////////////////////////////////////////////////////
-	//  Do Rehab last if there is a counselor available.  //
-	////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////
+	//  Do Rehab and therapy last if there is a counselor available.  //
+	////////////////////////////////////////////////////////////////////
 	current = brothel->m_Girls;
 	while (current)
 	{
-		sw = (Day0Night1 == SHIFT_DAY ? current->m_DayJob : current->m_NightJob);
-		if (current->health() <= 0 || sw != JOB_REHAB)
+		sw = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
+		if (current->health() <= 0 || (sw != JOB_REHAB && sw != JOB_ANGER && sw != JOB_EXTHERAPY && sw != JOB_THERAPY))
 		{	// skip dead girls, resting girls and the matron
 			if (current->m_Next) { current = current->m_Next; continue; }
 			else { current = 0; break; }
@@ -889,4 +965,12 @@ bool sCentre::LoadCentreXML(TiXmlHandle hBrothel)
 	//commented out before the conversion to XML
 	//building.load(ifs);
 	return true;
+}
+
+int cCentreManager::GetNumberPatients(bool Day0Night1)	// `J` added, if there is a doctor already on duty or there is no one needing surgery, return false
+{
+	return (GetNumGirlsOnJob(0, JOB_REHAB, Day0Night1) +
+		GetNumGirlsOnJob(0, JOB_ANGER, Day0Night1) +
+		GetNumGirlsOnJob(0, JOB_EXTHERAPY, Day0Night1) +
+		GetNumGirlsOnJob(0, JOB_THERAPY, Day0Night1));
 }

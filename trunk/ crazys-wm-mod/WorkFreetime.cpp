@@ -57,9 +57,7 @@ extern cFarmManager			g_Farm;
 // `J` Brothel Job - General
 bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-	// `J` NOTE: start with just the basic stuff
-	stringstream ss;
-	string girlName = girl->m_Realname;
+	stringstream ss; string girlName = girl->m_Realname;
 
 	int U_Tiredness = -(10 + g_Dice % 21);
 	int U_Health = 10 + (girl->constitution() / 10);
@@ -417,7 +415,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			{
 				if (roll <= 33)
 				{
-					ss << girlName + " confessed her shameful actions that she did at work, asking for the God's forgiveness.\n";
+					ss << girlName << " confessed her shameful actions that she did at work, asking for the God's forgiveness.\n";
 					U_Morality += 2;
 				}
 				else if (roll <= 66)
@@ -433,7 +431,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			{
 				if (roll <= 33)
 				{
-					ss << girlName + " starts to find this way of spending free time interesting. Wanting to know more, she listens intently to the preacher.\n";
+					ss << girlName << " starts to find this way of spending free time interesting. Wanting to know more, she listens intently to the preacher.\n";
 				}
 				else if (roll <= 66)
 				{
@@ -449,7 +447,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			{
 				if (roll <= 33)
 				{
-					ss << girlName + " made a quick stop at the local temple for a short prayer before heading further into town.\n";
+					ss << girlName << " made a quick stop at the local temple for a short prayer before heading further into town.\n";
 				}
 				else if (roll <= 66)
 				{
@@ -464,7 +462,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			{
 				if (roll <= 33)
 				{
-					ss << girlName + " tried to listen to the preachers lecture, but she fell asleep halfway thru!\n";
+					ss << girlName << " tried to listen to the preachers lecture, but she fell asleep halfway thru!\n";
 				}
 				else if (roll <= 66)
 				{
@@ -479,7 +477,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			{
 				if (roll <= 33)
 				{
-					ss << girlName + " threw some special weeds from your farm into a goblet of fire, standing in front of one of the side altars. Later on, most of praying at the altar swear that they saw angels!\n";
+					ss << girlName << " threw some special weeds from your farm into a goblet of fire, standing in front of one of the side altars. Later on, most of praying at the altar swear that they saw angels!\n";
 				}
 				else if (roll <= 66)
 				{
@@ -494,7 +492,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			{
 				if (roll <= 33)
 				{
-					ss << girlName + " entered the confessional. Whispering sensually of her job experiences, all in great detail, she made the priest have a heart attack! When the man was squirming in pain on the floor, she left the temple laughing.\n";
+					ss << girlName << " entered the confessional. Whispering sensually of her job experiences, all in great detail, she made the priest have a heart attack! When the man was squirming in pain on the floor, she left the temple laughing.\n";
 				}
 				else if (roll <= 66)
 				{
@@ -509,7 +507,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			{
 				if (roll <= 33)
 				{
-					ss << girlName + " came to the temple with one of girls working for you, but her companion flew right after seeing what kind place of worship this was. No human sacrifice provided by " + girlName + " today, sorry.\n";
+					ss << girlName << " came to the temple with one of girls working for you, but her companion flew right after seeing what kind place of worship this was. No human sacrifice provided by " << girlName << " today, sorry.\n";
 				}
 				else if (roll <= 66)
 				{
@@ -524,7 +522,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			{
 				if (roll <= 33)
 				{
-					ss << girlName + " was on her way to pray in the local temple, but on the way there, she saw a beautiful bag on display. After entering the shop, she spent several hours, picking out the perfect bag for herself before returning.\n";
+					ss << girlName << " was on her way to pray in the local temple, but on the way there, she saw a beautiful bag on display. After entering the shop, she spent several hours, picking out the perfect bag for herself before returning.\n";
 				}
 				else if (roll <= 66)
 				{
@@ -783,14 +781,10 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			string nursename = "the Nurse";
 			if (playerclinic)
 			{
-				vector<sGirl *> doctors = g_Clinic.GirlsOnJob(0, JOB_DOCTOR, Day0Night1);
-				if (doctors.size() > 0) doctoronduty = doctors[g_Dice%doctors.size()];
-				if (doctoronduty)	doctorname = "Doctor " + doctoronduty->m_Realname + "";
-				else doctorname = "";	// no doctor
-				vector<sGirl *> nurses = g_Clinic.GirlsOnJob(0, JOB_NURSE, Day0Night1);
-				if (nurses.size() > 0) nurseonduty = nurses[g_Dice%nurses.size()];
-				if (nurseonduty) nursename = "Nurse " + nurseonduty->m_Realname + "";
-				else nursename = "";
+				doctoronduty = g_Clinic.GetRandomGirlOnJob(0, JOB_DOCTOR, Day0Night1);
+				doctorname = (doctoronduty ? "Doctor " + doctoronduty->m_Realname + "" : "the Doctor");
+				nurseonduty = g_Clinic.GetRandomGirlOnJob(0, JOB_NURSE, Day0Night1);
+				nursename = (nurseonduty ? "Nurse " + nurseonduty->m_Realname + "" : "the Nurse");
 			}
 
 			if ((playerclinic && (doctoronduty || nurseonduty)) || girl->m_Money >= 25)	// get a checkup
@@ -983,7 +977,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			{
 				if (g_Girls.HasTrait(girl, "Aggressive"))
 				{
-					ss << girlName + "'s loves this type of movie with all the action it gets her blood pumping.\n";
+					ss << girlName << "'s loves this type of movie with all the action it gets her blood pumping.\n";
 					U_Happiness += 5;  roll = 96;
 				}
 			}
@@ -1015,7 +1009,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			bool invite = false;
 
 			ss << girlName << " decides to go to a concert.";
-			ss << "They were playing " + song_type_text + " music.\n";
+			ss << "They were playing " << song_type_text << " music.\n";
 			U_Money -= 50;
 			if (roll_c <= 14) //goth rock
 			{
@@ -1024,7 +1018,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			{
 				if (g_Girls.HasTrait(girl, "Elegant"))
 				{
-					ss << girlName + " seems to really enjoy this type of music.\n";
+					ss << girlName << " seems to really enjoy this type of music.\n";
 					U_Happiness += 5;  roll = 96;
 				}
 			}
@@ -1038,7 +1032,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			{
 				if (g_Girls.HasTrait(girl, "Farmers Daughter") || g_Girls.HasTrait(girl, "Country Gal"))
 				{
-					ss << girlName + " loves this type of music as she grew up listen to it.\n";
+					ss << girlName << " loves this type of music as she grew up listen to it.\n";
 					U_Happiness += 5;  roll = 96;
 				}
 			}
@@ -1046,7 +1040,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			{
 				if (g_Girls.HasTrait(girl, "Aggressive"))
 				{
-					ss << girlName + " loves this type of music it gets her blood pumping.\n";
+					ss << girlName << " loves this type of music it gets her blood pumping.\n";
 					U_Happiness += 5;  roll = 96;
 				}
 			}
@@ -1129,12 +1123,8 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 		case FT_VisitBar:
 		{
-			sGirl* barmaidonduty = NULL;
-			string barmaidname = "the Barmaid";	// Who?
-			vector<sGirl *> barmaid = g_Brothels.GirlsOnJob(0, JOB_BARMAID, Day0Night1);
-			if (barmaid.size() > 0) barmaidonduty = barmaid[g_Dice%barmaid.size()];
-			if (barmaidonduty)	barmaidname = "Barmaid " + barmaidonduty->m_Realname + "";
-			else barmaidname = "";	// no barmaid
+			sGirl* barmaidonduty = g_Brothels.GetRandomGirlOnJob(0, JOB_BARMAID, Day0Night1);
+			string barmaidname = (barmaidonduty ? "Barmaid " + barmaidonduty->m_Realname + "" : "the Barmaid");
 			ss << girlName << " decides to go to the bar.\n";
 			if (g_Girls.HasTrait(girl, "Alcoholic"))
 			{
@@ -1161,18 +1151,10 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 		case FT_Club:
 		{
-			sGirl* clubbaronduty = NULL;
-			sGirl* stripperonduty = NULL;
-			string clubbarname = "the Bartender";	// Who?
-			string strippername = "the Stripper";
-			vector<sGirl *> clubbar = g_Brothels.GirlsOnJob(0, JOB_SLEAZYBARMAID, Day0Night1);
-			if (clubbar.size() > 0) clubbaronduty = clubbar[g_Dice%clubbar.size()];
-			if (clubbaronduty)	clubbarname = "Bartender " + clubbaronduty->m_Realname + "";
-			else clubbarname = "";	// no clubbar
-			vector<sGirl *> stripper = g_Brothels.GirlsOnJob(0, JOB_BARSTRIPPER, Day0Night1);
-			if (stripper.size() > 0) stripperonduty = stripper[g_Dice%stripper.size()];
-			if (stripperonduty) strippername = "Stripper " + stripperonduty->m_Realname + "";
-			else strippername = "";
+			sGirl* clubbaronduty = g_Brothels.GetRandomGirlOnJob(0, JOB_SLEAZYBARMAID, Day0Night1);
+			string clubbarname = (clubbaronduty ? "Bartender " + clubbaronduty->m_Realname + "" : "the Bartender");
+			sGirl* stripperonduty = g_Brothels.GetRandomGirlOnJob(0, JOB_BARSTRIPPER, Day0Night1);
+			string strippername = (stripperonduty ? "Stripper " + stripperonduty->m_Realname + "" : "the Stripper");
 
 			ss << girlName << " puts on her best dress before leaving and going to the club.";
 			if (clubbaronduty)
@@ -1576,4 +1558,9 @@ bool cJobManager::AddictBuysDrugs(string Addiction, string Drug, sGirl* girl, sB
 		return true;
 	}
 
+}
+
+double cJobManager::JP_Freetime(sGirl* girl, bool estimate)	// not used
+{
+	return 0;
 }

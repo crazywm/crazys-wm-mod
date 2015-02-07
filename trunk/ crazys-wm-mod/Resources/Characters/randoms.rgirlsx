@@ -389,6 +389,8 @@
 			Percent="50" />
 		<Trait		Name="Long Legs"
 			Percent="30" />
+<Item Name="Assault Rifle" Percent="75" />
+<Item Name="Assault Rifle" Percent="75" />
 	</Girl>
 	<Girl
 		Name="Archer Elf"

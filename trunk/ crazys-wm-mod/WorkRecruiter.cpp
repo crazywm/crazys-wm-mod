@@ -1,21 +1,21 @@
 /*
- * Copyright 2009, 2010, The Pink Petal Development Team.
- * The Pink Petal Devloment Team are defined as the game's coders 
- * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright 2009, 2010, The Pink Petal Development Team.
+* The Pink Petal Devloment Team are defined as the game's coders
+* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 #include "cJobManager.h"
 #include "cBrothel.h"
 #include "cCustomers.h"
@@ -45,88 +45,76 @@ static cDungeon* m_Dungeon = g_Brothels.GetDungeon();
 // `J` House Job - General
 bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-	if (Day0Night1 == SHIFT_NIGHT) return false;
+	int actiontype = ACTION_WORKRECRUIT;
+	if (Day0Night1) return false;
+
+	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
+	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work 
+	{
+		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
+		return true;
+	}
+	ss << " worked trying to recruit girls for you.\n\n";
+
 	cTariff tariff;
-	stringstream ss;
 
-	if(Preprocessing(ACTION_WORKRECRUIT, girl, brothel, Day0Night1, summary, ss.str()))		return true;
+	g_Girls.UnequipCombat(girl);	// put that shit away, are you are trying to recruit for the military?
 
-
-	// put that shit away, not needed for sex training
-	g_Girls.UnequipCombat(girl);
-
-	int HateLove = 0;
-	HateLove = g_Girls.GetStat(girl, STAT_PCLOVE) - g_Girls.GetStat(girl, STAT_PCHATE);
-	int jobperformance = (HateLove + g_Girls.GetStat(girl, STAT_CHARISMA));
+	int HateLove = g_Girls.GetStat(girl, STAT_PCLOVE) - g_Girls.GetStat(girl, STAT_PCHATE);
 	int wages = 100, work = 0;
 	int roll = g_Dice % 100;
-
-	ss << "She worked trying to recruit girls for you.";
-
-	/* */if (HateLove < -80)	ss << " She hates you more then anything so she doesn't try that hard.\n\n";
-	else if (HateLove < -60)	ss << " She hates you.\n\n";
-	else if (HateLove < -40)	ss << " She doesn't like you.\n\n";
-	else if (HateLove < -20)	ss << " She finds you to be annoying.\n\n";
-	else if (HateLove <   0)	ss << " She finds you to be annoying.\n\n";
-	else if (HateLove <  20)	ss << " She finds you to be decent.\n\n";
-	else if (HateLove <  40)	ss << " She finds you to be a good person.\n\n";
-	else if (HateLove <  60)	ss << " She finds you to be a good person.\n\n";
-	else if (HateLove <  80)	ss << " She has really strong feelings for you so she trys really hard for you.\n\n";
-	else						ss << " She loves you more then anything so she gives it her all.\n\n";
-
-	//good traits
-	if (g_Girls.HasTrait(girl, "Charismatic"))  jobperformance += 20;
-	if (g_Girls.HasTrait(girl, "Cool Person"))  jobperformance += 10; //people love to be around her
-	if (g_Girls.HasTrait(girl, "Charming"))		jobperformance += 10; //people like charming people	
-	if (g_Girls.HasTrait(girl, "Psychic"))		jobperformance += 20; //knows what people want to hear
-		
-
-	//bad traits
-	if (g_Girls.HasTrait(girl, "Dependant"))	jobperformance -= 50; //needs others to do the job
-	if (g_Girls.HasTrait(girl, "Clumsy"))		jobperformance -= 5;
-	if (g_Girls.HasTrait(girl, "Aggressive"))	jobperformance -= 20; //gets mad easy and may attack people
-	if (g_Girls.HasTrait(girl, "Nervous"))		jobperformance -= 30; //don't like to be around people
-	if (g_Girls.HasTrait(girl, "Meek"))			jobperformance -= 20;
-	if (g_Girls.HasTrait(girl, "Broken Will"))	jobperformance -= 50;
-
-
 	int findchance = 0;
 
+	/* */if (HateLove < -80)	ss << "She hates you more then anything so she doesn't try that hard.";
+	else if (HateLove < -60)	ss << "She hates you.";
+	else if (HateLove < -40)	ss << "She doesn't like you.";
+	else if (HateLove < -20)	ss << "She finds you to be annoying.";
+	else if (HateLove <   0)	ss << "She finds you to be annoying.";
+	else if (HateLove <  20)	ss << "She finds you to be decent.";
+	else if (HateLove <  40)	ss << "She finds you to be a good person.";
+	else if (HateLove <  60)	ss << "She finds you to be a good person.";
+	else if (HateLove <  80)	ss << "She has really strong feelings for you so she trys really hard for you.";
+	else						ss << "She loves you more then anything so she gives it her all.";
+	ss << "\n\n";
+
+	double jobperformance = JP_Recruiter(girl, false);
 	if (jobperformance >= 245)
 	{
-		ss << "She must be the perfect recruiter.\n\n";
+		ss << "She must be the perfect recruiter.";
 		findchance = 20;
 	}
-	else if (jobperformance  >= 185)
+	else if (jobperformance >= 185)
 	{
-		ss << "She's unbelievable at this.\n\n";
+		ss << "She's unbelievable at this.";
 		findchance = 15;
 	}
 	else if (jobperformance >= 135)
 	{
-		ss << "She's good at this job.\n\n";
+		ss << "She's good at this job.";
 		findchance = 12;
 	}
 	else if (jobperformance >= 85)
 	{
-		ss << "She made a few mistakes but overall she is okay at this.\n\n";
+		ss << "She made a few mistakes but overall she is okay at this.";
 		findchance = 10;
 	}
 	else if (jobperformance >= 65)
 	{
-		ss << "She was nervous and made a few mistakes. She isn't that good at this.\n\n";
+		ss << "She was nervous and made a few mistakes. She isn't that good at this.";
 		findchance = 8;
 	}
 	else
 	{
-		ss << "She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
+		ss << "She was nervous and constantly making mistakes. She really isn't very good at this job.";
 		findchance = 4;
 	}
+	ss << "\n\n";
+
 	// `J` add in player's disposition so if the girl has heard of you
 	cPlayer m_Player;
-	int findroll = (g_Dice % 101);
 	int dispmod = 0;
-	     if (m_Player.disposition() >= 100)	dispmod = 3;	// "Saint"
+	/* */if (m_Player.disposition() >= 100)	dispmod = 3;	// "Saint"
 	else if (m_Player.disposition() >= 80)	dispmod = 2;	// "Benevolent"
 	else if (m_Player.disposition() >= 50)	dispmod = 1;	// "Nice"
 	else if (m_Player.disposition() >= 10)	dispmod = 0;	// "Pleasant"
@@ -135,10 +123,11 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	else if (m_Player.disposition() >= -80)	dispmod = -2;	// "Mean"
 	else /*								*/	dispmod = -3;	// "Evil"
 
+	int findroll = (g_Dice.d100());
 	if (findroll < findchance + 10)	// `J` While out recruiting she does find someone...
 	{
 		int finddif = findroll - findchance;
-		sGirl* girl = g_Girls.GetRandomGirl(false, (dispmod == -3 && g_Dice%4!=0));
+		sGirl* girl = g_Girls.GetRandomGirl(false, (dispmod == -3 && g_Dice % 4 != 0));
 		if (girl)
 		{
 			bool add = false;
@@ -216,23 +205,32 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 		ss << "But was unable to find anyone to join.";
 	}
 
-
+	ss << "\n\n";
 
 	//enjoyed the work or not
 	if (roll <= 5)
-	{ ss << "\nSome of the people abused her during the shift."; work -= 1; }
-	else if (roll <= 25) 
-	{ ss << "\nShe had a pleasant time working."; work += 3; }
+	{
+		ss << "Some of the people abused her during the shift.";
+		work -= 1;
+	}
+	else if (roll <= 25)
+	{
+		ss << "She had a pleasant time working.";
+		work += 3;
+	}
 	else
-	{ ss << "\nOtherwise, the shift passed uneventfully."; work += 1; }
+	{
+		ss << "Otherwise, the shift passed uneventfully.";
+		work += 1;
+	}
 
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKRECRUIT, work, true);
+	g_Girls.UpdateEnjoyment(girl, actiontype, work, true);
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 	int roll_max = (g_Girls.GetStat(girl, STAT_CHARISMA) + g_Girls.GetSkill(girl, SKILL_SERVICE));
 	roll_max /= 4;
 	wages += 10 + g_Dice%roll_max;
 	girl->m_Pay = wages;
-	
+
 
 	// Improve stats
 	int xp = 10, libido = 1, skill = 3;
@@ -250,10 +248,33 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
 	//gain traits
-	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, ACTION_WORKRECRUIT, "Dealing with people all day has made " + girl->m_Realname + " more Charismatic.", Day0Night1 == SHIFT_NIGHT);
-	g_Girls.PossiblyGainNewTrait(girl, "Psychic", 80, ACTION_WORKRECRUIT, girl->m_Realname + " has been doing this for so long it's as if she can read minds now.", Day0Night1 == SHIFT_NIGHT);
+	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, actiontype, "Dealing with people all day has made " + girl->m_Realname + " more Charismatic.", Day0Night1);
+	g_Girls.PossiblyGainNewTrait(girl, "Psychic", 80, actiontype, girl->m_Realname + " has been doing this for so long it's as if she can read minds now.", Day0Night1);
 
 	//lose traits
-	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 20, ACTION_WORKRECRUIT, girl->m_Realname + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", Day0Night1 == SHIFT_NIGHT);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 20, actiontype, girl->m_Realname + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", Day0Night1);
 	return false;
-	}
+}
+
+double cJobManager::JP_Recruiter(sGirl* girl, bool estimate)// not used
+{
+	int HateLove = g_Girls.GetStat(girl, STAT_PCLOVE) - g_Girls.GetStat(girl, STAT_PCHATE);
+	double jobperformance =
+		(HateLove + g_Girls.GetStat(girl, STAT_CHARISMA));
+
+	//good traits
+	if (g_Girls.HasTrait(girl, "Charismatic"))  jobperformance += 20;
+	if (g_Girls.HasTrait(girl, "Psychic"))		jobperformance += 20; //knows what people want to hear
+	if (g_Girls.HasTrait(girl, "Cool Person"))  jobperformance += 10; //people love to be around her
+	if (g_Girls.HasTrait(girl, "Charming"))		jobperformance += 10; //people like charming people	
+
+	//bad traits
+	if (g_Girls.HasTrait(girl, "Dependant"))	jobperformance -= 50; //needs others to do the job
+	if (g_Girls.HasTrait(girl, "Broken Will"))	jobperformance -= 50;
+	if (g_Girls.HasTrait(girl, "Nervous"))		jobperformance -= 30; //don't like to be around people
+	if (g_Girls.HasTrait(girl, "Aggressive"))	jobperformance -= 20; //gets mad easy and may attack people
+	if (g_Girls.HasTrait(girl, "Meek"))			jobperformance -= 20;
+	if (g_Girls.HasTrait(girl, "Clumsy"))		jobperformance -= 5;
+
+	return jobperformance;
+}

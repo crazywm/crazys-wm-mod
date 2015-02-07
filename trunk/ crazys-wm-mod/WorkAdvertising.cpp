@@ -46,23 +46,18 @@ extern cGold g_Gold;
 bool cJobManager::WorkAdvertising(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	int actiontype = ACTION_WORKADVERTISING;
-	int imagetype = IMGTYPE_PROFILE;
-	string girlName = girl->m_Realname;
-	stringstream ss;
-
-	ss << girlName << " is assigned to advertize the brothel.\n\n";
+	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))
 	{
-		ss << "She refused to advertise the brothel today.";
-		girl->m_Events.AddMessage(ss.str(), imagetype, EVENT_NOWORK);
+		ss << " refused to advertise the brothel today.";
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
 	cConfig cfg;
+	ss << " is assigned to advertize the brothel.\n\n";
 
 	g_Girls.UnequipCombat(girl);	// put that shit away
 
-	double cval = 0.0;
-	double multiplier = 0.0;
 	int enjoy = 0;
 	int wages = 0;
 	int tips = 0;
@@ -70,62 +65,7 @@ bool cJobManager::WorkAdvertising(sGirl* girl, sBrothel* brothel, bool Day0Night
 
 
 	// How much will she help stretch your advertising budget? Let's find out
-
-	cval = g_Girls.GetSkill(girl, SKILL_PERFORMANCE);	// `J` added
-	if (cval > 0)
-	{
-		cval = g_Dice%int(cval) + (cval / 2);  // random 50%-150% range
-		multiplier += (cval / 6);  // add ~17% of performance skill to multiplier
-	}
-	cval = g_Girls.GetSkill(girl, SKILL_SERVICE);
-	if (cval > 0)	// `J` halved multiplier to include performace without excessive change
-	{
-		cval = g_Dice%int(cval) + (cval / 2);  // random 50%-150% range
-		multiplier += (cval / 6);  // add ~17% of service skill to multiplier
-	}
-	cval = g_Girls.GetStat(girl, STAT_CHARISMA);
-	if (cval > 0)
-	{
-		cval = g_Dice%int(cval) + (cval / 2);  // random 50%-150% range
-		multiplier += (cval / 6);  // add ~17% of charisma to multiplier
-	}
-	cval = g_Girls.GetStat(girl, STAT_BEAUTY);
-	if (cval > 0)
-	{
-		cval = g_Dice%int(cval) + (cval / 2);  // random 50%-150% range
-		multiplier += (cval / 10);  // add 10% of beauty to multiplier
-	}
-	cval = g_Girls.GetStat(girl, STAT_INTELLIGENCE);
-	if (cval > 0)
-	{
-		cval = g_Dice%int(cval) + (cval / 2);  // random 50%-150% range
-		multiplier += (cval / 6);  // add ~17% of intelligence to multiplier
-	}
-	cval = g_Girls.GetStat(girl, STAT_CONFIDENCE);
-	if (cval > 0)
-	{
-		cval = g_Dice%int(cval) + (cval / 2);  // random 50%-150% range
-		multiplier += (cval / 10);  // add 10% of confidence to multiplier
-	}
-	cval = g_Girls.GetStat(girl, STAT_FAME);
-	if (cval > 0)
-	{
-		cval = g_Dice%int(cval) + (cval / 2);  // random 50%-150% range
-		multiplier += (cval / 10);  // add 10% of fame to multiplier
-	}
-
-	// useful traits
-	if (girl->has_trait("Psychic"))		multiplier += 10;
-	if (girl->has_trait("Cool Person"))	multiplier += 10;
-	if (girl->has_trait("Sexy Air"))	multiplier += 10;
-	if (girl->has_trait("Charismatic"))	multiplier += 10;
-	if (girl->has_trait("Charming"))	multiplier += 10;
-
-	// unhelpful traits
-	if (girl->has_trait("Nervous"))		multiplier -= 5;
-	if (girl->has_trait("Clumsy"))		multiplier -= 5;
-	if (girl->has_trait("Retarded"))	multiplier -= 20;
-	if (girl->has_trait("Malformed"))	multiplier -= 20;
+	double multiplier = JP_Advertising(girl, false);
 
 	if (girl->is_slave() && !cfg.initial.slave_pay_outofpocket())	
 		multiplier *= 0.9;	// unpaid slaves don't seem to want to advertise as much.
@@ -240,4 +180,82 @@ bool cJobManager::WorkAdvertising(sGirl* girl, sBrothel* brothel, bool Day0Night
 	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 40, actiontype, girl->m_Realname + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", Day0Night1 == SHIFT_NIGHT);
 
 	return false;
+}
+
+double cJobManager::JP_Advertising(sGirl* girl, bool estimate)
+{
+	double cval = 0.0;
+	double jobperformance = 0.0;
+	if (estimate)	// for third detail string
+	{
+		jobperformance =
+			g_Girls.GetSkill(girl, SKILL_PERFORMANCE) / 6.0 +
+			g_Girls.GetSkill(girl, SKILL_SERVICE) / 6.0 +
+			g_Girls.GetStat(girl, STAT_CHARISMA) / 6.0 +
+			g_Girls.GetStat(girl, STAT_BEAUTY) / 10.0 +
+			g_Girls.GetStat(girl, STAT_INTELLIGENCE) / 6.0 +
+			g_Girls.GetStat(girl, STAT_CONFIDENCE) / 10.0 +
+			g_Girls.GetStat(girl, STAT_FAME) / 10.0;
+	}
+	else			// for the actual check
+	{
+		cval = g_Girls.GetSkill(girl, SKILL_PERFORMANCE);	// `J` added
+		if (cval > 0)
+		{
+			cval = g_Dice % (int)cval + (cval / 2);  // random 50%-150% range
+			jobperformance += (cval / 6);  // add ~17% of performance skill to jobperformance
+		}
+		cval = g_Girls.GetSkill(girl, SKILL_SERVICE);
+		if (cval > 0)	// `J` halved jobperformance to include performace without excessive change
+		{
+			cval = g_Dice % (int)cval + (cval / 2);  // random 50%-150% range
+			jobperformance += (cval / 6);  // add ~17% of service skill to jobperformance
+		}
+		cval = g_Girls.GetStat(girl, STAT_CHARISMA);
+		if (cval > 0)
+		{
+			cval = g_Dice % (int)cval + (cval / 2);  // random 50%-150% range
+			jobperformance += (cval / 6);  // add ~17% of charisma to jobperformance
+		}
+		cval = g_Girls.GetStat(girl, STAT_BEAUTY);
+		if (cval > 0)
+		{
+			cval = g_Dice % (int)cval + (cval / 2);  // random 50%-150% range
+			jobperformance += (cval / 10);  // add 10% of beauty to jobperformance
+		}
+		cval = g_Girls.GetStat(girl, STAT_INTELLIGENCE);
+		if (cval > 0)
+		{
+			cval = g_Dice % (int)cval + (cval / 2);  // random 50%-150% range
+			jobperformance += (cval / 6);  // add ~17% of intelligence to jobperformance
+		}
+		cval = g_Girls.GetStat(girl, STAT_CONFIDENCE);
+		if (cval > 0)
+		{
+			cval = g_Dice % (int)cval + (cval / 2);  // random 50%-150% range
+			jobperformance += (cval / 10);  // add 10% of confidence to jobperformance
+		}
+		cval = g_Girls.GetStat(girl, STAT_FAME);
+		if (cval > 0)
+		{
+			cval = g_Dice % (int)cval + (cval / 2);  // random 50%-150% range
+			jobperformance += (cval / 10);  // add 10% of fame to jobperformance
+		}
+
+	}
+
+	// useful traits
+	if (girl->has_trait("Psychic"))		jobperformance += 10;
+	if (girl->has_trait("Cool Person"))	jobperformance += 10;
+	if (girl->has_trait("Sexy Air"))	jobperformance += 10;
+	if (girl->has_trait("Charismatic"))	jobperformance += 10;
+	if (girl->has_trait("Charming"))	jobperformance += 10;
+
+	// unhelpful traits
+	if (girl->has_trait("Nervous"))		jobperformance -= 5;
+	if (girl->has_trait("Clumsy"))		jobperformance -= 5;
+	if (girl->has_trait("Retarded"))	jobperformance -= 20;
+	if (girl->has_trait("Malformed"))	jobperformance -= 20;
+
+	return jobperformance;
 }

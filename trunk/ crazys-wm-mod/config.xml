@@ -1,5 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <config>
+  <Folders
+    Characters="..\Characters"
+    Saves="..\Saves"
+    BackupSaves="true"
+  />
 	<!--
 	Resolution     = the name of your interface folder
 	Width          = screen width
@@ -14,7 +19,7 @@
 	TextScrollAmount = The number of lines to scroll in Text boxes.
 	-->
 	<Resolution
-		Resolution="J_1024x768"
+		Resolution="..\\..\\..\\J_1024x768"
 		Width="1024"
 		Height="768"
 		ScaleWidth="800"

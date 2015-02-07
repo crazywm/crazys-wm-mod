@@ -188,7 +188,9 @@ public:
 	int  &stat_lookup(string stat_name, int brothel_id = -1);
 
 	int GetGirlsCurrentBrothel(sGirl* girl); // Used by new security guard code
-	vector<sGirl*> GirlsOnJob(int BrothelID, int JobID, bool day); // Also used by new security code
+	vector<sGirl*> GirlsOnJob(int BrothelID, int JobID, bool Day0Night1);	// Also used by new security code
+	sGirl* GetRandomGirlOnJob(int BrothelID, int JobID, bool Day0Night1);	// `J` - added
+	sGirl* GetFirstGirlOnJob(int BrothelID, int JobID, bool Day0Night1);	// `J` - added
 
 /*	// `J` AntiPreg Potions rewriten and moved to individual buildings
 	bool UseAntiPreg(bool use, int brothelID);

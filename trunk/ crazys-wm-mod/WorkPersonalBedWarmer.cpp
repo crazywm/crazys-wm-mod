@@ -49,54 +49,55 @@ extern int g_Building;
 // `J` House Job - General
 bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
+	int actiontype = ACTION_SEX;
+	stringstream ss; string girlName = girl->m_Realname;
+	int roll_a = g_Dice % 100, roll_b = g_Dice % 100, roll_c = g_Dice % 100, roll_d = g_Dice % 100;
+	ss << "You tell " << girlName << " she is going to warm your bed tonight";
+	if (roll_a <= 80 && g_Girls.DisobeyCheck(girl, ACTION_WORKHAREM, brothel))
+	{
+		ss << " but she refuses to lay with you.";
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
+		return true;
+	}
+	ss << ".\n";
+
 	cTariff tariff;
-	stringstream ss;
 	g_Building = BUILDING_HOUSE;
 
-	// put that shit away, not needed for sex training
-	g_Girls.UnequipCombat(girl);
+	g_Girls.UnequipCombat(girl);	// put that shit away, not needed for sex training
 
-	int roll_a = g_Dice % 100, roll_b = g_Dice % 100, roll_c = g_Dice % 100, roll_d = g_Dice % 100;
 	int HateLove = 0;
 	HateLove = g_Girls.GetStat(girl, STAT_PCLOVE) - g_Girls.GetStat(girl, STAT_PCHATE);
 	int wages = 150;
 
-	ss << gettext("You tell her she is going to warm your bed tonight.\n");
-
-	if (girl->m_States&(1 << STATUS_SLAVE))
+	if (girl->is_slave())
 	{
-		if (HateLove < -80)	ss << gettext("She hates you more then anything but you own her so she does what she is told.\n\n");
+		/* */if (HateLove < -80)	ss << gettext("She hates you more then anything but you own her so she does what she is told.\n\n");
 		else if (HateLove < -60)	ss << gettext("She hates you but knows she must listen.\n\n");
 		else if (HateLove < -40)	ss << gettext("She doesn't like you but she is your slave and does what she is told.\n\n");
 		else if (HateLove < -20)	ss << gettext("She finds you annoying but knows she must listen.\n\n");
-		else if (HateLove < 0)	ss << gettext("She finds you to be annoying but you own her.\n\n");
-		else if (HateLove < 20)	ss << gettext("She finds you be a decent master.\n\n");
-		else if (HateLove < 40)	ss << gettext("She finds you be a good master.\n\n");
-		else if (HateLove < 60)	ss << gettext("She finds you to be attractive.\n\n");
-		else if (HateLove < 80)	ss << gettext("She has really strong feelings for you.\n\n");
-		else					ss << gettext("She loves you more then anything.\n\n");
+		else if (HateLove < 0)		ss << gettext("She finds you to be annoying but you own her.\n\n");
+		else if (HateLove < 20)		ss << gettext("She finds you be a decent master.\n\n");
+		else if (HateLove < 40)		ss << gettext("She finds you be a good master.\n\n");
+		else if (HateLove < 60)		ss << gettext("She finds you to be attractive.\n\n");
+		else if (HateLove < 80)		ss << gettext("She has really strong feelings for you.\n\n");
+		else						ss << gettext("She loves you more then anything.\n\n");
 	}
 	else
 	{
-		if (HateLove < -80)	{ wages += 150;	ss << gettext("She can't stand the sight of you and demands way more money to lay with you at night.\n\n"); }
+		/* */if (HateLove < -80)	{ wages += 150;	ss << gettext("She can't stand the sight of you and demands way more money to lay with you at night.\n\n"); }
 		else if (HateLove < -60)	{ wages += 100;	ss << gettext("She don't like you at all and wants more money to lay with you at night .\n\n"); }
 		else if (HateLove < -40)	{ wages += 75;	ss << gettext("She doesn't like you so she wants extra for the job.\n\n"); }
 		else if (HateLove < -20)	{ wages += 50;	ss << gettext("She finds you annoying so she wants extra for the job.\n\n"); }
-		else if (HateLove < 0)	{ wages += 25;	ss << gettext("She finds you to be annoying so she wants extra for the job.\n\n"); }
-		else if (HateLove < 20)	{ ss << gettext("She finds you to be okay.\n\n"); }
-		else if (HateLove < 40)	{ wages -= 20;	ss << gettext("She finds you to be nice so she gives you a discount.\n\n"); }
-		else if (HateLove < 60)	{ wages -= 40;	ss << gettext("She finds you attractive so she gives you a discount.\n\n"); }
-		else if (HateLove < 80)	{ wages -= 60;	ss << gettext("Shes has really strong feelings for you so she lays with you for less money.\n\n"); }
-		else					{ wages -= 80;	ss << gettext("She is totally in love with you and doesn't want as much money.\n\n"); }
+		else if (HateLove < 0)		{ wages += 25;	ss << gettext("She finds you to be annoying so she wants extra for the job.\n\n"); }
+		else if (HateLove < 20)		{ ss << gettext("She finds you to be okay.\n\n"); }
+		else if (HateLove < 40)		{ wages -= 20;	ss << gettext("She finds you to be nice so she gives you a discount.\n\n"); }
+		else if (HateLove < 60)		{ wages -= 40;	ss << gettext("She finds you attractive so she gives you a discount.\n\n"); }
+		else if (HateLove < 80)		{ wages -= 60;	ss << gettext("Shes has really strong feelings for you so she lays with you for less money.\n\n"); }
+		else						{ wages -= 80;	ss << gettext("She is totally in love with you and doesn't want as much money.\n\n"); }
 	}
 
-	if (roll_a <= 100 && g_Girls.DisobeyCheck(girl, ACTION_WORKHAREM, brothel))
-	{
-		ss << girl->m_Realname + gettext(" refused to lay with you today.");
-		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-		return true;
-	}
-	else if (roll_a <= 15)
+	if (roll_a <= 15)
 	{
 		ss << gettext("\nYou did something to piss her off.\n\n");
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKHAREM, -1, true);
@@ -314,9 +315,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 	}
 
 
-	if (wages < 0)
-		wages = 0;
-
+	if (wages < 0) wages = 0;
 	g_Gold.girl_support(wages);  // wages come from you
 	girl->m_Pay = wages;
 
@@ -331,4 +330,10 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
 	return false;
+}
+
+
+double cJobManager::JP_PersonalBedWarmer(sGirl* girl, bool estimate)// not used
+{
+	return 0;
 }

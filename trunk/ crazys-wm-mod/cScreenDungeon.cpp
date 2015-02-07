@@ -76,37 +76,37 @@ bool cScreenDungeon::ids_set = false;
 void cScreenDungeon::set_ids()
 {
 	ids_set = true;
-	back_id =			get_id("BackButton");
-	header_id =			get_id("DungeonHeader");
-	girllist_id =		get_id("GirlList");
-	girlimage_id =		get_id("GirlImage");
-	brandslave_id =		get_id("BrandSlaveButton");
-	release_id =		get_id("ReleaseButton");
-	allowfood_id =		get_id("AllowFoodButton");
-	torture_id =		get_id("TortureButton");
-	stopfood_id =		get_id("StopFeedingButton");
-	interact_id =		get_id("InteractButton");
-	releaseall_id =		get_id("ReleaseAllButton");
-	releasecust_id =	get_id("ReleaseCustButton");
-	viewdetails_id =	get_id("DetailsButton");
-	sellslave_id =		get_id("SellButton");
+	back_id = get_id("BackButton");
+	header_id = get_id("DungeonHeader");
+	girllist_id = get_id("GirlList");
+	girlimage_id = get_id("GirlImage");
+	brandslave_id = get_id("BrandSlaveButton");
+	release_id = get_id("ReleaseButton");
+	allowfood_id = get_id("AllowFoodButton");
+	torture_id = get_id("TortureButton");
+	stopfood_id = get_id("StopFeedingButton");
+	interact_id = get_id("InteractButton");
+	releaseall_id = get_id("ReleaseAllButton");
+	releasecust_id = get_id("ReleaseCustButton");
+	viewdetails_id = get_id("DetailsButton");
+	sellslave_id = get_id("SellButton");
 
-	releaseto_id =		get_id("ReleaseTo");
-	roomsfree_id =		get_id("RoomsFree");
+	releaseto_id = get_id("ReleaseTo");
+	roomsfree_id = get_id("RoomsFree");
 
-	brothel0_id =		get_id("Brothel0");
-	brothel1_id =		get_id("Brothel1");
-	brothel2_id =		get_id("Brothel2");
-	brothel3_id =		get_id("Brothel3");
-	brothel4_id =		get_id("Brothel4");
-	brothel5_id =		get_id("Brothel5");
-	brothel6_id =		get_id("Brothel6");
-	house_id =			get_id("House");
-	clinic_id =			get_id("Clinic");
-	studio_id =			get_id("Studio");
-	arena_id =			get_id("Arena");
-	centre_id =			get_id("Centre");
-	farm_id =			get_id("Farm");
+	brothel0_id = get_id("Brothel0");
+	brothel1_id = get_id("Brothel1");
+	brothel2_id = get_id("Brothel2");
+	brothel3_id = get_id("Brothel3");
+	brothel4_id = get_id("Brothel4");
+	brothel5_id = get_id("Brothel5");
+	brothel6_id = get_id("Brothel6");
+	house_id = get_id("House");
+	clinic_id = get_id("Clinic");
+	studio_id = get_id("Studio");
+	arena_id = get_id("Arena");
+	centre_id = get_id("Centre");
+	farm_id = get_id("Farm");
 
 
 	//Set the default sort order for columns, so listbox knows the order in which data will be sent
@@ -187,11 +187,11 @@ void cScreenDungeon::init()
 	HideButton(brothel4_id, (g_Brothels.GetBrothel(4) == 0));
 	HideButton(brothel5_id, (g_Brothels.GetBrothel(5) == 0));
 	HideButton(brothel6_id, (g_Brothels.GetBrothel(6) == 0));
-	HideButton(clinic_id,	(g_Clinic.GetBrothel(0) == 0));
-	HideButton(studio_id,	(g_Studios.GetBrothel(0) == 0));
-	HideButton(arena_id,	(g_Arena.GetBrothel(0) == 0));
-	HideButton(centre_id,	(g_Centre.GetBrothel(0) == 0));
-	HideButton(farm_id,		(g_Farm.GetBrothel(0) == 0));
+	HideButton(clinic_id, (g_Clinic.GetBrothel(0) == 0));
+	HideButton(studio_id, (g_Studios.GetBrothel(0) == 0));
+	HideButton(arena_id, (g_Arena.GetBrothel(0) == 0));
+	HideButton(centre_id, (g_Centre.GetBrothel(0) == 0));
+	HideButton(farm_id, (g_Farm.GetBrothel(0) == 0));
 
 	g_InitWin = false;
 
@@ -212,7 +212,7 @@ void cScreenDungeon::selection_change()
 {
 	selection = GetLastSelectedItemFromList(girllist_id);
 	// if nothing is selected, then we just need to disable some buttons and we're done
-	if (selection == -1) 
+	if (selection == -1)
 	{
 		selected_girl = 0;
 		DisableButton(brandslave_id);
@@ -235,7 +235,7 @@ void cScreenDungeon::selection_change()
 	EnableButton(release_id);
 	DisableButton(brandslave_id);
 	// and then decide if this is a customer selected, or a girl customer is easiest, so we do that first
-	if ((selection - dungeon->GetNumGirls()) >= 0) 
+	if ((selection - dungeon->GetNumGirls()) >= 0)
 	{
 		// It's a customer! All we need to do is toggle some buttons
 		cerr << "Player selecting Dungeon Customer #" << selection << endl;	// `J` rewrote to reduce confusion
@@ -270,7 +270,7 @@ void cScreenDungeon::selection_change()
 int cScreenDungeon::view_girl()
 {
 	selection = GetSelectedItemFromList(girllist_id);
-	
+
 	if (selection == -1) return Continue;							// nothing selected, nothing to do.
 	if ((selection - dungeon->GetNumGirls()) >= 0) return Continue;	// if this is a customer, we're not interested
 	sGirl *girl = dungeon->GetGirl(selection)->m_Girl;				// if we can't find the girl, there's nothing we can do
@@ -358,7 +358,7 @@ int cScreenDungeon::enslave()
 		}
 		cGirlGangFight ggf(girl);		// This is much simpler if she just submits...
 
-		if (ggf.girl_submits()) 
+		if (ggf.girl_submits())
 		{
 			message += girl->m_Realname;
 			message += gettext(" submits the the enchanted slave tattoo being placed upon her.");
@@ -368,7 +368,7 @@ int cScreenDungeon::enslave()
 		}
 
 		// did the player need to step in
-		if (!ggf.player_won()) 
+		if (!ggf.player_won())
 		{
 			// adjust the girl's stats to reflect her new status and then evil up the player because he forced her into slavery
 			player->evil(5);
@@ -413,7 +413,7 @@ void cScreenDungeon::release_all_customers()
 {
 	cPlayer* player = g_Brothels.GetPlayer();
 	// loop until we run out of customers
-	while (dungeon->GetNumCusts() > 0) 
+	while (dungeon->GetNumCusts() > 0)
 	{
 		sDungeonCust* cust = dungeon->GetCust(0);		// get the first customer in the list
 		dungeon->RemoveCust(cust);						// remove from brothel
@@ -442,7 +442,7 @@ void cScreenDungeon::sell_slaves()
 		*/
 		sDungeonGirl* dgirl = dungeon->GetGirl(selection);
 		sGirl *girl = dgirl->m_Girl;
-	
+
 		if (girl->is_slave() == false) continue;					// if she's not a slave, the player isn't allowed to sell her
 		if (girl->health() <= 0)									// likewise, dead slaves can't be sold
 		{
@@ -450,7 +450,7 @@ void cScreenDungeon::sell_slaves()
 			continue;
 		}
 		// she's a living slave, she's out of here
-		g_Girls.CalculateAskPrice(girl, false);		
+		g_Girls.CalculateAskPrice(girl, false);
 		int cost = tariff.slave_sell_price(girl);					// get the sell price of the girl. This is a little on the occult side
 		g_Gold.slave_sales(cost);
 		paid += cost;
@@ -578,7 +578,7 @@ void cScreenDungeon::torture_customer(int girls_removed)
 		g_MessageQue.AddToQue(message, 0);
 		return;
 	}
-	if (cust->m_Health > 0) 
+	if (cust->m_Health > 0)
 	{
 		message += "Screams fill the dungeon until the customer is battered, bleeding and bruised.\nYou leave them sobbing and near to death.";
 		g_MessageQue.AddToQue(message, 0);
@@ -604,12 +604,12 @@ bool cScreenDungeon::torture_possible()
 	{
 		bool not_yet_tortured;
 		// get the customer or girl under selection and find out if they've been tortured this turn
-		if (nSelection >= nNumGirls) 
+		if (nSelection >= nNumGirls)
 		{
 			sDungeonCust* dcust = dungeon->GetCust(nSelection - nNumGirls);
 			not_yet_tortured = !dcust->m_Tort;
 		}
-		else 
+		else
 		{
 			sDungeonGirl* dgirl = dungeon->GetGirl(nSelection);
 			not_yet_tortured = !dgirl->m_Girl->m_Tort;
@@ -628,7 +628,7 @@ void cScreenDungeon::torture()
 	for (selection = GetNextSelectedItemFromList(girllist_id, 0, pos); selection != -1; selection = GetNextSelectedItemFromList(girllist_id, pos + 1, pos))
 	{
 		// if it's a customer, we have a separate routine
-		if ((selection - (dungeon->GetNumGirls() + numGirlsRemoved)) >= 0)	
+		if ((selection - (dungeon->GetNumGirls() + numGirlsRemoved)) >= 0)
 		{
 			player->evil(5);
 			torture_customer(numGirlsRemoved);
@@ -699,11 +699,12 @@ void cScreenDungeon::release()
 
 void cScreenDungeon::talk()
 {
+	cConfig cfg;
 	if (g_TalkCount <= 0) return;	// if we have no talks left, we can go home
 	int v[2] = { 0, -1 };
 	// customers are always last in the list, so we can determine if this is a customer by simple aritmetic
 	if ((selection - g_Brothels.GetDungeon()->GetNumGirls()) >= 0) return;		// it is a customer
-	
+
 	// OK, it wasn't a customer
 	int num = selection;
 	sDungeonGirl* girl = g_Brothels.GetDungeon()->GetGirl(num);
@@ -713,7 +714,7 @@ void cScreenDungeon::talk()
 	*	(actually, I'd like to be able to view her stats in read-only mode
 	*	after she dies, just so I can do a post-mortem. But for now...)
 	*/
-	if (g_Girls.GetStat(girl->m_Girl, STAT_HEALTH) <= 0) 
+	if (g_Girls.GetStat(girl->m_Girl, STAT_HEALTH) <= 0)
 	{
 		g_MessageQue.AddToQue("Though you have many skills, speaking to the dead is not one of them.", 1);
 		return;
@@ -727,9 +728,12 @@ void cScreenDungeon::talk()
 	{	// no, so trigger the default one
 		dp = dp << "Resources" << "Scripts" << "DefaultInteractDungeon.script";
 	}
-	else	
+	else
 	{	// yes, so trigger the custom one
-		dp = dp << "Resources" << "Characters" << girl->m_Girl->m_Name << trig->m_Script << "DefaultInteractDungeon.script";
+		if (cfg.folders.configXMLch())
+			dp = DirPath() << cfg.folders.characters() << girl->m_Girl->m_Name << trig->m_Script << "DefaultInteractDungeon.script";
+		else
+			dp = DirPath() << "Resources" << "Characters" << girl->m_Girl->m_Name << trig->m_Script << "DefaultInteractDungeon.script";
 	}
 	cScriptManager script_manager;
 	script_manager.Load(dp, girl->m_Girl);
@@ -770,7 +774,7 @@ int cScreenDungeon::process_events()
 		g_WinManager.Pop();
 		return Return;
 	}
-	if (g_InterfaceEvents.CheckListbox(girllist_id)) 
+	if (g_InterfaceEvents.CheckListbox(girllist_id))
 	{
 		if (ListDoubleClicked(girllist_id))		// If double-clicked, try to bring up girl details
 		{

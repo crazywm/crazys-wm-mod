@@ -1,21 +1,21 @@
 /*
- * Copyright 2009, 2010, The Pink Petal Development Team.
- * The Pink Petal Devloment Team are defined as the game's coders 
- * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright 2009, 2010, The Pink Petal Development Team.
+* The Pink Petal Devloment Team are defined as the game's coders
+* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 #include "cJobManager.h"
 #include "cBrothel.h"
 #include "cClinic.h"
@@ -45,36 +45,30 @@ extern cMessageQue g_MessageQue;
 // `J` Clinic Job - Surgery
 bool cJobManager::WorkGetFacelift(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-	stringstream ss;
-	int msgtype = Day0Night1;
+	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
+	// if she was not in surgery last turn, reset working days to 0 before proceding
+	if (girl->m_YesterDayJob != JOB_FACELIFT) { girl->m_WorkingDay = girl->m_PrevWorkingDay = 0; }
 
-	if (girl->m_YesterDayJob != JOB_FACELIFT)	// if she was not in surgery yesterday, 
+	if (g_Girls.GetStat(girl, STAT_AGE) <= 21)
 	{
-		girl->m_WorkingDay = 0;				// rest working days to 0 before proceding
-		girl->m_PrevWorkingDay = 0;
+		ss << " is too young to get a Face Lift so she was sent to the waiting room.";
+		if (Day0Night1 == SHIFT_DAY)	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+		girl->m_PrevDayJob = girl->m_PrevNightJob = girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
+		girl->m_WorkingDay = girl->m_PrevWorkingDay = 0;
+		return false;	// not refusing
 	}
 
-
-	// not for patient
-	g_Girls.UnequipCombat(girl);
-
-	bool hasDoctor = false;
-	if (g_Clinic.GetNumGirlsOnJob(brothel->m_id, JOB_DOCTOR, true) > 0 || g_Clinic.GetNumGirlsOnJob(brothel->m_id, JOB_DOCTOR, false) > 0)
-		hasDoctor = true;
-
+	bool hasDoctor = (g_Clinic.GetNumGirlsOnJob(brothel->m_id, JOB_DOCTOR, true) > 0 || g_Clinic.GetNumGirlsOnJob(brothel->m_id, JOB_DOCTOR, false) > 0);
 	if (!hasDoctor)
 	{
-		ss << girl->m_Realname + gettext(" does nothing. You don't have any Doctors working. (require 1) ");
+		ss << " does nothing. You don't have any Doctors working. (require 1) ";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
 		return false;	// not refusing
 	}
-	if (g_Girls.GetStat(girl, STAT_AGE) <= 21)
-	{
-		ss << girl->m_Realname + gettext(" is too young to get a Face Lift so she was sent to the waiting room.");
-		if (Day0Night1 == SHIFT_DAY)	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
-		girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
-		return false;	// not refusing
-	}
+	ss << " is in the Clinic to get a face lift.\n\n";
+
+	int msgtype = Day0Night1;
+	g_Girls.UnequipCombat(girl);	// not for patient
 
 	if (Day0Night1 == SHIFT_DAY)	// the Doctor works on her durring the day
 	{
@@ -165,4 +159,20 @@ bool cJobManager::WorkGetFacelift(sGirl* girl, sBrothel* brothel, bool Day0Night
 		g_Girls.UpdateSkill(girl, SKILL_MEDICINE, 1);	// `J` she watched what the doctors and nurses were doing
 
 	return false;
+}
+
+double cJobManager::JP_GetFacelift(sGirl* girl, bool estimate)
+{
+	double jobperformance = 0.0;
+	if (estimate)	// for third detail string - how much do they need this?
+	{
+		if (girl->age() <= 21)	return -1000;			// X - not needed
+		if (girl->age() == 100) return 0;				// E - unknown age?
+		
+		// this probably needs to be reworked
+		jobperformance += 50 + girl->age() * 5;
+		jobperformance -= girl->charisma();
+		jobperformance -= girl->beauty();
+	}
+	return jobperformance;
 }

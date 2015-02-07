@@ -44,36 +44,34 @@ extern cGold g_Gold;
 // `J` Brothel Job - General
 bool cJobManager::WorkBeastCare(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-	stringstream ss; string girlName = girl->m_Realname;
+	int actiontype = ACTION_WORKCARING;
+	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
+	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
+	if (roll_a < 50 && g_Girls.DisobeyCheck(girl, actiontype, brothel))
+	{
+		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
+		return true;
+	}
+	ss << " worked taking care of beasts.\n\n";
+
+	if (g_Brothels.m_Beasts < 1)
+	{
+		ss << gettext("There were no beasts in the brothel to take care of.\n\n");
+	}
+
 	cConfig cfg;
 
 	g_Girls.UnequipCombat(girl);	// put that shit away
 
 	int enjoy = 0;
 	int wages = 50;
-	int jobperformance = (g_Girls.GetSkill(girl, SKILL_ANIMALHANDLING) +
-		g_Girls.GetStat(girl, STAT_INTELLIGENCE) / 3 +
-		g_Girls.GetSkill(girl, SKILL_SERVICE) / 3 +
-		g_Girls.GetSkill(girl, SKILL_MAGIC) / 3);
+	double jobperformance = JP_BeastCare(girl, false);
+
 	int numhandle = girl->animalhandling() * 2;	// `J` first we assume a girl can take care of 2 beasts per point of animalhandling
 	int addbeasts = 0;
 	bool doadd = false;
 
-	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
-
-	ss << girlName << gettext(" worked taking care of beasts.\n\n");
-
-	if (roll_a <= 50 && g_Girls.DisobeyCheck(girl, ACTION_WORKCARING, brothel))
-	{
-		ss.str("");
-		ss << girl->m_Realname << gettext(" refused to take care of the beasts in the brothel.");
-		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-		return true;
-	}
-	else if (g_Brothels.m_Beasts < 1)
-	{
-		ss << gettext("There were no beasts in the brothel to take care of.\n\n");
-	}
 
 	// `J` if she has time to spare after taking care of the current beasts, she may try to get some new ones.
 	if (numhandle / 2 > g_Brothels.m_Beasts && g_Dice.percent(50))	// `J` these need more options
@@ -140,7 +138,7 @@ bool cJobManager::WorkBeastCare(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	}
 
 
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKCARING, enjoy, true);
+	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy, true);
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 	girl->m_Pay = wages;
 
@@ -156,7 +154,18 @@ bool cJobManager::WorkBeastCare(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 	g_Girls.UpdateSkill(girl, SKILL_ANIMALHANDLING, max(1, (g_Dice % skill) + 1));
 
-	g_Girls.PossiblyLoseExistingTrait(girl, "Elegant", 40, ACTION_WORKCARING, " Working with dirty, smelly beasts has damaged " + girlName + "'s hair, skin and nails making her less Elegant.", Day0Night1 == SHIFT_NIGHT);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Elegant", 40, actiontype, " Working with dirty, smelly beasts has damaged " + girlName + "'s hair, skin and nails making her less Elegant.", Day0Night1);
 
 	return false;
+}
+
+double cJobManager::JP_BeastCare(sGirl* girl, bool estimate)
+{
+	double jobperformance = 0.0;
+	jobperformance = (g_Girls.GetSkill(girl, SKILL_ANIMALHANDLING) +
+		g_Girls.GetStat(girl, STAT_INTELLIGENCE) / 3 +
+		g_Girls.GetSkill(girl, SKILL_SERVICE) / 3 +
+		g_Girls.GetSkill(girl, SKILL_MAGIC) / 3);
+
+	return jobperformance;
 }

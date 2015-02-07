@@ -1,21 +1,21 @@
 /*
- * Copyright 2009, 2010, The Pink Petal Development Team.
- * The Pink Petal Devloment Team are defined as the game's coders 
- * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright 2009, 2010, The Pink Petal Development Team.
+* The Pink Petal Devloment Team are defined as the game's coders
+* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 #include "cJobManager.h"
 #include "cBrothel.h"
 #include "cClinic.h"
@@ -49,29 +49,35 @@ extern cGold g_Gold;
 // `J` Arena Job - Staff
 bool cJobManager::WorkCityGuard(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-	stringstream ss; string girlName = girl->m_Realname;
-	if (Preprocessing(ACTION_WORKSECURITY, girl, brothel, Day0Night1, summary, ss.str())) return true;
+	int actiontype = ACTION_WORKSECURITY;
+	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
+	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work 
+	{
+		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
+		return true;
+	}
+	ss << " helps guard the city.\n\n";
 
-	// ready armor and weapons!
-	g_Girls.EquipCombat(girl);
+	g_Girls.EquipCombat(girl);	// ready armor and weapons!
+
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100();
 	int wages = 150, enjoy = 0, enjoyc = 0, sus = 0;
-	u_int imagetype = IMGTYPE_PROFILE;
+	int imagetype = IMGTYPE_PROFILE;
 
-	int agl = (g_Girls.GetStat(girl, STAT_AGILITY) / 2 + g_Dice%(g_Girls.GetSkill(girl, SKILL_COMBAT) / 2));
+	int agl = (g_Girls.GetStat(girl, STAT_AGILITY) / 2 + g_Dice % (g_Girls.GetSkill(girl, SKILL_COMBAT) / 2));
 
-	ss << "She helps guard the city.\n";
 
 	sGirl* tempgirl = g_Girls.CreateRandomGirl(18, false, false, false, false, false, true);
 
 	if (roll_a >= 50)
 	{
-		ss << girlName + " didn't find any trouble today.";
+		ss << girlName << " didn't find any trouble today.";
 		sus -= 5;
 	}
 	else if (roll_a >= 25)
 	{
-		ss << girlName + " spotted a theif and ";
+		ss << girlName << " spotted a theif and ";
 		if (agl >= 90)
 		{
 			ss << "was on them before they could blink.  Putting a stop to the theft.";
@@ -118,13 +124,13 @@ bool cJobManager::WorkCityGuard(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 		else if (fight_outcome == 1)	// she won
 		{
 			enjoy += 3; enjoyc += 3;
-			ss << girlName + " ran into some trouble and ended up in a fight. She was able to win.";
+			ss << girlName << " ran into some trouble and ended up in a fight. She was able to win.";
 			sus -= 20;
 			imagetype = IMGTYPE_COMBAT;
 		}
 		else  // she lost or it was a draw
 		{
-			ss << girlName + " ran into some trouble and ended up in a fight. She was unable to win the fight.";
+			ss << girlName << " ran into some trouble and ended up in a fight. She was unable to win the fight.";
 			enjoy -= 1; enjoyc -= 1;
 			sus += 10;
 			imagetype = IMGTYPE_COMBAT;
@@ -141,7 +147,6 @@ bool cJobManager::WorkCityGuard(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 
 
 	// Improve girl
-	// int fightxp = 1;	if (trouble == 1)	fightxp = 3; // `J` fight xp is done in the fight itself
 	int xp = 8, libido = 2, skill = 3;
 
 	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
@@ -155,13 +160,24 @@ bool cJobManager::WorkCityGuard(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	g_Girls.UpdateStat(girl, STAT_CONSTITUTION, g_Dice % skill);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
-	
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKSECURITY, enjoy, true);
-	g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, enjoyc, true);
-	g_Girls.PossiblyGainNewTrait(girl, "Tough", 20, ACTION_WORKSECURITY, "She has become pretty Tough from all of the fights she's been in.", Day0Night1 == SHIFT_NIGHT);
-	g_Girls.PossiblyGainNewTrait(girl, "Aggressive", 60, ACTION_WORKSECURITY, "She is getting rather Aggressive from her enjoyment of combat.", Day0Night1 == SHIFT_NIGHT);
-	g_Girls.PossiblyGainNewTrait(girl, "Fleet of Foot", 30, ACTION_WORKSECURITY, "She is getting rather fast from all the fighting.", Day0Night1 == SHIFT_NIGHT);
 
+	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy, true);
+	g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, enjoyc, true);
+	g_Girls.PossiblyGainNewTrait(girl, "Tough", 20, actiontype, "She has become pretty Tough from all of the fights she's been in.", Day0Night1);
+	g_Girls.PossiblyGainNewTrait(girl, "Aggressive", 60, actiontype, "She is getting rather Aggressive from her enjoyment of combat.", Day0Night1);
+	g_Girls.PossiblyGainNewTrait(girl, "Fleet of Foot", 30, actiontype, "She is getting rather fast from all the fighting.", Day0Night1);
 
 	return false;
+}
+
+double cJobManager::JP_CityGuard(sGirl* girl, bool estimate)// not used
+{
+	double jobperformance = 0.0;
+	if (estimate)// for third detail string
+	{
+	}
+	else// for the actual check
+	{
+	}
+	return jobperformance;
 }

@@ -690,7 +690,7 @@ void cDungeon::Update()
 				else if (nTired > 60)					{ msg << gettext(" is"); }
 				else									{ msg << gettext("."); }
 				if (nTired > 80)						{ msg << gettext(" exhausted, it may effect her health."); }
-				else if (nTired > 60)					{ msg << girlName + gettext(" tired."); }
+				else if (nTired > 60)					{ msg << gettext(" tired."); }
 				msg << gettext("\n\nHer health is ") << nHealth << gettext(".\nHer tiredness is ") << nTired << ".";
 			}
 			girl->m_Events.AddMessage(msg.str(), imgtype, msgtype);

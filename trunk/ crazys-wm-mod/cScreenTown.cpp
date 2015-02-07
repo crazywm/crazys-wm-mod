@@ -1,21 +1,21 @@
 /*
- * Copyright 2009, 2010, The Pink Petal Development Team.
- * The Pink Petal Devloment Team are defined as the game's coders 
- * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright 2009, 2010, The Pink Petal Development Team.
+* The Pink Petal Devloment Team are defined as the game's coders
+* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 #include "cBrothel.h"
 #include "cClinic.h"
 #include "cMovieStudio.h"
@@ -65,28 +65,28 @@ bool cScreenTown::ids_set = false;
 void cScreenTown::set_ids()
 {
 	ids_set = true;
-	back_id =			get_id("BackButton");
-	walk_id =			get_id("WalkButton");
-	curbrothel_id =		get_id("CurrentBrothel");
-	slavemarket_id =	get_id("SlaveMarket");
-	shop_id =			get_id("Shop");
-	mayor_id =			get_id("MayorsOffice");
-	bank_id =			get_id("Bank");
-	house_id =			get_id("House");
-	clinic_id =			get_id("Clinic");
-	studio_id =			get_id("Studio");
-	arena_id =			get_id("Arena");
-	centre_id =			get_id("Centre");
-	farm_id =			get_id("Farm");
-	prison_id =			get_id("Prison");
-	brothel0_id =		get_id("Brothel0");
-	brothel1_id =		get_id("Brothel1");
-	brothel2_id =		get_id("Brothel2");
-	brothel3_id =		get_id("Brothel3");
-	brothel4_id =		get_id("Brothel4");
-	brothel5_id =		get_id("Brothel5");
-	brothel6_id =		get_id("Brothel6");
-	setup_id =			get_id("SetUp");
+	back_id = get_id("BackButton");
+	walk_id = get_id("WalkButton");
+	curbrothel_id = get_id("CurrentBrothel");
+	slavemarket_id = get_id("SlaveMarket");
+	shop_id = get_id("Shop");
+	mayor_id = get_id("MayorsOffice");
+	bank_id = get_id("Bank");
+	house_id = get_id("House");
+	clinic_id = get_id("Clinic");
+	studio_id = get_id("Studio");
+	arena_id = get_id("Arena");
+	centre_id = get_id("Centre");
+	farm_id = get_id("Farm");
+	prison_id = get_id("Prison");
+	brothel0_id = get_id("Brothel0");
+	brothel1_id = get_id("Brothel1");
+	brothel2_id = get_id("Brothel2");
+	brothel3_id = get_id("Brothel3");
+	brothel4_id = get_id("Brothel4");
+	brothel5_id = get_id("Brothel5");
+	brothel6_id = get_id("Brothel6");
+	setup_id = get_id("SetUp");
 }
 
 struct static_brothel_data {
@@ -98,12 +98,12 @@ struct static_brothel_data {
 
 // stats of each brothel: price to buy, starting rooms, maximum rooms, required # of businesses owned
 static static_brothel_data brothel_data[] = {
-	{       0, 20, 200,   0 },
-	{   10000, 25, 250,  30 },
-	{   30000, 30, 300,  70 },
-	{   70000, 35, 350, 100 },
-	{  150000, 40, 400, 140 },
-	{  300000, 50, 500, 170 },
+	{ 0, 20, 200, 0 },
+	{ 10000, 25, 250, 30 },
+	{ 30000, 30, 300, 70 },
+	{ 70000, 35, 350, 100 },
+	{ 150000, 40, 400, 140 },
+	{ 300000, 50, 500, 170 },
 	{ 1000000, 80, 600, 220 }
 };
 
@@ -117,11 +117,11 @@ static static_brothel_data farm_data[] = {
 	//{000, 10, 0 }
 };
 static static_brothel_data arena_data[] = {
-		{ 15000, 20, 200, 15 }
+	{ 15000, 20, 200, 15 }
 	//{000, 10, 0 }
 };
 static static_brothel_data studio_data[] = {
-		{ 20000, 20, 200, 20 }
+	{ 20000, 20, 200, 20 }
 	//{000, 10, 0 }
 };
 static static_brothel_data clinic_data[] = {
@@ -259,11 +259,11 @@ void cScreenTown::process()
 	if (g_InterfaceEvents.GetNumEvents() == 0) return;	// no events means we can go home
 
 	/*
-	 *	otherwise, compare event IDs
-	 *
-	 *	if it's the back button, pop the window off the stack
-	 *	and we're done
-	 */
+	*	otherwise, compare event IDs
+	*
+	*	if it's the back button, pop the window off the stack
+	*	and we're done
+	*/
 	/* */if (g_InterfaceEvents.CheckButton(back_id))		{ g_InitWin = true;		g_WinManager.Pop();					return; }
 	else if (g_InterfaceEvents.CheckButton(slavemarket_id)) { g_InitWin = true;		g_WinManager.push("Slave Market");	return; }
 	else if (g_InterfaceEvents.CheckButton(prison_id))		{ g_InitWin = true;		g_WinManager.push("Prison");		return; }
@@ -278,13 +278,13 @@ void cScreenTown::process()
 	else if (g_InterfaceEvents.CheckButton(shop_id))		{ g_InitWin = true;		g_AllTogle = false;	g_WinManager.push("Item Management");	return; }
 	else if (g_InterfaceEvents.CheckButton(brothel0_id))	{ check_brothel(0);		g_InitWin = true;	return; }
 	else if (g_InterfaceEvents.CheckButton(brothel1_id))	{ check_brothel(1);		g_InitWin = true;	return; }
-	else if (g_InterfaceEvents.CheckButton(brothel2_id))	{ check_brothel(2);		g_InitWin = true;	return;	}
-	else if (g_InterfaceEvents.CheckButton(brothel3_id))	{ check_brothel(3);		g_InitWin = true;	return;	}
-	else if (g_InterfaceEvents.CheckButton(brothel4_id))	{ check_brothel(4);		g_InitWin = true;	return;	}
-	else if (g_InterfaceEvents.CheckButton(brothel5_id))	{ check_brothel(5);		g_InitWin = true;	return;	}
-	else if (g_InterfaceEvents.CheckButton(brothel6_id))	{ check_brothel(6);		g_InitWin = true;	return;	}
-	else if (g_InterfaceEvents.CheckButton(walk_id))		{ do_walk();			if (!g_Cheats) g_WalkAround = true;	g_InitWin = true;	}
-	else if (g_InterfaceEvents.CheckButton(setup_id))		{ g_InitWin = true;		g_WinManager.push("Property Management");		return;	}	// `J` added
+	else if (g_InterfaceEvents.CheckButton(brothel2_id))	{ check_brothel(2);		g_InitWin = true;	return; }
+	else if (g_InterfaceEvents.CheckButton(brothel3_id))	{ check_brothel(3);		g_InitWin = true;	return; }
+	else if (g_InterfaceEvents.CheckButton(brothel4_id))	{ check_brothel(4);		g_InitWin = true;	return; }
+	else if (g_InterfaceEvents.CheckButton(brothel5_id))	{ check_brothel(5);		g_InitWin = true;	return; }
+	else if (g_InterfaceEvents.CheckButton(brothel6_id))	{ check_brothel(6);		g_InitWin = true;	return; }
+	else if (g_InterfaceEvents.CheckButton(walk_id))		{ do_walk();			if (!g_Cheats) g_WalkAround = true;	g_InitWin = true; }
+	else if (g_InterfaceEvents.CheckButton(setup_id))		{ g_InitWin = true;		g_WinManager.push("Property Management");		return; }	// `J` added
 
 }
 
@@ -390,9 +390,17 @@ void cScreenTown::do_walk()
 	DirPath dp;
 	string filename;
 	cScriptManager sm;
-	dp = (!(trig = girl->m_Triggers.CheckForScript(TRIGGER_MEET, false, v))) ?		// is there a girl specific talk script?
-		DirPath() << "Resources" << "Scripts" << "MeetTownDefault.script" :			// no, so trigger the default one
-		DirPath() << "Resources" << "Characters" << girl->m_Name << trig->m_Script;	// trigger the girl-specific one
+	if (!(trig = girl->m_Triggers.CheckForScript(TRIGGER_MEET, false, v)))
+	{
+		dp = DirPath() << "Resources" << "Scripts" << "MeetTownDefault.script";			// no, so trigger the default one
+	}
+	else
+	{
+		if (cfg.folders.configXMLch())
+			dp = DirPath() << cfg.folders.characters() << girl->m_Name << trig->m_Script;
+		else
+			dp = DirPath() << "Resources" << "Characters" << girl->m_Name << trig->m_Script;	// trigger the girl-specific one
+	}
 	eventrunning = true;
 	sm.Load(dp, girl);
 	return;
@@ -582,19 +590,19 @@ void cScreenTown::check_studio(int StudioNum)
 
 void cScreenTown::check_farm(int FarmNum)
 {	// player clicked on one of the brothels
-	if(g_Farm.GetNumBrothels() == FarmNum)
+	if (g_Farm.GetNumBrothels() == FarmNum)
 	{	// player doesn't own this Studio... can he buy it? 
 		static_brothel_data *bck = farm_data + FarmNum;
 		locale syslocale("");
 		stringstream ss;
 		ss.imbue(syslocale);
 
-		if(!g_Gold.afford(bck->price) || g_Gangs.GetNumBusinessExtorted() < bck->business)
+		if (!g_Gold.afford(bck->price) || g_Gangs.GetNumBusinessExtorted() < bck->business)
 		{	// can't buy it
 			ss << gettext("This building costs ") << bck->price << gettext(" gold and you need to control at least ") << bck->business << gettext(" businesses.");
-			if(!g_Gold.afford(bck->price))
+			if (!g_Gold.afford(bck->price))
 				ss << "\n" << gettext("You need ") << (bck->price - g_Gold.ival()) << gettext(" more gold to afford it.");
-			if(g_Gangs.GetNumBusinessExtorted() < bck->business)
+			if (g_Gangs.GetNumBusinessExtorted() < bck->business)
 				ss << "\n" << gettext("You need to control ") << (bck->business - g_Gangs.GetNumBusinessExtorted()) << gettext(" more businesses.");
 			g_MessageQue.AddToQue(ss.str(), 0);
 		}

@@ -64,6 +64,8 @@ public:
 	void Free();
 	int m_NumCentres;
 	cJobManager m_JobManager;
+	int GetNumberPatients(bool Day0Night1 = SHIFT_DAY);
+
 };
 
 

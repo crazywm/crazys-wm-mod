@@ -1,21 +1,21 @@
 /*
- * Copyright 2009, 2010, The Pink Petal Development Team.
- * The Pink Petal Devloment Team are defined as the game's coders 
- * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright 2009, 2010, The Pink Petal Development Team.
+* The Pink Petal Devloment Team are defined as the game's coders
+* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 #include "cBrothel.h"
 #include "cMovieStudio.h"
 #include "cCastingTry.h"
@@ -50,67 +50,67 @@ bool cCastingTry::ids_set = false;
 void cCastingTry::set_ids()
 {
 	ids_set = true;
-	back_id =		get_id("BackButton");
-	walk_id =		get_id("WalkButton");
-	curbrothel_id =	get_id("CurrentBrothel");
-	clinic_id =		get_id("Clinic");
+	back_id = get_id("BackButton");
+	walk_id = get_id("WalkButton");
+	curbrothel_id = get_id("CurrentBrothel");
+	clinic_id = get_id("Clinic");
 }
 
 void cCastingTry::init()
 {
 
-/*
- *	buttons enable/disable
- */
+	/*
+	*	buttons enable/disable
+	*/
 	DisableButton(walk_id, g_TryCast);
 
 }
 
 void cCastingTry::process()
 {
-/*
- *	we need to make sure the ID variables are set
- */
-	if(!ids_set) {
+	/*
+	*	we need to make sure the ID variables are set
+	*/
+	if (!ids_set) {
 		set_ids();
 	}
 
 	init();
-/* 
- *	no events means we can go home
- */
-	if(g_InterfaceEvents.GetNumEvents() == 0) {
+	/*
+	*	no events means we can go home
+	*/
+	if (g_InterfaceEvents.GetNumEvents() == 0) {
 		return;
 	}
 
-/*
- *	otherwise, compare event IDs 
- *
- *	if it's the back button, pop the window off the stack
- *	and we're done
- */
-	if(g_InterfaceEvents.CheckButton(back_id)) {
+	/*
+	*	otherwise, compare event IDs
+	*
+	*	if it's the back button, pop the window off the stack
+	*	and we're done
+	*/
+	if (g_InterfaceEvents.CheckButton(back_id)) {
 		g_InitWin = true;
 		g_WinManager.Pop();
 		return;
 	}
-	else if(g_InterfaceEvents.CheckButton(walk_id)) {
+	else if (g_InterfaceEvents.CheckButton(walk_id)) {
 		do_walk();
-		if(!g_Cheats) g_TryCast = true;
+		if (!g_Cheats) g_TryCast = true;
 		g_InitWin = true;
 	}
 }
 
 string cCastingTry::walk_no_luck()
 {
-	if(m_first_walk) {
+	if (m_first_walk) {
 		m_first_walk = false;
 		return	"Your father once called this 'talent spotting' - "
 			"and looking these girls over you see no talent for "
 			"anything."
-		;
+			;
 	}
-	switch(g_Dice % 8) {
+	switch (g_Dice % 8) {
 	case 0:
 	case 1:
 	case 2: return
@@ -141,9 +141,9 @@ string cCastingTry::walk_no_luck()
 		"got daddy's gold.  Looks like nothing to gain here today. "
 		;
 	}
-/*
- *	I don't think this should happen, hence the overly dramatic prose
- */
+	/*
+	*	I don't think this should happen, hence the overly dramatic prose
+	*/
 	return	"The sky is filled with thunder, and portals are opening all "
 		"over Crossgate. You've seen five rains of frogs so far and "
 		"three madmen speaking in tongues. In the marketplace a "
@@ -154,7 +154,7 @@ string cCastingTry::walk_no_luck()
 		"otherwordly species of carnivorous plant, and had to be "
 		"destroyed by the town guard. The only good thing about this "
 		"day is that it's over. It's time to go home."
-	;
+		;
 }
 
 void cCastingTry::do_walk()
@@ -171,47 +171,46 @@ void cCastingTry::do_walk()
 		g_MessageQue.AddToQue(walk_no_luck(), COLOR_RED);
 		return;
 	}
-/*
- *	most of the time, you're not going to find anyone
- *	unless you're cheating, of course.
- */
+	/*
+	*	most of the time, you're not going to find anyone
+	*	unless you're cheating, of course.
+	*/
 	cConfig cfg;
 	int meet_chance = cfg.initial.girl_meet();
-	if(!g_Dice.percent(meet_chance) && !g_Cheats) {
+	if (!g_Dice.percent(meet_chance) && !g_Cheats) {
 		g_MessageQue.AddToQue(walk_no_luck(), COLOR_RED);
 		return;
 	}
-/*
- *	I'd like to move this to the handler script
- *
- *	once scripts are stable
- */
+	/*
+	*	I'd like to move this to the handler script
+	*
+	*	once scripts are stable
+	*/
 	string message = "";
 	int pre = g_Dice % 2;
 	if (pre == 1)	message = "You need a new girl for your next film. You set up a public casting call.";
 	else			message = "You hold an open casting call to try to get a new actress for your movies.";
 	g_MessageQue.AddToQue(message, COLOR_BLUE);
-	int v[2] = {0,-1};
+	int v[2] = { 0, -1 };
 	cTrigger* trig = 0;
 	g_Building = BUILDING_STUDIO;
 	DirPath dp;
 	string filename;
 	cScriptManager sm;
-/*
- *	is there a girl specific talk script?
- */
-	if(!(trig = girl->m_Triggers.CheckForScript(TRIGGER_MEET, false, v))) {
+	/*
+	*	is there a girl specific talk script?
+	*/
+	if (!(trig = girl->m_Triggers.CheckForScript(TRIGGER_MEET, false, v))) {
 		// no, so trigger the default one
-		dp = DirPath()
-			<< "Resources" << "Scripts" << "MeetCastingTry.script"
-		;
+		dp = DirPath() << "Resources" << "Scripts" << "MeetCastingTry.script";
 	}
 	else {
 		// trigger the girl-specific one
-		dp = DirPath()
-			<< "Resources" << "Characters" << girl->m_Name
-			<< trig->m_Script
-		;
+		cConfig cfg;
+		if (cfg.folders.configXMLch())
+			dp = DirPath() << cfg.folders.characters() << girl->m_Name << trig->m_Script;
+		else
+			dp = DirPath() << "Resources" << "Characters" << girl->m_Name << trig->m_Script;
 	}
 	eventrunning = true;
 	sm.Load(dp, girl);

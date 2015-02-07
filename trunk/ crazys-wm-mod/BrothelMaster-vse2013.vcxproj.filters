@@ -397,9 +397,6 @@
     <ClCompile Include="WorkDoctore.cpp">
       <Filter>Jobs</Filter>
     </ClCompile>
-    <ClCompile Include="WorkDrugCounselor.cpp">
-      <Filter>Jobs</Filter>
-    </ClCompile>
     <ClCompile Include="WorkExploreCatacombs.cpp">
       <Filter>Jobs</Filter>
     </ClCompile>
@@ -608,6 +605,7 @@
     <ClCompile Include="WorkCentreAngerManagement.cpp" />
     <ClCompile Include="WorkCentreExTherapy.cpp" />
     <ClCompile Include="WorkCentreTherapy.cpp" />
+    <ClCompile Include="WorkCounselor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cButton.h">
