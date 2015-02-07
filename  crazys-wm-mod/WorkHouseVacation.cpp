@@ -84,3 +84,15 @@ bool cJobManager::WorkHouseVacation(sGirl* girl, sBrothel* brothel, bool Day0Nig
 
 	return false;
 }
+
+double cJobManager::JP_HouseVacation(sGirl* girl, bool estimate)// not used
+{
+double jp = 0;
+if (estimate)// for third detail string
+{
+}
+else// for the actual check
+{
+}
+return jp;
+}

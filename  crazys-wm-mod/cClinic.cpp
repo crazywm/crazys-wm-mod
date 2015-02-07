@@ -346,7 +346,7 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 	current = brothel->m_Girls;
 	while (current)
 	{
-		sw = (Day0Night1 == SHIFT_DAY ? current->m_DayJob : current->m_NightJob);
+		sw = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
 		if (current->health() <= 0 || sw != restjob)
 		{	// skip dead girls and anyone not resting
 			if (current->m_Next) { current = current->m_Next; continue; }
@@ -477,7 +477,7 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 	current = brothel->m_Girls;
 	while (current)
 	{
-		sw = (Day0Night1 == SHIFT_DAY ? current->m_DayJob : current->m_NightJob);
+		sw = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
 		if (current->health() <= 0 || sw != JOB_DOCTOR)
 		{	// skip dead girls and anyone who is not a doctor
 			if (current->m_Next) { current = current->m_Next; continue; }
@@ -519,7 +519,7 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 	current = brothel->m_Girls;
 	while (current && matron && numDoctors < 1)
 	{
-		sw = (Day0Night1 == SHIFT_DAY ? current->m_DayJob : current->m_NightJob);
+		sw = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
 		if (current->health() <= 0 || sw != JOB_INTERN || current->is_slave() || current->intelligence() < 50 || current->medicine() < 50)
 		{	// skip dead girls and anyone who is not an intern and make sure they are qualified to be a doctor
 			if (current->m_Next) { current = current->m_Next; continue; }
@@ -541,7 +541,7 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 	current = brothel->m_Girls;
 	while (current && matron && numDoctors < 1)
 	{
-		sw = (Day0Night1 == SHIFT_DAY ? current->m_DayJob : current->m_NightJob);
+		sw = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
 		if (current->health() <= 0 || sw != JOB_NURSE || current->is_slave() || current->intelligence() < 50 || current->medicine() < 50)
 		{	// skip dead girls and anyone who is not a nurse and make sure they are qualified to be a doctor
 			if (current->m_Next) { current = current->m_Next; continue; }
@@ -567,7 +567,7 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 	current = brothel->m_Girls;
 	while (current)
 	{
-		sw = (Day0Night1 == SHIFT_DAY ? current->m_DayJob : current->m_NightJob);
+		sw = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
 		if (current->health() <= 0 || (sw != JOB_INTERN && sw != JOB_NURSE && sw != JOB_JANITOR && sw != JOB_MECHANIC && sw != JOB_DOCTOR) ||
 			// skip dead girls and anyone who is not staff
 			(sw == JOB_DOCTOR && ((Day0Night1 == SHIFT_DAY && current->m_Refused_To_Work_Day)||(Day0Night1 == SHIFT_NIGHT && current->m_Refused_To_Work_Night))))
@@ -613,7 +613,7 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 	current = brothel->m_Girls;
 	while (current)
 	{
-		sw = (Day0Night1 == SHIFT_DAY ? current->m_DayJob : current->m_NightJob);
+		sw = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
 		if (current->health() <= 0 || (sw != JOB_GETHEALING && sw != JOB_GETREPAIRS && sw != JOB_GETABORT
 			&& sw != JOB_PHYSICALSURGERY && sw != JOB_LIPO && sw != JOB_BREASTREDUCTION && sw != JOB_BOOBJOB
 			&& sw != JOB_VAGINAREJUV && sw != JOB_FACELIFT && sw != JOB_ASSJOB && sw != JOB_TUBESTIED
@@ -653,7 +653,7 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 		g_Girls.UpdateStat(current, STAT_HEALTH, 2, false);
 		g_Girls.UpdateStat(current, STAT_TIREDNESS, -2, false);
 
-		sw = (Day0Night1 == SHIFT_DAY ? current->m_DayJob : current->m_NightJob);
+		sw = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
 		if (g_Girls.GetStat(current, STAT_HAPPINESS) < 40)
 		{
 			if (sw != matronjob && matron && brothel->m_NumGirls > 1 && g_Dice.percent(70))

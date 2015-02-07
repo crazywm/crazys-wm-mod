@@ -1,21 +1,21 @@
 /*
- * Copyright 2009, 2010, The Pink Petal Development Team.
- * The Pink Petal Devloment Team are defined as the game's coders 
- * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright 2009, 2010, The Pink Petal Development Team.
+* The Pink Petal Devloment Team are defined as the game's coders
+* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 #pragma once
 
 #include <iostream>
@@ -32,10 +32,10 @@ struct SDL_Color;
 
 struct sConfigData
 {
-/*
- *	initialisation
- */
- 	struct {
+	/*
+	*	initialisation
+	*/
+	struct {
 		int	gold;
 		int girl_meet;
 		int girls_house_perc;
@@ -49,10 +49,22 @@ struct sConfigData
 		int horoscopetype;
 	} initial;
 
-/*
- *	resolution
- */
- 	struct Resolution {
+
+	/*
+	*	Folders
+	*/
+	struct Folders {
+		string	characters;
+		bool	configXMLch;
+		string	saves;
+		bool	configXMLsa;
+		bool	backupsaves;
+	} folders;
+
+	/*
+	*	resolution
+	*/
+	struct Resolution {
 		string	resolution;
 		int width;
 		int height;
@@ -63,9 +75,9 @@ struct sConfigData
 		int list_scroll;
 		int text_scroll;
 	} resolution;
-/*
- *	income factors
- */
+	/*
+	*	income factors
+	*/
 
 	struct InFactors {
 		double extortion;
@@ -79,9 +91,9 @@ struct sConfigData
 		double clinic_income;
 		double arena_income;
 	} in_fact;
-/*
- *	outgoings factors
- */
+	/*
+	*	outgoings factors
+	*/
 	struct OutFactors {
 		double training;
 		double actress_wages;
@@ -157,7 +169,7 @@ struct sConfigData
 		bool	showpercent;
 		int detailfontsize;
 		font_data()
-		: normal(""), fixed(""), antialias("")
+			: normal(""), fixed(""), antialias("")
 		{
 		}
 	} fonts;
@@ -194,6 +206,7 @@ struct sConfigData
 	void	get_item_data(TiXmlElement *el);
 	void	get_font_data(TiXmlElement *el);
 	void	get_initial_values(TiXmlElement *el);
+	void	get_folders_data(TiXmlElement *el);
 	void	get_resolution_data(TiXmlElement *el);
 	void	get_att(TiXmlElement *el, const char *name, int *data);
 	void	get_att(TiXmlElement *el, const char *name, double *data);
@@ -202,9 +215,9 @@ struct sConfigData
 	void	get_debug_flags(TiXmlElement *el);
 };
 
-class cConfig 
+class cConfig
 {
-static	sConfigData	*data;
+	static	sConfigData	*data;
 public:
 	cConfig()
 	{
@@ -230,9 +243,9 @@ public:
 		double clinic_income()	{ return data->in_fact.clinic_income; }
 		double arena_income()	{ return data->in_fact.arena_income; }
 	} in_fact;
-/*
- *	outgoings factors
- */
+	/*
+	*	outgoings factors
+	*/
 	struct OutFactors {
 		double training()	    { return data->out_fact.training; }
 		double actress_wages()	{ return data->out_fact.actress_wages; }
@@ -281,7 +294,7 @@ public:
 		int	base()		            { return data->gamble.base; }
 		int	spread()	            { return data->gamble.spread; }
 		double	house_factor()	    { return data->gamble.house_factor; }
-		double	customer_factor( )  { return data->gamble.customer_factor; }
+		double	customer_factor()  { return data->gamble.customer_factor; }
 	} gamble;
 
 	struct PregnancyData {
@@ -306,7 +319,7 @@ public:
 		int	add_new_weekly_max()    { return data->gangs.add_new_weekly_max; }
 	} gangs;
 
- 	struct {
+	struct {
 		int	gold()					{ return data->initial.gold; }
 		int	girl_meet()				{ return data->initial.girl_meet; }
 		int girls_house_perc()		{ return data->initial.girls_house_perc; }
@@ -320,6 +333,15 @@ public:
 		int horoscopetype()			{ return data->initial.horoscopetype; }
 	} initial;
 
+	struct Folders{
+		string& characters()		{ return data->folders.characters; }
+		bool configXMLch()			{ return data->folders.configXMLch; }
+		string& saves()				{ return data->folders.saves; }
+		bool configXMLsa()			{ return data->folders.configXMLsa; }
+		bool backupsaves()			{ return data->folders.backupsaves; }
+
+	}folders;
+
 	struct Resolution{
 		string& resolution()	{ return data->resolution.resolution; }
 		int width()				{ return data->resolution.width; }
@@ -332,7 +354,7 @@ public:
 		int text_scroll()		{ return data->resolution.text_scroll; }
 	} resolution;
 
- 	struct Debug{
+	struct Debug{
 		bool	log_girls()         { return data->debug.log_girls; }
 		bool	log_rgirls()        { return data->debug.log_rgirls; }
 		bool	log_girlfights()    { return data->debug.log_girl_fights; }

@@ -1488,3 +1488,46 @@ WME - Fixed a bug with "Your Daughter" and "Is Daughter" breaking items.
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.34
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.19
 
+###  Changes 2/4/2015
+Fixed it so that worn items can adjust age properly.
+Removed Preprocessing and made refusing to work more customisable per job.
+Converted a ton of stringstream + to <<
+Cleaned up cScreenPropertyManagement.cpp (still need to make this work)
+Started cleanup of all jobs - mostly standardizing the first part of the jobs.
+Removed unused work*.cpp files
+
+###  Changes 2/5/2015
+Started adding JobPerformance function to jobs for easier editing and reuse.
+
+###  Changes 2/6/2015
+Finished adding JobPerformance functions and job cleanup.
+Fixed a few bugs in several jobs.
+Updating Clinic surgeries jobs:
+ - Breast size surgeries are now 1 size change per turn.
+ - Added AdjustTraitGroupFertility and it is used in fertility/tubes tied jobs.
+Updating Centre Counseling jobs:
+ - Changed "Drug Centre" to "Counseling Centre"
+ - Changed "Drug Counselor" to "Counselor"
+ - Fixed Therapy jobs so they work better.
+ - Added Therapy jobs to the Centre flow.
+ - Added Therapy jobs (#)*** notes to girls list
+Added GetRandomGirlOnJob and GetFirstGirlOnJob to be used to get just one girl instead of using GirlsOnJob to get a group then choosing one.
+Changed items to use StatTr/SkillTr instead of Stat/Skill.
+Removed the limits on m_StatMods, m_TempStats, m_StatTr, m_SkillMods, m_TempSkills and m_SkillTr
+ - This will allow for cleaner modification via items and traits
+Added starting items for (r)girls so they can have items before you get them.
+Added in "Your Daughter" checks to births and random girl creation - hopefully they work.
+
+###  Changes 2/6/2015
+Started moving folders:
+ - Moved Default girl images from ./Resources/Characters/Default to ./Resources/DefaultImages
+ - Added a check for config.xml in the folder above the exe folder
+ - Added Characters and Saves folders locations to config.xml
+ - If not found in the new locations, it uses the old defaults
+
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r148
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.00
+
+
+
+

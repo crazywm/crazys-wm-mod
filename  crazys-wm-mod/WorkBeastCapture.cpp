@@ -1,21 +1,21 @@
 /*
- * Copyright 2009, 2010, The Pink Petal Development Team.
- * The Pink Petal Devloment Team are defined as the game's coders 
- * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright 2009, 2010, The Pink Petal Development Team.
+* The Pink Petal Devloment Team are defined as the game's coders
+* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 #include "cJobManager.h"
 #include "cRng.h"
 #include "CLog.h"
@@ -23,7 +23,6 @@
 #include "cGold.h"
 #include "cBrothel.h"
 #include "cFarm.h"
-
 
 extern CLog g_LogFile;
 extern cMessageQue g_MessageQue;
@@ -33,21 +32,20 @@ extern cBrothelManager g_Brothels;
 extern cFarmManager g_Farm;
 extern cInventory g_InvManager;
 
-
-
-
 // `J` Farm Job - Laborers
 bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-	stringstream ss; string girlName = girl->m_Realname;
-	if (Preprocessing(ACTION_COMBAT, girl, brothel, Day0Night1, summary, ss.str()))
+	int actiontype = ACTION_COMBAT;
+	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
+	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work 
+	{
+		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
+	}
+	ss << " equipped herself and went out to hunt for exotic beasts and animals.\n\n";
 
-	// ready armor and weapons!
-	g_Girls.EquipCombat(girl);
-
-	// TODO need better dialog - SIN: DONE
-	ss << girlName + " equipped herself and went out to hunt for exotic beasts and animals.\n";
+	g_Girls.EquipCombat(girl);	// ready armor and weapons!
 
 	int gain = g_Dice % 2 + 2;
 	sGirl* tempgirl = g_Girls.CreateRandomGirl(18, false, false, false, true, false);
@@ -71,7 +69,7 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	}
 	else if (fight_outcome == 1)	// she won
 	{
-		g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, +3, true);
+		g_Girls.UpdateEnjoyment(girl, actiontype, +3, true);
 		ss << "She had fun hunting today and came back with ";
 		if (gain <= 2)	{ ss << "two";  gain = 2; }
 		else if (gain == 3)	{ ss << "three"; }
@@ -82,8 +80,8 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	}
 	else		// she lost or it was a draw
 	{
-		g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, -1, true);
-		ss << " The animals were difficult to track today. " + girlName + " eventually returned worn out and frustrated, dragging one captured beast behind her.\n";
+		g_Girls.UpdateEnjoyment(girl, actiontype, -1, true);
+		ss << " The animals were difficult to track today. " << girlName << " eventually returned worn out and frustrated, dragging one captured beast behind her.\n";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_COMBAT, Day0Night1);
 		gain = 1;
 	}
@@ -97,20 +95,20 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	//SIN: A little randomness
 	if (((g_Girls.GetSkill(girl, SKILL_ANIMALHANDLING) + g_Girls.GetSkill(girl, SKILL_ANIMALHANDLING)) > 125) && g_Dice.percent(30))
 	{
-		ss << girlName + " has a way with animals. Another beast freely follows her back.\n";
+		ss << girlName << " has a way with animals. Another beast freely follows her back.\n";
 		gain++;
 	}
 	//SIN: most the rest rely on more than one cap so might as well skip the lot if less than this...
 	if (gain > 1){
 		if (g_Girls.HasTrait(girl, "Twisted") && g_Girls.HasTrait(girl, "Nymphomaniac") && (g_Girls.GetStat(girl, STAT_LIBIDO) >= 80))
 		{
-			ss << "Being a horny, twisted nymphomaniac, " + girlName + " had some fun with the beasts before she handed them over.\n";
+			ss << "Being a horny, twisted nymphomaniac, " << girlName << " had some fun with the beasts before she handed them over.\n";
 			g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, g_Dice % gain);
 			g_Girls.UpdateStat(girl, STAT_LIBIDO, -(g_Dice % gain));
 		}
 		if (g_Girls.HasTrait(girl, "Psychic") && (g_Girls.GetStat(girl, STAT_LIBIDO) >= 90) && g_Dice.percent(10))
 		{
-			ss << girlName + "'s Psychic sensitivity caused her mind be overwhelmed by the creatures' lusts";
+			ss << girlName << "'s Psychic sensitivity caused her mind be overwhelmed by the creatures' lusts";
 			if (g_Girls.CheckVirginity(girl))
 			{
 				ss << " but, things were moving too fast and she regained control before they could take her virginity.\n";
@@ -127,14 +125,13 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 		}
 		if (g_Girls.HasTrait(girl, "Assassin") && g_Dice.percent(5))
 		{
-			ss << " One of the captured creatures tried to escape on the way back. Trained assassin, " +
-				girlName + ", instantly killed it as an example to the others.\n";
+			ss << " One of the captured creatures tried to escape on the way back. Trained assassin, " << girlName << ", instantly killed it as an example to the others.\n";
 			g_Girls.UpdateSkill(girl, SKILL_COMBAT, 1);
 			gain--;
 		}
 		if (g_Girls.GetStat(girl, STAT_TIREDNESS) > 50 && g_Dice.percent(5))
 		{
-			ss << girlName + " was so exhausted she couldn't concentrate. One of the creatures escaped.";
+			ss << girlName << " was so exhausted she couldn't concentrate. One of the creatures escaped.";
 			gain--;
 		}
 	}
@@ -236,12 +233,23 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 	g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, gain + skill);
 
-	g_Girls.PossiblyGainNewTrait(girl, "Tough", 30, ACTION_COMBAT, "She has become pretty Tough from all of the fights she's been in.", Day0Night1 == SHIFT_NIGHT);
-	g_Girls.PossiblyGainNewTrait(girl, "Adventurer", 40, ACTION_COMBAT, "She has been in enough tough spots to consider herself Adventurer.", Day0Night1 == SHIFT_NIGHT);
-	g_Girls.PossiblyGainNewTrait(girl, "Aggressive", 60, ACTION_COMBAT, "She is getting rather Aggressive from her enjoyment of combat.", Day0Night1 == SHIFT_NIGHT);
+	g_Girls.PossiblyGainNewTrait(girl, "Tough", 30, actiontype, "She has become pretty Tough from all of the fights she's been in.", Day0Night1);
+	g_Girls.PossiblyGainNewTrait(girl, "Adventurer", 40, actiontype, "She has been in enough tough spots to consider herself Adventurer.", Day0Night1);
+	g_Girls.PossiblyGainNewTrait(girl, "Aggressive", 60, actiontype, "She is getting rather Aggressive from her enjoyment of combat.", Day0Night1);
 
 	//lose traits
-	g_Girls.PossiblyLoseExistingTrait(girl, "Fragile", 15, ACTION_COMBAT, girl->m_Realname + " has had to heal from so many injuries you can't say she is fragile anymore.", Day0Night1 == SHIFT_NIGHT);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Fragile", 15, actiontype, girl->m_Realname + " has had to heal from so many injuries you can't say she is fragile anymore.", Day0Night1);
 
 	return false;
+}
+double cJobManager::JP_BeastCapture(sGirl* girl, bool estimate)// not used
+{
+	double jobperformance = 0.0;
+	if (estimate)// for third detail string
+	{
+	}
+	else// for the actual check
+	{
+	}
+	return jobperformance;
 }

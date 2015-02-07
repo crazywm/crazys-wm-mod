@@ -162,6 +162,7 @@
     <ClCompile Include="WorkCentreAngerManagement.cpp" />
     <ClCompile Include="WorkCentreExTherapy.cpp" />
     <ClCompile Include="WorkCentreTherapy.cpp" />
+    <ClCompile Include="WorkCounselor.cpp" />
     <ClCompile Include="WorkEscort.cpp" />
     <ClCompile Include="WorkFarmer.cpp" />
     <ClCompile Include="WorkFarmHand.cpp" />
@@ -275,7 +276,6 @@
     <ClCompile Include="WorkCustService.cpp" />
     <ClCompile Include="WorkDoctor.cpp" />
     <ClCompile Include="WorkDoctore.cpp" />
-    <ClCompile Include="WorkDrugCounselor.cpp" />
     <ClCompile Include="WorkExploreCatacombs.cpp" />
     <ClCompile Include="WorkFeedPoor.cpp" />
     <ClCompile Include="WorkFightArenaGirls.cpp" />

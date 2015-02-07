@@ -110,6 +110,7 @@ void cScreenBrothelManagement::process()
 
 void cScreenBrothelManagement::check_events()
 {
+	cConfig cfg;
 	if (g_InterfaceEvents.GetNumEvents() != 0)
 	{
 		if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, id_girls))
@@ -144,15 +145,27 @@ void cScreenBrothelManagement::check_events()
 		}
 		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, id_save))
 		{
-			if (g_CTRLDown)SaveGirlsCSV(DirPath() << "Saves" << (g_Brothels.GetBrothel(0)->m_Name + ".csv").c_str());
+			if (g_CTRLDown)
+			{
+				if (cfg.folders.configXMLsa())
+					SaveGirlsCSV(DirPath() << cfg.folders.saves() << (g_Brothels.GetBrothel(0)->m_Name + ".csv").c_str());
+				if (!cfg.folders.configXMLsa() || cfg.folders.backupsaves())
+					SaveGirlsCSV(DirPath() << "Saves" << (g_Brothels.GetBrothel(0)->m_Name + ".csv").c_str());
+			}
 			g_MessageQue.AddToQue("Game Saved", COLOR_GREEN);
-			SaveGameXML(DirPath() << "Saves" << (g_Brothels.GetBrothel(0)->m_Name + ".gam").c_str());
+			if (cfg.folders.configXMLsa())
+				SaveGameXML(DirPath() << cfg.folders.saves() << (g_Brothels.GetBrothel(0)->m_Name + ".gam").c_str());
+			if (!cfg.folders.configXMLsa() || cfg.folders.backupsaves())
+				SaveGameXML(DirPath() << "Saves" << (g_Brothels.GetBrothel(0)->m_Name + ".gam").c_str());
 			return;
 		}
 		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, id_week))
 		{
 			g_InitWin = true;
-			SaveGameXML(DirPath() << "Saves" << "autosave.gam");
+			if (cfg.folders.configXMLsa())
+				SaveGameXML(DirPath() << cfg.folders.saves() << "autosave.gam");
+			else
+				SaveGameXML(DirPath() << "Saves" << "autosave.gam");
 			NextWeek();
 			g_WinManager.Push(Turnsummary, &g_Turnsummary);
 			return;

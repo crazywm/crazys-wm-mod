@@ -1,21 +1,21 @@
 /*
- * Copyright 2009, 2010, The Pink Petal Development Team.
- * The Pink Petal Devloment Team are defined as the game's coders 
- * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright 2009, 2010, The Pink Petal Development Team.
+* The Pink Petal Devloment Team are defined as the game's coders
+* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 #include "cJobManager.h"
 #include "cRng.h"
 #include "CLog.h"
@@ -24,7 +24,6 @@
 #include "cBrothel.h"
 #include "cFarm.h"
 
-
 extern CLog g_LogFile;
 extern cMessageQue g_MessageQue;
 extern cRng g_Dice;
@@ -32,18 +31,20 @@ extern cGold g_Gold;
 extern cBrothelManager g_Brothels;
 extern cFarmManager g_Farm;
 
-
-
-
 // `J` Farm Job - Laborers
 bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-	stringstream ss; string girlName = girl->m_Realname;
-	cConfig cfg;
-
-	if (Preprocessing(ACTION_WORKMILK, girl, brothel, Day0Night1, summary, ss.str()))	// they refuse to have work
+	int actiontype = ACTION_WORKMILK;
+	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
+	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work 
+	{
+		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
+	}
+	ss << " let her breasts be milked.\n\n";
 
+	cConfig cfg;
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
@@ -53,7 +54,6 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
 
-	ss << "She let her breasts be milked.\n\n";
 
 
 
@@ -141,12 +141,12 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 	{
 		if (girl->m_States&(1 << STATUS_PREGNANT) || girl->m_States&(1 << STATUS_PREGNANT_BY_PLAYER))
 		{
-			ss << girl->m_Realname + " has small breasts, but her body still gives plenty of milk in anticipation of nursing!.";
+			ss << girlName << " has small breasts, but her body still gives plenty of milk in anticipation of nursing!.";
 			girl->m_Pay += 125;
 		}
 		else
 		{
-			ss << girl->m_Realname + " has small breasts, which only yield a small amount of milk.";
+			ss << girlName << " has small breasts, which only yield a small amount of milk.";
 			girl->m_Pay += 25;
 		}
 	}
@@ -154,12 +154,12 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 	{
 		if (girl->m_States&(1 << STATUS_PREGNANT) || girl->m_States&(1 << STATUS_PREGNANT_BY_PLAYER))
 		{
-			ss << girl->m_Realname + "'s already sizable breasts have become fat and swollen with milk in preparation for her child.";
+			ss << girlName << "'s already sizable breasts have become fat and swollen with milk in preparation for her child.";
 			girl->m_Pay += 135;
 		}
 		else
 		{
-			ss << girl->m_Realname + " has large breasts, that yield a good amount of milk to the suction machine even without pregnancy.";
+			ss << girlName << " has large breasts, that yield a good amount of milk to the suction machine even without pregnancy.";
 			girl->m_Pay += 35;
 		}
 	}
@@ -167,12 +167,12 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 	{
 		if (girl->m_States&(1 << STATUS_PREGNANT) || girl->m_States&(1 << STATUS_PREGNANT_BY_PLAYER))
 		{
-			ss << girl->m_Realname + " has ridiculously large breasts, even without a baby in development.  With a bun in the oven, her tits are each larger than her head, and leak milk near continuously.";
+			ss << girlName << " has ridiculously large breasts, even without a baby in development.  With a bun in the oven, her tits are each larger than her head, and leak milk near continuously.";
 			girl->m_Pay += 140;
 		}
 		else
 		{
-			ss << girl->m_Realname + "'s massive globes don't need pregnancy to yield a profitable quantity of milk!";
+			ss << girlName << "'s massive globes don't need pregnancy to yield a profitable quantity of milk!";
 			girl->m_Pay += 40;
 		}
 	}
@@ -180,12 +180,12 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 	{
 		if (girl->m_States&(1 << STATUS_PREGNANT) || girl->m_States&(1 << STATUS_PREGNANT_BY_PLAYER))
 		{
-			ss << girl->m_Realname + " has average sized breasts, which yield a fair amount of milk with the help of pregnancy.";
+			ss << girlName << " has average sized breasts, which yield a fair amount of milk with the help of pregnancy.";
 			girl->m_Pay += 130;
 		}
 		else
 		{
-			ss << girl->m_Realname + " has average sized breasts, perfect handfuls, which yield an okay amount of milk.";
+			ss << girlName << " has average sized breasts, perfect handfuls, which yield an okay amount of milk.";
 			girl->m_Pay += 30;
 		}
 	}
@@ -194,11 +194,17 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 
 	//enjoyed the work or not
 	if (roll <= 5)
-	{ ss << "\nShe had a bad time letting her breasts be milked."; work -= 1; } //zzzzz FIXME this needs better text
+	{
+		ss << "\nShe had a bad time letting her breasts be milked."; work -= 1;
+	} //zzzzz FIXME this needs better text
 	else if (roll <= 25)
-	{ ss << "\nShe had a pleasant time letting her breasts be milked."; work += 3; }
+	{
+		ss << "\nShe had a pleasant time letting her breasts be milked."; work += 3;
+	}
 	else
-	{ ss << "\nOtherwise, the shift passed uneventfully."; work += 1; }
+	{
+		ss << "\nOtherwise, the shift passed uneventfully."; work += 1;
+	}
 
 
 #if 0
@@ -222,7 +228,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 #endif
 
 
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKMILK, work, true);
+	g_Girls.UpdateEnjoyment(girl, actiontype, work, true);
 
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_MILK, Day0Night1);
 
@@ -239,4 +245,16 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
 	return false;
+}
+
+double cJobManager::JP_Milk(sGirl* girl, bool estimate)// not used
+{
+	double jobperformance = 0.0;
+	if (estimate)// for third detail string
+	{
+	}
+	else// for the actual check
+	{
+	}
+	return jobperformance;
 }

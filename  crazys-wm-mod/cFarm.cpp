@@ -334,7 +334,7 @@ void cFarmManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)		// Start_Bui
 	current = brothel->m_Girls;
 	while (current)
 	{
-		sw = (Day0Night1 == SHIFT_DAY ? current->m_DayJob : current->m_NightJob);
+		sw = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
 		if (current->health() <= 0 || sw != restjob)
 		{	// skip dead girls and anyone not resting
 			if (current->m_Next) { current = current->m_Next; continue; }
@@ -446,7 +446,7 @@ void cFarmManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)		// Start_Bui
 	current = brothel->m_Girls;
 	while (current)
 	{
-		sw = (Day0Night1 == SHIFT_DAY ? current->m_DayJob : current->m_NightJob);
+		sw = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
 		if (current->health() <= 0 || sw == restjob || sw == matronjob)
 		{	// skip dead girls, resting girls and the matron
 			if (current->m_Next) { current = current->m_Next; continue; }

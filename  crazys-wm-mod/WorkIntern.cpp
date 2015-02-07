@@ -1,21 +1,21 @@
 /*
- * Copyright 2009, 2010, The Pink Petal Development Team.
- * The Pink Petal Devloment Team are defined as the game's coders 
- * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright 2009, 2010, The Pink Petal Development Team.
+* The Pink Petal Devloment Team are defined as the game's coders
+* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 #include "cJobManager.h"
 #include "cBrothel.h"
 #include "cClinic.h"
@@ -46,23 +46,29 @@ extern cGold g_Gold;
 // `J` Clinic Job - Staff
 bool cJobManager::WorkIntern(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-	stringstream ss; string girlName = girl->m_Realname;
+	int actiontype = ACTION_WORKINTERN;
 
+	stringstream ss; string girlName = girl->m_Realname;
 	if (g_Girls.HasTrait(girl, "AIDS"))
 	{
 		ss << "Health laws prohibit anyone with AIDS from working in the Medical profession so " << girlName << " was sent to the waiting room.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
-		girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
+		girl->m_PrevDayJob = girl->m_PrevNightJob = girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
 		return false;
 	}
-
-	if (Preprocessing(ACTION_WORKINTERN, girl, brothel, Day0Night1, summary, ss.str())) return true;
+	ss << girlName;
+	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work 
+	{
+		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
+		return true;
+	}
+	ss << " trains in the Medical field.\n\n";
 
 	cConfig cfg;
 	int enjoy = 0, wages = 0, skill = 0, train = 0;
 	double roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
 
-	ss << gettext("She trains in the Medical field.\n\n");
 
 	/* */if (roll_a <= 5)	skill = 7;
 	else if (roll_a <= 15)	skill = 6;
@@ -95,7 +101,7 @@ bool cJobManager::WorkIntern(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 		ss << gettext("She managed to gain ") << skill << gettext(" Medicine skill.\n\n");
 		g_Girls.UpdateSkill(girl, SKILL_MEDICINE, skill);
 	}
-	else g_Girls.UpdateSkill(girl, SKILL_MEDICINE, g_Dice % 2);
+	else g_Girls.UpdateSkill(girl, SKILL_MEDICINE, g_Dice % 3);
 	if (train == 2)
 	{
 		ss << gettext("She got smarter today.\n");
@@ -116,16 +122,12 @@ bool cJobManager::WorkIntern(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	else if (roll_c >= 90)	{ enjoy += g_Dice % 3 + 1;	ss << "She had a pleasant time working."; }
 	else /*             */	{ enjoy += g_Dice % 2;		ss << "Otherwise, the shift passed uneventfully."; }
 
-	if ((girl->is_slave() && !cfg.initial.slave_pay_outofpocket()))
-	{
-		wages = 0;
-	}
-	else
-	{
-		wages = 25 + (skill * 5); // `J` Pay her more if she learns more
-	}
 
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
+
+	if ((girl->is_slave() && !cfg.initial.slave_pay_outofpocket())) { wages = 0; }
+	else { wages = 25 + (skill * 5); } // `J` Pay her more if she learns more
+
 	girl->m_Pay = wages;
 
 	// Improve stats
@@ -139,11 +141,16 @@ bool cJobManager::WorkIntern(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
 
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKINTERN, enjoy, true);
+	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy, true);
 	//gain traits
-	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, ACTION_WORKINTERN, "Dealing with patients and talking with them about their problems has made " + girl->m_Realname + " more Charismatic.", Day0Night1 == SHIFT_NIGHT);
+	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, actiontype, "Dealing with patients and talking with them about their problems has made " + girl->m_Realname + " more Charismatic.", Day0Night1);
 	//lose traits
-	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 30, ACTION_WORKINTERN, girl->m_Realname + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", Day0Night1 == SHIFT_NIGHT);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 30, actiontype, girl->m_Realname + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", Day0Night1);
 
 	return false;
+}
+
+double cJobManager::JP_Intern(sGirl* girl, bool estimate)// not used
+{
+	return 0;
 }

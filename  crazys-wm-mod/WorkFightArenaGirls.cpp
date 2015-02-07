@@ -1,21 +1,21 @@
 /*
- * Copyright 2009, 2010, The Pink Petal Development Team.
- * The Pink Petal Devloment Team are defined as the game's coders 
- * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright 2009, 2010, The Pink Petal Development Team.
+* The Pink Petal Devloment Team are defined as the game's coders
+* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 #include "cJobManager.h"
 #include "cBrothel.h"
 #include "cArena.h"
@@ -46,14 +46,22 @@ extern cGold g_Gold;
 // `J` Arena Job - Fighting
 bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-	stringstream ss; string girlName = girl->m_Realname;
-	if (Preprocessing(ACTION_COMBAT, girl, brothel, Day0Night1, summary, ss.str()))
+	int actiontype = ACTION_COMBAT;
+	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
+	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work 
+	{
+		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
-	int wages = 0, fight_outcome = 0, enjoyment = 0, fame = 0, imagetype = IMGTYPE_COMBAT;
-	int jobperformance = (g_Girls.GetStat(girl, STAT_FAME) + g_Girls.GetStat(girl, STAT_CHARISMA))/2;
-	bool unique = false;
+	}
+	ss << " was assigned to fight other girls in the arena.\n\n";
 
 	cConfig cfg;
+	int wages = 0, fight_outcome = 0, enjoyment = 0, fame = 0, imagetype = IMGTYPE_COMBAT;
+	bool unique = false;
+
+	double jobperformance = JP_FightArenaGirls(girl, false);
+
 	g_Girls.EquipCombat(girl);		// ready armor and weapons!
 
 	sGirl* tempgirl = g_Girls.CreateRandomGirl(18, false, false, false, false, false, true);
@@ -82,15 +90,15 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 			ugirl->m_Stats[STAT_HAPPINESS] = g_Dice % 80 + 1;
 			ugirl->m_Stats[STAT_TIREDNESS] = g_Dice % 50 + 50;
 			ugirl->m_States |= (1 << STATUS_ARENA);
-			ss << girlName + " won her fight against " + ugirl->m_Realname + ".\n";
+			ss << girlName << " won her fight against " << ugirl->m_Realname << ".\n";
 			if (g_Dice.percent(50))
 			{
 				ugirl->m_States |= (1 << STATUS_SLAVE);
-				ss << ugirl->m_Realname + "'s owner could not afford to pay you your winnings so he gave her to you instead.";
+				ss << ugirl->m_Realname << "'s owner could not afford to pay you your winnings so he gave her to you instead.";
 			}
 			else
 			{
-				ss << ugirl->m_Realname + " put up a good fight so you let her live as long as she came work for you.";
+				ss << ugirl->m_Realname << " put up a good fight so you let her live as long as she came work for you.";
 				wages = 100 + g_Dice % (girl->fame() + girl->charisma());
 			}
 			g_MessageQue.AddToQue(ss.str(), 0);
@@ -110,7 +118,7 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 		int cost = 150;
 		brothel->m_Finance.arena_costs(cost);
 		ss << " You had to pay " << cost << " gold cause your girl lost.";
-		/*that should work but now need to make if you lose the girl if you dont have the gold zzzzz FIXME*/ 
+		/*that should work but now need to make if you lose the girl if you dont have the gold zzzzz FIXME*/
 	}
 	else if (fight_outcome == 0)  // it was a draw
 	{
@@ -144,10 +152,10 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 	g_Girls.UpdateStat(girl, STAT_AGILITY, g_Dice%fightxp + skill);
 	g_Girls.UpdateStat(girl, STAT_CONSTITUTION, g_Dice%fightxp + skill);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
-	g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, enjoyment, true);
+	g_Girls.UpdateEnjoyment(girl, actiontype, enjoyment, true);
 
 	/* `J` this will be a place holder until a better payment system gets done
-	* 
+	*
 	*/
 	int earned = 0;
 	for (int i = 0; i < jobperformance; i++)
@@ -161,10 +169,31 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 
 
 	//gain traits
-	g_Girls.PossiblyGainNewTrait(girl, "Tough", 65, ACTION_COMBAT, "She has become pretty Tough from all of the fights she's been in.", Day0Night1 == SHIFT_NIGHT);
-	g_Girls.PossiblyGainNewTrait(girl, "Fleet of Foot", 55, ACTION_COMBAT, "She is getting rather fast from all the fighting.", Day0Night1 == SHIFT_NIGHT);
-	g_Girls.PossiblyGainNewTrait(girl, "Aggressive", 70, ACTION_COMBAT, "She is getting rather Aggressive from her enjoyment of combat.", Day0Night1 == SHIFT_NIGHT);
+	g_Girls.PossiblyGainNewTrait(girl, "Tough", 65, actiontype, "She has become pretty Tough from all of the fights she's been in.", Day0Night1);
+	g_Girls.PossiblyGainNewTrait(girl, "Fleet of Foot", 55, actiontype, "She is getting rather fast from all the fighting.", Day0Night1);
+	g_Girls.PossiblyGainNewTrait(girl, "Aggressive", 70, actiontype, "She is getting rather Aggressive from her enjoyment of combat.", Day0Night1);
 	//lose traits
-	g_Girls.PossiblyLoseExistingTrait(girl, "Fragile", 35, ACTION_COMBAT, girlName + " has had to heal from so many injuries you can't say she is fragile anymore.", Day0Night1 == SHIFT_NIGHT);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Fragile", 35, actiontype, girlName + " has had to heal from so many injuries you can't say she is fragile anymore.", Day0Night1);
 	return false;
+}
+
+double cJobManager::JP_FightArenaGirls(sGirl* girl, bool estimate)// not used
+{
+	double jobperformance = 0.0;
+
+	if (estimate)// for third detail string
+	{
+		jobperformance +=
+			(girl->fame() / 2) +
+			(girl->charisma() / 2) +
+			(girl->combat() / 2) +
+			(girl->magic() / 2) +
+			(girl->level());
+	}
+	else// for the actual check
+	{
+		jobperformance += (g_Girls.GetStat(girl, STAT_FAME) + g_Girls.GetStat(girl, STAT_CHARISMA)) / 2;
+
+	}
+	return jobperformance;
 }

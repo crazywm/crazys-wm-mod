@@ -221,7 +221,7 @@ void cScreenSlaveMarket::init()
 		return;
 	}
 	// loop through her traits, populating the box
-	for (int i = 0; i < 30; i++)
+	for (int i = 0; i < MAXNUM_TRAITS; i++)
 	{
 		if (!g->m_Traits[i]) continue;
 		AddToListBox(trait_list_id, i, g_Traits.GetTranslateName(g->m_Traits[i]->m_Name));
@@ -403,7 +403,7 @@ bool cScreenSlaveMarket::change_selected_girl()
 	else						detail = g_Girls.GetThirdDetailsString(girl);
 	EditTextItem(detail, details_id);
 	ImageNum = -1;										// I don't understand where this is used...
-	for (int i = 0; i < 30; i++)						// whizz down the girl's trait list
+	for (int i = 0; i < MAXNUM_TRAITS; i++)						// whizz down the girl's trait list
 	{
 		sTrait *trait = girl->m_Traits[i];
 		if (!trait) continue;							// skip any that are absent

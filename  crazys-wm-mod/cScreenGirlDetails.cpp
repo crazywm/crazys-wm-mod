@@ -273,10 +273,10 @@ void cScreenGirlDetails::init()
 	{
 		ClearListBox(joblist_id);
 		AddToListBox(jobtypelist_id, JOBFILTER_COMMUNITYCENTRE, g_Centre.m_JobManager.JobFilterName[JOBFILTER_COMMUNITYCENTRE]);
-		AddToListBox(jobtypelist_id, JOBFILTER_DRUGCENTRE, g_Centre.m_JobManager.JobFilterName[JOBFILTER_DRUGCENTRE]);
+		AddToListBox(jobtypelist_id, JOBFILTER_COUNSELINGCENTRE, g_Centre.m_JobManager.JobFilterName[JOBFILTER_COUNSELINGCENTRE]);
 		RefreshJobList();
-		if (job >= g_Centre.m_JobManager.JobFilterIndex[JOBFILTER_DRUGCENTRE] && job < g_Centre.m_JobManager.JobFilterIndex[JOBFILTER_DRUGCENTRE + 1])
-			SetSelectedItemInList(jobtypelist_id, JOBFILTER_DRUGCENTRE);
+		if (job >= g_Centre.m_JobManager.JobFilterIndex[JOBFILTER_COUNSELINGCENTRE] && job < g_Centre.m_JobManager.JobFilterIndex[JOBFILTER_COUNSELINGCENTRE + 1])
+			SetSelectedItemInList(jobtypelist_id, JOBFILTER_COUNSELINGCENTRE);
 		else SetSelectedItemInList(jobtypelist_id, JOBFILTER_COMMUNITYCENTRE);
 		HideButton(day_id, false);
 		HideButton(night_id, false);
@@ -362,7 +362,7 @@ void cScreenGirlDetails::init()
 	}
 
 	ClearListBox(traitlist_id);
-	for (int i = 0; i < 30; i++)
+	for (int i = 0; i < MAXNUM_TRAITS; i++)
 	{
 		if (selected_girl->m_Traits[i])
 		{
@@ -789,6 +789,7 @@ void cScreenGirlDetails::check_events()
 	{
 		if (g_TalkCount > 0)
 		{
+			cConfig cfg;
 			DirPath dp;
 			eventrunning = true;
 			if (selected_girl->m_DayJob != JOB_INDUNGEON)
@@ -803,7 +804,10 @@ void cScreenGirlDetails::check_events()
 				else
 				{
 					// yes, so use that instead
-					dp = dp << "Resources" << "Characters" << selected_girl->m_Name << trig->m_Script;
+					if (cfg.folders.configXMLch())
+						dp = DirPath() << cfg.folders.characters() << selected_girl->m_Name << trig->m_Script;
+					else
+						dp = DirPath() << "Resources" << "Characters" << selected_girl->m_Name << trig->m_Script;
 				}
 			}
 			else
@@ -817,7 +821,10 @@ void cScreenGirlDetails::check_events()
 				}
 				else
 				{
-					dp = dp << "Resources" << "Characters" << selected_girl->m_Name << trig->m_Script;
+					if (cfg.folders.configXMLch())
+						dp = DirPath() << cfg.folders.characters() << selected_girl->m_Name << trig->m_Script;
+					else
+						dp = DirPath() << "Resources" << "Characters" << selected_girl->m_Name << trig->m_Script;
 				}
 			}
 			cScriptManager script_manager;

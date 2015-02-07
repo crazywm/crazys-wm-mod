@@ -214,8 +214,8 @@ const unsigned int JOB_CLEANCENTRE		= 59;	//
 // TODO ideas:Run a charity, with an option for the player to steal from charity (with possible bad outcome). Run schools/orphanages.. this should give a boost to the stats of new random girls, and possibly be a place to recruit new uniques.
 // Homeless shelter... once again a possible place to find new girls.
 // `J` Centre Job - Rehab
-const unsigned int JOBFILTER_DRUGCENTRE	= 10;
-const unsigned int JOB_DRUGCOUNSELOR	= 60;	// 	
+const unsigned int JOBFILTER_COUNSELINGCENTRE	= 10;
+const unsigned int JOB_COUNSELOR		= 60;	// 	
 const unsigned int JOB_REHAB			= 61;	// 	
 const unsigned int JOB_ANGER			= 62;	// 	
 const unsigned int JOB_EXTHERAPY		= 63;	// 	
@@ -470,7 +470,8 @@ const unsigned char ACTION_WORKREHAB		= 28;
 const unsigned char ACTION_WORKMAKEPOTIONS	= 29;
 const unsigned char ACTION_WORKMAKEITEMS	= 30;
 const unsigned char ACTION_WORKCOOKING		= 31;
-const unsigned char ACTION_GENERAL			= 32; // ACTION_GENERAL must be the last sction type
+const unsigned char ACTION_WORKTHERAPY		= 32;
+const unsigned char ACTION_GENERAL			= 33; // ACTION_GENERAL must be the last sction type
 
 const unsigned char NUM_ACTIONTYPES = ACTION_GENERAL + 1;
 

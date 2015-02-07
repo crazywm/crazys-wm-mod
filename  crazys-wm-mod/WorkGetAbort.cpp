@@ -1,21 +1,21 @@
 /*
- * Copyright 2009, 2010, The Pink Petal Development Team.
- * The Pink Petal Devloment Team are defined as the game's coders 
- * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright 2009, 2010, The Pink Petal Development Team.
+* The Pink Petal Devloment Team are defined as the game's coders
+* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 #include "cJobManager.h"
 #include "cBrothel.h"
 #include "cClinic.h"
@@ -45,36 +45,30 @@ extern cMessageQue g_MessageQue;
 // `J` Clinic Job - Surgery
 bool cJobManager::WorkGetAbort(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-	stringstream ss;
-	int msgtype = Day0Night1;
+	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
+	// if she was not in surgery last turn, reset working days to 0 before proceding
+	if (girl->m_YesterDayJob != JOB_GETABORT) { girl->m_WorkingDay = girl->m_PrevWorkingDay = 0; }
 
-	if (girl->m_YesterDayJob != JOB_GETABORT)	// if she was not in surgery yesterday, 
+	if (!girl->is_pregnant())
 	{
-		girl->m_WorkingDay = 0;				// rest working days to 0 before proceding
-		girl->m_PrevWorkingDay = 0;
+		ss << " is not pregant so she was sent to the waiting room.";
+		if (Day0Night1 == SHIFT_DAY)	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+		girl->m_PrevDayJob = girl->m_PrevNightJob = girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
+		girl->m_WorkingDay = girl->m_PrevWorkingDay = 0;
+		return false;	// not refusing
 	}
 
-
-	// not for patient
-	g_Girls.UnequipCombat(girl);
-
-	bool hasDoctor = false;
-	if (g_Clinic.GetNumGirlsOnJob(brothel->m_id, JOB_DOCTOR, true) > 0 || g_Clinic.GetNumGirlsOnJob(brothel->m_id, JOB_DOCTOR, false) > 0)
-		hasDoctor = true;
-
+	bool hasDoctor = (g_Clinic.GetNumGirlsOnJob(brothel->m_id, JOB_DOCTOR, true) > 0 || g_Clinic.GetNumGirlsOnJob(brothel->m_id, JOB_DOCTOR, false) > 0);
 	if (!hasDoctor)
 	{
-		ss << girl->m_Realname + gettext(" does nothing. You don't have any Doctors working. (require 1) ");
+		ss << " does nothing. You don't have any Doctors working. (require 1) ";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
 		return false;	// not refusing
 	}
-	if (!girl->is_pregnant())
-	{
-		ss << girl->m_Realname + gettext(" is not pregant so she was sent to the waiting room.");
-		if (Day0Night1 == SHIFT_DAY)	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
-		girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
-		return false;	// not refusing
-	}
+	ss << " is in the Clinic to get an abortion.\n\n";
+
+	int msgtype = Day0Night1;
+	g_Girls.UnequipCombat(girl);	// not for patient
 
 	if (Day0Night1 == SHIFT_DAY)	// the Doctor works on her durring the day
 	{
@@ -86,6 +80,7 @@ bool cJobManager::WorkGetAbort(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		{
 			girl->m_WorkingDay++;
 			g_Girls.UpdateStat(girl, STAT_MANA, 10);
+
 		}
 	}
 
@@ -95,13 +90,13 @@ bool cJobManager::WorkGetAbort(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	{
 		ss << "The girl had an abortion.\n";
 		msgtype = EVENT_GOODNEWS;
-// `J` first set the base stat modifiers
+		// `J` first set the base stat modifiers
 		int happy = -10, health = -20, mana = -20, spirit = -5, love = -5, hate = 5;
 
 		if (numnurse > 0)
 		{
 			ss << "The Nurse tried to keep her healthy and happy during her recovery.\n";
-// `J` then adjust if a nurse helps her through it
+			// `J` then adjust if a nurse helps her through it
 			happy += 10;	health += 10;	mana += 10;	spirit += 5;	love += 1;	hate -= 1;
 		}
 		else
@@ -109,7 +104,7 @@ bool cJobManager::WorkGetAbort(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			ss << "She is sad and has lost some health during the operation.\n";
 		}
 
-// `J` next, check traits
+		// `J` next, check traits
 		if (g_Girls.HasTrait(girl, "Pessimist"))	// natural adj
 		{
 			happy -= 5;		health += 0;	mana += 0;	spirit -= 1;	love += 0;	hate += 0;
@@ -168,7 +163,7 @@ bool cJobManager::WorkGetAbort(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		}
 
 
-// `J` finally see what type of pregnancy it is and get her reaction to the abortion.
+		// `J` finally see what type of pregnancy it is and get her reaction to the abortion.
 		if (girl->m_States & (1 << STATUS_PREGNANT))
 		{
 			if (happy < -50)
@@ -207,7 +202,7 @@ bool cJobManager::WorkGetAbort(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		}
 		else if (girl->m_States & (1 << STATUS_PREGNANT_BY_PLAYER))
 		{
-// `J` adjust her happiness by her hate-love for you
+			// `J` adjust her happiness by her hate-love for you
 			happy += int(((g_Girls.GetStat(girl, STAT_PCHATE) + hate) - (g_Girls.GetStat(girl, STAT_PCLOVE) + love)) / 2);
 			if (happy < -50)
 			{
@@ -245,7 +240,7 @@ bool cJobManager::WorkGetAbort(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		}
 		else if (girl->m_States & (1 << STATUS_INSEMINATED))
 		{
-// `J` Some traits would react diferently to non-human pregnancys.
+			// `J` Some traits would react diferently to non-human pregnancys.
 			if (g_Girls.HasTrait(girl, "Adventurer"))	// "It could have been interesting to see what became of that."
 			{
 				happy -= 2;		health += 0;	mana += 0;	spirit += 0;	love += 0;	hate += 0;
@@ -313,7 +308,7 @@ bool cJobManager::WorkGetAbort(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				girl->add_trait("Optimist", false);
 			}
 		}
-// `J` now apply all the stat changes and finalize the transaction
+		// `J` now apply all the stat changes and finalize the transaction
 		g_Girls.UpdateStat(girl, STAT_HAPPINESS, happy);
 		g_Girls.UpdateStat(girl, STAT_HEALTH, health);
 		g_Girls.UpdateStat(girl, STAT_MANA, mana);
@@ -344,4 +339,17 @@ bool cJobManager::WorkGetAbort(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 
 	return false;
+}
+
+double cJobManager::JP_GetAbort(sGirl* girl, bool estimate)
+{
+	double jobperformance = 0.0;
+	if (estimate)	// for third detail string - how much do they need this?
+	{
+		if (!girl->is_pregnant())			return -1000;	// X - not needed
+		if (girl->carrying_players_child())	return 0;		// E - its your's
+		if (girl->carrying_monster())		return 150;		// B - Beast
+		return 100;											// C - customer's child
+	}
+	return jobperformance;
 }

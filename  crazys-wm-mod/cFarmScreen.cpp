@@ -99,7 +99,7 @@ void cFarmScreen::process()
 	*	if it's the back button, pop the window off the stack
 	*	and we're done
 	*/
-	if (g_InterfaceEvents.CheckButton(back_id)) 
+	if (g_InterfaceEvents.CheckButton(back_id))
 	{
 		g_InitWin = true;
 		g_WinManager.Pop();
@@ -145,7 +145,11 @@ void cFarmScreen::process()
 	else if (g_InterfaceEvents.CheckButton(weeks_id))
 	{
 		g_InitWin = true;
-		SaveGameXML(DirPath() << "Saves" << "autosave.gam");
+		cConfig cfg;
+		if (cfg.folders.configXMLsa())
+			SaveGameXML(DirPath() << cfg.folders.saves() << "autosave.gam");
+		else
+			SaveGameXML(DirPath() << "Saves" << "autosave.gam");
 		NextWeek();
 		g_WinManager.Push(Turnsummary, &g_Turnsummary);
 		return;

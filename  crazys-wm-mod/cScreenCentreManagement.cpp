@@ -181,7 +181,7 @@ void cScreenCentreManagement::init()
 	// add the job filters
 	//	for(int i=0; i<NUMJOBTYPES; i++)  // loop through all job types
 	AddToListBox(jobtypelist_id, JOBFILTER_COMMUNITYCENTRE, g_Centre.m_JobManager.JobFilterName[JOBFILTER_COMMUNITYCENTRE]);
-	AddToListBox(jobtypelist_id, JOBFILTER_DRUGCENTRE, g_Centre.m_JobManager.JobFilterName[JOBFILTER_DRUGCENTRE]);
+	AddToListBox(jobtypelist_id, JOBFILTER_COUNSELINGCENTRE, g_Centre.m_JobManager.JobFilterName[JOBFILTER_COUNSELINGCENTRE]);
 	RefreshJobList();
 	SetSelectedItemInList(jobtypelist_id, JOBFILTER_COMMUNITYCENTRE);
 
@@ -361,12 +361,12 @@ void cScreenCentreManagement::check_events()
 			RefreshJobList();
 			string jdmessage = g_Centre.m_JobManager.JobFilterDesc[selection];
 
-			if ((g_Centre.GetNumGirlsOnJob(g_CurrCentre, JOB_DRUGCOUNSELOR, 0) < 1 &&
-				g_Centre.GetNumGirlsOnJob(g_CurrCentre, JOB_REHAB, 0) > 0) ||
-				(g_Centre.GetNumGirlsOnJob(g_CurrCentre, JOB_DRUGCOUNSELOR, 1) < 1 &&
-				g_Centre.GetNumGirlsOnJob(g_CurrCentre, JOB_REHAB, 1) > 0))
+			if ((g_Centre.GetNumGirlsOnJob(g_CurrCentre, JOB_COUNSELOR, 0) < 1 &&
+				g_Centre.GetNumberPatients(0) > 0) ||
+				(g_Centre.GetNumGirlsOnJob(g_CurrCentre, JOB_COUNSELOR, 1) < 1 &&
+				g_Centre.GetNumberPatients(1) > 0))
 			{
-				jdmessage += gettext("\n*** A Drug Counselor is required to guide Rehab. ");
+				jdmessage += gettext("\n*** A Counselor is required to guide Rehab and Therapy patients. ");
 			}
 			EditTextItem(jdmessage, jobtypedesc_id);
 		}
@@ -536,8 +536,8 @@ void cScreenCentreManagement::RefreshSelectedJobType()
 	selected_girl = g_Centre.GetGirl(g_CurrCentre, selection);
 	u_int job = (Day0Night1 == SHIFT_DAY ? selected_girl->m_DayJob : selected_girl->m_NightJob);
 	// set the job filter
-	if (job >= g_Centre.m_JobManager.JobFilterIndex[JOBFILTER_DRUGCENTRE] && job < g_Centre.m_JobManager.JobFilterIndex[JOBFILTER_DRUGCENTRE + 1])
-		SetSelectedItemInList(jobtypelist_id, JOBFILTER_DRUGCENTRE);
+	if (job >= g_Centre.m_JobManager.JobFilterIndex[JOBFILTER_COUNSELINGCENTRE] && job < g_Centre.m_JobManager.JobFilterIndex[JOBFILTER_COUNSELINGCENTRE + 1])
+		SetSelectedItemInList(jobtypelist_id, JOBFILTER_COUNSELINGCENTRE);
 	else SetSelectedItemInList(jobtypelist_id, JOBFILTER_COMMUNITYCENTRE);
 	SetJob = true;
 }

@@ -95,7 +95,16 @@ typedef struct sRandomGirl
 	sTrait* m_Traits[MAXNUM_TRAITS];		// List of traits they may start with
 	int m_TraitChance[MAXNUM_TRAITS];		// the percentage change for each trait
 	int m_TraitChanceB[200];
-	string m_TraitNames[200];		// `J` fix for more than MAXNUM_TRAITS in .rgirlsx files
+	string m_TraitNames[200];				// `J` fix for more than MAXNUM_TRAITS in .rgirlsx files
+
+	// `J` added starting items for random girls
+	int m_NumItems;
+	int m_NumItemNames;
+	sInventoryItem* m_Inventory[MAXNUM_INVENTORY];
+	int m_ItemChance[MAXNUM_GIRL_INVENTORY];
+	int m_ItemChanceB[200];
+	string m_ItemNames[200];				
+
 
 	int m_MinMoney = 0;	// min and max money they can start with
 	int m_MaxMoney = 0;
@@ -115,6 +124,7 @@ typedef struct sRandomGirl
 	*/
 	void load_from_xml(TiXmlElement*);	// uses sRandomGirl::load_from_xml
 	void process_trait_xml(TiXmlElement*);
+	void process_item_xml(TiXmlElement*);
 	void process_stat_xml(TiXmlElement*);
 	void process_skill_xml(TiXmlElement*);
 	void process_cash_xml(TiXmlElement*);
@@ -664,6 +674,7 @@ struct sGirl
 
 
 	int rebel();
+	string JobRatingLetter(double value);
 	string JobRatingLetter(int value);
 	/*
 	*	notice that if we do tweak get_stat to reference the stats array
@@ -914,15 +925,17 @@ public:
 	int GetStat(sGirl* girl, int stat);
 	void SetStat(sGirl* girl, int stat, int amount);
 	void UpdateStat(sGirl* girl, int stat, int amount, bool usetraits = true);	// updates a stat
-	void UpdateStatMod(sGirl* girl, int stat, int amount, bool usetraits = true);	// updates a stat
+	void UpdateStatMod(sGirl* girl, int stat, int amount, bool usetraits = true);	// updates a statmod usually from items
 	void UpdateTempStat(sGirl* girl, int stat, int amount, bool usetraits = true);	// updates a stat temporarily
+	void UpdateStatTr(sGirl* girl, int stat, int amount, bool usetraits = true);	// updates a statTr from traits
 
 	int GetSkill(sGirl* girl, int skill);
 	void SetSkill(sGirl* girl, int skill, int amount);
 	void SetSkillMod(sGirl* girl, int skill, int amount);
-	void UpdateSkill(sGirl* girl, int skill, int amount);	// updates a skill
-	void UpdateSkillMod(sGirl* girl, int skill, int amount);	// updates a skillmods
+	void UpdateSkill(sGirl* girl, int skill, int amount);		// updates a skill
+	void UpdateSkillMod(sGirl* girl, int skill, int amount);	// updates a skillmods usually from items
 	void UpdateTempSkill(sGirl* girl, int skill, int amount);	// updates a skill temporarily
+	void UpdateSkillTr(sGirl* girl, int skill, int amount);		// updates a skillTr from traits
 
 	double GetAveragOfAllSkills(sGirl* girl);	// `J` added
 	double GetAveragOfSexSkills(sGirl* girl);	// `J` added
@@ -946,9 +959,9 @@ public:
 	// `J` When adding new traits, search for "J-Add-New-Traits"  :  found in >> cGirls.h > AdjustTraitGroup
 
 	// `J` adding these to allow single step adjustment of linked traits
-	bool AdjustTraitGroupGagReflex(sGirl* girl, int steps, bool showmessage = false, bool Day0Night1 = false);
-	bool AdjustTraitGroupBreastSize(sGirl* girl, int steps, bool showmessage = false, bool Day0Night1 = false);
-
+	string AdjustTraitGroupGagReflex(sGirl* girl, int steps, bool showmessage = false, bool Day0Night1 = false);
+	string AdjustTraitGroupBreastSize(sGirl* girl, int steps, bool showmessage = false, bool Day0Night1 = false);
+	string AdjustTraitGroupFertility(sGirl* girl, int steps, bool showmessage = false, bool Day0Night1 = false);
 
 
 	void UpdateEnjoyment(sGirl* girl, int whatSheEnjoys, int amount, bool wrapTo100 = false); //updates what she enjoys

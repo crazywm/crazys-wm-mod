@@ -1,21 +1,21 @@
 /*
- * Copyright 2009, 2010, The Pink Petal Development Team.
- * The Pink Petal Devloment Team are defined as the game's coders 
- * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright 2009, 2010, The Pink Petal Development Team.
+* The Pink Petal Devloment Team are defined as the game's coders
+* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 #include "cBrothel.h"
 #include "cArena.h"
 #include "cArenaTry.h"
@@ -51,10 +51,10 @@ bool cArenaTry::ids_set = false;
 void cArenaTry::set_ids()
 {
 	ids_set = true;
-	back_id =		get_id("BackButton");
-	walk_id =		get_id("WalkButton");
-	curbrothel_id =	get_id("CurrentBrothel");
-	arena_id =		get_id("Arena");
+	back_id = get_id("BackButton");
+	walk_id = get_id("WalkButton");
+	curbrothel_id = get_id("CurrentBrothel");
+	arena_id = get_id("Arena");
 }
 
 void cArenaTry::init()
@@ -70,11 +70,11 @@ void cArenaTry::process()
 	if (g_InterfaceEvents.GetNumEvents() == 0) return;	// no events means we can go home
 
 	/*
-	 *	otherwise, compare event IDs
-	 *
-	 *	if it's the back button, pop the window off the stack
-	 *	and we're done
-	 */
+	*	otherwise, compare event IDs
+	*
+	*	if it's the back button, pop the window off the stack
+	*	and we're done
+	*/
 	if (g_InterfaceEvents.CheckButton(back_id))
 	{
 		g_InitWin = true;
@@ -91,14 +91,14 @@ void cArenaTry::process()
 
 string cArenaTry::walk_no_luck()
 {
-	if(m_first_walk) {
+	if (m_first_walk) {
 		m_first_walk = false;
 		return	"Your father once called this 'talent spotting' - "
 			"and looking these girls over you see no talent for "
 			"anything."
-		;
+			;
 	}
-	switch(g_Dice % 8) {
+	switch (g_Dice % 8) {
 	case 0:
 	case 1:
 	case 2: return
@@ -139,9 +139,9 @@ string cArenaTry::walk_no_luck()
 		"today. Maybe tomorrow will be better."
 		;
 	}
-/*
- *	I don't think this should happen, hence the overly dramatic prose
- */
+	/*
+	*	I don't think this should happen, hence the overly dramatic prose
+	*/
 	return	"The sky is filled with thunder, and portals are opening all "
 		"over Crossgate. You've seen five rains of frogs so far and "
 		"three madmen speaking in tongues. In the marketplace a "
@@ -152,32 +152,32 @@ string cArenaTry::walk_no_luck()
 		"otherwordly species of carnivorous plant, and had to be "
 		"destroyed by the town guard. The only good thing about this "
 		"day is that it's over. It's time to go home."
-	;
+		;
 }
 
 void cArenaTry::do_walk()
 {
-	if (g_TryOuts) 
+	if (g_TryOuts)
 	{
 		g_MessageQue.AddToQue("You can only do this once per week.", COLOR_RED);
 		return;
 	}
 	/*
-	 *	let's get a girl for the player to meet
-	 */
+	*	let's get a girl for the player to meet
+	*/
 	sGirl *girl = g_Girls.GetRandomGirl(false, false, true);
 	/*
-	 *	if there's no girl, no meeting
-	 */
-	if (girl == 0) 
+	*	if there's no girl, no meeting
+	*/
+	if (girl == 0)
 	{
 		g_MessageQue.AddToQue(walk_no_luck(), COLOR_RED);
 		return;
 	}
 	/*
-	 *	most of the time, you're not going to find anyone
-	 *	unless you're cheating, of course.
-	 */
+	*	most of the time, you're not going to find anyone
+	*	unless you're cheating, of course.
+	*/
 	cConfig cfg;
 	int meet_chance = cfg.initial.girl_meet();
 	if (!g_Dice.percent(meet_chance) && !g_Cheats)
@@ -186,10 +186,10 @@ void cArenaTry::do_walk()
 		return;
 	}
 	/*
-	 *	I'd like to move this to the handler script
-	 *
-	 *	once scripts are stable
-	 */
+	*	I'd like to move this to the handler script
+	*
+	*	once scripts are stable
+	*/
 	string message = "You hold open try outs to all girls willing to step into the arena and fight for their life.";
 	g_MessageQue.AddToQue(message, COLOR_BLUE);
 	int v[2] = { 3, -1 };
@@ -199,8 +199,8 @@ void cArenaTry::do_walk()
 	string filename;
 	cScriptManager sm;
 	/*
-	 *	is there a girl specific talk script?
-	 */
+	*	is there a girl specific talk script?
+	*/
 	if (!(trig = girl->m_Triggers.CheckForScript(TRIGGER_MEET, false, v)))
 	{
 		// no, so trigger the default one
@@ -209,11 +209,13 @@ void cArenaTry::do_walk()
 	else
 	{
 		// trigger the girl-specific one
-		dp = DirPath() << "Resources" << "Characters" << girl->m_Name << trig->m_Script;
+		cConfig cfg;
+		if (cfg.folders.configXMLch())
+			dp = DirPath() << cfg.folders.characters() << girl->m_Name << trig->m_Script;
+		else
+			dp = DirPath() << "Resources" << "Characters" << girl->m_Name << trig->m_Script;
 	}
 	eventrunning = true;
 	sm.Load(dp, girl);
 	return;
 }
-
-

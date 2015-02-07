@@ -59,7 +59,8 @@ public:
 	//static vector<sJobBase *> job_list; - Changed until it is working - necro
 	// using an array of function pointers
 //	WorkJobF JobFunc[NUM_JOBS];
-	bool (*JobFunc[NUM_JOBS])(sGirl*,sBrothel*,bool,string&);
+	bool	(*JobFunc[NUM_JOBS])(sGirl*, sBrothel*, bool, string&);
+	double	(*JobPerf[NUM_JOBS])(sGirl*, bool estimate);			// `J` a replacement for job performance - work in progress
 
 	string JobName[NUM_JOBS];  // short descriptive name of job
 	string JobDesc[NUM_JOBS];  // longer description of job
@@ -75,144 +76,242 @@ public:
 	static bool WorkVoid(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);	// used for jobs that are not yet implemented
 
 	// - General
-	static bool WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);	// resting
 	static bool AddictBuysDrugs(string Addiction, string Drug, sGirl* girl, sBrothel* brothel, bool Day0Night1);
-
+	static bool WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);	// resting
+	static double JP_Freetime(sGirl* girl, bool estimate);	// not used
 	static bool WorkTraining(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_Training(sGirl* girl, bool estimate);	// not used
 	static bool WorkCleaning(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_Cleaning(sGirl* girl, bool estimate);
 	static bool WorkSecurity(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static bool WorkMatron(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_Security(sGirl* girl, bool estimate);
 	static bool WorkAdvertising(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_Advertising(sGirl* girl, bool estimate);
 	static bool WorkCustService(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_CustService(sGirl* girl, bool estimate);
+	static bool WorkMatron(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_Matron(sGirl* girl, bool estimate);
 	static bool WorkTorturer(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_Torturer(sGirl* girl, bool estimate);
 	static bool WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static bool WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_ExploreCatacombs(sGirl* girl, bool estimate);
 	static bool WorkBeastCare(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static bool WorkRecruiter(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-
+	static double JP_BeastCare(sGirl* girl, bool estimate);
 	// - Bar
-	static bool WorkBar(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
 	static bool WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_Barmaid(sGirl* girl, bool estimate);
 	static bool WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_BarWaitress(sGirl* girl, bool estimate);
 	static bool WorkBarSinger(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_BarSinger(sGirl* girl, bool estimate);
 	static bool WorkBarPiano(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_BarPiano(sGirl* girl, bool estimate);
 	static bool WorkEscort(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-
+	static double JP_Escort(sGirl* girl, bool estimate);
+	// - Gambling Hall
+	static bool WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_HallDealer(sGirl* girl, bool estimate);
+	static bool WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_HallEntertainer(sGirl* girl, bool estimate);
+	static bool WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_HallXXXEntertainer(sGirl* girl, bool estimate);
+	static bool WorkHallWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_HallWhore(sGirl* girl, bool estimate);
 	// - Sleazy Bar
 	static bool WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_SleazyBarmaid(sGirl* girl, bool estimate);
 	static bool WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_SleazyWaitress(sGirl* girl, bool estimate);
 	static bool WorkBarStripper(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_BarStripper(sGirl* girl, bool estimate);
 	static bool WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-
-	// - Gambling Hall
-	static bool WorkHall(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static bool WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static bool WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static bool WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static bool WorkHallWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static bool WorkShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-
+	static double JP_BarWhore(sGirl* girl, bool estimate);
 	// - Brothel
-	static bool WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static bool WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
 	static bool WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_BrothelMasseuse(sGirl* girl, bool estimate);
+	static bool WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_BrothelStripper(sGirl* girl, bool estimate);
 	static bool WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_PeepShow(sGirl* girl, bool estimate);
+	static bool WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_Whore(sGirl* girl, bool estimate);
 
-	//- Stables
-	static bool WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-
-	// - Farm Staff
-	static bool WorkFarmManager(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static bool WorkFarmHand(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static bool WorkFarmVeterinarian(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static bool WorkFarmResearch(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static bool WorkFarmMarketer(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-
-	// - Clinic
-	static bool WorkDoctor(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static bool WorkHealing(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static bool WorkGetAbort(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static bool WorkPhysicalSurgery(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static bool WorkRepairShop(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static bool WorkNurse(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static bool WorkMechanic(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static bool WorkChairMan(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static bool WorkJanitor(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static bool WorkIntern(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static bool WorkBreastReduction(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static bool WorkLiposuction(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static bool WorkBoobJob(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static bool WorkGetVaginalRejuvenation(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static bool WorkGetFacelift(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static bool WorkGetAssJob(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static bool WorkGetTubesTied(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static bool WorkGetFertility(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-
-	// - Movie Studio
-	static bool WorkFluffer(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static bool WorkFilmSex(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	// - Movie Studio - Actress
 	static bool WorkFilmBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static bool WorkFilmGroup(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_FilmBeast(sGirl* girl, bool estimate);
+	static bool WorkFilmSex(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_FilmSex(sGirl* girl, bool estimate);
 	static bool WorkFilmAnal(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_FilmAnal(sGirl* girl, bool estimate);
 	static bool WorkFilmLesbian(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_FilmLesbian(sGirl* girl, bool estimate);
 	static bool WorkFilmBondage(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_FilmBondage(sGirl* girl, bool estimate);
+	static bool WorkFilmGroup(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_FilmGroup(sGirl* girl, bool estimate);
 	static bool WorkFilmOral(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_FilmOral(sGirl* girl, bool estimate);
 	static bool WorkFilmMast(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_FilmMast(sGirl* girl, bool estimate);
 	static bool WorkFilmTitty(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_FilmTitty(sGirl* girl, bool estimate);
 	static bool WorkFilmStrip(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_FilmStrip(sGirl* girl, bool estimate);
 	static bool WorkFilmHandJob(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_FilmHandJob(sGirl* girl, bool estimate);
 	static bool WorkFilmFootJob(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_FilmFootJob(sGirl* girl, bool estimate);
 	static bool WorkFilmRandom(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static bool WorkCameraMage(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static bool WorkCrystalPurifier(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_FilmRandom(sGirl* girl, bool estimate);
+	// - Movie Studio - Crew
 	static bool WorkFilmDirector(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_FilmDirector(sGirl* girl, bool estimate);
 	static bool WorkFilmPromoter(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_FilmPromoter(sGirl* girl, bool estimate);
+	static bool WorkCameraMage(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_CameraMage(sGirl* girl, bool estimate);
+	static bool WorkCrystalPurifier(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_CrystalPurifier(sGirl* girl, bool estimate);
+	static bool WorkFluffer(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_Fluffer(sGirl* girl, bool estimate);
 	static bool WorkFilmStagehand(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_FilmStagehand(sGirl* girl, bool estimate);
 
-	//- Arena
+	// - Arena - Fighting
 	static bool WorkFightBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_FightBeast(sGirl* girl, bool estimate);
 	static bool WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_FightArenaGirls(sGirl* girl, bool estimate);
 	static bool WorkCombatTraining(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static bool WorkDoctore(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static bool WorkCleanArena(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static bool WorkCityGuard(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_CombatTraining(sGirl* girl, bool estimate);
 	static bool WorkArenaJousting(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_ArenaJousting(sGirl* girl, bool estimate);
 	static bool WorkArenaRacing(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_ArenaRacing(sGirl* girl, bool estimate);
+	// - Arena - Staff
+	static bool WorkDoctore(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_Doctore(sGirl* girl, bool estimate);
+	static bool WorkCityGuard(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_CityGuard(sGirl* girl, bool estimate);
+	static bool WorkCleanArena(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_CleanArena(sGirl* girl, bool estimate);
 
 	//Comunity Centre
-	static bool WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static bool WorkMakeItem(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static bool WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
 	static bool WorkCentreManager(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_CentreManager(sGirl* girl, bool estimate);
+	static bool WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_FeedPoor(sGirl* girl, bool estimate);
+	static bool WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_ComunityService(sGirl* girl, bool estimate);
 	static bool WorkCleanCentre(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-
-	//drug Centre
-	static bool WorkDrugCounselor(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_CleanCentre(sGirl* girl, bool estimate);
+	// Counseling Centre
+	static bool WorkCounselor(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_Counselor(sGirl* girl, bool estimate);
 	static bool WorkRehab(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_Rehab(sGirl* girl, bool estimate);
 	static bool WorkCentreAngerManagement(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_CentreAngerManagement(sGirl* girl, bool estimate);
 	static bool WorkCentreExTherapy(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_CentreExTherapy(sGirl* girl, bool estimate);
 	static bool WorkCentreTherapy(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_CentreTherapy(sGirl* girl, bool estimate);
+
+	// - Clinic - Surgery
+	static bool WorkHealing(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_Healing(sGirl* girl, bool estimate);
+	static bool WorkRepairShop(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_RepairShop(sGirl* girl, bool estimate);
+	static bool WorkGetAbort(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_GetAbort(sGirl* girl, bool estimate);
+	static bool WorkPhysicalSurgery(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_PhysicalSurgery(sGirl* girl, bool estimate);
+	static bool WorkLiposuction(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_Liposuction(sGirl* girl, bool estimate);
+	static bool WorkBreastReduction(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_BreastReduction(sGirl* girl, bool estimate);
+	static bool WorkBoobJob(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_BoobJob(sGirl* girl, bool estimate);
+	static bool WorkGetVaginalRejuvenation(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_GetVaginalRejuvenation(sGirl* girl, bool estimate);
+	static bool WorkGetFacelift(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_GetFacelift(sGirl* girl, bool estimate);
+	static bool WorkGetAssJob(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_GetAssJob(sGirl* girl, bool estimate);
+	static bool WorkGetTubesTied(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_GetTubesTied(sGirl* girl, bool estimate);
+	static bool WorkGetFertility(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_GetFertility(sGirl* girl, bool estimate);
+	// - Clinic - Staff
+	static bool WorkChairMan(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_ChairMan(sGirl* girl, bool estimate);
+	static bool WorkDoctor(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_Doctor(sGirl* girl, bool estimate);
+	static bool WorkNurse(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_Nurse(sGirl* girl, bool estimate);
+	static bool WorkMechanic(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_Mechanic(sGirl* girl, bool estimate);
+	static bool WorkIntern(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_Intern(sGirl* girl, bool estimate);
+	static bool WorkJanitor(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_Janitor(sGirl* girl, bool estimate);
+
+	// - Farm - Staff
+	static bool WorkFarmManager(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_FarmManager(sGirl* girl, bool estimate);
+	static bool WorkFarmVeterinarian(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_FarmVeterinarian(sGirl* girl, bool estimate);
+	static bool WorkFarmMarketer(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_FarmMarketer(sGirl* girl, bool estimate);
+	static bool WorkFarmResearch(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_FarmResearch(sGirl* girl, bool estimate);
+	static bool WorkFarmHand(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_FarmHand(sGirl* girl, bool estimate);
+	// - Farm - Laborers
+	static bool WorkFarmer(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_Farmer(sGirl* girl, bool estimate);
+	static bool WorkGardener(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_Gardener(sGirl* girl, bool estimate);
+	static bool WorkSheapherd(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_Sheapherd(sGirl* girl, bool estimate);
+	static bool WorkRancher(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_Rancher(sGirl* girl, bool estimate);
+	static bool WorkCatacombRancher(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_CatacombRancher(sGirl* girl, bool estimate);
+	static bool WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_BeastCapture(sGirl* girl, bool estimate);
+	static bool WorkMilker(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_Milker(sGirl* girl, bool estimate);
+	static bool WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_Milk(sGirl* girl, bool estimate);
+	// - Farm - Producers
+	static bool WorkButcher(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_Butcher(sGirl* girl, bool estimate);
+	static bool WorkBaker(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_Baker(sGirl* girl, bool estimate);
+	static bool WorkBrewer(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_Brewer(sGirl* girl, bool estimate);
+	static bool WorkMakeItem(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_MakeItem(sGirl* girl, bool estimate);
+	static bool WorkMakePotions(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_MakePotions(sGirl* girl, bool estimate);
 
 	// house
-	static bool WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static bool WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static bool WorkCleanHouse(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
 	static bool WorkHeadGirl(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_HeadGirl(sGirl* girl, bool estimate);
+	static bool WorkRecruiter(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_Recruiter(sGirl* girl, bool estimate);
+	static bool WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_PersonalTraining(sGirl* girl, bool estimate);
+	static bool WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_PersonalBedWarmer(sGirl* girl, bool estimate);
+	static bool WorkCleanHouse(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_CleanHouse(sGirl* girl, bool estimate);
 	static bool WorkHouseVacation(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_HouseVacation(sGirl* girl, bool estimate);
 
-	// laborers
-	static bool WorkGardener(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static bool WorkFarmer(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static bool WorkSheapherd(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static bool WorkRancher(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static bool WorkCatacombRancher(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static bool WorkMilker(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
 
-	// Producers
-	static bool WorkButcher(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static bool WorkBaker(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static bool WorkBrewer(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static bool WorkMakePotions(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+
 
 	// - stuff that does processing for jobs
 

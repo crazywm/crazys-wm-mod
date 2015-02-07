@@ -184,7 +184,7 @@ string* ownerdata(sDungeonGirl* girl)
 	return data;
 }
 
-void cScreenItemManagement::init()
+void cScreenItemManagement::init()	// `J` bookmark
 {
 	g_CurrentScreen = SCREEN_INVENTORY;
 	if (!g_InitWin) return;

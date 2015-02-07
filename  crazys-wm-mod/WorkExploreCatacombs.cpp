@@ -1,21 +1,21 @@
 /*
- * Copyright 2009, 2010, The Pink Petal Development Team.
- * The Pink Petal Devloment Team are defined as the game's coders 
- * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright 2009, 2010, The Pink Petal Development Team.
+* The Pink Petal Devloment Team are defined as the game's coders
+* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 #include "cJobManager.h"
 #include "cBrothel.h"
 #include "cCustomers.h"
@@ -44,16 +44,25 @@ extern cJobManager m_JobManager;
 // `J` Brothel Job - General
 bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-	stringstream ss;
-	if (Preprocessing(ACTION_COMBAT, girl, brothel, Day0Night1, summary, ss.str())) return true;
+	int actiontype = ACTION_COMBAT;
+	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
+	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))
+	{
+		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
+		return true;
+	}
+	ss << " went into the catacombs to see what she can find.\n\n";
+
 	// determine if they fight any monsters
 	if (!g_Dice.percent(max(girl->combat(), girl->magic())))	// WD:	Allow best of Combat or Magic skill 
 	{
-		girl->m_Events.AddMessage("Nobody wants to play with her today in the catacombs :(", IMGTYPE_COMBAT, Day0Night1);
+		ss << "Nobody wants to play with her today in the catacombs :(";
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_COMBAT, Day0Night1);
 		return false;
 	}
 
-	int num_monsters = max(1,(g_Dice % 6) - 1);
+	int num_monsters = max(1, (g_Dice % 6) - 1);
 	int type_monster_girls = 0;
 	int type_unique_monster_girls = 0;
 	int type_beasts = 0;
@@ -174,7 +183,7 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 		g_Girls.UpdateStat(girl, STAT_SPIRIT, spirit);
 		g_Girls.GirlInjured(girl, injury);
 		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, sex, true);
-		g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, combat, true);
+		g_Girls.UpdateEnjoyment(girl, actiontype, combat, true);
 
 		return false;
 	}
@@ -232,7 +241,7 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 			if (type_unique_monster_girls + type_beasts == 0)
 				ss << ".";
 			else if (type_unique_monster_girls > 0 && type_beasts > 0)
-			ss << ",\n";
+				ss << ",\n";
 			else
 				ss << " and\n";
 		}
@@ -244,7 +253,7 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 			else
 				ss << " and\n";
 		}
-		if (type_beasts > 0) 
+		if (type_beasts > 0)
 			ss << type_beasts << " beast" << (type_beasts > 1 ? "s." : ".");
 		ss << "\n\n";
 	}
@@ -297,20 +306,42 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 	if (g_Girls.HasTrait(girl, "Lesbian"))				libido += type_monster_girls + type_unique_monster_girls;
 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_COMBAT, (g_Dice % skill)+1);
-	g_Girls.UpdateSkill(girl, SKILL_MAGIC,  (g_Dice % skill)+1);
+	g_Girls.UpdateSkill(girl, SKILL_COMBAT, (g_Dice % skill) + 1);
+	g_Girls.UpdateSkill(girl, SKILL_MAGIC, (g_Dice % skill) + 1);
 	g_Girls.UpdateStat(girl, STAT_AGILITY, g_Dice % skill);
 	g_Girls.UpdateStat(girl, STAT_CONSTITUTION, g_Dice % skill);
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
-	g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, (g_Dice % skill)+2, true);
+	g_Girls.UpdateEnjoyment(girl, actiontype, (g_Dice % skill) + 2, true);
 
 	// Myr: Turned trait gains into functions
-	g_Girls.PossiblyGainNewTrait(girl, "Tough", 30, ACTION_COMBAT, "She has become pretty Tough from all of the fights she's been in.", Day0Night1 == SHIFT_NIGHT);
-	g_Girls.PossiblyGainNewTrait(girl, "Adventurer", 40, ACTION_COMBAT, "She has been in enough tough spots to consider herself an Adventurer.", Day0Night1 == SHIFT_NIGHT);
-	g_Girls.PossiblyGainNewTrait(girl, "Aggressive", 60, ACTION_COMBAT, "She is getting rather Aggressive from her enjoyment of combat.", Day0Night1 == SHIFT_NIGHT);
+	g_Girls.PossiblyGainNewTrait(girl, "Tough", 30, actiontype, "She has become pretty Tough from all of the fights she's been in.", Day0Night1);
+	g_Girls.PossiblyGainNewTrait(girl, "Adventurer", 40, actiontype, "She has been in enough tough spots to consider herself an Adventurer.", Day0Night1);
+	g_Girls.PossiblyGainNewTrait(girl, "Aggressive", 60, actiontype, "She is getting rather Aggressive from her enjoyment of combat.", Day0Night1);
 
 	//lose traits
-	g_Girls.PossiblyLoseExistingTrait(girl, "Fragile", 75, ACTION_COMBAT, girl->m_Realname + " has had to heal from so many injuries you can't say she is fragile anymore.", Day0Night1 == SHIFT_NIGHT);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Fragile", 75, actiontype, girl->m_Realname + " has had to heal from so many injuries you can't say she is fragile anymore.", Day0Night1);
 
 	return false;
+}
+
+double cJobManager::JP_ExploreCatacombs(sGirl* girl, bool estimate)
+{
+	double jobperformance = 0.0;
+	if (estimate)	// for third detail string
+	{
+		jobperformance = girl->combat() +
+			girl->agility() / 3 +
+			girl->constitution() / 3 +
+			girl->magic() / 3;
+
+		if (g_Girls.HasTrait(girl, "Incorporeal")) jobperformance += 100;
+
+	}
+	else			// for the actual check		// not used
+	{
+
+	}
+
+
+	return jobperformance;
 }

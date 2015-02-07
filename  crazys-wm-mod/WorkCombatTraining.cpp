@@ -45,14 +45,21 @@ extern cGold g_Gold;
 // `J` Arena Job - Fighting
 bool cJobManager::WorkCombatTraining(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-	stringstream ss;
-	if (Preprocessing(ACTION_COMBAT, girl, brothel, Day0Night1, summary, ss.str())) return true;
+	int actiontype = ACTION_COMBAT;
+	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
+	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work 
+	{
+		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
+		return true;
+	}
+	ss << " trains for combat.\n\n";
+
 	cConfig cfg;
 	int wages = 0;
 	int dirtyloss = 0;
 	int roll_a, roll_b, roll_c;
 
-	ss << gettext("She trains in combat for the day.\n\n");
 
 	roll_a = g_Dice.d100(); //this is used to determine gain amount
 	int skill = 0;
@@ -329,4 +336,16 @@ Great Figure
 	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
 
 	return false;
+}
+
+double cJobManager::JP_CombatTraining(sGirl* girl, bool estimate)// not used
+{
+double jobperformance = 0.0;
+if (estimate)// for third detail string
+{
+}
+else// for the actual check
+{
+}
+return jobperformance;
 }

@@ -1,21 +1,21 @@
 /*
- * Copyright 2009, 2010, The Pink Petal Development Team.
- * The Pink Petal Devloment Team are defined as the game's coders 
- * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright 2009, 2010, The Pink Petal Development Team.
+* The Pink Petal Devloment Team are defined as the game's coders
+* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 #include "cJobManager.h"
 #include "cBrothel.h"
 #include "cCustomers.h"
@@ -43,62 +43,63 @@ extern cMessageQue g_MessageQue;
 // `J` Brothel Job - Sleazy Bar
 bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
+	int actiontype = ACTION_SEX;
 	// put that shit away, you'll scare off the customers!
 	g_Girls.UnequipCombat(girl);
 
 	/*
-	 *	WD:	Modified to fix customer service problems.. I hope :)
-	 *
-	 *	Change logic as original code is based on linked list of customers
-	 *	not random generation for each call to GetCustomer()
-	 *
-	 *	Pricing issues seem to be resolved with getting lots of money
-	 *	from customer that cant pay
-	 *
-	 *	The numbers I have added need to be tested
-	 *
-	 *	Limit number customers a girl can fuck to 10 max
-	 *
-	 *	Limit the number of customers a girl can see if they will
-	 *	fuck her from 5 to Max Customers * 2
-	 *
-	 *	Redid the code for deadbeat customers
-	 *
-	 *	% Chance of customers without any money getting service is
-	 *  percent(50 - INTELLIGENCE) / 5) where  20 < INTELLIGENCE < 100
-	 *	If caught will set deadbeat flag
-	 *
-	 *	GetCustomer() is generating a lot of poor customers changed
-	 *	code to add pay to customers funds instead of generating
-	 *	New customer.
-	 *
-	 *	% Chance of customer refusing to pay despite having funds is
-	 *	percent((40 - HAPPINESS) / 2) && percent(CONFIDENCE - 25)
-	 *	If caught by guards they will pay
-	 *
-	 *	Only decrement filthiness when service is performed in brothel
-	 *
-	 *	Street Work will not decrement number customers
-	 *  Street work will only service 66% number of customers
-	 *	Street Work will only generate 66% of brothel income
-	 *	Street Work Really needs its own NumCustomers() counter
-	 *
-	 *	Rival gangs can damage girls doing Street Work
-	 *  % Chance of destroying rival gang is depended on best of
-	 *	SKILL_COMBAT & SKILL_MAGIC / 5
-	 *
-	 *	Changed message for rival gangs attacking street girls to give
-	 *	EVENT_WARNING
-	 *
-	 *	GROUP sex code caculations now consolidated to one place
-	 *
-	 *  Fixed end of shift messages
-	 *
-	 *	Fame only to be done in GirlFucks()
-	 *
-	 *	Now Base Customer HAPPINESS = 60, code conslidated from 2 places in file
-	 *
-	 */
+	*	WD:	Modified to fix customer service problems.. I hope :)
+	*
+	*	Change logic as original code is based on linked list of customers
+	*	not random generation for each call to GetCustomer()
+	*
+	*	Pricing issues seem to be resolved with getting lots of money
+	*	from customer that cant pay
+	*
+	*	The numbers I have added need to be tested
+	*
+	*	Limit number customers a girl can fuck to 10 max
+	*
+	*	Limit the number of customers a girl can see if they will
+	*	fuck her from 5 to Max Customers * 2
+	*
+	*	Redid the code for deadbeat customers
+	*
+	*	% Chance of customers without any money getting service is
+	*  percent(50 - INTELLIGENCE) / 5) where  20 < INTELLIGENCE < 100
+	*	If caught will set deadbeat flag
+	*
+	*	GetCustomer() is generating a lot of poor customers changed
+	*	code to add pay to customers funds instead of generating
+	*	New customer.
+	*
+	*	% Chance of customer refusing to pay despite having funds is
+	*	percent((40 - HAPPINESS) / 2) && percent(CONFIDENCE - 25)
+	*	If caught by guards they will pay
+	*
+	*	Only decrement filthiness when service is performed in brothel
+	*
+	*	Street Work will not decrement number customers
+	*  Street work will only service 66% number of customers
+	*	Street Work will only generate 66% of brothel income
+	*	Street Work Really needs its own NumCustomers() counter
+	*
+	*	Rival gangs can damage girls doing Street Work
+	*  % Chance of destroying rival gang is depended on best of
+	*	SKILL_COMBAT & SKILL_MAGIC / 5
+	*
+	*	Changed message for rival gangs attacking street girls to give
+	*	EVENT_WARNING
+	*
+	*	GROUP sex code caculations now consolidated to one place
+	*
+	*  Fixed end of shift messages
+	*
+	*	Fame only to be done in GirlFucks()
+	*
+	*	Now Base Customer HAPPINESS = 60, code conslidated from 2 places in file
+	*
+	*/
 
 	string fuckMessage = "";
 	string message = "";
@@ -208,7 +209,7 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		else
 		{
 			// 50% chance of getting something a little weirder during the night
-			if (Day0Night1 == SHIFT_NIGHT && Cust.m_Fetish < NUM_FETISH - 2 && g_Dice.percent(50)) Cust.m_Fetish += 2;
+			if (Day0Night1 && Cust.m_Fetish < NUM_FETISH - 2 && g_Dice.percent(50)) Cust.m_Fetish += 2;
 
 			// Check for fetish match
 			if (g_Girls.CheckGirlType(girl, Cust.m_Fetish))
@@ -408,12 +409,12 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	girl->m_Events.AddMessage(summary, IMGTYPE_PROFILE, Day0Night1);
 
 	//gain
-	g_Girls.PossiblyGainNewTrait(girl, "Good Kisser", 50, ACTION_SEX, girl->m_Realname + " has had a lot of practice kissing and as such as become a Good Kisser.", Day0Night1 == SHIFT_NIGHT);
-	g_Girls.PossiblyGainNewTrait(girl, "Nymphomaniac", 70, ACTION_SEX, girl->m_Realname + " has been having so much sex she is now wanting sex all the time.", Day0Night1 == SHIFT_NIGHT);
-	
+	g_Girls.PossiblyGainNewTrait(girl, "Good Kisser", 50, actiontype, girl->m_Realname + " has had a lot of practice kissing and as such as become a Good Kisser.", Day0Night1);
+	g_Girls.PossiblyGainNewTrait(girl, "Nymphomaniac", 70, actiontype, girl->m_Realname + " has been having so much sex she is now wanting sex all the time.", Day0Night1);
+
 	//SIN: use a few of the new traits
 	if (g_Dice.percent(1) && g_Dice.percent(girl->oralsex()) && (g_Girls.HasTrait(girl, "Nymphomaniac")))
-		g_Girls.PossiblyGainNewTrait(girl, "Cum Addict", 90, ACTION_SEX, girl->m_Realname + " has tasted so much cum she now craves it at all times.", Day0Night1);
+		g_Girls.PossiblyGainNewTrait(girl, "Cum Addict", 90, actiontype, girl->m_Realname + " has tasted so much cum she now craves it at all times.", Day0Night1);
 
 
 #if 1 // `J` I am working on upgrading this but I have not finished it yet - but it seems to work with generic texts
@@ -429,18 +430,30 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	*/
 	if (g_Girls.HasTrait(girl, "Strong Gag Reflex") || g_Girls.HasTrait(girl, "Gag Reflex"))
 	{
-		if (g_Girls.PossiblyLoseExistingTrait(girl, "Strong Gag Reflex", 20, ACTION_SEX, girl->m_Realname + " is getting over sucking cocks. She no longer gags at the first taste of one.", Day0Night1))
+		if (g_Girls.PossiblyLoseExistingTrait(girl, "Strong Gag Reflex", 20, actiontype, girl->m_Realname + " is getting over sucking cocks. She no longer gags at the first taste of one.", Day0Night1))
 		{
 			if (g_Dice.percent(min((70 - g_Girls.GetSkill(girl, SKILL_ORALSEX)), 0))) g_Girls.AddTrait(girl, "Gag Reflex");
 		}
 	}
 	if (g_Girls.HasTrait(girl, "Gag Reflex"))
-		g_Girls.PossiblyLoseExistingTrait(girl, "Gag Reflex", 40, ACTION_SEX, girl->m_Realname + " has enough experience now that putting a cock in her mouth no longer makes her gag.", Day0Night1);
-	else if (g_Girls.PossiblyGainNewTrait(girl, "No Gag Reflex", 60, ACTION_SEX, girl->m_Realname + " has entirely lost her gag reflex, meaning she can now use her throat to give much sexier blowjobs.", Day0Night1))
+		g_Girls.PossiblyLoseExistingTrait(girl, "Gag Reflex", 40, actiontype, girl->m_Realname + " has enough experience now that putting a cock in her mouth no longer makes her gag.", Day0Night1);
+	else if (g_Girls.PossiblyGainNewTrait(girl, "No Gag Reflex", 60, actiontype, girl->m_Realname + " has entirely lost her gag reflex, meaning she can now use her throat to give much sexier blowjobs.", Day0Night1))
 		g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 5);
-	g_Girls.PossiblyGainNewTrait(girl, "Deepthroat", 90, ACTION_SEX, "Wow! " + girl->m_Realname + " has overcome her gag reflex such that she can comfortably take a large cock fucking her throat, while licking his balls in time.", Day0Night1);
+	g_Girls.PossiblyGainNewTrait(girl, "Deepthroat", 90, actiontype, "Wow! " + girl->m_Realname + " has overcome her gag reflex such that she can comfortably take a large cock fucking her throat, while licking his balls in time.", Day0Night1);
 
 #endif
 
 	return false;
+}
+
+double cJobManager::JP_BarWhore(sGirl* girl, bool estimate)// not used
+{
+	double jobperformance = 0.0;
+	if (estimate)// for third detail string
+	{
+	}
+	else// for the actual check
+	{
+	}
+	return jobperformance;
 }

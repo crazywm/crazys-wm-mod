@@ -164,3 +164,15 @@ bool cJobManager::WorkArenaRacing(sGirl* girl, sBrothel* brothel, bool Day0Night
 
 	return false;
 }
+
+double cJobManager::JP_ArenaRacing(sGirl* girl, bool estimate)// not used
+{
+double jp = 0;
+if (estimate)// for third detail string
+{
+}
+else// for the actual check
+{
+}
+return jp;
+}

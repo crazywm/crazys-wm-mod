@@ -1,21 +1,21 @@
 /*
- * Copyright 2009, 2010, The Pink Petal Development Team.
- * The Pink Petal Devloment Team are defined as the game's coders 
- * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright 2009, 2010, The Pink Petal Development Team.
+* The Pink Petal Devloment Team are defined as the game's coders
+* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 #include "cJobManager.h"
 #include "cBrothel.h"
 #include "cClinic.h"
@@ -45,28 +45,21 @@ extern cMessageQue g_MessageQue;
 // `J` Clinic Job - Surgery
 bool cJobManager::WorkPhysicalSurgery(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-	stringstream ss;
-	int msgtype = Day0Night1;
+	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
+	// if she was not in surgery last turn, reset working days to 0 before proceding
+	if (girl->m_YesterDayJob != JOB_PHYSICALSURGERY) { girl->m_WorkingDay = girl->m_PrevWorkingDay = 0; }
 
-	if (girl->m_YesterDayJob != JOB_PHYSICALSURGERY)	// if she was not in surgery yesterday, 
-	{
-		girl->m_WorkingDay = 0;				// rest working days to 0 before proceding
-		girl->m_PrevWorkingDay = 0;
-	}
-
-	// not for patient
-	g_Girls.UnequipCombat(girl);
-
-	bool hasDoctor = false;
-	if (g_Clinic.GetNumGirlsOnJob(brothel->m_id, JOB_DOCTOR, true) > 0 || g_Clinic.GetNumGirlsOnJob(brothel->m_id, JOB_DOCTOR, false) > 0)
-		hasDoctor = true;
-
+	bool hasDoctor = (g_Clinic.GetNumGirlsOnJob(brothel->m_id, JOB_DOCTOR, true) > 0 || g_Clinic.GetNumGirlsOnJob(brothel->m_id, JOB_DOCTOR, false) > 0);
 	if (!hasDoctor)
 	{
-		ss << girl->m_Realname + gettext(" does nothing. You don't have any Doctors working. (require 1) ");
+		ss << " does nothing. You don't have any Doctors working. (require 1) ";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
 		return false;	// not refusing
 	}
+	ss << " is in the Clinic to get general surgery.\n\n";
+
+	int msgtype = Day0Night1;
+	g_Girls.UnequipCombat(girl);	// not for patient
 
 	if (Day0Night1 == SHIFT_DAY)	// the Doctor works on her durring the day
 	{
@@ -163,4 +156,18 @@ bool cJobManager::WorkPhysicalSurgery(sGirl* girl, sBrothel* brothel, bool Day0N
 		g_Girls.UpdateSkill(girl, SKILL_MEDICINE, 1);	// `J` she watched what the doctors and nurses were doing
 
 	return false;
+}
+
+
+double cJobManager::JP_PhysicalSurgery(sGirl* girl, bool estimate)
+{
+	double jobperformance = 0.0;
+	if (estimate)	// for third detail string - how much do they need this?
+	{
+		if (!g_Girls.HasTrait(girl, "Sexy Air"))	jobperformance += 100;
+		if (!g_Girls.HasTrait(girl, "Cute"))		jobperformance += 100;
+		jobperformance += (100 - girl->m_Stats[STAT_CHARISMA]);
+		jobperformance += (100 - girl->m_Stats[STAT_BEAUTY]);
+	}
+	return jobperformance;
 }
