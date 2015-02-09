@@ -21,6 +21,7 @@
 
 #include <stdio.h>
 #include <string>
+#include "tinyxml.h"
 using namespace std;
 
 
@@ -81,7 +82,8 @@ typedef struct sEntry	// represents a single entry in an action
 typedef struct sAction
 {
 	long m_ID; // Action ID (0 to # actions-1)
-	char m_Text[256]; // Action text
+//	char m_Text[256]; // Action text
+	string m_Text;
 	short m_NumEntries; // # of entries in action
 	sEntry *m_Entries; // Array of entry structures
 	sAction *m_Next; // Next action in linked list
@@ -104,10 +106,10 @@ typedef struct sAction
 
 typedef struct sScriptEntry
 {
-	long m_Type; // Type of entry (_TEXT, _BOOL, etc.)
+	int m_Type; // Type of entry (_TEXT, _BOOL, etc.)
 	union
 	{
-		long m_IOValue; // Used for saving/loading
+		int m_IOValue; // Used for saving/loading
 		long m_Length; // Length of text (w/ 0 terminator)
 		long m_Selection; // Selection in choice
 		bool m_bValue; // bool value
@@ -116,7 +118,7 @@ typedef struct sScriptEntry
 	};
 
 	char *m_Text; // Text buffer
-	unsigned char m_Var;
+	int m_Var;
 
 	sScriptEntry()
 	{
@@ -136,8 +138,8 @@ typedef struct sScriptEntry
 
 typedef struct sScript
 {
-	long m_Type; // 0 to (number of actions-1)
-	long m_NumEntries; // # entries in this script action
+	int m_Type; // 0 to (number of actions-1)
+	int m_NumEntries; // # entries in this script action
 	sScriptEntry *m_Entries; // Array of entries
 	sScript *m_Prev; // Prev in linked list
 	sScript *m_Next; // Next in linked list
@@ -152,11 +154,9 @@ typedef struct sScript
 
 	~sScript()
 	{
-		if(m_Entries)
-			delete [] m_Entries;
+//		if (m_Entries) delete[] m_Entries;
 		m_Entries = 0; // Delete entry array
-		if(m_Next)
-			delete m_Next;
+		if (m_Next) delete m_Next;
 		m_Prev = m_Next = 0; // Delete next in linked list
 	}
 } sScript;
@@ -229,7 +229,9 @@ public:
 
 // General Functions
 sScript *LoadScriptFile(string Filename);
+sScript *LoadScriptXML(string Filename);
 bool SaveScriptFile(const char *Filename, sScript *ScriptRoot);
+bool SaveScriptXML(const char *Filename, sScript *ScriptRoot);
 void TraverseScript(sScript *pScript);
 
 #endif

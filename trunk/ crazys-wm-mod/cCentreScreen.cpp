@@ -147,11 +147,7 @@ void cCentreScreen::process()
 	else if (g_InterfaceEvents.CheckButton(weeks_id))
 	{
 		g_InitWin = true;
-		cConfig cfg;
-		if (cfg.folders.configXMLsa())
-			SaveGameXML(DirPath() << cfg.folders.saves() << "autosave.gam");
-		else
-			SaveGameXML(DirPath() << "Saves" << "autosave.gam");
+		AutoSaveGame();
 		NextWeek();
 		g_WinManager.Push(Turnsummary, &g_Turnsummary);
 		return;

@@ -34,6 +34,8 @@ void NextWeek();
 void GameEvents();
 void Gallery();
 void Gallery2();
+void AutoSaveGame();
+void SaveGame(bool saveCSV = false);
 void SaveGameXML(string filename);
 bool LoadGame(string directory, string filename);
 bool LoadGameXML(TiXmlHandle hDoc);

@@ -263,17 +263,18 @@ void NewGame()
 			);
 	}
 
-	if (g_Cheats) { g_Gold.cheat(); g_InvManager.GivePlayerAllItems(); }
+	if (g_Cheats)
+	{
+		g_Gold.cheat();
+		g_InvManager.GivePlayerAllItems();
+		g_Gangs.NumBusinessExtorted(50);
+	}
 
 	g_WinManager.push("Brothel Management");
 
 	DirPath text;
-	if (cfg.folders.configXMLsa())
-		text = DirPath() << cfg.folders.saves() << (g_Brothels.GetBrothel(0)->m_Name + ".gam").c_str();
-	if (!cfg.folders.configXMLsa() || cfg.folders.backupsaves())
-		text = DirPath() << "Saves" << (g_Brothels.GetBrothel(0)->m_Name + ".gam").c_str();
 	sm.Load(ScriptPath("Intro.lua"), 0);
-	SaveGameXML(text);
+	SaveGame();
 	g_InitWin = true;
 
 }
@@ -1980,11 +1981,7 @@ void Turnsummary()		// `J` Bookmark - starting the turn summary page
 		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_TSNEWWEEK))
 		{
 			g_InitWin = true;
-			cConfig cfg;
-			if (cfg.folders.configXMLsa())
-				SaveGameXML(DirPath() << cfg.folders.saves() << "autosave.gam");
-			else
-				SaveGameXML(DirPath() << "Saves" << "autosave.gam");
+			AutoSaveGame();
 			NextWeek();
 			return;
 		}
@@ -3036,6 +3033,28 @@ void SaveMasterFile(string filename)
 	}
 	save.close();
 	*/
+}
+
+void AutoSaveGame()
+{
+	cConfig cfg;
+	string saveloc = (cfg.folders.configXMLsa() ? cfg.folders.saves() : "Saves");
+	SaveGameXML(DirPath() << saveloc << "autosave.gam");
+}
+void SaveGame(bool saveCSV)
+{
+	cConfig cfg;
+	string filename = g_Brothels.GetBrothel(0)->m_Name;
+	if (cfg.folders.configXMLsa())
+	{
+		SaveGameXML(DirPath() << cfg.folders.saves() << (filename + ".gam"));
+		if (saveCSV) SaveGirlsCSV(DirPath() << cfg.folders.saves() << (filename + ".csv"));
+	}
+	if (!cfg.folders.configXMLsa() || cfg.folders.backupsaves())
+	{
+		SaveGameXML(DirPath() << "Saves" << (filename + ".gam"));
+		if (saveCSV) SaveGirlsCSV(DirPath() << "Saves" << (filename + ".csv"));
+	}
 }
 
 void SaveGameXML(string filename)
