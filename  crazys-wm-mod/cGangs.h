@@ -114,7 +114,9 @@ public:
 	TiXmlElement* SaveGangsXML(TiXmlElement* pRoot);
 	bool LoadGangsXML(TiXmlHandle hGangManager);
 
-	int GetNumBusinessExtorted() {return m_BusinessesExtort;}
+	int GetNumBusinessExtorted()		{ return m_BusinessesExtort; }
+	int NumBusinessExtorted(int n)		{ m_BusinessesExtort += n; return m_BusinessesExtort; }
+
 
 	int* GetWeaponLevel() {return &m_SwordLevel;}
 	int* GetNets() {return &m_NumNets;}

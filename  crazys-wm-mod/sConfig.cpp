@@ -123,7 +123,7 @@ sConfigData::sConfigData(const char *a_filename)
 			{
 				XmlUtil xu(m_filename); string name; int r, g, b;
 				xu.get_att(el, "Name", name); xu.get_att(el, "R", r); xu.get_att(el, "G", g); xu.get_att(el, "B", b);
-				if (name == "ItemRarity0") ColorConvert.RGBToSDLColor(items.rarity_color[0], r, g, b);
+				/* */if (name == "ItemRarity0") ColorConvert.RGBToSDLColor(items.rarity_color[0], r, g, b);
 				else if (name == "ItemRarity1") ColorConvert.RGBToSDLColor(items.rarity_color[1], r, g, b);
 				else if (name == "ItemRarity2") ColorConvert.RGBToSDLColor(items.rarity_color[2], r, g, b);
 				else if (name == "ItemRarity3") ColorConvert.RGBToSDLColor(items.rarity_color[3], r, g, b);
@@ -218,54 +218,48 @@ void sConfigData::get_att(TiXmlElement *el, const char *name, int *ipt)
 
 void sConfigData::get_folders_data(TiXmlElement *el)
 {
-	folders.configXMLch = false;
-	folders.configXMLsa = false;
-	folders.backupsaves = false;
 	const char *pt;
-	string testch = "", testsa = "", charactersfound = "", savesfound = "";
+	folders.configXMLch = false; folders.configXMLsa = false; folders.backupsaves = false;
+	string testch = "", testsa = "";
 	if (pt = el->Attribute("Characters"))		get_att(el, "Characters", testch);
 	if (pt = el->Attribute("Saves"))			get_att(el, "Saves", testsa);
 	if (pt = el->Attribute("BackupSaves"))		get_att(el, "BackupSaves", folders.backupsaves);
 	if (testch != "")
 	{
 		DirPath locationch = DirPath() << testch;
-		XMLFileList test(locationch, "*.girlsx");
+		XMLFileList test(locationch, "*.*girlsx");
 		if (test.size() > 0)
 		{
 			folders.characters = testch;
-			charactersfound = locationch.c_str();
+			l.ss() << "Success: config.xml: Loading Characters from: " << locationch;
+			folders.configXMLch = true;
+		}
+		else
+		{
+			l.ss() << "\n\nWarning: config.xml: Characters folder '" << locationch << "' does not exist or has no girls in it.\nDefaulting to ./Resources/Characters\n\n";
+			l.ssend();
 		}
 	}
 	if (testsa != "")
 	{
 		DirPath locationsa = DirPath() << testsa;
-		XMLFileList test(locationsa, "*.gam");
+		FILE *fp;
+		DirPath testloc = DirPath() << testsa << ".Whore Master Save Games folder";
+		if ((fp = fopen(testloc, "w")) != 0)
+		{
+			fclose(fp);
+		}
+		XMLFileList test(locationsa, "*.*");
 		if (test.size() > 0)
 		{
 			folders.saves = testsa;
-			savesfound = locationsa.c_str();
+			l.ss() << "Success: config.xml: Loading Saves from: " << locationsa; l.ssend();
+			folders.configXMLsa = true;
 		}
-	}
-
-
-	if (charactersfound == "")
-	{
-		l.ss() << "\n\nWarning: config.xml:\n'Characters Location' attribute points to an invalid folder:\ndefaulting to ./Resources/Characters\n\n"; l.ssend();
-	}
-	else
-	{
-		l.ss() << "Success: config.xml: Loading Characters from: " << charactersfound; l.ssend();
-		folders.configXMLch = true;
-	}
-
-	if (savesfound == "")
-	{
-		l.ss() << "\n\nWarning: config.xml:\n'Saves Location' attribute points to an invalid folder:\ndefaulting to ./Saves\n\n"; l.ssend();
-	}
-	else
-	{
-		l.ss() << "Success: config.xml: Loading Saves from: " << savesfound; l.ssend();
-		folders.configXMLsa = true;
+		else
+		{
+			l.ss() << "\n\nWarning: config.xml: Save game folder '" << locationsa << "' does not exist.\nDefaulting to ./Saves\n\n"; l.ssend();
+		}
 	}
 }
 
@@ -273,7 +267,7 @@ void sConfigData::get_resolution_data(TiXmlElement *el)
 {
 	resolution.configXML = false;
 	const char *pt;
-	string testa = "", resfound = "";
+	string testa = "";
 	if (pt = el->Attribute("Resolution"))		get_att(el, "Resolution", testa);
 	if (testa != "")
 	{
@@ -282,19 +276,19 @@ void sConfigData::get_resolution_data(TiXmlElement *el)
 		if (test.size() > 0)
 		{
 			resolution.resolution = testa;
-			resfound = location.c_str();
+			l.ss() << "Success: config.xml: Loading Interface: " << location.c_str();;
+			l.ssend();
 		}
-	}
-	if (resfound == "")
-	{
-		l.ss() << "\n\nWarning: config.xml:\n'Resolution' attribute points to an invalid interface folder:\ndefaulting to 'J_1024x768'\n\n";
-		l.ssend();
+		else
+		{
+			l.ss() << "\n\nWarning: config.xml:\n'Resolution' attribute points to an invalid interface folder:\ndefaulting to 'J_1024x768'\n\n";
+			l.ssend();
+		}
 	}
 	else
 	{
-		l.ss() << "Success: config.xml: Loading Interface: " << resfound;
+		l.ss() << "\n\nWarning: config.xml: No Resolution specified, using defaults.\n\n";
 		l.ssend();
-
 	}
 	if (pt = el->Attribute("Width"))			{ get_att(el, "Width", &resolution.width);		resolution.configXML = true; }
 	if (pt = el->Attribute("Height"))			{ get_att(el, "Height", &resolution.height);	resolution.configXML = true; }

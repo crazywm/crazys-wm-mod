@@ -1518,7 +1518,7 @@ Removed the limits on m_StatMods, m_TempStats, m_StatTr, m_SkillMods, m_TempSkil
 Added starting items for (r)girls so they can have items before you get them.
 Added in "Your Daughter" checks to births and random girl creation - hopefully they work.
 
-###  Changes 2/6/2015
+###  Changes 2/6-7/2015
 Started moving folders:
  - Moved Default girl images from ./Resources/Characters/Default to ./Resources/DefaultImages
  - Added a check for config.xml in the folder above the exe folder
@@ -1527,6 +1527,19 @@ Started moving folders:
 
 !!!!!!!!!!!!!!!!!!!! pushed to SVN - r148
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.00
+
+Fixed a bug in .rgirlsx starting items.
+!!! Bug tested the game - works great !!!
+
+###  Changes 2/8/2015
+Refined the savegame into 2 functions: AutoSaveGame and SaveGame
+Added check in config.xml for Save and Characters folders and added gamelog error if not found.
+Started work on scripts XML conversion.
+
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r149
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.01
+
+
 
 
 

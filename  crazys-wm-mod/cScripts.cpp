@@ -16,14 +16,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "cScripts.h"
 #include <string>
+#include "cScripts.h"
+#include "CLog.h"
+#include "XmlUtil.h"
+#include "FileList.h"
 
 #ifdef LINUX
 #include "linux.h"
 #endif
 
+extern CLog g_LogFile;
+static CLog &l = g_LogFile;
+
 using namespace std;
+
 
 bool cActionTemplate::GetNextQuotedLine(char *Data, FILE *fp, long MaxSize)
 {
@@ -352,12 +359,52 @@ bool cActionTemplate::Load()
 bool cScript::Load(string filename)
 {
 	m_NumActions = 0;
-	if(m_ScriptParent)
-		delete m_ScriptParent;
+	if (m_ScriptParent) delete m_ScriptParent;
 	m_ScriptParent = 0;
 
 	// load the script
-	m_ScriptParent = LoadScriptFile(filename);
+	sScript* testscript = NULL;
+	if (testscript = LoadScriptFile(filename))
+	{
+		m_ScriptParent = testscript;
+		string testpath = filename.substr(2, filename.find_last_of("\\")-1);
+		string testname = filename.substr(filename.find_last_of("\\") + 1, filename.length()) + "x";
+		DirPath dp = DirPath() << testpath;
+		FileList test(dp, testname.c_str());
+		if (test.size() == 0)
+		{
+			SaveScriptXML((filename + "x").c_str(), m_ScriptParent);
+			l.ss() << "Message: Rebuilding XML '" << filename << "x' from Binary '" << filename << "'\n";
+			l.ssend();
+		}
+	}
+	else if ((testscript = LoadScriptXML(filename)) != 0)
+	{
+		m_ScriptParent = testscript;
+		SaveScriptXML((filename + "x").c_str(), m_ScriptParent);
+		SaveScriptFile(filename.c_str(), m_ScriptParent);
+		l.ss() << "Warning: Script '" << filename << "' was XML instead of Binary.\nRebuilding Binary '" << filename << "' as Binary and Building XML as '" << filename << "x'\n";
+		l.ssend();
+	}
+	else if ((testscript = LoadScriptXML(filename + "x")) != 0)
+	{
+		m_ScriptParent = testscript;
+		string testpath = filename.substr(2, filename.find_last_of("\\") - 1);
+		string testname = filename.substr(filename.find_last_of("\\") + 1, filename.length());
+		DirPath dp = DirPath() << testpath;
+		FileList test(dp, testname.c_str());
+		if (test.size() == 0)
+		{
+			SaveScriptFile(filename.c_str(), m_ScriptParent);
+			l.ss() << "Message: Rebuilding Binary '" << filename << "' from XML '" << filename<<"x'\n";
+			l.ssend();
+		}
+	}
+	else
+	{
+		l.ss() << "\n\nError: Could not load script: '" << filename << "'\n\n";
+		l.ssend(); return false;
+	}									// and return false
 	return true;
 }
 
@@ -417,6 +464,89 @@ bool SaveScriptFile(const char *Filename, sScript *ScriptRoot)
 	return true; // return a success!
 }
 
+bool SaveScriptXML(const char *Filename, sScript *ScriptRoot)
+{
+	sScript *ScriptPtr;
+	// Make sure there are some script actions
+	if ((ScriptPtr = ScriptRoot) == 0) return false;
+
+	TiXmlDocument doc(Filename);
+	TiXmlDeclaration* decl = new TiXmlDeclaration("1.0", "", "yes");
+	doc.LinkEndChild(decl);
+	TiXmlElement* pRoot = new TiXmlElement("Root");
+	doc.LinkEndChild(pRoot);
+
+//		FILE *fp;
+	
+	int NumActions = 0; int i = 0; int j = 0;
+
+	// Count the number of actions
+	while (ScriptPtr != 0)
+	{
+		NumActions++; // Increase count
+		ScriptPtr = ScriptPtr->m_Next; // Next action
+	}
+
+	// Output # of script actions
+//	fwrite(&NumActions, 1, sizeof(long), fp);
+	pRoot->SetAttribute("NumActions", NumActions);
+
+
+#if 1
+	// Loop through each script action
+	ScriptPtr = ScriptRoot;
+	for (i = 0; i<NumActions; i++)
+	{
+		// Output type of action and # of entries
+//		fwrite(&ScriptPtr->m_Type, 1, sizeof(long), fp);
+//		fwrite(&ScriptPtr->m_NumEntries, 1, sizeof(long), fp);
+		TiXmlElement* action = new TiXmlElement("Action");
+		pRoot->LinkEndChild(action);
+		action->SetAttribute("ActionNumber", i);
+		action->SetAttribute("Type", ScriptPtr->m_Type);
+		action->SetAttribute("NumEntries", ScriptPtr->m_NumEntries);
+
+#if 1
+		// Output entry data (if any)
+		if (ScriptPtr->m_NumEntries)
+		{
+			for (j = 0; j<ScriptPtr->m_NumEntries; j++)
+			{
+				// Write entry type and data
+//				fwrite(&ScriptPtr->m_Entries[j].m_Type, 1, sizeof(long), fp);
+//				fwrite(&ScriptPtr->m_Entries[j].m_IOValue, 1, sizeof(long), fp);
+//				fwrite(&ScriptPtr->m_Entries[j].m_Var, 1, sizeof(unsigned char), fp);
+
+				TiXmlElement* entry = new TiXmlElement("Entry");
+				action->LinkEndChild(entry);
+				entry->SetAttribute("ActionNumber", i);
+				entry->SetAttribute("EntryNumber", j);
+				entry->SetAttribute("Type", ScriptPtr->m_Entries[j].m_Type);
+				entry->SetAttribute("IOValue", ScriptPtr->m_Entries[j].m_IOValue);
+				entry->SetAttribute("Var", ScriptPtr->m_Entries[j].m_Var);
+
+				// Write text entry (if any)
+				if (ScriptPtr->m_Entries[j].m_Type == _TEXT && ScriptPtr->m_Entries[j].m_Text != NULL)
+				{
+//					fwrite(ScriptPtr->m_Entries[j].m_Text, 1, ScriptPtr->m_Entries[j].m_Length, fp);
+					stringstream ss; ss << ScriptPtr->m_Entries[j].m_Text;
+					entry->SetAttribute("Text", ss.str());
+				}
+			}
+		}
+#endif
+
+		// Go to next script structure in linked list
+		ScriptPtr = ScriptPtr->m_Next;
+	}
+
+#endif
+//	fclose(fp);
+	doc.SaveFile();
+
+	return true; // return a success!
+}
+
 sScript *LoadScriptFile(string Filename)
 {
 	FILE *fp;
@@ -468,5 +598,89 @@ sScript *LoadScriptFile(string Filename)
 	}
 
 	fclose(fp);
+	return ScriptRoot;
+}
+
+sScript *LoadScriptXML(string Filename)
+{
+	// Open the file for input
+//	FILE *fp;
+//	if ((fp = fopen(Filename.c_str(), "r")) == 0) return 0;
+	TiXmlDocument doc(Filename);
+	if (!doc.LoadFile())
+	{
+		l.ss() << "Error: Can't load script '" << Filename << "'. " << endl;
+		l.ssend();
+		return 0;
+	}
+	XmlUtil xu(Filename);
+	TiXmlElement *ela = NULL;
+	TiXmlElement *ele = NULL;
+	TiXmlElement *root_el = doc.RootElement();
+	const char *pt;
+	int Num = 0;
+	sScript *ScriptRoot = 0, *Script = 0, *ScriptPtr = 0;
+	
+//	fread(&Num, 1, sizeof(long), fp);
+	if (pt = root_el->Attribute("NumActions"))		xu.get_att(root_el, "NumActions", Num);
+	if (!Num) return 0;
+
+#if 1
+
+	// Loop through each script action
+//	for (i = 0; i < Num; i++)
+	for (ela = root_el->FirstChildElement(); ela; ela = ela->NextSiblingElement())
+	{
+		// Allocate a script structure and link in
+		Script = new sScript();
+
+		if (ScriptPtr == 0) ScriptRoot = Script; // Assign root
+		else ScriptPtr->m_Next = Script;
+		ScriptPtr = Script;
+
+		// Get type of action and # of entries
+		//		fread(&Script->m_Type, 1, sizeof(long), fp);
+		//		fread(&Script->m_NumEntries, 1, sizeof(long), fp);
+		//	fread(&Num, 1, sizeof(long), fp);
+		if (pt = ela->Attribute("Type"))		xu.get_att(ela, "Type", Script->m_Type);
+		if (pt = ela->Attribute("NumEntries"))	xu.get_att(ela, "NumEntries", Script->m_NumEntries);
+
+		// Get entry data (if any)
+		if (Script->m_NumEntries)
+		{
+			// Allocate entry array
+			Script->m_Entries = new sScriptEntry[Script->m_NumEntries]();
+			for (ele = ela->FirstChildElement(); ele; ele = ele->NextSiblingElement())
+			{
+
+				// Get entry type and data
+				//				fread(&Script->m_Entries[j].m_Type, 1, sizeof(long), fp);
+				//				fread(&Script->m_Entries[j].m_IOValue, 1, sizeof(long), fp);
+				//				fread(&Script->m_Entries[j].m_Var, 1, sizeof(unsigned char), fp);
+				int entrynum = 0;
+				if (pt = ele->Attribute("EntryNumber"))		xu.get_att(ele, "EntryNumber", entrynum);
+
+				if (pt = ele->Attribute("Type"))		xu.get_att(ele, "Type", Script->m_Entries[entrynum].m_Type);
+				if (pt = ele->Attribute("IOValue"))		xu.get_att(ele, "IOValue", Script->m_Entries[entrynum].m_IOValue);
+				if (pt = ele->Attribute("Var"))			xu.get_att(ele, "Var", Script->m_Entries[entrynum].m_Var);
+
+				// Get text (if any)
+				if (Script->m_Entries[entrynum].m_Type == _TEXT && Script->m_Entries[entrynum].m_Length)
+				{
+					// Allocate a buffer and get string
+					//					Script->m_Entries[j].m_Text = new char[Script->m_Entries[j].m_Length];
+					//					fread(Script->m_Entries[j].m_Text, 1, Script->m_Entries[j].m_Length, fp);
+					if (ele->Attribute("Text"))
+					{
+						Script->m_Entries[entrynum].m_Text = new char[Script->m_Entries[entrynum].m_Length];
+						strcpy(Script->m_Entries[entrynum].m_Text, ele->Attribute("Text"));
+					}
+				}
+			}
+		}
+	}
+#endif
+
+//	fclose(fp);
 	return ScriptRoot;
 }

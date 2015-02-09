@@ -3758,6 +3758,12 @@ void sGirl::load_from_xml(TiXmlElement *el)
 				}
 				m_NumInventory++;
 			}
+			else
+			{
+				g_LogFile.os() << "Error: Can't find Item: '" << pt << "' - skipping it." << endl;
+				return;		// do as much as we can without crashing
+			}
+
 		}
 	}
 	m_AccLevel = 1;
@@ -4000,13 +4006,17 @@ void sRandomGirl::process_trait_xml(TiXmlElement *el)
 void sRandomGirl::process_item_xml(TiXmlElement *el)
 {
 	int ival; const char *pt;
-	sInventoryItem *item = new sInventoryItem();
+	sInventoryItem *item = 0;
 	if ((pt = el->Attribute("Name")))
 	{
-		item->m_Name = n_strdup(pt);
-		stringstream ss;
-		ss << item->m_Name;
-		m_ItemNames[m_NumItemNames] = ss.str();
+		string finditem = n_strdup(pt);
+		item = g_InvManager.GetItem(finditem);
+		if (!item)
+		{
+			g_LogFile.os() << "Error: Can't find Item: '" << finditem << "' - skipping it." << endl;
+			return;		// do as much as we can without crashing
+		}
+		m_ItemNames[m_NumItemNames] = item->m_Name;
 	}
 	if (m_NumItemNames<MAXNUM_INVENTORY) m_Inventory[m_NumItems] = item;
 	if ((pt = el->Attribute("Percent", &ival)))

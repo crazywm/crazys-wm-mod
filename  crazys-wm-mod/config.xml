@@ -19,7 +19,7 @@
 	TextScrollAmount = The number of lines to scroll in Text boxes.
 	-->
 	<Resolution
-		Resolution="..\\..\\..\\J_1024x768"
+		Resolution="J_1024x768"
 		Width="1024"
 		Height="768"
 		ScaleWidth="800"
