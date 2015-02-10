@@ -158,7 +158,7 @@ bool cJobManager::WorkCityGuard(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	g_Girls.UpdateSkill(girl, SKILL_MAGIC, g_Dice % skill);
 	g_Girls.UpdateStat(girl, STAT_AGILITY, g_Dice % skill);
 	g_Girls.UpdateStat(girl, STAT_CONSTITUTION, g_Dice % skill);
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy, true);
@@ -172,12 +172,88 @@ bool cJobManager::WorkCityGuard(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 
 double cJobManager::JP_CityGuard(sGirl* girl, bool estimate)// not used
 {
-	double jobperformance = 0.0;
-	if (estimate)// for third detail string
+	// copied from Security
+	int SecLev = 0;
+	if (estimate)	// for third detail string
 	{
+		SecLev = (g_Girls.GetSkill(girl, SKILL_COMBAT))
+			+ (g_Girls.GetSkill(girl, SKILL_MAGIC) / 2)
+			+ (g_Girls.GetStat(girl, STAT_AGILITY) / 2);
 	}
-	else// for the actual check
+	else			// for the actual check
 	{
+		SecLev = g_Dice % (g_Girls.GetSkill(girl, SKILL_COMBAT))
+			+ g_Dice % (g_Girls.GetSkill(girl, SKILL_MAGIC) / 3)
+			+ g_Dice % (g_Girls.GetStat(girl, STAT_AGILITY) / 3);
 	}
-	return jobperformance;
+
+	// Good traits
+	if (g_Girls.HasTrait(girl, "Incorporeal"))			SecLev += 100;	// I'm fucking Superman!
+	if (g_Girls.HasTrait(girl, "Assassin"))				SecLev += 50;	// I was born for this job. I know how you think. Is 50 too high? Assassin is a relatively rare trait, and there's no way to gain it (That I'm aware of) so it trades off(?)                   
+	if (g_Girls.HasTrait(girl, "Tough"))				SecLev += 15;	// You hit like a girl
+	if (g_Girls.HasTrait(girl, "Powerful Magic"))		SecLev += 10;	//
+	if (g_Girls.HasTrait(girl, "Psychic"))				SecLev += 10;	// I sense danger
+	if (g_Girls.HasTrait(girl, "Demon"))				SecLev += 10;	// Even scarier
+	if (g_Girls.HasTrait(girl, "Brawler"))				SecLev += 10;	//
+	if (g_Girls.HasTrait(girl, "Strong"))				SecLev += 10;	//
+	if (g_Girls.HasTrait(girl, "Fleet of Foot"))		SecLev += 5;	// Moves around quickly
+	if (g_Girls.HasTrait(girl, "Charming"))				SecLev += 5;	// Gets more cooperation
+	if (g_Girls.HasTrait(girl, "Cool Person"))			SecLev += 5;	// Gets more cooperation redux
+	if (g_Girls.HasTrait(girl, "Adventurer"))			SecLev += 5;	// Has experience
+	if (g_Girls.HasTrait(girl, "Aggressive"))			SecLev += 5;	// Rawr! I kill you now!
+	if (g_Girls.HasTrait(girl, "Yandere"))				SecLev += 5;	// Rawr! I kill you now!
+	if (g_Girls.HasTrait(girl, "Tsundere"))				SecLev += 5;	// Rawr! I kill you now!
+	if (g_Girls.HasTrait(girl, "Sadistic"))				SecLev += 5;	// I kill you slowly with this dull knife!
+	if (g_Girls.HasTrait(girl, "Merciless"))			SecLev += 5;	// Your cries for clemency amuse me
+	if (g_Girls.HasTrait(girl, "Fearless"))				SecLev += 5;	// Chhhhaaaarrrrrggggeeeeee!!
+	if (g_Girls.HasTrait(girl, "Iron Will"))			SecLev += 5;	// Hold the line!
+	if (g_Girls.HasTrait(girl, "Construct"))			SecLev += 5;	// Scary
+	if (g_Girls.HasTrait(girl, "Not Human"))			SecLev += 5;	// Scary
+	if (g_Girls.HasTrait(girl, "Agile"))				SecLev += 5;	//
+	if (g_Girls.HasTrait(girl, "Dominatrix"))			SecLev += 5;	// likes to be in charge
+	if (g_Girls.HasTrait(girl, "Giant"))				SecLev += 5;	// Scary
+	if (g_Girls.HasTrait(girl, "Goddess"))				SecLev += 5;	// people might behave better around a goddess
+	if (g_Girls.HasTrait(girl, "Heroine"))				SecLev += 5;	// likes to protect others
+	if (g_Girls.HasTrait(girl, "Muscular"))				SecLev += 5;	// hit harder
+	if (g_Girls.HasTrait(girl, "Strong Magic"))			SecLev += 5;	//
+	if (g_Girls.HasTrait(girl, "Strange Eyes"))			SecLev += 2;	// I'm watching you	
+
+
+	// Bad traits
+	if (g_Girls.HasTrait(girl, "Blind"))				SecLev -= 50;	// can't see what people are doing
+	if (g_Girls.HasTrait(girl, "No Arms"))				SecLev -= 40;	// catch me if you... use your feet?
+	if (g_Girls.HasTrait(girl, "No Legs"))				SecLev -= 50;	// run? whats that?
+	if (g_Girls.HasTrait(girl, "Deaf"))					SecLev -= 25;	// can't hear girls scream for help
+	if (g_Girls.HasTrait(girl, "No Hands"))				SecLev -= 20;	// 
+	if (g_Girls.HasTrait(girl, "No Feet"))				SecLev -= 20;	// 
+	if (g_Girls.HasTrait(girl, "One Arm"))				SecLev -= 10;	// 
+	if (g_Girls.HasTrait(girl, "One Foot"))				SecLev -= 10;	// 
+	if (g_Girls.HasTrait(girl, "One Leg"))				SecLev -= 10;	// 
+	if (g_Girls.HasTrait(girl, "One Hand"))				SecLev -= 5;	// 
+	if (g_Girls.HasTrait(girl, "One Eye"))				SecLev -= 5;	// 
+
+	if (g_Girls.HasTrait(girl, "Broken Will"))			SecLev -= 50;	// I'm too tired to patrol	
+	if (g_Girls.HasTrait(girl, "Mind Fucked"))			SecLev -= 50;	// duurrrrrr..... secu.... sec... what? (Mind fucked can be cured btw.)  
+	if (g_Girls.HasTrait(girl, "Alcoholic"))			SecLev -= 30;	// 
+	if (g_Girls.HasTrait(girl, "Cum Addict"))			SecLev -= 30;	// Be looking for cum instead of doing job
+	if (g_Girls.HasTrait(girl, "Retarded"))				SecLev -= 20;	// duurrrrrr..... secu.... sec... what?      
+	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			SecLev -= 20;	// Wait! The security officer is a nymphomaniac in a brothel?	
+	if (g_Girls.HasTrait(girl, "Shroud Addict"))		SecLev -= 15;	// high at work never good
+	if (g_Girls.HasTrait(girl, "Fairy Dust Addict"))	SecLev -= 15;	// high at work never good
+	if (g_Girls.HasTrait(girl, "Viras Blood Addict"))	SecLev -= 15;	// high at work never good
+	if (g_Girls.HasTrait(girl, "Smoker"))				SecLev -= 10;	// less lung power = less running
+	if (g_Girls.HasTrait(girl, "Dependant"))			SecLev -= 10;	// I can't do this alone
+	if (g_Girls.HasTrait(girl, "Weak Magic"))			SecLev -= 5;	// 
+	if (g_Girls.HasTrait(girl, "Lolita"))				SecLev -= 5;	// Hi there kiddo.  Lost your mommy?
+	if (g_Girls.HasTrait(girl, "Nerd"))					SecLev -= 5;	// Gets no respect
+	if (g_Girls.HasTrait(girl, "Bimbo"))				SecLev -= 5;	// Gets no respect
+	if (g_Girls.HasTrait(girl, "Nervous"))				SecLev -= 5;	// Gets no respect
+	if (g_Girls.HasTrait(girl, "Twisted"))				SecLev -= 5;	// Wierd ideas about security rarely work
+	if (g_Girls.HasTrait(girl, "Meek"))					SecLev -= 5;	// Wait... bad person... come back
+	if (g_Girls.HasTrait(girl, "Clumsy"))				SecLev -= 5;	// "Stop thief!" ..... "Ahhhhh! I fell again!"
+	if (g_Girls.HasTrait(girl, "Delicate"))				SecLev -= 5;	// Awww, I broke a nail :(
+	if (g_Girls.HasTrait(girl, "Old"))					SecLev -= 5;	// Gets no respect
+	if (g_Girls.HasTrait(girl, "Plump"))				SecLev -= 5;	// Chubby... chaser?
+
+	return SecLev;
 }

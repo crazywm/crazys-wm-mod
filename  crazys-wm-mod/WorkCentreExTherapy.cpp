@@ -155,7 +155,7 @@ bool cJobManager::WorkCentreExTherapy(sGirl* girl, sBrothel* brothel, bool Day0N
 
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
 
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, msgtype);
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy, true);
 

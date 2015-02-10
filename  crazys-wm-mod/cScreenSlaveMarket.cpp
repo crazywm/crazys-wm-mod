@@ -332,7 +332,7 @@ void cScreenSlaveMarket::generate_unique_girl(int i, bool &unique)
 	cConfig cfg;
 
 	if (g_Girls.GetNumSlaveGirls() <= 0) return;			// if there are no unique slave girls left then we can do no more here
-	if (1 + (g_Dice % 100) >= 35) return;					// otherwise - 20% chance of a unique girl.
+	if (!g_Dice.percent(35)) return;							// otherwise - 35% chance of a unique girl.
 	int g = g_Dice%g_Girls.GetNumSlaveGirls();				// randomly select a slavegirl from the list
 	sGirl *gpt = g_Girls.GetGirl(g_Girls.GetSlaveGirl(g));	// try and get a struct for the girl in question
 	if (!gpt) return;										// if we can't, we go home
@@ -342,7 +342,7 @@ void cScreenSlaveMarket::generate_unique_girl(int i, bool &unique)
 	 *
 	 *	if she is, we need do nothing more
 	 */
-	for (int j = 0; j < 8; j++)
+	for (int j = 0; j < 12; j++)
 	{
 		if (MarketSlaveGirls[j] == gpt) return;
 	}

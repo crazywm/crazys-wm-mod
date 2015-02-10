@@ -335,7 +335,7 @@ bool cJobManager::WorkGetAbort(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	if (g_Girls.HasTrait(girl, "Lesbian"))		libido += numnurse;
 	if (g_Girls.HasTrait(girl, "Masochist"))	libido += 1;
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))	libido += 2;
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 
 	return false;

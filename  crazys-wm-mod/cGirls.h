@@ -56,15 +56,14 @@ public:
 	virtual void UpdateStat(sGirl* girl, int stat, int amount, bool usetraits = true) = 0;
 	virtual void UpdateSkill(sGirl* girl, int skill, int amount) = 0;
 	virtual bool CalcPregnancy(sGirl* girl, int chance, int type, int stats[NUM_STATS], int skills[NUM_SKILLS]) = 0;
-	//	virtual void AddTrait(sGirl* girl, string name, bool temp = false, bool removeitem = false, bool remember = false)=0;
-	virtual bool AddTrait(sGirl* girl, string name, bool temp = false, bool removeitem = false, bool remember = false) = 0;
+	virtual bool AddTrait(sGirl* girl, string name, int temptime = 0, bool removeitem = false, bool remember = false) = 0;
 	virtual bool RemoveTrait(sGirl* girl, string name, bool removeitem = false, bool remember = false, bool keepinrememberlist = false) = 0;
 	virtual bool HasTrait(sGirl* girl, string name) = 0;
 	virtual bool LoseVirginity(sGirl* girl, bool removeitem = false, bool remember = false) = 0;
-	virtual bool RegainVirginity(sGirl* girl, bool temp = false, bool removeitem = false, bool remember = false) = 0;
+	virtual bool RegainVirginity(sGirl* girl, int temptime = 0, bool removeitem = false, bool remember = false) = 0;
 	virtual bool CheckVirginity(sGirl* girl) = 0;
-	virtual void UpdateTempSkill(sGirl* girl, int skill, int amount) = 0;	// updates a skill temporarily
-	virtual void UpdateTempStat(sGirl* girl, int stat, int amount, bool usetraits=true) = 0;
+	virtual void UpdateSkillTemp(sGirl* girl, int skill, int amount) = 0;	// updates a skill temporarily
+	virtual void UpdateStatTemp(sGirl* girl, int stat, int amount) = 0;
 };
 extern cAbstractGirls *g_GirlsPtr;
 
@@ -380,7 +379,7 @@ struct sGirl
 	int m_Stats[NUM_STATS];
 	int m_StatTr[NUM_STATS];					// Trait modifiers to stats
 	int m_StatMods[NUM_STATS];					// perminant modifiers to stats
-	int m_TempStats[NUM_STATS];					// these go down (or up) by 30% each week until they reach 0
+	int m_StatTemps[NUM_STATS];					// these go down (or up) by 30% each week until they reach 0
 
 	int m_Enjoyment[NUM_ACTIONTYPES];			// these values determine how much a girl likes an action
 	// (-100 is hate, +100 is loves)
@@ -397,7 +396,7 @@ struct sGirl
 	int m_Skills[NUM_SKILLS];
 	int m_SkillTr[NUM_SKILLS];
 	int m_SkillMods[NUM_SKILLS];
-	int m_TempSkills[NUM_SKILLS];				// these go down (or up) by 1 each week until they reach 0
+	int m_SkillTemps[NUM_SKILLS];				// these go down (or up) by 1 each week until they reach 0
 
 	unsigned char m_RunAway;					// if 0 then off, if 1 then girl is removed from list,
 	// otherwise will count down each week
@@ -513,9 +512,9 @@ struct sGirl
 		m_UseAntiPreg = true;
 
 		for (u_int i = 0; i<NUM_SKILLS; i++)
-			m_TempSkills[i] = m_SkillMods[i] = m_Skills[i] = m_SkillTr[i] = 0;		// Added m_Skills here to zero out any that are not specified -- PP
+			m_Skills[i] = m_SkillTemps[i] = m_SkillMods[i] = m_SkillTr[i] = 0;		// Added m_Skills here to zero out any that are not specified -- PP
 		for (int i = 0; i < NUM_STATS; i++)
-			m_TempStats[i] = m_StatMods[i] = m_Stats[i] = m_StatTr[i] = 0;		// Added m_Stats here to zero out any that are not specified -- PP
+			m_Stats[i] = m_StatTemps[i] = m_StatMods[i] = m_StatTr[i] = 0;		// Added m_Stats here to zero out any that are not specified -- PP
 		for (u_int i = 0; i<NUM_ACTIONTYPES; i++)
 			m_Enjoyment[i] = -10;	// start off disliking everything
 
@@ -605,9 +604,9 @@ struct sGirl
 	{
 		return g_GirlsPtr->GetStat(this, stat_id);
 	}
-	int upd_temp_stat(int stat_id, int amount, bool usetraits = true)
+	int upd_temp_stat(int stat_id, int amount)
 	{
-		g_GirlsPtr->UpdateTempStat(this, stat_id, amount, usetraits);
+		g_GirlsPtr->UpdateStatTemp(this, stat_id, amount);
 		return g_GirlsPtr->GetStat(this, stat_id);
 	}
 	int upd_stat(int stat_id, int amount, bool usetraits = true)
@@ -688,7 +687,7 @@ struct sGirl
 	}
 	int upd_temp_skill(int skill_id, int amount)
 	{
-		g_GirlsPtr->UpdateTempSkill(this, skill_id, amount);
+		g_GirlsPtr->UpdateSkillTemp(this, skill_id, amount);
 		return g_GirlsPtr->GetSkill(this, skill_id);
 	}
 	int upd_skill(int skill_id, int amount)
@@ -794,9 +793,9 @@ struct sGirl
 	*	let's overload that...
 	*	should be able to do the same using sCustomer as well...
 	*/
-	void add_trait(string trait, bool temp = true)
+	void add_trait(string trait, int temptime = 0)
 	{
-		g_GirlsPtr->AddTrait(this, trait, temp);
+		g_GirlsPtr->AddTrait(this, trait, temptime);
 	}
 	void remove_trait(string trait)
 	{
@@ -925,28 +924,27 @@ public:
 	int GetStat(sGirl* girl, int stat);
 	void SetStat(sGirl* girl, int stat, int amount);
 	void UpdateStat(sGirl* girl, int stat, int amount, bool usetraits = true);	// updates a stat
-	void UpdateStatMod(sGirl* girl, int stat, int amount, bool usetraits = true);	// updates a statmod usually from items
-	void UpdateTempStat(sGirl* girl, int stat, int amount, bool usetraits = true);	// updates a stat temporarily
-	void UpdateStatTr(sGirl* girl, int stat, int amount, bool usetraits = true);	// updates a statTr from traits
+	void UpdateStatTemp(sGirl* girl, int stat, int amount);	// updates a stat temporarily
+	void UpdateStatMod(sGirl* girl, int stat, int amount);	// updates a statmod usually from items
+	void UpdateStatTr(sGirl* girl, int stat, int amount);	// updates a statTr from traits
 
 	int GetSkill(sGirl* girl, int skill);
 	void SetSkill(sGirl* girl, int skill, int amount);
-	void SetSkillMod(sGirl* girl, int skill, int amount);
 	void UpdateSkill(sGirl* girl, int skill, int amount);		// updates a skill
+	void UpdateSkillTemp(sGirl* girl, int skill, int amount);	// updates a skill temporarily
 	void UpdateSkillMod(sGirl* girl, int skill, int amount);	// updates a skillmods usually from items
-	void UpdateTempSkill(sGirl* girl, int skill, int amount);	// updates a skill temporarily
 	void UpdateSkillTr(sGirl* girl, int skill, int amount);		// updates a skillTr from traits
 
-	double GetAveragOfAllSkills(sGirl* girl);	// `J` added
-	double GetAveragOfSexSkills(sGirl* girl);	// `J` added
-	double GetAveragOfNSxSkills(sGirl* girl);	// `J` added
+	double GetAverageOfAllSkills(sGirl* girl);	// `J` added
+	double GetAverageOfSexSkills(sGirl* girl);	// `J` added
+	double GetAverageOfNSxSkills(sGirl* girl);	// `J` added
 
 	bool HasTrait(sGirl* girl, string trait);
 	bool HasRememberedTrait(sGirl* girl, string trait);
 
 	/* `J` replacing separate ApplyTraits and UnapplyTraits with a single MutuallyExclusiveTraits
 	*/
-	void ApplyTraits(sGirl* girl, sTrait* trait = 0, bool rememberflag = false);	// applys the stat bonuses for traits to a girl
+	void ApplyTraits(sGirl* girl, bool loadinggirl = false, sTrait* trait = 0, bool rememberflag = false);	// applys the stat bonuses for traits to a girl
 	void UnapplyTraits(sGirl* girl, sTrait* trait = 0);	// unapplys a trait (or all traits) from a girl
 	// */
 	void MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait = 0, bool rememberflag = false);
@@ -1035,11 +1033,10 @@ public:
 	string GetThirdDetailsString(sGirl* girl);
 	string GetGirlMood(sGirl* girl);
 
-	//	void AddTrait(sGirl* girl, string name, bool temp = false, bool removeitem = false, bool inrememberlist = false);
-	bool AddTrait(sGirl* girl, string name, bool temp = false, bool removeitem = false, bool inrememberlist = false);
+	bool AddTrait(sGirl* girl, string name, int temptime = 0, bool removeitem = false, bool inrememberlist = false);
 	void AddRememberedTrait(sGirl* girl, string name);
 	bool LoseVirginity(sGirl* girl, bool removeitem = false, bool remember = false);
-	bool RegainVirginity(sGirl* girl, bool temp = false, bool removeitem = false, bool inrememberlist = false);
+	bool RegainVirginity(sGirl* girl, int temptime = 0, bool removeitem = false, bool inrememberlist = false);
 	bool CheckVirginity(sGirl* girl);
 
 	cImgageListManager* GetImgManager() { return &m_ImgListManager; }

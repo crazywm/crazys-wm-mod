@@ -1,6 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Traits>
 	<Trait
+		Name="Kidnapped"
+		Desc="This girl was taken from her family."
+		Type="Temporary" />
+	<Trait
+		Name="Emprisoned Customer"
+		Desc="This girl was was a customer but broke the law in some way allowing you to take her as a slave."
+		Type="Temporary" />
+	<Trait
 		Name="Agile"
 		Desc="This girl is quick on her feet and swift with her hands. She has natural gift of dexterity."
 		Type="Action" />

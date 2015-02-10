@@ -205,7 +205,7 @@ bool cJobManager::WorkCleaning(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 		default:
 			ss << "she hung out around the brothel a bit.";
-			g_Girls.UpdateTempStat(girl, STAT_LIBIDO, g_Dice % 3 + 1);
+			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, g_Dice % 3 + 1);
 			g_Girls.UpdateStat(girl, STAT_HAPPINESS, (g_Dice % 3) + 1);
 			break;
 		}
@@ -225,7 +225,7 @@ bool cJobManager::WorkCleaning(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 	g_Girls.UpdateStat(girl, STAT_EXP, (g_Dice % xp) + 2);
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, (g_Dice % skill) + 2);
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy, true);
 

@@ -59,7 +59,7 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	g_Building = BUILDING_CENTRE;
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
-	int roll = g_Dice % 100;
+	int roll = g_Dice.d100();
 	bool blow = false, sex = false;
 	int wages = 100, work = 0, feed = 0;
 
@@ -293,7 +293,7 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			g_Girls.UpdateSkill(girl, SKILL_ANAL, 2);
 		}
 		brothel->m_Happiness += 100;
-		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -20);
+		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
 		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +3, true);
 		dispo += 6;
 	}
@@ -335,7 +335,7 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	if (g_Dice % 2)
 		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, 1);
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, skill);
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	return false;
 }

@@ -527,7 +527,7 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 				break;
 
 			case sEffect::Stat:			// affects skill
-				girl->upd_temp_stat(eff_id, amount, false);
+				girl->upd_temp_stat(eff_id, amount);
 				break;
 
 			case sEffect::Trait:			// affects skill
@@ -541,7 +541,7 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 					g_Girls.RemoveTrait(girl, girl->m_Inventory[num]->m_Effects[i].m_Trait, true);		// addrememberlist = true Temporary Item trait removal
 
 				else if (amount == 1)		// add temporary trait
-					g_Girls.AddTrait(girl, girl->m_Inventory[num]->m_Effects[i].m_Trait, true, true);	// Temp = true Temporary Item, removeitem = true for Temporary Item trait addition
+					g_Girls.AddTrait(girl, girl->m_Inventory[num]->m_Effects[i].m_Trait, 20, true);	// Temp = true Temporary Item, removeitem = true for Temporary Item trait addition
 
 				if (girl->m_Inventory[num]->m_Effects[i].m_Trait == "Virgin")
 				{
@@ -552,7 +552,7 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 		else	// m_Special == sInventoryItem::None
 		{
 			/* */if (affects == sEffect::Skill)	g_Girls.UpdateSkillMod(girl, eff_id, amount);
-			else if (affects == sEffect::Stat)	g_Girls.UpdateStatMod(girl, eff_id, amount, false);
+			else if (affects == sEffect::Stat)	g_Girls.UpdateStatMod(girl, eff_id, amount);
 			else if (affects == sEffect::GirlStatus)	// adds/removes status
 			{
 				if (amount >= 1)	// add status
@@ -623,7 +623,7 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 					{
 						if (!g_Girls.HasTrait(girl, "Sterile"))
 						{
-							if (g_Dice % 100 == 0)
+							if (g_Dice.percent(1))
 							{
 								g_MessageQue.AddToQue(girl->m_Realname + gettext(": ") +
 									girl->m_Inventory[num]->m_Name +
@@ -705,7 +705,7 @@ void cInventory::Unequip(sGirl* girl, int num)
 		int amount = girl->m_Inventory[num]->m_Effects[i].m_Amount;
 
 		/* */if (affects == sEffect::Skill)	g_Girls.UpdateSkillMod(girl, eff_id, -amount);
-		else if (affects == sEffect::Stat)	g_Girls.UpdateStatMod(girl, eff_id, -amount, false);
+		else if (affects == sEffect::Stat)	g_Girls.UpdateStatMod(girl, eff_id, -amount);
 		else if (affects == sEffect::GirlStatus)	// adds/removes status
 		{
 			if (amount == 1) girl->m_States &= ~(1 << eff_id);		// add status
@@ -747,7 +747,7 @@ void cInventory::Equip(sGirl* girl, sInventoryItem* item, bool force)
 		int amount = item->m_Effects[i].m_Amount;
 
 		/* */if (affects == sEffect::Skill)	g_Girls.UpdateSkillMod(girl, eff_id, amount);
-		else if (affects == sEffect::Stat)	g_Girls.UpdateStatMod(girl, eff_id, amount, false);
+		else if (affects == sEffect::Stat)	g_Girls.UpdateStatMod(girl, eff_id, amount);
 
 		else if (affects == sEffect::Trait)	// trait
 		{
@@ -755,7 +755,7 @@ void cInventory::Equip(sGirl* girl, sInventoryItem* item, bool force)
 				g_Girls.RemoveTrait(girl, item->m_Effects[i].m_Trait, true);	// addrememberlist = true AffectAll trait removal
 
 			else if (amount == 1)		// add temporary trait 					
-				g_Girls.AddTrait(girl, item->m_Effects[i].m_Trait, true, true); // Temp = true AffectAll Item, removeitem = true for AffectAll trait
+				g_Girls.AddTrait(girl, item->m_Effects[i].m_Trait, 20, true); // Temp = true AffectAll Item, removeitem = true for AffectAll trait
 
 			if (item->m_Effects[i].m_Trait == "Virgin")
 			{

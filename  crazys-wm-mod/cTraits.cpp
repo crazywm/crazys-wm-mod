@@ -274,6 +274,7 @@ string cTraits::GetTranslateName(string name)
 		else if (trait.compare("elegant") == 0)					return gettext("Elegant");
 		else if (trait.compare("elf") == 0)						return gettext("Elf");
 		else if (trait.compare("equine") == 0)					return gettext("Equine");
+		else if (trait.compare("emprisoned customer") == 0)		return gettext("Emprisoned Customer");
 		else if (trait.compare("exhibitionist") == 0)			return gettext("Exhibitionist");
 		else if (trait.compare("exotic") == 0)					return gettext("Exotic");
 		else if (trait.compare("eye patch") == 0)				return gettext("Eye Patch");
@@ -331,6 +332,14 @@ string cTraits::GetTranslateName(string name)
 		else if (trait.compare("incorporial") == 0)				return gettext("Incorporeal");		// put this back in for those too lazy to update their (r)girlsx files
 		else if (trait.compare("inverted nipples") == 0)		return gettext("Inverted Nipples");
 		else if (trait.compare("iron will") == 0)				return gettext("Iron Will");
+	}
+	else if (first == "j")
+	{
+		/* */
+	}
+	else if (first == "k")
+	{
+		/* */if (trait.compare("kidnapped") == 0)				return gettext("Kidnapped");
 	}
 	else if (first == "l")
 	{

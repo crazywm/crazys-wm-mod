@@ -58,7 +58,7 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, bool Da
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
-	int roll = g_Dice % 100;
+	int roll = g_Dice.d100();
 	int wages = 25, work = 0;
 	int imagetype = IMGTYPE_ECCHI;
 
@@ -517,7 +517,7 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, bool Da
 		sCustomer cust;
 		GetMiscCustomer(brothel, cust);
 		brothel->m_Happiness += 100;
-		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -20);
+		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
 		// work out the pay between the house and the girl
 		wages += g_Girls.GetStat(girl, STAT_ASKPRICE) + 60;
 		imagetype = IMGTYPE_MAST;
@@ -564,7 +564,7 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, bool Da
 	g_Girls.UpdateStat(girl, STAT_CONFIDENCE, g_Dice%skill);
 	g_Girls.UpdateSkill(girl, SKILL_STRIP, g_Dice%skill + 1);
 	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill + 1);
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	//gain traits
 	g_Girls.PossiblyGainNewTrait(girl, "Nymphomaniac", 75, ACTION_WORKSTRIP, "Having to perform sexual entertainment for patrons every day has made " + girlName + " quite the nympho.", Day0Night1);

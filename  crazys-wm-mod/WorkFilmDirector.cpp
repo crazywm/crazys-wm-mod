@@ -100,7 +100,7 @@ bool cJobManager::WorkFilmDirector(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	g_Girls.UpdateStat(girl, STAT_FAME, g_Dice%fame);
 	g_Girls.UpdateStat(girl, STAT_CHARISMA, g_Dice%skill);
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill + 2);
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, g_Dice%libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, g_Dice%libido);
 
 	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 30, actiontype, "She has worked as a matron long enough that she has learned to be more Charismatic.", Day0Night1);
 	g_Girls.PossiblyGainNewTrait(girl, "Psychic", 90, actiontype, "She has learned to handle the girls so well that you'd almost think she was Psychic.", Day0Night1);

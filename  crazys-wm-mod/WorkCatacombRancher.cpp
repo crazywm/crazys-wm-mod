@@ -82,7 +82,7 @@ bool cJobManager::WorkCatacombRancher(sGirl* girl, sBrothel* brothel, bool Day0N
 	ss << "\n\n";
 
 	//enjoyed the work or not
-	int roll = g_Dice % 100;
+	int roll = g_Dice.d100();
 	if (roll <= 5)
 	{
 		ss << "Some of the patrons abused her during the shift.";
@@ -142,7 +142,7 @@ bool cJobManager::WorkCatacombRancher(sGirl* girl, sBrothel* brothel, bool Day0N
 	g_Girls.UpdateStat(girl, STAT_FAME, 1);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateSkill(girl, SKILL_ANIMALHANDLING, skill);
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	return false;
 }

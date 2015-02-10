@@ -111,7 +111,7 @@ bool cJobManager::WorkHealing(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	g_Girls.UpdateStat(girl, STAT_TIREDNESS, -tiredness, false);
 	g_Girls.UpdateStat(girl, STAT_HAPPINESS, happy);
 	g_Girls.UpdateStat(girl, STAT_MANA, mana);
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 	if (g_Dice % 10 == 0) g_Girls.UpdateSkill(girl, SKILL_MEDICINE, 1);	// `J` she watched what the doctors and nurses were doing
 
 	g_Girls.UpdateStat(girl, STAT_EXP, 1);   // Just because!
@@ -133,13 +133,10 @@ bool cJobManager::WorkHealing(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 
 double cJobManager::JP_Healing(sGirl* girl, bool estimate)
 {
-	double jobperformance = 0.0;
-	if (estimate)	// for third detail string - how much do they need this?
-	{
-		if (g_Girls.HasTrait(girl, "Construct")) return -1000;
+	if (g_Girls.HasTrait(girl, "Construct")) return -1000;
+	double jobperformance = 1.0;
 		jobperformance += (100 - girl->health());
 		jobperformance += (100 - girl->happiness());
 		jobperformance += girl->tiredness();
-	}
 	return jobperformance;
 }

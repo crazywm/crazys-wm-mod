@@ -275,7 +275,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 			g_MessageQue.AddToQue(girlName + " has gotten pregnant", 0);
 		}
 		g_Girls.UpdateSkill(girl, n, 2);
-		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -25);
+		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -25);
 		// work out the pay between the house and the girl
 		wages += 225;
 		girl->m_Pay = wages;
@@ -321,7 +321,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateSkill(girl, SKILL_MEDICINE, g_Dice%skill);
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill + 1);
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	return false;
 }

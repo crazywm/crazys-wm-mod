@@ -59,7 +59,7 @@ bool cJobManager::WorkMechanic(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	cConfig cfg;
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 	int wages = 15, work = 0;
-	int roll = g_Dice % 100;
+	int roll = g_Dice.d100();
 	double jobperformance = JP_Mechanic(girl, false);
 
 
@@ -184,7 +184,7 @@ bool cJobManager::WorkMechanic(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, g_Dice%skill + 1);
 	g_Girls.UpdateSkill(girl, SKILL_MEDICINE, g_Dice%skill);
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill);
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	//gain traits
 	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, actiontype, "Dealing with patients and talking with them about their problems has made " + girl->m_Realname + " more Charismatic.", Day0Night1);

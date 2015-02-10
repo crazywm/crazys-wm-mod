@@ -51,7 +51,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 {
 	int actiontype = ACTION_SEX;
 	stringstream ss; string girlName = girl->m_Realname;
-	int roll_a = g_Dice % 100, roll_b = g_Dice % 100, roll_c = g_Dice % 100, roll_d = g_Dice % 100;
+	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100(), roll_d = g_Dice.d100();
 	ss << "You tell " << girlName << " she is going to warm your bed tonight";
 	if (roll_a <= 80 && g_Girls.DisobeyCheck(girl, ACTION_WORKHAREM, brothel))
 	{
@@ -298,7 +298,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 			ss << gettext("was horney so she just Masturbated.\n\n");
 		}
 		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +1, true);
-		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -15);
+		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -15);
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_MAST, Day0Night1);
 	}
 	else
@@ -327,7 +327,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	return false;
 }

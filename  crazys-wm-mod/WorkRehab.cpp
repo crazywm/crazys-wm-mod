@@ -173,7 +173,7 @@ bool cJobManager::WorkRehab(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 	// Improve girl
 	int libido = 1;
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy, true);
 
 	return false;

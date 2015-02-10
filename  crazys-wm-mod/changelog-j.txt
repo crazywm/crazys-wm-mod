@@ -1539,6 +1539,44 @@ Started work on scripts XML conversion.
 !!!!!!!!!!!!!!!!!!!! pushed to SVN - r149
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.01
 
+###  Changes 2/9/2015
+Fixed a bug with StatTr/SkillTr not being calculated on game load.
+ - Also added recalculation in CreateRandomGirl
+Cleaned the trait loading to check MutuallyExclusiveTraits then RemoveAllRememberedTraits before loading rememberd traits from the savegame.
+Renamed TempStat to StatTemp and TempSkill to SkillTemp for uniformity.
+Converted a ton of g_Dice%100 to either g_Dice.percent() or g_Dice.d100() as needed
+Removed Fame and Age from the list of stats without mod or temp stats.
+Fixed a bug in hard coded random girl to allow negative stats where applicable.
+Changed AddTrait function to allow variable temptime for items instead of fixed 20 turns.
+Added temp traits "Kidnapped" and "Emprisoned Customer".
+ - They both increase rebelliousness, even for mentally challenged girls just not as much
+ - They also increase flight risk
+ - Depending on how they were acquired, the trait's temporary duration will vary
+Fixed a bug in WorkRecruiter.cpp - the new girl was replacing the recruiter in the code
+Added messages for girls when they get placed in the dungeon.
+Converted the rest of the existing Job Performance List to the new checks.
+ - Added some of the missing jobs to the list
+ - Jobs listed with a ? are estimates
+ - Jobs listed with a * are just in for completion - commented out for now
+
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r150
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.02
+
+
+
+
+
+
+
+
+$$$$ note to self - when updating items to recalculate stats/skills when loading girls - don't modify temp stuff $$$$
+
+
+
+
+
+
+
 
 
 

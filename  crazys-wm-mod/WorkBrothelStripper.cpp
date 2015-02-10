@@ -55,7 +55,7 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
-	int roll = g_Dice % 100;
+	int roll = g_Dice.d100();
 	double jobperformance = JP_BrothelStripper(girl, false);
 
 
@@ -157,7 +157,7 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 			if (g_Girls.GetStat(girl, STAT_LIBIDO) > 70)
 			{
 				ss << "She was in the mood so she put on quite a show, taking herself to orgasm right in front of the customer.";
-				g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -20);
+				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
 				wages += 50;
 				mast = true;
 			}
@@ -190,7 +190,7 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 			if (g_Girls.GetStat(girl, STAT_LIBIDO) > 70)
 			{
 				ss << "She was in the mood so she put on quite a show, taking herself to orgasm right in front of the customer.";
-				g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -20);
+				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
 				wages += 50;
 				mast = true;
 			}
@@ -345,7 +345,7 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 			g_MessageQue.AddToQue(girlName + " has gotten pregnant", 0);
 		}
 		g_Girls.UpdateSkill(girl, n, 2);
-		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -25);
+		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -25);
 		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +1, true);
 		// work out the pay between the house and the girl
 		wages += g_Girls.GetStat(girl, STAT_ASKPRICE);
@@ -406,7 +406,7 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill);
 	g_Girls.UpdateSkill(girl, SKILL_STRIP, g_Dice%skill + 2);
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	//gained
 	g_Girls.PossiblyGainNewTrait(girl, "Sexy Air", 80, actiontype, girlName + " has been stripping and having to be sexy for so long she now reeks of sexyness.", Day0Night1);

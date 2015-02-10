@@ -63,7 +63,7 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 
 	int HateLove = g_Girls.GetStat(girl, STAT_PCLOVE) - g_Girls.GetStat(girl, STAT_PCHATE);
 	int wages = 100, work = 0;
-	int roll = g_Dice % 100;
+	int roll = g_Dice.d100();
 	int findchance = 0;
 
 	/* */if (HateLove < -80)	ss << "She hates you more then anything so she doesn't try that hard.";
@@ -127,12 +127,12 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	if (findroll < findchance + 10)	// `J` While out recruiting she does find someone...
 	{
 		int finddif = findroll - findchance;
-		sGirl* girl = g_Girls.GetRandomGirl(false, (dispmod == -3 && g_Dice % 4 != 0));
-		if (girl)
+		sGirl* newgirl = g_Girls.GetRandomGirl(false, (dispmod == -3 && g_Dice % 4 != 0));
+		if (newgirl)
 		{
 			bool add = false;
 			ss << "She finds a girl, ";
-			ss << girl->m_Name;
+			ss << newgirl->m_Name;
 			if (findroll < findchance - 5)
 			{		// `J` ... and your disposition did not come up.
 				add = true;
@@ -158,13 +158,13 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 					if (dispmod == 3)
 					{
 						int rollt(g_Dice % 4);
-						if (rollt == 0)	girl->add_trait("Optimist");
+						if (rollt == 0)	newgirl->add_trait("Optimist");
 					}
 					if (dispmod == -3)
 					{
 						int rollt(g_Dice % 4);
-						if (rollt == 0)	girl->add_trait("Demon");
-						if (rollt == 1)	girl->add_trait("Fearless");
+						if (rollt == 0)	newgirl->add_trait("Demon");
+						if (rollt == 1)	newgirl->add_trait("Fearless");
 					}
 				}
 				else	// `J` ... and she was not recruited
@@ -190,9 +190,12 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 			}
 			if (add)
 			{
-				girl->m_Stats[STAT_HOUSE] = 60;
+				newgirl->m_Stats[STAT_HOUSE] = 60;
+				stringstream NGmsg;
+				NGmsg << newgirl->m_Realname << " was recruited by " << girl->m_Realname << " to work for you.";
+				newgirl->m_Events.AddMessage(NGmsg.str(), IMGTYPE_PROFILE, EVENT_GANG);
 
-				m_Dungeon->AddGirl(girl, DUNGEON_NEWGIRL);
+				m_Dungeon->AddGirl(newgirl, DUNGEON_NEWGIRL);
 			}
 		}
 		else
@@ -245,7 +248,7 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	else			g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, 1);
 	if (g_Dice % 2)	g_Girls.UpdateStat(girl, STAT_CHARISMA, skill);
 	else			g_Girls.UpdateSkill(girl, SKILL_SERVICE, skill);
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	//gain traits
 	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, actiontype, "Dealing with people all day has made " + girl->m_Realname + " more Charismatic.", Day0Night1);

@@ -103,7 +103,7 @@ bool cJobManager::WorkChairMan(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	g_Girls.UpdateStat(girl, STAT_EXP, g_Dice%xp + 5);
 	g_Girls.UpdateSkill(girl, SKILL_MEDICINE, g_Dice%skill);
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill + 2);
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, g_Dice%libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, g_Dice%libido);
 
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy, true);
 	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 30, actiontype, "She has worked as a matron long enough that she has learned to be more Charismatic.", Day0Night1);

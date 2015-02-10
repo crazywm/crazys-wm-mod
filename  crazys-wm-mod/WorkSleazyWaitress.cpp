@@ -144,7 +144,9 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 			if (g_Girls.GetStat(girl, STAT_LIBIDO) > 70 && !g_Girls.HasTrait(girl, "Lesbian"))
 			{
 				ss << " and said that's only on the menu if your willing to pay up. He jumped at the chance to get to try her ass out and bent her over the table and whiping out his " << dick_type_text << " dick.";
-				wages += g_Girls.GetStat(girl, STAT_ASKPRICE) + 50; imagetype = IMGTYPE_ANAL; g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -20);
+				wages += g_Girls.GetStat(girl, STAT_ASKPRICE) + 50;
+				imagetype = IMGTYPE_ANAL;
+				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
 				if (roll_d >= 90)//small
 				{
 					if (g_Girls.GetSkill(girl, SKILL_ANAL) >= 70)
@@ -392,13 +394,19 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	if (g_Girls.HasTrait(girl, "Nymphomaniac") && !g_Girls.HasTrait(girl, "Lesbian") && g_Girls.GetStat(girl, STAT_LIBIDO) > 90 && g_Girls.GetSkill(girl, SKILL_ORALSEX) > 80 && g_Dice.percent(25))
 	{
 		ss << girlName << " thought she deserved a short break and disappeared under one of the tables when nobody was looking, in order to give one of the clients a blowjob. Kneeling under the table, she devoured his cock with ease and deepthroated him as he came to make sure she didn't make a mess. The client himself was wasted out of his mind and didn't catch as much as a glimpse of her, but he left the locale with a big tip on the table.\n";
-		wages += 50; imagetype = IMGTYPE_ORAL; oral += 2; g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -20);
+		wages += 50; 
+		imagetype = IMGTYPE_ORAL;
+		oral += 2;
+		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
 	}
 
 	if (g_Girls.HasTrait(girl, "Nymphomaniac") && !g_Girls.HasTrait(girl, "Lesbian") && g_Girls.GetStat(girl, STAT_LIBIDO) > 90 && g_Girls.GetSkill(girl, SKILL_HANDJOB) > 80 && g_Dice.percent(25))
 	{
 		ss << "During her shift, " << girlName << " unnoticeably dived under the table belonging to a lonely-looking fellow, quickly unzipped his pants and started jacking him off enthusiastically. She skillfully wiped herself when he came all over her face. The whole event took no longer than two minutes, but was well worth the time spent on it, since the patron left with a heavy tip.\n";
-		wages += 50; imagetype = IMGTYPE_HAND; hand += 2; g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -20);
+		wages += 50;
+		imagetype = IMGTYPE_HAND;
+		hand += 2;
+		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
 	}
 
 	if (g_Girls.GetStat(girl, STAT_DIGNITY) <= -20 && g_Dice.percent(20))
@@ -461,7 +469,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill);
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill + 1);
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	//gained traits
 	g_Girls.PossiblyGainNewTrait(girl, "Charming", 70, ACTION_WORKCLUB, girlName + " has been flirting with customers to try to get better tips. Enough practice at it has made her quite Charming.", Day0Night1);

@@ -260,6 +260,6 @@
 		LogItems="false"
 		LogFonts="false"
 		LogTorture="false"
-		LogDebug="true"
+		LogDebug="false"
 		LogExtraDetails="false" />
 </config>

@@ -87,7 +87,7 @@ bool cJobManager::WorkGardener(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	}
 	ss << "\n\n";
 
-	int roll = g_Dice % 100;
+	int roll = g_Dice.d100();
 
 	//enjoyed the work or not
 	if (roll <= 5)
@@ -207,7 +207,7 @@ bool cJobManager::WorkGardener(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, g_Dice % (skill - 1));
 	g_Girls.UpdateSkill(girl, SKILL_HERBALISM, (g_Dice%skill) + 1);
 	g_Girls.UpdateSkill(girl, SKILL_FARMING, (g_Dice%skill) + 1);
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	return false;
 }

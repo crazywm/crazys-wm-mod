@@ -230,7 +230,7 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	g_Girls.UpdateSkill(girl, SKILL_MAGIC, g_Dice % gain + skill);
 	g_Girls.UpdateStat(girl, STAT_AGILITY, g_Dice % gain + skill);
 	g_Girls.UpdateStat(girl, STAT_CONSTITUTION, g_Dice % 2 + skill);
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 	g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, gain + skill);
 
 	g_Girls.PossiblyGainNewTrait(girl, "Tough", 30, actiontype, "She has become pretty Tough from all of the fights she's been in.", Day0Night1);

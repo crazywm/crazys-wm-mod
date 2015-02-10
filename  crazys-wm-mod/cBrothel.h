@@ -168,6 +168,7 @@ public:
 	void RemoveGirlFromRunaways(sGirl* girl);
 	int  GetNumRunaways()			{ return m_NumRunaways; }
 
+
 	void NewBrothel(int NumRooms, int MaxNumRooms = 200);
 	void DestroyBrothel(int ID);
 	void UpdateBrothels();
@@ -202,6 +203,8 @@ public:
 /* */
 
 	int GetTotalNumGirls(bool monster = false);
+	int GetFreeRooms(sBrothel* brothel);
+	int GetFreeRooms(int brothelnum = 0);
 
 	void UpgradeSupplySheds()				{ m_SupplyShedLevel++; }
 	int  GetSupplyShedLevel()				{ return m_SupplyShedLevel; }
@@ -232,6 +235,8 @@ public:
 	sBrothel*	GetBrothel(int brothelID);
 	int			GetNumBrothels()			{ return m_NumBrothels; }
 	int			GetNumBrothelsWithVacancies();
+	int			GetFirstBrothelWithVacancies();
+	int			GetRandomBrothelWithVacancies();
 
 	void CalculatePay(sBrothel* brothel, sGirl* girl, u_int Job);
 

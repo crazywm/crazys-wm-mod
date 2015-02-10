@@ -60,7 +60,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 
 	int wages = 25, work = 0;
 
-	int roll = g_Dice % 100;
+	int roll = g_Dice.d100();
 	int jobperformance = (int)JP_HallDealer(girl, false);
 
 
@@ -590,7 +590,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	else if (gain == 1)	g_Girls.UpdateStat(girl, STAT_AGILITY, g_Dice%skill);
 	else /*          */	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill);
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill + 1);
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	return false;
 }

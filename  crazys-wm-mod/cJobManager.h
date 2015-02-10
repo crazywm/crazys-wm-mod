@@ -135,6 +135,7 @@ public:
 	static double JP_PeepShow(sGirl* girl, bool estimate);
 	static bool WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
 	static double JP_Whore(sGirl* girl, bool estimate);
+	static double JP_WhoreStreets(sGirl* girl, bool estimate);
 
 	// - Movie Studio - Actress
 	static bool WorkFilmBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);

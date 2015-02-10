@@ -49,7 +49,7 @@ bool cJobManager::WorkFarmVeterinarian(sGirl* girl, sBrothel* brothel, bool Day0
 
 	int fame = 0;
 	int wages = 25, work = 0;
-	int roll = g_Dice % 100;
+	int roll = g_Dice.d100();
 
 	double jobperformance = JP_FarmVeterinarian(girl, false);
 
@@ -138,7 +138,7 @@ bool cJobManager::WorkFarmVeterinarian(sGirl* girl, sBrothel* brothel, bool Day0
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateSkill(girl, SKILL_MEDICINE, g_Dice%skill + 1);
 	g_Girls.UpdateSkill(girl, SKILL_ANIMALHANDLING, g_Dice%skill + 1);
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	return false;
 }

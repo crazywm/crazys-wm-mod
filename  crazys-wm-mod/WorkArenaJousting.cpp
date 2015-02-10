@@ -55,7 +55,7 @@ bool cJobManager::WorkArenaJousting(sGirl* girl, sBrothel* brothel, bool Day0Nig
 	}
 	ss << " worked as a jouster in the arena.\n\n";
 
-	int roll = g_Dice % 100;
+	int roll = g_Dice.d100();
 	int wages = 50, work = 0;
 
 	//CRAZY
@@ -139,7 +139,7 @@ bool cJobManager::WorkArenaJousting(sGirl* girl, sBrothel* brothel, bool Day0Nig
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateSkill(girl, SKILL_ANIMALHANDLING, g_Dice%skill);
 	g_Girls.UpdateSkill(girl, SKILL_COMBAT, g_Dice%skill + 2);
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	//gained
 

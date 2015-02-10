@@ -50,7 +50,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 
 	int enjoy = 0, work = 0;
 	int wages = 0;
-	int roll = g_Dice % 100;
+	int roll = g_Dice.d100();
 
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
 
@@ -242,7 +242,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 	g_Girls.UpdateStat(girl, STAT_FAME, 1);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, skill);
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	return false;
 }
@@ -250,11 +250,24 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 double cJobManager::JP_Milk(sGirl* girl, bool estimate)// not used
 {
 	double jobperformance = 0.0;
-	if (estimate)// for third detail string
-	{
-	}
-	else// for the actual check
-	{
-	}
+	jobperformance += girl->lactation();
+	/* */if (g_Girls.HasTrait(girl, "Flat Chest"))				jobperformance += 5;
+	else if (g_Girls.HasTrait(girl, "Petite Breasts"))			jobperformance += 10;
+	else if (g_Girls.HasTrait(girl, "Small Boobs"))				jobperformance += 15;
+	else if (g_Girls.HasTrait(girl, "Busty Boobs"))				jobperformance += 25;
+	else if (g_Girls.HasTrait(girl, "Big Boobs"))				jobperformance += 30;
+	else if (g_Girls.HasTrait(girl, "Giant Juggs"))				jobperformance += 35;
+	else if (g_Girls.HasTrait(girl, "Massive Melons"))			jobperformance += 40;
+	else if (g_Girls.HasTrait(girl, "Abnormally Large Boobs"))	jobperformance += 45;
+	else if (g_Girls.HasTrait(girl, "Titanic Tits"))			jobperformance += 50;
+	else /*                                               */	jobperformance += 20;
+
+	/* */if (g_Girls.HasTrait(girl, "Dry Milk"))				jobperformance /= 5;
+	else if (g_Girls.HasTrait(girl, "Scarce Lactation"))		jobperformance /= 2;
+	else if (g_Girls.HasTrait(girl, "Abundant Lactation"))		jobperformance *= 1.5;
+	else if (g_Girls.HasTrait(girl, "Cow Tits"))				jobperformance *= 2;
+
+	if (girl->is_pregnant()) jobperformance *= 2;
+
 	return jobperformance;
 }

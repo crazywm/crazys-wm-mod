@@ -58,7 +58,7 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 	sGirl* dealeronduty = g_Brothels.GetRandomGirlOnJob(0, JOB_DEALER, Day0Night1);
 	string dealername = (dealeronduty ? "Dealer " + dealeronduty->m_Realname + "" : "the Dealer");
 
-	int roll = g_Dice % 100;
+	int roll = g_Dice.d100();
 	int wages = 25, work = 0;
 
 	double jobperformance = JP_HallEntertainer(girl, false);
@@ -534,7 +534,7 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateStat(girl, STAT_CONFIDENCE, g_Dice%skill);
 	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill + 1);
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	return false;
 }

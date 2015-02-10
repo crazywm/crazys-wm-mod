@@ -244,7 +244,7 @@ void cScreenPrison::release_button()
 	g_Gold.item_cost((double)cost);
 	g_Gold.girl_support((double)cost);
 	g_Brothels.RemoveGirlFromPrison(pgirls);
-	if((g_Brothels.GetBrothel(g_CurrBrothel)->m_NumRooms - g_Brothels.GetBrothel(g_CurrBrothel)->m_NumGirls) == 0)
+	if (g_Brothels.GetFreeRooms(g_CurrBrothel) < 1)
 	{
 		string text = pgirls->m_Realname;
 		text += gettext(" has been sent to your dungeon, since current brothel is full.");

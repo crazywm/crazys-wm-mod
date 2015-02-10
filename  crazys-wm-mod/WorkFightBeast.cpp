@@ -124,7 +124,7 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		if (m_JobManager.is_sex_type_allowed(SKILL_BEASTIALITY, brothel) && !g_Girls.HasTrait(girl, "Virgin"))
 		{
 			ss << " So as punishment you allow the beast to have its way with her."; enjoy -= 1;
-			g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -50);
+			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -50);
 			g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, 2);
 			girl->m_Events.AddMessage(ss.str(), IMGTYPE_BEAST, Day0Night1);
 			if (!girl->calc_insemination(g_Brothels.GetPlayer(), false, 1.0))
@@ -179,7 +179,7 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	g_Girls.UpdateSkill(girl, SKILL_MAGIC, g_Dice%fightxp + skill);
 	g_Girls.UpdateStat(girl, STAT_AGILITY, g_Dice%fightxp + skill);
 	g_Girls.UpdateStat(girl, STAT_CONSTITUTION, g_Dice%fightxp + skill);
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 	g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, g_Dice%fightxp * 2 + skill);
 
 	g_Girls.PossiblyGainNewTrait(girl, "Tough", 20, actiontype, "She has become pretty Tough from all of the fights she's been in.", Day0Night1);
