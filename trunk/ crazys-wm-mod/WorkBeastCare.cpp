@@ -151,7 +151,7 @@ bool cJobManager::WorkBeastCare(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, max(1, (g_Dice % skill) - 1));
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 	g_Girls.UpdateSkill(girl, SKILL_ANIMALHANDLING, max(1, (g_Dice % skill) + 1));
 
 	g_Girls.PossiblyLoseExistingTrait(girl, "Elegant", 40, actiontype, " Working with dirty, smelly beasts has damaged " + girlName + "'s hair, skin and nails making her less Elegant.", Day0Night1);

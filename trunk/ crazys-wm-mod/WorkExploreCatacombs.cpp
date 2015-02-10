@@ -109,33 +109,31 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 				// Some rationilization could be done, but is probably not necessary. DustyDan
 				sGirl* ugirl = 0;
 				bool unique = g_Dice.percent(50);	// chance of getting unique girl
-
-				if (unique)  // Unique monster girl type
-				{
-					ugirl = g_Girls.GetRandomGirl(false, true);
-					if (ugirl == 0) unique = false;
-				}
-				if (g_Brothels.GetObjective())
-				{
-					if (g_Brothels.GetObjective()->m_Objective == OBJECTIVE_CAPTUREXCATACOMBGIRLS)
-						g_Brothels.GetObjective()->m_SoFar++;
-				}
-
-				// Either type of girl goes to the dungeon
 				if (unique)
 				{
+					ugirl = g_Girls.GetRandomGirl(false, true);				// Unique monster girl type
+				}
+				if (ugirl == 0)		// if not unique or a unique girl can not be found
+				{
+					g_Girls.CreateRandomGirl(0, false, false, true, true);	// create a random girl
+					type_monster_girls++;
+				}
+				else				// otherwise set the unique girls stuff
+				{
 					ugirl->m_States &= ~(1 << STATUS_CATACOMBS);
-					g_Brothels.GetDungeon()->AddGirl(ugirl, DUNGEON_GIRLCAPTURED);
 					type_unique_monster_girls++;
 				}
-				else
+				if (ugirl)
 				{
-					ugirl = g_Girls.CreateRandomGirl(0, false, false, true, true);
-					if (ugirl != 0)  // make sure a girl was returned
+					if (g_Brothels.GetObjective())
 					{
-						g_Brothels.GetDungeon()->AddGirl(ugirl, DUNGEON_GIRLCAPTURED);
-						type_monster_girls++;
+						if (g_Brothels.GetObjective()->m_Objective == OBJECTIVE_CAPTUREXCATACOMBGIRLS)
+							g_Brothels.GetObjective()->m_SoFar++;
 					}
+					stringstream Umsg;
+					Umsg << ugirl->m_Realname << " was captured in the catacombs by " << girlName << ".\n";
+					ugirl->m_Events.AddMessage(Umsg.str(), IMGTYPE_PROFILE, EVENT_DUNGEON);
+					g_Brothels.GetDungeon()->AddGirl(ugirl, DUNGEON_GIRLCAPTURED);	// Either type of girl goes to the dungeon
 				}
 			}
 			else  // Beast type
@@ -276,7 +274,7 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 		ss << girl->m_Realname << " was real horny so she had a little fun with the girl";
 		if (type_monster_girls + type_unique_monster_girls > 1) ss << "s";
 		ss << " she captured.";
-		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -50);
+		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -50);
 		g_Girls.UpdateSkill(girl, SKILL_LESBIAN, type_monster_girls + type_unique_monster_girls);
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_LESBIAN, Day0Night1);
 	}
@@ -285,7 +283,7 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 		ss << girl->m_Realname << " was real horny so she had a little fun with the beast";
 		if (type_beasts > 1) ss << "s";
 		ss << " she captured.";
-		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -50);
+		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -50);
 		g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, type_beasts);
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_BEAST, Day0Night1);
 		if (!girl->calc_insemination(g_Brothels.GetPlayer(), false, 1.0))
@@ -310,7 +308,7 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 	g_Girls.UpdateSkill(girl, SKILL_MAGIC, (g_Dice % skill) + 1);
 	g_Girls.UpdateStat(girl, STAT_AGILITY, g_Dice % skill);
 	g_Girls.UpdateStat(girl, STAT_CONSTITUTION, g_Dice % skill);
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 	g_Girls.UpdateEnjoyment(girl, actiontype, (g_Dice % skill) + 2, true);
 
 	// Myr: Turned trait gains into functions

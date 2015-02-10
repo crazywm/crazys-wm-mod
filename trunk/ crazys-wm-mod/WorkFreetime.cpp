@@ -1521,9 +1521,9 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	g_Girls.UpdateStat(girl, STAT_HEALTH, U_Health, false);
 	g_Girls.UpdateStat(girl, STAT_HAPPINESS, U_Happiness);
 	g_Girls.UpdateStat(girl, STAT_MANA, U_Mana);
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, U_Libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, U_Libido);
 	g_Girls.UpdateStat(girl, STAT_EXP, U_EXP);
-	g_Girls.UpdateTempStat(girl, STAT_BEAUTY, U_Beauty);
+	g_Girls.UpdateStatTemp(girl, STAT_BEAUTY, U_Beauty);
 	g_Girls.UpdateStat(girl, STAT_MORALITY, U_Morality);
 
 

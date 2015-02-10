@@ -174,7 +174,7 @@ bool cJobManager::WorkCustService(sGirl* girl, sBrothel* brothel, bool Day0Night
 	else if(gain == 2)	g_Girls.UpdateStat(girl, STAT_SPIRIT, g_Dice%skill);
 	else				g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill);
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill+1);
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 	
 	return false;
 }

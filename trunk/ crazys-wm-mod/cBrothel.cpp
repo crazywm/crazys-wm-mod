@@ -1681,7 +1681,7 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_B
 
 
 		// Runaway, Depression & Drug checking
-		if (runaway_check(brothel, current) == true)
+		if (runaway_check(brothel, current))
 		{
 			sGirl* temp = current;
 			current = current->m_Next;
@@ -1715,7 +1715,7 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_B
 				}
 				else
 				{
-					if ((g_Dice % 100) + 1 < 70)
+					if (g_Dice.percent(70))
 					{
 						MatronMsg += gettext("Your matron helps ") + girlName + gettext(" to relax.\n");
 						g_Girls.UpdateStat(current, STAT_TIREDNESS, -5);
@@ -1726,7 +1726,7 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_B
 				MatronWarningMsg += gettext("CAUTION! This girl desparatly need rest. Give her some free time\n");
 		}
 
-		if (g_Girls.GetStat(current, STAT_HAPPINESS) < 40 && matron && (g_Dice % 100) + 1 < 70)
+		if (g_Girls.GetStat(current, STAT_HAPPINESS) < 40 && matron && g_Dice.percent(70))
 		{
 			MatronMsg = gettext("Your matron helps cheer up ") + girlName + gettext(" after she feels sad.\n");
 			g_Girls.UpdateStat(current, STAT_HAPPINESS, 5);
@@ -2666,7 +2666,7 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 				if (g_Girls.HasTrait(girl, "Nymphomaniac"))
 				{
 					ss << "She spent the day at the Libary looking at porn making her become horny.\n\n";
-					g_Girls.UpdateTempStat(girl, STAT_LIBIDO, 15);
+					g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, 15);
 				}
 				else
 				{
@@ -2721,7 +2721,7 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 		{
 			ss << girl->m_Realname << " spent most of her day lounging in front of her Television Set.\n\n";
 			girl->tiredness(-5);
-			if (g_Dice % 100<5)		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, 1);
+			if (g_Dice.percent(5))		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, 1);
 		}
 		else
 		{
@@ -2747,7 +2747,7 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 		if (g_Girls.GetStat(girl, STAT_LIBIDO) > 65 && is_she_resting(girl))
 		{
 			ss << girlName << "'s lust got the better of her and she spent the day using her Compelling Dildo.\n\n";
-			g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -20);
+			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
 			mast = true;
 		}
 	}
@@ -2833,19 +2833,19 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 			if (g_Girls.GetStat(girl, STAT_LIBIDO) > 65)
 			{
 				ss << girlName << "'s lust got the better of her while she was on the her Computer looking at porn.\n\n";
-				g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -20);
+				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
 				mast = true;
 			}
 			else
 			{
 				ss << "She spent the day on her Computer looking at porn making her become horny.\n\n";
-				g_Girls.UpdateTempStat(girl, STAT_LIBIDO, 15);
+				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, 15);
 			}
 		}
 		else
 		{
 			ss << "She spent her free time playing on her Computer.\n\n";
-			if (g_Dice % 100<5)		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, 1);
+			if (g_Dice.percent(5))		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, 1);
 		}
 	}
 	if (g_Girls.HasItemJ(girl, "Cat") != -1 && g_Dice.percent(10))
@@ -2958,12 +2958,12 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 		if (g_Girls.GetStat(girl, STAT_INTELLIGENCE) > 65 && is_she_resting(girl))
 		{
 			ss << girlName << " sharpened her Short Sword making it more ready for combat.\n\n";
-			g_Girls.UpdateTempSkill(girl, SKILL_COMBAT, 2);
+			g_Girls.UpdateSkillTemp(girl, SKILL_COMBAT, 2);
 		}
 		else
 		{
 			ss << girlName << " tried to sharpen her Short Sword but doesn't have the brains to do it right.\n\n";
-			g_Girls.UpdateTempSkill(girl, SKILL_COMBAT, -2);
+			g_Girls.UpdateSkillTemp(girl, SKILL_COMBAT, -2);
 		}
 	}
 
@@ -3975,6 +3975,17 @@ int cBrothelManager::GetTotalNumGirls(bool monster)
 	return total;
 }
 
+int cBrothelManager::GetFreeRooms(sBrothel* brothel)
+{
+	return brothel->m_NumRooms - brothel->m_NumGirls;
+}
+
+int cBrothelManager::GetFreeRooms(int brothelnum)
+{
+	sBrothel* brothel = g_Brothels.GetBrothel(brothelnum);
+	return brothel->m_NumRooms - brothel->m_NumGirls;
+}
+
 #if 0	// `J` no longer used so commenting out
 string cBrothelManager::GetGirlString(int brothelID, int girlNum)
 {
@@ -4094,7 +4105,7 @@ string cBrothelManager::GetBrothelString(int brothelID)
 	*/
 	ss << "Customer Happiness: " << happiness_text(brothel) << endl;
 	ss << "Fame: " << fame_text(brothel);
-	ss << "Rooms (available/current): " << int(brothel->m_NumRooms) - int(brothel->m_NumGirls) << " / " << int(brothel->m_NumRooms) << endl;
+	ss << "Rooms (available/current): " << (brothel->m_NumRooms - brothel->m_NumGirls) << " / " << brothel->m_NumRooms << endl;
 	//ss << "Strip Bar: "		<< has_bar		<< endl;
 	//ss << "Gambling Hall: "	<< has_hall		<< endl;
 	ss << "This brothel's Profit: " << profit << endl;
@@ -4139,6 +4150,42 @@ int cBrothelManager::GetNumBrothelsWithVacancies()
 	}
 
 	return number;
+}
+int cBrothelManager::GetFirstBrothelWithVacancies()
+{
+	if (GetNumBrothelsWithVacancies() < 1) return -1;
+
+	int number = 0;
+	sBrothel* current = m_Parent;
+	while (current)
+	{
+		if (current->m_NumGirls < current->m_NumRooms)
+			return number;
+		current = current->m_Next;
+	}
+
+	return -1;
+}
+int cBrothelManager::GetRandomBrothelWithVacancies()
+{
+	int chance = GetNumBrothelsWithVacancies();
+	if (chance < 1) return -1;
+	int *choice = new int[chance];
+	int j = 0;
+	int number = 0;
+	sBrothel* current = m_Parent;
+	while (current)
+	{
+		if (current->m_NumGirls < current->m_NumRooms)
+		{
+			choice[j] = number;
+			j++;
+		}
+		number++;
+		current = current->m_Next;
+	}
+
+	return choice[g_Dice%chance];
 }
 
 int cBrothelManager::GetNumGirls(int brothelID)
@@ -4297,7 +4344,7 @@ bool cBrothelManager::PlayerCombat(sGirl* girl)		//  ***************************
 	while (g_Girls.GetStat(girl, STAT_HEALTH) > 20 && pHealth > 0)
 	{
 		// Girl attacks
-		if ((g_Dice % 100) + 1 < g_Girls.GetSkill(girl, attack))
+		if (g_Dice.percent(g_Girls.GetSkill(girl, attack)))
 		{
 			int damage = 0;
 			if (attack == SKILL_MAGIC)
@@ -4322,14 +4369,14 @@ bool cBrothelManager::PlayerCombat(sGirl* girl)		//  ***************************
 			g_Girls.UpdateSkill(girl, attack, g_Dice % 2);	// she may improve a little
 
 			// player attempts Dodge
-			if ((g_Dice % 100) + 1 > pdodge)
+			if (g_Dice.percent(pdodge))
 				pHealth -= damage;
 			else
 				m_Player.m_Stats[STAT_AGILITY] += g_Dice % 2;	// player may improve a little
 		}
 
 		// Player Attacks
-		if ((g_Dice % 100) + 1 < m_Player.m_Skills[pattack])
+		if (g_Dice.percent(m_Player.m_Skills[pattack]))
 		{
 			int damage = 0;
 			if (pattack == SKILL_MAGIC)
@@ -4354,7 +4401,7 @@ bool cBrothelManager::PlayerCombat(sGirl* girl)		//  ***************************
 			m_Player.m_Skills[pattack] += g_Dice % 2;	// he may improve a little
 
 			// girl attempts Dodge
-			if ((g_Dice % 100) + 1 > dodge)
+			if (g_Dice.percent(dodge))
 				g_Girls.UpdateStat(girl, STAT_HEALTH, -damage);
 			else
 			{
@@ -4394,7 +4441,7 @@ bool cBrothelManager::FightsBack(sGirl* girl)
 	if (g_Girls.GetStat(girl, STAT_HEALTH) < 10)	// she won't fight back in this state
 		return false;
 
-	if (g_Girls.HasTrait(girl, "Merciless") && ((g_Dice % 100) <= 20))
+	if (g_Girls.HasTrait(girl, "Merciless") && (g_Dice.percent(20)))
 		return true;
 
 	if (g_Girls.DisobeyCheck(girl, ACTION_COMBAT))
@@ -4561,14 +4608,29 @@ bool cBrothelManager::runaway_check(sBrothel *brothel, sGirl *girl)
 	*
 	*	WD: added m_DaysUnhappy tracking
 	*/
-	if (girl->happiness() > 10)
+
+	bool flightrisk = (girl->has_trait("Kidnapped") || girl->has_trait("Emprisoned Customer"));
+
+	if (flightrisk && girl->happiness() > 50)	// Girls here totally against their will are more likely to try to get away
+	{
+		girl->m_DaysUnhappy--;					// and they don't reset days to 0 but instead reduce day count
+		if (girl->m_DaysUnhappy < 0)
+			girl->m_DaysUnhappy = 0;			// until it gets to 0
+		return false;
+	}
+	else if (girl->happiness() > 10)
 	{
 		girl->m_DaysUnhappy = 0;
 		return false;
 	}
 
-	if (!girl->is_slave())
-		girl->m_DaysUnhappy++;
+	/*	
+	*	`J` this was only adding up for free girls
+	*	I made it add up for all girls
+	*	and free girls become unhappy faster
+	*/
+	girl->m_DaysUnhappy++;		
+	if (!girl->is_slave()) girl->m_DaysUnhappy++;
 	/*
 	*	now there's a matron on duty, she has a chance of fending off
 	*	bad things.
@@ -4696,7 +4758,7 @@ sGirl* cBrothelManager::GetDrugPossessor()
 		sGirl* girl = current->m_Girls;
 		while (girl)
 		{
-			if ((g_Dice % 100) + 1 > g_Girls.GetStat(girl, STAT_INTELLIGENCE))	// girls will only be found out if low intelligence
+			if (g_Dice.percent(g_Girls.GetStat(girl, STAT_INTELLIGENCE)))	// girls will only be found out if low intelligence
 			{
 				if (g_Girls.HasItem(girl, "Shroud Mushroom") || g_Girls.HasItem(girl, "Fairy Dust") || g_Girls.HasItem(girl, "Vira Blood"))
 					return girl;

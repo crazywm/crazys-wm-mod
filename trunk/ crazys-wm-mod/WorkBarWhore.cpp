@@ -451,6 +451,7 @@ double cJobManager::JP_BarWhore(sGirl* girl, bool estimate)// not used
 	double jobperformance = 0.0;
 	if (estimate)// for third detail string
 	{
+		jobperformance += g_Girls.GetAverageOfSexSkills(girl) + (girl->charisma() + girl->beauty()) / 2;
 	}
 	else// for the actual check
 	{

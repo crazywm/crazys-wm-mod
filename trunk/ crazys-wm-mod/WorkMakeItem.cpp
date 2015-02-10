@@ -51,10 +51,11 @@ bool cJobManager::WorkMakeItem(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	int tips = 0;
 	int imagetype = IMGTYPE_CRAFT;
 	int msgtype = Day0Night1;
+	int roll = g_Dice.d100();
 
 #if 1
 	// TODO need better dialog
-	if (g_Dice % 100 <= 10)
+	if (roll <= 10)
 	{
 		g_Girls.UpdateEnjoyment(girl, actiontype, -1, true);
 		ss << " She wasn't able to make anything.";
@@ -130,7 +131,7 @@ bool cJobManager::WorkMakeItem(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateSkill(girl, SKILL_CRAFTING, g_Dice%skill + 1);
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill);
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	return false;
 }

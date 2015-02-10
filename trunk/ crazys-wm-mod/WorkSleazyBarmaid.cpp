@@ -57,7 +57,7 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Nig
 	int HateLove = 0;
 	HateLove = g_Girls.GetStat(girl, STAT_PCLOVE) - g_Girls.GetStat(girl, STAT_PCHATE);
 	int wages = 15, work = 0;
-	int roll = g_Dice % 100;
+	int roll = g_Dice.d100();
 	int imagetype = IMGTYPE_WAIT;
 
 	double jobperformance = JP_SleazyBarmaid(girl, false);
@@ -201,7 +201,7 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Nig
 			ss << girlName << " spotted a relatively good-looking guy walking into the bathroom alone. She followed him inside, and as he tried to exit the bathroom stall, he got pushed back in by her. " << girlName << " didn't waste any time and in a matter of seconds was vigorously fucking the client. After the deed, the client made sure " << girlName << " had a pretty hefty wad of money stuck behind her skirt.\n"; wages += 50;
 		}
 		imagetype = IMGTYPE_SEX;
-		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -20);
+		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
 	}
 
 
@@ -245,7 +245,7 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Nig
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill);
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill + 1);
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	//gained
 	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, actiontype, "Dealing with customers at the bar and talking with them about their problems has made " + girlName + " more Charismatic.", Day0Night1);

@@ -58,10 +58,10 @@ bool cJobManager::WorkEscort(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	int jobperformance = 0, wages = 0, tips = 0;
 
 	int agl = (g_Girls.GetStat(girl, STAT_AGILITY));
-	int roll_a = g_Dice % 100;							// customer type
-	int roll_b = g_Dice % 100;							// customer wealth
-	int roll_c = g_Dice % 100 + agl;					// agility adjustment
-	int roll_d = g_Dice % 100;
+	int roll_a = g_Dice.d100();							// customer type
+	int roll_b = g_Dice.d100();							// customer wealth
+	int roll_c = g_Dice.d100() + agl;					// agility adjustment
+	int roll_d = g_Dice.d100();
 
 	int pass_a = false;
 	int pass_b = false;
@@ -179,7 +179,7 @@ bool cJobManager::WorkEscort(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	g_Girls.UpdateStat(girl, STAT_CONFIDENCE, g_Dice%skill + 1);
 	g_Girls.UpdateStat(girl, STAT_FAME, g_Dice%skill);
 	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill + 1);
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_FORMAL, Day0Night1);
 
@@ -199,6 +199,8 @@ double cJobManager::JP_Escort(sGirl* girl, bool estimate)// not used
 	double jobperformance = 0.0;
 	if (estimate)// for third detail string
 	{
+		jobperformance += g_Girls.GetAverageOfSexSkills(girl) + (girl->charisma() + girl->beauty()) / 2;
+
 	}
 	else// for the actual check
 	{

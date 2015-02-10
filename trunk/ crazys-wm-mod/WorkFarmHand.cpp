@@ -161,7 +161,7 @@ bool cJobManager::WorkFarmHand(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, (g_Dice % skill));
 	g_Girls.UpdateSkill(girl, SKILL_CRAFTING, (g_Dice % 2));
 	g_Girls.UpdateSkill(girl, SKILL_FARMING, (g_Dice % 2));
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoyF, true);
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKCLEANING, enjoyC, true);

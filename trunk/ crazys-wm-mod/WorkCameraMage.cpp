@@ -156,7 +156,7 @@ bool cJobManager::WorkCameraMage(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, g_Dice%skill);
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill + 1);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	return false;
 }

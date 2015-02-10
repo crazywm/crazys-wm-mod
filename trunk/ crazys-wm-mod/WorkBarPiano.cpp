@@ -59,7 +59,7 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 	int wages = 20, work = 0;
 
-	int roll = g_Dice % 100;
+	int roll = g_Dice.d100();
 
 	double jobperformance = JP_BarPiano(girl, false);
 
@@ -342,7 +342,7 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	else
 		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, g_Dice%skill);
 	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill + 1);
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	//gain traits
 	g_Girls.PossiblyGainNewTrait(girl, "Elegant", 75, ACTION_WORKMUSIC, "Playing the piano has given " + girlName + " an Elegant nature.", Day0Night1);

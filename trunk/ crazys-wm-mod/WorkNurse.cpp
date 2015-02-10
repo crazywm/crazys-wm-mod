@@ -83,7 +83,7 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 	sCustomer cust;
 	GetMiscCustomer(brothel, cust);
 
-	int roll = g_Dice % 100;
+	int roll = g_Dice.d100();
 	if (jobperformance >= 245)
 	{
 		ss << " She must be the perfect nurse, patients go on and on about her and always come to see her when she works.\n\n";
@@ -343,7 +343,7 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 			g_Girls.UpdateSkill(girl, SKILL_ANAL, 2);
 		}
 		brothel->m_Happiness += 100;
-		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -20);
+		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
 		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +3, true);
 	}
 	else if (hand)
@@ -404,7 +404,7 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 	if (g_Dice % 2 == 1)	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, g_Dice%skill);
 	else				g_Girls.UpdateStat(girl, STAT_CHARISMA, g_Dice%skill);
 	g_Girls.UpdateSkill(girl, SKILL_MEDICINE, g_Dice%skill + 1);
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy, true);
 	//gain traits

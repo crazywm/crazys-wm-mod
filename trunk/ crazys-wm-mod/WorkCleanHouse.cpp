@@ -126,7 +126,7 @@ bool cJobManager::WorkCleanHouse(sGirl* girl, sBrothel* brothel, bool Day0Night1
 
 	g_Girls.UpdateStat(girl, STAT_EXP, (g_Dice % xp) + 2);
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, (g_Dice % skill) + 2);
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy, true);
 	//lose traits

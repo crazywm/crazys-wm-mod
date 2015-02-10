@@ -63,7 +63,7 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0N
 	int image = IMGTYPE_PROFILE;
 	bool blow = false, sex = false;
 	int dispo = 0;
-	int roll = g_Dice % 100;
+	int roll = g_Dice.d100();
 	int wages = 100, work = 0, help = 0;
 	double jobperformance = JP_ComunityService(girl, false);
 
@@ -162,7 +162,7 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0N
 			g_Girls.UpdateSkill(girl, SKILL_ANAL, 2); image = IMGTYPE_ANAL;
 		}
 		brothel->m_Happiness += 100;
-		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -20);
+		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
 		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +3, true);
 		dispo += 6;
 	}
@@ -209,7 +209,7 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0N
 	if (g_Dice % 2 == 1)	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, g_Dice%skill);
 	else				g_Girls.UpdateStat(girl, STAT_CHARISMA, g_Dice%skill);
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill + 1);
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	return false;
 }

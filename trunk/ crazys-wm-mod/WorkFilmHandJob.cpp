@@ -102,7 +102,7 @@ bool cJobManager::WorkFilmHandJob(sGirl* girl, sBrothel* brothel, bool Day0Night
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill);
 	g_Girls.UpdateSkill(girl, SKILL_HANDJOB, g_Dice%skill + 1);
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_SEX, enjoy, true);
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, enjoy, true);

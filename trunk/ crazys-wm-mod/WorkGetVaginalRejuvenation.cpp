@@ -146,7 +146,7 @@ bool cJobManager::WorkGetVaginalRejuvenation(sGirl* girl, sBrothel* brothel, boo
 	if (g_Girls.HasTrait(girl, "Lesbian"))		libido += numnurse;
 	if (g_Girls.HasTrait(girl, "Masochist"))	libido += 1;
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))	libido += 2;
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 	if (g_Dice % 10 == 0)
 		g_Girls.UpdateSkill(girl, SKILL_MEDICINE, 1);	// `J` she watched what the doctors and nurses were doing
 

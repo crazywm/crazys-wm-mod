@@ -123,7 +123,7 @@ bool cJobManager::WorkFluffer(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, skill);
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	return false;
 }

@@ -1265,7 +1265,7 @@ bool cGangManager::GirlVsEnemyGang(sGirl* girl, sGang* enemy_gang)
 		// This is checked for every member killed over 50%
 		if ((initial_num / 2) > enemy_gang->m_Num)
 		{
-			if ((1 + (g_Dice % 100)) <= 50) // MYR: Adjusting this has a big effect
+			if (g_Dice.percent(50)) // MYR: Adjusting this has a big effect
 			{
 				l.ss() << "The gang ran away after losing too many members. " << girl->m_Realname << " WINS!";
 				l.ssend();
@@ -1735,12 +1735,19 @@ void cGangManager::UpdateGangs()
 					if (g_Dice.percent(currentGang->m_Stats[STAT_CHARISMA]))	// convince her
 					{
 						ss << "convince her that she should work for you.";
+						stringstream NGmsg;
+						NGmsg << girl->m_Realname << " was talked into working for you by "<<currentGang->m_Name<<".";
+						girl->m_Events.AddMessage(NGmsg.str(), IMGTYPE_PROFILE, EVENT_GANG);
 						m_Dungeon->AddGirl(girl, DUNGEON_GIRLKIDNAPPED);
 					}
 					else if (m_NumNets > 0 || m_KeepNetsStocked)	// capture using net
 					{
 						girl->m_Stats[STAT_OBEDIENCE] = 0;
+						girl->add_trait("Kidnapped", 10 + g_Dice % 11);
 						ss << "She struggles against the net your men use, but it is pointless.  She is in your dungeon now.";
+						stringstream NGmsg;
+						NGmsg << girl->m_Realname << " was captured in a net and dragged back to the dungeon by " << currentGang->m_Name << ".";
+						girl->m_Events.AddMessage(NGmsg.str(), IMGTYPE_DEATH, EVENT_GANG);
 						m_Dungeon->AddGirl(girl, DUNGEON_GIRLKIDNAPPED);
 						if (m_NumNets > 0) m_NumNets--;
 						else g_Gold.consumable_cost(5);
@@ -1751,7 +1758,11 @@ void cGangManager::UpdateGangs()
 						if (!GangCombat(girl, currentGang))
 						{
 							girl->m_Stats[STAT_OBEDIENCE] = 0;
+							girl->add_trait("Kidnapped", 10 + g_Dice % 11);
 							ss << "\nShe fights back but your men succeed in kidnapping her.";
+							stringstream NGmsg;
+							NGmsg << girl->m_Realname << " fought with " << currentGang->m_Name << " but lost. She was dragged back to the dungeon.";
+							girl->m_Events.AddMessage(NGmsg.str(), IMGTYPE_COMBAT, EVENT_GANG);
 							m_Dungeon->AddGirl(girl, DUNGEON_GIRLKIDNAPPED);
 						}
 						else
@@ -1771,7 +1782,11 @@ void cGangManager::UpdateGangs()
 					}
 					else
 					{
+						girl->add_trait("Kidnapped", 5 + g_Dice % 6);
 						ss << "kidnap her successfully without a fuss.  She is in your dungeon now.";
+						stringstream NGmsg;
+						NGmsg << girl->m_Realname << " was surrounded by " << currentGang->m_Name << " and gave up without a fight.";
+						girl->m_Events.AddMessage(NGmsg.str(), IMGTYPE_PROFILE, EVENT_GANG);
 						m_Dungeon->AddGirl(girl, DUNGEON_GIRLKIDNAPPED);
 					}
 					BoostGangSkill(&currentGang->m_Stats[STAT_CHARISMA], 3);
@@ -1995,6 +2010,9 @@ void cGangManager::UpdateGangs()
 						ss << "\n\nYour men also captured a girl named ";
 						ss << ugirl->m_Realname;
 						ugirl->m_States &= ~(1 << STATUS_CATACOMBS);
+						stringstream NGmsg;
+						NGmsg << ugirl->m_Realname << " was captured in the catacombs by " << currentGang->m_Name << ".";
+						ugirl->m_Events.AddMessage(NGmsg.str(), IMGTYPE_PROFILE, EVENT_GANG);
 						m_Dungeon->AddGirl(ugirl, DUNGEON_GIRLCAPTURED);
 					}
 					else
@@ -2004,6 +2022,9 @@ void cGangManager::UpdateGangs()
 						{
 							girl++;
 							ss << "\n\nYour men also captured a girl.";
+							stringstream NGmsg;
+							NGmsg << ugirl->m_Realname << " was captured in the catacombs by " << currentGang->m_Name << ".";
+							ugirl->m_Events.AddMessage(NGmsg.str(), IMGTYPE_PROFILE, EVENT_GANG);
 							m_Dungeon->AddGirl(ugirl, DUNGEON_GIRLCAPTURED);
 						}
 					}
@@ -2490,6 +2511,9 @@ bool cGangManager::recapture_mission(sGang* gang)
 	if (m_NumNets > 0 || m_KeepNetsStocked)	// Case #1: Use a net
 	{
 		ss << "Your goons find and net " << runnaway->m_Realname << ". She struggles but can't escape, and has been returned to your dungeon.";
+		stringstream RGmsg;
+		RGmsg << runnaway->m_Realname << " was recaptured by " << gang->m_Name << ". They threw a net over her and dragged her back to the dungeon.";
+		runnaway->m_Events.AddMessage(RGmsg.str(), IMGTYPE_PROFILE, EVENT_GANG);
 		runnaway->m_RunAway = 0;
 		g_Brothels.RemoveGirlFromRunaways(runnaway);
 		m_Dungeon->AddGirl(runnaway, DUNGEON_GIRLRUNAWAY);
@@ -2501,6 +2525,9 @@ bool cGangManager::recapture_mission(sGang* gang)
 	if (!g_Brothels.FightsBack(runnaway))  // Case #2: She doesn't fight back
 	{
 		ss << "Your goons find " << runnaway->m_Realname << ". She comes quietly and doesn't put up a fight.";
+		stringstream RGmsg;
+		RGmsg << runnaway->m_Realname << " was recaptured by " << gang->m_Name << ". She gave up without a fight.";
+		runnaway->m_Events.AddMessage(RGmsg.str(), IMGTYPE_PROFILE, EVENT_GANG);
 		runnaway->m_RunAway = 0;
 		g_Brothels.RemoveGirlFromRunaways(runnaway);
 		m_Dungeon->AddGirl(runnaway, DUNGEON_GIRLRUNAWAY);
@@ -2516,6 +2543,9 @@ bool cGangManager::recapture_mission(sGang* gang)
 	{
 		gang->m_Num -= gang->m_Num - num;  // Is this a bug???
 		ss << "She is subdued and taken to your dungeon.";
+		stringstream RGmsg;
+		RGmsg << runnaway->m_Realname << " was recaptured by " << gang->m_Name << ". She fought back but ultimately lost.";
+		runnaway->m_Events.AddMessage(RGmsg.str(), IMGTYPE_PROFILE, EVENT_GANG);
 		runnaway->m_RunAway = 0;
 		g_Brothels.RemoveGirlFromRunaways(runnaway);
 		m_Dungeon->AddGirl(runnaway, DUNGEON_GIRLRUNAWAY);

@@ -58,7 +58,6 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 
 	cConfig cfg;
 	int wages = 0, fight_outcome = 0, enjoyment = 0, fame = 0, imagetype = IMGTYPE_COMBAT;
-	bool unique = false;
 
 	double jobperformance = JP_FightArenaGirls(girl, false);
 
@@ -79,34 +78,43 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 		enjoyment = g_Dice % 3 + 1;
 		fame = g_Dice % 3 + 1;
 		sGirl* ugirl = 0;
-		if (g_Dice.percent(20))		// chance of getting unique girl
+		if (g_Dice.percent(10))		// chance of getting unique girl
 		{
 			ugirl = g_Girls.GetRandomGirl(false, false, true);
-			if (ugirl != 0) unique = true;
 		}
-		if (unique)
+		if (ugirl)
 		{
+			stringstream msg;	// goes to the girl and the g_MessageQue
+			stringstream Umsg;	// goes to the new girl
+			stringstream Tmsg;	// temp msg
 			ugirl->m_Stats[STAT_HEALTH] = g_Dice % 50 + 1;
 			ugirl->m_Stats[STAT_HAPPINESS] = g_Dice % 80 + 1;
 			ugirl->m_Stats[STAT_TIREDNESS] = g_Dice % 50 + 50;
 			ugirl->m_States |= (1 << STATUS_ARENA);
-			ss << girlName << " won her fight against " << ugirl->m_Realname << ".\n";
+			msg << girlName << " won her fight against " << ugirl->m_Realname << ".\n";
+			Umsg << ugirl->m_Realname << " lost her fight against your girl " << girlName << ".\n";
+			Tmsg << ugirl->m_Realname;
 			if (g_Dice.percent(50))
 			{
 				ugirl->m_States |= (1 << STATUS_SLAVE);
-				ss << ugirl->m_Realname << "'s owner could not afford to pay you your winnings so he gave her to you instead.";
+				Tmsg << "'s owner could not afford to pay you your winnings so he gave her to you instead.";
 			}
 			else
 			{
-				ss << ugirl->m_Realname << " put up a good fight so you let her live as long as she came work for you.";
+				Tmsg << " put up a good fight so you let her live as long as she came work for you.";
 				wages = 100 + g_Dice % (girl->fame() + girl->charisma());
 			}
-			g_MessageQue.AddToQue(ss.str(), 0);
+			msg << Tmsg.str();
+			Umsg << Tmsg.str();
+			ss << msg.str();
+			g_MessageQue.AddToQue(msg.str(), 0);
+			ugirl->m_Events.AddMessage(Umsg.str(), IMGTYPE_PROFILE, EVENT_DUNGEON);
+
 			g_Brothels.GetDungeon()->AddGirl(ugirl, DUNGEON_NEWARENA);
 		}
 		else
 		{
-			ss << "She won the fight.";
+			ss << girlName << " won her fight.";
 			wages = 100 + g_Dice % (girl->fame() + girl->charisma());
 		}
 	}
@@ -151,7 +159,7 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 	g_Girls.UpdateSkill(girl, SKILL_MAGIC, g_Dice%fightxp + skill);
 	g_Girls.UpdateStat(girl, STAT_AGILITY, g_Dice%fightxp + skill);
 	g_Girls.UpdateStat(girl, STAT_CONSTITUTION, g_Dice%fightxp + skill);
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoyment, true);
 
 	/* `J` this will be a place holder until a better payment system gets done

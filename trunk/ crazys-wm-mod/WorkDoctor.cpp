@@ -147,7 +147,7 @@ bool cJobManager::WorkDoctor(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, skill);
 	g_Girls.UpdateSkill(girl, SKILL_MEDICINE, skill);
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, 1);
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy, true);

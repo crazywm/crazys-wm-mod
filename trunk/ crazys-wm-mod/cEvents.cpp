@@ -63,9 +63,9 @@ string CEvent::TitleText()
 	case EVENT_MATRON:
 		return "Matron";
 		break;
-	//case EVENT_GANG:
-	//	return "Event";
-	//	break;
+	case EVENT_GANG:
+		return "Gang Report";
+		break;
 	//case EVENT_BROTHEL:
 	//	return "Event";
 	//	break;

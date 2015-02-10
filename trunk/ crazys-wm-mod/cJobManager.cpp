@@ -187,7 +187,7 @@ void cJobManager::Setup()
 	JobName[JOB_WHORESTREETS] = "Whore on Streets";
 	JobDesc[JOB_WHORESTREETS] = "She will whore herself on the streets. It is more dangerous than whoring inside but more profitable.";
 	JobFunc[JOB_WHORESTREETS] = &WorkWhore;
-	JobPerf[JOB_WHORESTREETS] = &JP_Whore;
+	JobPerf[JOB_WHORESTREETS] = &JP_WhoreStreets;
 
 	//- Movie Jobs
 	JobFilterName[JOBFILTER_MOVIESTUDIO] = gettext("Actresses");
@@ -1727,81 +1727,94 @@ bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_n
 	{
 		g_Girls.UpdateSkill(SecGuard, SKILL_COMBAT, 1);
 		g_Girls.UpdateSkill(SecGuard, SKILL_MAGIC, 1);
-		g_Girls.UpdateTempStat(SecGuard, STAT_LIBIDO, num);  // There's nothing like killin ta make ya horny!
+		g_Girls.UpdateStatTemp(SecGuard, STAT_LIBIDO, num);  // There's nothing like killin ta make ya horny!
 		g_Girls.UpdateStat(SecGuard, STAT_CONFIDENCE, num);
 		g_Girls.UpdateStat(SecGuard, STAT_FAME, num);
 		g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, num, true);
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKSECURITY, num, true);
 
-		stringstream msg;
+		stringstream Gmsg;
+		stringstream SGmsg;
 
 		// I decided to not say gang in the text. It can be confused with a player or enemy organization's
 		// gang, when it is neither.
 		if (OrgNumMem == 1)
 		{
 			bool female = g_Dice.percent(30);
-			msg << "Security Report:\nA customer tried to attack " << girl->m_Realname << ", but " << SecName << " intercepted and beat ";
+			Gmsg << "A customer tried to attack " << girl->m_Realname << ", but " << SecName << " intercepted and beat ";
+			SGmsg << "Security Report:\nA customer tried to attack " << girl->m_Realname << ", but " << SecName << " intercepted and beat ";
 			if (female)
 			{
-				msg << "her.";
+				Gmsg << "her.";
+				SGmsg << "her.";
 				string item = "";
 				int itemnum = -1;
 				if (g_Brothels.HasItem("Brainwashing Oil", -1) != -1)
 				{
 					itemnum = g_Brothels.HasItem("Brainwashing Oil", -1);
 					item = "Brainwashing Oil";
-					msg << "\n\n" << SecName << " forced a bottle of Brainwashing Oil down her throat. After a few minutes of struggling, your new slave, ";
+					SGmsg << "\n\n" << SecName << " forced a bottle of Brainwashing Oil down her throat. After a few minutes of struggling, your new slave, ";
 				}
 				else if (g_Brothels.HasItem("Necklace of Control", -1) != -1)
 				{
 					itemnum = g_Brothels.HasItem("Necklace of Control", -1);
 					item = "Necklace of Control";
-					msg << "\n\n" << SecName << " placed a Necklace of Control around her neck. After a few minutes of struggling, the magic in the necklace activated and your new slave, ";
+					SGmsg << "\n\n" << SecName << " placed a Necklace of Control around her neck. After a few minutes of struggling, the magic in the necklace activated and your new slave, ";
 				}
 				else if (g_Brothels.HasItem("Slave Band", -1) != -1)
 				{
 					itemnum = g_Brothels.HasItem("Slave Band", -1);
 					item = "Slave Band";
-					msg << "\n\n" << SecName << " placed a Slave Band on her arm. After a few minutes of struggling, the magic in the Slave Band activated and your new slave, ";
+					SGmsg << "\n\n" << SecName << " placed a Slave Band on her arm. After a few minutes of struggling, the magic in the Slave Band activated and your new slave, ";
 				}
-				if (item != "" && itemnum!=-1)
+				if (item != "" && itemnum != -1)
 				{
 					cDungeon m_Dungeon; cPlayer m_Player;
-					sGirl* custgirl = g_Girls.CreateRandomGirl(g_Dice % 40 + 18, false, true, false, (g_Dice % 3 == 1));
-					custgirl->pclove(-(g_Dice % 50));
-					custgirl->pcfear(g_Dice%50);
-					custgirl->pchate(g_Dice%50);
-					m_Player.suspicion(g_Dice % 5);
-					m_Player.disposition(-(g_Dice % 5));
-					m_Player.customerfear(g_Dice % 5);
+					stringstream CGmsg;
 
+					// `J` create the customer
+					sGirl* custgirl = g_Girls.CreateRandomGirl(g_Dice % 40 + 18, false, true, false, (g_Dice % 3 == 1));
+
+					// `J` and adjust her stats
 					g_InvManager.Equip(custgirl, g_Girls.AddInv(custgirl, g_Brothels.m_Inventory[itemnum]), true);
 					g_Brothels.RemoveItemFromInventoryByNumber(itemnum);
+					g_GirlsPtr->AddTrait(custgirl, "Emprisoned Customer", 20);	// add temp trait for 20 turns
+					custgirl->pclove(-(g_Dice % 50 + 50));
+					custgirl->pcfear(g_Dice % 50 + 50);
+					custgirl->pchate(g_Dice % 50 + 50);
+					custgirl->m_Stats[STAT_HEALTH];
+					custgirl->m_Enjoyment[ACTION_COMBAT] -= (g_Dice % 50 + 20);
+					custgirl->m_Enjoyment[ACTION_SEX] -= (g_Dice % 50 + 20);
+					m_Player.suspicion(g_Dice % 10);
+					m_Player.disposition(-(g_Dice % 10));
+					m_Player.customerfear(g_Dice % 10);
 
-					m_Dungeon.AddGirl(custgirl, DUNGEON_CUSTBEATGIRL);
-					msg << custgirl->m_Realname << " was sent to your dungeon.";
-
-					stringstream cgm;
-					cgm << custgirl->m_Realname << " was caught attacking a girl under your employ. She was given a "
+					// `J` do all the messages
+					SGmsg << custgirl->m_Realname << " was sent to your dungeon.";
+					Gmsg << "\n" << girl->m_Realname << " escorted " << custgirl->m_Realname << " to the dungeon after "
+						<< SecName << " gave her attacker a " << item << ", all the while scolding her for her actions.";
+					CGmsg << custgirl->m_Realname << " was caught attacking a girl under your employ. She was given a "
 						<< item << " and sent to the dungeon as your newest slave.";
-					custgirl->m_Events.AddMessage(cgm.str(), IMGTYPE_DEATH, EVENT_WARNING);
-
+					custgirl->m_Events.AddMessage(CGmsg.str(), IMGTYPE_DEATH, EVENT_WARNING);
+					// `J` add the customer to the dungeon
+					m_Dungeon.AddGirl(custgirl, DUNGEON_CUSTBEATGIRL);
 				}
 			}
 			else
 			{
-				msg << "him.";
+				Gmsg << "him.";
+				SGmsg << "him.";
 				int dildo = 0;
-				/* */if (g_Girls.HasItem(SecGuard, "Compelling Dildo")!=-1)	dildo = 1;
+				/* */if (g_Girls.HasItem(SecGuard, "Compelling Dildo") != -1)	dildo = 1;
 				else if (g_Girls.HasItem(SecGuard, "Dreidel Dildo") != -1)	dildo = 2;
 				else if (g_Girls.HasItem(SecGuard, "Double Dildo") != -1)		dildo = 3;
 				if (dildo > 0)
 				{
-					msg << "\n\n" << SecName << " decided to give this customer a taste of his own medicine and shoved her ";
-					/* */if (dildo == 1) msg << "Compelling Dildo";
-					else if (dildo == 2) msg << "Dreidel Dildo";
-					else if (dildo == 3) msg << "Double Dildo";
-					msg << " up his ass.";
+					SGmsg << "\n\n" << SecName << " decided to give this customer a taste of his own medicine and shoved her ";
+					/* */if (dildo == 1) SGmsg << "Compelling Dildo";
+					else if (dildo == 2) SGmsg << "Dreidel Dildo";
+					else if (dildo == 3) SGmsg << "Double Dildo";
+					SGmsg << " up his ass.";
 					cPlayer m_Player;
 					m_Player.suspicion(g_Dice % 2);
 					m_Player.disposition(-(g_Dice % 2));
@@ -1812,14 +1825,19 @@ bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_n
 		else
 		{
 			int i = enemy_gang->m_Num;
-			msg << "Security Report:\n" << "A group of ";
+			stringstream Tmsg;
+			Gmsg << "A group of ";
+			SGmsg << "Security Report:\n" << "A group of ";
 			if (enemy_gang->m_Num == 0)
-				msg << "customers tried to attack " << girl->m_Realname << ". " << SecName << " intercepted and thrashed all " << OrgNumMem;
+				Tmsg << "customers tried to attack " << girl->m_Realname << ". " << SecName << " intercepted and thrashed all " << OrgNumMem;
 			else
-				msg << OrgNumMem << " customers tried to attack " << girl->m_Realname << ". They fled after " << SecName << " intercepted and thrashed " << num;
-			msg << " of them.";
+				Tmsg << OrgNumMem << " customers tried to attack " << girl->m_Realname << ". They fled after " << SecName << " intercepted and thrashed " << num;
+			Tmsg << " of them.";
+			Gmsg << Tmsg.str();
+			SGmsg << Tmsg.str();
 		}
-		SecGuard->m_Events.AddMessage(msg.str(), IMGTYPE_DEATH, EVENT_WARNING/*day_night*/);
+		SecGuard->m_Events.AddMessage(SGmsg.str(), IMGTYPE_COMBAT, EVENT_WARNING);
+		girl->m_Events.AddMessage(Gmsg.str(), IMGTYPE_COMBAT, EVENT_WARNING);
 	}
 	else  // Loss
 	{
@@ -1842,7 +1860,7 @@ bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_n
 		g_Girls.UpdateStat(SecGuard, STAT_OBEDIENCE, -10);
 		g_Girls.UpdateStat(SecGuard, STAT_SPIRIT, -40);
 		g_Girls.UpdateStat(SecGuard, STAT_LIBIDO, -4);
-		g_Girls.UpdateTempStat(SecGuard, STAT_LIBIDO, -40);
+		g_Girls.UpdateStatTemp(SecGuard, STAT_LIBIDO, -40);
 		g_Girls.UpdateStat(SecGuard, STAT_TIREDNESS, 60);
 		g_Girls.UpdateStat(SecGuard, STAT_PCFEAR, 20);
 		g_Girls.UpdateStat(SecGuard, STAT_PCLOVE, -20);
@@ -2007,7 +2025,7 @@ bool cJobManager::girl_fights_rape(sGirl* girl, sGang *enemy_gang, int day_night
 		g_Girls.UpdateSkill(girl, SKILL_COMBAT, 1);
 		g_Girls.UpdateSkill(girl, SKILL_MAGIC, 1);
 		g_Girls.UpdateStat(girl, STAT_AGILITY, 1);
-		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, num);  // There's nothing like killin ta make ya horny!
+		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, num);  // There's nothing like killin ta make ya horny!
 		g_Girls.UpdateStat(girl, STAT_CONFIDENCE, num);
 		g_Girls.UpdateStat(girl, STAT_FAME, num);
 
@@ -2087,7 +2105,7 @@ void cJobManager::customer_rape(sGirl* girl, int numberofattackers)
 	g_Girls.UpdateStat(girl, STAT_OBEDIENCE, -10);
 	g_Girls.UpdateStat(girl, STAT_SPIRIT, -40);
 	g_Girls.UpdateStat(girl, STAT_LIBIDO, -4);
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -40);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -40);
 	g_Girls.UpdateStat(girl, STAT_TIREDNESS, 60);
 	g_Girls.UpdateStat(girl, STAT_PCFEAR, 20);
 	g_Girls.UpdateStat(girl, STAT_PCLOVE, -20);
@@ -2401,7 +2419,14 @@ bool cJobManager::WorkTraining(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 }
 double cJobManager::JP_Training(sGirl* girl, bool estimate)
 {
-	return 0;
+	double jobperformance = 0.0;
+
+	jobperformance +=
+		(100 - g_Girls.GetAverageOfSexSkills(girl)) +
+		(100 - g_Girls.GetAverageOfNSxSkills(girl))
+		;
+
+	return jobperformance;
 }
 
 void cJobManager::do_solo_training(sGirl *girl, bool Day0Night1)
@@ -2547,7 +2572,7 @@ void cJobManager::do_training_set(vector<sGirl*> girls, bool Day0Night1)
 		}
 		ss << gettext(".");
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_SUMMARY);
-		if (g_Girls.HasTrait(girl, "Lesbian") && set.size() > 1) g_Girls.UpdateTempStat(girl, STAT_LIBIDO, set.size() - 1);
+		if (g_Girls.HasTrait(girl, "Lesbian") && set.size() > 1) g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, set.size() - 1);
 	}
 }
 
@@ -2584,7 +2609,7 @@ void cJobManager::do_training(sBrothel* brothel, bool Day0Night1)
 	{
 		sGirl *girl = girls[i];
 		int libido = (g_Girls.HasTrait(girl, "Nymphomaniac")) ? 4 : 2;
-		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 	}
 }
 

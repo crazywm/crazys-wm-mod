@@ -138,7 +138,7 @@ bool cJobManager::WorkIntern(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy, true);
@@ -152,5 +152,16 @@ bool cJobManager::WorkIntern(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 
 double cJobManager::JP_Intern(sGirl* girl, bool estimate)// not used
 {
-	return 0;
+	double jobperformance = 0.0;
+	if (estimate)// for third detail string
+	{
+		jobperformance +=
+			(100 - girl->intelligence()) +
+			(100 - girl->medicine()) +
+			(100 - girl->charisma());
+	}
+	else// for the actual check
+	{
+	}
+	return jobperformance;
 }

@@ -186,7 +186,7 @@ bool cJobManager::WorkFilmStagehand(sGirl* girl, sBrothel* brothel, bool Day0Nig
 	if (!filming && brothel->m_Filthiness < CleanAmt / 2) // `J` needs more variation
 	{
 		ss << "\n\n" << girlName << " finished her cleaning early so she hung out around the Studio a bit.";
-		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, g_Dice % 3 + 1);
+		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, g_Dice % 3 + 1);
 		g_Girls.UpdateStat(girl, STAT_HAPPINESS, g_Dice % 3 + 1);
 	}
 
@@ -206,7 +206,7 @@ bool cJobManager::WorkFilmStagehand(sGirl* girl, sBrothel* brothel, bool Day0Nig
 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, (g_Dice % skill) + 2);
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	if (filming) g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, enjoym, true);
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKCLEANING, enjoyc, true);

@@ -48,7 +48,7 @@ bool cJobManager::WorkFarmer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 
 	int wages = 15, enjoy = 0, work = 0;
 
-	int roll = g_Dice % 100;
+	int roll = g_Dice.d100();
 
 	double jobperformance = (int)JP_Farmer(girl, false);
 
@@ -136,7 +136,7 @@ bool cJobManager::WorkFarmer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	g_Girls.UpdateStat(girl, STAT_FAME, 1);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateSkill(girl, SKILL_FARMING, skill);
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	return false;
 }

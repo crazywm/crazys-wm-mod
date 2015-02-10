@@ -483,7 +483,7 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 	else
 		g_Girls.UpdateStat(girl, STAT_AGILITY, 1);
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill + 1);
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	//gain traits
 	g_Girls.PossiblyGainNewTrait(girl, "Charming", 70, actiontype, girlName + " has been flirting with customers to try to get better tips. Enough practice at it has made her quite Charming.", Day0Night1);

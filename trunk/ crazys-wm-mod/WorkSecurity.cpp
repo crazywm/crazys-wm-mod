@@ -147,7 +147,7 @@ bool cJobManager::WorkSecurity(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			imagetype = IMGTYPE_STRIP;
 		}
 		ss << "\n\n";
-		g_Girls.UpdateTempStat(girl, STAT_LIBIDO, -10);
+		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -10);
 	}
 
 	if (SecLev < 10) SecLev = 10;
@@ -169,7 +169,7 @@ bool cJobManager::WorkSecurity(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	g_Girls.UpdateSkill(girl, SKILL_COMBAT, (g_Dice % skill) + 1);
 	g_Girls.UpdateSkill(girl, SKILL_MAGIC, (g_Dice % skill) + 1);
 	g_Girls.UpdateSkill(girl, STAT_AGILITY, (g_Dice % skill) + 1);
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy, true);

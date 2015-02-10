@@ -1,21 +1,21 @@
 /*
- * Copyright 2009, 2010, The Pink Petal Development Team.
- * The Pink Petal Devloment Team are defined as the game's coders 
- * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright 2009, 2010, The Pink Petal Development Team.
+* The Pink Petal Devloment Team are defined as the game's coders
+* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 #include "cJobManager.h"
 #include "cBrothel.h"
 #include "cArena.h"
@@ -157,7 +157,7 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, sBrothel* brothel, bool Day0Ni
 
 
 	// `J` Try to add a trait 
-	roll_c = g_Dice%50;		// 2% per trait group chance
+	roll_c = g_Dice % 50;		// 2% per trait group chance
 	switch (roll_c)
 	{
 	case 0:
@@ -256,62 +256,62 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	girl->add_trait("tttttt", false);
 	ss << "tttttttttttttttttt";
 	}
-	
-Small Scars
-Cool Scars
-Horrific Scars
-Bruises
-Idol
-Agile
-Fleet of Foot
-Clumsy
-Strong
-Merciless
-Delicate
-Brawler
-Assassin
-Masochist
-Sadistic
-Tsundere
-Twisted
-Yandere
+
+	Small Scars
+	Cool Scars
+	Horrific Scars
+	Bruises
+	Idol
+	Agile
+	Fleet of Foot
+	Clumsy
+	Strong
+	Merciless
+	Delicate
+	Brawler
+	Assassin
+	Masochist
+	Sadistic
+	Tsundere
+	Twisted
+	Yandere
 
 
-Missing Nipple
+	Missing Nipple
 
-Muggle
-Weak Magic
-Strong Magic
-Powerful Magic
+	Muggle
+	Weak Magic
+	Strong Magic
+	Powerful Magic
 
-Broken Will
-Iron Will
+	Broken Will
+	Iron Will
 
-Eye Patch
-One Eye
+	Eye Patch
+	One Eye
 
-Shy
-Missing Teeth
-
-
-No Arms
-One Arm
-No Hands
-One Hand
-Missing Finger
-Missing Fingers
-
-No Feet
-No Legs
-One Foot
-One Leg
-Missing Toe
-Missing Toes
+	Shy
+	Missing Teeth
 
 
-Muscular
-Plump
-Great Figure
+	No Arms
+	One Arm
+	No Hands
+	One Hand
+	Missing Finger
+	Missing Fingers
+
+	No Feet
+	No Legs
+	One Foot
+	One Leg
+	Missing Toe
+	Missing Toes
+
+
+	Muscular
+	Plump
+	Great Figure
 
 
 
@@ -333,19 +333,24 @@ Great Figure
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	return false;
 }
 
 double cJobManager::JP_CombatTraining(sGirl* girl, bool estimate)// not used
 {
-double jobperformance = 0.0;
-if (estimate)// for third detail string
-{
-}
-else// for the actual check
-{
-}
-return jobperformance;
+	double jobperformance = 0.0;
+	if (estimate)// for third detail string
+	{
+		jobperformance +=
+			(100 - girl->combat()) +
+			(100 - girl->magic()) +
+			(100 - girl->agility()) +
+			(100 - girl->constitution());
+	}
+	else// for the actual check
+	{
+	}
+	return jobperformance;
 }

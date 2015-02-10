@@ -406,9 +406,7 @@ cTrigger* cTriggerList::CheckForScript(int Type, bool trigger, int values[2])
 							break;
 					}
 
-					if (curr->m_Chance == 100)
-						AddToQue(curr);
-					else if (((g_Dice % 100) + 1) <= curr->m_Chance)
+					if (curr->m_Chance >= 100 || g_Dice.percent(curr->m_Chance))
 						AddToQue(curr);
 				}
 			}
@@ -458,7 +456,7 @@ void cTriggerList::ProcessTriggers()
 		{
 		case TRIGGER_RANDOM:
 		{
-			if (curr->m_Chance == 100 || ((g_Dice % 100) + 1) <= curr->m_Chance)
+			if (curr->m_Chance >= 100 || g_Dice.percent(curr->m_Chance))
 				AddToQue(curr);
 		}break;
 
@@ -466,7 +464,7 @@ void cTriggerList::ProcessTriggers()
 		{
 			if (m_GirlTarget
 				&& g_Girls.GetSkill(m_GirlTarget, curr->m_Values[0]) >= curr->m_Values[1]
-				&& (curr->m_Chance == 100 || ((g_Dice % 100) + 1) <= curr->m_Chance))
+				&& (curr->m_Chance >= 100 || g_Dice.percent(curr->m_Chance)))
 				AddToQue(curr);
 		}break;
 
@@ -474,7 +472,7 @@ void cTriggerList::ProcessTriggers()
 		{
 			if (m_GirlTarget
 				&& g_Girls.GetStat(m_GirlTarget, curr->m_Values[0]) >= curr->m_Values[1]
-				&& (curr->m_Chance == 100 || ((g_Dice % 100) + 1) <= curr->m_Chance))
+				&& (curr->m_Chance >= 100 || g_Dice.percent(curr->m_Chance)))
 				AddToQue(curr);
 		}break;
 
@@ -519,14 +517,14 @@ void cTriggerList::ProcessTriggers()
 		{
 			if (m_GirlTarget
 				&& m_GirlTarget->m_WeeksPast >= (unsigned long)curr->m_Values[0]
-				&& (curr->m_Chance == 100 || ((g_Dice % 100) + 1) <= curr->m_Chance))
+				&& (curr->m_Chance >= 100 || g_Dice.percent(curr->m_Chance)))
 				AddToQue(curr);
 		}break;
 
 		case TRIGGER_SCRIPTRUN:
 		{
 			if (HasRun(curr->m_Values[0]) && HasRun(curr->m_Values[1])
-				&& (curr->m_Chance == 100 || ((g_Dice % 100) + 1) <= curr->m_Chance))
+				&& (curr->m_Chance >= 100 || g_Dice.percent(curr->m_Chance)))
 				AddToQue(curr);
 		}break;
 
@@ -535,14 +533,14 @@ void cTriggerList::ProcessTriggers()
 			if (m_GirlTarget)
 			{
 				int t = 0; if (m_GirlTarget->m_States&(1 << curr->m_Values[0])) t = 1;
-				if (curr->m_Values[1] == t && (curr->m_Chance == 100 || ((g_Dice % 100) + 1) <= curr->m_Chance))
+				if (curr->m_Values[1] == t && (curr->m_Chance >= 100 || g_Dice.percent(curr->m_Chance)))
 					AddToQue(curr);
 			}
 		}break;
 
 		case TRIGGER_GLOBALFLAG:
 		{
-			if (CheckGameFlag(curr->m_Values[0]) && (curr->m_Chance == 100 || ((g_Dice % 100) + 1) <= curr->m_Chance))
+			if (CheckGameFlag(curr->m_Values[0]) && (curr->m_Chance >= 100 || g_Dice.percent(curr->m_Chance)))
 				AddToQue(curr);
 		}break;
 		}

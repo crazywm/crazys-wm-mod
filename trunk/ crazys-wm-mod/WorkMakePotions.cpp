@@ -272,7 +272,7 @@ bool cJobManager::WorkMakePotions(sGirl* girl, sBrothel* brothel, bool Day0Night
 	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, (g_Dice % skill) + 1);
 	g_Girls.UpdateSkill(girl, SKILL_BREWING, (g_Dice % skill));
 	g_Girls.UpdateSkill(girl, SKILL_HERBALISM, (g_Dice % skill) + 1);
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, (g_Dice % libido) + 1);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, (g_Dice % libido) + 1);
 
 	return false;
 }

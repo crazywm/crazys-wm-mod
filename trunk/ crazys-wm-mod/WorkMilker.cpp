@@ -47,7 +47,7 @@ bool cJobManager::WorkMilker(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
 	int wages = 15, work = 0;
-	int roll = g_Dice % 100;
+	int roll = g_Dice.d100();
 	double jobperformance = JP_Milker(girl, false);
 
 
@@ -137,7 +137,7 @@ bool cJobManager::WorkMilker(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	g_Girls.UpdateStat(girl, STAT_FAME, 1);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateSkill(girl, SKILL_FARMING, skill);
-	g_Girls.UpdateTempStat(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	return false;
 }
