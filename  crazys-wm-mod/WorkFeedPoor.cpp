@@ -43,7 +43,7 @@ extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 extern int g_Building;
 
-// `J` Centre Job - General
+// `J` Job Centre - General
 bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	int actiontype = ACTION_WORKCENTRE;

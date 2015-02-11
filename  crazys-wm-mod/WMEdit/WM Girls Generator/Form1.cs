@@ -49,21 +49,38 @@ namespace WM_Girls_Generator
             TraitCollection.Columns.Add("Name", typeof(string));			//formatting of traits DataTable, adding two columns, Name and Data
             TraitCollection.Columns.Add("Desc", typeof(string));
             TraitCollection.Columns.Add("Type", typeof(string));
+            TraitCollection.Columns.Add("InheritChance", typeof(string));
+            TraitCollection.Columns.Add("RandomChance", typeof(string));
             TraitCollection.Columns.Add("Checked", typeof(string));
 
             dataGridView_Traits.DataSource = TraitCollection;
             dataGridView_Traits.RowHeadersVisible = false;
             dataGridView_Traits.AllowUserToAddRows = true;
-            dataGridView_Traits.Columns["Checked"].Visible = false;
+            dataGridView_Traits.Columns[0].Visible = true;
+            dataGridView_Traits.Columns[1].Visible = true;
+            dataGridView_Traits.Columns[2].Visible = true;
+            dataGridView_Traits.Columns[3].Visible = true;
+            dataGridView_Traits.Columns[4].Visible = true;
+            dataGridView_Traits.Columns[5].Visible = false;
 
             dataGridView_G_Traits.DataSource = TraitCollection;
             dataGridView_G_Traits.Columns[0].SortMode = DataGridViewColumnSortMode.Automatic;
-            dataGridView_G_Traits.Columns["Desc"].Visible = false;
+            
+            dataGridView_G_Traits.Columns[0].Visible = false;
+            dataGridView_G_Traits.Columns[1].Visible = true;
+            dataGridView_G_Traits.Columns[2].Visible = false;
+            dataGridView_G_Traits.Columns[3].Visible = true;
+            dataGridView_G_Traits.Columns[4].Visible = false;
+            dataGridView_G_Traits.Columns[5].Visible = false;
+            dataGridView_G_Traits.Columns[0].ReadOnly = true;
+            dataGridView_G_Traits.Columns[1].ReadOnly = true;
+            dataGridView_G_Traits.Columns[2].ReadOnly = true;
+            dataGridView_G_Traits.Columns[3].ReadOnly = true;
+            dataGridView_G_Traits.Columns[4].ReadOnly = true;
+            dataGridView_G_Traits.Columns[5].ReadOnly = true;
             dataGridView_G_Traits.RowHeadersVisible = false;
             dataGridView_G_Traits.AllowUserToAddRows = false;
             dataGridView_G_Traits.AllowUserToDeleteRows = false;
-            dataGridView_G_Traits.Columns[1].ReadOnly = true;
-            dataGridView_G_Traits.Columns[2].ReadOnly = true;
             dataGridView_G_Traits.ShowCellToolTips = false;
 
 
@@ -362,15 +379,17 @@ namespace WM_Girls_Generator
                 foreach (XmlNode node in baseNode.SelectNodes("/Traits/Trait"))
                 {
                     x++;
-                    string sName = "", sDesc = "", sType = "";
+                    string sName = "", sDesc = "", sType = "", sInheritChance = "", sRandomChance = "";
                     for (int i = 0; i < node.Attributes.Count; i++)
                     {
                         if (node.Attributes[i].Name == "Name") sName = node.Attributes["Name"].Value;
                         if (node.Attributes[i].Name == "Desc") sDesc = node.Attributes["Desc"].Value;
                         if (node.Attributes[i].Name == "Type") sType = node.Attributes["Type"].Value;
+                        if (node.Attributes[i].Name == "InheritChance") sInheritChance = node.Attributes["InheritChance"].Value;
+                        if (node.Attributes[i].Name == "RandomChance") sRandomChance = node.Attributes["RandomChance"].Value;
                     }
                     //                    ListBox_G_Traits.Items.Add(sName);
-                    TraitCollection.Rows.Add(sName, sDesc, sType);
+                    TraitCollection.Rows.Add(sName, sDesc, sType, sInheritChance, sRandomChance);
                     comboBox_ItemTraits.Items.Add(sName);
                     comboBox_RGTraits.Items.Add(sName);
                     aTraits.Add(sDesc);
@@ -410,7 +429,8 @@ namespace WM_Girls_Generator
             XmlElement traits = xmldoc.CreateElement("Traits");
             XmlElement trait = xmldoc.CreateElement("Trait");
             xmldoc.AppendChild(traits);
-            string sType = "", sName = "", sDesc = "";
+            string sName = "", sDesc = "", sType = "", sInheritChance = "", sRandomChance = "";
+                    
             for (int x = 0; x < TraitCollection.Rows.Count; x++)
             {
                 if (TraitCollection.Rows[x]["Name"].ToString() == "")
@@ -419,9 +439,13 @@ namespace WM_Girls_Generator
                 sName = TraitCollection.Rows[x]["Name"].ToString();
                 sDesc = TraitCollection.Rows[x]["Desc"].ToString();
                 sType = TraitCollection.Rows[x]["Type"].ToString();
+                sInheritChance = TraitCollection.Rows[x]["InheritChance"].ToString();
+                sRandomChance = TraitCollection.Rows[x]["RandomChance"].ToString();
                 trait.SetAttribute("Name", sName);
                 trait.SetAttribute("Desc", sDesc);
                 trait.SetAttribute("Type", sType);
+                trait.SetAttribute("InheritChance", sInheritChance);
+                trait.SetAttribute("RandomChance", sRandomChance);
                 traits.AppendChild(trait);
             }
             //after it's all done we have our XML, although, only in memory, not stored somewhere safe
@@ -496,6 +520,18 @@ namespace WM_Girls_Generator
                 XmlNode n;  // node
                 string nv;  // node value
                 bool nvtf;  // node value true/false
+                n = baseNode.SelectSingleNode("/config/Folders");
+                for (int i = 0; i < n.Attributes.Count; i++)
+                {
+                    nv = n.Attributes[i].Value; if (nv == "true") nvtf = true; else nvtf = false;
+                    switch (n.Attributes[i].Name)
+                    {
+                        case "Characters":      textBox_Config_Folders_Characters.Text = nv; break;
+                        case "Saves":           textBox_Config_Folders_Savegames.Text = nv; break;
+                        case "DefaultImages":   textBox_Config_Folders_Default_Images.Text = nv; break;
+                        case "BackupSaves":     checkBox_Config_Folders_Backup_Saves.Checked = nvtf; break;
+                    }
+                }
                 n = baseNode.SelectSingleNode("/config/Resolution");
                 for (int i = 0; i < n.Attributes.Count; i++)
                 {
@@ -707,6 +743,7 @@ namespace WM_Girls_Generator
             XmlDocument xmldoc = new XmlDocument();
 
             XmlElement xeConfig = xmldoc.CreateElement("config");
+            XmlElement xeFolders = xmldoc.CreateElement("Folders");
             XmlElement xeResolution = xmldoc.CreateElement("Resolution");
             XmlElement xeInitial = xmldoc.CreateElement("Initial");
             XmlElement xeIncome = xmldoc.CreateElement("Income");
@@ -720,6 +757,7 @@ namespace WM_Girls_Generator
             XmlElement xeFonts = xmldoc.CreateElement("Fonts");
             XmlElement xeDebug = xmldoc.CreateElement("Debug");
 
+            XmlComment xcFolders = xmldoc.CreateComment("\n\tCharacters     = The location of the Characters folder\n\tSaves          = The location of the Saves folder\n\tDefaultImages  = The location of the DefaultImages folder\n\t\t\tCurrently the folders are relative to the EXE file so to put the folder in the\n\t\t\t\tparent folder of the game, use  '..\\Characters'  and the like.\n\tBackupSaves    = 'true' or 'false'\n\t\t\tIf set to true, the game will save in both the game's default\n\t\t\t\tsave folder as well as the folder set here.\n\t");
             XmlComment xcResolution = xmldoc.CreateComment("\n\tResolution     = the name of your interface folder\n\tWidth          = screen width\n\tHeight         = screen height\n\tScaleWidth     = screen scale width\n\tScaleHeight    = screen scale height\n\t\t\tThe old code of the game scaled all windows down to 800x600\n\t\t\tThis has been fixed but any old interfaces will not display correctly\n\t\t\t\tif the scale width and height are not set to 800x600.\n\tFullScreen     = 'true' or 'false'\n\tListScrollAmount = The number of lines to scroll in List boxes.\n\tTextScrollAmount = The number of lines to scroll in Text boxes.\n\t");
             XmlComment xcInitial = xmldoc.CreateComment("\n\tGold is how much gold you start the game with.\n\tGirlMeet is the %chance you'll meet a girl when walking around town.\n\tGirlsHousePerc and SlaveHousePerc is the default House Percentage for free girls and slave girls.\n\tGirlsKeepTips and GirlsKeepTips is whether they keep tips separate from house percent.\n\tSlavePayOutOfPocket is wether or not slave girls get paid by the player directly for certain jobs\n\t\tie. Cleaning, Advertising, Farming jobs, Film jobs, etc.\n\tAutoUseItems is whether or not the game will try to automatically use\n\t\tthe player's items intelligently on girls each week.\n\t\tThis feature needs more testing.\n\tAutoCombatEquip determines whether girls will automatically equip their best weapon and\n\t\tarmor for combat jobs and also automatically unequip weapon and armor for regular\n\t\tjobs where such gear would be considered inappropriate (i.e. whores-with-swords).\n\t\tSet to \"false\" to disable this feature.\n\n\tTortureTraitWeekMod affects multiplying the duration that they will\n\t\tkeep a temporary trait that they get from being tortured.\n\t\tIt is multiplied by the number of weeks in the dungeon.\n`J` added\t\tIf TortureTraitWeekMod is set to -1 then torture is harsher.\n\t\tThis doubles the chance of injuring the girls and doubles evil gain.\n\t\tDamage is increased by half. It also makes breaking the girls wills permanent.\n\t");
             XmlComment xcIncome = xmldoc.CreateComment("\n\tThese are the numbers that will multiply the money from various sources of income.\n\t\tSo setting \"GirlsWorkBrothel\" to \"0.5\" will reduce the cash your girls generate in the brothel by half.\n\t\tYou can also use numbers >1 to increase income if you are so inclined.\n\t");
@@ -732,6 +770,17 @@ namespace WM_Girls_Generator
             XmlComment xcItems = xmldoc.CreateComment("\n\tItems:\n\t*** AutoCombatEquip was moved to Initial for .06. Kept here for .05 and earlier.\n\tColors are assigned to items listed on the item management screen by there rarity.\n\tThey are in RGB hex format, so #000000 is black and #FFFFFF is white.\n\t\tRarityColor0: Common\n\t\tRarityColor1: Appears in shop, 50% chance\n\t\tRarityColor2: Appears in shop, 25% chance\n\t\tRarityColor3: Appears in shop, 5% chance\n\t\tRarityColor4: Appears in catacombs, 15% chance\n\t\tRarityColor5: Only given by scripts\n\t\tRarityColor6: Given by scripts or as objective rewards\n\t\tRarityColor7: Appears in catacombs, 5% chance\n\t\tRarityColor8: Appears in catacombs, 1% chance\n\t");
             XmlComment xcFonts = xmldoc.CreateComment("\n\tFonts:\n\tNormal is the font that the game uses for text.\n\tFixed is for a monospaced font for tabular info but nothing currently uses that.\n\tShowPercent determines whether or not % is placed\n\t\tafter the number for stats and skills on the girl details list.\n\tAntialias determines whether font antialiasing (smoothing) is used.\n\n\tIt's worth leaving these in, since once the XML screen format is stable,\n\t\tit will be possible to set custom fonts for different text elements,\n\t\tjust like designing a web page.\n\tExcept that you'll have to distribute the font with the game or mod\n\t\trather than relying on the viewer to have it pre-installed.\n\t");
             XmlComment xcLogging = xmldoc.CreateComment("\n\tHow much logging is needed?\n\t* They currently don't really work all that much but they will be improved.\n\t");
+
+
+            xeConfig.AppendChild(xcFolders);
+            xeFolders.SetAttribute("Characters", textBox_Config_Folders_Characters.Text);
+            xeFolders.SetAttribute("Saves", textBox_Config_Folders_Savegames.Text);
+            xeFolders.SetAttribute("DefaultImages", textBox_Config_Folders_Default_Images.Text);
+            if (checkBox_Config_Folders_Backup_Saves.Checked == true) xeFolders.SetAttribute("BackupSaves", "true");
+            else xeFolders.SetAttribute("BackupSaves", "false");
+            xeConfig.AppendChild(xeFolders);
+
+
 
             xeConfig.AppendChild(xcResolution);
             xeResolution.SetAttribute("Resolution", textBox_Config_Resolution.Text);

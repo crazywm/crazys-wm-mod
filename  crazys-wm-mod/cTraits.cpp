@@ -98,9 +98,21 @@ void cTraits::LoadXMLTraits(string filename)
 	for (el = root_el->FirstChildElement(); el; el = el->NextSiblingElement())
 	{
 		newTrait = new sTrait;
-		if (pt = el->Attribute("Name"))			newTrait->m_Name = n_strdup(pt);
-		if (pt = el->Attribute("Desc"))			newTrait->m_Desc = n_strdup(pt);
-		if (pt = el->Attribute("Type"))			newTrait->m_Type = n_strdup(pt);
+		if (pt = el->Attribute("Name"))				newTrait->m_Name = n_strdup(pt);
+		if (pt = el->Attribute("Desc"))				newTrait->m_Desc = n_strdup(pt);
+		if (pt = el->Attribute("Type"))				newTrait->m_Type = n_strdup(pt);
+		if (pt = el->Attribute("InheritChance"))
+		{
+			int ival = -1;
+			pt = el->Attribute("InheritChance", &ival);
+			newTrait->m_InheritChance = ival;
+		}
+		if (pt = el->Attribute("RandomChance"))	
+		{
+			int ival = -1;
+			pt = el->Attribute("RandomChance", &ival);
+			newTrait->m_RandomChance = ival;
+		}
 		AddTrait(newTrait);
 		newTrait = 0;
 	}

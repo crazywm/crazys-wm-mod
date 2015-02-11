@@ -43,14 +43,14 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
-// `J` Arena Job - Staff - Matron_Job - Full_Time_Job
+// `J` Job Arena - Staff - Matron_Job - Full_Time_Job
 bool cJobManager::WorkDoctore(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	int actiontype = ACTION_WORKMATRON;
 	// DisobeyCheck is done in the building flow.
 	girl->m_DayJob = girl->m_NightJob = JOB_DOCTORE;	// it is a full time job
 
-	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
+	stringstream ss; string girlName = girl->m_Realname; ss<<"Doctore " << girlName;
 	cConfig cfg;
 
 	int numgirls = brothel->m_NumGirls;

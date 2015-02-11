@@ -541,6 +541,22 @@ sDungeonCust* cDungeon::GetCust(int i)
 	return cust;
 }
 
+void cDungeon::ClearDungeonGirlEvents()
+{
+	if (m_Girls)
+	{
+		sDungeonGirl* current = m_Girls;
+		while (current)
+		{
+			sGirl* girl = current->m_Girl;
+			// Clear the girls' events from the last turn
+			girl->m_Events.Clear();
+			current = current->m_Next;
+		}
+	}
+}
+
+
 void cDungeon::Update()
 {
 	/*
@@ -573,8 +589,6 @@ void cDungeon::Update()
 		while (current)
 		{
 			sGirl* girl = current->m_Girl;
-			// Clear the girls' events from the last turn
-			girl->m_Events.Clear();
 
 			//			girl->m_Tort = false;// WD: Move till after Girls have been tortured so that we dont torture twice week
 			girlName = girl->m_Realname;

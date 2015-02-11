@@ -42,7 +42,7 @@ extern cCentreManager g_Centre;
 extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
-// `J` Centre Job - ExTherapy
+// `J` Job Centre - ExTherapy
 bool cJobManager::WorkCentreExTherapy(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;

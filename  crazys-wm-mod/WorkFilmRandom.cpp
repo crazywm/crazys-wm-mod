@@ -43,7 +43,7 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern int g_Building;
 
-// `J` Movie Studio Job - Unused
+// `J` Job Movie Studio - Unused
 bool cJobManager::WorkFilmRandom(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	int actiontype = ACTION_WORKMOVIE;

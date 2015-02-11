@@ -41,7 +41,7 @@ extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 extern cJobManager m_JobManager;
 
-// `J` Brothel Job - General
+// `J` Job Brothel - General
 bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	int actiontype = ACTION_COMBAT;
@@ -69,6 +69,9 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 	int num_items = 0;
 	long gold = 0;
 	bool raped = false;
+	string UGirls_list = "";
+	string Girls_list = "";
+	string item_list = "";
 
 	g_Girls.EquipCombat(girl);	// ready armor and weapons!
 
@@ -108,20 +111,24 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 				// the only way to ever capture rare girls like those with incoporeal trait.
 				// Some rationilization could be done, but is probably not necessary. DustyDan
 				sGirl* ugirl = 0;
-				bool unique = g_Dice.percent(50);	// chance of getting unique girl
-				if (unique)
+				if (g_Dice.percent(50))	// chance of getting unique girl
 				{
 					ugirl = g_Girls.GetRandomGirl(false, true);				// Unique monster girl type
 				}
 				if (ugirl == 0)		// if not unique or a unique girl can not be found
 				{
-					g_Girls.CreateRandomGirl(0, false, false, true, true);	// create a random girl
-					type_monster_girls++;
+					ugirl = g_Girls.CreateRandomGirl(0, false, false, true, true);	// create a random girl
+					if (ugirl)
+					{
+						type_monster_girls++;
+						Girls_list += ((Girls_list == "") ? "   " : ",\n   ") + ugirl->m_Realname;
+					}
 				}
 				else				// otherwise set the unique girls stuff
 				{
 					ugirl->m_States &= ~(1 << STATUS_CATACOMBS);
 					type_unique_monster_girls++;
+					UGirls_list += ((UGirls_list == "") ? "   " : ",\n   ") + ugirl->m_Realname;
 				}
 				if (ugirl)
 				{
@@ -188,13 +195,12 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 
 	int ItemPlace = 0;  // Place in 0..299
 
-	string item_list = "";
 	for (int i = num_monsters; i > 0; i--)
 	{
 		gold += g_Dice % 150;
 
 		// get any items
-		while (g_Dice.percent(40))
+		while (g_Dice.percent(50 - (num_items*5)))
 		{
 			sInventoryItem* TempItem = g_InvManager.GetRandomItem();
 
@@ -203,7 +209,7 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 			ItemPlace = g_Brothels.HasItem(TempItem->m_Name, -1);
 			if ((ItemPlace != -1) && (g_Brothels.m_NumItem[ItemPlace] <= 999))
 			{
-				item_list += ((item_list == "") ? "" : ",\n") + TempItem->m_Name;
+				item_list += ((item_list == "") ? "   " : ",\n   ") + TempItem->m_Name;
 				g_Brothels.m_NumItem[ItemPlace]++;
 				num_items++;
 			}
@@ -215,7 +221,7 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 				{
 					if (g_Brothels.m_Inventory[j] == 0) // Empty slot
 					{
-						item_list += ((item_list == "") ? "" : ",\n") + TempItem->m_Name;
+						item_list += ((item_list == "") ? "   " : ",\n   ") + TempItem->m_Name;
 						g_Brothels.m_Inventory[j] = TempItem;
 						g_Brothels.m_EquipedItems[j] = 0;
 						g_Brothels.m_NumInventory++;
@@ -229,27 +235,16 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 		}
 	}
 
-	ss << girl->m_Realname << " adventured in the catacombs.\n\n";
 	if (num_monsters > 0)
 	{
 		ss << "She encountered " << num_monsters << " monster" << (num_monsters > 1 ? "s" : "") << " and captured:\n";
 		if (type_monster_girls > 0)
 		{
-			ss << type_monster_girls << " catacomb girl" << (type_monster_girls > 1 ? "s" : "");
-			if (type_unique_monster_girls + type_beasts == 0)
-				ss << ".";
-			else if (type_unique_monster_girls > 0 && type_beasts > 0)
-				ss << ",\n";
-			else
-				ss << " and\n";
+			ss << type_monster_girls << " catacomb girl" << (type_monster_girls > 1 ? "s" : "") << ":\n" << Girls_list << ".\n";
 		}
 		if (type_unique_monster_girls > 0)
 		{
-			ss << type_unique_monster_girls << " unique girl" << (type_unique_monster_girls > 1 ? "s" : "");
-			if (type_beasts == 0)
-				ss << ".";
-			else
-				ss << " and\n";
+			ss << type_unique_monster_girls << " unique girl" << (type_unique_monster_girls > 1 ? "s" : "") << ":\n" << UGirls_list << ".\n";
 		}
 		if (type_beasts > 0)
 			ss << type_beasts << " beast" << (type_beasts > 1 ? "s." : ".");
@@ -258,7 +253,7 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 	if (num_items > 0)
 	{
 		ss << (num_monsters > 0 ? "Further, she" : "She") << " came out with ";
-		if (num_items == 1) ss << "one ";
+		if (num_items == 1) ss << "one item:\n";
 		else	ss << num_items << " items:\n";
 		ss << item_list << ".\n\n";
 	}

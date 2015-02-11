@@ -29,7 +29,7 @@ extern int g_Building;
 static cPlayer* m_Player = g_Brothels.GetPlayer();
 extern cJobManager m_JobManager;
 
-// `J` House Job - General
+// `J` Job House - General
 bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	int actiontype = ACTION_SEX;

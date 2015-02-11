@@ -593,12 +593,11 @@ void cScreenCentreManagement::ViewSelectedGirl()
 {
 	if (selected_girl)
 	{
-		if (GirlDead(selected_girl))
-			return;
+		if (GirlDead(selected_girl)) return;
 
 		//load up the cycle_girls vector with the ordered list of girl IDs
 		FillSortedIDList(girllist_id, &cycle_girls, &cycle_pos);
-		for (int i = cycle_girls.size(); i--> 0;)
+		for (int i = cycle_girls.size(); i-- > 0;)
 		{  // no viewing dead girls
 			if (g_Centre.GetGirl(g_CurrCentre, cycle_girls[i])->health() <= 0)
 				cycle_girls.erase(cycle_girls.begin() + i);

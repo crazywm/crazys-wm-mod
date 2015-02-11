@@ -28,15 +28,18 @@ using namespace std;
 // Represents a single trait
 typedef struct sTrait
 {
-	char* m_Name = 0;		// the name and unique ID of the trait
-	char* m_Desc = 0;		// a description of the trait
-	char* m_Type = 0;		// a description of the trait
-
+	char*	m_Name = 0;				// the name and unique ID of the trait
+	char*	m_Desc = 0;				// a description of the trait
+	char*	m_Type = 0;				// a description of the trait
+	int		m_InheritChance = -1;	// chance of inheriting the trait
+	int		m_RandomChance = -1;	// chance of a random girl to get the trait
 	sTrait* m_Next;		// the next trait in the list
 
 	sTrait()
 	{
 		m_Name = m_Desc = m_Type = 0;
+		m_InheritChance = -1;
+		m_RandomChance = -1;
 		m_Next = 0;
 	}
 
@@ -50,6 +53,9 @@ typedef struct sTrait
 		m_Type = 0;
 		if (m_Next) delete m_Next;
 		m_Next = 0;
+		m_InheritChance = 0;
+		m_RandomChance = 0;
+
 	}
 }sTrait;
 
@@ -71,10 +77,14 @@ public:
 	sTrait* GetTrait(string name);
 	sTrait* GetTraitNum(int num);
 	int GetNumTraits() {return m_NumTraits;}
+
+	int GetInheritChance(sTrait* trait)	{ return trait->m_InheritChance; }
+	int GetRandomChance(sTrait* trait)	{ return trait->m_RandomChance; }
+
 	string GetTranslateName(string name);
 
 private:
-	int m_NumTraits;
+	int		m_NumTraits;
 	sTrait* m_ParentTrait;				// the first trait in the list
 	sTrait* m_LastTrait;				// the last trait in the list
 };

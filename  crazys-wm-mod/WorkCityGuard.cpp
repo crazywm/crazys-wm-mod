@@ -46,7 +46,7 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
-// `J` Arena Job - Staff
+// `J` Job Arena - Staff
 bool cJobManager::WorkCityGuard(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	int actiontype = ACTION_WORKSECURITY;

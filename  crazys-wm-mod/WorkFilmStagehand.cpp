@@ -43,7 +43,7 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
-// `J` Movie Studio Job - Crew - job_is_cleaning
+// `J` Job Movie Studio - Crew - job_is_cleaning
 bool cJobManager::WorkFilmStagehand(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	int actiontype = ACTION_WORKMOVIE;

@@ -43,7 +43,7 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
-// `J` Clinic Job - Staff
+// `J` Job Clinic - Staff
 bool cJobManager::WorkIntern(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	int actiontype = ACTION_WORKINTERN;
@@ -66,7 +66,7 @@ bool cJobManager::WorkIntern(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	ss << " trains in the Medical field.\n\n";
 
 	cConfig cfg;
-	int enjoy = 0, wages = 0, skill = 0, train = 0;
+	int enjoy = 0, wages = 0, skill = 0, sgMed = 0, sgInt = 0, sgCha = 0, train = 0;
 	double roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
 
 
@@ -98,24 +98,39 @@ bool cJobManager::WorkIntern(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	if (train == 1)
 	{
 		ss << gettext("She learns how to work with medicine better.\n");
-		ss << gettext("She managed to gain ") << skill << gettext(" Medicine skill.\n\n");
-		g_Girls.UpdateSkill(girl, SKILL_MEDICINE, skill);
+		sgMed = skill;
 	}
-	else g_Girls.UpdateSkill(girl, SKILL_MEDICINE, g_Dice % 3);
+	else sgMed= g_Dice % 3;
 	if (train == 2)
 	{
 		ss << gettext("She got smarter today.\n");
-		ss << gettext("She managed to gain ") << skill << gettext(" Intelligence.\n\n");
-		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, skill);
+		sgInt = skill;
 	}
-	else g_Girls.UpdateSkill(girl, STAT_INTELLIGENCE, g_Dice % 2);
+	else sgInt = g_Dice % 2;
 	if (train == 3)
 	{
 		ss << gettext("She got more charismatic today.\n");
-		ss << gettext("She managed to gain ") << skill << gettext(" Charisma.\n\n");
-		g_Girls.UpdateStat(girl, STAT_CHARISMA, skill);
+		sgCha = skill;
 	}
-	else g_Girls.UpdateSkill(girl, STAT_CHARISMA, g_Dice % 2);
+	else sgCha = g_Dice % 2;
+
+	if (sgMed > 0)
+	{
+		ss << gettext("She managed to gain ") << sgMed << gettext(" Medicine skill.\n\n");
+		g_Girls.UpdateSkill(girl, SKILL_MEDICINE, sgMed);
+	}
+	if (sgInt > 0)
+	{
+		ss << gettext("She managed to gain ") << sgInt << gettext(" Intelligence.\n\n");
+		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, sgInt);
+	}
+	if (sgCha > 0)
+	{
+		ss << gettext("She managed to gain ") << sgCha << gettext(" Charisma.\n\n");
+		g_Girls.UpdateStat(girl, STAT_CHARISMA, sgCha);
+	}
+
+
 
 	//enjoyed the work or not
 	/* */if (roll_c <= 10)	{ enjoy -= g_Dice % 3 + 1;	ss << "Some of the patrons abused her during the shift."; }

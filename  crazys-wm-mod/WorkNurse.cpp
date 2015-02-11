@@ -44,7 +44,7 @@ extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 extern int g_Building;
 
-// `J` Clinic Job - Staff
+// `J` Job Clinic - Staff
 bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	int actiontype = ACTION_WORKNURSE;

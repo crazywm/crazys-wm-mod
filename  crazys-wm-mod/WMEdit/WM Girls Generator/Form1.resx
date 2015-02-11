@@ -217,8 +217,10 @@ If you enter unsuported values (like "fasdsadfgdfvd" and like) you can
 expect that Whore Master will crash.</value>
   </data>
   <data name="label_Load_Config.Text" xml:space="preserve">
-    <value>The WME will try to find config.xml by itself.    If it does not find it, you will have to find it manually.
-Starting in version .05t it is in the root game folder.    In older versions, it was in \Resources\Data\ folder.</value>
+    <value>The WME will try to find config.xml by itself. If it does not find it, you will have to find it manually.
+Starting in version .05t it is in the root game folder.   In older versions, it was in \Resources\Data\ folder.
+In .06, the game will load the config.xml from the folder the .EXE is in and then from the folder above that.
+This means it loads it twice with the second one taking precidence. Leave anything out of the second that you want to have default to the game version folder.</value>
   </data>
   <metadata name="dataGridView_Traits_Trait_Name.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -227,6 +229,12 @@ Starting in version .05t it is in the root game folder.    In older versions, it
     <value>True</value>
   </metadata>
   <metadata name="dataGridView_Traits_Trait_Type.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="dataGridView_Traits_Trait_InheritChance.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="dataGridView_Traits_Trait_RandomChance.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <metadata name="Bad_Files.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">

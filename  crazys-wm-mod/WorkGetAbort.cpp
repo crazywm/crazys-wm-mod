@@ -42,9 +42,10 @@ extern cClinicManager g_Clinic;
 extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
-// `J` Clinic Job - Surgery
+// `J` Job Clinic - Surgery
 bool cJobManager::WorkGetAbort(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
+	int actiontype = ACTION_GENERAL;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 	// if she was not in surgery last turn, reset working days to 0 before proceding
 	if (girl->m_YesterDayJob != JOB_GETABORT) { girl->m_WorkingDay = girl->m_PrevWorkingDay = 0; }

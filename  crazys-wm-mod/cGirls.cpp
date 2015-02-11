@@ -2771,6 +2771,19 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 
 }
 
+sGirl* cGirls::GetRandomYourDaughterGirl()
+{
+	if (GetNumYourDaughterGirls() == 0) return 0;
+	sGirl *girl;
+	vector<sGirl *> v;
+	for (girl = m_Parent; girl; girl = girl->m_Next)
+	{
+		if (girl->is_yourdaughter())	v.push_back(girl);
+	}
+	
+	return v[g_Dice%v.size()];
+}
+
 sGirl* cGirls::GetRandomGirl(bool slave, bool catacomb, bool arena, bool daughter, bool isdaughter)
 {
 	int num_girls = m_NumGirls;
@@ -12568,11 +12581,14 @@ bool cGirls::child_is_grown(sGirl* mom, sChild *child, string& summary, bool Pla
 	{
 		sprog = make_girl_child(mom, playerfather);
 	}
-	else if (GetNumYourDaughterGirls() > 0)
+	if (!sprog && playerfather && GetNumYourDaughterGirls() > 0)
 	{
-		sprog = GetRandomGirl(slave, false, false, true);
+		sprog = GetRandomGirl(slave, !AllowNonHuman, false, playerfather, false);				// first try to get an exact match
+		if (!sprog) sprog = GetRandomGirl(!slave, !AllowNonHuman, false, playerfather, false);	// then try flipping slave status
+		if (!sprog) sprog = GetRandomGirl(false, false, false, playerfather, false);			// then try the original code
+		if (!sprog) sprog = GetRandomYourDaughterGirl();										// if all else fails, just pick one
 	}
-	else
+	if (!sprog)
 	{
 		sprog = g_Girls.CreateRandomGirl(17, false, slave, false, !AllowNonHuman, false, false, playerfather);
 	}
@@ -12588,15 +12604,29 @@ bool cGirls::child_is_grown(sGirl* mom, sChild *child, string& summary, bool Pla
 	{
 		if (mom->m_Traits[i])
 		{
-			string tname = mom->m_Traits[i]->m_Name;
-			if (g_Girls.InheritTrait(mom->m_Traits[i]) && tname != "")
-				g_Girls.AddTrait(sprog, mom->m_Traits[i]->m_Name);
+			if (mom->m_Traits[i]->m_InheritChance != -1)	// `J` new method for xml traits
+			{
+				if (g_Dice.percent(mom->m_Traits[i]->m_InheritChance))
+				{
+					g_Girls.AddTrait(sprog, mom->m_Traits[i]->m_Name);
+				}
+			}
+			else
+			{
+				string tname = mom->m_Traits[i]->m_Name;
+				if (g_Girls.InheritTrait(mom->m_Traits[i]) && tname != "")
+					g_Girls.AddTrait(sprog, mom->m_Traits[i]->m_Name);
+			}
 		}
 	}
 	if (playerfather)
 	{
 		g_Girls.AddTrait(sprog, "Your Daughter");
 	}
+
+	g_Girls.MutuallyExclusiveTraits(sprog, 1);	// make sure all the trait effects are applied
+	g_Girls.ApplyTraits(sprog, true);	// `J` this is the old method  - the trait add and remove has been removed 
+	RemoveAllRememberedTraits(sprog);	// WD: remove any rembered traits created from trait incompatibilities
 
 	// inherit stats
 	for (int i = 0; i < NUM_STATS; i++)
@@ -13349,126 +13379,166 @@ cAImgList* cImgageListManager::LoadList(string name)
 	*/
 
 	cConfig cfg;
-	DirPath locationch = DirPath() << "Resources" << "DefaultImages";
-	XMLFileList test(locationch, "*.*g");
 	DirPath imagedir;
-	if (name == "Default" && test.size() > 0)
+	bool gfound = false, afound = false;
+
+	// first check if we are looking for default images
+	if (name == "Default" && cfg.folders.configXMLdi())
 	{
-		imagedir << "Resources" << "DefaultImages";
+		imagedir = DirPath() << cfg.folders.defaultimageloc();
+		FileList testg(imagedir, "*.*g");
+		FileList testa(imagedir, "*.ani");
+		if (testg.size() > 0)	gfound = true;
+		if (testa.size() > 0)	afound = true;
 	}
-	else if (cfg.folders.configXMLch())
-		imagedir = DirPath() << cfg.folders.characters() << name;
-	else
-		imagedir << "Resources" << "Characters" << name;
-	string numeric = "0123456789 ().,[]-";
-	string pic_types[] =
+	if (!gfound && !afound && name == "Default")
 	{
-		// `J` When modifying Image types, search for "J-Change-Image-Types"  :  found in >> LoadList *.*g
-		"Anal*.*g", "BDSM*.*g", "Sex*.*g", "Beast*.*g", "Group*.*g", "Les*.*g", "torture*.*g",
-		"Death*.*g", "Profile*.*g", "Combat*.*g", "Oral*.*g", "Ecchi*.*g", "Strip*.*g", "Maid*.*g", "Sing*.*g",
-		"Wait*.*g", "Card*.*g", "Bunny*.*g", "Nude*.*g", "Mast*.*g", "Titty*.*g", "Milk*.*g", "Hand*.*g",
-		"Foot*.*g", "Bed*.*g", "Farm*.*g", "Herd*.*g", "Cook*.*g", "Craft*.*g", "Swim*.*g", "Bath*.*g",
-		"Nurse*.*g", "Formal*.*g", "Shop*.*g", "Magic*.*g",
-		// pregnant varients
-		"Preg*.*g", "PregAnal*.*g", "PregBDSM*.*g", "PregSex*.*g", "pregbeast*.*g", "preggroup*.*g", "pregles*.*g",
-		"pregtorture*.*g", "pregdeath*.*g", "pregprofile*.*g", "pregcombat*.*g", "pregoral*.*g", "pregecchi*.*g",
-		"pregstrip*.*g", "pregmaid*.*g", "pregsing*.*g", "pregwait*.*g", "pregcard*.*g", "pregbunny*.*g", "pregnude*.*g",
-		"pregmast*.*g", "pregtitty*.*g", "pregmilk*.*g", "preghand*.*g", "pregFoot*.*g", "pregBed*.*g", "pregFarm*.*g",
-		"pregHerd*.*g", "pregCook*.*g", "pregCraft*.*g", "pregSwim*.*g", "pregBath*.*g", "pregNurse*.*g", "pregFormal*.*g",
-		"pregShop*.*g", "pregMagic*.*g"
-	};
-	int i = 0;
-
-	do {
-		bool to_add = true;
-		FileList the_files(imagedir, pic_types[i].c_str());
-		for (int k = 0; k < the_files.size(); k++)
+		DirPath locationch = DirPath() << "Resources" << "DefaultImages";
+		FileList testg(locationch, "*.*g");
+		FileList testa(locationch, "*.ani");
+		if (testg.size() > 0)	gfound = true;
+		if (testa.size() > 0)	afound = true;
+		if (testg.size() > 0 || testa.size() > 0)
 		{
-			bool test = false;
-			/*
-			* `J` fixed this by changing
-			*		string numeric="123456789";
-			* to	string numeric="0123456789 ().,[]-";
-			* Check Preg*.*g filenames [leaf] and accept as non-subtype. ONLY those with number 1--9 in char 5
-			* (Allows filename like 'Preg22.jpg' BUT DOESN'T allow like 'Preg (2).jpg' or 'Preg09.jpg')
-			* MIGHT BE BETTER to just throw out sub-type filenames in this Preg*.*g section. */
-			if (i == IMGTYPE_PREGNANT)
+			imagedir << "Resources" << "DefaultImages";
+		}
+	}
+	// If not, check if the girl is in the config set folder
+	if (!gfound && !afound && cfg.folders.configXMLch())
+	{	
+		imagedir = DirPath() << cfg.folders.characters() << name;
+		FileList testg(imagedir, "*.*g");
+		FileList testa(imagedir, "*.ani");
+		if (testg.size() > 0)	gfound = true;
+		if (testa.size() > 0)	afound = true;
+	}
+	// If not, check if the girl is in the ./Resources/Characters folder
+	if (!gfound && !afound)
+	{
+		imagedir << "Resources" << "Characters" << name;
+		FileList testg(imagedir, "*.*g");
+		FileList testa(imagedir, "*.ani");
+		if (testg.size() > 0)	gfound = true;
+		if (testa.size() > 0)	afound = true;
+	}
+
+
+	string numeric = "0123456789 ().,[]-";
+	if (gfound)
+	{
+		string pic_types[] =
+		{
+			// `J` When modifying Image types, search for "J-Change-Image-Types"  :  found in >> LoadList *.*g
+			"Anal*.*g", "BDSM*.*g", "Sex*.*g", "Beast*.*g", "Group*.*g", "Les*.*g", "torture*.*g",
+			"Death*.*g", "Profile*.*g", "Combat*.*g", "Oral*.*g", "Ecchi*.*g", "Strip*.*g", "Maid*.*g", "Sing*.*g",
+			"Wait*.*g", "Card*.*g", "Bunny*.*g", "Nude*.*g", "Mast*.*g", "Titty*.*g", "Milk*.*g", "Hand*.*g",
+			"Foot*.*g", "Bed*.*g", "Farm*.*g", "Herd*.*g", "Cook*.*g", "Craft*.*g", "Swim*.*g", "Bath*.*g",
+			"Nurse*.*g", "Formal*.*g", "Shop*.*g", "Magic*.*g",
+			// pregnant varients
+			"Preg*.*g", "PregAnal*.*g", "PregBDSM*.*g", "PregSex*.*g", "pregbeast*.*g", "preggroup*.*g", "pregles*.*g",
+			"pregtorture*.*g", "pregdeath*.*g", "pregprofile*.*g", "pregcombat*.*g", "pregoral*.*g", "pregecchi*.*g",
+			"pregstrip*.*g", "pregmaid*.*g", "pregsing*.*g", "pregwait*.*g", "pregcard*.*g", "pregbunny*.*g", "pregnude*.*g",
+			"pregmast*.*g", "pregtitty*.*g", "pregmilk*.*g", "preghand*.*g", "pregFoot*.*g", "pregBed*.*g", "pregFarm*.*g",
+			"pregHerd*.*g", "pregCook*.*g", "pregCraft*.*g", "pregSwim*.*g", "pregBath*.*g", "pregNurse*.*g", "pregFormal*.*g",
+			"pregShop*.*g", "pregMagic*.*g"
+		};
+		int i = 0;
+
+		do {
+			bool to_add = true;
+			FileList the_files(imagedir, pic_types[i].c_str());
+			for (int k = 0; k < the_files.size(); k++)
 			{
-				char c = the_files[k].leaf()[4];
-				for (int j = 0; j < (int)numeric.size(); j++)
+				bool test = false;
+				/*
+				* `J` fixed this by changing
+				*		string numeric="123456789";
+				* to	string numeric="0123456789 ().,[]-";
+				* Check Preg*.*g filenames [leaf] and accept as non-subtype. ONLY those with number 1--9 in char 5
+				* (Allows filename like 'Preg22.jpg' BUT DOESN'T allow like 'Preg (2).jpg' or 'Preg09.jpg')
+				* MIGHT BE BETTER to just throw out sub-type filenames in this Preg*.*g section. */
+				if (i == IMGTYPE_PREGNANT)
 				{
-					if (c == numeric[j])
+					char c = the_files[k].leaf()[4];
+					for (int j = 0; j < (int)numeric.size(); j++)
 					{
-						test = true;
-						break;
+						if (c == numeric[j])
+						{
+							test = true;
+							break;
+						}
+					}
+					if (!test)
+					{
+						k = the_files.size();
+						to_add = false;
 					}
 				}
-				if (!test)
+				if (to_add)
 				{
-					k = the_files.size();
-					to_add = false;
+					current->m_Images[i].AddImage(the_files[k].full());
+					current->m_Images[i].m_NumImages++;
 				}
 			}
-			if (to_add)
-			{
-				current->m_Images[i].AddImage(the_files[k].full());
-				current->m_Images[i].m_NumImages++;
-			}
-		}
-		i++;
-	} while (i < NUM_IMGTYPES);
+			i++;
+		} while (i < NUM_IMGTYPES);
+	}
 
-	// Yes this is just a hack to load animations (my bad ;) - Necro
-	string pic_types2[] = {
-		// `J` When modifying Image types, search for "J-Change-Image-Types"  :  found in >> LoadList *.ani
-		"Anal*.ani", "BDSM*.ani", "Sex*.ani", "Beast*.ani", "Group*.ani", "Les*.ani", "torture*.ani",
-		"Death*.ani", "Profile*.ani", "Combat*.ani", "Oral*.ani", "Ecchi*.ani", "Strip*.ani", "Maid*.ani",
-		"Sing*.ani", "Wait*.ani", "Card*.ani", "Bunny*.ani", "Nude*.ani", "Mast*.ani", "Titty*.ani",
-		"Milk*.ani", "Hand*.ani", "Foot*.ani", "Bed*.ani", "Farm*.ani", "Herd*.ani", "Cook*.ani",
-		"Craft*.ani", "Swim*.ani", "Bath*.ani", "Nurse*.ani", "Formal*.ani", "Shop*.ani", "Magic*.ani",
-		// pregnant varients
-		"Preg*.ani", "PregAnal*.ani", "PregBDSM*.ani", "PregSex*.ani", "pregbeast*.ani", "preggroup*.ani",
-		"pregles*.ani", "pregtorture*.ani", "pregdeath*.ani", "pregprofile*.ani", "pregcombat*.ani", "pregoral*.ani",
-		"pregecchi*.ani", "pregstrip*.ani", "pregmaid*.ani", "pregsing*.ani", "pregwait*.ani", "pregcard*.ani",
-		"pregbunny*.ani", "pregnude*.ani", "pregmast*.ani", "pregtitty*.ani", "pregmilk*.ani", "preghand*.ani",
-		"pregFoot*.ani", "pregBed*.ani", "pregFarm*.ani", "pregHerd*.ani", "pregCook*.ani", "pregCraft*.ani",
-		"pregSwim*.ani", "pregBath*.ani", "pregNurse*.ani", "pregFormal*.ani", "pregShop*.ani", "pregMagic*.ani"
-	};
-	i = 0;
-	do {
-		bool to_add = true;
-		FileList the_files(imagedir, pic_types2[i].c_str());
-		for (int k = 0; k < the_files.size(); k++)
-		{
-			bool test = false;
-			/* Check Preg*.*g filenames [leaf] and accept as non-subtypew ONLY those with number 1--9 in char 5
-			* (Allows filename like 'Preg22.jpg' BUT DOESN'T allow like 'Preg (2).jpg' or 'Preg09.jpg')
-			* MIGHT BE BETTER to just throw out sub-type filenames in this Preg*.*g section. */
-			if (i == IMGTYPE_PREGNANT)
-			{
-				char c = the_files[k].leaf()[4];
-				for (int j = 0; j < 9; j++) {
+	if (afound)
+	{
 
-					if (c == numeric[j])
+		// Yes this is just a hack to load animations (my bad ;) - Necro
+		string pic_types2[] = {
+			// `J` When modifying Image types, search for "J-Change-Image-Types"  :  found in >> LoadList *.ani
+			"Anal*.ani", "BDSM*.ani", "Sex*.ani", "Beast*.ani", "Group*.ani", "Les*.ani", "torture*.ani",
+			"Death*.ani", "Profile*.ani", "Combat*.ani", "Oral*.ani", "Ecchi*.ani", "Strip*.ani", "Maid*.ani",
+			"Sing*.ani", "Wait*.ani", "Card*.ani", "Bunny*.ani", "Nude*.ani", "Mast*.ani", "Titty*.ani",
+			"Milk*.ani", "Hand*.ani", "Foot*.ani", "Bed*.ani", "Farm*.ani", "Herd*.ani", "Cook*.ani",
+			"Craft*.ani", "Swim*.ani", "Bath*.ani", "Nurse*.ani", "Formal*.ani", "Shop*.ani", "Magic*.ani",
+			// pregnant varients
+			"Preg*.ani", "PregAnal*.ani", "PregBDSM*.ani", "PregSex*.ani", "pregbeast*.ani", "preggroup*.ani",
+			"pregles*.ani", "pregtorture*.ani", "pregdeath*.ani", "pregprofile*.ani", "pregcombat*.ani", "pregoral*.ani",
+			"pregecchi*.ani", "pregstrip*.ani", "pregmaid*.ani", "pregsing*.ani", "pregwait*.ani", "pregcard*.ani",
+			"pregbunny*.ani", "pregnude*.ani", "pregmast*.ani", "pregtitty*.ani", "pregmilk*.ani", "preghand*.ani",
+			"pregFoot*.ani", "pregBed*.ani", "pregFarm*.ani", "pregHerd*.ani", "pregCook*.ani", "pregCraft*.ani",
+			"pregSwim*.ani", "pregBath*.ani", "pregNurse*.ani", "pregFormal*.ani", "pregShop*.ani", "pregMagic*.ani"
+		};
+		int i = 0;
+		do {
+			bool to_add = true;
+			FileList the_files(imagedir, pic_types2[i].c_str());
+			for (int k = 0; k < the_files.size(); k++)
+			{
+				bool test = false;
+				/* Check Preg*.*g filenames [leaf] and accept as non-subtypew ONLY those with number 1--9 in char 5
+				* (Allows filename like 'Preg22.jpg' BUT DOESN'T allow like 'Preg (2).jpg' or 'Preg09.jpg')
+				* MIGHT BE BETTER to just throw out sub-type filenames in this Preg*.*g section. */
+				if (i == IMGTYPE_PREGNANT)
+				{
+					char c = the_files[k].leaf()[4];
+					for (int j = 0; j < 9; j++) {
+
+						if (c == numeric[j])
+						{
+							test = true;
+							break;
+						}
+					}
+					if (!test)
 					{
-						test = true;
-						break;
+						k = the_files.size();
+						to_add = false;
 					}
 				}
-				if (!test)
+				if (to_add)
 				{
-					k = the_files.size();
-					to_add = false;
+					current->m_Images[i].AddImage(the_files[k].full(), the_files[k].path(), the_files[k].leaf());
+					current->m_Images[i].m_NumImages++;
 				}
 			}
-			if (to_add)
-			{
-				current->m_Images[i].AddImage(the_files[k].full(), the_files[k].path(), the_files[k].leaf());
-				current->m_Images[i].m_NumImages++;
-			}
-		}
-		i++;
-	} while (i < NUM_IMGTYPES);
+			i++;
+		} while (i < NUM_IMGTYPES);
+	}
 
 	if (m_Last)
 	{
@@ -14312,15 +14382,18 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 		{
 			cConfig cfg;
 			int to_go = cfg.pregnancy.weeks_pregnant() - m_WeeksPreg;
-			ss << gettext("Yes") << "(" << to_go << ")";
+			ss << gettext("Yes");
+			if (has_trait("Sterile"))	ss << "?" << to_go << "?";	// how?
+			else						ss << "(" << to_go << ")";
 		}
-		else
+		else if (m_PregCooldown > 0)
 		{
-			if (m_PregCooldown == 0)
-				ss << gettext("No");
-			else
-				ss << gettext("No") << "(" << m_PregCooldown << ")";
+			ss << gettext("No");
+			if (has_trait("Sterile"))	ss << "!" << m_PregCooldown << "!";
+			else						ss << "(" << m_PregCooldown << ")";
 		}
+		else if (has_trait("Sterile"))	ss << "St.";
+		else							ss << gettext("No");
 	}
 	else if (detailName == "is_slave")			{ ss << (is_slave() ? gettext("Yes") : gettext("No")); }
 	else if (detailName == "carrying_human")	{ ss << (carrying_human() ? gettext("Yes") : gettext("No")); }

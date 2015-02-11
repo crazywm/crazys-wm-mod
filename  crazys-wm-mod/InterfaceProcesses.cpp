@@ -2394,6 +2394,9 @@ void NextWeek()
 	// Clear the interface events
 	g_InterfaceEvents.ClearEvents();
 
+	// clear the events of dungeon girls
+	g_Brothels.m_Dungeon.ClearDungeonGirlEvents();
+
 	// go through and update all the brothels (this updates the girls each brothel has and calculates sex and stuff)
 	if (g_Clinic.GetNumBrothels() > 0)		g_Clinic.UpdateClinic();
 	if (g_Studios.GetNumBrothels() > 0)		g_Studios.UpdateMovieStudio();
@@ -2409,6 +2412,8 @@ void NextWeek()
 
 	// go through and update all the gang-related data (send them on missions, etc.)
 	g_Gangs.UpdateGangs();
+
+	g_Brothels.m_Dungeon.Update();	// update the people in the dungeon
 
 	// go through and update the population base
 	g_Customers.ChangeCustomerBase();

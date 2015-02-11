@@ -870,7 +870,7 @@ sScript *cGameScript::Script_AddFamilyToDungeon(sScript *Script)
 			}
 		}
 		NGmsg1 << ".";
-		Daughter1->m_Events.AddMessage(NGmsg1.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+		Daughter1->m_Events.AddMessage(NGmsg1.str(), IMGTYPE_PROFILE, EVENT_DUNGEON);
 	}
 	if (value[0] > 1)
 	{
@@ -879,14 +879,14 @@ sScript *cGameScript::Script_AddFamilyToDungeon(sScript *Script)
 		NGmsg2 << "her sister" << (value[0] > 2 ? "s " : " ") << Daughter1->m_Realname;
 		if (value[0] > 2) NGmsg2 << " and " << Daughter3->m_Realname;
 		NGmsg2 << ".";
-		Daughter2->m_Events.AddMessage(NGmsg2.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+		Daughter2->m_Events.AddMessage(NGmsg2.str(), IMGTYPE_PROFILE, EVENT_DUNGEON);
 	}
 	if (value[0] > 2)
 	{
 		NGmsg3 << Daughter3->m_Realname << " was " << kstring << " along with ";
 		if (value[1]) NGmsg3 << "her mother " << Mother->m_Realname << " and ";
 		NGmsg3 << "her sisters " << Daughter1->m_Realname << " and " << Daughter2->m_Realname << ".";
-		Daughter3->m_Events.AddMessage(NGmsg3.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+		Daughter3->m_Events.AddMessage(NGmsg3.str(), IMGTYPE_PROFILE, EVENT_DUNGEON);
 	}
 	if (value[1])
 	{
@@ -900,7 +900,7 @@ sScript *cGameScript::Script_AddFamilyToDungeon(sScript *Script)
 			if (value[0] > 2)		NGmsgM << " and " << Daughter3->m_Realname;
 		}
 		NGmsgM << ".";
-		Mother->m_Events.AddMessage(NGmsgM.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+		Mother->m_Events.AddMessage(NGmsgM.str(), IMGTYPE_PROFILE, EVENT_DUNGEON);
 	}
 
 	if (value[0] > 0)	g_Brothels.GetDungeon()->AddGirl(Daughter1, reason);

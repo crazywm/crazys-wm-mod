@@ -32,7 +32,7 @@ extern cBrothelManager g_Brothels;
 extern cFarmManager g_Farm;
 extern cInventory g_InvManager;
 
-// `J` Farm Job - Producers - updated 1/29/15
+// `J` Job Farm - Producers - updated 1/29/15
 bool cJobManager::WorkMakePotions(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	int actiontype = ACTION_WORKMAKEPOTIONS;

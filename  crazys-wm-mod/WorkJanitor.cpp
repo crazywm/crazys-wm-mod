@@ -43,7 +43,7 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
-// `J` Clinic Job - Staff - job_is_cleaning
+// `J` Job Clinic - Staff - job_is_cleaning
 bool cJobManager::WorkJanitor(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	int actiontype = ACTION_WORKCLEANING;

@@ -59,6 +59,8 @@ struct sConfigData
 		string	saves;
 		bool	configXMLsa;
 		bool	backupsaves;
+		string	defaultimageloc;
+		bool	configXMLdi;
 	} folders;
 
 	/*
@@ -339,6 +341,8 @@ public:
 		string& saves()				{ return data->folders.saves; }
 		bool configXMLsa()			{ return data->folders.configXMLsa; }
 		bool backupsaves()			{ return data->folders.backupsaves; }
+		string& defaultimageloc()	{ return data->folders.defaultimageloc; }
+		bool configXMLdi()			{ return data->folders.configXMLdi; }
 
 	}folders;
 

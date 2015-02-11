@@ -39,7 +39,7 @@ extern cBrothelManager g_Brothels;
 extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
-// `J` Brothel Job - Brothel
+// `J` Job Brothel - Brothel
 bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	int actiontype = ACTION_WORKSTRIP;

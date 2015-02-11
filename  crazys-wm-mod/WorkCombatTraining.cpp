@@ -42,7 +42,7 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
-// `J` Arena Job - Fighting
+// `J` Job Arena - Fighting
 bool cJobManager::WorkCombatTraining(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	int actiontype = ACTION_COMBAT;

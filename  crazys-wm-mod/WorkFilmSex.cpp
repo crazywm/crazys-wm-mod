@@ -44,7 +44,7 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern int g_Building;
 
-// `J` Movie Studio Job - Actress
+// `J` Job Movie Studio - Actress
 bool cJobManager::WorkFilmSex(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	int actiontype = ACTION_WORKMOVIE;

@@ -42,7 +42,7 @@ extern cCentreManager g_Centre;
 extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
-// `J` Centre Job - Anger Management
+// `J` Job Centre - Anger Management
 bool cJobManager::WorkCentreAngerManagement(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
@@ -71,12 +71,12 @@ bool cJobManager::WorkCentreAngerManagement(sGirl* girl, sBrothel* brothel, bool
 	{
 		g_Girls.UpdateEnjoyment(girl, actiontype, -1, true);
 		if (Day0Night1) girl->m_WorkingDay--;
-		if (g_Dice.percent(25))
+		if (g_Dice.percent(10))
 		{
 			g_Girls.UpdateEnjoyment(girl, actiontype, -5, true);
 			bool runaway = false;
 			// if there is no counselor, it should not get to here
-			sGirl* counselor = g_Brothels.GetRandomGirlOnJob(0, JOB_COUNSELOR, Day0Night1);	
+			sGirl* counselor = g_Centre.GetRandomGirlOnJob(0, JOB_COUNSELOR, Day0Night1);	
 			ss << "\n\n" << girlName << " fought hard with her counselor " << counselor->m_Realname;
 			int winner = g_Girls.girl_fights_girl(girl, counselor);
 			if (winner == 1)	// the patient won

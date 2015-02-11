@@ -43,21 +43,21 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
-// `J` Clinic Job - Staff - Matron_Job - Full_Time_Job
+// `J` Job Clinic - Staff - Matron_Job - Full_Time_Job
 bool cJobManager::WorkChairMan(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	int actiontype = ACTION_WORKMATRON;
 	// DisobeyCheck is done in the building flow.
 	girl->m_DayJob = girl->m_NightJob = JOB_CHAIRMAN;	// it is a full time job
 
-	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
+	stringstream ss; string girlName = girl->m_Realname; ss << "Clinic Chairman "<< girlName;
 	cConfig cfg;
 
 	int numgirls = brothel->m_NumGirls;
 	int enjoy = 0;
 	int conf = 0;
 	int happy = 0;
-
+	
 	// Complications
 	int check = g_Dice.d100();
 	if (check < 10 && numgirls >(girl->service() + girl->confidence()) * 3)

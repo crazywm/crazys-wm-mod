@@ -34,7 +34,7 @@ extern cFarmManager g_Farm;
 extern cInventory g_InvManager;
 
 
-// `J` Farm Job - Producers
+// `J` Job Farm - Producers
 bool cJobManager::WorkBaker(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	int actiontype = ACTION_WORKCOOKING;

@@ -42,7 +42,7 @@ extern cMessageQue g_MessageQue;
 
 static cDungeon* m_Dungeon = g_Brothels.GetDungeon();
 
-// `J` House Job - General
+// `J` Job House - General
 bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	int actiontype = ACTION_WORKRECRUIT;

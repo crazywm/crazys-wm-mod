@@ -43,14 +43,14 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
-// `J` Brothel Job - General - Matron_Job - Full_Time_Job
+// `J` Job Brothel - General - Matron_Job - Full_Time_Job
 bool cJobManager::WorkMatron(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	int actiontype = ACTION_WORKMATRON;
 	girl->m_DayJob = girl->m_NightJob = JOB_MATRON;	// it is a full time job
 	if (Day0Night1) return false;	// and is only checked once
 
-	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
+	stringstream ss; string girlName = girl->m_Realname; ss << "Matron " << girlName;
 
 	// `J` zzzzzz - this needs to be updated for building flow
 	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))
