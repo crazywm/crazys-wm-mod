@@ -42,7 +42,7 @@ extern cCentreManager g_Centre;
 extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
-// `J` Centre Job - Rehab_Job - Full_Time_Job
+// `J` Job Centre - Rehab_Job - Full_Time_Job
 bool cJobManager::WorkCounselor(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {	// `J` changed "Drug Counselor" to just "Counselor" so she can help the other therapy patients
 

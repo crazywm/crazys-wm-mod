@@ -3,877 +3,1315 @@
 	<Trait
 		Name="Kidnapped"
 		Desc="This girl was taken from her family."
-		Type="Temporary" />
+		Type="Temporary"
+		InheritChance="0"
+		RandomChance="0" />
 	<Trait
 		Name="Emprisoned Customer"
 		Desc="This girl was was a customer but broke the law in some way allowing you to take her as a slave."
-		Type="Temporary" />
+		Type="Temporary"
+		InheritChance="0"
+		RandomChance="0" />
 	<Trait
 		Name="Agile"
 		Desc="This girl is quick on her feet and swift with her hands. She has natural gift of dexterity."
-		Type="Action" />
+		Type="Action"
+		InheritChance="30"
+		RandomChance="20" />
 	<Trait
 		Name="Blind"
 		Desc="This girl is blind and cannot see"
-		Type="Action" />
+		Type="Action"
+		InheritChance="10"
+		RandomChance="5" />
 	<Trait
 		Name="Bad Eyesight"
 		Desc="This girl needs glasses to see, without them she is almost blind."
-		Type="Action" />
+		Type="Action"
+		InheritChance="10"
+		RandomChance="10" />
 	<Trait
 		Name="Sharp-Eyed"
 		Desc="This girl can see much clearer than most people."
-		Type="Action" />
+		Type="Action"
+		InheritChance="10"
+		RandomChance="10" />
 	<Trait
 		Name="Brawler"
 		Desc="This girl knows how to whoop asses when necessary."
-		Type="Action" />
+		Type="Action"
+		InheritChance="5"
+		RandomChance="10" />
 	<Trait
 		Name="Clumsy"
 		Desc="This girl often makes mistakes. Maybe she will learn in time."
-		Type="Action" />
+		Type="Action"
+		InheritChance="5"
+		RandomChance="20" />
 	<Trait
 		Name="Deaf"
 		Desc="This girl is Deaf and cannot hear."
-		Type="Action" />
+		Type="Action"
+		InheritChance="10"
+		RandomChance="5" />
 	<Trait
 		Name="Delicate"
 		Desc="This girl is a delicate flower. She gets tired quickly and bruises easily if she's hit."
-		Type="Action" />
+		Type="Action"
+		InheritChance="20"
+		RandomChance="10" />
 	<Trait
 		Name="Fleet of Foot"
 		Desc="This girl is quick on her feet. She can usually outrun her enemies if she can't beat them."
-		Type="Action" />
+		Type="Action"
+		InheritChance="30"
+		RandomChance="20" />
 	<Trait
 		Name="Fragile"
 		Desc="This girl is fragile and gets hurt or tired easy. (easy to hurt)"
-		Type="Action" />
+		Type="Action"
+		InheritChance="20"
+		RandomChance="5" />
 	<Trait
 		Name="Open Minded"
 		Desc="She has no problems trying different things sexually and she will accept anything as is."
-		Type="Action" />
+		Type="Action"
+		InheritChance="30"
+		RandomChance="10" />
 	<Trait
 		Name="Strong"
 		Desc="This girl can fight well and is tough. (+combat skills/stats)"
-		Type="Action" />
+		Type="Action"
+		InheritChance="30"
+		RandomChance="20" />
 	<Trait
 		Name="Tough"
 		Desc="This girl is tough, she can take alot of punishment. (hard to hurt)"
-		Type="Action" />
+		Type="Action"
+		InheritChance="50"
+		RandomChance="20" />
 	<Trait
 		Name="Alcoholic"
 		Desc="This girl is addicted to Alcohol"
-		Type="Addiction" />
+		Type="Addiction"
+		InheritChance="10"
+		RandomChance="5" />
 	<Trait
 		Name="Cum Addict"
 		Desc="This girl is addicted to the taste of semen and will even trick her customers to taste their delicious cum."
-		Type="Addiction" />
+		Type="Addiction"
+		InheritChance="0"
+		RandomChance="1" />
 	<Trait
 		Name="Fairy Dust Addict"
 		Desc="This girl is addicted to the mellow fairy dust. (drug) (+happiness) (-looks)"
-		Type="Addiction" />
+		Type="Addiction"
+		InheritChance="5"
+		RandomChance="3" />
 	<Trait
 		Name="Shroud Addict"
 		Desc="A girl additced to the gas emmited from the rare Shroud Mushroom. (drug) (+happiness) (-looks)"
-		Type="Addiction" />
+		Type="Addiction"
+		InheritChance="5"
+		RandomChance="1" />
 	<Trait
 		Name="Smoker"
 		Desc="This girl is addicted to Nicotine"
-		Type="Addiction" />
+		Type="Addiction"
+		InheritChance="10"
+		RandomChance="5" />
 	<Trait
 		Name="Viras Blood Addict"
 		Desc="This girl is additced to the blood of the sex crazed plant Viras. (drug) (+happiness) (-looks)"
-		Type="Addiction" />
+		Type="Addiction"
+		InheritChance="5"
+		RandomChance="1" />
 	<Trait
 		Name="Beauty Mark"
 		Desc="She has a visible beauty mark somewhere. Above her lips, on her cheek or maybe even on her tits or asscheeks."
-		Type="Appearance" />
+		Type="Appearance"
+		InheritChance="1"
+		RandomChance="5" />
 	<Trait
 		Name="Cool Scars"
 		Desc="This girl has some scars that look kinda cool and dangerous."
-		Type="Appearance" />
+		Type="Appearance"
+		InheritChance="0"
+		RandomChance="20" />
 	<Trait
 		Name="Dick-Sucking Lips"
 		Desc="Her lips are gorgeously full and they look even better when they're sucking on something."
-		Type="Appearance" />
+		Type="Appearance"
+		InheritChance="20"
+		RandomChance="5" />
 	<Trait
 		Name="Exotic"
 		Desc="Her skin colour is unusual. It could be natural chocolate, tanned orange, perhaps even alien green or purple."
-		Type="Appearance" />
+		Type="Appearance"
+		InheritChance="50"
+		RandomChance="10" />
 	<Trait
 		Name="Heavily Tattooed"
 		Desc="She has tattoos over most of her body. It is very hard for her to cover them all."
-		Type="Appearance" />
+		Type="Appearance"
+		InheritChance="1"
+		RandomChance="1" />
 	<Trait
 		Name="Horrific Scars"
 		Desc="The poor girl has some horrid scars on her body. (-looks)"
-		Type="Appearance" />
+		Type="Appearance"
+		InheritChance="0"
+		RandomChance="10" />
 	<Trait
 		Name="Pierced Clit"
 		Desc="She has had her clit pierced."
-		Type="Appearance" />
+		Type="Appearance"
+		InheritChance="0"
+		RandomChance="2" />
 	<Trait
 		Name="Pierced Nipples"
 		Desc="She has had her nipples pierced."
-		Type="Appearance" />
+		Type="Appearance"
+		InheritChance="0"
+		RandomChance="2" />
 	<Trait
 		Name="Pierced Nose"
 		Desc="This girl has a pierced nose."
-		Type="Appearance" />
+		Type="Appearance"
+		InheritChance="0"
+		RandomChance="2" />
 	<Trait
 		Name="Pierced Tongue"
 		Desc="She has her tongue pierced."
-		Type="Appearance" />
+		Type="Appearance"
+		InheritChance="0"
+		RandomChance="2" />
 	<Trait
 		Name="Small Scars"
 		Desc="This poor girl has small scars. (-looks)"
-		Type="Appearance" />
+		Type="Appearance"
+		InheritChance="0"
+		RandomChance="20" />
 	<Trait
 		Name="Small Tattoos"
 		Desc="She has some small tattoos on her body. If you ask nicely, she may show you."
-		Type="Appearance" />
+		Type="Appearance"
+		InheritChance="0"
+		RandomChance="10" />
 	<Trait
 		Name="Tattooed"
 		Desc="She has some type of image tattooed on her body, be it a bird, a heart or the name of some old boyfriend or girlfriend."
-		Type="Appearance" />
+		Type="Appearance"
+		InheritChance="0"
+		RandomChance="5" />
 	<Trait
 		Name="Abnormally Large Boobs"
 		Desc="My god these things are like miniture moons..."
-		Type="Breasts" />
+		Type="Breasts"
+		InheritChance="70"
+		RandomChance="5" />
 	<Trait
 		Name="Abundant Lactation"
 		Desc="Her breasts produce a large amount of milk at a faster-than-average rate."
-		Type="Breasts" />
+		Type="Breasts"
+		InheritChance="50"
+		RandomChance="5" />
 	<Trait
 		Name="Big Boobs"
 		Desc="Wow! This girl really has knockers. (+looks)"
-		Type="Breasts" />
+		Type="Breasts"
+		InheritChance="70"
+		RandomChance="20" />
 	<Trait
 		Name="Busty Boobs"
 		Desc="She's packing a pair of fairly large, full lady lumps on her chest."
-		Type="Breasts" />
+		Type="Breasts"
+		InheritChance="70"
+		RandomChance="20" />
 	<Trait
 		Name="Cow Tits"
 		Desc="This girl's breasts produce an astoundingly large amount of milk at an extremely quick rate. Her mammaries are practically overflowing with deliciously sweet and rich milk."
-		Type="Breasts" />
+		Type="Breasts"
+		InheritChance="50"
+		RandomChance="1" />
 	<Trait
 		Name="Dry Milk"
 		Desc="This girl is incapable of producing milk of any worth."
-		Type="Breasts" />
+		Type="Breasts"
+		InheritChance="50"
+		RandomChance="1" />
 	<Trait
 		Name="Flat Chest"
 		Desc="This girl's boobs aren't just small - her entire chest area is practically plank-shaped."
-		Type="Breasts" />
+		Type="Breasts"
+		InheritChance="70"
+		RandomChance="1" />
 	<Trait
 		Name="Giant Juggs"
 		Desc="They're soft, they're jiggly and they're BIG, with a B-I-G. There is definitely something to be jealous of here."
-		Type="Breasts" />
+		Type="Breasts"
+		InheritChance="70"
+		RandomChance="5" />
 	<Trait
 		Name="Inverted Nipples"
 		Desc="She has inverted nipples"
-		Type="Breasts" />
+		Type="Breasts"
+		InheritChance="5"
+		RandomChance="2" />
 	<Trait
 		Name="Massive Melons"
 		Desc="By the legendaries... her tits are like miniature moons. Hands and faces get lost inside them...forever."
-		Type="Breasts" />
+		Type="Breasts"
+		InheritChance="70"
+		RandomChance="5" />
 	<Trait
 		Name="Perky Nipples"
 		Desc="She has perky nipples."
-		Type="Breasts" />
+		Type="Breasts"
+		InheritChance="70"
+		RandomChance="5" />
 	<Trait
 		Name="Petite Breasts"
 		Desc="She's only a bit under-endowed. What she lacks in size, she makes up with sensitivity."
-		Type="Breasts" />
+		Type="Breasts"
+		InheritChance="70"
+		RandomChance="10" />
 	<Trait
 		Name="Puffy Nipples"
 		Desc="Her nipples are puffy."
-		Type="Breasts" />
+		Type="Breasts"
+		InheritChance="70"
+		RandomChance="5" />
 	<Trait
 		Name="Scarce Lactation"
 		Desc="Her breasts produce a smaller amount of milk than usual."
-		Type="Breasts" />
+		Type="Breasts"
+		InheritChance="50"
+		RandomChance="2" />
 	<Trait
 		Name="Small Boobs"
 		Desc="Her boobs may be small, but some customers like that."
-		Type="Breasts" />
+		Type="Breasts"
+		InheritChance="70"
+		RandomChance="20" />
 	<Trait
 		Name="Titanic Tits"
 		Desc="Her breasts, if they can even be called that, have transcended the scientific laws of space. You could hug them like you could hug an entire person. How the girl wielding them even walks is a mystery."
-		Type="Breasts" />
+		Type="Breasts"
+		InheritChance="70"
+		RandomChance="5" />
 	<Trait
 		Name="AIDS"
 		Desc="She has aids, rare magical cures exist but you may as well accept she will probably die. (disease)"
-		Type="Disease" />
+		Type="Disease"
+		InheritChance="80"
+		RandomChance="1" />
 	<Trait
 		Name="Chlamydia"
 		Desc="This nasty disease will cause pain for both her and the customers during urination. (disease)"
-		Type="Disease" />
+		Type="Disease"
+		InheritChance="50"
+		RandomChance="2" />
 	<Trait
 		Name="Herpes"
 		Desc="She has contracted Herpes. Customers will not be happy if she gives it to them."
-		Type="Disease" />
+		Type="Disease"
+		InheritChance="50"
+		RandomChance="4" />
 	<Trait
 		Name="Syphilis"
 		Desc="This disease can cause death if left untreated. While untreated sores will appear on parts of her body and eventually worse symptoms will appear. (disease)"
-		Type="Disease" />
+		Type="Disease"
+		InheritChance="50"
+		RandomChance="3" />
 	<Trait
 		Name="Actress"
 		Desc="She is a born Actress, ready for whatever the Director throws at her."
-		Type="Job" />
+		Type="Job"
+		InheritChance="0"
+		RandomChance="5" />
 	<Trait
 		Name="Porn Star"
 		Desc="She has stared in so many movies almost every man in the country knows her name."
-		Type="Job" />
+		Type="Job"
+		InheritChance="0"
+		RandomChance="1" />
 	<Trait
 		Name="Chef"
 		Desc="This girl either cooked professionally or for personal reasons. Either way, she is a master in the kitchen."
-		Type="Job" />
+		Type="Job"
+		InheritChance="0"
+		RandomChance="5" />
 	<Trait
 		Name="Country Gal"
 		Desc="This girl spend a lot of time in the country, and knows plants and Animals."
-		Type="Job" />
+		Type="Job"
+		InheritChance="0"
+		RandomChance="5" />
 	<Trait
 		Name="Director"
 		Desc="She has a knack for getting people to do things her way."
-		Type="Job" />
+		Type="Job"
+		InheritChance="0"
+		RandomChance="2" />
 	<Trait
 		Name="Doctor"
 		Desc="She has already had extensive medical training."
-		Type="Job" />
+		Type="Job"
+		InheritChance="0"
+		RandomChance="2" />
 	<Trait
 		Name="Farmers Daughter"
 		Desc="She grew up on the family farm."
-		Type="Job" />
+		Type="Job"
+		InheritChance="0"
+		RandomChance="5" />
 	<Trait
 		Name="Former Official"
 		Desc="This girl used to hold an elected office."
-		Type="Job" />
+		Type="Job"
+		InheritChance="0"
+		RandomChance="1" />
 	<Trait
 		Name="Handyman"
 		Desc="This girl can fix anything. Ducttape and paperclips are her favorite tools."
-		Type="Job" />
+		Type="Job"
+		InheritChance="0"
+		RandomChance="5" />
 	<Trait
 		Name="Heroine"
 		Desc="This girl was a vigilante out for Justice or revenge."
-		Type="Job" />
+		Type="Job"
+		InheritChance="0"
+		RandomChance="1" />
 	<Trait
 		Name="Homeless"
 		Desc="This girl used to be homeless, living on the streets."
-		Type="Job" />
+		Type="Job"
+		InheritChance="0"
+		RandomChance="5" />
 	<Trait
 		Name="Maid"
 		Desc="This girl has either worked or has been trained as a Maid"
-		Type="Job" />
+		Type="Job"
+		InheritChance="0"
+		RandomChance="5" />
 	<Trait
 		Name="Mixologist"
 		Desc="This girl knows how to blend drinks to her customer's taste"
-		Type="Job" />
+		Type="Job"
+		InheritChance="0"
+		RandomChance="5" />
 	<Trait
 		Name="Priestess"
 		Desc="She used to live a life of simple purity and devotion."
-		Type="Job" />
+		Type="Job"
+		InheritChance="0"
+		RandomChance="1" />
 	<Trait
 		Name="Singer"
 		Desc="She can sing really well and moves customers with just her voice."
-		Type="Job" />
+		Type="Job"
+		InheritChance="0"
+		RandomChance="1" />
 	<Trait
 		Name="Teacher"
 		Desc="This girl used to be a teacher at a neighborhood school, not anymore."
-		Type="Job" />
+		Type="Job"
+		InheritChance="0"
+		RandomChance="5" />
 	<Trait
 		Name="Tone Deaf"
 		Desc="She thinks she can sing but no one else does."
-		Type="Job" />
+		Type="Job"
+		InheritChance="5"
+		RandomChance="5" />
 	<Trait
 		Name="Waitress"
 		Desc="This girl has worked in the Service industry in the past."
-		Type="Job" />
+		Type="Job"
+		InheritChance="0"
+		RandomChance="5" />
 	<Trait
 		Name="Flight"
 		Desc="This girl can fly."
-		Type="Magical" />
+		Type="Magical"
+		InheritChance="50"
+		RandomChance="1" />
 	<Trait
 		Name="Natural Pheromones"
 		Desc="The girl emits her own special scent to draw in customers."
-		Type="Magical" />
+		Type="Magical"
+		InheritChance="50"
+		RandomChance="2" />
 	<Trait
 		Name="Muggle"
 		Desc="This girl can barely use magic if at all."
-		Type="Magical" />
+		Type="Magical"
+		InheritChance="50"
+		RandomChance="5" />
 	<Trait
 		Name="Weak Magic"
 		Desc="This girl has very little magical power within her."
-		Type="Magical" />
+		Type="Magical"
+		InheritChance="50"
+		RandomChance="10" />
 	<Trait
 		Name="Strong Magic"
 		Desc="This girl has strong power within her. Be careful you don't give her too much trouble."
-		Type="Magical" />
+		Type="Magical"
+		InheritChance="50"
+		RandomChance="10" />
 	<Trait
 		Name="Powerful Magic"
 		Desc="This girl has great power within her. She may become too powerful for you to handle."
-		Type="Magical" />
+		Type="Magical"
+		InheritChance="50"
+		RandomChance="5" />
 	<Trait
 		Name="Adventurer"
 		Desc="This girl loves adventure (+combat skills/stats)"
-		Type="Mental" />
+		Type="Mental"
+		InheritChance="1"
+		RandomChance="20" />
 	<Trait
 		Name="Aggressive"
 		Desc="This girl is alot more angry at things then others. (may attack customers)"
-		Type="Mental" />
+		Type="Mental"
+		InheritChance="1"
+		RandomChance="20" />
 	<Trait
 		Name="Assassin"
 		Desc="This girl has had training to kill, just name a price. (+combat skills/stats)"
-		Type="Mental" />
+		Type="Mental"
+		InheritChance="1"
+		RandomChance="20" />
 	<Trait
 		Name="Audacity"
 		Desc="She certainly doesn't lack courage. Dominating her would pose quite a challenge."
-		Type="Mental" />
+		Type="Mental"
+		InheritChance="1"
+		RandomChance="10" />
 	<Trait
 		Name="Bimbo"
 		Desc="This girl is, like, a total ditz."
-		Type="Mental" />
+		Type="Mental"
+		InheritChance="1"
+		RandomChance="2" />
 	<Trait
 		Name="Broken Will"
 		Desc="This girls' will is broken and she is completely obedient. (+OBEDIENCE)(-SPIRIT)"
-		Type="Mental" />
+		Type="Mental"
+		InheritChance="1"
+		RandomChance="5" />
 	<Trait
 		Name="Dependant"
 		Desc="This girl is rather dependent on other people for survival. Low rebelliousness. Will not strike out on her own. (+obedience)"
-		Type="Mental" />
+		Type="Mental"
+		InheritChance="1"
+		RandomChance="10" />
 	<Trait
 		Name="Fearless"
 		Desc="Fear has no effect. (will more likely defend herself)"
-		Type="Mental" />
+		Type="Mental"
+		InheritChance="1"
+		RandomChance="10" />
 	<Trait
 		Name="Former Addict"
 		Desc="This girl has had an addiction in the past."
-		Type="Mental" />
+		Type="Mental"
+		InheritChance="1"
+		RandomChance="0" />
 	<Trait
 		Name="Idiot Savant"
 		Desc="This girl isn't the brightest bulb and her personality is lacking, but her skills are extremely good"
-		Type="Mental" />
+		Type="Mental"
+		InheritChance="1"
+		RandomChance="1" />
 	<Trait
 		Name="Iron Will"
 		Desc="Do not expect rebelliousness to reduce itself in the near future, if ever. Broken Will will remove this trait. (hard to break)"
-		Type="Mental" />
+		Type="Mental"
+		InheritChance="1"
+		RandomChance="10" />
 	<Trait
 		Name="Manly"
 		Desc="Higher resistance to damage, higher rebelliousness, higher starting combat skill, can pass off as a man. Lowers her initial Looks. (-looks)"
-		Type="Mental" />
+		Type="Mental"
+		InheritChance="1"
+		RandomChance="10" />
 	<Trait
 		Name="Masochist"
 		Desc="She gets sexual gratification from pain, deprivation, degradation, etc. (+BDSM)(+CONSTITUTION)"
-		Type="Mental" />
+		Type="Mental"
+		InheritChance="1"
+		RandomChance="10" />
 	<Trait
 		Name="Meek"
 		Desc="She has a low rebelliousness. (+OBEDIENCE)"
-		Type="Mental" />
+		Type="Mental"
+		InheritChance="1"
+		RandomChance="10" />
 	<Trait
 		Name="Merciless"
 		Desc="Causes higher damage. Even with rebelliousness at a lower level, she will still take out (if not outright murder) anyone causing harm to her. Expect goons to die often, and expect her to take a long time to break. (will more likely disobey)"
-		Type="Mental" />
+		Type="Mental"
+		InheritChance="1"
+		RandomChance="10" />
 	<Trait
 		Name="Mind Fucked"
 		Desc="This girl is gone in the head. She will be compliant with anything. (+obedience)"
-		Type="Mental" />
+		Type="Mental"
+		InheritChance="0"
+		RandomChance="5" />
 	<Trait
 		Name="Nervous"
 		Desc="Shy and afraid to speak or mind sometimes."
-		Type="Mental" />
+		Type="Mental"
+		InheritChance="1"
+		RandomChance="20" />
 	<Trait
 		Name="Shy"
 		Desc="This girl has trouble interacting with people she does not know."
-		Type="Social" />
+		Type="Social"
+		InheritChance="1"
+		RandomChance="5" />
 	<Trait
 		Name="Optimist"
 		Desc="She is very cheerful and she is rarely in a bad mood. High happiness regeneration. She enjoys what she does, alot. (+happiness)"
-		Type="Mental" />
+		Type="Mental"
+		InheritChance="1"
+		RandomChance="20" />
 	<Trait
 		Name="Pessimist"
 		Desc="All it takes is one thing to send her mood down to the pits of the abyss. Low happiness regeneration. Less rebellious. If happiness is low enough, expect her to be killing herself in the near future. (-happiness)"
-		Type="Mental" />
+		Type="Mental"
+		InheritChance="1"
+		RandomChance="20" />
 	<Trait
 		Name="Psychic"
 		Desc="This girl always seems to know what a guy wants. (+magic skills/stats)"
-		Type="Mental" />
+		Type="Mental"
+		InheritChance="10"
+		RandomChance="10" />
 	<Trait
 		Name="Quick Learner"
 		Desc="This girl picks things up quick. She will probably rise to the top in no time. (+exp)"
-		Type="Mental" />
+		Type="Mental"
+		InheritChance="10"
+		RandomChance="10" />
 	<Trait
 		Name="Retarded"
 		Desc="This girl is mentaly retarded."
-		Type="Mental" />
+		Type="Mental"
+		InheritChance="1"
+		RandomChance="5" />
 	<Trait
 		Name="Sadistic"
 		Desc="Enjoys inflicting or watching pain inflicted. (+BDSM)"
-		Type="Mental" />
+		Type="Mental"
+		InheritChance="1"
+		RandomChance="10" />
 	<Trait
 		Name="Slow Learner"
 		Desc="A little daft, this girl will take awhile to learn things. (-exp)"
-		Type="Mental" />
+		Type="Mental"
+		InheritChance="10"
+		RandomChance="10" />
 	<Trait
 		Name="Tomboy"
 		Desc="She's got a feisty personality of a tomboy. Her hobbies, personalities, and resemble those of a man."
-		Type="Mental" />
+		Type="Mental"
+		InheritChance="1"
+		RandomChance="5" />
 	<Trait
 		Name="Tsundere"
 		Desc="A person with a conceited, irritable, and/or violent personality that suddenly becomes modest and loving when triggered by some sort of cause. (may attack customers)"
-		Type="Mental" />
+		Type="Mental"
+		InheritChance="1"
+		RandomChance="10" />
 	<Trait
 		Name="Twisted"
 		Desc="Her thought of pleasure is not... ordinary. Customers need to have a rather exotic taste or they won't enjoy what she has in store."
-		Type="Mental" />
+		Type="Mental"
+		InheritChance="1"
+		RandomChance="10" />
 	<Trait
 		Name="Yandere"
 		Desc="Expect this girl to be hurting people on the job. Alot. (may attack customers)"
-		Type="Mental" />
+		Type="Mental"
+		InheritChance="1"
+		RandomChance="10" />
 	<Trait
 		Name="Cool Person"
 		Desc="This person is just cool to be with. (+looks)"
-		Type="Perception" />
+		Type="Perception"
+		InheritChance="1"
+		RandomChance="20" />
 	<Trait
 		Name="Cute"
 		Desc="This girl is just very cute."
-		Type="Perception" />
+		Type="Perception"
+		InheritChance="70"
+		RandomChance="20" />
 	<Trait
 		Name="Dojikko"
 		Desc="This girl is a klutz, but somehow, that just makes her more attractive"
-		Type="Perception" />
+		Type="Perception"
+		InheritChance="1"
+		RandomChance="5" />
 	<Trait
 		Name="Lolita"
 		Desc="This girl looks very young and is sexually flirtatious."
-		Type="Perception" />
+		Type="Perception"
+		InheritChance="0"
+		RandomChance="20" />
 	<Trait
 		Name="MILF"
 		Desc="This woman has had children before."
-		Type="Perception" />
+		Type="Perception"
+		InheritChance="0"
+		RandomChance="0" />
 	<Trait
 		Name="Nerd"
 		Desc="Bookish and clumsy but kinda cute all the same. (+brains)"
-		Type="Perception" />
+		Type="Perception"
+		InheritChance="1"
+		RandomChance="20" />
 	<Trait
 		Name="Branded on the Ass"
 		Desc="Normally the slave brand goes on the shoulder, but for some reason hers was placed on her ass."
-		Type="Physical" />
+		Type="Physical"
+		InheritChance="0"
+		RandomChance="0" />
 	<Trait
 		Name="Branded on the Forehead"
 		Desc="Normally the slave brand goes on the shoulder, but for some reason hers was placed on her Forehead."
-		Type="Physical" />
+		Type="Physical"
+		InheritChance="0"
+		RandomChance="0" />
 	<Trait
 		Name="Broodmother"
 		Desc="Not just fertile, but super fertile, this girl is capable of giving birth to multiple children."
-		Type="Sexual" />
+		Type="Sexual"
+		InheritChance="70"
+		RandomChance="1" />
 	<Trait
 		Name="Cyclops"
 		Desc="This girl was born with only one eye."
-		Type="Species" />
+		Type="Species"
+		InheritChance="80"
+		RandomChance="1" />
 	<Trait
 		Name="Deluxe Derriere"
 		Desc="The legendary perfectly peach-shaped ass. Big enough to melt hands, shapely enough to glue eyes to it forever. You can't gaze at it too long without lowering your shades."
-		Type="Physical" />
+		Type="Physical"
+		InheritChance="70"
+		RandomChance="20" />
 	<Trait
 		Name="Eye Patch"
 		Desc="This girl has lost an eye, but wheres a patch over it making her look dangerous and cool. (-looks)"
-		Type="Physical" />
+		Type="Physical"
+		InheritChance="1"
+		RandomChance="5" />
 	<Trait
 		Name="Flat Ass"
 		Desc="Her posterior isn't really anything special. Not much to grope or slap whatsoever."
-		Type="Physical" />
+		Type="Physical"
+		InheritChance="70"
+		RandomChance="10" />
 	<Trait
 		Name="Giant"
 		Desc="This girl is tall. The height might be a bit intimidating..."
-		Type="Physical" />
+		Type="Physical"
+		InheritChance="70"
+		RandomChance="2" />
 	<Trait
 		Name="Great Arse"
 		Desc="She has a really nice arse."
-		Type="Physical" />
+		Type="Physical"
+		InheritChance="70"
+		RandomChance="30" />
 	<Trait
 		Name="Great Figure"
 		Desc="This girl has a really good figure."
-		Type="Physical" />
+		Type="Physical"
+		InheritChance="70"
+		RandomChance="30" />
 	<Trait
 		Name="Hourglass Figure"
 		Desc="Her body has the highly desireable shape of an hourglass - big tits, thin waist, wide hips and ass."
-		Type="Physical" />
+		Type="Physical"
+		InheritChance="70"
+		RandomChance="10" />
 	<Trait
 		Name="Incest"
 		Desc="This is a child of incest."
-		Type="Physical" />
+		Type="Physical"
+		InheritChance="0"
+		RandomChance="1" />
 	<Trait
 		Name="Large Hips"
 		Desc="This girl has really large hips."
-		Type="Physical" />
+		Type="Physical"
+		InheritChance="70"
+		RandomChance="20" />
 	<Trait
 		Name="Long Legs"
 		Desc="The legs on this girl go all the way to heaven."
-		Type="Physical" />
+		Type="Physical"
+		InheritChance="70"
+		RandomChance="10" />
 	<Trait
 		Name="Malformed"
 		Desc="This girl is deformed."
-		Type="Physical" />
+		Type="Physical"
+		InheritChance="5"
+		RandomChance="1" />
 	<Trait
 		Name="Mature Body"
 		Desc="A girl no longer, this woman's lascivious body is a fruit ripe for the picking."
-		Type="Physical" />
+		Type="Physical"
+		InheritChance="0"
+		RandomChance="1" />
 	<Trait
 		Name="Missing Finger"
 		Desc="This girl is missing a finger."
-		Type="Physical" />
+		Type="Physical"
+		InheritChance="0"
+		RandomChance="1" />
 	<Trait
 		Name="Missing Fingers"
 		Desc="This girl is missing several fingers."
-		Type="Physical" />
+		Type="Physical"
+		InheritChance="0"
+		RandomChance="1" />
 	<Trait
 		Name="Missing Nipple"
 		Desc="This girl has a huge scar where her nipple used to be."
-		Type="Breasts" />
+		Type="Breasts"
+		InheritChance="5"
+		RandomChance="1" />
 	<Trait
 		Name="Missing Teeth"
 		Desc="This girl is missing a couple of teeth."
-		Type="Physical" />
+		Type="Physical"
+		InheritChance="0"
+		RandomChance="1" />
 	<Trait
 		Name="Missing Toe"
 		Desc="This girl is missing a toe"
-		Type="Physical" />
+		Type="Physical"
+		InheritChance="0"
+		RandomChance="1" />
 	<Trait
 		Name="Missing Toes"
 		Desc="This girl is missing several toes"
-		Type="Physical" />
+		Type="Physical"
+		InheritChance="0"
+		RandomChance="1" />
 	<Trait
 		Name="Muscular"
 		Desc="This girl has an athletic, well-toned body with visible muscles. She definitely works out."
-		Type="Physical" />
+		Type="Physical"
+		InheritChance="10"
+		RandomChance="10" />
 	<Trait
 		Name="No Arms"
 		Desc="This girl has no arms."
-		Type="Physical" />
+		Type="Physical"
+		InheritChance="0"
+		RandomChance="0" />
 	<Trait
 		Name="No Clit"
 		Desc="This girl no longer has a clit. This was probably done to help her concentrate on her work."
-		Type="Physical" />
+		Type="Physical"
+		InheritChance="0"
+		RandomChance="0" />
 	<Trait
 		Name="No Feet"
 		Desc="This girl has legs but nothing on the ends."
-		Type="Physical" />
+		Type="Physical"
+		InheritChance="0"
+		RandomChance="0" />
 	<Trait
 		Name="No Hands"
 		Desc="This girl has arms but nothing on the ends."
-		Type="Physical" />
+		Type="Physical"
+		InheritChance="0"
+		RandomChance="0" />
 	<Trait
 		Name="No Legs"
 		Desc="This girl has no legs."
-		Type="Physical" />
+		Type="Physical"
+		InheritChance="0"
+		RandomChance="0" />
 	<Trait
 		Name="No Nipples"
 		Desc="This girl was born without nipples."
-		Type="Breasts" />
+		Type="Breasts"
+		InheritChance="50"
+		RandomChance="1" />
 	<Trait
 		Name="No Teeth"
 		Desc="This girl no longer has any teeth. This was deliberately done to her. It hurts her looks but customers need not fear any 'accidents' and are willing to use the girls more roughly."
-		Type="Physical" />
+		Type="Physical"
+		InheritChance="0"
+		RandomChance="1" />
 	<Trait
 		Name="Old"
 		Desc="This girl is old and looks it."
-		Type="Physical" />
+		Type="Physical"
+		InheritChance="0"
+		RandomChance="0" />
 	<Trait
 		Name="One Arm"
 		Desc="This girl has only one arm."
-		Type="Physical" />
+		Type="Physical"
+		InheritChance="0"
+		RandomChance="0" />
 	<Trait
 		Name="One Eye"
 		Desc="This girl has lost an eye somewhere along the way."
-		Type="Physical" />
+		Type="Physical"
+		InheritChance="0"
+		RandomChance="5" />
 	<Trait
 		Name="One Foot"
 		Desc="This girl has legs but one is missing the foot."
-		Type="Physical" />
+		Type="Physical"
+		InheritChance="0"
+		RandomChance="0" />
 	<Trait
 		Name="One Hand"
 		Desc="This girl has arms but one is missing the hand."
-		Type="Physical" />
+		Type="Physical"
+		InheritChance="0"
+		RandomChance="0" />
 	<Trait
 		Name="One Leg"
 		Desc="This girl has only one leg."
-		Type="Physical" />
+		Type="Physical"
+		InheritChance="0"
+		RandomChance="0" />
 	<Trait
 		Name="Phat Booty"
 		Desc="This girl has the kind of butt that makes all your gang members go 'Daaaayyyuuumn!'."
-		Type="Physical" />
+		Type="Physical"
+		InheritChance="70"
+		RandomChance="20" />
 	<Trait
 		Name="Plump Tush"
 		Desc="This girl's huge ass is impossible to hide. She can barely fit in any pants and every dress she wears is filled with her butts shape."
-		Type="Physical" />
+		Type="Physical"
+		InheritChance="70"
+		RandomChance="20" />
 	<Trait
 		Name="Plump"
 		Desc="This girl has more than a few soft bits. Plenty of supple flesh to squeeze and pinch."
-		Type="Physical" />
+		Type="Physical"
+		InheritChance="50"
+		RandomChance="20" />
 	<Trait
 		Name="Tight Butt"
 		Desc="Two finely-sculpted, scrumptious ass cheeks. What they lack in size, they make up with shape."
-		Type="Physical" />
+		Type="Physical"
+		InheritChance="70"
+		RandomChance="20" />
 	<Trait
 		Name="Whore"
 		Desc="This girl has serviced thousands of customers, willingly or unwillingly. That has put a toll on her body."
-		Type="Physical" />
+		Type="Physical"
+		InheritChance="0"
+		RandomChance="1" />
 	<Trait
 		Name="Wide Bottom"
 		Desc="She can be rightfully proud of her large, shapely hips and equally juicy thighs."
-		Type="Physical" />
+		Type="Physical"
+		InheritChance="70"
+		RandomChance="20" />
 	<Trait
 		Name="Bisexual"
 		Desc="She has no problems sleeping with guys or gals."
-		Type="Sexual" />
+		Type="Sexual"
+		InheritChance="1"
+		RandomChance="30" />
 	<Trait
 		Name="Deep Throat"
 		Desc="She can really handle big dicks in her mouth."
-		Type="Sexual" />
+		Type="Sexual"
+		InheritChance="1"
+		RandomChance="10" />
 	<Trait
 		Name="Dominatrix"
 		Desc="This girl loves to be in control"
-		Type="Sexual" />
+		Type="Sexual"
+		InheritChance="1"
+		RandomChance="5" />
 	<Trait
 		Name="Fake Orgasm Expert"
 		Desc="If the guy isn't satisfying her she can make him think he is. Not as good as the real thing, but most guys can't notice. Negates slow orgasms. (+sex ability)"
-		Type="Sexual" />
+		Type="Sexual"
+		InheritChance="1"
+		RandomChance="5" />
 	<Trait
 		Name="Fast Orgasms"
 		Desc="This girl cums faster then a dragon in heat. She always leaves men feeling good about themselves and enjoys herself to boot. (+sex skills)"
-		Type="Sexual" />
+		Type="Sexual"
+		InheritChance="10"
+		RandomChance="5" />
 	<Trait
 		Name="Fertile"
 		Desc="This girl gets pregnant very easily"
-		Type="Sexual" />
+		Type="Sexual"
+		InheritChance="50"
+		RandomChance="5" />
 	<Trait
 		Name="Gag Reflex"
 		Desc="She can't handle dicks in her mouth."
-		Type="Sexual" />
+		Type="Sexual"
+		InheritChance="10"
+		RandomChance="5" />
 	<Trait
 		Name="Good Kisser"
 		Desc="Locking mouths with this girl feels almost as good as sex. She's an artisan when it comes to kissing."
-		Type="Sexual" />
+		Type="Sexual"
+		InheritChance="1"
+		RandomChance="20" />
 	<Trait
 		Name="Lesbian"
 		Desc="This girl considers herself a lesbian (+LESBIAN)"
-		Type="Sexual" />
+		Type="Sexual"
+		InheritChance="1"
+		RandomChance="20" />
 	<Trait
 		Name="Nimble Tongue"
 		Desc="The flexibility of her tongue grants this girl the ability to do amazing things with it."
-		Type="Sexual" />
+		Type="Sexual"
+		InheritChance="10"
+		RandomChance="5" />
 	<Trait
 		Name="No Gag Reflex"
 		Desc="Putting things down her mouth is no big deal for her. Just not too much and not too fast."
-		Type="Sexual" />
+		Type="Sexual"
+		InheritChance="10"
+		RandomChance="2" />
 	<Trait
 		Name="Nymphomaniac"
 		Desc="This girl loves the sex, but will have to learn to let the guy have his moment. (+libedo)"
-		Type="Sexual" />
+		Type="Sexual"
+		InheritChance="1"
+		RandomChance="10" />
 	<Trait
 		Name="Slow Orgasms"
 		Desc="The poor girl just can't get herself off. Guys feel like they are just doing the rounds with her (negated by the fast orgasms trait). (-sex skills)"
-		Type="Sexual" />
+		Type="Sexual"
+		InheritChance="10"
+		RandomChance="5" />
 	<Trait
 		Name="Sterile"
 		Desc="This girl has lost the ability to give birth. (can't get pregnant)"
-		Type="Sexual" />
+		Type="Sexual"
+		InheritChance="20"
+		RandomChance="5" />
 	<Trait
 		Name="Straight"
 		Desc="She prefers to have sex with members of the opposite sex."
-		Type="Sexual" />
+		Type="Sexual"
+		InheritChance="1"
+		RandomChance="50" />
 	<Trait
 		Name="Strong Gag Reflex"
 		Desc="This girl just isn't used to sticking things down her throat."
-		Type="Sexual" />
+		Type="Sexual"
+		InheritChance="10"
+		RandomChance="5" />
 	<Trait
 		Name="Virgin"
 		Desc="This girl has never had sex before."
-		Type="Sexual" />
+		Type="Sexual"
+		InheritChance="0"
+		RandomChance="50" />
 	<Trait
 		Name="Charismatic"
 		Desc="Increased Charisma. She is a natural born leader, negotiator, diplomat, and fast talker. Damn, she's smooth. (+looks)"
-		Type="Social" />
+		Type="Social"
+		InheritChance="10"
+		RandomChance="10" />
 	<Trait
 		Name="Charming"
 		Desc="This girl has a lot of natural appealing wit on her side, in a non-sexual sort of way. Higher Charisma, and Natural Looks. (+looks)"
-		Type="Social" />
+		Type="Social"
+		InheritChance="10"
+		RandomChance="20" />
 	<Trait
 		Name="Elegant"
 		Desc="She's got style and flair (+looks)"
-		Type="Social" />
+		Type="Social"
+		InheritChance="10"
+		RandomChance="20" />
 	<Trait
 		Name="Exhibitionist"
 		Desc="She loves to show her body"
-		Type="Social" />
+		Type="Social"
+		InheritChance="1"
+		RandomChance="5" />
 	<Trait
 		Name="Idol"
 		Desc="This girl has gathered quite the following."
-		Type="Social" />
+		Type="Social"
+		InheritChance="1"
+		RandomChance="1" />
 	<Trait
 		Name="Noble"
 		Desc="This blue-blooded girl comes from an aristocratic, high-class background."
-		Type="Social" />
+		Type="Social"
+		InheritChance="0"
+		RandomChance="5" />
 	<Trait
 		Name="Princess"
 		Desc="She is a princess."
-		Type="Social" />
+		Type="Social"
+		InheritChance="0"
+		RandomChance="2" />
 	<Trait
 		Name="Queen"
 		Desc="She is a queen."
-		Type="Social" />
+		Type="Social"
+		InheritChance="0"
+		RandomChance="1" />
 	<Trait
 		Name="Sexy Air"
 		Desc="Something about this girl is just so sexy, everything she does is hot. (+customer attraction)"
-		Type="Social" />
+		Type="Social"
+		InheritChance="10"
+		RandomChance="10" />
 	<Trait
 		Name="Slut"
 		Desc="She definitely wouldn't make a good wife. A good whore on the other hand..."
-		Type="Social" />
+		Type="Social"
+		InheritChance="1"
+		RandomChance="5" />
 	<Trait
 		Name="Social Drinker"
 		Desc="This girl knows how to handle her alcohol."
-		Type="Social" />
+		Type="Social"
+		InheritChance="30"
+		RandomChance="10" />
 	<Trait
 		Name="Your Daughter"
 		Desc="This girl is a child of your loins"
-		Type="Social" />
+		Type="Social"
+		InheritChance="0"
+		RandomChance="0" />
 	<Trait
 		Name="Your Wife"
 		Desc="This girl is one of your wives"
-		Type="Social" />
+		Type="Social"
+		InheritChance="0"
+		RandomChance="0" />
 	<Trait
 		Name="Angel"
 		Desc="She is an angel from above."
-		Type="Species" />
+		Type="Species"
+		InheritChance="80"
+		RandomChance="1" />
 	<Trait
 		Name="Battery Operated"
 		Desc="She keeps going and going and going... She can never get tired, but she can get hurt or sad."
-		Type="Species" />
+		Type="Species"
+		InheritChance="10"
+		RandomChance="1" />
 	<Trait
 		Name="Canine"
 		Desc="This girl is a dog, literally."
-		Type="Species" />
+		Type="Species"
+		InheritChance="90"
+		RandomChance="5" />
 	<Trait
 		Name="Cat Girl"
 		Desc="This girl is part feline"
-		Type="Species" />
+		Type="Species"
+		InheritChance="90"
+		RandomChance="5" />
 	<Trait
 		Name="Construct"
 		Desc="This girl is not alive or real, as she is a machine or has been created with magic. Her health doesn't go down or up easy. (hard to hurt)"
-		Type="Species" />
+		Type="Species"
+		InheritChance="10"
+		RandomChance="2" />
 	<Trait
 		Name="Cow Girl"
 		Desc="This girl is part cow"
-		Type="Species" />
+		Type="Species"
+		InheritChance="90"
+		RandomChance="5" />
 	<Trait
 		Name="Demon"
 		Desc="This girl comes from the abyss."
-		Type="Species" />
+		Type="Species"
+		InheritChance="90"
+		RandomChance="10" />
 	<Trait
 		Name="Different Colored Eyes"
 		Desc="Her eyes are different colors"
-		Type="Species" />
+		Type="Species"
+		InheritChance="30"
+		RandomChance="5" />
 	<Trait
 		Name="Dryad"
 		Desc="This girl has a plant-like body"
-		Type="Species" />
+		Type="Species"
+		InheritChance="90"
+		RandomChance="1" />
 	<Trait
 		Name="Egg Layer"
 		Desc="This girl gives birth to eggs instead of live young."
-		Type="Species" />
+		Type="Species"
+		InheritChance="90"
+		RandomChance="1" />
 	<Trait
 		Name="Elf"
 		Desc="This girl grew up in the woodlands and has pointy ears."
-		Type="Species" />
+		Type="Species"
+		InheritChance="90"
+		RandomChance="5" />
 	<Trait
 		Name="Equine"
 		Desc="This girl has the body of a horse."
-		Type="Species" />
+		Type="Species"
+		InheritChance="90"
+		RandomChance="1" />
 	<Trait
 		Name="Fallen Goddess"
 		Desc="She used to be a Goddess until she was stripped of her powers and thrown to the slavers."
-		Type="Species" />
+		Type="Species"
+		InheritChance="1"
+		RandomChance="0" />
 	<Trait
 		Name="Furry"
 		Desc="This girl has short soft fur covering most of her body."
-		Type="Species" />
+		Type="Species"
+		InheritChance="90"
+		RandomChance="10" />
 	<Trait
 		Name="Futanari"
 		Desc="This girl is a hermaphrodite, possibly due to magic or maybe just born that way. Only a few guys will sleep with her."
-		Type="Species" />
+		Type="Species"
+		InheritChance="10"
+		RandomChance="2" />
 	<Trait
 		Name="Goddess"
 		Desc="She's a Goddess from above."
-		Type="Species" />
+		Type="Species"
+		InheritChance="1"
+		RandomChance="0" />
 	<Trait
 		Name="Half-Breed"
 		Desc="This girl is half human and half... something else."
-		Type="Species" />
+		Type="Species"
+		InheritChance="90"
+		RandomChance="10" />
 	<Trait
 		Name="Half-Construct"
 		Desc="This girl has lost a limb, and has a machine or magically animated replacement one. (hard to hurt)"
-		Type="Species" />
+		Type="Species"
+		InheritChance="10"
+		RandomChance="5" />
 	<Trait
 		Name="Incorporeal"
 		Desc="This girl never gets tired or loses health. (can't get tired or hurt)"
-		Type="Species" />
+		Type="Species"
+		InheritChance="90"
+		RandomChance="1" />
 	<Trait
 		Name="Not Human"
 		Desc="This girl is not human, which may appeal to some customers."
-		Type="Species" />
+		Type="Species"
+		InheritChance="100"
+		RandomChance="20" />
 	<Trait
 		Name="Playful Tail"
 		Desc="This girl has a tail that she can't control."
-		Type="Species" />
+		Type="Species"
+		InheritChance="30"
+		RandomChance="3" />
 	<Trait
 		Name="Prehensile Tail"
 		Desc="This girl has a tail that she can use like a third hand."
-		Type="Species" />
+		Type="Species"
+		InheritChance="30"
+		RandomChance="1" />
 	<Trait
 		Name="Reptilian"
 		Desc="This girl has a Reptilian body."
-		Type="Species" />
+		Type="Species"
+		InheritChance="90"
+		RandomChance="10" />
 	<Trait
 		Name="Shape Shifter"
 		Desc="This girl can change her shape to anything."
-		Type="Species" />
+		Type="Species"
+		InheritChance="30"
+		RandomChance="1" />
 	<Trait
 		Name="Slitherer"
 		Desc="This girl has a tail-like appendage instead of Legs"
-		Type="Species" />
+		Type="Species"
+		InheritChance="50"
+		RandomChance="2" />
 	<Trait
 		Name="Solar Powered"
 		Desc="She needs direct sunlight for a lengthy period to survive."
-		Type="Species" />
+		Type="Species"
+		InheritChance="10"
+		RandomChance="1" />
 	<Trait
 		Name="Strange Eyes"
 		Desc="Her eyes are unusual in some way."
-		Type="Species" />
+		Type="Species"
+		InheritChance="30"
+		RandomChance="5" />
 	<Trait
 		Name="Succubus"
 		Desc="She is a Demon who feeds on sexual energies."
-		Type="Species" />
+		Type="Species"
+		InheritChance="90"
+		RandomChance="1" />
 	<Trait
 		Name="Wings"
 		Desc="This girl has wings."
-		Type="Species" />
+		Type="Species"
+		InheritChance="50"
+		RandomChance="1" />
 	<Trait
 		Name="Botox Treatment"
 		Desc="She recently had Botox injected into her face. If she is happy about it, no one can tell."
-		Type="Temporary" />
+		Type="Temporary"
+		InheritChance="0"
+		RandomChance="0" />
 	<Trait
 		Name="Bruises"
 		Desc="This girl has bruises all over her body."
-		Type="Temporary" />
+		Type="Temporary"
+		InheritChance="0"
+		RandomChance="0" />
 	<Trait
 		Name="Demon Possessed"
 		Desc="Her body is currently being physically possessed by a demon."
-		Type="Temporary" />
+		Type="Temporary"
+		InheritChance="1"
+		RandomChance="0" />
 	<Trait
 		Name="Out-Patient Surgery"
 		Desc="She recently got out of surgery and should be resting."
-		Type="Temporary" />
+		Type="Temporary"
+		InheritChance="1"
+		RandomChance="0" />
 	<Trait
 		Name="Spirit Possessed"
 		Desc="Her body is currently being physically possessed by an evil spirit."
-		Type="Temporary" />
+		Type="Temporary"
+		InheritChance="1"
+		RandomChance="0" />
 </Traits>

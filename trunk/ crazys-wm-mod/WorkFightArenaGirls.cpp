@@ -43,7 +43,7 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
-// `J` Arena Job - Fighting
+// `J` Job Arena - Fighting
 bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	int actiontype = ACTION_COMBAT;
@@ -91,17 +91,17 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 			ugirl->m_Stats[STAT_HAPPINESS] = g_Dice % 80 + 1;
 			ugirl->m_Stats[STAT_TIREDNESS] = g_Dice % 50 + 50;
 			ugirl->m_States |= (1 << STATUS_ARENA);
-			msg << girlName << " won her fight against " << ugirl->m_Realname << ".\n";
-			Umsg << ugirl->m_Realname << " lost her fight against your girl " << girlName << ".\n";
+			msg << girlName << " won her fight against " << ugirl->m_Realname << ".\n\n";
+			Umsg << ugirl->m_Realname << " lost her fight against your girl " << girlName << ".\n\n";
 			Tmsg << ugirl->m_Realname;
 			if (g_Dice.percent(50))
 			{
 				ugirl->m_States |= (1 << STATUS_SLAVE);
-				Tmsg << "'s owner could not afford to pay you your winnings so he gave her to you instead.";
+				Tmsg << "'s owner could not afford to pay you your winnings so he gave her to you instead.\n\n";
 			}
 			else
 			{
-				Tmsg << " put up a good fight so you let her live as long as she came work for you.";
+				Tmsg << " put up a good fight so you let her live as long as she came work for you.\n\n";
 				wages = 100 + g_Dice % (girl->fame() + girl->charisma());
 			}
 			msg << Tmsg.str();

@@ -42,7 +42,7 @@ extern cGold g_Gold;
 
 static cPlayer* m_Player = g_Brothels.GetPlayer();	//SIN: a way to access player details
 
-// `J` Brothel Job - Hall
+// `J` Job Brothel - Hall
 bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	int actiontype = ACTION_WORKSTRIP;

@@ -1560,15 +1560,53 @@ Converted the rest of the existing Job Performance List to the new checks.
  - Jobs listed with a * are just in for completion - commented out for now
 
 !!!!!!!!!!!!!!!!!!!! pushed to SVN - r150
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.02 - bad - pulled
+Fixed a bug in WorkCentreAngerManagement.cpp where the girl fights with her counselor and crashes the game.
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.02
 
+###  Changes 2/10/2015
+Fixed a bug in explore catacombs not creating a random girl properly
+Fixed a bug in child_is_grown where it would not always find a "Your Daughter" girl and crash the game.
+Moved m_Dungeon.Update() out of the brothels and up into the NextWeek() so that grils added to the dungeon from other means will have their messages added.
+Added a reducer to explore catacombs item count
+ - Instead of a flat 40% I changed it to (50% - (numitems*5%))
+ - Better chance of getting 1 or 2 items but less likely to get 4 or more items
+I fixed something that was bugging me about the pregnancy column on girls lists, I added a check for Sterile.
+ - It will display "St." if she is sterile instead of just "No"
+ - If she is sterile and pregnant it will display "Yes?3?" - how could that happen?
+ - If she is sterile and in cool down it will display "No!3!"
+ -  - This could signify that she became sterile from giving birth
+Updated Intern to list all stats and skills that get increased.
+Added a bypass in the loading girl's images section so it will skip the loading of "nothing" if the girl has no images.
+ - This should speed up loading of the game a little.
+Added Default Images location to config.xml
+Started adding more stuff to CoreTraits.traitsx.
+ - Added "InheritChance" and "RandomChance" for girl creation.
+ - "InheritChance" is working now but "RandomChance" is not yet
+ 
+WME - Added "InheritChance" and "RandomChance" for traits
+WME - Added config.xml folders section
+ 
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.03
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.20
 
+!!!!!!!!!!!!!!!!!!!! pulled Whore Master version .06.01.03 because of bug.
+Fixed bug caused by "Converted a ton of g_Dice%100 to either g_Dice.percent() or g_Dice.d100() as needed" update from .06.01.02
+ - I accidentally changed a couple of fail percents into succeed percents.
+ - Two of which were in PlayerCombat where the player fights a girl.
+ - The error occurred in the combat sequence at the part where the combatants were supposed to take damage.
+ - They instead lost health if they succeeded their dodge rolls.
+ - Because dodge gets degraded as they get tired, the percent eventually fell to 0% thus always failing the roll.
+ - Never taking any damage, and without a turn limiter, the combat would go on forever.
+!!!!!!!!!!!!!!!!!!!! Repushed Whore Master version .06.01.03 with the fix.
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r151
 
-
-
-
-
-
+ 
+ 
+ 
+ 
+ 
+ 
 $$$$ note to self - when updating items to recalculate stats/skills when loading girls - don't modify temp stuff $$$$
 
 

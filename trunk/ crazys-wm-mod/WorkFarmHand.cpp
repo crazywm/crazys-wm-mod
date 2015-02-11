@@ -31,7 +31,7 @@ extern cGold g_Gold;
 extern cBrothelManager g_Brothels;
 extern cFarmManager g_Farm;
 
-// `J` Farm Job - Staff - job_is_cleaning
+// `J` Job Farm - Staff - job_is_cleaning
 bool cJobManager::WorkFarmHand(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	int actiontype = ACTION_WORKFARM;

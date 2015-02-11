@@ -219,11 +219,13 @@ void sConfigData::get_att(TiXmlElement *el, const char *name, int *ipt)
 void sConfigData::get_folders_data(TiXmlElement *el)
 {
 	const char *pt;
-	folders.configXMLch = false; folders.configXMLsa = false; folders.backupsaves = false;
-	string testch = "", testsa = "";
+	folders.configXMLch = false; folders.configXMLsa = false; folders.backupsaves = false; folders.configXMLdi = false;
+
+	string testch = "", testsa = "", testdi = "";
 	if (pt = el->Attribute("Characters"))		get_att(el, "Characters", testch);
 	if (pt = el->Attribute("Saves"))			get_att(el, "Saves", testsa);
 	if (pt = el->Attribute("BackupSaves"))		get_att(el, "BackupSaves", folders.backupsaves);
+	if (pt = el->Attribute("DefaultImages"))	get_att(el, "DefaultImages", testdi);
 	if (testch != "")
 	{
 		DirPath locationch = DirPath() << testch;
@@ -261,6 +263,27 @@ void sConfigData::get_folders_data(TiXmlElement *el)
 			l.ss() << "\n\nWarning: config.xml: Save game folder '" << locationsa << "' does not exist.\nDefaulting to ./Saves\n\n"; l.ssend();
 		}
 	}
+	if (testdi != "")
+	{
+		DirPath locationdi = DirPath() << testdi;
+		XMLFileList testdig(locationdi, "*.*g");
+		XMLFileList testdia(locationdi, "*.ani");
+		if (testdig.size() > 0 || testdia.size() > 0)
+		{
+			folders.defaultimageloc = testdi;
+			l.ss() << "Success: config.xml: Loading Default Images from: " << locationdi;
+			folders.configXMLdi = true;
+		}
+		else
+		{
+			l.ss() << "\n\nWarning: config.xml: Default Images folder '" << locationdi << "' does not exist or has no images in it.\n\n";
+			l.ssend();
+		}
+	}
+
+
+
+
 }
 
 void sConfigData::get_resolution_data(TiXmlElement *el)
@@ -480,11 +503,13 @@ void sConfigData::get_debug_flags(TiXmlElement *el)
 */
 void sConfigData::set_defaults()
 {
-	folders.characters = "";		// `J` if character's location is set in config.xml
-	folders.configXMLch = false;	// `J` where the characters folder is located 
-	folders.saves = "";				// `J` if saves's location is set in config.xml
-	folders.configXMLsa = false;	// `J` where the saves folder is located 
+	folders.characters = "";		// `J` where the characters folder is located 
+	folders.configXMLch = false;	// `J` if character's location is set in config.xml
+	folders.saves = "";				// `J` where the saves folder is located 
+	folders.configXMLsa = false;	// `J` if saves's location is set in config.xml
 	folders.backupsaves = false;	// `J` backup saves in the version folder incase moving to the next version breaks the save
+	folders.defaultimageloc = "";	// `J` where the default images folder is located 
+	folders.configXMLdi = false;	// `J` if default images location is set in config.xml
 
 	resolution.resolution = "J_1024x768";	// `J` I set this to my interface because that is the one I edit myself
 	resolution.width = 1024;	// `J` added - Will be moved to interfaces

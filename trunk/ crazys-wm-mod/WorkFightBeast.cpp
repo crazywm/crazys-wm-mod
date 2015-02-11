@@ -43,7 +43,7 @@ extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 extern cJobManager m_JobManager;
 
-// `J` Arena Job - Fighting
+// `J` Job Arena - Fighting
 bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	int actiontype = ACTION_COMBAT;

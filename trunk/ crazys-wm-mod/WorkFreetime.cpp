@@ -54,7 +54,7 @@ extern cCentreManager		g_Centre;
 extern cHouseManager		g_House;
 extern cFarmManager			g_Farm;
 
-// `J` Brothel Job - General
+// `J` Job Brothel - General
 bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	stringstream ss; string girlName = girl->m_Realname;

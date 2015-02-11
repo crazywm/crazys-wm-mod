@@ -42,7 +42,7 @@ extern cClinicManager g_Clinic;
 extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
-// `J` Clinic Job - Staff
+// `J` Job Clinic - Staff
 bool cJobManager::WorkDoctor(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	int actiontype = ACTION_WORKDOCTOR;

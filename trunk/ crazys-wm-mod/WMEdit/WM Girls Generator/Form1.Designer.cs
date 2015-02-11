@@ -31,6 +31,9 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage0_Info = new System.Windows.Forms.TabPage();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
@@ -441,6 +444,15 @@
             this.label74 = new System.Windows.Forms.Label();
             this.textBox_ItemName = new System.Windows.Forms.TextBox();
             this.tabPage4_Config = new System.Windows.Forms.TabPage();
+            this.groupBox_Folders = new System.Windows.Forms.GroupBox();
+            this.checkBox_Config_Folders_Backup_Saves = new System.Windows.Forms.CheckBox();
+            this.label185 = new System.Windows.Forms.Label();
+            this.textBox_Config_Folders_Default_Images = new System.Windows.Forms.TextBox();
+            this.label183 = new System.Windows.Forms.Label();
+            this.label182 = new System.Windows.Forms.Label();
+            this.label184 = new System.Windows.Forms.Label();
+            this.textBox_Config_Folders_Characters = new System.Windows.Forms.TextBox();
+            this.textBox_Config_Folders_Savegames = new System.Windows.Forms.TextBox();
             this.groupBox_C_Display_Settings = new System.Windows.Forms.GroupBox();
             this.label177 = new System.Windows.Forms.Label();
             this.textBox_Config_List_Scroll_Amount = new System.Windows.Forms.TextBox();
@@ -626,6 +638,8 @@
             this.dataGridView_Traits_Trait_Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridView_Traits_Trait_Desc = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridView_Traits_Trait_Type = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.dataGridView_Traits_Trait_InheritChance = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridView_Traits_Trait_RandomChance = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.button_Load_Traits = new System.Windows.Forms.Button();
             this.label_Load_Traits = new System.Windows.Forms.Label();
             this.button_Save_Traits = new System.Windows.Forms.Button();
@@ -677,6 +691,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_bad_02)).BeginInit();
             this.tabPage4_Config.SuspendLayout();
+            this.groupBox_Folders.SuspendLayout();
             this.groupBox_C_Display_Settings.SuspendLayout();
             this.groupBox_C_Expense_Multipliers.SuspendLayout();
             this.groupBox_C_Gangs.SuspendLayout();
@@ -5513,6 +5528,7 @@
             // 
             // tabPage4_Config
             // 
+            this.tabPage4_Config.Controls.Add(this.groupBox_Folders);
             this.tabPage4_Config.Controls.Add(this.groupBox_C_Display_Settings);
             this.tabPage4_Config.Controls.Add(this.groupBox_C_Expense_Multipliers);
             this.tabPage4_Config.Controls.Add(this.groupBox_C_Gangs);
@@ -5535,6 +5551,103 @@
             this.tabPage4_Config.TabIndex = 4;
             this.tabPage4_Config.Text = "  Game Configuration  ";
             this.tabPage4_Config.UseVisualStyleBackColor = true;
+            // 
+            // groupBox_Folders
+            // 
+            this.groupBox_Folders.Controls.Add(this.checkBox_Config_Folders_Backup_Saves);
+            this.groupBox_Folders.Controls.Add(this.label185);
+            this.groupBox_Folders.Controls.Add(this.textBox_Config_Folders_Default_Images);
+            this.groupBox_Folders.Controls.Add(this.label183);
+            this.groupBox_Folders.Controls.Add(this.label182);
+            this.groupBox_Folders.Controls.Add(this.label184);
+            this.groupBox_Folders.Controls.Add(this.textBox_Config_Folders_Characters);
+            this.groupBox_Folders.Controls.Add(this.textBox_Config_Folders_Savegames);
+            this.groupBox_Folders.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.groupBox_Folders.Location = new System.Drawing.Point(575, 402);
+            this.groupBox_Folders.Name = "groupBox_Folders";
+            this.groupBox_Folders.Size = new System.Drawing.Size(370, 128);
+            this.groupBox_Folders.TabIndex = 10;
+            this.groupBox_Folders.TabStop = false;
+            this.groupBox_Folders.Text = "Folders";
+            // 
+            // checkBox_Config_Folders_Backup_Saves
+            // 
+            this.checkBox_Config_Folders_Backup_Saves.AutoSize = true;
+            this.checkBox_Config_Folders_Backup_Saves.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.checkBox_Config_Folders_Backup_Saves.Location = new System.Drawing.Point(249, 20);
+            this.checkBox_Config_Folders_Backup_Saves.Name = "checkBox_Config_Folders_Backup_Saves";
+            this.checkBox_Config_Folders_Backup_Saves.Size = new System.Drawing.Size(96, 17);
+            this.checkBox_Config_Folders_Backup_Saves.TabIndex = 6;
+            this.checkBox_Config_Folders_Backup_Saves.Text = "Backup Saves";
+            this.checkBox_Config_Folders_Backup_Saves.UseVisualStyleBackColor = true;
+            // 
+            // label185
+            // 
+            this.label185.AutoSize = true;
+            this.label185.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label185.Location = new System.Drawing.Point(6, 107);
+            this.label185.Name = "label185";
+            this.label185.Size = new System.Drawing.Size(78, 13);
+            this.label185.TabIndex = 16;
+            this.label185.Text = "Default Images";
+            // 
+            // textBox_Config_Folders_Default_Images
+            // 
+            this.textBox_Config_Folders_Default_Images.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.textBox_Config_Folders_Default_Images.Location = new System.Drawing.Point(91, 103);
+            this.textBox_Config_Folders_Default_Images.MaxLength = 30;
+            this.textBox_Config_Folders_Default_Images.Name = "textBox_Config_Folders_Default_Images";
+            this.textBox_Config_Folders_Default_Images.Size = new System.Drawing.Size(274, 20);
+            this.textBox_Config_Folders_Default_Images.TabIndex = 17;
+            // 
+            // label183
+            // 
+            this.label183.AutoSize = true;
+            this.label183.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label183.Location = new System.Drawing.Point(6, 82);
+            this.label183.Name = "label183";
+            this.label183.Size = new System.Drawing.Size(63, 13);
+            this.label183.TabIndex = 8;
+            this.label183.Text = "Savegames";
+            // 
+            // label182
+            // 
+            this.label182.AutoSize = true;
+            this.label182.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
+            this.label182.Location = new System.Drawing.Point(6, 16);
+            this.label182.Name = "label182";
+            this.label182.Size = new System.Drawing.Size(215, 26);
+            this.label182.TabIndex = 15;
+            this.label182.Text = "This section is used for setting the locations \r\nof various folders the game will" +
+    " look for.";
+            // 
+            // label184
+            // 
+            this.label184.AutoSize = true;
+            this.label184.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label184.Location = new System.Drawing.Point(6, 57);
+            this.label184.Name = "label184";
+            this.label184.Size = new System.Drawing.Size(58, 13);
+            this.label184.TabIndex = 6;
+            this.label184.Text = "Characters";
+            // 
+            // textBox_Config_Folders_Characters
+            // 
+            this.textBox_Config_Folders_Characters.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.textBox_Config_Folders_Characters.Location = new System.Drawing.Point(91, 53);
+            this.textBox_Config_Folders_Characters.MaxLength = 30;
+            this.textBox_Config_Folders_Characters.Name = "textBox_Config_Folders_Characters";
+            this.textBox_Config_Folders_Characters.Size = new System.Drawing.Size(274, 20);
+            this.textBox_Config_Folders_Characters.TabIndex = 7;
+            // 
+            // textBox_Config_Folders_Savegames
+            // 
+            this.textBox_Config_Folders_Savegames.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.textBox_Config_Folders_Savegames.Location = new System.Drawing.Point(91, 78);
+            this.textBox_Config_Folders_Savegames.MaxLength = 30;
+            this.textBox_Config_Folders_Savegames.Name = "textBox_Config_Folders_Savegames";
+            this.textBox_Config_Folders_Savegames.Size = new System.Drawing.Size(274, 20);
+            this.textBox_Config_Folders_Savegames.TabIndex = 9;
             // 
             // groupBox_C_Display_Settings
             // 
@@ -6171,7 +6284,7 @@
             this.groupBox_C_Gangs.Controls.Add(this.textBox_config_StartRandom);
             this.groupBox_C_Gangs.Controls.Add(this.textBox_config_MaxRecruitList);
             this.groupBox_C_Gangs.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.groupBox_C_Gangs.Location = new System.Drawing.Point(5, 390);
+            this.groupBox_C_Gangs.Location = new System.Drawing.Point(5, 340);
             this.groupBox_C_Gangs.Name = "groupBox_C_Gangs";
             this.groupBox_C_Gangs.Size = new System.Drawing.Size(180, 190);
             this.groupBox_C_Gangs.TabIndex = 1;
@@ -6647,7 +6760,7 @@
             // 
             // button_Load_Config
             // 
-            this.button_Load_Config.Location = new System.Drawing.Point(611, 560);
+            this.button_Load_Config.Location = new System.Drawing.Point(690, 540);
             this.button_Load_Config.Name = "button_Load_Config";
             this.button_Load_Config.Size = new System.Drawing.Size(100, 25);
             this.button_Load_Config.TabIndex = 13;
@@ -6682,7 +6795,7 @@
             this.groupBox24.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.groupBox24.Location = new System.Drawing.Point(5, 5);
             this.groupBox24.Name = "groupBox24";
-            this.groupBox24.Size = new System.Drawing.Size(180, 360);
+            this.groupBox24.Size = new System.Drawing.Size(180, 320);
             this.groupBox24.TabIndex = 0;
             this.groupBox24.TabStop = false;
             this.groupBox24.Text = "Initial Settings";
@@ -6691,7 +6804,7 @@
             // 
             this.label178.AutoSize = true;
             this.label178.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label178.Location = new System.Drawing.Point(45, 313);
+            this.label178.Location = new System.Drawing.Point(45, 268);
             this.label178.Name = "label178";
             this.label178.Size = new System.Drawing.Size(86, 13);
             this.label178.TabIndex = 21;
@@ -6707,7 +6820,7 @@
             this.comboBox_Horoscope_Type.Items.AddRange(new object[] {
             "Tropical (Western)",
             "Sideral (Hindu)"});
-            this.comboBox_Horoscope_Type.Location = new System.Drawing.Point(8, 330);
+            this.comboBox_Horoscope_Type.Location = new System.Drawing.Point(8, 290);
             this.comboBox_Horoscope_Type.Name = "comboBox_Horoscope_Type";
             this.comboBox_Horoscope_Type.Size = new System.Drawing.Size(162, 21);
             this.comboBox_Horoscope_Type.TabIndex = 20;
@@ -6953,9 +7066,9 @@
             this.groupBox_Logging.Controls.Add(this.checkBox_config_LogItems);
             this.groupBox_Logging.Controls.Add(this.checkBox_config_LogAll);
             this.groupBox_Logging.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.groupBox_Logging.Location = new System.Drawing.Point(765, 380);
+            this.groupBox_Logging.Location = new System.Drawing.Point(765, 211);
             this.groupBox_Logging.Name = "groupBox_Logging";
-            this.groupBox_Logging.Size = new System.Drawing.Size(180, 135);
+            this.groupBox_Logging.Size = new System.Drawing.Size(180, 185);
             this.groupBox_Logging.TabIndex = 10;
             this.groupBox_Logging.TabStop = false;
             this.groupBox_Logging.Text = "What to Log";
@@ -7077,7 +7190,7 @@
             this.groupBox22.Controls.Add(this.textBox_config_FontFixed);
             this.groupBox22.Controls.Add(this.textBox_Config_FontNormal);
             this.groupBox22.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.groupBox22.Location = new System.Drawing.Point(765, 250);
+            this.groupBox22.Location = new System.Drawing.Point(575, 306);
             this.groupBox22.Name = "groupBox22";
             this.groupBox22.Size = new System.Drawing.Size(180, 90);
             this.groupBox22.TabIndex = 9;
@@ -7155,9 +7268,9 @@
             this.groupBox17.Controls.Add(this.textBox_Config_TaxMinimum);
             this.groupBox17.Controls.Add(this.textBox_Config_TaxRate);
             this.groupBox17.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.groupBox17.Location = new System.Drawing.Point(195, 485);
+            this.groupBox17.Location = new System.Drawing.Point(195, 432);
             this.groupBox17.Name = "groupBox17";
-            this.groupBox17.Size = new System.Drawing.Size(180, 95);
+            this.groupBox17.Size = new System.Drawing.Size(180, 98);
             this.groupBox17.TabIndex = 4;
             this.groupBox17.TabStop = false;
             this.groupBox17.Text = "Tax config";
@@ -7230,7 +7343,7 @@
             // 
             // button_Config_Reset
             // 
-            this.button_Config_Reset.Location = new System.Drawing.Point(418, 560);
+            this.button_Config_Reset.Location = new System.Drawing.Point(540, 540);
             this.button_Config_Reset.Name = "button_Config_Reset";
             this.button_Config_Reset.Size = new System.Drawing.Size(100, 25);
             this.button_Config_Reset.TabIndex = 12;
@@ -7240,7 +7353,7 @@
             // 
             // button_Config_Save
             // 
-            this.button_Config_Save.Location = new System.Drawing.Point(825, 560);
+            this.button_Config_Save.Location = new System.Drawing.Point(840, 540);
             this.button_Config_Save.Name = "button_Config_Save";
             this.button_Config_Save.Size = new System.Drawing.Size(100, 25);
             this.button_Config_Save.TabIndex = 14;
@@ -7255,7 +7368,7 @@
             this.groupBox_C_Prostitution_Rape_Chances.Controls.Add(this.textBox_Config_ProstitutionRapeStreets);
             this.groupBox_C_Prostitution_Rape_Chances.Controls.Add(this.textBox_Config_ProstitutionRapeBrothel);
             this.groupBox_C_Prostitution_Rape_Chances.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.groupBox_C_Prostitution_Rape_Chances.Location = new System.Drawing.Point(575, 445);
+            this.groupBox_C_Prostitution_Rape_Chances.Location = new System.Drawing.Point(385, 460);
             this.groupBox_C_Prostitution_Rape_Chances.Name = "groupBox_C_Prostitution_Rape_Chances";
             this.groupBox_C_Prostitution_Rape_Chances.Size = new System.Drawing.Size(180, 70);
             this.groupBox_C_Prostitution_Rape_Chances.TabIndex = 7;
@@ -7323,7 +7436,7 @@
             this.groupBox_C_Gambling.Controls.Add(this.textBox_Config_GamblingBase);
             this.groupBox_C_Gambling.Controls.Add(this.textBox_Config_GamblingOdds);
             this.groupBox_C_Gambling.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.groupBox_C_Gambling.Location = new System.Drawing.Point(195, 309);
+            this.groupBox_C_Gambling.Location = new System.Drawing.Point(195, 281);
             this.groupBox_C_Gambling.Name = "groupBox_C_Gambling";
             this.groupBox_C_Gambling.Size = new System.Drawing.Size(180, 145);
             this.groupBox_C_Gambling.TabIndex = 3;
@@ -7694,9 +7807,9 @@
             // 
             this.label_Load_Config.AutoSize = true;
             this.label_Load_Config.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
-            this.label_Load_Config.Location = new System.Drawing.Point(421, 531);
+            this.label_Load_Config.Location = new System.Drawing.Point(10, 533);
             this.label_Load_Config.Name = "label_Load_Config";
-            this.label_Load_Config.Size = new System.Drawing.Size(498, 26);
+            this.label_Load_Config.Size = new System.Drawing.Size(754, 52);
             this.label_Load_Config.TabIndex = 11;
             this.label_Load_Config.Text = resources.GetString("label_Load_Config.Text");
             // 
@@ -7727,14 +7840,43 @@
             // 
             // dataGridView_Traits
             // 
+            this.dataGridView_Traits.AllowUserToResizeRows = false;
+            this.dataGridView_Traits.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.PowderBlue;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView_Traits.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridView_Traits.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView_Traits.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dataGridView_Traits_Trait_Name,
             this.dataGridView_Traits_Trait_Desc,
-            this.dataGridView_Traits_Trait_Type});
+            this.dataGridView_Traits_Trait_Type,
+            this.dataGridView_Traits_Trait_InheritChance,
+            this.dataGridView_Traits_Trait_RandomChance});
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView_Traits.DefaultCellStyle = dataGridViewCellStyle3;
             this.dataGridView_Traits.Location = new System.Drawing.Point(6, 6);
             this.dataGridView_Traits.Name = "dataGridView_Traits";
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.PowderBlue;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView_Traits.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.dataGridView_Traits.RowHeadersVisible = false;
+            this.dataGridView_Traits.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridView_Traits.Size = new System.Drawing.Size(939, 445);
             this.dataGridView_Traits.TabIndex = 4;
             // 
@@ -7776,6 +7918,22 @@
             this.dataGridView_Traits_Trait_Type.Name = "dataGridView_Traits_Trait_Type";
             this.dataGridView_Traits_Trait_Type.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.dataGridView_Traits_Trait_Type.Width = 74;
+            // 
+            // dataGridView_Traits_Trait_InheritChance
+            // 
+            this.dataGridView_Traits_Trait_InheritChance.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dataGridView_Traits_Trait_InheritChance.DataPropertyName = "InheritChance";
+            this.dataGridView_Traits_Trait_InheritChance.HeaderText = "Inherit Chance";
+            this.dataGridView_Traits_Trait_InheritChance.Name = "dataGridView_Traits_Trait_InheritChance";
+            this.dataGridView_Traits_Trait_InheritChance.Width = 93;
+            // 
+            // dataGridView_Traits_Trait_RandomChance
+            // 
+            this.dataGridView_Traits_Trait_RandomChance.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dataGridView_Traits_Trait_RandomChance.DataPropertyName = "RandomChance";
+            this.dataGridView_Traits_Trait_RandomChance.HeaderText = "Random Chance";
+            this.dataGridView_Traits_Trait_RandomChance.Name = "dataGridView_Traits_Trait_RandomChance";
+            this.dataGridView_Traits_Trait_RandomChance.Width = 103;
             // 
             // button_Load_Traits
             // 
@@ -8004,7 +8162,7 @@
             this.MaximumSize = new System.Drawing.Size(1000, 700);
             this.MinimumSize = new System.Drawing.Size(1000, 700);
             this.Name = "Form1";
-            this.Text = "Whore Master Editor 0.8.19";
+            this.Text = "Whore Master Editor 0.8.20";
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.App_FileDrop);
             this.DragEnter += new System.Windows.Forms.DragEventHandler(this.App_DragEnter);
             this.tabControl1.ResumeLayout(false);
@@ -8048,6 +8206,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_bad_02)).EndInit();
             this.tabPage4_Config.ResumeLayout(false);
             this.tabPage4_Config.PerformLayout();
+            this.groupBox_Folders.ResumeLayout(false);
+            this.groupBox_Folders.PerformLayout();
             this.groupBox_C_Display_Settings.ResumeLayout(false);
             this.groupBox_C_Display_Settings.PerformLayout();
             this.groupBox_C_Expense_Multipliers.ResumeLayout(false);
@@ -8642,9 +8802,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridView_G_Traits_List;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridView_G_Traits_Type;
         private System.Windows.Forms.DataGridViewTextBoxColumn hidden_has;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridView_Traits_Trait_Name;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridView_Traits_Trait_Desc;
-        private System.Windows.Forms.DataGridViewComboBoxColumn dataGridView_Traits_Trait_Type;
         private System.Windows.Forms.Label label60;
         private System.Windows.Forms.TextBox SkillTBox_21;
         private System.Windows.Forms.Label label124;
@@ -8701,6 +8858,20 @@
         private System.Windows.Forms.TextBox TBox_G_FirstName;
         private System.Windows.Forms.Button button_G_Create_Real_Name;
         private System.Windows.Forms.Button button_G_Divide_Real_Name;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridView_Traits_Trait_Name;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridView_Traits_Trait_Desc;
+        private System.Windows.Forms.DataGridViewComboBoxColumn dataGridView_Traits_Trait_Type;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridView_Traits_Trait_InheritChance;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridView_Traits_Trait_RandomChance;
+        private System.Windows.Forms.GroupBox groupBox_Folders;
+        private System.Windows.Forms.CheckBox checkBox_Config_Folders_Backup_Saves;
+        private System.Windows.Forms.Label label185;
+        private System.Windows.Forms.TextBox textBox_Config_Folders_Default_Images;
+        private System.Windows.Forms.Label label183;
+        private System.Windows.Forms.Label label182;
+        private System.Windows.Forms.Label label184;
+        private System.Windows.Forms.TextBox textBox_Config_Folders_Characters;
+        private System.Windows.Forms.TextBox textBox_Config_Folders_Savegames;
     }
 }
 

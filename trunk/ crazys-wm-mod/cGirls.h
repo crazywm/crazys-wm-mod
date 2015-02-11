@@ -998,6 +998,7 @@ public:
 	sGirl* CreateRandomGirl(int age, bool addToGGirls, bool slave = false, bool undead = false, bool NonHuman = false, bool childnaped = false, bool arena = false, bool daughter = false, bool isdaughter = false, string findbyname = "");
 
 	sGirl* GetRandomGirl(bool slave = false, bool catacomb = false, bool arena = false, bool daughter = false, bool isdaughter = false);
+	sGirl* GetRandomYourDaughterGirl();
 
 	bool NameExists(string name);
 	bool SurnameExists(string surname);

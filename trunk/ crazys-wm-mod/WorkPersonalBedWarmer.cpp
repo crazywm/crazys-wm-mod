@@ -46,7 +46,7 @@ extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 extern int g_Building;
 
-// `J` House Job - General
+// `J` Job House - General
 bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	int actiontype = ACTION_SEX;
@@ -265,9 +265,10 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_BDSM, Day0Night1);
 		if (!girl->calc_pregnancy(g_Brothels.GetPlayer(), false, 1.0))
 		{
-			ss << girl->m_Realname;
-			ss << " has gotten pregnant";
-			g_MessageQue.AddToQue(ss.str(), 0);
+			stringstream ssm;
+			ssm << girlName << " has gotten pregnant.\n";
+			ss << ssm.str();
+			g_MessageQue.AddToQue(ssm.str(), 0);
 		}
 	}
 	else if (roll_d <= 80 && is_sex_type_allowed(SKILL_NORMALSEX, brothel))
@@ -282,9 +283,10 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_SEX, Day0Night1);
 		if (!girl->calc_pregnancy(g_Brothels.GetPlayer(), false, 1.0))
 		{
-			ss << girl->m_Realname;
-			ss << " has gotten pregnant";
-			g_MessageQue.AddToQue(ss.str(), 0);
+			stringstream ssm;
+			ssm << girlName << " has gotten pregnant.\n";
+			ss << ssm.str();
+			g_MessageQue.AddToQue(ssm.str(), 0);
 		}
 	}
 	else if (roll_d <= 90)

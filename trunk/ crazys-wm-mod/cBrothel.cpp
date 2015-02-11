@@ -279,7 +279,8 @@ void cBrothelManager::check_raid()
 	*	if we have a rival influencing things, it might not matter
 	*	if the player is squeaky clean
 	*/
-	if (m_Player.disposition() > 0 && g_Dice.percent(rival->m_Influence / 2))
+
+	if (rival && m_Player.disposition() > 0 && g_Dice.percent(rival->m_Influence / 2))
 	{
 		int fine = (g_Dice % 1000) + 150;
 		g_Gold.fines(fine);
@@ -1423,7 +1424,6 @@ void cBrothelManager::UpdateBrothels()	// Start_Building_Process_A
 	}
 
 	do_tax();
-	m_Dungeon.Update();	// update the people in the dungeon
 	check_rivals();
 
 	ss.str("");
@@ -4341,7 +4341,8 @@ bool cBrothelManager::PlayerCombat(sGirl* girl)		//  ***************************
 	else
 		dodge = (g_Girls.GetStat(girl, STAT_AGILITY) - g_Girls.GetStat(girl, STAT_TIREDNESS));
 
-	while (g_Girls.GetStat(girl, STAT_HEALTH) > 20 && pHealth > 0)
+	int combatrounds = 0;
+	while (g_Girls.GetStat(girl, STAT_HEALTH) > 20 && pHealth > 0 && combatrounds < 1000)
 	{
 		// Girl attacks
 		if (g_Dice.percent(g_Girls.GetSkill(girl, attack)))
@@ -4369,7 +4370,7 @@ bool cBrothelManager::PlayerCombat(sGirl* girl)		//  ***************************
 			g_Girls.UpdateSkill(girl, attack, g_Dice % 2);	// she may improve a little
 
 			// player attempts Dodge
-			if (g_Dice.percent(pdodge))
+			if (!g_Dice.percent(pdodge))
 				pHealth -= damage;
 			else
 				m_Player.m_Stats[STAT_AGILITY] += g_Dice % 2;	// player may improve a little
@@ -4401,7 +4402,7 @@ bool cBrothelManager::PlayerCombat(sGirl* girl)		//  ***************************
 			m_Player.m_Skills[pattack] += g_Dice % 2;	// he may improve a little
 
 			// girl attempts Dodge
-			if (g_Dice.percent(dodge))
+			if (!g_Dice.percent(dodge))
 				g_Girls.UpdateStat(girl, STAT_HEALTH, -damage);
 			else
 			{
@@ -4423,6 +4424,14 @@ bool cBrothelManager::PlayerCombat(sGirl* girl)		//  ***************************
 			pdodge = 0;
 		else
 			pdodge -= 2;
+
+		combatrounds++;
+	}
+
+	if (combatrounds > 999)	// a tie?
+	{
+		if (g_Girls.GetStat(girl, STAT_HEALTH) > pHealth) return true;	// the girl won
+		return false;
 	}
 
 	if (g_Girls.GetStat(girl, STAT_HEALTH) < 20)
@@ -4758,7 +4767,7 @@ sGirl* cBrothelManager::GetDrugPossessor()
 		sGirl* girl = current->m_Girls;
 		while (girl)
 		{
-			if (g_Dice.percent(g_Girls.GetStat(girl, STAT_INTELLIGENCE)))	// girls will only be found out if low intelligence
+			if (!g_Dice.percent(g_Girls.GetStat(girl, STAT_INTELLIGENCE)))	// girls will only be found out if low intelligence
 			{
 				if (g_Girls.HasItem(girl, "Shroud Mushroom") || g_Girls.HasItem(girl, "Fairy Dust") || g_Girls.HasItem(girl, "Vira Blood"))
 					return girl;

@@ -111,7 +111,7 @@ const unsigned int STATUS_ISDAUGHTER			= 13;
 // Jobs
 const unsigned int NUMJOBTYPES			= 18;
 const unsigned int NUM_JOBS				= 111;
-// `J` Brothel Job - General
+// `J` Job Brothel - General
 const unsigned int JOBFILTER_GENERAL	= 0;
 const unsigned int JOB_RESTING			= 0;	// relaxes and takes some time off
 const unsigned int JOB_TRAINING			= 1;	// trains skills at a basic level
@@ -123,26 +123,26 @@ const unsigned int JOB_MATRON			= 6;	// looks after the needs of the girls (only
 const unsigned int JOB_TORTURER			= 7;	// Tortures the people in the dungeons to help break their will (this is in addition to player torture) (only 1 allowed)
 const unsigned int JOB_EXPLORECATACOMBS	= 8;	// goes adventuring in the catacombs
 const unsigned int JOB_BEASTCARER		= 9;	// takes care of beasts that are housed in the brothel.
-// `J` Brothel Job - Bar
+// `J` Job Brothel - Bar
 const unsigned int JOBFILTER_BAR		= 1;
 const unsigned int JOB_BARMAID			= 10;	// serves at the bar
 const unsigned int JOB_WAITRESS			= 11;	// waits on the tables
 const unsigned int JOB_SINGER			= 12;	// sings in the bar
 const unsigned int JOB_PIANO			= 13;	// plays the piano for customers
 const unsigned int JOB_ESCORT			= 14;	// High lvl whore.  Sees less clients but needs higher skill high lvl items and the such to make them happy
-// `J` Brothel Job - Hall
+// `J` Job Brothel - Hall
 const unsigned int JOBFILTER_GAMBHALL	= 2;
 const unsigned int JOB_DEALER			= 15;	// dealer for gambling tables (requires at least 3 for all jobs in this filter to work)
 const unsigned int JOB_ENTERTAINMENT	= 16;	// sings, dances and other shows for patrons
 const unsigned int JOB_XXXENTERTAINMENT	= 17;	// naughty shows for patrons
 const unsigned int JOB_WHOREGAMBHALL	= 18;	// looks after customers sexual needs
-// `J` Brothel Job - Sleazy Bar
+// `J` Job Brothel - Sleazy Bar
 const unsigned int JOBFILTER_SLEAZYBAR	= 3;
 const unsigned int JOB_SLEAZYBARMAID	= 19;
 const unsigned int JOB_SLEAZYWAITRESS	= 20;
 const unsigned int JOB_BARSTRIPPER		= 21;
 const unsigned int JOB_BARWHORE			= 22;
-// `J` Brothel Job - Brothel
+// `J` Job Brothel - Brothel
 const unsigned int JOBFILTER_BROTHEL	= 4;
 const unsigned int JOB_MASSEUSE			= 23;	// gives massages to patrons and sometimes sex
 const unsigned int JOB_BROTHELSTRIPPER	= 24;	// strips for customers and sometimes sex
@@ -150,7 +150,7 @@ const unsigned int JOB_PEEP				= 25;	// Peep show
 const unsigned int JOB_WHOREBROTHEL		= 26;	// whore herself inside the building
 const unsigned int JOB_WHORESTREETS		= 27;	// whore self on the city streets
 
-// `J` Movie Studio Job - Actress
+// `J` Job Movie Studio - Actress
 const unsigned int JOBFILTER_MOVIESTUDIO = 5;
 const unsigned int JOB_FILMBEAST		= 28;	// films this sort of scene in the movie (uses beast resource)
 const unsigned int JOB_FILMSEX			= 29;	// films this sort of scene in the movie
@@ -168,7 +168,7 @@ const unsigned int JOB_FILMRANDOM		= 40;	// Films a random sex scene ... it does
 		// *****IMPORTANT**** If you add more scene types, they must go somewhere between
 		// JOB_FILMBEAST and JOB_FILMRANDOM, or it will cause the random job to stop working..
 		// JOB_FILMBEAST must be the first film job, JOB_FILMRANDOM must be the last one. --PP
-// `J` Movie Studio Job - Crew
+// `J` Job Movie Studio - Crew
 const unsigned int JOBFILTER_STUDIOCREW	= 6;
 const unsigned int JOB_FILMFREETIME		= 41;	// Free time
 const unsigned int JOB_DIRECTOR			= 42;	// Does same work as matron plus adds quality to films.
@@ -178,7 +178,7 @@ const unsigned int JOB_CRYSTALPURIFIER	= 45;	// Post editing to get the best out
 const unsigned int JOB_FLUFFER			= 46;	// Keeps the porn stars and animals aroused
 const unsigned int JOB_STAGEHAND		= 47;	// Currently does the same as a cleaner.
 
-// `J` Arena Job - Fighting
+// `J` Job Arena - Fighting
 const unsigned int JOBFILTER_ARENA		= 7;
 const unsigned int JOB_FIGHTBEASTS		= 48;	// customers come to place bets on who will win, girl may die (uses beasts resource)
 const unsigned int JOB_FIGHTARENAGIRLS	= 49;	
@@ -189,7 +189,7 @@ const unsigned int JOB_FIGHTTRAIN		= 50;
 //const unsigned int JOB_FIGHTBATTLE	= ;
 //const unsigned int JOB_ATHELETE		= ;
 //const unsigned int JOB_RACING			= ;
-// `J` Arena Job - Staff
+// `J` Job Arena - Staff
 const unsigned int JOBFILTER_ARENASTAFF	= 8;
 const unsigned int JOB_ARENAREST		= 51;	//free time of arena
 const unsigned int JOB_DOCTORE			= 52;	//Matron of arena
@@ -204,7 +204,7 @@ const unsigned int JOB_CLEANARENA		= 54;
 //const unsigned int JOB_MINER			= ;
 //const unsigned int JOB_SMITH			= ;
 
-// `J` Centre Job - General
+// `J` Job Centre - General
 const unsigned int JOBFILTER_COMMUNITYCENTRE = 9;
 const unsigned int JOB_CENTREREST		= 55;	// centres free time
 const unsigned int JOB_CENTREMANAGER	= 56;	// matron of centre	
@@ -213,7 +213,7 @@ const unsigned int JOB_COMUNITYSERVICE	= 58;	// Goes around town helping where t
 const unsigned int JOB_CLEANCENTRE		= 59;	// 	
 // TODO ideas:Run a charity, with an option for the player to steal from charity (with possible bad outcome). Run schools/orphanages.. this should give a boost to the stats of new random girls, and possibly be a place to recruit new uniques.
 // Homeless shelter... once again a possible place to find new girls.
-// `J` Centre Job - Rehab
+// `J` Job Centre - Rehab
 const unsigned int JOBFILTER_COUNSELINGCENTRE	= 10;
 const unsigned int JOB_COUNSELOR		= 60;	// 	
 const unsigned int JOB_REHAB			= 61;	// 	
@@ -221,7 +221,7 @@ const unsigned int JOB_ANGER			= 62;	//
 const unsigned int JOB_EXTHERAPY		= 63;	// 	
 const unsigned int JOB_THERAPY			= 64;	// 		
 
-// `J` Clinic Job - Surgery
+// `J` Job Clinic - Surgery
 const unsigned int JOBFILTER_CLINIC		= 11;	// teaches can train girls only up to their own skill level
 const unsigned int JOB_GETHEALING		= 65;	// takes 1 days for each wound trait received.
 const unsigned int JOB_GETREPAIRS		= 66;	// construct girls can get repaired quickly
@@ -236,7 +236,7 @@ const unsigned int JOB_ASSJOB			= 74;	// magical plastic surgery (takes 5 days)
 const unsigned int JOB_TUBESTIED		= 75;	// magical plastic surgery (takes 5 days)
 const unsigned int JOB_FERTILITY		= 76;	// magical plastic surgery (takes 5 days)
 
-// `J` Clinic Job - Staff
+// `J` Job Clinic - Staff
 const unsigned int JOBFILTER_CLINICSTAFF = 12;
 const unsigned int JOB_CLINICREST		= 77;	// Is clinics free time	
 const unsigned int JOB_CHAIRMAN			= 78;	// Matron of clinic	
@@ -246,7 +246,7 @@ const unsigned int JOB_MECHANIC			= 81;	// construct girls can get repaired quic
 const unsigned int JOB_INTERN			= 82;	// training for nurse job
 const unsigned int JOB_JANITOR			= 83;	// cleans clinic	
 
-// `J` Farm Job - Staff
+// `J` Job Farm - Staff
 const unsigned int JOBFILTER_FARMSTAFF	= 13;
 const unsigned int JOB_FARMREST			= 84;  //farm rest
 const unsigned int JOB_FARMMANGER		= 85;  //matron of farm
@@ -254,7 +254,7 @@ const unsigned int JOB_VETERINARIAN		= 86;  //tends to the animals to keep them 
 const unsigned int JOB_MARKETER			= 87;  // buys and sells food - full time
 const unsigned int JOB_RESEARCH			= 88;  // potions - unlock various types of potions and garden qualities - full time
 const unsigned int JOB_FARMHAND			= 89;  //cleaning of the farm
-// `J` Farm Job - Laborers
+// `J` Job Farm - Laborers
 const unsigned int JOBFILTER_LABORERS	= 14;
 const unsigned int JOB_FARMER			= 90;	//tends crops
 const unsigned int JOB_GARDENER			= 91;	// produces herbs and potion ingredients
@@ -264,7 +264,7 @@ const unsigned int JOB_CATACOMBRANCHER	= 94;	//tends strange beasts - 100% beast
 const unsigned int JOB_BEASTCAPTURE		= 95;	//
 const unsigned int JOB_MILKER			= 96;	// produces milk from animals/beasts/girls - if food animals < beasts - can be dangerous
 const unsigned int JOB_MILK				= 97;	//milker not required but increases yield
-// `J` Farm Job - Producers
+// `J` Job Farm - Producers
 const unsigned int JOBFILTER_PRODUCERS	= 15;
 const unsigned int JOB_BUTCHER			= 98;   // produces food from animals
 const unsigned int JOB_BAKER			= 99;   // produces food from crops
@@ -272,7 +272,7 @@ const unsigned int JOB_BREWER			= 100;  // Produces beers and wines
 const unsigned int JOB_MAKEITEM			= 101;  // produce items for sale
 const unsigned int JOB_MAKEPOTIONS		= 102;  // create potions with items gained from the garden
 
-// `J` House Job - General
+// `J` Job House - General
 const unsigned int JOBFILTER_HOUSE		= 16;
 const unsigned int JOB_HOUSEREST		= 103;
 const unsigned int JOB_HEADGIRL			= 104;

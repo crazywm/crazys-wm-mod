@@ -42,7 +42,7 @@ extern cMovieStudioManager g_Studios;
 extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
-// `J` Movie Studio Job - Actress
+// `J` Job Movie Studio - Actress
 bool cJobManager::WorkFilmStrip(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	int actiontype = ACTION_WORKMOVIE;

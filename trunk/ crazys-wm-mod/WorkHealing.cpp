@@ -42,7 +42,7 @@ extern cClinicManager g_Clinic;
 extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
-// `J` Clinic Job - Surgery
+// `J` Job Clinic - Surgery
 bool cJobManager::WorkHealing(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;

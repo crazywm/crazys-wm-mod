@@ -1,10 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <config>
-  <Folders
-    Characters="..\Characters"
-    Saves="..\Saves"
-    BackupSaves="true"
-  />
+	<!--
+	Characters     = The location of the Characters folder
+	Saves          = The location of the Saves folder
+	DefaultImages  = The location of the DefaultImages folder
+			Currently the folders are relative to the EXE file so to put the folder in the
+				parent folder of the game, use  '..\Characters'  and the like.
+	BackupSaves    = 'true' or 'false'
+			If set to true, the game will save in both the game's default
+				save folder as well as the folder set here.
+	-->
+	<Folders
+		Characters="..\Characters"
+		Saves="..\Saves"
+		DefaultImages="..\DefaultImages"
+		BackupSaves="true" />
 	<!--
 	Resolution     = the name of your interface folder
 	Width          = screen width

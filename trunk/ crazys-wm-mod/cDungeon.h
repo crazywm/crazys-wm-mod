@@ -103,6 +103,7 @@ public:
 	sGirl* RemoveGirl(sGirl* girl);
 	sGirl* RemoveGirl(sDungeonGirl* girl);	// releases or kills a girl
 	void RemoveCust(sDungeonCust* cust);	// releases or kills a customer
+	void ClearDungeonGirlEvents();
 	void Update();
 
 	int GetGirlPos(sGirl* girl);

@@ -40,7 +40,7 @@ extern cBrothelManager g_Brothels;
 extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
-// `J` Brothel Job - Bar
+// `J` Job Brothel - Bar
 bool cJobManager::WorkEscort(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	int actiontype = ACTION_WORKESCORT;
