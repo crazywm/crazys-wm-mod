@@ -79,7 +79,7 @@ int MarketSlaveGirlsDel[12] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 }
 CSurface* g_BrothelImages[7] = { 0, 0, 0, 0, 0, 0, 0 };
 
 extern bool g_LeftArrow;	extern bool g_RightArrow;	extern bool g_UpArrow;		extern bool g_DownArrow;
-extern bool g_EnterKey;		extern bool g_AltKeys;		extern bool g_SpaceKey;
+extern bool g_EnterKey;		extern bool g_AltKeys;		extern bool g_SpaceKey;		extern bool g_EscapeKey;
 extern bool g_HomeKey;		extern bool g_EndKey;		extern bool g_PageUpKey;	extern bool g_PageDownKey;
 
 extern bool g_A_Key;		extern bool g_B_Key;		extern bool g_C_Key;		extern bool g_D_Key;
@@ -128,33 +128,47 @@ void LoadGameScreen()
 	/*
 	*	no events process means we can go home early
 	*/
-	if (g_InterfaceEvents.GetNumEvents() == 0)
+	if (g_InterfaceEvents.GetNumEvents() == 0 && !g_EscapeKey && !g_UpArrow && !g_DownArrow && !g_EnterKey)
 	{
-
 		return;
 	}
 
 	/*
 	*	the next simplest case is the "back" button
 	*/
-	if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_LOADGBACK))
+	if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_LOADGBACK)
+		|| g_EscapeKey)
 	{
+		g_EscapeKey = false;
 		g_InitWin = true;
 		g_WinManager.Pop();
 		return;
 	}
+
+	int selection;
+	if (g_UpArrow)
+	{
+		g_UpArrow = false;
+		selection = g_LoadGame.ArrowUpListBox(g_interfaceid.LIST_LOADGSAVES);
+	}
+	if (g_DownArrow)
+	{
+		g_DownArrow = false;
+		selection = g_LoadGame.ArrowDownListBox(g_interfaceid.LIST_LOADGSAVES);
+	}
+
 	/*
 	*	by this point, we're only interested if it's a click on the load game button or a double-click on a game in the list
 	*/
 	if (!g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_LOADGLOAD)
-		&& !g_LoadGame.ListDoubleClicked(g_interfaceid.LIST_LOADGSAVES))
+		&& !g_LoadGame.ListDoubleClicked(g_interfaceid.LIST_LOADGSAVES) && !g_EnterKey)
 	{
 		return;
 	}
 	/*
 	*	OK: So from this point onwards, we're loading the game
 	*/
-	int selection = g_LoadGame.GetLastSelectedItemFromList(g_interfaceid.LIST_LOADGSAVES);
+	selection = g_LoadGame.GetLastSelectedItemFromList(g_interfaceid.LIST_LOADGSAVES);
 	/*
 	*	nothing selected means nothing more to do
 	*/
@@ -3050,17 +3064,21 @@ void SaveGame(bool saveCSV)
 {
 	cConfig cfg;
 	string filename = g_Brothels.GetBrothel(0)->m_Name;
+	string filenamedotgam = filename + ".gam";
+	string filenamedotcsv = filename + ".csv";
+
 	if (cfg.folders.configXMLsa())
 	{
-		SaveGameXML(DirPath() << cfg.folders.saves() << (filename + ".gam"));
-		if (saveCSV) SaveGirlsCSV(DirPath() << cfg.folders.saves() << (filename + ".csv"));
+		SaveGameXML(DirPath() << cfg.folders.saves() << filenamedotgam);
+		if (saveCSV) SaveGirlsCSV(DirPath() << cfg.folders.saves() << filenamedotcsv);
 	}
 	if (!cfg.folders.configXMLsa() || cfg.folders.backupsaves())
 	{
-		SaveGameXML(DirPath() << "Saves" << (filename + ".gam"));
-		if (saveCSV) SaveGirlsCSV(DirPath() << "Saves" << (filename + ".csv"));
+		SaveGameXML(DirPath() << "Saves" << filenamedotgam);
+		if (saveCSV) SaveGirlsCSV(DirPath() << "Saves" << filenamedotcsv);
 	}
 }
+
 
 void SaveGameXML(string filename)
 {

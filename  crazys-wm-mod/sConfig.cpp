@@ -46,8 +46,7 @@ sConfigData::sConfigData(const char *a_filename)
 	DirPath dpold = DirPath() << "Resources" << "Data" << a_filename;
 	string filename = dp.c_str();
 	string filenameold = dpold.c_str();
-	l.ss() << "Loading configration variables from '" << filename << "'";
-	l.ssend();
+	l.ss() << "Loading configration variables from '" << filename << "'"; l.ssend();
 	/*
 	*	make sure we have something playable,
 	*	even if the file doesn't load
@@ -60,26 +59,17 @@ sConfigData::sConfigData(const char *a_filename)
 	TiXmlDocument docold(filenameold);
 	if (!doc.LoadFile())
 	{
-		l.ss() << "Can't load " << filename << " from root directory." << endl;
-		l.ss() << "Error: line " << doc.ErrorRow() << ", col " << doc.ErrorCol() << ": " << doc.ErrorDesc() << endl;
-		l.ss() << "Attempting to load old file " << filenameold << "." << endl;
-		l.ssend();
+		l.ss() << "Can't load " << filename << " from root directory." << endl << "Error: line " << doc.ErrorRow() << ", col " << doc.ErrorCol() << ": " << doc.ErrorDesc() << endl << "Attempting to load old file " << filenameold << "." << endl; l.ssend();
 		doc = docold;
 	}
 	if (!doc.LoadFile())
 	{
-		l.ss() << "can't load " << filename << endl;
-		l.ss() << "Error: line " << doc.ErrorRow() << ", col " << doc.ErrorCol() << ": " << doc.ErrorDesc();
-		l.ssend();
+		l.ss() << "can't load " << filename << endl << "Error: line " << doc.ErrorRow() << ", col " << doc.ErrorCol() << ": " << doc.ErrorDesc(); l.ssend();
 		/*
 		*		a bit of narrative for the players: makes it easier to tell
 		*		if the config isn't being found
 		*/
-		l.ss() << "*** Game will run with default pricing factors." << endl
-			<< "*** This may seem a little easy. To fix this" << endl
-			<< "*** get a config.xml file from pinkpetal.org" << endl
-			<< "*** or make one with Whore Master Editor";
-		l.ssend();
+		l.ss() << "*** Game will run with default pricing factors.\n*** This may seem a little easy. To fix this\n*** get a config.xml file from pinkpetal.org\n*** or make one with Whore Master Editor"; l.ssend();
 		return;
 	}
 	/*
@@ -106,8 +96,7 @@ sConfigData::sConfigData(const char *a_filename)
 		if (el->ValueStr() == "Fonts")			{ get_font_data(el);		continue; }
 		if (el->ValueStr() == "Debug")			{ get_debug_flags(el);		continue; }
 
-		l.ss() << "Warning: config.xml: tag: '" << tag << "' unexpected";
-		l.ssend();
+		l.ss() << "Warning: config.xml: tag: '" << tag << "' unexpected"; l.ssend();
 	}
 	// check interface for colors
 	DirPath dpi = DirPath() << "Resources" << "Interface" << resolution.resolution << "InterfaceColors.xml";
@@ -170,8 +159,7 @@ void sConfigData::get_att(TiXmlElement *el, const char *name, bool &bval)
 	*	we can go
 	*/
 	if (!pt) {
-		g_LogFile.ss() << "Error: in config: No attribute named '" << name << "' found.";
-		g_LogFile.ssend();
+		l.ss() << "Error: in config: No attribute named '" << name << "' found."; l.ssend();
 		return;
 	}
 	/*
@@ -186,16 +174,14 @@ void sConfigData::get_att(TiXmlElement *el, const char *name, bool &bval)
 	if (s == "true" || s == "1")		{ bval = true;	return; }
 	if (s == "false" || s == "0")	{ bval = false;	return; }
 
-	g_LogFile.ss() << "Error in config: Binary attribute '" << name << "': unexpected value '" << s << "'";
-	g_LogFile.ssend();
+	l.ss() << "Error in config: Binary attribute '" << name << "': unexpected value '" << s << "'"; l.ssend();
 }
 
 
 void sConfigData::get_att(TiXmlElement *el, const char *name, double *dpt)
 {
 	if (el->Attribute(name, dpt)) { return; }
-	l.ss() << "Warning: config.xml: No '" << name << "' attribute: defaulting to " << *dpt;
-	l.ssend();
+	l.ss() << "Warning: config.xml: No '" << name << "' attribute: defaulting to " << *dpt; l.ssend();
 }
 
 void sConfigData::get_att(TiXmlElement *el, const char *name, string &s)
@@ -203,16 +189,14 @@ void sConfigData::get_att(TiXmlElement *el, const char *name, string &s)
 	const char *pt;
 	pt = el->Attribute(name);
 	if (pt) { s = pt;	return; }
-	l.ss() << "Warning: config.xml: No '" << name << "' attribute: defaulting to " << s;
-	l.ssend();
+	l.ss() << "Warning: config.xml: No '" << name << "' attribute: defaulting to " << s; l.ssend();
 }
 
 void sConfigData::get_att(TiXmlElement *el, const char *name, int *ipt)
 {
 	int def_val = *ipt;
 	if (el->Attribute(name, ipt)) { return; }
-	l.ss() << "Warning: config.xml: No '" << name << "' attribute: defaulting to " << def_val;
-	l.ssend();
+	l.ss() << "Warning: config.xml: No '" << name << "' attribute: defaulting to " << def_val; l.ssend();
 	*ipt = def_val;
 }
 
@@ -233,13 +217,12 @@ void sConfigData::get_folders_data(TiXmlElement *el)
 		if (test.size() > 0)
 		{
 			folders.characters = testch;
-			l.ss() << "Success: config.xml: Loading Characters from: " << locationch;
+			l.ss() << "Success: config.xml: Loading Characters from: " << locationch << "\n"; l.ssend();
 			folders.configXMLch = true;
 		}
 		else
 		{
-			l.ss() << "\n\nWarning: config.xml: Characters folder '" << locationch << "' does not exist or has no girls in it.\nDefaulting to ./Resources/Characters\n\n";
-			l.ssend();
+			l.ss() << "\n\nWarning: config.xml: Characters folder '" << locationch << "' does not exist or has no girls in it.\nDefaulting to ./Resources/Characters\n\n"; l.ssend();
 		}
 	}
 	if (testsa != "")
@@ -255,7 +238,7 @@ void sConfigData::get_folders_data(TiXmlElement *el)
 		if (test.size() > 0)
 		{
 			folders.saves = testsa;
-			l.ss() << "Success: config.xml: Loading Saves from: " << locationsa; l.ssend();
+			l.ss() << "Success: config.xml: Loading Saves from: " << locationsa << "\n"; l.ssend();
 			folders.configXMLsa = true;
 		}
 		else
@@ -271,13 +254,12 @@ void sConfigData::get_folders_data(TiXmlElement *el)
 		if (testdig.size() > 0 || testdia.size() > 0)
 		{
 			folders.defaultimageloc = testdi;
-			l.ss() << "Success: config.xml: Loading Default Images from: " << locationdi;
+			l.ss() << "Success: config.xml: Loading Default Images from: " << locationdi; l.ssend();
 			folders.configXMLdi = true;
 		}
 		else
 		{
-			l.ss() << "\n\nWarning: config.xml: Default Images folder '" << locationdi << "' does not exist or has no images in it.\n\n";
-			l.ssend();
+			l.ss() << "\n\nWarning: config.xml: Default Images folder '" << locationdi << "' does not exist or has no images in it.\n\n"; l.ssend();
 		}
 	}
 
@@ -299,19 +281,16 @@ void sConfigData::get_resolution_data(TiXmlElement *el)
 		if (test.size() > 0)
 		{
 			resolution.resolution = testa;
-			l.ss() << "Success: config.xml: Loading Interface: " << location.c_str();;
-			l.ssend();
+			l.ss() << "Success: config.xml: Loading Interface: " << location.c_str(); l.ssend();
 		}
 		else
 		{
-			l.ss() << "\n\nWarning: config.xml:\n'Resolution' attribute points to an invalid interface folder:\ndefaulting to 'J_1024x768'\n\n";
-			l.ssend();
+			l.ss() << "\n\nWarning: config.xml:\n'Resolution' attribute points to an invalid interface folder:\ndefaulting to 'J_1024x768'\n\n"; l.ssend();
 		}
 	}
 	else
 	{
-		l.ss() << "\n\nWarning: config.xml: No Resolution specified, using defaults.\n\n";
-		l.ssend();
+		l.ss() << "\n\nWarning: config.xml: No Resolution specified, using defaults.\n\n"; l.ssend();
 	}
 	if (pt = el->Attribute("Width"))			{ get_att(el, "Width", &resolution.width);		resolution.configXML = true; }
 	if (pt = el->Attribute("Height"))			{ get_att(el, "Height", &resolution.height);	resolution.configXML = true; }
@@ -319,9 +298,7 @@ void sConfigData::get_resolution_data(TiXmlElement *el)
 	if (pt = el->Attribute("ScaleHeight"))		{ get_att(el, "ScaleHeight", &resolution.scaleheight); }
 	if (pt = el->Attribute("FullScreen"))		{ get_att(el, "FullScreen", resolution.fullscreen); }
 	if (pt = el->Attribute("ListScrollAmount"))	{ get_att(el, "ListScrollAmount", &resolution.list_scroll); }
-	else { resolution.list_scroll = 3; }
 	if (pt = el->Attribute("TextScrollAmount"))	{ get_att(el, "TextScrollAmount", &resolution.text_scroll); }
-	else { resolution.text_scroll = 3; }
 }
 
 void sConfigData::get_initial_values(TiXmlElement *el)
@@ -363,14 +340,14 @@ void sConfigData::get_expense_factors(TiXmlElement *el)
 	if (pt = el->Attribute("ActressWages"))			get_att(el, "ActressWages", &out_fact.movie_cost);
 	if (pt = el->Attribute("GoonWages"))			get_att(el, "GoonWages", &out_fact.goon_wages);
 	if (pt = el->Attribute("MatronWages"))			get_att(el, "MatronWages", &out_fact.matron_wages);
-	if (pt = el->Attribute("StaffWages"))			get_att(el, "StaffWages", &out_fact.staff_wages);		// `J` ?not used?
+	if (pt = el->Attribute("StaffWages"))			get_att(el, "StaffWages", &out_fact.staff_wages);			// `J` ?not used?
 	if (pt = el->Attribute("GirlSupport"))			get_att(el, "GirlSupport", &out_fact.girl_support);
 	if (pt = el->Attribute("Consumables"))			get_att(el, "Consumables", &out_fact.consumables);
 	if (pt = el->Attribute("Items"))				get_att(el, "Items", &out_fact.item_cost);
 	if (pt = el->Attribute("SlavesBought"))			get_att(el, "SlavesBought", &out_fact.slave_cost);
 	if (pt = el->Attribute("BuyBrothel"))			get_att(el, "BuyBrothel", &out_fact.brothel_cost);
 	if (pt = el->Attribute("BrothelSupport"))		get_att(el, "BrothelSupport", &out_fact.brothel_support);	// `J` ?not used?
-	if (pt = el->Attribute("BarSupport"))			get_att(el, "BarSupport", &out_fact.bar_cost);		// `J` ?not used?
+	if (pt = el->Attribute("BarSupport"))			get_att(el, "BarSupport", &out_fact.bar_cost);				// `J` ?not used?
 	if (pt = el->Attribute("CasinoSupport"))		get_att(el, "CasinoSupport", &out_fact.casino_cost);		// `J` ?not used?
 	if (pt = el->Attribute("Bribes"))				get_att(el, "Bribes", &out_fact.bribes);
 	if (pt = el->Attribute("Fines"))				get_att(el, "Fines", &out_fact.fines);
@@ -396,18 +373,15 @@ void sConfigData::get_gambling_factors(TiXmlElement *el)
 void sConfigData::get_tax_factors(TiXmlElement *el)
 {
 	const char *pt;
-	if (pt = el->Attribute("Rate"))					get_att(el, "Rate", &tax.rate);
-	if (pt = el->Attribute("Minimum"))				get_att(el, "Minimum", &tax.minimum);
-	if (pt = el->Attribute("Laundry"))				get_att(el, "Laundry", &tax.laundry);
 	/*
 	*	we expect these in the format "25%" with the "%" being optional
 	*	The trailing % will be chopped off by tinyxml,
 	*	but we still need to divide by 100 to turn the numbers
 	*	from a percentage to a floating point factor
 	*/
-	tax.rate /= 100.0;
-	tax.minimum /= 100.0;
-	tax.laundry /= 100.0;
+	if (pt = el->Attribute("Rate"))					{ get_att(el, "Rate", &tax.rate);		tax.rate /= 100.0; }
+	if (pt = el->Attribute("Minimum"))				{ get_att(el, "Minimum", &tax.minimum);	tax.minimum /= 100.0; }
+	if (pt = el->Attribute("Laundry"))				{ get_att(el, "Laundry", &tax.laundry);	tax.laundry /= 100.0; }
 }
 
 void sConfigData::get_preg_factors(TiXmlElement *el)
@@ -424,6 +398,8 @@ void sConfigData::get_preg_factors(TiXmlElement *el)
 	if (pt = el->Attribute("MiscarriageMonster"))	get_att(el, "MiscarriageMonster", &pregnancy.miscarriage_monster);	// `J` added
 	if (pt = el->Attribute("WeeksTillGrown"))		get_att(el, "WeeksTillGrown", &pregnancy.weeks_till_grown);
 	if (pt = el->Attribute("CoolDown"))				get_att(el, "CoolDown", &pregnancy.cool_down);
+	if (pt = el->Attribute("AntiPregFailure"))		get_att(el, "AntiPregFailure", &pregnancy.anti_preg_failure);
+	if (pt = el->Attribute("MultiBirthChance"))		get_att(el, "MultiBirthChance", &pregnancy.multi_birth_chance);
 }
 
 void sConfigData::get_pros_factors(TiXmlElement *el)
@@ -503,33 +479,35 @@ void sConfigData::get_debug_flags(TiXmlElement *el)
 */
 void sConfigData::set_defaults()
 {
-	folders.characters = "";		// `J` where the characters folder is located 
-	folders.configXMLch = false;	// `J` if character's location is set in config.xml
-	folders.saves = "";				// `J` where the saves folder is located 
-	folders.configXMLsa = false;	// `J` if saves's location is set in config.xml
-	folders.backupsaves = false;	// `J` backup saves in the version folder incase moving to the next version breaks the save
-	folders.defaultimageloc = "";	// `J` where the default images folder is located 
-	folders.configXMLdi = false;	// `J` if default images location is set in config.xml
+	folders.characters = "";				// `J` where the characters folder is located 
+	folders.configXMLch = false;			// `J` if character's location is set in config.xml
+	folders.saves = "";						// `J` where the saves folder is located 
+	folders.configXMLsa = false;			// `J` if saves's location is set in config.xml
+	folders.backupsaves = false;			// `J` backup saves in the version folder incase moving to the next version breaks the save
+	folders.defaultimageloc = "";			// `J` where the default images folder is located 
+	folders.configXMLdi = false;			// `J` if default images location is set in config.xml
 
 	resolution.resolution = "J_1024x768";	// `J` I set this to my interface because that is the one I edit myself
-	resolution.width = 1024;	// `J` added - Will be moved to interfaces
-	resolution.height = 768;	// `J` added - Will be moved to interfaces
-	resolution.scalewidth = 800;	// `J` added - Will be moved to interfaces
-	resolution.scaleheight = 600;	// `J` added - Will be moved to interfaces
-	resolution.fullscreen = false;	// `J` added - Will be moved to interfaces
-	resolution.configXML = false;	// `J` added - Will be changed to interfaces
+	resolution.width = 1024;				// `J` added - Will be moved to interfaces
+	resolution.height = 768;				// `J` added - Will be moved to interfaces
+	resolution.scalewidth = 800;			// `J` added - Will be moved to interfaces
+	resolution.scaleheight = 600;			// `J` added - Will be moved to interfaces
+	resolution.fullscreen = false;			// `J` added - Will be moved to interfaces
+	resolution.configXML = false;			// `J` added - Will be changed to interfaces
+	resolution.list_scroll = 3;				// `Dagoth` added
+	resolution.text_scroll = 3;				// `Dagoth` added
 
 	initial.gold = 4000;
 	initial.girl_meet = 30;
-	initial.girls_house_perc = 60;	// `J` added
+	initial.girls_house_perc = 60;			// `J` added
 	initial.slave_pay_outofpocket = true;	// `J` added
-	initial.girls_keep_tips = true;	// `J` added
+	initial.girls_keep_tips = true;			// `J` added
 	initial.slave_house_perc = 100;
-	initial.slave_keep_tips = false;	// `J` added
+	initial.slave_keep_tips = false;		// `J` added
 	initial.auto_use_items = false;
 	initial.auto_combat_equip = true;
-	initial.torture_mod = 1;	// `J` added
-	initial.horoscopetype = 1;	// `J` added
+	initial.torture_mod = 1;				// `J` added
+	initial.horoscopetype = 1;				// `J` added
 
 	in_fact.extortion = 1.0;
 	in_fact.brothel_work = 1.0;
@@ -547,15 +525,15 @@ void sConfigData::set_defaults()
 	out_fact.movie_cost = 1.0;
 	out_fact.goon_wages = 1.0;
 	out_fact.matron_wages = 1.0;
-	out_fact.staff_wages = 1.0;	// `J` ?not used?
+	out_fact.staff_wages = 1.0;				// `J` ?not used?
 	out_fact.girl_support = 1.0;
 	out_fact.consumables = 1.0;
 	out_fact.item_cost = 1.0;
 	out_fact.slave_cost = 1.0;
 	out_fact.brothel_cost = 1.0;
-	out_fact.brothel_support = 1.0;	// `J` ?not used?
-	out_fact.bar_cost = 1.0;	// `J` ?not used?
-	out_fact.casino_cost = 1.0;	// `J` ?not used?
+	out_fact.brothel_support = 1.0;			// `J` ?not used?
+	out_fact.bar_cost = 1.0;				// `J` ?not used?
+	out_fact.casino_cost = 1.0;				// `J` ?not used?
 	out_fact.bribes = 1.0;
 	out_fact.fines = 1.0;
 	out_fact.advertising = 1.0;
@@ -573,14 +551,16 @@ void sConfigData::set_defaults()
 	pregnancy.player_chance = 8;
 	pregnancy.customer_chance = 8;
 	pregnancy.monster_chance = 8;
-	pregnancy.good_sex_factor = 2.0;	// `J` changed from 8 to 2
+	pregnancy.good_sex_factor = 2.0;		// `J` changed from 8 to 2
 	pregnancy.chance_of_girl = 50;
 	pregnancy.weeks_pregnant = 38;
-	pregnancy.weeks_monster_p = 20;	// `J` added
-	pregnancy.miscarriage_chance = 0.1;	// `J` added
+	pregnancy.weeks_monster_p = 20;			// `J` added
+	pregnancy.miscarriage_chance = 0.1;		// `J` added
 	pregnancy.miscarriage_monster = 1.0;	// `J` added
 	pregnancy.weeks_till_grown = 60;
-	pregnancy.cool_down = 4;	// `J` changed from 60 weeks to 4 weeks
+	pregnancy.cool_down = 4;				// `J` changed from 60 weeks to 4 weeks
+	pregnancy.anti_preg_failure = 0.0;		// `J` added
+	pregnancy.multi_birth_chance = 1.0;		// `J` added
 
 	gangs.max_recruit_list = 6;
 	gangs.start_random = 2;

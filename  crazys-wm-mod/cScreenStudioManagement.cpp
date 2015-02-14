@@ -1,21 +1,21 @@
 /*
- * Copyright 2009, 2010, The Pink Petal Development Team.
- * The Pink Petal Devloment Team are defined as the game's coders 
- * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright 2009, 2010, The Pink Petal Development Team.
+* The Pink Petal Devloment Team are defined as the game's coders
+* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 #include <algorithm>
 #include "cMovieStudio.h"
 #include "cScreenStudioManagement.h"
@@ -33,6 +33,7 @@ extern bool g_InitWin;
 extern int g_CurrStudio;
 extern cGold g_Gold;
 extern cMovieStudioManager g_Studios;
+extern cBrothelManager g_Brothels;
 extern cWindowManager g_WinManager;
 
 extern	bool	g_LeftArrow;
@@ -82,6 +83,7 @@ void cScreenStudioManagement::set_ids()
 	viewdetails_id = get_id("ViewDetailsButton");
 	transfer_id = get_id("TransferButton");
 	createmovie_id = get_id("CreateMovieButton");
+	freeslave_id = get_id("FreeSlaveButton");
 	jobtypehead_id = get_id("JobTypeHeader");
 	jobtypelist_id = get_id("JobTypeList");
 	jobtypedesc_id = get_id("JobTypeDescription");
@@ -97,14 +99,45 @@ void cScreenStudioManagement::set_ids()
 
 void cScreenStudioManagement::init()
 {
+
+	if (FreeGirl)
+	{
+		if (g_ChoiceManager.GetChoice(0) == 0)
+		{
+			vector<int> girl_array;
+			GetSelectedGirls(&girl_array);  // get and sort array of girls
+
+			for (int i = girl_array.size(); i--> 0;)	// OK, we have the array, now step through it backwards
+			{
+				selected_girl = g_Studios.GetGirl(g_CurrStudio, girl_array[i]);
+				if (GirlDead(selected_girl) || !selected_girl->is_slave()) continue;  // if dead or not a slave, can't free her
+				if (selected_girl)
+				{
+					selected_girl->m_States &= ~(1 << STATUS_SLAVE);
+					g_Brothels.GetPlayer()->disposition(5);
+					g_Girls.UpdateStat(selected_girl, STAT_PCLOVE, 10);
+					g_Girls.UpdateStat(selected_girl, STAT_PCFEAR, -20);
+					g_Girls.UpdateStat(selected_girl, STAT_PCHATE, -25);
+					g_Girls.UpdateStat(selected_girl, STAT_OBEDIENCE, 10);
+					g_Girls.UpdateStat(selected_girl, STAT_HAPPINESS, 70);
+					selected_girl->m_AccLevel = 1;
+					selected_girl->m_Stats[STAT_HOUSE] = 60;
+					g_InitWin = true;
+				}
+			}
+		}
+		g_ChoiceManager.Free();
+		FreeGirl = false;
+	}
+
 	g_CurrentScreen = SCREEN_STUDIO;
-	if(!g_InitWin)
-		return;
+	if (!g_InitWin) return;
+
 	Focused();
 	g_InitWin = false;
 
 
-////////////////////
+	////////////////////
 
 	selection = GetSelectedItemFromList(girllist_id);
 	string studio;
@@ -118,7 +151,7 @@ void cScreenStudioManagement::init()
 	ClearListBox(jobtypelist_id);
 
 	// add the job filters
-//	for(int i=0; i<NUMJOBTYPES; i++)  // loop through all job types
+	//	for(int i=0; i<NUMJOBTYPES; i++)  // loop through all job types
 	AddToListBox(jobtypelist_id, JOBFILTER_STUDIOCREW, g_Studios.m_JobManager.JobFilterName[JOBFILTER_STUDIOCREW]);
 	AddToListBox(jobtypelist_id, JOBFILTER_MOVIESTUDIO, g_Studios.m_JobManager.JobFilterName[JOBFILTER_MOVIESTUDIO]);
 	SetSelectedItemInList(jobtypelist_id, JOBFILTER_STUDIOCREW);
@@ -130,36 +163,36 @@ void cScreenStudioManagement::init()
 	string* Data = new string[numColumns];
 
 	// Add girls to list
-	for(int i=0; i<g_Studios.GetNumGirls(g_CurrStudio); i++)
+	for (int i = 0; i<g_Studios.GetNumGirls(g_CurrStudio); i++)
 	{
 		sGirl* gir = g_Studios.GetGirl(g_CurrStudio, i);
 		if (selected_girl == gir)
 			selection = i;
 
 		unsigned int item_color = COLOR_BLUE;
-		if(g_Girls.GetStat(gir, STAT_HEALTH) <= 30 || g_Girls.GetStat(gir, STAT_TIREDNESS) >= 80 || g_Girls.GetStat(gir, STAT_HAPPINESS) <= 30)
+		if (g_Girls.GetStat(gir, STAT_HEALTH) <= 30 || g_Girls.GetStat(gir, STAT_TIREDNESS) >= 80 || g_Girls.GetStat(gir, STAT_HAPPINESS) <= 30)
 			item_color = COLOR_RED;
 
 		gir->OutputGirlRow(Data, columnNames);
 		AddToListBox(girllist_id, i, Data, numColumns, item_color);
 	}
-	delete [] Data;
+	delete[] Data;
 
 	lastNum = -1;
 	g_InitWin = false;
 
-	if(selection >= 0)
+	if (selection >= 0)
 	{
-		while(selection > GetListBoxSize(girllist_id) && selection != -1)
+		while (selection > GetListBoxSize(girllist_id) && selection != -1)
 			selection--;
 	}
-	if(selection >= 0)
+	if (selection >= 0)
 		SetSelectedItemInList(girllist_id, selection);
 	else
-		{
+	{
 		SetSelectedItemInList(girllist_id, 0);
 		selection = 0;
-		}
+	}
 
 	HideButton(day_id, 1);
 	HideButton(night_id, 1);
@@ -171,11 +204,11 @@ void cScreenStudioManagement::init()
 void cScreenStudioManagement::process()
 {
 	// we need to make sure the ID variables are set
-	if(!ids_set)
+	if (!ids_set)
 		set_ids();
 
 	// handle arrow keys
- 	if(check_keys())
+	if (check_keys())
 		return;
 
 	// set up the window if needed
@@ -225,10 +258,10 @@ bool cScreenStudioManagement::check_keys()
 void cScreenStudioManagement::update_image()
 {
 	// Draw a girls profile picture and description when selected
-	if(selected_girl)
+	if (selected_girl)
 	{
 		bool Rand = false;
-		if(lastNum != selection)
+		if (lastNum != selection)
 		{
 			string text = g_Girls.GetGirlMood(selected_girl);
 			text += "\n\n";
@@ -246,7 +279,7 @@ void cScreenStudioManagement::update_image()
 		}
 
 		SetImage(girlimage_id, g_Girls.GetImageSurface(selected_girl, IMGTYPE_PROFILE, Rand, ImageNum));
-		if(g_Girls.IsAnimatedSurface(selected_girl, IMGTYPE_PROFILE, ImageNum))
+		if (g_Girls.IsAnimatedSurface(selected_girl, IMGTYPE_PROFILE, ImageNum))
 			SetImage(girlimage_id, g_Girls.GetAnimatedSurface(selected_girl, IMGTYPE_PROFILE, ImageNum));
 
 		HideImage(girlimage_id, false);
@@ -262,41 +295,41 @@ void cScreenStudioManagement::update_image()
 void cScreenStudioManagement::check_events()
 {
 	// no events means we can go home
-	if(g_InterfaceEvents.GetNumEvents() == 0)
+	if (g_InterfaceEvents.GetNumEvents() == 0)
 		return;
 
 	// if it's the back button, pop the window off the stack and we're done
-	if(g_InterfaceEvents.CheckButton(back_id)) {
+	if (g_InterfaceEvents.CheckButton(back_id)) {
 		g_InitWin = true;
 		g_WinManager.Pop();
 		return;
 	}
-	if(g_InterfaceEvents.CheckButton(viewdetails_id))
+	if (g_InterfaceEvents.CheckButton(viewdetails_id))
 	{
 		ViewSelectedGirl();
 	}
 
-	if(g_InterfaceEvents.CheckButton(createmovie_id))
+	if (g_InterfaceEvents.CheckButton(createmovie_id))
 	{
 		g_InitWin = true;
 		g_WinManager.push("Movie Maker");
 		return;
 	}
-	if(g_InterfaceEvents.CheckButton(day_id))
+	if (g_InterfaceEvents.CheckButton(day_id))
 	{
 		DisableButton(day_id, true);
 		DisableButton(night_id, false);
 		Day0Night1 = SHIFT_NIGHT; // We only want night shifts in studio.. just a sanity check --PP
 		RefreshSelectedJobType();
 	}
-	if(g_InterfaceEvents.CheckButton(night_id))
+	if (g_InterfaceEvents.CheckButton(night_id))
 	{
 		DisableButton(day_id, false);
 		DisableButton(night_id, true);
 		Day0Night1 = SHIFT_NIGHT;
 		RefreshSelectedJobType();
 	}
-	if(g_InterfaceEvents.CheckListbox(jobtypelist_id))
+	if (g_InterfaceEvents.CheckListbox(jobtypelist_id))
 	{
 		selection = GetSelectedItemFromList(jobtypelist_id);
 
@@ -314,10 +347,10 @@ void cScreenStudioManagement::check_events()
 			EditTextItem(jdmessage, jobtypedesc_id);
 		}
 	}
-	if(g_InterfaceEvents.CheckListbox(joblist_id))
+	if (g_InterfaceEvents.CheckListbox(joblist_id))
 	{
 		selection = GetSelectedItemFromList(joblist_id);
-		if(selection != -1)
+		if (selection != -1)
 		{
 			// first handle the descriptions
 			EditTextItem(g_Studios.m_JobManager.JobDesc[selection], jobdesc_id);
@@ -325,22 +358,22 @@ void cScreenStudioManagement::check_events()
 			// Now assign the job to all the selected girls
 			int pos = 0;
 			int GSelection = GetNextSelectedItemFromList(girllist_id, 0, pos);
-			while(GSelection != -1)
+			while (GSelection != -1)
 			{
 				selected_girl = g_Studios.GetGirl(g_CurrStudio, GSelection);
-				if(selected_girl)
+				if (selected_girl)
 				{
 					int old_job = selected_girl->m_NightJob;
 
 					// handle special job requirements and assign
 					// if HandleSpecialJobs returns true, the job assignment was modified or cancelled
-					
-					if(g_Studios.m_JobManager.HandleSpecialJobs(g_CurrStudio, selected_girl, selection, old_job, false))
+
+					if (g_Studios.m_JobManager.HandleSpecialJobs(g_CurrStudio, selected_girl, selection, old_job, false))
 					{
 						selection = selected_girl->m_NightJob;
 						SetSelectedItemInList(joblist_id, selection, false);
 					}
-					
+
 
 					if (old_job != selection)
 					{
@@ -364,29 +397,28 @@ void cScreenStudioManagement::check_events()
 					if (g_Studios.CrewNeeded())	ss << " **";
 					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->NightJobColumn());
 				}
-	
-				GSelection = GetNextSelectedItemFromList(girllist_id, pos+1, pos);
+
+				GSelection = GetNextSelectedItemFromList(girllist_id, pos + 1, pos);
 			}
 		}
 		else
 			EditTextItem(gettext("Nothing Selected"), jobdesc_id);
 	}
 
-	if(g_InterfaceEvents.CheckListbox(girllist_id))
+	if (g_InterfaceEvents.CheckListbox(girllist_id))
 	{
 		selection = GetSelectedItemFromList(girllist_id);
-		if(selection != -1)
+		if (selection != -1)
 		{
 			selected_girl = g_Studios.GetGirl(g_CurrStudio, selection);
-			//// If double-clicked, try to bring up girl details
-			if(ListDoubleClicked(girllist_id))
-				ViewSelectedGirl();
-			////
+			if (ListDoubleClicked(girllist_id)) ViewSelectedGirl();		// If double-clicked, try to bring up girl details
+			DisableButton(freeslave_id, selected_girl->is_free());
 			DisableButton(viewdetails_id, false);
 			RefreshSelectedJobType();
 		}
 		else
 		{
+			DisableButton(freeslave_id, true);
 			DisableButton(viewdetails_id, true);
 			selected_girl = 0;
 			selection = -1;
@@ -395,7 +427,33 @@ void cScreenStudioManagement::check_events()
 		update_image();
 		return;
 	}
-	if(g_InterfaceEvents.CheckButton(transfer_id))
+	if (g_InterfaceEvents.CheckButton(freeslave_id))
+	{
+		if (selected_girl)
+		{
+			if (IsMultiSelected(girllist_id))
+			{  // multiple girls selected
+				g_MessageQue.AddToQue("Are you sure you wish to give these girls their freedom?", 0);
+				g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, strlen("Keep as a slaves"));
+				g_ChoiceManager.AddChoice(0, "Grant Freedom", 0);
+				g_ChoiceManager.AddChoice(0, "Keep as a slaves", 1);
+				g_ChoiceManager.SetActive(0);
+				FreeGirl = true;
+			}
+			else  // only one girl selected
+			{
+				if (GirlDead(selected_girl)) return;
+				g_MessageQue.AddToQue("Are you sure you wish to give " + selected_girl->m_Realname + " her freedom?", 0);
+				g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, strlen("Keep as a slave"));
+				g_ChoiceManager.AddChoice(0, "Grant Freedom", 0);
+				g_ChoiceManager.AddChoice(0, "Keep as a slave", 1);
+				g_ChoiceManager.SetActive(0);
+				FreeGirl = true;
+			}
+		}
+		return;
+	}
+	if (g_InterfaceEvents.CheckButton(transfer_id))
 	{
 		g_CurrentScreen = SCREEN_TRANSFERGIRLS;
 		g_InitWin = true;
@@ -407,7 +465,7 @@ void cScreenStudioManagement::check_events()
 
 bool cScreenStudioManagement::GirlDead(sGirl *dgirl)
 {
-	if(g_Girls.GetStat(dgirl, STAT_HEALTH) <= 0)
+	if (g_Girls.GetStat(dgirl, STAT_HEALTH) <= 0)
 	{
 		g_MessageQue.AddToQue(gettext("This girl is dead. She isn't going to work anymore and her body will be removed by the end of the week."), 1);
 		return true;
@@ -419,7 +477,7 @@ bool cScreenStudioManagement::GirlDead(sGirl *dgirl)
 void cScreenStudioManagement::RefreshSelectedJobType()
 {
 	selection = GetSelectedItemFromList(girllist_id);
-	if(selection < 0) return;
+	if (selection < 0) return;
 	selected_girl = g_Studios.GetGirl(0, selection);
 	u_int job = selected_girl->m_NightJob;
 	// set the job filter
@@ -460,10 +518,10 @@ void cScreenStudioManagement::GetSelectedGirls(vector<int> *girl_array)
 {  // take passed vector and fill it with sorted list of selected girl IDs
 	int pos = 0;
 	int GSelection = GetNextSelectedItemFromList(girllist_id, 0, pos);
-	while(GSelection != -1)
+	while (GSelection != -1)
 	{
 		girl_array->push_back(GSelection);
-		GSelection = GetNextSelectedItemFromList(girllist_id, pos+1, pos);
+		GSelection = GetNextSelectedItemFromList(girllist_id, pos + 1, pos);
 	}
 	sort(girl_array->begin(), girl_array->end());
 }

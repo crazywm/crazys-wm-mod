@@ -2017,7 +2017,7 @@ void cGangManager::UpdateGangs()
 					}
 					else
 					{
-						ugirl = g_Girls.CreateRandomGirl(0, false, false, "", true);
+						ugirl = g_Girls.CreateRandomGirl(0, false, false, false, true);
 						if (ugirl != 0)  // make sure a girl was returned
 						{
 							girl++;

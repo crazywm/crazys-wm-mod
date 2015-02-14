@@ -40,6 +40,7 @@ private:
 	int girldesc_id;	// Girl Description text
 	int viewdetails_id;	// View Details button
 	int transfer_id;	// Transfer Girl button
+	int freeslave_id;
 	int createmovie_id;
 	int jobtypehead_id;	// Job Types header text
 	int jobtypelist_id;	// Job Types listbox

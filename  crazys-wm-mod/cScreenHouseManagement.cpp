@@ -107,19 +107,14 @@ void cScreenHouseManagement::init()
 			vector<int> girl_array;
 			GetSelectedGirls(&girl_array);  // get and sort array of girls
 
-			// OK, we have the array, now step through it backwards
-			for (int i = girl_array.size(); i--> 0;)
+			for (int i = girl_array.size(); i--> 0;)	// OK, we have the array, now step through it backwards
 			{
 				selected_girl = g_House.GetGirl(g_CurrHouse, girl_array[i]);
-				if (GirlDead(selected_girl) || !selected_girl->is_slave())
-					continue;  // if dead or not a slave, can't free her
+				if (GirlDead(selected_girl) || !selected_girl->is_slave()) continue;  // if dead or not a slave, can't free her
 				if (selected_girl)
 				{
 					selected_girl->m_States &= ~(1 << STATUS_SLAVE);
 					g_Brothels.GetPlayer()->disposition(5);
-					//g_Brothels.GetPlayer()->m_Disposition += 5;
-					//if(g_Brothels.GetPlayer()->m_Disposition > 100)
-					//	g_Brothels.GetPlayer()->m_Disposition = 100;
 					g_Girls.UpdateStat(selected_girl, STAT_PCLOVE, 10);
 					g_Girls.UpdateStat(selected_girl, STAT_PCFEAR, -20);
 					g_Girls.UpdateStat(selected_girl, STAT_PCHATE, -25);
@@ -131,13 +126,12 @@ void cScreenHouseManagement::init()
 				}
 			}
 		}
-
 		g_ChoiceManager.Free();
 		FreeGirl = false;
 	}
+
 	g_CurrentScreen = SCREEN_HOUSE;
-	if (!g_InitWin)
-		return;
+	if (!g_InitWin) return;
 
 	Focused();
 	g_InitWin = false;
@@ -392,18 +386,8 @@ void cScreenHouseManagement::check_events()
 		if (selection != -1)
 		{
 			selected_girl = g_House.GetGirl(g_CurrHouse, selection);
-			//// If double-clicked, try to bring up girl details
-			if (ListDoubleClicked(girllist_id))
-				ViewSelectedGirl();
-			////
-			if (selected_girl->m_States&(1 << STATUS_SLAVE))
-			{
-				DisableButton(freeslave_id, false);
-			}
-			else
-			{
-				DisableButton(freeslave_id, true);
-			}
+			if (ListDoubleClicked(girllist_id)) ViewSelectedGirl();		// If double-clicked, try to bring up girl details
+			DisableButton(freeslave_id, selected_girl->is_free());
 			DisableButton(viewdetails_id, false);
 			RefreshSelectedJobType();
 		}
@@ -424,21 +408,20 @@ void cScreenHouseManagement::check_events()
 		{
 			if (IsMultiSelected(girllist_id))
 			{  // multiple girls selected
-				g_MessageQue.AddToQue(("Are you sure you wish to give these girls their freedom?"), 0);
-				g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, strlen(("Keep as a slaves")));
-				g_ChoiceManager.AddChoice(0, ("Grant Freedom"), 0);
-				g_ChoiceManager.AddChoice(0, ("Keep as a slaves"), 1);
+				g_MessageQue.AddToQue("Are you sure you wish to give these girls their freedom?", 0);
+				g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, strlen("Keep as a slaves"));
+				g_ChoiceManager.AddChoice(0, "Grant Freedom", 0);
+				g_ChoiceManager.AddChoice(0, "Keep as a slaves", 1);
 				g_ChoiceManager.SetActive(0);
 				FreeGirl = true;
 			}
 			else  // only one girl selected
 			{
-				if (GirlDead(selected_girl))
-					return;
+				if (GirlDead(selected_girl)) return;
 				g_MessageQue.AddToQue("Are you sure you wish to give " + selected_girl->m_Realname + " her freedom?", 0);
-				g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, strlen(("Keep as a slave")));
-				g_ChoiceManager.AddChoice(0, ("Grant Freedom"), 0);
-				g_ChoiceManager.AddChoice(0, ("Keep as a slave"), 1);
+				g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, strlen("Keep as a slave"));
+				g_ChoiceManager.AddChoice(0, "Grant Freedom", 0);
+				g_ChoiceManager.AddChoice(0, "Keep as a slave", 1);
 				g_ChoiceManager.SetActive(0);
 				FreeGirl = true;
 			}

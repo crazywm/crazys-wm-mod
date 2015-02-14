@@ -131,17 +131,19 @@ struct sConfigData
 	} tax;
 
 	struct PregnancyData {
-		int	player_chance;
-		int	customer_chance;
-		int	monster_chance;
+		int		player_chance;
+		int		customer_chance;
+		int		monster_chance;
 		double	good_sex_factor;
-		int	chance_of_girl;
-		int	weeks_pregnant;
-		int weeks_monster_p;
+		int		chance_of_girl;
+		int		weeks_pregnant;
+		int		weeks_monster_p;
 		double	miscarriage_chance;
 		double	miscarriage_monster;
-		int	weeks_till_grown;
-		int	cool_down;
+		int		weeks_till_grown;
+		int		cool_down;
+		double	anti_preg_failure;
+		double	multi_birth_chance;
 	} pregnancy;
 
 	struct GangData {
@@ -300,14 +302,19 @@ public:
 	} gamble;
 
 	struct PregnancyData {
-		int	player_chance()	        { return data->pregnancy.player_chance; }
-		int	customer_chance()       { return data->pregnancy.customer_chance; }
-		int	monster_chance()        { return data->pregnancy.monster_chance; }
-		double	good_sex_factor()   { return data->pregnancy.good_sex_factor; }
-		int	chance_of_girl()        { return data->pregnancy.chance_of_girl; }
-		int	weeks_pregnant()        { return data->pregnancy.weeks_pregnant; }
-		int	weeks_till_grown()      { return data->pregnancy.weeks_till_grown; }
-		int	cool_down()             { return data->pregnancy.cool_down; }
+		int	player_chance()				{ return data->pregnancy.player_chance; }
+		int	customer_chance()			{ return data->pregnancy.customer_chance; }
+		int	monster_chance()			{ return data->pregnancy.monster_chance; }
+		double	good_sex_factor()		{ return data->pregnancy.good_sex_factor; }
+		int	chance_of_girl()			{ return data->pregnancy.chance_of_girl; }
+		int	weeks_pregnant()			{ return data->pregnancy.weeks_pregnant; }
+		int weeks_monster_p()			{ return data->pregnancy.weeks_monster_p; }
+		double	miscarriage_chance()	{ return data->pregnancy.miscarriage_chance; }
+		double	miscarriage_monster()	{ return data->pregnancy.miscarriage_monster; }
+		int	weeks_till_grown()			{ return data->pregnancy.weeks_till_grown; }
+		int	cool_down()					{ return data->pregnancy.cool_down; }
+		double	anti_preg_failure()		{ return data->pregnancy.anti_preg_failure; }
+		double	multi_birth_chance()	{ return data->pregnancy.multi_birth_chance; }
 	} pregnancy;
 
 	struct GangData {

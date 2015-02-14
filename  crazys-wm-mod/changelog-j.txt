@@ -1601,11 +1601,55 @@ Fixed bug caused by "Converted a ton of g_Dice%100 to either g_Dice.percent() or
 !!!!!!!!!!!!!!!!!!!! Repushed Whore Master version .06.01.03 with the fix.
 !!!!!!!!!!!!!!!!!!!! pushed to SVN - r151
 
- 
- 
- 
- 
- 
+###  Changes 2/11/2015
+Added control and shift keys to building selection (F1,F5-9,F12)
+ - control + F# goes to building setup
+ - shift + F# goes to the building screen
+ - F# alone goes to the girls list in that building (as usual)
+Reworked updateGirlTurnStats()
+ - commented out "She gets more injured for being injured" section
+ - added possible obedience modifier 
+Rearranged some things in cGirls.cpp for better flow
+Normalized building screen codes
+ - Added "free slave" button to studio so all buildings now have it.
+
+###  Changes 2/12/2015
+Added AntiPregFailure to config.xml and to the game. Default is 0.0%
+ - If a girl uses an antipreg, the percent is rolled and if it succeds, the antipreg does not work.
+Added MiscarriageChance to the birth code.
+Added MultiBirthChance to config.xml - does not work in game yet.
+
+WME - Sorted stats and skills for .(r)girlsx so they are arranged in the order the editor has them.
+WME - Started adding script editor tab
+ - It reads .scriptsx files but doesn't do anything with it yet.
+WME - Added AntiPregFailure and MultiBirthChance to config.xml
+
+###  Changes 2/13/2015
+Fixed a bug in arena where jobs would change to fight girls if there were no beasts.
+ - All jobs were changing when only fight beasts was intended, fixed the check to be for fight beasts only.
+ - If her health is less than 50 she will rest a shift.
+ - If all 4 skills are 90+ it sends her to fight girls, otherwise to training.
+Fixed a bug in inventory sorting - was not affecting the game but could affect texts.
+Updated Main Menu adding "Continue" and "Settings" buttons.
+ - "Continue" will load the autosave.gam if it exists
+ - "Settings" does nothing yet.
+Added hotkeys to main menu - C, L, N, S, Q
+Added hotkeys to load game list - up, down, enter, escape
+Fixed a bug - if you hit escape while the game was loading it would return to the main menu after it loaded.
+If the owner of a business you are extorting can not pay and sells you his daughter, he becomes free from your debt. (-1 businesses)
+
+
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.04
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.21
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r152
+
+
+
+
+
+
+
  
 $$$$ note to self - when updating items to recalculate stats/skills when loading girls - don't modify temp stuff $$$$
 

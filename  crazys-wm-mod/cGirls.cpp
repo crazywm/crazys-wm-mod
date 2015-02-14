@@ -2867,13 +2867,12 @@ int cGirls::GetRebelValue(sGirl* girl, bool matron)
 			(g_Brothels.is_Nightshift_Processing() && g_Brothels.m_JobManager.is_job_Paid_Player(girl->m_NightJob)))
 			houseStat = 0;
 
-		if (houseStat < 60)							// Take less money than normal lower Rebel 
+		if (houseStat < 60)							// Take less money than normal, lower Rebel 
 			chanceNo -= (60 - houseStat) / 2;
 		else
 		{
 			chanceNo += (houseStat - 60) / 2;		// Take more money than normal, more Rebel
 			if (houseStat >= 100) chanceNo += 10;	// Take all the money, more Rebel
-
 		}
 	}
 	
@@ -11850,6 +11849,15 @@ bool cGirls::GirlInjured(sGirl* girl, unsigned int unModifier)
 		message = gettext("Her unborn child has been lost due to the injuries she sustained, leaving her quite distraught.");
 		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_WARNING);
 	}
+	if (girl->carrying_monster() && g_Dice.percent((nMod)))
+	{  // unintended abortion time
+		//injured = true;
+		girl->clear_pregnancy();
+		girl->happiness(-10);
+		girl->spirit(-5);
+		message = gettext("The creature growing inside her has been lost due to the injuries she sustained, leaving her distraught.");
+		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_WARNING);
+	}
 
 	// Lose between 5 - 14 hp
 	girl->health(-5 - g_Dice % 10);
@@ -12049,16 +12057,16 @@ void cGirls::updateGirlTurnStats(sGirl* girl)
 	// TIREDNESS Really tired girls get unhappy fast
 	int bonus = girl->tiredness() - 90;
 	int b = 0;
-	if (bonus > 0)
+	if (bonus > 0)							// bonus is 1-10
 	{
-		girl->obedience(-1);					// Base loss for being tired
+		girl->obedience(-1);				// Base loss for being tired
 		girl->pclove(-1);
 		b = bonus / 3 + 1;
-		girl->happiness(-b);
-		b = bonus / 2 + 1;
-		if (girl->health() - b < 10)	// Don't kill the girl from tiredness
+		girl->happiness(-b);				// 1-4
+		if (girl->health() - bonus < 10)	// Don't kill the girl from tiredness
 		{
-			girl->health(10);				// Girl will hate player more if badly hurt from being tired
+			b = bonus / 2 + 1;				// halve the damage
+			girl->health(-b);				// Girl will hate player more if badly hurt from being tired
 			girl->pclove(-1);
 			girl->pchate(1);
 		}
@@ -12067,16 +12075,17 @@ void cGirls::updateGirlTurnStats(sGirl* girl)
 
 	// HEALTH hurt girls get tired fast
 	bonus = 40 - girl->health();
-	if (bonus > 0)
+	if (bonus > 0)							// bonus is 1-40
 	{
 		girl->pchate(1);					// Base loss for being hurt
 		girl->pclove(-1);
 		girl->happiness(-1);
 
-		bonus = bonus / 8 + 1;			// bonus vs health values 1: 33-39, 2: 25-32, 3: 17-24, 4: 09-16 5: 01-08
+		bonus = bonus / 8 + 1;				// bonus vs health values 1: 33-39, 2: 25-32, 3: 17-24, 4: 09-16 5: 01-08
 		girl->tiredness(bonus);
 
-		bonus = bonus / 2 + 1;			// bonus vs health values 1: 33-39, 2: 17-32, 3: 01-16
+		/* `J` She gets more injured for being injured???  commenting out
+		bonus = bonus / 2 + 1;				// bonus vs health values 1: 33-39, 2: 17-32, 3: 01-16
 		if (girl->health() - bonus < 1)		// Don't kill the girl from low health
 		{
 			girl->health(1);				// Girl will hate player more for very low health
@@ -12087,6 +12096,7 @@ void cGirls::updateGirlTurnStats(sGirl* girl)
 		{
 			girl->health(-bonus);
 		}
+		*/
 
 		/*		These messages duplicate warning messages in the matron code
 		*
@@ -12099,10 +12109,12 @@ void cGirls::updateGirlTurnStats(sGirl* girl)
 	if (girl->happiness() >= 100)
 	{
 		girl->pclove(2);					// Happy girls love player more
+		girl->obedience(g_Dice%2);			// `J` added
 	}
 	if (!girl->is_slave() && girl->happiness() < 50)
 	{
 		girl->pclove(-2);					// Unhappy FREE girls love player less	
+		girl->obedience(-(g_Dice % 2));		// `J` added
 	}
 }
 
@@ -12315,15 +12327,9 @@ bool sGirl::calc_insemination(cPlayer *player, bool good, double factor)
 	return g_GirlsPtr->CalcPregnancy(this, int(chance), STATUS_INSEMINATED, player->m_Stats, player->m_Skills);
 }
 
+// returns false if she becomes pregnant or true if she does not
 bool cGirls::CalcPregnancy(sGirl* girl, int chance, int type, int stats[NUM_STATS], int skills[NUM_SKILLS])
 {
-	string text = gettext("She has");
-	/*
-	*	for reasons I do not understand, but nevertheless think
-	*	are kind of cool, virgins have a +10 to their pregnancy
-	*	chance
-	*/
-	if (g_Girls.CheckVirginity(girl) && chance > 0) chance += 10;
 	/*
 	*	If there's a condition that would stop her getting preggers
 	*	then we get to go home early
@@ -12334,13 +12340,20 @@ bool cGirls::CalcPregnancy(sGirl* girl, int chance, int type, int stats[NUM_STAT
 	*	or just blowing the dice roll. That gets confusing too.
 	*/
 	if (has_contraception(girl)) return true;
+
+	string text = gettext("She has");
+	/*
+	*	for reasons I do not understand, but nevertheless think
+	*	are kind of cool, virgins have a +10 to their pregnancy
+	*	chance
+	*/
+	if (g_Girls.CheckVirginity(girl) && chance > 0) chance += 10;
 	/*
 	*	the other effective form of contraception, of course,
 	*	is failing the dice roll. Let's check the chance of
 	*	her NOT getting preggers here
 	*/
-	if (g_Girls.HasTrait(girl, "Sterile")) return true;
-	else if (g_Girls.HasTrait(girl, "Broodmother") && chance > 0)	chance += 60;//this should work CRAZY
+	if (g_Girls.HasTrait(girl, "Broodmother") && chance > 0)	chance += 60;//this should work CRAZY
 	else if (g_Girls.HasTrait(girl, "Fertile") && chance > 0)	chance += 30;//this should work CRAZY
 	if (g_Dice.percent(100 - chance)) return true;
 	/*
@@ -12537,12 +12550,12 @@ sGirl *cGirls::make_girl_child(sGirl* mom, bool playerisdad)
 
 bool cGirls::child_is_grown(sGirl* mom, sChild *child, string& summary, bool PlayerControlled)
 {
-	string playersurname = "";	// `J` since this is not changeable yet, leaving it blank.
 	cConfig cfg;
-	cTariff tariff;
-	stringstream ss;
 	// bump the age - if it's still not grown, go home
 	child->m_Age++;		if (child->m_Age < cfg.pregnancy.weeks_till_grown())	return false;
+
+	cTariff tariff;
+	stringstream ss;
 
 	// we need a coming of age ceremony
 	if (child->is_boy())
@@ -12693,17 +12706,7 @@ bool cGirls::child_is_grown(sGirl* mom, sChild *child, string& summary, bool Pla
 		}
 		else
 		{
-			// check if mom has a surname in her m_RealName
-			int posspace = 0;
-			posspace = mom->m_Realname.find(' ');
-			if (posspace >= 0)
-			{
-				sprog->m_Surname = mom->m_Realname.substr(posspace + 1);
-			}
-			else
-			{
-				sprog->m_Surname = prevsurname;
-			}
+			sprog->m_Surname = prevsurname;
 		}
 		biography = "Daughter of " + mom->m_Realname + " and an anonymous brothel client";
 	}
@@ -12771,7 +12774,6 @@ void cGirls::UncontrolledPregnancies()
 
 void cGirls::HandleChildren(sGirl* girl, string& summary, bool PlayerControlled)
 {
-	sChild* child;
 	girl->m_JustGaveBirth = false;
 	/*
 	*	start by advancing pregnancy cooldown time
@@ -12793,40 +12795,30 @@ void cGirls::HandleChildren(sGirl* girl, string& summary, bool PlayerControlled)
 	*	and divide them into those growing up
 	*	and those still to be born
 	*/
+
 	bool remove_flag;
-	child = girl->m_Children.m_FirstChild;
+	sChild* child = girl->m_Children.m_FirstChild;
 	while (child)
 	{
-		/*
-		*		if the child is yet unborn
-		*		see if it is due
-		*/
+		// if the child is yet unborn see if it is due
 		if (child->m_Unborn)
 		{
-			/*
-			*			some births (monsters) we do not track to adulthood
-			*			these need removing from the list
-			*/
+			// some births (monsters) we do not track to adulthood these need removing from the list
 			remove_flag = child_is_due(girl, child, summary, PlayerControlled);
 		}
 		else
 		{
-			/*
-			*			the child has been born already
-			*
-			*			if it comes of age we remove it from the list
-			*/
+			// the child has been born already if it comes of age we remove it from the list
 			remove_flag = child_is_grown(girl, child, summary, PlayerControlled);
 		}
 		child = girl->next_child(child, remove_flag);
 	}
 }
 
+// Returns false if we do not want to remove the child. Returns true and we get rid of the child.
 bool cGirls::child_is_due(sGirl* girl, sChild *child, string& summary, bool PlayerControlled)
 {
 	cConfig cfg;
-	cTariff tariff;
-	stringstream ss;
 	/*
 	*	clock on the count and see if she's due
 	*	if not, return false (meaning "do not remove this child yet)
@@ -12837,6 +12829,9 @@ bool cGirls::child_is_due(sGirl* girl, sChild *child, string& summary, bool Play
 	*	OK, it's time to give birth
 	*	start with some basic bookkeeping.
 	*/
+	cTariff tariff;
+	stringstream ss;
+
 	girl->m_WeeksPreg = 0;
 	child->m_Unborn = 0;
 	girl->m_PregCooldown = cfg.pregnancy.cool_down();
@@ -12855,27 +12850,43 @@ bool cGirls::child_is_due(sGirl* girl, sChild *child, string& summary, bool Play
 		*		this is a human birth, so add the MILF trait
 		*/
 		girl->clear_pregnancy();
-		g_Girls.AddTrait(girl, "MILF");
-		/*
-		*		format a message
-		*/
-		//summary += "Gave birth. ";
-		ss << "She has given birth to a baby " << child->boy_girl_str() << ".\n\nYou grant her the week off for maternity leave.";
-		/*
-		*		check for sterility
-		*/
-		if (g_Dice.percent(1 + healthFactor))
-		{
-			ss << gettext(" It was a difficult birth and she has lost the ability to have children.");
-			g_Girls.AddTrait(girl, "Sterile");
-		}
-		/*
-		*		queue the message and return false because we need to
-		*		see this one grow up
-		*/
-		if (PlayerControlled) girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_DANGER);
 		girl->m_JustGaveBirth = true;
-		return false;
+		g_Girls.AddTrait(girl, "MILF");
+
+		girl->tiredness(100);
+		girl->happiness(10 + g_Dice % 91);
+		int healthloss = 1 + g_Dice % 10;
+		if (girl->health() - healthloss < 1)	// don't kill her, it causes too many problems with the baby. 
+			SetStat(girl, STAT_HEALTH, 1);		// you can kill her when the baby gets moved somewhere else in the code.
+		else girl->health(-healthloss);
+
+		if (g_Dice.percent(cfg.pregnancy.miscarriage_chance()))	// the baby dies
+		{
+			// format a message
+			ss << "She has given birth to a baby " << child->boy_girl_str() << " but it did not survive the birth.\n\nYou grant her the week off to grieve.";
+			//check for sterility
+			if (g_Dice.percent(5 + healthFactor))
+			{
+				ss << " It was a difficult birth and she has lost the ability to have children.";
+				g_Girls.AddTrait(girl, "Sterile");
+			}
+			if (PlayerControlled) girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_DANGER);
+			return true;
+		}
+		else	// the baby lives
+		{
+			// format a message
+			ss << "She has given birth to a baby " << child->boy_girl_str() << ".\n\nYou grant her the week off for maternity leave.";
+			//check for sterility
+			if (g_Dice.percent(1 + healthFactor))
+			{
+				ss << " It was a difficult birth and she has lost the ability to have children.";
+				g_Girls.AddTrait(girl, "Sterile");
+			}
+			// queue the message and return false because we need to see this one grow up
+			if (PlayerControlled) girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_DANGER);
+			return false;
+		}
 	}
 	/*
 	*	It's monster time!
@@ -12886,15 +12897,25 @@ bool cGirls::child_is_due(sGirl* girl, sChild *child, string& summary, bool Play
 	*	might as well record the transaction and clear the preggo bit
 	*	while we're at it
 	*/
+
+
 	if (PlayerControlled)
 	{
-		long gold = tariff.creature_sales();
-		g_Gold.creature_sales(gold);
 
-		//summary += gettext("Gave birth to a beast. ");
-		ss << gettext("The creature within her has matured and emerged from her womb.\n");
-		ss << gettext("You make ") << gold << gettext(" gold selling the creature.");
-		ss << gettext("\n\nYou grant her the week off for her body to recover.");
+		//summary += "Gave birth to a beast. ";
+		ss << "The creature within her has matured and emerged from her womb.\n";
+		if (g_Dice.percent(cfg.pregnancy.miscarriage_monster()))
+		{
+			ss << "Unfortunately it did not survive.";
+			healthFactor += 5;
+		}
+		else
+		{
+			long gold = tariff.creature_sales();
+			g_Gold.creature_sales(gold);
+			ss << "You make " << gold << " gold selling the creature.";
+		}
+		ss << "\n\nYou grant her the week off for her body to recover.";
 	}
 	girl->clear_pregnancy();
 	/*
@@ -12902,8 +12923,8 @@ bool cGirls::child_is_due(sGirl* girl, sChild *child, string& summary, bool Play
 	*/
 	if (g_Dice.percent(1 + healthFactor))
 	{
-		//summary += gettext("And died from it. ");
-		ss << gettext("\nSadly, the girl did not survive the experience.");
+		//summary += "And died from it. ";
+		ss << "\nSadly, the girl did not survive the experience.";
 		girl->m_Stats[STAT_HEALTH] = 0;
 	}
 	/*
@@ -12913,7 +12934,7 @@ bool cGirls::child_is_due(sGirl* girl, sChild *child, string& summary, bool Play
 	*/
 	else if (g_Dice.percent(5 + healthFactor))
 	{
-		ss << gettext(" It was a difficult birth and she has lost the ability to have children.");
+		ss << " It was a difficult birth and she has lost the ability to have children.";
 		g_Girls.AddTrait(girl, "Sterile");
 	}
 	/*
@@ -12926,6 +12947,7 @@ bool cGirls::child_is_due(sGirl* girl, sChild *child, string& summary, bool Play
 	return true;
 }
 
+// `J` this has been replased by trait->m_InheritChance - this is still used if the trait does not have it
 bool cGirls::InheritTrait(sTrait* trait)
 {
 	// `J` When adding new traits, search for "J-Add-New-Traits"  :  found in >> InheritTrait
@@ -13013,7 +13035,7 @@ bool cGirls::InheritTrait(sTrait* trait)
 			return false;
 
 		// WD: Any unlisted traits here
-		if (g_Dice.percent(30))
+		if (g_Dice.percent(10))
 			return true;
 	}
 	return false;
@@ -14159,25 +14181,9 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 		(((this)->m_WorkingDay > 0) || (this)->m_PrevWorkingDay > 0))
 		interrupted = true;
 
-	if (detailName == "Name")					{ ss << m_Realname; }
-	else if (detailName == "Health")
-	{
-		if (get_stat(STAT_HEALTH) == 0)
-			ss << gettext("DEAD");
-		else
-			ss << get_stat(STAT_HEALTH) << "%";
-	}
-	else if (detailName == "Age")
-	{
-		if (get_stat(STAT_AGE) == 100)
-		{
-			ss << gettext("???");
-		}
-		else
-		{
-			ss << get_stat(STAT_AGE);
-		}
-	}
+	/* */if (detailName == "Name")				{ ss << m_Realname; }
+	else if (detailName == "Health")			{ if (get_stat(STAT_HEALTH) == 0) ss << gettext("DEAD"); else ss << get_stat(STAT_HEALTH) << "%"; }
+	else if (detailName == "Age")				{ if (get_stat(STAT_AGE) == 100) ss << "???"; else ss << get_stat(STAT_AGE); }
 	else if (detailName == "Libido")			{ ss << libido(); }
 	else if (detailName == "Rebel")				{ ss << rebel(); }
 	else if (detailName == "Looks")				{ ss << ((get_stat(STAT_BEAUTY) + get_stat(STAT_CHARISMA)) / 2) << "%"; }
@@ -14235,10 +14241,7 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 		{
 			ss << gettext("None");
 		}
-		else if (DN_Job == JOB_REHAB ||
-			DN_Job == JOB_ANGER ||
-			DN_Job == JOB_EXTHERAPY ||
-			DN_Job == JOB_THERAPY)
+		else if (DN_Job == JOB_REHAB || DN_Job == JOB_ANGER || DN_Job == JOB_EXTHERAPY || DN_Job == JOB_THERAPY)
 		{
 			if (g_Centre.GetNumGirlsOnJob(0, JOB_COUNSELOR, DN_Day) > 0)
 			{
@@ -14324,9 +14327,6 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 		}
 	}
 
-
-
-
 	else if (detailName.find("STAT_") != string::npos)
 	{
 		string stat = detailName;
@@ -14362,14 +14362,7 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 		int code = lookup_status_code(status);
 		if (code != -1)
 		{
-			if (m_States&(1 << code))
-			{
-				ss << gettext("Yes");
-			}
-			else
-			{
-				ss << gettext("No");
-			}
+			ss << (m_States&(1 << code) ? gettext("Yes") : gettext("No"));
 		}
 		else
 		{

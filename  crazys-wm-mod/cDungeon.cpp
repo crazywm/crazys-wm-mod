@@ -391,29 +391,20 @@ void sDungeonGirl::OutputGirlDetailString(string& Data, const string& detailName
 	{
 		switch (m_Reason)
 		{
-		case DUNGEON_GIRLCAPTURED:			ss << gettext("Newly Captured.");					break;
-		case DUNGEON_GIRLKIDNAPPED:			ss << gettext("Taken from her family.");			break;
-		case DUNGEON_GIRLWHIM:				ss << gettext("Your whim.");						break;
-		case DUNGEON_GIRLSTEAL:				ss << gettext("Not reporting true earnings.");		break;
-		case DUNGEON_GIRLRUNAWAY:			ss << gettext("Ran away and re-captured.");			break;
-		case DUNGEON_NEWSLAVE:				ss << gettext("This is a new slave.");				break;
-		case DUNGEON_NEWGIRL:				ss << gettext("This is a new girl.");				break;
-		case DUNGEON_KID:					ss << gettext("Child of one of your girls.");		break;
-		case DUNGEON_NEWARENA:				ss << gettext("This is a girl won in the arena.");	break;
+		case DUNGEON_GIRLCAPTURED:				ss << gettext("Newly Captured.");					break;
+		case DUNGEON_GIRLKIDNAPPED:				ss << gettext("Taken from her family.");			break;
+		case DUNGEON_GIRLWHIM:					ss << gettext("Your whim.");						break;
+		case DUNGEON_GIRLSTEAL:					ss << gettext("Not reporting true earnings.");		break;
+		case DUNGEON_GIRLRUNAWAY:				ss << gettext("Ran away and re-captured.");			break;
+		case DUNGEON_NEWSLAVE:					ss << gettext("This is a new slave.");				break;
+		case DUNGEON_NEWGIRL:					ss << gettext("This is a new girl.");				break;
+		case DUNGEON_KID:						ss << gettext("Child of one of your girls.");		break;
+		case DUNGEON_NEWARENA:					ss << gettext("This is a girl won in the arena.");	break;
 		}
 	}
-	else if (detailName == "Duration")
-	{
-		ss << (int)m_Weeks;
-	}
-	else if (detailName == "Feeding")
-	{
-		ss << ((m_Feeding) ? gettext("Yes") : gettext("No"));
-	}
-	else if (detailName == "Tortured")
-	{
-		ss << ((m_Girl->m_Tort) ? gettext("Yes") : gettext("No"));
-	}
+	else if (detailName == "Duration")			{ ss << m_Weeks; }
+	else if (detailName == "Feeding")			{ ss << ((m_Feeding) ? gettext("Yes") : gettext("No")); }
+	else if (detailName == "Tortured")			{ ss << ((m_Girl->m_Tort) ? gettext("Yes") : gettext("No")); }
 	else
 	{
 		m_Girl->OutputGirlDetailString(Data, detailName);
@@ -447,17 +438,8 @@ void sDungeonCust::OutputCustDetailString(string& Data, const string& detailName
 	//given a statistic name, set a string to a value that represents that statistic
 	static stringstream ss;
 	ss.str("");
-	if (detailName == "Name")
-	{
-		ss << gettext("Customer");
-	}
-	else if (detailName == gettext("Health"))
-	{
-		if (m_Health == 0)
-			ss << gettext("DEAD");
-		else
-			ss << m_Health << gettext("%");
-	}
+	if (detailName == "Name")					{ ss << gettext("Customer"); }
+	else if (detailName == gettext("Health"))	{ if (m_Health == 0) ss << gettext("DEAD"); else ss << m_Health << gettext("%"); }
 	else if (detailName == "Reason")
 	{
 		switch (m_Reason)
@@ -468,18 +450,9 @@ void sDungeonCust::OutputCustDetailString(string& Data, const string& detailName
 		case DUNGEON_RIVAL:				ss << gettext("Is a rival.");			break;
 		}
 	}
-	else if (detailName == "Duration")
-	{
-		ss << (int)m_Weeks;
-	}
-	else if (detailName == "Feeding")
-	{
-		ss << ((m_Feeding) ? gettext("Yes") : gettext("No"));
-	}
-	else if (detailName == "Tortured")
-	{
-		ss << ((m_Tort) ? gettext("Yes") : gettext("No"));
-	}
+	else if (detailName == "Duration")			{ ss << (int)m_Weeks; }
+	else if (detailName == "Feeding")			{ ss << ((m_Feeding) ? gettext("Yes") : gettext("No")); }
+	else if (detailName == "Tortured")			{ ss << ((m_Tort) ? gettext("Yes") : gettext("No")); }
 	else
 	{
 		ss << gettext("---");
@@ -574,10 +547,7 @@ void cDungeon::Update()
 	// WD:	Did we torture the girls
 	bool tort = g_Brothels.TortureDone();
 	// WD: If so, who is the Torturer
-	if (tort)
-	{
-		TorturerGirlref = g_Brothels.WhoHasTorturerJob();
-	}
+	if (tort) { TorturerGirlref = g_Brothels.WhoHasTorturerJob(); }
 
 	/*********************************
 	*	DO ALL DUNGEON GIRLS

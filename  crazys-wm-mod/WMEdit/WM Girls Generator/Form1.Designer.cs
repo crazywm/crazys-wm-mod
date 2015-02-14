@@ -449,7 +449,6 @@
             this.label185 = new System.Windows.Forms.Label();
             this.textBox_Config_Folders_Default_Images = new System.Windows.Forms.TextBox();
             this.label183 = new System.Windows.Forms.Label();
-            this.label182 = new System.Windows.Forms.Label();
             this.label184 = new System.Windows.Forms.Label();
             this.textBox_Config_Folders_Characters = new System.Windows.Forms.TextBox();
             this.textBox_Config_Folders_Savegames = new System.Windows.Forms.TextBox();
@@ -522,6 +521,10 @@
             this.textBox_config_StartRandom = new System.Windows.Forms.TextBox();
             this.textBox_config_MaxRecruitList = new System.Windows.Forms.TextBox();
             this.groupBox_C_Pregnancy_Config = new System.Windows.Forms.GroupBox();
+            this.label186 = new System.Windows.Forms.Label();
+            this.textBox_Config_Multi_Birth_Chance = new System.Windows.Forms.TextBox();
+            this.label182 = new System.Windows.Forms.Label();
+            this.textBox_Config_AntiPregFailure = new System.Windows.Forms.TextBox();
             this.label_C_Weeks_Monster_Preg = new System.Windows.Forms.Label();
             this.label_C_Miscarriage_Monster = new System.Windows.Forms.Label();
             this.label_C_Miscarriage_Chance = new System.Windows.Forms.Label();
@@ -643,7 +646,11 @@
             this.button_Load_Traits = new System.Windows.Forms.Button();
             this.label_Load_Traits = new System.Windows.Forms.Label();
             this.button_Save_Traits = new System.Windows.Forms.Button();
-            this.tabPage6_FAQ = new System.Windows.Forms.TabPage();
+            this.tabPage6_Scripts = new System.Windows.Forms.TabPage();
+            this.label187 = new System.Windows.Forms.Label();
+            this.textBox_Script_Content = new System.Windows.Forms.TextBox();
+            this.button_ScriptLoad = new System.Windows.Forms.Button();
+            this.tabPage7_FAQ = new System.Windows.Forms.TabPage();
             this.dataGridView_Bad_Files = new System.Windows.Forms.DataGridView();
             this.Bad_Files = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Error_Message = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -705,7 +712,8 @@
             this.groupBox_C_Income_Multipliers.SuspendLayout();
             this.tabPage5_Traits.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Traits)).BeginInit();
-            this.tabPage6_FAQ.SuspendLayout();
+            this.tabPage6_Scripts.SuspendLayout();
+            this.tabPage7_FAQ.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Bad_Files)).BeginInit();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -718,7 +726,8 @@
             this.tabControl1.Controls.Add(this.tabPage3_Items);
             this.tabControl1.Controls.Add(this.tabPage4_Config);
             this.tabControl1.Controls.Add(this.tabPage5_Traits);
-            this.tabControl1.Controls.Add(this.tabPage6_FAQ);
+            this.tabControl1.Controls.Add(this.tabPage6_Scripts);
+            this.tabControl1.Controls.Add(this.tabPage7_FAQ);
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -5558,14 +5567,13 @@
             this.groupBox_Folders.Controls.Add(this.label185);
             this.groupBox_Folders.Controls.Add(this.textBox_Config_Folders_Default_Images);
             this.groupBox_Folders.Controls.Add(this.label183);
-            this.groupBox_Folders.Controls.Add(this.label182);
             this.groupBox_Folders.Controls.Add(this.label184);
             this.groupBox_Folders.Controls.Add(this.textBox_Config_Folders_Characters);
             this.groupBox_Folders.Controls.Add(this.textBox_Config_Folders_Savegames);
             this.groupBox_Folders.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.groupBox_Folders.Location = new System.Drawing.Point(575, 402);
+            this.groupBox_Folders.Location = new System.Drawing.Point(575, 420);
             this.groupBox_Folders.Name = "groupBox_Folders";
-            this.groupBox_Folders.Size = new System.Drawing.Size(370, 128);
+            this.groupBox_Folders.Size = new System.Drawing.Size(370, 110);
             this.groupBox_Folders.TabIndex = 10;
             this.groupBox_Folders.TabStop = false;
             this.groupBox_Folders.Text = "Folders";
@@ -5574,7 +5582,7 @@
             // 
             this.checkBox_Config_Folders_Backup_Saves.AutoSize = true;
             this.checkBox_Config_Folders_Backup_Saves.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.checkBox_Config_Folders_Backup_Saves.Location = new System.Drawing.Point(249, 20);
+            this.checkBox_Config_Folders_Backup_Saves.Location = new System.Drawing.Point(9, 90);
             this.checkBox_Config_Folders_Backup_Saves.Name = "checkBox_Config_Folders_Backup_Saves";
             this.checkBox_Config_Folders_Backup_Saves.Size = new System.Drawing.Size(96, 17);
             this.checkBox_Config_Folders_Backup_Saves.TabIndex = 6;
@@ -5585,7 +5593,7 @@
             // 
             this.label185.AutoSize = true;
             this.label185.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label185.Location = new System.Drawing.Point(6, 107);
+            this.label185.Location = new System.Drawing.Point(6, 68);
             this.label185.Name = "label185";
             this.label185.Size = new System.Drawing.Size(78, 13);
             this.label185.TabIndex = 16;
@@ -5594,7 +5602,7 @@
             // textBox_Config_Folders_Default_Images
             // 
             this.textBox_Config_Folders_Default_Images.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.textBox_Config_Folders_Default_Images.Location = new System.Drawing.Point(91, 103);
+            this.textBox_Config_Folders_Default_Images.Location = new System.Drawing.Point(91, 64);
             this.textBox_Config_Folders_Default_Images.MaxLength = 30;
             this.textBox_Config_Folders_Default_Images.Name = "textBox_Config_Folders_Default_Images";
             this.textBox_Config_Folders_Default_Images.Size = new System.Drawing.Size(274, 20);
@@ -5604,28 +5612,17 @@
             // 
             this.label183.AutoSize = true;
             this.label183.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label183.Location = new System.Drawing.Point(6, 82);
+            this.label183.Location = new System.Drawing.Point(6, 43);
             this.label183.Name = "label183";
             this.label183.Size = new System.Drawing.Size(63, 13);
             this.label183.TabIndex = 8;
             this.label183.Text = "Savegames";
             // 
-            // label182
-            // 
-            this.label182.AutoSize = true;
-            this.label182.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
-            this.label182.Location = new System.Drawing.Point(6, 16);
-            this.label182.Name = "label182";
-            this.label182.Size = new System.Drawing.Size(215, 26);
-            this.label182.TabIndex = 15;
-            this.label182.Text = "This section is used for setting the locations \r\nof various folders the game will" +
-    " look for.";
-            // 
             // label184
             // 
             this.label184.AutoSize = true;
             this.label184.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label184.Location = new System.Drawing.Point(6, 57);
+            this.label184.Location = new System.Drawing.Point(6, 18);
             this.label184.Name = "label184";
             this.label184.Size = new System.Drawing.Size(58, 13);
             this.label184.TabIndex = 6;
@@ -5634,7 +5631,7 @@
             // textBox_Config_Folders_Characters
             // 
             this.textBox_Config_Folders_Characters.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.textBox_Config_Folders_Characters.Location = new System.Drawing.Point(91, 53);
+            this.textBox_Config_Folders_Characters.Location = new System.Drawing.Point(91, 14);
             this.textBox_Config_Folders_Characters.MaxLength = 30;
             this.textBox_Config_Folders_Characters.Name = "textBox_Config_Folders_Characters";
             this.textBox_Config_Folders_Characters.Size = new System.Drawing.Size(274, 20);
@@ -5643,7 +5640,7 @@
             // textBox_Config_Folders_Savegames
             // 
             this.textBox_Config_Folders_Savegames.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.textBox_Config_Folders_Savegames.Location = new System.Drawing.Point(91, 78);
+            this.textBox_Config_Folders_Savegames.Location = new System.Drawing.Point(91, 39);
             this.textBox_Config_Folders_Savegames.MaxLength = 30;
             this.textBox_Config_Folders_Savegames.Name = "textBox_Config_Folders_Savegames";
             this.textBox_Config_Folders_Savegames.Size = new System.Drawing.Size(274, 20);
@@ -5669,7 +5666,7 @@
             this.groupBox_C_Display_Settings.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.groupBox_C_Display_Settings.Location = new System.Drawing.Point(765, 5);
             this.groupBox_C_Display_Settings.Name = "groupBox_C_Display_Settings";
-            this.groupBox_C_Display_Settings.Size = new System.Drawing.Size(180, 200);
+            this.groupBox_C_Display_Settings.Size = new System.Drawing.Size(180, 185);
             this.groupBox_C_Display_Settings.TabIndex = 8;
             this.groupBox_C_Display_Settings.TabStop = false;
             this.groupBox_C_Display_Settings.Text = "Display Settings";
@@ -5678,7 +5675,7 @@
             // 
             this.label177.AutoSize = true;
             this.label177.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label177.Location = new System.Drawing.Point(5, 148);
+            this.label177.Location = new System.Drawing.Point(5, 138);
             this.label177.Name = "label177";
             this.label177.Size = new System.Drawing.Size(91, 13);
             this.label177.TabIndex = 14;
@@ -5689,7 +5686,7 @@
             // textBox_Config_List_Scroll_Amount
             // 
             this.textBox_Config_List_Scroll_Amount.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.textBox_Config_List_Scroll_Amount.Location = new System.Drawing.Point(115, 145);
+            this.textBox_Config_List_Scroll_Amount.Location = new System.Drawing.Point(115, 135);
             this.textBox_Config_List_Scroll_Amount.MaxLength = 5;
             this.textBox_Config_List_Scroll_Amount.Name = "textBox_Config_List_Scroll_Amount";
             this.textBox_Config_List_Scroll_Amount.Size = new System.Drawing.Size(55, 20);
@@ -5702,7 +5699,7 @@
             // 
             this.label176.AutoSize = true;
             this.label176.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label176.Location = new System.Drawing.Point(5, 173);
+            this.label176.Location = new System.Drawing.Point(5, 163);
             this.label176.Name = "label176";
             this.label176.Size = new System.Drawing.Size(96, 13);
             this.label176.TabIndex = 11;
@@ -5713,7 +5710,7 @@
             // textBox_Config_Text_Scroll_Amount
             // 
             this.textBox_Config_Text_Scroll_Amount.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.textBox_Config_Text_Scroll_Amount.Location = new System.Drawing.Point(115, 170);
+            this.textBox_Config_Text_Scroll_Amount.Location = new System.Drawing.Point(115, 160);
             this.textBox_Config_Text_Scroll_Amount.MaxLength = 5;
             this.textBox_Config_Text_Scroll_Amount.Name = "textBox_Config_Text_Scroll_Amount";
             this.textBox_Config_Text_Scroll_Amount.Size = new System.Drawing.Size(55, 20);
@@ -6469,6 +6466,10 @@
             // 
             // groupBox_C_Pregnancy_Config
             // 
+            this.groupBox_C_Pregnancy_Config.Controls.Add(this.label186);
+            this.groupBox_C_Pregnancy_Config.Controls.Add(this.textBox_Config_Multi_Birth_Chance);
+            this.groupBox_C_Pregnancy_Config.Controls.Add(this.label182);
+            this.groupBox_C_Pregnancy_Config.Controls.Add(this.textBox_Config_AntiPregFailure);
             this.groupBox_C_Pregnancy_Config.Controls.Add(this.label_C_Weeks_Monster_Preg);
             this.groupBox_C_Pregnancy_Config.Controls.Add(this.label_C_Miscarriage_Monster);
             this.groupBox_C_Pregnancy_Config.Controls.Add(this.label_C_Miscarriage_Chance);
@@ -6494,10 +6495,56 @@
             this.groupBox_C_Pregnancy_Config.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.groupBox_C_Pregnancy_Config.Location = new System.Drawing.Point(575, 5);
             this.groupBox_C_Pregnancy_Config.Name = "groupBox_C_Pregnancy_Config";
-            this.groupBox_C_Pregnancy_Config.Size = new System.Drawing.Size(180, 295);
+            this.groupBox_C_Pregnancy_Config.Size = new System.Drawing.Size(180, 415);
             this.groupBox_C_Pregnancy_Config.TabIndex = 6;
             this.groupBox_C_Pregnancy_Config.TabStop = false;
             this.groupBox_C_Pregnancy_Config.Text = "Pregnancy Config";
+            // 
+            // label186
+            // 
+            this.label186.AutoSize = true;
+            this.label186.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label186.Location = new System.Drawing.Point(5, 318);
+            this.label186.Name = "label186";
+            this.label186.Size = new System.Drawing.Size(96, 13);
+            this.label186.TabIndex = 24;
+            this.label186.Text = "Multi-Birth Chance:";
+            this.toolTip1.SetToolTip(this.label186, "How long after giving birth before she can become pregnant again.");
+            // 
+            // textBox_Config_Multi_Birth_Chance
+            // 
+            this.textBox_Config_Multi_Birth_Chance.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.textBox_Config_Multi_Birth_Chance.Location = new System.Drawing.Point(130, 315);
+            this.textBox_Config_Multi_Birth_Chance.MaxLength = 5;
+            this.textBox_Config_Multi_Birth_Chance.Name = "textBox_Config_Multi_Birth_Chance";
+            this.textBox_Config_Multi_Birth_Chance.Size = new System.Drawing.Size(40, 20);
+            this.textBox_Config_Multi_Birth_Chance.TabIndex = 25;
+            this.textBox_Config_Multi_Birth_Chance.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_Multi_Birth_Chance.TextChanged += new System.EventHandler(this.ValidateTextBoxDouble);
+            this.textBox_Config_Multi_Birth_Chance.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxDouble);
+            // 
+            // label182
+            // 
+            this.label182.AutoSize = true;
+            this.label182.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label182.Location = new System.Drawing.Point(5, 293);
+            this.label182.Name = "label182";
+            this.label182.Size = new System.Drawing.Size(87, 13);
+            this.label182.TabIndex = 22;
+            this.label182.Text = "Anti-Preg Failure:";
+            this.toolTip1.SetToolTip(this.label182, "How long after giving birth before she can become pregnant again.");
+            // 
+            // textBox_Config_AntiPregFailure
+            // 
+            this.textBox_Config_AntiPregFailure.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.textBox_Config_AntiPregFailure.Location = new System.Drawing.Point(130, 290);
+            this.textBox_Config_AntiPregFailure.MaxLength = 5;
+            this.textBox_Config_AntiPregFailure.Name = "textBox_Config_AntiPregFailure";
+            this.textBox_Config_AntiPregFailure.Size = new System.Drawing.Size(40, 20);
+            this.textBox_Config_AntiPregFailure.TabIndex = 23;
+            this.textBox_Config_AntiPregFailure.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Config_AntiPregFailure.TextChanged += new System.EventHandler(this.ValidateTextBoxDouble);
+            this.textBox_Config_AntiPregFailure.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxDouble);
             // 
             // label_C_Weeks_Monster_Preg
             // 
@@ -7066,9 +7113,9 @@
             this.groupBox_Logging.Controls.Add(this.checkBox_config_LogItems);
             this.groupBox_Logging.Controls.Add(this.checkBox_config_LogAll);
             this.groupBox_Logging.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.groupBox_Logging.Location = new System.Drawing.Point(765, 211);
+            this.groupBox_Logging.Location = new System.Drawing.Point(765, 200);
             this.groupBox_Logging.Name = "groupBox_Logging";
-            this.groupBox_Logging.Size = new System.Drawing.Size(180, 185);
+            this.groupBox_Logging.Size = new System.Drawing.Size(180, 125);
             this.groupBox_Logging.TabIndex = 10;
             this.groupBox_Logging.TabStop = false;
             this.groupBox_Logging.Text = "What to Log";
@@ -7077,7 +7124,7 @@
             // 
             this.checkBox_config_LogDebug.AutoSize = true;
             this.checkBox_config_LogDebug.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.checkBox_config_LogDebug.Location = new System.Drawing.Point(5, 115);
+            this.checkBox_config_LogDebug.Location = new System.Drawing.Point(5, 100);
             this.checkBox_config_LogDebug.Name = "checkBox_config_LogDebug";
             this.checkBox_config_LogDebug.Size = new System.Drawing.Size(58, 17);
             this.checkBox_config_LogDebug.TabIndex = 7;
@@ -7089,7 +7136,7 @@
             // 
             this.checkBox_config_LogExtraDetails.AutoSize = true;
             this.checkBox_config_LogExtraDetails.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.checkBox_config_LogExtraDetails.Location = new System.Drawing.Point(90, 115);
+            this.checkBox_config_LogExtraDetails.Location = new System.Drawing.Point(90, 100);
             this.checkBox_config_LogExtraDetails.Name = "checkBox_config_LogExtraDetails";
             this.checkBox_config_LogExtraDetails.Size = new System.Drawing.Size(85, 17);
             this.checkBox_config_LogExtraDetails.TabIndex = 8;
@@ -7101,7 +7148,7 @@
             // 
             this.checkBox_config_LogGirlFights.AutoSize = true;
             this.checkBox_config_LogGirlFights.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.checkBox_config_LogGirlFights.Location = new System.Drawing.Point(90, 65);
+            this.checkBox_config_LogGirlFights.Location = new System.Drawing.Point(90, 60);
             this.checkBox_config_LogGirlFights.Name = "checkBox_config_LogGirlFights";
             this.checkBox_config_LogGirlFights.Size = new System.Drawing.Size(72, 17);
             this.checkBox_config_LogGirlFights.TabIndex = 4;
@@ -7113,7 +7160,7 @@
             // 
             this.checkBox_config_LogTorture.AutoSize = true;
             this.checkBox_config_LogTorture.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.checkBox_config_LogTorture.Location = new System.Drawing.Point(5, 65);
+            this.checkBox_config_LogTorture.Location = new System.Drawing.Point(5, 60);
             this.checkBox_config_LogTorture.Name = "checkBox_config_LogTorture";
             this.checkBox_config_LogTorture.Size = new System.Drawing.Size(60, 17);
             this.checkBox_config_LogTorture.TabIndex = 3;
@@ -7125,7 +7172,7 @@
             // 
             this.checkBox_config_LogFonts.AutoSize = true;
             this.checkBox_config_LogFonts.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.checkBox_config_LogFonts.Location = new System.Drawing.Point(90, 90);
+            this.checkBox_config_LogFonts.Location = new System.Drawing.Point(90, 80);
             this.checkBox_config_LogFonts.Name = "checkBox_config_LogFonts";
             this.checkBox_config_LogFonts.Size = new System.Drawing.Size(52, 17);
             this.checkBox_config_LogFonts.TabIndex = 6;
@@ -7161,7 +7208,7 @@
             // 
             this.checkBox_config_LogItems.AutoSize = true;
             this.checkBox_config_LogItems.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.checkBox_config_LogItems.Location = new System.Drawing.Point(5, 90);
+            this.checkBox_config_LogItems.Location = new System.Drawing.Point(5, 80);
             this.checkBox_config_LogItems.Name = "checkBox_config_LogItems";
             this.checkBox_config_LogItems.Size = new System.Drawing.Size(51, 17);
             this.checkBox_config_LogItems.TabIndex = 5;
@@ -7173,7 +7220,7 @@
             // 
             this.checkBox_config_LogAll.AutoSize = true;
             this.checkBox_config_LogAll.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.checkBox_config_LogAll.Location = new System.Drawing.Point(60, 15);
+            this.checkBox_config_LogAll.Location = new System.Drawing.Point(60, 20);
             this.checkBox_config_LogAll.Name = "checkBox_config_LogAll";
             this.checkBox_config_LogAll.Size = new System.Drawing.Size(58, 17);
             this.checkBox_config_LogAll.TabIndex = 0;
@@ -7190,7 +7237,7 @@
             this.groupBox22.Controls.Add(this.textBox_config_FontFixed);
             this.groupBox22.Controls.Add(this.textBox_Config_FontNormal);
             this.groupBox22.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.groupBox22.Location = new System.Drawing.Point(575, 306);
+            this.groupBox22.Location = new System.Drawing.Point(765, 330);
             this.groupBox22.Name = "groupBox22";
             this.groupBox22.Size = new System.Drawing.Size(180, 90);
             this.groupBox22.TabIndex = 9;
@@ -7968,18 +8015,61 @@
             this.button_Save_Traits.UseVisualStyleBackColor = true;
             this.button_Save_Traits.Click += new System.EventHandler(this.button_Save_Traits_Click);
             // 
-            // tabPage6_FAQ
+            // tabPage6_Scripts
             // 
-            this.tabPage6_FAQ.Controls.Add(this.dataGridView_Bad_Files);
-            this.tabPage6_FAQ.Controls.Add(this.richTextBox2);
-            this.tabPage6_FAQ.Controls.Add(this.button_G_Save_Individual);
-            this.tabPage6_FAQ.Location = new System.Drawing.Point(4, 22);
-            this.tabPage6_FAQ.Name = "tabPage6_FAQ";
-            this.tabPage6_FAQ.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6_FAQ.Size = new System.Drawing.Size(952, 592);
-            this.tabPage6_FAQ.TabIndex = 6;
-            this.tabPage6_FAQ.Text = "  Extras  ";
-            this.tabPage6_FAQ.UseVisualStyleBackColor = true;
+            this.tabPage6_Scripts.Controls.Add(this.label187);
+            this.tabPage6_Scripts.Controls.Add(this.textBox_Script_Content);
+            this.tabPage6_Scripts.Controls.Add(this.button_ScriptLoad);
+            this.tabPage6_Scripts.Location = new System.Drawing.Point(4, 22);
+            this.tabPage6_Scripts.Name = "tabPage6_Scripts";
+            this.tabPage6_Scripts.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage6_Scripts.Size = new System.Drawing.Size(952, 592);
+            this.tabPage6_Scripts.TabIndex = 7;
+            this.tabPage6_Scripts.Text = "  Scripts  ";
+            this.tabPage6_Scripts.UseVisualStyleBackColor = true;
+            // 
+            // label187
+            // 
+            this.label187.AutoSize = true;
+            this.label187.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label187.Location = new System.Drawing.Point(155, 11);
+            this.label187.Name = "label187";
+            this.label187.Size = new System.Drawing.Size(198, 25);
+            this.label187.TabIndex = 12;
+            this.label187.Text = "Work in progress.";
+            // 
+            // textBox_Script_Content
+            // 
+            this.textBox_Script_Content.Location = new System.Drawing.Point(6, 66);
+            this.textBox_Script_Content.Multiline = true;
+            this.textBox_Script_Content.Name = "textBox_Script_Content";
+            this.textBox_Script_Content.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBox_Script_Content.Size = new System.Drawing.Size(940, 520);
+            this.textBox_Script_Content.TabIndex = 4;
+            this.toolTip1.SetToolTip(this.textBox_Script_Content, "DO NOT use enter here, just write in one line");
+            // 
+            // button_ScriptLoad
+            // 
+            this.button_ScriptLoad.Location = new System.Drawing.Point(28, 16);
+            this.button_ScriptLoad.Name = "button_ScriptLoad";
+            this.button_ScriptLoad.Size = new System.Drawing.Size(85, 23);
+            this.button_ScriptLoad.TabIndex = 3;
+            this.button_ScriptLoad.Text = "Load Scripts";
+            this.button_ScriptLoad.UseVisualStyleBackColor = true;
+            this.button_ScriptLoad.Click += new System.EventHandler(this.button_ScriptLoad_Click);
+            // 
+            // tabPage7_FAQ
+            // 
+            this.tabPage7_FAQ.Controls.Add(this.dataGridView_Bad_Files);
+            this.tabPage7_FAQ.Controls.Add(this.richTextBox2);
+            this.tabPage7_FAQ.Controls.Add(this.button_G_Save_Individual);
+            this.tabPage7_FAQ.Location = new System.Drawing.Point(4, 22);
+            this.tabPage7_FAQ.Name = "tabPage7_FAQ";
+            this.tabPage7_FAQ.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage7_FAQ.Size = new System.Drawing.Size(952, 592);
+            this.tabPage7_FAQ.TabIndex = 6;
+            this.tabPage7_FAQ.Text = "  Extras  ";
+            this.tabPage7_FAQ.UseVisualStyleBackColor = true;
             // 
             // dataGridView_Bad_Files
             // 
@@ -8162,7 +8252,7 @@
             this.MaximumSize = new System.Drawing.Size(1000, 700);
             this.MinimumSize = new System.Drawing.Size(1000, 700);
             this.Name = "Form1";
-            this.Text = "Whore Master Editor 0.8.20";
+            this.Text = "Whore Master Editor 0.8.21";
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.App_FileDrop);
             this.DragEnter += new System.Windows.Forms.DragEventHandler(this.App_DragEnter);
             this.tabControl1.ResumeLayout(false);
@@ -8233,7 +8323,9 @@
             this.tabPage5_Traits.ResumeLayout(false);
             this.tabPage5_Traits.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Traits)).EndInit();
-            this.tabPage6_FAQ.ResumeLayout(false);
+            this.tabPage6_Scripts.ResumeLayout(false);
+            this.tabPage6_Scripts.PerformLayout();
+            this.tabPage7_FAQ.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Bad_Files)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
@@ -8504,7 +8596,7 @@
         private System.Windows.Forms.Button button_Reset_Item;
         private System.Windows.Forms.CheckBox checkBox_DG2;
         private System.Windows.Forms.CheckBox checkBox_DG3;
-        private System.Windows.Forms.TabPage tabPage6_FAQ;
+        private System.Windows.Forms.TabPage tabPage7_FAQ;
         private System.Windows.Forms.ComboBox comboBox_ItemDuration;
         private System.Windows.Forms.Label label84;
         private System.Windows.Forms.GroupBox groupBox11;
@@ -8868,10 +8960,17 @@
         private System.Windows.Forms.Label label185;
         private System.Windows.Forms.TextBox textBox_Config_Folders_Default_Images;
         private System.Windows.Forms.Label label183;
-        private System.Windows.Forms.Label label182;
         private System.Windows.Forms.Label label184;
         private System.Windows.Forms.TextBox textBox_Config_Folders_Characters;
         private System.Windows.Forms.TextBox textBox_Config_Folders_Savegames;
+        private System.Windows.Forms.TabPage tabPage6_Scripts;
+        private System.Windows.Forms.Button button_ScriptLoad;
+        private System.Windows.Forms.Label label182;
+        private System.Windows.Forms.TextBox textBox_Config_AntiPregFailure;
+        private System.Windows.Forms.Label label186;
+        private System.Windows.Forms.TextBox textBox_Config_Multi_Birth_Chance;
+        private System.Windows.Forms.TextBox textBox_Script_Content;
+        private System.Windows.Forms.Label label187;
     }
 }
 

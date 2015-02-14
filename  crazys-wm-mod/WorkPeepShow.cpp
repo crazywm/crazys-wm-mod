@@ -238,7 +238,9 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		cust.m_SexPref = sextype;								// they don't get a say in this
 		if (sextype == SKILL_LESBIAN) cust.m_IsWoman = true;	// make sure it is a lesbian
 
-		g_Girls.GirlFucks(girl, Day0Night1, &cust, false, ss.str(), sextype);
+		string message = ss.str();
+		g_Girls.GirlFucks(girl, Day0Night1, &cust, false, message, sextype);
+		ss.str(""); ss << message;
 		brothel->m_Happiness += cust.m_Stats[STAT_HAPPINESS];
 
 		/* `J` g_Girls.GirlFucks handles libido and customer happiness
