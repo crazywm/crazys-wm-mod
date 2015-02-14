@@ -366,8 +366,8 @@ typedef struct sInventoryItem
 		else if (s == "Swimsuit")						{ m_Type = Swimsuit; }
 		else if (s == "Helmet")							{ m_Type = Helmet; }
 		else if (s == "Shield")							{ m_Type = Shield; }
-		else if (s == "Combat Shoes")					{ m_Type = Combatshoes;
-		}
+		else if (s == "Combat Shoes")					{ m_Type = Combatshoes; }
+		else if (s == "CombatShoes")					{ m_Type = Combatshoes; }
 		else { m_Type = Misc; cerr << "Error: unexpected item type: " << s << endl; }
 	}
 
@@ -426,11 +426,11 @@ typedef struct sInventoryItem
 		case Misc:			return os << "Misc";
 		case Armband:		return os << "Armband";
 		case Hat:			return os << "Hat";
-		case Helmet:		return os << "Glasses";
-		case Glasses:		return os << "Swimsuit";
-		case Swimsuit:		return os << "Helmet";
-		case Combatshoes:	return os << "Shield";
-		case Shield:		return os << "Combat Shoes";
+		case Helmet:		return os << "Helmet";
+		case Glasses:		return os << "Glasses";
+		case Swimsuit:		return os << "Swimsuit";
+		case Combatshoes:	return os << "Combat Shoes";
+		case Shield:		return os << "Shield";
 		default:
 			cerr << "Unexpected type value: " << int(typ) << endl;
 			return os << "Error";

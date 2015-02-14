@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <config>
-	<!--
+    <!--
 	Characters     = The location of the Characters folder
 	Saves          = The location of the Saves folder
 	DefaultImages  = The location of the DefaultImages folder
@@ -10,12 +10,12 @@
 			If set to true, the game will save in both the game's default
 				save folder as well as the folder set here.
 	-->
-	<Folders
-		Characters="..\Characters"
-		Saves="..\Saves"
-		DefaultImages="..\DefaultImages"
-		BackupSaves="true" />
-	<!--
+    <Folders
+        Characters="..\Characters"
+        Saves="..\Saves"
+        DefaultImages="..\DefaultImages"
+        BackupSaves="true" />
+    <!--
 	Resolution     = the name of your interface folder
 	Width          = screen width
 	Height         = screen height
@@ -28,16 +28,16 @@
 	ListScrollAmount = The number of lines to scroll in List boxes.
 	TextScrollAmount = The number of lines to scroll in Text boxes.
 	-->
-	<Resolution
-		Resolution="J_1024x768"
-		Width="1024"
-		Height="768"
-		ScaleWidth="800"
-		ScaleHeight="600"
-		FullScreen="false"
-		ListScrollAmount="3"
-		TextScrollAmount="3" />
-	<!--
+    <Resolution
+        Resolution="J_1024x768"
+        Width="1024"
+        Height="768"
+        ScaleWidth="800"
+        ScaleHeight="600"
+        FullScreen="false"
+        ListScrollAmount="3"
+        TextScrollAmount="3" />
+    <!--
 	Gold is how much gold you start the game with.
 	GirlMeet is the %chance you'll meet a girl when walking around town.
 	GirlsHousePerc and SlaveHousePerc is the default House Percentage for free girls and slave girls.
@@ -59,35 +59,35 @@
 		This doubles the chance of injuring the girls and doubles evil gain.
 		Damage is increased by half. It also makes breaking the girls wills permanent.
 	-->
-	<Initial
-		Gold="4000"
-		GirlMeet="30"
-		GirlsHousePerc="60"
-		GirlsKeepTips="true"
-		SlaveHousePerc="100"
-		SlavePayOutOfPocket="true"
-		SlaveKeepTips="false"
-		AutoUseItems="false"
-		AutoCombatEquip="true"
-		TortureTraitWeekMod="1"
-		HoroscopeType="1" />
-	<!--
+    <Initial
+        Gold="4000"
+        GirlMeet="30"
+        GirlsHousePerc="60"
+        GirlsKeepTips="true"
+        SlaveHousePerc="100"
+        SlavePayOutOfPocket="true"
+        SlaveKeepTips="false"
+        AutoUseItems="false"
+        AutoCombatEquip="true"
+        TortureTraitWeekMod="1"
+        HoroscopeType="1" />
+    <!--
 	These are the numbers that will multiply the money from various sources of income.
 		So setting "GirlsWorkBrothel" to "0.5" will reduce the cash your girls generate in the brothel by half.
 		You can also use numbers >1 to increase income if you are so inclined.
 	-->
-	<Income
-		ExtortionIncome="1.0"
-		GirlsWorkBrothel="1.0"
-		GirlsWorkStreet="1.0"
-		MovieIncome="1.0"
-		StripperIncome="1.0"
-		BarmaidIncome="1.0"
-		SlaveSales="1.0"
-		ItemSales="1.0"
-		ClinicIncome="1.0"
-		ArenaIncome="1.0" />
-	<!--
+    <Income
+        ExtortionIncome="1.0"
+        GirlsWorkBrothel="1.0"
+        GirlsWorkStreet="1.0"
+        MovieIncome="1.0"
+        StripperIncome="1.0"
+        BarmaidIncome="1.0"
+        SlaveSales="1.0"
+        ItemSales="1.0"
+        ClinicIncome="1.0"
+        ArenaIncome="1.0" />
+    <!--
 	These are the multipliers for your expenses.
 
 	Training doesn't currently have a cost, so I'm setting it to 1 gold per girl per week
@@ -105,25 +105,25 @@
 
 	* not all are used but are retained just in case.
 	-->
-	<Expenses
-		Training="0.0"
-		MovieCost="0.0"
-		ActressWages="0.0"
-		GoonWages="1.0"
-		MatronWages="1.0"
-		StaffWages="1.0"
-		GirlSupport="1.0"
-		Consumables="1.0"
-		Items="0.5"
-		SlavesBought="1.0"
-		BuyBrothel="1.0"
-		BrothelSupport="1.0"
-		BarSupport="1.0"
-		CasinoSupport="1.0"
-		Bribes="1.0"
-		Fines="1.0"
-		Advertising="1.0" />
-	<!--
+    <Expenses
+        Training="0.0"
+        MovieCost="0.0"
+        ActressWages="0.0"
+        GoonWages="1.0"
+        MatronWages="1.0"
+        StaffWages="1.0"
+        GirlSupport="1.0"
+        Consumables="1.0"
+        Items="0.5"
+        SlavesBought="1.0"
+        BuyBrothel="1.0"
+        BrothelSupport="1.0"
+        BarSupport="1.0"
+        CasinoSupport="1.0"
+        Bribes="1.0"
+        Fines="1.0"
+        Advertising="1.0" />
+    <!--
 	Gambling:
 
 	The starting %chance for the tables is given by "Odds"
@@ -140,13 +140,13 @@
 	while the payout is 2:1 in favour of the house.
 	So by default, the tables are rigged!
 	-->
-	<Gambling
-		Odds="49%"
-		Base="79"
-		Spread="100"
-		CustomerFactor="0.5"
-		HouseFactor="1.0" />
-	<!--
+    <Gambling
+        Odds="49%"
+        Base="79"
+        Spread="100"
+        CustomerFactor="0.5"
+        HouseFactor="1.0" />
+    <!--
 	Taxes:
 	Rate is the rate at which your income is taxed.
 	Min is the minimum adjusted rate after influence is used to lower the tax rate.
@@ -154,11 +154,11 @@
 		So if you have 100g income, and a 25% laundry rating, then between 1 and 25 gold will go directly into your pocket.
 		The remaining 75 Gold will be taxed at 6% (assuming no reduction due to political influence)
 	-->
-	<Tax
-		Rate="6%"
-		Minimum="1%"
-		Laundry="25%" />
-	<!--
+    <Tax
+        Rate="6%"
+        Minimum="1%"
+        Laundry="25%" />
+    <!--
 	Pregnancy:
 	PlayerChance, CustomerChance and MonsterChance give the odds of her
 		getting knocked up by the PC, a customer and a monster, respectively
@@ -171,25 +171,27 @@
 		Real world is 936 weeks.
 	CoolDown is how long before the girl can get pregnant again after giving birth.
 	-->
-	<Pregnancy
-		PlayerChance="8%"
-		CustomerChance="8%"
-		MonsterChance="8%"
-		GoodSexFactor="2.0"
-		ChanceOfGirl="50%"
-		WeeksPregnant="40"
-		WeeksMonsterP="20"
-		MiscarriageChance="0.1%"
-		MiscarriageMonster="1.0%"
-		WeeksTillGrown="60"
-		CoolDown="4" />
-	<!--
+    <Pregnancy
+        PlayerChance="8%"
+        CustomerChance="8%"
+        MonsterChance="8%"
+        GoodSexFactor="2.0"
+        ChanceOfGirl="50%"
+        WeeksPregnant="40"
+        WeeksMonsterP="20"
+        MiscarriageChance="0.1%"
+        MiscarriageMonster="1.0%"
+        WeeksTillGrown="60"
+        CoolDown="4"
+        AntiPregFailure="0.0"
+        MultiBirthChance="2.0" />
+    <!--
 	These are the base chances of rape occurring in a brothel and streetwalking.
 	-->
-	<Prostitution
-		RapeBrothel="1%"
-		RapeStreet="5%" />
-	<!--
+    <Prostitution
+        RapeBrothel="1%"
+        RapeStreet="5%" />
+    <!--
 	Gangs:
 	MaxRecruitList limits the maximum number of recruitable gangs listed for you to hire.
 		WARNING: BE CAREFUL here; the number of recruitable gangs plus the number of potential hired
@@ -204,16 +206,16 @@
 		gangs list each week; a random number between Min and Max is picked.
 	ChanceRemoveUnwanted is the %chance each week that each unhired gang in the recruitable list is removed.
 	-->
-	<Gangs
-		MaxRecruitList="12"
-		StartRandom="2"
-		StartBoosted="2"
-		InitMemberMin="1"
-		InitMemberMax="10"
-		AddNewWeeklyMin="0"
-		AddNewWeeklyMax="3"
-		ChanceRemoveUnwanted="33%" />
-	<!--
+    <Gangs
+        MaxRecruitList="12"
+        StartRandom="2"
+        StartBoosted="2"
+        InitMemberMin="1"
+        InitMemberMax="10"
+        AddNewWeeklyMin="0"
+        AddNewWeeklyMax="3"
+        ChanceRemoveUnwanted="33%" />
+    <!--
 	Items:
 	*** AutoCombatEquip was moved to Initial for .06. Kept here for .05 and earlier.
 	Colors are assigned to items listed on the item management screen by there rarity.
@@ -228,18 +230,18 @@
 		RarityColor7: Appears in catacombs, 5% chance
 		RarityColor8: Appears in catacombs, 1% chance
 	-->
-	<Items
-		AutoCombatEquip="true"
-		RarityColor0="#000000"
-		RarityColor1="#000066"
-		RarityColor2="#0000cc"
-		RarityColor3="#0066ff"
-		RarityColor4="#8f0000"
-		RarityColor5="#00ff00"
-		RarityColor6="#008f00"
-		RarityColor7="#a00000"
-		RarityColor8="#e00000" />
-	<!--
+    <Items
+        AutoCombatEquip="true"
+        RarityColor0="#000000"
+        RarityColor1="#000066"
+        RarityColor2="#0000cc"
+        RarityColor3="#0066ff"
+        RarityColor4="#8f0000"
+        RarityColor5="#00ff00"
+        RarityColor6="#008f00"
+        RarityColor7="#a00000"
+        RarityColor8="#e00000" />
+    <!--
 	Fonts:
 	Normal is the font that the game uses for text.
 	Fixed is for a monospaced font for tabular info but nothing currently uses that.
@@ -253,23 +255,23 @@
 	Except that you'll have to distribute the font with the game or mod
 		rather than relying on the viewer to have it pre-installed.
 	-->
-	<Fonts
-		Normal="segoeui.ttf"
-		Fixed="segoeui.ttf"
-		Antialias="true"
-		ShowPercent="false" />
-	<!--
+    <Fonts
+        Normal="segoeui.ttf"
+        Fixed="segoeui.ttf"
+        Antialias="true"
+        ShowPercent="false" />
+    <!--
 	How much logging is needed?
 	* They currently don't really work all that much but they will be improved.
 	-->
-	<Debug
-		LogAll="false"
-		LogGirls="false"
-		LogRGirls="false"
-		LogGirlFights="false"
-		LogItems="false"
-		LogFonts="false"
-		LogTorture="false"
-		LogDebug="false"
-		LogExtraDetails="false" />
+    <Debug
+        LogAll="false"
+        LogGirls="false"
+        LogRGirls="false"
+        LogGirlFights="false"
+        LogItems="false"
+        LogFonts="false"
+        LogTorture="false"
+        LogDebug="false"
+        LogExtraDetails="false" />
 </config>

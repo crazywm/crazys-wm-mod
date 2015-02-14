@@ -419,6 +419,7 @@ bool UseAntiPreg(bool use, bool isClinic, bool isStudio, bool isArena, bool isCe
 	*
 	*/
 	cTariff tariff;
+	cConfig cfg;
 	int cost = tariff.anti_preg_price(1);
 	if (isClinic)
 	{
@@ -427,12 +428,14 @@ bool UseAntiPreg(bool use, bool isClinic, bool isStudio, bool isArena, bool isCe
 			if (g_Clinic.GetBrothel(0)->m_AntiPregPotions < g_Clinic.GetBrothel(0)->m_AntiPregUsed) cost *= 5;
 			g_Gold.consumable_cost(cost);
 			g_Clinic.GetBrothel(0)->m_AntiPregUsed++;
+			if (g_Dice.percent(cfg.pregnancy.anti_preg_failure()))	return false;
 			return true;
 		}
 		if (g_Clinic.GetBrothel(0)->m_AntiPregPotions > 0)
 		{
 			g_Clinic.GetBrothel(0)->m_AntiPregUsed++;
 			g_Clinic.GetBrothel(0)->m_AntiPregPotions--;
+			if (g_Dice.percent(cfg.pregnancy.anti_preg_failure()))	return false;
 			return true;
 		}
 	}
@@ -443,12 +446,14 @@ bool UseAntiPreg(bool use, bool isClinic, bool isStudio, bool isArena, bool isCe
 			if (g_Studios.GetBrothel(0)->m_AntiPregPotions < g_Studios.GetBrothel(0)->m_AntiPregUsed) cost *= 5;
 			g_Gold.consumable_cost(cost);
 			g_Studios.GetBrothel(0)->m_AntiPregUsed++;
+			if (g_Dice.percent(cfg.pregnancy.anti_preg_failure()))	return false;
 			return true;
 		}
 		if (g_Studios.GetBrothel(0)->m_AntiPregPotions > 0)
 		{
 			g_Studios.GetBrothel(0)->m_AntiPregUsed++;
 			g_Studios.GetBrothel(0)->m_AntiPregPotions--;
+			if (g_Dice.percent(cfg.pregnancy.anti_preg_failure()))	return false;
 			return true;
 		}
 	}
@@ -459,12 +464,14 @@ bool UseAntiPreg(bool use, bool isClinic, bool isStudio, bool isArena, bool isCe
 			if (g_Arena.GetBrothel(0)->m_AntiPregPotions < g_Arena.GetBrothel(0)->m_AntiPregUsed) cost *= 5;
 			g_Gold.consumable_cost(cost);
 			g_Arena.GetBrothel(0)->m_AntiPregUsed++;
+			if (g_Dice.percent(cfg.pregnancy.anti_preg_failure()))	return false;
 			return true;
 		}
 		if (g_Arena.GetBrothel(0)->m_AntiPregPotions > 0)
 		{
 			g_Arena.GetBrothel(0)->m_AntiPregUsed++;
 			g_Arena.GetBrothel(0)->m_AntiPregPotions--;
+			if (g_Dice.percent(cfg.pregnancy.anti_preg_failure()))	return false;
 			return true;
 		}
 	}
@@ -475,12 +482,14 @@ bool UseAntiPreg(bool use, bool isClinic, bool isStudio, bool isArena, bool isCe
 			if (g_Centre.GetBrothel(0)->m_AntiPregPotions < g_Centre.GetBrothel(0)->m_AntiPregUsed) cost *= 5;
 			g_Gold.consumable_cost(cost);
 			g_Centre.GetBrothel(0)->m_AntiPregUsed++;
+			if (g_Dice.percent(cfg.pregnancy.anti_preg_failure()))	return false;
 			return true;
 		}
 		if (g_Centre.GetBrothel(0)->m_AntiPregPotions > 0)
 		{
 			g_Centre.GetBrothel(0)->m_AntiPregUsed++;
 			g_Centre.GetBrothel(0)->m_AntiPregPotions--;
+			if (g_Dice.percent(cfg.pregnancy.anti_preg_failure()))	return false;
 			return true;
 		}
 	}
@@ -491,12 +500,14 @@ bool UseAntiPreg(bool use, bool isClinic, bool isStudio, bool isArena, bool isCe
 			if (g_House.GetBrothel(0)->m_AntiPregPotions < g_House.GetBrothel(0)->m_AntiPregUsed) cost *= 5;
 			g_Gold.consumable_cost(cost);
 			g_House.GetBrothel(0)->m_AntiPregUsed++;
+			if (g_Dice.percent(cfg.pregnancy.anti_preg_failure()))	return false;
 			return true;
 		}
 		if (g_House.GetBrothel(0)->m_AntiPregPotions > 0)
 		{
 			g_House.GetBrothel(0)->m_AntiPregUsed++;
 			g_House.GetBrothel(0)->m_AntiPregPotions--;
+			if (g_Dice.percent(cfg.pregnancy.anti_preg_failure()))	return false;
 			return true;
 		}
 	}
@@ -507,12 +518,14 @@ bool UseAntiPreg(bool use, bool isClinic, bool isStudio, bool isArena, bool isCe
 			if (g_Farm.GetBrothel(0)->m_AntiPregPotions < g_Farm.GetBrothel(0)->m_AntiPregUsed) cost *= 5;
 			g_Gold.consumable_cost(cost);
 			g_Farm.GetBrothel(0)->m_AntiPregUsed++;
+			if (g_Dice.percent(cfg.pregnancy.anti_preg_failure()))	return false;
 			return true;
 		}
 		if (g_Farm.GetBrothel(0)->m_AntiPregPotions > 0)
 		{
 			g_Farm.GetBrothel(0)->m_AntiPregUsed++;
 			g_Farm.GetBrothel(0)->m_AntiPregPotions--;
+			if (g_Dice.percent(cfg.pregnancy.anti_preg_failure()))	return false;
 			return true;
 		}
 	}
@@ -523,12 +536,14 @@ bool UseAntiPreg(bool use, bool isClinic, bool isStudio, bool isArena, bool isCe
 			if (g_Brothels.GetBrothel(whereisshe)->m_AntiPregPotions < g_Brothels.GetBrothel(whereisshe)->m_AntiPregUsed) cost *= 5;
 			g_Gold.consumable_cost(cost);
 			g_Brothels.GetBrothel(whereisshe)->m_AntiPregUsed++;
+			if (g_Dice.percent(cfg.pregnancy.anti_preg_failure()))	return false;
 			return true;
 		}
 		if (g_Brothels.GetBrothel(whereisshe)->m_AntiPregPotions > 0)
 		{
 			g_Brothels.GetBrothel(whereisshe)->m_AntiPregUsed++;
 			g_Brothels.GetBrothel(whereisshe)->m_AntiPregPotions--;
+			if (g_Dice.percent(cfg.pregnancy.anti_preg_failure()))	return false;
 			return true;
 		}
 	}
@@ -1409,17 +1424,19 @@ void cBrothelManager::UpdateBrothels()	// Start_Building_Process_A
 	ss.str("");
 	if (g_Gangs.GetNumBusinessExtorted() > 0)
 	{
-		long gold = g_Gangs.GetNumBusinessExtorted()*INCOME_BUSINESS;
-		int num = g_Dice % 15;
-		if (num == 1) gold -= INCOME_BUSINESS;
-		ss << "You gain " << gold << " gold from the " << g_Gangs.GetNumBusinessExtorted() << " businesses under your control.\n";
-		g_Gold.extortion(gold);
-		if (num == 1)
+		if (g_Dice.percent(6.7))
 		{
 			sGirl* girl = g_Girls.CreateRandomGirl(17, false);
-			ss << "A man cannot pay so he sells you his daughter " << girl->m_Realname;
+			ss << "A man cannot pay so he sells you his daughter " << girl->m_Realname << " to clear his debt to you.\n";
+			stringstream ssg;
+			ssg << girl->m_Realname << "'s father could not pay his debt to you so he gave her to you as payment.";
+			girl->m_Events.AddMessage(ssg.str(), IMGTYPE_PROFILE, EVENT_DUNGEON);
 			m_Dungeon.AddGirl(girl, DUNGEON_NEWGIRL);
+			g_Gangs.NumBusinessExtorted(-1);
 		}
+		long gold = g_Gangs.GetNumBusinessExtorted()*INCOME_BUSINESS;
+		ss << "You gain " << gold << " gold from the " << g_Gangs.GetNumBusinessExtorted() << " businesses under your control.\n";
+		g_Gold.extortion(gold);
 		g_MessageQue.AddToQue(ss.str(), COLOR_GREEN);
 	}
 
@@ -3540,7 +3557,11 @@ void cBrothelManager::PassObjective()
 			ss << girls << gettext(" slave girls.");
 			while (girls > 0)
 			{
-				m_Dungeon.AddGirl(g_Girls.CreateRandomGirl(0, false, true, "", g_Dice % 3 == 1), DUNGEON_NEWGIRL);
+				sGirl* girl = g_Girls.CreateRandomGirl(0, false, true, false, g_Dice % 3 == 1);
+				stringstream ssg;
+				ssg << girl->m_Realname << " was given to you as a reward for completing your objective.";
+				girl->m_Events.AddMessage(ssg.str(), IMGTYPE_PROFILE, EVENT_DUNGEON);
+				m_Dungeon.AddGirl(girl, DUNGEON_NEWGIRL);
 				girls--;
 			}
 		}break;

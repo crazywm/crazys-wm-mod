@@ -468,10 +468,29 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 		girlName = current->m_Realname;
 
 		// fight beasts so if there is no beasts dont want them doing nothing
-		if (g_Brothels.GetNumBeasts() < 1)
+		if (sw == JOB_FIGHTBEASTS && g_Brothels.GetNumBeasts() < 1)
 		{
-			ss << "There are no beasts so " << girlName << " was sent to fight other girls instead.";
-			current->m_DayJob = current->m_NightJob = JOB_FIGHTARENAGIRLS;
+			stringstream ssc;
+			ssc << "There are no beasts to fight so " << girlName << " was sent to ";
+
+			if (current->health() < 50)
+			{
+				ssc << "rest and heal";
+				sw = restjob;
+			}
+			else if (current->combat() > 90 && current->magic() > 90 && current->agility() > 90 && current->constitution() > 90 && current->health() > 90)
+			{
+				ssc << "fight other girls";
+				sw = JOB_FIGHTARENAGIRLS;
+			}
+			else
+			{
+				ssc << "train for combat";
+				sw = JOB_FIGHTTRAIN;
+			}
+			ssc << " instead.\n\n";
+			current->m_Events.AddMessage(ssc.str(), IMGTYPE_PROFILE, Day0Night1);
+
 		}
 
 		// do their job

@@ -208,6 +208,9 @@ void handle_hotkeys()
 	case SDLK_LCTRL:
 		g_CTRLDown = true;		// enable multi select
 		break;
+		
+	case SDLK_RETURN:
+	case SDLK_KP_ENTER:	g_EnterKey = true;	break;
 
 	case SDLK_UP:		g_UpArrow = true;		break;
 	case SDLK_DOWN:		g_DownArrow = true;		break;
@@ -311,7 +314,10 @@ void handle_hotkeys()
 			break;
 
 		case SDLK_ESCAPE:       // Go back to previous screen
-			if (g_CurrentScreen == SCREEN_BROTHEL)
+			if (g_CurrentScreen == SCREEN_BROTHEL	||
+				g_CurrentScreen == SCREEN_MAINMENU	||
+				g_CurrentScreen == SCREEN_NEWGAME	||
+				g_CurrentScreen == SCREEN_PREPARING)
 				break;
 			g_Building = BUILDING_BROTHEL;
 			g_InitWin = true;
@@ -325,7 +331,9 @@ void handle_hotkeys()
 			g_WinManager.PopToWindow(&g_BrothelManagement);
 			g_CurrentScreen = SCREEN_GIRLMANAGEMENT;
 			g_InitWin = true;
-			g_WinManager.push("Girl Management");
+			if (g_ShiftDown)		break;
+			else if (g_CTRLDown)	g_WinManager.push("Building Setup");
+			else					g_WinManager.push("Girl Management");
 			break;
 
 			// staff management screen (gang management)
@@ -373,7 +381,9 @@ void handle_hotkeys()
 			g_InitWin = true;
 			g_WinManager.push("Town");
 			g_WinManager.push("Movie Screen");
-			g_WinManager.push("Studio");
+			if (g_ShiftDown)		break;
+			else if (g_CTRLDown)	g_WinManager.push("Building Setup");
+			else					g_WinManager.push("Studio");
 			break;
 
 			// Arena
@@ -392,7 +402,9 @@ void handle_hotkeys()
 			g_InitWin = true;
 			g_WinManager.push("Town");
 			g_WinManager.push("Arena Screen");
-			g_WinManager.push("Arena");
+			if (g_ShiftDown)		break;
+			else if (g_CTRLDown)	g_WinManager.push("Building Setup");
+			else					g_WinManager.push("Arena");
 			break;
 
 		case SDLK_F7:   // Centre
@@ -409,7 +421,9 @@ void handle_hotkeys()
 			g_InitWin = true;
 			g_WinManager.push("Town");
 			g_WinManager.push("Centre Screen");
-			g_WinManager.push("Centre");
+			if (g_ShiftDown)		break;
+			else if (g_CTRLDown)	g_WinManager.push("Building Setup");
+			else					g_WinManager.push("Centre");
 			break;
 
 			// clinic
@@ -428,7 +442,9 @@ void handle_hotkeys()
 			g_InitWin = true;
 			g_WinManager.push("Town");
 			g_WinManager.push("Clinic Screen");
-			g_WinManager.push("Clinic");
+			if (g_ShiftDown)		break;
+			else if (g_CTRLDown)	g_WinManager.push("Building Setup");
+			else					g_WinManager.push("Clinic");
 			break;
 
 			// farm
@@ -446,7 +462,9 @@ void handle_hotkeys()
 			g_InitWin = true;
 			g_WinManager.push("Town");
 			g_WinManager.push("Farm Screen");
-			g_WinManager.push("Farm");
+			if (g_ShiftDown)		break;
+			else if (g_CTRLDown)	g_WinManager.push("Building Setup");
+			else					g_WinManager.push("Farm");
 			break;
 			// shop screen
 		case SDLK_p:    if (vent.key.keysym.sym == SDLK_p && g_AltKeys)  break;
@@ -513,7 +531,10 @@ void handle_hotkeys()
 			g_InitWin = true;
 			g_WinManager.push("Town");
 			g_WinManager.push("Player House");
-			g_WinManager.push("House Management");
+
+			if (g_ShiftDown)		break;
+			else if (g_CTRLDown)	g_WinManager.push("Building Setup");
+			else					g_WinManager.push("House Management");
 			break;
 
 			// Non F-Key hotkeys (disabled by alt)
@@ -1208,8 +1229,17 @@ int main(int ac, char* av[])	// `J` Bookmark - #1 - Entering the game
 								)
 								handle_hotkeys();
 						}
+						if (g_WinManager.GetWindow() == &g_LoadGame)
+						{
+							if (vent.key.keysym.sym == SDLK_UP || vent.key.keysym.sym == SDLK_DOWN
+								|| vent.key.keysym.sym == SDLK_ESCAPE || vent.key.keysym.sym == SDLK_KP_ENTER
+								|| vent.key.keysym.sym == SDLK_RETURN)
+								handle_hotkeys();
+						}
+
 						if (vent.key.keysym.sym == SDLK_BACKSPACE)		g_WinManager.UpdateKeyInput('-');
 						else if (vent.key.keysym.sym == SDLK_RETURN)	g_EnterKey = true;
+						else if (vent.key.keysym.sym == SDLK_KP_ENTER)	g_EnterKey = true;
 						else if ((vent.key.keysym.sym >= 97 && vent.key.keysym.sym <= 122) || vent.key.keysym.sym == 39 || vent.key.keysym.sym == 32 || (vent.key.keysym.sym >= 48 && vent.key.keysym.sym <= 57) || ((vent.key.keysym.sym >= 256 && vent.key.keysym.sym <= 265)))
 						{
 							if (vent.key.keysym.sym >= 256)

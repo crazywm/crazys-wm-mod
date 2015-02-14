@@ -15,7 +15,6 @@ namespace WM_Girls_Generator
 {
     public partial class Form1
     {
-
         private void TBox_G_RealName_TextChanged(object sender, EventArgs e)
         {
             bool imagesfound = false;
@@ -65,12 +64,6 @@ namespace WM_Girls_Generator
             else
                 label_G_Images_Found.Text = "Images Found: 0";
         }
-
-
-
-
-
-
 
         /*
          * limits input to integers and limits it to 0 to 100 values, 
@@ -209,7 +202,6 @@ namespace WM_Girls_Generator
             }
         }
 
-
         private void ValidateTextBoxDouble(object sender, EventArgs e)
         {
             TextBox textBox = (TextBox)sender;
@@ -284,13 +276,10 @@ namespace WM_Girls_Generator
             }
         }
 
-
-        
         public static bool IsNumeric(string strToCheck) //function to check if string is numeric or not
         {
             return Regex.IsMatch(strToCheck, "^\\d+(\\.\\d+)?$");
         }
-
 
         //checks keypresses to allow only numbers
         private void GoldTBox1_KeyPress(object sender, KeyPressEventArgs e)                 
@@ -305,7 +294,6 @@ namespace WM_Girls_Generator
         {
             if (GoldTBox1.Text.Length == 0) GoldTBox1.Text = "0";
         }
-
 
         private void affects_textBox_value_TextChanged(object sender, EventArgs e)          //if everything in this textbox is deleted it puts 0 in it
         {

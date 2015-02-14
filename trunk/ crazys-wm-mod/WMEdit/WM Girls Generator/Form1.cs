@@ -24,6 +24,7 @@ namespace WM_Girls_Generator
         DataTable GirlsCollection = new DataTable();		//DataTable to store girls in
         DataTable GirlsCollectionTemp = new DataTable();	//DataTable to store temporary filtered girls in
         DataTable RGirlsCollection = new DataTable();		//DataTable to store random girls in
+        DataTable ScriptsCollection = new DataTable();		//DataTable to store scripts in
         DataTable rgTable = new DataTable();				//table to store selected traits and chances for random girls
         SaveFileDialog Filesave = new SaveFileDialog();
         SaveFileDialog saveTraits = new SaveFileDialog();
@@ -451,8 +452,8 @@ namespace WM_Girls_Generator
             //after it's all done we have our XML, although, only in memory, not stored somewhere safe
             XmlWriterSettings settings = new XmlWriterSettings();	//I've tried few ways of saving this, and this had the nicest output (they were all correct XML wise mind you, but output of this has the "nicest" structure as far as human readability goes
             settings.Indent = true;									//indent every node, otherwise it would be harder to find where each node begins, again, not for computer, for some person looking at outputed XML
-            settings.NewLineOnAttributes = true;						//without this each node would be one long line, this puts each attribute in new line
-            settings.IndentChars = "\t";								//just a character that'll be used for indenting, \t means tab, so indent is one tab,
+            settings.NewLineOnAttributes = true;					//without this each node would be one long line, this puts each attribute in new line
+            settings.IndentChars = "    ";							//just a character that'll be used for indenting, \t means tab, so indent is one tab,
             XmlWriter xmlwrite = XmlWriter.Create(path, settings);	//now that settings are complete we can write this file, using path passed from button function, and settings we just made
             xmldoc.Save(xmlwrite);									//now we tell our XmlDocument to save itself to our XmlWriter, this is what finally gives us our file
             xmlwrite.Close();										//now to be all nice and proper we close our file, after all it's finished
@@ -647,17 +648,19 @@ namespace WM_Girls_Generator
                     nv = n.Attributes[i].Value.TrimEnd('%');
                     switch (n.Attributes[i].Name)
                     {
-                        case "PlayerChance": textBox_Config_PregnancyPlayer.Text = nv; break;
-                        case "CustomerChance": textBox_Config_PregnancyCustomer.Text = nv; break;
-                        case "MonsterChance": textBox_Config_PregnancyMonster.Text = nv; break;
-                        case "GoodSexFactor": textBox_Config_PregnancyGoodSex.Text = nv; break;
-                        case "ChanceOfGirl": textBox_Config_PregnancyGirlChance.Text = nv; break;
-                        case "WeeksPregnant": textBox_Config_PregnancyWeeksPregnant.Text = nv; break;
-                        case "WeeksMonsterP": textBox_Config_PregnancyWeeksMonsterP.Text = nv; break;
-                        case "MiscarriageChance": textBox_Config_PregnancyMiscarriageChance.Text = nv; break;
-                        case "MiscarriageMonster": textBox_Config_PregnancyMiscarriageMonster.Text = nv; break;
-                        case "WeeksTillGrown": textBox_Config_PregnancyWeeksTillGrown.Text = nv; break;
-                        case "CoolDown": textBox_Config_PregnancyCoolDown.Text = nv; break;
+                        case "PlayerChance":        textBox_Config_PregnancyPlayer.Text = nv; break;
+                        case "CustomerChance":      textBox_Config_PregnancyCustomer.Text = nv; break;
+                        case "MonsterChance":       textBox_Config_PregnancyMonster.Text = nv; break;
+                        case "GoodSexFactor":       textBox_Config_PregnancyGoodSex.Text = nv; break;
+                        case "ChanceOfGirl":        textBox_Config_PregnancyGirlChance.Text = nv; break;
+                        case "WeeksPregnant":       textBox_Config_PregnancyWeeksPregnant.Text = nv; break;
+                        case "WeeksMonsterP":       textBox_Config_PregnancyWeeksMonsterP.Text = nv; break;
+                        case "MiscarriageChance":   textBox_Config_PregnancyMiscarriageChance.Text = nv; break;
+                        case "MiscarriageMonster":  textBox_Config_PregnancyMiscarriageMonster.Text = nv; break;
+                        case "WeeksTillGrown":      textBox_Config_PregnancyWeeksTillGrown.Text = nv; break;
+                        case "CoolDown":            textBox_Config_PregnancyCoolDown.Text = nv; break;
+                        case "AntiPregFailure":     textBox_Config_AntiPregFailure.Text = nv; break;
+                        case "MultiBirthChance":    textBox_Config_Multi_Birth_Chance.Text = nv; break;
                     }
                 }
 
@@ -764,7 +767,7 @@ namespace WM_Girls_Generator
             XmlComment xcExpenses = xmldoc.CreateComment("\n\tThese are the multipliers for your expenses.\n\n\tTraining doesn't currently have a cost, so I'm setting it to 1 gold per girl per week\n\t\tand defaulting the multiplier to 0 (so no change by default).\n\tSet it higher and training begins to cost beyond the simple loss of income.\n\n\tActressWages are like training costs:\n\tA per-girl expense nominally 1 gold per girl, but with a default factor of 0,\n\t\tso no change to the current scheme unless you alter that.\n\n\tMakingMovies is the setup cost for a movie:\n\tI'm going to make this 1000 gold per movie, but again, with a zero factor by default.\n\n\tOtherwise, same as above, except you probably want numbers > 1 to make things more expensive here.\n\n\t* not all are used but are retained just in case.\n\t");
             XmlComment xcGambling = xmldoc.CreateComment("\n\tGambling:\n\n\tThe starting %chance for the tables is given by \"Odds\"\n\n\tWins and losses on the tables are calculated as the \"Base\" value\n\t\tplus a random number between 1 and the value of \"Spread\".\n\tIf the house wins, the amount is multiplied by the HouseFactor\n\tIf the customer wins, by the customer factor.\n\n\tSo: if Base = 50 and spread = 100 then the basic amount\n\t\twon or lost per customer would be 50+d100.\n\n\tAs it stands, the default odds are near 50%\n\twhile the payout is 2:1 in favour of the house.\n\tSo by default, the tables are rigged!\n\t");
             XmlComment xcTax = xmldoc.CreateComment("\n\tTaxes:\n\tRate is the rate at which your income is taxed.\n\tMin is the minimum adjusted rate after influence is used to lower the tax rate.\n\tLaundry is the Maximum % of your income that can be Laundered and so escape taxation.\n\t\tSo if you have 100g income, and a 25% laundry rating, then between 1 and 25 gold will go directly into your pocket.\n\t\tThe remaining 75 Gold will be taxed at 6% (assuming no reduction due to political influence)\n\t");
-            XmlComment xcPregnancy = xmldoc.CreateComment("\n\tPregnancy:\n\tPlayerChance, CustomerChance and MonsterChance give the odds of her\n\t\tgetting knocked up by the PC, a customer and a monster, respectively\n\tGoodSexFactor is the multiplier for the pregnancy chance if both parties were happy post coitus.\n\tChanceOfGirl is the %chance of any baby being female.\n\tWeeksPregnant and WeeksMonsterP is how long she is pregnant for.\n\tMiscarriageChance and MiscarriageMonster is the weekly percent chance that the pregnancy may fail.\n\tWeeksTillGrown is how long is takes for the baby to grow up to age 18\n\t\tThe magic of the world the game is set in causes children to age much faster.\n\t\tReal world is 936 weeks.\n\tCoolDown is how long before the girl can get pregnant again after giving birth.\n\t");
+            XmlComment xcPregnancy = xmldoc.CreateComment("\n\tPregnancy:\n\tPlayerChance, CustomerChance and MonsterChance give the odds of her\n\t\tgetting knocked up by the PC, a customer and a monster, respectively\n\tGoodSexFactor is the multiplier for the pregnancy chance if both parties were happy post coitus.\n\tChanceOfGirl is the %chance of any baby being female.\n\tWeeksPregnant and WeeksMonsterP is how long she is pregnant for.\n\tMiscarriageChance and MiscarriageMonster is the weekly percent chance that the pregnancy may fail.\n\tWeeksTillGrown is how long is takes for the baby to grow up to age 18\n\t\tThe magic of the world the game is set in causes children to age much faster.\n\t\tReal world is 936 weeks.\n\tCoolDown is how long before the girl can get pregnant again after giving birth.\n\tAntiPregFailure is the chance that an Anti-Preg Potion fails to work.\n\tMultiBirthChance is the chance of multiple births.\n\t");
             XmlComment xcProstitution = xmldoc.CreateComment("\n\tThese are the base chances of rape occurring in a brothel and streetwalking.\n\t");
             XmlComment xcGangs = xmldoc.CreateComment("\n\tGangs:\n\tMaxRecruitList limits the maximum number of recruitable gangs listed for you to hire.\n\t\tWARNING: BE CAREFUL here; the number of recruitable gangs plus the number of potential hired\n\t\t\tgangs must not exceed the number of names stored in HiredGangNames.txt.\n\t\tFor example, with 20 names, you could have a max of 12 recruitables since you have to\n\t\t\taccount for the possible 8 hired gangs.\n\tStartRandom is how many random recruitable gangs are created for you at the start of a new game.\n\tStartBoosted is how many stat-boosted starting gangs are also added.\n\tInitMemberMin and InitMemberMax indicate the number of initial gang members which are in each recruitable gang;\n\t\ta random number between Min and Max is picked.\n\tAddNewWeeklyMin and AddNewWeeklyMax indicate how many new random gangs are added to the recruitable\n\t\tgangs list each week; a random number between Min and Max is picked.\n\tChanceRemoveUnwanted is the %chance each week that each unhired gang in the recruitable list is removed.\n\t");
             XmlComment xcItems = xmldoc.CreateComment("\n\tItems:\n\t*** AutoCombatEquip was moved to Initial for .06. Kept here for .05 and earlier.\n\tColors are assigned to items listed on the item management screen by there rarity.\n\tThey are in RGB hex format, so #000000 is black and #FFFFFF is white.\n\t\tRarityColor0: Common\n\t\tRarityColor1: Appears in shop, 50% chance\n\t\tRarityColor2: Appears in shop, 25% chance\n\t\tRarityColor3: Appears in shop, 5% chance\n\t\tRarityColor4: Appears in catacombs, 15% chance\n\t\tRarityColor5: Only given by scripts\n\t\tRarityColor6: Given by scripts or as objective rewards\n\t\tRarityColor7: Appears in catacombs, 5% chance\n\t\tRarityColor8: Appears in catacombs, 1% chance\n\t");
@@ -810,80 +813,82 @@ namespace WM_Girls_Generator
             xeConfig.AppendChild(xeInitial);
 
             xeConfig.AppendChild(xcIncome);
-            xeIncome.SetAttribute("ExtortionIncome", textBox_Config_IncomeExtortion.Text);
-            xeIncome.SetAttribute("GirlsWorkBrothel", textBox_Config_IncomeBrothel.Text);
-            xeIncome.SetAttribute("GirlsWorkStreet", textBox_Config_IncomeStreet.Text);
-            xeIncome.SetAttribute("MovieIncome", textBox_Config_IncomeMovie.Text);
-            xeIncome.SetAttribute("StripperIncome", textBox_Config_IncomeStripper.Text);
-            xeIncome.SetAttribute("BarmaidIncome", textBox_Config_IncomeBarmaid.Text);
-            xeIncome.SetAttribute("SlaveSales", textBox_Config_IncomeSlaveSales.Text);
-            xeIncome.SetAttribute("ItemSales", textBox_Config_IncomeItemSales.Text);
-            xeIncome.SetAttribute("ClinicIncome", textBox_Config_IncomeClinic.Text);
-            xeIncome.SetAttribute("ArenaIncome", textBox_Config_IncomeArena.Text);
+            xeIncome.SetAttribute("ExtortionIncome",        textBox_Config_IncomeExtortion.Text);
+            xeIncome.SetAttribute("GirlsWorkBrothel",       textBox_Config_IncomeBrothel.Text);
+            xeIncome.SetAttribute("GirlsWorkStreet",        textBox_Config_IncomeStreet.Text);
+            xeIncome.SetAttribute("MovieIncome",            textBox_Config_IncomeMovie.Text);
+            xeIncome.SetAttribute("StripperIncome",         textBox_Config_IncomeStripper.Text);
+            xeIncome.SetAttribute("BarmaidIncome",          textBox_Config_IncomeBarmaid.Text);
+            xeIncome.SetAttribute("SlaveSales",             textBox_Config_IncomeSlaveSales.Text);
+            xeIncome.SetAttribute("ItemSales",              textBox_Config_IncomeItemSales.Text);
+            xeIncome.SetAttribute("ClinicIncome",           textBox_Config_IncomeClinic.Text);
+            xeIncome.SetAttribute("ArenaIncome",            textBox_Config_IncomeArena.Text);
             xeConfig.AppendChild(xeIncome);
 
             xeConfig.AppendChild(xcExpenses);
-            xeExpenses.SetAttribute("Training", textBox_Config_ExpenseTraining.Text);
-            xeExpenses.SetAttribute("MovieCost", textBox_Config_ExpenseMovie.Text);
-            xeExpenses.SetAttribute("ActressWages", textBox_Config_ExpenseActress.Text);
-            xeExpenses.SetAttribute("GoonWages", textBox_Config_ExpenseGoon.Text);
-            xeExpenses.SetAttribute("MatronWages", textBox_Config_ExpenseMatron.Text);
-            xeExpenses.SetAttribute("StaffWages", textBox_Config_ExpenseStaff.Text);        // `J` Not used but kept in for legacy
-            xeExpenses.SetAttribute("GirlSupport", textBox_Config_ExpenseGirls.Text);
-            xeExpenses.SetAttribute("Consumables", textBox_Config_ExpenseConsumables.Text);
-            xeExpenses.SetAttribute("Items", textBox_Config_ExpenseItems.Text);
-            xeExpenses.SetAttribute("SlavesBought", textBox_Config_ExpenseSlaves.Text);
-            xeExpenses.SetAttribute("BuyBrothel", textBox_Config_ExpenseBrothelPrice.Text);
-            xeExpenses.SetAttribute("BrothelSupport", textBox_Config_ExpenseBrothel.Text);
-            xeExpenses.SetAttribute("BarSupport", textBox_Config_ExpenseBar.Text);
-            xeExpenses.SetAttribute("CasinoSupport", textBox_Config_ExpenseCasino.Text);
-            xeExpenses.SetAttribute("Bribes", textBox_Config_ExpenseBribes.Text);
-            xeExpenses.SetAttribute("Fines", textBox_Config_ExpenseFines.Text);
-            xeExpenses.SetAttribute("Advertising", textBox_Config_ExpenseAdvertising.Text);
+            xeExpenses.SetAttribute("Training",             textBox_Config_ExpenseTraining.Text);
+            xeExpenses.SetAttribute("MovieCost",            textBox_Config_ExpenseMovie.Text);
+            xeExpenses.SetAttribute("ActressWages",         textBox_Config_ExpenseActress.Text);
+            xeExpenses.SetAttribute("GoonWages",            textBox_Config_ExpenseGoon.Text);
+            xeExpenses.SetAttribute("MatronWages",          textBox_Config_ExpenseMatron.Text);
+            xeExpenses.SetAttribute("StaffWages",           textBox_Config_ExpenseStaff.Text);        // `J` Not used but kept in for legacy
+            xeExpenses.SetAttribute("GirlSupport",          textBox_Config_ExpenseGirls.Text);
+            xeExpenses.SetAttribute("Consumables",          textBox_Config_ExpenseConsumables.Text);
+            xeExpenses.SetAttribute("Items",                textBox_Config_ExpenseItems.Text);
+            xeExpenses.SetAttribute("SlavesBought",         textBox_Config_ExpenseSlaves.Text);
+            xeExpenses.SetAttribute("BuyBrothel",           textBox_Config_ExpenseBrothelPrice.Text);
+            xeExpenses.SetAttribute("BrothelSupport",       textBox_Config_ExpenseBrothel.Text);
+            xeExpenses.SetAttribute("BarSupport",           textBox_Config_ExpenseBar.Text);
+            xeExpenses.SetAttribute("CasinoSupport",        textBox_Config_ExpenseCasino.Text);
+            xeExpenses.SetAttribute("Bribes",               textBox_Config_ExpenseBribes.Text);
+            xeExpenses.SetAttribute("Fines",                textBox_Config_ExpenseFines.Text);
+            xeExpenses.SetAttribute("Advertising",          textBox_Config_ExpenseAdvertising.Text);
             xeConfig.AppendChild(xeExpenses);
 
             xeConfig.AppendChild(xcGambling);
-            xeGambling.SetAttribute("Odds", textBox_Config_GamblingOdds.Text + "%");
-            xeGambling.SetAttribute("Base", textBox_Config_GamblingBase.Text);
-            xeGambling.SetAttribute("Spread", textBox_Config_GamblingSpread.Text);
-            xeGambling.SetAttribute("CustomerFactor", textBox_Config_GamblingCustomer.Text);
-            xeGambling.SetAttribute("HouseFactor", textBox_Config_GamblingHouse.Text);
+            xeGambling.SetAttribute("Odds",                 textBox_Config_GamblingOdds.Text + "%");
+            xeGambling.SetAttribute("Base",                 textBox_Config_GamblingBase.Text);
+            xeGambling.SetAttribute("Spread",               textBox_Config_GamblingSpread.Text);
+            xeGambling.SetAttribute("CustomerFactor",       textBox_Config_GamblingCustomer.Text);
+            xeGambling.SetAttribute("HouseFactor",          textBox_Config_GamblingHouse.Text);
             xeConfig.AppendChild(xeGambling);
 
             xeConfig.AppendChild(xcTax);
-            xeTax.SetAttribute("Rate", textBox_Config_TaxRate.Text + "%");
-            xeTax.SetAttribute("Minimum", textBox_Config_TaxMinimum.Text + "%");
-            xeTax.SetAttribute("Laundry", textBox_Config_TaxLaundry.Text + "%");
+            xeTax.SetAttribute("Rate",                      textBox_Config_TaxRate.Text + "%");
+            xeTax.SetAttribute("Minimum",                   textBox_Config_TaxMinimum.Text + "%");
+            xeTax.SetAttribute("Laundry",                   textBox_Config_TaxLaundry.Text + "%");
             xeConfig.AppendChild(xeTax);
 
             xeConfig.AppendChild(xcPregnancy);
-            xePregnancy.SetAttribute("PlayerChance", textBox_Config_PregnancyPlayer.Text + "%");
-            xePregnancy.SetAttribute("CustomerChance", textBox_Config_PregnancyCustomer.Text + "%");
-            xePregnancy.SetAttribute("MonsterChance", textBox_Config_PregnancyMonster.Text + "%");
-            xePregnancy.SetAttribute("GoodSexFactor", textBox_Config_PregnancyGoodSex.Text);
-            xePregnancy.SetAttribute("ChanceOfGirl", textBox_Config_PregnancyGirlChance.Text + "%");
-            xePregnancy.SetAttribute("WeeksPregnant", textBox_Config_PregnancyWeeksPregnant.Text);
-            xePregnancy.SetAttribute("WeeksMonsterP", textBox_Config_PregnancyWeeksMonsterP.Text);                  // `J` added
-            xePregnancy.SetAttribute("MiscarriageChance", textBox_Config_PregnancyMiscarriageChance.Text + "%");    // `J` added
-            xePregnancy.SetAttribute("MiscarriageMonster", textBox_Config_PregnancyMiscarriageMonster.Text + "%");  // `J` added
-            xePregnancy.SetAttribute("WeeksTillGrown", textBox_Config_PregnancyWeeksTillGrown.Text);
-            xePregnancy.SetAttribute("CoolDown", textBox_Config_PregnancyCoolDown.Text);
+            xePregnancy.SetAttribute("PlayerChance",        textBox_Config_PregnancyPlayer.Text + "%");
+            xePregnancy.SetAttribute("CustomerChance",      textBox_Config_PregnancyCustomer.Text + "%");
+            xePregnancy.SetAttribute("MonsterChance",       textBox_Config_PregnancyMonster.Text + "%");
+            xePregnancy.SetAttribute("GoodSexFactor",       textBox_Config_PregnancyGoodSex.Text);
+            xePregnancy.SetAttribute("ChanceOfGirl",        textBox_Config_PregnancyGirlChance.Text + "%");
+            xePregnancy.SetAttribute("WeeksPregnant",       textBox_Config_PregnancyWeeksPregnant.Text);
+            xePregnancy.SetAttribute("WeeksMonsterP",       textBox_Config_PregnancyWeeksMonsterP.Text);                // `J` added
+            xePregnancy.SetAttribute("MiscarriageChance",   textBox_Config_PregnancyMiscarriageChance.Text + "%");      // `J` added
+            xePregnancy.SetAttribute("MiscarriageMonster",  textBox_Config_PregnancyMiscarriageMonster.Text + "%");     // `J` added
+            xePregnancy.SetAttribute("WeeksTillGrown",      textBox_Config_PregnancyWeeksTillGrown.Text);
+            xePregnancy.SetAttribute("CoolDown",            textBox_Config_PregnancyCoolDown.Text);
+            xePregnancy.SetAttribute("AntiPregFailure",     textBox_Config_AntiPregFailure.Text);
+            xePregnancy.SetAttribute("MultiBirthChance",    textBox_Config_Multi_Birth_Chance.Text);
             xeConfig.AppendChild(xePregnancy);
 
             xeConfig.AppendChild(xcProstitution);
-            xeProstitution.SetAttribute("RapeBrothel", textBox_Config_ProstitutionRapeBrothel.Text + "%");
-            xeProstitution.SetAttribute("RapeStreet", textBox_Config_ProstitutionRapeStreets.Text + "%");
+            xeProstitution.SetAttribute("RapeBrothel",      textBox_Config_ProstitutionRapeBrothel.Text + "%");
+            xeProstitution.SetAttribute("RapeStreet",       textBox_Config_ProstitutionRapeStreets.Text + "%");
             xeConfig.AppendChild(xeProstitution);
 
             xeConfig.AppendChild(xcGangs);
-            xeGangs.SetAttribute("MaxRecruitList", textBox_config_MaxRecruitList.Text);
-            xeGangs.SetAttribute("StartRandom", textBox_config_StartRandom.Text);
-            xeGangs.SetAttribute("StartBoosted", textBox_config_StartBoosted.Text);
-            xeGangs.SetAttribute("InitMemberMin", textBox_config_InitMemberMin.Text);
-            xeGangs.SetAttribute("InitMemberMax", textBox_config_InitMemberMax.Text);
-            xeGangs.SetAttribute("AddNewWeeklyMin", textBox_config_AddNewWeeklyMin.Text);
-            xeGangs.SetAttribute("AddNewWeeklyMax", textBox_config_AddNewWeeklyMax.Text);
-            xeGangs.SetAttribute("ChanceRemoveUnwanted", textBox_config_ChanceRemoveUnwanted.Text + "%");
+            xeGangs.SetAttribute("MaxRecruitList",          textBox_config_MaxRecruitList.Text);
+            xeGangs.SetAttribute("StartRandom",             textBox_config_StartRandom.Text);
+            xeGangs.SetAttribute("StartBoosted",            textBox_config_StartBoosted.Text);
+            xeGangs.SetAttribute("InitMemberMin",           textBox_config_InitMemberMin.Text);
+            xeGangs.SetAttribute("InitMemberMax",           textBox_config_InitMemberMax.Text);
+            xeGangs.SetAttribute("AddNewWeeklyMin",         textBox_config_AddNewWeeklyMin.Text);
+            xeGangs.SetAttribute("AddNewWeeklyMax",         textBox_config_AddNewWeeklyMax.Text);
+            xeGangs.SetAttribute("ChanceRemoveUnwanted",    textBox_config_ChanceRemoveUnwanted.Text + "%");
             xeConfig.AppendChild(xeGangs);
 
             xeConfig.AppendChild(xcItems);
@@ -925,7 +930,7 @@ namespace WM_Girls_Generator
             XmlWriterSettings settings = new XmlWriterSettings();
             settings.Indent = true;
             settings.NewLineOnAttributes = true;
-            settings.IndentChars = "\t";
+            settings.IndentChars = "    ";
             XmlWriter xmlwrite = XmlWriter.Create(path, settings);
 
             xmldoc.Save(xmlwrite);
@@ -1004,6 +1009,8 @@ namespace WM_Girls_Generator
             textBox_Config_PregnancyMiscarriageMonster.Text = "1.0";
             textBox_Config_PregnancyWeeksTillGrown.Text = "60";
             textBox_Config_PregnancyCoolDown.Text = "4";
+            textBox_Config_AntiPregFailure.Text = "0.0";
+            textBox_Config_Multi_Birth_Chance.Text = "2.0";
 
             textBox_Config_TaxRate.Text = "6";
             textBox_Config_TaxMinimum.Text = "1";
@@ -2301,53 +2308,56 @@ namespace WM_Girls_Generator
                 girl.SetAttribute("MiddleName", sMName);
                 girl.SetAttribute("Surname", sLName);
                 girl.SetAttribute("Desc", sDesc);
-                girl.SetAttribute("Charisma", sStats[0]);
-                girl.SetAttribute("Happiness", sStats[1]);
-                girl.SetAttribute("Libido", sStats[2]);
-                girl.SetAttribute("Constitution", sStats[3]);
-                girl.SetAttribute("Intelligence", sStats[4]);
-                girl.SetAttribute("Confidence", sStats[5]);
-                girl.SetAttribute("Mana", sStats[6]);
-                girl.SetAttribute("Agility", sStats[7]);
-                girl.SetAttribute("Fame", sStats[8]);
+
                 girl.SetAttribute("Level", sStats[9]);
-                girl.SetAttribute("AskPrice", sStats[10]);
-                girl.SetAttribute("House", sStats[11]);
                 girl.SetAttribute("Exp", sStats[12]);
                 girl.SetAttribute("Age", sStats[13]);
-                girl.SetAttribute("Obedience", sStats[14]);
-                girl.SetAttribute("Spirit", sStats[15]);
-                girl.SetAttribute("Beauty", sStats[16]);
-                girl.SetAttribute("Tiredness", sStats[17]);
+                girl.SetAttribute("Fame", sStats[8]);
+                girl.SetAttribute("AskPrice", sStats[10]);
+                girl.SetAttribute("House", sStats[11]);
                 girl.SetAttribute("Health", sStats[18]);
-                girl.SetAttribute("PCFear", sStats[19]);
+                girl.SetAttribute("Happiness", sStats[1]);
+                girl.SetAttribute("Tiredness", sStats[17]);
                 girl.SetAttribute("PCLove", sStats[20]);
+                girl.SetAttribute("PCFear", sStats[19]);
                 girl.SetAttribute("PCHate", sStats[21]);
-                girl.SetAttribute("Morality", sStats[22]);
-                girl.SetAttribute("Refinement", sStats[23]);
-                girl.SetAttribute("Dignity", sStats[24]);
                 girl.SetAttribute("Lactation", sStats[25]);
 
-                girl.SetAttribute("Anal", sSkills[0]);
-                girl.SetAttribute("Magic", sSkills[1]);
-                girl.SetAttribute("BDSM", sSkills[2]);
-                girl.SetAttribute("NormalSex", sSkills[3]);
-                girl.SetAttribute("Beastiality", sSkills[4]);
-                girl.SetAttribute("Group", sSkills[5]);
-                girl.SetAttribute("Lesbian", sSkills[6]);
-                girl.SetAttribute("Service", sSkills[7]);
-                girl.SetAttribute("Strip", sSkills[8]);
+                girl.SetAttribute("Charisma", sStats[0]);
+                girl.SetAttribute("Beauty", sStats[16]);
+                girl.SetAttribute("Refinement", sStats[23]);
+                girl.SetAttribute("Agility", sStats[7]);
+                girl.SetAttribute("Constitution", sStats[3]);
+                girl.SetAttribute("Intelligence", sStats[4]);
+                girl.SetAttribute("Mana", sStats[6]);
+                girl.SetAttribute("Morality", sStats[22]);
+                girl.SetAttribute("Dignity", sStats[24]);
+                girl.SetAttribute("Confidence", sStats[5]);
+                girl.SetAttribute("Obedience", sStats[14]);
+                girl.SetAttribute("Spirit", sStats[15]);
+                girl.SetAttribute("Libido", sStats[2]);
+
                 girl.SetAttribute("Combat", sSkills[9]);
-                girl.SetAttribute("OralSex", sSkills[10]);
-                girl.SetAttribute("TittySex", sSkills[11]);
+                girl.SetAttribute("Magic", sSkills[1]);
+                girl.SetAttribute("Service", sSkills[7]);
                 girl.SetAttribute("Medicine", sSkills[12]);
                 girl.SetAttribute("Performance", sSkills[13]);
-                girl.SetAttribute("Handjob", sSkills[14]);
                 girl.SetAttribute("Crafting", sSkills[15]);
-                girl.SetAttribute("Herbalism", sSkills[16]);
                 girl.SetAttribute("Farming", sSkills[17]);
+                girl.SetAttribute("Herbalism", sSkills[16]);
                 girl.SetAttribute("Brewing", sSkills[18]);
                 girl.SetAttribute("AnimalHandling", sSkills[19]);
+
+                girl.SetAttribute("NormalSex", sSkills[3]);
+                girl.SetAttribute("Anal", sSkills[0]);
+                girl.SetAttribute("BDSM", sSkills[2]);
+                girl.SetAttribute("Beastiality", sSkills[4]);
+                girl.SetAttribute("Lesbian", sSkills[6]);
+                girl.SetAttribute("Strip", sSkills[8]);
+                girl.SetAttribute("Group", sSkills[5]);
+                girl.SetAttribute("OralSex", sSkills[10]);
+                girl.SetAttribute("TittySex", sSkills[11]);
+                girl.SetAttribute("Handjob", sSkills[14]);
                 girl.SetAttribute("Footjob", sSkills[20]);
 
                 girl.SetAttribute("Gold", sGold);
@@ -2360,7 +2370,7 @@ namespace WM_Girls_Generator
             XmlWriterSettings settings = new XmlWriterSettings();	//I've tried few ways of saving this, and this had the nicest output (they were all correct XML wise mind you, but output of this has the "nicest" structure as far as human readability goes
             settings.Indent = true;									//indent every node, otherwise it would be harder to find where each node begins, again, not for computer, for some person looking at outputed XML
             settings.NewLineOnAttributes = true;						//without this each node would be one long line, this puts each attribute in new line
-            settings.IndentChars = "\t";								//just a character that'll be used for indenting, \t means tab, so indent is one tab,
+            settings.IndentChars = "    ";								//just a character that'll be used for indenting, \t means tab, so indent is one tab,
             XmlWriter xmlwrite = XmlWriter.Create(path, settings);	//now that settings are complete we can write this file, using path passed from button function, and settings we just made
 
             xmldoc.Save(xmlwrite);									//now we tell our XmlDocument to save itself to our XmlWriter, this is what finally gives us our file
@@ -3377,7 +3387,7 @@ namespace WM_Girls_Generator
         private void SaveRGirlsXML(string path)
         {
             XmlDocument xmldoc = new XmlDocument();
-
+            
             XmlElement girls = xmldoc.CreateElement("Girls");
             XmlElement girl = xmldoc.CreateElement("Girl");
             XmlElement cash = xmldoc.CreateElement("Cash");
@@ -3387,6 +3397,8 @@ namespace WM_Girls_Generator
 
             string[] sStats = new string[26] { "Charisma", "Happiness", "Libido", "Constitution", "Intelligence", "Confidence", "Mana", "Agility", "Fame", "Level", "AskPrice", "House", "Exp", "Age", "Obedience", "Spirit", "Beauty", "Tiredness", "Health", "PCFear", "PCLove", "PCHate", "Morality", "Refinement", "Dignity", "Lactation" };
             string[] sSkills = new string[21] { "Anal", "Magic", "BDSM", "NormalSex", "Beastiality", "Group", "Lesbian", "Service", "Strip", "Combat", "OralSex", "TittySex", "Medicine", "Performance", "Handjob", "Crafting", "Herbalism", "Farming", "Brewing", "AnimalHandling", "Footjob" };
+            int[] statsortorder = new int[26] { 9, 12, 13, 8, 10, 11, 18, 1, 17, 20, 19, 21, 25, 0, 16, 23, 7, 3, 4, 6, 22, 24, 5, 14, 15, 2 };
+            int[] skillsortorder = new int[21] { 9, 1, 7, 12, 13, 15, 17, 16, 18, 19, 3, 0, 2, 4, 6, 8, 5, 10, 11, 14, 20 };
 
             xmldoc.AppendChild(girls);
 
@@ -3425,17 +3437,17 @@ namespace WM_Girls_Generator
                 for (int y = 0; y < sStats.Count(); y++)
                 {
                     stat = xmldoc.CreateElement("Stat");
-                    stat.SetAttribute("Name", sStats[y]);
-                    stat.SetAttribute("Min", sMinStat[y]);
-                    stat.SetAttribute("Max", sMaxStat[y]);
+                    stat.SetAttribute("Name", sStats[statsortorder[y]]);
+                    stat.SetAttribute("Min", sMinStat[statsortorder[y]]);
+                    stat.SetAttribute("Max", sMaxStat[statsortorder[y]]);
                     girl.AppendChild(stat);
                 }
                 for (int y = 0; y < sSkills.Count(); y++)
                 {
                     skill = xmldoc.CreateElement("Skill");
-                    skill.SetAttribute("Name", sSkills[y]);
-                    skill.SetAttribute("Min", sMinSkill[y]);
-                    skill.SetAttribute("Max", sMaxSkill[y]);
+                    skill.SetAttribute("Name", sSkills[skillsortorder[y]]);
+                    skill.SetAttribute("Min", sMinSkill[skillsortorder[y]]);
+                    skill.SetAttribute("Max", sMaxSkill[skillsortorder[y]]);
                     girl.AppendChild(skill);
                 }
                 string sCatacombs = "";
@@ -3459,7 +3471,7 @@ namespace WM_Girls_Generator
             XmlWriterSettings settings = new XmlWriterSettings();
             settings.Indent = true;
             settings.NewLineOnAttributes = true;
-            settings.IndentChars = "\t";
+            settings.IndentChars = "    ";
             XmlWriter xmlwrite = XmlWriter.Create(path, settings);
 
             xmldoc.Save(xmlwrite);
@@ -3694,53 +3706,56 @@ namespace WM_Girls_Generator
                 girl.SetAttribute("MiddleName", sMName);
                 girl.SetAttribute("Surname", sLName);
                 girl.SetAttribute("Desc", sDesc);
-                girl.SetAttribute("Charisma", sStats[0]);
-                girl.SetAttribute("Happiness", sStats[1]);
-                girl.SetAttribute("Libido", sStats[2]);
-                girl.SetAttribute("Constitution", sStats[3]);
-                girl.SetAttribute("Intelligence", sStats[4]);
-                girl.SetAttribute("Confidence", sStats[5]);
-                girl.SetAttribute("Mana", sStats[6]);
-                girl.SetAttribute("Agility", sStats[7]);
-                girl.SetAttribute("Fame", sStats[8]);
+
                 girl.SetAttribute("Level", sStats[9]);
-                girl.SetAttribute("AskPrice", sStats[10]);
-                girl.SetAttribute("House", sStats[11]);
                 girl.SetAttribute("Exp", sStats[12]);
                 girl.SetAttribute("Age", sStats[13]);
-                girl.SetAttribute("Obedience", sStats[14]);
-                girl.SetAttribute("Spirit", sStats[15]);
-                girl.SetAttribute("Beauty", sStats[16]);
-                girl.SetAttribute("Tiredness", sStats[17]);
+                girl.SetAttribute("Fame", sStats[8]);
+                girl.SetAttribute("AskPrice", sStats[10]);
+                girl.SetAttribute("House", sStats[11]);
                 girl.SetAttribute("Health", sStats[18]);
-                girl.SetAttribute("PCFear", sStats[19]);
+                girl.SetAttribute("Happiness", sStats[1]);
+                girl.SetAttribute("Tiredness", sStats[17]);
                 girl.SetAttribute("PCLove", sStats[20]);
+                girl.SetAttribute("PCFear", sStats[19]);
                 girl.SetAttribute("PCHate", sStats[21]);
-                girl.SetAttribute("Morality", sStats[22]);
-                girl.SetAttribute("Refinement", sStats[23]);
-                girl.SetAttribute("Dignity", sStats[24]);
                 girl.SetAttribute("Lactation", sStats[25]);
 
-                girl.SetAttribute("Anal", sSkills[0]);
-                girl.SetAttribute("Magic", sSkills[1]);
-                girl.SetAttribute("BDSM", sSkills[2]);
-                girl.SetAttribute("NormalSex", sSkills[3]);
-                girl.SetAttribute("Beastiality", sSkills[4]);
-                girl.SetAttribute("Group", sSkills[5]);
-                girl.SetAttribute("Lesbian", sSkills[6]);
-                girl.SetAttribute("Service", sSkills[7]);
-                girl.SetAttribute("Strip", sSkills[8]);
+                girl.SetAttribute("Charisma", sStats[0]);
+                girl.SetAttribute("Beauty", sStats[16]);
+                girl.SetAttribute("Refinement", sStats[23]);
+                girl.SetAttribute("Agility", sStats[7]);
+                girl.SetAttribute("Constitution", sStats[3]);
+                girl.SetAttribute("Intelligence", sStats[4]);
+                girl.SetAttribute("Mana", sStats[6]);
+                girl.SetAttribute("Morality", sStats[22]);
+                girl.SetAttribute("Dignity", sStats[24]);
+                girl.SetAttribute("Confidence", sStats[5]);
+                girl.SetAttribute("Obedience", sStats[14]);
+                girl.SetAttribute("Spirit", sStats[15]);
+                girl.SetAttribute("Libido", sStats[2]);
+
                 girl.SetAttribute("Combat", sSkills[9]);
-                girl.SetAttribute("OralSex", sSkills[10]);
-                girl.SetAttribute("TittySex", sSkills[11]);
+                girl.SetAttribute("Magic", sSkills[1]);
+                girl.SetAttribute("Service", sSkills[7]);
                 girl.SetAttribute("Medicine", sSkills[12]);
                 girl.SetAttribute("Performance", sSkills[13]);
-                girl.SetAttribute("Handjob", sSkills[14]);
                 girl.SetAttribute("Crafting", sSkills[15]);
-                girl.SetAttribute("Herbalism", sSkills[16]);
                 girl.SetAttribute("Farming", sSkills[17]);
+                girl.SetAttribute("Herbalism", sSkills[16]);
                 girl.SetAttribute("Brewing", sSkills[18]);
                 girl.SetAttribute("AnimalHandling", sSkills[19]);
+
+                girl.SetAttribute("NormalSex", sSkills[3]);
+                girl.SetAttribute("Anal", sSkills[0]);
+                girl.SetAttribute("BDSM", sSkills[2]);
+                girl.SetAttribute("Beastiality", sSkills[4]);
+                girl.SetAttribute("Lesbian", sSkills[6]);
+                girl.SetAttribute("Strip", sSkills[8]);
+                girl.SetAttribute("Group", sSkills[5]);
+                girl.SetAttribute("OralSex", sSkills[10]);
+                girl.SetAttribute("TittySex", sSkills[11]);
+                girl.SetAttribute("Handjob", sSkills[14]);
                 girl.SetAttribute("Footjob", sSkills[20]);
 
                 girl.SetAttribute("Gold", sGold);
@@ -3766,7 +3781,7 @@ namespace WM_Girls_Generator
                 XmlWriterSettings settings = new XmlWriterSettings();	//I've tried few ways of saving this, and this had the nicest output (they were all correct XML wise mind you, but output of this has the "nicest" structure as far as human readability goes
                 settings.Indent = true;									//indent every node, otherwise it would be harder to find where each node begins, again, not for computer, for some person looking at outputed XML
                 settings.NewLineOnAttributes = true;						//without this each node would be one long line, this puts each attribute in new line
-                settings.IndentChars = "\t";								//just a character that'll be used for indenting, \t means tab, so indent is one tab,
+                settings.IndentChars = "    ";								//just a character that'll be used for indenting, \t means tab, so indent is one tab,
                 XmlWriter xmlwrite = XmlWriter.Create(filename, settings);	//now that settings are complete we can write this file, using path passed from button function, and settings we just made
 
                 xmldoc.Save(xmlwrite);									//now we tell our XmlDocument to save itself to our XmlWriter, this is what finally gives us our file
@@ -3775,8 +3790,6 @@ namespace WM_Girls_Generator
 
             }
         }
-
-
         private void SaveIndividualRGirlsXML(string path)
         {
 
@@ -3794,6 +3807,8 @@ namespace WM_Girls_Generator
 
                 string[] sStats = new string[26] { "Charisma", "Happiness", "Libido", "Constitution", "Intelligence", "Confidence", "Mana", "Agility", "Fame", "Level", "AskPrice", "House", "Exp", "Age", "Obedience", "Spirit", "Beauty", "Tiredness", "Health", "PCFear", "PCLove", "PCHate", "Morality", "Refinement", "Dignity", "Lactation" };
                 string[] sSkills = new string[21] { "Anal", "Magic", "BDSM", "NormalSex", "Beastiality", "Group", "Lesbian", "Service", "Strip", "Combat", "OralSex", "TittySex", "Medicine", "Performance", "Handjob", "Crafting", "Herbalism", "Farming", "Brewing", "AnimalHandling", "Footjob" };
+                int[] statsortorder = new int[26] { 9, 12, 13, 8, 10, 11, 18, 1, 17, 20, 19, 21, 25, 0, 16, 23, 7, 3, 4, 6, 22, 24, 5, 14, 15, 2};
+                int[] skillsortorder = new int[21] { 9, 1, 7, 12, 13, 15, 17, 16, 18, 19, 3, 0, 2, 4, 6, 8, 5, 10, 11, 14, 20};
 
                 xmldoc.AppendChild(girls);
 
@@ -3830,17 +3845,17 @@ namespace WM_Girls_Generator
                 for (int y = 0; y < sStats.Count(); y++)
                 {
                     stat = xmldoc.CreateElement("Stat");
-                    stat.SetAttribute("Name", sStats[y]);
-                    stat.SetAttribute("Min", sMinStat[y]);
-                    stat.SetAttribute("Max", sMaxStat[y]);
+                    stat.SetAttribute("Name", sStats[statsortorder[y]]);
+                    stat.SetAttribute("Min", sMinStat[statsortorder[y]]);
+                    stat.SetAttribute("Max", sMaxStat[statsortorder[y]]);
                     girl.AppendChild(stat);
                 }
                 for (int y = 0; y < sSkills.Count(); y++)
                 {
                     skill = xmldoc.CreateElement("Skill");
-                    skill.SetAttribute("Name", sSkills[y]);
-                    skill.SetAttribute("Min", sMinSkill[y]);
-                    skill.SetAttribute("Max", sMaxSkill[y]);
+                    skill.SetAttribute("Name", sSkills[skillsortorder[y]]);
+                    skill.SetAttribute("Min", sMinSkill[skillsortorder[y]]);
+                    skill.SetAttribute("Max", sMaxSkill[skillsortorder[y]]);
                     girl.AppendChild(skill);
                 }
                 string sCatacombs = "";
@@ -3874,7 +3889,7 @@ namespace WM_Girls_Generator
                 XmlWriterSettings settings = new XmlWriterSettings();
                 settings.Indent = true;
                 settings.NewLineOnAttributes = true;
-                settings.IndentChars = "\t";
+                settings.IndentChars = "    ";
                 XmlWriter xmlwrite = XmlWriter.Create(filename, settings);
 
                 xmldoc.Save(xmlwrite);
@@ -4890,7 +4905,7 @@ namespace WM_Girls_Generator
             XmlWriterSettings settings = new XmlWriterSettings();
             settings.Indent = true;
             settings.NewLineOnAttributes = true;
-            settings.IndentChars = "\t";
+            settings.IndentChars = "    ";
             XmlWriter xmlwrite = XmlWriter.Create(path, settings);
 
             xmldoc.Save(xmlwrite);
@@ -4920,6 +4935,139 @@ namespace WM_Girls_Generator
                 }
             }
         }
+
+
+        //***************************
+        //*****   Scripts tab   *****
+        //***************************
+
+        private void button_ScriptLoad_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog Open = new OpenFileDialog();
+            Open.Filter = "Whore Master Script File|*.scriptx; *.script|All files|*.*";
+            Open.ShowDialog();
+
+            switch (Path.GetExtension(Open.FileName))
+            {
+                case ".script":
+                    LoadScripts(Open.FileName);
+                    break;
+                case ".scriptx":
+                    LoadScriptsXML(Open.FileName);
+                    break;
+            }
+            //SortDataTable(ref ScriptsCollection, ref listBox_ScriptsList);
+        }
+
+
+        private void LoadScripts(string path)
+        {
+            try
+            {
+#if false
+                int x = 0;
+                StreamReader Import = new StreamReader(path);
+                while (Import.Peek() >= 0)
+                {
+                    x++;
+                    string name = Convert.ToString(Import.ReadLine());
+                    string desc = Convert.ToString(Import.ReadLine());
+                    string data = Convert.ToString(Import.ReadLine());
+                    string num = Convert.ToString(Import.ReadLine());
+                    string temp = "";
+
+                    for (int i = 0; i < Convert.ToInt32(num); i++)
+                    {
+                        string test = Convert.ToString(Import.ReadLine());
+
+                        if (IsNumeric(test) == true && Convert.ToInt32(test) == 4)
+                        {
+                            test = test + "\r\n" + Convert.ToString(Import.ReadLine()) + "\r\n" + Convert.ToString(Import.ReadLine());
+                        }
+                        temp = temp + test + "\r\n";
+                    }
+
+                    listBox_ItemsList.Items.Add(name);
+                    ItemsCollection.Rows.Add(name, (desc + "\r\n" + data + "\r\n" + num + "\r\n" + temp).TrimEnd('\r', '\n'));
+                }
+                Import.Close();
+                StatusLabel1.Text = "Loaded " + x.ToString() + " items from file...";
+#endif
+            }
+            catch (Exception err)
+            {
+                dataGridView_Bad_Files.Rows.Add(path, err.Message);
+                MessageBox.Show("File load error in file \n\n" + path + "\n\n" + err.Message + "\n\nSee the Extras tab for details.", "Open error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                StatusLabel1.Text = "Load canceled...";
+            }
+        }
+
+        private void LoadScriptsXML(string path)
+        {
+            try
+            {
+                XmlTextReader xmlread = new XmlTextReader(path);
+                XmlDocument xmldoc = new XmlDocument();
+                xmldoc.Load(xmlread);
+                XmlNode baseNode = xmldoc.DocumentElement;
+
+                string ScriptName = baseNode.Attributes["ScriptName"].Value;
+                string s = ScriptName+"\r\n";
+
+                foreach (XmlNode n_actions in baseNode.SelectNodes("/Root/Action"))
+                {
+                    string ActionNumber     = n_actions.Attributes["ActionNumber"].Value;
+                    string a_Type           = n_actions.Attributes["Type"].Value;
+                    string a_NumEntries     = n_actions.Attributes["NumEntries"].Value;
+
+                    string a = ActionNumber + "\t" + a_Type + "\t" + a_NumEntries + "\r\n";
+                    if (n_actions.HasChildNodes == true)
+                    {
+                        int x=0;
+                        foreach (XmlNode n_entry in n_actions.ChildNodes)
+                        {
+                            string e_anumber = "";
+                            string e_number = "";
+                            string e_Type = "";
+                            string e_IOValue = "";
+                            string e_Var = "";
+                            string e_Text = "";
+                            for (int i = 0; i < n_entry.Attributes.Count; i++)
+                            {
+                                if (n_entry.Attributes[i].Name == "ActionNumber")   e_anumber = n_entry.Attributes["ActionNumber"].Value;
+                                if (n_entry.Attributes[i].Name == "EntryNumber")    e_number = n_entry.Attributes["EntryNumber"].Value;
+                                if (n_entry.Attributes[i].Name == "Type")           e_Type = n_entry.Attributes["Type"].Value;
+                                if (n_entry.Attributes[i].Name == "IOValue")        e_IOValue = n_entry.Attributes["IOValue"].Value;
+                                if (n_entry.Attributes[i].Name == "Var")            e_Var = n_entry.Attributes["Var"].Value;
+                                if (n_entry.Attributes[i].Name == "Text")           e_Text = n_entry.Attributes["Text"].Value;
+                            }
+                            x++;
+                            a += e_anumber + "\t" + e_number + "\t" + e_Type + "\t" + e_IOValue + "\t" + e_Var + "\t" + e_Text + "\r\n";
+                        }
+                    }
+                    s += a;
+
+
+                }
+                //ScriptsCollection.Rows.Add(sName, sDesc + "\r\n" + sData + "\r\n" + num.ToString() + "\r\n" + sEffects);
+                xmlread.Close();
+                textBox_Script_Content.Text = s;
+                StatusLabel1.Text = "Loaded Script file: '" + ScriptName+ "'.";
+                //StatusLabel1.Text = "Loaded " + ScriptName + " from XML file...";
+            }
+            catch (Exception err)
+            {
+                dataGridView_Bad_Files.Rows.Add(path, err.Message);
+                MessageBox.Show("File load error in file \n\n" + path + "\n\n" + err.Message + "\n\nSee the Extras tab for details.", "XML load error error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                StatusLabel1.Text = "XML load error...";
+            }
+        }
+
+
+
+
+
+
 
 
         //*********************************
@@ -5114,5 +5262,6 @@ namespace WM_Girls_Generator
              * and can probably be removed
              */
         }
+
     }
 }

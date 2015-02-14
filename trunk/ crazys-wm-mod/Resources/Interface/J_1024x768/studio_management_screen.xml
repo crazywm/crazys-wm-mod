@@ -13,7 +13,8 @@
 <Text     Name="JobDescription"     Text=""               XPos="352" YPos="501" Width="236" Height="63"  FontSize="10" />    
 <Button   Name="ViewDetailsButton"  Image="ViewDetails"   XPos="600" YPos="316" Width="160" Height="32"  Transparency="true" Scale="true" />
 <Button   Name="TransferButton"     Image="TransferGirls" XPos="600" YPos="364" Width="160" Height="32"  Transparency="true" Scale="true" />
-<Button   Name="CreateMovieButton"  Image="CreateMovie"   XPos="600" YPos="404" Width="160" Height="32"  Transparency="true" Scale="true" />
+<Button   Name="FreeSlaveButton"    Image="FreeSlave"     XPos="600" YPos="404" Width="160" Height="32"  Transparency="true" Scale="true" />
+<Button   Name="CreateMovieButton"  Image="CreateMovie"   XPos="600" YPos="444" Width="160" Height="32"  Transparency="true" Scale="true" />
 <Button   Name="BackButton"         Image="Back"          XPos="600" YPos="540" Width="160" Height="32"  Transparency="true" Scale="true" />
 <ListBox  Name="GirlList"                                 XPos="8"   YPos="26"  Width="588" Height="408" Border="1"          Events="true"      Multi="true"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
 <Column   Name="Name"               Header="Girl Name"    Offset="0"/>

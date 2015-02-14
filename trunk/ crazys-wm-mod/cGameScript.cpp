@@ -596,7 +596,7 @@ sScript *cGameScript::Script_AddRandomGirlToDungeon(sScript *Script)
 	else
 		age = (g_Dice % (value[2] + 1)) + value[1] - 1;
 
-	sGirl* newgirl = g_Girls.CreateRandomGirl(age, false, slave, "", allowNonHuman, kidnaped, arena);
+	sGirl* newgirl = g_Girls.CreateRandomGirl(age, false, slave, false, allowNonHuman, kidnaped, arena);
 	stringstream NGmsg;
 	NGmsg << "(DEBUG:: "<< newgirl->m_Realname << " was added by a script.\nLookup code: D_001)";
 	newgirl->m_Events.AddMessage(NGmsg.str(), IMGTYPE_PROFILE, EVENT_WARNING);
@@ -727,7 +727,7 @@ sScript *cGameScript::Script_AddManyRandomGirlsToDungeon(sScript *Script)
 		else
 			age = (g_Dice % (value[3] + 1)) + value[2] - 1;
 
-		sGirl* newgirl = g_Girls.CreateRandomGirl(age, false, slave, "", allowNonHuman, kidnaped, arena);
+		sGirl* newgirl = g_Girls.CreateRandomGirl(age, false, slave, false, allowNonHuman, kidnaped, arena);
 		stringstream NGmsg;
 		NGmsg << "(DEBUG:: " << newgirl->m_Realname << " was added by a script.\nLookup code: D_002)";
 		newgirl->m_Events.AddMessage(NGmsg.str(), IMGTYPE_PROFILE, EVENT_WARNING);
@@ -814,14 +814,14 @@ sScript *cGameScript::Script_AddFamilyToDungeon(sScript *Script)
 	int oldest = 18;
 	if (value[0] > 0)
 	{
-		Daughter1 = g_Girls.CreateRandomGirl((g_Dice % 13) + 13, false, slave, "", allowNonHuman, kidnaped, arena);
+		Daughter1 = g_Girls.CreateRandomGirl((g_Dice % 13) + 13, false, slave, false, allowNonHuman, kidnaped, arena);
 		if (Daughter1->age() > oldest) oldest = Daughter1->age();
 		Daughter1->m_Surname = surname;
 		g_Girls.CreateRealName(Daughter1);
 	}
 	if (value[0] > 1)
 	{
-		Daughter2 = g_Girls.CreateRandomGirl((g_Dice % 13) + 13, false, slave, "", allowNonHuman, kidnaped, arena);
+		Daughter2 = g_Girls.CreateRandomGirl((g_Dice % 13) + 13, false, slave, false, allowNonHuman, kidnaped, arena);
 		if (Daughter2->age() == Daughter1->age())	// if only 2 daughters and their ages are the same, change that
 		{											// if there is a third daughter, her age can be anything (to allow twins)
 			if (Daughter1->age() > 20) Daughter2->age(-(g_Dice % 3 + 1));
@@ -833,7 +833,7 @@ sScript *cGameScript::Script_AddFamilyToDungeon(sScript *Script)
 	}
 	if (value[0] > 2)
 	{
-		Daughter3 = g_Girls.CreateRandomGirl((g_Dice % 13) + 13, false, slave, "", allowNonHuman, kidnaped, arena);
+		Daughter3 = g_Girls.CreateRandomGirl((g_Dice % 13) + 13, false, slave, false, allowNonHuman, kidnaped, arena);
 		if (Daughter3->age() > oldest) oldest = Daughter3->age();
 		Daughter3->m_Surname = surname;
 		g_Girls.CreateRealName(Daughter3);

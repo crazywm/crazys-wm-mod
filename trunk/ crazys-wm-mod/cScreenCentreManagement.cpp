@@ -62,7 +62,6 @@ static int lastNum = -1;
 static int ImageNum = -1;
 static bool FireGirl = false;
 static bool FreeGirl = false;
-static int SpecialJobNumber = 0;
 static bool SellGirl = false;
 static int selection = -1;
 static bool Day0Night1 = SHIFT_DAY;	// 1 is night, 0 is day.
@@ -109,12 +108,10 @@ void cScreenCentreManagement::init()
 			vector<int> girl_array;
 			GetSelectedGirls(&girl_array);  // get and sort array of girls
 
-			// OK, we have the array, now step through it backwards
-			for (int i = girl_array.size(); i--> 0;)
+			for (int i = girl_array.size(); i--> 0;)	// OK, we have the array, now step through it backwards
 			{
 				selected_girl = g_Centre.GetGirl(g_CurrCentre, girl_array[i]);
-				if (GirlDead(selected_girl) || !selected_girl->is_slave())
-					continue;  // if dead or not a slave, can't free her
+				if (GirlDead(selected_girl) || !selected_girl->is_slave()) continue;  // if dead or not a slave, can't free her
 				if (selected_girl)
 				{
 					selected_girl->m_States &= ~(1 << STATUS_SLAVE);
@@ -133,33 +130,9 @@ void cScreenCentreManagement::init()
 		g_ChoiceManager.Free();
 		FreeGirl = false;
 	}
-	if (SpecialJobNumber>0)
-	{
-		if (g_ChoiceManager.GetChoice(0) != 0)
-		{
-			vector<int> girl_array;
-			GetSelectedGirls(&girl_array);  // get and sort array of girls
-
-			// OK, we have the array, now step through it backwards
-			for (int i = girl_array.size(); i-- > 0;)
-			{
-				selected_girl = g_Centre.GetGirl(g_CurrCentre, girl_array[i]);
-				if (GirlDead(selected_girl)) continue;  // skip if dead 
-				if (selected_girl)
-				{
-
-
-					g_InitWin = true;
-				}
-			}
-		}
-		g_ChoiceManager.Free();
-		SpecialJobNumber = 0;
-	}
 
 	g_CurrentScreen = SCREEN_CENTRE;
-	if (!g_InitWin)
-		return;
+	if (!g_InitWin) return;
 
 	Focused();
 	g_InitWin = false;
@@ -456,18 +429,8 @@ void cScreenCentreManagement::check_events()
 		if (selection != -1)
 		{
 			selected_girl = g_Centre.GetGirl(g_CurrCentre, selection);
-			//// If double-clicked, try to bring up girl details
-			if (ListDoubleClicked(girllist_id))
-				ViewSelectedGirl();
-			////
-			if (selected_girl->m_States&(1 << STATUS_SLAVE))
-			{
-				DisableButton(freeslave_id, false);
-			}
-			else
-			{
-				DisableButton(freeslave_id, true);
-			}
+			if (ListDoubleClicked(girllist_id)) ViewSelectedGirl();		// If double-clicked, try to bring up girl details
+			DisableButton(freeslave_id, selected_girl->is_free());
 			DisableButton(viewdetails_id, false);
 			RefreshSelectedJobType();
 		}
@@ -497,8 +460,7 @@ void cScreenCentreManagement::check_events()
 			}
 			else  // only one girl selected
 			{
-				if (GirlDead(selected_girl))
-					return;
+				if (GirlDead(selected_girl)) return;
 				g_MessageQue.AddToQue("Are you sure you wish to give " + selected_girl->m_Realname + " her freedom?", 0);
 				g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, strlen("Keep as a slave"));
 				g_ChoiceManager.AddChoice(0, "Grant Freedom", 0);

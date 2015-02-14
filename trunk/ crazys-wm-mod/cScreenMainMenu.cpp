@@ -20,23 +20,39 @@
 #include "cGetStringScreenManager.h"
 #include "cScriptManager.h"
 #include "cWindowManager.h"
+#include "FileList.h"
 
 extern void NewGame();
 extern void LoadGameScreen();
 extern void GetString();
+
+extern void PreparingLoad();
+extern string g_ReturnText;
+
 
 extern cWindowManager g_WinManager;
 
 extern bool g_InitWin;
 extern int g_CurrentScreen;
 
+extern bool g_C_Key;	// continue
+extern bool g_L_Key;	// load game
+extern bool g_N_Key;	// new game
+extern bool g_Q_Key;	// quit
+extern bool g_S_Key;	// settings
+
+
+
+
 bool cScreenMainMenu::ids_set = false;
 
 void cScreenMainMenu::set_ids()
 {
 	ids_set = true;
-	new_id = get_id("New Game");
+	continue_id = get_id("Continue");
 	load_id = get_id("Load Game");
+	new_id = get_id("New Game");
+	settings_id = get_id("Settings");
 	quit_id = get_id("Quit Game");
 }
 
@@ -48,7 +64,26 @@ void cScreenMainMenu::init()
 		Focused();
 		g_InitWin = false;
 		g_Girls.GetImgManager()->LoadList("Default");
+
+		cConfig cfg;
+		DirPath location;
+		if (cfg.folders.configXMLsa())
+			location = DirPath() << cfg.folders.saves();
+		else
+			location = DirPath() << "Saves";
+		const char *pattern = "autosave.gam";
+		FileList fl(location, pattern);
+		DisableButton(continue_id, fl.size() < 1);		// `J` disable continue button if autosave.gam is not found
+
+		pattern = "*.gam";
+		FileList fla(location, pattern);
+		DisableButton(load_id, fla.size() < 1);			// `J` disable load game button if there are no save games found
+
+
+		DisableButton(settings_id, true);			// `J` disable settings button until settings page is added
+
 	}
+
 }
 
 void cScreenMainMenu::process()
@@ -72,6 +107,14 @@ void cScreenMainMenu::check_events()
 		return;
 	}
 
+	if (g_InterfaceEvents.CheckButton(continue_id))		// `J` not ready yet
+	{
+		g_ReturnText = "autosave.gam";
+		g_WinManager.Push(PreparingLoad, &g_Preparing);
+		g_InitWin = true;
+		return;
+	}
+
 	if (g_InterfaceEvents.CheckButton(load_id))
 	{
 		g_WinManager.Push(LoadGameScreen, &g_LoadGame);
@@ -89,5 +132,42 @@ void cScreenMainMenu::check_events()
 
 bool cScreenMainMenu::check_keys()
 {
+	if (g_C_Key && !m_Buttons[continue_id]->m_Disabled)
+	{
+		g_C_Key = false;
+		g_ReturnText = "autosave.gam";
+		g_WinManager.Push(PreparingLoad, &g_Preparing);
+		g_InitWin = true;
+		return true;
+	}
+	if (g_L_Key)
+	{
+		g_L_Key = false;
+		g_WinManager.Push(LoadGameScreen, &g_LoadGame);
+		g_InitWin = true;
+		return true;
+	}
+	if (g_N_Key)
+	{
+		g_N_Key = false;
+		// the new new game code
+		g_WinManager.push("New Game");
+		g_InitWin = true;
+		return true;
+	}
+	if (g_Q_Key)
+	{
+		g_Q_Key = false;
+		SDL_Event evn;
+		evn.type = SDL_QUIT;
+		SDL_PushEvent(&evn);
+		return true;
+	}
+	if (g_S_Key)
+	{
+		g_S_Key = false;
+		return true;
+	}
+
 	return false;
 }

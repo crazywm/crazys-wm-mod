@@ -35,8 +35,10 @@ public:
 	}
 
 
-	int new_id;
+	int continue_id;
 	int load_id;
+	int new_id;
+	int settings_id;
 	int quit_id;
 
 	void set_ids();
