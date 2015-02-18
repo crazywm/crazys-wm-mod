@@ -94,7 +94,10 @@ bool cJobManager::WorkCentreAngerManagement(sGirl* girl, sBrothel* brothel, bool
 					g_MessageQue.AddToQue(smess.str(), COLOR_RED);
 
 					g_Centre.RemoveGirl(0, girl, false);
+					girl->m_RunAway = 6;
+					girl->m_NightJob = girl->m_DayJob = JOB_RUNAWAY;
 					g_Brothels.AddGirlToRunaways(girl);
+					return true;
 				}
 			}
 			else	// the counselor won

@@ -119,19 +119,25 @@ bool cJobManager::WorkMakeItem(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 
 
+	girl->m_Pay += 25;
+	g_Gold.staff_wages(25);  // wages come from you
+
 	// Improve girl
-	int xp = 10, libido = 1, skill = 2;
+	int xp = 5, libido = 1, skill = 3;
 
 	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
 
-	girl->m_Pay += 25;
-	g_Gold.staff_wages(25);  // wages come from you
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_CRAFTING, g_Dice%skill + 1);
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill);
+	g_Girls.UpdateStat(girl, STAT_EXP, (g_Dice%xp) + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
+
+	// primary (+2 for single or +1 for multiple)
+	g_Girls.UpdateSkill(girl, SKILL_CRAFTING, (g_Dice % skill) + 2);
+	// secondary (-1 for one then -2 for others)
+	g_Girls.UpdateSkill(girl, SKILL_SERVICE, max(0, (g_Dice % skill) - 1));
+	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, max(0, (g_Dice % skill) - 2));
+	g_Girls.UpdateSkill(girl, SKILL_MAGIC, max(0, (g_Dice % skill) - 2));
 
 	return false;
 }
@@ -139,8 +145,13 @@ bool cJobManager::WorkMakeItem(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 double cJobManager::JP_MakeItem(sGirl* girl, bool estimate)// not used
 {
 	double jobperformance =
-		(g_Girls.GetSkill(girl, SKILL_CRAFTING) +
-		g_Girls.GetSkill(girl, SKILL_SERVICE));
+		// primary - first 100
+		girl->crafting() +
+		// secondary - second 100
+		((girl->service() + girl->intelligence() + girl->magic()) / 3) +
+		// level bonus
+		girl->level();
+		// traits modifiers
 
 	return jobperformance;
 }

@@ -73,7 +73,7 @@ sArena::~sArena()			// destructor
 void cArenaManager::AddGirl(int brothelID, sGirl* girl)
 {
 	girl->where_is_she = 0;
-	girl->m_InMovieStudio = false;
+	girl->m_InStudio = false;
 	girl->m_InArena = true;
 	girl->m_InCentre = false;
 	girl->m_InClinic = false;
@@ -148,7 +148,7 @@ void cArenaManager::UpdateArena()	// Start_Building_Process_A
 		{
 			cgirl->m_Events.Clear();			// Clear the girls' events from the last turn
 			cgirl->where_is_she = 0;
-			cgirl->m_InMovieStudio = false;
+			cgirl->m_InStudio = false;
 			cgirl->m_InArena = true;
 			cgirl->m_InCentre = false;
 			cgirl->m_InClinic = false;
@@ -296,7 +296,7 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 		}
 		else if (g_Girls.DisobeyCheck(current, ACTION_WORKMATRON, brothel))
 		{
-			(Day0Night1 == SHIFT_DAY ? current->m_Refused_To_Work_Day = true : current->m_Refused_To_Work_Night = true);
+			(Day0Night1 ? current->m_Refused_To_Work_Night = true : current->m_Refused_To_Work_Day = true);
 			brothel->m_Fame -= g_Girls.GetStat(current, STAT_FAME);
 			ss << girlName << " refused to work as the Doctore.";
 			sum = EVENT_NOWORK;
@@ -353,7 +353,7 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 		{	// if she is healthy enough to go back to work... 
 			if (matron)	// and there is a marton working...
 			{
-				psw = (Day0Night1 == SHIFT_DAY ? current->m_PrevDayJob : current->m_PrevNightJob);
+				psw = (Day0Night1 ? current->m_PrevNightJob : current->m_PrevDayJob);
 				if (psw != restjob && psw != 255)
 				{	// if she had a previous job, put her back to work.
 					if (Day0Night1 == SHIFT_DAY)

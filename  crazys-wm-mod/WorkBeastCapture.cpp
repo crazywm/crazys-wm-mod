@@ -32,7 +32,7 @@ extern cBrothelManager g_Brothels;
 extern cFarmManager g_Farm;
 extern cInventory g_InvManager;
 
-// `J` Job Farm - Laborers
+// `J` Job Farm - Laborers - Combat_Job
 bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	int actiontype = ACTION_COMBAT;
@@ -217,7 +217,7 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 
 
 	// Improve girl
-	int xp = 8, libido = 2, skill = 1;
+	int xp = 10, libido = 1, skill = 3;
 
 	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
@@ -225,12 +225,17 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 
 	girl->m_Pay += 50 + (gain * 10);	// you catch more you get paid more
 	g_Gold.staff_wages(50 + (gain * 10));	// wages come from you
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
+
+	g_Girls.UpdateStat(girl, STAT_EXP, (g_Dice % xp) + 1);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
+
+	// primary (+2 for single or +1 for multiple)
 	g_Girls.UpdateSkill(girl, SKILL_COMBAT, g_Dice % gain + skill);
 	g_Girls.UpdateSkill(girl, SKILL_MAGIC, g_Dice % gain + skill);
 	g_Girls.UpdateStat(girl, STAT_AGILITY, g_Dice % gain + skill);
 	g_Girls.UpdateStat(girl, STAT_CONSTITUTION, g_Dice % 2 + skill);
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStat(girl, STAT_STRENGTH, g_Dice % 2 + skill);
+	// secondary (-1 for one then -2 for others)
 	g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, gain + skill);
 
 	g_Girls.PossiblyGainNewTrait(girl, "Tough", 30, actiontype, "She has become pretty Tough from all of the fights she's been in.", Day0Night1);

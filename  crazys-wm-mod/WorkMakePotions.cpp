@@ -267,12 +267,16 @@ bool cJobManager::WorkMakePotions(sGirl* girl, sBrothel* brothel, bool Day0Night
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
 
-	g_Girls.UpdateStat(girl, STAT_FAME, totalitemsmade);
 	g_Girls.UpdateStat(girl, STAT_EXP, (g_Dice % xp) + 1);
-	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, (g_Dice % skill) + 1);
-	g_Girls.UpdateSkill(girl, SKILL_BREWING, (g_Dice % skill));
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
+
+	// primary (+2 for single or +1 for multiple)
+	g_Girls.UpdateSkill(girl, SKILL_BREWING, (g_Dice % skill) + 1);
 	g_Girls.UpdateSkill(girl, SKILL_HERBALISM, (g_Dice % skill) + 1);
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, (g_Dice % libido) + 1);
+	// secondary (-1 for one then -2 for others)
+	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, max(0, (g_Dice % skill) - 1));
+	g_Girls.UpdateSkill(girl, SKILL_COOKING, max(0, (g_Dice % skill) - 2));
+	g_Girls.UpdateSkill(girl, SKILL_MAGIC, max(0, (g_Dice % skill) - 2));
 
 	return false;
 }
@@ -280,9 +284,13 @@ bool cJobManager::WorkMakePotions(sGirl* girl, sBrothel* brothel, bool Day0Night
 double cJobManager::JP_MakePotions(sGirl* girl, bool estimate)// not used
 {
 	double jobperformance =
-		((girl->intelligence() + girl->herbalism()) / 2) +
-		((girl->brewing() + girl->crafting() + girl->magic()) / 3) +
+		// primary - first 100
+		((girl->brewing() + girl->herbalism()) / 2) +
+		// secondary - second 100
+		((girl->intelligence() + girl->cooking() + girl->magic()) / 3) +
+		// level bonus
 		girl->level();
+	// traits modifiers
 
 	//good traits
 	if (g_Girls.HasTrait(girl, "Quick Learner"))  jobperformance += 5;

@@ -463,11 +463,11 @@ void cScreenStudioManagement::check_events()
 }
 
 
-bool cScreenStudioManagement::GirlDead(sGirl *dgirl)
+bool cScreenStudioManagement::GirlDead(sGirl *dgirl, bool sendmessage)
 {
 	if (g_Girls.GetStat(dgirl, STAT_HEALTH) <= 0)
 	{
-		g_MessageQue.AddToQue(gettext("This girl is dead. She isn't going to work anymore and her body will be removed by the end of the week."), 1);
+		if (sendmessage) g_MessageQue.AddToQue(gettext("This girl is dead. She isn't going to work anymore and her body will be removed by the end of the week."), 1);
 		return true;
 	}
 	else

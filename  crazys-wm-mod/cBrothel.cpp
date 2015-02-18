@@ -139,7 +139,6 @@ sBrothel::~sBrothel()			// destructor
 }
 
 // ----- Matron  // `J` added building checks
-//bool sBrothel::matron_on_shift(int shift)
 bool sBrothel::matron_on_shift(int shift, bool isClinic, bool isStudio, bool isArena, bool isCentre, bool isHouse, bool isFarm, int BrothelID)
 {
 	/* */if (isArena)	{ if (g_Arena.GetNumGirlsOnJob(0, JOB_DOCTORE, shift) > 0)				return true; }
@@ -151,6 +150,7 @@ bool sBrothel::matron_on_shift(int shift, bool isClinic, bool isStudio, bool isA
 	else /*         */	{ if (g_Brothels.GetNumGirlsOnJob(BrothelID, JOB_MATRON, shift) > 0)	return true; }
 	return false;
 }
+
 
 //int sBrothel::matron_count
 int sBrothel::matron_count(bool isClinic, bool isStudio, bool isArena, bool isCentre, bool isHouse, bool isFarm, int BrothelID)
@@ -563,7 +563,7 @@ void sBrothel::AddAntiPreg(int amount) // unused
 void cBrothelManager::AddGirl(int brothelID, sGirl* girl)
 {
 	if (girl == 0)	return;
-	if (girl->m_InMovieStudio)	girl->m_DayJob = girl->m_NightJob = JOB_FILMFREETIME;
+	if (girl->m_InStudio)	girl->m_DayJob = girl->m_NightJob = JOB_FILMFREETIME;
 	else if (girl->m_InArena)	girl->m_DayJob = girl->m_NightJob = JOB_ARENAREST;
 	else if (girl->m_InCentre)	girl->m_DayJob = girl->m_NightJob = JOB_CENTREREST;
 	else if (girl->m_InClinic)	girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
@@ -1188,7 +1188,7 @@ void cBrothelManager::UpdateBrothels()	// Start_Building_Process_A
 			else
 			{
 				cgirl->where_is_she = current->m_id;
-				cgirl->m_InMovieStudio = cgirl->m_InArena = cgirl->m_InCentre = cgirl->m_InClinic = cgirl->m_InFarm = cgirl->m_InHouse = false;
+				cgirl->m_InStudio = cgirl->m_InArena = cgirl->m_InCentre = cgirl->m_InClinic = cgirl->m_InFarm = cgirl->m_InHouse = false;
 				cgirl->m_Events.Clear();
 				cgirl->m_Pay = cgirl->m_Tips = 0;
 				cgirl->m_Tort = false;
@@ -1703,7 +1703,8 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_B
 			sGirl* temp = current;
 			current = current->m_Next;
 			g_Brothels.RemoveGirl(brothel->m_id, temp, false);
-			g_Brothels.AddGirlToRunaways(temp);
+			
+			temp->run_away();
 			continue;
 		}
 
@@ -1715,9 +1716,7 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_B
 		MatronMsg = "";
 		MatronWarningMsg = "";
 
-		bool matron = false;
-		if (GetNumGirlsOnJob(brothel->m_id, JOB_MATRON, true) >= 1 || GetNumGirlsOnJob(brothel->m_id, JOB_MATRON, false) >= 1)
-			matron = true;
+		bool matron = (GetNumGirlsOnJob(brothel->m_id, JOB_MATRON, true) >= 1 || GetNumGirlsOnJob(brothel->m_id, JOB_MATRON, false) >= 1);
 
 		if (g_Girls.GetStat(current, STAT_TIREDNESS) > 80)
 		{
@@ -1890,23 +1889,17 @@ void cBrothelManager::UsePlayersItems(sGirl* cur)
 	has = g_Brothels.HasItem("Mana Crystal");
 	if (g_Girls.GetStat(cur, STAT_MANA) < 20 && has != -1)
 	{
-		Die = g_Dice % 20 + 1;
-		if (Die == 12) // Share them around
-			AutomaticFoodItemUse(cur, has, gettext("Used a mana crystal to restore 25 mana."));
+		if (g_Dice.percent(5))	AutomaticFoodItemUse(cur, has, gettext("Used a mana crystal to restore 25 mana."));
 	}
 	has = g_Brothels.HasItem("Eldritch Cookie");
 	if (g_Girls.GetStat(cur, STAT_MANA) < 20 && has != -1)
 	{
-		Die = g_Dice % 20 + 1;
-		if (Die == 13) // Share them around
-			AutomaticFoodItemUse(cur, has, gettext("Used an eldritch cookie to restore 30 mana."));
+		if (g_Dice.percent(5))	AutomaticFoodItemUse(cur, has, gettext("Used an eldritch cookie to restore 30 mana."));
 	}
 	has = g_Brothels.HasItem("Mana Potion");
 	if (g_Girls.GetStat(cur, STAT_MANA) < 20 && has != -1)
 	{
-		Die = g_Dice % 20 + 1;
-		if (Die == 15) // Share them around
-			AutomaticFoodItemUse(cur, has, gettext("Used a mana potion to restore 100 mana."));
+		if (g_Dice.percent(5))	AutomaticFoodItemUse(cur, has, gettext("Used a mana potion to restore 100 mana."));
 	}
 
 	// Libido - ordered big to small
@@ -2050,40 +2043,21 @@ void cBrothelManager::UsePlayersItems(sGirl* cur)
 
 	// XP: Nuts & tomes & mangos of knowledge, etc...
 
-	// 25 xp
-	/* `J` xp can now be above 255 so removing restriction
-	/* has = g_Brothels.HasItem("Nut of Knowledge");
-	/* if (g_Girls.GetStat(cur, STAT_EXP) <= 230 && g_Girls.GetStat(cur, STAT_LEVEL) < 255 && has != -1)
-	*/
-	if (g_Brothels.HasItem("Nut of Knowledge") != -1)
+	// `J` xp can now be above 255 so removing restriction
+	has = g_Brothels.HasItem("Nut of Knowledge"); 
+	if (has != -1)
 	{
-		Die = g_Dice % 50;   // Spread them around
-		if (Die == 5)
-			AutomaticFoodItemUse(cur, has, gettext("Used a small nut of knowledge."));
+		if (g_Dice.percent(5))	AutomaticFoodItemUse(cur, has, gettext("Used a small nut of knowledge."));
 	}
-
-	// 100 xp
-	/* `J` xp can now be above 255 so removing restriction
-	/* has = g_Brothels.HasItem("Mango of Knowledge");
-	/* if (g_Girls.GetStat(cur, STAT_EXP) <= 155 && g_Girls.GetStat(cur, STAT_LEVEL) < 255 && has != -1)
-	*/
-	if (g_Brothels.HasItem("Mango of Knowledge") != -1)
+	has = g_Brothels.HasItem("Mango of Knowledge");
+	if (has != -1)
 	{
-		Die = g_Dice % 30;
-		if (Die == 9)
-			AutomaticFoodItemUse(cur, has, gettext("She ate a mango of knowledge."));
+		if (g_Dice.percent(5))	AutomaticFoodItemUse(cur, has, gettext("She ate a mango of knowledge."));
 	}
-
-	// 200 xp
-	/* `J` xp can now be above 255 so removing restriction
-	/* has = g_Brothels.HasItem("Watermelon of Knowledge");
-	/* if (g_Girls.GetStat(cur, STAT_EXP) <= 55 && g_Girls.GetStat(cur, STAT_LEVEL) < 255 && has != -1)
-	*/
-	if (g_Brothels.HasItem("Watermelon of Knowledge") != -1)
+	has = g_Brothels.HasItem("Watermelon of Knowledge");
+	if (has != -1)
 	{
-		Die = g_Dice % 30;
-		if (Die == 9)
-			AutomaticFoodItemUse(cur, has, gettext("She had a watermelon of knowledge for lunch."));
+		if (g_Dice.percent(5))	AutomaticFoodItemUse(cur, has, gettext("She had a watermelon of knowledge for lunch."));
 	}
 
 	// Constitution (Items in reverse order. That is, the items offering the largest increases are first)
@@ -4596,6 +4570,23 @@ bool cBrothelManager::NameExists(string name)
 	return false;
 }
 
+bool cBrothelManager::SurnameExists(string name)
+{
+	sBrothel* current = m_Parent;
+	while (current)
+	{
+		sGirl* currentGirl = current->m_Girls;
+		while (currentGirl)
+		{
+			if (name == currentGirl->m_Surname)
+				return true;
+			currentGirl = currentGirl->m_Next;
+		}
+		current = current->m_Next;
+	}
+	return false;
+}
+
 // ----- Runaways
 sGirl* cBrothelManager::GetFirstRunaway()
 {
@@ -4676,7 +4667,7 @@ bool cBrothelManager::runaway_check(sBrothel *brothel, sGirl *girl)
 	*	may be inclined to turn a blind eye to runaway attempts
 	*/
 	//	int matron_chance = brothel->matron_count() * 35;
-	int matron_chance = brothel->matron_count(girl->m_InClinic, girl->m_InMovieStudio, girl->m_InArena, girl->m_InCentre, girl->m_InHouse, girl->m_InFarm, girl->where_is_she) * 35;
+	int matron_chance = brothel->matron_count(girl->m_InClinic, girl->m_InStudio, girl->m_InArena, girl->m_InCentre, girl->m_InHouse, girl->m_InFarm, girl->where_is_she) * 35;
 
 	if (g_Dice.percent(matron_chance)) return false;	// if there is a matron 70%
 
@@ -4692,11 +4683,12 @@ bool cBrothelManager::runaway_check(sBrothel *brothel, sGirl *girl)
 	{
 		if (g_Dice.percent(m_JobManager.guard_coverage() - girl->m_DaysUnhappy)) return false;
 
-		girl->m_Events.AddMessage(gettext("She ran away."), IMGTYPE_PROFILE, EVENT_SUMMARY);
-		girl->m_DayJob = girl->m_NightJob = JOB_RUNAWAY;
+		girl->m_Events.AddMessage(gettext("She ran away."), IMGTYPE_PROFILE, EVENT_DANGER);
 		SetGirlStat(girl, STAT_TIREDNESS, 0);
 		SetGirlStat(girl, STAT_HEALTH, 100);
 		girl->m_RunAway = 6;
+		girl->m_NightJob = girl->m_DayJob = JOB_RUNAWAY;
+		AddGirlToRunaways(girl);
 		stringstream smess;
 		smess << girl->m_Realname << gettext(" has run away.\nSend your goons after her to attempt recapture.\nShe will escape for good after 6 weeks.\n");
 		g_MessageQue.AddToQue(smess.str(), COLOR_RED);

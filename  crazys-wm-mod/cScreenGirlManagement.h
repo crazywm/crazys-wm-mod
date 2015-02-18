@@ -59,7 +59,7 @@ private:
 	int next_id;
 
 	void set_ids();
-	bool GirlDead(sGirl *dgirl);
+	bool GirlDead(sGirl *dgirl, bool sendmessage = true);
 	void RefreshSelectedJobType();
 	void RefreshJobList();
 	void GetSelectedGirls(vector<int> *girl_array);

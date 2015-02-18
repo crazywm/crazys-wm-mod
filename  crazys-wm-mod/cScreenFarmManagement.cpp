@@ -355,14 +355,14 @@ void cScreenFarmManagement::check_events()
 				selected_girl = g_Farm.GetGirl(g_CurrFarm, GSelection);
 				if (selected_girl)
 				{
-					int old_job = (Day0Night1 == SHIFT_DAY ? selected_girl->m_DayJob : selected_girl->m_NightJob);
+					int old_job = (Day0Night1 ? selected_girl->m_NightJob : selected_girl->m_DayJob);
 
 					// handle special job requirements and assign
 					// if HandleSpecialJobs returns true, the job assignment was modified or cancelled
 
 					if (g_Farm.m_JobManager.HandleSpecialJobs(g_CurrFarm, selected_girl, new_job, old_job, Day0Night1, fulltime))
 					{
-						new_job = (Day0Night1 == SHIFT_DAY ? selected_girl->m_DayJob : selected_girl->m_NightJob);
+						new_job = (Day0Night1 ? selected_girl->m_NightJob : selected_girl->m_DayJob);
 						SetSelectedItemInList(joblist_id, new_job, false);
 					}
 					// update the girl's listing to reflect the job change
@@ -440,11 +440,11 @@ void cScreenFarmManagement::check_events()
 }
 
 
-bool cScreenFarmManagement::GirlDead(sGirl *dgirl)
+bool cScreenFarmManagement::GirlDead(sGirl *dgirl, bool sendmessage)
 {
 	if (g_Girls.GetStat(dgirl, STAT_HEALTH) <= 0)
 	{
-		g_MessageQue.AddToQue("This girl is dead. She isn't going to work anymore and her body will be removed by the end of the week.", 1);
+		if (sendmessage) g_MessageQue.AddToQue("This girl is dead. She isn't going to work anymore and her body will be removed by the end of the week.", 1);
 		return true;
 	}
 	else
@@ -456,7 +456,7 @@ void cScreenFarmManagement::RefreshSelectedJobType()
 	selection = GetSelectedItemFromList(girllist_id);
 	if (selection < 0) return;
 	selected_girl = g_Farm.GetGirl(g_CurrFarm, selection);
-	u_int job = (Day0Night1 == SHIFT_DAY ? selected_girl->m_DayJob : selected_girl->m_NightJob);
+	u_int job = (Day0Night1 ? selected_girl->m_NightJob : selected_girl->m_DayJob);
 	// set the job filter
 	if (job >= g_Farm.m_JobManager.JobFilterIndex[JOBFILTER_LABORERS] && job < g_Farm.m_JobManager.JobFilterIndex[JOBFILTER_LABORERS + 1])
 		SetSelectedItemInList(jobtypelist_id, JOBFILTER_LABORERS);
@@ -481,7 +481,7 @@ void cScreenFarmManagement::RefreshJobList()
 	}
 	if (selected_girl)
 	{
-		int sel_job = (Day0Night1 == SHIFT_DAY ? selected_girl->m_DayJob : selected_girl->m_NightJob);
+		int sel_job = (Day0Night1 ? selected_girl->m_NightJob : selected_girl->m_DayJob);
 		SetSelectedItemInList(joblist_id, sel_job, false);
 		EditTextItem(g_Farm.m_JobManager.JobDesc[sel_job], jobdesc_id);
 	}

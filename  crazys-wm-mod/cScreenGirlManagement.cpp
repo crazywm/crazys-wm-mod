@@ -149,9 +149,20 @@ void cScreenGirlManagement::init()
 			for (int i = girl_array.size(); i--> 0;)
 			{
 				selected_girl = g_Brothels.GetGirl(g_CurrBrothel, girl_array[i]);
-				if (GirlDead(selected_girl) || !selected_girl->is_slave())
-					continue;  // if dead or not a slave, can't sell her
-				if (selected_girl)
+				if (GirlDead(selected_girl,false))
+				{
+					g_Brothels.RemoveGirl(g_CurrBrothel, selected_girl, false);
+					// dead girls get removed from the game
+					delete selected_girl;
+					selected_girl = 0;
+					g_InitWin = true;
+
+				}
+				else if (!selected_girl->is_slave())
+				{
+					continue;  // if not a slave, can't sell her
+				}
+				else if (selected_girl)
 				{
 					int cost = tariff.slave_sell_price(selected_girl);
 
@@ -185,9 +196,20 @@ void cScreenGirlManagement::init()
 			for (int i = girl_array.size(); i--> 0;)
 			{
 				selected_girl = g_Brothels.GetGirl(g_CurrBrothel, girl_array[i]);
-				if (GirlDead(selected_girl) || selected_girl->is_slave())
-					continue;  // if dead or a slave, can't fire her
-				if (selected_girl)
+				if (GirlDead(selected_girl, false))
+				{
+					g_Brothels.RemoveGirl(g_CurrBrothel, selected_girl, false);
+					// dead girls get removed from the game
+					delete selected_girl;
+					selected_girl = 0;
+					g_InitWin = true;
+
+				}
+				else if (!selected_girl->is_slave())
+				{
+					continue;  // if not a slave, can't sell her
+				}
+				else if (selected_girl)
 				{
 					g_Brothels.RemoveGirl(g_CurrBrothel, selected_girl, false);
 					if (selected_girl->m_Realname.compare(selected_girl->m_Name) == 0)
@@ -208,8 +230,7 @@ void cScreenGirlManagement::init()
 
 
 	g_CurrentScreen = SCREEN_GIRLMANAGEMENT;
-	if (!g_InitWin)
-		return;
+	if (!g_InitWin) return;
 
 	Focused();
 	g_InitWin = false;
@@ -241,11 +262,10 @@ void cScreenGirlManagement::init()
 	string* Data = new string[numColumns];
 
 	// Add girls to list
-	for (int i = 0; i<g_Brothels.GetNumGirls(g_CurrBrothel); i++)
+	for (int i = 0; i < g_Brothels.GetNumGirls(g_CurrBrothel); i++)
 	{
 		sGirl* gir = g_Brothels.GetGirl(g_CurrBrothel, i);
-		if (selected_girl == gir)
-			selection = i;
+		if (selected_girl == gir) selection = i;
 
 		unsigned int item_color = COLOR_BLUE;
 		if (g_Girls.GetStat(gir, STAT_HEALTH) <= 30 || g_Girls.GetStat(gir, STAT_TIREDNESS) >= 80 || g_Girls.GetStat(gir, STAT_HAPPINESS) <= 30)
@@ -282,29 +302,22 @@ void cScreenGirlManagement::init()
 
 void cScreenGirlManagement::process()
 {
-	// we need to make sure the ID variables are set
-	if (!ids_set)
-		set_ids();
-
-	// handle arrow keys
-	if (check_keys())
-		return;
-
-	// set up the window if needed
-	init();
-
-	// check to see if there's a button event needing handling
-	check_events();
+	if (!ids_set) set_ids();	// we need to make sure the ID variables are set
+	if (check_keys()) return;	// handle arrow keys
+	init();						// set up the window if needed
+	check_events();				// check to see if there's a button event needing handling
 }
 
 bool cScreenGirlManagement::check_keys()
 {
-	if (g_UpArrow) {
+	if (g_UpArrow)
+	{
 		selection = ArrowUpListBox(girllist_id);
 		g_UpArrow = false;
 		return true;
 	}
-	if (g_DownArrow) {
+	if (g_DownArrow)
+	{
 		selection = ArrowDownListBox(girllist_id);
 		g_DownArrow = false;
 		return true;
@@ -312,18 +325,21 @@ bool cScreenGirlManagement::check_keys()
 	if (g_AltKeys)
 	{
 		//Select Girls
-		if (g_A_Key) {
+		if (g_A_Key)
+		{
 			selection = ArrowUpListBox(girllist_id);
 			g_A_Key = false;
 			return true;
 		}
-		if (g_D_Key) {
+		if (g_D_Key)
+		{
 			selection = ArrowDownListBox(girllist_id);
 			g_D_Key = false;
 			return true;
 		}
 		// Select Job  >> Current bug, wont go past torturer/matron if slave due to job check.
-		if (g_Q_Key) {
+		if (g_Q_Key)
+		{
 			selection = ArrowUpListBox(joblist_id);
 			if (u_int(selection) == JOB_TORTURER)
 			{
@@ -354,7 +370,8 @@ bool cScreenGirlManagement::check_keys()
 			g_Q_Key = false;
 			return true;
 		}
-		if (g_E_Key) {
+		if (g_E_Key)
+		{
 			selection = ArrowDownListBox(joblist_id);
 			if (u_int(selection) == JOB_MATRON)
 			{
@@ -386,18 +403,21 @@ bool cScreenGirlManagement::check_keys()
 			return true;
 		}
 		// Select Location
-		if (g_W_Key) {
+		if (g_W_Key)
+		{
 			selection = ArrowUpListBox(jobtypelist_id);
 			g_W_Key = false;
 			return true;
 		}
-		if (g_S_Key) {
+		if (g_S_Key)
+		{
 			selection = ArrowDownListBox(jobtypelist_id);
 			g_S_Key = false;
 			return true;
 		}
 		// Toggle Day/Night shift
-		if (g_Z_Key) {
+		if (g_Z_Key)
+		{
 			DisableButton(day_id, true);
 			DisableButton(night_id, false);
 			Day0Night1 = SHIFT_DAY;
@@ -405,7 +425,8 @@ bool cScreenGirlManagement::check_keys()
 			RefreshSelectedJobType();
 			return true;
 		}
-		if (g_C_Key) {
+		if (g_C_Key)
+		{
 			DisableButton(day_id, false);
 			DisableButton(night_id, true);
 			Day0Night1 = SHIFT_NIGHT;
@@ -469,12 +490,11 @@ void cScreenGirlManagement::update_image()
 
 void cScreenGirlManagement::check_events()
 {
-	// no events means we can go home
-	if (g_InterfaceEvents.GetNumEvents() == 0)
-		return;
+	if (g_InterfaceEvents.GetNumEvents() == 0) return;	// no events means we can go home
 
 	// if it's the back button, pop the window off the stack and we're done
-	if (g_InterfaceEvents.CheckButton(back_id)) {
+	if (g_InterfaceEvents.CheckButton(back_id))
+	{
 		g_InitWin = true;
 		g_WinManager.Pop();
 		return;
@@ -482,8 +502,7 @@ void cScreenGirlManagement::check_events()
 	if (g_InterfaceEvents.CheckButton(prev_id))
 	{
 		g_CurrBrothel--;
-		if (g_CurrBrothel < 0)
-			g_CurrBrothel = g_Brothels.GetNumBrothels() - 1;
+		if (g_CurrBrothel < 0) g_CurrBrothel = g_Brothels.GetNumBrothels() - 1;
 		g_InitWin = true;
 	}
 	if (g_InterfaceEvents.CheckButton(next_id))
@@ -544,28 +563,26 @@ void cScreenGirlManagement::check_events()
 				selected_girl = g_Brothels.GetGirl(g_CurrBrothel, GSelection);
 				if (selected_girl)
 				{
-					int old_job = (Day0Night1 == SHIFT_DAY ? selected_girl->m_DayJob : selected_girl->m_NightJob);
+					int old_job = (Day0Night1 ? selected_girl->m_NightJob : selected_girl->m_DayJob);
 
 					// handle special job requirements and assign
 					// if HandleSpecialJobs returns true, the job assignment was modified or cancelled
 					if (g_Brothels.m_JobManager.HandleSpecialJobs(g_CurrBrothel, selected_girl, new_job, old_job, Day0Night1, fulltime))
 					{
-						new_job = (Day0Night1 == SHIFT_DAY ? selected_girl->m_DayJob : selected_girl->m_NightJob);
+						new_job = (Day0Night1 ? selected_girl->m_NightJob : selected_girl->m_DayJob);
 						SetSelectedItemInList(joblist_id, new_job, false);
 					}
 
-						// update the girl's listing to reflect the job change
-						ss.str("");
-						ss << g_Brothels.m_JobManager.JobName[selected_girl->m_DayJob];
-						SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->DayJobColumn());
-						ss.str("");
-						ss << g_Brothels.m_JobManager.JobName[selected_girl->m_NightJob];
-						SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->NightJobColumn());
-						// refresh job worker counts for former job and current job
+					// update the girl's listing to reflect the job change
+					stringstream ss1; stringstream ss2;
+					ss1 << g_Brothels.m_JobManager.JobName[selected_girl->m_DayJob];
+					ss2 << g_Brothels.m_JobManager.JobName[selected_girl->m_NightJob];
+					SetSelectedItemColumnText(girllist_id, GSelection, ss1.str(), m_ListBoxes[girllist_id]->DayJobColumn());
+					SetSelectedItemColumnText(girllist_id, GSelection, ss2.str(), m_ListBoxes[girllist_id]->NightJobColumn());
+					// refresh job worker counts for former job and current job
 
-						SetSelectedItemText(joblist_id, old_job, g_Brothels.m_JobManager.JobDescriptionCount(old_job, g_CurrBrothel, Day0Night1));
-						SetSelectedItemText(joblist_id, new_job, g_Brothels.m_JobManager.JobDescriptionCount(new_job, g_CurrBrothel, Day0Night1));
-
+					SetSelectedItemText(joblist_id, old_job, g_Brothels.m_JobManager.JobDescriptionCount(old_job, g_CurrBrothel, Day0Night1));
+					SetSelectedItemText(joblist_id, new_job, g_Brothels.m_JobManager.JobDescriptionCount(new_job, g_CurrBrothel, Day0Night1));
 				}
 				GSelection = GetNextSelectedItemFromList(girllist_id, pos + 1, pos);
 			}
@@ -615,38 +632,6 @@ void cScreenGirlManagement::check_events()
 		update_image();
 		return;
 	}
-	if (g_InterfaceEvents.CheckButton(firegirl_id))
-	{
-		if (selected_girl)
-		{
-			if (IsMultiSelected(girllist_id))
-			{  // multiple girls selected
-				g_MessageQue.AddToQue(gettext("Are you sure you wish to fire the selected girls?"), 0);
-				g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, strlen(gettext("Keep Them")));
-				g_ChoiceManager.AddChoice(0, gettext("Fire Them"), 0);
-				g_ChoiceManager.AddChoice(0, gettext("Keep Them"), 1);
-				g_ChoiceManager.SetActive(0);
-				FireGirl = true;
-			}
-			else  // only one girl selected
-			{
-				if (GirlDead(selected_girl)) return;
-				g_MessageQue.AddToQue(gettext("Are you sure you wish to fire the selected girl?"), 0);
-				g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, strlen(gettext("Keep Her")));
-				g_ChoiceManager.AddChoice(0, gettext("Fire Her"), 0);
-				g_ChoiceManager.AddChoice(0, gettext("Keep Her"), 1);
-				g_ChoiceManager.SetActive(0);
-				FireGirl = true;
-			}
-		}
-		return;
-	}
-	if (g_InterfaceEvents.CheckButton(transfer_id))
-	{
-		g_InitWin = true;
-		g_WinManager.Push(TransferGirls, &g_TransferGirls);
-		return;
-	}
 	if (g_InterfaceEvents.CheckButton(freeslave_id))
 	{
 		if (selected_girl)
@@ -662,8 +647,7 @@ void cScreenGirlManagement::check_events()
 			}
 			else  // only one girl selected
 			{
-				if (GirlDead(selected_girl))
-					return;
+				if (GirlDead(selected_girl)) return;
 				g_MessageQue.AddToQue("Are you sure you wish to give " + selected_girl->m_Realname + " her freedom?", 0);
 				g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, strlen(gettext("Keep as a slave")));
 				g_ChoiceManager.AddChoice(0, gettext("Grant Freedom"), 0);
@@ -674,64 +658,216 @@ void cScreenGirlManagement::check_events()
 		}
 		return;
 	}
-	if (g_InterfaceEvents.CheckButton(sellslave_id))
+	if (g_InterfaceEvents.CheckButton(transfer_id))
+	{
+		g_InitWin = true;
+		g_WinManager.Push(TransferGirls, &g_TransferGirls);
+		return;
+	}
+
+	if (g_InterfaceEvents.CheckButton(firegirl_id))
 	{
 		if (selected_girl)
 		{
-			stringstream ss;
-
+			stringstream fg;
 			if (IsMultiSelected(girllist_id))
 			{  // multiple girls selected
-				int value = 0, pos = 0;
+				int value = 0, pos = 0, slavegirls = 0, freegirls = 0, deadgirls = 0;
 				int GSelection = GetNextSelectedItemFromList(girllist_id, 0, pos);
 				while (GSelection != -1)
 				{
 					selected_girl = g_Brothels.GetGirl(g_CurrBrothel, GSelection);
 					GSelection = GetNextSelectedItemFromList(girllist_id, pos + 1, pos);
-					if (GirlDead(selected_girl) || !selected_girl->is_slave())
-						continue;  // dead and non-slave girls don't count
-					if (selected_girl)
-						value += tariff.slave_sell_price(selected_girl);
+					if (GirlDead(selected_girl, false))
+					{
+						deadgirls++;
+					}
+					else if (selected_girl->is_slave())
+					{
+						slavegirls++;
+						continue;		// slave girls don't count
+					}
+					else if (selected_girl)
+					{
+						freegirls++;
+					}
+				}
+				if (deadgirls > 0)
+				{
+					fg << "You can have the " << deadgirls << " dead " << (deadgirls > 1 ? "bodies" : "body") << " removed now instead of at the end of the turn.\n";
+				}
+				if (freegirls > 0)
+				{
+					fg << "Are you sure you wish to fire the " << freegirls << " free girl" << (freegirls > 1 ? "s" : "") << "?\n";
 				}
 
-				ss.str("");
-				ss << gettext("You can sell these girls for ") << value << gettext(" gold. Do you wish to proceed?");
-				g_MessageQue.AddToQue(ss.str(), 0);
-				g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, strlen(gettext("Keep Girls")));
-				g_ChoiceManager.AddChoice(0, gettext("Sell Girls"), 0);
-				g_ChoiceManager.AddChoice(0, gettext("Keep Girls"), 1);
-				g_ChoiceManager.SetActive(0);
-				SellGirl = true;
+				if (deadgirls > 0 || freegirls > 0) fg << "Do you wish to proceed ?\n\n";
+				if (slavegirls > 0)
+				{
+					fg << "(You can not fire the " << slavegirls << " slave girls, you would have to free them first.)";
+				}
+
+				g_MessageQue.AddToQue(fg.str(), 0);
+				if (freegirls > 0)
+				{
+					g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, strlen(gettext("Keep Girls")));
+					g_ChoiceManager.AddChoice(0, gettext("Fire Girls"), 0);
+					g_ChoiceManager.AddChoice(0, gettext("Keep Girls"), 1);
+					g_ChoiceManager.SetActive(0);
+					FireGirl = true;
+				}
+				else if (deadgirls > 0)
+				{
+					g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, strlen(gettext("Remove Bodies")));
+					g_ChoiceManager.AddChoice(0, gettext("Remove Bodies"), 0);
+					g_ChoiceManager.AddChoice(0, gettext("Keep Bodies"), 1);
+					g_ChoiceManager.SetActive(0);
+					FireGirl = true;
+				}
+
 			}
 			else  // only one girl selected
 			{
-				if (GirlDead(selected_girl))
-					return;
+				if (GirlDead(selected_girl, false))
+				{
+					// Tell the player the price
+					fg << "You can remove the dead girl's body now instead of at the end of the turn.\nDo you wish to proceed?";
+					g_MessageQue.AddToQue(fg.str(), 0);
 
-				// Tell the player the price
-				ss.str("");
-				ss << gettext("You can sell this girl for ")
-					<< tariff.slave_sell_price(selected_girl)
-					<< gettext(" gold. Do you wish to proceed?")
-					;
-				g_MessageQue.AddToQue(ss.str(), 0);
+					// ask if he wants to do it
+					g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, strlen(gettext("Remove Body")));
+					g_ChoiceManager.AddChoice(0, gettext("Remove Body"), 0);
+					g_ChoiceManager.AddChoice(0, gettext("Keep Body"), 1);
+					g_ChoiceManager.SetActive(0);
+					FireGirl = true;
+				}
+				else if (!selected_girl->is_slave())	// `J` added just in case
+				{
+					fg << "You can not fire this girl, she is your slave.\n(Use the \"Sell Slave\" button instead.)\n";
+					g_MessageQue.AddToQue(fg.str(), 0);
+				}
+				else
+				{
+					// Tell the player the price
+					fg << "Are you sure you wish to fire the selected girl?";
+					g_MessageQue.AddToQue(fg.str(), 0);
 
-				// ask if he wants to do it
-				g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, strlen(gettext("Keep Girl")));
-				g_ChoiceManager.AddChoice(0, gettext("Sell Girl"), 0);
-				g_ChoiceManager.AddChoice(0, gettext("Keep Girl"), 1);
-				g_ChoiceManager.SetActive(0);
-				SellGirl = true;
+					// ask if he wants to do it
+					g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, strlen(gettext("Keep Her")));
+					g_ChoiceManager.AddChoice(0, gettext("Fire Her"), 0);
+					g_ChoiceManager.AddChoice(0, gettext("Keep Her"), 1);
+					g_ChoiceManager.SetActive(0);
+					FireGirl = true;
+				}
+			}
+		}
+		return;
+	}
+	if (g_InterfaceEvents.CheckButton(sellslave_id))
+	{
+		if (selected_girl)
+		{
+			stringstream sg;
+			if (IsMultiSelected(girllist_id))
+			{  // multiple girls selected
+				int value = 0, pos = 0, slavegirls = 0, freegirls = 0, deadgirls = 0;
+				int GSelection = GetNextSelectedItemFromList(girllist_id, 0, pos);
+				while (GSelection != -1)
+				{
+					selected_girl = g_Brothels.GetGirl(g_CurrBrothel, GSelection);
+					GSelection = GetNextSelectedItemFromList(girllist_id, pos + 1, pos);
+					if (GirlDead(selected_girl,false))
+					{
+						deadgirls++;
+					}
+					else if (!selected_girl->is_slave())
+					{
+						freegirls++;
+						continue;  // non-slave girls don't count
+					}
+					else if (selected_girl)
+					{
+						slavegirls++;
+						value += tariff.slave_sell_price(selected_girl);
+					}
+				}
+
+				if (deadgirls > 0)
+				{
+					sg << "You can have the " << deadgirls << " dead " << (deadgirls > 1 ? "bodies" : "body") << " removed now instead of at the end of the turn.\n";
+				}
+				if (slavegirls > 0)
+				{
+					sg << "You can sell the " << slavegirls << " slave girl" << (slavegirls > 1 ? "s" : "") << " for " << value << " gold.\n";
+				}
+				if (deadgirls > 0 || slavegirls > 0) sg << "Do you wish to proceed ?\n\n";
+				if (freegirls > 0)
+				{
+					sg << "(You can not sell the " << freegirls << " free girl" << (freegirls > 1 ? "s" : "") << ". Use the \"Fire Girls\" button instead.)";
+				}
+
+				g_MessageQue.AddToQue(sg.str(), 0);
+				if (slavegirls > 0)
+				{
+					g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, strlen(gettext("Keep Girls")));
+					g_ChoiceManager.AddChoice(0, gettext("Sell Girls"), 0);
+					g_ChoiceManager.AddChoice(0, gettext("Keep Girls"), 1);
+					g_ChoiceManager.SetActive(0);
+					SellGirl = true;
+				}
+				else if (deadgirls > 0)
+				{
+					g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, strlen(gettext("Remove Bodies")));
+					g_ChoiceManager.AddChoice(0, gettext("Remove Bodies"), 0);
+					g_ChoiceManager.AddChoice(0, gettext("Keep Bodies"), 1);
+					g_ChoiceManager.SetActive(0);
+					SellGirl = true;
+				}
+
+			}
+			else  // only one girl selected
+			{
+				if (GirlDead(selected_girl,false))
+				{
+					// Tell the player the price
+					sg << "You can remove the dead girl's body now instead of at the end of the turn.\nDo you wish to proceed?";
+					g_MessageQue.AddToQue(sg.str(), 0);
+
+					// ask if he wants to do it
+					g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, strlen(gettext("Remove Body")));
+					g_ChoiceManager.AddChoice(0, gettext("Remove Body"), 0);
+					g_ChoiceManager.AddChoice(0, gettext("Keep Body"), 1);
+					g_ChoiceManager.SetActive(0);
+					SellGirl = true;
+				}
+				else if (!selected_girl->is_slave())	// `J` added just in case
+				{
+					sg << "You can not sell this girl, she is not your slave.\n(Use the \"Fire Girls\" button instead.)\n";
+					g_MessageQue.AddToQue(sg.str(), 0);
+				}
+				else
+				{
+					// Tell the player the price
+					sg << "You can sell this girl for " << tariff.slave_sell_price(selected_girl) << " gold.\nDo you wish to proceed?";
+					g_MessageQue.AddToQue(sg.str(), 0);
+
+					// ask if he wants to do it
+					g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, strlen(gettext("Keep Girl")));
+					g_ChoiceManager.AddChoice(0, gettext("Sell Girl"), 0);
+					g_ChoiceManager.AddChoice(0, gettext("Keep Girl"), 1);
+					g_ChoiceManager.SetActive(0);
+					SellGirl = true;
+				}
 			}
 		}
 	}
 }
 
-bool cScreenGirlManagement::GirlDead(sGirl *dgirl)
+bool cScreenGirlManagement::GirlDead(sGirl *dgirl, bool sendmessage)
 {
 	if (g_Girls.GetStat(dgirl, STAT_HEALTH) <= 0)
 	{
-		g_MessageQue.AddToQue(gettext("This girl is dead. She isn't going to work anymore and her body will be removed by the end of the week."), 1);
+		if (sendmessage) g_MessageQue.AddToQue(gettext("This girl is dead. She isn't going to work anymore and her body will be removed by the end of the week."), 1);
 		return true;
 	}
 	else
@@ -743,7 +879,7 @@ void cScreenGirlManagement::RefreshSelectedJobType()
 	selection = GetSelectedItemFromList(girllist_id);
 	if (selection < 0) return;
 	selected_girl = g_Brothels.GetGirl(g_CurrBrothel, selection);
-	u_int job = (Day0Night1 == SHIFT_DAY ? selected_girl->m_DayJob : selected_girl->m_NightJob);
+	u_int job = (Day0Night1 ? selected_girl->m_NightJob : selected_girl->m_DayJob);
 	// set the job filter
 	int jobtype = 0;
 	for (unsigned int i = 0; i<NUMJOBTYPES; i++)
@@ -772,7 +908,7 @@ void cScreenGirlManagement::RefreshJobList()
 	}
 	if (selected_girl)
 	{
-		int sel_job = (Day0Night1 == SHIFT_DAY ? selected_girl->m_DayJob : selected_girl->m_NightJob);
+		int sel_job = (Day0Night1 ? selected_girl->m_NightJob : selected_girl->m_DayJob);
 		SetSelectedItemInList(joblist_id, sel_job, false);
 		EditTextItem(g_Brothels.m_JobManager.JobDesc[sel_job], jobdesc_id);
 	}
@@ -798,11 +934,11 @@ void cScreenGirlManagement::ViewSelectedGirl()
 
 		//load up the cycle_girls vector with the ordered list of girl IDs
 		FillSortedIDList(girllist_id, &cycle_girls, &cycle_pos);
-		for (int i = cycle_girls.size(); i-- > 0;)
-		{  // no viewing dead girls
-			if (g_Brothels.GetGirl(g_CurrBrothel, cycle_girls[i])->health() <= 0)
-				cycle_girls.erase(cycle_girls.begin() + i);
-		}
+//		for (int i = cycle_girls.size(); i-- > 0;)
+//		{  // no viewing dead girls
+//			if (g_Brothels.GetGirl(g_CurrBrothel, cycle_girls[i])->health() <= 0)
+//				cycle_girls.erase(cycle_girls.begin() + i);
+//		}
 		g_CurrentScreen = SCREEN_GIRLDETAILS;
 		g_InitWin = true;
 		g_WinManager.push("Girl Details");

@@ -398,7 +398,7 @@ struct sGirl
 	int m_SkillMods[NUM_SKILLS];
 	int m_SkillTemps[NUM_SKILLS];				// these go down (or up) by 1 each week until they reach 0
 
-	unsigned char m_RunAway;					// if 0 then off, if 1 then girl is removed from list,
+	int m_RunAway;					// if 0 then off, if 1 then girl is removed from list,
 	// otherwise will count down each week
 	unsigned char m_Spotted;					// if 1 then she has been seen stealing but not punished yet
 
@@ -440,7 +440,7 @@ struct sGirl
 	vector<string> m_Canonical_Daughters;
 
 	bool m_InClinic = false;
-	bool m_InMovieStudio = false;
+	bool m_InStudio = false;
 	bool m_InArena = false;
 	bool m_InCentre = false;
 	bool m_InHouse = false;
@@ -457,7 +457,7 @@ struct sGirl
 		m_SpecialJobGoal = 0;
 		m_WorkingDay = 0;
 		m_InClinic = false;
-		m_InMovieStudio = false;
+		m_InStudio = false;
 		m_InArena = false;
 		m_InCentre = false;
 		m_InHouse = false;
@@ -617,6 +617,7 @@ struct sGirl
 	/*
 	*	Now then:
 	*/
+	// `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in >> cGirls.h
 	int charisma()				{ return get_stat(STAT_CHARISMA); }
 	int charisma(int n)			{ return upd_stat(STAT_CHARISMA, n); }
 	int happiness()				{ return get_stat(STAT_HAPPINESS); }
@@ -633,6 +634,8 @@ struct sGirl
 	int mana(int n)				{ return upd_stat(STAT_MANA, n); }
 	int agility()				{ return get_stat(STAT_AGILITY); }
 	int agility(int n)			{ return upd_stat(STAT_AGILITY, n); }
+	int strength()				{ return get_stat(STAT_STRENGTH); }
+	int strength(int n)			{ return upd_stat(STAT_STRENGTH, n); }
 	int fame()					{ return get_stat(STAT_FAME); }
 	int fame(int n)				{ return upd_stat(STAT_FAME, n); }
 	int level()					{ return get_stat(STAT_LEVEL); }
@@ -737,6 +740,8 @@ struct sGirl
 	int	brewing(int n)			{ return upd_skill(SKILL_BREWING, n); }
 	int	animalhandling()		{ return get_skill(SKILL_ANIMALHANDLING); }
 	int	animalhandling(int n)	{ return upd_skill(SKILL_ANIMALHANDLING, n); }
+	int	cooking()				{ return get_skill(SKILL_COOKING); }
+	int	cooking(int n)			{ return upd_skill(SKILL_COOKING, n); }
 
 
 	/*
@@ -995,10 +1000,10 @@ public:
 	void LoadRandomGirlXML(string filename);
 	// end mod
 
-	sGirl* CreateRandomGirl(int age, bool addToGGirls, bool slave = false, bool undead = false, bool NonHuman = false, bool childnaped = false, bool arena = false, bool daughter = false, bool isdaughter = false, string findbyname = "");
+	sGirl* CreateRandomGirl(int age, bool addToGGirls, bool slave = false, bool undead = false, bool Human0Monster1 = false, bool childnaped = false, bool arena = false, bool daughter = false, bool isdaughter = false, string findbyname = "");
 
 	sGirl* GetRandomGirl(bool slave = false, bool catacomb = false, bool arena = false, bool daughter = false, bool isdaughter = false);
-	sGirl* GetRandomYourDaughterGirl();
+	sGirl* GetRandomYourDaughterGirl(int Human0Monster1 = -1);	// -1 either, 0 human, 1 monster
 
 	bool NameExists(string name);
 	bool SurnameExists(string surname);
@@ -1086,12 +1091,23 @@ public:
 	void updateHappyTraits(sGirl* girl);
 	void updateGirlTurnStats(sGirl* girl);
 
+	bool girl_has_matron(sGirl* girl, int shift = 0);
+
+
+
 private:
 	unsigned int m_NumGirls;	// number of girls in the class
 	sGirl* m_Parent;	// first in the list of girls who are dead, gone or in use
 	sGirl* m_Last;	// last in the list of girls who are dead, gone or in use
 
 	unsigned int m_NumRandomGirls;
+	unsigned int m_NumHumanRandomGirls;
+	unsigned int m_NumNonHumanRandomGirls;
+
+	unsigned int m_NumRandomYourDaughterGirls;
+	unsigned int m_NumHumanRandomYourDaughterGirls;
+	unsigned int m_NumNonHumanRandomYourDaughterGirls;
+
 	sRandomGirl* m_RandomGirls;
 	sRandomGirl* m_LastRandomGirls;
 

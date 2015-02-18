@@ -61,12 +61,12 @@ const unsigned int STAT_MORALITY		= 22;
 const unsigned int STAT_REFINEMENT		= 23;
 const unsigned int STAT_DIGNITY			= 24;
 const unsigned int STAT_LACTATION		= 25;
-const int					NUM_STATS	= 26;	// 1 more than the last stat
+const unsigned int STAT_STRENGTH		= 26;
+const int					NUM_STATS	= 27;	// 1 more than the last stat
 
 // `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in >> Constants.h
 
 // Skills
-const unsigned int NUM_SKILLS			= 21;
 const unsigned int SKILL_ANAL			= 0;
 const unsigned int SKILL_MAGIC			= 1;
 const unsigned int SKILL_BDSM			= 2;
@@ -88,7 +88,8 @@ const unsigned int SKILL_FARMING		= 17;
 const unsigned int SKILL_BREWING		= 18;
 const unsigned int SKILL_ANIMALHANDLING	= 19;
 const unsigned int SKILL_FOOTJOB		= 20;
-//const unsigned int SKILL_COOKING		= ;
+const unsigned int SKILL_COOKING		= 21;
+const unsigned int NUM_SKILLS			= 22;	// 1 more than the last skill
 //const unsigned int SKILL_MAST		= ;
 
 // STATUS

@@ -167,7 +167,7 @@ void cCustomers::GenerateCustomers(sBrothel * brothel, bool Day0Night1)
 	stringstream ss;
 	ss.str("");
 	if (brothel->m_NumGirls == 0) return;	// no girls, no customers
-
+	string daynighttime = (Day0Night1 ? gettext("nighttime") : gettext("daytime"));
 	/*
  *	base number of customers = number of girls times 1.5f
  *	(was set to time 5 - reverting it to agree with the comment for now
@@ -176,9 +176,8 @@ void cCustomers::GenerateCustomers(sBrothel * brothel, bool Day0Night1)
  *	adding a .5 bonus to night time trade as well - should see more 
  *	punters after dark it seems to me
  */
-	m_NumCustomers = int(brothel->m_NumGirls * (Day0Night1 == SHIFT_DAY ? 1.5 : 2.0));
-	ss << gettext("The number of girls in this brothel attracted ") << m_NumCustomers
-		<< gettext(" initial ") << (Day0Night1 == SHIFT_DAY ? gettext("daytime") : gettext("nighttime")) << gettext(" customers.\n\n");
+	m_NumCustomers = int(brothel->m_NumGirls * (Day0Night1 ? 2.0 : 1.5));
+	ss << gettext("The number of girls in this brothel attracted ") << m_NumCustomers << gettext(" initial ") << daynighttime << gettext(" customers.\n\n");
 /*
  *	the customers attracted by the places fame (for this shift)
  *	is the fame divided by 4 (so a max of 25 people)
@@ -186,8 +185,7 @@ void cCustomers::GenerateCustomers(sBrothel * brothel, bool Day0Night1)
  *	(halved the number -- doc)
  */
 	int fame_customers = brothel->m_Fame / 4;
-	ss << gettext("This brothel's fame enticed ") << fame_customers
-		<< gettext(" additional ") << (Day0Night1 == SHIFT_DAY ? gettext("daytime") : gettext("nighttime")) << gettext(" customers to visit.\n\n");
+	ss << gettext("This brothel's fame enticed ") << fame_customers << gettext(" additional ") << daynighttime << gettext(" customers to visit.\n\n");
 	m_NumCustomers += fame_customers;
 
 	// each 100 gold of advertising adds 6 customers which is then randomized a little
@@ -198,7 +196,7 @@ void cCustomers::GenerateCustomers(sBrothel * brothel, bool Day0Night1)
 		advert *= brothel->m_AdvertisingLevel;					// apply multiplier from girls working on advertising
 		int custsFromAds = int(advert * 0.06);					// 6 customers per 100 gold or so
 		custsFromAds = g_Dice%custsFromAds + (custsFromAds / 2);  // randomized from 50% to 150%
-		ss << gettext("You brought in ") << custsFromAds << gettext(" more ") << (Day0Night1 == SHIFT_DAY ? gettext("daytime") : gettext("nighttime")) << gettext(" customers through advertising.\n\n");
+		ss << gettext("You brought in ") << custsFromAds << gettext(" more ") << daynighttime << gettext(" customers through advertising.\n\n");
 		m_NumCustomers += custsFromAds;
 	}
 
@@ -207,9 +205,9 @@ void cCustomers::GenerateCustomers(sBrothel * brothel, bool Day0Night1)
 	m_NumCustomers -= LostCustomers;
 
 	if(LostCustomers <= 0)
-		ss << gettext("Your brothel was spotlessly clean, so you didn't lose any ") << (Day0Night1 == SHIFT_DAY ? gettext("daytime") : gettext("nighttime")) << gettext(" customers due to filthiness.\n\n");
+		ss << gettext("Your brothel was spotlessly clean, so you didn't lose any ") << daynighttime << gettext(" customers due to filthiness.\n\n");
 	else
-		ss << gettext("You lost ") << LostCustomers << gettext(" ") << (Day0Night1 == SHIFT_DAY ? gettext("daytime") : gettext("nighttime")) << gettext(" customers due to the filthiness of your brothel.\n\n");
+		ss << gettext("You lost ") << LostCustomers << " " << daynighttime << gettext(" customers due to the filthiness of your brothel.\n\n");
 
 
 	// `J` Too much security will scare away customers
@@ -221,16 +219,14 @@ void cCustomers::GenerateCustomers(sBrothel * brothel, bool Day0Night1)
 
 	if (ScareCustomers < 0)
 	{
-		ss << "Your nonintrusive security attracted " << -ScareCustomers << " ";
-		ss << (Day0Night1 == SHIFT_DAY ? gettext("daytime") : gettext("nighttime"));
-		ss << " customers. (for better or worse)";
+		ss << "Your nonintrusive security attracted " << -ScareCustomers << " " << daynighttime << " customers. (for better or worse)";
 	}
 	else if (ScareCustomers == 0)
-		ss << gettext("Your brothel was safe and secure, so you didn't lose any ") << (Day0Night1 == SHIFT_DAY ? gettext("daytime") : gettext("nighttime")) << gettext(" customers due to excessive security.");
+		ss << gettext("Your brothel was safe and secure, so you didn't lose any ") << daynighttime << gettext(" customers due to excessive security.");
 	else if (ScareCustomers < 10)
-		ss << gettext("You lost ") << ScareCustomers << gettext(" ") << (Day0Night1 == SHIFT_DAY ? gettext("daytime") : gettext("nighttime")) << gettext(" customers due to the excessive security in your brothel.");
+		ss << gettext("You lost ") << ScareCustomers << " " << daynighttime << gettext(" customers due to the excessive security in your brothel.");
 	else
-		ss << gettext("You lost ") << ScareCustomers << gettext(" ") << (Day0Night1 == SHIFT_DAY ? gettext("daytime") : gettext("nighttime")) << gettext(" customers due to the oppressive security in your brothel.");
+		ss << gettext("You lost ") << ScareCustomers << " " << daynighttime << gettext(" customers due to the oppressive security in your brothel.");
 	brothel->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_BROTHEL);
 
 

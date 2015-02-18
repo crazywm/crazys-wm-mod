@@ -29,11 +29,11 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage0_Info = new System.Windows.Forms.TabPage();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
@@ -83,6 +83,8 @@
             this.label33 = new System.Windows.Forms.Label();
             this.label34 = new System.Windows.Forms.Label();
             this.groupBox_G_Skills = new System.Windows.Forms.GroupBox();
+            this.label192 = new System.Windows.Forms.Label();
+            this.SkillTBox_22 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -131,6 +133,8 @@
             this.button_G_Update = new System.Windows.Forms.Button();
             this.button_G_Reset = new System.Windows.Forms.Button();
             this.groupBox_G_Stats = new System.Windows.Forms.GroupBox();
+            this.StatsTBox_27 = new System.Windows.Forms.TextBox();
+            this.label195 = new System.Windows.Forms.Label();
             this.label160 = new System.Windows.Forms.Label();
             this.label159 = new System.Windows.Forms.Label();
             this.label164 = new System.Windows.Forms.Label();
@@ -204,6 +208,9 @@
             this.button_St_Mental = new System.Windows.Forms.Button();
             this.tabPage2_RGirls = new System.Windows.Forms.TabPage();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.StatRGMaxTBox27 = new System.Windows.Forms.TextBox();
+            this.StatRGMinTBox27 = new System.Windows.Forms.TextBox();
+            this.label194 = new System.Windows.Forms.Label();
             this.label175 = new System.Windows.Forms.Label();
             this.label174 = new System.Windows.Forms.Label();
             this.label173 = new System.Windows.Forms.Label();
@@ -324,6 +331,9 @@
             this.label63 = new System.Windows.Forms.Label();
             this.label69 = new System.Windows.Forms.Label();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.label193 = new System.Windows.Forms.Label();
+            this.SkillRGMaxTBox22 = new System.Windows.Forms.TextBox();
+            this.SkillRGMinTBox22 = new System.Windows.Forms.TextBox();
             this.label38 = new System.Windows.Forms.Label();
             this.label39 = new System.Windows.Forms.Label();
             this.SkillRGMaxTBox19 = new System.Windows.Forms.TextBox();
@@ -444,14 +454,19 @@
             this.label74 = new System.Windows.Forms.Label();
             this.textBox_ItemName = new System.Windows.Forms.TextBox();
             this.tabPage4_Config = new System.Windows.Forms.TabPage();
-            this.groupBox_Folders = new System.Windows.Forms.GroupBox();
-            this.checkBox_Config_Folders_Backup_Saves = new System.Windows.Forms.CheckBox();
-            this.label185 = new System.Windows.Forms.Label();
-            this.textBox_Config_Folders_Default_Images = new System.Windows.Forms.TextBox();
-            this.label183 = new System.Windows.Forms.Label();
-            this.label184 = new System.Windows.Forms.Label();
-            this.textBox_Config_Folders_Characters = new System.Windows.Forms.TextBox();
-            this.textBox_Config_Folders_Savegames = new System.Windows.Forms.TextBox();
+            this.groupBox_C_Catacombs = new System.Windows.Forms.GroupBox();
+            this.label188 = new System.Windows.Forms.Label();
+            this.checkBox_Config_Control_Gangs = new System.Windows.Forms.CheckBox();
+            this.checkBox_Config_Control_Girls = new System.Windows.Forms.CheckBox();
+            this.textBox_Config_Girl_Gets_Girls = new System.Windows.Forms.TextBox();
+            this.textBox_Config_Girl_Gets_Beast = new System.Windows.Forms.TextBox();
+            this.textBox_Config_Gang_Gets_Girls = new System.Windows.Forms.TextBox();
+            this.label189 = new System.Windows.Forms.Label();
+            this.textBox_Config_Gang_Gets_Items = new System.Windows.Forms.TextBox();
+            this.label190 = new System.Windows.Forms.Label();
+            this.textBox_Config_Gang_Gets_Beast = new System.Windows.Forms.TextBox();
+            this.label191 = new System.Windows.Forms.Label();
+            this.textBox_Config_Girl_Gets_Items = new System.Windows.Forms.TextBox();
             this.groupBox_C_Display_Settings = new System.Windows.Forms.GroupBox();
             this.label177 = new System.Windows.Forms.Label();
             this.textBox_Config_List_Scroll_Amount = new System.Windows.Forms.TextBox();
@@ -651,6 +666,15 @@
             this.textBox_Script_Content = new System.Windows.Forms.TextBox();
             this.button_ScriptLoad = new System.Windows.Forms.Button();
             this.tabPage7_FAQ = new System.Windows.Forms.TabPage();
+            this.groupBox_Folders = new System.Windows.Forms.GroupBox();
+            this.richTextBox3 = new System.Windows.Forms.RichTextBox();
+            this.checkBox_Config_Folders_Backup_Saves = new System.Windows.Forms.CheckBox();
+            this.label185 = new System.Windows.Forms.Label();
+            this.textBox_Config_Folders_Default_Images = new System.Windows.Forms.TextBox();
+            this.label183 = new System.Windows.Forms.Label();
+            this.label184 = new System.Windows.Forms.Label();
+            this.textBox_Config_Folders_Characters = new System.Windows.Forms.TextBox();
+            this.textBox_Config_Folders_Savegames = new System.Windows.Forms.TextBox();
             this.dataGridView_Bad_Files = new System.Windows.Forms.DataGridView();
             this.Bad_Files = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Error_Message = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -698,7 +722,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_bad_02)).BeginInit();
             this.tabPage4_Config.SuspendLayout();
-            this.groupBox_Folders.SuspendLayout();
+            this.groupBox_C_Catacombs.SuspendLayout();
             this.groupBox_C_Display_Settings.SuspendLayout();
             this.groupBox_C_Expense_Multipliers.SuspendLayout();
             this.groupBox_C_Gangs.SuspendLayout();
@@ -714,6 +738,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Traits)).BeginInit();
             this.tabPage6_Scripts.SuspendLayout();
             this.tabPage7_FAQ.SuspendLayout();
+            this.groupBox_Folders.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Bad_Files)).BeginInit();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -896,8 +921,8 @@
             // 
             this.dataGridView_G_Traits_Type.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.dataGridView_G_Traits_Type.DataPropertyName = "Type";
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dataGridView_G_Traits_Type.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dataGridView_G_Traits_Type.DefaultCellStyle = dataGridViewCellStyle5;
             this.dataGridView_G_Traits_Type.HeaderText = "Type";
             this.dataGridView_G_Traits_Type.Name = "dataGridView_G_Traits_Type";
             this.dataGridView_G_Traits_Type.Resizable = System.Windows.Forms.DataGridViewTriState.True;
@@ -1051,9 +1076,9 @@
             this.groupBox_G_SexSkills.Controls.Add(this.label36);
             this.groupBox_G_SexSkills.Controls.Add(this.label33);
             this.groupBox_G_SexSkills.Controls.Add(this.label34);
-            this.groupBox_G_SexSkills.Location = new System.Drawing.Point(450, 306);
+            this.groupBox_G_SexSkills.Location = new System.Drawing.Point(450, 330);
             this.groupBox_G_SexSkills.Name = "groupBox_G_SexSkills";
-            this.groupBox_G_SexSkills.Size = new System.Drawing.Size(170, 280);
+            this.groupBox_G_SexSkills.Size = new System.Drawing.Size(170, 250);
             this.groupBox_G_SexSkills.TabIndex = 12;
             this.groupBox_G_SexSkills.TabStop = false;
             this.groupBox_G_SexSkills.Text = "Sex Skills";
@@ -1062,7 +1087,7 @@
             // label60
             // 
             this.label60.AutoSize = true;
-            this.label60.Location = new System.Drawing.Point(10, 256);
+            this.label60.Location = new System.Drawing.Point(10, 228);
             this.label60.Name = "label60";
             this.label60.Size = new System.Drawing.Size(45, 13);
             this.label60.TabIndex = 20;
@@ -1070,7 +1095,7 @@
             // 
             // SkillTBox_21
             // 
-            this.SkillTBox_21.Location = new System.Drawing.Point(99, 253);
+            this.SkillTBox_21.Location = new System.Drawing.Point(99, 225);
             this.SkillTBox_21.MaxLength = 3;
             this.SkillTBox_21.Name = "SkillTBox_21";
             this.SkillTBox_21.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -1083,7 +1108,7 @@
             // label147
             // 
             this.label147.AutoSize = true;
-            this.label147.Location = new System.Drawing.Point(10, 232);
+            this.label147.Location = new System.Drawing.Point(10, 207);
             this.label147.Name = "label147";
             this.label147.Size = new System.Drawing.Size(50, 13);
             this.label147.TabIndex = 18;
@@ -1091,7 +1116,7 @@
             // 
             // SkillTBox_04
             // 
-            this.SkillTBox_04.Location = new System.Drawing.Point(99, 13);
+            this.SkillTBox_04.Location = new System.Drawing.Point(99, 15);
             this.SkillTBox_04.MaxLength = 3;
             this.SkillTBox_04.Name = "SkillTBox_04";
             this.SkillTBox_04.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -1103,7 +1128,7 @@
             // 
             // SkillTBox_15
             // 
-            this.SkillTBox_15.Location = new System.Drawing.Point(99, 229);
+            this.SkillTBox_15.Location = new System.Drawing.Point(99, 204);
             this.SkillTBox_15.MaxLength = 3;
             this.SkillTBox_15.Name = "SkillTBox_15";
             this.SkillTBox_15.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -1115,7 +1140,7 @@
             // 
             // SkillTBox_12
             // 
-            this.SkillTBox_12.Location = new System.Drawing.Point(99, 205);
+            this.SkillTBox_12.Location = new System.Drawing.Point(99, 183);
             this.SkillTBox_12.MaxLength = 3;
             this.SkillTBox_12.Name = "SkillTBox_12";
             this.SkillTBox_12.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -1128,7 +1153,7 @@
             // label144
             // 
             this.label144.AutoSize = true;
-            this.label144.Location = new System.Drawing.Point(10, 208);
+            this.label144.Location = new System.Drawing.Point(10, 186);
             this.label144.Name = "label144";
             this.label144.Size = new System.Drawing.Size(51, 13);
             this.label144.TabIndex = 16;
@@ -1136,7 +1161,7 @@
             // 
             // SkillTBox_11
             // 
-            this.SkillTBox_11.Location = new System.Drawing.Point(99, 181);
+            this.SkillTBox_11.Location = new System.Drawing.Point(99, 162);
             this.SkillTBox_11.MaxLength = 3;
             this.SkillTBox_11.Name = "SkillTBox_11";
             this.SkillTBox_11.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -1149,7 +1174,7 @@
             // label143
             // 
             this.label143.AutoSize = true;
-            this.label143.Location = new System.Drawing.Point(10, 184);
+            this.label143.Location = new System.Drawing.Point(10, 165);
             this.label143.Name = "label143";
             this.label143.Size = new System.Drawing.Size(50, 13);
             this.label143.TabIndex = 14;
@@ -1157,7 +1182,7 @@
             // 
             // SkillTBox_09
             // 
-            this.SkillTBox_09.Location = new System.Drawing.Point(99, 133);
+            this.SkillTBox_09.Location = new System.Drawing.Point(99, 120);
             this.SkillTBox_09.MaxLength = 3;
             this.SkillTBox_09.Name = "SkillTBox_09";
             this.SkillTBox_09.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -1169,7 +1194,7 @@
             // 
             // SkillTBox_07
             // 
-            this.SkillTBox_07.Location = new System.Drawing.Point(99, 109);
+            this.SkillTBox_07.Location = new System.Drawing.Point(99, 99);
             this.SkillTBox_07.MaxLength = 3;
             this.SkillTBox_07.Name = "SkillTBox_07";
             this.SkillTBox_07.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -1181,7 +1206,7 @@
             // 
             // SkillTBox_06
             // 
-            this.SkillTBox_06.Location = new System.Drawing.Point(99, 157);
+            this.SkillTBox_06.Location = new System.Drawing.Point(99, 141);
             this.SkillTBox_06.MaxLength = 3;
             this.SkillTBox_06.Name = "SkillTBox_06";
             this.SkillTBox_06.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -1194,7 +1219,7 @@
             // label29
             // 
             this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(10, 40);
+            this.label29.Location = new System.Drawing.Point(10, 39);
             this.label29.Name = "label29";
             this.label29.Size = new System.Drawing.Size(52, 13);
             this.label29.TabIndex = 2;
@@ -1202,7 +1227,7 @@
             // 
             // SkillTBox_05
             // 
-            this.SkillTBox_05.Location = new System.Drawing.Point(99, 85);
+            this.SkillTBox_05.Location = new System.Drawing.Point(99, 78);
             this.SkillTBox_05.MaxLength = 3;
             this.SkillTBox_05.Name = "SkillTBox_05";
             this.SkillTBox_05.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -1215,7 +1240,7 @@
             // label30
             // 
             this.label30.AutoSize = true;
-            this.label30.Location = new System.Drawing.Point(10, 64);
+            this.label30.Location = new System.Drawing.Point(10, 60);
             this.label30.Name = "label30";
             this.label30.Size = new System.Drawing.Size(62, 13);
             this.label30.TabIndex = 4;
@@ -1223,7 +1248,7 @@
             // 
             // SkillTBox_03
             // 
-            this.SkillTBox_03.Location = new System.Drawing.Point(99, 61);
+            this.SkillTBox_03.Location = new System.Drawing.Point(99, 57);
             this.SkillTBox_03.MaxLength = 3;
             this.SkillTBox_03.Name = "SkillTBox_03";
             this.SkillTBox_03.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -1236,7 +1261,7 @@
             // label31
             // 
             this.label31.AutoSize = true;
-            this.label31.Location = new System.Drawing.Point(10, 16);
+            this.label31.Location = new System.Drawing.Point(10, 18);
             this.label31.Name = "label31";
             this.label31.Size = new System.Drawing.Size(64, 13);
             this.label31.TabIndex = 0;
@@ -1244,7 +1269,7 @@
             // 
             // SkillTBox_01
             // 
-            this.SkillTBox_01.Location = new System.Drawing.Point(99, 37);
+            this.SkillTBox_01.Location = new System.Drawing.Point(99, 36);
             this.SkillTBox_01.MaxLength = 3;
             this.SkillTBox_01.Name = "SkillTBox_01";
             this.SkillTBox_01.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -1257,7 +1282,7 @@
             // label32
             // 
             this.label32.AutoSize = true;
-            this.label32.Location = new System.Drawing.Point(10, 88);
+            this.label32.Location = new System.Drawing.Point(10, 81);
             this.label32.Name = "label32";
             this.label32.Size = new System.Drawing.Size(72, 13);
             this.label32.TabIndex = 6;
@@ -1266,7 +1291,7 @@
             // label36
             // 
             this.label36.AutoSize = true;
-            this.label36.Location = new System.Drawing.Point(10, 136);
+            this.label36.Location = new System.Drawing.Point(10, 123);
             this.label36.Name = "label36";
             this.label36.Size = new System.Drawing.Size(51, 13);
             this.label36.TabIndex = 10;
@@ -1275,7 +1300,7 @@
             // label33
             // 
             this.label33.AutoSize = true;
-            this.label33.Location = new System.Drawing.Point(10, 160);
+            this.label33.Location = new System.Drawing.Point(10, 144);
             this.label33.Name = "label33";
             this.label33.Size = new System.Drawing.Size(60, 13);
             this.label33.TabIndex = 12;
@@ -1284,7 +1309,7 @@
             // label34
             // 
             this.label34.AutoSize = true;
-            this.label34.Location = new System.Drawing.Point(10, 112);
+            this.label34.Location = new System.Drawing.Point(10, 102);
             this.label34.Name = "label34";
             this.label34.Size = new System.Drawing.Size(68, 13);
             this.label34.TabIndex = 8;
@@ -1292,6 +1317,8 @@
             // 
             // groupBox_G_Skills
             // 
+            this.groupBox_G_Skills.Controls.Add(this.label192);
+            this.groupBox_G_Skills.Controls.Add(this.SkillTBox_22);
             this.groupBox_G_Skills.Controls.Add(this.label1);
             this.groupBox_G_Skills.Controls.Add(this.label2);
             this.groupBox_G_Skills.Controls.Add(this.label3);
@@ -1312,18 +1339,40 @@
             this.groupBox_G_Skills.Controls.Add(this.SkillTBox_10);
             this.groupBox_G_Skills.Controls.Add(this.SkillTBox_13);
             this.groupBox_G_Skills.Controls.Add(this.SkillTBox_14);
-            this.groupBox_G_Skills.Location = new System.Drawing.Point(270, 306);
+            this.groupBox_G_Skills.Location = new System.Drawing.Point(270, 330);
             this.groupBox_G_Skills.Name = "groupBox_G_Skills";
-            this.groupBox_G_Skills.Size = new System.Drawing.Size(170, 280);
+            this.groupBox_G_Skills.Size = new System.Drawing.Size(170, 250);
             this.groupBox_G_Skills.TabIndex = 11;
             this.groupBox_G_Skills.TabStop = false;
             this.groupBox_G_Skills.Text = "Skills";
             this.toolTip1.SetToolTip(this.groupBox_G_Skills, "I think this one is selfexpalantory, values are from 0 to 100");
             // 
+            // label192
+            // 
+            this.label192.AutoSize = true;
+            this.label192.Location = new System.Drawing.Point(10, 228);
+            this.label192.Name = "label192";
+            this.label192.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.label192.Size = new System.Drawing.Size(46, 13);
+            this.label192.TabIndex = 20;
+            this.label192.Text = "Cooking";
+            // 
+            // SkillTBox_22
+            // 
+            this.SkillTBox_22.Location = new System.Drawing.Point(99, 225);
+            this.SkillTBox_22.MaxLength = 3;
+            this.SkillTBox_22.Name = "SkillTBox_22";
+            this.SkillTBox_22.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.SkillTBox_22.Size = new System.Drawing.Size(65, 20);
+            this.SkillTBox_22.TabIndex = 21;
+            this.SkillTBox_22.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.SkillTBox_22.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillTBox_22.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(10, 232);
+            this.label1.Location = new System.Drawing.Point(10, 207);
             this.label1.Name = "label1";
             this.label1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.label1.Size = new System.Drawing.Size(86, 13);
@@ -1333,7 +1382,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(10, 208);
+            this.label2.Location = new System.Drawing.Point(10, 186);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(48, 13);
             this.label2.TabIndex = 16;
@@ -1342,7 +1391,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(10, 136);
+            this.label3.Location = new System.Drawing.Point(10, 123);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(46, 13);
             this.label3.TabIndex = 10;
@@ -1351,7 +1400,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(10, 160);
+            this.label13.Location = new System.Drawing.Point(10, 144);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(56, 13);
             this.label13.TabIndex = 12;
@@ -1360,7 +1409,7 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(10, 184);
+            this.label16.Location = new System.Drawing.Point(10, 165);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(47, 13);
             this.label16.TabIndex = 14;
@@ -1368,7 +1417,7 @@
             // 
             // SkillTBox_16
             // 
-            this.SkillTBox_16.Location = new System.Drawing.Point(99, 133);
+            this.SkillTBox_16.Location = new System.Drawing.Point(99, 120);
             this.SkillTBox_16.MaxLength = 3;
             this.SkillTBox_16.Name = "SkillTBox_16";
             this.SkillTBox_16.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -1380,7 +1429,7 @@
             // 
             // SkillTBox_18
             // 
-            this.SkillTBox_18.Location = new System.Drawing.Point(99, 181);
+            this.SkillTBox_18.Location = new System.Drawing.Point(99, 162);
             this.SkillTBox_18.MaxLength = 3;
             this.SkillTBox_18.Name = "SkillTBox_18";
             this.SkillTBox_18.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -1392,7 +1441,7 @@
             // 
             // SkillTBox_17
             // 
-            this.SkillTBox_17.Location = new System.Drawing.Point(99, 157);
+            this.SkillTBox_17.Location = new System.Drawing.Point(99, 141);
             this.SkillTBox_17.MaxLength = 3;
             this.SkillTBox_17.Name = "SkillTBox_17";
             this.SkillTBox_17.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -1404,7 +1453,7 @@
             // 
             // SkillTBox_19
             // 
-            this.SkillTBox_19.Location = new System.Drawing.Point(99, 205);
+            this.SkillTBox_19.Location = new System.Drawing.Point(99, 183);
             this.SkillTBox_19.MaxLength = 3;
             this.SkillTBox_19.Name = "SkillTBox_19";
             this.SkillTBox_19.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -1416,7 +1465,7 @@
             // 
             // SkillTBox_20
             // 
-            this.SkillTBox_20.Location = new System.Drawing.Point(99, 229);
+            this.SkillTBox_20.Location = new System.Drawing.Point(99, 204);
             this.SkillTBox_20.MaxLength = 3;
             this.SkillTBox_20.Name = "SkillTBox_20";
             this.SkillTBox_20.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -1429,7 +1478,7 @@
             // label146
             // 
             this.label146.AutoSize = true;
-            this.label146.Location = new System.Drawing.Point(10, 112);
+            this.label146.Location = new System.Drawing.Point(10, 102);
             this.label146.Name = "label146";
             this.label146.Size = new System.Drawing.Size(70, 13);
             this.label146.TabIndex = 8;
@@ -1438,7 +1487,7 @@
             // label145
             // 
             this.label145.AutoSize = true;
-            this.label145.Location = new System.Drawing.Point(10, 88);
+            this.label145.Location = new System.Drawing.Point(10, 81);
             this.label145.Name = "label145";
             this.label145.Size = new System.Drawing.Size(53, 13);
             this.label145.TabIndex = 6;
@@ -1447,7 +1496,7 @@
             // label27
             // 
             this.label27.AutoSize = true;
-            this.label27.Location = new System.Drawing.Point(10, 16);
+            this.label27.Location = new System.Drawing.Point(10, 18);
             this.label27.Name = "label27";
             this.label27.Size = new System.Drawing.Size(39, 13);
             this.label27.TabIndex = 0;
@@ -1456,7 +1505,7 @@
             // label28
             // 
             this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(10, 40);
+            this.label28.Location = new System.Drawing.Point(10, 39);
             this.label28.Name = "label28";
             this.label28.Size = new System.Drawing.Size(46, 13);
             this.label28.TabIndex = 2;
@@ -1465,7 +1514,7 @@
             // label35
             // 
             this.label35.AutoSize = true;
-            this.label35.Location = new System.Drawing.Point(10, 64);
+            this.label35.Location = new System.Drawing.Point(10, 60);
             this.label35.Name = "label35";
             this.label35.Size = new System.Drawing.Size(46, 13);
             this.label35.TabIndex = 4;
@@ -1473,7 +1522,7 @@
             // 
             // SkillTBox_02
             // 
-            this.SkillTBox_02.Location = new System.Drawing.Point(99, 13);
+            this.SkillTBox_02.Location = new System.Drawing.Point(99, 15);
             this.SkillTBox_02.MaxLength = 3;
             this.SkillTBox_02.Name = "SkillTBox_02";
             this.SkillTBox_02.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -1485,7 +1534,7 @@
             // 
             // SkillTBox_08
             // 
-            this.SkillTBox_08.Location = new System.Drawing.Point(99, 61);
+            this.SkillTBox_08.Location = new System.Drawing.Point(99, 57);
             this.SkillTBox_08.MaxLength = 3;
             this.SkillTBox_08.Name = "SkillTBox_08";
             this.SkillTBox_08.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -1497,7 +1546,7 @@
             // 
             // SkillTBox_10
             // 
-            this.SkillTBox_10.Location = new System.Drawing.Point(99, 37);
+            this.SkillTBox_10.Location = new System.Drawing.Point(99, 36);
             this.SkillTBox_10.MaxLength = 3;
             this.SkillTBox_10.Name = "SkillTBox_10";
             this.SkillTBox_10.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -1509,7 +1558,7 @@
             // 
             // SkillTBox_13
             // 
-            this.SkillTBox_13.Location = new System.Drawing.Point(99, 85);
+            this.SkillTBox_13.Location = new System.Drawing.Point(99, 78);
             this.SkillTBox_13.MaxLength = 3;
             this.SkillTBox_13.Name = "SkillTBox_13";
             this.SkillTBox_13.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -1521,7 +1570,7 @@
             // 
             // SkillTBox_14
             // 
-            this.SkillTBox_14.Location = new System.Drawing.Point(99, 109);
+            this.SkillTBox_14.Location = new System.Drawing.Point(99, 99);
             this.SkillTBox_14.MaxLength = 3;
             this.SkillTBox_14.Name = "SkillTBox_14";
             this.SkillTBox_14.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -1843,6 +1892,8 @@
             // 
             // groupBox_G_Stats
             // 
+            this.groupBox_G_Stats.Controls.Add(this.StatsTBox_27);
+            this.groupBox_G_Stats.Controls.Add(this.label195);
             this.groupBox_G_Stats.Controls.Add(this.label160);
             this.groupBox_G_Stats.Controls.Add(this.label159);
             this.groupBox_G_Stats.Controls.Add(this.label164);
@@ -1904,11 +1955,30 @@
             this.groupBox_G_Stats.Controls.Add(this.label17);
             this.groupBox_G_Stats.Location = new System.Drawing.Point(270, 5);
             this.groupBox_G_Stats.Name = "groupBox_G_Stats";
-            this.groupBox_G_Stats.Size = new System.Drawing.Size(350, 300);
+            this.groupBox_G_Stats.Size = new System.Drawing.Size(350, 320);
             this.groupBox_G_Stats.TabIndex = 10;
             this.groupBox_G_Stats.TabStop = false;
             this.groupBox_G_Stats.Text = "Stats";
             this.toolTip1.SetToolTip(this.groupBox_G_Stats, " \"Use values from 0 to 100 for these\"");
+            // 
+            // StatsTBox_27
+            // 
+            this.StatsTBox_27.Location = new System.Drawing.Point(279, 78);
+            this.StatsTBox_27.Name = "StatsTBox_27";
+            this.StatsTBox_27.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.StatsTBox_27.Size = new System.Drawing.Size(65, 20);
+            this.StatsTBox_27.TabIndex = 55;
+            this.StatsTBox_27.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label195
+            // 
+            this.label195.AutoSize = true;
+            this.label195.Location = new System.Drawing.Point(188, 81);
+            this.label195.Name = "label195";
+            this.label195.Size = new System.Drawing.Size(50, 13);
+            this.label195.TabIndex = 54;
+            this.label195.Text = "Strength:";
+            this.toolTip1.SetToolTip(this.label195, "Most have 60, some girls have up to 90\r\nI haven\'t noticed a pattern so far");
             // 
             // label160
             // 
@@ -1924,7 +1994,7 @@
             // label159
             // 
             this.label159.AutoSize = true;
-            this.label159.Location = new System.Drawing.Point(260, 186);
+            this.label159.Location = new System.Drawing.Point(260, 207);
             this.label159.Name = "label159";
             this.label159.Size = new System.Drawing.Size(13, 13);
             this.label159.TabIndex = 53;
@@ -1979,7 +2049,7 @@
             // label158
             // 
             this.label158.AutoSize = true;
-            this.label158.Location = new System.Drawing.Point(260, 165);
+            this.label158.Location = new System.Drawing.Point(260, 186);
             this.label158.Name = "label158";
             this.label158.Size = new System.Drawing.Size(13, 13);
             this.label158.TabIndex = 52;
@@ -2039,7 +2109,7 @@
             // StatsTBox_25
             // 
             this.StatsTBox_25.BackColor = System.Drawing.SystemColors.Window;
-            this.StatsTBox_25.Location = new System.Drawing.Point(279, 183);
+            this.StatsTBox_25.Location = new System.Drawing.Point(279, 204);
             this.StatsTBox_25.Name = "StatsTBox_25";
             this.StatsTBox_25.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.StatsTBox_25.Size = new System.Drawing.Size(65, 20);
@@ -2052,7 +2122,7 @@
             // 
             this.label128.AutoSize = true;
             this.label128.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label128.Location = new System.Drawing.Point(188, 186);
+            this.label128.Location = new System.Drawing.Point(188, 207);
             this.label128.Name = "label128";
             this.label128.Size = new System.Drawing.Size(42, 13);
             this.label128.TabIndex = 42;
@@ -2084,7 +2154,7 @@
             // StatsTBox_23
             // 
             this.StatsTBox_23.BackColor = System.Drawing.SystemColors.Window;
-            this.StatsTBox_23.Location = new System.Drawing.Point(279, 162);
+            this.StatsTBox_23.Location = new System.Drawing.Point(279, 183);
             this.StatsTBox_23.Name = "StatsTBox_23";
             this.StatsTBox_23.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.StatsTBox_23.Size = new System.Drawing.Size(65, 20);
@@ -2097,7 +2167,7 @@
             // 
             this.label_G_Morality.AutoSize = true;
             this.label_G_Morality.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_G_Morality.Location = new System.Drawing.Point(188, 165);
+            this.label_G_Morality.Location = new System.Drawing.Point(188, 186);
             this.label_G_Morality.Name = "label_G_Morality";
             this.label_G_Morality.Size = new System.Drawing.Size(46, 13);
             this.label_G_Morality.TabIndex = 40;
@@ -2153,7 +2223,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(188, 270);
+            this.label6.Location = new System.Drawing.Point(188, 291);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(38, 13);
             this.label6.TabIndex = 50;
@@ -2162,7 +2232,7 @@
             // 
             // StatsTBox_03
             // 
-            this.StatsTBox_03.Location = new System.Drawing.Point(279, 267);
+            this.StatsTBox_03.Location = new System.Drawing.Point(279, 288);
             this.StatsTBox_03.Name = "StatsTBox_03";
             this.StatsTBox_03.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.StatsTBox_03.Size = new System.Drawing.Size(65, 20);
@@ -2174,7 +2244,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(188, 102);
+            this.label7.Location = new System.Drawing.Point(188, 123);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(65, 13);
             this.label7.TabIndex = 34;
@@ -2183,7 +2253,7 @@
             // 
             // StatsTBox_04
             // 
-            this.StatsTBox_04.Location = new System.Drawing.Point(279, 99);
+            this.StatsTBox_04.Location = new System.Drawing.Point(279, 120);
             this.StatsTBox_04.Name = "StatsTBox_04";
             this.StatsTBox_04.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.StatsTBox_04.Size = new System.Drawing.Size(65, 20);
@@ -2195,7 +2265,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(188, 123);
+            this.label8.Location = new System.Drawing.Point(188, 144);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(64, 13);
             this.label8.TabIndex = 36;
@@ -2204,7 +2274,7 @@
             // 
             // StatsTBox_05
             // 
-            this.StatsTBox_05.Location = new System.Drawing.Point(279, 120);
+            this.StatsTBox_05.Location = new System.Drawing.Point(279, 141);
             this.StatsTBox_05.Name = "StatsTBox_05";
             this.StatsTBox_05.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.StatsTBox_05.Size = new System.Drawing.Size(65, 20);
@@ -2215,7 +2285,7 @@
             // 
             // StatsTBox_06
             // 
-            this.StatsTBox_06.Location = new System.Drawing.Point(279, 204);
+            this.StatsTBox_06.Location = new System.Drawing.Point(279, 225);
             this.StatsTBox_06.Name = "StatsTBox_06";
             this.StatsTBox_06.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.StatsTBox_06.Size = new System.Drawing.Size(65, 20);
@@ -2226,7 +2296,7 @@
             // 
             // StatsTBox_07
             // 
-            this.StatsTBox_07.Location = new System.Drawing.Point(279, 141);
+            this.StatsTBox_07.Location = new System.Drawing.Point(279, 162);
             this.StatsTBox_07.Name = "StatsTBox_07";
             this.StatsTBox_07.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.StatsTBox_07.Size = new System.Drawing.Size(65, 20);
@@ -2237,7 +2307,7 @@
             // 
             // StatsTBox_08
             // 
-            this.StatsTBox_08.Location = new System.Drawing.Point(279, 78);
+            this.StatsTBox_08.Location = new System.Drawing.Point(279, 99);
             this.StatsTBox_08.Name = "StatsTBox_08";
             this.StatsTBox_08.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.StatsTBox_08.Size = new System.Drawing.Size(65, 20);
@@ -2249,7 +2319,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(188, 207);
+            this.label9.Location = new System.Drawing.Point(188, 228);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(64, 13);
             this.label9.TabIndex = 44;
@@ -2259,7 +2329,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(188, 144);
+            this.label10.Location = new System.Drawing.Point(188, 165);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(37, 13);
             this.label10.TabIndex = 38;
@@ -2270,7 +2340,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(188, 81);
+            this.label11.Location = new System.Drawing.Point(188, 102);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(37, 13);
             this.label11.TabIndex = 32;
@@ -2343,7 +2413,7 @@
             // 
             // StatsTBox_15
             // 
-            this.StatsTBox_15.Location = new System.Drawing.Point(279, 225);
+            this.StatsTBox_15.Location = new System.Drawing.Point(279, 246);
             this.StatsTBox_15.Name = "StatsTBox_15";
             this.StatsTBox_15.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.StatsTBox_15.Size = new System.Drawing.Size(65, 20);
@@ -2354,7 +2424,7 @@
             // 
             // StatsTBox_16
             // 
-            this.StatsTBox_16.Location = new System.Drawing.Point(279, 246);
+            this.StatsTBox_16.Location = new System.Drawing.Point(279, 267);
             this.StatsTBox_16.Name = "StatsTBox_16";
             this.StatsTBox_16.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.StatsTBox_16.Size = new System.Drawing.Size(65, 20);
@@ -2552,7 +2622,7 @@
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(188, 249);
+            this.label19.Location = new System.Drawing.Point(188, 270);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(33, 13);
             this.label19.TabIndex = 48;
@@ -2562,7 +2632,7 @@
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(188, 228);
+            this.label18.Location = new System.Drawing.Point(188, 249);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(62, 13);
             this.label18.TabIndex = 46;
@@ -2760,6 +2830,9 @@
             // 
             // groupBox5
             // 
+            this.groupBox5.Controls.Add(this.StatRGMaxTBox27);
+            this.groupBox5.Controls.Add(this.StatRGMinTBox27);
+            this.groupBox5.Controls.Add(this.label194);
             this.groupBox5.Controls.Add(this.label175);
             this.groupBox5.Controls.Add(this.label174);
             this.groupBox5.Controls.Add(this.label173);
@@ -2847,10 +2920,38 @@
             this.groupBox5.Controls.Add(this.label62);
             this.groupBox5.Location = new System.Drawing.Point(270, 5);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(350, 300);
+            this.groupBox5.Size = new System.Drawing.Size(350, 320);
             this.groupBox5.TabIndex = 17;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Stats";
+            // 
+            // StatRGMaxTBox27
+            // 
+            this.StatRGMaxTBox27.Location = new System.Drawing.Point(314, 78);
+            this.StatRGMaxTBox27.Name = "StatRGMaxTBox27";
+            this.StatRGMaxTBox27.Size = new System.Drawing.Size(30, 20);
+            this.StatRGMaxTBox27.TabIndex = 87;
+            this.StatRGMaxTBox27.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // StatRGMinTBox27
+            // 
+            this.StatRGMinTBox27.Location = new System.Drawing.Point(279, 78);
+            this.StatRGMinTBox27.Name = "StatRGMinTBox27";
+            this.StatRGMinTBox27.Size = new System.Drawing.Size(30, 20);
+            this.StatRGMinTBox27.TabIndex = 86;
+            this.StatRGMinTBox27.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.StatRGMinTBox27.TextChanged += new System.EventHandler(this.ValidateTextBoxNegative);
+            this.StatRGMinTBox27.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxNegative);
+            // 
+            // label194
+            // 
+            this.label194.AutoSize = true;
+            this.label194.Location = new System.Drawing.Point(188, 81);
+            this.label194.Name = "label194";
+            this.label194.Size = new System.Drawing.Size(50, 13);
+            this.label194.TabIndex = 85;
+            this.label194.Text = "Strength:";
+            this.toolTip1.SetToolTip(this.label194, "Most have 60, some girls have up to 90\r\nI haven\'t noticed a pattern so far");
             // 
             // label175
             // 
@@ -2899,7 +3000,7 @@
             // label171
             // 
             this.label171.AutoSize = true;
-            this.label171.Location = new System.Drawing.Point(260, 186);
+            this.label171.Location = new System.Drawing.Point(260, 207);
             this.label171.Name = "label171";
             this.label171.Size = new System.Drawing.Size(13, 13);
             this.label171.TabIndex = 70;
@@ -2910,7 +3011,7 @@
             // label170
             // 
             this.label170.AutoSize = true;
-            this.label170.Location = new System.Drawing.Point(260, 165);
+            this.label170.Location = new System.Drawing.Point(260, 186);
             this.label170.Name = "label170";
             this.label170.Size = new System.Drawing.Size(13, 13);
             this.label170.TabIndex = 66;
@@ -3036,7 +3137,7 @@
             // StatRGMaxTBox25
             // 
             this.StatRGMaxTBox25.BackColor = System.Drawing.SystemColors.Window;
-            this.StatRGMaxTBox25.Location = new System.Drawing.Point(314, 183);
+            this.StatRGMaxTBox25.Location = new System.Drawing.Point(314, 204);
             this.StatRGMaxTBox25.Name = "StatRGMaxTBox25";
             this.StatRGMaxTBox25.Size = new System.Drawing.Size(30, 20);
             this.StatRGMaxTBox25.TabIndex = 72;
@@ -3047,7 +3148,7 @@
             // StatRGMinTBox25
             // 
             this.StatRGMinTBox25.BackColor = System.Drawing.SystemColors.Window;
-            this.StatRGMinTBox25.Location = new System.Drawing.Point(279, 183);
+            this.StatRGMinTBox25.Location = new System.Drawing.Point(279, 204);
             this.StatRGMinTBox25.Name = "StatRGMinTBox25";
             this.StatRGMinTBox25.Size = new System.Drawing.Size(30, 20);
             this.StatRGMinTBox25.TabIndex = 71;
@@ -3059,7 +3160,7 @@
             // 
             this.label165.AutoSize = true;
             this.label165.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label165.Location = new System.Drawing.Point(188, 186);
+            this.label165.Location = new System.Drawing.Point(188, 207);
             this.label165.Name = "label165";
             this.label165.Size = new System.Drawing.Size(42, 13);
             this.label165.TabIndex = 69;
@@ -3070,7 +3171,7 @@
             // StatRGMaxTBox23
             // 
             this.StatRGMaxTBox23.BackColor = System.Drawing.SystemColors.Window;
-            this.StatRGMaxTBox23.Location = new System.Drawing.Point(314, 162);
+            this.StatRGMaxTBox23.Location = new System.Drawing.Point(314, 183);
             this.StatRGMaxTBox23.Name = "StatRGMaxTBox23";
             this.StatRGMaxTBox23.Size = new System.Drawing.Size(30, 20);
             this.StatRGMaxTBox23.TabIndex = 68;
@@ -3081,7 +3182,7 @@
             // StatRGMinTBox23
             // 
             this.StatRGMinTBox23.BackColor = System.Drawing.SystemColors.Window;
-            this.StatRGMinTBox23.Location = new System.Drawing.Point(279, 162);
+            this.StatRGMinTBox23.Location = new System.Drawing.Point(279, 183);
             this.StatRGMinTBox23.Name = "StatRGMinTBox23";
             this.StatRGMinTBox23.Size = new System.Drawing.Size(30, 20);
             this.StatRGMinTBox23.TabIndex = 67;
@@ -3093,7 +3194,7 @@
             // 
             this.label_RG_Morality.AutoSize = true;
             this.label_RG_Morality.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_RG_Morality.Location = new System.Drawing.Point(188, 165);
+            this.label_RG_Morality.Location = new System.Drawing.Point(188, 186);
             this.label_RG_Morality.Name = "label_RG_Morality";
             this.label_RG_Morality.Size = new System.Drawing.Size(46, 13);
             this.label_RG_Morality.TabIndex = 65;
@@ -3139,7 +3240,7 @@
             // 
             // StatRGMaxTBox16
             // 
-            this.StatRGMaxTBox16.Location = new System.Drawing.Point(314, 245);
+            this.StatRGMaxTBox16.Location = new System.Drawing.Point(314, 266);
             this.StatRGMaxTBox16.Name = "StatRGMaxTBox16";
             this.StatRGMaxTBox16.Size = new System.Drawing.Size(30, 20);
             this.StatRGMaxTBox16.TabIndex = 81;
@@ -3184,7 +3285,7 @@
             // 
             // StatRGMaxTBox8
             // 
-            this.StatRGMaxTBox8.Location = new System.Drawing.Point(314, 78);
+            this.StatRGMaxTBox8.Location = new System.Drawing.Point(314, 99);
             this.StatRGMaxTBox8.Name = "StatRGMaxTBox8";
             this.StatRGMaxTBox8.Size = new System.Drawing.Size(30, 20);
             this.StatRGMaxTBox8.TabIndex = 55;
@@ -3194,7 +3295,7 @@
             // 
             // StatRGMaxTBox6
             // 
-            this.StatRGMaxTBox6.Location = new System.Drawing.Point(314, 204);
+            this.StatRGMaxTBox6.Location = new System.Drawing.Point(314, 225);
             this.StatRGMaxTBox6.Name = "StatRGMaxTBox6";
             this.StatRGMaxTBox6.Size = new System.Drawing.Size(30, 20);
             this.StatRGMaxTBox6.TabIndex = 75;
@@ -3204,7 +3305,7 @@
             // 
             // StatRGMaxTBox4
             // 
-            this.StatRGMaxTBox4.Location = new System.Drawing.Point(314, 99);
+            this.StatRGMaxTBox4.Location = new System.Drawing.Point(314, 120);
             this.StatRGMaxTBox4.Name = "StatRGMaxTBox4";
             this.StatRGMaxTBox4.Size = new System.Drawing.Size(30, 20);
             this.StatRGMaxTBox4.TabIndex = 58;
@@ -3262,7 +3363,7 @@
             // 
             // StatRGMinTBox16
             // 
-            this.StatRGMinTBox16.Location = new System.Drawing.Point(279, 246);
+            this.StatRGMinTBox16.Location = new System.Drawing.Point(279, 267);
             this.StatRGMinTBox16.Name = "StatRGMinTBox16";
             this.StatRGMinTBox16.Size = new System.Drawing.Size(30, 20);
             this.StatRGMinTBox16.TabIndex = 80;
@@ -3307,7 +3408,7 @@
             // 
             // StatRGMinTBox8
             // 
-            this.StatRGMinTBox8.Location = new System.Drawing.Point(279, 78);
+            this.StatRGMinTBox8.Location = new System.Drawing.Point(279, 99);
             this.StatRGMinTBox8.Name = "StatRGMinTBox8";
             this.StatRGMinTBox8.Size = new System.Drawing.Size(30, 20);
             this.StatRGMinTBox8.TabIndex = 54;
@@ -3317,7 +3418,7 @@
             // 
             // StatRGMinTBox6
             // 
-            this.StatRGMinTBox6.Location = new System.Drawing.Point(279, 204);
+            this.StatRGMinTBox6.Location = new System.Drawing.Point(279, 225);
             this.StatRGMinTBox6.Name = "StatRGMinTBox6";
             this.StatRGMinTBox6.Size = new System.Drawing.Size(30, 20);
             this.StatRGMinTBox6.TabIndex = 74;
@@ -3327,7 +3428,7 @@
             // 
             // StatRGMinTBox4
             // 
-            this.StatRGMinTBox4.Location = new System.Drawing.Point(279, 99);
+            this.StatRGMinTBox4.Location = new System.Drawing.Point(279, 120);
             this.StatRGMinTBox4.Name = "StatRGMinTBox4";
             this.StatRGMinTBox4.Size = new System.Drawing.Size(30, 20);
             this.StatRGMinTBox4.TabIndex = 57;
@@ -3383,7 +3484,7 @@
             // 
             // StatRGMaxTBox15
             // 
-            this.StatRGMaxTBox15.Location = new System.Drawing.Point(314, 225);
+            this.StatRGMaxTBox15.Location = new System.Drawing.Point(314, 246);
             this.StatRGMaxTBox15.Name = "StatRGMaxTBox15";
             this.StatRGMaxTBox15.Size = new System.Drawing.Size(30, 20);
             this.StatRGMaxTBox15.TabIndex = 78;
@@ -3417,7 +3518,7 @@
             // 
             // StatRGMaxTBox7
             // 
-            this.StatRGMaxTBox7.Location = new System.Drawing.Point(314, 141);
+            this.StatRGMaxTBox7.Location = new System.Drawing.Point(314, 162);
             this.StatRGMaxTBox7.Name = "StatRGMaxTBox7";
             this.StatRGMaxTBox7.Size = new System.Drawing.Size(30, 20);
             this.StatRGMaxTBox7.TabIndex = 64;
@@ -3427,7 +3528,7 @@
             // 
             // StatRGMaxTBox5
             // 
-            this.StatRGMaxTBox5.Location = new System.Drawing.Point(314, 120);
+            this.StatRGMaxTBox5.Location = new System.Drawing.Point(314, 141);
             this.StatRGMaxTBox5.Name = "StatRGMaxTBox5";
             this.StatRGMaxTBox5.Size = new System.Drawing.Size(30, 20);
             this.StatRGMaxTBox5.TabIndex = 61;
@@ -3437,7 +3538,7 @@
             // 
             // StatRGMaxTBox3
             // 
-            this.StatRGMaxTBox3.Location = new System.Drawing.Point(314, 267);
+            this.StatRGMaxTBox3.Location = new System.Drawing.Point(314, 288);
             this.StatRGMaxTBox3.Name = "StatRGMaxTBox3";
             this.StatRGMaxTBox3.Size = new System.Drawing.Size(30, 20);
             this.StatRGMaxTBox3.TabIndex = 84;
@@ -3491,7 +3592,7 @@
             // 
             // StatRGMinTBox15
             // 
-            this.StatRGMinTBox15.Location = new System.Drawing.Point(279, 225);
+            this.StatRGMinTBox15.Location = new System.Drawing.Point(279, 246);
             this.StatRGMinTBox15.Name = "StatRGMinTBox15";
             this.StatRGMinTBox15.Size = new System.Drawing.Size(30, 20);
             this.StatRGMinTBox15.TabIndex = 77;
@@ -3525,7 +3626,7 @@
             // 
             // StatRGMinTBox7
             // 
-            this.StatRGMinTBox7.Location = new System.Drawing.Point(279, 141);
+            this.StatRGMinTBox7.Location = new System.Drawing.Point(279, 162);
             this.StatRGMinTBox7.Name = "StatRGMinTBox7";
             this.StatRGMinTBox7.Size = new System.Drawing.Size(30, 20);
             this.StatRGMinTBox7.TabIndex = 63;
@@ -3535,7 +3636,7 @@
             // 
             // StatRGMinTBox5
             // 
-            this.StatRGMinTBox5.Location = new System.Drawing.Point(279, 120);
+            this.StatRGMinTBox5.Location = new System.Drawing.Point(279, 141);
             this.StatRGMinTBox5.Name = "StatRGMinTBox5";
             this.StatRGMinTBox5.Size = new System.Drawing.Size(30, 20);
             this.StatRGMinTBox5.TabIndex = 60;
@@ -3545,7 +3646,7 @@
             // 
             // StatRGMinTBox3
             // 
-            this.StatRGMinTBox3.Location = new System.Drawing.Point(279, 267);
+            this.StatRGMinTBox3.Location = new System.Drawing.Point(279, 288);
             this.StatRGMinTBox3.Name = "StatRGMinTBox3";
             this.StatRGMinTBox3.Size = new System.Drawing.Size(30, 20);
             this.StatRGMinTBox3.TabIndex = 83;
@@ -3587,7 +3688,7 @@
             // label43
             // 
             this.label43.AutoSize = true;
-            this.label43.Location = new System.Drawing.Point(188, 270);
+            this.label43.Location = new System.Drawing.Point(188, 291);
             this.label43.Name = "label43";
             this.label43.Size = new System.Drawing.Size(38, 13);
             this.label43.TabIndex = 82;
@@ -3597,7 +3698,7 @@
             // label44
             // 
             this.label44.AutoSize = true;
-            this.label44.Location = new System.Drawing.Point(188, 102);
+            this.label44.Location = new System.Drawing.Point(188, 123);
             this.label44.Name = "label44";
             this.label44.Size = new System.Drawing.Size(65, 13);
             this.label44.TabIndex = 56;
@@ -3607,7 +3708,7 @@
             // label45
             // 
             this.label45.AutoSize = true;
-            this.label45.Location = new System.Drawing.Point(188, 123);
+            this.label45.Location = new System.Drawing.Point(188, 144);
             this.label45.Name = "label45";
             this.label45.Size = new System.Drawing.Size(64, 13);
             this.label45.TabIndex = 59;
@@ -3617,7 +3718,7 @@
             // label46
             // 
             this.label46.AutoSize = true;
-            this.label46.Location = new System.Drawing.Point(188, 207);
+            this.label46.Location = new System.Drawing.Point(188, 228);
             this.label46.Name = "label46";
             this.label46.Size = new System.Drawing.Size(64, 13);
             this.label46.TabIndex = 73;
@@ -3627,7 +3728,7 @@
             // label47
             // 
             this.label47.AutoSize = true;
-            this.label47.Location = new System.Drawing.Point(188, 144);
+            this.label47.Location = new System.Drawing.Point(188, 165);
             this.label47.Name = "label47";
             this.label47.Size = new System.Drawing.Size(37, 13);
             this.label47.TabIndex = 62;
@@ -3638,7 +3739,7 @@
             // label48
             // 
             this.label48.AutoSize = true;
-            this.label48.Location = new System.Drawing.Point(188, 81);
+            this.label48.Location = new System.Drawing.Point(188, 102);
             this.label48.Name = "label48";
             this.label48.Size = new System.Drawing.Size(37, 13);
             this.label48.TabIndex = 53;
@@ -3758,7 +3859,7 @@
             // label59
             // 
             this.label59.AutoSize = true;
-            this.label59.Location = new System.Drawing.Point(188, 249);
+            this.label59.Location = new System.Drawing.Point(188, 270);
             this.label59.Name = "label59";
             this.label59.Size = new System.Drawing.Size(33, 13);
             this.label59.TabIndex = 79;
@@ -3768,7 +3869,7 @@
             // label61
             // 
             this.label61.AutoSize = true;
-            this.label61.Location = new System.Drawing.Point(188, 228);
+            this.label61.Location = new System.Drawing.Point(188, 249);
             this.label61.Name = "label61";
             this.label61.Size = new System.Drawing.Size(62, 13);
             this.label61.TabIndex = 76;
@@ -3821,9 +3922,9 @@
             this.groupBox26.Controls.Add(this.label72);
             this.groupBox26.Controls.Add(this.label63);
             this.groupBox26.Controls.Add(this.label69);
-            this.groupBox26.Location = new System.Drawing.Point(450, 306);
+            this.groupBox26.Location = new System.Drawing.Point(450, 330);
             this.groupBox26.Name = "groupBox26";
-            this.groupBox26.Size = new System.Drawing.Size(170, 280);
+            this.groupBox26.Size = new System.Drawing.Size(170, 250);
             this.groupBox26.TabIndex = 19;
             this.groupBox26.TabStop = false;
             this.groupBox26.Text = "Sex Skills";
@@ -4149,6 +4250,9 @@
             // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.label193);
+            this.groupBox6.Controls.Add(this.SkillRGMaxTBox22);
+            this.groupBox6.Controls.Add(this.SkillRGMinTBox22);
             this.groupBox6.Controls.Add(this.label38);
             this.groupBox6.Controls.Add(this.label39);
             this.groupBox6.Controls.Add(this.SkillRGMaxTBox19);
@@ -4179,12 +4283,39 @@
             this.groupBox6.Controls.Add(this.label64);
             this.groupBox6.Controls.Add(this.label65);
             this.groupBox6.Controls.Add(this.label68);
-            this.groupBox6.Location = new System.Drawing.Point(270, 306);
+            this.groupBox6.Location = new System.Drawing.Point(270, 330);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(170, 280);
+            this.groupBox6.Size = new System.Drawing.Size(170, 250);
             this.groupBox6.TabIndex = 18;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Skills";
+            // 
+            // label193
+            // 
+            this.label193.AutoSize = true;
+            this.label193.Location = new System.Drawing.Point(8, 228);
+            this.label193.Name = "label193";
+            this.label193.Size = new System.Drawing.Size(49, 13);
+            this.label193.TabIndex = 30;
+            this.label193.Text = "Cooking:";
+            // 
+            // SkillRGMaxTBox22
+            // 
+            this.SkillRGMaxTBox22.Location = new System.Drawing.Point(134, 225);
+            this.SkillRGMaxTBox22.Name = "SkillRGMaxTBox22";
+            this.SkillRGMaxTBox22.Size = new System.Drawing.Size(30, 20);
+            this.SkillRGMaxTBox22.TabIndex = 32;
+            this.SkillRGMaxTBox22.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.SkillRGMaxTBox22.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.SkillRGMaxTBox22.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
+            // 
+            // SkillRGMinTBox22
+            // 
+            this.SkillRGMinTBox22.Location = new System.Drawing.Point(99, 225);
+            this.SkillRGMinTBox22.Name = "SkillRGMinTBox22";
+            this.SkillRGMinTBox22.Size = new System.Drawing.Size(30, 20);
+            this.SkillRGMinTBox22.TabIndex = 31;
+            this.SkillRGMinTBox22.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label38
             // 
@@ -5537,7 +5668,7 @@
             // 
             // tabPage4_Config
             // 
-            this.tabPage4_Config.Controls.Add(this.groupBox_Folders);
+            this.tabPage4_Config.Controls.Add(this.groupBox_C_Catacombs);
             this.tabPage4_Config.Controls.Add(this.groupBox_C_Display_Settings);
             this.tabPage4_Config.Controls.Add(this.groupBox_C_Expense_Multipliers);
             this.tabPage4_Config.Controls.Add(this.groupBox_C_Gangs);
@@ -5561,90 +5692,154 @@
             this.tabPage4_Config.Text = "  Game Configuration  ";
             this.tabPage4_Config.UseVisualStyleBackColor = true;
             // 
-            // groupBox_Folders
+            // groupBox_C_Catacombs
             // 
-            this.groupBox_Folders.Controls.Add(this.checkBox_Config_Folders_Backup_Saves);
-            this.groupBox_Folders.Controls.Add(this.label185);
-            this.groupBox_Folders.Controls.Add(this.textBox_Config_Folders_Default_Images);
-            this.groupBox_Folders.Controls.Add(this.label183);
-            this.groupBox_Folders.Controls.Add(this.label184);
-            this.groupBox_Folders.Controls.Add(this.textBox_Config_Folders_Characters);
-            this.groupBox_Folders.Controls.Add(this.textBox_Config_Folders_Savegames);
-            this.groupBox_Folders.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.groupBox_Folders.Location = new System.Drawing.Point(575, 420);
-            this.groupBox_Folders.Name = "groupBox_Folders";
-            this.groupBox_Folders.Size = new System.Drawing.Size(370, 110);
-            this.groupBox_Folders.TabIndex = 10;
-            this.groupBox_Folders.TabStop = false;
-            this.groupBox_Folders.Text = "Folders";
+            this.groupBox_C_Catacombs.Controls.Add(this.label188);
+            this.groupBox_C_Catacombs.Controls.Add(this.checkBox_Config_Control_Gangs);
+            this.groupBox_C_Catacombs.Controls.Add(this.checkBox_Config_Control_Girls);
+            this.groupBox_C_Catacombs.Controls.Add(this.textBox_Config_Girl_Gets_Girls);
+            this.groupBox_C_Catacombs.Controls.Add(this.textBox_Config_Girl_Gets_Beast);
+            this.groupBox_C_Catacombs.Controls.Add(this.textBox_Config_Gang_Gets_Girls);
+            this.groupBox_C_Catacombs.Controls.Add(this.label189);
+            this.groupBox_C_Catacombs.Controls.Add(this.textBox_Config_Gang_Gets_Items);
+            this.groupBox_C_Catacombs.Controls.Add(this.label190);
+            this.groupBox_C_Catacombs.Controls.Add(this.textBox_Config_Gang_Gets_Beast);
+            this.groupBox_C_Catacombs.Controls.Add(this.label191);
+            this.groupBox_C_Catacombs.Controls.Add(this.textBox_Config_Girl_Gets_Items);
+            this.groupBox_C_Catacombs.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.groupBox_C_Catacombs.Location = new System.Drawing.Point(765, 334);
+            this.groupBox_C_Catacombs.Name = "groupBox_C_Catacombs";
+            this.groupBox_C_Catacombs.Size = new System.Drawing.Size(180, 120);
+            this.groupBox_C_Catacombs.TabIndex = 8;
+            this.groupBox_C_Catacombs.TabStop = false;
+            this.groupBox_C_Catacombs.Text = "Catacombs: Who gets What";
             // 
-            // checkBox_Config_Folders_Backup_Saves
+            // label188
             // 
-            this.checkBox_Config_Folders_Backup_Saves.AutoSize = true;
-            this.checkBox_Config_Folders_Backup_Saves.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.checkBox_Config_Folders_Backup_Saves.Location = new System.Drawing.Point(9, 90);
-            this.checkBox_Config_Folders_Backup_Saves.Name = "checkBox_Config_Folders_Backup_Saves";
-            this.checkBox_Config_Folders_Backup_Saves.Size = new System.Drawing.Size(96, 17);
-            this.checkBox_Config_Folders_Backup_Saves.TabIndex = 6;
-            this.checkBox_Config_Folders_Backup_Saves.Text = "Backup Saves";
-            this.checkBox_Config_Folders_Backup_Saves.UseVisualStyleBackColor = true;
+            this.label188.AutoSize = true;
+            this.label188.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label188.Location = new System.Drawing.Point(66, 19);
+            this.label188.Name = "label188";
+            this.label188.Size = new System.Drawing.Size(40, 13);
+            this.label188.TabIndex = 11;
+            this.label188.Text = "Control";
+            this.toolTip1.SetToolTip(this.label188, resources.GetString("label188.ToolTip"));
             // 
-            // label185
+            // checkBox_Config_Control_Gangs
             // 
-            this.label185.AutoSize = true;
-            this.label185.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label185.Location = new System.Drawing.Point(6, 68);
-            this.label185.Name = "label185";
-            this.label185.Size = new System.Drawing.Size(78, 13);
-            this.label185.TabIndex = 16;
-            this.label185.Text = "Default Images";
+            this.checkBox_Config_Control_Gangs.AutoSize = true;
+            this.checkBox_Config_Control_Gangs.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.checkBox_Config_Control_Gangs.Location = new System.Drawing.Point(117, 17);
+            this.checkBox_Config_Control_Gangs.Name = "checkBox_Config_Control_Gangs";
+            this.checkBox_Config_Control_Gangs.Size = new System.Drawing.Size(57, 17);
+            this.checkBox_Config_Control_Gangs.TabIndex = 9;
+            this.checkBox_Config_Control_Gangs.Text = "Gangs";
+            this.checkBox_Config_Control_Gangs.UseVisualStyleBackColor = true;
             // 
-            // textBox_Config_Folders_Default_Images
+            // checkBox_Config_Control_Girls
             // 
-            this.textBox_Config_Folders_Default_Images.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.textBox_Config_Folders_Default_Images.Location = new System.Drawing.Point(91, 64);
-            this.textBox_Config_Folders_Default_Images.MaxLength = 30;
-            this.textBox_Config_Folders_Default_Images.Name = "textBox_Config_Folders_Default_Images";
-            this.textBox_Config_Folders_Default_Images.Size = new System.Drawing.Size(274, 20);
-            this.textBox_Config_Folders_Default_Images.TabIndex = 17;
+            this.checkBox_Config_Control_Girls.AutoSize = true;
+            this.checkBox_Config_Control_Girls.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.checkBox_Config_Control_Girls.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.checkBox_Config_Control_Girls.Location = new System.Drawing.Point(10, 18);
+            this.checkBox_Config_Control_Girls.Name = "checkBox_Config_Control_Girls";
+            this.checkBox_Config_Control_Girls.Size = new System.Drawing.Size(46, 17);
+            this.checkBox_Config_Control_Girls.TabIndex = 9;
+            this.checkBox_Config_Control_Girls.Text = "Girls";
+            this.checkBox_Config_Control_Girls.UseVisualStyleBackColor = true;
             // 
-            // label183
+            // textBox_Config_Girl_Gets_Girls
             // 
-            this.label183.AutoSize = true;
-            this.label183.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label183.Location = new System.Drawing.Point(6, 43);
-            this.label183.Name = "label183";
-            this.label183.Size = new System.Drawing.Size(63, 13);
-            this.label183.TabIndex = 8;
-            this.label183.Text = "Savegames";
+            this.textBox_Config_Girl_Gets_Girls.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.textBox_Config_Girl_Gets_Girls.Location = new System.Drawing.Point(10, 40);
+            this.textBox_Config_Girl_Gets_Girls.MaxLength = 3;
+            this.textBox_Config_Girl_Gets_Girls.Name = "textBox_Config_Girl_Gets_Girls";
+            this.textBox_Config_Girl_Gets_Girls.Size = new System.Drawing.Size(40, 20);
+            this.textBox_Config_Girl_Gets_Girls.TabIndex = 1;
+            this.textBox_Config_Girl_Gets_Girls.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // label184
+            // textBox_Config_Girl_Gets_Beast
             // 
-            this.label184.AutoSize = true;
-            this.label184.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label184.Location = new System.Drawing.Point(6, 18);
-            this.label184.Name = "label184";
-            this.label184.Size = new System.Drawing.Size(58, 13);
-            this.label184.TabIndex = 6;
-            this.label184.Text = "Characters";
+            this.textBox_Config_Girl_Gets_Beast.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.textBox_Config_Girl_Gets_Beast.Location = new System.Drawing.Point(10, 90);
+            this.textBox_Config_Girl_Gets_Beast.MaxLength = 5;
+            this.textBox_Config_Girl_Gets_Beast.Name = "textBox_Config_Girl_Gets_Beast";
+            this.textBox_Config_Girl_Gets_Beast.Size = new System.Drawing.Size(40, 20);
+            this.textBox_Config_Girl_Gets_Beast.TabIndex = 3;
+            this.textBox_Config_Girl_Gets_Beast.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // textBox_Config_Folders_Characters
+            // textBox_Config_Gang_Gets_Girls
             // 
-            this.textBox_Config_Folders_Characters.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.textBox_Config_Folders_Characters.Location = new System.Drawing.Point(91, 14);
-            this.textBox_Config_Folders_Characters.MaxLength = 30;
-            this.textBox_Config_Folders_Characters.Name = "textBox_Config_Folders_Characters";
-            this.textBox_Config_Folders_Characters.Size = new System.Drawing.Size(274, 20);
-            this.textBox_Config_Folders_Characters.TabIndex = 7;
+            this.textBox_Config_Gang_Gets_Girls.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.textBox_Config_Gang_Gets_Girls.Location = new System.Drawing.Point(130, 40);
+            this.textBox_Config_Gang_Gets_Girls.MaxLength = 3;
+            this.textBox_Config_Gang_Gets_Girls.Name = "textBox_Config_Gang_Gets_Girls";
+            this.textBox_Config_Gang_Gets_Girls.Size = new System.Drawing.Size(40, 20);
+            this.textBox_Config_Gang_Gets_Girls.TabIndex = 8;
+            this.textBox_Config_Gang_Gets_Girls.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // textBox_Config_Folders_Savegames
+            // label189
             // 
-            this.textBox_Config_Folders_Savegames.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.textBox_Config_Folders_Savegames.Location = new System.Drawing.Point(91, 39);
-            this.textBox_Config_Folders_Savegames.MaxLength = 30;
-            this.textBox_Config_Folders_Savegames.Name = "textBox_Config_Folders_Savegames";
-            this.textBox_Config_Folders_Savegames.Size = new System.Drawing.Size(274, 20);
-            this.textBox_Config_Folders_Savegames.TabIndex = 9;
+            this.label189.AutoSize = true;
+            this.label189.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label189.Location = new System.Drawing.Point(66, 43);
+            this.label189.Name = "label189";
+            this.label189.Size = new System.Drawing.Size(47, 13);
+            this.label189.TabIndex = 4;
+            this.label189.Text = "Get Girls";
+            this.toolTip1.SetToolTip(this.label189, resources.GetString("label189.ToolTip"));
+            // 
+            // textBox_Config_Gang_Gets_Items
+            // 
+            this.textBox_Config_Gang_Gets_Items.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.textBox_Config_Gang_Gets_Items.Location = new System.Drawing.Point(130, 65);
+            this.textBox_Config_Gang_Gets_Items.MaxLength = 3;
+            this.textBox_Config_Gang_Gets_Items.Name = "textBox_Config_Gang_Gets_Items";
+            this.textBox_Config_Gang_Gets_Items.Size = new System.Drawing.Size(40, 20);
+            this.textBox_Config_Gang_Gets_Items.TabIndex = 9;
+            this.textBox_Config_Gang_Gets_Items.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label190
+            // 
+            this.label190.AutoSize = true;
+            this.label190.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label190.Location = new System.Drawing.Point(60, 93);
+            this.label190.Name = "label190";
+            this.label190.Size = new System.Drawing.Size(59, 13);
+            this.label190.TabIndex = 6;
+            this.label190.Text = "Get Beasts";
+            this.toolTip1.SetToolTip(this.label190, resources.GetString("label190.ToolTip"));
+            // 
+            // textBox_Config_Gang_Gets_Beast
+            // 
+            this.textBox_Config_Gang_Gets_Beast.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.textBox_Config_Gang_Gets_Beast.Location = new System.Drawing.Point(130, 90);
+            this.textBox_Config_Gang_Gets_Beast.MaxLength = 5;
+            this.textBox_Config_Gang_Gets_Beast.Name = "textBox_Config_Gang_Gets_Beast";
+            this.textBox_Config_Gang_Gets_Beast.Size = new System.Drawing.Size(40, 20);
+            this.textBox_Config_Gang_Gets_Beast.TabIndex = 10;
+            this.textBox_Config_Gang_Gets_Beast.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label191
+            // 
+            this.label191.AutoSize = true;
+            this.label191.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label191.Location = new System.Drawing.Point(64, 68);
+            this.label191.Name = "label191";
+            this.label191.Size = new System.Drawing.Size(52, 13);
+            this.label191.TabIndex = 5;
+            this.label191.Text = "Get Items";
+            this.toolTip1.SetToolTip(this.label191, resources.GetString("label191.ToolTip"));
+            // 
+            // textBox_Config_Girl_Gets_Items
+            // 
+            this.textBox_Config_Girl_Gets_Items.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.textBox_Config_Girl_Gets_Items.Location = new System.Drawing.Point(10, 65);
+            this.textBox_Config_Girl_Gets_Items.MaxLength = 3;
+            this.textBox_Config_Girl_Gets_Items.Name = "textBox_Config_Girl_Gets_Items";
+            this.textBox_Config_Girl_Gets_Items.Size = new System.Drawing.Size(40, 20);
+            this.textBox_Config_Girl_Gets_Items.TabIndex = 2;
+            this.textBox_Config_Girl_Gets_Items.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // groupBox_C_Display_Settings
             // 
@@ -5667,7 +5862,7 @@
             this.groupBox_C_Display_Settings.Location = new System.Drawing.Point(765, 5);
             this.groupBox_C_Display_Settings.Name = "groupBox_C_Display_Settings";
             this.groupBox_C_Display_Settings.Size = new System.Drawing.Size(180, 185);
-            this.groupBox_C_Display_Settings.TabIndex = 8;
+            this.groupBox_C_Display_Settings.TabIndex = 9;
             this.groupBox_C_Display_Settings.TabStop = false;
             this.groupBox_C_Display_Settings.Text = "Display Settings";
             // 
@@ -6495,8 +6690,8 @@
             this.groupBox_C_Pregnancy_Config.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.groupBox_C_Pregnancy_Config.Location = new System.Drawing.Point(575, 5);
             this.groupBox_C_Pregnancy_Config.Name = "groupBox_C_Pregnancy_Config";
-            this.groupBox_C_Pregnancy_Config.Size = new System.Drawing.Size(180, 415);
-            this.groupBox_C_Pregnancy_Config.TabIndex = 6;
+            this.groupBox_C_Pregnancy_Config.Size = new System.Drawing.Size(180, 345);
+            this.groupBox_C_Pregnancy_Config.TabIndex = 7;
             this.groupBox_C_Pregnancy_Config.TabStop = false;
             this.groupBox_C_Pregnancy_Config.Text = "Pregnancy Config";
             // 
@@ -6810,7 +7005,7 @@
             this.button_Load_Config.Location = new System.Drawing.Point(690, 540);
             this.button_Load_Config.Name = "button_Load_Config";
             this.button_Load_Config.Size = new System.Drawing.Size(100, 25);
-            this.button_Load_Config.TabIndex = 13;
+            this.button_Load_Config.TabIndex = 14;
             this.button_Load_Config.Text = "Load Config";
             this.button_Load_Config.UseVisualStyleBackColor = true;
             this.button_Load_Config.Click += new System.EventHandler(this.button_Load_Config_Click);
@@ -6856,9 +7051,7 @@
             this.label178.Size = new System.Drawing.Size(86, 13);
             this.label178.TabIndex = 21;
             this.label178.Text = "Horoscope Type";
-            this.toolTip1.SetToolTip(this.label178, "This number is how long the girl remembers torture.\r\nIf the number is above 0 the" +
-        "n it is how many weeks some traits gained through torture last.\r\nIf it is -1, th" +
-        "en the traits are permanent.");
+            this.toolTip1.SetToolTip(this.label178, resources.GetString("label178.ToolTip"));
             // 
             // comboBox_Horoscope_Type
             // 
@@ -6926,7 +7119,7 @@
             this.label_C_Girls_Keep_Tips.TabIndex = 6;
             this.label_C_Girls_Keep_Tips.Text = "Girls Keep Tips";
             this.toolTip1.SetToolTip(this.label_C_Girls_Keep_Tips, "If checked, the girl gets to keep all of her tips.\r\nIf unchecked, tips are includ" +
-        "ed with House Perc.");
+        "ed with House Percent.");
             // 
             // label_C_Autouse_Player_Items
             // 
@@ -6950,7 +7143,7 @@
             this.label_C_Slaves_Keep_Tips.TabIndex = 12;
             this.label_C_Slaves_Keep_Tips.Text = "Slaves Keep Tips";
             this.toolTip1.SetToolTip(this.label_C_Slaves_Keep_Tips, "If checked, slaves get to keep all of her tips.\r\nIf unchecked, tips are included " +
-        "with House Perc.");
+        "with House Percent.");
             // 
             // checkBox_Config_GirlsKeepTips
             // 
@@ -7028,9 +7221,7 @@
             this.label155.Size = new System.Drawing.Size(65, 13);
             this.label155.TabIndex = 18;
             this.label155.Text = "Torture Mod";
-            this.toolTip1.SetToolTip(this.label155, "This number is how long the girl remembers torture.\r\nIf the number is above 0 the" +
-        "n it is how many weeks some traits gained through torture last.\r\nIf it is -1, th" +
-        "en the traits are permanent.");
+            this.toolTip1.SetToolTip(this.label155, resources.GetString("label155.ToolTip"));
             // 
             // textBox_Torture_Mod
             // 
@@ -7237,10 +7428,10 @@
             this.groupBox22.Controls.Add(this.textBox_config_FontFixed);
             this.groupBox22.Controls.Add(this.textBox_Config_FontNormal);
             this.groupBox22.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.groupBox22.Location = new System.Drawing.Point(765, 330);
+            this.groupBox22.Location = new System.Drawing.Point(575, 364);
             this.groupBox22.Name = "groupBox22";
             this.groupBox22.Size = new System.Drawing.Size(180, 90);
-            this.groupBox22.TabIndex = 9;
+            this.groupBox22.TabIndex = 11;
             this.groupBox22.TabStop = false;
             this.groupBox22.Text = "Fonts";
             // 
@@ -7393,7 +7584,7 @@
             this.button_Config_Reset.Location = new System.Drawing.Point(540, 540);
             this.button_Config_Reset.Name = "button_Config_Reset";
             this.button_Config_Reset.Size = new System.Drawing.Size(100, 25);
-            this.button_Config_Reset.TabIndex = 12;
+            this.button_Config_Reset.TabIndex = 13;
             this.button_Config_Reset.Text = "Reset Config";
             this.button_Config_Reset.UseVisualStyleBackColor = true;
             this.button_Config_Reset.Click += new System.EventHandler(this.button_Config_Reset_Click);
@@ -7403,7 +7594,7 @@
             this.button_Config_Save.Location = new System.Drawing.Point(840, 540);
             this.button_Config_Save.Name = "button_Config_Save";
             this.button_Config_Save.Size = new System.Drawing.Size(100, 25);
-            this.button_Config_Save.TabIndex = 14;
+            this.button_Config_Save.TabIndex = 15;
             this.button_Config_Save.Text = "Save Config";
             this.button_Config_Save.UseVisualStyleBackColor = true;
             this.button_Config_Save.Click += new System.EventHandler(this.button_Config_Save_Click);
@@ -7418,7 +7609,7 @@
             this.groupBox_C_Prostitution_Rape_Chances.Location = new System.Drawing.Point(385, 460);
             this.groupBox_C_Prostitution_Rape_Chances.Name = "groupBox_C_Prostitution_Rape_Chances";
             this.groupBox_C_Prostitution_Rape_Chances.Size = new System.Drawing.Size(180, 70);
-            this.groupBox_C_Prostitution_Rape_Chances.TabIndex = 7;
+            this.groupBox_C_Prostitution_Rape_Chances.TabIndex = 6;
             this.groupBox_C_Prostitution_Rape_Chances.TabStop = false;
             this.groupBox_C_Prostitution_Rape_Chances.Text = "Prostitution Rape Chances";
             this.toolTip1.SetToolTip(this.groupBox_C_Prostitution_Rape_Chances, "The world is a dangerous place.");
@@ -7857,7 +8048,7 @@
             this.label_Load_Config.Location = new System.Drawing.Point(10, 533);
             this.label_Load_Config.Name = "label_Load_Config";
             this.label_Load_Config.Size = new System.Drawing.Size(754, 52);
-            this.label_Load_Config.TabIndex = 11;
+            this.label_Load_Config.TabIndex = 12;
             this.label_Load_Config.Text = resources.GetString("label_Load_Config.Text");
             // 
             // tabPage5_Traits
@@ -7889,14 +8080,14 @@
             // 
             this.dataGridView_Traits.AllowUserToResizeRows = false;
             this.dataGridView_Traits.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.PowderBlue;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView_Traits.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.PowderBlue;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView_Traits.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle6;
             this.dataGridView_Traits.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView_Traits.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dataGridView_Traits_Trait_Name,
@@ -7904,24 +8095,24 @@
             this.dataGridView_Traits_Trait_Type,
             this.dataGridView_Traits_Trait_InheritChance,
             this.dataGridView_Traits_Trait_RandomChance});
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView_Traits.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle7.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView_Traits.DefaultCellStyle = dataGridViewCellStyle7;
             this.dataGridView_Traits.Location = new System.Drawing.Point(6, 6);
             this.dataGridView_Traits.Name = "dataGridView_Traits";
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.PowderBlue;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView_Traits.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle8.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.PowderBlue;
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView_Traits.RowHeadersDefaultCellStyle = dataGridViewCellStyle8;
             this.dataGridView_Traits.RowHeadersVisible = false;
             this.dataGridView_Traits.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridView_Traits.Size = new System.Drawing.Size(939, 445);
@@ -8060,6 +8251,7 @@
             // 
             // tabPage7_FAQ
             // 
+            this.tabPage7_FAQ.Controls.Add(this.groupBox_Folders);
             this.tabPage7_FAQ.Controls.Add(this.dataGridView_Bad_Files);
             this.tabPage7_FAQ.Controls.Add(this.richTextBox2);
             this.tabPage7_FAQ.Controls.Add(this.button_G_Save_Individual);
@@ -8070,6 +8262,104 @@
             this.tabPage7_FAQ.TabIndex = 6;
             this.tabPage7_FAQ.Text = "  Extras  ";
             this.tabPage7_FAQ.UseVisualStyleBackColor = true;
+            // 
+            // groupBox_Folders
+            // 
+            this.groupBox_Folders.Controls.Add(this.richTextBox3);
+            this.groupBox_Folders.Controls.Add(this.checkBox_Config_Folders_Backup_Saves);
+            this.groupBox_Folders.Controls.Add(this.label185);
+            this.groupBox_Folders.Controls.Add(this.textBox_Config_Folders_Default_Images);
+            this.groupBox_Folders.Controls.Add(this.label183);
+            this.groupBox_Folders.Controls.Add(this.label184);
+            this.groupBox_Folders.Controls.Add(this.textBox_Config_Folders_Characters);
+            this.groupBox_Folders.Controls.Add(this.textBox_Config_Folders_Savegames);
+            this.groupBox_Folders.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.groupBox_Folders.Location = new System.Drawing.Point(6, 111);
+            this.groupBox_Folders.Name = "groupBox_Folders";
+            this.groupBox_Folders.Size = new System.Drawing.Size(484, 185);
+            this.groupBox_Folders.TabIndex = 14;
+            this.groupBox_Folders.TabStop = false;
+            this.groupBox_Folders.Text = "Folders";
+            // 
+            // richTextBox3
+            // 
+            this.richTextBox3.BackColor = System.Drawing.SystemColors.Window;
+            this.richTextBox3.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.richTextBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.richTextBox3.Location = new System.Drawing.Point(9, 113);
+            this.richTextBox3.Name = "richTextBox3";
+            this.richTextBox3.ReadOnly = true;
+            this.richTextBox3.Size = new System.Drawing.Size(469, 69);
+            this.richTextBox3.TabIndex = 15;
+            this.richTextBox3.Text = resources.GetString("richTextBox3.Text");
+            // 
+            // checkBox_Config_Folders_Backup_Saves
+            // 
+            this.checkBox_Config_Folders_Backup_Saves.AutoSize = true;
+            this.checkBox_Config_Folders_Backup_Saves.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.checkBox_Config_Folders_Backup_Saves.Location = new System.Drawing.Point(9, 90);
+            this.checkBox_Config_Folders_Backup_Saves.Name = "checkBox_Config_Folders_Backup_Saves";
+            this.checkBox_Config_Folders_Backup_Saves.Size = new System.Drawing.Size(96, 17);
+            this.checkBox_Config_Folders_Backup_Saves.TabIndex = 6;
+            this.checkBox_Config_Folders_Backup_Saves.Text = "Backup Saves";
+            this.checkBox_Config_Folders_Backup_Saves.UseVisualStyleBackColor = true;
+            // 
+            // label185
+            // 
+            this.label185.AutoSize = true;
+            this.label185.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label185.Location = new System.Drawing.Point(6, 68);
+            this.label185.Name = "label185";
+            this.label185.Size = new System.Drawing.Size(78, 13);
+            this.label185.TabIndex = 16;
+            this.label185.Text = "Default Images";
+            // 
+            // textBox_Config_Folders_Default_Images
+            // 
+            this.textBox_Config_Folders_Default_Images.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.textBox_Config_Folders_Default_Images.Location = new System.Drawing.Point(91, 64);
+            this.textBox_Config_Folders_Default_Images.MaxLength = 30;
+            this.textBox_Config_Folders_Default_Images.Name = "textBox_Config_Folders_Default_Images";
+            this.textBox_Config_Folders_Default_Images.Size = new System.Drawing.Size(387, 20);
+            this.textBox_Config_Folders_Default_Images.TabIndex = 17;
+            // 
+            // label183
+            // 
+            this.label183.AutoSize = true;
+            this.label183.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label183.Location = new System.Drawing.Point(6, 43);
+            this.label183.Name = "label183";
+            this.label183.Size = new System.Drawing.Size(63, 13);
+            this.label183.TabIndex = 8;
+            this.label183.Text = "Savegames";
+            // 
+            // label184
+            // 
+            this.label184.AutoSize = true;
+            this.label184.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label184.Location = new System.Drawing.Point(6, 18);
+            this.label184.Name = "label184";
+            this.label184.Size = new System.Drawing.Size(58, 13);
+            this.label184.TabIndex = 6;
+            this.label184.Text = "Characters";
+            // 
+            // textBox_Config_Folders_Characters
+            // 
+            this.textBox_Config_Folders_Characters.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.textBox_Config_Folders_Characters.Location = new System.Drawing.Point(91, 14);
+            this.textBox_Config_Folders_Characters.MaxLength = 30;
+            this.textBox_Config_Folders_Characters.Name = "textBox_Config_Folders_Characters";
+            this.textBox_Config_Folders_Characters.Size = new System.Drawing.Size(387, 20);
+            this.textBox_Config_Folders_Characters.TabIndex = 7;
+            // 
+            // textBox_Config_Folders_Savegames
+            // 
+            this.textBox_Config_Folders_Savegames.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.textBox_Config_Folders_Savegames.Location = new System.Drawing.Point(91, 39);
+            this.textBox_Config_Folders_Savegames.MaxLength = 30;
+            this.textBox_Config_Folders_Savegames.Name = "textBox_Config_Folders_Savegames";
+            this.textBox_Config_Folders_Savegames.Size = new System.Drawing.Size(387, 20);
+            this.textBox_Config_Folders_Savegames.TabIndex = 9;
             // 
             // dataGridView_Bad_Files
             // 
@@ -8252,7 +8542,7 @@
             this.MaximumSize = new System.Drawing.Size(1000, 700);
             this.MinimumSize = new System.Drawing.Size(1000, 700);
             this.Name = "Form1";
-            this.Text = "Whore Master Editor 0.8.21";
+            this.Text = "Whore Master Editor 0.8.22";
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.App_FileDrop);
             this.DragEnter += new System.Windows.Forms.DragEventHandler(this.App_DragEnter);
             this.tabControl1.ResumeLayout(false);
@@ -8296,8 +8586,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBar_bad_02)).EndInit();
             this.tabPage4_Config.ResumeLayout(false);
             this.tabPage4_Config.PerformLayout();
-            this.groupBox_Folders.ResumeLayout(false);
-            this.groupBox_Folders.PerformLayout();
+            this.groupBox_C_Catacombs.ResumeLayout(false);
+            this.groupBox_C_Catacombs.PerformLayout();
             this.groupBox_C_Display_Settings.ResumeLayout(false);
             this.groupBox_C_Display_Settings.PerformLayout();
             this.groupBox_C_Expense_Multipliers.ResumeLayout(false);
@@ -8326,6 +8616,8 @@
             this.tabPage6_Scripts.ResumeLayout(false);
             this.tabPage6_Scripts.PerformLayout();
             this.tabPage7_FAQ.ResumeLayout(false);
+            this.groupBox_Folders.ResumeLayout(false);
+            this.groupBox_Folders.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Bad_Files)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
@@ -8955,14 +9247,6 @@
         private System.Windows.Forms.DataGridViewComboBoxColumn dataGridView_Traits_Trait_Type;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridView_Traits_Trait_InheritChance;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridView_Traits_Trait_RandomChance;
-        private System.Windows.Forms.GroupBox groupBox_Folders;
-        private System.Windows.Forms.CheckBox checkBox_Config_Folders_Backup_Saves;
-        private System.Windows.Forms.Label label185;
-        private System.Windows.Forms.TextBox textBox_Config_Folders_Default_Images;
-        private System.Windows.Forms.Label label183;
-        private System.Windows.Forms.Label label184;
-        private System.Windows.Forms.TextBox textBox_Config_Folders_Characters;
-        private System.Windows.Forms.TextBox textBox_Config_Folders_Savegames;
         private System.Windows.Forms.TabPage tabPage6_Scripts;
         private System.Windows.Forms.Button button_ScriptLoad;
         private System.Windows.Forms.Label label182;
@@ -8971,6 +9255,38 @@
         private System.Windows.Forms.TextBox textBox_Config_Multi_Birth_Chance;
         private System.Windows.Forms.TextBox textBox_Script_Content;
         private System.Windows.Forms.Label label187;
+        private System.Windows.Forms.GroupBox groupBox_Folders;
+        private System.Windows.Forms.CheckBox checkBox_Config_Folders_Backup_Saves;
+        private System.Windows.Forms.Label label185;
+        private System.Windows.Forms.TextBox textBox_Config_Folders_Default_Images;
+        private System.Windows.Forms.Label label183;
+        private System.Windows.Forms.Label label184;
+        private System.Windows.Forms.TextBox textBox_Config_Folders_Characters;
+        private System.Windows.Forms.TextBox textBox_Config_Folders_Savegames;
+        private System.Windows.Forms.GroupBox groupBox_C_Catacombs;
+        private System.Windows.Forms.TextBox textBox_Config_Girl_Gets_Girls;
+        private System.Windows.Forms.TextBox textBox_Config_Girl_Gets_Beast;
+        private System.Windows.Forms.TextBox textBox_Config_Gang_Gets_Girls;
+        private System.Windows.Forms.Label label189;
+        private System.Windows.Forms.TextBox textBox_Config_Gang_Gets_Items;
+        private System.Windows.Forms.Label label190;
+        private System.Windows.Forms.TextBox textBox_Config_Gang_Gets_Beast;
+        private System.Windows.Forms.Label label191;
+        private System.Windows.Forms.TextBox textBox_Config_Girl_Gets_Items;
+        private System.Windows.Forms.RichTextBox richTextBox3;
+        private System.Windows.Forms.Label label188;
+        private System.Windows.Forms.CheckBox checkBox_Config_Control_Gangs;
+        private System.Windows.Forms.CheckBox checkBox_Config_Control_Girls;
+        private System.Windows.Forms.Label label192;
+        private System.Windows.Forms.TextBox SkillTBox_22;
+        private System.Windows.Forms.Label label193;
+        private System.Windows.Forms.TextBox SkillRGMaxTBox22;
+        private System.Windows.Forms.TextBox SkillRGMinTBox22;
+        private System.Windows.Forms.TextBox StatRGMaxTBox27;
+        private System.Windows.Forms.TextBox StatRGMinTBox27;
+        private System.Windows.Forms.Label label194;
+        private System.Windows.Forms.TextBox StatsTBox_27;
+        private System.Windows.Forms.Label label195;
     }
 }
 

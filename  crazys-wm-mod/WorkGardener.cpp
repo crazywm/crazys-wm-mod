@@ -196,18 +196,21 @@ bool cJobManager::WorkGardener(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 
 	// Improve stats
-	int xp = 10, libido = 1, skill = 3;
+	int xp = 5, libido = 1, skill = 3;
 
 	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
 
-	g_Girls.UpdateStat(girl, STAT_FAME, 1);
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, g_Dice % (skill - 1));
-	g_Girls.UpdateSkill(girl, SKILL_HERBALISM, (g_Dice%skill) + 1);
-	g_Girls.UpdateSkill(girl, SKILL_FARMING, (g_Dice%skill) + 1);
+	g_Girls.UpdateStat(girl, STAT_EXP, (g_Dice % xp) + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
+
+	// primary (+2 for single or +1 for multiple)
+	g_Girls.UpdateSkill(girl, SKILL_HERBALISM, (g_Dice%skill) + 2);
+	// secondary (-1 for one then -2 for others)
+	g_Girls.UpdateSkill(girl, SKILL_FARMING, max(0, (g_Dice % skill) - 1));
+	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, max(0, (g_Dice % skill) - 2));
+	g_Girls.UpdateStat(girl, STAT_CONSTITUTION, max(0, (g_Dice % skill) - 2));
 
 	return false;
 }
@@ -216,15 +219,16 @@ bool cJobManager::WorkGardener(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 double cJobManager::JP_Gardener(sGirl* girl, bool estimate)// not used
 {
 	double jobperformance =
-		(g_Girls.GetStat(girl, STAT_INTELLIGENCE) / 2 +
-		g_Girls.GetSkill(girl, SKILL_HERBALISM) / 2 +
-		g_Girls.GetSkill(girl, SKILL_FARMING));
-
+		// primary - first 100
+		girl->herbalism() +
+		// secondary - second 100
+		((girl->farming() + girl->intelligence() + girl->constitution()) / 3) +
+		// level bonus
+		girl->level();
 
 	//good traits
 	if (g_Girls.HasTrait(girl, "Quick Learner"))  jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Psychic"))		  jobperformance += 10;
-
 
 	//bad traits
 	if (g_Girls.HasTrait(girl, "Dependant"))	jobperformance -= 50; //needs others to do the job

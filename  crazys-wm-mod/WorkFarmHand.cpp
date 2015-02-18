@@ -152,16 +152,21 @@ bool cJobManager::WorkFarmHand(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 	// Improve girl
 	int xp = 5, libido = 1, skill = 3;
+
 	if (enjoyC + enjoyF > 2)							{ xp += 1; skill += 1; }
 	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
 
-	g_Girls.UpdateStat(girl, STAT_EXP, (g_Dice % xp) + 2);
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, (g_Dice % skill));
-	g_Girls.UpdateSkill(girl, SKILL_CRAFTING, (g_Dice % 2));
-	g_Girls.UpdateSkill(girl, SKILL_FARMING, (g_Dice % 2));
+	g_Girls.UpdateStat(girl, STAT_EXP, (g_Dice % xp) + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
+
+	// primary (+2 for single or +1 for multiple)
+	g_Girls.UpdateSkill(girl, SKILL_SERVICE, (g_Dice % skill));
+	// secondary (-1 for one then -2 for others)
+	g_Girls.UpdateSkill(girl, SKILL_CRAFTING, max(0, (g_Dice % skill) - 1));
+	g_Girls.UpdateSkill(girl, SKILL_FARMING, max(0, (g_Dice % skill) - 2));
+	g_Girls.UpdateStat(girl, STAT_STRENGTH, max(0, (g_Dice % skill) - 2));
 
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoyF, true);
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKCLEANING, enjoyC, true);

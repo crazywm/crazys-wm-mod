@@ -1910,30 +1910,8 @@ void cGangManager::UpdateGangs()
 				while (g_Dice.percent((currentGang->intelligence() / 2) + 30) && items <= (currentGang->m_Num / 3))	// item chance
 				{
 					bool quit = false; bool add = false;
-					sInventoryItem* temp;
-					do {
-						temp = g_InvManager.GetRandomItem();
-					} while (!temp || temp->m_Rarity < RARITYSHOP25 || temp->m_Rarity > RARITYCATACOMB01);
-
-					switch (temp->m_Rarity)
-					{
-					case RARITYSHOP25:								add = true;		break;
-					case RARITYSHOP05:		if (g_Dice.percent(25))	add = true;		break;
-					case RARITYCATACOMB15:	if (g_Dice.percent(15))	add = true;		break;
-					case RARITYCATACOMB05:	if (g_Dice.percent(5))	add = true;		break;
-					case RARITYCATACOMB01:	if (g_Dice.percent(1))	add = true;		break;
-						// adding these cases to shut the compiler up
-					case RARITYCOMMON:	case RARITYSHOP50:	case RARITYSCRIPTONLY:	case RARITYSCRIPTORREWARD:
-						g_LogFile.ss() << "Warning: unexpected rarity " << temp->m_Rarity << " in cGangManager::UpdateGangs";
-						g_LogFile.ssend();
-						break;
-					default:
-						g_LogFile.ss() << "Warning: cGangManager::UpdateGangs: " << "unexpected enum in switch";
-						g_LogFile.ssend();
-						break;
-					}
-
-					if (add)
+					sInventoryItem* temp = g_InvManager.GetRandomCatacombItem();
+					if (temp)
 					{
 						ss << ",\n";
 						int curI = g_Brothels.HasItem(temp->m_Name, -1);

@@ -162,6 +162,18 @@ struct sConfigData
 		double	rape_brothel;
 	} prostitution;
 
+	struct CatacombsData {
+		bool	control_girls;
+		bool	control_gangs;
+		double	girl_gets_girls;
+		double	girl_gets_items;
+		double	girl_gets_beast;
+		double	gang_gets_girls;
+		double	gang_gets_items;
+		double	gang_gets_beast;
+	} catacombs;
+
+
 	struct item_data {
 		SDL_Color*	rarity_color[9];
 	} items;
@@ -207,6 +219,7 @@ struct sConfigData
 	void	get_preg_factors(TiXmlElement *el);
 	void	get_gang_factors(TiXmlElement *el);
 	void	get_pros_factors(TiXmlElement *el);
+	void	get_catacombs_data(TiXmlElement *el);
 	void	get_item_data(TiXmlElement *el);
 	void	get_font_data(TiXmlElement *el);
 	void	get_initial_values(TiXmlElement *el);
@@ -274,6 +287,17 @@ public:
 		double	rape_streets()  { return data->prostitution.rape_streets; }
 		double	rape_brothel()  { return data->prostitution.rape_brothel; }
 	} prostitution;
+
+	struct CatacombsData {
+		bool	control_girls()		{ return data->catacombs.control_girls; }
+		bool	control_gangs()		{ return data->catacombs.control_gangs; }
+		double	girl_gets_girls()	{ return data->catacombs.girl_gets_girls; }
+		double	girl_gets_items()	{ return data->catacombs.girl_gets_items; }
+		double	girl_gets_beast()	{ return data->catacombs.girl_gets_beast; }
+		double	gang_gets_girls()	{ return data->catacombs.gang_gets_girls; }
+		double	gang_gets_items()	{ return data->catacombs.gang_gets_items; }
+		double	gang_gets_beast()	{ return data->catacombs.gang_gets_beast; }
+	} catacombs;
 
 	struct font_data {
 		string&	normal()	    { return data->fonts.normal; }
