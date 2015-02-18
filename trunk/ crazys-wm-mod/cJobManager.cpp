@@ -714,7 +714,7 @@ bool cJobManager::Preprocessing(int action, sGirl* girl, sBrothel* brothel, bool
 	if (g_Girls.DisobeyCheck(girl, action, brothel))			// they refuse to work 
 	{
 		string message = girl->m_Realname + gettext(" refused to work during the ");
-		message += (Day0Night1 == SHIFT_DAY ? "day" : "night");
+		message += (Day0Night1 ? "night" : "day");
 		message += gettext(" shift.");
 		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
@@ -819,7 +819,7 @@ void cJobManager::do_whorejobs(sBrothel* brothel, bool Day0Night1)
 		default:
 			break;
 		}
-		if (refused) (Day0Night1 == SHIFT_DAY ? current->m_Refused_To_Work_Day = true : current->m_Refused_To_Work_Night = true);
+		if (refused) (Day0Night1 ? current->m_Refused_To_Work_Night = true : current->m_Refused_To_Work_Day = true);
 		current = current->m_Next;
 	}
 }
@@ -1444,7 +1444,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		Girl->m_DayJob = Girl->m_NightJob = JOB_FILMFREETIME;
 	}
 // Special Studio cases were checked and don't apply, just set the studio job as requested
-	else if (Girl->m_InMovieStudio)
+	else if (Girl->m_InStudio)
 	{
 		MadeChanges = false;
 		Girl->m_DayJob = JOB_FILMFREETIME;
@@ -1471,12 +1471,12 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 			if ((u_int(OldJobID) == JOB_MATRON || u_int(OldJobID) == JOB_TORTURER) &&
 				(u_int(JobID) != JOB_MATRON		&&	u_int(JobID) != JOB_TORTURER))
 			{	// if old job was full time but new job is not, switch leftover day or night job back to resting
-				(Day0Night1 == SHIFT_DAY ? Girl->m_NightJob = JOB_RESTING : Girl->m_DayJob = JOB_RESTING);
+				(Day0Night1 ? Girl->m_DayJob = JOB_RESTING : Girl->m_NightJob = JOB_RESTING);
 			}
 			// arena jobs
 			else if (u_int(OldJobID) == JOB_DOCTORE && u_int(JobID) != JOB_DOCTORE)
 			{	// if old job was full time but new job is not, switch leftover day or night job back to resting
-				(Day0Night1 == SHIFT_DAY ? Girl->m_NightJob = JOB_ARENAREST : Girl->m_DayJob = JOB_ARENAREST);
+				(Day0Night1 ? Girl->m_DayJob = JOB_ARENAREST : Girl->m_NightJob = JOB_ARENAREST);
 			}
 			// clinic jobs
 			else if (Girl->m_InClinic)
@@ -1486,7 +1486,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 					&& (!g_Clinic.is_Surgery_Job(JobID) && u_int(JobID) != JOB_DOCTOR
 					&& u_int(JobID) != JOB_MECHANIC && u_int(JobID) != JOB_CHAIRMAN))
 				{	// if old job was full time but new job is not, switch leftover day or night job back to resting
-					(Day0Night1 == SHIFT_DAY ? Girl->m_NightJob = JOB_CLINICREST : Girl->m_DayJob = JOB_CLINICREST);
+					(Day0Night1 ? Girl->m_DayJob = JOB_CLINICREST : Girl->m_NightJob = JOB_CLINICREST);
 				}
 			}
 			// centre jobs
@@ -1495,19 +1495,19 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 				if ((u_int(OldJobID) == JOB_CENTREMANAGER || u_int(OldJobID) == JOB_COUNSELOR || u_int(OldJobID) == JOB_REHAB || u_int(OldJobID) == JOB_ANGER || u_int(OldJobID) == JOB_EXTHERAPY || u_int(OldJobID) == JOB_THERAPY) &&
 					(u_int(JobID) != JOB_CENTREMANAGER && u_int(JobID) != JOB_COUNSELOR && u_int(JobID) != JOB_REHAB) && u_int(JobID) != JOB_ANGER && u_int(JobID) != JOB_EXTHERAPY && u_int(JobID) != JOB_THERAPY)
 				{	// if old job was full time but new job is not, switch leftover day or night job back to resting
-					(Day0Night1 == SHIFT_DAY ? Girl->m_NightJob = JOB_CENTREREST : Girl->m_DayJob = JOB_CENTREREST);
+					(Day0Night1 ? Girl->m_DayJob = JOB_CENTREREST : Girl->m_NightJob = JOB_CENTREREST);
 				}
 			}
 			// house jobs
 			else if ((u_int(OldJobID) == JOB_HEADGIRL || u_int(OldJobID) == JOB_RECRUITER) &&
 				(u_int(JobID) != JOB_HEADGIRL || u_int(JobID) != JOB_RECRUITER))
 			{	// if old job was full time but new job is not, switch leftover day or night job back to resting
-				(Day0Night1 == SHIFT_DAY ? Girl->m_NightJob = JOB_HOUSEREST : Girl->m_DayJob = JOB_HOUSEREST);
+				(Day0Night1 ? Girl->m_DayJob = JOB_HOUSEREST : Girl->m_NightJob = JOB_HOUSEREST);
 			}
 			// farm jobs
 			else if (u_int(OldJobID) == JOB_FARMMANGER && u_int(JobID) != JOB_FARMMANGER)
 			{	
-				(Day0Night1 == SHIFT_DAY ? Girl->m_NightJob = JOB_FARMREST : Girl->m_DayJob = JOB_FARMREST);
+				(Day0Night1 ? Girl->m_DayJob = JOB_FARMREST : Girl->m_NightJob = JOB_FARMREST);
 			}
 		}
 
@@ -1524,7 +1524,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 				refresh = true;
 			}
 		}
-		if (Girl->m_InMovieStudio)
+		if (Girl->m_InStudio)
 		{	// `J` if removing the last or adding the first camera or crystal
 			if ((u_int(OldJobID) == JOB_CAMERAMAGE && g_Studios.GetNumGirlsOnJob(0, JOB_CAMERAMAGE, SHIFT_NIGHT) < 1) ||
 				(u_int(JobID) == JOB_CAMERAMAGE  && g_Studios.GetNumGirlsOnJob(0, JOB_CAMERAMAGE, SHIFT_NIGHT) < 2) ||
@@ -2448,7 +2448,7 @@ void cJobManager::do_solo_training(sGirl *girl, bool Day0Night1)
 	string improved = trainee.update_random(amt);
 	stringstream ss;
 	ss.str("");
-	ss << gettext("She managed to gain ") << amt << gettext(" ") << improved << gettext(".");
+	ss << gettext("She managed to gain ") << amt << " " << improved << gettext(".");
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_SUMMARY);
 }
 
@@ -2568,7 +2568,7 @@ void cJobManager::do_training_set(vector<sGirl*> girls, bool Day0Night1)
 			}
 			else ss << gettext(", ");
 
-			ss << gettext("+") << gain << gettext(" ") << trainee[index].name();
+			ss << gettext("+") << gain << " " << trainee[index].name();
 		}
 		ss << gettext(".");
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_SUMMARY);
@@ -2703,7 +2703,7 @@ string cJobManager::GirlPaymentText(sBrothel* brothel, sGirl* girl, int totalTip
 	cConfig cfg;
 	stringstream ss;
 	string girlName = girl->m_Realname;
-	u_int sw = (Day0Night1 == SHIFT_DAY ? girl->m_DayJob : girl->m_NightJob);
+	u_int sw = (Day0Night1 ? girl->m_NightJob : girl->m_DayJob);
 
 	// `J` if a slave does a job that is normally paid by you but you don't pay your slaves...
 	if (is_job_Paid_Player(sw) && girl->is_slave() && !cfg.initial.slave_pay_outofpocket())

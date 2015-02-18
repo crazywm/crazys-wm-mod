@@ -25,11 +25,10 @@
 extern cBrothelManager g_Brothels;
 extern cHouseManager g_House;
 extern cMessageQue g_MessageQue;
-extern int g_Building;
 static cPlayer* m_Player = g_Brothels.GetPlayer();
 extern cJobManager m_JobManager;
 
-// `J` Job House - General
+// `J` Job House - General - Learning_Job
 bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	int actiontype = ACTION_SEX;
@@ -42,9 +41,8 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0
 	}
 	ss << "You oversee " << girlName << "'s traning.\n\n";
 
-	g_Building = BUILDING_HOUSE;
-
 	g_Girls.UnequipCombat(girl);	// put that shit away, not needed for sex training
+	cConfig cfg;
 
 
 	// first set sex restrictions

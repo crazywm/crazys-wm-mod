@@ -68,7 +68,7 @@ sClinic::~sClinic()			// destructor
 void cClinicManager::AddGirl(int brothelID, sGirl* girl)
 {
 	girl->where_is_she = 0;
-	girl->m_InMovieStudio = false;
+	girl->m_InStudio = false;
 	girl->m_InArena = false;
 	girl->m_InCentre = false;
 	girl->m_InClinic = true;
@@ -147,7 +147,7 @@ void cClinicManager::UpdateClinic()	// Start_Building_Process_A
 		{
 			cgirl->m_Events.Clear();			// Clear the girls' events from the last turn
 			cgirl->where_is_she = 0;
-			cgirl->m_InMovieStudio = false;
+			cgirl->m_InStudio = false;
 			cgirl->m_InArena = false;
 			cgirl->m_InCentre = false;
 			cgirl->m_InClinic = true;
@@ -311,7 +311,7 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 		}
 		else if (g_Girls.DisobeyCheck(current, ACTION_WORKMATRON, brothel))
 		{
-			(Day0Night1 == SHIFT_DAY ? current->m_Refused_To_Work_Day = true : current->m_Refused_To_Work_Night = true);
+			(Day0Night1 ? current->m_Refused_To_Work_Night = true : current->m_Refused_To_Work_Day = true);
 			brothel->m_Fame -= g_Girls.GetStat(current, STAT_FAME);
 			ss << girlName << " refused to work as the Chairman.";
 			sum = EVENT_NOWORK;
@@ -384,7 +384,7 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 		{
 			if (matron)	// and there is a marton working...
 			{
-				psw = (Day0Night1 == SHIFT_DAY ? current->m_PrevDayJob : current->m_PrevNightJob);
+				psw = (Day0Night1 ? current->m_PrevNightJob : current->m_PrevDayJob);
 				if (psw == JOB_NURSE || psw == JOB_MECHANIC || psw == JOB_GETHEALING || psw == JOB_GETREPAIRS ||
 					psw == JOB_GETABORT || psw == JOB_PHYSICALSURGERY || psw == JOB_LIPO || psw == JOB_BREASTREDUCTION ||
 					psw == JOB_BOOBJOB || psw == JOB_VAGINAREJUV || psw == JOB_FACELIFT || psw == JOB_ASSJOB ||
@@ -499,7 +499,7 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 		}
 		else if (g_Girls.DisobeyCheck(current, ACTION_WORKDOCTOR, brothel))
 		{
-			(Day0Night1 == SHIFT_DAY ? current->m_Refused_To_Work_Day = true : current->m_Refused_To_Work_Night = true);
+			(Day0Night1 ? current->m_Refused_To_Work_Night = true : current->m_Refused_To_Work_Day = true);
 			brothel->m_Fame -= g_Girls.GetStat(current, STAT_FAME);
 			ss << girlName << " refused to work as a Doctor so made no money.";
 			sum = EVENT_NOWORK;

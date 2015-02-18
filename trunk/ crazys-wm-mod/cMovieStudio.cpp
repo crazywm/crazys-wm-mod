@@ -82,7 +82,7 @@ sMovieStudio::~sMovieStudio()			// destructor
 void cMovieStudioManager::AddGirl(int brothelID, sGirl* girl)
 {
 	girl->where_is_she = 0;
-	girl->m_InMovieStudio = true;
+	girl->m_InStudio = true;
 	girl->m_InArena = false;
 	girl->m_InCentre = false;
 	girl->m_InClinic = false;
@@ -93,7 +93,7 @@ void cMovieStudioManager::AddGirl(int brothelID, sGirl* girl)
 
 void cMovieStudioManager::RemoveGirl(int brothelID, sGirl* girl, bool deleteGirl)
 {
-	girl->m_InMovieStudio = false;
+	girl->m_InStudio = false;
 	cBrothelManager::RemoveGirl(brothelID, girl, deleteGirl);
 }
 
@@ -161,7 +161,7 @@ void cMovieStudioManager::UpdateMovieStudio()	// Start_Building_Process_A
 		{
 			cgirl->m_Events.Clear();			// Clear the girls' events from the last turn
 			cgirl->where_is_she = 0;
-			cgirl->m_InMovieStudio = true;
+			cgirl->m_InStudio = true;
 			cgirl->m_InArena = false;
 			cgirl->m_InCentre = false;
 			cgirl->m_InClinic = false;
@@ -1177,7 +1177,7 @@ bool sMovieStudio::LoadMovieStudioXML(TiXmlHandle hBrothel)
 			bool success = girl->LoadGirlXML(TiXmlHandle(pGirl));
 			if (success == true)
 			{
-				girl->m_InMovieStudio = true;
+				girl->m_InStudio = true;
 				AddGirl(girl);
 			}
 			else

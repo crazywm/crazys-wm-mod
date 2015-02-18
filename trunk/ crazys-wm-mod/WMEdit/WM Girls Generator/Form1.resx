@@ -117,6 +117,50 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>24, 26</value>
+  </metadata>
+  <data name="label188.ToolTip" xml:space="preserve">
+    <value>Catacombs: Who gets What
+These settings will determine the ratio of Girls to Items to Beasts that they try to come back with.
+If the box is checked, these will control what they try to get when you send a Girl or Gang into the catacombs.
+The numbers entered here are normalized into fractions of 100% by the game.
+Negative numbers are not allowed and if all three are set to 0s, they wil be set to 33.33% each.
+
+</value>
+  </data>
+  <data name="label189.ToolTip" xml:space="preserve">
+    <value>Catacombs: Who gets What
+These settings will determine the ratio of Girls to Items to Beasts that they try to come back with.
+If the box is checked, these will control what they try to get when you send a Girl or Gang into the catacombs.
+The numbers entered here are normalized into fractions of 100% by the game.
+Negative numbers are not allowed and if all three are set to 0s, they wil be set to 33.33% each.
+</value>
+  </data>
+  <data name="label190.ToolTip" xml:space="preserve">
+    <value>Catacombs: Who gets What
+These settings will determine the ratio of Girls to Items to Beasts that they try to come back with.
+If the box is checked, these will control what they try to get when you send a Girl or Gang into the catacombs.
+The numbers entered here are normalized into fractions of 100% by the game.
+Negative numbers are not allowed and if all three are set to 0s, they wil be set to 33.33% each.
+
+</value>
+  </data>
+  <data name="label191.ToolTip" xml:space="preserve">
+    <value>Catacombs: Who gets What
+These settings will determine the ratio of Girls to Items to Beasts that they try to come back with.
+If the box is checked, these will control what they try to get when you send a Girl or Gang into the catacombs.
+The numbers entered here are normalized into fractions of 100% by the game.
+Negative numbers are not allowed and if all three are set to 0s, they wil be set to 33.33% each.
+
+</value>
+  </data>
+  <data name="label_Load_Config.Text" xml:space="preserve">
+    <value>The WME will try to find config.xml by itself. If it does not find it, you will have to find it manually.
+Starting in version .05t it is in the root game folder.   In older versions, it was in \Resources\Data\ folder.
+In .06, the game will load the config.xml from the folder the .EXE is in and then from the folder above that.
+This means it loads it twice with the second one taking precidence. Leave anything out of the second that you want to have default to the game version folder.</value>
+  </data>
   <data name="richTextBox1.Text" xml:space="preserve">
     <value>
 This FAQ is extremely out of date, I don't know why I have not removed it yet.
@@ -178,6 +222,18 @@ If it finds 2, they become first and last.
   <metadata name="hidden_has.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
+  <metadata name="dataGridView_G_Traits_Has.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="dataGridView_G_Traits_List.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="dataGridView_G_Traits_Type.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="hidden_has.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
   <data name="button_G_UnZero_Sex_Skills.ToolTip" xml:space="preserve">
     <value>If the girl you are editing does not have some of the sex skills set in it, 
 this will check the existing sex skills and set the missing or zeroed sex skills 
@@ -216,11 +272,15 @@ supported value.
 If you enter unsuported values (like "fasdsadfgdfvd" and like) you can
 expect that Whore Master will crash.</value>
   </data>
-  <data name="label_Load_Config.Text" xml:space="preserve">
-    <value>The WME will try to find config.xml by itself. If it does not find it, you will have to find it manually.
-Starting in version .05t it is in the root game folder.   In older versions, it was in \Resources\Data\ folder.
-In .06, the game will load the config.xml from the folder the .EXE is in and then from the folder above that.
-This means it loads it twice with the second one taking precidence. Leave anything out of the second that you want to have default to the game version folder.</value>
+  <data name="label178.ToolTip" xml:space="preserve">
+    <value>Horoscope Type can either be "Tropical (Western)" or "Sideral (Hindu)".
+The only real difference is the dates that the Signs start and end.
+This is not really used in the game yet so either choice does not matter.</value>
+  </data>
+  <data name="label155.ToolTip" xml:space="preserve">
+    <value>This number is how long the girl remembers torture.
+If the number is above 0 then it is how many weeks some traits gained through torture last.
+If it is -1, then the torture is much harsher and the traits are permanent.</value>
   </data>
   <metadata name="dataGridView_Traits_Trait_Name.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -235,6 +295,18 @@ This means it loads it twice with the second one taking precidence. Leave anythi
     <value>True</value>
   </metadata>
   <metadata name="dataGridView_Traits_Trait_RandomChance.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="richTextBox3.Text" xml:space="preserve">
+    <value>You can set the location of certain folders relative to the game .EXE file.
+Currently only relative paths are allowed so "c:\Characters" would not work.
+Use "..\" to go up one folder. This section requires more knowledge of how 
+folder paths work so it was moved to the extras tab.</value>
+  </data>
+  <metadata name="Bad_Files.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="Error_Message.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <metadata name="Bad_Files.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">

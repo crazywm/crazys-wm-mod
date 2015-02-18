@@ -47,15 +47,15 @@ typedef int (*lua_func)(lua_State *L);
 static const char *stats[] = {
 	"charisma", "happiness", "libido", "constitution", "intelligence", "confidence", "mana", "agility", "fame",
 	"level", "askprice", "house", "exp", "age", "obedience", "spirit", "beauty", "tiredness",
-	"health", "pc_fear", "pc_love", "pc_hate", "morality", "refinement", "dignity", "lactation",
+	"health", "pc_fear", "pc_love", "pc_hate", "morality", "refinement", "dignity", "lactation", "strength",
 	0
 };
 // `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in >> cLuaScript.cpp
 
 static const char *skills[] = // same again for skill names
 {
-	"anal", "magic", "bdsm", "normal", "beastiality", "group", "lesbian", "service", "strip", "combat", "oral",
-	"titty", "medicine", "performance", "handjob", "crafting", "herbalism", "farming", "brewing", "animalhandling", "footjob"
+	"anal", "magic", "bdsm", "normal", "beastiality", "group", "lesbian", "service", "strip", "combat", "oral", "titty", 
+	"medicine", "performance", "handjob", "crafting", "herbalism", "farming", "brewing", "animalhandling", "footjob", "cooking"
 	,0
 };
 

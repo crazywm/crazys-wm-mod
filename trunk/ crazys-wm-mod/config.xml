@@ -67,7 +67,7 @@
         SlaveHousePerc="100"
         SlavePayOutOfPocket="true"
         SlaveKeepTips="false"
-        AutoUseItems="false"
+        AutoUseItems="true"
         AutoCombatEquip="true"
         TortureTraitWeekMod="1"
         HoroscopeType="1" />
@@ -170,6 +170,8 @@
 		The magic of the world the game is set in causes children to age much faster.
 		Real world is 936 weeks.
 	CoolDown is how long before the girl can get pregnant again after giving birth.
+	AntiPregFailure is the chance that an Anti-Preg Potion fails to work.
+	MultiBirthChance is the chance of multiple births.
 	-->
     <Pregnancy
         PlayerChance="8%"
@@ -191,6 +193,22 @@
     <Prostitution
         RapeBrothel="1%"
         RapeStreet="5%" />
+    <!--
+	Catacombs: Who gets What
+		These settings will determine the ratio of Girls to Items to Beasts that they try to come back with.
+		If the Controls are true, these will determine what they try to get when you send a Girl or Gang into the catacombs.
+		The numbers entered here are normalized into fractions of 100% by the game.
+		Negative numbers are not allowed and all 0s will set to (100/3)% each.
+	-->
+    <Catacombs
+        ControlGirls="true"
+        ControlGangs="false"
+        GirlGetsGirls="1"
+        GirlGetsItems="1"
+        GirlGetsBeast="1"
+        GangGetsGirls="1"
+        GangGetsItems="1"
+        GangGetsBeast="1" />
     <!--
 	Gangs:
 	MaxRecruitList limits the maximum number of recruitable gangs listed for you to hire.

@@ -290,6 +290,7 @@ public:
 	bool LoadDataXML(TiXmlHandle hBrothelManager);
 
 	bool NameExists(string name);
+	bool SurnameExists(string name);
 
 	bool AddItemToInventory(sInventoryItem* item);
 

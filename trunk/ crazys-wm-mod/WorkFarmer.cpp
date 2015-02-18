@@ -133,23 +133,31 @@ bool cJobManager::WorkFarmer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
 
-	g_Girls.UpdateStat(girl, STAT_FAME, 1);
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_FARMING, skill);
+	g_Girls.UpdateStat(girl, STAT_EXP, (g_Dice % xp) + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
+
+	// primary (+2 for single or +1 for multiple)
+	g_Girls.UpdateSkill(girl, SKILL_FARMING, (g_Dice % skill) + 2);
+	// secondary (-1 for one then -2 for others)
+	g_Girls.UpdateStat(girl, STAT_CONSTITUTION, max(0, (g_Dice % skill) - 1));
+	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, max(0, (g_Dice % skill) - 2));
 
 	return false;
 }
 
 double cJobManager::JP_Farmer(sGirl* girl, bool estimate)// not used
 {
-	double jobperformance = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) + g_Girls.GetSkill(girl, SKILL_FARMING));
-
+	double jobperformance =
+		// primary - first 100
+		girl->farming() +
+		// secondary - second 100
+		((girl->intelligence() + girl->constitution()) / 2) +
+		// level bonus
+		girl->level();
 
 	//good traits
 	if (g_Girls.HasTrait(girl, "Quick Learner"))  jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Psychic"))		  jobperformance += 10;
-
 
 	//bad traits
 	if (g_Girls.HasTrait(girl, "Dependant"))	jobperformance -= 50; //needs others to do the job

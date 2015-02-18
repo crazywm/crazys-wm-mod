@@ -135,16 +135,21 @@ bool cJobManager::WorkSheapherd(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 
 
 	// Improve stats
-	int xp = 10, libido = 1, skill = 3;
+	int xp = 5, libido = 1, skill = 3;
 
 	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
 
-	g_Girls.UpdateStat(girl, STAT_FAME, 1);
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_ANIMALHANDLING, skill);
+	g_Girls.UpdateStat(girl, STAT_EXP, (g_Dice%xp) + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
+	
+	// primary (+2 for single or +1 for multiple)
+	g_Girls.UpdateSkill(girl, SKILL_ANIMALHANDLING, (g_Dice % skill) + 2);
+	// secondary (-1 for one then -2 for others)
+	g_Girls.UpdateStat(girl, STAT_CHARISMA, max(0, (g_Dice % skill) - 1));
+	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, max(0, (g_Dice % skill) - 2));
+	g_Girls.UpdateStat(girl, STAT_CONFIDENCE, max(0, (g_Dice % skill) - 2));
 
 	return false;
 }
@@ -152,9 +157,12 @@ bool cJobManager::WorkSheapherd(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 double cJobManager::JP_Sheapherd(sGirl* girl, bool estimate)// not used
 {
 	double jobperformance =
-		(g_Girls.GetStat(girl, STAT_INTELLIGENCE) / 2 +
-		g_Girls.GetSkill(girl, SKILL_FARMING) / 2 +
-		g_Girls.GetSkill(girl, SKILL_ANIMALHANDLING));
+		// primary - first 100
+		girl->animalhandling() +
+		// secondary - second 100
+		((girl->charisma() + girl->intelligence() + girl->confidence()) / 3) +
+		// level bonus
+		girl->level();
 
 
 	//good traits

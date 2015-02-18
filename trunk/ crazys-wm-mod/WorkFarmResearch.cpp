@@ -27,11 +27,10 @@
 extern CLog g_LogFile;
 extern cMessageQue g_MessageQue;
 extern cRng g_Dice;
-extern cGold g_Gold;
 extern cBrothelManager g_Brothels;
 extern cFarmManager g_Farm;
 
-// `J` Job Farm - Staff
+// `J` Job Farm - Staff - Learning_Job
 bool cJobManager::WorkFarmResearch(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	int actiontype = ACTION_WORKFARM;
@@ -44,104 +43,121 @@ bool cJobManager::WorkFarmResearch(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	}
 	ss << " worked as a reseacher on the farm.";
 
-	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
-
-	int wages = 25, work = 0;
-
-	int roll = g_Dice.d100();
-
-	double jobperformance = JP_FarmResearch(girl, false);
-
-	if (jobperformance >= 245)
-	{
-		ss << " She must be the perfect at this.\n\n";
-		wages += 155;
-	}
-	else if (jobperformance >= 185)
-	{
-		ss << " She's unbelievable at this.\n\n";
-		wages += 95;
-	}
-	else if (jobperformance >= 145)
-	{
-		ss << " She's good at this job.\n\n";
-		wages += 55;
-	}
-	else if (jobperformance >= 100)
-	{
-		ss << " She made a few mistakes but overall she is okay at this.\n\n";
-		wages += 15;
-	}
-	else if (jobperformance >= 70)
-	{
-		ss << " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
-		wages -= 5;
-	}
-	else
-	{
-		ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
-		wages -= 15;
-	}
+	g_Girls.UnequipCombat(girl);	// put that shit away
+	cConfig cfg;
+	int enjoy = 0;												// 
+	int wages = 0;												// 
+	int train = 0;												// main skill trained
+	int tanm = girl->m_Skills[SKILL_ANIMALHANDLING];			// Starting level - train = 1
+	int tfar = girl->m_Skills[SKILL_FARMING];					// Starting level - train = 2
+	int tmag = girl->m_Skills[SKILL_MAGIC];						// Starting level - train = 3
+	int ther = girl->m_Skills[SKILL_HERBALISM];					// Starting level - train = 4
+	int tint = girl->m_Stats[STAT_INTELLIGENCE];				// Starting level - train = 5
+	bool gaintrait = false;										// posibility of gaining a trait
+	int skill = 0;												// gian for main skill trained
+	int dirtyloss = brothel->m_Filthiness / 100;				// training time wasted with bad equipment
+	int sgAnm = 0, sgFar = 0, sgMag = 0, sgHer = 0, sgInt = 0;	// gains per skill
+	int roll_a = g_Dice.d100();									// roll for main skill gain
+	int roll_b = g_Dice.d100();									// roll for main skill trained
+	int roll_c = g_Dice.d100();									// roll for enjoyment
 
 
-	if (wages < 0)
-		wages = 0;
+	/* */if (roll_a <= 5)	skill = 7;
+	else if (roll_a <= 15)	skill = 6;
+	else if (roll_a <= 30)	skill = 5;
+	else if (roll_a <= 60)	skill = 4;
+	else /*             */	skill = 3;
+	/* */if (g_Girls.HasTrait(girl, "Quick Learner"))	{ skill += 1; }
+	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; }
+	skill -= dirtyloss;
+	ss << "The Farm Lab is ";
+	if (dirtyloss <= 0) ss << "clean and tidy";
+	if (dirtyloss == 1) ss << "dirty and the equipment has not been put back in its place";
+	if (dirtyloss == 2) ss << "messy. The equipment is damaged and strewn about the building";
+	if (dirtyloss == 3) ss << "filthy and some of the equipment is broken";
+	if (dirtyloss >= 4) ss << "in complete disarray and the equipment barely usable";
+	ss << ".\n\n";
+	if (skill < 1) skill = 1;	// always at least 1 
+
+	do{		// `J` New method of selecting what job to do
+		/* */if (roll_b < 20  && tanm < 100)	train = 1;	// animalhandling
+		else if (roll_b < 40  && tfar < 100)	train = 2;	// farming
+		else if (roll_b < 60  && tmag < 100)	train = 3;	// magic
+		else if (roll_b < 80  && ther < 100)	train = 4;	// herbalism
+		else if (roll_b < 100 && tint < 100)	train = 5;	// intelligence
+		roll_b -= 10;
+	} while (train == 0 && roll_b > 0);
+	if (train == 0 || g_Dice.percent(5)) gaintrait = true;
+
+	if (train == 1) { sgAnm = skill; ss << "She researches animals.\n"; }				else sgAnm = g_Dice % 2;
+	if (train == 2) { sgFar = skill; ss << "She researches farming techniques.\n"; }	else sgFar = g_Dice % 2;
+	if (train == 3) { sgMag = skill; ss << "She researches magical techniques.\n"; }	else sgMag = g_Dice % 2;
+	if (train == 4) { sgHer = skill; ss << "She researches plants and their uses.\n"; }	else sgHer = g_Dice % 2;
+	if (train == 5) { sgInt = skill; ss << "She researches general topics.\n"; }		else sgInt = g_Dice % 2;
+
+	if (sgAnm + sgFar + sgMag + sgHer + sgInt > 0)
+	{
+		ss << "She managed to gain:\n";
+		if (sgAnm > 0) { ss << sgAnm << " Animal Handling\n";	g_Girls.UpdateSkill(girl, SKILL_ANIMALHANDLING, sgAnm); }
+		if (sgFar > 0) { ss << sgFar << " Farming\n";			g_Girls.UpdateSkill(girl, SKILL_FARMING, sgFar); }
+		if (sgMag > 0) { ss << sgMag << " Magic\n";				g_Girls.UpdateSkill(girl, SKILL_MAGIC, sgMag); }
+		if (sgHer > 0) { ss << sgHer << " Herbalism\n";			g_Girls.UpdateSkill(girl, SKILL_HERBALISM, sgHer); }
+		if (sgInt > 0) { ss << sgInt << " Intelligence\n";		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, sgInt); }
+	}
+	
+	int trycount = 5;
+	while (gaintrait && trycount > 0)	// `J` Try to add a trait 
+	{
+		trycount--;
+		switch (g_Dice % 10)
+		{
+		case 0:
+			break;
+		case 1:
+			break;
+		case 2:
+			if (g_Girls.HasTrait(girl, "Dependant"))
+			{
+				g_Girls.RemoveTrait(girl, "Dependant");
+				ss << "She seems to be getting over her Dependancy with her training.";
+				gaintrait = false;
+			}
+			break;
+		case 3:
+			break;
+		case 4:
+			break;
+		case 5:
+
+			break;
+		case 6:
+
+			break;
+
+		default:	break;	// no trait gained
+		}
+	}
 
 	//enjoyed the work or not
-	if (roll <= 5)
-	{
-		ss << "\nSome of the patrons abused her during the shift."; work -= 1;
-	}
-	else if (roll <= 25)
-	{
-		ss << "\nShe had a pleasant time working."; work += 3;
-	}
-	else
-	{
-		ss << "\nOtherwise, the shift passed uneventfully."; work += 1;
-	}
+	/* */if (roll_c <= 10)	{ enjoy -= g_Dice % 3 + 1;	ss << "She did not enjoy her time training."; }
+	else if (roll_c >= 90)	{ enjoy += g_Dice % 3 + 1;	ss << "She had a pleasant time training."; }
+	else /*             */	{ enjoy += g_Dice % 2;		ss << "Otherwise, the shift passed uneventfully."; }
+	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy, true);
 
-
-#if 0
-
-	// `J` Farm Bookmark - adding in items that can be created in the farm
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#endif
-
-
-	g_Girls.UpdateEnjoyment(girl, actiontype, work, true);
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
+
+	if ((girl->is_slave() && !cfg.initial.slave_pay_outofpocket())) { wages = 0; }
+	else { wages = 25 + (skill * 5); } // `J` Pay her more if she learns more
 	girl->m_Pay = wages;
 
-
 	// Improve stats
-	int xp = 15, libido = 1, skill = 5;
+	int xp = 5 + skill, libido = int(1 + skill / 2);
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
+	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ xp += 2; }
+	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ xp -= 2; }
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
 
-	g_Girls.UpdateStat(girl, STAT_FAME, 1);
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, (g_Dice % skill) + 1);
-	g_Girls.UpdateSkill(girl, SKILL_MAGIC, max(0, ((g_Dice % skill) - 1)));
-	g_Girls.UpdateSkill(girl, SKILL_CRAFTING, max(0, ((g_Dice % skill) - 1)));
-	g_Girls.UpdateSkill(girl, SKILL_HERBALISM, (g_Dice % skill));
-	g_Girls.UpdateSkill(girl, SKILL_ANIMALHANDLING, (g_Dice % skill));
+	g_Girls.UpdateStat(girl, STAT_EXP, (g_Dice % xp) + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	return false;
@@ -149,22 +165,32 @@ bool cJobManager::WorkFarmResearch(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 
 double cJobManager::JP_FarmResearch(sGirl* girl, bool estimate)// not used
 {
-	double jobperformance = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) / 2 +
-		g_Girls.GetSkill(girl, SKILL_HERBALISM) / 2 +
-		g_Girls.GetSkill(girl, SKILL_BREWING));
+	double jobperformance = 0.0;
+	if (estimate)// for third detail string
+	{
+		jobperformance +=
+			(100 - girl->m_Skills[SKILL_ANIMALHANDLING]) +
+			(100 - girl->m_Skills[SKILL_FARMING]) +
+			(100 - girl->m_Skills[SKILL_MAGIC]) +
+			(100 - girl->m_Skills[SKILL_HERBALISM]) +
+			(100 - girl->m_Stats[STAT_INTELLIGENCE]);
+	}
+	else// for the actual check
+	{
+		jobperformance = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) / 2 +
+			g_Girls.GetSkill(girl, SKILL_HERBALISM) / 2 +
+			g_Girls.GetSkill(girl, SKILL_BREWING));
 
+		//good traits
+		if (g_Girls.HasTrait(girl, "Quick Learner"))  jobperformance += 5;
+		if (g_Girls.HasTrait(girl, "Psychic"))		  jobperformance += 10;
 
-	//good traits
-	if (g_Girls.HasTrait(girl, "Quick Learner"))  jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Psychic"))		  jobperformance += 10;
-
-
-	//bad traits
-	if (g_Girls.HasTrait(girl, "Dependant"))	jobperformance -= 50; //needs others to do the job
-	if (g_Girls.HasTrait(girl, "Clumsy")) 		jobperformance -= 20; //spills food and breaks things often
-	if (g_Girls.HasTrait(girl, "Aggressive")) 	jobperformance -= 20; //gets mad easy
-	if (g_Girls.HasTrait(girl, "Nervous"))		jobperformance -= 30; //don't like to be around people	
-	if (g_Girls.HasTrait(girl, "Meek"))			jobperformance -= 20;
-
+		//bad traits
+		if (g_Girls.HasTrait(girl, "Dependant"))	jobperformance -= 50; //needs others to do the job
+		if (g_Girls.HasTrait(girl, "Clumsy")) 		jobperformance -= 20; //spills food and breaks things often
+		if (g_Girls.HasTrait(girl, "Aggressive")) 	jobperformance -= 20; //gets mad easy
+		if (g_Girls.HasTrait(girl, "Nervous"))		jobperformance -= 30; //don't like to be around people	
+		if (g_Girls.HasTrait(girl, "Meek"))			jobperformance -= 20;
+	}
 	return jobperformance;
 }

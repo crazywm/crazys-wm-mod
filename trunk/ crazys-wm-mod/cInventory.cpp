@@ -474,6 +474,34 @@ sInventoryItem* cInventory::GetRandomItem()
 	return ipt;
 }
 
+sInventoryItem* cInventory::GetRandomCatacombItem()
+{
+	sInventoryItem *temp;
+	int tries = 200;	// 200 tries to get an item
+	while (tries > 0)
+	{
+		temp = GetRandomItem();
+		switch (temp->m_Rarity) {
+		case RARITYSHOP25:									return temp;	break;
+		case RARITYSHOP05:		if (g_Dice.percent(25))		return temp;	break;
+		case RARITYCATACOMB15:	if (g_Dice.percent(15))		return temp;	break;
+		case RARITYCATACOMB05:	if (g_Dice.percent(5))		return temp;	break;
+		case RARITYCATACOMB01:	if (g_Dice.percent(1))		return temp;	break;
+		case RARITYSCRIPTONLY:	
+		case RARITYSCRIPTORREWARD:	
+			temp = 0;
+			break;	// if at the end it is a script item, no item is returned
+		case RARITYCOMMON:	
+		case RARITYSHOP50: 
+		default: 
+			break;	// if at the end it is a common item, that item is returned
+		}
+		tries--;
+	} 
+	if (!temp) return 0;
+	return temp;
+}
+
 sInventoryItem* cInventory::GetItem(string name)
 {
 	sInventoryItem* item;

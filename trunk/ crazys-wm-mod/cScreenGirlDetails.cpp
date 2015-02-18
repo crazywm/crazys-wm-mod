@@ -156,7 +156,9 @@ void cScreenGirlDetails::init()
 	////////////////////
 	if (selected_girl->health() <= 0)
 	{
-		selected_girl = remove_selected_girl();
+		// `J` instead of removing dead girls from the list which breaks the game, just skip past her in the list.
+		NextGirl();								// `J` currently this prevents scrolling backwards past her - need to fix that.
+//		selected_girl = remove_selected_girl();
 		if (selected_girl == 0)
 		{
 			g_WinManager.Pop();
@@ -165,7 +167,7 @@ void cScreenGirlDetails::init()
 		}
 	}
 
-	u_int job = (Day0Night1 == SHIFT_DAY ? selected_girl->m_DayJob : selected_girl->m_NightJob);
+	u_int job = (Day0Night1 ? selected_girl->m_NightJob : selected_girl->m_DayJob);
 	SetJob = true;
 
 	EditTextItem(selected_girl->m_Realname, girlname_id);
@@ -224,7 +226,7 @@ void cScreenGirlDetails::init()
 	DisableButton(takegold_id, (selected_girl->m_Money <= 0));
 	SetCheckBox(antipreg_id, (selected_girl->m_UseAntiPreg));
 
-	bool InMovieStudio = (selected_girl->m_InMovieStudio);
+	bool InMovieStudio = (selected_girl->m_InStudio);
 	bool InArena = (selected_girl->m_InArena);
 	bool InCentre = (selected_girl->m_InCentre);
 	bool InClinic = (selected_girl->m_InClinic);
@@ -235,10 +237,10 @@ void cScreenGirlDetails::init()
 	DisableButton(senddungeon_id, InDungeon);
 
 	// Disable dungeon if selected girl is in a non-brothel building
-	if (InMovieStudio || InArena || InCentre || InClinic || InHouse || InFarm)
-	{
-		DisableButton(senddungeon_id, true);
-	}
+//	if (InMovieStudio || InArena || InCentre || InClinic || InFarm || InHouse) 
+//	{
+//		DisableButton(senddungeon_id, true);
+//	}
 
 	if (InArena)
 	{
@@ -375,24 +377,13 @@ void cScreenGirlDetails::init()
 	EditTextItem("", traitdesc_id);
 }
 
-
 void cScreenGirlDetails::process()
 {
-	// we need to make sure the ID variables are set
-	if (!ids_set)
-		set_ids();
-
-	// handle arrow keys
-	if (check_keys())
-		return;
-
-	// set up the window if needed
-	init();
-
-	// check to see if there's a button event needing handling
-	check_events();
+	if (!ids_set) set_ids();	// we need to make sure the ID variables are set
+	if (check_keys()) return;	// handle arrow keys
+	init();						// set up the window if needed
+	check_events();				// check to see if there's a button event needing handling
 }
-
 
 bool cScreenGirlDetails::check_keys()
 {
@@ -467,15 +458,14 @@ bool cScreenGirlDetails::check_keys()
 	return false;
 }
 
-
 void cScreenGirlDetails::check_events()
 {
 	// no events means we can go home
-	if (g_InterfaceEvents.GetNumEvents() == 0)
-		return;
+	if (g_InterfaceEvents.GetNumEvents() == 0) return;
 
 	// if it's the back button, pop the window off the stack and we're done
-	if (g_InterfaceEvents.CheckButton(back_id)) {
+	if (g_InterfaceEvents.CheckButton(back_id))
+	{
 		g_InitWin = true;
 		g_WinManager.Pop();
 		return;
@@ -492,7 +482,6 @@ void cScreenGirlDetails::check_events()
 			string detail = g_Girls.GetDetailsString(selected_girl);
 			EditTextItem(detail, girldesc_id);
 		}
-
 		return;
 	}
 	if (g_InterfaceEvents.CheckButton(more_id))
@@ -539,11 +528,11 @@ void cScreenGirlDetails::check_events()
 		int selection = GetSelectedItemFromList(joblist_id);
 		if (selection != -1)
 		{
-			int old_job = (Day0Night1 == SHIFT_DAY ? selected_girl->m_DayJob : selected_girl->m_NightJob);
+			int old_job = (Day0Night1 ? selected_girl->m_NightJob : selected_girl->m_DayJob);
 			// handle special job requirements and assign - if HandleSpecialJobs returns true, the job assignment was modified or cancelled
 			if (g_Brothels.m_JobManager.HandleSpecialJobs(g_CurrBrothel, selected_girl, selection, old_job, Day0Night1, fulltime))
 			{
-				selection = (Day0Night1 == SHIFT_DAY ? selected_girl->m_DayJob : selected_girl->m_NightJob);
+				selection = (Day0Night1 ? selected_girl->m_NightJob : selected_girl->m_DayJob);
 				SetSelectedItemInList(joblist_id, selection, false);
 			}
 			// refresh job worker counts for former job and current job
@@ -662,7 +651,7 @@ void cScreenGirlDetails::check_events()
 	}
 	if (g_InterfaceEvents.CheckButton(senddungeon_id))
 	{
-		string message;
+		ss.str("");
 		g_Brothels.GetGirlPos(g_CurrBrothel, selected_girl);
 
 		// does she decide to fight back
@@ -673,116 +662,137 @@ void cScreenGirlDetails::check_events()
 			int count = 8;
 			while (gang && win && count >= 0)
 			{
-				if (g_Gangs.GangCombat(selected_girl, gang))
-					win = true;
-				else
-					win = false;
-				if (gang->m_Num == 0)
-					gang = g_Gangs.GetGangOnMission(MISS_GUARDING);
+				win = (g_Gangs.GangCombat(selected_girl, gang));
+				if (gang->m_Num == 0) gang = g_Gangs.GetGangOnMission(MISS_GUARDING);
 				count--;
-				if (count<0)
-					win = true;
+				if (count<0) win = true;
 			}
 			// Calculate combat between goons and girl if she decides to fight back
 			if (win)
 			{
-				message += gettext("She puts up a fight");
-
-				if (gang)
-				{
-					if (gang->m_Num == 0)
-						message += gettext(", and the gang is completely wiped out");
-				}
-				message += ". ";
+				ss << gettext("She puts up a fight");
+				if (gang && gang->m_Num == 0) ss << gettext(", and the gang is completely wiped out");
+				ss << ". ";
 
 				if (g_Brothels.PlayerCombat(selected_girl))				// fight with the player
 				{
 					// If girl wins she escapes and leaves the brothel
-					message += gettext("After defeating you as well, she escapes to the outside.\n");
-					message += gettext(" She will escape for good in 6 weeks if you don't send someone after her.");
+					ss << gettext("After defeating you as well, she escapes to the outside.\n");
+					ss << gettext("She will escape for good in 6 weeks if you don't send someone after her.");
 
 					sGirl* nextGirl = remove_selected_girl();
 					sGirl* temp = selected_girl;
-					if (selected_girl->m_DayJob != JOB_INDUNGEON)
-						g_Brothels.RemoveGirl(g_CurrBrothel, selected_girl, false);
-					else
-						temp = g_Brothels.GetDungeon()->RemoveGirl(selected_girl);
+					if (selected_girl->m_DayJob == JOB_INDUNGEON)	temp = g_Brothels.GetDungeon()->RemoveGirl(selected_girl);
+					else if (selected_girl->m_InHouse)	g_House.RemoveGirl(0, selected_girl, false);
+					else if (selected_girl->m_InFarm)	g_Farm.RemoveGirl(0, selected_girl, false);
+					else if (selected_girl->m_InClinic)	g_Clinic.RemoveGirl(0, selected_girl, false);
+					else if (selected_girl->m_InCentre)	g_Centre.RemoveGirl(0, selected_girl, false);
+					else if (selected_girl->m_InArena)	g_Arena.RemoveGirl(0, selected_girl, false);
+					else if (selected_girl->m_InStudio)	g_Studios.RemoveGirl(0, selected_girl, false);
+					else g_Brothels.RemoveGirl(selected_girl->where_is_she, selected_girl, false);
 
-					temp->m_RunAway = 6;	// player has 6 weeks to retreive
+					temp->m_RunAway = 6;
 					temp->m_NightJob = temp->m_DayJob = JOB_RUNAWAY;
-
 					g_Brothels.AddGirlToRunaways(temp);
 
-					string smess = "";
-					smess += temp->m_Realname;
-					smess += gettext(" has run away");
-					g_MessageQue.AddToQue(smess, 1);
+					stringstream smess;
+					smess << temp->m_Realname << gettext(" has run away");
+					g_MessageQue.AddToQue(smess.str(), 1);
 
 					selected_girl = nextGirl;
-					if (selected_girl == 0)
-						g_WinManager.Pop();
+					if (selected_girl == 0) g_WinManager.Pop();
 				}
 				else	// otherwise put her in the dungeon
 				{
-					int reason = DUNGEON_GIRLWHIM;
-					if (selected_girl->m_Spotted)
-						reason = DUNGEON_GIRLSTEAL;
+					int reason = (selected_girl->m_Spotted ? DUNGEON_GIRLSTEAL : DUNGEON_GIRLWHIM);
 					sGirl* nextGirl = remove_selected_girl();
 					selected_girl->m_DayJob = selected_girl->m_NightJob = JOB_INDUNGEON;
-					g_Brothels.RemoveGirl(g_CurrBrothel, selected_girl, false);
-					g_Brothels.GetDungeon()->AddGirl(selected_girl, reason);
-					message += gettext("However, you manage to defeat her yourself and place her unconscious body in the dungeon.");
 
-					if (g_Brothels.GetNumGirls(g_CurrBrothel) == 0)
-					{
-						selected_girl = 0;
-						g_WinManager.Pop();
-					}
-					else
-						selected_girl = nextGirl;
+					/* */if (selected_girl->m_InHouse)	g_House.RemoveGirl(0, selected_girl, false);
+					else if (selected_girl->m_InFarm)	g_Farm.RemoveGirl(0, selected_girl, false);
+					else if (selected_girl->m_InClinic)	g_Clinic.RemoveGirl(0, selected_girl, false);
+					else if (selected_girl->m_InCentre)	g_Centre.RemoveGirl(0, selected_girl, false);
+					else if (selected_girl->m_InArena)	g_Arena.RemoveGirl(0, selected_girl, false);
+					else if (selected_girl->m_InStudio)	g_Studios.RemoveGirl(0, selected_girl, false);
+					else g_Brothels.RemoveGirl(selected_girl->where_is_she, selected_girl, false);
+
+					g_Brothels.GetDungeon()->AddGirl(selected_girl, reason);
+					ss << gettext("However, you manage to defeat her yourself and place her unconscious body in the dungeon.");
+
+					bool pop = false;
+					/* */if (selected_girl->m_InHouse)	if (g_House.GetNumGirls(0) == 0)	pop = true;
+					else if (selected_girl->m_InFarm)	if (g_Farm.GetNumGirls(0) == 0)		pop = true;
+					else if (selected_girl->m_InClinic)	if (g_Clinic.GetNumGirls(0) == 0)	pop = true;
+					else if (selected_girl->m_InCentre)	if (g_Centre.GetNumGirls(0) == 0)	pop = true;
+					else if (selected_girl->m_InArena)	if (g_Arena.GetNumGirls(0) == 0)	pop = true;
+					else if (selected_girl->m_InStudio)	if (g_Studios.GetNumGirls(0) == 0)	pop = true;
+					else if (g_Brothels.GetNumGirls(selected_girl->where_is_she) == 0)		pop = true;
+
+					if (pop)	{ selected_girl = 0; g_WinManager.Pop(); }
+					else		selected_girl = nextGirl;
 				}
 			}
 			else	// otherwise put her in the dungeon
 			{
-				message += gettext("She puts up a fight ");
+				ss << gettext("She puts up a fight ");
+				if (gang && gang->m_Num == 0)	ss << gettext("and the gang is wiped out, ");
 
-				if (gang)
-				{
-					if (gang->m_Num == 0)
-						message += gettext("and the gang is wiped out, ");
-				}
-
-				message += gettext("but your goons manage to drag her unconscious to the dungeon.");
-				int reason = DUNGEON_GIRLWHIM;
-				if (selected_girl->m_Spotted)
-					reason = DUNGEON_GIRLSTEAL;
+				ss << gettext("but your goons manage to drag her unconscious to the dungeon.");
+				int reason = (selected_girl->m_Spotted ? DUNGEON_GIRLSTEAL : DUNGEON_GIRLWHIM);
 				sGirl* nextGirl = remove_selected_girl();
-				g_Brothels.RemoveGirl(g_CurrBrothel, selected_girl, false);
+
+				/* */if (selected_girl->m_InHouse)	g_House.RemoveGirl(0, selected_girl, false);
+				else if (selected_girl->m_InFarm)	g_Farm.RemoveGirl(0, selected_girl, false);
+				else if (selected_girl->m_InClinic)	g_Clinic.RemoveGirl(0, selected_girl, false);
+				else if (selected_girl->m_InCentre)	g_Centre.RemoveGirl(0, selected_girl, false);
+				else if (selected_girl->m_InArena)	g_Arena.RemoveGirl(0, selected_girl, false);
+				else if (selected_girl->m_InStudio)	g_Studios.RemoveGirl(0, selected_girl, false);
+				else g_Brothels.RemoveGirl(selected_girl->where_is_she, selected_girl, false);
 				g_Brothels.GetDungeon()->AddGirl(selected_girl, reason);
 
-				if (g_Brothels.GetNumGirls(g_CurrBrothel) == 0)
-					g_WinManager.Pop();
-				else
-					selected_girl = nextGirl;
+				bool pop = false;
+				/* */if (selected_girl->m_InHouse)	if (g_House.GetNumGirls(0) == 0)	pop = true;
+				else if (selected_girl->m_InFarm)	if (g_Farm.GetNumGirls(0) == 0)		pop = true;
+				else if (selected_girl->m_InClinic)	if (g_Clinic.GetNumGirls(0) == 0)	pop = true;
+				else if (selected_girl->m_InCentre)	if (g_Centre.GetNumGirls(0) == 0)	pop = true;
+				else if (selected_girl->m_InArena)	if (g_Arena.GetNumGirls(0) == 0)	pop = true;
+				else if (selected_girl->m_InStudio)	if (g_Studios.GetNumGirls(0) == 0)	pop = true;
+				else if (g_Brothels.GetNumGirls(selected_girl->where_is_she) == 0)		pop = true;
+
+				if (pop)	{ selected_girl = 0; g_WinManager.Pop(); }
+				else		selected_girl = nextGirl;
 			}
 		}
 		else
 		{
-			int reason = DUNGEON_GIRLWHIM;
-			if (selected_girl->m_Spotted)
-				reason = DUNGEON_GIRLSTEAL;
+			int reason = (selected_girl->m_Spotted ? DUNGEON_GIRLSTEAL : DUNGEON_GIRLWHIM);
 			sGirl* nextGirl = remove_selected_girl();
-			g_Brothels.RemoveGirl(g_CurrBrothel, selected_girl, false);
-			g_Brothels.GetDungeon()->AddGirl(selected_girl, reason);
-			message += gettext("She goes quietly with a sullen look on her face.");
 
-			if (g_Brothels.GetNumGirls(g_CurrBrothel) == 0)
-				g_WinManager.Pop();
-			else
-				selected_girl = nextGirl;
+			/* */if (selected_girl->m_InHouse)	g_House.RemoveGirl(0, selected_girl, false);
+			else if (selected_girl->m_InFarm)	g_Farm.RemoveGirl(0, selected_girl, false);
+			else if (selected_girl->m_InClinic)	g_Clinic.RemoveGirl(0, selected_girl, false);
+			else if (selected_girl->m_InCentre)	g_Centre.RemoveGirl(0, selected_girl, false);
+			else if (selected_girl->m_InArena)	g_Arena.RemoveGirl(0, selected_girl, false);
+			else if (selected_girl->m_InStudio)	g_Studios.RemoveGirl(0, selected_girl, false);
+			else g_Brothels.RemoveGirl(selected_girl->where_is_she, selected_girl, false);
+
+			g_Brothels.GetDungeon()->AddGirl(selected_girl, reason);
+			ss << gettext("She goes quietly with a sullen look on her face.");
+
+			bool pop = false;
+			/* */if (selected_girl->m_InHouse)	if (g_House.GetNumGirls(0) == 0)	pop = true;
+			else if (selected_girl->m_InFarm)	if (g_Farm.GetNumGirls(0) == 0)		pop = true;
+			else if (selected_girl->m_InClinic)	if (g_Clinic.GetNumGirls(0) == 0)	pop = true;
+			else if (selected_girl->m_InCentre)	if (g_Centre.GetNumGirls(0) == 0)	pop = true;
+			else if (selected_girl->m_InArena)	if (g_Arena.GetNumGirls(0) == 0)	pop = true;
+			else if (selected_girl->m_InStudio)	if (g_Studios.GetNumGirls(0) == 0)	pop = true;
+			else if (g_Brothels.GetNumGirls(g_CurrBrothel) == 0) /*              */	pop = true;
+
+			if (pop)	{ selected_girl = 0; g_WinManager.Pop(); }
+			else		selected_girl = nextGirl;
 		}
 		g_InitWin = true;
-		g_MessageQue.AddToQue(message, 0);
+		g_MessageQue.AddToQue(ss.str(), 0);
 		return;
 	}
 	if (g_InterfaceEvents.CheckButton(interact_id))
@@ -845,12 +855,11 @@ void cScreenGirlDetails::check_events()
 	}
 }
 
-
-bool cScreenGirlDetails::GirlDead(sGirl *dgirl)
+bool cScreenGirlDetails::GirlDead(sGirl *dgirl, bool sendmessage)
 {
 	if (g_Girls.GetStat(dgirl, STAT_HEALTH) == 0)
 	{
-		g_MessageQue.AddToQue(gettext("This girl is dead. She isn't going to work anymore and her body will be removed by the end of the week."), 1);
+		if (sendmessage) g_MessageQue.AddToQue(gettext("This girl is dead. She isn't going to work anymore and her body will be removed by the end of the week."), 1);
 		return true;
 	}
 	else
@@ -869,17 +878,16 @@ void cScreenGirlDetails::RefreshJobList()
 	{
 		if (g_Brothels.m_JobManager.JobName[i] == "")
 			continue;
-		text = g_Brothels.m_JobManager.JobDescriptionCount(i, g_CurrBrothel, Day0Night1, selected_girl->m_InClinic, selected_girl->m_InMovieStudio, selected_girl->m_InArena, selected_girl->m_InCentre, selected_girl->m_InHouse, selected_girl->m_InFarm);
+		text = g_Brothels.m_JobManager.JobDescriptionCount(i, g_CurrBrothel, Day0Night1, selected_girl->m_InClinic, selected_girl->m_InStudio, selected_girl->m_InArena, selected_girl->m_InCentre, selected_girl->m_InHouse, selected_girl->m_InFarm);
 
 		AddToListBox(joblist_id, i, text);
 	}
 	if (selected_girl)
 	{
-		int sel_job = (Day0Night1 == SHIFT_DAY ? selected_girl->m_DayJob : selected_girl->m_NightJob);
+		int sel_job = (Day0Night1 ? selected_girl->m_NightJob : selected_girl->m_DayJob);
 		SetSelectedItemInList(joblist_id, sel_job, false);
 	}
 }
-
 
 void cScreenGirlDetails::PrevGirl()
 {
@@ -1028,10 +1036,14 @@ sGirl *cScreenGirlDetails::remove_selected_girl()
 			return next_girl;
 	}
 
-	if (selected_girl->m_DayJob == JOB_INDUNGEON)
-		next_girl = g_Brothels.GetDungeon()->GetGirl(cycle_girls[cycle_pos])->m_Girl;
-	else
-		next_girl = g_Brothels.GetGirl(g_CurrBrothel, cycle_girls[cycle_pos]);
+	if (selected_girl->m_DayJob == JOB_INDUNGEON) next_girl = g_Brothels.GetDungeon()->GetGirl(cycle_girls[cycle_pos])->m_Girl;
+	else if (selected_girl->m_InHouse)	next_girl = g_House.GetGirl(0, cycle_girls[cycle_pos]);
+	else if (selected_girl->m_InFarm)	next_girl = g_Farm.GetGirl(0, cycle_girls[cycle_pos]);
+	else if (selected_girl->m_InClinic)	next_girl = g_Clinic.GetGirl(0, cycle_girls[cycle_pos]);
+	else if (selected_girl->m_InCentre)	next_girl = g_Centre.GetGirl(0, cycle_girls[cycle_pos]);
+	else if (selected_girl->m_InArena)	next_girl = g_Arena.GetGirl(0, cycle_girls[cycle_pos]);
+	else if (selected_girl->m_InStudio)	next_girl = g_Studios.GetGirl(0, cycle_girls[cycle_pos]);
+	else next_girl = g_Brothels.GetGirl(g_CurrBrothel, cycle_girls[cycle_pos]);
 
 	for (int i = cycle_girls.size(); i--> 0;)
 	{  // all girls with ID higher than removed girl need their ID reduced
@@ -1041,7 +1053,6 @@ sGirl *cScreenGirlDetails::remove_selected_girl()
 
 	return next_girl;
 }
-
 
 /*
 * returns TRUE if the girl won
@@ -1056,7 +1067,8 @@ bool cScreenGirlDetails::do_take_gold(sGirl *girl, string &message)
 	*	makes a fight of it - so lets do the case where she meekly complies
 	*	first
 	*/
-	if (!g_Brothels.FightsBack(girl)) {
+	if (!g_Brothels.FightsBack(girl))
+	{
 		message += gettext("She quietly allows you to take her gold.");
 		return GIRL_LOSES;	// no fight -> girl lose
 	}
@@ -1095,16 +1107,16 @@ bool cScreenGirlDetails::do_take_gold(sGirl *girl, string &message)
 		/*
 		*		if she didn't win, exit the loop
 		*/
-		if (girl_win_flag == GIRL_LOSES) {
-			break;
-		}
+		if (girl_win_flag == GIRL_LOSES) break;
 	}
 	/*
 	*	the "girl lost" case is easier
 	*/
-	if (girl_win_flag == GIRL_LOSES) {		// put her in the dungeon
+	if (girl_win_flag == GIRL_LOSES)
+	{		// put her in the dungeon
 		message += gettext("She puts up a fight ");
-		if (gang && gang->m_Num == 0) {
+		if (gang && gang->m_Num == 0)
+		{
 			message += gettext("and the gang is wiped out, ");
 		}
 		message += gettext(" but you take her gold anyway.");
@@ -1113,16 +1125,14 @@ bool cScreenGirlDetails::do_take_gold(sGirl *girl, string &message)
 	/*
 	*	from here on down, the girl won against the goons
 	*/
-	message += gettext("She puts up a fight and ");
-	if (gang && gang->m_Num == 0) {
-		message += gettext("the gang is wiped out");
-	}
+	message += gettext("She puts up a fight ");
+	if (gang && gang->m_Num == 0)	message += gettext(" and the gang is wiped out ");
 	/*
 	*	can the player tame this particular shrew?
 	*/
 	if (!g_Brothels.PlayerCombat(girl))	// fight with the player
 	{
-		message += gettext("But you defeat her yourself and take her gold.");
+		message += gettext("but you defeat her yourself and take her gold.");
 		return false;	// girl did not win, after all
 	}
 	/*
@@ -1151,16 +1161,14 @@ bool cScreenGirlDetails::do_take_gold(sGirl *girl, string &message)
 	*/
 	g_Brothels.AddGirlToRunaways(temp);
 
-	string smess = "";
-	smess += temp->m_Realname;
-	smess += gettext(" has run away");
-	g_MessageQue.AddToQue(smess, 1);
+	stringstream smess;
+	smess << temp->m_Realname << gettext(" has run away");
+	g_MessageQue.AddToQue(smess.str(), 1);
 
 	selected_girl = nextGirl;
 	g_InitWin = true;
 
-	if (selected_girl == 0)
-		g_WinManager.Pop();
+	if (selected_girl == 0) g_WinManager.Pop();
 
 	return true;	// the girl still won
 }
@@ -1173,7 +1181,8 @@ void cScreenGirlDetails::take_gold(sGirl *girl)
 	*	if the girl won, then we're pretty much sorted
 	*	display the message and return
 	*/
-	if (girl_win) {
+	if (girl_win)
+	{
 		g_MessageQue.AddToQue(message, 0);
 		g_InitWin = true;
 		return;

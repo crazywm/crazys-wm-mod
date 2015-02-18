@@ -89,13 +89,13 @@ const char *sGirl::stat_names[] =
 {
 	"Charisma", "Happiness", "Libido", "Constitution", "Intelligence", "Confidence", "Mana", "Agility",
 	"Fame", "Level", "AskPrice", "House", "Exp", "Age", "Obedience", "Spirit", "Beauty",
-	"Tiredness", "Health", "PCFear", "PCLove", "PCHate", "Morality", "Refinement", "Dignity", "Lactation"
+	"Tiredness", "Health", "PCFear", "PCLove", "PCHate", "Morality", "Refinement", "Dignity", "Lactation", "Strength"
 };
 // `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in >> cGirls.cpp > *_names[]
 const char *sGirl::skill_names[] =
 {
-	"Anal", "Magic", "BDSM", "NormalSex", "Beastiality", "Group", "Lesbian", "Service", "Strip", "Combat", "OralSex",
-	"TittySex", "Medicine", "Performance", "Handjob", "Crafting", "Herbalism", "Farming", "Brewing", "AnimalHandling", "Footjob"
+	"Anal", "Magic", "BDSM", "NormalSex", "Beastiality", "Group", "Lesbian", "Service", "Strip", "Combat", "OralSex", "TittySex", 
+	"Medicine", "Performance", "Handjob", "Crafting", "Herbalism", "Farming", "Brewing", "AnimalHandling", "Footjob", "Cooking"
 	, 0
 };
 const char *sGirl::status_names[] =
@@ -139,6 +139,7 @@ void sGirl::setup_maps()
 	stat_lookup["Refinement"] = STAT_REFINEMENT;
 	stat_lookup["Dignity"] = STAT_DIGNITY;
 	stat_lookup["Lactation"] = STAT_LACTATION;
+	stat_lookup["Strength"] = STAT_STRENGTH;
 
 	// `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in >> cGirls.cpp > setup_maps
 
@@ -153,6 +154,7 @@ void sGirl::setup_maps()
 	skill_lookup["Farming"] = SKILL_FARMING;
 	skill_lookup["Brewing"] = SKILL_BREWING;
 	skill_lookup["AnimalHandling"] = SKILL_ANIMALHANDLING;
+	skill_lookup["Cooking"] = SKILL_COOKING;
 
 	skill_lookup["Anal"] = SKILL_ANAL;
 	skill_lookup["BDSM"] = SKILL_BDSM;
@@ -250,7 +252,12 @@ cGirls::cGirls()
 	m_DefImages = 0;
 	m_Parent = 0;
 	m_Last = 0;
-	m_NumRandomGirls = m_NumGirls = 0;
+	m_NumRandomGirls = m_NumGirls =
+		m_NumHumanRandomGirls =
+		m_NumNonHumanRandomGirls =
+		m_NumRandomYourDaughterGirls =
+		m_NumHumanRandomYourDaughterGirls =
+		m_NumNonHumanRandomYourDaughterGirls = 0;
 	m_RandomGirls = 0;
 	m_LastRandomGirls = 0;
 }
@@ -270,7 +277,13 @@ void cGirls::Free()
 	if (m_RandomGirls) delete m_RandomGirls;
 	m_RandomGirls = 0;
 	m_LastRandomGirls = 0;
-	m_NumRandomGirls = 0;
+	m_NumRandomGirls = 
+	m_NumHumanRandomGirls =
+		m_NumNonHumanRandomGirls =
+		m_NumRandomYourDaughterGirls =
+		m_NumHumanRandomYourDaughterGirls =
+		m_NumNonHumanRandomYourDaughterGirls = 0;
+
 	m_DefImages = 0;
 }
 
@@ -304,8 +317,8 @@ bool cGirls::DisobeyCheck(sGirl* girl, int action, sBrothel* brothel)
 	*/
 	if (brothel)
 	{ // `J` added building checks
-		if (brothel->matron_on_shift(SHIFT_DAY, girl->m_InClinic, girl->m_InMovieStudio, girl->m_InArena, girl->m_InCentre, girl->m_InHouse, girl->m_InFarm, girl->where_is_she)) chance_to_obey += 10;
-		if (brothel->matron_on_shift(SHIFT_NIGHT, girl->m_InClinic, girl->m_InMovieStudio, girl->m_InArena, girl->m_InCentre, girl->m_InHouse, girl->m_InFarm, girl->where_is_she)) chance_to_obey += 10;
+		if (brothel->matron_on_shift(SHIFT_DAY, girl->m_InClinic, girl->m_InStudio, girl->m_InArena, girl->m_InCentre, girl->m_InHouse, girl->m_InFarm, girl->where_is_she)) chance_to_obey += 10;
+		if (brothel->matron_on_shift(SHIFT_NIGHT, girl->m_InClinic, girl->m_InStudio, girl->m_InArena, girl->m_InCentre, girl->m_InHouse, girl->m_InFarm, girl->where_is_she)) chance_to_obey += 10;
 	}
 	/*
 	*	This is still confusing - at least it still confuses me
@@ -750,7 +763,7 @@ sRandomGirl* cGirls::random_girl_at(u_int n)
 	return current;		// and there we (hopefully) are
 }
 
-sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool undead, bool NonHuman, bool childnaped, bool arena, bool daughter, bool isdaughter, string findbyname)
+sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool undead, bool Human0Monster1, bool childnaped, bool arena, bool daughter, bool isdaughter, string findbyname)
 {
 	cConfig cfg;
 	sRandomGirl* current = 0;
@@ -758,7 +771,43 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 	{
 		current = find_random_girl_by_name(findbyname, 0);
 	}
-	if (current){}	// if findbyname succeded - skip random check
+	if (current == 0 && daughter &&	m_NumRandomYourDaughterGirls > 0) // We are now checking for your daughter girls
+	{
+		bool girlfound = false;
+		bool monstergirl = Human0Monster1;
+		if (m_NumNonHumanRandomYourDaughterGirls < 1) monstergirl = false;	// if there are no monster girls we will accept a human
+
+		int i = 0;
+		int random_girl_index = g_Dice%m_NumRandomGirls;	// pick a number between 0 and m_NumRandomGirls as the stating point
+		while (i < (int)m_NumRandomGirls)	// loop until we find a human/non-human template as required
+		{
+			current = random_girl_at(random_girl_index);
+			if (current != 0 && current->m_YourDaughter)
+			{
+				if (monstergirl)
+				{
+					if (current->m_Human == 0)
+					{
+						girlfound = true;
+						break;	// nonhuman
+					}
+				}
+				else
+				{
+					if (current->m_Human == 1)
+					{
+						girlfound = true;
+						break;
+					}
+				}
+			}
+			i++; random_girl_index++;	// `J` check all random girls then if not found return the last random girl checked
+			if (random_girl_index >(int)m_NumRandomGirls) random_girl_index = 0;
+		}
+		if (!girlfound) current = 0;	// if no your daughter was found allow for random check.
+	}
+
+	if (current){}	// if the above checks succeded - skip random check
 	else if (m_NumRandomGirls == 0)	current = 0;
 	else
 	{
@@ -767,19 +816,9 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 		while (i < (int)m_NumRandomGirls)	// loop until we find a human/non-human template as required
 		{
 			current = random_girl_at(random_girl_index);
-			if (daughter)	// we are looking for a "Your Daughter" girl as the primary check
+			if (current != 0 && Human0Monster1 == (current->m_Human == 0))				// test for humanity - or lack of it as the case may be
 			{
-				if (current != 0 && current->m_YourDaughter)
-				{
-					break;
-				}
-			}
-			else
-			{
-				if (current != 0 && NonHuman == (current->m_Human == 0))				// test for humanity - or lack of it as the case may be
-				{
-					break;
-				}
+				break;
 			}
 			//	She's either human when we wanted non-human or non-human when we wanted human
 			//	Either way, try again...
@@ -797,7 +836,7 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 		current->m_newRandom = false;
 		current->m_Desc = "Hard Coded Random Girl\n(The game did not find any .rgirlsx files)\n(or there was an error in an .rgirlsx file)";
 		current->m_Name = "Default";
-		current->m_Human = (NonHuman == 0);
+		current->m_Human = (Human0Monster1 == 0);
 		current->m_Arena = arena;
 		current->m_YourDaughter = daughter;
 		for (int i = 0; i < NUM_STATS; i++)
@@ -815,7 +854,7 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 				if (i == STAT_OBEDIENCE)	{ current->m_MinStats[i] -= 10;	current->m_MaxStats[i] -= 10; }
 				if (i == STAT_SPIRIT)		{ current->m_MinStats[i] += 10;	current->m_MaxStats[i] += 20; }
 			}
-			if (NonHuman)
+			if (Human0Monster1)
 			{
 				if (i == STAT_CHARISMA)		{ current->m_MinStats[i] -= 10;	current->m_MaxStats[i] += 10; }
 				if (i == STAT_CONSTITUTION)	{ current->m_MinStats[i] -= 10;	current->m_MaxStats[i] += 20; }
@@ -864,7 +903,7 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 				if (i == SKILL_PERFORMANCE || i == SKILL_ANIMALHANDLING)	current->m_MaxSkills[i] += 20;
 				if (i == SKILL_MEDICINE)									current->m_MaxSkills[i] += 10;
 			}
-			if (NonHuman)
+			if (Human0Monster1)
 			{
 				if (i == SKILL_MAGIC)			{ current->m_MaxSkills[i] -= 10; current->m_MaxSkills[i] += 40; }
 				if (i == SKILL_COMBAT)			{ current->m_MaxSkills[i] -= 10; current->m_MaxSkills[i] += 40; }
@@ -886,23 +925,70 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 		current->m_NumTraits = 0;
 		for (int i = 0; i < g_Traits.GetNumTraits() && current->m_NumTraits < MAXNUM_TRAITS - 10; i++)
 		{
-			int c = -1;
+			int c = g_Traits.GetTraitNum(i)->m_RandomChance;
 			string test = g_Traits.GetTraitNum(i)->m_Name;
-			// first check if it is a daughter or nonhuman trait
+
+			// first check if it is a daughter or Human0Monster1 trait
 			if (test == "Your Daughter")	c = (daughter) ? 100 : 0;
-			if (test == "Not Human")		c = (NonHuman) ? 100 : 0;
-			if (test == "Incorporeal")		c = (NonHuman) ? 1 : 0;
-			if (test == "Futanari")			c = (NonHuman) ? 5 : 0;
-			if (test == "Construct")		c = (NonHuman) ? 5 : 0;
-			if (test == "Half-Construct")	c = (NonHuman) ? 10 : 0;
-			if (test == "Strange Eyes")		c = (NonHuman) ? 10 : 0;
-			if (test == "Cat Girl")			c = (NonHuman) ? 20 : 0;
-			if (test == "Demon")			c = (NonHuman) ? 20 : 0;
-			if (test == "Shape Shifter")	c = (NonHuman) ? 5 : 0;
+			if (test == "Not Human")		c = (Human0Monster1) ? 100 : 0;
+			if (test == "Incorporeal")		c = (Human0Monster1) ? c+1 : 0;
+			if (test == "Futanari")			c = (Human0Monster1) ? c+5 : 0;
+			if (test == "Construct")		c = (Human0Monster1) ? c+5 : 0;
+			if (test == "Half-Construct")	c = (Human0Monster1) ? c+10 : 0;
+			if (test == "Strange Eyes")		c = (Human0Monster1) ? c+10 : 0;
+			if (test == "Cat Girl")			c = (Human0Monster1) ? c+10 : 0;
+			if (test == "Demon")			c = (Human0Monster1) ? c+10 : 0;
+			if (test == "Shape Shifter")	c = (Human0Monster1) ? c+1 : 0;
 
 			// virgin is handled differently
 			if (test == "Virgin")			c = (age < 21) ? max(min(100 - ((age - 17) * 10), 100), 0) : max(70 - ((age - 20) * 2), 0);
 			// so under 18 is 100%, 18=90%, 19=80%, 20=70%, then 21=68%, 22=66% and so on until age 55 where it is 0%
+
+
+			if (c != -1 && arena)	// if .traitsx has m_RandomChance in it adjust some traits for arena girls
+			{
+				// some traits are more or less common for arena girls
+				if (test == "Adventurer")			c += 30;
+				if (test == "Fearless")				c += 30;
+				if (test == "Iron Will")			c += 30;
+				if (test == "Small Scars")			c += 20;
+				if (test == "Cool Scars")			c += 20;
+				if (test == "Horrific Scars")		c += 20;
+				if (test == "Strong")				c += 20;
+				if (test == "Strong Magic")			c += 20;
+				if (test == "Aggressive")			c += 20;
+				if (test == "Great Figure")			c += 20;
+				if (test == "Sadistic")				c += 20;
+				if (test == "Tsundere")				c += 20;
+				if (test == "Yandere")				c += 20;
+				if (test == "Fleet of Foot")		c += 20;
+				if (test == "Tough")				c += 20;
+				if (test == "Merciless")			c += 20;
+				if (test == "Assassin")				c += 10;
+				if (test == "Great Arse")			c += 10;
+				if (test == "Masochist")			c += 10;
+				if (test == "Manly")				c += 10;
+				if (test == "Twisted")				c += 10;
+				if (test == "Cool Person")			c += 5;
+				if (test == "One Eye")				c += 5;
+				if (test == "Eye Patch")			c += 5;
+				if (test == "Malformed")			c += 5;
+
+				if (test == "Mind Fucked")			c += -5;
+				if (test == "Retarded")				c += -5;
+				if (test == "Dependant")			c += -10;
+				if (test == "Fragile")				c += -10;
+				if (test == "Cute")					c += -10;
+				if (test == "Lolita")				c += -10;
+				if (test == "Nervous")				c += -10;
+				if (test == "Elegant")				c += -10;
+				if (test == "Broken Will")			c += -10;
+				if (test == "Nerd")					c += -15;
+				if (test == "Clumsy")				c += -15;
+				if (test == "Meek")					c += -20;
+
+				if (c < 0)	c = 0;
+			}
 
 			// all other traits have a 1 in 3 chance of making the cut
 			if (c == -1 && g_Dice % 3 == 1)
@@ -1223,7 +1309,12 @@ bool cGirls::NameExists(string name)
 		current = current->m_Next;
 	}
 	if (g_Brothels.NameExists(name))		return true;
-	for (int i = 0; i < 8; i++)
+	if (g_Studios.NameExists(name))			return true;
+	if (g_Arena.NameExists(name))			return true;
+	if (g_Centre.NameExists(name))			return true;
+	if (g_Clinic.NameExists(name))			return true;
+	if (g_House.NameExists(name))			return true;
+	for (int i = 0; i < 12; i++)
 	{
 		if (MarketSlaveGirls[i])
 		{
@@ -1240,7 +1331,12 @@ bool cGirls::SurnameExists(string name)
 		if (current->m_Surname == name)	return true;
 		current = current->m_Next;
 	}
-	if (g_Brothels.NameExists(name))		return true;
+	if (g_Brothels.SurnameExists(name))		return true;
+	if (g_Studios.SurnameExists(name))		return true;
+	if (g_Arena.SurnameExists(name))		return true;
+	if (g_Centre.SurnameExists(name))		return true;
+	if (g_Clinic.SurnameExists(name))		return true;
+	if (g_House.SurnameExists(name))		return true;
 	for (int i = 0; i < 12; i++)
 	{
 		if (MarketSlaveGirls[i])
@@ -1423,6 +1519,17 @@ void cGirls::AddRandomGirl(sRandomGirl* girl)
 	else				m_RandomGirls = girl;
 	m_LastRandomGirls = girl;
 	m_NumRandomGirls++;
+	if (girl->m_YourDaughter)
+	{
+		m_NumRandomYourDaughterGirls++;
+		if (girl->m_Human)		m_NumHumanRandomYourDaughterGirls++;
+		if (!girl->m_Human)		m_NumNonHumanRandomYourDaughterGirls++;
+	}
+	else
+	{
+		if (girl->m_Human)		m_NumHumanRandomGirls++;
+		if (!girl->m_Human)		m_NumNonHumanRandomGirls++;
+	}
 }
 
 void cGirls::AddGirl(sGirl* girl)
@@ -1583,16 +1690,18 @@ string cGirls::GetGirlMood(sGirl* girl)
 	{
 		if (HateLove > 0)	ss << "but she is also ";
 		else				ss << "and she is ";
-		if (GetStat(girl, STAT_PCFEAR) < 40)		ss << "afraid of him.";
-		else if (GetStat(girl, STAT_PCFEAR) < 60)	ss << "fearful of him.";
-		else if (GetStat(girl, STAT_PCFEAR) < 80)	ss << "afraid he will hurt her.";
-		else										ss << "afraid he will kill her.";
+		if (GetStat(girl, STAT_PCFEAR) < 40)		ss << "afraid of him." << (girl->health() <= 0 ? " (for good reasons)." : ".");
+		else if (GetStat(girl, STAT_PCFEAR) < 60)	ss << "fearful of him." << (girl->health() <= 0 ? " (for good reasons)." : ".");
+		else if (GetStat(girl, STAT_PCFEAR) < 80)	ss << "afraid he will hurt her" << (girl->health() <= 0? " (and she was right).":".");
+		else										ss << "afraid he will kill her" << (girl->health() <= 0 ? " (and she was right)." : ".");
+		 
 	}
 	else	ss << "and he isn't scary.";
 
 	int happy = GetStat(girl, STAT_HAPPINESS);
 	ss << "\nShe is ";
-	/* */if (happy > 90)	ss << "happy.";
+	if (girl->health() < 1)	ss << "dead.";
+	else if (happy > 90)	ss << "happy.";
 	else if (happy > 80)	ss << "joyful.";
 	else if (happy > 60)	ss << "reasonably happy.";
 	else if (happy > 40)	ss << "unhappy.";
@@ -1600,7 +1709,7 @@ string cGirls::GetGirlMood(sGirl* girl)
 
 
 	int morality = GetStat(girl, STAT_MORALITY); //zzzzz FIXME needs better text
-	ss << "\nShe is ";
+	ss << "\nShe " << (girl->health() < 1 ? "was " : "is ");
 	/* */if (morality <= -80)	ss << "pure evil.";
 	else if (morality <= -60)	ss << "evil.";
 	else if (morality <= -40)	ss << "mean.";
@@ -1625,26 +1734,27 @@ string cGirls::GetDetailsString(sGirl* girl, bool purchase)
 	string sper = ""; if (cfg.fonts.showpercent()) sper = " %";
 
 	// `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in >> cGirls.cpp > GetDetailsString
-	int skillnum[] = { SKILL_MAGIC, SKILL_COMBAT, SKILL_SERVICE, SKILL_MEDICINE, SKILL_PERFORMANCE, SKILL_CRAFTING, SKILL_HERBALISM, SKILL_FARMING, SKILL_BREWING, SKILL_ANIMALHANDLING, SKILL_ANAL, SKILL_BDSM, SKILL_NORMALSEX, SKILL_BEASTIALITY, SKILL_GROUP, SKILL_LESBIAN, SKILL_ORALSEX, SKILL_TITTYSEX, SKILL_HANDJOB, SKILL_STRIP, SKILL_FOOTJOB };
-	string basestr[] = { "Age : ", "Rebelliousness : ", "Looks : ", "Constitution : ", "Health : ", "Happiness : ", "Tiredness : ", "Gold : ", "Worth : " };
-	string skillstr[] = { "Magic Ability : ", "Combat Ability : ", "Service Skills : ", "Medicine Skill : ", "Performance Skill : ", "Crafting Skill : ", "Herbalism Skill : ", "Farming Skill : ", "Brewing Skill : ", "Animal Handling : ", "Anal Sex : ", "BDSM Sex : ", "Normal Sex : ", "Bestiality Sex : ", "Group Sex : ", "Lesbian Sex : ", "Oral Sex : ", "Titty Sex : ", "Hand Job : ", "Stripping : ", "Foot Job : " };
+	string basestr[] = { "Age : ", "Rebelliousness : ", "Looks : ", "Constitution : ", "Health : ", "Happiness : ", "Tiredness : ", "Worth : " };
+
+	int skillnum[] = { SKILL_MAGIC, SKILL_COMBAT, SKILL_SERVICE, SKILL_MEDICINE, SKILL_PERFORMANCE, SKILL_CRAFTING, SKILL_HERBALISM, SKILL_FARMING, SKILL_BREWING, SKILL_ANIMALHANDLING, SKILL_COOKING, SKILL_ANAL, SKILL_BDSM, SKILL_NORMALSEX, SKILL_BEASTIALITY, SKILL_GROUP, SKILL_LESBIAN, SKILL_ORALSEX, SKILL_TITTYSEX, SKILL_HANDJOB, SKILL_STRIP, SKILL_FOOTJOB };
+	string skillstr[] = { "Magic Ability : ", "Combat Ability : ", "Service Skills : ", "Medicine Skill : ", "Performance Skill : ", "Crafting Skill : ", "Herbalism Skill : ", "Farming Skill : ", "Brewing Skill : ", "Animal Handling : ", "Cooking : ", "Anal Sex : ", "BDSM Sex : ", "Normal Sex : ", "Bestiality Sex : ", "Group Sex : ", "Lesbian Sex : ", "Oral Sex : ", "Titty Sex : ", "Hand Job : ", "Stripping : ", "Foot Job : " };
 
 	if (cfg.fonts.normal() == "segoeui.ttf" && cfg.fonts.detailfontsize() == 9) // `J` if already set to my default
 	{
-		string basesegoeuistr[] = { "Age :                                   ", "Rebelliousness :         ", "Looks :                              ", "Constitution :               ", "Health :                            ", "Happiness :                    ", "Tiredness :                     ", "Gold :                                ", "Worth :                             " };
-		for (int i = 0; i < 9; i++) basestr[i] = basesegoeuistr[i];
-		string skillsegoeuistr[] = { "Magic Ability :              ", "Combat Ability :           ", "Service Skills :              ", "Medicine Skill :            ", "Performance Skill :    ", "Crafting Skill :              ", "Herbalism Skill :         ", "Farming Skill :             ", "Brewing Skill :               ", "Animal Handling :    ", "Anal Sex :                        ", "BDSM Sex :                      ", "Normal Sex :                 ", "Bestiality Sex :              ", "Group Sex :                     ", "Lesbian Sex :                 ", "Oral Sex :                         ", "Titty Sex :                         ", "Hand Job :                      ", "Stripping :                       ", "Foot Job :                         " };
-		for (int i = 0; i < 21; i++) skillstr[i] = skillsegoeuistr[i];
+		string basesegoeuistr[] = { "Age :                                   ", "Rebelliousness :         ", "Looks :                              ", "Constitution :               ", "Health :                            ", "Happiness :                    ", "Tiredness :                     ", "Worth :                             " };
+		for (int i = 0; i < 8; i++) basestr[i] = basesegoeuistr[i];
+		string skillsegoeuistr[] = { "Magic Ability :              ", "Combat Ability :           ", "Service Skills :              ", "Medicine Skill :            ", "Performance Skill :    ", "Crafting Skill :              ", "Herbalism Skill :         ", "Farming Skill :             ", "Brewing Skill :               ", "Animal Handling :    ", "Cooking :                        ", "Anal Sex :                        ", "BDSM Sex :                      ", "Normal Sex :                 ", "Bestiality Sex :              ", "Group Sex :                     ", "Lesbian Sex :                 ", "Oral Sex :                         ", "Titty Sex :                         ", "Hand Job :                      ", "Stripping :                       ", "Foot Job :                         " };
+		for (int i = 0; i < 22; i++) skillstr[i] = skillsegoeuistr[i];
 		size = 90;
 	}
 	else		// `J` otherwise try to align the numbers
 	{
 		// get the widest
-		for (int i = 0; i < 9; i++) { check.GetSize(basestr[i], w, h); if (w > size) size = w; }
-		for (int i = 0; i < 21; i++) { check.GetSize(skillstr[i], w, h); if (w > size) size = w; }
+		for (int i = 0; i < 8; i++) { check.GetSize(basestr[i], w, h); if (w > size) size = w; }
+		for (int i = 0; i < 22; i++) { check.GetSize(skillstr[i], w, h); if (w > size) size = w; }
 		size += 5; // add a little padding
 		// then add extra spaces until it is longer that the widest
-		for (int i = 0; i < 9; i++)
+		for (int i = 0; i < 8; i++)
 		{
 			check.GetSize(basestr[i], w, h);
 			while (w < size)
@@ -1653,7 +1763,7 @@ string cGirls::GetDetailsString(sGirl* girl, bool purchase)
 				check.GetSize(basestr[i], w, h);
 			}
 		}
-		for (int i = 0; i < 21; i++)
+		for (int i = 0; i < 22; i++)
 		{
 			check.GetSize(skillstr[i], w, h);
 			while (w < size)
@@ -1723,20 +1833,11 @@ string cGirls::GetDetailsString(sGirl* girl, bool purchase)
 		ss << "\n" << basestr[4] << GetStat(girl, STAT_HEALTH) << sper;
 		ss << "\n" << basestr[5] << GetStat(girl, STAT_HAPPINESS) << sper;
 		ss << "\n" << basestr[6] << GetStat(girl, STAT_TIREDNESS) << sper;
-		ss << "\n" << basestr[7];
-		if (g_Gangs.GetGangOnMission(MISS_SPYGIRLS))
-		{
-			ss << girl->m_Money;
-		}
-		else
-		{
-			ss << "Unknown";
-		}
 	}
 	int cost = int(tariff.slave_price(girl, purchase));
 	g_LogFile.ss() << "slave " << (purchase ? "buy" : "sell") << "price = " << cost;
 	g_LogFile.ssend();
-	ss << "\n" << basestr[8] << cost << " Gold";
+	ss << "\n" << basestr[7] << cost << " Gold";
 	CalculateAskPrice(girl, false);
 	cost = g_Girls.GetStat(girl, STAT_ASKPRICE);
 	ss << "\nAvg Pay per Customer : " << cost << " gold\n";
@@ -1798,9 +1899,9 @@ string cGirls::GetDetailsString(sGirl* girl, bool purchase)
 	ss << "\n\nSKILLS";
 	if (cfg.debug.log_extradetails() && !purchase) ss << "           (base+temp+item+trait)";
 
-	for (int i = 0; i < 21; i++)
+	for (int i = 0; i < 22; i++)
 	{
-		if (i == 10)
+		if (i == 11)
 		{
 			ss << "\n\nSEX SKILLS";
 			if (cfg.debug.log_extradetails() && !purchase) ss << "           (base+temp+item+trait)";
@@ -1823,23 +1924,24 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 	// `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in >> cGirls.cpp > GetMoreDetailsString
 	ss << "STATS";
 	if (cfg.debug.log_extradetails() && !purchase) ss << "           (base+temp+item+trait)";
-	int statnum[] = { STAT_CHARISMA, STAT_BEAUTY, STAT_LIBIDO, STAT_MANA, STAT_INTELLIGENCE, STAT_CONFIDENCE, STAT_OBEDIENCE, STAT_SPIRIT, STAT_AGILITY, STAT_FAME, STAT_LACTATION ,STAT_PCFEAR, STAT_PCLOVE, STAT_PCHATE };
-	int statnumsize = 14;
-	string statstr[] = { "Charisma : ", "Beauty : ", "Libido : ", "Mana : ", "Intelligence : ", "Confidence : ", "Obedience : ", "Spirit : ", "Agility : ", "Fame : ", "Lactation : ", "PCFear : ", "PCLove : ", "PCHate : " };
+	int statnum[] = { STAT_CHARISMA, STAT_BEAUTY, STAT_LIBIDO, STAT_MANA, STAT_INTELLIGENCE, STAT_CONFIDENCE, STAT_OBEDIENCE, STAT_SPIRIT, STAT_AGILITY, STAT_STRENGTH, STAT_FAME, STAT_LACTATION ,STAT_PCFEAR, STAT_PCLOVE, STAT_PCHATE };
+	int statnumsize = 15;
+	string statstr[] = { "Charisma : ", "Beauty : ", "Libido : ", "Mana : ", "Intelligence : ", "Confidence : ", "Obedience : ", "Spirit : ", "Agility : ", "Strength : ", "Fame : ", "Lactation : ", "PCFear : ", "PCLove : ", "PCHate : ", "Gold : " };
 
 	if (cfg.fonts.normal() == "segoeui.ttf" && cfg.fonts.detailfontsize() == 9) // `J` if already set to my default
 	{
-		string statsegoeuistr[] = { "Charisma :          ", "Beauty :                  ", "Libido :                   ", "Mana :                   ", "Intelligence :      ", "Confidence :       ", "Obedience :         ", "Spirit :                     ", "Agility :                  ", "Fame :                    ", "Lactation :           ", "PCFear :                 ", "PCLove :                 ", "PCHate :                 " };
-		for (int i = 0; i < statnumsize; i++) statstr[i] = statsegoeuistr[i];
+		string statsegoeuistr[] = { "Charisma :          ", "Beauty :                  ", "Libido :                   ", "Mana :                   ", "Intelligence :      ", "Confidence :       ", "Obedience :         ", "Spirit :                     ", "Agility :                  ",
+			"Strength :                  ", "Fame :                    ", "Lactation :           ", "PCFear :                 ", "PCLove :                 ", "PCHate :                 ", "Gold :                     " };
+		for (u_int i = 0; i < 16; i++) statstr[i] = statsegoeuistr[i];
 		size = 70;
 	}
 	else		// `J` otherwise try to align the numbers
 	{
 		// get the widest
-		for (int i = 0; i < statnumsize; i++) { check.GetSize(statstr[i], w, h); if (w > size) size = w; }
+		for (u_int i = 0; i < 16; i++) { check.GetSize(statstr[i], w, h); if (w > size) size = w; }
 		size += 10; // add some padding
 		// then add extra spaces to the statstr until it is longer that the widest
-		for (int i = 0; i < statnumsize; i++)
+		for (u_int i = 0; i < statstr->size()-1; i++)
 		{
 			check.GetSize(statstr[i], w, h);
 			while (w < size)
@@ -1855,6 +1957,20 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 		ss << "\n" << statstr[i] << GetStat(girl, statnum[i]) << sper;
 		if (cfg.debug.log_extradetails() && !purchase) ss << "    (" << girl->m_Stats[statnum[i]] << "+" << girl->m_StatTemps[statnum[i]] << "+" << girl->m_StatMods[statnum[i]] << "+" << girl->m_StatTr[statnum[i]] << ")";
 	}
+	if (!purchase)
+	{
+		ss << "\n" << statstr[15];
+		if (g_Gangs.GetGangOnMission(MISS_SPYGIRLS))
+		{
+			ss << girl->m_Money;
+		}
+		else
+		{
+			ss << "Unknown";
+		}
+	}
+	else ss << "\n";
+
 	if (!purchase)
 	{
 		ss << "\n\nAccommodation: ";
@@ -2742,7 +2858,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 	// `J` Show the current building first
 	string data = "";
 	/* */if (girl->m_InArena)		data += Arena_Data;
-	else if (girl->m_InMovieStudio)	data += Studio_Data;
+	else if (girl->m_InStudio)	data += Studio_Data;
 	else if (girl->m_InCentre)		data += Centre_Data;
 	else if (girl->m_InClinic)		data += Clinic_Data;
 	else if (girl->m_InFarm)		data += Farm_Data;
@@ -2751,9 +2867,9 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 
 	// `J` show all the other buildings
 	data += div;
-	if (girl->m_InMovieStudio || girl->m_InArena || girl->m_InCentre || girl->m_InClinic || girl->m_InFarm || girl->m_InHouse)
+	if (girl->m_InStudio || girl->m_InArena || girl->m_InCentre || girl->m_InClinic || girl->m_InFarm || girl->m_InHouse)
 		/*                       */	data += Brothel_Data;
-	if (!girl->m_InMovieStudio)	data += Studio_Data;
+	if (!girl->m_InStudio)	data += Studio_Data;
 	if (!girl->m_InArena)		data += Arena_Data;
 	if (!girl->m_InCentre)		data += Centre_Data;
 	if (!girl->m_InClinic)		data += Clinic_Data;
@@ -2771,14 +2887,19 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 
 }
 
-sGirl* cGirls::GetRandomYourDaughterGirl()
+// added human check: -1 does not matter, 0 not human, 1 human
+sGirl* cGirls::GetRandomYourDaughterGirl(int Human0Monster1)
 {
 	if (GetNumYourDaughterGirls() == 0) return 0;
 	sGirl *girl;
 	vector<sGirl *> v;
 	for (girl = m_Parent; girl; girl = girl->m_Next)
 	{
-		if (girl->is_yourdaughter())	v.push_back(girl);
+		if (girl->is_yourdaughter())
+			if (Human0Monster1 == -1 ||
+				(Human0Monster1 == 1 && !girl->is_human()) ||
+				(Human0Monster1 == 0 && girl->is_human()))
+				v.push_back(girl);
 	}
 	
 	return v[g_Dice%v.size()];
@@ -8361,7 +8482,7 @@ void cGirls::updateHappyTraits(sGirl* girl)
 			string stopper = "";
 			if (girl->m_InArena && g_Arena.GetNumGirlsOnJob(0, JOB_DOCTORE, 0) > 0)
 				stopper = "the Doctore";
-			else if (girl->m_InMovieStudio && g_Studios.GetNumGirlsOnJob(0, JOB_DIRECTOR, 1) > 0)
+			else if (girl->m_InStudio && g_Studios.GetNumGirlsOnJob(0, JOB_DIRECTOR, 1) > 0)
 				stopper = "the Director";
 			else if (girl->m_InClinic && g_Clinic.GetNumGirlsOnJob(0, JOB_CHAIRMAN, 0) > 0)
 				stopper = "the Chairman";
@@ -9809,7 +9930,7 @@ string cGirls::GetRandomSexString()
 		OStr << gettext("(Each wearing ");
 		random = g_Dice % 2 + 4;
 		OStr << random;
-		OStr << gettext(" ");
+		OStr << " ";
 		random = g_Dice % 8 + 1;
 		/* */if (random <= 2)	OStr << gettext("rings of the Schwarzenegger");
 		else if (random <= 4)	OStr << gettext("rings of the horndog");
@@ -9836,7 +9957,7 @@ string cGirls::GetRandomGroupString()
 	stringstream OStr;
 	// Part 1
 # pragma region group1
-	OStr << gettext(" ");
+	OStr << " ";
 	roll1 = g_Dice % 4 + 1;   // Remember to update this when new strings are added
 	switch (roll1)
 	{
@@ -9927,7 +10048,7 @@ string cGirls::GetRandomGroupString()
 		random = g_Dice % 10 + 1;
 		/* */if (random <= 5)	OStr << gettext("an expensive");
 		else /*            */	OStr << gettext("a cheap");
-		OStr << gettext(" ");
+		OStr << " ";
 		random = g_Dice % 8 + 1;
 		/* */if (random <= 2)	OStr << gettext("hooker");
 		else if (random <= 4)	OStr << gettext("street worker");
@@ -9998,7 +10119,7 @@ string cGirls::GetRandomGroupString()
 # pragma endregion group2
 	// Part 3
 # pragma region group3
-	OStr << gettext(" ");
+	OStr << " ";
 	roll3 = g_Dice % 11 + 1;
 	switch (roll3)
 	{
@@ -10058,13 +10179,13 @@ string cGirls::GetRandomGroupString()
 		OStr << gettext(" of really");
 		random = g_Dice % 10 + 1;
 		/* */if (random <= 5)	OStr << gettext(", really ");
-		else /*            */	OStr << gettext(" ");
+		else /*            */	OStr << " ";
 		random = g_Dice % 8 + 1;
 		/* */if (random <= 2)	OStr << gettext("fired up");
 		else if (random <= 4)	OStr << gettext("horny");
 		else if (random <= 6)	OStr << gettext("randy");
 		else /*            */	OStr << gettext("backed up");
-		OStr << gettext(" ");
+		OStr << " ";
 		random = g_Dice % 8 + 1;
 		/* */if (random <= 2)	OStr << gettext("gnomes.");
 		else if (random <= 4)	OStr << gettext("halflings.");
@@ -10177,7 +10298,7 @@ string cGirls::GetRandomBDSMString()
 	/* */if (random == 2)	OStr << gettext(", spread eagle");
 	random = g_Dice % 4 + 1;
 	/* */if (random == 2)	OStr << gettext(", upside down");
-	OStr << gettext(" ");
+	OStr << " ";
 	random = g_Dice % 16 + 1;
 	/* */if (random <= 2)	OStr << gettext("to a bed");
 	else if (random <= 4)	OStr << gettext("to a post");
@@ -10282,7 +10403,7 @@ string cGirls::GetRandomBDSMString()
 # pragma endregion bdsm2
 	// Part 3
 # pragma region bdsm3
-	OStr << gettext(" ");
+	OStr << " ";
 	roll3 = g_Dice % 18 + 1;
 	switch (roll3)
 	{
@@ -10549,7 +10670,7 @@ string cGirls::GetRandomBeastString()
 		else if (random <= 6)	OStr << gettext("lustily");
 		else if (random <= 8)	OStr << gettext("repeatedly");
 		else /*            */	OStr << gettext("orgasmically");
-		OStr << gettext(" ");
+		OStr << " ";
 		random = g_Dice % 10 + 1;
 		/* */if (random <= 2)	OStr << gettext("fucked");
 		else if (random <= 4)	OStr << gettext("railed");
@@ -10673,7 +10794,7 @@ string cGirls::GetRandomBeastString()
 		random = g_Dice % 10 + 1;
 		/* */if (random <= 5)	OStr << gettext("an evil");
 		else /*            */	OStr << gettext("a misunderstood");
-		OStr << gettext(" ");
+		OStr << " ";
 		random = g_Dice % 10 + 1;
 		/* */if (random <= 2)	OStr << gettext("tengu.");
 		else if (random <= 4)	OStr << gettext("Whore Master developer.");
@@ -10811,7 +10932,7 @@ string cGirls::GetRandomLesString()
 {
 	int roll1 = 0, roll2 = 0, roll3 = 0, random = 0, plus = 0;
 	stringstream OStr;
-	OStr << gettext(" ");
+	OStr << " ";
 	// Part1
 # pragma region les1
 	roll1 = g_Dice % 6 + 1;   // Remember to update this when new strings are added
@@ -10824,7 +10945,7 @@ string cGirls::GetRandomLesString()
 		else if (random <= 6)	OStr << gettext("slowly");
 		else if (random <= 8) 	OStr << gettext("authoratively");
 		else /*            */	OStr << gettext("violently");
-		OStr << gettext(" ");
+		OStr << " ";
 		random = g_Dice % 10 + 1;
 		/* */if (random <= 2)	OStr << gettext("straddled");
 		else if (random <= 4)	OStr << gettext("scissored");
@@ -10840,7 +10961,7 @@ string cGirls::GetRandomLesString()
 		OStr << gettext(" with a +");
 		plus = g_Dice % 7 + 4;
 		OStr << plus;
-		OStr << gettext(" ");
+		OStr << " ";
 		random = g_Dice % 14 + 1;
 		/* */if (random <= 2)	OStr << gettext("vorporal broadsword");
 		else if (random <= 4)
@@ -11065,7 +11186,7 @@ string cGirls::GetRandomLesString()
 		/* */if (random <= 2)	OStr << gettext("single mindedly");
 		else if (random <= 4)	OStr << gettext("repeatedly");
 		else /*            */	OStr << gettext("roughly");
-		OStr << gettext(" ");
+		OStr << " ";
 		random = g_Dice % 2 + 1;
 		/* */if (random <= 2)	OStr << gettext("rubbed");
 		else if (random <= 4)	OStr << gettext("fondled");
@@ -11079,7 +11200,7 @@ string cGirls::GetRandomLesString()
 		else if (random <= 4)	OStr << gettext("pleasure");
 		else if (random <= 6)	OStr << gettext("powerful sensations");
 		else /*            */	OStr << gettext("indescribable joy");
-		OStr << gettext(" ");
+		OStr << " ";
 		random = g_Dice % 8 + 1;
 		/* */if (random <= 2)	OStr << gettext("rushed");
 		else if (random <= 4)	OStr << gettext("thundered");
@@ -11094,7 +11215,7 @@ string cGirls::GetRandomLesString()
 		else if (random <= 4)	OStr << gettext("back-stretching joy");
 		else if (random <= 6)	OStr << gettext("madness");
 		else /*            */	OStr << gettext("incredible feeling");
-		OStr << gettext(" ");
+		OStr << " ";
 		random = g_Dice % 8 + 1;
 		/* */if (random <= 2)	OStr << gettext("throbbed");
 		else if (random <= 4)	OStr << gettext("shook");
@@ -11105,7 +11226,7 @@ string cGirls::GetRandomLesString()
 		/* */if (random <= 2)	OStr << gettext("single mindedly");
 		else if (random <= 4)	OStr << gettext("repeatedly");
 		else /*            */	OStr << gettext("roughly");
-		OStr << gettext(" ");
+		OStr << " ";
 		random = g_Dice % 12 + 1;
 		/* */if (random <= 2)	OStr << gettext("rubbed");
 		else if (random <= 4)	OStr << gettext("fondled");
@@ -11205,7 +11326,7 @@ string cGirls::GetRandomLesString()
 		random = g_Dice % 10 + 1;
 		/* */if (random <= 5)	OStr << gettext("senior");
 		else /*            */	OStr << gettext("junior");
-		OStr << gettext(" ");
+		OStr << " ";
 		random = g_Dice % 12 + 1;
 		/* */if (random <= 2)	OStr << gettext("Sorceress");
 		else if (random <= 4)	OStr << gettext("Warrioress");
@@ -11220,7 +11341,7 @@ string cGirls::GetRandomLesString()
 		else if (random <= 6)	OStr << gettext("Masters");
 		else if (random <= 8)	OStr << gettext("Scarlet");
 		else /*            */	OStr << gettext("Resolute");
-		OStr << gettext(" ");
+		OStr << " ";
 		random = g_Dice % 10 + 1;
 		/* */if (random <= 2)	OStr << gettext("Hand");
 		else if (random <= 4)	OStr << gettext("Dagger");
@@ -11235,7 +11356,7 @@ string cGirls::GetRandomLesString()
 		/* */if (random <= 2)	OStr << gettext("high-ranking");
 		else if (random <= 4)	OStr << gettext("mid-tier");
 		else /*            */	OStr << gettext("low-ranking");
-		OStr << gettext(" ");
+		OStr << " ";
 		random = g_Dice % 14 + 1;
 		/* */if (random <= 2)	OStr << gettext("elf");
 		else if (random <= 4)	OStr << gettext("woman");     // MYR: Human assumed
@@ -11251,7 +11372,7 @@ string cGirls::GetRandomLesString()
 		else if (random <= 6)	OStr << gettext("Women Who Love Sex");
 		else if (random <= 8)	OStr << gettext("Real Women Don't Marry");
 		else /*            */	OStr << gettext("Monster Sex is Best");
-		OStr << gettext(" ");
+		OStr << " ";
 		random = g_Dice % 10 + 1;
 		/* */if (random <= 2)	OStr << gettext("support group");
 		else if (random <= 4)	OStr << gettext("league");
@@ -11268,7 +11389,7 @@ string cGirls::GetRandomLesString()
 		else if (random <= 6)	OStr << gettext("sexy");
 		else if (random <= 8)	OStr << gettext("curvacious");
 		else /*            */	OStr << gettext("sultry");
-		OStr << gettext(" ");
+		OStr << " ";
 		// MYR: Covering the big fetishes/stereotpes
 		random = g_Dice % 12 + 1;
 		/* */if (random <= 2)	OStr << gettext("idol singer");
@@ -11289,7 +11410,7 @@ string cGirls::GetRandomAnalString()
 {
 	int roll1 = 0, roll2 = 0, roll3 = 0;
 	stringstream OStr;
-	OStr << gettext(" ");
+	OStr << " ";
 	// Part 1
 #pragma region anal1
 	roll1 = g_Dice % 10 + 1;   // Remember to update this when new strings are added
@@ -12014,32 +12135,86 @@ void cGirls::updateSTD(sGirl* girl)
 {
 	// Sanity check. Abort on dead girl
 	if (girl->health() <= 0) return;
+	
+	bool matron = girl_has_matron(girl, SHIFT_DAY);
 
-	int a, b, c;
+	int Dhea = 0, Dhap = 0, Dtir = 0, Dint = 0, Dcha = 0;
 	if (girl->has_trait("AIDS"))
 	{
-		a = g_Dice % 15 + 5;		girl->health(-a);
-		b = g_Dice % 5 + 5;			girl->happiness(-b);
-		c = g_Dice % 2 + 1;			girl->tiredness(c);
+		string cureitem = "AIDS Cure";
+		int brothelhasscure = g_Brothels.HasItem(cureitem);
+		if (brothelhasscure != 1 && matron)
+		{
+			stringstream cure;
+			cure << girl->m_Realname << " was given an " << cureitem << " from the brothel's stock to cure the disease.";
+			g_Brothels.AutomaticFoodItemUse(girl, brothelhasscure, cure.str());
+		}
+		else
+		{
+			Dhea += g_Dice % 15 + 5;
+			Dhap += g_Dice % 5 + 5;
+			Dtir += g_Dice % 2 + 1;
+		}
 	}
-	if (girl->has_trait("Herpes"))
+	if (girl->has_trait("Herpes") && matron)
 	{
-		a = max(0, g_Dice % 4 - 2);	girl->health(-a);
-		b = max(1, g_Dice % 5 - 2);	girl->happiness(-b);
-		c = max(0, g_Dice % 4 - 1);	girl->charisma(-c);
+		string cureitem = "Herpes Cure";
+		int brothelhasscure = g_Brothels.HasItem(cureitem);
+		if (brothelhasscure != 1)
+		{
+			stringstream cure;
+			cure << girl->m_Realname << " was given a " << cureitem << " from the brothel's stock to cure the disease.";
+			g_Brothels.AutomaticFoodItemUse(girl, brothelhasscure, cure.str());
+		}
+		else
+		{
+			Dhea += max(0, g_Dice % 4 - 2);
+			Dhap += max(1, g_Dice % 5 - 2);
+			Dcha += max(0, g_Dice % 4 - 1);
+		}
 	}
-	if (girl->has_trait("Chlamydia"))
+	if (girl->has_trait("Chlamydia") && matron)
 	{
-		a = g_Dice % 3 + 1;			girl->health(-a);
-		b = g_Dice % 3 + 1;			girl->happiness(-b);
-		c = g_Dice % 2 + 1;			girl->tiredness(c);
+		string cureitem = "Chlamydia Cure";
+		int brothelhasscure = g_Brothels.HasItem(cureitem);
+		if (brothelhasscure != 1)
+		{
+			stringstream cure;
+			cure << girl->m_Realname << " was given a " << cureitem << " from the brothel's stock to cure the disease.";
+			g_Brothels.AutomaticFoodItemUse(girl, brothelhasscure, cure.str());
+		}
+		else
+		{
+			Dhea += g_Dice % 3 + 1;
+			Dhap += g_Dice % 3 + 1;
+			Dtir += g_Dice % 2 + 1;
+		}
 	}
-	if (girl->has_trait("Syphilis"))
+	if (girl->has_trait("Syphilis") && matron)
 	{
-		a = g_Dice % 10 + 5;		girl->health(-a);
-		b = g_Dice % 5 + 5;			girl->happiness(-b);
-		c = max(0, g_Dice % 4 - 2);	girl->intelligence(-c);
+		string cureitem = "Syphilis Cure";
+		int brothelhasscure = g_Brothels.HasItem(cureitem);
+		if (brothelhasscure != 1)
+		{
+			stringstream cure;
+			cure << girl->m_Realname << " was given a " << cureitem << " from the brothel's stock to cure the disease.";
+			g_Brothels.AutomaticFoodItemUse(girl, brothelhasscure, cure.str());
+		}
+		else
+		{
+			Dhea += g_Dice % 10 + 5;
+			Dhap += g_Dice % 5 + 5;
+			Dint += max(0, g_Dice % 4 - 2);	
+		}
 	}
+
+	girl->health(-Dhea);
+	girl->happiness(-Dhap);
+	girl->tiredness(Dtir);
+	girl->charisma(-Dcha);
+	girl->intelligence(-Dint);
+
+
 
 	if (girl->health() <= 0)
 	{
@@ -12212,10 +12387,10 @@ static bool has_contraception(sGirl *girl)
 	if (girl->m_PregCooldown > 0) 		return true;	// If she's in her cooldown period after giving birth
 	if (girl->m_DayJob == JOB_INDUNGEON || girl->m_NightJob == JOB_INDUNGEON)	// `J`
 	{
-		girl->m_InMovieStudio = girl->m_InCentre = girl->m_InClinic = girl->m_InHouse = girl->m_InArena = girl->m_InFarm = false;
+		girl->m_InStudio = girl->m_InCentre = girl->m_InClinic = girl->m_InHouse = girl->m_InArena = girl->m_InFarm = false;
 		girl->where_is_she = 0;
 	}
-	if (UseAntiPreg(girl->m_UseAntiPreg, girl->m_InClinic, girl->m_InMovieStudio, girl->m_InArena, girl->m_InCentre, girl->m_InHouse, girl->m_InFarm, girl->where_is_she))
+	if (UseAntiPreg(girl->m_UseAntiPreg, girl->m_InClinic, girl->m_InStudio, girl->m_InArena, girl->m_InCentre, girl->m_InHouse, girl->m_InFarm, girl->where_is_she))
 	{
 		return true;
 	}
@@ -12447,16 +12622,13 @@ sRandomGirl *cGirls::find_random_girl_by_name(string name, int *index_pt)
 {
 	int count = 0;
 	sRandomGirl* current = m_RandomGirls;
+	if (index_pt) *index_pt = -1;
 
-	if (index_pt) {
-		*index_pt = -1;
-	}
-
-	while (current) {
-		if (current->m_Name == name) {
-			if (index_pt) {
-				*index_pt = count;
-			}
+	while (current)
+	{
+		if (current->m_Name == name)
+		{
+			if (index_pt) *index_pt = count;
 			return current;
 		}
 		count++;
@@ -12587,23 +12759,21 @@ bool cGirls::child_is_grown(sGirl* mom, sChild *child, string& summary, bool Pla
 	summary += gettext("A daughter grew of age. ");
 	mom->m_States |= (1 << STATUS_HAS_DAUGHTER);
 	bool slave = mom->is_slave();
-	bool AllowNonHuman = mom->is_human();
+	bool MomIsMonster = mom->is_monster();
 	// create a new girl for the barn
 	sGirl* sprog = 0;
 	if (mom->m_Canonical_Daughters.size() > 0)
 	{
 		sprog = make_girl_child(mom, playerfather);
 	}
-	if (!sprog && playerfather && GetNumYourDaughterGirls() > 0)
+	if (!sprog && playerfather && GetNumYourDaughterGirls() > 0)				// this should check all your daughter girls that apply
 	{
-		sprog = GetRandomGirl(slave, !AllowNonHuman, false, playerfather, false);				// first try to get an exact match
-		if (!sprog) sprog = GetRandomGirl(!slave, !AllowNonHuman, false, playerfather, false);	// then try flipping slave status
-		if (!sprog) sprog = GetRandomGirl(false, false, false, playerfather, false);			// then try the original code
-		if (!sprog) sprog = GetRandomYourDaughterGirl();										// if all else fails, just pick one
+		sprog = GetRandomYourDaughterGirl(MomIsMonster);						// first try to get the same human/nonhuman as mother
+		if (!sprog && MomIsMonster) sprog = GetRandomYourDaughterGirl(true);	// next, if mom is nonhuman, try to get a human daughter
 	}
 	if (!sprog)
 	{
-		sprog = g_Girls.CreateRandomGirl(17, false, slave, false, !AllowNonHuman, false, false, playerfather);
+		sprog = g_Girls.CreateRandomGirl(17, false, slave, false, MomIsMonster, false, false, playerfather);
 	}
 	// check for incest, get the odds on abnormality
 	int abnormal_pc = calc_abnormal_pc(mom, sprog, child->m_IsPlayers);
@@ -14410,7 +14580,7 @@ int sGirl::rebel()
 		g_Brothels.GetNumGirlsOnJob(4, JOB_TORTURER, 0) > 0 ||
 		g_Brothels.GetNumGirlsOnJob(5, JOB_TORTURER, 0) > 0 ||
 		g_Brothels.GetNumGirlsOnJob(6, JOB_TORTURER, 0) > 0));
-	else if (this->m_InMovieStudio)		return g_Girls.GetRebelValue(this, g_Studios.GetNumGirlsOnJob(0, JOB_DIRECTOR, 1) > 0);
+	else if (this->m_InStudio)		return g_Girls.GetRebelValue(this, g_Studios.GetNumGirlsOnJob(0, JOB_DIRECTOR, 1) > 0);
 	else if (this->m_InArena)			return g_Girls.GetRebelValue(this, g_Arena.GetNumGirlsOnJob(0, JOB_DOCTORE, 0) > 0);
 	else if (this->m_InCentre)			return g_Girls.GetRebelValue(this, g_Centre.GetNumGirlsOnJob(0, JOB_CENTREMANAGER, 0) > 0);
 	else if (this->m_InClinic)			return g_Girls.GetRebelValue(this, g_Clinic.GetNumGirlsOnJob(0, JOB_CHAIRMAN, 0) > 0);
@@ -14485,3 +14655,14 @@ string cGirls::GetHoroscopeName(int month, int day)
 	return "";
 }
 
+bool cGirls::girl_has_matron(sGirl* girl, int shift)
+{
+	/* */if (girl->m_InArena)		{ if (g_Arena.GetNumGirlsOnJob(0, JOB_DOCTORE, shift) > 0)						return true; }
+	else if (girl->m_InStudio)	{ if (g_Studios.GetNumGirlsOnJob(0, JOB_DIRECTOR, shift) > 0)					return true; }
+	else if (girl->m_InClinic)		{ if (g_Clinic.GetNumGirlsOnJob(0, JOB_CHAIRMAN, shift) > 0)					return true; }
+	else if (girl->m_InCentre)		{ if (g_Centre.GetNumGirlsOnJob(0, JOB_CENTREMANAGER, shift) > 0)				return true; }
+	else if (girl->m_InHouse)		{ if (g_House.GetNumGirlsOnJob(0, JOB_HEADGIRL, shift) > 0)						return true; }
+	else if (girl->m_InFarm)		{ if (g_Farm.GetNumGirlsOnJob(0, JOB_FARMMANGER, shift) > 0)					return true; }
+	else /*                   */	{ if (g_Brothels.GetNumGirlsOnJob(girl->where_is_she, JOB_MATRON, shift) > 0)	return true; }
+	return false;
+}

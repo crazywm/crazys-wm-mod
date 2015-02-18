@@ -52,7 +52,7 @@ private:
 	int	walk_id;		// Walk Around Town button
 
 	void set_ids();
-	bool GirlDead(sGirl *dgirl);
+	bool GirlDead(sGirl *dgirl, bool sendmessage = true);
 	void RefreshSelectedJobType();
 	void RefreshJobList();
 	void GetSelectedGirls(vector<int> *girl_array);

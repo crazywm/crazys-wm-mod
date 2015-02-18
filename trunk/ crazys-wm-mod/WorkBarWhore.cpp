@@ -114,7 +114,7 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	bool acceptsGirl;		// Customer will sleep girl
 
 	u_int SexType = 0;
-	u_int job = (Day0Night1 == SHIFT_DAY ? girl->m_DayJob : girl->m_NightJob);
+	u_int job = (Day0Night1 ? girl->m_NightJob : girl->m_DayJob);
 	stringstream ss;
 	girl->m_Pay = 0;
 

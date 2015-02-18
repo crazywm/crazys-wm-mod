@@ -133,16 +133,21 @@ bool cJobManager::WorkRancher(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 
 
 	// Improve stats
-	int xp = 10, libido = 1, skill = 3;
+	int xp = 5, libido = 1, skill = 3;
 
 	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
 
-	g_Girls.UpdateStat(girl, STAT_FAME, 1);
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_ANIMALHANDLING, skill);
+	g_Girls.UpdateStat(girl, STAT_EXP, (g_Dice % xp) + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
+
+	// primary (+2 for single or +1 for multiple)
+	g_Girls.UpdateSkill(girl, SKILL_ANIMALHANDLING, (g_Dice % skill) + 2);
+	// secondary (-1 for one then -2 for others)
+	g_Girls.UpdateStat(girl, STAT_CONFIDENCE, max(0, (g_Dice % skill) - 1));
+	g_Girls.UpdateStat(girl, STAT_CHARISMA, max(0, (g_Dice % skill) - 2));
+	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, max(0, (g_Dice % skill) - 2));
 
 	return false;
 }
@@ -150,21 +155,23 @@ bool cJobManager::WorkRancher(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 double cJobManager::JP_Rancher(sGirl* girl, bool estimate)// not used
 {
 	double jobperformance =
-		(g_Girls.GetSkill(girl, SKILL_BEASTIALITY) / 2 +
-		g_Girls.GetSkill(girl, SKILL_FARMING) / 2 +
-		g_Girls.GetSkill(girl, SKILL_ANIMALHANDLING));
-
+		// primary - first 100
+		girl->animalhandling() +
+		// secondary - second 100
+		((girl->confidence() + girl->charisma() + girl->intelligence()) / 3) +
+		// level bonus
+		girl->level();
 
 	//good traits
-	if (g_Girls.HasTrait(girl, "Quick Learner"))  jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Psychic"))		  jobperformance += 10;
-
+	if (g_Girls.HasTrait(girl, "Quick Learner"))	jobperformance += 5;
+	if (g_Girls.HasTrait(girl, "Psychic"))			jobperformance += 10;
 
 	//bad traits
-	if (g_Girls.HasTrait(girl, "Dependant"))	jobperformance -= 50; //needs others to do the job
-	if (g_Girls.HasTrait(girl, "Clumsy")) 		jobperformance -= 20; //spills food and breaks things often
-	if (g_Girls.HasTrait(girl, "Aggressive")) 	jobperformance -= 20; //gets mad easy
-	if (g_Girls.HasTrait(girl, "Nervous"))		jobperformance -= 30; //don't like to be around people	
-	if (g_Girls.HasTrait(girl, "Meek"))			jobperformance -= 20;
+	if (g_Girls.HasTrait(girl, "Dependant"))		jobperformance -= 50; //needs others to do the job
+	if (g_Girls.HasTrait(girl, "Clumsy")) 			jobperformance -= 20; //spills food and breaks things often
+	if (g_Girls.HasTrait(girl, "Aggressive")) 		jobperformance -= 20; //gets mad easy
+	if (g_Girls.HasTrait(girl, "Nervous"))			jobperformance -= 30; //don't like to be around people	
+	if (g_Girls.HasTrait(girl, "Meek"))				jobperformance -= 20;
+
 	return jobperformance;
 }

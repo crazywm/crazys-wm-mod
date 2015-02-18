@@ -198,8 +198,7 @@ void cGirlTorture::DoTorture()
  */
 	if (m_TorturedByPlayer)
 	{
- 		if (girl_escapes())
-			return;
+ 		if (girl_escapes()) return;
 	}
 
 /*
@@ -239,7 +238,8 @@ void cGirlTorture::DoTorture()
 /*
  *	check for injury
  */
-	if (IsGirlInjured(3)) {
+	if (IsGirlInjured(3))
+	{
 		if (m_TorturedByPlayer)
 		{
 			m_Message += gettext(" You were a little too heavy handed and badly injure her.\n");
@@ -352,7 +352,8 @@ void cGirlTorture::AddTextPlayer()
  *		if she was not, but is now, then the player
  *		just knocked her up. We should mention this.
  */
-		if (is && !was) {
+		if (is && !was)
+		{
 			m_Message += gettext(" She is now pregnant.");
 		}
 		g_Girls.LoseVirginity(m_Girl);
@@ -426,6 +427,11 @@ void cGirlTorture::UpdateStats()
 
 bool cGirlTorture::IsGirlInjured(unsigned int unModifier)
 {  // modifier: 5 = 5% chance, 10 = 10% chance
+
+	// Sanity check, Can't get injured
+	if (m_Girl->has_trait("Incorporeal")) return false;
+
+	
 /*
  *	WD	Injury was only possible if girl is pregnant or
  *		hasn't got the required traits.
@@ -439,17 +445,13 @@ bool cGirlTorture::IsGirlInjured(unsigned int unModifier)
 	int		nMod		= static_cast<int>(unModifier);
 	if (cfg.initial.torture_mod() < 0){ nMod += nMod; }
 
-	// Sanity check, Can't get injured
-	if (m_Girl->has_trait("Incorporeal"))
-		return false;
 
 	if (m_Girl->has_trait("Fragile"))	nMod += nMod;	// nMod *= 2;
 	if (m_Girl->has_trait("Tough"))		nMod /= 2;
-	if (nMod < 1)nMod = 1;		// `J` always at least a 1% chance
+	if (nMod < 1) nMod = 1;		// `J` always at least a 1% chance
 
 	// Did the girl get injured
-	if (!g_Dice.percent(nMod))
-		return false;
+	if (!g_Dice.percent(nMod)) return false;
 /*
  *	INJURY PROCESSING
  *	Only injured girls continue past here
@@ -465,12 +467,10 @@ bool cGirlTorture::IsGirlInjured(unsigned int unModifier)
 	}
 
 	// getting hurt badly could lead to scars
-	if (
-		g_Dice.percent(nMod*2) &&
+	if (g_Dice.percent(nMod*2) &&
 		!m_Girl->has_trait("Small Scars") &&
 		!m_Girl->has_trait("Cool Scars") &&
-		!m_Girl->has_trait("Horrific Scars")
-		)
+		!m_Girl->has_trait("Horrific Scars"))
 	{
 		int chance = g_Dice%6;
 		if (chance == 0)
@@ -500,11 +500,9 @@ bool cGirlTorture::IsGirlInjured(unsigned int unModifier)
 	}
 
 	// in rare cases, she might even lose an eye
-	if (
-		g_Dice.percent((nMod/2)) &&
+	if (g_Dice.percent((nMod/2)) &&
 		!m_Girl->has_trait("One Eye") &&
-		!m_Girl->has_trait("Eye Patch")
-		)
+		!m_Girl->has_trait("Eye Patch"))
 	{
 		int chance = g_Dice%3;
 		if (chance == 0)
@@ -583,11 +581,10 @@ bool cGirlTorture::IsGirlInjured(unsigned int unModifier)
 
 bool cGirlTorture::girl_escapes()
 {
-
 	cGirlGangFight ggf(m_Girl);
 
-
-	if (ggf.girl_submits()) {
+	if (ggf.girl_submits())
+	{
 		m_Message += gettext("She doesn't put up a fight so ");
 		return false;	// she does NOT escape
 	}
@@ -596,7 +593,8 @@ bool cGirlTorture::girl_escapes()
  */
 	m_Fight = true;
 	m_Message += gettext("She puts up a fight ");
-	if (ggf.girl_lost()) {
+	if (ggf.girl_lost())
+	{
 		if (ggf.player_won()) 
 		{
 			m_Message += gettext(" and would have escaped but for your personal intervention; ");
@@ -612,8 +610,6 @@ bool cGirlTorture::girl_escapes()
 	{
 		m_Message += gettext(" the gang is wiped out and");
 	}
-
-
 
 	// If girl wins she escapes and leaves the brothel
 	m_Message += gettext("And after defeating you as well she escapes to the outside world.\n");
@@ -642,38 +638,33 @@ void cGirlTorture::UpdateTraits()
 	if (cfg.initial.torture_mod() < 0){ harshtorture = true; }
 	else	{	nWeekMod = cfg.initial.torture_mod() * m_DungeonGirl->m_Weeks;	}
 
-	if (m_Girl->spirit() < 20 && m_Girl->health() < 20)
+	if (g_Dice.percent(30) && m_Girl->spirit() < 20 && m_Girl->health() < 20)
 	{
 		if (harshtorture)	{ m_Girl->add_trait("Broken Will", false); }
-		else				{ add_trait("Broken Will", 5 + nWeekMod / 2); }
+		else				{ m_Girl->add_trait("Broken Will", 5 + nWeekMod / 2); }
 	}
-	if (m_Girl->bdsm() > 30)
+	if (g_Dice.percent(30) && m_Girl->bdsm() > 30)
 	{
 		if (harshtorture)	{ m_Girl->add_trait("Masochist", false); }
-		else				{ add_trait("Masochist", 10 + nWeekMod); }
+		else				{ m_Girl->add_trait("Masochist", 10 + nWeekMod); }
 	}
-
-	if (m_Girl->health() < 10)
+	if (g_Dice.percent(30) && m_Girl->health() < 10)
 	{
 		if (harshtorture)	{ m_Girl->add_trait("Mind Fucked", false); }
-		else				{ add_trait("Mind Fucked", 10 + nWeekMod); }
+		else				{ m_Girl->add_trait("Mind Fucked", 10 + nWeekMod); }
 	}
 }
 
 void cGirlTorture::add_trait(string trait, int pc)
 {
-	if (m_Girl->has_trait(trait))
-		return;
+	if (m_Girl->has_trait(trait)) return;
 /*
  *	WD:	To balance a crash bug workaround for Job Torturer
  *		unable to call GirlGangFight()
  *		Halve chance of gaining trait
  */
-	if (!m_TorturedByPlayer)
-		pc /= 2;
-
-	if (!g_Dice.percent(pc))
-		return;
+	if (!m_TorturedByPlayer) pc /= 2;
+	if (!g_Dice.percent(pc)) return;
 
 	string sMsg = m_Girl->m_Realname + gettext(" has gained trait \"" )+ trait + gettext("\" from being tortured.");
 
@@ -682,8 +673,7 @@ void cGirlTorture::add_trait(string trait, int pc)
 		g_MessageQue.AddToQue(sMsg, 2);
 		m_Girl->m_Events.AddMessage(sMsg, IMGTYPE_TORTURE, EVENT_WARNING);
 	}
-	else
-		MakeEvent(sMsg);
+	else MakeEvent(sMsg);
 
 	// Add trait
 	m_Girl->add_trait(trait);

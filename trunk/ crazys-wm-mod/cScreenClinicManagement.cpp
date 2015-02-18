@@ -342,14 +342,14 @@ void cScreenClinicManagement::check_events()
 				selected_girl = g_Clinic.GetGirl(g_CurrClinic, GSelection);
 				if (selected_girl)
 				{
-					int old_job = (Day0Night1 == SHIFT_DAY ? selected_girl->m_DayJob : selected_girl->m_NightJob);
+					int old_job = (Day0Night1 ? selected_girl->m_NightJob : selected_girl->m_DayJob);
 
 					// handle special job requirements and assign
 					// if HandleSpecialJobs returns true, the job assignment was modified or cancelled
 
 					if (g_Clinic.m_JobManager.HandleSpecialJobs(g_CurrClinic, selected_girl, new_job, old_job, Day0Night1, fulltime))
 					{
-						new_job = (Day0Night1 == SHIFT_DAY ? selected_girl->m_DayJob : selected_girl->m_NightJob);
+						new_job = (Day0Night1 ? selected_girl->m_NightJob : selected_girl->m_DayJob);
 						SetSelectedItemInList(joblist_id, new_job, false);
 					}
 					// update the girl's listing to reflect the job change
@@ -485,11 +485,11 @@ void cScreenClinicManagement::check_events()
 }
 
 
-bool cScreenClinicManagement::GirlDead(sGirl *dgirl)
+bool cScreenClinicManagement::GirlDead(sGirl *dgirl, bool sendmessage)
 {
 	if (dgirl->health() <= 0)
 	{
-		g_MessageQue.AddToQue(gettext("This girl is dead. She isn't going to work anymore and her body will be removed by the end of the week."), 1);
+		if (sendmessage) g_MessageQue.AddToQue(gettext("This girl is dead. She isn't going to work anymore and her body will be removed by the end of the week."), 1);
 		return true;
 	}
 	return false;
@@ -500,7 +500,7 @@ void cScreenClinicManagement::RefreshSelectedJobType()
 	selection = GetSelectedItemFromList(girllist_id);
 	if (selection < 0) return;
 	selected_girl = g_Clinic.GetGirl(g_CurrClinic, selection);
-	u_int job = (Day0Night1 == SHIFT_DAY ? selected_girl->m_DayJob : selected_girl->m_NightJob);
+	u_int job = (Day0Night1 ? selected_girl->m_NightJob : selected_girl->m_DayJob);
 	// set the job filter
 	if (job >= g_Clinic.m_JobManager.JobFilterIndex[JOBFILTER_CLINIC] && job < g_Clinic.m_JobManager.JobFilterIndex[JOBFILTER_CLINIC + 1])
 		SetSelectedItemInList(jobtypelist_id, JOBFILTER_CLINIC);
@@ -530,7 +530,7 @@ void cScreenClinicManagement::RefreshJobList()
 		selected_girl->m_YesterDayJob != selected_girl->m_DayJob &&
 		(selected_girl->m_WorkingDay > 0 || selected_girl->m_PrevWorkingDay > 0))
 	{
-		int sel_job = (Day0Night1 == SHIFT_DAY ? selected_girl->m_DayJob : selected_girl->m_NightJob);
+		int sel_job = (Day0Night1 ? selected_girl->m_NightJob : selected_girl->m_DayJob);
 		SetSelectedItemInList(joblist_id, sel_job, false);
 
 		stringstream jdmessage;
@@ -547,7 +547,7 @@ void cScreenClinicManagement::RefreshJobList()
 	}
 	else if (selected_girl)
 	{
-		int sel_job = (Day0Night1 == SHIFT_DAY ? selected_girl->m_DayJob : selected_girl->m_NightJob);
+		int sel_job = (Day0Night1 ? selected_girl->m_NightJob : selected_girl->m_DayJob);
 		SetSelectedItemInList(joblist_id, sel_job, false);
 		EditTextItem(g_Clinic.m_JobManager.JobDesc[sel_job], jobdesc_id);
 	}

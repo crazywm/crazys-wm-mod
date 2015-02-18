@@ -1126,13 +1126,11 @@ int main(int ac, char* av[])	// `J` Bookmark - #1 - Entering the game
 					switch (vent.key.keysym.sym)
 					{
 					case SDLK_RSHIFT:
-					case SDLK_LSHIFT:
-						g_ShiftDown = false;	// enable multi select
-						break;
+					case SDLK_LSHIFT:	g_ShiftDown = false;	break;	// enable multi select
 					case SDLK_RCTRL:
-					case SDLK_LCTRL:
-						g_CTRLDown = false;		// enable multi select
-						break;
+					case SDLK_LCTRL:	g_CTRLDown = false;		break;	// enable multi select
+					case SDLK_RETURN:
+					case SDLK_KP_ENTER:	g_EnterKey = false;		break;
 
 					case SDLK_UP:		g_UpArrow = false;		break;
 					case SDLK_DOWN:		g_DownArrow = false;	break;

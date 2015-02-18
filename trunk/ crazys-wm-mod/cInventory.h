@@ -482,6 +482,7 @@ public:
 	sInventoryItem* GetShopItem(int num);
 	int GetRandomShopItem();
 	sInventoryItem* GetRandomItem();
+	sInventoryItem* GetRandomCatacombItem();
 	int CheckShopItem(string name);	// checks if a item is in shop inventory, returns -1 if not and the id if it is
 	sInventoryItem* BuyShopItem(int num);	// removes and returns the item from the shop
 	bool GirlBuyItem(sGirl* girl, int ShopItem, int MaxItems, bool AutoEquip);  // girl buys selected item if possible; returns true if bought

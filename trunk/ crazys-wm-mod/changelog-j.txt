@@ -1644,12 +1644,42 @@ If the owner of a business you are extorting can not pay and sells you his daugh
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.21
 !!!!!!!!!!!!!!!!!!!! pushed to SVN - r152
 
+###  Changes 2/14-17/2015
+Fixed a bug where dead girls in building lists crashes on send to dungeon.
+ - The crash is fixed but cycling through girls on details page will not go backwards past the dead girl.
+Some cleanup of "Day0Night1 == SHIFT_DAY" to just use "Day0Night1"
+Updated "Sell Slave" and "Fire Girl" buttons to better detail what will happen with different types of girls.
+Added some notes for dead girl texts.
+Added automatic disease cure if there is a cure in the player's inventory and a matron on duty.
+Updated runaway checks and send to dungeon to allow it in all buildings.
+Added human check to GetRandomYourDaughterGirl()
+Separated your daughter check from other checks in CreateRandomGirl
+Fixed NameExists and SurnameExists to check all buildings.
+Added config.xml options for division of catacombs loot between girls, items and beasts
+ - girls and gangs have their own sets of gets
+ - "ControlGirls" and "ControlGangs" tell the game if you want to control what they look for. Default is false.
+ - whatever the numbers are set to, they get converted into a 100% range
+ - defaults are 33.33% each
+ - Works for Girls but not gangs yet.
+Started normalizing jobperformance and stat/skill gain for farm jobs.
+Added Cooking skill and Strength stat
+Moved girl's Gold from first details list to second details list to make room for cooking.
+Fixed a bug crashing on automatic item use for exp granting items.
+Started normalizing Learning_Jobs - Intern, Combat Training and Farm Research. 
+ - Added Strength training to combat training
+Added GetRandomCatacombItem() function
 
+Updated old script editor with new stats/skills
 
+WME - Moved folders setction from config tab to extras tab and added a note for its use.
+WME - Added Catacombs loot to config.xml
+WME - Added a few more tooltips.
+WME - Added Cooking skill and Strength stat
 
-
-
-
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.05
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r153
+WME - Fixed a bug where unzero sex skills would not work for footjob.
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.22
  
 $$$$ note to self - when updating items to recalculate stats/skills when loading girls - don't modify temp stuff $$$$
 

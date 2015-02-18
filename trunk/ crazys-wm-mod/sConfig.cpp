@@ -82,13 +82,14 @@ sConfigData::sConfigData(const char *a_filename)
 	for (el = root_el->FirstChildElement(); el; el = el->NextSiblingElement())
 	{
 		string tag = el->ValueStr();		//	now, depending on the tag name...
-		if (el->ValueStr() == "Folders")		{ get_folders_data(el);	continue; }
+		if (el->ValueStr() == "Folders")		{ get_folders_data(el);		continue; }
 		if (el->ValueStr() == "Resolution")		{ get_resolution_data(el);	continue; }
 		if (el->ValueStr() == "Initial")		{ get_initial_values(el);	continue; }
 		if (el->ValueStr() == "Income")			{ get_income_factors(el);	continue; }
 		if (el->ValueStr() == "Expenses")		{ get_expense_factors(el);	continue; }
 		if (el->ValueStr() == "Gambling")		{ get_gambling_factors(el);	continue; }
 		if (el->ValueStr() == "Prostitution")	{ get_pros_factors(el);		continue; }
+		if (el->ValueStr() == "Catacombs")		{ get_catacombs_data(el);	continue; }
 		if (el->ValueStr() == "Pregnancy")		{ get_preg_factors(el);		continue; }
 		if (el->ValueStr() == "Tax")			{ get_tax_factors(el);		continue; }
 		if (el->ValueStr() == "Gangs")			{ get_gang_factors(el);		continue; }
@@ -405,8 +406,39 @@ void sConfigData::get_preg_factors(TiXmlElement *el)
 void sConfigData::get_pros_factors(TiXmlElement *el)
 {
 	const char *pt;
-	if (pt = el->Attribute("RapeStreet"))		get_att(el, "RapeStreet", &prostitution.rape_streets);
-	if (pt = el->Attribute("RapeBrothel"))		get_att(el, "RapeBrothel", &prostitution.rape_brothel);
+	if (pt = el->Attribute("RapeStreet"))			get_att(el, "RapeStreet", &prostitution.rape_streets);
+	if (pt = el->Attribute("RapeBrothel"))			get_att(el, "RapeBrothel", &prostitution.rape_brothel);
+}
+
+void sConfigData::get_catacombs_data(TiXmlElement *el)
+{
+	const char *pt;
+	if (pt = el->Attribute("ControlGirls"))			get_att(el, "ControlGirls", catacombs.control_girls);
+	if (pt = el->Attribute("ControlGangs"))			get_att(el, "ControlGangs", catacombs.control_gangs);
+	if (pt = el->Attribute("GirlGetsGirls"))		get_att(el, "GirlGetsGirls", &catacombs.girl_gets_girls);
+	if (pt = el->Attribute("GirlGetsItems"))		get_att(el, "GirlGetsItems", &catacombs.girl_gets_items);
+	if (pt = el->Attribute("GirlGetsBeast"))		get_att(el, "GirlGetsBeast", &catacombs.girl_gets_beast);
+	if (pt = el->Attribute("GangGetsGirls"))		get_att(el, "GangGetsGirls", &catacombs.gang_gets_girls);
+	if (pt = el->Attribute("GangGetsItems"))		get_att(el, "GangGetsItems", &catacombs.gang_gets_items);
+	if (pt = el->Attribute("GangGetsBeast"))		get_att(el, "GangGetsBeast", &catacombs.gang_gets_beast);
+
+	double checkggirl = abs(catacombs.girl_gets_girls) + abs(catacombs.girl_gets_items) + abs(catacombs.girl_gets_beast);
+	if (checkggirl == 0) catacombs.girl_gets_girls = catacombs.girl_gets_items = catacombs.girl_gets_beast = (100 / 3);
+	else
+	{
+		catacombs.girl_gets_girls = (100.0 / checkggirl) * catacombs.girl_gets_girls;
+		catacombs.girl_gets_items = (100.0 / checkggirl) * catacombs.girl_gets_items;
+		catacombs.girl_gets_beast = 100.0 - catacombs.girl_gets_girls - catacombs.girl_gets_items;
+	}
+
+	double checkggang = abs(catacombs.gang_gets_girls) + abs(catacombs.gang_gets_items) + abs(catacombs.gang_gets_beast);
+	if (checkggang == 0) catacombs.gang_gets_girls = catacombs.gang_gets_items = catacombs.gang_gets_beast = (100 / 3);
+	else
+	{
+		catacombs.gang_gets_girls = (100.0 / checkggang) * catacombs.gang_gets_girls;
+		catacombs.gang_gets_items = (100.0 / checkggang) * catacombs.gang_gets_items;
+		catacombs.gang_gets_beast = 100.0 - catacombs.gang_gets_girls - catacombs.gang_gets_items;
+	}									 
 }
 
 void sConfigData::get_gang_factors(TiXmlElement *el)
@@ -574,6 +606,14 @@ void sConfigData::set_defaults()
 	prostitution.rape_brothel = 1;
 	prostitution.rape_streets = 5;
 
+	catacombs.control_girls = false;
+	catacombs.control_gangs = false;
+	catacombs.girl_gets_girls = 33.33;
+	catacombs.girl_gets_items = 33.33;
+	catacombs.girl_gets_beast = 33.33;
+	catacombs.gang_gets_girls = 33.33;
+	catacombs.gang_gets_items = 33.33;
+	catacombs.gang_gets_beast = 33.33;
 
 	for (int i = 0; i<9; i++)
 	{
