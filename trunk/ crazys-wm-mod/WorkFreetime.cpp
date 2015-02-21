@@ -597,19 +597,19 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		{
 			imagetype = IMGTYPE_COOK;
 			ss << girlName << " decided to cook a meal.\nThe meal she cooked was ";
-			if (g_Girls.GetSkill(girl, SKILL_SERVICE) >= 85)//use service for now on how well she can cook.. if cooking skill ever gets added can be changed then
+			if (g_Girls.GetSkill(girl, SKILL_COOKING) >= 85)//use service for now on how well she can cook.. if cooking skill ever gets added can be changed then
 			{
 				ss << "amazing. She really knows how to cook.\n";
 				U_Health += 5;
 				g_Girls.UpdateEnjoyment(girl, ACTION_WORKCOOKING, 1, true);
 
 			}
-			else if (g_Girls.GetSkill(girl, SKILL_SERVICE) > 50)
+			else if (g_Girls.GetSkill(girl, SKILL_COOKING) > 50)
 			{
 				ss << "pretty good. She isn't the best but with some work she could be.\n";
 				U_Health += 2;
 			}
-			else if (g_Girls.GetSkill(girl, SKILL_SERVICE) > 10)
+			else if (g_Girls.GetSkill(girl, SKILL_COOKING) > 10)
 			{
 				ss << "plain. She really needs some practice at this.\n";
 			}
@@ -624,7 +624,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			{
 				ss << "She invites you to eat with her.\n";//FIXME add in different things here
 			}
-			g_Girls.UpdateSkill(girl, SKILL_SERVICE, 1);
+			g_Girls.UpdateSkill(girl, SKILL_COOKING, 1);
 		}
 		break;	// end FT_Cook
 
@@ -1243,7 +1243,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				if (jog && !g_Girls.HasTrait(girl, "Great Figure") && g_Dice.percent(5))
 				{
 					ss << "With the help of her workouts she has got quite a Great Figure now.";
-					g_Girls.AddTrait(girl, "Strong");
+					g_Girls.AddTrait(girl, "Great Figure");
 				}
 				else if (ass && !g_Girls.HasTrait(girl, "Great Arse") && g_Dice.percent(5))
 				{

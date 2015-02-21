@@ -382,6 +382,7 @@ string cTraits::GetTranslateName(string name)
 		else if (trait.compare("mixologist") == 0)				return gettext("Mixologist");
 		else if (trait.compare("muggle") == 0)					return gettext("Muggle");
 		else if (trait.compare("muscular") == 0)				return gettext("Muscular");
+		else if (trait.compare("mute") == 0)					return gettext("Mute");
 	}
 	else if (first == "n")
 	{
