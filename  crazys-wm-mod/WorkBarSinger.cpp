@@ -402,6 +402,7 @@ double cJobManager::JP_BarSinger(sGirl* girl, bool estimate)// not used
 	if (g_Girls.HasTrait(girl, "Fearless"))			jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Singer"))			jobperformance += 50;
 	if (g_Girls.HasTrait(girl, "Idol"))				jobperformance += 10;
+	if (g_Girls.HasTrait(girl, "Natural Pheromones"))jobperformance += 15;
 
 	//bad traits
 	if (g_Girls.HasTrait(girl, "Dependant"))	jobperformance -= 50; //needs others to do the job
@@ -414,6 +415,24 @@ double cJobManager::JP_BarSinger(sGirl* girl, bool estimate)// not used
 	if (g_Girls.HasTrait(girl, "Shy"))			jobperformance -= 10;
 	if (g_Girls.HasTrait(girl, "Construct"))	jobperformance -= 20; //voice would sound funny
 	if (g_Girls.HasTrait(girl, "Tone Deaf"))	jobperformance -= 150; //should never get good at this job
+
+	if (g_Girls.HasTrait(girl, "Deaf"))			jobperformance -= 20;	//Voice would sound funny
+	if (g_Girls.HasTrait(girl, "Retarded"))		jobperformance -= 60;
+	if (g_Girls.HasTrait(girl, "Smoker"))		jobperformance -= 20;	//would need smoke breaks and get out of breath quicker
+	if (g_Girls.HasTrait(girl, "Mute"))			jobperformance -= 1000; //cant sing
+	if (g_Girls.HasTrait(girl, "Canine"))		jobperformance -= 20;	//Voice would sound funny
+	if (g_Girls.HasTrait(girl, "Cat Girl"))		jobperformance -= 20;	//Voice would sound funny
+	if (g_Girls.HasTrait(girl, "Demon Possessed"))jobperformance -= 20;	//Voice would sound funny
+	if (g_Girls.HasTrait(girl, "Reptilian"))	jobperformance -= 20;	//Voice would sound funny
+	if (g_Girls.HasTrait(girl, "Slitherer"))	jobperformance -= 20;	//Voice would sound funny
+	if (g_Girls.HasTrait(girl, "Spirit Possessed"))jobperformance -= 20;	//Voice would sound funny
+
+	if (g_Girls.HasTrait(girl, "Alcoholic"))			jobperformance -= 25;
+	if (g_Girls.HasTrait(girl, "Fairy Dust Addict"))	jobperformance -= 25;
+	if (g_Girls.HasTrait(girl, "Shroud Addict"))		jobperformance -= 25;
+	if (g_Girls.HasTrait(girl, "Viras Blood Addict"))	jobperformance -= 25;
+
+
 	return jobperformance;
 }
 

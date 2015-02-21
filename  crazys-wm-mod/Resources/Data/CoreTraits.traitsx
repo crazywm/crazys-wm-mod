@@ -721,6 +721,12 @@
 		InheritChance="70"
 		RandomChance="10" />
 	<Trait
+		Name="Flexible"
+		Desc="She is able to bend her body in many different ways."
+		Type="Physical"
+		InheritChance="10"
+		RandomChance="5" />
+	<Trait
 		Name="Giant"
 		Desc="This girl is tall. The height might be a bit intimidating..."
 		Type="Physical"
