@@ -209,19 +209,9 @@ void cScreenGirlDetails::init()
 
 	// `J` Replacing accom buttons with slider
 	if (accomdown_id != -1)	DisableButton(accomdown_id, selected_girl->m_AccLevel < 1);
-	if (accomup_id != -1)	DisableButton(accomup_id, selected_girl->m_AccLevel > 4);
-	if (accom_id != -1)		SliderRange(accom_id, 0, 5, selected_girl->m_AccLevel, 1);
-	if (accomval_id != -1)
-	{
-		string accomstr = "Accommodation: ";
-		if (SliderValue(accom_id) == 0)	accomstr += gettext("Very Poor");
-		if (SliderValue(accom_id) == 1)	accomstr += gettext("Adequate");
-		if (SliderValue(accom_id) == 2)	accomstr += gettext("Nice");
-		if (SliderValue(accom_id) == 3)	accomstr += gettext("Good");
-		if (SliderValue(accom_id) == 4)	accomstr += gettext("Wonderful");
-		if (SliderValue(accom_id) == 5)	accomstr += gettext("High Class");
-		EditTextItem(accomstr, accomval_id);
-	}
+	if (accomup_id != -1)	DisableButton(accomup_id, selected_girl->m_AccLevel > 9);
+	if (accom_id != -1)		SliderRange(accom_id, 0, 9, selected_girl->m_AccLevel, 1);
+	if (accomval_id != -1)	EditTextItem("Accommodation: " + g_Girls.Accommodation(SliderValue(accom_id)), accomval_id);
 	DisableButton(interact_id, (g_TalkCount <= 0));
 	DisableButton(takegold_id, (selected_girl->m_Money <= 0));
 	SetCheckBox(antipreg_id, (selected_girl->m_UseAntiPreg));
@@ -566,38 +556,18 @@ void cScreenGirlDetails::check_events()
 	if (g_InterfaceEvents.CheckSlider(accom_id))
 	{
 		selected_girl->m_AccLevel = SliderValue(accom_id);
-		SliderRange(accom_id, 0, 5, selected_girl->m_AccLevel, 1);
-		if (accomval_id != -1)
-		{
-			string accomstr = "Accommodation: ";
-			if (selected_girl->m_AccLevel == 0)	accomstr += gettext("Very Poor");
-			if (selected_girl->m_AccLevel == 1)	accomstr += gettext("Adequate");
-			if (selected_girl->m_AccLevel == 2)	accomstr += gettext("Nice");
-			if (selected_girl->m_AccLevel == 3)	accomstr += gettext("Good");
-			if (selected_girl->m_AccLevel == 4)	accomstr += gettext("Wonderful");
-			if (selected_girl->m_AccLevel == 5)	accomstr += gettext("High Class");
-			EditTextItem(accomstr, accomval_id);
-		}
+		SliderRange(accom_id, 0, 9, selected_girl->m_AccLevel, 1);
+		EditTextItem("Accommodation: " + g_Girls.Accommodation(SliderValue(accom_id)), accomval_id);
 		g_InitWin = true;
 		return;
 	}
 	if (g_InterfaceEvents.CheckButton(accomup_id))
 	{
-		if (selected_girl->m_AccLevel + 1 > 5)
-			selected_girl->m_AccLevel = 5;
+		if (selected_girl->m_AccLevel + 1 > 9)
+			selected_girl->m_AccLevel = 9;
 		else
 			selected_girl->m_AccLevel++;
-		if (accomval_id != -1)
-		{
-			string accomstr = "Accommodation: ";
-			if (selected_girl->m_AccLevel == 0)	accomstr += gettext("Very Poor");
-			if (selected_girl->m_AccLevel == 1)	accomstr += gettext("Adequate");
-			if (selected_girl->m_AccLevel == 2)	accomstr += gettext("Nice");
-			if (selected_girl->m_AccLevel == 3)	accomstr += gettext("Good");
-			if (selected_girl->m_AccLevel == 4)	accomstr += gettext("Wonderful");
-			if (selected_girl->m_AccLevel == 5)	accomstr += gettext("High Class");
-			EditTextItem(accomstr, accomval_id);
-		}
+		if (accomval_id != -1) EditTextItem("Accommodation: " + g_Girls.Accommodation(selected_girl->m_AccLevel), accomval_id);
 
 		g_InitWin = true;
 		return;
@@ -606,17 +576,7 @@ void cScreenGirlDetails::check_events()
 	{
 		if (selected_girl->m_AccLevel - 1 < 0)	selected_girl->m_AccLevel = 0;
 		else									selected_girl->m_AccLevel--;
-		if (accomval_id != -1)
-		{
-			string accomstr = "Accommodation: ";
-			if (selected_girl->m_AccLevel == 0)	accomstr += gettext("Very Poor");
-			if (selected_girl->m_AccLevel == 1)	accomstr += gettext("Adequate");
-			if (selected_girl->m_AccLevel == 2)	accomstr += gettext("Nice");
-			if (selected_girl->m_AccLevel == 3)	accomstr += gettext("Good");
-			if (selected_girl->m_AccLevel == 4)	accomstr += gettext("Wonderful");
-			if (selected_girl->m_AccLevel == 5)	accomstr += gettext("High Class");
-			EditTextItem(accomstr, accomval_id);
-		}
+		if (accomval_id != -1) EditTextItem("Accommodation: " + g_Girls.Accommodation(selected_girl->m_AccLevel), accomval_id);
 
 		g_InitWin = true;
 		return;

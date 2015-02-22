@@ -18,6 +18,7 @@
 <Effect What="Skill" Name="BDSM"                    Amount="500"    /><Effect What="Skill" Name="BDSM"                    Amount="-100"    />
 <Effect What="Skill" Name="Beastiality"             Amount="500"    /><Effect What="Skill" Name="Beastiality"             Amount="-100"    />
 <Effect What="Skill" Name="Brewing"                 Amount="500"    /><Effect What="Skill" Name="Brewing"                 Amount="-100"    />
+<Effect What="Skill" Name="Cooking"                 Amount="500"    /><Effect What="Skill" Name="Cooking"                 Amount="-100"    />
 <Effect What="Skill" Name="Combat"                  Amount="500"    /><Effect What="Skill" Name="Combat"                  Amount="-100"    />
 <Effect What="Skill" Name="Crafting"                Amount="500"    /><Effect What="Skill" Name="Crafting"                Amount="-100"    />
 <Effect What="Skill" Name="Farming"                 Amount="500"    /><Effect What="Skill" Name="Farming"                 Amount="-100"    />
@@ -39,6 +40,7 @@
 <Effect What="Stat"  Name="Charisma"                Amount="500"    /><Effect What="Stat"  Name="Charisma"                Amount="-100"    />
 <Effect What="Stat"  Name="Confidence"              Amount="500"    /><Effect What="Stat"  Name="Confidence"              Amount="-100"    />
 <Effect What="Stat"  Name="Constitution"            Amount="500"    /><Effect What="Stat"  Name="Constitution"            Amount="-100"    />
+<Effect What="Stat"  Name="Strength"                Amount="500"    /><Effect What="Stat"  Name="Strength"                Amount="-100"    />
 <Effect What="Stat"  Name="Dignity"                 Amount="500"    /><Effect What="Stat"  Name="Dignity"                 Amount="-100"    />
 <Effect What="Stat"  Name="Fame"                    Amount="500"    /><Effect What="Stat"  Name="Fame"                    Amount="-100"    />
 <Effect What="Stat"  Name="Happiness"               Amount="500"    /><Effect What="Stat"  Name="Happiness"               Amount="-100"    />

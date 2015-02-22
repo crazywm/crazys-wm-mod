@@ -34,6 +34,8 @@ extern cBrothelManager g_Brothels;
 extern cMessageQue g_MessageQue;
 extern cRng g_Dice;
 
+extern string stringtolowerj(string name);
+
 // ----- Misc
 
 cInventory::~cInventory()
@@ -176,6 +178,10 @@ static void do_effects(TiXmlElement *parent, sInventoryItem *item)
 			}
 		}
 		if (pt = el->Attribute("Amount", &ival)) ept->m_Amount = ival;
+		
+		if (pt = el->Attribute("Duration", &ival)) ept->m_Duration = ival;
+		else ept->m_Duration = 20;
+
 		item->m_Effects.push_back(*ept);
 	}
 }
@@ -517,7 +523,12 @@ sInventoryItem* cInventory::GetItem(string name)
 
 void cInventory::Equip(sGirl* girl, int num, bool force)
 {
-	if (girl->health() <= 0 ||					// dead girls shouldn't be able to equip or use anything
+	// Allow certain Items to recover the dead
+	if (girl->health() <= 0 && (
+		stringtolowerj(girl->m_Inventory[num]->m_Name) == stringtolowerj("Better Zed than Dead") ||
+		stringtolowerj(girl->m_Inventory[num]->m_Name) == stringtolowerj("Elixir of Ultimate Regeneration")
+		)){}
+	else if (girl->health() <= 0 ||					// dead girls shouldn't be able to equip or use anything
 		girl->m_EquipedItems[num] == 1 ||		// if already equiped do nothing
 		girl->m_Inventory[num]->m_Special == sInventoryItem::AffectsAll || // no "AffectsAll" item should be equipable
 		ok_2_equip(girl, num, force) == false)	// of if it is not ok to equip it
@@ -529,6 +540,7 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 		int affects = girl->m_Inventory[num]->m_Effects[i].m_Affects;
 		int eff_id = girl->m_Inventory[num]->m_Effects[i].m_EffectID;
 		int amount = girl->m_Inventory[num]->m_Effects[i].m_Amount;
+		int duration = girl->m_Inventory[num]->m_Effects[i].m_Duration;
 
 		if (girl->m_Inventory[num]->m_Special == sInventoryItem::Temporary)
 		{
@@ -569,7 +581,7 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 					g_Girls.RemoveTrait(girl, girl->m_Inventory[num]->m_Effects[i].m_Trait, true);		// addrememberlist = true Temporary Item trait removal
 
 				else if (amount == 1)		// add temporary trait
-					g_Girls.AddTrait(girl, girl->m_Inventory[num]->m_Effects[i].m_Trait, 20, true);	// Temp = true Temporary Item, removeitem = true for Temporary Item trait addition
+					g_Girls.AddTrait(girl, girl->m_Inventory[num]->m_Effects[i].m_Trait, duration, true);	// Temp = true Temporary Item, removeitem = true for Temporary Item trait addition
 
 				if (girl->m_Inventory[num]->m_Effects[i].m_Trait == "Virgin")
 				{
@@ -579,8 +591,22 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 		}
 		else	// m_Special == sInventoryItem::None
 		{
-			/* */if (affects == sEffect::Skill)	g_Girls.UpdateSkillMod(girl, eff_id, amount);
-			else if (affects == sEffect::Stat)	g_Girls.UpdateStatMod(girl, eff_id, amount);
+			/* */if (affects == sEffect::Skill)
+			{
+				// `J` food and makeup are single use items, so if permanent, make them affect the base skill
+				if (girl->m_Inventory[num]->m_Type == INVFOOD || girl->m_Inventory[num]->m_Type == INVMAKEUP)
+					g_Girls.UpdateSkill(girl, eff_id, amount);
+				// `J` all other items can be removed so use skill mod
+				else g_Girls.UpdateSkillMod(girl, eff_id, amount);
+			}
+			else if (affects == sEffect::Stat)
+			{
+				// `J` food and makeup are single use items, so if permanent, make them affect the base skill
+				if (girl->m_Inventory[num]->m_Type == INVFOOD || girl->m_Inventory[num]->m_Type == INVMAKEUP)
+					g_Girls.UpdateStat(girl, eff_id, amount);
+				// `J` all other items can be removed so use skill mod
+				else g_Girls.UpdateStatMod(girl, eff_id, amount);
+			}
 			else if (affects == sEffect::GirlStatus)	// adds/removes status
 			{
 				if (amount >= 1)	// add status

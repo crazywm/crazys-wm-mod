@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Items>
 <Item Name="Death Mullet"
-      Desc="This hairstyle is required to practice Death Kwon Do, unattractive as it may be. (Combat +20, Constitution +10. Removes Cool Person.)"
+      Desc="This hairstyle is required to practice Death Kwon Do, unattractive as it may be. (+20 Cmb, +10 Con/Str. Removes Cool Person.)"
       Type="Helmet"
       Badness="0"
       Special="None"
@@ -10,6 +10,7 @@
       Infinite="false">
    <Effect What="Skill" Name="Combat"                  Amount="20"    />
    <Effect What="Stat"  Name="Constitution"            Amount="10"    />
+   <Effect What="Stat"  Name="Strength"                Amount="10"    />
    <Effect What="Trait" Name="Cool Person"             Amount="0"    />
 </Item>
 </Items>

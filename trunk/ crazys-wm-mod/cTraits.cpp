@@ -454,6 +454,7 @@ string cTraits::GetTranslateName(string name)
 		else if (trait.compare("sharp-eyed") == 0)				return gettext("Sharp-Eyed");
 		else if (trait.compare("shroud addict") == 0)			return gettext("Shroud Addict");
 		else if (trait.compare("singer") == 0)					return gettext("Singer");
+		else if (trait.compare("skeleton") == 0)				return gettext("Skeleton");
 		else if (trait.compare("slitherer") == 0)				return gettext("Slitherer");
 		else if (trait.compare("slow learner") == 0)			return gettext("Slow Learner");
 		else if (trait.compare("slow orgasms") == 0)			return gettext("Slow Orgasms");
@@ -486,9 +487,14 @@ string cTraits::GetTranslateName(string name)
 		else if (trait.compare("tsundere") == 0)				return gettext("Tsundere");
 		else if (trait.compare("twisted") == 0)					return gettext("Twisted");
 	}
+	else if (first == "u")
+	{
+		/* */if (trait.compare("undead") == 0)					return gettext("Undead");
+	}
 	else if (first == "v")
 	{
-		/* */if (trait.compare("viras blood addict") == 0)		return gettext("Viras Blood Addict");
+		/* */if (trait.compare("vampire") == 0)					return gettext("Vampire");
+		else if (trait.compare("viras blood addict") == 0)		return gettext("Viras Blood Addict");
 		else if (trait.compare("virgin") == 0)					return gettext("Virgin");
 	}
 	else if (first == "w")
@@ -504,6 +510,10 @@ string cTraits::GetTranslateName(string name)
 		/* */if (trait.compare("yandere") == 0)					return gettext("Yandere");
 		else if (trait.compare("your daughter") == 0)			return gettext("Your Daughter");
 		else if (trait.compare("your wife") == 0)				return gettext("Your Wife");
+	}
+	else if (first == "z")
+	{
+		/* */if (trait.compare("zombie") == 0)					return gettext("Zombie");
 	}
 	return name;
 }

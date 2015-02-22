@@ -54,6 +54,8 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern	bool			g_InitWin;
 
+static cDungeon* m_Dungeon = g_Brothels.GetDungeon();
+
 void cJobManager::Setup()
 {
 	// much simplier then trying to get the sJob working with this (plus a smaller memory footprint...?maybe)
@@ -1769,7 +1771,7 @@ bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_n
 				}
 				if (item != "" && itemnum != -1)
 				{
-					cDungeon m_Dungeon; cPlayer m_Player;
+					cPlayer m_Player;
 					stringstream CGmsg;
 
 					// `J` create the customer
@@ -1797,7 +1799,7 @@ bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_n
 						<< item << " and sent to the dungeon as your newest slave.";
 					custgirl->m_Events.AddMessage(CGmsg.str(), IMGTYPE_DEATH, EVENT_WARNING);
 					// `J` add the customer to the dungeon
-					m_Dungeon.AddGirl(custgirl, DUNGEON_CUSTBEATGIRL);
+					m_Dungeon->AddGirl(custgirl, DUNGEON_CUSTBEATGIRL);
 				}
 			}
 			else

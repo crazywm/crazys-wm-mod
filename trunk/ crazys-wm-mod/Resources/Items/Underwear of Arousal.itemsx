@@ -11,7 +11,6 @@
    <Effect What="Stat" Name="Libido" Amount="60" />
    <Effect What="Stat" Name="Charisma" Amount="4" />
    <Effect What="Trait" Name="Nymphomaniac" Amount="1" />
-   <Effect What="Trait" Name="Slow Orgasms" Amount="0" />
    <Effect What="Trait" Name="Fast Orgasms" Amount="1" />
 </Item>
 </Items>

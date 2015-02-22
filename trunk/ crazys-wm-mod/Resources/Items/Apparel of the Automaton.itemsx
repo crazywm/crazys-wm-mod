@@ -16,10 +16,8 @@
    <Effect What="Stat" Name="Obedience" Amount="100" />
    <Effect What="Stat" Name="Intelligence" Amount="-40" />
    <Effect What="Stat" Name="Charisma" Amount="-25" />
-   <Effect What="Trait" Name="Construct" Amount="1" />
+
    <Effect What="Trait" Name="Fragile" Amount="0" />
-   <Effect What="Trait" Name="Tough" Amount="1" />
-   <Effect What="Trait" Name="Strong" Amount="1" />
    <Effect What="Trait" Name="Broken Will" Amount="0" />
    <Effect What="Trait" Name="Iron Will" Amount="0" />
    <Effect What="Trait" Name="Optimist" Amount="0" />
@@ -33,6 +31,9 @@
    <Effect What="Trait" Name="Dependant" Amount="0" />
    <Effect What="Trait" Name="Nervous" Amount="0" />
    <Effect What="Trait" Name="Fearless" Amount="1" />
+   <Effect What="Trait" Name="Construct" Amount="1" />
+   <Effect What="Trait" Name="Tough" Amount="1" />
+   <Effect What="Trait" Name="Strong" Amount="1" />
 
 </Item>
 </Items>

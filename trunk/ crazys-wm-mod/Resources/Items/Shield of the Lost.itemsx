@@ -6,6 +6,7 @@
 		Type="Shield"		Badness="18"		Special="None"		Cost="5"		Rarity="Catacomb01"		Infinite="false"		GirlBuyChance="0">
 		<Effect			What="GirlStatus"		Name="Controlled"		Amount="1" />
 		<Effect			What="Skill"			Name="Combat"			Amount="30" />
+		<Effect			What="Stat"			Name="Strength"			Amount="30" />
 		<Effect			What="Skill"			Name="Service"			Amount="30" />
 		<Effect			What="Stat"				Name="Morality"			Amount="-40" />
 		<Effect			What="Stat"				Name="Refinement"		Amount="-40" />

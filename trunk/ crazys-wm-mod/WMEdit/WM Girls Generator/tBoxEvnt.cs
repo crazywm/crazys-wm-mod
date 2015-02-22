@@ -276,6 +276,82 @@ namespace WM_Girls_Generator
             }
         }
 
+        private void ValidateTextBoxDoubleK(object sender, EventArgs e)
+        {
+            TextBox textBox = (TextBox)sender;
+
+            string teststr = ""; bool dotfound = false;
+            for (int i = 0; i < textBox.Text.Length; i++)
+            {
+                if (!dotfound && textBox.Text.Substring(i, 1) == ".")
+                {
+                    dotfound = true;
+                    teststr += textBox.Text.Substring(i, 1);
+                }
+                else if (dotfound && textBox.Text.Substring(i, 1) == ".") { }
+                else teststr += textBox.Text.Substring(i, 1);
+            }
+            double test = 0.0;
+            if (textBox.Text.Length > 0)
+            {
+                try { test = double.Parse(textBox.Text); }
+                catch { test = 0.0; }
+            }
+            if (test < 0.0 || test > 10000.0)
+            {
+
+                if (test < 0.0) test = 0.0;
+                if (test > 10000.0) test = 10000.0;
+                textBox.Text = test.ToString();
+            }
+        }
+        private void LimitTextBoxDoubleK(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = true;  // everything is handled by this process so the program does not need to add the key itself
+            TextBox textBox = (TextBox)sender;
+            if (e.KeyChar == (char)Keys.Back) textBox.Text = "";
+            else if ((e.KeyChar == '.' || char.IsDigit(e.KeyChar)) && textBox.Text.Length < 6)
+            {
+                double testnum = 0.0; string teststr = ""; bool dotfound = false;
+                if (textBox.Text.Length < 1)
+                {
+                    textBox.Text = "";
+                    if (e.KeyChar == '.') textBox.Text += "0.";
+                    else textBox.Text += e.KeyChar;
+                }
+                else
+                {
+                    // check the existing ...
+                    for (int i = 0; i < textBox.Text.Length; i++)
+                    {
+                        if (!dotfound && textBox.Text.Substring(i, 1) == ".")
+                        {
+                            dotfound = true;
+                            teststr += textBox.Text.Substring(i, 1);
+                        }
+                        else if (dotfound && textBox.Text.Substring(i, 1) == ".") { }
+                        else teststr += textBox.Text.Substring(i, 1);
+                    }
+                    // process the new key
+
+                    if (char.IsDigit(e.KeyChar) || (!dotfound && e.KeyChar == '.')) teststr += e.KeyChar;
+                    if (textBox.Text.Length > 0)
+                    {
+                        try { testnum = double.Parse(textBox.Text); }
+                        catch { testnum = 0.0; }
+                    }
+                    if (testnum < 0.0 || testnum > 1000.0)
+                    {
+
+                        if (testnum < 0.0) testnum = 0.0;
+                        if (testnum > 10000.0) testnum = 10000.0;
+                        textBox.Text = testnum.ToString();
+                    }
+                    else textBox.Text = teststr;
+                }
+            }
+        }
+
         public static bool IsNumeric(string strToCheck) //function to check if string is numeric or not
         {
             return Regex.IsMatch(strToCheck, "^\\d+(\\.\\d+)?$");
@@ -310,7 +386,7 @@ namespace WM_Girls_Generator
 
         private void textBox_itemcost_04_TextChanged(object sender, EventArgs e)            //if everything in this textbox is deleted it puts 0 in it
         {
-            if (textBox_itemcost_04.Text.Length == 0) textBox_itemcost_04.Text = "0";
+            if (textBox_Item_Cost.Text.Length == 0) textBox_Item_Cost.Text = "0";
         }
 
         private void textBox_RGTraitValue_KeyPress(object sender, KeyPressEventArgs e)      //checks keypresses to allow only numbers

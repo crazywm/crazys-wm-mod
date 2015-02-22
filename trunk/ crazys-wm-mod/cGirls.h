@@ -391,7 +391,7 @@ struct sGirl
 
 	int m_Money;
 
-	unsigned char m_AccLevel;					// how good her Accommodation is, 0 is slave like and non-slaves will really hate it
+	int m_AccLevel;					// how good her Accommodation is, 0 is slave like and non-slaves will really hate it
 
 	int m_Skills[NUM_SKILLS];
 	int m_SkillTr[NUM_SKILLS];
@@ -1093,7 +1093,7 @@ public:
 
 	bool girl_has_matron(sGirl* girl, int shift = 0);
 
-
+	string Accommodation(int acc);
 
 private:
 	unsigned int m_NumGirls;	// number of girls in the class

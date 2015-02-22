@@ -1680,17 +1680,54 @@ WME - Added Cooking skill and Strength stat
 !!!!!!!!!!!!!!!!!!!! pushed to SVN - r153
 WME - Fixed a bug where unzero sex skills would not work for footjob.
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.22
+
+###  Changes 2/18/2015
+Fixed a bug in the new explore catacombs code.
+Updated .itemsx adding Strength and Cooking
+Changed food and makeup items to affect the base stat/skill if not temporary
+Added Trait "Zombie"
+Updated Item "Better Zed than Dead" to return dead girls as zombies
+Updated Item "Elixir of Ultimate Regeneration" to return dead girls and zombies to life as well as repair some new traits
+
+###  Changes 2/19/2015
+Fixed a bug in automatic disease cure code
+Added unique chance to config.xml for Catacombs and Slave Market
+
+WME - Added unique chance to config.xml for Catacombs and Slave Market
+WME - Added Item Weight - not used in game yet
+WME - Reduced element spacing to allow for more to be added.
+
+###  Changes 2/20/2015
+Fixed a bug in "Free Girl" button
+
+###  Changes 2/21/2015
+Added Undead, Skeleton and Vampire traits.
+Updated Item "Elixir of Ultimate Regeneration" to remove Undead and Skeleton
+Updated game buttons - supplied by Dagoth
+Added more Milk Items - based off I_V_Saur's items
+Added temprory trait duration customization for items - defaults to 20
+Fixed a bug in security enslaves female customer who attacks your girls not adding her to the dungeon. (hopefully)
+Increased the number of accommodation steps from 6 (0-5) to 10 (0-9).
+Added "GirlsAccom" and "SlaveAccom" to config.xml with defaults of 5 and 1.
+Added "string cGirls::Accommodation(int acc)" to replace multiple calls.
+Added "Accomm" to .girlsx
+
+WME - Added temprory trait duration customization for items
+WME - Added "GirlsAccom" and "SlaveAccom" to config.xml with defaults of 5 and 1.
+WME - Added "Accomm" to .girlsx
+
+Crazy pushed SVN-r154
+ - Updated some jobs to use new Cooking skill
+ - Added more traits to jobs
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.06
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r155
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.23
+
+
+
+
+
+
  
 $$$$ note to self - when updating items to recalculate stats/skills when loading girls - don't modify temp stuff $$$$
-
-
-
-
-
-
-
-
-
-
-
-

@@ -325,7 +325,7 @@ void cScreenDungeon::set_slave_stats(sGirl *girl)
 	girl->pclove(-10);
 	girl->pchate(5);
 	girl->m_Stats[STAT_HOUSE] = cfg.initial.slave_house_perc();
-	girl->m_AccLevel = 0;
+	girl->m_AccLevel = cfg.initial.slave_accom();
 }
 
 int cScreenDungeon::enslave()

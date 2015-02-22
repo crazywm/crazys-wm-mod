@@ -312,6 +312,8 @@ void sConfigData::get_initial_values(TiXmlElement *el)
 	if (pt = el->Attribute("SlavePayOutOfPocket"))	get_att(el, "SlavePayOutOfPocket", initial.slave_pay_outofpocket);	// `J` added
 	if (pt = el->Attribute("SlaveHousePerc"))		get_att(el, "SlaveHousePerc", &initial.slave_house_perc);
 	if (pt = el->Attribute("SlaveKeepTips"))		get_att(el, "SlaveKeepTips", initial.slave_keep_tips);	// `J` added
+	if (pt = el->Attribute("GirlsAccom"))			get_att(el, "GirlsAccom", &initial.girls_accom);
+	if (pt = el->Attribute("SlaveAccom"))			get_att(el, "SlaveAccom", &initial.slave_accom);
 	if (pt = el->Attribute("AutoUseItems"))			get_att(el, "AutoUseItems", initial.auto_use_items);
 	if (pt = el->Attribute("AutoCombatEquip"))		get_att(el, "AutoCombatEquip", initial.auto_combat_equip);	// `J` moved from items
 	if (pt = el->Attribute("TortureTraitWeekMod"))	get_att(el, "TortureTraitWeekMod", &initial.torture_mod);
@@ -441,6 +443,13 @@ void sConfigData::get_catacombs_data(TiXmlElement *el)
 	}									 
 }
 
+void sConfigData::get_unique_factors(TiXmlElement *el)
+{
+	const char *pt;
+	if (pt = el->Attribute("UniqueCatacombs"))		get_att(el, "UniqueCatacombs", &uniquegirl.unique_catacombs);
+	if (pt = el->Attribute("UniqueMarket"))			get_att(el, "UniqueMarket", &uniquegirl.unique_market);
+}
+
 void sConfigData::get_gang_factors(TiXmlElement *el)
 {
 	const char *pt;
@@ -536,6 +545,8 @@ void sConfigData::set_defaults()
 	initial.girls_keep_tips = true;			// `J` added
 	initial.slave_house_perc = 100;
 	initial.slave_keep_tips = false;		// `J` added
+	initial.girls_accom = 5;
+	initial.slave_accom = 1;
 	initial.auto_use_items = false;
 	initial.auto_combat_equip = true;
 	initial.torture_mod = 1;				// `J` added
@@ -614,6 +625,9 @@ void sConfigData::set_defaults()
 	catacombs.gang_gets_girls = 33.33;
 	catacombs.gang_gets_items = 33.33;
 	catacombs.gang_gets_beast = 33.33;
+
+	uniquegirl.unique_catacombs = 50;
+	uniquegirl.unique_market = 35;
 
 	for (int i = 0; i<9; i++)
 	{

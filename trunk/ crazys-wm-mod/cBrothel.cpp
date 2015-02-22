@@ -2091,17 +2091,17 @@ void cBrothelManager::UsePlayersItems(sGirl* cur)
 	// Lets be reasonable and only allow only one of each slotless item to be given to a girl.
 	// (Having 8 stripper poles in a girl's inventory looks silly IMO.)
 	has = g_Brothels.HasItem("Manual of Health");
-	if (g_Girls.GetStat(cur, STAT_CONSTITUTION) <= 90 && g_Girls.HasItem(cur, "Manual of Health") == -1 && has != -1)
+	if (g_Girls.GetStat(cur, STAT_CONSTITUTION) <= 90 && g_Girls.GetStat(cur, STAT_STRENGTH) <= 90 && g_Girls.HasItem(cur, "Manual of Health") == -1 && has != -1)
 		AutomaticSlotlessItemUse(cur, has, gettext("You gave her a manual of health to read."));
 
 	// Free Weights [10 pts] (Piece of equipment, but slotless)
 	has = g_Brothels.HasItem("Free Weights");
-	if (g_Girls.GetStat(cur, STAT_CONSTITUTION) <= 90 && g_Girls.HasItem(cur, "Free Weights") == -1 && has != -1)
+	if (g_Girls.GetStat(cur, STAT_CONSTITUTION) <= 90 && g_Girls.GetStat(cur, STAT_STRENGTH) <= 90 && g_Girls.HasItem(cur, "Free Weights") == -1 && has != -1)
 		AutomaticSlotlessItemUse(cur, has, gettext("You gave her free weights to work with."));
 
 	// Stripper Pole [5 pts] (Piece of equipment, but slotless)
 	has = g_Brothels.HasItem("Stripper Pole");
-	if (g_Girls.GetStat(cur, STAT_CONSTITUTION) <= 95 && g_Girls.HasItem(cur, "Stripper Pole") == -1 && has != -1)
+	if (g_Girls.GetStat(cur, STAT_CONSTITUTION) <= 95 && g_Girls.GetStat(cur, STAT_STRENGTH) <= 95 && g_Girls.HasItem(cur, "Stripper Pole") == -1 && has != -1)
 		AutomaticSlotlessItemUse(cur, has, gettext("You gave her a stripper pole to practice with."));
 
 	// Obedience
@@ -2241,9 +2241,9 @@ void cBrothelManager::UsePlayersItems(sGirl* cur)
 
 	// Malformed
 
-	has = g_Brothels.HasItem("Elixir of Ultimate Regeneration");
-	if (g_Girls.HasTrait(cur, "Malformed") && has != -1)
-		AutomaticFoodItemUse(cur, has, gettext("Used an elixir of ultimate regeneration to cure her malformities."));
+//	has = g_Brothels.HasItem("Elixir of Ultimate Regeneration");
+//	if (g_Girls.HasTrait(cur, "Malformed") && has != -1)
+//		AutomaticFoodItemUse(cur, has, gettext("Used an elixir of ultimate regeneration to cure her malformities."));
 
 	// Tsundere & yandere
 
@@ -2258,9 +2258,9 @@ void cBrothelManager::UsePlayersItems(sGirl* cur)
 		AutomaticFoodItemUse(cur, has, gettext("Used an eye replacement candy to restore her eye."));
 
 	// Last ditch eye check.  Use the big guns if you don't have anything else.
-	has = g_Brothels.HasItem("Elixir of Ultimate Regeneration");
-	if ((g_Girls.HasTrait(cur, "One Eye") || g_Girls.HasTrait(cur, "Eye Patch")) && has != -1)
-		AutomaticFoodItemUse(cur, has, gettext("Used an elixir of ultimate regeneration to restore her eye."));
+//	has = g_Brothels.HasItem("Elixir of Ultimate Regeneration");
+//	if ((g_Girls.HasTrait(cur, "One Eye") || g_Girls.HasTrait(cur, "Eye Patch")) && has != -1)
+//		AutomaticFoodItemUse(cur, has, gettext("Used an elixir of ultimate regeneration to restore her eye."));
 
 	// Scars - start with the least powerful cures and work up
 	has = g_Brothels.HasItem("Oil of Lesser Scar Removing");
@@ -2271,9 +2271,9 @@ void cBrothelManager::UsePlayersItems(sGirl* cur)
 	if ((g_Girls.HasTrait(cur, "Small Scars") || g_Girls.HasTrait(cur, "Cool Scars") || g_Girls.HasTrait(cur, "Horrific Scars")) && has != -1)
 		AutomaticFoodItemUse(cur, has, gettext("Used an oil of greater scar removal to remove her scars."));
 
-	has = g_Brothels.HasItem("Elixir of Ultimate Regeneration");
-	if ((g_Girls.HasTrait(cur, "Small Scars") || g_Girls.HasTrait(cur, "Cool Scars") || g_Girls.HasTrait(cur, "Horrific Scars")) && has != -1)
-		AutomaticFoodItemUse(cur, has, gettext("Used an elixir of ultimate regeneration to remove her scars."));
+//	has = g_Brothels.HasItem("Elixir of Ultimate Regeneration");
+//	if ((g_Girls.HasTrait(cur, "Small Scars") || g_Girls.HasTrait(cur, "Cool Scars") || g_Girls.HasTrait(cur, "Horrific Scars")) && has != -1)
+//		AutomaticFoodItemUse(cur, has, gettext("Used an elixir of ultimate regeneration to remove her scars."));
 
 	// Big boobs
 
@@ -2989,9 +2989,7 @@ void cBrothelManager::do_food_and_digs(sBrothel *brothel, sGirl *girl)
 		/*
 		*		accommodation zero is all they expect
 		*/
-		if (girl->m_AccLevel == 0) {
-			return;
-		}
+		if (girl->m_AccLevel == 0) return;
 		/*
 		*		accommodation over 0 means happier,
 		*		and maybe liking the PC more
@@ -3029,10 +3027,12 @@ void cBrothelManager::do_food_and_digs(sBrothel *brothel, sGirl *girl)
 	*	before, but this way 0 level girls want level 1 accom
 	*	and it goes up level for level thereafter
 	*/
-	if (girl->m_AccLevel > girl->level() / 2) {
+	if (girl->m_AccLevel > girl->level() / 2)
+	{
 		girl->happiness(2 + girl->m_AccLevel / 2);
 		int excess = girl->happiness() - 100;
-		if (excess >= 0) {
+		if (excess >= 0)
+		{
 			int mod = 1 + excess / 3;
 			girl->pchate(-mod);
 			girl->pclove(mod);

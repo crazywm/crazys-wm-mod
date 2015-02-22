@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Items>
 <Item Name="Adamantine leg fetter"
-      Desc="It really interfers with her ability to move around. (+20 con +20 libido/obedience +10 group +20 best/BDSM/anal -lots service/strip/magic/combat -fleet of foot)"
+      Desc="It really interfers with her ability to move around. (+20 con +20 libido/obedience +10 group +20 best/BDSM/anal -lots service/strip/magic/combat/strength -fleet of foot)"
       Type="Misc"
       Badness="30"
       Special="None"
@@ -27,6 +27,7 @@
    <Effect What="Skill" Name="Combat"                  Amount="-500"    />
    <Effect What="Skill" Name="Service"                 Amount="-200"    />
    <Effect What="Stat"  Name="Constitution"            Amount="20"    />
+   <Effect What="Stat"  Name="Strength"                Amount="-20"    />
    <Effect What="Trait" Name="Fleet of Foot"           Amount="0"    />
 </Item>
 </Items>

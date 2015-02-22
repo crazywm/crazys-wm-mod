@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Items>
 <Item Name="Succubus' Wardress"
-      Desc="Mostly composed of thin strips of leather, gold and blackened steel, this otherworldly elegant suit of &quot;armor&quot; worn to battle by infernal temptresses seems to be more lingerie than protection. It covers very little of the body, entirely revealing all of the wearer's physical charms, but it carries a powerful warding enchantment that makes it stronger than any mundane plate mail. (S) (+40 Combat, +25 Lib, +40 Cons, +10 Conf, -10 Fear, +10 to all sex skills, adds Nymphomaniac)"
+      Desc="Mostly composed of thin strips of leather, gold and blackened steel, this otherworldly elegant suit of &quot;armor&quot; worn to battle by infernal temptresses seems to be more lingerie than protection. It covers very little of the body, entirely revealing all of the wearer's physical charms, but it carries a powerful warding enchantment that makes it stronger than any mundane plate mail. (S) (+40 Cmb/Cns, +25 Lib/Str, +10 Conf, -10 Fear, +10 to all sex skills, adds Nymphomaniac)"
       Type="Armor"
       Badness="40"
       Special="None"
@@ -25,6 +25,7 @@
 
    <Effect What="Stat"  Name="Charisma"                Amount="10"    />
    <Effect What="Stat"  Name="Libido"                  Amount="25"    />
+   <Effect What="Stat"  Name="Strength"                Amount="25"    />
    <Effect What="Stat"  Name="Constitution"            Amount="40"    />
    <Effect What="Stat"  Name="Confidence"              Amount="10"    />
    <Effect What="Stat"  Name="PCFear"                  Amount="-10"    />

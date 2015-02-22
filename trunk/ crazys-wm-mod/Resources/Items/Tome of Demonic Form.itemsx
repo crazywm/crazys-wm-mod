@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Items>
 <Item Name="Tome of Demonic Form"    
-      Desc="This book feels both extraordinarily compelling and inconceivably evil. When opened and examined, it bestows bodily perfection with great beauty, hardiness, and grace. Afterward, it quickly burns away into ash. Old age will never affect the reader, although they can still be killed. In exchange, they pay a high price -- their soul will be eternally tainted beyond redemption. (+80 Bea/Agi/Cons, -Malformed, -Scars, -Fragile, -Manly, -Clumsy, -One Eye, +Twisted, +Demon)" 
+      Desc="This book feels both extraordinarily compelling and inconceivably evil. When opened and examined, it bestows bodily perfection with great beauty, hardiness, and grace. Afterward, it quickly burns away into ash. Old age will never affect the reader, although they can still be killed. In exchange, they pay a high price -- their soul will be eternally tainted beyond redemption. (+80 Bea/Agi/Cons/Str, -Malformed, -Scars, -Fragile, -Manly, -Clumsy, -One Eye, +Twisted, +Demon)" 
       Type="Food" 
       Badness="19" 
       Special="None" 
@@ -12,6 +12,7 @@
    <Effect What="Stat" Name="Beauty" Amount="80" />
    <Effect What="Stat" Name="Agility" Amount="80" />
    <Effect What="Stat" Name="Constitution" Amount="80" />
+   <Effect What="Stat" Name="Strength" Amount="80" />
    <Effect What="Trait" Name="Not Human" Amount="1" />
    <Effect What="Trait" Name="Twisted" Amount="1" />
    <Effect What="Trait" Name="Demon" Amount="1" />

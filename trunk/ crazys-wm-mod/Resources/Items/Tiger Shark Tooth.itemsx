@@ -21,6 +21,7 @@
    <Effect What="Stat"  Name="Libido"                  Amount="70"    />
    <Effect What="Stat"  Name="Happiness"               Amount="20"    />
    <Effect What="Stat"  Name="Constitution"            Amount="50"    />
+   <Effect What="Stat"  Name="Strength"                Amount="30"    />
    <Effect What="Stat"  Name="Intelligence"            Amount="-30"    />
    <Effect What="Stat"  Name="Confidence"              Amount="60"    />
    <Effect What="Stat"  Name="Agility"                 Amount="60"    />

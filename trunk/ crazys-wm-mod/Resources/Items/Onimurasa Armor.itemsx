@@ -14,6 +14,7 @@
    <Effect What="Skill" Name="NormalSex"               Amount="30" />
    <Effect What="Stat"  Name="Charisma"                Amount="10" />
    <Effect What="Stat"  Name="Constitution"            Amount="10" />
+   <Effect What="Stat"  Name="Strength"                Amount="10" />
    <Effect What="Stat"  Name="Intelligence"            Amount="10" />
    <Effect What="Stat"  Name="Confidence"              Amount="10" />
    <Effect What="Stat"  Name="Mana"                    Amount="10" />

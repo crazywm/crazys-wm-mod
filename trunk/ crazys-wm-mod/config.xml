@@ -67,7 +67,9 @@
         SlaveHousePerc="100"
         SlavePayOutOfPocket="true"
         SlaveKeepTips="false"
-        AutoUseItems="true"
+        GirlsAccom="5"
+        SlaveAccom="1"
+        AutoUseItems="false"
         AutoCombatEquip="true"
         TortureTraitWeekMod="1"
         HoroscopeType="1" />
@@ -201,7 +203,7 @@
 		Negative numbers are not allowed and all 0s will set to (100/3)% each.
 	-->
     <Catacombs
-        ControlGirls="true"
+        ControlGirls="false"
         ControlGangs="false"
         GirlGetsGirls="1"
         GirlGetsItems="1"
@@ -209,6 +211,15 @@
         GangGetsGirls="1"
         GangGetsItems="1"
         GangGetsBeast="1" />
+    <!--
+	Unique Girls:
+	Chance to get a Unique Girl when exploring the Catacombs.
+	Chance to get a Unique Girl from the Slave Market.
+		After all Unique Girls have been found, the rest will be random girls.
+	-->
+    <UniqueGirls
+        UniqueCatacombs="50"
+        UniqueMarket="35" />
     <!--
 	Gangs:
 	MaxRecruitList limits the maximum number of recruitable gangs listed for you to hire.

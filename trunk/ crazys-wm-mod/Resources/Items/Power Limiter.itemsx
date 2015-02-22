@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Items>
 <Item Name="Power Limiter"
-      Desc="Wrist cuffs that remove pretty much any strength or power a girl has. (Removes Strong, Strong Magic, Psychic, Aggressive, Assassin. Happiness and love -10, fear and hate +5)"
+      Desc="Wrist cuffs that remove pretty much any strength or power a girl has. (Removes Strong, Strong Magic, Psychic, Aggressive, Assassin. -10 Happy/Love/Str, +5 fear/hate)"
       Type="Armband"
       Badness="40"
       Special="None"
@@ -9,6 +9,7 @@
       Rarity="Shop25"
       Infinite="false">
    <Effect What="Stat"  Name="PCLove"                  Amount="-10"    />
+   <Effect What="Stat"  Name="Strength"                Amount="-10"    />
    <Effect What="Stat"  Name="Happiness"               Amount="-10"    />
    <Effect What="Stat"  Name="PCFear"                  Amount="5"    />
    <Effect What="Stat"  Name="PCHate"                  Amount="5"    />

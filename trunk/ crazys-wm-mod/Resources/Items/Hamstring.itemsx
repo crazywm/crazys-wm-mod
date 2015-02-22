@@ -9,6 +9,7 @@
       Rarity="Shop05"
       Infinite="false">
    <Effect What="Stat"  Name="Agility"                 Amount="-100"    />
+   <Effect What="Stat"  Name="Strength"                Amount="-50"    />
    <Effect What="Stat"  Name="PCFear"                  Amount="40"    />
    <Effect What="Stat"  Name="PCHate"                  Amount="40"    />
    <Effect What="Stat"  Name="PCLove"                  Amount="-15"    />

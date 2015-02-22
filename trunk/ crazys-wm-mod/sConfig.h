@@ -43,6 +43,8 @@ struct sConfigData
 		bool slave_pay_outofpocket;
 		int slave_house_perc;
 		bool slave_keep_tips;
+		int girls_accom;
+		int slave_accom;
 		bool auto_use_items;
 		bool auto_combat_equip;
 		int torture_mod;
@@ -173,6 +175,11 @@ struct sConfigData
 		double	gang_gets_beast;
 	} catacombs;
 
+	struct UniqueGirlData {
+		double	unique_catacombs;
+		double	unique_market;
+	} uniquegirl;
+
 
 	struct item_data {
 		SDL_Color*	rarity_color[9];
@@ -220,6 +227,7 @@ struct sConfigData
 	void	get_gang_factors(TiXmlElement *el);
 	void	get_pros_factors(TiXmlElement *el);
 	void	get_catacombs_data(TiXmlElement *el);
+	void	get_unique_factors(TiXmlElement *el);
 	void	get_item_data(TiXmlElement *el);
 	void	get_font_data(TiXmlElement *el);
 	void	get_initial_values(TiXmlElement *el);
@@ -249,43 +257,43 @@ public:
 	}
 
 	struct InFactors {
-		double extortion()	    { return data->in_fact.extortion; }
-		double brothel_work()	{ return data->in_fact.brothel_work; }
-		double street_work()	{ return data->in_fact.street_work; }
-		double movie_income()	{ return data->in_fact.movie_income; }
-		double stripper_work()	{ return data->in_fact.stripper_work; }
-		double barmaid_work()	{ return data->in_fact.barmaid_work; }
-		double slave_sales()	{ return data->in_fact.slave_sales; }
-		double item_sales()	    { return data->in_fact.item_sales; }
-		double clinic_income()	{ return data->in_fact.clinic_income; }
-		double arena_income()	{ return data->in_fact.arena_income; }
+		double extortion()			{ return data->in_fact.extortion; }
+		double brothel_work()		{ return data->in_fact.brothel_work; }
+		double street_work()		{ return data->in_fact.street_work; }
+		double movie_income()		{ return data->in_fact.movie_income; }
+		double stripper_work()		{ return data->in_fact.stripper_work; }
+		double barmaid_work()		{ return data->in_fact.barmaid_work; }
+		double slave_sales()		{ return data->in_fact.slave_sales; }
+		double item_sales()			{ return data->in_fact.item_sales; }
+		double clinic_income()		{ return data->in_fact.clinic_income; }
+		double arena_income()		{ return data->in_fact.arena_income; }
 	} in_fact;
 	/*
 	*	outgoings factors
 	*/
 	struct OutFactors {
-		double training()	    { return data->out_fact.training; }
-		double actress_wages()	{ return data->out_fact.actress_wages; }
-		double movie_cost()	    { return data->out_fact.movie_cost; }
-		double goon_wages()	    { return data->out_fact.goon_wages; }
-		double matron_wages()	{ return data->out_fact.matron_wages; }
-		double staff_wages()	{ return data->out_fact.staff_wages; }
-		double girl_support()	{ return data->out_fact.girl_support; }
-		double consumables()	{ return data->out_fact.consumables; }
-		double item_cost()	    { return data->out_fact.item_cost; }
-		double slave_cost()	    { return data->out_fact.slave_cost; }
-		double brothel_cost()	{ return data->out_fact.brothel_cost; }
-		double brothel_support(){ return data->out_fact.brothel_support; }
-		double bar_cost()	    { return data->out_fact.bar_cost; }
-		double casino_cost()	{ return data->out_fact.casino_cost; }
-		double bribes()		    { return data->out_fact.bribes; }
-		double fines()		    { return data->out_fact.fines; }
-		double advertising()	{ return data->out_fact.advertising; }
+		double training()			{ return data->out_fact.training; }
+		double actress_wages()		{ return data->out_fact.actress_wages; }
+		double movie_cost()			{ return data->out_fact.movie_cost; }
+		double goon_wages()			{ return data->out_fact.goon_wages; }
+		double matron_wages()		{ return data->out_fact.matron_wages; }
+		double staff_wages()		{ return data->out_fact.staff_wages; }
+		double girl_support()		{ return data->out_fact.girl_support; }
+		double consumables()		{ return data->out_fact.consumables; }
+		double item_cost()			{ return data->out_fact.item_cost; }
+		double slave_cost()			{ return data->out_fact.slave_cost; }
+		double brothel_cost()		{ return data->out_fact.brothel_cost; }
+		double brothel_support()	{ return data->out_fact.brothel_support; }
+		double bar_cost()			{ return data->out_fact.bar_cost; }
+		double casino_cost()		{ return data->out_fact.casino_cost; }
+		double bribes()				{ return data->out_fact.bribes; }
+		double fines()				{ return data->out_fact.fines; }
+		double advertising()		{ return data->out_fact.advertising; }
 	} out_fact;
 
 	struct ProstitutionData {
-		double	rape_streets()  { return data->prostitution.rape_streets; }
-		double	rape_brothel()  { return data->prostitution.rape_brothel; }
+		double	rape_streets()		{ return data->prostitution.rape_streets; }
+		double	rape_brothel()		{ return data->prostitution.rape_brothel; }
 	} prostitution;
 
 	struct CatacombsData {
@@ -298,6 +306,11 @@ public:
 		double	gang_gets_items()	{ return data->catacombs.gang_gets_items; }
 		double	gang_gets_beast()	{ return data->catacombs.gang_gets_beast; }
 	} catacombs;
+
+	struct UniqueGirlData {
+		double	unique_catacombs()	{ return data->uniquegirl.unique_catacombs; }
+		double	unique_market()		{ return data->uniquegirl.unique_market; }
+	} uniquegirl;
 
 	struct font_data {
 		string&	normal()	    { return data->fonts.normal; }
@@ -360,6 +373,8 @@ public:
 		bool slave_pay_outofpocket(){ return data->initial.slave_pay_outofpocket; }
 		int slave_house_perc()		{ return data->initial.slave_house_perc; }
 		bool slave_keep_tips()		{ return data->initial.slave_keep_tips; }
+		int girls_accom()			{ return data->initial.girls_accom; }
+		int slave_accom()			{ return data->initial.slave_accom; }
 		bool auto_use_items()		{ return data->initial.auto_use_items; }
 		bool auto_combat_equip()	{ return data->initial.auto_combat_equip; }
 		int	torture_mod()			{ return data->initial.torture_mod; }

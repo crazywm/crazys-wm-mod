@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Items>
 <Item Name="Playco Armboy"
-      Desc="An attachment that goes on your arm and makes you a good deal stronger. (Combat +10)"
+      Desc="An attachment that goes on your arm and makes you a good deal stronger. (+5 Cmb/Str)"
       Type="Armband"
       Badness="0"
       Special="None"
       Cost="100"
       Rarity="Shop25"
       Infinite="false">
-   <Effect What="Skill" Name="Combat"                  Amount="10"    />
+   <Effect What="Skill" Name="Combat"                  Amount="5"    />
+   <Effect What="Stat"  Name="Strength"                Amount="5"    />
 </Item>
 </Items>
