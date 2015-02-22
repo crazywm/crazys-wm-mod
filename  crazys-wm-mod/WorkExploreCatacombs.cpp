@@ -194,8 +194,9 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 		g_Brothels.add_to_beasts(type_beasts);
 		while (numgirls > 0)
 		{
+			numgirls--;
 			sGirl* ugirl = 0;
-			if (g_Dice.percent(50))	// chance of getting unique girl
+			if (g_Dice.percent(cfg.uniquegirl.unique_catacombs()))	// chance of getting unique girl
 			{
 				ugirl = g_Girls.GetRandomGirl(false, true);				// Unique monster girl type
 			}
@@ -229,6 +230,7 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 		}
 		while (numitems > 0)
 		{
+			numitems--;
 			int ItemPlace = 0;  // Place in 0..299
 			sInventoryItem* TempItem = g_InvManager.GetRandomCatacombItem();
 			// 1. If the item type already exists in the brothel, and there isn't already 999 of it,

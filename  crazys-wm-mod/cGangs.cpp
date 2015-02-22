@@ -1232,8 +1232,7 @@ bool cGangManager::GirlVsEnemyGang(sGirl* girl, sGang* enemy_gang)
 					g_Girls.TakeCombatDamage(girl, -damage); // MYR: Note change
 
 					l.ss() << "\t" << girl->m_Realname << " takes " << damage << ". New health value: " << girl->health();
-					if (girl->has_trait("Incorporeal"))
-						l.ss() << " (Girl is Incorporeal)";
+					if (girl->has_trait("Incorporeal")) l.ss() << " (Girl is Incorporeal)";
 					l.ssend();
 				}
 			}

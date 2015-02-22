@@ -121,8 +121,9 @@ void cScreenCentreManagement::init()
 					g_Girls.UpdateStat(selected_girl, STAT_PCHATE, -25);
 					g_Girls.UpdateStat(selected_girl, STAT_OBEDIENCE, 10);
 					g_Girls.UpdateStat(selected_girl, STAT_HAPPINESS, 70);
-					selected_girl->m_AccLevel = 1;
-					selected_girl->m_Stats[STAT_HOUSE] = 60;
+					cConfig cfg;
+					selected_girl->m_AccLevel = cfg.initial.girls_accom();
+					selected_girl->m_Stats[STAT_HOUSE] = cfg.initial.girls_house_perc();
 					g_InitWin = true;
 				}
 			}

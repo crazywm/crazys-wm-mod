@@ -220,6 +220,8 @@ struct sEffect
  *	0 means take away and 2 means disable
  */
 	int m_Amount;
+	
+	int m_Duration;	// `J` added for temporary trait duration
 /*
  *	name of the trait it adds
  */

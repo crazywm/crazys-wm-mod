@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Items>
 <Item Name="Lolita Wand (Lesser)"    
-      Desc="More powerful lolita wands are extremely rare, and their source and creation process is unknown. These wands were designed to create a similar effect that would be easier to replicate. Although they're still rather powerful, their creation is far less refined and produces a smaller effect. Because they lack the subtle quality of the originals, mental and physical development also gets reversed. (-12 age, +Small Boobs, +Lolita, -MILF, -10 Cons, -30 All skills)" 
+      Desc="More powerful lolita wands are extremely rare, and their source and creation process is unknown. These wands were designed to create a similar effect that would be easier to replicate. Although they're still rather powerful, their creation is far less refined and produces a smaller effect. Because they lack the subtle quality of the originals, mental and physical development also gets reversed. (-12 age, +Small Boobs, +Lolita, -MILF, -10 Cons/Str, -30 All skills)" 
       Type="Food" 
       Badness="10" 
       Special="None" 
@@ -11,6 +11,7 @@
       GirlBuyChance="0">
    <Effect What="Stat" Name="Age" Amount="-12" />
    <Effect What="Stat" Name="Constitution" Amount="-10" />
+   <Effect What="Stat" Name="Strength" Amount="-10" />
    <Effect What="Skill" Name="Combat" Amount="-30" />
    <Effect What="Skill" Name="Magic" Amount="-30" />
    <Effect What="Skill" Name="Service" Amount="-30" />

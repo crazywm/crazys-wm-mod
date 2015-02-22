@@ -1,39 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Items>
 <Item Name="Scroll of the Hadoken"
-      Desc="A uber-rare scroll that makes the reader become a legendary street fighter. It will steel their mind to become the strongest to fight their rivals. Even though no one but them will own them, they will still help you. (Frees from Slavery, Repairs the Body and Mind, +Cool Person/Strong, -Abnormally Large Boobs)"
+      Desc="A uber-rare scroll that makes the reader become a legendary street fighter. It will steel their mind to become the strongest to fight their rivals. Even though no one but them will own them, they will still help you. (Frees from Slavery, Repairs the Body and Mind, +Cool Person/Strong, Reduces breast size to average)"
       Type="Food"
       Badness="0"
       Special="None"
       Cost="15000"
       Rarity="Catacomb15"
       Infinite="false">
-   <Effect What="GirlStatus" Name="Slave"              Amount="0"    />
-   <Effect What="Skill" Name="Combat"                  Amount="55"    />
-   <Effect What="Skill" Name="Magic"                   Amount="15"    />
-   <Effect What="Stat"  Name="Charisma"                Amount="25"    />
-   <Effect What="Stat"  Name="Intelligence"            Amount="35"    />
-   <Effect What="Stat"  Name="Confidence"              Amount="55"    />
-   <Effect What="Stat"  Name="Mana"                    Amount="25"    />
-   <Effect What="Stat"  Name="Agility"                 Amount="55"    />
-   <Effect What="Stat"  Name="Spirit"                  Amount="55"    />
-   <Effect What="Stat"  Name="Tiredness"               Amount="-100"    />
-   <Effect What="Stat"  Name="Health"                  Amount="100"    />
-   <Effect What="Stat"  Name="PCFear"                  Amount="-100"    />
-   <Effect What="Trait" Name="Cool Person"             Amount="1"    />
-   <Effect What="Trait" Name="Strong"                  Amount="1"    />
-   <Effect What="Trait" Name="Fragile"                 Amount="0"    />
-   <Effect What="Trait" Name="Abnormally Large Boobs"  Amount="0"    />
-   <Effect What="Trait" Name="One Eye"                 Amount="0"    />
-   <Effect What="Trait" Name="Eye Patch"               Amount="0"    />
-   <Effect What="Trait" Name="Dependant"               Amount="0"    />
-   <Effect What="Trait" Name="Pessimist"               Amount="0"    />
-   <Effect What="Trait" Name="Tsundere"                Amount="0"    />
-   <Effect What="Trait" Name="Nervous"                 Amount="0"    />
-   <Effect What="Trait" Name="Nymphomaniac"            Amount="0"    />
-   <Effect What="Trait" Name="Mind Fucked"             Amount="0"    />
-   <Effect What="Trait" Name="Broken Will"             Amount="0"    />
-   <Effect What="Trait" Name="Retarded"                Amount="0"    />
-   <Effect What="Trait" Name="Malformed"               Amount="0"    />
+   <Effect What="GirlStatus" Name="Slave"               Amount="0"    />
+   <Effect What="Stat"  Name="Strength"                 Amount="55"    />
+   <Effect What="Skill" Name="Combat"                   Amount="55"    />
+   <Effect What="Skill" Name="Magic"                    Amount="15"    />
+   <Effect What="Stat"  Name="Charisma"                 Amount="25"    />
+   <Effect What="Stat"  Name="Intelligence"             Amount="35"    />
+   <Effect What="Stat"  Name="Confidence"               Amount="55"    />
+   <Effect What="Stat"  Name="Mana"                     Amount="25"    />
+   <Effect What="Stat"  Name="Agility"                  Amount="55"    />
+   <Effect What="Stat"  Name="Spirit"                   Amount="55"    />
+   <Effect What="Stat"  Name="Tiredness"                Amount="-100"    />
+   <Effect What="Stat"  Name="Health"                   Amount="100"    />
+   <Effect What="Stat"  Name="PCFear"                   Amount="-100"    />
+   <Effect What="Trait" Name="Cool Person"              Amount="1"    />
+   <Effect What="Trait" Name="Strong"                   Amount="1"    />
+   <Effect What="Trait" Name="Fragile"                  Amount="0"    />
+   <Effect What="Trait" Name="Busty Boobs"              Amount="0"    />
+   <Effect What="Trait" Name="Big Boobs"                Amount="0"    />
+   <Effect What="Trait" Name="Giant Juggs"              Amount="0"    />
+   <Effect What="Trait" Name="Massive Melons"           Amount="0"    />
+   <Effect What="Trait" Name="Abnormally Large Boobs"   Amount="0"    />
+   <Effect What="Trait" Name="Titanic Tits"             Amount="0"    />
+   <Effect What="Trait" Name="One Eye"                  Amount="0"    />
+   <Effect What="Trait" Name="Eye Patch"                Amount="0"    />
+   <Effect What="Trait" Name="Dependant"                Amount="0"    />
+   <Effect What="Trait" Name="Pessimist"                Amount="0"    />
+   <Effect What="Trait" Name="Tsundere"                 Amount="0"    />
+   <Effect What="Trait" Name="Nervous"                  Amount="0"    />
+   <Effect What="Trait" Name="Nymphomaniac"             Amount="0"    />
+   <Effect What="Trait" Name="Mind Fucked"              Amount="0"    />
+   <Effect What="Trait" Name="Broken Will"              Amount="0"    />
+   <Effect What="Trait" Name="Retarded"                 Amount="0"    />
+   <Effect What="Trait" Name="Malformed"                Amount="0"    />
 </Item>
 </Items>

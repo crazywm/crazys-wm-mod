@@ -212,7 +212,7 @@ bool cJobManager::WorkMakePotions(sGirl* girl, sBrothel* brothel, bool Day0Night
 			else if (chooseitem < 15)	itemmade = "Oil of Greater Breast Growth";
 			else if (chooseitem < 16)	itemmade = "Oil of Greater Scar Removing";
 			else if (chooseitem < 17)	itemmade = "Starfish Elixir";
-			else if (chooseitem < 18)	itemmade = "Elixir of Ultimate Regeneration";
+			else if (chooseitem < 18) { itemmade = "Better Zed than Dead"; switch (g_Dice % 6) { case 0: itemmade += " ."; break; case 1: itemmade += ", "; break; case 2: itemmade += ". "; break; case 3: itemmade += ".."; break; default: break; } }
 			else if (chooseitem < 19)	itemmade = "Oil of Extreme Breast Growth";
 			else if (chooseitem < 20)	itemmade = "Oil of Redemption";
 			else if (chooseitem < 21)	itemmade = "Unguent of Intense Desire";
@@ -224,8 +224,9 @@ bool cJobManager::WorkMakePotions(sGirl* girl, sBrothel* brothel, bool Day0Night
 			int chooseitem = g_Dice % 100;
 			/* */if (chooseitem < 5)	itemmade = "Potion of Oppai Loli";
 			else if (chooseitem < 10)	itemmade = "Refined Mandragora Extract";
-			else if (chooseitem < 11)	itemmade = "Reset Potion MK i";
-			else if (chooseitem < 12)	itemmade = "Reset Potion MK ii";
+			else if (chooseitem < 15)	itemmade = "Elixir of Ultimate Regeneration";
+			else if (chooseitem < 16)	itemmade = "Reset Potion MK i";
+			else if (chooseitem < 17)	itemmade = "Reset Potion MK ii";
 			else { numitemsmade += 2; choosequality = 240; }		// make 2 items of lesser quality
 		}
 

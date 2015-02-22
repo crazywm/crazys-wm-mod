@@ -205,6 +205,8 @@ double cJobManager::JP_Security(sGirl* girl, bool estimate)	// not used
 	// Good traits
 	if (g_Girls.HasTrait(girl, "Incorporeal"))			SecLev += 100;	// I'm fucking Superman!
 	if (g_Girls.HasTrait(girl, "Assassin"))				SecLev += 50;	// I was born for this job. I know how you think. Is 50 too high? Assassin is a relatively rare trait, and there's no way to gain it (That I'm aware of) so it trades off(?)                   
+	if (g_Girls.HasTrait(girl, "Zombie"))				SecLev += 20;	// You have what guarding the building?!?! I'm out of here.
+	if (g_Girls.HasTrait(girl, "Skeleton"))				SecLev += 10;	// You have what guarding the building?!?! I'm out of here.
 	if (g_Girls.HasTrait(girl, "Tough"))				SecLev += 15;	// You hit like a girl
 	if (g_Girls.HasTrait(girl, "Powerful Magic"))		SecLev += 10;	//
 	if (g_Girls.HasTrait(girl, "Psychic"))				SecLev += 10;	// I sense danger

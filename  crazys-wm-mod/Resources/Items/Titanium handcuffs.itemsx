@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Items>
 <Item Name="Titanium handcuffs"
-      Desc="(+50 libido/obedience +30 con +40 BDSM/group/best -lots service/strip/magic/combat)"
+      Desc="(+50 libido/obedience, +30 con, +40 BDSM/group/best, -10 Str, -lots service/strip/magic/combat)"
       Type="Armband"
       Badness="40"
       Special="None"
@@ -22,5 +22,6 @@
    <Effect What="Skill" Name="Magic"                   Amount="-1500"    />
    <Effect What="Skill" Name="Combat"                  Amount="-1500"    />
    <Effect What="Stat"  Name="Constitution"            Amount="30"    />
+   <Effect What="Stat"  Name="Strength"                Amount="-10"    />
 </Item>
 </Items>

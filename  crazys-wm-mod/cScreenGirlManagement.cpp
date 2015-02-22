@@ -123,8 +123,9 @@ void cScreenGirlManagement::init()
 					g_Girls.UpdateStat(selected_girl, STAT_PCHATE, -25);
 					g_Girls.UpdateStat(selected_girl, STAT_OBEDIENCE, 10);
 					g_Girls.UpdateStat(selected_girl, STAT_HAPPINESS, 70);
-					selected_girl->m_AccLevel = 1;
-					selected_girl->m_Stats[STAT_HOUSE] = 60;
+					cConfig cfg;
+					selected_girl->m_AccLevel = cfg.initial.girls_accom();
+					selected_girl->m_Stats[STAT_HOUSE] = cfg.initial.girls_house_perc();
 					g_InitWin = true;
 				}
 			}
@@ -205,9 +206,9 @@ void cScreenGirlManagement::init()
 					g_InitWin = true;
 
 				}
-				else if (!selected_girl->is_slave())
+				else if (selected_girl->is_slave())
 				{
-					continue;  // if not a slave, can't sell her
+					continue;  // if a slave, can't fire her
 				}
 				else if (selected_girl)
 				{
@@ -741,7 +742,7 @@ void cScreenGirlManagement::check_events()
 					g_ChoiceManager.SetActive(0);
 					FireGirl = true;
 				}
-				else if (!selected_girl->is_slave())	// `J` added just in case
+				else if (selected_girl->is_slave())	// `J` added just in case
 				{
 					fg << "You can not fire this girl, she is your slave.\n(Use the \"Sell Slave\" button instead.)\n";
 					g_MessageQue.AddToQue(fg.str(), 0);

@@ -29,6 +29,7 @@
    <Effect What="Skill" Name="Service"                 Amount="-200"    />
    <Effect What="Skill" Name="Magic"                   Amount="-500"    />
    <Effect What="Skill" Name="Combat"                  Amount="-500"    />
+   <Effect What="Stat"  Name="Strength"                Amount="-20" />
    <Effect What="Stat"  Name="Constitution"            Amount="20"    />
    <Effect What="Trait" Name="Elegant"                 Amount="0"    />
 </Item>

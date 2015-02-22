@@ -26,8 +26,6 @@
    <Effect What="Skill" Name="Strip"                   Amount="-25"    />
    <Effect What="Skill" Name="TittySex"                Amount="-25"    />
 
-   <Effect What="Trait" Name="Big Boobs" Amount="0" />
-   <Effect What="Trait" Name="Abnormally Large Boobs" Amount="0" />
    <Effect What="Trait" Name="Small Boobs" Amount="1" />
    <Effect What="Trait" Name="Puffy Nipples" Amount="1" />
    <Effect What="Trait" Name="Lolita" Amount="1" />

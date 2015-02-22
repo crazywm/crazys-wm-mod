@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Items>
 <Item Name="Pacifist's Armlet"
-      Desc="The enchantment placed on this pretty blue armband slows down the wearer's movements whenever they are attempting to harm another person for any reason. It's the bane of warriors everywhere, but also an unpleasant object for anyone to wear. (+5 Cha, -60 Comb, -30 BDSM, -50 Hap, -10 Conf, +60 Fear, +30 Hate)"
+      Desc="The enchantment placed on this pretty blue armband slows down the wearer's movements whenever they are attempting to harm another person for any reason. It's the bane of warriors everywhere, but also an unpleasant object for anyone to wear. (+5 Cha, -60 Comb, -40 Str, -30 BDSM, -50 Hap, -10 Conf, +60 Fear, +30 Hate)"
       Type="Armband"
       Badness="50"
       Special="None"
@@ -14,6 +14,7 @@
    <Effect What="Stat"  Name="Confidence"              Amount="-10"    />
    <Effect What="Stat"  Name="PCFear"                  Amount="60"    />
    <Effect What="Stat"  Name="PCHate"                  Amount="30"    />
+   <Effect What="Stat"  Name="Strength"                Amount="-40"    />
    <Effect What="Skill" Name="BDSM"                    Amount="-30"    />
    <Effect What="Stat"  Name="Charisma"                Amount="5"    />
    <Effect What="Trait" Name="Assassin"                Amount="0"    />

@@ -198,6 +198,14 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		}
 
 		// test for specific girls
+		if (girl->has_trait("Skeleton"))
+		{
+			fuckMessage = "The customer sees that you are offering up a Skeleton for sex and is scared, if you allow that kind of thing in your brothels, what else do you allow? They left in a hurry, afraid of what might happen if they stay.\n\n";
+			brothel->m_Fame -= 5;
+			g_Brothels.GetPlayer()->customerfear(2);
+			acceptsGirl = false;
+			continue;
+		}
 		if (Cust.m_Fetish == FETISH_SPECIFICGIRL)
 		{
 			if (Cust.m_ParticularGirl == g_Brothels.GetGirlPos(brothel->m_id, girl))
@@ -205,6 +213,11 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				fuckMessage = "This is the customer's favorite girl.\n\n";
 				acceptsGirl = true;
 			}
+		}
+		else if (girl->has_trait("Zombie") && Cust.m_Fetish == FETISH_FREAKYGIRLS && g_Dice.percent(10))
+		{
+			fuckMessage = "This customer is intrigued to fuck a Zombie girl.\n\n";
+			acceptsGirl = true;
 		}
 		else
 		{
@@ -222,7 +235,14 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		// Other ways the customer will accept the girl
 		if (acceptsGirl == false)
 		{
-			if (Cust.m_Stats[STAT_LIBIDO] >= 80)
+			if (girl->has_trait("Zombie"))
+			{
+				fuckMessage = "The customer sees that you are offering up a Zombie girl and is scared, if you allow that kind of thing in your brothels, what else do you allow? They left in a hurry, afraid of what might happen if they stay.\n\n";
+				brothel->m_Fame -= 10;
+				g_Brothels.GetPlayer()->customerfear(5);
+				acceptsGirl = false;
+			}
+			else if (Cust.m_Stats[STAT_LIBIDO] >= 80)
 			{
 				fuckMessage = "Customer chooses her because they are very horny.\n\n";
 				acceptsGirl = true;

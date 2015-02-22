@@ -6,6 +6,7 @@
 		Type="Combat Shoes"	Badness="0"	Special="None"	Cost="10000"	Rarity="Catacomb01"	Infinite="false"	GirlBuyChance="0">
 		<Effect			What="Skill"		Name="Combat"			Amount="20" />
 		<Effect			What="Skill"		Name="Performance"		Amount="20" />
+		<Effect			What="Stat"			Name="Strength"			Amount="10" />
 		<Effect			What="Stat"			Name="Spirit"			Amount="-66" />
 		<Effect			What="Stat"			Name="Agility"			Amount="66" />
 		<Effect			What="Trait"		Name="Agile"			Amount="1" />

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Items>
 <Item Name="Tiger Leotard"
-      Desc="This sexy striped leotard holds a bound tiger spirit, and can give any girl a sleek, feline demeanor. It even enhances her fighting instincts! (A) (+30 Best, +10 all other sex skills, +15 Comb, +20 Cons, +15 Lib, +6 Cha, +5 Spi, +5 Agi, adds Sexy Air and Strange Eyes)"
+      Desc="This sexy striped leotard holds a bound tiger spirit, and can give any girl a sleek, feline demeanor. It even enhances her fighting instincts! (A) (+30 Best, +10 all other sex skills, +15 Comb/Lib, +20 Cons, +6 Cha, +5 Spi/Agi/Str, adds Sexy Air and Strange Eyes)"
       Type="Dress"
       Badness="35"
       Special="None"
@@ -12,6 +12,7 @@
    <Effect What="Stat"  Name="Charisma"                Amount="6"    />
    <Effect What="Stat"  Name="Libido"                  Amount="15"    />
    <Effect What="Stat"  Name="Constitution"            Amount="20"    />
+   <Effect What="Stat"  Name="Strength"                Amount="5"    />
    <Effect What="Stat"  Name="Spirit"                  Amount="5"    />
    <Effect What="Stat"  Name="Agility"                 Amount="5"    />
    <Effect What="Skill" Name="Combat"                  Amount="15"    />

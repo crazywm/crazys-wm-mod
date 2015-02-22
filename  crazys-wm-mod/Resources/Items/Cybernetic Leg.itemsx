@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Items>
 <Item Name="Cybernetic Leg"
-      Desc="Replace your girl's leg with this robotic one. (+5 Agility. Adds Half-construct)"
+      Desc="Replace your girl's leg with this robotic one. (+5 Agl/Str. Adds Half-construct)"
       Type="Misc"
       Badness="0"
       Special="None"
@@ -9,6 +9,7 @@
       Rarity="Shop50"
       Infinite="false">
    <Effect What="Stat"  Name="Agility"                 Amount="5"    />
+   <Effect What="Stat" Name="Strength" Amount="5" />
    <Effect What="Trait" Name="Half-Construct"          Amount="1"    />
 </Item>
 </Items>

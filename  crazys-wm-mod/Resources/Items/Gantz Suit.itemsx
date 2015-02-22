@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Items>
 <Item Name="Gantz Suit"
-      Desc="A skintight black suit that enhances both the combat skills and the assets of women who wear it!  Beware of religious statuary, though!  (Combat+40, Strip+20, Cha+25, Libedo+10, Cons+30, Conf+10, Agi+60, Bea+50, Fear-25,  Adds Big Boobs, Strong, Adventurer, Great Figure, Great Arse, Fleet of Foot)"
+      Desc="A skintight black suit that enhances both the combat skills and the assets of women who wear it!  Beware of religious statuary, though!  (Combat+40, Strip+20, Cha+25, Libedo+10, Cons+30, Conf+10, Agi+60, Bea+50, Str+20, Fear-25,  Adds Big Boobs, Strong, Adventurer, Great Figure, Great Arse, Fleet of Foot)"
       Type="Dress"
       Badness="0"
       Special="None"
@@ -14,6 +14,7 @@
    <Effect What="Stat"  Name="Charisma"                Amount="25"    />
    <Effect What="Stat"  Name="Libido"                  Amount="10"    />
    <Effect What="Stat"  Name="Constitution"            Amount="30"    />
+   <Effect What="Stat"  Name="Strength"                Amount="20"    />
    <Effect What="Stat"  Name="Confidence"              Amount="10"    />
    <Effect What="Stat"  Name="Agility"                 Amount="60"    />
    <Effect What="Stat"  Name="Beauty"                  Amount="50"    />

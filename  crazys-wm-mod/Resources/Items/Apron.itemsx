@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Items>
 <Item Name="Apron"
-      Desc="A simple apron, used for cooking. (+15 Service, +5 Obedience"
+      Desc="A simple apron, used for cooking. (+15 Service/Cooking, +5 Obedience)"
       Type="Dress"
       Badness="0"
       Special="None"
@@ -10,6 +10,7 @@
       Infinite="false"
       GirlBuyChance="15">
    <Effect What="Skill" Name="Service"                 Amount="15"    />
+   <Effect What="Skill" Name="Cooking"                 Amount="15"    />
    <Effect What="Stat"  Name="Obedience"               Amount="5"    />
 </Item>
 </Items>

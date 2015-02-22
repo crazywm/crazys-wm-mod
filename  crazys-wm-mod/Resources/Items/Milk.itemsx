@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="Milk" Desc="One ounce of common cow's milk. (+1 health/happiness)" Type="Food" Badness="0" Special="Temporary" Cost="5" Rarity="Common" Infinite="true" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Health" Amount="1" />
+        <Effect What="Stat" Name="Happiness" Amount="1" />
+    </Item>
+    <Item Name="Milk" Desc="One ounce of common cow's milk. (+1 health/happiness)" Type="Food" Badness="0" Special="Temporary" Cost="5" Rarity="Common" Infinite="true" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Health" Amount="1" />
+        <Effect What="Stat" Name="Happiness" Amount="1" />
+    </Item>
+    <Item Name="Milk" Desc="One ounce of common cow's milk. (+1 health/happiness)" Type="Food" Badness="0" Special="Temporary" Cost="5" Rarity="Common" Infinite="true" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Health" Amount="1" />
+        <Effect What="Stat" Name="Happiness" Amount="1" />
+    </Item>
+    <Item Name="Milk (g)" Desc="One gallon of common cow's milk. (+10 health/happiness)" Type="Food" Badness="0" Special="Temporary" Cost="30" Rarity="Common" Infinite="true" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Health" Amount="10" />
+        <Effect What="Stat" Name="Happiness" Amount="10" />
+    </Item>
+    <Item Name="Milk (g)" Desc="One gallon of common cow's milk. (+10 health/happiness)" Type="Food" Badness="0" Special="Temporary" Cost="30" Rarity="Common" Infinite="true" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Health" Amount="10" />
+        <Effect What="Stat" Name="Happiness" Amount="10" />
+    </Item>
+    <Item Name="Milk (pt)" Desc="One pint of common cow's milk. (+3 health/happiness)" Type="Food" Badness="0" Special="Temporary" Cost="10" Rarity="Common" Infinite="true" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Health" Amount="3" />
+        <Effect What="Stat" Name="Happiness" Amount="3" />
+    </Item>
+    <Item Name="Milk (pt)" Desc="One pint of common cow's milk. (+3 health/happiness)" Type="Food" Badness="0" Special="Temporary" Cost="10" Rarity="Common" Infinite="true" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Health" Amount="3" />
+        <Effect What="Stat" Name="Happiness" Amount="3" />
+    </Item>
+    <Item Name="Milk (pt)" Desc="One pint of common cow's milk. (+3 health/happiness)" Type="Food" Badness="0" Special="Temporary" Cost="10" Rarity="Common" Infinite="true" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Health" Amount="3" />
+        <Effect What="Stat" Name="Happiness" Amount="3" />
+    </Item>
+    <Item Name="Milk (qt)" Desc="One quart of common cow's milk. (+5 health/happiness)" Type="Food" Badness="0" Special="Temporary" Cost="20" Rarity="Common" Infinite="true" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Health" Amount="5" />
+        <Effect What="Stat" Name="Happiness" Amount="5" />
+    </Item>
+    <Item Name="Milk (qt)" Desc="One quart of common cow's milk. (+5 health/happiness)" Type="Food" Badness="0" Special="Temporary" Cost="20" Rarity="Common" Infinite="true" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Health" Amount="5" />
+        <Effect What="Stat" Name="Happiness" Amount="5" />
+    </Item>
+    <Item Name="Milk (qt)" Desc="One quart of common cow's milk. (+5 health/happiness)" Type="Food" Badness="0" Special="Temporary" Cost="20" Rarity="Common" Infinite="true" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Health" Amount="5" />
+        <Effect What="Stat" Name="Happiness" Amount="5" />
+    </Item>
+</Items>

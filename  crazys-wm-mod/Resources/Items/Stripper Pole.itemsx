@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Items>
 <Item Name="Stripper Pole"
-      Desc="Installed in a girl's room, this shiny pole allows her to practice dancing during her spare time. (+10 Strip, +5 Cons, +5 Agi)"
+      Desc="Installed in a girl's room, this shiny pole allows her to practice dancing during her spare time. (+10 Strip, +5 Cns/Str, +5 Agi)"
       Type="Misc"
       Badness="25"
       Special="None"
@@ -11,6 +11,7 @@
       GirlBuyChance="0">
    <Effect What="Skill" Name="Strip"                   Amount="10"    />
    <Effect What="Stat"  Name="Constitution"            Amount="5"    />
+   <Effect What="Stat"  Name="Strength"                Amount="5"    />
    <Effect What="Stat"  Name="Agility"                 Amount="5"    />
 </Item>
 </Items>

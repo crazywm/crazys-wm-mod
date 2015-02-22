@@ -7,6 +7,7 @@
 		<Effect		What="Skill"		Name="Magic"			Amount="35" />
 		<Effect		What="Skill"		Name="Combat"			Amount="15" />
 		<Effect		What="Skill"		Name="Performance"		Amount="15" />
+		<Effect		What="Stat"			Name="Strength"			Amount="15" />
 		<Effect		What="GirlStatus"	Name="Controlled"		Amount="1" />
 		<Effect		What="Trait"		Name="Demon Possessed"	Amount="1" />
 		<Effect		What="Trait"		Name="Demon"			Amount="1" />

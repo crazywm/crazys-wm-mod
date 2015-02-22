@@ -10,6 +10,7 @@
       Infinite="true">
    <Effect What="Stat"  Name="Libido"                  Amount="-10"    />
    <Effect What="Stat"  Name="Constitution"            Amount="10"    />
+   <Effect What="Stat"  Name="Strength"                Amount="-10"    />
    <Effect What="Stat"  Name="Confidence"              Amount="-5"    />
    <Effect What="Stat"  Name="Agility"                 Amount="10"    />
    <Effect What="Stat"  Name="Obedience"               Amount="-5"    />

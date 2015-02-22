@@ -39,6 +39,7 @@ namespace WM_Girls_Generator
         {
             InitializeComponent();
             comboBox_Girl_Type.SelectedIndex = 0;			//sets default selections for these comboBoxes
+            comboBox_Girl_Accomm.SelectedIndex = 5;
             comboBox_ItemType_01.SelectedIndex = 3;
             comboBox_Rarity_05.SelectedIndex = 0;
             comboBox_ItemDuration.SelectedIndex = 0;
@@ -152,6 +153,7 @@ namespace WM_Girls_Generator
 
             iTTable.Columns.Add("Traits", typeof(string));				//Adding columns to items traits table
             iTTable.Columns.Add("Value", typeof(string));
+            iTTable.Columns.Add("Duration", typeof(string));
             dataGridView3.DataSource = iTTable;
             dataGridView3.RowHeadersVisible = false;
             dataGridView3.AllowUserToAddRows = false;
@@ -159,6 +161,8 @@ namespace WM_Girls_Generator
             dataGridView3.Columns[0].ReadOnly = true;
             dataGridView3.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             dataGridView3.Columns[1].ReadOnly = true;
+            dataGridView3.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dataGridView3.Columns[2].ReadOnly = true;
 
             ItemsCollection.Columns.Add("Name", typeof(string));			//formatting of items DataTable, adding two columns, Name and Data
             ItemsCollection.Columns.Add("Data", typeof(string));
@@ -522,222 +526,279 @@ namespace WM_Girls_Generator
                 string nv;  // node value
                 bool nvtf;  // node value true/false
                 n = baseNode.SelectSingleNode("/config/Folders");
-                for (int i = 0; i < n.Attributes.Count; i++)
+                if (n != null)
                 {
-                    nv = n.Attributes[i].Value; if (nv == "true") nvtf = true; else nvtf = false;
-                    switch (n.Attributes[i].Name)
+                    for (int i = 0; i < n.Attributes.Count; i++)
                     {
-                        case "Characters":      textBox_Config_Folders_Characters.Text = nv; break;
-                        case "Saves":           textBox_Config_Folders_Savegames.Text = nv; break;
-                        case "DefaultImages":   textBox_Config_Folders_Default_Images.Text = nv; break;
-                        case "BackupSaves":     checkBox_Config_Folders_Backup_Saves.Checked = nvtf; break;
+                        nv = n.Attributes[i].Value; if (nv == "true") nvtf = true; else nvtf = false;
+                        switch (n.Attributes[i].Name)
+                        {
+                            case "Characters": textBox_Config_Folders_Characters.Text = nv; break;
+                            case "Saves": textBox_Config_Folders_Savegames.Text = nv; break;
+                            case "DefaultImages": textBox_Config_Folders_Default_Images.Text = nv; break;
+                            case "BackupSaves": checkBox_Config_Folders_Backup_Saves.Checked = nvtf; break;
+                        }
                     }
                 }
+                
                 n = baseNode.SelectSingleNode("/config/Resolution");
-                for (int i = 0; i < n.Attributes.Count; i++)
+                if (n != null)
                 {
-                    nv = n.Attributes[i].Value; if (nv == "true") nvtf = true; else nvtf = false;
-                    switch (n.Attributes[i].Name)
+                    for (int i = 0; i < n.Attributes.Count; i++)
                     {
-                        case "Resolution": textBox_Config_Resolution.Text = nv; break;
-                        case "Width": textBox_Config_Screen_Width.Text = nv; break;
-                        case "Height": textBox_Config_Screen_Height.Text = nv; break;
-                        case "ScaleWidth": textBox_Config_Screen_Width_Scale.Text = nv; break;
-                        case "ScaleHeight": textBox_Config_Screen_Height_Scale.Text = nv; break;
-                        case "FullScreen": checkBox_Config_FullScreen.Checked = nvtf; break;
-                        case "ListScrollAmount": textBox_Config_List_Scroll_Amount.Text = nv; break;
-                        case "TextScrollAmount": textBox_Config_Text_Scroll_Amount.Text = nv; break;
+                        nv = n.Attributes[i].Value; if (nv == "true") nvtf = true; else nvtf = false;
+                        switch (n.Attributes[i].Name)
+                        {
+                            case "Resolution": textBox_Config_Resolution.Text = nv; break;
+                            case "Width": textBox_Config_Screen_Width.Text = nv; break;
+                            case "Height": textBox_Config_Screen_Height.Text = nv; break;
+                            case "ScaleWidth": textBox_Config_Screen_Width_Scale.Text = nv; break;
+                            case "ScaleHeight": textBox_Config_Screen_Height_Scale.Text = nv; break;
+                            case "FullScreen": checkBox_Config_FullScreen.Checked = nvtf; break;
+                            case "ListScrollAmount": textBox_Config_List_Scroll_Amount.Text = nv; break;
+                            case "TextScrollAmount": textBox_Config_Text_Scroll_Amount.Text = nv; break;
+                        }
                     }
                 }
                 if (textBox_Config_Screen_Width_Scale.Text == "") textBox_Config_Screen_Width_Scale.Text = "800";
                 if (textBox_Config_Screen_Height_Scale.Text == "") textBox_Config_Screen_Height_Scale.Text = "600";
+                
                 n = baseNode.SelectSingleNode("/config/Initial");
-                for (int i = 0; i < n.Attributes.Count; i++)
+                if (n != null)
                 {
-                    nv = n.Attributes[i].Value.TrimEnd('%'); if (nv == "true") nvtf = true; else nvtf = false;
-                    switch (n.Attributes[i].Name)
+                    for (int i = 0; i < n.Attributes.Count; i++)
                     {
-                        case "Gold": textBox_Initial_Gold.Text = nv; break;
-                        case "GirlMeet": textBox_Config_InitialGirlMeet.Text = nv; break;
-                        case "GirlsHousePerc": textBox_Config_InitialGirlsHousePerc.Text = nv; break;
-                        case "GirlsKeepTips": checkBox_Config_GirlsKeepTips.Checked = nvtf; break;
-                        case "SlavePayOutOfPocket": checkBox_Config_SlavesPayOutOfPocket.Checked = nvtf; break;
-                        case "SlaveHousePerc": textBox_Config_InitialSlaveHousePerc.Text = nv; break;
-                        case "SlaveKeepTips": checkBox_Config_SlavesKeepTips.Checked = nvtf; break;
-                        case "AutoUseItems": checkBox_Config_AutoUseItems.Checked = nvtf; break;
-                        case "AutoCombatEquip": checkBox_Config_AutoEquipCombat.Checked = nvtf; break;
-                        case "TortureTraitWeekMod": textBox_Torture_Mod.Text = nv; break;
-                        case "HoroscopeType": comboBox_Horoscope_Type.SelectedIndex = nv == "2" ? 1 : 0; break;
+                        nv = n.Attributes[i].Value.TrimEnd('%'); if (nv == "true") nvtf = true; else nvtf = false;
+                        switch (n.Attributes[i].Name)
+                        {
+                            case "Gold":                    textBox_Initial_Gold.Text = nv; break;
+                            case "GirlMeet":                textBox_Config_InitialGirlMeet.Text = nv; break;
+                            case "GirlsHousePerc":          textBox_Config_InitialGirlsHousePerc.Text = nv; break;
+                            case "GirlsKeepTips":           checkBox_Config_GirlsKeepTips.Checked = nvtf; break;
+                            case "SlavePayOutOfPocket":     checkBox_Config_SlavesPayOutOfPocket.Checked = nvtf; break;
+                            case "SlaveHousePerc":          textBox_Config_InitialSlaveHousePerc.Text = nv; break;
+                            case "SlaveKeepTips":           checkBox_Config_SlavesKeepTips.Checked = nvtf; break;
+                            case "GirlsAccom":              comboBox_Config_InitialGirlsAccom.SelectedIndex = Convert.ToInt32(nv); break;
+                            case "SlaveAccom":              comboBox_Config_InitialSlaveAccom.SelectedIndex = Convert.ToInt32(nv); break;
+                            case "AutoUseItems":            checkBox_Config_AutoUseItems.Checked = nvtf; break;
+                            case "AutoCombatEquip":         checkBox_Config_AutoEquipCombat.Checked = nvtf; break;
+                            case "TortureTraitWeekMod":     textBox_Torture_Mod.Text = nv; break;
+                            case "HoroscopeType":           comboBox_Horoscope_Type.SelectedIndex = nv == "2" ? 1 : 0; break;
 
+                        }
                     }
                 }
 
                 n = baseNode.SelectSingleNode("/config/Income");
-                for (int i = 0; i < n.Attributes.Count; i++)
+                if (n != null)
                 {
-                    nv = n.Attributes[i].Value.TrimEnd('%'); if (nv == "true") nvtf = true; else nvtf = false;
-                    switch (n.Attributes[i].Name)
+                    for (int i = 0; i < n.Attributes.Count; i++)
                     {
-                        case "ExtortionIncome": textBox_Config_IncomeExtortion.Text = nv; break;
-                        case "GirlsWorkBrothel": textBox_Config_IncomeBrothel.Text = nv; break;
-                        case "GirlsWorkStreet": textBox_Config_IncomeStreet.Text = nv; break;
-                        case "MovieIncome": textBox_Config_IncomeMovie.Text = nv; break;
-                        case "StripperIncome": textBox_Config_IncomeStripper.Text = nv; break;
-                        case "BarmaidIncome": textBox_Config_IncomeBarmaid.Text = nv; break;
-                        case "SlaveSales": textBox_Config_IncomeSlaveSales.Text = nv; break;
-                        case "ItemSales": textBox_Config_IncomeItemSales.Text = nv; break;
-                        case "ClinicIncome": textBox_Config_IncomeClinic.Text = nv; break;
-                        case "ArenaIncome": textBox_Config_IncomeArena.Text = nv; break;
+                        nv = n.Attributes[i].Value.TrimEnd('%'); if (nv == "true") nvtf = true; else nvtf = false;
+                        switch (n.Attributes[i].Name)
+                        {
+                            case "ExtortionIncome": textBox_Config_IncomeExtortion.Text = nv; break;
+                            case "GirlsWorkBrothel": textBox_Config_IncomeBrothel.Text = nv; break;
+                            case "GirlsWorkStreet": textBox_Config_IncomeStreet.Text = nv; break;
+                            case "MovieIncome": textBox_Config_IncomeMovie.Text = nv; break;
+                            case "StripperIncome": textBox_Config_IncomeStripper.Text = nv; break;
+                            case "BarmaidIncome": textBox_Config_IncomeBarmaid.Text = nv; break;
+                            case "SlaveSales": textBox_Config_IncomeSlaveSales.Text = nv; break;
+                            case "ItemSales": textBox_Config_IncomeItemSales.Text = nv; break;
+                            case "ClinicIncome": textBox_Config_IncomeClinic.Text = nv; break;
+                            case "ArenaIncome": textBox_Config_IncomeArena.Text = nv; break;
+                        }
                     }
                 }
 
                 n = baseNode.SelectSingleNode("/config/Expenses");
-                for (int i = 0; i < n.Attributes.Count; i++)
+                if (n != null)
                 {
-                    nv = n.Attributes[i].Value.TrimEnd('%');
-                    switch (n.Attributes[i].Name)
+                    for (int i = 0; i < n.Attributes.Count; i++)
                     {
-                        case "Training": textBox_Config_ExpenseTraining.Text = nv; break;
-                        case "MovieCost": textBox_Config_ExpenseMovie.Text = nv; break;
-                        case "ActressWages": textBox_Config_ExpenseActress.Text = nv; break;
-                        case "GoonWages": textBox_Config_ExpenseGoon.Text = nv; break;
-                        case "MatronWages": textBox_Config_ExpenseMatron.Text = nv; break;
-                        case "StaffWages": textBox_Config_ExpenseStaff.Text = nv; break;
-                        case "GirlSupport": textBox_Config_ExpenseGirls.Text = nv; break;
-                        case "Consumables": textBox_Config_ExpenseConsumables.Text = nv; break;
-                        case "Items": textBox_Config_ExpenseItems.Text = nv; break;
-                        case "SlavesBought": textBox_Config_ExpenseSlaves.Text = nv; break;
-                        case "BuyBrothel": textBox_Config_ExpenseBrothelPrice.Text = nv; break;
-                        case "BrothelSupport": textBox_Config_ExpenseBrothel.Text = nv; break;
-                        case "BarSupport": textBox_Config_ExpenseBar.Text = nv; break;
-                        case "CasinoSupport": textBox_Config_ExpenseCasino.Text = nv; break;
-                        case "Bribes": textBox_Config_ExpenseBribes.Text = nv; break;
-                        case "Fines": textBox_Config_ExpenseFines.Text = nv; break;
-                        case "Advertising": textBox_Config_ExpenseAdvertising.Text = nv; break;
+                        nv = n.Attributes[i].Value.TrimEnd('%');
+                        switch (n.Attributes[i].Name)
+                        {
+                            case "Training": textBox_Config_ExpenseTraining.Text = nv; break;
+                            case "MovieCost": textBox_Config_ExpenseMovie.Text = nv; break;
+                            case "ActressWages": textBox_Config_ExpenseActress.Text = nv; break;
+                            case "GoonWages": textBox_Config_ExpenseGoon.Text = nv; break;
+                            case "MatronWages": textBox_Config_ExpenseMatron.Text = nv; break;
+                            case "StaffWages": textBox_Config_ExpenseStaff.Text = nv; break;
+                            case "GirlSupport": textBox_Config_ExpenseGirls.Text = nv; break;
+                            case "Consumables": textBox_Config_ExpenseConsumables.Text = nv; break;
+                            case "Items": textBox_Config_ExpenseItems.Text = nv; break;
+                            case "SlavesBought": textBox_Config_ExpenseSlaves.Text = nv; break;
+                            case "BuyBrothel": textBox_Config_ExpenseBrothelPrice.Text = nv; break;
+                            case "BrothelSupport": textBox_Config_ExpenseBrothel.Text = nv; break;
+                            case "BarSupport": textBox_Config_ExpenseBar.Text = nv; break;
+                            case "CasinoSupport": textBox_Config_ExpenseCasino.Text = nv; break;
+                            case "Bribes": textBox_Config_ExpenseBribes.Text = nv; break;
+                            case "Fines": textBox_Config_ExpenseFines.Text = nv; break;
+                            case "Advertising": textBox_Config_ExpenseAdvertising.Text = nv; break;
+                        }
                     }
                 }
 
                 n = baseNode.SelectSingleNode("/config/Gambling");
-                for (int i = 0; i < n.Attributes.Count; i++)
+                if (n != null)
                 {
-                    nv = n.Attributes[i].Value.TrimEnd('%');
-                    switch (n.Attributes[i].Name)
+                    for (int i = 0; i < n.Attributes.Count; i++)
                     {
-                        case "Odds": textBox_Config_GamblingOdds.Text = nv; break;
-                        case "Base": textBox_Config_GamblingBase.Text = nv; break;
-                        case "Spread": textBox_Config_GamblingSpread.Text = nv; break;
-                        case "CustomerFactor": textBox_Config_GamblingCustomer.Text = nv; break;
-                        case "HouseFactor": textBox_Config_GamblingHouse.Text = nv; break;
+                        nv = n.Attributes[i].Value.TrimEnd('%');
+                        switch (n.Attributes[i].Name)
+                        {
+                            case "Odds": textBox_Config_GamblingOdds.Text = nv; break;
+                            case "Base": textBox_Config_GamblingBase.Text = nv; break;
+                            case "Spread": textBox_Config_GamblingSpread.Text = nv; break;
+                            case "CustomerFactor": textBox_Config_GamblingCustomer.Text = nv; break;
+                            case "HouseFactor": textBox_Config_GamblingHouse.Text = nv; break;
+                        }
                     }
                 }
 
                 n = baseNode.SelectSingleNode("/config/Prostitution");
-                for (int i = 0; i < n.Attributes.Count; i++)
+                if (n != null)
                 {
-                    nv = n.Attributes[i].Value.TrimEnd('%');
-                    switch (n.Attributes[i].Name)
+                    for (int i = 0; i < n.Attributes.Count; i++)
                     {
-                        case "RapeBrothel": textBox_Config_ProstitutionRapeBrothel.Text = nv; break;
-                        case "RapeStreet": textBox_Config_ProstitutionRapeStreets.Text = nv; break;
+                        nv = n.Attributes[i].Value.TrimEnd('%');
+                        switch (n.Attributes[i].Name)
+                        {
+                            case "RapeBrothel": textBox_Config_ProstitutionRapeBrothel.Text = nv; break;
+                            case "RapeStreet": textBox_Config_ProstitutionRapeStreets.Text = nv; break;
+                        }
                     }
                 }
 
                 n = baseNode.SelectSingleNode("/config/Catacombs");
-                for (int i = 0; i < n.Attributes.Count; i++)
+                if (n != null)
                 {
-                    nv = n.Attributes[i].Value.TrimEnd('%'); if (nv == "true") nvtf = true; else nvtf = false;
-                    switch (n.Attributes[i].Name)
+                    for (int i = 0; i < n.Attributes.Count; i++)
                     {
-                        case "ControlGirls": checkBox_Config_Control_Girls.Checked = nvtf; break;
-                        case "ControlGangs": checkBox_Config_Control_Gangs.Checked = nvtf; break;
-                        case "GirlGetsGirls": textBox_Config_Girl_Gets_Girls.Text = nv; break;
-                        case "GirlGetsItems": textBox_Config_Girl_Gets_Items.Text = nv; break;
-                        case "GirlGetsBeast": textBox_Config_Girl_Gets_Beast.Text = nv; break;
-                        case "GangGetsGirls": textBox_Config_Gang_Gets_Girls.Text = nv; break;
-                        case "GangGetsItems": textBox_Config_Gang_Gets_Items.Text = nv; break;
-                        case "GangGetsBeast": textBox_Config_Gang_Gets_Beast.Text = nv; break;
+                        nv = n.Attributes[i].Value.TrimEnd('%'); if (nv == "true") nvtf = true; else nvtf = false;
+                        switch (n.Attributes[i].Name)
+                        {
+                            case "ControlGirls": checkBox_Config_Control_Girls.Checked = nvtf; break;
+                            case "ControlGangs": checkBox_Config_Control_Gangs.Checked = nvtf; break;
+                            case "GirlGetsGirls": textBox_Config_Girl_Gets_Girls.Text = nv; break;
+                            case "GirlGetsItems": textBox_Config_Girl_Gets_Items.Text = nv; break;
+                            case "GirlGetsBeast": textBox_Config_Girl_Gets_Beast.Text = nv; break;
+                            case "GangGetsGirls": textBox_Config_Gang_Gets_Girls.Text = nv; break;
+                            case "GangGetsItems": textBox_Config_Gang_Gets_Items.Text = nv; break;
+                            case "GangGetsBeast": textBox_Config_Gang_Gets_Beast.Text = nv; break;
+                        }
+                    }
+                }
+
+                n = baseNode.SelectSingleNode("/config/UniqueGirls");
+                if (n!=null)
+                {
+                    for (int i = 0; i < n.Attributes.Count; i++)
+                    {
+                        nv = n.Attributes[i].Value.TrimEnd('%');
+                        switch (n.Attributes[i].Name)
+                        {
+                            case "UniqueCatacombs": textBox_Config_Unique_Catacombs.Text = nv; break;
+                            case "UniqueMarket": textBox_Config_Unique_Market.Text = nv; break;
+                        }
                     }
                 }
 
                 n = baseNode.SelectSingleNode("/config/Pregnancy");
-                for (int i = 0; i < n.Attributes.Count; i++)
+                if (n != null)
                 {
-                    nv = n.Attributes[i].Value.TrimEnd('%');
-                    switch (n.Attributes[i].Name)
+                    for (int i = 0; i < n.Attributes.Count; i++)
                     {
-                        case "PlayerChance":        textBox_Config_PregnancyPlayer.Text = nv; break;
-                        case "CustomerChance":      textBox_Config_PregnancyCustomer.Text = nv; break;
-                        case "MonsterChance":       textBox_Config_PregnancyMonster.Text = nv; break;
-                        case "GoodSexFactor":       textBox_Config_PregnancyGoodSex.Text = nv; break;
-                        case "ChanceOfGirl":        textBox_Config_PregnancyGirlChance.Text = nv; break;
-                        case "WeeksPregnant":       textBox_Config_PregnancyWeeksPregnant.Text = nv; break;
-                        case "WeeksMonsterP":       textBox_Config_PregnancyWeeksMonsterP.Text = nv; break;
-                        case "MiscarriageChance":   textBox_Config_PregnancyMiscarriageChance.Text = nv; break;
-                        case "MiscarriageMonster":  textBox_Config_PregnancyMiscarriageMonster.Text = nv; break;
-                        case "WeeksTillGrown":      textBox_Config_PregnancyWeeksTillGrown.Text = nv; break;
-                        case "CoolDown":            textBox_Config_PregnancyCoolDown.Text = nv; break;
-                        case "AntiPregFailure":     textBox_Config_AntiPregFailure.Text = nv; break;
-                        case "MultiBirthChance":    textBox_Config_Multi_Birth_Chance.Text = nv; break;
+                        nv = n.Attributes[i].Value.TrimEnd('%');
+                        switch (n.Attributes[i].Name)
+                        {
+                            case "PlayerChance": textBox_Config_PregnancyPlayer.Text = nv; break;
+                            case "CustomerChance": textBox_Config_PregnancyCustomer.Text = nv; break;
+                            case "MonsterChance": textBox_Config_PregnancyMonster.Text = nv; break;
+                            case "GoodSexFactor": textBox_Config_PregnancyGoodSex.Text = nv; break;
+                            case "ChanceOfGirl": textBox_Config_PregnancyGirlChance.Text = nv; break;
+                            case "WeeksPregnant": textBox_Config_PregnancyWeeksPregnant.Text = nv; break;
+                            case "WeeksMonsterP": textBox_Config_PregnancyWeeksMonsterP.Text = nv; break;
+                            case "MiscarriageChance": textBox_Config_PregnancyMiscarriageChance.Text = nv; break;
+                            case "MiscarriageMonster": textBox_Config_PregnancyMiscarriageMonster.Text = nv; break;
+                            case "WeeksTillGrown": textBox_Config_PregnancyWeeksTillGrown.Text = nv; break;
+                            case "CoolDown": textBox_Config_PregnancyCoolDown.Text = nv; break;
+                            case "AntiPregFailure": textBox_Config_AntiPregFailure.Text = nv; break;
+                            case "MultiBirthChance": textBox_Config_Multi_Birth_Chance.Text = nv; break;
+                        }
                     }
                 }
 
                 n = baseNode.SelectSingleNode("/config/Tax");
-                for (int i = 0; i < n.Attributes.Count; i++)
+                if (n != null)
                 {
-                    nv = n.Attributes[i].Value.TrimEnd('%');
-                    switch (n.Attributes[i].Name)
+                    for (int i = 0; i < n.Attributes.Count; i++)
                     {
-                        case "Rate": textBox_Config_TaxRate.Text = nv; break;
-                        case "Minimum": textBox_Config_TaxMinimum.Text = nv; break;
-                        case "Laundry": textBox_Config_TaxLaundry.Text = nv; break;
+                        nv = n.Attributes[i].Value.TrimEnd('%');
+                        switch (n.Attributes[i].Name)
+                        {
+                            case "Rate": textBox_Config_TaxRate.Text = nv; break;
+                            case "Minimum": textBox_Config_TaxMinimum.Text = nv; break;
+                            case "Laundry": textBox_Config_TaxLaundry.Text = nv; break;
+                        }
                     }
                 }
 
                 n = baseNode.SelectSingleNode("/config/Gangs");
-                for (int i = 0; i < n.Attributes.Count; i++)
+                if (n != null)
                 {
-                    nv = n.Attributes[i].Value.TrimEnd('%');
-                    switch (n.Attributes[i].Name)
+                    for (int i = 0; i < n.Attributes.Count; i++)
                     {
-                        case "MaxRecruitList": textBox_config_MaxRecruitList.Text = nv; break;
-                        case "StartRandom": textBox_config_StartRandom.Text = nv; break;
-                        case "StartBoosted": textBox_config_StartBoosted.Text = nv; break;
-                        case "InitMemberMin": textBox_config_InitMemberMin.Text = nv; break;
-                        case "InitMemberMax": textBox_config_InitMemberMax.Text = nv; break;
-                        case "ChanceRemoveUnwanted": textBox_config_ChanceRemoveUnwanted.Text = nv; break;
-                        case "AddNewWeeklyMin": textBox_config_AddNewWeeklyMin.Text = nv; break;
-                        case "AddNewWeeklyMax": textBox_config_AddNewWeeklyMax.Text = nv; break;
+                        nv = n.Attributes[i].Value.TrimEnd('%');
+                        switch (n.Attributes[i].Name)
+                        {
+                            case "MaxRecruitList": textBox_config_MaxRecruitList.Text = nv; break;
+                            case "StartRandom": textBox_config_StartRandom.Text = nv; break;
+                            case "StartBoosted": textBox_config_StartBoosted.Text = nv; break;
+                            case "InitMemberMin": textBox_config_InitMemberMin.Text = nv; break;
+                            case "InitMemberMax": textBox_config_InitMemberMax.Text = nv; break;
+                            case "ChanceRemoveUnwanted": textBox_config_ChanceRemoveUnwanted.Text = nv; break;
+                            case "AddNewWeeklyMin": textBox_config_AddNewWeeklyMin.Text = nv; break;
+                            case "AddNewWeeklyMax": textBox_config_AddNewWeeklyMax.Text = nv; break;
+                        }
                     }
                 }
 
                 n = baseNode.SelectSingleNode("/config/Fonts");
-                for (int i = 0; i < n.Attributes.Count; i++)
+                if (n != null)
                 {
-                    nv = n.Attributes[i].Value; if (nv == "true") nvtf = true; else nvtf = false;
-                    switch (n.Attributes[i].Name)
+                    for (int i = 0; i < n.Attributes.Count; i++)
                     {
-                        case "Normal": textBox_Config_FontNormal.Text = nv; break;
-                        case "Fixed": textBox_config_FontFixed.Text = nv; break;
-                        case "Antialias": checkBox_Config_Antialias.Checked = nvtf; break;
-                        case "ShowPercent": checkBox_Config_Show_Percent.Checked = nvtf; break;
+                        nv = n.Attributes[i].Value; if (nv == "true") nvtf = true; else nvtf = false;
+                        switch (n.Attributes[i].Name)
+                        {
+                            case "Normal": textBox_Config_FontNormal.Text = nv; break;
+                            case "Fixed": textBox_config_FontFixed.Text = nv; break;
+                            case "Antialias": checkBox_Config_Antialias.Checked = nvtf; break;
+                            case "ShowPercent": checkBox_Config_Show_Percent.Checked = nvtf; break;
+                        }
                     }
                 }
 
                 n = baseNode.SelectSingleNode("/config/Debug");
-                for (int i = 0; i < n.Attributes.Count; i++)
+                if (n != null)
                 {
-                    nv = n.Attributes[i].Value; if (nv == "true") nvtf = true; else nvtf = false;
-                    switch (n.Attributes[i].Name)
+                    for (int i = 0; i < n.Attributes.Count; i++)
                     {
-                        case "LogAll": checkBox_config_LogAll.Checked = nvtf; break;
-                        case "LogGirls": checkBox_config_LogGirls.Checked = nvtf; break;
-                        case "LogRGirls": checkBox_config_LogRGirls.Checked = nvtf; break;
-                        case "LogGirlFights": checkBox_config_LogGirlFights.Checked = nvtf; break;
-                        case "LogItems": checkBox_config_LogItems.Checked = nvtf; break;
-                        case "LogFonts": checkBox_config_LogFonts.Checked = nvtf; break;
-                        case "LogTorture": checkBox_config_LogTorture.Checked = nvtf; break;
-                        case "LogDebug": checkBox_config_LogDebug.Checked = nvtf; break;
-                        case "LogExtraDetails": checkBox_config_LogExtraDetails.Checked = nvtf; break;
+                        nv = n.Attributes[i].Value; if (nv == "true") nvtf = true; else nvtf = false;
+                        switch (n.Attributes[i].Name)
+                        {
+                            case "LogAll": checkBox_config_LogAll.Checked = nvtf; break;
+                            case "LogGirls": checkBox_config_LogGirls.Checked = nvtf; break;
+                            case "LogRGirls": checkBox_config_LogRGirls.Checked = nvtf; break;
+                            case "LogGirlFights": checkBox_config_LogGirlFights.Checked = nvtf; break;
+                            case "LogItems": checkBox_config_LogItems.Checked = nvtf; break;
+                            case "LogFonts": checkBox_config_LogFonts.Checked = nvtf; break;
+                            case "LogTorture": checkBox_config_LogTorture.Checked = nvtf; break;
+                            case "LogDebug": checkBox_config_LogDebug.Checked = nvtf; break;
+                            case "LogExtraDetails": checkBox_config_LogExtraDetails.Checked = nvtf; break;
+                        }
                     }
                 }
 
@@ -773,6 +834,7 @@ namespace WM_Girls_Generator
             XmlElement xePregnancy = xmldoc.CreateElement("Pregnancy");
             XmlElement xeProstitution = xmldoc.CreateElement("Prostitution");
             XmlElement xeCatacombs = xmldoc.CreateElement("Catacombs");
+            XmlElement xeUniqueGirls = xmldoc.CreateElement("UniqueGirls");
             XmlElement xeGangs = xmldoc.CreateElement("Gangs");
             XmlElement xeItems = xmldoc.CreateElement("Items");
             XmlElement xeFonts = xmldoc.CreateElement("Fonts");
@@ -788,6 +850,7 @@ namespace WM_Girls_Generator
             XmlComment xcPregnancy = xmldoc.CreateComment("\n\tPregnancy:\n\tPlayerChance, CustomerChance and MonsterChance give the odds of her\n\t\tgetting knocked up by the PC, a customer and a monster, respectively\n\tGoodSexFactor is the multiplier for the pregnancy chance if both parties were happy post coitus.\n\tChanceOfGirl is the %chance of any baby being female.\n\tWeeksPregnant and WeeksMonsterP is how long she is pregnant for.\n\tMiscarriageChance and MiscarriageMonster is the weekly percent chance that the pregnancy may fail.\n\tWeeksTillGrown is how long is takes for the baby to grow up to age 18\n\t\tThe magic of the world the game is set in causes children to age much faster.\n\t\tReal world is 936 weeks.\n\tCoolDown is how long before the girl can get pregnant again after giving birth.\n\tAntiPregFailure is the chance that an Anti-Preg Potion fails to work.\n\tMultiBirthChance is the chance of multiple births.\n\t");
             XmlComment xcProstitution = xmldoc.CreateComment("\n\tThese are the base chances of rape occurring in a brothel and streetwalking.\n\t");
             XmlComment xcCatacombs = xmldoc.CreateComment("\n\tCatacombs: Who gets What\n\t\tThese settings will determine the ratio of Girls to Items to Beasts that they try to come back with.\n\t\tIf the Controls are true, these will determine what they try to get when you send a Girl or Gang into the catacombs.\n\t\tThe numbers entered here are normalized into fractions of 100% by the game.\n\t\tNegative numbers are not allowed and all 0s will set to (100/3)% each.\n\t");
+            XmlComment xcUniqueGirls = xmldoc.CreateComment("\n\tUnique Girls:\n\tChance to get a Unique Girl when exploring the Catacombs.\n\tChance to get a Unique Girl from the Slave Market.\n\t\tAfter all Unique Girls have been found, the rest will be random girls.\n\t");
             XmlComment xcGangs = xmldoc.CreateComment("\n\tGangs:\n\tMaxRecruitList limits the maximum number of recruitable gangs listed for you to hire.\n\t\tWARNING: BE CAREFUL here; the number of recruitable gangs plus the number of potential hired\n\t\t\tgangs must not exceed the number of names stored in HiredGangNames.txt.\n\t\tFor example, with 20 names, you could have a max of 12 recruitables since you have to\n\t\t\taccount for the possible 8 hired gangs.\n\tStartRandom is how many random recruitable gangs are created for you at the start of a new game.\n\tStartBoosted is how many stat-boosted starting gangs are also added.\n\tInitMemberMin and InitMemberMax indicate the number of initial gang members which are in each recruitable gang;\n\t\ta random number between Min and Max is picked.\n\tAddNewWeeklyMin and AddNewWeeklyMax indicate how many new random gangs are added to the recruitable\n\t\tgangs list each week; a random number between Min and Max is picked.\n\tChanceRemoveUnwanted is the %chance each week that each unhired gang in the recruitable list is removed.\n\t");
             XmlComment xcItems = xmldoc.CreateComment("\n\tItems:\n\t*** AutoCombatEquip was moved to Initial for .06. Kept here for .05 and earlier.\n\tColors are assigned to items listed on the item management screen by there rarity.\n\tThey are in RGB hex format, so #000000 is black and #FFFFFF is white.\n\t\tRarityColor0: Common\n\t\tRarityColor1: Appears in shop, 50% chance\n\t\tRarityColor2: Appears in shop, 25% chance\n\t\tRarityColor3: Appears in shop, 5% chance\n\t\tRarityColor4: Appears in catacombs, 15% chance\n\t\tRarityColor5: Only given by scripts\n\t\tRarityColor6: Given by scripts or as objective rewards\n\t\tRarityColor7: Appears in catacombs, 5% chance\n\t\tRarityColor8: Appears in catacombs, 1% chance\n\t");
             XmlComment xcFonts = xmldoc.CreateComment("\n\tFonts:\n\tNormal is the font that the game uses for text.\n\tFixed is for a monospaced font for tabular info but nothing currently uses that.\n\tShowPercent determines whether or not % is placed\n\t\tafter the number for stats and skills on the girl details list.\n\tAntialias determines whether font antialiasing (smoothing) is used.\n\n\tIt's worth leaving these in, since once the XML screen format is stable,\n\t\tit will be possible to set custom fonts for different text elements,\n\t\tjust like designing a web page.\n\tExcept that you'll have to distribute the font with the game or mod\n\t\trather than relying on the viewer to have it pre-installed.\n\t");
@@ -823,6 +886,8 @@ namespace WM_Girls_Generator
             xeInitial.SetAttribute("SlaveHousePerc", textBox_Config_InitialSlaveHousePerc.Text);
             if (checkBox_Config_SlavesPayOutOfPocket.Checked == true) xeInitial.SetAttribute("SlavePayOutOfPocket", "true"); else xeInitial.SetAttribute("SlavePayOutOfPocket", "false"); // `J` added
             if (checkBox_Config_SlavesKeepTips.Checked == true) xeInitial.SetAttribute("SlaveKeepTips", "true"); else xeInitial.SetAttribute("SlaveKeepTips", "false"); // `J` added
+            xeInitial.SetAttribute("GirlsAccom", comboBox_Config_InitialGirlsAccom.SelectedIndex.ToString());
+            xeInitial.SetAttribute("SlaveAccom", comboBox_Config_InitialSlaveAccom.SelectedIndex.ToString());
             if (checkBox_Config_AutoUseItems.Checked == true) xeInitial.SetAttribute("AutoUseItems", "true"); else xeInitial.SetAttribute("AutoUseItems", "false");
             if (checkBox_Config_AutoEquipCombat.Checked == true) xeInitial.SetAttribute("AutoCombatEquip", "true"); else xeInitial.SetAttribute("AutoCombatEquip", "false");    // `J` added
             xeInitial.SetAttribute("TortureTraitWeekMod", textBox_Torture_Mod.Text);    // `J` added
@@ -908,6 +973,12 @@ namespace WM_Girls_Generator
             xeCatacombs.SetAttribute("GangGetsBeast", textBox_Config_Gang_Gets_Beast.Text);
             xeConfig.AppendChild(xeCatacombs);
 
+            xeConfig.AppendChild(xcUniqueGirls);
+            xeUniqueGirls.SetAttribute("UniqueCatacombs", textBox_Config_Unique_Catacombs.Text);
+            xeUniqueGirls.SetAttribute("UniqueMarket", textBox_Config_Unique_Market.Text);
+            xeConfig.AppendChild(xeUniqueGirls);
+
+
             xeConfig.AppendChild(xcGangs);
             xeGangs.SetAttribute("MaxRecruitList",          textBox_config_MaxRecruitList.Text);
             xeGangs.SetAttribute("StartRandom",             textBox_config_StartRandom.Text);
@@ -983,6 +1054,8 @@ namespace WM_Girls_Generator
             textBox_Config_InitialSlaveHousePerc.Text = "100";
             checkBox_Config_SlavesPayOutOfPocket.Checked = true;
             checkBox_Config_SlavesKeepTips.Checked = false;
+            comboBox_Config_InitialGirlsAccom.SelectedIndex = 5;
+            comboBox_Config_InitialSlaveAccom.SelectedIndex = 1;
             checkBox_Config_AutoUseItems.Checked = false;
             checkBox_Config_AutoEquipCombat.Checked = true;
             textBox_Torture_Mod.Text = "1";
@@ -1035,6 +1108,9 @@ namespace WM_Girls_Generator
             textBox_Config_Gang_Gets_Items.Text = "1";
             textBox_Config_Gang_Gets_Beast.Text = "1";
 
+            textBox_Config_Unique_Catacombs.Text = "50";
+            textBox_Config_Unique_Market.Text = "35";
+            
             textBox_Config_PregnancyPlayer.Text = "8";
             textBox_Config_PregnancyCustomer.Text = "8";
             textBox_Config_PregnancyMonster.Text = "8";
@@ -1272,6 +1348,7 @@ namespace WM_Girls_Generator
             string sStats = "";			    // string for stats
             string sSkills = "";			// for skills
             string sSlave = "";			    // ex is slave/isn't slave option, now has one more state
+            string sAccomm = "";            // Accommodation
             string sVirgin = "";
             string sGDesc = "";			    // girl description
             string sFName = TBox_G_FirstName.Text;
@@ -1307,12 +1384,15 @@ namespace WM_Girls_Generator
             else if (comboBox_Girl_Type.SelectedIndex == 3) sSlave = "3";    // arena girls
             else if (comboBox_Girl_Type.SelectedIndex == 4) sSlave = "4";    // your daughter
             else sSlave = "0";
+
+            sAccomm = comboBox_Girl_Accomm.SelectedIndex.ToString();
+
             if (checkBox_G_Virgin.Checked) sVirgin = "1";
 
             //first element in array is name
             sGirl[0] = TBox_G_RealName.Text;
             //second is girl data, this is where nln comes handy, easier to type nln than "\n\r" every time, and less error prone
-            sGirl[1] = sGDesc + nln + numberoftraits + nln + sTraits + "0" + nln + sStats + nln + sSkills + nln + GoldTBox1.Text + nln + sVirgin + nln + sSlave + nln + sFName + nln + sMName + nln + sLName;
+            sGirl[1] = sGDesc + nln + numberoftraits + nln + sTraits + "0" + nln + sStats + nln + sSkills + nln + GoldTBox1.Text + nln + sVirgin + nln + sSlave + nln + sAccomm +nln + sFName + nln + sMName + nln + sLName;
             sGirl[2] = sSlave;
 
             return sGirl;
@@ -1870,6 +1950,7 @@ namespace WM_Girls_Generator
             StatsTBox_01.Text = StatsTBox_03.Text = StatsTBox_04.Text = StatsTBox_05.Text = StatsTBox_06.Text = StatsTBox_07.Text = StatsTBox_08.Text = StatsTBox_09.Text = StatsTBox_10.Text = StatsTBox_11.Text = StatsTBox_13.Text = StatsTBox_15.Text = StatsTBox_16.Text = StatsTBox_17.Text = StatsTBox_18.Text = StatsTBox_20.Text = StatsTBox_21.Text = StatsTBox_22.Text = StatsTBox_23.Text = StatsTBox_24.Text = StatsTBox_25.Text = StatsTBox_26.Text = StatsTBox_27.Text = "0";
             SkillTBox_01.Text = SkillTBox_02.Text = SkillTBox_03.Text = SkillTBox_04.Text = SkillTBox_05.Text = SkillTBox_06.Text = SkillTBox_07.Text = SkillTBox_08.Text = SkillTBox_09.Text = SkillTBox_10.Text = SkillTBox_11.Text = SkillTBox_12.Text = SkillTBox_13.Text = SkillTBox_14.Text = SkillTBox_15.Text = SkillTBox_16.Text = SkillTBox_17.Text = SkillTBox_18.Text = SkillTBox_19.Text = SkillTBox_20.Text = SkillTBox_21.Text = SkillTBox_22.Text = "0";
             comboBox_Girl_Type.SelectedIndex = 0;
+            comboBox_Girl_Accomm.SelectedIndex = 0;
             this.listBox_GirlsList.SelectedIndexChanged -= new System.EventHandler(this.listBox_GirlsList_SelectedIndexChanged);		//turns off SelectedIndexChanged handler, if this isn't used when we delete item at current index, new index would be CHANGED to -1, this would of course activate handler who would try to parse data at index -1, problem is, there is no data at -1 so this would produce an error, so it's best to simply turn this handler off while we delete stuff
             listBox_GirlsList.SelectedItem = null;
             this.listBox_GirlsList.SelectedIndexChanged += new System.EventHandler(this.listBox_GirlsList_SelectedIndexChanged);		//turns SelectedIndexChanged handler back on
@@ -1966,6 +2047,7 @@ namespace WM_Girls_Generator
                     string sGold = "";				        //starting gold
                     string sVirgin = "";				    //starting Virginity
                     string sStatus = "";			        //girl status
+                    string sAccomm = "";			        //girl status
                     ArrayList alTraits = new ArrayList();	//ArrayList to store parsed traits, later on in the code of this method
 
                     string[] jStats = new string[27];
@@ -2001,6 +2083,7 @@ namespace WM_Girls_Generator
                         if (node.Attributes[i].Name == "Level") jStats[9] = node.Attributes["Level"].Value;
                         if (node.Attributes[i].Name == "AskPrice") jStats[10] = node.Attributes["AskPrice"].Value;
                         if (node.Attributes[i].Name == "House") jStats[11] = node.Attributes["House"].Value;
+                        if (node.Attributes[i].Name == "Accomm") sAccomm = node.Attributes["Accomm"].Value;
                         if (node.Attributes[i].Name == "Exp") jStats[12] = node.Attributes["Exp"].Value;
                         if (node.Attributes[i].Name == "Age") jStats[13] = node.Attributes["Age"].Value;
                         if (node.Attributes[i].Name == "Obedience") jStats[14] = node.Attributes["Obedience"].Value;
@@ -2073,6 +2156,7 @@ namespace WM_Girls_Generator
                     if (sGold == null) sGold = "0";
                     if (sVirgin == null) sVirgin = "0";
                     if (sStatus == null) sStatus = "0";
+                    if (sAccomm == null) sAccomm = "0";
                     if (jStats[1] == null) jStats[1] = "100";     // happiness
                     if (jStats[18] == null) jStats[18] = "100";   // health
                     if (jStats[11] == null) jStats[11] = "60";    // house
@@ -2219,7 +2303,7 @@ namespace WM_Girls_Generator
                     }
 
                     //when we get to this part one girl has been read from XML and data collected, now we only need to store that data in DataTable in old format, this is what next line does, the one behind it adds her name to girls list
-                    GirlsCollection.Rows.Add(sName, sDesc + "\r\n" + sTraits + "\r\n" + "0" + "\r\n" + sData + "\r\n" + sSkills + "\r\n" + sGold + "\r\n" + sVirgin + "\r\n" + sStatus + "\r\n" + sFName + "\r\n" + sMName + "\r\n" + sLName, sStatus);
+                    GirlsCollection.Rows.Add(sName, sDesc + "\r\n" + sTraits + "\r\n" + "0" + "\r\n" + sData + "\r\n" + sSkills + "\r\n" + sGold + "\r\n" + sVirgin + "\r\n" + sStatus + "\r\n" + sAccomm + "\r\n" + sFName + "\r\n" + sMName + "\r\n" + sLName, sStatus);
                     listBox_GirlsList.Items.Add(sName);
                 }
                 xmlread.Close();
@@ -2340,6 +2424,7 @@ namespace WM_Girls_Generator
                 string sGold = sData.ReadLine();				//gold
                 string sVirgin = sData.ReadLine();				//virgin
                 string sStatus = sData.ReadLine();				//status, slave, normal, catacombs, arena, your daughter
+                string sAccomm = sData.ReadLine();				//Accommodation
                 if (!foundvirgintrait && sVirgin == "1")          // add virgin trait if not already there and Virgin box is checked.
                 {
                     trait.SetAttribute("Name", "Virgin");		//Trait name is attribute in "Trait" node, this is where that attribute get's set
@@ -2372,6 +2457,7 @@ namespace WM_Girls_Generator
                 girl.SetAttribute("Fame", sStats[8]);
                 girl.SetAttribute("AskPrice", sStats[10]);
                 girl.SetAttribute("House", sStats[11]);
+                girl.SetAttribute("Accomm", sAccomm);
                 girl.SetAttribute("Health", sStats[18]);
                 girl.SetAttribute("Happiness", sStats[1]);
                 girl.SetAttribute("Tiredness", sStats[17]);
@@ -2564,6 +2650,17 @@ namespace WM_Girls_Generator
                 comboBox_Girl_Type.SelectedIndex = Convert.ToInt32(gtype);		//if it's "within bounds" just convert string to number and make that item in droplist selected
                 StatusLabel1.Text = "\"" + TBox_G_RealName.Text + "\"" + " parsed successfully...";
             }
+
+            string accomm = data.ReadLine();
+            if (accomm == null || accomm=="" || Convert.ToInt32(accomm) < 0 || Convert.ToInt32(accomm) > 9)
+            {
+                comboBox_Girl_Accomm.SelectedIndex = 0;
+            }
+            else
+            {
+                comboBox_Girl_Accomm.SelectedIndex = Convert.ToInt32(accomm);
+            }
+
 
             TBox_G_FirstName.Text = data.ReadLine();
             TBox_G_MiddleName.Text = data.ReadLine();
@@ -3764,6 +3861,7 @@ namespace WM_Girls_Generator
                 string sGold = sData.ReadLine();				//gold
                 string sVirgin = sData.ReadLine();				//virgin
                 string sStatus = sData.ReadLine();				//status, slave, normal, catacombs, arena, your daughter
+                string sAccomm = sData.ReadLine();				//Accommodation
                 if (!foundvirgintrait && sVirgin == "1")          // add virgin trait if not already there and Virgin box is checked.
                 {
                     trait.SetAttribute("Name", "Virgin");		//Trait name is attribute in "Trait" node, this is where that attribute get's set
@@ -3809,6 +3907,7 @@ namespace WM_Girls_Generator
                 girl.SetAttribute("Fame", sStats[8]);
                 girl.SetAttribute("AskPrice", sStats[10]);
                 girl.SetAttribute("House", sStats[11]);
+                girl.SetAttribute("Accomm", sAccomm);
                 girl.SetAttribute("Health", sStats[18]);
                 girl.SetAttribute("Happiness", sStats[1]);
                 girl.SetAttribute("Tiredness", sStats[17]);
@@ -4005,6 +4104,23 @@ namespace WM_Girls_Generator
             lTrack1.Text = trackBar_bad_02.Value.ToString();
         }
 
+        private void comboBox_ItemDuration_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+
+            if (comboBox_ItemDuration.SelectedIndex == 2)
+            {
+                textBox_Item_TempTraitDuration.Visible = true;
+                label199.Visible = true;
+            }
+            else
+            {
+                textBox_Item_TempTraitDuration.Visible = false;
+                label199.Visible = false;
+            }
+        }
+
+
         //Since some drop boxes have different contents in regard of previus one this is how to do it. Simply if index is this and this, clear droplist and fill these in
         //also, in status case there's no value, it's simply add or remove, so in case status is selected value textbox is hidden and add/remove droplist is displayed, and vice versa
         private void comboBox_affects_01_SelectedIndexChanged(object sender, EventArgs e)
@@ -4098,9 +4214,13 @@ namespace WM_Girls_Generator
                 comboBox_affects_02.Items.Add("Is Daughter");
             }
 
+            /* `J` this is not really needed
+
             //not all combinations are possible, this takes care of that, duration is disabled in these cases
 
-            if ((comboBox_affects_01.SelectedIndex == 0 && comboBox_ItemType_01.SelectedIndex == 3) || (comboBox_affects_01.SelectedIndex == 1 && comboBox_ItemType_01.SelectedIndex == 3))		//if consumables and skills, or consumables and stats are selected duration drop list is enabled
+            //if consumables and skills, or consumables and stats are selected duration drop list is enabled
+            if ((comboBox_affects_01.SelectedIndex == 0 && comboBox_ItemType_01.SelectedIndex == 3) || 
+                (comboBox_affects_01.SelectedIndex == 1 && comboBox_ItemType_01.SelectedIndex == 3))		
             {
                 comboBox_ItemDuration.Enabled = true;			//enables duration drop list in case it was disabled
             }
@@ -4109,7 +4229,7 @@ namespace WM_Girls_Generator
                 comboBox_ItemDuration.Enabled = false;				//item duration doesn't affect status changes so to be better safe than sorry we disable it and set it do default value
                 comboBox_ItemDuration.SelectedIndex = 0;
             }
-
+            */
         }
 
         //adds special effects to the item datagrid
@@ -4145,12 +4265,14 @@ namespace WM_Girls_Generator
         {
             try
             {
-                iTTable.Rows.Add(comboBox_ItemTraits.SelectedItem.ToString(), comboBox_ItemTraitsEffect.SelectedItem.ToString());
+                iTTable.Rows.Add(comboBox_ItemTraits.SelectedItem.ToString(), comboBox_ItemTraitsEffect.SelectedItem.ToString()
+                    , textBox_Item_TempTraitDuration.Text.ToString()
+                    );
             }
             catch (Exception err)
             {
-                dataGridView_Bad_Files.Rows.Add(comboBox_ItemTraits.SelectedItem.ToString(), err.Message);
-                MessageBox.Show("One or more fields are empty", "Add error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show("One or more fields are empty.", "Add error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                string a=err.ToString();
             }
         }
         //remove selected trait
@@ -4162,8 +4284,9 @@ namespace WM_Girls_Generator
             }
             catch (Exception err)
             {
-                dataGridView_Bad_Files.Rows.Add(dataGridView3.CurrentRow.Index, err.Message);
+                //dataGridView_Bad_Files.Rows.Add(dataGridView3.CurrentRow.Index, err.Message);
                 MessageBox.Show("Nothing is selected or list is empty.", "Delete error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                string a = err.ToString();
             }
         }
 
@@ -4199,7 +4322,7 @@ namespace WM_Girls_Generator
                 int i = 0;
                 while (i < dataGridView3.RowCount)
                 {
-                    sTraits = sTraits + nln + TraitsParse(dataGridView3.Rows[i].Cells[0].Value.ToString(), dataGridView3.Rows[i].Cells[1].Value.ToString());
+                    sTraits = sTraits + nln + TraitsParse(dataGridView3.Rows[i].Cells[0].Value.ToString(), dataGridView3.Rows[i].Cells[1].Value.ToString(), dataGridView3.Rows[i].Cells[2].Value.ToString());
                     i++;
                 }
             }
@@ -4209,12 +4332,12 @@ namespace WM_Girls_Generator
             if (comboBox_ItemDuration.SelectedIndex == 2) sDuration = "2";		//sets flag 3 to Affects one girl temporarily
 
             //not sure what (if anything) this does, it seems that this is obsolete now as compile button passes only "list" parameter, or better said, in current app this doesn't do anything, but I left it here "just in case"
-            if (output == "single") sItem[0] = textBox_ItemName.Text + nln + textBox_ItemDesc.Text + nln + (comboBox_ItemType_01.SelectedIndex + 1).ToString() + sp + trackBar_bad_02.Value.ToString() + sp + sDuration + sp + textBox_itemcost_04.Text + sp + comboBox_Rarity_05.SelectedIndex.ToString() + sp + sItemInfinite + nln + sEffectNumber + sEffects + sTraits;
+            if (output == "single") sItem[0] = textBox_ItemName.Text + nln + textBox_ItemDesc.Text + nln + (comboBox_ItemType_01.SelectedIndex + 1).ToString() + sp + trackBar_bad_02.Value.ToString() + sp + sDuration + sp + textBox_Item_Cost.Text + sp + comboBox_Rarity_05.SelectedIndex.ToString() + sp + sItemInfinite + sp + textBox_Item_Weight.Text + nln + sEffectNumber + sEffects + sTraits;
             else if (output == "list")
             {
                 sItem[0] = textBox_ItemName.Text;
-                if (checkBox_Item_GirlBuyChance.Checked == true) sItem[1] = textBox_ItemDesc.Text + nln + (comboBox_ItemType_01.SelectedIndex + 1).ToString() + sp + trackBar_bad_02.Value.ToString() + sp + sDuration + sp + textBox_itemcost_04.Text + sp + comboBox_Rarity_05.SelectedIndex.ToString() + sp + sItemInfinite + sp + textBox_Item_GirlBuyChance.Text + nln + sEffectNumber + sEffects + sTraits;
-                else sItem[1] = textBox_ItemDesc.Text + nln + (comboBox_ItemType_01.SelectedIndex + 1).ToString() + sp + trackBar_bad_02.Value.ToString() + sp + sDuration + sp + textBox_itemcost_04.Text + sp + comboBox_Rarity_05.SelectedIndex.ToString() + sp + sItemInfinite + nln + sEffectNumber + sEffects + sTraits;
+                if (checkBox_Item_GirlBuyChance.Checked == true) sItem[1] = textBox_ItemDesc.Text + nln + (comboBox_ItemType_01.SelectedIndex + 1).ToString() + sp + trackBar_bad_02.Value.ToString() + sp + sDuration + sp + textBox_Item_Cost.Text + sp + comboBox_Rarity_05.SelectedIndex.ToString() + sp + sItemInfinite + sp + textBox_Item_GirlBuyChance.Text + sp + textBox_Item_Weight.Text + nln + sEffectNumber + sEffects + sTraits;
+                else sItem[1] = textBox_ItemDesc.Text + nln + (comboBox_ItemType_01.SelectedIndex + 1).ToString() + sp + trackBar_bad_02.Value.ToString() + sp + sDuration + sp + textBox_Item_Cost.Text + sp + comboBox_Rarity_05.SelectedIndex.ToString() + sp + sItemInfinite + sp + textBox_Item_Weight.Text + nln + sEffectNumber + sEffects + sTraits;
             }
             return sItem;
         }
@@ -4242,7 +4365,8 @@ namespace WM_Girls_Generator
             comboBox_ItemType_01.SelectedIndex = 3;
             comboBox_Rarity_05.SelectedIndex = 0;
             comboBox_ItemDuration.SelectedIndex = 0;
-            textBox_itemcost_04.Text = "10";
+            textBox_Item_Cost.Text = "10";
+            textBox_Item_Weight.Text = "0.0";
             iTable.Clear();
             iTTable.Clear();
             affects_textBox_value.Text = "0";
@@ -4340,12 +4464,12 @@ namespace WM_Girls_Generator
             return (sEf01 + " " + sEf02 + " " + sEf03);		//and in the end return finished effect in game format (number number number)
         }
         //parses traits to game values
-        private string TraitsParse(string trait, string value)
+        private string TraitsParse(string trait, string value, string duration="20")
         {
             //traits are much simpler than items, they're represented by their names so there's no need to assign numbers, just take the trait and check if it's add or remove and apply that
             string sTr = "";
             sTr = (value == "Add") ? "1" : "0";
-            return ("4" + "\r\n" + trait + "\r\n" + sTr);
+            return ("4" + "\r\n" + trait + "\r\n" + sTr + "\r\n" + duration);
         }
 
         //toggles readonly attribute for value field in datagridview
@@ -4357,6 +4481,7 @@ namespace WM_Girls_Generator
         private void checkBox_DG3_CheckedChanged(object sender, EventArgs e)
         {
             dataGridView3.Columns[1].ReadOnly = (checkBox_DG3.Checked) ? true : false;
+            dataGridView3.Columns[2].ReadOnly = (checkBox_DG3.Checked) ? true : false;
         }
 
         //disables duration drop list if item type selected is not consumable
@@ -4517,6 +4642,18 @@ namespace WM_Girls_Generator
                     {
                         sData = sData + " " + node.Attributes["GirlBuyChance"].Value;
                     }
+                    else
+                    {
+                        sData = sData + " " + "0";
+                    }
+                    if (node.Attributes["ItemWeight"] != null)				//this will be 8th value, it doesn't exist in original items
+                    {
+                        sData = sData + " " + node.Attributes["ItemWeight"].Value;
+                    }
+                    else
+                    {
+                        sData = sData + " " + "0.0";
+                    }
                     if (node.HasChildNodes == true)
                     {
                         for (int x = 0; x < node.ChildNodes.Count; x++)
@@ -4612,7 +4749,13 @@ namespace WM_Girls_Generator
                                     sEffect = sEffect + " " + node.ChildNodes[x].Attributes["Amount"].Value;
                                     break;
                                 case "Trait":
-                                    sEffect = "4" + "\r\n" + node.ChildNodes[x].Attributes["Name"].Value + "\r\n" + node.ChildNodes[x].Attributes["Amount"].Value;
+                                    string duration="20";
+                                    if (node.ChildNodes[x].Attributes["Duration"] != null)
+                                        duration = node.ChildNodes[x].Attributes["Duration"].Value;
+
+                                    sEffect = "4" + "\r\n" + node.ChildNodes[x].Attributes["Name"].Value + "\r\n" + 
+                                        node.ChildNodes[x].Attributes["Amount"].Value + "\r\n" + 
+                                        duration;
                                     break;
                             }
                             alEffects.Add(sEffect);
@@ -4693,7 +4836,7 @@ namespace WM_Girls_Generator
             if (int.Parse(values[2]) < 0 || int.Parse(values[2]) > 2) comboBox_ItemDuration.SelectedIndex = 0;	//Originaly there wasn't an "if" planned here, which works fine if input data is correct, but in the case it's out of bounds you get an error, so to prevent these from scaring users this if defaults the droplist to "Permanent" if value is out of bounds
             else comboBox_ItemDuration.SelectedIndex = int.Parse(values[2]);		//old unused "flag 3", now duration
 
-            textBox_itemcost_04.Text = values[3];								//item cost, just throw the string to textbox
+            textBox_Item_Cost.Text = values[3];								//item cost, just throw the string to textbox
 
             if (int.Parse(values[4]) < 0 || int.Parse(values[4]) > 8) comboBox_Rarity_05.SelectedIndex = 3;		//Originaly there wasn't an "if" planned here, which works fine if input data is correct, but in the case it's out of bounds you get an error, so to prevent these from scaring users this if defaults the droplist to "Common" if value is out of bounds
             comboBox_Rarity_05.SelectedIndex = int.Parse(values[4]);				//rarity comboBox, unlike item type these go from 0 to 6, like index count for comboBox object
@@ -4709,7 +4852,15 @@ namespace WM_Girls_Generator
             else
             {
                 checkBox_Item_GirlBuyChance.Checked = false;
-                textBox_Item_GirlBuyChance.Text = "";
+                textBox_Item_GirlBuyChance.Text = "0";
+            }
+            if (values.Length >= 8)     //Item Weight value
+            {
+                textBox_Item_Weight.Text = values[7];
+            }
+            else
+            {
+                textBox_Item_Weight.Text = "0.0";
             }
 
             int iEffNum = Convert.ToInt32(data.ReadLine());
@@ -4724,7 +4875,8 @@ namespace WM_Girls_Generator
                 {
                     string trait = data.ReadLine();
                     string change = data.ReadLine();
-                    iTTable.Rows.Add(trait, (change == "1") ? "Add" : "Remove");
+                    string duration = data.ReadLine();
+                    iTTable.Rows.Add(trait, (change == "1") ? "Add" : "Remove", duration);
                 }
                 else
                 {
@@ -4888,6 +5040,20 @@ namespace WM_Girls_Generator
                 {
                     item.SetAttribute("GirlBuyChance", sValues[6]);
                 }
+                else
+                {
+                    item.SetAttribute("GirlBuyChance", "0");
+                }
+                if (sValues.Length >= 8)  //check to see if item is old item that doesn't have girlbuychance
+                {
+                    item.SetAttribute("ItemWeight", sValues[7]);
+                }
+                else
+                {
+                    item.SetAttribute("ItemWeight", "0.0");
+                }
+
+                
                 int num = Convert.ToInt32(sData.ReadLine());
                 for (int y = 0; y < num; y++)
                 {
@@ -4898,10 +5064,11 @@ namespace WM_Girls_Generator
 
                     if (IsNumeric(sEffectTest) == true && Convert.ToInt32(sEffectTest) == 4)
                     {
-                        sEffects = new string[3];
+                        sEffects = new string[4];
                         sEffects[0] = "Trait";
                         sEffects[1] = sData.ReadLine();
                         sEffects[2] = sData.ReadLine();
+                        sEffects[3] = sData.ReadLine();
                     }
                     else
                     {
@@ -4999,6 +5166,8 @@ namespace WM_Girls_Generator
                     effect.SetAttribute("What", sEffects[0]);
                     effect.SetAttribute("Name", sEffects[1]);
                     effect.SetAttribute("Amount", sEffects[2]);
+                    if (sEffects[0] == "Trait")
+                        effect.SetAttribute("Duration", sEffects[3]);
 
                     item.AppendChild(effect);
                 }
@@ -5008,7 +5177,7 @@ namespace WM_Girls_Generator
 
             XmlWriterSettings settings = new XmlWriterSettings();
             settings.Indent = true;
-            settings.NewLineOnAttributes = true;
+            settings.NewLineOnAttributes = false;
             settings.IndentChars = "    ";
             XmlWriter xmlwrite = XmlWriter.Create(path, settings);
 
@@ -5366,7 +5535,5 @@ namespace WM_Girls_Generator
              * and can probably be removed
              */
         }
-
-
     }
 }
