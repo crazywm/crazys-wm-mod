@@ -163,6 +163,7 @@ namespace WM_Girls_Generator
             dataGridView3.Columns[1].ReadOnly = true;
             dataGridView3.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             dataGridView3.Columns[2].ReadOnly = true;
+            dataGridView3.Columns[2].Visible = false;
 
             ItemsCollection.Columns.Add("Name", typeof(string));			//formatting of items DataTable, adding two columns, Name and Data
             ItemsCollection.Columns.Add("Data", typeof(string));
@@ -524,6 +525,8 @@ namespace WM_Girls_Generator
                 XmlNode baseNode = xmldoc.DocumentElement;
                 XmlNode n;  // node
                 string nv;  // node value
+                int nvi;    // node value int
+                double nvd; // node value double
                 bool nvtf;  // node value true/false
                 n = baseNode.SelectSingleNode("/config/Folders");
                 if (n != null)
@@ -607,6 +610,7 @@ namespace WM_Girls_Generator
                             case "ItemSales": textBox_Config_IncomeItemSales.Text = nv; break;
                             case "ClinicIncome": textBox_Config_IncomeClinic.Text = nv; break;
                             case "ArenaIncome": textBox_Config_IncomeArena.Text = nv; break;
+                            case "FarmIncome": textBox_Config_IncomeFarm.Text = nv; break;
                         }
                     }
                 }
@@ -674,33 +678,72 @@ namespace WM_Girls_Generator
                 n = baseNode.SelectSingleNode("/config/Catacombs");
                 if (n != null)
                 {
+                    double girlgirls = 1, girlitems = 1, girlbeast = 1, ganggirls = 1, gangitems = 1, gangbeast = 1;
+                    // load data
                     for (int i = 0; i < n.Attributes.Count; i++)
                     {
                         nv = n.Attributes[i].Value.TrimEnd('%'); if (nv == "true") nvtf = true; else nvtf = false;
+                        int.TryParse(nv, out nvi);
+                        double.TryParse(nv, out nvd);
                         switch (n.Attributes[i].Name)
                         {
+                            case "UniqueCatacombs": textBox_Config_Unique_Catacombs.Text = nv; break;
                             case "ControlGirls": checkBox_Config_Control_Girls.Checked = nvtf; break;
                             case "ControlGangs": checkBox_Config_Control_Gangs.Checked = nvtf; break;
-                            case "GirlGetsGirls": textBox_Config_Girl_Gets_Girls.Text = nv; break;
-                            case "GirlGetsItems": textBox_Config_Girl_Gets_Items.Text = nv; break;
-                            case "GirlGetsBeast": textBox_Config_Girl_Gets_Beast.Text = nv; break;
-                            case "GangGetsGirls": textBox_Config_Gang_Gets_Girls.Text = nv; break;
-                            case "GangGetsItems": textBox_Config_Gang_Gets_Items.Text = nv; break;
-                            case "GangGetsBeast": textBox_Config_Gang_Gets_Beast.Text = nv; break;
+                            case "GirlGetsGirls": girlgirls = nvd; break;
+                            case "GirlGetsItems": girlitems = nvd; break;
+                            case "GirlGetsBeast": girlbeast = nvd; break;
+                            case "GangGetsGirls": ganggirls = nvd; break;
+                            case "GangGetsItems": gangitems = nvd; break;
+                            case "GangGetsBeast": gangbeast = nvd; break;
                         }
                     }
+                    // validate data
+                    if (girlgirls < 0) girlgirls = -girlgirls; if (girlitems < 0) girlitems = -girlitems; if (girlbeast < 0) girlbeast = -girlbeast;
+                    if (ganggirls < 0) ganggirls = -ganggirls; if (gangitems < 0) gangitems = -gangitems; if (gangbeast < 0) gangbeast = -gangbeast;
+
+                    double checkggirl = girlgirls + girlitems + girlbeast;
+                    if (checkggirl == 0) girlgirls = girlitems = girlbeast = (100 / 3);
+                    else
+                    {
+                        girlgirls = ((int)((100.0 / checkggirl) * girlgirls)) + (girlgirls == (int)girlgirls ? 0 : 1);
+                        girlitems = (int)((100.0 / checkggirl) * girlitems);
+                        girlbeast = 100 - (int)girlgirls - (int)girlitems;
+                    }
+                    double checkggang = ganggirls + gangitems + gangbeast;
+                    if (checkggang == 0) ganggirls = gangitems = gangbeast = (100 / 3);
+                    else
+                    {
+                        ganggirls = ((int)((100.0 / checkggang) * ganggirls)) + (ganggirls == (int)ganggirls ? 0 : 1);
+                        gangitems = (int)((100.0 / checkggang) * gangitems);
+                        gangbeast = 100 - (int)ganggirls - (int)gangitems;
+                    }									 
+                    // set trackbars
+                    trackBar_Config_Control_GirlsA.Value = (int)girlgirls;
+                    trackBar_Config_Control_GirlsB.Value = (int)girlgirls + (int)girlitems;
+                    trackBar_Config_Control_GangsA.Value = (int)ganggirls;
+                    trackBar_Config_Control_GangsB.Value = (int)ganggirls + (int)gangitems;
+                    // set texts
+                    Label_Config_Control_Girls_Girls.Text = "Girl: "  + (int)girlgirls + "%";
+                    Label_Config_Control_Girls_Items.Text = "Item: "  + (int)girlitems + "%";
+                    Label_Config_Control_Girls_Beast.Text = "Beast: " + (int)girlbeast + "%";
+                    Label_Config_Control_Gangs_Girls.Text = "Girl: "  + (int)ganggirls + "%";
+                    Label_Config_Control_Gangs_Items.Text = "Item: "  + (int)gangitems + "%";
+                    Label_Config_Control_Gangs_Beast.Text = "Beast: " + (int)gangbeast + "%";
                 }
 
-                n = baseNode.SelectSingleNode("/config/UniqueGirls");
-                if (n!=null)
+                n = baseNode.SelectSingleNode("/config/SlaveMarket");
+                if (n != null)
                 {
                     for (int i = 0; i < n.Attributes.Count; i++)
                     {
                         nv = n.Attributes[i].Value.TrimEnd('%');
+                        int.TryParse(nv, out nvi);
                         switch (n.Attributes[i].Name)
                         {
-                            case "UniqueCatacombs": textBox_Config_Unique_Catacombs.Text = nv; break;
                             case "UniqueMarket": textBox_Config_Unique_Market.Text = nv; break;
+                            case "SlavesNewWeeklyMin": trackBar_Config_Market_Min.Value = nvi; break;
+                            case "SlavesNewWeeklyMax": trackBar_Config_Market_Max.Value = nvi; break;
                         }
                     }
                 }
@@ -834,7 +877,7 @@ namespace WM_Girls_Generator
             XmlElement xePregnancy = xmldoc.CreateElement("Pregnancy");
             XmlElement xeProstitution = xmldoc.CreateElement("Prostitution");
             XmlElement xeCatacombs = xmldoc.CreateElement("Catacombs");
-            XmlElement xeUniqueGirls = xmldoc.CreateElement("UniqueGirls");
+            XmlElement xeSlaveMarket = xmldoc.CreateElement("SlaveMarket");
             XmlElement xeGangs = xmldoc.CreateElement("Gangs");
             XmlElement xeItems = xmldoc.CreateElement("Items");
             XmlElement xeFonts = xmldoc.CreateElement("Fonts");
@@ -849,8 +892,8 @@ namespace WM_Girls_Generator
             XmlComment xcTax = xmldoc.CreateComment("\n\tTaxes:\n\tRate is the rate at which your income is taxed.\n\tMin is the minimum adjusted rate after influence is used to lower the tax rate.\n\tLaundry is the Maximum % of your income that can be Laundered and so escape taxation.\n\t\tSo if you have 100g income, and a 25% laundry rating, then between 1 and 25 gold will go directly into your pocket.\n\t\tThe remaining 75 Gold will be taxed at 6% (assuming no reduction due to political influence)\n\t");
             XmlComment xcPregnancy = xmldoc.CreateComment("\n\tPregnancy:\n\tPlayerChance, CustomerChance and MonsterChance give the odds of her\n\t\tgetting knocked up by the PC, a customer and a monster, respectively\n\tGoodSexFactor is the multiplier for the pregnancy chance if both parties were happy post coitus.\n\tChanceOfGirl is the %chance of any baby being female.\n\tWeeksPregnant and WeeksMonsterP is how long she is pregnant for.\n\tMiscarriageChance and MiscarriageMonster is the weekly percent chance that the pregnancy may fail.\n\tWeeksTillGrown is how long is takes for the baby to grow up to age 18\n\t\tThe magic of the world the game is set in causes children to age much faster.\n\t\tReal world is 936 weeks.\n\tCoolDown is how long before the girl can get pregnant again after giving birth.\n\tAntiPregFailure is the chance that an Anti-Preg Potion fails to work.\n\tMultiBirthChance is the chance of multiple births.\n\t");
             XmlComment xcProstitution = xmldoc.CreateComment("\n\tThese are the base chances of rape occurring in a brothel and streetwalking.\n\t");
-            XmlComment xcCatacombs = xmldoc.CreateComment("\n\tCatacombs: Who gets What\n\t\tThese settings will determine the ratio of Girls to Items to Beasts that they try to come back with.\n\t\tIf the Controls are true, these will determine what they try to get when you send a Girl or Gang into the catacombs.\n\t\tThe numbers entered here are normalized into fractions of 100% by the game.\n\t\tNegative numbers are not allowed and all 0s will set to (100/3)% each.\n\t");
-            XmlComment xcUniqueGirls = xmldoc.CreateComment("\n\tUnique Girls:\n\tChance to get a Unique Girl when exploring the Catacombs.\n\tChance to get a Unique Girl from the Slave Market.\n\t\tAfter all Unique Girls have been found, the rest will be random girls.\n\t");
+            XmlComment xcCatacombs = xmldoc.CreateComment("\n\tCatacombs Settings:\n\tUniqueCatacombs:   Chance to get a Unique Girl when exploring the Catacombs.\n\t\tAfter all Unique Girls have been found, the rest will be random girls.\n\t\n\tWho gets What:\n\t\tThese settings will determine the ratio of Girls to Items to Beasts that they try to come back with.\n\t\tIf the Controls are true, these will determine what they try to get when you send a Girl or Gang into the catacombs.\n\t\tThe numbers entered here are normalized into fractions of 100% by the game.\n\t\tNegative numbers are not allowed and all 0s will set to (100/3)% each.\n\t");
+            XmlComment xcSlaveMarket = xmldoc.CreateComment("\n\tSlave Market Settings:\n\tUniqueMarket:   Chance to get a Unique Girl from the Slave Market.\n\t\tAfter all Unique Girls have been found, the rest will be random girls.\n\t\n\tSlavesNewWeekly...:\tThe minimum and maximum number of girls in the slave market each turn.\n\t\tAbsolude minimum of 0 and maximum of 20.\n\t\tIf min is higher than max, they get switched.\n\t");
             XmlComment xcGangs = xmldoc.CreateComment("\n\tGangs:\n\tMaxRecruitList limits the maximum number of recruitable gangs listed for you to hire.\n\t\tWARNING: BE CAREFUL here; the number of recruitable gangs plus the number of potential hired\n\t\t\tgangs must not exceed the number of names stored in HiredGangNames.txt.\n\t\tFor example, with 20 names, you could have a max of 12 recruitables since you have to\n\t\t\taccount for the possible 8 hired gangs.\n\tStartRandom is how many random recruitable gangs are created for you at the start of a new game.\n\tStartBoosted is how many stat-boosted starting gangs are also added.\n\tInitMemberMin and InitMemberMax indicate the number of initial gang members which are in each recruitable gang;\n\t\ta random number between Min and Max is picked.\n\tAddNewWeeklyMin and AddNewWeeklyMax indicate how many new random gangs are added to the recruitable\n\t\tgangs list each week; a random number between Min and Max is picked.\n\tChanceRemoveUnwanted is the %chance each week that each unhired gang in the recruitable list is removed.\n\t");
             XmlComment xcItems = xmldoc.CreateComment("\n\tItems:\n\t*** AutoCombatEquip was moved to Initial for .06. Kept here for .05 and earlier.\n\tColors are assigned to items listed on the item management screen by there rarity.\n\tThey are in RGB hex format, so #000000 is black and #FFFFFF is white.\n\t\tRarityColor0: Common\n\t\tRarityColor1: Appears in shop, 50% chance\n\t\tRarityColor2: Appears in shop, 25% chance\n\t\tRarityColor3: Appears in shop, 5% chance\n\t\tRarityColor4: Appears in catacombs, 15% chance\n\t\tRarityColor5: Only given by scripts\n\t\tRarityColor6: Given by scripts or as objective rewards\n\t\tRarityColor7: Appears in catacombs, 5% chance\n\t\tRarityColor8: Appears in catacombs, 1% chance\n\t");
             XmlComment xcFonts = xmldoc.CreateComment("\n\tFonts:\n\tNormal is the font that the game uses for text.\n\tFixed is for a monospaced font for tabular info but nothing currently uses that.\n\tShowPercent determines whether or not % is placed\n\t\tafter the number for stats and skills on the girl details list.\n\tAntialias determines whether font antialiasing (smoothing) is used.\n\n\tIt's worth leaving these in, since once the XML screen format is stable,\n\t\tit will be possible to set custom fonts for different text elements,\n\t\tjust like designing a web page.\n\tExcept that you'll have to distribute the font with the game or mod\n\t\trather than relying on the viewer to have it pre-installed.\n\t");
@@ -905,6 +948,7 @@ namespace WM_Girls_Generator
             xeIncome.SetAttribute("ItemSales",              textBox_Config_IncomeItemSales.Text);
             xeIncome.SetAttribute("ClinicIncome",           textBox_Config_IncomeClinic.Text);
             xeIncome.SetAttribute("ArenaIncome",            textBox_Config_IncomeArena.Text);
+            xeIncome.SetAttribute("FarmIncome",             textBox_Config_IncomeFarm.Text);
             xeConfig.AppendChild(xeIncome);
 
             xeConfig.AppendChild(xcExpenses);
@@ -963,21 +1007,29 @@ namespace WM_Girls_Generator
             xeConfig.AppendChild(xeProstitution);
 
             xeConfig.AppendChild(xcCatacombs);
+            xeCatacombs.SetAttribute("UniqueCatacombs", textBox_Config_Unique_Catacombs.Text);
             if (checkBox_Config_Control_Girls.Checked == true) xeCatacombs.SetAttribute("ControlGirls", "true"); else xeCatacombs.SetAttribute("ControlGirls", "false");
             if (checkBox_Config_Control_Gangs.Checked == true) xeCatacombs.SetAttribute("ControlGangs", "true"); else xeCatacombs.SetAttribute("ControlGangs", "false");
-            xeCatacombs.SetAttribute("GirlGetsGirls", textBox_Config_Girl_Gets_Girls.Text);
-            xeCatacombs.SetAttribute("GirlGetsItems", textBox_Config_Girl_Gets_Items.Text);
-            xeCatacombs.SetAttribute("GirlGetsBeast", textBox_Config_Girl_Gets_Beast.Text);
-            xeCatacombs.SetAttribute("GangGetsGirls", textBox_Config_Gang_Gets_Girls.Text);
-            xeCatacombs.SetAttribute("GangGetsItems", textBox_Config_Gang_Gets_Items.Text);
-            xeCatacombs.SetAttribute("GangGetsBeast", textBox_Config_Gang_Gets_Beast.Text);
+            int girlgirls = trackBar_Config_Control_GirlsA.Value;
+            int girlitems = trackBar_Config_Control_GirlsB.Value - trackBar_Config_Control_GirlsA.Value;
+            int girlbeast = 100 - trackBar_Config_Control_GirlsB.Value;
+            int ganggirls = trackBar_Config_Control_GangsA.Value;
+            int gangitems = trackBar_Config_Control_GangsB.Value - trackBar_Config_Control_GangsA.Value;
+            int gangbeast = 100 - trackBar_Config_Control_GangsB.Value;
+            xeCatacombs.SetAttribute("GirlGetsGirls", girlgirls.ToString());
+            xeCatacombs.SetAttribute("GirlGetsItems", girlitems.ToString());
+            xeCatacombs.SetAttribute("GirlGetsBeast", girlbeast.ToString());
+            xeCatacombs.SetAttribute("GangGetsGirls", ganggirls.ToString());
+            xeCatacombs.SetAttribute("GangGetsItems", gangitems.ToString());
+            xeCatacombs.SetAttribute("GangGetsBeast", gangbeast.ToString());
             xeConfig.AppendChild(xeCatacombs);
 
-            xeConfig.AppendChild(xcUniqueGirls);
-            xeUniqueGirls.SetAttribute("UniqueCatacombs", textBox_Config_Unique_Catacombs.Text);
-            xeUniqueGirls.SetAttribute("UniqueMarket", textBox_Config_Unique_Market.Text);
-            xeConfig.AppendChild(xeUniqueGirls);
 
+            xeConfig.AppendChild(xcSlaveMarket);
+            xeSlaveMarket.SetAttribute("UniqueMarket", textBox_Config_Unique_Market.Text);
+            xeSlaveMarket.SetAttribute("SlavesNewWeeklyMin", trackBar_Config_Market_Min.Value.ToString());
+            xeSlaveMarket.SetAttribute("SlavesNewWeeklyMax", trackBar_Config_Market_Max.Value.ToString());
+            xeConfig.AppendChild(xeSlaveMarket);
 
             xeConfig.AppendChild(xcGangs);
             xeGangs.SetAttribute("MaxRecruitList",          textBox_config_MaxRecruitList.Text);
@@ -1071,6 +1123,7 @@ namespace WM_Girls_Generator
             textBox_Config_IncomeItemSales.Text = "1.0";
             textBox_Config_IncomeClinic.Text = "1.0";
             textBox_Config_IncomeArena.Text = "1.0";
+            textBox_Config_IncomeFarm.Text = "1.0";
 
             textBox_Config_ExpenseTraining.Text = "0.0";
             textBox_Config_ExpenseMovie.Text = "0.0";
@@ -1101,16 +1154,22 @@ namespace WM_Girls_Generator
 
             checkBox_Config_Control_Gangs.Checked = false;
             checkBox_Config_Control_Girls.Checked = false;
-            textBox_Config_Girl_Gets_Girls.Text = "1";
-            textBox_Config_Girl_Gets_Items.Text = "1";
-            textBox_Config_Girl_Gets_Beast.Text = "1";
-            textBox_Config_Gang_Gets_Girls.Text = "1";
-            textBox_Config_Gang_Gets_Items.Text = "1";
-            textBox_Config_Gang_Gets_Beast.Text = "1";
-
+            trackBar_Config_Control_GirlsA.Value = 34;
+            trackBar_Config_Control_GirlsB.Value = 67;
+            trackBar_Config_Control_GangsA.Value = 34;
+            trackBar_Config_Control_GangsB.Value = 67;
             textBox_Config_Unique_Catacombs.Text = "50";
+            Label_Config_Control_Girls_Girls.Text = "Girl: 34%";
+            Label_Config_Control_Girls_Items.Text = "Item: 33%";
+            Label_Config_Control_Girls_Beast.Text = "Beast: 33%";
+            Label_Config_Control_Gangs_Girls.Text = "Girl: 34%";
+            Label_Config_Control_Gangs_Items.Text = "Item: 33%";
+            Label_Config_Control_Gangs_Beast.Text = "Beast: 33%";
+
             textBox_Config_Unique_Market.Text = "35";
-            
+            trackBar_Config_Market_Min.Value = 5;
+            trackBar_Config_Market_Max.Value = 12;
+
             textBox_Config_PregnancyPlayer.Text = "8";
             textBox_Config_PregnancyCustomer.Text = "8";
             textBox_Config_PregnancyMonster.Text = "8";
@@ -4106,15 +4165,15 @@ namespace WM_Girls_Generator
 
         private void comboBox_ItemDuration_SelectedIndexChanged(object sender, EventArgs e)
         {
-
-
             if (comboBox_ItemDuration.SelectedIndex == 2)
             {
+                if (dataGridView3.ColumnCount > 2) dataGridView3.Columns[2].Visible = true;
                 textBox_Item_TempTraitDuration.Visible = true;
                 label199.Visible = true;
             }
             else
             {
+                if (dataGridView3.ColumnCount > 2) dataGridView3.Columns[2].Visible = false;
                 textBox_Item_TempTraitDuration.Visible = false;
                 label199.Visible = false;
             }
@@ -4979,7 +5038,7 @@ namespace WM_Girls_Generator
 
                 string sName = ItemsCollection.Rows[x][0].ToString();
                 string sDesc = sData.ReadLine();
-
+                bool tempitem = false;
                 string[] sValues = sData.ReadLine().Split(' ');
 
                 switch (sValues[0])
@@ -5007,7 +5066,7 @@ namespace WM_Girls_Generator
                 {
                     case "0": sValues[2] = "None"; break;
                     case "1": sValues[2] = "AffectsAll"; break;
-                    case "2": sValues[2] = "Temporary"; break;
+                    case "2": sValues[2] = "Temporary"; tempitem = true; break;
                 }
                 switch (sValues[4])
                 {
@@ -5166,7 +5225,7 @@ namespace WM_Girls_Generator
                     effect.SetAttribute("What", sEffects[0]);
                     effect.SetAttribute("Name", sEffects[1]);
                     effect.SetAttribute("Amount", sEffects[2]);
-                    if (sEffects[0] == "Trait")
+                    if (sEffects[0] == "Trait" && tempitem)             // `J` only save duration for temporary traits.
                         effect.SetAttribute("Duration", sEffects[3]);
 
                     item.AppendChild(effect);
@@ -5535,5 +5594,5 @@ namespace WM_Girls_Generator
              * and can probably be removed
              */
         }
-    }
+   }
 }

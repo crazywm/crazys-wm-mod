@@ -274,18 +274,31 @@ private:
 
 typedef struct sChild
 {
+	int m_MultiBirth;
+	string multibirth_str()
+	{
+		if (m_MultiBirth == 2) return "Twins";
+		if (m_MultiBirth == 3) return "Triplets";
+		if (m_MultiBirth == 4) return "Quads";
+		if (m_MultiBirth == 5) return "Quints";
+		// `J` anything else is single
+		m_MultiBirth = 1;	
+		return "Single";
+	};
 	enum Gender {
 		None = -1,
 		Girl = 0,
 		Boy = 1
 	};
 	Gender m_Sex;
-
-	string boy_girl_str() {
-		if (m_Sex == Boy)
-			return "boy";
-
-		return "girl";
+	int m_GirlsBorn;			// if multiple births, how many are girls
+	string boy_girl_str() 
+	{
+		if (m_MultiBirth == 2)	return "twins";
+		if (m_MultiBirth == 3)	return "triplets";
+		if (m_MultiBirth > 3)	return "a litter";
+		if (m_Sex == Boy)		return "a baby boy";
+		return "a baby girl";
 	}
 	bool is_boy()	{ return m_Sex == Boy; }
 	bool is_girl()	{ return m_Sex == Girl; }
@@ -301,7 +314,7 @@ typedef struct sChild
 	sChild* m_Next;
 	sChild* m_Prev;
 
-	sChild(bool is_players = false, Gender gender = None);
+	sChild(bool is_players = false, Gender gender = None, int MultiBirth = 1);
 	~sChild(){ m_Prev = 0; if (m_Next)delete m_Next; m_Next = 0; }
 
 	TiXmlElement* SaveChildXML(TiXmlElement* pRoot);
@@ -436,6 +449,7 @@ struct sGirl
 	int m_WeeksPreg;					// number of weeks pregnant or inseminated
 	int m_PregCooldown;					// number of weeks until can get pregnant again
 	cChildList m_Children;
+	int m_ChildrenCount[CHILD_COUNT_TYPES];
 
 	vector<string> m_Canonical_Daughters;
 
@@ -556,6 +570,7 @@ struct sGirl
 	static const char	*stat_names[];
 	static const char	*skill_names[];
 	static const char	*status_names[];
+	static const char	*children_type_names[];	// `J` added
 	/*
 	*	again, might as well make them part of the struct that uses them
 	*/
@@ -747,41 +762,14 @@ struct sGirl
 	/*
 	*	convenience func. Also easier to read like this
 	*/
-	bool carrying_monster() {
-		return(m_States & (1 << STATUS_INSEMINATED)) != 0;
-	}
-	bool carrying_human() {
-		return carrying_players_child() || carrying_customer_child();
-	}
-	bool carrying_players_child() {
-		return(m_States & (1 << STATUS_PREGNANT_BY_PLAYER)) != 0;
-	}
-	bool carrying_customer_child() {
-		return(m_States & (1 << STATUS_PREGNANT)) != 0;
-	}
-	bool is_pregnant() {
-		return(m_States & (1 << STATUS_PREGNANT) ||
-			m_States & (1 << STATUS_PREGNANT_BY_PLAYER) ||
-			m_States & (1 << STATUS_INSEMINATED)
-			);
-	}
-
-	bool is_mother() {
-		return(m_States&(1 << STATUS_HAS_DAUGHTER)
-			|| m_States&(1 << STATUS_HAS_SON));
-	}
-
-	bool is_poisoned() {
-		return(m_States&(1 << STATUS_POISONED)
-			|| m_States&(1 << STATUS_BADLY_POISONED));
-	}
-
-	void clear_pregnancy() {
-		m_States &= ~(1 << STATUS_PREGNANT);
-		m_States &= ~(1 << STATUS_PREGNANT_BY_PLAYER);
-		m_States &= ~(1 << STATUS_INSEMINATED);
-		m_WeeksPreg = 0;
-	}
+	bool carrying_monster()			{ return(m_States & (1 << STATUS_INSEMINATED)) != 0; }
+	bool carrying_human()			{ return carrying_players_child() || carrying_customer_child(); }
+	bool carrying_players_child()	{ return(m_States & (1 << STATUS_PREGNANT_BY_PLAYER)) != 0; }
+	bool carrying_customer_child()	{ return(m_States & (1 << STATUS_PREGNANT)) != 0; }
+	bool is_pregnant()				{ return(m_States & (1 << STATUS_PREGNANT) || m_States & (1 << STATUS_PREGNANT_BY_PLAYER) || m_States & (1 << STATUS_INSEMINATED)); }
+	bool is_mother()				{ return(m_States&(1 << STATUS_HAS_DAUGHTER) || m_States&(1 << STATUS_HAS_SON)); }
+	bool is_poisoned()				{ return(m_States&(1 << STATUS_POISONED) || m_States&(1 << STATUS_BADLY_POISONED)); }
+	void clear_pregnancy()			{ m_States &= ~(1 << STATUS_PREGNANT); m_States &= ~(1 << STATUS_PREGNANT_BY_PLAYER); m_States &= ~(1 << STATUS_INSEMINATED); m_WeeksPreg = 0; }
 
 	int preg_chance(int base_pc, bool good = false, double factor = 1.0);
 
@@ -798,18 +786,9 @@ struct sGirl
 	*	let's overload that...
 	*	should be able to do the same using sCustomer as well...
 	*/
-	void add_trait(string trait, int temptime = 0)
-	{
-		g_GirlsPtr->AddTrait(this, trait, temptime);
-	}
-	void remove_trait(string trait)
-	{
-		g_GirlsPtr->RemoveTrait(this, trait);
-	}
-	bool has_trait(string trait)
-	{
-		return g_GirlsPtr->HasTrait(this, trait);
-	}
+	void add_trait(string trait, int temptime = 0)	{ g_GirlsPtr->AddTrait(this, trait, temptime); }
+	void remove_trait(string trait)					{ g_GirlsPtr->RemoveTrait(this, trait); }
+	bool has_trait(string trait)					{ return g_GirlsPtr->HasTrait(this, trait); }
 	bool is_addict()
 	{
 		return	has_trait("Shroud Addict") ||

@@ -67,8 +67,7 @@ typedef struct sGang
 
 	~sGang()
 	{
-		if(m_Next)
-			delete m_Next;
+		if(m_Next) delete m_Next;
 		m_Prev = m_Next = 0;
 	}
 }sGang;
@@ -99,6 +98,8 @@ public:
 	sGang* GetHireableGang(int gangID);	// gets a recruitable gang
 	sGang* GetGangOnMission(u_int missID);	// gets a gang on the current mission
 	void UpdateGangs();
+
+	int GetMaxNumGangs();
 	int GetNumGangs();
 	int GetNumHireableGangs();
 	bool GangCombat(sGirl* girl, sGang* gang);								// returns true if the girl wins
@@ -140,11 +141,12 @@ public:
 private:
 	int m_BusinessesExtort;	// number of businesses under your control
 
+	int m_MaxNumGangs;
 	int m_NumGangNames;
-	unsigned char m_NumGangs;
+	int m_NumGangs;
 	sGang* m_GangStart;	// the start and end of the list of gangs under the players employment
 	sGang* m_GangEnd;
-	unsigned char m_NumHireableGangs;
+	int m_NumHireableGangs;
 	sGang* m_HireableGangStart;	// the start and end of the list of gangs which are available for hire
 	sGang* m_HireableGangEnd;
 

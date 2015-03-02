@@ -30,6 +30,7 @@
 #include "MasterFile.h"
 #include "DirPath.h"
 #include "cScreenGirlDetails.h"
+#include "cBrothel.h"
 
 #undef bool
 
@@ -73,8 +74,8 @@ vector<int> cycle_girls;  // globally available sorted list of girl IDs for Girl
 int cycle_pos;  //currently selected girl's position in the cycle_girls vector
 int summarysortorder = 0;	// the order girls get sorted in the summary lists
 
-sGirl* MarketSlaveGirls[12] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-int MarketSlaveGirlsDel[12] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
+sGirl* MarketSlaveGirls[20] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+int MarketSlaveGirlsDel[20] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
 
 CSurface* g_BrothelImages[7] = { 0, 0, 0, 0, 0, 0, 0 };
 
@@ -237,7 +238,7 @@ void NewGame()
 	g_Year = 1209; g_Month = 1; g_Day = 1;
 
 	selected_girl = 0;
-	for (int i = 0; i < 12; i++)
+	for (int i = 0; i < 20; i++)
 	{
 		MarketSlaveGirls[i] = 0;
 		MarketSlaveGirlsDel[i] = -1;
@@ -3079,6 +3080,28 @@ void SaveGame(bool saveCSV)
 	}
 }
 
+void SimpleSaveGameXML(string filename)	// `J` zzzzzz - incomplete code
+{
+	TiXmlDocument docq(filename + ".q");
+	TiXmlDeclaration* declq = new TiXmlDeclaration("1.0", "", "yes");
+	docq.LinkEndChild(declq);
+	TiXmlElement* qRoot = new TiXmlElement("Root");
+	docq.LinkEndChild(qRoot);
+
+	qRoot->SetAttribute("Year", g_Year);
+	qRoot->SetAttribute("Month", g_Month);
+	qRoot->SetAttribute("Day", g_Day);
+
+	qRoot->SetAttribute("NumberOfBrothels", g_Brothels.GetNumBrothels());
+	qRoot->SetAttribute("Gold", g_Gold.ival());
+
+	qRoot->SetAttribute("LoadedGirlsFiles", loadedGirlsFiles.size());
+
+
+
+
+	docq.SaveFile();
+}
 
 void SaveGameXML(string filename)
 {
@@ -3108,19 +3131,19 @@ void SaveGameXML(string filename)
 	pRoot->SetAttribute("TryCast", g_TryCast);
 
 	// output year, month and day
-	pRoot->SetAttribute("Year", g_Year);
-	pRoot->SetAttribute("Month", g_Month);
-	pRoot->SetAttribute("Day", g_Day);
+	pRoot->SetAttribute("Year", g_Year);		
+	pRoot->SetAttribute("Month", g_Month);		
+	pRoot->SetAttribute("Day", g_Day);			
 
 	//this replaces the "master file"
-	loadedGirlsFiles.SaveXML(pRoot);
+	loadedGirlsFiles.SaveXML(pRoot);			
 
 	// output player gold
-	g_Gold.saveGoldXML(pRoot);
+	g_Gold.saveGoldXML(pRoot);					
 
 	// output girls
 	g_Girls.SaveGirlsXML(pRoot);	// this is all the girls that have not been acquired
-
+	
 	// output gangs
 	g_Gangs.SaveGangsXML(pRoot);
 
@@ -3149,7 +3172,6 @@ void SaveGameXML(string filename)
 	g_GlobalTriggers.SaveTriggersXML(pRoot);
 	doc.SaveFile();
 
-
 	//ADB TODO
 #if 0
 	//this stuff is not saved, save it and load it
@@ -3163,6 +3185,8 @@ void SaveGameXML(string filename)
 	// update the shop inventory
 	g_InvManager.UpdateShop();
 #endif
+
+	SimpleSaveGameXML(filename);
 
 }
 
@@ -3324,7 +3348,7 @@ bool LoadGameXML(TiXmlHandle hDoc)
 	}
 
 	selected_girl = 0;
-	for (int i = 0; i<8; i++)
+	for (int i = 0; i < 20; i++)
 	{
 		MarketSlaveGirls[i] = 0;
 		MarketSlaveGirlsDel[i] = -1;

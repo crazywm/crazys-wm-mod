@@ -77,17 +77,19 @@ public:
 	{
 		TiXmlElement* pLoadedFiles = new TiXmlElement("Loaded_Files");
 		pRoot->LinkEndChild(pLoadedFiles);
-
 		TiXmlElement* pGirlsFiles = new TiXmlElement("Girls_Files");
 		pLoadedFiles->LinkEndChild(pGirlsFiles);
 
+		int numfiles = 0;
 		FileFlags::const_iterator it;
 		for(it = files.begin(); it != files.end(); it++)
 		{
 			TiXmlElement* pFile = new TiXmlElement("File");
 			pGirlsFiles->LinkEndChild(pFile);
 			pFile->SetAttribute("Filename", it->first);
+			numfiles++;
 		}
+		pLoadedFiles->SetAttribute("NumberofFiles", numfiles);
 		return pLoadedFiles;
 	}
 };

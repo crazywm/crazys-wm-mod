@@ -352,6 +352,77 @@ namespace WM_Girls_Generator
             }
         }
 
+        private void ValidateMarketMin(object sender, EventArgs e)
+        {
+            int mini = trackBar_Config_Market_Min.Value;
+            int maxi = trackBar_Config_Market_Max.Value;
+            if (mini < 0) mini = 0; if (maxi < mini) maxi = mini;
+            if (maxi > 20) maxi = 20; if (mini > maxi) mini = maxi;
+            trackBar_Config_Market_Min.Value = mini;
+            trackBar_Config_Market_Max.Value = maxi;
+            Label_Config_Market_Min.Text = trackBar_Config_Market_Min.Value.ToString();
+            Label_Config_Market_Max.Text = trackBar_Config_Market_Max.Value.ToString();
+        }
+        private void ValidateMarketMax(object sender, EventArgs e)
+        {
+            int mini = trackBar_Config_Market_Min.Value;
+            int maxi = trackBar_Config_Market_Max.Value;
+            if (maxi > 20) maxi = 20; if (mini > maxi) mini = maxi;
+            if (mini < 0) mini = 0; if (maxi < mini) maxi = mini;
+            trackBar_Config_Market_Min.Value = mini;
+            trackBar_Config_Market_Max.Value = maxi;
+            Label_Config_Market_Min.Text = trackBar_Config_Market_Min.Value.ToString();
+            Label_Config_Market_Max.Text = trackBar_Config_Market_Max.Value.ToString();
+            
+        }
+
+        private void ValidateGirlGetsA(object sender, EventArgs e)
+        {
+            if (trackBar_Config_Control_GirlsA.Value > trackBar_Config_Control_GirlsB.Value)
+                trackBar_Config_Control_GirlsB.Value = trackBar_Config_Control_GirlsA.Value;
+            int girlgirls = trackBar_Config_Control_GirlsA.Value;
+            int girlitems = trackBar_Config_Control_GirlsB.Value - trackBar_Config_Control_GirlsA.Value;
+            int girlbeast = 100 - trackBar_Config_Control_GirlsB.Value;
+            Label_Config_Control_Girls_Girls.Text = "Girl: " + girlgirls + "%";
+            Label_Config_Control_Girls_Items.Text = "Item: " + girlitems + "%";
+            Label_Config_Control_Girls_Beast.Text = "Beast: " + girlbeast + "%";
+        }
+        private void ValidateGirlGetsB(object sender, EventArgs e)
+        {
+            if (trackBar_Config_Control_GirlsB.Value < trackBar_Config_Control_GirlsA.Value)
+                trackBar_Config_Control_GirlsA.Value = trackBar_Config_Control_GirlsB.Value;
+            int girlgirls = trackBar_Config_Control_GirlsA.Value;
+            int girlitems = trackBar_Config_Control_GirlsB.Value - trackBar_Config_Control_GirlsA.Value;
+            int girlbeast = 100 - trackBar_Config_Control_GirlsB.Value;
+            Label_Config_Control_Girls_Girls.Text = "Girl: " + girlgirls + "%";
+            Label_Config_Control_Girls_Items.Text = "Item: " + girlitems + "%";
+            Label_Config_Control_Girls_Beast.Text = "Beast: " + girlbeast + "%";
+        }
+
+        private void ValidateGangGetsA(object sender, EventArgs e)
+        {
+            if (trackBar_Config_Control_GangsA.Value > trackBar_Config_Control_GangsB.Value)
+                trackBar_Config_Control_GangsB.Value = trackBar_Config_Control_GangsA.Value;
+            int Ganggirls = trackBar_Config_Control_GangsA.Value;
+            int Gangitems = trackBar_Config_Control_GangsB.Value - trackBar_Config_Control_GangsA.Value;
+            int Gangbeast = 100 - trackBar_Config_Control_GangsB.Value;
+            Label_Config_Control_Gangs_Girls.Text = "Girl: " + Ganggirls + "%";
+            Label_Config_Control_Gangs_Items.Text = "Item: " + Gangitems + "%";
+            Label_Config_Control_Gangs_Beast.Text = "Beast: " + Gangbeast + "%";
+        }
+        private void ValidateGangGetsB(object sender, EventArgs e)
+        {
+            if (trackBar_Config_Control_GangsB.Value < trackBar_Config_Control_GangsA.Value)
+                trackBar_Config_Control_GangsA.Value = trackBar_Config_Control_GangsB.Value;
+            int Ganggirls = trackBar_Config_Control_GangsA.Value;
+            int Gangitems = trackBar_Config_Control_GangsB.Value - trackBar_Config_Control_GangsA.Value;
+            int Gangbeast = 100 - trackBar_Config_Control_GangsB.Value;
+            Label_Config_Control_Gangs_Girls.Text = "Girl: " + Ganggirls + "%";
+            Label_Config_Control_Gangs_Items.Text = "Item: " + Gangitems + "%";
+            Label_Config_Control_Gangs_Beast.Text = "Beast: " + Gangbeast + "%";
+        }
+
+
         public static bool IsNumeric(string strToCheck) //function to check if string is numeric or not
         {
             return Regex.IsMatch(strToCheck, "^\\d+(\\.\\d+)?$");

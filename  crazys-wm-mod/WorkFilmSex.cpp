@@ -72,9 +72,9 @@ bool cJobManager::WorkFilmSex(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	else if (roll <= 10) { enjoy -= g_Dice % 4 + 1;	ss << "She didn't want sex today, but she did it anyway.\n\n"; }
-	else if (roll >= 90) { enjoy += g_Dice % 4 + 1;	ss << "She loved having a man in her pussy today.\n\n"; }
-	else /*    */{ enjoy += max(0, g_Dice % 3 - 1);	ss << "She had a pleasant day fucking her co-star.\n\n"; }
+	else if (roll <= 10) { enjoy -= g_Dice % 3 + 1;	ss << "She didn't want sex today, but she did it anyway.\n\n"; }
+	else if (roll >= 90) { enjoy += g_Dice % 3 + 1;	ss << "She loved having a man in her pussy today.\n\n"; }
+	else /*            */{ enjoy += g_Dice % 2;		ss << "She had a pleasant day fucking her co-star.\n\n"; }
 	jobperformance = enjoy * 2;
 
 	if (g_Girls.CheckVirginity(girl))
@@ -89,7 +89,8 @@ bool cJobManager::WorkFilmSex(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	ss << "Her scene is valued at: " << finalqual << " gold.\n";
 
 	g_Building = BUILDING_STUDIO;
-	if (!girl->calc_pregnancy(g_Brothels.GetPlayer(), false, 1.0))
+	sCustomer Cust; g_Customers.GetCustomer(Cust, brothel);	Cust.m_Amount = 1; Cust.m_IsWoman = false;
+	if (!girl->calc_pregnancy(&Cust, false, 1.0))
 	{
 		g_MessageQue.AddToQue(girl->m_Realname + " has gotten pregnant", 0);
 	}

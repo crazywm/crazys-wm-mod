@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="Whore's Horror" Desc="This flower contains significant magical properties. It also holds living cultures of every sexual disease known to brothels." 
+    Type="Food" Badness="100" Special="None" Cost="5000" Rarity="Common" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Mana" Amount="60" />
+        <Effect What="Trait" Name="AIDS" Amount="1" />
+        <Effect What="Trait" Name="Chlamydia" Amount="1" />
+        <Effect What="Trait" Name="Herpes" Amount="1" />
+        <Effect What="Trait" Name="Syphilis" Amount="1" />
+    </Item>
+</Items>

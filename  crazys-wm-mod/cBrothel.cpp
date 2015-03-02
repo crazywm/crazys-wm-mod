@@ -3282,43 +3282,38 @@ void cBrothelManager::UpdateObjective()
 {
 	if (m_Objective)
 	{
-		if (m_Objective->m_Limit != -1)
-			m_Objective->m_Limit--;
-		if (m_Objective->m_Limit == 0)
-		{
-			g_MessageQue.AddToQue(gettext("You have failed an objective."), COLOR_RED);
-			delete m_Objective;
-			m_Objective = 0;
-			return;
-		}
+		if (m_Objective->m_Limit > -1) m_Objective->m_Limit--;
 
 		switch (m_Objective->m_Objective)
 		{
 		case OBJECTIVE_REACHGOLDTARGET:
-			if (g_Gold.ival() >= m_Objective->m_Target)
-				PassObjective();
+			if (g_Gold.ival() >= m_Objective->m_Target)				PassObjective();
 			break;
 		case OBJECTIVE_HAVEXGOONS:
-			if (g_Gangs.GetNumGangs() >= m_Objective->m_Target)
-				PassObjective();
+			if (g_Gangs.GetNumGangs() >= m_Objective->m_Target)		PassObjective();
 			break;
 		case OBJECTIVE_STEALXAMOUNTOFGOLD:
 		case OBJECTIVE_CAPTUREXCATACOMBGIRLS:
 		case OBJECTIVE_KIDNAPXGIRLS:
 		case OBJECTIVE_EXTORTXNEWBUSINESS:
-			if (m_Objective->m_SoFar >= m_Objective->m_Target)
-				PassObjective();
+			if (m_Objective->m_SoFar >= m_Objective->m_Target)		PassObjective();
 			break;
 		case OBJECTIVE_HAVEXMONSTERGIRLS:
-			if (GetTotalNumGirls(true) >= m_Objective->m_Target)
-				PassObjective();
+			if (GetTotalNumGirls(true) >= m_Objective->m_Target)	PassObjective();
 			break;
 		case OBJECTIVE_HAVEXAMOUNTOFGIRLS:
-			if (GetTotalNumGirls() >= m_Objective->m_Target)
-				PassObjective();
+			if (GetTotalNumGirls() >= m_Objective->m_Target)		PassObjective();
 			break;
 
 			// note that OBJECTIVE_GETNEXTBROTHEL has PassObjective() call in cScreenTown when passed.
+		}
+		
+		// `J` moved to the end and fixed so if the objective is passed (thus deleted), failure is not returned
+		if (m_Objective != 0 && m_Objective->m_Limit == 0)
+		{
+			g_MessageQue.AddToQue(gettext("You have failed an objective."), COLOR_RED);
+			delete m_Objective;
+			m_Objective = 0;
 		}
 	}
 }
@@ -3327,8 +3322,7 @@ sObjective* cBrothelManager::GetObjective(){ return m_Objective; }
 
 void cBrothelManager::CreateNewObjective()
 {
-	if (m_Objective)
-		delete m_Objective;
+	if (m_Objective) delete m_Objective;
 	m_Objective = 0;
 
 	m_Objective = new sObjective();
@@ -3376,10 +3370,10 @@ void cBrothelManager::CreateNewObjective()
 
 			case OBJECTIVE_HAVEXGOONS:
 			{
-				if (g_Gangs.GetNumGangs() < 8)
+				if (g_Gangs.GetNumGangs() < g_Gangs.GetMaxNumGangs())
 				{
 					m_Objective->m_Target = g_Gangs.GetNumGangs() + ((g_Dice % 3) + 1);
-					if (m_Objective->m_Target > 8) m_Objective->m_Target = 8;
+					if (m_Objective->m_Target > g_Gangs.GetMaxNumGangs()) m_Objective->m_Target = g_Gangs.GetMaxNumGangs();
 					m_Objective->m_Limit = (m_Objective->m_Difficulty >= 3 ? (g_Dice % 4) + 3 : (g_Dice % 7) + 6);
 					ss << gettext("Have ") << m_Objective->m_Target << gettext(" gangs within ") << m_Objective->m_Limit << gettext(" weeks.");
 					done = true;
@@ -3453,21 +3447,24 @@ void cBrothelManager::CreateNewObjective()
 				done = true;
 			}break;
 
-			case OBJECTIVE_EXTORTXNEWBUSINESS:
-			{
-				ss << gettext("Gain control of ");
-				if (m_Objective->m_Difficulty >= 2)
+			case OBJECTIVE_EXTORTXNEWBUSINESS: 
+			{	// `J` if there are not enough available businesses, don't use this one
+				if (TOWN_NUMBUSINESSES > g_Gangs.GetNumBusinessExtorted() + 5)	
 				{
-					m_Objective->m_Limit = (g_Dice % 5) + 1;
-					m_Objective->m_Target = (g_Dice % (m_Objective->m_Limit - 1)) + 1;
-					ss << m_Objective->m_Target << gettext(" new businesses within ") << m_Objective->m_Limit << gettext(" weeks.");
+					ss << gettext("Gain control of ");
+					if (m_Objective->m_Difficulty >= 2)
+					{
+						m_Objective->m_Limit = (g_Dice % 5) + 1;
+						m_Objective->m_Target = (g_Dice % (m_Objective->m_Limit - 1)) + 1;
+						ss << m_Objective->m_Target << gettext(" new businesses within ") << m_Objective->m_Limit << gettext(" weeks.");
+					}
+					else
+					{
+						m_Objective->m_Target = (g_Dice % 5) + 1;
+						ss << m_Objective->m_Target << gettext(" new businesses.");
+					}
+					done = true;
 				}
-				else
-				{
-					m_Objective->m_Target = (g_Dice % 5) + 1;
-					ss << m_Objective->m_Target << gettext(" new businesses.");
-				}
-				done = true;
 			}break;
 
 			case OBJECTIVE_HAVEXAMOUNTOFGIRLS:
@@ -3512,6 +3509,14 @@ void cBrothelManager::PassObjective()
 {
 	if (m_Objective)
 	{
+		// `J` fix for REWARD_RIVALHINDER so it does not have to recall PassObjective()
+		cRival* rival = 0;
+		if (m_Objective->m_Reward == REWARD_RIVALHINDER)
+		{
+			rival = m_Rivals.GetRandomRival();
+			if (!rival) m_Objective->m_Reward = REWARD_GOLD;
+		}
+
 		stringstream ss;
 		ss << gettext("You have completed your objective and you get ");
 		switch (m_Objective->m_Reward)
@@ -3542,21 +3547,10 @@ void cBrothelManager::PassObjective()
 
 		case REWARD_RIVALHINDER:
 		{
-			cRival* rival = m_Rivals.GetRandomRival();
-			if (rival)
-			{
-				long gold = (rival->m_Gold > 10 ? (g_Dice % (rival->m_Gold / 2)) + 1 : 436);
-				rival->m_Gold -= gold;
-				ss << gettext("to steal ") << gold << gettext(" gold from the ") << rival->m_Name << gettext(".");
-				g_Gold.objective_reward(gold);
-			}
-			else
-			{
-				ss.str("");
-				m_Objective->m_Reward = REWARD_GOLD;
-				// `J` - zzzzzz - need to fix this so it does not have to recall itself
-				PassObjective();
-			}
+			long gold = (rival->m_Gold > 10 ? (g_Dice % (rival->m_Gold / 2)) + 1 : 436);
+			rival->m_Gold -= gold;
+			ss << gettext("to steal ") << gold << gettext(" gold from the ") << rival->m_Name << gettext(".");
+			g_Gold.objective_reward(gold);
 		}break;
 
 		case REWARD_ITEM:
@@ -3637,10 +3631,8 @@ void cBrothelManager::PassObjective()
 
 void cBrothelManager::AddCustomObjective(int limit, int diff, int objective, int reward, int sofar, int target)
 {
-	if (m_Objective)
-		delete m_Objective;
+	if (m_Objective) delete m_Objective;
 	m_Objective = 0;
-
 	m_Objective = new sObjective();
 
 	m_Objective->m_Difficulty = diff;
@@ -3918,7 +3910,7 @@ vector<sGirl*> cBrothelManager::GirlsOnJob(int BrothelID, int JobID, bool Day0Ni
 sGirl* cBrothelManager::GetRandomGirlOnJob(int BrothelID, int JobID, bool Day0Night1)
 {
 	sGirl* girl = 0;
-	vector<sGirl *> girls = GirlsOnJob(0, JOB_DOCTOR, Day0Night1);
+	vector<sGirl *> girls = GirlsOnJob(BrothelID, JobID, Day0Night1);
 	if (girls.size() > 0) girl = girls[g_Dice%girls.size()];
 
 	return girl;

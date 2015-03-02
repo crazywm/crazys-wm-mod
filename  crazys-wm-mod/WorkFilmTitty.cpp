@@ -70,9 +70,9 @@ bool cJobManager::WorkFilmTitty(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	else if (roll <= 10) { enjoy -= g_Dice % 4 + 1;	ss << "She used her breasts on his cock, but didn't like it.\n\n"; }
-	else if (roll >= 90) { enjoy += g_Dice % 4 + 1;	ss << "She loved having his cock slide between her breasts.\n\n"; }
-	else /*    */{ enjoy += max(0, g_Dice % 3 - 1);	ss << "She had a pleasant day using her tits to get her co-star off.\n\n"; }
+	else if (roll <= 10) { enjoy -= g_Dice % 3 + 1;	ss << "She used her breasts on his cock, but didn't like it.\n\n"; }
+	else if (roll >= 90) { enjoy += g_Dice % 3 + 1;	ss << "She loved having his cock slide between her breasts.\n\n"; }
+	else /*            */{ enjoy += g_Dice % 2;		ss << "She had a pleasant day using her tits to get her co-star off.\n\n"; }
 	jobperformance = enjoy * 2;
 
 	// remaining modifiers are in the AddScene function --PP

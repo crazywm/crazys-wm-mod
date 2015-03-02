@@ -115,8 +115,8 @@ cSlider* g_DragSlider = 0;  // if a slider is being dragged, this points to it
 
 extern CSurface* g_BrothelImages[7];
 extern bool g_InitWin;
-extern sGirl* MarketSlaveGirls[12];
-extern int MarketSlaveGirlsDel[12];
+extern sGirl* MarketSlaveGirls[20];
+extern int MarketSlaveGirlsDel[20];
 extern string g_ReturnText;
 
 // SDL Graphics interface
@@ -1352,7 +1352,7 @@ void Shutdown()
 	}
 
 	g_LogFile.write("Releasing Girls");
-	for (int i = 0; i<8; i++)
+	for (int i = 0; i<20; i++)
 	{
 		if (MarketSlaveGirls[i] && MarketSlaveGirlsDel[i] == -1)
 			delete MarketSlaveGirls[i];

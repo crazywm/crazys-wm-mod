@@ -262,7 +262,7 @@ void cScreenGangs::init()
 	if (sel_recruit == -1 && GetListBoxSize(recruitlist_id) >= 1) sel_recruit = 0;
 	if (sel_recruit >= 0) SetSelectedItemInList(recruitlist_id, sel_recruit);
 
-	DisableButton(ganghire_id, (g_Gangs.GetNumHireableGangs() <= 0) || (g_Gangs.GetNumGangs() >= 8) || (sel_recruit == -1));
+	DisableButton(ganghire_id, (g_Gangs.GetNumHireableGangs() <= 0) || (g_Gangs.GetNumGangs() >= g_Gangs.GetMaxNumGangs()) || (sel_recruit == -1));
 	DisableButton(gangfire_id, (g_Gangs.GetNumGangs() <= 0) || (selection == -1));
 
 	potions = wlev = nets = 0;
@@ -646,8 +646,7 @@ int cScreenGangs::set_mission_desc(int mid)
 
 void cScreenGangs::hire_recruitable()
 {
-	if ((g_Gangs.GetNumGangs() >= 8) || (sel_recruit == -1))
-		return;
+	if ((g_Gangs.GetNumGangs() >= g_Gangs.GetMaxNumGangs()) || (sel_recruit == -1)) return;
 	g_Gangs.HireGang(sel_recruit);
 	g_InitWin = true;
 }

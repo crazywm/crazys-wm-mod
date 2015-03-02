@@ -46,7 +46,7 @@ sConfigData::sConfigData(const char *a_filename)
 	DirPath dpold = DirPath() << "Resources" << "Data" << a_filename;
 	string filename = dp.c_str();
 	string filenameold = dpold.c_str();
-	l.ss() << "Loading configration variables from '" << filename << "'"; l.ssend();
+	l.ss() << "Loading configuration variables from '" << filename << "'"; l.ssend();
 	/*
 	*	make sure we have something playable,
 	*	even if the file doesn't load
@@ -90,6 +90,7 @@ sConfigData::sConfigData(const char *a_filename)
 		if (el->ValueStr() == "Gambling")		{ get_gambling_factors(el);	continue; }
 		if (el->ValueStr() == "Prostitution")	{ get_pros_factors(el);		continue; }
 		if (el->ValueStr() == "Catacombs")		{ get_catacombs_data(el);	continue; }
+		if (el->ValueStr() == "SlaveMarket")	{ get_slave_market_data(el);continue; }
 		if (el->ValueStr() == "Pregnancy")		{ get_preg_factors(el);		continue; }
 		if (el->ValueStr() == "Tax")			{ get_tax_factors(el);		continue; }
 		if (el->ValueStr() == "Gangs")			{ get_gang_factors(el);		continue; }
@@ -333,6 +334,7 @@ void sConfigData::get_income_factors(TiXmlElement *el)
 	if (pt = el->Attribute("ItemSales"))			get_att(el, "ItemSales", &in_fact.item_sales);
 	if (pt = el->Attribute("ClinicIncome"))			get_att(el, "ClinicIncome", &in_fact.clinic_income);
 	if (pt = el->Attribute("ArenaIncome"))			get_att(el, "ArenaIncome", &in_fact.arena_income);
+	if (pt = el->Attribute("FarmIncome"))			get_att(el, "FarmIncome", &in_fact.farm_income);
 }
 
 void sConfigData::get_expense_factors(TiXmlElement *el)
@@ -396,13 +398,14 @@ void sConfigData::get_preg_factors(TiXmlElement *el)
 	if (pt = el->Attribute("GoodSexFactor"))		get_att(el, "GoodSexFactor", &pregnancy.good_sex_factor);
 	if (pt = el->Attribute("ChanceOfGirl"))			get_att(el, "ChanceOfGirl", &pregnancy.chance_of_girl);
 	if (pt = el->Attribute("WeeksPregnant"))		get_att(el, "WeeksPregnant", &pregnancy.weeks_pregnant);
-	if (pt = el->Attribute("WeeksMonsterP"))		get_att(el, "WeeksMonsterP", &pregnancy.weeks_monster_p);	// `J` added
+	if (pt = el->Attribute("WeeksMonsterP"))		get_att(el, "WeeksMonsterP", &pregnancy.weeks_monster_p);			// `J` added
 	if (pt = el->Attribute("MiscarriageChance"))	get_att(el, "MiscarriageChance", &pregnancy.miscarriage_chance);	// `J` added
 	if (pt = el->Attribute("MiscarriageMonster"))	get_att(el, "MiscarriageMonster", &pregnancy.miscarriage_monster);	// `J` added
 	if (pt = el->Attribute("WeeksTillGrown"))		get_att(el, "WeeksTillGrown", &pregnancy.weeks_till_grown);
 	if (pt = el->Attribute("CoolDown"))				get_att(el, "CoolDown", &pregnancy.cool_down);
 	if (pt = el->Attribute("AntiPregFailure"))		get_att(el, "AntiPregFailure", &pregnancy.anti_preg_failure);
-	if (pt = el->Attribute("MultiBirthChance"))		get_att(el, "MultiBirthChance", &pregnancy.multi_birth_chance);
+	if (pt = el->Attribute("MultiBirthChance"))		get_att(el, "MultiBirthChance", &pregnancy.multi_birth_chance);		// `J` added
+	if (pregnancy.multi_birth_chance > 50)			pregnancy.multi_birth_chance = 50;									// `J` limited
 }
 
 void sConfigData::get_pros_factors(TiXmlElement *el)
@@ -415,6 +418,8 @@ void sConfigData::get_pros_factors(TiXmlElement *el)
 void sConfigData::get_catacombs_data(TiXmlElement *el)
 {
 	const char *pt;
+	if (pt = el->Attribute("UniqueCatacombs"))		get_att(el, "UniqueCatacombs", &catacombs.unique_catacombs);
+	// load them
 	if (pt = el->Attribute("ControlGirls"))			get_att(el, "ControlGirls", catacombs.control_girls);
 	if (pt = el->Attribute("ControlGangs"))			get_att(el, "ControlGangs", catacombs.control_gangs);
 	if (pt = el->Attribute("GirlGetsGirls"))		get_att(el, "GirlGetsGirls", &catacombs.girl_gets_girls);
@@ -423,19 +428,25 @@ void sConfigData::get_catacombs_data(TiXmlElement *el)
 	if (pt = el->Attribute("GangGetsGirls"))		get_att(el, "GangGetsGirls", &catacombs.gang_gets_girls);
 	if (pt = el->Attribute("GangGetsItems"))		get_att(el, "GangGetsItems", &catacombs.gang_gets_items);
 	if (pt = el->Attribute("GangGetsBeast"))		get_att(el, "GangGetsBeast", &catacombs.gang_gets_beast);
-
-	double checkggirl = abs(catacombs.girl_gets_girls) + abs(catacombs.girl_gets_items) + abs(catacombs.girl_gets_beast);
+	// make them positive
+	if (catacombs.girl_gets_girls < 0) catacombs.girl_gets_girls = -catacombs.girl_gets_girls;
+	if (catacombs.girl_gets_items < 0) catacombs.girl_gets_items = -catacombs.girl_gets_items;
+	if (catacombs.girl_gets_beast < 0) catacombs.girl_gets_beast = -catacombs.girl_gets_beast;
+	if (catacombs.gang_gets_girls < 0) catacombs.gang_gets_girls = -catacombs.gang_gets_girls;
+	if (catacombs.gang_gets_items < 0) catacombs.gang_gets_items = -catacombs.gang_gets_items;
+	if (catacombs.gang_gets_beast < 0) catacombs.gang_gets_beast = -catacombs.gang_gets_beast;
+	// make them percents
+	double checkggirl = catacombs.girl_gets_girls + catacombs.girl_gets_items + catacombs.girl_gets_beast;
 	if (checkggirl == 0) catacombs.girl_gets_girls = catacombs.girl_gets_items = catacombs.girl_gets_beast = (100 / 3);
-	else
+	else if (checkggirl != 100)
 	{
 		catacombs.girl_gets_girls = (100.0 / checkggirl) * catacombs.girl_gets_girls;
 		catacombs.girl_gets_items = (100.0 / checkggirl) * catacombs.girl_gets_items;
 		catacombs.girl_gets_beast = 100.0 - catacombs.girl_gets_girls - catacombs.girl_gets_items;
 	}
-
-	double checkggang = abs(catacombs.gang_gets_girls) + abs(catacombs.gang_gets_items) + abs(catacombs.gang_gets_beast);
+	double checkggang = catacombs.gang_gets_girls + catacombs.gang_gets_items + catacombs.gang_gets_beast;
 	if (checkggang == 0) catacombs.gang_gets_girls = catacombs.gang_gets_items = catacombs.gang_gets_beast = (100 / 3);
-	else
+	else if (checkggang != 100)
 	{
 		catacombs.gang_gets_girls = (100.0 / checkggang) * catacombs.gang_gets_girls;
 		catacombs.gang_gets_items = (100.0 / checkggang) * catacombs.gang_gets_items;
@@ -443,11 +454,12 @@ void sConfigData::get_catacombs_data(TiXmlElement *el)
 	}									 
 }
 
-void sConfigData::get_unique_factors(TiXmlElement *el)
+void sConfigData::get_slave_market_data(TiXmlElement *el)
 {
 	const char *pt;
-	if (pt = el->Attribute("UniqueCatacombs"))		get_att(el, "UniqueCatacombs", &uniquegirl.unique_catacombs);
-	if (pt = el->Attribute("UniqueMarket"))			get_att(el, "UniqueMarket", &uniquegirl.unique_market);
+	if (pt = el->Attribute("UniqueMarket"))			get_att(el, "UniqueMarket", &slavemarket.unique_market);
+	if (pt = el->Attribute("SlavesNewWeeklyMin"))	get_att(el, "SlavesNewWeeklyMin", &slavemarket.slavesnewweeklymin);
+	if (pt = el->Attribute("SlavesNewWeeklyMax"))	get_att(el, "SlavesNewWeeklyMax", &slavemarket.slavesnewweeklymax);
 }
 
 void sConfigData::get_gang_factors(TiXmlElement *el)
@@ -562,6 +574,7 @@ void sConfigData::set_defaults()
 	in_fact.item_sales = 1.0;
 	in_fact.clinic_income = 1.0;
 	in_fact.arena_income = 1.0;
+	in_fact.farm_income = 1.0;
 
 	out_fact.training = 0.0;
 	out_fact.actress_wages = 0.0;
@@ -617,6 +630,7 @@ void sConfigData::set_defaults()
 	prostitution.rape_brothel = 1;
 	prostitution.rape_streets = 5;
 
+	catacombs.unique_catacombs = 50;
 	catacombs.control_girls = false;
 	catacombs.control_gangs = false;
 	catacombs.girl_gets_girls = 33.33;
@@ -626,8 +640,9 @@ void sConfigData::set_defaults()
 	catacombs.gang_gets_items = 33.33;
 	catacombs.gang_gets_beast = 33.33;
 
-	uniquegirl.unique_catacombs = 50;
-	uniquegirl.unique_market = 35;
+	slavemarket.unique_market = 35;
+	slavemarket.slavesnewweeklymin = 5;
+	slavemarket.slavesnewweeklymax = 12;
 
 	for (int i = 0; i<9; i++)
 	{

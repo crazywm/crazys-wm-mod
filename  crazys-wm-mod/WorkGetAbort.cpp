@@ -317,6 +317,7 @@ bool cJobManager::WorkGetAbort(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		g_Girls.UpdateStat(girl, STAT_PCLOVE, love);
 		g_Girls.UpdateStat(girl, STAT_PCHATE, hate);
 		cConfig cfg;
+		girl->m_ChildrenCount[CHILD09_ABORTIONS]++;
 		girl->clear_pregnancy();
 		girl->m_PregCooldown = cfg.pregnancy.cool_down();
 		girl->m_WorkingDay = 0;

@@ -1,15 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Items>
-<Item Name="Fertility Tome"    
-      Desc="This tome glows with magical runes whenever it approaches anyone female. If opened by a male, it appears blank and does nothing. But once opened by a woman of any species, it imbues her with great fertility and sexuality, then quickly turns to dust. (-Sterile, +50 Normal Sex, +100 Libido)" 
-      Type="Food" 
-      Badness="0" 
-      Special="None" 
-      Cost="10000" 
-      Rarity="Shop05" 
-      Infinite="false">
-   <Effect What="Stat" Name="Libido" Amount="100" />
-   <Effect What="Skill" Name="NormalSex" Amount="50" />
-   <Effect What="Trait" Name="Sterile" Amount="0" />
-</Item>
+    <Item Name="Fertility Tome" Desc="This tome glows with magical runes whenever it approaches anyone female. If opened by a male, it appears blank and does nothing. But once opened by a woman of any species, it imbues her with great fertility and sexuality, then quickly turns to dust. (-Sterile, +Fertile, +50 Normal Sex, +100 Libido)" 
+    Type="Food" Badness="0" Special="None" Cost="10000" Rarity="Shop05" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Libido" Amount="100" />
+        <Effect What="Skill" Name="NormalSex" Amount="50" />
+        <Effect What="Trait" Name="Sterile" Amount="0" />
+        <Effect What="Trait" Name="Fertile" Amount="1" />
+    </Item>
 </Items>

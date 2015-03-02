@@ -1691,7 +1691,7 @@ Updated Item "Elixir of Ultimate Regeneration" to return dead girls and zombies 
 
 ###  Changes 2/19/2015
 Fixed a bug in automatic disease cure code
-Added unique chance to config.xml for Catacombs and Slave Market
+Added unique chance to config.xml for Catacombs and Slave Market - (forgot to make it actually load it)
 
 WME - Added unique chance to config.xml for Catacombs and Slave Market
 WME - Added Item Weight - not used in game yet
@@ -1724,10 +1724,86 @@ Crazy pushed SVN-r154
 !!!!!!!!!!!!!!!!!!!! pushed to SVN - r155
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.23
 
+###  Changes 2/22-23/2015 - didn't do much - played the game a little to make sure it works.
+Increased max number of gangs to 7 + number of brothels.
 
+###  Changes 2/24/2015
+Started adding simple-save file to allow for easy load list expansion. - not finished
 
+###  Changes 2/25-3/1/2015
+Started updating farm jobs to add food and drink counter to offset higher girl accommodation costs
+ - WorkMilker now adds common Milk items
+Added girl's strength to GetCombatDamage() so base damage is min(1,strength/10) instead of flat 5
+Started adding child type counts:
+ - Children are now counted when born (or not)
+ - The numbers are listed in the second detail list
+Multiple births:
+ - The initial creation of the child when the girl gets pregnant adds m_MultiBirth based on cfg.pregnancy.multi_birth_chance()
+ - 2 counts, m_MultiBirth (total babies) and m_GirlsBorn (total girls), number of boys is (m_MultiBirth-m_GirlsBorn)
+ - Completed multiple birth texts
+ - Added fertility level adjustments to births.
+Fixed a bug in UpdateObjective() where any objective will always fail on the last turn allowed.
+Fixed a flow problem with Hinder_Rival reward if there are no rivals.
+Added a check for OBJECTIVE_EXTORTXNEWBUSINESS to only allow it as an objective if there are atleast 5 available businesses to acquire.
+Added g_Dice.bell(min,max) function - not a true bell curve but it works ok for what I need.
+Added "SlavesNewWeeklyMin" and "SlavesNewWeeklyMax" and made the slave market use a bell curve for them.
+Added m_Finance.farm_income and "FarmIncome" to config.xml
+Fixed a bug in GetRandomGirlOnJob
 
+Added several items from MMeer and I_V_Saur
 
+WME - Added "SlavesNewWeeklyMin" and "SlavesNewWeeklyMax" for config.xml
+WME - Added "FarmIncome" to config.xml
+WME - Converted Catacombs girl/gang collecting numbers from text numbers to sliders
+WME - Fixed problem with Items - temporary trait duration saving for all items instead of just temporary items.
+
+Note about the unique chance for Catacomb girls and Slave Market girls:
+ - I added a group specifically for the Slave Market so I am moving them into the groups more appropriate for them.
+ - Because I forgot to add the part in the game code where it was supposed to load them, changing them now should not affect the game at all.
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.07
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r156
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.24
 
  
-$$$$ note to self - when updating items to recalculate stats/skills when loading girls - don't modify temp stuff $$$$
+ 
+ 
+ 
+
+
+
+$$$$ TO DO - SHORT TERM - (for this version) $$$$
+
+
+$$$$ TO DO - MID TERM - (for the next few versions) $$$$
+Keep expanding on simple-save
+food and drink
+
+New Script Stuff:
+ - Add_Trait, Remove_Trait, Has_Trait, Does_Not_Have_Trait
+ - Get_Girl_Name
+ - Picture_Sequence
+ - Make_Movie_Scene
+ - And/Or
+New Default Interacts for each building
+ - DefaultInteractStudio.script
+ - DefaultInteractArena.script
+ - DefaultInteractCentre.script
+ - DefaultInteractClinic.script
+ - DefaultInteractFarm.script
+ - DefaultInteractHouse.script
+New Meet Try for the buildings that don't have them
+ - MeetCentreTry.script (homeless, addicts, psychpatients, etc.)
+ - MeetFarmTry.script (beast girls, farmers, craftsmen, etc.)
+ - MeetHouseTry.script (House party? - Costs money to do, adds lots of filthiness to the house, etc.)
+
+
+
+
+
+$$$$ NOTE TO SELF - When updating items to recalculate stats/skills when loading girls - don't modify temp stuff $$$$
+
+
+$$$$ TO DO - LONG TERM $$$$
+Update from SDL1.2 to SDL2.0 (or something else)
+Expand the map and allow multiples of all buildings

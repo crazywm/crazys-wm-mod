@@ -115,8 +115,7 @@ void cGirlTorture::DoTorture()
  */
 
 	// Sanity check. Abort on dead girl
-	if (m_Girl->health() <= 0)
-		return;
+	if (m_Girl->health() <= 0) return;
 	
 	m_Fight	= false;
 	m_Player = g_Brothels.GetPlayer();
@@ -129,27 +128,23 @@ void cGirlTorture::DoTorture()
 
 	if(bDebug)
 	{
-		if (m_TorturedByPlayer)
-			l.ss() << "\ncGirlTorture: Player is torturing " << sGirlName << ".";
-		else
-			l.ss() << "\ncGirlTorture: " << m_Torturer->m_Realname << " is torturing " << sGirlName << ".";
+		if (m_TorturedByPlayer) l.ss() << "\ncGirlTorture: Player is torturing " << sGirlName << ".";
+		else l.ss() << "\ncGirlTorture: " << m_Torturer->m_Realname << " is torturing " << sGirlName << ".";
 		l.ssend();
 	}
 /*
  *	clear down the message and start with her name
  */		
 	m_Message = "";
-	if (m_TorturedByPlayer)
-		m_Message = sGirlName + ": ";
+	if (m_TorturedByPlayer) m_Message = sGirlName + ": ";
 /*
  *	only allow this once a week
  */
 	// WD	Don't allow girls to be tortured by both the Player and the Torturer
-	if (m_Girl->m_Tort && !g_Cheats) {
-		if (m_TorturedByPlayer)
-			m_Message += gettext("You may only torture someone once per week.\n");
-		else
-			m_Message += sGirlName + gettext(" has allready been tortured this week.\n");
+	if (m_Girl->m_Tort && !g_Cheats)
+	{
+		if (m_TorturedByPlayer) m_Message += gettext("You may only torture someone once per week.\n");
+		else m_Message += sGirlName + gettext(" has already been tortured this week.\n");
 		return;
 	}
 
@@ -164,8 +159,7 @@ void cGirlTorture::DoTorture()
 		else
 		{
 			sMsg = sGirlName + gettext(" gave birth and had the week off so was not tortured this week.");
-			m_Message += gettext("Since ") + sGirlName +
-				gettext(" gave birth she was not tortured this week.\n");
+			m_Message += gettext("Since ") + sGirlName + gettext(" gave birth she was not tortured this week.\n");
 			//m_Girl->m_Events.AddMessage(sMsg, IMGTYPE_PROFILE, EVENT_DUNGEON);
 			m_Torturer->m_Events.AddMessage( sMsg, IMGTYPE_PROFILE, EVENT_DUNGEON);
 		}
@@ -552,6 +546,7 @@ bool cGirlTorture::IsGirlInjured(unsigned int unModifier)
 		(m_Girl->carrying_monster() && g_Dice.percent(nMod))	)	// `J` added insemination loss chance
 	{  // unintended abortion time
 		//injured = true;
+		m_Girl->m_ChildrenCount[CHILD08_MISCARRIAGES]++;
 		m_Girl->clear_pregnancy();
 		m_Girl->happiness(-20);
 		m_Girl->spirit(-5);

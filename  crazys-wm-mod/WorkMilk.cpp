@@ -30,6 +30,7 @@ extern cRng g_Dice;
 extern cGold g_Gold;
 extern cBrothelManager g_Brothels;
 extern cFarmManager g_Farm;
+extern cInventory g_InvManager;
 
 // `J` Job Farm - Laborers
 bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
@@ -58,7 +59,9 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 
 
 
-#if 0	// `J` New job function - needs work - commenting out for now
+#if 0	
+	
+	// `J` New job function - needs work - commenting out for now
 	/*
 	100 lactation + preg + notrait = volume should be 20-30oz per day, 140-210oz per week
 

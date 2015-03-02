@@ -196,7 +196,7 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 		{
 			numgirls--;
 			sGirl* ugirl = 0;
-			if (g_Dice.percent(cfg.uniquegirl.unique_catacombs()))	// chance of getting unique girl
+			if (g_Dice.percent(cfg.catacombs.unique_catacombs()))	// chance of getting unique girl
 			{
 				ugirl = g_Girls.GetRandomGirl(false, true);				// Unique monster girl type
 			}

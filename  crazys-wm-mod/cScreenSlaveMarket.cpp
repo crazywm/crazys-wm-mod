@@ -30,8 +30,8 @@ extern	cGold			g_Gold;
 extern	cBrothelManager		g_Brothels;
 extern	cWindowManager		g_WinManager;
 extern	cInterfaceEventManager	g_InterfaceEvents;
-extern sGirl* MarketSlaveGirls[12];
-extern int MarketSlaveGirlsDel[12];
+extern sGirl* MarketSlaveGirls[20];
+extern int MarketSlaveGirlsDel[20];
 extern bool g_GenGirls;
 extern bool g_Cheats;
 extern cTraits g_Traits;
@@ -94,22 +94,10 @@ void cScreenSlaveMarket::init()
 	// clear the list
 	ClearListBox(slave_list_id);
 
-	int numgirls=g_Dice.d100();
-	/* */if (numgirls < 3)	numgirls = 5;	// 3%
-	else if (numgirls < 10)	numgirls = 6;	// 7%
-	else if (numgirls < 25)	numgirls = 7;	// 15%
-	else if (numgirls < 70)	numgirls = 8;	// 45%
-	else if (numgirls < 85)	numgirls = 9;	// 15%
-	else if (numgirls < 95)	numgirls = 10;	// 10%
-	else /*              */	numgirls = 11;	// 5%
-
-
-
-
-
+	int numgirls = g_Dice.bell(cfg.slavemarket.slavesnewweeklymin(), cfg.slavemarket.slavesnewweeklymax());
 
 	// Check if any slave girls
-	for (int i = 0; i < 12; i++)
+	for (int i = 0; i < 20; i++)
 	{
 		bool unique = false;
 		// easiest case is if the girs have already been generated
@@ -154,7 +142,7 @@ void cScreenSlaveMarket::init()
 			while (testgirl == 0&& n<20)
 			{
 				testgirl = g_Girls.CreateRandomGirl(0, false, true);
-				for (int j = 0; j < 12; j++)
+				for (int j = 0; j < 20; j++)
 				{
 					if (MarketSlaveGirls[j] == 0) continue;
 					else if (string(testgirl->m_Name) == string(MarketSlaveGirls[j]->m_Name))
@@ -332,7 +320,7 @@ void cScreenSlaveMarket::generate_unique_girl(int i, bool &unique)
 	cConfig cfg;
 
 	if (g_Girls.GetNumSlaveGirls() <= 0) return;				// if there are no unique slave girls left then we can do no more here
-	if (!g_Dice.percent(cfg.uniquegirl.unique_market())) return;	// otherwise - 35% chance of a unique girl. `J` added config.xml customization
+	if (!g_Dice.percent(cfg.slavemarket.unique_market())) return;	// otherwise - 35% chance of a unique girl. `J` added config.xml customization
 	int g = g_Dice%g_Girls.GetNumSlaveGirls();					// randomly select a slavegirl from the list
 	sGirl *gpt = g_Girls.GetGirl(g_Girls.GetSlaveGirl(g));		// try and get a struct for the girl in question
 	if (!gpt) return;											// if we can't, we go home
@@ -342,7 +330,7 @@ void cScreenSlaveMarket::generate_unique_girl(int i, bool &unique)
 	 *
 	 *	if she is, we need do nothing more
 	 */
-	for (int j = 0; j < 12; j++)
+	for (int j = 0; j < 20; j++)
 	{
 		if (MarketSlaveGirls[j] == gpt) return;
 	}

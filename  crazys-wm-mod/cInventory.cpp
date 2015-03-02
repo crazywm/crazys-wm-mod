@@ -669,18 +669,29 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 				}
 				else if (amount == 0)	// remove status
 				{
+					bool preg = girl->is_pregnant();
 					if (girl->m_States&(1 << eff_id))
 						girl->m_States &= ~(1 << eff_id);
 					if (eff_id == STATUS_PREGNANT ||
 						eff_id == STATUS_PREGNANT_BY_PLAYER ||
 						eff_id == STATUS_INSEMINATED)
 					{
+						if (preg)
+						{
+							girl->m_ChildrenCount[CHILD09_ABORTIONS]++;
+							g_MessageQue.AddToQue(girl->m_Realname + gettext(": ") + girl->m_Inventory[num]->m_Name +
+								gettext(": The use of this item has ended her pregnancy."), COLOR_RED);
+						}
+						else
+						{
+							g_MessageQue.AddToQue(girl->m_Realname + gettext(": ") + girl->m_Inventory[num]->m_Name +
+								gettext(": She was not pregnant before the use of this item."), COLOR_RED);
+						}
 						if (!g_Girls.HasTrait(girl, "Sterile"))
 						{
-							if (g_Dice.percent(1))
+							if (g_Dice.percent(preg ? 1 : 3))
 							{
-								g_MessageQue.AddToQue(girl->m_Realname + gettext(": ") +
-									girl->m_Inventory[num]->m_Name +
+								g_MessageQue.AddToQue(girl->m_Realname + gettext(": ") + girl->m_Inventory[num]->m_Name +
 									gettext(": The use of this item has made her sterile, she can no longer have children."), COLOR_RED);
 								g_Girls.AddTrait(girl, "Sterile");
 							}

@@ -88,9 +88,7 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	g_Brothels.add_to_beasts(gain);
 
 	// Cleanup
-	if (tempgirl)
-		delete tempgirl;
-	tempgirl = 0;
+	if (tempgirl) delete tempgirl; tempgirl = 0;
 
 	//SIN: A little randomness
 	if (((g_Girls.GetSkill(girl, SKILL_ANIMALHANDLING) + g_Girls.GetSkill(girl, SKILL_ANIMALHANDLING)) > 125) && g_Dice.percent(30))
