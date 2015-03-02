@@ -113,7 +113,7 @@ bool cJobManager::WorkFilmGroup(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	}
 	else
 	{
-		enjoy += max(0, g_Dice % 3 - 1);
+		enjoy += g_Dice % 2;
 		ss << "She wasn't really into having so much sex today, but managed to get through.\n\n";
 	}
 	jobperformance = enjoy * 2;
@@ -125,7 +125,8 @@ bool cJobManager::WorkFilmGroup(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 		ss << "She is no longer a virgin.\n";
 	}
 
-	if (!girl->calc_group_pregnancy(g_Brothels.GetPlayer(), false, 1.0))
+	sCustomer Cust; g_Customers.GetCustomer(Cust, brothel);	Cust.m_Amount = guys;
+	if (!girl->calc_group_pregnancy(&Cust, false, 1.0))
 	{
 		g_MessageQue.AddToQue(girl->m_Realname + " has gotten pregnant", 0);
 	}

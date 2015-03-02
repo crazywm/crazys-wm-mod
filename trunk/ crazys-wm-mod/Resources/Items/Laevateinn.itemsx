@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="Laevateinn" Desc="A heavy iron wand that emits flames on command.  A powerful melee weapon as well." Type="Weapon" Badness="0" Special="None" Cost="25000" Rarity="Catacomb01" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Skill" Name="Magic" Amount="40" />
+        <Effect What="Skill" Name="Combat" Amount="15" />
+        <Effect What="Stat" Name="Charisma" Amount="10" />
+        <Effect What="Stat" Name="Constitution" Amount="10" />
+        <Effect What="Stat" Name="Mana" Amount="50" />
+        <Effect What="Stat" Name="Agility" Amount="-15" />
+        <Effect What="Trait" Name="Agile" Amount="0" />
+        <Effect What="Trait" Name="Fleet of Foot" Amount="0" />
+        <Effect What="Trait" Name="Powerful Magic" Amount="1" />
+    </Item>
+</Items>

@@ -55,7 +55,7 @@ class cGoldBase
 		double misc;
 		double clinic_income;
 		double arena_income;
-
+		double farm_income;
 
 //01234567890123456789012345678901234567890123456789012345678901234567890123456789
 // --- Whores ---                              --- Sales --- 
@@ -92,6 +92,7 @@ class cGoldBase
 			ss << setw(7) << misc		<< " ";
 			ss << setw(7) << clinic_income << " ";
 			ss << setw(7) << arena_income << " ";
+			ss << setw(7) << farm_income << " ";
 			ss << endl;
 			return ss.str();
 		}
@@ -221,6 +222,7 @@ friend	istream &operator>>(istream& is, cGoldBase &g);
 	void movie_income(double income);
 	void clinic_income(double income);
 	void arena_income(double income);
+	void farm_income(double income);
 	void bar_income(double income);
 	void gambling_profits(double income);
 	void extortion(double income);

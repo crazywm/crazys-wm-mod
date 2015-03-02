@@ -94,6 +94,7 @@ struct sConfigData
 		double item_sales;
 		double clinic_income;
 		double arena_income;
+		double farm_income;
 	} in_fact;
 	/*
 	*	outgoings factors
@@ -165,6 +166,7 @@ struct sConfigData
 	} prostitution;
 
 	struct CatacombsData {
+		double	unique_catacombs;
 		bool	control_girls;
 		bool	control_gangs;
 		double	girl_gets_girls;
@@ -175,10 +177,11 @@ struct sConfigData
 		double	gang_gets_beast;
 	} catacombs;
 
-	struct UniqueGirlData {
-		double	unique_catacombs;
+	struct SlaveMarketData {
 		double	unique_market;
-	} uniquegirl;
+		int slavesnewweeklymin;
+		int slavesnewweeklymax;
+	} slavemarket;
 
 
 	struct item_data {
@@ -227,7 +230,7 @@ struct sConfigData
 	void	get_gang_factors(TiXmlElement *el);
 	void	get_pros_factors(TiXmlElement *el);
 	void	get_catacombs_data(TiXmlElement *el);
-	void	get_unique_factors(TiXmlElement *el);
+	void	get_slave_market_data(TiXmlElement *el);
 	void	get_item_data(TiXmlElement *el);
 	void	get_font_data(TiXmlElement *el);
 	void	get_initial_values(TiXmlElement *el);
@@ -267,6 +270,7 @@ public:
 		double item_sales()			{ return data->in_fact.item_sales; }
 		double clinic_income()		{ return data->in_fact.clinic_income; }
 		double arena_income()		{ return data->in_fact.arena_income; }
+		double farm_income()		{ return data->in_fact.farm_income; }
 	} in_fact;
 	/*
 	*	outgoings factors
@@ -297,6 +301,7 @@ public:
 	} prostitution;
 
 	struct CatacombsData {
+		double	unique_catacombs()	{ return data->catacombs.unique_catacombs; }
 		bool	control_girls()		{ return data->catacombs.control_girls; }
 		bool	control_gangs()		{ return data->catacombs.control_gangs; }
 		double	girl_gets_girls()	{ return data->catacombs.girl_gets_girls; }
@@ -307,10 +312,11 @@ public:
 		double	gang_gets_beast()	{ return data->catacombs.gang_gets_beast; }
 	} catacombs;
 
-	struct UniqueGirlData {
-		double	unique_catacombs()	{ return data->uniquegirl.unique_catacombs; }
-		double	unique_market()		{ return data->uniquegirl.unique_market; }
-	} uniquegirl;
+	struct SlaveMarketData {
+		double	unique_market()		{ return data->slavemarket.unique_market; }
+		int slavesnewweeklymin()	{ return data->slavemarket.slavesnewweeklymin; }
+		int slavesnewweeklymax()	{ return data->slavemarket.slavesnewweeklymax; }
+	} slavemarket;
 
 	struct font_data {
 		string&	normal()	    { return data->fonts.normal; }

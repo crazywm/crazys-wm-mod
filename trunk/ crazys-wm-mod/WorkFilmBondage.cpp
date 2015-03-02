@@ -71,9 +71,9 @@ bool cJobManager::WorkFilmBondage(sGirl* girl, sBrothel* brothel, bool Day0Night
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	else if (roll <= 10) { enjoy -= g_Dice % 4 + 1;	ss << "She did not enjoy getting tied up and hurt today.\n\n"; }
-	else if (roll >= 90) { enjoy += g_Dice % 4 + 1;	ss << "She had a great time getting spanked and whipped.\n\n"; }
-	else /*    */{ enjoy += max(0, g_Dice % 3 - 1);	ss << "She had just another day in the dungeon.\n\n"; }
+	else if (roll <= 10) { enjoy -= g_Dice % 3 + 1;	ss << "She did not enjoy getting tied up and hurt today.\n\n"; }
+	else if (roll >= 90) { enjoy += g_Dice % 3 + 1;	ss << "She had a great time getting spanked and whipped.\n\n"; }
+	else /*            */{ enjoy += g_Dice % 2;		ss << "She had just another day in the dungeon.\n\n"; }
 	jobperformance = enjoy * 2;
 
 	if (g_Girls.CheckVirginity(girl))
@@ -82,8 +82,8 @@ bool cJobManager::WorkFilmBondage(sGirl* girl, sBrothel* brothel, bool Day0Night
 		jobperformance += 50;
 		ss << "She is no longer a virgin.\n";
 	}
-
-	if (!girl->calc_pregnancy(g_Brothels.GetPlayer(), false, 0.75))
+	sCustomer Cust; g_Customers.GetCustomer(Cust, brothel);
+	if (!girl->calc_pregnancy(&Cust, false, 0.75))
 	{
 		g_MessageQue.AddToQue(girl->m_Realname + " has gotten pregnant", 0);
 	}

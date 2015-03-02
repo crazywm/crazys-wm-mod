@@ -117,28 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>24, 26</value>
-  </metadata>
-  <data name="button_G_Divide_Real_Name.ToolTip" xml:space="preserve">
-    <value>Click to divide the Girl's Real Name into First, Middle and Last
-This looks for the first and last names and anything between becomes the middle.
-If it only finds 1 name, that becomes the first.
-If it finds 2, they become first and last.
-</value>
-  </data>
-  <metadata name="dataGridView_G_Traits_Has.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="dataGridView_G_Traits_List.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="dataGridView_G_Traits_Type.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="hidden_has.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
   <data name="richTextBox1.Text" xml:space="preserve">
     <value>
 This FAQ is extremely out of date, I don't know why I have not removed it yet.
@@ -177,6 +155,16 @@ Only limit is this:
 Temporary effects apply to traits, stats and skills, they don't apply to status' (it is logical, status' themselves are temporary, and have prior this change, only with different mechanics).
 
 Traits that were added through this temporary mechanics will fade after 20 days, stats/skills that were added as temporary will fade by 1 point each day, until they're gone completely.</value>
+  </data>
+  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>24, 26</value>
+  </metadata>
+  <data name="button_G_Divide_Real_Name.ToolTip" xml:space="preserve">
+    <value>Click to divide the Girl's Real Name into First, Middle and Last
+This looks for the first and last names and anything between becomes the middle.
+If it only finds 1 name, that becomes the first.
+If it finds 2, they become first and last.
+</value>
   </data>
   <metadata name="dataGridView_G_Traits_Has.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -228,12 +216,15 @@ supported value.
 If you enter unsuported values (like "fasdsadfgdfvd" and like) you can
 expect that Whore Master will crash.</value>
   </data>
-  <data name="label197.ToolTip" xml:space="preserve">
-    <value>Percent chance a Unique Girl will be found in the Catacombs.
-If there are no Unique Girls left, then all will be Random Girls.
-Only used if Girl Gets Girl or Gang Gets Girl is used for the Catacombs.</value>
+  <data name="Label_Config_Control_Girls_Girls.ToolTip" xml:space="preserve">
+    <value>Catacombs: Who gets What
+These settings will determine the ratio of Girls to Items to Beasts that they try to come back with.
+If the box is checked, these will control what they try to get when you send a Girl or Gang into the catacombs.
+The numbers entered here are normalized into fractions of 100% by the game.
+Negative numbers are not allowed and if all three are set to 0s, they wil be set to 33.33% each.
+</value>
   </data>
-  <data name="label188.ToolTip" xml:space="preserve">
+  <data name="Label_Config_Control_Girls_Beast.ToolTip" xml:space="preserve">
     <value>Catacombs: Who gets What
 These settings will determine the ratio of Girls to Items to Beasts that they try to come back with.
 If the box is checked, these will control what they try to get when you send a Girl or Gang into the catacombs.
@@ -242,15 +233,7 @@ Negative numbers are not allowed and if all three are set to 0s, they wil be set
 
 </value>
   </data>
-  <data name="label189.ToolTip" xml:space="preserve">
-    <value>Catacombs: Who gets What
-These settings will determine the ratio of Girls to Items to Beasts that they try to come back with.
-If the box is checked, these will control what they try to get when you send a Girl or Gang into the catacombs.
-The numbers entered here are normalized into fractions of 100% by the game.
-Negative numbers are not allowed and if all three are set to 0s, they wil be set to 33.33% each.
-</value>
-  </data>
-  <data name="label190.ToolTip" xml:space="preserve">
+  <data name="Label_Config_Control_Girls_Items.ToolTip" xml:space="preserve">
     <value>Catacombs: Who gets What
 These settings will determine the ratio of Girls to Items to Beasts that they try to come back with.
 If the box is checked, these will control what they try to get when you send a Girl or Gang into the catacombs.
@@ -259,7 +242,42 @@ Negative numbers are not allowed and if all three are set to 0s, they wil be set
 
 </value>
   </data>
-  <data name="label191.ToolTip" xml:space="preserve">
+  <data name="Label_Config_Control_Gangs_Girls.ToolTip" xml:space="preserve">
+    <value>Catacombs: Who gets What
+These settings will determine the ratio of Girls to Items to Beasts that they try to come back with.
+If the box is checked, these will control what they try to get when you send a Girl or Gang into the catacombs.
+The numbers entered here are normalized into fractions of 100% by the game.
+Negative numbers are not allowed and if all three are set to 0s, they wil be set to 33.33% each.
+</value>
+  </data>
+  <data name="Label_Config_Control_Gangs_Beast.ToolTip" xml:space="preserve">
+    <value>Catacombs: Who gets What
+These settings will determine the ratio of Girls to Items to Beasts that they try to come back with.
+If the box is checked, these will control what they try to get when you send a Girl or Gang into the catacombs.
+The numbers entered here are normalized into fractions of 100% by the game.
+Negative numbers are not allowed and if all three are set to 0s, they wil be set to 33.33% each.
+
+</value>
+  </data>
+  <data name="Label_Config_Control_Gangs_Items.ToolTip" xml:space="preserve">
+    <value>Catacombs: Who gets What
+These settings will determine the ratio of Girls to Items to Beasts that they try to come back with.
+If the box is checked, these will control what they try to get when you send a Girl or Gang into the catacombs.
+The numbers entered here are normalized into fractions of 100% by the game.
+Negative numbers are not allowed and if all three are set to 0s, they wil be set to 33.33% each.
+
+</value>
+  </data>
+  <data name="checkBox_Config_Control_Gangs.ToolTip" xml:space="preserve">
+    <value>Catacombs: Who gets What
+These settings will determine the ratio of Girls to Items to Beasts that they try to come back with.
+If the box is checked, these will control what they try to get when you send a Girl or Gang into the catacombs.
+The numbers entered here are normalized into fractions of 100% by the game.
+Negative numbers are not allowed and if all three are set to 0s, they wil be set to 33.33% each.
+
+</value>
+  </data>
+  <data name="checkBox_Config_Control_Girls.ToolTip" xml:space="preserve">
     <value>Catacombs: Who gets What
 These settings will determine the ratio of Girls to Items to Beasts that they try to come back with.
 If the box is checked, these will control what they try to get when you send a Girl or Gang into the catacombs.
@@ -282,8 +300,7 @@ If it is -1, then the torture is much harsher and the traits are permanent.</val
     <value>The WME will try to find config.xml by itself. If it does not find it, you will have to find it manually.
 Starting in version .05t it is in the root game folder.   In older versions, it was in \Resources\Data\ folder.
 In .06, the game will load the config.xml from the folder the .EXE is in and then from the folder above that.
-This means it loads it twice with the second one taking precidence.
-Leave anything out of the second that you want to have default to the game version folder.</value>
+This means it loads it twice with the second one taking precidence. Leave anything out of the second that you want to have default to the game version folder.</value>
   </data>
   <metadata name="dataGridView_Traits_Trait_Name.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -312,12 +329,6 @@ folder paths work so it was moved to the extras tab.</value>
   <metadata name="Error_Message.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <metadata name="Bad_Files.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="Error_Message.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
   <data name="richTextBox2.Text" xml:space="preserve">
     <value>This button will create a new random numbered folder in the same folder as the WME.exe
 It will then attempt to save every Girl and Rgirl into their own files.
@@ -332,9 +343,6 @@ to be similar to the existing sex skill numbers.
 It checks for 'round to 5 or 10' and 'number spreads'.
 *** Currently only works for .girlsx files</value>
   </data>
-  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>24, 26</value>
-  </metadata>
   <metadata name="statusStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>121, 26</value>
   </metadata>

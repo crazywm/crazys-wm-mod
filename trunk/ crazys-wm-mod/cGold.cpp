@@ -133,6 +133,13 @@ void cGoldBase::arena_income(double income)
 	detail_in.arena_income += income;
 }
 
+// income from the farm
+void cGoldBase::farm_income(double income)
+{
+	m_income += income;
+	detail_in.farm_income += income;
+}
+
 // income from the bar
 void cGoldBase::bar_income(double income)
 {

@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="Stick-On Beauty Mark" Desc="An artificial beauty mark for those who don't have one naturally. (Adds Beauty Mark, predictably.)" 
+    Type="Misc" Badness="0" Special="None" Cost="312" Rarity="Shop50" Infinite="false" GirlBuyChance="1" ItemWeight="0.0">
+        <Effect What="Trait" Name="Beauty Mark" Amount="1" />
+    </Item>
+</Items>

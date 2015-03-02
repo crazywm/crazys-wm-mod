@@ -34,7 +34,8 @@ struct cRng
  *	function than an operator. Well, less messy, anyway.
  */
 	int random(int n); // returns int between 0 and n
-/*
+	double randomd(double n); // returns double between 0 and n - `J` added
+	/*
  *	modulus operator re-implemented using random()
  */
 	int operator %(int n) {
@@ -48,6 +49,12 @@ struct cRng
  *	in order to replicate how the girl stat generation works
  */
 	int in_range(int min, int max, int range=101);
+
+/*
+ *	`J` trying to add a bell curve
+*/
+	int bell(int min, int max, int mid);
+	int bell(int min, int max);
 /*
  *	I was thinking of this as useful shorthand for all the
  *	(g_Dice % 100)+1 lines, but on reflection, I think 

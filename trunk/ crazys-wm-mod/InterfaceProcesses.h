@@ -37,6 +37,7 @@ void Gallery2();
 void AutoSaveGame();
 void SaveGame(bool saveCSV = false);
 void SaveGameXML(string filename);
+void SimpleSaveGameXML(string filename);
 bool LoadGame(string directory, string filename);
 bool LoadGameXML(TiXmlHandle hDoc);
 void LoadGameScreen();

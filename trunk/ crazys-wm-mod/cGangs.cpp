@@ -453,12 +453,18 @@ void cGangManager::RemoveGang(int gangID)
 
 int cGangManager::GetNumGangs()
 {
-	return (int)m_NumGangs;
+	return m_NumGangs;
+}
+
+int cGangManager::GetMaxNumGangs()
+{
+	m_MaxNumGangs = 7 + g_Brothels.GetNumBrothels();
+	return m_MaxNumGangs;
 }
 
 int cGangManager::GetNumHireableGangs()
 {
-	return (int)m_NumHireableGangs;
+	return m_NumHireableGangs;
 }
 
 sGang* cGangManager::GetTempGang()

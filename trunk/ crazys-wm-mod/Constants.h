@@ -637,4 +637,18 @@ const int BUILDING_CENTRE			= 40;
 const int BUILDING_HOUSE			= 50;
 const int BUILDING_FARM				= 60;
 const int BUILDING_ERROR			= 70;	// This shows there was an error somehow, looking for a building that does not exist.
+
+
+// The following constants are used with counting child types for girls.
+const int CHILD00_TOTAL_BIRTHS		= 0;
+const int CHILD01_ALL_BEASTS		= 1;
+const int CHILD02_ALL_GIRLS			= 2;
+const int CHILD03_ALL_BOYS			= 3;
+const int CHILD04_CUSTOMER_GIRLS	= 4;
+const int CHILD05_CUSTOMER_BOYS		= 5;
+const int CHILD06_YOUR_GIRLS		= 6;
+const int CHILD07_YOUR_BOYS			= 7;
+const int CHILD08_MISCARRIAGES		= 8;
+const int CHILD09_ABORTIONS			= 9;
+const int CHILD_COUNT_TYPES			= 10; // last type+1
 #endif

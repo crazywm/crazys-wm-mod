@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="Vilethorn" Desc="Sprouting from the vines of fruit-bearing trees, these thorns contain a dire toxin within."
+    Type="Food" Badness="90" Special="None" Cost="550" Rarity="Common" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Health" Amount="-50" />
+        <Effect What="Stat" Name="Mana" Amount="40" />
+    </Item>
+</Items>

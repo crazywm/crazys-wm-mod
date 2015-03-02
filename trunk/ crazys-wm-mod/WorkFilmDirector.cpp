@@ -74,7 +74,7 @@ bool cJobManager::WorkFilmDirector(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	}
 	else
 	{
-		enjoy += max(0, g_Dice % 3 - 1);
+		enjoy += g_Dice % 2;
 		ss << "Otherwise, the shift passed uneventfully.\n\n";
 	}
 	double jobperformance = JP_FilmDirector(girl, false);

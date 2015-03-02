@@ -70,9 +70,9 @@ bool cJobManager::WorkFilmMast(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	else if (roll <= 10) { enjoy -= g_Dice % 4 + 1;	ss << "She didn't want to make the film, but the director persuaded her.\n\n"; }
-	else if (roll >= 90) { enjoy += g_Dice % 4 + 1;	ss << "She had intense orgasms while playing with her pussy!\n\n"; }
-	else /*    */{ enjoy += max(0, g_Dice % 3 - 1);	ss << "She spent the afternoon fingering herself.\n\n"; }
+	else if (roll <= 10) { enjoy -= g_Dice % 3 + 1;	ss << "She didn't want to make the film, but the director persuaded her.\n\n"; }
+	else if (roll >= 90) { enjoy += g_Dice % 3 + 1;	ss << "She had intense orgasms while playing with her pussy!\n\n"; }
+	else /*            */{ enjoy += g_Dice % 2;		ss << "She spent the afternoon fingering herself.\n\n"; }
 	jobperformance = enjoy * 2;
 
 	if (g_Girls.CheckVirginity(girl))

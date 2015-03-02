@@ -50,7 +50,7 @@ extern cMessageQue g_MessageQue;
 extern cTraits g_Traits;
 extern cEvents g_Events;
 extern cInventory g_InvManager;
-extern sGirl* MarketSlaveGirls[12];
+extern sGirl* MarketSlaveGirls[20];
 extern CGraphics g_Graphics;
 extern cRng g_Dice;
 extern bool g_GenGirls;
@@ -103,6 +103,12 @@ const char *sGirl::status_names[] =
 	"None", "Poisoned", "Badly Poisoned", "Pregnant", "Pregnant By Player", "Slave", "Has Daughter", "Has Son",
 	"Inseminated", "Controlled", "Catacombs", "Arena", "Your Daughter", "Is Daughter"
 };
+const char *sGirl::children_type_names[] =
+{
+	"Total_Births", "Beasts", "All_Girls", "All_Boys", "Customer_Girls",
+	"Customer_Boys", "Your_Girls", "Your_Boys", "Miscarriages", "Abortions"
+};
+
 // calculate the max like this, and it's self-maintaining
 const unsigned int sGirl::max_stats = (sizeof(sGirl::stat_names) / sizeof(sGirl::stat_names[0]));
 const unsigned int sGirl::max_skills = (sizeof(sGirl::skill_names) / sizeof(sGirl::skill_names[0]));
@@ -1319,7 +1325,7 @@ bool cGirls::NameExists(string name)
 	if (g_Centre.NameExists(name))			return true;
 	if (g_Clinic.NameExists(name))			return true;
 	if (g_House.NameExists(name))			return true;
-	for (int i = 0; i < 12; i++)
+	for (int i = 0; i < 20; i++)
 	{
 		if (MarketSlaveGirls[i])
 		{
@@ -1342,7 +1348,7 @@ bool cGirls::SurnameExists(string name)
 	if (g_Centre.SurnameExists(name))		return true;
 	if (g_Clinic.SurnameExists(name))		return true;
 	if (g_House.SurnameExists(name))		return true;
-	for (int i = 0; i < 12; i++)
+	for (int i = 0; i < 20; i++)
 	{
 		if (MarketSlaveGirls[i])
 		{
@@ -1861,31 +1867,13 @@ string cGirls::GetDetailsString(sGirl* girl, bool purchase)
 	if (!purchase)
 	{
 		int to_go = cfg.pregnancy.weeks_pregnant() - girl->m_WeeksPreg;
-		if (girl->m_States&(1 << STATUS_PREGNANT))
-		{
-			ss << "Is pregnant, due: " << to_go << " weeks\n";
-		}
-		else if (girl->m_States&(1 << STATUS_PREGNANT_BY_PLAYER))
-		{
-			ss << "Is pregnant with your child, due: " << to_go << " weeks\n";
-		}
-		else if (girl->m_States&(1 << STATUS_INSEMINATED))
-		{
-			ss << "Is inseminated, due: " << to_go << " weeks\n";
-		}
-		else if (girl->m_PregCooldown != 0)
-		{
-			ss << "Cannot get pregnant for: " << girl->m_PregCooldown << " weeks\n";
-		}
-		else if (cfg.debug.log_extradetails())			ss << "( She Is not Pregnant )\n";
+		if (girl->m_States&(1 << STATUS_PREGNANT))					{ ss << "Is pregnant, due: " << to_go << " weeks\n"; }
+		else if (girl->m_States&(1 << STATUS_PREGNANT_BY_PLAYER))	{ ss << "Is pregnant with your child, due: " << to_go << " weeks\n"; }
+		else if (girl->m_States&(1 << STATUS_INSEMINATED))			{ ss << "Is inseminated, due: " << to_go << " weeks\n"; }
+		else if (girl->m_PregCooldown != 0)							{ ss << "Cannot get pregnant for: " << girl->m_PregCooldown << " weeks\n"; }
+		else if (cfg.debug.log_extradetails())						{ ss << "( She Is not Pregnant )\n"; }
 		else ss << "\n";
-
-		if (girl->m_States&(1 << STATUS_HAS_DAUGHTER))	ss << "Has Daughter\n";
-		else if (cfg.debug.log_extradetails())			ss << "( She Has No Daughters )\n";
-		else											ss << "\n";
-		if (girl->m_States&(1 << STATUS_HAS_SON))		ss << "Has Son\n";
-		else if (cfg.debug.log_extradetails())			ss << "( She Has No Sons )\n";
-		else											ss << "\n";
+		// `J` moved the rest of children lines to second detail list
 	}
 
 	if (girl->is_addict() && !girl->has_disease())		ss << "Has an addiciton\n";
@@ -1980,14 +1968,43 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 	if (!purchase)
 	{
 		ss << "\n\nAccommodation: " << Accommodation(girl->m_AccLevel);
-		ss << "\nCost per turn: " << ((girl->is_slave() ? 5 : 20) * (girl->m_AccLevel + 1)) << " gold";
-	}
-	// added from Dagoth
-	if (girl->m_DayJob == JOB_RESTING && girl->m_NightJob == JOB_RESTING && girl->m_PrevDayJob != 255 && girl->m_PrevNightJob != 255)
-	{
-		ss << "\n\nOFF WORK, RESTING DUE TO TIREDNESS.";
-		ss << "\nStored Day Job:   " << g_Brothels.m_JobManager.JobName[girl->m_PrevDayJob];
-		ss << "\nStored Night Job: " << g_Brothels.m_JobManager.JobName[girl->m_PrevNightJob];
+		ss << "\nCost per turn: " << ((girl->is_slave() ? 5 : 20) * (girl->m_AccLevel + 1)) << " gold.\n";
+
+		// added from Dagoth
+		if (girl->m_DayJob == JOB_RESTING && girl->m_NightJob == JOB_RESTING && girl->m_PrevDayJob != 255 && girl->m_PrevNightJob != 255)
+		{
+			ss << "\n\nOFF WORK, RESTING DUE TO TIREDNESS.";
+			ss << "\nStored Day Job:   " << g_Brothels.m_JobManager.JobName[girl->m_PrevDayJob];
+			ss << "\nStored Night Job: " << g_Brothels.m_JobManager.JobName[girl->m_PrevNightJob];
+		}
+		ss << "\n";
+		int to_go = cfg.pregnancy.weeks_pregnant() - girl->m_WeeksPreg;
+		if (girl->m_States&(1 << STATUS_PREGNANT))					{ ss << "Is pregnant, due: " << to_go << " weeks\n"; }
+		else if (girl->m_States&(1 << STATUS_PREGNANT_BY_PLAYER))	{ ss << "Is pregnant with your child, due: " << to_go << " weeks\n"; }
+		else if (girl->m_States&(1 << STATUS_INSEMINATED))			{ ss << "Is inseminated, due: " << to_go << " weeks\n"; }
+		else if (girl->m_PregCooldown != 0)							{ ss << "Cannot get pregnant for: " << girl->m_PregCooldown << " weeks\n"; }
+		else if (cfg.debug.log_extradetails())						{ ss << "( She Is not Pregnant )\n"; }
+		else ss << "\n";
+
+		if (girl->m_ChildrenCount[CHILD00_TOTAL_BIRTHS] > 0)	ss << "She has given birth to " << girl->m_ChildrenCount[CHILD00_TOTAL_BIRTHS] << " children:\n";
+
+		if (girl->m_ChildrenCount[CHILD02_ALL_GIRLS] > 0)		ss << girl->m_ChildrenCount[CHILD02_ALL_GIRLS] << " girls\n";
+		else if (girl->m_States&(1 << STATUS_HAS_DAUGHTER))		ss << "at least one Daughter (old code)\n";
+		else if (cfg.debug.log_extradetails())					ss << "( She Has No Daughters )\n";
+		if (girl->m_ChildrenCount[CHILD06_YOUR_GIRLS] > 0)		ss << girl->m_ChildrenCount[CHILD06_YOUR_GIRLS] << " of them are yours.\n";
+		if (girl->m_ChildrenCount[CHILD04_CUSTOMER_GIRLS] > 0)	ss << girl->m_ChildrenCount[CHILD04_CUSTOMER_GIRLS] << " of them are from other men.\n";
+
+		if (girl->m_ChildrenCount[CHILD03_ALL_BOYS] > 0)		ss << girl->m_ChildrenCount[CHILD03_ALL_BOYS] << " boys\n";
+		else if (girl->m_States&(1 << STATUS_HAS_SON))			ss << "at least one Son (old code)\n";
+		else if (cfg.debug.log_extradetails())					ss << "( She Has No Sons )\n";
+		if (girl->m_ChildrenCount[CHILD07_YOUR_BOYS] > 0)		ss << girl->m_ChildrenCount[CHILD07_YOUR_BOYS] << " of them are yours.\n";
+		if (girl->m_ChildrenCount[CHILD05_CUSTOMER_BOYS] > 0)	ss << girl->m_ChildrenCount[CHILD05_CUSTOMER_BOYS] << " of them are from other men.\n";
+
+		if (girl->m_ChildrenCount[CHILD03_ALL_BOYS] > 0)		ss << girl->m_ChildrenCount[CHILD03_ALL_BOYS] << " boys\n";
+
+		if (girl->m_ChildrenCount[CHILD01_ALL_BEASTS] > 0)		ss << "She has given birth to " << girl->m_ChildrenCount[CHILD01_ALL_BEASTS] << " Beast" << (girl->m_ChildrenCount[CHILD01_ALL_BEASTS] > 1 ? "s" : "") << ".\n";
+		if (girl->m_ChildrenCount[CHILD08_MISCARRIAGES] > 0)	ss << "She has had " << girl->m_ChildrenCount[CHILD08_MISCARRIAGES] << " Miscarriage" << (girl->m_ChildrenCount[CHILD08_MISCARRIAGES] > 1 ? "s" : "") << ".\n";
+		if (girl->m_ChildrenCount[CHILD09_ABORTIONS] > 0)		ss << "She has had " << girl->m_ChildrenCount[CHILD09_ABORTIONS] << " Abortion" << (girl->m_ChildrenCount[CHILD09_ABORTIONS] > 1 ? "s" : "") << ".\n";
 	}
 
 	ss << "\n\nFETISH CATEGORIES\n";
@@ -3731,23 +3748,18 @@ bool sGirl::LoadGirlXML(TiXmlHandle hGirl)
 
 	// load number of children
 	TiXmlElement* pChildren = pGirl->FirstChildElement("Children");
+	for (int i = 0; i < CHILD_COUNT_TYPES; i++)		// `J` added
+	{
+		pChildren->QueryIntAttribute(children_type_names[i], &tempInt); m_ChildrenCount[i] = tempInt; tempInt = 0;
+	}
 	if (pChildren)
 	{
-		for (TiXmlElement* pChild = pChildren->FirstChildElement("Child");
-			pChild != 0;
-			pChild = pChild->NextSiblingElement("Child"))
+		for (TiXmlElement* pChild = pChildren->FirstChildElement("Child"); pChild != 0; pChild = pChild->NextSiblingElement("Child"))
 		{
-			sChild* child = new sChild();
-			bool success = child->LoadChildXML(TiXmlHandle(pChild));
-			if (success == true)
-			{
-				m_Children.add_child(child);
-			}
-			else
-			{
-				delete child;
-				continue;
-			}
+			sChild* child = new sChild(0, sChild::Girl, 0);				// `J` prepare a minimal new child
+			bool success = child->LoadChildXML(TiXmlHandle(pChild));	// because this will load over top of it
+			if (success == true) { m_Children.add_child(child); }		// add it if it loaded
+			else { delete child; continue; }							// or delete the failed load
 		}
 	}
 
@@ -3862,6 +3874,12 @@ TiXmlElement* sGirl::SaveGirlXML(TiXmlElement* pRoot)
 	// save their children
 	pGirl->SetAttribute("PregCooldown", m_PregCooldown);
 	TiXmlElement* pChildren = new TiXmlElement("Children");
+	for (int i = 0; i < CHILD_COUNT_TYPES; i++)
+	{
+		if (m_ChildrenCount[i] < 0)	m_ChildrenCount[i] = 0;		// to correct girls without these
+		pChildren->SetAttribute(children_type_names[i], m_ChildrenCount[i]);
+	}
+	
 	pGirl->LinkEndChild(pChildren);
 	sChild* child = m_Children.m_FirstChild;
 	while (child)
@@ -3892,15 +3910,16 @@ bool sChild::LoadChildXML(TiXmlHandle hChild)
 	int tempInt = 0;
 	pChild->QueryIntAttribute("Age", &tempInt); m_Age = tempInt; tempInt = 0;
 	pChild->QueryValueAttribute<bool>("IsPlayers", &m_IsPlayers);
-	pChild->QueryIntAttribute("Sex", &tempInt);
-	m_Sex = sChild::Gender(tempInt); tempInt = 0;
+	pChild->QueryIntAttribute("Sex", &tempInt);	m_Sex = sChild::Gender(tempInt); tempInt = 0;
 	pChild->QueryIntAttribute("Unborn", &tempInt); m_Unborn = tempInt; tempInt = 0;
+	pChild->QueryIntAttribute("MultiBirth", &tempInt); m_MultiBirth = tempInt; tempInt = 0;	// `J` added
+	if (m_MultiBirth < 1) m_MultiBirth = 1; if (m_MultiBirth > 5) m_MultiBirth = 5;			// `J` limited
+	pChild->QueryIntAttribute("GirlsBorn", &tempInt); m_GirlsBorn = tempInt; tempInt = 0;	// `J` added
+	if (m_GirlsBorn > m_MultiBirth) m_GirlsBorn = m_MultiBirth;								// `J` limited
+	if (m_GirlsBorn < 0)	m_GirlsBorn = 0;												// `J` limited
 
-	// load their stats
-	LoadStatsXML(hChild.FirstChild("Stats"), m_Stats);
-
-	// load their skills
-	LoadSkillsXML(hChild.FirstChild("Skills"), m_Skills);
+	LoadStatsXML(hChild.FirstChild("Stats"), m_Stats);		// load their stats
+	LoadSkillsXML(hChild.FirstChild("Skills"), m_Skills);	// load their skills
 	return true;
 }
 
@@ -3912,11 +3931,10 @@ TiXmlElement* sChild::SaveChildXML(TiXmlElement* pRoot)
 	pChild->SetAttribute("IsPlayers", m_IsPlayers);
 	pChild->SetAttribute("Sex", m_Sex);
 	pChild->SetAttribute("Unborn", m_Unborn);
-	// Save their stats
-	SaveStatsXML(pChild, m_Stats);
-
-	// save their skills
-	SaveSkillsXML(pChild, m_Skills);
+	pChild->SetAttribute("MultiBirth", m_MultiBirth);	// `J` added
+	pChild->SetAttribute("GirlsBorn", m_GirlsBorn);		// `J` added
+	SaveStatsXML(pChild, m_Stats);						// Save their stats
+	SaveSkillsXML(pChild, m_Skills);					// save their skills
 	return pChild;
 }
 
@@ -4225,11 +4243,14 @@ TiXmlElement* cGirls::SaveGirlsXML(TiXmlElement* pRoot)
 	TiXmlElement* pGirls = new TiXmlElement("Girls");
 	pRoot->LinkEndChild(pGirls);
 	sGirl* current = m_Parent;
+	int numgirls=0;
 	while (current)					// save the number of girls
 	{
 		current->SaveGirlXML(pGirls);
 		current = current->m_Next;
+		numgirls++;
 	}
+	pGirls->SetAttribute("NumberofGirls", numgirls);
 	return pGirls;
 }
 
@@ -8550,7 +8571,7 @@ bool cGirls::AddTrait(sGirl* girl, string name, int temptime, bool removeitem, b
 	*	WD: Added logic for remembered trait
 	*
 	*		removeitem = true Will add to Remember
-	*		trait list if the trait is allready active
+	*		trait list if the trait is already active
 	*		Used with items / efects may be removed
 	*		later eg items - rings
 	*
@@ -12262,6 +12283,7 @@ bool cGirls::GirlInjured(sGirl* girl, unsigned int unModifier)
 	if (girl->carrying_human() && g_Dice.percent((nMod * 2)))
 	{  // unintended abortion time
 		//injured = true;
+		girl->m_ChildrenCount[CHILD08_MISCARRIAGES]++;
 		girl->clear_pregnancy();
 		girl->happiness(-20);
 		girl->spirit(-5);
@@ -12271,6 +12293,7 @@ bool cGirls::GirlInjured(sGirl* girl, unsigned int unModifier)
 	if (girl->carrying_monster() && g_Dice.percent((nMod)))
 	{  // unintended abortion time
 		//injured = true;
+		girl->m_ChildrenCount[CHILD08_MISCARRIAGES]++;
 		girl->clear_pregnancy();
 		girl->happiness(-10);
 		girl->spirit(-5);
@@ -12290,72 +12313,44 @@ bool cGirls::GirlInjured(sGirl* girl, unsigned int unModifier)
 
 int cGirls::GetCombatDamage(sGirl *girl, int CombatType)
 {
-	int damage = 5;
+	int damage = min(1, girl->strength() / 10);
 
 	// Some traits help for both kinds of combat
 	// There are a number of them so I set them at one point each
 	// This also has the effect that some traits actually do something in the
 	// game now
 
-	if (girl->has_trait("Psychic"))
-		damage++;
-
-	if (girl->has_trait("Adventurer"))
-		damage++;
-
-	if (girl->has_trait("Aggressive"))
-		damage++;
-
-	if (girl->has_trait("Fearless"))
-		damage++;
-
-	if (girl->has_trait("Yandere"))
-		damage++;
-
-	if (girl->has_trait("Merciless"))
-		damage++;
-
-	if (girl->has_trait("Sadistic"))
-		damage++;
-
-	if (girl->has_trait("Twisted"))
-		damage++;
-
+	if (girl->has_trait("Psychic"))					damage++;
+	if (girl->has_trait("Adventurer"))				damage++;
+	if (girl->has_trait("Aggressive"))				damage++;
+	if (girl->has_trait("Fearless"))				damage++;
+	if (girl->has_trait("Yandere"))					damage++;
+	if (girl->has_trait("Merciless"))				damage++;
+	if (girl->has_trait("Sadistic"))				damage++;
+	if (girl->has_trait("Twisted"))					damage++;
 	if (unsigned(CombatType) == SKILL_MAGIC)
 	{
 		damage += g_Girls.GetSkill(girl, SKILL_MAGIC) / 5 + 2;
 
 		// Depending on how you see magic, charisma can influence how it flows
 		// (Think Dungeons and Dragons sorcerer)
-		if (girl->has_trait("Charismatic"))
-			damage += 1;
+		if (girl->has_trait("Charismatic"))			damage += 1;
 
 		// Same idea as charismatic.
 		// Note that I love using brainwashing oil, so this hurts me more than
 		// it hurts you
-		if (girl->has_trait("Iron Will"))
-			damage += 2;
-		else if (girl->has_trait("Broken Will"))
-			damage -= 2;
-
-		if (girl->has_trait("Strong Magic"))
-			damage += 2;
-
+		if (girl->has_trait("Iron Will"))			damage += 2;
+		else if (girl->has_trait("Broken Will"))	damage -= 2;
+		if (girl->has_trait("Strong Magic"))		damage += 2;
 		// Can Mind Fucked people even work magic?
-		if (girl->has_trait("Mind Fucked"))
-			damage -= 5;
+		if (girl->has_trait("Mind Fucked"))			damage -= 5;
 	}
 	else   // SKILL_COMBAT case
 	{
 		damage += g_Girls.GetSkill(girl, SKILL_COMBAT) / 10;
-
-		if (girl->has_trait("Manly"))
-			damage += 2;
-
-		if (girl->has_trait("Strong"))
-			damage += 2;
+		if (girl->has_trait("Manly"))				damage += 2;
+		if (girl->has_trait("Strong"))				damage += 2;
 	}
-
 	return damage;
 }
 
@@ -12704,15 +12699,32 @@ bool sGirl::calc_pregnancy(int chance, sCustomer *cust)
 	return g_GirlsPtr->CalcPregnancy(this, chance, STATUS_PREGNANT, cust->m_Stats, cust->m_Skills);
 }
 
-sChild::sChild(bool is_players, Gender gender)
+sChild::sChild(bool is_players, Gender gender, int MultiBirth)
 {
+	// set all the basics
 	m_Unborn = 1;
 	m_Age = 0;
 	m_IsPlayers = is_players;
-	m_Sex = gender;
+	if (gender == None && MultiBirth != 0)
+		m_Sex = (g_Dice.is_girl() ? Girl : Boy);
+	else m_Sex = gender;
+	m_MultiBirth = 1;
+	m_GirlsBorn = (m_Sex == Girl ? 1 : 0);
 	m_Next = m_Prev = 0;
-	if (gender != None) return;
-	m_Sex = (g_Dice.is_girl() ? Girl : Boy);
+	if (MultiBirth == 0) return;	// 0 means we are creating a new child in order to load one so we can skip the rest
+
+	// so now the first baby is ready, check if there are more
+	m_MultiBirth = MultiBirth;
+	cConfig cfg;
+	int trycount = 1;
+	double multichance = cfg.pregnancy.multi_birth_chance();
+	while (g_Dice.percent(multichance) && m_MultiBirth < 5)
+	{
+		m_MultiBirth++;
+		if (g_Dice.is_girl()) m_GirlsBorn++;	// check if the new one is a girl
+		trycount++;
+		multichance /= trycount;
+	}
 }
 
 void cChildList::add_child(sChild * child)
@@ -12778,6 +12790,7 @@ bool sGirl::calc_group_pregnancy(sCustomer *cust, bool good, double factor)
 {
 	cConfig cfg;
 	double chance = preg_chance(cfg.pregnancy.player_chance(), good, factor);
+	chance += cust->m_Amount;
 	// now do the calculation
 	return g_GirlsPtr->CalcPregnancy(this, int(chance), STATUS_PREGNANT, cust->m_Stats, cust->m_Skills);
 }
@@ -12803,6 +12816,7 @@ bool sGirl::calc_insemination(cPlayer *player, bool good, double factor)
 // returns false if she becomes pregnant or true if she does not
 bool cGirls::CalcPregnancy(sGirl* girl, int chance, int type, int stats[NUM_STATS], int skills[NUM_SKILLS])
 {
+	cConfig cfg;
 	/*
 	*	If there's a condition that would stop her getting preggers
 	*	then we get to go home early
@@ -12850,13 +12864,17 @@ bool cGirls::CalcPregnancy(sGirl* girl, int chance, int type, int stats[NUM_STAT
 	girl->m_States |= (1 << type);	// set the pregnant status
 	girl->m_Events.AddMessage(text, IMGTYPE_PREGNANT, EVENT_DANGER);
 
-	sChild* child = new sChild(unsigned(type) == STATUS_PREGNANT_BY_PLAYER);
+	int numchildren = 1;
+	if (g_Girls.HasTrait(girl, "Broodmother"))
+	{
+		if (g_Dice.percent(cfg.pregnancy.multi_birth_chance())) numchildren++;
+		if (g_Dice.percent(cfg.pregnancy.multi_birth_chance())) numchildren++;
+	}
+	sChild* child = new sChild(unsigned(type) == STATUS_PREGNANT_BY_PLAYER, sChild::None, numchildren);
 
 	// `J` average the mother's and father's stats and skills
-	for (int i = 0; i < NUM_STATS; i++)
-		child->m_Stats[i] = (stats[i] + girl->m_Stats[i]) / 2;
-	for (u_int i = 0; i < NUM_SKILLS; i++)
-		child->m_Skills[i] = (skills[i] + girl->m_Skills[i]) / 2;
+	for (int i = 0; i < NUM_STATS; i++)		child->m_Stats[i] = (stats[i] + girl->m_Stats[i]) / 2;
+	for (u_int i = 0; i < NUM_SKILLS; i++)	child->m_Skills[i] = (skills[i] + girl->m_Skills[i]) / 2;
 
 	// if there is somehow leftover pregnancy data, clear it
 	girl->m_WeeksPreg = 0;
@@ -13017,9 +13035,12 @@ sGirl *cGirls::make_girl_child(sGirl* mom, bool playerisdad)
 #endif
 
 
-
+// returns false if the child is not grown up, returns true when the child grows up
 bool cGirls::child_is_grown(sGirl* mom, sChild *child, string& summary, bool PlayerControlled)
 {
+	if (child->m_MultiBirth < 1) child->m_MultiBirth = 1; // `J` fix old code
+	if (child->m_MultiBirth > 5) child->m_MultiBirth = 5; // `J` fix old code
+
 	cConfig cfg;
 	// bump the age - if it's still not grown, go home
 	child->m_Age++;		if (child->m_Age < cfg.pregnancy.weeks_till_grown())	return false;
@@ -13027,205 +13048,417 @@ bool cGirls::child_is_grown(sGirl* mom, sChild *child, string& summary, bool Pla
 	cTariff tariff;
 	stringstream ss;
 
-	// we need a coming of age ceremony
-	if (child->is_boy())
+#if 1
+	if (child->m_MultiBirth == 1)	// `J` only 1 child so use the old code
 	{
-		summary += gettext("A son grew of age. ");
-		mom->m_States |= (1 << STATUS_HAS_SON);
+		// we need a coming of age ceremony
+		if (child->is_boy())
+		{
+			summary += "A son grew of age. ";
+			mom->m_States |= (1 << STATUS_HAS_SON);
 
-		if (PlayerControlled)	// get the going rate for a male slave and sell the poor sod
-		{
-			int gold = tariff.male_slave_sales();
-			g_Gold.slave_sales(gold);
-			ss << gettext("Her son has grown of age and has been sold into slavery.\n");
-			ss << gettext("You make ") << gold << gettext(" gold selling the boy.\n");
-		}
-		else	// or send him on his way
-		{
-			int roll = g_Dice % 4;
-			ss << "Her son has grown of age and ";
-			if (roll == 0)		ss << "moved away";
-			else if (roll == 1)	ss << "joined the army";
-			else 				ss << "got his own place in town";
-			ss << gettext(".\n");
-		}
-		mom->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
-		return true;
-	}
-
-	bool playerfather = child->m_IsPlayers;		// is 1 if father is player
-	summary += gettext("A daughter grew of age. ");
-	mom->m_States |= (1 << STATUS_HAS_DAUGHTER);
-	bool slave = mom->is_slave();
-	bool MomIsMonster = mom->is_monster();
-	// create a new girl for the barn
-	sGirl* sprog = 0;
-	if (mom->m_Canonical_Daughters.size() > 0)
-	{
-		sprog = make_girl_child(mom, playerfather);
-	}
-	if (!sprog && playerfather && GetNumYourDaughterGirls() > 0)				// this should check all your daughter girls that apply
-	{
-		sprog = GetRandomYourDaughterGirl(MomIsMonster);						// first try to get the same human/nonhuman as mother
-		if (!sprog && MomIsMonster) sprog = GetRandomYourDaughterGirl(true);	// next, if mom is nonhuman, try to get a human daughter
-	}
-	if (!sprog)
-	{
-		sprog = g_Girls.CreateRandomGirl(17, false, slave, false, MomIsMonster, false, false, playerfather);
-	}
-	// check for incest, get the odds on abnormality
-	int abnormal_pc = calc_abnormal_pc(mom, sprog, child->m_IsPlayers);
-	if (g_Dice.percent(abnormal_pc))
-	{
-		if (g_Dice.percent(50)) g_Girls.AddTrait(sprog, "Malformed");
-		else 					g_Girls.AddTrait(sprog, "Retarded");
-	}
-	// loop throught the mom's traits, inheriting where appropriate
-	for (int i = 0; i < mom->m_NumTraits && sprog->m_NumTraits < 30; i++)
-	{
-		if (mom->m_Traits[i])
-		{
-			if (mom->m_Traits[i]->m_InheritChance != -1)	// `J` new method for xml traits
+			if (PlayerControlled)	// get the going rate for a male slave and sell the poor sod
 			{
-				if (g_Dice.percent(mom->m_Traits[i]->m_InheritChance))
+				int gold = tariff.male_slave_sales();
+				g_Gold.slave_sales(gold);
+				ss << "Her son has grown of age and has been sold into slavery.\n";
+				ss << "You make " << gold << " gold selling the boy.\n";
+			}
+			else	// or send him on his way
+			{
+				int roll = g_Dice % 4;
+				ss << "Her son has grown of age and ";
+				if (roll == 0)		ss << "moved away";
+				else if (roll == 1)	ss << "joined the army";
+				else 				ss << "got his own place in town";
+				ss << ".\n";
+			}
+			mom->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
+			return true;
+		}
+
+		bool playerfather = child->m_IsPlayers;		// is 1 if father is player
+		summary += "A daughter grew of age. ";
+		mom->m_States |= (1 << STATUS_HAS_DAUGHTER);
+		bool slave = mom->is_slave();
+		bool MomIsMonster = mom->is_monster();
+		// create a new girl for the barn
+		sGirl* sprog = 0;
+		if (mom->m_Canonical_Daughters.size() > 0)
+		{
+			sprog = make_girl_child(mom, playerfather);
+		}
+		if (!sprog && playerfather && GetNumYourDaughterGirls() > 0)				// this should check all your daughter girls that apply
+		{
+			sprog = GetRandomYourDaughterGirl(MomIsMonster);						// first try to get the same human/nonhuman as mother
+			if (!sprog && MomIsMonster) sprog = GetRandomYourDaughterGirl(true);	// next, if mom is nonhuman, try to get a human daughter
+		}
+		if (!sprog)
+		{
+			sprog = g_Girls.CreateRandomGirl(17, false, slave, false, MomIsMonster, false, false, playerfather);
+		}
+		// check for incest, get the odds on abnormality
+		int abnormal_pc = calc_abnormal_pc(mom, sprog, child->m_IsPlayers);
+		if (g_Dice.percent(abnormal_pc))
+		{
+			if (g_Dice.percent(50)) g_Girls.AddTrait(sprog, "Malformed");
+			else 					g_Girls.AddTrait(sprog, "Retarded");
+		}
+		// loop throught the mom's traits, inheriting where appropriate
+		for (int i = 0; i < mom->m_NumTraits && sprog->m_NumTraits < 30; i++)
+		{
+			if (mom->m_Traits[i])
+			{
+				if (mom->m_Traits[i]->m_InheritChance != -1)	// `J` new method for xml traits
 				{
-					g_Girls.AddTrait(sprog, mom->m_Traits[i]->m_Name);
+					if (g_Dice.percent(mom->m_Traits[i]->m_InheritChance))
+					{
+						g_Girls.AddTrait(sprog, mom->m_Traits[i]->m_Name);
+					}
+				}
+				else
+				{
+					string tname = mom->m_Traits[i]->m_Name;
+					if (g_Girls.InheritTrait(mom->m_Traits[i]) && tname != "")
+						g_Girls.AddTrait(sprog, mom->m_Traits[i]->m_Name);
 				}
 			}
-			else
+		}
+		if (playerfather)
+		{
+			g_Girls.AddTrait(sprog, "Your Daughter");
+		}
+
+		g_Girls.MutuallyExclusiveTraits(sprog, 1);	// make sure all the trait effects are applied
+		g_Girls.ApplyTraits(sprog, true);	// `J` this is the old method  - the trait add and remove has been removed 
+		RemoveAllRememberedTraits(sprog);	// WD: remove any rembered traits created from trait incompatibilities
+
+		// inherit stats
+		for (int i = 0; i < NUM_STATS; i++)
+		{
+			int min = 0, max = 100;
+			if (mom->m_Stats[i] < child->m_Stats[i]) { min = mom->m_Stats[i]; max = child->m_Stats[i]; }
+			else 									 { max = mom->m_Stats[i]; min = child->m_Stats[i]; }
+			sprog->m_Stats[i] = (g_Dice % (max - min)) + min;
+		}
+
+		// set age to 18, fix health
+		sprog->m_Stats[STAT_AGE] = 18;
+		sprog->m_Stats[STAT_HEALTH] = 100;
+		sprog->m_Stats[STAT_HAPPINESS] = 100;
+		sprog->m_Stats[STAT_TIREDNESS] = 0;
+		sprog->m_Stats[STAT_LEVEL] = 0;
+		sprog->m_Stats[STAT_EXP] = 0;
+
+
+		// `J` set her birthday
+		int m0 = g_Month;
+		int d0 = g_Day;
+		d0 -= g_Dice % 7;
+		if (d0 < 1) { d0 += 30; m0--; }
+		if (m0 < 1) { m0 = 12; }
+		sprog->BirthMonth = m0;
+		sprog->BirthDay = d0;
+
+
+
+		// inherit skills
+		for (u_int i = 0; i < NUM_SKILLS; i++)
+		{
+			int s = 0;
+			if (mom->m_Skills[i] < child->m_Skills[i])	s = child->m_Skills[i];
+			else										s = mom->m_Skills[i];
+			sprog->m_Skills[i] = g_Dice%max(s, 20);
+		}
+
+
+		// new code to add first and last name to girls
+
+		// at this point the sprog should have temporary firstname, surname, and realname
+		string prevsurname = sprog->m_Surname;		// save the temporary surname incase it is needed later
+		string biography = "";
+		cPlayer* m_Player = g_Brothels.GetPlayer();
+		if (playerfather)
+		{
+			if (m_Player->Surname().size() > 0)
 			{
-				string tname = mom->m_Traits[i]->m_Name;
-				if (g_Girls.InheritTrait(mom->m_Traits[i]) && tname != "")
-					g_Girls.AddTrait(sprog, mom->m_Traits[i]->m_Name);
+				sprog->m_Surname = m_Player->Surname();
 			}
-		}
-	}
-	if (playerfather)
-	{
-		g_Girls.AddTrait(sprog, "Your Daughter");
-	}
-
-	g_Girls.MutuallyExclusiveTraits(sprog, 1);	// make sure all the trait effects are applied
-	g_Girls.ApplyTraits(sprog, true);	// `J` this is the old method  - the trait add and remove has been removed 
-	RemoveAllRememberedTraits(sprog);	// WD: remove any rembered traits created from trait incompatibilities
-
-	// inherit stats
-	for (int i = 0; i < NUM_STATS; i++)
-	{
-		int min = 0, max = 100;
-		if (mom->m_Stats[i] < child->m_Stats[i]) { min = mom->m_Stats[i]; max = child->m_Stats[i]; }
-		else 									 { max = mom->m_Stats[i]; min = child->m_Stats[i]; }
-		sprog->m_Stats[i] = (g_Dice % (max - min)) + min;
-	}
-
-	// set age to 18, fix health
-	sprog->m_Stats[STAT_AGE] = 18;
-	sprog->m_Stats[STAT_HEALTH] = 100;
-	sprog->m_Stats[STAT_HAPPINESS] = 100;
-	sprog->m_Stats[STAT_TIREDNESS] = 0;
-	sprog->m_Stats[STAT_LEVEL] = 0;
-	sprog->m_Stats[STAT_EXP] = 0;
-
-
-	// `J` set her birthday
-	int m0 = g_Month;
-	int d0 = g_Day;
-	d0 -= g_Dice % 7;
-	if (d0 < 1) { d0 += 30; m0--; }
-	if (m0 < 1) { m0 = 12; }
-	sprog->BirthMonth = m0;
-	sprog->BirthDay = d0;
-
-
-
-	// inherit skills
-	for (u_int i = 0; i < NUM_SKILLS; i++)
-	{
-		int s = 0;
-		if (mom->m_Skills[i] < child->m_Skills[i])	s = child->m_Skills[i];
-		else										s = mom->m_Skills[i];
-		sprog->m_Skills[i] = g_Dice%max(s, 20);
-	}
-
-
-	// new code to add first and last name to girls
-
-	// at this point the sprog should have temporary firstname, surname, and realname
-	string prevsurname = sprog->m_Surname;		// save the temporary surname incase it is needed later
-	string biography = "";
-	cPlayer* m_Player = g_Brothels.GetPlayer();
-	if (playerfather)
-	{
-		if (m_Player->Surname().size() > 0)
-		{
-			sprog->m_Surname = m_Player->Surname();
-		}
-		else	// probably shouldn't happen because there is a default surname
-		{
-			sprog->m_Surname = "Playerchild";	// generic name
-		}
-		biography = "Daughter of " + mom->m_Realname + " and the Brothel owner, Mr. " + m_Player->RealName();
-	}
-	else
-	{
-		if (mom->m_Surname.length() > 0)	// mom has a surname already
-		{
-			sprog->m_Surname = mom->m_Surname;
+			else	// probably shouldn't happen because there is a default surname
+			{
+				sprog->m_Surname = "Playerchild";	// generic name
+			}
+			biography = "Daughter of " + mom->m_Realname + " and the Brothel owner, Mr. " + m_Player->RealName();
 		}
 		else
 		{
-			sprog->m_Surname = prevsurname;
+			if (mom->m_Surname.length() > 0)	// mom has a surname already
+			{
+				sprog->m_Surname = mom->m_Surname;
+			}
+			else
+			{
+				sprog->m_Surname = prevsurname;
+			}
+			biography = "Daughter of " + mom->m_Realname + " and an anonymous brothel client";
 		}
-		biography = "Daughter of " + mom->m_Realname + " and an anonymous brothel client";
-	}
-	g_Girls.CreateRealName(sprog);
-	sprog->m_Desc = sprog->m_Desc + "\n\n" + biography+".";
+		g_Girls.CreateRealName(sprog);
+		sprog->m_Desc = sprog->m_Desc + "\n\n" + biography + ".";
 
-	// make sure slave daughters have house perc. set to 100, otherwise 60
-	sprog->m_Stats[STAT_HOUSE] = (slave) ? cfg.initial.slave_house_perc() : cfg.initial.girls_house_perc();
+		// make sure slave daughters have house perc. set to 100, otherwise 60
+		sprog->m_Stats[STAT_HOUSE] = (slave) ? cfg.initial.slave_house_perc() : cfg.initial.girls_house_perc();
 
-	int sendwhere = -1;
-	string sendwherestring = "Dungeon.";
+		int sendwhere = -1;
+		string sendwherestring = "Dungeon.";
 
 #if 0	// not going to use this until safeguards are in place
-	if (playerfather && g_House.GetFreeRooms(0) > 0)	// `J` send your daughters to your house if there is room.
-	{
-		sendwhere = BUILDING_HOUSE;
-		sendwherestring = "House.";
-	}
-	if (sendwhere < 0 &&
-		(PlayerControlled || sprog->is_slave) &&		// `J` if the girl is controlled or a slave and 
-		g_Brothels.GetNumBrothelsWithVacancies > 0)		// there are any brothels with space, send her to one
-	{
-		sendwhere = 1;
-		sendwherestring = "Brothel";
+		if (playerfather && g_House.GetFreeRooms(0) > 0)	// `J` send your daughters to your house if there is room.
+		{
+			sendwhere = BUILDING_HOUSE;
+			sendwherestring = "House.";
+		}
+		if (sendwhere < 0 &&
+			(PlayerControlled || sprog->is_slave) &&		// `J` if the girl is controlled or a slave and 
+			g_Brothels.GetNumBrothelsWithVacancies > 0)		// there are any brothels with space, send her to one
+		{
+			sendwhere = 1;
+			sendwherestring = "Brothel";
+		}
+#endif
+
+		stringstream Sss;
+		Sss << sprog->m_Realname << ", the " << biography << ", has grown of age and was sent to your " << sendwherestring;
+		sprog->m_Events.AddMessage(Sss.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
+
+		ss << "Her daughter " << sprog->m_Realname << " has grown of age and was sent to your " << sendwherestring;
+		if (sendwhere == BUILDING_HOUSE)	// house
+		{
+			g_House.AddGirl(0, sprog);
+		}
+		else if (sendwhere == 1)	// brothel
+		{
+			int sendto = 0;
+			if (mom->where_is_she > 0 && g_Brothels.GetFreeRooms(mom->where_is_she) > 0)
+				sendto = mom->where_is_she;
+			g_Brothels.AddGirl(sendto, sprog);
+		}
+		else	// dungeon
+		{
+			g_Brothels.GetDungeon()->AddGirl(sprog, DUNGEON_KID);
+		}
+
+
+		mom->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
+		return true;
 	}
 #endif
 
-	stringstream Sss;
-	Sss << sprog->m_Realname << ", the " << biography << ", has grown of age and was sent to your " << sendwherestring;
-	sprog->m_Events.AddMessage(Sss.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
-
-	ss << "Her daughter " << sprog->m_Realname << " has grown of age and was sent to your " << sendwherestring;
-	if (sendwhere == BUILDING_HOUSE)	// house
+	else		// `J` new code
 	{
-		g_House.AddGirl(0, sprog);
-	}
-	else if (sendwhere == 1)	// brothel
-	{
-		int sendto = 0;
-		if (mom->where_is_she > 0 && g_Brothels.GetFreeRooms(mom->where_is_she) > 0)
-			sendto = mom->where_is_she;
-		g_Brothels.AddGirl(sendto, sprog);
-	}
-	else	// dungeon
-	{
-		g_Brothels.GetDungeon()->AddGirl(sprog, DUNGEON_KID);
-	}
+		// prepare for the checks
+		int numchildren = child->m_MultiBirth;
+		// default them all to girls
+		bool aregirls[5] = { child->is_girl(), child->is_girl(), child->is_girl(), child->is_girl(), child->is_girl() };
+		// and set any 
+		for (int i = child->m_GirlsBorn; i < 5; i++)	aregirls[i] = child->is_boy();
+
+		for (int i = 0; i < numchildren; i++)
+		{
+			// we need a coming of age ceremony
+			if (!aregirls[i])	// boys first
+			{
+				summary += "A son has grown of age. ";
+				mom->m_States |= (1 << STATUS_HAS_SON);
+				if (PlayerControlled)	// get the going rate for a male slave and sell the poor sod
+				{
+					int gold = tariff.male_slave_sales();
+					g_Gold.slave_sales(gold);
+					ss << "Her son has grown of age and has been sold into slavery.\n";
+					ss << "You make " << gold << " gold selling the boy.\n";
+				}
+				else	// or send him on his way
+				{
+					int roll = g_Dice % 4;
+					ss << "Her son has grown of age and ";
+					if (roll == 0)		ss << "moved away";
+					else if (roll == 1)	ss << "joined the army";
+					else 				ss << "got his own place in town";
+					ss << ".\n";
+				}
+				mom->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
+			}
+			else	// girls next
+			{
+				bool playerfather = child->m_IsPlayers;		// is 1 if father is player
+				summary += "A daughter has grown of age. ";
+				mom->m_States |= (1 << STATUS_HAS_DAUGHTER);
+				bool slave = mom->is_slave();
+				bool MomIsMonster = mom->is_monster();
+				// create a new girl for the barn
+				sGirl* sprog = 0;
+				if (mom->m_Canonical_Daughters.size() > 0)
+				{
+					sprog = make_girl_child(mom, playerfather);
+				}
+				if (!sprog && playerfather && GetNumYourDaughterGirls() > 0)				// this should check all your daughter girls that apply
+				{
+					sprog = GetRandomYourDaughterGirl(MomIsMonster);						// first try to get the same human/nonhuman as mother
+					if (!sprog && MomIsMonster) sprog = GetRandomYourDaughterGirl(true);	// next, if mom is nonhuman, try to get a human daughter
+				}
+				if (!sprog)
+				{
+					sprog = g_Girls.CreateRandomGirl(17, false, slave, false, MomIsMonster, false, false, playerfather);
+				}
+				// check for incest, get the odds on abnormality
+				int abnormal_pc = calc_abnormal_pc(mom, sprog, child->m_IsPlayers);
+				if (g_Dice.percent(abnormal_pc))
+				{
+					if (g_Dice.percent(50)) g_Girls.AddTrait(sprog, "Malformed");
+					else 					g_Girls.AddTrait(sprog, "Retarded");
+				}
+				// loop throught the mom's traits, inheriting where appropriate
+				for (int i = 0; i < mom->m_NumTraits && sprog->m_NumTraits < 30; i++)
+				{
+					if (mom->m_Traits[i])
+					{
+						if (mom->m_Traits[i]->m_InheritChance != -1)	// `J` new method for xml traits
+						{
+							if (g_Dice.percent(mom->m_Traits[i]->m_InheritChance))
+							{
+								g_Girls.AddTrait(sprog, mom->m_Traits[i]->m_Name);
+							}
+						}
+						else
+						{
+							string tname = mom->m_Traits[i]->m_Name;
+							if (g_Girls.InheritTrait(mom->m_Traits[i]) && tname != "")
+								g_Girls.AddTrait(sprog, mom->m_Traits[i]->m_Name);
+						}
+					}
+				}
+				if (playerfather)
+				{
+					g_Girls.AddTrait(sprog, "Your Daughter");
+				}
+
+				g_Girls.MutuallyExclusiveTraits(sprog, 1);	// make sure all the trait effects are applied
+				g_Girls.ApplyTraits(sprog, true);	// `J` this is the old method  - the trait add and remove has been removed 
+				RemoveAllRememberedTraits(sprog);	// WD: remove any rembered traits created from trait incompatibilities
+
+				// inherit stats
+				for (int i = 0; i < NUM_STATS; i++)
+				{
+					int min = 0, max = 100;
+					if (mom->m_Stats[i] < child->m_Stats[i]) { min = mom->m_Stats[i]; max = child->m_Stats[i]; }
+					else 									 { max = mom->m_Stats[i]; min = child->m_Stats[i]; }
+					sprog->m_Stats[i] = (g_Dice % (max - min)) + min;
+				}
+
+				// set age to 18, fix health
+				sprog->m_Stats[STAT_AGE] = 18;
+				sprog->m_Stats[STAT_HEALTH] = 100;
+				sprog->m_Stats[STAT_HAPPINESS] = 100;
+				sprog->m_Stats[STAT_TIREDNESS] = 0;
+				sprog->m_Stats[STAT_LEVEL] = 0;
+				sprog->m_Stats[STAT_EXP] = 0;
+
+				// `J` set her birthday
+				int m0 = g_Month;
+				int d0 = g_Day;
+				d0 -= g_Dice % 7;
+				if (d0 < 1) { d0 += 30; m0--; }
+				if (m0 < 1) { m0 = 12; }
+				sprog->BirthMonth = m0;
+				sprog->BirthDay = d0;
+
+				// inherit skills
+				for (u_int i = 0; i < NUM_SKILLS; i++)
+				{
+					int s = 0;
+					if (mom->m_Skills[i] < child->m_Skills[i])	s = child->m_Skills[i];
+					else										s = mom->m_Skills[i];
+					sprog->m_Skills[i] = g_Dice%max(s, 20);
+				}
 
 
-	mom->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
+				// new code to add first and last name to girls
 
+				// at this point the sprog should have temporary firstname, surname, and realname
+				string prevsurname = sprog->m_Surname;		// save the temporary surname incase it is needed later
+				string biography = "";
+				cPlayer* m_Player = g_Brothels.GetPlayer();
+				if (playerfather)
+				{
+					if (m_Player->Surname().size() > 0)
+					{
+						sprog->m_Surname = m_Player->Surname();
+					}
+					else	// probably shouldn't happen because there is a default surname
+					{
+						sprog->m_Surname = "Playerchild";	// generic name
+					}
+					biography = "Daughter of " + mom->m_Realname + " and the Brothel owner, Mr. " + m_Player->RealName();
+				}
+				else
+				{
+					if (mom->m_Surname.length() > 0)	// mom has a surname already
+					{
+						sprog->m_Surname = mom->m_Surname;
+					}
+					else
+					{
+						sprog->m_Surname = prevsurname;
+					}
+					biography = "Daughter of " + mom->m_Realname + " and an anonymous brothel client";
+				}
+				g_Girls.CreateRealName(sprog);
+				sprog->m_Desc = sprog->m_Desc + "\n\n" + biography + ".";
+
+				// make sure slave daughters have house perc. set to 100, otherwise 60
+				sprog->m_Stats[STAT_HOUSE] = (slave) ? cfg.initial.slave_house_perc() : cfg.initial.girls_house_perc();
+
+				int sendwhere = -1;
+				string sendwherestring = "Dungeon.";
+
+#if 0	// not going to use this until safeguards are in place
+				if (playerfather && g_House.GetFreeRooms(0) > 0)	// `J` send your daughters to your house if there is room.
+				{
+					sendwhere = BUILDING_HOUSE;
+					sendwherestring = "House.";
+				}
+				if (sendwhere < 0 &&
+					(PlayerControlled || sprog->is_slave) &&		// `J` if the girl is controlled or a slave and 
+					g_Brothels.GetNumBrothelsWithVacancies > 0)		// there are any brothels with space, send her to one
+				{
+					sendwhere = 1;
+					sendwherestring = "Brothel";
+				}
+#endif
+
+				stringstream Sss;
+				Sss << sprog->m_Realname << ", the " << biography << ", has grown of age and was sent to your " << sendwherestring;
+				sprog->m_Events.AddMessage(Sss.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
+
+				ss << "Her daughter " << sprog->m_Realname << " has grown of age and was sent to your " << sendwherestring;
+				if (sendwhere == BUILDING_HOUSE)	// house
+				{
+					g_House.AddGirl(0, sprog);
+				}
+				else if (sendwhere == 1)	// brothel
+				{
+					int sendto = 0;
+					if (mom->where_is_she > 0 && g_Brothels.GetFreeRooms(mom->where_is_she) > 0)
+						sendto = mom->where_is_she;
+					g_Brothels.AddGirl(sendto, sprog);
+				}
+				else	// dungeon
+				{
+					g_Brothels.GetDungeon()->AddGirl(sprog, DUNGEON_KID);
+				}
+				mom->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
+			}
+		}
+	}
 	return true;
 }
 
@@ -13248,20 +13481,12 @@ void cGirls::HandleChildren(sGirl* girl, string& summary, bool PlayerControlled)
 	*/
 	if (girl->m_PregCooldown > 0) girl->m_PregCooldown--;
 	/*
-	*	now: if the girl has no children
-	*	we have nothing to do
-	*
-	*	logically this can precede the cooldown bump
-	*	since if she's on cooldown she must have
-	*	given birth
-	*
-	*	but I guess this way offers better bugproofing
+	*	now: if the girl has no children we have nothing to do logically this can precede the cooldown bump 
+	*	since if she's on cooldown she must have given birth but I guess this way offers better bugproofing
 	*/
 	if (girl->m_Children.m_FirstChild == 0) return;
 	/*
-	*	loop through the girl's children,
-	*	and divide them into those growing up
-	*	and those still to be born
+	*	loop through the girl's children, and divide them into those growing up and those still to be born
 	*/
 
 	bool remove_flag;
@@ -13287,6 +13512,8 @@ void cGirls::HandleChildren(sGirl* girl, string& summary, bool PlayerControlled)
 bool cGirls::child_is_due(sGirl* girl, sChild *child, string& summary, bool PlayerControlled)
 {
 	cConfig cfg;
+	if (child->m_MultiBirth < 1) child->m_MultiBirth = 1; // `J` fix old code
+	if (child->m_MultiBirth > 5) child->m_MultiBirth = 5; // `J` fix old code
 	/*
 	*	clock on the count and see if she's due
 	*	if not, return false (meaning "do not remove this child yet)
@@ -13319,41 +13546,193 @@ bool cGirls::child_is_due(sGirl* girl, sChild *child, string& summary, bool Play
 		*/
 		girl->clear_pregnancy();
 		girl->m_JustGaveBirth = true;
-		g_Girls.AddTrait(girl, "MILF");
+		AddTrait(girl, "MILF");
 
 		girl->tiredness(100);
 		girl->happiness(10 + g_Dice % 91);
-		int healthloss = 1 + g_Dice % 10;
-		if (girl->health() - healthloss < 1)	// don't kill her, it causes too many problems with the baby. 
-			SetStat(girl, STAT_HEALTH, 1);		// you can kill her when the baby gets moved somewhere else in the code.
-		else girl->health(-healthloss);
+		girl->health(-(child->m_MultiBirth + g_Dice % 10));
 
-		if (g_Dice.percent(cfg.pregnancy.miscarriage_chance()))	// the baby dies
+		// `J` If/when the baby gets moved somewhere else in the code, then the maother can die from giving birth
+		// For now don't kill her, it causes too many problems with the baby. 
+		if (girl->health() < 1) SetStat(girl, STAT_HEALTH, 1);	
+
+#if 1
+		if (child->m_MultiBirth == 1)	// only 1 baby so use the old code
 		{
-			// format a message
-			ss << "She has given birth to a baby " << child->boy_girl_str() << " but it did not survive the birth.\n\nYou grant her the week off to grieve.";
-			//check for sterility
-			if (g_Dice.percent(5 + healthFactor))
+			if (g_Dice.percent(cfg.pregnancy.miscarriage_chance()))	// the baby dies
 			{
-				ss << " It was a difficult birth and she has lost the ability to have children.";
-				g_Girls.AddTrait(girl, "Sterile");
+				// format a message
+				girl->m_ChildrenCount[CHILD08_MISCARRIAGES]++;
+				ss << "She has given birth to " << child->boy_girl_str() << " but it did not survive the birth.\n\nYou grant her the week off to grieve.";
+				//check for sterility
+				if (g_Dice.percent(5 + healthFactor))
+				{
+					// `J` updated old code to use new traits from new code
+					ss << "It was a difficult birth and ";
+					if (g_Girls.HasTrait(girl, "Broodmother"))
+					{
+						ss << "her womb has been damaged.\n";
+						girl->health(-(1 + g_Dice % 2));
+						if (girl->health() < 1) g_Girls.SetStat(girl, STAT_HEALTH, 1);	// don't kill her now, it causes all the babies to go away.
+					}
+					else if (g_Girls.HasTrait(girl, "Fertile"))	// loose fertile
+					{
+						ss << "her womb has been damaged reducing her fertility.\n";
+						AdjustTraitGroupFertility(girl, -1);
+					}
+					else	// add sterile
+					{
+						ss << "she has lost the ability to have children.\n";
+						AdjustTraitGroupFertility(girl, -1);
+					}
+				}
+				if (PlayerControlled) girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_DANGER);
+				return true;
 			}
-			if (PlayerControlled) girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_DANGER);
-			return true;
+			else	// the baby lives
+			{
+				girl->m_ChildrenCount[CHILD00_TOTAL_BIRTHS]++;
+				if (child->is_girl())
+				{
+					girl->m_ChildrenCount[CHILD02_ALL_GIRLS]++;
+					if (child->m_IsPlayers) girl->m_ChildrenCount[CHILD06_YOUR_GIRLS]++;
+					else					girl->m_ChildrenCount[CHILD04_CUSTOMER_GIRLS]++;
+				}
+				else
+				{
+					girl->m_ChildrenCount[CHILD03_ALL_BOYS]++;
+					if (child->m_IsPlayers) girl->m_ChildrenCount[CHILD07_YOUR_BOYS]++;
+					else					girl->m_ChildrenCount[CHILD05_CUSTOMER_BOYS]++;
+				}
+				// format a message
+				ss << "She has given birth to " << child->boy_girl_str() << ".\n\nYou grant her the week off for maternity leave.";
+				//check for sterility
+				if (g_Dice.percent(healthFactor))
+				{
+					// `J` updated old code to use new traits from new code
+					ss << "It was a difficult birth and ";
+					if (g_Girls.HasTrait(girl, "Broodmother"))
+					{
+						ss << "her womb has been damaged.\n";
+						girl->health(-(1 + g_Dice % 2));
+						if (girl->health() < 1) g_Girls.SetStat(girl, STAT_HEALTH, 1);	// don't kill her now, it causes all the babies to go away.
+					}
+					else if (g_Girls.HasTrait(girl, "Fertile"))	// loose fertile
+					{
+						ss << "her womb has been damaged reducing her fertility.\n";
+						AdjustTraitGroupFertility(girl, -1);
+					}
+					else	// add sterile
+					{
+						ss << "she has lost the ability to have children.\n";
+						AdjustTraitGroupFertility(girl, -1);
+					}
+				}
+				// queue the message and return false because we need to see this one grow up
+				if (PlayerControlled) girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_DANGER);
+				return false;
+			}
 		}
-		else	// the baby lives
+		else	// multiple births
+#endif
 		{
-			// format a message
-			ss << "She has given birth to a baby " << child->boy_girl_str() << ".\n\nYou grant her the week off for maternity leave.";
-			//check for sterility
-			if (g_Dice.percent(1 + healthFactor))
+			int unbornbabies = child->m_MultiBirth;
+			healthFactor += child->m_MultiBirth;
+			int t = 0;	// total
+			int m = 0;	// miscarriages
+			int g = 0;	// girls born live
+			int b = 0;	// boys born live
+			int s = 0;	// sterility count
+			int c = 0;	// current baby, 0=girl, 1=boy
+			while (unbornbabies > 0)
 			{
-				ss << " It was a difficult birth and she has lost the ability to have children.";
-				g_Girls.AddTrait(girl, "Sterile");
+				c = (unbornbabies > child->m_GirlsBorn ? 1 : 0);
+				t++;
+				if (g_Dice.percent(cfg.pregnancy.miscarriage_chance()			// the baby dies
+					+ child->m_MultiBirth))										// more likely for multiple births
+				{
+					m++; girl->m_ChildrenCount[CHILD08_MISCARRIAGES]++;			// add to miscarriage count
+					child->m_MultiBirth--; if (c == 0) child->m_GirlsBorn--;	// and remove the baby from the counts
+					if (g_Dice.percent(5 + healthFactor)) s++;					// check for sterility
+				}
+				else	// the baby lives
+				{
+					girl->m_ChildrenCount[CHILD00_TOTAL_BIRTHS]++;
+					if (c == 0)
+					{
+						g++;
+						girl->m_ChildrenCount[CHILD02_ALL_GIRLS]++;
+						if (child->m_IsPlayers) girl->m_ChildrenCount[CHILD06_YOUR_GIRLS]++;
+						else					girl->m_ChildrenCount[CHILD04_CUSTOMER_GIRLS]++;
+					}
+					else
+					{
+						b++;
+						girl->m_ChildrenCount[CHILD03_ALL_BOYS]++;
+						if (child->m_IsPlayers) girl->m_ChildrenCount[CHILD07_YOUR_BOYS]++;
+						else					girl->m_ChildrenCount[CHILD05_CUSTOMER_BOYS]++;
+					}
+					if (g_Dice.percent(healthFactor)) s++;						//check for sterility
+				}
+				unbornbabies--; // count down and check the next one
 			}
-			// queue the message and return false because we need to see this one grow up
+
+			ss << girl->m_Realname << " has given birth";
+			if (g + b > 0)		ss << " to ";
+			if (g > 0)			ss << g << " girl" << (g > 1 ? "s" : "");
+			if (g > 0 && b > 0)	ss << " and ";
+			if (b > 0)			ss << b << " boy" << (b > 1 ? "s" : "");
+			if (m > 0)
+			{
+				ss << ".\nShe lost ";
+				if (m < t) ss << m << " of her " << t << " babies";
+				else ss << "all of her babies, she is very distraught";
+			}
+
+			ss << ".\n\nYou grant her the week off ";
+			if (g + b > 0)			ss << "for maternity leave";
+			if (g + b > 0 && m > 0)	ss << " and ";
+			if (m > 0)				ss << "to mourn her lost child" << (m > 1 ? "ren" : "");
+			ss << ".\n\n";
+
+			if (s > 0)
+			{
+				ss << "It was a difficult birth and ";
+				if (g_Girls.HasTrait(girl, "Broodmother"))
+				{
+					if (s > 1)	// loose broodmother only if 2 or more miscarriages
+					{
+						ss << "her womb has been damaged reducing her fertility.\n";
+						AdjustTraitGroupFertility(girl, (s == 5 ? -2 : -1));
+					}
+					else		// otherwise take more damage
+					{
+						ss << "her womb has been damaged.\n";
+						girl->health(-(s + g_Dice % (s * 2)));
+						if (girl->health() < 1) SetStat(girl, STAT_HEALTH, 1);	// don't kill her now, it causes all the babies to go away.
+					}
+				}
+				else if (HasTrait(girl, "Fertile"))	// loose fertile
+				{
+					ss << "her womb has been damaged " << (s > 3 ? "leaving her sterile" : "reducing her fertility") << ".\n";
+					AdjustTraitGroupFertility(girl, (s > 3 ? -2 : -1));
+				}
+				else	// add sterile
+				{
+					ss << "she has lost the ability to have children.\n";
+					AdjustTraitGroupFertility(girl, -1);
+				}
+			}
+			else if (!girl->has_trait("Broodmother") && t > 1 && g_Dice.percent(t * 5))
+			{
+				ss << "She has given birth to so many children, her womb has gotten used to carrying babies.\n";
+				AdjustTraitGroupFertility(girl, 1);
+			}
+
 			if (PlayerControlled) girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_DANGER);
-			return false;
+
+			if (child->m_MultiBirth > 0) return false;	// there are some babies that survived so we need to keep them
+			else return true;							// or they all died so we can remove this pregnancy
 		}
 	}
 	/*
@@ -13369,16 +13748,17 @@ bool cGirls::child_is_due(sGirl* girl, sChild *child, string& summary, bool Play
 
 	if (PlayerControlled)
 	{
-
 		//summary += "Gave birth to a beast. ";
 		ss << "The creature within her has matured and emerged from her womb.\n";
 		if (g_Dice.percent(cfg.pregnancy.miscarriage_monster()))
 		{
+			girl->m_ChildrenCount[CHILD08_MISCARRIAGES]++;
 			ss << "Unfortunately it did not survive.";
 			healthFactor += 5;
 		}
 		else
 		{
+			girl->m_ChildrenCount[CHILD01_ALL_BEASTS]++;
 			long gold = tariff.creature_sales();
 			g_Gold.creature_sales(gold);
 			ss << "You make " << gold << " gold selling the creature.";
@@ -13389,7 +13769,7 @@ bool cGirls::child_is_due(sGirl* girl, sChild *child, string& summary, bool Play
 	/*
 	*	check for death
 	*/
-	if (g_Dice.percent(1 + healthFactor))
+	if (g_Dice.percent(healthFactor))
 	{
 		//summary += "And died from it. ";
 		ss << "\nSadly, the girl did not survive the experience.";
@@ -13402,8 +13782,24 @@ bool cGirls::child_is_due(sGirl* girl, sChild *child, string& summary, bool Play
 	*/
 	else if (g_Dice.percent(5 + healthFactor))
 	{
-		ss << " It was a difficult birth and she has lost the ability to have children.";
-		g_Girls.AddTrait(girl, "Sterile");
+		// `J` updated old code to use new traits from new code
+		ss << "It was a difficult birth and ";
+		if (g_Girls.HasTrait(girl, "Broodmother"))
+		{
+			ss << "her womb has been damaged.\n";
+			girl->health(-(1 + g_Dice % 2));
+			if (girl->health() < 1) g_Girls.SetStat(girl, STAT_HEALTH, 1);	// don't kill her now, it causes all the babies to go away.
+		}
+		else if (g_Girls.HasTrait(girl, "Fertile"))	// loose fertile
+		{
+			ss << "her womb has been damaged reducing her fertility.\n";
+			AdjustTraitGroupFertility(girl, -1);
+		}
+		else	// add sterile
+		{
+			ss << "she has lost the ability to have children.\n";
+			AdjustTraitGroupFertility(girl, -1);
+		}
 	}
 	/*
 	*	queue the message and return TRUE
@@ -13508,90 +13904,6 @@ bool cGirls::InheritTrait(sTrait* trait)
 	}
 	return false;
 }
-
-#if 0
-void cGirls::HandleChildren(sGirl* girl, string summary)
-{
-	cConfig cfg;
-	if (girl->m_PregCooldown > 0)
-		girl->m_PregCooldown--;
-	if (girl->m_Children.m_FirstChild)
-	{
-		sChild* child = girl->m_Children.m_FirstChild;
-		while (child)
-		{
-			if (child->m_Unborn == 0)
-			else	// handle the pregnancy
-			{
-				girl->m_WeeksPreg++;
-				if (girl->m_WeeksPreg >= cfg.pregnancy.weeks_pregnant())
-				{
-					girl->m_PregCooldown = cfg.pregnancy.cool_down();
-					if (girl->m_States & (1 << STATUS_INSEMINATED))
-						g_Girls.AddTrait(girl, "MILF");
-					string message = "";
-					if (girl->m_States&(1 << STATUS_PREGNANT) || girl->m_States&(1 << STATUS_PREGNANT_BY_PLAYER))
-					{
-						summary += gettext("Gave birth. ");
-						message = gettext("She has given birth to a baby ");
-
-						if (child->m_Sex == 1)
-							message += gettext("boy.");
-						else
-							message += gettext("girl.");
-						girl->m_States &= ~(1 << STATUS_PREGNANT);
-						girl->m_States &= ~(1 << STATUS_PREGNANT_BY_PLAYER);
-						if (g_Dice.percent(1))
-						{
-							message += gettext(" It was a difficult birth and she has lost the ability to have children.");
-							g_Girls.AddTrait(girl, "Sterile");
-						}
-					}
-					else if (girl->m_States & (1 << STATUS_INSEMINATED))
-					{
-						summary += gettext("Gave birth to beast. ");
-						message = gettext("The creature within her has matured and emerged from her womb.\n");
-						message += gettext("You make ");
-						long gold = (g_Dice % 2000) + 100;
-						_ltoa(gold, buffer, 10);
-						message += buffer;
-						message += gettext(" gold selling the creature.\n");
-						g_Gold.creature_sales(gold);
-
-						int death = g_Dice % 101;
-						if (death < 5)
-						{
-							summary += gettext("And died from it. ");
-							message += gettext("Sadly the girl did not survive the experiance.";
-							girl->m_Stats[STAT_HEALTH] = 0;
-						}
-
-						girl->m_States &= ~(1 << STATUS_INSEMINATED);
-						if (g_Dice.percent(1))
-						{
-							message += gettext(" It was a difficult birth and she has lost the ability to have children.");
-							g_Girls.AddTrait(girl, "Sterile");
-						}
-
-						girl->m_Events.AddMessage(message, IMGTYPE_PREGNANT, 3);
-						girl->m_WeeksPreg = 0;
-						child->m_Unborn = 0;
-
-						// remove from the list
-						//child = girl->m_Children.remove_child(child,girl);
-						continue;
-					}
-
-					girl->m_Events.AddMessage(message, IMGTYPE_PREGNANT, 3);
-					girl->m_WeeksPreg = 0;
-					child->m_Unborn = 0;
-				}
-			}
-			child = child->m_Next;
-		}
-	}
-}
-#endif
 
 // ----- Image
 
@@ -14668,7 +14980,7 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 		}
 		else
 		{
-			ss << gettext("---");
+			ss << "---";
 		}
 	}
 	else if (detailName == "PregCooldown")		{ ss << m_PregCooldown; }
@@ -14684,7 +14996,7 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 		}
 		else
 		{
-			ss << gettext("???");
+			ss << "???";
 		}
 	}
 	else if (detailName == "Pay")				{ ss << m_Pay; }

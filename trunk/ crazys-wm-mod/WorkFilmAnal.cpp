@@ -73,9 +73,10 @@ bool cJobManager::WorkFilmAnal(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	else if (roll <= 10) { enjoy -= g_Dice % 4 + 1;	ss << "She didn't like having a cock up her ass today.\n\n"; }
-	else if (roll >= 90) { enjoy += g_Dice % 4 + 1;	ss << "She loved having her ass pounded today.\n\n"; }
-	else /*    */{ enjoy += max(0, g_Dice % 3 - 1);	ss << "She had a pleasant day letting her co-star slip his cock into her butt.\n\n"; }
+	else if (roll <= 10) { enjoy -= g_Dice % 3 + 1;	ss << "She didn't like having a cock up her ass today.\n\n"; }
+	else if (roll >= 90) { enjoy += g_Dice % 3 + 1;	ss << "She loved having her ass pounded today.\n\n"; }
+	else /*            */{ enjoy += g_Dice % 2;		ss << "She had a pleasant day letting her co-star slip his cock into her butt.\n\n";
+	}
 	jobperformance = enjoy * 2;
 
 	if (g_Girls.CheckVirginity(girl))

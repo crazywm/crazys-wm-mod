@@ -89,8 +89,8 @@ bool cJobManager::WorkFluffer(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	}
 	else
 	{
-		enjoy += max(0, g_Dice % 3 - 1);
-		ss << "She had a pleasant day giving blowjobs.\n\n";
+		enjoy += g_Dice % 2;
+		ss << "She had a pleasant day keeping the actors ready to work.\n\n";
 	}
 	double jobperformance = JP_Fluffer(girl, false);
 	jobperformance += enjoy * 2;

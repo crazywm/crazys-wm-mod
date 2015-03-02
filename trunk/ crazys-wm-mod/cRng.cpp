@@ -28,6 +28,11 @@ int cRng::random(int n)
         float scaling_factor = rand() / float(RAND_MAX);
         return  int(scaling_factor * n );
 }
+double cRng::randomd(double n)
+{
+	float scaling_factor = rand() / float(RAND_MAX);
+	return  double(scaling_factor * n);
+}
 
 
 
@@ -39,6 +44,38 @@ int cRng::in_range(int min, int max, int range)
 	if(diff < 0) return random(range);
 	return min + random(diff);
 }
+
+int cRng::bell(int min, int max)	// `J` added - not sure how well it will work, I'm not too good at math
+{
+	if (min == max) return max;
+	double bmin, bmax, bmid, blow, bhii, test;
+	if (min < max) { bmin = min; bmax = max; } else { bmin = max; bmax = min; }
+	bmax++;// to correct random+1
+	bmid = (bmin + bmax) / 2.0;
+	blow = bmid - bmin;
+	bhii = bmax - bmid;
+	test = in_range((int)bmin, (int)bmax);
+	/* */if (test < bmid) test += randomd(bhii);
+	else if (test >= bmid) test -= randomd(blow);
+
+	if (test < min)	return min;
+	if (test > max) return max;
+	return (int)test;
+}
+#if 0
+int cRng::bell(int min, int max, int mid)
+{
+	if (min == max) return max;
+	return min + random(bdif);
+}
+int cRng::bell(int min, int max, int mlo, int mhi)
+{
+	if (min == max) return max;
+	return min + random(bdif);
+}
+#endif
+
+
 
 bool cRng::is_boy(int mod)
 {
