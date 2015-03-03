@@ -1765,25 +1765,32 @@ Note about the unique chance for Catacomb girls and Slave Market girls:
 !!!!!!!!!!!!!!!!!!!! pushed to SVN - r156
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.24
 
+###  Changes 3/2/2015
+Cleaned up birth list on second details page.
+Added Futa to fetish types
+Added larger button images provided by Dagoth
+ 
+New Script Stuff Added:
+ - AddTrait, AddTraitTemp, RemoveTrait, (IfHasTrait already there)
+ - Use *GIRLNAME* to have the game replace it with the girl's name
+ - Cleaned up cGameScript.cpp
+ 
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.08
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r157
  
  
  
  
-
-
 
 $$$$ TO DO - SHORT TERM - (for this version) $$$$
-
-
-$$$$ TO DO - MID TERM - (for the next few versions) $$$$
 Keep expanding on simple-save
 food and drink
 
+
+$$$$ TO DO - MID TERM - (for the next few versions) $$$$
 New Script Stuff:
- - Add_Trait, Remove_Trait, Has_Trait, Does_Not_Have_Trait
- - Get_Girl_Name
- - Picture_Sequence
- - Make_Movie_Scene
+ - Picture_Sequence     -- needs image rework before it can be implemented
+ - Make_Movie_Scene     -- needs movie and scene rework before it can be implemented
  - And/Or
 New Default Interacts for each building
  - DefaultInteractStudio.script
@@ -1796,7 +1803,6 @@ New Meet Try for the buildings that don't have them
  - MeetCentreTry.script (homeless, addicts, psychpatients, etc.)
  - MeetFarmTry.script (beast girls, farmers, craftsmen, etc.)
  - MeetHouseTry.script (House party? - Costs money to do, adds lots of filthiness to the house, etc.)
-
 
 
 

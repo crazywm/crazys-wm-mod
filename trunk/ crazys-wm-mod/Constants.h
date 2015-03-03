@@ -420,7 +420,7 @@ const unsigned int REWARD_RIVALHINDER   = 2;
 const unsigned int REWARD_ITEM          = 3;
 
 // customer fetishes (important that they are ordered from normal to weird)
-const unsigned int  NUM_FETISH              = 15;
+const unsigned int  NUM_FETISH              = 16;
 const unsigned char FETISH_TRYANYTHING      = 0;	// will like and try any form of sex (a nympho basically)
 const unsigned char FETISH_SPECIFICGIRL     = 1;	// wants a particular girl
 const unsigned char FETISH_BIGBOOBS         = 2;	// likes girls with big boobs
@@ -435,7 +435,8 @@ const unsigned char FETISH_NERDYGIRLS       = 10;	// likes nerds or clumsy girls
 const unsigned char FETISH_SMALLBOOBS       = 11;	// likes girls with small boobs
 const unsigned char FETISH_DANGEROUSGIRLS   = 12;	// likes girls with a bit of danger
 const unsigned char FETISH_NONHUMAN         = 13;	// likes non human girls
-const unsigned char FETISH_FREAKYGIRLS      = 14;	// likes girls with small boobs
+const unsigned char FETISH_FREAKYGIRLS      = 14;	// likes freaky girls
+const unsigned char FETISH_FUTAGIRLS		= 15;	// likes girls with dicks
 
 // actions girls can disobey against
 // `J` When modifying Action types, search for "J-Change-Action-Types"  :  found in >> Constants.h

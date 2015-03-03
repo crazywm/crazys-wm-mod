@@ -233,7 +233,7 @@ bool cJobManager::WorkHallWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 		else
 		{
 			// 50% chance of getting something a little weirder during the night
-			if (Day0Night1 == SHIFT_NIGHT && Cust.m_Fetish < NUM_FETISH - 2 && g_Dice.percent(50)) Cust.m_Fetish += 2;
+			if (Day0Night1 && Cust.m_Fetish < NUM_FETISH - 2 && g_Dice.percent(50)) Cust.m_Fetish += 2;
 
 			// Check for fetish match
 			if (g_Girls.CheckGirlType(girl, Cust.m_Fetish))

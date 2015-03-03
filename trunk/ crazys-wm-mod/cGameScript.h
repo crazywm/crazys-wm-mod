@@ -57,7 +57,6 @@ private:
 	sScript* Script_SetGirlFlag(sScript *Script);
 	sScript* Script_AddRandomValueToGold(sScript *Script);
 	sScript* Script_AddManyRandomGirlsToDungeon(sScript *Script);
-	sScript* Script_AddFamilyToDungeon(sScript *Script);			// `J` new
 	sScript* Script_AddTargetGirl(sScript *Script);
 	sScript* Script_AdjustTargetGirlStat(sScript *Script);
 	sScript* Script_PlayerRapeTargetGirl(sScript *Script);
@@ -105,6 +104,10 @@ private:
 	sScript* Script_BathTarget(sScript* Script);
 	sScript* Script_NurseTarget(sScript* Script);
 	sScript* Script_FormalTarget(sScript* Script);
+	sScript* Script_AddFamilyToDungeon(sScript *Script);			// `J` new
+	sScript* Script_AddTrait(sScript* Script);						// `J` new
+	sScript* Script_RemoveTrait(sScript* Script);					// `J` new
+	sScript* Script_AddTraitTemp(sScript* Script);					// `J` new
 	//sScript* Script_GirlNameTarget(sScript* Script);
 
 	// The overloaded process function

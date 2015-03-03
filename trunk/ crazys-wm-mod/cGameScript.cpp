@@ -125,7 +125,13 @@ sScript *cGameScript::Process(sScript *Script)
 	case 68: return Script_NurseTarget(Script);
 	case 69: return Script_FormalTarget(Script);
 	case 70: return Script_AddFamilyToDungeon(Script);
+	case 71: return Script_AddTrait(Script);
+	case 72: return Script_RemoveTrait(Script);
+	case 73: return Script_AddTraitTemp(Script);
 		//case 60: return Script_GirlNameTarget(Script);
+
+	default: return Script->m_Next;	// `J` if a script type is not found, skip it.
+
 	}
 
 	return 0; // Error executing
@@ -138,8 +144,7 @@ void cGameScript::RunScript()
 	sScript* curr = m_CurrPos;
 
 	// Scan through script and process functions
-	while (curr != 0 && !m_Leave && m_Active)
-		curr = Process(curr);
+	while (curr != 0 && !m_Leave && m_Active) curr = Process(curr);
 
 	if (m_Active == false)
 	{
@@ -150,7 +155,16 @@ void cGameScript::RunScript()
 
 sScript *cGameScript::Script_Dialog(sScript *Script)
 {
-	g_MessageQue.AddToQue(Script->m_Entries[0].m_Text, COLOR_BLUE);
+	string text = Script->m_Entries[0].m_Text;
+	string replacestring = "*GIRLNAME*";
+	string replacewith = (m_GirlTarget ? m_GirlTarget->m_Realname : "The Girl");
+	int f = -1;
+	do {
+		f = text.find(replacestring);
+		if (f > -1)	text.replace(f, replacestring.length(), replacewith);
+	} while (f > -1);
+
+	g_MessageQue.AddToQue(text, COLOR_BLUE);
 	return Script->m_Next; // Go to next script action
 }
 
@@ -174,27 +188,25 @@ sScript *cGameScript::Script_EndScript(sScript *Script)
 sScript *cGameScript::Script_ChoiceBox(sScript *Script)
 {
 	int value[2];
-	if (Script->m_Entries[0].m_Var == 1)
-		value[0] = m_Vars[Script->m_Entries[0].m_lValue];
-	else
-		value[0] = Script->m_Entries[0].m_lValue;
-
-	if (Script->m_Entries[1].m_Var == 1)
-		value[1] = m_Vars[Script->m_Entries[1].m_lValue];
-	else
-		value[1] = Script->m_Entries[1].m_lValue;
+	value[0] = (Script->m_Entries[0].m_Var == 1 ? m_Vars[Script->m_Entries[0].m_lValue] : Script->m_Entries[0].m_lValue);
+	value[1] = (Script->m_Entries[1].m_Var == 1 ? m_Vars[Script->m_Entries[1].m_lValue] : Script->m_Entries[1].m_lValue);
 
 	g_ChoiceManager.CreateChoiceBoxResize(value[0], value[1]);
 	int id = value[0];
 	int num = value[1];
 	int size = 0;
 	Script = Script->m_Next;
-	for (int i = 0; i<num; i++)
+
+	string replacestring = "*GIRLNAME*";
+	string replacewith = (m_GirlTarget ? m_GirlTarget->m_Realname : "The Girl");
+	for (int i = 0; i < num; i++)
 	{
-		int newlen = strlen(Script->m_Entries[0].m_Text);
-		if (newlen > size)
-			size = newlen;
-		g_ChoiceManager.AddChoice(id, Script->m_Entries[0].m_Text, i);
+		string text = Script->m_Entries[0].m_Text;
+		int f = -1;
+		do { f = text.find(replacestring); if (f > -1)	text.replace(f, replacestring.length(), replacewith); } while (f > -1);
+		int newlen = text.length();
+		if (newlen > size) size = newlen;
+		g_ChoiceManager.AddChoice(id, text, i);
 		Script = Script->m_Next;
 	}
 	g_ChoiceManager.BuildChoiceBox(id, size);
@@ -211,15 +223,8 @@ sScript *cGameScript::Script_Restart(sScript *Script)
 sScript *cGameScript::Script_SetVar(sScript *Script)
 {
 	int value[2];
-	if (Script->m_Entries[0].m_Var == 1)
-		value[0] = m_Vars[Script->m_Entries[0].m_lValue];
-	else
-		value[0] = Script->m_Entries[0].m_lValue;
-
-	if (Script->m_Entries[1].m_Var == 1)
-		value[1] = m_Vars[Script->m_Entries[1].m_lValue];
-	else
-		value[1] = Script->m_Entries[1].m_lValue;
+	value[0] = (Script->m_Entries[0].m_Var == 1 ? m_Vars[Script->m_Entries[0].m_lValue] : Script->m_Entries[0].m_lValue);
+	value[1] = (Script->m_Entries[1].m_Var == 1 ? m_Vars[Script->m_Entries[1].m_lValue] : Script->m_Entries[1].m_lValue);
 
 	// Set value
 	m_Vars[value[0]] = value[1];
@@ -231,25 +236,10 @@ sScript *cGameScript::Script_SetVarRandom(sScript *Script)
 	int num = 0;
 	int value[3];
 
-	if (Script->m_Entries[0].m_Var == 1)
-		value[0] = m_Vars[Script->m_Entries[0].m_lValue];
-	else
-		value[0] = Script->m_Entries[0].m_lValue;
-
-	if (Script->m_Entries[1].m_Var == 1)
-		value[1] = m_Vars[Script->m_Entries[1].m_lValue];
-	else
-		value[1] = Script->m_Entries[1].m_lValue;
-
-	if (Script->m_Entries[2].m_Var == 1)
-		value[2] = m_Vars[Script->m_Entries[2].m_lValue];
-	else
-		value[2] = Script->m_Entries[2].m_lValue;
-
-	if (Script->m_Entries[1].m_lValue == 0)
-		num = (g_Dice % (value[2] + 1)) + value[1];
-	else
-		num = (g_Dice % (value[2] + 1)) + value[1] - 1;
+	value[0] = (Script->m_Entries[0].m_Var == 1 ? m_Vars[Script->m_Entries[0].m_lValue] : Script->m_Entries[0].m_lValue);
+	value[1] = (Script->m_Entries[1].m_Var == 1 ? m_Vars[Script->m_Entries[1].m_lValue] : Script->m_Entries[1].m_lValue);
+	value[2] = (Script->m_Entries[2].m_Var == 1 ? m_Vars[Script->m_Entries[2].m_lValue] : Script->m_Entries[2].m_lValue);
+	num = (Script->m_Entries[1].m_lValue == 0 ? (g_Dice % (value[2] + 1)) + value[1] : (g_Dice % (value[2] + 1)) + value[1] - 1);
 
 	m_Vars[value[0]] = num;
 	return Script->m_Next; // Go to next script action
@@ -262,22 +252,12 @@ sScript *cGameScript::Script_IfVar(sScript *Script)
 	int Nest = m_NestLevel;
 	int value[2];
 
-	if (Script->m_Entries[0].m_Var == 1)
-		value[0] = m_Vars[Script->m_Entries[0].m_lValue];
-	else
-		value[0] = Script->m_Entries[0].m_lValue;
-
-	if (Script->m_Entries[2].m_Var == 1)
-		value[1] = m_Vars[Script->m_Entries[2].m_lValue];
-	else
-		value[1] = Script->m_Entries[2].m_lValue;
+	value[0] = (Script->m_Entries[0].m_Var == 1 ? m_Vars[Script->m_Entries[0].m_lValue] : Script->m_Entries[0].m_lValue);
+	value[1] = (Script->m_Entries[2].m_Var == 1 ? m_Vars[Script->m_Entries[2].m_lValue] : Script->m_Entries[2].m_lValue);
 
 	// See if variable matches second entry
 	int sel = 0;
-	if (Script->m_Entries[1].m_Var == 1)
-		sel = m_Vars[Script->m_Entries[1].m_Selection];
-	else
-		sel = Script->m_Entries[1].m_Selection;
+	sel = (Script->m_Entries[1].m_Var == 1 ? m_Vars[Script->m_Entries[1].m_Selection] : Script->m_Entries[1].m_Selection);
 	switch (sel)
 	{
 	case 0:
@@ -392,16 +372,8 @@ sScript *cGameScript::Script_IfChoice(sScript *Script)
 	int Nest = m_NestLevel;
 	int value[2];
 
-	if (Script->m_Entries[0].m_Var == 1)
-		value[0] = m_Vars[Script->m_Entries[0].m_lValue];
-	else
-		value[0] = Script->m_Entries[0].m_lValue;
-
-	if (Script->m_Entries[1].m_Var == 1)
-		value[1] = m_Vars[Script->m_Entries[1].m_lValue];
-	else
-		value[1] = Script->m_Entries[1].m_lValue;
-
+	value[0] = (Script->m_Entries[0].m_Var == 1 ? m_Vars[Script->m_Entries[0].m_lValue] : Script->m_Entries[0].m_lValue);
+	value[1] = (Script->m_Entries[1].m_Var == 1 ? m_Vars[Script->m_Entries[1].m_lValue] : Script->m_Entries[1].m_lValue);
 	// See if choice flag matches second entry
 	if (g_ChoiceManager.GetChoice(value[0]) == value[1])
 		Skipping = false;
@@ -457,17 +429,9 @@ sScript *cGameScript::Script_IfChoice(sScript *Script)
 sScript *cGameScript::Script_SetPlayerSuspision(sScript *Script)
 {
 	int value;
-	if (Script->m_Entries[0].m_Var == 1)
-		value = m_Vars[Script->m_Entries[0].m_lValue];
-	else
-		value = Script->m_Entries[0].m_lValue;
+	value = (Script->m_Entries[0].m_Var == 1 ? m_Vars[Script->m_Entries[0].m_lValue] : Script->m_Entries[0].m_lValue);
 
 	g_Brothels.GetPlayer()->suspicion(value);
-	//g_Brothels.GetPlayer()->m_Suspicion += value;
-	//if(g_Brothels.GetPlayer()->m_Suspicion < -100)
-	//	g_Brothels.GetPlayer()->m_Suspicion = -100;
-	//if(g_Brothels.GetPlayer()->m_Suspicion > 100)
-	//	g_Brothels.GetPlayer()->m_Suspicion = 100;
 
 	return Script->m_Next;
 }
@@ -475,16 +439,8 @@ sScript *cGameScript::Script_SetPlayerSuspision(sScript *Script)
 sScript *cGameScript::Script_SetPlayerDisposition(sScript *Script)
 {
 	int value;
-	if (Script->m_Entries[0].m_Var == 1)
-		value = m_Vars[Script->m_Entries[0].m_lValue];
-	else
-		value = Script->m_Entries[0].m_lValue;
+	value = (Script->m_Entries[0].m_Var == 1 ? m_Vars[Script->m_Entries[0].m_lValue] : Script->m_Entries[0].m_lValue);
 
-	//g_Brothels.GetPlayer()->m_Disposition += value;
-	//if(g_Brothels.GetPlayer()->m_Disposition < -100)
-	//	g_Brothels.GetPlayer()->m_Disposition = -100;
-	//if(g_Brothels.GetPlayer()->m_Disposition > 100)
-	//	g_Brothels.GetPlayer()->m_Disposition = 100;
 	g_Brothels.GetPlayer()->disposition(value);
 
 	return Script->m_Next;
@@ -493,10 +449,7 @@ sScript *cGameScript::Script_SetPlayerDisposition(sScript *Script)
 sScript *cGameScript::Script_ClearGlobalFlag(sScript *Script)
 {
 	int value;
-	if (Script->m_Entries[0].m_Var == 1)
-		value = m_Vars[Script->m_Entries[0].m_lValue];
-	else
-		value = Script->m_Entries[0].m_lValue;
+	value = (Script->m_Entries[0].m_Var == 1 ? m_Vars[Script->m_Entries[0].m_lValue] : Script->m_Entries[0].m_lValue);
 
 	ClearGameFlag(value);
 	return Script->m_Next;
@@ -506,21 +459,9 @@ sScript *cGameScript::Script_AddCustToDungeon(sScript *Script)
 {
 	bool wife = false;
 	int value[3];
-	if (Script->m_Entries[0].m_Var == 1)
-		value[0] = m_Vars[Script->m_Entries[0].m_Selection];
-	else
-		value[0] = Script->m_Entries[0].m_Selection;
-
-	if (Script->m_Entries[1].m_Var == 1)
-		value[1] = m_Vars[Script->m_Entries[1].m_lValue];
-	else
-		value[1] = Script->m_Entries[1].m_lValue;
-
-	if (Script->m_Entries[2].m_Var == 1)
-		value[2] = m_Vars[Script->m_Entries[2].m_lValue];
-	else
-		value[2] = Script->m_Entries[2].m_lValue;
-
+	value[0] = (Script->m_Entries[0].m_Var == 1 ? m_Vars[Script->m_Entries[0].m_Selection] : Script->m_Entries[0].m_Selection);
+	value[1] = (Script->m_Entries[1].m_Var == 1 ? m_Vars[Script->m_Entries[1].m_lValue] : Script->m_Entries[1].m_lValue);
+	value[2] = (Script->m_Entries[2].m_Var == 1 ? m_Vars[Script->m_Entries[2].m_lValue] : Script->m_Entries[2].m_lValue);
 	if (value[2] == 1)
 		wife = true;
 
@@ -535,35 +476,12 @@ sScript *cGameScript::Script_AddCustToDungeon(sScript *Script)
 sScript *cGameScript::Script_AddRandomGirlToDungeon(sScript *Script)
 {
 	int value[6];
-	if (Script->m_Entries[0].m_Var == 1)
-		value[0] = m_Vars[Script->m_Entries[0].m_Selection];
-	else
-		value[0] = Script->m_Entries[0].m_Selection;
-
-	if (Script->m_Entries[1].m_Var == 1)
-		value[1] = m_Vars[Script->m_Entries[1].m_lValue];
-	else
-		value[1] = Script->m_Entries[1].m_lValue;
-
-	if (Script->m_Entries[2].m_Var == 1)
-		value[2] = m_Vars[Script->m_Entries[2].m_lValue];
-	else
-		value[2] = Script->m_Entries[2].m_lValue;
-
-	if (Script->m_Entries[3].m_Var == 1)
-		value[3] = m_Vars[Script->m_Entries[3].m_lValue];
-	else
-		value[3] = Script->m_Entries[3].m_lValue;
-
-	if (Script->m_Entries[4].m_Var == 1)
-		value[4] = m_Vars[Script->m_Entries[4].m_lValue];
-	else
-		value[4] = Script->m_Entries[4].m_lValue;
-
-	if (Script->m_Entries[5].m_Var == 1)
-		value[5] = m_Vars[Script->m_Entries[5].m_lValue];
-	else
-		value[5] = Script->m_Entries[5].m_lValue;
+	value[0] = (Script->m_Entries[0].m_Var == 1 ? m_Vars[Script->m_Entries[0].m_Selection] : Script->m_Entries[0].m_Selection);
+	value[1] = (Script->m_Entries[1].m_Var == 1 ? m_Vars[Script->m_Entries[1].m_lValue] : Script->m_Entries[1].m_lValue);
+	value[2] = (Script->m_Entries[2].m_Var == 1 ? m_Vars[Script->m_Entries[2].m_lValue] : Script->m_Entries[2].m_lValue);
+	value[3] = (Script->m_Entries[3].m_Var == 1 ? m_Vars[Script->m_Entries[3].m_lValue] : Script->m_Entries[3].m_lValue);
+	value[4] = (Script->m_Entries[4].m_Var == 1 ? m_Vars[Script->m_Entries[4].m_lValue] : Script->m_Entries[4].m_lValue);
+	value[5] = (Script->m_Entries[5].m_Var == 1 ? m_Vars[Script->m_Entries[5].m_lValue] : Script->m_Entries[5].m_lValue);
 
 	bool kidnaped = false;
 	int reason = 0;
@@ -578,27 +496,14 @@ sScript *cGameScript::Script_AddRandomGirlToDungeon(sScript *Script)
 		reason = DUNGEON_GIRLCAPTURED;
 	}
 
-	bool slave = false;
-	if (value[3] == 1)
-		slave = true;
-
-	bool allowNonHuman = false;
-	if (value[4] == 1)
-		allowNonHuman = true;
-
-	bool arena = false;
-	if (value[5] == 1)
-		arena = true;
-
-	int age = 0;
-	if (value[1] == 0)
-		age = (g_Dice % (value[2] + 1)) + value[1];
-	else
-		age = (g_Dice % (value[2] + 1)) + value[1] - 1;
+	bool slave = (value[3] == 1);
+	bool allowNonHuman = (value[4] == 1);
+	bool arena = (value[5] == 1);
+	int age = (value[1] == 0 ? (g_Dice % (value[2] + 1)) + value[1] : (g_Dice % (value[2] + 1)) + value[1] - 1);
 
 	sGirl* newgirl = g_Girls.CreateRandomGirl(age, false, slave, false, allowNonHuman, kidnaped, arena);
 	stringstream NGmsg;
-	NGmsg << "(DEBUG:: "<< newgirl->m_Realname << " was added by a script.\nLookup code: D_001)";
+	NGmsg << "(DEBUG:: " << newgirl->m_Realname << " was added by a script.\nLookup code: D_001)";
 	newgirl->m_Events.AddMessage(NGmsg.str(), IMGTYPE_PROFILE, EVENT_WARNING);
 
 	g_Brothels.GetDungeon()->AddGirl(newgirl, reason);
@@ -615,18 +520,10 @@ sScript *cGameScript::Script_SetGlobal(sScript *Script)
 sScript *cGameScript::Script_SetGirlFlag(sScript *Script)
 {
 	int value[2];
-	if (Script->m_Entries[0].m_Var == 1)
-		value[0] = m_Vars[Script->m_Entries[0].m_lValue];
-	else
-		value[0] = Script->m_Entries[0].m_lValue;
-
-	if (Script->m_Entries[1].m_Var == 1)
-		value[1] = m_Vars[Script->m_Entries[1].m_lValue];
-	else
-		value[1] = Script->m_Entries[1].m_lValue;
-
-	if (m_GirlTarget == 0)
-		return Script->m_Next;	// this shouldn't happen
+	value[0] = (Script->m_Entries[0].m_Var == 1 ? m_Vars[Script->m_Entries[0].m_lValue] : Script->m_Entries[0].m_lValue);
+	value[1] = (Script->m_Entries[1].m_Var == 1 ? m_Vars[Script->m_Entries[1].m_lValue] : Script->m_Entries[1].m_lValue);
+	
+	if (m_GirlTarget == 0) return Script->m_Next;	// this shouldn't happen
 
 	m_GirlTarget->m_Flags[value[0]] = (unsigned char)value[1];
 	return Script->m_Next;
@@ -635,21 +532,9 @@ sScript *cGameScript::Script_SetGirlFlag(sScript *Script)
 sScript *cGameScript::Script_AddRandomValueToGold(sScript *Script)
 {
 	int value[2];
-	if (Script->m_Entries[0].m_Var == 1)
-		value[0] = m_Vars[Script->m_Entries[0].m_lValue];
-	else
-		value[0] = Script->m_Entries[0].m_lValue;
-
-	if (Script->m_Entries[1].m_Var == 1)
-		value[1] = m_Vars[Script->m_Entries[1].m_lValue];
-	else
-		value[1] = Script->m_Entries[1].m_lValue;
-
-	long gold = 0;
-	if (value[0] == 0)
-		gold = (g_Dice % (value[1] + 1)) + value[0];
-	else
-		gold = (g_Dice % (value[1] + 1)) + value[0] - 1;
+	value[0] = (Script->m_Entries[0].m_Var == 1 ? m_Vars[Script->m_Entries[0].m_lValue] : Script->m_Entries[0].m_lValue);
+	value[1] = (Script->m_Entries[1].m_Var == 1 ? m_Vars[Script->m_Entries[1].m_lValue] : Script->m_Entries[1].m_lValue);
+	long gold = (value[0] == 0 ? (g_Dice % (value[1] + 1)) + value[0] : (g_Dice % (value[1] + 1)) + value[0] - 1);
 
 	g_Gold.misc_credit(gold);
 
@@ -659,73 +544,26 @@ sScript *cGameScript::Script_AddRandomValueToGold(sScript *Script)
 sScript *cGameScript::Script_AddManyRandomGirlsToDungeon(sScript *Script)
 {
 	int value[7];
-	if (Script->m_Entries[0].m_Var == 1)							// [0] = how many girls?
-		value[0] = m_Vars[Script->m_Entries[0].m_lValue];
-	else
-		value[0] = Script->m_Entries[0].m_lValue;
-
-	if (Script->m_Entries[1].m_Var == 1)							// [1] = kidnaped or captured?
-		value[1] = m_Vars[Script->m_Entries[1].m_Selection];
-	else
-		value[1] = Script->m_Entries[1].m_Selection;
-
-	if (Script->m_Entries[2].m_Var == 1)							// [2] = min age
-		value[2] = m_Vars[Script->m_Entries[2].m_lValue];
-	else
-		value[2] = Script->m_Entries[2].m_lValue;
-
-	if (Script->m_Entries[3].m_Var == 1)							// [3] = max age
-		value[3] = m_Vars[Script->m_Entries[3].m_lValue];
-	else
-		value[3] = Script->m_Entries[3].m_lValue;
-
-	if (Script->m_Entries[4].m_Var == 1)							// [4] = slave
-		value[4] = m_Vars[Script->m_Entries[4].m_lValue];
-	else
-		value[4] = Script->m_Entries[4].m_lValue;
-
-	if (Script->m_Entries[5].m_Var == 1)							// [5] = nonhuman
-		value[5] = m_Vars[Script->m_Entries[5].m_lValue];
-	else
-		value[5] = Script->m_Entries[5].m_lValue;
-
-	if (Script->m_Entries[6].m_Var == 1)							// [6] = arena
-		value[6] = m_Vars[Script->m_Entries[6].m_lValue];
-	else
-		value[6] = Script->m_Entries[6].m_lValue;
+	value[0] = (Script->m_Entries[0].m_Var == 1 ? m_Vars[Script->m_Entries[0].m_lValue] : Script->m_Entries[0].m_lValue);		// how many girls?
+	value[1] = (Script->m_Entries[1].m_Var == 1 ? m_Vars[Script->m_Entries[1].m_Selection] : Script->m_Entries[1].m_Selection);	// kidnaped or captured?
+	value[2] = (Script->m_Entries[2].m_Var == 1 ? m_Vars[Script->m_Entries[2].m_lValue] : Script->m_Entries[2].m_lValue);		// min age
+	value[3] = (Script->m_Entries[3].m_Var == 1 ? m_Vars[Script->m_Entries[3].m_lValue] : Script->m_Entries[3].m_lValue);		// max age
+	value[4] = (Script->m_Entries[4].m_Var == 1 ? m_Vars[Script->m_Entries[4].m_lValue] : Script->m_Entries[4].m_lValue);		// slave
+	value[5] = (Script->m_Entries[5].m_Var == 1 ? m_Vars[Script->m_Entries[5].m_lValue] : Script->m_Entries[5].m_lValue);		// nonhuman
+	value[6] = (Script->m_Entries[6].m_Var == 1 ? m_Vars[Script->m_Entries[6].m_lValue] : Script->m_Entries[6].m_lValue);		// arena
 
 	bool kidnaped = false;
 	int reason = 0;
-	if (value[1] == 0)
-	{
-		kidnaped = true;
-		reason = DUNGEON_GIRLKIDNAPPED;
-	}
-	else if (value[1] == 1)
-	{
-		kidnaped = true;
-		reason = DUNGEON_GIRLCAPTURED;
-	}
+	if (value[1] == 0)		{ kidnaped = true; reason = DUNGEON_GIRLKIDNAPPED; }
+	else if (value[1] == 1)	{ kidnaped = true; reason = DUNGEON_GIRLCAPTURED; }
 
-	bool slave = false;
-	if (value[4] == 1)
-		slave = true;
-
-	bool allowNonHuman = false;
-	if (value[5] == 1)
-		allowNonHuman = true;
-
-	bool arena = false;
-	if (value[6] == 1)
-		arena = true;
+	bool slave = (value[4] == 1);
+	bool allowNonHuman = (value[5] == 1);
+	bool arena = (value[6] == 1);
 
 	for (int i = 0; i < value[0]; i++)
 	{
-		int age = 0;
-		if (value[2] == 0)
-			age = (g_Dice % (value[3] + 1)) + value[2];
-		else
-			age = (g_Dice % (value[3] + 1)) + value[2] - 1;
+		int age = (value[2] == 0 ? (g_Dice % (value[3] + 1)) + value[2] : (g_Dice % (value[3] + 1)) + value[2] - 1);
 
 		sGirl* newgirl = g_Girls.CreateRandomGirl(age, false, slave, false, allowNonHuman, kidnaped, arena);
 		stringstream NGmsg;
@@ -742,61 +580,28 @@ sScript *cGameScript::Script_AddManyRandomGirlsToDungeon(sScript *Script)
 sScript *cGameScript::Script_AddFamilyToDungeon(sScript *Script)
 {
 	int value[6];
-	if (Script->m_Entries[0].m_Var == 1)					// [0] = how many daughters? Base age 18-25
-		value[0] = m_Vars[Script->m_Entries[0].m_lValue];
-	else
-		value[0] = Script->m_Entries[0].m_lValue;
-
-	if (Script->m_Entries[1].m_Var == 1)					// [1] = mother taken also?
-		value[1] = m_Vars[Script->m_Entries[1].m_Selection];
-	else
-		value[1] = Script->m_Entries[1].m_Selection;
-
-	if (Script->m_Entries[2].m_Var == 1)					// [2] = kidnaped or captured?
-		value[2] = m_Vars[Script->m_Entries[2].m_lValue];
-	else
-		value[2] = Script->m_Entries[2].m_lValue;
-
-	if (Script->m_Entries[3].m_Var == 1)					// [3] = slave
-		value[3] = m_Vars[Script->m_Entries[3].m_lValue];
-	else
-		value[3] = Script->m_Entries[3].m_lValue;
-
-	if (Script->m_Entries[4].m_Var == 1)					// [4] = nonhuman
-		value[4] = m_Vars[Script->m_Entries[4].m_lValue];
-	else
-		value[4] = Script->m_Entries[4].m_lValue;
-
-	if (Script->m_Entries[5].m_Var == 1)					// [5] = arena
-		value[5] = m_Vars[Script->m_Entries[5].m_lValue];
-	else
-		value[5] = Script->m_Entries[5].m_lValue;
-
+	value[0] = (Script->m_Entries[0].m_Var == 1 ? m_Vars[Script->m_Entries[0].m_lValue] : Script->m_Entries[0].m_lValue);		// how many daughters? Base age 18-25
+	value[1] = (Script->m_Entries[1].m_Var == 1 ? m_Vars[Script->m_Entries[1].m_Selection] : Script->m_Entries[1].m_Selection);	// mother taken also?
+	value[2] = (Script->m_Entries[2].m_Var == 1 ? m_Vars[Script->m_Entries[2].m_lValue] : Script->m_Entries[2].m_lValue);		// kidnaped or captured?
+	value[3] = (Script->m_Entries[3].m_Var == 1 ? m_Vars[Script->m_Entries[3].m_lValue] : Script->m_Entries[3].m_lValue);		// slave
+	value[4] = (Script->m_Entries[4].m_Var == 1 ? m_Vars[Script->m_Entries[4].m_lValue] : Script->m_Entries[4].m_lValue);		// nonhuman
+	value[5] = (Script->m_Entries[5].m_Var == 1 ? m_Vars[Script->m_Entries[5].m_lValue] : Script->m_Entries[5].m_lValue);		// arena
 
 	bool kidnaped = false;
 	int reason = 0;
-	if (value[3] == 0)
-	{
-		kidnaped = true;
-		reason = DUNGEON_GIRLKIDNAPPED;
-	}
-	else if (value[3] == 1)
-	{
-		kidnaped = true;
-		reason = DUNGEON_GIRLCAPTURED;
-	}
+	if (value[3] == 0)		{ kidnaped = true; reason = DUNGEON_GIRLKIDNAPPED; }
+	else if (value[3] == 1)	{ kidnaped = true; reason = DUNGEON_GIRLCAPTURED; }
 
 	bool slave = (value[4] == 1);
 	bool allowNonHuman = (value[5] == 1);
 	bool arena = (value[6] == 1);
-
 
 	// Set the surname for the family
 	string surname;
 	for (int i = 0; i < 5; i++)
 	{
 		surname = g_SurnameList.random();
-		if (i>3) surname = surname + "-" + g_SurnameList.random();
+		if (i > 3) surname = surname + "-" + g_SurnameList.random();
 		if (g_Girls.SurnameExists(surname)) continue;
 		break;
 	}
@@ -922,16 +727,8 @@ sScript *cGameScript::Script_AddTargetGirl(sScript *Script)
 sScript *cGameScript::Script_AdjustTargetGirlStat(sScript *Script)
 {
 	int value[2];
-	if (Script->m_Entries[0].m_Var == 1)
-		value[0] = m_Vars[Script->m_Entries[0].m_Selection];
-	else
-		value[0] = Script->m_Entries[0].m_Selection;
-
-	if (Script->m_Entries[1].m_Var == 1)
-		value[1] = m_Vars[Script->m_Entries[1].m_lValue];
-	else
-		value[1] = Script->m_Entries[1].m_lValue;
-
+	value[0] = (Script->m_Entries[0].m_Var == 1 ? m_Vars[Script->m_Entries[0].m_Selection] : Script->m_Entries[0].m_Selection);
+	value[1] = (Script->m_Entries[1].m_Var == 1 ? m_Vars[Script->m_Entries[1].m_lValue] : Script->m_Entries[1].m_lValue);
 	if (m_GirlTarget)
 	{
 		if (value[0] - NUM_STATS >= 0)
@@ -965,13 +762,10 @@ sScript *cGameScript::Script_PlayerRapeTargetGirl(sScript *Script)
 
 	if (g_Dice.percent(2)) g_Girls.AddTrait(m_GirlTarget, "Broken Will");
 
-	if (g_Girls.CheckVirginity(m_GirlTarget))
-		g_Girls.LoseVirginity(m_GirlTarget);	// `J` updated for trait/status
+	if (g_Girls.CheckVirginity(m_GirlTarget)) g_Girls.LoseVirginity(m_GirlTarget);	// `J` updated for trait/status
 
 	bool preg = !m_GirlTarget->calc_pregnancy(player, false, 1.0);
-	if (preg) {
-		g_MessageQue.AddToQue(m_GirlTarget->m_Realname + " has gotten pregnant", COLOR_BLUE);
-	}
+	if (preg) g_MessageQue.AddToQue(m_GirlTarget->m_Realname + " has gotten pregnant", COLOR_BLUE);
 	g_GirlDetails.lastsexact = IMGTYPE_SEX;
 
 	return Script->m_Next;
@@ -986,13 +780,10 @@ sScript *cGameScript::Script_GivePlayerRandomSpecialItem(sScript *Script)
 	bool ok = false;
 	while (!ok)
 	{
-		if (item->m_Rarity >= RARITYSHOP05)
-			ok = true;
+		if (item->m_Rarity >= RARITYSHOP05) ok = true;
 		else
 		{
-			item = g_InvManager.GetRandomItem();
-			while (item == 0)
-				item = g_InvManager.GetRandomItem();
+			do { item = g_InvManager.GetRandomItem(); } while (item == 0);
 		}
 	}
 
@@ -1045,10 +836,7 @@ sScript *cGameScript::Script_IfPassSkillCheck(sScript *Script)
 	int value = Script->m_Entries[0].m_Selection;
 
 	// See if variable matches second entry
-	if (g_Dice.percent(g_Girls.GetSkill(m_GirlTarget, value)))
-		Skipping = false;
-	else
-		Skipping = true;
+	Skipping = !g_Dice.percent(g_Girls.GetSkill(m_GirlTarget, value));
 
 	// At this point, Skipping states if the script actions
 	// need to be skipped due to a conditional if...then statement.
@@ -1058,14 +846,12 @@ sScript *cGameScript::Script_IfPassSkillCheck(sScript *Script)
 	Script = Script->m_Next; // Go to next action to process
 	while (Script != 0)
 	{
-		if (m_Leave)
-			break;
+		if (m_Leave) break;
 
 		// if else, flip skip mode
 		if (Script->m_Type == 10)
 		{
-			if (Nest == m_NestLevel)
-				Skipping = !Skipping;
+			if (Nest == m_NestLevel) Skipping = !Skipping;
 		}
 
 		// break on end if
@@ -1083,14 +869,12 @@ sScript *cGameScript::Script_IfPassSkillCheck(sScript *Script)
 		// making sure to skip actions when condition not met.
 		if (Skipping)
 		{
-			if (IsIfStatement(Script->m_Type))
-				m_NestLevel++;
+			if (IsIfStatement(Script->m_Type)) m_NestLevel++;
 			Script = Script->m_Next;
 		}
 		else
 		{
-			if ((Script = Process(Script)) == 0)
-				return 0;
+			if ((Script = Process(Script)) == 0) return 0;
 		}
 	}
 	return 0; // End of script reached
@@ -1105,10 +889,7 @@ sScript *cGameScript::Script_IfPassStatCheck(sScript *Script)
 	int value = Script->m_Entries[0].m_Selection;
 
 	// See if variable matches second entry
-	if (g_Dice.percent(g_Girls.GetStat(m_GirlTarget, value)))
-		Skipping = false;
-	else
-		Skipping = true;
+	Skipping = !g_Dice.percent(g_Girls.GetStat(m_GirlTarget, value));
 
 	// At this point, Skipping states if the script actions
 	// need to be skipped due to a conditional if...then statement.
@@ -1118,14 +899,12 @@ sScript *cGameScript::Script_IfPassStatCheck(sScript *Script)
 	Script = Script->m_Next; // Go to next action to process
 	while (Script != 0)
 	{
-		if (m_Leave)
-			break;
+		if (m_Leave) break;
 
 		// if else, flip skip mode
 		if (Script->m_Type == 10)
 		{
-			if (Nest == m_NestLevel)
-				Skipping = !Skipping;
+			if (Nest == m_NestLevel) Skipping = !Skipping;
 		}
 
 		// break on end if
@@ -1143,14 +922,12 @@ sScript *cGameScript::Script_IfPassStatCheck(sScript *Script)
 		// making sure to skip actions when condition not met.
 		if (Skipping)
 		{
-			if (IsIfStatement(Script->m_Type))
-				m_NestLevel++;
+			if (IsIfStatement(Script->m_Type)) m_NestLevel++;
 			Script = Script->m_Next;
 		}
 		else
 		{
-			if ((Script = Process(Script)) == 0)
-				return 0;
+			if ((Script = Process(Script)) == 0) return 0;
 		}
 	}
 	return 0; // End of script reached
@@ -1163,65 +940,19 @@ sScript* cGameScript::Script_IfGirlFlag(sScript* Script)
 	int Nest = m_NestLevel;
 	int value[2];
 
-	if (Script->m_Entries[0].m_Var == 1)
-		value[0] = m_Vars[Script->m_Entries[0].m_lValue];
-	else
-		value[0] = Script->m_Entries[0].m_lValue;
-
-	if (Script->m_Entries[2].m_Var == 1)
-		value[1] = m_Vars[Script->m_Entries[2].m_lValue];
-	else
-		value[1] = Script->m_Entries[2].m_lValue;
+	value[0] = (Script->m_Entries[0].m_Var == 1 ? m_Vars[Script->m_Entries[0].m_lValue] : Script->m_Entries[0].m_lValue);
+	value[1] = (Script->m_Entries[2].m_Var == 1 ? m_Vars[Script->m_Entries[2].m_lValue] : Script->m_Entries[2].m_lValue);
 
 	// See if variable matches second entry
-	int sel = 0;
-	if (Script->m_Entries[1].m_Var == 1)
-		sel = m_Vars[Script->m_Entries[1].m_Selection];
-	else
-		sel = Script->m_Entries[1].m_Selection;
+	int sel = (Script->m_Entries[1].m_Var == 1 ? m_Vars[Script->m_Entries[1].m_Selection] : Script->m_Entries[1].m_Selection);
 	switch (sel)
 	{
-	case 0:
-		if (m_GirlTarget->m_Flags[value[0]] == value[1])
-			Skipping = false;
-		else
-			Skipping = true;
-		break;
-
-	case 1:
-		if (m_GirlTarget->m_Flags[value[0]] < value[1])
-			Skipping = false;
-		else
-			Skipping = true;
-		break;
-
-	case 2:
-		if (m_GirlTarget->m_Flags[value[0]] <= value[1])
-			Skipping = false;
-		else
-			Skipping = true;
-		break;
-
-	case 3:
-		if (m_GirlTarget->m_Flags[value[0]] > value[1])
-			Skipping = false;
-		else
-			Skipping = true;
-		break;
-
-	case 4:
-		if (m_GirlTarget->m_Flags[value[0]] >= value[1])
-			Skipping = false;
-		else
-			Skipping = true;
-		break;
-
-	case 5:
-		if (m_GirlTarget->m_Flags[value[0]] != value[1])
-			Skipping = false;
-		else
-			Skipping = true;
-		break;
+	case 0:		Skipping = !(m_GirlTarget->m_Flags[value[0]] == value[1]);		break;
+	case 1:		Skipping = !(m_GirlTarget->m_Flags[value[0]] <  value[1]);		break;
+	case 2:		Skipping = !(m_GirlTarget->m_Flags[value[0]] <= value[1]);		break;
+	case 3:		Skipping = !(m_GirlTarget->m_Flags[value[0]] >  value[1]);		break;
+	case 4:		Skipping = !(m_GirlTarget->m_Flags[value[0]] >= value[1]);		break;
+	case 5:		Skipping = !(m_GirlTarget->m_Flags[value[0]] != value[1]);		break;
 	}
 
 	// At this point, Skipping states if the script actions
@@ -1232,14 +963,12 @@ sScript* cGameScript::Script_IfGirlFlag(sScript* Script)
 	Script = Script->m_Next; // Go to next action to process
 	while (Script != 0)
 	{
-		if (m_Leave)
-			break;
+		if (m_Leave) break;
 
 		// if else, flip skip mode
 		if (Script->m_Type == 10)
 		{
-			if (Nest == m_NestLevel)
-				Skipping = !Skipping;
+			if (Nest == m_NestLevel) Skipping = !Skipping;
 		}
 
 		// break on end if
@@ -1257,14 +986,12 @@ sScript* cGameScript::Script_IfGirlFlag(sScript* Script)
 		// making sure to skip actions when condition not met.
 		if (Skipping)
 		{
-			if (IsIfStatement(Script->m_Type))
-				m_NestLevel++;
+			if (IsIfStatement(Script->m_Type)) m_NestLevel++;
 			Script = Script->m_Next;
 		}
 		else
 		{
-			if ((Script = Process(Script)) == 0)
-				return 0;
+			if ((Script = Process(Script)) == 0) return 0;
 		}
 	}
 	return 0; // End of script reached
@@ -1288,65 +1015,19 @@ sScript* cGameScript::Script_IfGirlStat(sScript* Script)
 	int Nest = m_NestLevel;
 	int value[2];
 
-	if (Script->m_Entries[0].m_Var == 1)
-		value[0] = m_Vars[Script->m_Entries[0].m_lValue];
-	else
-		value[0] = Script->m_Entries[0].m_lValue;
-
-	if (Script->m_Entries[2].m_Var == 1)
-		value[1] = m_Vars[Script->m_Entries[2].m_lValue];
-	else
-		value[1] = Script->m_Entries[2].m_lValue;
+	value[0] = (Script->m_Entries[0].m_Var == 1 ? m_Vars[Script->m_Entries[0].m_lValue] : Script->m_Entries[0].m_lValue);
+	value[1] = (Script->m_Entries[2].m_Var == 1 ? m_Vars[Script->m_Entries[2].m_lValue] : Script->m_Entries[2].m_lValue);
 
 	// See if variable matches second entry
-	int sel = 0;
-	if (Script->m_Entries[1].m_Var == 1)
-		sel = m_Vars[Script->m_Entries[1].m_Selection];
-	else
-		sel = Script->m_Entries[1].m_Selection;
+	int sel = (Script->m_Entries[1].m_Var == 1 ? m_Vars[Script->m_Entries[1].m_Selection] : Script->m_Entries[1].m_Selection);
 	switch (sel)
 	{
-	case 0:
-		if (g_Girls.GetStat(m_GirlTarget, value[0]) == value[1])
-			Skipping = false;
-		else
-			Skipping = true;
-		break;
-
-	case 1:
-		if (g_Girls.GetStat(m_GirlTarget, value[0]) < value[1])
-			Skipping = false;
-		else
-			Skipping = true;
-		break;
-
-	case 2:
-		if (g_Girls.GetStat(m_GirlTarget, value[0]) <= value[1])
-			Skipping = false;
-		else
-			Skipping = true;
-		break;
-
-	case 3:
-		if (g_Girls.GetStat(m_GirlTarget, value[0]) > value[1])
-			Skipping = false;
-		else
-			Skipping = true;
-		break;
-
-	case 4:
-		if (g_Girls.GetStat(m_GirlTarget, value[0]) >= value[1])
-			Skipping = false;
-		else
-			Skipping = true;
-		break;
-
-	case 5:
-		if (g_Girls.GetStat(m_GirlTarget, value[0]) != value[1])
-			Skipping = false;
-		else
-			Skipping = true;
-		break;
+	case 0:		Skipping = !(g_Girls.GetStat(m_GirlTarget, value[0]) == value[1]);		break;
+	case 1:		Skipping = !(g_Girls.GetStat(m_GirlTarget, value[0]) <  value[1]);		break;
+	case 2:		Skipping = !(g_Girls.GetStat(m_GirlTarget, value[0]) <= value[1]);		break;
+	case 3:		Skipping = !(g_Girls.GetStat(m_GirlTarget, value[0]) >  value[1]);		break;
+	case 4:		Skipping = !(g_Girls.GetStat(m_GirlTarget, value[0]) >= value[1]);		break;
+	case 5:		Skipping = !(g_Girls.GetStat(m_GirlTarget, value[0]) != value[1]);		break;
 	}
 
 	// At this point, Skipping states if the script actions
@@ -1357,14 +1038,12 @@ sScript* cGameScript::Script_IfGirlStat(sScript* Script)
 	Script = Script->m_Next; // Go to next action to process
 	while (Script != 0)
 	{
-		if (m_Leave)
-			break;
+		if (m_Leave) break;
 
 		// if else, flip skip mode
 		if (Script->m_Type == 10)
 		{
-			if (Nest == m_NestLevel)
-				Skipping = !Skipping;
+			if (Nest == m_NestLevel) Skipping = !Skipping;
 		}
 
 		// break on end if
@@ -1382,15 +1061,10 @@ sScript* cGameScript::Script_IfGirlStat(sScript* Script)
 		// making sure to skip actions when condition not met.
 		if (Skipping)
 		{
-			if (IsIfStatement(Script->m_Type))
-				m_NestLevel++;
+			if (IsIfStatement(Script->m_Type)) m_NestLevel++;
 			Script = Script->m_Next;
 		}
-		else
-		{
-			if ((Script = Process(Script)) == 0)
-				return 0;
-		}
+		else if ((Script = Process(Script)) == 0) return 0;
 	}
 	return 0; // End of script reached
 }
@@ -1402,65 +1076,19 @@ sScript* cGameScript::Script_IfGirlSkill(sScript* Script)
 	int Nest = m_NestLevel;
 	int value[2];
 
-	if (Script->m_Entries[0].m_Var == 1)
-		value[0] = m_Vars[Script->m_Entries[0].m_lValue];
-	else
-		value[0] = Script->m_Entries[0].m_lValue;
-
-	if (Script->m_Entries[2].m_Var == 1)
-		value[1] = m_Vars[Script->m_Entries[2].m_lValue];
-	else
-		value[1] = Script->m_Entries[2].m_lValue;
+	value[0] = (Script->m_Entries[0].m_Var == 1 ? m_Vars[Script->m_Entries[0].m_lValue] : Script->m_Entries[0].m_lValue);
+	value[1] = (Script->m_Entries[2].m_Var == 1 ? m_Vars[Script->m_Entries[2].m_lValue] : Script->m_Entries[2].m_lValue);
 
 	// See if variable matches second entry
-	int sel = 0;
-	if (Script->m_Entries[1].m_Var == 1)
-		sel = m_Vars[Script->m_Entries[1].m_Selection];
-	else
-		sel = Script->m_Entries[1].m_Selection;
+	int sel = (Script->m_Entries[1].m_Var == 1 ? m_Vars[Script->m_Entries[1].m_Selection] : Script->m_Entries[1].m_Selection);
 	switch (sel)
 	{
-	case 0:
-		if (g_Girls.GetSkill(m_GirlTarget, value[0]) == value[1])
-			Skipping = false;
-		else
-			Skipping = true;
-		break;
-
-	case 1:
-		if (g_Girls.GetSkill(m_GirlTarget, value[0]) < value[1])
-			Skipping = false;
-		else
-			Skipping = true;
-		break;
-
-	case 2:
-		if (g_Girls.GetSkill(m_GirlTarget, value[0]) <= value[1])
-			Skipping = false;
-		else
-			Skipping = true;
-		break;
-
-	case 3:
-		if (g_Girls.GetSkill(m_GirlTarget, value[0]) > value[1])
-			Skipping = false;
-		else
-			Skipping = true;
-		break;
-
-	case 4:
-		if (g_Girls.GetSkill(m_GirlTarget, value[0]) >= value[1])
-			Skipping = false;
-		else
-			Skipping = true;
-		break;
-
-	case 5:
-		if (g_Girls.GetSkill(m_GirlTarget, value[0]) != value[1])
-			Skipping = false;
-		else
-			Skipping = true;
-		break;
+	case 0:		Skipping = !(g_Girls.GetSkill(m_GirlTarget, value[0]) == value[1]);		break;
+	case 1:		Skipping = !(g_Girls.GetSkill(m_GirlTarget, value[0]) < value[1]);		break;
+	case 2:		Skipping = !(g_Girls.GetSkill(m_GirlTarget, value[0]) <= value[1]);		break;
+	case 3:		Skipping = !(g_Girls.GetSkill(m_GirlTarget, value[0]) > value[1]);		break;
+	case 4:		Skipping = !(g_Girls.GetSkill(m_GirlTarget, value[0]) >= value[1]);		break;
+	case 5:		Skipping = !(g_Girls.GetSkill(m_GirlTarget, value[0]) != value[1]);		break;
 	}
 
 	// At this point, Skipping states if the script actions
@@ -1471,14 +1099,12 @@ sScript* cGameScript::Script_IfGirlSkill(sScript* Script)
 	Script = Script->m_Next; // Go to next action to process
 	while (Script != 0)
 	{
-		if (m_Leave)
-			break;
+		if (m_Leave) break;
 
 		// if else, flip skip mode
 		if (Script->m_Type == 10)
 		{
-			if (Nest == m_NestLevel)
-				Skipping = !Skipping;
+			if (Nest == m_NestLevel) Skipping = !Skipping;
 		}
 
 		// break on end if
@@ -1496,15 +1122,10 @@ sScript* cGameScript::Script_IfGirlSkill(sScript* Script)
 		// making sure to skip actions when condition not met.
 		if (Skipping)
 		{
-			if (IsIfStatement(Script->m_Type))
-				m_NestLevel++;
+			if (IsIfStatement(Script->m_Type)) m_NestLevel++;
 			Script = Script->m_Next;
 		}
-		else
-		{
-			if ((Script = Process(Script)) == 0)
-				return 0;
-		}
+		else if ((Script = Process(Script)) == 0) return 0;
 	}
 	return 0; // End of script reached
 }
@@ -1515,10 +1136,7 @@ sScript* cGameScript::Script_IfHasTrait(sScript* Script)
 	m_NestLevel++;
 	int Nest = m_NestLevel;
 
-	if (g_Girls.HasTrait(m_GirlTarget, Script->m_Entries[0].m_Text))
-		Skipping = false;
-	else
-		Skipping = true;
+	Skipping = !g_Girls.HasTrait(m_GirlTarget, Script->m_Entries[0].m_Text);
 
 	// At this point, Skipping states if the script actions
 	// need to be skipped due to a conditional if...then statement.
@@ -1528,14 +1146,12 @@ sScript* cGameScript::Script_IfHasTrait(sScript* Script)
 	Script = Script->m_Next; // Go to next action to process
 	while (Script != 0)
 	{
-		if (m_Leave)
-			break;
+		if (m_Leave) break;
 
 		// if else, flip skip mode
 		if (Script->m_Type == 10)
 		{
-			if (Nest == m_NestLevel)
-				Skipping = !Skipping;
+			if (Nest == m_NestLevel) Skipping = !Skipping;
 		}
 
 		// break on end if
@@ -1553,15 +1169,10 @@ sScript* cGameScript::Script_IfHasTrait(sScript* Script)
 		// making sure to skip actions when condition not met.
 		if (Skipping)
 		{
-			if (IsIfStatement(Script->m_Type))
-				m_NestLevel++;
+			if (IsIfStatement(Script->m_Type)) m_NestLevel++;
 			Script = Script->m_Next;
 		}
-		else
-		{
-			if ((Script = Process(Script)) == 0)
-				return 0;
-		}
+		else if ((Script = Process(Script)) == 0) return 0;
 	}
 	return 0; // End of script reached
 }
@@ -1645,12 +1256,10 @@ sScript* cGameScript::Script_NormalSexTarget(sScript* Script)
 	{
 		g_Girls.UpdateSkill(m_GirlTarget, SKILL_NORMALSEX, 2);
 
-		if (g_Girls.CheckVirginity(m_GirlTarget))
-			g_Girls.LoseVirginity(m_GirlTarget);	// `J` updated for trait/status
+		if (g_Girls.CheckVirginity(m_GirlTarget)) g_Girls.LoseVirginity(m_GirlTarget);	// `J` updated for trait/status
 
-		if (!m_GirlTarget->calc_pregnancy(g_Brothels.GetPlayer(), false, 1.0)) {
+		if (!m_GirlTarget->calc_pregnancy(g_Brothels.GetPlayer(), false, 1.0))
 			g_MessageQue.AddToQue(m_GirlTarget->m_Realname + " has gotten pregnant", 0);
-		}
 	}
 	g_GirlDetails.lastsexact = IMGTYPE_SEX;
 
@@ -1661,14 +1270,14 @@ sScript* cGameScript::Script_BeastSexTarget(sScript* Script)
 {
 	if (m_GirlTarget)
 	{
-		g_Girls.UpdateSkill(m_GirlTarget, SKILL_BEASTIALITY, 2);
+		g_Girls.UpdateSkill(m_GirlTarget, SKILL_BEASTIALITY, 1);	// `J` divided skill gain 
 
-		if (g_Girls.CheckVirginity(m_GirlTarget))
-			g_Girls.LoseVirginity(m_GirlTarget);	// `J` updated for trait/status
+		if (g_Girls.CheckVirginity(m_GirlTarget)) g_Girls.LoseVirginity(m_GirlTarget);	// `J` updated for trait/status
 
 		// mod: added check for number of beasts owned; otherwise, fake beasts could somehow inseminate the girl
 		if (g_Brothels.GetNumBeasts() > 0)
 		{
+			g_Girls.UpdateSkill(m_GirlTarget, SKILL_BEASTIALITY, 1);	// `J` divided skill gain 
 			if (!m_GirlTarget->calc_insemination(g_Brothels.GetPlayer(), false, 1.0))
 				g_MessageQue.AddToQue(m_GirlTarget->m_Realname + " has gotten inseminated", 0);
 		}
@@ -1680,10 +1289,7 @@ sScript* cGameScript::Script_BeastSexTarget(sScript* Script)
 
 sScript* cGameScript::Script_AnalSexTarget(sScript* Script)
 {
-	if (m_GirlTarget)
-	{
-		g_Girls.UpdateSkill(m_GirlTarget, SKILL_ANAL, 2);
-	}
+	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_ANAL, 2);
 	g_GirlDetails.lastsexact = IMGTYPE_ANAL;
 
 	return Script->m_Next;
@@ -1695,13 +1301,11 @@ sScript* cGameScript::Script_BDSMSexTarget(sScript* Script)
 	{
 		g_Girls.UpdateSkill(m_GirlTarget, SKILL_BDSM, 2);
 
-		if (g_Girls.CheckVirginity(m_GirlTarget))
-			g_Girls.LoseVirginity(m_GirlTarget);	// `J` updated for trait/status
+		if (g_Girls.CheckVirginity(m_GirlTarget)) g_Girls.LoseVirginity(m_GirlTarget);	// `J` updated for trait/status
 	}
 
-	if (!m_GirlTarget->calc_pregnancy(g_Brothels.GetPlayer(), false, 0.75)) {
+	if (!m_GirlTarget->calc_pregnancy(g_Brothels.GetPlayer(), false, 0.75))
 		g_MessageQue.AddToQue(m_GirlTarget->m_Realname + " has gotten pregnant", 0);
-	}
 	g_GirlDetails.lastsexact = IMGTYPE_BDSM;
 
 	return Script->m_Next;
@@ -1714,10 +1318,7 @@ sScript* cGameScript::Script_IfNotDisobey(sScript* Script)
 	int Nest = m_NestLevel;
 
 	// See if choice flag matches second entry
-	if (!g_Girls.DisobeyCheck(m_GirlTarget, ACTION_GENERAL, g_Brothels.GetBrothel(g_CurrBrothel)))
-		Skipping = false;
-	else
-		Skipping = true;
+	Skipping = g_Girls.DisobeyCheck(m_GirlTarget, ACTION_GENERAL, g_Brothels.GetBrothel(g_CurrBrothel));
 
 	// At this point, Skipping states if the script actions
 	// need to be skipped due to a conditional if...then statement.
@@ -1727,14 +1328,12 @@ sScript* cGameScript::Script_IfNotDisobey(sScript* Script)
 	Script = Script->m_Next; // Go to next action to process
 	while (Script != 0)
 	{
-		if (m_Leave)
-			break;
+		if (m_Leave) break;
 
 		// if else, flip skip mode
 		if (Script->m_Type == 10)
 		{
-			if (Nest == m_NestLevel)
-				Skipping = !Skipping;
+			if (Nest == m_NestLevel) Skipping = !Skipping;
 		}
 
 		// break on end if
@@ -1752,15 +1351,10 @@ sScript* cGameScript::Script_IfNotDisobey(sScript* Script)
 		// making sure to skip actions when condition not met.
 		if (Skipping)
 		{
-			if (IsIfStatement(Script->m_Type))
-				m_NestLevel++;
+			if (IsIfStatement(Script->m_Type)) m_NestLevel++;
 			Script = Script->m_Next;
 		}
-		else
-		{
-			if ((Script = Process(Script)) == 0)
-				return 0;
-		}
+		else if ((Script = Process(Script)) == 0) return 0;
 	}
 	return 0; // End of script reached
 }
@@ -1771,12 +1365,11 @@ sScript* cGameScript::Script_GroupSexTarget(sScript* Script)
 	{
 		g_Girls.UpdateSkill(m_GirlTarget, SKILL_GROUP, 2);
 
-		if (g_Girls.CheckVirginity(m_GirlTarget))
-			g_Girls.LoseVirginity(m_GirlTarget);	// `J` updated for trait/status
+		if (g_Girls.CheckVirginity(m_GirlTarget)) g_Girls.LoseVirginity(m_GirlTarget);	// `J` updated for trait/status
 
-		if (!m_GirlTarget->calc_group_pregnancy(g_Brothels.GetPlayer(), false, 1.0)) {
+		if (!m_GirlTarget->calc_group_pregnancy(g_Brothels.GetPlayer(), false, 1.0))
 			g_MessageQue.AddToQue(m_GirlTarget->m_Realname + " has gotten pregnant", 0);
-		}
+
 		g_GirlDetails.lastsexact = IMGTYPE_GROUP;
 	}
 
@@ -1785,32 +1378,20 @@ sScript* cGameScript::Script_GroupSexTarget(sScript* Script)
 
 sScript* cGameScript::Script_LesbianSexTarget(sScript* Script)
 {
-	if (m_GirlTarget)
-	{
-		g_Girls.UpdateSkill(m_GirlTarget, SKILL_LESBIAN, 2);
-	}
+	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_LESBIAN, 2);
 	g_GirlDetails.lastsexact = IMGTYPE_LESBIAN;
-
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_OralSexTarget(sScript* Script)
 {
-	if (m_GirlTarget)
-	{
-		g_Girls.UpdateSkill(m_GirlTarget, SKILL_ORALSEX, 2);
-	}
+	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_ORALSEX, 2);
 	g_GirlDetails.lastsexact = IMGTYPE_ORAL;
-
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_StripTarget(sScript* Script)
 {
-	if (m_GirlTarget)
-	{
-		g_Girls.UpdateSkill(m_GirlTarget, SKILL_STRIP, 2);
-	}
+	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_STRIP, 2);
 	g_GirlDetails.lastsexact = IMGTYPE_STRIP;
-
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_CleanTarget(sScript* Script)
@@ -1820,12 +1401,7 @@ sScript* cGameScript::Script_CleanTarget(sScript* Script)
 
 	if (m_GirlTarget)
 	{
-		int CleanAmt;
-		if (g_Girls.GetSkill(m_GirlTarget, SKILL_SERVICE) >= 10)
-			CleanAmt = ((g_Girls.GetSkill(m_GirlTarget, SKILL_SERVICE) / 10) + 5) * 10;
-		else
-			CleanAmt = 50;
-
+		int CleanAmt = (g_Girls.GetSkill(m_GirlTarget, SKILL_SERVICE) >= 10 ? ((g_Girls.GetSkill(m_GirlTarget, SKILL_SERVICE) / 10) + 5) * 10 : 50);
 		brothel->m_Filthiness -= CleanAmt;
 		stringstream sstemp;
 		sstemp << ("Cleanliness rating improved by ") << CleanAmt;
@@ -1837,244 +1413,166 @@ sScript* cGameScript::Script_CleanTarget(sScript* Script)
 }
 sScript* cGameScript::Script_NudeTarget(sScript* Script)
 {
-	if (m_GirlTarget)
-	{
-		g_Girls.UpdateSkill(m_GirlTarget, SKILL_STRIP, 1);
-	}
+	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_STRIP, 1);
 	g_GirlDetails.lastsexact = IMGTYPE_NUDE;
-
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_MastTarget(sScript* Script)
 {
-	if (m_GirlTarget)
-	{
-		g_Girls.UpdateSkill(m_GirlTarget, SKILL_SERVICE, 2);
-	}
+	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_SERVICE, 2);
 	g_GirlDetails.lastsexact = IMGTYPE_MAST;
-
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_CombatTarget(sScript* Script)
 {
-	if (m_GirlTarget)
-	{
-		g_Girls.UpdateSkill(m_GirlTarget, SKILL_COMBAT, 1);
-	}
+	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_COMBAT, 1);
 	g_GirlDetails.lastsexact = IMGTYPE_COMBAT;
-
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_TittyTarget(sScript* Script)
 {
-	if (m_GirlTarget)
-	{
-		g_Girls.UpdateSkill(m_GirlTarget, SKILL_TITTYSEX, 2);
-	}
+	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_TITTYSEX, 2);
 	g_GirlDetails.lastsexact = IMGTYPE_TITTY;
-
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_DeathTarget(sScript* Script)
 {
-	if (m_GirlTarget)
-	{
-		g_Girls.UpdateSkill(m_GirlTarget, SKILL_COMBAT, 0);
-	}
+	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_COMBAT, 0);
 	g_GirlDetails.lastsexact = IMGTYPE_DEATH;
-
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_ProfileTarget(sScript* Script)
 {
-	if (m_GirlTarget)
-	{
-
-	}
 	g_GirlDetails.lastsexact = IMGTYPE_PROFILE;
-
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_HandJobTarget(sScript* Script)
 {
-	if (m_GirlTarget)
-	{
-		g_Girls.UpdateSkill(m_GirlTarget, SKILL_HANDJOB, 2);
-	}
+	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_HANDJOB, 2);
 	g_GirlDetails.lastsexact = IMGTYPE_HAND;
-
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_EcchiTarget(sScript* Script)
 {
-	if (m_GirlTarget)
-	{
-		//g_Girls.UpdateSkill(m_GirlTarget, SKILL_HANDJOB, 1);
-	}
+	if (m_GirlTarget){}		//g_Girls.UpdateSkill(m_GirlTarget, SKILL_HANDJOB, 1);
 	g_GirlDetails.lastsexact = IMGTYPE_ECCHI;
-
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_BunnyTarget(sScript* Script)
 {
-	if (m_GirlTarget)
-	{
-		g_Girls.UpdateSkill(m_GirlTarget, SKILL_PERFORMANCE, 1);
-	}
+	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_PERFORMANCE, 1);
 	g_GirlDetails.lastsexact = IMGTYPE_BUNNY;
-
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_CardTarget(sScript* Script)
 {
-	if (m_GirlTarget)
-	{
-		//g_Girls.UpdateSkill(m_GirlTarget, SKILL_HANDJOB, 1);
-	}
+	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_PERFORMANCE, 1);
 	g_GirlDetails.lastsexact = IMGTYPE_CARD;
-
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_MilkTarget(sScript* Script)
 {
-	if (m_GirlTarget)
-	{
-		//g_Girls.UpdateSkill(m_GirlTarget, SKILL_HANDJOB, 1);
-	}
+	if (m_GirlTarget){}		//g_Girls.UpdateSkill(m_GirlTarget, SKILL_HANDJOB, 1);
 	g_GirlDetails.lastsexact = IMGTYPE_MILK;
-
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_WaitTarget(sScript* Script)
 {
-	if (m_GirlTarget)
-	{
-		g_Girls.UpdateSkill(m_GirlTarget, SKILL_SERVICE, 1);
-	}
+	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_SERVICE, 1);
 	g_GirlDetails.lastsexact = IMGTYPE_WAIT;
-
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_SingTarget(sScript* Script)
 {
-	if (m_GirlTarget)
-	{
-		g_Girls.UpdateSkill(m_GirlTarget, SKILL_PERFORMANCE, 1);
-	}
+	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_PERFORMANCE, 1);
 	g_GirlDetails.lastsexact = IMGTYPE_SING;
-
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_TorturePicTarget(sScript* Script)
 {
-	if (m_GirlTarget)
-	{
-		//g_Girls.UpdateSkill(m_GirlTarget, SKILL_PERFORMANCE, 1);
-	}
+	if (m_GirlTarget){}		//g_Girls.UpdateSkill(m_GirlTarget, SKILL_PERFORMANCE, 1);
 	g_GirlDetails.lastsexact = IMGTYPE_TORTURE;
-
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_FootTarget(sScript* Script)
 {
-	if (m_GirlTarget)
-	{
-		//g_Girls.UpdateSkill(m_GirlTarget, SKILL_PERFORMANCE, 1);
-	}
+	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_FOOTJOB, 1);
 	g_GirlDetails.lastsexact = IMGTYPE_FOOT;
-
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_BedTarget(sScript* Script)
 {
-	if (m_GirlTarget)
-	{
-		//g_Girls.UpdateSkill(m_GirlTarget, SKILL_PERFORMANCE, 1);
-	}
+	if (m_GirlTarget){}		//g_Girls.UpdateSkill(m_GirlTarget, SKILL_PERFORMANCE, 1);
 	g_GirlDetails.lastsexact = IMGTYPE_BED;
-
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_FarmTarget(sScript* Script)
 {
-	if (m_GirlTarget)
-	{
-		g_Girls.UpdateSkill(m_GirlTarget, SKILL_FARMING, 1);
-	}
+	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_FARMING, 1);
 	g_GirlDetails.lastsexact = IMGTYPE_FARM;
-
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_HerdTarget(sScript* Script)
 {
-	if (m_GirlTarget)
-	{
-		//g_Girls.UpdateSkill(m_GirlTarget, SKILL_HERDING, 1);
-	}
+	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_ANIMALHANDLING, 1);
 	g_GirlDetails.lastsexact = IMGTYPE_HERD;
-
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_CookTarget(sScript* Script)
 {
-	if (m_GirlTarget)
-	{
-		//g_Girls.UpdateSkill(m_GirlTarget, SKILL_COOKING, 1);
-	}
+	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_COOKING, 1);
 	g_GirlDetails.lastsexact = IMGTYPE_COOK;
-
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_CraftTarget(sScript* Script)
 {
-	if (m_GirlTarget)
-	{
-		g_Girls.UpdateSkill(m_GirlTarget, SKILL_CRAFTING, 1);
-	}
+	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_CRAFTING, 1);
 	g_GirlDetails.lastsexact = IMGTYPE_CRAFT;
-
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_SwimTarget(sScript* Script)
 {
-	if (m_GirlTarget)
-	{
-		//g_Girls.UpdateSkill(m_GirlTarget, SKILL_COOKING, 1);
-	}
+	if (m_GirlTarget) g_Girls.UpdateStat(m_GirlTarget, STAT_STRENGTH, 1);
 	g_GirlDetails.lastsexact = IMGTYPE_SWIM;
-
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_BathTarget(sScript* Script)
 {
-	if (m_GirlTarget)
-	{
-		//g_Girls.UpdateSkill(m_GirlTarget, SKILL_CRAFTING, 1);
-	}
+	if (m_GirlTarget){}		//g_Girls.UpdateSkill(m_GirlTarget, SKILL_CRAFTING, 1);
 	g_GirlDetails.lastsexact = IMGTYPE_BATH;
-
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_NurseTarget(sScript* Script)
 {
-	if (m_GirlTarget)
-	{
-		g_Girls.UpdateSkill(m_GirlTarget, SKILL_MEDICINE, 1);
-	}
+	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_MEDICINE, 1);
 	g_GirlDetails.lastsexact = IMGTYPE_NURSE;
-
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_FormalTarget(sScript* Script)
 {
-	if (m_GirlTarget)
-	{
-		//g_Girls.UpdateSkill(m_GirlTarget, SKILL_MEDICINE, 1);
-	}
+	if (m_GirlTarget) g_Girls.UpdateStat(m_GirlTarget, STAT_REFINEMENT, 1);
 	g_GirlDetails.lastsexact = IMGTYPE_FORMAL;
-
 	return Script->m_Next;
 }
+sScript* cGameScript::Script_AddTrait(sScript* Script)						// `J` new
+{
+	if (!g_Girls.HasTrait(m_GirlTarget, Script->m_Entries[0].m_Text))
+		g_Girls.AddTrait(m_GirlTarget, Script->m_Entries[0].m_Text);
+	return Script->m_Next;
+}
+sScript* cGameScript::Script_RemoveTrait(sScript* Script)					// `J` new
+{
+	if (g_Girls.HasTrait(m_GirlTarget, Script->m_Entries[0].m_Text))
+		g_Girls.RemoveTrait(m_GirlTarget, Script->m_Entries[0].m_Text);
+	return Script->m_Next;
+}
+sScript* cGameScript::Script_AddTraitTemp(sScript* Script)						// `J` new
+{
+	if (!g_Girls.HasTrait(m_GirlTarget, Script->m_Entries[0].m_Text))
+		g_Girls.AddTrait(m_GirlTarget, Script->m_Entries[0].m_Text, Script->m_Entries[1].m_lValue);
+	return Script->m_Next;
+}
+
 //sScript* cGameScript::Script_GirlNameTarget(sScript* Script)
 //{
 //	if(m_GirlTarget)

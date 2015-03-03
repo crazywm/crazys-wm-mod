@@ -597,7 +597,7 @@ void cGirls::CalculateGirlType(sGirl* girl)
 	//	if (HasTrait(girl, "Chef"))						/**/{}								// Not visible to customer
 	if (HasTrait(girl, "Country Gal"))				/**/{ Sexy += 10; Cool -= 10; }		//simple country charm!
 	if (HasTrait(girl, "Director"))					/**/{ Elegant += 10; }				//Composure under pressure
-	if (HasTrait(girl, "Doctor"))					/**/{ Elegant += 5; Freak += 15; }	//rubber gloves
+	if (HasTrait(girl, "Doctor"))					/**/{ Elegant += 5; }	//rubber gloves
 	if (HasTrait(girl, "Farmers Daughter"))			/**/{ Sexy += 5; Cool -= 5; }		//simple country charm!
 	if (HasTrait(girl, "Former Official"))			/**/{ Elegant += 10; Freak += 10; } //F* the government!
 	if (HasTrait(girl, "Handyman"))					/**/{ Nerd += 10; }
@@ -632,21 +632,21 @@ void cGirls::CalculateGirlType(sGirl* girl)
 	//Following traits marked /**/ are newly added from CoreTraits.traitsx - delete this comment if these are ok and the numbers are reasonable
 	if (HasTrait(girl, "Canine"))					/**/{ NonHuman += 60; CuteGirl += 10; Freak += 15; }
 	if (HasTrait(girl, "Cow Girl"))					/**/{ NonHuman += 60; CuteGirl -= 20; Freak += 25; BigBoobs += 20; SmallBoobs -= 20; }
-	if (HasTrait(girl, "Dryad"))					/**/{ NonHuman += 70; CuteGirl -= 10; Freak += 20; }
-	if (HasTrait(girl, "Egg Layer"))				/**/{ NonHuman += 60; Sexy -= 20; Freak += 40; }
+	if (HasTrait(girl, "Dryad"))					/**/{ NonHuman += 50; CuteGirl -= 10; Freak += 20; }
+	if (HasTrait(girl, "Egg Layer"))				/**/{ NonHuman += 30; Sexy -= 20; Freak += 40; }
 	if (HasTrait(girl, "Elf"))						/**/{ NonHuman += 30; Lolita += 10; Freak += 10; }
-	if (HasTrait(girl, "Equine"))					/**/{ NonHuman += 70; Freak += 40; }
-	if (HasTrait(girl, "Fallen Goddess"))			/**/{ NonHuman += 40; Elegant += 30; Freak -= 10; Sexy += 25; }
-	if (HasTrait(girl, "Furry"))					/**/{ NonHuman += 60; Sexy += 15; Freak += 30; }
-	if (HasTrait(girl, "Goddess"))					/**/{ NonHuman += 40; Elegant += 50; Freak -= 20; Sexy += 20; }
+	if (HasTrait(girl, "Equine"))					/**/{ NonHuman += 80; Freak += 40; }
+	if (HasTrait(girl, "Fallen Goddess"))			/**/{ NonHuman += 20; Elegant += 30; Freak -= 10; Sexy += 25; }
+	if (HasTrait(girl, "Furry"))					/**/{ NonHuman += 40; Sexy += 15; Freak += 30; }
+	if (HasTrait(girl, "Goddess"))					/**/{ NonHuman += 20; Elegant += 50; Freak -= 20; Sexy += 20; }
 	if (HasTrait(girl, "Half-Breed"))				/**/{ NonHuman += 20; Freak += 20; }
 	if (HasTrait(girl, "Playful Tail"))				/**/{ NonHuman += 10; Freak += 25; }
 	if (HasTrait(girl, "Prehensile Tail"))			/**/{ NonHuman += 20; Freak += 40; }
 	if (HasTrait(girl, "Reptilian"))				/**/{ NonHuman += 50; Freak += 20; Dangerous += 10; CuteGirl -= 20; }
 	if (HasTrait(girl, "Slitherer"))				/**/{ NonHuman += 60; Freak += 25; CuteGirl -= 30; }
-	if (HasTrait(girl, "Solar Powered"))			/**/{ NonHuman += 30; }
-	if (HasTrait(girl, "Succubus"))					/**/{ NonHuman += 60; Freak += 30; Sexy += 30; }
-	if (HasTrait(girl, "Wings"))					/**/{ NonHuman += 15; Freak += 10; }
+	if (HasTrait(girl, "Solar Powered"))			/**/{ NonHuman += 20; }
+	if (HasTrait(girl, "Succubus"))					/**/{ NonHuman += 40; Freak += 30; Sexy += 30; }
+	if (HasTrait(girl, "Wings"))					/**/{ NonHuman += 50; Freak += 20; }
 
 
 	// Other Invisible Traits (which do not affect customer decision, but are here for completeness)
@@ -683,23 +683,24 @@ void cGirls::CalculateGirlType(sGirl* girl)
 
 	if (BigBoobs > SmallBoobs)
 	{
-		if (BigBoobs > 50)		girl->m_FetishTypes |= (1 << FETISH_BIGBOOBS);
+		if (BigBoobs > 50)			girl->m_FetishTypes |= (1 << FETISH_BIGBOOBS);
 	}
 	else
 	{
-		if (SmallBoobs > 50)	girl->m_FetishTypes |= (1 << FETISH_SMALLBOOBS);
+		if (SmallBoobs > 50)		girl->m_FetishTypes |= (1 << FETISH_SMALLBOOBS);
 	}
-	if (CuteGirl > 50)			girl->m_FetishTypes |= (1 << FETISH_CUTEGIRLS);
-	if (Dangerous > 50)			girl->m_FetishTypes |= (1 << FETISH_DANGEROUSGIRLS);
-	if (Cool > 50)				girl->m_FetishTypes |= (1 << FETISH_COOLGIRLS);
-	if (Nerd > 50)				girl->m_FetishTypes |= (1 << FETISH_NERDYGIRLS);
-	if (NonHuman > 50)			girl->m_FetishTypes |= (1 << FETISH_NONHUMAN);
-	if (Lolita > 50)			girl->m_FetishTypes |= (1 << FETISH_LOLITA);
-	if (Elegant > 50)			girl->m_FetishTypes |= (1 << FETISH_ELEGANT);
-	if (Sexy > 50)				girl->m_FetishTypes |= (1 << FETISH_SEXY);
-	if (NiceFigure > 50)		girl->m_FetishTypes |= (1 << FETISH_FIGURE);
-	if (NiceArse > 50)			girl->m_FetishTypes |= (1 << FETISH_ARSE);
-	if (Freak > 50)				girl->m_FetishTypes |= (1 << FETISH_FREAKYGIRLS);
+	if (CuteGirl > 50)				girl->m_FetishTypes |= (1 << FETISH_CUTEGIRLS);
+	if (Dangerous > 50)				girl->m_FetishTypes |= (1 << FETISH_DANGEROUSGIRLS);
+	if (Cool > 50)					girl->m_FetishTypes |= (1 << FETISH_COOLGIRLS);
+	if (Nerd > 50)					girl->m_FetishTypes |= (1 << FETISH_NERDYGIRLS);
+	if (NonHuman > 50)				girl->m_FetishTypes |= (1 << FETISH_NONHUMAN);
+	if (Lolita > 50)				girl->m_FetishTypes |= (1 << FETISH_LOLITA);
+	if (Elegant > 50)				girl->m_FetishTypes |= (1 << FETISH_ELEGANT);
+	if (Sexy > 50)					girl->m_FetishTypes |= (1 << FETISH_SEXY);
+	if (NiceFigure > 50)			girl->m_FetishTypes |= (1 << FETISH_FIGURE);
+	if (NiceArse > 50)				girl->m_FetishTypes |= (1 << FETISH_ARSE);
+	if (Freak > 50)					girl->m_FetishTypes |= (1 << FETISH_FREAKYGIRLS);
+	if (HasTrait(girl, "Futanari"))	girl->m_FetishTypes |= (1 << FETISH_FUTAGIRLS);
 }
 
 bool cGirls::CheckGirlType(sGirl* girl, int type)
@@ -1979,28 +1980,78 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 		}
 		ss << "\n";
 		int to_go = cfg.pregnancy.weeks_pregnant() - girl->m_WeeksPreg;
-		if (girl->m_States&(1 << STATUS_PREGNANT))					{ ss << "Is pregnant, due: " << to_go << " weeks\n"; }
+		// first line is current pregnancy
+		/* */if (girl->m_States&(1 << STATUS_PREGNANT))				{ ss << "Is pregnant, due: " << to_go << " weeks\n"; }
 		else if (girl->m_States&(1 << STATUS_PREGNANT_BY_PLAYER))	{ ss << "Is pregnant with your child, due: " << to_go << " weeks\n"; }
 		else if (girl->m_States&(1 << STATUS_INSEMINATED))			{ ss << "Is inseminated, due: " << to_go << " weeks\n"; }
 		else if (girl->m_PregCooldown != 0)							{ ss << "Cannot get pregnant for: " << girl->m_PregCooldown << " weeks\n"; }
 		else if (cfg.debug.log_extradetails())						{ ss << "( She Is not Pregnant )\n"; }
 		else ss << "\n";
-
-		if (girl->m_ChildrenCount[CHILD00_TOTAL_BIRTHS] > 0)	ss << "She has given birth to " << girl->m_ChildrenCount[CHILD00_TOTAL_BIRTHS] << " children:\n";
-
-		if (girl->m_ChildrenCount[CHILD02_ALL_GIRLS] > 0)		ss << girl->m_ChildrenCount[CHILD02_ALL_GIRLS] << " girls\n";
+		// count the total births
+		if (girl->m_ChildrenCount[CHILD00_TOTAL_BIRTHS] > 0)
+			ss << "She has given birth to " << girl->m_ChildrenCount[CHILD00_TOTAL_BIRTHS]
+				<< " child" << (girl->m_ChildrenCount[CHILD00_TOTAL_BIRTHS] > 1 ? "ren" : "") << ":\n";
+		// count the girls born
+		if (girl->m_ChildrenCount[CHILD02_ALL_GIRLS] > 0)
+		{
+			ss << girl->m_ChildrenCount[CHILD02_ALL_GIRLS] << " girl" << (girl->m_ChildrenCount[CHILD02_ALL_GIRLS] > 1 ? "s" : "") << "\n\t";
+			if (girl->m_ChildrenCount[CHILD02_ALL_GIRLS] == girl->m_ChildrenCount[CHILD06_YOUR_GIRLS])
+			{
+				if (girl->m_ChildrenCount[CHILD02_ALL_GIRLS] == 1)
+					ss << "She is your daughter.";
+				else ss << "They are all yours.";
+			}
+			else if (girl->m_ChildrenCount[CHILD02_ALL_GIRLS] == girl->m_ChildrenCount[CHILD04_CUSTOMER_GIRLS])
+			{
+				if (girl->m_ChildrenCount[CHILD02_ALL_GIRLS] == 1)
+					ss << "She is not your daughter.";
+				else ss << "They are all from other men.";
+			}
+			else
+			{
+				if (girl->m_ChildrenCount[CHILD06_YOUR_GIRLS] == 1)
+					ss << "One is yours and ";
+				else ss << girl->m_ChildrenCount[CHILD06_YOUR_GIRLS] << " of them are yours and ";
+				ss << "\n\t";
+				if (girl->m_ChildrenCount[CHILD04_CUSTOMER_GIRLS] == 1)
+					ss << "One is from another man.";
+				else ss << girl->m_ChildrenCount[CHILD04_CUSTOMER_GIRLS] << " of them are from other men.";
+			}
+			ss << "\n";
+		}
 		else if (girl->m_States&(1 << STATUS_HAS_DAUGHTER))		ss << "at least one Daughter (old code)\n";
 		else if (cfg.debug.log_extradetails())					ss << "( She Has No Daughters )\n";
-		if (girl->m_ChildrenCount[CHILD06_YOUR_GIRLS] > 0)		ss << girl->m_ChildrenCount[CHILD06_YOUR_GIRLS] << " of them are yours.\n";
-		if (girl->m_ChildrenCount[CHILD04_CUSTOMER_GIRLS] > 0)	ss << girl->m_ChildrenCount[CHILD04_CUSTOMER_GIRLS] << " of them are from other men.\n";
 
-		if (girl->m_ChildrenCount[CHILD03_ALL_BOYS] > 0)		ss << girl->m_ChildrenCount[CHILD03_ALL_BOYS] << " boys\n";
+		// count the boys born
+		if (girl->m_ChildrenCount[CHILD03_ALL_BOYS] > 0)
+		{
+			ss << girl->m_ChildrenCount[CHILD03_ALL_BOYS] << " boy" << (girl->m_ChildrenCount[CHILD03_ALL_BOYS] > 1 ? "s" : "") << "\n\t";
+			if (girl->m_ChildrenCount[CHILD03_ALL_BOYS] == girl->m_ChildrenCount[CHILD07_YOUR_BOYS])
+			{
+				if (girl->m_ChildrenCount[CHILD03_ALL_BOYS] == 1)
+					ss << "He is your son.";
+				else ss << "They are all yours.";
+			}
+			else if (girl->m_ChildrenCount[CHILD03_ALL_BOYS] == girl->m_ChildrenCount[CHILD05_CUSTOMER_BOYS])
+			{
+				if (girl->m_ChildrenCount[CHILD03_ALL_BOYS] == 1)
+					ss << "He is not your son.";
+				else ss << "They are all from other men.";
+			}
+			else
+			{
+				if (girl->m_ChildrenCount[CHILD07_YOUR_BOYS] == 1)
+					ss << "One is yours and ";
+				else ss << girl->m_ChildrenCount[CHILD07_YOUR_BOYS] << " of them are yours and ";
+				ss << "\n\t";
+				if (girl->m_ChildrenCount[CHILD05_CUSTOMER_BOYS] == 1)
+					ss << "One is from another man.";
+				else ss << girl->m_ChildrenCount[CHILD05_CUSTOMER_BOYS] << " of them are from other men.";
+			}
+			ss << "\n";
+		}
 		else if (girl->m_States&(1 << STATUS_HAS_SON))			ss << "at least one Son (old code)\n";
 		else if (cfg.debug.log_extradetails())					ss << "( She Has No Sons )\n";
-		if (girl->m_ChildrenCount[CHILD07_YOUR_BOYS] > 0)		ss << girl->m_ChildrenCount[CHILD07_YOUR_BOYS] << " of them are yours.\n";
-		if (girl->m_ChildrenCount[CHILD05_CUSTOMER_BOYS] > 0)	ss << girl->m_ChildrenCount[CHILD05_CUSTOMER_BOYS] << " of them are from other men.\n";
-
-		if (girl->m_ChildrenCount[CHILD03_ALL_BOYS] > 0)		ss << girl->m_ChildrenCount[CHILD03_ALL_BOYS] << " boys\n";
 
 		if (girl->m_ChildrenCount[CHILD01_ALL_BEASTS] > 0)		ss << "She has given birth to " << girl->m_ChildrenCount[CHILD01_ALL_BEASTS] << " Beast" << (girl->m_ChildrenCount[CHILD01_ALL_BEASTS] > 1 ? "s" : "") << ".\n";
 		if (girl->m_ChildrenCount[CHILD08_MISCARRIAGES] > 0)	ss << "She has had " << girl->m_ChildrenCount[CHILD08_MISCARRIAGES] << " Miscarriage" << (girl->m_ChildrenCount[CHILD08_MISCARRIAGES] > 1 ? "s" : "") << ".\n";
@@ -2021,6 +2072,7 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 	if (CheckGirlType(girl, FETISH_ARSE))			ss << " |Nice Arse| ";
 	if (CheckGirlType(girl, FETISH_SMALLBOOBS))		ss << " |Small Boobs| ";
 	if (CheckGirlType(girl, FETISH_FREAKYGIRLS))	ss << " |Freaky| ";
+	if (CheckGirlType(girl, FETISH_FUTAGIRLS))		ss << " |Futa| ";
 
 
 	if (!purchase)
@@ -8703,6 +8755,12 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 	else if (HasTrait(girl, "Slow Orgasms"))		happymod -= 10;
 	if (HasTrait(girl, "Psychic"))					happymod += 10;	// she knows what the customer wants
 	if (HasTrait(girl, "Shape Shifter"))			happymod += 10;	// she can be anything the customer wants
+
+	if (customer->m_Fetish == FETISH_FUTAGIRLS)
+	{
+		if (HasTrait(girl, "Futanari"))				happymod += 50;
+		else										happymod -= 10;
+	}
 
 	if (customer->m_Fetish == FETISH_BIGBOOBS)
 	{

@@ -306,3 +306,10 @@ CHOICE 2
 BOOL
 BOOL
 BOOL
+"AddTrait ~"
+TEXT
+"RemoveTrait ~"
+TEXT
+"AddTraitTemp ~ ~"
+TEXT
+INT 0 255
