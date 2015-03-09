@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item
+        Name="Ninja Garb"
+        Desc="Want to blend in to the shadows like a ninja? With this classic set of ninja clothes, you still won't be able to. Come on, it takes years of training to be able to do that. Regardless, it is quite easy to move in and carries a certain intimidation factor. (+5 Comb, +2 Conf, +2 Con, +10 Agi, -5 Fear, -5 Hate)"
+        Type="Armor"
+        Badness="0"
+        Special="None"
+        Cost="700"
+        Rarity="Shop05"
+        Infinite="false"
+        GirlBuyChance="0"
+        ItemWeight="0.0">
+        <Effect
+            What="Skill"
+            Name="Combat"
+            Amount="5" />
+        <Effect
+            What="Stat"
+            Name="Confidence"
+            Amount="2" />
+        <Effect
+            What="Stat"
+            Name="Constitution"
+            Amount="2" />
+        <Effect
+            What="Stat"
+            Name="Agility"
+            Amount="10" />
+        <Effect
+            What="Stat"
+            Name="PCFear"
+            Amount="-5" />
+        <Effect
+            What="Stat"
+            Name="PCHate"
+            Amount="-5" />
+    </Item>
+</Items>

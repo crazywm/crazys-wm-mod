@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item
+        Name="Cowgirl Hat"
+        Desc="A wide-brimmed hat that yells 'Country Gal' for whoever wears it. Not literally though, that would be wierd. (+2 Charisma, +10 Spirit, +7 Farming, +5 Animal Handling)"
+        Type="Hat"
+        Badness="0"
+        Special="None"
+        Cost="300"
+        Rarity="Shop25"
+        Infinite="false"
+        GirlBuyChance="0"
+        ItemWeight="0.0">
+        <Effect
+            What="Stat"
+            Name="Charisma"
+            Amount="2" />
+        <Effect
+            What="Stat"
+            Name="Spirit"
+            Amount="10" />
+        <Effect
+            What="Skill"
+            Name="Farming"
+            Amount="7" />
+        <Effect
+            What="Skill"
+            Name="AnimalHandling"
+            Amount="5" />
+    </Item>
+</Items>

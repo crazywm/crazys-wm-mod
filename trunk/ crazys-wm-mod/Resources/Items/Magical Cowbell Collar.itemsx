@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item
+        Name="Magical Cowbell Collar"
+        Desc="A collar with a magical cowbell that turns your girl into a cow girl. The bell originally replaced her brain with an actual cow brain, but too many people complained about it, so they changed it to just eliminate small breastedness. (+15 Best, +10 Obed, -5 Refinement, -20 Spi, +5 Con, -5 Int, adds Cow Girl, Increases breast size to Average, removes Elegant)"
+        Type="Necklace"
+        Badness="31"
+        Special="None"
+        Cost="1500"
+        Rarity="Shop05"
+        Infinite="false"
+        GirlBuyChance="0"
+        ItemWeight="0.0">
+        <Effect
+            What="Skill"
+            Name="Beastiality"
+            Amount="15" />
+        <Effect
+            What="Stat"
+            Name="Obedience"
+            Amount="10" />
+        <Effect
+            What="Stat"
+            Name="Intelligence"
+            Amount="-5" />
+        <Effect
+            What="Stat"
+            Name="Constitution"
+            Amount="5" />
+        <Effect
+            What="Stat"
+            Name="Refinement"
+            Amount="-5" />
+        <Effect
+            What="Stat"
+            Name="Spirit"
+            Amount="-20" />
+        <Effect
+            What="Trait"
+            Name="Cow Girl"
+            Amount="1" />
+        <Effect
+            What="Trait"
+            Name="Small Boobs"
+            Amount="0" />
+        <Effect
+            What="Trait"
+            Name="Petite Breasts"
+            Amount="0" />
+        <Effect
+            What="Trait"
+            Name="Flat Chest"
+            Amount="0" />
+        <Effect
+            What="Trait"
+            Name="Elegant"
+            Amount="0" />
+    </Item>
+</Items>

@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item
+        Name="Codex of Asclepius"
+        Desc="A mystical book written by the god of medicine. Serves as a textbook or reference book for any aspiring or practicing doctor. After all, if the god of medicine wrote it, it's probably pretty effective. (+20 Med, +10 Int)"
+        Type="Misc"
+        Badness="0"
+        Special="None"
+        Cost="3000"
+        Rarity="Catacomb15"
+        Infinite="false"
+        GirlBuyChance="0"
+        ItemWeight="0.0">
+        <Effect
+            What="Skill"
+            Name="Medicine"
+            Amount="20" />
+        <Effect
+            What="Stat"
+            Name="Intelligence"
+            Amount="10" />
+    </Item>
+</Items>

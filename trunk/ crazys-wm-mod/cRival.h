@@ -90,10 +90,10 @@ public:
 	}
 	void Update(int& NumPlayerBussiness);
 	cRival* GetRandomRival();
-	cRival* GetRivals()
-	{
-		return m_Rivals;
-	}
+	cRival* GetRandomRivalWithGangs();
+	cRival* GetRandomRivalWithBusinesses();
+	cRival* GetRandomRivalToSabotage();
+	cRival* GetRivals() { return m_Rivals; }
 	cRival* GetRival(string name);
 	cRival* GetRival(int number);
 	TiXmlElement* SaveRivalsXML(TiXmlElement* pRoot);

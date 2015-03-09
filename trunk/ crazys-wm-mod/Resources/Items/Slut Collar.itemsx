@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item
+        Name="Slut Collar"
+        Desc="This pink leather collar with shiny silver studs and the word slut spelled out in golden, capital letters is an insult... and a compliment, in a special way. (+8 BDSM, +5 Best, +2 Serv, +8 Obed, +7 Conf, +5 Fame, -15 Spi, -2 Cha, -2 Hap, +10 Hate, -10 Refinement, -10 Dignity, removes Elegant and adds Slut)"
+        Type="Necklace"
+        Badness="25"
+        Special="None"
+        Cost="500"
+        Rarity="Shop05"
+        Infinite="false"
+        GirlBuyChance="0"
+        ItemWeight="0.0">
+        <Effect
+            What="Skill"
+            Name="BDSM"
+            Amount="8" />
+        <Effect
+            What="Skill"
+            Name="Beastiality"
+            Amount="5" />
+        <Effect
+            What="Skill"
+            Name="Service"
+            Amount="2" />
+        <Effect
+            What="Stat"
+            Name="Charisma"
+            Amount="-2" />
+        <Effect
+            What="Stat"
+            Name="Happiness"
+            Amount="-2" />
+        <Effect
+            What="Stat"
+            Name="Obedience"
+            Amount="8" />
+        <Effect
+            What="Stat"
+            Name="Confidence"
+            Amount="7" />
+        <Effect
+            What="Stat"
+            Name="Fame"
+            Amount="5" />
+        <Effect
+            What="Stat"
+            Name="PCHate"
+            Amount="10" />
+        <Effect
+            What="Stat"
+            Name="Spirit"
+            Amount="-15" />
+        <Effect
+            What="Stat"
+            Name="Dignity"
+            Amount="-10" />
+        <Effect
+            What="Stat"
+            Name="Refinement"
+            Amount="-10" />
+        <Effect
+            What="Trait"
+            Name="Elegant"
+            Amount="0" />
+        <Effect
+            What="Trait"
+            Name="Slut"
+            Amount="1" />
+    </Item>
+</Items>

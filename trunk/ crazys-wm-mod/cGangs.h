@@ -37,6 +37,8 @@ typedef struct sGang
 	int m_Num;	// number in the gang
 	int m_Skills[NUM_SKILLS];	// skills of the gang
 	int m_Stats[NUM_STATS];	// stats of the gang
+	int m_Heal_Limit;	// number of potions the gang has
+	int m_Net_Limit;	// number of nets the gang has
 	u_int m_MissionID;	// the type of mission currently performing
 	int m_LastMissID;	// the last mission if auto changed to recruit mission
 	bool m_AutoRecruit;	// true if auto recruiting
@@ -50,9 +52,21 @@ typedef struct sGang
 	TiXmlElement* SaveGangXML(TiXmlElement* pRoot);
 	bool LoadGangXML(TiXmlHandle hGang);
 
-	int magic()		{ return m_Skills[SKILL_MAGIC]; }
+	// `J` have the gangs only get a set amount each turn
+	int	heal_limit()			{ return m_Heal_Limit; }		
+	void heal_limit(int n)		{ m_Heal_Limit += n; }
+	void set_heal_limit(int n)	{ m_Heal_Limit = n; }
+	int	net_limit()				{ return m_Net_Limit; }
+	void net_limit(int n)		{ m_Net_Limit += n; }
+	void set_net_limit(int n)	{ m_Net_Limit = n; }
+
+	int magic()			{ return m_Skills[SKILL_MAGIC]; }
 	int combat()		{ return m_Skills[SKILL_COMBAT]; }
 	int intelligence()	{ return m_Stats[STAT_INTELLIGENCE]; }
+	int agility()		{ return m_Stats[STAT_AGILITY]; }
+	int constitution()	{ return m_Stats[STAT_CONSTITUTION]; }
+	int charisma()		{ return m_Stats[STAT_CHARISMA]; }
+	int strength()		{ return m_Stats[STAT_STRENGTH]; }
 
 	sGang()
 	{
@@ -97,6 +111,7 @@ public:
 	sGang* GetGang(int gangID);	// gets a gang
 	sGang* GetHireableGang(int gangID);	// gets a recruitable gang
 	sGang* GetGangOnMission(u_int missID);	// gets a gang on the current mission
+	sGang* GetGangRecruitingNotFull(int roomfor = 0);	// gets a gang recruiting with room to spare
 	void UpdateGangs();
 
 	int GetMaxNumGangs();
@@ -118,25 +133,43 @@ public:
 	int GetNumBusinessExtorted()		{ return m_BusinessesExtort; }
 	int NumBusinessExtorted(int n)		{ m_BusinessesExtort += n; return m_BusinessesExtort; }
 
+	int* GetWeaponLevel() {return &m_SwordLevel;}						// 
 
-	int* GetWeaponLevel() {return &m_SwordLevel;}
-	int* GetNets() {return &m_NumNets;}
-	int GetNetRestock() {return m_KeepNetsStocked;}
-	void KeepNetStocked(int stocked){m_KeepNetsStocked = stocked;}
-	int* GetHealingPotions() {return &m_NumHealingPotions;}
-	void KeepHealStocked(int stocked){m_KeepHealStocked = stocked;}
-	int GetHealingRestock() {return m_KeepHealStocked;}
+	int* GetNets() {return &m_NumNets;}									// 
+	int GetNetRestock() {return m_KeepNetsStocked;}						// 
+	void KeepNetStocked(int stocked){m_KeepNetsStocked = stocked;}		// 
+	int net_limit();													// 
 
-	void sabotage_mission(sGang* gang);
-	bool recapture_mission(sGang* gang);
+	int* GetHealingPotions() {return &m_NumHealingPotions;}				// 
+	void KeepHealStocked(int stocked){m_KeepHealStocked = stocked;}		// 
+	int GetHealingRestock() {return m_KeepHealStocked;}					// 
+	int healing_limit();												// 
+
+
+
+	bool sabotage_mission(sGang* gang);									// 
+	bool recapture_mission(sGang* gang);								// 
+	bool extortion_mission(sGang* gang);								// 
+	bool petytheft_mission(sGang* gang);								// 
+	bool grandtheft_mission(sGang* gang);								// 
+	bool kidnapp_mission(sGang* gang);									// 
+	bool catacombs_mission(sGang* gang);								// 
+	bool gangtraining(sGang* gang);										// 
+	bool gangrecruiting(sGang* gang);									// 
+
+	bool losegang(sGang* gang);
+	void check_gang_recruit(sGang* gang);
+	void GangStartOfShift();
+	void RestockNetsAndPots();
+
 	int chance_to_catch(sGirl* girl);
-	int healing_limit();
 
 	// Used by the new brothel security code
 	sGang*	random_gang(vector<sGang*>& v);
 	bool GirlVsEnemyGang(sGirl* girl, sGang* enemy_gang);
 
 	vector<sGang*> gangs_on_mission(u_int mission_id);
+	vector<sGang*> gangs_watching_girls();
 
 private:
 	int m_BusinessesExtort;	// number of businesses under your control

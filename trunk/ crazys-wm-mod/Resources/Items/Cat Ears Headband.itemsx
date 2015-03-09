@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item
+        Name="Cat Ears Headband"
+        Desc="Headband with cute cat ears. The moe will be hard to resist. (+7 Cha, +7 Beast, adds Cute)"
+        Type="Hat"
+        Badness="5"
+        Special="None"
+        Cost="200"
+        Rarity="Shop25"
+        Infinite="false"
+        GirlBuyChance="0"
+        ItemWeight="0.0">
+        <Effect
+            What="Stat"
+            Name="Charisma"
+            Amount="7" />
+        <Effect
+            What="Skill"
+            Name="Beastiality"
+            Amount="7" />
+        <Effect
+            What="Trait"
+            Name="Cute"
+            Amount="1" />
+    </Item>
+</Items>

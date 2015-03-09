@@ -81,10 +81,10 @@ void cScreenGangs::set_ids()
 	recruitlist_id = get_id("RecruitList");
 
 	//Set the default sort order for columns, so listboxes know the order in which data will be sent
-	string RecruitColumns[] = { "GangName", "Number", gettext("Combat"), gettext("Magic"), gettext("Intelligence"), gettext("Agility"), gettext("Constitution"), gettext("Charisma") };
-	SortColumns(recruitlist_id, RecruitColumns, 8);
-	string GangColumns[] = { "GangName", "Number", "Mission", gettext("Combat"), gettext("Magic"), gettext("Intelligence"), gettext("Agility"), gettext("Constitution"), gettext("Charisma") };
-	SortColumns(ganglist_id, GangColumns, 9);
+	string RecruitColumns[] = { "GangName", "Number", gettext("Combat"), gettext("Magic"), gettext("Intelligence"), gettext("Agility"), gettext("Constitution"), gettext("Charisma"), gettext("Strength") };
+	SortColumns(recruitlist_id, RecruitColumns, 9);
+	string GangColumns[] = { "GangName", "Number", "Mission", gettext("Combat"), gettext("Magic"), gettext("Intelligence"), gettext("Agility"), gettext("Constitution"), gettext("Charisma"), gettext("Strength") };
+	SortColumns(ganglist_id, GangColumns, 10);
 }
 
 void cScreenGangs::init()
@@ -170,7 +170,7 @@ void cScreenGangs::init()
 	for (current = g_Gangs.GetGang(0); current; current = current->m_Next)
 	{
 		// format the string with the gang name, mission and number of men
-		string Data[9];
+		string Data[10];
 		ss.str("");
 		ss << current->m_Name;
 		Data[0] = ss.str();
@@ -198,6 +198,9 @@ void cScreenGangs::init()
 		ss.str("");
 		ss << current->m_Stats[STAT_CHARISMA] << "%";
 		Data[8] = ss.str();
+		ss.str("");
+		ss << current->m_Stats[STAT_STRENGTH] << "%";
+		Data[9] = ss.str();
 
 		//		cerr << "Gang:\t" << Data[0] << "\t" << Data[1] << "\t" << Data[2]
 		//			<< "\t" << Data[3] << "\t" << Data[4] << "\t" << Data[5] << "\t" << Data[6] << endl;
@@ -205,7 +208,7 @@ void cScreenGangs::init()
 		/*
 		*			add the box to the list; red highlight gangs that are low on numbers
 		*/
-		AddToListBox(ganglist_id, num++, Data, 9, (current->m_Num < 6 ? COLOR_RED : COLOR_BLUE));
+		AddToListBox(ganglist_id, num++, Data, 10, (current->m_Num < 6 ? COLOR_RED : COLOR_BLUE));
 	}
 
 	ClearListBox(recruitlist_id);
@@ -217,7 +220,7 @@ void cScreenGangs::init()
 	for (current = g_Gangs.GetHireableGang(0); current; current = current->m_Next)
 	{
 		// format the string with the gang name, mission and number of men
-		string Data[8];
+		string Data[9];
 		ss.str("");
 		ss << current->m_Name;
 		Data[0] = ss.str();
@@ -242,6 +245,9 @@ void cScreenGangs::init()
 		ss.str("");
 		ss << current->m_Stats[STAT_CHARISMA] << "%";
 		Data[7] = ss.str();
+		ss.str("");
+		ss << current->m_Stats[STAT_STRENGTH] << "%";
+		Data[8] = ss.str();
 
 		//		cerr << "Recruitable\t" << Data[0] << "\t" << Data[1] << "\t" << Data[2]
 		//			<< "\t" << Data[3] << "\t" << Data[4] << "\t" << Data[5] << endl;
@@ -249,7 +255,7 @@ void cScreenGangs::init()
 		/*
 		*			add the box to the list
 		*/
-		AddToListBox(recruitlist_id, num++, Data, 8, (current->m_Num < 6 ? COLOR_RED : COLOR_BLUE));
+		AddToListBox(recruitlist_id, num++, Data, 9, (current->m_Num < 6 ? COLOR_RED : COLOR_BLUE));
 	}
 
 	if (selection == -1 && GetListBoxSize(ganglist_id) >= 1) selection = 0;

@@ -1291,16 +1291,16 @@ void cBrothelManager::UpdateBrothels()	// Start_Building_Process_A
 			bool error = false;	// in case there is an error this makes for easier debugging
 
 			// first line: previous stock
-			if (stocked && num>0)		ss << "You keep a regular stock of " << num << " Anti-Pregnancy potions in this borthel.\n\n";
-			else if (num + used > 0)	ss << "You " << (used > 0 ? "had" : "have") << " a stock of " << (num + used) << " Anti-Pregnancy potions in this borthel.\n\n";
-			else { skip = true;			ss << "You have no Anti-Pregnancy potions in this borthel."; }
+			if (stocked && num > 0)		ss << "You keep a regular stock of " << num << " Anti-Pregnancy potions in this brothel.\n\n";
+			else if (num + used > 0)	ss << "You " << (used > 0 ? "had" : "have") << " a stock of " << (num + used) << " Anti-Pregnancy potions in this brothel.\n\n";
+			else { skip = true;			ss << "You have no Anti-Pregnancy potions in this brothel."; }
 
 			// second line: number used
 			/* */if (skip){}	// skip the rest of the lines
-			else if (used == 0)	{ skip = true;	ss << "None were used.\n\n"; }
-			else if (num == 0)	{ skip = true;	ss << "All have been used.\n\n"; }
-			else if (used > 0 && stocked)		ss << used << " were " << (used > num ? "needed" : "used") << " this week.\n\n";
-			else if (used < num && !stocked)	ss << used << " were used this week leaving " << num << " in stock.\n\n";
+			else if (used == 0)			{ skip = true;	ss << "None were used.\n\n"; }
+			else if (num == 0)			{ skip = true;	ss << "All have been used.\n\n"; }
+			else if (used > 0 && stocked)				ss << used << " were " << (used > num ? "needed" : "used") << " this week.\n\n";
+			else if (used > 0 && num > 0 && !stocked)	ss << used << " were used this week leaving " << num << " in stock.\n\n";
 			else
 			{	// `J` put this in just in case I missed something
 				ss << "error code::  BAP02|" << current->m_AntiPregPotions << "|" << current->m_AntiPregUsed << "|" << current->m_KeepPotionsStocked << "  :: Please report it to pinkpetal.org so it can be fixed";

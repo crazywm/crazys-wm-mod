@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item
+        Name="Studded Dildo"
+        Desc="It isn't recorded who first thought of putting studs onto a sex toy, but this is the result of that innovation. Makes girls hornier than a regular dildo. (+2 Les, +10 Normal, +7 BDSM, +13 Lib)"
+        Type="Misc"
+        Badness="15"
+        Special="None"
+        Cost="250"
+        Rarity="Shop05"
+        Infinite="false"
+        GirlBuyChance="0"
+        ItemWeight="0.0">
+        <Effect
+            What="Skill"
+            Name="BDSM"
+            Amount="7" />
+        <Effect
+            What="Skill"
+            Name="NormalSex"
+            Amount="10" />
+        <Effect
+            What="Skill"
+            Name="Lesbian"
+            Amount="2" />
+        <Effect
+            What="Stat"
+            Name="Libido"
+            Amount="13" />
+    </Item>
+</Items>

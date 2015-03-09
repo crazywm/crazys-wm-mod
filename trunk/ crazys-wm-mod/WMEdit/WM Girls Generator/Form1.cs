@@ -2346,6 +2346,7 @@ namespace WM_Girls_Generator
                     {
                         for (int y = 0; y < node.ChildNodes.Count; y++)
                         {
+                            if (node.ChildNodes[y].NodeType != XmlNodeType.Element) continue;   // `J` only process elements
                             alTraits.Add(node.ChildNodes[y].Attributes["Name"].Value);
                         }
                     }
@@ -3871,10 +3872,12 @@ namespace WM_Girls_Generator
             {
                 SaveIndividualGirlsXML(".\\" + create + "\\");
                 SaveIndividualRGirlsXML(".\\" + create + "\\");
-                StatusLabel1.Text = "Successfully compiled " + listBox_GirlsList.Items.Count.ToString() +
-                    " girls and " +
-                    listBox_RGirlsList.Items.Count.ToString() +
-                " rgirls to folder " + create;
+                SaveIndividualItemsXML(".\\" + create + "\\");
+
+                StatusLabel1.Text = "Successfully compiled " + 
+                    listBox_GirlsList.Items.Count.ToString() + " girls, " +
+                    listBox_RGirlsList.Items.Count.ToString() + " rgirls and " +
+                    listBox_ItemsList.Items.Count.ToString() + " items to folder " + create;
             }
             catch (Exception err)
             {
@@ -4152,6 +4155,239 @@ namespace WM_Girls_Generator
                 xmlwrite.Close();
             }
 
+        }
+        private void SaveIndividualItemsXML(string path)
+        {
+            for (int x = 0; x < ItemsCollection.Rows.Count; x++)
+            {
+                string filepath = path;
+                XmlDocument xmldoc = new XmlDocument();
+
+                XmlElement items = xmldoc.CreateElement("Items");
+                XmlElement item = xmldoc.CreateElement("Item");
+                XmlElement effect = xmldoc.CreateElement("Effect");
+
+                item = xmldoc.CreateElement("Item");
+
+                StringReader sData = new StringReader(ItemsCollection.Rows[x][1].ToString());
+
+                string sName = ItemsCollection.Rows[x][0].ToString();
+                string sDesc = sData.ReadLine();
+                bool tempitem = false;
+                string[] sValues = sData.ReadLine().Split(' ');
+
+                switch (sValues[0])
+                {
+                    case "1": sValues[0] = "Ring"; break;
+                    case "2": sValues[0] = "Dress"; break;
+                    case "3": sValues[0] = "Shoes"; break;
+                    case "4": sValues[0] = "Food"; break;
+                    case "5": sValues[0] = "Necklace"; break;
+                    case "6": sValues[0] = "Weapon"; break;
+                    case "7": sValues[0] = "Makeup"; break;
+                    case "8": sValues[0] = "Armor"; break;
+                    case "9": sValues[0] = "Misc"; break;
+                    case "10": sValues[0] = "Armband"; break;
+                    case "11": sValues[0] = "Small Weapon"; break;
+                    case "12": sValues[0] = "Underwear"; break;
+                    case "13": sValues[0] = "Hat"; break;
+                    case "14": sValues[0] = "Helmet"; break;
+                    case "15": sValues[0] = "Glasses"; break;
+                    case "16": sValues[0] = "Swimsuit"; break;
+                    case "17": sValues[0] = "Combat Shoes"; break;
+                    case "18": sValues[0] = "Shield"; break;
+                }
+                switch (sValues[2])
+                {
+                    case "0": sValues[2] = "None"; break;
+                    case "1": sValues[2] = "AffectsAll"; break;
+                    case "2": sValues[2] = "Temporary"; tempitem = true; break;
+                }
+                switch (sValues[4])
+                {
+                    case "0": sValues[4] = "Common"; break;
+                    case "1": sValues[4] = "Shop50"; break;
+                    case "2": sValues[4] = "Shop25"; break;
+                    case "3": sValues[4] = "Shop05"; break;
+                    case "4": sValues[4] = "Catacomb15"; break;
+                    case "5": sValues[4] = "Catacomb05"; break;
+                    case "6": sValues[4] = "Catacomb01"; break;
+                    case "7": sValues[4] = "ScriptOnly"; break;
+                    case "8": sValues[4] = "ScriptOrReward"; break;
+                }
+                switch (sValues[5])
+                {
+                    case "1": sValues[5] = "true"; break;
+                    case "0":
+                    default: sValues[5] = "false"; break;
+                }
+                item.SetAttribute("Name", sName);
+                item.SetAttribute("Desc", sDesc);
+                item.SetAttribute("Type", sValues[0]);
+                item.SetAttribute("Badness", sValues[1]);
+                item.SetAttribute("Special", sValues[2]);
+                item.SetAttribute("Cost", sValues[3]);
+                item.SetAttribute("Rarity", sValues[4]);
+                item.SetAttribute("Infinite", sValues[5]);
+
+                if (sValues.Length >= 7)  //check to see if item is old item that doesn't have girlbuychance
+                {
+                    item.SetAttribute("GirlBuyChance", sValues[6]);
+                }
+                else
+                {
+                    item.SetAttribute("GirlBuyChance", "0");
+                }
+                if (sValues.Length >= 8)  //check to see if item is old item that doesn't have girlbuychance
+                {
+                    item.SetAttribute("ItemWeight", sValues[7]);
+                }
+                else
+                {
+                    item.SetAttribute("ItemWeight", "0.0");
+                }
+
+                
+                int num = Convert.ToInt32(sData.ReadLine());
+                for (int y = 0; y < num; y++)
+                {
+                    effect = xmldoc.CreateElement("Effect");
+
+                    string sEffectTest = sData.ReadLine();
+                    string[] sEffects;
+
+                    if (IsNumeric(sEffectTest) == true && Convert.ToInt32(sEffectTest) == 4)
+                    {
+                        sEffects = new string[4];
+                        sEffects[0] = "Trait";
+                        sEffects[1] = sData.ReadLine();
+                        sEffects[2] = sData.ReadLine();
+                        sEffects[3] = sData.ReadLine();
+                    }
+                    else
+                    {
+                        sEffects = sEffectTest.Split(' ');
+                        switch (sEffects[0])
+                        {
+                            case "0":
+                                sEffects[0] = "Skill";
+                                switch (sEffects[1])
+                                {
+                                    case "0": sEffects[1] = "Anal"; break;
+                                    case "1": sEffects[1] = "Magic"; break;
+                                    case "2": sEffects[1] = "BDSM"; break;
+                                    case "3": sEffects[1] = "NormalSex"; break;
+                                    case "4": sEffects[1] = "Beastiality"; break;
+                                    case "5": sEffects[1] = "Group"; break;
+                                    case "6": sEffects[1] = "Lesbian"; break;
+                                    case "7": sEffects[1] = "Service"; break;
+                                    case "8": sEffects[1] = "Strip"; break;
+                                    case "9": sEffects[1] = "Combat"; break;
+                                    case "10": sEffects[1] = "OralSex"; break;
+                                    case "11": sEffects[1] = "TittySex"; break;
+                                    case "12": sEffects[1] = "Medicine"; break;
+                                    case "13": sEffects[1] = "Performance"; break;
+                                    case "14": sEffects[1] = "Handjob"; break;
+                                    case "15": sEffects[1] = "Crafting"; break;
+                                    case "16": sEffects[1] = "Herbalism"; break;
+                                    case "17": sEffects[1] = "Farming"; break;
+                                    case "18": sEffects[1] = "Brewing"; break;
+                                    case "19": sEffects[1] = "AnimalHandling"; break;
+                                    case "20": sEffects[1] = "Footjob"; break;
+                                    case "21": sEffects[1] = "Cooking"; break;
+                                }
+                                break;
+                            case "1":
+                                sEffects[0] = "Stat";
+                                switch (sEffects[1])
+                                {
+                                    case "0": sEffects[1] = "Charisma"; break;
+                                    case "1": sEffects[1] = "Happiness"; break;
+                                    case "2": sEffects[1] = "Libido"; break;
+                                    case "3": sEffects[1] = "Constitution"; break;
+                                    case "4": sEffects[1] = "Intelligence"; break;
+                                    case "5": sEffects[1] = "Confidence"; break;
+                                    case "6": sEffects[1] = "Mana"; break;
+                                    case "7": sEffects[1] = "Agility"; break;
+                                    case "8": sEffects[1] = "Fame"; break;
+                                    case "9": sEffects[1] = "Level"; break;
+                                    case "10": sEffects[1] = "AskPrice"; break;
+                                    case "11": sEffects[1] = "House"; break;
+                                    case "12": sEffects[1] = "Exp"; break;
+                                    case "13": sEffects[1] = "Age"; break;
+                                    case "14": sEffects[1] = "Obedience"; break;
+                                    case "15": sEffects[1] = "Spirit"; break;
+                                    case "16": sEffects[1] = "Beauty"; break;
+                                    case "17": sEffects[1] = "Tiredness"; break;
+                                    case "18": sEffects[1] = "Health"; break;
+                                    case "19": sEffects[1] = "PCFear"; break;
+                                    case "20": sEffects[1] = "PCLove"; break;
+                                    case "21": sEffects[1] = "PCHate"; break;
+                                    case "22": sEffects[1] = "Morality"; break;
+                                    case "23": sEffects[1] = "Refinement"; break;
+                                    case "24": sEffects[1] = "Dignity"; break;
+                                    case "25": sEffects[1] = "Lactation"; break;
+                                    case "26": sEffects[1] = "Strength"; break;
+                                }
+                                break;
+                            case "2":
+                                sEffects[0] = "Nothing";
+                                break;
+                            case "3":
+                                sEffects[0] = "GirlStatus";
+                                switch (sEffects[1])
+                                {
+                                    case "1": sEffects[1] = "Poisoned"; break;
+                                    case "2": sEffects[1] = "Badly Poisoned"; break;
+                                    case "3": sEffects[1] = "Pregnant"; break;
+                                    case "4": sEffects[1] = "Pregnant By Player"; break;
+                                    case "5": sEffects[1] = "Slave"; break;
+                                    case "6": sEffects[1] = "Has Daughter"; break;
+                                    case "7": sEffects[1] = "Has Son"; break;
+                                    case "8": sEffects[1] = "Inseminated"; break;
+                                    case "9": sEffects[1] = "Controlled"; break;
+                                    case "10": sEffects[1] = "Catacombs"; break;
+                                    case "11": sEffects[1] = "Arena"; break;
+                                    case "12": sEffects[1] = "Your Daughter"; break;
+                                    case "13": sEffects[1] = "Is Daughter"; break;
+                                }
+                                break;
+                            case "4":
+                                sEffects[0] = "Trait";
+                                break;
+                        }
+                    }
+                    effect.SetAttribute("What", sEffects[0]);
+                    effect.SetAttribute("Name", sEffects[1]);
+                    effect.SetAttribute("Amount", sEffects[2]);
+                    if (sEffects[0] == "Trait" && tempitem)             // `J` only save duration for temporary traits.
+                        effect.SetAttribute("Duration", sEffects[3]);
+
+                    item.AppendChild(effect);
+                }
+                items.AppendChild(item);
+
+                xmldoc.AppendChild(items);
+
+                int test = 0;
+                string filename = filepath + sName + ".itemsx";
+
+                while (File.Exists(Convert.ToString(filename)) == true)
+                {
+                    test++;
+                    if (!Directory.Exists(filepath + test.ToString())) Directory.CreateDirectory(filepath + test.ToString());
+                    filename = filepath + test.ToString() + "\\" + sName + ".itemsx";
+                }
+
+                XmlWriterSettings settings = new XmlWriterSettings();
+                settings.Indent = true;
+                settings.NewLineOnAttributes = true;
+                settings.IndentChars = "    ";
+                XmlWriter xmlwrite = XmlWriter.Create(filename, settings);
+
+                xmldoc.Save(xmlwrite);
+                xmlwrite.Close();
+            }
         }
 
         //*************************
@@ -4718,7 +4954,7 @@ namespace WM_Girls_Generator
                         for (int x = 0; x < node.ChildNodes.Count; x++)
                         {
                             string sEffect = "";
-
+                            if (node.ChildNodes[x].NodeType != XmlNodeType.Element) continue;   // `J` only process elements
                             switch (node.ChildNodes[x].Attributes["What"].Value)	//what item affects, 1st of 3 numbers that define items
                             {
                                 case "Skill":
@@ -4815,6 +5051,8 @@ namespace WM_Girls_Generator
                                     sEffect = "4" + "\r\n" + node.ChildNodes[x].Attributes["Name"].Value + "\r\n" + 
                                         node.ChildNodes[x].Attributes["Amount"].Value + "\r\n" + 
                                         duration;
+                                    break;
+                                default:
                                     break;
                             }
                             alEffects.Add(sEffect);
@@ -5358,6 +5596,8 @@ namespace WM_Girls_Generator
                         int x=0;
                         foreach (XmlNode n_entry in n_actions.ChildNodes)
                         {
+                            if (n_entry.NodeType != XmlNodeType.Element) continue;   // `J` only process elements
+
                             string e_anumber = "";
                             string e_number = "";
                             string e_Type = "";

@@ -1778,10 +1778,49 @@ New Script Stuff Added:
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.08
 !!!!!!!!!!!!!!!!!!!! pushed to SVN - r157
  
- 
- 
- 
+###  Changes 3/3-8/2015
+Applied patch to add null pointers provided by Wirbelwind
+Added detect_disease_in_customer() to whore jobs
+Changed PossiblyGainNewTrait and PossiblyLoseExistingTrait to display their turn summaries as goodnews instead of warnings.
+Changed starting job enjoyment from all -10 to random (-10 to +10)
+Hard coded "Reset Potion MK i" and "Reset Potion MK ii" so they don't have to be updated whenever something new is added.
+Fixed a bug in brothel antipreg potion restock texts
+Updated Objectives to check for passing whenever the m_SoFar is changed
 
+Fixed ApplyTraits to allow for clean recalculation.
+ - Added m_EnjoymentTR and (Get/Set/Update)Enjoyment(TR)
+ - Updated trait adjustments
+ - Removed old ApplyTraits and UnApplyTraits
+
+Started updating gang again:
+ - Moved missions into their own individual functions for cleaner code.
+ - Updated all missions
+ - Updated catacombs for config.xml controls
+ - Added Strength stat to gangs
+ -  - Damage changed from ((SwordLevel + 1) * 5) to ((SwordLevel + 1) * min(1, gang->strength() / 10))
+ - Added net restock and individual gang net count to gangs
+ - Added individual gang heal potion count
+ - Set net/pot restock to happen at the start and end of the turn
+ - Gangs recruiting but already with full numbers are switched to training before their turn starts so they will train that turn instead of doing nothing
+ - Combined the turn summary for most missions into one box.
+ - Updated some missions to use nets better (or worse depending on how you look at it)
+ - Added PassObjective() check to extorttion, grand theft and petty theft missions
+ - Made gang recruitment based on charisma with a modifier for player disposition
+ - Added GetRandomRivalWithGangs, GetRandomRivalWithBusinesses and GetRandomRivalToSabotage to better choose a rival for the gang to go after
+ - Gangs spying on girls can help stop rape
+ 
+Added 87 items from Hanzo
+ 
+WME - Added fixes so comments will not break files when loaded
+WME - Added SaveIndividualItemsXML() to the save all button on extras tab.
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.09
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r158
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.25
+
+ 
+ 
+ 
 $$$$ TO DO - SHORT TERM - (for this version) $$$$
 Keep expanding on simple-save
 food and drink

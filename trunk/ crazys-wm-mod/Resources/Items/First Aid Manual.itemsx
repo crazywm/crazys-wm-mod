@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item
+        Name="First Aid Manual"
+        Desc="Book that contains clear and simple first aid advices and techniques for any emergency. (+10 Med)"
+        Type="Misc"
+        Badness="0"
+        Special="None"
+        Cost="800"
+        Rarity="Shop05"
+        Infinite="false"
+        GirlBuyChance="0"
+        ItemWeight="0.0">
+        <Effect
+            What="Skill"
+            Name="Medicine"
+            Amount="10" />
+    </Item>
+</Items>

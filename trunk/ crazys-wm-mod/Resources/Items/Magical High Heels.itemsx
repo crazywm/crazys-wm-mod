@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item
+        Name="Magical High Heels"
+        Desc="Red high heel shoes with some mild magical powers, though they'll probably inhibit your movements in battle. (+5 Conf, +7 Cha, +2 BDSM, +3 Mag, +5 Agi, -20 Com)"
+        Type="Shoes"
+        Badness="0"
+        Special="None"
+        Cost="2000"
+        Rarity="Shop05"
+        Infinite="false"
+        GirlBuyChance="0"
+        ItemWeight="0.0">
+        <Effect
+            What="Stat"
+            Name="Confidence"
+            Amount="5" />
+        <Effect
+            What="Stat"
+            Name="Charisma"
+            Amount="7" />
+        <Effect
+            What="Skill"
+            Name="BDSM"
+            Amount="2" />
+        <Effect
+            What="Skill"
+            Name="Magic"
+            Amount="3" />
+        <Effect
+            What="Stat"
+            Name="Agility"
+            Amount="5" />
+        <Effect
+            What="Skill"
+            Name="Combat"
+            Amount="-20" />
+    </Item>
+</Items>

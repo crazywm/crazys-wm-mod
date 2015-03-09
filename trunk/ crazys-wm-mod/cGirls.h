@@ -38,6 +38,8 @@
 #include "cAnimatedSurface.h"
 #include "cFont.h"
 
+extern cRng g_Dice;
+
 using namespace std;
 
 // Prototypes
@@ -53,6 +55,7 @@ class cAbstractGirls {
 public:
 	virtual int GetStat(sGirl* girl, int stat) = 0;
 	virtual int GetSkill(sGirl* girl, int skill) = 0;
+	virtual int GetEnjoyment(sGirl* girl, int skill) = 0;
 	virtual void UpdateStat(sGirl* girl, int stat, int amount, bool usetraits = true) = 0;
 	virtual void UpdateSkill(sGirl* girl, int skill, int amount) = 0;
 	virtual bool CalcPregnancy(sGirl* girl, int chance, int type, int stats[NUM_STATS], int skills[NUM_SKILLS]) = 0;
@@ -395,6 +398,7 @@ struct sGirl
 	int m_StatTemps[NUM_STATS];					// these go down (or up) by 30% each week until they reach 0
 
 	int m_Enjoyment[NUM_ACTIONTYPES];			// these values determine how much a girl likes an action
+	int m_EnjoymentTR[NUM_ACTIONTYPES];			// `J` added for traits to affect enjoyment
 	// (-100 is hate, +100 is loves)
 	int m_Virgin = -1;							// is she a virgin, 0=false, 1=true, -1=not checked
 
@@ -495,22 +499,22 @@ struct sGirl
 		m_FetishTypes = 0;
 		m_DaysUnhappy = 0;
 		m_PregCooldown = 0;
-		for (int i = 0; i<40; i++)
+		for (int i = 0; i < MAXNUM_GIRL_INVENTORY; i++)
 		{
 			m_EquipedItems[i] = 0;
 			m_Inventory[i] = 0;
 		}
 
 		m_NumRememTraits = m_NumTraits = 0;
-		for (int i = 0; i<MAXNUM_TRAITS; i++)
+		for (int i = 0; i < MAXNUM_TRAITS; i++)
 		{
 			m_Traits[i] = 0;
 			m_TempTrait[i] = 0;
 		}
-		for (int i = 0; i<MAXNUM_TRAITS * 2; i++)
+		for (int i = 0; i < MAXNUM_TRAITS * 2; i++)
 			m_RememTraits[i] = 0;
 
-		for (int i = 0; i<NUM_GIRLFLAGS; i++)
+		for (int i = 0; i < NUM_GIRLFLAGS; i++)
 			m_Flags[i] = 0;
 
 		m_Prev = 0;
@@ -525,12 +529,14 @@ struct sGirl
 		m_Refused_To_Work_Night = false;
 		m_UseAntiPreg = true;
 
-		for (u_int i = 0; i<NUM_SKILLS; i++)
-			m_Skills[i] = m_SkillTemps[i] = m_SkillMods[i] = m_SkillTr[i] = 0;		// Added m_Skills here to zero out any that are not specified -- PP
+		for (u_int i = 0; i < NUM_SKILLS; i++)
+			m_Skills[i] = m_SkillTemps[i] = m_SkillMods[i] = m_SkillTr[i] = 0;	// Added m_Skills here to zero out any that are not specified -- PP
 		for (int i = 0; i < NUM_STATS; i++)
 			m_Stats[i] = m_StatTemps[i] = m_StatMods[i] = m_StatTr[i] = 0;		// Added m_Stats here to zero out any that are not specified -- PP
-		for (u_int i = 0; i<NUM_ACTIONTYPES; i++)
-			m_Enjoyment[i] = -10;	// start off disliking everything
+		for (int i = 0; i < NUM_ACTIONTYPES; i++)
+			m_Enjoyment[i] = m_EnjoymentTR[i] = 0;								// `J` Added m_Enjoyment here to zero out any that are not specified -- PP
+		for (u_int i = 0; i < NUM_ACTIONTYPES; i++)
+			m_Enjoyment[i] = (g_Dice % 21) - 10;								// `J` randomize starting likes -10 to 10
 
 		m_Stats[STAT_HOUSE] = 60;  // Moved from above so it is not zero'd out by above changes --PP
 		/*
@@ -758,6 +764,10 @@ struct sGirl
 	int	cooking()				{ return get_skill(SKILL_COOKING); }
 	int	cooking(int n)			{ return upd_skill(SKILL_COOKING, n); }
 
+	int get_enjoyment(int actiontype)
+	{
+		return g_GirlsPtr->GetEnjoyment(this, actiontype);
+	}
 
 	/*
 	*	convenience func. Also easier to read like this
@@ -926,9 +936,11 @@ public:
 	bool HasTrait(sGirl* girl, string trait);
 	bool HasRememberedTrait(sGirl* girl, string trait);
 
-	/* `J` replacing separate ApplyTraits and UnapplyTraits with a single MutuallyExclusiveTraits
-	*/
-	void ApplyTraits(sGirl* girl, bool loadinggirl = false, sTrait* trait = 0, bool rememberflag = false);	// applys the stat bonuses for traits to a girl
+
+	void ApplyTraits(sGirl* girl, sTrait* trait = 0);	// applys the stat bonuses for traits to a girl
+	/* `J` replacing separate ApplyTraits and UnapplyTraits with a single ApplyTraits.
+	*	The new ApplyTraits(girl) recalculates all trait effects if no trait is supplied.
+	*	If a trait is supplied, it only calculates that one trait.
 	void UnapplyTraits(sGirl* girl, sTrait* trait = 0);	// unapplys a trait (or all traits) from a girl
 	// */
 	void MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait = 0, bool rememberflag = false);
@@ -946,7 +958,11 @@ public:
 	string AdjustTraitGroupFertility(sGirl* girl, int steps, bool showmessage = false, bool Day0Night1 = false);
 
 
-	void UpdateEnjoyment(sGirl* girl, int whatSheEnjoys, int amount, bool wrapTo100 = false); //updates what she enjoys
+	int GetEnjoyment(sGirl* girl, int a_Enjoy);													// `J` added
+	void SetEnjoyment(sGirl* girl, int a_Enjoy, int amount);									// `J` added
+	void SetEnjoymentTR(sGirl* girl, int a_Enjoy, int amount);									// `J` added for traits
+	void UpdateEnjoyment(sGirl* girl, int whatSheEnjoys, int amount, bool wrapTo100 = false);	// updates what she enjoys
+	void UpdateEnjoymentTR(sGirl* girl, int whatSheEnjoys, int amount);							// `J` added for traits
 
 	void LoadGirlImages(sGirl* girl);	// loads a girls images using her name to check that directory in the characters folder
 	int DrawGirl(sGirl* girl, int x, int y, int width, int height, int ImgType, bool random = true, int img = 0);	// draws a image of a girl
@@ -1071,8 +1087,10 @@ public:
 	void updateGirlTurnStats(sGirl* girl);
 
 	bool girl_has_matron(sGirl* girl, int shift = 0);
+	bool detect_disease_in_customer(sBrothel * brothel, sGirl* girl, sCustomer cust, double mod = 0.0);
 
 	string Accommodation(int acc);
+	string catacombs_look_for(double girls, double items, double beast);
 
 private:
 	unsigned int m_NumGirls;	// number of girls in the class

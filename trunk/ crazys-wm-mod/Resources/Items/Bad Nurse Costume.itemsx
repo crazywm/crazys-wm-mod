@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item
+        Name="Bad Nurse Costume"
+        Desc="Similar to the nurse costume, but it's skimpier and black instead of white - which should give you the idea that something went wrong. (+7 Cha, +7 Lib, +5 BDSM, +5 Hand, +5 Foot, +8 Strip, +15 Med, -7 Morality, adds Sexy Air)"
+        Type="Dress"
+        Badness="25"
+        Special="None"
+        Cost="1500"
+        Rarity="Shop05"
+        Infinite="false"
+        GirlBuyChance="2"
+        ItemWeight="0.0">
+        <Effect
+            What="Stat"
+            Name="Charisma"
+            Amount="7" />
+        <Effect
+            What="Stat"
+            Name="Libido"
+            Amount="7" />
+        <Effect
+            What="Stat"
+            Name="Morality"
+            Amount="-7" />
+        <Effect
+            What="Skill"
+            Name="BDSM"
+            Amount="5" />
+        <Effect
+            What="Skill"
+            Name="Handjob"
+            Amount="5" />
+        <Effect
+            What="Skill"
+            Name="Footjob"
+            Amount="5" />
+        <Effect
+            What="Skill"
+            Name="Strip"
+            Amount="8" />
+        <Effect
+            What="Skill"
+            Name="Medicine"
+            Amount="15" />
+        <Effect
+            What="Trait"
+            Name="Sexy Air"
+            Amount="1" />
+    </Item>
+</Items>

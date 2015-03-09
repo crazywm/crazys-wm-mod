@@ -1424,6 +1424,15 @@ int cMovieStudioManager::AddScene(sGirl* girl, int Job, int Bonus)
 		if (Job == SKILL_NORMALSEX || Job == SKILL_BEASTIALITY || Job == SKILL_GROUP || Job == SKILL_LESBIAN || Job == SKILL_STRIP)
 			quality += 1;
 	}
+	if (g_Girls.HasTrait(girl, "Pierced Navel"))
+	{
+		if (Job == SKILL_BDSM || Job == SKILL_STRIP)
+			quality += 5;
+		if (Job == SKILL_TITTYSEX)
+			quality += 2;
+		if (Job == SKILL_NORMALSEX || Job == SKILL_BEASTIALITY || Job == SKILL_GROUP || Job == SKILL_LESBIAN)
+			quality += 1;
+	}
 	if (g_Girls.HasTrait(girl, "Pierced Clit"))
 	{
 		if (Job == SKILL_BDSM)		quality += 5;

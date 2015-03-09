@@ -2412,6 +2412,9 @@ void NextWeek()
 	// clear the events of dungeon girls
 	g_Brothels.m_Dungeon.ClearDungeonGirlEvents();
 
+	// pass out potions and nets to gangs for the start of the shift
+	g_Gangs.GangStartOfShift();
+
 	// go through and update all the brothels (this updates the girls each brothel has and calculates sex and stuff)
 	if (g_Clinic.GetNumBrothels() > 0)		g_Clinic.UpdateClinic();
 	if (g_Studios.GetNumBrothels() > 0)		g_Studios.UpdateMovieStudio();
@@ -3831,7 +3834,7 @@ void TransferGirls()
 
 void TransferGirlsLeftToRight(int rightBrothel, int leftBrothel)
 {
-	sBrothel* brothel;
+    sBrothel* brothel = nullptr;
 	/* */if (leftBrothel > 5)	{ brothel = g_Brothels.GetBrothel(leftBrothel - 6); }
 	else if (leftBrothel == 5)	{ brothel = g_House.GetBrothel(0); }
 	else if (leftBrothel == 4)	{ brothel = g_Farm.GetBrothel(0); }
@@ -3851,7 +3854,7 @@ void TransferGirlsLeftToRight(int rightBrothel, int leftBrothel)
 		int girlSelection = g_TransferGirls.GetNextSelectedItemFromList(g_interfaceid.LIST_TRANSGRIGHTGIRLS, 0, pos);
 		while (girlSelection != -1)
 		{
-			sGirl* temp;
+			sGirl* temp = nullptr;
 			// get the girl
 			/* */if (rightBrothel > 5)	{ temp = g_Brothels.GetGirl(rightBrothel - 6, girlSelection - NumRemoved); }
 			else if (rightBrothel == 5)	{ temp = g_House.GetGirl(0, girlSelection - NumRemoved); }
@@ -3899,7 +3902,7 @@ void TransferGirlsLeftToRight(int rightBrothel, int leftBrothel)
 
 void TransferGirlsRightToLeft(int rightBrothel, int leftBrothel)
 {
-	sBrothel* brothel;
+    sBrothel* brothel = nullptr;
 	/* */if (rightBrothel > 5)	{ brothel = g_Brothels.GetBrothel(rightBrothel - 6); }
 	else if (rightBrothel == 5)	{ brothel = g_House.GetBrothel(0); }
 	else if (rightBrothel == 4)	{ brothel = g_Farm.GetBrothel(0); }
@@ -3919,7 +3922,7 @@ void TransferGirlsRightToLeft(int rightBrothel, int leftBrothel)
 		int girlSelection = g_TransferGirls.GetNextSelectedItemFromList(g_interfaceid.LIST_TRANSGLEFTGIRLS, 0, pos);
 		while (girlSelection != -1)
 		{
-			sGirl* temp;
+            sGirl* temp = nullptr;
 			/* */if (leftBrothel > 5)	{ temp = g_Brothels.GetGirl(leftBrothel - 6, girlSelection - NumRemoved); }
 			else if (leftBrothel == 5)	{ temp = g_House.GetGirl(0, girlSelection - NumRemoved); }
 			else if (leftBrothel == 4)	{ temp = g_Farm.GetGirl(0, girlSelection - NumRemoved); }

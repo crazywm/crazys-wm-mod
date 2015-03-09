@@ -199,6 +199,12 @@
         InheritChance="0"
         RandomChance="2" />
     <Trait
+        Name="Pierced Navel"
+        Desc="This girl has a pierced Navel."
+        Type="Appearance"
+        InheritChance="0"
+        RandomChance="2" />
+    <Trait
         Name="Pierced Nipples"
         Desc="She has had her nipples pierced."
         Type="Appearance"

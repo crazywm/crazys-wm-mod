@@ -7,14 +7,15 @@
 <Image    Name="FireArrow"            File="imgArrowDown.png"           XPos="26"  YPos="194" Width="60"  Height="44" />
 <ListBox  Name="GangList"                                               XPos="16"  YPos="40"  Width="578" Height="182" Border="1" Events="true" Multi="true" ShowHeaders="true" HeaderDiv="true" HeaderClicksSort="true" >
 <Column   Name="GangName"             Header="Gang Name"           Offset="0" />
-<Column   Name="Mission"              Header="Mission"             Offset="130" />
-<Column   Name="Number"               Header="Men"                 Offset="255" />
-<Column   Name="Combat"               Header="Combat"              Offset="290" />
-<Column   Name="Magic"                Header="Magic"               Offset="340" />
-<Column   Name="Intelligence"         Header="Intel."              Offset="383" />
-<Column   Name="Agility"              Header="Agility"             Offset="419" />
-<Column   Name="Constitution"         Header="Tough"               Offset="462" />
-<Column   Name="Charisma"             Header="Charisma"            Offset="505" />
+<Column   Name="Mission"              Header="Mission"             Offset="150" />
+<Column   Name="Number"               Header="Men"                 Offset="270" />
+<Column   Name="Combat"               Header="Combat"              Offset="305" />
+<Column   Name="Magic"                Header="Magic"               Offset="355" />
+<Column   Name="Intelligence"         Header="Intel."              Offset="398" />
+<Column   Name="Agility"              Header="Agility"             Offset="434" />
+<Column   Name="Constitution"         Header="Tough"               Offset="477" />
+<Column   Name="Charisma"             Header="Charisma"            Offset="520" />
+<Column   Name="Strength"             Header="Strength"            Offset="580" />
 </ListBox>
 <ListBox  Name="MissionList"                                            XPos="602" YPos="40"  Width="168" Height="182" Border="1"          Events="true" />
 <Button   Name="GangFireButton"       Image="Fire"                      XPos="16"  YPos="238" Width="80"  Height="32"  Transparency="true" Scale="true" />
@@ -30,6 +31,7 @@
 <Column   Name="Agility"              Header="Agility"             Offset="294" />
 <Column   Name="Constitution"         Header="Tough"               Offset="337" />
 <Column   Name="Charisma"             Header="Charisma"            Offset="380" />
+<Column   Name="Strength"             Header="Strength"            Offset="440" />
 </ListBox>
 <Text     Name="WeaponDescription"    Text="Weapon Level: 0"            XPos="32"  YPos="406" Width="198" Height="32" FontSize="13" />
 <Button   Name="WeaponUpButton"       Image="UpAds"                     XPos="40"  YPos="430" Width="80"  Height="32" Transparency="true" Scale="true" />
