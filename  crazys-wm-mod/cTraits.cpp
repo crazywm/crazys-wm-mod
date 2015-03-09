@@ -421,6 +421,7 @@ string cTraits::GetTranslateName(string name)
 		else if (trait.compare("petite breasts") == 0)			return gettext("Petite Breasts");
 		else if (trait.compare("phat booty") == 0)				return gettext("Phat Booty");
 		else if (trait.compare("pierced clit") == 0)			return gettext("Pierced Clit");
+		else if (trait.compare("pierced navel") == 0)			return gettext("Pierced Navel");
 		else if (trait.compare("pierced nipples") == 0)			return gettext("Pierced Nipples");
 		else if (trait.compare("pierced nose") == 0)			return gettext("Pierced Nose");
 		else if (trait.compare("pierced tongue") == 0)			return gettext("Pierced Tongue");

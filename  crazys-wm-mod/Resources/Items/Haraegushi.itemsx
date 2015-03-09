@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item
+        Name="Haraegushi"
+        Desc="The magical wand of a shrine maiden, usually used in purification rituals. (+10 Mag, +3 Comb, +10 Spirit, +8 Conf, -24 Fear, -12 Hate)"
+        Type="Weapon"
+        Badness="0"
+        Special="None"
+        Cost="2000"
+        Rarity="Shop05"
+        Infinite="false"
+        GirlBuyChance="0"
+        ItemWeight="0.0">
+        <Effect
+            What="Skill"
+            Name="Magic"
+            Amount="10" />
+        <Effect
+            What="Skill"
+            Name="Combat"
+            Amount="3" />
+        <Effect
+            What="Stat"
+            Name="Spirit"
+            Amount="10" />
+        <Effect
+            What="Stat"
+            Name="Confidence"
+            Amount="8" />
+        <Effect
+            What="Stat"
+            Name="PCFear"
+            Amount="-24" />
+        <Effect
+            What="Stat"
+            Name="PCHate"
+            Amount="-12" />
+    </Item>
+</Items>

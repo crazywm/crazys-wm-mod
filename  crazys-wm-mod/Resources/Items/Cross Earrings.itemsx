@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item
+        Name="Cross Earrings"
+        Desc="Earrings with a dangling crucifix made of silver. Popular with all types of girls - except vampires. (+5 Spirit, +3 Charisma)"
+        Type="Ring"
+        Badness="0"
+        Special="None"
+        Cost="300"
+        Rarity="Shop05"
+        Infinite="false"
+        GirlBuyChance="2"
+        ItemWeight="0.0">
+        <Effect
+            What="Stat"
+            Name="Spirit"
+            Amount="5" />
+        <Effect
+            What="Stat"
+            Name="Charisma"
+            Amount="3" />
+    </Item>
+</Items>

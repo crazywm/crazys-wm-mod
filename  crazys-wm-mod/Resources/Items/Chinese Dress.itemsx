@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item
+        Name="Chinese Dress"
+        Desc="A brilliantly decorated, colorful, and supremely shape-hugging Quipao from an exotic land. The dress is slit all the way up the side to allow for plenty of leg to show. (+7 Cha, +7 Refinement, +2 Spi, +5 Agi, +7 Service, Adds Sexy Air)"
+        Type="Dress"
+        Badness="0"
+        Special="None"
+        Cost="500"
+        Rarity="Shop25"
+        Infinite="false"
+        GirlBuyChance="10"
+        ItemWeight="0.0">
+        <Effect
+            What="Stat"
+            Name="Charisma"
+            Amount="7" />
+        <Effect
+            What="Stat"
+            Name="Refinement"
+            Amount="7" />
+        <Effect
+            What="Stat"
+            Name="Spirit"
+            Amount="2" />
+        <Effect
+            What="Stat"
+            Name="Agility"
+            Amount="5" />
+        <Effect
+            What="Skill"
+            Name="Service"
+            Amount="7" />
+        <Effect
+            What="Trait"
+            Name="Sexy Air"
+            Amount="1" />
+    </Item>
+</Items>

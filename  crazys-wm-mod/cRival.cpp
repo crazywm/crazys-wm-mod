@@ -816,6 +816,97 @@ cRival* cRivalManager::GetRandomRival()
 	return current;
 }
 
+// check a random rival for gangs
+cRival* cRivalManager::GetRandomRivalWithGangs()
+{
+	if (m_NumRivals == 0) return 0;
+	if (m_NumRivals == 1) return m_Rivals;
+
+	cRival* current = m_Rivals;
+	int tries = m_NumRivals*5;
+	while (tries > 0)
+	{
+		tries--;
+		int number = g_Dice%m_NumRivals;
+		current = m_Rivals;
+		int tmp = 0;
+		while (current)
+		{
+			if (tmp == number)
+			{
+				if (current->m_NumGangs > 0) return current;
+				else break;
+			}
+			tmp++;
+			current = current->m_Next;
+		}
+	}
+
+	// do one last check of all rivals if the random check failed
+	current = m_Rivals;
+	while (current)
+	{
+		if (current->m_NumGangs > 0) return current;
+		current = current->m_Next;
+	}
+
+
+	return 0;
+}
+
+// check a random rival for gangs
+cRival* cRivalManager::GetRandomRivalWithBusinesses()
+{
+	if (m_NumRivals == 0) return 0;
+	if (m_NumRivals == 1) return m_Rivals;
+
+	cRival* current = m_Rivals;
+	int tries = m_NumRivals * 5;
+	while (tries > 0)
+	{
+		tries--;
+		int number = g_Dice%m_NumRivals;
+		current = m_Rivals;
+		int tmp = 0;
+		while (current)
+		{
+			if (tmp == number)
+			{
+				if (current->m_BusinessesExtort > 0) return current;
+				else break;
+			}
+			tmp++;
+			current = current->m_Next;
+		}
+	}
+
+	// do one last check of all rivals if the random check failed
+	current = m_Rivals;
+	while (current)
+	{
+		if (current->m_BusinessesExtort > 0) return current;
+		current = current->m_Next;
+	}
+	return 0;
+}
+
+// `J` added - hit whoever has the most brothels
+cRival* cRivalManager::GetRandomRivalToSabotage()
+{
+	if (m_NumRivals == 0) return 0;
+	if (m_NumRivals == 1) return m_Rivals;
+
+	cRival* current = m_Rivals;
+	cRival* temp = current;
+	while (current)
+	{
+		if (temp->m_NumBrothels < current->m_NumBrothels) temp = current;
+		current = current->m_Next;
+	}
+
+	return temp;
+}
+
 // how many businesses are controlled by rivals
 int cRivalManager::GetNumBusinesses()
 {

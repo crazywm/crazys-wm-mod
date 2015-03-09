@@ -103,6 +103,7 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 	string fuckMessage = "";
 	string message = "";
+	string girlName = girl->m_Realname;
 	int iNum = 0;
 	int iOriginal = 0;
 	int	AskPrice = g_Girls.GetStat(girl, STAT_ASKPRICE);
@@ -153,6 +154,9 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		// WD:	Create Customer
 		sCustomer Cust;
 		g_Customers.GetCustomer(Cust, brothel);
+
+		// `J` check for disease
+		if (g_Girls.detect_disease_in_customer(brothel, girl, Cust)) continue;
 
 		// filter out unwanted sex types (unless it is street work)
 		if (!is_sex_type_allowed(Cust.m_SexPref, brothel) && !is_sex_type_allowed(Cust.m_SexPrefB, brothel))
@@ -260,7 +264,7 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			// WD:	Use Magic only as last resort
 			else if (g_Girls.GetSkill(girl, SKILL_MAGIC) > 50 && g_Girls.GetStat(girl, STAT_MANA) >= 20)	// she can use magic to get him
 			{
-				fuckMessage = girl->m_Realname + " uses magic to get the customer to choose her.\n\n";
+				fuckMessage = girlName + " uses magic to get the customer to choose her.\n\n";
 				g_Girls.UpdateStat(girl, STAT_MANA, -20);
 				acceptsGirl = true;
 			}
@@ -419,49 +423,25 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	// WD:	End of shift messages
 	// doc: adding braces - gcc warns of ambiguous if nesting
 	if (g_Customers.GetNumCustomers() == 0)	{ girl->m_Events.AddMessage("No more customers.", IMGTYPE_PROFILE, Day0Night1); }
-	else if (NumSleptWith < NumCusts)		{ girl->m_Events.AddMessage(girl->m_Realname + " ran out of customers who like her.", IMGTYPE_PROFILE, Day0Night1); }
+	else if (NumSleptWith < NumCusts)		{ girl->m_Events.AddMessage(girlName + " ran out of customers who like her.", IMGTYPE_PROFILE, Day0Night1); }
 
 	// WD:	Summary messages
 	ss.str("");
-	ss << girl->m_Realname << " saw " << NumSleptWith << " customers this shift.";
+	ss << girlName << " saw " << NumSleptWith << " customers this shift.";
 	summary += ss.str();
 
 	girl->m_Events.AddMessage(summary, IMGTYPE_PROFILE, Day0Night1);
 
 	//gain
-	g_Girls.PossiblyGainNewTrait(girl, "Good Kisser", 50, actiontype, girl->m_Realname + " has had a lot of practice kissing and as such as become a Good Kisser.", Day0Night1);
-	g_Girls.PossiblyGainNewTrait(girl, "Nymphomaniac", 70, actiontype, girl->m_Realname + " has been having so much sex she is now wanting sex all the time.", Day0Night1);
+	g_Girls.PossiblyGainNewTrait(girl, "Good Kisser", 50, actiontype, girlName + " has had a lot of practice kissing and as such as become a Good Kisser.", Day0Night1);
+	g_Girls.PossiblyGainNewTrait(girl, "Nymphomaniac", 70, actiontype, girlName + " has been having so much sex she is now wanting sex all the time.", Day0Night1);
 
 	//SIN: use a few of the new traits
 	if (g_Dice.percent(1) && g_Dice.percent(girl->oralsex()) && (g_Girls.HasTrait(girl, "Nymphomaniac")))
-		g_Girls.PossiblyGainNewTrait(girl, "Cum Addict", 90, actiontype, girl->m_Realname + " has tasted so much cum she now craves it at all times.", Day0Night1);
+		g_Girls.PossiblyGainNewTrait(girl, "Cum Addict", 90, actiontype, girlName + " has tasted so much cum she now craves it at all times.", Day0Night1);
 
-
-#if 1 // `J` I am working on upgrading this but I have not finished it yet - but it seems to work with generic texts
 	if (g_Dice.percent(min(50, girl->oralsex() - 30)))
 		g_Girls.AdjustTraitGroupGagReflex(girl, +1, true, Day0Night1);
-
-#else
-	/* `J` I have a couple of problems with doing it this way:
-	*	First - the checks flow in a way that it is possible to change several traits at once
-	*	Second - these traits don't really depend on if the girl "likes" what she is doing
-	*		so the threshold check in the 'Possibly...' functions is bad for this
-	*	Third - the function that changes the traits changes the skills so they don't need to be done here
-	*/
-	if (g_Girls.HasTrait(girl, "Strong Gag Reflex") || g_Girls.HasTrait(girl, "Gag Reflex"))
-	{
-		if (g_Girls.PossiblyLoseExistingTrait(girl, "Strong Gag Reflex", 20, actiontype, girl->m_Realname + " is getting over sucking cocks. She no longer gags at the first taste of one.", Day0Night1))
-		{
-			if (g_Dice.percent(min((70 - g_Girls.GetSkill(girl, SKILL_ORALSEX)), 0))) g_Girls.AddTrait(girl, "Gag Reflex");
-		}
-	}
-	if (g_Girls.HasTrait(girl, "Gag Reflex"))
-		g_Girls.PossiblyLoseExistingTrait(girl, "Gag Reflex", 40, actiontype, girl->m_Realname + " has enough experience now that putting a cock in her mouth no longer makes her gag.", Day0Night1);
-	else if (g_Girls.PossiblyGainNewTrait(girl, "No Gag Reflex", 60, actiontype, girl->m_Realname + " has entirely lost her gag reflex, meaning she can now use her throat to give much sexier blowjobs.", Day0Night1))
-		g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 5);
-	g_Girls.PossiblyGainNewTrait(girl, "Deepthroat", 90, actiontype, "Wow! " + girl->m_Realname + " has overcome her gag reflex such that she can comfortably take a large cock fucking her throat, while licking his balls in time.", Day0Night1);
-
-#endif
 
 	return false;
 }

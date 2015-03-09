@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item
+        Name="Crossgate's 1001 Essential Recipes"
+        Desc="Recipe book with Crossgate's best dishes. A surprising amount of the recipes deal with sausage, fish, and various white creams. (+10 Cooking)"
+        Type="Misc"
+        Badness="0"
+        Special="None"
+        Cost="500"
+        Rarity="Shop25"
+        Infinite="false"
+        GirlBuyChance="0"
+        ItemWeight="0.0">
+        <Effect
+            What="Skill"
+            Name="Cooking"
+            Amount="10" />
+    </Item>
+</Items>

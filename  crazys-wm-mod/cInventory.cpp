@@ -528,6 +528,43 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 		stringtolowerj(girl->m_Inventory[num]->m_Name) == stringtolowerj("Better Zed than Dead") ||
 		stringtolowerj(girl->m_Inventory[num]->m_Name) == stringtolowerj("Elixir of Ultimate Regeneration")
 		)){}
+	// A few items are hard coded
+	else if (stringtolowerj(girl->m_Inventory[num]->m_Name) == stringtolowerj("Reset Potion MK i"))
+	{
+		cConfig cfg;
+		int age = girl->age();
+		// reset all numbers to default
+		for (u_int i = 0; i < NUM_SKILLS; i++)	girl->m_Skills[i] = 0;
+		for (int i = 0; i < NUM_STATS; i++)		girl->m_Stats[i] = 0;
+		girl->m_Stats[STAT_HEALTH]		= 100;
+		girl->m_Stats[STAT_HAPPINESS]	= 100;
+		girl->m_Stats[STAT_AGE] = (age == 100 ? 100 : 18);	// keep ageless girls ageless
+		girl->m_Stats[STAT_HOUSE] = girl->is_slave() ? cfg.initial.slave_house_perc() : cfg.initial.girls_house_perc();
+
+		girl->m_Inventory[num] = 0;
+		girl->m_EquipedItems[num] = 0;
+		girl->m_NumInventory--;
+		g_Girls.CalculateGirlType(girl);
+		return;
+	}
+	else if (stringtolowerj(girl->m_Inventory[num]->m_Name) == stringtolowerj("Reset Potion MK ii"))
+	{
+		// remove all traits
+		for (int i = 0; i < MAXNUM_TRAITS; i++)
+		{
+			if (girl->m_Traits[i]) g_Girls.RemoveTrait(girl, girl->m_Traits[i]->m_Name, false, true, false);
+		}
+		g_Girls.RemoveAllRememberedTraits(girl);
+		g_MessageQue.AddToQue(girl->m_Realname + gettext(": ") +
+			girl->m_Inventory[num]->m_Name +
+			gettext(": The use of this item has removed all her traits."), COLOR_BLUE);
+		girl->m_Inventory[num] = 0;
+		girl->m_EquipedItems[num] = 0;
+		girl->m_NumInventory--;
+		g_Girls.ApplyTraits(girl);
+		g_Girls.CalculateGirlType(girl);
+		return;
+	}
 	else if (girl->health() <= 0 ||					// dead girls shouldn't be able to equip or use anything
 		girl->m_EquipedItems[num] == 1 ||		// if already equiped do nothing
 		girl->m_Inventory[num]->m_Special == sInventoryItem::AffectsAll || // no "AffectsAll" item should be equipable

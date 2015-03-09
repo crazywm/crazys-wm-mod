@@ -1573,7 +1573,8 @@ bool cJobManager::work_related_violence(sGirl* girl, bool Day0Night1, bool stree
 	int GirlsBrothelNo = g_Brothels.GetGirlsCurrentBrothel(girl);
 	sBrothel * Brothl = g_Brothels.GetBrothel(GirlsBrothelNo);
 
-	vector<sGang *> gangs_guarding = g_Gangs.gangs_on_mission(MISS_GUARDING);
+	// `J` adjusted this a bit so gangs spying on the girl can help also
+	vector<sGang *> gangs_guarding = g_Gangs.gangs_watching_girls();
 
 	int gang_coverage = guard_coverage(&gangs_guarding);
 

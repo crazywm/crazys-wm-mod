@@ -1029,6 +1029,30 @@ int main(int ac, char* av[])	// `J` Bookmark - #1 - Entering the game
 #endif
 #endif
 
+#if 0
+	g_LogFile.ss() << "\n`J` DEBUG CODE - this section is used to debug a piece of code.\n"; g_LogFile.ssend();
+
+
+	for (int disp = -100; disp < 101; disp++)
+	{
+		int chance = 0;
+		if (disp < -50)				chance += (disp + 50) / 2;	// -25 for -100 disp
+		if (disp > -20 && disp < 0)	chance += (22 + disp) / 2;	// +1 for -19  to +10 for -2
+		if (disp == 0)				chance += 10;				// +10 for -2,-1,0,1,2
+		if (disp < 20 && disp > 0)	chance += (22 - disp) / 2;	// +1 for 19   to +10 for 2
+		if (disp > 50)				chance -= (disp - 50) / 3;	// -16 for > 98 disp
+
+		g_LogFile.ss() << disp << "        " << chance; g_LogFile.ssend();
+
+	}
+
+
+
+	g_LogFile.ss() << "\n`J` DEBUG CODE - this section is used to debug a piece of code.\n"; g_LogFile.ssend();
+#endif
+
+
+
 	// get text
 	setlocale(LC_ALL, "");
 	DirPath base = DirPath() << "Resources" << "lang";

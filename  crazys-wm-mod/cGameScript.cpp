@@ -256,51 +256,15 @@ sScript *cGameScript::Script_IfVar(sScript *Script)
 	value[1] = (Script->m_Entries[2].m_Var == 1 ? m_Vars[Script->m_Entries[2].m_lValue] : Script->m_Entries[2].m_lValue);
 
 	// See if variable matches second entry
-	int sel = 0;
-	sel = (Script->m_Entries[1].m_Var == 1 ? m_Vars[Script->m_Entries[1].m_Selection] : Script->m_Entries[1].m_Selection);
+	int sel = (Script->m_Entries[1].m_Var == 1 ? m_Vars[Script->m_Entries[1].m_Selection] : Script->m_Entries[1].m_Selection);
 	switch (sel)
 	{
-	case 0:
-		if (m_Vars[value[0]] == value[1])
-			Skipping = false;
-		else
-			Skipping = true;
-		break;
-
-	case 1:
-		if (m_Vars[value[0]] < value[1])
-			Skipping = false;
-		else
-			Skipping = true;
-		break;
-
-	case 2:
-		if (m_Vars[value[0]] <= value[1])
-			Skipping = false;
-		else
-			Skipping = true;
-		break;
-
-	case 3:
-		if (m_Vars[value[0]] > value[1])
-			Skipping = false;
-		else
-			Skipping = true;
-		break;
-
-	case 4:
-		if (m_Vars[value[0]] >= value[1])
-			Skipping = false;
-		else
-			Skipping = true;
-		break;
-
-	case 5:
-		if (m_Vars[value[0]] != value[1])
-			Skipping = false;
-		else
-			Skipping = true;
-		break;
+	case 0:		Skipping = !(m_Vars[value[0]] == value[1]);		break;
+	case 1:		Skipping = !(m_Vars[value[0]] <  value[1]);		break;
+	case 2:		Skipping = !(m_Vars[value[0]] <= value[1]);		break;
+	case 3:		Skipping = !(m_Vars[value[0]] >  value[1]);		break;
+	case 4:		Skipping = !(m_Vars[value[0]] >= value[1]);		break;
+	case 5:		Skipping = !(m_Vars[value[0]] != value[1]);		break;
 	}
 
 	// At this point, Skipping states if the script actions
@@ -311,15 +275,9 @@ sScript *cGameScript::Script_IfVar(sScript *Script)
 	Script = Script->m_Next; // Go to next action to process
 	while (Script != 0)
 	{
-		if (m_Leave)
-			break;
-
+		if (m_Leave) break;
 		// if else, flip skip mode
-		if (Script->m_Type == 10)
-		{
-			if (Nest == m_NestLevel)
-				Skipping = !Skipping;
-		}
+		if (Script->m_Type == 10 && Nest == m_NestLevel) Skipping = !Skipping;
 
 		// break on end if
 		if (Script->m_Type == 11)
@@ -336,14 +294,12 @@ sScript *cGameScript::Script_IfVar(sScript *Script)
 		// making sure to skip actions when condition not met.
 		if (Skipping)
 		{
-			if (IsIfStatement(Script->m_Type))
-				m_NestLevel++;
+			if (IsIfStatement(Script->m_Type)) m_NestLevel++;
 			Script = Script->m_Next;
 		}
 		else
 		{
-			if ((Script = Process(Script)) == 0)
-				return 0;
+			if ((Script = Process(Script)) == 0) return 0;
 		}
 	}
 	return 0; // End of script reached
@@ -419,8 +375,7 @@ sScript *cGameScript::Script_IfChoice(sScript *Script)
 		}
 		else
 		{
-			if ((Script = Process(Script)) == 0)
-				return 0;
+			if ((Script = Process(Script)) == 0) return 0;
 		}
 	}
 	return 0; // End of script reached
@@ -607,10 +562,10 @@ sScript *cGameScript::Script_AddFamilyToDungeon(sScript *Script)
 	}
 
 	// `J` zzzzzz - this can probably be done easier
-	sGirl* Daughter1;
-	sGirl* Daughter2;
-	sGirl* Daughter3;
-	sGirl* Mother;
+    sGirl* Daughter1 = nullptr;
+    sGirl* Daughter2 = nullptr;
+    sGirl* Daughter3 = nullptr;
+    sGirl* Mother = nullptr;
 	stringstream NGmsg1;
 	stringstream NGmsg2;
 	stringstream NGmsg3;
@@ -1064,7 +1019,10 @@ sScript* cGameScript::Script_IfGirlStat(sScript* Script)
 			if (IsIfStatement(Script->m_Type)) m_NestLevel++;
 			Script = Script->m_Next;
 		}
-		else if ((Script = Process(Script)) == 0) return 0;
+		else
+		{
+			if ((Script = Process(Script)) == 0) return 0;
+		}
 	}
 	return 0; // End of script reached
 }
@@ -1125,7 +1083,10 @@ sScript* cGameScript::Script_IfGirlSkill(sScript* Script)
 			if (IsIfStatement(Script->m_Type)) m_NestLevel++;
 			Script = Script->m_Next;
 		}
-		else if ((Script = Process(Script)) == 0) return 0;
+		else
+		{
+			if ((Script = Process(Script)) == 0) return 0;
+		}
 	}
 	return 0; // End of script reached
 }
@@ -1172,7 +1133,10 @@ sScript* cGameScript::Script_IfHasTrait(sScript* Script)
 			if (IsIfStatement(Script->m_Type)) m_NestLevel++;
 			Script = Script->m_Next;
 		}
-		else if ((Script = Process(Script)) == 0) return 0;
+		else
+		{
+			if ((Script = Process(Script)) == 0) return 0;
+		}
 	}
 	return 0; // End of script reached
 }
@@ -1354,7 +1318,10 @@ sScript* cGameScript::Script_IfNotDisobey(sScript* Script)
 			if (IsIfStatement(Script->m_Type)) m_NestLevel++;
 			Script = Script->m_Next;
 		}
-		else if ((Script = Process(Script)) == 0) return 0;
+		else
+		{
+			if ((Script = Process(Script)) == 0) return 0;
+		}
 	}
 	return 0; // End of script reached
 }

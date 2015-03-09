@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item
+        Name="Dildo"
+        Desc="A plain dildo. Not much else to be said about it. (+7 Normal, +2 Les, +10 Lib)"
+        Type="Misc"
+        Badness="5"
+        Special="None"
+        Cost="150"
+        Rarity="Shop50"
+        Infinite="false"
+        GirlBuyChance="5"
+        ItemWeight="0.0">
+        <Effect
+            What="Skill"
+            Name="NormalSex"
+            Amount="7" />
+        <Effect
+            What="Skill"
+            Name="Lesbian"
+            Amount="2" />
+        <Effect
+            What="Stat"
+            Name="Libido"
+            Amount="10" />
+    </Item>
+</Items>

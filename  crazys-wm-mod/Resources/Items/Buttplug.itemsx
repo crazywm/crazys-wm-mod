@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item
+        Name="Buttplug"
+        Desc="A plain buttplug. It goes in the butt. Not much else to be said about it. (+15 Anal, +2 BDSM and Obed, +2 Con, +7 Lib, -8 Ref, -5 Agi, -2 Combat, +5 Hate, -5 Happy and Spirit)"
+        Type="Misc"
+        Badness="25"
+        Special="None"
+        Cost="150"
+        Rarity="Shop25"
+        Infinite="false"
+        GirlBuyChance="1"
+        ItemWeight="0.0">
+        <Effect
+            What="Skill"
+            Name="Anal"
+            Amount="15" />
+        <Effect
+            What="Skill"
+            Name="BDSM"
+            Amount="2" />
+        <Effect
+            What="Skill"
+            Name="Combat"
+            Amount="-2" />
+        <Effect
+            What="Stat"
+            Name="Obedience"
+            Amount="2" />
+        <Effect
+            What="Stat"
+            Name="Constitution"
+            Amount="2" />
+        <Effect
+            What="Stat"
+            Name="Libido"
+            Amount="7" />
+        <Effect
+            What="Stat"
+            Name="Refinement"
+            Amount="-8" />
+        <Effect
+            What="Stat"
+            Name="Agility"
+            Amount="-5" />
+        <Effect
+            What="Stat"
+            Name="PCHate"
+            Amount="5" />
+        <Effect
+            What="Stat"
+            Name="Happiness"
+            Amount="-5" />
+        <Effect
+            What="Stat"
+            Name="Spirit"
+            Amount="-5" />
+    </Item>
+</Items>

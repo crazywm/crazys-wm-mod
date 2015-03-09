@@ -84,7 +84,7 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 		double itemspercent = cfg.catacombs.girl_gets_items();	// each item costs 2 if an item is found or 1 if not	- max 11 items
 		int numgirls = 0, numitems = 0;
 
-		while (haulcount > 0)
+		while (haulcount > 0 && girl->health() > 40)
 		{
 			gold += g_Dice % 150;
 			double roll = (g_Dice % 10000) / 100.0;
@@ -217,10 +217,10 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 			}
 			if (ugirl)
 			{
-				if (g_Brothels.GetObjective())
+				if (g_Brothels.GetObjective() && g_Brothels.GetObjective()->m_Objective == OBJECTIVE_CAPTUREXCATACOMBGIRLS)
 				{
-					if (g_Brothels.GetObjective()->m_Objective == OBJECTIVE_CAPTUREXCATACOMBGIRLS)
-						g_Brothels.GetObjective()->m_SoFar++;
+					g_Brothels.GetObjective()->m_SoFar++;
+					if (g_Brothels.GetObjective()->m_SoFar >= g_Brothels.GetObjective()->m_Target)	g_Brothels.PassObjective();
 				}
 				stringstream Umsg;
 				Umsg << ugirl->m_Realname << " was captured in the catacombs by " << girlName << ".\n";
@@ -324,10 +324,10 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 					}
 					if (ugirl)
 					{
-						if (g_Brothels.GetObjective())
+						if (g_Brothels.GetObjective() && g_Brothels.GetObjective()->m_Objective == OBJECTIVE_CAPTUREXCATACOMBGIRLS)
 						{
-							if (g_Brothels.GetObjective()->m_Objective == OBJECTIVE_CAPTUREXCATACOMBGIRLS)
-								g_Brothels.GetObjective()->m_SoFar++;
+							g_Brothels.GetObjective()->m_SoFar++;
+							if (g_Brothels.GetObjective()->m_SoFar >= g_Brothels.GetObjective()->m_Target)	g_Brothels.PassObjective();
 						}
 						stringstream Umsg;
 						Umsg << ugirl->m_Realname << " was captured in the catacombs by " << girlName << ".\n";

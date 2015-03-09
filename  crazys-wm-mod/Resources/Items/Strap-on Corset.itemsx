@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item
+        Name="Strap-on Corset"
+        Desc="This black leather corset comes with a strap-on for your lesbian slaves. (+1 Charisma, +7 Libido, +10 Confidence, +15 Lesbian, +12 BDSM, + 8 Bestiality, Anal, Handjob, Footjob, and Group)"
+        Type="Underwear"
+        Badness="35"
+        Special="None"
+        Cost="900"
+        Rarity="Shop25"
+        Infinite="false"
+        GirlBuyChance="0"
+        ItemWeight="0.0">
+        <Effect
+            What="Stat"
+            Name="Charisma"
+            Amount="1" />
+        <Effect
+            What="Stat"
+            Name="Libido"
+            Amount="7" />
+        <Effect
+            What="Stat"
+            Name="Confidence"
+            Amount="10" />
+        <Effect
+            What="Skill"
+            Name="Lesbian"
+            Amount="15" />
+        <Effect
+            What="Skill"
+            Name="BDSM"
+            Amount="12" />
+        <Effect
+            What="Skill"
+            Name="Beastiality"
+            Amount="8" />
+        <Effect
+            What="Skill"
+            Name="Anal"
+            Amount="8" />
+        <Effect
+            What="Skill"
+            Name="Group"
+            Amount="8" />
+        <Effect
+            What="Skill"
+            Name="Handjob"
+            Amount="8" />
+        <Effect
+            What="Skill"
+            Name="Footjob"
+            Amount="8" />
+    </Item>
+</Items>

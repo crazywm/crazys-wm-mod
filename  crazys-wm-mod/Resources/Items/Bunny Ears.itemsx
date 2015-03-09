@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item
+        Name="Bunny Ears"
+        Desc="Headband with black bunny ears. Goes perfectly with the Bunny Outift and Tail Plug, but can also work well on its own. (+8 Charisma, +5 Service)"
+        Type="Hat"
+        Badness="10"
+        Special="None"
+        Cost="500"
+        Rarity="Shop25"
+        Infinite="false"
+        GirlBuyChance="0"
+        ItemWeight="0.0">
+        <Effect
+            What="Stat"
+            Name="Charisma"
+            Amount="8" />
+        <Effect
+            What="Skill"
+            Name="Service"
+            Amount="5" />
+    </Item>
+</Items>

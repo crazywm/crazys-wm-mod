@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item
+        Name="Cat Paw Glove"
+        Desc="Awww, what could be more cute than a pair of big fluffy cat-paw gloves? Of course, it does make it rather difficult for her to perform handjobs. (+5 Charisma, +3 Beast, -3 Service, -3 Handjob, adds Cute)"
+        Type="Armband"
+        Badness="5"
+        Special="None"
+        Cost="250"
+        Rarity="Shop05"
+        Infinite="true"
+        GirlBuyChance="2"
+        ItemWeight="0.0">
+        <Effect
+            What="Stat"
+            Name="Charisma"
+            Amount="5" />
+        <Effect
+            What="Skill"
+            Name="Beastiality"
+            Amount="3" />
+        <Effect
+            What="Skill"
+            Name="Service"
+            Amount="-3" />
+        <Effect
+            What="Skill"
+            Name="Handjob"
+            Amount="-3" />
+        <Effect
+            What="Trait"
+            Name="Cute"
+            Amount="1" />
+    </Item>
+</Items>
