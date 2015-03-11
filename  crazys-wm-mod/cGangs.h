@@ -171,8 +171,23 @@ public:
 	vector<sGang*> gangs_on_mission(u_int mission_id);
 	vector<sGang*> gangs_watching_girls();
 
+	bool Control_Gangs()	{ return m_Control_Gangs; }
+	int Gang_Gets_Girls()	{ return m_Gang_Gets_Girls; }
+	int Gang_Gets_Items()	{ return m_Gang_Gets_Items; }
+	int Gang_Gets_Beast()	{ return m_Gang_Gets_Beast; }
+	bool Control_Gangs(bool cg)	{ return m_Control_Gangs = cg; }
+	int Gang_Gets_Girls(int g)	{ return m_Gang_Gets_Girls = g; }
+	int Gang_Gets_Items(int g)	{ return m_Gang_Gets_Items = g; }
+	int Gang_Gets_Beast(int g)	{ return m_Gang_Gets_Beast = g; }
+
+
 private:
 	int m_BusinessesExtort;	// number of businesses under your control
+
+	bool m_Control_Gangs;
+	int m_Gang_Gets_Girls;
+	int m_Gang_Gets_Items;
+	int m_Gang_Gets_Beast;
 
 	int m_MaxNumGangs;
 	int m_NumGangNames;

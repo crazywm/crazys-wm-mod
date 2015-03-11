@@ -1818,6 +1818,30 @@ WME - Added SaveIndividualItemsXML() to the save all button on extras tab.
 !!!!!!!!!!!!!!!!!!!! pushed to SVN - r158
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.25
 
+###  Changes 3/9/2015
+Fixed a bug in fights caused by adding strength to damage.
+Fixed a bug in brothel management screen where sometimes a girls status lists "is" twice.
+Fixed an accounting bug in petty theft causing 0 victim numbers.
+Added Catacomb Gang controls to gang screen.
+Started adding Catacomb Girls controls - not ready yet.
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.10
+
+###  Changes 3/10/2015
+Girls captured from the catacombs get the "Kidnapped" trait for 2-15 turns
+Added updateTempTraits(girl, trait, amount) to modify the time for temporary traits - will not make nontemp traits temp
+Added HasTempTrait(girl, trait) to return the amount of time left on a temp trait
+Temporary traits show the temp time in () on traits lists
+Changed m_TempTrait from unsigned char to int
+Torture reduces "Kidnapped" and "Emprisoned Customer" temp times
+Fixed a bug in runaway code causing a crash.
+Fixed missing strength to old gangs
+ 
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.11
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r159
+ 
+ 
+ 
  
  
  

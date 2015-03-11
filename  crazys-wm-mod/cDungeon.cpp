@@ -694,6 +694,7 @@ void cDungeon::Update()
 			msg.str("");
 			msg << TorturerGirlref->m_Realname << gettext(" has tortured ") << m_NumGirlsTort << gettext(" girls in the Dungeon.");
 			TorturerGirlref->m_Events.AddMessage(msg.str(), IMGTYPE_PROFILE, EVENT_DUNGEON);
+
 		}
 	}
 

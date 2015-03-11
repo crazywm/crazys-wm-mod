@@ -70,6 +70,9 @@ cGangManager::cGangManager()
 	m_BusinessesExtort = 0;
 	m_NumHealingPotions = m_NumNets = m_SwordLevel = 0;
 	m_KeepHealStocked = m_KeepNetsStocked = 0;
+	m_Control_Gangs = false;
+	m_Gang_Gets_Girls = m_Gang_Gets_Items = m_Gang_Gets_Beast = 0;
+
 }
 
 void cGangManager::Free()
@@ -83,6 +86,8 @@ void cGangManager::Free()
 	m_BusinessesExtort = 0;
 	m_NumHealingPotions = m_SwordLevel = m_NumNets = 0;
 	m_KeepHealStocked = m_KeepNetsStocked = 0;
+	m_Control_Gangs = false;
+	m_Gang_Gets_Girls = m_Gang_Gets_Items = m_Gang_Gets_Beast = 0;
 }
 
 bool cGangManager::LoadGangsXML(TiXmlHandle hGangManager)
@@ -122,6 +127,22 @@ bool cGangManager::LoadGangsXML(TiXmlHandle hGangManager)
 	pGangManager->QueryIntAttribute("NumNets", &m_NumNets);
 	pGangManager->QueryIntAttribute("KeepHealStocked", &m_KeepHealStocked);
 	pGangManager->QueryIntAttribute("KeepNetsStocked", &m_KeepNetsStocked);
+
+	// `J` added for .06.01.10
+	pGangManager->QueryValueAttribute<bool>("ControlCatacombs", &m_Control_Gangs);
+	pGangManager->QueryIntAttribute("Gang_Gets_Girls", &m_Gang_Gets_Girls);
+	pGangManager->QueryIntAttribute("Gang_Gets_Items", &m_Gang_Gets_Items);
+	pGangManager->QueryIntAttribute("Gang_Gets_Beast", &m_Gang_Gets_Beast);
+	if ((m_Gang_Gets_Girls == 0 && m_Gang_Gets_Items == 0 && m_Gang_Gets_Beast == 0) ||
+		m_Gang_Gets_Girls + m_Gang_Gets_Items + m_Gang_Gets_Beast != 100)
+	{
+		cConfig cfg;
+		m_Control_Gangs = cfg.catacombs.control_gangs();
+		m_Gang_Gets_Items = (int)cfg.catacombs.gang_gets_items();
+		m_Gang_Gets_Beast = (int)cfg.catacombs.gang_gets_beast();
+		m_Gang_Gets_Girls = 100 - m_Gang_Gets_Items - m_Gang_Gets_Beast;
+	}
+
 	return true;
 }
 
@@ -157,6 +178,22 @@ TiXmlElement* cGangManager::SaveGangsXML(TiXmlElement* pRoot)
 	pGangManager->SetAttribute("NumNets", m_NumNets);
 	pGangManager->SetAttribute("KeepHealStocked", m_KeepHealStocked);
 	pGangManager->SetAttribute("KeepNetsStocked", m_KeepNetsStocked);
+
+	// `J` added for .06.01.10
+	if (m_Gang_Gets_Girls == 0 && m_Gang_Gets_Items == 0 && m_Gang_Gets_Beast == 0)
+	{
+		cConfig cfg;
+		m_Control_Gangs = cfg.catacombs.control_gangs();
+		m_Gang_Gets_Items = (int)cfg.catacombs.gang_gets_items();
+		m_Gang_Gets_Beast = (int)cfg.catacombs.gang_gets_beast();
+		m_Gang_Gets_Girls = 100 - m_Gang_Gets_Items - m_Gang_Gets_Beast;
+
+	}
+	pGangManager->SetAttribute("ControlCatacombs", m_Control_Gangs);
+	pGangManager->SetAttribute("Gang_Gets_Girls", m_Gang_Gets_Girls);
+	pGangManager->SetAttribute("Gang_Gets_Items", m_Gang_Gets_Items);
+	pGangManager->SetAttribute("Gang_Gets_Beast", m_Gang_Gets_Beast);
+
 	return pGangManager;
 }
 
@@ -176,9 +213,24 @@ bool sGang::LoadGangXML(TiXmlHandle hGang)
 	TiXmlElement* pGang = hGang.ToElement();
 	if (pGang == 0) return false;
 	if (pGang->Attribute("Name")) m_Name = pGang->Attribute("Name");
+	pGang->QueryIntAttribute("Num", &m_Num);
 	LoadSkillsXML(hGang.FirstChild("Skills"), m_Skills);
 	LoadStatsXML(hGang.FirstChild("Stats"), m_Stats);
-	pGang->QueryIntAttribute("Num", &m_Num);
+	if (m_Skills[SKILL_MAGIC] < 0 || m_Skills[SKILL_COMBAT] < 0 || m_Stats[STAT_INTELLIGENCE] < 0 || m_Stats[STAT_AGILITY] < 0 ||
+		m_Stats[STAT_CONSTITUTION] < 0 || m_Stats[STAT_CHARISMA] < 0 || m_Stats[STAT_STRENGTH] < 0)
+	{
+		int total = m_Skills[SKILL_MAGIC] + m_Skills[SKILL_COMBAT] + m_Stats[STAT_INTELLIGENCE] + m_Stats[STAT_AGILITY] +
+			m_Stats[STAT_CONSTITUTION] + m_Stats[STAT_CHARISMA] + m_Stats[STAT_STRENGTH];
+		int low = total / 8;
+		int high = total / 6;
+		if (m_Skills[SKILL_MAGIC] < 0)			m_Skills[SKILL_MAGIC] = g_Dice.bell(low, high);
+		if (m_Skills[SKILL_COMBAT] < 0)			m_Skills[SKILL_COMBAT] = g_Dice.bell(low, high);
+		if (m_Stats[STAT_INTELLIGENCE] < 0)		m_Stats[STAT_INTELLIGENCE] = g_Dice.bell(low, high);
+		if (m_Stats[STAT_AGILITY] < 0)			m_Stats[STAT_AGILITY] = g_Dice.bell(low, high);
+		if (m_Stats[STAT_CONSTITUTION] < 0)		m_Stats[STAT_CONSTITUTION] = g_Dice.bell(low, high);
+		if (m_Stats[STAT_CHARISMA] < 0)			m_Stats[STAT_CHARISMA] = g_Dice.bell(low, high);
+		if (m_Stats[STAT_STRENGTH] < 0)			m_Stats[STAT_STRENGTH] = g_Dice.bell(low, high);
+	}
 
 	//these may not have been saved
 	//if not, the query just does not set the value
@@ -726,7 +778,7 @@ bool cGangManager::GangBrawl(sGang* gang1, sGang* gang2, bool rivalVrival)
 				// gang 2 attempts Dodge
 				if (!g_Dice.percent(g2dodge))
 				{
-					damage = (damage - (gang2->m_Stats[STAT_CONSTITUTION] / 15));
+					damage = max(1, (damage - (gang2->m_Stats[STAT_CONSTITUTION] / 15)));
 					g2Health -= damage;
 				}
 			}
@@ -750,7 +802,7 @@ bool cGangManager::GangBrawl(sGang* gang1, sGang* gang2, bool rivalVrival)
 
 				if (!g_Dice.percent(g1dodge))
 				{
-					damage = (damage - (gang1->m_Stats[STAT_CONSTITUTION] / 15));
+					damage = max(1, (damage - (gang1->m_Stats[STAT_CONSTITUTION] / 15)));
 					g1Health -= damage;
 				}
 			}
@@ -982,7 +1034,7 @@ bool cGangManager::GangCombat(sGirl* girl, sGang* gang)
 				// girl attempts Dodge
 				if (!g_Dice.percent(dodge))
 				{
-					damage = (damage - (g_Girls.GetStat(girl, STAT_CONSTITUTION) / 10));
+					damage = max(1, (damage - (g_Girls.GetStat(girl, STAT_CONSTITUTION) / 15)));
 					g_Girls.UpdateStat(girl, STAT_HEALTH, -damage);
 				}
 			}
@@ -2022,6 +2074,7 @@ bool cGangManager::petytheft_mission(sGang* gang)
 	string who = "people";
 	int fightbackchance = 0;
 	int numberoftargets = 2 + g_Dice % 9;
+	int targetfight = numberoftargets;
 	long gold = 0;
 	long goldbase = 1;
 
@@ -2035,9 +2088,9 @@ bool cGangManager::petytheft_mission(sGang* gang)
 
 	if (g_Dice.percent(fightbackchance))	// determine losses if they fight back
 	{
-		while (gang->m_Num > 0 && numberoftargets > 0)	// fight until someone wins
+		while (gang->m_Num > 0 && targetfight > 0)	// fight until someone wins
 		{
-			if (g_Dice.percent(gang->combat()))		numberoftargets--;		// you win so lower their numbers
+			if (g_Dice.percent(gang->combat()))		targetfight--;		// you win so lower their numbers
 			else if (g_Dice.percent(g_Dice % 11 + (difficulty * 10)))		// or they win 
 			{
 				if (gang->heal_limit() > 0) { gang->heal_limit(-1); m_NumHealingPotions--; }	// but you heal
@@ -2285,7 +2338,7 @@ bool cGangManager::catacombs_mission(sGang* gang)
 	int num = gang->m_Num;
 	ss << "Gang   " << gang->m_Name << "   is exploring the catacombs.\n\n";
 
-	if (!cfg.catacombs.control_gangs())	// use old code
+	if (!m_Control_Gangs)	// use old code
 	{
 		ss << "Your tell them to get whatever they can find.\n";
 
@@ -2396,6 +2449,7 @@ bool cGangManager::catacombs_mission(sGang* gang)
 					ss << ugirl->m_Realname;
 					ugirl->m_States &= ~(1 << STATUS_CATACOMBS);
 					stringstream NGmsg;
+					ugirl->add_trait("Kidnapped", 2 + g_Dice % 14);
 					NGmsg << ugirl->m_Realname << " was captured in the catacombs by " << gang->m_Name << ".";
 					ugirl->m_Events.AddMessage(NGmsg.str(), IMGTYPE_PROFILE, EVENT_GANG);
 					m_Dungeon->AddGirl(ugirl, DUNGEON_GIRLCAPTURED);
@@ -2408,6 +2462,7 @@ bool cGangManager::catacombs_mission(sGang* gang)
 						girl++;
 						ss << "\n\nYour men also captured a girl.";
 						stringstream NGmsg;
+						ugirl->add_trait("Kidnapped", 2 + g_Dice % 14);
 						NGmsg << ugirl->m_Realname << " was captured in the catacombs by " << gang->m_Name << ".";
 						ugirl->m_Events.AddMessage(NGmsg.str(), IMGTYPE_PROFILE, EVENT_GANG);
 						m_Dungeon->AddGirl(ugirl, DUNGEON_GIRLCAPTURED);
@@ -2426,15 +2481,12 @@ bool cGangManager::catacombs_mission(sGang* gang)
 	}
 	else	// use new code
 	{
-		double getgirls = cfg.catacombs.gang_gets_girls();
-		double getitems = cfg.catacombs.gang_gets_items();
-		double getbeast = cfg.catacombs.gang_gets_beast();
 		int totalgirls = 0; int totalitems = 0; int totalbeast = 0;
 		int bringbacknum = 0;
 		int gold = 0;
 
 		// do the intro text
-		ss << g_Girls.catacombs_look_for(getgirls, getitems, getbeast);
+		ss << g_Girls.catacombs_look_for(m_Gang_Gets_Girls, m_Gang_Gets_Items, m_Gang_Gets_Beast);
 
 		// do the bring back loop
 		while (gang->m_Num >= 1 && bringbacknum < gang->m_Num * min(1, gang->strength()/20))
@@ -2442,7 +2494,7 @@ bool cGangManager::catacombs_mission(sGang* gang)
 			double choice = (g_Dice % 10001) / 100.0;
 			gold += g_Dice % (gang->m_Num * 20);
 
-			if (choice < getgirls)					// get girl = 10 point
+			if (choice < m_Gang_Gets_Girls)					// get girl = 10 point
 			{
 				bool gotgirl = false;
 				sGirl* tempgirl = g_Girls.CreateRandomGirl(18, false, false, false, true);
@@ -2477,7 +2529,7 @@ bool cGangManager::catacombs_mission(sGang* gang)
 				}
 				else bringbacknum += 5;
 			}
-			else if (choice < getgirls + getitems)	// get item = 4 points
+			else if (choice < m_Gang_Gets_Girls + m_Gang_Gets_Items)	// get item = 4 points
 			{
 				bool gotitem = false;
 				if (g_Dice.percent(33))	// item is guarded
@@ -2575,6 +2627,7 @@ bool cGangManager::catacombs_mission(sGang* gang)
 						ss << "   " << ugirl->m_Realname << "   (u)\n";
 						ugirl->m_States &= ~(1 << STATUS_CATACOMBS);
 						stringstream NGmsg;
+						ugirl->add_trait("Kidnapped", 2 + g_Dice % 14);
 						NGmsg << ugirl->m_Realname << " was captured in the catacombs by " << gang->m_Name << ".";
 						ugirl->m_Events.AddMessage(NGmsg.str(), IMGTYPE_PROFILE, EVENT_GANG);
 						m_Dungeon->AddGirl(ugirl, DUNGEON_GIRLCAPTURED);
@@ -2586,6 +2639,7 @@ bool cGangManager::catacombs_mission(sGang* gang)
 						{
 							ss << "   " << ugirl->m_Realname << "\n";
 							stringstream NGmsg;
+							ugirl->add_trait("Kidnapped", 2 + g_Dice % 14);
 							NGmsg << ugirl->m_Realname << " was captured in the catacombs by " << gang->m_Name << ".";
 							ugirl->m_Events.AddMessage(NGmsg.str(), IMGTYPE_PROFILE, EVENT_GANG);
 							m_Dungeon->AddGirl(ugirl, DUNGEON_GIRLCAPTURED);
@@ -2659,7 +2713,7 @@ bool cGangManager::catacombs_mission(sGang* gang)
 			// bring back any beasts
 			if (totalbeast > 0)
 			{
-				ss << "Your men also bring back " << totalbeast << " beasts.";
+				ss << "Your men " << (totalgirls + totalitems > 0 ? "also " : "") << "bring back " << totalbeast << " beasts.";
 				g_Brothels.add_to_beasts(totalbeast);
 			}
 		}

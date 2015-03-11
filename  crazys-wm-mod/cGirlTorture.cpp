@@ -250,6 +250,10 @@ void cGirlTorture::DoTorture()
  */
 	UpdateStats();
 	UpdateTraits();
+	
+	// `J` wear down rebellion
+	g_Girls.updateTempTraits(m_Girl, "Kidnapped", -1);
+	g_Girls.updateTempTraits(m_Girl, "Emprisoned Customer", -1);
 
 /*
  *	DANGER DEATH and low health warnings

@@ -185,7 +185,11 @@ bool LoadStatsXML(TiXmlHandle hStats, int stats[], int statMods[], int tempStats
 		if (pStat)
 		{
 			int tempInt = 0;
-			pStat->QueryIntAttribute("Value", &tempInt); stats[i] = tempInt; tempInt = 0;
+			pStat->QueryIntAttribute("Value", &tempInt);
+			if (tempInt < -1000)	tempInt = -1;	// test for null stats and set them to 0
+			if (tempInt < -100)		tempInt = -100;
+			if (tempInt > 100)		tempInt = 100;
+			stats[i] = tempInt;		tempInt = 0;
 			if (statMods)
 			{
 				pStat->QueryIntAttribute("Mod", &(statMods[i]));
@@ -233,7 +237,10 @@ bool LoadSkillsXML(TiXmlHandle hSkills, int skills[], int skillMods[], int tempS
 		if (pSkill)
 		{
 			int tempInt = 0;
-			pSkill->QueryIntAttribute("Value", &tempInt); skills[i] = tempInt; tempInt = 0;
+			pSkill->QueryIntAttribute("Value", &tempInt);
+			if (tempInt < 0)	tempInt = -1;
+			if (tempInt > 100)	tempInt = 100;
+			skills[i] = tempInt; tempInt = 0;
 			if (skillMods)
 			{
 				pSkill->QueryIntAttribute("Mod", &(skillMods[i]));
@@ -260,7 +267,7 @@ TiXmlElement* SaveJobsXML(TiXmlElement* pRoot, int buildingQualities[])
 	return pJobs;
 }
 
-TiXmlElement* SaveTraitsXML(TiXmlElement* pRoot, std::string TagName, const int numTraits, sTrait* traits[], unsigned char tempTraits[])
+TiXmlElement* SaveTraitsXML(TiXmlElement* pRoot, std::string TagName, const int numTraits, sTrait* traits[], int tempTraits[])
 {
 	TiXmlElement* pTraits = new TiXmlElement(TagName);
 	pRoot->LinkEndChild(pTraits);
@@ -279,7 +286,7 @@ TiXmlElement* SaveTraitsXML(TiXmlElement* pRoot, std::string TagName, const int 
 	return pTraits;
 }
 
-bool LoadTraitsXML(TiXmlHandle hTraits, unsigned char& numTraits, sTrait* traits[], unsigned char tempTraits[])
+bool LoadTraitsXML(TiXmlHandle hTraits, unsigned char& numTraits, sTrait* traits[], int tempTraits[])
 {
 	numTraits = 0;
 	TiXmlElement* pTraits = hTraits.ToElement();

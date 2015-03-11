@@ -371,7 +371,7 @@ struct sGirl
 
 	unsigned char m_NumTraits;					// current number of traits they have
 	sTrait* m_Traits[MAXNUM_TRAITS];			// List of traits they have
-	unsigned char m_TempTrait[MAXNUM_TRAITS];	// a temp trait if not 0. Trait removed when == 0. traits last for 20 weeks.
+	int m_TempTrait[MAXNUM_TRAITS];	// a temp trait if not 0. Trait removed when == 0. traits last for 20 weeks.
 
 	unsigned char m_NumRememTraits;				// number of traits that are apart of the girls starting traits
 	sTrait* m_RememTraits[MAXNUM_TRAITS * 2];		// List of traits they have inbuilt
@@ -935,6 +935,7 @@ public:
 
 	bool HasTrait(sGirl* girl, string trait);
 	bool HasRememberedTrait(sGirl* girl, string trait);
+	int HasTempTrait(sGirl* girl, string trait);
 
 
 	void ApplyTraits(sGirl* girl, sTrait* trait = 0);	// applys the stat bonuses for traits to a girl
@@ -1082,6 +1083,7 @@ public:
 	void updateTempStats(sGirl* girl);
 	void updateTempSkills(sGirl* girl);
 	void updateTempTraits(sGirl* girl);
+	void updateTempTraits(sGirl* girl, string trait, int amount);
 	void updateSTD(sGirl* girl);
 	void updateHappyTraits(sGirl* girl);
 	void updateGirlTurnStats(sGirl* girl);
@@ -1090,7 +1092,7 @@ public:
 	bool detect_disease_in_customer(sBrothel * brothel, sGirl* girl, sCustomer cust, double mod = 0.0);
 
 	string Accommodation(int acc);
-	string catacombs_look_for(double girls, double items, double beast);
+	string catacombs_look_for(int girls, int items, int beast);
 
 private:
 	unsigned int m_NumGirls;	// number of girls in the class

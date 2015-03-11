@@ -147,17 +147,12 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 					}
 				}
 			}
-			else if (fight_outcome == 2)  // she lost
+			else // she lost or it was a draw // `J` just to make things harder
 			{
 				haulcount -= 50;
 				raped = true;
+				break;
 			}
-			else if (fight_outcome == 0)  // it was a draw
-			{
-				// hmm, guess we'll just ignore draws for now
-			}
-
-			if (raped) break;
 		}
 
 		if (raped)
@@ -223,6 +218,7 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 					if (g_Brothels.GetObjective()->m_SoFar >= g_Brothels.GetObjective()->m_Target)	g_Brothels.PassObjective();
 				}
 				stringstream Umsg;
+				ugirl->add_trait("Kidnapped", 2 + g_Dice % 15);
 				Umsg << ugirl->m_Realname << " was captured in the catacombs by " << girlName << ".\n";
 				ugirl->m_Events.AddMessage(Umsg.str(), IMGTYPE_PROFILE, EVENT_DUNGEON);
 				g_Brothels.GetDungeon()->AddGirl(ugirl, DUNGEON_GIRLCAPTURED);	// Either type of girl goes to the dungeon
