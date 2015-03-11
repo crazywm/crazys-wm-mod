@@ -80,6 +80,15 @@ void cScreenGangs::set_ids()
 	healautobuy_id = get_id("AutoBuyHealToggle");
 	recruitlist_id = get_id("RecruitList");
 
+	// `J` added for .06.01.10
+	controlcatacombs_id = get_id("ControlCatacombs");
+	catacombslabel_id = get_id("Catacombs");
+	ganggetsgirls_id = get_id("GangGetsGirls");
+	ganggetsitems_id = get_id("GangGetsItems");
+	ganggetsbeast_id = get_id("GangGetsBeast");
+	girlspercslider_id = get_id("GirlsPercSlider");
+	itemspercslider_id = get_id("ItemsPercSlider");
+
 	//Set the default sort order for columns, so listboxes know the order in which data will be sent
 	string RecruitColumns[] = { "GangName", "Number", gettext("Combat"), gettext("Magic"), gettext("Intelligence"), gettext("Agility"), gettext("Constitution"), gettext("Charisma"), gettext("Strength") };
 	SortColumns(recruitlist_id, RecruitColumns, 9);
@@ -112,6 +121,13 @@ void cScreenGangs::init()
 	AddToListBox(missionlist_id, 8, gettext("CATACOMBS"));
 	AddToListBox(missionlist_id, 9, gettext("TRAINING"));
 	AddToListBox(missionlist_id, 10, gettext("RECRUITING"));
+
+	SetCheckBox(controlcatacombs_id, (g_Gangs.Control_Gangs()));
+	SliderRange(girlspercslider_id, 0, 100, g_Gangs.Gang_Gets_Girls(), 1);
+	SliderRange(itemspercslider_id, 0, 100, g_Gangs.Gang_Gets_Girls()+g_Gangs.Gang_Gets_Items(), 1);
+	ss.str("");	ss << gettext("Girls : ") << g_Gangs.Gang_Gets_Girls() << gettext("%");		EditTextItem(ss.str(), ganggetsgirls_id);
+	ss.str("");	ss << gettext("Items : ") << g_Gangs.Gang_Gets_Items() << gettext("%");		EditTextItem(ss.str(), ganggetsitems_id);
+	ss.str("");	ss << gettext("Beasts : ") << g_Gangs.Gang_Gets_Beast() << gettext("%");	EditTextItem(ss.str(), ganggetsbeast_id);
 
 	SetCheckBox(netautobuy_id, (g_Gangs.GetNetRestock() > 0));
 	SetCheckBox(healautobuy_id, (g_Gangs.GetHealingRestock() > 0));
@@ -171,36 +187,16 @@ void cScreenGangs::init()
 	{
 		// format the string with the gang name, mission and number of men
 		string Data[10];
-		ss.str("");
-		ss << current->m_Name;
-		Data[0] = ss.str();
-		ss.str("");
-		ss << current->m_Num;
-		Data[1] = ss.str();
-		ss.str("");
-		ss << short_mission_desc(current->m_MissionID);
-		Data[2] = ss.str();
-		ss.str("");
-		ss << current->m_Skills[SKILL_COMBAT] << "%";
-		Data[3] = ss.str();
-		ss.str("");
-		ss << current->m_Skills[SKILL_MAGIC] << "%";
-		Data[4] = ss.str();
-		ss.str("");
-		ss << current->m_Stats[STAT_INTELLIGENCE] << "%";
-		Data[5] = ss.str();
-		ss.str("");
-		ss << current->m_Stats[STAT_AGILITY] << "%";
-		Data[6] = ss.str();
-		ss.str("");
-		ss << current->m_Stats[STAT_CONSTITUTION] << "%";
-		Data[7] = ss.str();
-		ss.str("");
-		ss << current->m_Stats[STAT_CHARISMA] << "%";
-		Data[8] = ss.str();
-		ss.str("");
-		ss << current->m_Stats[STAT_STRENGTH] << "%";
-		Data[9] = ss.str();
+		ss.str("");		ss << current->m_Name;								Data[0] = ss.str();
+		ss.str("");		ss << current->m_Num;								Data[1] = ss.str();
+		ss.str("");		ss << short_mission_desc(current->m_MissionID);		Data[2] = ss.str();
+		ss.str("");		ss << current->m_Skills[SKILL_COMBAT] << "%";		Data[3] = ss.str();
+		ss.str("");		ss << current->m_Skills[SKILL_MAGIC] << "%";		Data[4] = ss.str();
+		ss.str("");		ss << current->m_Stats[STAT_INTELLIGENCE] << "%";	Data[5] = ss.str();
+		ss.str("");		ss << current->m_Stats[STAT_AGILITY] << "%";		Data[6] = ss.str();
+		ss.str("");		ss << current->m_Stats[STAT_CONSTITUTION] << "%";	Data[7] = ss.str();
+		ss.str("");		ss << current->m_Stats[STAT_CHARISMA] << "%";		Data[8] = ss.str();
+		ss.str("");		ss << current->m_Stats[STAT_STRENGTH] << "%";		Data[9] = ss.str();
 
 		//		cerr << "Gang:\t" << Data[0] << "\t" << Data[1] << "\t" << Data[2]
 		//			<< "\t" << Data[3] << "\t" << Data[4] << "\t" << Data[5] << "\t" << Data[6] << endl;
@@ -221,33 +217,15 @@ void cScreenGangs::init()
 	{
 		// format the string with the gang name, mission and number of men
 		string Data[9];
-		ss.str("");
-		ss << current->m_Name;
-		Data[0] = ss.str();
-		ss.str("");
-		ss << current->m_Num;
-		Data[1] = ss.str();
-		ss.str("");
-		ss << current->m_Skills[SKILL_COMBAT] << "%";
-		Data[2] = ss.str();
-		ss.str("");
-		ss << current->m_Skills[SKILL_MAGIC] << "%";
-		Data[3] = ss.str();
-		ss.str("");
-		ss << current->m_Stats[STAT_INTELLIGENCE] << "%";
-		Data[4] = ss.str();
-		ss.str("");
-		ss << current->m_Stats[STAT_AGILITY] << "%";
-		Data[5] = ss.str();
-		ss.str("");
-		ss << current->m_Stats[STAT_CONSTITUTION] << "%";
-		Data[6] = ss.str();
-		ss.str("");
-		ss << current->m_Stats[STAT_CHARISMA] << "%";
-		Data[7] = ss.str();
-		ss.str("");
-		ss << current->m_Stats[STAT_STRENGTH] << "%";
-		Data[8] = ss.str();
+		ss.str("");		ss << current->m_Name;								Data[0] = ss.str();
+		ss.str("");		ss << current->m_Num;								Data[1] = ss.str();
+		ss.str("");		ss << current->m_Skills[SKILL_COMBAT] << "%";		Data[2] = ss.str();
+		ss.str("");		ss << current->m_Skills[SKILL_MAGIC] << "%";		Data[3] = ss.str();
+		ss.str("");		ss << current->m_Stats[STAT_INTELLIGENCE] << "%";	Data[4] = ss.str();
+		ss.str("");		ss << current->m_Stats[STAT_AGILITY] << "%";		Data[5] = ss.str();
+		ss.str("");		ss << current->m_Stats[STAT_CONSTITUTION] << "%";	Data[6] = ss.str();
+		ss.str("");		ss << current->m_Stats[STAT_CHARISMA] << "%";		Data[7] = ss.str();
+		ss.str("");		ss << current->m_Stats[STAT_STRENGTH] << "%";		Data[8] = ss.str();
 
 		//		cerr << "Recruitable\t" << Data[0] << "\t" << Data[1] << "\t" << Data[2]
 		//			<< "\t" << Data[3] << "\t" << Data[4] << "\t" << Data[5] << endl;
@@ -343,7 +321,6 @@ bool cScreenGangs::check_keys()
 	}
 	return false;
 }
-
 
 void cScreenGangs::check_events()
 {
@@ -577,8 +554,53 @@ void cScreenGangs::check_events()
 		ss << gettext("Weekly Cost: ") << cost;
 		EditTextItem(ss.str(), totalcost_id);
 	}
-}
 
+	if (g_InterfaceEvents.CheckCheckbox(controlcatacombs_id))
+	{
+		g_Gangs.Control_Gangs(IsCheckboxOn(controlcatacombs_id));
+	}
+	bool dosliders = false;
+	if (g_InterfaceEvents.CheckSlider(girlspercslider_id))
+	{
+		int s1 = SliderValue(girlspercslider_id);
+		int s2 = SliderValue(itemspercslider_id);
+		if (s2 < s1)
+		{
+			s2 = s1;
+			SliderRange(itemspercslider_id, 0, 100, s2, 1);
+		}
+		dosliders = true;
+	}
+	if (g_InterfaceEvents.CheckSlider(itemspercslider_id))
+	{
+		int s1 = SliderValue(itemspercslider_id);
+		int s2 = SliderValue(girlspercslider_id);
+		if (s1 < s2)
+		{
+			s2 = s1;
+			SliderRange(girlspercslider_id, 0, 100, s2, 1);
+		}
+		dosliders = true;
+	}
+	if (dosliders)
+	{
+		int s1 = SliderValue(girlspercslider_id);
+		int s2 = SliderValue(itemspercslider_id);
+		g_Gangs.Gang_Gets_Girls(s1);
+		g_Gangs.Gang_Gets_Items(s2 - s1);
+		g_Gangs.Gang_Gets_Beast(100 - s2);
+
+		ss.str("");	ss << gettext("Girls : ") << g_Gangs.Gang_Gets_Girls() << gettext("%");		EditTextItem(ss.str(), ganggetsgirls_id);
+		ss.str("");	ss << gettext("Items : ") << g_Gangs.Gang_Gets_Items() << gettext("%");		EditTextItem(ss.str(), ganggetsitems_id);
+		ss.str("");	ss << gettext("Beasts : ") << g_Gangs.Gang_Gets_Beast() << gettext("%");	EditTextItem(ss.str(), ganggetsbeast_id);
+
+		return;
+	}
+
+
+
+
+}
 
 string cScreenGangs::mission_desc(int mid)
 {
@@ -602,7 +624,6 @@ string cScreenGangs::mission_desc(int mid)
 	ss << "Error: unexpected mission ID: " << mid;
 	return ss.str();
 }
-
 
 string cScreenGangs::short_mission_desc(int mid)
 {

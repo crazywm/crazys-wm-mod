@@ -95,6 +95,26 @@ struct sBrothel
 	void KeepPotionsStocked(bool stocked)	{ m_KeepPotionsStocked = stocked; }
 	bool GetPotionRestock()					{ return m_KeepPotionsStocked; }
 
+
+
+
+	bool Control_Girls()	{ return m_Control_Girls; }
+	int Girl_Gets_Girls()	{ return m_Girl_Gets_Girls; }
+	int Girl_Gets_Items()	{ return m_Girl_Gets_Items; }
+	int Girl_Gets_Beast()	{ return m_Girl_Gets_Beast; }
+	bool Control_Girls(bool cg)	{ return m_Control_Girls = cg; }
+	int Girl_Gets_Girls(int g)	{ return m_Girl_Gets_Girls = g; }
+	int Girl_Gets_Items(int g)	{ return m_Girl_Gets_Items = g; }
+	int Girl_Gets_Beast(int g)	{ return m_Girl_Gets_Beast = g; }
+
+	bool m_Control_Girls;
+	int m_Girl_Gets_Girls;
+	int m_Girl_Gets_Items;
+	int m_Girl_Gets_Beast;
+
+
+
+
 	int				m_MovieRunTime;		// see above, counter for the 7 week effect
 	int				m_NumMovies;
 

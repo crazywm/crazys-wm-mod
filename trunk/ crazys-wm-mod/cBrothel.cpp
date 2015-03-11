@@ -359,7 +359,7 @@ void cBrothelManager::check_raid()
 int cBrothelManager::TotalFame(sBrothel * brothel)
 {
 	int total_fame = 0;
-	sGirl * current = brothel->m_Girls;
+	sGirl* current = brothel->m_Girls;
 	while (current)
 	{
 		total_fame += g_Girls.GetStat(current, STAT_FAME);
@@ -4679,8 +4679,6 @@ bool cBrothelManager::runaway_check(sBrothel *brothel, sGirl *girl)
 		SetGirlStat(girl, STAT_TIREDNESS, 0);
 		SetGirlStat(girl, STAT_HEALTH, 100);
 		girl->m_RunAway = 6;
-		girl->m_NightJob = girl->m_DayJob = JOB_RUNAWAY;
-		AddGirlToRunaways(girl);
 		stringstream smess;
 		smess << girl->m_Realname << gettext(" has run away.\nSend your goons after her to attempt recapture.\nShe will escape for good after 6 weeks.\n");
 		g_MessageQue.AddToQue(smess.str(), COLOR_RED);

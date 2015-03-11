@@ -1158,7 +1158,7 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 
 	if (childnaped)	// this girl has been taken against her will so make her rebelious
 	{
-		AddTrait(newGirl, "Kidnapped", 20);		// 20 turn temp trait
+		AddTrait(newGirl, "Kidnapped", g_Dice.bell(5, 25));		// 5-25 turn temp trait
 		newGirl->m_Stats[STAT_SPIRIT] = 100;
 		newGirl->m_Stats[STAT_CONFIDENCE] = 100;
 		newGirl->m_Stats[STAT_OBEDIENCE] = 0;
@@ -1729,10 +1729,10 @@ string cGirls::GetGirlMood(sGirl* girl)
 	else if (morality <= -40)	ss << "mean.";
 	else if (morality <= -20)	ss << "not nice.";
 	else if (morality <= 0)		ss << "neutral.";
-	else if (morality <= 20)	ss << "is lawful.";
-	else if (morality <= 40)	ss << "is nice";
-	else if (morality <= 60)	ss << "is good.";
-	else if (morality <= 80)	ss << "is very good.";
+	else if (morality <= 20)	ss << "lawful.";
+	else if (morality <= 40)	ss << "nice";
+	else if (morality <= 60)	ss << "good.";
+	else if (morality <= 80)	ss << "very good.";
 	else 						ss << "holy.";
 
 	return ss.str();
@@ -3081,17 +3081,20 @@ int cGirls::GetRebelValue(sGirl* girl, bool matron)
 	*	`J` "Kidnapped" and "Emprisoned Customer" are factored in twice, before and after mental trait modifiers
 	*	This will allow them to have at least some effect on "Mind Fucked", "Dependant" or "Meek" girls
 	*/
-	if (HasTrait(girl, "Kidnapped"))			chanceNo += 20;
-	if (HasTrait(girl, "Emprisoned Customer"))	chanceNo += 20;
+
+	// these are factoring in twice before and after mental trait modifiers
+	if (HasTrait(girl, "Kidnapped") || HasTrait(girl, "Emprisoned Customer"))	chanceNo += 10;
+	int kep = HasTempTrait(girl, "Kidnapped") + HasTempTrait(girl, "Emprisoned Customer");
+	if (kep > 20) kep += 20; else if (kep > 10) kep += 10;
 
 	// guarantee certain rebelliousness values for specific traits
 	if (HasTrait(girl, "Retarded"))	chanceNo -= 30;
-	if (HasTrait(girl, "Mind Fucked") && chanceNo > -50)		return -50;
-	if (HasTrait(girl, "Dependant") && chanceNo > -40)		return -40;
-	if (HasTrait(girl, "Meek") && chanceNo > 20)			return 20;
+	if (HasTrait(girl, "Mind Fucked") && chanceNo > -50)	chanceNo = -50;
+	if (HasTrait(girl, "Dependant") && chanceNo > -40)		chanceNo = -40;
+	if (HasTrait(girl, "Meek") && chanceNo > 20)			chanceNo = 20;
 
-	if (HasTrait(girl, "Kidnapped"))			chanceNo += 10;		// these are factoring in twice
-	if (HasTrait(girl, "Emprisoned Customer"))	chanceNo += 10;		// before and after mental trait modifiers
+	chanceNo += kep;
+
 
 	// Normalise
 	if (chanceNo < -100)		chanceNo = -100;
@@ -7426,6 +7429,22 @@ bool cGirls::HasTrait(sGirl* girl, string trait)
 	return false;
 }
 
+// `J` returns the number of turns left on a temp trait or 0 if is not temporary
+int cGirls::HasTempTrait(sGirl* girl, string trait)
+{
+	for (int i = 0; i < MAXNUM_TRAITS; i++)
+	{
+		if (girl->m_Traits[i] && girl->m_TempTrait[i] > 0)
+		{
+			if (trait.compare(girl->m_Traits[i]->m_Name) == 0)
+			{
+				return girl->m_TempTrait[i];
+			}
+		}
+	}
+	return 0;
+}
+
 void cGirls::RemoveRememberedTrait(sGirl* girl, string name)
 {
 	sTrait* trait = g_Traits.GetTrait(name);
@@ -7699,6 +7718,22 @@ void cGirls::updateTempTraits(sGirl* girl)
 			girl->m_TempTrait[i]--;
 			if (girl->m_TempTrait[i] == 0)
 				g_Girls.RemoveTrait(girl, girl->m_Traits[i]->m_Name);
+		}
+	}
+}
+
+// Update individual temp trait and remove expired trait - can not make nontemp traits temp
+void cGirls::updateTempTraits(sGirl* girl, string trait, int amount)
+{
+	if (girl->health() <= 0) return;				// Sanity check. Abort on dead girl
+
+	for (int i = 0; i < MAXNUM_TRAITS; i++)
+	{
+		if (girl->m_TempTrait[i] > 0 && girl->m_Traits[i] && trait.compare(girl->m_Traits[i]->m_Name) == 0)
+		{
+			girl->m_TempTrait[i] += amount;
+			if (girl->m_TempTrait[i] <= 0) g_Girls.RemoveTrait(girl, girl->m_Traits[i]->m_Name);
+			return;
 		}
 	}
 }
@@ -14509,7 +14544,7 @@ bool cGirls::detect_disease_in_customer(sBrothel * brothel, sGirl* girl, sCustom
 	return false;
 }
 
-string cGirls::catacombs_look_for(double girls, double items, double beast)
+string cGirls::catacombs_look_for(int girls, int items, int beast)
 {
 	stringstream ss;
 	ss << "You tell them to ";

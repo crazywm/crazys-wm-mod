@@ -33,28 +33,40 @@ private:
 /*
  *	interface/event IDs
  */
-	int back_id;		// Back button
-	int gangcost_id;	// Gang Hiring Cost text
-	int ganghire_id;	// Hire Gang button
-	int gangfire_id;	// Fire Gang button
-	int totalcost_id;	// Weekly Cost text
-	int ganglist_id;	// Controlled Gangs list
-	int missionlist_id;	// Missions list
-	int gangdesc_id;	// Gang Description text
-	int missiondesc_id;	// Mission Description text
-	int weaponlevel_id;	// Weapon Level text
-	int weaponup_id;	// Increase Weapon Level button
-	int netdesc_id;		// Nets Description text
-	int netbuy_id;		// Buy 1 Net button
-	int netbuy10_id;	// Buy 10 Nets button
-	int netbuy20_id;	// Buy 20 Nets button
-	int netautobuy_id;	// Auto-buy Nets checkbox
-	int healdesc_id;	// Healing Potions Description text
-	int healbuy_id;		// Buy 1 Healing Potion button
-	int healbuy10_id;	// Buy 10 Healing Potions button
-	int healbuy20_id;	// Buy 20 Healing Potions button
-	int healautobuy_id;	// Auto-buy Healing Potions checkbox
-	int recruitlist_id;	// Recruitable Gangs list
+	int back_id;			// Back button
+	int gangcost_id;		// Gang Hiring Cost text
+	int ganghire_id;		// Hire Gang button
+	int gangfire_id;		// Fire Gang button
+	int totalcost_id;		// Weekly Cost text
+	int ganglist_id;		// Controlled Gangs list
+	int missionlist_id;		// Missions list
+	int gangdesc_id;		// Gang Description text
+	int missiondesc_id;		// Mission Description text
+	int weaponlevel_id;		// Weapon Level text
+	int weaponup_id;		// Increase Weapon Level button
+	int netdesc_id;			// Nets Description text
+	int netbuy_id;			// Buy 1 Net button
+	int netbuy10_id;		// Buy 10 Nets button
+	int netbuy20_id;		// Buy 20 Nets button
+	int netautobuy_id;		// Auto-buy Nets checkbox
+	int healdesc_id;		// Healing Potions Description text
+	int healbuy_id;			// Buy 1 Healing Potion button
+	int healbuy10_id;		// Buy 10 Healing Potions button
+	int healbuy20_id;		// Buy 20 Healing Potions button
+	int healautobuy_id;		// Auto-buy Healing Potions checkbox
+	int recruitlist_id;		// Recruitable Gangs list
+
+	int controlcatacombs_id;// checkbox
+	int catacombslabel_id;	// just a label
+	int ganggetsgirls_id;	// gang gets girls label
+	int ganggetsitems_id;	// gang gets items label
+	int ganggetsbeast_id;	// gang gets beast label
+	int girlspercslider_id;	// girls percent slider
+	int itemspercslider_id;	// items percent slider
+
+
+
+
 
 	void set_ids();
 

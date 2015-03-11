@@ -358,10 +358,10 @@ void cScreenGirlDetails::init()
 	{
 		if (selected_girl->m_Traits[i])
 		{
-			// TODO replace m_Name by getName()
-			// In cTraits.cpp add comparaison for gettext
-			// selected_girl->m_Traits[i].getName()
-			AddToListBox(traitlist_id, i, g_Traits.GetTranslateName(selected_girl->m_Traits[i]->m_Name));
+			stringstream st;
+			st << selected_girl->m_Traits[i]->m_Name;
+			if (selected_girl->m_TempTrait[i] > 0) st << "   (" << selected_girl->m_TempTrait[i] << ")";
+			AddToListBox(traitlist_id, i, g_Traits.GetTranslateName(st.str()));
 		}
 	}
 	EditTextItem("", traitdesc_id);
