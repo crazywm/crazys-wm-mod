@@ -1600,7 +1600,7 @@ bool cJobManager::work_related_violence(sGirl* girl, bool Day0Night1, bool stree
 		// carry over to the next layer of defense.
 		sGang *enemy_gang = g_Gangs.GetTempWeakGang();
 		// There is also between 1 and 15 of them, not 15 every time
-		enemy_gang->m_Num = (max(1, g_Dice % 20 - 4));
+		enemy_gang->m_Num = (max(1, g_Dice.bell(-5, 15)));
 
 		// Three more lines of defense
 
@@ -1781,7 +1781,7 @@ bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_n
 					// `J` and adjust her stats
 					g_InvManager.Equip(custgirl, g_Girls.AddInv(custgirl, g_Brothels.m_Inventory[itemnum]), true);
 					g_Brothels.RemoveItemFromInventoryByNumber(itemnum);
-					g_GirlsPtr->AddTrait(custgirl, "Emprisoned Customer", 20);	// add temp trait for 20 turns
+					g_GirlsPtr->AddTrait(custgirl, "Emprisoned Customer", max(5, g_Dice.bell(0, 20)));	// add temp trait
 					custgirl->pclove(-(g_Dice % 50 + 50));
 					custgirl->pcfear(g_Dice % 50 + 50);
 					custgirl->pchate(g_Dice % 50 + 50);

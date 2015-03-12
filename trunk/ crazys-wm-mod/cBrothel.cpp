@@ -2778,7 +2778,7 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 	{
 		if (is_she_resting(girl))
 		{
-			ss << "Spent her time playing The Realm of Darthon wiht some of the other girls.\n\n";
+			ss << "Spent her time playing The Realm of Darthon with some of the other girls.\n\n";
 			girl->happiness(5);
 		}
 	}

@@ -769,7 +769,7 @@ bool cGangManager::GangBrawl(sGang* gang1, sGang* gang2, bool rivalVrival)
 			if (g1attack == SKILL_MAGIC) g1Mana -= 7;	// spend the mana before attacking
 			if (g_Dice.percent(gang1->m_Skills[g1attack]))
 			{
-				int damage = (g1SwordLevel + 1) * min(1, gang1->strength() / 10);
+				int damage = (g1SwordLevel + 1) * max(1, gang1->strength() / 10);
 				if (g1attack == SKILL_MAGIC)
 				{
 					damage += gang1->m_Skills[SKILL_MAGIC] / 10 + 3;
@@ -794,7 +794,7 @@ bool cGangManager::GangBrawl(sGang* gang1, sGang* gang2, bool rivalVrival)
 			if (g2attack == SKILL_MAGIC) g2Mana -= 7;	// spend the mana before attacking
 			if (g_Dice.percent(gang2->m_Skills[g2attack]))
 			{
-				int damage = (g2SwordLevel + 1) * min(1, gang2->strength() / 10);
+				int damage = (g2SwordLevel + 1) * max(1, gang2->strength() / 10);
 				if (g2attack == SKILL_MAGIC)
 				{
 					damage += gang2->m_Skills[SKILL_MAGIC] / 10 + 3;
@@ -1019,7 +1019,7 @@ bool cGangManager::GangCombat(sGirl* girl, sGang* gang)
 				l.ss() << " attack succeeds!";
 				l.ssend();
 
-				int damage = (m_SwordLevel + 1) * min(1, gang->strength() / 10);
+				int damage = (m_SwordLevel + 1) * max(1, gang->strength() / 10);
 				if (gattack == SKILL_MAGIC)
 				{
 					if (gMana <= 0)
@@ -2258,7 +2258,7 @@ bool cGangManager::kidnapp_mission(sGang* gang)
 					girlimagetype = IMGTYPE_DEATH;
 					dungeonreason = DUNGEON_GIRLKIDNAPPED;
 					girl->m_Stats[STAT_OBEDIENCE] = 0;
-					girl->add_trait("Kidnapped", 10 + g_Dice % 11);
+					girl->add_trait("Kidnapped", 5 + g_Dice % 11);
 					NGmsg << girlName << " was captured in a net and dragged back to the dungeon by " << gang->m_Name << ".";
 					BoostGangSkill(&gang->m_Stats[STAT_INTELLIGENCE], 2);
 				}
@@ -2292,7 +2292,7 @@ bool cGangManager::kidnapp_mission(sGang* gang)
 				else if (damagednets == 0)
 				{
 					dungeonreason = DUNGEON_GIRLKIDNAPPED;
-					girl->add_trait("Kidnapped", 5 + g_Dice % 6);
+					girl->add_trait("Kidnapped", 3 + g_Dice % 8);
 					ss << "kidnap her successfully without a fuss.  She is in your dungeon now.";
 					NGmsg << girl->m_Realname << " was surrounded by " << gang->m_Name << " and gave up without a fight.";
 					captured = true;
@@ -2300,7 +2300,7 @@ bool cGangManager::kidnapp_mission(sGang* gang)
 				else
 				{
 					dungeonreason = DUNGEON_GIRLKIDNAPPED;
-					girl->add_trait("Kidnapped", 5 + g_Dice % 6);
+					girl->add_trait("Kidnapped", 5 + g_Dice % 8);
 					ss << "After dodging all of their nets, she gives up when they pull out their weapons and prepare to kill her.";
 					NGmsg << girl->m_Realname << " was surrounded by " << gang->m_Name << " and gave up without anymore of a fight.";
 					captured = true;
@@ -2449,7 +2449,7 @@ bool cGangManager::catacombs_mission(sGang* gang)
 					ss << ugirl->m_Realname;
 					ugirl->m_States &= ~(1 << STATUS_CATACOMBS);
 					stringstream NGmsg;
-					ugirl->add_trait("Kidnapped", 2 + g_Dice % 14);
+					ugirl->add_trait("Kidnapped", 2 + g_Dice % 10);
 					NGmsg << ugirl->m_Realname << " was captured in the catacombs by " << gang->m_Name << ".";
 					ugirl->m_Events.AddMessage(NGmsg.str(), IMGTYPE_PROFILE, EVENT_GANG);
 					m_Dungeon->AddGirl(ugirl, DUNGEON_GIRLCAPTURED);
@@ -2462,7 +2462,7 @@ bool cGangManager::catacombs_mission(sGang* gang)
 						girl++;
 						ss << "\n\nYour men also captured a girl.";
 						stringstream NGmsg;
-						ugirl->add_trait("Kidnapped", 2 + g_Dice % 14);
+						ugirl->add_trait("Kidnapped", 2 + g_Dice % 10);
 						NGmsg << ugirl->m_Realname << " was captured in the catacombs by " << gang->m_Name << ".";
 						ugirl->m_Events.AddMessage(NGmsg.str(), IMGTYPE_PROFILE, EVENT_GANG);
 						m_Dungeon->AddGirl(ugirl, DUNGEON_GIRLCAPTURED);
@@ -2489,7 +2489,7 @@ bool cGangManager::catacombs_mission(sGang* gang)
 		ss << g_Girls.catacombs_look_for(m_Gang_Gets_Girls, m_Gang_Gets_Items, m_Gang_Gets_Beast);
 
 		// do the bring back loop
-		while (gang->m_Num >= 1 && bringbacknum < gang->m_Num * min(1, gang->strength()/20))
+		while (gang->m_Num >= 1 && bringbacknum < gang->m_Num * max(1, gang->strength() / 20))
 		{
 			double choice = (g_Dice % 10001) / 100.0;
 			gold += g_Dice % (gang->m_Num * 20);
@@ -2627,7 +2627,7 @@ bool cGangManager::catacombs_mission(sGang* gang)
 						ss << "   " << ugirl->m_Realname << "   (u)\n";
 						ugirl->m_States &= ~(1 << STATUS_CATACOMBS);
 						stringstream NGmsg;
-						ugirl->add_trait("Kidnapped", 2 + g_Dice % 14);
+						ugirl->add_trait("Kidnapped", 2 + g_Dice % 10);
 						NGmsg << ugirl->m_Realname << " was captured in the catacombs by " << gang->m_Name << ".";
 						ugirl->m_Events.AddMessage(NGmsg.str(), IMGTYPE_PROFILE, EVENT_GANG);
 						m_Dungeon->AddGirl(ugirl, DUNGEON_GIRLCAPTURED);
@@ -2639,7 +2639,7 @@ bool cGangManager::catacombs_mission(sGang* gang)
 						{
 							ss << "   " << ugirl->m_Realname << "\n";
 							stringstream NGmsg;
-							ugirl->add_trait("Kidnapped", 2 + g_Dice % 14);
+							ugirl->add_trait("Kidnapped", 2 + g_Dice % 10);
 							NGmsg << ugirl->m_Realname << " was captured in the catacombs by " << gang->m_Name << ".";
 							ugirl->m_Events.AddMessage(NGmsg.str(), IMGTYPE_PROFILE, EVENT_GANG);
 							m_Dungeon->AddGirl(ugirl, DUNGEON_GIRLCAPTURED);

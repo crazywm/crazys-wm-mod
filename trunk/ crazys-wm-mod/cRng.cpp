@@ -39,7 +39,7 @@ double cRng::randomd(double n)
 int cRng::in_range(int min, int max, int range)
 {
 	int diff = max - min;
-
+	if (min < 0 && max>0) diff++;
 	if(diff == 0) return max;
 	if(diff < 0) return random(range);
 	return min + random(diff);
@@ -51,6 +51,7 @@ int cRng::bell(int min, int max)	// `J` added - not sure how well it will work, 
 	double bmin, bmax, bmid, blow, bhii, test;
 	if (min < max) { bmin = min; bmax = max; } else { bmin = max; bmax = min; }
 	bmax++;// to correct random+1
+	if (bmin < 0) bmin--;
 	bmid = (bmin + bmax) / 2.0;
 	blow = bmid - bmin;
 	bhii = bmax - bmid;

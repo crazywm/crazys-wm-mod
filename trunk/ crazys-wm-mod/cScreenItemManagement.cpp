@@ -55,6 +55,7 @@ extern	bool	g_K_Key;
 
 static int selection = -1;
 
+extern bool playershopinventory;
 extern sGirl *selected_girl;
 
 extern	int		g_CurrentScreen;
@@ -199,6 +200,13 @@ void cScreenItemManagement::init()	// `J` bookmark
 
 	NumBrothelGirls = NumBrothelGirls0 = NumBrothelGirls1 = NumBrothelGirls2 = NumBrothelGirls3 = NumBrothelGirls4 = NumBrothelGirls5 = NumBrothelGirls6 = 0;
 	NumStudioGirls = NumArenaGirls = NumCentreGirls = NumClinicGirls = NumFarmGirls = NumHouseGirls = NumDungeonGirls = 0;
+	
+	if (playershopinventory)	// `J` to set player and shop when pressing I to get to inventory
+	{
+		leftOwner = 0; rightOwner = 1;
+	}
+	playershopinventory = false;
+
 	if (leftOwner < 0)	leftOwner = 0;
 	if (rightOwner < 0)	rightOwner = 1;
 
@@ -233,6 +241,7 @@ void cScreenItemManagement::init()	// `J` bookmark
 
 	if (filter == -1) filter = 0;
 	SetSelectedItemInList(filter_id, filter, false);
+
 
 	// add shop and player to list
 
