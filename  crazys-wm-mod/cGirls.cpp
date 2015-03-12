@@ -1158,7 +1158,7 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 
 	if (childnaped)	// this girl has been taken against her will so make her rebelious
 	{
-		AddTrait(newGirl, "Kidnapped", g_Dice.bell(5, 25));		// 5-25 turn temp trait
+		AddTrait(newGirl, "Kidnapped", max(5, g_Dice.bell(0, 25)));		// 5-25 turn temp trait
 		newGirl->m_Stats[STAT_SPIRIT] = 100;
 		newGirl->m_Stats[STAT_CONFIDENCE] = 100;
 		newGirl->m_Stats[STAT_OBEDIENCE] = 0;
@@ -11406,7 +11406,7 @@ bool cGirls::GirlInjured(sGirl* girl, unsigned int unModifier)
 
 int cGirls::GetCombatDamage(sGirl *girl, int CombatType)
 {
-	int damage = min(1, girl->strength() / 10);
+	int damage = max(1, girl->strength() / 10);
 
 	// Some traits help for both kinds of combat
 	// There are a number of them so I set them at one point each
@@ -11579,11 +11579,11 @@ void cGirls::updateSTD(sGirl* girl)
 			Dtir += g_Dice % 2 + 1;
 		}
 	}
-	if (girl->has_trait("Herpes") && matron)
+	if (girl->has_trait("Herpes"))
 	{
 		string cureitem = "Herpes Cure";
 		int brothelhasscure = g_Brothels.HasItem(cureitem);
-		if (brothelhasscure != -1)
+		if (brothelhasscure != -1 && matron)
 		{
 			stringstream cure;
 			cure << girl->m_Realname << " was given a " << cureitem << " from the brothel's stock to cure the disease.";
@@ -11596,11 +11596,11 @@ void cGirls::updateSTD(sGirl* girl)
 			Dcha += max(0, g_Dice % 4 - 1);
 		}
 	}
-	if (girl->has_trait("Chlamydia") && matron)
+	if (girl->has_trait("Chlamydia"))
 	{
 		string cureitem = "Chlamydia Cure";
 		int brothelhasscure = g_Brothels.HasItem(cureitem);
-		if (brothelhasscure != -1)
+		if (brothelhasscure != -1 && matron)
 		{
 			stringstream cure;
 			cure << girl->m_Realname << " was given a " << cureitem << " from the brothel's stock to cure the disease.";
@@ -11613,11 +11613,11 @@ void cGirls::updateSTD(sGirl* girl)
 			Dtir += g_Dice % 2 + 1;
 		}
 	}
-	if (girl->has_trait("Syphilis") && matron)
+	if (girl->has_trait("Syphilis"))
 	{
 		string cureitem = "Syphilis Cure";
 		int brothelhasscure = g_Brothels.HasItem(cureitem);
-		if (brothelhasscure != -1)
+		if (brothelhasscure != -1 && matron)
 		{
 			stringstream cure;
 			cure << girl->m_Realname << " was given a " << cureitem << " from the brothel's stock to cure the disease.";

@@ -1840,6 +1840,21 @@ Fixed missing strength to old gangs
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.11
 !!!!!!!!!!!!!!!!!!!! pushed to SVN - r159
  
+Fixed an old piece of code that was broken:
+ - Pressing "i" to go to inventory screen will select the current girl 
+ - Added pressing "ctrl + i" will select player and shop as left and right owners
+ 
+###  Changes 3/11/2015
+Fixed bug with new strength damage calc
+Fixed a bug in updateSTD
+Updated number of customers that try to attack a girl in work_related_violence to make it more random but more common lower numbers
+Adjusted "Kidnapped" temp time.
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.12
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r160
+ 
+ 
+ 
  
  
  
