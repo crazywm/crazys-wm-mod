@@ -1921,7 +1921,7 @@ bool cJobManager::gang_stops_rape(sGirl* girl, vector<sGang *> gangs_guarding, s
 	cerr << "gang ss=" << gang_ss.str() << endl;
 	cerr << "girl ss=" << girl_ss.str() << endl;
 
-	girl->m_Events.AddMessage(girl_ss.str(), IMGTYPE_DEATH, day_night);
+	girl->m_Events.AddMessage(girl_ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
 	guarding_gang->m_Events.AddMessage(gang_ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
 
 	return true;

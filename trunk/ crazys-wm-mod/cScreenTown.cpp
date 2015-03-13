@@ -208,7 +208,8 @@ void cScreenTown::init()
 	{
 		if (g_ReturnText != "")
 		{
-			if (g_Brothels.GetObjective() && g_Brothels.GetObjective()->m_Objective == OBJECTIVE_GETNEXTBROTHEL) g_Brothels.PassObjective();
+			if (g_Brothels.GetObjective() && g_Brothels.GetObjective()->m_Objective == OBJECTIVE_GETNEXTBROTHEL) 
+				g_Brothels.PassObjective();
 			static_brothel_data *bpt = brothel_data + BuyBrothel;
 			g_Gold.brothel_cost(bpt->price);
 			g_Brothels.NewBrothel(bpt->rooms, bpt->maxrooms);

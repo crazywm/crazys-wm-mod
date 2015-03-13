@@ -1853,9 +1853,22 @@ Adjusted "Kidnapped" temp time.
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.12
 !!!!!!!!!!!!!!!!!!!! pushed to SVN - r160
  
- 
- 
- 
+###  Changes 3/13/2015
+Fixed a bug in catacombs_look_for text
+Changed message to girl, when a gang defends her from rapist, from normal message to warning
+
+Objective updates:
+ - Moved update objectives to the end of the next turn so any changes done that turn will pass the objective
+ - Added m_Objective->m_Text to save the objective text when created to allow for easier output
+ - Added Objective passed message to Brothel turn summary.
+ - If your objective was to get more girls and your reward is more girls, you get 1-5 extra girls after the base and difficulty modifiers.
+ - If you had a time limit and your reward is gold, you get more gold for the unneeded time.
+ - Added more variation for REWARD_RIVALHINDER
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.13
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r161
+
+
  
  
  

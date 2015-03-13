@@ -215,7 +215,6 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 				if (g_Brothels.GetObjective() && g_Brothels.GetObjective()->m_Objective == OBJECTIVE_CAPTUREXCATACOMBGIRLS)
 				{
 					g_Brothels.GetObjective()->m_SoFar++;
-					if (g_Brothels.GetObjective()->m_SoFar >= g_Brothels.GetObjective()->m_Target)	g_Brothels.PassObjective();
 				}
 				stringstream Umsg;
 				ugirl->add_trait("Kidnapped", 2 + g_Dice % 15);
@@ -323,7 +322,6 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 						if (g_Brothels.GetObjective() && g_Brothels.GetObjective()->m_Objective == OBJECTIVE_CAPTUREXCATACOMBGIRLS)
 						{
 							g_Brothels.GetObjective()->m_SoFar++;
-							if (g_Brothels.GetObjective()->m_SoFar >= g_Brothels.GetObjective()->m_Target)	g_Brothels.PassObjective();
 						}
 						stringstream Umsg;
 						Umsg << ugirl->m_Realname << " was captured in the catacombs by " << girlName << ".\n";
