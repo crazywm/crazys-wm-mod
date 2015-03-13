@@ -14554,33 +14554,33 @@ string cGirls::catacombs_look_for(int girls, int items, int beast)
 		ss << "bring back anything they can find";
 
 	// over 99%
-	if (girls > 99 || items > 99 || beast > 99)
+	else if (girls >= 99 || items >= 99 || beast >= 99)
 	{
 		ss << "only bring back ";
-		if (girls > 99)	ss << "girls";
-		if (items > 99)	ss << "items";
-		if (beast > 99)	ss << "beasts";
+		if (girls >= 99)	ss << "girls";
+		if (items >= 99)	ss << "items";
+		if (beast >= 99)	ss << "beasts";
 	}
 
 	// over 80%
-	else if (girls > 80 || items > 80 || beast > 80)
+	else if (girls >= 80 || items >= 80 || beast >= 80)
 	{
 		ss << "mostly try to only bring back ";
-		if (girls > 80)
+		if (girls >= 80)
 		{
 			ss << "girls but bring back ";
 			/* */if (items < 1) ss << "any beasts";
 			else if (beast < 1) ss << "any items";
 			else ss << "anything else";
 		}
-		else if (items > 80)
+		else if (items >= 80)
 		{
 			ss << "items but bring back ";
 			/* */if (girls < 1) ss << "any beasts";
 			else if (beast < 1) ss << "any girls";
 			else ss << "anything else";
 		}
-		else if (beast > 80)
+		else if (beast >= 80)
 		{
 			ss << "beasts but bring back ";
 			/* */if (items < 1) ss << "any girls";
@@ -14591,17 +14591,17 @@ string cGirls::catacombs_look_for(int girls, int items, int beast)
 	}
 
 	// over 50%
-	else if (girls > 50 || items > 50 || beast > 50)
+	else if (girls >= 50 || items >= 50 || beast >= 50)
 	{
 		ss << "bring back any ";
-		if (girls > 50)
+		if (girls >= 50)
 		{
 			ss << "girls and ";
 			/* */if (beast > 40) ss << "beasts";
 			else if (items > 40) ss << "items";
 			else ss << "anything else they find";
 		}
-		else if (items > 50)
+		else if (items >= 50)
 		{
 			ss << "items and ";
 			double remainder = 100 - items;
@@ -14609,7 +14609,7 @@ string cGirls::catacombs_look_for(int girls, int items, int beast)
 			else if (girls > 40)	ss << "girls";
 			else ss << "anything else they find";
 		}
-		else if (beast > 50)
+		else if (beast >= 50)
 		{
 			ss << "beasts and ";
 			double remainder = 100 - beast;
@@ -14618,6 +14618,7 @@ string cGirls::catacombs_look_for(int girls, int items, int beast)
 			else ss << "anything else they find";
 		}
 	}
+	else  ss << "have fun. (error code::  CLF01|" << girls << "|" << items << "|" << beast << "  ::  Please report it to pinkpetal.org so it can be fixed)";
 	ss << ".\n";
 	return ss.str();
 }

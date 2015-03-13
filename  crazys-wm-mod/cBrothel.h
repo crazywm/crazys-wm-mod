@@ -47,6 +47,7 @@ typedef struct sObjective
 	int m_SoFar;		// how much of the x variable has been achieved
 	int m_Limit;		// the number of weeks must be done by
 	int m_Difficulty;	// a number representing how hard it is
+	string m_Text;		// save the text for pass objective report.
 }sObjective;
 
 bool UseAntiPreg(bool use, bool isClinic, bool isStudio, bool isArena, bool isCentre, bool isHouse, bool isFarm, int BrothelID);
@@ -304,7 +305,7 @@ public:
 	sObjective* GetObjective();			// returns the objective
 	void CreateNewObjective();			// Creates a new objective
 	void PassObjective();				// Gives a reward
-	void AddCustomObjective(int limit, int diff, int objective, int reward, int sofar, int target);
+	void AddCustomObjective(int limit, int diff, int objective, int reward, int sofar, int target, string text="");
 
 	TiXmlElement* SaveDataXML(TiXmlElement* pRoot);
 	bool LoadDataXML(TiXmlHandle hBrothelManager);

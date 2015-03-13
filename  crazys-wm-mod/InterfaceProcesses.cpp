@@ -2433,6 +2433,10 @@ void NextWeek()
 
 	g_Brothels.m_Dungeon.Update();	// update the people in the dungeon
 
+	// update objectives or maybe create a new one
+	if (g_Brothels.GetObjective()) g_Brothels.UpdateObjective();
+	else if (g_Dice.percent(45)) g_Brothels.CreateNewObjective();
+
 	// go through and update the population base
 	g_Customers.ChangeCustomerBase();
 

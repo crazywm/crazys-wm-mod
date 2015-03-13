@@ -703,6 +703,12 @@ bool cBrothelManager::LoadDataXML(TiXmlHandle hBrothelManager)
 		pObjective->QueryIntAttribute("Reward", &m_Objective->m_Reward);
 		pObjective->QueryIntAttribute("SoFar", &m_Objective->m_SoFar);
 		pObjective->QueryIntAttribute("Target", &m_Objective->m_Target);
+		
+		if (pObjective->Attribute("Text"))	// `J` added
+		{
+			m_Objective->m_Text = pObjective->Attribute("Text");
+		}
+		else m_Objective->m_Text = "";
 	}
 
 	// load rivals
@@ -865,6 +871,7 @@ TiXmlElement* cBrothelManager::SaveDataXML(TiXmlElement* pRoot)
 		pObjective->SetAttribute("Reward", m_Objective->m_Reward);
 		pObjective->SetAttribute("SoFar", m_Objective->m_SoFar);
 		pObjective->SetAttribute("Target", m_Objective->m_Target);
+		pObjective->SetAttribute("Text", m_Objective->m_Text);
 	}
 
 	g_LogFile.write("***************** Saving rivals *******************");
@@ -1503,10 +1510,6 @@ void cBrothelManager::UpdateBrothels()	// Start_Building_Process_A
 	{
 		g_Brothels.GetBrothel(6)->m_SecurityLevel -= (220 - g_Gangs.GetNumBusinessExtorted()) * 2;
 	}
-
-	// update objectives or maybe create a new one
-	if (GetObjective()) UpdateObjective();
-	else { if (g_Dice.percent(45)) CreateNewObjective(); }
 
 }
 
@@ -3311,7 +3314,10 @@ void cBrothelManager::UpdateObjective()
 		// `J` moved to the end and fixed so if the objective is passed (thus deleted), failure is not returned
 		if (m_Objective != 0 && m_Objective->m_Limit == 0)
 		{
-			g_MessageQue.AddToQue(gettext("You have failed an objective."), COLOR_RED);
+			stringstream ss;
+			if (m_Objective->m_Text.size() < 1)	ss << "You have failed an objective.";
+			else ss << "You have failed your objective to " << m_Objective->m_Text;
+			g_MessageQue.AddToQue(ss.str(), COLOR_RED);
 			delete m_Objective;
 			m_Objective = 0;
 		}
@@ -3329,14 +3335,16 @@ void cBrothelManager::CreateNewObjective()
 	if (m_Objective)
 	{
 		stringstream ss;
+		stringstream sst;
 
-		ss << gettext("You have a new objective, you must ");
+		sst << gettext("You have a new objective, you must ");
 		bool done = false;
 		m_Objective->m_Difficulty = g_Year - 1209;
 		m_Objective->m_SoFar = 0;
 		m_Objective->m_Reward = g_Dice%NUM_REWARDS;
 		m_Objective->m_Limit = -1;
 		m_Objective->m_Target = 0;
+		m_Objective->m_Text = "";
 
 		while (!done)
 		{
@@ -3362,10 +3370,14 @@ void cBrothelManager::CreateNewObjective()
 
 			case OBJECTIVE_LAUNCHSUCCESSFULATTACK:
 			{
-				ss << gettext("Launch a successful attack mission within ");
-				m_Objective->m_Limit = (m_Objective->m_Difficulty >= 3 ? (g_Dice % 5) + 3 : (g_Dice % 10) + 10);
-				ss << m_Objective->m_Limit << gettext(" weeks.");
-				done = true;
+				cRivalManager r;
+				if (r.GetNumRivals() > 0)
+				{
+					ss << gettext("Launch a successful attack mission within ");
+					m_Objective->m_Limit = (m_Objective->m_Difficulty >= 3 ? (g_Dice % 5) + 3 : (g_Dice % 10) + 10);
+					ss << m_Objective->m_Limit << gettext(" weeks.");
+					done = true;
+				}
 			}break;
 
 			case OBJECTIVE_HAVEXGOONS:
@@ -3501,7 +3513,14 @@ void cBrothelManager::CreateNewObjective()
 			}
 		}
 
-		g_MessageQue.AddToQue(ss.str(), COLOR_DARKBLUE);
+		sst << ss.str();
+		m_Objective->m_Text = ss.str();
+
+		if (sst.str().length() > 0)
+		{
+			g_MessageQue.AddToQue(sst.str(), COLOR_DARKBLUE);
+			g_Brothels.GetBrothel(0)->m_Events.AddMessage(sst.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
+		}
 	}
 }
 
@@ -3518,13 +3537,23 @@ void cBrothelManager::PassObjective()
 		}
 
 		stringstream ss;
-		ss << gettext("You have completed your objective and you get ");
+		if (m_Objective->m_Text.size() < 1)	ss << "You have completed your objective and you get ";
+		else ss << "You have completed your objective to " << m_Objective->m_Text <<"\nYou get ";
+
+
 		switch (m_Objective->m_Reward)
 		{
 		case REWARD_GOLD:
 		{
 			long gold = (g_Dice % 200) + 33;
 			if (m_Objective->m_Difficulty > 0) gold *= m_Objective->m_Difficulty;
+
+			// `J` if you had a time limit you get extra gold for the unused time
+			int mod = m_Objective->m_Target;
+			if (m_Objective->m_Objective == OBJECTIVE_REACHGOLDTARGET || m_Objective->m_Objective == OBJECTIVE_STEALXAMOUNTOFGOLD)
+				mod = min(1, m_Objective->m_Target / 100);
+			if (m_Objective->m_Limit > 0) gold += mod * m_Objective->m_Limit;
+
 			ss << gold << gettext(" gold.");
 			g_Gold.objective_reward(gold);
 		}break;
@@ -3533,11 +3562,23 @@ void cBrothelManager::PassObjective()
 		{
 			int girls = 1;
 			if (m_Objective->m_Difficulty > 0) girls *= m_Objective->m_Difficulty;
-			ss << girls << gettext(" slave girls.");
+			
+			// `J` throw in a few extra girls if your mission was to get more girls
+			int div = 0;
+			int bonus = min(5, m_Objective->m_Limit < 4 ? 1 : m_Objective->m_Limit / 2);
+			if (m_Objective->m_Objective == OBJECTIVE_CAPTUREXCATACOMBGIRLS || m_Objective->m_Objective == OBJECTIVE_KIDNAPXGIRLS)
+				div = 10;
+			if (m_Objective->m_Objective == OBJECTIVE_HAVEXMONSTERGIRLS || m_Objective->m_Objective == OBJECTIVE_HAVEXAMOUNTOFGIRLS)
+				div = 20;
+			if (bonus > 0 && div > 0) girls += min(bonus, m_Objective->m_Target / div);
+
+
+			ss << girls << " slave girl" << (girls > 1 ? "s" : "") << ":\n";
 			while (girls > 0)
 			{
 				sGirl* girl = g_Girls.CreateRandomGirl(0, false, true, false, g_Dice % 3 == 1);
 				stringstream ssg;
+				ss << girl->m_Realname << "\n";
 				ssg << girl->m_Realname << " was given to you as a reward for completing your objective.";
 				girl->m_Events.AddMessage(ssg.str(), IMGTYPE_PROFILE, EVENT_DUNGEON);
 				m_Dungeon.AddGirl(girl, DUNGEON_NEWGIRL);
@@ -3549,26 +3590,71 @@ void cBrothelManager::PassObjective()
 		{
 			long gold = (rival->m_Gold > 10 ? (g_Dice % (rival->m_Gold / 2)) + 1 : 436);
 			rival->m_Gold -= gold;
-			ss << gettext("to steal ") << gold << gettext(" gold from the ") << rival->m_Name << gettext(".");
 			g_Gold.objective_reward(gold);
+			ss << gettext("to steal ") << gold << gettext(" gold from the ") << rival->m_Name << gettext(".");
+
+			// `J` added 
+			bool building = false;
+			if (rival->m_NumBrothels > 0 && g_Dice.percent(10))
+			{
+				ss << "\nOne of their Brothels ";
+				building = true;
+				rival->m_NumBrothels--;
+			}
+			else if (rival->m_NumGamblingHalls > 0 && g_Dice.percent(25))
+			{
+				ss << "\nOne of their Gambling Halls ";
+				building = true;
+				rival->m_NumGamblingHalls--;
+			}
+			else if (rival->m_NumBars > 0 && g_Dice.percent(50))
+			{
+				ss << "\nOne of their Bars ";
+				building = true;
+				rival->m_NumBars--;
+			}
+			if (building)
+			{
+				switch (g_Dice % 5)
+				{
+				case 0: ss << "is closed down by the health department."; break;
+				case 1: ss << "is bombed by an unknown party."; break;
+				case 2: ss << "vanishes."; break;
+				case 3: ss << "falls into a sinkhole."; break;
+				default: ss << "mysteriously burns to the ground."; break;
+				}
+			}
+
+			if (rival->m_NumGirls > 0 && g_Dice.percent(30))
+			{
+				int num = 1;
+				rival->m_NumGirls--;
+				while (rival->m_NumGirls > 0 && g_Dice.percent(50))
+				{
+					num++;
+					rival->m_NumGirls--;
+				}
+				ss << "\n" << num << " of their girls ";
+				switch (g_Dice % 5)
+				{
+				case 0: ss << "were arrested for various crimes."; break;
+				case 1: ss << "were killed."; break;
+				case 2: ss << "vanished."; break;
+				case 3: ss << "disappeared."; break;
+				default: ss << "were kidnapped."; break;
+				}
+			}
 		}break;
 
 		case REWARD_ITEM:
 		{
-			int numItems = 1;
-			if (m_Objective->m_Difficulty > 0)
-				numItems *= m_Objective->m_Difficulty;
-			while (numItems > 0)
+			int numItems = max(1, m_Objective->m_Difficulty);
+			int tries = numItems * 10;
+			while (numItems > 0 && tries > 0)
 			{
-				//mod
-				//purpose fix a crash
-				sInventoryItem* item = 0;
-				do
-				{
-					item = g_InvManager.GetRandomItem();
-				} while (!item);
-				// end mod
-				if (item->m_Rarity != RARITYSCRIPTONLY)
+				tries--;
+				sInventoryItem* item = g_InvManager.GetRandomItem();
+				if (item && item->m_Rarity < RARITYSCRIPTONLY)
 				{
 					int curI = g_Brothels.HasItem(item->m_Name, -1);
 					bool loop = true;
@@ -3623,13 +3709,17 @@ void cBrothelManager::PassObjective()
 		}break;
 		}
 
-		if (ss.str().length()>0) g_MessageQue.AddToQue(ss.str(), COLOR_DARKBLUE);
+		if (ss.str().length() > 0)
+		{
+			g_MessageQue.AddToQue(ss.str(), COLOR_GREEN);
+			g_Brothels.GetBrothel(0)->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
+		}
 		delete m_Objective;
 		m_Objective = 0;
 	}
 }
 
-void cBrothelManager::AddCustomObjective(int limit, int diff, int objective, int reward, int sofar, int target)
+void cBrothelManager::AddCustomObjective(int limit, int diff, int objective, int reward, int sofar, int target, string text)
 {
 	if (m_Objective) delete m_Objective;
 	m_Objective = 0;
@@ -3641,6 +3731,8 @@ void cBrothelManager::AddCustomObjective(int limit, int diff, int objective, int
 	m_Objective->m_Reward = reward;
 	m_Objective->m_SoFar = sofar;
 	m_Objective->m_Target = target;
+	m_Objective->m_Text = text;
+
 }
 
 // ----- Stats

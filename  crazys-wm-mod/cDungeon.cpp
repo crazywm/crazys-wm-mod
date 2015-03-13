@@ -224,7 +224,6 @@ void cDungeon::AddGirl(sGirl* girl, int reason)
 		if (g_Brothels.GetObjective() && g_Brothels.GetObjective()->m_Objective == OBJECTIVE_KIDNAPXGIRLS)
 		{
 			g_Brothels.GetObjective()->m_SoFar++;
-			if (g_Brothels.GetObjective()->m_SoFar >= g_Brothels.GetObjective()->m_Target)	g_Brothels.PassObjective();
 		}
 	}
 

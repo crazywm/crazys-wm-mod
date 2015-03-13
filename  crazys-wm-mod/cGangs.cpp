@@ -1424,6 +1424,8 @@ void cGangManager::UpdateGangs()
 		currentGang = currentGang->m_Next;
 	}
 
+
+
 	m_Rivals->Update(m_BusinessesExtort);	// Update the rivals
 
 	RestockNetsAndPots();
@@ -1641,7 +1643,8 @@ bool cGangManager::sabotage_mission(sGang* gang)
 	else ss << "\nYour men encounter no resistance when you go after " << rival->m_Name << ".";
 
 	// if we had an objective to attack a rival we just achieved it
-	if (g_Brothels.GetObjective() && g_Brothels.GetObjective()->m_Objective == OBJECTIVE_LAUNCHSUCCESSFULATTACK) g_Brothels.PassObjective();
+	if (g_Brothels.GetObjective() && g_Brothels.GetObjective()->m_Objective == OBJECTIVE_LAUNCHSUCCESSFULATTACK) 
+		g_Brothels.PassObjective();
 
 	// If the rival has some businesses under his control he's going to lose some of them
 	if (rival->m_BusinessesExtort > 0)
@@ -2029,7 +2032,6 @@ bool cGangManager::extortion_mission(sGang* gang)
 	if (g_Brothels.GetObjective() && g_Brothels.GetObjective()->m_Objective == OBJECTIVE_EXTORTXNEWBUSINESS)
 	{
 		g_Brothels.GetObjective()->m_SoFar += n;
-		if (g_Brothels.GetObjective()->m_SoFar >= g_Brothels.GetObjective()->m_Target)	g_Brothels.PassObjective();
 	}
 
 	return true;
@@ -2111,7 +2113,6 @@ bool cGangManager::petytheft_mission(sGang* gang)
 	if (g_Brothels.GetObjective() && g_Brothels.GetObjective()->m_Objective == OBJECTIVE_STEALXAMOUNTOFGOLD)
 	{
 		g_Brothels.GetObjective()->m_SoFar += gold;
-		if (g_Brothels.GetObjective()->m_SoFar >= g_Brothels.GetObjective()->m_Target)	g_Brothels.PassObjective();
 	}
 	return true;
 }
@@ -2180,7 +2181,6 @@ bool cGangManager::grandtheft_mission(sGang* gang)
 	if (g_Brothels.GetObjective() && g_Brothels.GetObjective()->m_Objective == OBJECTIVE_STEALXAMOUNTOFGOLD)
 	{
 		g_Brothels.GetObjective()->m_SoFar += gold;
-		if (g_Brothels.GetObjective()->m_SoFar >= g_Brothels.GetObjective()->m_Target)	g_Brothels.PassObjective();
 	}
 	return true;
 }
@@ -2439,7 +2439,6 @@ bool cGangManager::catacombs_mission(sGang* gang)
 				if (g_Brothels.GetObjective() && g_Brothels.GetObjective()->m_Objective == OBJECTIVE_CAPTUREXCATACOMBGIRLS)
 				{
 					g_Brothels.GetObjective()->m_SoFar++;
-					if (g_Brothels.GetObjective()->m_SoFar >= g_Brothels.GetObjective()->m_Target) g_Brothels.PassObjective();
 				}
 
 				if (unique)
@@ -2648,7 +2647,6 @@ bool cGangManager::catacombs_mission(sGang* gang)
 					if (ugirl && g_Brothels.GetObjective() && g_Brothels.GetObjective()->m_Objective == OBJECTIVE_CAPTUREXCATACOMBGIRLS)
 					{
 						g_Brothels.GetObjective()->m_SoFar++;
-						if (g_Brothels.GetObjective()->m_SoFar >= g_Brothels.GetObjective()->m_Target)	g_Brothels.PassObjective();
 					}
 				}
 			}
