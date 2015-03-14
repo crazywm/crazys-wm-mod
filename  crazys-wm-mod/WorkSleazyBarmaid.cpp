@@ -274,6 +274,9 @@ double cJobManager::JP_SleazyBarmaid(sGirl* girl, bool estimate)// not used
 	if (g_Girls.HasTrait(girl, "Great Figure"))			jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Great Arse"))			jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Quick Learner"))		jobperformance += 5;
+	if (g_Girls.HasTrait(girl, "Dick-Sucking Lips"))	jobperformance += 5;
+	if (g_Girls.HasTrait(girl, "Long Legs"))			jobperformance += 5;
+	if (g_Girls.HasTrait(girl, "Natural Pheromones"))	jobperformance += 15;
 
 	//bad traits
 	if (g_Girls.HasTrait(girl, "Dependant"))			jobperformance -= 50;	// needs others to do the job	
@@ -283,5 +286,25 @@ double cJobManager::JP_SleazyBarmaid(sGirl* girl, bool estimate)// not used
 	if (g_Girls.HasTrait(girl, "Aggressive"))			jobperformance -= 20;	// gets mad easy and may attack people
 	if (g_Girls.HasTrait(girl, "Meek"))					jobperformance -= 20;
 	if (g_Girls.HasTrait(girl, "Slow Learner"))			jobperformance -= 10;
+	if (g_Girls.HasTrait(girl, "Social Drinker"))		jobperformance -= 10;
+	if (g_Girls.HasTrait(girl, "Bimbo"))				jobperformance -= 5;
+
+	if (g_Girls.HasTrait(girl, "One Arm"))		jobperformance -= 30;
+	if (g_Girls.HasTrait(girl, "One Foot"))		jobperformance -= 20;
+	if (g_Girls.HasTrait(girl, "One Hand"))		jobperformance -= 15; 
+	if (g_Girls.HasTrait(girl, "One Leg"))		jobperformance -= 40;
+	if (g_Girls.HasTrait(girl, "No Arms"))		jobperformance -= 100;
+	if (g_Girls.HasTrait(girl, "No Feet"))		jobperformance -= 20;
+	if (g_Girls.HasTrait(girl, "No Hands"))		jobperformance -= 50;
+	if (g_Girls.HasTrait(girl, "No Legs"))		jobperformance -= 40;
+	if (g_Girls.HasTrait(girl, "Blind"))		jobperformance -= 40;
+	if (g_Girls.HasTrait(girl, "Deaf"))			jobperformance -= 20;
+	if (g_Girls.HasTrait(girl, "Retarded"))		jobperformance -= 60;
+	if (g_Girls.HasTrait(girl, "Smoker"))		jobperformance -= 10;//would need smoke breaks
+
+	if (g_Girls.HasTrait(girl, "Fairy Dust Addict"))	jobperformance -= 25;
+	if (g_Girls.HasTrait(girl, "Shroud Addict"))		jobperformance -= 25;
+	if (g_Girls.HasTrait(girl, "Viras Blood Addict"))	jobperformance -= 25;
+
 	return jobperformance;
 }

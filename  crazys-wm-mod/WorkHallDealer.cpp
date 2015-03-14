@@ -619,5 +619,24 @@ double cJobManager::JP_HallDealer(sGirl* girl, bool estimate)
 	if (g_Girls.HasTrait(girl, "Nervous"))		jobperformance -= 30; //don't like to be around people
 	if (g_Girls.HasTrait(girl, "Meek"))			jobperformance -= 20;
 	if (g_Girls.HasTrait(girl, "Slow Learner"))	jobperformance -= 15;
+
+	if (g_Girls.HasTrait(girl, "One Arm"))		jobperformance -= 40;
+	if (g_Girls.HasTrait(girl, "One Foot"))		jobperformance -= 15;
+	if (g_Girls.HasTrait(girl, "One Hand"))		jobperformance -= 30; 
+	if (g_Girls.HasTrait(girl, "One Leg"))		jobperformance -= 20;
+	if (g_Girls.HasTrait(girl, "No Arms"))		jobperformance -= 150;
+	if (g_Girls.HasTrait(girl, "No Feet"))		jobperformance -= 25;
+	if (g_Girls.HasTrait(girl, "No Hands"))		jobperformance -= 100;
+	if (g_Girls.HasTrait(girl, "No Legs"))		jobperformance -= 50;
+	if (g_Girls.HasTrait(girl, "Blind"))		jobperformance -= 60;
+	if (g_Girls.HasTrait(girl, "Deaf"))			jobperformance -= 15;
+	if (g_Girls.HasTrait(girl, "Retarded"))		jobperformance -= 60;
+	if (g_Girls.HasTrait(girl, "Smoker"))		jobperformance -= 10;	//would need smoke breaks
+
+	if (g_Girls.HasTrait(girl, "Alcoholic"))			jobperformance -= 25;
+	if (g_Girls.HasTrait(girl, "Fairy Dust Addict"))	jobperformance -= 25;
+	if (g_Girls.HasTrait(girl, "Shroud Addict"))		jobperformance -= 25;
+	if (g_Girls.HasTrait(girl, "Viras Blood Addict"))	jobperformance -= 25;
+
 	return jobperformance;
 }
