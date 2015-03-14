@@ -541,7 +541,7 @@ double cJobManager::JP_BarWaitress(sGirl* girl, bool estimate)// not used
 	if (g_Girls.HasTrait(girl, "Blind"))		jobperformance -= 60;
 	if (g_Girls.HasTrait(girl, "Deaf"))			jobperformance -= 40;
 	if (g_Girls.HasTrait(girl, "Retarded"))		jobperformance -= 60;
-	if (g_Girls.HasTrait(girl, "Smoker"))		jobperformance -= 10;//would need smoke breaks
+	if (g_Girls.HasTrait(girl, "Smoker"))		jobperformance -= 10;	//would need smoke breaks
 	if (g_Girls.HasTrait(girl, "Dominatrix"))	jobperformance -= 5;	//try and force the people to order what she wants them to not what they want
 
 	if (g_Girls.HasTrait(girl, "Alcoholic"))			jobperformance -= 40; //might drink the drinks instead of taking to people
