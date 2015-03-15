@@ -1177,7 +1177,8 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 	}
 	if (newGirl->m_Stats[STAT_AGE] < 18) newGirl->m_Stats[STAT_AGE] = 18;
 
-	/* */if (g_Dice.percent(4))	AddTrait(newGirl, "Alcoholic");//changed this to else if... seems like it should have been
+	/* */if (g_Dice.percent(5))	AddTrait(newGirl, "Smoker");	//changed this to else if... seems like it should have been
+	else if (g_Dice.percent(4))	AddTrait(newGirl, "Alcoholic");
 	else if (g_Dice.percent(3))	AddTrait(newGirl, "Shroud Addict");
 	else if (g_Dice.percent(2))	AddTrait(newGirl, "Fairy Dust Addict");
 	else if (g_Dice.percent(1))	AddTrait(newGirl, "Viras Blood Addict");
@@ -14549,12 +14550,9 @@ string cGirls::catacombs_look_for(int girls, int items, int beast)
 	stringstream ss;
 	ss << "You tell them to ";
 	
-	// all 3 are about the same
-	if (beast >= 30 && girls >= 30 && items >= 30)
-		ss << "bring back anything they can find";
 
 	// over 99%
-	else if (girls >= 99 || items >= 99 || beast >= 99)
+	if (girls >= 99 || items >= 99 || beast >= 99)
 	{
 		ss << "only bring back ";
 		if (girls >= 99)	ss << "girls";
@@ -14618,7 +14616,9 @@ string cGirls::catacombs_look_for(int girls, int items, int beast)
 			else ss << "anything else they find";
 		}
 	}
-	else  ss << "have fun. (error code::  CLF01|" << girls << "|" << items << "|" << beast << "  ::  Please report it to pinkpetal.org so it can be fixed)";
+	else ss << "bring back anything they can find";
+
+	//else  ss << "have fun. (error code::  CLF01|" << girls << "|" << items << "|" << beast << "  ::  Please report it to pinkpetal.org so it can be fixed)";
 	ss << ".\n";
 	return ss.str();
 }

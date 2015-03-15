@@ -802,8 +802,10 @@ struct sGirl
 	bool is_addict()
 	{
 		return	has_trait("Shroud Addict") ||
+			has_trait("Smoker") ||
 			has_trait("Fairy Dust Addict") ||
 			has_trait("Alcoholic") ||
+			has_trait("Cum Addict") ||
 			has_trait("Viras Blood Addict");
 	}
 	bool has_disease()

@@ -97,7 +97,7 @@ bool cJobManager::WorkBeastCare(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 			if (addbeasts == 1) ss << "a stray beast";
 			else ss << addbeasts << " stray beasts";
 			ss << " for the brothel" << (addbeasts > 0 ? "." : " but failed.");
-			g_Girls.UpdateSkill(girl, STAT_CONFIDENCE, addbeasts);
+			g_Girls.UpdateStat(girl, STAT_CONFIDENCE, addbeasts);
 		}
 		else if (girl->combat() > 50 && (g_Girls.HasTrait(girl, "Adventurer") || girl->confidence() > 70))
 		{

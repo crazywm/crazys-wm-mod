@@ -140,8 +140,8 @@ bool cJobManager::WorkFarmVeterinarian(sGirl* girl, sBrothel* brothel, bool Day0
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	// primary (+2 for single or +1 for multiple)
-	g_Girls.UpdateStat(girl, SKILL_MEDICINE, (g_Dice % skill) + 1);
-	g_Girls.UpdateStat(girl, SKILL_ANIMALHANDLING, (g_Dice % skill) + 1);
+	g_Girls.UpdateSkill(girl, SKILL_MEDICINE, (g_Dice % skill) + 1);
+	g_Girls.UpdateSkill(girl, SKILL_ANIMALHANDLING, (g_Dice % skill) + 1);
 	// secondary (-1 for one then -2 for others)
 	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, max(0, (g_Dice % skill) - 1));
 	g_Girls.UpdateStat(girl, STAT_CHARISMA, max(0, (g_Dice % skill) - 2));

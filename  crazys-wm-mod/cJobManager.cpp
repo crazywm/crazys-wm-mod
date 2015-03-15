@@ -1386,6 +1386,8 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		if (g_Centre.GetNumGirlsOnJob(TargetBrothel, JOB_COUNSELOR, Day0Night1) < 1)
 			g_MessageQue.AddToQue(gettext("You must have a counselor for rehab."), 0);
 		else if (!g_Girls.HasTrait(Girl, "Shroud Addict")
+			&& !g_Girls.HasTrait(Girl, "Smoker")
+			&& !g_Girls.HasTrait(Girl, "Cum Addict")
 			&& !g_Girls.HasTrait(Girl, "Fairy Dust Addict")
 			&& !g_Girls.HasTrait(Girl, "Alcoholic")
 			&& !g_Girls.HasTrait(Girl, "Viras Blood Addict"))

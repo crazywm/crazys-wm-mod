@@ -324,38 +324,38 @@ void sConfigData::get_initial_values(TiXmlElement *el)
 void sConfigData::get_income_factors(TiXmlElement *el)
 {
 	const char *pt;
-	if (pt = el->Attribute("ExtortionIncome"))		get_att(el, "ExtortionIncome", &in_fact.extortion);
-	if (pt = el->Attribute("GirlsWorkBrothel"))		get_att(el, "GirlsWorkBrothel", &in_fact.brothel_work);
-	if (pt = el->Attribute("GirlsWorkStreet"))		get_att(el, "GirlsWorkStreet", &in_fact.street_work);
-	if (pt = el->Attribute("MovieIncome"))			get_att(el, "MovieIncome", &in_fact.movie_income);
-	if (pt = el->Attribute("StripperIncome"))		get_att(el, "StripperIncome", &in_fact.stripper_work);
-	if (pt = el->Attribute("BarmaidIncome"))		get_att(el, "BarmaidIncome", &in_fact.barmaid_work);
+	if (pt = el->Attribute("ExtortionIncome"))		get_att(el, "ExtortionIncome", &in_fact.extortion);			// `J` ?not used?
+	if (pt = el->Attribute("GirlsWorkBrothel"))		get_att(el, "GirlsWorkBrothel", &in_fact.brothel_work);		// `J` ?not used?
+	if (pt = el->Attribute("GirlsWorkStreet"))		get_att(el, "GirlsWorkStreet", &in_fact.street_work);		// `J` ?not used?
+	if (pt = el->Attribute("MovieIncome"))			get_att(el, "MovieIncome", &in_fact.movie_income);			// `J` ?not used?
+	if (pt = el->Attribute("StripperIncome"))		get_att(el, "StripperIncome", &in_fact.stripper_work);		// `J` ?not used?
+	if (pt = el->Attribute("BarmaidIncome"))		get_att(el, "BarmaidIncome", &in_fact.barmaid_work);		// `J` ?not used?
 	if (pt = el->Attribute("SlaveSales"))			get_att(el, "SlaveSales", &in_fact.slave_sales);
-	if (pt = el->Attribute("ItemSales"))			get_att(el, "ItemSales", &in_fact.item_sales);
-	if (pt = el->Attribute("ClinicIncome"))			get_att(el, "ClinicIncome", &in_fact.clinic_income);
-	if (pt = el->Attribute("ArenaIncome"))			get_att(el, "ArenaIncome", &in_fact.arena_income);
-	if (pt = el->Attribute("FarmIncome"))			get_att(el, "FarmIncome", &in_fact.farm_income);
+	if (pt = el->Attribute("ItemSales"))			get_att(el, "ItemSales", &in_fact.item_sales);				// `J` ?not used?
+	if (pt = el->Attribute("ClinicIncome"))			get_att(el, "ClinicIncome", &in_fact.clinic_income);		// `J` ?not used?
+	if (pt = el->Attribute("ArenaIncome"))			get_att(el, "ArenaIncome", &in_fact.arena_income);			// `J` ?not used?
+	if (pt = el->Attribute("FarmIncome"))			get_att(el, "FarmIncome", &in_fact.farm_income);			// `J` ?not used?
 }
 
 void sConfigData::get_expense_factors(TiXmlElement *el)
 {
 	const char *pt;
 	if (pt = el->Attribute("Training"))				get_att(el, "Training", &out_fact.training);
-	if (pt = el->Attribute("MovieCost"))			get_att(el, "MovieCost", &out_fact.actress_wages);
-	if (pt = el->Attribute("ActressWages"))			get_att(el, "ActressWages", &out_fact.movie_cost);
+	if (pt = el->Attribute("MovieCost"))			get_att(el, "MovieCost", &out_fact.movie_cost);
+	if (pt = el->Attribute("ActressWages"))			get_att(el, "ActressWages", &out_fact.actress_wages);		// `J` ?not used?
 	if (pt = el->Attribute("GoonWages"))			get_att(el, "GoonWages", &out_fact.goon_wages);
 	if (pt = el->Attribute("MatronWages"))			get_att(el, "MatronWages", &out_fact.matron_wages);
 	if (pt = el->Attribute("StaffWages"))			get_att(el, "StaffWages", &out_fact.staff_wages);			// `J` ?not used?
-	if (pt = el->Attribute("GirlSupport"))			get_att(el, "GirlSupport", &out_fact.girl_support);
+	if (pt = el->Attribute("GirlSupport"))			get_att(el, "GirlSupport", &out_fact.girl_support);			// `J` ?not used?
 	if (pt = el->Attribute("Consumables"))			get_att(el, "Consumables", &out_fact.consumables);
 	if (pt = el->Attribute("Items"))				get_att(el, "Items", &out_fact.item_cost);
 	if (pt = el->Attribute("SlavesBought"))			get_att(el, "SlavesBought", &out_fact.slave_cost);
 	if (pt = el->Attribute("BuyBrothel"))			get_att(el, "BuyBrothel", &out_fact.brothel_cost);
-	if (pt = el->Attribute("BrothelSupport"))		get_att(el, "BrothelSupport", &out_fact.brothel_support);	// `J` ?not used?
+	if (pt = el->Attribute("BrothelSupport"))		get_att(el, "BrothelSupport", &out_fact.brothel_support);
 	if (pt = el->Attribute("BarSupport"))			get_att(el, "BarSupport", &out_fact.bar_cost);				// `J` ?not used?
 	if (pt = el->Attribute("CasinoSupport"))		get_att(el, "CasinoSupport", &out_fact.casino_cost);		// `J` ?not used?
-	if (pt = el->Attribute("Bribes"))				get_att(el, "Bribes", &out_fact.bribes);
-	if (pt = el->Attribute("Fines"))				get_att(el, "Fines", &out_fact.fines);
+	if (pt = el->Attribute("Bribes"))				get_att(el, "Bribes", &out_fact.bribes);					// `J` ?not used?
+	if (pt = el->Attribute("Fines"))				get_att(el, "Fines", &out_fact.fines);						// `J` ?not used?
 	if (pt = el->Attribute("Advertising"))			get_att(el, "Advertising", &out_fact.advertising);
 }
 
@@ -564,34 +564,34 @@ void sConfigData::set_defaults()
 	initial.torture_mod = 1;				// `J` added
 	initial.horoscopetype = 1;				// `J` added
 
-	in_fact.extortion = 1.0;
-	in_fact.brothel_work = 1.0;
-	in_fact.street_work = 1.0;
-	in_fact.movie_income = 1.0;
-	in_fact.stripper_work = 1.0;
-	in_fact.barmaid_work = 1.0;
+	in_fact.extortion = 1.0;				// `J` ?not used?
+	in_fact.brothel_work = 1.0;				// `J` ?not used?
+	in_fact.street_work = 1.0;				// `J` ?not used?
+	in_fact.movie_income = 1.0;				// `J` ?not used?
+	in_fact.stripper_work = 1.0;			// `J` ?not used?
+	in_fact.barmaid_work = 1.0;				// `J` ?not used?
 	in_fact.slave_sales = 1.0;
-	in_fact.item_sales = 1.0;
-	in_fact.clinic_income = 1.0;
-	in_fact.arena_income = 1.0;
-	in_fact.farm_income = 1.0;
+	in_fact.item_sales = 1.0;				// `J` ?not used?
+	in_fact.clinic_income = 1.0;			// `J` ?not used?
+	in_fact.arena_income = 1.0;				// `J` ?not used?
+	in_fact.farm_income = 1.0;				// `J` ?not used?
 
 	out_fact.training = 0.0;
-	out_fact.actress_wages = 0.0;
 	out_fact.movie_cost = 1.0;
+	out_fact.actress_wages = 0.0;			// `J` ?not used?
 	out_fact.goon_wages = 1.0;
 	out_fact.matron_wages = 1.0;
 	out_fact.staff_wages = 1.0;				// `J` ?not used?
-	out_fact.girl_support = 1.0;
+	out_fact.girl_support = 1.0;			// `J` ?not used?
 	out_fact.consumables = 1.0;
 	out_fact.item_cost = 1.0;
 	out_fact.slave_cost = 1.0;
 	out_fact.brothel_cost = 1.0;
-	out_fact.brothel_support = 1.0;			// `J` ?not used?
+	out_fact.brothel_support = 1.0;
 	out_fact.bar_cost = 1.0;				// `J` ?not used?
 	out_fact.casino_cost = 1.0;				// `J` ?not used?
-	out_fact.bribes = 1.0;
-	out_fact.fines = 1.0;
+	out_fact.bribes = 1.0;					// `J` ?not used?
+	out_fact.fines = 1.0;					// `J` ?not used?
 	out_fact.advertising = 1.0;
 
 	tax.rate = 0.06;

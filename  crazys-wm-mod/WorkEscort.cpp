@@ -133,7 +133,7 @@ bool cJobManager::WorkEscort(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 			if (g_Gangs.GetGangOnMission(MISS_GUARDING))
 			{
 				sGang* gang = g_Gangs.GetGangOnMission(MISS_GUARDING);
-				if (g_Dice.percent(gang->m_Skills[STAT_AGILITY]))
+				if (g_Dice.percent(gang->m_Stats[STAT_AGILITY]))
 				{
 					ss << " The customer tried to run off without paying. Your men caught him before he got away.";
 					SetGameFlag(FLAG_CUSTNOPAY);
