@@ -1868,8 +1868,16 @@ Objective updates:
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.13
 !!!!!!!!!!!!!!!!!!!! pushed to SVN - r161
 
-
+###  Changes 3/13-14/2015
+Updated catacombs_look_for text again
+Fixed a bug in gang catacombs get beast
+Added Cum Addict and Smoker to rehab
+Fixed several skill-stat check mixups
  
+Crazy pushed SVN r162 - Updates to job performance for several jobs adding new traits.
+ 
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.14
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r163
  
  
  
@@ -1879,6 +1887,8 @@ food and drink
 
 
 $$$$ TO DO - MID TERM - (for the next few versions) $$$$
+Make config in_fact and out_fact do something
+
 New Script Stuff:
  - Picture_Sequence     -- needs image rework before it can be implemented
  - Make_Movie_Scene     -- needs movie and scene rework before it can be implemented

@@ -111,9 +111,9 @@ bool cJobManager::WorkCleanArena(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	{
 		ss << "\n\n" << girlName << " finished her cleaning early so she played around with some of the equipment.";
 		g_Girls.UpdateSkill(girl, SKILL_COMBAT, (g_Dice % 3));
-		g_Girls.UpdateSkill(girl, STAT_AGILITY, (g_Dice % 2));
-		g_Girls.UpdateSkill(girl, STAT_CONSTITUTION, (g_Dice % 2));
-		g_Girls.UpdateSkill(girl, STAT_CONFIDENCE, (g_Dice % 2));
+		g_Girls.UpdateStat(girl, STAT_AGILITY, (g_Dice % 2));
+		g_Girls.UpdateStat(girl, STAT_CONSTITUTION, (g_Dice % 2));
+		g_Girls.UpdateStat(girl, STAT_CONFIDENCE, (g_Dice % 2));
 		g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, 1, true);
 	}
 

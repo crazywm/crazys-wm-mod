@@ -242,6 +242,7 @@ double cJobManager::JP_CityGuard(sGirl* girl, bool estimate)// not used
 	if (g_Girls.HasTrait(girl, "Shroud Addict"))		SecLev -= 15;	// high at work never good
 	if (g_Girls.HasTrait(girl, "Fairy Dust Addict"))	SecLev -= 15;	// high at work never good
 	if (g_Girls.HasTrait(girl, "Viras Blood Addict"))	SecLev -= 15;	// high at work never good
+	if (g_Girls.HasTrait(girl, "Cum Addict"))			SecLev -= 5;
 	if (g_Girls.HasTrait(girl, "Smoker"))				SecLev -= 10;	// less lung power = less running
 	if (g_Girls.HasTrait(girl, "Dependant"))			SecLev -= 10;	// I can't do this alone
 	if (g_Girls.HasTrait(girl, "Weak Magic"))			SecLev -= 5;	// 

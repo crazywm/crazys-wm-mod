@@ -168,7 +168,7 @@ bool cJobManager::WorkSecurity(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateSkill(girl, SKILL_COMBAT, (g_Dice % skill) + 1);
 	g_Girls.UpdateSkill(girl, SKILL_MAGIC, (g_Dice % skill) + 1);
-	g_Girls.UpdateSkill(girl, STAT_AGILITY, (g_Dice % skill) + 1);
+	g_Girls.UpdateStat(girl, STAT_AGILITY, (g_Dice % skill) + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 
@@ -258,6 +258,7 @@ double cJobManager::JP_Security(sGirl* girl, bool estimate)	// not used
 	if (g_Girls.HasTrait(girl, "Shroud Addict"))		SecLev -= 15;	// high at work never good
 	if (g_Girls.HasTrait(girl, "Fairy Dust Addict"))	SecLev -= 15;	// high at work never good
 	if (g_Girls.HasTrait(girl, "Viras Blood Addict"))	SecLev -= 15;	// high at work never good
+	if (g_Girls.HasTrait(girl, "Cum Addict"))			SecLev -= 5;
 	if (g_Girls.HasTrait(girl, "Smoker"))				SecLev -= 10;	// less lung power = less running
 	if (g_Girls.HasTrait(girl, "Dependant"))			SecLev -= 10;	// I can't do this alone
 	if (g_Girls.HasTrait(girl, "Weak Magic"))			SecLev -= 5;	// 

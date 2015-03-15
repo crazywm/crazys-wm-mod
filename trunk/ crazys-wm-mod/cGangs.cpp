@@ -2559,7 +2559,6 @@ bool cGangManager::catacombs_mission(sGang* gang)
 							if (!g_Dice.percent(60)) gotbeast = true;
 							else damagechance = 80;
 						}
-
 						if (g_Dice.percent(damagechance)) { gang->net_limit(-1); m_NumNets--; }
 					}
 				}
@@ -2568,9 +2567,9 @@ bool cGangManager::catacombs_mission(sGang* gang)
 					// the last few members will runaway or allow the beast to run away so that the can still bring back what they have
 					while (gang->m_Num > 1 + g_Dice % 3 && !gotbeast)
 					{
-						if (g_Dice.percent(gang->combat()))
+						if (g_Dice.percent(min(90, gang->combat())))
 						{
-							gotbeast;
+							gotbeast = true;
 							continue;
 						}
 						if (gang->heal_limit() == 0)

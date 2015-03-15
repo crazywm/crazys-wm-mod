@@ -54,7 +54,9 @@ bool cJobManager::WorkRehab(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 	// `J` this will be taken care of in the centre reflow - leaving it in anyway
 	if (!g_Girls.HasTrait(girl, "Fairy Dust Addict") &&		// `J` if the girl is not an addict
 		!g_Girls.HasTrait(girl, "Shroud Addict") &&
+		!g_Girls.HasTrait(girl, "Cum Addict") &&
 		!g_Girls.HasTrait(girl, "Alcoholic") &&
+		!g_Girls.HasTrait(girl, "Smoker") &&
 		!g_Girls.HasTrait(girl, "Viras Blood Addict"))
 	{
 		ss << " is not addicted to anything so she was sent to the waiting room.";
@@ -148,10 +150,22 @@ bool cJobManager::WorkRehab(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 			g_Girls.RemoveTrait(girl, "Alcoholic", true);
 			ss << "She is no longer an alcoholic.\n";
 		}
-		girl->m_PrevWorkingDay = girl->m_WorkingDay = 0;
-		g_Girls.AddTrait(girl, "Former Addict");
+		else if (g_Girls.HasTrait(girl, "Smoker"))
+		{
+			g_Girls.RemoveTrait(girl, "Smoker", true);
+			ss << "She is no longer a smoker.\n";
+		}
+		else if (g_Girls.HasTrait(girl, "Cum Addict"))
+		{
+			g_Girls.RemoveTrait(girl, "Cum Addict", true);
+			ss << "She is no longer a cum addict.\n";
+		}
 
-		if (g_Girls.HasTrait(girl, "Fairy Dust Addict") || g_Girls.HasTrait(girl, "Shroud Addict") || g_Girls.HasTrait(girl, "Viras Blood Addict") || g_Girls.HasTrait(girl, "Alcoholic"))
+		girl->m_PrevWorkingDay = girl->m_WorkingDay = 0;
+		g_Girls.AddTrait(girl, "Former Addict", 40);
+
+		if (g_Girls.HasTrait(girl, "Fairy Dust Addict") || g_Girls.HasTrait(girl, "Shroud Addict") || g_Girls.HasTrait(girl, "Cum Addict") ||
+			g_Girls.HasTrait(girl, "Viras Blood Addict") || g_Girls.HasTrait(girl, "Alcoholic") || g_Girls.HasTrait(girl, "Smoker"))
 		{
 			ss << "\nShe should stay in rehab to treat her other addictions.";
 		}
@@ -186,13 +200,17 @@ double cJobManager::JP_Rehab(sGirl* girl, bool estimate)// not used
 	{
 		if (!g_Girls.HasTrait(girl, "Fairy Dust Addict") &&
 			!g_Girls.HasTrait(girl, "Shroud Addict") &&
+			!g_Girls.HasTrait(girl, "Cum Addict") &&
 			!g_Girls.HasTrait(girl, "Alcoholic") &&
+			!g_Girls.HasTrait(girl, "Smoker") &&
 			!g_Girls.HasTrait(girl, "Viras Blood Addict"))	return -1000;			// X - does not need it
-		jobperformance += 200;
-		if (g_Girls.HasTrait(girl, "Fairy Dust Addict"))	jobperformance += 40;	// if she has 1 = A
-		if (g_Girls.HasTrait(girl, "Shroud Addict"))		jobperformance += 40;	// if she has 2 = S
-		if (g_Girls.HasTrait(girl, "Alcoholic"))			jobperformance += 40;	// if she has 3 = S
-		if (g_Girls.HasTrait(girl, "Viras Blood Addict"))	jobperformance += 40;	// if she has 4 = I
+		jobperformance += 110;
+		if (g_Girls.HasTrait(girl, "Smoker"))				jobperformance += 40;	// if she has 1 = C
+		if (g_Girls.HasTrait(girl, "Cum Addict"))			jobperformance += 40;	// if she has 2 = B
+		if (g_Girls.HasTrait(girl, "Fairy Dust Addict"))	jobperformance += 40;	// if she has 3 = A
+		if (g_Girls.HasTrait(girl, "Shroud Addict"))		jobperformance += 40;	// if she has 4 = S
+		if (g_Girls.HasTrait(girl, "Alcoholic"))			jobperformance += 40;	// if she has 5 = S
+		if (g_Girls.HasTrait(girl, "Viras Blood Addict"))	jobperformance += 40;	// if she has 6 = I
 
 	}
 	return jobperformance;
