@@ -28,9 +28,11 @@ namespace WM_Girls_Generator
         DataTable rgTable = new DataTable();				//table to store selected traits and chances for random girls
         SaveFileDialog Filesave = new SaveFileDialog();
         SaveFileDialog saveTraits = new SaveFileDialog();
+        SaveFileDialog saveScript = new SaveFileDialog();
         string lastTip = "";								//temp storage string for specific item in listbox' to function
         string sConfigPath = "";
         string sTraitsPath = "";
+        string sScriptPath = "";
         Random rnd = new Random();							//creates new random object to generate random values where needed
         bool LogAllCheckBoxes = false; bool LogOtherCheckBoxes = false;
         string[] sexskills = { "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0" };
@@ -54,6 +56,17 @@ namespace WM_Girls_Generator
             TraitCollection.Columns.Add("InheritChance", typeof(string));
             TraitCollection.Columns.Add("RandomChance", typeof(string));
             TraitCollection.Columns.Add("Checked", typeof(string));
+
+
+            dataGridView_Scripts.DataSource = ScriptsCollection;
+            ScriptsCollection.Columns.Add("Script_ActionNumber", typeof(string));
+            ScriptsCollection.Columns.Add("Script_EntryNumber", typeof(string));
+            ScriptsCollection.Columns.Add("Script_Type", typeof(string));
+            ScriptsCollection.Columns.Add("Script_IOValue", typeof(string));
+            ScriptsCollection.Columns.Add("Script_Var", typeof(string));
+            ScriptsCollection.Columns.Add("Script_Text", typeof(string));
+            
+
 
             dataGridView_Traits.DataSource = TraitCollection;
             dataGridView_Traits.RowHeadersVisible = false;
@@ -320,6 +333,7 @@ namespace WM_Girls_Generator
         private void button_Save_Traits_Click(object sender, EventArgs e)
         {
             saveTraits.Filter = "Whore Master XML traits file|*.traitsx|Whore Master traits file|*.traits|All files|*.*";
+            saveTraits.DefaultExt = ".traitsx";
             if (sTraitsPath != "")
             {
                 saveTraits.FileName = Path.GetFileName(sTraitsPath);
@@ -488,6 +502,7 @@ namespace WM_Girls_Generator
         {
             SaveFileDialog saveConfig = new SaveFileDialog();
             saveConfig.Filter = "Whore Master XML config file|*.xml|All files|*.*";
+            saveConfig.DefaultExt = ".xml";
             if (sConfigPath != "")
             {
                 saveConfig.FileName = Path.GetFileName(sConfigPath);
@@ -2432,6 +2447,7 @@ namespace WM_Girls_Generator
         {
             Filesave.FileName = "";
             Filesave.Filter = "Whore Master XML girls file|*.girlsx|All files|*.*";
+            Filesave.DefaultExt = ".girlsx";
             Filesave.ShowDialog();
 
             try
@@ -3618,6 +3634,7 @@ namespace WM_Girls_Generator
         {
             Filesave.FileName = "";
             Filesave.Filter = "Whore Master random girls XML file|*.rgirlsx|All files|*.*";
+            Filesave.DefaultExt = ".rgirlsx";
             Filesave.ShowDialog();
             try
             {
@@ -5245,6 +5262,7 @@ namespace WM_Girls_Generator
         {
             Filesave.FileName = "";
             Filesave.Filter = "Whore Master XML items file|*.itemsx|All files|*.*";
+            Filesave.DefaultExt = ".itemsx";
             try
             {
                 Filesave.ShowDialog();
@@ -5511,12 +5529,23 @@ namespace WM_Girls_Generator
         //*****   Scripts tab   *****
         //***************************
 
-        private void button_ScriptLoad_Click(object sender, EventArgs e)
+
+
+
+        private void button_Script_Clear_Click(object sender, EventArgs e)
+        {
+            ScriptsCollection.Clear();
+            label_Script.Text = "Work in progress.";
+            label_Script_Path.Text = "Click Load Script to start.";
+
+        }
+
+        private void button_Script_Load_Click(object sender, EventArgs e)
         {
             OpenFileDialog Open = new OpenFileDialog();
             Open.Filter = "Whore Master Script File|*.scriptx; *.script|All files|*.*";
             Open.ShowDialog();
-
+            button_Script_Clear_Click(sender, e);
             switch (Path.GetExtension(Open.FileName))
             {
                 case ".script":
@@ -5534,35 +5563,44 @@ namespace WM_Girls_Generator
         {
             try
             {
-#if false
-                int x = 0;
-                StreamReader Import = new StreamReader(path);
-                while (Import.Peek() >= 0)
+                Stream fp = File.Open(path, FileMode.Open);
+                long Num = 0;
+                BinaryReader read = new BinaryReader(fp);
+                string ScriptName = path.Substring(path.LastIndexOf("\\") + 1, path.LastIndexOf(".") - path.LastIndexOf("\\") - 1);
+                label_Script.Text = ScriptName;
+                label_Script_Path.Text = path;
+                Num = read.ReadInt32();
+                for (int i = 0; i < Num; i++)
                 {
-                    x++;
-                    string name = Convert.ToString(Import.ReadLine());
-                    string desc = Convert.ToString(Import.ReadLine());
-                    string data = Convert.ToString(Import.ReadLine());
-                    string num = Convert.ToString(Import.ReadLine());
-                    string temp = "";
+                    int ActionNumber = i;
+                    int a_Type = read.ReadInt32();
+                    int a_NumEntries = read.ReadInt32();
 
-                    for (int i = 0; i < Convert.ToInt32(num); i++)
+                    ScriptsCollection.Rows.Add(ActionNumber, "", a_Type, a_NumEntries, "", "");
+                    if (a_NumEntries>0)
                     {
-                        string test = Convert.ToString(Import.ReadLine());
-
-                        if (IsNumeric(test) == true && Convert.ToInt32(test) == 4)
+                        for (int j = 0; j < a_NumEntries; j++)
                         {
-                            test = test + "\r\n" + Convert.ToString(Import.ReadLine()) + "\r\n" + Convert.ToString(Import.ReadLine());
+                            string e_anumber = i.ToString();
+                            string e_number = j.ToString();
+                            string e_Type = read.ReadInt32().ToString();
+                            int e_IOValue = read.ReadInt32();
+                            char a = read.ReadChar();
+                            int b = a;
+                            string e_Var = b.ToString();
+                            string e_Text = "";
+                            if (e_Type=="1")
+                            {
+                                for (int k = 0; k < e_IOValue; k++)
+                                {
+                                    e_Text += read.ReadChar();
+                                }
+                            }
+                            ScriptsCollection.Rows.Add(e_anumber, e_number, e_Type, e_IOValue.ToString(), e_Var, e_Text);
                         }
-                        temp = temp + test + "\r\n";
                     }
-
-                    listBox_ItemsList.Items.Add(name);
-                    ItemsCollection.Rows.Add(name, (desc + "\r\n" + data + "\r\n" + num + "\r\n" + temp).TrimEnd('\r', '\n'));
                 }
-                Import.Close();
-                StatusLabel1.Text = "Loaded " + x.ToString() + " items from file...";
-#endif
+                fp.Close();
             }
             catch (Exception err)
             {
@@ -5580,9 +5618,17 @@ namespace WM_Girls_Generator
                 XmlDocument xmldoc = new XmlDocument();
                 xmldoc.Load(xmlread);
                 XmlNode baseNode = xmldoc.DocumentElement;
+                
+                string ScriptName="";
+                string NumActions = "";
+                if (baseNode.Attributes["ScriptName"] == null)
+                    ScriptName = path.Substring(path.LastIndexOf("\\") + 1, path.LastIndexOf(".") - path.LastIndexOf("\\") - 1);
+                else ScriptName = baseNode.Attributes["ScriptName"].Value;
+                label_Script.Text = ScriptName;
+                label_Script_Path.Text = path;
 
-                string ScriptName = baseNode.Attributes["ScriptName"].Value;
-                string s = ScriptName+"\r\n";
+                if (baseNode.Attributes["NumActions"] == null) NumActions = "0";
+                else NumActions = baseNode.Attributes["NumActions"].Value;
 
                 foreach (XmlNode n_actions in baseNode.SelectNodes("/Root/Action"))
                 {
@@ -5590,40 +5636,27 @@ namespace WM_Girls_Generator
                     string a_Type           = n_actions.Attributes["Type"].Value;
                     string a_NumEntries     = n_actions.Attributes["NumEntries"].Value;
 
-                    string a = ActionNumber + "\t" + a_Type + "\t" + a_NumEntries + "\r\n";
+                    ScriptsCollection.Rows.Add(ActionNumber, "", a_Type, a_NumEntries, "", "");
                     if (n_actions.HasChildNodes == true)
                     {
-                        int x=0;
                         foreach (XmlNode n_entry in n_actions.ChildNodes)
                         {
                             if (n_entry.NodeType != XmlNodeType.Element) continue;   // `J` only process elements
 
-                            string e_anumber = "";
-                            string e_number = "";
-                            string e_Type = "";
-                            string e_IOValue = "";
-                            string e_Var = "";
-                            string e_Text = "";
-                            for (int i = 0; i < n_entry.Attributes.Count; i++)
-                            {
-                                if (n_entry.Attributes[i].Name == "ActionNumber")   e_anumber = n_entry.Attributes["ActionNumber"].Value;
-                                if (n_entry.Attributes[i].Name == "EntryNumber")    e_number = n_entry.Attributes["EntryNumber"].Value;
-                                if (n_entry.Attributes[i].Name == "Type")           e_Type = n_entry.Attributes["Type"].Value;
-                                if (n_entry.Attributes[i].Name == "IOValue")        e_IOValue = n_entry.Attributes["IOValue"].Value;
-                                if (n_entry.Attributes[i].Name == "Var")            e_Var = n_entry.Attributes["Var"].Value;
-                                if (n_entry.Attributes[i].Name == "Text")           e_Text = n_entry.Attributes["Text"].Value;
-                            }
-                            x++;
-                            a += e_anumber + "\t" + e_number + "\t" + e_Type + "\t" + e_IOValue + "\t" + e_Var + "\t" + e_Text + "\r\n";
+                            string e_anumber = ""; string e_number = ""; string e_Type = "";
+                            string e_IOValue = ""; string e_Var = ""; string e_Text = "";
+                            if (n_entry.Attributes["ActionNumber"] != null) e_anumber = n_entry.Attributes["ActionNumber"].Value;
+                            if (n_entry.Attributes["EntryNumber"] != null)  e_number = n_entry.Attributes["EntryNumber"].Value;
+                            if (n_entry.Attributes["Type"] != null)         e_Type = n_entry.Attributes["Type"].Value;
+                            if (n_entry.Attributes["IOValue"] != null)      e_IOValue = n_entry.Attributes["IOValue"].Value;
+                            if (n_entry.Attributes["Var"] != null)          e_Var = n_entry.Attributes["Var"].Value;
+                            if (n_entry.Attributes["Text"] != null)         e_Text = n_entry.Attributes["Text"].Value;
+                            ScriptsCollection.Rows.Add(e_anumber, e_number, e_Type, e_IOValue, e_Var, e_Text);
                         }
                     }
-                    s += a;
-
-
                 }
                 //ScriptsCollection.Rows.Add(sName, sDesc + "\r\n" + sData + "\r\n" + num.ToString() + "\r\n" + sEffects);
                 xmlread.Close();
-                textBox_Script_Content.Text = s;
                 StatusLabel1.Text = "Loaded Script file: '" + ScriptName+ "'.";
                 //StatusLabel1.Text = "Loaded " + ScriptName + " from XML file...";
             }
@@ -5635,10 +5668,173 @@ namespace WM_Girls_Generator
             }
         }
 
+        private void button_Script_Save_Click(object sender, EventArgs e)
+        {
+            saveScript.Filter = "Whore Master XML Script file|*.scriptx|Whore Master Script file|*.script|All files|*.*";
+            saveScript.DefaultExt = ".script";
+            if (sScriptPath != "")
+            {
+                saveScript.FileName = Path.GetFileName(sScriptPath);
+                saveScript.InitialDirectory = Path.GetDirectoryName(sScriptPath);
+            }
+            try
+            {
+                saveScript.ShowDialog();
+                if (File.Exists(Convert.ToString(saveScript.FileName) + ".bak") == true) File.Delete(Convert.ToString(saveScript.FileName) + ".bak");
+                if (File.Exists(Convert.ToString(saveScript.FileName)) == true) File.Move(Convert.ToString(saveScript.FileName), Convert.ToString(saveScript.FileName) + ".bak");
+                switch (Path.GetExtension(saveScript.FileName))
+                {
+                    case ".script":
+                        saveScriptBinary(saveScript.FileName);
+                        StatusLabel1.Text = "Script saved...";
+                        break;
+                    case ".scriptx":
+                    default:
+                        saveScriptXML(saveScript.FileName);
+                        StatusLabel1.Text = "Script XML saved...";
+                        break;
+                }
+            }
+            catch (Exception err)
+            {
+                dataGridView_Bad_Files.Rows.Add(saveScript.FileName, err.Message);
+                StatusLabel1.Text = "XML Script save error...";
+            }
+        }
+
+        private void saveScriptBinary(string path)
+        {
+// gamecode //              bool SaveScriptFile(const char *Filename, sScript *ScriptRoot)
+// gamecode //  {
+// gamecode //  	FILE *fp;
+// gamecode //  	long i, j, NumActions;
+// gamecode //  	sScript *ScriptPtr;
+// gamecode //  
+// gamecode //  	// Make sure there are some script actions
+// gamecode //  	if((ScriptPtr = ScriptRoot) == 0)
+// gamecode //  		return false;
+// gamecode //  
+// gamecode //  	// Count the number of actions
+// gamecode //  	NumActions = 0;
+// gamecode //  	while(ScriptPtr != 0) 
+// gamecode //  	{
+// gamecode //  		NumActions++; // Increase count
+// gamecode //  		ScriptPtr = ScriptPtr->m_Next; // Next action
+// gamecode //  	}
+// gamecode //  
+// gamecode //  	// Open the file for output
+// gamecode //  	if ((fp = fopen(Filename, "wb")) == 0) return false; // return a failure
+// gamecode //  
+// gamecode //  	// Output # of script actions
+// gamecode //  	fwrite(&NumActions, 1, sizeof(long), fp);
+// gamecode //  
+// gamecode //  	// Loop through each script action
+// gamecode //  	ScriptPtr = ScriptRoot;
+// gamecode //  	for(i=0;i<NumActions;i++) 
+// gamecode //  	{
+// gamecode //  		// Output type of action and # of entries
+// gamecode //  		fwrite(&ScriptPtr->m_Type, 1, sizeof(long), fp);
+// gamecode //  		fwrite(&ScriptPtr->m_NumEntries, 1, sizeof(long), fp);
+// gamecode //  
+// gamecode //  		// Output entry data (if any)
+// gamecode //  		if(ScriptPtr->m_NumEntries) 
+// gamecode //  		{
+// gamecode //  			for(j=0;j<ScriptPtr->m_NumEntries;j++) 
+// gamecode //  			{
+// gamecode //  				// Write entry type and data
+// gamecode //  				fwrite(&ScriptPtr->m_Entries[j].m_Type, 1,sizeof(long),fp);
+// gamecode //  				fwrite(&ScriptPtr->m_Entries[j].m_IOValue,1,sizeof(long),fp);
+// gamecode //  				fwrite(&ScriptPtr->m_Entries[j].m_Var,1,sizeof(unsigned char),fp);
+// gamecode //  
+// gamecode //  				// Write text entry (if any)
+// gamecode //  				if(ScriptPtr->m_Entries[j].m_Type == _TEXT && ScriptPtr->m_Entries[j].m_Text != NULL)
+// gamecode //  					fwrite(ScriptPtr->m_Entries[j].m_Text, 1, ScriptPtr->m_Entries[j].m_Length, fp);
+// gamecode //  			}
+// gamecode //  		}
+// gamecode //  	
+// gamecode //  		// Go to next script structure in linked list
+// gamecode //  		ScriptPtr = ScriptPtr->m_Next;
+// gamecode //  	}
+// gamecode //  
+// gamecode //  	fclose(fp);
+// gamecode //  	return true; // return a success!
+// gamecode //  }
 
 
+        }
+        private void saveScriptXML(string path)
+        {
+            SortScript(ScriptsCollection);
+
+            XmlDocument xmldoc = new XmlDocument();
+
+            XmlElement sRoot = xmldoc.CreateElement("Root");
+            XmlElement sAction = xmldoc.CreateElement("Action");
+            XmlElement sEntry = xmldoc.CreateElement("Entry");
+
+            string cAction = "";
+            for (int x = 0; x < ScriptsCollection.Rows.Count; x++)
+            {
+                string a = ScriptsCollection.Rows[x]["Script_ActionNumber"].ToString();
+                string b = ScriptsCollection.Rows[x]["Script_EntryNumber"].ToString();
+                string c = ScriptsCollection.Rows[x]["Script_Type"].ToString();
+                string d = ScriptsCollection.Rows[x]["Script_IOValue"].ToString();
+                string e = ScriptsCollection.Rows[x]["Script_Var"].ToString();
+                string f = ScriptsCollection.Rows[x]["Script_Text"].ToString();
 
 
+                if (cAction != a)
+                {
+//<Action ActionNumber="2" Type="6" NumEntries="1">
+                    if (cAction!="") sRoot.AppendChild(sAction);
+                    cAction = a;
+                    sAction = xmldoc.CreateElement("Action");
+                    sAction.SetAttribute("ActionNumber", a);
+                    sAction.SetAttribute("Type", c);
+                    sAction.SetAttribute("NumEntries", d);
+                }
+                else
+                {
+//<Entry ActionNumber="2" EntryNumber="0" Type="1" IOValue="7" Var="0" Text="Reward" />
+                    sEntry = xmldoc.CreateElement("Entry");
+                    sEntry.SetAttribute("ActionNumber", a);
+                    sEntry.SetAttribute("EntryNumber", b);
+                    sEntry.SetAttribute("Type", c);
+                    sEntry.SetAttribute("IOValue", d);
+                    sEntry.SetAttribute("Var", e);
+                    if (f.Length > 0)
+                    {
+                        f = f.Substring(0, f.LastIndexOf('\0'));
+                        sEntry.SetAttribute("Text", f);
+                    }
+                    sAction.AppendChild(sEntry);
+                }
+            }
+            sRoot.AppendChild(sAction);
+            sRoot.SetAttribute("NumActions", cAction);
+            xmldoc.AppendChild(sRoot);
+
+            XmlWriterSettings settings = new XmlWriterSettings();
+            settings.Indent = true;
+            settings.NewLineOnAttributes = false;
+            settings.IndentChars = "    ";
+            XmlWriter xmlwrite = XmlWriter.Create(path, settings);
+
+            xmldoc.Save(xmlwrite);
+            xmlwrite.Close();
+
+        }
+
+        private void SortScript(DataTable dt)
+        {
+            DataTable tempDT = dt.Clone();							//copies the structure from original DataTable
+
+            for (int x = 0; x < dt.Rows.Count; x++) tempDT.ImportRow(dt.Rows[x]);	//this copies content from original DataTable
+            DataView v = tempDT.DefaultView;							//rest is almost the same as with normal sort, create DataView from our DataTable, this time temp DataTable that will get gutted :P, so our original doesn't loose any data
+            v.Sort = "Script_ActionNumber ASC, Script_EntryNumber ASC";										//sort this DataView in ascending order using "Name" column as key
+            dt = v.ToTable();									//apply this sorted view to our original DataTable
+
+        }
 
 
 
@@ -5834,5 +6030,6 @@ namespace WM_Girls_Generator
              * and can probably be removed
              */
         }
+
    }
 }

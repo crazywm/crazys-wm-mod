@@ -117,19 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="Bad_Files.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="Error_Message.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <data name="richTextBox2.Text" xml:space="preserve">
-    <value>This button will create a new random numbered folder in the same folder as the WME.exe
-It will then attempt to save every Girl, Rgirl and Item into their own files.
-If it comes across a file that already exists, it will create a numbered folder and place the new file in there.
-It will continue making numbered folders as long as there are multiple .girlsx, .rgirlsx or .itemsx with the same name.
-</value>
-  </data>
   <data name="richTextBox1.Text" xml:space="preserve">
     <value>
 This FAQ is extremely out of date, I don't know why I have not removed it yet.
@@ -179,18 +166,6 @@ If it only finds 1 name, that becomes the first.
 If it finds 2, they become first and last.
 </value>
   </data>
-  <metadata name="dataGridView_G_Traits_Has.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="dataGridView_G_Traits_List.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="dataGridView_G_Traits_Type.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="hidden_has.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
   <metadata name="dataGridView_G_Traits_Has.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -342,6 +317,18 @@ This means it loads it twice with the second one taking precidence. Leave anythi
   <metadata name="dataGridView_Traits_Trait_RandomChance.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
+  <metadata name="Script_ActionNumber.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="dataGridViewTextBoxColumn2.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="dataGridViewTextBoxColumn3.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="dataGridViewTextBoxColumn4.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
   <data name="richTextBox3.Text" xml:space="preserve">
     <value>You can set the location of certain folders relative to the game .EXE file.
 Currently only relative paths are allowed so "c:\Characters" would not work.
@@ -354,6 +341,13 @@ folder paths work so it was moved to the extras tab.</value>
   <metadata name="Error_Message.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
+  <data name="richTextBox2.Text" xml:space="preserve">
+    <value>This button will create a new random numbered folder in the same folder as the WME.exe
+It will then attempt to save every Girl, Rgirl and Item into their own files.
+If it comes across a file that already exists, it will create a numbered folder and place the new file in there.
+It will continue making numbered folders as long as there are multiple .girlsx, .rgirlsx or .itemsx with the same name.
+</value>
+  </data>
   <data name="checkBox_Add_Missing_Sex_Skills_On_Load.ToolTip" xml:space="preserve">
     <value>If you are loading an old girl file that does not have some of the sex skills set in it, 
 this will check the existing sex skills and set the missing sex skills 
@@ -361,9 +355,6 @@ to be similar to the existing sex skill numbers.
 It checks for 'round to 5 or 10' and 'number spreads'.
 *** Currently only works for .girlsx files</value>
   </data>
-  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>24, 26</value>
-  </metadata>
   <metadata name="statusStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>121, 26</value>
   </metadata>

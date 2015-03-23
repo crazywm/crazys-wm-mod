@@ -25,8 +25,9 @@
 extern cBrothelManager g_Brothels;
 extern cHouseManager g_House;
 extern cMessageQue g_MessageQue;
-static cPlayer* m_Player = g_Brothels.GetPlayer();
 extern cJobManager m_JobManager;
+
+extern cPlayer* The_Player;
 
 // `J` Job House - General - Learning_Job
 bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
@@ -90,7 +91,7 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0
 	double roll_a = g_Dice.d100();
 	double roll_b = g_Dice.d100();
 
-	int Disp = m_Player->disposition();
+	int Disp = The_Player->disposition();
 
 	int PT_Fear = 0;
 	int PT_Love = 0;

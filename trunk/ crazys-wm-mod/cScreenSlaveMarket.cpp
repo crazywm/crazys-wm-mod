@@ -35,7 +35,8 @@ extern int MarketSlaveGirlsDel[20];
 extern bool g_GenGirls;
 extern bool g_Cheats;
 extern cTraits g_Traits;
-static cPlayer* m_Player = g_Brothels.GetPlayer();
+
+extern cPlayer* The_Player;
 
 extern	bool	g_LeftArrow;
 extern	bool	g_RightArrow;
@@ -491,27 +492,27 @@ string cScreenSlaveMarket::get_buy_slave_string(sGirl* girl)
 	}
 	else if (g_Girls.GetRebelValue(girl, false) >= 35)
 	{
-		if (m_Player->disposition() >= 80)				//Benevolent
+		if (The_Player->disposition() >= 80)				//Benevolent
 		{
 			text += " accepting her own flaws that to needed be corrected, she goes to the dungeon where she will be waiting for your guidance.";
 		}
-		else if (m_Player->disposition() >= 50)			//Nice
+		else if (The_Player->disposition() >= 50)			//Nice
 		{
 			text += " in your opinion needs to work on her attitude, she has been guided to the dungeon.";
 		}
-		else if (m_Player->disposition() >= 10)			//Pleasant
+		else if (The_Player->disposition() >= 10)			//Pleasant
 		{
 			text += " as your newest investment, she was sent to the dungeon to work on her rebellious nature.";
 		}
-		else if (m_Player->disposition() >= -10)			//Neutral
+		else if (The_Player->disposition() >= -10)			//Neutral
 		{
 			text += " has been sent to your dungeon, as she is rebellious and poorly trained.";
 		}
-		else if (m_Player->disposition() >= -50)			//Not nice
+		else if (The_Player->disposition() >= -50)			//Not nice
 		{
 			text += " as your newest investment that needs your special touch, she was sent to the dungeon.";
 		}
-		else if (m_Player->disposition() >= -80)			//Mean
+		else if (The_Player->disposition() >= -80)			//Mean
 		{
 			text += " still had some spirit in her eyes left that you decided to stub out. She was dragged to a dungeon cell.";
 		}
@@ -523,32 +524,32 @@ string cScreenSlaveMarket::get_buy_slave_string(sGirl* girl)
 	else
 	{
 		int t = g_Dice % 2;	// `J` because there are currently only 2 text options per disposition this should be ok
-		if (m_Player->disposition() >= 80)				//Benevolent
+		if (The_Player->disposition() >= 80)				//Benevolent
 		{
 			if (t == 1)	text += " went to your current brothel with a smile on her face happy that such a nice guy bought her.";
 			else		text += " smiled as you offered her your arm, surprised to find such a kindness waiting for her. Hopeing such kindness would continue, she went happily with you as her owner.";
 		}
-		else if (m_Player->disposition() >= 50)			//Nice
+		else if (The_Player->disposition() >= 50)			//Nice
 		{
 			if (t == 1)	text += ", having heard about her new owner's reputation, was guided to your current brothel without giving any trouble.";
 			else		text += " looked up at you hopefully as you refused the use of a retainer or delivery, instead finding herself taken into your retinue for the day and given a chance to enjoy the fresh air before you both return home.";
 		}
-		else if (m_Player->disposition() >= 10)			//Pleasant
+		else if (The_Player->disposition() >= 10)			//Pleasant
 		{
 			if (t == 1)	text += " was sent to your current brothel, knowing that she could have been bought by a lot worse owner.";
 			else		text += " was escorted home by one of your slaves who helped her settle in. She seems rather hopeful of a good life in your care.";
 		}
-		else if (m_Player->disposition() >= -10)			//Neutral
+		else if (The_Player->disposition() >= -10)			//Neutral
 		{
 			if (t == 1)	text += " as your newest investment, she was sent to your current brothel.";
 			else		text += " has been sent to your establishment under the supervision of your most trusted slaves.";
 		}
-		else if (m_Player->disposition() >= -50)			//Not nice
+		else if (The_Player->disposition() >= -50)			//Not nice
 		{
 			if (t == 1)	text += " not being very happy about her new owner, was escorted to your current brothel.";
 			else		text += " struggled as her hands were shackled in front of her. Her eyes locked on the floor, tears gathering in the corners of her eyes, as she was sent off to your brothel.";
 		}
-		else if (m_Player->disposition() >= -80)			//Mean
+		else if (The_Player->disposition() >= -80)			//Mean
 		{
 			if (t == 1)	text += " didn't wanted to provoke you in any possible way. She went quietly to your current brothel, without any resistance.";
 			else		text += " was dragged away to your brothel crying, one of your guards slapping her face as she tried to resist. ";

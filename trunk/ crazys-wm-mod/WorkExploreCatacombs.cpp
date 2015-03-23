@@ -147,11 +147,15 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 					}
 				}
 			}
-			else // she lost or it was a draw // `J` just to make things harder
+			else if (fight_outcome == 2) // she lost
 			{
 				haulcount -= 50;
 				raped = true;
 				break;
+			}
+			else if (fight_outcome == 0) // it was a draw
+			{
+				haulcount -= 1 + g_Dice % 5;
 			}
 		}
 

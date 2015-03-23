@@ -44,8 +44,9 @@
 extern cScreenGirlDetails g_GirlDetails;
 extern cScreenBrothelManagement g_BrothelManagement;
 extern sInterfaceIDs g_interfaceid;
-extern cPlayer m_Player;
 extern void PreparingLoad();
+
+extern cPlayer* The_Player;
 
 // globals used for the interface
 string g_ReturnText = "";

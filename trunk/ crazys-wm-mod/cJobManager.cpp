@@ -56,6 +56,8 @@ extern	bool			g_InitWin;
 
 static cDungeon* m_Dungeon = g_Brothels.GetDungeon();
 
+extern cPlayer* The_Player;
+
 void cJobManager::Setup()
 {
 	// much simplier then trying to get the sJob working with this (plus a smaller memory footprint...?maybe)
@@ -1774,7 +1776,6 @@ bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_n
 				}
 				if (item != "" && itemnum != -1)
 				{
-					cPlayer m_Player;
 					stringstream CGmsg;
 
 					// `J` create the customer
@@ -1790,9 +1791,9 @@ bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_n
 					custgirl->m_Stats[STAT_HEALTH];
 					custgirl->m_Enjoyment[ACTION_COMBAT] -= (g_Dice % 50 + 20);
 					custgirl->m_Enjoyment[ACTION_SEX] -= (g_Dice % 50 + 20);
-					m_Player.suspicion(g_Dice % 10);
-					m_Player.disposition(-(g_Dice % 10));
-					m_Player.customerfear(g_Dice % 10);
+					The_Player->suspicion(g_Dice % 10);
+					The_Player->disposition(-(g_Dice % 10));
+					The_Player->customerfear(g_Dice % 10);
 
 					// `J` do all the messages
 					SGmsg << custgirl->m_Realname << " was sent to your dungeon.";
@@ -1820,10 +1821,9 @@ bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_n
 					else if (dildo == 2) SGmsg << "Dreidel Dildo";
 					else if (dildo == 3) SGmsg << "Double Dildo";
 					SGmsg << " up his ass.";
-					cPlayer m_Player;
-					m_Player.suspicion(g_Dice % 2);
-					m_Player.disposition(-(g_Dice % 2));
-					m_Player.customerfear(g_Dice % 3);
+					The_Player->suspicion(g_Dice % 2);
+					The_Player->disposition(-(g_Dice % 2));
+					The_Player->customerfear(g_Dice % 3);
 				}
 			}
 		}

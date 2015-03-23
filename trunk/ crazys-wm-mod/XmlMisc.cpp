@@ -184,12 +184,39 @@ bool LoadStatsXML(TiXmlHandle hStats, int stats[], int statMods[], int tempStats
 		TiXmlElement* pStat = pStats->FirstChildElement(XMLifyString(sGirl::stat_names[i]));
 		if (pStat)
 		{
+			int min = 0, max = 100;
 			int tempInt = 0;
 			pStat->QueryIntAttribute("Value", &tempInt);
+			switch (i)
+			{
+			case STAT_AGE:
+				if (tempInt > 99)		tempInt = 100;
+				else if (tempInt > 80)		tempInt = 80;
+				else if (tempInt < 18)		tempInt = 18;
+				break;
+			case STAT_EXP:
+				max = 32000;
+				break;
+			case STAT_LEVEL:
+				max = 255;
+				break;
+			case STAT_PCFEAR:
+			case STAT_PCHATE:
+			case STAT_PCLOVE:
+			case STAT_MORALITY:
+			case STAT_REFINEMENT:
+			case STAT_DIGNITY:
+			case STAT_LACTATION:
+				min = -100;
+				break;
+			default:
+				break;
+			}
+
 			if (tempInt < -1000)	tempInt = -1;	// test for null stats and set them to 0
-			if (tempInt < -100)		tempInt = -100;
-			if (tempInt > 100)		tempInt = 100;
-			stats[i] = tempInt;		tempInt = 0;
+			if (tempInt  > max) tempInt = max;
+			else if (tempInt  < min) tempInt = min;
+			stats[i] = tempInt;
 			if (statMods)
 			{
 				pStat->QueryIntAttribute("Mod", &(statMods[i]));

@@ -32,6 +32,7 @@ extern	cBrothelManager	g_Brothels;
 extern	bool			g_Cheats;
 extern	int				g_CurrBrothel;
 
+extern cPlayer* The_Player;
 
 /*
  * ideally, we'd keep a queue of message strings and 
@@ -118,7 +119,6 @@ void cGirlTorture::DoTorture()
 	if (m_Girl->health() <= 0) return;
 	
 	m_Fight	= false;
-	m_Player = g_Brothels.GetPlayer();
 
 	string sGirlName	= m_Girl->m_Realname;
 	string sMsg			= "";
@@ -178,7 +178,7 @@ void cGirlTorture::DoTorture()
  *	add 5 evil points for attempted torture.
  *	original code had this as non-slave only...
  */
-	m_Player->evil(5);
+	The_Player->evil(5);
 #endif
 
 /*
@@ -210,16 +210,16 @@ void cGirlTorture::DoTorture()
 	if (m_TorturedByPlayer)
 	 {
 		if (m_Girl->is_slave())
-			m_Player->evil(5);
+			The_Player->evil(5);
 		else
-			m_Player->evil(10);
+			The_Player->evil(10);
 	}
 	else	// Tortured by Girl
 	{
 		if (m_Girl->is_slave())
-			m_Player->evil(2);
+			The_Player->evil(2);
 		else
-			m_Player->evil(4);
+			The_Player->evil(4);
 
 	}
 /*
@@ -344,7 +344,7 @@ void cGirlTorture::AddTextPlayer()
  *		and assigning any progeny to the player.
  *		Lazy, I know :)
  */
-		m_Girl->calc_pregnancy(m_Player, false, 1.5);
+		m_Girl->calc_pregnancy(The_Player, false, 1.5);
 		is = m_Girl->is_pregnant();
 /*
  *		if she was not, but is now, then the player
@@ -619,8 +619,8 @@ bool cGirlTorture::girl_escapes()
 		g_Brothels.RemoveGirl(g_CurrBrothel, m_Girl, false);
 	m_Girl->m_NightJob = m_Girl->m_DayJob = JOB_RUNAWAY;
 	g_Brothels.AddGirlToRunaways(m_Girl);
-	m_Player->evil(5);							// Add evilness for girl telling the tale
-	m_Player->suspicion(15);
+	The_Player->evil(5);							// Add evilness for girl telling the tale
+	The_Player->suspicion(15);
 	return true;
 }
 

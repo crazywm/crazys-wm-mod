@@ -40,7 +40,7 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
-static cPlayer* m_Player = g_Brothels.GetPlayer();	//SIN: a way to access player details
+extern cPlayer* The_Player;
 
 // `J` Job Brothel - Hall
 bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
@@ -492,7 +492,7 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, bool Da
 	{
 		ss << "Word got around that " << girlName << " is your daughter, so more customers than normal came to watch her perform.\n";
 		wages += (wages / 5);
-		if (m_Player->disposition() > 0)
+		if (The_Player->disposition() > 0)
 		{
 			ss << "This is about the nicest job you can give her. She's safe here and the customers can only look - ";
 		}

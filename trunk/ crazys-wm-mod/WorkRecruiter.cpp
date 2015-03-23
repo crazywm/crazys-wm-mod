@@ -42,6 +42,8 @@ extern cMessageQue g_MessageQue;
 
 static cDungeon* m_Dungeon = g_Brothels.GetDungeon();
 
+extern cPlayer* The_Player;
+
 // `J` Job House - General
 bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
@@ -112,16 +114,15 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	ss << "\n\n";
 
 	// `J` add in player's disposition so if the girl has heard of you
-	cPlayer m_Player;
 	int dispmod = 0;
-	/* */if (m_Player.disposition() >= 100)	dispmod = 3;	// "Saint"
-	else if (m_Player.disposition() >= 80)	dispmod = 2;	// "Benevolent"
-	else if (m_Player.disposition() >= 50)	dispmod = 1;	// "Nice"
-	else if (m_Player.disposition() >= 10)	dispmod = 0;	// "Pleasant"
-	else if (m_Player.disposition() >= -10)	dispmod = 0;	// "Neutral"
-	else if (m_Player.disposition() >= -50)	dispmod = -1;	// "Not nice"
-	else if (m_Player.disposition() >= -80)	dispmod = -2;	// "Mean"
-	else /*								*/	dispmod = -3;	// "Evil"
+	/* */if (The_Player->disposition() >= 100)	dispmod = 3;	// "Saint"
+	else if (The_Player->disposition() >= 80)	dispmod = 2;	// "Benevolent"
+	else if (The_Player->disposition() >= 50)	dispmod = 1;	// "Nice"
+	else if (The_Player->disposition() >= 10)	dispmod = 0;	// "Pleasant"
+	else if (The_Player->disposition() >= -10)	dispmod = 0;	// "Neutral"
+	else if (The_Player->disposition() >= -50)	dispmod = -1;	// "Not nice"
+	else if (The_Player->disposition() >= -80)	dispmod = -2;	// "Mean"
+	else /*								  */	dispmod = -3;	// "Evil"
 
 	int findroll = (g_Dice.d100());
 	if (findroll < findchance + 10)	// `J` While out recruiting she does find someone...

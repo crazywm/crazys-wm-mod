@@ -64,6 +64,7 @@ extern cCentreManager		g_Centre;
 extern cHouseManager		g_House;
 extern cFarmManager			g_Farm;
 
+cPlayer* The_Player = g_Brothels.GetPlayer();
 
 //extern CGraphics			g_Graphics;
 
@@ -241,7 +242,7 @@ void cBrothelManager::check_raid()
 	*
 	*	And then modified back upwards by rival influence
 	*/
-	int pc = m_Player.suspicion() - m_Influence;
+	int pc = The_Player->suspicion() - m_Influence;
 	if (rival)
 	{
 		pc += rival->m_Influence / 4;
@@ -271,7 +272,7 @@ void cBrothelManager::check_raid()
 	if (g_Dice.percent(m_Influence))
 	{
 		ss << "the guard captain lectures you on the importance of crime prevention, whilst also passing on the Mayor's heartfelt best wishes.";
-		m_Player.suspicion(-5);
+		The_Player->suspicion(-5);
 		g_MessageQue.AddToQue(ss.str(), COLOR_GREEN);
 		return;
 	}
@@ -280,7 +281,7 @@ void cBrothelManager::check_raid()
 	*	if the player is squeaky clean
 	*/
 
-	if (rival && m_Player.disposition() > 0 && g_Dice.percent(rival->m_Influence / 2))
+	if (rival && The_Player->disposition() > 0 && g_Dice.percent(rival->m_Influence / 2))
 	{
 		int fine = (g_Dice % 1000) + 150;
 		g_Gold.fines(fine);
@@ -302,14 +303,14 @@ void cBrothelManager::check_raid()
 	*	he's unlikely to have anything incriminating on
 	*	the premises. 20 disposition should see him
 	*/
-	if (g_Dice.percent(m_Player.disposition() * 5))
+	if (g_Dice.percent(The_Player->disposition() * 5))
 	{
 		ss << "they pronounce your operation to be entirely in accordance with the law.";
-		m_Player.suspicion(-5);
+		The_Player->suspicion(-5);
 		g_MessageQue.AddToQue(ss.str(), COLOR_GREEN);
 		return;
 	}
-	int nPlayer_Disposition = m_Player.disposition();
+	int nPlayer_Disposition = The_Player->disposition();
 	if (nPlayer_Disposition > -10)
 	{
 		int fine = (g_Dice % 100) + 20;
@@ -1029,7 +1030,7 @@ void cBrothelManager::check_rivals()
 		peace = true;
 		peace_breaks_out();
 	}
-	if (m_Player.m_WinGame == false) return;	// we only create new rivals after the game has been won
+	if (The_Player->m_WinGame == false) return;	// we only create new rivals after the game has been won
 	if (g_Dice.percent(70)) return;				// create new random rival or not!
 	peace = false;								// flag the war as on again, (should be a field somewhere)
 	m_Rivals.CreateRandomRival();				// create a new rival and tell the player the good news
@@ -1126,14 +1127,14 @@ void cBrothelManager::peace_breaks_out()
 {
 	stringstream ss;
 	// if the PC already won, this is just an minor outbreak of peace in the day-to-day feuding in crossgate
-	if (m_Player.m_WinGame)
+	if (The_Player->m_WinGame)
 	{
 		ss << "The last of your challengers has been overthrown. Your domination of Crossgate is absolute.\n\nUntil the next time that is...";
 		g_MessageQue.AddToQue(ss.str(), COLOR_GREEN);
 		return;
 	}
 	// otherwise, the player has just won flag it as such
-	m_Player.m_WinGame = true;
+	The_Player->m_WinGame = true;
 	// let's have a bit of chat to mark the event
 	ss.str("");
 	ss << "The last of your father's killers has been brought before you for judgement. None remain who would dare to oppose you. For all intents and purposes, the city is yours.\n\nWhether or not your father will rest easier for your efforts, you cannot say, but now, with the city at your feet, you feel sure he would be proud of you at this moment.\n\nBut pride comes before a fall, and in Crossgate, complacency kills. The city's slums and slave markets and the fighting pits are full of hungry young bloods burning to make their mark on the world, and any one of them could rise to challenge you at any time.\n\nYou may have seized the city, but holding on to it is never going to be easy.";
@@ -1412,9 +1413,9 @@ void cBrothelManager::UpdateBrothels()	// Start_Building_Process_A
 	}
 
 	// keep gravitating player suspicion to 0
-	/* */if (m_Player.suspicion() > 0)	m_Player.suspicion(-1);
-	else if (m_Player.suspicion() < 0)	m_Player.suspicion(1);
-	if (m_Player.suspicion() > 20) check_raid();	// is the player under suspision by the authorities
+	/* */if (The_Player->suspicion() > 0)	The_Player->suspicion(-1);
+	else if (The_Player->suspicion() < 0)	The_Player->suspicion(1);
+	if (The_Player->suspicion() > 20) check_raid();	// is the player under suspision by the authorities
 
 	if (m_Bank > 0)									// incraese the bank gold by 02%
 	{
@@ -4332,13 +4333,13 @@ void cBrothelManager::SetName(int brothelID, string name)
 // ----- Status texts
 string cBrothelManager::disposition_text()
 {
-	if (m_Player.disposition() >= 100)	return gettext("Saint");
-	if (m_Player.disposition() >= 80)	return gettext("Benevolent");
-	if (m_Player.disposition() >= 50)	return gettext("Nice");
-	if (m_Player.disposition() >= 10)	return gettext("Pleasant");
-	if (m_Player.disposition() >= -10)	return gettext("Neutral");
-	if (m_Player.disposition() >= -50)	return gettext("Not nice");
-	if (m_Player.disposition() >= -80)	return gettext("Mean");
+	if (The_Player->disposition() >= 100)	return gettext("Saint");
+	if (The_Player->disposition() >= 80)	return gettext("Benevolent");
+	if (The_Player->disposition() >= 50)	return gettext("Nice");
+	if (The_Player->disposition() >= 10)	return gettext("Pleasant");
+	if (The_Player->disposition() >= -10)	return gettext("Neutral");
+	if (The_Player->disposition() >= -50)	return gettext("Not nice");
+	if (The_Player->disposition() >= -80)	return gettext("Mean");
 	return gettext("Evil");
 }
 
@@ -4356,21 +4357,13 @@ string cBrothelManager::fame_text(sBrothel* brothel)
 string cBrothelManager::suss_text()
 {
 	//WD:	Should be Susipicion not Disposition 
-	if (m_Player.suspicion() >= 80)	return gettext("Town Scum");
-	if (m_Player.suspicion() >= 50)	return gettext("Miscreant");
-	if (m_Player.suspicion() >= 10)	return gettext("Suspect");
-	if (m_Player.suspicion() >= -10)	return gettext("Unsuspected");
-	if (m_Player.suspicion() >= -50)	return gettext("Lawful");
-	if (m_Player.suspicion() >= -80) 	return gettext("Philanthropist");
+	if (The_Player->suspicion() >= 80)	return gettext("Town Scum");
+	if (The_Player->suspicion() >= 50)	return gettext("Miscreant");
+	if (The_Player->suspicion() >= 10)	return gettext("Suspect");
+	if (The_Player->suspicion() >= -10)	return gettext("Unsuspected");
+	if (The_Player->suspicion() >= -50)	return gettext("Lawful");
+	if (The_Player->suspicion() >= -80) return gettext("Philanthropist");
 	return gettext("Town Hero");
-
-	//if(m_Player.m_Disposition >= 80)	return "Town Scum";
-	//if(m_Player.m_Disposition >= 50)	return "Miscreant";
-	//if(m_Player.m_Disposition >= 10)		return "Suspect";
-	//if(m_Player.m_Disposition >= -10)	return "Unsuspected";
-	//if(m_Player.m_Disposition >= -50)	return "Lawful";
-	//if(m_Player.m_Disposition >= -80) 	return "Philanthropist";
-	//					return "Town Hero";
 }
 
 string cBrothelManager::happiness_text(sBrothel* brothel)
@@ -4398,7 +4391,7 @@ bool cBrothelManager::PlayerCombat(sGirl* girl)		//  ***************************
 	u_int attack = SKILL_COMBAT;	// determined later, defaults to combat
 	u_int pattack = SKILL_COMBAT;
 	int dodge = 0;
-	int pdodge = m_Player.m_Stats[STAT_AGILITY];
+	int pdodge = The_Player->m_Stats[STAT_AGILITY];
 	int pHealth = 100;
 	int pMana = 100;
 
@@ -4409,7 +4402,7 @@ bool cBrothelManager::PlayerCombat(sGirl* girl)		//  ***************************
 		attack = SKILL_MAGIC;
 
 	// determine what player will fight with
-	if (m_Player.m_Skills[SKILL_COMBAT] >= m_Player.m_Skills[SKILL_MAGIC])
+	if (The_Player->m_Skills[SKILL_COMBAT] >= The_Player->m_Skills[SKILL_MAGIC])
 		pattack = SKILL_COMBAT;
 	else
 		pattack = SKILL_MAGIC;
@@ -4452,11 +4445,11 @@ bool cBrothelManager::PlayerCombat(sGirl* girl)		//  ***************************
 			if (!g_Dice.percent(pdodge))
 				pHealth -= damage;
 			else
-				m_Player.m_Stats[STAT_AGILITY] += g_Dice % 2;	// player may improve a little
+				The_Player->m_Stats[STAT_AGILITY] += g_Dice % 2;	// player may improve a little
 		}
 
 		// Player Attacks
-		if (g_Dice.percent(m_Player.m_Skills[pattack]))
+		if (g_Dice.percent(The_Player->m_Skills[pattack]))
 		{
 			int damage = 0;
 			if (pattack == SKILL_MAGIC)
@@ -4468,26 +4461,26 @@ bool cBrothelManager::PlayerCombat(sGirl* girl)		//  ***************************
 				}
 				else
 				{
-					damage = 2 + (m_Player.m_Skills[pattack] / 5);
+					damage = 2 + (The_Player->m_Skills[pattack] / 5);
 					pMana -= 5;
 				}
 			}
 			else
 			{
 				// he has hit now calculate how much damage will be done
-				damage = 5 + (m_Player.m_Skills[pattack] / 10);
+				damage = 5 + (The_Player->m_Skills[pattack] / 10);
 			}
 
-			m_Player.m_Skills[pattack] += g_Dice % 2;	// he may improve a little
+			The_Player->m_Skills[pattack] += g_Dice % 2;	// he may improve a little
 
 			// girl attempts Dodge
 			if (!g_Dice.percent(dodge))
 				g_Girls.UpdateStat(girl, STAT_HEALTH, -damage);
 			else
 			{
-				m_Player.m_Stats[STAT_AGILITY] += g_Dice % 2;	// player may improve a little
-				if (m_Player.m_Stats[STAT_AGILITY] > 100)
-					m_Player.m_Stats[STAT_AGILITY] = 100;
+				The_Player->m_Stats[STAT_AGILITY] += g_Dice % 2;	// player may improve a little
+				if (The_Player->m_Stats[STAT_AGILITY] > 100)
+					The_Player->m_Stats[STAT_AGILITY] = 100;
 			}
 		}
 
