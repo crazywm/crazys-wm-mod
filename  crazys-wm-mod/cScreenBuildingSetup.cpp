@@ -211,7 +211,7 @@ void cScreenBuildingSetup::init()
 		maxrooms = g_Farm.GetBrothel(0)->m_MaxNumRooms;
 		antipregnum = g_Farm.GetBrothel(0)->m_AntiPregPotions;
 		antipregused = g_Farm.GetBrothel(0)->m_AntiPregUsed;
-		advert = g_House.GetBrothel(0)->m_AdvertisingBudget / 50;
+		advert = g_Farm.GetBrothel(0)->m_AdvertisingBudget / 50;
 
 		// setup check boxes
 		SetCheckBox(autopotions_id, g_Farm.GetBrothel(0)->m_KeepPotionsStocked);
@@ -473,12 +473,12 @@ void cScreenBuildingSetup::check_events()
 		// set advertising budget based on slider
 		switch (g_Building)
 		{
-		case BUILDING_STUDIO:	g_Studios.GetBrothel(g_CurrBrothel)->m_AdvertisingBudget = SliderValue(advertsli_id) * 50;	break;
-		case BUILDING_CLINIC:	g_Clinic.GetBrothel(g_CurrBrothel)->m_AdvertisingBudget = SliderValue(advertsli_id) * 50;	break;
-		case BUILDING_ARENA:	g_Arena.GetBrothel(g_CurrBrothel)->m_AdvertisingBudget = SliderValue(advertsli_id) * 50;	break;
-		case BUILDING_CENTRE:	g_Centre.GetBrothel(g_CurrBrothel)->m_AdvertisingBudget = SliderValue(advertsli_id) * 50;	break;
-		case BUILDING_HOUSE:	g_House.GetBrothel(g_CurrBrothel)->m_AdvertisingBudget = SliderValue(advertsli_id) * 50;	break;
-		case BUILDING_FARM:		g_Farm.GetBrothel(g_CurrBrothel)->m_AdvertisingBudget = SliderValue(advertsli_id) * 50;		break;
+		case BUILDING_STUDIO:	g_Studios.GetBrothel(0)->m_AdvertisingBudget = SliderValue(advertsli_id) * 50;	break;
+		case BUILDING_CLINIC:	g_Clinic.GetBrothel(0)->m_AdvertisingBudget = SliderValue(advertsli_id) * 50;	break;
+		case BUILDING_ARENA:	g_Arena.GetBrothel(0)->m_AdvertisingBudget = SliderValue(advertsli_id) * 50;	break;
+		case BUILDING_CENTRE:	g_Centre.GetBrothel(0)->m_AdvertisingBudget = SliderValue(advertsli_id) * 50;	break;
+		case BUILDING_HOUSE:	g_House.GetBrothel(0)->m_AdvertisingBudget = SliderValue(advertsli_id) * 50;	break;
+		case BUILDING_FARM:		g_Farm.GetBrothel(0)->m_AdvertisingBudget = SliderValue(advertsli_id) * 50;		break;
 		case BUILDING_BROTHEL:
 		default:
 			g_Brothels.GetBrothel(g_CurrBrothel)->m_AdvertisingBudget = SliderValue(advertsli_id) * 50;

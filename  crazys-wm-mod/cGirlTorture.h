@@ -34,7 +34,6 @@ class	CLog;
 class	cConfig;
 
 class cGirlTorture {
-	cPlayer			*m_Player;
 	sGirl			*m_Girl;
 	sGirl			*m_Torturer;
 	sDungeonGirl	*m_DungeonGirl;

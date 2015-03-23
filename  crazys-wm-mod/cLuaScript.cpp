@@ -41,6 +41,7 @@ extern cWindowManager g_WinManager;
 extern cScreenBrothelManagement g_BrothelManagement;
 extern bool g_InitWin;
 
+extern cPlayer* The_Player;
 
 typedef int (*lua_func)(lua_State *L);
 
@@ -909,7 +910,6 @@ void cLuaScript::set_wm_girl(sGirl *girl)
  */
 void cLuaScript::set_wm_player()
 {
-	cPlayer *player = g_Brothels.GetPlayer();
 /*
  *	get the "wm" symbol on the stack to start with
  */
@@ -922,7 +922,7 @@ void cLuaScript::set_wm_player()
 /*
  *	now format the sGirl data as a Lua table
  */
-	make_lua_player(l, player);
+	make_lua_player(l, The_Player);
 	bool flag = !lua_isnil(l, -1);
 	assert(flag);
 /*

@@ -1878,8 +1878,37 @@ Crazy pushed SVN r162 - Updates to job performance for several jobs adding new t
  
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.14
 !!!!!!!!!!!!!!!!!!!! pushed to SVN - r163
+
+###  Changes 3/15/2015
+Fixed a bug in exp maxing out at 100 when loading save game by adding the limiter check to load stats.
+
+WME - Started work on making binary .script files load.
+WME - Added table for storing and editing script data.
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.15
+
+###  Changes 3/16/2015
+
+WME - Added Clear script and save script buttons
+WME - Loads binary script files
+
+###  Changes 3/17-20/2015 - Real life kept me away from working on the game or editor for several days
+###  Changes 3/21/2015    - but I got back and after some hassle, I got the editor to save xml scripts.
+
+###  Changes 3/22/2015
+Fixed a bug with suspicion and disposition not working for non brothel buildings.
+Fixed some bugs in nonbrothel building's advertising sliders.
+
+WME - Now saves .scriptx files
  
- 
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.16
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r164
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.26
+
+
+
+
+
  
 $$$$ TO DO - SHORT TERM - (for this version) $$$$
 Keep expanding on simple-save

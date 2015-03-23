@@ -75,6 +75,9 @@ extern unsigned long    g_Day;
 extern cNameList	g_NameList;
 extern cSurnameList g_SurnameList;
 
+extern cPlayer* The_Player;
+
+
 /*
 * MOD: DocClox: Stuff for the XML loader code
 *
@@ -1276,8 +1279,7 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 	string surname;
 	if (daughter || newGirl->m_States&(1 << STATUS_YOURDAUGHTER))	// `J` if she is your daughter...
 	{
-		cPlayer m_Player;
-		surname = m_Player.Surname();	// give her your last name
+		surname = The_Player->Surname();	// give her your last name
 	}
 	else if (g_Dice.percent(90))		// 10% chance of no last name
 	{
@@ -12308,18 +12310,17 @@ bool cGirls::child_is_grown(sGirl* mom, sChild *child, string& summary, bool Pla
 		// at this point the sprog should have temporary firstname, surname, and realname
 		string prevsurname = sprog->m_Surname;		// save the temporary surname incase it is needed later
 		string biography = "";
-		cPlayer* m_Player = g_Brothels.GetPlayer();
 		if (playerfather)
 		{
-			if (m_Player->Surname().size() > 0)
+			if (The_Player->Surname().size() > 0)
 			{
-				sprog->m_Surname = m_Player->Surname();
+				sprog->m_Surname = The_Player->Surname();
 			}
 			else	// probably shouldn't happen because there is a default surname
 			{
 				sprog->m_Surname = "Playerchild";	// generic name
 			}
-			biography = "Daughter of " + mom->m_Realname + " and the Brothel owner, Mr. " + m_Player->RealName();
+			biography = "Daughter of " + mom->m_Realname + " and the Brothel owner, Mr. " + The_Player->RealName();
 		}
 		else
 		{
@@ -12517,18 +12518,17 @@ bool cGirls::child_is_grown(sGirl* mom, sChild *child, string& summary, bool Pla
 				// at this point the sprog should have temporary firstname, surname, and realname
 				string prevsurname = sprog->m_Surname;		// save the temporary surname incase it is needed later
 				string biography = "";
-				cPlayer* m_Player = g_Brothels.GetPlayer();
 				if (playerfather)
 				{
-					if (m_Player->Surname().size() > 0)
+					if (The_Player->Surname().size() > 0)
 					{
-						sprog->m_Surname = m_Player->Surname();
+						sprog->m_Surname = The_Player->Surname();
 					}
 					else	// probably shouldn't happen because there is a default surname
 					{
 						sprog->m_Surname = "Playerchild";	// generic name
 					}
-					biography = "Daughter of " + mom->m_Realname + " and the Brothel owner, Mr. " + m_Player->RealName();
+					biography = "Daughter of " + mom->m_Realname + " and the Brothel owner, Mr. " + The_Player->RealName();
 				}
 				else
 				{

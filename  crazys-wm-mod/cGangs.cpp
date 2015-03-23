@@ -48,8 +48,8 @@ extern unsigned long g_Day;
 extern CGraphics g_Graphics;
 extern cRng g_Dice;
 extern cGold g_Gold;
+extern cPlayer* The_Player;
 
-static cPlayer* m_Player = g_Brothels.GetPlayer();
 static cRivalManager* m_Rivals = g_Brothels.GetRivalManager();
 static cDungeon* m_Dungeon = g_Brothels.GetDungeon();
 
@@ -219,8 +219,14 @@ bool sGang::LoadGangXML(TiXmlHandle hGang)
 	if (m_Skills[SKILL_MAGIC] < 0 || m_Skills[SKILL_COMBAT] < 0 || m_Stats[STAT_INTELLIGENCE] < 0 || m_Stats[STAT_AGILITY] < 0 ||
 		m_Stats[STAT_CONSTITUTION] < 0 || m_Stats[STAT_CHARISMA] < 0 || m_Stats[STAT_STRENGTH] < 0)
 	{
-		int total = m_Skills[SKILL_MAGIC] + m_Skills[SKILL_COMBAT] + m_Stats[STAT_INTELLIGENCE] + m_Stats[STAT_AGILITY] +
-			m_Stats[STAT_CONSTITUTION] + m_Stats[STAT_CHARISMA] + m_Stats[STAT_STRENGTH];
+		int total =
+			max(0, m_Skills[SKILL_MAGIC]) +
+			max(0, m_Skills[SKILL_COMBAT]) +
+			max(0, m_Stats[STAT_INTELLIGENCE]) +
+			max(0, m_Stats[STAT_AGILITY]) +
+			max(0, m_Stats[STAT_CONSTITUTION]) +
+			max(0, m_Stats[STAT_CHARISMA]) +
+			max(0, m_Stats[STAT_STRENGTH]);
 		int low = total / 8;
 		int high = total / 6;
 		if (m_Skills[SKILL_MAGIC] < 0)			m_Skills[SKILL_MAGIC] = g_Dice.bell(low, high);
@@ -1918,7 +1924,7 @@ bool cGangManager::recapture_mission(sGang* gang)
 bool cGangManager::extortion_mission(sGang* gang)
 {
 	stringstream ss;
-	m_Player->disposition(-1);	m_Player->customerfear(1);	m_Player->suspicion(1);
+	The_Player->disposition(-1);	The_Player->customerfear(1);	The_Player->suspicion(1);
 	ss << "Gang   " << gang->m_Name << "   is capturing territory.\n\n";
 
 	// Case 1:  Neutral businesses still around
@@ -1935,18 +1941,18 @@ bool cGangManager::extortion_mission(sGang* gang)
 			if (g_Dice.percent(gang->charisma() / 2))				// convince
 			{
 				uncontrolled--; n++;
-				m_Player->customerfear(-1);
+				The_Player->customerfear(-1);
 			}
 			else if (g_Dice.percent(gang->intelligence() / 2))		// outwit
 			{
 				uncontrolled--; n++;
-				m_Player->disposition(-1);
+				The_Player->disposition(-1);
 			}
 			else if (g_Dice.percent(gang->combat() / 2))			// threaten
 			{
 				uncontrolled--; n++;
-				m_Player->disposition(-1);
-				m_Player->customerfear(2);
+				The_Player->disposition(-1);
+				The_Player->customerfear(2);
 			}
 		}
 
@@ -2042,9 +2048,9 @@ bool cGangManager::petytheft_mission(sGang* gang)
 {
 	stringstream ss;
 	ss << "Gang   " << gang->m_Name << "   is performing petty theft.\n\n";
-	m_Player->disposition(-1);
-	m_Player->customerfear(1);
-	m_Player->suspicion(1);
+	The_Player->disposition(-1);
+	The_Player->customerfear(1);
+	The_Player->suspicion(1);
 
 	int startnum = gang->m_Num;
 	int numlost = 0;
@@ -2121,7 +2127,7 @@ bool cGangManager::petytheft_mission(sGang* gang)
 bool cGangManager::grandtheft_mission(sGang* gang)
 {
 	stringstream ss;
-	m_Player->disposition(-3);		m_Player->customerfear(3);		m_Player->suspicion(3);
+	The_Player->disposition(-3);		The_Player->customerfear(3);		The_Player->suspicion(3);
 	bool fightrival = false;		cRival* rival = 0;				sGang *defenders = 0;
 	int difficulty = max(0, g_Dice.bell(0, 6) - 2);	// 0-4
 	string place = "place";			int defencechance = 0;			long gold = 1;
@@ -2173,7 +2179,7 @@ bool cGangManager::grandtheft_mission(sGang* gang)
 	// `J` zzzzzz - need to add items
 
 
-	m_Player->suspicion(gold / 1000);
+	The_Player->suspicion(gold / 1000);
 
 	g_Gold.grand_theft(gold);
 	gang->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
@@ -2774,7 +2780,7 @@ bool cGangManager::gangrecruiting(sGang* gang)
 	int available = start;
 	int add = max(0, g_Dice.bell(0, 4) - 1);		// possibly get 1-3 without having to ask
 	start += add;
-	int disp = m_Player->disposition();
+	int disp = The_Player->disposition();
 	while (available > 0)
 	{
 		int chance = gang->charisma();

@@ -29,11 +29,14 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage0_Info = new System.Windows.Forms.TabPage();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
@@ -689,9 +692,12 @@
             this.label_Load_Traits = new System.Windows.Forms.Label();
             this.button_Save_Traits = new System.Windows.Forms.Button();
             this.tabPage6_Scripts = new System.Windows.Forms.TabPage();
-            this.label187 = new System.Windows.Forms.Label();
-            this.textBox_Script_Content = new System.Windows.Forms.TextBox();
-            this.button_ScriptLoad = new System.Windows.Forms.Button();
+            this.button_Script_Save = new System.Windows.Forms.Button();
+            this.button_Script_Clear = new System.Windows.Forms.Button();
+            this.label_Script_Path = new System.Windows.Forms.Label();
+            this.dataGridView_Scripts = new System.Windows.Forms.DataGridView();
+            this.label_Script = new System.Windows.Forms.Label();
+            this.button_Script_Load = new System.Windows.Forms.Button();
             this.tabPage7_FAQ = new System.Windows.Forms.TabPage();
             this.groupBox_Folders = new System.Windows.Forms.GroupBox();
             this.richTextBox3 = new System.Windows.Forms.RichTextBox();
@@ -720,6 +726,12 @@
             this.button24 = new System.Windows.Forms.Button();
             this.checkBox_ToggleTraitTooltips = new System.Windows.Forms.CheckBox();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.Script_ActionNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Script_Var = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Script_Text = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabControl1.SuspendLayout();
             this.tabPage0_Info.SuspendLayout();
             this.tabPage1_Girls.SuspendLayout();
@@ -772,6 +784,7 @@
             this.tabPage5_Traits.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Traits)).BeginInit();
             this.tabPage6_Scripts.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Scripts)).BeginInit();
             this.tabPage7_FAQ.SuspendLayout();
             this.groupBox_Folders.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Bad_Files)).BeginInit();
@@ -990,8 +1003,8 @@
             // 
             this.dataGridView_G_Traits_Type.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.dataGridView_G_Traits_Type.DataPropertyName = "Type";
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dataGridView_G_Traits_Type.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dataGridView_G_Traits_Type.DefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridView_G_Traits_Type.HeaderText = "Type";
             this.dataGridView_G_Traits_Type.Name = "dataGridView_G_Traits_Type";
             this.dataGridView_G_Traits_Type.Resizable = System.Windows.Forms.DataGridViewTriState.True;
@@ -8511,14 +8524,14 @@
             // 
             this.dataGridView_Traits.AllowUserToResizeRows = false;
             this.dataGridView_Traits.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.PowderBlue;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView_Traits.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.PowderBlue;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView_Traits.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridView_Traits.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView_Traits.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dataGridView_Traits_Trait_Name,
@@ -8526,24 +8539,24 @@
             this.dataGridView_Traits_Trait_Type,
             this.dataGridView_Traits_Trait_InheritChance,
             this.dataGridView_Traits_Trait_RandomChance});
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle7.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle7.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView_Traits.DefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView_Traits.DefaultCellStyle = dataGridViewCellStyle3;
             this.dataGridView_Traits.Location = new System.Drawing.Point(6, 6);
             this.dataGridView_Traits.Name = "dataGridView_Traits";
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle8.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle8.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.PowderBlue;
-            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView_Traits.RowHeadersDefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.PowderBlue;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView_Traits.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.dataGridView_Traits.RowHeadersVisible = false;
             this.dataGridView_Traits.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridView_Traits.Size = new System.Drawing.Size(939, 445);
@@ -8642,9 +8655,12 @@
             // 
             // tabPage6_Scripts
             // 
-            this.tabPage6_Scripts.Controls.Add(this.label187);
-            this.tabPage6_Scripts.Controls.Add(this.textBox_Script_Content);
-            this.tabPage6_Scripts.Controls.Add(this.button_ScriptLoad);
+            this.tabPage6_Scripts.Controls.Add(this.button_Script_Save);
+            this.tabPage6_Scripts.Controls.Add(this.button_Script_Clear);
+            this.tabPage6_Scripts.Controls.Add(this.label_Script_Path);
+            this.tabPage6_Scripts.Controls.Add(this.dataGridView_Scripts);
+            this.tabPage6_Scripts.Controls.Add(this.label_Script);
+            this.tabPage6_Scripts.Controls.Add(this.button_Script_Load);
             this.tabPage6_Scripts.Location = new System.Drawing.Point(4, 22);
             this.tabPage6_Scripts.Name = "tabPage6_Scripts";
             this.tabPage6_Scripts.Padding = new System.Windows.Forms.Padding(3);
@@ -8653,35 +8669,98 @@
             this.tabPage6_Scripts.Text = "  Scripts  ";
             this.tabPage6_Scripts.UseVisualStyleBackColor = true;
             // 
-            // label187
+            // button_Script_Save
             // 
-            this.label187.AutoSize = true;
-            this.label187.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label187.Location = new System.Drawing.Point(155, 11);
-            this.label187.Name = "label187";
-            this.label187.Size = new System.Drawing.Size(198, 25);
-            this.label187.TabIndex = 12;
-            this.label187.Text = "Work in progress.";
+            this.button_Script_Save.Location = new System.Drawing.Point(840, 10);
+            this.button_Script_Save.Name = "button_Script_Save";
+            this.button_Script_Save.Size = new System.Drawing.Size(100, 40);
+            this.button_Script_Save.TabIndex = 16;
+            this.button_Script_Save.Text = "Save Script";
+            this.button_Script_Save.UseVisualStyleBackColor = true;
+            this.button_Script_Save.Click += new System.EventHandler(this.button_Script_Save_Click);
             // 
-            // textBox_Script_Content
+            // button_Script_Clear
             // 
-            this.textBox_Script_Content.Location = new System.Drawing.Point(6, 66);
-            this.textBox_Script_Content.Multiline = true;
-            this.textBox_Script_Content.Name = "textBox_Script_Content";
-            this.textBox_Script_Content.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox_Script_Content.Size = new System.Drawing.Size(940, 520);
-            this.textBox_Script_Content.TabIndex = 4;
-            this.toolTip1.SetToolTip(this.textBox_Script_Content, "DO NOT use enter here, just write in one line");
+            this.button_Script_Clear.Location = new System.Drawing.Point(720, 10);
+            this.button_Script_Clear.Name = "button_Script_Clear";
+            this.button_Script_Clear.Size = new System.Drawing.Size(100, 40);
+            this.button_Script_Clear.TabIndex = 15;
+            this.button_Script_Clear.Text = "Clear Script";
+            this.button_Script_Clear.UseVisualStyleBackColor = true;
+            this.button_Script_Clear.Click += new System.EventHandler(this.button_Script_Clear_Click);
             // 
-            // button_ScriptLoad
+            // label_Script_Path
             // 
-            this.button_ScriptLoad.Location = new System.Drawing.Point(28, 16);
-            this.button_ScriptLoad.Name = "button_ScriptLoad";
-            this.button_ScriptLoad.Size = new System.Drawing.Size(85, 23);
-            this.button_ScriptLoad.TabIndex = 3;
-            this.button_ScriptLoad.Text = "Load Scripts";
-            this.button_ScriptLoad.UseVisualStyleBackColor = true;
-            this.button_ScriptLoad.Click += new System.EventHandler(this.button_ScriptLoad_Click);
+            this.label_Script_Path.AutoSize = true;
+            this.label_Script_Path.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_Script_Path.Location = new System.Drawing.Point(140, 35);
+            this.label_Script_Path.Name = "label_Script_Path";
+            this.label_Script_Path.Size = new System.Drawing.Size(130, 16);
+            this.label_Script_Path.TabIndex = 14;
+            this.label_Script_Path.Text = "Work in progress.";
+            // 
+            // dataGridView_Scripts
+            // 
+            this.dataGridView_Scripts.AllowUserToResizeRows = false;
+            this.dataGridView_Scripts.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.PowderBlue;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView_Scripts.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            this.dataGridView_Scripts.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView_Scripts.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Script_ActionNumber,
+            this.dataGridViewTextBoxColumn2,
+            this.dataGridViewTextBoxColumn3,
+            this.dataGridViewTextBoxColumn4,
+            this.Script_Var,
+            this.Script_Text});
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView_Scripts.DefaultCellStyle = dataGridViewCellStyle6;
+            this.dataGridView_Scripts.Location = new System.Drawing.Point(10, 60);
+            this.dataGridView_Scripts.Name = "dataGridView_Scripts";
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle7.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.Color.PowderBlue;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView_Scripts.RowHeadersDefaultCellStyle = dataGridViewCellStyle7;
+            this.dataGridView_Scripts.RowHeadersVisible = false;
+            this.dataGridView_Scripts.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView_Scripts.Size = new System.Drawing.Size(930, 520);
+            this.dataGridView_Scripts.TabIndex = 13;
+            // 
+            // label_Script
+            // 
+            this.label_Script.AutoSize = true;
+            this.label_Script.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_Script.Location = new System.Drawing.Point(140, 5);
+            this.label_Script.Name = "label_Script";
+            this.label_Script.Size = new System.Drawing.Size(198, 25);
+            this.label_Script.TabIndex = 12;
+            this.label_Script.Text = "Work in progress.";
+            // 
+            // button_Script_Load
+            // 
+            this.button_Script_Load.Location = new System.Drawing.Point(10, 10);
+            this.button_Script_Load.Name = "button_Script_Load";
+            this.button_Script_Load.Size = new System.Drawing.Size(100, 40);
+            this.button_Script_Load.TabIndex = 3;
+            this.button_Script_Load.Text = "Load Script";
+            this.button_Script_Load.UseVisualStyleBackColor = true;
+            this.button_Script_Load.Click += new System.EventHandler(this.button_Script_Load_Click);
             // 
             // tabPage7_FAQ
             // 
@@ -8960,6 +9039,60 @@
             this.checkBox_ToggleTraitTooltips.UseVisualStyleBackColor = true;
             this.checkBox_ToggleTraitTooltips.CheckedChanged += new System.EventHandler(this.checkBox_ToggleTraitTooltips_CheckedChanged);
             // 
+            // Script_ActionNumber
+            // 
+            this.Script_ActionNumber.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Script_ActionNumber.DataPropertyName = "Script_ActionNumber";
+            this.Script_ActionNumber.HeaderText = "Action Number";
+            this.Script_ActionNumber.Name = "Script_ActionNumber";
+            this.Script_ActionNumber.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.Script_ActionNumber.Width = 83;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dataGridViewTextBoxColumn2.DataPropertyName = "Script_EntryNumber";
+            this.dataGridViewTextBoxColumn2.HeaderText = "Entry Number";
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.dataGridViewTextBoxColumn2.Width = 77;
+            // 
+            // dataGridViewTextBoxColumn3
+            // 
+            this.dataGridViewTextBoxColumn3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dataGridViewTextBoxColumn3.DataPropertyName = "Script_Type";
+            this.dataGridViewTextBoxColumn3.HeaderText = "Type";
+            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewTextBoxColumn3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.dataGridViewTextBoxColumn3.Width = 37;
+            // 
+            // dataGridViewTextBoxColumn4
+            // 
+            this.dataGridViewTextBoxColumn4.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dataGridViewTextBoxColumn4.DataPropertyName = "Script_IOValue";
+            this.dataGridViewTextBoxColumn4.HeaderText = "IOValue";
+            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
+            this.dataGridViewTextBoxColumn4.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.dataGridViewTextBoxColumn4.Width = 51;
+            // 
+            // Script_Var
+            // 
+            this.Script_Var.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Script_Var.DataPropertyName = "Script_Var";
+            this.Script_Var.HeaderText = "Var";
+            this.Script_Var.Name = "Script_Var";
+            this.Script_Var.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.Script_Var.Width = 29;
+            // 
+            // Script_Text
+            // 
+            this.Script_Text.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Script_Text.DataPropertyName = "Script_Text";
+            this.Script_Text.HeaderText = "Text";
+            this.Script_Text.Name = "Script_Text";
+            this.Script_Text.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
             // Form1
             // 
             this.AllowDrop = true;
@@ -8976,7 +9109,7 @@
             this.MaximumSize = new System.Drawing.Size(1000, 700);
             this.MinimumSize = new System.Drawing.Size(1000, 700);
             this.Name = "Form1";
-            this.Text = "Whore Master Editor 0.8.25";
+            this.Text = "Whore Master Editor 0.8.26";
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.App_FileDrop);
             this.DragEnter += new System.Windows.Forms.DragEventHandler(this.App_DragEnter);
             this.tabControl1.ResumeLayout(false);
@@ -9059,6 +9192,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Traits)).EndInit();
             this.tabPage6_Scripts.ResumeLayout(false);
             this.tabPage6_Scripts.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView_Scripts)).EndInit();
             this.tabPage7_FAQ.ResumeLayout(false);
             this.groupBox_Folders.ResumeLayout(false);
             this.groupBox_Folders.PerformLayout();
@@ -9692,13 +9826,12 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridView_Traits_Trait_InheritChance;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridView_Traits_Trait_RandomChance;
         private System.Windows.Forms.TabPage tabPage6_Scripts;
-        private System.Windows.Forms.Button button_ScriptLoad;
+        private System.Windows.Forms.Button button_Script_Load;
         private System.Windows.Forms.Label label182;
         private System.Windows.Forms.TextBox textBox_Config_AntiPregFailure;
         private System.Windows.Forms.Label label186;
         private System.Windows.Forms.TextBox textBox_Config_Multi_Birth_Chance;
-        private System.Windows.Forms.TextBox textBox_Script_Content;
-        private System.Windows.Forms.Label label187;
+        private System.Windows.Forms.Label label_Script;
         private System.Windows.Forms.GroupBox groupBox_Folders;
         private System.Windows.Forms.CheckBox checkBox_Config_Folders_Backup_Saves;
         private System.Windows.Forms.Label label185;
@@ -9758,6 +9891,16 @@
         private System.Windows.Forms.Label label188;
         private System.Windows.Forms.TextBox textBox_Config_IncomeFarm;
         private System.Windows.Forms.Label label190;
+        private System.Windows.Forms.DataGridView dataGridView_Scripts;
+        private System.Windows.Forms.Label label_Script_Path;
+        private System.Windows.Forms.Button button_Script_Save;
+        private System.Windows.Forms.Button button_Script_Clear;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Script_ActionNumber;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Script_Var;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Script_Text;
     }
 }
 
