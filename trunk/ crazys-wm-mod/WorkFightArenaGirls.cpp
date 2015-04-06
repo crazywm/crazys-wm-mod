@@ -160,7 +160,7 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 	g_Girls.UpdateStat(girl, STAT_AGILITY, g_Dice%fightxp + skill);
 	g_Girls.UpdateStat(girl, STAT_CONSTITUTION, g_Dice%fightxp + skill);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoyment, true);
+	g_Girls.UpdateEnjoyment(girl, actiontype, enjoyment);
 
 	/* `J` this will be a place holder until a better payment system gets done
 	*

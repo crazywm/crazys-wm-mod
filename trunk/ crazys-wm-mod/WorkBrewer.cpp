@@ -192,7 +192,7 @@ bool cJobManager::WorkBrewer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 #endif
 
 
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy, true);
+	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
 	if (wages < 0) wages = 0;
 	girl->m_Pay = wages;

@@ -119,7 +119,7 @@ bool cJobManager::WorkFarmMarketer(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 #endif
 
 
-	g_Girls.UpdateEnjoyment(girl, actiontype, work, true);
+	g_Girls.UpdateEnjoyment(girl, actiontype, work);
 
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 

@@ -104,8 +104,8 @@ bool cJobManager::WorkFilmFootJob(sGirl* girl, sBrothel* brothel, bool Day0Night
 	g_Girls.UpdateSkill(girl, SKILL_FOOTJOB, g_Dice%skill + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
-	g_Girls.UpdateEnjoyment(girl, ACTION_SEX, enjoy, true);
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, enjoy, true);
+	g_Girls.UpdateEnjoyment(girl, ACTION_SEX, enjoy);
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, enjoy);
 	g_Girls.PossiblyGainNewTrait(girl, "Porn Star", 80, ACTION_WORKMOVIE, "She has performed in enough sex scenes that she has become a well known Porn Star.", Day0Night1);
 
 	return false;

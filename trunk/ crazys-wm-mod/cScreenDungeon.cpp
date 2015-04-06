@@ -748,14 +748,22 @@ void cScreenDungeon::update_image()
 		if (selected_girl->m_Tort)
 		{
 			SetImage(girlimage_id, g_Girls.GetImageSurface(selected_girl, IMGTYPE_TORTURE, Rand, ImageNum));
-			if (g_Girls.IsAnimatedSurface(selected_girl, IMGTYPE_TORTURE, ImageNum))
-				SetImage(girlimage_id, g_Girls.GetAnimatedSurface(selected_girl, IMGTYPE_TORTURE, ImageNum));
+			// `J` added check in case the girl has no images and the game is using defaults (no .ani defaults)
+			if (selected_girl->m_GirlImages->m_Images[IMGTYPE_TORTURE].m_NumImages > 0)
+			{
+				if (g_Girls.IsAnimatedSurface(selected_girl, IMGTYPE_TORTURE, ImageNum))
+					SetImage(girlimage_id, g_Girls.GetAnimatedSurface(selected_girl, IMGTYPE_TORTURE, ImageNum));
+			}
 		}
 		else
 		{
 			SetImage(girlimage_id, g_Girls.GetImageSurface(selected_girl, IMGTYPE_PROFILE, Rand, ImageNum));
-			if (g_Girls.IsAnimatedSurface(selected_girl, IMGTYPE_PROFILE, ImageNum))
-				SetImage(girlimage_id, g_Girls.GetAnimatedSurface(selected_girl, IMGTYPE_PROFILE, ImageNum));
+			// `J` added check in case the girl has no images and the game is using defaults (no .ani defaults)
+			if (selected_girl->m_GirlImages->m_Images[IMGTYPE_PROFILE].m_NumImages > 0)
+			{
+				if (g_Girls.IsAnimatedSurface(selected_girl, IMGTYPE_PROFILE, ImageNum))
+					SetImage(girlimage_id, g_Girls.GetAnimatedSurface(selected_girl, IMGTYPE_PROFILE, ImageNum));
+			}
 		}
 		HideImage(girlimage_id, false);
 	}

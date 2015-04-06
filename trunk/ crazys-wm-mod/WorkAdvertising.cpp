@@ -158,7 +158,7 @@ bool cJobManager::WorkAdvertising(sGirl* girl, sBrothel* brothel, bool Day0Night
 	}
 
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_SUMMARY);
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy, true);
+	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 
 	// now to boost the brothel's advertising level accordingly
 	brothel->m_AdvertisingLevel += (multiplier / 100);

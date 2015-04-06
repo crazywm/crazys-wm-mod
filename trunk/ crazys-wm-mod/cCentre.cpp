@@ -199,9 +199,7 @@ void cCentreManager::UpdateCentre()	// Start_Building_Process_A
 	cgirl = current->m_Girls;
 	while (cgirl)
 	{
-		g_Girls.updateTempStats(cgirl);			// update temp stats
-		g_Girls.updateTempSkills(cgirl);		// update temp skills
-		g_Girls.updateTempTraits(cgirl);		// update temp traits
+		g_Girls.updateTemp(cgirl);			// update temp stuff
 		g_Girls.EndDayGirls(current, cgirl);
 		cgirl = cgirl->m_Next;
 	}
@@ -711,7 +709,7 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 					current->m_PrevNightJob = current->m_NightJob;
 					current->m_DayJob = current->m_NightJob = restjob;
 					ss << "The Centre Manager takes herself off duty because she is just too damn sore.\n";
-					g_Girls.UpdateEnjoyment(current, ACTION_WORKMATRON, -10, true);
+					g_Girls.UpdateEnjoyment(current, ACTION_WORKMATRON, -10);
 				}
 				else
 				{

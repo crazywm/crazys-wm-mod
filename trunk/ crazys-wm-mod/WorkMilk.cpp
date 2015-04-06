@@ -231,7 +231,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 #endif
 
 
-	g_Girls.UpdateEnjoyment(girl, actiontype, work, true);
+	g_Girls.UpdateEnjoyment(girl, actiontype, work);
 
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_MILK, Day0Night1);
 

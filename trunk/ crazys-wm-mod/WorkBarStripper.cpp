@@ -447,7 +447,7 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, bool Day0Night
 	}
 
 
-	g_Girls.UpdateEnjoyment(girl, actiontype, work, true);
+	g_Girls.UpdateEnjoyment(girl, actiontype, work);
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_STRIP, Day0Night1);
 
 

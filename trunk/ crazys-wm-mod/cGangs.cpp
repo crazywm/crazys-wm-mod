@@ -216,8 +216,8 @@ bool sGang::LoadGangXML(TiXmlHandle hGang)
 	pGang->QueryIntAttribute("Num", &m_Num);
 	LoadSkillsXML(hGang.FirstChild("Skills"), m_Skills);
 	LoadStatsXML(hGang.FirstChild("Stats"), m_Stats);
-	if (m_Skills[SKILL_MAGIC] < 0 || m_Skills[SKILL_COMBAT] < 0 || m_Stats[STAT_INTELLIGENCE] < 0 || m_Stats[STAT_AGILITY] < 0 ||
-		m_Stats[STAT_CONSTITUTION] < 0 || m_Stats[STAT_CHARISMA] < 0 || m_Stats[STAT_STRENGTH] < 0)
+	if (m_Skills[SKILL_MAGIC] <= 0 || m_Skills[SKILL_COMBAT] <= 0 || m_Stats[STAT_INTELLIGENCE] <= 0 || m_Stats[STAT_AGILITY] <= 0 ||
+		m_Stats[STAT_CONSTITUTION] <= 0 || m_Stats[STAT_CHARISMA] <= 0 || m_Stats[STAT_STRENGTH] <= 0)
 	{
 		int total =
 			max(0, m_Skills[SKILL_MAGIC]) +
@@ -229,13 +229,13 @@ bool sGang::LoadGangXML(TiXmlHandle hGang)
 			max(0, m_Stats[STAT_STRENGTH]);
 		int low = total / 8;
 		int high = total / 6;
-		if (m_Skills[SKILL_MAGIC] < 0)			m_Skills[SKILL_MAGIC] = g_Dice.bell(low, high);
-		if (m_Skills[SKILL_COMBAT] < 0)			m_Skills[SKILL_COMBAT] = g_Dice.bell(low, high);
-		if (m_Stats[STAT_INTELLIGENCE] < 0)		m_Stats[STAT_INTELLIGENCE] = g_Dice.bell(low, high);
-		if (m_Stats[STAT_AGILITY] < 0)			m_Stats[STAT_AGILITY] = g_Dice.bell(low, high);
-		if (m_Stats[STAT_CONSTITUTION] < 0)		m_Stats[STAT_CONSTITUTION] = g_Dice.bell(low, high);
-		if (m_Stats[STAT_CHARISMA] < 0)			m_Stats[STAT_CHARISMA] = g_Dice.bell(low, high);
-		if (m_Stats[STAT_STRENGTH] < 0)			m_Stats[STAT_STRENGTH] = g_Dice.bell(low, high);
+		if (m_Skills[SKILL_MAGIC] <= 0)			m_Skills[SKILL_MAGIC] = g_Dice.bell(low, high);
+		if (m_Skills[SKILL_COMBAT] <= 0)			m_Skills[SKILL_COMBAT] = g_Dice.bell(low, high);
+		if (m_Stats[STAT_INTELLIGENCE] <= 0)		m_Stats[STAT_INTELLIGENCE] = g_Dice.bell(low, high);
+		if (m_Stats[STAT_AGILITY] <= 0)			m_Stats[STAT_AGILITY] = g_Dice.bell(low, high);
+		if (m_Stats[STAT_CONSTITUTION] <= 0)		m_Stats[STAT_CONSTITUTION] = g_Dice.bell(low, high);
+		if (m_Stats[STAT_CHARISMA] <= 0)			m_Stats[STAT_CHARISMA] = g_Dice.bell(low, high);
+		if (m_Stats[STAT_STRENGTH] <= 0)			m_Stats[STAT_STRENGTH] = g_Dice.bell(low, high);
 	}
 
 	//these may not have been saved
@@ -537,7 +537,7 @@ sGang* cGangManager::GetTempGang()
 sGang* cGangManager::GetTempGang(int mod)
 {
 	sGang* newGang = new sGang();
-	newGang->m_Num = min(15, g_Dice % 8 + 10);
+	newGang->m_Num = min(15, g_Dice.bell(6, 18));
 	for (int i = 0; i < NUM_SKILLS; i++)
 	{
 		newGang->m_Skills[i] = (g_Dice % 40) + 21 + (g_Dice % mod);
@@ -1053,7 +1053,7 @@ bool cGangManager::GangCombat(sGirl* girl, sGang* gang)
 				if (g_Dice.percent(girl->agility()))
 				{
 					BoostGangCombatSkills(gang, 2);
-					g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, -1, true);
+					g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, -1);
 					return false;
 				}
 			}
@@ -1062,7 +1062,7 @@ bool cGangManager::GangCombat(sGirl* girl, sGang* gang)
 		if (g_Girls.GetStat(girl, STAT_HEALTH) <= 20)
 		{
 			BoostGangCombatSkills(gang, 2);
-			g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, -1, true);
+			g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, -1);
 			return false;
 		}
 		else
@@ -1072,13 +1072,13 @@ bool cGangManager::GangCombat(sGirl* girl, sGang* gang)
 		{
 			if (g_Dice.percent(40))
 			{
-				g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, +1, true);
+				g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, +1);
 				return true;	// the men run away
 			}
 		}
 		if (gang->m_Num == 0)
 		{
-			g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, +1, true);
+			g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, +1);
 			return true;
 		}
 	}
@@ -1086,7 +1086,7 @@ bool cGangManager::GangCombat(sGirl* girl, sGang* gang)
 	l.ss() << "No more opponents: " << girl->m_Realname << " WINS!";
 	l.ssend();
 
-	g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, +1, true);
+	g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, +1);
 
 	return true;
 }
@@ -1295,7 +1295,7 @@ bool cGangManager::GirlVsEnemyGang(sGirl* girl, sGang* enemy_gang)
 		{
 			l.ss() << "The gang overwhelmed and defeated " << girl->m_Realname << ". She lost the battle.";
 			l.ssend();
-			g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, -5, true);
+			g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, -5);
 			return false;
 		}
 		else
@@ -1309,7 +1309,7 @@ bool cGangManager::GirlVsEnemyGang(sGirl* girl, sGang* enemy_gang)
 			{
 				l.ss() << "The gang ran away after losing too many members. " << girl->m_Realname << " WINS!";
 				l.ssend();
-				g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, +5, true);
+				g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, +5);
 				return true;	// the men run away
 			}
 		}
@@ -1318,7 +1318,7 @@ bool cGangManager::GirlVsEnemyGang(sGirl* girl, sGang* enemy_gang)
 		{
 			l.ss() << "The gang fought to bitter end. They are all dead. " << girl->m_Realname << " WINS!";
 			l.ssend();
-			g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, +5, true);
+			g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, +5);
 			return true;
 		}
 	}
@@ -1326,7 +1326,7 @@ bool cGangManager::GirlVsEnemyGang(sGirl* girl, sGang* enemy_gang)
 	l.ss() << "No more opponents: " << girl->m_Realname << " WINS!";
 	l.ssend();
 
-	g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, +5, true);
+	g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, +5);
 
 	return true;
 }

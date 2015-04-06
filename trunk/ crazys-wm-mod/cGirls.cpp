@@ -16,11 +16,12 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#include <fstream>
+#include <algorithm>
 #include "cTariff.h"
 #include "cGirls.h"
 #include "cEvents.h"
 #include "math.h"
-#include <fstream>
 #include "cBrothel.h"
 #include "cMessageBox.h"
 #include "cGold.h"
@@ -28,7 +29,6 @@
 #include "XmlMisc.h"
 #include "cGangs.h"
 #include "CGraphics.h"
-#include <algorithm>
 #include "cMovieStudio.h"
 #include "cArena.h"
 #include "cCentre.h"
@@ -87,6 +87,7 @@ bool sGirl::m_maps_setup = false;
 map<string, unsigned int> sGirl::stat_lookup;
 map<string, unsigned int> sGirl::skill_lookup;
 map<string, unsigned int> sGirl::status_lookup;
+map<string, unsigned int> sGirl::enjoy_lookup;
 
 const char *sGirl::stat_names[] =
 {
@@ -106,6 +107,15 @@ const char *sGirl::status_names[] =
 	"None", "Poisoned", "Badly Poisoned", "Pregnant", "Pregnant By Player", "Slave", "Has Daughter", "Has Son",
 	"Inseminated", "Controlled", "Catacombs", "Arena", "Your Daughter", "Is Daughter"
 };
+// `J` When modifying Action types, search for "J-Change-Action-Types"  :  found in >> cGirls.cpp > *_names[]
+const char *sGirl::enjoy_names[] =
+{
+	"COMBAT", "SEX", "WORKESCORT", "WORKCLEANING", "WORKMATRON", "WORKBAR", "WORKHALL", "WORKSHOW", "WORKSECURITY",
+	"WORKADVERTISING", "WORKTORTURER", "WORKCARING", "WORKDOCTOR", "WORKMOVIE", "WORKCUSTSERV", "WORKCENTRE", "WORKCLUB",
+	"WORKHAREM", "WORKRECRUIT", "WORKNURSE", "WORKMECHANIC", "WORKCOUNSELOR", "WORKMUSIC", "WORKSTRIP", "WORKMILK",
+	"WORKMASSUSSE", "WORKFARM", "WORKINTERN", "WORKREHAB", "MAKEPOTIONS", "MAKEITEMS", "COOKING", "GETTHERAPY",
+	"GENERAL"
+};
 const char *sGirl::children_type_names[] =
 {
 	"Total_Births", "Beasts", "All_Girls", "All_Boys", "Customer_Girls",
@@ -116,6 +126,7 @@ const char *sGirl::children_type_names[] =
 const unsigned int sGirl::max_stats = (sizeof(sGirl::stat_names) / sizeof(sGirl::stat_names[0]));
 const unsigned int sGirl::max_skills = (sizeof(sGirl::skill_names) / sizeof(sGirl::skill_names[0]));
 const unsigned int sGirl::max_statuses = (sizeof(sGirl::status_names) / sizeof(sGirl::status_names[0]));
+const unsigned int sGirl::max_enjoy = (sizeof(sGirl::enjoy_names) / sizeof(sGirl::enjoy_names[0]));
 
 // ----- Lookups
 void sGirl::setup_maps()
@@ -191,6 +202,46 @@ void sGirl::setup_maps()
 	status_lookup["Arena"] = STATUS_ARENA;
 	status_lookup["Your Daughter"] = STATUS_YOURDAUGHTER;
 	status_lookup["Is Daughter"] = STATUS_ISDAUGHTER;
+
+	// `J` When modifying Action types, search for "J-Change-Action-Types"  :  found in >> cGirls.cpp > setup_maps
+
+	enjoy_lookup["COMBAT"] = ACTION_COMBAT;
+	enjoy_lookup["SEX"] = ACTION_SEX;
+	enjoy_lookup["WORKESCORT"] = ACTION_WORKESCORT;
+	enjoy_lookup["WORKCLEANING"] = ACTION_WORKCLEANING;
+	enjoy_lookup["WORKMATRON"] = ACTION_WORKMATRON;
+	enjoy_lookup["WORKBAR"] = ACTION_WORKBAR;
+	enjoy_lookup["WORKHALL"] = ACTION_WORKHALL;
+	enjoy_lookup["WORKSHOW"] = ACTION_WORKSHOW;
+	enjoy_lookup["WORKSECURITY"] = ACTION_WORKSECURITY;
+	enjoy_lookup["WORKADVERTISING"] = ACTION_WORKADVERTISING;
+	enjoy_lookup["WORKTORTURER"] = ACTION_WORKTORTURER;
+	enjoy_lookup["WORKCARING"] = ACTION_WORKCARING;
+	enjoy_lookup["WORKDOCTOR"] = ACTION_WORKDOCTOR;
+	enjoy_lookup["WORKMOVIE"] = ACTION_WORKMOVIE;
+	enjoy_lookup["WORKCUSTSERV"] = ACTION_WORKCUSTSERV;
+	enjoy_lookup["WORKCENTRE"] = ACTION_WORKCENTRE;
+	enjoy_lookup["WORKCLUB"] = ACTION_WORKCLUB;
+	enjoy_lookup["WORKHAREM"] = ACTION_WORKHAREM;
+	enjoy_lookup["WORKRECRUIT"] = ACTION_WORKRECRUIT;
+	enjoy_lookup["WORKNURSE"] = ACTION_WORKNURSE;
+	enjoy_lookup["WORKMECHANIC"] = ACTION_WORKMECHANIC;
+	enjoy_lookup["WORKCOUNSELOR"] = ACTION_WORKCOUNSELOR;
+	enjoy_lookup["WORKMUSIC"] = ACTION_WORKMUSIC;
+	enjoy_lookup["WORKSTRIP"] = ACTION_WORKSTRIP;
+	enjoy_lookup["WORKMILK"] = ACTION_WORKMILK;
+	enjoy_lookup["WORKMASSUSSE"] = ACTION_WORKMASSUSSE;
+	enjoy_lookup["WORKFARM"] = ACTION_WORKFARM;
+	enjoy_lookup["WORKINTERN"] = ACTION_WORKINTERN;
+	enjoy_lookup["WORKREHAB"] = ACTION_WORKREHAB;
+	enjoy_lookup["MAKEPOTIONS"] = ACTION_WORKMAKEPOTIONS;
+	enjoy_lookup["MAKEITEMS"] = ACTION_WORKMAKEITEMS;
+	enjoy_lookup["COOKING"] = ACTION_WORKCOOKING;
+	enjoy_lookup["GETTHERAPY"] = ACTION_WORKTHERAPY;
+	enjoy_lookup["GENERAL"] = ACTION_GENERAL;
+
+
+
 }
 
 int sGirl::lookup_skill_code(string s)
@@ -224,6 +275,17 @@ int sGirl::lookup_stat_code(string s)
 		return -1;
 	}
 	return stat_lookup[s];
+}
+
+int sGirl::lookup_enjoy_code(string s)
+{
+	// be useful to be able to log unrecognised type names here
+	if (enjoy_lookup.find(s) == enjoy_lookup.end())
+	{
+		g_LogFile.os() << "[sGirl::lookup_enjoy_code] Error: unknown Enjoy: " << s << endl;
+		return -1;
+	}
+	return enjoy_lookup[s];
 }
 
 // END MOD
@@ -2081,7 +2143,7 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 	if (!purchase)
 	{
 		ss << "\n\nJOB PREFERENCES";
-		if (cfg.debug.log_extradetails() && !purchase) ss << " (base+trait)";
+		if (cfg.debug.log_extradetails() && !purchase) ss << "\n    (base+temp+item+trait)";
 		ss << "\n";
 
 		// `J` When modifying Action types, search for "J-Change-Action-Types"  :  found in >> GetMoreDetailsString
@@ -2127,20 +2189,23 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 		for (int i = 0; i < NUM_ACTIONTYPES; ++i)
 		{
 			if (jobs[i] == "")			continue;
-			/* */if (girl->get_enjoyment(i) < -70)	{ text = " hates "; }
-			else if (girl->m_Enjoyment[i] < -50)	{ text = " really dislikes "; }
-			else if (girl->m_Enjoyment[i] < -30)	{ text = " dislikes "; }
-			else if (girl->m_Enjoyment[i] < -20)	{ text = " doesn't particularly enjoy "; }
-			else if (girl->m_Enjoyment[i] < 15)		{
-				if (cfg.debug.log_extradetails())	{ text = " is indifferent to "; }
-				else continue;
-			} // if she's indifferent, why specify it? Let's instead skip it.
-			else if (girl->m_Enjoyment[i] < 30)		{ text = " is happy enough with "; }
-			else if (girl->m_Enjoyment[i] < 50)		{ text = " likes "; }
-			else if (girl->m_Enjoyment[i] < 70)		{ text = " really enjoys "; }
-			else									{ text = " loves "; }
+			int e = girl->get_enjoyment(i);
+			/* */if (e < -70)	{ text = " hates "; }
+			else if (e < -50)	{ text = " really dislikes "; }
+			else if (e < -30)	{ text = " dislikes "; }
+			else if (e < -20)	{ text = " doesn't particularly enjoy "; }
+			// if she's indifferent, why specify it? Let's instead skip it.
+			else if (e < 15)	{ if (cfg.debug.log_extradetails())	{ text = " is indifferent to "; } else continue; }
+			else if (e < 30)	{ text = " is happy enough with "; }
+			else if (e < 50)	{ text = " likes "; }
+			else if (e < 70)	{ text = " really enjoys "; }
+			else				{ text = " loves "; }
 			ss << base << text << jobs[i] << ".";
-			if (cfg.debug.log_extradetails())		{ ss << "  (" << girl->m_Enjoyment[i] << "+" << girl->m_EnjoymentTR[i] << ")"; }
+			if (cfg.debug.log_extradetails())		
+			{ 
+				ss << "\n    ( " << girl->m_Enjoyment[i] << " + " << girl->m_EnjoymentTemps[i] << " + " 
+					<< girl->m_EnjoymentMods[i] << " + " << girl->m_EnjoymentTR[i] << " )";
+			}
 			ss << "\n";
 			enjcount++;
 		}
@@ -2789,159 +2854,159 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 	string div = "\n------------------------------------\n\n";
 	string Brothel_Data = "";
 	Brothel_Data += "Brothel Job Ratings\n";
-	Brothel_Data += girl->JobRatingLetter(m_JobManager.JP_Matron(girl, true))				+ "  -  Matron\n";
-	Brothel_Data += girl->JobRatingLetter(m_JobManager.JP_Security(girl, true))				+ "  -  Security\n";
-	Brothel_Data += girl->JobRatingLetter(m_JobManager.JP_ExploreCatacombs(girl, true))		+ "  -  Explore Catacombs\n";
-	Brothel_Data += girl->JobRatingLetter(m_JobManager.JP_Advertising(girl, true))			+ "  -  Advertising\n";
-	Brothel_Data += girl->JobRatingLetter(m_JobManager.JP_CustService(girl, true))			+ "  -  Customer Service\n";
-	Brothel_Data += girl->JobRatingLetter(m_JobManager.JP_BeastCare(girl, true))			+ "  -  Beast Care\n";
-	Brothel_Data += girl->JobRatingLetter(m_JobManager.JP_Training(girl, true))				+ "  !  Training\n";
-//	Brothel_Data += girl->JobRatingLetter(m_JobManager.JP_Torturer(girl, true))				+ "  *  Torturer\n";
-	Brothel_Data += girl->JobRatingLetter(m_JobManager.JP_Cleaning(girl, true))				+ "  ?  Cleaning\n";
+	Brothel_Data += girl->JobRating(m_JobManager.JP_Matron(girl, true), "-", "Matron");
+	Brothel_Data += girl->JobRating(m_JobManager.JP_Security(girl, true), "-", "Security");
+	Brothel_Data += girl->JobRating(m_JobManager.JP_ExploreCatacombs(girl, true), "-", "Explore Catacombs");
+	Brothel_Data += girl->JobRating(m_JobManager.JP_Advertising(girl, true), "-", "Advertising");
+	Brothel_Data += girl->JobRating(m_JobManager.JP_CustService(girl, true), "-", "Customer Service");
+	Brothel_Data += girl->JobRating(m_JobManager.JP_BeastCare(girl, true), "-", "Beast Care");
+	Brothel_Data += girl->JobRating(m_JobManager.JP_Training(girl, true), "!", "Training");
+	// Brothel_Data += girl->JobRating(m_JobManager.JP_Torturer(girl, true), "* Torturer");
+	Brothel_Data += girl->JobRating(m_JobManager.JP_Cleaning(girl, true), "?", "Cleaning");
 	Brothel_Data += "\n";
-	Brothel_Data += girl->JobRatingLetter(m_JobManager.JP_Barmaid(girl, true))				+ "  -  Barmaid\n";
-	Brothel_Data += girl->JobRatingLetter(m_JobManager.JP_BarWaitress(girl, true))			+ "  -  Bar Waitress\n";
-	Brothel_Data += girl->JobRatingLetter(m_JobManager.JP_BarSinger(girl, true))			+ "  -  Singer\n";
-	Brothel_Data += girl->JobRatingLetter(m_JobManager.JP_BarPiano(girl, true))				+ "  -  Piano\n";
-	Brothel_Data += girl->JobRatingLetter(m_JobManager.JP_Escort(girl, true))				+ "  ?  Escort\n";
+	Brothel_Data += girl->JobRating(m_JobManager.JP_Barmaid(girl, true), "-", "Barmaid");
+	Brothel_Data += girl->JobRating(m_JobManager.JP_BarWaitress(girl, true), "-", "Bar Waitress");
+	Brothel_Data += girl->JobRating(m_JobManager.JP_BarSinger(girl, true), "-", "Singer");
+	Brothel_Data += girl->JobRating(m_JobManager.JP_BarPiano(girl, true), "-", "Piano");
+	Brothel_Data += girl->JobRating(m_JobManager.JP_Escort(girl, true), "?", "Escort");
 	Brothel_Data += "\n";
-	Brothel_Data += girl->JobRatingLetter(m_JobManager.JP_HallDealer(girl, true))			+ "  -  Dealer\n";
-	Brothel_Data += girl->JobRatingLetter(m_JobManager.JP_HallEntertainer(girl, true))		+ "  -  Entertainer\n";
-	Brothel_Data += girl->JobRatingLetter(m_JobManager.JP_HallXXXEntertainer(girl, true))	+ "  -  XXX Entertainer\n";
-	Brothel_Data += girl->JobRatingLetter(m_JobManager.JP_HallWhore(girl, true))			+ "  ?  Hall Whore\n";
+	Brothel_Data += girl->JobRating(m_JobManager.JP_HallDealer(girl, true), "-", "Dealer");
+	Brothel_Data += girl->JobRating(m_JobManager.JP_HallEntertainer(girl, true), "-", "Entertainer");
+	Brothel_Data += girl->JobRating(m_JobManager.JP_HallXXXEntertainer(girl, true), "-", "XXX Entertainer");
+	Brothel_Data += girl->JobRating(m_JobManager.JP_HallWhore(girl, true), "?", "Hall Whore");
 	Brothel_Data += "\n";
-	Brothel_Data += girl->JobRatingLetter(m_JobManager.JP_SleazyBarmaid(girl, true))		+ "  -  Club Barmaid\n";
-	Brothel_Data += girl->JobRatingLetter(m_JobManager.JP_SleazyWaitress(girl, true))		+ "  -  Club Waitress\n";
-	Brothel_Data += girl->JobRatingLetter(m_JobManager.JP_BarStripper(girl, true))			+ "  -  Stripper\n";
-	Brothel_Data += girl->JobRatingLetter(m_JobManager.JP_BarWhore(girl, true))				+ "  ?  Bar Whore\n";
+	Brothel_Data += girl->JobRating(m_JobManager.JP_SleazyBarmaid(girl, true), "-", "Club Barmaid");
+	Brothel_Data += girl->JobRating(m_JobManager.JP_SleazyWaitress(girl, true), "-", "Club Waitress");
+	Brothel_Data += girl->JobRating(m_JobManager.JP_BarStripper(girl, true), "-", "Stripper");
+	Brothel_Data += girl->JobRating(m_JobManager.JP_BarWhore(girl, true), "?", "Bar Whore");
 	Brothel_Data += "\n";
-	Brothel_Data += girl->JobRatingLetter(m_JobManager.JP_BrothelMasseuse(girl, true))		+ "  -  Massusse\n";
-	Brothel_Data += girl->JobRatingLetter(m_JobManager.JP_BrothelStripper(girl, true))		+ "  -  Brothel Stripper\n";
-	Brothel_Data += girl->JobRatingLetter(m_JobManager.JP_PeepShow(girl, true))				+ "  -  Peep Show\n";
-	Brothel_Data += girl->JobRatingLetter(m_JobManager.JP_Whore(girl, true))				+ "  ?  Whore\n";
-	Brothel_Data += girl->JobRatingLetter(m_JobManager.JP_WhoreStreets(girl, true))			+ "  ?  Whore on Streets\n";
+	Brothel_Data += girl->JobRating(m_JobManager.JP_BrothelMasseuse(girl, true), "-", "Massusse");
+	Brothel_Data += girl->JobRating(m_JobManager.JP_BrothelStripper(girl, true), "-", "Brothel Stripper");
+	Brothel_Data += girl->JobRating(m_JobManager.JP_PeepShow(girl, true), "-", "Peep Show");
+	Brothel_Data += girl->JobRating(m_JobManager.JP_Whore(girl, true), "?", "Whore");
+	Brothel_Data += girl->JobRating(m_JobManager.JP_WhoreStreets(girl, true), "?", "Whore on Streets");
 	Brothel_Data += div;
-	
+
 	//STUDIO
 	string Studio_Data = "";
 	if (g_Studios.GetNumBrothels() > 0)
 	{
 		Studio_Data += "Studio Job Ratings\n";
-		Studio_Data += girl->JobRatingLetter(m_JobManager.JP_FilmDirector(girl, true))		+ "  ?  Director\n";
-		Studio_Data += girl->JobRatingLetter(m_JobManager.JP_FilmPromoter(girl, true))		+ "  ?  Promoter\n";
-		Studio_Data += girl->JobRatingLetter(m_JobManager.JP_CameraMage(girl, true))		+ "  ?  Camera Mage\n";
-		Studio_Data += girl->JobRatingLetter(m_JobManager.JP_CrystalPurifier(girl, true))	+ "  ?  Crystal Purifier\n";
-		Studio_Data += girl->JobRatingLetter(m_JobManager.JP_Fluffer(girl, true))			+ "  ?  Fluffer\n";
-		Studio_Data += girl->JobRatingLetter(m_JobManager.JP_FilmStagehand(girl, true))		+ "  ?  FilmStagehand\n";
+		Studio_Data += girl->JobRating(m_JobManager.JP_FilmDirector(girl, true), "?", "Director");
+		Studio_Data += girl->JobRating(m_JobManager.JP_FilmPromoter(girl, true), "?", "Promoter");
+		Studio_Data += girl->JobRating(m_JobManager.JP_CameraMage(girl, true), "?", "Camera Mage");
+		Studio_Data += girl->JobRating(m_JobManager.JP_CrystalPurifier(girl, true), "?", "Crystal Purifier");
+		Studio_Data += girl->JobRating(m_JobManager.JP_Fluffer(girl, true), "?", "Fluffer");
+		Studio_Data += girl->JobRating(m_JobManager.JP_FilmStagehand(girl, true), "?", "FilmStagehand");
 		Studio_Data += "\n";
-//		Studio_Data += girl->JobRatingLetter(m_JobManager.JP_FilmBeast(girl, true))			+ "  *  Film Beast\n";
-//		Studio_Data += girl->JobRatingLetter(m_JobManager.JP_FilmSex(girl, true))			+ "  *  Film Sex\n";
-//		Studio_Data += girl->JobRatingLetter(m_JobManager.JP_FilmAnal(girl, true))			+ "  *  Film Anal\n";
-//		Studio_Data += girl->JobRatingLetter(m_JobManager.JP_FilmLesbian(girl, true))		+ "  *  Film Lesbian\n";
-//		Studio_Data += girl->JobRatingLetter(m_JobManager.JP_FilmBondage(girl, true))		+ "  *  Film Bondage\n";
-//		Studio_Data += girl->JobRatingLetter(m_JobManager.JP_FilmGroup(girl, true))			+ "  *  Film Group\n";
-//		Studio_Data += girl->JobRatingLetter(m_JobManager.JP_FilmOral(girl, true))			+ "  *  Film Oral\n";
-//		Studio_Data += girl->JobRatingLetter(m_JobManager.JP_FilmMast(girl, true))			+ "  *  Film Mast\n";
-//		Studio_Data += girl->JobRatingLetter(m_JobManager.JP_FilmTitty(girl, true))			+ "  *  Film Titty\n";
-//		Studio_Data += girl->JobRatingLetter(m_JobManager.JP_FilmStrip(girl, true))			+ "  *  Film Strip\n";
-//		Studio_Data += girl->JobRatingLetter(m_JobManager.JP_FilmHandJob(girl, true))		+ "  *  Film HandJob\n";
-//		Studio_Data += girl->JobRatingLetter(m_JobManager.JP_FilmFootJob(girl, true))		+ "  *  Film FootJob\n";
-//		Studio_Data += girl->JobRatingLetter(m_JobManager.JP_FilmRandom(girl, true))		+ "  *  Film Random\n";
+		// Studio_Data += girl->JobRating(m_JobManager.JP_FilmBeast(girl, true), "* Film Beast");
+		// Studio_Data += girl->JobRating(m_JobManager.JP_FilmSex(girl, true), "* Film Sex");
+		// Studio_Data += girl->JobRating(m_JobManager.JP_FilmAnal(girl, true), "* Film Anal");
+		// Studio_Data += girl->JobRating(m_JobManager.JP_FilmLesbian(girl, true), "* Film Lesbian");
+		// Studio_Data += girl->JobRating(m_JobManager.JP_FilmBondage(girl, true), "* Film Bondage");
+		// Studio_Data += girl->JobRating(m_JobManager.JP_FilmGroup(girl, true), "* Film Group");
+		// Studio_Data += girl->JobRating(m_JobManager.JP_FilmOral(girl, true), "* Film Oral");
+		// Studio_Data += girl->JobRating(m_JobManager.JP_FilmMast(girl, true), "* Film Mast");
+		// Studio_Data += girl->JobRating(m_JobManager.JP_FilmTitty(girl, true), "* Film Titty");
+		// Studio_Data += girl->JobRating(m_JobManager.JP_FilmStrip(girl, true), "* Film Strip");
+		// Studio_Data += girl->JobRating(m_JobManager.JP_FilmHandJob(girl, true), "* Film HandJob");
+		// Studio_Data += girl->JobRating(m_JobManager.JP_FilmFootJob(girl, true), "* Film FootJob");
+		// Studio_Data += girl->JobRating(m_JobManager.JP_FilmRandom(girl, true), "* Film Random");
 		Studio_Data += div;
-	}																						
-	//ARENA																					
-	string Arena_Data = "";																	
-	if (g_Arena.GetNumBrothels() > 0)														
-	{																						
-		Arena_Data += "Arena Job Ratings\n";												
-		Arena_Data += girl->JobRatingLetter(m_JobManager.JP_Doctore(girl, true))			+ "  -  Doctore\n";
-		Arena_Data += girl->JobRatingLetter(m_JobManager.JP_CityGuard(girl, true))			+ "  ?  City Guard\n";
+	}
+	//ARENA 
+	string Arena_Data = "";
+	if (g_Arena.GetNumBrothels() > 0)
+	{
+		Arena_Data += "Arena Job Ratings\n";
+		Arena_Data += girl->JobRating(m_JobManager.JP_Doctore(girl, true), "-", "Doctore");
+		Arena_Data += girl->JobRating(m_JobManager.JP_CityGuard(girl, true), "?", "City Guard");
 		Arena_Data += "\n";
-		Arena_Data += girl->JobRatingLetter(m_JobManager.JP_FightBeast(girl, true))			+ "  -  Fight Beast\n";
-		Arena_Data += girl->JobRatingLetter(m_JobManager.JP_FightArenaGirls(girl, true))	+ "  -  Cage Match\n";
-		Arena_Data += girl->JobRatingLetter(m_JobManager.JP_CombatTraining(girl, true))		+ "  !  Combat Training\n";
-		Arena_Data += div;																	
-	}																						
-	//CENTRE																				
-	string Centre_Data = "";																
-	if (g_Centre.GetNumBrothels() > 0)														
-	{																						
-		Centre_Data += "Centre Job Ratings\n";												
-		Centre_Data += girl->JobRatingLetter(m_JobManager.JP_CentreManager(girl, true))			+ "  -  Centre Manager\n";
-		Centre_Data += girl->JobRatingLetter(m_JobManager.JP_FeedPoor(girl, true))				+ "  -  Feed Poor\n";
-		Centre_Data += girl->JobRatingLetter(m_JobManager.JP_ComunityService(girl, true))		+ "  -  Comunity Service\n";
+		Arena_Data += girl->JobRating(m_JobManager.JP_FightBeast(girl, true), "-", "Fight Beast");
+		Arena_Data += girl->JobRating(m_JobManager.JP_FightArenaGirls(girl, true), "-", "Cage Match");
+		Arena_Data += girl->JobRating(m_JobManager.JP_CombatTraining(girl, true), "!", "Combat Training");
+		Arena_Data += div;
+	}
+	//CENTRE 
+	string Centre_Data = "";
+	if (g_Centre.GetNumBrothels() > 0)
+	{
+		Centre_Data += "Centre Job Ratings\n";
+		Centre_Data += girl->JobRating(m_JobManager.JP_CentreManager(girl, true), "-", "Centre Manager");
+		Centre_Data += girl->JobRating(m_JobManager.JP_FeedPoor(girl, true), "-", "Feed Poor");
+		Centre_Data += girl->JobRating(m_JobManager.JP_ComunityService(girl, true), "-", "Comunity Service");
 		Centre_Data += "\n";
-		Centre_Data += girl->JobRatingLetter(m_JobManager.JP_Counselor(girl, true))				+ "  -  Counselor\n";
-		Centre_Data += girl->JobRatingLetter(m_JobManager.JP_Rehab(girl, true))					+ "  !  Rehab\n";
-		Centre_Data += girl->JobRatingLetter(m_JobManager.JP_CentreTherapy(girl, true))			+ "  !  Therapy\n";
-		Centre_Data += girl->JobRatingLetter(m_JobManager.JP_CentreExTherapy(girl, true))		+ "  !  Extreme Therapy\n";
-		Centre_Data += girl->JobRatingLetter(m_JobManager.JP_CentreAngerManagement(girl, true))	+ "  !  Anger Management\n";
-		Centre_Data += div;																	
-	}																						
-	//CLINIC																				
-	string Clinic_Data = "";																
-	if (g_Clinic.GetNumBrothels() > 0)														
-	{																						
-		Clinic_Data += "Clinic Job Ratings\n";												
-		Clinic_Data += girl->JobRatingLetter(m_JobManager.JP_ChairMan(girl, true))			+ "  -  Chairman\n";
-		Clinic_Data += girl->JobRatingLetter(m_JobManager.JP_Doctor(girl, true))			+ "  -  Doctor\n";
-		Clinic_Data += girl->JobRatingLetter(m_JobManager.JP_Nurse(girl, true))				+ "  -  Nurse\n";
-		Clinic_Data += girl->JobRatingLetter(m_JobManager.JP_Mechanic(girl, true))			+ "  -  Mechanic\n";
-		Clinic_Data += girl->JobRatingLetter(m_JobManager.JP_Intern(girl, true))			+ "  !  Intern\n";
+		Centre_Data += girl->JobRating(m_JobManager.JP_Counselor(girl, true), "-", "Counselor");
+		Centre_Data += girl->JobRating(m_JobManager.JP_Rehab(girl, true), "!", "Rehab");
+		Centre_Data += girl->JobRating(m_JobManager.JP_CentreTherapy(girl, true), "!", "Therapy");
+		Centre_Data += girl->JobRating(m_JobManager.JP_CentreExTherapy(girl, true), "!", "Extreme Therapy");
+		Centre_Data += girl->JobRating(m_JobManager.JP_CentreAngerManagement(girl, true), "!", "Anger Management");
+		Centre_Data += div;
+	}
+	//CLINIC 
+	string Clinic_Data = "";
+	if (g_Clinic.GetNumBrothels() > 0)
+	{
+		Clinic_Data += "Clinic Job Ratings\n";
+		Clinic_Data += girl->JobRating(m_JobManager.JP_ChairMan(girl, true), "-", "Chairman");
+		Clinic_Data += girl->JobRating(m_JobManager.JP_Doctor(girl, true), "-", "Doctor");
+		Clinic_Data += girl->JobRating(m_JobManager.JP_Nurse(girl, true), "-", "Nurse");
+		Clinic_Data += girl->JobRating(m_JobManager.JP_Mechanic(girl, true), "-", "Mechanic");
+		Clinic_Data += girl->JobRating(m_JobManager.JP_Intern(girl, true), "!", "Intern");
 		Clinic_Data += "\n";
-		Clinic_Data += girl->JobRatingLetter(m_JobManager.JP_Healing				(girl, true))	+ "  !  Healing\n";
-		Clinic_Data += girl->JobRatingLetter(m_JobManager.JP_RepairShop				(girl, true))	+ "  !  Repair Shop\n";
-		Clinic_Data += girl->JobRatingLetter(m_JobManager.JP_GetAbort				(girl, true))	+ "  !  Get Abortion\n";
-		Clinic_Data += girl->JobRatingLetter(m_JobManager.JP_PhysicalSurgery		(girl, true))	+ "  !  Physical Surgery\n";
-		Clinic_Data += girl->JobRatingLetter(m_JobManager.JP_Liposuction			(girl, true))	+ "  !  Liposuction\n";
-		Clinic_Data += girl->JobRatingLetter(m_JobManager.JP_BreastReduction		(girl, true))	+ "  !  Breast Reduction\n";
-		Clinic_Data += girl->JobRatingLetter(m_JobManager.JP_BoobJob				(girl, true))	+ "  !  Boob Job\n";
-		Clinic_Data += girl->JobRatingLetter(m_JobManager.JP_GetVaginalRejuvenation	(girl, true))	+ "  !  Vaginal Rejuvenation\n";
-		Clinic_Data += girl->JobRatingLetter(m_JobManager.JP_GetFacelift			(girl, true))	+ "  !  Facelift\n";
-		Clinic_Data += girl->JobRatingLetter(m_JobManager.JP_GetAssJob				(girl, true))	+ "  !  Ass Job\n";
-		Clinic_Data += girl->JobRatingLetter(m_JobManager.JP_GetTubesTied			(girl, true))	+ "  !  Tubes Tied\n";
-		Clinic_Data += girl->JobRatingLetter(m_JobManager.JP_GetFertility			(girl, true))	+ "  !  Fertility\n";
+		Clinic_Data += girl->JobRating(m_JobManager.JP_Healing(girl, true), "!", "Healing");
+		Clinic_Data += girl->JobRating(m_JobManager.JP_RepairShop(girl, true), "!", "Repair Shop");
+		Clinic_Data += girl->JobRating(m_JobManager.JP_GetAbort(girl, true), "!", "Get Abortion");
+		Clinic_Data += girl->JobRating(m_JobManager.JP_PhysicalSurgery(girl, true), "!", "Physical Surgery");
+		Clinic_Data += girl->JobRating(m_JobManager.JP_Liposuction(girl, true), "!", "Liposuction");
+		Clinic_Data += girl->JobRating(m_JobManager.JP_BreastReduction(girl, true), "!", "Breast Reduction");
+		Clinic_Data += girl->JobRating(m_JobManager.JP_BoobJob(girl, true), "!", "Boob Job");
+		Clinic_Data += girl->JobRating(m_JobManager.JP_GetVaginalRejuvenation(girl, true), "!", "Vaginal Rejuvenation");
+		Clinic_Data += girl->JobRating(m_JobManager.JP_GetFacelift(girl, true), "!", "Facelift");
+		Clinic_Data += girl->JobRating(m_JobManager.JP_GetAssJob(girl, true), "!", "Ass Job");
+		Clinic_Data += girl->JobRating(m_JobManager.JP_GetTubesTied(girl, true), "!", "Tubes Tied");
+		Clinic_Data += girl->JobRating(m_JobManager.JP_GetFertility(girl, true), "!", "Fertility");
 		Clinic_Data += div;
-	}																						
-	//FARM																					
-	string Farm_Data = "";																	
-	if (g_Farm.GetNumBrothels() > 0)														
-	{																						
-		Farm_Data += "Farm Job Ratings\n";													
-		Farm_Data += girl->JobRatingLetter(m_JobManager.JP_FarmManager(girl, true))			+ "  -  Farm Manger\n";
-		Farm_Data += girl->JobRatingLetter(m_JobManager.JP_FarmVeterinarian(girl, true))	+ "  -  Veterinarian\n";
-		Farm_Data += girl->JobRatingLetter(m_JobManager.JP_FarmMarketer(girl, true))		+ "  -  Marketer\n";
-		Farm_Data += girl->JobRatingLetter(m_JobManager.JP_FarmResearch(girl, true))		+ "  -  Researcher\n";
-		Farm_Data += girl->JobRatingLetter(m_JobManager.JP_FarmHand(girl, true))			+ "  -  FarmHand\n";
+	}
+	//FARM 
+	string Farm_Data = "";
+	if (g_Farm.GetNumBrothels() > 0)
+	{
+		Farm_Data += "Farm Job Ratings\n";
+		Farm_Data += girl->JobRating(m_JobManager.JP_FarmManager(girl, true), "-", "Farm Manger");
+		Farm_Data += girl->JobRating(m_JobManager.JP_FarmVeterinarian(girl, true), "-", "Veterinarian");
+		Farm_Data += girl->JobRating(m_JobManager.JP_FarmMarketer(girl, true), "-", "Marketer");
+		Farm_Data += girl->JobRating(m_JobManager.JP_FarmResearch(girl, true), "-", "Researcher");
+		Farm_Data += girl->JobRating(m_JobManager.JP_FarmHand(girl, true), "-", "FarmHand");
 		Farm_Data += "\n";
-		Farm_Data += girl->JobRatingLetter(m_JobManager.JP_Farmer(girl, true))				+ "  -  Farmer\n";
-		Farm_Data += girl->JobRatingLetter(m_JobManager.JP_Gardener(girl, true))			+ "  -  Gardener\n";
-		Farm_Data += girl->JobRatingLetter(m_JobManager.JP_Sheapherd(girl, true))			+ "  -  Sheapherd\n";
-		Farm_Data += girl->JobRatingLetter(m_JobManager.JP_Rancher(girl, true))				+ "  -  Rancher\n";
-		Farm_Data += girl->JobRatingLetter(m_JobManager.JP_CatacombRancher(girl, true))		+ "  -  Catacombs Rancher\n";
-		Farm_Data += girl->JobRatingLetter(m_JobManager.JP_Milker(girl, true))				+ "  -  Milker\n";
-		Farm_Data += girl->JobRatingLetter(m_JobManager.JP_Milk(girl, true))				+ "  ?  Get Milked\n";
+		Farm_Data += girl->JobRating(m_JobManager.JP_Farmer(girl, true), "-", "Farmer");
+		Farm_Data += girl->JobRating(m_JobManager.JP_Gardener(girl, true), "-", "Gardener");
+		Farm_Data += girl->JobRating(m_JobManager.JP_Sheapherd(girl, true), "-", "Sheapherd");
+		Farm_Data += girl->JobRating(m_JobManager.JP_Rancher(girl, true), "-", "Rancher");
+		Farm_Data += girl->JobRating(m_JobManager.JP_CatacombRancher(girl, true), "-", "Catacombs Rancher");
+		Farm_Data += girl->JobRating(m_JobManager.JP_Milker(girl, true), "-", "Milker");
+		Farm_Data += girl->JobRating(m_JobManager.JP_Milk(girl, true), "?", "Get Milked");
 		Farm_Data += "\n";
-		Farm_Data += girl->JobRatingLetter(m_JobManager.JP_Butcher(girl, true))				+ "  -  Butcher\n";
-		Farm_Data += girl->JobRatingLetter(m_JobManager.JP_Baker(girl, true))				+ "  -  Baker\n";
-		Farm_Data += girl->JobRatingLetter(m_JobManager.JP_Brewer(girl, true))				+ "  -  Brewer\n";
-		Farm_Data += girl->JobRatingLetter(m_JobManager.JP_MakeItem(girl, true))			+ "  -  Make Item\n";
-		Farm_Data += girl->JobRatingLetter(m_JobManager.JP_MakePotions(girl, true))			+ "  -  Make Potion\n";
-		Farm_Data += div;																	
-	}																						
-	//HOUSE																					
-	string House_Data = "";																	
-	House_Data += "House Job Ratings\n";													
-	House_Data += girl->JobRatingLetter(m_JobManager.JP_HeadGirl(girl, true))				+ "  -  Head Girl\n";
-	House_Data += girl->JobRatingLetter(m_JobManager.JP_Recruiter(girl, true))				+ "  -  Recruiter\n";
-	House_Data += girl->JobRatingLetter(m_JobManager.JP_PersonalTraining(girl, true))		+ "  !  PersonalTraining\n";
-//	House_Data += girl->JobRatingLetter(m_JobManager.JP_PersonalBedWarmer(girl, true))		+ "  *  PersonalBedWarmer\n";
+		Farm_Data += girl->JobRating(m_JobManager.JP_Butcher(girl, true), "-", "Butcher");
+		Farm_Data += girl->JobRating(m_JobManager.JP_Baker(girl, true), "-", "Baker");
+		Farm_Data += girl->JobRating(m_JobManager.JP_Brewer(girl, true), "-", "Brewer");
+		Farm_Data += girl->JobRating(m_JobManager.JP_MakeItem(girl, true), "-", "Make Item");
+		Farm_Data += girl->JobRating(m_JobManager.JP_MakePotions(girl, true), "-", "Make Potion");
+		Farm_Data += div;
+	}
+	//HOUSE 
+	string House_Data = "";
+	House_Data += "House Job Ratings\n";
+	House_Data += girl->JobRating(m_JobManager.JP_HeadGirl(girl, true), "-", "Head Girl");
+	House_Data += girl->JobRating(m_JobManager.JP_Recruiter(girl, true), "-", "Recruiter");
+	House_Data += girl->JobRating(m_JobManager.JP_PersonalTraining(girl, true), "!", "PersonalTraining");
+	// House_Data += girl->JobRating(m_JobManager.JP_PersonalBedWarmer(girl, true), "* PersonalBedWarmer");
 	House_Data += div;
 
 	// `J` Show the current building first
 	string data = "";
 	/* */if (girl->m_InArena)		data += Arena_Data;
-	else if (girl->m_InStudio)	data += Studio_Data;
+	else if (girl->m_InStudio)		data += Studio_Data;
 	else if (girl->m_InCentre)		data += Centre_Data;
 	else if (girl->m_InClinic)		data += Clinic_Data;
 	else if (girl->m_InFarm)		data += Farm_Data;
@@ -3508,6 +3573,14 @@ void cGirls::UpdateStatTr(sGirl* girl, int stat, int amount)
 	girl->m_StatTr[stat] += amount;
 }
 
+void cGirls::updateTemp(sGirl* girl)	// `J` group all the temp updates into one area
+{
+	updateTempStats(girl);		// update temp stats
+	updateTempSkills(girl);		// update temp skills
+	updateTempTraits(girl);		// update temp traits
+	updateTempEnjoyment(girl);		// update temp enjoyment
+}
+
 void cGirls::updateTempStats(sGirl* girl)	// Normalise to zero by 30% each week
 {
 	if (girl->health() <= 0) return;		// Sanity check. Abort on dead girl
@@ -3732,6 +3805,9 @@ bool sGirl::LoadGirlXML(TiXmlHandle hGirl)
 	// load their skills
 	LoadSkillsXML(hGirl.FirstChild("Skills"), m_Skills, m_SkillMods, m_SkillTemps);
 
+	// load enjoyment values
+	LoadActionsXML(hGirl.FirstChildElement("Actions"), m_Enjoyment, m_EnjoymentMods, m_EnjoymentTemps);
+
 	// load virginity
 	pGirl->QueryIntAttribute("Virgin", &m_Virgin);
 
@@ -3824,8 +3900,6 @@ bool sGirl::LoadGirlXML(TiXmlHandle hGirl)
 		}
 	}
 
-	// load enjoyment values
-	LoadActionsXML(hGirl.FirstChildElement("Actions"), m_Enjoyment);
 
 	// load their triggers
 	m_Triggers.LoadTriggersXML(hGirl.FirstChildElement("Triggers"));
@@ -4907,6 +4981,13 @@ void cGirls::UseItems(sGirl* girl)
 							checktouseit--;
 						}
 					}
+					else if (curEffect->m_Affects == sEffect::Enjoy)
+					{
+						if ((curEffect->m_Amount > 0) && (girl->get_enjoyment(curEffect->m_EffectID) < 100))
+						{  // enjoyment would actually increase (wouldn't want to lose any enjoyment)
+							checktouseit--;
+						}
+					}
 				}
 
 				if (checktouseit < (int)curItem->m_Effects.size() / 2) // if more than half of the effects are useful, use it
@@ -5481,6 +5562,7 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait)
 			}
 			else if (Name == "Assassin")
 			{
+				UpdateStatTr(girl, STAT_MORALITY, -20);
 				UpdateSkillTr(girl, SKILL_COMBAT, 15);
 				UpdateEnjoymentTR(girl, ACTION_COMBAT, 15);
 				UpdateEnjoymentTR(girl, ACTION_WORKSECURITY, 20);
@@ -5496,7 +5578,8 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait)
 		{
 			/* */if (Name == "Bad Eyesight")
 			{
-				UpdateSkillTr(girl, SKILL_CRAFTING, -10);
+				UpdateSkillTr(girl, SKILL_CRAFTING, -5);
+				UpdateSkillTr(girl, SKILL_COMBAT, -5);
 			}
 			else if (Name == "Battery Operated")
 			{
@@ -5509,6 +5592,7 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait)
 			}
 			else if (Name == "Big Boobs")
 			{
+				UpdateStatTr(girl, STAT_CONFIDENCE, 5);
 				UpdateStatTr(girl, STAT_BEAUTY, 10);
 				UpdateStatTr(girl, STAT_CONSTITUTION, 5);
 				UpdateStatTr(girl, STAT_AGILITY, -5);
@@ -5517,6 +5601,8 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait)
 			}
 			else if (Name == "Bimbo")
 			{
+				UpdateStatTr(girl, STAT_BEAUTY, 8);
+				UpdateStatTr(girl, STAT_CHARISMA, -10);
 				UpdateStatTr(girl, STAT_CONFIDENCE, 10);
 				UpdateStatTr(girl, STAT_INTELLIGENCE, -10);
 				UpdateSkillTr(girl, SKILL_MEDICINE, -10);
@@ -5540,15 +5626,18 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait)
 			{
 				UpdateSkillTr(girl, SKILL_COMBAT, 10);
 				UpdateStatTr(girl, STAT_CONSTITUTION, 5);
+				UpdateEnjoymentTR(girl, ACTION_COMBAT, 10);
 			}
 			else if (Name == "Broken Will")
 			{
 				UpdateStatTr(girl, STAT_SPIRIT, -100);
+				UpdateStatTr(girl, STAT_DIGNITY, -100);
 				UpdateStatTr(girl, STAT_OBEDIENCE, 100);
 			}
 			else if (Name == "Broodmother")
 			{
-				//
+				UpdateStatTr(girl, STAT_CONSTITUTION, 10);
+				UpdateEnjoymentTR(girl, ACTION_SEX, 10);
 			}
 			else if (Name == "Bruises")
 			{
@@ -5733,13 +5822,17 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait)
 			{
 				UpdateStatTr(girl, STAT_CHARISMA, 10);
 				UpdateStatTr(girl, STAT_CONFIDENCE, 5);
+				UpdateStatTr(girl, STAT_REFINEMENT, 10);
 				UpdateSkillTr(girl, SKILL_PERFORMANCE, 5);
 				UpdateEnjoymentTR(girl, ACTION_SEX, -20);
 				UpdateEnjoymentTR(girl, ACTION_WORKMATRON, 20);
 			}
 			else if (Name == "Elf")
 			{
-				//
+				UpdateStatTr(girl, STAT_AGILITY, 10);
+				UpdateStatTr(girl, STAT_INTELLIGENCE, 10);
+				UpdateStatTr(girl, STAT_CONSTITUTION, -5);
+				UpdateStatTr(girl, STAT_REFINEMENT, 5);
 			}
 			else if (Name == "Equine")
 			{
@@ -6245,11 +6338,6 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait)
 				UpdateStatTr(girl, STAT_CONSTITUTION, 5);
 				UpdateStatTr(girl, STAT_SPIRIT, -10);
 			}
-			else if (Name == "One Eye")
-			{
-				UpdateStatTr(girl, STAT_CHARISMA, -5);
-				UpdateStatTr(girl, STAT_BEAUTY, -5);
-			}
 			else if (Name == "One Foot")
 			{
 				UpdateStatTr(girl, STAT_CHARISMA, -10);
@@ -6412,9 +6500,10 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait)
 		}
 		else if (first == "s")
 		{
-			/* */if (Name == "Sadistic")
+			if (Name == "Sadistic")
 			{
 				UpdateSkillTr(girl, SKILL_BDSM, 20);
+				UpdateEnjoymentTR(girl, ACTION_WORKTORTURER, 25);
 			}
 			else if (Name == "Scarce Lactation")
 			{
@@ -8954,7 +9043,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		enjoy -= 30;
 	}
 
-	g_Girls.UpdateEnjoyment(girl, ACTION_SEX, enjoy, true);
+	g_Girls.UpdateEnjoyment(girl, ACTION_SEX, enjoy);
 
 	cConfig cfg;
 	if (cfg.debug.log_debug())
@@ -10977,13 +11066,13 @@ Uint8 cGirls::girl_fights_girl(sGirl* a, sGirl* b)
 	{
 		if (g_Girls.GetStat(a, STAT_HEALTH) <= 20)
 		{
-			g_Girls.UpdateEnjoyment(a, ACTION_COMBAT, -1, true);
+			g_Girls.UpdateEnjoyment(a, ACTION_COMBAT, -1);
 			winner = 2;
 			break;
 		}
 		else if (g_Girls.GetStat(b, STAT_HEALTH) <= 20)
 		{
-			g_Girls.UpdateEnjoyment(b, ACTION_COMBAT, -1, true);
+			g_Girls.UpdateEnjoyment(b, ACTION_COMBAT, -1);
 			winner = 1;
 			break;
 		}
@@ -11085,7 +11174,7 @@ Uint8 cGirls::girl_fights_girl(sGirl* a, sGirl* b)
 		// Highest damage is 27 pts.  Checking for health between 20 and 30 is a bug as it can be stepped over.
 		if (g_Girls.GetStat(Defender, STAT_HEALTH) <= 40 && g_Girls.GetStat(Defender, STAT_HEALTH) >= 10)
 		{
-			g_Girls.UpdateEnjoyment(Defender, ACTION_COMBAT, -1, true);
+			g_Girls.UpdateEnjoyment(Defender, ACTION_COMBAT, -1);
 			break;
 		}  // if defeated
 	}  // while (1)
@@ -11096,7 +11185,7 @@ Uint8 cGirls::girl_fights_girl(sGirl* a, sGirl* b)
 		l.ss() << a->m_Realname << gettext(" WINS!");
 		l.ssend();
 
-		g_Girls.UpdateEnjoyment(a, ACTION_COMBAT, +1, true);
+		g_Girls.UpdateEnjoyment(a, ACTION_COMBAT, +1);
 
 		return 1;
 	}
@@ -11105,7 +11194,7 @@ Uint8 cGirls::girl_fights_girl(sGirl* a, sGirl* b)
 		l.ss() << b->m_Realname << gettext(" WINS!");
 		l.ssend();
 
-		g_Girls.UpdateEnjoyment(b, ACTION_COMBAT, +1, true);
+		g_Girls.UpdateEnjoyment(b, ACTION_COMBAT, +1);
 
 		return 2;
 	}
@@ -11502,7 +11591,8 @@ int cGirls::GetEnjoyment(sGirl* girl, int whatSheEnjoys)
 {
 	if (whatSheEnjoys < 0) return 0;
 	// Generic calculation
-	int value = girl->m_Enjoyment[whatSheEnjoys] + girl->m_EnjoymentTR[whatSheEnjoys];
+	int value = girl->m_Enjoyment[whatSheEnjoys] + girl->m_EnjoymentTR[whatSheEnjoys] +
+		girl->m_EnjoymentMods[whatSheEnjoys] + girl->m_EnjoymentTemps[whatSheEnjoys];
 
 	if (value < -100) value = -100;
 	else if (value > 100) value = 100;
@@ -11522,18 +11612,43 @@ void cGirls::SetEnjoymentTR(sGirl* girl, int whatSheEnjoys, int amount)									
 	else if (girl->m_EnjoymentTR[whatSheEnjoys] < -100) 	girl->m_EnjoymentTR[whatSheEnjoys] = -100;
 }
 
-void cGirls::UpdateEnjoyment(sGirl* girl, int whatSheEnjoys, int amount, bool wrapTo100)
+void cGirls::UpdateEnjoyment(sGirl* girl, int whatSheEnjoys, int amount)
 {
 	girl->m_Enjoyment[whatSheEnjoys] += amount;
-	if (wrapTo100 == true)
-	{
-		if (girl->m_Enjoyment[whatSheEnjoys] > 100) 		girl->m_Enjoyment[whatSheEnjoys] = 100;
-		else if (girl->m_Enjoyment[whatSheEnjoys] < -100) 	girl->m_Enjoyment[whatSheEnjoys] = -100;
-	}
+	/* */if (girl->m_Enjoyment[whatSheEnjoys] > 100) 	girl->m_Enjoyment[whatSheEnjoys] = 100;
+	else if (girl->m_Enjoyment[whatSheEnjoys] < -100) 	girl->m_Enjoyment[whatSheEnjoys] = -100;
 }
 void cGirls::UpdateEnjoymentTR(sGirl* girl, int whatSheEnjoys, int amount)
 {
 	girl->m_EnjoymentTR[whatSheEnjoys] += amount;
+}
+void cGirls::UpdateEnjoymentMod(sGirl* girl, int whatSheEnjoys, int amount)
+{
+	girl->m_EnjoymentMods[whatSheEnjoys] += amount;
+}
+void cGirls::UpdateEnjoymentTemp(sGirl* girl, int whatSheEnjoys, int amount)
+{
+	girl->m_EnjoymentTemps[whatSheEnjoys] += amount;
+}
+// Normalise to zero by 30%
+void cGirls::updateTempEnjoyment(sGirl* girl)
+{
+	// Sanity check. Abort on dead girl
+	if (girl->health() <= 0) return;
+
+	for (u_int i = 0; i < NUM_ACTIONTYPES; i++)
+	{
+		if (girl->m_EnjoymentTemps[i] != 0)
+		{											// normalize towards 0 by 30% each week
+			int newEnjoy = (int)(float(girl->m_EnjoymentTemps[i]) * 0.7);
+			if (newEnjoy != girl->m_EnjoymentTemps[i])	girl->m_EnjoymentTemps[i] = newEnjoy;
+			else
+			{										// if 30% did nothing, go with 1 instead
+				/* */if (girl->m_EnjoymentTemps[i] > 0)	girl->m_EnjoymentTemps[i]--;
+				else if (girl->m_EnjoymentTemps[i] < 0)	girl->m_EnjoymentTemps[i]++;
+			}
+		}
+	}
 }
 
 
@@ -13209,23 +13324,18 @@ int cImageList::DrawImage(int x, int y, int width, int height, bool random, int 
 
 	if (!random)
 	{
-		if (img == -1)
-			return -1;
+		if (img == -1) return -1;
 
 		if (img > m_NumImages)
 		{
-			if (m_NumImages == 1)
-				ImageNum = 0;
-			else
-				ImageNum = g_Dice%m_NumImages;
+			ImageNum = (m_NumImages == 1 ? 0 : g_Dice%m_NumImages);
 		}
-		else
-			ImageNum = img;
+		else ImageNum = img;
+
 		cImage* current = m_Images;
 		while (current)
 		{
-			if (count == ImageNum)
-				break;
+			if (count == ImageNum) break;
 			count++;
 			current = current->m_Next;
 		}
@@ -13240,8 +13350,7 @@ int cImageList::DrawImage(int x, int y, int width, int height, bool random, int 
 	}
 	else
 	{
-		if (m_NumImages == 0)
-			return -1;
+		if (m_NumImages == 0) return -1;
 		else if (m_NumImages == 1)
 		{
 			m_Images->m_Surface->DrawSurface(x, y, 0, &rect, true);
@@ -13253,21 +13362,19 @@ int cImageList::DrawImage(int x, int y, int width, int height, bool random, int 
 			cImage* current = m_Images;
 			while (current)
 			{
-				if (count == ImageNum)
-					break;
+				if (count == ImageNum) break;
 				count++;
 				current = current->m_Next;
 			}
 
 			if (current)
 			{
-				if (current->m_AniSurface)
+				if (current->m_AniSurface) 
 					current->m_AniSurface->DrawFrame(x, y, rect.w, rect.h, g_Graphics.GetTicks());
 				else
 					current->m_Surface->DrawSurface(x, y, 0, &rect, true);
 			}
-			else
-				return -1;
+			else return -1;
 		}
 	}
 
@@ -13698,16 +13805,24 @@ CSurface* cGirls::GetImageSurface(sGirl* girl, int ImgType, bool random, int& im
 	// `J` If the image is for the gallery, just return the images
 	if (gallery) return girl->m_GirlImages->m_Images[ImgType].GetImageSurface(random, img);
 
-	// `J` check for pregnant profile
-	if (girl->is_pregnant() && ImgType == IMGTYPE_PROFILE &&
-		!girl->m_GirlImages->m_Images[IMGTYPE_PREGPROFILE].m_NumImages &&
-		girl->m_GirlImages->m_Images[IMGTYPE_PREGNANT].m_NumImages)
-		return girl->m_GirlImages->m_Images[IMGTYPE_PREGNANT].GetImageSurface(random, img);
+	// `J` check for pregnant images first
+	if (girl->is_pregnant())
+	{
+		if (ImgType == IMGTYPE_PREGNANT)
+			return girl->m_GirlImages->m_Images[IMGTYPE_PREGNANT].GetImageSurface(random, img);
+		else if (ImgType == IMGTYPE_PROFILE)
+		{
+			if (girl->m_GirlImages->m_Images[IMGTYPE_PREGPROFILE].m_NumImages)
+				return girl->m_GirlImages->m_Images[IMGTYPE_PREGPROFILE].GetImageSurface(random, img);
+			if (girl->m_GirlImages->m_Images[IMGTYPE_PREGNANT].m_NumImages)
+				return girl->m_GirlImages->m_Images[IMGTYPE_PREGNANT].GetImageSurface(random, img);
+		}
+		// `J` check if there are any Preg images for the requested type
+		else if (ImgType < PREG_OFFSET && ImgType != IMGTYPE_PREGNANT &&
+			girl->m_GirlImages->m_Images[ImgType + PREG_OFFSET].m_NumImages)
+			return girl->m_GirlImages->m_Images[ImgType + PREG_OFFSET].GetImageSurface(random, img);
+	}
 
-	// `J` check if she is pregnant and if there are any Preg images for the requested type
-	if (girl->is_pregnant() && ImgType < PREG_OFFSET && ImgType != IMGTYPE_PREGNANT &&
-		girl->m_GirlImages->m_Images[ImgType + PREG_OFFSET].m_NumImages)
-		return girl->m_GirlImages->m_Images[ImgType + PREG_OFFSET].GetImageSurface(random, img);
 
 	// `J` check if there are any images for the requested type
 	if (girl->m_GirlImages->m_Images[ImgType].m_NumImages)
@@ -14315,21 +14430,27 @@ int sGirl::rebel()
 		g_Brothels.GetNumGirlsOnJob(4, JOB_TORTURER, 0) > 0 ||
 		g_Brothels.GetNumGirlsOnJob(5, JOB_TORTURER, 0) > 0 ||
 		g_Brothels.GetNumGirlsOnJob(6, JOB_TORTURER, 0) > 0));
-	else if (this->m_InStudio)		return g_Girls.GetRebelValue(this, g_Studios.GetNumGirlsOnJob(0, JOB_DIRECTOR, 1) > 0);
-	else if (this->m_InArena)			return g_Girls.GetRebelValue(this, g_Arena.GetNumGirlsOnJob(0, JOB_DOCTORE, 0) > 0);
-	else if (this->m_InCentre)			return g_Girls.GetRebelValue(this, g_Centre.GetNumGirlsOnJob(0, JOB_CENTREMANAGER, 0) > 0);
-	else if (this->m_InClinic)			return g_Girls.GetRebelValue(this, g_Clinic.GetNumGirlsOnJob(0, JOB_CHAIRMAN, 0) > 0);
-	else if (this->m_InHouse)			return g_Girls.GetRebelValue(this, g_House.GetNumGirlsOnJob(0, JOB_HEADGIRL, 0) > 0);
-	else if (this->m_InFarm)			return g_Girls.GetRebelValue(this, g_Farm.GetNumGirlsOnJob(0, JOB_FARMMANGER, 0) > 0);
-	else								return g_Girls.GetRebelValue(this, g_Brothels.GetNumGirlsOnJob(this->where_is_she, JOB_MATRON, 0) > 0);
+	else if (this->m_InStudio)	return g_Girls.GetRebelValue(this, g_Studios.GetNumGirlsOnJob(0, JOB_DIRECTOR, 1) > 0);
+	else if (this->m_InArena)	return g_Girls.GetRebelValue(this, g_Arena.GetNumGirlsOnJob(0, JOB_DOCTORE, 0) > 0);
+	else if (this->m_InCentre)	return g_Girls.GetRebelValue(this, g_Centre.GetNumGirlsOnJob(0, JOB_CENTREMANAGER, 0) > 0);
+	else if (this->m_InClinic)	return g_Girls.GetRebelValue(this, g_Clinic.GetNumGirlsOnJob(0, JOB_CHAIRMAN, 0) > 0);
+	else if (this->m_InHouse)	return g_Girls.GetRebelValue(this, g_House.GetNumGirlsOnJob(0, JOB_HEADGIRL, 0) > 0);
+	else if (this->m_InFarm)	return g_Girls.GetRebelValue(this, g_Farm.GetNumGirlsOnJob(0, JOB_FARMMANGER, 0) > 0);
+	else						return g_Girls.GetRebelValue(this, g_Brothels.GetNumGirlsOnJob(this->where_is_she, JOB_MATRON, 0) > 0);
+}
+
+// `J` .06.01.17 condensed and added log_extradetails
+string sGirl::JobRating(double value, string type, string name)
+{
+	cConfig cfg;
+	stringstream jr;
+	jr << JobRatingLetter(value) << "  " << type << "  " << name;
+	if (cfg.debug.log_extradetails()) jr << "   ( " << (int)value << " )";
+	jr << "\n";
+	return jr.str();
 }
 
 string sGirl::JobRatingLetter(double value)
-{
-	return JobRatingLetter((int)value);
-}
-
-string sGirl::JobRatingLetter(int value)
 {
 	/* */if (value < -500)		return "X    ";	// Can not do this job
 	else if (value == 0)		return "0    ";	// Bad input
@@ -14422,7 +14543,7 @@ bool cGirls::detect_disease_in_customer(sBrothel * brothel, sGirl* girl, sCustom
 {
 	string girlName = girl->m_Realname;
 	stringstream ss;
-	if (g_Dice.percent(0.05))	// 0.0005 chance of false positive
+	if (g_Dice.percent(0.1))	// 0.001 chance of false positive
 	{
 		ss << girlName << " thought she detected that her customer had a disease and refused to allow them to touch her just to be safe.";
 		g_MessageQue.AddToQue(ss.str(), COLOR_RED);

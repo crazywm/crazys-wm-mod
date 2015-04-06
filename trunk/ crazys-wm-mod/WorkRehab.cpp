@@ -82,7 +82,7 @@ bool cJobManager::WorkRehab(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 	{
 		ss << "She fought with her counselor and did not make any progress this week.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-		g_Girls.UpdateEnjoyment(girl, actiontype, -1, true);
+		g_Girls.UpdateEnjoyment(girl, actiontype, -1);
 		if (Day0Night1) girl->m_WorkingDay--;
 		return true;
 	}
@@ -125,7 +125,7 @@ bool cJobManager::WorkRehab(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 	if (girl->m_WorkingDay >= 3 && Day0Night1)
 	{
 		enjoy += g_Dice % 10;
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCOUNSELOR, g_Dice % 6 - 2, true);	// `J` She may want to help others with their problems
+		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCOUNSELOR, g_Dice % 6 - 2);	// `J` She may want to help others with their problems
 		g_Girls.UpdateStat(girl, STAT_HAPPINESS, g_Dice % 10);
 
 		ss << "The rehab is a success.\n";
@@ -188,7 +188,7 @@ bool cJobManager::WorkRehab(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 	int libido = 1;
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy, true);
+	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 
 	return false;
 }

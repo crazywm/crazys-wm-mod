@@ -69,7 +69,7 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	}
 	else if (fight_outcome == 1)	// she won
 	{
-		g_Girls.UpdateEnjoyment(girl, actiontype, +3, true);
+		g_Girls.UpdateEnjoyment(girl, actiontype, +3);
 		ss << "She had fun hunting today and came back with ";
 		if (gain <= 2)	{ ss << "two";  gain = 2; }
 		else if (gain == 3)	{ ss << "three"; }
@@ -80,7 +80,7 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	}
 	else		// she lost or it was a draw
 	{
-		g_Girls.UpdateEnjoyment(girl, actiontype, -1, true);
+		g_Girls.UpdateEnjoyment(girl, actiontype, -1);
 		ss << " The animals were difficult to track today. " << girlName << " eventually returned worn out and frustrated, dragging one captured beast behind her.\n";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_COMBAT, Day0Night1);
 		gain = 1;

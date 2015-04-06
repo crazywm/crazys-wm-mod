@@ -526,17 +526,17 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	}
 	else if(roll <= 15) {
 	ss << gettext(" \nSome of the patrons abused her during the shift.");
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKBAR, -1, true);
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKBAR, -1);
 	}
 	else if(roll >=90)
 	{
 	ss << gettext(" \nShe had a pleasant time working.");
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKBAR, +3, true);
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKBAR, +3);
 	}
 	else
 	{
 	ss << gettext(" \nOtherwise, the shift passed uneventfully.");
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKBAR, +1, true);
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKBAR, +1);
 	}*/
 
 
@@ -555,7 +555,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 		ss << "\nOtherwise, the shift passed uneventfully."; work += 1;
 	}
 
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKBAR, work, true);
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKBAR, work);
 
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_WAIT, Day0Night1);
 	int roll_max = (g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetSkill(girl, SKILL_SERVICE));

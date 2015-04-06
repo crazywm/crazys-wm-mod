@@ -523,7 +523,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 			ss << "\nShe cleaned him out, deliberately humiliating him and taunting him into gambling more than he could afford. ";
 			ss << "He ended up losing every penny and all his clothes to this 'dumb whore'. He was finally kicked out, naked into the streets.\n\n";
 			ss << girlName << " enjoyed this. A lot.";
-			g_Girls.UpdateEnjoyment(girl, ACTION_WORKHALL, 3, true);
+			g_Girls.UpdateEnjoyment(girl, ACTION_WORKHALL, 3);
 			g_Girls.UpdateStat(girl, STAT_HAPPINESS, 5);
 			wages += 100;
 		}
@@ -544,7 +544,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 				ss << "\"I'm not doing that today, sir,\" she mumbled. \"But there are other girls.\"\nHe left for the brothel.";
 			}
 			ss << "\n\nShe really hated losing at this stupid card game.";
-			g_Girls.UpdateEnjoyment(girl, ACTION_WORKHALL, -3, true);
+			g_Girls.UpdateEnjoyment(girl, ACTION_WORKHALL, -3);
 			g_Girls.UpdateStat(girl, STAT_HAPPINESS, -5);
 			wages -= 50;
 		}
@@ -567,7 +567,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		ss << "\nOtherwise, the shift passed uneventfully."; work += 1;
 	}
 
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKHALL, work, true);
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKHALL, work);
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_CARD, Day0Night1);
 
 	// work out the pay between the house and the girl

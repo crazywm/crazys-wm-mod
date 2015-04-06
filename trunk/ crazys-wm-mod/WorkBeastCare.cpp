@@ -138,7 +138,7 @@ bool cJobManager::WorkBeastCare(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	}
 
 
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy, true);
+	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 	girl->m_Pay = wages;
 

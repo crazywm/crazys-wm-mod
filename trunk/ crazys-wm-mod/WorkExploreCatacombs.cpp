@@ -184,8 +184,8 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 			g_Girls.UpdateStat(girl, STAT_HAPPINESS, happy);
 			g_Girls.UpdateStat(girl, STAT_SPIRIT, spirit);
 			g_Girls.GirlInjured(girl, injury);
-			g_Girls.UpdateEnjoyment(girl, ACTION_SEX, sex, true);
-			g_Girls.UpdateEnjoyment(girl, actiontype, combat, true);
+			g_Girls.UpdateEnjoyment(girl, ACTION_SEX, sex);
+			g_Girls.UpdateEnjoyment(girl, actiontype, combat);
 
 			return false;
 		}
@@ -377,8 +377,8 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 			g_Girls.UpdateStat(girl, STAT_HAPPINESS, happy);
 			g_Girls.UpdateStat(girl, STAT_SPIRIT, spirit);
 			g_Girls.GirlInjured(girl, injury);
-			g_Girls.UpdateEnjoyment(girl, ACTION_SEX, sex, true);
-			g_Girls.UpdateEnjoyment(girl, actiontype, combat, true);
+			g_Girls.UpdateEnjoyment(girl, ACTION_SEX, sex);
+			g_Girls.UpdateEnjoyment(girl, actiontype, combat);
 
 			return false;
 		}
@@ -497,7 +497,7 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 	g_Girls.UpdateStat(girl, STAT_CONSTITUTION, g_Dice % skill);
 	g_Girls.UpdateStat(girl, STAT_STRENGTH, g_Dice % skill);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
-	g_Girls.UpdateEnjoyment(girl, actiontype, (g_Dice % skill) + 2, true);
+	g_Girls.UpdateEnjoyment(girl, actiontype, (g_Dice % skill) + 2);
 
 	// Myr: Turned trait gains into functions
 	g_Girls.PossiblyGainNewTrait(girl, "Tough", 30, actiontype, "She has become pretty Tough from all of the fights she's been in.", Day0Night1);

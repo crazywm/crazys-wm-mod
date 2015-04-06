@@ -102,7 +102,7 @@ bool cJobManager::WorkFarmManager(sGirl* girl, sBrothel* brothel, bool Day0Night
 	// secondary (-1 for one then -2 for others)
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill + 2);
 
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy, true);
+	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 30, actiontype, "She has worked as a matron long enough that she has learned to be more Charismatic.", Day0Night1);
 	g_Girls.PossiblyGainNewTrait(girl, "Psychic", 60, actiontype, "She has learned to handle the girls so well that you'd almost think she was Psychic.", Day0Night1);
 

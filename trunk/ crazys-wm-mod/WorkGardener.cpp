@@ -179,7 +179,7 @@ bool cJobManager::WorkGardener(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 #endif
 
 
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy, true);
+	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, msgtype);
 
 	if (girl->is_slave() && !cfg.initial.slave_pay_outofpocket()) wages = 0;    // You own her so you don't have to pay her.

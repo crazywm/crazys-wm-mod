@@ -57,13 +57,13 @@ bool cJobManager::WorkMakeItem(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	// TODO need better dialog
 	if (roll <= 10)
 	{
-		g_Girls.UpdateEnjoyment(girl, actiontype, -1, true);
+		g_Girls.UpdateEnjoyment(girl, actiontype, -1);
 		ss << " She wasn't able to make anything.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_CRAFT, Day0Night1);
 	}
 	else
 	{
-		g_Girls.UpdateEnjoyment(girl, actiontype, +3, true);
+		g_Girls.UpdateEnjoyment(girl, actiontype, +3);
 		ss << " She enjoyed her time working and made two items.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_CRAFT, Day0Night1);
 		g_Brothels.add_to_goods(2);

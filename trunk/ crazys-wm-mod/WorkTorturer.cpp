@@ -63,13 +63,13 @@ bool cJobManager::WorkTorturer(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 #if 0
 	if (g_Dice.percent(10))
 	{
-		g_Girls.UpdateEnjoyment(girl, actiontype, -3, true);
+		g_Girls.UpdateEnjoyment(girl, actiontype, -3);
 		ss << girlName << gettext(" hurt herself while torturing someone.");
 		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, Day0Night1);
 	}
 	else
 	{
-		g_Girls.UpdateEnjoyment(girl, actiontype, +3, true);
+		g_Girls.UpdateEnjoyment(girl, actiontype, +3);
 		ss << girlName << gettext(" enjoyed her job working in the dungeon.");
 		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, Day0Night1);
 	}
@@ -79,7 +79,7 @@ bool cJobManager::WorkTorturer(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	bool forFree = false;
 	if (g_Dice.percent(10))
 	{
-		g_Girls.UpdateEnjoyment(girl, actiontype, -3, true);
+		g_Girls.UpdateEnjoyment(girl, actiontype, -3);
 		if (g_Girls.HasTrait(girl, "Sadistic") || g_Girls.HasTrait(girl, "Merciless") || g_Girls.GetStat(girl, STAT_MORALITY) < 30)
 			ss << girlName << gettext(" hurt herself while torturing someone.\n");
 		else
@@ -123,7 +123,7 @@ bool cJobManager::WorkTorturer(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	}
 	else
 	{
-		g_Girls.UpdateEnjoyment(girl, actiontype, +3, true);
+		g_Girls.UpdateEnjoyment(girl, actiontype, +3);
 		switch (roll)
 		{
 		case 0:		ss << girlName << gettext(" enjoyed her job working in the dungeon.\n"); break;
@@ -138,7 +138,7 @@ bool cJobManager::WorkTorturer(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		if ((g_Girls.GetStat(girl, STAT_MORALITY) < 20 || g_Girls.HasTrait(girl, "Sadistic")) && g_Dice.percent(20))
 		{
 			ss << girlName << gettext(" loved this so much she wouldn't accept any money, as long as you promise she can do it again soon.\n");
-			g_Girls.UpdateEnjoyment(girl, actiontype, +3, true);
+			g_Girls.UpdateEnjoyment(girl, actiontype, +3);
 			forFree = true;
 		}
 		if (g_Dice.percent(20))
@@ -153,7 +153,7 @@ bool cJobManager::WorkTorturer(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			case 1:
 				ss << girlName << gettext(" went way too far, creating a hell of a mess. Still it looks like she had fun - she hasn't stopped smiling.\n");
 				g_Girls.UpdateStat(girl, STAT_HAPPINESS, g_Dice % 5);
-				g_Girls.UpdateEnjoyment(girl, actiontype, +1, true);
+				g_Girls.UpdateEnjoyment(girl, actiontype, +1);
 				brothel->m_Filthiness += 15;
 				break;
 			case 2:

@@ -355,7 +355,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	brothel->m_Fame += fame;
 	brothel->m_Happiness += happy;
 
-	g_Girls.UpdateEnjoyment(girl, actiontype, work, true);
+	g_Girls.UpdateEnjoyment(girl, actiontype, work);
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_SING, Day0Night1);
 	int roll_max = (g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA));
 	roll_max /= 4;

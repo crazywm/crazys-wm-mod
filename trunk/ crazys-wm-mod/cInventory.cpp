@@ -69,6 +69,13 @@ const char *sEffect::stat_name(unsigned int id)
 	return "";
 }
 
+const char *sEffect::enjoy_name(unsigned int id)
+{
+	if (id < sGirl::max_stats) return sGirl::enjoy_names[id];
+	g_LogFile.os() << "[sEffect::enjoy_names] Error: enjoy id " << id << " too large (max is " << sGirl::max_enjoy << ")" << endl;
+	return "";
+}
+
 bool sEffect::set_skill(string s)
 {
 	int nID = sGirl::lookup_skill_code(s);
@@ -99,6 +106,18 @@ bool sEffect::set_stat(string s)
 	if (nID == -1)		// ERROR
 	{
 		g_LogFile.os() << "[sEffect::set_stat] Error: unknown Stat: " << s << ". Skill ID: " << nID << endl;
+		return false;
+	}
+	m_EffectID = nID;
+	return true;
+}
+
+bool sEffect::set_Enjoyment(string s)
+{
+	int nID = sGirl::lookup_enjoy_code(s);
+	if (nID == -1)		// ERROR
+	{
+		g_LogFile.os() << "[sEffect::set_enjoy] Error: unknown Enjoy: " << s << ". Enjoy ID: " << nID << endl;
 		return false;
 	}
 	m_EffectID = nID;
@@ -171,6 +190,9 @@ static void do_effects(TiXmlElement *parent, sInventoryItem *item)
 				break;
 			case sEffect::Skill:
 				if (!ept->set_skill(pt)) g_LogFile.os() << " Error in item " << item->m_Name << endl;
+				break;
+			case sEffect::Enjoy:
+				if (!ept->set_Enjoyment(pt)) g_LogFile.os() << " Error in item " << item->m_Name << endl;
 				break;
 			default:
 				g_LogFile.os() << " can't handle effect type " << ept->m_Affects << endl;
@@ -284,7 +306,7 @@ void cInventory::CalculateCost(sInventoryItem* newItem)
 {
 	for (u_int i = 0; i < newItem->m_Effects.size(); i++)
 	{
-		if (newItem->m_Effects[i].m_Affects == 1)	// stats
+		if (newItem->m_Effects[i].m_Affects == sEffect::Stat)	// stats
 		{
 			if (newItem->m_Effects[i].m_Amount >= 0)
 			{
@@ -311,7 +333,7 @@ void cInventory::CalculateCost(sInventoryItem* newItem)
 				newItem->m_Cost -= (newItem->m_Effects[i].m_Amount / 5) * 5;
 			}
 		}
-		if (newItem->m_Effects[i].m_Affects == 0)	// skills
+		if (newItem->m_Effects[i].m_Affects == sEffect::Skill)	// skills
 		{
 			if (newItem->m_Effects[i].m_Amount >= 0)	// increases skill
 				newItem->m_Cost += newItem->m_Effects[i].m_Amount * 15;
@@ -321,7 +343,17 @@ void cInventory::CalculateCost(sInventoryItem* newItem)
 			// make items that do heaps of stuff cost a little less
 			newItem->m_Cost -= (newItem->m_Effects[i].m_Amount / 5) * 5;
 		}
-		if (newItem->m_Effects[i].m_Affects == 3)	// status
+		if (newItem->m_Effects[i].m_Affects == sEffect::Enjoy)	// skills
+		{
+			if (newItem->m_Effects[i].m_Amount >= 0)	// increases enjoyment
+				newItem->m_Cost += newItem->m_Effects[i].m_Amount * 15;
+			else	// decreases enjoyment
+				newItem->m_Cost += newItem->m_Effects[i].m_Amount * 2;
+
+			// make items that do heaps of stuff cost a little less
+			newItem->m_Cost -= (newItem->m_Effects[i].m_Amount / 5) * 5;
+		}
+		if (newItem->m_Effects[i].m_Affects == sEffect::GirlStatus)	// status
 		{
 			if (newItem->m_Effects[i].m_Amount == 1)	// adds status
 			{
@@ -354,7 +386,7 @@ void cInventory::CalculateCost(sInventoryItem* newItem)
 				else if (newItem->m_Effects[i].m_EffectID == STATUS_YOURDAUGHTER)			newItem->m_Cost += 200;
 			}
 		}
-		if (newItem->m_Effects[i].m_Affects == 4)	newItem->m_Cost += 500;	// traits
+		if (newItem->m_Effects[i].m_Affects == sEffect::Trait)	newItem->m_Cost += 500;	// traits
 	}
 	if (newItem->m_Effects.size() > 0)		newItem->m_Cost += newItem->m_Effects.size() * 5;
 	if (newItem->m_Rarity > 0)				newItem->m_Cost += newItem->m_Rarity * 5;
@@ -371,6 +403,7 @@ ostream& operator << (ostream& os, sEffect::What &w)
 	case sEffect::Nothing:		return os << "Nothing";
 	case sEffect::GirlStatus:	return os << "GirlStatus";
 	case sEffect::Trait:		return os << "Trait";
+	case sEffect::Enjoy:		return os << "Enjoy";
 	default:
 		g_LogFile.os() << "error: unexpected 'what' value: " << int(w) << endl;
 		return os << "Error(" << int(w) << ")";
@@ -607,6 +640,10 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 				girl->upd_temp_stat(eff_id, amount);
 				break;
 
+			case sEffect::Enjoy:			// affects enjoyment
+				girl->upd_temp_Enjoyment(eff_id, amount);
+				break;
+
 			case sEffect::Trait:			// affects skill
 				/*
 				 *	WD:	New logic for remembering traits
@@ -643,6 +680,14 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 					g_Girls.UpdateStat(girl, eff_id, amount);
 				// `J` all other items can be removed so use skill mod
 				else g_Girls.UpdateStatMod(girl, eff_id, amount);
+			}
+			else if (affects == sEffect::Enjoy)
+			{
+				// `J` food and makeup are single use items, so if permanent, make them affect the base skill
+				if (girl->m_Inventory[num]->m_Type == INVFOOD || girl->m_Inventory[num]->m_Type == INVMAKEUP)
+					g_Girls.UpdateEnjoyment(girl, eff_id, amount);
+				// `J` all other items can be removed so use skill mod
+				else g_Girls.UpdateEnjoymentMod(girl, eff_id, amount);
 			}
 			else if (affects == sEffect::GirlStatus)	// adds/removes status
 			{
@@ -808,6 +853,7 @@ void cInventory::Unequip(sGirl* girl, int num)
 
 		/* */if (affects == sEffect::Skill)	g_Girls.UpdateSkillMod(girl, eff_id, -amount);
 		else if (affects == sEffect::Stat)	g_Girls.UpdateStatMod(girl, eff_id, -amount);
+		else if (affects == sEffect::Enjoy)	g_Girls.UpdateEnjoymentMod(girl, eff_id, -amount);
 		else if (affects == sEffect::GirlStatus)	// adds/removes status
 		{
 			if (amount == 1) girl->m_States &= ~(1 << eff_id);		// add status
@@ -850,6 +896,7 @@ void cInventory::Equip(sGirl* girl, sInventoryItem* item, bool force)
 
 		/* */if (affects == sEffect::Skill)	g_Girls.UpdateSkillMod(girl, eff_id, amount);
 		else if (affects == sEffect::Stat)	g_Girls.UpdateStatMod(girl, eff_id, amount);
+		else if (affects == sEffect::Enjoy)	g_Girls.UpdateEnjoymentMod(girl, eff_id, amount);
 
 		else if (affects == sEffect::Trait)	// trait
 		{
@@ -1055,7 +1102,7 @@ void cInventory::LoadItems(string filename)
 
 			newItem->m_Effects[i].m_Affects = sEffect::What(tempData);
 
-			if(newItem->m_Effects[i].m_Affects == 4)
+			if (newItem->m_Effects[i].m_Affects == sEffect::Trait)
 			{
 				if (in.peek()=='\n') in.ignore(1,'\n');
 				in.getline(buffer, sizeof(buffer), '\n');		// get the trait name
@@ -1064,7 +1111,7 @@ void cInventory::LoadItems(string filename)
 				in>>tempData;
 				newItem->m_Effects[i].m_Amount = tempData;
 			}
-			else if(newItem->m_Effects[i].m_Affects != 4)
+			else
 			{
 				in>>tempData;
 				newItem->m_Effects[i].m_EffectID = (unsigned char)tempData;

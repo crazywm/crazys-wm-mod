@@ -199,9 +199,7 @@ void cArenaManager::UpdateArena()	// Start_Building_Process_A
 	cgirl = current->m_Girls;
 	while (cgirl)
 	{
-		g_Girls.updateTempStats(cgirl);			// update temp stats
-		g_Girls.updateTempSkills(cgirl);		// update temp skills
-		g_Girls.updateTempTraits(cgirl);		// update temp traits
+		g_Girls.updateTemp(cgirl);			// update temp stuff
 		g_Girls.EndDayGirls(current, cgirl);
 		cgirl = cgirl->m_Next;
 	}
@@ -594,7 +592,7 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 					current->m_PrevNightJob = current->m_NightJob;
 					current->m_DayJob = current->m_NightJob = restjob;
 					ss << "The Doctore takes herself off duty because she is just too damn sore.\n";
-					g_Girls.UpdateEnjoyment(current, ACTION_WORKMATRON, -10, true);
+					g_Girls.UpdateEnjoyment(current, ACTION_WORKMATRON, -10);
 				}
 				else
 				{
@@ -602,7 +600,7 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 					if (t > 80 && h < 40)
 					{
 						ss << "some potions";
-						g_Gold.consumable_cost(20, true);
+						g_Gold.consumable_cost(20);
 						current->m_Stats[STAT_HEALTH] = min(current->m_Stats[STAT_HEALTH] + 20, 100);
 						current->m_Stats[STAT_TIREDNESS] = max(current->m_Stats[STAT_TIREDNESS] - 20, 0);
 					}

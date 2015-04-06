@@ -228,7 +228,7 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 		work += 1;
 	}
 
-	g_Girls.UpdateEnjoyment(girl, actiontype, work, true);
+	g_Girls.UpdateEnjoyment(girl, actiontype, work);
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 	int roll_max = (g_Girls.GetStat(girl, STAT_CHARISMA) + g_Girls.GetSkill(girl, SKILL_SERVICE));
 	roll_max /= 4;

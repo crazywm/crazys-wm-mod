@@ -256,7 +256,7 @@ bool cJobManager::WorkMakePotions(sGirl* girl, sBrothel* brothel, bool Day0Night
 #endif
 
 
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy, true);
+	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_CRAFT, msgtype);
 	girl->m_Pay = max(0, wages);
 

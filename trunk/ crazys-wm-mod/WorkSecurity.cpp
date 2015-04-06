@@ -172,7 +172,7 @@ bool cJobManager::WorkSecurity(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy, true);
+	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 
 	// Copy-pasta from WorkExploreCatacombs
 	g_Girls.PossiblyGainNewTrait(girl, "Tough", 15, actiontype, gettext("She has become pretty Tough from all of the fights she's been in."), Day0Night1);

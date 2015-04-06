@@ -123,7 +123,7 @@ bool cJobManager::WorkFarmVeterinarian(sGirl* girl, sBrothel* brothel, bool Day0
 #endif
 
 
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKFARM, work, true);
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKFARM, work);
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 	girl->m_Pay = max(wages, 0);
 

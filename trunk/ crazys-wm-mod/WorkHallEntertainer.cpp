@@ -514,7 +514,7 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 		work += 1;
 	}
 
-	g_Girls.UpdateEnjoyment(girl, actiontype, work, true);
+	g_Girls.UpdateEnjoyment(girl, actiontype, work);
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_BUNNY, Day0Night1);
 
 

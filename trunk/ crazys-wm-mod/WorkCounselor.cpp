@@ -58,7 +58,7 @@ bool cJobManager::WorkCounselor(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 		{
 			ss << "She refused to counsel anyone.";
 			girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-			g_Girls.UpdateEnjoyment(girl, ACTION_WORKREHAB, -1, true);
+			g_Girls.UpdateEnjoyment(girl, ACTION_WORKREHAB, -1);
 			return true;
 		}
 	}
@@ -96,7 +96,7 @@ bool cJobManager::WorkCounselor(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	g_Girls.UpdateStat(girl, STAT_CHARISMA, (g_Dice%skill) + 1);
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, (g_Dice%skill) + 1);
 
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy, true);
+	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 	//gain traits
 	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, actiontype, "Dealing with patients and talking with them about their problems has made " + girl->m_Realname + " more Charismatic.", Day0Night1 == SHIFT_NIGHT);
 	//lose traits

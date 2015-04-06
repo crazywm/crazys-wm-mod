@@ -2369,8 +2369,12 @@ void Turnsummary()		// `J` Bookmark - starting the turn summary page
 		else
 		{
 			g_Turnsummary.SetImage(g_interfaceid.IMAGE_TSIMAGE, g_Girls.GetImageSurface(selGirl, ImageType, image_changed, ImageNum));
-			if (g_Girls.IsAnimatedSurface(selGirl, ImageType, ImageNum))
-				g_Turnsummary.SetImage(g_interfaceid.IMAGE_TSIMAGE, g_Girls.GetAnimatedSurface(selGirl, ImageType, ImageNum));
+			// `J` added check in case the girl has no images and the game is using defaults (no .ani defaults)
+			if (selGirl->m_GirlImages->m_Images[ImageType].m_NumImages > 0)
+			{
+				if (g_Girls.IsAnimatedSurface(selGirl, ImageType, ImageNum))
+					g_Turnsummary.SetImage(g_interfaceid.IMAGE_TSIMAGE, g_Girls.GetAnimatedSurface(selGirl, ImageType, ImageNum));
+			}
 		}
 	}
 	/*
