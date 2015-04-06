@@ -121,7 +121,7 @@ bool cJobManager::WorkRancher(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 
 
 
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKFARM, work, true);
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKFARM, work);
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_HERD, Day0Night1);
 
 

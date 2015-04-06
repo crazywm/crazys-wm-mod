@@ -269,7 +269,7 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		ss << "\nOtherwise, the shift passed uneventfully."; work += 1;
 	}
 
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKCENTRE, work, true);
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKCENTRE, work);
 
 	if (sex)
 	{
@@ -294,7 +294,7 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		}
 		brothel->m_Happiness += 100;
 		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
-		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +3, true);
+		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +3);
 		dispo += 6;
 	}
 	else if (blow)

@@ -100,19 +100,19 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 	if (roll_a <= 15)
 	{
 		ss << gettext("\nYou did something to piss her off.\n\n");
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKHAREM, -1, true);
+		g_Girls.UpdateEnjoyment(girl, ACTION_WORKHAREM, -1);
 		g_Girls.UpdateStat(girl, STAT_PCLOVE, -1);
 	}
 	else if (roll_a >= 90)
 	{
 		ss << gettext("\nShe had a pleasant time with you.\n\n");
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKHAREM, +3, true);
+		g_Girls.UpdateEnjoyment(girl, ACTION_WORKHAREM, +3);
 		g_Girls.UpdateStat(girl, STAT_PCLOVE, 2);
 	}
 	else
 	{
 		ss << gettext("\nOtherwise, nothing of note happened.\n\n");
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKHAREM, +1, true);
+		g_Girls.UpdateEnjoyment(girl, ACTION_WORKHAREM, +1);
 	}
 
 
@@ -299,7 +299,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 		{
 			ss << gettext("was horney so she just Masturbated.\n\n");
 		}
-		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +1, true);
+		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +1);
 		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -15);
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_MAST, Day0Night1);
 	}

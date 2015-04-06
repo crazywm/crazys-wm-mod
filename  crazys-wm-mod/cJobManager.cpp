@@ -1622,7 +1622,7 @@ bool cJobManager::work_related_violence(sGirl* girl, bool Day0Night1, bool stree
 		customer_rape(girl, enemy_gang->m_Num);
 		return true;
 	}
-	g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +1, true);
+	g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +1);
 	/*
 	 *	the fame thing could work either way.
 	 *	of course, that road leads to us keeping reputation for
@@ -1737,8 +1737,8 @@ bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_n
 		g_Girls.UpdateStatTemp(SecGuard, STAT_LIBIDO, num);  // There's nothing like killin ta make ya horny!
 		g_Girls.UpdateStat(SecGuard, STAT_CONFIDENCE, num);
 		g_Girls.UpdateStat(SecGuard, STAT_FAME, num);
-		g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, num, true);
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKSECURITY, num, true);
+		g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, num);
+		g_Girls.UpdateEnjoyment(girl, ACTION_WORKSECURITY, num);
 
 		stringstream Gmsg;
 		stringstream SGmsg;
@@ -1871,8 +1871,8 @@ bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_n
 		g_Girls.UpdateStat(SecGuard, STAT_PCLOVE, -20);
 		g_Girls.UpdateStat(SecGuard, STAT_PCHATE, 20);
 		g_Girls.GirlInjured(SecGuard, 10); // MYR: Note
-		g_Girls.UpdateEnjoyment(SecGuard, ACTION_WORKSECURITY, -30, true);
-		g_Girls.UpdateEnjoyment(SecGuard, ACTION_COMBAT, -30, true);
+		g_Girls.UpdateEnjoyment(SecGuard, ACTION_WORKSECURITY, -30);
+		g_Girls.UpdateEnjoyment(SecGuard, ACTION_COMBAT, -30);
 	}
 	return res;
 }
@@ -2034,7 +2034,7 @@ bool cJobManager::girl_fights_rape(sGirl* girl, sGang *enemy_gang, int day_night
 		g_Girls.UpdateStat(girl, STAT_CONFIDENCE, num);
 		g_Girls.UpdateStat(girl, STAT_FAME, num);
 
-		g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, num, true);
+		g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, num);
 
 		stringstream msg;
 
@@ -2116,7 +2116,7 @@ void cJobManager::customer_rape(sGirl* girl, int numberofattackers)
 	g_Girls.UpdateStat(girl, STAT_PCLOVE, -20);
 	g_Girls.UpdateStat(girl, STAT_PCHATE, 20);
 	g_Girls.GirlInjured(girl, 10); // MYR: Note
-	g_Girls.UpdateEnjoyment(girl, ACTION_SEX, -30, true);
+	g_Girls.UpdateEnjoyment(girl, ACTION_SEX, -30);
 
 	// `J` do Pregnancy and/or STDs
 	bool preg = false, std = false, a = false, c = false, h = false, s = false;

@@ -175,7 +175,7 @@ bool cJobManager::WorkIntern(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	/* */if (roll_c <= 10)	{ enjoy -= g_Dice % 3 + 1;	ss << "Some of the patrons abused her during the shift."; }
 	else if (roll_c >= 90)	{ enjoy += g_Dice % 3 + 1;	ss << "She had a pleasant time working."; }
 	else /*             */	{ enjoy += g_Dice % 2;		ss << "Otherwise, the shift passed uneventfully."; }
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy, true);
+	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 

@@ -104,10 +104,12 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 		int startinggold = curr->m_Gold;
 
 		// `J` added - rival power
-		if (curr->m_Power < 0) curr->m_Power = 0;				// if they are negative on power, set it to 0
-		else if (curr->m_NumBrothels <= 0) curr->m_Power--;		// if they have no brothels, reduce power
-		else curr->m_Power++;									// otherwise increase power
-
+		// `J` reworked to reduce the rival's power
+		curr->m_Power = 
+			max(0, curr->m_NumBrothels * 5) +
+			max(0, curr->m_NumGamblingHalls * 2) +
+			max(0, curr->m_NumBars * 1);
+	
 		// check if a rival is in danger
 		if (curr->m_Gold <= 0 || curr->m_NumBrothels <= 0 || curr->m_NumGirls <= 0 || curr->m_NumGamblingHalls <= 0 || curr->m_NumBars <= 0)
 		{
@@ -1027,6 +1029,9 @@ bool cRivalManager::LoadRivalsXML(TiXmlHandle hRivalManager)
 			pRival->QueryIntAttribute("NumGirls", &current->m_NumGirls);
 			pRival->QueryIntAttribute("NumGangs", &current->m_NumGangs);
 
+			// `J` cleanup rival power for .06.01.17
+			if (current->m_Power > 50) current->m_Power = max(0, current->m_NumBrothels * 5) + max(0, current->m_NumGamblingHalls * 2) + max(0, current->m_NumBars * 1);
+
 			message = "loaded rival: ";
 			message += current->m_Name;
 			g_LogFile.write(message);
@@ -1047,7 +1052,6 @@ void cRivalManager::CreateRival(long bribeRate, int extort, long gold, int bars,
 	DirPath first_names = DirPath() << "Resources" << "Data" << "RivalGangFirstNames.txt";
 	DirPath last_names = DirPath() << "Resources" << "Data" << "RivalGangLastNames.txt";
 
-	rival->m_Power = power;						// `J` added
 	rival->m_Gold = gold;
 	rival->m_NumBrothels = brothels;
 	rival->m_NumGirls = Girls;
@@ -1056,6 +1060,15 @@ void cRivalManager::CreateRival(long bribeRate, int extort, long gold, int bars,
 	rival->m_BusinessesExtort = extort;
 	rival->m_NumBars = bars;
 	rival->m_NumGamblingHalls = gambHalls;
+
+	// `J` added - rival power
+	// `J` reworked to reduce the rival's power
+	rival->m_Power = max(power, 
+		max(0, rival->m_NumBrothels * 5) +
+		max(0, rival->m_NumGamblingHalls * 2) +
+		max(0, rival->m_NumBars * 1));
+
+
 
 	for (;;)
 	{
@@ -1096,9 +1109,10 @@ void cRivalManager::CreateRandomRival()
 	DirPath first_names = DirPath() << "Resources" << "Data" << "RivalGangFirstNames.txt";
 	DirPath last_names = DirPath() << "Resources" << "Data" << "RivalGangLastNames.txt";
 
-	rival->m_Power = max(0, g_Dice % 11 - 5);
 	rival->m_Gold = (g_Dice % 20000) + 5000;
 	rival->m_NumBrothels = (g_Dice % 3) + 1;
+	rival->m_Power = rival->m_NumBrothels * 4;	// starts out a little less powerful
+
 	rival->m_NumGirls = 0;
 	while (rival->m_NumGirls == 0)
 		rival->m_NumGirls = (g_Dice % ((rival->m_NumBrothels) * 20)) + 20;

@@ -540,8 +540,8 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, bool Da
 		ss << "\nOtherwise, the shift passed uneventfully."; work += 1;
 	}
 
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKHALL, work, true);
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKSTRIP, work, true);
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKHALL, work);
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKSTRIP, work);
 
 	girl->m_Events.AddMessage(ss.str(), imagetype, Day0Night1);
 

@@ -114,7 +114,7 @@ bool cJobManager::WorkCleanArena(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		g_Girls.UpdateStat(girl, STAT_AGILITY, (g_Dice % 2));
 		g_Girls.UpdateStat(girl, STAT_CONSTITUTION, (g_Dice % 2));
 		g_Girls.UpdateStat(girl, STAT_CONFIDENCE, (g_Dice % 2));
-		g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, 1, true);
+		g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, 1);
 	}
 
 	// do all the output
@@ -139,7 +139,7 @@ bool cJobManager::WorkCleanArena(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	g_Girls.UpdateSkill(girl, SKILL_CRAFTING, (g_Dice % 2));
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy, true);
+	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 	//lose traits
 	g_Girls.PossiblyLoseExistingTrait(girl, "Clumsy", 30, actiontype, "It took her spilling hundreds of buckets, and just as many reprimands, but " + girl->m_Realname + " has finally stopped being so Clumsy.", Day0Night1);
 

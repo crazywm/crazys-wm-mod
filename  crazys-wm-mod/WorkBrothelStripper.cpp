@@ -346,7 +346,7 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 		}
 		g_Girls.UpdateSkill(girl, n, 2);
 		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -25);
-		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +1, true);
+		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +1);
 		// work out the pay between the house and the girl
 		wages += g_Girls.GetStat(girl, STAT_ASKPRICE);
 		int roll_max = (g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA));
@@ -389,7 +389,7 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 		ss << "\nOtherwise, the shift passed uneventfully."; work += 1;
 	}
 
-	g_Girls.UpdateEnjoyment(girl, actiontype, work, true);
+	g_Girls.UpdateEnjoyment(girl, actiontype, work);
 	girl->m_Events.AddMessage(ss.str(), imageType, Day0Night1);
 
 	if (wages < 0) wages = 0;

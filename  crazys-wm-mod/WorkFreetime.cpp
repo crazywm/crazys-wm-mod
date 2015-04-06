@@ -601,7 +601,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			{
 				ss << "amazing. She really knows how to cook.\n";
 				U_Health += 5;
-				g_Girls.UpdateEnjoyment(girl, ACTION_WORKCOOKING, 1, true);
+				g_Girls.UpdateEnjoyment(girl, ACTION_WORKCOOKING, 1);
 
 			}
 			else if (g_Girls.GetSkill(girl, SKILL_COOKING) > 50)
@@ -617,7 +617,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			{
 				ss << "awful. It can't really be called food it was so bad.\n";
 				U_Health -= 2;
-				g_Girls.UpdateEnjoyment(girl, ACTION_WORKCOOKING, -1, true);
+				g_Girls.UpdateEnjoyment(girl, ACTION_WORKCOOKING, -1);
 
 			}
 			if (HateLove >= 80 && g_Dice.percent(10))//loves you

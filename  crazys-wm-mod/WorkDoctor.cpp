@@ -150,7 +150,7 @@ bool cJobManager::WorkDoctor(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy, true);
+	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 
 	return false;
 }

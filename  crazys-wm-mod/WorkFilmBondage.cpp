@@ -115,8 +115,8 @@ bool cJobManager::WorkFilmBondage(sGirl* girl, sBrothel* brothel, bool Day0Night
 	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill);
 	g_Girls.UpdateSkill(girl, SKILL_BDSM, g_Dice%skill + 1);
 
-	g_Girls.UpdateEnjoyment(girl, ACTION_SEX, enjoy, true);
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, enjoy, true);
+	g_Girls.UpdateEnjoyment(girl, ACTION_SEX, enjoy);
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, enjoy);
 	g_Girls.PossiblyGainNewTrait(girl, "Fake Orgasm Expert", 50, ACTION_SEX, "She has become quite the faker.", Day0Night1);
 	g_Girls.PossiblyGainNewTrait(girl, "Porn Star", 80, ACTION_WORKMOVIE, "She has performed in enough sex scenes that she has become a well known Porn Star.", Day0Night1);
 

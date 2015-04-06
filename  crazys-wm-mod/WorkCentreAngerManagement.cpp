@@ -69,11 +69,11 @@ bool cJobManager::WorkCentreAngerManagement(sGirl* girl, sBrothel* brothel, bool
 	}
 	if (g_Dice.percent(20) || g_Girls.DisobeyCheck(girl, actiontype, brothel))	// `J` - yes, OR, not and.
 	{
-		g_Girls.UpdateEnjoyment(girl, actiontype, -1, true);
+		g_Girls.UpdateEnjoyment(girl, actiontype, -1);
 		if (Day0Night1) girl->m_WorkingDay--;
 		if (g_Dice.percent(10))
 		{
-			g_Girls.UpdateEnjoyment(girl, actiontype, -5, true);
+			g_Girls.UpdateEnjoyment(girl, actiontype, -5);
 			bool runaway = false;
 			// if there is no counselor, it should not get to here
 			sGirl* counselor = g_Centre.GetRandomGirlOnJob(0, JOB_COUNSELOR, Day0Night1);	
@@ -82,9 +82,9 @@ bool cJobManager::WorkCentreAngerManagement(sGirl* girl, sBrothel* brothel, bool
 			if (winner == 1)	// the patient won
 			{
 				ss << " and won.\n\n";
-				g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, 5, true);
-				g_Girls.UpdateEnjoyment(counselor, ACTION_WORKCOUNSELOR, -5, true);
-				g_Girls.UpdateEnjoyment(counselor, ACTION_COMBAT, -2, true);
+				g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, 5);
+				g_Girls.UpdateEnjoyment(counselor, ACTION_WORKCOUNSELOR, -5);
+				g_Girls.UpdateEnjoyment(counselor, ACTION_COMBAT, -2);
 
 				if (g_Dice.percent(10))	// and ran away
 				{
@@ -103,10 +103,10 @@ bool cJobManager::WorkCentreAngerManagement(sGirl* girl, sBrothel* brothel, bool
 			else	// the counselor won
 			{
 				ss << " and lost.\n\n";
-				g_Girls.UpdateEnjoyment(girl, actiontype, -5, true);
-				g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, -5, true);
-				g_Girls.UpdateEnjoyment(counselor, ACTION_WORKCOUNSELOR, -1, true);
-				g_Girls.UpdateEnjoyment(counselor, ACTION_COMBAT, 2, true);
+				g_Girls.UpdateEnjoyment(girl, actiontype, -5);
+				g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, -5);
+				g_Girls.UpdateEnjoyment(counselor, ACTION_WORKCOUNSELOR, -1);
+				g_Girls.UpdateEnjoyment(counselor, ACTION_COMBAT, 2);
 			}
 			stringstream ssc;
 			ssc << counselor->m_Realname << " had to defend herself from " << girlName << " who she was counceling.\n";
@@ -161,7 +161,7 @@ bool cJobManager::WorkCentreAngerManagement(sGirl* girl, sBrothel* brothel, bool
 	if (girl->m_WorkingDay >= 3 && Day0Night1)
 	{
 		enjoy += g_Dice % 10;
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCOUNSELOR, g_Dice % 6 - 2, true);	// `J` She may want to help others with their problems
+		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCOUNSELOR, g_Dice % 6 - 2);	// `J` She may want to help others with their problems
 		g_Girls.UpdateStat(girl, STAT_HAPPINESS, g_Dice % 10);
 		
 		ss << "The therapy is a success.\n";
@@ -208,7 +208,7 @@ bool cJobManager::WorkCentreAngerManagement(sGirl* girl, sBrothel* brothel, bool
 
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, msgtype);
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy, true);
+	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 
 	return false;
 }

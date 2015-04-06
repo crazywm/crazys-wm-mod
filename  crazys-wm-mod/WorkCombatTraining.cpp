@@ -275,7 +275,7 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	/* */if (roll_c <= 10)	{ enjoy -= g_Dice % 3 + 1;	ss << "She did not enjoy her time training."; }
 	else if (roll_c >= 90)	{ enjoy += g_Dice % 3 + 1;	ss << "She had a pleasant time training."; }
 	else /*             */	{ enjoy += g_Dice % 2;		ss << "Otherwise, the shift passed uneventfully."; }
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy, true);
+	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 	
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_COMBAT, Day0Night1);
 	brothel->m_Filthiness += 2;	// fighting is dirty

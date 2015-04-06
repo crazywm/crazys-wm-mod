@@ -123,7 +123,7 @@ bool cJobManager::WorkSheapherd(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 #endif
 
 
-	g_Girls.UpdateEnjoyment(girl, actiontype, work, true);
+	g_Girls.UpdateEnjoyment(girl, actiontype, work);
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_HERD, Day0Night1);
 
 

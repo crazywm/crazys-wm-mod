@@ -321,7 +321,7 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		ss << "\nOtherwise, the shift passed uneventfully."; work += 1;
 	}
 
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKMUSIC, work, true);
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKMUSIC, work);
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 	int roll_max = (g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA));
 	roll_max /= 4;

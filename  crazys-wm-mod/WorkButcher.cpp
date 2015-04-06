@@ -169,7 +169,7 @@ bool cJobManager::WorkButcher(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 #endif
 
 
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy, true);
+	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
 
 

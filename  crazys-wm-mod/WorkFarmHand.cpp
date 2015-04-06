@@ -168,8 +168,8 @@ bool cJobManager::WorkFarmHand(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	g_Girls.UpdateSkill(girl, SKILL_FARMING, max(0, (g_Dice % skill) - 2));
 	g_Girls.UpdateStat(girl, STAT_STRENGTH, max(0, (g_Dice % skill) - 2));
 
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoyF, true);
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKCLEANING, enjoyC, true);
+	g_Girls.UpdateEnjoyment(girl, actiontype, enjoyF);
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKCLEANING, enjoyC);
 	//lose traits
 	g_Girls.PossiblyLoseExistingTrait(girl, "Clumsy", 30, ACTION_WORKCLEANING, "It took her spilling hundreds of buckets, and just as many reprimands, but " + girl->m_Realname + " has finally stopped being so Clumsy.", Day0Night1);
 

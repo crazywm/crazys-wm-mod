@@ -42,7 +42,8 @@ struct sEffect
 		Stat		= 1,
 		Nothing		= 2,
 		GirlStatus	= 3,
-		Trait		= 4
+		Trait		= 4,
+		Enjoy		= 5
 	};
 	What m_Affects;
 /*
@@ -61,7 +62,8 @@ struct sEffect
 		else if	(s == "Stat")		m_Affects = Stat;
 		else if	(s == "Nothing")	m_Affects = Nothing;
 		else if	(s == "GirlStatus")	m_Affects = GirlStatus;
-		else if	(s == "Trait")		m_Affects = Trait;
+		else if (s == "Trait")		m_Affects = Trait;
+		else if (s == "Enjoy")		m_Affects = Enjoy;
 		else {
 			m_Affects = Nothing;
 			cerr << "Error: Bad 'what' string for item effect: '" << s << "'" << endl;
@@ -84,45 +86,7 @@ struct sEffect
 	const char *girl_status_name(unsigned int id);
 	const char *skill_name(unsigned int id);		// WD:	Use definition in sGirl::
 	const char *stat_name(unsigned int id);			// WD:	Use definition in sGirl::
-
-#if 0 // WD: use definition and code in sGirl:: to remove dup code
-	const char *skill_name(unsigned int id) {
-		const char *skills[] = {
-			"Anal",
-			"Magic",
-			"BDSM"),
-			"NormalSex"),
-			"Beastiality"),
-			"Group",
-			"Lesbian",
-			"Service",
-			"Strip"),
-			"Combat")
-		};
-		const size_t n_skills = (sizeof(skills) / sizeof(skills[0]));
-		if(id < n_skills) {
-			return skills[id];
-		}
-		cerr << "Error: skill id " << id << " too large (max is " << n_skills << ")" << endl;
-		return "";
-	}
-	const char *stat_name(unsigned int id) {
-		const char *stats[] = {
-			"Charisma"),	"Happiness"),	"Libido",	"Constitution"),
-			"Intelligence"),	"Confidence"),	"Mana"),		"Agility"),
-			"Fame"),		"Level"),	"AskPrice"),	"House"),
-			"Exp"),		"Age"),		"Obedience"),	"Spirit"),
-			"Beauty"),	"Tiredness"),	"Health"),	"PCFear"),
-			"PCLove"),	"PCHate")
-		};
-		const size_t n_stats = (sizeof(stats) / sizeof(stats[0]));
-		if(id < n_stats) {
-			return stats[id];
-		}
-		cerr << "Error: stat id " << id << " too large (max is " << n_stats << ")" << endl;
-		return 0;
-	}
-#endif
+	const char *enjoy_name(unsigned int id);		// `J`	Use definition in sGirl::
 
 /*
  *	and we need to go the other way,
@@ -134,83 +98,9 @@ struct sEffect
 	bool set_skill(string s);
 	bool set_girl_status(string s);
 	bool set_stat(string s);
+	bool set_Enjoyment(string s);
 
-#if 0 // WD: use definition and code in sGirl:: to remove dup code
-	bool set_skill(string s)
-	{
 
-		if(s == "Anal")			m_EffectID = 0;
-		else if(s == "Magic")		m_EffectID = 1;
-		else if(s == "BDSM")		m_EffectID = 2;
-		else if(s == "NormalSex")	m_EffectID = 3;
-		else if(s == "Beastiality")	m_EffectID = 4;
-		else if(s == "Group")		m_EffectID = 5;
-		else if(s == "Lesbian")		m_EffectID = 6;
-		else if(s == "Service")		m_EffectID = 7;
-		else if(s == "Strip")		m_EffectID = 8;
-		else if(s == "Combat")		m_EffectID = 9;
-		else {
-			cerr << "unknown skill: " << s << endl;
-			return false;
-		}
-		return true;
-	}
-	bool set_girl_status(string s)
-	{
-		if(s == "Poisoned")		m_EffectID = 1;
-		else if(s == "Badly Poisoned")	m_EffectID = 2;
-		else if(s == "Pregnant")	m_EffectID = 3;
-		else if(s == "Pregnant By Player") 	m_EffectID = 4;
-		else if(s == "Slave")		m_EffectID = 5;
-		else if(s == "Has Daughter")	m_EffectID = 6;
-		else if(s == "Has Son")		m_EffectID = 7;
-		else if(s == "Inseminated")	m_EffectID = 8;
-		else if(s == "Controlled")	m_EffectID = 9;
-		else if(s == "Catacombs")	m_EffectID = 10;
-		else {
-			cerr << "unknown girl status: " << s << endl;
-			return false;
-		}
-		return true;
-	}
-	bool set_stat(string s)
-	{
-		//cerr << "looking up " << s << endl;
-		if(s == "Age")			m_EffectID = STAT_AGE;
-		else if(s == "Agility") 	m_EffectID = STAT_AGILITY;
-		else if(s == "AskPrice")	m_EffectID = STAT_ASKPRICE;
-		else if(s == "Beauty")		m_EffectID = STAT_BEAUTY;
-		else if(s == "Charisma")	m_EffectID = STAT_CHARISMA;
-		else if(s == "Confidence") 	m_EffectID = STAT_CONFIDENCE;
-		else if(s == "Constitution") 	m_EffectID = STAT_CONSTITUTION;
-		else if(s == "Exp") 		m_EffectID = STAT_EXP;
-		else if(s == "Fame") 		m_EffectID = STAT_FAME;
-		else if(s == "Happiness") 	m_EffectID = STAT_HAPPINESS;
-		else if(s == "Health") 		m_EffectID = STAT_HEALTH;
-		else if(s == "House") 		m_EffectID = STAT_HOUSE;
-		else if(s == "Intelligence") 	m_EffectID = STAT_INTELLIGENCE;
-		else if(s == "Level") 		m_EffectID = STAT_LEVEL;
-		else if(s == "Libido") 		m_EffectID = STAT_LIBIDO;
-		else if(s == "Mana") 		m_EffectID = STAT_MANA;
-		else if(s == "Obedience") 	m_EffectID = STAT_OBEDIENCE;
-		else if(s == "PCFear") 		m_EffectID = STAT_PCFEAR;
-		else if(s == "PCHate") 		m_EffectID = STAT_PCHATE;
-		else if(s == "PCLove") 		m_EffectID = STAT_PCLOVE;
-		else if(s == "Spirit") 		m_EffectID = STAT_SPIRIT;
-		else if(s == "Tiredness") 	m_EffectID = STAT_TIREDNESS;
-		else {
-			cerr	<< "Error: unknown stat string '"
-				<< s
-				<< "'"
-				<< endl
-			;
-			m_EffectID = STAT_CHARISMA;
-			return false;
-		}
-		return true;
-	}
-#endif
-	
 /*
  *	magnitude of the effect. 
  *	-10 will subtract 10 from the target stat while equiped
@@ -237,6 +127,7 @@ struct sEffect
 		if (eff.m_Affects == Skill) { os << eff.skill_name(eff.m_EffectID); }
 		if (eff.m_Affects == Trait) { os << "'" << eff.m_Trait << "'"; }
 		if (eff.m_Affects == GirlStatus) { os << eff.girl_status_name(eff.m_EffectID); }
+		if (eff.m_Affects == Enjoy) { os << eff.enjoy_name(eff.m_EffectID); }
 		os << (eff.m_Amount > 0 ? " +" : " ") << eff.m_Amount;
 		return os << endl;
 	}
@@ -335,17 +226,14 @@ typedef struct sInventoryItem
 		else if (s == "Catacomb01")		{ m_Rarity = Catacomb01; }
 		else if (s == "ScriptOnly")		{ m_Rarity = ScriptOnly; }
 		else if (s == "ScriptOrReward") { m_Rarity = ScriptOrReward; }
-		else {
-			cerr << "Error in set_rarity: unexpected value '" << s << "'" << endl;
-			m_Rarity = Shop05;	// what to do?
-		}
+		else { cerr << "Error in set_rarity: unexpected value '" << s << "'" << endl; m_Rarity = Shop05; }	// what to do?
 	}
 
 	void set_special(string s)
 	{
-		if (s == "None") { m_Special = None; }
-		else if (s == "AffectsAll") { m_Special = AffectsAll; }
-		else if (s == "Temporary") { m_Special = Temporary; }
+		/* */if (s == "None")			{ m_Special = None; }
+		else if (s == "AffectsAll")		{ m_Special = AffectsAll; }
+		else if (s == "Temporary")		{ m_Special = Temporary; }
 		else { m_Special = None; cerr << "unexpected special string: '" << s << "'" << endl; }
 	}
 
@@ -375,40 +263,26 @@ typedef struct sInventoryItem
 
 	friend ostream& operator << (ostream& os, sInventoryItem::Special &spec) {
 		switch(spec) {
-		case None:
-			return os << "None";
-		case AffectsAll:
-			return os << "AffectsAll";
-		case Temporary:
-			return os << "Temporary";
-		default:
-			cerr << "error: unexpected special value: " << int(spec) << endl;
+		case None:				return os << "None";
+		case AffectsAll:		return os << "AffectsAll";
+		case Temporary:			return os << "Temporary";
+		default:	cerr << "error: unexpected special value: " << int(spec) << endl;
 			return os << "Error(" << int(spec) << ")";
 		}
 	}
 
 	friend ostream& operator << (ostream& os, sInventoryItem::Rarity &r) {
 		switch(r) {
-		case Common:
-			return os << "Common";
-		case Shop50:
-			return os << "Shops, 50%";
-		case Shop25:
-			return os << "Shops, 25%";
-		case Shop05:
-			return os << "Shops, 05%";
-		case Catacomb15:
-			return os << "Catacombs, 15%";
-		case Catacomb05:
-			return os << "Catacombs, 05%";
-		case Catacomb01:
-			return os << "Catacombs, 01%";
-		case ScriptOnly:
-			return os << "Scripted Only";
-		case ScriptOrReward:
-			return os << "Scripts or Reward";
-		default:
-			cerr << "error: unexpected rarity value: " << int(r) << endl;
+		case Common:			return os << "Common";
+		case Shop50:			return os << "Shops, 50%";
+		case Shop25:			return os << "Shops, 25%";
+		case Shop05:			return os << "Shops, 05%";
+		case Catacomb15:		return os << "Catacombs, 15%";
+		case Catacomb05:		return os << "Catacombs, 05%";
+		case Catacomb01:		return os << "Catacombs, 01%";
+		case ScriptOnly:		return os << "Scripted Only";
+		case ScriptOrReward:	return os << "Scripts or Reward";
+		default:	cerr << "error: unexpected rarity value: " << int(r) << endl;
 			return os << "Error(" << int(r) << ")";
 		}
 	}

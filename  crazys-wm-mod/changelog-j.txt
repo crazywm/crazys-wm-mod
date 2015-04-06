@@ -1905,9 +1905,27 @@ WME - Now saves .scriptx files
 !!!!!!!!!!!!!!!!!!!! pushed to SVN - r164
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.26
 
+###  Changes 3/23-4/4/2015 - real life is busy. not much time to work on the game.
+Reduced the power of rivals to prevent them from becoming too powerful.
 
+###  Changes 4/5/2015
+Added several stat/skill/enjoy mods to cGirls::ApplyTraits
+Started adding code needed to allow customized trait effects - work in progress.
+Added enjoyment temp and mod so items can affect enjoyment.
+Combined updateTemp stuff into one group.
+Rewrote job performance list to allow for cfg.debug.log_extradetails() to show the number
+Cleanup of XmlMisc.cpp
 
-
+###  Changes 4/6/2015
+Started cleaning image selection.
+ - Hopefully fixed a few problems dealing with default images
+ - Fixed the problem with .ani files not working.
+ 
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r165  -  Pushing before attempting to add gif support in case it does not work.
+ 
+ 
+ 
+ 
 
  
 $$$$ TO DO - SHORT TERM - (for this version) $$$$

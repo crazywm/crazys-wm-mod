@@ -208,8 +208,8 @@ bool cJobManager::WorkFilmStagehand(sGirl* girl, sBrothel* brothel, bool Day0Nig
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, (g_Dice % skill) + 2);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
-	if (filming) g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, enjoym, true);
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKCLEANING, enjoyc, true);
+	if (filming) g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, enjoym);
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKCLEANING, enjoyc);
 	//lose traits
 	g_Girls.PossiblyLoseExistingTrait(girl, "Clumsy", 30, ACTION_WORKCLEANING, "It took her spilling hundreds of buckets, and just as many reprimands, but " + girl->m_Realname + " has finally stopped being so Clumsy.", Day0Night1);
 

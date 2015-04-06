@@ -58,6 +58,7 @@ public:
 	virtual int GetEnjoyment(sGirl* girl, int skill) = 0;
 	virtual void UpdateStat(sGirl* girl, int stat, int amount, bool usetraits = true) = 0;
 	virtual void UpdateSkill(sGirl* girl, int skill, int amount) = 0;
+	virtual void UpdateEnjoyment(sGirl* girl, int skill, int amount) = 0;
 	virtual bool CalcPregnancy(sGirl* girl, int chance, int type, int stats[NUM_STATS], int skills[NUM_SKILLS]) = 0;
 	virtual bool AddTrait(sGirl* girl, string name, int temptime = 0, bool removeitem = false, bool remember = false) = 0;
 	virtual bool RemoveTrait(sGirl* girl, string name, bool removeitem = false, bool remember = false, bool keepinrememberlist = false) = 0;
@@ -67,6 +68,7 @@ public:
 	virtual bool CheckVirginity(sGirl* girl) = 0;
 	virtual void UpdateSkillTemp(sGirl* girl, int skill, int amount) = 0;	// updates a skill temporarily
 	virtual void UpdateStatTemp(sGirl* girl, int stat, int amount) = 0;
+	virtual void UpdateEnjoymentTemp(sGirl* girl, int stat, int amount) = 0;
 };
 extern cAbstractGirls *g_GirlsPtr;
 
@@ -399,6 +401,8 @@ struct sGirl
 
 	int m_Enjoyment[NUM_ACTIONTYPES];			// these values determine how much a girl likes an action
 	int m_EnjoymentTR[NUM_ACTIONTYPES];			// `J` added for traits to affect enjoyment
+	int m_EnjoymentMods[NUM_ACTIONTYPES];		// `J` added perminant modifiers to stats
+	int m_EnjoymentTemps[NUM_ACTIONTYPES];		// `J` added these go down (or up) by 30% each week until they reach 0
 	// (-100 is hate, +100 is loves)
 	int m_Virgin = -1;							// is she a virgin, 0=false, 1=true, -1=not checked
 
@@ -576,6 +580,7 @@ struct sGirl
 	static const char	*stat_names[];
 	static const char	*skill_names[];
 	static const char	*status_names[];
+	static const char	*enjoy_names[];
 	static const char	*children_type_names[];	// `J` added
 	/*
 	*	again, might as well make them part of the struct that uses them
@@ -583,6 +588,7 @@ struct sGirl
 	static const unsigned int	max_stats;
 	static const unsigned int	max_skills;
 	static const unsigned int	max_statuses;
+	static const unsigned int	max_enjoy;
 	/*
 	*	we need to be able to go the other way, too:
 	*	from string to number. The maps map stat/skill names
@@ -593,11 +599,13 @@ struct sGirl
 	static map<string, unsigned int>	stat_lookup;
 	static map<string, unsigned int>	skill_lookup;
 	static map<string, unsigned int>	status_lookup;
+	static map<string, unsigned int>	enjoy_lookup;
 	static void		setup_maps();
 
 	static int lookup_stat_code(string s);
 	static int lookup_skill_code(string s);
 	static int lookup_status_code(string s);
+	static int lookup_enjoy_code(string s);
 	/*
 	*	Strictly speaking, methods don't belong in structs.
 	*	I've always thought that more of a guideline than a hard and fast rule
@@ -635,6 +643,19 @@ struct sGirl
 		g_GirlsPtr->UpdateStat(this, stat_id, amount, usetraits);
 		return g_GirlsPtr->GetStat(this, stat_id);
 	}
+
+	int upd_temp_Enjoyment(int stat_id, int amount)
+	{
+		g_GirlsPtr->UpdateEnjoymentTemp(this, stat_id, amount);
+		return g_GirlsPtr->GetEnjoyment(this, stat_id);
+	}
+	int upd_Enjoyment(int stat_id, int amount, bool usetraits = true)
+	{
+		g_GirlsPtr->UpdateEnjoyment(this, stat_id, amount);
+		return g_GirlsPtr->GetEnjoyment(this, stat_id);
+	}
+
+
 	/*
 	*	Now then:
 	*/
@@ -697,8 +718,8 @@ struct sGirl
 
 
 	int rebel();
+	string JobRating(double value, string type = "", string name = "");
 	string JobRatingLetter(double value);
-	string JobRatingLetter(int value);
 	/*
 	*	notice that if we do tweak get_stat to reference the stats array
 	*	direct, the above still work.
@@ -931,6 +952,15 @@ public:
 	void UpdateSkillMod(sGirl* girl, int skill, int amount);	// updates a skillmods usually from items
 	void UpdateSkillTr(sGirl* girl, int skill, int amount);		// updates a skillTr from traits
 
+	int GetEnjoyment(sGirl* girl, int a_Enjoy);													// `J` added
+	void SetEnjoyment(sGirl* girl, int a_Enjoy, int amount);									// `J` added
+	void SetEnjoymentTR(sGirl* girl, int a_Enjoy, int amount);									// `J` added for traits
+	void UpdateEnjoyment(sGirl* girl, int whatSheEnjoys, int amount);	// updates what she enjoys
+	void UpdateEnjoymentTR(sGirl* girl, int whatSheEnjoys, int amount);							// `J` added for traits
+	void UpdateEnjoymentMod(sGirl* girl, int whatSheEnjoys, int amount);							// `J` added for traits
+	void UpdateEnjoymentTemp(sGirl* girl, int whatSheEnjoys, int amount);							// `J` added for traits
+
+
 	double GetAverageOfAllSkills(sGirl* girl);	// `J` added
 	double GetAverageOfSexSkills(sGirl* girl);	// `J` added
 	double GetAverageOfNSxSkills(sGirl* girl);	// `J` added
@@ -961,11 +991,6 @@ public:
 	string AdjustTraitGroupFertility(sGirl* girl, int steps, bool showmessage = false, bool Day0Night1 = false);
 
 
-	int GetEnjoyment(sGirl* girl, int a_Enjoy);													// `J` added
-	void SetEnjoyment(sGirl* girl, int a_Enjoy, int amount);									// `J` added
-	void SetEnjoymentTR(sGirl* girl, int a_Enjoy, int amount);									// `J` added for traits
-	void UpdateEnjoyment(sGirl* girl, int whatSheEnjoys, int amount, bool wrapTo100 = false);	// updates what she enjoys
-	void UpdateEnjoymentTR(sGirl* girl, int whatSheEnjoys, int amount);							// `J` added for traits
 
 	void LoadGirlImages(sGirl* girl);	// loads a girls images using her name to check that directory in the characters folder
 	int DrawGirl(sGirl* girl, int x, int y, int width, int height, int ImgType, bool random = true, int img = 0);	// draws a image of a girl
@@ -1080,11 +1105,14 @@ public:
 
 	// end mod
 
+	void updateTemp(sGirl* girl);		// `J` group all the temp updates into one area
+
 	// WD:	Consolidate common code in BrothelUpdate and DungeonUpdate to fn's
 	void updateGirlAge(sGirl* girl, bool inc_inService = false);
 	void updateTempStats(sGirl* girl);
 	void updateTempSkills(sGirl* girl);
 	void updateTempTraits(sGirl* girl);
+	void updateTempEnjoyment(sGirl* girl);
 	void updateTempTraits(sGirl* girl, string trait, int amount);
 	void updateSTD(sGirl* girl);
 	void updateHappyTraits(sGirl* girl);

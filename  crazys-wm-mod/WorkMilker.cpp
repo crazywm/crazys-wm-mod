@@ -210,7 +210,7 @@ bool cJobManager::WorkMilker(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	brothel->m_Finance.farm_income(earned);
 #endif
 
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy, true);
+	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 
 	wages += int(drinks / 5);

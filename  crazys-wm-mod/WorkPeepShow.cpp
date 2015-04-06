@@ -280,7 +280,7 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	/* */if (roll <= 5)		{ enjoyment -= 1; ss << "\nSome of the patrons abused her during the shift."; }
 	else if (roll <= 25)	{ enjoyment += 3; ss << "\nShe had a pleasant time working."; }
 	else /*           */	{ enjoyment += 1; ss << "\nOtherwise, the shift passed uneventfully."; }
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKSTRIP, enjoyment, true);
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKSTRIP, enjoyment);
 
 	// work out the pay between the house and the girl
 	girl->m_Tips = tips;

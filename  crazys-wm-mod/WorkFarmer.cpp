@@ -120,7 +120,7 @@ bool cJobManager::WorkFarmer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 #endif
 
 
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKFARM, work, true);
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKFARM, work);
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_FARM, Day0Night1);
 	if (wages < 0) wages = 0;
 	girl->m_Pay = wages;

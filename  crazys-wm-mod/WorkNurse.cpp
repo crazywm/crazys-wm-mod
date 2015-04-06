@@ -344,7 +344,7 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 		}
 		brothel->m_Happiness += 100;
 		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
-		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +3, true);
+		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +3);
 	}
 	else if (hand)
 	{
@@ -406,7 +406,7 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 	g_Girls.UpdateSkill(girl, SKILL_MEDICINE, g_Dice%skill + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy, true);
+	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 	//gain traits
 	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, actiontype, "Dealing with patients and talking with them about their problems has made " + girlName + " more Charismatic.", Day0Night1);
 	//lose traits

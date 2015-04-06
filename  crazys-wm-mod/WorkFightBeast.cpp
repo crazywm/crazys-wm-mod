@@ -165,7 +165,7 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	ss << girlName << " drew in " << jobperformance << " people to watch her and you earned " << earned << " from it.";
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy, true);
+	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 	// Improve girl
 	int fightxp = (fight_outcome == 1 ? 3 : 1);
 	int xp = 3 * fightxp, libido = 2, skill = 1;

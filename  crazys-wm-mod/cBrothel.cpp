@@ -1356,9 +1356,7 @@ void cBrothelManager::UpdateBrothels()	// Start_Building_Process_A
 		cgirl = current->m_Girls;
 		while (cgirl)
 		{
-			g_Girls.updateTempStats(cgirl);			// update temp stats
-			g_Girls.updateTempSkills(cgirl);		// update temp skills
-			g_Girls.updateTempTraits(cgirl);		// update temp traits
+			g_Girls.updateTemp(cgirl);			// update temp stuff
 			g_Girls.EndDayGirls(current, cgirl);
 			cgirl = cgirl->m_Next;
 		}
@@ -2914,7 +2912,7 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 		if (is_she_resting(girl))
 		{
 			ss << "She put on her Apron and cooked a meal for some of the girls.\n\n";
-			g_Girls.UpdateEnjoyment(girl, ACTION_WORKCOOKING, 1, true);
+			g_Girls.UpdateEnjoyment(girl, ACTION_WORKCOOKING, 1);
 			girl->happiness(5);
 			cook = true;
 		}
@@ -4508,11 +4506,11 @@ bool cBrothelManager::PlayerCombat(sGirl* girl)		//  ***************************
 
 	if (g_Girls.GetStat(girl, STAT_HEALTH) < 20)
 	{
-		g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, -1, true);
+		g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, -1);
 		return false;
 	}
 
-	g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, +1, true);
+	g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, +1);
 
 	return true;
 }

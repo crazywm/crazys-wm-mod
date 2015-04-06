@@ -279,7 +279,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 		// work out the pay between the house and the girl
 		wages += 225;
 		girl->m_Pay = wages;
-		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +1, true);
+		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +1);
 		//girl->m_Events.AddMessage(ss.str(), imageType, Day0Night1);
 	}
 	else
@@ -305,7 +305,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 		ss << "\nOtherwise, the shift passed uneventfully."; work += 1;
 	}
 
-	g_Girls.UpdateEnjoyment(girl, actiontype, work, true);
+	g_Girls.UpdateEnjoyment(girl, actiontype, work);
 
 	girl->m_Events.AddMessage(ss.str(), imageType, Day0Night1);
 

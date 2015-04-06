@@ -161,8 +161,8 @@ bool cJobManager::WorkCityGuard(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy, true);
-	g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, enjoyc, true);
+	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
+	g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, enjoyc);
 	g_Girls.PossiblyGainNewTrait(girl, "Tough", 20, actiontype, "She has become pretty Tough from all of the fights she's been in.", Day0Night1);
 	g_Girls.PossiblyGainNewTrait(girl, "Aggressive", 60, actiontype, "She is getting rather Aggressive from her enjoyment of combat.", Day0Night1);
 	g_Girls.PossiblyGainNewTrait(girl, "Fleet of Foot", 30, actiontype, "She is getting rather fast from all the fighting.", Day0Night1);

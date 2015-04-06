@@ -400,9 +400,12 @@ bool cScreenSlaveMarket::change_selected_girl()
 	}
 
 	SetImage(slave_image_id, g_Girls.GetImageSurface(girl, IMGTYPE_PROFILE, true, ImageNum));
-	if (g_Girls.IsAnimatedSurface(girl, IMGTYPE_PROFILE, ImageNum))
-		SetImage(slave_image_id, g_Girls.GetAnimatedSurface(girl, IMGTYPE_PROFILE, ImageNum));
-
+	// `J` added check in case the girl has no images and the game is using defaults (no .ani defaults)
+	if (girl->m_GirlImages->m_Images[IMGTYPE_PROFILE].m_NumImages > 0)
+	{
+		if (g_Girls.IsAnimatedSurface(girl, IMGTYPE_PROFILE, ImageNum))
+			SetImage(slave_image_id, g_Girls.GetAnimatedSurface(girl, IMGTYPE_PROFILE, ImageNum));
+	}
 	/*
 	 *	set the trait list to the first entry
 	 *

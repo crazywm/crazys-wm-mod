@@ -449,7 +449,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	g_Girls.UpdateSkill(girl, SKILL_ORALSEX, oral);
 	g_Girls.UpdateSkill(girl, SKILL_HANDJOB, hand);
 	g_Girls.UpdateSkill(girl, SKILL_ANAL, anal);
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKCLUB, work, true);
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKCLUB, work);
 	girl->m_Events.AddMessage(ss.str(), imagetype, Day0Night1);
 
 

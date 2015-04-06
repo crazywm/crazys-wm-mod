@@ -68,12 +68,12 @@ bool cJobManager::WorkCustService(sGirl* girl, sBrothel* brothel, bool Day0Night
 	if (roll <= 5)
 	{
 		ss << " Some of the patrons abused her during the shift.";
-		g_Girls.UpdateEnjoyment(girl, actiontype, -1, true);
+		g_Girls.UpdateEnjoyment(girl, actiontype, -1);
 	}
 
 	else if (roll >= 75) {
 		ss << " She had a pleasant time working.";
-		g_Girls.UpdateEnjoyment(girl, actiontype, +3, true);
+		g_Girls.UpdateEnjoyment(girl, actiontype, +3);
 	}
 	else
 	{
@@ -112,7 +112,7 @@ bool cJobManager::WorkCustService(sGirl* girl, sBrothel* brothel, bool Day0Night
 		bonus = -20;
 		ss << "\n\nHer efforts only made the customers angrier.";
 		//And she's REALLY not going to like this job if she's failing at it, so...
-		g_Girls.UpdateEnjoyment(girl, actiontype, -5, true);
+		g_Girls.UpdateEnjoyment(girl, actiontype, -5);
 	}
 
 	// Now let's take care of our neglected customers.
