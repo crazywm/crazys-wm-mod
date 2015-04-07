@@ -5660,6 +5660,10 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait)
 			{
 				//
 			}
+			else if (Name == "Cat Girl")
+			{
+				UpdateStatTr(girl, STAT_AGILITY, 10);
+			}
 			else if (Name == "Charismatic")
 			{
 				UpdateStatTr(girl, STAT_CHARISMA, 50);
@@ -5760,11 +5764,11 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait)
 			}
 			else if (Name == "Demon Possessed")
 			{
-				//
+				UpdateStatTr(girl, STAT_MORALITY, -25);
 			}
 			else if (Name == "Demon")
 			{
-				//
+				UpdateStatTr(girl, STAT_MORALITY, -40);
 			}
 			else if (Name == "Dependant")
 			{
@@ -5779,6 +5783,7 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait)
 			else if (Name == "Dick-Sucking Lips")
 			{
 				UpdateStatTr(girl, STAT_BEAUTY, 5);
+				UpdateSkillTr(girl, SKILL_ORALSEX, 5);
 			}
 			else if (Name == "Director")
 			{
@@ -5796,7 +5801,8 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait)
 			}
 			else if (Name == "Dojikko")
 			{
-				//
+				UpdateStatTr(girl, STAT_CHARISMA, 5);
+				UpdateStatTr(girl, STAT_AGILITY, -5);
 			}
 			else if (Name == "Dominatrix")
 			{
@@ -5937,6 +5943,10 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait)
 			{
 				UpdateStatTr(girl, STAT_AGILITY, 50);
 			}
+			else if (Name == "Flexible")
+			{
+				UpdateStatTr(girl, STAT_AGILITY, 5);
+			}
 			else if (Name == "Flight")
 			{
 				//
@@ -6043,7 +6053,8 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait)
 			}
 			else if (Name == "Homeless")
 			{
-				//
+				UpdateStatTr(girl, STAT_REFINEMENT, -10);
+				UpdateStatTr(girl, STAT_DIGNITY, -5);
 			}
 			else if (Name == "Horrific Scars")
 			{
@@ -6146,6 +6157,7 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait)
 				UpdateSkillTr(girl, SKILL_BDSM, 50);
 				UpdateStatTr(girl, STAT_CONSTITUTION, 50);
 				UpdateStatTr(girl, STAT_OBEDIENCE, 30);
+				UpdateStatTr(girl, STAT_DIGNITY, -20);
 				UpdateEnjoymentTR(girl, ACTION_WORKTORTURER, 5);
 			}
 			else if (Name == "Massive Melons")
@@ -6186,6 +6198,7 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait)
 				UpdateStatTr(girl, STAT_CONFIDENCE, -50);
 				UpdateStatTr(girl, STAT_OBEDIENCE, 100);
 				UpdateStatTr(girl, STAT_SPIRIT, -50);
+				UpdateStatTr(girl, STAT_DIGNITY, -35);
 			}
 			else if (Name == "Mixologist")
 			{
@@ -6239,6 +6252,7 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait)
 				UpdateStatTr(girl, STAT_CONFIDENCE, 2);
 				UpdateStatTr(girl, STAT_CHARISMA, 2);
 				UpdateEnjoymentTR(girl, ACTION_SEX, 5);
+				UpdateSkillTr(girl, SKILL_ORALSEX, 5);
 			}
 			else if (Name == "No Arms")
 			{
@@ -6304,6 +6318,7 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait)
 				UpdateStatTr(girl, STAT_OBEDIENCE, -5);
 				UpdateStatTr(girl, STAT_REFINEMENT, 10);
 				UpdateStatTr(girl, STAT_DIGNITY, 10);
+				UpdateStatTr(girl, STAT_FAME, 5);
 				UpdateEnjoymentTR(girl, ACTION_SEX, -10);
 				UpdateEnjoymentTR(girl, ACTION_WORKCLEANING, -20);
 				UpdateEnjoymentTR(girl, ACTION_WORKFARM, -20);
@@ -6333,7 +6348,7 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait)
 			}
 			else if (Name == "One Eye")
 			{
-				UpdateStatTr(girl, STAT_BEAUTY, -20);
+				UpdateStatTr(girl, STAT_BEAUTY, -5);
 				UpdateStatTr(girl, STAT_CHARISMA, -5);
 				UpdateStatTr(girl, STAT_CONSTITUTION, 5);
 				UpdateStatTr(girl, STAT_SPIRIT, -10);
@@ -6460,6 +6475,7 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait)
 				UpdateStatTr(girl, STAT_OBEDIENCE, -5);
 				UpdateStatTr(girl, STAT_REFINEMENT, 20);
 				UpdateStatTr(girl, STAT_DIGNITY, 20);
+				UpdateStatTr(girl, STAT_FAME, 10);
 				UpdateEnjoymentTR(girl, ACTION_SEX, -10);
 				UpdateEnjoymentTR(girl, ACTION_WORKCLEANING, -30);
 				UpdateEnjoymentTR(girl, ACTION_WORKFARM, -30);
@@ -6482,6 +6498,7 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait)
 				UpdateStatTr(girl, STAT_OBEDIENCE, -15);
 				UpdateStatTr(girl, STAT_REFINEMENT, 30);
 				UpdateStatTr(girl, STAT_DIGNITY, 30);
+				UpdateStatTr(girl, STAT_FAME, 15);
 				UpdateEnjoymentTR(girl, ACTION_SEX, -10);
 				UpdateEnjoymentTR(girl, ACTION_WORKCLEANING, -40);
 				UpdateEnjoymentTR(girl, ACTION_WORKFARM, -40);
@@ -6535,6 +6552,15 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait)
 				UpdateStatTr(girl, STAT_CONFIDENCE, -5);
 				UpdateStatTr(girl, STAT_OBEDIENCE, 5);
 			}
+			else if (Name == "Shy")
+			{
+				UpdateSkillTr(girl, SKILL_PERFORMANCE, -20);
+				UpdateStatTr(girl, STAT_CONFIDENCE, -20);
+				UpdateEnjoymentTR(girl, ACTION_WORKADVERTISING, -20);
+				UpdateEnjoymentTR(girl, ACTION_WORKRECRUIT, -20);
+				UpdateEnjoymentTR(girl, ACTION_WORKCUSTSERV, -10);
+				UpdateEnjoymentTR(girl, ACTION_WORKCLUB, -10);
+			}
 			else if (Name == "Singer")
 			{
 				UpdateSkillTr(girl, SKILL_PERFORMANCE, 30);
@@ -6585,6 +6611,7 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait)
 			else if (Name == "Slut")
 			{
 				UpdateStatTr(girl, STAT_CHARISMA, -10);
+				UpdateStatTr(girl, STAT_DIGNITY, -5);
 				UpdateEnjoymentTR(girl, ACTION_SEX, 10);
 			}
 			else if (Name == "Small Boobs")
@@ -6645,6 +6672,7 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait)
 			}
 			else if (Name == "Succubus")
 			{
+				UpdateStatTr(girl, STAT_LIBIDO, 35);
 				UpdateEnjoymentTR(girl, ACTION_SEX, 40);
 			}
 		}
