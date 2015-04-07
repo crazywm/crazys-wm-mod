@@ -513,15 +513,84 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, bool Da
 
 	if (g_Girls.GetStat(girl, STAT_LIBIDO) > 90)
 	{
-		ss << "She was horny and ended up masturbating for the customers making them very happy.";
-		sCustomer cust;
-		GetMiscCustomer(brothel, cust);
-		brothel->m_Happiness += 100;
-		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
-		// work out the pay between the house and the girl
-		wages += g_Girls.GetStat(girl, STAT_ASKPRICE) + 60;
-		imagetype = IMGTYPE_MAST;
+		if (g_Girls.HasTrait(girl, "Futanari"))
+				{
+						//Addiction bypasses confidence check
+						if (g_Girls.HasTrait(girl, "Cum Addict"))
+						{
+								//Autofellatio, belly gets in the way if pregnant, requires extra flexibility
+								if ( g_Girls.HasTrait(girl, "Flexible") && !girl->is_pregnant() && g_Dice.percent(50))
+								{
+										ss << "During her shift " << girlName << " couldn't resist the temptation of taking a load of hot, delicious cum in her mouth and began to suck her own cock. The customers enjoyed a lot such an unusual show.";
+										g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 1);
+										g_Girls.UpdateStat(girl, STAT_HAPPINESS, 1);
+										wages += 30;
+								}
+								else
+								{
+										//default Cum Addict
+										ss << girlName << " won't miss a chance to taste some yummy cum. She came up on the stage with a goblet, cummed in it and then drank the content to entertain the customers.";
+										g_Girls.UpdateStat(girl, STAT_HAPPINESS, 1);
+										wages += 10;
+								}
+								sCustomer cust;
+								GetMiscCustomer(brothel, cust);
+								brothel->m_Happiness += 100;
+								g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -30);
+								// work out the pay between the house and the girl
+								wages += g_Girls.GetStat(girl, STAT_ASKPRICE) + 60;
+								imagetype = IMGTYPE_MAST;
+						}
+						//Let's see if she has what it takes to do it: Confidence > 65 or Exhibitionist trait, maybe shy girls should be excluded
+						else if (!g_Girls.HasTrait(girl, "Cum Addict") && g_Girls.HasTrait(girl, "Exhibitionist") || !g_Girls.HasTrait(girl, "Cum Addict") && g_Girls.GetStat(girl, STAT_CONFIDENCE) > 65)
+						{
+								//Some variety
+								//Autopaizuri, requires very big breasts
+								if (g_Dice.percent(25) && g_Girls.HasTrait(girl, "Abnormally Large Boobs") || g_Dice.percent(25) && (g_Girls.HasTrait(girl, "Titanic Tits")))
+								{
+										ss << girlName << " was horny and decided to deliver a good show. She put her cock between her huge breasts and began to slowly massage it. The crowd went wild when she finally came on her massive tits.";
+										g_Girls.UpdateSkill(girl, SKILL_TITTYSEX, 1);
+										wages += 30;
+								}
+								//cums over self
+								else if (g_Girls.GetStat(girl, STAT_DIGNITY) < -40 && g_Dice.percent(25))
+								{
+										ss << "The customers were really impressed when " << girlName << " finished her show by cumming all over herself";
+										wages += 10;
+								}
+								//Regular futa masturbation
+								else
+								{
+										ss << girlName << "'s cock was hard all the time and she ended up cumming on stage. The customers enjoyed it but the cleaning crew won't be happy.";
+										brothel->m_Filthiness += 1;
+								}
+								sCustomer cust;
+								GetMiscCustomer(brothel, cust);
+								brothel->m_Happiness += 100;
+								g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -30);
+								// work out the pay between the house and the girl
+								wages += g_Girls.GetStat(girl, STAT_ASKPRICE) + 60;
+								imagetype = IMGTYPE_MAST;
+						}
+						else
+						{
+								ss << "There was a noticeable bulge in " << girlName << "'s panties but she didn't have enough confidence to masturbate in public.";
+						}
+				}
+				//regular masturbation code by Crazy tweaked to exclude futas and keep the original Libido > 90 requirement
+				else if (!g_Girls.HasTrait(girl, "Futanari") && g_Girls.GetStat(girl, STAT_LIBIDO) > 90)
+				{
+						ss << "She was horny and ended up masturbating for the customers making them very happy.";
+						sCustomer cust;
+						GetMiscCustomer(brothel, cust);
+						brothel->m_Happiness += 100;
+						g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
+						// work out the pay between the house and the girl
+						wages += g_Girls.GetStat(girl, STAT_ASKPRICE) + 60;
+						imagetype = IMGTYPE_MAST;
+				}
 	}
+
 
 
 	if (wages < 0) wages = 0;

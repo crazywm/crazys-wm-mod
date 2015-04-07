@@ -62,7 +62,8 @@ const unsigned int STAT_REFINEMENT		= 23;
 const unsigned int STAT_DIGNITY			= 24;
 const unsigned int STAT_LACTATION		= 25;
 const unsigned int STAT_STRENGTH		= 26;
-const int					NUM_STATS	= 27;	// 1 more than the last stat
+const unsigned int STAT_NPCLOVE			= 27;  //will be used for when a girl has a bf/gf to do different events
+const int					NUM_STATS	= 28;	// 1 more than the last stat
 
 // `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in >> Constants.h
 

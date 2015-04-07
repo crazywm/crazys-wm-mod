@@ -35,6 +35,7 @@ private:
 	int back_id;		// Back button
 	int details_id;		// House Details text
 	int header_id;		// page header text ("Your House")
+	int slavedate_id;	// Set if slaves can date or not
 
 	void set_ids();
 public:

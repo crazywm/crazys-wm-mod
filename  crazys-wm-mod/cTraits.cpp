@@ -454,6 +454,7 @@ string cTraits::GetTranslateName(string name)
 		else if (trait.compare("shape shifter") == 0)			return gettext("Shape Shifter");
 		else if (trait.compare("sharp-eyed") == 0)				return gettext("Sharp-Eyed");
 		else if (trait.compare("shroud addict") == 0)			return gettext("Shroud Addict");
+		else if (trait.compare("shy") == 0)						return gettext("Shy");
 		else if (trait.compare("singer") == 0)					return gettext("Singer");
 		else if (trait.compare("skeleton") == 0)				return gettext("Skeleton");
 		else if (trait.compare("slitherer") == 0)				return gettext("Slitherer");

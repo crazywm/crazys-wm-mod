@@ -53,6 +53,7 @@ void cScreenHouse::set_ids()
 	back_id = get_id("BackButton");
 	details_id = get_id("HouseDetails");
 	header_id = get_id("ScreenHeader");
+	slavedate_id = get_id("SlaveDate");
 }
 
 void cScreenHouse::init()

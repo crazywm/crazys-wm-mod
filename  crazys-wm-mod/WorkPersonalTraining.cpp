@@ -466,14 +466,14 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0
 		g_Girls.UpdateSkill(girl, SKILL_HANDJOB, skill);
 		ss << "You decide to teach her the art of manual stimulation.\n\n";
 		ss << "She managed to gain " << skill << " Hand Job.\n\n";
-		girl->m_Events.AddMessage(ss.str(), SKILL_HANDJOB, Day0Night1);
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_HAND, Day0Night1);
 	}
 	else if (roll_b <= 40 && girl->m_Skills[SKILL_FOOTJOB] < 100 && is_sex_type_allowed(SKILL_FOOTJOB, brothel))
 	{
 		g_Girls.UpdateSkill(girl, SKILL_FOOTJOB, skill);
 		ss << "You decide to teach her the art of manual stimulation with her feet.\n\n";
 		ss << "She managed to gain " << skill << " Foot Job.\n\n";
-		girl->m_Events.AddMessage(ss.str(), SKILL_FOOTJOB, Day0Night1);
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_FOOT, Day0Night1);
 	}
 	else if (roll_b <= 50 && girl->m_Skills[SKILL_ORALSEX] < 100 && is_sex_type_allowed(SKILL_ORALSEX, brothel))
 	{

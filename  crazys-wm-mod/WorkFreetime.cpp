@@ -68,6 +68,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	int U_Beauty = 0;
 	int U_Money = 0;
 	int U_Morality = 0;
+	int U_NPCLove = 0;
 
 	// `J` NOTE: one message to tell she is resting - use a separate one to tell the anything else she does
 	ss << girlName << gettext(" rested and recovered some energy.");
@@ -125,6 +126,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			FT_StrollInCity,	// she goes for a walk in the city
 			FT_Casino,			// she goes to the casino and gambles
 			FT_CountrySide,		// she goes out into the country side for a walk
+			FT_GoOnDate,		// she goes out on a date with someone
 
 
 
@@ -234,6 +236,14 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					// if she can not afford it, reroll.
 					break;
 
+				//case FT_GoOnDate:
+				//	if (g_Girls.HasTrait(girl, "Has Boy Friend") || g_Girls.HasTrait(girl, "Has Girl Friend"))
+				//	{
+				//		choicemade = true;	// Doesn't need money
+				//	}
+				//	// if she dont have one, reroll.
+				//	break;
+
 
 					// These are not ready so reroll.
 				case FT_Picnic:
@@ -243,6 +253,10 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				case FT_Hobby:
 				case FT_Counseling:
 				case FT_WatchFights:
+				case FT_StrollInCity:	
+				case FT_Casino:			
+				case FT_CountrySide:	
+				case FT_GoOnDate:
 					break;
 
 
@@ -1268,6 +1282,36 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		}
 		break;	// end FT_WorkOut
 
+		case FT_GoOnDate:
+		{
+			ss << girlName << " went on a date with a ";
+				if (g_Girls.HasTrait(girl, "Has Boy Friend"))
+					{
+						ss << "man.";
+					}
+				else if (g_Girls.HasTrait(girl, "Has Girl Friend"))
+					{
+						ss << "women.";
+					}
+			if (g_Girls.GetStat(girl, STAT_NPCLOVE) > 80)
+			{
+			}
+			else if (g_Girls.GetStat(girl, STAT_NPCLOVE) > 60)
+			{
+			}
+			else if (g_Girls.GetStat(girl, STAT_NPCLOVE) > 40)
+			{
+			}
+			else if (g_Girls.GetStat(girl, STAT_NPCLOVE) > 20)
+			{
+			}
+			else
+			{
+			}
+		}
+		break;	// end FT_GoOnDate
+
+
 
 
 
@@ -1525,6 +1569,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	g_Girls.UpdateStat(girl, STAT_EXP, U_EXP);
 	g_Girls.UpdateStatTemp(girl, STAT_BEAUTY, U_Beauty);
 	g_Girls.UpdateStat(girl, STAT_MORALITY, U_Morality);
+	g_Girls.UpdateStat(girl, STAT_NPCLOVE, U_NPCLove);
 
 
 
