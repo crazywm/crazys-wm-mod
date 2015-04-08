@@ -2085,6 +2085,23 @@ namespace WM_Girls_Generator
                     string gold = Import.ReadLine();				//gold
                     string girlType = Import.ReadLine();			//type (slave, catacombs...)
 
+                    // `J` adding in to allow the old .girls to add 0 in all stats/skills that they don't have.
+                    string[] sStats = data1.Split(' ');
+                    string[] sSkills = data2.Split(' ');
+
+                    while (sStats.Length < 27)
+                    {
+                        data1 += " 0";
+                        sStats = data1.Split(' ');
+                    }
+
+                    while (sSkills.Length < 23)
+                    {
+                        data2 += " 0";
+                        sSkills = data2.Split(' ');
+                    }
+
+
                     listBox_GirlsList.Items.Add(name);								//adds girl's name to girls list
                     GirlsCollection.Rows.Add(name, desc + "\r\n" + num + "\r\n" + temp + zero + "\r\n" + data1 + "\r\n" + data2 + "\r\n" + gold + "\r\n" + girlType, girlType);	//adds girls name and data to girls datatable, and GirlType so it can be sorted on that key
                 }
@@ -2515,9 +2532,22 @@ namespace WM_Girls_Generator
                     case "0":
                     default: sStatus = "Normal"; break;
                 }
-                string sFName = sData.ReadLine();
-                string sMName = sData.ReadLine();
-                string sLName = sData.ReadLine();
+                string sFName = sData.ReadLine(); if (sFName == null) sFName = "";
+                string sMName = sData.ReadLine(); if (sMName == null) sMName = "";
+                string sLName = sData.ReadLine(); if (sLName == null) sLName = "";
+
+                if (sName.Length < 1 && (sFName.Length > 1 || sMName.Length > 1 || sLName.Length < 1))
+                {
+                    sName = G_Create_Real_Name(sFName, sMName, sLName);
+                }
+                else if (sName.Length > 0 && sFName.Length < 1 && sMName.Length < 1 && sLName.Length < 1)
+                {
+                    string[] names = new string[3];
+                    names = G_Divide_Real_Name(sName);
+                    sFName = names[0];
+                    sMName = names[1];
+                    sLName = names[2];
+                }
 
                 //now that we have all that data isolated it should be assigned to their respective attributes in "Girl" node, this is what's done here, bunch of attributes getting assingned their values
 
@@ -3955,9 +3985,10 @@ namespace WM_Girls_Generator
                     case "0":
                     default: sStatus = "Normal"; break;
                 }
-                string sFName = sData.ReadLine();
-                string sMName = sData.ReadLine();
-                string sLName = sData.ReadLine();
+
+                string sFName = sData.ReadLine(); if (sFName == null) sFName = "";
+                string sMName = sData.ReadLine(); if (sMName == null) sMName = "";
+                string sLName = sData.ReadLine(); if (sLName == null) sLName = "";
 
                 if (sName.Length < 1 && (sFName.Length > 1 || sMName.Length > 1 || sLName.Length < 1))
                 {
