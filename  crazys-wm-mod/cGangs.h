@@ -77,6 +77,9 @@ typedef struct sGang
 		m_Combat = false;
 		m_LastMissID = -1;
 		m_AutoRecruit = false;
+		for (int i = 0; i < NUM_SKILLS; i++)	m_Skills[i] = 0;
+		for (int i = 0; i < NUM_STATS; i++)		m_Stats[i] = 0;
+
 	}
 
 	~sGang()

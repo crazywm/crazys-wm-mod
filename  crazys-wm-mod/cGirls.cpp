@@ -92,8 +92,9 @@ map<string, unsigned int> sGirl::enjoy_lookup;
 const char *sGirl::stat_names[] =
 {
 	"Charisma", "Happiness", "Libido", "Constitution", "Intelligence", "Confidence", "Mana", "Agility",
-	"Fame", "Level", "AskPrice", "House", "Exp", "Age", "Obedience", "Spirit", "Beauty",
-	"Tiredness", "Health", "PCFear", "PCLove", "PCHate", "Morality", "Refinement", "Dignity", "Lactation", "Strength"
+	"Fame", "Level", "AskPrice", "House", "Exp", "Age", "Obedience", "Spirit", "Beauty", "Tiredness", "Health", 
+	"PCFear", "PCLove", "PCHate", "Morality", "Refinement", "Dignity", "Lactation", "Strength",
+	"NPCLove"
 };
 // `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in >> cGirls.cpp > *_names[]
 const char *sGirl::skill_names[] =
@@ -160,6 +161,7 @@ void sGirl::setup_maps()
 	stat_lookup["Dignity"] = STAT_DIGNITY;
 	stat_lookup["Lactation"] = STAT_LACTATION;
 	stat_lookup["Strength"] = STAT_STRENGTH;
+	stat_lookup["NPCLove"] = STAT_NPCLOVE;
 
 	// `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in >> cGirls.cpp > setup_maps
 
@@ -11987,6 +11989,10 @@ sChild::sChild(bool is_players, Gender gender, int MultiBirth)
 	m_MultiBirth = 1;
 	m_GirlsBorn = (m_Sex == Girl ? 1 : 0);
 	m_Next = m_Prev = 0;
+	for (u_int i = 0; i < NUM_SKILLS; i++)		// Added m_Skills here to zero out any that are not specified -- PP
+		m_Skills[i] = 0;
+	for (int i = 0; i < NUM_STATS; i++)			// Added m_Stats here to zero out any that are not specified -- PP
+		m_Stats[i] = 0;
 	if (MultiBirth == 0) return;	// 0 means we are creating a new child in order to load one so we can skip the rest
 
 	// so now the first baby is ready, check if there are more

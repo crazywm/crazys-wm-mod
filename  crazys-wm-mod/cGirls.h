@@ -533,14 +533,14 @@ struct sGirl
 		m_Refused_To_Work_Night = false;
 		m_UseAntiPreg = true;
 
-		for (u_int i = 0; i < NUM_SKILLS; i++)
-			m_Skills[i] = m_SkillTemps[i] = m_SkillMods[i] = m_SkillTr[i] = 0;	// Added m_Skills here to zero out any that are not specified -- PP
-		for (int i = 0; i < NUM_STATS; i++)
-			m_Stats[i] = m_StatTemps[i] = m_StatMods[i] = m_StatTr[i] = 0;		// Added m_Stats here to zero out any that are not specified -- PP
-		for (int i = 0; i < NUM_ACTIONTYPES; i++)
-			m_Enjoyment[i] = m_EnjoymentTR[i] = 0;								// `J` Added m_Enjoyment here to zero out any that are not specified -- PP
-		for (u_int i = 0; i < NUM_ACTIONTYPES; i++)
-			m_Enjoyment[i] = (g_Dice % 21) - 10;								// `J` randomize starting likes -10 to 10
+		for (u_int i = 0; i < NUM_SKILLS; i++)		// Added m_Skills here to zero out any that are not specified -- PP
+			m_Skills[i] = m_SkillTemps[i] = m_SkillMods[i] = m_SkillTr[i] = 0;
+		for (int i = 0; i < NUM_STATS; i++)			// Added m_Stats here to zero out any that are not specified -- PP
+			m_Stats[i] = m_StatTemps[i] = m_StatMods[i] = m_StatTr[i] = 0;		
+		for (int i = 0; i < NUM_ACTIONTYPES; i++)	// `J` Added m_Enjoyment here to zero out any that are not specified
+			m_Enjoyment[i] = m_EnjoymentTR[i] = m_EnjoymentMods[i] = m_EnjoymentTemps[i] = 0;
+		for (u_int i = 0; i < NUM_ACTIONTYPES; i++)	// `J` randomize starting likes -10 to 10 most closer to 0
+			m_Enjoyment[i] = (g_Dice.bell(-10, 10));
 
 		m_Stats[STAT_HOUSE] = 60;  // Moved from above so it is not zero'd out by above changes --PP
 		/*
@@ -715,6 +715,8 @@ struct sGirl
 	int dignity(int n)			{ return upd_stat(STAT_DIGNITY, n); }
 	int lactation()				{ return get_stat(STAT_LACTATION); }
 	int lactation(int n)		{ return upd_stat(STAT_LACTATION, n); }
+	int npclove()				{ return get_stat(STAT_NPCLOVE); }
+	int npclove(int n)			{ return upd_stat(STAT_NPCLOVE, n); }
 
 
 	int rebel();

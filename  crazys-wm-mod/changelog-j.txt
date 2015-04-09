@@ -1922,10 +1922,28 @@ Started cleaning image selection.
  - Fixed the problem with .ani files not working.
  
 !!!!!!!!!!!!!!!!!!!! pushed to SVN - r165  -  Pushing before attempting to add gif support in case it does not work.
+
+WME - Fixed several issues with ".girls" files not loading properly
  
- 
- 
- 
+!!!!!!!!!!!!!!!!!!!! Google code is being phased out by Google and the SVN has been moved to github.com
+!!!!!!!!!!!!!!!!!!!! https://github.com/crazywm/crazys-wm-mod
+
+Crazy added several things to allow the girls to have a boyfriend?
+ - Added stat "NPCLove"
+ - Started adding some options to freetime for boyfriends.
+
+Fixed a few problems with "NPCLove" crashing the game.
+Cleaned up girls a little.
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.17
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.27
+
+
+
+
+
+
 
  
 $$$$ TO DO - SHORT TERM - (for this version) $$$$
