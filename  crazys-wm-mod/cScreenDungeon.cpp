@@ -55,7 +55,7 @@ extern	bool	g_X_Key;
 extern	bool	g_C_Key;
 extern	int		g_CurrentScreen;
 
-static cPlayer* player = g_Brothels.GetPlayer();
+extern cPlayer* The_Player;
 static cDungeon* dungeon = g_Brothels.GetDungeon();
 static cTariff tariff;
 
@@ -334,7 +334,6 @@ int cScreenDungeon::enslave()
 	int numCustsRemoved = 0;
 	int numGirlsRemoved = 0;
 	int pos = 0, deadcount = 0;
-	cPlayer* player = g_Brothels.GetPlayer();
 
 	store_selected_girls();
 	// roll on vectors!
@@ -371,7 +370,7 @@ int cScreenDungeon::enslave()
 		if (!ggf.player_won())
 		{
 			// adjust the girl's stats to reflect her new status and then evil up the player because he forced her into slavery
-			player->evil(5);
+			The_Player->evil(5);
 			set_slave_stats(girl);
 			message += girl->m_Realname;
 			message += gettext(" breaks free from your goons' control. You restrain her personally while the slave tattoo placed upon her.");
@@ -384,7 +383,7 @@ int cScreenDungeon::enslave()
 			message += girl->m_Realname;
 			message += gettext(" puts up a fight ");	// there was a gang, and some of them are still with us
 			message += gettext("but your goons control her as the enchanted slave tattoo is placed upon her.");
-			player->evil(5);				// evil up the player for doing a naughty thing and adjust the girl's stats
+			The_Player->evil(5);				// evil up the player for doing a naughty thing and adjust the girl's stats
 			set_slave_stats(girl);
 			g_MessageQue.AddToQue(message, COLOR_RED);	// and queue the message
 			continue;
@@ -399,8 +398,8 @@ int cScreenDungeon::enslave()
 		dungeon->RemoveGirl(girl);
 		numGirlsRemoved++;
 		girl->run_away();
-		player->suspicion(15);					// suspicion goes up
-		player->evil(15);						// so does evil
+		The_Player->suspicion(15);					// suspicion goes up
+		The_Player->evil(15);						// so does evil
 		g_MessageQue.AddToQue(message, 1);		// add to the message queue
 
 	}
@@ -411,15 +410,14 @@ int cScreenDungeon::enslave()
 
 void cScreenDungeon::release_all_customers()
 {
-	cPlayer* player = g_Brothels.GetPlayer();
 	// loop until we run out of customers
 	while (dungeon->GetNumCusts() > 0)
 	{
 		sDungeonCust* cust = dungeon->GetCust(0);		// get the first customer in the list
 		dungeon->RemoveCust(cust);						// remove from brothel
 		// de-evil the player for being nice suspicion drops too
-		player->evil(-5);
-		player->suspicion(-5);
+		The_Player->evil(-5);
+		The_Player->suspicion(-5);
 	}
 	selection = -1;
 	g_InitWin = true;
@@ -630,7 +628,7 @@ void cScreenDungeon::torture()
 		// if it's a customer, we have a separate routine
 		if ((selection - (dungeon->GetNumGirls() + numGirlsRemoved)) >= 0)
 		{
-			player->evil(5);
+			The_Player->evil(5);
 			torture_customer(numGirlsRemoved);
 			continue;
 		}
@@ -648,7 +646,6 @@ void cScreenDungeon::change_release(string towhere)
 
 void cScreenDungeon::release()
 {
-	cPlayer* player = g_Brothels.GetPlayer();
 	string sub = ReleaseGirlToWhere.substr(0, 2);
 	sBrothel *brothel = g_Brothels.GetBrothel(g_CurrBrothel);
 	char a = ReleaseGirlToWhere[2]; char b = "0"[0]; int sendtonum = a - b;	// `J` cheap fix to get brothel number
@@ -672,8 +669,8 @@ void cScreenDungeon::release()
 			sDungeonCust* cust = dungeon->GetCust(num);
 			dungeon->RemoveCust(cust);
 			// player did a nice thing: suss and evil go down :)
-			player->suspicion(-5);
-			player->evil(-5);
+			The_Player->suspicion(-5);
+			The_Player->evil(-5);
 			continue;
 		}
 

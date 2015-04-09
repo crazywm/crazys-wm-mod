@@ -129,6 +129,107 @@ const unsigned int sGirl::max_skills = (sizeof(sGirl::skill_names) / sizeof(sGir
 const unsigned int sGirl::max_statuses = (sizeof(sGirl::status_names) / sizeof(sGirl::status_names[0]));
 const unsigned int sGirl::max_enjoy = (sizeof(sGirl::enjoy_names) / sizeof(sGirl::enjoy_names[0]));
 
+
+sGirl::sGirl()				// constructor
+{
+	// sGirl stuff
+	m_Prev = m_Next = 0;		m_newRandomFixed = -1;
+
+	// Names
+	m_Name = m_Realname = m_FirstName = m_MiddleName = m_Surname = m_MotherName = m_FatherName = m_Desc = "";
+
+	// Time
+	BirthMonth = BirthDay = 0;		m_BDay = 0;		m_WeeksPast = 0;
+
+	// Jobs and money
+	m_DayJob = m_NightJob = m_PrevDayJob = m_PrevNightJob = m_YesterDayJob = m_YesterNightJob = 255;
+	where_is_she = 0;
+	m_InClinic = m_InStudio = m_InArena = m_InCentre = m_InHouse = m_InFarm = false;
+	m_SpecialJobGoal = m_WorkingDay = 0;
+	m_Refused_To_Work_Day = m_Refused_To_Work_Night = false;
+	m_Money = m_Pay = m_Tips = 0;
+	m_NumCusts = 0;
+
+	// Sex
+	m_Virgin = -1;
+	m_UseAntiPreg = true;
+	m_WeeksPreg = 0;
+	m_JustGaveBirth = false;
+	m_PregCooldown = 0;
+
+	// Health and happiness
+	m_Tort = false;
+	m_AccLevel = 0;
+	m_Withdrawals = 0;
+	m_DaysUnhappy = 0;
+	m_RunAway = 0;
+	m_Spotted = 0;
+
+	// Inventory
+	m_NumInventory = 0;
+	for (int i = 0; i < MAXNUM_GIRL_INVENTORY; i++)	{ m_EquipedItems[i] = 0; m_Inventory[i] = 0; }
+
+	//Traits
+	m_NumRememTraits = m_NumTraits = 0;
+	for (int i = 0; i < MAXNUM_TRAITS; i++)			{ m_Traits[i] = 0; m_TempTrait[i] = 0; }
+	for (int i = 0; i < MAXNUM_TRAITS * 2; i++)		{ m_RememTraits[i] = 0; }
+
+	// Stats and skills
+	for (u_int i = 0; i < NUM_SKILLS; i++)		// Added m_Skills here to zero out any that are not specified -- PP
+		m_Skills[i] = m_SkillTemps[i] = m_SkillMods[i] = m_SkillTr[i] = 0;
+	for (int i = 0; i < NUM_STATS; i++)			// Added m_Stats here to zero out any that are not specified -- PP
+		m_Stats[i] = m_StatTemps[i] = m_StatMods[i] = m_StatTr[i] = 0;
+	m_Stats[STAT_HEALTH] = 100;
+	m_Stats[STAT_HAPPINESS] = 100;
+	m_Stats[STAT_HOUSE] = 60;  // Moved from above so it is not zero'd out by above changes --PP
+
+	// Enjoyment
+	for (int i = 0; i < NUM_ACTIONTYPES; i++)	// `J` Added m_Enjoyment here to zero out any that are not specified
+		m_Enjoyment[i] = m_EnjoymentTR[i] = m_EnjoymentMods[i] = m_EnjoymentTemps[i] = 0;
+	for (u_int i = 0; i < NUM_ACTIONTYPES; i++)	// `J` randomize starting likes -10 to 10 most closer to 0
+		m_Enjoyment[i] = (g_Dice.bell(-10, 10));
+
+	// Others
+	for (int i = 0; i < NUM_GIRLFLAGS; i++)			{ m_Flags[i] = 0; }
+	m_States = m_BaseStates = 0;
+	m_FetishTypes = 0;
+	m_GirlImages = 0;
+
+	// Other things that I'm not sure how their defaults would be set 
+	//	cEvents m_Events;
+	//	cTriggerList m_Triggers;
+	//	cChildList m_Children;
+	//	int m_ChildrenCount[CHILD_COUNT_TYPES];
+	//	vector<string> m_Canonical_Daughters;
+
+
+
+
+	/*
+	*		MOD: DocClox, Sun Nov 15 06:08:32 GMT 2009
+	*		initialise maps to look up stat and skill names
+	*		needed for XML loader
+	*
+	*		things that need to happen every time the struct
+	*		is constructed need to go before this point
+	*		or they'll only happen the first time around
+	*/
+	if (!m_maps_setup)	// only need to do this once
+		setup_maps();
+}
+sGirl::~sGirl()		// destructor
+{
+	m_GirlImages = 0;
+	//if (m_Name)		delete[] m_Name;
+	m_Name = "";
+	m_Events.Free();
+	if (m_Next)		delete m_Next;
+	m_Next = 0;
+	m_Prev = 0;
+
+}
+
+
 // ----- Lookups
 void sGirl::setup_maps()
 {
@@ -11993,6 +12094,9 @@ sChild::sChild(bool is_players, Gender gender, int MultiBirth)
 		m_Skills[i] = 0;
 	for (int i = 0; i < NUM_STATS; i++)			// Added m_Stats here to zero out any that are not specified -- PP
 		m_Stats[i] = 0;
+	m_Stats[STAT_HEALTH] = 100;
+	m_Stats[STAT_HAPPINESS] = 100;
+
 	if (MultiBirth == 0) return;	// 0 means we are creating a new child in order to load one so we can skip the rest
 
 	// so now the first baby is ready, check if there are more
@@ -12157,6 +12261,8 @@ bool cGirls::CalcPregnancy(sGirl* girl, int chance, int type, int stats[NUM_STAT
 	// `J` average the mother's and father's stats and skills
 	for (int i = 0; i < NUM_STATS; i++)		child->m_Stats[i] = (stats[i] + girl->m_Stats[i]) / 2;
 	for (u_int i = 0; i < NUM_SKILLS; i++)	child->m_Skills[i] = (skills[i] + girl->m_Skills[i]) / 2;
+	child->m_Stats[STAT_HEALTH] = 100;
+	child->m_Stats[STAT_HAPPINESS] = 100;
 
 	// if there is somehow leftover pregnancy data, clear it
 	girl->m_WeeksPreg = 0;

@@ -1939,6 +1939,13 @@ Cleaned up girls a little.
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.17
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.27
 
+!!! Removed the .sdf files from GitHub to speed up pushes and pulls
+Converted the last few calls for new cPlayer objects to "extern cPlayer The_Player;" so everything uses only 1 cPlayer object.
+Set health and happiness to 100 when other stats are defaulted to 0
+Cleaned sGirl constructor and destructor
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+
+
 
 
 

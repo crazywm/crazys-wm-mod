@@ -45,6 +45,7 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 extern int g_Building;
+extern cPlayer* The_Player;
 
 // `J` Job House - General
 bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
@@ -263,7 +264,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 			ss << gettext("She is no longer a virgin.\n");
 		}
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_BDSM, Day0Night1);
-		if (!girl->calc_pregnancy(g_Brothels.GetPlayer(), false, 1.0))
+		if (!girl->calc_pregnancy(The_Player, false, 1.0))
 		{
 			stringstream ssm;
 			ssm << girlName << " has gotten pregnant.\n";
@@ -281,7 +282,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 			ss << gettext("She is no longer a virgin.\n");
 		}
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_SEX, Day0Night1);
-		if (!girl->calc_pregnancy(g_Brothels.GetPlayer(), false, 1.0))
+		if (!girl->calc_pregnancy(The_Player, false, 1.0))
 		{
 			stringstream ssm;
 			ssm << girlName << " has gotten pregnant.\n";

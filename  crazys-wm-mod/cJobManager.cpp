@@ -1586,7 +1586,7 @@ bool cJobManager::work_related_violence(sGirl* girl, bool Day0Night1, bool stree
 	if (Day0Night1) { rape_chance *= 2; gang_coverage = (int)((float)gang_coverage*0.8f); }
 
 	// if the player has a -ve disposition, this can scare the would-be rapist into behaving himself
-	if (g_Dice.percent(g_Brothels.GetPlayer()->disposition() * -1)) rape_chance = 1;
+	if (g_Dice.percent(The_Player->disposition() * -1)) rape_chance = 1;
 
 	if (rape_chance < 1) rape_chance = 1;	// minimum of 1%
 	if (g_Dice.percent(rape_chance))

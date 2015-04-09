@@ -40,6 +40,7 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 extern cJobManager m_JobManager;
+extern cPlayer* The_Player;
 
 // `J` Job Brothel - General
 bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
@@ -174,7 +175,7 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 			}
 			girl->m_Events.AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_DANGER);
 
-			if (!girl->calc_insemination(g_Brothels.GetPlayer(), false, 1.0 + (NumMon * 0.5)))
+			if (!girl->calc_insemination(The_Player, false, 1.0 + (NumMon * 0.5)))
 			{
 				g_MessageQue.AddToQue(girl->m_Realname + " has gotten inseminated", 0);
 				health -= 1, happy -= 10, spirit -= 4, sex -= 4, combat -= 2, injury += 2;
@@ -367,7 +368,7 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 			}
 			girl->m_Events.AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_DANGER);
 
-			if (!girl->calc_insemination(g_Brothels.GetPlayer(), false, 1.0 + (NumMon * 0.5)))
+			if (!girl->calc_insemination(The_Player, false, 1.0 + (NumMon * 0.5)))
 			{
 				g_MessageQue.AddToQue(girl->m_Realname + " has gotten inseminated", 0);
 				health -= 1, happy -= 10, spirit -= 4, sex -= 4, combat -= 2, injury += 2;
@@ -473,7 +474,7 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -50);
 		g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, type_beasts);
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_BEAST, Day0Night1);
-		if (!girl->calc_insemination(g_Brothels.GetPlayer(), false, 1.0))
+		if (!girl->calc_insemination(The_Player, false, 1.0))
 		{
 			g_MessageQue.AddToQue(girl->m_Realname + " has gotten inseminated", 0);
 		}

@@ -42,6 +42,7 @@ extern cBrothelManager g_Brothels;
 extern cMovieStudioManager g_Studios;
 extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
+extern cPlayer* The_Player;
 
 // `J` Job Movie Studio - Actress
 bool cJobManager::WorkFilmBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
@@ -90,7 +91,7 @@ bool cJobManager::WorkFilmBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	// mod: added check for number of beasts owned; otherwise, fake beasts could somehow inseminate the girl
 	if (g_Brothels.GetNumBeasts() > 0)
 	{
-		if (!girl->calc_insemination(g_Brothels.GetPlayer(), false, 1.0))
+		if (!girl->calc_insemination(The_Player, false, 1.0))
 			g_MessageQue.AddToQue(girl->m_Realname + " has gotten inseminated", 0);
 	}
 

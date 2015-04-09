@@ -493,7 +493,7 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0
 			ss << "She is no longer a virgin.\n";
 		}
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_SEX, Day0Night1);
-		if (!girl->calc_pregnancy(g_Brothels.GetPlayer(), false, 1.0))
+		if (!girl->calc_pregnancy(The_Player, false, 1.0))
 		{
 			g_MessageQue.AddToQue(girl->m_Realname + " has gotten pregnant", 0);
 		}
@@ -516,7 +516,7 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0
 			ss << "She is no longer a virgin.\n";
 		}
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_GROUP, Day0Night1);
-		if (!girl->calc_group_pregnancy(g_Brothels.GetPlayer(), false, 1.0))
+		if (!girl->calc_group_pregnancy(The_Player, false, 1.0))
 		{
 			g_MessageQue.AddToQue(girl->m_Realname + " has gotten pregnant", 0);
 		}
@@ -532,7 +532,7 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0
 			ss << "She is no longer a virgin.\n";
 		}
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_BDSM, Day0Night1);
-		if (!girl->calc_pregnancy(g_Brothels.GetPlayer(), false, 1.0))
+		if (!girl->calc_pregnancy(The_Player, false, 1.0))
 		{
 			g_MessageQue.AddToQue(girl->m_Realname + " has gotten pregnant", 0);
 		}

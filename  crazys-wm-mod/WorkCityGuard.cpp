@@ -45,6 +45,7 @@ extern cArenaManager g_Arena;
 extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
+extern cPlayer* The_Player;
 
 // `J` Job Arena - Staff
 bool cJobManager::WorkCityGuard(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
@@ -142,7 +143,7 @@ bool cJobManager::WorkCityGuard(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 
 
 	girl->m_Events.AddMessage(ss.str(), imagetype, Day0Night1);
-	g_Brothels.GetPlayer()->suspicion(sus);
+	The_Player->suspicion(sus);
 	girl->m_Pay = wages;
 
 

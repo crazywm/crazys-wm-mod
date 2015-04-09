@@ -39,6 +39,7 @@ extern cInventory g_InvManager;
 extern cBrothelManager g_Brothels;
 extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
+extern cPlayer* The_Player;
 
 // `J` Job Brothel - Sleazy Bar
 bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
@@ -206,7 +207,7 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		{
 			fuckMessage = "The customer sees that you are offering up a Skeleton for sex and is scared, if you allow that kind of thing in your brothels, what else do you allow? They left in a hurry, afraid of what might happen if they stay.\n\n";
 			brothel->m_Fame -= 5;
-			g_Brothels.GetPlayer()->customerfear(2);
+			The_Player->customerfear(2);
 			acceptsGirl = false;
 			continue;
 		}
@@ -243,7 +244,7 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			{
 				fuckMessage = "The customer sees that you are offering up a Zombie girl and is scared, if you allow that kind of thing in your brothels, what else do you allow? They left in a hurry, afraid of what might happen if they stay.\n\n";
 				brothel->m_Fame -= 10;
-				g_Brothels.GetPlayer()->customerfear(5);
+				The_Player->customerfear(5);
 				acceptsGirl = false;
 			}
 			else if (Cust.m_Stats[STAT_LIBIDO] >= 80)
@@ -385,7 +386,7 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				// If the customer is a government official
 				if (Cust.m_Official == 1)
 				{
-					g_Brothels.GetPlayer()->suspicion(-5);
+					The_Player->suspicion(-5);
 					fuckMessage += " It turns out that the customer was a government official, which lowers your suspicion.";
 				}
 			}

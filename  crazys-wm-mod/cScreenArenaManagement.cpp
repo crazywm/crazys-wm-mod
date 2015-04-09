@@ -70,7 +70,7 @@ static bool SetJob = false;
 extern sGirl *selected_girl;
 extern vector<int> cycle_girls;
 extern int cycle_pos;
-
+extern cPlayer* The_Player;
 
 bool cScreenArenaManagement::ids_set = false;
 
@@ -116,7 +116,7 @@ void cScreenArenaManagement::init()
 				if (selected_girl)
 				{
 					selected_girl->m_States &= ~(1 << STATUS_SLAVE);
-					g_Brothels.GetPlayer()->disposition(5);
+					The_Player->disposition(5);
 					g_Girls.UpdateStat(selected_girl, STAT_PCLOVE, 10);
 					g_Girls.UpdateStat(selected_girl, STAT_PCFEAR, -20);
 					g_Girls.UpdateStat(selected_girl, STAT_PCHATE, -25);

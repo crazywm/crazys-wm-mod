@@ -69,6 +69,8 @@ extern bool g_F12_Key;
 extern string monthnames[13];
 extern string g_ReturnText;
 
+extern cPlayer* The_Player;
+
 int currentbox=0;
 
 bool cScreenNewGame::ids_set = false;
@@ -128,17 +130,17 @@ void cScreenNewGame::check_events()
 	if (g_InterfaceEvents.CheckSlider(pbd_id) || g_InterfaceEvents.CheckSlider(pbm_id))
 	{
 		stringstream ss;
-		g_Brothels.GetPlayer()->SetBirthDay(SliderValue(pbd_id));
-		SliderValue(pbd_id, g_Brothels.GetPlayer()->BirthDay());
-		g_Brothels.GetPlayer()->SetBirthMonth(SliderValue(pbm_id));
-		SliderValue(pbm_id, g_Brothels.GetPlayer()->BirthMonth());
+		The_Player->SetBirthDay(SliderValue(pbd_id));
+		SliderValue(pbd_id, The_Player->BirthDay());
+		The_Player->SetBirthMonth(SliderValue(pbm_id));
+		SliderValue(pbm_id, The_Player->BirthMonth());
 
-		ss << g_Brothels.GetPlayer()->BirthDay();
+		ss << The_Player->BirthDay();
 		EditTextItem(ss.str(), pbd1_id);
 		ss.str("");
-		ss << monthnames[g_Brothels.GetPlayer()->BirthMonth()];
+		ss << monthnames[The_Player->BirthMonth()];
 		EditTextItem(ss.str(), pbm1_id);
-		EditTextItem(g_Girls.GetHoroscopeName(g_Brothels.GetPlayer()->BirthMonth(), g_Brothels.GetPlayer()->BirthDay()), phn_id);
+		EditTextItem(g_Girls.GetHoroscopeName(The_Player->BirthMonth(), The_Player->BirthDay()), phn_id);
 		return;
 	}
 
@@ -157,9 +159,9 @@ void cScreenNewGame::check_events()
 		else	// ready to start the game now
 		{
 			g_ReturnText = b;
-			g_Brothels.GetPlayer()->SetFirstName(p);
-			g_Brothels.GetPlayer()->SetSurname(s);
-			g_Brothels.GetPlayer()->SetRealName(p + " " + s);
+			The_Player->SetFirstName(p);
+			The_Player->SetSurname(s);
+			The_Player->SetRealName(p + " " + s);
 
 			g_InitWin = true;
 			g_WinManager.Pop();
@@ -192,29 +194,29 @@ bool cScreenNewGame::check_keys()
 	if (g_PageDownKey || (currentbox == 3 && g_LeftArrow))
 	{
 		mod = g_LeftArrow = g_PageDownKey = false;
-		g_Brothels.GetPlayer()->BirthMonth(-1);
+		The_Player->BirthMonth(-1);
 	}
 	if (g_PageUpKey || (currentbox == 3 && g_RightArrow))
 	{
 		mod = g_RightArrow = g_PageUpKey = false;
-		g_Brothels.GetPlayer()->BirthMonth(1);
+		The_Player->BirthMonth(1);
 	}
 	if (g_EndKey || (currentbox == 4 && g_LeftArrow))
 	{
 		mod = g_LeftArrow = g_EndKey = false;
-		g_Brothels.GetPlayer()->BirthDay(-1);
+		The_Player->BirthDay(-1);
 	}
 	if (g_HomeKey || (currentbox == 4 && g_RightArrow))
 	{
 		mod = g_RightArrow = g_HomeKey = false;
-		g_Brothels.GetPlayer()->BirthDay(1);
+		The_Player->BirthDay(1);
 	}
 	if (currentbox == 4 && (g_1_Key || g_2_Key || g_3_Key || g_4_Key || g_5_Key || g_6_Key || g_7_Key || g_8_Key || g_9_Key || g_0_Key))
 	{
 		// `J` I'm sure this can be done better but this will do for now.
 		mod = false;
 		int tmp = 0;
-		int cur = g_Brothels.GetPlayer()->BirthDay();
+		int cur = The_Player->BirthDay();
 		int fin = 0;
 
 		if (g_1_Key)	{ g_1_Key = false; tmp = 1; }
@@ -233,21 +235,21 @@ bool cScreenNewGame::check_keys()
 		else if (cur < 10)	fin = (cur * 10) + tmp;
 		if (fin>30)fin = 30;
 
-		g_Brothels.GetPlayer()->SetBirthDay(fin);
+		The_Player->SetBirthDay(fin);
 	}
 
-	if (g_F1_Key)	{ mod = g_F1_Key = false; g_Brothels.GetPlayer()->SetBirthMonth(1); }
-	if (g_F2_Key)	{ mod = g_F2_Key = false; g_Brothels.GetPlayer()->SetBirthMonth(2); }
-	if (g_F3_Key)	{ mod = g_F3_Key = false; g_Brothels.GetPlayer()->SetBirthMonth(3); }
-	if (g_F4_Key)	{ mod = g_F4_Key = false; g_Brothels.GetPlayer()->SetBirthMonth(4); }
-	if (g_F5_Key)	{ mod = g_F5_Key = false; g_Brothels.GetPlayer()->SetBirthMonth(5); }
-	if (g_F6_Key)	{ mod = g_F6_Key = false; g_Brothels.GetPlayer()->SetBirthMonth(6); }
-	if (g_F7_Key)	{ mod = g_F7_Key = false; g_Brothels.GetPlayer()->SetBirthMonth(7); }
-	if (g_F8_Key)	{ mod = g_F8_Key = false; g_Brothels.GetPlayer()->SetBirthMonth(8); }
-	if (g_F9_Key)	{ mod = g_F9_Key = false; g_Brothels.GetPlayer()->SetBirthMonth(9); }
-	if (g_F10_Key)	{ mod = g_F10_Key = false;  g_Brothels.GetPlayer()->SetBirthMonth(10); }
-	if (g_F11_Key)	{ mod = g_F11_Key = false;  g_Brothels.GetPlayer()->SetBirthMonth(11); }
-	if (g_F12_Key)	{ mod = g_F12_Key = false;  g_Brothels.GetPlayer()->SetBirthMonth(12); }
+	if (g_F1_Key)	{ mod = g_F1_Key = false; The_Player->SetBirthMonth(1); }
+	if (g_F2_Key)	{ mod = g_F2_Key = false; The_Player->SetBirthMonth(2); }
+	if (g_F3_Key)	{ mod = g_F3_Key = false; The_Player->SetBirthMonth(3); }
+	if (g_F4_Key)	{ mod = g_F4_Key = false; The_Player->SetBirthMonth(4); }
+	if (g_F5_Key)	{ mod = g_F5_Key = false; The_Player->SetBirthMonth(5); }
+	if (g_F6_Key)	{ mod = g_F6_Key = false; The_Player->SetBirthMonth(6); }
+	if (g_F7_Key)	{ mod = g_F7_Key = false; The_Player->SetBirthMonth(7); }
+	if (g_F8_Key)	{ mod = g_F8_Key = false; The_Player->SetBirthMonth(8); }
+	if (g_F9_Key)	{ mod = g_F9_Key = false; The_Player->SetBirthMonth(9); }
+	if (g_F10_Key)	{ mod = g_F10_Key = false;  The_Player->SetBirthMonth(10); }
+	if (g_F11_Key)	{ mod = g_F11_Key = false;  The_Player->SetBirthMonth(11); }
+	if (g_F12_Key)	{ mod = g_F12_Key = false;  The_Player->SetBirthMonth(12); }
 
 
 
@@ -257,12 +259,12 @@ bool cScreenNewGame::check_keys()
 	if (!mod)
 	{
 		stringstream ss;
-		SliderValue(pbd_id, g_Brothels.GetPlayer()->BirthDay());
-		ss << g_Brothels.GetPlayer()->BirthDay();
+		SliderValue(pbd_id, The_Player->BirthDay());
+		ss << The_Player->BirthDay();
 		EditTextItem(ss.str(), pbd1_id);
 		ss.str("");
-		SliderValue(pbm_id, g_Brothels.GetPlayer()->BirthMonth());
-		ss << monthnames[g_Brothels.GetPlayer()->BirthMonth()];
+		SliderValue(pbm_id, The_Player->BirthMonth());
+		ss << monthnames[The_Player->BirthMonth()];
 		EditTextItem(ss.str(), pbm1_id);
 
 		if (currentbox >= (int)m_EditBoxes.size() + (int)m_Sliders.size()) currentbox = 0;
@@ -273,7 +275,7 @@ bool cScreenNewGame::check_keys()
 
 		m_Sliders[0]->IsActive(currentbox == 3);
 		m_Sliders[1]->IsActive(currentbox == 4);
-		EditTextItem(g_Girls.GetHoroscopeName(g_Brothels.GetPlayer()->BirthMonth(), g_Brothels.GetPlayer()->BirthDay()), phn_id);
+		EditTextItem(g_Girls.GetHoroscopeName(The_Player->BirthMonth(), The_Player->BirthDay()), phn_id);
 		return true;
 	}
 

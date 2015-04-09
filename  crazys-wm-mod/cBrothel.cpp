@@ -64,7 +64,9 @@ extern cCentreManager		g_Centre;
 extern cHouseManager		g_House;
 extern cFarmManager			g_Farm;
 
-cPlayer* The_Player = g_Brothels.GetPlayer();
+// `J` the one and only time GetPlayer() should be used (hopefully)
+// `J` This will be moved to cPlayer.(h/cpp) eventually, just cleaning it up for now
+cPlayer* The_Player = g_Brothels.GetPlayer();	
 
 //extern CGraphics			g_Graphics;
 

@@ -329,6 +329,8 @@ void cGangManager::AddNewGang(bool boosted)
 		if (boosted)			new_val += 10 + g_Dice % 11;
 		newGang->m_Stats[i] = new_val;
 	}
+	newGang->m_Stats[STAT_HEALTH] = 100;
+	newGang->m_Stats[STAT_HAPPINESS] = 100;
 
 	char buffer[256];
 	bool done = false;
@@ -531,6 +533,8 @@ sGang* cGangManager::GetTempGang()
 	newGang->m_Num = g_Dice % 6 + 10;
 	for (int i = 0; i<NUM_SKILLS; i++)	newGang->m_Skills[i] = (g_Dice % 30) + 21;
 	for (int i = 0; i<NUM_STATS; i++)	newGang->m_Stats[i] = (g_Dice % 30) + 21;
+	newGang->m_Stats[STAT_HEALTH] = 100;
+	newGang->m_Stats[STAT_HAPPINESS] = 100;
 	return newGang;
 }
 // `J` added temp gang mod - base strength + mod
@@ -550,6 +554,9 @@ sGang* cGangManager::GetTempGang(int mod)
 		if (newGang->m_Stats[i] < 1)	newGang->m_Stats[i] = 1;
 		if (newGang->m_Stats[i] > 100)	newGang->m_Stats[i] = 100;
 	}
+	newGang->m_Stats[STAT_HEALTH] = 100;
+	newGang->m_Stats[STAT_HAPPINESS] = 100;
+
 	return newGang;
 }
 

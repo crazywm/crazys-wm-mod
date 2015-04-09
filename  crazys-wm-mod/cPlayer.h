@@ -53,13 +53,13 @@ private:
 	int m_CustomerFear;
 
 
-	int m_BirthYear = 1190;			// the game starts in year 1209 so default start age is 18
-	int m_BirthMonth = 1;			// there are 12 month in the year
-	int m_BirthDay = 1;				// there are 30 days in every month
+	int m_BirthYear;	// the game starts in year 1209 so default start age is 18
+	int m_BirthMonth;	// there are 12 month in the year
+	int m_BirthDay;		// there are 30 days in every month
 
-	string m_Title;			// basic title - need to add more titles with more power gained
-	string m_FirstName;			// no first name
-	string m_Surname;			// basic surname
+	string m_Title;		// basic title - need to add more titles with more power gained
+	string m_FirstName;	// no first name
+	string m_Surname;	// basic surname
 	string m_RealName;	// m_FirstName + " " + m_Surname
 
 public:
@@ -87,13 +87,12 @@ public:
 
 	int disposition()		{ return m_Disposition; }
 	int disposition(int n);
-	int evil(int n)			{cConfig cfg;						// `J` add check for if harsher torture is set
-		if (cfg.initial.torture_mod() < 0 && n > 0){ n += n; }	// `J` double evil if increasing it BUT NOT IF LOWERING IT
-		return disposition(-1 * n); }
+	int evil(int n);
 	int suspicion()			{ return m_Suspicion; }
 	int suspicion(int n);
 	int customerfear()		{ return m_CustomerFear; }
 	int customerfear(int n);
+
 	int BirthYear()		{ return m_BirthYear; }
 	int BirthMonth()	{ return m_BirthMonth; }
 	int BirthDay()		{ return m_BirthDay; }

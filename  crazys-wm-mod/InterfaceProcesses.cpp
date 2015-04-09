@@ -247,9 +247,9 @@ void NewGame()
 
 	g_Brothels.NewBrothel(20, 250);
 	g_Brothels.SetName(0, g_ReturnText);
-	for (int i = 0; i < NUM_STATS; i++)		g_Brothels.GetPlayer()->m_Stats[i] = 60;
-	for (u_int i = 0; i < NUM_SKILLS; i++)	g_Brothels.GetPlayer()->m_Skills[i] = 10;
-	g_Brothels.GetPlayer()->SetToZero();
+	for (int i = 0; i < NUM_STATS; i++)		The_Player->m_Stats[i] = 60;
+	for (u_int i = 0; i < NUM_SKILLS; i++)	The_Player->m_Skills[i] = 10;
+	The_Player->SetToZero();
 
 	g_House.NewBrothel(20, 200);
 	g_House.SetName(0, "House");
@@ -2400,7 +2400,7 @@ void NextWeek()
 	// `J` I want to make the player start with 0 in all stats and skills
 	// and have to gain them over time. When this gets implemented
 	// g_TalkCount will be based on the player's charisma.
-	g_TalkCount = 10 + (g_Brothels.GetPlayer()->m_Stats[STAT_CHARISMA] / 10);
+	g_TalkCount = 10 + (The_Player->m_Stats[STAT_CHARISMA] / 10);
 	// */ //
 
 	if (g_Cheats)	g_Gold.cheat();
@@ -2504,9 +2504,9 @@ void GameEvents()
 
 		if (g_Dice.percent(10))	// only 10% of being discovered
 		{
-			g_Brothels.GetPlayer()->suspicion(1);
+			The_Player->suspicion(1);
 		}
-		g_Brothels.GetPlayer()->disposition(-1);
+		The_Player->disposition(-1);
 		g_Brothels.UpdateAllGirlsStat(0, STAT_PCFEAR, 2);
 
 		ClearGameFlag(FLAG_DUNGEONGIRLDIE);
@@ -2517,10 +2517,10 @@ void GameEvents()
 
 		if (g_Dice.percent(10))	// only 10% chance of being found out
 		{
-			g_Brothels.GetPlayer()->suspicion(1);
+			The_Player->suspicion(1);
 		}
-		g_Brothels.GetPlayer()->disposition(-1);
-		g_Brothels.GetPlayer()->customerfear(1);
+		The_Player->disposition(-1);
+		The_Player->customerfear(1);
 
 		ClearGameFlag(FLAG_DUNGEONCUSTDIE);
 	}

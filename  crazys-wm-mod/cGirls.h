@@ -352,6 +352,9 @@ public:
 // Represents a single girl
 struct sGirl
 {
+	sGirl();
+	~sGirl();
+
 	int m_newRandomFixed;
 
 	string m_Name;								// The girls name
@@ -363,9 +366,8 @@ struct sGirl
 	string m_FirstName;							// this is the girl's first name
 	string m_MiddleName;						// this is the girl's middle name
 	string m_Surname;							// this is the girl's surname
-	//	`J` added mother and father names
-	string m_MotherName = "";
-	string m_FatherName = "";
+	string m_MotherName;						//	`J` added mother and father names
+	string m_FatherName;						//	`J` added mother and father names
 	/*
 	*	MOD: changed from char* -- easier to change from lua -- doc
 	*/
@@ -404,7 +406,7 @@ struct sGirl
 	int m_EnjoymentMods[NUM_ACTIONTYPES];		// `J` added perminant modifiers to stats
 	int m_EnjoymentTemps[NUM_ACTIONTYPES];		// `J` added these go down (or up) by 30% each week until they reach 0
 	// (-100 is hate, +100 is loves)
-	int m_Virgin = -1;							// is she a virgin, 0=false, 1=true, -1=not checked
+	int m_Virgin;								// is she a virgin, 0=false, 1=true, -1=not checked
 
 	bool m_UseAntiPreg;							// if true she will use anit preg measures
 
@@ -425,7 +427,7 @@ struct sGirl
 
 	unsigned long m_WeeksPast;					// number of weeks in your service
 	unsigned int m_BDay;						// number of weeks in your service since last aging
-	
+
 	int BirthMonth;
 	int BirthDay;
 
@@ -435,8 +437,8 @@ struct sGirl
 	bool m_Tort;								// if true then have already tortured today
 	bool m_JustGaveBirth;						// did she give birth this current week?
 
-	int m_Pay = 0;								// used to keep track of pay this turn
-	int m_Tips = 0;								// used to keep track of tips this turn
+	int m_Pay;									// used to keep track of pay this turn
+	int m_Tips;									// used to keep track of tips this turn
 
 	cAImgList* m_GirlImages;					// Images to display
 
@@ -454,118 +456,26 @@ struct sGirl
 	sGirl* m_Next;
 	sGirl* m_Prev;
 
-	int m_WeeksPreg;					// number of weeks pregnant or inseminated
-	int m_PregCooldown;					// number of weeks until can get pregnant again
+	int m_WeeksPreg;							// number of weeks pregnant or inseminated
+	int m_PregCooldown;							// number of weeks until can get pregnant again
 	cChildList m_Children;
 	int m_ChildrenCount[CHILD_COUNT_TYPES];
 
 	vector<string> m_Canonical_Daughters;
 
-	bool m_InClinic = false;
-	bool m_InStudio = false;
-	bool m_InArena = false;
-	bool m_InCentre = false;
-	bool m_InHouse = false;
-	bool m_InFarm = false;
-	int where_is_she = 0;
-	int m_PrevWorkingDay = 0;			// `J` save the last count of the number of working days
-	int m_WorkingDay = 0;				// count the number of working day
-	int m_SpecialJobGoal = 0;			// `J` Special Jobs like surgeries will have a specific goal
-	bool m_Refused_To_Work_Day		= false;		// `J` to track better if she refused to work her assigned job
-	bool m_Refused_To_Work_Night	= false;		// `J` to track better if she refused to work her assigned job
+	bool m_InClinic;
+	bool m_InStudio;
+	bool m_InArena;
+	bool m_InCentre;
+	bool m_InHouse;
+	bool m_InFarm;
+	int where_is_she;
+	int m_PrevWorkingDay;						// `J` save the last count of the number of working days
+	int m_WorkingDay;							// count the number of working day
+	int m_SpecialJobGoal;						// `J` Special Jobs like surgeries will have a specific goal
+	bool m_Refused_To_Work_Day;					// `J` to track better if she refused to work her assigned job
+	bool m_Refused_To_Work_Night;				// `J` to track better if she refused to work her assigned job
 
-	sGirl()
-	{
-		m_SpecialJobGoal = 0;
-		m_WorkingDay = 0;
-		m_InClinic = false;
-		m_InStudio = false;
-		m_InArena = false;
-		m_InCentre = false;
-		m_InHouse = false;
-		m_InFarm = false;
-		m_GirlImages = 0;
-		m_Tort = false;
-		m_JustGaveBirth = false;
-		m_Realname = "";
-		m_WeeksPreg = 0;
-		m_BDay = 0;
-		m_NumCusts = 0;
-		m_WeeksPast = 0;
-		m_Withdrawals = 0;
-		m_Virgin = -1;
-		m_Spotted = 0;
-		m_RunAway = 0;
-		m_AccLevel = 0;
-		m_Money = 0;
-		m_NumInventory = 0;
-		m_Pay = 0;
-		m_FetishTypes = 0;
-		m_DaysUnhappy = 0;
-		m_PregCooldown = 0;
-		for (int i = 0; i < MAXNUM_GIRL_INVENTORY; i++)
-		{
-			m_EquipedItems[i] = 0;
-			m_Inventory[i] = 0;
-		}
-
-		m_NumRememTraits = m_NumTraits = 0;
-		for (int i = 0; i < MAXNUM_TRAITS; i++)
-		{
-			m_Traits[i] = 0;
-			m_TempTrait[i] = 0;
-		}
-		for (int i = 0; i < MAXNUM_TRAITS * 2; i++)
-			m_RememTraits[i] = 0;
-
-		for (int i = 0; i < NUM_GIRLFLAGS; i++)
-			m_Flags[i] = 0;
-
-		m_Prev = 0;
-		m_Next = 0;
-		m_Name = "";
-		m_Desc = "";
-		m_States = 0;
-		m_DayJob = m_NightJob = 0;
-		m_PrevDayJob = m_PrevNightJob = 255;
-		m_YesterDayJob = m_YesterNightJob = 255;
-		m_Refused_To_Work_Day = false;
-		m_Refused_To_Work_Night = false;
-		m_UseAntiPreg = true;
-
-		for (u_int i = 0; i < NUM_SKILLS; i++)		// Added m_Skills here to zero out any that are not specified -- PP
-			m_Skills[i] = m_SkillTemps[i] = m_SkillMods[i] = m_SkillTr[i] = 0;
-		for (int i = 0; i < NUM_STATS; i++)			// Added m_Stats here to zero out any that are not specified -- PP
-			m_Stats[i] = m_StatTemps[i] = m_StatMods[i] = m_StatTr[i] = 0;		
-		for (int i = 0; i < NUM_ACTIONTYPES; i++)	// `J` Added m_Enjoyment here to zero out any that are not specified
-			m_Enjoyment[i] = m_EnjoymentTR[i] = m_EnjoymentMods[i] = m_EnjoymentTemps[i] = 0;
-		for (u_int i = 0; i < NUM_ACTIONTYPES; i++)	// `J` randomize starting likes -10 to 10 most closer to 0
-			m_Enjoyment[i] = (g_Dice.bell(-10, 10));
-
-		m_Stats[STAT_HOUSE] = 60;  // Moved from above so it is not zero'd out by above changes --PP
-		/*
-		*		MOD: DocClox, Sun Nov 15 06:08:32 GMT 2009
-		*		initialise maps to look up stat and skill names
-		*		needed for XML loader
-		*
-		*		things that need to happen every time the struct
-		*		is constructed need to go before this point
-		*		or they'll only happen the first time around
-		*/
-		if (!m_maps_setup)	// only need to do this once
-			setup_maps();
-	}
-
-	~sGirl()
-	{
-		m_GirlImages = 0;
-		//if (m_Name)		delete[] m_Name;
-		m_Name = "";
-		m_Events.Free();
-		if (m_Next)		delete m_Next;
-		m_Next = 0;
-		m_Prev = 0;
-	}
 
 	void dump(ostream &os);
 

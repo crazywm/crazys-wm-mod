@@ -42,6 +42,7 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 extern int g_Building;
+extern cPlayer* The_Player;
 
 // `J` Job Centre - General
 bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
@@ -186,7 +187,7 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0N
 		dispo = int(dispo*1.5);
 	}
 
-	g_Brothels.GetPlayer()->disposition(dispo);
+	The_Player->disposition(dispo);
 	girl->m_Events.AddMessage(ss.str(), image, Day0Night1);
 
 	help += (int)(jobperformance / 10);		//  1 helped per 10 point of performance

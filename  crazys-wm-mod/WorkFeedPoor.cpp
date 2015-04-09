@@ -42,6 +42,7 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 extern int g_Building;
+extern cPlayer* The_Player;
 
 // `J` Job Centre - General
 bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
@@ -243,14 +244,14 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	if (girl->m_States&(1 << STATUS_SLAVE))
 	{
 		ss << "\nThe fact that she is your slave makes people think its less of a good deed on your part.";
-		g_Brothels.GetPlayer()->disposition(dispo);
+		The_Player->disposition(dispo);
 	}
 	else
 	{
 		ss << "\nThe fact that your paying this girl to do this helps people think your a better person.";
 		girl->m_Pay = wages;
 		g_Gold.staff_wages(100);  // wages come from you
-		g_Brothels.GetPlayer()->disposition(int(dispo*1.5));
+		The_Player->disposition(int(dispo*1.5));
 	}
 
 

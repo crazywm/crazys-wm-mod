@@ -29,6 +29,18 @@
 
 cPlayer::cPlayer()			// constructor
 {
+	m_RealName = "";
+	m_FirstName = "";
+	m_Surname = "";
+	m_RealName = "";
+	m_BirthYear = 1190;
+	m_BirthMonth = 0;
+	m_BirthDay = 0;
+
+	for (int i = 0; i < NUM_SKILLS; i++)	m_Skills[i] = 0;
+	for (int i = 0; i < NUM_STATS; i++)		m_Stats[i] = 0;
+	m_Stats[STAT_HEALTH] = 100;
+	m_Stats[STAT_HAPPINESS] = 100;
 	SetToZero();
 }
 
@@ -123,6 +135,30 @@ int cPlayer::disposition(int n)
 	m_Disposition = Limit100(m_Disposition + n);
 	return m_Disposition;
 }
+int cPlayer::evil(int n)
+{
+	cConfig cfg;						// `J` add check for if harsher torture is set
+	if (cfg.initial.torture_mod() < 0 && n > 0)
+	{
+		n += n;		// `J` double evil if increasing it BUT NOT IF LOWERING IT
+	}	
+	return disposition(-1 * n);
+}
+
+int cPlayer::suspicion(int n)
+{
+	n = Scale200(n, m_Suspicion);
+	m_Suspicion = Limit100(m_Suspicion + n);
+	return m_Suspicion;
+}
+
+int cPlayer::customerfear(int n)
+{
+	n = Scale200(n, m_CustomerFear);
+	m_CustomerFear = Limit100(m_CustomerFear + n);
+	return m_CustomerFear;
+}
+
 
 string cPlayer::SetTitle(string title)
 {
@@ -186,16 +222,3 @@ int cPlayer::SetBirthDay(int n)
 
 
 
-int cPlayer::suspicion(int n)
-{
-	n = Scale200(n, m_Suspicion);
-	m_Suspicion = Limit100(m_Suspicion + n);
-	return m_Suspicion;
-}
-
-int cPlayer::customerfear(int n)
-{
-	n = Scale200(n, m_CustomerFear);
-	m_CustomerFear = Limit100(m_CustomerFear + n);
-	return m_CustomerFear;
-}

@@ -35,6 +35,7 @@ extern cMessageQue g_MessageQue;
 extern cRng g_Dice;
 
 extern string stringtolowerj(string name);
+extern cPlayer* The_Player;
 
 // ----- Misc
 
@@ -702,12 +703,11 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 						 */
 						if (!g_Girls.HasTrait(girl, "Sterile") && !girl->is_pregnant())
 						{
-							cPlayer *player = g_Brothels.GetPlayer();
 							bool AntiPreg = girl->m_UseAntiPreg;
 							girl->m_UseAntiPreg = false;  // we don't want contraceptives automatically used, eh?
 							if (eff_id == STATUS_PREGNANT_BY_PLAYER)
 							{
-								bool preg = !girl->calc_pregnancy(player, false, (double)amount);
+								bool preg = !girl->calc_pregnancy(The_Player, false, (double)amount);
 								if (preg)
 									g_MessageQue.AddToQue(girl->m_Realname + gettext(": ") +
 									girl->m_Inventory[num]->m_Name +
@@ -734,7 +734,7 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 							}
 							if (eff_id == STATUS_INSEMINATED)
 							{
-								bool preg = !girl->calc_insemination(player, false, (double)amount);
+								bool preg = !girl->calc_insemination(The_Player, false, (double)amount);
 								if (preg)
 									g_MessageQue.AddToQue(girl->m_Realname + gettext(": ") +
 									girl->m_Inventory[num]->m_Name +
@@ -798,20 +798,19 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 					//and replace, but if we get here, player is looking out for staff.
 					if (trait == "AIDS" || trait == "Syphilis" || trait == "Herpes" || trait == "Chlamydia")
 					{
-						cPlayer * player = g_Brothels.GetPlayer();
 						if (girl->is_slave())
 						{		//SIN: just protecting investment in property
-							if (trait == "AIDS") player->evil(-4);
-							if (trait == "Syphilis") player->evil(-3);
-							if (trait == "Herpes") player->evil(-2);
-							if (trait == "Chlamydia") player->evil(-1);
+							if (trait == "AIDS") The_Player->evil(-4);
+							if (trait == "Syphilis") The_Player->evil(-3);
+							if (trait == "Herpes") The_Player->evil(-2);
+							if (trait == "Chlamydia") The_Player->evil(-1);
 						}
 						else   //SIN: a genuinely kind act to support staff
 						{
-							if (trait == "AIDS") player->evil(-8);
-							if (trait == "Syphilis") player->evil(-6);
-							if (trait == "Herpes") player->evil(-4);
-							if (trait == "Chlamydia") player->evil(-2);
+							if (trait == "AIDS") The_Player->evil(-8);
+							if (trait == "Syphilis") The_Player->evil(-6);
+							if (trait == "Herpes") The_Player->evil(-4);
+							if (trait == "Chlamydia") The_Player->evil(-2);
 						}
 					}
 					g_Girls.RemoveTrait(girl, trait, girl->m_Inventory[num]->m_Type != INVFOOD && girl->m_Inventory[num]->m_Type != INVMAKEUP);		// addrememberlist = true only if not consumable
