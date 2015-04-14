@@ -175,7 +175,6 @@ void cCastingTry::do_walk()
 	*	most of the time, you're not going to find anyone
 	*	unless you're cheating, of course.
 	*/
-	cConfig cfg;
 	int meet_chance = cfg.initial.girl_meet();
 	if (!g_Dice.percent(meet_chance) && !g_Cheats) {
 		g_MessageQue.AddToQue(walk_no_luck(), COLOR_RED);
@@ -206,7 +205,6 @@ void cCastingTry::do_walk()
 	}
 	else {
 		// trigger the girl-specific one
-		cConfig cfg;
 		if (cfg.folders.configXMLch())
 			dp = DirPath() << cfg.folders.characters() << girl->m_Name << trig->m_Script;
 		else

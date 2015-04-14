@@ -81,7 +81,7 @@ string cRivalManager::rivals_plunder_pc_gold(cRival* rival)
 void cRivalManager::Update(int& NumPlayerBussiness)
 {
 	cRival* curr = m_Rivals;
-	cConfig cfg;
+	
 
 	if (g_Year >= 1209 && g_Month > 3) m_PlayerSafe = false;
 
@@ -1045,7 +1045,7 @@ bool cRivalManager::LoadRivalsXML(TiXmlHandle hRivalManager)
 void cRivalManager::CreateRival(long bribeRate, int extort, long gold, int bars, int gambHalls, int Girls, int brothels, int gangs, int power)
 {
 	ifstream in;
-	cConfig cfg;
+	
 
 	cRival* rival = new cRival();
 

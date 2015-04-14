@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Items>
 <Item Name="Teacher Glasses"
-      Desc="Glasses that look like they should be worn by a teacher. (Adds MILF and Nerd)"
+      Desc="Glasses that look like they should be worn by a teacher. (Adds MILF and Nerd, removes Bad Eyesight)"
       Type="Glasses"
       Badness="0"
       Special="None"
@@ -11,5 +11,6 @@
       GirlBuyChance="40">
    <Effect What="Trait" Name="MILF"                    Amount="1"    />
    <Effect What="Trait" Name="Nerd"                    Amount="1"    />
+   <Effect What="Trait" Name="Bad Eyesight"            Amount="0"    />
 </Item>
 </Items>

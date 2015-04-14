@@ -68,6 +68,8 @@ extern cFarmManager			g_Farm;
 // `J` This will be moved to cPlayer.(h/cpp) eventually, just cleaning it up for now
 cPlayer* The_Player = g_Brothels.GetPlayer();	
 
+
+
 //extern CGraphics			g_Graphics;
 
 /*
@@ -175,7 +177,6 @@ int sBrothel::matron_count(bool isClinic, bool isStudio, bool isArena, bool isCe
 // ----- Class cBrothelManager Create / destroy
 cBrothelManager::cBrothelManager()			// constructor
 {
-	cConfig cfg;
 	for (int i = 0; i < MAXNUM_INVENTORY; i++)
 	{
 		m_Inventory[i] = 0;
@@ -200,7 +201,6 @@ cBrothelManager::~cBrothelManager()			// destructor
 
 void cBrothelManager::Free()
 {
-	cConfig cfg;
 	if (m_Prison)		delete m_Prison;
 	if (m_Runaways)		delete m_Runaways;
 	/* sGirls */	m_Prison = m_LastPrison = m_Runaways = m_LastRunaway = 0;
@@ -374,7 +374,6 @@ int cBrothelManager::TotalFame(sBrothel * brothel)
 bool cBrothelManager::CheckScripts()
 {
 	sBrothel* current = m_Parent;
-	cConfig cfg;
 	DirPath base;
 	if (cfg.folders.configXMLch())
 		base = DirPath() << cfg.folders.characters() << "";
@@ -422,7 +421,6 @@ bool UseAntiPreg(bool use, bool isClinic, bool isStudio, bool isArena, bool isCe
 	*
 	*/
 	cTariff tariff;
-	cConfig cfg;
 	int cost = tariff.anti_preg_price(1);
 	if (isClinic)
 	{
@@ -1526,7 +1524,6 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_B
 	string MatronMsg = "", MatronWarningMsg = "";
 	stringstream ss;
 
-	cConfig cfg;
 	sGirl* current = brothel->m_Girls;
 	sGirl* DeadGirl = 0;
 	string summary, msg, girlName;
@@ -2442,7 +2439,6 @@ void cBrothelManager::UpdateBribeInfluence()
 
 void cBrothelManager::do_tax()
 {
-	cConfig cfg;
 	double taxRate = cfg.tax.rate();	// normal tax rate is 6%
 	if (m_Influence > 0)	// can you influence it lower
 	{
@@ -2546,7 +2542,7 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 
 	// unrestricted use items
 #if 1
-	if (g_Girls.HasItemJ(girl, "Android, Assistance") != -1)
+	if (g_Girls.HasItemJ(girl, "Android, Assistance") != -1 && g_Dice.percent(50))
 	{
 		ss << "Her Assistance Android swept up and took out the trash for her.\n\n";
 		brothel->m_Filthiness -= 5;
@@ -2558,20 +2554,125 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 	}
 	if (g_Girls.HasItemJ(girl, "Journal") != -1 && g_Dice.percent(15))
 	{
-		if (g_Girls.HasTrait(girl, "Nerd"))
+		if (g_Girls.HasTrait(girl, "Nerd") && g_Dice.percent(50))
 		{
 			ss << "She decide to write on her novel some today.\n\n";
+			girl->happiness(g_Dice % 2);
+			girl->intelligence(g_Dice % 2);
 		}
-		else if (g_Girls.HasTrait(girl, "Bimbo"))
+		else if (g_Girls.HasTrait(girl, "Bimbo") && g_Dice.percent(50))
 		{
 			ss << "She doodled silly pictures in her journal.\n\n";
+			girl->happiness(g_Dice % 3);
 		}
 		else
 		{
-			ss << "She used her Journal to write some of her thoughts down today.\n\n";
+			string thoughts = "";
+			switch (g_Dice % 20)
+			{
+			case 0:		girl->happiness(1);					thoughts = " happy";		break;
+			case 1:		girl->happiness(-1);				thoughts = " sad";			break;
+			case 2:		girl->happiness(1 + g_Dice % 3);	thoughts = " fun";			break;
+			case 3:		girl->intelligence(1);				thoughts = " interesting";	break;
+			case 4:		girl->spirit(1);					thoughts = " positive";		break;
+			case 5:		girl->spirit(-1);					thoughts = " negative";		break;
+			case 6:		girl->obedience(1);					thoughts = " helpful";		break;
+			case 7:		girl->obedience(-1);				thoughts = " anoying";		break;
+			case 8:		girl->pclove(1);					thoughts = " loving";		break;
+			case 9:		girl->pclove(-1);					thoughts = " unloving";		break;
+			case 10:	girl->pchate(1);					thoughts = " hateful";		break;
+			case 11:	girl->pchate(-1);					thoughts = " carefree";		break;
+			case 12:	girl->pcfear(1);					thoughts = " fearful";		break;
+			case 13:	girl->pcfear(-1);					thoughts = " fearless";		break;
+			case 14:	girl->dignity(1);					thoughts = " proper";		break;
+			case 15:	girl->dignity(-1);					thoughts = " slutty";		break;
+			case 16:	girl->libido(-1);					thoughts = " tame";			break;
+			case 17:	girl->libido(1);					thoughts = " sexy";			break;
+			default:	break;
+			}
+			ss << "She used her Journal to write some of her" << thoughts << " thoughts down today.\n\n";
+
 		}
 	}
 
+	// Dream Orbs
+#if 1
+	if (g_Girls.HasItemJ(girl, "Nightmare Orb") != -1 && g_Dice.percent(50))
+	{
+		if (girl->pclove() > girl->pcfear() && g_Dice.percent(girl->pclove()))
+		{
+			if (g_Dice.percent(50))	ss << girlName << " comes to you and tells you she had a scary dream about you.\n\n";
+			girl->pcfear(g_Dice % 2);
+			girl->happiness(-1);
+			girl->tiredness(1);
+		}
+		else if (girl->has_trait("Masochist") || girl->has_trait("Twisted"))	// she liked it
+		{
+			girl->pcfear(g_Dice % 2);
+			girl->happiness(g_Dice % 3);
+			girl->tiredness(g_Dice % 2);
+		}
+		else	// everyone else
+		{
+			girl->pcfear(g_Dice % 3);
+			girl->happiness(-(g_Dice % 3));
+			girl->tiredness(g_Dice % 4);
+		}
+	}
+	if (g_Girls.HasItemJ(girl, "Lovers Orb") != -1 && g_Dice.percent(50))
+	{
+		if (girl->pclove() > girl->pchate() && g_Dice.percent(girl->pclove()))
+		{
+			girl->pclove(1 + g_Dice % 3);
+			girl->pcfear(-(g_Dice % 3));
+			girl->pchate(-(g_Dice % 3));
+			girl->happiness(3 + g_Dice % 3);
+			girl->tiredness(1 + g_Dice % 3);
+			girl->npclove(-(1 + g_Dice % 3));
+			if (g_Dice.percent(50))
+			{
+				ss << girlName << " comes to you and tells you she had a sexy dream about you.";
+				if (girl->has_trait("Lesbian") && The_Player->Gender() >= GENDER_HERMFULL && g_Dice.percent(girl->pclove() / 10))
+				{
+					g_Girls.RemoveTrait(girl, "Lesbian");
+					g_Girls.AddTrait(girl, "Bisexual");
+					ss << "  \"Normally I don't like men but for you I'll make an exception.\"";
+				}
+				if (girl->has_trait("Straight") && The_Player->Gender() <= GENDER_FUTAFULL && g_Dice.percent(girl->pclove() / 10))
+				{
+					g_Girls.RemoveTrait(girl, "Straight");
+					g_Girls.AddTrait(girl, "Bisexual");
+					ss << "  \"Normally I don't like women but for you I'll make an exception.\"";
+				}
+				ss << "\n\n";
+			}
+		}
+		else	// everyone else
+		{
+			girl->pclove(g_Dice % 3);
+			girl->pcfear(-(g_Dice % 2));
+			girl->pchate(-(g_Dice % 2));
+			girl->happiness(1 + g_Dice % 3);
+			girl->tiredness(1 + g_Dice % 3);
+		}
+	}
+	if (g_Girls.HasItemJ(girl, "Happy Orb") != -1 && g_Dice.percent(50))
+	{
+		if (girl->pclove() > girl->pcfear() && g_Dice.percent(girl->pclove()))
+		{
+			if (g_Dice.percent(50))
+				ss << girlName << " comes to you and tells you she had a happy dream about you.\n\n";
+			girl->happiness(4 + g_Dice % 5);
+			girl->pclove(g_Dice % 2);
+			girl->pcfear(-(g_Dice % 2));
+			girl->pchate(-(g_Dice % 2));
+		}
+		else	// everyone else
+		{
+			girl->happiness(3 + g_Dice % 3);
+		}
+	}
+#endif		
 
 
 #endif
@@ -2584,7 +2685,8 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 		{
 			ss << girl->m_Realname << " decide to spend her time working out with her Free Weights.\n\n";
 			if (g_Dice.percent(5))	g_Girls.UpdateStat(girl, STAT_BEAUTY, 1);		// working out will help her look better
-			if (g_Dice.percent(5))	g_Girls.UpdateStat(girl, STAT_CONSTITUTION, 1);	// working out will make her healthier
+			if (g_Dice.percent(10))	g_Girls.UpdateStat(girl, STAT_CONSTITUTION, 1);	// working out will make her healthier
+			if (g_Dice.percent(50))	g_Girls.UpdateStat(girl, STAT_STRENGTH, 1);		// working out will make her stronger
 		}
 
 		// Books and reading materials
@@ -2700,7 +2802,7 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 
 
 
-#endif
+#endif	// End Books and reading materials
 
 	}
 #endif
@@ -2980,8 +3082,254 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 
 }
 
+// add the girls accommodation and food costs to the upkeep
 void cBrothelManager::do_food_and_digs(sBrothel *brothel, sGirl *girl)
 {
+	// `J` new code for .06.01.18
+#if 1
+	stringstream ss;
+
+	// Gold per accommodation level
+	int gold = (girl->is_slave() ? 5 : 20) * (girl->m_AccLevel + 1);
+	brothel->m_Finance.girl_support(gold);
+
+	int preferredaccom = g_Girls.PreferredAccom(girl);	// what she wants/expects
+	int mod = girl->m_AccLevel - preferredaccom;
+
+	/*   if (acc == 0)	return "Bare Bones";
+	else if (acc == 1)	return "Very Poor";
+	else if (acc == 2)	return "Poor";
+	else if (acc == 3)	return "Adequate";
+	else if (acc == 4)	return "Comfortable";
+	else if (acc == 5)	return "Nice";
+	else if (acc == 6)	return "Good";
+	else if (acc == 7)	return "Great";
+	else if (acc == 8)	return "Wonderful";
+	else if (acc == 9)	return "High Class";
+	*/
+
+	CLog l;
+	if (cfg.debug.log_extradetails())
+	{
+		string name = girl->m_Realname;
+		while (name.length() < 30) name += " ";
+		l.ss() << "" << name << " | P_" << preferredaccom << "-A_" << girl->m_AccLevel << "=M_" << mod << (mod > 0 ? " " : "");
+	}
+
+	int hapA, hapB, lovA, lovB, hatA, hatB, feaA, feaB;		// A should always be lower than B
+	if (mod < -9) mod = -9;	if (mod > 9) mod = 9;
+	switch (mod)	// happiness, love, hate, fear
+	{
+	case -9:	hapA = -24;	hapB = -7;	lovA = -14;	lovB = -3;	hatA = 6;	hatB = 22;	feaA = 5;	feaB = 12;	break;
+	case -8:	hapA = -19;	hapB = -6;	lovA = -11;	lovB = -3;	hatA = 5;	hatB = 18;	feaA = 4;	feaB = 9;	break;
+	case -7:	hapA = -16;	hapB = -5;	lovA = -9;	lovB = -3;	hatA = 4;	hatB = 14;	feaA = 3;	feaB = 7;	break;
+	case -6:	hapA = -13;	hapB = -4;	lovA = -7;	lovB = -2;	hatA = 4;	hatB = 10;	feaA = 2;	feaB = 5;	break;
+	case -5:	hapA = -10;	hapB = -3;	lovA = -6;	lovB = -2;	hatA = 3;	hatB = 7;	feaA = 1;	feaB = 4;	break;
+	case -4:	hapA = -8;	hapB = -2;	lovA = -5;	lovB = -1;	hatA = 2;	hatB = 5;	feaA = 0;	feaB = 3;	break;
+	case -3:	hapA = -6;	hapB = -1;	lovA = -4;	lovB = 0;	hatA = 1;	hatB = 4;	feaA = 0;	feaB = 2;	break;
+	case -2:	hapA = -4;	hapB = 0;	lovA = -3;	lovB = 0;	hatA = 0;	hatB = 3;	feaA = 0;	feaB = 1;	break;
+	case -1:	hapA = -2;	hapB = 1;	lovA = -2;	lovB = 1;	hatA = -1;	hatB = 2;	feaA = 0;	feaB = 0;	break;
+	case 0:		hapA = -1;	hapB = 3;	lovA = -1;	lovB = 2;	hatA = -1;	hatB = 1;	feaA = 0;	feaB = 0;	break;
+	case 1:		hapA = 0;	hapB = 5;	lovA = -1;	lovB = 3;	hatA = -1;	hatB = 0;	feaA = 0;	feaB = 0;	break;
+	case 2:		hapA = 1;	hapB = 8;	lovA = 0;	lovB = 3;	hatA = -3;	hatB = 0;	feaA = 0;	feaB = 0;	break;
+	case 3:		hapA = 2;	hapB = 11;	lovA = 0;	lovB = 4;	hatA = -5;	hatB = -1;	feaA = -1;	feaB = 0;	break;
+	case 4:		hapA = 3;	hapB = 14;	lovA = 1;	lovB = 4;	hatA = -6;	hatB = -1;	feaA = -1;	feaB = 0;	break;
+	case 5:		hapA = 4;	hapB = 16;	lovA = 1;	lovB = 5;	hatA = -7;	hatB = -1;	feaA = -1;	feaB = 0;	break;
+	case 6:		hapA = 5;	hapB = 18;	lovA = 2;	lovB = 5;	hatA = -7;	hatB = -2;	feaA = -2;	feaB = 0;	break;
+	case 7:		hapA = 5;	hapB = 19;	lovA = 2;	lovB = 6;	hatA = -8;	hatB = -2;	feaA = -2;	feaB = 0;	break;
+	case 8:		hapA = 5;	hapB = 20;	lovA = 2;	lovB = 7;	hatA = -9;	hatB = -3;	feaA = -3;	feaB = 0;	break;
+	case 9:		hapA = 5;	hapB = 21;	lovA = 2;	lovB = 8;	hatA = -10;	hatB = -3;	feaA = -3;	feaB = 0;	break;
+	default: break;
+	}
+	if (cfg.debug.log_extradetails())
+	{
+		l.ss() << "\t|";
+	}
+
+	if (girl->happiness() < 20 - mod)			// if she is unhappy, her mood will go down
+	{
+		if (cfg.debug.log_extradetails())
+		{
+			l.ss() << "a";
+		}
+		/* */if (mod < -6){ hapA -= 7;	hapB -= 3;	lovA -= 4;	lovB -= 1;	hatA += 2;	hatB += 5;	feaA += 2;	feaB += 5; }
+		else if (mod < -3){ hapA -= 5;	hapB -= 2;	lovA -= 2;	lovB -= 1;	hatA += 1;	hatB += 3;	feaA += 1;	feaB += 3; }
+		else if (mod < 0){ hapA -= 3;	hapB -= 1;	lovA -= 1;	lovB -= 0;	hatA += 0;	hatB += 2;	feaA += 0;	feaB += 2; }
+		else if (mod < 1){ hapA -= 2;	hapB -= 0;	lovA -= 1;	lovB -= 0;	hatA += 0;	hatB += 1;	feaA += 0;	feaB += 1; }
+		else if (mod < 4){ hapA -= 2;	hapB -= 0;	lovA -= 1;	lovB -= 0;	hatA += 0;	hatB += 1;	feaA -= 1;	feaB += 1; }
+		else if (mod < 7){ hapA -= 1;	hapB -= 0;	lovA -= 1;	lovB -= 0;	hatA += 0;	hatB += 0;	feaA -= 1;	feaB += 0; }
+	}
+	else if (!g_Dice.percent(girl->happiness()))	// if she is not happy, her mood may go up or down
+	{
+		if (cfg.debug.log_extradetails())
+		{
+			l.ss() << "b";
+		}
+		/* */if (mod < -6){ hapA -= 3;	hapB += 1;	lovA -= 3;	lovB += 0;	hatA -= 0;	hatB += 4;	feaA -= 2;	feaB += 3; }
+		else if (mod < -3){ hapA -= 2;	hapB += 1;	lovA -= 2;	lovB += 0;	hatA -= 0;	hatB += 3;	feaA -= 1;	feaB += 2; }
+		else if (mod < 0){ hapA -= 1;	hapB += 2;	lovA -= 1;	lovB += 1;	hatA -= 1;	hatB += 2;	feaA -= 1;	feaB += 2; }
+		else if (mod < 1){ hapA -= 1;	hapB += 2;	lovA -= 1;	lovB += 1;	hatA -= 1;	hatB += 1;	feaA -= 1;	feaB += 1; }
+		else if (mod < 4){ hapA += 0;	hapB += 2;	lovA -= 0;	lovB += 1;	hatA -= 1;	hatB += 1;	feaA -= 1;	feaB += 0; }
+		else if (mod < 7){ hapA += 0;	hapB += 3;	lovA += 0;	lovB += 1;	hatA -= 1;	hatB -= 0;	feaA -= 0;	feaB += 0; }
+	}
+	else										// otherwise her mood can go up
+	{
+		if (cfg.debug.log_extradetails())
+		{
+			l.ss() << "c";
+		}
+		/* */if (mod < -6){ hapA -= 1;	hapB += 2;	lovA -= 1;	lovB += 1;	hatA -= 1;	hatB -= 1;	feaA -= 1;	feaB += 1; }
+		else if (mod < -3){ hapA += 0;	hapB += 2;	lovA += 0;	lovB += 1;	hatA -= 2;	hatB -= 0;	feaA -= 2;	feaB -= 0; }
+		else if (mod < 0){ hapA += 0;	hapB += 3;	lovA += 0;	lovB += 1;	hatA -= 2;	hatB -= 0;	feaA -= 2;	feaB -= 0; }
+		else if (mod < 1){ hapA += 0;	hapB += 5;	lovA += 0;	lovB += 1;	hatA -= 2;	hatB -= 1;	feaA -= 2;	feaB -= 0; }
+		else if (mod < 4){ hapA += 1;	hapB += 7;	lovA += 0;	lovB += 2;	hatA -= 3;	hatB -= 1;	feaA -= 3;	feaB -= 0; }
+		else if (mod < 7){ hapA += 2;	hapB += 8;	lovA += 1;	lovB += 3;	hatA -= 4;	hatB -= 1;	feaA -= 3;	feaB -= 1; }
+	}
+	if (girl->health() < 25)					// if she is injured she may be scared because of her surroundings
+	{
+		if (cfg.debug.log_extradetails())
+		{
+			l.ss() << "d";
+		}
+		/* */if (mod < -6){ hapA -= 6;	hapB -= 2;	lovA -= 4;	lovB -= 1;	hatA += 3;	hatB += 4;	feaA += 2;	feaB += 4; }
+		else if (mod < -3){ hapA -= 4;	hapB -= 1;	lovA -= 3;	lovB -= 1;	hatA += 2;	hatB += 3;	feaA += 1;	feaB += 3; }
+		else if (mod < 0){	hapA -= 2;	hapB -= 1;	lovA -= 1;	lovB += 0;	hatA += 1;	hatB += 2;	feaA += 0;	feaB += 2; }
+		else if (mod < 1){	hapA -= 1;	hapB += 1;	lovA -= 0;	lovB += 0;	hatA -= 0;	hatB += 1;	feaA -= 1;	feaB += 1; }
+		else if (mod < 4){	hapA += 0;	hapB += 4;	lovA += 0;	lovB += 1;	hatA -= 1;	hatB += 0;	feaA -= 2;	feaB += 1; }
+		else if (mod < 7){	hapA += 2;	hapB += 8;	lovA += 1;	lovB += 1;	hatA -= 1;	hatB += 0;	feaA -= 3;	feaB += 0; }
+	}
+	else if (cfg.debug.log_extradetails())
+	{
+		l.ss() << " ";
+	}
+
+	if (girl->is_slave())						// slaves get half as much from their mods
+	{
+		if (cfg.debug.log_extradetails())
+		{
+			l.ss() << "e";
+		}
+		hapA /= 2;	hapB /= 2;	lovA /= 2;	lovB /= 2;	hatA /= 2;	hatB /= 2;	feaA /= 2;	feaB /= 2;
+	}
+	else if (cfg.debug.log_extradetails())
+	{
+		l.ss() << " ";
+	}
+
+	int hap = g_Dice.bell(hapA, hapB);
+	int lov = g_Dice.bell(lovA, lovB);
+	int hat = g_Dice.bell(hatA, hatB);
+	int fea = g_Dice.bell(feaA, feaB);
+
+	if (cfg.debug.log_extradetails())
+	{
+		l.ss() << "\t| happy:\t" << hapA << "\t" << hapB << "\t=" << hap
+			<< "\t| love :\t" << lovA << "\t" << lovB << "\t=" << lov
+			<< "\t| hate :\t" << hatA << "\t" << hatB << "\t=" << hat
+			<< "\t| fear :\t" << feaA << "\t" << feaB << "\t=" << fea
+			;
+		l.ssend();
+	}
+
+
+	girl->happiness(hap);
+	girl->pclove(lov);
+	girl->pchate(hat);
+	girl->pcfear(fea);
+
+
+	// after all the happy, love fear and hate are done, do some other checks.
+
+#if 0
+	if (girl->pchate() > girl->pcfear())		// if she hates you more than she fears you, she will disobey more
+	{
+		girl->obedience(g_Dice.bell(mod, 0));
+		girl->spirit(g_Dice.bell(-1, 2));
+	}
+	else										// otherwise she will obey more in hopes of getting an upgrade
+	{
+		girl->obedience(g_Dice.bell(0, -mod));
+		girl->spirit(g_Dice.bell(-2, 1));
+	}
+#endif
+
+
+
+
+
+	int chance = 1 + (mod < 0 ? -mod : mod);
+	if (!g_Dice.percent(chance)) return;
+	// Only check if a trait gets modified if mod is far from 0
+
+	bool b_health = g_Dice.percent(girl->health());
+	bool b_happiness = g_Dice.percent(girl->happiness());
+	bool b_tiredness = g_Dice.percent(girl->tiredness());
+	bool b_intelligence = g_Dice.percent(girl->intelligence());
+	bool b_confidence = g_Dice.percent(girl->confidence());
+	bool b_libido = g_Dice.percent(girl->libido());
+	bool b_obedience = g_Dice.percent(girl->obedience());
+	bool b_spirit = g_Dice.percent(girl->spirit());
+	bool b_pclove = g_Dice.percent(girl->pclove());
+	bool b_pcfear = g_Dice.percent(girl->pcfear());
+	bool b_pchate = g_Dice.percent(girl->pchate());
+	bool b_morality = g_Dice.percent(girl->morality());
+	bool b_refinement = g_Dice.percent(girl->refinement());
+	bool b_dignity = g_Dice.percent(girl->dignity());
+
+	if (girl->has_trait("Homeless") && b_refinement && b_dignity && b_confidence &&
+		mod >= 0 && girl->m_AccLevel >= 5 && g_Dice.percent(girl->m_AccLevel))
+	{
+		g_Girls.RemoveTrait(girl, "Homeless", true);
+		ss << girl->m_Realname << " has gotten used to better surroundings and has lost the \"Homeless\" trait.";
+	}
+	else if (girl->has_trait("Masochist") && b_intelligence && b_spirit && b_confidence &&
+		mod >= 2 && g_Dice.percent(girl->m_AccLevel - 7))
+	{
+		g_Girls.RemoveTrait(girl, "Masochist", true);
+		// `J` zzzzzz - needs better text
+		ss << girl->m_Realname << " seems to be getting over her Masochistic tendencies.";
+	}
+	else if (!girl->has_trait("Masochist") && !b_dignity && !b_spirit && !b_confidence &&
+		mod <= -1 && g_Dice.percent(3 - mod))
+	{
+		g_Girls.AddTrait(girl, "Masochist");
+		// `J` zzzzzz - needs better text
+		ss << girl->m_Realname << " seems to be getting a little Masochistic from not getting what she thinks she needs.";
+	}
+
+
+
+
+#if 1
+	else if (g_Dice.percent(90)){}	// `J` - zzzzzz - The rest need work so for now they will be less common
+#endif
+	else if (girl->has_trait("Optimist") && g_Dice.percent(3))
+	{
+		g_Girls.RemoveTrait(girl, "Optimist", true);
+		ss << girl->m_Realname << " has lost the \"Optimist\" trait. (someone write better text for this)";
+	}
+	else if (!girl->has_trait("Optimist") && g_Dice.percent(3))	// `J` - zzzzzz - needs work
+	{
+		g_Girls.AddTrait(girl, "Optimist");
+		ss << girl->m_Realname << " has gained the \"Optimist\" trait. (someone write better text for this)";
+	}
+	else if (girl->has_trait("Pessimist") && g_Dice.percent(3))	// `J` - zzzzzz - needs work
+	{
+		g_Girls.RemoveTrait(girl, "Pessimist", true);
+		ss << girl->m_Realname << " has lost the \"Pessimist\" trait. (someone write better text for this)";
+	}
+	else if (!girl->has_trait("Pessimist") && g_Dice.percent(3))	// `J` - zzzzzz - needs work
+	{
+		g_Girls.AddTrait(girl, "Pessimist");
+		ss << girl->m_Realname << " has gained the \"Pessimist\" trait. (someone write better text for this)";
+	}
+
+
+
+	if (ss.str().length() > 0)	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
+
+	// old code
+#else
 	/*
 	*	add the girls accommodation and food costs to the upkeep
 	*/
@@ -3068,6 +3416,7 @@ void cBrothelManager::do_food_and_digs(sBrothel *brothel, sGirl *girl)
 	if (girl->happiness() <= 0) {
 		girl->pchate(1 + diff / 3);
 	}
+#endif		// end old code
 }
 
 // ----- Inventory
@@ -3225,7 +3574,6 @@ void cBrothelManager::CalculatePay(sBrothel* brothel, sGirl* girl, u_int Job)
 	// no pay or tips, no need to continue
 	if (girl->m_Pay <= 0 && girl->m_Tips <= 0) { girl->m_Pay = girl->m_Tips = 0; return; }
 
-	cConfig cfg;
 	if (girl->m_Tips > 0)		// `J` check tips first
 	{
 		if ((cfg.initial.girls_keep_tips() && !girl->is_slave()) ||	// if free girls tips are counted sepreatly from pay
@@ -4714,6 +5062,13 @@ bool cBrothelManager::runaway_check(sBrothel *brothel, sGirl *girl)
 		girl->m_DaysUnhappy--;					// and they don't reset days to 0 but instead reduce day count
 		if (girl->m_DaysUnhappy < 0)
 			girl->m_DaysUnhappy = 0;			// until it gets to 0
+		return false;
+	}
+	else if ((girl->has_trait("Homeless") || girl->has_trait("Adventurer")) && girl->happiness() > 10)
+	{	// homeless girls and adventurers know they can survive on their own so are more likely to runaway
+		if (girl->m_DaysUnhappy > 3)
+			girl->m_DaysUnhappy /= 2;		// they don't reset days to 0 but instead divide day count in half
+		else girl->m_DaysUnhappy--;			// or just lower by 1
 		return false;
 	}
 	else if (girl->happiness() > 10)

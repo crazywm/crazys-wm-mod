@@ -147,6 +147,7 @@
     <ClCompile Include="GameFlags.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="sConfig.cpp" />
+    <ClCompile Include="SDL_anigif.c" />
     <ClCompile Include="sFacility.cpp" />
     <ClCompile Include="sFacilityList.cpp" />
     <ClCompile Include="strnatcmp.cpp" />
@@ -394,6 +395,7 @@
     <ClInclude Include="MasterFile.h" />
     <ClInclude Include="Revision.h" />
     <ClInclude Include="sConfig.h" />
+    <ClInclude Include="SDL_anigif.h" />
     <ClInclude Include="sFacility.h" />
     <ClInclude Include="sFacilityList.h" />
     <ClInclude Include="strnatcmp.h" />

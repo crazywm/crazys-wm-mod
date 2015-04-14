@@ -54,7 +54,7 @@ private:
 public:
 	cScreenGallery()
 	{
-		cConfig cfg;
+		
 		DirPath dp = DirPath()
 			<< "Resources" << "Interface" << cfg.resolution.resolution() << "gallery_screen.xml";
 		m_filename = dp.c_str();

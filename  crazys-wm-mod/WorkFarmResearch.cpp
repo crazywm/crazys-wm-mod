@@ -44,7 +44,7 @@ bool cJobManager::WorkFarmResearch(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	ss << " worked as a reseacher on the farm.";
 
 	g_Girls.UnequipCombat(girl);	// put that shit away
-	cConfig cfg;
+	
 	int enjoy = 0;												// 
 	int wages = 0;												// 
 	int train = 0;												// main skill trained

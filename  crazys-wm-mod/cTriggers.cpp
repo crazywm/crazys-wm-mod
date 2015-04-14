@@ -1184,7 +1184,7 @@ int cTrigger::load_from_xml(TiXmlElement *el)
 void cTriggerList::LoadList(string filename)
 {
 	TiXmlDocument doc(filename);
-	cConfig cfg;
+	
 	if (!doc.LoadFile())
 	{
 		if (cfg.debug.log_girls())

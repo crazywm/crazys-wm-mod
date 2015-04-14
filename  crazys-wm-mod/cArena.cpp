@@ -39,7 +39,6 @@ extern unsigned long    g_Month;
 extern unsigned long    g_Day;
 extern cRng             g_Dice;
 extern cGold            g_Gold;
-extern char             buffer[1000];
 
 u_int restjob = JOB_ARENAREST;
 u_int matronjob = JOB_DOCTORE;
@@ -209,8 +208,6 @@ void cArenaManager::UpdateArena()	// Start_Building_Process_A
 // Run the shifts
 void cArenaManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Building_Process_B
 {
-	cConfig cfg;
-
 	stringstream ss;
 	string summary, girlName;
 

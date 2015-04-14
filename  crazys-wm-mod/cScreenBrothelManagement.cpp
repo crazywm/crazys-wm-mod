@@ -67,7 +67,7 @@ void cScreenBrothelManagement::set_ids()
 
 cScreenBrothelManagement::cScreenBrothelManagement()
 {
-	cConfig cfg;
+	
 	DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "brothel_management.xml";
 	m_filename = dp.c_str();
 }

@@ -62,6 +62,8 @@ private:
 	string m_Surname;	// basic surname
 	string m_RealName;	// m_FirstName + " " + m_Surname
 
+	int m_PlayerGender;	// `J` added - not going to be changeable yet but adding it in for later
+
 public:
 	
 	string Title()		{ return m_Title; }
@@ -73,6 +75,17 @@ public:
 	string SetFirstName(string firstname);
 	string SetSurname(string surname);
 	string SetRealName(string realname);
+
+	int Gender()		{ return m_PlayerGender; }
+	void SetGender(int x);
+	void AdjustGender(int male, int female);
+	bool CanImpregnateFemale();
+	bool CanCarryOwnBaby();
+	bool CanCarryNormalBaby();
+	bool HasPenis();
+	bool HasVagina();
+	bool HasTestes();
+	bool HasOvaries();
 
 
 	bool m_WinGame;

@@ -257,8 +257,7 @@ void cMovieStudioManager::UpdateMovieStudio()	// Start_Building_Process_A
 // Run the shifts
 void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Process_B
 {
-	cConfig cfg;
-
+	
 	stringstream ss;
 	string summary, girlName;
 

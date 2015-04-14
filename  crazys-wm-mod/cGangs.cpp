@@ -136,7 +136,6 @@ bool cGangManager::LoadGangsXML(TiXmlHandle hGangManager)
 	if ((m_Gang_Gets_Girls == 0 && m_Gang_Gets_Items == 0 && m_Gang_Gets_Beast == 0) ||
 		m_Gang_Gets_Girls + m_Gang_Gets_Items + m_Gang_Gets_Beast != 100)
 	{
-		cConfig cfg;
 		m_Control_Gangs = cfg.catacombs.control_gangs();
 		m_Gang_Gets_Items = (int)cfg.catacombs.gang_gets_items();
 		m_Gang_Gets_Beast = (int)cfg.catacombs.gang_gets_beast();
@@ -182,7 +181,6 @@ TiXmlElement* cGangManager::SaveGangsXML(TiXmlElement* pRoot)
 	// `J` added for .06.01.10
 	if (m_Gang_Gets_Girls == 0 && m_Gang_Gets_Items == 0 && m_Gang_Gets_Beast == 0)
 	{
-		cConfig cfg;
 		m_Control_Gangs = cfg.catacombs.control_gangs();
 		m_Gang_Gets_Items = (int)cfg.catacombs.gang_gets_items();
 		m_Gang_Gets_Beast = (int)cfg.catacombs.gang_gets_beast();
@@ -287,7 +285,6 @@ void cGangManager::FireGang(int gangID)
 	}
 	if (currentGang)
 	{
-		cConfig cfg;
 		if (m_NumHireableGangs < cfg.gangs.max_recruit_list())
 		{
 			sGang* copyGang = new sGang();
@@ -308,7 +305,6 @@ void cGangManager::AddNewGang(bool boosted)
 	m_NumHireableGangs++;
 	sGang* newGang = new sGang();
 
-	cConfig cfg;
 	int max_members = cfg.gangs.init_member_max();
 	int min_members = cfg.gangs.init_member_min();
 	newGang->m_Num = min_members + g_Dice % (max_members + 1 - min_members);
@@ -1373,7 +1369,6 @@ int cGangManager::net_limit()
 // Missions done here - Updated for .06.01.09
 void cGangManager::UpdateGangs()
 {
-	cConfig cfg;
 	cTariff tariff;
 	stringstream ss;
 
@@ -2346,7 +2341,6 @@ bool cGangManager::kidnapp_mission(sGang* gang)
 bool cGangManager::catacombs_mission(sGang* gang)
 {
 	stringstream ss;
-	cConfig cfg;
 	gang->m_Combat = true;
 	int num = gang->m_Num;
 	ss << "Gang   " << gang->m_Name << "   is exploring the catacombs.\n\n";

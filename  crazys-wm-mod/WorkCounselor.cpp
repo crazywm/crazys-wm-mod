@@ -64,7 +64,7 @@ bool cJobManager::WorkCounselor(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	}
 	ss << " counceled patients.\n\n";
 
-	cConfig cfg;
+	
 
 	g_Girls.UnequipCombat(girl);	// not for doctor
 

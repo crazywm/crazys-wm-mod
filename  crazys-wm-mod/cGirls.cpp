@@ -76,6 +76,7 @@ extern cNameList	g_NameList;
 extern cSurnameList g_SurnameList;
 
 extern cPlayer* The_Player;
+extern cConfig cfg;
 
 
 /*
@@ -946,7 +947,6 @@ sRandomGirl* cGirls::random_girl_at(u_int n)
 
 sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool undead, bool Human0Monster1, bool childnaped, bool arena, bool daughter, bool isdaughter, string findbyname)
 {
-	cConfig cfg;
 	sRandomGirl* current = 0;
 	if (findbyname != "")
 	{
@@ -1909,7 +1909,7 @@ string cGirls::GetGirlMood(sGirl* girl)
 string cGirls::GetDetailsString(sGirl* girl, bool purchase)
 {
 	if (girl == 0)	return string("");
-	cConfig cfg; cTariff tariff;
+	cTariff tariff;
 	cFont check; int w, h, size = 0;
 	check.LoadFont(cfg.fonts.normal(), cfg.fonts.detailfontsize());
 	stringstream ss;
@@ -2078,7 +2078,6 @@ string cGirls::GetDetailsString(sGirl* girl, bool purchase)
 
 string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 {
-	cConfig cfg;
 	if (girl == 0)	return "";
 	string sper = ""; if (cfg.fonts.showpercent()) sper = " %";
 	stringstream ss;
@@ -2136,7 +2135,14 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 
 	if (!purchase)
 	{
-		ss << "\n\nAccommodation: " << Accommodation(girl->m_AccLevel);
+		ss << "\n\nAccommodation: ";
+		if (cfg.debug.log_extradetails()) ss << "( " << girl->m_AccLevel << " ) ";
+		ss << Accommodation(girl->m_AccLevel);
+		if (cfg.debug.log_extradetails())
+		{
+			ss << "\n" << (girl->is_free() ? "Preferred  Accom:" : "Expected Accom: ")
+				<< " ( " << PreferredAccom(girl) << " ) " << Accommodation(PreferredAccom(girl));
+		}
 		ss << "\nCost per turn: " << ((girl->is_slave() ? 5 : 20) * (girl->m_AccLevel + 1)) << " gold.\n";
 
 		// added from Dagoth
@@ -2326,8 +2332,7 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 {
 	cJobManager m_JobManager;
-	cConfig cfg;
-
+	
 #if 0
 	// `J` zzzzzz I will come back to this when I start editing jobs
 
@@ -3866,7 +3871,6 @@ bool sGirl::LoadGirlXML(TiXmlHandle hGirl)
 	}
 
 
-	cConfig cfg;
 	if (cfg.debug.log_girls())
 	{
 		std::stringstream ss;
@@ -4179,7 +4183,6 @@ TiXmlElement* sChild::SaveChildXML(TiXmlElement* pRoot)
 // and an xml loader for sGirl
 void sGirl::load_from_xml(TiXmlElement *el)
 {
-	cConfig cfg;
 	int ival;
 	const char *pt;
 	// get the simple fields
@@ -4218,7 +4221,6 @@ void sGirl::load_from_xml(TiXmlElement *el)
 			continue;
 		}
 		m_Stats[i] = ival;
-		cConfig cfg;
 		if (cfg.debug.log_girls())	os << "Debug: Girl='" << m_Realname << "'; Stat='" << stat_name << "'; Value='" << pt << "'; Ival = " << int(m_Stats[i]) << "'" << endl;
 	}
 
@@ -4409,7 +4411,6 @@ void cGirls::LoadGirlsDecider(string filename)
 
 void cGirls::LoadGirlsXML(string filename)
 {
-	cConfig cfg;
 	TiXmlDocument doc(filename);
 	if (!doc.LoadFile())
 	{
@@ -4448,7 +4449,6 @@ void cGirls::LoadGirlsXML(string filename)
 		ApplyTraits(girl);
 
 		// load triggers if the girl has any
-		cConfig cfg;
 		DirPath dp;
 		if (cfg.folders.configXMLch())
 			dp = DirPath() << cfg.folders.characters() << girl->m_Name << "triggers.xml";
@@ -4574,7 +4574,6 @@ void sRandomGirl::process_skill_xml(TiXmlElement *el)
 
 void sRandomGirl::process_cash_xml(TiXmlElement *el)
 {
-	cConfig cfg;
 	int ival; const char *pt;
 	if ((pt = el->Attribute("Min", &ival)))
 	{
@@ -4642,7 +4641,7 @@ int cGirls::HasItemJ(sGirl* girl, string name)	// `J` added to compare item name
 
 void cGirls::EquipCombat(sGirl* girl)
 {
-	cConfig cfg;									// girl makes sure best armor and weapons are equipped, ready for combat
+	// girl makes sure best armor and weapons are equipped, ready for combat
 	if (!cfg.initial.auto_combat_equip()) return;	// is this feature disabled in config?
 	int refusal = 0;
 	if (girl->has_trait("Retarded")) refusal += 30;	// if she's retarded, she might refuse or forget
@@ -4721,7 +4720,6 @@ void cGirls::EquipCombat(sGirl* girl)
 
 void cGirls::UnequipCombat(sGirl* girl)
 {  // girl unequips armor and weapons, ready for brothel work or other non-aggressive jobs	
-	cConfig cfg;
 	if (!cfg.initial.auto_combat_equip()) return; // is this feature disabled in config?
 	// if she's a really rough or crazy bitch, she might just keep combat gear equipped
 	int refusal = 0;
@@ -9176,7 +9174,6 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_SEX, enjoy);
 
-	cConfig cfg;
 	if (cfg.debug.log_debug())
 	{
 		g_LogFile.os() << "STD Debug ::: Sex Type : " << sGirl::skill_names[SexType]
@@ -12101,7 +12098,7 @@ sChild::sChild(bool is_players, Gender gender, int MultiBirth)
 
 	// so now the first baby is ready, check if there are more
 	m_MultiBirth = MultiBirth;
-	cConfig cfg;
+	
 	int trycount = 1;
 	double multichance = cfg.pregnancy.multi_birth_chance();
 	while (g_Dice.percent(multichance) && m_MultiBirth < 5)
@@ -12144,7 +12141,6 @@ sChild * cChildList::remove_child(sChild * child, sGirl * girl)
 
 int sGirl::preg_chance(int base_pc, bool good, double factor)
 {
-	cConfig cfg;
 	g_LogFile.ss() << "sGirl::preg_chance: " << "base %chance = " << base_pc << ", " << "good flag = " << good << ", " << "factor = " << factor;
 	g_LogFile.ssend();
 	double chance = base_pc;
@@ -12157,14 +12153,12 @@ int sGirl::preg_chance(int base_pc, bool good, double factor)
 
 bool sGirl::calc_pregnancy(cPlayer *player, bool good, double factor)
 {
-	cConfig cfg;
 	double chance = preg_chance(cfg.pregnancy.player_chance(), good, factor);
 	//	now do the calculation
 	return g_GirlsPtr->CalcPregnancy(this, int(chance), STATUS_PREGNANT_BY_PLAYER, player->m_Stats, player->m_Skills);
 }
 bool sGirl::calc_group_pregnancy(cPlayer *player, bool good, double factor)
 {
-	cConfig cfg;
 	double chance = preg_chance(cfg.pregnancy.player_chance(), good, factor);
 	// player has 25% chance to be father (4 men in the group)
 	int father = STATUS_PREGNANT;
@@ -12174,7 +12168,6 @@ bool sGirl::calc_group_pregnancy(cPlayer *player, bool good, double factor)
 }
 bool sGirl::calc_group_pregnancy(sCustomer *cust, bool good, double factor)
 {
-	cConfig cfg;
 	double chance = preg_chance(cfg.pregnancy.player_chance(), good, factor);
 	chance += cust->m_Amount;
 	// now do the calculation
@@ -12182,19 +12175,16 @@ bool sGirl::calc_group_pregnancy(sCustomer *cust, bool good, double factor)
 }
 bool sGirl::calc_pregnancy(sCustomer *cust, bool good, double factor)
 {
-	cConfig cfg;
 	double chance = preg_chance(cfg.pregnancy.customer_chance(), good, factor);
 	return g_GirlsPtr->CalcPregnancy(this, int(chance), STATUS_PREGNANT, cust->m_Stats, cust->m_Skills);
 }
 bool sGirl::calc_insemination(sCustomer *cust, bool good, double factor)
 {
-	cConfig cfg;
 	double chance = preg_chance(cfg.pregnancy.monster_chance(), good, factor);
 	return g_GirlsPtr->CalcPregnancy(this, int(chance), STATUS_INSEMINATED, cust->m_Stats, cust->m_Skills);
 }
 bool sGirl::calc_insemination(cPlayer *player, bool good, double factor)
 {
-	cConfig cfg;
 	double chance = preg_chance(cfg.pregnancy.monster_chance(), good, factor);
 	return g_GirlsPtr->CalcPregnancy(this, int(chance), STATUS_INSEMINATED, player->m_Stats, player->m_Skills);
 }
@@ -12202,7 +12192,6 @@ bool sGirl::calc_insemination(cPlayer *player, bool good, double factor)
 // returns false if she becomes pregnant or true if she does not
 bool cGirls::CalcPregnancy(sGirl* girl, int chance, int type, int stats[NUM_STATS], int skills[NUM_SKILLS])
 {
-	cConfig cfg;
 	/*
 	*	If there's a condition that would stop her getting preggers
 	*	then we get to go home early
@@ -12429,7 +12418,6 @@ bool cGirls::child_is_grown(sGirl* mom, sChild *child, string& summary, bool Pla
 	if (child->m_MultiBirth < 1) child->m_MultiBirth = 1; // `J` fix old code
 	if (child->m_MultiBirth > 5) child->m_MultiBirth = 5; // `J` fix old code
 
-	cConfig cfg;
 	// bump the age - if it's still not grown, go home
 	child->m_Age++;		if (child->m_Age < cfg.pregnancy.weeks_till_grown())	return false;
 
@@ -12897,7 +12885,6 @@ void cGirls::HandleChildren(sGirl* girl, string& summary, bool PlayerControlled)
 // Returns false if we do not want to remove the child. Returns true and we get rid of the child.
 bool cGirls::child_is_due(sGirl* girl, sChild *child, string& summary, bool PlayerControlled)
 {
-	cConfig cfg;
 	if (child->m_MultiBirth < 1) child->m_MultiBirth = 1; // `J` fix old code
 	if (child->m_MultiBirth > 5) child->m_MultiBirth = 5; // `J` fix old code
 	/*
@@ -13558,9 +13545,8 @@ cAImgList* cImgageListManager::LoadList(string name)
 	uses dir path and file list to construct the girl images
 	*/
 
-	cConfig cfg;
 	DirPath imagedir;
-	bool gfound = false, afound = false;
+	bool gfound = false, afound = false, ffound = false;
 
 	// first check if we are looking for default images
 	if (name == "Default" && cfg.folders.configXMLdi())
@@ -13589,8 +13575,10 @@ cAImgList* cImgageListManager::LoadList(string name)
 		imagedir = DirPath() << cfg.folders.characters() << name;
 		FileList testg(imagedir, "*.*g");
 		FileList testa(imagedir, "*.ani");
+		FileList testf(imagedir, "*.gif");
 		if (testg.size() > 0)	gfound = true;
 		if (testa.size() > 0)	afound = true;
+		if (testf.size() > 0)	ffound = true;
 	}
 	// If not, check if the girl is in the ./Resources/Characters folder
 	if (!gfound && !afound)
@@ -13598,8 +13586,10 @@ cAImgList* cImgageListManager::LoadList(string name)
 		imagedir << "Resources" << "Characters" << name;
 		FileList testg(imagedir, "*.*g");
 		FileList testa(imagedir, "*.ani");
+		FileList testf(imagedir, "*.gif");
 		if (testg.size() > 0)	gfound = true;
 		if (testa.size() > 0)	afound = true;
+		if (testf.size() > 0)	ffound = true;
 	}
 
 
@@ -13719,6 +13709,63 @@ cAImgList* cImgageListManager::LoadList(string name)
 			i++;
 		} while (i < NUM_IMGTYPES);
 	}
+
+	if (ffound)
+	{
+
+		// Yes this is just a hack to load animations (my bad ;) - Necro
+		string pic_types3[] = {
+			// `J` When modifying Image types, search for "J-Change-Image-Types"  :  found in >> LoadList *.gif
+			"Anal*.gif", "BDSM*.gif", "Sex*.gif", "Beast*.gif", "Group*.gif", "Les*.gif", "torture*.gif",
+			"Death*.gif", "Profile*.gif", "Combat*.gif", "Oral*.gif", "Ecchi*.gif", "Strip*.gif", "Maid*.gif",
+			"Sing*.gif", "Wait*.gif", "Card*.gif", "Bunny*.gif", "Nude*.gif", "Mast*.gif", "Titty*.gif",
+			"Milk*.gif", "Hand*.gif", "Foot*.gif", "Bed*.gif", "Farm*.gif", "Herd*.gif", "Cook*.gif",
+			"Craft*.gif", "Swim*.gif", "Bath*.gif", "Nurse*.gif", "Formal*.gif", "Shop*.gif", "Magic*.gif",
+			// pregnant varients
+			"Preg*.gif", "PregAnal*.gif", "PregBDSM*.gif", "PregSex*.gif", "pregbeast*.gif", "preggroup*.gif",
+			"pregles*.gif", "pregtorture*.gif", "pregdeath*.gif", "pregprofile*.gif", "pregcombat*.gif", "pregoral*.gif",
+			"pregecchi*.gif", "pregstrip*.gif", "pregmaid*.gif", "pregsing*.gif", "pregwait*.gif", "pregcard*.gif",
+			"pregbunny*.gif", "pregnude*.gif", "pregmast*.gif", "pregtitty*.gif", "pregmilk*.gif", "preghand*.gif",
+			"pregFoot*.gif", "pregBed*.gif", "pregFarm*.gif", "pregHerd*.gif", "pregCook*.gif", "pregCraft*.gif",
+			"pregSwim*.gif", "pregBath*.gif", "pregNurse*.gif", "pregFormal*.gif", "pregShop*.gif", "pregMagic*.gif"
+		};
+		int i = 0;
+		do {
+			bool to_add = true;
+			FileList the_files(imagedir, pic_types3[i].c_str());
+			for (int k = 0; k < the_files.size(); k++)
+			{
+				bool test = false;
+				/* Check Preg*.*g filenames [leaf] and accept as non-subtypew ONLY those with number 1--9 in char 5
+				* (Allows filename like 'Preg22.jpg' BUT DOESN'T allow like 'Preg (2).jpg' or 'Preg09.jpg')
+				* MIGHT BE BETTER to just throw out sub-type filenames in this Preg*.*g section. */
+				if (i == IMGTYPE_PREGNANT)
+				{
+					char c = the_files[k].leaf()[4];
+					for (int j = 0; j < 9; j++) {
+
+						if (c == numeric[j])
+						{
+							test = true;
+							break;
+						}
+					}
+					if (!test)
+					{
+						k = the_files.size();
+						to_add = false;
+					}
+				}
+				if (to_add)
+				{
+					current->m_Images[i].AddImage(the_files[k].full(), the_files[k].path(), the_files[k].leaf());
+					current->m_Images[i].m_NumImages++;
+				}
+			}
+			i++;
+		} while (i < NUM_IMGTYPES);
+	}
+
 
 	if (m_Last)
 	{
@@ -14360,7 +14407,6 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 	{
 		if (is_pregnant())
 		{
-			cConfig cfg;
 			int to_go = cfg.pregnancy.weeks_pregnant() - m_WeeksPreg;
 			ss << to_go;
 		}
@@ -14533,7 +14579,6 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 	{
 		if (is_pregnant())
 		{
-			cConfig cfg;
 			int to_go = cfg.pregnancy.weeks_pregnant() - m_WeeksPreg;
 			ss << gettext("Yes");
 			if (has_trait("Sterile"))	ss << "?" << to_go << "?";	// how?
@@ -14582,7 +14627,6 @@ int sGirl::rebel()
 // `J` .06.01.17 condensed and added log_extradetails
 string sGirl::JobRating(double value, string type, string name)
 {
-	cConfig cfg;
 	stringstream jr;
 	jr << JobRatingLetter(value) << "  " << type << "  " << name;
 	if (cfg.debug.log_extradetails()) jr << "   ( " << (int)value << " )";
@@ -14605,7 +14649,6 @@ string sGirl::JobRatingLetter(double value)
 
 string cGirls::GetHoroscopeName(int month, int day)
 {
-	cConfig cfg;
 	// There are 2 types of of horoscopes, 1: Tropical (Western) and 2: Sideral (Hindu)
 	int ZodiacType = cfg.initial.horoscopetype();
 
@@ -14676,6 +14719,80 @@ string cGirls::Accommodation(int acc)
 	else if (acc == 8)	return "Wonderful";
 	else if (acc == 9)	return "High Class";
 	else /*         */	return "Error";
+}
+
+// The accommodation level the girl expects/demands
+int cGirls::PreferredAccom(sGirl* girl)
+{
+	double preferredaccom = (girl->is_slave() ? 1.0 : 2.5);
+	preferredaccom += girl->level() * (girl->is_slave() ? 0.1 : 0.3);
+
+	if (girl->has_trait("Your Wife"))			preferredaccom += 2.0;	// You married her
+	else if (girl->has_trait("Your Daughter"))	preferredaccom += 1.0;	// She is yout kid
+	if (girl->has_trait("Queen"))				preferredaccom += 3.0;	// Royalty is accustomed to higher quality stuff.
+	else if (girl->has_trait("Princess"))		preferredaccom += 2.0;	// Royalty is accustomed to higher quality stuff.
+	else if (girl->has_trait("Noble"))			preferredaccom += 1.0;	// 
+	else if (girl->has_trait("Elegant"))		preferredaccom += 0.5;	// 
+	if (girl->has_trait("Heroine"))				preferredaccom += 0.5;	// 
+	if (girl->has_trait("Bimbo"))				preferredaccom += 2.0;	// she needs a place to keep all her stuff
+	if (girl->has_trait("Broodmother"))			preferredaccom += 2.5;	// she needs somewhere to raise her kids
+	if (girl->has_trait("Actress"))				preferredaccom += 2.0;	// 
+	else if (girl->has_trait("Porn Star"))		preferredaccom += 1.0;	// 
+	if (girl->has_trait("Iron Will"))			preferredaccom += 1.0;	// 
+	if (girl->has_trait("Nerd"))				preferredaccom += 0.5;	// she probably spends her free time in her room
+
+	if (girl->has_trait("Tomboy"))				preferredaccom -= 0.5;	// 
+	if (girl->has_trait("Open Minded"))			preferredaccom -= 0.5;	// 'I can sleep anywhere'
+	if (girl->has_trait("Dependant"))			preferredaccom -= 1.0;	// she will take what you give her
+	if (girl->has_trait("Adventurer"))			preferredaccom -= 1.0;	// she likes sleeping under the stars
+	if (girl->has_trait("Farmers Daughter"))	preferredaccom -= 1.5;	// 
+	else if (girl->has_trait("Country Gal"))	preferredaccom -= 1.5;	// 
+	if (girl->has_trait("Maid"))				preferredaccom -= 1.0;	// 
+	if (girl->has_trait("Optimist"))			preferredaccom -= 0.8;	// 'I can make due with what I have'
+	else if (girl->has_trait("Pessimist"))		preferredaccom -= 1.0;	// 'whatever'
+	if (girl->has_trait("Whore"))				preferredaccom -= 1.5;	// 
+	if (girl->has_trait("Homeless"))			preferredaccom -= 2.0;	// used to live outdoors
+	if (girl->has_trait("Masochist"))			preferredaccom -= 2.0;	// 'I deserve to sleep on rocks'
+	if (girl->has_trait("Retarded"))			preferredaccom -= 3.0;	// 
+	if (girl->has_trait("Zombie"))				preferredaccom -= 3.0;	// 
+	if (girl->has_trait("Skeleton"))			preferredaccom -= 4.0;	// 
+	if (girl->has_trait("Mind Fucked"))			preferredaccom -= 5.0;	// 
+
+	if (girl->m_NumInventory > 0)	// only bother checking items if the girl has at least 1
+	{
+		if (HasItemJ(girl, "Chrono Bed"))						preferredaccom -= 2.0;	// She gets a great night sleep so she is happier when she wakes up
+		else if (HasItemJ(girl, "Rejuvenation Bed"))			preferredaccom -= 1.0;	// She gets a good night sleep so she is happier when she wakes up
+		if (HasItemJ(girl, "150 Piece Drum Kit"))				preferredaccom += 0.5;	// Though she may annoy her neighbors and it takes a lot of space, it it fun
+		if (HasItemJ(girl, "Android, Assistance"))				preferredaccom -= 0.5;	// This little guy cleans up for her
+		if (HasItemJ(girl, "Anger Management Tapes"))			preferredaccom -= 0.1;	// When she listens to these it takes her mind off other things
+		if (HasItemJ(girl, "Appreciation Trophy"))				preferredaccom -= 0.1;	// Something nice to look at
+		if (HasItemJ(girl, "Art Easel"))						preferredaccom -= 1.0;	// She can make her room nicer by herself.
+		if (HasItemJ(girl, "Black Cat"))						preferredaccom -= 0.3;	// Small and soft, it mostly cares for itself
+		if (HasItemJ(girl, "Cat"))								preferredaccom -= 0.3;	// Small and soft, it mostly cares for itself
+		if (HasItemJ(girl, "Claptrap"))							preferredaccom -= 0.1;	// An annoying little guy but he does help a little
+		if (HasItemJ(girl, "Computer"))							preferredaccom -= 1.5;	// Something to do but it takes up a little room
+		if (HasItemJ(girl, "Death Bear"))						preferredaccom += 2.0;	// Having a large bear living with her she needs a little more room.
+		if (HasItemJ(girl, "Deathtrap"))						preferredaccom += 1.0;	// Having a large robot guarding her her she needs a little more room.
+		if (HasItemJ(girl, "Free Weights"))						preferredaccom += 0.2;	// She may like the workout but it takes up a lot of room
+		if (HasItemJ(girl, "Guard Dog"))						preferredaccom += 0.2;	// Though she loves having a pet, a large dog takes up some room
+		if (HasItemJ(girl, "Happy Orb"))						preferredaccom -= 0.5;	// She has happy dreams
+		if (HasItemJ(girl, "Library Card"))						preferredaccom -= 0.5;	// She has somewhere else to go and she can bring books back, they keep her mind off other things
+		if (HasItemJ(girl, "Lovers Orb"))						preferredaccom -= 0.5;	// She really enjoys her dreams
+		if (HasItemJ(girl, "Nightmare Orb"))					preferredaccom += 0.2;	// She does not sleep well
+		if (HasItemJ(girl, "Pet Spider"))						preferredaccom -= 0.1;	// A little spider, she may be afraid of it but it takes her mind off her room
+		if (HasItemJ(girl, "Room Decorations"))					preferredaccom -= 0.5;	// They make her like her room more.
+		if (HasItemJ(girl, "Safe by Marcus"))					preferredaccom -= 0.3;	// Somewhere to keep her stuff where ske knows no one can get to it.
+		if (HasItemJ(girl, "Smarty Pants"))						preferredaccom -= 0.2;	// A little stuffed animal to hug and squeeze
+		if (HasItemJ(girl, "Stick Hockey Game"))				preferredaccom += 0.3;	// While fun, it takes a lot of room to not break things
+		if (HasItemJ(girl, "Stripper Pole"))					preferredaccom += 0.1;	// She may like the workout but it takes up a lot of room
+		if (HasItemJ(girl, "Television Set"))					preferredaccom -= 2.0;	// When she stares at this, she doesn't notice anything else
+		if (HasItemJ(girl, "The Realm of Darthon"))				preferredaccom -= 0.1;	// She and her friends can have fun together but they need some space to play it
+		if (HasItemJ(girl, "Weekly Social Therapy Session"))	preferredaccom -= 0.1;	// She has somewhere to go and get her troubles off her chest.
+	}
+
+	if (preferredaccom <= 0.0) return 0;
+	if (preferredaccom >= 9.0) return 9;
+	return (int)preferredaccom;
 }
 
 // `J` the girl will check the customer for diseases before continuing.

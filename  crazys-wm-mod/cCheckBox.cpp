@@ -26,6 +26,8 @@ extern unsigned char g_CheckBoxBackgroundR, g_CheckBoxBackgroundG, g_CheckBoxBac
 extern CGraphics g_Graphics;
 extern cInterfaceEventManager g_InterfaceEvents;
 
+extern cConfig cfg;
+
 cCheckBox::~cCheckBox()
 {
 	if(m_Surface)
@@ -65,7 +67,6 @@ bool cCheckBox::CreateCheckBox(int id, int x, int y, int width, int height, stri
 	);
 	m_Image->SetAlpha(true);
 
-	cConfig cfg;
 	m_Font.LoadFont(cfg.fonts.normal(), fontsize);
 	m_Font.SetText(text);
 	m_Font.SetColor(0,0,0);

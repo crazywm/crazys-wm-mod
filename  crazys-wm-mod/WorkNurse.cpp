@@ -66,7 +66,7 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 	}
 	ss << " worked as a nurse.\n\n";
 
-	cConfig cfg;
+	
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the patients!
 	g_Building = BUILDING_CLINIC;
 	int imagetype = IMGTYPE_NURSE;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Items>
 <Item Name="Cybernetic Arm"
-      Desc="Replace your girl's arm with this robotic one. (+10 Strength, +5 combat. Adds Half-construct)"
+      Desc="Replace your girl's arm with this robotic one. (+10 Strength, +5 combat. Adds Half-construct, removes One Arm, One Hand, Missing Finger and Missing Fingers)"
       Type="Misc"
       Badness="0"
       Special="None"
@@ -11,5 +11,9 @@
    <Effect What="Stat"  Name="Strength"                Amount="10"    />
    <Effect What="Skill" Name="Combat"                  Amount="5"    />
    <Effect What="Trait" Name="Half-Construct"          Amount="1"    />
+   <Effect What="Trait" Name="One Arm"                 Amount="0"    />
+   <Effect What="Trait" Name="One Hand"                Amount="0"    />
+   <Effect What="Trait" Name="Missing Finger"          Amount="0"    />
+   <Effect What="Trait" Name="Missing Fingers"         Amount="0"    />
 </Item>
 </Items>

@@ -21,6 +21,7 @@
 #include <vector>
 #include "cGirls.h"
 using namespace std;
+
 //I need a better place for this
 #define FOREACH(x,y) for(u_int x=0;x<y.size();x++)
 struct sGirl;

@@ -20,6 +20,8 @@
 #include "sConfig.h"
 
 
+extern cConfig cfg;
+
 /*
  * kind of trivial...
  */
@@ -31,7 +33,6 @@ const char	DirPath::sep[] = "\\";
 
 DirPathR::DirPathR()
 {
-	cConfig cfg;
 	string s = cfg.override_dir();
 
 	(*this) << "." << "Resources";

@@ -1,16 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Items>
-<Item Name="Dixie's Chaps"
-      Desc="Chaps designed to be worn without pants underneath. Once owned by fighter Dixie Clements. (Combat +20. Adds Long Legs and Big Boobs. Removes Clumsy.)"
-      Type="Dress"
-      Badness="0"
-      Special="None"
-      Cost="12300"
-      Rarity="Catacomb15"
-      Infinite="false">
-   <Effect What="Skill" Name="Combat"                  Amount="20"    />
-   <Effect What="Trait" Name="Big Boobs"               Amount="1"    />
-   <Effect What="Trait" Name="Long Legs"               Amount="1"    />
-   <Effect What="Trait" Name="Clumsy"                  Amount="1"    />
-</Item>
+    <Item Name="Dixie's Chaps" Desc="Chaps designed to be worn without pants underneath. Once owned by fighter Dixie Clements. (Combat +20, Conf+10, Str/Perf +5. Adds Brawler, Long Legs and Big Boobs. Removes Clumsy.)" Type="Dress" Badness="0" Special="None" Cost="12300" Rarity="Catacomb15" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Skill" Name="Combat" Amount="20" />
+        <Effect What="Stat" Name="Confidence" Amount="10" />
+        <Effect What="Stat" Name="Strength" Amount="5" />
+        <Effect What="Skill" Name="Performance" Amount="5" />
+        <Effect What="Trait" Name="Big Boobs" Amount="1" />
+        <Effect What="Trait" Name="Long Legs" Amount="1" />
+        <Effect What="Trait" Name="Clumsy" Amount="0" />
+        <Effect What="Trait" Name="Brawler" Amount="1" />
+    </Item>
 </Items>

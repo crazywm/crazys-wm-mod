@@ -22,6 +22,8 @@
 #include "cInterfaceWindow.h"
 #include "InterfaceGlobals.h"
 
+extern cConfig cfg;
+
 class cScreenPropertyManagement : public cInterfaceWindowXML
 {
 public:
@@ -84,7 +86,7 @@ private:
 public:
 	cScreenPropertyManagement()
 	{
-		cConfig cfg;
+		
 		DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "property_management.xml";
 		m_filename = dp.c_str();
 	}

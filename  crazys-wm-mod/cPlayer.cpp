@@ -26,6 +26,8 @@
 #include "cPlayer.h"
 #include "XmlMisc.h"
 
+extern cConfig cfg;
+
 
 cPlayer::cPlayer()			// constructor
 {
@@ -36,6 +38,7 @@ cPlayer::cPlayer()			// constructor
 	m_BirthYear = 1190;
 	m_BirthMonth = 0;
 	m_BirthDay = 0;
+	m_PlayerGender = GENDER_MALE;
 
 	for (int i = 0; i < NUM_SKILLS; i++)	m_Skills[i] = 0;
 	for (int i = 0; i < NUM_STATS; i++)		m_Stats[i] = 0;
@@ -137,7 +140,7 @@ int cPlayer::disposition(int n)
 }
 int cPlayer::evil(int n)
 {
-	cConfig cfg;						// `J` add check for if harsher torture is set
+	// `J` add check for if harsher torture is set
 	if (cfg.initial.torture_mod() < 0 && n > 0)
 	{
 		n += n;		// `J` double evil if increasing it BUT NOT IF LOWERING IT
@@ -220,5 +223,349 @@ int cPlayer::SetBirthDay(int n)
 	return m_BirthDay;
 }
 
+bool cPlayer::CanImpregnateFemale()
+{
+	if (m_PlayerGender == GENDER_FUTAFULL || m_PlayerGender == GENDER_HERMFULL ||
+		m_PlayerGender == GENDER_HERM || m_PlayerGender == GENDER_MALE)
+		return true;
+	return false;
+}
+bool cPlayer::CanCarryOwnBaby()
+{
+	if (m_PlayerGender == GENDER_FEMALE || m_PlayerGender == GENDER_FUTA ||
+		m_PlayerGender == GENDER_FUTAFULL || m_PlayerGender == GENDER_HERMFULL)
+		return true;
+	return false;
+}
+bool cPlayer::CanCarryNormalBaby()
+{
+	if (m_PlayerGender == GENDER_FEMALE || m_PlayerGender == GENDER_FEMALENEUT ||
+		m_PlayerGender == GENDER_FUTA || m_PlayerGender == GENDER_FUTANEUT ||
+		m_PlayerGender == GENDER_FUTAFULL || m_PlayerGender == GENDER_HERMFULL ||
+		m_PlayerGender == GENDER_HERMNEUT || m_PlayerGender == GENDER_HERM)
+		return true;
+	return false;
+}
+bool cPlayer::HasPenis()
+{
+	if (m_PlayerGender == GENDER_FUTA || m_PlayerGender == GENDER_FUTANEUT ||
+		m_PlayerGender == GENDER_FUTAFULL || m_PlayerGender == GENDER_HERMFULL ||
+		m_PlayerGender == GENDER_HERMNEUT || m_PlayerGender == GENDER_HERM ||
+		m_PlayerGender == GENDER_MALENEUT || m_PlayerGender == GENDER_MALE)
+		return true;
+	return false;
+}
+bool cPlayer::HasVagina()
+{
+	if (m_PlayerGender == GENDER_FEMALE || m_PlayerGender == GENDER_FEMALENEUT ||
+		m_PlayerGender == GENDER_FUTA || m_PlayerGender == GENDER_FUTANEUT ||
+		m_PlayerGender == GENDER_FUTAFULL || m_PlayerGender == GENDER_HERMFULL ||
+		m_PlayerGender == GENDER_HERMNEUT || m_PlayerGender == GENDER_HERM)
+		return true;
+	return false;
+}
+bool cPlayer::HasTestes()
+{
+	if (m_PlayerGender == GENDER_FUTAFULL || m_PlayerGender == GENDER_HERMFULL ||
+		m_PlayerGender == GENDER_HERM || m_PlayerGender == GENDER_MALE)
+		return true;
+	return false;
+}
+bool cPlayer::HasOvaries()
+{
+	if (m_PlayerGender == GENDER_FEMALE || m_PlayerGender == GENDER_FUTA ||
+		m_PlayerGender == GENDER_FUTAFULL || m_PlayerGender == GENDER_HERMFULL)
+		return true;
+	return false;
+}
 
+
+void cPlayer::SetGender(int x)
+{
+	/* */if (x < GENDER_FEMALE)	m_PlayerGender = GENDER_FEMALE;
+	else if (x > GENDER_MALE)	m_PlayerGender = GENDER_MALE;
+	else /*                 */	m_PlayerGender = x;
+}
+
+void cPlayer::AdjustGender(int male, int female)
+{
+	if (male == 0 && female == 0)			return;								// no change
+
+	// do the easy stuff first
+	else if (male <= 0 && female >= 5)		{ m_PlayerGender = GENDER_FEMALE;		return; }	// force female
+	else if (male >= 5 && female <= 0)		{ m_PlayerGender = GENDER_MALE;			return; }	// force male
+	else if (male <= -3 && female <= -3)	{ m_PlayerGender = GENDER_NONE;			return; }	// force andro
+	else if (male >= 2 && female >= 2)
+	{
+		if (m_PlayerGender < 6)/*       */	{ m_PlayerGender = GENDER_FUTAFULL;		return; }	// everything on base female
+		else /*                         */	{ m_PlayerGender = GENDER_HERMFULL;		return; }	// everything on base male
+	}
+	else if (male <= -2 && female <= -2)
+	{
+		if (m_PlayerGender < 6)/*     */	{ m_PlayerGender = GENDER_NONEFEMALE;	return; }	// nothing on base female
+		else /*                       */	{ m_PlayerGender = GENDER_NONEMALE;		return; }	// nothing on base male
+	}
+
+	/*
+	GENDER_FEMALE      = 0;	 0 0 1 1
+	GENDER_FEMALENEUT  = 1;	 0 0 1 0
+	GENDER_FUTA        = 2;	 1 0 1 1
+	GENDER_FUTANEUT    = 3;	 1 0 1 0
+	GENDER_FUTAFULL    = 4;	 1 1 1 1
+	GENDER_NONEFEMALE  = 5;	 0 0 0 0
+	GENDER_NONE        = 6;	 0 0 0 0
+	GENDER_NONEMALE    = 7;	 0 0 0 0
+	GENDER_HERMFULL    = 8;	 1 1 1 1
+	GENDER_HERMNEUT    = 9;	 1 0 1 0
+	GENDER_HERM        = 10; 1 1 1 0
+	GENDER_MALENEUT    = 11; 1 0 0 0
+	GENDER_MALE        = 12; 1 1 0 0
+	*/
+
+
+#if 0 // `J` - this needs a ton more work before all outcomes will work so not using it for now
+	switch (m_PlayerGender)
+	{
+	case GENDER_FEMALE:
+	{
+		/* */if (male <= 0 && female >= 0)/*  */	m_PlayerGender = GENDER_FEMALE;			// 0 0 1 1
+		else if (male <= 0 && female == -1)/*  */	m_PlayerGender = GENDER_FEMALENEUT;		// 0 0 1 0
+		else if (male == 1	&& female >= 0)/*  */	m_PlayerGender = GENDER_FUTA;			// 1 0 1 1
+		else if (male == 1	&& female == -1)/*  */	m_PlayerGender = GENDER_FUTANEUT;		// 1 0 1 0
+		else if (male == 2	&& female >= 0)/*  */	m_PlayerGender = GENDER_FUTAFULL;		// 1 1 1 1
+		else if (male <= 0	&& female == -2)/*  */	m_PlayerGender = GENDER_NONEFEMALE;		// 0 0 0 0
+		else if (male <= -1	&& female <= -3)/*  */	m_PlayerGender = GENDER_NONE;			// 0 0 0 0
+		else if (male == 0	&& female <= -3)/*  */	m_PlayerGender = GENDER_NONEMALE;		// 0 0 0 0
+		else if (male >= #	&& female == #)/*  */	m_PlayerGender = GENDER_HERMFULL;		// 1 1 1 1
+		else if (male <= #	&& female <= #)/*  */	m_PlayerGender = GENDER_HERMNEUT;		// 1 0 1 0
+		else if (male <= #	&& female <= #)/*  */	m_PlayerGender = GENDER_HERM;			// 1 1 1 0
+		else if (male <= #	&& female <= #)/*  */	m_PlayerGender = GENDER_MALENEUT;		// 1 0 0 0
+		else if (male <= #	&& female <= #)/*  */	m_PlayerGender = GENDER_MALE;			// 1 1 0 0
+		return;
+	}
+	case GENDER_FEMALENEUT:
+	{
+		/* */if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FEMALE;			// 0 0 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FEMALENEUT;		// 0 0 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FUTA;			// 1 0 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FUTANEUT;		// 1 0 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FUTAFULL;		// 1 1 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_NONEFEMALE;		// 0 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_NONE;			// 0 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_NONEMALE;		// 0 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_HERMFULL;		// 1 1 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_HERMNEUT;		// 1 0 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_HERM;			// 1 1 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_MALENEUT;		// 1 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_MALE;			// 1 1 0 0
+		return;
+	}
+	case GENDER_FUTA:
+	{
+		/* */if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FEMALE;			// 0 0 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FEMALENEUT;		// 0 0 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FUTA;			// 1 0 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FUTANEUT;		// 1 0 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FUTAFULL;		// 1 1 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_NONEFEMALE;		// 0 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_NONE;			// 0 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_NONEMALE;		// 0 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_HERMFULL;		// 1 1 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_HERMNEUT;		// 1 0 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_HERM;			// 1 1 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_MALENEUT;		// 1 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_MALE;			// 1 1 0 0
+		return;
+	}
+	case GENDER_FUTANEUT:
+	{
+		/* */if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FEMALE;			// 0 0 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FEMALENEUT;		// 0 0 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FUTA;			// 1 0 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FUTANEUT;		// 1 0 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FUTAFULL;		// 1 1 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_NONEFEMALE;		// 0 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_NONE;			// 0 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_NONEMALE;		// 0 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_HERMFULL;		// 1 1 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_HERMNEUT;		// 1 0 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_HERM;			// 1 1 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_MALENEUT;		// 1 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_MALE;			// 1 1 0 0
+		return;
+	}
+	case GENDER_FUTAFULL:
+	{
+		/* */if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FEMALE;			// 0 0 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FEMALENEUT;		// 0 0 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FUTA;			// 1 0 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FUTANEUT;		// 1 0 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FUTAFULL;		// 1 1 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_NONEFEMALE;		// 0 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_NONE;			// 0 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_NONEMALE;		// 0 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_HERMFULL;		// 1 1 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_HERMNEUT;		// 1 0 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_HERM;			// 1 1 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_MALENEUT;		// 1 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_MALE;			// 1 1 0 0
+		return;
+	}
+	case GENDER_NONEFEMALE:
+	{
+		/* */if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FEMALE;			// 0 0 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FEMALENEUT;		// 0 0 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FUTA;			// 1 0 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FUTANEUT;		// 1 0 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FUTAFULL;		// 1 1 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_NONEFEMALE;		// 0 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_NONE;			// 0 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_NONEMALE;		// 0 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_HERMFULL;		// 1 1 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_HERMNEUT;		// 1 0 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_HERM;			// 1 1 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_MALENEUT;		// 1 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_MALE;			// 1 1 0 0
+		return;
+	}
+	case GENDER_NONE:
+	{
+		/* */if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FEMALE;			// 0 0 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FEMALENEUT;		// 0 0 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FUTA;			// 1 0 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FUTANEUT;		// 1 0 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FUTAFULL;		// 1 1 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_NONEFEMALE;		// 0 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_NONE;			// 0 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_NONEMALE;		// 0 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_HERMFULL;		// 1 1 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_HERMNEUT;		// 1 0 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_HERM;			// 1 1 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_MALENEUT;		// 1 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_MALE;			// 1 1 0 0
+		return;
+	}
+	case GENDER_NONEMALE:
+	{
+		/* */if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FEMALE;			// 0 0 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FEMALENEUT;		// 0 0 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FUTA;			// 1 0 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FUTANEUT;		// 1 0 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FUTAFULL;		// 1 1 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_NONEFEMALE;		// 0 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_NONE;			// 0 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_NONEMALE;		// 0 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_HERMFULL;		// 1 1 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_HERMNEUT;		// 1 0 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_HERM;			// 1 1 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_MALENEUT;		// 1 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_MALE;			// 1 1 0 0
+		return;
+	}
+	case GENDER_HERMFULL:
+	{
+		/* */if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FEMALE;			// 0 0 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FEMALENEUT;		// 0 0 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FUTA;			// 1 0 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FUTANEUT;		// 1 0 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FUTAFULL;		// 1 1 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_NONEFEMALE;		// 0 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_NONE;			// 0 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_NONEMALE;		// 0 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_HERMFULL;		// 1 1 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_HERMNEUT;		// 1 0 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_HERM;			// 1 1 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_MALENEUT;		// 1 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_MALE;			// 1 1 0 0
+		return;
+	}
+	case GENDER_HERMNEUT:
+	{
+		/* */if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FEMALE;			// 0 0 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FEMALENEUT;		// 0 0 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FUTA;			// 1 0 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FUTANEUT;		// 1 0 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FUTAFULL;		// 1 1 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_NONEFEMALE;		// 0 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_NONE;			// 0 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_NONEMALE;		// 0 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_HERMFULL;		// 1 1 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_HERMNEUT;		// 1 0 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_HERM;			// 1 1 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_MALENEUT;		// 1 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_MALE;			// 1 1 0 0
+		return;
+	}
+	case GENDER_HERM:
+	{
+		/* */if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FEMALE;			// 0 0 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FEMALENEUT;		// 0 0 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FUTA;			// 1 0 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FUTANEUT;		// 1 0 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FUTAFULL;		// 1 1 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_NONEFEMALE;		// 0 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_NONE;			// 0 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_NONEMALE;		// 0 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_HERMFULL;		// 1 1 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_HERMNEUT;		// 1 0 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_HERM;			// 1 1 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_MALENEUT;		// 1 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_MALE;			// 1 1 0 0
+		return;
+	}
+	case GENDER_MALENEUT:
+	{
+		/* */if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FEMALE;			// 0 0 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FEMALENEUT;		// 0 0 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FUTA;			// 1 0 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FUTANEUT;		// 1 0 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FUTAFULL;		// 1 1 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_NONEFEMALE;		// 0 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_NONE;			// 0 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_NONEMALE;		// 0 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_HERMFULL;		// 1 1 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_HERMNEUT;		// 1 0 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_HERM;			// 1 1 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_MALENEUT;		// 1 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_MALE;			// 1 1 0 0
+		return;
+	}
+	case GENDER_MALE:
+	{
+		/* */if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FEMALE;			// 0 0 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FEMALENEUT;		// 0 0 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FUTA;			// 1 0 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FUTANEUT;		// 1 0 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FUTAFULL;		// 1 1 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_NONEFEMALE;		// 0 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_NONE;			// 0 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_NONEMALE;		// 0 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_HERMFULL;		// 1 1 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_HERMNEUT;		// 1 0 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_HERM;			// 1 1 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_MALENEUT;		// 1 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_MALE;			// 1 1 0 0
+		return;
+	}
+	default:
+	{
+		/* */if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FEMALE;			// 0 0 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FEMALENEUT;		// 0 0 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FUTA;			// 1 0 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FUTANEUT;		// 1 0 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_FUTAFULL;		// 1 1 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_NONEFEMALE;		// 0 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_NONE;			// 0 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_NONEMALE;		// 0 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_HERMFULL;		// 1 1 1 1
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_HERMNEUT;		// 1 0 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_HERM;			// 1 1 1 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_MALENEUT;		// 1 0 0 0
+		else if (male <= # && female <= #)/*  */	m_PlayerGender = GENDER_MALE;			// 1 1 0 0
+		return;
+	}
+#endif
+
+
+	}
 

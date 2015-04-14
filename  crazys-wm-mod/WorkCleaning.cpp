@@ -57,7 +57,7 @@ bool cJobManager::WorkCleaning(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	}
 	ss << " worked cleaning the brothel.\n\n";
 
-	cConfig cfg;
+	
 
 	g_Girls.UnequipCombat(girl);	// put that shit away
 

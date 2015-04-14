@@ -49,7 +49,6 @@ private:
 public:
 	cCastingTry()
 	{
-		cConfig cfg;
 		DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "castingtry_screen.xml";
 		m_filename = dp.c_str();
 		GetName = false;

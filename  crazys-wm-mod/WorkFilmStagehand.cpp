@@ -58,7 +58,7 @@ bool cJobManager::WorkFilmStagehand(sGirl* girl, sBrothel* brothel, bool Day0Nig
 	}
 	ss << " worked as a stagehand.\n\n";
 
-	cConfig cfg;
+	
 	g_Girls.UnequipCombat(girl);	// not for studio crew
 
 	int wages = 50;

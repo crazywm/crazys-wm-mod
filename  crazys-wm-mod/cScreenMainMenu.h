@@ -27,12 +27,7 @@ public:
 	
 	static	bool		ids_set; 
 	
-	cScreenMainMenu()
-	{
-		cConfig cfg;
-		DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "main_menu.xml";
-		m_filename = dp.c_str();
-	}
+	cScreenMainMenu();
 
 
 	int continue_id;

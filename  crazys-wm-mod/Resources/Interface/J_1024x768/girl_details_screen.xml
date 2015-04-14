@@ -6,8 +6,9 @@
 <Button   Name="MoreButton"           Image="ShowMore"                 XPos="28"  YPos="470" Width="120" Height="24"  Transparency="true" Scale="true" Disabled=""   />
 <Button   Name="GalleryButton"        Image="Gallery"                  XPos="28"  YPos="500" Width="120" Height="24"  Transparency="true" Scale="true" />
 
+<Slider   Name="AccomSliderP"                                          XPos="15"  YPos="540" Width="150"              MinValue="0"        MaxValue="9" Value="1" Increment="1" LiveUpdate="true" Hidden="false" Disabled="true" />
 <Slider   Name="AccomSlider"                                           XPos="15"  YPos="540" Width="150"              MinValue="0"        MaxValue="9" Value="1" Increment="1" LiveUpdate="true" Hidden="false" Disabled="false" />
-<Text     Name="AccomValue"           Text="Accommodation: Very Poor"  XPos="15"  YPos="550" Width="150" Height="21"  FontSize="11" />
+<Text     Name="AccomValue"           Text="Accommodation: Very Poor"  XPos="15"  YPos="550" Width="200" Height="21"  FontSize="11" />
 <!-- Use either AccomSlider and AccomValue or  AccomUpButton and AccomDownButton    
      or you can use all or some ove them but you will have to move them around 
 <Button   Name="AccomUpButton"        Image="AcomUp"                   XPos="8"   YPos="535" Width="72"  Height="32"  Transparency="true" Scale="true" />

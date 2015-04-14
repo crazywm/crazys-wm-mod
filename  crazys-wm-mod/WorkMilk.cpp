@@ -45,7 +45,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 	}
 	ss << " let her breasts be milked.\n\n";
 
-	cConfig cfg;
+	
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 

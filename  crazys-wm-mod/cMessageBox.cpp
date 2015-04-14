@@ -22,6 +22,7 @@
 #include "Globals.h"
 
 extern CGraphics g_Graphics;
+extern cConfig cfg;
 
 extern unsigned char g_MessageBoxBorderR, g_MessageBoxBorderG, g_MessageBoxBorderB;
 extern unsigned char g_MessageBoxBackground0R, g_MessageBoxBackground0G, g_MessageBoxBackground0B;
@@ -56,7 +57,6 @@ void cMessageBox::CreateWindow(int x, int y, int width, int height, int BorderSi
 	float xScale = 1.0f, yScale = 1.0f;
 	if(scale)
 	{
-		cConfig cfg;
 		if (_G.g_ScreenWidth != cfg.resolution.width())
 			xScale = (float)((float)_G.g_ScreenWidth / (float)cfg.resolution.width());
 		if (_G.g_ScreenHeight != cfg.resolution.height())
@@ -139,7 +139,6 @@ void cMessageBox::ChangeFontSize(int FontSize)
 	}
 	m_Font = 0;
 	m_Font = new cFont();
-	cConfig cfg;
 	m_Font->LoadFont(cfg.fonts.normal(), FontSize);
 	m_Font->SetText("");
 	m_Font->SetColor(g_MessageBoxTextR,g_MessageBoxTextG,g_MessageBoxTextB);

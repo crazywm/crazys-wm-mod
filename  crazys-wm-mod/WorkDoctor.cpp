@@ -81,7 +81,7 @@ bool cJobManager::WorkDoctor(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	}
 	ss << " worked as a Doctor.\n";
 
-	cConfig cfg;
+	
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the patients!
 
 	int enjoy = 0, wages = 100;

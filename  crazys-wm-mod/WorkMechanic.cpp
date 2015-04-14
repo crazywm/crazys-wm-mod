@@ -56,7 +56,7 @@ bool cJobManager::WorkMechanic(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	}
 	ss << " worked as a mechanic.\n\n";
 
-	cConfig cfg;
+	
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 	int wages = 15, work = 0;
 	int roll = g_Dice.d100();

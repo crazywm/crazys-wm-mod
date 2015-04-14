@@ -5677,7 +5677,7 @@
             this.comboBox_Rarity_05.Items.AddRange(new object[] {
             "Common",
             "50% chance of store to have it",
-            "20% chance of store to have it",
+            "25% chance of store to have it",
             "5% chance of store to have it",
             "15% chance from Catacombs",
             "5% chance from Catacombs",
@@ -9109,7 +9109,7 @@
             this.MaximumSize = new System.Drawing.Size(1000, 700);
             this.MinimumSize = new System.Drawing.Size(1000, 700);
             this.Name = "Form1";
-            this.Text = "Whore Master Editor 0.8.27";
+            this.Text = "Whore Master Editor 0.8.28";
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.App_FileDrop);
             this.DragEnter += new System.Windows.Forms.DragEventHandler(this.App_DragEnter);
             this.tabControl1.ResumeLayout(false);

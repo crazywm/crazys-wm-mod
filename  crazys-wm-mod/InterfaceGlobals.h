@@ -44,6 +44,8 @@ extern cMessageBox g_MessageBox;
 extern cChoiceManager g_ChoiceManager;
 extern cMessageQue g_MessageQue;
 
+extern 
+
 void LoadInterface();	// Function for loading the interface
 void FreeInterface();
 void ResetInterface();

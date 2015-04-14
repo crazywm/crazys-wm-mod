@@ -45,7 +45,7 @@ bool cJobManager::WorkFarmHand(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	}
 	ss << " worked cleaning and repairing the farm.\n\n";
 
-	cConfig cfg;
+	
 
 	g_Girls.UnequipCombat(girl);	// put that shit away
 

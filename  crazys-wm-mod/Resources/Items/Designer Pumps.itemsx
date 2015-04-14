@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Items>
 <Item Name="Designer Pumps"
-      Desc="These fancy shoes are the height of fashion... for some reason. Maybe women just enjoy knowing that they walk around in a small fortune. (A) (+15 Hap, +15 Cha, +5 Love)"
+      Desc="These fancy shoes are the height of fashion... for some reason. Maybe women just enjoy knowing that they walk around in a small fortune. (A) (+15 Hap, +15 Cha, +8 Refinement, +5 Love)"
       Type="Shoes"
       Badness="0"
       Special="None"
@@ -11,5 +11,6 @@
    <Effect What="Stat"  Name="Happiness"               Amount="15"    />
    <Effect What="Stat"  Name="Charisma"                Amount="15"    />
    <Effect What="Stat"  Name="PCLove"                  Amount="5"    />
+   <Effect What="Stat"  Name="Refinement"               Amount="8"    />
 </Item>
 </Items>

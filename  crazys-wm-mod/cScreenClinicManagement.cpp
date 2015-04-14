@@ -121,7 +121,7 @@ void cScreenClinicManagement::init()
 					g_Girls.UpdateStat(selected_girl, STAT_PCHATE, -25);
 					g_Girls.UpdateStat(selected_girl, STAT_OBEDIENCE, 10);
 					g_Girls.UpdateStat(selected_girl, STAT_HAPPINESS, 70);
-					cConfig cfg;
+					
 					selected_girl->m_AccLevel = cfg.initial.girls_accom();
 					selected_girl->m_Stats[STAT_HOUSE] = cfg.initial.girls_house_perc();
 					g_InitWin = true;
@@ -245,7 +245,7 @@ void cScreenClinicManagement::update_image()
 			text += "\n\n";
 			text += selected_girl->m_Desc;
 			// Added a little feedback here to show what character template a girl is based on --PP
-			cConfig cfg;	// `J` I usually don't care about this so I made it optional
+				// `J` I usually don't care about this so I made it optional
 			if (cfg.debug.log_extradetails())
 			{
 				text += "\n\nBased on: ";

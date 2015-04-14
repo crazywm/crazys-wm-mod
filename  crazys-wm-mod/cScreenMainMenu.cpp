@@ -41,9 +41,6 @@ extern bool g_N_Key;	// new game
 extern bool g_Q_Key;	// quit
 extern bool g_S_Key;	// settings
 
-
-
-
 bool cScreenMainMenu::ids_set = false;
 
 void cScreenMainMenu::set_ids()
@@ -56,6 +53,13 @@ void cScreenMainMenu::set_ids()
 	quit_id = get_id("Quit Game");
 }
 
+cScreenMainMenu::cScreenMainMenu()
+{
+	cConfig cfg;
+	DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "main_menu.xml";
+	m_filename = dp.c_str();
+}
+
 void cScreenMainMenu::init()
 {
 	g_CurrentScreen = SCREEN_MAINMENU;
@@ -65,7 +69,7 @@ void cScreenMainMenu::init()
 		g_InitWin = false;
 		g_Girls.GetImgManager()->LoadList("Default");
 
-		cConfig cfg;
+		
 		DirPath location;
 		if (cfg.folders.configXMLsa())
 			location = DirPath() << cfg.folders.saves();

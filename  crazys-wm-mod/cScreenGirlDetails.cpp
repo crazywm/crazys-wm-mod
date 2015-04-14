@@ -88,6 +88,8 @@ extern sGirl *selected_girl;
 extern vector<int> cycle_girls;
 extern int cycle_pos;
 
+extern cConfig cfg;
+
 bool cScreenGirlDetails::ids_set = false;
 
 void cScreenGirlDetails::set_ids()
@@ -219,7 +221,18 @@ void cScreenGirlDetails::init()
 	if (accomdown_id != -1)	DisableButton(accomdown_id, selected_girl->m_AccLevel < 1);
 	if (accomup_id != -1)	DisableButton(accomup_id, selected_girl->m_AccLevel > 9);
 	if (accom_id != -1)		SliderRange(accom_id, 0, 9, selected_girl->m_AccLevel, 1);
-	if (accomval_id != -1)	EditTextItem("Accommodation: " + g_Girls.Accommodation(SliderValue(accom_id)), accomval_id);
+	if (accomp_id != -1)	SliderRange(accomp_id, 0, 9, g_Girls.PreferredAccom(selected_girl), 1);
+	if (accomval_id != -1)
+	{
+		stringstream acc;
+		acc << "Accommodation: " << g_Girls.Accommodation(SliderValue(accom_id));
+		if (cfg.debug.log_extradetails())
+		{
+			int val = SliderValue(accom_id) - g_Girls.PreferredAccom(selected_girl);
+			if (val != 0) acc << "  ( " << (val > 0 ? "+" : "") << val << " )";
+		}
+		EditTextItem(acc.str(), accomval_id);
+	}
 	DisableButton(interact_id, (g_TalkCount <= 0));
 	DisableButton(takegold_id, (selected_girl->m_Money <= 0));
 	SetCheckBox(antipreg_id, (selected_girl->m_UseAntiPreg));
@@ -565,7 +578,17 @@ void cScreenGirlDetails::check_events()
 	{
 		selected_girl->m_AccLevel = SliderValue(accom_id);
 		SliderRange(accom_id, 0, 9, selected_girl->m_AccLevel, 1);
-		EditTextItem("Accommodation: " + g_Girls.Accommodation(SliderValue(accom_id)), accomval_id);
+		if (accomval_id != -1)
+		{
+			stringstream acc;
+			acc << "Accommodation: " << g_Girls.Accommodation(SliderValue(accom_id));
+			if (cfg.debug.log_extradetails())
+			{
+				int val = SliderValue(accom_id) - g_Girls.PreferredAccom(selected_girl);
+				if (val != 0) acc << "  ( " << (val > 0 ? "+" : "") << val << " )";
+			}
+			EditTextItem(acc.str(), accomval_id);
+		}
 		g_InitWin = true;
 		return;
 	}
@@ -767,7 +790,6 @@ void cScreenGirlDetails::check_events()
 	{
 		if (g_TalkCount > 0)
 		{
-			cConfig cfg;
 			DirPath dp;
 			eventrunning = true;
 			if (selected_girl->m_DayJob != JOB_INDUNGEON)

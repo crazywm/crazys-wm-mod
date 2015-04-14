@@ -123,7 +123,6 @@ void cGirlTorture::DoTorture()
 	string sGirlName = m_Girl->m_Realname;
 	string sMsg = "";
 	CLog	l;
-	cConfig cfg;
 	bool bDebug = cfg.debug.log_torture();
 
 	if (bDebug)
@@ -378,7 +377,6 @@ void cGirlTorture::UpdateStats()
 	*	WD Stats based on ortiginal torture job code
 	*
 	*/
-	cConfig cfg;
 	// do heavy torture
 	if (cfg.initial.torture_mod() < 0) // `J`  added
 	{
@@ -439,7 +437,6 @@ bool cGirlTorture::IsGirlInjured(unsigned int unModifier)
 	*/
 	string	sMsg;
 	string	sGirlName = m_Girl->m_Realname;
-	cConfig cfg;
 	int		nMod = static_cast<int>(unModifier);
 	if (cfg.initial.torture_mod() < 0){ nMod += nMod; }
 
@@ -627,7 +624,6 @@ bool cGirlTorture::girl_escapes()
 void cGirlTorture::UpdateTraits()
 {
 	int nWeekMod = 1;
-	cConfig cfg;
 	bool harshtorture = false;
 	/* `J` added to allow permanent trait gain on torture
 	if TortureTraitWeekMod is set to a negative number in the config.xml

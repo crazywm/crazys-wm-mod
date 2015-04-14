@@ -34,6 +34,23 @@ enum {
 	SHIFT_NIGHT	= 1
 };
 
+// `J` added for .06.01.18 - not used for much yet 
+//                                              // P T V O //
+const unsigned int GENDER_FEMALE/*     */ = 0;	// 0 0 1 1 //	all female
+const unsigned int GENDER_FEMALENEUT/* */ = 1;	// 0 0 1 0 //	female with vagina but no ovaries
+const unsigned int GENDER_FUTA/*       */ = 2;	// 1 0 1 1 //	female with penis but no testes
+const unsigned int GENDER_FUTANEUT/*   */ = 3;	// 1 0 1 0 //	female with vagina and penis but no ovaries or testes
+const unsigned int GENDER_FUTAFULL/*   */ = 4;	// 1 1 1 1 //	female with penis and testes
+const unsigned int GENDER_NONEFEMALE/* */ = 5;	// 0 0 0 0 //	no gender but more female
+const unsigned int GENDER_NONE/*       */ = 6;	// 0 0 0 0 //	no gender at all
+const unsigned int GENDER_NONEMALE/*   */ = 7;	// 0 0 0 0 //	no gender but more male
+const unsigned int GENDER_HERMFULL/*   */ = 8;	// 1 1 1 1 //	male with vagina and ovaries
+const unsigned int GENDER_HERMNEUT/*   */ = 9;	// 1 0 1 0 //	male with penis and vagina but no testes or ovaries
+const unsigned int GENDER_HERM/*       */ = 10;	// 1 1 1 0 //	male with vagina but no ovaries
+const unsigned int GENDER_MALENEUT/*   */ = 11;	// 1 0 0 0 //	male with penis but no testes
+const unsigned int GENDER_MALE/*       */ = 12;	// 1 1 0 0 //	all male
+
+
 // Editable Character Stats and skills (used for traits)
 const unsigned int STAT_CHARISMA		= 0;
 const unsigned int STAT_HAPPINESS		= 1;

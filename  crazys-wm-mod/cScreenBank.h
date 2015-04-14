@@ -47,7 +47,7 @@ private:
 public:
 	cScreenBank()
 	{
-		cConfig cfg;
+		
 		DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "bank_screen.xml";
 		m_filename = dp.c_str();
 		GetDeposit = false;

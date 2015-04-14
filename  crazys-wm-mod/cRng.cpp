@@ -19,14 +19,16 @@
 #include"cRng.h"
 #include"sConfig.h"
 
+extern cConfig cfg;
+
 /*
  * easier to use the method internally than an operator
  * (OK - I could use (*this) % foo, but that's messy...)
  */
 int cRng::random(int n)
 {
-        float scaling_factor = rand() / float(RAND_MAX);
-        return  int(scaling_factor * n );
+	float scaling_factor = rand() / float(RAND_MAX);
+	return  int(scaling_factor * n);
 }
 double cRng::randomd(double n)
 {
@@ -80,8 +82,6 @@ int cRng::bell(int min, int max, int mlo, int mhi)
 
 bool cRng::is_boy(int mod)
 {
-	cConfig cfg;
-
 	int chance = 100 - cfg.pregnancy.chance_of_girl();
 	chance += mod;
 	if(chance > 100) chance = 100;
@@ -91,8 +91,6 @@ bool cRng::is_boy(int mod)
 
 bool cRng::is_girl(int mod)
 {
-	cConfig cfg;
-
 	int chance = cfg.pregnancy.chance_of_girl();
 	chance += mod;
 	if(chance > 100) chance = 100;

@@ -51,7 +51,7 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	ss << " trains for combat.\n\n";
 
 	g_Girls.EquipCombat(girl);	// Ready for combat training
-	cConfig cfg;
+	
 	int enjoy = 0;												// 
 	int wages = 0;												// 
 	int train = 0;												// main skill trained

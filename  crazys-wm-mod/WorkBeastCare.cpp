@@ -60,7 +60,7 @@ bool cJobManager::WorkBeastCare(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 		ss << gettext("There were no beasts in the brothel to take care of.\n\n");
 	}
 
-	cConfig cfg;
+	
 
 	g_Girls.UnequipCombat(girl);	// put that shit away
 

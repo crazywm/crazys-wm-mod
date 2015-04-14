@@ -230,8 +230,6 @@ void cInterfaceWindow::AddButton(string OffImage, string DisabledImage, string O
 
 void cInterfaceWindow::AddScrollBar(int & ID, int x, int y, int width, int height, int visibleitems)
 {
-	cConfig cfg;
-
 	ID = m_ScrollBars.size();
 	// create scroll bar
 	g_LogFile.write("initializing scrollbar");
@@ -247,8 +245,6 @@ void cInterfaceWindow::AddScrollBar(int & ID, int x, int y, int width, int heigh
 
 void cInterfaceWindow::AddTextItemScrollBar(int id)
 {	// adding scrollbar to a TextItem
-	cConfig cfg;
-
 	int x = m_TextItems[id]->GetXPos();
 	int y = m_TextItems[id]->GetYPos();
 	int width = m_TextItems[id]->GetWidth();
@@ -333,7 +329,6 @@ void cInterfaceWindow::CreateWindow(int x, int y, int width, int height, int Bor
 {
 	m_xRatio = 1.0f;	m_yRatio = 1.0f;
 	// `J` fixed this to allow for nonscaled 800x600 screen sizes
-	cConfig cfg;
 	if (_G.g_ScreenWidth != cfg.resolution.scalewidth())	m_xRatio = ((float)_G.g_ScreenWidth / (float)cfg.resolution.scalewidth());
 	if (_G.g_ScreenHeight != cfg.resolution.scaleheight())	m_yRatio = ((float)_G.g_ScreenHeight / (float)cfg.resolution.scaleheight());
 

@@ -32,6 +32,8 @@ SDL_Surface* cListBox::m_HeaderUnSort = 0;
 extern CGraphics g_Graphics;
 extern cInterfaceEventManager g_InterfaceEvents;
 
+extern cConfig cfg;
+
 extern bool g_ShiftDown;
 extern bool g_CTRLDown;
 
@@ -606,7 +608,6 @@ void cListBox::CreateListbox(int ID, int x, int y, int width, int height, int Bo
 		}
 	}
 
-	cConfig cfg;
 	m_Font.LoadFont(cfg.fonts.normal(), 10);
 	m_Font.SetText("");
 	m_Font.SetColor(g_ListBoxTextR, g_ListBoxTextG, g_ListBoxTextB);

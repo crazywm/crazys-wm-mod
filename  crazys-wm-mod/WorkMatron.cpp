@@ -60,7 +60,7 @@ bool cJobManager::WorkMatron(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 		return true;
 	}
 
-	cConfig cfg;
+	
 
 	int numgirls = brothel->m_NumGirls;
 	int enjoy = 0;

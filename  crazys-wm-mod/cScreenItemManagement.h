@@ -63,7 +63,7 @@ private:
 public:
 	cScreenItemManagement()
 	{
-		cConfig cfg;
+		
 		DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "itemmanagement_screen.xml";
 		m_filename = dp.c_str();
 		sel_pos_l = -2;

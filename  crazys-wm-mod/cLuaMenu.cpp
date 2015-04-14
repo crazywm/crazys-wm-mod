@@ -22,6 +22,7 @@
 extern CGraphics g_Graphics;
 extern cChoiceManager g_ChoiceManager;
 
+extern cConfig cfg;
 /*
  * OK: this is a little bit complicated
  *

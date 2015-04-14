@@ -62,7 +62,7 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_COMBAT, Day0Night1);
 		return false;
 	}
-	cConfig cfg;
+	
 	int num_monsters = max(1, (g_Dice % 6) - 1);
 	int type_monster_girls = 0;
 	int type_unique_monster_girls = 0;

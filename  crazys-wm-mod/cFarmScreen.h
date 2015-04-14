@@ -58,7 +58,6 @@ private:
 public:
 	cFarmScreen()
 	{
-		cConfig cfg;
 		DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "farm_screen.xml";
 		m_filename = dp.c_str();
 		GetName = false;

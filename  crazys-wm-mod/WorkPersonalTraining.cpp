@@ -43,7 +43,7 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0
 	ss << "You oversee " << girlName << "'s traning.\n\n";
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, not needed for sex training
-	cConfig cfg;
+	
 
 
 	// first set sex restrictions

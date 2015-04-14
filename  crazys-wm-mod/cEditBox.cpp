@@ -22,6 +22,8 @@
 
 extern CGraphics g_Graphics;
 
+extern cConfig cfg;
+
 extern unsigned char g_EditBoxBorderR, g_EditBoxBorderG, g_EditBoxBorderB;
 extern unsigned char g_EditBoxBackgroundR, g_EditBoxBackgroundG, g_EditBoxBackgroundB;
 extern unsigned char g_EditBoxSelectedR, g_EditBoxSelectedG, g_EditBoxSelectedB;
@@ -91,7 +93,6 @@ bool cEditBox::CreateEditBox(int ID, int x, int y, int width, int height, int Bo
 	SDL_FillRect(m_FocusedBackground,0,SDL_MapRGB(m_Background->format,g_EditBoxSelectedR,g_EditBoxSelectedG,g_EditBoxSelectedB));
 
 	m_Text = new cFont();
-	cConfig cfg;
 	m_Text->LoadFont(cfg.fonts.normal(), 16);
 	m_Text->SetText("");
 	m_Text->SetColor(g_EditBoxTextR,g_EditBoxTextG,g_EditBoxTextB);

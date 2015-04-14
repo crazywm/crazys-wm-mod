@@ -59,7 +59,7 @@ private:
 public:
 	cScreenCentreManagement()
 	{
-		cConfig cfg;
+		
 		DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "centre_management_screen.xml";
 		m_filename = dp.c_str();
 	}

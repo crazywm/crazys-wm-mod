@@ -48,7 +48,7 @@ extern cGold g_Gold;
 bool cJobManager::WorkFilmPromoter(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	int actiontype = ACTION_WORKMOVIE;
-	cConfig cfg;
+	
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 	int roll = g_Dice.d100();
 	if (roll <= 20 && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))

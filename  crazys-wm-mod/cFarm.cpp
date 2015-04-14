@@ -208,8 +208,6 @@ void cFarmManager::UpdateFarm()	// Start_Building_Process_A
 // Run the shifts
 void cFarmManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)		// Start_Building_Process_B
 {
-	cConfig cfg;
-
 	stringstream ss;
 	string summary, girlName;
 

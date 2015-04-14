@@ -47,7 +47,7 @@ bool cJobManager::WorkGardener(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
-	cConfig cfg;
+	
 	int enjoy = 0;
 	int wages = 25;
 	int tips = 0;

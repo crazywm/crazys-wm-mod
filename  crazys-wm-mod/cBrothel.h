@@ -37,6 +37,7 @@ using namespace std;
 
 extern  cGirls  g_Girls;
 extern  CLog    g_LogFile;
+extern cConfig cfg;
 
 // holds an objective and its data
 typedef struct sObjective

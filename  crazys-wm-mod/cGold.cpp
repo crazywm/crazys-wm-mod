@@ -23,6 +23,9 @@
 #include "libintl.h"
 
 extern CLog g_LogFile;
+
+extern cConfig cfg;
+
 //Function to handle conversions of an int to a string cMessageQue can accept,
 string intstring(int input)
 {
@@ -46,7 +49,6 @@ string intstring(int input)
 
 cGoldBase::cGoldBase()
 {
-	cConfig cfg;
 	m_initial_value = m_value = cfg.initial.gold();
 	m_upkeep = 0;
 	m_income = 0;

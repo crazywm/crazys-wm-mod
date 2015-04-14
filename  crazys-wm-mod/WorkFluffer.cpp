@@ -71,7 +71,7 @@ bool cJobManager::WorkFluffer(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	}
 	ss << " worked as a fluffer.\n\n";
 
-	cConfig cfg;
+	
 	g_Girls.UnequipCombat(girl);	// not for studio crew
 
 	int wages = 50;

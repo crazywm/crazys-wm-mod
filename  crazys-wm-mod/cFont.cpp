@@ -27,6 +27,8 @@ using namespace std;
 extern CLog g_LogFile;
 extern CGraphics g_Graphics;
 
+extern cConfig cfg;
+
 float FontScale = 1.0f;
 
 cFont::cFont()
@@ -139,7 +141,6 @@ void cFont::RenderMultilineText(string text)
 
 void cFont::RenderText(string text, bool multi)
 {
-	cConfig cfg;
 	if (m_NewText == false && m_Message != 0) return;
 	if (m_Font == 0)
 	{
@@ -268,7 +269,6 @@ void cFont::SetColor(unsigned char r, unsigned char g, unsigned char b)
  */
 bool cFont::LoadFont(string font, int size)
 {
-	cConfig cfg;
 	if (m_Font) TTF_CloseFont(m_Font);
 	m_Font = 0;
 	if (cfg.debug.log_fonts()) std::cerr << "loading font: '" << font << "' at size " << size << endl;

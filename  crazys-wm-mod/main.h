@@ -48,6 +48,7 @@ using namespace std;
 #include "cCentre.h"
 #include "cHouse.h"
 #include "cFarm.h"
+#include "SDL_anigif.h"
 
 class cScrollBar;
 

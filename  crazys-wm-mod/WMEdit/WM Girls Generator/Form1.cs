@@ -1451,7 +1451,9 @@ namespace WM_Girls_Generator
             if (sGDesc.Length == 0) sGDesc = "-";
 
             //next two lines are collection of numbers from stats and skills textboxes,and this is where that "sp" comes in handy, it's easier to type sp than " " every time
-            sStats = StatsTBox_01.Text + sp + StatsTBox_02.Text + sp + StatsTBox_03.Text + sp + StatsTBox_04.Text + sp + StatsTBox_05.Text + sp + StatsTBox_06.Text + sp + StatsTBox_07.Text + sp + StatsTBox_08.Text + sp + StatsTBox_09.Text + sp + StatsTBox_10.Text + sp + StatsTBox_11.Text + sp + StatsTBox_12.Text + sp + StatsTBox_13.Text + sp + StatsTBox_14.Text + sp + StatsTBox_15.Text + sp + StatsTBox_16.Text + sp + StatsTBox_17.Text + sp + StatsTBox_18.Text + sp + StatsTBox_19.Text + sp + StatsTBox_20.Text + sp + StatsTBox_21.Text + sp + StatsTBox_22.Text + sp + StatsTBox_23.Text + sp + StatsTBox_24.Text + sp + StatsTBox_25.Text + sp + StatsTBox_26.Text + sp + StatsTBox_27.Text;
+            sStats = StatsTBox_01.Text + sp + StatsTBox_02.Text + sp + StatsTBox_03.Text + sp + StatsTBox_04.Text + sp + StatsTBox_05.Text + sp + StatsTBox_06.Text + sp + StatsTBox_07.Text + sp + StatsTBox_08.Text + sp + StatsTBox_09.Text + sp + StatsTBox_10.Text + sp + StatsTBox_11.Text + sp + StatsTBox_12.Text + sp + StatsTBox_13.Text + sp + StatsTBox_14.Text + sp + StatsTBox_15.Text + sp + StatsTBox_16.Text + sp + StatsTBox_17.Text + sp + StatsTBox_18.Text + sp + StatsTBox_19.Text + sp + StatsTBox_20.Text + sp + StatsTBox_21.Text + sp + StatsTBox_22.Text + sp + StatsTBox_23.Text + sp + StatsTBox_24.Text + sp + StatsTBox_25.Text + sp + StatsTBox_26.Text
+                + sp + StatsTBox_27.Text
+                + sp + "0"; // `J` Crazy added NPCLove but it is not going to be editable yet
             sSkills = SkillTBox_01.Text + sp + SkillTBox_02.Text + sp + SkillTBox_03.Text + sp + SkillTBox_04.Text + sp + SkillTBox_05.Text + sp + SkillTBox_06.Text + sp + SkillTBox_07.Text + sp + SkillTBox_08.Text + sp + SkillTBox_09.Text + sp + SkillTBox_10.Text + sp + SkillTBox_11.Text + sp + SkillTBox_12.Text + sp + SkillTBox_13.Text + sp + SkillTBox_14.Text + sp + SkillTBox_15.Text + sp + SkillTBox_16.Text + sp + SkillTBox_17.Text + sp + SkillTBox_18.Text + sp + SkillTBox_19.Text + sp + SkillTBox_20.Text + sp + SkillTBox_21.Text + sp + SkillTBox_22.Text;
             if (comboBox_Girl_Type.SelectedIndex == 1) sSlave = "1";		//if check to see if slave checkbox is checked or not, and to set slave flag accordingly
             else if (comboBox_Girl_Type.SelectedIndex == 2) sSlave = "2";	//maybe I should have simply said "sSlave = comboBox_GirlType.SelectedIndex.ToString();" that would eliminate ifs, but this way it's more obvious, and it's not necessary to have these items in specific order in dropbox (although they are at the moment)
@@ -1478,14 +1480,14 @@ namespace WM_Girls_Generator
             StatsTBox_14.Text = J_Rand(18, 81);	    	//Age
             StatsTBox_01.Text = J_Rand(1, 100);			//Charisma
             StatsTBox_17.Text = J_Rand(1, 100);			//Beauty
-            StatsTBox_24.Text = J_Rand(-100, 100);			//Refinement
+            StatsTBox_24.Text = J_Rand(-100, 100);		//Refinement
             StatsTBox_08.Text = J_Rand(1, 100);			//Agility
             StatsTBox_27.Text = J_Rand(1, 100);			//Strength
             StatsTBox_04.Text = J_Rand(1, 100);			//Constitution
             StatsTBox_05.Text = J_Rand(1, 100);			//Intelligence
             StatsTBox_07.Text = J_Rand(1, 100);			//Mana
-            StatsTBox_23.Text = J_Rand(-100, 100);			//Morality
-            StatsTBox_25.Text = J_Rand(-100, 100);			//Dignity
+            StatsTBox_23.Text = J_Rand(-100, 100);		//Morality
+            StatsTBox_25.Text = J_Rand(-100, 100);		//Dignity
             StatsTBox_06.Text = J_Rand(1, 100);			//Confidence
             StatsTBox_15.Text = J_Rand(1, 100);			//Obedience
             StatsTBox_16.Text = J_Rand(1, 100);			//Spirit
@@ -2089,7 +2091,7 @@ namespace WM_Girls_Generator
                     string[] sStats = data1.Split(' ');
                     string[] sSkills = data2.Split(' ');
 
-                    while (sStats.Length < 27)
+                    while (sStats.Length < 28)
                     {
                         data1 += " 0";
                         sStats = data1.Split(' ');
@@ -2141,7 +2143,7 @@ namespace WM_Girls_Generator
                     string sAccomm = "";			        //girl status
                     ArrayList alTraits = new ArrayList();	//ArrayList to store parsed traits, later on in the code of this method
 
-                    string[] jStats = new string[27];
+                    string[] jStats = new string[28];
                     string[] jSkills = new string[22];
 
                     //now, reason why editor turned out to support conversion to new format is because I made this XML support as a wrapper, data get's read from XML it's stored
@@ -2190,6 +2192,7 @@ namespace WM_Girls_Generator
                         if (node.Attributes[i].Name == "Dignity") jStats[24] = node.Attributes["Dignity"].Value;
                         if (node.Attributes[i].Name == "Lactation") jStats[25] = node.Attributes["Lactation"].Value;
                         if (node.Attributes[i].Name == "Strength") jStats[26] = node.Attributes["Strength"].Value;
+                        if (node.Attributes[i].Name == "NPCLove") jStats[27] = node.Attributes["NPCLove"].Value;
 
                         if (node.Attributes[i].Name == "Anal") jSkills[0] = node.Attributes["Anal"].Value;
                         if (node.Attributes[i].Name == "Magic") jSkills[1] = node.Attributes["Magic"].Value;
@@ -2572,6 +2575,7 @@ namespace WM_Girls_Generator
                 girl.SetAttribute("PCHate", sStats[21]);
                 girl.SetAttribute("Lactation", sStats[25]);
                 girl.SetAttribute("Strength", sStats[26]);
+                girl.SetAttribute("NPCLove", sStats[27]);
                 
                 girl.SetAttribute("Charisma", sStats[0]);
                 girl.SetAttribute("Beauty", sStats[16]);
@@ -2715,6 +2719,7 @@ namespace WM_Girls_Generator
             StatsTBox_25.Text = (values.Length > 24) ? values[24] : "0";
             StatsTBox_26.Text = (values.Length > 25) ? values[25] : "0";
             StatsTBox_27.Text = (values.Length > 26) ? values[26] : "0";
+            //StatsTBox_28.Text = (values.Length > 27) ? values[27] : "0";  // `J` Crazy added this but it is not going to be editable yet
 
             //again for skills
             values = data.ReadLine().Split(separator);
@@ -3505,6 +3510,10 @@ namespace WM_Girls_Generator
                                 aStrength[0] = stat.Attributes["Min"].Value;
                                 aStrength[1] = stat.Attributes["Max"].Value;
                                 break;
+                            case "NPCLove":
+                                aStrength[0] = stat.Attributes["Min"].Value;
+                                aStrength[1] = stat.Attributes["Max"].Value;
+                                break;
                         }
                     }
 
@@ -3691,9 +3700,9 @@ namespace WM_Girls_Generator
             XmlElement skill = xmldoc.CreateElement("Skill");
             XmlElement trait = xmldoc.CreateElement("Trait");
 
-            string[] sStats = new string[27] { "Charisma", "Happiness", "Libido", "Constitution", "Intelligence", "Confidence", "Mana", "Agility", "Fame", "Level", "AskPrice", "House", "Exp", "Age", "Obedience", "Spirit", "Beauty", "Tiredness", "Health", "PCFear", "PCLove", "PCHate", "Morality", "Refinement", "Dignity", "Lactation", "Strength" };
+            string[] sStats = new string[28] { "Charisma", "Happiness", "Libido", "Constitution", "Intelligence", "Confidence", "Mana", "Agility", "Fame", "Level", "AskPrice", "House", "Exp", "Age", "Obedience", "Spirit", "Beauty", "Tiredness", "Health", "PCFear", "PCLove", "PCHate", "Morality", "Refinement", "Dignity", "Lactation", "Strength", "NPCLove" };
             string[] sSkills = new string[22] { "Anal", "Magic", "BDSM", "NormalSex", "Beastiality", "Group", "Lesbian", "Service", "Strip", "Combat", "OralSex", "TittySex", "Medicine", "Performance", "Handjob", "Crafting", "Herbalism", "Farming", "Brewing", "AnimalHandling", "Footjob", "Cooking" };
-            int[] statsortorder = new int[27] { 9, 12, 13, 8, 10, 11, 18, 1, 17, 20, 19, 21, 25, 0, 16, 23, 7, 26, 3, 4, 6, 22, 24, 5, 14, 15, 2 };
+            int[] statsortorder = new int[28] { 9, 12, 13, 8, 10, 11, 18, 1, 17, 20, 19, 21, 25, 0, 16, 23, 7, 26, 3, 4, 6, 22, 24, 5, 14, 15, 2, 27 };
             int[] skillsortorder = new int[22] { 9, 1, 7, 12, 13, 15, 17, 16, 18, 19, 21, 3, 0, 2, 4, 6, 8, 5, 10, 11, 14, 20 };
 
             xmldoc.AppendChild(girls);
@@ -3802,6 +3811,7 @@ namespace WM_Girls_Generator
             StatRGMinTBox25.Text = (values.Length > 24) ? values[24] : "0";
             StatRGMinTBox26.Text = (values.Length > 25) ? values[25] : "0";
             StatRGMinTBox27.Text = (values.Length > 26) ? values[26] : "0";
+            //StatRGMinTBox28.Text = (values.Length > 27) ? values[27] : "0";     // `J` Crazy added this but it is not going to be editable yet
 
             values = data.ReadLine().Split(separator);
             StatRGMaxTBox1.Text = values[0]; StatRGMaxTBox2.Text = values[1]; StatRGMaxTBox3.Text = values[2]; StatRGMaxTBox4.Text = values[3]; StatRGMaxTBox5.Text = values[4]; StatRGMaxTBox6.Text = values[5]; StatRGMaxTBox7.Text = values[6]; StatRGMaxTBox8.Text = values[7]; StatRGMaxTBox9.Text = values[8]; StatRGMaxTBox10.Text = values[9]; StatRGMaxTBox11.Text = values[10]; StatRGMaxTBox12.Text = values[11]; StatRGMaxTBox14.Text = values[13]; StatRGMaxTBox15.Text = values[14]; StatRGMaxTBox16.Text = values[15]; StatRGMaxTBox17.Text = values[16]; StatRGMaxTBox18.Text = values[17]; StatRGMaxTBox19.Text = values[18]; StatRGMaxTBox20.Text = values[19]; StatRGMaxTBox21.Text = values[20];
@@ -3811,6 +3821,7 @@ namespace WM_Girls_Generator
             StatRGMaxTBox25.Text = (values.Length > 24) ? values[24] : "0";
             StatRGMaxTBox26.Text = (values.Length > 25) ? values[25] : "0";
             StatRGMaxTBox27.Text = (values.Length > 26) ? values[26] : "0";
+            //StatRGMaxTBox28.Text = (values.Length > 27) ? values[27] : "0";     // `J` Crazy added this but it is not going to be editable yet
 
 
             values = data.ReadLine().Split(separator);
@@ -4026,6 +4037,7 @@ namespace WM_Girls_Generator
                 girl.SetAttribute("PCHate", sStats[21]);
                 girl.SetAttribute("Lactation", sStats[25]);
                 girl.SetAttribute("Strength", sStats[26]);
+                girl.SetAttribute("NPCLove", sStats[27]);
 
                 girl.SetAttribute("Charisma", sStats[0]);
                 girl.SetAttribute("Beauty", sStats[16]);
@@ -4112,9 +4124,9 @@ namespace WM_Girls_Generator
                 XmlElement skill = xmldoc.CreateElement("Skill");
                 XmlElement trait = xmldoc.CreateElement("Trait");
 
-                string[] sStats = new string[27] { "Charisma", "Happiness", "Libido", "Constitution", "Intelligence", "Confidence", "Mana", "Agility", "Fame", "Level", "AskPrice", "House", "Exp", "Age", "Obedience", "Spirit", "Beauty", "Tiredness", "Health", "PCFear", "PCLove", "PCHate", "Morality", "Refinement", "Dignity", "Lactation", "Strength" };
+                string[] sStats = new string[28] { "Charisma", "Happiness", "Libido", "Constitution", "Intelligence", "Confidence", "Mana", "Agility", "Fame", "Level", "AskPrice", "House", "Exp", "Age", "Obedience", "Spirit", "Beauty", "Tiredness", "Health", "PCFear", "PCLove", "PCHate", "Morality", "Refinement", "Dignity", "Lactation", "Strength", "NPCLove" };
                 string[] sSkills = new string[22] { "Anal", "Magic", "BDSM", "NormalSex", "Beastiality", "Group", "Lesbian", "Service", "Strip", "Combat", "OralSex", "TittySex", "Medicine", "Performance", "Handjob", "Crafting", "Herbalism", "Farming", "Brewing", "AnimalHandling", "Footjob", "Cooking" };
-                int[] statsortorder = new int[27] { 9, 12, 13, 8, 10, 11, 18, 1, 17, 20, 19, 21, 25, 0, 16, 23, 7, 26, 3, 4, 6, 22, 24, 5, 14, 15, 2};
+                int[] statsortorder = new int[28] { 9, 12, 13, 8, 10, 11, 18, 1, 17, 20, 19, 21, 25, 0, 16, 23, 7, 26, 3, 4, 6, 22, 24, 5, 14, 15, 2, 27 };
                 int[] skillsortorder = new int[22] { 9, 1, 7, 12, 13, 15, 17, 16, 18, 19, 21, 3, 0, 2, 4, 6, 8, 5, 10, 11, 14, 20};
 
                 xmldoc.AppendChild(girls);
@@ -4376,6 +4388,7 @@ namespace WM_Girls_Generator
                                     case "24": sEffects[1] = "Dignity"; break;
                                     case "25": sEffects[1] = "Lactation"; break;
                                     case "26": sEffects[1] = "Strength"; break;
+                                    case "27": sEffects[1] = "NPCLove"; break;
                                 }
                                 break;
                             case "2":
@@ -4533,6 +4546,7 @@ namespace WM_Girls_Generator
                 comboBox_affects_02.Items.Add("Dignity");
                 comboBox_affects_02.Items.Add("Lactation");
                 comboBox_affects_02.Items.Add("Strength");
+                comboBox_affects_02.Items.Add("NPCLove");
                 affects_textBox_value.Text = "";
             }
             if (comboBox_affects_01.SelectedIndex == 2)			//Status
@@ -4736,7 +4750,7 @@ namespace WM_Girls_Generator
 
             string[,] aTypes = new string[3, 2] { { "Skill", "0" }, { "Stat", "1" }, { "Status", "3" } };
             string[,] aSkills = new string[22, 2] { { "Anal", "0" }, { "Magic", "1" }, { "BDSM", "2" }, { "Normal Sex", "3" }, { "Bestiality", "4" }, { "Group", "5" }, { "Lesbian", "6" }, { "Service", "7" }, { "Strip", "8" }, { "Combat", "9" }, { "OralSex", "10" }, { "TittySex", "11" }, { "Medicine", "12" }, { "Performance", "13" }, { "Handjob", "14" }, { "Crafting", "15" }, { "Herbalism", "16" }, { "Farming", "17" }, { "Brewing", "18" }, { "AnimalHandling", "19" }, { "Footjob", "20" } , { "Cooking", "21"}};
-            string[,] aStats = new string[27, 2] { { "Charisma", "0" }, { "Happiness", "1" }, { "Libedo", "2" }, { "Constitution", "3" }, { "Intelligence", "4" }, { "Confidence", "5" }, { "Mana", "6" }, { "Agility", "7" }, { "Fame", "8" }, { "Level", "9" }, { "AskPrice", "10" }, { "House", "11" }, { "Experience", "12" }, { "Age", "13" }, { "Obedience", "14" }, { "Spirit", "15" }, { "Beauty", "16" }, { "Tiredness", "17" }, { "Health", "18" }, { "PC Fear", "19" }, { "PC Love", "20" }, { "PC Hate", "21" }, { "Morality", "22" }, { "Refinement", "23" }, { "Dignity", "24" }, { "Lactation", "25" }, { "Strength", "26" } };
+            string[,] aStats = new string[28, 2] { { "Charisma", "0" }, { "Happiness", "1" }, { "Libedo", "2" }, { "Constitution", "3" }, { "Intelligence", "4" }, { "Confidence", "5" }, { "Mana", "6" }, { "Agility", "7" }, { "Fame", "8" }, { "Level", "9" }, { "AskPrice", "10" }, { "House", "11" }, { "Experience", "12" }, { "Age", "13" }, { "Obedience", "14" }, { "Spirit", "15" }, { "Beauty", "16" }, { "Tiredness", "17" }, { "Health", "18" }, { "PC Fear", "19" }, { "PC Love", "20" }, { "PC Hate", "21" }, { "Morality", "22" }, { "Refinement", "23" }, { "Dignity", "24" }, { "Lactation", "25" }, { "Strength", "26" }, { "NPCLove", "27" } };
             string[,] aStatus = new string[13, 2] { { "Poisoned", "1" }, { "Badly Poisoned", "2" }, { "Pregnant", "3" }, { "Pregnant By Player", "4" }, { "Slave", "5" }, { "Has daughter", "6" }, { "Has son", "7" }, { "Inseminated", "8" }, { "Controlled", "9" }, { "Catacombs", "10" }, { "Arena", "11" }, { "Your Daughter", "12" }, { "Is Daughter", "13" } };
 
             //first check type against aTypes array, when it coresponds to one then we found our type, store number of that type to sEf01 string
@@ -5065,6 +5079,7 @@ namespace WM_Girls_Generator
                                         case "Dignity": sEffect = sEffect + " " + "24"; break;
                                         case "Lactation": sEffect = sEffect + " " + "25"; break;
                                         case "Strength": sEffect = sEffect + " " + "26"; break;
+                                        case "NPCLove": sEffect = sEffect + " " + "27"; break;
                                     }
                                     sEffect = sEffect + " " + node.ChildNodes[x].Attributes["Amount"].Value;
                                     break;
@@ -5157,7 +5172,7 @@ namespace WM_Girls_Generator
 
             string[,] aTypes = new string[3, 2] { { "Skill", "0" }, { "Stat", "1" }, { "Status", "3" } };
             string[,] aSkills = new string[22, 2] { { "Anal", "0" }, { "Magic", "1" }, { "BDSM", "2" }, { "Normal Sex", "3" }, { "Bestiality", "4" }, { "Group", "5" }, { "Lesbian", "6" }, { "Service", "7" }, { "Strip", "8" }, { "Combat", "9" }, { "OralSex", "10" }, { "TittySex", "11" }, { "Medicine", "12" }, { "Performance", "13" }, { "Handjob", "14" }, { "Crafting", "15" }, { "Herbalism", "16" }, { "Farming", "17" }, { "Brewing", "18" }, { "AnimalHandling", "19" }, { "Footjob", "20" }, { "Cooking","21"} };
-            string[,] aStats = new string[27, 2] { { "Charisma", "0" }, { "Happiness", "1" }, { "Libedo", "2" }, { "Constitution", "3" }, { "Intelligence", "4" }, { "Confidence", "5" }, { "Mana", "6" }, { "Agility", "7" }, { "Fame", "8" }, { "Level", "9" }, { "AskPrice", "10" }, { "House", "11" }, { "Experience", "12" }, { "Age", "13" }, { "Obedience", "14" }, { "Spirit", "15" }, { "Beauty", "16" }, { "Tiredness", "17" }, { "Health", "18" }, { "PC Fear", "19" }, { "PC Love", "20" }, { "PC Hate", "21" }, { "Morality", "22" }, { "Refinement", "23" }, { "Dignity", "24" }, { "Lactation", "25" }, { "Strength", "26" } };
+            string[,] aStats = new string[28, 2] { { "Charisma", "0" }, { "Happiness", "1" }, { "Libedo", "2" }, { "Constitution", "3" }, { "Intelligence", "4" }, { "Confidence", "5" }, { "Mana", "6" }, { "Agility", "7" }, { "Fame", "8" }, { "Level", "9" }, { "AskPrice", "10" }, { "House", "11" }, { "Experience", "12" }, { "Age", "13" }, { "Obedience", "14" }, { "Spirit", "15" }, { "Beauty", "16" }, { "Tiredness", "17" }, { "Health", "18" }, { "PC Fear", "19" }, { "PC Love", "20" }, { "PC Hate", "21" }, { "Morality", "22" }, { "Refinement", "23" }, { "Dignity", "24" }, { "Lactation", "25" }, { "Strength", "26" }, { "NPCLove", "27" } };
             string[,] aStatus = new string[13, 2] { { "Poisoned", "1" }, { "Badly Poisoned", "2" }, { "Pregnant", "3" }, { "Pregnant By Player", "4" }, { "Slave", "5" }, { "Has daughter", "6" }, { "Has son", "7" }, { "Inseminated", "8" }, { "Controlled", "9" }, { "Catacombs", "10" }, { "Arena", "11" }, { "Your Daughter", "12" }, { "Is Daughter", "13" } };
 
 
@@ -5480,6 +5495,7 @@ namespace WM_Girls_Generator
                                     case "24": sEffects[1] = "Dignity"; break;
                                     case "25": sEffects[1] = "Lactation"; break;
                                     case "26": sEffects[1] = "Strength"; break;
+                                    case "27": sEffects[1] = "NPCLove"; break;
                                 }
                                 break;
                             case "2":

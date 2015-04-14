@@ -195,6 +195,7 @@ cInventory g_InvManager;
 // TEmporary testing crap
 int IDS = 0;
 cRng g_Dice;
+cConfig cfg;
 
 cNameList		g_NameList;
 cSurnameList g_SurnameList;
@@ -915,7 +916,7 @@ void handle_hotkeys()
 
 		case SDLK_0:
 		{
-			cConfig cfg;
+			
 			msg = "Global Hotkeys:\n";
 			msg += "1-7         Brothels\n";
 			msg += "Tab         Cycle Brothels\n";
@@ -1134,7 +1135,7 @@ int main(int ac, char* av[])	// `J` Bookmark - #1 - Entering the game
 	bindtextdomain("whoremaster", base);
 	textdomain("whoremaster");
 
-	cConfig cfg;
+	
 	bool running = true;
 	bool quitPending = false;
 	bool mouseDown = false;

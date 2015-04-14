@@ -494,7 +494,7 @@ int cInventory::GetRandomShopItem()
 sInventoryItem* cInventory::GetRandomItem()
 {
 	sInventoryItem *ipt;
-	cConfig cfg; int log = 0; if (cfg.debug.log_items()) log = (cfg.debug.log_extradetails()) ? 2 : 1;
+	int log = 0; if (cfg.debug.log_items()) log = (cfg.debug.log_extradetails()) ? 2 : 1;
 	if (log > 0) g_LogFile.os() << "cInventory::GetRandomItem: " << "items.size == " << items.size() << endl;
 	if (items.size() == 0)
 	{
@@ -565,7 +565,6 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 	// A few items are hard coded
 	else if (stringtolowerj(girl->m_Inventory[num]->m_Name) == stringtolowerj("Reset Potion MK i"))
 	{
-		cConfig cfg;
 		int age = girl->age();
 		// reset all numbers to default
 		for (u_int i = 0; i < NUM_SKILLS; i++)	girl->m_Skills[i] = 0;
@@ -1034,7 +1033,6 @@ bool cInventory::LoadItemsXML(string filename)
 	}
 	TiXmlElement *el;
 	TiXmlElement *root_el = doc.RootElement();
-	cConfig cfg;
 	bool log_flag = cfg.debug.log_items();
 	for (el = root_el->FirstChildElement(); el; el = el->NextSiblingElement())
 	{

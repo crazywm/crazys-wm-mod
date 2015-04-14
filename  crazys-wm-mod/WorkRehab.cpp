@@ -68,7 +68,7 @@ bool cJobManager::WorkRehab(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 	}
 	ss << " underwent rehab for her addiction.\n\n";
 
-	cConfig cfg;
+	
 	g_Girls.UnequipCombat(girl);	// not for patient
 
 	if (g_Centre.GetNumGirlsOnJob(brothel->m_id, JOB_COUNSELOR, true) < 1 || g_Centre.GetNumGirlsOnJob(brothel->m_id, JOB_COUNSELOR, false) < 1)

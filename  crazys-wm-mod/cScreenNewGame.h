@@ -20,6 +20,8 @@
 #include "cInterfaceWindow.h"
 #include "InterfaceGlobals.h"
 
+extern cConfig cfg;
+
 class cScreenNewGame : public cInterfaceWindowXML
 {
 
@@ -29,7 +31,6 @@ public:
 	
 	cScreenNewGame()
 	{
-		cConfig cfg;
 		DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "NewGame.xml";
 		m_filename = dp.c_str();
 	}

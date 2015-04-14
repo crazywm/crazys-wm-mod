@@ -54,7 +54,7 @@ bool cJobManager::WorkFilmDirector(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 
 	ss << girlName << " worked as a film director.\n\n";
 
-	cConfig cfg;
+	
 	g_Girls.UnequipCombat(girl);	// not for studio crew
 
 	int wages = 50;

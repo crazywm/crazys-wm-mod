@@ -41,7 +41,7 @@ private:
 public:
 	cScreenHouse()
 	{
-		cConfig cfg;
+		
 		DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "house_screen.xml";
 		m_filename = dp.c_str();
 	}

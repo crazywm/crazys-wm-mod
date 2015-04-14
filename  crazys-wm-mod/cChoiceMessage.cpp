@@ -23,6 +23,8 @@
 
 extern CGraphics g_Graphics;
 
+extern cConfig cfg;
+
 extern unsigned char g_ChoiceMessageTextR, g_ChoiceMessageTextG, g_ChoiceMessageTextB;
 extern unsigned char g_ChoiceMessageBorderR, g_ChoiceMessageBorderG, g_ChoiceMessageBorderB;
 extern unsigned char g_ChoiceMessageBackgroundR, g_ChoiceMessageBackgroundG, g_ChoiceMessageBackgroundB;
@@ -83,7 +85,6 @@ void cChoiceManager::BuildChoiceBox(int ID, int MaxStrLen)
 		if(m_Font == 0)
 		{
 			m_Font = new cFont();
-			cConfig cfg;
 			m_Font->LoadFont(cfg.fonts.normal(), 16);
 			m_Font->SetText("");
 			m_Font->SetColor(g_ChoiceMessageTextR,g_ChoiceMessageTextG,g_ChoiceMessageTextB);
@@ -158,7 +159,6 @@ void cChoiceManager::CreateChoiceBox(int x, int y, int width, int height, int ID
 	if(m_Font == 0)
 	{
 		m_Font = new cFont();
-		cConfig cfg;
 		m_Font->LoadFont(cfg.fonts.normal(), 16);
 		m_Font->SetText("");
 		m_Font->SetColor(0,0,0);

@@ -64,7 +64,7 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		return true;
 	}
 
-	cConfig cfg;
+	
 	g_Girls.EquipCombat(girl);	// ready armor and weapons!
 	Uint8 fight_outcome = 0;
 	int wages = 175, enjoy = 0;

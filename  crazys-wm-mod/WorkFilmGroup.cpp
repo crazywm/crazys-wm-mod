@@ -53,7 +53,7 @@ bool cJobManager::WorkFilmGroup(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 		return false;
 	}
 
-	cConfig cfg;
+	
 	stringstream ss;
 	string girlName = girl->m_Realname;
 	int wages = 50;

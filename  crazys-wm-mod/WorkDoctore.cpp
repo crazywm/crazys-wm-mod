@@ -51,7 +51,7 @@ bool cJobManager::WorkDoctore(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	girl->m_DayJob = girl->m_NightJob = JOB_DOCTORE;	// it is a full time job
 
 	stringstream ss; string girlName = girl->m_Realname; ss<<"Doctore " << girlName;
-	cConfig cfg;
+	
 
 	int numgirls = brothel->m_NumGirls;
 	int enjoy = 0;

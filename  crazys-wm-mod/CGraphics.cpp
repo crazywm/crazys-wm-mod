@@ -26,6 +26,7 @@
 using namespace std;
 
 extern CLog g_LogFile;
+extern cConfig cfg;
 
 CGraphics::CGraphics()
 {
@@ -74,7 +75,6 @@ bool CGraphics::End()
 
 bool CGraphics::InitGraphics(string caption, int Width, int Height, int BPP)
 {
-	cConfig cfg;
 	if (Width == 0 || Height == 0)
 	{
 		if (cfg.resolution.configXML())

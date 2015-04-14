@@ -53,7 +53,7 @@ bool cJobManager::WorkAdvertising(sGirl* girl, sBrothel* brothel, bool Day0Night
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	cConfig cfg;
+	
 	ss << " is assigned to advertize the brothel.\n\n";
 
 	g_Girls.UnequipCombat(girl);	// put that shit away

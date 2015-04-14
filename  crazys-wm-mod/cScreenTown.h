@@ -80,7 +80,7 @@ private:
 public:
 	cScreenTown()
 	{
-		cConfig cfg;
+		
 		DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "town_screen.xml";
 		m_filename = dp.c_str();
 		BuyBrothel = -1;

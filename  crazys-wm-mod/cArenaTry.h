@@ -47,7 +47,6 @@ private:
 public:
 	cArenaTry()
 	{
-		cConfig cfg;
 		DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "arenatry_screen.xml";
 		m_filename = dp.c_str();
 		GetName = false;

@@ -39,7 +39,6 @@ class cLuaMenuInner
  */
 	cLuaState	l;
 	CLog		log;
-	cConfig		cfg;
 /*
  *	parameters to the initial show method
  */

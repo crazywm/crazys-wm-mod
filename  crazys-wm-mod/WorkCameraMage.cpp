@@ -72,7 +72,7 @@ bool cJobManager::WorkCameraMage(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		ss << "The Director assigned " << girlName << "to run the camera for the week";
 	}
 
-	cConfig cfg;
+	
 	g_Girls.UnequipCombat(girl);	// not for studio crew
 
 	int roll = g_Dice.d100();

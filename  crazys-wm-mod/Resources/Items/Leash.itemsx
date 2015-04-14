@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Items>
 <Item Name="Leash"
-      Desc="This length of rope attached to a leather collar isn't just an effective physical restraint: it's an humiliating punishment. In many ways, a woman wearing this is at the complete mercy of whoever is holding it. (D) (+5 BDSM, +10 Best, +20 Obed, -20 Spi, -20 Conf, -20 Comb, -30 Agi, -30 Happ, +10 Hate, +15 Fear, removes Elegant)"
+      Desc="This length of rope attached to a leather collar isn't just an effective physical restraint: it's an humiliating punishment. In many ways, a woman wearing this is at the complete mercy of whoever is holding it. (D) (+5 BDSM, +10 Best, +20 Obed, -20 Spi, -20 Conf, -20 Comb, -30 Agi, -30 Happ, -20 Refinement, +10 Hate, +15 Fear, removes Elegant)"
       Type="Necklace"
       Badness="30"
       Special="None"
@@ -20,6 +20,7 @@
    <Effect What="Stat"  Name="PCFear"                  Amount="15"    />
    <Effect What="Stat"  Name="Spirit"                  Amount="-20"    />
    <Effect What="Stat"  Name="Confidence"              Amount="-20"    />
+   <Effect What="Stat"  Name="Refinement"              Amount="-20"    />
    <Effect What="Trait" Name="Elegant"                 Amount="0"    />
 </Item>
 </Items>

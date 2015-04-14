@@ -74,7 +74,7 @@ static	bool		ids_set;
 public:
 	cBuildingManagement()
 	{
-		cConfig cfg;
+		
 		DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "upgrade_screen.xml";
 		m_filename = dp.c_str();
 		selection = 0;

@@ -24,6 +24,8 @@
 #include "sConfig.h"
 #include "cScrollBar.h"
 
+extern cConfig cfg;
+
 class cTextItem : public cInterfaceObject
 {
 	bool m_Hide;
@@ -80,7 +82,6 @@ public:
 
 	void ChangeFontSize(int FontSize)
 	{
-		cConfig cfg;
 		m_Font.LoadFont(cfg.fonts.normal(), FontSize);
 		m_Font.SetText(m_Text);
 		m_Font.SetColor(0, 0, 0);

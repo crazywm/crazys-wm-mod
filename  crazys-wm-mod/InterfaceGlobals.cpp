@@ -274,7 +274,7 @@ void LoadInterface()
 	string image = ""; string text = ""; string file = "";
 	bool Transparency = false, Scale = true, multi = false, events = false, liveUpdate = false;
 	ifstream incol;
-	cConfig cfg;
+	
 
 	g_LogFile.write("Begin Loading Interface");
 

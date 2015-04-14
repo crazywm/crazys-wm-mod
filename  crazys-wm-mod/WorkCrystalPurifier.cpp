@@ -72,7 +72,7 @@ bool cJobManager::WorkCrystalPurifier(sGirl* girl, sBrothel* brothel, bool Day0N
 		ss << "The Director assigned " << girlName << "to edit the scenes for the week";
 	}
 
-	cConfig cfg;
+	
 	g_Girls.UnequipCombat(girl);	// not for studio crew
 
 	int roll = g_Dice.d100();

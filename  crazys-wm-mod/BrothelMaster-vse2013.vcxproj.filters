@@ -606,6 +606,7 @@
     <ClCompile Include="WorkCentreExTherapy.cpp" />
     <ClCompile Include="WorkCentreTherapy.cpp" />
     <ClCompile Include="WorkCounselor.cpp" />
+    <ClCompile Include="SDL_anigif.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cButton.h">
@@ -1026,6 +1027,9 @@
       <Filter>Misc</Filter>
     </ClInclude>
     <ClInclude Include="cFarm.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="SDL_anigif.h">
       <Filter>Misc</Filter>
     </ClInclude>
   </ItemGroup>

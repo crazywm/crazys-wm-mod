@@ -104,7 +104,7 @@ void cScreenGangs::init()
 
 	Focused();
 	g_InitWin = false;
-	cConfig cfg;
+	
 
 	selection = GetLastSelectedItemFromList(ganglist_id);
 	sel_recruit = GetLastSelectedItemFromList(recruitlist_id);

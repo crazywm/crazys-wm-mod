@@ -52,7 +52,7 @@ bool cJobManager::WorkFilmHandJob(sGirl* girl, sBrothel* brothel, bool Day0Night
 		girl->m_Events.AddMessage("There was no crew to film the scene, so she took the day off", IMGTYPE_PROFILE, EVENT_NOWORK);
 		return false;
 	}
-	cConfig cfg;
+	
 	stringstream ss;
 	string girlName = girl->m_Realname;
 	int wages = 50;

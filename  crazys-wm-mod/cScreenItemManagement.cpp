@@ -144,7 +144,7 @@ void cScreenItemManagement::set_ids()
 
 
 
-	cConfig cfg;
+	
 	for (int i = 0; i < 9; i++) RarityColor[i] = cfg.items.rarity_color(i);
 }
 

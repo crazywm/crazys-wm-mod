@@ -49,7 +49,6 @@ private:
 public:
 	cClinicTry()
 	{
-		cConfig cfg;
 		DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "clinictry_screen.xml";
 		m_filename = dp.c_str();
 		GetName = false;

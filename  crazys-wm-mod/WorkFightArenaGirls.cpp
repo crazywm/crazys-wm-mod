@@ -56,7 +56,7 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 	}
 	ss << " was assigned to fight other girls in the arena.\n\n";
 
-	cConfig cfg;
+	
 	int wages = 0, fight_outcome = 0, enjoyment = 0, fame = 0, imagetype = IMGTYPE_COMBAT;
 
 	double jobperformance = JP_FightArenaGirls(girl, false);

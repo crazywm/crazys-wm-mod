@@ -51,6 +51,7 @@ private:
 	int accomup_id;		// Accom Up button
 	int accomdown_id;	// Accom Down button
 	int accom_id;		// Accom slider
+	int accomp_id;		// Accom slider - preferred
 	int accomval_id;	// Accom value text
 	int houseperc_id;	// House Percentage slider
 	int housepercval_id;// House Percentage value text
@@ -79,7 +80,7 @@ public:
 	int lastsexact = -1;
 	cScreenGirlDetails()
 	{
-		cConfig cfg;
+		
 		DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "girl_details_screen.xml";
 		m_filename = dp.c_str();
 	}

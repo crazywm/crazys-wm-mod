@@ -84,7 +84,7 @@ void cScreenSlaveMarket::init()
 	DisableButton(more_id, true);
 	DisableButton(buy_slave_id, true);
 	selection = -1;
-	cConfig cfg;
+	
 	if (cfg.debug.log_girls()) g_LogFile.os() << "setting up slave market: genGirls = " << g_GenGirls << endl;
 
 	ImageNum = -1;
@@ -318,7 +318,7 @@ void cScreenSlaveMarket::process()
 
 void cScreenSlaveMarket::generate_unique_girl(int i, bool &unique)
 {
-	cConfig cfg;
+	
 
 	if (g_Girls.GetNumSlaveGirls() <= 0) return;				// if there are no unique slave girls left then we can do no more here
 	if (!g_Dice.percent(cfg.slavemarket.unique_market())) return;	// otherwise - 35% chance of a unique girl. `J` added config.xml customization

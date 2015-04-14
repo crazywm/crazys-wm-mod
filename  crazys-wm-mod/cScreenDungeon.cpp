@@ -318,7 +318,7 @@ int cScreenDungeon::enslave_customer(int girls_removed, int custs_removed)
 
 void cScreenDungeon::set_slave_stats(sGirl *girl)
 {
-	cConfig cfg;
+	
 	girl->set_slave();
 	girl->obedience(-10);
 	girl->pcfear(5);
@@ -696,7 +696,7 @@ void cScreenDungeon::release()
 
 void cScreenDungeon::talk()
 {
-	cConfig cfg;
+	
 	if (g_TalkCount <= 0) return;	// if we have no talks left, we can go home
 	int v[2] = { 0, -1 };
 	// customers are always last in the list, so we can determine if this is a customer by simple aritmetic

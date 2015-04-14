@@ -1928,10 +1928,12 @@ WME - Fixed several issues with ".girls" files not loading properly
 !!!!!!!!!!!!!!!!!!!! Google code is being phased out by Google and the SVN has been moved to github.com
 !!!!!!!!!!!!!!!!!!!! https://github.com/crazywm/crazys-wm-mod
 
+###  Changes 4/7/2015
 Crazy added several things to allow the girls to have a boyfriend?
  - Added stat "NPCLove"
  - Started adding some options to freetime for boyfriends.
 
+###  Changes 4/8/2015
 Fixed a few problems with "NPCLove" crashing the game.
 Cleaned up girls a little.
 
@@ -1939,15 +1941,39 @@ Cleaned up girls a little.
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.17
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.27
 
+###  Changes 4/9/2015
 !!! Removed the .sdf files from GitHub to speed up pushes and pulls
 Converted the last few calls for new cPlayer objects to "extern cPlayer The_Player;" so everything uses only 1 cPlayer object.
 Set health and happiness to 100 when other stats are defaulted to 0
 Cleaned sGirl constructor and destructor
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 
+###  Changes 4/10-13/2015
+WME - Added "NPCLove" stat
+Condensed "cConfig cfg;" calls to externs so it is only created once.
+Cleaned cTariff.(cpp,h)
+Homeless girls and Adventurers know they can survive on their own so are more likely to runaway
+ -  They don't reset m_DaysUnhappy to 0 but instead divide day count in half
+Fixed a few items and added a few more.
+ - Added more to do_daily_items
+Improved chances of the girl surviving if she fights against being thrown in the dungeon (lose_vs_own_gang)
+ - Cleanup of cGirlGangFight.cpp
 
+Added .gif loading into image lists (they load and display but do not animate)
+ - Included SDL_anigif.(c,h) to the project but have not integrated it yet.
 
+Added Gender to Constants.h 
+Added some functions in cPlayer to use Gender
 
+Accommodation Update
+ - Updated do_food_and_digs to make accommodation do more.
+ - Added preferred accomodation check for girls
+ - Added slider marker for the girl's preferred accomodation.
+ - Reworked accom happy, love, hate and fear modifiers
+ - Some traits can be added or removed if some checks are passed.
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.18
 
 
 

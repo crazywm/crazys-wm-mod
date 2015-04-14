@@ -375,7 +375,7 @@ void cScreenTown::do_walk()
 		return;
 	}
 	// most of the time, you're not going to find anyone unless you're cheating, of course.
-	cConfig cfg;
+	
 	int meet_chance = cfg.initial.girl_meet();
 	if (!g_Dice.percent(meet_chance) && !g_Cheats)
 	{

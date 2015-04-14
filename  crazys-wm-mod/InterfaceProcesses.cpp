@@ -101,7 +101,7 @@ void confirm_exit();
 
 void LoadGameScreen()
 {
-	cConfig cfg;
+	
 	DirPath location;
 	if (cfg.folders.configXMLsa())
 		location = DirPath() << cfg.folders.saves();
@@ -194,7 +194,7 @@ void LoadGameScreen()
 
 void NewGame()
 {
-	cConfig cfg;
+	
 	cScriptManager sm;
 
 	g_GenGirls = g_Cheats = false;
@@ -303,7 +303,7 @@ void GetString()
 
 static string clobber_extension(string s)	// `J` debug logging
 {
-	cConfig cfg;
+	
 	if (cfg.debug.log_debug())	g_LogFile.os() << "clobber_extension: s = " << s << endl;
 	size_t pos = s.rfind(".");
 	if (cfg.debug.log_debug())	g_LogFile.os() << "clobber_extension: pos = " << pos << endl;
@@ -321,7 +321,7 @@ static void LoadXMLItems(FileList &fl)
 {
 	map<string, string> lookup;
 	int loglevel = 0;
-	cConfig cfg;
+	
 	if (cfg.debug.log_items())			loglevel++;
 	if (cfg.debug.log_extradetails())	loglevel++;
 
@@ -377,13 +377,13 @@ static void LoadXMLItems(FileList &fl)
 		if (c == 'x')
 		{
 
-			if (loglevel > 0)	g_LogFile.os() << "\t\tloading xml" << endl;
+			if (loglevel > 0)	g_LogFile.os() << "\t\tLoading xml Item: " << full_path<< endl;
 			g_InvManager.LoadItemsXML(full_path);
 		}
 		else
 		{
 
-			if (loglevel > 0)	g_LogFile.os() << "\t\tloading orig" << endl;
+			if (loglevel > 0)	g_LogFile.os() << "\t\tLoading orig Item: " << full_path << endl;
 			g_InvManager.LoadItems(full_path);
 		}
 	}
@@ -393,7 +393,7 @@ void LoadGameInfoFiles()
 {
 	stringstream ss;
 	ifstream incol;
-	cConfig cfg;
+	
 
 	int loadtraits = 0;		// 0=default, 1=xml, 2=txt
 	DirPath location = DirPath() << "Resources" << "Data";
@@ -461,7 +461,7 @@ void LoadGirlsFiles()
 	*	now get a list of all the file in the Characters folder
 	*	start by building a path...
 	*/
-	DirPath location; cConfig cfg;
+	DirPath location; 
 	if (cfg.folders.configXMLch())
 		location = DirPath() << cfg.folders.characters();
 	else
@@ -2551,7 +2551,7 @@ void PreparingLoad()
 	}
 	else
 	{
-		cConfig cfg;
+		
 		DirPath location;
 		if (cfg.folders.configXMLsa())
 			location = DirPath() << cfg.folders.saves();
@@ -3069,13 +3069,13 @@ void SaveMasterFile(string filename)
 
 void AutoSaveGame()
 {
-	cConfig cfg;
+	
 	string saveloc = (cfg.folders.configXMLsa() ? cfg.folders.saves() : "Saves");
 	SaveGameXML(DirPath() << saveloc << "autosave.gam");
 }
 void SaveGame(bool saveCSV)
 {
-	cConfig cfg;
+	
 	string filename = g_Brothels.GetBrothel(0)->m_Name;
 	string filenamedotgam = filename + ".gam";
 	string filenamedotcsv = filename + ".csv";

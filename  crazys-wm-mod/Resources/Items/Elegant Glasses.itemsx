@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Items>
 <Item Name="Elegant Glasses"
-      Desc="A fancy pair of glasses. (+10 Charisma. Adds Elegant)"
+      Desc="A fancy pair of glasses. (+10 Charisma. Adds Elegant, removes Bad Eyesight)"
       Type="Glasses"
       Badness="0"
       Special="None"
@@ -11,5 +11,6 @@
       GirlBuyChance="40">
    <Effect What="Stat"  Name="Charisma"                Amount="10"    />
    <Effect What="Trait" Name="Elegant"                 Amount="1"    />
+   <Effect What="Trait" Name="Bad Eyesight"            Amount="0"    />
 </Item>
 </Items>

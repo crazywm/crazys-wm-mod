@@ -60,7 +60,7 @@ bool cJobManager::WorkIntern(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	ss << " trains in the Medical field.\n\n";
 
 	g_Girls.UnequipCombat(girl);	// put that shit away
-	cConfig cfg;
+	
 	int enjoy = 0;												// 
 	int wages = 0;												// 
 	int train = 0;												// main skill trained

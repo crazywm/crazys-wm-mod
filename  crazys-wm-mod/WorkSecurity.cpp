@@ -54,7 +54,7 @@ bool cJobManager::WorkSecurity(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	}
 	ss << " worked Security in the brothel.\n\n";
 
-	cConfig cfg;
+	
 
 
 	int enjoy = 0;

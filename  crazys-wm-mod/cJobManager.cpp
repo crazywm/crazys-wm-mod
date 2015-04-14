@@ -1570,7 +1570,6 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
  */
 bool cJobManager::work_related_violence(sGirl* girl, bool Day0Night1, bool streets)
 {
-	cConfig cfg;
 	// the base chance of an attempted rape is higher on the streets
 	int rape_chance = (streets ? (int)cfg.prostitution.rape_streets() : (int)cfg.prostitution.rape_brothel());
 
@@ -2584,7 +2583,6 @@ void cJobManager::do_training_set(vector<sGirl*> girls, bool Day0Night1)
 void cJobManager::do_training(sBrothel* brothel, bool Day0Night1)
 {
 	cTariff tariff;
-	cConfig cfg;
 	vector<sGirl*> t_set;
 	vector<sGirl*> girls = girls_on_job(brothel, JOB_TRAINING, Day0Night1);
 
@@ -2705,7 +2703,6 @@ void cJobManager::load_films(std::ifstream &ifs)
 
 string cJobManager::GirlPaymentText(sBrothel* brothel, sGirl* girl, int totalTips, int totalPay, int totalGold, bool Day0Night1)
 {
-	cConfig cfg;
 	stringstream ss;
 	string girlName = girl->m_Realname;
 	u_int sw = (Day0Night1 ? girl->m_NightJob : girl->m_DayJob);
