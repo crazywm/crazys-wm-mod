@@ -199,21 +199,8 @@ typedef struct sRandomGirl
 class cImage
 {
 public:
-	cImage()
-	{
-		m_Surface = 0;
-		m_Next = 0;
-		m_AniSurface = 0;
-	}
-	~cImage()
-	{
-		if (m_Surface && !m_Surface->m_SaveSurface) delete m_Surface;
-		m_Surface = 0;
-		if (m_AniSurface) delete m_AniSurface;
-		m_AniSurface = 0;
-		m_Next = 0;
-	}
-
+	cImage();
+	~cImage();
 	cImage* m_Next;
 	CSurface* m_Surface;
 	cAnimatedSurface* m_AniSurface;
@@ -223,15 +210,9 @@ public:
 class cImageList
 {
 public:
-	cImageList() { m_NumImages = 0; m_LastImages = m_Images = 0; }
-	~cImageList() { Free(); }
-
-	void Free()
-	{
-		if (m_Images) delete m_Images;
-		m_LastImages = m_Images = 0;
-		m_NumImages = 0;
-	}
+	cImageList();
+	~cImageList();
+	void Free();
 
 	bool AddImage(string filename, string path = "", string file = "");
 	int DrawImage(int x, int y, int width, int height, bool random, int img);
@@ -248,13 +229,8 @@ public:
 class cAImgList	// class that manages a set of images from a directory
 {
 public:
-	cAImgList() { m_Next = 0; }
-	~cAImgList()
-	{
-		for (int i = 0; i<NUM_IMGTYPES; i++) m_Images[i].Free();
-		if (m_Next) delete m_Next;
-		m_Next = 0;
-	}
+	cAImgList();
+	~cAImgList();
 	string m_Name;	// name of the directory containing the images
 	cImageList m_Images[NUM_IMGTYPES];	// the images
 	cAImgList* m_Next;
@@ -264,11 +240,9 @@ public:
 class cImgageListManager	// manages all the girl images
 {
 public:
-	cImgageListManager() { m_First = m_Last = 0; }
-	~cImgageListManager() { Free(); }
-
-	void Free() { if (m_First)delete m_First; m_Last = m_First = 0; }
-
+	cImgageListManager();
+	~cImgageListManager();
+	void Free();
 	cAImgList* ListExists(string name);	// returns the list if the list is already loaded, returns 0 if it is not
 	cAImgList* LoadList(string name);	// loads a list if it doensn't already exist and returns a pointer to it. returns pointer to list if it does exist
 
@@ -303,7 +277,8 @@ typedef struct sChild
 		if (m_MultiBirth == 3)	return "triplets";
 		if (m_MultiBirth > 3)	return "a litter";
 		if (m_Sex == Boy)		return "a baby boy";
-		return "a baby girl";
+		if (m_Sex == Girl)		return "a baby girl";
+		return "a baby";
 	}
 	bool is_boy()	{ return m_Sex == Boy; }
 	bool is_girl()	{ return m_Sex == Girl; }

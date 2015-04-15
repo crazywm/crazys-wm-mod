@@ -2,7 +2,7 @@
 <Items>
     <Item
         Name="Nipple Rings of Puffiness"
-        Desc="This set of nipple rings causes a women's areolas to puff up. (+1 BDSM, +1 Titty, +1 Libido, adds Puffy Nipples and Pierced Nipples)"
+        Desc="This set of nipple rings causes a women's areolas to puff up. (+1 BDSM, +1 Libido, adds Puffy Nipples and Pierced Nipples)"
         Type="Ring"
         Badness="7"
         Special="None"
@@ -14,6 +14,10 @@
         <Effect
             What="Skill"
             Name="BDSM"
+            Amount="1" />
+        <Effect
+            What="Stat"
+            Name="Libido"
             Amount="1" />
         <Effect
             What="Trait"

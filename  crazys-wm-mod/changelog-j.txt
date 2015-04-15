@@ -1975,8 +1975,24 @@ Accommodation Update
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.18
 
+###  Changes 4/14/2015
+!!! Attempted adding gif loading to the game.
+!!!  - Loading gifs the way images are loaded now increased load time and excessivly bloated memory.
+!!!  - The way images are handled needs to be completly rewritten.
+!!!  - Instead of loading images when the game loads, they should be loaded when they are needed and not stored in memory.
+!!!  - This will allow for faster game loading and for easier image adjustments while the game is running.
+!!! Undid all changes (saved backup of changes)
 
+Added some checks into ani files so broken files do not crash the game.
+ - Do not use ani for profile pics - it may cause memory problems, but I forget.
+Cleanup of some image handling files
+Added pregnancy to PAccom
+Fixed a bug with items in PAccom
 
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.19
+ 
+ 
 
  
 $$$$ TO DO - SHORT TERM - (for this version) $$$$

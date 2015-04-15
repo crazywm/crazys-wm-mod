@@ -2,7 +2,7 @@
 <Items>
     <Item
         Name="Nipple Rings of Perkiness"
-        Desc="Special rings designed to keep the nipples of her wearer erect. (+1 BDSM, Titty, +1 Libido, adds Perky Nipples and Pierced Nipples)"
+        Desc="Special rings designed to keep the nipples of her wearer erect. (+1 BDSM, +1 Libido, adds Perky Nipples and Pierced Nipples)"
         Type="Ring"
         Badness="7"
         Special="None"
@@ -14,6 +14,10 @@
         <Effect
             What="Skill"
             Name="BDSM"
+            Amount="1" />
+        <Effect
+            What="Stat"
+            Name="Libido"
             Amount="1" />
         <Effect
             What="Trait"

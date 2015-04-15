@@ -130,6 +130,31 @@ const unsigned int sGirl::max_skills = (sizeof(sGirl::skill_names) / sizeof(sGir
 const unsigned int sGirl::max_statuses = (sizeof(sGirl::status_names) / sizeof(sGirl::status_names[0]));
 const unsigned int sGirl::max_enjoy = (sizeof(sGirl::enjoy_names) / sizeof(sGirl::enjoy_names[0]));
 
+string pic_types[] =	// `J` moved this out to global and removed file extensions
+{
+	// `J` When modifying Image types, search for "J-Change-Image-Types"  :  found in >> cGirls
+	"anal*.", "bdsm*.", "sex*.", "beast*.", "group*.", "les*.", "torture*.",
+	"death*.", "profile*.", "combat*.", "oral*.", "ecchi*.", "strip*.", "maid*.", "sing*.",
+	"wait*.", "card*.", "bunny*.", "nude*.", "mast*.", "titty*.", "milk*.", "hand*.",
+	"foot*.", "bed*.", "farm*.", "herd*.", "cook*.", "craft*.", "swim*.", "bath*.",
+	"nurse*.", "formal*.", "shop*.", "magic*.",
+	// pregnant varients
+	"preg*.", "preganal*.", "pregbdsm*.", "pregsex*.", "pregbeast*.", "preggroup*.", "pregles*.",
+	"pregtorture*.", "pregdeath*.", "pregprofile*.", "pregcombat*.", "pregoral*.", "pregecchi*.",
+	"pregstrip*.", "pregmaid*.", "pregsing*.", "pregwait*.", "pregcard*.", "pregbunny*.", "pregnude*.",
+	"pregmast*.", "pregtitty*.", "pregmilk*.", "preghand*.", "pregfoot*.", "pregbed*.", "pregfarm*.",
+	"pregherd*.", "pregcook*.", "pregcraft*.", "pregswim*.", "pregbath*.", "pregnurse*.", "pregformal*.",
+	"pregshop*.", "pregmagic*."
+};
+
+
+
+
+
+
+
+
+
 
 sGirl::sGirl()				// constructor
 {
@@ -13285,17 +13310,43 @@ void cGirls::LoadGirlImages(sGirl* girl)
 	girl->m_GirlImages = g_Girls.GetImgManager()->LoadList(girl->m_Name);
 }
 
+cImage::cImage()
+{
+	m_Surface = 0;
+	m_Next = 0;
+	m_AniSurface = 0;
+}
+cImage::~cImage()
+{
+	if (m_Surface && !m_Surface->m_SaveSurface) delete m_Surface;
+	m_Surface = 0;
+	//if (m_AniSurface)		delete m_AniSurface;
+	m_AniSurface = 0;
+	m_Next = 0;
+}
+cImageList::cImageList() { m_NumImages = 0; m_LastImages = m_Images = 0; }
+cImageList::~cImageList() { Free(); }
+
+void cImageList::Free()
+{
+	if (m_Images) delete m_Images;
+	m_LastImages = m_Images = 0;
+	m_NumImages = 0;
+}
+cAImgList::cAImgList() { m_Next = 0; }
+cAImgList::~cAImgList()
+{
+	for (int i = 0; i<NUM_IMGTYPES; i++) m_Images[i].Free();
+	if (m_Next) delete m_Next;
+	m_Next = 0;
+}
+cImgageListManager::cImgageListManager() { m_First = m_Last = 0; }
+cImgageListManager::~cImgageListManager() { Free(); }
+void cImgageListManager::Free() { if (m_First)delete m_First; m_Last = m_First = 0; }
+
+
 bool cImageList::AddImage(string filename, string path, string file)
 {
-	//ifstream in;
-	//in.open(filename.c_str());
-	//if(!in)
-	//{
-	//	in.close();
-	//	return false;
-	//}
-	//in.close();
-
 	// create image item
 	cImage* newImage = new cImage();
 
@@ -13546,77 +13597,68 @@ cAImgList* cImgageListManager::LoadList(string name)
 	*/
 
 	DirPath imagedir;
+	DirPath anidir;
 	bool gfound = false, afound = false, ffound = false;
 
 	// first check if we are looking for default images
 	if (name == "Default" && cfg.folders.configXMLdi())
 	{
 		imagedir = DirPath() << cfg.folders.defaultimageloc();
+		anidir = DirPath() << cfg.folders.defaultimageloc() << "ani";
 		FileList testg(imagedir, "*.*g");
-		FileList testa(imagedir, "*.ani");
-		if (testg.size() > 0)	gfound = true;
-		if (testa.size() > 0)	afound = true;
-	}
-	if (!gfound && !afound && name == "Default")
-	{
-		DirPath locationch = DirPath() << "Resources" << "DefaultImages";
-		FileList testg(locationch, "*.*g");
-		FileList testa(locationch, "*.ani");
-		if (testg.size() > 0)	gfound = true;
-		if (testa.size() > 0)	afound = true;
-		if (testg.size() > 0 || testa.size() > 0)
-		{
-			imagedir << "Resources" << "DefaultImages";
-		}
-	}
-	// If not, check if the girl is in the config set folder
-	if (!gfound && !afound && cfg.folders.configXMLch())
-	{	
-		imagedir = DirPath() << cfg.folders.characters() << name;
-		FileList testg(imagedir, "*.*g");
-		FileList testa(imagedir, "*.ani");
+		FileList testa1(imagedir, "*.ani");
+		FileList testa2(anidir, "*.*g");
 		FileList testf(imagedir, "*.gif");
 		if (testg.size() > 0)	gfound = true;
-		if (testa.size() > 0)	afound = true;
+		if (testa1.size() > 0 && testa2.size() > 0)	afound = true;
+		if (testf.size() > 0)	ffound = true;
+	}
+	if (!gfound && !afound && !ffound && name == "Default")
+	{
+		imagedir = DirPath() << "Resources" << "DefaultImages";
+		anidir = DirPath() << "Resources" << "DefaultImages" << "ani";
+		FileList testg(imagedir, "*.*g");
+		FileList testa1(imagedir, "*.ani");
+		FileList testa2(anidir, "*.*g");
+		FileList testf(imagedir, "*.gif");
+		if (testg.size() > 0)	gfound = true;
+		if (testa1.size() > 0 && testa2.size() > 0)	afound = true;
+		if (testf.size() > 0)	ffound = true;
+	}
+	// If not, check if the girl is in the config set folder
+	if (!gfound && !afound && !ffound && cfg.folders.configXMLch())
+	{	
+		imagedir = DirPath() << cfg.folders.characters() << name;
+		anidir = DirPath() << cfg.folders.characters() << name << "ani";
+		FileList testg(imagedir, "*.*g");
+		FileList testa1(imagedir, "*.ani");
+		FileList testa2(anidir, "*.*g");
+		FileList testf(imagedir, "*.gif");
+		if (testg.size() > 0)	gfound = true;
+		if (testa1.size() > 0 && testa2.size() > 0)	afound = true;
 		if (testf.size() > 0)	ffound = true;
 	}
 	// If not, check if the girl is in the ./Resources/Characters folder
-	if (!gfound && !afound)
+	if (!gfound && !afound && !ffound)
 	{
 		imagedir << "Resources" << "Characters" << name;
+		anidir << "Resources" << "Characters" << name << "ani";
 		FileList testg(imagedir, "*.*g");
-		FileList testa(imagedir, "*.ani");
+		FileList testa1(imagedir, "*.ani");
+		FileList testa2(anidir, "*.*g");
 		FileList testf(imagedir, "*.gif");
 		if (testg.size() > 0)	gfound = true;
-		if (testa.size() > 0)	afound = true;
+		if (testa1.size() > 0 && testa2.size() > 0)	afound = true;
 		if (testf.size() > 0)	ffound = true;
 	}
-
-
 	string numeric = "0123456789 ().,[]-";
 	if (gfound)
 	{
-		string pic_types[] =
-		{
-			// `J` When modifying Image types, search for "J-Change-Image-Types"  :  found in >> LoadList *.*g
-			"Anal*.*g", "BDSM*.*g", "Sex*.*g", "Beast*.*g", "Group*.*g", "Les*.*g", "torture*.*g",
-			"Death*.*g", "Profile*.*g", "Combat*.*g", "Oral*.*g", "Ecchi*.*g", "Strip*.*g", "Maid*.*g", "Sing*.*g",
-			"Wait*.*g", "Card*.*g", "Bunny*.*g", "Nude*.*g", "Mast*.*g", "Titty*.*g", "Milk*.*g", "Hand*.*g",
-			"Foot*.*g", "Bed*.*g", "Farm*.*g", "Herd*.*g", "Cook*.*g", "Craft*.*g", "Swim*.*g", "Bath*.*g",
-			"Nurse*.*g", "Formal*.*g", "Shop*.*g", "Magic*.*g",
-			// pregnant varients
-			"Preg*.*g", "PregAnal*.*g", "PregBDSM*.*g", "PregSex*.*g", "pregbeast*.*g", "preggroup*.*g", "pregles*.*g",
-			"pregtorture*.*g", "pregdeath*.*g", "pregprofile*.*g", "pregcombat*.*g", "pregoral*.*g", "pregecchi*.*g",
-			"pregstrip*.*g", "pregmaid*.*g", "pregsing*.*g", "pregwait*.*g", "pregcard*.*g", "pregbunny*.*g", "pregnude*.*g",
-			"pregmast*.*g", "pregtitty*.*g", "pregmilk*.*g", "preghand*.*g", "pregFoot*.*g", "pregBed*.*g", "pregFarm*.*g",
-			"pregHerd*.*g", "pregCook*.*g", "pregCraft*.*g", "pregSwim*.*g", "pregBath*.*g", "pregNurse*.*g", "pregFormal*.*g",
-			"pregShop*.*g", "pregMagic*.*g"
-		};
+		string ext = "*g";
 		int i = 0;
-
 		do {
 			bool to_add = true;
-			FileList the_files(imagedir, pic_types[i].c_str());
+			FileList the_files(imagedir, (pic_types[i] + ext).c_str());
 			for (int k = 0; k < the_files.size(); k++)
 			{
 				bool test = false;
@@ -13656,38 +13698,33 @@ cAImgList* cImgageListManager::LoadList(string name)
 
 	if (afound)
 	{
-
-		// Yes this is just a hack to load animations (my bad ;) - Necro
-		string pic_types2[] = {
-			// `J` When modifying Image types, search for "J-Change-Image-Types"  :  found in >> LoadList *.ani
-			"Anal*.ani", "BDSM*.ani", "Sex*.ani", "Beast*.ani", "Group*.ani", "Les*.ani", "torture*.ani",
-			"Death*.ani", "Profile*.ani", "Combat*.ani", "Oral*.ani", "Ecchi*.ani", "Strip*.ani", "Maid*.ani",
-			"Sing*.ani", "Wait*.ani", "Card*.ani", "Bunny*.ani", "Nude*.ani", "Mast*.ani", "Titty*.ani",
-			"Milk*.ani", "Hand*.ani", "Foot*.ani", "Bed*.ani", "Farm*.ani", "Herd*.ani", "Cook*.ani",
-			"Craft*.ani", "Swim*.ani", "Bath*.ani", "Nurse*.ani", "Formal*.ani", "Shop*.ani", "Magic*.ani",
-			// pregnant varients
-			"Preg*.ani", "PregAnal*.ani", "PregBDSM*.ani", "PregSex*.ani", "pregbeast*.ani", "preggroup*.ani",
-			"pregles*.ani", "pregtorture*.ani", "pregdeath*.ani", "pregprofile*.ani", "pregcombat*.ani", "pregoral*.ani",
-			"pregecchi*.ani", "pregstrip*.ani", "pregmaid*.ani", "pregsing*.ani", "pregwait*.ani", "pregcard*.ani",
-			"pregbunny*.ani", "pregnude*.ani", "pregmast*.ani", "pregtitty*.ani", "pregmilk*.ani", "preghand*.ani",
-			"pregFoot*.ani", "pregBed*.ani", "pregFarm*.ani", "pregHerd*.ani", "pregCook*.ani", "pregCraft*.ani",
-			"pregSwim*.ani", "pregBath*.ani", "pregNurse*.ani", "pregFormal*.ani", "pregShop*.ani", "pregMagic*.ani"
-		};
+		string ext = "ani";
 		int i = 0;
 		do {
 			bool to_add = true;
-			FileList the_files(imagedir, pic_types2[i].c_str());
+			FileList the_files(imagedir, (pic_types[i] + ext).c_str());
 			for (int k = 0; k < the_files.size(); k++)
 			{
 				bool test = false;
+				string aniname = the_files[k].leaf();
+				aniname = aniname.substr(0, aniname.length() - 3);
+				FileList IsItThere(anidir, (aniname + "jpg").c_str());
+				if (IsItThere.size() != 1)
+				{
+					to_add = false; 
+					continue;
+				}
+
+
+
 				/* Check Preg*.*g filenames [leaf] and accept as non-subtypew ONLY those with number 1--9 in char 5
 				* (Allows filename like 'Preg22.jpg' BUT DOESN'T allow like 'Preg (2).jpg' or 'Preg09.jpg')
 				* MIGHT BE BETTER to just throw out sub-type filenames in this Preg*.*g section. */
 				if (i == IMGTYPE_PREGNANT)
 				{
 					char c = the_files[k].leaf()[4];
-					for (int j = 0; j < 9; j++) {
-
+					for (int j = 0; j < (int)numeric.size(); j++)
+					{
 						if (c == numeric[j])
 						{
 							test = true;
@@ -13712,27 +13749,11 @@ cAImgList* cImgageListManager::LoadList(string name)
 
 	if (ffound)
 	{
-
-		// Yes this is just a hack to load animations (my bad ;) - Necro
-		string pic_types3[] = {
-			// `J` When modifying Image types, search for "J-Change-Image-Types"  :  found in >> LoadList *.gif
-			"Anal*.gif", "BDSM*.gif", "Sex*.gif", "Beast*.gif", "Group*.gif", "Les*.gif", "torture*.gif",
-			"Death*.gif", "Profile*.gif", "Combat*.gif", "Oral*.gif", "Ecchi*.gif", "Strip*.gif", "Maid*.gif",
-			"Sing*.gif", "Wait*.gif", "Card*.gif", "Bunny*.gif", "Nude*.gif", "Mast*.gif", "Titty*.gif",
-			"Milk*.gif", "Hand*.gif", "Foot*.gif", "Bed*.gif", "Farm*.gif", "Herd*.gif", "Cook*.gif",
-			"Craft*.gif", "Swim*.gif", "Bath*.gif", "Nurse*.gif", "Formal*.gif", "Shop*.gif", "Magic*.gif",
-			// pregnant varients
-			"Preg*.gif", "PregAnal*.gif", "PregBDSM*.gif", "PregSex*.gif", "pregbeast*.gif", "preggroup*.gif",
-			"pregles*.gif", "pregtorture*.gif", "pregdeath*.gif", "pregprofile*.gif", "pregcombat*.gif", "pregoral*.gif",
-			"pregecchi*.gif", "pregstrip*.gif", "pregmaid*.gif", "pregsing*.gif", "pregwait*.gif", "pregcard*.gif",
-			"pregbunny*.gif", "pregnude*.gif", "pregmast*.gif", "pregtitty*.gif", "pregmilk*.gif", "preghand*.gif",
-			"pregFoot*.gif", "pregBed*.gif", "pregFarm*.gif", "pregHerd*.gif", "pregCook*.gif", "pregCraft*.gif",
-			"pregSwim*.gif", "pregBath*.gif", "pregNurse*.gif", "pregFormal*.gif", "pregShop*.gif", "pregMagic*.gif"
-		};
+		string ext = "gif";
 		int i = 0;
 		do {
 			bool to_add = true;
-			FileList the_files(imagedir, pic_types3[i].c_str());
+			FileList the_files(imagedir, (pic_types[i] + ext).c_str());
 			for (int k = 0; k < the_files.size(); k++)
 			{
 				bool test = false;
@@ -13742,8 +13763,8 @@ cAImgList* cImgageListManager::LoadList(string name)
 				if (i == IMGTYPE_PREGNANT)
 				{
 					char c = the_files[k].leaf()[4];
-					for (int j = 0; j < 9; j++) {
-
+					for (int j = 0; j < (int)numeric.size(); j++)
+					{
 						if (c == numeric[j])
 						{
 							test = true;
@@ -14726,6 +14747,7 @@ int cGirls::PreferredAccom(sGirl* girl)
 {
 	double preferredaccom = (girl->is_slave() ? 1.0 : 2.5);
 	preferredaccom += girl->level() * (girl->is_slave() ? 0.1 : 0.3);
+	if (girl->is_pregnant()) preferredaccom += 1.5;
 
 	if (girl->has_trait("Your Wife"))			preferredaccom += 2.0;	// You married her
 	else if (girl->has_trait("Your Daughter"))	preferredaccom += 1.0;	// She is yout kid
@@ -14760,34 +14782,34 @@ int cGirls::PreferredAccom(sGirl* girl)
 
 	if (girl->m_NumInventory > 0)	// only bother checking items if the girl has at least 1
 	{
-		if (HasItemJ(girl, "Chrono Bed"))						preferredaccom -= 2.0;	// She gets a great night sleep so she is happier when she wakes up
-		else if (HasItemJ(girl, "Rejuvenation Bed"))			preferredaccom -= 1.0;	// She gets a good night sleep so she is happier when she wakes up
-		if (HasItemJ(girl, "150 Piece Drum Kit"))				preferredaccom += 0.5;	// Though she may annoy her neighbors and it takes a lot of space, it it fun
-		if (HasItemJ(girl, "Android, Assistance"))				preferredaccom -= 0.5;	// This little guy cleans up for her
-		if (HasItemJ(girl, "Anger Management Tapes"))			preferredaccom -= 0.1;	// When she listens to these it takes her mind off other things
-		if (HasItemJ(girl, "Appreciation Trophy"))				preferredaccom -= 0.1;	// Something nice to look at
-		if (HasItemJ(girl, "Art Easel"))						preferredaccom -= 1.0;	// She can make her room nicer by herself.
-		if (HasItemJ(girl, "Black Cat"))						preferredaccom -= 0.3;	// Small and soft, it mostly cares for itself
-		if (HasItemJ(girl, "Cat"))								preferredaccom -= 0.3;	// Small and soft, it mostly cares for itself
-		if (HasItemJ(girl, "Claptrap"))							preferredaccom -= 0.1;	// An annoying little guy but he does help a little
-		if (HasItemJ(girl, "Computer"))							preferredaccom -= 1.5;	// Something to do but it takes up a little room
-		if (HasItemJ(girl, "Death Bear"))						preferredaccom += 2.0;	// Having a large bear living with her she needs a little more room.
-		if (HasItemJ(girl, "Deathtrap"))						preferredaccom += 1.0;	// Having a large robot guarding her her she needs a little more room.
-		if (HasItemJ(girl, "Free Weights"))						preferredaccom += 0.2;	// She may like the workout but it takes up a lot of room
-		if (HasItemJ(girl, "Guard Dog"))						preferredaccom += 0.2;	// Though she loves having a pet, a large dog takes up some room
-		if (HasItemJ(girl, "Happy Orb"))						preferredaccom -= 0.5;	// She has happy dreams
-		if (HasItemJ(girl, "Library Card"))						preferredaccom -= 0.5;	// She has somewhere else to go and she can bring books back, they keep her mind off other things
-		if (HasItemJ(girl, "Lovers Orb"))						preferredaccom -= 0.5;	// She really enjoys her dreams
-		if (HasItemJ(girl, "Nightmare Orb"))					preferredaccom += 0.2;	// She does not sleep well
-		if (HasItemJ(girl, "Pet Spider"))						preferredaccom -= 0.1;	// A little spider, she may be afraid of it but it takes her mind off her room
-		if (HasItemJ(girl, "Room Decorations"))					preferredaccom -= 0.5;	// They make her like her room more.
-		if (HasItemJ(girl, "Safe by Marcus"))					preferredaccom -= 0.3;	// Somewhere to keep her stuff where ske knows no one can get to it.
-		if (HasItemJ(girl, "Smarty Pants"))						preferredaccom -= 0.2;	// A little stuffed animal to hug and squeeze
-		if (HasItemJ(girl, "Stick Hockey Game"))				preferredaccom += 0.3;	// While fun, it takes a lot of room to not break things
-		if (HasItemJ(girl, "Stripper Pole"))					preferredaccom += 0.1;	// She may like the workout but it takes up a lot of room
-		if (HasItemJ(girl, "Television Set"))					preferredaccom -= 2.0;	// When she stares at this, she doesn't notice anything else
-		if (HasItemJ(girl, "The Realm of Darthon"))				preferredaccom -= 0.1;	// She and her friends can have fun together but they need some space to play it
-		if (HasItemJ(girl, "Weekly Social Therapy Session"))	preferredaccom -= 0.1;	// She has somewhere to go and get her troubles off her chest.
+		if (HasItemJ(girl, "Chrono Bed") != -1)						preferredaccom -= 2.0;	// She gets a great night sleep so she is happier when she wakes up
+		else if (HasItemJ(girl, "Rejuvenation Bed") != -1)			preferredaccom -= 1.0;	// She gets a good night sleep so she is happier when she wakes up
+		if (HasItemJ(girl, "150 Piece Drum Kit") != -1)				preferredaccom += 0.5;	// Though she may annoy her neighbors and it takes a lot of space, it it fun
+		if (HasItemJ(girl, "Android, Assistance") != -1)			preferredaccom -= 0.5;	// This little guy cleans up for her
+		if (HasItemJ(girl, "Anger Management Tapes") != -1)			preferredaccom -= 0.1;	// When she listens to these it takes her mind off other things
+		if (HasItemJ(girl, "Appreciation Trophy") != -1)			preferredaccom -= 0.1;	// Something nice to look at
+		if (HasItemJ(girl, "Art Easel") != -1)						preferredaccom -= 1.0;	// She can make her room nicer by herself.
+		if (HasItemJ(girl, "Black Cat") != -1)						preferredaccom -= 0.3;	// Small and soft, it mostly cares for itself
+		if (HasItemJ(girl, "Cat") != -1)							preferredaccom -= 0.3;	// Small and soft, it mostly cares for itself
+		if (HasItemJ(girl, "Claptrap") != -1)						preferredaccom -= 0.1;	// An annoying little guy but he does help a little
+		if (HasItemJ(girl, "Computer") != -1)						preferredaccom -= 1.5;	// Something to do but it takes up a little room
+		if (HasItemJ(girl, "Death Bear") != -1)						preferredaccom += 2.0;	// Having a large bear living with her she needs a little more room.
+		if (HasItemJ(girl, "Deathtrap") != -1)						preferredaccom += 1.0;	// Having a large robot guarding her her she needs a little more room.
+		if (HasItemJ(girl, "Free Weights") != -1)					preferredaccom += 0.2;	// She may like the workout but it takes up a lot of room
+		if (HasItemJ(girl, "Guard Dog") != -1)						preferredaccom += 0.2;	// Though she loves having a pet, a large dog takes up some room
+		if (HasItemJ(girl, "Happy Orb") != -1)						preferredaccom -= 0.5;	// She has happy dreams
+		if (HasItemJ(girl, "Library Card") != -1)					preferredaccom -= 0.5;	// She has somewhere else to go and she can bring books back, they keep her mind off other things
+		if (HasItemJ(girl, "Lovers Orb") != -1)						preferredaccom -= 0.5;	// She really enjoys her dreams
+		if (HasItemJ(girl, "Nightmare Orb") != -1)					preferredaccom += 0.2;	// She does not sleep well
+		if (HasItemJ(girl, "Pet Spider") != -1)						preferredaccom -= 0.1;	// A little spider, she may be afraid of it but it takes her mind off her room
+		if (HasItemJ(girl, "Room Decorations") != -1)				preferredaccom -= 0.5;	// They make her like her room more.
+		if (HasItemJ(girl, "Safe by Marcus") != -1)					preferredaccom -= 0.3;	// Somewhere to keep her stuff where ske knows no one can get to it.
+		if (HasItemJ(girl, "Smarty Pants") != -1)					preferredaccom -= 0.2;	// A little stuffed animal to hug and squeeze
+		if (HasItemJ(girl, "Stick Hockey Game") != -1)				preferredaccom += 0.3;	// While fun, it takes a lot of room to not break things
+		if (HasItemJ(girl, "Stripper Pole") != -1)					preferredaccom += 0.1;	// She may like the workout but it takes up a lot of room
+		if (HasItemJ(girl, "Television Set") != -1)					preferredaccom -= 2.0;	// When she stares at this, she doesn't notice anything else
+		if (HasItemJ(girl, "The Realm of Darthon") != -1)			preferredaccom -= 0.1;	// She and her friends can have fun together but they need some space to play it
+		if (HasItemJ(girl, "Weekly Social Therapy Session") != -1)	preferredaccom -= 0.1;	// She has somewhere to go and get her troubles off her chest.
 	}
 
 	if (preferredaccom <= 0.0) return 0;

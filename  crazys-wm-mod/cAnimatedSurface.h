@@ -30,8 +30,8 @@ class CSurface;
 class cAnimatedSurface
 {
 public:
-	cAnimatedSurface() {m_Surface=0;m_SpriteSurface=0;}
-	~cAnimatedSurface() {m_Surface=0;if(m_SpriteSurface)SDL_FreeSurface(m_SpriteSurface);m_SpriteSurface=0;}
+	cAnimatedSurface();
+	~cAnimatedSurface();
 
 	void PlayOnce(bool playOnce) {m_PlayOnce = playOnce;}
 

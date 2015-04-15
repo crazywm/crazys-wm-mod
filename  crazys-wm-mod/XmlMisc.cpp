@@ -259,7 +259,12 @@ bool LoadSkillsXML(TiXmlHandle hSkills, int skills[], int skillMods[], int tempS
 				tempSkills[i] = tempInt;
 			}
 		}
-		else { skills[i] = skillMods[i] = tempSkills[i] = 0; }	// if not found set it all to 0
+		else		// if not found set it all to 0
+		{ 
+			if (skills)			skills[i] = 0;
+			if (skillMods)		skillMods[i] = 0;
+			if (tempSkills)		tempSkills[i] = 0; 
+		}
 	}
 	return true;
 }

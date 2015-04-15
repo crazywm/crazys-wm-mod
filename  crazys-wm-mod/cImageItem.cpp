@@ -28,7 +28,7 @@ cImageItem::~cImageItem()
 		delete m_Next;
 	m_Next = 0;
 	
-	if(m_Image && m_loaded)
+	if(m_Image)
 		delete m_Image;
 	m_Image = 0;
 
@@ -36,7 +36,7 @@ cImageItem::~cImageItem()
 		SDL_FreeSurface(m_Surface);
 	m_Surface = 0;
 
-	if(m_AnimatedImage && m_loaded)
+	if(m_AnimatedImage)
 		delete m_AnimatedImage;
 	m_AnimatedImage = 0;
 }

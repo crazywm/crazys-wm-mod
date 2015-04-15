@@ -21,6 +21,20 @@
 
 extern CLog g_LogFile;
 
+
+cAnimatedSurface::cAnimatedSurface()
+{
+	m_Surface = 0;
+	m_SpriteSurface = 0;
+}
+cAnimatedSurface::~cAnimatedSurface()
+{
+	m_Surface = 0;
+	if (m_SpriteSurface)
+		SDL_FreeSurface(m_SpriteSurface);
+	m_SpriteSurface = 0;
+}
+
 // Updates animation according to speed, and then draws it on the screen
 bool cAnimatedSurface::DrawFrame(int x, int y, int width, int height, unsigned int currentTime)
 {
