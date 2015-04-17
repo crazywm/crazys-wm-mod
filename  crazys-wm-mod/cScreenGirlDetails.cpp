@@ -220,8 +220,11 @@ void cScreenGirlDetails::init()
 	// `J` Replacing accom buttons with slider
 	if (accomdown_id != -1)	DisableButton(accomdown_id, selected_girl->m_AccLevel < 1);
 	if (accomup_id != -1)	DisableButton(accomup_id, selected_girl->m_AccLevel > 9);
-	if (accom_id != -1)		SliderRange(accom_id, 0, 9, selected_girl->m_AccLevel, 1);
-	if (accomp_id != -1)	SliderRange(accomp_id, 0, 9, g_Girls.PreferredAccom(selected_girl), 1);
+	if (accom_id != -1)
+	{
+		SliderRange(accom_id, 0, 9, selected_girl->m_AccLevel, 1);
+		SliderMarker(accom_id, g_Girls.PreferredAccom(selected_girl));
+	}
 	if (accomval_id != -1)
 	{
 		stringstream acc;

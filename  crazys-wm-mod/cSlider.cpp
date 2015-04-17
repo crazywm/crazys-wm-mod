@@ -29,6 +29,7 @@ SDL_Surface* cSlider::m_ImgRailDisabled=0;
 SDL_Surface* cSlider::m_ImgButtonOff=0;
 SDL_Surface* cSlider::m_ImgButtonOn=0;
 SDL_Surface* cSlider::m_ImgButtonDisabled=0;
+SDL_Surface* cSlider::m_ImgMarker=0;
 
 cSlider::cSlider() {
 	m_ImgButton = 0;
@@ -40,6 +41,8 @@ cSlider::cSlider() {
 	m_Disabled=false;
 	m_Hidden=false;
 	m_LiveUpdate=true;
+	m_ShowMarker = false;
+	m_MarkerOffset = 0;
 	BGLeft = new SDL_Rect;
 	BGRight = new SDL_Rect;
 }
@@ -83,28 +86,22 @@ bool cSlider::CreateSlider(int ID, int x, int y, int width, int min, int max, in
 
 void cSlider::LoadInitial()
 {  // load static class-wide shared base images into memory; only called once by first slider created
-	DirPath dp = ImagePath("Slider");
-	string disabled = string(dp.c_str()) + "ButtonDisabled.png";
-	string off = string(dp.c_str()) + "ButtonOff.png";
-	string on = string(dp.c_str()) + "ButtonOn.png";
-	string bg = string(dp.c_str()) + "Rail.png";
-	string bgd = string(dp.c_str()) + "RailDisabled.png";
+	m_ImgButtonDisabled = LoadAlphaImageFromFile("SliderButtonDisabled.png");
+	m_ImgButtonOff = LoadAlphaImageFromFile("SliderButtonOff.png");
+	m_ImgButtonOn = LoadAlphaImageFromFile("SliderButtonOn.png");
+	m_ImgRailDefault = LoadAlphaImageFromFile("SliderRail.png");
+	m_ImgRailDisabled = LoadAlphaImageFromFile("SliderRailDisabled.png");
+	m_ImgMarker = LoadAlphaImageFromFile("SliderMarker.png");
+}
+
+SDL_Surface* cSlider::LoadAlphaImageFromFile(string filepath)
+{
 	SDL_Surface* TmpImg;
-	TmpImg = IMG_Load(bg.c_str());
-	m_ImgRailDefault = SDL_DisplayFormatAlpha(TmpImg);
+	SDL_Surface* surface;
+	TmpImg = IMG_Load(ImagePath(filepath));
+	surface = SDL_DisplayFormatAlpha(TmpImg);
 	SDL_FreeSurface(TmpImg);
-	TmpImg = IMG_Load(bgd.c_str());
-	m_ImgRailDisabled = SDL_DisplayFormatAlpha(TmpImg);
-	SDL_FreeSurface(TmpImg);
-	TmpImg = IMG_Load(off.c_str());
-	m_ImgButtonOff = SDL_DisplayFormatAlpha(TmpImg);
-	SDL_FreeSurface(TmpImg);
-	TmpImg = IMG_Load(on.c_str());
-	m_ImgButtonOn = SDL_DisplayFormatAlpha(TmpImg);
-	SDL_FreeSurface(TmpImg);
-	TmpImg = IMG_Load(disabled.c_str());
-	m_ImgButtonDisabled = SDL_DisplayFormatAlpha(TmpImg);
-	SDL_FreeSurface(TmpImg);
+	return surface;
 }
 
 int cSlider::SetRange(int min, int max, int value, int increment)
@@ -131,6 +128,20 @@ int cSlider::Value(int NewValue, bool TriggerEvent)
 		g_InterfaceEvents.AddEvent(EVENT_SLIDERCHANGE, m_ID);
 
 	return m_Value;
+}
+
+void cSlider::SetMarker(int value)
+{
+	m_ShowMarker = true;
+	// see notes on offset calculation below in ValueToOffset()
+	double PercMult = double(value - m_MinVal) / double(m_MaxVal - m_MinVal);
+	m_MarkerOffset = int((m_MaxOffset * PercMult) + 0.5);
+}
+
+void cSlider::RemoveMarker()
+{
+	m_ShowMarker = false;
+	m_MarkerOffset = 0;
 }
 
 void cSlider::Disable(bool disable) 
@@ -294,6 +305,18 @@ void cSlider::Draw()
 	{
 		LogSliderError("Error blitting slider background (right half)");
 		return;
+	}
+
+	// draw marker if it's enabled
+	if (m_ShowMarker)
+	{
+		dstRect.x = m_XPos + m_MarkerOffset;
+		error = SDL_BlitSurface(m_ImgMarker, 0, g_Graphics.GetScreen(), &dstRect);
+		if (error == -1)
+		{
+			LogSliderError("Error blitting slider marker");
+			return;
+		}
 	}
 
 	// draw slider drag button

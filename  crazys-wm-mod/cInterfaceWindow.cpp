@@ -438,6 +438,18 @@ int cInterfaceWindow::SliderValue(int ID, int value)
 	return m_Sliders[ID]->Value(value);
 }
 
+void cInterfaceWindow::SliderMarker(int ID, int value)
+{
+	if (ID == -1) return;
+	m_Sliders[ID]->SetMarker(value);
+}
+
+void cInterfaceWindow::SliderMarkerDisable(int ID)
+{
+	if (ID == -1) return;
+	m_Sliders[ID]->RemoveMarker();
+}
+
 void cInterfaceWindow::AddCheckbox(int & ID, int x, int y, int width, int height, string text, int size)
 {
 	width = (int)((float)width*m_xRatio);

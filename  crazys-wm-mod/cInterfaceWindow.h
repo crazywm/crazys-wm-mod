@@ -107,6 +107,8 @@ public:
 	int SliderRange(int ID, int min, int max, int value, int increment);  // set min and max values; returns slider value
 	int SliderValue(int ID);  // get slider value
 	int SliderValue(int ID, int value);  // set slider value, get result (might be different than requested due to out-of-bounds or whatever)
+	void SliderMarker(int ID, int value); // set value for a visual "marker" to be shown at, to denote a default or target value or similar
+	void SliderMarkerDisable(int ID); // stop displaying marker
 
 	void DisableCheckBox(int ID, bool disable);
 	void AddCheckbox(int & ID, int x, int y, int width, int height, string text, int size = 16);

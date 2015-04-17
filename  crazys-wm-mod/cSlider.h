@@ -40,7 +40,11 @@ private:
 	int m_LastOffset;  // stored X offset when initiating drag
 	int m_DragInitXPos;  // stored mouse position when initiating drag
 
+	bool m_ShowMarker;  // whether to show the marker
+	int m_MarkerOffset;  // physical X offset to show the marker at
+
 	void LoadInitial();  // run by first slider control created, to load appropriate source images into memory
+	SDL_Surface* LoadAlphaImageFromFile(string file);  // utility function used by above for loading specific source image from file
 	void ValueToOffset();  // set the Offset of the button based on the current Value
 	void OffsetToValue();  // conversely, set the Value based on the current Offset of the button
 
@@ -54,6 +58,7 @@ private:
 	static SDL_Surface* m_ImgButtonOff;
 	static SDL_Surface* m_ImgButtonOn;
 	static SDL_Surface* m_ImgButtonDisabled;
+	static SDL_Surface* m_ImgMarker;
 
 	void LogSliderError(string description);
 
@@ -74,6 +79,9 @@ public:
 	int SetRange(int min, int max, int value, int increment);  // change min value, max value, current value, and increment amount
 	int Value()	{ return m_Value; }  // get value
 	int Value(int NewValue, bool TriggerEvent = false);  // set value, return value afterwards (might be different due to out-of-bounds)
+
+	void SetMarker(int value);  // set value for a visual "marker" to be shown at, to denote a default or target value or similar
+	void RemoveMarker();  // stop displaying marker
 
 	void Disable(bool disable);  // disable/enable this control
 	void Hide(bool hide) { m_Hidden = hide; }  // hide/unhide this control
