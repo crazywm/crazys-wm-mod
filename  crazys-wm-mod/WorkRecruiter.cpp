@@ -266,6 +266,8 @@ double cJobManager::JP_Recruiter(sGirl* girl, bool estimate)// not used
 	double jobperformance =
 		(HateLove + g_Girls.GetStat(girl, STAT_CHARISMA));
 
+	if (girl->is_slave()) jobperformance -= 1000;
+
 	//good traits
 	if (g_Girls.HasTrait(girl, "Charismatic"))  jobperformance += 20;
 	if (g_Girls.HasTrait(girl, "Psychic"))		jobperformance += 20; //knows what people want to hear

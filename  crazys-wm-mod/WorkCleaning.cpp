@@ -228,9 +228,12 @@ bool cJobManager::WorkCleaning(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
-
-	//lose traits
-	g_Girls.PossiblyLoseExistingTrait(girl, "Clumsy", 30, actiontype, "It took her spilling hundreds of buckets, and just as many reprimands, but " + girlName + " has finally stopped being so Clumsy.", Day0Night1);
+	// Gain Traits
+	if (g_Dice.percent(girl->service()))
+		g_Girls.PossiblyGainNewTrait(girl, "Maid", 70, actiontype, girlName + " has cleaned enough that she could work professionally as a Maid anywhere.", Day0Night1);
+	// Lose Traits
+	if (g_Dice.percent(girl->service()))
+		g_Girls.PossiblyLoseExistingTrait(girl, "Clumsy", 30, actiontype, "It took her spilling hundreds of buckets, and just as many reprimands, but " + girl->m_Realname + " has finally stopped being so Clumsy.", Day0Night1);
 
 	return false;
 }

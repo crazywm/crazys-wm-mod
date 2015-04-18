@@ -75,21 +75,22 @@ struct sBrothel
 	string m_Name;
 
 	int             m_id;
-	unsigned short	m_Happiness;			// av. % happy customers last week
-	int				m_TotalCustomers;		// the total number of customers for the last week
-	int				m_RejectCustomers;		// How many customers were turned away by your sex restrictions.
-	int				m_MiscCustomers;		// customers used for temp purposes but must still be taken into account
-	unsigned char	m_Fame;					// How famous this brothel is
-	int				m_NumRooms;				// How many rooms it has
-	int				m_MaxNumRooms;			// How many rooms it can have
-	int				m_NumGirls;				// How many girls are here
-	unsigned char	m_Bar;					// level of bar: 0 => none
-	unsigned char	m_GamblingHall;			// as above
-	unsigned short	m_AdvertisingBudget;	// Budget player has set for weekly advertising
-	double			m_AdvertisingLevel;		// multiplier for how far budget goes, based on girls working in advertising
-	int				m_AntiPregPotions;		// `J` added so all buildings save their own number of potions
-	int				m_AntiPregUsed;			// `J` number of potions used last turn
-	bool			m_KeepPotionsStocked;	// `J` and if they get restocked
+	unsigned short	m_Happiness;				// av. % happy customers last week
+	int				m_TotalCustomers;			// the total number of customers for the last week
+	int				m_RejectCustomersRestrict;	// How many customers were turned away by your sex restrictions.
+	int				m_RejectCustomersDisease;	// How many customers were turned away because of disease.
+	int				m_MiscCustomers;			// customers used for temp purposes but must still be taken into account
+	unsigned char	m_Fame;						// How famous this brothel is
+	int				m_NumRooms;					// How many rooms it has
+	int				m_MaxNumRooms;				// How many rooms it can have
+	int				m_NumGirls;					// How many girls are here
+	unsigned char	m_Bar;						// level of bar: 0 => none
+	unsigned char	m_GamblingHall;				// as above
+	unsigned short	m_AdvertisingBudget;		// Budget player has set for weekly advertising
+	double			m_AdvertisingLevel;			// multiplier for how far budget goes, based on girls working in advertising
+	int				m_AntiPregPotions;			// `J` added so all buildings save their own number of potions
+	int				m_AntiPregUsed;				// `J` number of potions used last turn
+	bool			m_KeepPotionsStocked;		// `J` and if they get restocked
 //	bool UseAntiPreg(bool use, int brothelID);
 //	bool UseAntiPreg(bool use);
 	void AddAntiPreg(int amount);

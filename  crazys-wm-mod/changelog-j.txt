@@ -1942,7 +1942,6 @@ Cleaned up girls a little.
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.27
 
 ###  Changes 4/9/2015
-!!! Removed the .sdf files from GitHub to speed up pushes and pulls
 Converted the last few calls for new cPlayer objects to "extern cPlayer The_Player;" so everything uses only 1 cPlayer object.
 Set health and happiness to 100 when other stats are defaulted to 0
 Cleaned sGirl constructor and destructor
@@ -1989,10 +1988,32 @@ Cleanup of some image handling files
 Added pregnancy to PAccom
 Fixed a bug with items in PAccom
 
-!!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.19
  
- 
+###  Changes 4/15-17/2015 - Nothing done on the game, I played it a bit to see what needs to be added/modified.
+###  Changes 4/18/2015
+Fixed a few job ratings list items.
+Updated a few fetish trait modifiers.
+Added info to some items.
+Added what traits are affected to Centre Therapy job descriptions.
+Added some more to Matron assigning girls to new jobs lists for the House.
+Divided m_RejectCustomers into m_RejectCustomersRestrict and m_RejectCustomersDisease for better logging.
+Updated several jobs
+ - Started adding new "Finish the shift" sections to make them all work the same way.
+
+!!! Removed the .sdf files from GitHub to speed up pushes and pulls
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+
+
+
+
+
+
+
+
+
+
+
 
  
 $$$$ TO DO - SHORT TERM - (for this version) $$$$

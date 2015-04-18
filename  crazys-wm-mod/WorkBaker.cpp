@@ -181,29 +181,36 @@ bool cJobManager::WorkBaker(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 #endif
 
 
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
+
+	// `J` - Finish the shift - Baker
+
+	// Push out the turn report
 	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
 
-	if (wages < 0) wages = 0;
-	girl->m_Pay = wages;
+	// Money
+	if (wages < 0)	wages = 0;	girl->m_Pay = wages;
+	if (tips < 0)	tips = 0;	girl->m_Tips = tips;
 
-
-	// Improve stats
+	// Base Improvement and trait modifiers
 	int xp = 5, libido = 1, skill = 3;
-
 	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
-
+	// EXP and Libido
 	g_Girls.UpdateStat(girl, STAT_EXP, (g_Dice % xp) + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
-	// primary (+2 for single or +1 for multiple)
-	g_Girls.UpdateSkill(girl, SKILL_COOKING, (g_Dice % skill) + 2);
-	// secondary (-1 for one then -2 for others)
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, max(0, (g_Dice % skill) - 1));
-	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, max(0, (g_Dice % skill) - 2));
-	g_Girls.UpdateSkill(girl, SKILL_HERBALISM, max(0, (g_Dice % skill) - 2));
+	// primary improvement (+2 for single or +1 for multiple)
+	g_Girls.UpdateSkill(girl, SKILL_COOKING,		(g_Dice % skill) + 2);
+	// secondary improvement (-1 for one then -2 for others)
+	g_Girls.UpdateSkill(girl, SKILL_SERVICE,		max(0, (g_Dice % skill) - 1));
+	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE,		max(0, (g_Dice % skill) - 2));
+	g_Girls.UpdateSkill(girl, SKILL_HERBALISM,		max(0, (g_Dice % skill) - 2));
+
+	// Update Enjoyment
+	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
+	// Gain Traits
+	g_Girls.PossiblyGainNewTrait(girl, "Chef", 70, actiontype, girlName + " has prepared enough food to qualify as a Chef.", Day0Night1);
 
 	return false;
 }

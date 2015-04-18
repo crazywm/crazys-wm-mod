@@ -777,10 +777,9 @@ void cGirls::CalculateGirlType(sGirl* girl)
 	if (HasTrait(girl, "Fairy Dust Addict"))			{ Dangerous += 10; Cool += 20; Nerd -= 15; Elegant -= 25; Sexy -= 25; Freak += 15; }
 	if (HasTrait(girl, "Viras Blood Addict"))			{ Dangerous += 15; Cool += 25; Nerd -= 20; Elegant -= 30; Sexy -= 30; Freak += 20; }
 	if (HasTrait(girl, "Nymphomaniac"))					{ Sexy += 15; Freak += 20; Elegant -= 5; } //kind of an addiction!
-	//Following traits marked /**/ are newly added from CoreTraits.traitsx - delete this comment if these are ok and the numbers are reasonable
-	if (HasTrait(girl, "Smoker"))					/**/{ Elegant -= 5; Cool += 5; }
-	if (HasTrait(girl, "Alchoholic"))				/**/{ Elegant -= 10; Cool += 5; Dangerous += 5; }
-	if (HasTrait(girl, "Cum Addict"))				/**/{ Sexy += 20; Freak += 20; Elegant -= 15; }
+	if (HasTrait(girl, "Smoker"))						{ Elegant -= 5; Cool += 5; }
+	if (HasTrait(girl, "Alchoholic"))					{ Elegant -= 20; Cool += 5; Dangerous += 5; }
+	if (HasTrait(girl, "Cum Addict"))					{ Sexy += 10; Freak += 20; Elegant -= 15; }
 
 
 	/****** Job Skills ******/
@@ -793,17 +792,17 @@ void cGirls::CalculateGirlType(sGirl* girl)
 	if (HasTrait(girl, "Director"))					/**/{ Elegant += 10; }				//Composure under pressure
 	if (HasTrait(girl, "Doctor"))					/**/{ Elegant += 5; }	//rubber gloves
 	if (HasTrait(girl, "Farmers Daughter"))			/**/{ Sexy += 5; Cool -= 5; }		//simple country charm!
-	if (HasTrait(girl, "Former Official"))			/**/{ Elegant += 10; Freak += 10; } //F* the government!
+	if (HasTrait(girl, "Former Official"))			/**/{ Elegant += 10; Freak += 5; } //F* the government!
 	if (HasTrait(girl, "Handyman"))					/**/{ Nerd += 10; }
-	if (HasTrait(girl, "Heroine"))					/**/{ Dangerous += 50; }
-	if (HasTrait(girl, "Homeless"))					/**/{ Dangerous += 10; }
-	if (HasTrait(girl, "Maid"))						/**/{ Sexy += 10; Freak += 20; }
-	if (HasTrait(girl, "Mixologist"))				/**/{ Nerd += 10; }
-	if (HasTrait(girl, "Priestess"))				/**/{ Freak += 30; Elegant += 10; Sexy -= 20; }
-	if (HasTrait(girl, "Singer"))					/**/{ Sexy += 5; Cool += 5; }
+	if (HasTrait(girl, "Heroine"))					{ Dangerous += 50; Sexy += 10; Cool += 10; }
+	if (HasTrait(girl, "Homeless"))					{ Dangerous += 10; Elegant -= 10; Cool -= 5; }
+	if (HasTrait(girl, "Maid"))						{ Sexy += 10; Freak -= 10; Elegant += 10; Cool -= 5; }
+	if (HasTrait(girl, "Mixologist"))				/**/{ Nerd += 5; Cool += 5; }
+	if (HasTrait(girl, "Priestess"))				/**/{ Freak += 30; Elegant += 10; Sexy -= 5; }
+	if (HasTrait(girl, "Singer"))					{ Elegant += 10; Sexy += 5; Cool += 5; }
 	//	if (HasTrait(girl, "Tone Deaf"))				/**/{}								// Not visible to customer
 	if (HasTrait(girl, "Teacher"))					/**/{ Elegant += 5; Nerd += 20; }
-	//	if (HasTrait(girl, "Waitress"))					/**/{}								// Not visible to customer
+	if (HasTrait(girl, "Waitress"))					{ Elegant += 5; }
 
 
 	/****** Species Traits ******/
@@ -828,10 +827,10 @@ void cGirls::CalculateGirlType(sGirl* girl)
 	if (HasTrait(girl, "Cow Girl"))					/**/{ NonHuman += 60; CuteGirl -= 20; Freak += 25; BigBoobs += 20; SmallBoobs -= 20; }
 	if (HasTrait(girl, "Dryad"))					/**/{ NonHuman += 50; CuteGirl -= 10; Freak += 20; }
 	if (HasTrait(girl, "Egg Layer"))				/**/{ NonHuman += 30; Sexy -= 20; Freak += 40; }
-	if (HasTrait(girl, "Elf"))						/**/{ NonHuman += 30; Lolita += 10; Freak += 10; }
+	if (HasTrait(girl, "Elf"))						/**/{ NonHuman += 30; Elegant += 10; Lolita += 10; Freak += 10; }
 	if (HasTrait(girl, "Equine"))					/**/{ NonHuman += 80; Freak += 40; }
 	if (HasTrait(girl, "Fallen Goddess"))			/**/{ NonHuman += 20; Elegant += 30; Freak -= 10; Sexy += 25; }
-	if (HasTrait(girl, "Furry"))					/**/{ NonHuman += 40; Sexy += 15; Freak += 30; }
+	if (HasTrait(girl, "Furry"))					/**/{ NonHuman += 40; Elegant -= 5; Sexy += 15; Freak += 30; }
 	if (HasTrait(girl, "Goddess"))					/**/{ NonHuman += 20; Elegant += 50; Freak -= 20; Sexy += 20; }
 	if (HasTrait(girl, "Half-Breed"))				/**/{ NonHuman += 20; Freak += 20; }
 	if (HasTrait(girl, "Playful Tail"))				/**/{ NonHuman += 10; Freak += 25; }
@@ -14915,7 +14914,7 @@ bool cGirls::detect_disease_in_customer(sBrothel * brothel, sGirl* girl, sCustom
 		ss << girlName << " detected that her customer has AIDS and refused to allow them to touch her.";
 		g_MessageQue.AddToQue(ss.str(), COLOR_RED);
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
-		brothel->m_RejectCustomers++;
+		brothel->m_RejectCustomersDisease++;
 		return true;
 	}
 	if (cust.m_HasSyphilis && g_Dice.percent(detectdisease*0.8))	// harder to detect
@@ -14923,7 +14922,7 @@ bool cGirls::detect_disease_in_customer(sBrothel * brothel, sGirl* girl, sCustom
 		ss << girlName << " detected that her customer has Syphilis and refused to allow them to touch her.";
 		g_MessageQue.AddToQue(ss.str(), COLOR_RED);
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
-		brothel->m_RejectCustomers++;
+		brothel->m_RejectCustomersDisease++;
 		return true;
 	}
 	if (cust.m_HasChlamydia && g_Dice.percent(detectdisease))
@@ -14931,7 +14930,7 @@ bool cGirls::detect_disease_in_customer(sBrothel * brothel, sGirl* girl, sCustom
 		ss << girlName << " detected that her customer has Chlamydia and refused to allow them to touch her.";
 		g_MessageQue.AddToQue(ss.str(), COLOR_RED);
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
-		brothel->m_RejectCustomers++;
+		brothel->m_RejectCustomersDisease++;
 		return true;
 	}
 	if (cust.m_HasHerpes && g_Dice.percent(detectdisease))
@@ -14939,7 +14938,7 @@ bool cGirls::detect_disease_in_customer(sBrothel * brothel, sGirl* girl, sCustom
 		ss << girlName << " detected that her customer has Herpes and refused to allow them to touch her.";
 		g_MessageQue.AddToQue(ss.str(), COLOR_RED);
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
-		brothel->m_RejectCustomers++;
+		brothel->m_RejectCustomersDisease++;
 		return true;
 	}
 	return false;

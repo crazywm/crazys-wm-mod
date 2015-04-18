@@ -69,18 +69,8 @@ bool cJobManager::WorkFilmStagehand(sGirl* girl, sBrothel* brothel, bool Day0Nig
 
 
 	// `J` - jobperformance and CleanAmt need to be worked out specially for this job.
-	int jobperformance = 0;
-	int CleanAmt = ((g_Girls.GetSkill(girl, SKILL_SERVICE) / 10) + 5) * 5;
-
-	if (g_Studios.GetNumGirlsOnJob(0, JOB_CAMERAMAGE, SHIFT_NIGHT) == 0 ||
-		g_Studios.GetNumGirlsOnJob(0, JOB_CRYSTALPURIFIER, SHIFT_NIGHT) == 0 ||
-		g_Studios.Num_Actress(0) < 1)
-	{
-		ss << "There were no scenes being filmed, so she just cleaned the set.\n\n";
-		filming = false;
-		CleanAmt *= 2;
-		imagetype = IMGTYPE_MAID;
-	}
+	double jobperformance = 0;
+	double CleanAmt = ((g_Girls.GetSkill(girl, SKILL_SERVICE) / 10.0) + 5) * 5;
 
 	if (g_Girls.HasTrait(girl, "Director"))					{ CleanAmt -= 10;	jobperformance += 15; }
 	if (g_Girls.HasTrait(girl, "Actress"))					{ CleanAmt += 0;	jobperformance += 10; }
@@ -125,16 +115,31 @@ bool cJobManager::WorkFilmStagehand(sGirl* girl, sBrothel* brothel, bool Day0Nig
 	if (g_Girls.HasTrait(girl, "Bad Eyesight"))				{ CleanAmt -= 5;	jobperformance -= 5; }
 
 
+	if (g_Studios.GetNumGirlsOnJob(0, JOB_CAMERAMAGE, SHIFT_NIGHT) == 0 ||
+		g_Studios.GetNumGirlsOnJob(0, JOB_CRYSTALPURIFIER, SHIFT_NIGHT) == 0 ||
+		g_Studios.Num_Actress(0) < 1)
+	{
+		ss << "There were no scenes being filmed, so she just cleaned the set.\n\n";
+		filming = false;
+		imagetype = IMGTYPE_MAID;
+	}
+	else	// she worked on the film so only cleaned half as much
+	{
+		CleanAmt *= 0.5;
+	}
+
+
+
 	if (roll_a <= 10)
 	{
 		enjoyc -= g_Dice % 3 + 1; if (filming) enjoym -= g_Dice % 3 + 1;
-		CleanAmt = int(CleanAmt * 0.8);
+		CleanAmt *= 0.8;
 		ss << "She did not like working in the studio today.";
 	}
 	else if (roll_a >= 90)
 	{
 		enjoyc += g_Dice % 3 + 1; if (filming) enjoym += g_Dice % 3 + 1;
-		CleanAmt = int(CleanAmt * 1.1);
+		CleanAmt *= 1.1;
 		ss << "She had a great time working today.";
 	}
 	else
@@ -153,12 +158,12 @@ bool cJobManager::WorkFilmStagehand(sGirl* girl, sBrothel* brothel, bool Day0Nig
 
 		if (jobperformance > 0)
 		{
-			jobperformance = max(1, jobperformance / 10);
+			jobperformance = max(1.0, jobperformance / 10);
 			ss << "She helped improve the scene " << (int)jobperformance << "% with her production skills.";
 		}
 		else if (jobperformance < 0)
 		{
-			jobperformance = min(-1, jobperformance / 10);
+			jobperformance = min(-1.0, jobperformance / 10);
 			ss << "She did a bad job today, reduceing the scene quality " << (int)jobperformance << "% with her poor performance.";
 		}
 		else ss << "She did not really help the scene quality.";
@@ -169,16 +174,16 @@ bool cJobManager::WorkFilmStagehand(sGirl* girl, sBrothel* brothel, bool Day0Nig
 	// slave girls not being paid for a job that normally you would pay directly for do less work
 	if ((girl->is_slave() && !cfg.initial.slave_pay_outofpocket()))
 	{
-		CleanAmt = int(CleanAmt * 0.9);
+		CleanAmt *= 0.9;
 		wages = 0;
 	}
 	else if (filming)
 	{
-		wages += CleanAmt + jobperformance;
+		wages += int(CleanAmt + jobperformance);
 	}
 	else
 	{
-		wages += CleanAmt;
+		wages += int(CleanAmt);
 	}
 
 	ss << gettext("Cleanliness rating improved by ") << CleanAmt;
@@ -192,8 +197,8 @@ bool cJobManager::WorkFilmStagehand(sGirl* girl, sBrothel* brothel, bool Day0Nig
 
 
 	girl->m_Events.AddMessage(ss.str(), imagetype, SHIFT_NIGHT);
-	if (filming) g_Studios.m_StagehandQuality += jobperformance;
-	brothel->m_Filthiness -= CleanAmt;
+	if (filming) g_Studios.m_StagehandQuality += int(jobperformance);
+	brothel->m_Filthiness -= int(CleanAmt);
 	girl->m_Pay = wages;
 
 
@@ -210,8 +215,11 @@ bool cJobManager::WorkFilmStagehand(sGirl* girl, sBrothel* brothel, bool Day0Nig
 
 	if (filming) g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, enjoym);
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKCLEANING, enjoyc);
+	// Gain Traits
+	if (g_Dice.percent(girl->service()))
+		g_Girls.PossiblyGainNewTrait(girl, "Maid", 90, ACTION_WORKCLEANING, girlName + " has cleaned enough that she could work professionally as a Maid anywhere.", Day0Night1);
 	//lose traits
-	g_Girls.PossiblyLoseExistingTrait(girl, "Clumsy", 30, ACTION_WORKCLEANING, "It took her spilling hundreds of buckets, and just as many reprimands, but " + girl->m_Realname + " has finally stopped being so Clumsy.", Day0Night1);
+		g_Girls.PossiblyLoseExistingTrait(girl, "Clumsy", 30, ACTION_WORKCLEANING, "It took her spilling hundreds of buckets, and just as many reprimands, but " + girl->m_Realname + " has finally stopped being so Clumsy.", Day0Night1);
 
 	return false;
 }

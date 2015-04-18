@@ -373,18 +373,15 @@ void cHouseManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 				else if (current->m_DayJob == restjob && current->m_NightJob == restjob)
 				{	// if they have no job at all, assign them a job
 					ss << "The Head Girl assigns " << girlName << " to ";
-					// `J` zzzzzz need to add more in
-					/*
-					JOB_CLEANHOUSE
 
-					JOB_RECRUITER
-					JOB_PERSONALTRAINING
-					JOB_PERSONALBEDWARMER
-
-					//*/
-
-					// start with a slave to clean
-					if (current->is_slave() && GetNumGirlsOnJob(0, JOB_CLEANHOUSE, Day0Night1) < 1)
+					// Set any free girls who would do well at recruiting to recruit for you
+					if (current->is_free() && m_JobManager.JP_Recruiter(current, true) >= 185)
+					{
+						current->m_DayJob = current->m_NightJob = JOB_RECRUITER;
+						ss << "work recruiting girls for you.";
+					}
+					// assign a slave to clean 
+					else if (current->is_slave() && GetNumGirlsOnJob(0, JOB_CLEANHOUSE, Day0Night1) < max(1, numgirls / 20))
 					{
 						current->m_DayJob = current->m_NightJob = JOB_CLEANHOUSE;
 						ss << "work cleaning the house.";
@@ -402,6 +399,12 @@ void cHouseManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 						current->m_DayJob = current->m_NightJob = JOB_PERSONALBEDWARMER;
 						ss << "work warming your bed.";
 					}
+					// assign 1 cleaner per 20 girls
+					else if (GetNumGirlsOnJob(0, JOB_CLEANHOUSE, Day0Night1) < max(1, numgirls / 20))
+					{
+						current->m_DayJob = current->m_NightJob = JOB_CLEANHOUSE;
+						ss << "work cleaning the house.";
+					}
 					// Put every one else who is not a virgin and needs some training
 					else if (!g_Girls.HasTrait(current, "Virgin") && g_Girls.GetAverageOfSexSkills(current) < 99)
 					{
@@ -414,6 +417,7 @@ void cHouseManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 						current->m_DayJob = current->m_NightJob = JOB_RECRUITER;
 						ss << "work recruiting girls for you.";
 					}
+
 
 					else
 					{

@@ -27,8 +27,6 @@ class cScreenBuildingSetup : public cInterfaceWindowXML
 public:
 
 private:
-	char	buffer[256];
-
 	static bool ids_set;
 /*
  *	interface/event IDs

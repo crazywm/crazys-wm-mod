@@ -170,8 +170,12 @@ bool cJobManager::WorkFarmHand(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoyF);
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKCLEANING, enjoyC);
-	//lose traits
-	g_Girls.PossiblyLoseExistingTrait(girl, "Clumsy", 30, ACTION_WORKCLEANING, "It took her spilling hundreds of buckets, and just as many reprimands, but " + girl->m_Realname + " has finally stopped being so Clumsy.", Day0Night1);
+	// Gain Traits
+	if (g_Dice.percent(girl->service()))
+		g_Girls.PossiblyGainNewTrait(girl, "Maid", 90, ACTION_WORKCLEANING, girlName + " has cleaned enough that she could work professionally as a Maid anywhere.", Day0Night1);
+	// Lose Traits
+	if (g_Dice.percent(girl->service()))
+		g_Girls.PossiblyLoseExistingTrait(girl, "Clumsy", 30, ACTION_WORKCLEANING, "It took her spilling hundreds of buckets, and just as many reprimands, but " + girl->m_Realname + " has finally stopped being so Clumsy.", Day0Night1);
 
 	return false;
 }

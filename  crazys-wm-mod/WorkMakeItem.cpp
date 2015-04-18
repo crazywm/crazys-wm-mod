@@ -72,7 +72,6 @@ bool cJobManager::WorkMakeItem(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	if (roll_a <= 10)
 	{
 		enjoyC -= g_Dice % 3; enjoyF -= g_Dice % 3;
-		CleanAmt = int(CleanAmt * 0.8);
 		/* */if (roll_b < 30)	ss << "She spilled a bucket of something unpleasant all over herself.";
 		else if (roll_b < 60)	ss << "She stepped in something unpleasant.";
 		else /*            */	ss << "She did not like working on the farm today.";
@@ -80,7 +79,6 @@ bool cJobManager::WorkMakeItem(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	else if (roll_a >= 90)
 	{
 		enjoyC += g_Dice % 3; enjoyF += g_Dice % 3;
-		CleanAmt = int(CleanAmt * 1.1);
 		/* */if (roll_b < 50)	ss << "She cleaned the building while humming a pleasant tune.";
 		else /*            */	ss << "She had a great time working today.";
 	}

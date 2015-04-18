@@ -598,7 +598,7 @@ double cJobManager::JP_PersonalTraining(sGirl* girl, bool estimate)// not used
 	double jobperformance = 0.0;
 	if (estimate)// for third detail string
 	{
-		jobperformance += g_Girls.GetAverageOfSexSkills(girl) * 3;
+		jobperformance += (100 - g_Girls.GetAverageOfSexSkills(girl)) * 3;
 	}
 	else// for the actual check
 	{

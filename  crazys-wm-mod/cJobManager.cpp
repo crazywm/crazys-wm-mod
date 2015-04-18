@@ -352,19 +352,19 @@ void cJobManager::Setup()
 	JobFunc[JOB_COUNSELOR] = &WorkCounselor;
 	JobPerf[JOB_COUNSELOR] = &JP_Counselor;
 	JobName[JOB_REHAB] = gettext("Rehab");
-	JobDesc[JOB_REHAB] = gettext("She will go to rehab to get over her drug addiction.");
+	JobDesc[JOB_REHAB] = gettext("She will go to rehab to get over her addictions.");
 	JobFunc[JOB_REHAB] = &WorkRehab;
 	JobPerf[JOB_REHAB] = &JP_Rehab;
 	JobName[JOB_THERAPY] = gettext("Therapy");
-	JobDesc[JOB_THERAPY] = gettext("She will go to therapy to get over her mental problems.");
+	JobDesc[JOB_THERAPY] = gettext("She will go to therapy to get over her mental problems. (Nervous, Dependant, Pessimist)");
 	JobFunc[JOB_THERAPY] = &WorkCentreTherapy;
 	JobPerf[JOB_THERAPY] = &JP_CentreTherapy;
 	JobName[JOB_EXTHERAPY] = gettext("Extreme Therapy");
-	JobDesc[JOB_EXTHERAPY] = gettext("She will go to extreme therapy to get over her hardcore mental problems.");
+	JobDesc[JOB_EXTHERAPY] = gettext("She will go to extreme therapy to get over her hardcore mental problems. (Mind Fucked, Broken Will)");
 	JobFunc[JOB_EXTHERAPY] = &WorkCentreExTherapy;
 	JobPerf[JOB_EXTHERAPY] = &JP_CentreExTherapy;
 	JobName[JOB_ANGER] = gettext("Anger Management");
-	JobDesc[JOB_ANGER] = gettext("She will go to anger management to get over her anger problems.");
+	JobDesc[JOB_ANGER] = gettext("She will go to anger management to get over her anger problems. (Aggressive, Tsundere, Yandere)");
 	JobFunc[JOB_ANGER] = &WorkCentreAngerManagement;
 	JobPerf[JOB_ANGER] = &JP_CentreAngerManagement;
 

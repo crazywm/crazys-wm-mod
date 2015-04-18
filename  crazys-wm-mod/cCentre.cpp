@@ -163,8 +163,7 @@ void cCentreManager::UpdateCentre()	// Start_Building_Process_A
 			if (cgirl->m_PrevNightJob != 255 && (cgirl->m_PrevNightJob < firstjob || cgirl->m_PrevNightJob > lastjob))	cgirl->m_PrevNightJob = 255;
 			cgirl->m_YesterDayJob = cgirl->m_DayJob;		// `J` set what she did yesterday
 			cgirl->m_YesterNightJob = cgirl->m_NightJob;	// `J` set what she did yesternight
-			cgirl->m_Refused_To_Work_Day = false;
-			cgirl->m_Refused_To_Work_Night = false;
+			cgirl->m_Refused_To_Work_Day = cgirl->m_Refused_To_Work_Night = false;
 			string summary = "";
 
 			g_Girls.AddTiredness(cgirl);			// `J` moved all girls add tiredness to one place
@@ -393,7 +392,7 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 						current->m_DayJob = current->m_NightJob = JOB_REHAB;
 						ss << "go to Rehab.";
 					}
-					// Make sure there is atleast 1 counselor on duty
+					// Make sure there is at least 1 counselor on duty
 					else if (current->is_free() && GetNumGirlsOnJob(0, JOB_COUNSELOR, Day0Night1) < 1)
 					{
 						current->m_DayJob = current->m_NightJob = JOB_COUNSELOR;

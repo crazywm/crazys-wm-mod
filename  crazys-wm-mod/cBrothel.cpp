@@ -1164,7 +1164,7 @@ void cBrothelManager::UpdateBrothels()	// Start_Building_Process_A
 		current->m_Finance.zero();
 		current->m_Events.Clear();
 		current->m_AntiPregUsed = 0;
-		current->m_RejectCustomers = 0;
+		current->m_RejectCustomersRestrict = current->m_RejectCustomersDisease = 0;
 
 		bool matron = (GetNumGirlsOnJob(current->m_id, matronjob, false) >= 1) ? true : false;
 
@@ -1262,7 +1262,8 @@ void cBrothelManager::UpdateBrothels()	// Start_Building_Process_A
 
 		ss.str("");
 		ss << current->m_TotalCustomers << " customers visited the building.";
-		if (current->m_RejectCustomers > 0) ss << "\n\n" << current->m_RejectCustomers << " were turned away because of your sex restrictions.";
+		if (current->m_RejectCustomersRestrict > 0) ss << "\n\n" << current->m_RejectCustomersRestrict << " were turned away because of your sex restrictions.";
+		if (current->m_RejectCustomersDisease > 0) ss << "\n\n" << current->m_RejectCustomersDisease << " were turned away because they had an STD.";
 		current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_BROTHEL);
 
 		// empty rooms cost 2 gold to maintain

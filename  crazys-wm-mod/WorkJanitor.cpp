@@ -71,7 +71,7 @@ bool cJobManager::WorkJanitor(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	if (roll_a <= 10)
 	{
 		enjoy -= g_Dice % 3 + 1;
-		CleanAmt = int(CleanAmt * 0.8);
+		CleanAmt *= 0.8;
 		if (roll_b < 50)	ss << "She spilled a bucket of something unpleasant all over herself.";
 		else				ss << "She did not like cleaning the clinic today.";
 
@@ -79,7 +79,7 @@ bool cJobManager::WorkJanitor(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	else if (roll_a >= 90)
 	{
 		enjoy += g_Dice % 3 + 1;
-		CleanAmt = int(CleanAmt * 1.1);
+		CleanAmt *= 1.1;
 		if (roll_b < 50)	ss << "She cleaned the building while humming a pleasant tune.";
 		else				ss << "She had a great time working today.";
 	}
@@ -93,7 +93,7 @@ bool cJobManager::WorkJanitor(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	// slave girls not being paid for a job that normally you would pay directly for do less work
 	if ((girl->is_slave() && !cfg.initial.slave_pay_outofpocket()))
 	{
-		CleanAmt = int(CleanAmt * 0.9);
+		CleanAmt *= 0.9;
 		wages = 0;
 	}
 	else
@@ -166,8 +166,12 @@ bool cJobManager::WorkJanitor(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
-	//lose traits
-	g_Girls.PossiblyLoseExistingTrait(girl, "Clumsy", 20, actiontype, "It took her spilling hundreds of buckets, and just as many reprimands, but " + girlName + " has finally stopped being so Clumsy.", Day0Night1);
+	// Gain Traits
+	if (g_Dice.percent(girl->service()))
+		g_Girls.PossiblyGainNewTrait(girl, "Maid", 70, actiontype, girlName + " has cleaned enough that she could work professionally as a Maid anywhere.", Day0Night1);
+	// Lose Traits
+	if (g_Dice.percent(girl->service()))
+		g_Girls.PossiblyLoseExistingTrait(girl, "Clumsy", 30, actiontype, "It took her spilling hundreds of buckets, and just as many reprimands, but " + girl->m_Realname + " has finally stopped being so Clumsy.", Day0Night1);
 
 	return false;
 }

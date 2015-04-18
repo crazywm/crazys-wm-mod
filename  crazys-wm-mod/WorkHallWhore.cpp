@@ -108,18 +108,17 @@ bool cJobManager::WorkHallWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	int iNum = 0;
 	int iOriginal = 0;
 	int	AskPrice = g_Girls.GetStat(girl, STAT_ASKPRICE);
-	int pay;
-	int tip;
+	int pay = 0;
+	int tip = 0;
 	int LoopCount;
 	bool group = false;	// Group sex flag
 	bool bCustCanPay;				// Customer has enough money to pay 
 	bool acceptsGirl;				// Customer will sleep girl
+	int oralcount = 0;		// how much oral she gave for use with AdjustTraitGroupGagReflex
 
 	u_int SexType = 0;
 	u_int job = (Day0Night1 ? girl->m_NightJob : girl->m_DayJob);
 	stringstream ss;
-
-	girl->m_Pay = 0;
 
 	// work out how many customers the girl can service
 
@@ -173,7 +172,7 @@ bool cJobManager::WorkHallWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 		// filter out unwanted sex types (unless it is street work)
 		if (!is_sex_type_allowed(Cust.m_SexPref, brothel) && !is_sex_type_allowed(Cust.m_SexPrefB, brothel))
 		{
-			brothel->m_RejectCustomers++;
+			brothel->m_RejectCustomersRestrict++;
 			continue;	// `J` if both their sexprefs are banned then they leave
 		}
 		else if (!is_sex_type_allowed(Cust.m_SexPref, brothel)) // it their first sexpref is banned then switch to the second
@@ -286,6 +285,14 @@ bool cJobManager::WorkHallWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 
 		// Horizontal boogy
 		g_Girls.GirlFucks(girl, Day0Night1, &Cust, group, fuckMessage, SexType);
+
+		/* */if (SexType == SKILL_ORALSEX)		oralcount += 5;
+		else if (SexType == SKILL_GROUP)		oralcount += 5;
+		else if (SexType == SKILL_BEASTIALITY)	oralcount += g_Dice % 3;
+		else if (SexType == SKILL_LESBIAN)		oralcount += g_Dice % 2;
+		else if (SexType == SKILL_TITTYSEX)		oralcount += g_Dice % 2;
+		else if (SexType == SKILL_HANDJOB)		oralcount += g_Dice % 2;
+		
 		NumSleptWith++;
 		brothel->m_Filthiness++;
 
@@ -454,7 +461,7 @@ bool cJobManager::WorkHallWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	if (g_Dice.percent(1) && g_Dice.percent(girl->oralsex()) && (g_Girls.HasTrait(girl, "Nymphomaniac")))
 		g_Girls.PossiblyGainNewTrait(girl, "Cum Addict", 90, actiontype, girlName + " has tasted so much cum she now craves it at all times.", Day0Night1);
 
-	if (g_Dice.percent(min(50, girl->oralsex() - 30)))
+	if (girl->oralsex() > 30 && g_Dice.percent(oralcount))
 		g_Girls.AdjustTraitGroupGagReflex(girl, +1, true, Day0Night1);
 
 	return false;
@@ -466,7 +473,6 @@ double cJobManager::JP_HallWhore(sGirl* girl, bool estimate)// not used
 	if (estimate)// for third detail string
 	{
 		jobperformance += g_Girls.GetAverageOfSexSkills(girl) + (girl->charisma() + girl->beauty()) / 2;
-
 	}
 	else// for the actual check
 	{
