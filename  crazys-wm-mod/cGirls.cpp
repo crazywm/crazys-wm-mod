@@ -616,7 +616,6 @@ void cGirls::CalculateGirlType(sGirl* girl)
 	if (HasTrait(girl, "Deluxe Derriere"))			/**/{ Lolita -= 25; Sexy += 20; NiceArse += 40; }
 	if (HasTrait(girl, "Dick-Sucking Lips"))		/**/{ Sexy += 20; CuteGirl += 20; }
 	if (HasTrait(girl, "Exotic"))					/**/{ Sexy += 10; CuteGirl += 10; Freak += 10; }
-	if (HasTrait(girl, "Giant"))					/**/{ Freak += 20; Lolita -= 30; }
 	if (HasTrait(girl, "Hourglass Figure"))			/**/{ Sexy += 25; Lolita -= 30; NiceFigure += 20; }
 	if (HasTrait(girl, "Large Hips"))				/**/{ Sexy += 15; Lolita -= 20; NiceArse += 20; }
 	if (HasTrait(girl, "Mature Body"))				/**/{ Lolita -= 50; CuteGirl -= 20; Sexy += 10; }
@@ -624,6 +623,12 @@ void cGirls::CalculateGirlType(sGirl* girl)
 	if (HasTrait(girl, "Old"))						/**/{ Lolita -= 75; CuteGirl -= 40; Sexy -= 20; Freak += 30; Elegant += 15; }
 	if (HasTrait(girl, "Plump"))					/**/{ Lolita -= 10; NiceFigure -= 20; Freak += 20; }
 	if (HasTrait(girl, "Whore"))					/**/{ Lolita -= 50; CuteGirl -= 40; Cool += 10; Sexy += 10; }
+	
+	//Height
+	if (HasTrait(girl, "Giant"))					/**/{ Freak += 20; Lolita -= 60; }
+	if (HasTrait(girl, "Tall"))						/**/{ Lolita -= 30; }
+	if (HasTrait(girl, "Short"))					/**/{ Lolita += 15; }
+	if (HasTrait(girl, "Dwarf"))					/**/{ Freak += 20; Lolita += 10; }
 
 	//Ass
 	if (HasTrait(girl, "Great Arse"))					{ Sexy += 10; NiceArse += 60; }
@@ -5840,7 +5845,11 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait)
 			}
 			else if (Name == "Cow Girl")
 			{
-				//
+				UpdateStatTr(girl, STAT_REFINEMENT, -5);
+				UpdateStatTr(girl, STAT_SPIRIT, -10);
+				UpdateStatTr(girl, STAT_CONSTITUTION, 5);
+				UpdateStatTr(girl, STAT_OBEDIENCE, 5);
+				UpdateEnjoymentTR(girl, ACTION_WORKMILK, 20);
 			}
 			else if (Name == "Cow Tits")
 			{
@@ -7291,6 +7300,27 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 				else if (name != "No Teeth" && HasRememberedTrait(girl, "No Teeth"))			AddTrait(girl, "No Teeth", false, false, true);
 			}
 		}
+		else if (	// Check Height
+			name == "Giant" ||
+			name == "Tall"  ||
+			name == "Short" ||
+			name == "Dwarf")
+		{
+			if (apply)
+			{
+				if (name != "Giant")		RemoveTrait(girl, "Giant", rememberflag, true);
+				if (name != "Tall")			RemoveTrait(girl, "Tall", rememberflag, true);
+				if (name != "Short")		RemoveTrait(girl, "Short", rememberflag, true);
+				if (name != "Dwarf")		RemoveTrait(girl, "Dwarf", rememberflag, true);
+			}
+			else
+			{
+				/* */if (name != "Giant" && HasRememberedTrait(girl, "Giant"))			AddTrait(girl, "Giant", false, false, true);
+				else if (name != "Tall" && HasRememberedTrait(girl, "Tall"))			AddTrait(girl, "Tall", false, false, true);
+				else if (name != "Short" && HasRememberedTrait(girl, "Short"))			AddTrait(girl, "Short", false, false, true);
+				else if (name != "Dwarf" && HasRememberedTrait(girl, "Dwarf"))			AddTrait(girl, "Dwarf", false, false, true);
+			}
+		}
 
 
 #endif	// End of Physical traits
@@ -7615,6 +7645,74 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 		}
 
 #endif	// End of Special Group Traits
+
+#if 1	// Start of Species Traits
+
+		else if (	// Check Eyesight Traits
+			name == "Succubus" ||
+			name == "Angel" ||
+			name == "Battery Operated" ||
+			name == "Canine" ||
+			name == "Cat Girl" ||
+			name == "Cow Girl" ||
+			name == "Demon" ||
+			name == "Dryad" ||
+			name == "Elf" ||
+			name == "Equine" ||
+			name == "Fallen Goddess" ||
+			name == "Furry" ||
+			name == "Goddess" ||
+			name == "Half-Breed" ||
+			name == "Not Human" ||
+			name == "Reptilian" ||
+			name == "Slitherer" ||
+			name == "Solar Powered")
+		{
+			if (apply)
+			{
+				if (name != "Succubus")			RemoveTrait(girl, "Succubus", rememberflag, true);
+				if (name != "Angel")			RemoveTrait(girl, "Angel", rememberflag, true);
+				if (name != "Battery Operated")	RemoveTrait(girl, "Battery Operated", rememberflag, true);
+				if (name != "Canine")			RemoveTrait(girl, "Canine", rememberflag, true);
+				if (name != "Cat Girl")			RemoveTrait(girl, "Cat Girl", rememberflag, true);
+				if (name != "Cow Girl")			RemoveTrait(girl, "Cow Girl", rememberflag, true);
+				if (name != "Demon")			RemoveTrait(girl, "Demon", rememberflag, true);
+				if (name != "Dryad")			RemoveTrait(girl, "Dryad", rememberflag, true);
+				if (name != "Elf")				RemoveTrait(girl, "Elf", rememberflag, true);
+				if (name != "Equine")			RemoveTrait(girl, "Equine", rememberflag, true);
+				if (name != "Fallen Goddess")	RemoveTrait(girl, "Fallen Goddess", rememberflag, true);
+				if (name != "Furry")			RemoveTrait(girl, "Furry", rememberflag, true);
+				if (name != "Goddess")			RemoveTrait(girl, "Goddess", rememberflag, true);
+				if (name != "Half-Breed")		RemoveTrait(girl, "Half-Breed", rememberflag, true);
+				if (name != "Not Human")		RemoveTrait(girl, "Not Human", rememberflag, true);
+				if (name != "Reptilian")		RemoveTrait(girl, "Reptilian", rememberflag, true);
+				if (name != "Slitherer")		RemoveTrait(girl, "Slitherer", rememberflag, true);
+				if (name != "Solar Powered")	RemoveTrait(girl, "Solar Powered", rememberflag, true);
+			}
+			else
+			{
+				/* */if (name != "Succubus" && HasRememberedTrait(girl, "Succubus"))					AddTrait(girl, "Succubus", false, false, true);
+				else if (name != "Angel" && HasRememberedTrait(girl, "Angel"))							AddTrait(girl, "Angel", false, false, true);
+				else if (name != "Battery Operated" && HasRememberedTrait(girl, "Battery Operated"))	AddTrait(girl, "Battery Operated", false, false, true);
+				else if (name != "Canine" && HasRememberedTrait(girl, "Canine"))						AddTrait(girl, "Canine", false, false, true);
+				else if (name != "Cat Girl" && HasRememberedTrait(girl, "Cat Girl"))					AddTrait(girl, "Cat Girl", false, false, true);
+				else if (name != "Cow Girl" && HasRememberedTrait(girl, "Cow Girl"))					AddTrait(girl, "Cow Girl", false, false, true);
+				else if (name != "Demon" && HasRememberedTrait(girl, "Demon"))							AddTrait(girl, "Demon", false, false, true);
+				else if (name != "Dryad" && HasRememberedTrait(girl, "Dryad"))							AddTrait(girl, "Dryad", false, false, true);
+				else if (name != "Elf" && HasRememberedTrait(girl, "Elf"))								AddTrait(girl, "Elf", false, false, true);
+				else if (name != "Equine" && HasRememberedTrait(girl, "Equine"))						AddTrait(girl, "Equine", false, false, true);
+				else if (name != "Fallen Goddess" && HasRememberedTrait(girl, "Fallen Goddess"))		AddTrait(girl, "Fallen Goddess", false, false, true);
+				else if (name != "Furry" && HasRememberedTrait(girl, "Furry"))							AddTrait(girl, "Furry", false, false, true);
+				else if (name != "Goddess" && HasRememberedTrait(girl, "Goddess"))						AddTrait(girl, "Goddess", false, false, true);
+				else if (name != "Half-Breed" && HasRememberedTrait(girl, "Half-Breed"))				AddTrait(girl, "Half-Breed", false, false, true);
+				else if (name != "Not Human" && HasRememberedTrait(girl, "Not Human"))					AddTrait(girl, "Not Human", false, false, true);
+				else if (name != "Reptilian" && HasRememberedTrait(girl, "Reptilian"))					AddTrait(girl, "Reptilian", false, false, true);
+				else if (name != "Slitherer" && HasRememberedTrait(girl, "Slitherer"))					AddTrait(girl, "Slitherer", false, false, true);
+				else if (name != "Solar Powered" && HasRememberedTrait(girl, "Solar Powered"))			AddTrait(girl, "Solar Powered", false, false, true);
+			}
+		}
+
+#endif	// End of Species Traits
 
 #if 1	// Start of Unsorted Traits
 
@@ -8175,6 +8273,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 	else
 	{
 		// need to add more traits
+		if (HasTrait(girl, "Succubus"))		intro += 4;
 		if (HasTrait(girl, "Nymphomaniac"))	intro += 2;
 		if (HasTrait(girl, "Aggressive"))	intro += 1;
 		if (HasTrait(girl, "Open Minded"))	intro += 1;

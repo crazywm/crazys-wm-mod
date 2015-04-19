@@ -135,7 +135,7 @@ bool cJobManager::WorkArenaRacing(sGirl* girl, sBrothel* brothel, bool Day0Night
 	else
 	{ ss << "\nOtherwise, the shift passed uneventfully."; work += 1; }
 
-	g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, work, true);
+	g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, work,);
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_COMBAT, Day0Night1);
 	int roll_max = (g_Girls.GetStat(girl, STAT_FAME) + g_Girls.GetStat(girl, STAT_CHARISMA));
 	roll_max /= 4;

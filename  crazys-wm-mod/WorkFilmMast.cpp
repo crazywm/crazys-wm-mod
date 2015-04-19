@@ -71,7 +71,9 @@ bool cJobManager::WorkFilmMast(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		return true;
 	}
 	else if (roll <= 10) { enjoy -= g_Dice % 3 + 1;	ss << "She didn't want to make the film, but the director persuaded her.\n\n"; }
-	else if (roll >= 90) { enjoy += g_Dice % 3 + 1;	ss << "She had intense orgasms while playing with her pussy!\n\n"; }
+	else if (roll >= 90 && g_Girls.HasTrait(girl, "Futanari")) { enjoy += g_Dice % 3 + 1;	ss << "She cummed hard while playing with her cock!\n\n"; }
+	else if (roll >= 90 && !g_Girls.HasTrait(girl, "Futanari")) { enjoy += g_Dice % 3 + 1;	ss << "She had intense orgasms while playing with her pussy!\n\n"; }
+	else if (g_Girls.HasTrait(girl, "Futanari")){ enjoy += g_Dice % 2;		ss << girlName << " spent the session rubbing her dick until she came.\n\n"; }
 	else /*            */{ enjoy += g_Dice % 2;		ss << "She spent the afternoon fingering herself.\n\n"; }
 	jobperformance = enjoy * 2;
 

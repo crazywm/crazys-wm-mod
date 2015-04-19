@@ -426,6 +426,22 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 		ss << "A drunk patron \"accidentally\" fell onto " << girlName << " and buried his face between her breasts. To his joy and surprise, " << girlName << " flirtatiously encouraged him to motorboat them for a while, which he gladly did, before slipping some cash between the titties and staggering out on his way.\n"; wages += 40;
 	}
 
+	 if (g_Girls.HasTrait(girl, "Futanari") && g_Girls.GetStat(girl, STAT_LIBIDO) > 80 && g_Dice.percent(5))
+       {
+             if (g_Girls.HasTrait(girl, "Open Minded") || g_Girls.GetStat(girl, STAT_CONFIDENCE) > 35 && g_Girls.GetStat(girl, STAT_DIGNITY) < 35)
+                {
+                        ss << "Noticing the bulge under her skirt one of the customers asked for a very special service: He wanted some \"cream\" in his drink. " << girlName << " took her already hard cock out and sprinkled the drink with some of her jizz. The customer thanked her and slipped a good tip under her panties.";
+                        g_Girls.UpdateSkill(girl, SKILL_SERVICE, 2);
+                        g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -30);
+                        wages += 30 + (g_Girls.GetSkill(girl, SKILL_SERVICE) / 5); //Not sure if this will work fine
+                        imagetype = IMGTYPE_MAST;
+                }
+              else
+                {
+                        ss << "Noticing the bulge under her skirt one of the customers asked " << girlName << " to spill some of her \"cream\" in his drink, but she refused, blushing.";
+                }
+		}
+
 
 	if (wages < 0)
 		wages = 0;

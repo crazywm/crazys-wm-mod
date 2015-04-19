@@ -1227,6 +1227,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\WorkCounselor.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\WorkCrystalPurifier.cpp"
 				>
 			</File>
@@ -1240,10 +1244,6 @@
 			</File>
 			<File
 				RelativePath=".\WorkDoctore.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\WorkDrugCounselor.cpp"
 				>
 			</File>
 			<File

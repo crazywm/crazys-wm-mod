@@ -943,6 +943,8 @@ public:
 	int GetSkillWorth(sGirl* girl);
 
 	bool DisobeyCheck(sGirl* girl, int action, sBrothel* brothel = 0);
+	bool AskedOutChance(sGirl* girl, int action, sBrothel* brothel = 0);
+	bool SayYesChance(sGirl* girl, int action, sBrothel* brothel = 0);
 
 	string GetDetailsString(sGirl* girl, bool purchace = false);
 	string GetMoreDetailsString(sGirl* girl, bool purchace = false);
