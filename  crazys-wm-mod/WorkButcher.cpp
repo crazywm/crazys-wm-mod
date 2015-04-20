@@ -214,6 +214,8 @@ double cJobManager::JP_Butcher(sGirl* girl, bool estimate)// not used
 	//good traits
 	if (g_Girls.HasTrait(girl, "Quick Learner"))  jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Psychic"))		  jobperformance += 10;
+	if (g_Girls.HasTrait(girl, "Farmers Daughter"))	jobperformance += 20;
+	if (g_Girls.HasTrait(girl, "Country Gal"))		jobperformance += 10;
 
 	//bad traits
 	if (g_Girls.HasTrait(girl, "Dependant"))	jobperformance -= 50; //needs others to do the job
@@ -221,6 +223,23 @@ double cJobManager::JP_Butcher(sGirl* girl, bool estimate)// not used
 	if (g_Girls.HasTrait(girl, "Aggressive")) 	jobperformance -= 20; //gets mad easy
 	if (g_Girls.HasTrait(girl, "Nervous"))		jobperformance -= 30; //don't like to be around people	
 	if (g_Girls.HasTrait(girl, "Meek"))			jobperformance -= 20;
+
+	if (g_Girls.HasTrait(girl, "One Arm"))		jobperformance -= 40;
+	if (g_Girls.HasTrait(girl, "One Foot"))		jobperformance -= 20;
+	if (g_Girls.HasTrait(girl, "One Hand"))		jobperformance -= 30; 
+	if (g_Girls.HasTrait(girl, "One Leg"))		jobperformance -= 35;
+	if (g_Girls.HasTrait(girl, "No Arms"))		jobperformance -= 125;
+	if (g_Girls.HasTrait(girl, "No Feet"))		jobperformance -= 40;
+	if (g_Girls.HasTrait(girl, "No Hands"))		jobperformance -= 50;
+	if (g_Girls.HasTrait(girl, "No Legs"))		jobperformance -= 75;
+	if (g_Girls.HasTrait(girl, "Blind"))		jobperformance -= 30;
+	if (g_Girls.HasTrait(girl, "Retarded"))		jobperformance -= 60;
+	if (g_Girls.HasTrait(girl, "Smoker"))		jobperformance -= 10;	//would need smoke breaks
+
+	if (g_Girls.HasTrait(girl, "Alcoholic"))			jobperformance -= 25;
+	if (g_Girls.HasTrait(girl, "Fairy Dust Addict"))	jobperformance -= 25;
+	if (g_Girls.HasTrait(girl, "Shroud Addict"))		jobperformance -= 25;
+	if (g_Girls.HasTrait(girl, "Viras Blood Addict"))	jobperformance -= 25;
 
 	return jobperformance;
 }

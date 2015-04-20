@@ -458,6 +458,9 @@ const unsigned char FETISH_DANGEROUSGIRLS   = 12;	// likes girls with a bit of d
 const unsigned char FETISH_NONHUMAN         = 13;	// likes non human girls
 const unsigned char FETISH_FREAKYGIRLS      = 14;	// likes freaky girls
 const unsigned char FETISH_FUTAGIRLS		= 15;	// likes girls with dicks
+//const unsigned char FETISH_TALLGIRLS        = 16;	// likes tall girls
+//const unsigned char FETISH_SHORTGIRLS		= 17;	// likes short girls
+//const unsigned char FETISH_FATGIRLS		= 18;	// likes fat girls
 
 // actions girls can disobey against
 // `J` When modifying Action types, search for "J-Change-Action-Types"  :  found in >> Constants.h
@@ -535,7 +538,8 @@ const int IMGTYPE_NURSE		= 31;
 const int IMGTYPE_FORMAL	= 32;
 const int IMGTYPE_SHOP		= 33;
 const int IMGTYPE_MAGIC		= 34;
-const int IMGTYPE_PREGNANT	= 35;	// IMGTYPE_PREGNANT needs to be the last of the nonpregnant image types.
+const int IMGTYPE_SIGN		= 35;	//Going be used for advertisigin
+const int IMGTYPE_PREGNANT	= 36;	// IMGTYPE_PREGNANT needs to be the last of the nonpregnant image types.
 
 /*
 *	`J` All image types can have a pregnant alternative now
@@ -579,6 +583,7 @@ const int IMGTYPE_PREGNURSE		= IMGTYPE_NURSE		+ PREG_OFFSET;
 const int IMGTYPE_PREGFORMAL	= IMGTYPE_FORMAL	+ PREG_OFFSET;
 const int IMGTYPE_PREGSHOP		= IMGTYPE_SHOP		+ PREG_OFFSET;
 const int IMGTYPE_PREGMAGIC		= IMGTYPE_MAGIC		+ PREG_OFFSET;
+const int IMGTYPE_PREGSIGN		= IMGTYPE_SIGN		+ PREG_OFFSET;
 
 const int NUM_IMGTYPES = IMGTYPE_PREGNANT + PREG_OFFSET; // `J` All image types can have a pregnant variation (except pregnant-pregnant)
 

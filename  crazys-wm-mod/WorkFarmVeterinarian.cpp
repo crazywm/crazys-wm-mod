@@ -164,6 +164,9 @@ double cJobManager::JP_FarmVeterinarian(sGirl* girl, bool estimate)// not used
 	if (g_Girls.HasTrait(girl, "Quick Learner"))	jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Psychic"))			jobperformance += 10;
 	if (g_Girls.HasTrait(girl, "Optimist"))			jobperformance += 10;	//less willing to give up on the animal
+	if (g_Girls.HasTrait(girl, "Farmers Daughter"))	jobperformance += 30;
+	if (g_Girls.HasTrait(girl, "Country Gal"))		jobperformance += 10;
+
 	//bad traits
 	if (g_Girls.HasTrait(girl, "Dependant"))		jobperformance -= 50;	//needs others to do the job
 	if (g_Girls.HasTrait(girl, "Clumsy"))  			jobperformance -= 20;	//spills food and breaks things often
@@ -171,6 +174,24 @@ double cJobManager::JP_FarmVeterinarian(sGirl* girl, bool estimate)// not used
 	if (g_Girls.HasTrait(girl, "Nervous"))  		jobperformance -= 30;	//don't like to be around people
 	if (g_Girls.HasTrait(girl, "Meek"))				jobperformance -= 20;
 	if (g_Girls.HasTrait(girl, "Pessimist"))		jobperformance -= 10;	//more likely to give up on the animal
+
+	if (g_Girls.HasTrait(girl, "One Arm"))		jobperformance -= 40;
+	if (g_Girls.HasTrait(girl, "One Foot"))		jobperformance -= 40;
+	if (g_Girls.HasTrait(girl, "One Hand"))		jobperformance -= 30; 
+	if (g_Girls.HasTrait(girl, "One Leg"))		jobperformance -= 60;
+	if (g_Girls.HasTrait(girl, "No Arms"))		jobperformance -= 125;
+	if (g_Girls.HasTrait(girl, "No Feet"))		jobperformance -= 60;
+	if (g_Girls.HasTrait(girl, "No Hands"))		jobperformance -= 50;
+	if (g_Girls.HasTrait(girl, "No Legs"))		jobperformance -= 150;
+	if (g_Girls.HasTrait(girl, "Blind"))		jobperformance -= 30;
+	if (g_Girls.HasTrait(girl, "Deaf"))			jobperformance -= 15;
+	if (g_Girls.HasTrait(girl, "Retarded"))		jobperformance -= 60;
+	if (g_Girls.HasTrait(girl, "Smoker"))		jobperformance -= 10;	//would need smoke breaks
+
+	if (g_Girls.HasTrait(girl, "Alcoholic"))			jobperformance -= 25;
+	if (g_Girls.HasTrait(girl, "Fairy Dust Addict"))	jobperformance -= 25;
+	if (g_Girls.HasTrait(girl, "Shroud Addict"))		jobperformance -= 25;
+	if (g_Girls.HasTrait(girl, "Viras Blood Addict"))	jobperformance -= 25;
 
 	return jobperformance;
 }

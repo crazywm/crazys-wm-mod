@@ -180,6 +180,10 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Nig
 		{
 			ss << "She screamed do you know who my dad is? He will have your head for this!\n";
 		}
+		else if (g_Girls.HasTrait(girl, "Your Wife"))
+		{
+			ss << "She screamed do you know who my husband is? He will have your head for this!\n";
+		}
 		else if (HateLove >= 80) //loves you
 		{
 			ss << "She screamed do you know who my love is? He will have your head for this!\n";

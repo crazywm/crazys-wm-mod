@@ -745,11 +745,23 @@
         InheritChance="70"
         RandomChance="20" />
     <Trait
+        Name="Dwarf"
+        Desc="This girl is extremly short."
+        Type="Species"
+        InheritChance="80"
+        RandomChance="1" />
+    <Trait
         Name="Eye Patch"
         Desc="This girl has lost an eye, but wheres a patch over it making her look dangerous and cool. (-looks)"
         Type="Physical"
         InheritChance="1"
         RandomChance="5" />
+   <Trait
+        Name="Fat"
+        Desc="She is a very heavy girl."
+        Type="Physical"
+        InheritChance="40"
+        RandomChance="10" />
     <Trait
         Name="Flat Ass"
         Desc="Her posterior isn't really anything special. Not much to grope or slap whatsoever."
@@ -757,12 +769,12 @@
         InheritChance="70"
         RandomChance="10" />
     <Trait
-		Name="Flexible"
-		Desc="She is able to bend her body in many different ways."
-		Type="Physical"
-		InheritChance="10"
-		RandomChance="5" />
-	<Trait
+	Name="Flexible"
+	Desc="She is able to bend her body in many different ways."
+	Type="Physical"
+	InheritChance="10"
+	RandomChance="5" />
+    <Trait
         Name="Giant"
         Desc="This girl is tall. The height might be a bit intimidating..."
         Type="Physical"
@@ -951,6 +963,18 @@
     <Trait
         Name="Plump"
         Desc="This girl has more than a few soft bits. Plenty of supple flesh to squeeze and pinch."
+        Type="Physical"
+        InheritChance="50"
+        RandomChance="20" />
+   <Trait
+        Name="Short"
+        Desc="This girl is short."
+        Type="Physical"
+        InheritChance="50"
+        RandomChance="20" />
+  <Trait
+        Name="Tall"
+        Desc="This girl is considered tall."
         Type="Physical"
         InheritChance="50"
         RandomChance="20" />

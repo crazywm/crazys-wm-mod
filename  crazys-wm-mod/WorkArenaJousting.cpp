@@ -185,5 +185,23 @@ double cJobManager::JP_ArenaJousting(sGirl* girl, bool estimate)// not used
 	if (g_Girls.HasTrait(girl, "Slow Learner"))				jobperformance -= 5;
 	if (g_Girls.HasTrait(girl, "Elegant"))					jobperformance -= 5;	// wouldnt want to do this
 
+	if (g_Girls.HasTrait(girl, "One Arm"))		jobperformance -= 40;
+	if (g_Girls.HasTrait(girl, "One Foot"))		jobperformance -= 40;
+	if (g_Girls.HasTrait(girl, "One Hand"))		jobperformance -= 30; 
+	if (g_Girls.HasTrait(girl, "One Leg"))		jobperformance -= 60;
+	if (g_Girls.HasTrait(girl, "No Arms"))		jobperformance -= 125;
+	if (g_Girls.HasTrait(girl, "No Feet"))		jobperformance -= 60;
+	if (g_Girls.HasTrait(girl, "No Hands"))		jobperformance -= 50;
+	if (g_Girls.HasTrait(girl, "No Legs"))		jobperformance -= 150;
+	if (g_Girls.HasTrait(girl, "Blind"))		jobperformance -= 75;
+	if (g_Girls.HasTrait(girl, "Deaf"))			jobperformance -= 15;
+	if (g_Girls.HasTrait(girl, "Retarded"))		jobperformance -= 60;
+	if (g_Girls.HasTrait(girl, "Smoker"))		jobperformance -= 10;	//would need smoke breaks
+
+	if (g_Girls.HasTrait(girl, "Alcoholic"))			jobperformance -= 25;
+	if (g_Girls.HasTrait(girl, "Fairy Dust Addict"))	jobperformance -= 25;
+	if (g_Girls.HasTrait(girl, "Shroud Addict"))		jobperformance -= 25;
+	if (g_Girls.HasTrait(girl, "Viras Blood Addict"))	jobperformance -= 25;
+
 	return jobperformance;
 }

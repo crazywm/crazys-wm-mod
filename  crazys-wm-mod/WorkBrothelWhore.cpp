@@ -451,6 +451,19 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 				Cust.m_Money -= 20;
 				girl->m_Tips += 20;
 			}
+			if (g_Girls.HasTrait(girl, "Your Wife") && Cust.m_Money >= 20 && g_Dice.percent(15))//may need to be moved to work right
+			{
+				if (g_Dice.percent(50))
+				{
+					message += "Learning that she was your wife the customer tosses some extra gold down saying no husband should do this to there wife.\n";
+				}
+				else
+				{
+					message += "A smile crossed the customer's face upon learning that she is your wife and they threw some extra gold down. They seem to enjoy the thought of fucking the bosse's wife.\n";
+				}
+				Cust.m_Money -= 20;
+				girl->m_Tips += 20;
+			}
 
 			// if he is happy and has some extra gold he will give a tip
 			if ((int)Cust.m_Money >= 20 && Cust.m_Stats[STAT_HAPPINESS] > 90)

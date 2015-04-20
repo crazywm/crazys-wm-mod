@@ -1073,7 +1073,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				ss << "Before the show was over " << girlName << " had thrown all her clothes on stage and was now walking around naked.\n";
 				imagetype = IMGTYPE_NUDE; invite = true;
 			}
-			if (girl->is_addict() && g_Dice.percent(20))
+			if (girl->is_addict() && g_Dice.percent(20)) //may have to change this to the traits instead of the addict as only those 3 should trigger it.  zzzzz FIXME CRAZY
 			{
 				ss << "\nNoticing her addiction, someone offered her some drugs. She accepted, and got baked for the concert.\n";
 				if (g_Girls.HasTrait(girl, "Shroud Addict"))
@@ -1089,6 +1089,11 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					g_Girls.AddInv(girl, g_InvManager.GetItem("Vira Blood"));
 				}
 				/* May added in a sex event here where they try to take advatage of the high girl*/
+				if (g_Dice.percent(10) && g_Girls.GetStat(girl, STAT_BEAUTY) > 85) && !g_Girls.HasTrait(girl, "Virgin"))
+				{
+					ss << "After noticing her great beauty and the fact that she is baked a group of guys take her off alone somewhere and have there way with her.\n";
+					imagetype = IMGTYPE_GROUP;
+				}
 			}
 
 			if (roll <= 5)//did she enjoy it or not?
@@ -1115,6 +1120,24 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				{
 					ss << girlName << " accepted with great joy.\n"; U_Happiness += 5;
 					/* add anything from them trying to have sex with her to just talking*/
+					if (g_Dice.percent(10) && !g_Girls.HasTrait(girl, "Virgin"))
+						{
+							ss << "After talking for a awhile they asked if she wanted to have sex with them. ";
+							if (g_Girls.GetStat(girl, STAT_LIBIDO) >= 70)
+							{
+								ss << "As she was in the mood and loved the show she agreed and spent many hours pleasing the band.\n";
+								imagetype = IMGTYPE_GROUP;
+							}
+							else
+							{
+								ss << "Not in the mood she declined and returned home.\n";
+							}
+							
+						}
+					else
+					{
+						ss << "They talked for a few hours about many things. She left late then she normally would have very happy with the show.\n";
+					}
 				}
 				else
 				{
@@ -1126,6 +1149,48 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					{
 						ss << girlName << " enjoyed herself so she accepted.\n";
 						/* add anything from them trying to have sex with her to just talking*/
+						if (g_Dice.percent(10) && !g_Girls.HasTrait(girl, "Virgin"))
+						{
+							ss << "After talking for a awhile they asked if she wanted to have sex with them. ";
+							if (g_Girls.GetStat(girl, STAT_LIBIDO) >= 70)
+							{
+								ss << "As she was in the mood and enjoyed the show she agreed to have sex with the ";
+								if (roll_b >= 80 )
+								{
+									ss << "lead singer.";
+									imagetype = IMGTYPE_SEX;
+								}
+								else if (roll_b >= 60 )
+								{
+									ss << "lead guitarist.";
+									imagetype = IMGTYPE_SEX;
+								}
+								else if (roll_b >= 40 )
+								{
+									ss << "drummer.";
+									imagetype = IMGTYPE_SEX;
+								}
+								else if (roll_b >= 40 )
+								{
+									ss << "bass player.";
+									imagetype = IMGTYPE_SEX;
+								}
+								else
+								{
+									ss << "whole group.";
+									imagetype = IMGTYPE_GROUP;
+								}
+							}
+							else
+							{
+								ss << "Not in the mood she declined and returned home.\n";
+							}
+							
+						}
+					else
+					{
+						ss << "They talked for a few hours about many things. She left late then she normally would have very happy with the show.\n";
+					}
 					}
 				}
 			}
@@ -1284,14 +1349,14 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 		case FT_GoOnDate:
 		{
-			ss << girlName << " went on a date with a ";
+			ss << girlName << " went on a date with a her ";
 				if (g_Girls.HasTrait(girl, "Has Boy Friend"))
 					{
-						ss << "man.";
+						ss << "boy friend.";
 					}
 				else if (g_Girls.HasTrait(girl, "Has Girl Friend"))
 					{
-						ss << "women.";
+						ss << "girl friend.";
 					}
 			if (g_Girls.GetStat(girl, STAT_NPCLOVE) > 80)
 			{

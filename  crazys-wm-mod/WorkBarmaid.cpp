@@ -517,30 +517,6 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 		wages = 0;
 
 
-
-	/*if (roll <= 50 && g_Girls.DisobeyCheck(girl, ACTION_WORKBAR, brothel))
-	{
-	ss << girl->m_Realname << gettext(" refused to as a barmaid today.");
-	girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_NOWORK);
-	return true;
-	}
-	else if(roll <= 15) {
-	ss << gettext(" \nSome of the patrons abused her during the shift.");
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKBAR, -1);
-	}
-	else if(roll >=90)
-	{
-	ss << gettext(" \nShe had a pleasant time working.");
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKBAR, +3);
-	}
-	else
-	{
-	ss << gettext(" \nOtherwise, the shift passed uneventfully.");
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKBAR, +1);
-	}*/
-
-
-
 	//enjoyed the work or not
 	if (roll <= 5)
 	{

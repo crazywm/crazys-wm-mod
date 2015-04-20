@@ -1143,6 +1143,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\WorkBlacksmith.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\WorkBoobJob.cpp"
 				>
 			</File>

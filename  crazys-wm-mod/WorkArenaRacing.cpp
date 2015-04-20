@@ -52,7 +52,7 @@ bool cJobManager::WorkArenaRacing(sGirl* girl, sBrothel* brothel, bool Day0Night
 
 	int roll = g_Dice%100;
 	int wages = 50, work = 0;
-	int jobperformance = ((g_Girls.GetStat(girl, STAT_INTELLIGENCE) / 2) + (g_Girls.GetSkill(girl, SKILL_COMBAT) / 2) + g_Girls.GetSkill(girl, SKILL_ANIMALHANDLING));
+	double jobperformance = JP_ArenaRacing(girl, false);
 
 
 	ss << "She worked as a chariot racer in the arena.";
@@ -60,36 +60,9 @@ bool cJobManager::WorkArenaRacing(sGirl* girl, sBrothel* brothel, bool Day0Night
 	//CRAZY
 	/*Racing plans
 		General plan is to have the girls race each other each shift.  Must have atleast 2 girls working each shift
-		winner get most money and works its way down to where they place last getting the least amount of money.
+		winner gets most money and works its way down to where they place last getting the least amount of money.
 		Again it would be based off jobperformance as to where they place.
 		.*/ 
-
-
-	//good traits
-	if (g_Girls.HasTrait(girl, "Charismatic"))   jobperformance += 10;
-	if (g_Girls.HasTrait(girl, "Aggressive"))    jobperformance += 20;
-	if (g_Girls.HasTrait(girl, "Long Legs"))     jobperformance += 5;  //be able to ride better
-	if (g_Girls.HasTrait(girl, "Quick Learner")) jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Psychic"))		 jobperformance += 10;
-	if (g_Girls.HasTrait(girl, "Strong"))		 jobperformance += 10;
-	if (g_Girls.HasTrait(girl, "Strong Magic"))  jobperformance += 5; //use magic to cheat
-	if (g_Girls.HasTrait(girl, "Assassin"))		 jobperformance += 10;
-	if (g_Girls.HasTrait(girl, "Sadistic"))		 jobperformance += 10;
-	if (g_Girls.HasTrait(girl, "Manly"))		 jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Merciless"))	 jobperformance += 10;
-	if (g_Girls.HasTrait(girl, "Fearless"))		 jobperformance += 5;
-
-
-	//bad traits
-	if (g_Girls.HasTrait(girl, "Dependant"))   jobperformance -= 50;
-	if (g_Girls.HasTrait(girl, "Clumsy"))      jobperformance -= 20;
-	if (g_Girls.HasTrait(girl, "Nervous"))     jobperformance -= 30;
-	if (g_Girls.HasTrait(girl, "Meek"))		   jobperformance -= 20;
-	if (g_Girls.HasTrait(girl, "Fragile"))	   jobperformance -= 10;
-	if (g_Girls.HasTrait(girl, "Slow Learner"))jobperformance -= 5;
-	if (g_Girls.HasTrait(girl, "One Eye"))     jobperformance -= 15;
-	if (g_Girls.HasTrait(girl, "Eye Patch"))   jobperformance -= 15;
-	if (g_Girls.HasTrait(girl, "Elegant"))     jobperformance -= 5;  //wouldnt want to do this
 
 
 	if (jobperformance >= 245)
@@ -135,7 +108,7 @@ bool cJobManager::WorkArenaRacing(sGirl* girl, sBrothel* brothel, bool Day0Night
 	else
 	{ ss << "\nOtherwise, the shift passed uneventfully."; work += 1; }
 
-	g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, work,);
+	g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, work);
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_COMBAT, Day0Night1);
 	int roll_max = (g_Girls.GetStat(girl, STAT_FAME) + g_Girls.GetStat(girl, STAT_CHARISMA));
 	roll_max /= 4;
@@ -167,12 +140,56 @@ bool cJobManager::WorkArenaRacing(sGirl* girl, sBrothel* brothel, bool Day0Night
 
 double cJobManager::JP_ArenaRacing(sGirl* girl, bool estimate)// not used
 {
-double jp = 0;
-if (estimate)// for third detail string
-{
-}
-else// for the actual check
-{
-}
-return jp;
+
+double jobperformance =
+		(girl->combat() / 2) +
+		(girl->intelligence() / 2) +
+		(girl->animalhandling()  +
+		girl->level());
+
+//good traits
+	if (g_Girls.HasTrait(girl, "Charismatic"))   jobperformance += 10;
+	if (g_Girls.HasTrait(girl, "Aggressive"))    jobperformance += 20;
+	if (g_Girls.HasTrait(girl, "Long Legs"))     jobperformance += 5;  //be able to ride better
+	if (g_Girls.HasTrait(girl, "Quick Learner")) jobperformance += 5;
+	if (g_Girls.HasTrait(girl, "Psychic"))		 jobperformance += 10;
+	if (g_Girls.HasTrait(girl, "Strong"))		 jobperformance += 10;
+	if (g_Girls.HasTrait(girl, "Strong Magic"))  jobperformance += 5; //use magic to cheat
+	if (g_Girls.HasTrait(girl, "Assassin"))		 jobperformance += 10;
+	if (g_Girls.HasTrait(girl, "Sadistic"))		 jobperformance += 10;
+	if (g_Girls.HasTrait(girl, "Manly"))		 jobperformance += 5;
+	if (g_Girls.HasTrait(girl, "Merciless"))	 jobperformance += 10;
+	if (g_Girls.HasTrait(girl, "Fearless"))		 jobperformance += 5;
+
+
+	//bad traits
+	if (g_Girls.HasTrait(girl, "Dependant"))   jobperformance -= 50;
+	if (g_Girls.HasTrait(girl, "Clumsy"))      jobperformance -= 20;
+	if (g_Girls.HasTrait(girl, "Nervous"))     jobperformance -= 30;
+	if (g_Girls.HasTrait(girl, "Meek"))		   jobperformance -= 20;
+	if (g_Girls.HasTrait(girl, "Fragile"))	   jobperformance -= 10;
+	if (g_Girls.HasTrait(girl, "Slow Learner"))jobperformance -= 5;
+	if (g_Girls.HasTrait(girl, "One Eye"))     jobperformance -= 15;
+	if (g_Girls.HasTrait(girl, "Eye Patch"))   jobperformance -= 15;
+	if (g_Girls.HasTrait(girl, "Elegant"))     jobperformance -= 5;  //wouldnt want to do this
+
+	if (g_Girls.HasTrait(girl, "One Arm"))		jobperformance -= 40;
+	if (g_Girls.HasTrait(girl, "One Foot"))		jobperformance -= 40;
+	if (g_Girls.HasTrait(girl, "One Hand"))		jobperformance -= 30; 
+	if (g_Girls.HasTrait(girl, "One Leg"))		jobperformance -= 60;
+	if (g_Girls.HasTrait(girl, "No Arms"))		jobperformance -= 125;
+	if (g_Girls.HasTrait(girl, "No Feet"))		jobperformance -= 60;
+	if (g_Girls.HasTrait(girl, "No Hands"))		jobperformance -= 50;
+	if (g_Girls.HasTrait(girl, "No Legs"))		jobperformance -= 150;
+	if (g_Girls.HasTrait(girl, "Blind"))		jobperformance -= 100;
+	if (g_Girls.HasTrait(girl, "Deaf"))			jobperformance -= 15;
+	if (g_Girls.HasTrait(girl, "Retarded"))		jobperformance -= 60;
+	if (g_Girls.HasTrait(girl, "Smoker"))		jobperformance -= 10;	//would need smoke breaks
+
+	if (g_Girls.HasTrait(girl, "Alcoholic"))			jobperformance -= 25;
+	if (g_Girls.HasTrait(girl, "Fairy Dust Addict"))	jobperformance -= 25;
+	if (g_Girls.HasTrait(girl, "Shroud Addict"))		jobperformance -= 25;
+	if (g_Girls.HasTrait(girl, "Viras Blood Addict"))	jobperformance -= 25;
+
+return jobperformance;
 }

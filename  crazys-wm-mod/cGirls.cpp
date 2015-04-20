@@ -606,7 +606,6 @@ void cGirls::CalculateGirlType(sGirl* girl)
 	//Body
 	if (HasTrait(girl, "Fleet of Foot"))				{ Dangerous += 10; Sexy += 20; }
 	if (HasTrait(girl, "Fragile"))						{ CuteGirl += 10; Nerd += 5; Freak += 10; Lolita += 10; }
-	if (HasTrait(girl, "Great Figure"))					{ BigBoobs += 10; Sexy += 10; NiceFigure += 60; }
 	if (HasTrait(girl, "Long Legs"))					{ Sexy += 20; NiceFigure += 20; }
 	if (HasTrait(girl, "Strong"))						{ Dangerous += 20; Cool += 20; Nerd -= 30; NiceFigure += 20; NiceArse += 20; Lolita -= 5; }
 	if (HasTrait(girl, "Tough"))						{ CuteGirl -= 5; Dangerous += 10; Cool += 10; Nerd -= 5; Elegant -= 5; }
@@ -616,14 +615,18 @@ void cGirls::CalculateGirlType(sGirl* girl)
 	if (HasTrait(girl, "Deluxe Derriere"))			/**/{ Lolita -= 25; Sexy += 20; NiceArse += 40; }
 	if (HasTrait(girl, "Dick-Sucking Lips"))		/**/{ Sexy += 20; CuteGirl += 20; }
 	if (HasTrait(girl, "Exotic"))					/**/{ Sexy += 10; CuteGirl += 10; Freak += 10; }
-	if (HasTrait(girl, "Hourglass Figure"))			/**/{ Sexy += 25; Lolita -= 30; NiceFigure += 20; }
 	if (HasTrait(girl, "Large Hips"))				/**/{ Sexy += 15; Lolita -= 20; NiceArse += 20; }
 	if (HasTrait(girl, "Mature Body"))				/**/{ Lolita -= 50; CuteGirl -= 20; Sexy += 10; }
 	if (HasTrait(girl, "Muscular"))					/**/{ Lolita -= 30; Sexy -= 30; Dangerous += 25; Freak += 25; }
-	if (HasTrait(girl, "Old"))						/**/{ Lolita -= 75; CuteGirl -= 40; Sexy -= 20; Freak += 30; Elegant += 15; }
-	if (HasTrait(girl, "Plump"))					/**/{ Lolita -= 10; NiceFigure -= 20; Freak += 20; }
+	if (HasTrait(girl, "Old"))						/**/{ Lolita -= 75; CuteGirl -= 40; Sexy -= 20; Freak += 30; Elegant += 15; }	
 	if (HasTrait(girl, "Whore"))					/**/{ Lolita -= 50; CuteGirl -= 40; Cool += 10; Sexy += 10; }
-	
+
+	//Figure
+	if (HasTrait(girl, "Great Figure"))					{ BigBoobs += 10; Sexy += 10; NiceFigure += 60; }
+	if (HasTrait(girl, "Hourglass Figure"))			/**/{ Sexy += 25; Lolita -= 30; NiceFigure += 20; }
+	if (HasTrait(girl, "Plump"))					/**/{ Lolita -= 10; NiceFigure -= 20; Freak += 20; }
+	if (HasTrait(girl, "Fat"))						/**/{ Lolita -= 20; NiceFigure -= 40; Freak += 25; }
+
 	//Height
 	if (HasTrait(girl, "Giant"))					/**/{ Freak += 20; Lolita -= 60; }
 	if (HasTrait(girl, "Tall"))						/**/{ Lolita -= 30; }
@@ -7320,6 +7323,27 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 				else if (name != "Tall" && HasRememberedTrait(girl, "Tall"))			AddTrait(girl, "Tall", false, false, true);
 				else if (name != "Short" && HasRememberedTrait(girl, "Short"))			AddTrait(girl, "Short", false, false, true);
 				else if (name != "Dwarf" && HasRememberedTrait(girl, "Dwarf"))			AddTrait(girl, "Dwarf", false, false, true);
+			}
+		}
+		else if (	// Check Figure
+			name == "Great Figure" ||
+			name == "Hourglass Figure"  ||
+			name == "Plump" ||
+			name == "Fat")
+		{
+			if (apply)
+			{
+				if (name != "Great Figure")		RemoveTrait(girl, "Great Figure", rememberflag, true);
+				if (name != "Hourglass Figure")	RemoveTrait(girl, "Hourglass Figure", rememberflag, true);
+				if (name != "Plump")			RemoveTrait(girl, "Plump", rememberflag, true);
+				if (name != "Fat")				RemoveTrait(girl, "Fat", rememberflag, true);
+			}
+			else
+			{
+				/* */if (name != "Great Figure" && HasRememberedTrait(girl, "Great Figure"))			AddTrait(girl, "Great Figure", false, false, true);
+				else if (name != "Hourglass Figure" && HasRememberedTrait(girl, "Hourglass Figure"))	AddTrait(girl, "Hourglass Figure", false, false, true);
+				else if (name != "Plump" && HasRememberedTrait(girl, "Plump"))							AddTrait(girl, "Plump", false, false, true);
+				else if (name != "Fat" && HasRememberedTrait(girl, "Fat"))								AddTrait(girl, "Fat", false, false, true);
 			}
 		}
 
