@@ -137,14 +137,14 @@ string pic_types[] =	// `J` moved this out to global and removed file extensions
 	"death*.", "profile*.", "combat*.", "oral*.", "ecchi*.", "strip*.", "maid*.", "sing*.",
 	"wait*.", "card*.", "bunny*.", "nude*.", "mast*.", "titty*.", "milk*.", "hand*.",
 	"foot*.", "bed*.", "farm*.", "herd*.", "cook*.", "craft*.", "swim*.", "bath*.",
-	"nurse*.", "formal*.", "shop*.", "magic*.",
+	"nurse*.", "formal*.", "shop*.", "magic*.", "sign*.",
 	// pregnant varients
 	"preg*.", "preganal*.", "pregbdsm*.", "pregsex*.", "pregbeast*.", "preggroup*.", "pregles*.",
 	"pregtorture*.", "pregdeath*.", "pregprofile*.", "pregcombat*.", "pregoral*.", "pregecchi*.",
 	"pregstrip*.", "pregmaid*.", "pregsing*.", "pregwait*.", "pregcard*.", "pregbunny*.", "pregnude*.",
 	"pregmast*.", "pregtitty*.", "pregmilk*.", "preghand*.", "pregfoot*.", "pregbed*.", "pregfarm*.",
 	"pregherd*.", "pregcook*.", "pregcraft*.", "pregswim*.", "pregbath*.", "pregnurse*.", "pregformal*.",
-	"pregshop*.", "pregmagic*."
+	"pregshop*.", "pregmagic*.", "pregsign*."
 };
 
 
@@ -8419,7 +8419,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		if (HasTrait(girl, "Sadist"))
 		{
 			if (g_Dice.percent(50)) message += " She prefers to be in charge, but the customer wouldn't have it.";
-			else /*              */	message += " She took charge for a while, which the customer enjoyed.";
+			else /*              */	message += " She took charge for awhile, which the customer enjoyed.";
 		}
 	}break;
 
@@ -13034,7 +13034,8 @@ void cGirls::HandleChildren(sGirl* girl, string& summary, bool PlayerControlled)
 bool cGirls::child_is_due(sGirl* girl, sChild *child, string& summary, bool PlayerControlled)
 {
 	if (child->m_MultiBirth < 1) child->m_MultiBirth = 1; // `J` fix old code
-	if (child->m_MultiBirth > 5) child->m_MultiBirth = 5; // `J` fix old code
+	if (child->m_MultiBirth > 5 && girl->carrying_human()) 
+		child->m_MultiBirth = 5; // `J` fix old code - maximum 5 human children - no max for beasts
 	/*
 	*	clock on the count and see if she's due
 	*	if not, return false (meaning "do not remove this child yet)
@@ -13269,21 +13270,89 @@ bool cGirls::child_is_due(sGirl* girl, sChild *child, string& summary, bool Play
 
 	if (PlayerControlled)
 	{
-		//summary += "Gave birth to a beast. ";
-		ss << "The creature within her has matured and emerged from her womb.\n";
-		if (g_Dice.percent(cfg.pregnancy.miscarriage_monster()))
+		int number = child->m_MultiBirth;
+		ss << "The ";
+		if (number > 1)	{ ss << number << " creatures within her have"; }
+		else { number = 1;	ss << "creature within her has"; }
+		ss << " matured and emerged from her womb.\n";
+
+		int died = 0; int add = 0; int sell = 0; long gold = 0;
+		for (int i = 0; i < number; i++)
 		{
-			girl->m_ChildrenCount[CHILD08_MISCARRIAGES]++;
-			ss << "Unfortunately it did not survive.";
-			healthFactor += 5;
+			if (g_Dice.percent(cfg.pregnancy.miscarriage_monster() + number - 1))	died++;		// some may die
+			else if (g_Dice.percent(child->m_Stats[STAT_BEAUTY]))					add++;		// keep the good looking ones
+			else if (g_Dice.percent(child->m_Stats[STAT_CONSTITUTION]))				add++;		// and the realy healthy ones
+			else sell++;																		// sell the rest
 		}
-		else
+		girl->m_ChildrenCount[CHILD01_ALL_BEASTS] += add + sell;
+		girl->m_ChildrenCount[CHILD08_MISCARRIAGES] += died;
+		if (died > 0)
 		{
-			girl->m_ChildrenCount[CHILD01_ALL_BEASTS]++;
-			long gold = tariff.creature_sales();
+			healthFactor += died;
+			if (died > 2) healthFactor += died;	// the more that died the worse off she will be
+		}
+		if (add > 0)
+		{
+			g_Brothels.add_to_beasts(add);
+		}
+		if (sell > 0)
+		{
+			gold = sell * tariff.creature_sales();
 			g_Gold.creature_sales(gold);
-			ss << "You make " << gold << " gold selling the creature.";
 		}
+
+		if (died > 0)
+		{
+			ss << "\nUnfortunately ";
+			if (add + sell < 1)
+			{ 
+				/* */if (died == 1)	ss << "it did not survive.";
+				else if (died == 2)	ss << "neither of them survived.";
+				else /*          */	ss << "none of them survived.";
+			}
+			else 
+			{ 
+				if (died == 1) ss << "one"; 
+				else ss << died; 
+				ss << " of them did not survive."; 
+			}
+		}
+
+		if (add > 0)
+		{
+			ss << "\n";
+			if (died + sell < 1)	// all added
+			{ 
+				if (add == 1) ss << "It was";
+				else ss << "They were " << (add == 2 ? "both" : "all");
+				ss << " added to your stable of beasts.";
+			}
+			else
+			{
+				if (add == 1) ss << "One of them was";
+				else ss << add << " of them were";
+				ss << " good enough to be added to your stable of beasts.";
+			}
+		}
+
+		if (sell > 0)
+		{
+			ss << "\n";
+			if (died + add < 1)	// all sold
+			{
+				if (sell == 1) ss << "It was";
+				else ss << "They were " << (sell ==2 ? "both" : "all");
+				ss << " sold for " << tariff.creature_sales() << "gold" << (sell > 1 ? " each" : "") << ".";
+			}
+			else
+			{
+				if (sell == 1) ss << "One of them was";
+				else ss << sell << " of them were";
+				ss << " sold for " << tariff.creature_sales() << " gold" << (sell > 1 ? " each" : "") << ".";
+			}
+			if (sell > 1) ss << "\nYou made " << int(gold) << " gold for selling " << (sell == 2 ? "both" : "all") << " of them.";
+		}
+
 		ss << "\n\nYou grant her the week off for her body to recover.";
 	}
 	girl->clear_pregnancy();
@@ -14222,6 +14291,7 @@ CSurface* cGirls::GetImageSurface(sGirl* girl, int ImgType, bool random, int& im
 	case IMGTYPE_PREGNANT:
 	case IMGTYPE_PROFILE:
 	case IMGTYPE_SHOP:
+	case IMGTYPE_SIGN:
 	default:
 		alttypes[0] = -1;
 		break;

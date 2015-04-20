@@ -2774,7 +2774,7 @@ void Gallery()
 	// `J` When modifying Image types, search for "J-Change-Image-Types"  :  found in >> InterfaceProcesses.cpp > Gallery
 	string galtxt[] = { "Anal", "BDSM", "Sex", "Beast", "Group", "Lesbian", "Torture", "Death", "Profile", "Combat",
 		"Oral", "Ecchi", "Strip", "Maid", "Sing", "Wait", "Card", "Bunny", "Nude", "Mast", "Titty", "Milk", "Hand",
-		"Foot", "Bed", "Farm", "Herd", "Cook", "Craft", "Swim", "Bath", "Nurse", "Formal", "Shop", "Magic",
+		"Foot", "Bed", "Farm", "Herd", "Cook", "Craft", "Swim", "Bath", "Nurse", "Formal", "Shop", "Magic", "Sign",
 		// pregnant varients
 		"Pregnant", "Pregnant\nAnal", "Pregnant\nBDSM", "Pregnant\nSex", "Pregnant\nBeast", "Pregnant\nGroup",
 		"Pregnant\nLesbian", "Pregnant\nTorture", "Pregnant\nDeath", "Pregnant\nProfile", "Pregnant\nCombat",
@@ -2782,7 +2782,7 @@ void Gallery()
 		"Pregnant\nCard", "Pregnant\nBunny", "Pregnant\nNude", "Pregnant\nMast", "Pregnant\nTitty", "Pregnant\nMilk",
 		"Pregnant\nHand", "Pregnant\nFoot", "Pregnant\nBed", "Pregnant\nFarm", "Pregnant\nHerd", "Pregnant\nCook",
 		"Pregnant\nCraft", "Pregnant\nSwim", "Pregnant\nBath", "Pregnant\nNurse", "Pregnant\nFormal", "Pregnant\nShop",
-		"Pregnant\nMagic" };
+		"Pregnant\nMagic","Pregnant\nSign" };
 	g_Gallery.EditTextItem(galtxt[Mode], g_interfaceid.TEXT_GALLERYTYPE);	// Set the text for gallery type
 
 	// Draw the image
@@ -2970,7 +2970,7 @@ void Gallery2()
 	// `J` When modifying Image types, search for "J-Change-Image-Types"  :  found in >> InterfaceProcesses.cpp > Gallery2
 	string galtxt[] = { "Anal", "BDSM", "Sex", "Beast", "Group", "Lesbian", "Torture", "Death", "Profile", "Combat",
 		"Oral", "Ecchi", "Strip", "Maid", "Sing", "Wait", "Card", "Bunny", "Nude", "Mast", "Titty", "Milk", "Hand",
-		"Foot", "Bed", "Farm", "Herd", "Cook", "Craft", "Swim", "Bath", "Nurse", "Formal", "Shop", "Magic",
+		"Foot", "Bed", "Farm", "Herd", "Cook", "Craft", "Swim", "Bath", "Nurse", "Formal", "Shop", "Magic", "Sign",
 		// pregnant varients
 		"Pregnant", "Pregnant\nAnal", "Pregnant\nBDSM", "Pregnant\nSex", "Pregnant\nBeast", "Pregnant\nGroup",
 		"Pregnant\nLesbian", "Pregnant\nTorture", "Pregnant\nDeath", "Pregnant\nProfile", "Pregnant\nCombat",
@@ -2978,7 +2978,7 @@ void Gallery2()
 		"Pregnant\nCard", "Pregnant\nBunny", "Pregnant\nNude", "Pregnant\nMast", "Pregnant\nTitty", "Pregnant\nMilk",
 		"Pregnant\nHand", "Pregnant\nFoot", "Pregnant\nBed", "Pregnant\nFarm", "Pregnant\nHerd", "Pregnant\nCook",
 		"Pregnant\nCraft", "Pregnant\nSwim", "Pregnant\nBath", "Pregnant\nNurse", "Pregnant\nFormal", "Pregnant\nShop",
-		"Pregnant\nMagic" };
+		"Pregnant\nMagic", "Pregnant\nSign" };
 	g_Gallery.EditTextItem(galtxt[Mode], g_interfaceid.TEXT_GALLERYTYPE);	// Set the text for gallery type
 
 

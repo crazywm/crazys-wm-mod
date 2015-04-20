@@ -489,7 +489,7 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 	g_Girls.PossiblyGainNewTrait(girl, "Charming", 70, actiontype, girlName + " has been flirting with customers to try to get better tips. Enough practice at it has made her quite Charming.", Day0Night1);
 	if (jobperformance > 150 && g_Girls.GetStat(girl, STAT_CONSTITUTION) > 65)
 	{
-		g_Girls.PossiblyGainNewTrait(girl, "Fleet of Foot", 60, actiontype, girlName + " has been dodging bewteen tables and avoiding running into customers for so long she has become Fleet of Foot.", Day0Night1);
+		g_Girls.PossiblyGainNewTrait(girl, "Fleet of Foot", 60, actiontype, girlName + " has been dodging between tables and avoiding running into customers for so long she has become Fleet of Foot.", Day0Night1);
 	}
 
 	//lose traits

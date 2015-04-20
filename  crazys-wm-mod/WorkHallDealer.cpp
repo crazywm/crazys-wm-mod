@@ -83,7 +83,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 			jobperformance += 5;
 		}
 	}
-	if (girl->is_addict() && g_Dice.percent(20))
+	if (girl->is_addict(true) && g_Dice.percent(20))
 	{
 		ss << "\nNoticing her addiction, a customer offered her drugs. She accepted, and had an awful day at the card table.\n";
 		if (g_Girls.HasTrait(girl, "Shroud Addict"))

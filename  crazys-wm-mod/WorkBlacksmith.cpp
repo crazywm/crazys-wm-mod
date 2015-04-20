@@ -58,6 +58,14 @@ bool cJobManager::WorkBlacksmith(sGirl* girl, sBrothel* brothel, bool Day0Night1
 
 	double jobperformance = JP_Blacksmith(girl, false);
 	double craftpoints = jobperformance;
+	
+	int dirtyloss = brothel->m_Filthiness / 10;		// craftpoints lost due to repairing equipment
+	if (dirtyloss > 0)
+	{
+		craftpoints -= dirtyloss * 2;
+		brothel->m_Filthiness -= dirtyloss;
+		ss << "She spent some of her time repairing the Arena's equipment instead of making new stuff.\n";
+	}
 
 	if (jobperformance >= 245)
 	{
@@ -90,8 +98,8 @@ bool cJobManager::WorkBlacksmith(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		craftpoints *= 0.4;
 	}
 	ss << "\n\n";
-	int tired = (300 - (int)jobperformance);
 
+	int tired = (300 - (int)jobperformance);	// this gets divided in roll_a by (8, 10 or 12) so it will end up around 0-40 tired
 	if (roll_a <= 10)
 	{
 		tired /= 8;
@@ -103,12 +111,16 @@ bool cJobManager::WorkBlacksmith(sGirl* girl, sBrothel* brothel, bool Day0Night1
 			if (girl->magic() > 50 && girl->mana() > 20)
 			{
 				girl->mana(-10 - (g_Dice % 10));
-				ss << "While trying to enchant an item the magic rebounded on her";
+				ss << "While trying to enchant an item, the magic rebounded on her";
 			}
 			else
 				ss << "She burnt herself in the heat of the forge";
 			if (girl->health() <= 0)
+			{
 				ss << " killing her.";
+				g_MessageQue.AddToQue(girlName + " was killed in an accident while working as a Blacksmith at the Arena.", COLOR_RED);
+				return false;	// not refusing, she is dead
+			}
 			else ss << ".";
 		}
 		else if (roll_b < 60)	// fire
@@ -116,11 +128,14 @@ bool cJobManager::WorkBlacksmith(sGirl* girl, sBrothel* brothel, bool Day0Night1
 			int fire = max(0, g_Dice.bell(-2, 10));
 			brothel->m_Filthiness += fire * 2;
 			craftpoints -= (craftpoints * (fire * 0.1));
+			if (girl->pcfear() > 20) girl->pcfear(fire / 2);	// she is afraid you will get mad at her
 			ss << "She accidently started a fire";
 			/* */if (fire < 3)	ss << " but it was quickly put out.";
 			else if (fire < 6)	ss << " that destroyed several racks of equipment.";
 			else if (fire < 10)	ss << " that destroyed most of the equipment she had made.";
 			else /*          */	ss << " destroying everything she had made.";
+
+			if (fire > 5) g_MessageQue.AddToQue(girlName + " accidently started a large fire while working as a Blacksmith at the Arena.", COLOR_RED);
 		}
 		else	// unhappy
 		{

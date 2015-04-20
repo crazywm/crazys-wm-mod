@@ -387,11 +387,11 @@ bool cJobManager::WorkHallWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 			{
 				if (g_Dice.percent(50))
 				{
-					message += "Learning that she was your wife the customer tosses some extra gold down saying no husband should do this to there wife.\n";
+					message += "Learning that she was your wife the customer tosses some extra gold down saying no husband should do this to their wife.\n";
 				}
 				else
 				{
-					message += "A smile crossed the customer's face upon learning that she is your wife and they threw some extra gold down. They seem to enjoy the thought of fucking the bosse's wife.\n";
+					message += "A smile crossed the customer's face upon learning that she is your wife and they threw some extra gold down. They seem to enjoy the thought of fucking the boss's wife.\n";
 				}
 				Cust.m_Money -= 20;
 				girl->m_Tips += 20;

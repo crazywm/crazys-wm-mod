@@ -3560,7 +3560,8 @@ void cBrothelManager::DepositInBank(long amount)
 double cBrothelManager::calc_pilfering(sGirl *girl)
 {
 	double factor = 0.0;
-	if (girl->is_addict() && girl->m_Money < 100) factor += 0.2;				// on top of all other factors, an addict will steal to feed her habit
+	if (girl->is_addict() && girl->m_Money < 100)			// on top of all other factors, an addict will steal to feed her habit
+		factor += (girl->is_addict(true) ? 0.5 : 0.1);		// hard drugs will make her steal more
 	// let's work out what if she is going steal anything
 	if (girl->pclove() >= 50 || girl->obedience() >= 50) return factor;			// love or obedience will keep her honest
 	if (girl->pcfear() > girl->pchate()) return factor;							// if her fear is greater than her hate, she won't dare steal

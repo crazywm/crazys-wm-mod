@@ -298,14 +298,13 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 	//	}
 	//}
 
-	if (girl->is_addict() && !sex && !mast && g_Dice.percent(60)) //not going to get money or drugs any other way
+	if (girl->is_addict(true) && !sex && !mast && g_Dice.percent(60)) //not going to get money or drugs any other way
 	{
 		string warning = "Noticing her addiction, a customer offered her drugs for a blowjob. She accepted, taking him out of sight of security and sucking him off for no money.\n";
 		ss << "\n" << warning << "\n";
 		if (g_Girls.HasTrait(girl, "Shroud Addict"))		g_Girls.AddInv(girl, g_InvManager.GetItem("Shroud Mushroom"));
 		if (g_Girls.HasTrait(girl, "Fairy Dust Addict"))	g_Girls.AddInv(girl, g_InvManager.GetItem("Fairy Dust"));
 		if (g_Girls.HasTrait(girl, "Viras Blood Addict"))	g_Girls.AddInv(girl, g_InvManager.GetItem("Vira Blood"));
-		if (g_Girls.HasTrait(girl, "Alcoholic"))			g_Girls.AddInv(girl, g_InvManager.GetItem("Alcohol "));
 		girl->m_Events.AddMessage(warning, IMGTYPE_ORAL, EVENT_WARNING);
 	}
 

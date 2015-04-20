@@ -707,11 +707,17 @@ struct sGirl
 	void add_trait(string trait, int temptime = 0)	{ g_GirlsPtr->AddTrait(this, trait, temptime); }
 	void remove_trait(string trait)					{ g_GirlsPtr->RemoveTrait(this, trait); }
 	bool has_trait(string trait)					{ return g_GirlsPtr->HasTrait(this, trait); }
-	bool is_addict()
+	bool is_addict(bool onlyhard = false)	// `J` added bool onlyhard to allow only hard drugs to be checked for
 	{
+		if (onlyhard)
+		{
+			return	has_trait("Shroud Addict") ||
+				has_trait("Fairy Dust Addict") ||
+				has_trait("Viras Blood Addict");
+		}
 		return	has_trait("Shroud Addict") ||
-			has_trait("Smoker") ||
 			has_trait("Fairy Dust Addict") ||
+			has_trait("Smoker") ||
 			has_trait("Alcoholic") ||
 			has_trait("Cum Addict") ||
 			has_trait("Viras Blood Addict");

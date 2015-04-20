@@ -89,8 +89,6 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 	if (g_Dice % 2 != 1)	// half of the time she will just stay home and rest
 	{
-#if 1	// `J` try a different way of choosing what to do
-
 		/*	First we give her all the possible choices in the freetimechoice enum
 		*	start each name with "FT_"
 		*	Don't assign anything to the names, the enum will do that for you.
@@ -137,9 +135,9 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		int choice = 0;	bool choicemade = false;
 
 #if 0	// change this to 1 and add your choice to debug a choice
-		
+
 		choice = FT_ClinicVisit;
-		choicemade=true;
+		choicemade = true;
 #endif
 
 		while (!choicemade)
@@ -150,7 +148,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				choice = FT_ClinicCheckup;
 				choicemade = true;
 			}
-			else if (girl->is_addict() && girl->happiness() < 80)
+			else if (girl->is_addict(true) && girl->happiness() < 80)	// `J` changed it so only hard drugs will trigger this
 			{
 				choice = FT_BuyDrugs;
 				choicemade = true;
@@ -163,7 +161,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				choice = g_Dice % FT_NumberOfFreeTimeChoices;	// randomly choose from all of the choices
 				switch (choice)
 				{
-				// these don't need a test
+					// these don't need a test
 				case FT_Bath:
 				case FT_Bed:
 				case FT_Church:
@@ -236,13 +234,13 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					// if she can not afford it, reroll.
 					break;
 
-				//case FT_GoOnDate:
-				//	if (g_Girls.HasTrait(girl, "Has Boy Friend") || g_Girls.HasTrait(girl, "Has Girl Friend"))
-				//	{
-				//		choicemade = true;	// Doesn't need money
-				//	}
-				//	// if she dont have one, reroll.
-				//	break;
+					//case FT_GoOnDate:
+					//	if (g_Girls.HasTrait(girl, "Has Boy Friend") || g_Girls.HasTrait(girl, "Has Girl Friend"))
+					//	{
+					//		choicemade = true;	// Doesn't need money
+					//	}
+					//	// if she dont have one, reroll.
+					//	break;
 
 
 					// These are not ready so reroll.
@@ -253,9 +251,9 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				case FT_Hobby:
 				case FT_Counseling:
 				case FT_WatchFights:
-				case FT_StrollInCity:	
-				case FT_Casino:			
-				case FT_CountrySide:	
+				case FT_StrollInCity:
+				case FT_Casino:
+				case FT_CountrySide:
 				case FT_GoOnDate:
 					break;
 
@@ -1073,7 +1071,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				ss << "Before the show was over " << girlName << " had thrown all her clothes on stage and was now walking around naked.\n";
 				imagetype = IMGTYPE_NUDE; invite = true;
 			}
-			if (girl->is_addict() && g_Dice.percent(20)) //may have to change this to the traits instead of the addict as only those 3 should trigger it.  zzzzz FIXME CRAZY
+			if (girl->is_addict(true) && g_Dice.percent(20)) //may have to change this to the traits instead of the addict as only those 3 should trigger it.  zzzzz FIXME CRAZY
 			{
 				ss << "\nNoticing her addiction, someone offered her some drugs. She accepted, and got baked for the concert.\n";
 				if (g_Girls.HasTrait(girl, "Shroud Addict"))
@@ -1089,9 +1087,9 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					g_Girls.AddInv(girl, g_InvManager.GetItem("Vira Blood"));
 				}
 				/* May added in a sex event here where they try to take advatage of the high girl*/
-				if (g_Dice.percent(10) && g_Girls.GetStat(girl, STAT_BEAUTY) > 85) && !g_Girls.HasTrait(girl, "Virgin"))
+				if (g_Dice.percent(10) && g_Girls.GetStat(girl, STAT_BEAUTY) > 85 && !g_Girls.HasTrait(girl, "Virgin"))
 				{
-					ss << "After noticing her great beauty and the fact that she is baked a group of guys take her off alone somewhere and have there way with her.\n";
+					ss << "After noticing her great beauty and the fact that she is baked, a group of guys take her off alone somewhere and have their way with her.\n";
 					imagetype = IMGTYPE_GROUP;
 				}
 			}
@@ -1121,19 +1119,19 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					ss << girlName << " accepted with great joy.\n"; U_Happiness += 5;
 					/* add anything from them trying to have sex with her to just talking*/
 					if (g_Dice.percent(10) && !g_Girls.HasTrait(girl, "Virgin"))
+					{
+						ss << "After talking for awhile they asked if she wanted to have sex with them. ";
+						if (g_Girls.GetStat(girl, STAT_LIBIDO) >= 70)
 						{
-							ss << "After talking for a awhile they asked if she wanted to have sex with them. ";
-							if (g_Girls.GetStat(girl, STAT_LIBIDO) >= 70)
-							{
-								ss << "As she was in the mood and loved the show she agreed and spent many hours pleasing the band.\n";
-								imagetype = IMGTYPE_GROUP;
-							}
-							else
-							{
-								ss << "Not in the mood she declined and returned home.\n";
-							}
-							
+							ss << "As she was in the mood and loved the show, she agreed and spent many hours pleasing the band.\n";
+							imagetype = IMGTYPE_GROUP;
 						}
+						else
+						{
+							ss << "Not in the mood she declined and returned home.\n";
+						}
+
+					}
 					else
 					{
 						ss << "They talked for a few hours about many things. She left late then she normally would have very happy with the show.\n";
@@ -1151,26 +1149,26 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 						/* add anything from them trying to have sex with her to just talking*/
 						if (g_Dice.percent(10) && !g_Girls.HasTrait(girl, "Virgin"))
 						{
-							ss << "After talking for a awhile they asked if she wanted to have sex with them. ";
-							if (g_Girls.GetStat(girl, STAT_LIBIDO) >= 70)
+							ss << "After talking for awhile they asked if she wanted to have sex with them. ";
+							if (g_Girls.GetStat(girl, STAT_LIBIDO) >= 50)
 							{
-								ss << "As she was in the mood and enjoyed the show she agreed to have sex with the ";
-								if (roll_b >= 80 )
+								ss << "As she was in the mood and enjoyed the show, she agreed to have sex with the ";
+								if (roll_b >= 80)
 								{
 									ss << "lead singer.";
 									imagetype = IMGTYPE_SEX;
 								}
-								else if (roll_b >= 60 )
+								else if (roll_b >= 60)
 								{
 									ss << "lead guitarist.";
 									imagetype = IMGTYPE_SEX;
 								}
-								else if (roll_b >= 40 )
+								else if (roll_b >= 40)
 								{
 									ss << "drummer.";
 									imagetype = IMGTYPE_SEX;
 								}
-								else if (roll_b >= 40 )
+								else if (roll_b >= 40)
 								{
 									ss << "bass player.";
 									imagetype = IMGTYPE_SEX;
@@ -1185,12 +1183,12 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 							{
 								ss << "Not in the mood she declined and returned home.\n";
 							}
-							
+
 						}
-					else
-					{
-						ss << "They talked for a few hours about many things. She left late then she normally would have very happy with the show.\n";
-					}
+						else
+						{
+							ss << "They talked for a few hours about many things. She left later then she normally would have, very happy with the show.\n";
+						}
 					}
 				}
 			}
@@ -1257,16 +1255,16 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 		case FT_Hobby:
 			/*{
-				ss << girlName << " decided to do something she really enjoys so she ";
-				if (g_Girls.HasTrait(girl, "Nymphomaniac") && g_Girls.GetStat(girl, STAT_LIBIDO) > 80)
-				{
-				ss << " went out looking to get laid.\n";
-				}
-				else if (g_Girls.HasTrait(girl, "Nerd"))
-				{
-				ss << " stayed inside and read a book.\n";
-				}
-				}*/
+			ss << girlName << " decided to do something she really enjoys so she ";
+			if (g_Girls.HasTrait(girl, "Nymphomaniac") && g_Girls.GetStat(girl, STAT_LIBIDO) > 80)
+			{
+			ss << " went out looking to get laid.\n";
+			}
+			else if (g_Girls.HasTrait(girl, "Nerd"))
+			{
+			ss << " stayed inside and read a book.\n";
+			}
+			}*/
 			break;	// end FT_Hobby
 
 		case FT_Counseling:
@@ -1350,14 +1348,14 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		case FT_GoOnDate:
 		{
 			ss << girlName << " went on a date with a her ";
-				if (g_Girls.HasTrait(girl, "Has Boy Friend"))
-					{
-						ss << "boy friend.";
-					}
-				else if (g_Girls.HasTrait(girl, "Has Girl Friend"))
-					{
-						ss << "girl friend.";
-					}
+			if (g_Girls.HasTrait(girl, "Has Boy Friend"))
+			{
+				ss << "boy friend.";
+			}
+			else if (g_Girls.HasTrait(girl, "Has Girl Friend"))
+			{
+				ss << "girl friend.";
+			}
 			if (g_Girls.GetStat(girl, STAT_NPCLOVE) > 80)
 			{
 			}
@@ -1387,240 +1385,6 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		}
 
 		// `J` end of the line
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#else
-
-		int v[2] = { -1, -1 };
-		girl->m_Triggers.CheckForScript(TRIGGER_SHOPPING, true, v);	// check for and trigger shopping scripts
-
-		if (girl->m_Money < 1 || girl->m_NumInventory >= 40)
-		{
-			//add country side, casino, stroll in the city, go watch a fight at the arena
-
-			// `CRAZY` This is things she can explore on a quest
-			/*default*/	int adv_type = 1;    string adv_type_text = "a cave";
-			/* */if (roll_b <= 20)	{ adv_type = 4; adv_type_text = "the local forest"; }
-			else if (roll_b <= 40)	{ adv_type = 3; adv_type_text = "the country side"; }
-			else if (roll_b <= 60)	{ adv_type = 2; adv_type_text = "an old temple"; }
-			else if (roll_b >= 80)	{ adv_type = 0; adv_type_text = "a local mountain"; }
-
-
-
-			if (quest) //this may just turn into a job.. hate to have a girl get hurt when on free time
-			{
-				if (g_Girls.HasTrait(girl, "Adventurer"))
-				{
-					message += girlName + " went out on a quest to explore " + adv_type_text + ".\n";
-					if (roll_b <= 20) //forest
-					{
-					}
-					else if (roll_b <= 40) //country side
-					{
-					}
-					else if (roll_b <= 60) //old temple
-					{
-					}
-					else if (roll_b <= 80) //cave
-					{
-					}
-					else //mountain
-					{
-					}
-				}
-
-		// 1. if she is addicted she will first attempt to purchase drugs until she has no money
-		if (g_Girls.HasTrait(girl, "Viras Blood Addict"))
-			AddictBuysDrugs("Viras Blood Addict", "Viras Blood", girl, brothel, Day0Night1);
-
-		if (g_Girls.HasTrait(girl, "Fairy Dust Addict"))
-			AddictBuysDrugs("Fairy Dust Addict", "Fairy Dust", girl, brothel, Day0Night1);
-
-		if (g_Girls.HasTrait(girl, "Shroud Addict"))
-			AddictBuysDrugs("Shroud Addict", "Shroud Mushroom", girl, brothel, Day0Night1);
-
-		if (girl->m_Money == 0 || girl->m_NumInventory == 40)
-		{
-			girl->m_Events.AddMessage(message, imagetype, Day0Night1);
-			return false;
-		}
-
-		// 2. buy any items that catch her fancy
-		int numberToBuy = g_Dice % 5;	// buy up to 10 things  MYR: Reduced to 5 to cut down on inventory clutter
-		int itemsBought = 0;
-		string buyList = "";
-
-		for (int i = 0; i < numberToBuy && girl->m_NumInventory < 40; i++)
-		{
-			int item = g_InvManager.GetRandomShopItem();
-			int cost = g_InvManager.GetShopItem(item)->m_Cost;
-			string itemName = g_InvManager.GetShopItem(item)->m_Name;
-
-			if (g_Girls.HasItem(girl, itemName) > -1)
-				continue;
-			if (girl->m_Money - cost < 0)
-				continue;
-
-			if (g_Dice.percent(g_InvManager.GetShopItem(item)->m_GirlBuyChance))
-			{
-				int chance = (g_Dice.d100());
-				switch ((int)g_InvManager.GetShopItem(item)->m_Type)
-				{
-				case INVRING:
-				{
-					// Third argument to GirlBuyITem is the max # of the item type (ring, dress, etc...) they 
-					// should have (Max. 8 rings, max 1 dress, etc...)
-					if (g_InvManager.GirlBuyItem(girl, item, 8, true))
-					{
-						buyList += ((buyList == "") ? "" : ", ") + itemName;
-						itemsBought++;
-					}
-				}
-				break;
-
-				case INVDRESS:
-				{
-					if (g_InvManager.GirlBuyItem(girl, item, 1, true))
-					{
-						buyList += ((buyList == "") ? "" : ", ") + itemName;
-						itemsBought++;
-					}
-				}
-				break;
-
-				case INVUNDERWEAR:
-				{
-					if (g_InvManager.GirlBuyItem(girl, item, 1, true))
-					{
-						buyList += ((buyList == "") ? "" : ", ") + itemName;
-						itemsBought++;
-					}
-				}
-				break;
-
-				case INVSHOES:
-				{
-					if (g_InvManager.GirlBuyItem(girl, item, 1, true))
-					{
-						buyList += ((buyList == "") ? "" : ", ") + itemName;
-						itemsBought++;
-					}
-				}
-				break;
-
-				case INVFOOD:
-				{
-					if (g_InvManager.GirlBuyItem(girl, item, 15, false))
-					{
-						buyList += ((buyList == "") ? "" : ", ") + itemName;
-						itemsBought++;
-					}
-				}
-				break;
-
-				case INVNECKLACE:
-				{
-					if (g_InvManager.GirlBuyItem(girl, item, 1, true))
-					{
-						buyList += ((buyList == "") ? "" : ", ") + itemName;
-						itemsBought++;
-					}
-				}
-				break;
-
-				case INVWEAPON:
-				{
-					// if she isn't a warrior type she probably won't buy it
-					if (!g_Girls.HasTrait(girl, "Adventurer") && !g_Girls.HasTrait(girl, "Assassin") && (girl->combat() < chance))
-						break;
-
-					if (g_InvManager.GirlBuyItem(girl, item, 1, true))
-					{
-						buyList += ((buyList == "") ? "" : ", ") + itemName;
-						itemsBought++;
-					}
-				}
-				break;
-
-				case INVSMWEAPON:
-				{
-					if (g_InvManager.GirlBuyItem(girl, item, 2, true))
-					{
-						buyList += ((buyList == "") ? "" : ", ") + itemName;
-						itemsBought++;
-					}
-				}
-				break;
-
-				case INVMAKEUP:
-				{
-					if (g_InvManager.GirlBuyItem(girl, item, 15, false))
-					{
-						buyList += ((buyList == "") ? "" : ", ") + itemName;
-						itemsBought++;
-					}
-				}
-				break;
-
-				case INVARMOR:
-				{
-					// if she isn't a warrior type she probably won't buy it
-					if (!g_Girls.HasTrait(girl, "Adventurer") && !g_Girls.HasTrait(girl, "Assassin") && (girl->combat() < chance))
-						break;
-
-					if (g_InvManager.GirlBuyItem(girl, item, 1, true))
-					{
-						buyList += ((buyList == "") ? "" : ", ") + itemName;
-						itemsBought++;
-					}
-				}
-				break;
-
-				case INVMISC:
-				{
-					if (g_InvManager.GirlBuyItem(girl, item, 15, false))
-					{
-						buyList += ((buyList == "") ? "" : ", ") + itemName;
-						itemsBought++;
-					}
-				}
-				break;
-
-				case INVARMBAND:
-				{
-					if (g_InvManager.GirlBuyItem(girl, item, 2, true))
-					{
-						buyList += ((buyList == "") ? "" : ", ") + itemName;
-						itemsBought++;
-					}
-				}
-				break;
-				} // Switch
-			}     // if buy
-		}         // for # buy chances
-
-		if (itemsBought > 0)
-		{
-			g_Girls.UpdateStat(girl, STAT_HAPPINESS, 5 + (itemsBought * 2));
-			message += gettext(" She did some shopping, and bought: ") + buyList + ".";
-			imagetype = IMGTYPE_SHOP;
-		}
-
-		ss << message;
-
-#endif
 	}
 	// `J` only add a new message if something new was done.
 	if (ss.str().length() > 0) girl->m_Events.AddMessage(ss.str(), imagetype, Day0Night1);

@@ -538,7 +538,7 @@ const int IMGTYPE_NURSE		= 31;
 const int IMGTYPE_FORMAL	= 32;
 const int IMGTYPE_SHOP		= 33;
 const int IMGTYPE_MAGIC		= 34;
-const int IMGTYPE_SIGN		= 35;	//Going be used for advertisigin
+const int IMGTYPE_SIGN		= 35;	//Going be used for advertising
 const int IMGTYPE_PREGNANT	= 36;	// IMGTYPE_PREGNANT needs to be the last of the nonpregnant image types.
 
 /*

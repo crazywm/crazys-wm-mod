@@ -71,7 +71,7 @@ bool cJobManager::WorkFilmHandJob(sGirl* girl, sBrothel* brothel, bool Day0Night
 		return true;
 	}
 	else if (roll <= 10) { enjoy -= g_Dice % 3 + 1;	ss << "She used her hand on his cock, but didn't like it.\n\n"; }
-	else if (roll >= 90) { enjoy += g_Dice % 3 + 1;	ss << "She loved having his cock slide bewteen her hands.\n\n"; }
+	else if (roll >= 90) { enjoy += g_Dice % 3 + 1;	ss << "She loved having his cock slide between her hands.\n\n"; }
 	else /*            */{ enjoy += g_Dice % 2;		ss << "She had a pleasant day using her hands to get her co-star off.\n\n"; }
 	jobperformance = enjoy * 2;
 

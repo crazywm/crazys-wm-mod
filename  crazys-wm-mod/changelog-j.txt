@@ -2015,22 +2015,34 @@ Added Craftable to most Small Weapons and a few other items.
 WME - Added Craftable section to items.
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 
+###  Changes 4/20/2015
+Crazy - added several new traits and updated several jobs.
+Corrected some typeos.
+Added "bool is_addict(bool onlyhard = false)" 
+ - So you can check only for hard drugs "girl->is_addict(true)" (Shroud, Fairy Dust, Viras Blood)
+ - Or for any addiction "girl->is_addict() or (false)"
+Added multibirth to inseminated births, some die, some are sold and some can be added to beasts.
+Added more to Blacksmith job
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
 
 
 
 
+$$$$ NOTE TO SELF - When updating items to recalculate stats/skills when loading girls - don't modify temp stuff $$$$
 
-
- 
 $$$$ TO DO - SHORT TERM - (for this version) $$$$
 Add "Sell All" and similar buttons to inventory screen
-
+Make jobs load and save by name instead of number so adding new jobs will not break save games.
 Keep expanding on simple-save
 food and drink
 
 
 $$$$ TO DO - MID TERM - (for the next few versions) $$$$
 Make config in_fact and out_fact do something
+
+Change the way the game handles images
+ - Instead of loading them all when the game loads, load them when they are needed.
+
 
 New Script Stuff:
  - Picture_Sequence     -- needs image rework before it can be implemented
@@ -2051,7 +2063,6 @@ New Meet Try for the buildings that don't have them
 
 
 
-$$$$ NOTE TO SELF - When updating items to recalculate stats/skills when loading girls - don't modify temp stuff $$$$
 
 
 $$$$ TO DO - LONG TERM $$$$

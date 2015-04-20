@@ -74,7 +74,9 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 		}
 		else
 		{
-			wages += 35; brothel->m_Happiness += 5; ss << girlName << "'s Maid Uniform didn't do much for most of the patrons, but a few of them seemed to really like it and tipped her extra.\n\n";
+			wages += 35; 
+			brothel->m_Happiness += 5; 
+			ss << girlName << "'s Maid Uniform didn't do much for most of the patrons, but a few of them seemed to really like it and tipped her extra.\n\n";
 		}
 	}
 
