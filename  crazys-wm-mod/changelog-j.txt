@@ -1988,6 +1988,7 @@ Cleanup of some image handling files
 Added pregnancy to PAccom
 Fixed a bug with items in PAccom
 
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.19
  
 ###  Changes 4/15-17/2015 - Nothing done on the game, I played it a bit to see what needs to be added/modified.
@@ -2004,10 +2005,15 @@ Updated several jobs
 !!! Removed the .sdf files from GitHub to speed up pushes and pulls
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 
+Updated WorkAdvertising
 
+###  Changes 4/19/2015
+Added Blacksmith job to Arena.
+Adding Craftable section to items.
+Added Craftable to most Small Weapons and a few other items.
 
-
-
+WME - Added Craftable section to items.
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
 
 
 
@@ -2017,6 +2023,8 @@ Updated several jobs
 
  
 $$$$ TO DO - SHORT TERM - (for this version) $$$$
+Add "Sell All" and similar buttons to inventory screen
+
 Keep expanding on simple-save
 food and drink
 

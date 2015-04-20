@@ -409,6 +409,24 @@
             this.label26 = new System.Windows.Forms.Label();
             this.nameRTBox1 = new System.Windows.Forms.TextBox();
             this.tabPage3_Items = new System.Windows.Forms.TabPage();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label210 = new System.Windows.Forms.Label();
+            this.comboBox_Item_Craftable = new System.Windows.Forms.ComboBox();
+            this.textBox_Item_Craft_Points = new System.Windows.Forms.TextBox();
+            this.textBox_Item_Craft_Magic = new System.Windows.Forms.TextBox();
+            this.textBox_Item_Craft_Strength = new System.Windows.Forms.TextBox();
+            this.textBox_Item_Craft_Level = new System.Windows.Forms.TextBox();
+            this.textBox_Item_Craft_Craft = new System.Windows.Forms.TextBox();
+            this.textBox_Item_Craft_Intelligence = new System.Windows.Forms.TextBox();
+            this.label208 = new System.Windows.Forms.Label();
+            this.label209 = new System.Windows.Forms.Label();
+            this.label207 = new System.Windows.Forms.Label();
+            this.label191 = new System.Windows.Forms.Label();
+            this.label187 = new System.Windows.Forms.Label();
+            this.label206 = new System.Windows.Forms.Label();
+            this.comboBox_Rarity_05 = new System.Windows.Forms.ComboBox();
+            this.comboBox_ItemType_01 = new System.Windows.Forms.ComboBox();
+            this.comboBox_ItemDuration = new System.Windows.Forms.ComboBox();
             this.label189 = new System.Windows.Forms.Label();
             this.label188 = new System.Windows.Forms.Label();
             this.textBox_Item_Weight = new System.Windows.Forms.TextBox();
@@ -423,7 +441,6 @@
             this.button_ItemLoad = new System.Windows.Forms.Button();
             this.button_ItemDelete = new System.Windows.Forms.Button();
             this.label84 = new System.Windows.Forms.Label();
-            this.comboBox_ItemDuration = new System.Windows.Forms.ComboBox();
             this.button_Reset_Item = new System.Windows.Forms.Button();
             this.button_Update_Selected_Item = new System.Windows.Forms.Button();
             this.button_Add_Item_To_List = new System.Windows.Forms.Button();
@@ -452,14 +469,12 @@
             this.comboBox_affects_01 = new System.Windows.Forms.ComboBox();
             this.label80 = new System.Windows.Forms.Label();
             this.checkBox_infinite_06 = new System.Windows.Forms.CheckBox();
-            this.comboBox_Rarity_05 = new System.Windows.Forms.ComboBox();
             this.label79 = new System.Windows.Forms.Label();
             this.textBox_Item_Cost = new System.Windows.Forms.TextBox();
             this.label78 = new System.Windows.Forms.Label();
             this.lTrack1 = new System.Windows.Forms.Label();
             this.trackBar_bad_02 = new System.Windows.Forms.TrackBar();
             this.label77 = new System.Windows.Forms.Label();
-            this.comboBox_ItemType_01 = new System.Windows.Forms.ComboBox();
             this.label76 = new System.Windows.Forms.Label();
             this.textBox_ItemDesc = new System.Windows.Forms.TextBox();
             this.label75 = new System.Windows.Forms.Label();
@@ -696,6 +711,12 @@
             this.button_Script_Clear = new System.Windows.Forms.Button();
             this.label_Script_Path = new System.Windows.Forms.Label();
             this.dataGridView_Scripts = new System.Windows.Forms.DataGridView();
+            this.Script_ActionNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Script_Var = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Script_Text = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label_Script = new System.Windows.Forms.Label();
             this.button_Script_Load = new System.Windows.Forms.Button();
             this.tabPage7_FAQ = new System.Windows.Forms.TabPage();
@@ -726,12 +747,6 @@
             this.button24 = new System.Windows.Forms.Button();
             this.checkBox_ToggleTraitTooltips = new System.Windows.Forms.CheckBox();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.Script_ActionNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Script_Var = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Script_Text = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabControl1.SuspendLayout();
             this.tabPage0_Info.SuspendLayout();
             this.tabPage1_Girls.SuspendLayout();
@@ -755,6 +770,7 @@
             this.groupBox7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tabPage3_Items.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.groupBox11.SuspendLayout();
             this.groupBox10.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).BeginInit();
@@ -5134,6 +5150,10 @@
             // 
             // tabPage3_Items
             // 
+            this.tabPage3_Items.Controls.Add(this.groupBox1);
+            this.tabPage3_Items.Controls.Add(this.comboBox_Rarity_05);
+            this.tabPage3_Items.Controls.Add(this.comboBox_ItemType_01);
+            this.tabPage3_Items.Controls.Add(this.comboBox_ItemDuration);
             this.tabPage3_Items.Controls.Add(this.label189);
             this.tabPage3_Items.Controls.Add(this.label188);
             this.tabPage3_Items.Controls.Add(this.textBox_Item_Weight);
@@ -5143,21 +5163,18 @@
             this.tabPage3_Items.Controls.Add(this.textBox_Item_GirlBuyChance);
             this.tabPage3_Items.Controls.Add(this.groupBox11);
             this.tabPage3_Items.Controls.Add(this.label84);
-            this.tabPage3_Items.Controls.Add(this.comboBox_ItemDuration);
             this.tabPage3_Items.Controls.Add(this.button_Reset_Item);
             this.tabPage3_Items.Controls.Add(this.button_Update_Selected_Item);
             this.tabPage3_Items.Controls.Add(this.button_Add_Item_To_List);
             this.tabPage3_Items.Controls.Add(this.groupBox10);
             this.tabPage3_Items.Controls.Add(this.groupBox9);
             this.tabPage3_Items.Controls.Add(this.checkBox_infinite_06);
-            this.tabPage3_Items.Controls.Add(this.comboBox_Rarity_05);
             this.tabPage3_Items.Controls.Add(this.label79);
             this.tabPage3_Items.Controls.Add(this.textBox_Item_Cost);
             this.tabPage3_Items.Controls.Add(this.label78);
             this.tabPage3_Items.Controls.Add(this.lTrack1);
             this.tabPage3_Items.Controls.Add(this.trackBar_bad_02);
             this.tabPage3_Items.Controls.Add(this.label77);
-            this.tabPage3_Items.Controls.Add(this.comboBox_ItemType_01);
             this.tabPage3_Items.Controls.Add(this.label76);
             this.tabPage3_Items.Controls.Add(this.textBox_ItemDesc);
             this.tabPage3_Items.Controls.Add(this.label75);
@@ -5171,32 +5188,266 @@
             this.tabPage3_Items.Text = "  Items  ";
             this.tabPage3_Items.UseVisualStyleBackColor = true;
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.label210);
+            this.groupBox1.Controls.Add(this.comboBox_Item_Craftable);
+            this.groupBox1.Controls.Add(this.textBox_Item_Craft_Points);
+            this.groupBox1.Controls.Add(this.textBox_Item_Craft_Magic);
+            this.groupBox1.Controls.Add(this.textBox_Item_Craft_Strength);
+            this.groupBox1.Controls.Add(this.textBox_Item_Craft_Level);
+            this.groupBox1.Controls.Add(this.textBox_Item_Craft_Craft);
+            this.groupBox1.Controls.Add(this.textBox_Item_Craft_Intelligence);
+            this.groupBox1.Controls.Add(this.label208);
+            this.groupBox1.Controls.Add(this.label209);
+            this.groupBox1.Controls.Add(this.label207);
+            this.groupBox1.Controls.Add(this.label191);
+            this.groupBox1.Controls.Add(this.label187);
+            this.groupBox1.Controls.Add(this.label206);
+            this.groupBox1.Location = new System.Drawing.Point(7, 379);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(240, 205);
+            this.groupBox1.TabIndex = 4;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Craftable";
+            // 
+            // label210
+            // 
+            this.label210.AutoSize = true;
+            this.label210.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label210.Location = new System.Drawing.Point(5, 98);
+            this.label210.Name = "label210";
+            this.label210.Size = new System.Drawing.Size(129, 16);
+            this.label210.TabIndex = 6;
+            this.label210.Text = "Strength Needed:";
+            this.toolTip1.SetToolTip(this.label210, "The amount of Strength Stat the girl needs to make the item.");
+            // 
+            // comboBox_Item_Craftable
+            // 
+            this.comboBox_Item_Craftable.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox_Item_Craftable.FormattingEnabled = true;
+            this.comboBox_Item_Craftable.Items.AddRange(new object[] {
+            "No",
+            "Any",
+            "Baker",
+            "Blacksmith",
+            "Brewer",
+            "Butcher",
+            "MakeItem",
+            "Milker"});
+            this.comboBox_Item_Craftable.Location = new System.Drawing.Point(109, 18);
+            this.comboBox_Item_Craftable.Name = "comboBox_Item_Craftable";
+            this.comboBox_Item_Craftable.Size = new System.Drawing.Size(119, 21);
+            this.comboBox_Item_Craftable.TabIndex = 1;
+            // 
+            // textBox_Item_Craft_Points
+            // 
+            this.textBox_Item_Craft_Points.Location = new System.Drawing.Point(164, 174);
+            this.textBox_Item_Craft_Points.Name = "textBox_Item_Craft_Points";
+            this.textBox_Item_Craft_Points.Size = new System.Drawing.Size(64, 20);
+            this.textBox_Item_Craft_Points.TabIndex = 13;
+            this.textBox_Item_Craft_Points.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Item_Craft_Points.TextChanged += new System.EventHandler(this.ValidateTextBoxNoMax);
+            this.textBox_Item_Craft_Points.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxNoMax);
+            // 
+            // textBox_Item_Craft_Magic
+            // 
+            this.textBox_Item_Craft_Magic.Location = new System.Drawing.Point(164, 122);
+            this.textBox_Item_Craft_Magic.Name = "textBox_Item_Craft_Magic";
+            this.textBox_Item_Craft_Magic.Size = new System.Drawing.Size(64, 20);
+            this.textBox_Item_Craft_Magic.TabIndex = 9;
+            this.textBox_Item_Craft_Magic.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // textBox_Item_Craft_Strength
+            // 
+            this.textBox_Item_Craft_Strength.Location = new System.Drawing.Point(164, 96);
+            this.textBox_Item_Craft_Strength.Name = "textBox_Item_Craft_Strength";
+            this.textBox_Item_Craft_Strength.Size = new System.Drawing.Size(64, 20);
+            this.textBox_Item_Craft_Strength.TabIndex = 7;
+            this.textBox_Item_Craft_Strength.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // textBox_Item_Craft_Level
+            // 
+            this.textBox_Item_Craft_Level.Location = new System.Drawing.Point(164, 44);
+            this.textBox_Item_Craft_Level.Name = "textBox_Item_Craft_Level";
+            this.textBox_Item_Craft_Level.Size = new System.Drawing.Size(64, 20);
+            this.textBox_Item_Craft_Level.TabIndex = 3;
+            this.textBox_Item_Craft_Level.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBox_Item_Craft_Level.TextChanged += new System.EventHandler(this.ValidateTextBoxNoMax);
+            this.textBox_Item_Craft_Level.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBoxNoMax);
+            // 
+            // textBox_Item_Craft_Craft
+            // 
+            this.textBox_Item_Craft_Craft.Location = new System.Drawing.Point(164, 70);
+            this.textBox_Item_Craft_Craft.Name = "textBox_Item_Craft_Craft";
+            this.textBox_Item_Craft_Craft.Size = new System.Drawing.Size(64, 20);
+            this.textBox_Item_Craft_Craft.TabIndex = 5;
+            this.textBox_Item_Craft_Craft.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // textBox_Item_Craft_Intelligence
+            // 
+            this.textBox_Item_Craft_Intelligence.Location = new System.Drawing.Point(164, 148);
+            this.textBox_Item_Craft_Intelligence.Name = "textBox_Item_Craft_Intelligence";
+            this.textBox_Item_Craft_Intelligence.Size = new System.Drawing.Size(64, 20);
+            this.textBox_Item_Craft_Intelligence.TabIndex = 11;
+            this.textBox_Item_Craft_Intelligence.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label208
+            // 
+            this.label208.AutoSize = true;
+            this.label208.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label208.Location = new System.Drawing.Point(5, 150);
+            this.label208.Name = "label208";
+            this.label208.Size = new System.Drawing.Size(152, 16);
+            this.label208.TabIndex = 10;
+            this.label208.Text = "Intelligence Needed:";
+            this.toolTip1.SetToolTip(this.label208, "The amount of Intelligence Stat the girl needs to make the item.");
+            // 
+            // label209
+            // 
+            this.label209.AutoSize = true;
+            this.label209.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label209.Location = new System.Drawing.Point(5, 46);
+            this.label209.Name = "label209";
+            this.label209.Size = new System.Drawing.Size(138, 16);
+            this.label209.TabIndex = 2;
+            this.label209.Text = "Girl Level Needed:";
+            this.toolTip1.SetToolTip(this.label209, "The minimum Level the girl needs to be to make the item.");
+            // 
+            // label207
+            // 
+            this.label207.AutoSize = true;
+            this.label207.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label207.Location = new System.Drawing.Point(5, 72);
+            this.label207.Name = "label207";
+            this.label207.Size = new System.Drawing.Size(159, 16);
+            this.label207.TabIndex = 4;
+            this.label207.Text = "Crafting Skill Needed:";
+            this.toolTip1.SetToolTip(this.label207, "The amount of the Crafting Skill the girl needs to make the item.");
+            // 
+            // label191
+            // 
+            this.label191.AutoSize = true;
+            this.label191.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label191.Location = new System.Drawing.Point(5, 176);
+            this.label191.Name = "label191";
+            this.label191.Size = new System.Drawing.Size(150, 16);
+            this.label191.TabIndex = 12;
+            this.label191.Text = "Craft Points to Make:";
+            this.toolTip1.SetToolTip(this.label191, resources.GetString("label191.ToolTip"));
+            // 
+            // label187
+            // 
+            this.label187.AutoSize = true;
+            this.label187.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label187.Location = new System.Drawing.Point(5, 124);
+            this.label187.Name = "label187";
+            this.label187.Size = new System.Drawing.Size(148, 16);
+            this.label187.TabIndex = 8;
+            this.label187.Text = "Magic Skill Needed:";
+            this.toolTip1.SetToolTip(this.label187, "The amount of the Magic Skill the girl needs to make the item.");
+            // 
+            // label206
+            // 
+            this.label206.AutoSize = true;
+            this.label206.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label206.Location = new System.Drawing.Point(5, 20);
+            this.label206.Name = "label206";
+            this.label206.Size = new System.Drawing.Size(97, 16);
+            this.label206.TabIndex = 0;
+            this.label206.Text = "Craft Where?";
+            this.toolTip1.SetToolTip(this.label206, "What job can make the item:\r\nBlacksmith can usually make weapons and armor,\r\nBake" +
+        "r usually makes food items,\r\nMakeItem makes general items, etc.");
+            // 
+            // comboBox_Rarity_05
+            // 
+            this.comboBox_Rarity_05.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox_Rarity_05.FormattingEnabled = true;
+            this.comboBox_Rarity_05.Items.AddRange(new object[] {
+            "Common",
+            "50% chance of store to have it",
+            "25% chance of store to have it",
+            "5% chance of store to have it",
+            "15% chance from Catacombs",
+            "5% chance from Catacombs",
+            "1% chance from Catacombs",
+            "Given by script only",
+            "Given by script or reward"});
+            this.comboBox_Rarity_05.Location = new System.Drawing.Point(329, 489);
+            this.comboBox_Rarity_05.Name = "comboBox_Rarity_05";
+            this.comboBox_Rarity_05.Size = new System.Drawing.Size(165, 21);
+            this.comboBox_Rarity_05.TabIndex = 10;
+            // 
+            // comboBox_ItemType_01
+            // 
+            this.comboBox_ItemType_01.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox_ItemType_01.FormattingEnabled = true;
+            this.comboBox_ItemType_01.Items.AddRange(new object[] {
+            "Ring",
+            "Clothing",
+            "Shoes",
+            "Consumable/Food",
+            "Necklace",
+            "Weapon",
+            "Makeup",
+            "Armor",
+            "Miscellaneous",
+            "Arm/Wristband",
+            "Small Weapon",
+            "Underwear",
+            "Hat",
+            "Helmet",
+            "Glasses",
+            "Swimsuit",
+            "Combatshoes",
+            "Shield"});
+            this.comboBox_ItemType_01.Location = new System.Drawing.Point(329, 462);
+            this.comboBox_ItemType_01.Name = "comboBox_ItemType_01";
+            this.comboBox_ItemType_01.Size = new System.Drawing.Size(165, 21);
+            this.comboBox_ItemType_01.TabIndex = 8;
+            this.comboBox_ItemType_01.SelectedIndexChanged += new System.EventHandler(this.comboBox_ItemType_01_SelectedIndexChanged);
+            // 
+            // comboBox_ItemDuration
+            // 
+            this.comboBox_ItemDuration.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox_ItemDuration.Enabled = false;
+            this.comboBox_ItemDuration.FormattingEnabled = true;
+            this.comboBox_ItemDuration.Items.AddRange(new object[] {
+            "Default behaviour (permanent)",
+            "Affects all girls temporarily",
+            "Affects one girl temporarily"});
+            this.comboBox_ItemDuration.Location = new System.Drawing.Point(329, 516);
+            this.comboBox_ItemDuration.Name = "comboBox_ItemDuration";
+            this.comboBox_ItemDuration.Size = new System.Drawing.Size(165, 21);
+            this.comboBox_ItemDuration.TabIndex = 12;
+            this.comboBox_ItemDuration.SelectedIndexChanged += new System.EventHandler(this.comboBox_ItemDuration_SelectedIndexChanged);
+            // 
             // label189
             // 
             this.label189.AutoSize = true;
             this.label189.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label189.Location = new System.Drawing.Point(218, 482);
+            this.label189.Location = new System.Drawing.Point(711, 518);
             this.label189.Name = "label189";
             this.label189.Size = new System.Drawing.Size(30, 16);
-            this.label189.TabIndex = 28;
+            this.label189.TabIndex = 24;
             this.label189.Text = "gp.";
             // 
             // label188
             // 
             this.label188.AutoSize = true;
             this.label188.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label188.Location = new System.Drawing.Point(218, 456);
+            this.label188.Location = new System.Drawing.Point(711, 491);
             this.label188.Name = "label188";
             this.label188.Size = new System.Drawing.Size(33, 16);
-            this.label188.TabIndex = 27;
+            this.label188.TabIndex = 21;
             this.label188.Text = "lbs.";
             // 
             // textBox_Item_Weight
             // 
-            this.textBox_Item_Weight.Location = new System.Drawing.Point(151, 454);
+            this.textBox_Item_Weight.Location = new System.Drawing.Point(644, 489);
             this.textBox_Item_Weight.Name = "textBox_Item_Weight";
             this.textBox_Item_Weight.Size = new System.Drawing.Size(64, 20);
-            this.textBox_Item_Weight.TabIndex = 14;
+            this.textBox_Item_Weight.TabIndex = 20;
             this.textBox_Item_Weight.Text = "0.0";
             this.textBox_Item_Weight.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.textBox_Item_Weight.TextChanged += new System.EventHandler(this.ValidateTextBoxDoubleK);
@@ -5206,10 +5457,10 @@
             // 
             this.label198.AutoSize = true;
             this.label198.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label198.Location = new System.Drawing.Point(85, 456);
+            this.label198.Location = new System.Drawing.Point(578, 491);
             this.label198.Name = "label198";
             this.label198.Size = new System.Drawing.Size(60, 16);
-            this.label198.TabIndex = 13;
+            this.label198.TabIndex = 19;
             this.label198.Text = "Weight:";
             this.toolTip1.SetToolTip(this.label198, "Item Weight");
             // 
@@ -5217,10 +5468,10 @@
             // 
             this.checkBox_Item_GirlBuyChance.AutoSize = true;
             this.checkBox_Item_GirlBuyChance.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold);
-            this.checkBox_Item_GirlBuyChance.Location = new System.Drawing.Point(9, 428);
+            this.checkBox_Item_GirlBuyChance.Location = new System.Drawing.Point(502, 462);
             this.checkBox_Item_GirlBuyChance.Name = "checkBox_Item_GirlBuyChance";
             this.checkBox_Item_GirlBuyChance.Size = new System.Drawing.Size(141, 20);
-            this.checkBox_Item_GirlBuyChance.TabIndex = 10;
+            this.checkBox_Item_GirlBuyChance.TabIndex = 16;
             this.checkBox_Item_GirlBuyChance.Text = "Girl Buy Chance:";
             this.toolTip1.SetToolTip(this.checkBox_Item_GirlBuyChance, "This is the chance that girl will buy item by herself.\r\nIf not specified, chance " +
         "defaults to (100% - (badness level * 5))\r\nSo 20 or more badness is 0% chance, 5 " +
@@ -5232,19 +5483,19 @@
             // 
             this.label131.AutoSize = true;
             this.label131.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label131.Location = new System.Drawing.Point(218, 430);
+            this.label131.Location = new System.Drawing.Point(711, 464);
             this.label131.Name = "label131";
             this.label131.Size = new System.Drawing.Size(21, 16);
-            this.label131.TabIndex = 12;
+            this.label131.TabIndex = 18;
             this.label131.Text = "%";
             // 
             // textBox_Item_GirlBuyChance
             // 
             this.textBox_Item_GirlBuyChance.Enabled = false;
-            this.textBox_Item_GirlBuyChance.Location = new System.Drawing.Point(151, 428);
+            this.textBox_Item_GirlBuyChance.Location = new System.Drawing.Point(644, 462);
             this.textBox_Item_GirlBuyChance.Name = "textBox_Item_GirlBuyChance";
             this.textBox_Item_GirlBuyChance.Size = new System.Drawing.Size(64, 20);
-            this.textBox_Item_GirlBuyChance.TabIndex = 11;
+            this.textBox_Item_GirlBuyChance.TabIndex = 17;
             this.textBox_Item_GirlBuyChance.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.textBox_Item_GirlBuyChance.TextChanged += new System.EventHandler(this.ValidateTextBox);
             this.textBox_Item_GirlBuyChance.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
@@ -5259,7 +5510,7 @@
             this.groupBox11.Location = new System.Drawing.Point(743, 6);
             this.groupBox11.Name = "groupBox11";
             this.groupBox11.Size = new System.Drawing.Size(200, 520);
-            this.groupBox11.TabIndex = 23;
+            this.groupBox11.TabIndex = 26;
             this.groupBox11.TabStop = false;
             this.groupBox11.Text = "Items";
             // 
@@ -5317,33 +5568,18 @@
             // 
             this.label84.AutoSize = true;
             this.label84.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label84.Location = new System.Drawing.Point(6, 402);
+            this.label84.Location = new System.Drawing.Point(262, 518);
             this.label84.Name = "label84";
             this.label84.Size = new System.Drawing.Size(70, 16);
-            this.label84.TabIndex = 8;
+            this.label84.TabIndex = 11;
             this.label84.Text = "Duration:";
-            // 
-            // comboBox_ItemDuration
-            // 
-            this.comboBox_ItemDuration.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox_ItemDuration.Enabled = false;
-            this.comboBox_ItemDuration.FormattingEnabled = true;
-            this.comboBox_ItemDuration.Items.AddRange(new object[] {
-            "Default behaviour (permanent)",
-            "Affects all girls temporarily",
-            "Affects one girl temporarily"});
-            this.comboBox_ItemDuration.Location = new System.Drawing.Point(84, 401);
-            this.comboBox_ItemDuration.Name = "comboBox_ItemDuration";
-            this.comboBox_ItemDuration.Size = new System.Drawing.Size(165, 21);
-            this.comboBox_ItemDuration.TabIndex = 9;
-            this.comboBox_ItemDuration.SelectedIndexChanged += new System.EventHandler(this.comboBox_ItemDuration_SelectedIndexChanged);
             // 
             // button_Reset_Item
             // 
             this.button_Reset_Item.Location = new System.Drawing.Point(858, 561);
             this.button_Reset_Item.Name = "button_Reset_Item";
             this.button_Reset_Item.Size = new System.Drawing.Size(85, 23);
-            this.button_Reset_Item.TabIndex = 26;
+            this.button_Reset_Item.TabIndex = 29;
             this.button_Reset_Item.Text = "Reset";
             this.toolTip1.SetToolTip(this.button_Reset_Item, "Resets values on this tab, also deselects\r\ncurrently selected item in the list");
             this.button_Reset_Item.UseVisualStyleBackColor = true;
@@ -5354,7 +5590,7 @@
             this.button_Update_Selected_Item.Location = new System.Drawing.Point(749, 561);
             this.button_Update_Selected_Item.Name = "button_Update_Selected_Item";
             this.button_Update_Selected_Item.Size = new System.Drawing.Size(106, 23);
-            this.button_Update_Selected_Item.TabIndex = 25;
+            this.button_Update_Selected_Item.TabIndex = 28;
             this.button_Update_Selected_Item.Text = "Update selected";
             this.toolTip1.SetToolTip(this.button_Update_Selected_Item, "Replaces currently selected item with new values");
             this.button_Update_Selected_Item.UseVisualStyleBackColor = true;
@@ -5365,7 +5601,7 @@
             this.button_Add_Item_To_List.Location = new System.Drawing.Point(749, 532);
             this.button_Add_Item_To_List.Name = "button_Add_Item_To_List";
             this.button_Add_Item_To_List.Size = new System.Drawing.Size(106, 23);
-            this.button_Add_Item_To_List.TabIndex = 24;
+            this.button_Add_Item_To_List.TabIndex = 27;
             this.button_Add_Item_To_List.Text = "Add to list";
             this.toolTip1.SetToolTip(this.button_Add_Item_To_List, "Compiles item and adds it to item list");
             this.button_Add_Item_To_List.UseVisualStyleBackColor = true;
@@ -5385,8 +5621,8 @@
             this.groupBox10.Controls.Add(this.label81);
             this.groupBox10.Location = new System.Drawing.Point(500, 6);
             this.groupBox10.Name = "groupBox10";
-            this.groupBox10.Size = new System.Drawing.Size(237, 578);
-            this.groupBox10.TabIndex = 22;
+            this.groupBox10.Size = new System.Drawing.Size(237, 450);
+            this.groupBox10.TabIndex = 6;
             this.groupBox10.TabStop = false;
             this.groupBox10.Text = "Trait changes";
             // 
@@ -5415,7 +5651,7 @@
             this.checkBox_DG3.AutoSize = true;
             this.checkBox_DG3.Checked = true;
             this.checkBox_DG3.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox_DG3.Location = new System.Drawing.Point(6, 555);
+            this.checkBox_DG3.Location = new System.Drawing.Point(6, 427);
             this.checkBox_DG3.Name = "checkBox_DG3";
             this.checkBox_DG3.Size = new System.Drawing.Size(127, 17);
             this.checkBox_DG3.TabIndex = 9;
@@ -5452,7 +5688,7 @@
             this.dataGridView3.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView3.Location = new System.Drawing.Point(9, 157);
             this.dataGridView3.Name = "dataGridView3";
-            this.dataGridView3.Size = new System.Drawing.Size(219, 392);
+            this.dataGridView3.Size = new System.Drawing.Size(219, 264);
             this.dataGridView3.TabIndex = 8;
             // 
             // comboBox_ItemTraitsEffect
@@ -5514,8 +5750,8 @@
             this.groupBox9.Controls.Add(this.label80);
             this.groupBox9.Location = new System.Drawing.Point(255, 6);
             this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Size = new System.Drawing.Size(239, 578);
-            this.groupBox9.TabIndex = 21;
+            this.groupBox9.Size = new System.Drawing.Size(239, 450);
+            this.groupBox9.TabIndex = 5;
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "Special effects";
             // 
@@ -5524,7 +5760,7 @@
             this.checkBox_DG2.AutoSize = true;
             this.checkBox_DG2.Checked = true;
             this.checkBox_DG2.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox_DG2.Location = new System.Drawing.Point(8, 555);
+            this.checkBox_DG2.Location = new System.Drawing.Point(11, 427);
             this.checkBox_DG2.Name = "checkBox_DG2";
             this.checkBox_DG2.Size = new System.Drawing.Size(127, 17);
             this.checkBox_DG2.TabIndex = 11;
@@ -5561,7 +5797,7 @@
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView2.Location = new System.Drawing.Point(11, 157);
             this.dataGridView2.Name = "dataGridView2";
-            this.dataGridView2.Size = new System.Drawing.Size(219, 392);
+            this.dataGridView2.Size = new System.Drawing.Size(219, 264);
             this.dataGridView2.TabIndex = 10;
             // 
             // affects_comboBox_status
@@ -5661,50 +5897,31 @@
             // 
             this.checkBox_infinite_06.AutoSize = true;
             this.checkBox_infinite_06.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.checkBox_infinite_06.Location = new System.Drawing.Point(51, 506);
+            this.checkBox_infinite_06.Location = new System.Drawing.Point(581, 541);
             this.checkBox_infinite_06.Name = "checkBox_infinite_06";
             this.checkBox_infinite_06.Size = new System.Drawing.Size(129, 20);
-            this.checkBox_infinite_06.TabIndex = 17;
+            this.checkBox_infinite_06.TabIndex = 25;
             this.checkBox_infinite_06.Text = "Item is infinite?";
             this.toolTip1.SetToolTip(this.checkBox_infinite_06, "If checked it will be an infinite item in shops (the shop\r\nwill not run out no ma" +
         "tter how many you purchase).");
             this.checkBox_infinite_06.UseVisualStyleBackColor = true;
             // 
-            // comboBox_Rarity_05
-            // 
-            this.comboBox_Rarity_05.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox_Rarity_05.FormattingEnabled = true;
-            this.comboBox_Rarity_05.Items.AddRange(new object[] {
-            "Common",
-            "50% chance of store to have it",
-            "25% chance of store to have it",
-            "5% chance of store to have it",
-            "15% chance from Catacombs",
-            "5% chance from Catacombs",
-            "1% chance from Catacombs",
-            "Given by script only",
-            "Given by script or reward"});
-            this.comboBox_Rarity_05.Location = new System.Drawing.Point(84, 370);
-            this.comboBox_Rarity_05.Name = "comboBox_Rarity_05";
-            this.comboBox_Rarity_05.Size = new System.Drawing.Size(165, 21);
-            this.comboBox_Rarity_05.TabIndex = 7;
-            // 
             // label79
             // 
             this.label79.AutoSize = true;
             this.label79.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label79.Location = new System.Drawing.Point(6, 371);
+            this.label79.Location = new System.Drawing.Point(279, 491);
             this.label79.Name = "label79";
             this.label79.Size = new System.Drawing.Size(53, 16);
-            this.label79.TabIndex = 6;
+            this.label79.TabIndex = 9;
             this.label79.Text = "Rarity:";
             // 
             // textBox_Item_Cost
             // 
-            this.textBox_Item_Cost.Location = new System.Drawing.Point(151, 480);
+            this.textBox_Item_Cost.Location = new System.Drawing.Point(644, 516);
             this.textBox_Item_Cost.Name = "textBox_Item_Cost";
             this.textBox_Item_Cost.Size = new System.Drawing.Size(64, 20);
-            this.textBox_Item_Cost.TabIndex = 16;
+            this.textBox_Item_Cost.TabIndex = 23;
             this.textBox_Item_Cost.Text = "10";
             this.textBox_Item_Cost.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.textBox_Item_Cost.TextChanged += new System.EventHandler(this.ValidateTextBoxNoMax);
@@ -5714,10 +5931,10 @@
             // 
             this.label78.AutoSize = true;
             this.label78.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label78.Location = new System.Drawing.Point(97, 482);
+            this.label78.Location = new System.Drawing.Point(590, 518);
             this.label78.Name = "label78";
             this.label78.Size = new System.Drawing.Size(48, 16);
-            this.label78.TabIndex = 15;
+            this.label78.TabIndex = 22;
             this.label78.Text = "Price:";
             this.toolTip1.SetToolTip(this.label78, "Item Price");
             // 
@@ -5725,21 +5942,21 @@
             // 
             this.lTrack1.AutoSize = true;
             this.lTrack1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold);
-            this.lTrack1.Location = new System.Drawing.Point(219, 532);
+            this.lTrack1.Location = new System.Drawing.Point(472, 543);
             this.lTrack1.Name = "lTrack1";
             this.lTrack1.Size = new System.Drawing.Size(16, 16);
-            this.lTrack1.TabIndex = 19;
+            this.lTrack1.TabIndex = 14;
             this.lTrack1.Text = "0";
             // 
             // trackBar_bad_02
             // 
             this.trackBar_bad_02.AutoSize = false;
             this.trackBar_bad_02.BackColor = System.Drawing.SystemColors.Window;
-            this.trackBar_bad_02.Location = new System.Drawing.Point(7, 551);
+            this.trackBar_bad_02.Location = new System.Drawing.Point(254, 562);
             this.trackBar_bad_02.Maximum = 100;
             this.trackBar_bad_02.Name = "trackBar_bad_02";
             this.trackBar_bad_02.Size = new System.Drawing.Size(240, 25);
-            this.trackBar_bad_02.TabIndex = 20;
+            this.trackBar_bad_02.TabIndex = 15;
             this.trackBar_bad_02.TickFrequency = 5;
             this.trackBar_bad_02.TickStyle = System.Windows.Forms.TickStyle.None;
             this.toolTip1.SetToolTip(this.trackBar_bad_02, "The higher the number the more a girl will consider the item not good for them so" +
@@ -5751,52 +5968,23 @@
             // 
             this.label77.AutoSize = true;
             this.label77.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label77.Location = new System.Drawing.Point(7, 532);
+            this.label77.Location = new System.Drawing.Point(260, 543);
             this.label77.Name = "label77";
             this.label77.Size = new System.Drawing.Size(208, 16);
-            this.label77.TabIndex = 18;
+            this.label77.TabIndex = 13;
             this.label77.Text = "How bad the item is for a girl:";
             this.toolTip1.SetToolTip(this.label77, "The higher the number the more a girl will consider the item not good for them so" +
         " will\r\nnot buy it themselves and refuse to wear it/use it more often. Anything b" +
         "elow 20 is\r\nconsidered ok by girls.");
             // 
-            // comboBox_ItemType_01
-            // 
-            this.comboBox_ItemType_01.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox_ItemType_01.FormattingEnabled = true;
-            this.comboBox_ItemType_01.Items.AddRange(new object[] {
-            "Ring",
-            "Clothing",
-            "Shoes",
-            "Consumable/Food",
-            "Necklace",
-            "Weapon",
-            "Makeup",
-            "Armor",
-            "Miscellaneous",
-            "Arm/Wristband",
-            "Small Weapon",
-            "Underwear",
-            "Hat",
-            "Helmet",
-            "Glasses",
-            "Swimsuit",
-            "Combatshoes",
-            "Shield"});
-            this.comboBox_ItemType_01.Location = new System.Drawing.Point(84, 341);
-            this.comboBox_ItemType_01.Name = "comboBox_ItemType_01";
-            this.comboBox_ItemType_01.Size = new System.Drawing.Size(165, 21);
-            this.comboBox_ItemType_01.TabIndex = 5;
-            this.comboBox_ItemType_01.SelectedIndexChanged += new System.EventHandler(this.comboBox_ItemType_01_SelectedIndexChanged);
-            // 
             // label76
             // 
             this.label76.AutoSize = true;
             this.label76.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label76.Location = new System.Drawing.Point(6, 342);
+            this.label76.Location = new System.Drawing.Point(251, 464);
             this.label76.Name = "label76";
             this.label76.Size = new System.Drawing.Size(81, 16);
-            this.label76.TabIndex = 4;
+            this.label76.TabIndex = 7;
             this.label76.Text = "Item Type:";
             // 
             // textBox_ItemDesc
@@ -5805,7 +5993,7 @@
             this.textBox_ItemDesc.Multiline = true;
             this.textBox_ItemDesc.Name = "textBox_ItemDesc";
             this.textBox_ItemDesc.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox_ItemDesc.Size = new System.Drawing.Size(240, 260);
+            this.textBox_ItemDesc.Size = new System.Drawing.Size(240, 297);
             this.textBox_ItemDesc.TabIndex = 3;
             this.toolTip1.SetToolTip(this.textBox_ItemDesc, "DO NOT use enter here, just write in one line");
             // 
@@ -8742,6 +8930,60 @@
             this.dataGridView_Scripts.Size = new System.Drawing.Size(930, 520);
             this.dataGridView_Scripts.TabIndex = 13;
             // 
+            // Script_ActionNumber
+            // 
+            this.Script_ActionNumber.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Script_ActionNumber.DataPropertyName = "Script_ActionNumber";
+            this.Script_ActionNumber.HeaderText = "Action Number";
+            this.Script_ActionNumber.Name = "Script_ActionNumber";
+            this.Script_ActionNumber.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.Script_ActionNumber.Width = 83;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dataGridViewTextBoxColumn2.DataPropertyName = "Script_EntryNumber";
+            this.dataGridViewTextBoxColumn2.HeaderText = "Entry Number";
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.dataGridViewTextBoxColumn2.Width = 77;
+            // 
+            // dataGridViewTextBoxColumn3
+            // 
+            this.dataGridViewTextBoxColumn3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dataGridViewTextBoxColumn3.DataPropertyName = "Script_Type";
+            this.dataGridViewTextBoxColumn3.HeaderText = "Type";
+            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewTextBoxColumn3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.dataGridViewTextBoxColumn3.Width = 37;
+            // 
+            // dataGridViewTextBoxColumn4
+            // 
+            this.dataGridViewTextBoxColumn4.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dataGridViewTextBoxColumn4.DataPropertyName = "Script_IOValue";
+            this.dataGridViewTextBoxColumn4.HeaderText = "IOValue";
+            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
+            this.dataGridViewTextBoxColumn4.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.dataGridViewTextBoxColumn4.Width = 51;
+            // 
+            // Script_Var
+            // 
+            this.Script_Var.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Script_Var.DataPropertyName = "Script_Var";
+            this.Script_Var.HeaderText = "Var";
+            this.Script_Var.Name = "Script_Var";
+            this.Script_Var.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.Script_Var.Width = 29;
+            // 
+            // Script_Text
+            // 
+            this.Script_Text.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Script_Text.DataPropertyName = "Script_Text";
+            this.Script_Text.HeaderText = "Text";
+            this.Script_Text.Name = "Script_Text";
+            this.Script_Text.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
             // label_Script
             // 
             this.label_Script.AutoSize = true;
@@ -9039,60 +9281,6 @@
             this.checkBox_ToggleTraitTooltips.UseVisualStyleBackColor = true;
             this.checkBox_ToggleTraitTooltips.CheckedChanged += new System.EventHandler(this.checkBox_ToggleTraitTooltips_CheckedChanged);
             // 
-            // Script_ActionNumber
-            // 
-            this.Script_ActionNumber.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Script_ActionNumber.DataPropertyName = "Script_ActionNumber";
-            this.Script_ActionNumber.HeaderText = "Action Number";
-            this.Script_ActionNumber.Name = "Script_ActionNumber";
-            this.Script_ActionNumber.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Script_ActionNumber.Width = 83;
-            // 
-            // dataGridViewTextBoxColumn2
-            // 
-            this.dataGridViewTextBoxColumn2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dataGridViewTextBoxColumn2.DataPropertyName = "Script_EntryNumber";
-            this.dataGridViewTextBoxColumn2.HeaderText = "Entry Number";
-            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
-            this.dataGridViewTextBoxColumn2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.dataGridViewTextBoxColumn2.Width = 77;
-            // 
-            // dataGridViewTextBoxColumn3
-            // 
-            this.dataGridViewTextBoxColumn3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dataGridViewTextBoxColumn3.DataPropertyName = "Script_Type";
-            this.dataGridViewTextBoxColumn3.HeaderText = "Type";
-            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
-            this.dataGridViewTextBoxColumn3.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewTextBoxColumn3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.dataGridViewTextBoxColumn3.Width = 37;
-            // 
-            // dataGridViewTextBoxColumn4
-            // 
-            this.dataGridViewTextBoxColumn4.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dataGridViewTextBoxColumn4.DataPropertyName = "Script_IOValue";
-            this.dataGridViewTextBoxColumn4.HeaderText = "IOValue";
-            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
-            this.dataGridViewTextBoxColumn4.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.dataGridViewTextBoxColumn4.Width = 51;
-            // 
-            // Script_Var
-            // 
-            this.Script_Var.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Script_Var.DataPropertyName = "Script_Var";
-            this.Script_Var.HeaderText = "Var";
-            this.Script_Var.Name = "Script_Var";
-            this.Script_Var.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Script_Var.Width = 29;
-            // 
-            // Script_Text
-            // 
-            this.Script_Text.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Script_Text.DataPropertyName = "Script_Text";
-            this.Script_Text.HeaderText = "Text";
-            this.Script_Text.Name = "Script_Text";
-            this.Script_Text.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
             // Form1
             // 
             this.AllowDrop = true;
@@ -9145,6 +9333,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.tabPage3_Items.ResumeLayout(false);
             this.tabPage3_Items.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.groupBox11.ResumeLayout(false);
             this.groupBox10.ResumeLayout(false);
             this.groupBox10.PerformLayout();
@@ -9901,6 +10091,21 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
         private System.Windows.Forms.DataGridViewTextBoxColumn Script_Var;
         private System.Windows.Forms.DataGridViewTextBoxColumn Script_Text;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.ComboBox comboBox_Item_Craftable;
+        private System.Windows.Forms.Label label206;
+        private System.Windows.Forms.Label label209;
+        private System.Windows.Forms.Label label208;
+        private System.Windows.Forms.Label label207;
+        private System.Windows.Forms.Label label191;
+        private System.Windows.Forms.Label label187;
+        private System.Windows.Forms.TextBox textBox_Item_Craft_Points;
+        private System.Windows.Forms.TextBox textBox_Item_Craft_Magic;
+        private System.Windows.Forms.TextBox textBox_Item_Craft_Level;
+        private System.Windows.Forms.TextBox textBox_Item_Craft_Craft;
+        private System.Windows.Forms.TextBox textBox_Item_Craft_Intelligence;
+        private System.Windows.Forms.TextBox textBox_Item_Craft_Strength;
+        private System.Windows.Forms.Label label210;
     }
 }
 

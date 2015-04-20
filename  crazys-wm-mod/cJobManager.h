@@ -76,6 +76,8 @@ public:
 	// - Misc
 	static bool WorkVoid(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);	// used for jobs that are not yet implemented
 
+	// `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> cJobManager.h > class cJobManager
+
 	// - General
 	static bool AddictBuysDrugs(string Addiction, string Drug, sGirl* girl, sBrothel* brothel, bool Day0Night1);
 	static bool WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);	// resting
@@ -195,6 +197,8 @@ public:
 	static double JP_Doctore(sGirl* girl, bool estimate);
 	static bool WorkCityGuard(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
 	static double JP_CityGuard(sGirl* girl, bool estimate);
+	static bool WorkBlacksmith(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_Blacksmith(sGirl* girl, bool estimate);
 	static bool WorkCleanArena(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
 	static double JP_CleanArena(sGirl* girl, bool estimate);
 

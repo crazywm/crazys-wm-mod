@@ -157,6 +157,7 @@
     <ClCompile Include="tinyxmlparser.cpp" />
     <ClCompile Include="WorkArenaJousting.cpp" />
     <ClCompile Include="WorkBaker.cpp" />
+    <ClCompile Include="WorkBlacksmith.cpp" />
     <ClCompile Include="WorkBoobJob.cpp" />
     <ClCompile Include="WorkBreastReduction.cpp" />
     <ClCompile Include="WorkBrewer.cpp" />

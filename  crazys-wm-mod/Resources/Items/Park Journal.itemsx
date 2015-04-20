@@ -1,15 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Items>
-<Item Name="Park Journal"
-      Desc="A magic journal that has the power to change reality to whatever is written in it. (Magic +15. Adds Strong Magic, Psychic.)"
-      Type="Small Weapon"
-      Badness="0"
-      Special="None"
-      Cost="7110"
-      Rarity="Catacomb15"
-      Infinite="false">
-   <Effect What="Skill" Name="Magic"                   Amount="15"    />
-   <Effect What="Trait" Name="Strong Magic"            Amount="1"    />
-   <Effect What="Trait" Name="Psychic"                 Amount="1"    />
-</Item>
+    <Item Name="Park Journal" Desc="A magic journal that has the power to change reality to whatever is written in it. (Magic +15. Adds Strong Magic, Psychic.)" Type="Small Weapon" Badness="0" Special="None" Cost="7110" Rarity="Catacomb15" Infinite="false" GirlBuyChance="0" ItemWeight="0.0" Craftable="MakeItem" CraftLevel="6" CraftCraft="20" CraftStren="0" CraftMagic="70" CraftIntel="70" CraftPoint="100">
+        <Effect What="Skill" Name="Magic" Amount="15" />
+        <Effect What="Trait" Name="Strong Magic" Amount="1" />
+        <Effect What="Trait" Name="Psychic" Amount="1" />
+    </Item>
 </Items>

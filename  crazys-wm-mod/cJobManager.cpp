@@ -60,6 +60,8 @@ extern cPlayer* The_Player;
 
 void cJobManager::Setup()
 {
+	// `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> cJobManager.cpp > Setup
+
 	// much simplier then trying to get the sJob working with this (plus a smaller memory footprint...?maybe)
 	// General Jobs
 	JobFilterName[JOBFILTER_GENERAL] = "General";
@@ -314,6 +316,10 @@ void cJobManager::Setup()
 	JobDesc[JOB_CITYGUARD] = gettext("She will help keep crossgate safe.");
 	JobFunc[JOB_CITYGUARD] = &WorkCityGuard;
 	JobPerf[JOB_CITYGUARD] = &JP_CityGuard;
+	JobName[JOB_BLACKSMITH] = gettext("Blacksmith");
+	JobDesc[JOB_BLACKSMITH] = gettext("She will make weapons and armor.");
+	JobFunc[JOB_BLACKSMITH] = &WorkBlacksmith;
+	JobPerf[JOB_BLACKSMITH] = &JP_Blacksmith;
 	JobName[JOB_CLEANARENA] = gettext("Grounds Keeper");
 	JobDesc[JOB_CLEANARENA] = gettext("She will clean the arena.");
 	JobFunc[JOB_CLEANARENA] = &WorkCleanArena;

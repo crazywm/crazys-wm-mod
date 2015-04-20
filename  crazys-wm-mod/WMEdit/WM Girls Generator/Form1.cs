@@ -4298,7 +4298,7 @@ namespace WM_Girls_Generator
                 {
                     item.SetAttribute("GirlBuyChance", "0");
                 }
-                if (sValues.Length >= 8)  //check to see if item is old item that doesn't have girlbuychance
+                if (sValues.Length >= 8)  //check to see if item is old item that doesn't have ItemWeight
                 {
                     item.SetAttribute("ItemWeight", sValues[7]);
                 }
@@ -4306,7 +4306,28 @@ namespace WM_Girls_Generator
                 {
                     item.SetAttribute("ItemWeight", "0.0");
                 }
-
+                if (sValues.Length >= 9)
+                {
+                    switch (sValues[8])
+                    {
+                        case "1": sValues[8] = "Any"; break;
+                        case "2": sValues[8] = "Baker"; break;
+                        case "3": sValues[8] = "Blacksmith"; break;
+                        case "4": sValues[8] = "Brewer"; break;
+                        case "5": sValues[8] = "Butcher"; break;
+                        case "6": sValues[8] = "MakeItem"; break;
+                        case "7": sValues[8] = "Milker"; break;
+                        case "0": default:
+                            sValues[8] = "No"; break;
+                    }
+                    item.SetAttribute("Craftable",  sValues[8]);  
+                }   else item.SetAttribute("Craftable", "No");
+                if (sValues.Length >= 10) item.SetAttribute("CraftLevel", sValues[9]);  else item.SetAttribute("CraftLevel", "0");
+                if (sValues.Length >= 11) item.SetAttribute("CraftCraft", sValues[10]); else item.SetAttribute("CraftCraft", "0");
+                if (sValues.Length >= 12) item.SetAttribute("CraftStren", sValues[11]); else item.SetAttribute("CraftStren", "0");
+                if (sValues.Length >= 13) item.SetAttribute("CraftMagic", sValues[12]); else item.SetAttribute("CraftMagic", "0");
+                if (sValues.Length >= 14) item.SetAttribute("CraftIntel", sValues[13]); else item.SetAttribute("CraftIntel", "0");
+                if (sValues.Length >= 15) item.SetAttribute("CraftPoint", sValues[14]); else item.SetAttribute("CraftPoint", "0");
                 
                 int num = Convert.ToInt32(sData.ReadLine());
                 for (int y = 0; y < num; y++)
@@ -4442,7 +4463,7 @@ namespace WM_Girls_Generator
 
                 XmlWriterSettings settings = new XmlWriterSettings();
                 settings.Indent = true;
-                settings.NewLineOnAttributes = true;
+                settings.NewLineOnAttributes = false;
                 settings.IndentChars = "    ";
                 XmlWriter xmlwrite = XmlWriter.Create(filename, settings);
 
@@ -4689,12 +4710,18 @@ namespace WM_Girls_Generator
             if (comboBox_ItemDuration.SelectedIndex == 2) sDuration = "2";		//sets flag 3 to Affects one girl temporarily
 
             //not sure what (if anything) this does, it seems that this is obsolete now as compile button passes only "list" parameter, or better said, in current app this doesn't do anything, but I left it here "just in case"
-            if (output == "single") sItem[0] = textBox_ItemName.Text + nln + textBox_ItemDesc.Text + nln + (comboBox_ItemType_01.SelectedIndex + 1).ToString() + sp + trackBar_bad_02.Value.ToString() + sp + sDuration + sp + textBox_Item_Cost.Text + sp + comboBox_Rarity_05.SelectedIndex.ToString() + sp + sItemInfinite + sp + textBox_Item_Weight.Text + nln + sEffectNumber + sEffects + sTraits;
+            if (output == "single") sItem[0] = textBox_ItemName.Text + nln + textBox_ItemDesc.Text + nln + (comboBox_ItemType_01.SelectedIndex + 1).ToString() + sp + trackBar_bad_02.Value.ToString() + sp + sDuration + sp + textBox_Item_Cost.Text + sp + comboBox_Rarity_05.SelectedIndex.ToString() + sp + sItemInfinite
+                + sp + textBox_Item_Weight.Text + sp + comboBox_Item_Craftable.SelectedIndex.ToString() + sp + textBox_Item_Craft_Level.Text + sp + textBox_Item_Craft_Craft.Text + sp + textBox_Item_Craft_Strength.Text + sp + textBox_Item_Craft_Magic.Text + sp + textBox_Item_Craft_Intelligence.Text + sp + textBox_Item_Craft_Points.Text
+                + nln + sEffectNumber + sEffects + sTraits;
             else if (output == "list")
             {
                 sItem[0] = textBox_ItemName.Text;
-                if (checkBox_Item_GirlBuyChance.Checked == true) sItem[1] = textBox_ItemDesc.Text + nln + (comboBox_ItemType_01.SelectedIndex + 1).ToString() + sp + trackBar_bad_02.Value.ToString() + sp + sDuration + sp + textBox_Item_Cost.Text + sp + comboBox_Rarity_05.SelectedIndex.ToString() + sp + sItemInfinite + sp + textBox_Item_GirlBuyChance.Text + sp + textBox_Item_Weight.Text + nln + sEffectNumber + sEffects + sTraits;
-                else sItem[1] = textBox_ItemDesc.Text + nln + (comboBox_ItemType_01.SelectedIndex + 1).ToString() + sp + trackBar_bad_02.Value.ToString() + sp + sDuration + sp + textBox_Item_Cost.Text + sp + comboBox_Rarity_05.SelectedIndex.ToString() + sp + sItemInfinite + sp + textBox_Item_Weight.Text + nln + sEffectNumber + sEffects + sTraits;
+                if (checkBox_Item_GirlBuyChance.Checked == true) sItem[1] = textBox_ItemDesc.Text + nln + (comboBox_ItemType_01.SelectedIndex + 1).ToString() + sp + trackBar_bad_02.Value.ToString() + sp + sDuration + sp + textBox_Item_Cost.Text + sp + comboBox_Rarity_05.SelectedIndex.ToString() + sp + sItemInfinite + sp + textBox_Item_GirlBuyChance.Text
+                    + sp + textBox_Item_Weight.Text + sp + comboBox_Item_Craftable.SelectedIndex.ToString() + sp + textBox_Item_Craft_Level.Text + sp + textBox_Item_Craft_Craft.Text + sp + textBox_Item_Craft_Strength.Text + sp + textBox_Item_Craft_Magic.Text + sp + textBox_Item_Craft_Intelligence.Text + sp + textBox_Item_Craft_Points.Text
+                    + nln + sEffectNumber + sEffects + sTraits;
+                else sItem[1] = textBox_ItemDesc.Text + nln + (comboBox_ItemType_01.SelectedIndex + 1).ToString() + sp + trackBar_bad_02.Value.ToString() + sp + sDuration + sp + textBox_Item_Cost.Text + sp + comboBox_Rarity_05.SelectedIndex.ToString() + sp + sItemInfinite
+                    + sp + textBox_Item_Weight.Text + sp + comboBox_Item_Craftable.SelectedIndex.ToString() + sp + textBox_Item_Craft_Level.Text + sp + textBox_Item_Craft_Craft.Text + sp + textBox_Item_Craft_Strength.Text + sp + textBox_Item_Craft_Magic.Text + sp + textBox_Item_Craft_Intelligence.Text + sp + textBox_Item_Craft_Points.Text
+                    + nln + sEffectNumber + sEffects + sTraits;
             }
             return sItem;
         }
@@ -4724,6 +4751,13 @@ namespace WM_Girls_Generator
             comboBox_ItemDuration.SelectedIndex = 0;
             textBox_Item_Cost.Text = "10";
             textBox_Item_Weight.Text = "0.0";
+            comboBox_Item_Craftable.SelectedIndex = 0;
+            textBox_Item_Craft_Level.Text = "0";
+            textBox_Item_Craft_Craft.Text = "0";
+            textBox_Item_Craft_Strength.Text = "0";
+            textBox_Item_Craft_Magic.Text = "0";
+            textBox_Item_Craft_Intelligence.Text = "0";
+            textBox_Item_Craft_Points.Text = "0";
             iTable.Clear();
             iTTable.Clear();
             affects_textBox_value.Text = "0";
@@ -5011,6 +5045,29 @@ namespace WM_Girls_Generator
                     {
                         sData = sData + " " + "0.0";
                     }
+                    // Craftable will be 9th through 15th values, they don't exist in original items
+                    if (node.Attributes["Craftable"] != null)
+                    {
+                        switch (node.Attributes["Craftable"].Value)						//item rarity, 5th value
+                        {
+                            case "Any": sData = sData + " " + "1"; break;
+                            case "Baker": sData = sData + " " + "2"; break;
+                            case "Blacksmith": sData = sData + " " + "3"; break;
+                            case "Brewer": sData = sData + " " + "4"; break;
+                            case "Butcher": sData = sData + " " + "5"; break;
+                            case "MakeItem": sData = sData + " " + "6"; break;
+                            case "Milker": sData = sData + " " + "7"; break;
+                            case "No":
+                            default: sData = sData + " " + "0"; break;
+                        }
+                    }   else sData = sData + " " + "0";
+                    if (node.Attributes["CraftLevel"] != null) sData = sData + " " + node.Attributes["CraftLevel"].Value; else sData = sData + " " + "0";
+                    if (node.Attributes["CraftCraft"] != null) sData = sData + " " + node.Attributes["CraftCraft"].Value; else sData = sData + " " + "0";
+                    if (node.Attributes["CraftStren"] != null) sData = sData + " " + node.Attributes["CraftStren"].Value; else sData = sData + " " + "0";
+                    if (node.Attributes["CraftMagic"] != null) sData = sData + " " + node.Attributes["CraftMagic"].Value; else sData = sData + " " + "0";
+                    if (node.Attributes["CraftIntel"] != null) sData = sData + " " + node.Attributes["CraftIntel"].Value; else sData = sData + " " + "0";
+                    if (node.Attributes["CraftPoint"] != null) sData = sData + " " + node.Attributes["CraftPoint"].Value; else sData = sData + " " + "0";
+
                     if (node.HasChildNodes == true)
                     {
                         for (int x = 0; x < node.ChildNodes.Count; x++)
@@ -5222,6 +5279,17 @@ namespace WM_Girls_Generator
             {
                 textBox_Item_Weight.Text = "0.0";
             }
+            comboBox_Item_Craftable.SelectedIndex = Convert.ToInt32(values[8]);
+            textBox_Item_Craft_Level.Text           = values[9];
+            textBox_Item_Craft_Craft.Text           = values[10];
+            textBox_Item_Craft_Strength.Text        = values[11];
+            textBox_Item_Craft_Magic.Text           = values[12];
+            textBox_Item_Craft_Intelligence.Text    = values[13];
+            textBox_Item_Craft_Points.Text          = values[14];
+
+
+
+
 
             int iEffNum = Convert.ToInt32(data.ReadLine());
 
@@ -5413,7 +5481,30 @@ namespace WM_Girls_Generator
                 {
                     item.SetAttribute("ItemWeight", "0.0");
                 }
-
+                if (sValues.Length >= 9)
+                {
+                    switch (sValues[8])
+                    {
+                        case "1": sValues[8] = "Any"; break;
+                        case "2": sValues[8] = "Baker"; break;
+                        case "3": sValues[8] = "Blacksmith"; break;
+                        case "4": sValues[8] = "Brewer"; break;
+                        case "5": sValues[8] = "Butcher"; break;
+                        case "6": sValues[8] = "MakeItem"; break;
+                        case "7": sValues[8] = "Milker"; break;
+                        case "0":
+                        default:
+                            sValues[8] = "No"; break;
+                    }
+                    item.SetAttribute("Craftable", sValues[8]);
+                }
+                else item.SetAttribute("Craftable", "No");
+                if (sValues.Length >= 10) item.SetAttribute("CraftLevel", sValues[9]); else item.SetAttribute("CraftLevel", "0");
+                if (sValues.Length >= 11) item.SetAttribute("CraftCraft", sValues[10]); else item.SetAttribute("CraftCraft", "0");
+                if (sValues.Length >= 12) item.SetAttribute("CraftStren", sValues[11]); else item.SetAttribute("CraftStren", "0");
+                if (sValues.Length >= 13) item.SetAttribute("CraftMagic", sValues[12]); else item.SetAttribute("CraftMagic", "0");
+                if (sValues.Length >= 14) item.SetAttribute("CraftIntel", sValues[13]); else item.SetAttribute("CraftIntel", "0");
+                if (sValues.Length >= 15) item.SetAttribute("CraftPoint", sValues[14]); else item.SetAttribute("CraftPoint", "0");
                 
                 int num = Convert.ToInt32(sData.ReadLine());
                 for (int y = 0; y < num; y++)

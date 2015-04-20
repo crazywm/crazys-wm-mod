@@ -1,47 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Items>
-    <Item
-        Name="Blue Steel Fan"
-        Desc="Kitana's favourite. Some people discount the validity of fans in battle; the victims of Kitana's fatalities are not among them. (+2 Cha, +5 Com, +3 Perf, +5 Refinement, -10 Fear, -5 Hate, +2 Conf, adds Elegant)"
-        Type="Small Weapon"
-        Badness="0"
-        Special="None"
-        Cost="500"
-        Rarity="Shop05"
-        Infinite="false"
-        GirlBuyChance="0"
-        ItemWeight="0.0">
-        <Effect
-            What="Skill"
-            Name="Combat"
-            Amount="5" />
-        <Effect
-            What="Skill"
-            Name="Performance"
-            Amount="3" />
-        <Effect
-            What="Stat"
-            Name="Refinement"
-            Amount="5" />
-        <Effect
-            What="Stat"
-            Name="Confidence"
-            Amount="2" />
-        <Effect
-            What="Stat"
-            Name="Charisma"
-            Amount="2" />
-        <Effect
-            What="Stat"
-            Name="PCFear"
-            Amount="-10" />
-        <Effect
-            What="Stat"
-            Name="PCHate"
-            Amount="-5" />
-        <Effect
-            What="Trait"
-            Name="Elegant"
-            Amount="1" />
+    <Item Name="Blue Steel Fan" Desc="Kitana's favourite. Some people discount the validity of fans in battle; the victims of Kitana's fatalities are not among them. (+2 Cha, +5 Com, +3 Perf, +5 Refinement, -10 Fear, -5 Hate, +2 Conf, adds Elegant)" Type="Small Weapon" Badness="0" Special="None" Cost="500" Rarity="Shop05" Infinite="false" GirlBuyChance="0" ItemWeight="0.0" Craftable="Blacksmith" CraftLevel="5" CraftCraft="40" CraftStren="10" CraftMagic="0" CraftIntel="30" CraftPoint="70">
+        <Effect What="Skill" Name="Combat" Amount="5" />
+        <Effect What="Skill" Name="Performance" Amount="3" />
+        <Effect What="Stat" Name="Refinement" Amount="5" />
+        <Effect What="Stat" Name="Confidence" Amount="2" />
+        <Effect What="Stat" Name="Charisma" Amount="2" />
+        <Effect What="Stat" Name="PCFear" Amount="-10" />
+        <Effect What="Stat" Name="PCHate" Amount="-5" />
+        <Effect What="Trait" Name="Elegant" Amount="1" />
     </Item>
 </Items>

@@ -607,6 +607,7 @@
     <ClCompile Include="WorkCentreTherapy.cpp" />
     <ClCompile Include="WorkCounselor.cpp" />
     <ClCompile Include="SDL_anigif.c" />
+    <ClCompile Include="WorkBlacksmith.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cButton.h">

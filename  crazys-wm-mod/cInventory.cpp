@@ -516,11 +516,16 @@ sInventoryItem* cInventory::GetRandomItem()
 
 sInventoryItem* cInventory::GetRandomCatacombItem()
 {
+	if (items.size() == 0)	return 0;
 	sInventoryItem *temp;
-	int tries = 200;	// 200 tries to get an item
+	int index = g_Dice % (items.size() - 1);
+
+	int tries = items.size() / 3;	// try 1/3 of all items to get an item
 	while (tries > 0)
 	{
-		temp = GetRandomItem();
+		if (tries % 10 == 0) index = g_Dice % (items.size() - 1);
+		if (index >= (int)items.size()) index = 0;
+		temp = items[index];
 		switch (temp->m_Rarity) {
 		case RARITYSHOP25:									return temp;	break;
 		case RARITYSHOP05:		if (g_Dice.percent(25))		return temp;	break;
@@ -537,10 +542,42 @@ sInventoryItem* cInventory::GetRandomCatacombItem()
 			break;	// if at the end it is a common item, that item is returned
 		}
 		tries--;
+		index++;
 	} 
 	if (!temp) return 0;
 	return temp;
 }
+
+// `J` get an item the girl can make
+sInventoryItem* cInventory::GetRandomCraftableItem(sGirl*girl, int job, int points)
+{
+	if (items.size() == 0)	return 0;
+	sInventoryItem *temp;
+	int index = g_Dice % (items.size() - 1);
+
+	int tries = items.size()/3;	// try 1/3 of all items to get an item
+	while (tries > 0)
+	{
+		if (tries % 10 == 0) index = g_Dice % (items.size() - 1);
+		if (index >= (int)items.size()) index = 0;
+		temp = items[index];
+		if ((temp->m_Craftable == job || temp->m_Craftable == sInventoryItem::Any)
+			&& temp->m_CraftPoints <= points
+			&& temp->m_CraftLevel <= girl->level()
+			&& temp->m_CraftCraft <= girl->crafting()
+			&& temp->m_CraftStrength <= girl->strength()
+			&& temp->m_CraftMagic <= girl->magic()
+			&& temp->m_CraftIntel <= girl->intelligence())
+			return temp;
+		else temp = NULL;
+		tries--;
+		index++;
+
+	}
+	return temp;
+}
+
+
 
 sInventoryItem* cInventory::GetItem(string name)
 {
@@ -1017,6 +1054,16 @@ static sInventoryItem* handle_element(TiXmlElement *el)
 	if (pt = el->Attribute("Rarity"))					item->set_rarity(pt);
 	if (pt = el->Attribute("Infinite"))					item->m_Infinite = ((string(pt) == "true") || (string(pt) == "True"));
 	else												item->m_Infinite = false;
+	
+	if (pt = el->Attribute("Craftable"))				item->set_craftable(pt);			else item->set_craftable("No");
+	if (pt = el->Attribute("CraftLevel", &ival))		item->m_CraftLevel		 = ival;	else item->m_CraftLevel		 = 0;
+	if (pt = el->Attribute("CraftCraft", &ival))		item->m_CraftCraft		 = ival;	else item->m_CraftCraft		 = 0;
+	if (pt = el->Attribute("CraftStren", &ival))		item->m_CraftStrength	 = ival;	else item->m_CraftStrength	 = 0;
+	if (pt = el->Attribute("CraftMagic", &ival))		item->m_CraftMagic		 = ival;	else item->m_CraftMagic		 = 0;
+	if (pt = el->Attribute("CraftIntel", &ival))		item->m_CraftIntel		 = ival;	else item->m_CraftIntel		 = 0;
+	if (pt = el->Attribute("CraftPoint", &ival))		item->m_CraftPoints		 = ival;	else item->m_CraftPoints	 = 0;	
+
+
 	do_effects(el, item);
 	//	do_tests(el, item);		//	`J` will be added in the future (hopefully)
 	return item;

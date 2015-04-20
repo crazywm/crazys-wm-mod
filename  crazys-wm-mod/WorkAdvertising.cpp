@@ -61,6 +61,8 @@ bool cJobManager::WorkAdvertising(sGirl* girl, sBrothel* brothel, bool Day0Night
 	int enjoy = 0;
 	int wages = 0;
 	int tips = 0;
+	int imagetype = IMGTYPE_PROFILE;
+	int msgtype = EVENT_SUMMARY;
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
 
 
@@ -157,26 +159,43 @@ bool cJobManager::WorkAdvertising(sGirl* girl, sBrothel* brothel, bool Day0Night
 		ss << gettext(" You do not pay your slave for her advertising efforts.");
 	}
 
-	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_SUMMARY);
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 
 	// now to boost the brothel's advertising level accordingly
 	brothel->m_AdvertisingLevel += (multiplier / 100);
 
-	// Improve girl
+	// `J` - Finish the shift - jobname
+	// Push out the turn report
+	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
+	// Money
+	if (wages < 0)	wages = 0;	girl->m_Pay = wages;
+	if (tips < 0)	tips = 0;	girl->m_Tips = tips;
+
+	// Base Improvement and trait modifiers
 	int xp = 5, libido = 1, skill = 3;
-
-	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
-
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill + 1);
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill + 1);
+	/* */if (girl->has_trait("Quick Learner"))	{ skill += 1; xp += 3; }
+	else if (girl->has_trait("Slow Learner"))	{ skill -= 1; xp -= 3; }
+	/* */if (girl->has_trait("Nymphomaniac"))	{ libido += 2; }
+	// EXP and Libido
+	g_Girls.UpdateStat(girl, STAT_EXP, (g_Dice % xp) + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
-	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 70, actiontype, "Advertising on a daily basis has made " + girl->m_Realname + " more Charismatic.", Day0Night1 == SHIFT_NIGHT);
+
+	// primary improvement (+2 for single or +1 for multiple)
+	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, (g_Dice % skill) + 1);
+	g_Girls.UpdateStat(girl, STAT_CHARISMA, (g_Dice % skill) + 1);
+
+	// secondary improvement (-1 for one then -2 for others)
+	g_Girls.UpdateSkill(girl, SKILL_SERVICE, max(0, (g_Dice % skill) - 1));
+	g_Girls.UpdateStat(girl, STAT_CONFIDENCE, max(0, (g_Dice % skill) - 2));
+
+	// Update Enjoyment
+	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
+	// Gain Traits
 	
+	if (girl->strip() > 50)
+		g_Girls.PossiblyGainNewTrait(girl, "Exhibitionist", 50, actiontype, girlName +" has become quite the Exhibitionist, she seems to prefer Advertising topless more and more.", Day0Night1 == SHIFT_NIGHT);
+	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 70, actiontype, "Advertising on a daily basis has made " + girl->m_Realname + " more Charismatic.", Day0Night1 == SHIFT_NIGHT);
+	// Lose Traits
 	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 40, actiontype, girl->m_Realname + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", Day0Night1 == SHIFT_NIGHT);
 
 	return false;
@@ -244,18 +263,67 @@ double cJobManager::JP_Advertising(sGirl* girl, bool estimate)
 
 	}
 
-	// useful traits
-	if (girl->has_trait("Psychic"))		jobperformance += 10;
-	if (girl->has_trait("Cool Person"))	jobperformance += 10;
-	if (girl->has_trait("Sexy Air"))	jobperformance += 10;
-	if (girl->has_trait("Charismatic"))	jobperformance += 10;
-	if (girl->has_trait("Charming"))	jobperformance += 10;
-
-	// unhelpful traits
-	if (girl->has_trait("Nervous"))		jobperformance -= 5;
-	if (girl->has_trait("Clumsy"))		jobperformance -= 5;
-	if (girl->has_trait("Retarded"))	jobperformance -= 20;
-	if (girl->has_trait("Malformed"))	jobperformance -= 20;
+	if (girl->has_trait("Actress"))					jobperformance += 10;	// 
+	if (girl->has_trait("Aggressive"))				jobperformance -= 5;	// 
+	if (girl->has_trait("Blind"))					jobperformance -= 10;	// 
+	if (girl->has_trait("Broken Will"))				jobperformance -= 20;	// 
+	if (girl->has_trait("Charismatic"))				jobperformance += 10;	//
+	if (girl->has_trait("Charming"))				jobperformance += 10;	//
+	if (girl->has_trait("Clumsy"))					jobperformance -= 5;	//
+	if (girl->has_trait("Cool Person"))				jobperformance += 10;	//
+	if (girl->has_trait("Cute"))					jobperformance += 5;	// 
+	if (girl->has_trait("Deaf"))					jobperformance -= 10;	// 
+	if (girl->has_trait("Dependant"))				jobperformance -= 10;	// 
+	if (girl->has_trait("Director"))				jobperformance += 10;	// 
+	if (girl->has_trait("Dominatrix"))				jobperformance += 10;	// 
+	if (girl->has_trait("Elegant"))					jobperformance += 5;	// 
+	if (girl->has_trait("Emprisoned Customer"))		jobperformance -= 30;	// she may be warning the other customers
+	if (girl->has_trait("Exhibitionist"))			jobperformance += 15;	// Advertising topless
+	if (girl->has_trait("Fake Orgasm Expert"))		jobperformance += 10;	// 
+	if (girl->has_trait("Fearless"))				jobperformance += 5;	// 
+	if (girl->has_trait("Flexible"))				jobperformance += 5;	// 
+	if (girl->has_trait("Former Official"))			jobperformance += 10;	// 
+	if (girl->has_trait("Horrific Scars"))			jobperformance -= 10;	// 
+	if (girl->has_trait("Idol"))					jobperformance += 20;	// 
+	if (girl->has_trait("Iron Will"))				jobperformance += 5;	// 
+	if (girl->has_trait("Kidnapped"))				jobperformance -= 40;	// she may try to run away or get help
+	if (girl->has_trait("Malformed"))				jobperformance -= 20;	//
+	if (girl->has_trait("Meek"))					jobperformance -= 20;	// 
+	if (girl->has_trait("Mind Fucked"))				jobperformance -= 50;	// 
+	if (girl->has_trait("Mute"))					jobperformance -= 10;	// 
+	if (girl->has_trait("Natural Pheromones"))		jobperformance += 10;	// 
+	if (girl->has_trait("Nervous"))					jobperformance -= 5;	//
+	if (girl->has_trait("No Arms"))					jobperformance -= 30;	// 
+	if (girl->has_trait("No Hands"))				jobperformance -= 20;	// 
+	if (girl->has_trait("No Legs"))					jobperformance -= 30;	// 
+	if (girl->has_trait("Nymphomaniac"))			jobperformance -= 5;	// free samples?
+	if (girl->has_trait("One Arm"))					jobperformance -= 10;	// 
+	if (girl->has_trait("One Hand"))				jobperformance -= 5;	// 
+	if (girl->has_trait("One Leg"))					jobperformance -= 10;	// 
+	if (girl->has_trait("Open Minded"))				jobperformance += 5;	// 
+	if (girl->has_trait("Optimist"))				jobperformance += 5;	// 
+	if (girl->has_trait("Pessimist"))				jobperformance -= 5;	// 
+	if (girl->has_trait("Playful Tail"))			jobperformance += 5;	// 
+	if (girl->has_trait("Porn Star"))				jobperformance += 20;	// 
+	if (girl->has_trait("Powerful Magic"))			jobperformance += 20;	// 
+	if (girl->has_trait("Prehensile Tail"))			jobperformance += 5;	// 
+	if (girl->has_trait("Priestess"))				jobperformance += 10;	// used to preaching to the masses
+	if (girl->has_trait("Princess"))				jobperformance += 5;	// 
+	if (girl->has_trait("Psychic"))					jobperformance += 10;	//
+	if (girl->has_trait("Queen"))					jobperformance += 10;	// 
+	if (girl->has_trait("Retarded"))				jobperformance -= 20;	//
+	if (girl->has_trait("Sexy Air"))				jobperformance += 10;	//
+	if (girl->has_trait("Shape Shifter"))			jobperformance += 20;	// she can show who is available
+	if (girl->has_trait("Shy"))						jobperformance -= 10;	// 
+	if (girl->has_trait("Singer"))					jobperformance += 10;	// 
+	if (girl->has_trait("Skeleton"))				jobperformance -= 50;	// 
+	if (girl->has_trait("Slut"))					jobperformance += 10;	// 
+	if (girl->has_trait("Strong Magic"))			jobperformance += 10;	// 
+	if (girl->has_trait("Strong"))					jobperformance += 5;	// 
+	if (girl->has_trait("Whore"))					jobperformance += 10;	// 
+	if (girl->has_trait("Your Daughter"))			jobperformance += 20;	// 
+	if (girl->has_trait("Your Wife"))				jobperformance += 20;	// 
+	if (girl->has_trait("Zombie"))					jobperformance -= 50;	// 
 
 	return jobperformance;
 }

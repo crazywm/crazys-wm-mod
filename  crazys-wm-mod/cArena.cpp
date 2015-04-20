@@ -380,7 +380,12 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 						current->m_DayJob = current->m_NightJob = JOB_CLEANARENA;
 						ss << "work cleaning the arena.";
 					}
-					
+					else if (GetNumGirlsOnJob(0, JOB_BLACKSMITH, Day0Night1) < 1)
+					{
+						current->m_DayJob = current->m_NightJob = JOB_BLACKSMITH;
+						ss << "work making weapons and armor.";
+					}
+
 					// next assign more guards and cleaners if there are a lot of girls to choose from
 					else if (current->is_free() && GetNumGirlsOnJob(0, JOB_CITYGUARD, Day0Night1) < numgirls / 20)
 					{
@@ -392,6 +397,11 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 						current->m_DayJob = current->m_NightJob = JOB_CLEANARENA;
 						ss << "work cleaning the arena.";
 					}
+					else if (GetNumGirlsOnJob(0, JOB_BLACKSMITH, Day0Night1) < numgirls / 20)
+					{
+						current->m_DayJob = current->m_NightJob = JOB_BLACKSMITH;
+						ss << "work making weapons and armor.";
+					}
 
 					// Assign fighters - 50+ combat
 
@@ -401,14 +411,14 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 					*		until each building has their own beast supply.
 					*	The farm will supply them when more work gets done to it
 					*/
-					else if (current->combat() > 50 && g_Brothels.GetNumBeasts() >= 10 &&
+					else if (current->combat() > 60 && g_Brothels.GetNumBeasts() >= 10 &&
 						GetNumGirlsOnJob(0, JOB_FIGHTBEASTS, Day0Night1) < g_Brothels.GetNumBeasts() / 10)
 					{
 						current->m_DayJob = current->m_NightJob = JOB_FIGHTBEASTS;
 						ss << "work fighting beast in the arena.";
 					}
 					// if there are not enough beasts, have the girls fight other girls
-					else if (current->combat() > 50 && GetNumGirlsOnJob(0, JOB_FIGHTARENAGIRLS, Day0Night1) < 1)
+					else if (current->combat() > 60 && GetNumGirlsOnJob(0, JOB_FIGHTARENAGIRLS, Day0Night1) < 1)
 					{
 						current->m_DayJob = current->m_NightJob = JOB_FIGHTARENAGIRLS;
 						ss << "work fighting other girls in the arena.";

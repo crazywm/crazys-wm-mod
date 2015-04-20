@@ -1,29 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Items>
-<Item Name="Dagger"
-      Desc="This sturdy iron dagger isn't fancy but it gets the job done. (C) (+5 Com, -10 Fear, -5 Hate, +5 Conf)"
-      Type="Small Weapon"
-      Badness="0"
-      Special="None"
-      Cost="50"
-      Rarity="Common"
-      Infinite="true">
-   <Effect What="Skill" Name="Combat"                  Amount="10"    />
-   <Effect What="Stat"  Name="Confidence"              Amount="5"    />
-   <Effect What="Stat"  Name="PCFear"                  Amount="-10"    />
-   <Effect What="Stat"  Name="PCHate"                  Amount="-5"    />
-</Item>
-<Item Name="Dagger"
-      Desc="This sturdy iron dagger isn't fancy but it gets the job done. (C) (+5 Com, -10 Fear, -5 Hate, +5 Conf)"
-      Type="Small Weapon"
-      Badness="0"
-      Special="None"
-      Cost="50"
-      Rarity="Common"
-      Infinite="true">
-   <Effect What="Skill" Name="Combat"                  Amount="10"    />
-   <Effect What="Stat"  Name="Confidence"              Amount="5"    />
-   <Effect What="Stat"  Name="PCFear"                  Amount="-10"    />
-   <Effect What="Stat"  Name="PCHate"                  Amount="-5"    />
-</Item>
+    <Item Name="Dagger" Desc="This sturdy iron dagger isn't fancy but it gets the job done. (C) (+5 Com, -10 Fear, -5 Hate, +5 Conf)" Type="Small Weapon" Badness="0" Special="None" Cost="50" Rarity="Common" Infinite="true" GirlBuyChance="0" ItemWeight="0.0" Craftable="Blacksmith" CraftLevel="0" CraftCraft="20" CraftStren="20" CraftMagic="0" CraftIntel="5" CraftPoint="10">
+        <Effect What="Skill" Name="Combat" Amount="10" />
+        <Effect What="Stat" Name="Confidence" Amount="5" />
+        <Effect What="Stat" Name="PCFear" Amount="-10" />
+        <Effect What="Stat" Name="PCHate" Amount="-5" />
+    </Item>
+    <Item Name="Dagger" Desc="This sturdy iron dagger isn't fancy but it gets the job done. (C) (+5 Com, -10 Fear, -5 Hate, +5 Conf)" Type="Small Weapon" Badness="0" Special="None" Cost="50" Rarity="Common" Infinite="true" GirlBuyChance="0" ItemWeight="0.0" Craftable="Blacksmith" CraftLevel="1" CraftCraft="20" CraftStren="20" CraftMagic="0" CraftIntel="5" CraftPoint="10">
+        <Effect What="Skill" Name="Combat" Amount="10" />
+        <Effect What="Stat" Name="Confidence" Amount="5" />
+        <Effect What="Stat" Name="PCFear" Amount="-10" />
+        <Effect What="Stat" Name="PCHate" Amount="-5" />
+    </Item>
 </Items>

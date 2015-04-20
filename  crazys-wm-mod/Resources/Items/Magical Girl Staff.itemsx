@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Items>
-    <Item Name="Magical Girl Staff" Desc="Comes complete with secret identity! However, also makes user much more attractive to tentacled things, and prone to be a tad bit reckless(+30 magic, +10 best. Adds Lolita, Fearless, Heroine, Strong Magic)" Type="Small Weapon" Badness="5" Special="None" Cost="2800" Rarity="Shop05" Infinite="false" GirlBuyChance="5" ItemWeight="0.0">
+    <Item Name="Magical Girl Staff" Desc="Comes complete with secret identity! However, also makes user much more attractive to tentacled things, and prone to be a tad bit reckless(+30 magic, +10 best. Adds Lolita, Fearless, Heroine, Strong Magic)" Type="Small Weapon" Badness="5" Special="None" Cost="2800" Rarity="Shop05" Infinite="false" GirlBuyChance="5" ItemWeight="0.0" Craftable="MakeItem" CraftLevel="7" CraftCraft="60" CraftStren="10" CraftMagic="60" CraftIntel="50" CraftPoint="100">
         <Effect What="Skill" Name="Magic" Amount="20" />
         <Effect What="Skill" Name="Beastiality" Amount="10" />
         <Effect What="Trait" Name="Lolita" Amount="1" />

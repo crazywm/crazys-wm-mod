@@ -1,36 +1,31 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Items>
-<Item Name="Adamantine arm fetter"
-      Desc="This device restrains the girls arms. (+10 con +30 libido/obedience +20 BDSM/group/best/anal -lots service/strip/magic/combat -elegant)"
-      Type="Armband"
-      Badness="40"
-      Special="None"
-      Cost="20000"
-      Rarity="Catacomb15"
-      Infinite="false">
-   <Effect What="Stat"  Name="PCLove"                  Amount="-10"    />
-   <Effect What="Stat"  Name="PCFear"                  Amount="10"    />
-   <Effect What="Stat"  Name="PCHate"                  Amount="10"    />
-   <Effect What="Stat"  Name="Charisma"                Amount="-10"    />
-   <Effect What="Stat"  Name="Happiness"               Amount="-10"    />
-   <Effect What="Stat"  Name="Obedience"               Amount="30"    />
-   <Effect What="Stat"  Name="Libido"                  Amount="30"    />
-   <Effect What="Skill" Name="Anal"                    Amount="20"    />
-   <Effect What="Skill" Name="BDSM"                    Amount="20"    />
-   <Effect What="Skill" Name="Beastiality"             Amount="20"    />
-   <Effect What="Skill" Name="Group"                   Amount="20"    />
-   <Effect What="Skill" Name="Footjob"                 Amount="20"    />
-   <Effect What="Skill" Name="Handjob"                 Amount="-200"    />
-   <Effect What="Skill" Name="Lesbian"                 Amount="0"    />
-   <Effect What="Skill" Name="NormalSex"               Amount="10"    />
-   <Effect What="Skill" Name="OralSex"                 Amount="10"    />
-   <Effect What="Skill" Name="Strip"                   Amount="-500"    />
-   <Effect What="Skill" Name="TittySex"                Amount="10"    />
-   <Effect What="Skill" Name="Service"                 Amount="-200"    />
-   <Effect What="Skill" Name="Magic"                   Amount="-500"    />
-   <Effect What="Skill" Name="Combat"                  Amount="-500"    />
-   <Effect What="Stat"  Name="Strength"                Amount="-20" />
-   <Effect What="Stat"  Name="Constitution"            Amount="20"    />
-   <Effect What="Trait" Name="Elegant"                 Amount="0"    />
-</Item>
+    <Item Name="Adamantine arm fetter" Desc="This device restrains the girls arms. (+10 con +30 libido/obedience +20 BDSM/group/best/anal -lots service/strip/magic/combat -elegant)"
+	Type="Armband" Badness="40" Special="None" Cost="20000" Rarity="Catacomb15" Infinite="false" GirlBuyChance="0" ItemWeight="0.0" 
+	Craftable="Blacksmith" CraftLevel="10" CraftCraft="60" CraftStren="60" CraftMagic="0" CraftIntel="30" CraftPoint="100">
+        <Effect What="Stat" Name="PCLove" Amount="-10" />
+        <Effect What="Stat" Name="PCFear" Amount="10" />
+        <Effect What="Stat" Name="PCHate" Amount="10" />
+        <Effect What="Stat" Name="Charisma" Amount="-10" />
+        <Effect What="Stat" Name="Happiness" Amount="-10" />
+        <Effect What="Stat" Name="Obedience" Amount="30" />
+        <Effect What="Stat" Name="Libido" Amount="30" />
+        <Effect What="Skill" Name="Anal" Amount="20" />
+        <Effect What="Skill" Name="BDSM" Amount="20" />
+        <Effect What="Skill" Name="Beastiality" Amount="20" />
+        <Effect What="Skill" Name="Group" Amount="20" />
+        <Effect What="Skill" Name="Footjob" Amount="20" />
+        <Effect What="Skill" Name="Handjob" Amount="-200" />
+        <Effect What="Skill" Name="Lesbian" Amount="0" />
+        <Effect What="Skill" Name="NormalSex" Amount="10" />
+        <Effect What="Skill" Name="OralSex" Amount="10" />
+        <Effect What="Skill" Name="Strip" Amount="-500" />
+        <Effect What="Skill" Name="TittySex" Amount="10" />
+        <Effect What="Skill" Name="Service" Amount="-200" />
+        <Effect What="Skill" Name="Magic" Amount="-500" />
+        <Effect What="Skill" Name="Combat" Amount="-500" />
+        <Effect What="Stat" Name="Strength" Amount="-20" />
+        <Effect What="Stat" Name="Constitution" Amount="20" />
+        <Effect What="Trait" Name="Elegant" Amount="0" />
+    </Item>
 </Items>

@@ -138,86 +138,86 @@ typedef struct sInventoryItem
 {
 	string m_Name;
 	string m_Desc;
-/*
- *	item type: let's make an enum
- */
+	/*
+	 *	item type: let's make an enum
+	 */
 	enum Type {
-		Ring		= 1,		// worn on fingers (max 8)
-		Dress		= 2,		// Worn on body, (max 1)
-		Shoes		= 3,		// worn on feet, (max 1)
-		Food		= 4,		// Eaten, single use
-		Necklace	= 5,		// worn on neck, (max 1)
-		Weapon		= 6,		// equiped on body, (max 2)
-		Makeup		= 7,		// worn on face, single use
-		Armor		= 8,		// worn on body over dresses (max 1)
-		Misc		= 9,		// random stuff. may cause a constant effect without having to be equiped
-		Armband		= 10,		// (max 2), worn around arms
-		SmWeapon	= 11,		// (max 2), hidden on body
-		Underwear	= 12,		// (max 1) worn under dress
-		Hat			= 13,		// CRAZY added this - Noncombat worn on the head (max 1)
-		Helmet		= 14,		// CRAZY added this	- Combat worn on the head (max 1)
-		Glasses		= 15,		// CRAZY added this	- Glasses (max 1)
-		Swimsuit	= 16,		// CRAZY added this - Swimsuit (max 1 in use but can have as many as they want)
-		Combatshoes	= 17,		// `J`   added this - Combat Shoes (max 1) often unequipped outside of combat
-		Shield		= 18		// `J`   added this - Shields (max 1) often unequipped outside of combat
+		Ring = 1,		// worn on fingers (max 8)
+		Dress = 2,		// Worn on body, (max 1)
+		Shoes = 3,		// worn on feet, (max 1)
+		Food = 4,		// Eaten, single use
+		Necklace = 5,		// worn on neck, (max 1)
+		Weapon = 6,		// equiped on body, (max 2)
+		Makeup = 7,		// worn on face, single use
+		Armor = 8,		// worn on body over dresses (max 1)
+		Misc = 9,		// random stuff. may cause a constant effect without having to be equiped
+		Armband = 10,		// (max 2), worn around arms
+		SmWeapon = 11,		// (max 2), hidden on body
+		Underwear = 12,		// (max 1) worn under dress
+		Hat = 13,		// CRAZY added this - Noncombat worn on the head (max 1)
+		Helmet = 14,		// CRAZY added this	- Combat worn on the head (max 1)
+		Glasses = 15,		// CRAZY added this	- Glasses (max 1)
+		Swimsuit = 16,		// CRAZY added this - Swimsuit (max 1 in use but can have as many as they want)
+		Combatshoes = 17,		// `J`   added this - Combat Shoes (max 1) often unequipped outside of combat
+		Shield = 18		// `J`   added this - Shields (max 1) often unequipped outside of combat
 	};
 	Type m_Type;
-/*
- *	and another for special values
- */
+	/*
+	 *	and another for special values
+	 */
 	enum Special {
-		None		= 0,
-		AffectsAll	= 1,
-		Temporary	= 2
+		None = 0,
+		AffectsAll = 1,
+		Temporary = 2
 	};
 	Special m_Special;
-/*
- *	if 1 then this item doesn't run out if stocked in shop inventory
- */
+	/*
+	 *	if 1 then this item doesn't run out if stocked in shop inventory
+	 */
 	bool m_Infinite;
-/*
- *	the number of effects this item has
- */
+	/*
+	 *	the number of effects this item has
+	 */
 	vector<sEffect> m_Effects;
-/*
- *	how much the item is worth?
- */
+	/*
+	 *	how much the item is worth?
+	 */
 	long m_Cost;
-/*	0 is good, while badness > is evil.
- *	Girls may fight back if badness > 0,
- *	Girls won't normally buy items > 20 on their own
- *      default formula is -5% chance to buy on their own per Badness point (5 Badness = 75% chance)
- *	Girls with low obedience may take off something that is bad for them
- */
+	/*	0 is good, while badness > is evil.
+	 *	Girls may fight back if badness > 0,
+	 *	Girls won't normally buy items > 20 on their own
+	 *      default formula is -5% chance to buy on their own per Badness point (5 Badness = 75% chance)
+	 *	Girls with low obedience may take off something that is bad for them
+	 */
 	unsigned char m_Badness;
 	unsigned char m_GirlBuyChance;  // chance that a girl on break will buy this item if she's looking at it in the shop
-/*
- *	0 means common,
- *	1 means 50% chance of appearing in shops,
- *	2 means 25% chance,
- *	3 means 5% chance and
- *	4 means only 15% chance of being found in catacombs,
- *	5 means ONLY given in scripts and
- *	6 means same as 5 but also may be given as a reward for objective
-    7 means only 5% chance in catacombs (catacombs05)
-	8 means only 1% chance in catacombs (catacombs01)
- */
- 	enum Rarity {
-		Common			= RARITYCOMMON,			// old 0
-		Shop50			= RARITYSHOP50,			// old 1
-		Shop25			= RARITYSHOP25,			// old 2
-		Shop05			= RARITYSHOP05,			// old 3
-		Catacomb15		= RARITYCATACOMB15,		// old 4
-		Catacomb05		= RARITYCATACOMB05,		// old 7  // MYR: Added 05 and 01 for the really, really valuable things like invulnerability
-		Catacomb01		= RARITYCATACOMB01,		// old 8
-		ScriptOnly		= RARITYSCRIPTONLY,		// old 5
-		ScriptOrReward	= RARITYSCRIPTORREWARD	// old 6
+	/*
+	 *	0 means common,
+	 *	1 means 50% chance of appearing in shops,
+	 *	2 means 25% chance,
+	 *	3 means 5% chance and
+	 *	4 means only 15% chance of being found in catacombs,
+	 *	5 means ONLY given in scripts and
+	 *	6 means same as 5 but also may be given as a reward for objective
+	 7 means only 5% chance in catacombs (catacombs05)
+	 8 means only 1% chance in catacombs (catacombs01)
+	 */
+	enum Rarity {
+		Common = RARITYCOMMON,			// old 0
+		Shop50 = RARITYSHOP50,			// old 1
+		Shop25 = RARITYSHOP25,			// old 2
+		Shop05 = RARITYSHOP05,			// old 3
+		Catacomb15 = RARITYCATACOMB15,		// old 4
+		Catacomb05 = RARITYCATACOMB05,		// old 7  // MYR: Added 05 and 01 for the really, really valuable things like invulnerability
+		Catacomb01 = RARITYCATACOMB01,		// old 8
+		ScriptOnly = RARITYSCRIPTONLY,		// old 5
+		ScriptOrReward = RARITYSCRIPTORREWARD	// old 6
 	};
 	Rarity m_Rarity;
 
 	void set_rarity(string s)
 	{
-		     if (s == "Common")			{ m_Rarity = Common; }
+		if (s == "Common")			{ m_Rarity = Common; }
 		else if (s == "Shop50")			{ m_Rarity = Shop50; }
 		else if (s == "Shop25")			{ m_Rarity = Shop25; }
 		else if (s == "Shop05")			{ m_Rarity = Shop05; }
@@ -235,6 +235,37 @@ typedef struct sInventoryItem
 		else if (s == "AffectsAll")		{ m_Special = AffectsAll; }
 		else if (s == "Temporary")		{ m_Special = Temporary; }
 		else { m_Special = None; cerr << "unexpected special string: '" << s << "'" << endl; }
+	}
+
+	enum Craftable {
+		No = 0,
+		Any = 1,
+		Baker = JOB_BAKER,
+		Blacksmith = JOB_BLACKSMITH,
+		Brewer = JOB_BREWER,
+		Butcher = JOB_BUTCHER,
+		MakeItem = JOB_MAKEITEM,
+		Milker = JOB_MILKER,
+	};
+	Craftable m_Craftable;	// Who can make it
+	int m_CraftLevel;		// Girl Level needed to make it
+	int m_CraftCraft;		// Craft skill needed to make it
+	int m_CraftStrength;	// Strength needed to make it
+	int m_CraftMagic;		// Magic skill needed to make it
+	int m_CraftIntel;		// Intelligence needed to make it
+	int m_CraftPoints;		// Craft points needed to make it
+
+	void set_craftable(string s)
+	{
+		if (s == "No" || s == "no" || s == "False" || s == "false")	{ m_Craftable = No; }
+		else if (s == "Any")			{ m_Craftable = Any; }
+		else if (s == "Baker")			{ m_Craftable = Baker; }
+		else if (s == "Blacksmith")		{ m_Craftable = Blacksmith; }
+		else if (s == "Brewer")			{ m_Craftable = Brewer; }
+		else if (s == "Butcher")		{ m_Craftable = Butcher; }
+		else if (s == "MakeItem")		{ m_Craftable = MakeItem; }
+		else if (s == "Milker")			{ m_Craftable = Milker; }
+		else { cerr << "Error in set_craftable: unexpected value '" << s << "'" << endl; m_Craftable = No; }	// what to do?
 	}
 
 	void set_type(string s)
@@ -359,6 +390,7 @@ public:
 	int GetRandomShopItem();
 	sInventoryItem* GetRandomItem();
 	sInventoryItem* GetRandomCatacombItem();
+	sInventoryItem* GetRandomCraftableItem(sGirl*girl, int job, int points);
 	int CheckShopItem(string name);	// checks if a item is in shop inventory, returns -1 if not and the id if it is
 	sInventoryItem* BuyShopItem(int num);	// removes and returns the item from the shop
 	bool GirlBuyItem(sGirl* girl, int ShopItem, int MaxItems, bool AutoEquip);  // girl buys selected item if possible; returns true if bought

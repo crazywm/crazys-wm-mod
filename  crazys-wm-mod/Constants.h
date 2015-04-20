@@ -128,8 +128,8 @@ const unsigned int STATUS_YOURDAUGHTER			= 12;
 const unsigned int STATUS_ISDAUGHTER			= 13;
 
 // Jobs
-const unsigned int NUMJOBTYPES			= 18;
-const unsigned int NUM_JOBS				= 111;
+// `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> Constants.h
+
 // `J` Job Brothel - General
 const unsigned int JOBFILTER_GENERAL	= 0;
 const unsigned int JOB_RESTING			= 0;	// relaxes and takes some time off
@@ -213,7 +213,8 @@ const unsigned int JOBFILTER_ARENASTAFF	= 8;
 const unsigned int JOB_ARENAREST		= 51;	//free time of arena
 const unsigned int JOB_DOCTORE			= 52;	//Matron of arena
 const unsigned int JOB_CITYGUARD		= 53;	
-const unsigned int JOB_CLEANARENA		= 54;
+const unsigned int JOB_BLACKSMITH		= 54;
+const unsigned int JOB_CLEANARENA		= 55;
 //const unsigned int JOB_BATTLEMASTER	= ;
 //const unsigned int JOB_ARENAPROMOTER	= ;
 //const unsigned int JOB_BEASTMASTER	= ;
@@ -221,92 +222,94 @@ const unsigned int JOB_CLEANARENA		= 54;
 //const unsigned int JOB_BOOKIE			= ;
 //const unsigned int JOB_GROUNDSKEEPER	= ;
 //const unsigned int JOB_MINER			= ;
-//const unsigned int JOB_SMITH			= ;
 
 // `J` Job Centre - General
 const unsigned int JOBFILTER_COMMUNITYCENTRE = 9;
-const unsigned int JOB_CENTREREST		= 55;	// centres free time
-const unsigned int JOB_CENTREMANAGER	= 56;	// matron of centre	
-const unsigned int JOB_FEEDPOOR			= 57;	// work in a soup kitchen
-const unsigned int JOB_COMUNITYSERVICE	= 58;	// Goes around town helping where they can
-const unsigned int JOB_CLEANCENTRE		= 59;	// 	
+const unsigned int JOB_CENTREREST		= 56;	// centres free time
+const unsigned int JOB_CENTREMANAGER	= 57;	// matron of centre	
+const unsigned int JOB_FEEDPOOR			= 58;	// work in a soup kitchen
+const unsigned int JOB_COMUNITYSERVICE	= 59;	// Goes around town helping where they can
+const unsigned int JOB_CLEANCENTRE		= 60;	// 	
 // TODO ideas:Run a charity, with an option for the player to steal from charity (with possible bad outcome). Run schools/orphanages.. this should give a boost to the stats of new random girls, and possibly be a place to recruit new uniques.
 // Homeless shelter... once again a possible place to find new girls.
 // `J` Job Centre - Rehab
 const unsigned int JOBFILTER_COUNSELINGCENTRE	= 10;
-const unsigned int JOB_COUNSELOR		= 60;	// 	
-const unsigned int JOB_REHAB			= 61;	// 	
-const unsigned int JOB_ANGER			= 62;	// 	
-const unsigned int JOB_EXTHERAPY		= 63;	// 	
-const unsigned int JOB_THERAPY			= 64;	// 		
+const unsigned int JOB_COUNSELOR		= 61;	// 	
+const unsigned int JOB_REHAB			= 62;	// 	
+const unsigned int JOB_ANGER			= 63;	// 	
+const unsigned int JOB_EXTHERAPY		= 64;	// 	
+const unsigned int JOB_THERAPY			= 65;	// 		
 
 // `J` Job Clinic - Surgery
 const unsigned int JOBFILTER_CLINIC		= 11;	// teaches can train girls only up to their own skill level
-const unsigned int JOB_GETHEALING		= 65;	// takes 1 days for each wound trait received.
-const unsigned int JOB_GETREPAIRS		= 66;	// construct girls can get repaired quickly
-const unsigned int JOB_GETABORT			= 67;	// gets an abortion (takes 2 days)
-const unsigned int JOB_PHYSICALSURGERY	= 68;	// magical plastic surgery (takes 5 days)
-const unsigned int JOB_LIPO				= 69;	// magical plastic surgery (takes 5 days)
-const unsigned int JOB_BREASTREDUCTION	= 70;	// magical plastic surgery (takes 5 days)
-const unsigned int JOB_BOOBJOB			= 71;	// magical plastic surgery (takes 5 days)
-const unsigned int JOB_VAGINAREJUV		= 72;	// magical plastic surgery (takes 5 days)
-const unsigned int JOB_FACELIFT			= 73;	// magical plastic surgery (takes 5 days)
-const unsigned int JOB_ASSJOB			= 74;	// magical plastic surgery (takes 5 days)
-const unsigned int JOB_TUBESTIED		= 75;	// magical plastic surgery (takes 5 days)
-const unsigned int JOB_FERTILITY		= 76;	// magical plastic surgery (takes 5 days)
+const unsigned int JOB_GETHEALING		= 66;	// takes 1 days for each wound trait received.
+const unsigned int JOB_GETREPAIRS		= 67;	// construct girls can get repaired quickly
+const unsigned int JOB_GETABORT			= 68;	// gets an abortion (takes 2 days)
+const unsigned int JOB_PHYSICALSURGERY	= 69;	// magical plastic surgery (takes 5 days)
+const unsigned int JOB_LIPO				= 70;	// magical plastic surgery (takes 5 days)
+const unsigned int JOB_BREASTREDUCTION	= 71;	// magical plastic surgery (takes 5 days)
+const unsigned int JOB_BOOBJOB			= 72;	// magical plastic surgery (takes 5 days)
+const unsigned int JOB_VAGINAREJUV		= 73;	// magical plastic surgery (takes 5 days)
+const unsigned int JOB_FACELIFT			= 74;	// magical plastic surgery (takes 5 days)
+const unsigned int JOB_ASSJOB			= 75;	// magical plastic surgery (takes 5 days)
+const unsigned int JOB_TUBESTIED		= 76;	// magical plastic surgery (takes 5 days)
+const unsigned int JOB_FERTILITY		= 77;	// magical plastic surgery (takes 5 days)
 
 // `J` Job Clinic - Staff
 const unsigned int JOBFILTER_CLINICSTAFF = 12;
-const unsigned int JOB_CLINICREST		= 77;	// Is clinics free time	
-const unsigned int JOB_CHAIRMAN			= 78;	// Matron of clinic	
-const unsigned int JOB_DOCTOR			= 79;	// becomes a doctor (requires 1) (will make some extra cash for treating locals)
-const unsigned int JOB_NURSE			= 80;	// helps girls recover from surgery on healing
-const unsigned int JOB_MECHANIC			= 81;	// construct girls can get repaired quickly
-const unsigned int JOB_INTERN			= 82;	// training for nurse job
-const unsigned int JOB_JANITOR			= 83;	// cleans clinic	
+const unsigned int JOB_CLINICREST		= 78;	// Is clinics free time	
+const unsigned int JOB_CHAIRMAN			= 79;	// Matron of clinic	
+const unsigned int JOB_DOCTOR			= 80;	// becomes a doctor (requires 1) (will make some extra cash for treating locals)
+const unsigned int JOB_NURSE			= 81;	// helps girls recover from surgery on healing
+const unsigned int JOB_MECHANIC			= 82;	// construct girls can get repaired quickly
+const unsigned int JOB_INTERN			= 83;	// training for nurse job
+const unsigned int JOB_JANITOR			= 84;	// cleans clinic	
 
 // `J` Job Farm - Staff
 const unsigned int JOBFILTER_FARMSTAFF	= 13;
-const unsigned int JOB_FARMREST			= 84;  //farm rest
-const unsigned int JOB_FARMMANGER		= 85;  //matron of farm
-const unsigned int JOB_VETERINARIAN		= 86;  //tends to the animals to keep them from dying - full time
-const unsigned int JOB_MARKETER			= 87;  // buys and sells food - full time
-const unsigned int JOB_RESEARCH			= 88;  // potions - unlock various types of potions and garden qualities - full time
-const unsigned int JOB_FARMHAND			= 89;  //cleaning of the farm
+const unsigned int JOB_FARMREST			= 85;  //farm rest
+const unsigned int JOB_FARMMANGER		= 86;  //matron of farm
+const unsigned int JOB_VETERINARIAN		= 87;  //tends to the animals to keep them from dying - full time
+const unsigned int JOB_MARKETER			= 88;  // buys and sells food - full time
+const unsigned int JOB_RESEARCH			= 89;  // potions - unlock various types of potions and garden qualities - full time
+const unsigned int JOB_FARMHAND			= 90;  //cleaning of the farm
 // `J` Job Farm - Laborers
 const unsigned int JOBFILTER_LABORERS	= 14;
-const unsigned int JOB_FARMER			= 90;	//tends crops
-const unsigned int JOB_GARDENER			= 91;	// produces herbs and potion ingredients
-const unsigned int JOB_SHEAPHERD		= 92;	//tends food animals - 100% food
-const unsigned int JOB_RANCHER			= 93;	// tends animals for food or beast - % food/beast based on skills
-const unsigned int JOB_CATACOMBRANCHER	= 94;	//tends strange beasts - 100% beast - dangerous
-const unsigned int JOB_BEASTCAPTURE		= 95;	//
-const unsigned int JOB_MILKER			= 96;	// produces milk from animals/beasts/girls - if food animals < beasts - can be dangerous
-const unsigned int JOB_MILK				= 97;	//milker not required but increases yield
+const unsigned int JOB_FARMER			= 91;	//tends crops
+const unsigned int JOB_GARDENER			= 92;	// produces herbs and potion ingredients
+const unsigned int JOB_SHEAPHERD		= 93;	//tends food animals - 100% food
+const unsigned int JOB_RANCHER			= 94;	// tends animals for food or beast - % food/beast based on skills
+const unsigned int JOB_CATACOMBRANCHER	= 95;	//tends strange beasts - 100% beast - dangerous
+const unsigned int JOB_BEASTCAPTURE		= 96;	//
+const unsigned int JOB_MILKER			= 97;	// produces milk from animals/beasts/girls - if food animals < beasts - can be dangerous
+const unsigned int JOB_MILK				= 98;	//milker not required but increases yield
 // `J` Job Farm - Producers
 const unsigned int JOBFILTER_PRODUCERS	= 15;
-const unsigned int JOB_BUTCHER			= 98;   // produces food from animals
-const unsigned int JOB_BAKER			= 99;   // produces food from crops
-const unsigned int JOB_BREWER			= 100;  // Produces beers and wines
-const unsigned int JOB_MAKEITEM			= 101;  // produce items for sale
-const unsigned int JOB_MAKEPOTIONS		= 102;  // create potions with items gained from the garden
+const unsigned int JOB_BUTCHER			= 99;   // produces food from animals
+const unsigned int JOB_BAKER			= 100;   // produces food from crops
+const unsigned int JOB_BREWER			= 101;  // Produces beers and wines
+const unsigned int JOB_MAKEITEM			= 102;  // produce items for sale
+const unsigned int JOB_MAKEPOTIONS		= 103;  // create potions with items gained from the garden
 
 // `J` Job House - General
 const unsigned int JOBFILTER_HOUSE		= 16;
-const unsigned int JOB_HOUSEREST		= 103;
-const unsigned int JOB_HEADGIRL			= 104;
-const unsigned int JOB_RECRUITER		= 105;
-const unsigned int JOB_PERSONALTRAINING	= 106;
-const unsigned int JOB_PERSONALBEDWARMER= 107;
-const unsigned int JOB_CLEANHOUSE		= 108;
+const unsigned int JOB_HOUSEREST		= 104;
+const unsigned int JOB_HEADGIRL			= 105;
+const unsigned int JOB_RECRUITER		= 106;
+const unsigned int JOB_PERSONALTRAINING	= 107;
+const unsigned int JOB_PERSONALBEDWARMER= 108;
+const unsigned int JOB_CLEANHOUSE		= 109;
 //const unsigned int JOB_HOUSECOOK		= ;    // cooks for the harem, (helps keep them happy, and increase job performance)
 //const unsigned int JOB_HOUSEDATE		= ;
 //const unsigned int JOB_HOUSEVAC		= ;
 
 // - extra unassignable
 const unsigned int JOBFILTER_NONE		= 17;
-const unsigned int JOB_INDUNGEON        = 109;
-const unsigned int JOB_RUNAWAY          = 110;
+const unsigned int JOB_INDUNGEON        = 110;
+const unsigned int JOB_RUNAWAY          = 111;
+
+const unsigned int NUMJOBTYPES			= 18;
+const unsigned int NUM_JOBS				= 112;
 
 #if 0
 // - Community Centre
