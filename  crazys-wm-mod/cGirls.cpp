@@ -7419,6 +7419,7 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 		else if (	// Check Lolita/MILF Traits
 			name == "Lolita" ||
 			name == "MILF" ||
+			name == "Middle Aged" ||//zzzzz FIXME
 			name == "Old")
 		{
 			if (apply)
@@ -7428,9 +7429,11 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 				{
 					RemoveTrait(girl, "MILF", rememberflag, true);
 					RemoveTrait(girl, "Old", rememberflag, true);
+					RemoveTrait(girl, "Middle Aged", rememberflag, true);
 				}
 				if (name == "MILF")			RemoveTrait(girl, "Lolita", rememberflag, true);
 				if (name == "Old")			RemoveTrait(girl, "Lolita", rememberflag, true);
+				if (name == "Middle Aged")	RemoveTrait(girl, "Lolita", rememberflag, true);
 			}
 			else
 			{

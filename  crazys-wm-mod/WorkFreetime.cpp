@@ -233,6 +233,13 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					}
 					// if she can not afford it, reroll.
 					break;
+				case FT_WatchFights:
+					if (girl->m_Money >= 15 || g_Arena.GetNumBrothels() > 0)
+					{
+						choicemade = true;	// She has enough money for it, so continue
+					}
+					// if she can not afford it, reroll.
+					break;
 
 					//case FT_GoOnDate:
 					//	if (g_Girls.HasTrait(girl, "Has Boy Friend") || g_Girls.HasTrait(girl, "Has Girl Friend"))
@@ -250,10 +257,9 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				case FT_Quest:
 				case FT_Hobby:
 				case FT_Counseling:
-				case FT_WatchFights:
-				case FT_StrollInCity:
-				case FT_Casino:
-				case FT_CountrySide:
+				case FT_StrollInCity:	
+				case FT_Casino:			
+				case FT_CountrySide:	
 				case FT_GoOnDate:
 					break;
 
@@ -1168,7 +1174,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 									ss << "drummer.";
 									imagetype = IMGTYPE_SEX;
 								}
-								else if (roll_b >= 40)
+								else if (roll_b >= 20 )
 								{
 									ss << "bass player.";
 									imagetype = IMGTYPE_SEX;
@@ -1196,7 +1202,10 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		break;	// end FT_Concert
 
 		case FT_Picnic:
-			break;	// end FT_Picnic	
+		{
+			ss << girlName << " decides to go on a picnic.\n";
+		}
+		break;	// end FT_Picnic	
 
 		case FT_VisitBar:
 		{
@@ -1269,8 +1278,38 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 		case FT_Counseling:
 			break;	// end FT_Counseling
+
 		case FT_WatchFights:
-			break;	// end FT_WatchFights
+		{
+			if (g_Arena.GetNumBrothels() < 0)
+			{
+				U_Money -= 15;
+			}
+			sGirl* fightgirlonduty = g_Brothels.GetRandomGirlOnJob(0, JOB_FIGHTARENAGIRLS, Day0Night1);
+			string fightgirlname = (fightgirlonduty ? "Gladiator " + fightgirlonduty->m_Realname + "" : "the Gladiator");
+			sGirl* fightbeastonduty = g_Brothels.GetRandomGirlOnJob(0, JOB_BARSTRIPPER, Day0Night1);
+			string fightbeastname = (fightbeastonduty ? "Beast fighter " + fightbeastonduty->m_Realname + "" : "the Beast fighter");
+			ss << girlName << " decides to go to the arena and watch some fights.\n";
+			if (fightgirlonduty && fightbeastonduty)
+			{
+				ss << girlName << " watched " << fightgirlname << "during her match.";
+				ss << " Then watched " << fightbeastname << "fight a beast.\n";
+			}
+			else if (fightbeastonduty)
+			{
+				ss << girlName << " watched " << fightbeastname << "during her match against a beast.\n";
+			}
+			else if (fightgirlonduty)
+			{
+				ss << girlName << " watched " << fightgirlname << "during her match.";
+			}
+			else
+			{
+				ss << girlName << " took in a few fights before going home.";
+			}
+		}
+		break;	// end FT_WatchFights
+
 		case FT_StrollInCity:
 			break;	// end FT_StrollInCity
 		case FT_Casino:
@@ -1347,15 +1386,17 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 		case FT_GoOnDate:
 		{
-			ss << girlName << " went on a date with a her ";
-			if (g_Girls.HasTrait(girl, "Has Boy Friend"))
-			{
-				ss << "boy friend.";
-			}
-			else if (g_Girls.HasTrait(girl, "Has Girl Friend"))
-			{
-				ss << "girl friend.";
-			}
+			int enjoy = 0;
+			bool breakup = false;
+			ss << girlName << " went on a date with her ";
+				if (g_Girls.HasTrait(girl, "Has Boy Friend"))
+					{
+						ss << "boy friend.\n";
+					}
+				else if (g_Girls.HasTrait(girl, "Has Girl Friend"))
+					{
+						ss << "girl friend.\n";
+					}
 			if (g_Girls.GetStat(girl, STAT_NPCLOVE) > 80)
 			{
 			}
@@ -1370,7 +1411,63 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			}
 			else
 			{
+				if (roll >= 80 )//dinner
+					{
+						ss << "They go to dinner. ";	
+						//if ()//perv
+						//{
+						//	ss << "During dinner her date told several dirt jokes and made many lewd comments which she ";
+						//	if (g_Girls.HasTrait(girl, "Shy"))
+						//		{
+						//			ss << "didn't like at all.\n"; enjoy -= 2;
+						//		}
+						//	else if (g_Girls.HasTrait(girl, "Slut"))
+						//		{
+						//			ss << "really liked.\n"; enjoy += 2;
+						//		}
+						//	else if (g_Girls.HasTrait(girl, "Bimbo"))
+						//		{
+						//			ss << "which she didn't get at all.\n";
+						//		}
+						//	else
+						//		{
+						//			ss << "didn't care for much either way.\n";
+						//		}
+						//}
+						//else if ()//mean
+						//{
+						//	ss << ".";
+						//}
+						//else if ()//nice
+						//{
+						//	ss << ".";
+						//}
+					}
+				else if (roll >= 60 )//movie
+					{
+						ss << "They go to a movie. ";
+					}
+				else if (roll >= 40 )
+					{
+						ss << ".";
+					}
+				else if (roll >= 20 )
+					{
+						ss << ".";
+					}
+				else
+					{
+						ss << ".";
+					}
+				g_Girls.UpdateStat(girl, STAT_NPCLOVE, enjoy);
 			}
+			if (breakup) //For if they break up removes traits and puts npclove back to 0
+				{
+					ss << "Not happy with how the date went she broke up with them.";
+					g_Girls.RemoveTrait(girl, "Has Boy Friend", true);
+					g_Girls.RemoveTrait(girl, "Has Girl Friend", true);
+					g_Girls.UpdateStat(girl, STAT_NPCLOVE, -100);
+				}
 		}
 		break;	// end FT_GoOnDate
 

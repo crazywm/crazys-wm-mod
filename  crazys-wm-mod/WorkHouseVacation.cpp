@@ -62,7 +62,7 @@ bool cJobManager::WorkHouseVacation(sGirl* girl, sBrothel* brothel, bool Day0Nig
 	else if (roll_a <= 60)	{ vac_type = 2; vac_type_text = "a near by beach"; }
 	else if (roll_a >= 80)	{ vac_type = 0; vac_type_text = "an amusment park"; } 
 
-	ss << "You send her to " + vac_type_text + " for the week.\n";
+	ss << "You send her to " << vac_type_text << " for the week.\n";
 
 	g_Girls.UpdateStat(girl, STAT_TIREDNESS, -100);
 	g_Girls.UpdateStat(girl, STAT_HAPPINESS, 100);
