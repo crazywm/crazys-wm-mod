@@ -45,10 +45,14 @@ extern cGold g_Gold;
 
 bool cJobManager::WorkArenaRacing(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-	string girlName = girl->m_Realname; stringstream ss;
-
-	if(Preprocessing(ACTION_COMBAT, girl, brothel, Day0Night1, summary, ss.str()))
+	int actiontype = ACTION_COMBAT;
+	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
+	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work 
+	{
+		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
+	}
 
 	int roll = g_Dice%100;
 	int wages = 50, work = 0;

@@ -300,6 +300,10 @@ void cJobManager::Setup()
 	JobDesc[JOB_FIGHTTRAIN] = gettext("She will practice combat.");
 	JobFunc[JOB_FIGHTTRAIN] = &WorkCombatTraining;
 	JobPerf[JOB_FIGHTTRAIN] = &JP_CombatTraining;
+	/*JobName[JOB_JOUSTING] = gettext("Jousting");
+	JobDesc[JOB_JOUSTING] = gettext("She will put on a Jousting match.");
+	JobFunc[JOB_JOUSTING] = &WorkArenaJousting;
+	JobPerf[JOB_JOUSTING] = &JP_ArenaJousting;*/
 	//- Arena Staff
 	JobFilterName[JOBFILTER_ARENASTAFF] = gettext("Arena Staff");
 	JobFilterDesc[JOBFILTER_ARENASTAFF] = gettext("These are jobs that help run an arena.");

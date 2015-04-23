@@ -53,10 +53,14 @@ bool cJobManager::WorkArenaJousting(sGirl* girl, sBrothel* brothel, bool Day0Nig
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	ss << " worked as a jouster in the arena.\n\n";
+	ss << girlName << " worked as a jouster in the arena.\n";
 
 	int roll = g_Dice.d100();
 	int wages = 50, work = 0;
+	//string girls = GetNumGirlsOnJob(0, JOB_JOUSTING, Day0Night1)
+	//int winner = > JP_ArenaJousting;
+
+	//ss << girls << " competed today.";
 
 	//CRAZY
 	/*Jousting plans

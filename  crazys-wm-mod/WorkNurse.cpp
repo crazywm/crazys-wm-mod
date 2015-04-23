@@ -181,7 +181,15 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 		}
 		else
 		{
-			ss << "When giving a sponge bath to one of male patients she accidently aroused his manhood. Ashamed from the sight, she run out the room!\n";
+			ss << "When giving a sponge bath to one of male patients she accidently aroused his manhood. \n";
+			if (g_Girls.HasTrait(girl, "Shy") || g_Girls.HasTrait(girl, "Meek"))
+			{
+				ss << "Ashamed from the sight, she run out the room!\n";
+			}
+			else
+			{
+				ss << "But it didn't bother her any.";
+			}
 		}
 	}
 	else if (jobperformance >= 65)

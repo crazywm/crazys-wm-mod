@@ -571,7 +571,7 @@ void cGirls::CalculateGirlType(sGirl* girl)
 {
 	// `J` When adding new traits, search for "J-Add-New-Traits"  :  found in >> CalculateGirlType
 	int BigBoobs = 0, SmallBoobs = 0, CuteGirl = 0, Dangerous = 0, Cool = 0, Nerd = 0, NonHuman = 0, Lolita = 0,
-		Elegant = 0, Sexy = 0, NiceFigure = 0, NiceArse = 0, Freak = 0;
+		Elegant = 0, Sexy = 0, NiceFigure = 0, NiceArse = 0, Freak = 0, Tall = 0, Short = 0, Fat = 0;
 
 	girl->m_FetishTypes = 0;
 	// zzzzzz -  the traits with /**/ in front of the mods have not been updated
@@ -622,16 +622,16 @@ void cGirls::CalculateGirlType(sGirl* girl)
 	if (HasTrait(girl, "Whore"))					/**/{ Lolita -= 50; CuteGirl -= 40; Cool += 10; Sexy += 10; }
 
 	//Figure
-	if (HasTrait(girl, "Great Figure"))					{ BigBoobs += 10; Sexy += 10; NiceFigure += 60; }
-	if (HasTrait(girl, "Hourglass Figure"))			/**/{ Sexy += 25; Lolita -= 30; NiceFigure += 20; }
-	if (HasTrait(girl, "Plump"))					/**/{ Lolita -= 10; NiceFigure -= 20; Freak += 20; }
-	if (HasTrait(girl, "Fat"))						/**/{ Lolita -= 20; NiceFigure -= 40; Freak += 25; }
+	if (HasTrait(girl, "Great Figure"))					{ BigBoobs += 10; Sexy += 10; NiceFigure += 60; Fat -= 100;}
+	if (HasTrait(girl, "Hourglass Figure"))			/**/{ Sexy += 25; Lolita -= 30; NiceFigure += 20; Fat -= 50;}
+	if (HasTrait(girl, "Plump"))					/**/{ Lolita -= 10; NiceFigure -= 20; Freak += 20; Fat += 50;}
+	if (HasTrait(girl, "Fat"))						/**/{ Lolita -= 20; NiceFigure -= 40; Freak += 25; Fat += 100;}
 
 	//Height
-	if (HasTrait(girl, "Giant"))					/**/{ Freak += 20; Lolita -= 60; }
-	if (HasTrait(girl, "Tall"))						/**/{ Lolita -= 30; }
-	if (HasTrait(girl, "Short"))					/**/{ Lolita += 15; }
-	if (HasTrait(girl, "Dwarf"))					/**/{ Freak += 20; Lolita += 10; }
+	if (HasTrait(girl, "Giant"))					/**/{ Freak += 20; Lolita -= 60; Tall += 75; Short -= 100;}
+	if (HasTrait(girl, "Tall"))						/**/{ Lolita -= 30; Tall += 50; Short -= 50;}
+	if (HasTrait(girl, "Short"))					/**/{ Lolita += 15; Tall -= 50; Short += 50;}
+	if (HasTrait(girl, "Dwarf"))					/**/{ Freak += 20; Lolita += 10; Tall -= 75; Short += 100;}
 
 	//Ass
 	if (HasTrait(girl, "Great Arse"))					{ Sexy += 10; NiceArse += 60; }
@@ -786,8 +786,8 @@ void cGirls::CalculateGirlType(sGirl* girl)
 	if (HasTrait(girl, "Viras Blood Addict"))			{ Dangerous += 15; Cool += 25; Nerd -= 20; Elegant -= 30; Sexy -= 30; Freak += 20; }
 	if (HasTrait(girl, "Nymphomaniac"))					{ Sexy += 15; Freak += 20; Elegant -= 5; } //kind of an addiction!
 	if (HasTrait(girl, "Smoker"))						{ Elegant -= 5; Cool += 5; }
-	if (HasTrait(girl, "Alchoholic"))					{ Elegant -= 20; Cool += 5; Dangerous += 5; }
-	if (HasTrait(girl, "Cum Addict"))					{ Sexy += 10; Freak += 20; Elegant -= 15; }
+	if (HasTrait(girl, "Alchoholic"))					{ Elegant -= 15; Cool += 5; Dangerous += 5; }
+	if (HasTrait(girl, "Cum Addict"))					{ Sexy += 10; Freak += 20; Elegant -= 20; }
 
 
 	/****** Job Skills ******/
@@ -902,6 +902,9 @@ void cGirls::CalculateGirlType(sGirl* girl)
 	if (NiceArse > 50)				girl->m_FetishTypes |= (1 << FETISH_ARSE);
 	if (Freak > 50)					girl->m_FetishTypes |= (1 << FETISH_FREAKYGIRLS);
 	if (HasTrait(girl, "Futanari"))	girl->m_FetishTypes |= (1 << FETISH_FUTAGIRLS);
+	if (Tall > 50)					girl->m_FetishTypes |= (1 << FETISH_TALLGIRLS);
+	if (Short > 50)					girl->m_FetishTypes |= (1 << FETISH_SHORTGIRLS);
+	if (Fat > 50)					girl->m_FetishTypes |= (1 << FETISH_FATGIRLS);
 }
 
 bool cGirls::CheckGirlType(sGirl* girl, int type)
@@ -2279,6 +2282,9 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 	if (CheckGirlType(girl, FETISH_SMALLBOOBS))		ss << " |Small Boobs| ";
 	if (CheckGirlType(girl, FETISH_FREAKYGIRLS))	ss << " |Freaky| ";
 	if (CheckGirlType(girl, FETISH_FUTAGIRLS))		ss << " |Futa| ";
+	if (CheckGirlType(girl, FETISH_TALLGIRLS))		ss << " |Tall| ";
+	if (CheckGirlType(girl, FETISH_SHORTGIRLS))		ss << " |Short| ";
+	if (CheckGirlType(girl, FETISH_FATGIRLS))		ss << " |Fat| ";
 
 
 	if (!purchase)

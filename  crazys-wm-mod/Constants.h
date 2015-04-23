@@ -111,7 +111,7 @@ const unsigned int NUM_SKILLS			= 22;	// 1 more than the last skill
 //const unsigned int SKILL_MAST		= ;
 
 // STATUS
-const unsigned int NUM_STATUS					= 14;
+const unsigned int NUM_STATUS					= 17;
 const unsigned int STATUS_NONE					= 0;
 const unsigned int STATUS_POISONED				= 1;
 const unsigned int STATUS_BADLY_POISONED		= 2;
@@ -126,6 +126,9 @@ const unsigned int STATUS_CATACOMBS				= 10;
 const unsigned int STATUS_ARENA					= 11;
 const unsigned int STATUS_YOURDAUGHTER			= 12;
 const unsigned int STATUS_ISDAUGHTER			= 13;
+const unsigned int STATUS_DATING_PERV			= 14;
+const unsigned int STATUS_DATING_MEAN			= 15;
+const unsigned int STATUS_DATING_NICE			= 16;
 
 // Jobs
 // `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> Constants.h
@@ -441,7 +444,7 @@ const unsigned int REWARD_RIVALHINDER   = 2;
 const unsigned int REWARD_ITEM          = 3;
 
 // customer fetishes (important that they are ordered from normal to weird)
-const unsigned int  NUM_FETISH              = 16;
+const unsigned int  NUM_FETISH              = 19;
 const unsigned char FETISH_TRYANYTHING      = 0;	// will like and try any form of sex (a nympho basically)
 const unsigned char FETISH_SPECIFICGIRL     = 1;	// wants a particular girl
 const unsigned char FETISH_BIGBOOBS         = 2;	// likes girls with big boobs
@@ -458,9 +461,9 @@ const unsigned char FETISH_DANGEROUSGIRLS   = 12;	// likes girls with a bit of d
 const unsigned char FETISH_NONHUMAN         = 13;	// likes non human girls
 const unsigned char FETISH_FREAKYGIRLS      = 14;	// likes freaky girls
 const unsigned char FETISH_FUTAGIRLS		= 15;	// likes girls with dicks
-//const unsigned char FETISH_TALLGIRLS        = 16;	// likes tall girls
-//const unsigned char FETISH_SHORTGIRLS		= 17;	// likes short girls
-//const unsigned char FETISH_FATGIRLS		= 18;	// likes fat girls
+const unsigned char FETISH_TALLGIRLS        = 16;	// likes tall girls
+const unsigned char FETISH_SHORTGIRLS		= 17;	// likes short girls
+const unsigned char FETISH_FATGIRLS			= 18;	// likes fat girls
 
 // actions girls can disobey against
 // `J` When modifying Action types, search for "J-Change-Action-Types"  :  found in >> Constants.h

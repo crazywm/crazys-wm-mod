@@ -729,6 +729,13 @@ struct sGirl
 			has_trait("Chlamydia") ||
 			has_trait("Syphilis");
 	}
+	bool is_fighter()
+	{
+		return	has_trait("Aggressive") ||
+			has_trait("Assassin") ||
+			has_trait("Yandere") ||
+			has_trait("Tsundere");
+	}
 
 	sChild *next_child(sChild *child, bool remove = false)
 	{
