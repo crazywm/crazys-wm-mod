@@ -213,6 +213,9 @@ double cJobManager::JP_Mechanic(sGirl* girl, bool estimate)// not used
 	if (g_Girls.HasTrait(girl, "Tough"))			jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Construct"))		jobperformance += 10;
 	if (g_Girls.HasTrait(girl, "Half-Construct"))	jobperformance += 5;
+	if (g_Girls.HasTrait(girl, "Psychic"))			jobperformance += 10;
+	if (g_Girls.HasTrait(girl, "Goddess"))			jobperformance += 10; //might be able to heal people easier.. they are a goddess after all
+	if (g_Girls.HasTrait(girl, "Optimist"))			jobperformance += 10;
 
 	//bad traits
 	if (g_Girls.HasTrait(girl, "Dependant"))		jobperformance -= 40;
@@ -223,5 +226,27 @@ double cJobManager::JP_Mechanic(sGirl* girl, bool estimate)// not used
 	if (g_Girls.HasTrait(girl, "Elegant"))			jobperformance -= 5;	// Don't break a nail
 	if (g_Girls.HasTrait(girl, "Queen"))			jobperformance -= 20;	// Manual labor is beneth her
 	if (g_Girls.HasTrait(girl, "Princess"))			jobperformance -= 10;	// Manual labor is beneth her
+	if (g_Girls.HasTrait(girl, "Mind Fucked"))		jobperformance -= 50;
+	if (g_Girls.HasTrait(girl, "Pessimist"))		jobperformance -= 10;
+	if (g_Girls.HasTrait(girl, "Sadistic"))			jobperformance -= 20;
+
+	if (g_Girls.HasTrait(girl, "One Arm"))		jobperformance -= 40;
+	if (g_Girls.HasTrait(girl, "One Foot"))		jobperformance -= 40;
+	if (g_Girls.HasTrait(girl, "One Hand"))		jobperformance -= 30; 
+	if (g_Girls.HasTrait(girl, "One Leg"))		jobperformance -= 60;
+	if (g_Girls.HasTrait(girl, "No Arms"))		jobperformance -= 150;
+	if (g_Girls.HasTrait(girl, "No Feet"))		jobperformance -= 60;
+	if (g_Girls.HasTrait(girl, "No Hands"))		jobperformance -= 90;
+	if (g_Girls.HasTrait(girl, "No Legs"))		jobperformance -= 150;
+	if (g_Girls.HasTrait(girl, "Blind"))		jobperformance -= 75;
+	if (g_Girls.HasTrait(girl, "Deaf"))			jobperformance -= 15;
+	if (g_Girls.HasTrait(girl, "Retarded"))		jobperformance -= 60;
+	if (g_Girls.HasTrait(girl, "Smoker"))		jobperformance -= 10;	//would need smoke breaks
+
+	if (g_Girls.HasTrait(girl, "Alcoholic"))			jobperformance -= 25;
+	if (g_Girls.HasTrait(girl, "Fairy Dust Addict"))	jobperformance -= 25;
+	if (g_Girls.HasTrait(girl, "Shroud Addict"))		jobperformance -= 25;
+	if (g_Girls.HasTrait(girl, "Viras Blood Addict"))	jobperformance -= 25;
+
 	return jobperformance;
 }

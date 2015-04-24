@@ -1302,7 +1302,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				ss << "addiction.";
 				if (girl->is_addict(true) && g_Dice.percent(20))//doesnt make it
 				{
-					ss << "But on her way their she ran into an old friend who invited her to do some";
+					ss << "But on her way their she ran into an old friend who invited her to do some ";
 					if (g_Girls.HasTrait(girl, "Shroud Addict"))
 					{
 						g_Girls.AddInv(girl, g_InvManager.GetItem("Shroud Mushroom"));

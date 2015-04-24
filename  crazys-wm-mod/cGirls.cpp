@@ -11827,6 +11827,7 @@ int cGirls::GetCombatDamage(sGirl *girl, int CombatType)
 		damage += girl->combat() / 10;
 		if (girl->has_trait("Manly"))				damage += 2;
 		if (girl->has_trait("Strong"))				damage += 2;
+		if (girl->has_trait("Brawler"))				damage += 1;
 	}
 	return damage;
 }
@@ -13488,6 +13489,7 @@ bool cGirls::InheritTrait(sTrait* trait)
 			name == "Horrific Scars" ||
 			name == "MILF" ||
 			name == "Your Daughter" ||
+			name == "Your Wife" ||
 			name == "Incest" ||
 			name == "One Eye" ||
 			name == "Eye Patch" ||
@@ -14952,7 +14954,7 @@ int cGirls::PreferredAccom(sGirl* girl)
 	if (girl->is_pregnant()) preferredaccom += 1.5;
 
 	if (girl->has_trait("Your Wife"))			preferredaccom += 2.0;	// You married her
-	else if (girl->has_trait("Your Daughter"))	preferredaccom += 1.0;	// She is yout kid
+	else if (girl->has_trait("Your Daughter"))	preferredaccom += 1.0;	// She is your kid
 	if (girl->has_trait("Queen"))				preferredaccom += 3.0;	// Royalty is accustomed to higher quality stuff.
 	else if (girl->has_trait("Princess"))		preferredaccom += 2.0;	// Royalty is accustomed to higher quality stuff.
 	else if (girl->has_trait("Noble"))			preferredaccom += 1.0;	// 

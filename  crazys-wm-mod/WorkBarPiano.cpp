@@ -231,7 +231,7 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 
 	//try and add randomness here
-	if (g_Girls.GetStat(girl, STAT_BEAUTY) >85 && g_Dice.percent(20))
+	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85 && g_Dice.percent(20))
 	{
 		ss << "Stunned by her beauty a customer left her a great tip.\n\n"; wages += 15;
 	}
