@@ -30,6 +30,7 @@
 #include "cGold.h"
 #include "cGangs.h"
 #include "cMessageBox.h"
+#include "cScriptManager.h"
 #include "libintl.h"
 
 #include "cMovieStudio.h"
@@ -1402,7 +1403,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			sGirl* xxxonduty = g_Brothels.GetRandomGirlOnJob(0, JOB_XXXENTERTAINMENT, Day0Night1);
 			string xxxname = (xxxonduty ? "XXX Entertainment " + xxxonduty->m_Realname + "" : "the XXX Entertainment");
 			ss << girlName << " decides to go to ";
-			int gamble = g_Dice.d1000();
+			int gamble = g_Dice.percent(1000);
 			if (roll > 75)
 			{
 				ss << "one of your rivials casinos.\n";
