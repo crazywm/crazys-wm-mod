@@ -5234,7 +5234,9 @@
             "Brewer",
             "Butcher",
             "MakeItem",
-            "Milker"});
+            "Milker",
+            "Tailor",
+            "Cobbler"});
             this.comboBox_Item_Craftable.Location = new System.Drawing.Point(109, 18);
             this.comboBox_Item_Craftable.Name = "comboBox_Item_Craftable";
             this.comboBox_Item_Craftable.Size = new System.Drawing.Size(119, 21);

@@ -152,6 +152,7 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		SexType = 0;
 		group = false;
 		acceptsGirl = false;
+		fuckMessage = "";
 		// WD:	Create Customer
 		sCustomer Cust;
 		g_Customers.GetCustomer(Cust, brothel);
@@ -247,6 +248,23 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				The_Player->customerfear(5);
 				acceptsGirl = false;
 			}
+			else if (girl->has_trait("Lesbian") && Cust.m_IsWoman && g_Dice.percent(50))
+			{
+				fuckMessage = "The female customer chooses her because she is a Lesbian.\n\n";
+				acceptsGirl = true;
+			}
+			else if (girl->has_trait("Straight") && Cust.m_IsWoman && g_Dice.percent(10))
+			{
+				fuckMessage = girlName + " refuses to accept a female customer because she is Straight.\n\n";
+				brothel->m_Fame -= 2;
+				acceptsGirl = false;
+			}
+			else if (girl->has_trait("Lesbian") && !Cust.m_IsWoman && g_Dice.percent(10))
+			{
+				fuckMessage = girlName + " refuses to accept a male customer because she is a Lesbian.\n\n";
+				brothel->m_Fame -= 5;
+				acceptsGirl = false;
+			}
 			else if (Cust.m_Stats[STAT_LIBIDO] >= 80)
 			{
 				fuckMessage = "Customer chooses her because they are very horny.\n\n";
@@ -271,7 +289,14 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			}
 		}
 
-		if (!acceptsGirl) continue;		// will the customer sleep with her?
+		if (!acceptsGirl)	// if the customer will not sleep with her
+		{
+			if (fuckMessage != "")	// if there is a reason, include it in her messages.
+			{
+				girl->m_Events.AddMessage(fuckMessage, IMGTYPE_PROFILE, Day0Night1);
+			}
+			continue;	// otherwise just move on
+		}
 
 		// Horizontal boogy
 		g_Girls.GirlFucks(girl, Day0Night1, &Cust, group, fuckMessage, SexType);

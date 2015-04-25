@@ -189,7 +189,7 @@
     <ClCompile Include="WorkMechanic.cpp" />
     <ClCompile Include="WorkMilker.cpp" />
     <ClCompile Include="WorkRancher.cpp" />
-    <ClCompile Include="WorkSheapherd.cpp" />
+    <ClCompile Include="WorkShepherd.cpp" />
     <ClCompile Include="XmlMisc.cpp" />
     <ClCompile Include="XmlUtil.cpp" />
     <ClCompile Include="cColor.cpp" />

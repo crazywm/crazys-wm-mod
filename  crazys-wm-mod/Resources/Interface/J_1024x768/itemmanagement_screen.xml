@@ -24,6 +24,12 @@
 <Text     Name="PlayerGold"         Text="Your Gold"         XPos="302" YPos="260" Width="208" Height="32"  FontSize="16" />
 <Text     Name="ShiftHeader"        Text="TransferItem(s)"   XPos="330" YPos="210" Width="150" Height="68"  FontSize="18" />
 <Checkbox Name="AutoUseItems"   Text="Autouse Consumables"   XPos="325" YPos="235" Width="16"  Height="16"	FontSize="12"/>
+
+<Button   Name="Sell1LeftButton"    Image="Sell1"            XPos="270" YPos="30" Width="48"  Height="22"  Transparency="true" Scale="true" />
+<Button   Name="Sell1RightButton"   Image="Sell1"            XPos="450" YPos="30" Width="48"  Height="22"  Transparency="true" Scale="true" />
+<Button   Name="SellAllLeftButton"  Image="SellAll"          XPos="270" YPos="55" Width="48"  Height="22"  Transparency="true" Scale="true" />
+<Button   Name="SellAllRightButton" Image="SellAll"          XPos="450" YPos="55" Width="48"  Height="22"  Transparency="true" Scale="true" />
+
 <Button   Name="Buy10LeftButton"    Image="Buy10"            XPos="270" YPos="175" Width="48"  Height="22"  Transparency="true" Scale="true" />
 <Button   Name="Buy10RightButton"   Image="Buy10"            XPos="450" YPos="175" Width="48"  Height="22"  Transparency="true" Scale="true" />
 <Button   Name="ShiftLeftButton"    Image="ShiftLeft"        XPos="270" YPos="200" Width="48"  Height="48"  Transparency="true" Scale="true" />

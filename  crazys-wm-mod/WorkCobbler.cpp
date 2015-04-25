@@ -34,8 +34,8 @@ extern cFarmManager g_Farm;
 extern cInventory g_InvManager;
 
 
-// `J` Job Arena - Staff
-bool cJobManager::WorkBlacksmith(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
+// `J` Job arena - Staff
+bool cJobManager::WorkCobbler(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	int actiontype = ACTION_WORKMAKEITEMS;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
@@ -46,7 +46,7 @@ bool cJobManager::WorkBlacksmith(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	ss << " worked as a blacksmith at the arena.\n\n";
+	ss << " worked making shoes and other leather items at the arena.\n\n";
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
@@ -56,7 +56,7 @@ bool cJobManager::WorkBlacksmith(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	int imagetype = IMGTYPE_CRAFT;
 	int msgtype = Day0Night1;
 
-	double jobperformance = JP_Blacksmith(girl, false);
+	double jobperformance = JP_Cobbler(girl, false);
 	double craftpoints = jobperformance;
 	
 	int dirtyloss = brothel->m_Filthiness / 10;		// craftpoints lost due to repairing equipment
@@ -172,7 +172,7 @@ bool cJobManager::WorkBlacksmith(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	}
 
 	// `J` Arena Bookmark - adding in items that can be created in the Arena
-	if (craftpoints > 0) ss << g_InvManager.CraftItem(girl, JOB_BLACKSMITH, int(craftpoints));
+	if (craftpoints > 0) ss << g_InvManager.CraftItem(girl, JOB_COBBLER, int(craftpoints));
 
 	// `J` - Finish the shift - Baker
 
@@ -207,7 +207,7 @@ bool cJobManager::WorkBlacksmith(sGirl* girl, sBrothel* brothel, bool Day0Night1
 
 	return false;
 }
-double cJobManager::JP_Blacksmith(sGirl* girl, bool estimate)// not used
+double cJobManager::JP_Cobbler(sGirl* girl, bool estimate)// not used
 {
 	double jobperformance =
 		// primary - first 100

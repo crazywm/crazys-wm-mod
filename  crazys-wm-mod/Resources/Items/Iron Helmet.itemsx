@@ -1,22 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Items>
-	<Item
-		Name="Iron Helmet"
-		Desc="Standard army issue helmet, most of the city guards wear one of these.  (Cons +5, adds Tough.)"
-		Type="Helmet"
-		Badness="10"
-		Special="None"
-		Cost="150"
-		Rarity="Shop50"
-		Infinite="false"
-		GirlBuyChance="10">
-		<Effect
-			What="Stat"
-			Name="Constitution"
-			Amount="5" />
-		<Effect
-			What="Trait"
-			Name="Tough"
-			Amount="1" />
-	</Item>
+    <Item Name="Iron Helmet" Desc="Standard army issue helmet, most of the city guards wear one of these.  (Cons +5, adds Tough.)"
+	Type="Helmet" Badness="10" Special="None" Cost="150" Rarity="Shop50" Infinite="false" GirlBuyChance="10" ItemWeight="0.0"
+	Craftable="Blacksmith" CraftLevel="1" CraftCraft="10" CraftStren="10" CraftMagic="0" CraftIntel="5" CraftPoint="30">
+        <Effect What="Stat" Name="Constitution" Amount="5" />
+        <Effect What="Trait" Name="Tough" Amount="1" />
+    </Item>
+    <Item Name="Iron Helmet" Desc="Standard army issue helmet, most of the city guards wear one of these.  (Cons +5, adds Tough.)"
+	Type="Helmet" Badness="10" Special="None" Cost="150" Rarity="Shop50" Infinite="false" GirlBuyChance="10" ItemWeight="0.0"
+	Craftable="Blacksmith" CraftLevel="1" CraftCraft="10" CraftStren="10" CraftMagic="0" CraftIntel="5" CraftPoint="30">
+        <Effect What="Stat" Name="Constitution" Amount="5" />
+        <Effect What="Trait" Name="Tough" Amount="1" />
+    </Item>
 </Items>

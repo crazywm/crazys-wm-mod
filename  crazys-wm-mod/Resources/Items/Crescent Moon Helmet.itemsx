@@ -1,43 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Items>
-    <Item
-        Name="Crescent Moon Helmet"
-        Desc="Samurai helmet with decoration in the shape of a crescent moon. (+5 Combat, -5 Mag, +3 Cons, +3 Conf, -5 Fear, -5 Hate, +3 Cha)"
-        Type="Helmet"
-        Badness="0"
-        Special="None"
-        Cost="2000"
-        Rarity="Catacomb15"
-        Infinite="false"
-        GirlBuyChance="0"
-        ItemWeight="0.0">
-        <Effect
-            What="Skill"
-            Name="Combat"
-            Amount="5" />
-        <Effect
-            What="Skill"
-            Name="Magic"
-            Amount="-5" />
-        <Effect
-            What="Stat"
-            Name="Charisma"
-            Amount="3" />
-        <Effect
-            What="Stat"
-            Name="Confidence"
-            Amount="3" />
-        <Effect
-            What="Stat"
-            Name="PCFear"
-            Amount="-5" />
-        <Effect
-            What="Stat"
-            Name="PCHate"
-            Amount="-5" />
-        <Effect
-            What="Stat"
-            Name="Constitution"
-            Amount="5" />
+    <Item Name="Crescent Moon Helmet" Desc="Samurai helmet with decoration in the shape of a crescent moon. (+5 Combat, -5 Mag, +3 Cons, +3 Conf, -5 Fear, -5 Hate, +3 Cha)"
+	Type="Helmet" Badness="0" Special="None" Cost="2000" Rarity="Catacomb15" Infinite="false" GirlBuyChance="0" ItemWeight="0.0"
+	Craftable="Blacksmith" CraftLevel="4" CraftCraft="20" CraftStren="10" CraftMagic="0" CraftIntel="30" CraftPoint="60">
+        <Effect What="Skill" Name="Combat" Amount="5" />
+        <Effect What="Skill" Name="Magic" Amount="-5" />
+        <Effect What="Stat" Name="Charisma" Amount="3" />
+        <Effect What="Stat" Name="Confidence" Amount="3" />
+        <Effect What="Stat" Name="PCFear" Amount="-5" />
+        <Effect What="Stat" Name="PCHate" Amount="-5" />
+        <Effect What="Stat" Name="Constitution" Amount="5" />
     </Item>
 </Items>

@@ -381,7 +381,7 @@ void cFarmManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)		// Start_Bui
 
 					JOB_FARMER
 					JOB_GARDENER
-					JOB_SHEAPHERD
+					JOB_SHEPHERD
 					JOB_RANCHER
 					JOB_CATACOMBRANCHER
 					JOB_BEASTCAPTURE
@@ -423,7 +423,7 @@ void cFarmManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)		// Start_Bui
 
 	JOB_FARMER
 	JOB_GARDENER
-	JOB_SHEAPHERD
+	JOB_SHEPHERD
 	JOB_RANCHER
 	JOB_CATACOMBRANCHER
 	JOB_BEASTCAPTURE

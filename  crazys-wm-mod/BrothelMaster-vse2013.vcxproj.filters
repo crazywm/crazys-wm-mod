@@ -566,7 +566,6 @@
     <ClCompile Include="WorkMakePotions.cpp" />
     <ClCompile Include="WorkMilker.cpp" />
     <ClCompile Include="WorkRancher.cpp" />
-    <ClCompile Include="WorkSheapherd.cpp" />
     <ClCompile Include="WorkGetVaginalRejuvenation.cpp" />
     <ClCompile Include="WorkFilmFootJob.cpp" />
     <ClCompile Include="lua\src\lapi.c" />
@@ -608,6 +607,7 @@
     <ClCompile Include="WorkCounselor.cpp" />
     <ClCompile Include="SDL_anigif.c" />
     <ClCompile Include="WorkBlacksmith.cpp" />
+    <ClCompile Include="WorkShepherd.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cButton.h">

@@ -2025,6 +2025,29 @@ Added multibirth to inseminated births, some die, some are sold and some can be 
 Added more to Blacksmith job
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 
+Added Dagoth's changes to Slider controls
+ - Added a new "marker" option to Slider control for marking a default or target value, 
+ - switched girl's "preferred accommodation" value to display using this new marker instead of using a separate disabled slider
+ - Also providing alternate marker image as an option, depending on how you want it to look
+
+Updated several items with Craftable numbers.
+
+###  Changes 4/21-24/2015
+Crazy - Added several things to several jobs
+
+Renamed Sheapherd the Shepherd
+Added item creation to Make Items job.
+Updated several more items with Craftable numbers.
+Added "Sell 1" and "Sell All" buttons to Inventory screen
+Fixed Listboxes to scroll better.
+Added Lesbian and Straight checks to whore jobs.
+Included some rejected customers texts to whore's turn summary.
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub  -  several areas unfinished: itemsx, blacksmith, tailor, cobbler, inventory screen
+
+
+
+
 
 
 

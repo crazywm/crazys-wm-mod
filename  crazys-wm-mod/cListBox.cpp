@@ -17,13 +17,13 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include <algorithm>
+#include <sstream>
+#include <SDL_rotozoom.h>
 #include "cListBox.h"
 #include "CGraphics.h"
 #include "cInterfaceEvent.h"
 #include "strnatcmp.h"
-#include <SDL_rotozoom.h>
 #include "sConfig.h"
-#include <sstream>
 
 SDL_Surface* cListBox::m_HeaderSortAsc = 0;
 SDL_Surface* cListBox::m_HeaderSortDesc = 0;
@@ -171,8 +171,7 @@ int cListBox::ArrowDownList()
 {
 	int selection = GetSelected();
 	cListItem* current = m_Items;
-	if (m_Items == 0)
-		return -1;
+	if (m_Items == 0)		return -1;
 
 	if (selection == -1)
 	{
@@ -183,8 +182,7 @@ int cListBox::ArrowDownList()
 
 	while (1)
 	{
-		if (current == 0)
-			return -1;
+		if (current == 0)		return -1;
 		if (current->m_ID == selection)
 		{
 			if (current->m_Next == 0)
@@ -202,8 +200,7 @@ int cListBox::ArrowDownList()
 		current = current->m_Next;
 	}
 
-	if (current == 0)
-		return -1;
+	if (current == 0) return -1;
 
 	return current->m_ID;
 }
@@ -213,9 +210,7 @@ int cListBox::ArrowUpList()
 	int selection = GetSelected();
 	cListItem* current = m_Items;
 
-	if (m_Items == 0)
-		return -1;
-
+	if (m_Items == 0) return -1;
 	if (selection == -1)
 	{
 		current = m_LastItem;
@@ -238,8 +233,7 @@ int cListBox::ArrowUpList()
 			break;
 		}
 		current = current->m_Next;
-		if (current == 0)
-			return -1;
+		if (current == 0) return -1;
 	}
 
 	return current->m_ID;
@@ -323,8 +317,7 @@ void cListBox::OnClicked(int x, int y, bool mouseWheelDown, bool mouseWheelUp)
 			int x_start = 0, x_end = 0;
 			for (int i = 0; i < m_ColumnCount; i++)
 			{
-				if (m_SkipColumn[i])
-					continue;
+				if (m_SkipColumn[i]) continue;
 
 				x_start = m_ColumnOffset[i] - 3;
 
@@ -363,11 +356,9 @@ void cListBox::OnClicked(int x, int y, bool mouseWheelDown, bool mouseWheelUp)
 				m_HasMultiSelect = false;
 				deselect = true;
 			}
-			else
-				m_HasMultiSelect = true;
+			else m_HasMultiSelect = true;
 		}
-		else
-			deselect = true;
+		else deselect = true;
 
 		// first unselect any currently selected items
 		if (deselect)
@@ -387,8 +378,7 @@ void cListBox::OnClicked(int x, int y, bool mouseWheelDown, bool mouseWheelUp)
 			if (g_ShiftDown == true)
 				singleSelect = false;
 		}
-		else
-			singleSelect = true;
+		else singleSelect = true;
 
 		if (singleSelect)	// find the first element displayed
 		{
@@ -396,9 +386,7 @@ void cListBox::OnClicked(int x, int y, bool mouseWheelDown, bool mouseWheelUp)
 			int count = 0;
 			while (current)
 			{
-				if (count == m_Position)
-					break;
-
+				if (count == m_Position) break;
 				count++;
 				current = current->m_Next;
 			}
@@ -572,12 +560,9 @@ void cListBox::CreateListbox(int ID, int x, int y, int width, int height, int Bo
 		string Asc = string(dp.c_str()) + "Asc.png";
 		string Desc = string(dp.c_str()) + "Desc.png";
 		string None = string(dp.c_str()) + "None.png";
-		if (m_HeaderSortAsc == 0)
-			m_HeaderSortAsc = IMG_Load(Asc.c_str());
-		if (m_HeaderSortDesc == 0)
-			m_HeaderSortDesc = IMG_Load(Desc.c_str());
-		if (m_HeaderUnSort == 0)
-			m_HeaderUnSort = IMG_Load(None.c_str());
+		if (m_HeaderSortAsc == 0)	m_HeaderSortAsc = IMG_Load(Asc.c_str());
+		if (m_HeaderSortDesc == 0)	m_HeaderSortDesc = IMG_Load(Desc.c_str());
+		if (m_HeaderUnSort == 0)	m_HeaderUnSort = IMG_Load(None.c_str());
 
 		// draw the "un-sort" clickable header
 		if (HeaderSort)
@@ -659,15 +644,13 @@ void cListBox::Draw()
 		// draw the header text
 		for (int i = 0; i<m_ColumnCount; i++)
 		{
-			if (m_SkipColumn[i])
-				continue;
+			if (m_SkipColumn[i]) continue;
 			if (m_SortedColumn != "" && m_SortedColumn == m_ColumnName[i])
 			{
 				SDL_Rect sort_offset;
 				sort_offset.x = offset.x + m_ColumnOffset[i];
 				sort_offset.y = offset.y + 1;
-				if (i == 0)
-					sort_offset.x += 2 + m_BorderSize;
+				if (i == 0) sort_offset.x += 2 + m_BorderSize;
 				SDL_BlitSurface(m_HeaderSortBack, 0, g_Graphics.GetScreen(), &sort_offset);
 			}
 			m_Font.SetText(m_Header[i]);
@@ -683,9 +666,7 @@ void cListBox::Draw()
 	cListItem* current = m_Items;
 	while (current)
 	{
-		if (count == m_Position)
-			break;
-
+		if (count == m_Position) break;
 		count++;
 		current = current->m_Next;
 	}
@@ -694,8 +675,7 @@ void cListBox::Draw()
 	int temp = 0;
 	while (current)
 	{
-		if ((count - m_Position) >= m_NumDrawnElements)
-			break;
+		if ((count - m_Position) >= m_NumDrawnElements) break;
 
 		// Draw the window
 		offset.x = m_XPos + m_BorderSize;
@@ -753,42 +733,25 @@ void cListBox::Draw()
 
 void cListBox::ScrollDown(int amount, bool updatebar)
 {
-	if (m_NumDrawnElements >= m_NumElements)
-		return;
-
-	if (amount <= 0)
-		amount = m_ScrollBar->m_ScrollAmount;
-
-	if (m_Position + m_NumDrawnElements + amount < m_NumElements)
-		m_Position += amount;
-	else
-		m_Position = m_NumElements - m_NumDrawnElements;
-
-	if (updatebar)
-		m_ScrollBar->SetTopValue(m_Position);
+	if (m_NumDrawnElements >= m_NumElements) return;
+	if (amount <= 0) amount = m_ScrollBar->m_ScrollAmount;
+	if (m_Position + m_NumDrawnElements + amount < m_NumElements) m_Position += amount;
+	else m_Position = m_NumElements - m_NumDrawnElements;
+	if (updatebar) m_ScrollBar->SetTopValue(m_Position);
 }
 
 void cListBox::ScrollUp(int amount, bool updatebar)
 {
-	if (m_NumDrawnElements >= m_NumElements)
-		return;
-
-	if (amount <= 0)
-		amount = m_ScrollBar->m_ScrollAmount;
-
-	if (m_Position - amount >= 0)
-		m_Position -= amount;
-	else
-		m_Position = 0;
-
-	if (updatebar)
-		m_ScrollBar->SetTopValue(m_Position);
+	if (m_NumDrawnElements >= m_NumElements) return;
+	if (amount <= 0) amount = m_ScrollBar->m_ScrollAmount;
+	if (m_Position - amount >= 0) m_Position -= amount;
+	else m_Position = 0;
+	if (updatebar) m_ScrollBar->SetTopValue(m_Position);
 }
 
 int cListBox::GetNextSelected(int from, int& pos)
 {
-	if (m_MultiSelect == false)
-		return -1;
+	if (m_MultiSelect == false) return -1;
 
 	cListItem* current = m_Items;
 	int count = 0;
@@ -806,84 +769,64 @@ int cListBox::GetNextSelected(int from, int& pos)
 		current = current->m_Next;
 	}
 
-	if (current)
-		return current->m_ID;
-
+	if (current) return current->m_ID;
 	return -1;
 }
 
 int cListBox::GetLastSelected()
 {
-	if (m_LastSelected)
-		return m_LastSelected->m_ID;
-
+	if (m_LastSelected) return m_LastSelected->m_ID;
 	return -1;
 }
 
 int cListBox::GetSelected()
 {
-	if (m_LastSelected == 0)
-		return -1;
-	else
-		return m_LastSelected->m_ID;
+	if (m_LastSelected == 0) return -1;
+	else return m_LastSelected->m_ID;
 
 	cListItem* current = m_Items;
 	while (current->m_Selected == false && current)
 		current = current->m_Next;
 
-	if (current)
-		return current->m_ID;
-
+	if (current) return current->m_ID;
 	return -1;
 }
 
 string cListBox::GetSelectedText()
 {
-	if (m_LastSelected == 0)
-		return "";
-	else
-		return m_LastSelected->m_Data->c_str();
+	if (m_LastSelected == 0) return "";
+	else return m_LastSelected->m_Data->c_str();
 
 	cListItem* current = m_Items;
 	while (current->m_Selected == false && current)
 		current = current->m_Next;
 
-	if (current)
-		return current->m_Data->c_str();
-
+	if (current) return current->m_Data->c_str();
 	return "";
 }
 
 bool cListBox::IsSelected()
 {
 	cListItem* current = m_Items;
-	if (!m_Items)
-		return false;
-
+	if (!m_Items) return false;
 	while (current->m_Selected == false && current)
 	{
 		current = current->m_Next;
-		if (!current)
-			return false;
+		if (!current) return false;
 	}
-
-	if (current)
-		return true;
-
+	if (current) return true;
 	return false;
 }
 
 void cListBox::GetSortedIDList(vector<int> *id_vec, int *vec_pos)
 {
 	id_vec->clear();
-
 	int count = 0;
 	cListItem* current = m_Items;
 	while (current)
 	{
 		id_vec->push_back(current->m_ID);
-		if (current == m_LastSelected)
-			*vec_pos = count;
+		if (current == m_LastSelected) *vec_pos = count;
 		count++;
 		current = current->m_Next;
 	}
@@ -908,7 +851,7 @@ void cListBox::SetElementText(int ID, string data[], int columns)
 	{
 		if (current->m_ID == ID)
 		{
-			for (int i = 0; i<columns; i++)
+			for (int i = 0; i < columns; i++)
 				current->m_Data[i] = data[i];
 			break;
 		}
@@ -954,8 +897,7 @@ void cListBox::AddElement(int ID, string data[], int columns, int color)
 	newItem->m_Color = color;
 	newItem->m_Next = (class cListItem*)NULL;
 
-	if (!m_Items)
-		m_LastItem = m_Items = newItem;
+	if (!m_Items) m_LastItem = m_Items = newItem;
 	else
 	{
 		m_LastItem->m_Next = newItem;
@@ -982,14 +924,12 @@ void cListBox::DefineColumns(string name[], string header[], int offset[], bool 
 		m_SkipColumn[i] = skip[i];
 	}
 
-	if (!m_HeaderDividers)
-		return;
+	if (!m_HeaderDividers) return;
 
 	// while we're here, let's pre-draw the header dividers on the stored header background image
 	for (int i = 1; i<m_ColumnCount; i++)
 	{
-		if (m_SkipColumn[i])
-			continue;
+		if (m_SkipColumn[i]) continue;
 		m_Divider.x = m_ColumnOffset[i] - 4;
 		m_Divider.w = 2;
 		SDL_FillRect(m_HeaderBackground, &m_Divider, SDL_MapRGB(m_HeaderBackground->format, g_ListBoxHeaderBorderHR, g_ListBoxHeaderBorderHG, g_ListBoxHeaderBorderHB));
@@ -1063,8 +1003,7 @@ void cListBox::SetSelected(int ID, bool ev, bool deselect_others)
 	m_LastSelected = 0;
 	m_HeaderClicked = "";
 
-	if (!current)
-		return;
+	if (!current) return;
 
 	// special case if ID "-2" is sent, select first actual list item (not based on ID)
 	if (ID == -2)
@@ -1073,41 +1012,40 @@ void cListBox::SetSelected(int ID, bool ev, bool deselect_others)
 		m_LastSelected = current;
 		m_Position = 0;
 		m_ScrollBar->SetTopValue(m_Position);
-		if (ev)
-			g_InterfaceEvents.AddEvent(EVENT_SELECTIONCHANGE, m_ID);
+		if (ev) g_InterfaceEvents.AddEvent(EVENT_SELECTIONCHANGE, m_ID);
 		return;
 	}
 
-	int count = 0;
+	int count = 0; int posit = 0;
 	while (current)
 	{
 		if (current->m_ID == ID)
 		{
-			if (ev)
-				g_InterfaceEvents.AddEvent(EVENT_SELECTIONCHANGE, m_ID);
+			if (ev) g_InterfaceEvents.AddEvent(EVENT_SELECTIONCHANGE, m_ID);
 			current->m_Selected = true;
 			m_LastSelected = current;
-
-			if (count < m_Position)
-				m_Position = count;
+			posit = count;
+			if (count < m_Position)		m_Position = count;
 			else if (count >(m_Position + m_NumDrawnElements - 1))
 			{
 				while (count > (m_Position + m_NumDrawnElements))
 					m_Position++;
 				m_Position++;
 			}
-			if (!deselect_others)
-				break;
+			m_Position = count;
+			if (!deselect_others) break;
 		}
 		else
 		{
-			if (deselect_others)
-				current->m_Selected = false;
+			if (deselect_others) current->m_Selected = false;
 		}
-
 		count++;
 		current = current->m_Next;
 	}
+
+	m_Position = posit - (m_NumDrawnElements / 2);
+	if (m_Position > count - m_NumDrawnElements) m_Position = count - m_NumDrawnElements;
+	if (m_Position < 0) m_Position = 0;
 
 	m_ScrollBar->SetTopValue(m_Position);
 }

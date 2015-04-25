@@ -503,10 +503,10 @@ void cJobManager::Setup()
 	JobDesc[JOB_GARDENER] = gettext("She will produce herbs.");
 	JobFunc[JOB_GARDENER] = &WorkGardener;
 	JobPerf[JOB_GARDENER] = &JP_Gardener;
-	JobName[JOB_SHEAPHERD] = gettext("Sheapherd");
-	JobDesc[JOB_SHEAPHERD] = gettext("She will tend to food animals.");
-	JobFunc[JOB_SHEAPHERD] = &WorkSheapherd;
-	JobPerf[JOB_SHEAPHERD] = &JP_Sheapherd;
+	JobName[JOB_SHEPHERD] = gettext("Shepherd");
+	JobDesc[JOB_SHEPHERD] = gettext("She will tend to food animals.");
+	JobFunc[JOB_SHEPHERD] = &WorkShepherd;
+	JobPerf[JOB_SHEPHERD] = &JP_Shepherd;
 	JobName[JOB_RANCHER] = gettext("Rancher");
 	JobDesc[JOB_RANCHER] = gettext("She will tend to larger animals.");
 	JobFunc[JOB_RANCHER] = &WorkRancher;

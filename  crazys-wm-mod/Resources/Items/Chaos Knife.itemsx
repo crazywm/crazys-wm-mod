@@ -1,6 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Items>
-    <Item Name="Chaos Knife" Desc="A small blade used by mad-driven beings. Careful you don't try to hurt people with it....oh who am I kidding LLIK OG, HSELF TAE. (Com 15, Int -20, Con 10, Health 55, Mag 20, Perf 10, +Open Minded, Small Scars, Strong Magic, Twisted, -Mind Fucked, Broken Will)" Type="Small Weapon" Badness="20" Special="None" Cost="10" Rarity="Catacomb01" Infinite="false" GirlBuyChance="0" ItemWeight="0.0" Craftable="Blacksmith" CraftLevel="10" CraftCraft="40" CraftStren="20" CraftMagic="70" CraftIntel="80" CraftPoint="130">
+    <Item Name="Chaos Knife" Desc="A small blade used by mad-driven beings. Careful you don't try to hurt people with it....oh who am I kidding LLIK OG, HSELF TAE. (Com 15, Int -20, Con 10, Health 55, Mag 20, Perf 10, +Open Minded, Small Scars, Strong Magic, Twisted, -Mind Fucked, Broken Will)" 
+	Type="Small Weapon" Badness="20" Special="None" Cost="10" Rarity="Catacomb01" Infinite="false" GirlBuyChance="0" ItemWeight="0.0" 
+	Craftable="Blacksmith" CraftLevel="10" CraftCraft="40" CraftStren="20" CraftMagic="70" CraftIntel="80" CraftPoint="130">
         <Effect What="Skill" Name="Performance" Amount="10" />
         <Effect What="Skill" Name="Magic" Amount="20" />
         <Effect What="Stat" Name="Health" Amount="55" />

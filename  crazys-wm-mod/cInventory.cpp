@@ -577,7 +577,58 @@ sInventoryItem* cInventory::GetRandomCraftableItem(sGirl*girl, int job, int poin
 	return temp;
 }
 
+string cInventory::CraftItem(sGirl*girl, int job, int points)
+{
+	stringstream ss;
+	sInventoryItem* item = NULL;
 
+	int nummade = 0;
+	int total_made = 0;
+	int tries = girl->constitution() / 2;
+	string ItemsMade[50];
+	int numItemsMade[50];
+
+	while (points > 0 && tries > 0)
+	{
+		tries--;
+		item = GetRandomCraftableItem(girl, job, points);
+		if (item)
+		{
+			if (g_Brothels.AddItemToInventory(item))
+			{
+				points -= item->m_CraftPoints;
+				bool newitem = true;
+
+				for (int i=0; i < nummade; i++)
+				{
+					if (ItemsMade[i] == item->m_Name)
+					{
+						numItemsMade[i]++;
+						newitem = false;
+						break;
+					}
+				}
+				if (newitem)
+				{
+					ItemsMade[nummade] = item->m_Name;
+					numItemsMade[nummade] = 1;
+					nummade++;
+				}
+				total_made++;
+			}
+			else points--;
+		}
+		else points--;
+	}
+	if (total_made > 0)
+	{
+		ss << "\n\n" << girl->m_Realname << " made:\n";
+		for (int i = 0; i < nummade; i++)
+			ss << numItemsMade[i] << " " << ItemsMade[i] << "\n";
+	}
+
+	return ss.str();
+}
 
 sInventoryItem* cInventory::GetItem(string name)
 {

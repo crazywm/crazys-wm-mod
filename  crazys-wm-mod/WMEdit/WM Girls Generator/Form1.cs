@@ -4317,7 +4317,10 @@ namespace WM_Girls_Generator
                         case "5": sValues[8] = "Butcher"; break;
                         case "6": sValues[8] = "MakeItem"; break;
                         case "7": sValues[8] = "Milker"; break;
-                        case "0": default:
+                        case "8": sValues[8] = "Tailor"; break;
+                        case "9": sValues[8] = "Cobbler"; break;
+                        case "0":
+                        default:
                             sValues[8] = "No"; break;
                     }
                     item.SetAttribute("Craftable",  sValues[8]);  
@@ -5057,6 +5060,8 @@ namespace WM_Girls_Generator
                             case "Butcher": sData = sData + " " + "5"; break;
                             case "MakeItem": sData = sData + " " + "6"; break;
                             case "Milker": sData = sData + " " + "7"; break;
+                            case "Tailor": sData = sData + " " + "8"; break;
+                            case "Cobbler": sData = sData + " " + "9"; break;
                             case "No":
                             default: sData = sData + " " + "0"; break;
                         }
@@ -5492,9 +5497,10 @@ namespace WM_Girls_Generator
                         case "5": sValues[8] = "Butcher"; break;
                         case "6": sValues[8] = "MakeItem"; break;
                         case "7": sValues[8] = "Milker"; break;
+                        case "8": sValues[8] = "Tailor"; break;
+                        case "9": sValues[8] = "Cobbler"; break;
                         case "0":
-                        default:
-                            sValues[8] = "No"; break;
+                        default:  sValues[8] = "No"; break;
                     }
                     item.SetAttribute("Craftable", sValues[8]);
                 }

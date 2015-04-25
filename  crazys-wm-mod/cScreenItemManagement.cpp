@@ -120,6 +120,10 @@ void cScreenItemManagement::set_ids()
 	ids_set = true;
 	curbrothel_id	= get_id("CurrentBrothel");
 	back_id			= get_id("BackButton");
+	sell1_l_id		= get_id("Sell1LeftButton");
+	sell1_r_id		= get_id("Sell1RightButton");
+	sellall_l_id	= get_id("SellAllLeftButton");
+	sellall_r_id	= get_id("SellAllRightButton");
 	buy10_l_id		= get_id("Buy10LeftButton");
 	buy10_r_id		= get_id("Buy10RightButton");
 	shift_l_id		= get_id("ShiftLeftButton");
@@ -142,9 +146,6 @@ void cScreenItemManagement::set_ids()
 	string OLColumns[] = { "OLLName", "OLLNumber", "OLLCatNum" };
 	SortColumns(owners_l_id, OLColumns, 3);
 
-
-
-	
 	for (int i = 0; i < 9; i++) RarityColor[i] = cfg.items.rarity_color(i);
 }
 
@@ -203,7 +204,11 @@ void cScreenItemManagement::init()	// `J` bookmark
 	
 	if (playershopinventory)	// `J` to set player and shop when pressing I to get to inventory
 	{
-		leftOwner = 0; rightOwner = 1;
+		if (leftOwner != 0)									leftItem = -1;
+		if (leftItem < 0 && g_Brothels.m_Inventory[0])		leftItem = 0;
+		if (rightOwner != 1)								rightItem = -1;
+		if (rightItem < 0 && g_InvManager.GetShopItem(0))	rightItem = 0;
+		leftOwner = 0;	rightOwner = 1;
 	}
 	playershopinventory = false;
 
@@ -237,15 +242,11 @@ void cScreenItemManagement::init()	// `J` bookmark
 	AddToListBox(filter_id, INVSHIELD,		gettext("Shields"));
 	AddToListBox(filter_id, INVCOMBATSHOES, gettext("Combat Shoes"));
 	
-
-
 	if (filter == -1) filter = 0;
 	SetSelectedItemInList(filter_id, filter, false);
 
 
-	// add shop and player to list
-
-	if (true)
+	if (true)	// add shop and player to list
 	{
 		stringstream ss, ss2;
 		if (g_Brothels.m_NumInventory > 0) ss << g_Brothels.m_NumInventory;
@@ -473,39 +474,51 @@ void cScreenItemManagement::init()	// `J` bookmark
 	g_ReturnText = "";
 	g_AllTogle = false;
 
-	DisableButton(shift_l_id, true);
-	DisableButton(shift_r_id, true);
-	DisableButton(buy10_l_id, true);
-	DisableButton(buy10_r_id, true);
-
 	SetSelectedItemInList(owners_l_id, leftOwner);
 	SetSelectedItemInList(owners_r_id, rightOwner);
 
 	SetSelectedItemInList(items_l_id, leftItem);
 	SetSelectedItemInList(items_r_id, rightItem);
 
-	// check the shop for infinite items
-	bool disablebuy10L = true; bool disablebuy10R = true;
-	if ((GetSelectedItemFromList(owners_r_id) == 1 && GetSelectedItemFromList(owners_l_id) == 0) ||
-		(GetSelectedItemFromList(owners_l_id) == 1 && GetSelectedItemFromList(owners_r_id) == 0))
+	// check the shop for infinite items and check Player for multiples of the same item
+	int disableshiftL	= 0;		int disableshiftR	= 0;	// 0 = hidden
+	int disablebuy10L	= 0;		int disablebuy10R	= 0;	// 1 = off
+	int	disablesell1L	= 0;		int	disablesell1R	= 0;	// 2 = on
+	int	disablesellallL	= 0;		int	disablesellallR	= 0;	// 
+	
+	if (leftOwner == 0)
 	{
-		if (GetSelectedItemFromList(owners_r_id) == 1 && GetLastSelectedItemFromList(items_r_id) > -1
-			&& g_InvManager.GetShopItem(GetSelectedItemFromList(items_r_id)) &&
-			g_InvManager.GetShopItem(GetLastSelectedItemFromList(items_r_id))->m_Infinite &&
-			g_Gold.afford(g_InvManager.GetShopItem(GetSelectedItemFromList(items_r_id))->m_Cost * 10))
-		{
-			disablebuy10R = false;
-		}
-		if (GetSelectedItemFromList(owners_l_id) == 1 && GetLastSelectedItemFromList(items_l_id) > -1 &&
-			g_InvManager.GetShopItem(GetSelectedItemFromList(items_l_id)) &&
-			g_InvManager.GetShopItem(GetLastSelectedItemFromList(items_l_id))->m_Infinite &&
-			g_Gold.afford(g_InvManager.GetShopItem(GetSelectedItemFromList(items_l_id))->m_Cost * 10))
-		{
-			disablebuy10L = false;
-		}
+		disablesell1R = (leftItem > -1 ? 2 : 1);
+		disablesellallR = (g_Brothels.m_NumItem[leftItem] > 1 ? 2 : 1);
 	}
-	DisableButton(buy10_l_id, disablebuy10L);
-	DisableButton(buy10_r_id, disablebuy10R);
+	if (rightOwner == 0)
+	{
+		disablesell1L = (rightItem > -1 ? 2 : 1);
+		disablesellallL = (g_Brothels.m_NumItem[rightItem] > 1 ? 2 : 1);
+	}
+	if (leftOwner == 0/*Player*/ && rightOwner == 1/*Shop*/)
+	{
+		disableshiftR = (rightItem > -1 ? 2 : 1);
+		disablebuy10L = (rightItem > -1 && g_InvManager.GetShopItem(rightItem) &&
+			g_InvManager.GetShopItem(rightItem)->m_Infinite &&
+			g_Gold.afford(g_InvManager.GetShopItem(rightItem)->m_Cost * 10) ? 2 : 1);
+	}
+	if (leftOwner == 1/*Shop*/ && rightOwner == 0/*Player*/)
+	{
+		disableshiftL = (leftItem > -1 ? 2 : 1);
+		disablebuy10L = (leftItem > -1 && g_InvManager.GetShopItem(leftItem) &&
+			g_InvManager.GetShopItem(leftItem)->m_Infinite &&
+			g_Gold.afford(g_InvManager.GetShopItem(leftItem)->m_Cost * 10) ? 2 : 1);
+	}
+	DisableButton(shift_l_id, disableshiftL <= 1);
+	DisableButton(shift_r_id, disableshiftR <= 1);
+
+	HideButton(buy10_l_id, disablebuy10L == 0);			DisableButton(buy10_l_id, disablebuy10L != 2);
+	HideButton(buy10_r_id, disablebuy10R == 0);			DisableButton(buy10_r_id, disablebuy10R != 2);
+	HideButton(sell1_l_id, disablesell1L == 0);			DisableButton(sell1_l_id, disablesell1L != 2);
+	HideButton(sell1_r_id, disablesell1R == 0);			DisableButton(sell1_r_id, disablesell1R != 2);
+	HideButton(sellall_l_id, disablesellallL == 0);		DisableButton(sellall_l_id, disablesellallL != 2);
+	HideButton(sellall_r_id, disablesellallR == 0);		DisableButton(sellall_r_id, disablesellallR != 2);
 
 	// disable the equip/unequip buttons
 	DisableButton(equip_l_id, true);
@@ -546,14 +559,12 @@ void cScreenItemManagement::check_events()
 
 	if (g_InterfaceEvents.CheckButton(back_id))			// if it's the back button, pop the window off the stack and we're done
 	{
-		sel_pos_l = -2;
-		sel_pos_r = -2;
-		leftOwner = -2;
-		rightOwner = -2;
+		sel_pos_l = sel_pos_r = leftOwner = rightOwner = -2;
 		g_InitWin = true;
 		g_WinManager.Pop();
 		return;
 	}
+
 	if (g_InterfaceEvents.CheckButton(buy10_r_id))		{ attempt_transfer(Left, 10); }
 	if (g_InterfaceEvents.CheckButton(buy10_l_id))		{ attempt_transfer(Right, 10); }
 	if (g_InterfaceEvents.CheckButton(shift_r_id))		{ attempt_transfer(Left); g_InitWin = true; }
@@ -601,6 +612,8 @@ void cScreenItemManagement::check_events()
 
 				DisableButton(equip_l_id, true);
 				DisableButton(unequip_l_id, true);
+
+
 			}
 			else
 			{

@@ -42,6 +42,10 @@ private:
  */
 	int curbrothel_id;	// Current Brothel text
 	int back_id;		// Back button
+	int sell1_l_id;		// Buy 10 Items Left button
+	int sell1_r_id;		// Buy 10 Items Right button
+	int sellall_l_id;	// Buy 10 Items Left button
+	int sellall_r_id;	// Buy 10 Items Right button
 	int buy10_l_id;		// Buy 10 Items Left button
 	int buy10_r_id;		// Buy 10 Items Right button
 	int shift_l_id;		// Shift Item Left button

@@ -2456,7 +2456,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 	int researcher = ((jr_int / 2) + (jr_her / 2) + jr_bre);
 	int farmer = (jr_int + jr_far);
 	int gardener = ((jr_int / 2) + (jr_her / 2) + jr_far);
-	int sheapherd = ((jr_int / 2) + (jr_far / 2) + jr_anh);
+	int shepherd = ((jr_int / 2) + (jr_far / 2) + jr_anh);
 	int rancher = ((jr_bst / 2) + (jr_far / 2) + jr_anh);
 	int beastcap = combat;
 	int catarancher = ((jr_int / 2) + (jr_far / 2) + jr_anh);
@@ -2515,7 +2515,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 		marketer -= 20;
 		farmer -= 20;
 		gardener -= 20;
-		sheapherd -= 20;
+		shepherd -= 20;
 		rancher -= 20;
 		catarancher -= 20;
 		milker -= 20;
@@ -2609,7 +2609,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 		marketer -= 20;
 		farmer -= 20;
 		gardener -= 20;
-		sheapherd -= 20;
+		shepherd -= 20;
 		rancher -= 20;
 		catarancher -= 20;
 		milker -= 20;
@@ -2693,7 +2693,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 		marketer -= 50;
 		farmer -= 50;
 		gardener -= 50;
-		sheapherd -= 50;
+		shepherd -= 50;
 		rancher -= 50;
 		catarancher -= 50;
 		milker -= 50;
@@ -2785,7 +2785,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 		marketer -= 20;
 		farmer -= 20;
 		gardener -= 20;
-		sheapherd -= 20;
+		shepherd -= 20;
 		rancher -= 20;
 		catarancher -= 20;
 		milker -= 20;
@@ -2832,7 +2832,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 		marketer -= 30;
 		farmer -= 30;
 		gardener -= 30;
-		sheapherd -= 30;
+		shepherd -= 30;
 		rancher -= 30;
 		catarancher -= 30;
 		milker -= 30;
@@ -2878,7 +2878,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 		marketer += 10;
 		farmer += 10;
 		gardener += 10;
-		sheapherd += 10;
+		shepherd += 10;
 		rancher += 10;
 		catarancher += 10;
 		milker += 10;
@@ -2912,7 +2912,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 		marketer += 5;
 		farmer += 5;
 		gardener += 5;
-		sheapherd += 5;
+		shepherd += 5;
 		rancher += 5;
 		catarancher += 5;
 		milker += 5;
@@ -3128,7 +3128,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 		Farm_Data += "\n";
 		Farm_Data += girl->JobRating(m_JobManager.JP_Farmer(girl, true), "-", "Farmer");
 		Farm_Data += girl->JobRating(m_JobManager.JP_Gardener(girl, true), "-", "Gardener");
-		Farm_Data += girl->JobRating(m_JobManager.JP_Sheapherd(girl, true), "-", "Sheapherd");
+		Farm_Data += girl->JobRating(m_JobManager.JP_Shepherd(girl, true), "-", "Shepherd");
 		Farm_Data += girl->JobRating(m_JobManager.JP_Rancher(girl, true), "-", "Rancher");
 		Farm_Data += girl->JobRating(m_JobManager.JP_CatacombRancher(girl, true), "-", "Catacombs Rancher");
 		Farm_Data += girl->JobRating(m_JobManager.JP_Milker(girl, true), "-", "Milker");
@@ -12223,6 +12223,7 @@ ostream& operator<<(ostream& os, sGirl &g)
 static bool has_contraception(sGirl *girl)
 {
 	// `J` rearranged to speed up checks
+	if (girl->has_trait("Skeleton") || girl->has_trait("Zombie"))	return true;	// Skeletons and Zombies can't get pregnant
 	if (girl->has_trait("Sterile"))		return true;	// If she's Sterile, she can't get pregnant
 	if (girl->is_pregnant())			return true;	// If she's pregnant, she shouldn't get pregnant
 	if (girl->m_PregCooldown > 0) 		return true;	// If she's in her cooldown period after giving birth
@@ -15062,8 +15063,8 @@ bool cGirls::detect_disease_in_customer(sBrothel * brothel, sGirl* girl, sCustom
 	detectdisease += girl->magic() / 5.0;									// +20 magic
 	detectdisease -= girl->libido() / 2.0;									// -50 libido
 
-	if (girl->has_disease()							detectdisease += 20;	// has it so know what to look for
-	if (girl->is_addict(true)						detectdisease -= 20;	// if your high your not paying any mind to things
+	if (girl->has_disease())						detectdisease += 20;	// has it so know what to look for
+	if (girl->is_addict(true))						detectdisease -= 20;	// if your high your not paying any mind to things
 	if (girl->has_trait("Alcoholic"))				detectdisease -= 20;	// if your drunk your not paying any mind to things
 	if (girl->has_trait("Bimbo"))					detectdisease -= 20;	// 
 	if (girl->has_trait("Blind"))					detectdisease -= 20;	// can't see it

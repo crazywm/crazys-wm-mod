@@ -278,8 +278,8 @@ public:
 	static double JP_Farmer(sGirl* girl, bool estimate);
 	static bool WorkGardener(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
 	static double JP_Gardener(sGirl* girl, bool estimate);
-	static bool WorkSheapherd(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static double JP_Sheapherd(sGirl* girl, bool estimate);
+	static bool WorkShepherd(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_Shepherd(sGirl* girl, bool estimate);
 	static bool WorkRancher(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
 	static double JP_Rancher(sGirl* girl, bool estimate);
 	static bool WorkCatacombRancher(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
