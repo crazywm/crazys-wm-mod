@@ -471,7 +471,12 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, bool Day0Night
 	g_Girls.UpdateStatTemp(girl, STAT_CONFIDENCE, g_Dice % 2); //SIN - slow boost to confidence
 
 	//gained
-	g_Girls.PossiblyGainNewTrait(girl, "Sexy Air", 70, actiontype, girlName + " has been stripping and having to be sexy for so long she now reeks of sexyness.", Day0Night1);
+	g_Girls.PossiblyGainNewTrait(girl, "Sexy Air", 80, actiontype, girlName + " has been stripping and having to be sexy for so long she now reeks of sexyness.", Day0Night1);
+	g_Girls.PossiblyGainNewTrait(girl, "Exhibitionist", 60, actiontype, girlName + " has been stripping for so long she loves to be naked now.", Day0Night1);
+	if (jobperformance >= 140 && g_Dice.percent(25))
+	{
+		g_Girls.PossiblyGainNewTrait(girl, "Agile", 40, actiontype, girlName + " has been working the pole long enought to become quite Agile.", Day0Night1);
+	}
 
 	//lose
 	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 20, actiontype, girlName + " has had so many people see her naked she is no longer nervous about anything.", Day0Night1);

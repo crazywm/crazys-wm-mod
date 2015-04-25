@@ -468,6 +468,7 @@ bool cJobManager::WorkHallWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 
 	//gain
 	g_Girls.PossiblyGainNewTrait(girl, "Good Kisser", 50, actiontype, girlName + " has had a lot of practice kissing and as such as become a Good Kisser.", Day0Night1);
+	g_Girls.PossiblyGainNewTrait(girl, "Slut", 60, actiontype, girlName + " has turned into quite a slut.", Day0Night1);
 	g_Girls.PossiblyGainNewTrait(girl, "Nymphomaniac", 70, actiontype, girlName + " has been having so much sex she is now wanting sex all the time.", Day0Night1);
 
 	//SIN: use a few of the new traits

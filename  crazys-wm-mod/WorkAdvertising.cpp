@@ -61,7 +61,7 @@ bool cJobManager::WorkAdvertising(sGirl* girl, sBrothel* brothel, bool Day0Night
 	int enjoy = 0;
 	int wages = 0;
 	int tips = 0;
-	int imagetype = IMGTYPE_PROFILE;
+	int imagetype = IMGTYPE_SIGN;
 	int msgtype = EVENT_SUMMARY;
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
 

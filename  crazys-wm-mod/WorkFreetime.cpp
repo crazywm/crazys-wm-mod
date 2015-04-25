@@ -85,6 +85,10 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	int HateLove = 0;
 	HateLove = g_Girls.GetStat(girl, STAT_PCLOVE) - g_Girls.GetStat(girl, STAT_PCHATE);
 
+	DirPath dp;
+	string filename;
+	cScriptManager sm;
+
 
 
 	if (g_Dice % 2 != 1)	// half of the time she will just stay home and rest
@@ -1388,8 +1392,70 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 		case FT_StrollInCity:
 			break;	// end FT_StrollInCity
+
 		case FT_Casino:
-			break;	// end FT_Casino
+		{
+			sGirl* dealeronduty = g_Brothels.GetRandomGirlOnJob(0, JOB_DEALER, Day0Night1);
+			string dealername = (dealeronduty ? "Dealer " + dealeronduty->m_Realname + "" : "the Dealer");
+			sGirl* enteronduty = g_Brothels.GetRandomGirlOnJob(0, JOB_ENTERTAINMENT, Day0Night1);
+			string entername = (enteronduty ? "Entertainment " + enteronduty->m_Realname + "" : "the Entertainment");
+			sGirl* xxxonduty = g_Brothels.GetRandomGirlOnJob(0, JOB_XXXENTERTAINMENT, Day0Night1);
+			string xxxname = (xxxonduty ? "XXX Entertainment " + xxxonduty->m_Realname + "" : "the XXX Entertainment");
+			ss << girlName << " decides to go to ";
+			int gamble = g_Dice.d1000();
+			if (roll > 75)
+			{
+				ss << "one of your rivials casinos.\n";
+				//if she gambles and loses more then she has I want it to fire a script where rival brings girl to you and says pay her bill or he keeps her
+				if (roll_a >= 50)//won.. may have her skills at dealing or maybe intel affect this
+				{
+					ss << girlName << " won " << gamble << " gold at the card tables.";
+					U_Money += gamble;
+				}
+				else//she loses
+				{
+					ss << girlName << " lost " << gamble << " gold at the card tables. ";
+					if (girl->m_Money < gamble)
+					{
+						ss << "She didn't have enough to pay them so they brought her to you to see if you would.";
+						//dp = DirPath() << "Resources" << "Scripts" << "GirlLostRivalGamble.script"; //FIXME zzzzz
+					}
+					else
+					{
+						U_Money -= gamble;
+					}
+				}
+			}
+			else
+			{
+				ss << "your casino. ";
+				//if she loses more then she has they bring her in front of you and you can forgive her debt make her a slave or make her "work it off"
+				if (roll_a >= 60)//gambles
+				{
+					ss << "She sits down at " << dealername << "'s table and decides to gamble some.";
+					/*This could either be based off the dealers skill or gambling odds as it does nothing currently as to if she wins or not */
+					//if (girl->m_Money < gamble)
+					//{
+					//	ss << "She didn't have enough to pay so they brought her to you to decide her fate.";
+					//	//dp = DirPath() << "Resources" << "Scripts" << "GirlLostYouGamble.script";  //FIXME zzzzz
+					//}
+					//else
+					//{
+					//	U_Money -= gamble;
+					//}
+				}
+				if (roll_a >= 30)//enter
+				{
+					ss << "She watchs " << entername << " put on her show.";
+				}
+				else//xxx
+				{
+					ss << "She takes in " << xxxname << "'s exotic show.";
+				}
+			}
+		}
+		break;	// end FT_Casino
+
 		case FT_CountrySide:
 			break;	// end FT_CountrySide
 

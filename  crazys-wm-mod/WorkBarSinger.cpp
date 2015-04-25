@@ -379,6 +379,10 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 
 	//gain traits
 	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 70, actiontype, "Singing on a daily basis has made " + girlName + " more Charismatic.", Day0Night1);
+	if (g_Girls.GetStat(girl, STAT_FAME) >= 80 && g_Dice.percent(25))
+	{
+		g_Girls.PossiblyGainNewTrait(girl, "Idol", 50, actiontype, "Her fame and singing skills has made " + girlName + " an Idol in Crossgate.", Day0Night1);
+	}
 
 	//lose traits
 	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 30, actiontype, girlName + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", Day0Night1);

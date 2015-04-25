@@ -1907,7 +1907,7 @@ string cGirls::GetGirlMood(sGirl* girl)
 	{
 		if (HateLove > 0)	ss << "but she is also ";
 		else				ss << "and she is ";
-		if (GetStat(girl, STAT_PCFEAR) < 40)		ss << "afraid of him." << (girl->health() <= 0 ? " (for good reasons)." : ".");
+		/* */if (GetStat(girl, STAT_PCFEAR) < 40)	ss << "afraid of him." << (girl->health() <= 0 ? " (for good reasons)." : ".");
 		else if (GetStat(girl, STAT_PCFEAR) < 60)	ss << "fearful of him." << (girl->health() <= 0 ? " (for good reasons)." : ".");
 		else if (GetStat(girl, STAT_PCFEAR) < 80)	ss << "afraid he will hurt her" << (girl->health() <= 0? " (and she was right).":".");
 		else										ss << "afraid he will kill her" << (girl->health() <= 0 ? " (and she was right)." : ".");
@@ -3773,15 +3773,15 @@ int cGirls::GetSkill(sGirl* girl, int skill)
 double cGirls::GetAverageOfAllSkills(sGirl* girl)
 {
 	return ((girl->anal() + girl->animalhandling() + girl->bdsm() + girl->beastiality() + girl->brewing()
-		+ girl->combat() + girl->crafting() + girl->farming() + girl->footjob() + girl->group() + girl->handjob()
+		+ girl->combat() + girl->cooking()+ girl->crafting() + girl->farming() + girl->footjob() + girl->group() + girl->handjob()
 		+ girl->herbalism() + girl->lesbian() + girl->magic() + girl->medicine() + girl->normalsex() + girl->oralsex()
-		+ girl->performance() + girl->service() + girl->strip() + girl->tittysex()) / 21.0);
+		+ girl->performance() + girl->service() + girl->strip() + girl->tittysex()) / 22.0);
 }
 double cGirls::GetAverageOfNSxSkills(sGirl* girl)
 {
-	return ((girl->animalhandling() + girl->brewing() + girl->combat() + girl->crafting() + girl->farming()
+	return ((girl->animalhandling() + girl->brewing() + girl->combat() + girl->cooking() + girl->crafting() + girl->farming()
 		+ girl->herbalism() + girl->magic() + girl->medicine() + girl->performance() + girl->service()
-		) / 10.0);
+		) / 11.0);
 }
 double cGirls::GetAverageOfSexSkills(sGirl* girl)
 {
@@ -8308,6 +8308,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 	{
 		// need to add more traits
 		if (HasTrait(girl, "Succubus"))		intro += 4;
+		if (customer->m_IsWoman && HasTrait(girl, "Lesbian"))	intro += 3;
 		if (HasTrait(girl, "Nymphomaniac"))	intro += 2;
 		if (HasTrait(girl, "Aggressive"))	intro += 1;
 		if (HasTrait(girl, "Open Minded"))	intro += 1;
@@ -8316,6 +8317,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		if (HasTrait(girl, "Meek"))			intro -= 1;
 		if (HasTrait(girl, "Nervous"))		intro -= 2;
 		if (HasTrait(girl, "Shy"))			intro -= 2;
+		if (customer->m_IsWoman && HasTrait(girl, "Straight"))	intro -= 3;
 
 		/* */if (intro < 2)		introtext += " reluctantly leads";
 		else if (intro < 4)		introtext += " hesitantly leads";
@@ -8380,6 +8382,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		if (HasTrait(girl, "Great Arse") || HasTrait(girl, "Deluxe Derriere")) message += "'s behind is a thing of beauty. She ";
 		else if (HasTrait(girl, "Phat Booty") || HasTrait(girl, "Plump Tush")) message += "'s big round booty was up in the air. She ";
 		else if (HasTrait(girl, "Tight Butt")) message += " has a tight, round firm little butt. She ";
+		else if (HasTrait(girl, "Flat Ass")) message += "'s ass is flat as a board. She ";
 
 		if (check < 20)
 		{
@@ -8497,7 +8500,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			}
 			if (tries > 0)
 			{
-				message += "She just lay back and let the customer fuck her.";
+				message += "She just lay back and lets the customer fuck her.";
 			}
 		}
 		else if (check < 40)
@@ -8534,7 +8537,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		{
 			if (choice < 30)
 			{
-				message += "She manages to keep the customer going until he finished, but forgot to fake her own orgasm.Despite that, the customer left pleased with the experience.";
+				message += "She manages to keep the customer going until he finished, but forgot to fake her own orgasm. Despite that, the customer left pleased with the experience.";
 			}
 			else
 			{
@@ -8543,6 +8546,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		}
 		else
 		{
+			message += girlName;
 			message += GetRandomSexString();
 		}
 	}break;
@@ -8805,7 +8809,9 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 
 	message += (SexType == SKILL_GROUP) ? "\nThe customers " : "\nThe customer ";
 	/* */if (customer->m_Stats[STAT_HAPPINESS] > 80)	message += "swore they would come back.";
-	else if (customer->m_Stats[STAT_HAPPINESS] > 50)	message += "enjoyed the experience.";
+	else if (customer->m_Stats[STAT_HAPPINESS] > 60)	message += "enjoyed the experience.";
+	else if (customer->m_Stats[STAT_HAPPINESS] > 50)	message += "has had a better experience before."; //added this CRAZY
+	else if (customer->m_Stats[STAT_HAPPINESS] > 40)	message += "thought it was okay."; //added this CRAZY
 	else if (customer->m_Stats[STAT_HAPPINESS] > 30)	message += "didn't enjoy it.";
 	else /*                                       */	message += "thought it was crap.";
 
@@ -11700,7 +11706,14 @@ bool cGirls::GirlInjured(sGirl* girl, unsigned int unModifier)
 		if (chance == 0)
 		{
 			girl->add_trait("Horrific Scars", false);
-			message = gettext("She was badly injured, and now has to deal with Horrific Scars.");
+			if (g_Dice.percent(50))
+			{
+				message = gettext("She was horribly injured, and now is now covered with Horrific Scars.");
+			}
+			else
+			{
+				message = gettext("She was badly injured, and now has to deal with Horrific Scars.");
+			}
 		}
 		else if (chance <= 2)
 		{
@@ -11827,6 +11840,7 @@ int cGirls::GetCombatDamage(sGirl *girl, int CombatType)
 		damage += girl->combat() / 10;
 		if (girl->has_trait("Manly"))				damage += 2;
 		if (girl->has_trait("Strong"))				damage += 2;
+		if (girl->has_trait("Muscular"))			damage += 2;
 		if (girl->has_trait("Brawler"))				damage += 1;
 	}
 	return damage;
@@ -14957,13 +14971,15 @@ int cGirls::PreferredAccom(sGirl* girl)
 	else if (girl->has_trait("Your Daughter"))	preferredaccom += 1.0;	// She is your kid
 	if (girl->has_trait("Queen"))				preferredaccom += 3.0;	// Royalty is accustomed to higher quality stuff.
 	else if (girl->has_trait("Princess"))		preferredaccom += 2.0;	// Royalty is accustomed to higher quality stuff.
-	else if (girl->has_trait("Noble"))			preferredaccom += 1.0;	// 
+	else if (girl->has_trait("Noble"))			preferredaccom += 1.5;	// 
+	else if (girl->has_trait("Former Official"))preferredaccom += 1.0;	// 
 	else if (girl->has_trait("Elegant"))		preferredaccom += 0.5;	// 
 	if (girl->has_trait("Heroine"))				preferredaccom += 0.5;	// 
 	if (girl->has_trait("Bimbo"))				preferredaccom += 2.0;	// she needs a place to keep all her stuff
 	if (girl->has_trait("Broodmother"))			preferredaccom += 2.5;	// she needs somewhere to raise her kids
 	if (girl->has_trait("Actress"))				preferredaccom += 2.0;	// 
 	else if (girl->has_trait("Porn Star"))		preferredaccom += 1.0;	// 
+	if (girl->has_trait("Idol"))				preferredaccom += 2.0;	// 
 	if (girl->has_trait("Iron Will"))			preferredaccom += 1.0;	// 
 	if (girl->has_trait("Nerd"))				preferredaccom += 0.5;	// she probably spends her free time in her room
 
@@ -14977,6 +14993,7 @@ int cGirls::PreferredAccom(sGirl* girl)
 	if (girl->has_trait("Optimist"))			preferredaccom -= 0.8;	// 'I can make due with what I have'
 	else if (girl->has_trait("Pessimist"))		preferredaccom -= 1.0;	// 'whatever'
 	if (girl->has_trait("Whore"))				preferredaccom -= 1.5;	// 
+	if (girl->has_trait("Broken Will"))			preferredaccom -= 1.5;	// 
 	if (girl->has_trait("Homeless"))			preferredaccom -= 2.0;	// used to live outdoors
 	if (girl->has_trait("Masochist"))			preferredaccom -= 2.0;	// 'I deserve to sleep on rocks'
 	if (girl->has_trait("Retarded"))			preferredaccom -= 3.0;	// 
@@ -15045,6 +15062,9 @@ bool cGirls::detect_disease_in_customer(sBrothel * brothel, sGirl* girl, sCustom
 	detectdisease += girl->magic() / 5.0;									// +20 magic
 	detectdisease -= girl->libido() / 2.0;									// -50 libido
 
+	if (girl->has_disease()							detectdisease += 20;	// has it so know what to look for
+	if (girl->is_addict(true)						detectdisease -= 20;	// if your high your not paying any mind to things
+	if (girl->has_trait("Alcoholic"))				detectdisease -= 20;	// if your drunk your not paying any mind to things
 	if (girl->has_trait("Bimbo"))					detectdisease -= 20;	// 
 	if (girl->has_trait("Blind"))					detectdisease -= 20;	// can't see it
 	if (girl->has_trait("Broken Will"))				detectdisease -= 90;	// 
