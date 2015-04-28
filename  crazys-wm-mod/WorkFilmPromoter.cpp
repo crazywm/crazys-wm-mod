@@ -199,16 +199,67 @@ double cJobManager::JP_FilmPromoter(sGirl* girl, bool estimate)// not used
 
 
 	// useful traits
-	if (girl->has_trait("Psychic"))			jobperformance += 10;
-	if (girl->has_trait("Cool Person"))		jobperformance += 10;
-	if (girl->has_trait("Sexy Air"))		jobperformance += 10;
-	if (girl->has_trait("Charismatic"))		jobperformance += 10;
-	if (girl->has_trait("Charming"))		jobperformance += 10;
+	if (girl->has_trait("Actress"))				jobperformance += 10;	// 
+	if (girl->has_trait("Charismatic"))			jobperformance += 10;
+	if (girl->has_trait("Charming"))			jobperformance += 10;
+	if (girl->has_trait("Cool Person"))			jobperformance += 10;
+	if (girl->has_trait("Elegant"))				jobperformance += 5;	// 
+	if (girl->has_trait("Exhibitionist"))		jobperformance += 15;	// Advertising topless
+	if (girl->has_trait("Fearless"))			jobperformance += 5;	// 
+	if (girl->has_trait("Flexible"))			jobperformance += 5;	// 
+	if (girl->has_trait("Former Official"))		jobperformance += 10;	// 
+	if (girl->has_trait("Great Arse"))			jobperformance += 5;
+	if (girl->has_trait("Great Figure"))		jobperformance += 5;
+	if (girl->has_trait("Idol"))				jobperformance += 20;	// 
+	if (girl->has_trait("Natural Pheromones"))	jobperformance += 10;
+	if (girl->has_trait("Optimist"))			jobperformance += 5;	// 
+	if (girl->has_trait("Porn Star"))			jobperformance += 20;	//
+	if (girl->has_trait("Priestess"))			jobperformance += 10;	// used to preaching to the masses
+	if (girl->has_trait("Princess"))			jobperformance += 5;	// 
+	if (girl->has_trait("Psychic"))				jobperformance += 10;
+	if (girl->has_trait("Queen"))				jobperformance += 10;	// 
+	if (girl->has_trait("Quick Learner"))		jobperformance += 5;
+	if (girl->has_trait("Sexy Air"))			jobperformance += 10;
+	if (girl->has_trait("Shape Shifter"))		jobperformance += 20;	// she can show what is playing
+	if (girl->has_trait("Singer"))				jobperformance += 10;	// 
+	if (girl->has_trait("Slut"))				jobperformance += 10;	// 
+	if (girl->has_trait("Your Daughter"))		jobperformance += 20;	// 
+	if (girl->has_trait("Your Wife"))			jobperformance += 20;	// 
+	
+	
 	// unhelpful traits
-	if (girl->has_trait("Nervous"))			jobperformance -= 5;
-	if (girl->has_trait("Clumsy"))			jobperformance -= 5;
-	if (girl->has_trait("Retarded"))		jobperformance -= 20;
-	if (girl->has_trait("Malformed"))		jobperformance -= 20;
+	if (girl->has_trait("Alcoholic"))			jobperformance -= 15;
+	if (girl->has_trait("Aggressive"))			jobperformance -= 10; //gets mad easy and may attack people
+	if (girl->has_trait("Blind"))				jobperformance -= 20;
+	if (girl->has_trait("Broken Will"))			jobperformance -= 50;
+	if (girl->has_trait("Clumsy"))				jobperformance -= 5;
+	if (girl->has_trait("Deaf"))				jobperformance -= 10;
+	if (girl->has_trait("Dependant"))			jobperformance -= 50; //needs others to do the job
+	if (girl->has_trait("Emprisoned Customer"))	jobperformance -= 30;	// she may be warning the other customers
+	if (girl->has_trait("Fairy Dust Addict"))	jobperformance -= 15;
+	if (girl->has_trait("Horrific Scars"))		jobperformance -= 10;	// 
+	if (girl->has_trait("Kidnapped"))			jobperformance -= 40;	// she may try to run away or get help
+	if (girl->has_trait("Malformed"))			jobperformance -= 20;
+	if (girl->has_trait("Meek"))				jobperformance -= 10;
+	if (girl->has_trait("Mute"))				jobperformance -= 10;	// 
+	if (girl->has_trait("Nervous"))				jobperformance -= 5;
+	if (girl->has_trait("No Arms"))				jobperformance -= 40;
+	if (girl->has_trait("No Feet"))				jobperformance -= 40;
+	if (girl->has_trait("No Hands"))			jobperformance -= 30;
+	if (girl->has_trait("No Legs"))				jobperformance -= 40;
+	if (girl->has_trait("One Arm"))				jobperformance -= 10;
+	if (girl->has_trait("One Foot"))			jobperformance -= 15;
+	if (girl->has_trait("One Hand"))			jobperformance -= 5; 
+	if (girl->has_trait("One Leg"))				jobperformance -= 20;
+	if (girl->has_trait("Pessimist"))			jobperformance -= 5;	// 
+	if (girl->has_trait("Retarded"))			jobperformance -= 20;
+	if (girl->has_trait("Skeleton"))			jobperformance -= 50;	// 
+	if (girl->has_trait("Shy"))					jobperformance -= 10;
+	if (girl->has_trait("Slow Learner"))		jobperformance -= 5;
+	if (girl->has_trait("Smoker"))				jobperformance -= 10;	//would need smoke breaks
+	if (girl->has_trait("Shroud Addict"))		jobperformance -= 15;
+	if (girl->has_trait("Viras Blood Addict"))	jobperformance -= 15;
+	if (girl->has_trait("Zombie"))				jobperformance -= 50;	// 
 
 
 	return jobperformance;

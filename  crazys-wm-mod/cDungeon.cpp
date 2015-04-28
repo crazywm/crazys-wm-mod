@@ -399,6 +399,7 @@ void sDungeonGirl::OutputGirlDetailString(string& Data, const string& detailName
 		case DUNGEON_NEWGIRL:					ss << gettext("This is a new girl.");				break;
 		case DUNGEON_KID:						ss << gettext("Child of one of your girls.");		break;
 		case DUNGEON_NEWARENA:					ss << gettext("This is a girl won in the arena.");	break;
+		case DUNGEON_RECRUITED:					ss << gettext("This girl was recruited for you.");	break;
 		}
 	}
 	else if (detailName == "Duration")			{ ss << m_Weeks; }

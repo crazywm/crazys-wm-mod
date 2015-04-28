@@ -205,6 +205,11 @@ bool cJobManager::WorkGetAbort(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		{
 			// `J` adjust her happiness by her hate-love for you
 			happy += int(((g_Girls.GetStat(girl, STAT_PCHATE) + hate) - (g_Girls.GetStat(girl, STAT_PCLOVE) + love)) / 2);
+			if (g_Girls.HasTrait(girl, "Your Wife"))// "Why?"
+			{
+				happy -= 20;		health += 0;	mana += 0;	spirit -= 1;	love -= 3;	hate += 0;
+			}
+
 			if (happy < -50)
 			{
 				ss << "She is very distraught about the loss of your baby.\n";
@@ -273,6 +278,10 @@ bool cJobManager::WorkGetAbort(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			if (g_Girls.HasTrait(girl, "Princess"))		// "Thank God I didn't have to carry that."
 			{
 				happy += 20;		health += 0;	mana += 0;	spirit += 0;	love += 4;	hate -= 2;
+			}
+			if (g_Girls.HasTrait(girl, "Noble"))		// "Thank God I didn't have to carry that."
+			{
+				happy += 15;		health += 0;	mana += 0;	spirit += 0;	love += 4;	hate -= 2;
 			}
 
 			if (happy < -50)

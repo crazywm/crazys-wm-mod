@@ -1223,6 +1223,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\WorkCobbler.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\WorkCombatTraining.cpp"
 				>
 			</File>
@@ -1495,7 +1499,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\WorkSheapherd.cpp"
+				RelativePath=".\WorkShepherd.cpp"
 				>
 			</File>
 			<File
@@ -1504,6 +1508,10 @@
 			</File>
 			<File
 				RelativePath=".\WorkSleazyWaitress.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\WorkTailor.cpp"
 				>
 			</File>
 			<File

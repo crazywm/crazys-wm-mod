@@ -199,6 +199,8 @@ public:
 	static double JP_CityGuard(sGirl* girl, bool estimate);
 	static bool WorkBlacksmith(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
 	static double JP_Blacksmith(sGirl* girl, bool estimate);
+	static bool WorkCobbler(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_Cobbler(sGirl* girl, bool estimate);
 	static bool WorkCleanArena(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
 	static double JP_CleanArena(sGirl* girl, bool estimate);
 

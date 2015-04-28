@@ -116,7 +116,7 @@ bool cJobManager::WorkCobbler(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 			else if (fire < 10)	ss << " that destroyed most of the equipment she had made.";
 			else /*          */	ss << " destroying everything she had made.";
 
-			if (fire > 5) g_MessageQue.AddToQue(girlName + " accidently started a large fire while working as a Blacksmith at the Arena.", COLOR_RED);
+			if (fire > 5) g_MessageQue.AddToQue(girlName + " accidently started a large fire while working as a Cobbler at the Arena.", COLOR_RED);
 		}
 		else if (roll_b < 30)	// injury
 		{
@@ -128,11 +128,11 @@ bool cJobManager::WorkCobbler(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 				ss << "While trying to enchant an item, the magic rebounded on her";
 			}
 			else
-				ss << "She burnt herself in the heat of the forge";
+				ss << "She hurt herself while making items";
 			if (girl->health() <= 0)
 			{
 				ss << " killing her.";
-				g_MessageQue.AddToQue(girlName + " was killed in an accident while working as a Blacksmith at the Arena.", COLOR_RED);
+				g_MessageQue.AddToQue(girlName + " was killed in an accident while working as a Cobbler at the Arena.", COLOR_RED);
 				return false;	// not refusing, she is dead
 			}
 			else ss << ".";
@@ -149,7 +149,7 @@ bool cJobManager::WorkCobbler(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 		tired /= 12;
 		craftpoints *= 1.1;
 		enjoy += g_Dice % 3;
-		/* */if (roll_b < 50)	ss << "She kept a steady pace of hammer blows by humming a pleasant tune.";
+		/* */if (roll_b < 50)	ss << "She kept a steady pace with her neddle work by humming a pleasant tune.";
 		else /*            */	ss << "She had a great time working today.";
 	}
 	else
@@ -203,7 +203,7 @@ bool cJobManager::WorkCobbler(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	// Update Enjoyment
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 	// Gain Traits
-	g_Girls.PossiblyGainNewTrait(girl, "Tough", 50, actiontype, "Working in the heat of the forge has made " + girlName + " rather Tough.", Day0Night1);
+	//g_Girls.PossiblyGainNewTrait(girl, "Tough", 50, actiontype, "Working in the heat of the forge has made " + girlName + " rather Tough.", Day0Night1);
 
 	return false;
 }

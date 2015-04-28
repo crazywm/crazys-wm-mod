@@ -196,7 +196,7 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 				NGmsg << newgirl->m_Realname << " was recruited by " << girl->m_Realname << " to work for you.";
 				newgirl->m_Events.AddMessage(NGmsg.str(), IMGTYPE_PROFILE, EVENT_GANG);
 
-				m_Dungeon->AddGirl(newgirl, DUNGEON_NEWGIRL);
+				m_Dungeon->AddGirl(newgirl, DUNGEON_RECRUITED);
 			}
 		}
 		else
@@ -273,6 +273,10 @@ double cJobManager::JP_Recruiter(sGirl* girl, bool estimate)// not used
 	if (g_Girls.HasTrait(girl, "Psychic"))		jobperformance += 20; //knows what people want to hear
 	if (g_Girls.HasTrait(girl, "Cool Person"))  jobperformance += 10; //people love to be around her
 	if (g_Girls.HasTrait(girl, "Charming"))		jobperformance += 10; //people like charming people	
+	if (g_Girls.HasTrait(girl, "Great Figure"))	jobperformance += 5;
+	if (g_Girls.HasTrait(girl, "Great Arse"))	jobperformance += 5;
+	if (g_Girls.HasTrait(girl, "Quick Learner"))jobperformance += 5;
+	if (g_Girls.HasTrait(girl, "Natural Pheromones"))jobperformance += 10;
 
 	//bad traits
 	if (g_Girls.HasTrait(girl, "Dependant"))	jobperformance -= 50; //needs others to do the job
@@ -281,6 +285,26 @@ double cJobManager::JP_Recruiter(sGirl* girl, bool estimate)// not used
 	if (g_Girls.HasTrait(girl, "Aggressive"))	jobperformance -= 20; //gets mad easy and may attack people
 	if (g_Girls.HasTrait(girl, "Meek"))			jobperformance -= 20;
 	if (g_Girls.HasTrait(girl, "Clumsy"))		jobperformance -= 5;
+	if (g_Girls.HasTrait(girl, "Slow Learner"))	jobperformance -= 10;
+	if (g_Girls.HasTrait(girl, "Shy"))			jobperformance -= 10;
+	
+	if (g_Girls.HasTrait(girl, "One Arm"))		jobperformance -= 30;
+	if (g_Girls.HasTrait(girl, "One Foot"))		jobperformance -= 20;
+	if (g_Girls.HasTrait(girl, "One Hand"))		jobperformance -= 15; 
+	if (g_Girls.HasTrait(girl, "One Leg"))		jobperformance -= 40;
+	if (g_Girls.HasTrait(girl, "No Arms"))		jobperformance -= 100;
+	if (g_Girls.HasTrait(girl, "No Feet"))		jobperformance -= 40;
+	if (g_Girls.HasTrait(girl, "No Hands"))		jobperformance -= 25;
+	if (g_Girls.HasTrait(girl, "No Legs"))		jobperformance -= 100;
+	if (g_Girls.HasTrait(girl, "Blind"))		jobperformance -= 60;
+	if (g_Girls.HasTrait(girl, "Deaf"))			jobperformance -= 40;
+	if (g_Girls.HasTrait(girl, "Retarded"))		jobperformance -= 60;
+	if (g_Girls.HasTrait(girl, "Smoker"))		jobperformance -= 10;	//would need smoke breaks
+
+	if (g_Girls.HasTrait(girl, "Alcoholic"))			jobperformance -= 25;
+	if (g_Girls.HasTrait(girl, "Fairy Dust Addict"))	jobperformance -= 25;
+	if (g_Girls.HasTrait(girl, "Shroud Addict"))		jobperformance -= 25;
+	if (g_Girls.HasTrait(girl, "Viras Blood Addict"))	jobperformance -= 25;
 
 	return jobperformance;
 }

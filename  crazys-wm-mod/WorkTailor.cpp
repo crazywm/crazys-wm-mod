@@ -64,7 +64,7 @@ bool cJobManager::WorkTailor(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	{
 		craftpoints -= dirtyloss * 2;
 		brothel->m_Filthiness -= dirtyloss;
-		ss << "She spent some of her time repairing the Arena's equipment instead of making new stuff.\n";
+		ss << "She spent some of her time repairing the Farm's equipment instead of making new stuff.\n";
 	}
 
 	if (jobperformance >= 245)
@@ -106,17 +106,17 @@ bool cJobManager::WorkTailor(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 		enjoy -= g_Dice % 3;
 		if (roll_b < 10)	// fire
 		{
-			int fire = max(0, g_Dice.bell(-2, 10));
+			int fire = max(0, g_Dice.bell(-2, 10));/*Not really sure a tailor can start a fire but left it in cause couldnt think of anything to replace it CRAZY*/
 			brothel->m_Filthiness += fire * 2;
 			craftpoints -= (craftpoints * (fire * 0.1));
 			if (girl->pcfear() > 20) girl->pcfear(fire / 2);	// she is afraid you will get mad at her
 			ss << "She accidently started a fire";
 			/* */if (fire < 3)	ss << " but it was quickly put out.";
-			else if (fire < 6)	ss << " that destroyed several racks of equipment.";
-			else if (fire < 10)	ss << " that destroyed most of the equipment she had made.";
+			else if (fire < 6)	ss << " that destroyed several racks of clothes.";
+			else if (fire < 10)	ss << " that destroyed most of the clothes she had made.";
 			else /*          */	ss << " destroying everything she had made.";
 
-			if (fire > 5) g_MessageQue.AddToQue(girlName + " accidently started a large fire while working as a Blacksmith at the Arena.", COLOR_RED);
+			if (fire > 5) g_MessageQue.AddToQue(girlName + " accidently started a large fire while working as a Tailor at the Farm.", COLOR_RED);
 		}
 		else if (roll_b < 30)	// injury
 		{
@@ -128,11 +128,11 @@ bool cJobManager::WorkTailor(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 				ss << "While trying to enchant an item, the magic rebounded on her";
 			}
 			else
-				ss << "She burnt herself in the heat of the forge";
+				ss << "She stabed herself while working";
 			if (girl->health() <= 0)
 			{
 				ss << " killing her.";
-				g_MessageQue.AddToQue(girlName + " was killed in an accident while working as a Blacksmith at the Arena.", COLOR_RED);
+				g_MessageQue.AddToQue(girlName + " was killed in an accident while working as a Tailor at the Farm.", COLOR_RED);
 				return false;	// not refusing, she is dead
 			}
 			else ss << ".";
@@ -140,7 +140,7 @@ bool cJobManager::WorkTailor(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 
 		else	// unhappy
 		{
-			ss << "She did not like working in the arena today.";
+			ss << "She did not like working as a tailor today.";
 			girl->happiness(-(g_Dice % 11));
 		}
 	}
@@ -149,7 +149,7 @@ bool cJobManager::WorkTailor(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 		tired /= 12;
 		craftpoints *= 1.1;
 		enjoy += g_Dice % 3;
-		/* */if (roll_b < 50)	ss << "She kept a steady pace of hammer blows by humming a pleasant tune.";
+		/* */if (roll_b < 50)	ss << "She kept a steady pace with her neddle work by humming a pleasant tune.";
 		else /*            */	ss << "She had a great time working today.";
 	}
 	else
@@ -203,7 +203,7 @@ bool cJobManager::WorkTailor(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	// Update Enjoyment
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 	// Gain Traits
-	g_Girls.PossiblyGainNewTrait(girl, "Tough", 50, actiontype, "Working in the heat of the forge has made " + girlName + " rather Tough.", Day0Night1);
+	//g_Girls.PossiblyGainNewTrait(girl, "Tough", 50, actiontype, "Working in the heat of the forge has made " + girlName + " rather Tough.", Day0Night1);
 
 	return false;
 }

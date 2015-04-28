@@ -193,7 +193,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 		if (g_Girls.CheckVirginity(girl))		// 100% decline
 		{
 			ss << gettext("She is a virgin so you ask her if she wants to let you be her first.\nShe ");
-			ss << gettext("laughs hard at the thought of her letting you touch her.\nShe ");
+			ss << gettext("laughs hard at the thought of you touching her.\nShe ");
 			if (g_Girls.GetStat(girl, STAT_LIBIDO) > 60)
 			{
 				roll_d = 88;
@@ -308,11 +308,11 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 	{
 		if (HateLove > 20)
 		{
-			ss << gettext("is to tried to fool around so she goes to sleep.\n\n");
+			ss << gettext("is to tried to fool around so she went to sleep.\n\n");
 		}
 		else
 		{
-			ss << gettext("just goes to sleep.\n\n");
+			ss << gettext("just went to sleep.\n\n");
 		}
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_ECCHI, Day0Night1);
 	}

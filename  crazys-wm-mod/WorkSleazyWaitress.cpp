@@ -533,7 +533,8 @@ double cJobManager::JP_SleazyWaitress(sGirl* girl, bool estimate)// not used
 	if (g_Girls.HasTrait(girl, "Meek"))			jobperformance -= 20;
 	if (g_Girls.HasTrait(girl, "Slow Learner"))	jobperformance -= 10;
 	if (g_Girls.HasTrait(girl, "One Eye"))		jobperformance -= 10;
-
+	if (g_Girls.HasTrait(girl, "Shy"))			jobperformance -= 10;
+	
 	if (g_Girls.HasTrait(girl, "One Arm"))		jobperformance -= 30;
 	if (g_Girls.HasTrait(girl, "One Foot"))		jobperformance -= 20;
 	if (g_Girls.HasTrait(girl, "One Hand"))		jobperformance -= 15; 

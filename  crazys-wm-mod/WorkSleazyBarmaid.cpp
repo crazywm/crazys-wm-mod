@@ -283,15 +283,16 @@ double cJobManager::JP_SleazyBarmaid(sGirl* girl, bool estimate)// not used
 	if (g_Girls.HasTrait(girl, "Natural Pheromones"))	jobperformance += 15;
 
 	//bad traits
-	if (g_Girls.HasTrait(girl, "Dependant"))			jobperformance -= 50;	// needs others to do the job	
-	if (g_Girls.HasTrait(girl, "Alcoholic"))			jobperformance -= 40;	// bad idea let an alcoholic near booze
-	if (g_Girls.HasTrait(girl, "Nervous"))				jobperformance -= 30;	// don't like to be around people
-	if (g_Girls.HasTrait(girl, "Clumsy"))				jobperformance -= 20;	// spills food and breaks things often	
-	if (g_Girls.HasTrait(girl, "Aggressive"))			jobperformance -= 20;	// gets mad easy and may attack people
-	if (g_Girls.HasTrait(girl, "Meek"))					jobperformance -= 20;
-	if (g_Girls.HasTrait(girl, "Slow Learner"))			jobperformance -= 10;
-	if (g_Girls.HasTrait(girl, "Social Drinker"))		jobperformance -= 10;
-	if (g_Girls.HasTrait(girl, "Bimbo"))				jobperformance -= 5;
+	if (g_Girls.HasTrait(girl, "Dependant"))		jobperformance -= 50;	// needs others to do the job	
+	if (g_Girls.HasTrait(girl, "Alcoholic"))		jobperformance -= 40;	// bad idea let an alcoholic near booze
+	if (g_Girls.HasTrait(girl, "Nervous"))			jobperformance -= 30;	// don't like to be around people
+	if (g_Girls.HasTrait(girl, "Clumsy"))			jobperformance -= 20;	// spills food and breaks things often	
+	if (g_Girls.HasTrait(girl, "Aggressive"))		jobperformance -= 20;	// gets mad easy and may attack people
+	if (g_Girls.HasTrait(girl, "Meek"))				jobperformance -= 20;
+	if (g_Girls.HasTrait(girl, "Slow Learner"))		jobperformance -= 10;
+	if (g_Girls.HasTrait(girl, "Social Drinker"))	jobperformance -= 10;
+	if (g_Girls.HasTrait(girl, "Bimbo"))			jobperformance -= 5;
+	if (g_Girls.HasTrait(girl, "Shy"))				jobperformance -= 10;
 
 	if (g_Girls.HasTrait(girl, "One Arm"))		jobperformance -= 30;
 	if (g_Girls.HasTrait(girl, "One Foot"))		jobperformance -= 20;

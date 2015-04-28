@@ -381,6 +381,7 @@ const int DUNGEON_NEWSLAVE          = 11;	// a newly brought slave
 const int DUNGEON_NEWGIRL           = 12;	// a new girl who just joined you
 const int DUNGEON_KID               = 13;	// a girl child just aged up
 const int DUNGEON_NEWARENA          = 14;	// a new girl who just joined you from the arena
+const int DUNGEON_RECRUITED         = 15;	// a new girl who was just recruited
 
 // Town Constants
 const int TOWN_NUMBUSINESSES        = 250;	// the amount of businesses in the town
