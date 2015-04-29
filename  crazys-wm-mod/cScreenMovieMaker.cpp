@@ -50,6 +50,9 @@ static int selection = -1;
 static bool Day0Night1 = SHIFT_DAY;	// 1 is night, 0 is day.
 static bool SetJob = false;
 
+static int lastNum = -1;
+static int ImageNum = -1;
+
 extern sGirl *selected_girl;
 extern vector<int> cycle_girls;
 extern int cycle_pos;
@@ -146,5 +149,21 @@ void cScreenMovieMaker::check_events()
 	}
 }
 
+void cScreenMovieMaker::update_image()
+{
+	if((selected_girl)) //&& !IsMultiSelected(girllist_id))
+	{
+		bool Rand = true;
 
+		SetImage(girlimage_id, g_Girls.GetImageSurface(selected_girl, IMGTYPE_PROFILE, Rand, ImageNum));
 
+		if(g_Girls.IsAnimatedSurface(selected_girl, IMGTYPE_PROFILE, ImageNum))
+			SetImage(girlimage_id, g_Girls.GetAnimatedSurface(selected_girl, IMGTYPE_PROFILE, ImageNum));
+
+		HideImage(girlimage_id, false); 
+	}
+	else
+	{		
+		HideImage(girlimage_id, true); 
+	}
+}

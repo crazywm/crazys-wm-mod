@@ -68,6 +68,7 @@ private:
 	int		brothel5_id;	// Brothel 5 map button
 	int		brothel6_id;	// Brothel 6 map button
 	int		setup_id;		// setup map button
+	int		girlimage_id;	// Girl image
 	bool m_first_walk;
 
 	void set_ids();
@@ -104,5 +105,6 @@ public:
 	bool check_keys();
 	void do_walk();
 	string walk_no_luck();
+	void update_image();
 
 };

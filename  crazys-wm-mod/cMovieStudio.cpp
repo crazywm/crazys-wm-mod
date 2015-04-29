@@ -1510,7 +1510,19 @@ int cMovieStudioManager::AddScene(sGirl* girl, int Job, int Bonus)
 	newScene->m_Money_Made = 0;
 	newScene->m_RunWeeks = 0;
 	stringstream ss;
-	ss << "scene " << m_movieScenes.size() + 1;
+	string girlName = girl->m_Realname;
+	/* */if (Job == SKILL_LESBIAN)		ss << "Lesbian scene by  " << girlName << " " << m_movieScenes.size() + 1;
+	else if (Job == SKILL_ANAL)			ss << "Anal scene by  " << girlName << " " << m_movieScenes.size() + 1;
+	else if (Job == SKILL_BEASTIALITY)	ss << "Beast scene by  " << girlName << " " << m_movieScenes.size() + 1;
+	else if (Job == SKILL_NORMALSEX)	ss << "Sex scene by  " << girlName << " " << m_movieScenes.size() + 1;
+	else if (Job == SKILL_GROUP)		ss << "Group scene by  " << girlName << " " << m_movieScenes.size() + 1;
+	else if (Job == SKILL_ORALSEX)		ss << "Oral scene by  " << girlName << " " << m_movieScenes.size() + 1;
+	else if (Job == SKILL_TITTYSEX)		ss << "Titty sex scene by  " << girlName << " " << m_movieScenes.size() + 1;
+	else if (Job == SKILL_FOOTJOB)		ss << "Foot job scene by  " << girlName << " " << m_movieScenes.size() + 1;
+	else if (Job == SKILL_HANDJOB)		ss << "Hand job scene by  " << girlName << " " << m_movieScenes.size() + 1;
+	else if (Job == SKILL_BDSM)			ss << "BDSM scene by  " << girlName << " " << m_movieScenes.size() + 1;
+	else if (Job == SKILL_STRIP)		ss << "Stripping scene by  " << girlName << " " << m_movieScenes.size() + 1;
+	else ss << "Masturbation scene by  " << girlName << " " << m_movieScenes.size() + 1; /*Dont think there is any more so that should work for masturbation without hurting anything CRAZY*/
 	newScene->m_Name = ss.str();
 	m_movieScenes.push_back(newScene);
 	return performance;

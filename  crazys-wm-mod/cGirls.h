@@ -730,11 +730,18 @@ struct sGirl
 			has_trait("Chlamydia") ||
 			has_trait("Syphilis");
 	}
-	bool is_fighter()
+	bool is_fighter(bool canbehelped = false)
 	{
+		if (canbehelped)
+		{
+			return	has_trait("Aggressive") ||
+				has_trait("Yandere") ||
+				has_trait("Tsundere");
+		}
 		return	has_trait("Aggressive") ||
 			has_trait("Assassin") ||
 			has_trait("Yandere") ||
+			has_trait("Brawler") ||
 			has_trait("Tsundere");
 	}
 

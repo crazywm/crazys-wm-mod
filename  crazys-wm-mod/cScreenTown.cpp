@@ -62,6 +62,11 @@ extern int						g_Building;
 
 bool cScreenTown::ids_set = false;
 
+static int lastNum = -1;
+static int ImageNum = -1;
+
+extern sGirl *selected_girl;
+
 void cScreenTown::set_ids()
 {
 	ids_set = true;
@@ -87,6 +92,7 @@ void cScreenTown::set_ids()
 	brothel5_id = get_id("Brothel5");
 	brothel6_id = get_id("Brothel6");
 	setup_id = get_id("SetUp");
+	girlimage_id =	get_id("GirlImage");
 }
 
 struct static_brothel_data {
@@ -382,6 +388,21 @@ void cScreenTown::do_walk()
 		g_MessageQue.AddToQue(walk_no_luck(), 1);
 		return;
 	}
+	/*if (girl) //Doesn't work like I want it to.. brings up selected girl not the girl your talking to FIXME zzzzz CRAZY want it to bring up an image of the girl your talking to when script runs
+	{
+		bool Rand = true;
+
+		SetImage(girlimage_id, g_Girls.GetImageSurface(selected_girl, IMGTYPE_PROFILE, Rand, ImageNum));
+
+		if(g_Girls.IsAnimatedSurface(selected_girl, IMGTYPE_PROFILE, ImageNum))
+			SetImage(girlimage_id, g_Girls.GetAnimatedSurface(selected_girl, IMGTYPE_PROFILE, ImageNum));
+
+		HideImage(girlimage_id, false); 
+	}
+	else
+	{		
+		HideImage(girlimage_id, true); 
+	}*/
 	// I'd like to move this to the handler script - once scripts are stable
 	string message = "You go out searching around town for any new girls. You notice a potential new girl and walk up to her.";
 	g_MessageQue.AddToQue(message, 2);

@@ -5867,7 +5867,7 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait)
 			}
 			else if (Name == "Cum Addict")
 			{
-				UpdateStatTr(girl, SKILL_ORALSEX, 30);
+				UpdateSkillTr(girl, SKILL_ORALSEX, 30);
 				UpdateSkillTr(girl, SKILL_GROUP, 10);
 				UpdateStatTr(girl, STAT_OBEDIENCE, 20);
 				UpdateStatTr(girl, STAT_SPIRIT, -10);

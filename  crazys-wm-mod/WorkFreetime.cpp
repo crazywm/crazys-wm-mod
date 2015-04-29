@@ -1331,9 +1331,22 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					ss << " stayed inside and read a book.\n";
 				}
 			}
+			else if (girl->is_fighter())
+			{
+				if (g_Dice.percent(75))
+				{
+					ss << " practiced her combat skills.";
+					imagetype = IMGTYPE_COMBAT;
+					g_Girls.UpdateSkill(girl, SKILL_COMBAT, 1);
+				}
+				else
+				{
+					ss << " decide to go out and look for a fight.\n";//need to add more to this
+				}
+			}
 			else
 			{
-				ss << ".";
+				ss << " spent the day doing varouis things she enjoys.";
 			}
 		}
 		break;	// end FT_Hobby
@@ -1367,7 +1380,22 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				{
 					if (g_Dice.percent(2))//helps
 					{
-						ss << ".\n";
+						ss << "She ended up having a major breakthru and ";
+						if (g_Girls.HasTrait(girl, "Fairy Dust Addict"))
+							{
+								g_Girls.RemoveTrait(girl, "Fairy Dust Addict", true);
+								ss << "she is no longer a fairy dust addict.\n";
+							}
+						else if (g_Girls.HasTrait(girl, "Shroud Addict"))
+							{
+								g_Girls.RemoveTrait(girl, "Shroud Addict", true);
+								ss << "she is no longer a shroud addict.\n";
+							}
+						else if (g_Girls.HasTrait(girl, "Viras Blood Addict"))
+							{
+								g_Girls.RemoveTrait(girl, "Viras Blood Addict", true);
+								ss << "she is no longer a viras blood addict.\n";
+							}
 					}
 					else//doesnt
 					{
@@ -1375,7 +1403,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					}
 				}
 			}
-			else if (girl->is_fighter())
+			else if (girl->is_fighter(true))
 			{
 				ss << "anger problems.";
 				if (g_Dice.percent(20))//doesnt make it
@@ -1386,7 +1414,22 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				{
 					if (g_Dice.percent(2))//helps
 					{
-						ss << ".\n";
+						ss << "She ended up having a major breakthru and ";
+						if (g_Girls.HasTrait(girl, "Aggressive"))
+							{
+								g_Girls.RemoveTrait(girl, "Aggressive");
+								ss << "she is no longer Aggressive.\n";
+							}
+						else if (g_Girls.HasTrait(girl, "Tsundere"))
+							{
+								g_Girls.RemoveTrait(girl, "Tsundere");
+								ss << "she is no longer a Tsundere.\n";
+							}
+						else if (g_Girls.HasTrait(girl, "Yandere"))
+							{
+								g_Girls.RemoveTrait(girl, "Yandere");
+								ss << "she is no longer a Yandere.\n";
+							}
 					}
 					else//doesnt
 					{
@@ -1405,7 +1448,8 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				{
 					if (g_Dice.percent(2))//helps
 					{
-						ss << ".\n";
+						ss << "She ended up having a major breakthru and she is no longer shy.\n";
+						g_Girls.RemoveTrait(girl, "Shy", true);
 					}
 					else//doesnt
 					{
