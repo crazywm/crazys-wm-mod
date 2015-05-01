@@ -1723,6 +1723,7 @@ void cGirls::EndDayGirls(sBrothel* brothel, sGirl* girl)
 	if (g_Dice.percent(5))	UpdateSkill(girl, SKILL_FARMING, -1);
 	if (g_Dice.percent(5))	UpdateSkill(girl, SKILL_BREWING, -1);
 	if (g_Dice.percent(5))	UpdateSkill(girl, SKILL_ANIMALHANDLING, -1);
+	if (g_Dice.percent(5))	UpdateSkill(girl, SKILL_COOKING, -1);
 }
 
 // ----- Add remove
@@ -7493,6 +7494,21 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 				else if (name != "Pessimist" && HasRememberedTrait(girl, "Pessimist"))	AddTrait(girl, "Pessimist", false, false, true);
 			}
 		}
+		else if (	// singer/tone deaf
+			name == "Singer" ||
+			name == "Tone Deaf")
+		{
+			if (apply)
+			{
+				if (name != "Singer")			RemoveTrait(girl, "Singer", rememberflag, true);
+				if (name != "Tone Deaf")		RemoveTrait(girl, "Tone Deaf", rememberflag, true);
+			}
+			else
+			{
+				/* */if (name != "Singer" && HasRememberedTrait(girl, "Singer"))	AddTrait(girl, "Singer", false, false, true);
+				else if (name != "Tone Deaf" && HasRememberedTrait(girl, "Tone Deaf"))	AddTrait(girl, "Tone Deaf", false, false, true);
+			}
+		}
 		else if (	// Check Willpower Traits
 			name == "Broken Will" ||
 			name == "Iron Will")
@@ -7990,7 +8006,7 @@ bool cGirls::CheckVirginity(sGirl* girl)
 		for (u_int i = 0; i < NUM_SKILLS; i++)
 		{
 			// `J` removed nonsex from virginity check
-			if (i != SKILL_SERVICE && i != SKILL_MAGIC && i != SKILL_COMBAT && i != SKILL_MEDICINE && i != SKILL_PERFORMANCE &&
+			if (i != SKILL_SERVICE && i != SKILL_MAGIC && i != SKILL_COMBAT && i != SKILL_MEDICINE && i != SKILL_PERFORMANCE && i != SKILL_COOKING &&
 				i != SKILL_CRAFTING && i != SKILL_HERBALISM && i != SKILL_FARMING && i != SKILL_BREWING && i != SKILL_ANIMALHANDLING)
 			{
 				totalsex += girl->m_Skills[i];
@@ -8308,16 +8324,30 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 	{
 		// need to add more traits
 		if (HasTrait(girl, "Succubus"))		intro += 4;
+		if (customer->!m_IsWoman && HasTrait(girl, "Cum Addict")) intro += 4;
 		if (customer->m_IsWoman && HasTrait(girl, "Lesbian"))	intro += 3;
+		if (HasTrait(girl, "Fast Orgasms"))	intro += 3;
 		if (HasTrait(girl, "Nymphomaniac"))	intro += 2;
+		if (HasTrait(girl, "Whore"))		intro += 2;
 		if (HasTrait(girl, "Aggressive"))	intro += 1;
 		if (HasTrait(girl, "Open Minded"))	intro += 1;
+		if (HasTrait(girl, "Slut"))			intro += 1;
+		if (HasTrait(girl, "Homeless"))		intro += 1; //Just happy to be off the street?  CRAZY
 		if (HasTrait(girl, "Optimist"))		intro += 1;
 		if (HasTrait(girl, "Pessimist"))	intro -= 1;
 		if (HasTrait(girl, "Meek"))			intro -= 1;
+		if (HasTrait(girl, "Noble"))		intro -= 1;//maybe again CRAZY
 		if (HasTrait(girl, "Nervous"))		intro -= 2;
 		if (HasTrait(girl, "Shy"))			intro -= 2;
+		if (HasTrait(girl, "Princess"))		intro -= 2;//maybe again CRAZY
+		if (HasTrait(girl, "Priestess"))	intro -= 2;//maybe again CRAZY guess it would depend on the type of priestess
+		if (HasTrait(girl, "Slow Orgasms"))	intro -= 3;
+		if (HasTrait(girl, "Queen"))		intro -= 3; //maybe again CRAZY
 		if (customer->m_IsWoman && HasTrait(girl, "Straight"))	intro -= 3;
+		if (HasTrait(girl, "Your Wife"))	intro -= 3; //maybe this idk CRAZY might need a love check also
+		if (HasTrait(girl, "Virgin"))		intro -= 5;
+		if (HasTrait(girl, "Kidnapped"))	intro -= 5;
+		if (HasTrait(girl, "Emprisoned Customer"))	intro -= 5;
 
 		/* */if (intro < 2)		introtext += " reluctantly leads";
 		else if (intro < 4)		introtext += " hesitantly leads";
@@ -8401,7 +8431,8 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		}
 		else if (check < 80)
 		{
-			/*                   */	message += " had the customer's cock go in easy. She found his cock in her ass a very pleasurable experience.";
+			if (g_Dice.percent(30)) message += " slid right in her ass and she loved every minute of it.";
+			else /*              */ message += " had the customer's cock go in easy. She found his cock in her ass a very pleasurable experience.";
 		}
 		else
 		{
@@ -8605,14 +8636,18 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 	{
 		if (z)
 		{
+			message += girlName;
+			//message += " stared off vancantily as the customer used her tits to get off."; /*Its not great but try to get something.. wrote when net was down so spelling isnt right CRAZY*/
 			message += "(Z text not done)\n";
 			//break;
 		}
 		message += girlName;
 		if (check < 20)
 		{
-			if (g_Dice.percent(40))	message += " awkwardly let the customer's cock fuck her tits, and recoiled when he came.";
-			else /*              */	message += " awkwardly let the customer fuck her tits, and recoiled when he came.";
+			if (g_Dice.percent(40))	message += " awkwardly let the customer's cock fuck her tits,";
+			else /*              */	message += " awkwardly let the customer fuck her tits,";
+			if (HasTrait(girl, "Cum Addict")) message += " and licked up every last drop of cum when he finished.";
+			else /*              */	message += " and recoiled when he came.";
 		}
 		else if (check < 60) /*  */	message += " used her breasts on the customer's cock.";
 		else if (check < 80)
@@ -8637,7 +8672,11 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		}
 		if (check < 20)
 		{
-			if (g_Dice.percent(40))	message += " awkwardly worked the customer's cock with her hand, and recoiled when he came.";
+			if (g_Dice.percent(40))	message += " awkwardly worked the customer's cock with her hand,";
+			{
+				if (HasTrait(girl, "Cum Addict")) message += " and licked up every last drop of cum when he finished.";
+				else /*              */	message += " and recoiled when he came.";
+			}
 			else /*              */	message += " clumsily pulled the customer's cock around with her hand until, in the end, he gave up and finished himself off.";
 		}
 		else if (check < 60) /*  */	message += " used her hand on the customer's cock.";
@@ -8657,6 +8696,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 	{
 		if (z)
 		{
+			//message += " laid back as the customer used her feet to get off."; /*Its not great but trying to get something.. wrote when net was down so spelling isnt right CRAZY*/
 			message += "(Z text not done)\n";
 			//break;
 		}
@@ -8664,8 +8704,11 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 
 		if (check < 20)
 		{
-			if (g_Dice.percent(40))	message += " awkwardly worked the customer's cock with her feet, and recoiled when he came.";
-			else /*              */	message += " awkwardly squashed the customer's cock around with her feet, recoiling when he finally came.";
+			if (g_Dice.percent(40))	message += " awkwardly worked the customer's cock with her feet,";
+			else /*              */	message += " awkwardly squashed the customer's cock around with her feet,";
+			if (HasTrait(girl, "Cum Addict")) message += " and licked up every last drop of cum when he finished.";
+			else if (g_Dice.percent(40))	message += " and recoiled when he came.";
+			else /*              */	message += " recoiling when he finally came.";
 		}
 		else if (check < 60) /*  */	message += " used her feet on the customer's cock.";
 		else if (check < 80) /*  */	message += " loved using her feet on the customer's cock, and let him cum all over her.";
@@ -8697,6 +8740,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 	{
 		if (z)
 		{
+			//message += "Seems the customer thought having a beast fuck the dead would be great fun."; /*Its not great but try to get something.. wrote when net was down so spelling isnt right CRAZY*/
 			message += "(Z text not done)\n";
 			//break;
 		}
@@ -8754,6 +8798,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 	{
 		if (z)
 		{
+			//message += "Seems the customer was interested in knowing if a dead girls pussy tasted any different."; /*Its not great but try to get something.. wrote when net was down so spelling isnt right CRAZY*/
 			message += "(Z text not done)\n";
 			//break;
 		}
@@ -8900,7 +8945,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		if (check < 15)
 		{
 			if (g_Dice.percent(30)) message += "\nHer inexperience hurt her a little.";
-			else /*              */	message += "\nShe's inexperienced and got poked in the eye.";
+			else /*              */	message += "\nShe's inexperienced and got poked in the eye.";/*Wouldnt this work better in oral? CRAZY*/
 			UpdateStat(girl, STAT_HAPPINESS, -2);
 			UpdateStat(girl, STAT_SPIRIT, -3);
 			UpdateStat(girl, STAT_CONFIDENCE, -1);
@@ -9463,7 +9508,7 @@ string cGirls::GetRandomSexString()
 		random = g_Dice % 8 + 1;
 		/* */if (random <= 2)	OStr << gettext("squealed");
 		else if (random <= 4)	OStr << gettext("moaned");
-		else 	OStr << gettext("grew hot");
+		else /*            */	OStr << gettext("grew hot");
 		OStr << gettext(" as he ");
 		random = g_Dice % 8 + 1;
 		/* */if (random <= 2)	OStr << gettext("touched");
@@ -9571,7 +9616,7 @@ string cGirls::GetRandomSexString()
 		/* */if (random <= 2)	OStr << gettext("tools");
 		else if (random <= 4)	OStr << gettext("customer");
 		else if (random <= 6)	OStr << gettext("sword");
-		else 	OStr << gettext("sugar frosting");
+		else /*            */	OStr << gettext("sugar frosting");
 		OStr << gettext("' with");
 		break;
 	case 9:
@@ -9639,7 +9684,7 @@ string cGirls::GetRandomSexString()
 		/* */if (random <= 2)	OStr << gettext("Pink Petal forum member.");
 		else if (random <= 4)	OStr << gettext("tentacle.");
 		else if (random <= 6)	OStr << gettext("pirate.");
-		else 	OStr << gettext("sentient bottle.");
+		else /*            */	OStr << gettext("sentient bottle.");
 		break;
 	case 8:
 		random = g_Dice % 20 + 1;
@@ -9717,7 +9762,7 @@ string cGirls::GetRandomSexString()
 		}
 		else if (random <= 4)	OStr << gettext("the closet.");
 		else if (random <= 6)	OStr << gettext("the suburbs.");
-		else 	OStr << gettext("somewhere in deep space.");
+		else /*            */	OStr << gettext("somewhere in deep space.");
 		break;
 	case 16:
 		OStr << gettext("the ");
@@ -9725,7 +9770,7 @@ string cGirls::GetRandomSexString()
 		/* */if (random <= 2)	OStr << gettext("mayor");
 		else if (random <= 4)	OStr << gettext("bishop");
 		else if (random <= 6)	OStr << gettext("town treasurer");
-		else 	OStr << gettext("school principle");
+		else /*            */	OStr << gettext("school principle");
 		OStr << gettext(", on one of his regular health checkups.");
 		break;
 	case 17: OStr << gettext("the letter H."); break;
@@ -9746,13 +9791,13 @@ string cGirls::GetRandomSexString()
 		/* */if (random <= 2)	OStr << gettext("rings of the Schwarzenegger");
 		else if (random <= 4)	OStr << gettext("rings of the horndog");
 		else if (random <= 6)	OStr << gettext("rings of beauty");
-		else 	OStr << gettext("rings of potent sexual stamina");
+		else /*            */	OStr << gettext("rings of potent sexual stamina");
 		OStr << gettext(") ");
 		random = g_Dice % 8 + 1;
 		/* */if (random <= 2)	OStr << gettext("neighbor");
 		else if (random <= 4)	OStr << gettext("yugoloth");
 		else if (random <= 6)	OStr << gettext("abberation");
-		else 	OStr << gettext("ancient one");
+		else /*            */	OStr << gettext("ancient one");
 		OStr << gettext(".");
 		break;
 	case 20:
@@ -9879,14 +9924,14 @@ string cGirls::GetRandomGroupString()
 		random = g_Dice % 6 + 1;
 		/* */if (random <= 2)	OStr << gettext("was bukkaked by");
 		else if (random <= 4)	OStr << gettext("was given pearl necklaces by");
-		else 	OStr << gettext("received a thorough face/hair job from");
+		else /*            */	OStr << gettext("received a thorough face/hair job from");
 		break;
 	case 5:
 		OStr << gettext("They demanded simultaneous hand, foot and mouth ");
 		random = g_Dice % 6 + 1;
 		/* */if (random <= 2)	OStr << gettext("jobs");
 		else if (random <= 4)	OStr << gettext("action");
-		else 	OStr << gettext("combat");
+		else /*            */	OStr << gettext("combat");
 		OStr << gettext(" for");
 		break;
 	case 6:
@@ -9923,7 +9968,7 @@ string cGirls::GetRandomGroupString()
 		OStr << gettext(" silly ");
 		/* */if (random <= 2)	OStr << gettext("twice over");
 		else if (random <= 4)	OStr << gettext("three times over");
-		else 	OStr << gettext("so many times");
+		else /*            */	OStr << gettext("so many times");
 		OStr << gettext(" by");
 		break;
 	}
@@ -10169,7 +10214,7 @@ string cGirls::GetRandomBDSMString()
 		else if (random <= 4)	OStr << gettext("fucked");
 		else if (random <= 6)	OStr << gettext("left alone");
 		else if (random <= 8)	OStr << gettext("repeatedly brought to the edge of orgasm, but not over");
-		else 	OStr << gettext("mercilessly tickled by a feather wielded");
+		else /*            */	OStr << gettext("mercilessly tickled by a feather wielded");
 		OStr << gettext(" by");
 		break;
 	case 5:
@@ -10768,7 +10813,7 @@ string cGirls::GetRandomLesString()
 	case 2:
 		random = g_Dice % 10 + 1;
 		if (random <= 5)	OStr << gettext("shaved her");
-		else /*            */	OStr << gettext("was shaved");
+		else /*          */	OStr << gettext("was shaved");
 		OStr << gettext(" with a +");
 		plus = g_Dice % 7 + 4;
 		OStr << plus;
@@ -10902,7 +10947,7 @@ string cGirls::GetRandomLesString()
 		OStr << gettext("!\n");
 		random = g_Dice % 10 + 1;
 		if (random <= 6)	OStr << gettext("The customer won");
-		else /*            */	OStr << gettext("The customer was vanquished");
+		else /*          */	OStr << gettext("The customer was vanquished");
 		break;
 	}
 # pragma endregion les1

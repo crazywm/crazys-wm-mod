@@ -343,6 +343,12 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 				brothel->m_Fame -= 5;
 				acceptsGirl = false;
 			}
+			else if (g_Girls.GetStat(girl, STAT_DIGNITY) >= 70 && Cust.m_SexPref == SKILL_BEASTIALITY && g_Dice.percent(20))	// 
+			{
+				fuckMessage = girlName + " refuses to sleep with a beast she has to much dignity for that.\n\n";
+				brothel->m_Fame -= 5;
+				acceptsGirl = false;
+			}
 			else if (Cust.m_Stats[STAT_LIBIDO] >= 80)
 			{
 				fuckMessage = "Customer chooses her because they are very horny.\n\n";

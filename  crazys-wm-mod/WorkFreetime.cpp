@@ -240,6 +240,13 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					}
 					// if she can not afford it, reroll.
 					break;
+				case FT_Counseling:
+					if (girl->is_addict() || girl->is_fighter() || girl->has_trait("Shy"))
+					{
+						choicemade = true;	// She has enough money for it, so continue
+					}
+					// if she dont need it, reroll.
+					break;
 				case FT_WatchFights:
 					if (girl->m_Money >= 15 || g_Arena.GetNumBrothels() > 0)
 					{
@@ -1378,7 +1385,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				}
 				else//does make it
 				{
-					if (g_Dice.percent(2))//helps
+					if (g_Dice.percent(2))//helps 2% seems about right to me... dont want it to help to often or rehab would be worthless
 					{
 						ss << "She ended up having a major breakthru and ";
 						if (g_Girls.HasTrait(girl, "Fairy Dust Addict"))
@@ -1395,6 +1402,21 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 							{
 								g_Girls.RemoveTrait(girl, "Viras Blood Addict", true);
 								ss << "she is no longer a viras blood addict.\n";
+							}
+						else if (g_Girls.HasTrait(girl, "Alcoholic"))
+							{
+								g_Girls.RemoveTrait(girl, "Alcoholic", true);
+								ss << "she is no longer an alcoholic.\n";
+							}
+							else if (g_Girls.HasTrait(girl, "Smoker"))
+							{
+								g_Girls.RemoveTrait(girl, "Smoker", true);
+								ss << "she is no longer a smoker.\n";
+							}
+							else if (g_Girls.HasTrait(girl, "Cum Addict"))
+							{
+								g_Girls.RemoveTrait(girl, "Cum Addict", true);
+								ss << "she is no longer a cum addict.\n";
 							}
 					}
 					else//doesnt
