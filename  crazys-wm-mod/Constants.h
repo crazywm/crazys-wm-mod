@@ -152,12 +152,14 @@ const unsigned int JOB_WAITRESS			= 11;	// waits on the tables
 const unsigned int JOB_SINGER			= 12;	// sings in the bar
 const unsigned int JOB_PIANO			= 13;	// plays the piano for customers
 const unsigned int JOB_ESCORT			= 14;	// High lvl whore.  Sees less clients but needs higher skill high lvl items and the such to make them happy
+//const unsigned int JOB_WETTSHIRT		= ;
 // `J` Job Brothel - Hall
 const unsigned int JOBFILTER_GAMBHALL	= 2;
 const unsigned int JOB_DEALER			= 15;	// dealer for gambling tables (requires at least 3 for all jobs in this filter to work)
 const unsigned int JOB_ENTERTAINMENT	= 16;	// sings, dances and other shows for patrons
 const unsigned int JOB_XXXENTERTAINMENT	= 17;	// naughty shows for patrons
 const unsigned int JOB_WHOREGAMBHALL	= 18;	// looks after customers sexual needs
+//const unsigned int JOB_FOXYBOXING		= ;
 // `J` Job Brothel - Sleazy Bar
 const unsigned int JOBFILTER_SLEAZYBAR	= 3;
 const unsigned int JOB_SLEAZYBARMAID	= 19;

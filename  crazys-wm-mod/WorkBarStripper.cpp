@@ -61,13 +61,13 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, bool Day0Night
 		g_Girls.GetSkill(girl, SKILL_STRIP)) / 2;
 	//int drinks;
 
-	int wages = 30, work = 0;
+	int wages = 30, tips = 0, work = 0;
 
 	//what is she wearing?
 	if (g_Girls.HasItemJ(girl, "Rainbow Underwear") != -1)
 	{
 		ss << girlName << " stripped down to reveal her Rainbow Underwear to the approval of the patrons watching her.\n\n";
-		brothel->m_Happiness += 5; jobperformance += 5; wages += 10;
+		brothel->m_Happiness += 5; jobperformance += 5; tips += 10;
 	}
 	else if (g_Girls.HasItemJ(girl, "Black Leather Underwear") != -1)
 	{
@@ -88,7 +88,7 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, bool Day0Night
 	else if (g_Girls.HasItemJ(girl, "Adorable Underwear") != -1)
 	{
 		ss << girlName << " stripped down to reveal her Adorable Underwear which slightly help her out on tips.\n\n";
-		wages += 5;
+		tips += 5;
 	}
 	else if (g_Girls.HasItemJ(girl, "Classy Underwear") != -1)
 	{
@@ -99,7 +99,7 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, bool Day0Night
 		}
 		else
 		{
-			ss << "and it helped her tips.\n\n"; wages += 20;
+			ss << "and it helped her tips.\n\n"; tips += 20;
 		}
 	}
 	else if (g_Girls.HasItemJ(girl, "Comfortable Underwear") != -1)
@@ -109,13 +109,13 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, bool Day0Night
 	}
 	else if (g_Girls.HasItemJ(girl, "Plain Underwear") != -1)
 	{
-		ss << girlName << " stripped down to reveal her Plain Underwear which didn't help her performance as the pastrons found them boring.\n\n";
+		ss << girlName << " stripped down to reveal her Plain Underwear which didn't help her performance as the patrons found them boring.\n\n";
 		jobperformance -= 5;
 	}
 	else if (g_Girls.HasItemJ(girl, "Sexy Underwear") != -1)
 	{
 		ss << girlName << " stripped down to reveal her Sexy Underwear which brought many people to the stage to watch her.\n\n";
-		jobperformance += 5; wages += 15;
+		jobperformance += 5; tips += 15;
 	}
 
 
@@ -143,7 +143,7 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, bool Day0Night
 		{
 			ss << girlName << "'s smile is enough to bring in the tips. You sometimes wonder if she even needs to take her clothes off.\n";
 			brothel->m_Happiness += 10;
-			wages += 15;
+			tips += 15;
 		}
 		else
 		{
@@ -179,7 +179,7 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, bool Day0Night
 		}
 		else
 		{
-			ss << "From start to finish, every move " << girlName << " makes practically sweats sexuallity.\n";
+			ss << "From start to finish, every move " << girlName << " makes practically sweats sexuality.\n";
 			brothel->m_Happiness += 10;
 		}
 	}
@@ -200,7 +200,7 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, bool Day0Night
 		else if (roll <= 60)
 		{
 			ss << "Seeing the large crowd waiting outside, " << girlName << " smirked and slowly walked on stage knowing she was going get good tips today.\n";
-			wages += 10;
+			tips += 10;
 		}
 		else if (roll <= 80)
 		{
@@ -298,10 +298,13 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, bool Day0Night
 	}
 
 
+	//base tips, aprox 5-40% of base wages
+	tips += (((5 + jobperformance / 6) * wages) / 100);
+	
 	//try and add randomness here
-	if (g_Girls.GetStat(girl, STAT_BEAUTY) >85 && g_Dice.percent(20))
+	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85 && g_Dice.percent(20))
 	{
-		ss << "Stunned by her beauty a customer left her a great tip.\n\n"; wages += 25;
+		ss << "Stunned by her beauty a customer left her a great tip.\n\n"; tips += 25;
 	}
 
 	if (g_Girls.HasTrait(girl, "Clumsy") && g_Dice.percent(5))
@@ -313,11 +316,11 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, bool Day0Night
 	{
 		if (jobperformance < 125)
 		{
-			ss << "Her pessimistic mood depressed the customers making them tip less.\n"; wages -= 10;
+			ss << "Her pessimistic mood depressed the customers making them tip less.\n"; tips -= 10;
 		}
 		else
 		{
-			ss << girlName << " was in a poor mood so the patrons gave her a bigger tip to try and cheer her up.\n"; wages += 10;
+			ss << girlName << " was in a poor mood so the patrons gave her a bigger tip to try and cheer her up.\n"; tips += 10;
 		}
 	}
 
@@ -325,11 +328,11 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, bool Day0Night
 	{
 		if (jobperformance < 125)
 		{
-			ss << girlName << " was in a cheerful mood but the patrons thought she needed to work more on her stripping.\n"; wages -= 10;
+			ss << girlName << " was in a cheerful mood but the patrons thought she needed to work more on her stripping.\n"; tips -= 10;
 		}
 		else
 		{
-			ss << "Her optimistic mood made patrons cheer up increasing the amount they tip.\n"; wages += 10;
+			ss << "Her optimistic mood made patrons cheer up increasing the amount they tip.\n"; tips += 10;
 		}
 	}
 
@@ -337,11 +340,11 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, bool Day0Night
 	{
 		if (jobperformance < 125)
 		{
-			ss << girlName << " has a great figure so she draws a few extra patrons even if she needed to work more on her stripping.\n"; wages += 5;
+			ss << girlName << " has a great figure so she draws a few extra patrons even if she needed to work more on her stripping.\n"; tips += 5;
 		}
 		else
 		{
-			ss << girlName << "'s great figure draws a large crowed to the stage and her skill at stripping makes them pay up to see the show up close.\n"; wages += 15;
+			ss << girlName << "'s great figure draws a large crowed to the stage and her skill at stripping makes them pay up to see the show up close.\n"; tips += 15;
 		}
 	}
 
@@ -353,27 +356,27 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, bool Day0Night
 		if (roll < 5)
 		{
 			ss << "She sold a champagne dance.";
-			wages += 250;
+			tips += 250;
 		}
 		if (roll < 20)
 		{
 			ss << "She sold a shower dance.";
-			wages += 125;
+			tips += 125;
 		}
 		if (roll < 40)
 		{
 			ss << "She was able to sell a few VIP dances.";
-			wages += 160;
+			tips += 160;
 		}
 		if (roll < 60)
 		{
 			ss << "She sold a VIP dance.";
-			wages += 75;
+			tips += 75;
 		}
 		else
 		{
 			ss << "She sold several lap dances.";
-			wages += 85;
+			tips += 85;
 		}
 	}
 	else if (lapdance >= 65)
@@ -382,17 +385,17 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, bool Day0Night
 		if (roll < 5)
 		{
 			ss << "She convinced a patron to buy a shower dance.";
-			wages += 75;
+			tips += 75;
 		}
 		if (roll < 20)
 		{
 			ss << "Sold a VIP dance to a patron.";
-			wages += 70;
+			tips += 70;
 		}
 		else
 		{
 			ss << "Sold a few lap dance.";
-			wages += 65;
+			tips += 65;
 		}
 	}
 	else if (lapdance >= 40)
@@ -400,13 +403,13 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, bool Day0Night
 		ss << girlName << " tried to sell private dances ";
 		if (roll < 5)
 		{
-			ss << "and was able to sell a vip dance againts all odds.";
-			wages += 50;
+			ss << "and was able to sell a VIP dance against all odds.";
+			tips += 50;
 		}
 		if (roll < 20)
 		{
 			ss << "and was able to sell a lap dance.";
-			wages += 25;
+			tips += 25;
 		}
 		else
 		{
@@ -431,6 +434,13 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, bool Day0Night
 		girl->m_Events.AddMessage(warning, IMGTYPE_ORAL, EVENT_WARNING);
 	}
 
+	if (girl->is_pregnant())
+	{
+		ss << "\nPole dancing proved to be quite exhausting for a pregnant girl like " << girlName << " .\n";
+		g_Girls.UpdateStat(girl, STAT_TIREDNESS, 10);
+	}
+
+
 	//enjoyed the work or not
 	if (roll <= 5)
 	{
@@ -454,7 +464,9 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, bool Day0Night
 	roll_max /= 4;
 	wages += 10 + g_Dice%roll_max;
 	if (wages < 0) wages = 0;
+	if (tips < 0) tips = 0;
 	girl->m_Pay = wages;
+	girl->m_Tips = tips;
 
 	// Improve stats
 	int xp = 15, libido = 1, skill = 3;
@@ -475,7 +487,7 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, bool Day0Night
 	g_Girls.PossiblyGainNewTrait(girl, "Exhibitionist", 60, actiontype, girlName + " has been stripping for so long she loves to be naked now.", Day0Night1);
 	if (jobperformance >= 140 && g_Dice.percent(25))
 	{
-		g_Girls.PossiblyGainNewTrait(girl, "Agile", 40, actiontype, girlName + " has been working the pole long enought to become quite Agile.", Day0Night1);
+		g_Girls.PossiblyGainNewTrait(girl, "Agile", 40, actiontype, girlName + " has been working the pole long enough to become quite Agile.", Day0Night1);
 	}
 
 	//lose

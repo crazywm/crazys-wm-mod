@@ -77,7 +77,7 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	}
 	else if (jobperformance >= 185)
 	{
-		mod = 2.0;				ss << "She is unbelievable at this and is always finding new ways of pleaseing the customers.\n\n";
+		mod = 2.0;				ss << "She is unbelievable at this and is always finding new ways of pleasing the customers.\n\n";
 		/* */if (roll <= 20) { ss << "She is really good at this, knowing how to tease customers into staying and paying for hours.\n"; }
 		else if (roll <= 40) { ss << girlName << " swinging her boobs and ass in a very sexual way. As a result causing heavy breathing from the booths.\n"; }
 		else if (roll <= 60) { ss << "Her body movement is flawless and very sensual, earning a nice sum today.\n"; }
@@ -127,7 +127,7 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	{
 		if (g_Girls.HasTrait(girl, "Lesbian") && g_Girls.HasTrait(girl, "Nymphomaniac"))
 		{
-			ss << "\nShe was horney and she loves sex so she brought in another girl and had sex with her while the customers watched.";
+			ss << "\nShe was horny and she loves sex so she brought in another girl and had sex with her while the customers watched.";
 			sextype = SKILL_LESBIAN;
 			/* `J` g_Girls.GirlFucks handles skill gain from sex
 			g_Girls.UpdateSkill(girl, SKILL_LESBIAN, 1);
@@ -137,7 +137,7 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		{
 			if (roll <= 50)
 			{
-				ss << "\nShe was horney and she loves sex so she brought in another girl and had sex with her while the customers watched.";
+				ss << "\nShe was horny and she loves sex so she brought in another girl and had sex with her while the customers watched.";
 				sextype = SKILL_LESBIAN;
 				/* `J` g_Girls.GirlFucks handles skill gain from sex
 				g_Girls.UpdateSkill(girl, SKILL_LESBIAN, 1);
@@ -145,13 +145,13 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			}
 			else
 			{
-				ss << "\nShe was horney and she loves sex so she brought in one of the customers and had sex with him while the others watched.";
+				ss << "\nShe was horny and she loves sex so she brought in one of the customers and had sex with him while the others watched.";
 				sextype = SKILL_NORMALSEX;
 			}
 		}
 		else if (g_Girls.HasTrait(girl, "Straight") && g_Girls.HasTrait(girl, "Nymphomaniac"))
 		{
-			ss << "\nShe was horney and she loves sex so she brought in one of the customers and had sex with him while the others watched.";
+			ss << "\nShe was horny and she loves sex so she brought in one of the customers and had sex with him while the others watched.";
 			sextype = SKILL_NORMALSEX;
 		}
 		//New stuff
@@ -166,14 +166,14 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 								ss << "\nDuring her shift " << girlName << " couldn't resist the temptation of taking a load of hot, delicious cum in her mouth and began to suck her own cock. The customers enjoyed a lot such an unusual show.";
 								g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 1);
 								g_Girls.UpdateStat(girl, STAT_HAPPINESS, 1);
-								wages += 30;
+								tips += 30;
 							}
 						else
 							{
 								//default Cum Addict
 								ss << "\n" << girlName << " won't miss a chance to taste some yummy cum. She came up on the stage with a goblet, cummed in it and then drank the content to entertain the customers.";
 								g_Girls.UpdateStat(girl, STAT_HAPPINESS, 1);
-								wages += 10;
+								tips += 10;
 							}
 								sCustomer cust;
 								GetMiscCustomer(brothel, cust);
@@ -192,13 +192,13 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 								{
 										ss << "\n" << girlName << " was horny and decided to deliver a good show. She put her cock between her huge breasts and began to slowly massage it. The crowd went wild when she finally came on her massive tits.";
 										g_Girls.UpdateSkill(girl, SKILL_TITTYSEX, 1);
-										wages += 30;
+										tips += 30;
 								}
 								//cums over self
 								else if (g_Girls.GetStat(girl, STAT_DIGNITY) < -40 && g_Dice.percent(25))
 								{
 										ss << "\nThe customers were really impressed when " << girlName << " finished her show by cumming all over herself";
-										wages += 10;
+										tips += 10;
 								}
 								//Regular futa masturbation
 								else
@@ -221,13 +221,13 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				}
 		else
 		{
-			ss << "\nShe was horney and ended up masturbating for the customers, making them very happy.";
+			ss << "\nShe was horny and ended up masturbating for the customers, making them very happy.";
 			imagetype = IMGTYPE_MAST;
 		}
 	}
 	else if (g_Dice.percent(5))  //glory hole event
 	{
-		ss << "A man manged to cut a hole out from his booth and made himself a glory hole, " << girlName
+		ss << "A man managed to cut a hole out from his booth and made himself a glory hole, " << girlName
 			<< " saw his cock sticking out and ";
 		{
 			if (g_Girls.HasTrait(girl, "Meek") || g_Girls.HasTrait(girl, "Shy"))

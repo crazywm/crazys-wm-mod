@@ -56,7 +56,7 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Nig
 
 	int HateLove = 0;
 	HateLove = g_Girls.GetStat(girl, STAT_PCLOVE) - g_Girls.GetStat(girl, STAT_PCHATE);
-	int wages = 15, work = 0;
+	int wages = 15, tips = 0, work = 0;
 	int roll = g_Dice.d100();
 	int imagetype = IMGTYPE_WAIT;
 
@@ -96,20 +96,23 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Nig
 	}
 
 
+	//base tips, aprox 10-20% of base wages
+	tips += (((10 + jobperformance / 22) * wages) / 100);
+	
 	//try and add randomness here
 	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85 && g_Dice.percent(20))
 	{
-		ss << "Stunned by her beauty a customer left her a great tip.\n\n"; wages += 25;
+		ss << "Stunned by her beauty a customer left her a great tip.\n\n"; tips += 25;
 	}
 
 	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 99 && g_Dice.percent(5))
 	{
-		ss << girlName << " looked absolutely stunning during her shift and was unable to hide it. Instead of her ass or tits, the patrons couldn't glue their eyes off her face, and spent a lot more than usual on tipping her.\n"; wages += 50;
+		ss << girlName << " looked absolutely stunning during her shift and was unable to hide it. Instead of her ass or tits, the patrons couldn't glue their eyes off her face, and spent a lot more than usual on tipping her.\n"; tips += 50;
 	}
 
 	if (g_Girls.GetStat(girl, STAT_CHARISMA) > 85 && g_Dice.percent(20))
 	{
-		ss << girlName << " surprised a couple of gentlemen discussing some complicated issue by her insightful comments when she was taking her order. They decided her words were worth a heavy tip.\n"; wages += 35;
+		ss << girlName << " surprised a couple of gentlemen discussing some complicated issue by her insightful comments when she was taking her order. They decided her words were worth a heavy tip.\n"; tips += 35;
 	}
 
 	if (g_Girls.HasTrait(girl, "Clumsy") && g_Dice.percent(15))
@@ -121,11 +124,11 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Nig
 	{
 		if (jobperformance < 125)
 		{
-			ss << "Her pessimistic mood depressed the customers making them tip less.\n"; wages -= 10;
+			ss << "Her pessimistic mood depressed the customers making them tip less.\n"; tips -= 10;
 		}
 		else
 		{
-			ss << girlName << " was in a poor mood so the patrons gave her a bigger tip to try and cheer her up.\n"; wages += 10;
+			ss << girlName << " was in a poor mood so the patrons gave her a bigger tip to try and cheer her up.\n"; tips += 10;
 		}
 	}
 
@@ -133,11 +136,11 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Nig
 	{
 		if (jobperformance < 125)
 		{
-			ss << girlName << " was in a cheerful mood but the patrons thought she needed to work more on her services.\n"; wages -= 10;
+			ss << girlName << " was in a cheerful mood but the patrons thought she needed to work more on her services.\n"; tips -= 10;
 		}
 		else
 		{
-			ss << "Her optimistic mood made patrons cheer up increasing the amount they tip.\n"; wages += 10;
+			ss << "Her optimistic mood made patrons cheer up increasing the amount they tip.\n"; tips += 10;
 		}
 	}
 	// `J` slightly higher percent compared to regular barmaid, I would think sleazy barmaid's uniform is more revealing
@@ -160,7 +163,7 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Nig
 
 	if (g_Girls.HasTrait(girl, "Meek") && g_Dice.percent(5) && jobperformance < 125)
 	{
-		ss << girlName << " spilled a drink all over a mans lap. He told her she had to lick it up and forced her to clean him up which she Meekly accepted and went about licking his cock clean.\n";
+		ss << girlName << " spilled a drink all over a man's lap. He told her she had to lick it up and forced her to clean him up which she Meekly accepted and went about licking his cock clean.\n";
 		imagetype = IMGTYPE_ORAL;
 		work -= 3;
 	}
@@ -202,7 +205,7 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Nig
 		}
 		else
 		{
-			ss << girlName << " spotted a relatively good-looking guy walking into the bathroom alone. She followed him inside, and as he tried to exit the bathroom stall, he got pushed back in by her. " << girlName << " didn't waste any time and in a matter of seconds was vigorously fucking the client. After the deed, the client made sure " << girlName << " had a pretty hefty wad of money stuck behind her skirt.\n"; wages += 50;
+			ss << girlName << " spotted a relatively good-looking guy walking into the bathroom alone. She followed him inside, and as he tried to exit the bathroom stall, he got pushed back in by her. " << girlName << " didn't waste any time and in a matter of seconds was vigorously fucking the client. After the deed, the client made sure " << girlName << " had a pretty hefty wad of money stuck behind her skirt.\n"; tips += 50;
 		}
 		imagetype = IMGTYPE_SEX;
 		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
@@ -236,7 +239,9 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Nig
 	roll_max /= 4;
 	wages += 10 + g_Dice%roll_max;
 	if (wages < 0) wages = 0;
+	if (tips < 0) tips = 0;
 	girl->m_Pay = wages;
+	girl->m_Tips = tips;
 
 	// Improve stats
 	int xp = 15, libido = 1, skill = 3;
@@ -244,6 +249,7 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Nig
 	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
+	if (!g_Girls.HasTrait(girl, "Straight"))	{ libido += min(3, g_Brothels.GetNumGirlsOnJob(0, JOB_BARSTRIPPER, false)); }
 
 	g_Girls.UpdateStat(girl, STAT_FAME, 1);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);

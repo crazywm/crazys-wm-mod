@@ -59,7 +59,7 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 	string dealername = (dealeronduty ? "Dealer " + dealeronduty->m_Realname + "" : "the Dealer");
 
 	int roll = g_Dice.d100();
-	int wages = 25, work = 0;
+	int wages = 25, tips = 0, work = 0;
 
 	double jobperformance = JP_HallEntertainer(girl, false);
 
@@ -115,7 +115,7 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 		{
 			if (g_Girls.HasTrait(girl, "Elegant"))
 			{
-				ss << girlName << "'s very appearance in the door of the gambling hall leads to applause and the sudden appearence of a clear way to the stage steps.\n";
+				ss << girlName << "'s very appearance in the door of the gambling hall leads to applause and the sudden appearance of a clear way to the stage steps.\n";
 			}
 			else
 			{
@@ -215,7 +215,7 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 			}
 			else if (g_Girls.HasTrait(girl, "Elegant"))
 			{
-				ss << "The elegence " << girlName << " brings to all things enhances her already pleasant singing.\n";
+				ss << "The elegance " << girlName << " brings to all things enhances her already pleasant singing.\n";
 			}
 			else
 			{
@@ -261,7 +261,7 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 		{
 			if (g_Girls.HasTrait(girl, "Charming") || g_Girls.HasTrait(girl, "Charismatic"))
 			{
-				ss << "The tips she recieved were far more than " << girlName << "'s skills had any reason to bring in.\n";
+				ss << "The tips she received were far more than " << girlName << "'s skills had any reason to bring in.\n";
 			}
 			else
 			{
@@ -329,7 +329,7 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 			}
 			else
 			{
-				ss << girlName << " tells bland jokes and sings forgetable songs.\n";
+				ss << girlName << " tells bland jokes and sings forgettable songs.\n";
 			}
 		}
 		else if (roll <= 80)
@@ -414,11 +414,14 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 	}
 
 
+	//base tips, aprox 5-30% of base wages
+	tips += (((5 + jobperformance / 8) * wages) / 100);
+
 	//try and add randomness here
 	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85 && g_Dice.percent(20))
 	{
 		ss << "Stunned by her beauty a customer left her a great tip.\n\n";
-		wages += 25;
+		tips += 25;
 	}
 
 	if (g_Girls.HasTrait(girl, "Clumsy") && g_Dice.percent(15))
@@ -432,12 +435,12 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 		if (jobperformance < 125)
 		{
 			ss << "Her pessimistic mood depressed the customers making them tip less.\n";
-			wages -= 10;
+			tips -= 10;
 		}
 		else
 		{
 			ss << girlName << " was in a poor mood so the patrons gave her a bigger tip to try and cheer her up.\n";
-			wages += 10;
+			tips += 10;
 		}
 	}
 
@@ -446,12 +449,12 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 		if (jobperformance < 125)
 		{
 			ss << girlName << " was in a cheerful mood but the patrons thought she needed to work more on her services.\n";
-			wages -= 10;
+			tips -= 10;
 		}
 		else
 		{
 			ss << " Her optimistic mood made patrons cheer up increasing the amount they tip.\n";
-			wages += 10;
+			tips += 10;
 		}
 	}
 
@@ -460,12 +463,12 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 		if (jobperformance < 125)
 		{
 			ss << "Despite her poor performance, people still applaud loudly for her.\n";
-			wages -= 10;
+			tips -= 10;
 		}
 		else
 		{
 			ss << "People love to see her perform, and " << girlName << " collects a massive tip!.\n";
-			wages += 100;
+			tips += 100;
 		}
 	}
 
@@ -474,12 +477,12 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 		if (jobperformance < 125)
 		{
 			ss << "Her royal bitchiness combined with the poor entertainment pisses the audience off.\n";
-			wages -= 15;
+			tips -= 15;
 		}
 		else
 		{
 			ss << girlName << " owns the stage, imperious eyes flashing out across the audience.  Tips are very good tonight.\n";
-			wages += 25;
+			tips += 25;
 		}
 	}
 
@@ -520,7 +523,9 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 
 	wages += (g_Dice % ((int)(((g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA)) / 2)*0.5f))) + 10;
 	if (wages < 0) wages = 0;
+	if (tips < 0) tips = 0;
 	girl->m_Pay = wages;
+	girl->m_Tips = tips;
 
 
 	// Improve girl

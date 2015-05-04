@@ -105,7 +105,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 
 
 	//base tips, aprox 10-20% of base wages
-	tips += (((10 + jobperformance / 22) * wages) / 100)
+	tips += (((10 + jobperformance / 22) * wages) / 100);
 	
 	//try and add randomness here
 	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85 && g_Dice.percent(20))
@@ -367,7 +367,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 		}
 		else if (jobperformance >= 135) //decent or good
 		{
-			ss << "A patron reached out and grabbed her ass. She's use to this and skilled enough so she didn't drop anything\n";
+			ss << "A patron reached out and grabbed her ass. She's use to this and skilled enough so she didn't drop anything.\n";
 		}
 		else if (jobperformance >= 85) //bad
 		{
@@ -391,7 +391,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 		}
 	}
 
-	if (g_Girls.HasTrait(girl, "Meek") || g_Girls.HasTrait(girl, "Shy") && g_Dice.percent(5))
+	if ((g_Girls.HasTrait(girl, "Meek") || g_Girls.HasTrait(girl, "Shy")) && g_Dice.percent(5))
 	{
 		ss << girlName << " was taking an order from a rather rude patron when he decide to grope her. She isn't the kind of girl to resist this and had a bad day at work because of this.\n";
 		work -= 5;
@@ -417,7 +417,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 
 	if (g_Girls.GetStat(girl, STAT_DIGNITY) <= -20 && g_Dice.percent(20))
 	{
-		if (roll <-50) //I'm not sure if it's ok so I won't touch it
+		if (roll <= 50) //I'm not sure if it's ok so I won't touch it
 		{
 			ss << "During her shift, " << girlName << " deliberately dropped the pen she uses to write down orders in front of one of the customers. Exploiting her skimpy outfit, she made sure to bend over to pick it up in a way that allowed her to directly flash her butt on the sitting client's eye level. This earned her an extra tip.\n"; tips += 20;
 		}
@@ -427,28 +427,28 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 		}
 	}
 
-	if (g_Girls.GetStat(girl, STAT_DIGNITY) <= -20 && g_Dice.percent(20) && g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Giant Juggs") || g_Girls.HasTrait(girl, "Massive Melons") || g_Girls.HasTrait(girl, "Abnormally Large Boobs") || g_Girls.HasTrait(girl, "Titanic Tits")) //updated for the new breast traits
+	if (g_Girls.GetStat(girl, STAT_DIGNITY) <= -20 && g_Dice.percent(20) && (g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Giant Juggs") || g_Girls.HasTrait(girl, "Massive Melons") || g_Girls.HasTrait(girl, "Abnormally Large Boobs") || g_Girls.HasTrait(girl, "Titanic Tits"))) //updated for the new breast traits
 	{
 		ss << "A drunk patron \"accidentally\" fell onto " << girlName << " and buried his face between her breasts. To his joy and surprise, " << girlName << " flirtatiously encouraged him to motorboat them for awhile, which he gladly did, before slipping some cash between the titties and staggering out on his way.\n"; tips += 40;
 	}
 
 	if (g_Girls.HasTrait(girl, "Futanari") && g_Girls.GetStat(girl, STAT_LIBIDO) > 80 && g_Dice.percent(5))
-        {
-            if (g_Girls.HasTrait(girl, "Open Minded") || g_Girls.GetStat(girl, STAT_CONFIDENCE) > 35 && g_Girls.GetStat(girl, STAT_DIGNITY) < 35)
-                {
-                        ss << "Noticing the bulge under her skirt one of the customers asked for a very special service: He wanted some \"cream\" in his drink. " << girlName << " took her already hard cock out and sprinkled the drink with some of her jizz. The customer thanked her and slipped a good tip under her panties.\n";
-                        g_Girls.UpdateSkill(girl, SKILL_SERVICE, 2);
-                        g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -30);
-                        tips += 30 + (g_Girls.GetSkill(girl, SKILL_SERVICE) / 5); //Not sure if this will work fine
-                        imagetype = IMGTYPE_MAST;
-                }
-                else
-                {
-                        ss << "Noticing the bulge under her skirt one of the customers asked " << girlName << " to spill some of her \"cream\" in his drink, but she refused, blushing.\n";
-                }
+	{
+		if (g_Girls.HasTrait(girl, "Open Minded") || g_Girls.GetStat(girl, STAT_CONFIDENCE) > 35 && g_Girls.GetStat(girl, STAT_DIGNITY) < 35)
+		{
+			ss << "Noticing the bulge under her skirt one of the customers asked for a very special service: He wanted some \"cream\" in his drink. " << girlName << " took her already hard cock out and sprinkled the drink with some of her jizz. The customer thanked her and slipped a good tip under her panties.\n";
+			g_Girls.UpdateSkill(girl, SKILL_SERVICE, 2);
+			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -30);
+			tips += 30 + (g_Girls.GetSkill(girl, SKILL_SERVICE) / 5); //Not sure if this will work fine
+			imagetype = IMGTYPE_MAST;
 		}
+		else
+		{
+			ss << "Noticing the bulge under her skirt one of the customers asked " << girlName << " to spill some of her \"cream\" in his drink, but she refused, blushing.\n";
+		}
+	}
 	
-	if (g_Brothels.GetNumGirlsOnJob(0, JOB_SLEAZYBARMAID, false) >= 1)
+	if (g_Brothels.GetNumGirlsOnJob(0, JOB_SLEAZYBARMAID, false) >= 1 && g_Dice.percent(25))
 	{
 		if (jobperformance > 100)
 		{
@@ -503,6 +503,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
+	if (!g_Girls.HasTrait(girl, "Straight"))	{ libido += min(3, g_Brothels.GetNumGirlsOnJob(0, JOB_BARSTRIPPER, false)); }
 
 	g_Girls.UpdateStat(girl, STAT_FAME, 1);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
@@ -512,7 +513,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 
 	//gained traits
 	g_Girls.PossiblyGainNewTrait(girl, "Charming", 70, ACTION_WORKCLUB, girlName + " has been flirting with customers to try to get better tips. Enough practice at it has made her quite Charming.", Day0Night1);
-	if (jobperformance > 150 && g_Girls.GetStat(girl, STAT_CONSTITUTION) > 65) { g_Girls.PossiblyGainNewTrait(girl, "Fleet of Foot", 60, ACTION_WORKBAR, girlName + " has been dodging between tables and avoiding running into customers for so long she has become Fleet Of Foot.", Day0Night1); }
+	if (jobperformance > 150 && g_Girls.GetStat(girl, STAT_CONSTITUTION) > 65) { g_Girls.PossiblyGainNewTrait(girl, "Fleet of Foot", 60, ACTION_WORKCLUB, girlName + " has been dodging between tables and avoiding running into customers for so long she has become Fleet Of Foot.", Day0Night1); }
 
 	//lose traits
 	g_Girls.PossiblyLoseExistingTrait(girl, "Clumsy", 30, ACTION_WORKCLUB, "It took her breaking hundreds of dishes, and just as many reprimands, but " + girlName + " has finally stopped being so Clumsy.", Day0Night1);

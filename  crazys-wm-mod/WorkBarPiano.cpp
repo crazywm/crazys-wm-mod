@@ -57,7 +57,7 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	sGirl* singeronduty = g_Brothels.GetRandomGirlOnJob(0, JOB_SINGER, Day0Night1);
 	string singername = (singeronduty ? "Singer " + singeronduty->m_Realname + "" : "the Singer");
 
-	int wages = 20, work = 0;
+	int wages = 20, tips = 0, work = 0;
 
 	int roll = g_Dice.d100();
 
@@ -230,10 +230,13 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	}
 
 
+	//base tips, aprox 5-30% of base wages
+	tips += (((5 + jobperformance / 8) * wages) / 100);
+
 	//try and add randomness here
 	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85 && g_Dice.percent(20))
 	{
-		ss << "Stunned by her beauty a customer left her a great tip.\n\n"; wages += 15;
+		ss << "Stunned by her beauty a customer left her a great tip.\n\n"; tips += 15;
 	}
 
 	if (g_Girls.HasTrait(girl, "Clumsy") && g_Dice.percent(5))
@@ -245,11 +248,11 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	{
 		if (jobperformance < 125)
 		{
-			ss << "Her pessimistic mood depressed the customers making them tip less.\n\n"; wages -= 10;
+			ss << "Her pessimistic mood depressed the customers making them tip less.\n\n"; tips -= 10;
 		}
 		else
 		{
-			ss << girlName << " was in a poor mood so the patrons gave her a bigger tip to try and cheer her up.\n\n"; wages += 10;
+			ss << girlName << " was in a poor mood so the patrons gave her a bigger tip to try and cheer her up.\n\n"; tips += 10;
 		}
 	}
 
@@ -257,17 +260,17 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	{
 		if (jobperformance < 125)
 		{
-			ss << girlName << " was in a cheerful mood but the patrons thought she needed to work more on her on her playing.\n\n"; wages -= 10;
+			ss << girlName << " was in a cheerful mood but the patrons thought she needed to work more on her on her playing.\n\n"; tips -= 10;
 		}
 		else
 		{
-			ss << "Her optimistic mood made patrons cheer up increasing the amount they tip.\n\n"; wages += 10;
+			ss << "Her optimistic mood made patrons cheer up increasing the amount they tip.\n\n"; tips += 10;
 		}
 	}
 
 	if (g_Girls.HasTrait(girl, "Psychic") && g_Dice.percent(20))
 	{
-		ss << "She used her Psychic skills to know exactly what the patrons wanted to hear her play.\n"; wages += 15;
+		ss << "She used her Psychic skills to know exactly what the patrons wanted to hear her play.\n"; tips += 15;
 	}
 
 	if (g_Girls.HasTrait(girl, "Assassin") && g_Dice.percent(5))
@@ -290,7 +293,7 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		}
 		else
 		{
-			ss << "A patron gasped at her Horrific Scars making her sad. Feeling bad about it as she played so well, they left a good tip.\n"; wages += 15;
+			ss << "A patron gasped at her Horrific Scars making her sad. Feeling bad about it as she played so well, they left a good tip.\n"; tips += 15;
 		}
 	}
 
@@ -298,11 +301,11 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	{
 		if (jobperformance < 125)
 		{
-			ss << girlName << " played poorly with " << singername << " making people leave.\n\n"; wages -= 10;
+			ss << girlName << " played poorly with " << singername << " making people leave.\n"; tips -= 10;
 		}
 		else
 		{
-			ss << girlName << " played well with " << singername << " increasing tips.\n\n"; wages += 40;
+			ss << girlName << " played well with " << singername << " increasing tips.\n"; tips += 40;
 		}
 	}
 
@@ -326,7 +329,10 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	int roll_max = (g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA));
 	roll_max /= 4;
 	wages += 10 + g_Dice%roll_max;
+	if (wages < 0) wages = 0;
+	if (tips < 0) tips = 0;
 	girl->m_Pay = wages;
+	girl->m_Tips = tips;
 
 	// Improve stats
 	int xp = 10, libido = 1, skill = 3;

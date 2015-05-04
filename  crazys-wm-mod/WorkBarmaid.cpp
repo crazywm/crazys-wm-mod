@@ -55,7 +55,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
-	int wages = 15, work = 0;
+	int wages = 15, tips = 0, work = 0;
 	int imagetype = IMGTYPE_WAIT;
 
 	int roll = g_Dice.d100();
@@ -86,7 +86,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	{
 		if (g_Girls.HasTrait(girl, "Alcoholic"))
 		{
-			ss << girlName << "'s alcoholic nature caused her to drink serveral bottles of booze becoming drunk and her serving suffered cause of it.";
+			ss << girlName << "'s alcoholic nature caused her to drink several bottles of booze becoming drunk and her serving suffered cause of it.";
 			jobperformance -= 50;
 		}
 	}
@@ -109,23 +109,23 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 		{
 			ss << girlName << " made an 11 layer drink like it was nothing. The amazed customer left her a big tip!\n";
 			brothel->m_Fame += 10;
-			wages += 10;
+			tips += 10;
 		}
 		else if (roll <= 56)
 		{
-			ss << "She pours eleven 100ml shots from a single, one liter bottle. Now there's a good barmaid!\n";
+			ss << "She pours eleven 100ml shots from a single, one litre bottle. Now there's a good barmaid!\n";
 		}
 		else if (roll <= 70)
 		{
 			ss << girlName << " noticed that a client was upset about something. After a pleasant conversation she managed to cheer him up. The client left full of willpower, leaving a generous tip behind.\n";
 			brothel->m_Happiness += 10;
-			wages += 10;
+			tips += 10;
 		}
 		else if (roll <= 84)
 		{
 			ss << "Bottles fly high under the ceiling when " << girlName << " is pouring drinks for the customers. The amazed crowd loudly applauses every caught bottle and leave big tips for the girl.\n";
 			brothel->m_Fame += 10;
-			wages += 15;
+			tips += 15;
 		}
 		else
 		{
@@ -186,13 +186,13 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 		else if (roll <= 28)
 		{
 			ss << girlName << " certainly knows what she is doing behind the bar counter. She spends her shift without making any mistakes and earning a lot from tips.\n";
-			wages += 5;
+			tips += 5;
 		}
 		else if (roll <= 42)
 		{
 			ss << girlName << " didn't make any mistakes today. She even earned some tips from happy customers.\n";
 			brothel->m_Happiness += 5;
-			wages += 5;
+			tips += 5;
 		}
 		else if (roll <= 56)
 		{
@@ -228,7 +228,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 		}
 		else if (roll <= 42)
 		{
-			ss << "Trying her best she accidently knocks down a bottle containing one of the bars most expensive liquors.\n";
+			ss << "Trying her best she accidentally knocks down a bottle containing one of the bars most expensive liquors.\n";
 			brothel->m_Filthiness += 5;
 		}
 		else if (roll <= 56)
@@ -323,20 +323,23 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	}
 
 
+	//base tips, aprox 10-20% of base wages
+	tips += (((10 + jobperformance / 22) * wages) / 100);
+	
 	//try and add randomness here
 	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85 && g_Dice.percent(20))
 	{
-		ss << "Stunned by her beauty a customer left her a great tip.\n\n"; wages += 25;
+		ss << "Stunned by her beauty a customer left her a great tip.\n\n"; tips += 25;
 	}
 
 	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 99 && g_Dice.percent(5))
 	{
-		wages += 50; ss << girlName << " looked absolutely stunning during her shift and was unable to hide it. Instead of her ass or tits, the patrons couldn't take their eyes off her face, and spent a lot more than usual on tipping her.\n";
+		tips += 50; ss << girlName << " looked absolutely stunning during her shift and was unable to hide it. Instead of her ass or tits, the patrons couldn't take their eyes off her face, and spent a lot more than usual on tipping her.\n";
 	}
 
 	if (g_Girls.GetStat(girl, STAT_CHARISMA) > 85 && g_Dice.percent(20))
 	{
-		wages += 35; ss << girlName << " surprised a couple of gentlemen discussing some complicated issue by her insightful comments when she was taking her order. They decided her words were worth a heavy tip.\n";
+		tips += 35; ss << girlName << " surprised a couple of gentlemen discussing some complicated issue by her insightful comments when she was taking her order. They decided her words were worth a heavy tip.\n";
 	}
 
 	if (g_Girls.GetStat(girl, STAT_INTELLIGENCE) < 30 && g_Dice.percent(20))
@@ -346,18 +349,18 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 
 	if (g_Girls.HasTrait(girl, "Clumsy") && g_Dice.percent(15))
 	{
-		ss << "Her clumsy nature caused her to spill a drink on a custmoer resulting in them storming off without paying.\n"; wages -= 15;
+		ss << "Her clumsy nature caused her to spill a drink on a customer resulting in them storming off without paying.\n"; wages -= 15;
 	}
 
 	if (g_Girls.HasTrait(girl, "Pessimist") && g_Dice.percent(5))
 	{
 		if (jobperformance < 125)
 		{
-			ss << "Her pessimistic mood depressed the customers making them tip less.\n"; wages -= 10;
+			ss << "Her pessimistic mood depressed the customers making them tip less.\n"; tips -= 10;
 		}
 		else
 		{
-			ss << girlName << " was in a poor mood so the patrons gave her a bigger tip to try and cheer her up.\n"; wages += 10;
+			ss << girlName << " was in a poor mood so the patrons gave her a bigger tip to try and cheer her up.\n"; tips += 10;
 		}
 	}
 
@@ -365,11 +368,11 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	{
 		if (jobperformance < 125)
 		{
-			ss << girlName << " was in a cheerful mood but the patrons thought she needed to work more on her services.\n"; wages -= 10;
+			ss << girlName << " was in a cheerful mood but the patrons thought she needed to work more on her services.\n"; tips -= 10;
 		}
 		else
 		{
-			ss << "Her optimistic mood made patrons cheer up increasing the amount they tip.\n"; wages += 10;
+			ss << "Her optimistic mood made patrons cheer up increasing the amount they tip.\n"; tips += 10;
 		}
 	}
 	// `J` slightly lower percent compared to sleazy barmaid, I would think regular barmaid's uniform is less revealing
@@ -393,7 +396,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 
 	if (g_Girls.HasTrait(girl, "Psychic") && g_Dice.percent(20))
 	{
-		ss << "She used her Psychic skills to know exactly what the patrons wanted to order and when to refill their mugs, keeping them happy and increasing tips.\n"; wages += 15;
+		ss << "She used her Psychic skills to know exactly what the patrons wanted to order and when to refill their mugs, keeping them happy and increasing tips.\n"; tips += 15;
 	}
 
 	if (g_Girls.HasTrait(girl, "Assassin") && g_Dice.percent(5))
@@ -416,7 +419,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 		}
 		else
 		{
-			ss << "A patron gasped at her Horrific Scars making her sad. Feeling bad about it as she did a wonderful job they left a good tip.\n"; wages += 25;
+			ss << "A patron gasped at her Horrific Scars making her sad. Feeling bad about it as she did a wonderful job they left a good tip.\n"; tips += 25;
 		}
 	}
 
@@ -424,11 +427,11 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	{
 		if (roll <= 50)
 		{
-			wages += 35; ss << "During her shift " << girlName << " spotted a depressed-looking lone man sinking his sorrows in alcohol. She spent a short while cheering him up. Surprised with her kindness, the client left her a generous tip.\n";
+			tips += 35; ss << "During her shift " << girlName << " spotted a depressed-looking lone man sinking his sorrows in alcohol. She spent a short while cheering him up. Surprised with her kindness, the client left her a generous tip.\n";
 		}
 		else
 		{
-			wages += 25; ss << "One of the patrons paid way too much for his order. When " << girlName << " quickly pointed out his mistake, he said not to worry about it and told her to keep the extra as a reward for her honesty.\n";
+			tips += 25; ss << "One of the patrons paid way too much for his order. When " << girlName << " quickly pointed out his mistake, he said not to worry about it and told her to keep the extra as a reward for her honesty.\n";
 		}
 	}
 
@@ -436,38 +439,38 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	{
 		if (roll <= 33)
 		{
-			wages += 35; ss << "During her shift, " << girlName << " spotted a lone fellow passed out from alcohol alone at a table in a corner, his wallet bulging out of his pocket. Without a second thought, she discreetly snatched it out and claimed for herself.\n";
+			tips += 35; ss << "During her shift, " << girlName << " spotted a lone fellow passed out from alcohol alone at a table in a corner, his wallet bulging out of his pocket. Without a second thought, she discreetly snatched it out and claimed for herself.\n";
 		}
 		else if (roll <= 66)
 		{
-			wages += 25; ss << "One of the patrons paid way too much for his order... and " << girlName << " didn't really feel like pointing it out, considering the extra money a generous tip.\n";
+			tips += 25; ss << "One of the patrons paid way too much for his order... and " << girlName << " didn't really feel like pointing it out, considering the extra money a generous tip.\n";
 		}
 		else
 		{
-			wages -= 15; ss << girlName << " responded to one of the vulgar remarks by a client in a much more vulgar way. Needless to say, this didn't earn her any favors with the patrons that shift, and her tips were a bit less than usual.\n";
+			tips -= 15; ss << girlName << " responded to one of the vulgar remarks by a client in a much more vulgar way. Needless to say, this didn't earn her any favors with the patrons that shift, and her tips were a bit less than usual.\n";
 		}
 	}
 
 	if (g_Girls.GetStat(girl, STAT_MORALITY) <= -20 && g_Girls.GetStat(girl, STAT_DIGNITY) <= -20 && g_Dice.percent(20))
 	{
-		wages += 40; ss << "A drunk patron suddenly walked up to " << girlName << " and just started groping her body. Instead of pushing him away immediately, " << girlName << " allowed him to take his time with her tits and butt while she helped herself to his pockets and all the money inside them. The rowdy client left with a dumb glee on his face, probably to find out his fondling was much, much overpriced.\n";
+		tips += 40; ss << "A drunk patron suddenly walked up to " << girlName << " and just started groping her body. Instead of pushing him away immediately, " << girlName << " allowed him to take his time with her tits and butt while she helped herself to his pockets and all the money inside them. The rowdy client left with a dumb glee on his face, probably to find out his fondling was much, much overpriced.\n";
 	}
 
 	if (g_Girls.GetStat(girl, STAT_DIGNITY) <= -20 && g_Dice.percent(20))
 	{
 		if (roll <= 50)
 		{
-			wages += 15; ss << "When taking an order, " << girlName << " made sure to lean in really close for the client to get a full view of her cleavage. Giving him an eyefull of tits was promptly rewarded with some extra cash in tips.\n";
+			tips += 15; ss << "When taking an order, " << girlName << " made sure to lean in really close for the client to get a full view of her cleavage. Giving him an eyefull of tits was promptly rewarded with some extra cash in tips.\n";
 		}
 		else
 		{
-			wages += 20; ss << "One of the rowdier clients gently slapped the butt of " << girlName << " when she was passing through. Her coy giggle only encouraged more clients to occasionally fondle her butt through the rest of her work, which earned her some extra tips.\n";
+			tips += 20; ss << "One of the rowdier clients gently slapped the butt of " << girlName << " when she was passing through. Her coy giggle only encouraged more clients to occasionally fondle her butt through the rest of her work, which earned her some extra tips.\n";
 		}
 	}
 
-	if (g_Girls.GetStat(girl, STAT_DIGNITY) <= -20 && g_Dice.percent(20) && g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Abnormally Large Boobs"))
+	if (g_Girls.GetStat(girl, STAT_DIGNITY) <= -20 && g_Dice.percent(20) && (g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Abnormally Large Boobs") || g_Girls.HasTrait(girl, "Titanic Tits") || g_Girls.HasTrait(girl, "Massive Melons") || g_Girls.HasTrait(girl, "Giant Juggs")))
 	{
-		wages += 25; ss << girlName << " got an odd request from a client to carry a small drink he ordered between her tits to his table. After pouring the drink in a thin glass, " << girlName << " handled the task with minimal difficulty and earned a bigger tip.\n";
+		tips += 25; ss << girlName << " got an odd request from a client to carry a small drink he ordered between her tits to his table. After pouring the drink in a thin glass, " << girlName << " handled the task with minimal difficulty and earned a bigger tip.\n";
 	}
 
 	if (g_Girls.GetStat(girl, STAT_MORALITY) <= -20 && g_Dice.percent(10))
@@ -495,7 +498,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 		else
 		{
 			ss << "Her talent at getting things down her throat meant she could pour the drink straight down. She won easily, earning quite a bit of gold.";
-			wages += 30;
+			tips += 30;
 		}
 	}
 
@@ -506,7 +509,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 			|| g_Girls.HasTrait(girl, "Titanic Tits") || g_Girls.HasTrait(girl, "Big Boobs")
 			|| g_Girls.HasTrait(girl, "Busty Boobs") || g_Girls.HasTrait(girl, "Giant Juggs"))
 		{
-			ss << "an excuse to stare at her ampale cleavage.";
+			ss << "an excuse to stare at her ample cleavage.";
 		}
 		else
 		{
@@ -517,6 +520,8 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 
 	if (wages < 0)
 		wages = 0;
+	if (tips < 0)
+		tips = 0;
 
 
 	//enjoyed the work or not
@@ -540,7 +545,9 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	roll_max /= 4;
 	wages += 10 + g_Dice%roll_max;
 	if (wages < 0) wages = 0;
+	if (tips < 0) tips = 0;
 	girl->m_Pay = wages;
+	girl->m_Tips = tips;
 
 
 	// Improve stats

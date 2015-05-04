@@ -59,7 +59,7 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, bool Da
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
 	int roll = g_Dice.d100();
-	int wages = 25, work = 0;
+	int wages = 25, tips = 0, work = 0;
 	int imagetype = IMGTYPE_ECCHI;
 
 	double jobperformance = JP_HallXXXEntertainer(girl, false);
@@ -183,7 +183,7 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, bool Da
 			}
 			else
 			{
-				ss << "From start to finish, every move " << girlName << " makes practically sweats sexuallity.\n";
+				ss << "From start to finish, every move " << girlName << " makes practically sweats sexuality.\n";
 			}
 		}
 		else if (roll <= 40)
@@ -430,10 +430,13 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, bool Da
 	}
 
 
+	//base tips, aprox 5-40% of base wages
+	tips += (((5 + jobperformance / 6) * wages) / 100);
+	
 	//try and add randomness here
 	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85 && g_Dice.percent(20))
 	{
-		ss << "Stunned by her beauty a customer left her a great tip.\n\n"; wages += 25;
+		ss << "Stunned by her beauty a customer left her a great tip.\n\n"; tips += 25;
 	}
 
 	if (g_Girls.HasTrait(girl, "Clumsy") && g_Dice.percent(15))
@@ -441,11 +444,11 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, bool Da
 		ss << "Her clumsy nature caused her to lose one of her \"toys\" up a hole. ";
 		if (g_Dice.percent(20) || g_Girls.HasTrait(girl, "Psychic") || g_Girls.HasTrait(girl, "Exhibitionist") || g_Girls.GetSkill(girl, SKILL_MEDICINE) > 25)
 		{
-			ss << "She put on a damn sexy show of getting it back out.\n"; wages += 10;
+			ss << "She put on a damn sexy show of getting it back out.\n"; tips += 10;
 		}
 		else
 		{
-			ss << "She panicked and ran off stage to go find a doctor.\n"; wages -= 15;
+			ss << "She panicked and ran off stage to go find a doctor.\n"; tips -= 15;
 		}
 	}
 
@@ -453,11 +456,11 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, bool Da
 	{
 		if (jobperformance < 125)
 		{
-			ss << "Her pessimism made her unadventurous. The customers were unimpressed and the tips were lower.\n"; wages -= 10;
+			ss << "Her pessimism made her unadventurous. The customers were unimpressed and the tips were lower.\n"; tips -= 10;
 		}
 		else
 		{
-			ss << girlName << " performed well despite her mood. The customers enjoy the darker, sultry nature of her sex shows.\n"; wages += 10;
+			ss << girlName << " performed well despite her mood. The customers enjoy the darker, sultry nature of her sex shows.\n"; tips += 10;
 		}
 	}
 
@@ -465,11 +468,11 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, bool Da
 	{
 		if (jobperformance < 125)
 		{
-			ss << girlName << " smiled far too much to look seductive.\n"; wages -= 10;
+			ss << girlName << " smiled far too much to look seductive.\n"; tips -= 10;
 		}
 		else
 		{
-			ss << girlName << " showed endless energy, agility and enthusiasm as she rucked around the stage.\n"; wages += 10; g_Girls.UpdateStat(girl, STAT_AGILITY, 1);
+			ss << girlName << " showed endless energy, agility and enthusiasm as she rucked around the stage.\n"; tips += 10; g_Girls.UpdateStat(girl, STAT_AGILITY, 1);
 		}
 	}
 
@@ -478,13 +481,13 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, bool Da
 		ss << girlName << " is able to clean herself like a cat. Customers are amazed as this pussy-cat ";
 		ss << "spreads her legs wide and licks her own cunt right there on stage.\n";
 		g_Girls.UpdateStat(girl, STAT_FAME, 2);
-		wages += 15;
+		tips += 15;
 	}
 
 	if (g_Girls.HasTrait(girl, "Masochist") && g_Dice.percent(10))
 	{
 		ss << girlName << " invites a few customers to punish her on stage. They happily agree to spank and whip her.\n";
-		wages += 15;
+		tips += 15;
 		g_Girls.UpdateStat(girl, STAT_HEALTH, -2);
 		g_Girls.UpdateSkill(girl, SKILL_BDSM, 1);
 	}
@@ -524,14 +527,14 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, bool Da
 										ss << "During her shift " << girlName << " couldn't resist the temptation of taking a load of hot, delicious cum in her mouth and began to suck her own cock. The customers enjoyed a lot such an unusual show.";
 										g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 1);
 										g_Girls.UpdateStat(girl, STAT_HAPPINESS, 1);
-										wages += 30;
+										tips += 30;
 								}
 								else
 								{
 										//default Cum Addict
 										ss << girlName << " won't miss a chance to taste some yummy cum. She came up on the stage with a goblet, cummed in it and then drank the content to entertain the customers.";
 										g_Girls.UpdateStat(girl, STAT_HAPPINESS, 1);
-										wages += 10;
+										tips += 10;
 								}
 								sCustomer cust;
 								GetMiscCustomer(brothel, cust);
@@ -550,13 +553,13 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, bool Da
 								{
 										ss << girlName << " was horny and decided to deliver a good show. She put her cock between her huge breasts and began to slowly massage it. The crowd went wild when she finally came on her massive tits.";
 										g_Girls.UpdateSkill(girl, SKILL_TITTYSEX, 1);
-										wages += 30;
+										tips += 30;
 								}
 								//cums over self
 								else if (g_Girls.GetStat(girl, STAT_DIGNITY) < -40 && g_Dice.percent(25))
 								{
 										ss << "The customers were really impressed when " << girlName << " finished her show by cumming all over herself";
-										wages += 10;
+										tips += 10;
 								}
 								//Regular futa masturbation
 								else
@@ -594,6 +597,7 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, bool Da
 
 
 	if (wages < 0) wages = 0;
+	if (tips < 0) tips = 0;
 
 	//enjoyed the work or not
 	if (roll <= 5)
@@ -619,6 +623,7 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, bool Da
 	// work out the pay between the house and the girl
 	wages += (g_Dice % ((int)(((g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA)) / 2)*0.5f))) + 10;
 	girl->m_Pay = wages;
+	girl->m_Tips = tips;
 
 
 	// Improve girl
