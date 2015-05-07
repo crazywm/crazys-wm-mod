@@ -8324,7 +8324,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 	{
 		// need to add more traits
 		if (HasTrait(girl, "Succubus"))		intro += 4;
-		if (customer->!m_IsWoman && HasTrait(girl, "Cum Addict")) intro += 4;
+		if (!customer->m_IsWoman && HasTrait(girl, "Cum Addict")) intro += 4;
 		if (customer->m_IsWoman && HasTrait(girl, "Lesbian"))	intro += 3;
 		if (HasTrait(girl, "Fast Orgasms"))	intro += 3;
 		if (HasTrait(girl, "Nymphomaniac"))	intro += 2;
@@ -8672,12 +8672,16 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		}
 		if (check < 20)
 		{
-			if (g_Dice.percent(40))	message += " awkwardly worked the customer's cock with her hand,";
-			{
-				if (HasTrait(girl, "Cum Addict")) message += " and licked up every last drop of cum when he finished.";
-				else /*              */	message += " and recoiled when he came.";
-			}
-			else /*              */	message += " clumsily pulled the customer's cock around with her hand until, in the end, he gave up and finished himself off.";
+			if (g_Dice.percent(40))	
+				{
+					/*						      */  message += " awkwardly worked the customer's cock with her hand,";
+					if (HasTrait(girl, "Cum Addict")) message += " and licked up every last drop of cum when he finished.";
+					else /*						  */  message += " and recoiled when he came.";
+				}
+			else 
+				{
+					/*						   	*/	 message += " clumsily pulled the customer's cock around with her hand until, in the end, he gave up and finished himself off.";
+				}
 		}
 		else if (check < 60) /*  */	message += " used her hand on the customer's cock.";
 		else if (check < 80)
@@ -8786,11 +8790,29 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			break;
 		}
 		message += girlName;
+		int choice = g_Dice.d100();
 
-		/* */if (check < 20)	message += " struggled to service everyone in the group that came to fuck her.";
-		else if (check < 40)	message += " managed to keep the group of customers fucking her satisfied.";
-		else if (check < 60)	message += " serviced all of the group of customers that fucked her.";
-		else if (check < 80)	message += " fucked and came many times with everyone in the group of customers.";
+		/* */if (check < 20)
+			{
+				if (choice < 30)		message += " was overwhelmed by the group surrounding her, barely able to react to what was done to her.";
+				else if (choice < 60)	message += " was being used by the group more so than her actively servicing them.";
+				else /*              */ message += " struggled to service everyone in the group that came to fuck her.";
+			}
+		else if (check < 40)
+			{
+				if (g_Dice.percent(40))	message += " barely was able to service everyone, but managed to entertain her customers nonetheless.";
+				else /*              */ message += " managed to keep the group of customers fucking her satisfied.";
+			}
+		else if (check < 60)	
+			{
+				if (g_Dice.percent(40))	message += " managed to surprise a few of her customers as she pleasured more of them at the same time than they had thought possible.";
+				else /*              */ message += " serviced all of the group of customers that fucked her.";
+			}
+		else if (check < 80)	
+			{
+				if (g_Dice.percent(40))	message += " was praised for her enthusiastic multitasking, which left everyone satisfied and a bit exhausted.";
+				else /*              */ message += " fucked and came many times with everyone in the group of customers.";
+			}
 		else /*                             */	message += GetRandomGroupString();
 	}break;
 
@@ -8803,11 +8825,33 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			//break;
 		}
 		message += girlName;
+		int choice = g_Dice.d100();
 
-		/* */if (check < 20)	message += " licked her female customer's cunt until she came. She didn't want any herself.";
-		else if (check < 40)	message += " was aroused as she made her female customer cum.";
-		else if (check < 60)	message += " fucked and was fucked by her female customer.";
-		else if (check < 80)	message += " and her female customer's cumming could be heard thoughout the building.";
+		/* */if (check < 20)	
+			{
+				if (choice < 30)		message += " mechanically worked the customers pussy, barely managing to satisfy her.";
+				else if (choice < 60)	message += " managed to make the female customer cum, but seemed distressed about where she was touched by a fellow woman.";
+				else /*              */ message += " licked her female customer's cunt until she came. She didn't want any herself.";
+			}
+		else if (check < 40)	
+			{
+				if (choice < 20)		message += " enjoyed herself a little bit as her hands and tongue made her customer cum.";
+				else if (choice < 40)	message += " didn't seem to mind her customers hands drifting over her body as she brought her to orgasm.";
+				else if (choice < 60)	message += " was a bit uncomfortable with herself being visibly aroused after servicing her customer.";
+				else /*              */ message += " was aroused as she made her female customer cum.";
+			}
+		else if (check < 60)	
+			{
+				if (choice < 30)		message += " and her customer both came as they rubbed their bodies against each other.";
+				//else if (choice < 60)	message += "Both of their faces had a satisfied look to them when " + girlName + " and her customer were done.";
+				else /*              */ message += " fucked and was fucked by her female customer.";
+			}
+		else if (check < 80)
+			{
+				if (choice < 30)		message += " seemingly had a blast with her customer as both their moans were quite audible.";
+				else if (choice < 60)	message += " managed to make her partner shriek loudly several times as she tickled multiple orgasms out of her customer.";
+				else /*              */ message += " and her female customer's cumming could be heard thoughout the building.";
+			}
 		else /*                             */	message += GetRandomLesString();
 	}break;
 

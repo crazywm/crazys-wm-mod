@@ -68,6 +68,7 @@ void cScreenMovieMaker::set_ids()
 	sceneslist_id =		get_id("ScenesList");
 	releasemovie_id =	get_id("ReleaseMovieButton");
 	girlimage_id =		get_id("GirlImage");
+	removescene_id =	get_id("RemoveScene");
 }
 
 void cScreenMovieMaker::init()

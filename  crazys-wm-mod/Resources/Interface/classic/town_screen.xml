@@ -45,6 +45,14 @@
 		FontSize= "16"
 	/>
 
+  <Image Name	= "GirlImage"
+    File		= "blank.png"
+    XPos		= "632"
+    YPos		= "8"
+    Width		= "160"
+    Height		= "218"
+	/>
+
   
   <Button	Name	= "SlaveMarket"
 		Image		= "SlaveMarket"

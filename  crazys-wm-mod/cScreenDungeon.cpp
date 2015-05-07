@@ -739,7 +739,11 @@ void cScreenDungeon::talk()
 
 void cScreenDungeon::update_image()
 {
-	if ((selected_girl) && !IsMultiSelected(girllist_id))
+	if((selection - dungeon->GetNumGirls()) >= 0) //Makes it so when on a customer it doesnt keep the last girls pic up
+	{
+		HideImage(girlimage_id, true);
+	}
+	else if ((selected_girl) && !IsMultiSelected(girllist_id))
 	{
 		bool Rand = true;
 		if (selected_girl->m_Tort)

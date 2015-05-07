@@ -388,21 +388,22 @@ void cScreenTown::do_walk()
 		g_MessageQue.AddToQue(walk_no_luck(), 1);
 		return;
 	}
-	/*if (girl) //Doesn't work like I want it to.. brings up selected girl not the girl your talking to FIXME zzzzz CRAZY want it to bring up an image of the girl your talking to when script runs
+
+	if (girl)
 	{
 		bool Rand = true;
 
-		SetImage(girlimage_id, g_Girls.GetImageSurface(selected_girl, IMGTYPE_PROFILE, Rand, ImageNum));
+		SetImage(girlimage_id, g_Girls.GetImageSurface(girl, IMGTYPE_PROFILE, Rand, ImageNum));
 
-		if(g_Girls.IsAnimatedSurface(selected_girl, IMGTYPE_PROFILE, ImageNum))
-			SetImage(girlimage_id, g_Girls.GetAnimatedSurface(selected_girl, IMGTYPE_PROFILE, ImageNum));
+		if(g_Girls.IsAnimatedSurface(girl, IMGTYPE_PROFILE, ImageNum))
+			SetImage(girlimage_id, g_Girls.GetAnimatedSurface(girl, IMGTYPE_PROFILE, ImageNum));
 
 		HideImage(girlimage_id, false); 
 	}
 	else
 	{		
 		HideImage(girlimage_id, true); 
-	}*/
+	}
 	// I'd like to move this to the handler script - once scripts are stable
 	string message = "You go out searching around town for any new girls. You notice a potential new girl and walk up to her.";
 	g_MessageQue.AddToQue(message, 2);

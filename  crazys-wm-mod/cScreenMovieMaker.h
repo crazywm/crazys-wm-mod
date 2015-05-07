@@ -38,6 +38,7 @@ private:
 	int sceneslist_id;		// Scenes listbox
 	int releasemovie_id;	// Release movie
 	int girlimage_id;		// Girl image
+	int removescene_id;		// removes selected scene
 
 	void set_ids();
 public:
