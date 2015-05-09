@@ -4938,6 +4938,44 @@ void cGirls::UseItems(sGirl* girl)
 			girl->m_Withdrawals = 0;
 		}
 	}
+	if (HasTrait(girl, "Smoker")) // `Gondra` added this since this seemed to be missing IMPORTANT: requires the item
+	{
+		int temp = HasItem(girl, "Small pack of Cigarettes");
+		if (temp == -1)	// withdrawals for a week
+		{
+			if (girl->m_Withdrawals >= 15)
+			{
+				RemoveTrait(girl, "Smoker", true);
+				AddTrait(girl, "Former Addict");
+				stringstream goodnews;
+				goodnews << "Good News, " << girl->m_Realname << " has overcome her addiction to Nicotine.";
+				girl->m_Events.AddMessage(goodnews.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
+			}
+			else
+			{
+				UpdateStat(girl, STAT_HAPPINESS, -10);
+				UpdateStat(girl, STAT_OBEDIENCE, -5);
+
+				// `Gondra` not sure if Nicotine withdrawal should harm her health, left it at (-2, -1, 0 or +1) like alcohol
+				UpdateStat(girl, STAT_HEALTH, g_Dice % 4 - 2);
+				// `Gondra` nicotine withdrawal includes as symptoms difficulty to concentrate and fatigue
+				UpdateStatTemp(girl, STAT_INTELLIGENCE, -2);
+				UpdateStat(girl, STAT_TIREDNESS, 5);
+				if (!withdraw)
+				{
+					girl->m_Withdrawals++;
+					withdraw = true;
+				}
+			}
+		}
+		else
+		{
+			UpdateStat(girl, STAT_HAPPINESS, 10);
+			UpdateStatTemp(girl, STAT_LIBIDO, 2);
+			g_InvManager.Equip(girl, temp, false);
+			girl->m_Withdrawals = 0;
+		}
+	}
 
 	// sell crapy items
 	for (int i = 0; i < girl->m_NumInventory; i++)	// use a food item if it is in stock, and remove any bad things if disobedient
