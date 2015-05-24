@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Starfire's Miniskirt"
+      Desc="The miniskirt worn by superheroine alien Starfire. (+20 Happy/Cmb/Cons/Str)"
+      Type="Dress"
+      Badness="0"
+      Special="None"
+      Cost="9500"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Skill" Name="Combat"                  Amount="20"    />
+   <Effect What="Stat"  Name="Strength"                Amount="20"    />
+   <Effect What="Stat"  Name="Constitution"            Amount="20"    />
+   <Effect What="Stat"  Name="Happiness"               Amount="20"    />
+</Item>
+</Items>

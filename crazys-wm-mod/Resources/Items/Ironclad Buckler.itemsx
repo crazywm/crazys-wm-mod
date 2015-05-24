@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="Ironclad Buckler" Desc="A rather small shield, but quite sturdy. (adds Tough)"
+	Type="Shield" Badness="15" Special="None" Cost="120" Rarity="Shop50" Infinite="false" GirlBuyChance="3" ItemWeight="0.0"
+	Craftable="Blacksmith" CraftLevel="1" CraftCraft="10" CraftStren="10" CraftMagic="0" CraftIntel="5" CraftPoint="30">
+        <Effect What="Trait" Name="Tough" Amount="1" />
+    </Item>
+    <Item Name="Ironclad Buckler" Desc="A rather small shield, but quite sturdy. (adds Tough)"
+	Type="Shield" Badness="15" Special="None" Cost="120" Rarity="Shop50" Infinite="false" GirlBuyChance="3" ItemWeight="0.0"
+	Craftable="Blacksmith" CraftLevel="1" CraftCraft="10" CraftStren="10" CraftMagic="0" CraftIntel="5" CraftPoint="30">
+        <Effect What="Trait" Name="Tough" Amount="1" />
+    </Item>
+</Items>

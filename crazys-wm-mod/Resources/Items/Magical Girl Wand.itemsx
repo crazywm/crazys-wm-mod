@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="Magical Girl Wand" Desc="Magical wand made of a strange material known as plastic topped with a pink heart. It can also deliver a good whack if needed. Not to be confused with the Magical Girl Staff. (+7 Mag, +2 Combat, +2 Conf, Cha and Happiness, -8 Fear, -5 Hate)" 
+	Type="Small Weapon" Badness="0" Special="None" Cost="300" Rarity="Shop05" Infinite="false" GirlBuyChance="0" ItemWeight="0.0" 
+	Craftable="MakeItem" CraftLevel="4" CraftCraft="30" CraftStren="5" CraftMagic="20" CraftIntel="30" CraftPoint="50">
+        <Effect What="Skill" Name="Magic" Amount="7" />
+        <Effect What="Skill" Name="Combat" Amount="2" />
+        <Effect What="Stat" Name="Charisma" Amount="2" />
+        <Effect What="Stat" Name="Confidence" Amount="2" />
+        <Effect What="Stat" Name="Happiness" Amount="2" />
+        <Effect What="Stat" Name="PCFear" Amount="-8" />
+        <Effect What="Stat" Name="PCHate" Amount="-5" />
+    </Item>
+</Items>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Philtre of Abortion. "
+      Desc="So-called &quot;abortion potions&quot; are not particularly difficult to obtain in the city, but the sources are rarely reputable and various unpleasant side-effects are common. Most formulas involve releasing a mild toxin in the mother's body, and are therefore at least a little risky. (random side-effect!)"
+      Type="Food"
+      Badness="40"
+      Special="None"
+      Cost="500"
+      Rarity="Shop05"
+      Infinite="false"
+      GirlBuyChance="0">
+   <Effect What="GirlStatus" Name="Pregnant By Player" Amount="0"    />
+   <Effect What="GirlStatus" Name="Pregnant"           Amount="0"    />
+   <Effect What="GirlStatus" Name="Inseminated"        Amount="0"    />
+   <Effect What="Stat"  Name="Constitution"            Amount="-2"    />
+   <Effect What="Trait" Name="Fragile"                 Amount="1"    />
+</Item>
+<Item Name="Philtre of Abortion, "
+      Desc="So-called &quot;abortion potions&quot; are not particularly difficult to obtain in the city, but the sources are rarely reputable and various unpleasant side-effects are common. Most formulas involve releasing a mild toxin in the mother's body, and are therefore at least a little risky. (random side-effect!)"
+      Type="Food"
+      Badness="40"
+      Special="None"
+      Cost="500"
+      Rarity="Shop05"
+      Infinite="false"
+      GirlBuyChance="0">
+   <Effect What="GirlStatus" Name="Pregnant By Player" Amount="0"    />
+   <Effect What="GirlStatus" Name="Pregnant"           Amount="0"    />
+   <Effect What="GirlStatus" Name="Inseminated"        Amount="0"    />
+   <Effect What="Stat"  Name="Health"                  Amount="-10"    />
+</Item>
+<Item Name="Philtre of Abortion ,"
+      Desc="So-called &quot;abortion potions&quot; are not particularly difficult to obtain in the city, but the sources are rarely reputable and various unpleasant side-effects are common. Most formulas involve releasing a mild toxin in the mother's body, and are therefore at least a little risky. (random side-effect!)"
+      Type="Food"
+      Badness="40"
+      Special="None"
+      Cost="500"
+      Rarity="Shop05"
+      Infinite="false"
+      GirlBuyChance="0">
+   <Effect What="GirlStatus" Name="Pregnant By Player" Amount="0"    />
+   <Effect What="GirlStatus" Name="Pregnant"           Amount="0"    />
+   <Effect What="GirlStatus" Name="Inseminated"        Amount="0"    />
+   <Effect What="Stat"  Name="Tiredness"               Amount="20"    />
+</Item>
+<Item Name="Philtre of Abortion,,"
+      Desc="So-called &quot;abortion potions&quot; are not particularly difficult to obtain in the city, but the sources are rarely reputable and various unpleasant side-effects are common. Most formulas involve releasing a mild toxin in the mother's body, and are therefore at least a little risky. (random side-effect!)"
+      Type="Food"
+      Badness="40"
+      Special="None"
+      Cost="500"
+      Rarity="Shop05"
+      Infinite="false"
+      GirlBuyChance="0">
+   <Effect What="GirlStatus" Name="Pregnant By Player" Amount="0"    />
+   <Effect What="GirlStatus" Name="Pregnant"           Amount="0"    />
+   <Effect What="GirlStatus" Name="Inseminated"        Amount="0"    />
+   <Effect What="Trait" Name="Sterile"                 Amount="1"    />
+</Item>
+<Item Name="Philtre of Abortion.."
+      Desc="So-called &quot;abortion potions&quot; are not particularly difficult to obtain in the city, but the sources are rarely reputable and various unpleasant side-effects are common. Most formulas involve releasing a mild toxin in the mother's body, and are therefore at least a little risky. (random side-effect!)"
+      Type="Food"
+      Badness="40"
+      Special="None"
+      Cost="500"
+      Rarity="Shop05"
+      Infinite="false"
+      GirlBuyChance="0">
+   <Effect What="GirlStatus" Name="Pregnant By Player" Amount="0"    />
+   <Effect What="GirlStatus" Name="Pregnant"           Amount="0"    />
+   <Effect What="GirlStatus" Name="Inseminated"        Amount="0"    />
+   <Effect What="Trait" Name="Viras Blood Addict"      Amount="1"    />
+</Item>
+<Item Name="Philtre of Abortion  "
+      Desc="So-called &quot;abortion potions&quot; are not particularly difficult to obtain in the city, but the sources are rarely reputable and various unpleasant side-effects are common. Most formulas involve releasing a mild toxin in the mother's body, and are therefore at least a little risky. (random side-effect!)"
+      Type="Food"
+      Badness="40"
+      Special="None"
+      Cost="500"
+      Rarity="Shop05"
+      Infinite="false"
+      GirlBuyChance="0">
+   <Effect What="GirlStatus" Name="Pregnant By Player" Amount="0"    />
+   <Effect What="GirlStatus" Name="Pregnant"           Amount="0"    />
+   <Effect What="GirlStatus" Name="Inseminated"        Amount="0"    />
+</Item>
+<Item Name="Philtre of Abortion  "
+      Desc="So-called &quot;abortion potions&quot; are not particularly difficult to obtain in the city, but the sources are rarely reputable and various unpleasant side-effects are common. Most formulas involve releasing a mild toxin in the mother's body, and are therefore at least a little risky. (random side-effect!)"
+      Type="Food"
+      Badness="40"
+      Special="None"
+      Cost="500"
+      Rarity="Shop05"
+      Infinite="false"
+      GirlBuyChance="0">
+   <Effect What="GirlStatus" Name="Pregnant By Player" Amount="0"    />
+   <Effect What="GirlStatus" Name="Pregnant"           Amount="0"    />
+   <Effect What="GirlStatus" Name="Inseminated"        Amount="0"    />
+</Item>
+<Item Name="Philtre of Abortion ."
+      Desc="So-called &quot;abortion potions&quot; are not particularly difficult to obtain in the city, but the sources are rarely reputable and various unpleasant side-effects are common. Most formulas involve releasing a mild toxin in the mother's body, and are therefore at least a little risky. (random-side effect!)"
+      Type="Food"
+      Badness="40"
+      Special="None"
+      Cost="500"
+      Rarity="Shop05"
+      Infinite="false"
+      GirlBuyChance="0">
+   <Effect What="GirlStatus" Name="Pregnant By Player" Amount="0"    />
+   <Effect What="GirlStatus" Name="Pregnant"           Amount="0"    />
+   <Effect What="GirlStatus" Name="Inseminated"        Amount="0"    />
+   <Effect What="Stat"  Name="Constitution"            Amount="-2"    />
+</Item>
+<Item Name="Philtre of Abortion ."
+      Desc="So-called &quot;abortion potions&quot; are not particularly difficult to obtain in the city, but the sources are rarely reputable and various unpleasant side-effects are common. Most formulas involve releasing a mild toxin in the mother's body, and are therefore at least a little risky. (random-side effect!)"
+      Type="Food"
+      Badness="40"
+      Special="None"
+      Cost="500"
+      Rarity="Shop05"
+      Infinite="false"
+      GirlBuyChance="0">
+   <Effect What="GirlStatus" Name="Pregnant By Player" Amount="0"    />
+   <Effect What="GirlStatus" Name="Pregnant"           Amount="0"    />
+   <Effect What="GirlStatus" Name="Inseminated"        Amount="0"    />
+   <Effect What="Stat"  Name="Constitution"            Amount="-2"    />
+</Item>
+</Items>

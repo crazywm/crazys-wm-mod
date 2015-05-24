@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Kung Fu Shoes"
+      Desc="These slim, lightweight cloth shoes are ideal for practicing martial arts, and are pretty dang comfortable everyday wear too! (B) (+5 Cha, +5 Spi, +15 Agi, +4 Comb)"
+      Type="Shoes"
+      Badness="0"
+      Special="None"
+      Cost="400"
+      Rarity="Shop25"
+      Infinite="true">
+   <Effect What="Stat"  Name="Charisma"                Amount="5"    />
+   <Effect What="Stat"  Name="Spirit"                  Amount="5"    />
+   <Effect What="Stat"  Name="Agility"                 Amount="15"    />
+   <Effect What="Skill" Name="Combat"                  Amount="4"    />
+</Item>
+</Items>

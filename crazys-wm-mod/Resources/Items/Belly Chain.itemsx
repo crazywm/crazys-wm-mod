@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item
+        Name="Belly Chain"
+        Desc="Metallic chain usually worn by exotic dancers around their waist. (+5 Strip, +3 Performance, +3 Charisma, +1 Beauty)"
+        Type="Misc"
+        Badness="5"
+        Special="None"
+        Cost="400"
+        Rarity="Shop25"
+        Infinite="false"
+        GirlBuyChance="3"
+        ItemWeight="0.0">
+        <Effect
+            What="Skill"
+            Name="Strip"
+            Amount="5" />
+        <Effect
+            What="Skill"
+            Name="Performance"
+            Amount="3" />
+        <Effect
+            What="Stat"
+            Name="Charisma"
+            Amount="3" />
+        <Effect
+            What="Stat"
+            Name="Beauty"
+            Amount="1" />
+    </Item>
+</Items>

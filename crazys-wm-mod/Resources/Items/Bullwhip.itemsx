@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="Bullwhip" Desc="This tough leather whip, originally used on oxen, is more than capable of causing severely painful wounds on humans, though it is awkward and difficult to use in actual combat. Some find it of more practical use in the bedroom... (C) (+5 Comb, +10 BDSM, +3 AnimalH, +2 Farm, +5 Conf, -5 Fear)" 
+	Type="Small Weapon" Badness="0" Special="None" Cost="350" Rarity="Shop25" Infinite="false" GirlBuyChance="0" ItemWeight="0.0" 
+	Craftable="MakeItem" CraftLevel="3" CraftCraft="40" CraftStren="10" CraftMagic="0" CraftIntel="25" CraftPoint="50">
+        <Effect What="Skill" Name="Combat" Amount="5" />
+        <Effect What="Skill" Name="BDSM" Amount="10" />
+        <Effect What="Skill" Name="AnimalHandling" Amount="3" />
+        <Effect What="Skill" Name="Farming" Amount="2" />
+        <Effect What="Stat" Name="Confidence" Amount="5" />
+        <Effect What="Stat" Name="PCFear" Amount="-5" />
+    </Item>
+    <Item Name="Bullwhip" Desc="This tough leather whip, originally used on oxen, is more than capable of causing severely painful wounds on humans, though it is awkward and difficult to use in actual combat. Some find it of more practical use in the bedroom... (C) (+5 Comb, +10 BDSM, +3 AnimalH, +2 Farm, +5 Conf, -5 Fear)" 
+	Type="Small Weapon" Badness="0" Special="None" Cost="350" Rarity="Shop25" Infinite="false" GirlBuyChance="0" ItemWeight="0.0" 
+	Craftable="MakeItem" CraftLevel="3" CraftCraft="40" CraftStren="10" CraftMagic="0" CraftIntel="25" CraftPoint="50">
+        <Effect What="Skill" Name="Combat" Amount="5" />
+        <Effect What="Skill" Name="BDSM" Amount="10" />
+        <Effect What="Skill" Name="AnimalHandling" Amount="3" />
+        <Effect What="Skill" Name="Farming" Amount="2" />
+        <Effect What="Stat" Name="Confidence" Amount="5" />
+        <Effect What="Stat" Name="PCFear" Amount="-5" />
+    </Item>
+</Items>

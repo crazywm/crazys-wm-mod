@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Lumps of Coal"
+      Desc="These strange pieces of coal come from Mareth and when inhaled, brings people to heat or rut depending on their gender. Futanaris beware! (Max Lib, +Nymphomaniac/Aggressive)"
+      Type="Food"
+      Badness="19"
+      Special="Temporary"
+      Cost="350"
+      Rarity="Common"
+      Infinite="false">
+   <Effect What="Stat"  Name="Libido"                  Amount="100"    />
+   <Effect What="Trait" Name="Nymphomaniac"            Amount="1"    />
+   <Effect What="Trait" Name="Aggressive"              Amount="1"    />
+</Item>
+</Items>

@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item
+        Name="Cowgirl Boots"
+        Desc="Knee-high cowgirl boots. (+3 Charisma, +8 Spirit, +2 Con, +10 Farming, +7 AnimalHandling)"
+        Type="Shoes"
+        Badness="0"
+        Special="None"
+        Cost="400"
+        Rarity="Shop25"
+        Infinite="false"
+        GirlBuyChance="0"
+        ItemWeight="0.0">
+        <Effect
+            What="Stat"
+            Name="Charisma"
+            Amount="3" />
+        <Effect
+            What="Stat"
+            Name="Constitution"
+            Amount="2" />
+        <Effect
+            What="Stat"
+            Name="Spirit"
+            Amount="8" />
+        <Effect
+            What="Skill"
+            Name="Farming"
+            Amount="10" />
+        <Effect
+            What="Skill"
+            Name="AnimalHandling"
+            Amount="7" />
+    </Item>
+</Items>

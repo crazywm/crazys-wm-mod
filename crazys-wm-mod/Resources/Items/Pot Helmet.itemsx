@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="Pot Helmet" Desc="There's some of last night's stew left inside. (Cha -10, Cons +10, adds Brawler.)"
+	Type="Helmet" Badness="15" Special="None" Cost="60" Rarity="Shop50" Infinite="false" GirlBuyChance="3" ItemWeight="0.0"
+	Craftable="Blacksmith" CraftLevel="0" CraftCraft="5" CraftStren="10" CraftMagic="0" CraftIntel="5" CraftPoint="20">
+        <Effect What="Stat" Name="Charisma" Amount="-10" />
+        <Effect What="Stat" Name="Constitution" Amount="10" />
+        <Effect What="Trait" Name="Brawler" Amount="1" />
+    </Item>
+    <Item Name="Pot Helmet" Desc="There's some of last night's stew left inside. (Cha -10, Cons +10, adds Brawler.)"
+	Type="Helmet" Badness="15" Special="None" Cost="60" Rarity="Shop50" Infinite="false" GirlBuyChance="3" ItemWeight="0.0"
+	Craftable="Blacksmith" CraftLevel="0" CraftCraft="5" CraftStren="10" CraftMagic="0" CraftIntel="5" CraftPoint="20">
+        <Effect What="Stat" Name="Charisma" Amount="-10" />
+        <Effect What="Stat" Name="Constitution" Amount="10" />
+        <Effect What="Trait" Name="Brawler" Amount="1" />
+    </Item>
+</Items>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Digistruct Module MK II"
+      Desc="A small digistruct module able to make something from nothing. This one can make weapons from nothing. (Combat +20)"
+      Type="Misc"
+      Badness="0"
+      Special="None"
+      Cost="2200"
+      Rarity="Shop25"
+      Infinite="false">
+   <Effect What="Skill" Name="Combat"                  Amount="20"    />
+</Item>
+</Items>

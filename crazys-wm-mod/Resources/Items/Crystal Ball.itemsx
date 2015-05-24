@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item
+        Name="Crystal Ball"
+        Desc="Magical item commonly used used by fortune tellers. (+7 Mag, +2 Int, +3 Mana)"
+        Type="Misc"
+        Badness="0"
+        Special="None"
+        Cost="650"
+        Rarity="Shop50"
+        Infinite="false"
+        GirlBuyChance="0"
+        ItemWeight="0.0">
+        <Effect
+            What="Skill"
+            Name="Magic"
+            Amount="7" />
+        <Effect
+            What="Stat"
+            Name="Intelligence"
+            Amount="2" />
+        <Effect
+            What="Stat"
+            Name="Mana"
+            Amount="3" />
+    </Item>
+</Items>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Fancy Glasses"
+      Desc="A fancy pair of glasses. (+10 Charisma. Adds Nerd, removes Bad Eyesight)"
+      Type="Glasses"
+      Badness="0"
+      Special="None"
+      Cost="140"
+      Rarity="Common"
+      Infinite="false"
+      GirlBuyChance="40">
+   <Effect What="Stat"  Name="Charisma"                Amount="10"    />
+   <Effect What="Trait" Name="Nerd"                    Amount="1"    />
+   <Effect What="Trait" Name="Bad Eyesight"            Amount="0"    />
+</Item>
+</Items>

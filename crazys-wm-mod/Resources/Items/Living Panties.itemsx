@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+	<Item
+		Name="Living Panties"
+		Desc="From the makers of Magic Seed Fertilizer is the next best thing: Living Panties! For those naughty ladies in your life. These from time to time, will shake up and wake up the vagina ( or both if they're herm) and can train the body to magically orgasm! Get a pack today while supplies last! (Warning: these panties might make the user very moist and affect the mind as well....) (+5 NSex/Perf, +20 Lib, +10 Conf, -20 Tired, Adds 1 Orgasm trait, may add Mind Fucked)"
+		Type="Underwear"		Badness="0"		Special="None"		Cost="1200"		Rarity="Shop25"		Infinite="false"		GirlBuyChance="0">
+		<Effect			What="Skill"	Name="NormalSex"			Amount="5" />
+		<Effect			What="Skill"	Name="Performance"		Amount="5" />
+		<Effect			What="Stat"		Name="Libido"			Amount="20" />
+		<Effect			What="Stat"		Name="Tiredness"			Amount="-20" />
+		<Effect			What="Stat"		Name="Confidence"			Amount="10" />
+		<Effect			What="Trait"	Name="Fast Orgasms"		Amount="1" />
+	</Item>
+	<Item
+		Name="Living Panties "
+		Desc="From the makers of Magic Seed Fertilizer is the next best thing: Living Panties! For those naughty ladies in your life. These from time to time, will shake up and wake up the vagina ( or both if they're herm) and can train the body to magically orgasm! Get a pack today while supplies last! (Warning: these panties might make the user very moist and affect the mind as well....) (+5 NSex/Perf, +20 Lib, +10 Conf, -20 Tired, Adds 1 Orgasm trait, may add Mind Fucked)"
+		Type="Underwear"		Badness="0"		Special="None"		Cost="1200"		Rarity="Shop05"		Infinite="false"		GirlBuyChance="0">
+		<Effect			What="Skill"	Name="NormalSex"			Amount="5" />
+		<Effect			What="Skill"	Name="Performance"		Amount="5" />
+		<Effect			What="Stat"		Name="Libido"			Amount="20" />
+		<Effect			What="Stat"		Name="Tiredness"			Amount="-20" />
+		<Effect			What="Stat"		Name="Confidence"			Amount="10" />
+		<Effect			What="Trait"	Name="Fake Orgasm Expert"	Amount="1" />
+	</Item>
+	<Item
+		Name="Living  Panties"
+		Desc="From the makers of Magic Seed Fertilizer is the next best thing: Living Panties! For those naughty ladies in your life. These from time to time, will shake up and wake up the vagina ( or both if they're herm) and can train the body to magically orgasm! Get a pack today while supplies last! (Warning: these panties might make the user very moist and affect the mind as well....) (+5 NSex/Perf, +20 Lib, +10 Conf, -20 Tired, Adds 1 Orgasm trait, may add Mind Fucked)"
+		Type="Underwear"		Badness="0"		Special="None"		Cost="1200"		Rarity="Shop05"		Infinite="false"		GirlBuyChance="0">
+		<Effect			What="Skill"	Name="NormalSex"			Amount="5" />
+		<Effect			What="Skill"	Name="Performance"		Amount="5" />
+		<Effect			What="Stat"		Name="Tiredness"			Amount="-20" />
+		<Effect			What="Stat"		Name="Confidence"			Amount="10" />
+		<Effect			What="Stat"		Name="Libido"			Amount="40" />
+		<Effect			What="Trait"	Name="Slow Orgasms"		Amount="1" />
+		<Effect			What="Trait"	Name="Mind Fucked"		Amount="1" />
+	</Item>
+</Items>

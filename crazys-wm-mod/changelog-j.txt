@@ -1,0 +1,2093 @@
+### Planned/Reccomended changes:
+Add right click menus
+Transfer screen - Add Health, Happy, Tired and Rebel columns
+Transfer screen - Add Girl count above columns and/or on location lists
+Make the game create the "Saves" folder if it does not exist
+Either combine "Resources/Buttons" into "Resources/Images" or combine both into "Resources/Interface/(individiual interface folder)/Images"
+Allow for subfolders in "Resources" folders. Would allow:
+   Girls folders to contain the "girlsx" files
+   Subfolders for each image type to cleanup massive image count girls
+Items page - Add location filter
+? Items page - Add (does the girl have this item?) filter - if an item is selected, (who has one of these)'s line changes color?
+Brothel page - Add "Manage Inventory" button
+
+
+
+
+
+
+
+
+### Changes April 2014:
+Items - Cleaned and reorganized files.
+Items - Moved "Gantz Suit" and "Succubus' Wardress" from armor to clothes to allow brothel workers not to unequip them loosing their bonuses.
+Items - Renamed same-named items to allow the game to save the exact variation of the item with minimal visiual effect in the game.
+Items - Added alternate "sellers" some of items - allowing items to be more common but at higher prices. - Items keep the same name so they merge with the original item when the game is reloaded.
+Items - Added "Healing Salve (T)" and "Incense of Serenity (T)"
+# Interface - J_1024x768
+ - Moved "Next Week" buttons to top right
+ - Moved most "Back" buttons to bottom right
+ - Rearranged and resized Dungeon buttons
+ - Brothel page - Enlarged "Girls" box to 25
+ - Brothel page - added "Slave" and "Rebel" columns
+ - Girl detail - Reduced size of "Take Gold" and "Send to Dungeon" buttons
+ - Girl detail - Rearranged some buttons
+ - Girl detail - Aligned "Manage Inventory" and Inventory's "Back" button for faster use.
+ - Girl detail - Resized "Job Type" box to remove scrolling
+ - Girl detail - Enlarged "Traits" box to 6
+ - Inventory page - Enlarged "Item Group" list to remove scrolling. Moved left/right buttons to fit.
+ - Repaired Bank screen adding missing "withdraw all" button.
+# Source code:
+WorkPersonalBedWarmer.cpp
+ - Corrected brackets, wages, rolls
+ - Condensed if(HateLove) group
+WorkPersonalTraining.cpp
+ - Corrected rolls
+main.cpp
+ - Corrected background image stretching to not maintain ratio
+cButton.cpp
+ - Corrected button image stretching to not maintain ratio
+
+Crazy fixed saving of restrictions for all buildings.
+
+###### I have not been too good about keeping up with the changelog
+### Changes May 2014:
+Moved all the ".itemsx" files from ".\Resources\Data" to ".\Resources\Items"
+Changed the damage/healing of constructs to be 10% instead of a max of +/-4
+Complete rebuild of WorkPersonalTraining
+Added WorkMechanic and rearranged some jobs
+Changed spelling of "Incorporial" to "Incorporeal" 
+Updated the readme.html
+
+###  Changes 5/10/2014
+!!!!!!!!!!!!!!!!!!!! pushed version .05i    - bad
+!!!!!!!!!!!!!!!!!!!! pushed version .05i.1  - bad
+added msvcp120d.dll and related files (all are 32bit versions)
+!!!!!!!!!!!!!!!!!!!! pushed version .05i.2  - good
+
+
+###  Changes 5/11/2014
+Replaced all references to "pinkpetal.co.cc" with "pinkpetal.org" since the old site no longer works.
+Sidestep fix for the "Send to dungeon" bug
+ - All buildings now set where the girl is when loading so the "Send to dungeon" button does not show in girl details unless she is in a main brothel
+ - - (for a proper fix that allows sending girls to the dungeon from any building, much more coding will be required)
+Fixed movies to store their own runweeks - this fixes the 35 week crash bug
+Added more movie storage options:
+	<Movies>
+		<Movie Init_Qual="940" Qual="799" Promo_Qual="1412" Money_Made="1412" RunWeeks="1" />
+		<Movie Init_Qual="839" Qual="839" Promo_Qual="0" Money_Made="0" RunWeeks="0" />
+	</Movies>
+!!!!!!!!!!!!!!!!!!!! pushed version .05i.3
+(20minutes after I pushed version .05i.3 Crazy sent a bug fix to the SVN)
+The girl deatils screens now show the correct buildings jobs.
+!!!!!!!!!!!!!!!!!!!! pushed version .05j
+
+
+###  Changes 5/12/2014
+Changed compiler settings so it would compile to work on windows xp
+!!!!!!!!!!!!!!!!!!!! pushed version .05j.1
+Fixed InterfaceProcesses.cpp crash - pTmpGirl = g_Studios.GetGirl(0, i); // `J` changed g_CurrBrothel to 0
+!!!!!!!!!!!!!!!!!!!! pushed version .05j.2
+###  Changes 5/13/2014
+Fixed cScreenBuildingSetup.cpp - loading/saving of non-brothel building settings
+!!!!!!!!!!!!!!!!!!!! pushed version .05j.3
+###  Changes 5/14/2014
+Crazy - Added two more surgery jobs.
+Crazy - Fixed it so combat training tells u how much skill u gained.
+Crazy - Fixed a few spelling errors
+
+###  Changes 5/16/2014
+Crazy - Added a skill check for combat training so it would skip things that are at 100.
+Crazy - Added a half ass fix for surgery jobs so they wouldn't keep repeating once they gave the trait or whatever they give
+
+###  Changes 5/18/2014
+Addicts now steal if they have less than 50gold instead of if they have none.
+Cleaned and/or rearranged several areas of code.
+Changed some hotkeys:
+ - 0 is global hotkeys
+ - 9 is screen hotkeys
+ - F12 is House
+ - F7 corrected centre
+All buildings need to be purchased now
+ - Centre requires  5000 gold and  5 territories
+ - Clinic requires 10000 gold and 10 territories
+ - Arena  requires 15000 gold and 15 territories
+ - Studio requires 20000 gold and 20 territories
+Crazy - Fixed some bugs with the rest jobs in other buildings.
+!!!!!!!!!!!!!!!!!!!! pushed version .05k
+
+###  Changes 5/19/2014
+started rebuilding girl_fights_girl - corrections only so far
+fixed .05k crashing on next day - forgot to add "check if building is owned" to next day 
+!!!!!!!!!!!!!!!!!!!! pushed version .05k.01
+Fixed .05k crashing on house building setup - ad budget looking for centre instead of house
+!!!!!!!!!!!!!!!!!!!! pushed version .05k.02
+
+
+###  Changes 5/21/2014
+Cleaned up whitespace and rearranged some code in cGirls.cpp
+WorkRehab.cpp
+ - stop girl death if Counselor is on duty
+ - girls go to free time if they have no more addictions after they finish rehab
+WorkRecruiter.cpp - modified trait performance and skill/stat gains
+WorkComunityService.cpp and WorkFeedPoor.cpp
+ - performance now = int/2 + cha/2 + service
+ - merged slave/free messages and moved actual dispo change to after
+ - reduced xp gain from 15 to 10 and reduced dispo gain to 2-14 (times 1.5 for free girls)
+Magic Nipple Piercings.itemsx, Magic Tongue Piercing.itemsx, Magic Clit Piercing.itemsx have corresponding "Pierced..." traits added
+!!!!!!!!!!!!!!!!!!!! pushed version .05l
+
+###  Changes 5/23/2014
+Renamed JOB_REPAIRSHOP to JOB_GETREPAIRS and JOB_HEALING to JOB_GETHEALING
+Fixed JOBFILTER_CLINIC not including JOB_HEALING in Clinic
+Rearranged and repaired cJobManager::HandleSpecialJobs
+Fixed film jobs now require one of each of Camera Mage and Crystal Purifier before being assigned instead of just one of either.
+Film jobs now set day job as "Free Time" when setting night job.
+
+###  Changes 5/24/2014
+Changed "Fake Orgasm Expert", "Slow Orgasms" and "Fast Orgasms" to Title Case keeping legacy spelling.
+Added actress and director to scenes - needs more work to make these usable.
+Added file "!0 Itemsx-contents.txt" to explain and assist creating new itemsx files.
+Cleaned and added new items.
+Fixed accommodation buttons in girl details screen to turn on/off when min/max is reached.
+Fixed job selection in girl details screen.
+!!!!!!!!!!!!!!!!!!!! pushed version .05m
+
+###  Changes 5/27/2014
+Corrected creation of random girls not passing traits through translation check. All "GetTrait"s now go through translation.
+Matron checks now check for equivalent in each building.
+Rewrote Pessimist suicide chance to allow Matron (or equivalents), Drug Counselors or You to try to stop it.
+Major rewrite of anti-pregnancy potions - Each building now stores their own potions.
+Moved Clinic Staff list above Clinic surgery list.
+Crazy added Clinic job - GetAssJob
+Crazy adjusted traits and stats for several jobs
+Added files "!0 girlsx-contents.txt" and "!0 rgirlsx-contents.txt" to explain and assist creating new girl files.
+!!!!!!!!!!!!!!!!!!!! pushed version .05n
+Corrected a bug by making the game set where the girl is before processing the next week
+!!!!!!!!!!!!!!!!!!!! pushed version .05n.01
+
+###  Changes 5/27/2014
+Partial correction of bug if girl is assigned a job outside of the building she is in
+ - Corrected for Arena, Clinic, Centre and House
+ - Still need to correct Studio and Brothel but these are lesser chance of having the bug
+Corrected antipreg check for dungeon girls
+Modified WorkGetAssJob.cpp
+!!!!!!!!!!!!!!!!!!!! pushed version .05n.02
+
+###  Changes 5/29/2014
+Increased max number of rooms from 250 to 32k
+Changed some debug strings for dungeon.
+Added a fix "dungeon screen to brothel screen crash" - needs more testing to be sure it works correctly
+Finished correction of bug "if girl is assigned a job outside of the building she is in"
+
+###  Changes 5/30-31/2014
+Clinic Nurse and Mechanic jobs are now full time jobs.
+Resting jobs get set to correct building rest jobs when changing from full time to part time jobs.
+Half-Constructs can get healed in the clinic by using either GetHealing (60), GetRepairs (60) or both (80) if a Doctor and a Mechanic are on duty.
+Reworked all Clinic surgery jobs. 
+Nurses now play more of a role in helping girls recover from surgery and healing.
+Rewrote GetAbortion from Clinic - probably made it too complicated, but it works. Takes 1 day with doctor and nurse or 2 days with just doctor.
+Tweaked numbers in WorkRecruiter.cpp and WorkPersonalTraining.cpp to be a little more useful.
+!!!!!!!!!!!!!!!!!!!! pushed version .05o
+
+###  Changes 6/1/2014
+corrected bug in tiredness for clinic
+Modified the way "Virgin" is loaded from .girlsx files, specifically yes (1) or no (0)
+ - if Virgin="0" or Virgin="1" is added inside the <girl ... > section.
+ - if <Trait Name="Virgin" /> is in the traits list then yes.
+ - if neither is specified, the game randomly sets virgin status based on age and sex stats.
+ - .rgirls still use the <Trait Name="Virgin" Percent="#" />
+Reworked WorkCombatTraining a little
+!!!!!!!!!!!!!!!!!!!! pushed version .05o.01
+Fixed bug with Brothel Stables jobs not working
+!!!!!!!!!!!!!!!!!!!! pushed version .05o.02
+Corrected some spelling errors
+Rewrote Clinic surgery working days section
+Girls will no longer runaway from rehab if a counselor is on duty
+Reworked Arena Combat Training
+You can no longer send girls with max combat, magic, agility and constitution to train in the arena.
+!!!!!!!!!!!!!!!!!!!! pushed version .05o.03
+
+###  Changes 6/2/2014
+Increased item counts
+ - 3000 item slots for you (increased from 300)
+ - still only 40 item slots for girls
+ - 999 of each item per slot (increased from 254)
+!!!!!!!!!!!!!!!!!!!! pushed version .05o.04
+Corrected buying buildings from the town screen (Hopefully for good)
+Fixed children ageing if <Pregnancy ... WeeksTillGrown = "#" ... > in the config.xml file is set above 255
+ - Now it can be up to 32k.
+Added hotkeys to the inventory screen (press 9 in game to see what the hotkeys for that screen are.)
+!!!!!!!!!!!!!!!!!!!! pushed version .05o.05
+
+###  Changes 6/3/2014
+Fixed arena combat training precheck
+!!!!!!!!!!!!!!!!!!!! pushed version .05o.06
+Made several changes to how some jobs work, the pay for them and the xp/skill/stat gains
+ - Brothel: Explore Catacombs, Beast Capture
+ - Arena: Fight Girls, Fight Beasts, Combat Training
+ - Clinic: Nurse, Mechanic
+ - Centre: Drug Counselor
+ - Beast jobs now randomly increase or decrease the number of beasts by -2 to +5 
+ - Combat jobs now give random increase to all 4 combat skill/stats (com,mag,agi,con)
+ - Nurse, Mechanic and Drug Counselor now pay the girl an additional amount for each of your girls they take care of
+Added WORKNURSE, WORKMECHANIC and WORKCOUNSELOR to job enjoyment
+
+###  Changes 6/4/2014
+Changed how whores use magic to charm their customers happier
+Updated cGirlTorture::IsGirlInjured to include possibility of loosing "Tough" trait at 1% and Insemination pregnancy
+
+###  Changes 6/5/2014
+I am making it so that if TortureTraitWeekMod is set to -1 in the config.xml it makes torture harsher.
+ - This will make "Broken Will", "Masochist" and "Mind Fucked" permanent.
+ - It will double the chance of greatly injuring girls when torturing them and damage is increased by half (7-21 instead of 5-14).
+ - Also doubles any evil gained.
+
+###  Changes 6/6/2014
+I changed it so the the security level goes down by 1 per attacker before checking if they get though.
+ - Then, if any attackers survive, the security level goes down by 5 per attacker who survived.
+
+Added do_daily_items code
+Some items have variations that have spaces, commas and/or periods to differentiate them so I added functions to assist in comparing strings 
+ - "stringtolower(string name)" to allow easier string conversion to all lower case
+ - "stringtolowerj(string name)" to allow easier string conversion to all lower case while removing spaces, commas and periods
+ - "HasItemJ(sGirl* girl, string name)" to check if a girl has an item by comparing them with "stringtolowerj"
+Some items are hard coded into do_daily_items
+Started making xml loading for do_daily_items tests, nothing in it yet.
+
+###  Changes 6/7/2014
+Corrected a few typos
+I have made some changes to the torture code in order to make the images displayed for torture be from an image list specifically for torture.
+ - If you name some images with the prefix "torture #.*g" they will show up when you or one of your girls tortures a girl in the dungeon.
+ - If you have no "torture #.*g", it defaults to "bdsm #.*g" then to "profile #.*g".
+While I was adding that, I went ahead and added pregnancy pictures for all image types that didn't already have them.
+I also fixed a bug where "preg #.*g" would only work with numbers 1-9, not with spaces or ().
+
+###  Changes 6/8/2014
+Changed m_DayJob and m_NightJob to unsigned int instead of unsigned char
+Added m_PrevWorkingDay, m_YesterDayJob and m_YesterNightJob to allow for multiday jobs to be continued if accidentally changed before hitting next week
+Rehab and clinic surgery jobs now say how long they have left. "jobname (#)*" where surgery jobs have the * note in their job description
+If Rehab or a surgery job are changed while in progress, " **" is added to the new job name with the ** note after the job description
+If an interrupted multiday job is not changed back before the next week, all progress from the old multiday job is lost.
+Chopped out a lot of useless debug logging
+Fixed bug "if you have no Non-Human Random Girls breaking combat jobs"
+ - Beast Capture, City Guard, Explore Catacombs, Fight Arena Girls and Fight Beast reworked
+Updated City Guard job for xp/skill/stat gains and results in change to Player's Suspicion level instead of Disposition.
+!!!!!!!!!!!!!!!!!!!! pushed version .05p
+Crazy added Medicine and Performance skills and updated some jobs to use them
+
+###  Changes 6/9-10/2014
+Successful Rehab and Surgeries show green when successful.
+*** Important: You will need to edit your .\Resources\Interface\(interfacename)\InterfaceColors.txt ***
+[code]
+200 30 30    LIST BOX SPECIAL ELEMENT 1 (RED) BACKGROUND
+80 80 250    LIST BOX SPECIAL ELEMENT 2 (DARK BLUE) BACKGROUND <--- after this line...
+30 190 30    LIST BOX SPECIAL ELEMENT 3 (GREEN) BACKGROUND     <--- ... Add this lines
+187 190 224    LIST BOX SELECTED ELEMENT
+255 167 180    LIST BOX SELECTED SPECIAL ELEMENT 1 (RED)
+187 190 224    LIST BOX SELECTED SPECIAL ELEMENT 2 (DARK BLUE) <--- after this line...
+0 250 0    LIST BOX SELECTED SPECIAL ELEMENT 3 (GREEN)     <--- ... Add this lines
+[/code]
+Multiday jobs now change their (#) based on if there is a Nurse or Doctor is on duty.
+ - If there is no Doctor on duty it changes to " (?)***" with a note in the job description.
+ - If there is no Mechanic on duty it changes to " (?)****" with a note in the job description.
+Corrected Rehab and Surgeries result texts.
+!!!!!!!!!!!!!!!!!!!! pushed version .05p.01
+Torture message in the dungeon is back to normal message instead of warning.
+
+###  Changes 6/9-10/2014
+Added "Health laws prohibit anyone with AIDS from working in the Medical profession" to Doctor and Nurse
+ - Not added to Arena Doctore as that is regulated differently.
+Changed skill and stat types from "unsigned char" to "int" to get rid of 255<->0 wrap around problems
+Xp to level up is now (current level+1)*125  -  until level 255 then it is 32000xp per level
+Many jobs now include the new Medicine or Performance skills in their JobPerformance and skill gains.
+Even if there is no Camera Mage or Crystal Purifier on duty, the Stagehand will still clean the studio a little.
+
+###  Changes 6/11-13/2014
+Reworked Job Ratings system
+ - All jobs that have job performance modifiers are listed in the new third details page.
+ - Sex jobs, Actress, and other jobs that do not require stats/skills to do better at are not included.
+ - Ratings are (in order of best to worst) 'I' 'S' 'A' 'B' 'C' 'D' 'E' 'X'
+ - 'X' is for jobs that the girl can not do if she is a slave.
+!!!!!!!!!!!!!!!!!!!! pushed version .05q
+
+###  Changes 6/14/2014
+Updated "!0 girlsx-contents.txt" and "!0 rgirlsx-contents.txt" adding new skills.
+Corrected Movie studio yesterday job setting.
+Corrected exp that I missed in a few places
+Corrected bug in dungeon tortureing customers that are not there.
+Corrected blank warning in dungeon torture.
+!!!!!!!!!!!!!!!!!!!! pushed version .05q.01
+
+###  Changes 6/14/2014
+Fixed bug where if you play a game where you had a building then load or start another game, you still have that building without buying it.
+The popup message for girls that run away though torture now show red.
+Updated "!0 Itemsx-contents.txt" adding new skills.
+Modified and added several items from Comeback.itemsx by R565
+!!!!!!!!!!!!!!!!!!!! pushed version .05q.02
+
+
+###  Changes 6/15-16/2014
+Corrected "YesterDayJob not a job".
+Rewrote Dungeon turn summary to sort the girls the way other buildings do.
+Added "Runaway's Names (Time)" list to house details
+Added variations of "Holy Water" items (T), (S), (M), (L), (D) 
+!!!!!!!!!!!!!!!!!!!! pushed version .05q.03
+Fixed a bug dealing with the game not knowing where the girl is located.
+!!!!!!!!!!!!!!!!!!!! pushed version .05q.04
+
+###  Changes 6/17/2014
+Crazy added:
+New Skill - Hand Job
+New Jobs - WorkFilmHandJob, GetFertility, GetTubesTied, Intern
+Modified Jobs - Cleaning, BarPiano, BarSinger, BarStripper, BarWhore, Milk, PeepShow,
+                BrothelMassusse, BrothelStripper, BrothelWhore, HallEntertainer, HallWhore
+New Actions - ACTION_WORKMUSIC, ACTION_WORKSTRIP, ACTION_WORKMILK, ACTION_WORKMASSUSSE	
+New Script Targets - HandJob, Ecchi, Bunny, Card, Milk, Wait, Sing
+
+'J'
+Renamed "cWorkCleaning.cpp" to "WorkCleaning.cpp" to bring it in with the other "Work.cpp"s
+Corrected typos, missed changes, etc.
+Separated m_JustGaveBirth resting to current building resting
+Added pregnancy check to GetFertility and GetTubesTied
+Added trait gain/loss and enjoyment to Intern
+Removed possible gain of "Fake orgasm expert" from WorkFilmStrip, WorkFilmTitty, WorkFilmHandJob
+Added Hand Job to WorkPersonalTraining
+Added Hand Job restrictions to interface J_1024x768
+Removed the "End of Script text for testing purposes." line from DefaultInteractDetails.script
+Included .\Docs&Tools with ScriptEdit and WMEdit in it
+!!!!!!!!!!!!!!!!!!!! pushed version .05r
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r85
+
+Dungeon "Matron" can be a Torturer from any brothel for purpose of dungeon girl rebelliousness.
+
+###  Changes 6/18-20/2014
+Corrected job out of building bug for new arena staff list
+Fixed arena job list flicker
+Fixed multi-girl job assigning in arena and studio (the other buildings will get this fix also)
+Major rewrite of gallery section (part 1): cleanup and expand to allow all image types.
+ - No new buttons but W, S, UpArrow, DownArrow keys cycle through all image types.
+Children get their stats/skills as an average of mother's and father's skills/stats at the time of conception instead of only from the father
+The studio now warns you if there is no camera mage or crystal purifier on duty the way rehab or surgery does
+May have fixed a bug, but it needs testing to be sure,  details here - http://www.pinkpetal.org/index.php?topic=1031.msg28068#msg28068
+Updated "!0 girlsx-contents.txt" and "!0 rgirlsx-contents.txt" adding new skills.
+Added "JTest.zip" in Characters folder containing "JTest.rgirlsx" and "JTest" folder with test pictures for each image type
+!!!!!!!!!!!!!!!!!!!! pushed version .05r.01
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r86
+
+###  Changes 6/21/2014
+Merged day and night for OutputGirlDetailString for easier adding in later.
+Cleaned studio section of HandleSpecialJobs
+
+###  Changes 6/21/2014
+Major rewrite of gallery section (part 1b): made it work the way it was intended.
+JOB_RECRUITER is now part time job and you can have as many as you want
+Reduced JOB_RECRUITER success rate to compensate for more recruiters allowed
+JOB_RECRUITER modified to include player's disposition - Needs more texts
+!!!!!!!!!!!!!!!!!!!! pushed version .05r.02
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r87
+
+
+###  Changes 6/22-27/2014 - busy week IRL :/
+Started "Your Daughter" status to allow (r)girlsx to be specified as only available through "pregnant by player" births
+Some more cleaning of HandleSpecialJobs
+Added default images back in for if the girl has no images for an image_type
+Rewrote virgin test for (r)girlsx to compare Virgin status and Virgin trait, 
+ - if both are the same then set as that
+ - if both are different or one is not set, do age/skill check
+Corrected so "m_Human == 1" is human , "m_Human == 0" is nonhuman
+Corrected CreateRandomGirl, some places had slave/undead switched
+Reward girls from Objectives have a 1 in 3 chance of being nonhuman.
+Fixed the int to bool warning in cLuaScript.cpp
+Changed most virginity changes to use g_Girls.LoseVirginity(girl) and g_Girls.RegainVirginity(girl)
+Added handjob to WorkPersonalTraining
+Added Player Disposition >= 100 then Player is a "Saint"
+Fixed item rarity Catacomb05 and Catacomb01 so they work
+ - added colors for them in config.xml
+ - added default colors in the code
+ - expanded the for loops to make it read them
+!!!!!!!!!!!!!!!!!!!! pushed version .05s
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r89
+
+
+###  Changes 6/28/2014
+Corrected bug in images where default pregnant offset was not checking for IMGTYPE_PREGNANT
+Corrected bug in virginity check not passing age to rgirls
+!!!!!!!!!!!!!!!!!!!! pushed version .05s.01
+###  Changes 6/29/2014
+Corrected bug in images so pregnant profile now looks for IMGTYPE_PREGNANT if there are no IMGTYPE_PREGPROFILE 
+!!!!!!!!!!!!!!!!!!!! pushed version .05s.02
+
+###  Changes 7/1/2014
+Corrected bug - default lastsexact was 0 (anal), changed to -1 so it now displays profile instead of anal on first load of girl
+Whore Master Editor:
+ - Increased program screen dimensions to 1000x600 to allow more stuff.
+ - Rearranged buttons and boxes to allow for more things in the future.
+ - Added the 5 newest skills from .05 to non-random girls
+ - * Only creating New Non-Random Girls or opening Non-Random Girls that already have the 5 new skills works.
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.00
+
+###  Changes 7/2/2014
+Whore Master Editor:
+ - Changed how the editor loads girlsx files so if a stat/skill is not listed, it gets set to default
+ - Updated Status="" to include "Arena"
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.01
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r90
+
+###  Changes 7/3-5/2014
+Corrected bug in Your Daughter for random girls.
+Whore Master Editor:
+ - Updated Rgirls with the new skills.
+ - Updated and added new Girls Randomize buttons.
+ - Updated Status="" to include "Your Daughter"
+ - Massive cleanup.
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.02
+!!!!!!!!!!!!!!!!!!!! pushed version .05s.03
+
+###  Changes 7/6/2014
+Updated "Box of Cookies.itemsx" to reduce power and add varieties.
+Renamed "Under Wear" to "Underwear" - both are accepted as imput
+WME - added "Underwear" to Items category
+WME - added "Catacomb05" and "Catacomb01" to Items rarity
+Corrected bug in level up where level up message and trait gained message duplicates.
+Started rewrite of m_SecurityLevel - lowers by (10 + number of girls) each day instead of flat 30
+
+###  Changes 7/7-9/2014
+Whore Master Editor:
+ - Added farm skills
+ - Added new random number generator
+ - Added all new skills to item effects
+ - Added new job focus buttons
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.03
+!!!!!!!!!!!!!!!!!!!! pushed version .05s.04
+
+###  Changes 7/10/2014
+Changed some instances of ["she", "her" and "this girl"] in g_MessageQue to [girl->m_Realname] so you know who the message is about.
+
+***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****
+***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****
+***** ***** *****                                                             ***** ***** ***** 
+***** ***** *****                .06 Started base code rewrite                ***** ***** *****
+***** ***** *****      Anything changed in .05 will be marked with (.05)      ***** ***** *****
+***** ***** *****                                                             ***** ***** ***** 
+***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****
+***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** ***** *****
+
+Changed and updated config.xml 
+Merged ScreenMode.txt into config.xml
+Moved config.xml to root directory
+
+###  Changes 7/11-15/2014  ** I was sick so didn't get much done
+
+###  Changes 7/16/2014
+Fixed Virgin Check to work closer to the way it was prior to .05s (.05)
+Split Skills into nonsex and sex skills on girls display (.05)
+!!!!!!!!!!!!!!!!!!!! pushed version .05s.05
+
+###  Changes 7/17-19/2014
+Whore Master Editor:
+ - Finished Config page to load and save config.xml for .05 and .06
+ - Traits page can now load and save from either ".traits" or ".traitsx" files
+
+Started adding new config.xml settings.
+Fixed a few bugs in .05
+
+Crazy added/updated farm jobs and some other jobs
+ - Incorperated Crazy's changes to WorkPersonalBedWarmer.cpp into .05
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.04
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r93
+
+###  Changes 7/20-21/2014
+Continued work on config.xml
+Cleaned and repaired triggers
+
+###  Changes 7/22/2014
+Converted InterfaceColors to xml
+
+###  Changes 7/22/2014
+Converted Item Rarity from enum to Constants.h
+Changed hotkeys:
+ - <F9> changed from Items to Farm
+ - <i> added as Item Management. 
+ - (<i> fixed so as not to conflict between "Change to item screen" and "item list up")
+
+###  Changes 7/23-29/2014
+Added "void cColor::RGBToSDLColor(SDL_Color* SDLColor, int r = 0, int g = 0, int b = 0)" to cColor.cpp
+Fixed screen resolution problem where all interfaces get scaled to 800x600
+Added the farm to town_screen.xml - Still needs its own icon
+Rearranged town_screen.xml a bit
+Rearranged sConfig.cpp and sConfig.h for better parralleling of config.xml
+Created base for farm_screen.xml and farm_management_screen.xml - neither are coded yet and need reworking
+InterfaceColors.xml contains Item Rarity Colors and is coded to load them when config.xml gets loaded - needs cleaning
+Converted GetString.txt to GetString.xml and LoadMenu.txt to LoadMenu.xml
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r94
+
+###  Changes 7/30-8/4/2014
+Added LogGirlFights, LogDebug and LogExtraDetails to config.xml to both WM and WME
+Whore Master Editor:
+ - Fixed "LogAll" and other log check boxes to work together.
+ - Added LogGirlFights, LogDebug and LogExtraDetails to config.xml
+ - Added "Add Missing Sex Skills On Load" check box and "UnZero Sex Skills" button for girlsx
+ -  - these will try to set missing or zeroed sex skills to match close to what the existing sex skills are
+ -  -  - if existing numbers are all the same then missing numbers get set to that
+ -  - both will check for "round to 5 or 10" and "number spreads"
+ -  *** these are not automatically saved yet, you must save them manually until I make the autocheck page
+ -  *** the "Add Missing Sex Skills On Load" only works for .girlsx files. For legacy .girls files, use the "UnZero Sex Skills" button.
+ - Fixed rgirls so all skills are saved and loaded. (no add missing yet)
+ - Fixed items for the new skills and other things.
+ - Fixed an old bug where if you try to enter anything other than a number into a number box, it would crash.
+ - Major code cleanup
+ - Removed save to legacy .girls and .rgirls files - you can only save to (r)girls to xml now
+
+Whore Master:
+Corrected spelling of Rejuvenation
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.05
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r95
+
+
+###  Changes 8/6/2014
+Cleaned cInterfaceWindow.cpp
+
+###  Changes 8/7/2014
+Converting hard coded interface items in InterfaceGlobals.cpp
+ - Converted LoadMenu.txt and GetString.txt to .xml
+ - Added TurnSummary.xml and TransferGirls.xml
+Updated .05t to use new config.xml and interface xmls
+
+###  Changes 8/8-9/2014
+Cleanup of cGirls.cpp and other girls interface stuff
+ - Fixed Virgin/MILF conflict for new girls
+ - If same name check fails 3 times, name tries double name
+ - Changed the girl note "Based on:" to be optional with log_extradetails=true .06
+ - Changed Accomodation from buttons to slider and moved text for it below it
+ - Added hotkeys "H" = House percent -1 and "J" = House percent +1
+ - Rearranged Girls details texts
+
+###  Changes 8/10/2014
+Added "Hard Coded Random Girl" to CreateRandomGirl incase there are no rgirlsx files
+Changed "JobDescription[]" to "JobDesc[]" and "JobFilterDescription[]" to "JobFilterDesc[]" and "JobFunction[]" to "JobFunc[]"
+Rearranged and renumbered jobs for .06
+Lots of cleanup. .06
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r96
+
+
+
+
+
+###  Changes 8/11-12/2014
+More cleanup
+Working on cArena.cpp, cCentre.cpp, cClinic.cpp, cFarm.cpp and cHouse.cpp making them all similar .06
+Added set prevdayjob to m_JustGaveBirth check to (hopefully) fix maternity leave bug
+Added hotkey "space" to all buildings that were missing it to go from girl list to girl details
+SCREEN_PLAYERHOUSE was 23 conflicting with SCREEN_SLAVEMARKET also 23. (.05 only - already fixed in .06)
+SCREEN_PLAYERHOUSE was only used 1 time where SCREEN_HOUSE was supposed to be used. 
+Rewrote cScreenSlaveMarket.cpp cleaning and adding get_buy_slave_string(girl) function to handle when either "buy slave" button or the space bar is pressed
+Cleaned cInventory::UpdateShop() to make it run a little smoother
+Cleanup of cInventory.cpp .06
+Started fixing stat/skill vs statmod/skillmod incongruities
+
+###  Changes 8/13/2014
+Reworked GetDetailsString and GetMoreDetailsString to align numbers into a column
+Updated .05t with a some more of the .06 improvements
+More cleanup of cGirls.cpp .06
+ - Increased limits of Temp and Mod stats/skills, can be up to +/- 200 instead of 100
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.06
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version 05t
+
+###  Changes 8/14/2014
+Whore Master Editor:
+ - Increased width and height boxes to 5 digits and interface name to 15.
+ - Fixed the fonts to allow them to be changed.
+ - Made all the (%) things on the config page to only allow 0-100.
+ - Added Screen Scale to fix the 800x600 scale bug.
+ - Added a few more tool tips.
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.07
+
+###  Changes 8/16/2014
+Refixed maternity leave bug for .05 (was fixed for .06 but not fully fixed in .05)
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version 05t.01
+
+###  Changes 8/17/2014
+Re-Refixed maternity leave bug - matron back to work was sending them back without giving them the week off.
+Cleaned and repaired jobtype and job lists for buildings and girldetails.
+Added DayJobColumn(), NightJobColumn() and JobColumn(DayNight) checks to cListBox.(cpp,h) to allow for girl lists to be changed propperly.
+Started reworking "back to work" code
+
+###  Changes 8/18/2014
+Finished "back to work" code part 1 for .05 (.06 will have much smarter "back to work" code)
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version 05t.02
+Rearranged .05 cJobManager.cpp to merge "JobDesc[]", "JobFilterDesc[]" and "JobFunc[]" sections (already done in .06)
+Added and updated "Check for out of building jobs and set yesterday jobs for everyone" section at the start of all building's dayshift.
+
+###  Changes 8/19/2014
+Fixed a bug in WorkPersonalBedWarmer.cpp where it would show a "Sing" image instead of "Handjob" image.
+Fixed small weapon to allow 2 to be equipped
+
+###  Changes 8/20/2014
+Added insemination chance to loss in WorkExploreCatacombs.cpp
+Added high libido check if a girl captures something in WorkExploreCatacombs.cpp
+Fixed default preg profile image
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version 05t.03
+
+###  Changes 8/21/2014
+***** BSOD crashed durring compiling - lost cJobManager.cpp and main.cpp back to r96 for .06
+
+###  Changes 8/21-23/2014
+* Not doing much work on this because of Doctor Who marathon and new season starts *
+Rebuild cJobManager.cpp and main.cpp
+Changed Hotkey switching from [home] and [end] to [ctrl + home] and [ctrl + end]
+
+###  Changes 8/24/2014
+Cleaning of random girl creation removing milf and lolita and reducing virgin to simple check because of complaints.
+Rearranged girl details and made "%" optional with config.xml fonts "ShowPercent=True"
+Added new image types available for future use: "Foot", "Bed", "Farm", "Herd", "Cook", "Craft", "Swim", "Bath" (and preg varients.)
+Rearranged image alttypes to include new image types.
+City Guards can not be slaves.
+Fixed some jobs not showing up in house.
+*********** Farm Veterinarian is a full time job. ** undone for .06.00.05
+Added Farm background image. (Still need Farm Icon for town map.)
+Added to Matron complications and changed Matron wages from skill alone to skill plus number of girls.
+Updated all buildings' Matrons to match.
+Fixed it so you must start a new game when changing from .05 to .06
+Re-limited building size:  200, 250, 300, 350, 400, 500, 600
+
+###  Changes 8/25-28/2014 --- Studio reflow:
+Fixed GetNumGirlsOnJob to use daynight directly as SHIFT_DAY and SHIFT_NIGHT instead of checking (shift==SHIFT_DAY)
+Finished Director as matron code for studio. (matron=false if Director refuses to work.)
+Finished main part of Studio job processing. 
+Fixed Studio pay to allow slaves not to be paid for out of pocket jobs.
+Added Director assigning unassigned girls to new jobs
+Finished Studio Reflow
+Removed all Legacy girls and savegame code. XML only from now on. 
+ - Legacy triggers were not removed but thay may get removed when I get to making sure triggers work as xml.
+Lots of cleanup of old and unused code.
+Minor changes to the interface and made a halfass farm icon by recoloring centre icon.
+
+WME - added "ShowPercent" checkbox and a few minor changes.
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.08
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.00
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r97
+
+Changed default brothel background in J_1024x768 interface.
+Fixed typos in Escort job.
+
+###  Changes 8/29/2014
+WME - started Image Count for girls
+Added image types "Nurse" and "Formal"
+
+###  Changes 8/30/2014
+Fixed bug in child_is_grown that was crashing game.
+Cleaned and did some minor changes to children growing up.
+Fixed error with default background image not loading for turn summary screen.
+Adjusted AIDS check for Nurse and Doctor plus added it to Intern.
+Added m_Tips so tips can be counted seperatly from pay when useing girls_keep_tips and slave_keep_tips
+Added tips to CalculatePay and summary messages
+* Only Escort and Peep Show have new tips so far
+Spell checked and cleaned WorkPeepShow.cpp
+Updated WorkEscort.cpp to make it a working job (still needs fleshing out)
+
+###  Changes 8/31/2014
+Fixed broken flow in brothels causing bad payments
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.09
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.01
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r98
+
+###  Changes 9/1/2014
+WME - Added Morality to girls and rgirls
+WME - Rewrote textbox validation.
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.10
+
+###  Changes 9/2/2014
+***** I replaced my hard drive with a new solid state drive
+Cleaned item equip/use changing skill/stat from temp to mod
+Fixed bug in Director dealing with unruly workers.
+Fixed bug in payment using house percent as number instead of percent.
+
+
+###  Changes 9/3-5/2014
+***** I have been updating my Characters folder so have not been working on the code much.
+* Crazy updated several jobs (svn r99 and r100)
+Fixed some unfinished jobs and added a few new things to Crazy's stuff.
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r101
+Re-Fixed an error with girls payment text.
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.02
+
+
+###  Changes 9/6/2014
+WME - Added "Save All Girls and Rgirls to Individual Files" button on Extras tab
+WME - Improved load error message to actually tell you what file caused the error and added "Bad Files" list on Extras tab.
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.11
+
+###  Changes 9/7/2014
+Crazy updated several jobs
+Crazy added more items to do_daily_items
+WME - Extensive changes to Traits
+Added more traits to CoreTraits.traitsx
+WM - Updated WorkFightArenaGirls.cpp 
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.11
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r103
+
+###  Changes 9/8-10/2014
+Changed prescript text for movie recruitment and added CaptC's MeetCastingTry.script
+Added more traits to CoreTraits.traitsx
+Started integrating new traits into the game.
+Rebuilt cTraits::GetTranslateName() for faster flow and checking case insensitive.
+Added more negative effects from STDs in cGirls::updateSTD
+Added "Herpes Cure.itemsx".
+Added more traits into cGirls::GirlFucks
+Modified diseases calculations.
+Cleaned up GetRandomSexString and varients.
+Added Morality as a Stat. Nothing uses it yet.
+
+Crazy made more changes to jobs - SVN r104
+
+###  Changes 9/11/2014
+Added loading of .traitsx files
+
+WME - minor changes
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.03
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.13
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r105
+
+###  Changes 9/12/2014
+Moved girl's payment text to before matron text because the matron taking the girl off work breaks the flow.
+Started reflow of house
+
+###  Changes 9/13/2014
+Some people were complaining about the third detail list for girls so I made it optional with "shift+s"
+Fixed end turn screen for farm not showing girls details.
+Reworked customer.m_SexPref to choose pref differently. 
+ - female customer = 50% les, 25% bdsm or beast
+ - group = 10% strip or 90% group
+ - single males = 20% normal, 15% anal or bdsm, 10% all others.
+Added secondary sex pref to reduce sex restriction turn aways. (not implemented yet)
+Reworked customer base: 10-40% Rich, 10-50% Middle, 10-80% poor
+
+###  Changes 9/14/2014
+Updated advertising job
+Changed LISTBOX_(colors) to COLOR_(colors) and fixed Message box colors to match.
+Condensed cScreenBuildingSetup.cpp
+
+###  Changes 9/15/2014
+WME - fixed a bug in update girls button
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.14
+
+Crazy did more fixes to some jobs.
+Removed some of the unneeded traits - "Anal Plug", "Nail Polish", "Pheromones", "Plain Lipstick", "Sexy Lipstick", "Vibrator", "Whoreish Lipstick", "Pregnant 1T", "Pregnant 2T", "Pregnant 3T"
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.04
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r109
+
+###  Changes 9/16-17/2014
+Added stats "Refinement", "Dignity", "Lactation" minor updates to "Morality" (nothing uses them yet)
+Reworked sRandomGirl in cGirls.h to make it set base stats better
+Fixed "farmer's daughter" trait to "farmers daughter" - save games will not load if a trait has an ' in it 
+ - Fixed XmlMisc.cpp to compensate and InterfaceProcesses.cpp to tell you where the error occurred
+
+
+###  Changes 9/18-21/2014
+Fixed antipreg stock to use what you have before buying more at the higher price
+Added antipreg message to brothel turn summary
+Brothel Matrons will increase antipreg restock order if more were used than normally stocked.
+Moved xp to level up check into levelup() code to reduce lines needed.
+Cleaned and added more traits to levelup to multiples of 5
+If not enough businesses are held to support a brothel, its security level drops by 2 per needed business.
+Fixed items to properly update age and exp and cleaned other stat item update.
+Started reflow of brothel - moved start of shift stuff from UpdateGirls to UpdateBrothels so all girls get updated at the same time.
+Cleaned up and some updates to cGangs.cpp, cJobManager.cpp
+House Recruiter is now full time job.
+Farm Veterinarian is no longer a full time job.
+Condensed clinic surgery jobs in HandleSpecialJobs
+
+Crazy made more changes to jobs - SVN r110 and r111
+
+###  Changes 9/22-26/2014
+Removed Trait effects on stats and skills from add and remove traits. - they will be added back in a separate function.
+Combined UnapplyTraits and ApplyTraits into MutuallyExclusiveTraits
+Added several new traits and removed/renamed a few.
+Fixed antipreg potions when buying they actually cost you money.
+
+*** the removal of the stat/skill mods when converting to MutuallyExclusiveTraits destroyed the rebelliousness calculation.
+*** I put back the old UnapplyTraits and ApplyTraits functions for the stat/skill mods until the MutuallyExclusiveTraits gets the new stat/skill mods
+*** the new traits do not have modifiers 
+
+Crazy made more changes to jobs - SVN r112
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.05
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r113
+
+###  Changes 9/27-28/2014 - Nothing done, Taking a few days off
+
+###  Changes 9/29/2014
+Cleaned cScreenTown.cpp
+Fixed bug in brothel dead girl check.
+
+###  Changes 9/30/2014
+Cleaned and added farm to cScreenItemManagement.cpp
+
+###  Changes 10/1-2/2014
+Fixed gallery to add new image types
+Major rework of cCustomers::GetCustomer with fixes to m_SexPref, m_SexPrefB and added customer chance of STDs
+Major rework of cGirls::GirlFucks fixing STDs and several other things
+Major rework of WorkPeepShow.cpp
+Major rework of cJobManager::customer_rape and cJobManager::GetGirlAttackedString adding variations and Pregnancy/STD chances
+
+###  Changes 10/3-10/2014
+Cleanup of arena
+Reworked WorkCombatTraining.cpp and cleaning jobs
+Fixed bugs in studio where girls were not getting taken off for maternity leave and many jobs were not getting done.
+Reworked all studio jobs and some other jobs
+SlavePayOutOfPocket now works for the studio and cleaning jobs
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.06
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r114
+
+###  Changes 10/11/2014
+Added release to buildings option for dungeon.
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.07
+
+###  Changes 10/12/2014
+Crazy added some changes to several jobs.
+
+Fixed inventory give item to girl text not showing up
+Added autouse consumables checkbox to inventory.
+Updated WorkExploreCatacombs.cpp adding sex restrictions and fixing output text to better count gains. 
+ - Also adjusted munber of monsters encounterable from 1-3 (33% each) to 1-4 (50%=1 then equal chance 2,3or4)
+ - increased the chance of getting a girl instead of a beast from 50% to 55%
+Adjusted breast size and lesbian/straight modifiers in cMovieStudioManager::AddScene
+ - Added more traits to cMovieStudioManager::AddScene
+Cleaned cScreenGangs.cpp and added Buy1 and Buy10 buttons to potions and nets
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.08
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r116
+
+###  Changes 10/13-14/2014
+I made any attempt to modify Health, Happiness, Tiredness, Age, EXP or Level affect the main stat only.
+Updated brothel beast career job 
+ - added chances for the girl adding beasts 
+ - included into SlavePayOutOfPocket group
+ - uses Animalhandling instead of Beastiality
+Changed hardcoded random girl unlisted trait chance from 20% to 1%
+Updated the 3 brothel whore jobs 
+ - added in customer's secondary sex preference
+ - added girl->m_Tips 
+ - increased trait gain thresholds (20 is way too low)
+Updated customers a little
+Updated cleaning jobs again.
+ - added trait modifiers
+ - all cleaner jobs (except stagehand) are basically the same
+ - added playtime for cleaners who clean more than twice that buildings filthiness
+Added image type "Magic" and fixed misordered image type texts
+Updated WorkPersonalTraining.cpp increasing skill gain chances
+Added number of rejected customer count to brothel + whore jobs 
+Changed Intern to be training for "the Medical field" instead of just Nurseing
+ - Interns get promoted to Doctor if freegirl or Nurse if slave
+ - Increased intern main skill gain from 3-7 to 2-14
+ - Interns can gain 1 point in the 2 other skills 
+Updated Doctor and Nurse jobs
+Added m_Doctor_Patient_Time and m_Nurse_Patient_Time to track number of patients the clinic can handle
+Added clinic_income to track how much money the clinic makes.
+Added temporary clinic income for doctor and nurses - (need to make this comprehensive for the entire clinic.)
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.09
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r117
+
+###  Changes 10/16/2014
+Updated several items adding missing skills and traits
+Added another check for group sex being restricted in 3 whore jobs.
+Fixed arena try to give arena girls
+Updated Drug Counselor and Rehab jobs.
+ - Rehab has a small chance of killing a girl if her health is less than 20
+ - Rehab is now tracked like other jobs where enjoyment is used - girls who go through rehab will make better counselors.
+ - Counselor and Rehab are full time jobs and are only run for day shift.
+Started reflow of Centre - not much done yet.
+Reorderd dungeon screen release to icons to match F# keys order
+Consolidated the AddTiredness(girl) function out of jobs and after the job is done
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.10
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r118
+
+###  Changes 10/17-18/2014
+Moved the AddTiredness(girl) function to be used once at the start of the turn for everyone. 
+ - It was missing for some jobs, so some girls never got tired. Now everyone can get tired but not a whole lot.
+ - If a job causes tiredness the AddTiredness(girl) can be added where it is needed. (already in whore jobs)
+Lowered the libido loss for sex work again:
+ - Anal -10, Bdsm -5, Normalsex -15, Oralsex -2, Tittysex -2, Handjob -1, Beastiality -10, Group -20, Lesbian -10, Strip 0,
+ - +12 for nymphos so they will want sex more.
+Lowered the STD chance a bit more
+Fixed a bug where if you click the buy room button when you don't have enough money it resets the room text to base.
+Added m_Refused_To_Work_Day and m_Refused_To_Work_Night to girls for better tracking
+Cleaned up extra m_JustGaveBirth checks and fixed a bug in some buildings
+
+###  Changes 10/19-21/2014
+*** Blocked some of the changes made to freetime until more can be worked out with it
+Reworked how FilmRandom chooses scene type
+Added Skill Footjob
+Added Footjob and Strip restrictions
+Updated several items adding footjob
+Updated sex jobs to include footjob
+Added a GirlPaymentText function to handle all the girls payment text variations in one place.
+Fixed a bug in triggers where it would only allow 1 trigger per girl
+
+Reflow and make similar all non-brothel buildings
+********** There are a lot of changes with this so exact changelog of it would be rather long  so I will just cpoy/paste moy notes from the forum **********
+*                                                                                                                                                          *
+*   .06.00.11 is taking a lot longer to get finished than I anticipated.  :'(                                                                              *
+*                                                                                                                                                          *
+*   I am reflowing the other non-brothel buildings to bring them in line with the movie studio's flow style.                                               *
+*   While I was doing that, I found a few bugs in several places.                                                                                          *
+*   Also I added the Footjob skill to go with the Film Footjob scenes and added sex restriction checkboxes for footjob and strip.                          *
+*    - Footjob is not used by anything yet.                                                                                                                *
+*   I changed the way the Film Random job chooses what to film as well as how the Director assigns actresses if they have no job.                          *
+*    - Both take into account skill levels and sex restrictions in a more efficient way.                                                                   *
+*   I fixed a bug in the out of building check (I had a && instead of an || so it did not work at all)                                                     *
+*    - I also added checking of previous day jobs for out of building so if she gets put back to work, it will not be to an out of building job.           *
+*                                                                                                                                                          *
+*   So far everything runs but only the studio works as it should.                                                                                         *
+*   Very little has been changed with the main brothels yet, just some cleanup and a few of the fixes listed above.                                        *
+*                                                                                                                                                          *
+*                                                                                                                                                          *
+*   The non-brothel building reflow is 80% done.                                                                                                           *
+*                                                                                                                                                          *
+*   The new matron code is in                                                                                                                              *
+*    - Except for the assigning of new jobs part.                                                                                                          *
+*    - The "take a girl off work" and "put a girl back to her old job" works.                                                                              *
+*    - If a girl is on maternity leave, her turn summary will say that.                                                                                    *
+*                                                                                                                                                          *
+*   The jobs still need to be split into groups but all of them get done.                                                                                  *
+*    - The movie studio has been updated and cleaned more.                                                                                                 *
+*    - The house and arena do not need splitting so they are done.                                                                                         *
+*    - I am not sure what to do about the farm at this time so it will not get split much right now.                                                       *
+*    - The Clinic and Centre need the doctor and counselor jobs split and verified.                                                                        *
+*    -  - If either of those are not filled then surgery or rehab can not be done.                                                                         *
+*    -  - Non-slave Interns and Nurses will be able to be promoted to Doctor if there is one needed.                                                       *
+*    -  - Any girl not in rehab will be able to be reassigned to counselor if needed.                                                                      *
+*    -  - Of course any reassigning requires a matron to do it.                                                                                            *
+*                                                                                                                                                          *
+*   Several of the jobs will need to be updated to work better with the new building flow.                                                                 *
+*   If you find a job that is broken, let me know and I will focus on that.                                                                                *
+*                                                                                                                                                          *
+*                                                                                                                                                          *
+*   The clinic reflow is done but it still needs testing.                                                                                                  *
+*                                                                                                                                                          *
+*   Doctors can not be slaves and require 50 intelligence and 50 medicine.                                                                                 *
+*    - If a Doctor does not meet these requirements, she will be either made a Nurse if she is a slave or sent back to Internship.                         *
+*                                                                                                                                                          *
+*   As long as you have a Clinic Chairman on duty:                                                                                                         *
+*    - The Clinic Chairman will send injured or tired girls to get Healing if they are not well                                                            *
+*    -  - health<70 or tired>30 goes to Healing                                                                                                            *
+*    -  - health<80 or tired>20 goes to Resting                                                                                                            *
+*    -  - Anyone else gets assigned a new job                                                                                                              *
+*                                                                                                                                                          *
+*    - The Chairman will assign girls to new jobs in this order:                                                                                           *
+*    -  - Anyone with 70 or more Int and Med will get assigned as a Doctor no mater what.                                                                  *
+*    -  - If there are no Doctors, than the first girl with 50 or more Int and Med will get assigned.                                                      *
+*    -  - One of each Nurse, Mechanic and Janitor will be assigned first.                                                                                  *
+*    -  - If a girl has some Med >30, she will be assigned as a nurse to a ratio of 1 nurse per 10 girls                                                   *
+*    -  - One Janitor and Mechanic will be assigned for every 20 girls in the Clinic.                                                                      *
+*    -  - Anyone else will be assigned as an intern.                                                                                                       *
+*                                                                                                                                                          *
+*    - I have not decided if or how the Chairman will be able to assign girls to surgery                                                                   *
+*    - For every 20 girls in the clinic there should end up being at least 2 nurses, 1 janitor and 1 mechanic                                              *
+*    - If there is not a Doctor on duty, an Intern or a Nurse will be promoted if they qualify.                                                            *
+*                                                                                                                                                          *
+*   Once all the job assignments have been made:                                                                                                           *
+*    - All the Clinic Staff jobs are done.                                                                                                                 *
+*    - Then all the Patient jobs are done.                                                                                                                 *
+*                                                                                                                                                          *
+*   Any of the Matrons will 'borrow' potions to heal themselves if they are injured or tired instead of taking themselves off duty                         *
+*    - The will only take themselves off if their health is <10 or their tiredness is >90                                                                  *
+*    - The Clinic Chairman will heal herself at health<40 or tiredness >60 because she has easier access to the potions                                    *
+*    - The other matrons will heal at health<20 or tiredness >80                                                                                           *
+*    - This is meant to reduce the chances of buildings not having a working Matron.                                                                       *
+************************************************************************************************************************************************************
+ 
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.11
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r119
+
+###  Changes 10/22/2014
+Added footjob to girl details skill list
+Added check in slave market to greatly reduce the chance of duplicate rgirls in the same market turn
+Changed the number of girls the slave market has available to a random amount of 5-11 each market turn
+ - 5=5%, 6=10%, 7=15%, 8=40%, 9=15%, 10=10%, 11=5%
+Added info for who the girl is based on in the second details page
+
+
+Whore Master Editor:
+Increased size of program window to 1000x700 to fit more stuff
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.12
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r120
+
+###  Changes 10/23/2014
+Fixed a bug in new matron text
+Added color to transfer screen - Red = don't move, Dark Blue = probably don't move, Light Blue = working,  Green = freetime
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.13
+
+Fixed minor bug in transfer screen colors - resting green changed from day OR night to day AND night
+Adjusted number of girls in the slave market 
+ - 5=3%, 6=7%, 7=15%, 8=45%, 9=15%, 10=10%, 11=5%
+
+###  Changes 10/24/2014
+Tried checking for memory leaks:
+ - Visual Leak Detector - https://vld.codeplex.com/ 
+ - #include "vld.h" in main.cpp with it commented out so if anyone does not have it, it will not crash them
+ - little success fixing them at this time.
+
+
+###  Changes 10/25/2014
+Fixed a few bugs in matron code: 
+ - matrons no longer take girls off work if in rehab or surgery.
+ - some enjoyment was using workmovie instead of workmatron
+Fixed a text problem with explore catacombs.
+Fixed a bug with rehab days left >3 instead of >=3
+Added CSV export for girls - hold <ctrl> when clicking the save game button
+Started cleanup of cGangs.cpp
+Updated gang explore catacombs
+ - added a 2% chance that the healing potion can not revive a member. (no more immortal gangs)
+ - changed the limits of gold obtained from 300-1000 to 1-1500 (1-100 per gang member who returned)
+ - limited number of items to 1 item per 3 gang members while increasing the odds of getting items a little
+ - added chance of gang members returning with beasts
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.14
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r121
+
+###  Changes 10/26-28/2014
+Fixed bug in items where healing potions do not work on constructs.
+Increased the ammount of Animalhandling beast careres gain
+Updated WorkExploreCatacombs a little
+Updated WorkHealing and WorkRepairShop 
+
+###  Changes 10/29/2014
+
+Added DegradeGirls() to lower girls skills a little each turn
+Updated WorkPersonalBedWarmer and WorkPersonalTraining to use sex restrictions
+
+###  Changes 11/1/2014
+Fixed bugs in marton assigning girls new jobs
+ - matron will only assign a new job if both day and night are free.
+Changed get healing and get repairs
+ - both are now single shift jobs.
+ - both can be assigned even with no staff to work on them.
+ - they heal differently based on the staff available.
+Cleaned and fixed a few bugs in the clinic.
+Multiselect continues changing all girls jobs if one girl can not do that job instead of stopping on that girl.
+Replaced all variables that handle day/night with "Day0Night1" to reduce confusion 
+ - (Day0Night1 == 0) is always day, (Day0Night1 == 1) is always night
+ - use "if (Day0Night1 == SHIFT_DAY)" or "if (Day0Night1 == SHIFT_NIGHT)"
+Added day and night assignment with CTRL held while clicking the new job
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.15
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r122
+
+###  Changes 11/2/2014
+Updated ./Resources/Data/(names txt files) mergeing in Whitetooth's lists in with the current
+ - http://www.pinkpetal.org/index.php?topic=3446.msg30543#msg30543
+
+Renamed DegradeGirls() to EndDayGirls() and added more to it:
+ - Added mana gain based on traits and magic skill.
+ - Added base libido adjustment based on total libido.
+ - Added lactation increase.
+Started updating girl milking job but it became too complex so commented it out - I will send it to Crazy because he is better with text options
+
+###  Changes 11/3-16/2014
+****** Not much done to the game because I am learning how to updrade the SDL from 1.2 to 2.0 ******
+
+Fixed a bug with Fragile/Tough traits affecting health and tiredness
+ - Added Delicate trait to this check
+ - All 3 traits affect health or tiredness by 10% for one and 20% for the other
+
+Disabled the console window
+ - Doing so increased the game speed a bit because it is one less thing to render.
+ - It can be reenabled when compiled if there are complaints
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.16
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r123
+ 
+###  Changes 11/20-22/2014
+Updated Freetime to make the options flow better
+ - spellchecked and updated many options.
+Combined gallery screens help message
+ 
+###  Changes 11/23-30/2014
+Updated turn summary window
+ - If you don't own a building, it will not be listed.
+ - Added alternate sorting option with the "O" key
+ -  - Clinic > Triage = Patients in order of when they will finish treatment, then Doctors, then Nurses, then everyone else.
+ -  - Studio > Jobs = Director [red], Crew (Crystal, Camera) [dark blue], Other Staff [blue], Actresses [green], Freetime [red]
+ - Re-Ordered sections to realign numbers
+
+ 
+###  No Changes 12/1-10/2014
+Real life taking over.
+
+###  Changes 12/7/2014
+Crazy pushed r124
+
+###  Changes 12/11/2014
+Updating WorkFreetime.cpp more.
+Changed all instances of Day0Night1 from int to bool.
+Did some file cleanup:
+ - Added the Copyright section to some files that were missing it.
+ - Did an EOL check on all files and fixed bad EOLs. 
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.17
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r125
+
+###  Changes 12/12-16/2014
+Started rewrite of WorkPersonalTraining.cpp
+Cleanup of Farm jobs.
+Reorganized Job Raitings list to put current building at the top and dividing the buildings better.
+ - Unowned buildings are not listed.
+Condensed inventory selection if/else checks into one.
+ - Fixed a bug causing a crash if you try to transfer an item from a non-brothel girl to another girl.
+ - Expanded girl list so every brothel girl is listed instead of only the current brothel girls.
+ - Reordered the lists to conform with F# order.
+ - Prepared it to be split with building selection
+ - Prepared it to add Store Room and Vault
+Reordered Transfer Screen to conform with F# order.
+ 
+###  Changes 12/17/2014
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.18
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r126
+ 
+###  Changes 12/18-21/2014 - preholiday stuff and work taking most of my time
+
+###  Changes 12/22/2014
+!! bsin posted several spell checks and additions
+[from his readme.txt included with the updates]
+Few notes on changes in these files:
+
+cGirls.cpp
+Changed the action texts for sex activities to make them a little less copy/pastey.
+
+cInventory.cpp
+Added a bit to give the player some kindness for giving girls expensive cures. Given the scarcity and cost of cures (relative to cost of just buying a new girl), this should be a "kind" act imho
+
+WorkBrothelStripper.cpp
+WorkBarStripper.cpp
+Typo fixes and new events, INCLUDING a new event where addicts are exploited by a customer who gives them drugs. I haven't yet tested this and am not 100% confident it will work - **please check**
+
+WorkBarmaid.cpp
+WorkBarPiano.cpp
+WorkBarSinger.cpp
+WorkBarWaitress.cpp
+WorkBrothelMassusse.cpp
+WorkBrothelWhore.cpp
+Typo fixes, cleanup, some rephrasing and some new 'random'ish events.
+
+BugFix: **WorkBarSinger.cpp**
+Fixed some lines of code near the end that overwrite (using =) the happiness/fame instead of incrementing/decrementing (using +=)
+
+Hope this helps...
+[end]
+ - I got all the work updates added in 99% as is (a few fixes of my own in there)
+ - cGirls.cpp texts added in as random options 
+ - cInventory.cpp part added in with fixes to make it work smoother.
+ 
+
+###  Changes 12/22-30/2014 - preholiday stuff and work taking most of my time
+
+###  Changes 12/30/2014
+!! bsin posted more additions
+[excerpt from his readme.txt included with the updates]
+#Core changes
+cGirls.cpp
++ A comment indicated that the list of "traits" used in customer decisions on girltype needed to be sorted.
++++ Now ALL traits are sorted and grouped into types (large groups are also ordered alphebetically)
++++ Updated to include ALL current traits (as of v126).
++++ Values added so that customer decision is influence by many new traits.
++++ Unused/invisible traits commented out to optimise performance.
++ Some new traits (the one I wanted to use) now have ApplyTrait and UnapplyTrait values, meaning they affect skills, stats and likes.
++ New xxx events and dialogues based on new and existing traits.
+
+
+#Gambling hall -
+WorkHallDealer.cpp
+WorkHallXXXEntertainer.cpp
+WorkHallEntertainer.cpp
++BUGFIX: Fixed a recurring logic bug that was causing certain events to be much more likely than intended (logical operator precedence means that ANDs are processed before ORs - see example code below)
++New skill-levelled events.
++New random/trait-based after-events for both types of entertainment and dealer.
++New random/trait-based *PRE*-events for both types of entertainment - e.g. if she has high libido today it may affect her performance.
+
+
+#Whorking Girls
+WorkHallWhore.cpp
+WorkBrothelWhore.cpp
++ Some additional PossiblyGainTrait gains, to bring some of the new traits into action.
+
+#ALL
++General Typo fixes
+[end]
+ - I got all the work updates added in 95% as is (a few fixes of my own in there)
+ - cGirls.cpp stuff added in and cleaned up
+
+I started reworking how mutually exclusive traits are changed, adding a function group "AdjustTraitGroup..."
+ - AdjustTraitGroupGagReflex is in and is used in the three whore jobs so far.
+ - AdjustTraitGroupBreastSize should work but is not used in anything yet.
+
+Cleaned some other things but forgot to log them.
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.19
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r127
+
+###  Changes 12/31/2014-1/3/2015  -  Taking a few days off for new years.
+
+###  Changes 1/4/2015
+Added in some of MuteDay's changes to Advertising
+ - Created a new section for if the girl does not like her job she will ask you to change it.
+ -  - This will probably get made into its own function and added to all jobs.
+Fixed a bug in the Farm reversing day and night jobs.
+Fixed a bug in AdjustTraitGroupGagReflex - "Deep Throat" missing a space
+ - If you had this problem, you will need to edit your save game to fix "DeepThroat" adding the space in.
+Added g_Dice.percent() allowing double input up to 3 decimal - 99.999% has 0.001% of failing
+Adjusted STD chance again to allow exponential health to chance ratio.
+ 
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.20
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r128
+ 
+###  Changes 1/5/2015
+Added update to scroll bars by Dagoth
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.21
+
+###  Changes 1/6/2015
+!! Attempted SDL2 conversion but it threw too many errors - will have to rewrite SDL2 upgrade from scratch
+
+###  Changes 1/7-9/2015
+Started removing all microsoft code (_itoa, ltoa, etc.) and related code (char buffer[10];)
+ - Cleaned cBrothels.cpp updating a few things in the process.
+ - Cleaned cDungeon.cpp
+ - Cleaned cGangs.cpp and fixed a few things
+ - Cleaned cScreenGangs.cpp fixing a few things
+ - Cleaned cGirls.cpp
+ - Cleaned cScreenPrison.(cpp,h) fixing a few things and adding PrisonReleaseCost function
+ - Cleaned cScreenHouse.cpp
+ - Cleaned cScreenMayor.cpp
+ 
+Crazy pushed r129 - lots of changes to jobs and added a few traits
+ - I checked most of it and fixed a few things so they worked better
+ -  - expanded GiveItemText to include sGirl so girl's traits can affect the output text
+ -  - Added girl->m_Surname so family trees can be tracked a little - not fully implemented yet
+ -  - Akab's original surname code was almost completely rewritten but was a good framework
+ -  - Existing names should automatically be converted to the new first/last name with one named girls given "" as surname
+ - Added Player stuff: m_Title, m_FirstName, m_Surname, m_RealName, m_BirthYear, m_BirthMonth, m_BirthDay
+ - Made m_RealName = m_FirstName + " " + m_Surname;
+ - Added Surname loading from RandomLastNames.txt
+ - 10% chance of a girl not being given a surname
+ - Reworked "Former Addict" check and made loosing any addictions save in remembered traits to be brought back if needed.
+ - Rearranged arena matron assigning and made girls fighting beasts fight other girls if there are no beasts available
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.22
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r130
+
+
+
+###  Changes 1/10/2015
+Crazy pushed r131 and r132 - lots of changes to jobs - mostly code cleaning
+
+Fixed a bug in "Former Addict" check causing a infinite loop.
+Expanded more on Names and Surnames making them their own externs: 
+ - "extern cNameList g_NameList" and "extern cSurnameList g_SurnameList"
+ - Both lists load only once and are accessable to everything that may need it.
+Added a new script function "Script_AddFamilyToDungeon" and added it to the script editor.
+ - I changed "CustNoPay.script" to use this instead of 2 separate functions when kidnapping a customer's wife and daughters.
+ - This function gives them all the same surname and adds the parent biography to the daughters.
+ - The mother will not have the Virgin trait and may or may not have the MILF trait.
+ - The mother's age is calculated from the oldest daughters age.
+Added the Player's m_FirstName, m_Surname, m_RealName, m_BirthMonth, m_BirthDay to the save game.
+ - If you want to change them you need to edit the savegame file. - Once loaded, they stay.
+
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.23
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r133
+
+###  Changes 1/11/2015
+All new New Game page
+ - Added Player Name and Surname boxes as well as birthday selection.
+ - Added NewGame.xml to the interface folder
+ 
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.24
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r134
+
+###  Changes 1/12/2015
+Added Horoscope Name function cGirls::GetHoroscopeName(int month, int day)
+Added Horoscope Type to config.xml in Initial section: "HoroscopeType"=(1=Western(default), 2=Hindu)
+Added Horoscope to player creation page.
+
+###  Changes 1/13/2015
+Crazy pushed r135 - several minor changes to a few things - Major update to Security job
+
+Fixed a bug in handlechildren function.
+Cleaned up a few things.
+Changed Cum Addict trait because it was causing problems for some.
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.25
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r136
+
+###  Changes 1/14-16/2015
+Changed prices to buy buildings Clinic 10k->25k, Farm 20k->10k
+Fixed a bug that crashes when .rgirlsx files try to load more than the allowed number of traits.
+ - Updated .rgirlsx so they can have up to 200 traits to choose from but girls can still only have 60 traits.
+Fixed a text bug for girls with "Cum Addict" and "Sterile"
+??? Possibly fixed a bug that brothel girls don't always get reassigned to their old job by matrons (needs testing)
+Changed starting rivals to be randomly created
+Cleaned and updated cRival.cpp
+ - Changed when rivals start attacking from 7th month to 3rd month
+ - Changed entirely how rival's money is made and how they spend it
+ - Updated rival gang missions and added some new ones
+ -  - Extortion, Petty Theft, Grand Theft, Sabotage, Kidnap Girl and Catacombs are done.
+ -  - Capture Girl - take a girl from you or another rival - will be done later. 
+ - Added Rival Inventory - items you can steal from them
+Added stealing items from rivals in sabotage gang missions
+Added a little more to old age variation in WorkHallXXXEntertainer.cpp
+Crazy pushed r137 - Added more traits to apply and unapply traits
+ - Split traits alphabetically to reduce if/else length
+ 
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.26
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r138
+ 
+###  Changes 1/17/2015
+Updated GangBrawl to allow rival gangs to work properly - Fixing a bug when rival gang is fighting rival gang.
+ - Enemy gang was using player's gang weapon level, now they get their own based on combat skill.
+ - Cleaned up combat/magic choice and made magic level affect magic damage.
+ - Mana was only being spent if the attack succeeded, now any magic attack uses mana.
+ - Skill gain for the winner was 2 across the board, increased win by kill all to 3, win by runaway still 2.
+Updated Rival's Power (was rival->m_Age now rival->m_Power) and made it more dynamic
+ - Added it to save/load
+Cut gang sabotauge gold theft massively, from ~10.8k max to ~4.8k max
+ - being able to damage rivals' bars and halls should make up for this as well as being able to steal items from them.
+Adjusted gang recruitment from flat 3 to random 2-4
+Adjusted gang catacomb chances for getting items from 60 to (int/2)+30 and girls from 40 to (int/4)+25
+ 
+Cleaned and updated Brothel Security job
+Added two section to security_stops_rape, one for male customers and one for female customers.
+ - If a single male customer is defeated by a girl working security and she has a dildo in her inv, she will punish the customer.
+ - If a single female customer is defeated by a girl working security and the brothel has one of 3 items in inv, the customer will become your slave.
+ -  - Those items are "Brainwashing Oil", "Necklace of Control" and "Slave Band"
+
+!!! Added 18 items by ShoHaFa !!!
+Added "Black String Bikini" to do_daily_items list
+Fixed "Chrono Bed" and "Rejuvenation Bed" in do_daily_items list adding tiredness adj and only 1 will be used if both are owned.
+Started subdividing the do_daily_items list
+
+Crazy pushed r139
+ - Updates to several jobs and added in some old code (commented out)
+ - Added old code for Canonical_Daughters (I gave it that name 8p ) We'll see if it works.
+ 
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.27
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r140
+
+###  Changes 1/18/2015
+Fixed a bug in gang catacombs
+Added a little more to House matron assigning.
+Added "Virgin" column to house list.
+Added "GetAveragOfAllSkills", "GetAveragOfSexSkills" and "GetAveragOfNSxSkills" functions for girls
+Nerfed "sex worker is a virgin" customer happiness gain
+ - Now happiness increases an amount based on the type of sex.
+ - oralsex, tittysex, handjob, footjob +2 | strip +10 | beastiality +25 | anal +50 | lesbian +69 | group +80 | bdsm +90 | normalsex +100
+ - BDSM should now only take virginity 70% of the time.
+ - If she gets pregnant, she will loose virginity.
+Added mission Guarding to rival gangs so that gang does nothing that turn. (~33% chance)
+Cleaned up girl detail list enjoyment section adding cfg.debug.log_extradetails() for testing
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.28
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r142
+ 
+###  Changes 1/19-20/2015
+Fixed a bug in Player's Child Surname and trait.
+Fixed a bug in Child growing up breaking on mothers trait missing.
+Fixed a bug with building setup not setting the correct building.
+Fixed a bug in apply and unapply traits that broke its functionality.
+Added more text into GirlFucks function including intro and several submissions by Naturalrice
+Added hotkeys in New Game page for month (F1-F12) and day (0-9) - the days are a little messy but they work.
+Added Preparing Game page
+
+WME - Added all of the new stats, skills, statuses and game configs.
+
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.29
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r143
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.15
+
+###  Changes 1/21/2015
+Reworked rivals again to reduce gold earned and spent.
+Added ability for rivals to buy random items.
+Reduced the amount player's gangs can steal from rivals.
+Fixed a bug when starting a new game after quitting the current game and starting a new one without closing the game entirely, the text on the first page would display the gold from the previous game.
+Added debug messages for rivals.
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.30
+
+###  Changes 1/21-25/2015
+WME - Fixed a bug stopping .rgirlsx from saving
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.16
+
+Added limiters for player gang sabotage gold.
+Doubled m_SecurityLevel reduction for number of girls in the brothels and in work_related_violence
+Added catches into interface functions to prevent missing items from breaking the game.
+Inventory screen updates:
+ - Added "Buy 10" button for infinite shop items only if the player is getting it and they can afford 10 of the item.
+ - Set it so if you can not afford an item from the shop, the buy button will turn off.
+ - Fixed buttons so they turn off when they are supposed to.
+ - Added colums to owner lists showing how many total items they have ans how many of the selected category they have. (blank is none)
+Other Item related updates
+ - Added new item types: Hats, Helmets, Glasses, Swimsuits, Combatshoes and Shields
+ - Added Hats, Helmets, Combatshoes and Shields to (un)equipcombat checks.
+Updated 36 items - mostly for the new categories but some needed other updates.
+ 
+WME - Added the new item types: Hats, Helmets, Glasses, Swimsuits, Combatshoes and Shields
+WME - Added First, Middle and Last names - if not set, it will fix them
+WME - Added a bunch of error checks to pass the error messages to the Extras tab error list.
+
+Started "Changes that need to be done.txt"
+
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r144
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.31
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.17
+
+###  Changes 1/26/2015
+WME - Fixed several bugs with missing stats/skills not saving and/or loading
+WME - Fixed first/middle/last names so they save/load properly
+
+Fixed a bug in inventory screen with dungeon girls breaking the game.
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.18
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.32
+
+###  Changes 1/27-28/2015  - I didn't do much.
+
+Crazy pushed r145 - some updates to free time and other jobs.
+
+Fixed a bug in inventory screen with dungeon girls not showing item numbers or color.
+
+###  Changes 1/29/2015
+Fixed a bug with Stat_House bugging out on mod or temp stats. Added House, Fame and Ask Price to the list of stats without mod or temp stats.
+Updated Make Potions on the Farm to actually Make Potions.
+Added some random animals or animal based items to Beast Capture job.
+Added items to Gardener jobs.
+Started adding items to Butcher, Baker, Brewer. (needs work)
+Increased learning from farm research (this will need to be updated like Intern)
+Fixed a few items.
+
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r146
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.33
+
+###  Changes 1/30-2/4/2015
+Fixed a bug in security guard item use.
+Finished adding items to Butcher, Baker, Brewer.
+Added "ShoHaFa Items Collection 2" and 15 items from R565
+
+WME - Fixed a bug with "Your Daughter" and "Is Daughter" breaking items.
+
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r147
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.00.34
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.19
+
+###  Changes 2/4/2015
+Fixed it so that worn items can adjust age properly.
+Removed Preprocessing and made refusing to work more customisable per job.
+Converted a ton of stringstream + to <<
+Cleaned up cScreenPropertyManagement.cpp (still need to make this work)
+Started cleanup of all jobs - mostly standardizing the first part of the jobs.
+Removed unused work*.cpp files
+
+###  Changes 2/5/2015
+Started adding JobPerformance function to jobs for easier editing and reuse.
+
+###  Changes 2/6/2015
+Finished adding JobPerformance functions and job cleanup.
+Fixed a few bugs in several jobs.
+Updating Clinic surgeries jobs:
+ - Breast size surgeries are now 1 size change per turn.
+ - Added AdjustTraitGroupFertility and it is used in fertility/tubes tied jobs.
+Updating Centre Counseling jobs:
+ - Changed "Drug Centre" to "Counseling Centre"
+ - Changed "Drug Counselor" to "Counselor"
+ - Fixed Therapy jobs so they work better.
+ - Added Therapy jobs to the Centre flow.
+ - Added Therapy jobs (#)*** notes to girls list
+Added GetRandomGirlOnJob and GetFirstGirlOnJob to be used to get just one girl instead of using GirlsOnJob to get a group then choosing one.
+Changed items to use StatTr/SkillTr instead of Stat/Skill.
+Removed the limits on m_StatMods, m_TempStats, m_StatTr, m_SkillMods, m_TempSkills and m_SkillTr
+ - This will allow for cleaner modification via items and traits
+Added starting items for (r)girls so they can have items before you get them.
+Added in "Your Daughter" checks to births and random girl creation - hopefully they work.
+
+###  Changes 2/6-7/2015
+Started moving folders:
+ - Moved Default girl images from ./Resources/Characters/Default to ./Resources/DefaultImages
+ - Added a check for config.xml in the folder above the exe folder
+ - Added Characters and Saves folders locations to config.xml
+ - If not found in the new locations, it uses the old defaults
+
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r148
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.00
+
+Fixed a bug in .rgirlsx starting items.
+!!! Bug tested the game - works great !!!
+
+###  Changes 2/8/2015
+Refined the savegame into 2 functions: AutoSaveGame and SaveGame
+Added check in config.xml for Save and Characters folders and added gamelog error if not found.
+Started work on scripts XML conversion.
+
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r149
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.01
+
+###  Changes 2/9/2015
+Fixed a bug with StatTr/SkillTr not being calculated on game load.
+ - Also added recalculation in CreateRandomGirl
+Cleaned the trait loading to check MutuallyExclusiveTraits then RemoveAllRememberedTraits before loading rememberd traits from the savegame.
+Renamed TempStat to StatTemp and TempSkill to SkillTemp for uniformity.
+Converted a ton of g_Dice%100 to either g_Dice.percent() or g_Dice.d100() as needed
+Removed Fame and Age from the list of stats without mod or temp stats.
+Fixed a bug in hard coded random girl to allow negative stats where applicable.
+Changed AddTrait function to allow variable temptime for items instead of fixed 20 turns.
+Added temp traits "Kidnapped" and "Emprisoned Customer".
+ - They both increase rebelliousness, even for mentally challenged girls just not as much
+ - They also increase flight risk
+ - Depending on how they were acquired, the trait's temporary duration will vary
+Fixed a bug in WorkRecruiter.cpp - the new girl was replacing the recruiter in the code
+Added messages for girls when they get placed in the dungeon.
+Converted the rest of the existing Job Performance List to the new checks.
+ - Added some of the missing jobs to the list
+ - Jobs listed with a ? are estimates
+ - Jobs listed with a * are just in for completion - commented out for now
+
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r150
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.02 - bad - pulled
+Fixed a bug in WorkCentreAngerManagement.cpp where the girl fights with her counselor and crashes the game.
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.02
+
+###  Changes 2/10/2015
+Fixed a bug in explore catacombs not creating a random girl properly
+Fixed a bug in child_is_grown where it would not always find a "Your Daughter" girl and crash the game.
+Moved m_Dungeon.Update() out of the brothels and up into the NextWeek() so that grils added to the dungeon from other means will have their messages added.
+Added a reducer to explore catacombs item count
+ - Instead of a flat 40% I changed it to (50% - (numitems*5%))
+ - Better chance of getting 1 or 2 items but less likely to get 4 or more items
+I fixed something that was bugging me about the pregnancy column on girls lists, I added a check for Sterile.
+ - It will display "St." if she is sterile instead of just "No"
+ - If she is sterile and pregnant it will display "Yes?3?" - how could that happen?
+ - If she is sterile and in cool down it will display "No!3!"
+ -  - This could signify that she became sterile from giving birth
+Updated Intern to list all stats and skills that get increased.
+Added a bypass in the loading girl's images section so it will skip the loading of "nothing" if the girl has no images.
+ - This should speed up loading of the game a little.
+Added Default Images location to config.xml
+Started adding more stuff to CoreTraits.traitsx.
+ - Added "InheritChance" and "RandomChance" for girl creation.
+ - "InheritChance" is working now but "RandomChance" is not yet
+ 
+WME - Added "InheritChance" and "RandomChance" for traits
+WME - Added config.xml folders section
+ 
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.03
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.20
+
+!!!!!!!!!!!!!!!!!!!! pulled Whore Master version .06.01.03 because of bug.
+Fixed bug caused by "Converted a ton of g_Dice%100 to either g_Dice.percent() or g_Dice.d100() as needed" update from .06.01.02
+ - I accidentally changed a couple of fail percents into succeed percents.
+ - Two of which were in PlayerCombat where the player fights a girl.
+ - The error occurred in the combat sequence at the part where the combatants were supposed to take damage.
+ - They instead lost health if they succeeded their dodge rolls.
+ - Because dodge gets degraded as they get tired, the percent eventually fell to 0% thus always failing the roll.
+ - Never taking any damage, and without a turn limiter, the combat would go on forever.
+!!!!!!!!!!!!!!!!!!!! Repushed Whore Master version .06.01.03 with the fix.
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r151
+
+###  Changes 2/11/2015
+Added control and shift keys to building selection (F1,F5-9,F12)
+ - control + F# goes to building setup
+ - shift + F# goes to the building screen
+ - F# alone goes to the girls list in that building (as usual)
+Reworked updateGirlTurnStats()
+ - commented out "She gets more injured for being injured" section
+ - added possible obedience modifier 
+Rearranged some things in cGirls.cpp for better flow
+Normalized building screen codes
+ - Added "free slave" button to studio so all buildings now have it.
+
+###  Changes 2/12/2015
+Added AntiPregFailure to config.xml and to the game. Default is 0.0%
+ - If a girl uses an antipreg, the percent is rolled and if it succeds, the antipreg does not work.
+Added MiscarriageChance to the birth code.
+Added MultiBirthChance to config.xml - does not work in game yet.
+
+WME - Sorted stats and skills for .(r)girlsx so they are arranged in the order the editor has them.
+WME - Started adding script editor tab
+ - It reads .scriptsx files but doesn't do anything with it yet.
+WME - Added AntiPregFailure and MultiBirthChance to config.xml
+
+###  Changes 2/13/2015
+Fixed a bug in arena where jobs would change to fight girls if there were no beasts.
+ - All jobs were changing when only fight beasts was intended, fixed the check to be for fight beasts only.
+ - If her health is less than 50 she will rest a shift.
+ - If all 4 skills are 90+ it sends her to fight girls, otherwise to training.
+Fixed a bug in inventory sorting - was not affecting the game but could affect texts.
+Updated Main Menu adding "Continue" and "Settings" buttons.
+ - "Continue" will load the autosave.gam if it exists
+ - "Settings" does nothing yet.
+Added hotkeys to main menu - C, L, N, S, Q
+Added hotkeys to load game list - up, down, enter, escape
+Fixed a bug - if you hit escape while the game was loading it would return to the main menu after it loaded.
+If the owner of a business you are extorting can not pay and sells you his daughter, he becomes free from your debt. (-1 businesses)
+
+
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.04
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.21
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r152
+
+###  Changes 2/14-17/2015
+Fixed a bug where dead girls in building lists crashes on send to dungeon.
+ - The crash is fixed but cycling through girls on details page will not go backwards past the dead girl.
+Some cleanup of "Day0Night1 == SHIFT_DAY" to just use "Day0Night1"
+Updated "Sell Slave" and "Fire Girl" buttons to better detail what will happen with different types of girls.
+Added some notes for dead girl texts.
+Added automatic disease cure if there is a cure in the player's inventory and a matron on duty.
+Updated runaway checks and send to dungeon to allow it in all buildings.
+Added human check to GetRandomYourDaughterGirl()
+Separated your daughter check from other checks in CreateRandomGirl
+Fixed NameExists and SurnameExists to check all buildings.
+Added config.xml options for division of catacombs loot between girls, items and beasts
+ - girls and gangs have their own sets of gets
+ - "ControlGirls" and "ControlGangs" tell the game if you want to control what they look for. Default is false.
+ - whatever the numbers are set to, they get converted into a 100% range
+ - defaults are 33.33% each
+ - Works for Girls but not gangs yet.
+Started normalizing jobperformance and stat/skill gain for farm jobs.
+Added Cooking skill and Strength stat
+Moved girl's Gold from first details list to second details list to make room for cooking.
+Fixed a bug crashing on automatic item use for exp granting items.
+Started normalizing Learning_Jobs - Intern, Combat Training and Farm Research. 
+ - Added Strength training to combat training
+Added GetRandomCatacombItem() function
+
+Updated old script editor with new stats/skills
+
+WME - Moved folders setction from config tab to extras tab and added a note for its use.
+WME - Added Catacombs loot to config.xml
+WME - Added a few more tooltips.
+WME - Added Cooking skill and Strength stat
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.05
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r153
+WME - Fixed a bug where unzero sex skills would not work for footjob.
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.22
+
+###  Changes 2/18/2015
+Fixed a bug in the new explore catacombs code.
+Updated .itemsx adding Strength and Cooking
+Changed food and makeup items to affect the base stat/skill if not temporary
+Added Trait "Zombie"
+Updated Item "Better Zed than Dead" to return dead girls as zombies
+Updated Item "Elixir of Ultimate Regeneration" to return dead girls and zombies to life as well as repair some new traits
+
+###  Changes 2/19/2015
+Fixed a bug in automatic disease cure code
+Added unique chance to config.xml for Catacombs and Slave Market - (forgot to make it actually load it)
+
+WME - Added unique chance to config.xml for Catacombs and Slave Market
+WME - Added Item Weight - not used in game yet
+WME - Reduced element spacing to allow for more to be added.
+
+###  Changes 2/20/2015
+Fixed a bug in "Free Girl" button
+
+###  Changes 2/21/2015
+Added Undead, Skeleton and Vampire traits.
+Updated Item "Elixir of Ultimate Regeneration" to remove Undead and Skeleton
+Updated game buttons - supplied by Dagoth
+Added more Milk Items - based off I_V_Saur's items
+Added temprory trait duration customization for items - defaults to 20
+Fixed a bug in security enslaves female customer who attacks your girls not adding her to the dungeon. (hopefully)
+Increased the number of accommodation steps from 6 (0-5) to 10 (0-9).
+Added "GirlsAccom" and "SlaveAccom" to config.xml with defaults of 5 and 1.
+Added "string cGirls::Accommodation(int acc)" to replace multiple calls.
+Added "Accomm" to .girlsx
+
+WME - Added temprory trait duration customization for items
+WME - Added "GirlsAccom" and "SlaveAccom" to config.xml with defaults of 5 and 1.
+WME - Added "Accomm" to .girlsx
+
+Crazy pushed SVN-r154
+ - Updated some jobs to use new Cooking skill
+ - Added more traits to jobs
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.06
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r155
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.23
+
+###  Changes 2/22-23/2015 - didn't do much - played the game a little to make sure it works.
+Increased max number of gangs to 7 + number of brothels.
+
+###  Changes 2/24/2015
+Started adding simple-save file to allow for easy load list expansion. - not finished
+
+###  Changes 2/25-3/1/2015
+Started updating farm jobs to add food and drink counter to offset higher girl accommodation costs
+ - WorkMilker now adds common Milk items
+Added girl's strength to GetCombatDamage() so base damage is min(1,strength/10) instead of flat 5
+Started adding child type counts:
+ - Children are now counted when born (or not)
+ - The numbers are listed in the second detail list
+Multiple births:
+ - The initial creation of the child when the girl gets pregnant adds m_MultiBirth based on cfg.pregnancy.multi_birth_chance()
+ - 2 counts, m_MultiBirth (total babies) and m_GirlsBorn (total girls), number of boys is (m_MultiBirth-m_GirlsBorn)
+ - Completed multiple birth texts
+ - Added fertility level adjustments to births.
+Fixed a bug in UpdateObjective() where any objective will always fail on the last turn allowed.
+Fixed a flow problem with Hinder_Rival reward if there are no rivals.
+Added a check for OBJECTIVE_EXTORTXNEWBUSINESS to only allow it as an objective if there are atleast 5 available businesses to acquire.
+Added g_Dice.bell(min,max) function - not a true bell curve but it works ok for what I need.
+Added "SlavesNewWeeklyMin" and "SlavesNewWeeklyMax" and made the slave market use a bell curve for them.
+Added m_Finance.farm_income and "FarmIncome" to config.xml
+Fixed a bug in GetRandomGirlOnJob
+
+Added several items from MMeer and I_V_Saur
+
+WME - Added "SlavesNewWeeklyMin" and "SlavesNewWeeklyMax" for config.xml
+WME - Added "FarmIncome" to config.xml
+WME - Converted Catacombs girl/gang collecting numbers from text numbers to sliders
+WME - Fixed problem with Items - temporary trait duration saving for all items instead of just temporary items.
+
+Note about the unique chance for Catacomb girls and Slave Market girls:
+ - I added a group specifically for the Slave Market so I am moving them into the groups more appropriate for them.
+ - Because I forgot to add the part in the game code where it was supposed to load them, changing them now should not affect the game at all.
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.07
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r156
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.24
+
+###  Changes 3/2/2015
+Cleaned up birth list on second details page.
+Added Futa to fetish types
+Added larger button images provided by Dagoth
+ 
+New Script Stuff Added:
+ - AddTrait, AddTraitTemp, RemoveTrait, (IfHasTrait already there)
+ - Use *GIRLNAME* to have the game replace it with the girl's name
+ - Cleaned up cGameScript.cpp
+ 
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.08
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r157
+ 
+###  Changes 3/3-8/2015
+Applied patch to add null pointers provided by Wirbelwind
+Added detect_disease_in_customer() to whore jobs
+Changed PossiblyGainNewTrait and PossiblyLoseExistingTrait to display their turn summaries as goodnews instead of warnings.
+Changed starting job enjoyment from all -10 to random (-10 to +10)
+Hard coded "Reset Potion MK i" and "Reset Potion MK ii" so they don't have to be updated whenever something new is added.
+Fixed a bug in brothel antipreg potion restock texts
+Updated Objectives to check for passing whenever the m_SoFar is changed
+
+Fixed ApplyTraits to allow for clean recalculation.
+ - Added m_EnjoymentTR and (Get/Set/Update)Enjoyment(TR)
+ - Updated trait adjustments
+ - Removed old ApplyTraits and UnApplyTraits
+
+Started updating gang again:
+ - Moved missions into their own individual functions for cleaner code.
+ - Updated all missions
+ - Updated catacombs for config.xml controls
+ - Added Strength stat to gangs
+ -  - Damage changed from ((SwordLevel + 1) * 5) to ((SwordLevel + 1) * min(1, gang->strength() / 10))
+ - Added net restock and individual gang net count to gangs
+ - Added individual gang heal potion count
+ - Set net/pot restock to happen at the start and end of the turn
+ - Gangs recruiting but already with full numbers are switched to training before their turn starts so they will train that turn instead of doing nothing
+ - Combined the turn summary for most missions into one box.
+ - Updated some missions to use nets better (or worse depending on how you look at it)
+ - Added PassObjective() check to extorttion, grand theft and petty theft missions
+ - Made gang recruitment based on charisma with a modifier for player disposition
+ - Added GetRandomRivalWithGangs, GetRandomRivalWithBusinesses and GetRandomRivalToSabotage to better choose a rival for the gang to go after
+ - Gangs spying on girls can help stop rape
+ 
+Added 87 items from Hanzo
+ 
+WME - Added fixes so comments will not break files when loaded
+WME - Added SaveIndividualItemsXML() to the save all button on extras tab.
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.09
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r158
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.25
+
+###  Changes 3/9/2015
+Fixed a bug in fights caused by adding strength to damage.
+Fixed a bug in brothel management screen where sometimes a girls status lists "is" twice.
+Fixed an accounting bug in petty theft causing 0 victim numbers.
+Added Catacomb Gang controls to gang screen.
+Started adding Catacomb Girls controls - not ready yet.
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.10
+
+###  Changes 3/10/2015
+Girls captured from the catacombs get the "Kidnapped" trait for 2-15 turns
+Added updateTempTraits(girl, trait, amount) to modify the time for temporary traits - will not make nontemp traits temp
+Added HasTempTrait(girl, trait) to return the amount of time left on a temp trait
+Temporary traits show the temp time in () on traits lists
+Changed m_TempTrait from unsigned char to int
+Torture reduces "Kidnapped" and "Emprisoned Customer" temp times
+Fixed a bug in runaway code causing a crash.
+Fixed missing strength to old gangs
+ 
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.11
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r159
+ 
+Fixed an old piece of code that was broken:
+ - Pressing "i" to go to inventory screen will select the current girl 
+ - Added pressing "ctrl + i" will select player and shop as left and right owners
+ 
+###  Changes 3/11/2015
+Fixed bug with new strength damage calc
+Fixed a bug in updateSTD
+Updated number of customers that try to attack a girl in work_related_violence to make it more random but more common lower numbers
+Adjusted "Kidnapped" temp time.
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.12
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r160
+ 
+###  Changes 3/13/2015
+Fixed a bug in catacombs_look_for text
+Changed message to girl, when a gang defends her from rapist, from normal message to warning
+
+Objective updates:
+ - Moved update objectives to the end of the next turn so any changes done that turn will pass the objective
+ - Added m_Objective->m_Text to save the objective text when created to allow for easier output
+ - Added Objective passed message to Brothel turn summary.
+ - If your objective was to get more girls and your reward is more girls, you get 1-5 extra girls after the base and difficulty modifiers.
+ - If you had a time limit and your reward is gold, you get more gold for the unneeded time.
+ - Added more variation for REWARD_RIVALHINDER
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.13
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r161
+
+###  Changes 3/13-14/2015
+Updated catacombs_look_for text again
+Fixed a bug in gang catacombs get beast
+Added Cum Addict and Smoker to rehab
+Fixed several skill-stat check mixups
+ 
+Crazy pushed SVN r162 - Updates to job performance for several jobs adding new traits.
+ 
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.14
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r163
+
+###  Changes 3/15/2015
+Fixed a bug in exp maxing out at 100 when loading save game by adding the limiter check to load stats.
+
+WME - Started work on making binary .script files load.
+WME - Added table for storing and editing script data.
+
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.15
+
+###  Changes 3/16/2015
+
+WME - Added Clear script and save script buttons
+WME - Loads binary script files
+
+###  Changes 3/17-20/2015 - Real life kept me away from working on the game or editor for several days
+###  Changes 3/21/2015    - but I got back and after some hassle, I got the editor to save xml scripts.
+
+###  Changes 3/22/2015
+Fixed a bug with suspicion and disposition not working for non brothel buildings.
+Fixed some bugs in nonbrothel building's advertising sliders.
+
+WME - Now saves .scriptx files
+ 
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.16
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r164
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.26
+
+###  Changes 3/23-4/4/2015 - real life is busy. not much time to work on the game.
+Reduced the power of rivals to prevent them from becoming too powerful.
+
+###  Changes 4/5/2015
+Added several stat/skill/enjoy mods to cGirls::ApplyTraits
+Started adding code needed to allow customized trait effects - work in progress.
+Added enjoyment temp and mod so items can affect enjoyment.
+Combined updateTemp stuff into one group.
+Rewrote job performance list to allow for cfg.debug.log_extradetails() to show the number
+Cleanup of XmlMisc.cpp
+
+###  Changes 4/6/2015
+Started cleaning image selection.
+ - Hopefully fixed a few problems dealing with default images
+ - Fixed the problem with .ani files not working.
+ 
+!!!!!!!!!!!!!!!!!!!! pushed to SVN - r165  -  Pushing before attempting to add gif support in case it does not work.
+
+WME - Fixed several issues with ".girls" files not loading properly
+ 
+!!!!!!!!!!!!!!!!!!!! Google code is being phased out by Google and the SVN has been moved to github.com
+!!!!!!!!!!!!!!!!!!!! https://github.com/crazywm/crazys-wm-mod
+
+###  Changes 4/7/2015
+Crazy added several things to allow the girls to have a boyfriend?
+ - Added stat "NPCLove"
+ - Started adding some options to freetime for boyfriends.
+
+###  Changes 4/8/2015
+Fixed a few problems with "NPCLove" crashing the game.
+Cleaned up girls a little.
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.17
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.27
+
+###  Changes 4/9/2015
+Converted the last few calls for new cPlayer objects to "extern cPlayer The_Player;" so everything uses only 1 cPlayer object.
+Set health and happiness to 100 when other stats are defaulted to 0
+Cleaned sGirl constructor and destructor
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+
+###  Changes 4/10-13/2015
+WME - Added "NPCLove" stat
+Condensed "cConfig cfg;" calls to externs so it is only created once.
+Cleaned cTariff.(cpp,h)
+Homeless girls and Adventurers know they can survive on their own so are more likely to runaway
+ -  They don't reset m_DaysUnhappy to 0 but instead divide day count in half
+Fixed a few items and added a few more.
+ - Added more to do_daily_items
+Improved chances of the girl surviving if she fights against being thrown in the dungeon (lose_vs_own_gang)
+ - Cleanup of cGirlGangFight.cpp
+
+Added .gif loading into image lists (they load and display but do not animate)
+ - Included SDL_anigif.(c,h) to the project but have not integrated it yet.
+
+Added Gender to Constants.h 
+Added some functions in cPlayer to use Gender
+
+Accommodation Update
+ - Updated do_food_and_digs to make accommodation do more.
+ - Added preferred accomodation check for girls
+ - Added slider marker for the girl's preferred accomodation.
+ - Reworked accom happy, love, hate and fear modifiers
+ - Some traits can be added or removed if some checks are passed.
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.18
+
+###  Changes 4/14/2015
+!!! Attempted adding gif loading to the game.
+!!!  - Loading gifs the way images are loaded now increased load time and excessivly bloated memory.
+!!!  - The way images are handled needs to be completly rewritten.
+!!!  - Instead of loading images when the game loads, they should be loaded when they are needed and not stored in memory.
+!!!  - This will allow for faster game loading and for easier image adjustments while the game is running.
+!!! Undid all changes (saved backup of changes)
+
+Added some checks into ani files so broken files do not crash the game.
+ - Do not use ani for profile pics - it may cause memory problems, but I forget.
+Cleanup of some image handling files
+Added pregnancy to PAccom
+Fixed a bug with items in PAccom
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.19
+ 
+###  Changes 4/15-17/2015 - Nothing done on the game, I played it a bit to see what needs to be added/modified.
+###  Changes 4/18/2015
+Fixed a few job ratings list items.
+Updated a few fetish trait modifiers.
+Added info to some items.
+Added what traits are affected to Centre Therapy job descriptions.
+Added some more to Matron assigning girls to new jobs lists for the House.
+Divided m_RejectCustomers into m_RejectCustomersRestrict and m_RejectCustomersDisease for better logging.
+Updated several jobs
+ - Started adding new "Finish the shift" sections to make them all work the same way.
+
+!!! Removed the .sdf files from GitHub to speed up pushes and pulls
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+
+Updated WorkAdvertising
+
+###  Changes 4/19/2015
+Added Blacksmith job to Arena.
+Adding Craftable section to items.
+Added Craftable to most Small Weapons and a few other items.
+
+WME - Added Craftable section to items.
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+
+###  Changes 4/20/2015
+Crazy - added several new traits and updated several jobs.
+Corrected some typeos.
+Added "bool is_addict(bool onlyhard = false)" 
+ - So you can check only for hard drugs "girl->is_addict(true)" (Shroud, Fairy Dust, Viras Blood)
+ - Or for any addiction "girl->is_addict() or (false)"
+Added multibirth to inseminated births, some die, some are sold and some can be added to beasts.
+Added more to Blacksmith job
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+
+Added Dagoth's changes to Slider controls
+ - Added a new "marker" option to Slider control for marking a default or target value, 
+ - switched girl's "preferred accommodation" value to display using this new marker instead of using a separate disabled slider
+ - Also providing alternate marker image as an option, depending on how you want it to look
+
+Updated several items with Craftable numbers.
+
+###  Changes 4/21-24/2015
+Crazy - Added several things to several jobs
+
+Renamed Sheapherd the Shepherd
+Added item creation to Make Items job.
+Updated several more items with Craftable numbers.
+Added "Sell 1" and "Sell All" buttons to Inventory screen
+Fixed Listboxes to scroll better.
+Added Lesbian and Straight checks to whore jobs.
+Included some rejected customers texts to whore's turn summary.
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub  -  several areas unfinished: itemsx, blacksmith, tailor, cobbler, inventory screen
+
+
+
+
+
+
+
+$$$$ NOTE TO SELF - When updating items to recalculate stats/skills when loading girls - don't modify temp stuff $$$$
+
+$$$$ TO DO - SHORT TERM - (for this version) $$$$
+Add "Sell All" and similar buttons to inventory screen
+Make jobs load and save by name instead of number so adding new jobs will not break save games.
+Keep expanding on simple-save
+food and drink
+
+
+$$$$ TO DO - MID TERM - (for the next few versions) $$$$
+Make config in_fact and out_fact do something
+
+Change the way the game handles images
+ - Instead of loading them all when the game loads, load them when they are needed.
+
+
+New Script Stuff:
+ - Picture_Sequence     -- needs image rework before it can be implemented
+ - Make_Movie_Scene     -- needs movie and scene rework before it can be implemented
+ - And/Or
+New Default Interacts for each building
+ - DefaultInteractStudio.script
+ - DefaultInteractArena.script
+ - DefaultInteractCentre.script
+ - DefaultInteractClinic.script
+ - DefaultInteractFarm.script
+ - DefaultInteractHouse.script
+New Meet Try for the buildings that don't have them
+ - MeetCentreTry.script (homeless, addicts, psychpatients, etc.)
+ - MeetFarmTry.script (beast girls, farmers, craftsmen, etc.)
+ - MeetHouseTry.script (House party? - Costs money to do, adds lots of filthiness to the house, etc.)
+
+
+
+
+
+
+$$$$ TO DO - LONG TERM $$$$
+Update from SDL1.2 to SDL2.0 (or something else)
+Expand the map and allow multiples of all buildings

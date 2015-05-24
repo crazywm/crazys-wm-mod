@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Doctor Degree"
+      Desc="&quot;By decree of Crossgate Interdimentional University, ENTER NAME HERE is hereby known to have the skills (or money) to work at Crossgate or any other Medical Hospital.&quot; Wait....since when did this girl go to school here? Ah well, it is out of your pocket so that means something... (Doctoral traits, +70 plus House and Fame, +75) (Love +75, Hate and Fear -75, Service, Medicine +70) (Adds Quick Learner, Removes Retarded, Slow Learner)"
+      Type="Misc"
+      Badness="0"
+      Special="None"
+      Cost="4500"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Stat" Name="Intelligence" Amount="70" />
+   <Effect What="Stat" Name="Confidence" Amount="70" />
+   <Effect What="Stat" Name="Happiness" Amount="70" />
+   <Effect What="Stat" Name="Fame" Amount="70" />
+   <Effect What="Stat" Name="Level" Amount="5" />
+   <Effect What="Stat" Name="AskPrice" Amount="75" />
+   <Effect What="Stat" Name="House" Amount="75" />
+   <Effect What="Stat" Name="Exp" Amount="75" />
+   <Effect What="Stat" Name="Spirit" Amount="75" />
+   <Effect What="Stat" Name="Health" Amount="75" />
+   <Effect What="Stat" Name="Tiredness" Amount="75" />
+   <Effect What="Stat" Name="PCHate" Amount="-75" />
+   <Effect What="Stat" Name="PCFear" Amount="-75" />
+   <Effect What="Stat" Name="PCLove" Amount="75" />
+   <Effect What="Skill" Name="Service" Amount="70" />
+   <Effect What="Skill" Name="Medicine" Amount="70" />
+   <Effect What="Trait" Name="Retarded" Amount="0" />
+   <Effect What="Trait" Name="Slow Learner" Amount="0" />
+   <Effect What="Trait" Name="Quick Learner" Amount="1" />
+</Item>
+</Items>

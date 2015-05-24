@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Spiked Collar"
+      Desc="This thick black leather collar is studded with shiny spikes. It looks like something you'd put on a dog, but it also looks quite intimidating. (C) (+10 BDSM, +10 Best, +2 Comb, -5 Cha)"
+      Type="Necklace"
+      Badness="20"
+      Special="None"
+      Cost="400"
+      Rarity="Shop25"
+      Infinite="false"
+      GirlBuyChance="5">
+   <Effect What="Skill" Name="BDSM"                    Amount="10"    />
+   <Effect What="Skill" Name="Beastiality"             Amount="10"    />
+   <Effect What="Skill" Name="Combat"                  Amount="2"    />
+   <Effect What="Stat"  Name="Charisma"                Amount="-5"    />
+</Item>
+</Items>

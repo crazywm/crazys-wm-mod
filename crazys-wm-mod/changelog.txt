@@ -1,0 +1,864 @@
+1.30.4 beta r593
+* Updated Slider control code to now change position to wherever you click on the slider, instead of just increasing/decreasing by a set amount if you clicked to either side of the "button"
+* Revamped scrollbar code to extricate it from being directly tied to listboxes
+* Scrollbars on listboxes are now "clicky", meaning the bar itself sort of snaps up or down between actual positions instead of smoothly sliding up or down; this description might be confusing, but you'll probably notice the different feel
+* Text which is too long to fit in the provided areas now have scrollbars automatically added; you can smoothly scroll pixel-by-pixel by dragging the bar, or scroll one line of text at a time by using the up/down buttons or your mouse scrollwheel
+* fixed quite a few typos, mainly thanks to bj (http://pinkpetal.co.cc/index.php?topic=585.0)
+* Animated images should now be completely supported, where support was semi-broken before
+* Code which was supposed to cull old (no longer needed) images from memory has been fixed, so memory usage should be lower with extended play
+Several changes by WonderDog, as follows:
+* Torturer job and torturing in general has been updated and improved quite a bit
+* Turn Summary message colors are updated based on severity of events and health o girls/gangs (dark blue or red)
+* Weekly girl stat changes based on house percentage (obedience, fear, hate, happiness) are a bit more fluid
+* some further code refactoring
+Many many changes by myrikhan, as follows:
+* High-quality sex acts (from skilled girls) now often give flavorful mad-libs style turn summary descriptions 
+* Turn Summary screen message display order changed:
+  - Girls with ciritical (red) messages are displayed first, followed by warnings (dark blue)
+  - Within the message list itself, red messages are displayed first, then dark blue
+* Worked in the security job:
+  - Attackers who cause trouble to girls is now a group of 1-10 people. (I'm specifically NOT calling them gangs to avoid confusion.) They don't have healing potions or weapon levels.
+  - The first layer of protection is one of the security guards.
+  - If she is defeated, the second layer is defending gangs, if they pass the coverage check.
+  - The third layer of defense is the girl herself.
+  - Casualties to the attackers accumulate from layer to layer
+  - Traits worked in to the security point calculation
+  - Stopping a group of attackers costs (#attackers x 5) security points
+  - Security points decay by 50 each round (To prevent banking in the early parts of the game.)
+* Added Catacombs05 and Catacombs01 to rarity. Didn't change any items in the items file. (I figure we can do that over time if we like this change.)
+* Improved and bugfixed the item use automation function
+* Girl level cap raised to 999. Function modified to reflect this: Skill-ups occur for only the first 20 levels (same as before). This is cosmetic, as nothing depends on level, except girl sell price.
+* Turned some repetitive code into functions
+* Random bugfixes
+* Added natural healing of 2% per shift for each girl. It is a flat 2% that isn't affected by traits like tough or fragile
+  - Tried to add a 2% per shift reduction to tiredness, but it caused tiredness values to go to 100% unexpectedly, so it's commented out.
+* Noticed that statuses like 'controlled' currently don't do anything. For a few of the items that add the 'controlled' status I added on to them the ability to remove the strong willed trait.
+  - (eg: disguised slave band, necklace of control)
+
+1.30.3 beta r485
+* missing numerical config values now properly stay set to default values instead of reverting to 0
+* girls with more than 30 traits would fuck things up (and probably fuck things in other directions, too)
+* girls on maternity leave from giving birth no longer sneak in training on the sly
+* "Have X gangs in Y weeks" objective fixed (no more "-1 gangs"), and time given is reduced
+* Pregnant sex pics are now shown if available
+* Cammy meet script was apparently corrupt; reverted
+* WMEdit updated to support GirlMeet and SlaveHousePerc values
+* anal sex no longer removes virginity
+* group sex is now prohibited properly if you have it disabled
+* SlaveHousePerc config option is now implemented in the game, so you can specify the default slave house-percentage
+* girls who sustain injuries (scars, lost eye, lost pregnancy) now also lose 10 health in the process
+* changing the house percentage slider for a girl now updates the Rebelliousness text on-the-fly
+* Rebelliousness is now properly increased/decreased by House Percentage for non-slaves; anything above 60% increases rebelliousness, below 60% decreases it
+* If you have no random monster girls in your .rgilrsx files for whatever reason (testing, major mod, whatever), the game no longer hangs when girls or gangs try to capture a monster girl in the catacombs
+* new random girl name list with 5188 names from many world cultures; if you want to switch back to the name pack with 969 Japanese names, that file is also included
+* girls defeated and raped by monsters in the catacombs can now potentially be inseminated if she isn't using anti-preg potions; chance of insemination is increased based on number of monsters
+
+1.30.2 beta r452
+* unique girls weren't being loaded on new games
+	NOTE: if you started a new game in r450, you can fix this by opening the savegame's .gam.mast file and deleting the contents (don't delete the file itself, though, that will do nothing)
+* navigating between girls with up/down arrow keys on the Turn Summary screen wasn't working
+* bundled WMEdit is updated to 0.68b  --  provided as always by Solo761
+* add "GirlMeet" config value to config.xml, which is the chance you'll meet a girl when walking around town
+* potential crash on Girl Details screen fixed
+
+1.30.1 beta r450
+* event scripting can use Lua scripts now
+* permanent stat modifications should now be limited to +/- 100 in almost every case
+* temporary stats changes now normalize towards 0 by 30% each week instead of by 1 point each week
+* most libido changes are now temporary (largest portion from doing jobs), not permanent
+* dead girls can no longer equip or use any items (no more resurrecting by giving a healing item)
+* new item category "Small Weapon", covering daggers and whips and such; small weapons are considered concealable or acceptable for normal carry and are never automatically unequipped unlike regular weapons; max equipped: 1
+* code for girls buying items in their free time is rewritten further to consolidate otherwise re-re-re-re-repeated code
+* Starting a new "Test" (cheat) game no longer gives you Ayanami Rei; not sure why that was there, since you can Walk Around Town infinite times in cheat mode
+* updated WMEdit by Solo761, to support "Small Weapon" category
+* updated items file by LordShame
+** new Slider control for selecting numerical values
+* You now set each brothel's advertising budget on the Brothel Setup screen.
+* Girls who do the advertising job now boost the effectiveness of your advertising budget by a certain percentage, based on Service skill, a few stats, and some traits, as described below.
+    Foremost is the girl's Service skill. A distant second are Charisma and Intelligence. Third, Beauty and Fame. Several traits can further increase her effectiveness on par with 100% Beauty or Fame: Psychic, Cool Person, Sexy Air, Charismatic, and Charming. Some traits on the other hand reduce effectiveness: Nervous and Clumsy are minor reductions, while Retarded and Malformed are major ones.
+* You can see what percentage a girl boosted your advertising effectiveness in her Turn Summary info, and you likewise get a breakdown of what brought in customers on the brothel's Turn Summary info
+* new option in config.xml to disable feature which auto-equips and auto-unequips combat gear for different jobs
+* fixed mission description for "have total of X girls" in Player House screen
+* slave daughters now correctly have house percentage set at 100
+* raised threshold for matron cheering up unhappy girls from 20 happiness to 40
+* switched "House Percentage" on Girl Details screen to use new slider control
+* rewrote / cleaned up portions of Slider display code and most of Scrollbar display code for lower memory usage and proper alpha transparency
+* Turn Summary screen's "Go To Selected" for brothel girls resulted in broken prev/next on Girl Details screen; fixed
+* Turn Summary screen's "Go To Selected" now works for dungeon girls
+* When returning to Turn Summary screen from Girl Details screen, last viewed girl on Girl Details screen is now selected
+* unique girls can be virgins again, based on nearly the same criteria as random girls (basically, young age and/or lack of sex skills)
+* objective to get specific number of gangs can no longer go higher than the limit ( 8 )
+* reduced happiness / love from giving items to girls 
+* some controls (buttons, edit boxes, checkboxes) were responding to mouse scroll wheel movements as regular clicks, which they now ignore; this showed up most in the Inventory Management screen
+* "auto buy" checkboxes are no longer displayed unless you have some of the item in question, to allay confusion based on it not staying checked when you have 0 of that item; setting it to auto-buy 0 of something makes no sense
+* traits gained from torture in the dungeon (Broken Will, Masochist, and Mind Fucked) are no longer incorrectly set as temporary
+* un-sort header on far right of listboxes could be incorrectly triggered by clicks a bit to the right of the listbox (leading to "View Details" button in dungeon sometimes additionally unsorting dungeon girl list)
+* if the .gam.mast file couldn't be read (missing or otherwise) when loading a game, it will now assume you have all existing character packs (.girlsx files) loaded, instead of re-loading all of them and resulting in duplicate unique girls
+
+
+1.30.0 alpha r416
+* Now all extra "hidden" stats for girls are shown on More Details for debugging/reference data
+* girls were getting stuck on Free Time after giving birth  (pretty serious bug, the reason I went ahead and released r416 already)
+
+1.30.0 alpha r415
+* girls should no longer automatically use consumables unless the item does something which seems useful to her at the time or makes her happy (no health potion when fully healthy, no "cure for X disease" when she doesn't have "X disease", etc.); they do still buys such items, though
+* girls will now unequip all armor and weapon(s) before doing most mundane jobs like whoring, customer service, cleaning, etc.; however, girls with the following traits might refuse to do so: Aggressive, Yandere, Twisted, Retarded
+* girls will likewise now equip their best (most expensive) armor and weapon(s) before doing "dangerous" jobs, such as exploring catacombs, capturing beasts, or providing security; however, Retarded girls might refuse to do so
+* Items.itemsx now parses new optional GirlBuyChance % value [if not specified, chance now defaults to (100% - (badness level * 5)), so 20 or more badness is 0% chance, 5 badness is 75% chance, etc.]
+	This GirlBuyChance % value is checked when a girl is on free time and shopping, and has looked at a random shop item, instead of it just checking the Badness value as it used to.
+* girls shouldn't buy things like brainwashing oil and disguised slave collars for themselves any more, among other things; thanks to LordShame for updating all appropriate items
+* updated WMEdit supporting new GirlBuyChance value provided by Solo761
+* non-unique girls who are sold or fired are now simply removed from the game, though unique girls are still kept
+* items bought from shop directly into a girls inventory were not depleting shop stock properly
+* pregnant girls not controlled by player (should only be uniques, sold/fired by player) have their pregnancies handled just like girls controlled by the player; there are of course no announcements though and nothing gained by the player, and grown daughters are added to the buyable/recruitable girls
+* Girl Details screen wouldn't let you go to manage a girl's inventory if it was full
+* When going to Inventory Management from Girl Details screen, it would select the girl based on the name, so it could choose incorrectly if you had any girls with identical names
+* animated images would get stuck on the image surface, where it couldn't then be changed to a non-animated one
+* new girl packs were not being imported properly when loading a saved game, though the .gam.mast file was being updated
+	as a result, for older savegames, you'll need to manually edit the .gam.mast file to delete out any files which you know aren't really loaded in order to get them to actually import at this point; new savegames should have no problem
+* girls get the week off when they give birth
+* injury system reworked slightly; injuries can now potentially result in unintended abortion if pregnant, which is distressing for the girl in question
+* when girls buy stuff in their free time, it now indicates everything they bought in their Turn Summary info
+* Gallery mode no longer shows pregnant images in the profile slot
+* tweaked the bar working enjoyment
+
+1.30.0 alpha r397
+* auto-buy healing potions and nets options were not reset on "new game"
+* bank withdrawals should no longer be taxed; by extension, money taken from girls or given by scripts is no longer taxed
+* bad items sent directly from the shop to a girl's inventory could still cause a crash
+* dead girls can no longer be enslaved or sold in the dungeon
+* multi-select should now be maintained when doing actions in the dungeon
+* Girl sex enjoyment messages updated a bit
+* new clickable area on far right of listbox header which un-sorts the list back to the order the elements were originally added in; scrollbar and scroll up button are moved down to make room whenever it's shown
+* On Girl Details screen, sort order for previous/next girl functionality now matches the girl list sort order of the screen that called it (Girl Management or Dungeon)... so, you can sort the girls based on a specific stat and then view their details in that same order
+* polished the "new rival" texts a bit for spacing and fixed he/she type gender indicators
+* gang training now works on a curve where they gain less the higher the skill/stat (but more at lower levels); however, they'll tend to focus training in what they're good at as well, so they should hopefully end up being better at certain skills and stats
+* gang missions and combat will slightly boost appropriate gang stats/skills (not as much as training, though)
+* all 6 important gang stats are now listed on the Gang Management screen; in other words, added Agility, Toughness (Constitution), and Charisma
+* even if user had config set to 0% chance of any one or more types of pregnancy, virgins would still have 10% chance of getting pregnant; the (somewhat odd) 10% chance boost for virgins is left alone for any chance over 0%, though
+* girl details next/prev cycle order was not properly updating IDs when a girl was removed, resulting in a crash on moving on to the last girl
+* when a girl becomes pregnant or inseminated, it now makes sure to clear any leftover pregnancy data (from abortions or what-not, pregnancy countdown and unborn child data)
+
+1.30.0 alpha r385
+* switching between day and night on Girl Management screen no longer rebuilds the girl list, maintaining multi-select
+* on Girl Management screen, "Fire", Sell", and "Free" buttons now work on multi-selected girls (it properly ignores slaves for "Fire", and ignores non-slaves for "Sell" and "Free")
+* Selling or releasing multi-selected girls and/or customers from the Dungeon screen could cause crash
+* You're now told how much gold you got when you sell girls directly from the dungeon
+* girl working as matron now gets full pay (you get no house perc) and the money is deducted from you; her pay is now 200-400, depending on service skill (200+(service*2))
+* jobs which do not gain money externally (from customers, exploring, whatever) now have wages deducted from you; you do still get your house percent back, though
+* Updated job enjoyment changes, very slight decrease for whoring but major increase for all other jobs (+1/-1 to +3/-3)
+* girls exploring the catacombs now list each gained item in turn summary
+* girls doing beast care and beast capture gain a bit of bestiality skill
+* girls who do the Torturer job can sometimes become Sadistic or even Merciless if they enjoy their job enough
+* girls who do the Matron job can sometimes become Charismatic or even Psychic if they enjoy their job enough
+* girls exploring the Catacombs or Capturing Beasts can sometimes gain the traits Adventurer, Tough, and Aggressive if they enjoy combat enough
+* girls defeated in the Catacombs might end up with one of the 3 types of Scars, or even rarely One Eye or Eye Patch
+* bestiality now only has a chance to harm your beasts if the girl has lower than 50 skill in bestiality; it ranges from 50% chance at 0 skill to 1% chance at 49 skill; chance was 25% regardless before
+* a bug prevented girls on their free time from buying things from the shop; it's back to functional again
+* girl fights can now end in draw if still going after 1000 attacks rather than potentially getting stuck in an infinite loop
+* number of customers could go into the negatives due to high filthiness; added a check to set number of customers to 0 if it's in the negative
+* girls now properly train in groups of up to 4 girls. The grouping of girls is now randomized, and the turn summary report indicates which girls trained with which. Also, training can no longer give negative gains ("+-1" indeed :P).
+* girls who train alone (only possible if you have only 1 girl training) now have 50% chance to gain 1-3 points in a random stat, instead of 10% chance to gain 1 point; also, turn summary output for it is updated
+* Matron was still a bit bugged; should work perfectly now. Also, the Matron can put herself back to work (if she took herself off duty due to getting too tired or whatever).
+* number of customers lost due to filthiness is now reported in the turn summary for each brothel
+
+1.30.0 alpha r372
+* Unique girls showing up underage (< 17) should be taken care of
+* WonderDog has further worked quite a bit on fixing how traits are handled, extensively fixing and improving how whore jobs work in many ways, and fixed the items file (duplicate "Sword of Forever" item and unencoded "&" character which kept Solo's item editor from working).
+* Random girls would quite often default to 30 in all skills; value name lookup table was not being initialized correctly
+* changed debug output from failure to load trigger file to better indicate it's not a problem ("Assuming this is a girl with no special triggers")
+* the picture of the last selected girl in the girl management window would sometimes be shown when no girl was selected (or existed for that matter)
+* Shift-selecting items in listboxes which support multiselect was hit-and-miss; rewrote that code so that it should respond exactly as expected
+* Starting a new game was not clearing out number of beasts owned from a previously loaded game
+* Items with a non-zero "How bad is it" stat crash the game 100% of the time when going directly from the store inventory to a girl's inventory. Buying to the player's inventory then transferring to a girl is still fine.
+* using make-up items or any other items which provided a temporary stat boost (not skill boost) was bugged
+* items which were set to impregnate or inseminate did not work correctly; now, it uses the "Amount" value as a multiplier for the chances.
+    So, assuming the default config of 8% chance each for pregnancy, player pregnancy, and insemination, these item effects would have 80% chance of success (8% * 10):
+    <Effect What="GirlStatus" Name="Pregnant By Player" Amount="10" />
+    <Effect What="GirlStatus" Name="Pregnant" Amount="10" />
+    <Effect What="GirlStatus" Name="Inseminated" Amount="10" />
+    An "Amount" of 0 still removes any of the above, that hasn't been changed.
+* When transferring an item on the Item Management screen, the selection is much better maintained and tracked (transferred items are selected in target inventory)
+* removed availability of movie job types for now, since they were indeed entirely broken
+* Whore jobs in Bar and Gambling Hall renamed to reflect location
+* It was possible for more than 1 matron to be in a house by forcing a matron to rest and reassigning another girl to be matron. When the first girl was through resting she auto-magically became matron again resulting in two matrons.
+* People who were consistently getting a crash immediately on running the game can now play
+
+1.30.0 alpha r349
+* Script functionality was completely borked in several ways; all scripts are now working
+* When sabotaging, if rival had no gangs it could cause a crash
+* work report for brothel girls kept saying she "ran out of customers who like her"; disabled that erroneous message for now
+* GetRandomShopItem could return out-of-bounds (+1 over) item num, leading to crash
+* Girls were losing "Incest" and "Your Daughter" trait after a while, as they were incorrectly set as temporary  --  this fix courtesy of tlib, thanks!
+* There were a few further trait handling problems, and "unknown" age girls could have their age messed up  --  these fixes courtesy of WonderDog, thanks!
+* Random girl name generation could go out of bounds
+* customer display in dungeon was slightly off
+* a specific semi-random image on the release build would fail to load for a bizarre reason; fixed by commenting out a hopefully unnecessary extra bit of animated image sanity checking
+* job enjoyment text (shown in Girl Details by More button): fixed and added in support for showing enjoyment level for all current major task types, but "indifferent" ones are omitted
+* when a girl captures beasts, it now indicates how many
+* number of owned beasts is now shown on brothel screen
+* rearranged job and job type lists on girl management screen a tad bit
+* Girls with "Dependant" trait or "Mind Fucked" trait no longer have guaranteed -100 rebelliousness, it's now guaranteed -40 and -50 respectively  --  thanks to tlib for finding the root of this one
+* You could not generally transfer items directly from the store to a girl.  --  the item transferring code was a bit wonky and was separate for transferring either way; I consolidated and cleane up the code, fixing it in the process
+* Item lists on Item Management screen are now sorted alphabetically
+* When viewing player or girl inventory item, it shows "Value: x  Sell For: y" instead of "Cost: x"
+* Items listed on the item management screen now have differing font colors according to rarity. Items purchaseable in the shops are blue, the brighter the rarer. Green items are only found on the catacombs (dark green) or by scripts or objective rewards (a bit lighter green). "Common" items should be plain black, but there seems to be very little in that category currently. The rarity colors are configurable in config.xml.
+* If you had negative money you could hit "deposit all" in the bank, which would reset you to 0 money
+* Girls could be inseminated when using fake beasts
+* Random girl traits were not properly applying skill changes... ex. pigtail girl started with lesbian trait, 0% lesbian skill  --  This fix was courtesy of WonderDog - thanks!
+* Big Boobs and Abnormally Large Boobs weren't properly improving customer happiness  --  This fix also courtesy of WonderDog
+
+1.30.0 alpha r342
+* When in the dungeon with exactly one girl listed, selecting any of the column header caused the game to crash.  --  fixed
+* Age variables for all the random characters were set to 0 min and max. This resulted in all random girls being 17.  --  fixed (game currently limits max age to 25, so you'll get an age range of 17-25)
+* During the turn summary, clicking on the Dungeon listing will cause it to crash if there are no girls in the dungeon.  --  fixed
+* "config.weeks_preg: 38" message given on debug window when viewing any girl, pregnant or not.  --  message now only shown when girl is pregnant
+* Dependent trait still giving an automatic -100 rebeliousness  --  changed obedience boost from +90 to +50
+* Charismatic/Charming traits still give game breaking stat boosts.  --  halved charisma boost for each
+* girl images were being stretched to fit the area, losing aspect ratio (made image class default to maintaining aspect ratio)
+* unique girls were incorrectly starting with 100% normal sex skill (stored in XML as "NormalSex", game was looking for "normalSex")
+* some unique girls had odd starting "house percentage" values, such as 0 and 100; normalized to all starting at the default of 60
+* also, Font.txt is no longer needed or checked; instead, font definition in config.xml is used for everything 
+
+1.30.0 alpha r327
+NOTE: THIS IS AN ALPHA, AND THUS HAS MANY BUGS
+- Major reworking of job handling (still in progress)
+- Most of the major screens are revamped and configurable by XML layout files
+- Listboxes are all swanky now
+- support for animated images (none used yet, though)
+- Gang recruitment is reworked, so there are limited new gangs available each week
+- font antialiasing which can be disabled in config
+...Lots lots lots more stuff, including plenty of bugs and unfinished stuff
+
+
+-----------------------------------
+
+1.29.2
+notable fixes
+slave market issues have been fixed
+pregnacy warnings have been fixed
+refusing to work issue should be fixed.
+additions
+will give an idea of girl enjoyment
+now has a version number for the megafix
+1.29.1
+new things
+- full screen and the ability to change the resolultion
+fixes
+- the game will no longer crash when you have a non paying customer and a defeted rival event on the same day.
+- you can buy brothels again
+- fame now works
+- pregnacy and saving has been fixed
+- completing an objective should no longer crash the game
+- refusing to work works differently
+- brothel fame is calculated by the average fame of the girls
+- and who knows what else
+known bugs
+- the next day bug still exists, I think
+- trying to give a girl fast orgasms, who has had slow orgamsms and fake orgamsm expert will crash the game.
+v1.29
+- added ability to load separate pregnant images by placing preg in the front of the filename eg PregAnal1.jpg. Works with Anal, Sex, BDSM, Beast, Group, Les. Doesn't work with profile (cause normal preg already does that) or death.
+- multiple colors in listboxes added, not fully in use yet though.
+- fixed girl fetish types not updating after equiping a item that increases fetish (still worked just didn't update until next week).
+- updated upgrades screen a little
+- now only 40% chance that the Merciless trait will force a girl to fight back
+- re-did how rebel value is calculated (should be a value from -100 to 100)
+- re-did how a girl decides weather to disobey, now if they like the act they will do it even if they have a high rebel value.
+- implimented an enjoyment system, this allows girls to learn to enjoy things reguardless of rebel (purly behind the scenes)
+- fixed problem with items that add or remove traits when equiped then unequiped (you gained traits that you shouldn't)
+- fixed game not autosaving from next week button in turn summary
+- re-coded children they now have alot more depth behind the scenes
+- girls now have a low pregnancy chance during BDSM sessions
+- inherited skills are capped at 20
+- fixed bug where default images were not longer being loaded correctly
+- fixed problem with aging (was still set to days)
+- older women now have a chance of starting with the milf trait
+- fixed issue when purchasing last brothel
+- fixed crash with merciless trait when branding as a slave
+- fixed constuct/incorporial and such traits affecting happiness incorrectly
+- fixed fragile trait working incorrectly
+- updated interact scripts to take into account rebel
+- fixed bug where if you didn't have any heal potions and/or have auto buy on all your catacomb/theif men would die
+- increased recruitment rate a little
+- increased the value of item rewards from catacomb missions (it is now what it was supposed to be in the first place)
+- refusing to work is now a warning (will show up in lists as a blue item)
+- fixed girls not equiping armbands or armour they buy themselves
+- increased talk count to 10
+- unique girls from walking around town are now also put in brothel or dungoen based on rebel and free rooms
+- libido now much more dynamic, it increases how much a girl enjoys sex
+- traits gained from torture
+- item management screen now keeps selections (provided the item still exists)
+- fixed matrons not putting girls back to work
+- there is now a cooldown period of 20 weeks before a girl can get preg/inseminated again
+- fixed some algorithm mistakes with the gambling hall
+- girls no longer obtain items from the players list of available shop items
+- fixed problem where wasn't resetting the pay earn't meaning you got lots more money then normal
+- fixed some issues when scrolling with the arrow keys in list boxes.
+- virgin status removed in script commands now
+- drugs now make girls happy when they have them (but still major unhappiness for withdrawals)
+- started to gradually re-implement many of the alife(simulation) code that was removed (very early on) due to being a little too random.
+- few minor tweaks to random generator
+- many other minor fixes and a few tweaks
+
+v1.28
+- enemies will now attack after 20 weeks
+- fixed a crash when entering slave market
+- group sex now involves more money
+- fixed gang jobs not displaying training or recruiting as the current mission in the staff management screen
+- added some new traits
+- overhaul of how fetishes work. Now customers will flat out refuse a girl if she doesn't meet their fetish needs unless they are very very horny. Also girls can learn to behave differently in differently situations, so it is possible for a girl to satisfy the nerdy and cool fetishes. Also if girls become damage mentally, it limits their uses as whores (only certain customers will like them). Girls that have no fetish categories will only be hired by customers who are just after sex or by request. Next update will allow customers to have up to 3 fetishes
+- fixed rival attack message where it says nothing after the ".... attacks and"
+- there is now a "more details" button on the girl details and slave market screens so you can view what fetishes they attract
+- redid the sex event messages, they now have more flavor
+- fixed a minor savegame corruption (still need to start a new game to resolve)
+- taking gold from a girl results in much much dislike from the girl, less so with slaves but still larger
+- added button that adds 5 new rooms to a building for a cost of 5000.
+- added sex type restrictions to upgrades screen (note this will turn away many customers, functions per brothel and does not restrict the girls working the streets)
+- non slave girls will now leave if they are consistantly uber unhappy for 3 days
+- serious injuries will now be displayed better in the summary
+- modified happiness code so that it will no longer go into the negatives/positives.
+- fixed new entries in script editor not autoformatting (still no formating when adding commands to a existing script, just save and re-load to apply formating (annoying i know but it only takes 2 seconds))
+- fixed girls sometimes getting pregnant with other children when they were raped by player
+- added many new script commands to enable some new functionality
+- mostly implemented the proposed new interaction method with girls (button still called talk for now).
+	- Torturing functions like it always has
+	- Scolding works best with girls whoose spirit is between 30 and 50 (still works on other levels but may also do more damage then good.
+	- Forcing a girl may work for or against you (they hate you but they'll do what you say)
+- Fixed problem where talk scripts for being in dungeon were not executed from the details screen (only the talk to non-dungeon girl script was running instead).
+- love towards player wasn't taken into account for girls disobeying. So now players who have girls who love them will get the benefit. (objective of coding is to allow player to either rule though fear or love).
+- lowered chance of girls getting perminant injury
+- lowered chance of girls getting attacked on the job
+- fixed item lists not updating after using items (bug only showed with consumables)
+- lowered death rate in catacombs
+- increased chance of getting a unique girl from the catacombs to 30%
+- incorporial girls now are sterile
+- made group session pay a little better, also made them rarer
+- you can no longer interact with dead girls in the dungeon
+- fixed some bugs with girls running away
+- min age now 17
+- fixed some random girl probs
+- changed limit of girls that can train with to 4 (was 3)
+- tiedied up trait inheritence
+- added reseeding of random generator when new girls are born to prevent new daughters all having the same name
+- fixed some crashes to do with loading/starting new games without exiting the program
+- various smaller tweaks and fixes
+- HOTFIX ADDITIONS	
+		- fixed crash when reloading and entering certain screens
+		- fixed brothel name not working and image not showing
+		- fixed issue with using arrow keys to scroll
+		- made it so not being able to torture doens't use up a talk count
+		- added go back options to the scripts
+		
+
+v1.27 BETA
+- days renamed to weeks
+- pregnancy is now 38 weeks
+- fixed some typos and spelling mistakes
+- change official UI to Dagoth's UI Pack
+- Redid item management:
+	- Market screen is heavily modified
+	- "Give Gift" buttons will take you to the same screen as the market
+- old view inventory/traits screen removed due to redundency
+- Girl Details screen now editable and Girl Management screen now fully editable (editing image location didn't work before)
+- fixed catacomb girls house price not being initialised (at all). Which caused some bad bugs.
+- disabled autocost until i have balanced it completely (since it looks like i will have to value each traits worth separatly)
+- During freetime girls will now only buy 1 of an item
+- misc items will now equip if you give them to girls yourself
+- fixed details screen where the gold and worth lines ran together 
+- should have fixed the -2billion bug for good. Problem was when house percentage was at 0.
+- fixed girls torture flags not being saved
+
+v1.26 BETA
+- misc items do their effects correctly
+- slow down training rate slightly
+- spying on girls is now only way to see how much money they have
+- brothel fame results in more customers and affects asking price more
+- fix girls pregnancy not working in dungeon
+- add button to change house percentage, the more u let her keep the happier she'll be (and less likely to rebel)
+- Fixed a really dumb bug with the playermoney trigger, NOW the trigger will work when money <= -5000
+- pregnancy will display correctly
+- advertising attracts more customers
+- much less customers will be attracted overall, meaning other methods of money making will be needed (bars, halls) when there are not enough customers being attracted.
+- fixed problem with girl images not resizing
+- house percentage now viewable on details page
+- added transfer screen (screen where you can transfer girls between brothels, located on girl management screen)
+- Implemented autocosting, this will make item costs automatically defined by the game based on the items effects (it will allow easier balancing)
+- girls will now purchase more stuff
+- fixed some typos with random girl data files
+- sons and daughters inherit traits and stats from parents.
+- incorporial girls now don't gain/lose tiredness or health
+
+v1.25 BETA
+- reduced the effects of the Tough and construct traits
+- girls gain certain stats such as constitution only when leveling (or through items)
+- working the bar and hall now update fame
+- stat/skill increases from leveling up is reduced
+- stat/skill increases from having sex is reduced
+- training with other girls made slightly more effective
+- added bounds checking to some things
+- fixed some possible endless loops when girls run away
+- random girl chances of traits modified
+- increased the amount of customers by splitting between day and night shifts, in other words the number stays the same but is generated again for the night shift.
+- fixed checkbox on girl details screen
+- changed many integer values for calculating gold earned to long values (in the hope this is the cause of negative values, don't want to use _int64 just yet).
+- no longer will the variance be applied when it needn't be
+- capped ask price to 100
+- fixed unique girls in slave market not showing in red all the time
+- fixed flickering images when using up/down arrows in slave market
+- added error checking for traits in girls and rgirls (displays message if traits are incorrectly spelled or don't exist)
+- happiness will now decrease if you take something away from her that she likes
+- gang number shouldn't go into the negatives anymore
+- up/down arrow keys will now scroll through items list on turn summary
+- fixed bug with girls not getting tortured when they should have been
+- rebel now displayed correctly (ie, it will show if it is over 100)
+- fixed a memory leak with girls being released from dungeon
+- few minor optimisations
+- gangs now go back to the mission they were doing before automatically being placed on recruitment
+- fixed sterile trait for good, problem was that i wansn't checking for sterile trait with group sex (girls still can get inseminated but thats intended)
+- forgot to mentions, last update changed pregnancy time to 30 and kid grow up time to 50
+- item creation has always had a global value, now it works. It will apply temporary stats/skills/traits if set to 1 to all girls in current brothel (of the girl it is applied too).
+- if global flag is set to 2 then it will apply temporary effects to that single girl
+- Temporary traits last for 20 days. Temp stats/skills reduce or increase by 1 each day until 0 is met.
+- reduced the amount of neutral territory that can be taken over in a single turn
+- fixed looping game over script
+- fixed triggers not loading correctly allowing the original intent for the game over script to occur when reaching -5000
+- new customer fettish, one where they want a particular girl in a brothel
+- traits now show have a generalisation of what they do
+- fixed matron not doing her job with girls who are only working shift
+
+v1.24 BETA
+- girls only go up to level 20
+- girls level up slower
+- changed enforced min age to 17
+- some traits removed when aged
+- every 5 levels a girl has a chance of gaining a new trait
+- girls have a chance of gaining negative traits (injuries) when hurt
+- bothel happiness now takes into account bars and gambling halls
+- tweaked fetishes (chance customer will sleep with a girl
+- tweaked tiredness a little
+- added some variance to customer/girl price haggle
+- reduced effectiveness of training (needed for future update)
+- fiddled with pregnancy stuff
+- fixed problem where non human girls were being given for taken territory
+- renamed references to extorted bussiness to territory
+- increased matrons starting skill to 65
+- fixed problem with matron not working as she should
+- group sex now gives more money
+- reduced the askprice addition given by the girls level
+- overall profit more accurate
+- fixed gold from catacomb missions not being added
+- gold from goon missions is now taxable
+- gangs will now use healing potions during theft missions
+- new algorithm for calculating rebelness, needs some scaling but should be more accurate (basically if a girls hatred of player outways her fear then rebelness will increase, otherwise it will decrease)
+- added a couple more traits, nothing special though just fluff
+- fixed checkbox for use anti preg not updating status
+- changed checkbox cross to a tick
+- constitution now increases during training
+- sterile girls can now still get inseminated
+- various other minor fixes
+
+v1.23 BETA
+- fixed girls comming back to life
+- fixed girls resurecting accidently from dungeon
+- added a new trait "Incorporial"
+- renamed "keep in stock" to "auto buy" so as not to confuse people on how it works (it will buy when needed, not refil stock)
+- increased odds that new rivals will turn up after winning the game
+- fixed crashes with generating new rivals
+- fixed leveling not showing what level they are
+- max level is now 30
+- game over script will now only execute once
+- tweaked getting pregnant a little
+- forgot to add the image that shows a check in the check boxes
+- customers not paying is much much reduced
+- made modifications to custnopay.script (fixed not adding a single girl)
+- fixed some bugs with script editor
+- fixed some traits
+- added some new girls
+
+v1.22 BETA
+- added new interface item, checkboxes. You will see them on the staff mangement and the brothel upgrades screens.
+- you can now change the font by replacing the "comic.ttf" file with whatever you want and changing the font.txt file in the interfaces directory.
+- added ability to specify if a girl will use anti pregnancy potions from girl details screen
+- gang events now clear correctly at the end of each day
+- tweaked slave market somewhat
+- added traits viewable in slave market
+- fixed problem with exp not going above 100 meaning girls couldn't level up
+- ADDED color coded lists
+- matrons will now place girls back onto jobs they were doing before forced rest (but still based on their skill)
+- girl details now show when a child is due, it takes 80 days.
+- added prev/next buttons back to turn summary. also left/right arrow keys.
+- tweaked bar and gambling hall profits (in case of gambling all it also increases loses a bit)
+- increased asking price for girls
+- added 4 more script commands to script editor
+- added a basic (needs tweaking) game over event if your money falls below -5000
+- changed the buttons for hiring/firing matron a little
+- you now need to control a certain amount of bussiness to purchase new buildings.
+- fixed some player stuff carring over from other games when starting a new game.
+- fixed a problem with fame not updating correctly (was - from fame when supposed to +)
+- fixed a problem with girls who have unknown age being shown as runnaways (old code needed deleting)
+- a few other small tweaks to code were made as well
+- fixed a few feedback problems with pregnancy
+- girls will be a little happier when 'bad' items are taken away
+- when giving gifts, girls will be happier with items the more they cost (only with non 'bad' items)
+- after using the goto buttons on turn summary, you will now return to turn summary when clicking back from the screen your taken to.
+- fixed autosaves not working (crashing when loaded)
+- girls will get less tired when having sex
+- the "her health is being affected by working too much" message has been reduced in frequency
+
+v1.21 BETA
+- modified how tiredness works and implemented into producing movies
+- major modifications to turn summary screen. only really important stuff will now show in a message box its unfinished but you can see where i'm going with it. will add more categories in future.
+- on summary you will now see !!! marking girls with important details you should see
+- fixed crash when moving between brothels from girl details screen
+- changed girl details screen to show traits.
+- gangs now have names (helps alot with telling them appart)
+- added some more traits
+- fixed problem where girls working a movie in the night shift won't change to resting if the movie finishes
+- fixed problem with customers being unsatisfied by naturally skilled girls
+- age system works slighty different, aging will stop and is caped at 80. !!however!! if age is equal to 100 then it sets the age to unknown which is useful for certain custom characters.
+- movie income will degrade now
+- you can now hired a matron from the staff management screen. She will take girls off work and onto resting when they are tired or sick, she will take drugs from them if she finds them, she will cost 200G per day, she will help heal wounds faster and reduce tiredness faster when girls are resting, she will help prevent girls getting onto drugs, she will cheer them up when sad, and lastly her skill increases over time up to 95 (slowly).
+- added event for girls when they are resting and have full health and tiredness (since the matron won't put them back to work)
+- played with code in slave market a bit to fix crashes caused by custom girls
+- added 6 new unique girls
+- there is now always some improvement in gang stats when training
+- tons of minor tweaks and fixes to code (ie nothing you will notice much but on the whole the game will seem different)
+
+v1.20 BETA
+- fixed girls fucking people in bar (they were fucking the same person over and over.... lucky bastard)
+- fixed crash in shop when swtiching to sell mode
+- gangs on guard duty are more effective
+- fixed over purchasing of anti-preg potions & alcohol
+- fixed problem with girls getting added from girls lists (walk around town), this will fix hong meiling. Also may have fixed save bug since the pointers should now all be correct.
+- fixed mission description not updating when selecting another gang
+- items now unequip when taken or the unequip button is pressed (they were flaged unequiped before but the stats didn't revert.
+- fixed some code with rivals script
+- modified gold obtained from theft 
+- fixed catacombs missions were reporting how many men lost rather then how much money gained.
+- scaled back amount gained from producing movies
+- pregnant girls will now only show preg images if they are preg. Otherwise they will just show regular profile image.
+- girls asking price will increase more now, according to their fame and level.
+- girls will be less happy with accomodation less then their current level (up to top level accomodation of course)
+- A girls level and experiance is now shown on details screen (its always been hidden in the game previously)
+- tweaked how girls are removed from dungeon
+- tiredness from certain actions increased
+- added many new traits
+- girls now use agility more in combat, now instead of only using it for dodging attacks they will use it to attempt escape if their health is low enough.
+- changed items to that of user PHR
+- added Solo761's editor to the tools file
+- updated script editing tool. Script view is autoformated for easier reading. Descriptions added for commands when selected from list.
+- added 3 new script commands (see them down bottom of editor)
+
+v1.19 BETA
+- fixed problems with runnaways
+- tweaked girls being added from scripts to fix some problems
+- fixed bug with characters girls not getting 60%
+- !!!ADDED SCRIPT EDITOR!!! (still havn't done the new commands yet, but they will be a snap now this is done)
+
+v1.18 BETA
+- fixed hang when random girls are generated (yeh, this means pretty much anywhere may cause game to hang)
+- revised message for gangs when they get placed on auto recruitment
+- added message for gangs being placed on guard duty automatically
+- added messages for when you don't get taxed or get taxed nothing
+- fixed cheats flag not setting correctly when starting a new game
+- fixed save master file not saving correctly
+- fixed girls are not saving
+- fixed problems with girls added to brothel/dungeon.
+- fixed cammy white script giving 2 girls
+- fixed Gang upkeep cost not automatically updating when selecting new missions
+- fixed pregnant images now only replace profile pictures when pregnant
+- fixed rivals attacking player before the first month is up
+- fixed pregnancy problems, also fixed the below problem and all situation where a state should be set to false (ie pregnant, slave and such)
+- fixed coat hanger item due to the above fix
+- added more girls 1 random girl and several special encounters
+- changed readme.txt to readme.html
+
+v1.17b BETA
+- fixed garbeled girl management screen
+- added filter consuables to replace makeup and food item types
+- made sell slave button on dungeon screen non selectable when girl isn't a slave
+- fixed cheat mode remaining on in some cases
+- Fixed item filters not working on inventory
+- "reduced" odds of girl name appearing more than once
+
+v1.17 BETA
+- incorporated rival gang names
+- added many more traits (some may not yet appear ingame as i need to update the girls for some of them)
+- removed black background for images
+- fixed images taking up more and more memory
+- fixed load problem to do with saved movies
+- changed the way runaways are handled by the game. will fix some problems including
+	- girls will no longer take up a brothel space
+	- added number of runaways to summary screen
+	- certain crashes and girls disappearing
+- optimised all code to do with girls (runs a little faster and cleaner)
+- reduced movie values
+- added item filter to the town store and increased the amount of items in the shop
+- gambling and bars modified to make more money
+- fixed a few more grammar and spelling mistakes
+- fixed problem where still getting gold from extortion and reduced how much you get from extortion
+- fixed mis-reported age in girl details, and enforced legal ages (18+)
+- fixed cap-lock and shift keys not working on some machines (for typing capital letters into edit boxes)
+- fixed problem causing player not being able to get girls pregnant
+- sons and daughters now come of age in 1000 days (boys are sold as slaves and girls are placed in dungeon for your use)
+- now takes just 80 days to give birth
+- fixed no inventory until next day bug when loading another save game without quiting
+- fixed editing of positons for brothel management to work for next button, also swaped the buttons around
+- fixed some traits being added to a girl when they have an opposing trait
+- added text "Has addiciton" to girl details if they have one. This is a temp solution until i merge the traits, inventory and details screens
+- dungeon screen sell slave button will now be disabled if nothing selected
+- fixed cammy script bug
+- gang missions now cost different amounts and the missions are less rewarding.
+
+v1.16 BETA
+- Girls now receive the virgin flag based on a formula (or their age)
+- slave market was no longer getting slave girls from character girl lists. It now does again.
+- fixed custom girl scripts not running
+- fixed some bugs when taking gold
+- fixed girls not recovering when resting
+- times when needed to count girls for objectives now counts the girls in the dungeon.
+- added a few new items
+- changed the way game keeps track of loaded mods with savegame
+- added new directory in resources called interface, the files in there change the interface. More files will be added in future as the interface becomes more concrete
+- added a mission message for when gangs on sabotage fail to find something to sabotage
+- when a gangs' number reaches 5 or below they will automatically be placed on recruitment mission
+- if a gang is on recruit mission and their number hits 15 they will go to a guard mission. (was going to make them go to a random mission but decided against it)
+- fixed the last (i hope) bug with mis reported girl prices
+- added sell slave button to dungeon screen
+
+v1.15 BETA Quickfix release
+- cheatmode now makes walk around town find girl every time
+- fixed talk to flag :D oops
+
+v1.14 BETA
+- enabled support for caps lock
+- fixed savegame corruption to do with movies
+- a girls fear and love towards the player now is taken correctly into account
+- Added lesbian trait
+- added coat hanger item (should work but untested, fixed some buggy code)
+- fixed traits not showing
+- fixed girl prices not working correctly
+- fixed a load crash with savegames that have an objective
+- added recruitment mission for goons and fixed goons not being replaced when havn't seen combat (forgot to return the combat flag to false)
+- fixed a crash caused by the rival defeat script (the giving of an item after defeating an enemy had a bug)
+- fixed cammy triggers (somehow the triggers.txt became a jpg... :S)
+- goons now use healing potions
+- gangs guarding will now deter girls disobeing more
+- girls will also disobey less if their rebelness is less than 20
+- > 50 happiness will now also decrease chances of disobey (< 20 still increases chances)
+- num custs slept with now doesn't show if girl refused to work
+- up/down arrows will scroll events on turn summary
+- fixed problem with girl pay per customer not being shown correctly
+- added rebel to dungeon screen
+- added happiness to girl management screen
+- fixed girl images for certain sex events not showing
+- added deposit all button to bank screen
+- you can now talk to girls (dungeon or details) 5 times a day. Either spread this out amoungst many girls or use all 5 chances with 1 girls.
+- replaced all Alife functions with simple functions (the alife stuff really didn't do much gamewise)
+- minor interface tweaks
+- minor code tweaks
+- girl sex events now show how much they got paid for that session, reducing the number of events needed
+- Added a cheat state, to activate cheat state your first brothel must be called Test (case sensitive) adds following cheats
+		- Unlimited gold (goes down but replenished every day)
+		- Unlimited walk around towns
+		- Given 1 of every item at start of game
+		- unlimited tortures
+		- unlimited talking to girls
+		- slave market generates new content every visit
+
+v1.13 BETA
+- fixed training mission doing catacombs as well.
+- fixed crash when torturing
+- fixed crash when branding
+- fixed lots of crashes with goons
+- fixed miss-reported price on slave girls
+- Small changes to cust no pay script
+
+v1.12 BETA
+- gangs implemented.
+	- still not support for names yet so all are called "unnamed" for now
+	- gangs will use their skills differently according to the situation
+	- gangs will recover 1 man up to the max of 15 when they have a turn without combat
+	- gangs have a 40% chance of running away after losing half their number in a fight
+	- can use nets and healing potions (nets allow easy capture of girls
+	- gang supplies and upgrades added to the staff management screen
+	- added training mission
+- fixed some spelling mistakes
+- adjusted girl training.
+- Load game menu added, also clicking the save button will save the game under the name of the players 1st brothel
+- The game will automatically load new mod files. Mods should now adopt the follow formats (they are still txt files just the extention is changed)
+	- .txt girl files now should be .girls
+	- .txt random girls should be .rgirls
+	- .txt item files should be .items
+- Cheats removed (999999 gold, and all items when starting a new game)
+- went through all algorithms and  checked various things.
+- training will cost 5g and is slower also girls can only train in groups of 4 now
+- Basic summary screen added. Just objective info for the moment, but i will be adding more with each update.
+- Changes to girls
+	- Max number of customers a girl can see in a shift is 8. They will need to be max in charisma, fame and beauty to get this (so its almost impossible).
+	- slave girls still earn less, although its gone from 50% less to 45%
+	- working nights increase a girls asking price a little
+	- being a slave no longer increases obedience just for the fact they are one
+	- health, happiness and tiredness affect obedience (they actually always have, i've just tweaked a little)
+	- increase the affect skills have on a girls purchase/sell price
+	- girls constitution will now properly reduce how tired they get, also getting tired will be quicker if they are working hard
+	- removed price haggeling between the girls and customers.
+- fixed many little things
+- torturing is more effective
+
+v1.11 BETA
+- Fixed issue where recalling last goon mission will make the list disappear. Its was a weird bug.
+- fixed problem where the new way girls stats stack was causing them to ask for more and more gold. Which in turns means more customers unable to pay.
+- fixed releasing all customers crash for good.... i hope
+- added intelligence test for customers who don't have enough money, they will now look for a cheaper girl
+- Added multi selection to slave market, dungeon screen and staff management (still more screens to do with next update)
+- the slave button on the dungeon screen will now work on customers for selling them into slavery
+- removed flicking interface when choice boxes come up (makes things look much nicer and smoother)
+- adjusted some feedback messages on the dungeon screen and changed how occupants are listed
+- releasing customers is now considered a nice thing to do
+- Shift selecting now works when having selected from a lower list item and shift clicking a higher list item
+- changed appearance of girl details screen alot, no more change jobs button as it isn't needed :D
+- added number inside () on job selection list boxes to show how many girls in current brothel are doing that job
+- fixed some spelling and grammar errors
+- fixed newly branded girls getting extra cash
+
+v1.10 BETA
+- Potion of full frontal growth now removes trait small boobs
+- fixed girl genaration bug causing a crash in scripts (take daughters) and sometimes on slave market
+- can no longer sell or free runaway girls
+- left/right arrow arrow keys act like clicking prev/next. Up/Down will scroll list boxes on screens with only 1 list box.
+- fixed crash when releasing customers from dungeon
+- fixed health for customers not being saved
+- guarding goons are now a major deterent to girls being beaten and raped
+
+v1.09 BETA
+- added new script trigger number 11 which triggers when girl is kidnaped (no arguments)
+- few more spelling mistakes
+- fixed bug allowing hire of more then 15 goons into an existing mission
+- staff management screen will now keep a selected mission on the viewable list when interacting with it
+- very massive changes to the way girls gain/lose stats and skills. Requires starting a new game since the save format is too different for conversion.
+- fixed the last bug that was causing corrupt saves. Hoping the new save format won't introduce any new ones (i doubt it will)
+- updated the editing manual entry for random girls.
+- added ability to CTRL or SHIFT click items to select multiple entries on the gift screen. This is just for testing the new feature. Will add to other screens latter.
+- added a couple more random girl templates and some more character girls
+
+v1.08 BETA
+- fixed extort mission not displaying the correct message
+- fixed a problem with items that add or remove traits. They were not updating correctly which was causing savegame corruption. I think i got them all but if we are still having savegame corruptions then i missed one.
+- fixed some traits not applying effects sometimes.
+- added some more healing potions, they vary in how common they are according to power. The existing scar healing one is still the most powerful and only 5% chance of it being in the shop
+- relevant list boxes will now remember last selections
+- message boxes now roughly are differenct colors according to how important they are. The colors and reasons for the colors may change in future.
+- You will not follow a girl to the dungeon if you send her there. And if there are no more girls you will leave the details screen.
+- changed details display to percentage values rather then "untrained", "trained" and all that jazz.
+- while training skills now upgrade correctly, yeh it wasn't updating the skills. It was updating the stats instead which probably cause random results.
+- girl management screen will show how many days left until a runaway escapes for good. It will also show how many days left on a move
+- caption for game window show shows program name and version
+- adjusted text box appearance slightly
+- numpad will now enter numbers correctly
+- fixed some spelling mistakes
+- changed manychoice boxes to be clearer as to what they do
+- recapture missions now do not return unless they die or you ask them to return.
+- clicking the save button will now display "game saved" message
+- fixed issues with the slave market. It works a bit differently now which ended up fixing bugs as a side effect.
+- moved saving of version number into save files. this means save files will update to the lastest version if possible. But for this version you still need to start a new game. from this version onwards, providing your savegame isn't already corupt you should not have to start a new game.
+- now saving variables to track if walked around town and if talked to girl
+- MAJOR change to the way images for girls are loaded. will reduce memory usage by a HELL of alot compaired to previous versions. Should also increase speed a bit.
+- Changed the way gallery works behind the scenes. Should work slighly better but probably not noticeable.
+- fixed a problem with list boxes not updating when you deselect an item by clicking a black area
+- fixed a problem with the have _ goons objective
+- fixed freeing a slave not updating the house percentage of profit
+- added "broken will trait". Girls have a 2% chance of getting after torture by player
+- added "Masochist" trait. Girls can get on 3% chance when involved in BDSM like activities.
+- added a few other items
+- fixed occasional endless (well almost endless) loop when more then a certain number of girls working in brothel or streets.
+- swaped prev and next buttons to be logical :D
+
+v1.07 BETA
+- There will only be 8 girls generated each day in the slave market
+- added autosave to separate file. you need to delete savegame.gam and rename the autosave.gam to savegame.gam for it to load
+- modified girl summary event to show more (and show how much skills increase).
+- made training slightly more effective 
+- made girl details show skills as "MAX" when they are full
+- couple of minor interface tweaks
+- modified the resouce manager heavily (this is what loads and unloads images, only 30 images including buttons are loaded at any time)
+- fixed goons dying on missions not updating the total amount of goons. meaning you get stuck with not being able to hire anymore
+- when a girl is branded a slave they will now be set at lowest accomodation level and your percentage of profit will be set to 100%
+- Objectives never displayed the completion message or what the reward was. They do now
+- fixed items with multiple effects such as "super cream of healing" (before they only loaded the 1st effect. So many items will now work as they were supposed to.
+- Fixed reports on missions not showing as they were supposed to
+- viewing girl details from dungeon will change the "send to dungeon" button to a "release girl" button
+- fixed being able to torture a girl more then once per day by releasing from dungeon and placing in dungeon
+- fixed some loading bugs, which also fixed some bugs to do with traits and items
+- fixed some minor pointer issues
+- fixed a few crash on quit bugs
+- fixed crash when in dungeon screen and no girl selected when clicking view details, also disabled it to make it clearer
+- fixed talking to girls 2 times per day, once from details screen, the other from dungeon screen. Was actually a feature since the two talk scripts are separate (they just have same content for now), but changed it since once per day makes more sense.
+- hotkeys attached to the numbers 1-6 on the keyboard, pressing will change between your brothels (if you have them). It will change the current brothel you are at but will not change the current screen. so you can change the brothel you are at and still stay on the manage girls screen.
+- added hotkeys, o: town screen, a: turn summary, d: dungeon screen, s: slave market, m: mayors office, b: bank, p: shop, g: girl management, t: staff management, u: brothel upgrades & supplies
+- because of the hotkeys. On screens when it is relevant (ie will change what you work with) in the upper left of the screen it shows the name of the brothel you are currently at.
+- mouse wheel now works on all list boxes
+- fixed prev/next buttons no longer correctly on girl details screen working since v1.06
+- fixed issue that didn't allow bribe rate to be set back to 0
+- fixed some stuff with items and modified the view traits/inventory screen
+- girls will sell items they cannot equip (cause that item slot is full) providing the equiped item is better (they do this when you click next day)
+- added message to tell total overall profit until summary screen is done
+- fixed the wierd sex message appearing sometimes. this also fixed the messages telling when a girl got a desease.
+- made it so deseases can only be caught by girls with low health
+- fixed a save issue with goons (probably also fixes some other goon problems)
+- mayors office screen now shows how much your currently bribing
+- fixed item desguised slave band
+- added change job button to girl details screen
+- changed some interface images a little and added a few more images to existing girls
+
+
+v1.06 BETA
+- Memory leak to do with slave market fixed
+
+v1.05 BETA
+- Girls without money and with a drug problem may steal money from customers and you.
+- fixed goon missions not working after recalling a mission
+- changed way interfaces work with girls behind the scenes... for better or worse :D
+- added button to view girl details from dungeon screen
+- added give gift to girl details screen
+- fixed fireing goons to work correctly and can now also fire goons from a selected mission
+
+v1.04 BETA
+- Fixed buying 20 barrels of alcohol only buying 10
+- adjusted suspision levels and raid fequency
+- made slave girls not start with any money
+- girls without money will not get addicted to drugs
+- only 20% chance of addiction when the girl is unhappy for a while
+- added summery event to each girls turn summery. gives a breif overview of what they did.
+- fixed bribe influence. it should now work as it should (this will decrease raids too), also it is impossible to get 100%
+- fixed total daily goon cost not showing correctly :D
+- added ability to select an existing mission and hire goons INTO it on staff management
+
+v1.03 BETA
+- fixed many issues with traits... this also fixed many issues to do with saving
+- fixed some issues with items
+- fixed an issue with releasing girls that were saved in the dungeon
+- fixed issue with items that add traits (potion of frontal growth)
+
+v1.02 BETA
+- Disabled load game button when no save exists
+- optimisations (particulary noticeable when loading savegames)
+- fixed dungeon releasing girls into a already full brothel
+- fixed listbox navigation on change jobs screen
+- fixed prev and next buttons not updating inventory and traits display
+- fixed game crashing when movies are finished production
+- goons cost per day and total cost per day now shown on staff management
+- fixed rivals were not having their number of goons saved.
+- Killed some memory leaks, they were probably responsible for many crashes.
+
+v1.01 BETA
+- Removed autosave when going to the next day (at least until I'm sure saving works 100%)
+- Fixed crashes with item equiping
+- Save game now saves players inventory (dunno how i missed this)
+- Added health display to girl management screen
+- added some more log information (means you can open gamelog.txt and see some stuff, but its not complete yet)
+- Various random data errors
+- minor optimizations
+- Anti-Preg Potions now renamed to Protection Potion, and they protect against STDs.
+- Reduced chance of getting STDs
+- Made random objectives appear a little more often

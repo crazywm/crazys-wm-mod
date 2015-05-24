@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Exotic Amulet"    
+      Desc="This amulet gives the wearer a slight otherworldly quality. Their eyes appear unnaturally striking, and they seem more beautiful and compelling. (+10 Beauty, +Strange Eyes, +Exotic)" 
+      Type="Necklace" 
+      Badness="0" 
+      Special="None" 
+      Cost="1250" 
+      Rarity="Shop25" 
+      Infinite="false" 
+      GirlBuyChance="10">
+   <Effect What="Stat" Name="Beauty" Amount="10" />
+   <Effect What="Trait" Name="Strange Eyes" Amount="1" />
+   <Effect What="Trait" Name="Exotic" Amount="1" />
+</Item>
+</Items>

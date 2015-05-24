@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Prophylactic Ring"
+      Desc="A common enchantment on this strange flexible ring makes it impossible for its wearer to become pregnant by any means. It can't stop non-human creatures from implanting autonomous seed in the body, however. (-10 Fear, -10 Hate, adds Sterile)"
+      Type="Ring"
+      Badness="0"
+      Special="None"
+      Cost="150"
+      Rarity="Shop25"
+      Infinite="false">
+   <Effect What="Stat"  Name="PCFear"                  Amount="-10"    />
+   <Effect What="Stat"  Name="PCHate"                  Amount="-10"    />
+   <Effect What="Trait" Name="Sterile"                 Amount="1"    />
+</Item>
+<Item Name="Prophylactic Ring"
+      Desc="A common enchantment on this strange flexible ring makes it impossible for its wearer to become pregnant by any means. It can't stop non-human creatures from implanting autonomous seed in the body, however. (-10 Fear, -10 Hate, adds Sterile)"
+      Type="Ring"
+      Badness="0"
+      Special="None"
+      Cost="150"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Stat"  Name="PCFear"                  Amount="-10"    />
+   <Effect What="Stat"  Name="PCHate"                  Amount="-10"    />
+   <Effect What="Trait" Name="Sterile"                 Amount="1"    />
+</Item>
+</Items>

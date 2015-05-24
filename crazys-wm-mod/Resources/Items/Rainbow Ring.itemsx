@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Rainbow Ring"
+      Desc="This magical stone ring allows its wearer to change the color of their hair at will, and even to slightly alter their skin tone to fit their whims or their partners'. (+15 Beau, +5 Happ)"
+      Type="Ring"
+      Badness="0"
+      Special="None"
+      Cost="800"
+      Rarity="Shop25"
+      Infinite="false">
+   <Effect What="Stat"  Name="Beauty"                  Amount="15"    />
+   <Effect What="Stat"  Name="Happiness"               Amount="5"    />
+</Item>
+</Items>

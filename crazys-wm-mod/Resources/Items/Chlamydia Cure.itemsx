@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Chlamydia Cure"
+      Desc="This nasty green unguent instantly cures chlamydia when applied to the afflicted's genitals. It smells awful for a long time, but better stinky than sick. (-5 Cha)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="1000"
+      Rarity="Shop25"
+      Infinite="false"
+      GirlBuyChance="0">
+   <Effect What="Stat"  Name="Charisma"                Amount="-5"    />
+   <Effect What="Trait" Name="Chlamydia"               Amount="0"    />
+</Item>
+<Item Name="Chlamydia Cure"
+      Desc="This nasty green unguent instantly cures chlamydia when applied to the afflicted's genitals. It smells awful for a long time, but better stinky than sick. (-5 Cha) (This Seller can get more but he charges more)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="2000"
+      Rarity="Shop50"
+      Infinite="false"
+      GirlBuyChance="0">
+   <Effect What="Stat"  Name="Charisma"                Amount="-5"    />
+   <Effect What="Trait" Name="Chlamydia"               Amount="0"    />
+</Item>
+</Items>

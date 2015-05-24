@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Ring of the MILF"
+      Desc="A mysterious ring that makes a woman slightly older and more mature. (Age +5. Adds Big Boobs and MILF. Removes Lolita.)"
+      Type="Ring"
+      Badness="10"
+      Special="None"
+      Cost="3200"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Stat"  Name="Age"                     Amount="5"    />
+   <Effect What="Trait" Name="Big Boobs"               Amount="1"    />
+   <Effect What="Trait" Name="MILF"                    Amount="1"    />
+   <Effect What="Trait" Name="Lolita"                  Amount="0"    />
+</Item>
+</Items>

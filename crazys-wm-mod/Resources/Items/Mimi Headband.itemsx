@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Mimi Headband"
+      Desc="A magical headband that turns your girl into a cat girl. (Adds Cat Girl)"
+      Type="Hat"
+      Badness="6"
+      Special="None"
+      Cost="1900"
+      Rarity="Shop25"
+      Infinite="false">
+   <Effect What="Trait" Name="Cat Girl"                Amount="1"    />
+</Item>
+</Items>

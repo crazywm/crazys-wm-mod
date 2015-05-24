@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Magic Underwear"    
+      Desc="Arcane symbols cover this underwear. It enhances magical abilities and intelligence, and it also looks good on the wearer. (+5 Magic, +4 Cha, +3 Int, +5 Happiness)" 
+      Type="Underwear" 
+      Badness="0" 
+      Special="None" 
+      Cost="800" 
+      Rarity="Shop25" 
+      Infinite="false">
+   <Effect What="Skill" Name="Magic" Amount="5" />
+   <Effect What="Stat" Name="Charisma" Amount="4" />
+   <Effect What="Stat" Name="Intelligence" Amount="3" />
+   <Effect What="Stat" Name="Happiness" Amount="5" />
+</Item>
+</Items>

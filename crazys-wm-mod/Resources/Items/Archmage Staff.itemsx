@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Archmage Staff"
+      Desc="This deceptively simple painted wood staff is woven with such powerful enchantments that a mage of any talent can instantly detect its true nature just by touching it. It is bursting at the seams with arcane energy that almost begs to be unleashed. (A) (+30 Mag, +8 Comb, +16 Conf, -32 Fear, -16 Hate)"
+      Type="Weapon"
+      Badness="0"
+      Special="None"
+      Cost="3000"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Skill" Name="Magic"                   Amount="30"    />
+   <Effect What="Skill" Name="Combat"                  Amount="8"    />
+   <Effect What="Stat"  Name="Confidence"              Amount="16"    />
+   <Effect What="Stat"  Name="PCFear"                  Amount="-32"    />
+   <Effect What="Stat"  Name="PCHate"                  Amount="-16"    />
+</Item>
+<Item Name="Archmage Staff"
+      Desc="This deceptively simple painted wood staff is woven with such powerful enchantments that a mage of any talent can instantly detect its true nature just by touching it. It is bursting at the seams with arcane energy that almost begs to be unleashed. (A) (+30 Mag, +8 Comb, +16 Conf, -32 Fear, -16 Hate)"
+      Type="Weapon"
+      Badness="0"
+      Special="None"
+      Cost="3000"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Skill" Name="Magic"                   Amount="30"    />
+   <Effect What="Skill" Name="Combat"                  Amount="8"    />
+   <Effect What="Stat"  Name="Confidence"              Amount="16"    />
+   <Effect What="Stat"  Name="PCFear"                  Amount="-32"    />
+   <Effect What="Stat"  Name="PCHate"                  Amount="-16"    />
+</Item>
+</Items>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Blonde Ring"
+      Desc="A ring given by the cult of blondes. It can shoot lasers. (Combat +5, Beauty +5)"
+      Type="Ring"
+      Badness="0"
+      Special="None"
+      Cost="2800"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Skill" Name="Combat"                  Amount="5"    />
+   <Effect What="Stat"  Name="Beauty"                  Amount="5"    />
+</Item>
+</Items>

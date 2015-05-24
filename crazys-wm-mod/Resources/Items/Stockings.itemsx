@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Stockings"
+      Desc="A simple pair of stockings that can be knee length or thigh length. (+5 Charisma and Beauty)"
+      Type="Misc"
+      Badness="0"
+      Special="None"
+      Cost="160"
+      Rarity="Common"
+      Infinite="true"
+      GirlBuyChance="70">
+   <Effect What="Stat"  Name="Charisma"                Amount="5"    />
+   <Effect What="Stat"  Name="Beauty"                  Amount="5"    />
+</Item>
+</Items>

@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Gauntlet de Sade"    
+      Desc="This long, black leather gauntlet locks tightly onto the wrist and hand. It creates sadistic desires in the wearer, and the gauntlet can actually absorb power from the physical suffering of other people -- especially women. Normal sexual desire will be reduced, but the wearer will feel intense pleasure and even orgasms from inflicting pain. However, most wearers will still maintain their sense of compassion and try to avoid causing permanent harm. (+Sadistic, +50 BDSM, -50 Normal Sex)" 
+      Type="Armband" 
+      Badness="18" 
+      Special="None" 
+      Cost="4000" 
+      Rarity="Shop05" 
+      Infinite="false">
+   <Effect What="Skill" Name="NormalSex" Amount="-50" />
+   <Effect What="Skill" Name="BDSM" Amount="50" />
+   <Effect What="Trait" Name="Sadistic" Amount="1" />
+</Item>
+</Items>

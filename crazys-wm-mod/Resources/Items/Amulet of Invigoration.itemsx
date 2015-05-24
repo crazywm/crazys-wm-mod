@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Amulet of Invigoration"    
+      Desc="This bright, simple pendant is composed of some unknown metal. It always trembles slightly, as if some energy inside it simply can't remain stagnant. When put on, this energy extends to the wearer, ensuring that they never feel tired. The strong, stimulating effect can cause some nervousness, and the lack of any sleep may reduce physical resilience. (-100 Tiredness, -10 Constitution, +Nervous)" 
+      Type="Necklace" 
+      Badness="16" 
+      Special="None" 
+      Cost="8000" 
+      Rarity="Catacomb15" 
+      Infinite="false">
+   <Effect What="Stat" Name="Tiredness" Amount="-100" />
+   <Effect What="Stat" Name="Constitution" Amount="-10" />
+   <Effect What="Trait" Name="Nervous" Amount="1" />
+</Item>
+</Items>

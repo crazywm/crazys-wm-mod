@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Plain Lingerie"
+      Desc="This simple set of cloth bra and panties is definitely erotic, but it's nothing fancy or special. It's only as pretty as the girl wearing it. (D) (+5 Lib, +2 Cha, +5 all sex skills)"
+      Type="Underwear"
+      Badness="25"
+      Special="None"
+      Cost="75"
+      Rarity="Common"
+      Infinite="true"
+      GirlBuyChance="5">
+   <Effect What="Skill" Name="Anal"                    Amount="5"    />
+   <Effect What="Skill" Name="BDSM"                    Amount="5"    />
+   <Effect What="Skill" Name="Beastiality"             Amount="5"    />
+   <Effect What="Skill" Name="Group"                   Amount="5"    />
+   <Effect What="Skill" Name="Footjob"                 Amount="5"    />
+   <Effect What="Skill" Name="Handjob"                 Amount="5"    />
+   <Effect What="Skill" Name="Lesbian"                 Amount="5"    />
+   <Effect What="Skill" Name="NormalSex"               Amount="5"    />
+   <Effect What="Skill" Name="OralSex"                 Amount="5"    />
+   <Effect What="Skill" Name="Strip"                   Amount="5"    />
+   <Effect What="Skill" Name="TittySex"                Amount="5"    />
+
+   <Effect What="Skill" Name="Service"                 Amount="5"    />
+   <Effect What="Stat"  Name="Charisma"                Amount="2"    />
+   <Effect What="Stat"  Name="Libido"                  Amount="5"    />
+</Item>
+</Items>

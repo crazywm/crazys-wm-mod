@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Amulet of Pinocchio"
+      Desc="This fey-enchanted amulet has the unique ability to make any construct into a real, living, breathing, flesh and bone human being! (+50 Hap, -10 Com, -25 Cons, removes Construct)"
+      Type="Necklace"
+      Badness="0"
+      Special="None"
+      Cost="4000"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Skill" Name="Combat"                  Amount="-10"    />
+   <Effect What="Stat"  Name="Happiness"               Amount="50"    />
+   <Effect What="Stat"  Name="Constitution"            Amount="-25"    />
+   <Effect What="Trait" Name="Construct"               Amount="0"    />
+</Item>
+</Items>

@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Dark Magic Makeup"    
+      Desc="This makeup kit has a strong magical aura, yet something about it seems a little off. When applied, it gives any girl a very dark, sullen appearance. It's somber effects make the wearer seem intensely desirable, but it's magic can make even the most cheerful of girls rather moody. (Temporary Effects: +75 Beauty, +10 Magic, -50 Happiness)" 
+      Type="Food" 
+      Badness="20" 
+      Special="Temporary" 
+      Cost="300" 
+      Rarity="Shop05" 
+      Infinite="true" 
+      GirlBuyChance="0">
+   <Effect What="Stat" Name="Beauty" Amount="75" />
+   <Effect What="Stat" Name="Happiness" Amount="-50" />
+   <Effect What="Skill" Name="Magic" Amount="10" />
+</Item>
+</Items>

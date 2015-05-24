@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Yummy Cookie Bra"
+      Desc="This bra may be made of food, but it's surprisingly sturdy. (Strip, Spirit, Charisma +5, Health +45)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="10"
+      Rarity="Shop25"
+      Infinite="false">
+   <Effect What="Skill" Name="Strip" Amount="5" />
+   <Effect What="Stat" Name="Health" Amount="45" />
+   <Effect What="Stat" Name="Spirit" Amount="5" />
+   <Effect What="Stat" Name="Charisma" Amount="5" />
+</Item>
+</Items>

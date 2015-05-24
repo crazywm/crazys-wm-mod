@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Anti-age cream."
+      Desc="A wonderful cosmetic cream that doesn't just make you look younger - it actually makes you younger! (age -1 to -3)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="1999"
+      Rarity="Shop05"
+      Infinite="false"
+      GirlBuyChance="3">
+   <Effect What="Stat"  Name="Age"                     Amount="-1"    />
+</Item>
+<Item Name="Anti-age cream "
+      Desc="A wonderful cosmetic cream that doesn't just make you look younger - it actually makes you younger! (age -1 to -3)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="1999"
+      Rarity="Shop05"
+      Infinite="false"
+      GirlBuyChance="2">
+   <Effect What="Stat"  Name="Age"                     Amount="-2"    />
+</Item>
+<Item Name="Anti-age cream,"
+      Desc="A wonderful cosmetic cream that doesn't just make you look younger - it actually makes you younger! (age -1 to -3)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="1999"
+      Rarity="Shop05"
+      Infinite="false"
+      GirlBuyChance="2">
+   <Effect What="Stat"  Name="Age"                     Amount="-3"    />
+</Item>
+</Items>

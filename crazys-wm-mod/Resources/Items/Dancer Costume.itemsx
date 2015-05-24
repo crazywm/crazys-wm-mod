@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Dancer Costume"
+      Desc="This colorful and flashy dress is made of long, interlocking strips of light fabric, festooned with sequins and small polished stones. It is intended to flow gracefully around the wearer's body while she dances, and while it wasn't designed primarily as a stripping aid, it is skimpy and light enough to perform admirably in that regard. (C) (+20 Performance, +15 Strip, +10 Cha, +5 Lib)"
+      Type="Dress"
+      Badness="15"
+      Special="None"
+      Cost="500"
+      Rarity="Shop25"
+      Infinite="false">
+   <Effect What="Skill" Name="Strip"                   Amount="15"    />
+   <Effect What="Stat"  Name="Charisma"                Amount="12"    />
+   <Effect What="Stat"  Name="Libido"                  Amount="5"    />
+   <Effect What="Skill" Name="Performance"             Amount="20"    />
+
+</Item>
+</Items>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Breast Reduction Pill A"
+      Desc="Sick of hauling around humongous magombos? If you're tired of not being able to see your own feet, this bitter-tasting medicine is for you. (Reduces breast size to Small.)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="300"
+      Rarity="Shop05"
+      Infinite="false"
+      GirlBuyChance="0">
+   <Effect What="Trait" Name="Busty Boobs"             Amount="0" />
+   <Effect What="Trait" Name="Big Boobs"               Amount="0" />
+   <Effect What="Trait" Name="Giant Juggs"             Amount="0" />
+   <Effect What="Trait" Name="Massive Melons"          Amount="0" />
+   <Effect What="Trait" Name="Abnormally Large Boobs"  Amount="0" />
+   <Effect What="Trait" Name="Titanic Tits"            Amount="0" />
+   <Effect What="Trait" Name="Small Boobs"             Amount="1"    />
+</Item>
+</Items>

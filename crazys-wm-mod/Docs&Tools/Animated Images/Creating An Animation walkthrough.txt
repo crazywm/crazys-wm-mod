@@ -1,0 +1,13 @@
+NOTE: This walkthrough assumes you already know how to add images to the game, as it only illistrates the extra steps
+	Also the example files are called Sex18.ani (which is actually a txt file) and Sex18.jpg
+
+1. First find a gif file you want to animate
+2. Use the program Avi4BMP to save the file as a sprite sheet (.jpg) format
+3. create a .txt file like the example in this folder the numbers are:
+		(Number of frames) (animation speed) (width of frames) (height of frames)
+4. Rename the .txt file to a .ani file.
+5. Other then the extension (.ani) it should be the same filename as the image
+6. Place the .ani file in the desired girls directory as usual
+7. Place the .jpg file in a subfolder of the girls folder called ani
+8. The same naming scheme for image files still applies (preg, les, etc)
+9. Enjoy :D

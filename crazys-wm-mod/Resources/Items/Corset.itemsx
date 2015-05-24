@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Corset"
+      Desc="Make sure to pull it so tight that she can't breathe to give its full effect! (-5 constitution. Adds Big Boobs and Great Figure.)"
+      Type="Dress"
+      Badness="15"
+      Special="None"
+      Cost="790"
+      Rarity="Shop50"
+      Infinite="false"
+      GirlBuyChance="10">
+   <Effect What="Stat"  Name="Constitution"            Amount="-5"    />
+   <Effect What="Trait" Name="Big Boobs"               Amount="1"    />
+   <Effect What="Trait" Name="Great Figure"            Amount="1"    />
+</Item>
+</Items>

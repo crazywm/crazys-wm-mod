@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Glasses of Singular Brilliance"    
+      Desc="These glasses look perfectly normal to anyone except the wearer, but they affect a person's vision rather uniquely. They cause complete blindness in one eye -- but at the same time, they give extraordinary vision in the other. The wearer's remaining sight shows the world as intensely more vibrant and beautiful. The glasses never come off unintentionally, and their enthralling nature keeps most people from ever removing them. However, taking them off causes the effects to fade within a few hours. (+One Eye, +Optimist)" 
+      Type="Glasses" 
+      Badness="10" 
+      Special="None" 
+      Cost="2000" 
+      Rarity="Shop05" 
+      Infinite="false">
+   <Effect What="Stat" Name="Beauty" Amount="20" />
+   <Effect What="Stat" Name="Charisma" Amount="5" />
+   <Effect What="Trait" Name="Optimist" Amount="1" />
+   <Effect What="Trait" Name="One Eye" Amount="1" />
+</Item>
+</Items>

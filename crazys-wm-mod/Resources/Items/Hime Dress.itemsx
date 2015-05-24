@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Hime Dress"
+      Desc="A poofy, elegant dress worn by a princess. (+10 Beauty. Adds Elegant, Cute)"
+      Type="Dress"
+      Badness="0"
+      Special="None"
+      Cost="4950"
+      Rarity="Shop25"
+      Infinite="false"
+      GirlBuyChance="40">
+   <Effect What="Stat"  Name="Beauty"                  Amount="10"    />
+   <Effect What="Trait" Name="Elegant"                 Amount="1"    />
+   <Effect What="Trait" Name="Cute"                    Amount="1"    />
+</Item>
+</Items>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Daddy's Girl Necklace"
+      Desc="A small necklace with the word's Daddy's Girl on it. (Obedience +5, Adds Dependant)"
+      Type="Necklace"
+      Badness="0"
+      Special="None"
+      Cost="1050"
+      Rarity="Shop50"
+      Infinite="false">
+   <Effect What="Stat"  Name="Obedience"               Amount="5"    />
+   <Effect What="Trait" Name="Dependant"               Amount="1"    />
+</Item>
+</Items>

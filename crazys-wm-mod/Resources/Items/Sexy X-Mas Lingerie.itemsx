@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Sexy X-Mas Lingerie"
+      Desc="Wow...with this lingerie your girl/lover/mistress will totally look so festive when they go to bed with someone! They also bring out a girl's natural curves. (+20 Mag/Strip/Anal, +30 Serv/Spi, +25 Love/Beauty/Cha/Hap/Lib/Conf, -25 Fear/Hate, +Sexy Air/Great Figure/Optimist, -Pessimist)"
+      Type="Underwear"
+      Badness="0"
+      Special="None"
+      Cost="5000"
+      Rarity="Shop50"
+      Infinite="false">
+   <Effect What="Stat"  Name="Charisma"                Amount="25"    />
+   <Effect What="Stat"  Name="Happiness"               Amount="25"    />
+   <Effect What="Stat"  Name="Libido"                  Amount="25"    />
+   <Effect What="Stat"  Name="Confidence"              Amount="25"    />
+   <Effect What="Stat"  Name="Agility"                 Amount="15"    />
+   <Effect What="Stat"  Name="Obedience"               Amount="-10"    />
+   <Effect What="Stat"  Name="Spirit"                  Amount="30"    />
+   <Effect What="Stat"  Name="Beauty"                  Amount="25"    />
+   <Effect What="Stat"  Name="PCLove"                  Amount="25"    />
+   <Effect What="Stat"  Name="PCFear"                  Amount="-25"    />
+   <Effect What="Stat"  Name="PCHate"                  Amount="-25"    />
+   <Effect What="Skill" Name="Magic"                   Amount="20"    />
+   <Effect What="Skill" Name="Service"                 Amount="30"    />
+   <Effect What="Skill" Name="Strip"                   Amount="20"    />
+   <Effect What="Skill" Name="Anal"                    Amount="20"    />
+   <Effect What="Trait" Name="Sexy Air"                Amount="1"    />
+   <Effect What="Trait" Name="Great Figure"            Amount="1"    />
+   <Effect What="Trait" Name="Optimist"                Amount="1"    />
+   <Effect What="Trait" Name="Pessimist"               Amount="0"    />
+</Item>
+</Items>

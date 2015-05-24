@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Shoes of Icarus"
+      Desc="These winged shoes not only look cool, they also grant the wearer a nice set of boosts too. The girl is sure to love them a lot. (+fleet of foot, +25 agility, +15 confidence, -15 fear/hate/love, +25 happiness, +10 constitution, +25 spirit, -50 tiredness"
+      Type="Shoes"
+      Badness="0"
+      Special="None"
+      Cost="1000"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Stat"  Name="Agility"                 Amount="25"    />
+   <Effect What="Stat"  Name="Confidence"              Amount="15"    />
+   <Effect What="Stat"  Name="PCFear"                  Amount="-15"    />
+   <Effect What="Stat"  Name="Obedience"               Amount="15"    />
+   <Effect What="Stat"  Name="Happiness"               Amount="25"    />
+   <Effect What="Stat"  Name="Constitution"            Amount="10"    />
+   <Effect What="Stat"  Name="Spirit"                  Amount="25"    />
+   <Effect What="Stat"  Name="Tiredness"               Amount="-50"    />
+   <Effect What="Stat"  Name="PCHate"                  Amount="-15"    />
+   <Effect What="Stat"  Name="PCLove"                  Amount="-15"    />
+   <Effect What="Trait" Name="Fleet of Foot"           Amount="1"    />
+</Item>
+</Items>

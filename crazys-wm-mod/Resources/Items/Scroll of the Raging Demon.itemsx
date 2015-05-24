@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Scroll of the Raging Demon"
+      Desc="A uber-rare scroll that makes the reader become a legendary street fighter. It will make them so angry, that they will lash out at anyone, even their master can't control them. They gain immense strength and skills, but will do anything they want with their lives. They won't care about sex, they just want to find a strong opponent. Unless you got a fight club, they won't be happy with you. (Frees from Slavery, Repairs the Body and Mind then makes them fighting Demons)"
+      Type="Food"
+      Badness="5"
+      Special="None"
+      Cost="20000"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="GirlStatus" Name="Slave"              Amount="0"    />
+   <Effect What="Skill" Name="Combat"                  Amount="55"    />
+   <Effect What="Stat"  Name="Strength"                Amount="55"    />
+   <Effect What="Skill" Name="Magic"                   Amount="15"    />
+   <Effect What="Stat"  Name="Charisma"                Amount="25"    />
+   <Effect What="Stat"  Name="Libido"                  Amount="-25"    />
+   <Effect What="Stat"  Name="Intelligence"            Amount="35"    />
+   <Effect What="Stat"  Name="Confidence"              Amount="55"    />
+   <Effect What="Stat"  Name="Mana"                    Amount="25"    />
+   <Effect What="Stat"  Name="Agility"                 Amount="55"    />
+   <Effect What="Stat"  Name="Obedience"               Amount="-25"    />
+   <Effect What="Stat"  Name="Spirit"                  Amount="55"    />
+   <Effect What="Stat"  Name="Tiredness"               Amount="-100"    />
+   <Effect What="Stat"  Name="Health"                  Amount="100"    />
+   <Effect What="Stat"  Name="PCFear"                  Amount="-100"    />
+   <Effect What="Stat"  Name="PCHate"                  Amount="100"    />
+   <Effect What="Stat"  Name="PCLove"                  Amount="-100"    />
+   <Effect What="Trait" Name="Cool Scars"              Amount="1"    />
+   <Effect What="Trait" Name="Cool Person"             Amount="1"    />
+   <Effect What="Trait" Name="Strong"                  Amount="1"    />
+   <Effect What="Trait" Name="Strong Magic"            Amount="1"    />
+   <Effect What="Trait" Name="Aggressive"              Amount="1"    />
+   <Effect What="Trait" Name="Masochist"               Amount="1"    />
+   <Effect What="Trait" Name="Sadistic"                Amount="1"    />
+   <Effect What="Trait" Name="Demon"                   Amount="1"    />
+   <Effect What="Trait" Name="Strange Eyes"            Amount="1"    />
+   <Effect What="Trait" Name="Not Human"               Amount="1"    />
+   <Effect What="Trait" Name="Fragile"                 Amount="0"    />
+   <Effect What="Trait" Name="Abnormally Large Boobs"  Amount="0"    />
+   <Effect What="Trait" Name="One Eye"                 Amount="0"    />
+   <Effect What="Trait" Name="Eye Patch"               Amount="0"    />
+   <Effect What="Trait" Name="Dependant"               Amount="0"    />
+   <Effect What="Trait" Name="Pessimist"               Amount="0"    />
+   <Effect What="Trait" Name="Tsundere"                Amount="0"    />
+   <Effect What="Trait" Name="Nervous"                 Amount="0"    />
+   <Effect What="Trait" Name="Nymphomaniac"            Amount="0"    />
+   <Effect What="Trait" Name="Mind Fucked"             Amount="0"    />
+   <Effect What="Trait" Name="Broken Will"             Amount="0"    />
+   <Effect What="Trait" Name="Malformed"               Amount="0"    />
+   <Effect What="Trait" Name="Retarded"                Amount="0"    />
+</Item>
+</Items>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Android, Assistance"
+      Desc="A robot helper for your girl. (Tiredness -10, Happiness +10, Service +15, Love +5)"
+      Type="Misc"
+      Badness="0"
+      Special="None"
+      Cost="9990"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Skill" Name="Service"                 Amount="15"    />
+   <Effect What="Stat"  Name="Happiness"               Amount="10"    />
+   <Effect What="Stat"  Name="Tiredness"               Amount="-10"    />
+   <Effect What="Stat"  Name="PCLove"                  Amount="5"    />
+</Item>
+</Items>

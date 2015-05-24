@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+	<Item
+		Name="Valkyrie Headdress"
+		Desc="The famous winged helmet of the Valkyrie. A sight no soul will ever forget. (Cha/Bea/Cons/Str +25, Fame +10, adds Incorporeal, Flight.)"
+		Type="Helmet"
+		Badness="0"
+		Special="None"
+		Cost="30000"
+		Rarity="Catacomb01"
+		Infinite="false"
+		GirlBuyChance="0">
+		<Effect			What="Stat"			Name="Constitution"			Amount="25" />
+		<Effect			What="Stat"			Name="Strength"			Amount="25" />
+		<Effect			What="Stat"			Name="Charisma"			Amount="25" />
+		<Effect			What="Stat"			Name="Beauty"			Amount="25" />
+		<Effect			What="Stat"			Name="Fame"			Amount="10" />
+		<Effect			What="Trait"			Name="Incorporeal"			Amount="1" />
+		<Effect			What="Trait"			Name="Flight"			Amount="1" />
+	</Item>
+</Items>

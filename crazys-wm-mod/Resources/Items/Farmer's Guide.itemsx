@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+	<Item
+		Name="Farmer's Guide"
+		Desc="Book that covers the basics of farm jobs. (+10 Farming and AnimalHandling)"
+		Type="Misc"
+		Badness="0"
+		Special="None"
+		Cost="900"
+		Rarity="Shop05"
+		Infinite="false"
+		ItemWeight="0.0">
+		<Effect
+			What="Skill"
+			Name="Farming"
+			Amount="10" />
+		<Effect
+			What="Skill"
+			Name="AnimalHandling"
+			Amount="10" />
+	</Item>
+</Items>

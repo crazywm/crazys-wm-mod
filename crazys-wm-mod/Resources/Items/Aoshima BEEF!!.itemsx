@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Aoshima BEEF!!"
+      Desc="This beef from a far off land toughens the body. (+Tough, -Fragile)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="5000"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Trait" Name="Tough"                   Amount="1"    />
+   <Effect What="Trait" Name="Fragile"                 Amount="0"    />
+</Item>
+</Items>

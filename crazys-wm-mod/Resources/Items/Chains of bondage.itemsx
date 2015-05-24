@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Chains of Bondage"
+      Desc="Enslave the body to liberate the mind (+50 cha +100 con/libido/obedience +30 sex skills -lots service/strip/magic/combat +many effects)"
+      Type="Misc"
+      Badness="40"
+      Special="None"
+      Cost="40000"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Stat"  Name="PCLove"                  Amount="-50"    />
+   <Effect What="Stat"  Name="PCFear"                  Amount="50"    />
+   <Effect What="Stat"  Name="PCHate"                  Amount="50"    />
+   <Effect What="Stat"  Name="Charisma"                Amount="50"    />
+   <Effect What="Stat"  Name="Happiness"               Amount="-50"    />
+   <Effect What="Stat"  Name="Obedience"               Amount="100"    />
+   <Effect What="Stat"  Name="Libido"                  Amount="100"    />
+   <Effect What="Skill" Name="BDSM"                    Amount="30"    />
+   <Effect What="Skill" Name="NormalSex"               Amount="30"    />
+   <Effect What="Skill" Name="OralSex"                 Amount="30"    />
+   <Effect What="Skill" Name="TittySex"                Amount="30"    />
+   <Effect What="Skill" Name="Beastiality"             Amount="30"    />
+   <Effect What="Skill" Name="Group"                   Amount="30"    />
+   <Effect What="Skill" Name="Lesbian"                 Amount="30"    />
+   <Effect What="Skill" Name="Strip"                   Amount="-300"    />
+   <Effect What="Skill" Name="Anal"                    Amount="30"    />
+   <Effect What="Skill" Name="Footjob"                 Amount="30"    />
+   <Effect What="Skill" Name="Handjob"                 Amount="30"    />
+   <Effect What="Skill" Name="Service"                 Amount="-300"    />
+   <Effect What="Skill" Name="Magic"                   Amount="-300"    />
+   <Effect What="Skill" Name="Combat"                  Amount="-300"    />
+   <Effect What="Stat"  Name="Strength"                Amount="-50"    />
+   <Effect What="Stat"  Name="Constitution"            Amount="100"    />
+   <Effect What="Trait" Name="Elegant"                 Amount="0"    />
+   <Effect What="Trait" Name="Fearless"                Amount="1"    />
+   <Effect What="Trait" Name="Aggressive"              Amount="0"    />
+   <Effect What="Trait" Name="Tsundere"                Amount="0"    />
+   <Effect What="Trait" Name="Sexy Air"                Amount="1"    />
+   <Effect What="Trait" Name="Fleet of Foot"           Amount="0"    />
+   <Effect What="Trait" Name="Big Boobs"               Amount="0"    />
+   <Effect What="Trait" Name="Small Boobs"             Amount="0"    />
+   <Effect What="Trait" Name="Abnormally Large Boobs"  Amount="1"    />
+   <Effect What="Trait" Name="Fast Orgasms"            Amount="1"    />
+   <Effect What="Trait" Name="Slow Orgasms"            Amount="0"    />
+   <Effect What="Trait" Name="Nymphomaniac"            Amount="1"    />
+   <Effect What="Trait" Name="Great Figure"            Amount="1"    />
+   <Effect What="Trait" Name="Great Arse"              Amount="1"    />
+   <Effect What="Trait" Name="Sterile"                 Amount="1"    />
+   <Effect What="Trait" Name="Tough"                   Amount="1"    />
+   <Effect What="Trait" Name="Masochist"               Amount="1"    />
+   <Effect What="Trait" Name="Fragile"                 Amount="0"    />
+   <Effect What="Trait" Name="Long Legs"               Amount="1"    />
+   <Effect What="Trait" Name="Puffy Nipples"           Amount="1"    />
+   <Effect What="Trait" Name="Perky Nipples"           Amount="1"    />
+   <Effect What="Trait" Name="Optimist"              Amount="1"    />
+   <Effect What="Trait" Name="Sadistic"                Amount="0"    />
+   <Effect What="Trait" Name="Merciless"               Amount="0"    />
+</Item>
+</Items>

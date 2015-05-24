@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Faerie Gown"
+      Desc="This incredibly rare garment bears an otherworldly beauty; its magical origin is visible even to the untrained eye. Woven from the silk of unknown insects and shimmering with ever-shifting rainbow hues, its effect is almost hypnotic. It carries a powerful enchantment that transforms the wearer's body, enhancing their natural looks, and even though it seems heavy and difficult to move in it is actually much lighter than it appears. (S) (+30 Cha, +20 Hap, +15 Conf, +5 Mag, +10 Bea, +10 Lib, -10 Agi, -5 Com)"
+      Type="Dress"
+      Badness="0"
+      Special="None"
+      Cost="6000"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Stat"  Name="Charisma"                Amount="30"    />
+   <Effect What="Stat"  Name="Happiness"               Amount="20"    />
+   <Effect What="Stat"  Name="Confidence"              Amount="15"    />
+   <Effect What="Stat"  Name="Agility"                 Amount="-10"    />
+   <Effect What="Skill" Name="Combat"                  Amount="-5"    />
+   <Effect What="Skill" Name="Magic"                   Amount="5"    />
+   <Effect What="Stat"  Name="Beauty"                  Amount="10"    />
+   <Effect What="Stat"  Name="Libido"                  Amount="10"    />
+</Item>
+</Items>

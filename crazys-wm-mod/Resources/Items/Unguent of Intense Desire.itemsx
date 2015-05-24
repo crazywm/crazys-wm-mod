@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Unguent of Intense Desire"    
+      Desc="After rubbing this gel into a girl's clit and vagina, she'll develop an irreversible need for constant sexual release. This need is worsened by an unpleasant side effect -- a permanent loss of sensitivity. With a lot of effort, she can occasionally still have an orgasm. However, it's never truly satisfying, and she'll constantly struggle to live with such intense desire. As a result of so much frustration, she's also likely to be more wild and harder to control. (+Nymphomaniac, +Slow Orgasms, -30 Obedience, -10 Love. +10 Hate)" 
+      Type="Food" 
+      Badness="40" 
+      Special="None" 
+      Cost="1200" 
+      Rarity="Shop05" 
+      Infinite="false">
+   <Effect What="Stat" Name="PCHate" Amount="10" />
+   <Effect What="Stat" Name="PCLove" Amount="-10" />
+   <Effect What="Stat" Name="Obedience" Amount="-30" />
+   <Effect What="Trait" Name="Nymphomaniac" Amount="1" />
+   <Effect What="Trait" Name="Fast Orgasms" Amount="0" />
+   <Effect What="Trait" Name="Slow Orgasms" Amount="1" />
+</Item>
+</Items>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Sexy Underwear"    
+      Desc="This skimpy underwear has a lace border and is made of quality materials. Overall, it looks quite attractive. (+4 cha, +2 Beauty, +5 Happiness)" 
+      Type="Underwear" 
+      Badness="0" 
+      Special="None" 
+      Cost="200" 
+      Rarity="Shop50" 
+      Infinite="false">
+   <Effect What="Stat" Name="Happiness" Amount="5" />
+   <Effect What="Stat" Name="Charisma" Amount="4" />
+   <Effect What="Stat" Name="Beauty" Amount="2" />
+</Item>
+</Items>

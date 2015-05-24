@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="Chainmail Bikini" Desc="This set of chainmail bra and panties doesn't offer much protection at all, but some would argue it is irrelevant to their appeal. (E) (+5 Comb, +5 Cons, +8 Cha, +5 BDSM, +10 Best, -5 Int, -5 Mag, removes Elegant)"
+	Type="Armor" Badness="10" Special="None" Cost="400" Rarity="Shop05" Infinite="false" GirlBuyChance="0" ItemWeight="0.0"
+	Craftable="Blacksmith" CraftLevel="3" CraftCraft="30" CraftStren="10" CraftMagic="0" CraftIntel="40" CraftPoint="80">
+        <Effect What="Skill" Name="Combat" Amount="2" />
+        <Effect What="Stat" Name="Constitution" Amount="2" />
+        <Effect What="Stat" Name="Charisma" Amount="8" />
+        <Effect What="Stat" Name="Intelligence" Amount="-5" />
+        <Effect What="Skill" Name="BDSM" Amount="5" />
+        <Effect What="Skill" Name="Beastiality" Amount="10" />
+        <Effect What="Skill" Name="Magic" Amount="-5" />
+        <Effect What="Trait" Name="Elegant" Amount="0" />
+    </Item>
+</Items>

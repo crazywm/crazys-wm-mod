@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Staff of Sammy"
+      Desc="A staff that was once owned by a famous magical girl. Perhaps you can become as strong as her! (+lots of stats)"
+      Type="Weapon"
+      Badness="0"
+      Special="None"
+      Cost="6800"
+      Rarity="Catacomb15"
+      Infinite="false"
+      GirlBuyChance="5">
+   <Effect What="Skill" Name="Magic"                   Amount="50"    />
+   <Effect What="Stat"  Name="Age"                     Amount="-2"    />
+   <Effect What="Stat"  Name="Confidence"              Amount="10"    />
+   <Effect What="Stat"  Name="Fame"                    Amount="20"    />
+   <Effect What="Stat"  Name="Beauty"                  Amount="10"    />
+   <Effect What="Skill" Name="Combat"                  Amount="10"    />
+   <Effect What="Stat"  Name="Constitution"            Amount="10"    />
+   <Effect What="Stat"  Name="Strength"                Amount="10"    />
+   <Effect What="Stat"  Name="Mana"                    Amount="10"    />
+   <Effect What="Trait" Name="Lolita"                  Amount="1"    />
+   <Effect What="Trait" Name="Strong Magic"            Amount="1"    />
+</Item>
+</Items>

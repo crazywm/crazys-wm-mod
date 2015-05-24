@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Whitewillow Sap"    
+      Desc="This syrupy substance makes a delicious tea with unique magical properties. When consumed, it causes the drinker to feel a stronger bond toward the person who gave it to them. This sense of connection also creates an enhanced sense of self-worth and value. As a side effect, the tea can cause sleepiness, which persists very slightly even after rest. (+4 Love, +8 Confidence, +8 Spirit, +20 Tiredness)" 
+      Type="Food" 
+      Badness="10" 
+      Special="None" 
+      Cost="400" 
+      Rarity="Shop50" 
+      Infinite="false" 
+      GirlBuyChance="20">
+   <Effect What="Stat" Name="Spirit" Amount="8" />
+   <Effect What="Stat" Name="Confidence" Amount="8" />
+   <Effect What="Stat" Name="PCLove" Amount="4" />
+   <Effect What="Stat" Name="Tiredness" Amount="20" />
+</Item>
+</Items>

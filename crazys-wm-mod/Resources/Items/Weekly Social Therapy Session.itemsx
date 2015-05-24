@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item
+        Name="Weekly Social Therapy Session"
+        Desc="Keeps your girl a commonly accepted functional part of society (B) (+20 Tired, +5 Mor, removes Twisted, Sadistic)"
+        Type="Misc"
+        Badness="25"
+        Special="None"
+        Cost="8000"
+        Rarity="Shop25"
+        Infinite="false"
+        GirlBuyChance="0">
+    <Effect     What="Stat"     Name="Morality"         Amount="5" />
+    <Effect     What="Stat"     Name="Tiredness"        Amount="20" />
+    <Effect     What="Trait"    Name="Sadistic"         Amount="0" />
+    <Effect     What="Trait"    Name="Twisted"          Amount="0" />
+    </Item>
+</Items>

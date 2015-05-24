@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Mechanic's Degree"
+      Desc="This paper states that this girl has all the skills needed to repair machines and constructables. Even if they need a limb fixed. ( Service MAX, Adds Nerd, Quick Learner, Removes Slow Learner.)"
+      Type="Misc"
+      Badness="0"
+      Special="None"
+      Cost="3500"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Skill" Name="Service" Amount="100" />
+   <Effect What="Trait" Name="Nerd" Amount="1" />
+   <Effect What="Trait" Name="Quick Learner" Amount="1" />
+   <Effect What="Trait" Name="Slow Learner" Amount="0" />
+</Item>
+</Items>

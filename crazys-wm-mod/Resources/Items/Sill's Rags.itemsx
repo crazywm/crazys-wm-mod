@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Sill's Rags"
+      Desc="The rags given to Sill Plain by the 'hero' Rance. (Sex and Service +20. Adds Meek, Dependant.)"
+      Type="Dress"
+      Badness="0"
+      Special="None"
+      Cost="17000"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Skill" Name="Service"                 Amount="20"    />
+   <Effect What="Skill" Name="NormalSex"               Amount="20"    />
+   <Effect What="Trait" Name="Meek"                    Amount="1"    />
+   <Effect What="Trait" Name="Dependant"               Amount="1"    />
+</Item>
+</Items>

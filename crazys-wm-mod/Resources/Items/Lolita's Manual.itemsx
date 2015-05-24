@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Lolita's Manual"
+      Desc="A book from another world that reads like an instruction booklet on how to be a perfect lolita. (Adds Nymphomaniac and Lolita. +10 Sex, Oral, and Service. -2 Age)"
+      Type="Food"
+      Badness="5"
+      Special="None"
+      Cost="1390"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Stat"  Name="Age"                     Amount="-2"    />
+   <Effect What="Skill" Name="Service"                 Amount="10"    />
+   <Effect What="Skill" Name="OralSex"                 Amount="10"    />
+   <Effect What="Skill" Name="NormalSex"               Amount="10"    />
+   <Effect What="Trait" Name="Nymphomaniac"            Amount="1"    />
+   <Effect What="Trait" Name="Lolita"                  Amount="1"    />
+</Item>
+</Items>

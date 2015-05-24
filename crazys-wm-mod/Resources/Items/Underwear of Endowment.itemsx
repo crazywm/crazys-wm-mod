@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Underwear of Endowment"    
+      Desc="This set of underwear includes both attractive panties and a large bra. No matter what size breasts a girl has, imbued magic will cause them to grow to a large enough size for the bra to fit. Once removed, the effect will start to dissipate in about 24 hours.(+Big Boobs, +6 Cha, +5 Happiness)" 
+      Type="Underwear" 
+      Badness="6" 
+      Special="None" 
+      Cost="2500" 
+      Rarity="Shop05" 
+      Infinite="false">
+   <Effect What="Stat" Name="Charisma" Amount="6" />
+   <Effect What="Stat" Name="Happiness" Amount="5" />
+   <Effect What="Trait" Name="Big Boobs" Amount="1" />
+</Item>
+</Items>

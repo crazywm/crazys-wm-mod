@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item
+        Name="Black Stole"
+        Desc="It's the exact same thing as the pink version, but the manufacturer figured he'd make it more limited and more expensive, since black supposedly looks less trashy. (BDSM +5, Strip +10, Perf +3, Cha +4)"
+        Type="Misc"
+        Badness="10"
+        Special="None"
+        Cost="300"
+        Rarity="Shop50"
+        Infinite="false"
+        GirlBuyChance="1">
+    <Effect     What="Skill"    Name="BDSM"             Amount="5" />
+    <Effect     What="Skill"    Name="Strip"            Amount="10" />
+    <Effect     What="Skill"    Name="Performance"      Amount="3" />
+    <Effect     What="Stat"     Name="Charisma"         Amount="4" />
+    </Item>
+</Items>

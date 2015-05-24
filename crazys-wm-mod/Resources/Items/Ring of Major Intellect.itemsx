@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Ring of Major Intellect"    
+      Desc="This ring is beautifully crafted using precious materials, and it greatly enhances the wearer's intelligence. Such enchanted items are uncommon, but can usually be found by those who can afford them. Anyone can appreciate both the beauty and practicality of such an item. (+30 Int, +10 Love)" 
+      Type="Ring" 
+      Badness="0" 
+      Special="None" 
+      Cost="8000" 
+      Rarity="Shop05" 
+      Infinite="false">
+   <Effect What="Stat" Name="PCLove" Amount="10" />
+   <Effect What="Stat" Name="Intelligence" Amount="30" />
+</Item>
+</Items>

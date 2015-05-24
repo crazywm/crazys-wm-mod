@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item
+        Name="Silk Lingerie"
+        Desc="The cool cloth of this undergarment makes a girl feel sexy. (C) (+5 Lib, +4 Bea, +6 all sex skills)"
+        Type="Underwear"
+        Badness="5"
+        Special="None"
+        Cost="500"
+        Rarity="Shop25"
+        Infinite="false"
+        GirlBuyChance="20">
+    <Effect     What="Skill"    Name="Anal"             Amount="6" />
+    <Effect     What="Skill"    Name="BDSM"             Amount="6" />
+    <Effect     What="Skill"    Name="NormalSex"        Amount="6" />
+    <Effect     What="Skill"    Name="OralSex"          Amount="6" />
+    <Effect     What="Skill"    Name="Footjob"          Amount="6" />
+    <Effect     What="Skill"    Name="Handjob"          Amount="6" />
+    <Effect     What="Skill"    Name="TittySex"         Amount="6" />
+    <Effect     What="Skill"    Name="Beastiality"      Amount="6" />
+    <Effect     What="Skill"    Name="Group"            Amount="6" />
+    <Effect     What="Skill"    Name="Lesbian"          Amount="6" />
+    <Effect     What="Skill"    Name="Strip"            Amount="6" />
+    <Effect     What="Skill"    Name="Service"          Amount="6" />
+    <Effect     What="Stat"     Name="Beauty"           Amount="4" />
+    <Effect     What="Stat"     Name="Libido"           Amount="5" />
+    </Item>
+</Items>

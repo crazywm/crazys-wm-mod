@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Magic Christmas Present"
+      Desc="Made by Santa himself, this present has anything the opener wants inside. Unfortunately, it makes them aggressively defend it, too. (Happiness +50, Love +50, Fear -50, Hate -50. Adds Aggressive.)"
+      Type="Food"
+      Badness="6"
+      Special="None"
+      Cost="12000"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Stat"  Name="Happiness"               Amount="50"    />
+   <Effect What="Stat"  Name="PCLove"                  Amount="50"    />
+   <Effect What="Stat"  Name="PCFear"                  Amount="-50"    />
+   <Effect What="Stat"  Name="PCHate"                  Amount="-50"    />
+   <Effect What="Trait" Name="Aggressive"              Amount="1"    />
+</Item>
+</Items>

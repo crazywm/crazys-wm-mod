@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Manual of the Dancer"
+      Desc="This slender book details several tried-and-true sensual dance moves and stripping techniques. It also has thinly-veiled instructions on how to ensure customers are fully satisfied from private dances. (B) (+15 Serv, +15 Strip, +5 Norm, +5 Agi)"
+      Type="Misc"
+      Badness="25"
+      Special="None"
+      Cost="1200"
+      Rarity="Shop05"
+      Infinite="false"
+      GirlBuyChance="20">
+   <Effect What="Skill" Name="Service"                 Amount="15"    />
+   <Effect What="Skill" Name="Strip"                   Amount="15"    />
+   <Effect What="Skill" Name="NormalSex"               Amount="5"    />
+   <Effect What="Stat"  Name="Agility"                 Amount="5"    />
+</Item>
+</Items>

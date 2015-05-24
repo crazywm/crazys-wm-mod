@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+   <Item
+      Name="Leather Pads"
+      Desc="These small pads of hardened hide strapped over one's clothes provide a small amount of protection without impeding movement. (-5 Magic,  +3 Cons, Conf,  -2 Agl, Fear, Cha)"
+      Type="Armor"
+      Badness="0"
+      Special="None"
+      Cost="75"
+      Rarity="Common"
+      Infinite="false"
+      GirlBuyChance="30">
+   <Effect What="Skill" Name="Magic"                   Amount="-5" />
+   <Effect What="Stat"  Name="Constitution"            Amount="3" />
+   <Effect What="Stat"  Name="Confidence"              Amount="3" />      
+   <Effect What="Stat"  Name="Agility"                 Amount="-2" />
+   <Effect What="Stat"  Name="PCFear"                  Amount="-2" />     
+   <Effect What="Stat"  Name="Charisma"                Amount="-2" />
+   </Item>
+</Items>
