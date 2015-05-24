@@ -1,8 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Items>
-    <Item Name="Storm Vine" Desc="Sprouting only during terrible storms, and dying shortly thereafter, Storm Vine is incredibly rare. Within, it holds the might of the vengeful skies." 
-    Type="Food" Badness="15" Special="Temporary" Cost="4000" Rarity="Common" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
-        <Effect What="Stat" Name="Mana" Amount="80" />
-        <Effect What="Trait" Name="Natural Pheremones" Amount="1" Duration="5" />
-    </Item>
-</Items>

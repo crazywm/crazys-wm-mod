@@ -1,6 +1,0 @@
-<Triggers>
-	<Trigger	Type	= "Meet"
-				Where	= "Town"
-				File	= "MeetGirl.script"
-	 />
-</Triggers>

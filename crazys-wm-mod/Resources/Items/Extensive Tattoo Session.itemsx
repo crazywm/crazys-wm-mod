@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Items>
-    <Item Name="Extensive Tattoo Session" Desc="Take your girl down to the tattoo parlor and add some ink to her. Like, just some SERIOUS ink. An entire mural maybe... (Adds Heavily Tattooed, +10 Tired, -15 Health)" 
-    Type="Food" Badness="10" Special="None" Cost="250" Rarity="Shop25" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
-        <Effect What="Stat" Name="Tiredness" Amount="10" />
-        <Effect What="Stat" Name="Health" Amount="-15" />
-        <Effect What="Trait" Name="Heavily Tattooed" Amount="1" />
-    </Item>
-</Items>
