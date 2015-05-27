@@ -60,7 +60,8 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	string barmaidname = (barmaidonduty ? "Barmaid " + barmaidonduty->m_Realname + "" : "the Barmaid");
 
 	int roll = g_Dice.d100(), roll_d = g_Dice.d100();
-	int wages = 25, tips = 0, work = 0, anal = 0, health = 0, happy = 0, oral = 0, hand = 0;
+	double wages = 25, tips = 0;
+	int work = 0, anal = 0, health = 0, happy = 0, oral = 0, hand = 0;
 
 	double jobperformance = JP_SleazyWaitress(girl, false);
 
@@ -494,8 +495,8 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	int roll_max = (g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA));
 	roll_max /= 4;
 	wages += 10 + g_Dice%roll_max;
-	girl->m_Pay = wages;
-	girl->m_Tips = tips;
+	girl->m_Pay = (int)wages;
+	girl->m_Tips = (int)tips;
 
 	// Improve stats
 	int xp = 15, libido = 1, skill = 3;

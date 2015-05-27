@@ -63,7 +63,8 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 		g_Girls.GetSkill(girl, SKILL_PERFORMANCE) / 2 +
 		g_Girls.GetSkill(girl, SKILL_STRIP)) / 2;
 	int mast = false, sex = false;
-	int wages = 45, tips = 0, work = 0, imageType = IMGTYPE_STRIP;
+	double wages = 45, tips = 0;
+	int work = 0, imageType = IMGTYPE_STRIP;
 	bool contraception = false;
 
 	if (girl->beauty() > 90)
@@ -401,8 +402,8 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 
 	if (wages < 0) wages = 0;
 	if (tips < 0) tips = 0;
-	girl->m_Pay = wages;
-	girl->m_Tips = tips;
+	girl->m_Pay = (int)wages;
+	girl->m_Tips = (int)tips;
 
 	// Improve stats
 	int xp = 15, libido = 1, skill = 3;

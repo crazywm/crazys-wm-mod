@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Items>
     <Item Name="Adamantium Helmet" Desc="Very rare and much sought after head protection. Even rarer and more expensive matching Adamantium Suit Of Armor not included!  (Cha/Bea +15, Cons +25, adds Tough.)"
-	Type="Helmet" Badness="0" Special="None" Cost="8000" Rarity="Catacomb01" Infinite="false" GirlBuyChance="10" ItemWeight="0.0" 
-	Craftable="Blacksmith" CraftLevel="10" CraftCraft="60" CraftStren="60" CraftMagic="0" CraftIntel="30" CraftPoint="100">
+	Type="Helmet" Badness="0" Special="None" Cost="8000" Rarity="Catacomb01" Infinite="false" GirlBuyChance="10" ItemWeight="0.0">
         <Effect What="Stat" Name="Charisma" Amount="15" />
         <Effect What="Stat" Name="Beauty" Amount="15" />
         <Effect What="Stat" Name="Constitution" Amount="25" />

@@ -324,6 +324,10 @@ void cJobManager::Setup()
 	JobDesc[JOB_BLACKSMITH] = gettext("She will make weapons and armor.");
 	JobFunc[JOB_BLACKSMITH] = &WorkBlacksmith;
 	JobPerf[JOB_BLACKSMITH] = &JP_Blacksmith;
+	JobName[JOB_COBBLER] = gettext("Cobbler");
+	JobDesc[JOB_COBBLER] = gettext("She will make shoes and leather items.");
+	JobFunc[JOB_COBBLER] = &WorkCobbler;
+	JobPerf[JOB_COBBLER] = &JP_Cobbler;
 	JobName[JOB_CLEANARENA] = gettext("Grounds Keeper");
 	JobDesc[JOB_CLEANARENA] = gettext("She will clean the arena.");
 	JobFunc[JOB_CLEANARENA] = &WorkCleanArena;
@@ -543,6 +547,10 @@ void cJobManager::Setup()
 	JobDesc[JOB_BREWER] = gettext("She will make various beers and wines.");
 	JobFunc[JOB_BREWER] = &WorkBrewer;
 	JobPerf[JOB_BREWER] = &JP_Brewer;
+	JobName[JOB_TAILOR] = gettext("Tailor");
+	JobDesc[JOB_TAILOR] = gettext("She will make clothes and other items from fabrics.");
+	JobFunc[JOB_TAILOR] = &WorkTailor;
+	JobPerf[JOB_TAILOR] = &JP_Tailor;
 	JobName[JOB_MAKEITEM] = gettext("Make Items");
 	JobDesc[JOB_MAKEITEM] = gettext("She will make various items.");
 	JobFunc[JOB_MAKEITEM] = &WorkMakeItem;
@@ -1178,6 +1186,27 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 			g_MessageQue.AddToQue(gettext("The Farm Manager cannot be a slave."), 0);
 		else
 			Girl->m_NightJob = Girl->m_DayJob = JOB_FARMMANGER;
+	}
+	else if (u_int(JobID) == JOB_MARKETER)
+	{
+		if (Girl->is_slave())
+			g_MessageQue.AddToQue(gettext("The Farm Marketer cannot be a slave."), 0);
+		else
+		{
+			if (Day0Night1 == SHIFT_DAY || fulltime)
+			{
+				if (g_Farm.GetNumGirlsOnJob(TargetBrothel, JOB_MARKETER, SHIFT_DAY) > 0)
+					g_MessageQue.AddToQue(gettext("There can be only one Farm Marketer on each shift!"), 0);
+				else Girl->m_DayJob = JOB_MARKETER;
+			}
+			if (Day0Night1 == SHIFT_NIGHT || fulltime)
+			{
+				if (g_Farm.GetNumGirlsOnJob(TargetBrothel, JOB_MARKETER, SHIFT_NIGHT) > 0)
+					g_MessageQue.AddToQue(gettext("There can be only one Farm Marketer on each shift!"), 0);
+				else Girl->m_NightJob = JOB_MARKETER;
+			}
+			
+		}
 	}
 	// Special Arena Jobs
 	else if (u_int(JobID) == JOB_DOCTORE)

@@ -196,13 +196,6 @@ girl type (template that corresponds to folder name
 with her pics), something like "Sporty girl",
 "Funny girl" and so on.</value>
   </data>
-  <data name="label191.ToolTip" xml:space="preserve">
-    <value>How many crafting points needed to make the item.
-Based off job performance, simple items can be less than 10
-while major items can be more than 100.
-The number of points is subtracted from the total the girl gets for her 
-job performance so she can usually make more than one item per shift.</value>
-  </data>
   <data name="checkBox_DG3.ToolTip" xml:space="preserve">
     <value>I recommend simply deleting entry and adding it again with correct
 value, but if you really, really, REALLY must, you can edit it manually.

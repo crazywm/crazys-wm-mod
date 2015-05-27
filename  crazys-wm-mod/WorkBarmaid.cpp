@@ -55,7 +55,8 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
-	int wages = 15, tips = 0, work = 0;
+	double wages = 15, tips = 0;
+	int work = 0;
 	int imagetype = IMGTYPE_WAIT;
 
 	int roll = g_Dice.d100();
@@ -546,8 +547,8 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	wages += 10 + g_Dice%roll_max;
 	if (wages < 0) wages = 0;
 	if (tips < 0) tips = 0;
-	girl->m_Pay = wages;
-	girl->m_Tips = tips;
+	girl->m_Pay = (int)wages;
+	girl->m_Tips = (int)tips;
 
 
 	// Improve stats

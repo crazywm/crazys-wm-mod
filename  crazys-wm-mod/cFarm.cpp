@@ -374,10 +374,11 @@ void cFarmManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)		// Start_Bui
 					// `J` zzzzzz need to add this in
 					ss << "do nothing because this part of the code has not been added yet.";
 					/*
+					JOB_MARKETER		// free girl, only one
+
 					JOB_VETERINARIAN
-					JOB_MARKETER
-					JOB_RESEARCH
 					JOB_FARMHAND
+					JOB_RESEARCH
 
 					JOB_FARMER
 					JOB_GARDENER
@@ -414,11 +415,10 @@ void cFarmManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)		// Start_Bui
 	////////////////////////////////
 	/* `J` zzzzzz - Need to split up the jobs
 	Done - JOB_FARMREST, JOB_FARMMANGER
+	Do Last - JOB_MARKETER
 
 	JOB_FARMHAND
-
 	JOB_VETERINARIAN
-	JOB_MARKETER
 	JOB_RESEARCH
 
 	JOB_FARMER
@@ -443,7 +443,7 @@ void cFarmManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)		// Start_Bui
 	while (current)
 	{
 		sw = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
-		if (current->health() <= 0 || sw == restjob || sw == matronjob)
+		if (current->health() <= 0 || sw == restjob || sw == matronjob || sw == JOB_MARKETER)
 		{	// skip dead girls, resting girls and the matron
 			if (current->m_Next) { current = current->m_Next; continue; }
 			else { current = 0; break; }
@@ -477,6 +477,51 @@ void cFarmManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)		// Start_Bui
 
 		current = current->m_Next; // Next Girl
 	}
+
+
+	//////////////////////////////////////////////////////////////
+	//  Do Marketer last so she can sell what the others made.  //
+	//////////////////////////////////////////////////////////////
+
+	current = brothel->m_Girls;
+	while (current)
+	{
+		sw = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
+		if (current->health() <= 0 || sw != JOB_MARKETER)
+		{	// skip dead girls, resting girls and the matron
+			if (current->m_Next) { current = current->m_Next; continue; }
+			else { current = 0; break; }
+		}
+		totalPay = totalTips = totalGold = 0;
+		sum = EVENT_SUMMARY; summary = ""; ss.str("");
+		girlName = current->m_Realname;
+
+		// do their job
+		refused = m_JobManager.JobFunc[sw](current, brothel, Day0Night1, summary);
+
+		totalPay += current->m_Pay;
+		totalTips += current->m_Tips;
+		totalGold += current->m_Pay + current->m_Tips;
+		g_Brothels.CalculatePay(brothel, current, sw);
+
+		//		Summary Messages
+		if (refused)
+		{
+			brothel->m_Fame -= g_Girls.GetStat(current, STAT_FAME);
+			ss << girlName << " refused to work so made no money.";
+		}
+		else
+		{
+			ss << m_JobManager.GirlPaymentText(brothel, current, totalTips, totalPay, totalGold, Day0Night1);
+			if (totalGold < 0) sum = EVENT_DEBUG;
+
+			brothel->m_Fame += g_Girls.GetStat(current, STAT_FAME);
+		}
+		if (ss.str().length() > 0) current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
+
+		current = current->m_Next; // Next Girl
+	}
+
 
 	///////////////////////////////////
 	//  Finaly do end of day stuff.  //

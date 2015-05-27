@@ -51,7 +51,7 @@ bool cJobManager::WorkCobbler(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
 	int enjoy = 0;
-	int wages = 0;
+	int wages = 20;
 	int tips = 0;
 	int imagetype = IMGTYPE_CRAFT;
 	int msgtype = Day0Night1;
@@ -168,13 +168,24 @@ bool cJobManager::WorkCobbler(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	}
 	else
 	{
-		wages = int(craftpoints); // `J` Pay her based on how much she made
+		wages += int(craftpoints); // `J` Pay her based on how much she made
 	}
 
 	// `J` Arena Bookmark - adding in items that can be created in the Arena
-	if (craftpoints > 0) ss << g_InvManager.CraftItem(girl, JOB_COBBLER, int(craftpoints));
+	if (craftpoints > 0)
+	{
+		// `J` Incomplete Craftable code - commenting out
+#if 0
+		ss << g_InvManager.CraftItem(girl, JOB_COBBLER, int(craftpoints));
+#else
 
-	// `J` - Finish the shift - Baker
+
+
+
+#endif
+	}
+
+	// `J` - Finish the shift - Cobbler
 
 	// Push out the turn report
 	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
@@ -202,8 +213,6 @@ bool cJobManager::WorkCobbler(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 
 	// Update Enjoyment
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
-	// Gain Traits
-	//g_Girls.PossiblyGainNewTrait(girl, "Tough", 50, actiontype, "Working in the heat of the forge has made " + girlName + " rather Tough.", Day0Night1);
 
 	return false;
 }
@@ -211,14 +220,12 @@ double cJobManager::JP_Cobbler(sGirl* girl, bool estimate)// not used
 {
 	double jobperformance =
 		// primary - first 100
-		((girl->crafting() + girl->strength()) / 2) +
+		girl->crafting() +
 		// secondary - second 100
-		((girl->constitution() + girl->intelligence() + girl->magic() + girl->combat()) / 4) +
+		((girl->service() + girl->intelligence() + girl->magic()) / 3) +
 		// level bonus
 		girl->level();
-
-	//good traits
-
+		// traits modifiers
 
 	return jobperformance;
 }

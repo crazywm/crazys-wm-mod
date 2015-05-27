@@ -184,8 +184,11 @@ cBrothelManager::cBrothelManager()			// constructor
 		m_NumItem[i] = 0;
 	}
 	/* sBrothel */	m_Parent = m_Last = 0;
-	/* int */		m_NumBrothels = m_Influence = m_NumInventory = m_NumPrison = m_NumRunaways = m_HandmadeGoods = m_Beasts = m_AlchemyIngredients = 0;
+	/* int */		m_NumBrothels = m_Influence = m_NumInventory = m_NumPrison = m_NumRunaways = m_HandmadeGoods = m_Beasts = m_Alchemy = 0;
 	/* int */		m_SupplyShedLevel = 1;
+	/* int */		m_HandmadeGoodsReserves = m_AlchemyReserves = 0;
+	/* int */		m_BeastsReserves = 100;
+	/* int */		m_FoodReserves = m_DrinksReserves = 1000;
 	/* int */		m_Processing_Shift = -1;
 	/* long */		m_BribeRate = m_Bank = 0;
 	/* sObjective */m_Objective = 0;
@@ -212,7 +215,7 @@ void cBrothelManager::Free()
 		m_NumItem[i] = 0;
 	}
 	/* long   */	m_BribeRate = m_Bank = 0;
-	/* int    */	m_NumBrothels = m_Influence = m_HandmadeGoods = m_Beasts = m_AlchemyIngredients = 0;
+	/* int    */	m_NumBrothels = m_Influence = m_HandmadeGoods = m_Beasts = m_Alchemy = 0;
 	/* int    */	m_SupplyShedLevel = 1;
 	if (m_Objective)	delete m_Objective;
 	m_Objective = 0;
@@ -656,8 +659,16 @@ bool cBrothelManager::LoadDataXML(TiXmlHandle hBrothelManager)
 	// load supply shed level, other goodies
 	pBrothelManager->QueryIntAttribute("SupplyShedLevel", &m_SupplyShedLevel);
 	pBrothelManager->QueryIntAttribute("HandmadeGoods", &m_HandmadeGoods);
+	pBrothelManager->QueryIntAttribute("HandmadeGoodsReserves", &m_HandmadeGoodsReserves);
 	pBrothelManager->QueryIntAttribute("Beasts", &m_Beasts);
-	pBrothelManager->QueryIntAttribute("AlchemyIngredients", &m_AlchemyIngredients);
+	pBrothelManager->QueryIntAttribute("BeastsReserves", &m_BeastsReserves);
+	pBrothelManager->QueryIntAttribute("AlchemyIngredients", &m_Alchemy);
+	pBrothelManager->QueryIntAttribute("AlchemyIngredientsReserves", &m_AlchemyReserves);
+	pBrothelManager->QueryIntAttribute("Food", &m_Food);
+	pBrothelManager->QueryIntAttribute("FoodReserves", &m_FoodReserves);
+	pBrothelManager->QueryIntAttribute("Drinks", &m_Drinks);
+	pBrothelManager->QueryIntAttribute("DrinksReserves", &m_DrinksReserves);
+
 
 	// load runaways
 	m_NumRunaways = 0;
@@ -834,8 +845,15 @@ TiXmlElement* cBrothelManager::SaveDataXML(TiXmlElement* pRoot)
 	// save preg potions, supply shed level, other goodies
 	pBrothelManager->SetAttribute("SupplyShedLevel", m_SupplyShedLevel);
 	pBrothelManager->SetAttribute("HandmadeGoods", m_HandmadeGoods);
+	pBrothelManager->SetAttribute("HandmadeGoodsReserves", m_HandmadeGoodsReserves);
 	pBrothelManager->SetAttribute("Beasts", m_Beasts);
-	pBrothelManager->SetAttribute("AlchemyIngredients", m_AlchemyIngredients);
+	pBrothelManager->SetAttribute("BeastsReserves", m_BeastsReserves);
+	pBrothelManager->SetAttribute("AlchemyIngredients", m_Alchemy);
+	pBrothelManager->SetAttribute("AlchemyIngredientsReserves", m_AlchemyReserves);
+	pBrothelManager->SetAttribute("Food", m_Food);
+	pBrothelManager->SetAttribute("FoodReserves", m_FoodReserves);
+	pBrothelManager->SetAttribute("Drinks", m_Drinks);
+	pBrothelManager->SetAttribute("DrinksReserves", m_DrinksReserves);
 
 	// save runaways
 	TiXmlElement* pRunaways = new TiXmlElement("Runaways");

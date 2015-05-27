@@ -126,6 +126,7 @@ public:
 	int GetLastSelectedItemFromList(int listBoxID);
 	int GetNextSelectedItemFromList(int listBoxID, int from, int& pos);
 	int GetAfterSelectedItemFromList(int listBoxID);
+	void SetListTopPos(int listBoxID, int pos = 0);
 	void SetSelectedItemInList(int listBoxID, int itemID, bool ev = true, bool DeselectOthers = true);
 	void SetSelectedItemText(int listBoxID, int itemID, string data);
 	void ClearListBox(int ID);

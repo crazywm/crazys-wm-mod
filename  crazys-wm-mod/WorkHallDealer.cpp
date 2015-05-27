@@ -61,7 +61,8 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	sGirl* xxxenteronduty = g_Brothels.GetRandomGirlOnJob(0, JOB_XXXENTERTAINMENT, Day0Night1);
 	string xxxentername = (xxxenteronduty ? "Entertainer " + xxxenteronduty->m_Realname + "" : "the Sexual Entertainer");
 
-	int wages = 25, tips = 0, work = 0;
+	double wages = 25, tips = 0;
+	int work = 0;
 
 	int roll = g_Dice.d100();
 	int jobperformance = (int)JP_HallDealer(girl, false);
@@ -606,8 +607,8 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 
 	// work out the pay between the house and the girl
 	wages += (g_Dice % ((int)(((g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA)) / 2)*0.5f))) + 10;
-	girl->m_Pay = wages;
-	girl->m_Tips = tips;
+	girl->m_Pay = (int)wages;
+	girl->m_Tips = (int)tips;
 
 
 

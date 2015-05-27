@@ -130,7 +130,7 @@ bool cJobManager::WorkCleanCentre(sGirl* girl, sBrothel* brothel, bool Day0Night
 
 	brothel->m_Filthiness -= (int)CleanAmt;
 
-	// `J` - Finish the shift - jobname
+	// `J` - Finish the shift - CleanCentre
 
 	// Push out the turn report
 	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);

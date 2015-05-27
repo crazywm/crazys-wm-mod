@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Items>
 <Item Name="Codex of the Courtesan"
-      Desc="This book, written by a woman with much experience in &quot;servicing&quot; nobles, instructs its reader in the ways of conversation, seductive grace, and the art of allure through movement. (A) (+20 Serv, +20 Strip, +10 Cha, +10 Int, +10 Lib, +10 Conf, +10 Oral)"
-      Type="Misc"
-      Badness="0"
-      Special="None"
-      Cost="4000"
-      Rarity="Catacomb15"
-      Infinite="false">
+      Desc="This book, written by a woman with much experience in &quot;servicing&quot; nobles, instructs its reader in the ways of conversation, seductive grace, and the art of allure through movement. (A) (+20 Serv/Strip/Refin, +10 Mor/Dig/Cha/Int/Lib/Conf/Oral)"
+      Type="Misc"Badness="0" Special="None" Cost="5000" Rarity="Catacomb15" Infinite="false">
    <Effect What="Skill" Name="Service"                 Amount="20"    />
    <Effect What="Skill" Name="Strip"                   Amount="20"    />
+   <Effect What="Stat"  Name="Refinement"              Amount="20"    />
+   <Effect What="Stat"  Name="Morality"                Amount="10"    />
+   <Effect What="Stat"  Name="Dignity"                 Amount="10"    />
    <Effect What="Stat"  Name="Charisma"                Amount="10"    />
    <Effect What="Stat"  Name="Intelligence"            Amount="10"    />
    <Effect What="Stat"  Name="Libido"                  Amount="10"    />

@@ -61,7 +61,8 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, bool Day0Night
 		g_Girls.GetSkill(girl, SKILL_STRIP)) / 2;
 	//int drinks;
 
-	int wages = 30, tips = 0, work = 0;
+	double wages = 30, tips = 0;
+	int work = 0;
 
 	//what is she wearing?
 	if (g_Girls.HasItemJ(girl, "Rainbow Underwear") != -1)
@@ -465,8 +466,8 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, bool Day0Night
 	wages += 10 + g_Dice%roll_max;
 	if (wages < 0) wages = 0;
 	if (tips < 0) tips = 0;
-	girl->m_Pay = wages;
-	girl->m_Tips = tips;
+	girl->m_Pay = (int)wages;
+	girl->m_Tips = (int)tips;
 
 	// Improve stats
 	int xp = 15, libido = 1, skill = 3;

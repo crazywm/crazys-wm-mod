@@ -34,7 +34,7 @@ extern cFarmManager g_Farm;
 // `J` Job Farm - Staff
 bool cJobManager::WorkFarmMarketer(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-	int actiontype = ACTION_WORKFARM;
+	int actiontype = ACTION_WORKCUSTSERV;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work 
 	{
@@ -46,9 +46,59 @@ bool cJobManager::WorkFarmMarketer(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
-	int wages = 15, work = 0;
+	int wages = 20, work = 0;
 	int roll = g_Dice.d100();
+	int ForSale_HandmadeGoods	= max(0, g_Brothels.m_HandmadeGoods	- g_Brothels.m_HandmadeGoodsReserves);
+	int ForSale_Beasts			= max(0, g_Brothels.m_Beasts		- g_Brothels.m_BeastsReserves);
+	int ForSale_Food			= max(0, g_Brothels.m_Food			- g_Brothels.m_FoodReserves);
+	int ForSale_Drinks			= max(0, g_Brothels.m_Drinks		- g_Brothels.m_DrinksReserves);
+	int ForSale_Alchemy			= max(0, g_Brothels.m_Alchemy		- g_Brothels.m_AlchemyReserves);
+
+
 	double jobperformance = JP_FarmMarketer(girl, false);
+
+#if 1
+	// `J` Farm Bookmark - adding in items that can be created in the farm
+	if (ForSale_Food + (g_Brothels.m_FoodReserves/2) >= 10000 && g_Dice.percent(5))
+	{
+		sGirl* ugirl = 0;
+		int cost = 10000;
+		if (ForSale_Food >= 15000 && g_Dice.percent(cfg.slavemarket.unique_market()))
+		{
+			cost = 15000;
+			ugirl = g_Girls.GetRandomGirl();				// Unique girl type
+		}
+		if (ugirl == 0)		// if not unique or a unique girl can not be found
+		{
+			cost = 10000;
+			ugirl = g_Girls.CreateRandomGirl(0, false);	// create a random girl
+		}
+		if (ugirl)
+		{
+			stringstream Umsg;
+			// improve her a bit because she should be a good girl to be traded
+			ugirl->tiredness(-100);		ugirl->happiness(100);		ugirl->health(100);
+			ugirl->charisma(10 + g_Dice % 30);			ugirl->beauty(10 + g_Dice % 10);
+			ugirl->constitution(30 - g_Dice % 40);		ugirl->intelligence(10 - g_Dice % 15);
+			ugirl->confidence(10 - g_Dice % 30);		ugirl->agility(20 - g_Dice % 25);
+			ugirl->strength(1 + g_Dice % 20);			ugirl->obedience(10 + g_Dice % 40);
+			ugirl->spirit(50 - g_Dice % 100);			ugirl->morality(10 + g_Dice % 40);
+			ugirl->refinement(30 - g_Dice % 40);		ugirl->dignity(20 - g_Dice % 40);
+			ugirl->npclove(g_Dice.bell(-100, 100));		// she may have had a boyfriend before she got sold to you
+			ugirl->service(10 + g_Dice % 30);			ugirl->performance(g_Dice % 5);
+			ugirl->crafting(g_Dice % 10);				ugirl->herbalism(g_Dice % 5);
+			ugirl->farming(g_Dice % 10);				ugirl->brewing(g_Dice % 5);
+			ugirl->animalhandling(g_Dice % 10);			ugirl->cooking(g_Dice % 20);
+
+			Umsg << ugirl->m_Realname << " was purchased by Farm Marketer " << girlName << " in exchange for " << cost << " units of food.\n";
+			ugirl->m_Events.AddMessage(Umsg.str(), IMGTYPE_PROFILE, EVENT_DUNGEON);
+			g_Brothels.GetDungeon()->AddGirl(ugirl, DUNGEON_NEWGIRL);	// Either type of girl goes to the dungeon
+
+			ss << "\n\nA merchant from a far off village brought a girl from his village to trade for " << cost << " units of food.\n" << ugirl->m_Realname << " has been sent to your dungeon.\n";
+			g_Brothels.add_to_food(-cost);
+		}
+	}
+#endif
 
 	if (jobperformance >= 245)
 	{
@@ -98,25 +148,6 @@ bool cJobManager::WorkFarmMarketer(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	}
 
 
-#if 0
-
-	// `J` Farm Bookmark - adding in items that can be created in the farm
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#endif
 
 
 	g_Girls.UpdateEnjoyment(girl, actiontype, work);

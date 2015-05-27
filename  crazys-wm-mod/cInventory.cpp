@@ -548,6 +548,8 @@ sInventoryItem* cInventory::GetRandomCatacombItem()
 	return temp;
 }
 
+// `J` Incomplete Craftable code - commenting out
+#if 0
 // `J` get an item the girl can make
 sInventoryItem* cInventory::GetRandomCraftableItem(sGirl*girl, int job, int points)
 {
@@ -576,7 +578,10 @@ sInventoryItem* cInventory::GetRandomCraftableItem(sGirl*girl, int job, int poin
 	}
 	return temp;
 }
+#endif
 
+// `J` Incomplete Craftable code - commenting out
+#if 0
 string cInventory::CraftItem(sGirl*girl, int job, int points)
 {
 	stringstream ss;
@@ -591,6 +596,8 @@ string cInventory::CraftItem(sGirl*girl, int job, int points)
 	while (points > 0 && tries > 0)
 	{
 		tries--;
+
+
 		item = GetRandomCraftableItem(girl, job, points);
 		if (item)
 		{
@@ -629,6 +636,7 @@ string cInventory::CraftItem(sGirl*girl, int job, int points)
 
 	return ss.str();
 }
+#endif	
 
 sInventoryItem* cInventory::GetItem(string name)
 {
@@ -1106,6 +1114,9 @@ static sInventoryItem* handle_element(TiXmlElement *el)
 	if (pt = el->Attribute("Infinite"))					item->m_Infinite = ((string(pt) == "true") || (string(pt) == "True"));
 	else												item->m_Infinite = false;
 	
+
+	// `J` Incomplete Craftable code - commenting out
+#if 0
 	if (pt = el->Attribute("Craftable"))				item->set_craftable(pt);			else item->set_craftable("No");
 	if (pt = el->Attribute("CraftLevel", &ival))		item->m_CraftLevel		 = ival;	else item->m_CraftLevel		 = 0;
 	if (pt = el->Attribute("CraftCraft", &ival))		item->m_CraftCraft		 = ival;	else item->m_CraftCraft		 = 0;
@@ -1113,7 +1124,7 @@ static sInventoryItem* handle_element(TiXmlElement *el)
 	if (pt = el->Attribute("CraftMagic", &ival))		item->m_CraftMagic		 = ival;	else item->m_CraftMagic		 = 0;
 	if (pt = el->Attribute("CraftIntel", &ival))		item->m_CraftIntel		 = ival;	else item->m_CraftIntel		 = 0;
 	if (pt = el->Attribute("CraftPoint", &ival))		item->m_CraftPoints		 = ival;	else item->m_CraftPoints	 = 0;	
-
+#endif
 
 	do_effects(el, item);
 	//	do_tests(el, item);		//	`J` will be added in the future (hopefully)

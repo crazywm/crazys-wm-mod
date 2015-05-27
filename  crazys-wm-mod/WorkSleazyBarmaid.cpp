@@ -56,7 +56,8 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Nig
 
 	int HateLove = 0;
 	HateLove = g_Girls.GetStat(girl, STAT_PCLOVE) - g_Girls.GetStat(girl, STAT_PCHATE);
-	int wages = 15, tips = 0, work = 0;
+	double wages = 15, tips = 0;
+	int work = 0;
 	int roll = g_Dice.d100();
 	int imagetype = IMGTYPE_WAIT;
 
@@ -240,8 +241,8 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Nig
 	wages += 10 + g_Dice%roll_max;
 	if (wages < 0) wages = 0;
 	if (tips < 0) tips = 0;
-	girl->m_Pay = wages;
-	girl->m_Tips = tips;
+	girl->m_Pay = (int)wages;
+	girl->m_Tips = (int)tips;
 
 	// Improve stats
 	int xp = 15, libido = 1, skill = 3;

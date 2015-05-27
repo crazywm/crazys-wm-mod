@@ -1044,6 +1044,8 @@ int main(int ac, char* av[])	// `J` Bookmark - #1 - Entering the game
 	g_LogFile.ss() << "\n`J` DEBUG CODE - this section is used to debug a piece of code.\n"; g_LogFile.ssend();
 
 
+
+
 #if 0
 	// testing 		enemy_gang->m_Num = (max(1, g_Dice.bell(-5, 25) - 10));
 

@@ -672,6 +672,13 @@ bool cInterfaceWindow::ListDoubleClicked(int listBoxID)
 	return m_ListBoxes[listBoxID]->DoubleClicked();
 }
 
+void cInterfaceWindow::SetListTopPos(int listBoxID, int pos)
+{
+	if (pos < 0)	return;
+	m_ListBoxes[listBoxID]->m_Position = pos;
+	m_ListBoxes[listBoxID]->m_ScrollBar->SetTopValue(pos);
+}
+
 void cInterfaceWindow::SetSelectedItemInList(int listBoxID, int itemID, bool ev, bool DeselectOthers)
 {
 	if(itemID == -1)	return;

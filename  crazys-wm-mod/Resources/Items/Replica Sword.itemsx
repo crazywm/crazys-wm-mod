@@ -2,7 +2,6 @@
 <Items>
     <Item Name="Replica Sword" Desc="This imitation of some legendary sword or other is basically no good in a fight and bears little resemblance to a weapon one would actually wield in battle. If you're into that sort of thing, it looks kind of cool. If you're not, it looks kind of silly. (E) (+2 Com, +10 Hap, -2 Cha, adds Nerd)"
 	Type="Weapon" Badness="0" Special="None" Cost="200" Rarity="Shop05" Infinite="false" GirlBuyChance="0" ItemWeight="0.0"
-	Craftable="Blacksmith" CraftLevel="4" CraftCraft="50" CraftStren="40" CraftMagic="0" CraftIntel="50" CraftPoint="100">
         <Effect What="Skill" Name="Combat" Amount="2" />
         <Effect What="Stat" Name="Charisma" Amount="-2" />
         <Effect What="Stat" Name="Happiness" Amount="10" />

@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Items>
 <Item Name="Codex of Eros"
-      Desc="The scented pages of this wonderfully-illustrated book offers detailed instructions on how to make sex between a man and a woman more enjoyable. Many of the techniques in there are more than a little fancy, but they're presented in a way that makes them easy to understand. (A) (+30 Norm, +10 Anal)"
-      Type="Misc"
-      Badness="0"
-      Special="None"
-      Cost="3000"
-      Rarity="Catacomb15"
-      Infinite="false">
+      Desc="The scented pages of this wonderfully-illustrated book offers detailed instructions on how to make sex between a man and a woman more enjoyable. Many of the techniques in there are more than a little fancy, but they're presented in a way that makes them easy to understand. (A) (+30 Norm, +10 Anal/Oral)"
+      Type="Misc" Badness="0" Special="None" Cost="3000" Rarity="Catacomb15" Infinite="false">
    <Effect What="Skill" Name="NormalSex"               Amount="30"    />
    <Effect What="Skill" Name="Anal"                    Amount="10"    />
    <Effect What="Skill" Name="OralSex"                 Amount="10"    />

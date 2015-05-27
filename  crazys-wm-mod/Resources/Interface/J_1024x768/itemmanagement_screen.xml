@@ -25,8 +25,8 @@
 <Text     Name="ShiftHeader"        Text="TransferItem(s)"   XPos="330" YPos="210" Width="150" Height="68"  FontSize="18" />
 <Checkbox Name="AutoUseItems"   Text="Autouse Consumables"   XPos="325" YPos="235" Width="16"  Height="16"	FontSize="12"/>
 
-<Button   Name="Sell1LeftButton"    Image="Sell1"            XPos="270" YPos="30" Width="48"  Height="22"  Transparency="true" Scale="true" />
-<Button   Name="Sell1RightButton"   Image="Sell1"            XPos="450" YPos="30" Width="48"  Height="22"  Transparency="true" Scale="true" />
+<Button   Name="Sell10LeftButton"   Image="Sell10"           XPos="270" YPos="30" Width="48"  Height="22"  Transparency="true" Scale="true" />
+<Button   Name="Sell10RightButton"  Image="Sell10"           XPos="450" YPos="30" Width="48"  Height="22"  Transparency="true" Scale="true" />
 <Button   Name="SellAllLeftButton"  Image="SellAll"          XPos="270" YPos="55" Width="48"  Height="22"  Transparency="true" Scale="true" />
 <Button   Name="SellAllRightButton" Image="SellAll"          XPos="450" YPos="55" Width="48"  Height="22"  Transparency="true" Scale="true" />
 

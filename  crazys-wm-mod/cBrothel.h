@@ -296,10 +296,12 @@ public:
 	int  GetNumDrinks()					{ return m_Drinks; }
 	int  GetNumBeasts()					{ return m_Beasts; }
 	int  GetNumGoods()					{ return m_HandmadeGoods; }
+	int  GetNumAlchemy()				{ return m_Alchemy; }
 	void add_to_food(int i)				{ m_Food += i; if (m_Food < 0) m_Food = 0; }
 	void add_to_drinks(int i)			{ m_Drinks += i; if (m_Drinks < 0) m_Drinks = 0; }
 	void add_to_beasts(int i)			{ m_Beasts += i; if (m_Beasts < 0) m_Beasts = 0; }
 	void add_to_goods(int i)			{ m_HandmadeGoods += i; if (m_HandmadeGoods < 0) m_HandmadeGoods = 0; }
+	void add_to_alchemy(int i)			{ m_Alchemy += i; if (m_Alchemy < 0) m_Alchemy = 0; }
 
 	bool CheckScripts();
 
@@ -367,7 +369,15 @@ public:
 	int m_Beasts;					// used for beastiality scenes
 	int m_Food;						// food produced at the farm
 	int m_Drinks;					// drinks produced at the farm
-	int m_AlchemyIngredients;
+	int m_Alchemy;
+
+	// brothel resource Reserves - How much will NOT be sold so it can be used by the Brothels 
+	int m_HandmadeGoodsReserves;
+	int m_BeastsReserves;
+	int m_FoodReserves;
+	int m_DrinksReserves;
+	int m_AlchemyReserves;
+
 
 	int		m_NumPrison;
 	sGirl*  m_Prison;				// a list of girls kept in prision

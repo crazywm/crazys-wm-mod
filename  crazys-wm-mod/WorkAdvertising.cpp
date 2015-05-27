@@ -163,7 +163,8 @@ bool cJobManager::WorkAdvertising(sGirl* girl, sBrothel* brothel, bool Day0Night
 	// now to boost the brothel's advertising level accordingly
 	brothel->m_AdvertisingLevel += (multiplier / 100);
 
-	// `J` - Finish the shift - jobname
+	// `J` - Finish the shift - Advertising
+
 	// Push out the turn report
 	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
 	// Money

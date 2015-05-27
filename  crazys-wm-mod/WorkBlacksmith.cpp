@@ -51,7 +51,7 @@ bool cJobManager::WorkBlacksmith(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
 	int enjoy = 0;
-	int wages = 0;
+	int wages = 40;
 	int tips = 0;
 	int imagetype = IMGTYPE_CRAFT;
 	int msgtype = Day0Night1;
@@ -90,12 +90,12 @@ bool cJobManager::WorkBlacksmith(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	else if (jobperformance >= 70)
 	{
 		ss << " She was nervous and made a few mistakes. She isn't that good at this.";
-		craftpoints *= 0.6; roll_a -= 2; roll_b -= 5;
+		wages -= 10; craftpoints *= 0.6; roll_a -= 2; roll_b -= 5;
 	}
 	else
 	{
 		ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.";
-		wages -= 15; craftpoints *= 0.4; roll_a -= 5; roll_b -= 10;
+		wages -= 25; craftpoints *= 0.4; roll_a -= 5; roll_b -= 10;
 	}
 	ss << "\n\n";
 
@@ -168,13 +168,24 @@ bool cJobManager::WorkBlacksmith(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	}
 	else
 	{
-		wages = int(craftpoints); // `J` Pay her based on how much she made
+		wages += int(craftpoints); // `J` Pay her based on how much she made
 	}
 
 	// `J` Arena Bookmark - adding in items that can be created in the Arena
-	if (craftpoints > 0) ss << g_InvManager.CraftItem(girl, JOB_BLACKSMITH, int(craftpoints));
+	if (craftpoints > 0)
+	{
+		// `J` Incomplete Craftable code - commenting out
+#if 0
+		ss << g_InvManager.CraftItem(girl, JOB_BLACKSMITH, int(craftpoints));
+#else
 
-	// `J` - Finish the shift - Baker
+
+
+
+#endif
+	}
+
+	// `J` - Finish the shift - BlackSmith
 
 	// Push out the turn report
 	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);

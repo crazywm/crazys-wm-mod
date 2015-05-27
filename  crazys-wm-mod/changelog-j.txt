@@ -2045,6 +2045,46 @@ Included some rejected customers texts to whore's turn summary.
 
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub  -  several areas unfinished: itemsx, blacksmith, tailor, cobbler, inventory screen
 
+###  Changes 4/24-5/23/2015 - I have not had any time to work on the game all month
+Crazy and several others have added a lot of text to many jobs
+
+###  Changes 5/24-26
+!!!!!! Commented out all Craftable changes as I have had no time to finish it.
+!!!!!! Rolled back WME to .8.27
+Changed "Sell 1" in Inventory screen to "Sell 10"
+ - "Sell 10" and "Sell All" now work properly
+ReFixed Listboxes to scroll better.
+Fixed Inventory category list box to work better.
+Moved galtxt to global so it only needs to be edited once for both gallery screens.
+Added Image type "Presented" for slave market images.
+Fixed the first+middle+last names to combine into m_Realname better
+Fixed AskPrice variation to be based more on int and cha
+ - removed the max of 100 for calculating how much to charge customers.
+Fixed hard coded random girls to check .traitsx chances
+Adjusted new girl's addiction chances.
+Updated several items
+
+Adding to jobs:
+ - Blacksmith
+ - Cobbler - New
+ - Tailor - New
+ - MakeItems
+ - Farmer - Now produces food and a few other things
+ - Farm Research - Added item creation
+ 
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+
+
+
+
+
+ 
+ 
+
+$$$$ TO DO - SHORT TERM - (for this version) $$$$
+Config.xml: 
+ > Debug > ShowNumbers
+ > Folders > PreferDefaults
 
 
 
@@ -2053,14 +2093,14 @@ Included some rejected customers texts to whore's turn summary.
 
 $$$$ NOTE TO SELF - When updating items to recalculate stats/skills when loading girls - don't modify temp stuff $$$$
 
-$$$$ TO DO - SHORT TERM - (for this version) $$$$
-Add "Sell All" and similar buttons to inventory screen
+$$$$ TO DO - SHORT TERM - (Soon) $$$$
 Make jobs load and save by name instead of number so adding new jobs will not break save games.
+
+$$$$ TO DO - MID TERM - (for the next few versions) $$$$
 Keep expanding on simple-save
 food and drink
 
 
-$$$$ TO DO - MID TERM - (for the next few versions) $$$$
 Make config in_fact and out_fact do something
 
 Change the way the game handles images

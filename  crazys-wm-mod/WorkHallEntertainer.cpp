@@ -59,7 +59,8 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 	string dealername = (dealeronduty ? "Dealer " + dealeronduty->m_Realname + "" : "the Dealer");
 
 	int roll = g_Dice.d100();
-	int wages = 25, tips = 0, work = 0;
+	double wages = 25, tips = 0;
+	int work = 0;
 
 	double jobperformance = JP_HallEntertainer(girl, false);
 
@@ -524,8 +525,8 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 	wages += (g_Dice % ((int)(((g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA)) / 2)*0.5f))) + 10;
 	if (wages < 0) wages = 0;
 	if (tips < 0) tips = 0;
-	girl->m_Pay = wages;
-	girl->m_Tips = tips;
+	girl->m_Pay = (int)wages;
+	girl->m_Tips = (int)tips;
 
 
 	// Improve girl

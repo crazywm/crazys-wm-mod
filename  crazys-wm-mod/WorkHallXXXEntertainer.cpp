@@ -59,7 +59,8 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, bool Da
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
 	int roll = g_Dice.d100();
-	int wages = 25, tips = 0, work = 0;
+	double wages = 25, tips = 0;
+	int work = 0;
 	int imagetype = IMGTYPE_ECCHI;
 
 	double jobperformance = JP_HallXXXEntertainer(girl, false);
@@ -622,8 +623,8 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, bool Da
 
 	// work out the pay between the house and the girl
 	wages += (g_Dice % ((int)(((g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA)) / 2)*0.5f))) + 10;
-	girl->m_Pay = wages;
-	girl->m_Tips = tips;
+	girl->m_Pay = (int)wages;
+	girl->m_Tips = (int)tips;
 
 
 	// Improve girl

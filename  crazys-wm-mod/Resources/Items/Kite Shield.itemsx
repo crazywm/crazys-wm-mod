@@ -2,14 +2,12 @@
 <Items>
     <Item Name="Kite Shield" Desc="Since your enemies cant see your girls Great Figure behind this shield, you hired an artist to paint her on the front in a lewd position, to distract her enemies. (Beau/Cons +5, adds Half-Construct)"
 	Type="Shield" Badness="15" Special="None" Cost="500" Rarity="Shop05" Infinite="false" GirlBuyChance="3" ItemWeight="0.0"
-	Craftable="Blacksmith" CraftLevel="3" CraftCraft="20" CraftStren="20" CraftMagic="0" CraftIntel="5" CraftPoint="40">
         <Effect What="Stat" Name="Constitution" Amount="5" />
         <Effect What="Stat" Name="Beauty" Amount="5" />
         <Effect What="Trait" Name="Half-Construct" Amount="1" />
     </Item>
     <Item Name="Kite Shield" Desc="Since your enemies cant see your girls Great Figure behind this shield, you hired an artist to paint her on the front in a lewd position, to distract her enemies. (Beau/Cons +5, adds Half-Construct)"
 	Type="Shield" Badness="15" Special="None" Cost="500" Rarity="Catacomb15" Infinite="false" GirlBuyChance="3" ItemWeight="0.0"
-	Craftable="Blacksmith" CraftLevel="3" CraftCraft="20" CraftStren="20" CraftMagic="0" CraftIntel="5" CraftPoint="40">
         <Effect What="Stat" Name="Constitution" Amount="5" />
         <Effect What="Stat" Name="Beauty" Amount="5" />
         <Effect What="Trait" Name="Half-Construct" Amount="1" />

@@ -51,14 +51,14 @@ bool cJobManager::WorkTailor(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
 	int enjoy = 0;
-	int wages = 0;
+	int wages = 20;
 	int tips = 0;
 	int imagetype = IMGTYPE_CRAFT;
 	int msgtype = Day0Night1;
 
 	double jobperformance = JP_Tailor(girl, false);
 	double craftpoints = jobperformance;
-	
+
 	int dirtyloss = brothel->m_Filthiness / 10;		// craftpoints lost due to repairing equipment
 	if (dirtyloss > 0)
 	{
@@ -104,21 +104,7 @@ bool cJobManager::WorkTailor(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	{
 		tired /= 8;
 		enjoy -= g_Dice % 3;
-		if (roll_b < 10)	// fire
-		{
-			int fire = max(0, g_Dice.bell(-2, 10));/*Not really sure a tailor can start a fire but left it in cause couldnt think of anything to replace it CRAZY*/
-			brothel->m_Filthiness += fire * 2;
-			craftpoints -= (craftpoints * (fire * 0.1));
-			if (girl->pcfear() > 20) girl->pcfear(fire / 2);	// she is afraid you will get mad at her
-			ss << "She accidently started a fire";
-			/* */if (fire < 3)	ss << " but it was quickly put out.";
-			else if (fire < 6)	ss << " that destroyed several racks of clothes.";
-			else if (fire < 10)	ss << " that destroyed most of the clothes she had made.";
-			else /*          */	ss << " destroying everything she had made.";
-
-			if (fire > 5) g_MessageQue.AddToQue(girlName + " accidently started a large fire while working as a Tailor at the Farm.", COLOR_RED);
-		}
-		else if (roll_b < 30)	// injury
+		if (roll_b < 20)	// injury
 		{
 			girl->health(-(1 + g_Dice % 5));
 			craftpoints *= 0.8;
@@ -168,13 +154,26 @@ bool cJobManager::WorkTailor(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	}
 	else
 	{
-		wages = int(craftpoints); // `J` Pay her based on how much she made
+		wages += int(craftpoints); // `J` Pay her based on how much she made
 	}
 
-	// `J` Arena Bookmark - adding in items that can be created in the Arena
-	if (craftpoints > 0) ss << g_InvManager.CraftItem(girl, JOB_TAILOR, int(craftpoints));
+	// `J` Farm Bookmark - adding in items that can be created in the Farm
+	if (craftpoints > 0)
+	{
+		// `J` Incomplete Craftable code - commenting out
+#if 0
+		ss << g_InvManager.CraftItem(girl, JOB_TAILOR, int(craftpoints));
+#else
 
-	// `J` - Finish the shift - Baker
+
+
+
+#endif
+	}
+
+	
+
+	// `J` - Finish the shift - Tailor
 
 	// Push out the turn report
 	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
@@ -194,16 +193,14 @@ bool cJobManager::WorkTailor(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	// primary improvement (+2 for single or +1 for multiple)
-	g_Girls.UpdateSkill(girl, SKILL_CRAFTING,		(g_Dice % skill) + 1);
-	g_Girls.UpdateStat(girl, STAT_STRENGTH,			(g_Dice % skill) + 1);
+	g_Girls.UpdateSkill(girl, SKILL_CRAFTING, (g_Dice % skill) + 1);
+	g_Girls.UpdateStat(girl, STAT_STRENGTH, (g_Dice % skill) + 1);
 	// secondary improvement (-1 for one then -2 for others)
-	g_Girls.UpdateStat(girl, STAT_CONSTITUTION,	max(0, (g_Dice % skill) - 1));
-	g_Girls.UpdateSkill(girl, SKILL_COMBAT,		max(0, (g_Dice % skill) - 2));
+	g_Girls.UpdateStat(girl, STAT_CONSTITUTION, max(0, (g_Dice % skill) - 1));
+	g_Girls.UpdateSkill(girl, SKILL_COMBAT, max(0, (g_Dice % skill) - 2));
 
 	// Update Enjoyment
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
-	// Gain Traits
-	//g_Girls.PossiblyGainNewTrait(girl, "Tough", 50, actiontype, "Working in the heat of the forge has made " + girlName + " rather Tough.", Day0Night1);
 
 	return false;
 }
@@ -211,13 +208,12 @@ double cJobManager::JP_Tailor(sGirl* girl, bool estimate)// not used
 {
 	double jobperformance =
 		// primary - first 100
-		((girl->crafting() + girl->strength()) / 2) +
+		girl->crafting() +
 		// secondary - second 100
-		((girl->constitution() + girl->intelligence() + girl->magic() + girl->combat()) / 4) +
+		((girl->service() + girl->intelligence() + girl->magic()) / 3) +
 		// level bonus
 		girl->level();
-
-	//good traits
+	// traits modifiers
 
 
 	return jobperformance;

@@ -399,7 +399,7 @@ bool cScreenSlaveMarket::change_selected_girl()
 		AddToListBox(trait_list_id, i, trait->m_Name);	// mention the rest in the trait listbox
 	}
 
-	SetImage(slave_image_id, g_Girls.GetImageSurface(girl, IMGTYPE_PROFILE, true, ImageNum));
+	SetImage(slave_image_id, g_Girls.GetImageSurface(girl, IMGTYPE_PRESENTED, true, ImageNum));
 	/*
 	 *	set the trait list to the first entry
 	 *

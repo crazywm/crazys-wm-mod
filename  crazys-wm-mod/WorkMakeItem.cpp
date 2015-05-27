@@ -50,7 +50,7 @@ bool cJobManager::WorkMakeItem(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
 	int enjoy = 0;
-	int wages = 0;
+	int wages = 20;
 	int tips = 0;
 	int imagetype = IMGTYPE_CRAFT;
 	int msgtype = Day0Night1;
@@ -152,53 +152,52 @@ bool cJobManager::WorkMakeItem(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	}
 	else
 	{
-		wages = int(craftpoints); // `J` Pay her based on how much she made
+		wages += int(craftpoints); // `J` Pay her based on how much she made
 	}
 
 	// `J` Farm Bookmark - adding in items that can be created in the farm
-#if 1
-	if (craftpoints > 0) ss << g_InvManager.CraftItem(girl, JOB_MAKEITEM, int(craftpoints));
-
-
-
-
-
-
-
-
-
-
-
+	if (craftpoints > 0)
+	{
+		// `J` Incomplete Craftable code - commenting out
+#if 0
+		ss << g_InvManager.CraftItem(girl, JOB_MAKEITEM, int(craftpoints));
+#else
 
 
 
 
 #endif
+	}
 
 
+	// `J` - Finish the shift - MakeItem
 
+	// Push out the turn report
+	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
+	if (tired > 0) girl->tiredness(tired);
 
+	// Money
+	if (wages < 0)	wages = 0;	girl->m_Pay = wages;
+	if (tips < 0)	tips = 0;	girl->m_Tips = tips;
 
-
-	girl->m_Pay += 25;
-	g_Gold.staff_wages(25);  // wages come from you
-
-	// Improve girl
+	// Base Improvement and trait modifiers
 	int xp = 5, libido = 1, skill = 3;
-
-	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
-
-	g_Girls.UpdateStat(girl, STAT_EXP, (g_Dice%xp) + 1);
+	/* */if (girl->has_trait("Quick Learner"))	{ skill += 1; xp += 3; }
+	else if (girl->has_trait("Slow Learner"))	{ skill -= 1; xp -= 3; }
+	/* */if (girl->has_trait("Nymphomaniac"))	{ libido += 2; }
+	// EXP and Libido
+	g_Girls.UpdateStat(girl, STAT_EXP, (g_Dice % xp) + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
-	// primary (+2 for single or +1 for multiple)
+	// primary improvement (+2 for single or +1 for multiple)
 	g_Girls.UpdateSkill(girl, SKILL_CRAFTING, (g_Dice % skill) + 2);
-	// secondary (-1 for one then -2 for others)
+	// secondary improvement (-1 for one then -2 for others)
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, max(0, (g_Dice % skill) - 1));
 	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, max(0, (g_Dice % skill) - 2));
 	g_Girls.UpdateSkill(girl, SKILL_MAGIC, max(0, (g_Dice % skill) - 2));
+
+	// Update Enjoyment
+	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 
 	return false;
 }

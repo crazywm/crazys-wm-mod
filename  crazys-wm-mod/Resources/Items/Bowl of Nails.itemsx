@@ -2,7 +2,6 @@
 <Items>
     <Item Name="Bowl of Nails" Desc="Is your girl tough enough to eat this without any milk? (Health -10, Constitution +5)"
 	Type="Food" Badness="0" Special="None" Cost="350" Rarity="Shop50" Infinite="false" GirlBuyChance="0" ItemWeight="0.0"
-	Craftable="Blacksmith" CraftLevel="0" CraftCraft="0" CraftStren="0" CraftMagic="0" CraftIntel="0" CraftPoint="20">
         <Effect What="Stat" Name="Constitution" Amount="5" />
         <Effect What="Stat" Name="Health" Amount="-10" />
     </Item>

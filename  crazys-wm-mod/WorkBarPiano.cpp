@@ -57,7 +57,8 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	sGirl* singeronduty = g_Brothels.GetRandomGirlOnJob(0, JOB_SINGER, Day0Night1);
 	string singername = (singeronduty ? "Singer " + singeronduty->m_Realname + "" : "the Singer");
 
-	int wages = 20, tips = 0, work = 0;
+	double wages = 20, tips = 0;
+	int work = 0;
 
 	int roll = g_Dice.d100();
 
@@ -331,8 +332,8 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	wages += 10 + g_Dice%roll_max;
 	if (wages < 0) wages = 0;
 	if (tips < 0) tips = 0;
-	girl->m_Pay = wages;
-	girl->m_Tips = tips;
+	girl->m_Pay = (int)wages;
+	girl->m_Tips = (int)tips;
 
 	// Improve stats
 	int xp = 10, libido = 1, skill = 3;

@@ -50,9 +50,6 @@ static int selection = -1;
 static bool Day0Night1 = SHIFT_DAY;	// 1 is night, 0 is day.
 static bool SetJob = false;
 
-static int lastNum = -1;
-static int ImageNum = -1;
-
 extern sGirl *selected_girl;
 extern vector<int> cycle_girls;
 extern int cycle_pos;

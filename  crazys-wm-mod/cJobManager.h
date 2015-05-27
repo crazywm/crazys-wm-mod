@@ -299,6 +299,8 @@ public:
 	static double JP_Baker(sGirl* girl, bool estimate);
 	static bool WorkBrewer(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
 	static double JP_Brewer(sGirl* girl, bool estimate);
+	static bool WorkTailor(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_Tailor(sGirl* girl, bool estimate);
 	static bool WorkMakeItem(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
 	static double JP_MakeItem(sGirl* girl, bool estimate);
 	static bool WorkMakePotions(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);

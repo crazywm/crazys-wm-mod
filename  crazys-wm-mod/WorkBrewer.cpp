@@ -37,6 +37,8 @@ bool cJobManager::WorkBrewer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 {
 	int actiontype = ACTION_WORKCOOKING;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
+	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
+
 	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work 
 	{
 		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
@@ -55,6 +57,7 @@ bool cJobManager::WorkBrewer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 
 	int roll = g_Dice.d100();
 	double jobperformance = JP_Brewer(girl, false);
+	double drinksproduced = jobperformance;
 
 
 	if (jobperformance >= 245)

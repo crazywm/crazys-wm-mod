@@ -29,6 +29,7 @@ extern cMessageQue g_MessageQue;
 extern cRng g_Dice;
 extern cBrothelManager g_Brothels;
 extern cFarmManager g_Farm;
+extern cInventory g_InvManager;
 
 // `J` Job Farm - Staff - Learning_Job
 bool cJobManager::WorkFarmResearch(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
@@ -105,7 +106,7 @@ bool cJobManager::WorkFarmResearch(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 		if (sgInt > 0) { ss << sgInt << " Intelligence\n";		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, sgInt); }
 	}
 	
-	int trycount = 5;
+	int trycount = skill;
 	while (gaintrait && trycount > 0)	// `J` Try to add a trait 
 	{
 		trycount--;
@@ -137,11 +138,172 @@ bool cJobManager::WorkFarmResearch(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 		default:	break;	// no trait gained
 		}
 	}
+	ss << "\n\n";
 
 	//enjoyed the work or not
 	/* */if (roll_c <= 10)	{ enjoy -= g_Dice % 3 + 1;	ss << "She did not enjoy her time training."; }
 	else if (roll_c >= 90)	{ enjoy += g_Dice % 3 + 1;	ss << "She had a pleasant time training."; }
 	else /*             */	{ enjoy += g_Dice % 2;		ss << "Otherwise, the shift passed uneventfully."; }
+	
+	ss << "\n\n";
+#if 1
+	// `J` Farm Bookmark - adding in items that can be created in the farm
+	if (girl->intelligence() + girl->crafting() > 100 && g_Dice.percent(girl->intelligence() + girl->crafting() / 10))	// 10-20%
+	{
+		sInventoryItem* item = NULL;
+		string itemname = "";
+		int tries = skill;
+		while (itemname == "" && tries > 0)
+		{
+			switch (g_Dice % 20)
+			{
+				/*	For each item available, the girl making it must have:
+				Skills:
+				*	If an item gives less than 40 skill points, the girl must have 40 more than the amount given in that skill
+				*	If it gives more than 40 points, there will need to be some magic included.
+				*	If there are multiple skills, add 40 to each bonus and if skills (a+b+c) > bonus total
+				Stats:
+				*	Stats will need more variation in how high they are needed because it is less knowledge than conditioning
+				Traits:
+				*	Most traits will require some magic
+				Randomness:
+				*	There also should be a g_Dice.percent() with the main Skills averaged and divided by 10
+				*		If there are 3 skills, then g_Dice.percent((a+b+c)/30)
+				*/
+			case 0:
+				if (girl->farming() > 50 && girl->animalhandling() > 50
+					&& g_Dice.percent(girl->farming() + girl->animalhandling() / 20))
+					itemname = "Farmer's Guide";		// +10 Farming, +10 AnimalHandling
+				break;
+			case 1:
+				if (girl->constitution() > 60 && g_Dice.percent(girl->constitution() / 10))
+					itemname = "Manual of Health";		// (+15 Beast/Group, +10 Cons/Str, +5 BDSM/Comb)
+				break;
+			case 2:
+				if (girl->magic() > 60 && g_Dice.percent(girl->magic() / 10))
+					itemname = "Manual of Magic";		// +20 magic
+				break;
+			case 3:
+				if (girl->magic() > 80 && g_Dice.percent(girl->magic() / 10))
+					itemname = "Codex of the Arcane";	// +40 magic
+				break;
+			case 4:
+				if (girl->lesbian() > 40 && g_Dice.percent(girl->lesbian() / 10))
+					itemname = "Manual of Two Roses";	// +20 Lesbian
+				break;
+			case 5:
+			{
+				if (girl->lesbian() > 80 && g_Dice.percent(girl->lesbian() / 10))
+					itemname = "Codex of Sappho";		// +40 Lesbian
+			}break;
+			case 6:
+				if (girl->bdsm() > 60 && g_Dice.percent(girl->bdsm() / 10))
+					itemname = "Manual of Bondage";		// (+20 BDSM, +5 Cons)
+				break;
+			case 7:
+				if (girl->combat() > 60 && g_Dice.percent(girl->combat() / 10))
+					itemname = "Manual of Arms";		// (+20 Com)
+				break;
+			case 8:
+				if (girl->performance() + girl->strip() > 100 && g_Dice.percent((girl->performance() + girl->strip()) / 20))
+					itemname = "Manual of the Dancer";	// (+15 Serv/Strip/Perf, +5 Norm/Agi)
+				break;
+			case 9:
+				if (girl->normalsex() + girl->oralsex() + girl->anal() > 150 && g_Dice.percent((girl->normalsex() + girl->oralsex() + girl->anal()) / 30))
+					itemname = "Manual of Sex";			// (+15 Norm, +10 Oral, +5 Anal)
+				break;
+			case 10:
+			{
+				if (girl->magic() < 80 && girl->mana() < 20) break;
+				int manacost = 60;
+				/* */if (girl->has_trait("Sterile"))		manacost = 80;
+				else if (girl->has_trait("Fertile"))		manacost = 40;
+				else if (girl->has_trait("Broodmother"))	manacost = 20;
+				if (girl->mana() >= manacost && g_Dice.percent(girl->magic() - manacost))
+				{
+					girl->mana(-manacost);
+					itemname = "Fertility Tome";				// (-Sterile, +Fertile, +50 Normal Sex, +100 Libido)
+				}
+			}break;
+			case 11:
+			{
+				// Noble, Princess and Queen needs 40, everyone else needs 60 to make this
+				if (girl->has_trait("Noble") || girl->has_trait("Princess") || girl->has_trait("Queen"))
+					if (girl->refinement() < 40 || girl->service() < 40 || girl->intelligence() < 40)		break;
+				else if (girl->refinement() < 60 && girl->service() < 60 && girl->intelligence() < 60)		break;
+				// she can make it, now does she?
+				if (g_Dice.percent((girl->refinement() + girl->service() + girl->intelligence()) / 30))
+					itemname = "Codex of the Courtesan";		// (+20 Serv/Strip/Refin, +10 Mor/Dig/Cha/Int/Lib/Conf/Oral)
+			}break;
+			case 12:
+			{
+				int manacost = 70;
+				// Dominatrix, Masochist and Sadistic needs 50, everyone else needs 70 to make this
+				if (girl->has_trait("Dominatrix") || girl->has_trait("Masochist") || girl->has_trait("Sadistic"))
+				{
+					if (girl->bdsm() < 50 || girl->magic() < 50 || girl->mana() < 50)		break;
+					manacost = 50;
+				}
+				else if (girl->bdsm() < 70 && girl->magic() < 70 && girl->mana() < 70)		break;
+				// she can make it, now does she?
+				if (g_Dice.percent((girl->bdsm() + girl->magic()) / 20))
+				{
+					girl->mana(-manacost);
+					itemname = "Codex of Submission";		// (+30 Obed, -30 Spi/Dig, +20 BDSM, +10 Anal/Group/Oral/Hand/Foot)
+				}
+			}break;
+			case 13:
+			{
+				if (girl->combat() > 80 && g_Dice.percent(girl->combat() / 10))
+					itemname = "Codex of Mars";			// (+40 Com, Adds Brawler)
+			}break;
+			case 14:
+			{
+				if (girl->normalsex() + girl->oralsex() + girl->anal() > 170 && g_Dice.percent((girl->normalsex() + girl->oralsex() + girl->anal()) / 30))
+					itemname = "Codex of Eros";			// (+30 Norm, +10 Anal/Oral)
+			}break;
+			case 15:
+			{
+				if (girl->medicine() + girl->intelligence() > 110 && g_Dice.percent((girl->medicine() + girl->intelligence()) / 20))
+					itemname = "Codex of Asclepius";	// (+20 Med, +10 Int)
+			}break;
+			case 16:
+			{
+				/*
+
+				*/
+			}break;
+			case 17:
+			{
+				/*
+
+				*/
+			}break;
+			case 18:
+			{
+				/*
+
+				*/
+			}break;
+
+			default:
+				break;
+			}
+		}
+		
+		item = g_InvManager.GetItem(itemname);
+		if (item)
+		{
+			g_Brothels.AddItemToInventory(item);
+			ss << girlName << " managed to create a " << itemname << " by compiling her notes together.\n";
+		}
+	}
+
+#endif
+
+	
+	
+	
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);

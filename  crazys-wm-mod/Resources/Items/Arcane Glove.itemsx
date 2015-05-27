@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Items>
     <Item Name="Arcane Glove" Desc="Gloves like this are created to give mages an easy defence without the inconvenience of traditional weapons. The glove can emit an electric shock designed to travel through clothes and armor, stunning an opponent briefly and giving time for escape. (+8 Magic, +8 Combat, -10 Fear)" 
-	Type="Small Weapon" Badness="0" Special="None" Cost="750" Rarity="Shop50" Infinite="false" GirlBuyChance="5" ItemWeight="0.0" 
-	Craftable="MakeItem" CraftLevel="3" CraftCraft="25" CraftStren="15" CraftMagic="15" CraftIntel="15" CraftPoint="30">
+	Type="Small Weapon" Badness="0" Special="None" Cost="750" Rarity="Shop50" Infinite="false" GirlBuyChance="5" ItemWeight="0.0">
         <Effect What="Stat" Name="PCFear" Amount="-10" />
         <Effect What="Skill" Name="Magic" Amount="8" />
         <Effect What="Skill" Name="Combat" Amount="8" />

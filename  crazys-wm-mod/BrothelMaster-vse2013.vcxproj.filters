@@ -608,6 +608,8 @@
     <ClCompile Include="SDL_anigif.c" />
     <ClCompile Include="WorkBlacksmith.cpp" />
     <ClCompile Include="WorkShepherd.cpp" />
+    <ClCompile Include="WorkCobbler.cpp" />
+    <ClCompile Include="WorkTailor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cButton.h">

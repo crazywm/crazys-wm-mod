@@ -237,6 +237,8 @@ typedef struct sInventoryItem
 		else { m_Special = None; cerr << "unexpected special string: '" << s << "'" << endl; }
 	}
 
+	// `J` Incomplete Craftable code - commenting out
+#if 0
 	enum Craftable {
 		No = 0,
 		Any = 1,
@@ -267,6 +269,7 @@ typedef struct sInventoryItem
 		else if (s == "Milker")			{ m_Craftable = Milker; }
 		else { cerr << "Error in set_craftable: unexpected value '" << s << "'" << endl; m_Craftable = No; }	// what to do?
 	}
+#endif
 
 	void set_type(string s)
 	{

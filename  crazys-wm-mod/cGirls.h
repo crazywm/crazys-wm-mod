@@ -913,8 +913,9 @@ public:
 	int GetNumIsDaughterGirls();
 	int GetSlaveGirl(int from);
 	int GetRebelValue(sGirl* girl, bool matron);
-	void EquipCombat(sGirl* girl);  // girl makes sure best armor and weapons are equipped, ready for combat
-	void UnequipCombat(sGirl* girl);  // girl unequips armor and weapons, ready for brothel work or other non-aggressive jobs
+	int CheckEquipment(sGirl* girl);	// Check what combat equipment the girl has equipped
+	void EquipCombat(sGirl* girl);		// girl makes sure best armor and weapons are equipped, ready for combat
+	void UnequipCombat(sGirl* girl);	// girl unequips armor and weapons, ready for brothel work or other non-aggressive jobs
 	bool RemoveInvByNumber(sGirl* girl, int Pos);
 
 	Uint8 girl_fights_girl(sGirl* a, sGirl* b);
@@ -938,7 +939,10 @@ public:
 
 	bool NameExists(string name);
 	bool SurnameExists(string surname);
-	void CreateRealName(sGirl* girl);
+	string CreateRealName(string first, string middle = "", string last = "");	// if you have first, middle and last
+	bool CreateRealName(sGirl* girl);
+	void DivideName(sGirl* girl);
+	bool BuildName(sGirl* girl);
 
 	string GetHoroscopeName(int month, int day);
 

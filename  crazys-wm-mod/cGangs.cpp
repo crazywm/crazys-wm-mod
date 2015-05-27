@@ -1446,7 +1446,7 @@ void cGangManager::RestockNetsAndPots()
 	g_LogFile.ss() << "Time to restock heal potions and nets\n"
 		<< "Heal Flag    = " << bool(m_KeepHealStocked > 0) << "\n"
 		<< "Heal Target  = " << m_KeepHealStocked << "\n"
-		<< "Heal Current = " << m_KeepHealStocked
+		<< "Heal Current = " << m_KeepHealStocked << "\n"
 		<< "Nets Flag    = " << bool(m_KeepNetsStocked > 0) << "\n"
 		<< "Nets Target  = " << m_KeepNetsStocked << "\n"
 		<< "Nets Current = " << m_KeepNetsStocked;

@@ -1025,14 +1025,6 @@ void cListBox::SetSelected(int ID, bool ev, bool deselect_others)
 			current->m_Selected = true;
 			m_LastSelected = current;
 			posit = count;
-			if (count < m_Position)		m_Position = count;
-			else if (count >(m_Position + m_NumDrawnElements - 1))
-			{
-				while (count > (m_Position + m_NumDrawnElements))
-					m_Position++;
-				m_Position++;
-			}
-			m_Position = count;
 			if (!deselect_others) break;
 		}
 		else
@@ -1043,7 +1035,18 @@ void cListBox::SetSelected(int ID, bool ev, bool deselect_others)
 		current = current->m_Next;
 	}
 
-	m_Position = posit - (m_NumDrawnElements / 2);
+	if (count <= m_NumDrawnElements)
+	{
+		m_Position = 0;
+	}
+	else
+	{
+		if (m_Position >= posit)
+			m_Position = posit - 1;
+		else if (m_Position + m_NumDrawnElements - 1 <= posit)
+			m_Position = posit - m_NumDrawnElements + 2;
+	}
+
 	if (m_Position > count - m_NumDrawnElements) m_Position = count - m_NumDrawnElements;
 	if (m_Position < 0) m_Position = 0;
 

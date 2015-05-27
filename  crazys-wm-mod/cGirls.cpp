@@ -137,23 +137,15 @@ string pic_types[] =	// `J` moved this out to global and removed file extensions
 	"death*.", "profile*.", "combat*.", "oral*.", "ecchi*.", "strip*.", "maid*.", "sing*.",
 	"wait*.", "card*.", "bunny*.", "nude*.", "mast*.", "titty*.", "milk*.", "hand*.",
 	"foot*.", "bed*.", "farm*.", "herd*.", "cook*.", "craft*.", "swim*.", "bath*.",
-	"nurse*.", "formal*.", "shop*.", "magic*.", "sign*.",
+	"nurse*.", "formal*.", "shop*.", "magic*.", "sign*.", "presented*.",
 	// pregnant varients
 	"preg*.", "preganal*.", "pregbdsm*.", "pregsex*.", "pregbeast*.", "preggroup*.", "pregles*.",
 	"pregtorture*.", "pregdeath*.", "pregprofile*.", "pregcombat*.", "pregoral*.", "pregecchi*.",
 	"pregstrip*.", "pregmaid*.", "pregsing*.", "pregwait*.", "pregcard*.", "pregbunny*.", "pregnude*.",
 	"pregmast*.", "pregtitty*.", "pregmilk*.", "preghand*.", "pregfoot*.", "pregbed*.", "pregfarm*.",
 	"pregherd*.", "pregcook*.", "pregcraft*.", "pregswim*.", "pregbath*.", "pregnurse*.", "pregformal*.",
-	"pregshop*.", "pregmagic*.", "pregsign*."
+	"pregshop*.", "pregmagic*.", "pregsign*.", "pregpresented*.",
 };
-
-
-
-
-
-
-
-
 
 
 sGirl::sGirl()				// constructor
@@ -923,25 +915,47 @@ sGirl *sGirl::run_away()
 
 void cGirls::CalculateAskPrice(sGirl* girl, bool vari)
 {
-	girl->m_Stats[STAT_ASKPRICE] = 0;
-	SetStat(girl, STAT_ASKPRICE, 0);
 	int askPrice = (int)(((GetStat(girl, STAT_BEAUTY) + GetStat(girl, STAT_CHARISMA)) / 2)*0.6f);	// Initial price
 	askPrice += GetStat(girl, STAT_CONFIDENCE) / 10;		// their confidence will make them think they are worth more
 	askPrice += GetStat(girl, STAT_INTELLIGENCE) / 10;		// if they are smart they know they can get away with a little more
 	askPrice += GetStat(girl, STAT_FAME) / 2;				// And lastly their fame can be quite useful too
 	if (GetStat(girl, STAT_LEVEL) > 0)	askPrice += GetStat(girl, STAT_LEVEL) * 10;  // MYR: Was * 1
 
-	if (vari)
+	if (askPrice > 100) askPrice = 100;
+	if (askPrice < 0) askPrice = 0;
+	SetStat(girl, STAT_ASKPRICE, askPrice);
+	int baseask = askPrice;
+	if (vari)	// vari is used when calculating for jobs so she can charge customers a little more
 	{
+		// `J` changed so there is better variation but with a chance of negatives
+#if 0	// old code
 		int minVariance = 0 - (g_Dice % 10) + 1;
 		int maxVariance = (g_Dice % 10) + 1;
 		int variance = ((g_Dice % 10) + maxVariance) - minVariance;
 		askPrice += variance;
-	}
-	if (askPrice > 100) askPrice = 100;
-	if (askPrice < 0) askPrice = 0;
+#else	// new code
 
-	UpdateStat(girl, STAT_ASKPRICE, askPrice);
+		int lowend = 0;	int highend = 0;
+		// dumb girls will charge less, smart girls will charge more
+		lowend	+= (girl->intelligence() / 10) - 7;	// -7 to +3
+		highend	+= (girl->intelligence() / 8);		// +0 to +12
+		// timid girls will charge less, confident girls will charge more
+		lowend	+= (girl->confidence() / 10) - 7;	// -7 to +3
+		highend	+= (girl->confidence() / 7);		// +0 to +14
+
+		askPrice += g_Dice.bell(lowend, highend);
+
+		if (askPrice < 1) askPrice = 1;
+		girl->m_Stats[STAT_ASKPRICE] = askPrice;
+
+		if (cfg.debug.log_extradetails())
+		{
+			g_LogFile.ss() << "\n" << girl->m_Realname << " Ask Price: " << baseask << " : " << askPrice << "\n"; g_LogFile.ssend();
+		}
+
+#endif
+	}
+
 }
 
 sRandomGirl* cGirls::random_girl_at(u_int n)
@@ -1139,6 +1153,7 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 
 		// `J` When adding new traits, search for "J-Add-New-Traits"  :  found in >> CreateRandomGirl > hardcoded rgirl
 		current->m_NumTraits = 0;
+		current->m_NumTraitNames = 0;
 		for (int i = 0; i < g_Traits.GetNumTraits() && current->m_NumTraits < MAXNUM_TRAITS - 10; i++)
 		{
 			int c = g_Traits.GetTraitNum(i)->m_RandomChance;
@@ -1265,8 +1280,15 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 			}
 			if (c > 0)	// after the checks, if c was set, add the trait to the girl
 			{
-				current->m_Traits[current->m_NumTraits] = g_Traits.GetTraitNum(i);
-				current->m_TraitChance[current->m_NumTraits] = c;
+				if (current->m_NumTraitNames < MAXNUM_TRAITS)	// first 40
+				{
+					current->m_Traits[current->m_NumTraits] = g_Traits.GetTraitNum(i);
+					current->m_TraitChance[current->m_NumTraits] = c;
+				}
+				current->m_TraitNames[current->m_NumTraitNames] = test;
+				current->m_TraitChanceB[current->m_NumTraitNames] = c;
+
+				current->m_NumTraitNames++;											// and whack up the trait count.
 				current->m_NumTraits++;
 			}
 		}
@@ -1380,11 +1402,15 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 	}
 	if (newGirl->m_Stats[STAT_AGE] < 18) newGirl->m_Stats[STAT_AGE] = 18;
 
-	/* */if (g_Dice.percent(5))	AddTrait(newGirl, "Smoker");	//changed this to else if... seems like it should have been
-	else if (g_Dice.percent(4))	AddTrait(newGirl, "Alcoholic");
-	else if (g_Dice.percent(3))	AddTrait(newGirl, "Shroud Addict");
-	else if (g_Dice.percent(2))	AddTrait(newGirl, "Fairy Dust Addict");
-	else if (g_Dice.percent(1))	AddTrait(newGirl, "Viras Blood Addict");
+	if (g_Dice.percent(5))		AddTrait(newGirl, "Former Addict");
+	else
+	{
+		if (g_Dice.percent(5))		AddTrait(newGirl, "Smoker");
+		if (g_Dice.percent(4))		AddTrait(newGirl, "Alcoholic");
+		if (g_Dice.percent(2))		AddTrait(newGirl, "Fairy Dust Addict");
+		if (g_Dice.percent(1))		AddTrait(newGirl, "Shroud Addict");
+		if (g_Dice.percent(0.5))	AddTrait(newGirl, "Viras Blood Addict");
+	}
 
 	if (daughter)				newGirl->m_Stats[STAT_HOUSE] = 0;	// your daughter gets to keep all she gets
 	else if (!slave && !arena)	newGirl->m_Stats[STAT_HOUSE] = cfg.initial.girls_house_perc();	// 60% is the norm
@@ -1528,6 +1554,7 @@ bool cGirls::NameExists(string name)
 	if (g_Arena.NameExists(name))			return true;
 	if (g_Centre.NameExists(name))			return true;
 	if (g_Clinic.NameExists(name))			return true;
+	if (g_Farm.NameExists(name))			return true;
 	if (g_House.NameExists(name))			return true;
 	for (int i = 0; i < 20; i++)
 	{
@@ -1551,6 +1578,7 @@ bool cGirls::SurnameExists(string name)
 	if (g_Arena.SurnameExists(name))		return true;
 	if (g_Centre.SurnameExists(name))		return true;
 	if (g_Clinic.SurnameExists(name))		return true;
+	if (g_Farm.SurnameExists(name))			return true;
 	if (g_House.SurnameExists(name))		return true;
 	for (int i = 0; i < 20; i++)
 	{
@@ -1563,24 +1591,73 @@ bool cGirls::SurnameExists(string name)
 }
 
 // `J` added to simplify first, middle and surname combining into realname
-void cGirls::CreateRealName(sGirl* girl)
+string cGirls::CreateRealName(string first, string middle, string last)
 {
 	stringstream ss;
 	int numnames = 0;
-	if (girl->m_FirstName.size() > 0)	numnames++;
-	if (girl->m_MiddleName.size() > 0)	numnames++;
-	if (girl->m_Surname.size() > 0)		numnames++;
+	if (first.size() > 0)	numnames++;
+	if (middle.size() > 0)	numnames++;
+	if (last.size() > 0)	numnames++;
 
-	if (numnames == 0) return;
-	else if (numnames == 1) ss << girl->m_FirstName << girl->m_MiddleName << girl->m_Surname;
+	if (numnames == 0) return "";
+	else if (numnames == 1) ss << first << middle << last;
 	else if (numnames == 2)
 	{
-		if (girl->m_FirstName.size() > 0) ss << girl->m_FirstName << " " << girl->m_MiddleName << girl->m_Surname;
-		else ss << girl->m_MiddleName << " " << girl->m_Surname;
+		if (first.size() > 0) ss << first << " " << middle << last;
+		else ss << middle << " " << last;
 	}
-	else  ss << girl->m_FirstName << " " << girl->m_MiddleName << " " << girl->m_Surname;
+	else  ss << first << " " << middle << " " << last;
 
-	girl->m_Realname = ss.str();
+	return ss.str();
+}
+bool cGirls::CreateRealName(sGirl* girl)
+{
+	if (!girl) return false;
+	string rn = CreateRealName(girl->m_FirstName, girl->m_MiddleName, girl->m_Surname);
+	if (rn.length() > 0)
+	{
+		girl->m_Realname = rn;
+		return true;
+	}
+	return false;
+}
+void cGirls::DivideName(sGirl* girl)
+{
+	string test = girl->m_Realname;
+	int posspace = 0;
+	posspace = test.find(' ');
+	if (posspace < 0)		// only 1 name found so making it the first name
+	{
+		girl->m_FirstName = test;
+	}
+	else					// Set the first name found and test the rest
+	{
+		girl->m_FirstName = test.substr(0, posspace);
+		test = test.substr(posspace + 1);
+	}
+	posspace = test.find_last_of(' ');
+	if (posspace < 0)		// only 1 name found so making it the last name
+	{
+		girl->m_Surname = test;
+	}
+	else					// Set the middle and last names
+	{
+		girl->m_MiddleName = test.substr(0, posspace);
+		girl->m_Surname = test.substr(posspace + 1);
+	}
+}
+bool cGirls::BuildName(sGirl* girl)
+{
+	if (girl->m_Realname == "")				// if m_Realname is empty...
+	{
+		if (CreateRealName(girl))			// check if the F+M+S names are also empty
+		{
+			return true;					// if F+M+S exist, just use them to build m_Realname
+		}
+		girl->m_Realname = girl->m_Name;	// otherwise, set m_Realname as m_Name
+	}
+	DivideName(girl);						// divide the name
+	return true;
 }
 
 
@@ -2997,6 +3074,8 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 #endif
 	// `J` bookmark - Job Ratings list
 
+	// `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> cGirls.cpp > GetThirdDetailsString
+
 	// `J` spiltting the buildings so they can be sorted
 	string div = "\n------------------------------------\n\n";
 	string Brothel_Data = "";
@@ -3069,6 +3148,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 		Arena_Data += girl->JobRating(m_JobManager.JP_Doctore(girl, true), "-", "Doctore");
 		Arena_Data += girl->JobRating(m_JobManager.JP_CityGuard(girl, true), "?", "City Guard");
 		Arena_Data += girl->JobRating(m_JobManager.JP_Blacksmith(girl, true), "-", "Blacksmith");
+		Arena_Data += girl->JobRating(m_JobManager.JP_Cobbler(girl, true), "-", "Cobbler");
 		Arena_Data += "\n";
 		Arena_Data += girl->JobRating(m_JobManager.JP_FightBeast(girl, true), "-", "Fight Beast");
 		Arena_Data += girl->JobRating(m_JobManager.JP_FightArenaGirls(girl, true), "-", "Cage Match");
@@ -3138,6 +3218,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 		Farm_Data += girl->JobRating(m_JobManager.JP_Butcher(girl, true), "-", "Butcher");
 		Farm_Data += girl->JobRating(m_JobManager.JP_Baker(girl, true), "-", "Baker");
 		Farm_Data += girl->JobRating(m_JobManager.JP_Brewer(girl, true), "-", "Brewer");
+		Farm_Data += girl->JobRating(m_JobManager.JP_Tailor(girl, true), "-", "Tailor");
 		Farm_Data += girl->JobRating(m_JobManager.JP_MakeItem(girl, true), "-", "Make Item");
 		Farm_Data += girl->JobRating(m_JobManager.JP_MakePotions(girl, true), "-", "Make Potion");
 		Farm_Data += div;
@@ -3864,65 +3945,22 @@ bool sGirl::LoadGirlXML(TiXmlHandle hGirl)
 {
 	//this is always called after creating a new girl, so let's not init sGirl again
 	TiXmlElement* pGirl = hGirl.ToElement();
-	if (pGirl == 0)
-	{
-		return false;
-	}
-
+	if (pGirl == 0) return false;
 	int tempInt = 0;
 
 	// load the name
 	m_Name = pGirl->Attribute("Name");		// the name the girl is based on, also the name of the image folder
 
-	if (pGirl->Attribute("Realname"))		// the name the girl is called in the game
-	{
-		m_Realname = pGirl->Attribute("Realname");
-	}
-	else m_Realname = m_Name;
+	// m_Realname = the name the girl is called in the game // `J` used to set to m_Name but now gets built from F+M+S names
+	m_Realname =	(pGirl->Attribute("Realname")	? pGirl->Attribute("Realname")		: "");	
+	m_FirstName =	(pGirl->Attribute("FirstName")	? pGirl->Attribute("FirstName")		: "");	// `J` New
+	m_MiddleName =	(pGirl->Attribute("MiddleName") ? pGirl->Attribute("MiddleName")	: "");	// `J` New
+	m_Surname =		(pGirl->Attribute("Surname")	? pGirl->Attribute("Surname")		: "");	// `J` New
+	if (m_Realname == "" || (m_FirstName == "" && m_MiddleName == "" && m_Surname == "")) g_Girls.BuildName(this);
 
-	m_FirstName = (pGirl->Attribute("FirstName") ? pGirl->Attribute("FirstName") : "");	// `J` New
-	m_MiddleName = (pGirl->Attribute("MiddleName") ? pGirl->Attribute("MiddleName") : "");	// `J` New
-	m_Surname = (pGirl->Attribute("Surname") ? pGirl->Attribute("Surname") : "");	// `J` New
+	if (cfg.debug.log_girls()) g_LogFile.ss() << "Loading girl: '" << m_Realname; g_LogFile.ssend();
 
-	if (m_FirstName == "" && m_MiddleName == "" && m_Surname == "")
-	{
-		string test = m_Realname;
-		int posspace = 0;
-		posspace = test.find(' ');
-		if (posspace < 0)		// only 1 name found so making it the first name
-		{
-			m_FirstName = m_Realname;
-		}
-		else					// Set the first name found and test the rest
-		{
-			m_FirstName = test.substr(0, posspace);
-			test = test.substr(posspace + 1);
-		}
-		posspace = test.find_last_of(' ');
-		if (posspace < 0)		// only 1 name found so making it the last name
-		{
-			m_Surname = test;
-		}
-		else					// Set the middle and last names
-		{
-			m_MiddleName = test.substr(0, posspace);
-			m_Surname = test.substr(posspace + 1);
-		}
-	}
-
-
-	if (cfg.debug.log_girls())
-	{
-		std::stringstream ss;
-		ss << "Loading girl: '" << m_Realname;
-		g_LogFile.write(ss.str());
-	}
-
-	// get the description
-	if (pGirl->Attribute("Desc"))
-	{
-		m_Desc = pGirl->Attribute("Desc");
-	}
+	m_Desc = (pGirl->Attribute("Desc") ? pGirl->Attribute("Desc") : "-");	// get the description
 
 	// load the amount of days they are unhappy in a row
 	pGirl->QueryIntAttribute("DaysUnhappy", &tempInt); m_DaysUnhappy = tempInt; tempInt = 0;
@@ -4538,13 +4576,14 @@ void sRandomGirl::process_trait_xml(TiXmlElement *el)
 {
 	int ival; const char *pt;
 	sTrait *trait = new sTrait();													// we need to allocate a new sTrait scruct,
-	if ((pt = el->Attribute("Name")))
+	if (pt = el->Attribute("Name"))
 	{
 		trait->m_Name = n_strdup(pt);					// get the trait name
 		stringstream ss;
 		ss << trait->m_Name;
 		m_TraitNames[m_NumTraitNames] = ss.str();
 	}
+	else return;	// `J` if there is no name why continue?
 	if (m_NumTraitNames<MAXNUM_TRAITS) m_Traits[m_NumTraits] = trait;					// store that in the next free index slot
 	if ((pt = el->Attribute("Percent", &ival)))							// get the percentage chance
 	{
@@ -4676,6 +4715,42 @@ int cGirls::HasItemJ(sGirl* girl, string name)	// `J` added to compare item name
 			if (t == s)	return i;
 		}
 	}
+	return -1;
+}
+
+/*	`J` Updated from Akia's suggestion and expanded return values
+	returns 0 if she has no weapons or armor equipped
+	returns 6 if she has one of each: weapon, armor, helmet, boots, shield
+	returns 5 if she has weapons and armor (others ignored)
+	returns 4 if she has weapons and no armor but at least one of helmet, boots or shield
+	returns 3 if she has no weapons or armor but at least one of helmet, boots or shield
+	returns 2 if she has only armor but no weapon (others ignored)
+	returns 1 if she has only weapons
+	returns -1 for errors
+	*/
+int cGirls::CheckEquipment(sGirl* girl)
+{
+	if (girl->m_NumInventory <= 0) return 0;	// she has no items
+	int foundw = 0;	int founda = 0;	int foundh = 0;	int foundc = 0;	int founds = 0;
+	for (int i = 0; i < MAXNUM_GIRL_INVENTORY; i++)
+	{
+		if (girl->m_Inventory[i] != 0 && girl->m_EquipedItems[i] == 1)
+		{
+			if (girl->m_Inventory[i]->m_Type == INVWEAPON)			foundw = 1;
+			if (girl->m_Inventory[i]->m_Type == INVARMOR)			founda = 1;
+			if (girl->m_Inventory[i]->m_Type == INVHELMET)			foundh = 1;
+			if (girl->m_Inventory[i]->m_Type == INVCOMBATSHOES)		foundc = 1;
+			if (girl->m_Inventory[i]->m_Type == INVSHIELD)			founds = 1;
+		}
+	}
+
+	if (foundw + founda + foundh + foundc + founds <= 0)			return 0;	// has nothing
+	if (foundw + founda + foundh + foundc + founds >= 5)			return 6;	// has everything
+	if (foundw == 1 && founda == 1)									return 5;	// has weapon and armor (others ignored)
+	if (foundw == 1 && founda == 0 && foundh + foundc + founds > 0)	return 4;	// has weapon, no armor but at least one of helmet, boots or shield
+	if (foundw == 0 && founda == 0 && foundh + foundc + founds > 0)	return 3;	// no weapon or armor but at least one of helmet, boots or shield
+	if (foundw == 0 && founda == 1)									return 2;	// has armor but no weapons (others ignored)
+	if (foundw == 1 && founda + foundh + foundc + founds <= 0)		return 1;	// has weapon only
 	return -1;
 }
 
@@ -14434,6 +14509,8 @@ CSurface* cGirls::GetImageSurface(sGirl* girl, int ImgType, bool random, int& im
 	case IMGTYPE_CRAFT:		alttypes[0] = IMGTYPE_FARM;		break;
 
 	case IMGTYPE_COMBAT:	alttypes[0] = IMGTYPE_MAGIC;	break;
+
+	case IMGTYPE_PRESENTED:	alttypes[0] = IMGTYPE_PROFILE;	break;
 
 		// these image types have no alt types
 		//	case IMGTYPE_NURSE:

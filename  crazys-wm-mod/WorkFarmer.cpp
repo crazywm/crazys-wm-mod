@@ -30,117 +30,198 @@ extern cRng g_Dice;
 extern cGold g_Gold;
 extern cBrothelManager g_Brothels;
 extern cFarmManager g_Farm;
+extern cInventory g_InvManager;
 
 // `J` Job Farm - Laborers
 bool cJobManager::WorkFarmer(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	int actiontype = ACTION_WORKFARM;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
-	if (g_Girls.DisobeyCheck(girl, ACTION_WORKFARM, brothel))			// they refuse to work 
+	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
+
+	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work 
 	{
 		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	ss << " worked as a farmer on the farm.";
+	ss << " worked tending crops on the farm.\n\n";
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
-	int wages = 15, enjoy = 0, work = 0;
+	double wages = 20, tips = 0;
+	int enjoy = 0, work = 0;
 
-	int roll = g_Dice.d100();
+	int imagetype = IMGTYPE_FARM;
+	int msgtype = Day0Night1;
 
 	double jobperformance = (int)JP_Farmer(girl, false);
+	double foodproduced = jobperformance;
+	int alchemyproduced = 0;
+	int goodsproduced = 0;
 
 	if (jobperformance >= 245)
 	{
 		ss << " She must be the perfect at this.\n\n";
-		wages += 155;
+		foodproduced *= 5; roll_a += 10; roll_b += 25;
 	}
 	else if (jobperformance >= 185)
 	{
 		ss << " She's unbelievable at this.\n\n";
-		wages += 95;
+		foodproduced *= 4; roll_a += 5; roll_b += 18;
 	}
 	else if (jobperformance >= 145)
 	{
 		ss << " She's good at this job.\n\n";
-		wages += 55;
+		foodproduced *= 3; roll_a += 2; roll_b += 10;
 	}
 	else if (jobperformance >= 100)
 	{
 		ss << " She made a few mistakes but overall she is okay at this.\n\n";
-		wages += 15;
+		foodproduced *= 2;
 	}
 	else if (jobperformance >= 70)
 	{
 		ss << " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
-		wages -= 5;
+		foodproduced *= 1.2; roll_a -= 2; roll_b -= 5;
 	}
 	else
 	{
 		ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
-		wages -= 15;
+		wages -= 10; foodproduced *= 0.8; roll_a -= 5; roll_b -= 10;
 	}
 
+	int tired = (300 - (int)jobperformance);	// this gets divided in roll_a by (8, 10 or 12) so it will end up around 0-40 tired
+	if (roll_a <= 10)
+	{
+		tired /= 8;
+		enjoy -= g_Dice % 3;
+		if (roll_b < 20)	// injury
+		{
+			girl->health(-(1 + g_Dice % 5));
+			foodproduced *= 0.8;
+			if (girl->magic() > 50 && girl->mana() > 20)
+			{
+				girl->mana(-10 - (g_Dice % 10));
+				ss << "While trying to use magic to do her work for her, the magic rebounded on her";
+			}
+			else
+				ss << "She stabed herself while working";
+			if (girl->health() <= 0)
+			{
+				ss << " killing her.";
+				g_MessageQue.AddToQue(girlName + " was killed in an accident at the Farm.", COLOR_RED);
+				return false;	// not refusing, she is dead
+			}
+			else ss << ".";
+		}
 
-	//enjoyed the work or not
-	if (roll <= 5)
-	{
-		ss << "\nSome of the patrons abused her during the shift."; work -= 1;
+		else	// unhappy
+		{
+			ss << "She did not like working in the fields today.";
+			girl->happiness(-(g_Dice % 11));
+		}
 	}
-	else if (roll <= 25)
+	else if (roll_a >= 90)
 	{
-		ss << "\nShe had a pleasant time working."; work += 3;
+		tired /= 12;
+		foodproduced *= 1.1;
+		enjoy += g_Dice % 3;
+		/* */if (roll_b < 50)	ss << "She kept a steady pace by humming a pleasant tune.";
+		else /*            */	ss << "She had a great time working today.";
 	}
 	else
 	{
-		ss << "\nOtherwise, the shift passed uneventfully."; work += 1;
+		tired /= 10;
+		enjoy += g_Dice % 2;
+		ss << "The shift passed uneventfully.";
+	}
+	ss << "\n\n";
+
+	// slave girls not being paid for a job that normally you would pay directly for do less work
+	if ((girl->is_slave() && !cfg.initial.slave_pay_outofpocket()))
+	{
+		foodproduced *= 0.9;
+		wages = 0;
+	}
+	else
+	{
+		wages += foodproduced / 25; // `J` Pay her based on how much she made
 	}
 
 
-#if 0
-
-
+#if 1
 	// `J` Farm Bookmark - adding in items that can be created in the farm
 
+	if (g_Dice.percent(girl->farming() / 20) && g_Dice.percent(girl->magic() / 10) && g_Dice.percent(jobperformance / 10))
+	{
+		string itemname = "";
+		int itemnumber = 1;
+		/* */if (roll_c > 30)	{ itemname = "Nut of Knowledge";		itemnumber = (roll_c > 90 ? g_Dice % 3 + 2 : 1); }
+		else if (roll_c > 10)	{ itemname = "Mango of Knowledge";		itemnumber = (roll_c > 28 ? 2 : 1); }
+		else/*            */	{ itemname = "Watermelon of Knowledge"; itemnumber = (roll_c == 9 ? 2 : 1); }
 
-
-
-
-
-
-
-
-
-
-
-
+		sInventoryItem* item = g_InvManager.GetItem(itemname);
+		if (item)
+		{
+			for (int i = 0; i < itemnumber; i++) g_Brothels.AddItemToInventory(item);
+			ss << "While picking crops, " << girlName << " sensed a magical aura and found ";
+			if (itemnumber == 1) ss << "a"; else ss << itemnumber;
+			ss << " " << itemname << ".\n";
+		}
+	}
+	if (g_Dice.percent(girl->herbalism() / 2) && g_Dice.percent(jobperformance / 10))
+	{
+		alchemyproduced = 1 + g_Dice % (girl->herbalism() / 10);
+		ss << "While sorting the day's haul, " << girlName << " came across ";
+		if (alchemyproduced == 1) ss << "a specimen";
+		else ss << alchemyproduced << " specimens";
+		ss << " that would work well in potions.\n";
+	}
+	if (g_Dice.percent(girl->crafting() / 2) && g_Dice.percent(jobperformance / 10))
+	{
+		goodsproduced = 1 + g_Dice % (girl->crafting() / 10);
+		ss << girlName << " created ";
+		if (goodsproduced == 1) ss << "a little toy";
+		else ss << goodsproduced << " little toys";
+		ss << " from the unuseable parts of her crops.\n";
+	}
 
 #endif
 
+	// `J` - Finish the shift - Farmer
 
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKFARM, work);
-	girl->m_Events.AddMessage(ss.str(), IMGTYPE_FARM, Day0Night1);
-	if (wages < 0) wages = 0;
-	girl->m_Pay = wages;
+	// Push out the turn report
+	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
+	if (tired > 0) girl->tiredness(tired);
+	// Money
+	g_Brothels.add_to_food((int)foodproduced);
+	g_Brothels.add_to_alchemy((int)alchemyproduced);
+	g_Brothels.add_to_goods((int)goodsproduced);
+	if (wages < 0)	wages = 0;	girl->m_Pay = (int)wages;
+	if (tips < 0)	tips = 0;	girl->m_Tips = (int)tips;
 
-
-	// Improve stats
+	// Base Improvement and trait modifiers
 	int xp = 5, libido = 1, skill = 3;
-
-	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
-
+	/* */if (girl->has_trait("Quick Learner"))	{ skill += 1; xp += 3; }
+	else if (girl->has_trait("Slow Learner"))	{ skill -= 1; xp -= 3; }
+	/* */if (girl->has_trait("Nymphomaniac"))	{ libido += 2; }
+	// EXP and Libido
 	g_Girls.UpdateStat(girl, STAT_EXP, (g_Dice % xp) + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
-	// primary (+2 for single or +1 for multiple)
+	// primary improvement (+2 for single or +1 for multiple)
 	g_Girls.UpdateSkill(girl, SKILL_FARMING, (g_Dice % skill) + 2);
-	// secondary (-1 for one then -2 for others)
-	g_Girls.UpdateStat(girl, STAT_CONSTITUTION, max(0, (g_Dice % skill) - 1));
+	// secondary improvement (-1 for one then -2 for others)
+	g_Girls.UpdateStat(girl, STAT_STRENGTH, max(0, (g_Dice % skill) - 1));
+	g_Girls.UpdateStat(girl, STAT_CONSTITUTION, max(0, (g_Dice % skill) - 2));
 	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, max(0, (g_Dice % skill) - 2));
+
+	// Update Enjoyment
+	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
+
+	// Gain Traits
+	g_Girls.PossiblyGainNewTrait(girl, "Tough", 50, actiontype, "Working in the heat of the sun has made " + girlName + " rather Tough.", Day0Night1);
 
 	return false;
 }
@@ -151,7 +232,7 @@ double cJobManager::JP_Farmer(sGirl* girl, bool estimate)// not used
 		// primary - first 100
 		girl->farming() +
 		// secondary - second 100
-		((girl->intelligence() + girl->constitution()) / 2) +
+		((girl->intelligence() + girl->constitution() + girl->strength()) / 3) +
 		// level bonus
 		girl->level();
 

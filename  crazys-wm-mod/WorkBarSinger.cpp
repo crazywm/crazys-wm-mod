@@ -54,7 +54,8 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 
 	g_Girls.UnequipCombat(girl); // put that shit away, you'll scare off the customers!
 
-	int wages = 20, tips = 0, work = 0, happy = 0, fame = 0;
+	double wages = 20, tips = 0;
+	int work = 0, happy = 0, fame = 0;
 	int roll = g_Dice.d100(), roll_a = g_Dice.d100();
 	double jobperformance = JP_BarSinger(girl, false);
 	
@@ -386,8 +387,8 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	wages += 10 + g_Dice%roll_max;
 	if (wages < 0) wages = 0;
 	if (tips < 0) tips = 0;
-	girl->m_Pay = wages;
-	girl->m_Tips = tips;
+	girl->m_Pay = (int)wages;
+	girl->m_Tips = (int)tips;
 
 	// Improve stats
 	int xp = 10, libido = 1, skill = 3;
