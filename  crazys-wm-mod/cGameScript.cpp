@@ -129,10 +129,14 @@ sScript *cGameScript::Process(sScript *Script)
 	case 71: return Script_AddTrait(Script);
 	case 72: return Script_RemoveTrait(Script);
 	case 73: return Script_AddTraitTemp(Script);
-		//case 60: return Script_GirlNameTarget(Script);
+	case 74: return Script_ShopTarget(Script);
+	case 75: return Script_MagicTarget(Script);
+	case 76: return Script_SignTarget(Script);
+	case 77: return Script_PresentedTarget(Script);
+
+		// `J` When modifying Image types, search for "J-Change-Image-Types"  :  found in >> cGameScript.cpp
 
 	default: return Script->m_Next;	// `J` if a script type is not found, skip it.
-
 	}
 
 	return 0; // Error executing
@@ -1519,6 +1523,26 @@ sScript* cGameScript::Script_FormalTarget(sScript* Script)
 {
 	if (m_GirlTarget) g_Girls.UpdateStat(m_GirlTarget, STAT_REFINEMENT, 1);
 	g_GirlDetails.lastsexact = IMGTYPE_FORMAL;
+	return Script->m_Next;
+}
+sScript* cGameScript::Script_ShopTarget(sScript* Script)
+{
+	g_GirlDetails.lastsexact = IMGTYPE_SHOP;
+	return Script->m_Next;
+}
+sScript* cGameScript::Script_MagicTarget(sScript* Script)
+{
+	g_GirlDetails.lastsexact = IMGTYPE_MAGIC;
+	return Script->m_Next;
+}
+sScript* cGameScript::Script_SignTarget(sScript* Script)
+{
+	g_GirlDetails.lastsexact = IMGTYPE_SIGN;
+	return Script->m_Next;
+}
+sScript* cGameScript::Script_PresentedTarget(sScript* Script)
+{
+	g_GirlDetails.lastsexact = IMGTYPE_PRESENTED;
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_AddTrait(sScript* Script)						// `J` new

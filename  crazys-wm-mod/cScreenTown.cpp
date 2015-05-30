@@ -264,6 +264,7 @@ void cScreenTown::process()
 	if (!ids_set)set_ids();								// we need to make sure the ID variables are set
 	init();
 	if (g_InterfaceEvents.GetNumEvents() == 0) return;	// no events means we can go home
+	if (girlimage_id != -1 && !eventrunning)	HideImage(girlimage_id, true);
 
 	/*
 	*	otherwise, compare event IDs
@@ -389,21 +390,25 @@ void cScreenTown::do_walk()
 		return;
 	}
 
-	if (girl)
+	if (girlimage_id != -1)
 	{
-		bool Rand = true;
+		if (girl)
+		{
+			bool Rand = true;
 
-		SetImage(girlimage_id, g_Girls.GetImageSurface(girl, IMGTYPE_PROFILE, Rand, ImageNum));
+			SetImage(girlimage_id, g_Girls.GetImageSurface(girl, IMGTYPE_PROFILE, Rand, ImageNum));
 
-		if(g_Girls.IsAnimatedSurface(girl, IMGTYPE_PROFILE, ImageNum))
-			SetImage(girlimage_id, g_Girls.GetAnimatedSurface(girl, IMGTYPE_PROFILE, ImageNum));
+			if (g_Girls.IsAnimatedSurface(girl, IMGTYPE_PROFILE, ImageNum))
+				SetImage(girlimage_id, g_Girls.GetAnimatedSurface(girl, IMGTYPE_PROFILE, ImageNum));
 
-		HideImage(girlimage_id, false); 
+			HideImage(girlimage_id, false);
+		}
+		else
+		{
+			HideImage(girlimage_id, true);
+		}
 	}
-	else
-	{		
-		HideImage(girlimage_id, true); 
-	}
+
 	// I'd like to move this to the handler script - once scripts are stable
 	string message = "You go out searching around town for any new girls. You notice a potential new girl and walk up to her.";
 	g_MessageQue.AddToQue(message, 2);

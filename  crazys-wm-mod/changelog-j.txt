@@ -2074,12 +2074,22 @@ Adding to jobs:
  
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 
+###  Changes 5/27
+Updated J_1024x768 interface for town screen girl image and added a check in the code incase another interface is missing it.
+Added a hideimage check for town screen girl image when the walk script is finished.
 
+###  Changes 5/28-29
+Added Shop, Magic, Sign and Presented image types to scripts
+Updated more jobs: Farmer, 
 
+Added cfg.debug.log_show_numbers() with LogShowNumbers="true" in config.xml to show numbers gained in jobs.
+Added cfg.folders.preferdefault() with PreferDefault="true" in config.xml to allow default images to be preferred over the alternate image tree. (not used in the code yet)
+Updated Enjoyment list with cfg.debug.log_show_numbers()
+ - moved jobs[] out and renamed to sGirl::enjoy_jobs[]
+WME - added LogShowNumbers and PreferDefault to config settings
 
-
- 
- 
+Added g_Girls.GetBeast() to allow for easier beast insemination checks
+ - girl->calc_insemination(g_Girls.GetBeast(), 1);
 
 $$$$ TO DO - SHORT TERM - (for this version) $$$$
 Config.xml: 
@@ -2096,15 +2106,16 @@ $$$$ NOTE TO SELF - When updating items to recalculate stats/skills when loading
 $$$$ TO DO - SHORT TERM - (Soon) $$$$
 Make jobs load and save by name instead of number so adding new jobs will not break save games.
 
+
 $$$$ TO DO - MID TERM - (for the next few versions) $$$$
 Keep expanding on simple-save
 food and drink
-
 
 Make config in_fact and out_fact do something
 
 Change the way the game handles images
  - Instead of loading them all when the game loads, load them when they are needed.
+ - Make cfg.folders.preferdefault() work
 
 
 New Script Stuff:

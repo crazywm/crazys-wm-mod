@@ -62,32 +62,32 @@ bool cJobManager::WorkFarmer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 
 	if (jobperformance >= 245)
 	{
-		ss << " She must be the perfect at this.\n\n";
+		ss << "Her basket practically fills itself as she walks down the rows of crops.\n\n";
 		foodproduced *= 5; roll_a += 10; roll_b += 25;
 	}
 	else if (jobperformance >= 185)
 	{
-		ss << " She's unbelievable at this.\n\n";
+		ss << "Her hands moved like lightning as she picked only the best crops.\n\n";
 		foodproduced *= 4; roll_a += 5; roll_b += 18;
 	}
 	else if (jobperformance >= 145)
 	{
-		ss << " She's good at this job.\n\n";
+		ss << "She knows exactly when the crops are ready to be picked and how to best collect them.\n\n";
 		foodproduced *= 3; roll_a += 2; roll_b += 10;
 	}
 	else if (jobperformance >= 100)
 	{
-		ss << " She made a few mistakes but overall she is okay at this.\n\n";
+		ss << "She can pick the crops fairly well without too many culls.\n\n";
 		foodproduced *= 2;
 	}
 	else if (jobperformance >= 70)
 	{
-		ss << " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
-		foodproduced *= 1.2; roll_a -= 2; roll_b -= 5;
+		ss << "She isn't very good at knowing which plants are ripe and which should have been left a little longer.\n\n";
+		roll_a -= 2; roll_b -= 5;
 	}
 	else
 	{
-		ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
+		ss << "She seems to take more of the unuseable parts of the plants than she takes the edible parts.\n\n";
 		wages -= 10; foodproduced *= 0.8; roll_a -= 5; roll_b -= 10;
 	}
 
@@ -100,13 +100,12 @@ bool cJobManager::WorkFarmer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 		{
 			girl->health(-(1 + g_Dice % 5));
 			foodproduced *= 0.8;
-			if (girl->magic() > 50 && girl->mana() > 20)
+			if (g_Dice.percent(girl->magic() / 2))
 			{
 				girl->mana(-10 - (g_Dice % 10));
 				ss << "While trying to use magic to do her work for her, the magic rebounded on her";
 			}
-			else
-				ss << "She stabed herself while working";
+			else ss << "She cut herself while working";
 			if (girl->health() <= 0)
 			{
 				ss << " killing her.";
@@ -115,7 +114,6 @@ bool cJobManager::WorkFarmer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 			}
 			else ss << ".";
 		}
-
 		else	// unhappy
 		{
 			ss << "She did not like working in the fields today.";
@@ -138,17 +136,6 @@ bool cJobManager::WorkFarmer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	}
 	ss << "\n\n";
 
-	// slave girls not being paid for a job that normally you would pay directly for do less work
-	if ((girl->is_slave() && !cfg.initial.slave_pay_outofpocket()))
-	{
-		foodproduced *= 0.9;
-		wages = 0;
-	}
-	else
-	{
-		wages += foodproduced / 25; // `J` Pay her based on how much she made
-	}
-
 
 #if 1
 	// `J` Farm Bookmark - adding in items that can be created in the farm
@@ -168,6 +155,7 @@ bool cJobManager::WorkFarmer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 			ss << "While picking crops, " << girlName << " sensed a magical aura and found ";
 			if (itemnumber == 1) ss << "a"; else ss << itemnumber;
 			ss << " " << itemname << ".\n";
+			foodproduced -= itemnumber;
 		}
 	}
 	if (g_Dice.percent(girl->herbalism() / 2) && g_Dice.percent(jobperformance / 10))
@@ -177,6 +165,7 @@ bool cJobManager::WorkFarmer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 		if (alchemyproduced == 1) ss << "a specimen";
 		else ss << alchemyproduced << " specimens";
 		ss << " that would work well in potions.\n";
+		foodproduced -= alchemyproduced;
 	}
 	if (g_Dice.percent(girl->crafting() / 2) && g_Dice.percent(jobperformance / 10))
 	{
@@ -191,15 +180,26 @@ bool cJobManager::WorkFarmer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 
 	// `J` - Finish the shift - Farmer
 
-	// Push out the turn report
-	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
-	if (tired > 0) girl->tiredness(tired);
-	// Money
-	g_Brothels.add_to_food((int)foodproduced);
-	g_Brothels.add_to_alchemy((int)alchemyproduced);
-	g_Brothels.add_to_goods((int)goodsproduced);
+	// slave girls not being paid for a job that normally you would pay directly for do less work
+	if ((girl->is_slave() && !cfg.initial.slave_pay_outofpocket()))
+	{
+		foodproduced *= 0.9;
+		wages = 0;
+	}
+	else
+	{
+		wages += foodproduced / 100; // `J` Pay her based on how much she brought in
+	}
 	if (wages < 0)	wages = 0;	girl->m_Pay = (int)wages;
 	if (tips < 0)	tips = 0;	girl->m_Tips = (int)tips;
+
+	if (foodproduced > 0)
+	{
+		g_Brothels.add_to_food((int)foodproduced);
+		ss << "\n" << girlName << " brought in " << (int)foodproduced << " units of food.";
+	}
+	if (alchemyproduced > 0)	g_Brothels.add_to_alchemy((int)alchemyproduced);
+	if (goodsproduced > 0)		g_Brothels.add_to_goods((int)goodsproduced);
 
 	// Base Improvement and trait modifiers
 	int xp = 5, libido = 1, skill = 3;
@@ -207,21 +207,45 @@ bool cJobManager::WorkFarmer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	else if (girl->has_trait("Slow Learner"))	{ skill -= 1; xp -= 3; }
 	/* */if (girl->has_trait("Nymphomaniac"))	{ libido += 2; }
 	// EXP and Libido
-	g_Girls.UpdateStat(girl, STAT_EXP, (g_Dice % xp) + 1);
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
+	int I_xp = (g_Dice % xp) + 1;							g_Girls.UpdateStat(girl, STAT_EXP, I_xp);
+	int I_libido = (g_Dice % libido) + 1;					g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, I_libido);
+	if (tired > 0) girl->tiredness(tired);
 
 	// primary improvement (+2 for single or +1 for multiple)
-	g_Girls.UpdateSkill(girl, SKILL_FARMING, (g_Dice % skill) + 2);
+	int I_farming = (g_Dice % skill) + 2;					g_Girls.UpdateSkill(girl, SKILL_FARMING, I_farming);
 	// secondary improvement (-1 for one then -2 for others)
-	g_Girls.UpdateStat(girl, STAT_STRENGTH, max(0, (g_Dice % skill) - 1));
-	g_Girls.UpdateStat(girl, STAT_CONSTITUTION, max(0, (g_Dice % skill) - 2));
-	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, max(0, (g_Dice % skill) - 2));
+	int I_strength = max(0, (g_Dice % skill) - 1);			g_Girls.UpdateStat(girl, STAT_STRENGTH, I_strength);
+	int I_constitution = max(0, (g_Dice % skill) - 2);		g_Girls.UpdateStat(girl, STAT_CONSTITUTION, I_constitution);
+	int I_intelligence = max(0, (g_Dice % skill) - 2);		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, I_intelligence);
 
 	// Update Enjoyment
+	if (jobperformance < 50) enjoy -= 1; if (jobperformance < 0) enjoy -= 1;	// if she doesn't do well at the job, she enjoys it less
+	if (jobperformance > 200) enjoy *= 2;		// if she is really good at the job, her enjoyment (positive or negative) is doubled
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 
 	// Gain Traits
 	g_Girls.PossiblyGainNewTrait(girl, "Tough", 50, actiontype, "Working in the heat of the sun has made " + girlName + " rather Tough.", Day0Night1);
+
+	if (cfg.debug.log_show_numbers())
+	{
+		ss << "\n\nNumbers:"
+			<< "\nJob Performance = " << (int)jobperformance
+			<< "\nWages = " << (int)wages
+			<< "\nTips = " << (int)tips
+			<< "\nXp = " << I_xp
+			<< "\nLibido = " << I_libido
+			<< "\nFarming = " << I_farming
+			<< "\nStrength = " << I_strength
+			<< "\nConstitution = " << I_constitution
+			<< "\nIntelligence = " << I_intelligence
+			<< "\nTiredness = " << tired
+			<< "\nEnjoy " << girl->enjoy_jobs[actiontype] << " = " << enjoy
+			;
+
+	}
+
+	// Push out the turn report
+	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
 
 	return false;
 }
@@ -237,29 +261,29 @@ double cJobManager::JP_Farmer(sGirl* girl, bool estimate)// not used
 		girl->level();
 
 	//good traits
-	if (g_Girls.HasTrait(girl, "Quick Learner"))  jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Psychic"))		  jobperformance += 10;
-	if (g_Girls.HasTrait(girl, "Farmers Daughter"))jobperformance += 30;
-	if (g_Girls.HasTrait(girl, "Country Gal"))	  jobperformance += 10;
+	if (g_Girls.HasTrait(girl, "Farmers Daughter"))		jobperformance += 30;
+	if (g_Girls.HasTrait(girl, "Country Gal"))			jobperformance += 10;
+	if (g_Girls.HasTrait(girl, "Psychic"))				jobperformance += 10;
+	if (g_Girls.HasTrait(girl, "Quick Learner"))		jobperformance += 5;
 
 	//bad traits
-	if (g_Girls.HasTrait(girl, "Dependant"))	jobperformance -= 50; //needs others to do the job
-	if (g_Girls.HasTrait(girl, "Clumsy")) 		jobperformance -= 20; //spills food and breaks things often
-	if (g_Girls.HasTrait(girl, "Aggressive")) 	jobperformance -= 20; //gets mad easy
-	if (g_Girls.HasTrait(girl, "Nervous"))		jobperformance -= 30; //don't like to be around people	
-	if (g_Girls.HasTrait(girl, "Meek"))			jobperformance -= 20;
+	if (g_Girls.HasTrait(girl, "Dependant"))			jobperformance -= 50; //needs others to do the job
+	if (g_Girls.HasTrait(girl, "Clumsy")) 				jobperformance -= 20; //spills food and breaks things often
+	if (g_Girls.HasTrait(girl, "Aggressive")) 			jobperformance -= 20; //gets mad easy
+	if (g_Girls.HasTrait(girl, "Nervous"))				jobperformance -= 30; //don't like to be around people	
+	if (g_Girls.HasTrait(girl, "Meek"))					jobperformance -= 20;
 
-	if (g_Girls.HasTrait(girl, "One Arm"))		jobperformance -= 40;
-	if (g_Girls.HasTrait(girl, "One Foot"))		jobperformance -= 40;
-	if (g_Girls.HasTrait(girl, "One Hand"))		jobperformance -= 30; 
-	if (g_Girls.HasTrait(girl, "One Leg"))		jobperformance -= 60;
-	if (g_Girls.HasTrait(girl, "No Arms"))		jobperformance -= 125;
-	if (g_Girls.HasTrait(girl, "No Feet"))		jobperformance -= 60;
-	if (g_Girls.HasTrait(girl, "No Hands"))		jobperformance -= 50;
-	if (g_Girls.HasTrait(girl, "No Legs"))		jobperformance -= 150;
-	if (g_Girls.HasTrait(girl, "Blind"))		jobperformance -= 30;
-	if (g_Girls.HasTrait(girl, "Retarded"))		jobperformance -= 60;
-	if (g_Girls.HasTrait(girl, "Smoker"))		jobperformance -= 10;	//would need smoke breaks
+	if (g_Girls.HasTrait(girl, "One Arm"))				jobperformance -= 40;
+	if (g_Girls.HasTrait(girl, "One Foot"))				jobperformance -= 40;
+	if (g_Girls.HasTrait(girl, "One Hand"))				jobperformance -= 30; 
+	if (g_Girls.HasTrait(girl, "One Leg"))				jobperformance -= 60;
+	if (g_Girls.HasTrait(girl, "No Arms"))				jobperformance -= 125;
+	if (g_Girls.HasTrait(girl, "No Feet"))				jobperformance -= 60;
+	if (g_Girls.HasTrait(girl, "No Hands"))				jobperformance -= 50;
+	if (g_Girls.HasTrait(girl, "No Legs"))				jobperformance -= 150;
+	if (g_Girls.HasTrait(girl, "Blind"))				jobperformance -= 30;
+	if (g_Girls.HasTrait(girl, "Retarded"))				jobperformance -= 60;
+	if (g_Girls.HasTrait(girl, "Smoker"))				jobperformance -= 10;	//would need smoke breaks
 
 	if (g_Girls.HasTrait(girl, "Alcoholic"))			jobperformance -= 25;
 	if (g_Girls.HasTrait(girl, "Fairy Dust Addict"))	jobperformance -= 25;

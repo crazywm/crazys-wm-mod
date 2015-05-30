@@ -466,6 +466,7 @@ struct sGirl
 	static const char	*skill_names[];
 	static const char	*status_names[];
 	static const char	*enjoy_names[];
+	static const char	*enjoy_jobs[];
 	static const char	*children_type_names[];	// `J` added
 	/*
 	*	again, might as well make them part of the struct that uses them
@@ -1038,6 +1039,9 @@ public:
 	string Accommodation(int acc);
 	int PreferredAccom(sGirl* girl);
 	string catacombs_look_for(int girls, int items, int beast);
+
+	sCustomer* GetBeast();
+
 
 private:
 	unsigned int m_NumGirls;	// number of girls in the class

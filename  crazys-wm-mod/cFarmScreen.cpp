@@ -85,7 +85,13 @@ void cFarmScreen::process()
 
 	if (g_InitWin)
 	{
-		EditTextItem(g_Farm.GetBrothelString(0), farmdetails_id);
+		stringstream fp;
+		fp << g_Farm.GetBrothelString(0);
+		fp << "\nFood Stored: " << g_Brothels.GetNumFood()
+			<< "\nDrink Stored: " << g_Brothels.GetNumDrinks()
+			<< "\nGoods Stored: " << g_Brothels.GetNumGoods()
+			<< "\nAlchemy Items: " << g_Brothels.GetNumAlchemy();
+		EditTextItem(fp.str(), farmdetails_id);
 		g_InitWin = false;
 	}
 	/*

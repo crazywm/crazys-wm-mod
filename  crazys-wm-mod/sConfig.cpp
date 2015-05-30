@@ -206,12 +206,14 @@ void sConfigData::get_folders_data(TiXmlElement *el)
 {
 	const char *pt;
 	folders.configXMLch = false; folders.configXMLsa = false; folders.backupsaves = false; folders.configXMLdi = false;
+	folders.preferdefault = false;
 
 	string testch = "", testsa = "", testdi = "";
 	if (pt = el->Attribute("Characters"))		get_att(el, "Characters", testch);
 	if (pt = el->Attribute("Saves"))			get_att(el, "Saves", testsa);
 	if (pt = el->Attribute("BackupSaves"))		get_att(el, "BackupSaves", folders.backupsaves);
 	if (pt = el->Attribute("DefaultImages"))	get_att(el, "DefaultImages", testdi);
+	if (pt = el->Attribute("PreferDefault"))	get_att(el, "PreferDefault", folders.preferdefault);
 	if (testch != "")
 	{
 		DirPath locationch = DirPath() << testch;
@@ -511,7 +513,7 @@ void sConfigData::get_debug_flags(TiXmlElement *el)
 	const char *pt;
 	if (pt = el->Attribute("LogAll"))				get_att(el, "LogItems", debug.log_all);
 
-	if (debug.log_all) debug.log_girls = debug.log_rgirls = debug.log_girl_fights = debug.log_items = debug.log_fonts = debug.log_torture = debug.log_debug = debug.log_extra_details = debug.log_all;
+	if (debug.log_all) debug.log_girls = debug.log_rgirls = debug.log_girl_fights = debug.log_items = debug.log_fonts = debug.log_torture = debug.log_debug = debug.log_extra_details = debug.log_show_numbers = debug.log_all;
 	else
 	{
 		if (pt = el->Attribute("LogGirls"))			get_att(el, "LogGirls", debug.log_girls);
@@ -522,6 +524,7 @@ void sConfigData::get_debug_flags(TiXmlElement *el)
 		if (pt = el->Attribute("LogTorture"))		get_att(el, "LogTorture", debug.log_torture);
 		if (pt = el->Attribute("LogDebug"))			get_att(el, "LogDebug", debug.log_debug);
 		if (pt = el->Attribute("LogExtraDetails"))	get_att(el, "LogExtraDetails", debug.log_extra_details);
+		if (pt = el->Attribute("LogShowNumbers"))	get_att(el, "LogShowNumbers", debug.log_show_numbers);
 	}
 }
 
@@ -539,6 +542,7 @@ void sConfigData::set_defaults()
 	folders.backupsaves = false;			// `J` backup saves in the version folder incase moving to the next version breaks the save
 	folders.defaultimageloc = "";			// `J` where the default images folder is located 
 	folders.configXMLdi = false;			// `J` if default images location is set in config.xml
+	folders.preferdefault = false;			// `J` default images will be preferred over the alttype tree
 
 	resolution.resolution = "J_1024x768";	// `J` I set this to my interface because that is the one I edit myself
 	resolution.width = 1024;				// `J` added - Will be moved to interfaces
@@ -676,6 +680,6 @@ void sConfigData::set_defaults()
 	debug.log_torture = false;
 	debug.log_debug = false;
 	debug.log_extra_details = false;
-
+	debug.log_show_numbers = false;
 }
 

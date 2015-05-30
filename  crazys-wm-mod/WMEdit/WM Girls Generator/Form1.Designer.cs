@@ -696,12 +696,19 @@
             this.button_Script_Clear = new System.Windows.Forms.Button();
             this.label_Script_Path = new System.Windows.Forms.Label();
             this.dataGridView_Scripts = new System.Windows.Forms.DataGridView();
+            this.Script_ActionNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Script_Var = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Script_Text = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label_Script = new System.Windows.Forms.Label();
             this.button_Script_Load = new System.Windows.Forms.Button();
             this.tabPage7_FAQ = new System.Windows.Forms.TabPage();
             this.groupBox_Folders = new System.Windows.Forms.GroupBox();
             this.richTextBox3 = new System.Windows.Forms.RichTextBox();
             this.checkBox_Config_Folders_Backup_Saves = new System.Windows.Forms.CheckBox();
+            this.checkBox_Config_Folders_Prefer_Default = new System.Windows.Forms.CheckBox();
             this.label185 = new System.Windows.Forms.Label();
             this.textBox_Config_Folders_Default_Images = new System.Windows.Forms.TextBox();
             this.label183 = new System.Windows.Forms.Label();
@@ -726,12 +733,7 @@
             this.button24 = new System.Windows.Forms.Button();
             this.checkBox_ToggleTraitTooltips = new System.Windows.Forms.CheckBox();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.Script_ActionNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Script_Var = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Script_Text = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.checkBox_config_LogShowNumbers = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage0_Info.SuspendLayout();
             this.tabPage1_Girls.SuspendLayout();
@@ -7714,6 +7716,7 @@
             // 
             // groupBox_Logging
             // 
+            this.groupBox_Logging.Controls.Add(this.checkBox_config_LogShowNumbers);
             this.groupBox_Logging.Controls.Add(this.checkBox_config_LogDebug);
             this.groupBox_Logging.Controls.Add(this.checkBox_config_LogExtraDetails);
             this.groupBox_Logging.Controls.Add(this.checkBox_config_LogGirlFights);
@@ -7726,7 +7729,7 @@
             this.groupBox_Logging.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.groupBox_Logging.Location = new System.Drawing.Point(765, 282);
             this.groupBox_Logging.Name = "groupBox_Logging";
-            this.groupBox_Logging.Size = new System.Drawing.Size(180, 125);
+            this.groupBox_Logging.Size = new System.Drawing.Size(180, 159);
             this.groupBox_Logging.TabIndex = 13;
             this.groupBox_Logging.TabStop = false;
             this.groupBox_Logging.Text = "What to Log";
@@ -8026,7 +8029,7 @@
             this.groupBox_C_Prostitution_Rape_Chances.Controls.Add(this.textBox_Config_ProstitutionRapeStreets);
             this.groupBox_C_Prostitution_Rape_Chances.Controls.Add(this.textBox_Config_ProstitutionRapeBrothel);
             this.groupBox_C_Prostitution_Rape_Chances.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.groupBox_C_Prostitution_Rape_Chances.Location = new System.Drawing.Point(575, 342);
+            this.groupBox_C_Prostitution_Rape_Chances.Location = new System.Drawing.Point(575, 320);
             this.groupBox_C_Prostitution_Rape_Chances.Name = "groupBox_C_Prostitution_Rape_Chances";
             this.groupBox_C_Prostitution_Rape_Chances.Size = new System.Drawing.Size(180, 65);
             this.groupBox_C_Prostitution_Rape_Chances.TabIndex = 9;
@@ -8742,6 +8745,60 @@
             this.dataGridView_Scripts.Size = new System.Drawing.Size(930, 520);
             this.dataGridView_Scripts.TabIndex = 13;
             // 
+            // Script_ActionNumber
+            // 
+            this.Script_ActionNumber.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Script_ActionNumber.DataPropertyName = "Script_ActionNumber";
+            this.Script_ActionNumber.HeaderText = "Action Number";
+            this.Script_ActionNumber.Name = "Script_ActionNumber";
+            this.Script_ActionNumber.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.Script_ActionNumber.Width = 83;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dataGridViewTextBoxColumn2.DataPropertyName = "Script_EntryNumber";
+            this.dataGridViewTextBoxColumn2.HeaderText = "Entry Number";
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.dataGridViewTextBoxColumn2.Width = 77;
+            // 
+            // dataGridViewTextBoxColumn3
+            // 
+            this.dataGridViewTextBoxColumn3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dataGridViewTextBoxColumn3.DataPropertyName = "Script_Type";
+            this.dataGridViewTextBoxColumn3.HeaderText = "Type";
+            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewTextBoxColumn3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.dataGridViewTextBoxColumn3.Width = 37;
+            // 
+            // dataGridViewTextBoxColumn4
+            // 
+            this.dataGridViewTextBoxColumn4.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dataGridViewTextBoxColumn4.DataPropertyName = "Script_IOValue";
+            this.dataGridViewTextBoxColumn4.HeaderText = "IOValue";
+            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
+            this.dataGridViewTextBoxColumn4.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.dataGridViewTextBoxColumn4.Width = 51;
+            // 
+            // Script_Var
+            // 
+            this.Script_Var.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Script_Var.DataPropertyName = "Script_Var";
+            this.Script_Var.HeaderText = "Var";
+            this.Script_Var.Name = "Script_Var";
+            this.Script_Var.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.Script_Var.Width = 29;
+            // 
+            // Script_Text
+            // 
+            this.Script_Text.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Script_Text.DataPropertyName = "Script_Text";
+            this.Script_Text.HeaderText = "Text";
+            this.Script_Text.Name = "Script_Text";
+            this.Script_Text.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
             // label_Script
             // 
             this.label_Script.AutoSize = true;
@@ -8780,6 +8837,7 @@
             // 
             this.groupBox_Folders.Controls.Add(this.richTextBox3);
             this.groupBox_Folders.Controls.Add(this.checkBox_Config_Folders_Backup_Saves);
+            this.groupBox_Folders.Controls.Add(this.checkBox_Config_Folders_Prefer_Default);
             this.groupBox_Folders.Controls.Add(this.label185);
             this.groupBox_Folders.Controls.Add(this.textBox_Config_Folders_Default_Images);
             this.groupBox_Folders.Controls.Add(this.label183);
@@ -8816,6 +8874,17 @@
             this.checkBox_Config_Folders_Backup_Saves.TabIndex = 6;
             this.checkBox_Config_Folders_Backup_Saves.Text = "Backup Saves";
             this.checkBox_Config_Folders_Backup_Saves.UseVisualStyleBackColor = true;
+            // 
+            // checkBox_Config_Folders_Prefer_Default
+            // 
+            this.checkBox_Config_Folders_Prefer_Default.AutoSize = true;
+            this.checkBox_Config_Folders_Prefer_Default.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.checkBox_Config_Folders_Prefer_Default.Location = new System.Drawing.Point(124, 90);
+            this.checkBox_Config_Folders_Prefer_Default.Name = "checkBox_Config_Folders_Prefer_Default";
+            this.checkBox_Config_Folders_Prefer_Default.Size = new System.Drawing.Size(217, 17);
+            this.checkBox_Config_Folders_Prefer_Default.TabIndex = 7;
+            this.checkBox_Config_Folders_Prefer_Default.Text = "Prefer Default over Alternate Image Tree";
+            this.checkBox_Config_Folders_Prefer_Default.UseVisualStyleBackColor = true;
             // 
             // label185
             // 
@@ -9039,59 +9108,16 @@
             this.checkBox_ToggleTraitTooltips.UseVisualStyleBackColor = true;
             this.checkBox_ToggleTraitTooltips.CheckedChanged += new System.EventHandler(this.checkBox_ToggleTraitTooltips_CheckedChanged);
             // 
-            // Script_ActionNumber
+            // checkBox_config_LogShowNumbers
             // 
-            this.Script_ActionNumber.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Script_ActionNumber.DataPropertyName = "Script_ActionNumber";
-            this.Script_ActionNumber.HeaderText = "Action Number";
-            this.Script_ActionNumber.Name = "Script_ActionNumber";
-            this.Script_ActionNumber.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Script_ActionNumber.Width = 83;
-            // 
-            // dataGridViewTextBoxColumn2
-            // 
-            this.dataGridViewTextBoxColumn2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dataGridViewTextBoxColumn2.DataPropertyName = "Script_EntryNumber";
-            this.dataGridViewTextBoxColumn2.HeaderText = "Entry Number";
-            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
-            this.dataGridViewTextBoxColumn2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.dataGridViewTextBoxColumn2.Width = 77;
-            // 
-            // dataGridViewTextBoxColumn3
-            // 
-            this.dataGridViewTextBoxColumn3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dataGridViewTextBoxColumn3.DataPropertyName = "Script_Type";
-            this.dataGridViewTextBoxColumn3.HeaderText = "Type";
-            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
-            this.dataGridViewTextBoxColumn3.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewTextBoxColumn3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.dataGridViewTextBoxColumn3.Width = 37;
-            // 
-            // dataGridViewTextBoxColumn4
-            // 
-            this.dataGridViewTextBoxColumn4.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dataGridViewTextBoxColumn4.DataPropertyName = "Script_IOValue";
-            this.dataGridViewTextBoxColumn4.HeaderText = "IOValue";
-            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
-            this.dataGridViewTextBoxColumn4.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.dataGridViewTextBoxColumn4.Width = 51;
-            // 
-            // Script_Var
-            // 
-            this.Script_Var.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Script_Var.DataPropertyName = "Script_Var";
-            this.Script_Var.HeaderText = "Var";
-            this.Script_Var.Name = "Script_Var";
-            this.Script_Var.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Script_Var.Width = 29;
-            // 
-            // Script_Text
-            // 
-            this.Script_Text.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Script_Text.DataPropertyName = "Script_Text";
-            this.Script_Text.HeaderText = "Text";
-            this.Script_Text.Name = "Script_Text";
-            this.Script_Text.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.checkBox_config_LogShowNumbers.AutoSize = true;
+            this.checkBox_config_LogShowNumbers.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.checkBox_config_LogShowNumbers.Location = new System.Drawing.Point(5, 123);
+            this.checkBox_config_LogShowNumbers.Name = "checkBox_config_LogShowNumbers";
+            this.checkBox_config_LogShowNumbers.Size = new System.Drawing.Size(98, 17);
+            this.checkBox_config_LogShowNumbers.TabIndex = 9;
+            this.checkBox_config_LogShowNumbers.Text = "Show Numbers";
+            this.checkBox_config_LogShowNumbers.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -9834,6 +9860,7 @@
         private System.Windows.Forms.Label label_Script;
         private System.Windows.Forms.GroupBox groupBox_Folders;
         private System.Windows.Forms.CheckBox checkBox_Config_Folders_Backup_Saves;
+        private System.Windows.Forms.CheckBox checkBox_Config_Folders_Prefer_Default;
         private System.Windows.Forms.Label label185;
         private System.Windows.Forms.TextBox textBox_Config_Folders_Default_Images;
         private System.Windows.Forms.Label label183;
@@ -9901,6 +9928,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
         private System.Windows.Forms.DataGridViewTextBoxColumn Script_Var;
         private System.Windows.Forms.DataGridViewTextBoxColumn Script_Text;
+        private System.Windows.Forms.CheckBox checkBox_config_LogShowNumbers;
     }
 }
 

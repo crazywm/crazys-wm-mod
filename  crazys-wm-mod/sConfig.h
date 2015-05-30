@@ -63,6 +63,7 @@ struct sConfigData
 		bool	backupsaves;
 		string	defaultimageloc;
 		bool	configXMLdi;
+		bool	preferdefault;
 	} folders;
 
 	/*
@@ -210,6 +211,7 @@ struct sConfigData
 		bool	log_torture;
 		bool	log_debug;
 		bool	log_extra_details;
+		bool	log_show_numbers;
 	} debug;
 
 	struct FarmData {
@@ -395,7 +397,8 @@ public:
 		bool backupsaves()			{ return data->folders.backupsaves; }
 		string& defaultimageloc()	{ return data->folders.defaultimageloc; }
 		bool configXMLdi()			{ return data->folders.configXMLdi; }
-
+		bool preferdefault()		{ return data->folders.preferdefault; }
+		
 	}folders;
 
 	struct Resolution{
@@ -419,6 +422,7 @@ public:
 		bool	log_torture()       { return data->debug.log_torture; }
 		bool	log_debug()         { return data->debug.log_debug; }
 		bool	log_extradetails()  { return data->debug.log_extra_details; }
+		bool	log_show_numbers()	{ return data->debug.log_show_numbers; }
 	} debug;
 
 	string override_dir() {

@@ -109,7 +109,7 @@ const char *sGirl::status_names[] =
 	"None", "Poisoned", "Badly Poisoned", "Pregnant", "Pregnant By Player", "Slave", "Has Daughter", "Has Son",
 	"Inseminated", "Controlled", "Catacombs", "Arena", "Your Daughter", "Is Daughter"
 };
-// `J` When modifying Action types, search for "J-Change-Action-Types"  :  found in >> cGirls.cpp > *_names[]
+// `J` When modifying Action types, search for "J-Change-Action-Types"  :  found in >> cGirls.cpp > enjoy_names[]
 const char *sGirl::enjoy_names[] =
 {
 	"COMBAT", "SEX", "WORKESCORT", "WORKCLEANING", "WORKMATRON", "WORKBAR", "WORKHALL", "WORKSHOW", "WORKSECURITY",
@@ -117,6 +117,43 @@ const char *sGirl::enjoy_names[] =
 	"WORKHAREM", "WORKRECRUIT", "WORKNURSE", "WORKMECHANIC", "WORKCOUNSELOR", "WORKMUSIC", "WORKSTRIP", "WORKMILK",
 	"WORKMASSUSSE", "WORKFARM", "WORKINTERN", "WORKREHAB", "MAKEPOTIONS", "MAKEITEMS", "COOKING", "GETTHERAPY",
 	"GENERAL"
+};
+// `J` When modifying Action types, search for "J-Change-Action-Types"  :  found in >> cGirls.cpp > enjoy_jobs[]
+const char *sGirl::enjoy_jobs[] = {
+	"combat",							// ACTION_COMBAT           
+	"working as a whore",				// ACTION_SEX              
+	"working as an Escort",				// ACTION_WORKESCORT		
+	"cleaning",							// ACTION_WORKCLEANING     
+	"acting as a matron",				// ACTION_WORKMATRON       
+	"working in the bar",				// ACTION_WORKBAR          
+	"working in the gambling hall",		// ACTION_WORKHALL         
+	"producing movies",					// ACTION_WORKSHOW         
+	"providing security",				// ACTION_WORKSECURITY     
+	"doing advertising",				// ACTION_WORKADVERTISING  
+	"torturing people",					// ACTION_WORKTORTURER     
+	"caring for beasts",				// ACTION_WORKCARING       
+	"working as a doctor",				// ACTION_WORKDOCTOR       
+	"producing movies",					// ACTION_WORKMOVIE        
+	"providing customer service",		// ACTION_WORKCUSTSERV     
+	"working in the centre",			// ACTION_WORKCENTRE       
+	"working in the club",				// ACTION_WORKCLUB         
+	"being in your harem",				// ACTION_WORKHAREM        
+	"being a recruiter",				// ACTION_WORKRECRUIT      
+	"working as a nurse",				// ACTION_WORKNURSE        
+	"fixing things",					// ACTION_WORKMECHANIC     
+	"counseling people",				// ACTION_WORKCOUNSELOR    
+	"performing music",					// ACTION_WORKMUSIC		
+	"striping",							// ACTION_WORKSTRIP		
+	"having her breasts milked",		// ACTION_WORKMILK 		
+	"working as a massusse",			// ACTION_WORKMASSUSSE		
+	"working on the farm",				// ACTION_WORKFARM			
+	"training in the medical field",	// ACTION_WORKINTERN		
+	"counseling",						// ACTION_WORKREHAB		
+	"making potions",					// ACTION_WORKMAKEPOTIONS	
+	"making items",						// ACTION_WORKMAKEITEMS	
+	"cooking",							// ACTION_WORKCOOKING		
+	"therapy",							// ACTION_WORKTHERAPY		
+	"doing miscellaneous tasks"			// ACTION_GENERAL			
 };
 const char *sGirl::children_type_names[] =
 {
@@ -2370,50 +2407,12 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 		ss << "\n\nJOB PREFERENCES";
 		if (cfg.debug.log_extradetails() && !purchase) ss << "\n    (base+temp+item+trait)";
 		ss << "\n";
-
-		// `J` When modifying Action types, search for "J-Change-Action-Types"  :  found in >> GetMoreDetailsString
-		string jobs[] = {
-			"combat",
-			"working as a whore",
-			"working as an Escort",
-			"cleaning",
-			"acting as a matron",
-			"working in the bar",
-			"working in the gambling hall",
-			"producing movies",
-			"providing security",
-			"doing advertising",
-			"torturing people",
-			"caring for beasts",
-			"working as a doctor",
-			"producing movies",
-			"providing customer service",
-			"working in the centre",
-			"working in the club",
-			"being in your harem",
-			"being a recruiter",
-			"working as a nurse",
-			"fixing things",
-			"counseling people",
-			"performing music",
-			"striping",
-			"having her breasts milked",
-			"working as a massusse",
-			"working on the farm",
-			"training in the medical field",
-			"counseling",
-			"making potions",
-			"making items",
-			"cooking",
-			"therapy",
-			"doing miscellaneous tasks"  // general
-		};
 		string base = "She";
 		string text;
 		int enjcount = 0;
 		for (int i = 0; i < NUM_ACTIONTYPES; ++i)
 		{
-			if (jobs[i] == "")			continue;
+			if (sGirl::enjoy_jobs[i] == "")			continue;
 			int e = girl->get_enjoyment(i);
 			/* */if (e < -70)	{ text = " hates "; }
 			else if (e < -50)	{ text = " really dislikes "; }
@@ -2425,11 +2424,14 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 			else if (e < 50)	{ text = " likes "; }
 			else if (e < 70)	{ text = " really enjoys "; }
 			else				{ text = " loves "; }
-			ss << base << text << jobs[i] << ".";
-			if (cfg.debug.log_extradetails())		
+			ss << base << text << sGirl::enjoy_jobs[i] << ".";
+			if (cfg.debug.log_extradetails() || cfg.debug.log_show_numbers())
 			{ 
-				ss << "\n    ( " << girl->m_Enjoyment[i] << " + " << girl->m_EnjoymentTemps[i] << " + " 
-					<< girl->m_EnjoymentMods[i] << " + " << girl->m_EnjoymentTR[i] << " )";
+				if (cfg.debug.log_extradetails()) ss << "\n";
+				ss << "    ( " << girl->m_Enjoyment[i];
+				if (cfg.debug.log_extradetails())
+					ss << " + " << girl->m_EnjoymentTemps[i] << " + " << girl->m_EnjoymentMods[i] << " + " << girl->m_EnjoymentTR[i];
+				ss << " )";
 			}
 			ss << "\n";
 			enjcount++;
@@ -4727,6 +4729,7 @@ int cGirls::HasItemJ(sGirl* girl, string name)	// `J` added to compare item name
 	returns 2 if she has only armor but no weapon (others ignored)
 	returns 1 if she has only weapons
 	returns -1 for errors
+	*	Small weapons are not counted
 	*/
 int cGirls::CheckEquipment(sGirl* girl)
 {
@@ -14437,7 +14440,8 @@ CSurface* cGirls::GetImageSurface(sGirl* girl, int ImgType, bool random, int& im
 	if (girl->is_pregnant())
 	{
 		if (ImgType == IMGTYPE_PREGNANT)
-			return girl->m_GirlImages->m_Images[IMGTYPE_PREGNANT].GetImageSurface(random, img);
+			if (girl->m_GirlImages->m_Images[IMGTYPE_PREGNANT].m_NumImages)
+				return girl->m_GirlImages->m_Images[IMGTYPE_PREGNANT].GetImageSurface(random, img);
 		else if (ImgType == IMGTYPE_PROFILE)
 		{
 			if (girl->m_GirlImages->m_Images[IMGTYPE_PREGPROFILE].m_NumImages)
@@ -15450,4 +15454,25 @@ string cGirls::catacombs_look_for(int girls, int items, int beast)
 	//else  ss << "have fun. (error code::  CLF01|" << girls << "|" << items << "|" << beast << "  ::  Please report it to pinkpetal.org so it can be fixed)";
 	ss << ".\n";
 	return ss.str();
+}
+
+// `J` for use with beast jobs where the girl has sex with a beast
+sCustomer* cGirls::GetBeast()
+{
+	sCustomer* beast = 0;
+	beast->m_Amount = 1;
+	beast->m_IsWoman = 0;
+	// get their stats generated
+	for (int j = 0; j < NUM_STATS; j++)		beast->m_Stats[j] = g_Dice.d100();
+	for (int j = 0; j < NUM_SKILLS; j++)	beast->m_Skills[j] = g_Dice.d100();
+
+	beast->m_SexPref = beast->m_SexPrefB = SKILL_BEASTIALITY;
+
+	beast->m_HasAIDS = g_Dice.percent(0.5);
+	beast->m_HasChlamydia = g_Dice.percent(1);
+	beast->m_HasSyphilis = g_Dice.percent(1.5);
+	beast->m_HasHerpes = g_Dice.percent(2.5);
+	beast->m_Money = 0;
+	beast->m_Next = 0;
+	return beast;
 }

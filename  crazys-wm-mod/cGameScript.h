@@ -108,6 +108,10 @@ private:
 	sScript* Script_AddTrait(sScript* Script);						// `J` new
 	sScript* Script_RemoveTrait(sScript* Script);					// `J` new
 	sScript* Script_AddTraitTemp(sScript* Script);					// `J` new
+	sScript* Script_ShopTarget(sScript* Script);					// `J` new
+	sScript* Script_MagicTarget(sScript* Script);					// `J` new
+	sScript* Script_SignTarget(sScript* Script);					// `J` new
+	sScript* Script_PresentedTarget(sScript* Script);				// `J` new
 	//sScript* Script_GirlNameTarget(sScript* Script);
 
 	// The overloaded process function

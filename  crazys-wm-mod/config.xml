@@ -9,12 +9,16 @@
 	BackupSaves    = 'true' or 'false'
 			If set to true, the game will save in both the game's default
 				save folder as well as the folder set here.
+	PreferDefault    = 'true' or 'false'
+			If set to true, the game will try to use default images
+				before trying to find alternate images from the image tree.
 	-->
     <Folders
         Characters="..\Characters"
         Saves="..\Saves"
         DefaultImages="..\DefaultImages"
-        BackupSaves="true" />
+        BackupSaves="true"
+        PreferDefault="false" />
     <!--
 	Resolution     = the name of your interface folder
 	Width          = screen width
@@ -312,5 +316,6 @@
         LogFonts="false"
         LogTorture="false"
         LogDebug="false"
-        LogExtraDetails="false" />
+        LogExtraDetails="false"
+        LogShowNumbers="false" />
 </config>

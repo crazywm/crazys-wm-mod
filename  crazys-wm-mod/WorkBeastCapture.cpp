@@ -97,40 +97,56 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 		gain++;
 	}
 	//SIN: most the rest rely on more than one cap so might as well skip the lot if less than this...
-	if (gain > 1){
-		if (g_Girls.HasTrait(girl, "Twisted") && g_Girls.HasTrait(girl, "Nymphomaniac") && (g_Girls.GetStat(girl, STAT_LIBIDO) >= 80))
+	if (gain > 1)
+	{
+		// `J` added a switch with a use next if check fails and changed percents to (gain * 5)
+		switch (g_Dice % 10)	
 		{
-			ss << "Being a horny, twisted nymphomaniac, " << girlName << " had some fun with the beasts before she handed them over.\n";
-			g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, g_Dice % gain);
-			g_Girls.UpdateStat(girl, STAT_LIBIDO, -(g_Dice % gain));
-		}
-		if (g_Girls.HasTrait(girl, "Psychic") && (g_Girls.GetStat(girl, STAT_LIBIDO) >= 90) && g_Dice.percent(10))
-		{
-			ss << girlName << "'s Psychic sensitivity caused her mind be overwhelmed by the creatures' lusts";
-			if (g_Girls.CheckVirginity(girl))
+		case 0:
+			if (g_Girls.HasTrait(girl, "Twisted") && g_Girls.HasTrait(girl, "Nymphomaniac") && (g_Girls.GetStat(girl, STAT_LIBIDO) >= 80))
 			{
-				ss << " but, things were moving too fast and she regained control before they could take her virginity.\n";
-				g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, 1);
-				g_Girls.UpdateStat(girl, STAT_LIBIDO, 2); //no satisfaction!
-			}
-			else
-			{
-				ss << ". Many hours later she staggered in to present the creatures to you.\n";
+				ss << "Being a horny, twisted nymphomaniac, " << girlName << " had some fun with the beasts before she handed them over.\n";
 				g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, g_Dice % gain);
-				g_Girls.UpdateStat(girl, STAT_LIBIDO, -2 * (g_Dice % gain));
-				g_Girls.UpdateStat(girl, STAT_TIREDNESS, gain);
+				g_Girls.UpdateStat(girl, STAT_LIBIDO, -(g_Dice % gain));
+				break;
 			}
-		}
-		if (g_Girls.HasTrait(girl, "Assassin") && g_Dice.percent(5))
-		{
-			ss << " One of the captured creatures tried to escape on the way back. Trained assassin, " << girlName << ", instantly killed it as an example to the others.\n";
-			g_Girls.UpdateSkill(girl, SKILL_COMBAT, 1);
-			gain--;
-		}
-		if (g_Girls.GetStat(girl, STAT_TIREDNESS) > 50 && g_Dice.percent(5))
-		{
-			ss << girlName << " was so exhausted she couldn't concentrate. One of the creatures escaped.";
-			gain--;
+		case 1:
+			if (g_Girls.HasTrait(girl, "Psychic") && (g_Girls.GetStat(girl, STAT_LIBIDO) >= 90) && g_Dice.percent(gain * 5))
+			{
+				ss << girlName << "'s Psychic sensitivity caused her mind be overwhelmed by the creatures' lusts";
+				if (g_Girls.CheckVirginity(girl))
+				{
+					ss << " but, things were moving too fast and she regained control before they could take her virginity.\n";
+					g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, 1);
+					g_Girls.UpdateStat(girl, STAT_LIBIDO, 2); //no satisfaction!
+				}
+				else
+				{
+					ss << ". Many hours later she staggered in to present the creatures to you.\n";
+					g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, g_Dice % gain);
+					g_Girls.UpdateStat(girl, STAT_LIBIDO, -2 * (g_Dice % gain));
+					g_Girls.UpdateStat(girl, STAT_TIREDNESS, gain);
+					girl->calc_insemination(g_Girls.GetBeast(), 1);
+				}
+				break;
+			}
+		case 2:
+			if (g_Girls.HasTrait(girl, "Assassin") && g_Dice.percent(gain * 5))
+			{
+				ss << " One of the captured creatures tried to escape on the way back. Trained assassin, " << girlName << ", instantly killed it as an example to the others.\n";
+				g_Girls.UpdateSkill(girl, SKILL_COMBAT, 1);
+				gain--;
+				break;
+			}
+		case 3:
+			if (g_Girls.GetStat(girl, STAT_TIREDNESS) > 50 && g_Dice.percent(gain * 5))
+			{
+				ss << girlName << " was so exhausted she couldn't concentrate. One of the creatures escaped.";
+				gain--;
+				break;
+			}
+		default: break;
+
 		}
 	}
 
@@ -193,18 +209,6 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 		}
 
 	}
-
-
-
-
-
-
-
-
-
-
-
-
 
 #endif
 

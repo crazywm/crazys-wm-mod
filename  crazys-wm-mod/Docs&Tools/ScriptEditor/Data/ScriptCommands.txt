@@ -313,3 +313,7 @@ TEXT
 "AddTraitTemp ~ ~"
 TEXT
 INT 0 255
+"Have Shop"
+"Have Magic"
+"Have Sign"
+"Have Presented"

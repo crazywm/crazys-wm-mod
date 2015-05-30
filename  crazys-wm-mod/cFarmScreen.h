@@ -47,8 +47,8 @@ private:
 	int		curbrothel_id;	// Current Brothel text
 	int		farm_id;		// farm's House map button
 	int		nextbrothel_id;	// next brothel button
-	int		prevbrothel_id;		// prev brothel button
-	int     farmdetails_id;    // farm description text
+	int		prevbrothel_id;	// prev brothel button
+	int     farmdetails_id;	// farm description text
 
 	bool m_first_walk;
 
