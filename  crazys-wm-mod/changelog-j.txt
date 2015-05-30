@@ -2091,6 +2091,13 @@ WME - added LogShowNumbers and PreferDefault to config settings
 Added g_Girls.GetBeast() to allow for easier beast insemination checks
  - girl->calc_insemination(g_Girls.GetBeast(), 1);
 
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+
+###  Changes 5/30
+Added sex texts by GonDra
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+ 
+ 
 $$$$ TO DO - SHORT TERM - (for this version) $$$$
 Config.xml: 
  > Debug > ShowNumbers
