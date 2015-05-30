@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="Carton of Cigarettes" Desc="Ground tobacco rolled in small paper tubes, full of nicotine. 10 Packs of 10. Highly addictive. (+Hap, -HP, -Tired)"
+    Type="Food" Badness="15" Special="None" Cost="200" Rarity="Shop50" Infinite="false" GirlBuyChance="1" ItemWeight="0.1">
+        <Effect What="Stat"  Name="Happiness"   Amount="10" />
+        <Effect What="Stat"  Name="Health"      Amount="-5" />
+        <Effect What="Stat"  Name="Tiredness"   Amount="-10" />
+        <Effect What="Trait" Name="Smoker"      Amount="1" />
+    </Item>
+    <Item Name="Carton of  Cigarettes" Desc="Ground tobacco rolled in small paper tubes, full of nicotine. 10 Packs of 10. Highly addictive. (+Hap, -HP, -Tired)"
+    Type="Food" Badness="15" Special="None" Cost="200" Rarity="Shop50" Infinite="false" GirlBuyChance="1" ItemWeight="0.1">
+        <Effect What="Stat"  Name="Happiness"   Amount="8" />
+        <Effect What="Stat"  Name="Health"      Amount="-4" />
+        <Effect What="Stat"  Name="Tiredness"   Amount="-12" />
+        <Effect What="Trait" Name="Smoker"      Amount="1" />
+    </Item>
+    <Item Name="Carton  of Cigarettes" Desc="Ground tobacco rolled in small paper tubes, full of nicotine. 10 Packs of 10. Highly addictive. (+Hap, -HP, -Tired)"
+    Type="Food" Badness="15" Special="None" Cost="200" Rarity="Shop50" Infinite="false" GirlBuyChance="1" ItemWeight="0.1">
+        <Effect What="Stat"  Name="Happiness"   Amount="9" />
+        <Effect What="Stat"  Name="Health"      Amount="-2" />
+        <Effect What="Stat"  Name="Tiredness"   Amount="-6" />
+        <Effect What="Trait" Name="Smoker"      Amount="1" />
+    </Item>
+    <Item Name="Carton of Cigarettes " Desc="Ground tobacco rolled in small paper tubes, full of nicotine. 10 Packs of 10. Highly addictive. (+Hap, -HP, -Tired)"
+    Type="Food" Badness="15" Special="None" Cost="200" Rarity="Shop50" Infinite="false" GirlBuyChance="1" ItemWeight="0.1">
+        <Effect What="Stat"  Name="Happiness"   Amount="11" />
+        <Effect What="Stat"  Name="Health"      Amount="-6" />
+        <Effect What="Stat"  Name="Tiredness"   Amount="-7" />
+        <Effect What="Trait" Name="Smoker"      Amount="1" />
+    </Item>
+    <Item Name="Carton of  Cigarettes " Desc="Ground tobacco rolled in small paper tubes, full of nicotine. 10 Packs of 10. Highly addictive. (+Hap, -HP, -Tired)"
+    Type="Food" Badness="15" Special="None" Cost="200" Rarity="Shop50" Infinite="false" GirlBuyChance="1" ItemWeight="0.1">
+        <Effect What="Stat"  Name="Happiness"   Amount="10" />
+        <Effect What="Stat"  Name="Health"      Amount="-4" />
+        <Effect What="Stat"  Name="Tiredness"   Amount="-11" />
+        <Effect What="Trait" Name="Smoker"      Amount="1" />
+    </Item>
+    <Item Name="Carton  of  Cigarettes" Desc="Ground tobacco rolled in small paper tubes, full of nicotine. 10 Packs of 10. Highly addictive. (+Hap, -HP, -Tired)"
+    Type="Food" Badness="15" Special="None" Cost="200" Rarity="Shop50" Infinite="false" GirlBuyChance="1" ItemWeight="0.1">
+        <Effect What="Stat"  Name="Happiness"   Amount="8" />
+        <Effect What="Stat"  Name="Health"      Amount="-1" />
+        <Effect What="Stat"  Name="Tiredness"   Amount="-12" />
+        <Effect What="Trait" Name="Smoker"      Amount="1" />
+    </Item>
+    <Item Name="Carton  of  Cigarettes " Desc="Ground tobacco rolled in small paper tubes, full of nicotine. 10 Packs of 10. Highly addictive. (+Hap, -HP, -Tired)"
+    Type="Food" Badness="15" Special="None" Cost="200" Rarity="Shop50" Infinite="false" GirlBuyChance="1" ItemWeight="0.1">
+        <Effect What="Stat"  Name="Happiness"   Amount="9" />
+        <Effect What="Stat"  Name="Health"      Amount="-6" />
+        <Effect What="Stat"  Name="Tiredness"   Amount="-5" />
+        <Effect What="Trait" Name="Smoker"      Amount="1" />
+    </Item>
+</Items>

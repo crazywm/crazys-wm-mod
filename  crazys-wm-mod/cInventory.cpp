@@ -653,6 +653,7 @@ sInventoryItem* cInventory::GetItem(string name)
 
 void cInventory::Equip(sGirl* girl, int num, bool force)
 {
+	if (num == -1) return;	// no item then ignore the call
 	// Allow certain Items to recover the dead
 	if (girl->health() <= 0 && (
 		stringtolowerj(girl->m_Inventory[num]->m_Name) == stringtolowerj("Better Zed than Dead") ||

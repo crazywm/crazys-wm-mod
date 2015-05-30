@@ -5018,40 +5018,96 @@ void cGirls::UseItems(sGirl* girl)
 	}
 	if (HasTrait(girl, "Smoker")) // `Gondra` added this since this seemed to be missing IMPORTANT: requires the item
 	{
-		int temp = HasItem(girl, "Small pack of Cigarettes");
-		if (temp == -1)	// withdrawals for a week
+		if (HasItemJ(girl, "Stop Smoking Now Patch") > -1)
 		{
-			if (girl->m_Withdrawals >= 15)
+			g_InvManager.Equip(girl, HasItemJ(girl, "Stop Smoking Now Patch"), false);
+			girl->m_Withdrawals = 0;
+		}
+		else if (HasItemJ(girl, "Stop Smoking Patch") > -1)
+		{
+			g_InvManager.Equip(girl, HasItemJ(girl, "Stop Smoking Patch"), false);
+			girl->m_Withdrawals = 0;
+		}
+		else if (HasItemJ(girl, "Cigarette") > -1 ||
+			HasItemJ(girl, "Small pack of Cigarettes") > -1 ||
+			HasItemJ(girl, "Pack of Cigarettes") > -1 ||
+			HasItemJ(girl, "Carton of Cigarettes") > -1 ||
+			HasItemJ(girl, "Magic Pack of Cigarettes") > -1 ||
+			HasItemJ(girl, "Magic Carton of Cigarettes") > -1)
+		{
+			int temp = -1; int happy = 0; int health = 0; int libido = 0; int mana = 0;
+			// `J` go through the list of available items and if she has more than one of them use only the "best"
+			if (HasItemJ(girl, "Cigarette") > -1)
 			{
-				RemoveTrait(girl, "Smoker", true);
-				AddTrait(girl, "Former Addict");
-				stringstream goodnews;
-				goodnews << "Good News, " << girl->m_Realname << " has overcome her addiction to Nicotine.";
-				girl->m_Events.AddMessage(goodnews.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
+				temp = HasItemJ(girl, "Cigarette");
+				happy += g_Dice % 2; health = 0; libido += g_Dice % 2;
 			}
-			else
+			if (HasItemJ(girl, "Small pack of Cigarettes") > -1)
 			{
-				UpdateStat(girl, STAT_HAPPINESS, -10);
-				UpdateStat(girl, STAT_OBEDIENCE, -5);
-
-				// `Gondra` not sure if Nicotine withdrawal should harm her health, left it at (-2, -1, 0 or +1) like alcohol
-				UpdateStat(girl, STAT_HEALTH, g_Dice % 4 - 2);
-				// `Gondra` nicotine withdrawal includes as symptoms difficulty to concentrate and fatigue
-				UpdateStatTemp(girl, STAT_INTELLIGENCE, -2);
-				UpdateStat(girl, STAT_TIREDNESS, 5);
-				if (!withdraw)
-				{
-					girl->m_Withdrawals++;
-					withdraw = true;
-				}
+				temp = HasItemJ(girl, "Small pack of Cigarettes");
+				happy += g_Dice % 4; health -= g_Dice % 2; libido += g_Dice % 3;
 			}
+			if (HasItemJ(girl, "Pack of Cigarettes") > -1)
+			{
+				temp = HasItemJ(girl, "Pack of Cigarettes");
+				happy += g_Dice % 5 + 1; health -= g_Dice % 3; libido += g_Dice % 4;
+			}
+			if (HasItemJ(girl, "Carton of Cigarettes") > -1)
+			{
+				temp = HasItemJ(girl, "Carton of Cigarettes");
+				happy += g_Dice % 6 + 3; health -= g_Dice % 3 + 1; libido += g_Dice % 5 + 1;
+			}
+			if (HasItemJ(girl, "Magic Pack of Cigarettes") > -1)
+			{
+				temp = HasItemJ(girl, "Magic Pack of Cigarettes");
+				happy += g_Dice % 6 + 4; health -= g_Dice % 4; libido += g_Dice % 4 + 2; mana -= 1;
+			}
+			if (HasItemJ(girl, "Magic Carton of Cigarettes") > -1)
+			{
+				temp = HasItemJ(girl, "Magic Carton of Cigarettes");
+				happy += g_Dice % 11 + 5; health -= g_Dice % 6 + 1; libido += g_Dice % 8 + 4; mana -= 2;
+			}
+			if (temp > -1)
+			{
+				UpdateStat(girl, STAT_HAPPINESS, happy);
+				UpdateStat(girl, STAT_HEALTH, health);
+				UpdateStat(girl, STAT_MANA, mana);
+				UpdateStatTemp(girl, STAT_LIBIDO, libido);
+				g_InvManager.Equip(girl, temp, false);
+				girl->m_Withdrawals = 0;
+			}
+			if (girl->health() <= 0)
+			{
+				stringstream cancer;
+				cancer << girl->m_Realname << " has died of cancer from smoking.";
+				girl->m_Events.AddMessage(cancer.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
+				return;
+			}
+		}
+		else if (girl->m_Withdrawals >= 15)
+		{
+			girl->m_Withdrawals = 0;
+			RemoveTrait(girl, "Smoker", true);
+			AddTrait(girl, "Former Addict");
+			stringstream goodnews;
+			goodnews << "Good News, " << girl->m_Realname << " has overcome her addiction to Nicotine.";
+			girl->m_Events.AddMessage(goodnews.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
 		}
 		else
 		{
-			UpdateStat(girl, STAT_HAPPINESS, 10);
-			UpdateStatTemp(girl, STAT_LIBIDO, 2);
-			g_InvManager.Equip(girl, temp, false);
-			girl->m_Withdrawals = 0;
+			UpdateStat(girl, STAT_HAPPINESS, -10);
+			UpdateStat(girl, STAT_OBEDIENCE, -5);
+
+			// `Gondra` not sure if Nicotine withdrawal should harm her health, left it at (-2, -1, 0 or +1) like alcohol
+			UpdateStat(girl, STAT_HEALTH, g_Dice % 4 - 2);
+			// `Gondra` nicotine withdrawal includes as symptoms difficulty to concentrate and fatigue
+			UpdateStatTemp(girl, STAT_INTELLIGENCE, -2);
+			UpdateStat(girl, STAT_TIREDNESS, 5);
+			if (!withdraw)
+			{
+				girl->m_Withdrawals++;
+				withdraw = true;
+			}
 		}
 	}
 

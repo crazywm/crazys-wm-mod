@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="Magic Carton of Cigarettes" Desc="Ground tobacco rolled in small paper tubes, full of nicotine. 10 Packs of 10. This magical carton is always full. Highly addictive. (+10 Hap, -5 HP, -10 Tired, -20 Mana)"
+    Type="Food" Badness="25" Special="None" Cost="5000" Rarity="Catacomb05" Infinite="false" GirlBuyChance="1" ItemWeight="0.1">
+        <Effect What="Stat"  Name="Happiness"   Amount="10" />
+        <Effect What="Stat"  Name="Health"      Amount="-5" />
+        <Effect What="Stat"  Name="Tiredness"   Amount="-10" />
+        <Effect What="Stat"  Name="Mana"        Amount="-20" />
+        <Effect What="Trait" Name="Smoker"      Amount="1" />
+        <Effect What="Trait" Name="Smoker"      Amount="1" />
+    </Item>
+</Items>

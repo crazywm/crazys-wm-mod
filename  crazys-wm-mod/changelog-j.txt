@@ -2096,6 +2096,11 @@ Added g_Girls.GetBeast() to allow for easier beast insemination checks
 ###  Changes 5/30
 Added sex texts by GonDra
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
+Updated Smoker addiction checks
+Added several Smoker items
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+ 
+ 
  
  
 $$$$ TO DO - SHORT TERM - (for this version) $$$$
