@@ -328,6 +328,10 @@ void cJobManager::Setup()
 	JobDesc[JOB_COBBLER] = gettext("She will make shoes and leather items.");
 	JobFunc[JOB_COBBLER] = &WorkCobbler;
 	JobPerf[JOB_COBBLER] = &JP_Cobbler;
+	JobName[JOB_JEWELER] = gettext("Jeweler");
+	JobDesc[JOB_JEWELER] = gettext("She will make jewelery.");
+	JobFunc[JOB_JEWELER] = &WorkJeweler;
+	JobPerf[JOB_JEWELER] = &JP_Jeweler;
 	JobName[JOB_CLEANARENA] = gettext("Grounds Keeper");
 	JobDesc[JOB_CLEANARENA] = gettext("She will clean the arena.");
 	JobFunc[JOB_CLEANARENA] = &WorkCleanArena;

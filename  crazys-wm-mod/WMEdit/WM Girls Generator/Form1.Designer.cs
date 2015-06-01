@@ -5641,7 +5641,7 @@
             this.comboBox_affects_01.Items.AddRange(new object[] {
             "Skill",
             "Stat",
-            "Status"});
+            "Girl Status"});
             this.comboBox_affects_01.Location = new System.Drawing.Point(130, 15);
             this.comboBox_affects_01.Name = "comboBox_affects_01";
             this.comboBox_affects_01.Size = new System.Drawing.Size(101, 21);

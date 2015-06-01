@@ -251,6 +251,7 @@ string cTraits::GetTranslateName(string name)
 		else if (trait.compare("charming") == 0)				return gettext("Charming");
 		else if (trait.compare("chef") == 0)					return gettext("Chef");
 		else if (trait.compare("chlamydia") == 0)				return gettext("Chlamydia");
+		else if (trait.compare("city girl") == 0)				return gettext("City Girl");
 		else if (trait.compare("clumsy") == 0)					return gettext("Clumsy");
 		else if (trait.compare("construct") == 0)				return gettext("Construct");
 		else if (trait.compare("cool person") == 0)				return gettext("Cool Person");
@@ -296,6 +297,7 @@ string cTraits::GetTranslateName(string name)
 		/* */if (trait.compare("fairy dust addict") == 0)		return gettext("Fairy Dust Addict");
 		else if (trait.compare("fake orgasm expert") == 0)		return gettext("Fake Orgasm Expert");
 		else if (trait.compare("fallen goddess") == 0)			return gettext("Fallen Goddess");
+		else if (trait.compare("farmer") == 0)					return gettext("Farmer");
 		else if (trait.compare("farmers daughter") == 0)		return gettext("Farmers Daughter");
 		else if (trait.compare("fast orgasms") == 0)			return gettext("Fast Orgasms");
 		else if (trait.compare("fearless") == 0)				return gettext("Fearless");
@@ -334,6 +336,7 @@ string cTraits::GetTranslateName(string name)
 		else if (trait.compare("homeless") == 0)				return gettext("Homeless");
 		else if (trait.compare("horrific scars") == 0)			return gettext("Horrific Scars");
 		else if (trait.compare("hourglass figure") == 0)		return gettext("Hourglass Figure");
+		else if (trait.compare("hunter") == 0)					return gettext("Hunter");
 	}
 	else if (first == "i")
 	{

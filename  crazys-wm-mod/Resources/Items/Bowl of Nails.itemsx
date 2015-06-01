@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Items>
     <Item Name="Bowl of Nails" Desc="Is your girl tough enough to eat this without any milk? (Health -10, Constitution +5)"
-	Type="Food" Badness="0" Special="None" Cost="350" Rarity="Shop50" Infinite="false" GirlBuyChance="0" ItemWeight="0.0"
+	Type="Food" Badness="0" Special="None" Cost="350" Rarity="Shop50" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
         <Effect What="Stat" Name="Constitution" Amount="5" />
         <Effect What="Stat" Name="Health" Amount="-10" />
     </Item>

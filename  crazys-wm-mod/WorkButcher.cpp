@@ -16,6 +16,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#pragma region //	Includes and Externs			//
 #include "cJobManager.h"
 #include "cRng.h"
 #include "CLog.h"
@@ -23,6 +24,7 @@
 #include "cGold.h"
 #include "cBrothel.h"
 #include "cFarm.h"
+
 
 extern CLog g_LogFile;
 extern cMessageQue g_MessageQue;
@@ -32,11 +34,15 @@ extern cBrothelManager g_Brothels;
 extern cFarmManager g_Farm;
 extern cInventory g_InvManager;
 
+#pragma endregion
+
 // `J` Job Farm - Producers
 bool cJobManager::WorkButcher(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
+#pragma region //	Job setup				//
 	int actiontype = ACTION_WORKCOOKING;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
+	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
 	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work 
 	{
 		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
@@ -47,11 +53,14 @@ bool cJobManager::WorkButcher(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
+	double wages = 20, tips = 0;
 	int enjoy = 0;
-	int wages = 25;
-	int tips = 0;
 	int imagetype = IMGTYPE_COOK;
 	int msgtype = Day0Night1;
+
+#pragma endregion
+#pragma region //	Job Performance			//
+
 
 
 	double jobperformance = JP_Butcher(girl, false);
@@ -86,6 +95,10 @@ bool cJobManager::WorkButcher(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 		wages -= 15;
 	}
 	ss << "\n\n";
+
+#pragma endregion
+#pragma region	//	Enjoyment and Tiredness		//
+
 
 	int roll = g_Dice.d100();
 #if 1
@@ -130,8 +143,11 @@ bool cJobManager::WorkButcher(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 #endif
 
 
+#pragma endregion
+#pragma region	//	Create Items				//
+
+
 	// `J` Farm Bookmark - adding in items that can be created in the farm
-#if 1
 
 	string itemmade = "";
 	sInventoryItem* item = NULL;
@@ -166,7 +182,14 @@ bool cJobManager::WorkButcher(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 			g_Brothels.AddItemToInventory(item);
 	}
 
-#endif
+
+
+#pragma endregion
+#pragma region	//	Money					//
+
+
+#pragma endregion
+#pragma region	//	Finish the shift			//
 
 
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
@@ -176,9 +199,10 @@ bool cJobManager::WorkButcher(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	int roll_max = (g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA));
 	roll_max /= 4;
 	wages += 10 + g_Dice%roll_max;
-	if (wages < 0) wages = 0;
-	girl->m_Pay = wages;
 
+	// Money
+	if (wages < 0)	wages = 0;	girl->m_Pay = (int)wages;
+	if (tips < 0)	tips = 0;	girl->m_Tips = (int)tips;
 
 	// Improve stats
 	int xp = 5, libido = 1, skill = 3;
@@ -198,6 +222,7 @@ bool cJobManager::WorkButcher(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, max(0, (g_Dice % skill) - 2));
 	g_Girls.UpdateSkill(girl, SKILL_COOKING, max(0, (g_Dice % skill) - 2));
 
+#pragma endregion
 	return false;
 }
 

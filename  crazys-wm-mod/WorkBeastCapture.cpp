@@ -16,6 +16,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#pragma region //	Includes and Externs			//
 #include "cJobManager.h"
 #include "cRng.h"
 #include "CLog.h"
@@ -23,6 +24,7 @@
 #include "cGold.h"
 #include "cBrothel.h"
 #include "cFarm.h"
+
 
 extern CLog g_LogFile;
 extern cMessageQue g_MessageQue;
@@ -32,11 +34,15 @@ extern cBrothelManager g_Brothels;
 extern cFarmManager g_Farm;
 extern cInventory g_InvManager;
 
+#pragma endregion
+
 // `J` Job Farm - Laborers - Combat_Job
 bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
+#pragma region //	Job setup				//
 	int actiontype = ACTION_COMBAT;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
+	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
 	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work 
 	{
 		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
@@ -47,7 +53,17 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 
 	g_Girls.EquipCombat(girl);	// ready armor and weapons!
 
-	int gain = g_Dice % 2 + 2;
+	double wages = 50, tips = 0;
+	int enjoy = 0;
+	int imagetype = IMGTYPE_COMBAT;
+	int msgtype = Day0Night1;
+
+#pragma endregion
+#pragma region //	The Fight to get the Beasts		//
+
+	int tired = 0;
+	int gainmax = (int)(JP_BeastCapture(girl, false) / 30) + 1;
+	int gain = g_Dice % gainmax + 1;
 	sGirl* tempgirl = g_Girls.CreateRandomGirl(18, false, false, false, true, false);
 	Uint8 fight_outcome = 0;
 	if (tempgirl)		// `J` reworked incase there are no Non-Human Random Girls
@@ -60,40 +76,53 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 		g_LogFile.write("Error: You need a Non-Human Random Girl to allow WorkBeastCapture randomness");
 		fight_outcome = 7;
 	}
+	if (tempgirl) delete tempgirl; tempgirl = 0;	// Cleanup
 	if (fight_outcome == 7)
 	{
 		ss << "She came back with just one animal today.\n\n";
 		ss << "(Error: You need a Non-Human Random Girl to allow WorkBeastCapture randomness)";
 		gain = 1;
-		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
+		msgtype = EVENT_WARNING;
+		tired = 15;
 	}
 	else if (fight_outcome == 1)	// she won
 	{
-		g_Girls.UpdateEnjoyment(girl, actiontype, +3);
-		ss << "She had fun hunting today and came back with ";
-		if (gain <= 2)	{ ss << "two";  gain = 2; }
-		else if (gain == 3)	{ ss << "three"; }
-		else if (gain == 4)	{ ss << "four"; }
-		else   { gain = 5;    ss << "five"; } // shouldn't happen but just in case
-		ss << " new beasts for you.\n";
-		girl->m_Events.AddMessage(ss.str(), IMGTYPE_COMBAT, Day0Night1);
+		if (gain <= 2)	gain = 2;
+		if (gain >= gainmax)	gain = gainmax;
+		ss << "She had fun hunting today and came back with " << gain << " new beasts.";;
+		imagetype = IMGTYPE_COMBAT;
+		tired = g_Dice % (3 * gain);
+		enjoy += g_Dice % 4 + 2;
 	}
 	else		// she lost or it was a draw
 	{
-		g_Girls.UpdateEnjoyment(girl, actiontype, -1);
-		ss << " The animals were difficult to track today. " << girlName << " eventually returned worn out and frustrated, dragging one captured beast behind her.\n";
-		girl->m_Events.AddMessage(ss.str(), IMGTYPE_COMBAT, Day0Night1);
-		gain = 1;
+		gain = g_Dice.bell(-gainmax / 3, gainmax / 2);
+		ss << " The animals were difficult to track today. " << girlName << " eventually returned worn out and frustrated, ";
+		if (gain <= 0)
+		{
+			gain = 0;
+			ss << "empty handed.";
+		}
+		else
+		{
+			ss << "dragging ";
+			if (gain == 1)	ss << "one";
+			if (gain > 1)	ss << gain;
+			ss << " captured beast" << (gain > 1 ? "s" : "") << " behind her.";
+		}
+		imagetype = IMGTYPE_COMBAT;
+		enjoy -= g_Dice % 3 + 1;
+		tired = g_Dice % (10 * gain) + 20;
 	}
-	g_Brothels.add_to_beasts(gain);
+	ss << "\n\n";
 
-	// Cleanup
-	if (tempgirl) delete tempgirl; tempgirl = 0;
+#pragma endregion
+#pragma region	//	A Little Randomness			//
 
 	//SIN: A little randomness
-	if (((g_Girls.GetSkill(girl, SKILL_ANIMALHANDLING) + g_Girls.GetSkill(girl, SKILL_ANIMALHANDLING)) > 125) && g_Dice.percent(30))
+	if (((g_Girls.GetSkill(girl, SKILL_ANIMALHANDLING) + g_Girls.GetStat(girl, STAT_CHARISMA)) > 125) && g_Dice.percent(30))
 	{
-		ss << girlName << " has a way with animals. Another beast freely follows her back.\n";
+		ss << girlName << " has a way with animals, a" << (gain > 1 ? "nother" : "") << " beast freely follows her back.\n";
 		gain++;
 	}
 	//SIN: most the rest rely on more than one cap so might as well skip the lot if less than this...
@@ -108,6 +137,7 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 				ss << "Being a horny, twisted nymphomaniac, " << girlName << " had some fun with the beasts before she handed them over.\n";
 				g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, g_Dice % gain);
 				g_Girls.UpdateStat(girl, STAT_LIBIDO, -(g_Dice % gain));
+				tired += gain;
 				break;
 			}
 		case 1:
@@ -128,6 +158,7 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 					g_Girls.UpdateStat(girl, STAT_TIREDNESS, gain);
 					girl->calc_insemination(g_Girls.GetBeast(), 1);
 				}
+				tired += gain;
 				break;
 			}
 		case 2:
@@ -150,11 +181,10 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 		}
 	}
 
-
+#pragma endregion
+#pragma region	//	Collect Pets				//
 
 	// `J` Farm Bookmark - adding in items that can be gathered in the farm
-#if 1
-
 	if (g_Dice.percent(5))
 	{
 		string itemfound = ""; string itemfoundtext = "";
@@ -190,7 +220,7 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 			itemfound = (g_Dice % 4 == 1) ? "Fox Stole" : "Fur Stole";
 			itemfoundtext = "a dead animal that was not too badly damaged. She brought it home, skinned it, cleaned it up and made a lovely stole from it.";
 		}
-		else if (chooseitem < 98)
+		else if (chooseitem < 97)
 		{
 			itemfound = "Echidna's Snake";
 			itemfoundtext = "a rather obedient and psychic snake. It wrapped itself around her crotch and let her take it home.";
@@ -207,39 +237,55 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 			ss << girlName << " found " << itemfoundtext;
 			g_Brothels.AddItemToInventory(item);
 		}
-
 	}
 
-#endif
+#pragma endregion
+#pragma region	//	Money					//
 
+	// slave girls not being paid for a job that normally you would pay directly for do less work
+	if ((girl->is_slave() && !cfg.initial.slave_pay_outofpocket()))
+	{
+		wages = 0;
+	}
+	else
+	{
+		wages += gain * 10; // `J` Pay her based on how much she brings back
+	}
 
+#pragma endregion
+#pragma region	//	Finish the shift			//
 
+	g_Brothels.add_to_beasts(gain);
 
-
-
+	// Money
+	if (wages < 0)	wages = 0;	girl->m_Pay = (int)wages;
+	if (tips < 0)	tips = 0;	girl->m_Tips = (int)tips;
 
 	// Improve girl
+	// Base Improvement and trait modifiers
 	int xp = 10, libido = 1, skill = 3;
+	/* */if (girl->has_trait("Quick Learner"))	{ skill += 1; xp += 3; }
+	else if (girl->has_trait("Slow Learner"))	{ skill -= 1; xp -= 3; }
+	/* */if (girl->has_trait("Nymphomaniac"))	{ libido += 2; }
+	// EXP and Libido
+	int I_xp = (g_Dice % xp) + 1;							g_Girls.UpdateStat(girl, STAT_EXP, I_xp);
+	int I_libido = (g_Dice % libido) + 1;					g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, I_libido);
+	if (tired > 0) girl->tiredness(tired);
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
+	// primary improvement (+2 for single or +1 for multiple)
+	int I_combat		= (g_Dice % skill) + 1;				g_Girls.UpdateSkill(girl, SKILL_COMBAT, I_combat);
+	int I_animalh		= (g_Dice % skill) + 1;				g_Girls.UpdateSkill(girl, SKILL_ANIMALHANDLING, I_animalh);
+	int I_strength		= (g_Dice % skill) + 1;				g_Girls.UpdateStat(girl, STAT_STRENGTH, I_strength);
+	// secondary improvement (-1 for one then -2 for others)
+	int I_constitution	= max(0, (g_Dice % skill) - 1);		g_Girls.UpdateStat(girl, STAT_CONSTITUTION, I_constitution);
+	int I_beastiality	= max(0, (g_Dice % skill) - 2);		g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, I_beastiality);
+	int I_agility		= max(0, (g_Dice % skill) - 2);		g_Girls.UpdateStat(girl, STAT_AGILITY, I_agility);
+	int I_magic			= max(0, (g_Dice % skill) - 2);		g_Girls.UpdateSkill(girl, SKILL_MAGIC, I_magic);
 
-	girl->m_Pay += 50 + (gain * 10);	// you catch more you get paid more
-	g_Gold.staff_wages(50 + (gain * 10));	// wages come from you
+	// Update Enjoyment
+	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 
-	g_Girls.UpdateStat(girl, STAT_EXP, (g_Dice % xp) + 1);
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
-
-	// primary (+2 for single or +1 for multiple)
-	g_Girls.UpdateSkill(girl, SKILL_COMBAT, g_Dice % gain + skill);
-	g_Girls.UpdateSkill(girl, SKILL_MAGIC, g_Dice % gain + skill);
-	g_Girls.UpdateStat(girl, STAT_AGILITY, g_Dice % gain + skill);
-	g_Girls.UpdateStat(girl, STAT_CONSTITUTION, g_Dice % 2 + skill);
-	g_Girls.UpdateStat(girl, STAT_STRENGTH, g_Dice % 2 + skill);
-	// secondary (-1 for one then -2 for others)
-	g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, gain + skill);
-
+	// Gain Traits
 	g_Girls.PossiblyGainNewTrait(girl, "Tough", 30, actiontype, "She has become pretty Tough from all of the fights she's been in.", Day0Night1);
 	g_Girls.PossiblyGainNewTrait(girl, "Adventurer", 40, actiontype, "She has been in enough tough spots to consider herself Adventurer.", Day0Night1);
 	g_Girls.PossiblyGainNewTrait(girl, "Aggressive", 60, actiontype, "She is getting rather Aggressive from her enjoyment of combat.", Day0Night1);
@@ -247,16 +293,49 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	//lose traits
 	g_Girls.PossiblyLoseExistingTrait(girl, "Fragile", 15, actiontype, girl->m_Realname + " has had to heal from so many injuries you can't say she is fragile anymore.", Day0Night1);
 
+	if (cfg.debug.log_show_numbers())
+	{
+		ss << "\n\nNumbers:"
+			<< "\nWages = " << (int)wages
+			<< "\nTips = " << (int)tips
+			<< "\nXp = " << I_xp
+			<< "\nLibido = " << I_libido
+			<< "\ncombat = " << I_combat
+			<< "\nanimalh = " << I_animalh
+			<< "\nstrength = " << I_strength
+			<< "\nconstitution = " << I_constitution
+			<< "\nbeastiality = " << I_beastiality
+			<< "\nagility = " << I_agility
+			<< "\nmagic = " << I_magic
+			<< "\nTiredness = " << tired
+			<< "\nEnjoy " << girl->enjoy_jobs[actiontype] << " = " << enjoy
+			;
+
+	}
+
+	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
+
+#pragma endregion
 	return false;
 }
+
 double cJobManager::JP_BeastCapture(sGirl* girl, bool estimate)// not used
 {
 	double jobperformance = 0.0;
-	if (estimate)// for third detail string
-	{
-	}
-	else// for the actual check
-	{
-	}
+	
+	jobperformance +=
+		// primary - first 100
+		((girl->animalhandling() + girl->combat() + girl->strength()) / 3) +
+		// secondary - second 100
+		((girl->beastiality() + girl->constitution() + girl->agility() + girl->magic()) / 4) +
+		// level bonus
+		girl->level();
+
+	if (girl->has_trait("Hunter"))				jobperformance += 40;
+	if (girl->has_trait("Adventurer"))			jobperformance += 10;
+	if (girl->has_trait("Angel"))				jobperformance += 5;
+	if (girl->has_trait("Agile"))				jobperformance += 5;
+	if (girl->has_trait("Aggressive"))			jobperformance += 5;
+
 	return jobperformance;
 }

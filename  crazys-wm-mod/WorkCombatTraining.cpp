@@ -33,7 +33,7 @@ extern cMessageQue g_MessageQue;
 // `J` Job Arena - Fighting - Learning_Job - Combat_Job
 bool cJobManager::WorkCombatTraining(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-	int actiontype = ACTION_COMBAT;
+	int actiontype = ACTION_COMBAT, actiontype2 = ACTION_WORKTRAINING;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 	if (girl->m_Skills[SKILL_COMBAT] + girl->m_Skills[SKILL_MAGIC] + girl->m_Stats[STAT_AGILITY] +
 		girl->m_Stats[STAT_CONSTITUTION] + girl->m_Stats[STAT_STRENGTH] >= 500)
@@ -276,7 +276,8 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	else if (roll_c >= 90)	{ enjoy += g_Dice % 3 + 1;	ss << "She had a pleasant time training."; }
 	else /*             */	{ enjoy += g_Dice % 2;		ss << "Otherwise, the shift passed uneventfully."; }
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
-	
+	g_Girls.UpdateEnjoyment(girl, actiontype2, enjoy);
+
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_COMBAT, Day0Night1);
 	brothel->m_Filthiness += 2;	// fighting is dirty
 	if ((girl->is_slave() && !cfg.initial.slave_pay_outofpocket())) { wages = 0; }

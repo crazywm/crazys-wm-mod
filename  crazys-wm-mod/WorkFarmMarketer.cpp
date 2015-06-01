@@ -16,6 +16,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#pragma region //	Includes and Externs			//
 #include "cJobManager.h"
 #include "cRng.h"
 #include "CLog.h"
@@ -24,18 +25,24 @@
 #include "cBrothel.h"
 #include "cFarm.h"
 
+
 extern CLog g_LogFile;
 extern cMessageQue g_MessageQue;
 extern cRng g_Dice;
 extern cGold g_Gold;
 extern cBrothelManager g_Brothels;
 extern cFarmManager g_Farm;
+extern cInventory g_InvManager;
+
+#pragma endregion
 
 // `J` Job Farm - Staff
 bool cJobManager::WorkFarmMarketer(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
+#pragma region //	Job setup				//
 	int actiontype = ACTION_WORKCUSTSERV;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
+	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
 	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work 
 	{
 		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
@@ -46,20 +53,25 @@ bool cJobManager::WorkFarmMarketer(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
-	int wages = 20, work = 0;
-	int roll = g_Dice.d100();
-	int ForSale_HandmadeGoods	= max(0, g_Brothels.m_HandmadeGoods	- g_Brothels.m_HandmadeGoodsReserves);
-	int ForSale_Beasts			= max(0, g_Brothels.m_Beasts		- g_Brothels.m_BeastsReserves);
-	int ForSale_Food			= max(0, g_Brothels.m_Food			- g_Brothels.m_FoodReserves);
-	int ForSale_Drinks			= max(0, g_Brothels.m_Drinks		- g_Brothels.m_DrinksReserves);
-	int ForSale_Alchemy			= max(0, g_Brothels.m_Alchemy		- g_Brothels.m_AlchemyReserves);
+	double wages = 20, tips = 0;
+	int enjoy = 0;
+	int imagetype = IMGTYPE_PROFILE;
+	int msgtype = Day0Night1;
 
+#pragma endregion
+#pragma region	//	Create Items				//
 
+	int ForSale_HandmadeGoods = max(0, g_Brothels.m_HandmadeGoods - g_Brothels.m_HandmadeGoodsReserves);
+	int ForSale_Beasts = max(0, g_Brothels.m_Beasts - g_Brothels.m_BeastsReserves);
+	int ForSale_Food = max(0, g_Brothels.m_Food - g_Brothels.m_FoodReserves);
+	int ForSale_Drinks = max(0, g_Brothels.m_Drinks - g_Brothels.m_DrinksReserves);
+	int ForSale_Alchemy = max(0, g_Brothels.m_Alchemy - g_Brothels.m_AlchemyReserves);
+
+	double pricemultiplier = 1.0;
 	double jobperformance = JP_FarmMarketer(girl, false);
 
-#if 1
 	// `J` Farm Bookmark - adding in items that can be created in the farm
-	if (ForSale_Food + (g_Brothels.m_FoodReserves/2) >= 10000 && g_Dice.percent(5))
+	if (ForSale_Food + (g_Brothels.m_FoodReserves / 2) >= 10000 && g_Dice.percent(5))
 	{
 		sGirl* ugirl = 0;
 		int cost = 10000;
@@ -98,69 +110,137 @@ bool cJobManager::WorkFarmMarketer(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 			g_Brothels.add_to_food(-cost);
 		}
 	}
-#endif
+
+#pragma endregion
+#pragma region //	Job Performance			//
 
 	if (jobperformance >= 245)
 	{
 		ss << " She must be the perfect at this.\n\n";
-		wages += 155;
+		pricemultiplier += 1.0;
 	}
 	else if (jobperformance >= 185)
 	{
 		ss << " She's unbelievable at this.\n\n";
-		wages += 95;
+		pricemultiplier += 0.5;
 	}
 	else if (jobperformance >= 145)
 	{
 		ss << " She's good at this job.\n\n";
-		wages += 55;
+		pricemultiplier += 0.2;
 	}
 	else if (jobperformance >= 100)
 	{
 		ss << " She made a few mistakes but overall she is okay at this.\n\n";
-		wages += 15;
 	}
 	else if (jobperformance >= 70)
 	{
 		ss << " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
-		wages -= 5;
+		pricemultiplier -= 0.2;
 	}
 	else
 	{
 		ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
-		wages -= 15;
+		pricemultiplier -= 0.5;
 	}
 
+#pragma endregion
+#pragma region	//	Enjoyment and Tiredness		//
 
-
-	//enjoyed the work or not
-	if (roll <= 5)
+	if (roll_a <= 10)
 	{
-		ss << "\nSome of the patrons abused her during the shift."; work -= 1;
+		enjoy -= g_Dice % 3;
+		pricemultiplier -= 0.1;
+		ss << "She did not selling things today.";
+		girl->happiness(-(g_Dice % 11));
 	}
-	else if (roll <= 25)
+	else if (roll_a >= 90)
 	{
-		ss << "\nShe had a pleasant time working."; work += 3;
+		pricemultiplier += 0.1;
+		enjoy += g_Dice % 3;
+		ss << "She had a great time selling today.";
 	}
 	else
 	{
-		ss << "\nOtherwise, the shift passed uneventfully."; work += 1;
+		enjoy += g_Dice % 2;
+		ss << "The shift passed uneventfully.";
+	}
+	ss << "\n\n";
+
+#pragma endregion
+#pragma region	//	Money					//
+
+	double gold = 0.0;
+	// start with how many of each she can sell
+	int Sell_HandmadeGoods	= min(ForSale_HandmadeGoods,	(int)(jobperformance / 2.0 * ForSale_HandmadeGoods));
+	int Sell_Beasts			= min(ForSale_Beasts,			(int)(jobperformance / 2.5 * ForSale_Beasts));
+	int Sell_Food			= min(ForSale_Food,				(int)(jobperformance / 2.0 * ForSale_Food));
+	int Sell_Drinks			= min(ForSale_Drinks,			(int)(jobperformance / 2.0 * ForSale_Drinks));
+	int Sell_Alchemy		= min(ForSale_Alchemy,			(int)(jobperformance / 3.0 * ForSale_Alchemy));
+	// for how much
+	gold += (pricemultiplier * 1 * Sell_HandmadeGoods);
+	gold += (pricemultiplier * (g_Dice % 451 + 50) * Sell_Beasts);
+	gold += (pricemultiplier * 0.1 * Sell_Food);
+	gold += (pricemultiplier * 0.1 * Sell_Drinks);
+	gold += (pricemultiplier * (g_Dice % 141 + 10) * Sell_Alchemy);
+	// remove them from the count
+	g_Brothels.add_to_goods(-Sell_HandmadeGoods);
+	g_Brothels.add_to_beasts(-Sell_Beasts);
+	g_Brothels.add_to_food(-Sell_Food);
+	g_Brothels.add_to_drinks(-Sell_Drinks);
+	g_Brothels.add_to_alchemy(-Sell_Alchemy);
+	// tell the player
+	if (gold > 0)	// something was sold
+	{
+		ss << girlName << " was able to sell:\n";
+
+		if (Sell_HandmadeGoods > 0)
+		{
+			if (Sell_HandmadeGoods == ForSale_HandmadeGoods) ss << "All " << Sell_HandmadeGoods;
+			else ss << Sell_HandmadeGoods << " of the " << ForSale_HandmadeGoods;
+			ss << " Handmade Goods.\n";
+		}
+		if (Sell_Beasts > 0)
+		{
+			if (Sell_Beasts == ForSale_Beasts) ss << "All " << Sell_Beasts;
+			else ss << Sell_Beasts << " of the " << ForSale_Beasts;
+			ss << " Beasts.\n";
+
+		}
+		if (Sell_Food > 0)
+		{
+			if (Sell_Food == ForSale_Food) ss << "All " << Sell_Food;
+			else ss << Sell_Food << " of the " << ForSale_Food;
+			ss << " Food.\n";
+		}
+		if (Sell_Drinks > 0)
+		{
+			if (Sell_Drinks == ForSale_Drinks) ss << "All " << Sell_Drinks;
+			else ss << Sell_Drinks << " of the " << ForSale_Drinks;
+			ss << " Drinks.\n";
+		}
+		if (Sell_Alchemy > 0)
+		{
+			if (Sell_Alchemy == ForSale_Alchemy) ss << "All " << Sell_Alchemy;
+			else ss << Sell_Alchemy << " of the " << ForSale_Alchemy;
+			ss << " Alchemy Items.\n";
+		}
+		ss << "She made a total of " << (int)gold << " from it all.\nShe gets 1% of the sales: " << (int)(gold / 100)<<".\nThe rest goes directly into your coffers.\n\n";
+		wages += (int)(gold / 100); // `J` Pay her based on how much she brought in
+		gold -= (int)(gold / 100);
+		enjoy += (int)(wages / 100);		// the more she gets paid, the more she likes selling
 	}
 
+#pragma endregion
+#pragma region	//	Finish the shift			//
 
-
-
-	g_Girls.UpdateEnjoyment(girl, actiontype, work);
 
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 
-
-	int roll_max = (g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA));
-	roll_max /= 4;
-	wages += 10 + g_Dice%roll_max;
-	if (wages < 0) wages = 0;
-	girl->m_Pay = wages;
-
+	// Money
+	if (wages < 0)	wages = 0;	girl->m_Pay = (int)wages;
+	if (tips < 0)	tips = 0;	girl->m_Tips = (int)tips;
+	g_Gold.farm_income(gold);
 
 	// Improve stats
 	int xp = 10, libido = 1, skill = 3;
@@ -180,9 +260,11 @@ bool cJobManager::WorkFarmMarketer(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	g_Girls.UpdateStat(girl, STAT_FAME, max(0, (g_Dice % skill) - 2));
 	g_Girls.UpdateSkill(girl, SKILL_FARMING, max(0, (g_Dice % skill) - 2));
 
+	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
+
+#pragma endregion
 	return false;
 }
-
 
 double cJobManager::JP_FarmMarketer(sGirl* girl, bool estimate)// not used
 {

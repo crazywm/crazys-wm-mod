@@ -16,6 +16,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#pragma region //	Includes and Externs			//
 #include "cJobManager.h"
 #include "cRng.h"
 #include "CLog.h"
@@ -23,6 +24,7 @@
 #include "cGold.h"
 #include "cBrothel.h"
 #include "cFarm.h"
+
 
 extern CLog g_LogFile;
 extern cMessageQue g_MessageQue;
@@ -32,13 +34,15 @@ extern cBrothelManager g_Brothels;
 extern cFarmManager g_Farm;
 extern cInventory g_InvManager;
 
+#pragma endregion
+
 // `J` Job Farm - Laborers
 bool cJobManager::WorkFarmer(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
+#pragma region //	Job setup				//
 	int actiontype = ACTION_WORKFARM;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
-
 	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work 
 	{
 		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
@@ -50,10 +54,12 @@ bool cJobManager::WorkFarmer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
 	double wages = 20, tips = 0;
-	int enjoy = 0, work = 0;
-
+	int enjoy = 0;
 	int imagetype = IMGTYPE_FARM;
 	int msgtype = Day0Night1;
+
+#pragma endregion
+#pragma region //	Job Performance			//
 
 	double jobperformance = (int)JP_Farmer(girl, false);
 	double foodproduced = jobperformance;
@@ -62,34 +68,39 @@ bool cJobManager::WorkFarmer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 
 	if (jobperformance >= 245)
 	{
-		ss << "Her basket practically fills itself as she walks down the rows of crops.\n\n";
+		ss << "Her basket practically fills itself as she walks down the rows of crops.";
 		foodproduced *= 5; roll_a += 10; roll_b += 25;
 	}
 	else if (jobperformance >= 185)
 	{
-		ss << "Her hands moved like lightning as she picked only the best crops.\n\n";
+		ss << "Her hands moved like lightning as she picked only the best crops.";
 		foodproduced *= 4; roll_a += 5; roll_b += 18;
 	}
 	else if (jobperformance >= 145)
 	{
-		ss << "She knows exactly when the crops are ready to be picked and how to best collect them.\n\n";
+		ss << "She knows exactly when the crops are ready to be picked and how to best collect them.";
 		foodproduced *= 3; roll_a += 2; roll_b += 10;
 	}
 	else if (jobperformance >= 100)
 	{
-		ss << "She can pick the crops fairly well without too many culls.\n\n";
+		ss << "She can pick the crops fairly well without too many culls.";
 		foodproduced *= 2;
 	}
 	else if (jobperformance >= 70)
 	{
-		ss << "She isn't very good at knowing which plants are ripe and which should have been left a little longer.\n\n";
+		ss << "She isn't very good at knowing which plants are ripe and which should have been left a little longer.";
 		roll_a -= 2; roll_b -= 5;
 	}
 	else
 	{
-		ss << "She seems to take more of the unuseable parts of the plants than she takes the edible parts.\n\n";
+		ss << "She seems to take more of the unuseable parts of the plants than she takes the edible parts.";
 		wages -= 10; foodproduced *= 0.8; roll_a -= 5; roll_b -= 10;
 	}
+	ss << "\n\n";
+
+#pragma endregion
+#pragma region	//	Enjoyment and Tiredness		//
+
 
 	int tired = (300 - (int)jobperformance);	// this gets divided in roll_a by (8, 10 or 12) so it will end up around 0-40 tired
 	if (roll_a <= 10)
@@ -116,6 +127,7 @@ bool cJobManager::WorkFarmer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 		}
 		else	// unhappy
 		{
+			foodproduced *= 0.9;
 			ss << "She did not like working in the fields today.";
 			girl->happiness(-(g_Dice % 11));
 		}
@@ -137,8 +149,8 @@ bool cJobManager::WorkFarmer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	ss << "\n\n";
 
 
-#if 1
-	// `J` Farm Bookmark - adding in items that can be created in the farm
+#pragma endregion
+#pragma region	//	Create Items				//
 
 	if (g_Dice.percent(girl->farming() / 20) && g_Dice.percent(girl->magic() / 10) && g_Dice.percent(jobperformance / 10))
 	{
@@ -176,9 +188,8 @@ bool cJobManager::WorkFarmer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 		ss << " from the unuseable parts of her crops.\n";
 	}
 
-#endif
-
-	// `J` - Finish the shift - Farmer
+#pragma endregion
+#pragma region	//	Money					//
 
 	// slave girls not being paid for a job that normally you would pay directly for do less work
 	if ((girl->is_slave() && !cfg.initial.slave_pay_outofpocket()))
@@ -190,8 +201,9 @@ bool cJobManager::WorkFarmer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	{
 		wages += foodproduced / 100; // `J` Pay her based on how much she brought in
 	}
-	if (wages < 0)	wages = 0;	girl->m_Pay = (int)wages;
-	if (tips < 0)	tips = 0;	girl->m_Tips = (int)tips;
+
+#pragma endregion
+#pragma region	//	Finish the shift			//
 
 	if (foodproduced > 0)
 	{
@@ -200,6 +212,10 @@ bool cJobManager::WorkFarmer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	}
 	if (alchemyproduced > 0)	g_Brothels.add_to_alchemy((int)alchemyproduced);
 	if (goodsproduced > 0)		g_Brothels.add_to_goods((int)goodsproduced);
+
+	// Money
+	if (wages < 0)	wages = 0;	girl->m_Pay = (int)wages;
+	if (tips < 0)	tips = 0;	girl->m_Tips = (int)tips;
 
 	// Base Improvement and trait modifiers
 	int xp = 5, libido = 1, skill = 3;
@@ -241,12 +257,12 @@ bool cJobManager::WorkFarmer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 			<< "\nTiredness = " << tired
 			<< "\nEnjoy " << girl->enjoy_jobs[actiontype] << " = " << enjoy
 			;
-
 	}
 
 	// Push out the turn report
 	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
 
+#pragma endregion
 	return false;
 }
 
@@ -261,16 +277,18 @@ double cJobManager::JP_Farmer(sGirl* girl, bool estimate)// not used
 		girl->level();
 
 	//good traits
-	if (g_Girls.HasTrait(girl, "Farmers Daughter"))		jobperformance += 30;
+	if (g_Girls.HasTrait(girl, "Farmer"))				jobperformance += 30;
+	if (g_Girls.HasTrait(girl, "Farmers Daughter"))		jobperformance += 20;
 	if (g_Girls.HasTrait(girl, "Country Gal"))			jobperformance += 10;
-	if (g_Girls.HasTrait(girl, "Psychic"))				jobperformance += 10;
+	if (g_Girls.HasTrait(girl, "Psychic"))				jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Quick Learner"))		jobperformance += 5;
-
+	
 	//bad traits
 	if (g_Girls.HasTrait(girl, "Dependant"))			jobperformance -= 50; //needs others to do the job
+	if (g_Girls.HasTrait(girl, "Nervous"))				jobperformance -= 20; //don't like to be around people	
+	if (g_Girls.HasTrait(girl, "City Girl"))			jobperformance -= 20;
 	if (g_Girls.HasTrait(girl, "Clumsy")) 				jobperformance -= 20; //spills food and breaks things often
 	if (g_Girls.HasTrait(girl, "Aggressive")) 			jobperformance -= 20; //gets mad easy
-	if (g_Girls.HasTrait(girl, "Nervous"))				jobperformance -= 30; //don't like to be around people	
 	if (g_Girls.HasTrait(girl, "Meek"))					jobperformance -= 20;
 
 	if (g_Girls.HasTrait(girl, "One Arm"))				jobperformance -= 40;
@@ -282,7 +300,7 @@ double cJobManager::JP_Farmer(sGirl* girl, bool estimate)// not used
 	if (g_Girls.HasTrait(girl, "No Hands"))				jobperformance -= 50;
 	if (g_Girls.HasTrait(girl, "No Legs"))				jobperformance -= 150;
 	if (g_Girls.HasTrait(girl, "Blind"))				jobperformance -= 30;
-	if (g_Girls.HasTrait(girl, "Retarded"))				jobperformance -= 60;
+	if (g_Girls.HasTrait(girl, "Retarded"))				jobperformance -= 30;
 	if (g_Girls.HasTrait(girl, "Smoker"))				jobperformance -= 10;	//would need smoke breaks
 
 	if (g_Girls.HasTrait(girl, "Alcoholic"))			jobperformance -= 25;

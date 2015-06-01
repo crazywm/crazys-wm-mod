@@ -390,6 +390,11 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 						current->m_DayJob = current->m_NightJob = JOB_COBBLER;
 						ss << "work making shoes and leather items.";
 					}
+					else if (GetNumGirlsOnJob(0, JOB_JEWELER, Day0Night1) < 1)
+					{
+						current->m_DayJob = current->m_NightJob = JOB_JEWELER;
+						ss << "work making jewelery.";
+					}
 
 					// next assign more guards and cleaners if there are a lot of girls to choose from
 					else if (current->is_free() && GetNumGirlsOnJob(0, JOB_CITYGUARD, Day0Night1) < numgirls / 20)
@@ -411,6 +416,11 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 					{
 						current->m_DayJob = current->m_NightJob = JOB_COBBLER;
 						ss << "work making shoes and leather items.";
+					}
+					else if (GetNumGirlsOnJob(0, JOB_JEWELER, Day0Night1) < numgirls / 20)
+					{
+						current->m_DayJob = current->m_NightJob = JOB_JEWELER;
+						ss << "work making jewelery.";
 					}
 
 					// Assign fighters - 50+ combat

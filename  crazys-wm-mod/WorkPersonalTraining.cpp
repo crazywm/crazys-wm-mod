@@ -32,7 +32,7 @@ extern cPlayer* The_Player;
 // `J` Job House - General - Learning_Job
 bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-	int actiontype = ACTION_SEX;
+	int actiontype = ACTION_SEX, actiontype2 = ACTION_WORKTRAINING;
 	stringstream ss; string girlName = girl->m_Realname;
 	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work 
 	{

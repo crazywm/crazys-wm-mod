@@ -785,6 +785,8 @@ void cScreenItemManagement::check_buttons()
 		disablebuy10L = (rightItem > -1 && g_InvManager.GetShopItem(rightItem) &&
 			g_InvManager.GetShopItem(rightItem)->m_Infinite &&
 			g_Gold.afford(g_InvManager.GetShopItem(rightItem)->m_Cost * 10) ? 2 : 1);
+		disableshiftL = (rightItem > -1 && g_InvManager.GetShopItem(rightItem) &&
+			g_Gold.afford(g_InvManager.GetShopItem(rightItem)->m_Cost) ? 2 : 1);
 	}
 	if (leftOwner == 1/*Shop*/ && rightOwner == 0/*Player*/)
 	{
@@ -793,6 +795,8 @@ void cScreenItemManagement::check_buttons()
 		disablebuy10R = (leftItem > -1 && g_InvManager.GetShopItem(leftItem) &&
 			g_InvManager.GetShopItem(leftItem)->m_Infinite &&
 			g_Gold.afford(g_InvManager.GetShopItem(leftItem)->m_Cost * 10) ? 2 : 1);
+		disableshiftR = (leftItem > -1 && g_InvManager.GetShopItem(leftItem) &&
+			g_Gold.afford(g_InvManager.GetShopItem(leftItem)->m_Cost) ? 2 : 1);
 	}
 	DisableButton(shift_l_id, disableshiftL <= 1);
 	DisableButton(shift_r_id, disableshiftR <= 1);

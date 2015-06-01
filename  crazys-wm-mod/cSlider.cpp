@@ -92,6 +92,7 @@ void cSlider::LoadInitial()
 	m_ImgRailDefault = LoadAlphaImageFromFile("SliderRail.png");
 	m_ImgRailDisabled = LoadAlphaImageFromFile("SliderRailDisabled.png");
 	m_ImgMarker = LoadAlphaImageFromFile("SliderMarker.png");
+	if (m_ImgMarker == 0) m_ImgMarker = LoadAlphaImageFromFile("SliderButtonDisabled.png");
 }
 
 SDL_Surface* cSlider::LoadAlphaImageFromFile(string filepath)
@@ -99,6 +100,11 @@ SDL_Surface* cSlider::LoadAlphaImageFromFile(string filepath)
 	SDL_Surface* TmpImg;
 	SDL_Surface* surface;
 	TmpImg = IMG_Load(ImagePath(filepath));
+	if (TmpImg == 0)
+	{
+		g_LogFile.ss() << "Error Loading Slider image " << filepath; g_LogFile.ssend();
+		return 0;
+	}
 	surface = SDL_DisplayFormatAlpha(TmpImg);
 	SDL_FreeSurface(TmpImg);
 	return surface;

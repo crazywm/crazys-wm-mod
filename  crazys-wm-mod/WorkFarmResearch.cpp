@@ -16,6 +16,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#pragma region //	Includes and Externs			//
 #include "cJobManager.h"
 #include "cRng.h"
 #include "CLog.h"
@@ -24,18 +25,24 @@
 #include "cBrothel.h"
 #include "cFarm.h"
 
+
 extern CLog g_LogFile;
 extern cMessageQue g_MessageQue;
 extern cRng g_Dice;
+extern cGold g_Gold;
 extern cBrothelManager g_Brothels;
 extern cFarmManager g_Farm;
 extern cInventory g_InvManager;
 
+#pragma endregion
+
 // `J` Job Farm - Staff - Learning_Job
 bool cJobManager::WorkFarmResearch(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-	int actiontype = ACTION_WORKFARM;
+#pragma region //	Job setup				//
+	int actiontype = ACTION_WORKTRAINING;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
+	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
 	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work 
 	{
 		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
@@ -46,8 +53,14 @@ bool cJobManager::WorkFarmResearch(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 
 	g_Girls.UnequipCombat(girl);	// put that shit away
 	
-	int enjoy = 0;												// 
-	int wages = 0;												// 
+	double wages = 20, tips = 0;
+	int enjoy = 0;
+	int imagetype = IMGTYPE_PROFILE;
+	int msgtype = Day0Night1;
+
+#pragma endregion
+#pragma region //	Job Performance			//
+
 	int train = 0;												// main skill trained
 	int tanm = girl->m_Skills[SKILL_ANIMALHANDLING];			// Starting level - train = 1
 	int tfar = girl->m_Skills[SKILL_FARMING];					// Starting level - train = 2
@@ -58,9 +71,6 @@ bool cJobManager::WorkFarmResearch(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	int skill = 0;												// gian for main skill trained
 	int dirtyloss = brothel->m_Filthiness / 100;				// training time wasted with bad equipment
 	int sgAnm = 0, sgFar = 0, sgMag = 0, sgHer = 0, sgInt = 0;	// gains per skill
-	int roll_a = g_Dice.d100();									// roll for main skill gain
-	int roll_b = g_Dice.d100();									// roll for main skill trained
-	int roll_c = g_Dice.d100();									// roll for enjoyment
 
 
 	/* */if (roll_a <= 5)	skill = 7;
@@ -140,13 +150,22 @@ bool cJobManager::WorkFarmResearch(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	}
 	ss << "\n\n";
 
+#pragma endregion
+#pragma region	//	Enjoyment and Tiredness		//
+
+
 	//enjoyed the work or not
 	/* */if (roll_c <= 10)	{ enjoy -= g_Dice % 3 + 1;	ss << "She did not enjoy her time training."; }
 	else if (roll_c >= 90)	{ enjoy += g_Dice % 3 + 1;	ss << "She had a pleasant time training."; }
 	else /*             */	{ enjoy += g_Dice % 2;		ss << "Otherwise, the shift passed uneventfully."; }
 	
 	ss << "\n\n";
-#if 1
+
+#pragma endregion
+#pragma region	//	Create Items				//
+
+
+
 	// `J` Farm Bookmark - adding in items that can be created in the farm
 	if (girl->intelligence() + girl->crafting() > 100 && g_Dice.percent(girl->intelligence() + girl->crafting() / 10))	// 10-20%
 	{
@@ -299,18 +318,27 @@ bool cJobManager::WorkFarmResearch(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 		}
 	}
 
-#endif
 
-	
-	
+
+#pragma endregion
+#pragma region	//	Money					//
+
+	if ((girl->is_slave() && !cfg.initial.slave_pay_outofpocket())) { wages = 0; }
+	else { wages = 25 + (skill * 5); } // `J` Pay her more if she learns more
+
+
+#pragma endregion
+#pragma region	//	Finish the shift			//
+
+
 	
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 
-	if ((girl->is_slave() && !cfg.initial.slave_pay_outofpocket())) { wages = 0; }
-	else { wages = 25 + (skill * 5); } // `J` Pay her more if she learns more
-	girl->m_Pay = wages;
+	// Money
+	if (wages < 0)	wages = 0;	girl->m_Pay = (int)wages;
+	if (tips < 0)	tips = 0;	girl->m_Tips = (int)tips;
 
 	// Improve stats
 	int xp = 5 + skill, libido = int(1 + skill / 2);
@@ -322,6 +350,7 @@ bool cJobManager::WorkFarmResearch(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	g_Girls.UpdateStat(girl, STAT_EXP, (g_Dice % xp) + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
+#pragma endregion
 	return false;
 }
 

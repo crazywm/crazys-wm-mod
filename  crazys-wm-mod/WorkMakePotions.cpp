@@ -16,6 +16,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#pragma region //	Includes and Externs			//
 #include "cJobManager.h"
 #include "cRng.h"
 #include "CLog.h"
@@ -23,6 +24,7 @@
 #include "cGold.h"
 #include "cBrothel.h"
 #include "cFarm.h"
+
 
 extern CLog g_LogFile;
 extern cMessageQue g_MessageQue;
@@ -32,11 +34,15 @@ extern cBrothelManager g_Brothels;
 extern cFarmManager g_Farm;
 extern cInventory g_InvManager;
 
+#pragma endregion
+
 // `J` Job Farm - Producers - updated 1/29/15
 bool cJobManager::WorkMakePotions(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
+#pragma region //	Job setup				//
 	int actiontype = ACTION_WORKMAKEPOTIONS;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
+	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
 	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work 
 	{
 		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
@@ -47,12 +53,14 @@ bool cJobManager::WorkMakePotions(sGirl* girl, sBrothel* brothel, bool Day0Night
 
 	g_Girls.UnequipCombat(girl);	// weapons and armor can get in the way
 
+	double wages = 20, tips = 0;
 	int enjoy = 0;
-	int wages = 25;
-	int tips = 0;
 	int imagetype = IMGTYPE_CRAFT;
 	int msgtype = Day0Night1;
-	int danger = g_Dice.d100();	// chance that something bad will happen.
+
+#pragma endregion
+#pragma region //	Job Performance			//
+
 
 	double jobperformance = JP_MakePotions(girl, false);
 
@@ -60,13 +68,13 @@ bool cJobManager::WorkMakePotions(sGirl* girl, sBrothel* brothel, bool Day0Night
 	{
 		ss << " She must be the perfect at this.";
 		wages += 155;
-		danger -= 20;
+		roll_a -= 20;
 	}
 	else if (jobperformance >= 185)
 	{
 		ss << " She's unbelievable at this.";
 		wages += 95;
-		danger -= 10;
+		roll_a -= 10;
 	}
 	else if (jobperformance >= 145)
 	{
@@ -77,29 +85,33 @@ bool cJobManager::WorkMakePotions(sGirl* girl, sBrothel* brothel, bool Day0Night
 	{
 		ss << " She made a few mistakes but overall she is okay at this.";
 		wages += 15;
-		danger += 5;
+		roll_a += 5;
 	}
 	else if (jobperformance >= 70)
 	{
 		ss << " She was nervous and made a few mistakes. She isn't that good at this.";
 		wages -= 5;
-		danger += 10;
+		roll_a += 10;
 	}
 	else
 	{
 		ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.";
 		wages -= 15;
-		danger += 20;
+		roll_a += 20;
 	}
 	ss << "\n\n";
 
+#pragma endregion
+#pragma region	//	Enjoyment and Tiredness		//
+
+
 	//enjoyed the work or not
-	if (danger <= 10)
+	if (roll_a <= 10)
 	{
 		enjoy += g_Dice % 3 + 1;
 		ss << "She had a great time making potions today.";
 	}
-	else if (danger >= 90)
+	else if (roll_a >= 90)
 	{
 		enjoy -= (g_Dice % 5 + 1);
 		ss << "Some potions blew up in her face today.";
@@ -108,7 +120,7 @@ bool cJobManager::WorkMakePotions(sGirl* girl, sBrothel* brothel, bool Day0Night
 		girl->beauty(-(g_Dice % 3));
 
 	}
-	else if (danger >= 80)
+	else if (roll_a >= 80)
 	{
 		enjoy -= (g_Dice % 3 + 1);
 		ss << "She did not like making potions today.";
@@ -121,8 +133,11 @@ bool cJobManager::WorkMakePotions(sGirl* girl, sBrothel* brothel, bool Day0Night
 	ss << "\n\n";
 
 
+#pragma endregion
+#pragma region	//	Create Items				//
+
+
 	// `J` Farm Bookmark - adding in potions that can be created in the farm
-#if 1
 
 	stringstream ssitem;
 	int numitemsmade = 1;	// counts down
@@ -253,13 +268,22 @@ bool cJobManager::WorkMakePotions(sGirl* girl, sBrothel* brothel, bool Day0Night
 	}
 
 
-#endif
+
+#pragma endregion
+#pragma region	//	Money					//
+
+
+#pragma endregion
+#pragma region	//	Finish the shift			//
+
 
 
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_CRAFT, msgtype);
-	girl->m_Pay = max(0, wages);
 
+	// Money
+	if (wages < 0)	wages = 0;	girl->m_Pay = (int)wages;
+	if (tips < 0)	tips = 0;	girl->m_Tips = (int)tips;
 
 	// Improve stats
 	int xp = 5, libido = 1, skill = 3;
@@ -279,6 +303,7 @@ bool cJobManager::WorkMakePotions(sGirl* girl, sBrothel* brothel, bool Day0Night
 	g_Girls.UpdateSkill(girl, SKILL_COOKING, max(0, (g_Dice % skill) - 2));
 	g_Girls.UpdateSkill(girl, SKILL_MAGIC, max(0, (g_Dice % skill) - 2));
 
+#pragma endregion
 	return false;
 }
 

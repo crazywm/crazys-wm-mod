@@ -16,6 +16,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#pragma region //	Includes and Externs			//
 #include "cJobManager.h"
 #include "cRng.h"
 #include "CLog.h"
@@ -24,20 +25,25 @@
 #include "cBrothel.h"
 #include "cFarm.h"
 
+
 extern CLog g_LogFile;
 extern cMessageQue g_MessageQue;
 extern cRng g_Dice;
 extern cGold g_Gold;
 extern cBrothelManager g_Brothels;
 extern cFarmManager g_Farm;
+extern cInventory g_InvManager;
+
+#pragma endregion
 
 // `J` Job Farm - Staff
 bool cJobManager::WorkFarmVeterinarian(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
+#pragma region //	Job setup				//
 	int actiontype = ACTION_WORKFARM;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
-
-	if (g_Girls.DisobeyCheck(girl, ACTION_WORKFARM, brothel))			// they refuse to work 
+	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
+	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work 
 	{
 		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
@@ -47,10 +53,15 @@ bool cJobManager::WorkFarmVeterinarian(sGirl* girl, sBrothel* brothel, bool Day0
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
-	int fame = 0;
-	int wages = 25, work = 0;
-	int roll = g_Dice.d100();
+	double wages = 20, tips = 0;
+	int enjoy = 0;
+	int imagetype = IMGTYPE_FARM;
+	int msgtype = Day0Night1;
 
+#pragma endregion
+#pragma region //	Job Performance			//
+
+	int fame = 0;
 	double jobperformance = JP_FarmVeterinarian(girl, false);
 
 
@@ -86,20 +97,35 @@ bool cJobManager::WorkFarmVeterinarian(sGirl* girl, sBrothel* brothel, bool Day0
 	}
 
 
+#pragma endregion
+#pragma region	//	Enjoyment and Tiredness		//
+
+
 
 	//enjoyed the work or not
-	if (roll <= 5)
+	if (roll_a <= 5)
 	{
-		ss << "\nSome of the patrons abused her during the shift."; work -= 1;
+		ss << "\nSome of the patrons abused her during the shift.";
+		enjoy -= 1;
 	}
-	else if (roll <= 25)
+	else if (roll_a <= 25)
 	{
-		ss << "\nShe had a pleasant time working."; work += 3;
+		ss << "\nShe had a pleasant time working.";
+		enjoy += 3;
 	}
 	else
 	{
-		ss << "\nOtherwise, the shift passed uneventfully."; work += 1;
+		ss << "\nOtherwise, the shift passed uneventfully.";
+		enjoy += 1;
 	}
+
+#pragma endregion
+#pragma region	//	Money					//
+
+
+#pragma endregion
+#pragma region	//	Create Items				//
+
 
 
 #if 0
@@ -109,23 +135,19 @@ bool cJobManager::WorkFarmVeterinarian(sGirl* girl, sBrothel* brothel, bool Day0
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 #endif
 
 
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKFARM, work);
+#pragma endregion
+#pragma region	//	Finish the shift			//
+
+
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKFARM, enjoy);
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
-	girl->m_Pay = max(wages, 0);
+
+	// Money
+	if (wages < 0)	wages = 0;	girl->m_Pay = (int)wages;
+	if (tips < 0)	tips = 0;	girl->m_Tips = (int)tips;
 
 	// Improve stats
 	int xp = 10, libido = 1, skill = 3;
@@ -147,6 +169,7 @@ bool cJobManager::WorkFarmVeterinarian(sGirl* girl, sBrothel* brothel, bool Day0
 	g_Girls.UpdateStat(girl, STAT_CHARISMA, max(0, (g_Dice % skill) - 2));
 	g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, max(0, (g_Dice % skill) - 2));
 
+#pragma endregion
 	return false;
 }
 

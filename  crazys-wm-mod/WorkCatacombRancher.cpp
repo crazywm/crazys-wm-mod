@@ -16,6 +16,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#pragma region //	Includes and Externs			//
 #include "cJobManager.h"
 #include "cRng.h"
 #include "CLog.h"
@@ -24,18 +25,24 @@
 #include "cBrothel.h"
 #include "cFarm.h"
 
+
 extern CLog g_LogFile;
 extern cMessageQue g_MessageQue;
 extern cRng g_Dice;
 extern cGold g_Gold;
 extern cBrothelManager g_Brothels;
 extern cFarmManager g_Farm;
+extern cInventory g_InvManager;
+
+#pragma endregion
 
 // `J` Job Farm - Laborers
 bool cJobManager::WorkCatacombRancher(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
+#pragma region //	Job setup				//
 	int actiontype = ACTION_WORKFARM;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
+	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
 	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work 
 	{
 		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
@@ -46,7 +53,14 @@ bool cJobManager::WorkCatacombRancher(sGirl* girl, sBrothel* brothel, bool Day0N
 
 	g_Girls.EquipCombat(girl);	// This job can be dangerous so any protection is good.
 
-	int wages = 15, work = 0;;
+	double wages = 20, tips = 0;
+	int enjoy = 0;
+	int imagetype = IMGTYPE_FARM;
+	int msgtype = Day0Night1;
+
+#pragma endregion
+#pragma region //	Job Performance			//
+
 
 	double jobperformance = JP_CatacombRancher(girl, false);
 	if (jobperformance >= 245)
@@ -81,47 +95,46 @@ bool cJobManager::WorkCatacombRancher(sGirl* girl, sBrothel* brothel, bool Day0N
 	}
 	ss << "\n\n";
 
+#pragma endregion
+#pragma region	//	Enjoyment and Tiredness		//
+
+
 	//enjoyed the work or not
 	int roll = g_Dice.d100();
 	if (roll <= 5)
 	{
 		ss << "Some of the patrons abused her during the shift.";
-		work -= 1;
+		enjoy -= 1;
 	}
 	else if (roll <= 25)
 	{
 		ss << "She had a pleasant time working.";
-		work += 3;
+		enjoy += 3;
 	}
 	else
 	{
 		ss << "Otherwise, the shift passed uneventfully.";
-		work += 1;
+		enjoy += 1;
 	}
 
 
-#if 0
+#pragma endregion
+#pragma region	//	Create Items				//
+
 
 	// `J` Farm Bookmark - adding in items that can be created in the farm
 
 
 
+#pragma endregion
+#pragma region	//	Money					//
 
 
+#pragma endregion
+#pragma region	//	Finish the shift			//
 
 
-
-
-
-
-
-
-
-
-#endif
-
-
-	g_Girls.UpdateEnjoyment(girl, actiontype, work);
+	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_HERD, Day0Night1);
 
 
@@ -129,7 +142,7 @@ bool cJobManager::WorkCatacombRancher(sGirl* girl, sBrothel* brothel, bool Day0N
 	roll_max /= 4;
 	wages += 10 + g_Dice%roll_max;
 	if (wages < 0) wages = 0;
-	girl->m_Pay = wages;
+	girl->m_Pay = (int)wages;
 
 
 	// Improve stats
@@ -149,6 +162,7 @@ bool cJobManager::WorkCatacombRancher(sGirl* girl, sBrothel* brothel, bool Day0N
 	g_Girls.UpdateStat(girl, STAT_CONFIDENCE, max(0, (g_Dice % skill) - 2));
 	g_Girls.UpdateStat(girl, STAT_CONSTITUTION, max(0, (g_Dice % skill) - 2));
 
+#pragma endregion
 	return false;
 }
 

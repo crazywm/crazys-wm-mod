@@ -201,6 +201,8 @@ public:
 	static double JP_Blacksmith(sGirl* girl, bool estimate);
 	static bool WorkCobbler(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
 	static double JP_Cobbler(sGirl* girl, bool estimate);
+	static bool WorkJeweler(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_Jeweler(sGirl* girl, bool estimate);
 	static bool WorkCleanArena(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
 	static double JP_CleanArena(sGirl* girl, bool estimate);
 

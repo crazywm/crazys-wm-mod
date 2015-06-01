@@ -610,6 +610,7 @@
     <ClCompile Include="WorkShepherd.cpp" />
     <ClCompile Include="WorkCobbler.cpp" />
     <ClCompile Include="WorkTailor.cpp" />
+    <ClCompile Include="WorkJeweler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cButton.h">

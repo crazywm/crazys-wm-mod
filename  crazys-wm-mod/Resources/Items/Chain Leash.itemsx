@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Items>
     <Item Name="Chain Leash" Desc="This metallic chain attached to a leather collar isn't just an effective physical restraint: it's an humiliating punishment. A woman wearing this is at the complete mercy of whoever is holding it. (+15 BDSM, +5 Best and Oral, +20 Obed, -25 Spi, -25 Conf, -30 Refinement, -20 Comb, -30 Agi, -35 Happ, +10 Hate, +15 Fear, removes Elegant)"
-	Type="Necklace" Badness="35" Special="None" Cost="350" Rarity="Shop25" Infinite="false" GirlBuyChance="0" ItemWeight="0.0"
+	Type="Necklace" Badness="35" Special="None" Cost="350" Rarity="Shop25" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
         <Effect What="Skill" Name="BDSM" Amount="15" />
         <Effect What="Skill" Name="Combat" Amount="-20" />
         <Effect What="Stat" Name="Happiness" Amount="-35" />
@@ -17,7 +17,7 @@
         <Effect What="Trait" Name="Elegant" Amount="0" />
     </Item>
     <Item Name="Chain Leash" Desc="This metallic chain attached to a leather collar isn't just an effective physical restraint: it's an humiliating punishment. A woman wearing this is at the complete mercy of whoever is holding it. (+15 BDSM, +5 Best and Oral, +20 Obed, -25 Spi, -25 Conf, -30 Refinement, -20 Comb, -30 Agi, -35 Happ, +10 Hate, +15 Fear, removes Elegant)"
-	Type="Necklace" Badness="35" Special="None" Cost="350" Rarity="Shop05" Infinite="false" GirlBuyChance="0" ItemWeight="0.0"
+	Type="Necklace" Badness="35" Special="None" Cost="350" Rarity="Shop05" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
         <Effect What="Skill" Name="BDSM" Amount="15" />
         <Effect What="Skill" Name="Combat" Amount="-20" />
         <Effect What="Stat" Name="Happiness" Amount="-35" />

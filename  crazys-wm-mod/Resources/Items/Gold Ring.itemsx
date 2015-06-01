@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="Gold Ring" Desc="A plain gold ring. Despite its price it doesn't have any magical properties. (+15 Refinement)"
+    Type="Ring" Badness="0" Special="None" Cost="500" Rarity="Shop25" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Refinement" Amount="20" />
+    </Item>
+</Items>

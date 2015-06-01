@@ -185,6 +185,7 @@
     <ClCompile Include="WorkGetTubesTied.cpp" />
     <ClCompile Include="WorkGetVaginalRejuvenation.cpp" />
     <ClCompile Include="WorkIntern.cpp" />
+    <ClCompile Include="WorkJeweler.cpp" />
     <ClCompile Include="WorkLiposuction.cpp" />
     <ClCompile Include="WorkMakePotions.cpp" />
     <ClCompile Include="WorkMechanic.cpp" />

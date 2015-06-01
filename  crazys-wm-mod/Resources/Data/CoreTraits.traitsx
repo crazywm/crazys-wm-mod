@@ -377,13 +377,13 @@
         Desc="This girl either cooked professionally or for personal reasons. Either way, she is a master in the kitchen."
         Type="Job"
         InheritChance="0"
-        RandomChance="5" />
+        RandomChance="3" />
     <Trait
         Name="Country Gal"
-        Desc="This girl spend a lot of time in the country, and knows plants and Animals."
+        Desc="This girl spent a lot of time in the country and knows plants and Animals."
         Type="Job"
         InheritChance="0"
-        RandomChance="5" />
+        RandomChance="3" />
     <Trait
         Name="Director"
         Desc="She has a knack for getting people to do things her way."
@@ -402,6 +402,24 @@
         Type="Job"
         InheritChance="0"
         RandomChance="5" />
+    <Trait
+        Name="City Girl"
+        Desc="This girl has lived in big cities most of her life."
+        Type="Job"
+        InheritChance="0"
+        RandomChance="3" />
+    <Trait
+        Name="Farmer"
+        Desc="This girl has worked on a farm most of her life and can do just about any job dealing with plants or animals."
+        Type="Job"
+        InheritChance="0"
+        RandomChance="3" />
+    <Trait
+        Name="Hunter"
+        Desc="This girl is well trained in tracking then capturing or killing wild animals."
+        Type="Job"
+        InheritChance="0"
+        RandomChance="3" />
     <Trait
         Name="Former Official"
         Desc="This girl used to hold an elected office."

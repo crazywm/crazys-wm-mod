@@ -28,39 +28,10 @@ extern cInventory g_InvManager;
 const char* actionTypeNames[] =
 {
 	// `J` When modifying Action types, search for "J-Change-Action-Types"  :  found in > XmlMisc.cpp
-	"COMBAT",
-	"SEX",
-	"WORKESCORT",
-	"WORKCLEANING",
-	"WORKMATRON",
-	"WORKBAR",
-	"WORKHALL",
-	"WORKSHOW",
-	"WORKSECURITY",
-	"WORKADVERTISING",
-	"WORKTORTURER",
-	"WORKCARING",
-	"WORKDOCTOR",
-	"WORKMOVIE",
-	"WORKCUSTSERV",
-	"WORKCENTRE",
-	"WORKCLUB",
-	"WORKHAREM",
-	"WORKRECRUIT",
-	"WORKNURSE",
-	"WORKMECHANIC",
-	"WORKCOUNSELOR",
-	"WORKMUSIC",
-	"WORKSTRIP",
-	"WORKMILK",
-	"WORKMASSUSSE",
-	"WORKFARM",
-	"WORKINTERN",
-	"WORKREHAB",
-	"MAKEPOTIONS",
-	"MAKEITEMS",
-	"COOKING",
-	"GETTHERAPY",
+	"COMBAT", "SEX", "WORKESCORT", "WORKCLEANING", "WORKMATRON", "WORKBAR", "WORKHALL", "WORKSHOW", "WORKSECURITY",
+	"WORKADVERTISING", "WORKTORTURER", "WORKCARING", "WORKDOCTOR", "WORKMOVIE", "WORKCUSTSERV", "WORKCENTRE", "WORKCLUB",
+	"WORKHAREM", "WORKRECRUIT", "WORKNURSE", "WORKMECHANIC", "WORKCOUNSELOR", "WORKMUSIC", "WORKSTRIP", "WORKMILK",
+	"WORKMASSUSSE", "WORKFARM", "WORKTRAINING", "WORKREHAB", "MAKEPOTIONS", "MAKEITEMS", "COOKING", "GETTHERAPY",
 	"GENERAL"
 };
 
@@ -369,6 +340,10 @@ bool LoadActionsXML(TiXmlHandle hActions, int enjoyments[], int enjoymentsMods[]
 	for (int x = 0; x < NUM_ACTIONTYPES; ++x)
 	{
 		TiXmlElement* pAction = pActions->FirstChildElement(XMLifyString(actionTypeNames[x]));
+		
+		// `J` a fix for the old WORKINTERN changed to WORKTRAINING
+		if (x == ACTION_WORKTRAINING && !pAction) pAction = pActions->FirstChildElement(XMLifyString("WORKINTERN"));
+
 		if (pAction)
 		{
 			int tempInt = 0;

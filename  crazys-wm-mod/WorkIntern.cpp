@@ -33,7 +33,7 @@ extern cMessageQue g_MessageQue;
 // `J` Job Clinic - Staff - Learning_Job
 bool cJobManager::WorkIntern(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-	int actiontype = ACTION_WORKINTERN;
+	int actiontype = ACTION_WORKTRAINING;
 	stringstream ss; string girlName = girl->m_Realname;
 	if (g_Girls.HasTrait(girl, "AIDS"))
 	{

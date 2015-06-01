@@ -2099,9 +2099,39 @@ Added sex texts by GonDra
 Updated Smoker addiction checks
 Added several Smoker items
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
- 
- 
- 
+Fixed a minor bug in shop screen
+Fixed a bug with slider marker not allowing the game to start if "SliderMarker.png" is not found.
+ - It will use the "SliderButtonDisabled.png" instead.
+Because Milk will be produceable at the Farm, I am removing the Infinite="true" from all milk items.
+
+###  Changes 5/30
+WME - Fixed a bug with "GirlStatus" saving as "Status" breaking some items
+
+Changed WORKINTERN to WORKTRAINING to allow it to be used for any training job
+ - Fixed loading so it will accept either - saving will save the new WORKTRAINING
+Fixed a minor problem with girl_fights_girl if a girl does not show up for the fight
+Added traits: "City Girl", "Farmer", "Hunter"
+Added 13 items and fixed 3 from Hanzo
+Cleaned and fixed several items.
+Added in GonDra's new texts for Group and Lesbian sex.
+
+Updated more jobs: 
+ - Added Jeweler job to Arena
+ - Started dividing up job areas with  #pragma region - #pragma endregion
+ -  - I know it may throw some errors in editors not made by ms but it should not break it.
+ - Finished: Farmer, BeastCapture
+ - Mostly Finished: FarmMarketer, Milker
+ - Works but doesn't produce items yet: Blacksmith, Jeweler, MakeItem, Cobbler, Tailor
+ - Works with older item creation: Gardener, Research, MakePotions
+
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.20
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.28
+
+
+
+
  
 $$$$ TO DO - SHORT TERM - (for this version) $$$$
 Config.xml: 

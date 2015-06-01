@@ -1436,6 +1436,10 @@ int cMovieStudioManager::AddScene(sGirl* girl, int Job, int Bonus)
 		if (Job == SKILL_ANAL || Job == SKILL_NORMALSEX || Job == SKILL_GROUP || Job == SKILL_STRIP)
 			quality += 1;
 	}
+	if (g_Girls.HasTrait(girl, "Hunter"))
+	{
+		if (Job == SKILL_BEASTIALITY)	quality += 3;
+	}
 	if (Job == SKILL_ORALSEX)
 	{
 		if (g_Girls.HasTrait(girl, "Pierced Tongue"))		quality += 1;

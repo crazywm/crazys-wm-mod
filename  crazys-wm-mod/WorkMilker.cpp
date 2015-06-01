@@ -16,6 +16,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#pragma region //	Includes and Externs			//
 #include "cJobManager.h"
 #include "cRng.h"
 #include "CLog.h"
@@ -23,6 +24,7 @@
 #include "cGold.h"
 #include "cBrothel.h"
 #include "cFarm.h"
+
 
 extern CLog g_LogFile;
 extern cMessageQue g_MessageQue;
@@ -32,11 +34,15 @@ extern cBrothelManager g_Brothels;
 extern cFarmManager g_Farm;
 extern cInventory g_InvManager;
 
+#pragma endregion
+
 // `J` Job Farm - Laborers
 bool cJobManager::WorkMilker(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
+#pragma region //	Job setup				//
 	int actiontype = ACTION_WORKFARM;
-	stringstream ss; string girlName = girl->m_Realname; ss << girl->m_Realname;
+	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
+	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
 	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work 
 	{
 		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
@@ -47,42 +53,51 @@ bool cJobManager::WorkMilker(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
-	int wages = 15, enjoy = 0;
-	int roll_a = g_Dice.d100();
-	double jobperformance = JP_Milker(girl, false);
+	double wages = 20, tips = 0;
+	int enjoy = 0;
+	int imagetype = IMGTYPE_FARM;
+	int msgtype = Day0Night1;
 
-	double drinks = 1.0 + jobperformance + g_Dice.randomd(jobperformance);
+#pragma endregion
+#pragma region //	Job Performance			//
+
+	double jobperformance = JP_Milker(girl, false);
+	double drinks = jobperformance / 2;
 
 	if (jobperformance >= 245)
 	{
-		ss << "She must be the perfect at this.";
-		roll_a += 10;
+		ss << "Her milk bucket practically fills itself as she walks down the rows of cows.";
+		drinks *= 5; roll_a += 10; roll_b += 25;
 	}
 	else if (jobperformance >= 185)
 	{
-		ss << "She's unbelievable at this.";
-		roll_a += 5;
+		ss << "Her hands moved like lightning as she gracefully milks the cows teats.";
+		drinks *= 4; roll_a += 5; roll_b += 18;
 	}
 	else if (jobperformance >= 145)
 	{
-		ss << "She's good at this job.";
-		roll_a += 1;
+		ss << "She knows exactly when the cows are ready to be milked and how to best milk them.";
+		drinks *= 3; roll_a += 2; roll_b += 10;
 	}
 	else if (jobperformance >= 100)
 	{
-		ss << "She made a few mistakes but overall she is okay at this.";
+		ss << "She can milk the cows without spilling much.";
+		drinks *= 2;
 	}
 	else if (jobperformance >= 70)
 	{
-		ss << "She was nervous and made a few mistakes. She isn't that good at this.";
-		roll_a -= 1;
+		ss << "She isn't very good at aiming the teats into the bucket.";
+		roll_a -= 2; roll_b -= 5;
 	}
 	else
 	{
-		ss << "She was nervous and constantly making mistakes. She really isn't very good at this job.";
-		roll_a -= 5;
+		ss << "She can't seem to get the hang of this.";
+		wages -= 10; drinks *= 0.8; roll_a -= 5; roll_b -= 10;
 	}
 	ss << "\n\n";
+
+#pragma endregion
+#pragma region	//	Enjoyment and Tiredness		//
 
 
 	// Complications
@@ -134,11 +149,24 @@ bool cJobManager::WorkMilker(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 		ss << "She had an uneventful day milking.\n";
 	}
 
+#pragma endregion
+#pragma region	//	Money					//
 
-#if 1
-	// `J` Farm Bookmark - adding in items that can be created in the farm
+	// slave girls not being paid for a job that normally you would pay directly for do less work
+	if ((girl->is_slave() && !cfg.initial.slave_pay_outofpocket()))
+	{
+		drinks *= 0.9;
+		wages = 0;
+	}
+	else
+	{
+		wages += drinks / 100; // `J` Pay her based on how much she brought in
+	}
 
-	int milk = int(drinks / 50);	// plain milk is made here, breast milk from girls is made in WorkMilk
+#pragma endregion
+#pragma region	//	Create Items				//
+
+	int milk = int(drinks / 10);	// plain milk is made here, breast milk from girls is made in WorkMilk
 	if (milk > 0)
 	{
 		int milkmade[5] = { 0, 0, 0, 0, 0 };	// (total,gallon,quart,pint,shots}
@@ -194,30 +222,26 @@ bool cJobManager::WorkMilker(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	// `J` zzzzzz - need to add the girl milking herself - can be done easier after WorkMilk is done
 
 
-#endif
 
 	
-	ss << "\n" << girlName;
-	if (drinks < 1) { drinks = 0; ss << " was unable to collect any milk."; }
-	else ss << " was able to collect enough milk for " << (int)drinks << " drinks.";
+#pragma endregion
+#pragma region	//	Finish the shift			//
 
-#if 0
-	// `J` in the future, food and drinks will be stored for use elsewhere
-	g_Brothels.add_to_drinks(int(drinks));
-#else
-	// `J` but for now just sell them
-	double earned = drinks * 2;	// you sell the milk for 2 gold per glass
-	brothel->m_Finance.farm_income(earned);
-#endif
+	ss << "\n" << girlName;
+	if (drinks > 0)
+	{
+		g_Brothels.add_to_drinks((int)drinks);
+		ss << " brought in " << (int)drinks << " units of milk.";
+	}
+	else { ss<< " was unable to collect any milk."; }
+
 
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 
-	wages += int(drinks / 5);
-
-	if (wages < 0) wages = 0;
-	girl->m_Pay = wages;
-
+	// Money
+	if (wages < 0)	wages = 0;	girl->m_Pay = (int)wages;
+	if (tips < 0)	tips = 0;	girl->m_Tips = (int)tips;
 
 	// Improve stats
 	int xp = 5, libido = 1, skill = 3;
@@ -232,9 +256,11 @@ bool cJobManager::WorkMilker(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	// primary (+2 for single or +1 for multiple)
 	g_Girls.UpdateSkill(girl, SKILL_ANIMALHANDLING, (g_Dice % skill) + 2);
 	// secondary (-1 for one then -2 for others)
-	g_Girls.UpdateSkill(girl, SKILL_FARMING, max(0, (g_Dice % skill) - 1));
+	g_Girls.UpdateSkill(girl, SKILL_HANDJOB, max(0, (g_Dice % skill) - 1));
+	g_Girls.UpdateSkill(girl, SKILL_FARMING, max(0, (g_Dice % skill) - 2));
 	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, max(0, (g_Dice % skill) - 2));
 
+#pragma endregion
 	return false;
 }
 
@@ -242,7 +268,7 @@ double cJobManager::JP_Milker(sGirl* girl, bool estimate)// not used
 {
 	double jobperformance =
 		// primary - first 100
-		girl->animalhandling() +
+		((girl->animalhandling() + girl->handjob()) / 2) +
 		// secondary - second 100
 		((girl->farming() + girl->intelligence()) / 2) +
 		// level bonus

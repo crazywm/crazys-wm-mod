@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Items>
     <Item Name="Scutum" Desc="A large, but surprisingly light shield. However, it does take considerable skill to use properly in one on one combat. (Cons/Conf +10, Agi -15, adds Construct)"
-	Type="Shield" Badness="5" Special="None" Cost="100" Rarity="Catacomb05" Infinite="false" GirlBuyChance="3" ItemWeight="0.0"
+	Type="Shield" Badness="5" Special="None" Cost="100" Rarity="Catacomb05" Infinite="false" GirlBuyChance="3" ItemWeight="0.0">
         <Effect What="Stat" Name="Constitution" Amount="10" />
         <Effect What="Stat" Name="Confidence" Amount="10" />
         <Effect What="Stat" Name="Agility" Amount="-15" />
         <Effect What="Trait" Name="Construct" Amount="1" />
     </Item>
     <Item Name="Scutum" Desc="A large, but surprisingly light shield. However, it does take considerable skill to use properly in one on one combat. (Cons/Conf +10, Agi -15, adds Construct)"
-	Type="Shield" Badness="5" Special="None" Cost="100" Rarity="Shop25" Infinite="false" GirlBuyChance="3" ItemWeight="0.0"
+	Type="Shield" Badness="5" Special="None" Cost="100" Rarity="Shop25" Infinite="false" GirlBuyChance="3" ItemWeight="0.0">
         <Effect What="Stat" Name="Constitution" Amount="10" />
         <Effect What="Stat" Name="Confidence" Amount="10" />
         <Effect What="Stat" Name="Agility" Amount="-15" />
