@@ -8729,7 +8729,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			}
 			else
 			{
-				sexMessage << " came hard as the customer fucked her ass.";
+				sexMessage << girlName << " came hard as the customer fucked her ass.";
 			}
 		}
 		message += sexMessage.str(); //Gondra: add our sexMessage to our message string
@@ -9018,7 +9018,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			}
 			else
 			{
-				sexMessage << "Annoyed by her slow licks the customer pushed his throbbing cock through " << girlName << "'s lips, roughly fucking her mouth until he finished, leaving the room while she still spits out his cum.";
+				sexMessage << "Annoyed by her slow licks, the customer pushed his throbbing cock through " << girlName << "'s lips, roughly fucking her mouth until he finished, leaving the room while she still spit out his cum.";
 				customer->m_Stats[STAT_HAPPINESS] -= 5;
 			}
 		}
@@ -9117,7 +9117,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			}
 			else
 			{
-				sexMessage << girlName << " pushed together her breasts for the customer to fuck, sighing audibly after he had dirtied her chest with his cum.";
+				sexMessage << girlName << " held together her breasts for the customer to fuck, sighing loudly as his cum dirtied her chest.";
 			}
 		}
 		else if (check < 40) //Gondra:  if the girl is slightly skilled
@@ -9201,7 +9201,6 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 	case SKILL_HANDJOB:
 	{
 #if 1
-		sexMessage << girlName;
 		if (z)
 		{
 			sexMessage << "(Z text not done)\n";
@@ -9217,7 +9216,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			}
 			else if (choice < 40)	//Gondra: Vanilla Messages TODO Gondra: Replace/supplement these Vanilla messages.
 			{
-				sexMessage << "After enduring a few minutes of her awful handjob, the customer took hold of " << girlName << "'s hand, spits on it, and then proceeds to quickly jerk off using her hand, not paying attention to her disgusted face as he leaves her hand dripping with his load.";
+				sexMessage << "After enduring a few minutes of her awful handjob, the customer took hold of " << girlName << "'s hand, spit on it, and then proceeded to quickly jerk off using her hand, not paying attention to her disgusted face as he left her hand dripping with his seed.";
 			}
 			else
 			{
