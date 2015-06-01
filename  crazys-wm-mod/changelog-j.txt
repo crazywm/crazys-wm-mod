@@ -2104,7 +2104,7 @@ Fixed a bug with slider marker not allowing the game to start if "SliderMarker.p
  - It will use the "SliderButtonDisabled.png" instead.
 Because Milk will be produceable at the Farm, I am removing the Infinite="true" from all milk items.
 
-###  Changes 5/30
+###  Changes 5/31
 WME - Fixed a bug with "GirlStatus" saving as "Status" breaking some items
 
 Changed WORKINTERN to WORKTRAINING to allow it to be used for any training job
@@ -2129,8 +2129,13 @@ Updated more jobs:
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.20
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.28
 
-
-
+###  Changes 6/1
+Fixed a few items descriptions.
+Fixed some typeos in do_daily_items
+Added a little more to WorkFarmMarketer, WorkFarmer, WorkBeastCapture, WorkButcher, WorkCatacombRancher, WorkCobbler
+GonDra fixed a few more things in the sex strings
+WME - changed defaults to ControlGirls="true" and ControlGangs="true" because both now work
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
 
  
 $$$$ TO DO - SHORT TERM - (for this version) $$$$

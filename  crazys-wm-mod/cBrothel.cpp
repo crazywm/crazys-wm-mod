@@ -2719,7 +2719,7 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 			g_Girls.HasItemJ(girl, "Manual of Magic") != -1 ||
 			g_Girls.HasItemJ(girl, "Manual of Health") != -1 ||
 
-			g_Girls.HasItemJ(girl, "Libary Card") != -1)
+			g_Girls.HasItemJ(girl, "Library Card") != -1)
 		{
 			int numbooks = girl->intelligence() / 30;	// how many books can she read?
 			if (g_Girls.HasTrait(girl, "Blind"))				numbooks = 1;
@@ -2777,16 +2777,16 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 			}
 
 			// She may go to the library if she runs out of books to read
-			if (g_Girls.HasItemJ(girl, "Libary Card") != -1 && g_Dice.percent(15) && numbooks > 0)
+			if (g_Girls.HasItemJ(girl, "Library Card") != -1 && g_Dice.percent(15) && numbooks > 0)
 			{
 				if (g_Girls.HasTrait(girl, "Nymphomaniac"))
 				{
-					ss << "She spent the day at the Libary looking at porn making her become horny.\n\n";
+					ss << "She spent the day at the Library looking at porn making her become horny.\n\n";
 					g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, 15);
 				}
 				else
 				{
-					ss << "She spent her free time at the libary reading.";
+					ss << "She spent her free time at the library reading.";
 					if (g_Dice.percent(5))		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, 1);
 					if (g_Dice.percent(5))
 					{
@@ -2964,7 +2964,7 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 			if (g_Dice.percent(5))		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, 1);
 		}
 	}
-	if (g_Girls.HasItemJ(girl, "Cat") != -1 && g_Dice.percent(10))
+	if ((g_Girls.HasItemJ(girl, "Cat") != -1 || g_Girls.HasItemJ(girl, "Black Cat") != -1) && g_Dice.percent(10))
 	{
 		if (is_she_resting(girl))
 		{

@@ -53,7 +53,7 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 
 	g_Girls.EquipCombat(girl);	// ready armor and weapons!
 
-	double wages = 50, tips = 0;
+	double wages = 40, tips = 0;
 	int enjoy = 0;
 	int imagetype = IMGTYPE_COMBAT;
 	int msgtype = Day0Night1;
@@ -220,7 +220,7 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 			itemfound = (g_Dice % 4 == 1) ? "Fox Stole" : "Fur Stole";
 			itemfoundtext = "a dead animal that was not too badly damaged. She brought it home, skinned it, cleaned it up and made a lovely stole from it.";
 		}
-		else if (chooseitem < 97)
+		else if (chooseitem < 96)
 		{
 			itemfound = "Echidna's Snake";
 			itemfoundtext = "a rather obedient and psychic snake. It wrapped itself around her crotch and let her take it home.";
@@ -296,19 +296,19 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	if (cfg.debug.log_show_numbers())
 	{
 		ss << "\n\nNumbers:"
-			<< "\nWages = " << (int)wages
-			<< "\nTips = " << (int)tips
-			<< "\nXp = " << I_xp
-			<< "\nLibido = " << I_libido
-			<< "\ncombat = " << I_combat
-			<< "\nanimalh = " << I_animalh
-			<< "\nstrength = " << I_strength
-			<< "\nconstitution = " << I_constitution
-			<< "\nbeastiality = " << I_beastiality
-			<< "\nagility = " << I_agility
-			<< "\nmagic = " << I_magic
-			<< "\nTiredness = " << tired
-			<< "\nEnjoy " << girl->enjoy_jobs[actiontype] << " = " << enjoy
+			<< "\n Wages = " << (int)wages
+			<< "\n Tips = " << (int)tips
+			<< "\n Xp = " << I_xp
+			<< "\n Libido = " << I_libido
+			<< "\n combat = " << I_combat
+			<< "\n animalh = " << I_animalh
+			<< "\n strength = " << I_strength
+			<< "\n constitution = " << I_constitution
+			<< "\n beastiality = " << I_beastiality
+			<< "\n agility = " << I_agility
+			<< "\n magic = " << I_magic
+			<< "\n Tiredness = " << tired
+			<< "\n Enjoy " << girl->enjoy_jobs[actiontype] << " = " << enjoy
 			;
 
 	}

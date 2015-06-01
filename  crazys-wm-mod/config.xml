@@ -213,8 +213,8 @@
 	-->
     <Catacombs
         UniqueCatacombs="50"
-        ControlGirls="false"
-        ControlGangs="false"
+        ControlGirls="true"
+        ControlGangs="true"
         GirlGetsGirls="34"
         GirlGetsItems="33"
         GirlGetsBeast="33"

@@ -61,7 +61,6 @@ bool cJobManager::WorkCatacombRancher(sGirl* girl, sBrothel* brothel, bool Day0N
 #pragma endregion
 #pragma region //	Job Performance			//
 
-
 	double jobperformance = JP_CatacombRancher(girl, false);
 	if (jobperformance >= 245)
 	{

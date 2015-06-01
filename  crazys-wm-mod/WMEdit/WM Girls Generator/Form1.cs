@@ -1172,8 +1172,8 @@ namespace WM_Girls_Generator
             textBox_Config_ProstitutionRapeBrothel.Text = "1";
             textBox_Config_ProstitutionRapeStreets.Text = "5";
 
-            checkBox_Config_Control_Gangs.Checked = false;
-            checkBox_Config_Control_Girls.Checked = false;
+            checkBox_Config_Control_Gangs.Checked = true;
+            checkBox_Config_Control_Girls.Checked = true;
             trackBar_Config_Control_GirlsA.Value = 34;
             trackBar_Config_Control_GirlsB.Value = 67;
             trackBar_Config_Control_GangsA.Value = 34;

@@ -151,13 +151,14 @@ bool cJobManager::WorkFarmMarketer(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	{
 		enjoy -= g_Dice % 3;
 		pricemultiplier -= 0.1;
-		ss << "She did not selling things today.";
 		girl->happiness(-(g_Dice % 11));
+		ss << "She did not like selling things today.";
 	}
 	else if (roll_a >= 90)
 	{
 		pricemultiplier += 0.1;
 		enjoy += g_Dice % 3;
+		girl->happiness(g_Dice % 8);
 		ss << "She had a great time selling today.";
 	}
 	else
@@ -235,8 +236,6 @@ bool cJobManager::WorkFarmMarketer(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 #pragma region	//	Finish the shift			//
 
 
-	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
-
 	// Money
 	if (wages < 0)	wages = 0;	girl->m_Pay = (int)wages;
 	if (tips < 0)	tips = 0;	girl->m_Tips = (int)tips;
@@ -249,18 +248,44 @@ bool cJobManager::WorkFarmMarketer(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
 
-	g_Girls.UpdateStat(girl, STAT_EXP, (g_Dice % xp) + 1);
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
+	// EXP and Libido
+	int I_xp = (g_Dice % xp) + 1;							g_Girls.UpdateStat(girl, STAT_EXP, I_xp);
+	int I_libido = (g_Dice % libido) + 1;					g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, I_libido);
 
 	// primary (+2 for single or +1 for multiple)
-	g_Girls.UpdateStat(girl, STAT_CHARISMA, (g_Dice % skill) + 1);
-	g_Girls.UpdateStat(girl, STAT_CONFIDENCE, (g_Dice % skill) + 1);
+	int I_charisma		= max(0, (g_Dice % skill) + 1);		g_Girls.UpdateStat(girl, STAT_CHARISMA, I_charisma);
+	int I_confidence	= max(0, (g_Dice % skill) + 1);		g_Girls.UpdateStat(girl, STAT_CONFIDENCE, I_confidence);
 	// secondary (-1 for one then -2 for others)
-	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, max(0, (g_Dice % skill) - 1));
-	g_Girls.UpdateStat(girl, STAT_FAME, max(0, (g_Dice % skill) - 2));
-	g_Girls.UpdateSkill(girl, SKILL_FARMING, max(0, (g_Dice % skill) - 2));
+	int I_intelligence	= max(0, (g_Dice % skill) - 1);		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, I_intelligence);
+	int I_fame			= max(0, (g_Dice % skill) - 2);		g_Girls.UpdateStat(girl, STAT_FAME, I_fame);
+	int I_farming		= max(0, (g_Dice % skill) - 2);		g_Girls.UpdateSkill(girl, SKILL_FARMING, I_farming);
 
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
+	g_Girls.PossiblyGainNewTrait(girl,		"Charismatic",	30, actiontype, girlName + " has been selling long enough that she has learned to be more Charismatic.", Day0Night1);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Meek",			40, actiontype, girlName + "'s having to work with customers every day has forced her to get over her meekness.", Day0Night1);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Shy",			50, actiontype, girlName + " has been selling for so long now that her confidence is super high and she is no longer Shy.", Day0Night1);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous",		70, actiontype, girlName + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", Day0Night1);
+	g_Girls.PossiblyGainNewTrait(girl,		"Psychic",		90, actiontype, girlName + " has learned to size up the buyers so well that you'd almost think she was Psychic.", Day0Night1);
+
+	if (cfg.debug.log_show_numbers())
+	{
+		ss << "\n\nNumbers:"
+			<< "\n Job Performance = " << (int)jobperformance
+			<< "\n Wages = " << (int)wages
+			<< "\n Tips = " << (int)tips
+			<< "\n Xp = " << I_xp
+			<< "\n Libido = " << I_libido
+			<< "\n Charisma = " << I_charisma
+			<< "\n Confidence = " << I_confidence
+			<< "\n Intelligence = " << I_intelligence
+			<< "\n Fame = " << I_fame
+			<< "\n Farming = " << I_farming
+			<< "\n Enjoy " << girl->enjoy_jobs[actiontype] << " = " << enjoy
+			;
+	}
+
+	// Push out the turn report
+	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
 
 #pragma endregion
 	return false;

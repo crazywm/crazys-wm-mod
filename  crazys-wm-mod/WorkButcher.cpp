@@ -61,8 +61,6 @@ bool cJobManager::WorkButcher(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 #pragma endregion
 #pragma region //	Job Performance			//
 
-
-
 	double jobperformance = JP_Butcher(girl, false);
 	if (jobperformance >= 245)
 	{

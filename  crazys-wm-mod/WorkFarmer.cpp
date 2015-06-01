@@ -101,7 +101,6 @@ bool cJobManager::WorkFarmer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 #pragma endregion
 #pragma region	//	Enjoyment and Tiredness		//
 
-
 	int tired = (300 - (int)jobperformance);	// this gets divided in roll_a by (8, 10 or 12) so it will end up around 0-40 tired
 	if (roll_a <= 10)
 	{
@@ -148,14 +147,12 @@ bool cJobManager::WorkFarmer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	}
 	ss << "\n\n";
 
-
 #pragma endregion
 #pragma region	//	Create Items				//
 
-	if (g_Dice.percent(girl->farming() / 20) && g_Dice.percent(girl->magic() / 10) && g_Dice.percent(jobperformance / 10))
+	if (g_Dice.percent((girl->farming() + girl->magic()) / 10) && g_Dice.percent(jobperformance / 10))
 	{
-		string itemname = "";
-		int itemnumber = 1;
+		string itemname = ""; int itemnumber = 1;
 		/* */if (roll_c > 30)	{ itemname = "Nut of Knowledge";		itemnumber = (roll_c > 90 ? g_Dice % 3 + 2 : 1); }
 		else if (roll_c > 10)	{ itemname = "Mango of Knowledge";		itemnumber = (roll_c > 28 ? 2 : 1); }
 		else/*            */	{ itemname = "Watermelon of Knowledge"; itemnumber = (roll_c == 9 ? 2 : 1); }
@@ -187,6 +184,7 @@ bool cJobManager::WorkFarmer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 		else ss << goodsproduced << " little toys";
 		ss << " from the unuseable parts of her crops.\n";
 	}
+	if (foodproduced <= 0) foodproduced = 0;
 
 #pragma endregion
 #pragma region	//	Money					//
@@ -245,17 +243,17 @@ bool cJobManager::WorkFarmer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	if (cfg.debug.log_show_numbers())
 	{
 		ss << "\n\nNumbers:"
-			<< "\nJob Performance = " << (int)jobperformance
-			<< "\nWages = " << (int)wages
-			<< "\nTips = " << (int)tips
-			<< "\nXp = " << I_xp
-			<< "\nLibido = " << I_libido
-			<< "\nFarming = " << I_farming
-			<< "\nStrength = " << I_strength
-			<< "\nConstitution = " << I_constitution
-			<< "\nIntelligence = " << I_intelligence
-			<< "\nTiredness = " << tired
-			<< "\nEnjoy " << girl->enjoy_jobs[actiontype] << " = " << enjoy
+			<< "\n Job Performance = " << (int)jobperformance
+			<< "\n Wages = " << (int)wages
+			<< "\n Tips = " << (int)tips
+			<< "\n Xp = " << I_xp
+			<< "\n Libido = " << I_libido
+			<< "\n Farming = " << I_farming
+			<< "\n Strength = " << I_strength
+			<< "\n Constitution = " << I_constitution
+			<< "\n Intelligence = " << I_intelligence
+			<< "\n Tiredness = " << tired
+			<< "\n Enjoy " << girl->enjoy_jobs[actiontype] << " = " << enjoy
 			;
 	}
 
