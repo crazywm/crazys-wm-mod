@@ -2308,7 +2308,7 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 		ss << "\nCost per turn: " << ((girl->is_slave() ? 5 : 20) * (girl->m_AccLevel + 1)) << " gold.\n";
 
 		// added from Dagoth
-		if (girl->m_DayJob == JOB_RESTING && girl->m_NightJob == JOB_RESTING && girl->m_PrevDayJob != 255 && girl->m_PrevNightJob != 255)
+		if (girl->is_resting() && girl->m_PrevDayJob != 255 && girl->m_PrevNightJob != 255)
 		{
 			ss << "\n\nOFF WORK, RESTING DUE TO TIREDNESS.";
 			ss << "\nStored Day Job:   " << g_Brothels.m_JobManager.JobName[girl->m_PrevDayJob];
@@ -15634,6 +15634,10 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 		else if (g_Studios.is_Actress_Job(DN_Job) && g_Studios.CrewNeeded())
 		{
 			ss << g_Brothels.m_JobManager.JobName[DN_Job] << " **";
+		}
+		else if (is_resting() && m_PrevDayJob != 255 && m_PrevNightJob != 255)
+		{
+			ss << "[z] " << g_Brothels.m_JobManager.JobName[(DN_Day == 0 ? m_PrevDayJob : m_PrevNightJob)];
 		}
 		else
 		{
