@@ -2137,6 +2137,19 @@ GonDra fixed a few more things in the sex strings
 WME - changed defaults to ControlGirls="true" and ControlGangs="true" because both now work
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 
+###  Changes 6/2
+WME - Fixed a bug where rgirls were not saving if missing "NPCLove" stat
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.29
+Fixed a bug in inventory screen where items selected are not recoreded until the buy button is pressed.
+Added cGameScript::Script_GetRandomGirl to allow scripts to randomly choose a girl from the Player's girls.
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.21
+
+
+
+
+
+
  
 $$$$ TO DO - SHORT TERM - (for this version) $$$$
 Config.xml: 

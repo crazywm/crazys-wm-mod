@@ -317,3 +317,14 @@ INT 0 255
 "Have Magic"
 "Have Sign"
 "Have Presented"
+"Get Random Girl ~ ~"
+CHOICE 8
+"Anywhere"
+"Brothel"
+"Studio"
+"Arena"
+"Centre"
+"Clinic"
+"Farm"
+"House"
+INT 0 6

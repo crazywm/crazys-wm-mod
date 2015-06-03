@@ -41,7 +41,7 @@ void cCustomers::Free()
 	return num;
 }*/
 
-void cCustomers::GetCustomer(sCustomer& customer, sBrothel * brothel)
+void cCustomers::GetCustomer(sCustomer& customer, sBrothel* brothel)
 {
 
 	// It may be a group of people looking for group sex (5% chance)

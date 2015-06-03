@@ -112,6 +112,7 @@ private:
 	sScript* Script_MagicTarget(sScript* Script);					// `J` new
 	sScript* Script_SignTarget(sScript* Script);					// `J` new
 	sScript* Script_PresentedTarget(sScript* Script);				// `J` new
+	sScript* Script_GetRandomGirl(sScript* Script);					// `J` new
 	//sScript* Script_GirlNameTarget(sScript* Script);
 
 	// The overloaded process function

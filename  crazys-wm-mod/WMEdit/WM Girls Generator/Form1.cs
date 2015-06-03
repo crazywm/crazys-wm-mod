@@ -3752,8 +3752,16 @@ namespace WM_Girls_Generator
                 {
                     stat = xmldoc.CreateElement("Stat");
                     stat.SetAttribute("Name", sStats[statsortorder[y]]);
-                    stat.SetAttribute("Min", sMinStat[statsortorder[y]]);
-                    stat.SetAttribute("Max", sMaxStat[statsortorder[y]]);
+                    if (y >= sMinStat.Length)
+                    {
+                        stat.SetAttribute("Min", "0");
+                        stat.SetAttribute("Max", "0");
+                    }
+                    else
+                    {
+                        stat.SetAttribute("Min", sMinStat[statsortorder[y]]);
+                        stat.SetAttribute("Max", sMaxStat[statsortorder[y]]);
+                    }
                     girl.AppendChild(stat);
                 }
                 for (int y = 0; y < sSkills.Count(); y++)
@@ -3784,7 +3792,7 @@ namespace WM_Girls_Generator
 
             XmlWriterSettings settings = new XmlWriterSettings();
             settings.Indent = true;
-            settings.NewLineOnAttributes = true;
+            settings.NewLineOnAttributes = false;
             settings.IndentChars = "    ";
             XmlWriter xmlwrite = XmlWriter.Create(path, settings);
 

@@ -548,29 +548,29 @@ void cScreenItemManagement::check_events()
 
 	if (g_InterfaceEvents.CheckListbox(items_l_id))
 	{
-		int selection = GetLastSelectedItemFromList(items_l_id);
-		DisableButton(shift_r_id, (selection < 0) || (leftOwner == 1 && !g_Gold.afford(g_InvManager.GetShopItem(selection)->m_Cost)));
+		leftItem = GetLastSelectedItemFromList(items_l_id);
+		DisableButton(shift_r_id, (leftItem < 0) || (leftOwner == 1 && !g_Gold.afford(g_InvManager.GetShopItem(leftItem)->m_Cost)));
 
 		bool disablebuy10R = true;
 		if (leftOwner == 1 && rightOwner == 0)
 		{
-			if (selection > -1 && g_InvManager.GetShopItem(selection) && g_Gold.afford(g_InvManager.GetShopItem(selection)->m_Cost * 10))
+			if (leftItem > -1 && g_InvManager.GetShopItem(leftItem) && g_Gold.afford(g_InvManager.GetShopItem(leftItem)->m_Cost * 10))
 			{
-				disablebuy10R = !g_InvManager.GetShopItem(selection)->m_Infinite;
+				disablebuy10R = !g_InvManager.GetShopItem(leftItem)->m_Infinite;
 			}
 		}
 		DisableButton(buy10_r_id, disablebuy10R);
 
-		if (selection != -1)
+		if (leftItem != -1)
 		{
 			stringstream ss;
 			ss << gettext("Cost: ");
 			if (leftOwner == 0)	//Shop
 			{
-				ss << gettext("Value: ") << g_Brothels.m_Inventory[selection]->m_Cost << gettext(" gold    ");
-				ss << gettext("Sell for: ") << int((float)g_Brothels.m_Inventory[selection]->m_Cost*0.5f) << gettext(" gold\n");
-				ss << gettext("Item Name: ") << g_Brothels.m_Inventory[selection]->m_Name;
-				ss << gettext("\n") << g_Brothels.m_Inventory[selection]->m_Desc;
+				ss << gettext("Value: ") << g_Brothels.m_Inventory[leftItem]->m_Cost << gettext(" gold    ");
+				ss << gettext("Sell for: ") << int((float)g_Brothels.m_Inventory[leftItem]->m_Cost*0.5f) << gettext(" gold\n");
+				ss << gettext("Item Name: ") << g_Brothels.m_Inventory[leftItem]->m_Name;
+				ss << gettext("\n") << g_Brothels.m_Inventory[leftItem]->m_Desc;
 
 				DisableButton(equip_l_id, true);
 				DisableButton(unequip_l_id, true);
@@ -578,9 +578,9 @@ void cScreenItemManagement::check_events()
 			}
 			else if (leftOwner == 1)	//Player
 			{
-				ss << g_InvManager.GetShopItem(selection)->m_Cost << gettext(" gold\n");
-				ss << gettext("Item Name: ") << g_InvManager.GetShopItem(selection)->m_Name;
-				ss << "\n" << g_InvManager.GetShopItem(selection)->m_Desc;
+				ss << g_InvManager.GetShopItem(leftItem)->m_Cost << gettext(" gold\n");
+				ss << gettext("Item Name: ") << g_InvManager.GetShopItem(leftItem)->m_Name;
+				ss << "\n" << g_InvManager.GetShopItem(leftItem)->m_Desc;
 
 				DisableButton(equip_l_id, true);
 				DisableButton(unequip_l_id, true);
@@ -594,15 +594,15 @@ void cScreenItemManagement::check_events()
 
 				HateLove = g_Girls.GetStat(targetGirl, STAT_PCLOVE) - g_Girls.GetStat(targetGirl, STAT_PCHATE);
 
-				ss << gettext("Value: ") << targetGirl->m_Inventory[selection]->m_Cost << gettext(" gold    ");
-				ss << gettext("Sell for: ") << int((float)targetGirl->m_Inventory[selection]->m_Cost*0.5f) << gettext(" gold\n");
-				ss << gettext("Item Name: ") << targetGirl->m_Inventory[selection]->m_Name;
-				ss << gettext("\n") << targetGirl->m_Inventory[selection]->m_Desc;
+				ss << gettext("Value: ") << targetGirl->m_Inventory[leftItem]->m_Cost << gettext(" gold    ");
+				ss << gettext("Sell for: ") << int((float)targetGirl->m_Inventory[leftItem]->m_Cost*0.5f) << gettext(" gold\n");
+				ss << gettext("Item Name: ") << targetGirl->m_Inventory[leftItem]->m_Name;
+				ss << gettext("\n") << targetGirl->m_Inventory[leftItem]->m_Desc;
 
-				if (g_InvManager.IsItemEquipable(targetGirl->m_Inventory[selection]))
+				if (g_InvManager.IsItemEquipable(targetGirl->m_Inventory[leftItem]))
 				{
-					DisableButton(equip_l_id, (targetGirl->m_EquipedItems[selection] == 1));
-					DisableButton(unequip_l_id, !(targetGirl->m_EquipedItems[selection] == 1));
+					DisableButton(equip_l_id, (targetGirl->m_EquipedItems[leftItem] == 1));
+					DisableButton(unequip_l_id, !(targetGirl->m_EquipedItems[leftItem] == 1));
 				}
 				else
 				{
@@ -620,38 +620,38 @@ void cScreenItemManagement::check_events()
 	}
 	if (g_InterfaceEvents.CheckListbox(items_r_id))
 	{
-		int selection = GetLastSelectedItemFromList(items_r_id);
-		DisableButton(shift_l_id, (selection < 0) || (rightOwner == 1 && !g_Gold.afford(g_InvManager.GetShopItem(selection)->m_Cost)));
+		rightItem = GetLastSelectedItemFromList(items_r_id);
+		DisableButton(shift_l_id, (rightItem < 0) || (rightOwner == 1 && !g_Gold.afford(g_InvManager.GetShopItem(rightItem)->m_Cost)));
 
 		bool disablebuy10L = true;
-		if (leftOwner == 0 && rightOwner == 1 && selection > -1 &&
-			g_InvManager.GetShopItem(selection) &&
-			g_Gold.afford(g_InvManager.GetShopItem(selection)->m_Cost * 10))
+		if (leftOwner == 0 && rightOwner == 1 && rightItem > -1 &&
+			g_InvManager.GetShopItem(rightItem) &&
+			g_Gold.afford(g_InvManager.GetShopItem(rightItem)->m_Cost * 10))
 		{
-			disablebuy10L = !g_InvManager.GetShopItem(selection)->m_Infinite;
+			disablebuy10L = !g_InvManager.GetShopItem(rightItem)->m_Infinite;
 		}
 		DisableButton(buy10_l_id, disablebuy10L);
 
 
-		if (selection != -1)
+		if (rightItem != -1)
 		{
 			stringstream ss;
 			ss << gettext("Cost: ");
 			if (rightOwner == 0)
 			{
-				ss << gettext("Value: ") << g_Brothels.m_Inventory[selection]->m_Cost << gettext(" gold    ");
-				ss << gettext("Sell for: ") << int((float)g_Brothels.m_Inventory[selection]->m_Cost*0.5f) << gettext(" gold\n");
-				ss << gettext("Item Name: ") << g_Brothels.m_Inventory[selection]->m_Name;
-				ss << gettext("\n") << g_Brothels.m_Inventory[selection]->m_Desc;
+				ss << gettext("Value: ") << g_Brothels.m_Inventory[rightItem]->m_Cost << gettext(" gold    ");
+				ss << gettext("Sell for: ") << int((float)g_Brothels.m_Inventory[rightItem]->m_Cost*0.5f) << gettext(" gold\n");
+				ss << gettext("Item Name: ") << g_Brothels.m_Inventory[rightItem]->m_Name;
+				ss << gettext("\n") << g_Brothels.m_Inventory[rightItem]->m_Desc;
 
 				DisableButton(equip_r_id, true);
 				DisableButton(unequip_r_id, true);
 			}
 			else if (rightOwner == 1)
 			{
-				ss << g_InvManager.GetShopItem(selection)->m_Cost << gettext(" gold\n");
-				ss << gettext("Item Name: ") << g_InvManager.GetShopItem(selection)->m_Name;
-				ss << "\n" << g_InvManager.GetShopItem(selection)->m_Desc;
+				ss << g_InvManager.GetShopItem(rightItem)->m_Cost << gettext(" gold\n");
+				ss << gettext("Item Name: ") << g_InvManager.GetShopItem(rightItem)->m_Name;
+				ss << "\n" << g_InvManager.GetShopItem(rightItem)->m_Desc;
 
 				DisableButton(equip_r_id, true);
 				DisableButton(unequip_r_id, true);
@@ -664,15 +664,15 @@ void cScreenItemManagement::check_events()
 
 				HateLove = g_Girls.GetStat(targetGirl, STAT_PCLOVE) - g_Girls.GetStat(targetGirl, STAT_PCHATE);
 
-				ss << gettext("Value: ") << targetGirl->m_Inventory[selection]->m_Cost << gettext(" gold    ");
-				ss << gettext("Sell for: ") << int((float)targetGirl->m_Inventory[selection]->m_Cost*0.5f) << gettext(" gold\n");
-				ss << gettext("Item Name: ") << targetGirl->m_Inventory[selection]->m_Name;
-				ss << gettext("\n") << targetGirl->m_Inventory[selection]->m_Desc;
+				ss << gettext("Value: ") << targetGirl->m_Inventory[rightItem]->m_Cost << gettext(" gold    ");
+				ss << gettext("Sell for: ") << int((float)targetGirl->m_Inventory[rightItem]->m_Cost*0.5f) << gettext(" gold\n");
+				ss << gettext("Item Name: ") << targetGirl->m_Inventory[rightItem]->m_Name;
+				ss << gettext("\n") << targetGirl->m_Inventory[rightItem]->m_Desc;
 
-				if (g_InvManager.IsItemEquipable(targetGirl->m_Inventory[selection]))
+				if (g_InvManager.IsItemEquipable(targetGirl->m_Inventory[rightItem]))
 				{
-					DisableButton(equip_r_id, (targetGirl->m_EquipedItems[selection] == 1));
-					DisableButton(unequip_r_id, !(targetGirl->m_EquipedItems[selection] == 1));
+					DisableButton(equip_r_id, (targetGirl->m_EquipedItems[rightItem] == 1));
+					DisableButton(unequip_r_id, !(targetGirl->m_EquipedItems[rightItem] == 1));
 				}
 				else
 				{
@@ -703,10 +703,10 @@ void cScreenItemManagement::check_events()
 
 		HateLove = g_Girls.GetStat(targetGirl, STAT_PCLOVE) - g_Girls.GetStat(targetGirl, STAT_PCHATE);
 
-		int selection = GetLastSelectedItemFromList(items_l_id);
-		if (selection != -1)
+		leftItem = GetLastSelectedItemFromList(items_l_id);
+		if (leftItem != -1)
 		{
-			g_InvManager.Equip(targetGirl, selection, true);
+			g_InvManager.Equip(targetGirl, leftItem, true);
 			DisableButton(equip_l_id, true);
 			DisableButton(unequip_l_id, false);
 			SetSelectedItemInList(owners_l_id, leftOwner);
@@ -720,10 +720,10 @@ void cScreenItemManagement::check_events()
 
 		HateLove = g_Girls.GetStat(targetGirl, STAT_PCLOVE) - g_Girls.GetStat(targetGirl, STAT_PCHATE);
 
-		int selection = GetLastSelectedItemFromList(items_l_id);
-		if (selection != -1)
+		int leftItem = GetLastSelectedItemFromList(items_l_id);
+		if (leftItem != -1)
 		{
-			g_InvManager.Unequip(targetGirl, selection);
+			g_InvManager.Unequip(targetGirl, leftItem);
 			DisableButton(equip_l_id, false);
 			DisableButton(unequip_l_id, true);
 			SetSelectedItemInList(owners_l_id, leftOwner);
@@ -737,10 +737,10 @@ void cScreenItemManagement::check_events()
 
 		HateLove = g_Girls.GetStat(targetGirl, STAT_PCLOVE) - g_Girls.GetStat(targetGirl, STAT_PCHATE);
 
-		int selection = GetLastSelectedItemFromList(items_r_id);
-		if (selection != -1)
+		rightItem = GetLastSelectedItemFromList(items_r_id);
+		if (rightItem != -1)
 		{
-			g_InvManager.Equip(targetGirl, selection, true);
+			g_InvManager.Equip(targetGirl, rightItem, true);
 			DisableButton(equip_r_id, true);
 			DisableButton(unequip_r_id, false);
 			SetSelectedItemInList(owners_l_id, leftOwner);
@@ -754,10 +754,10 @@ void cScreenItemManagement::check_events()
 
 		HateLove = g_Girls.GetStat(targetGirl, STAT_PCLOVE) - g_Girls.GetStat(targetGirl, STAT_PCHATE);
 
-		int selection = GetLastSelectedItemFromList(items_r_id);
-		if (selection != -1)
+		int rightItem = GetLastSelectedItemFromList(items_r_id);
+		if (rightItem != -1)
 		{
-			g_InvManager.Unequip(targetGirl, selection);
+			g_InvManager.Unequip(targetGirl, rightItem);
 			DisableButton(equip_r_id, false);
 			DisableButton(unequip_r_id, true);
 			SetSelectedItemInList(owners_l_id, leftOwner);

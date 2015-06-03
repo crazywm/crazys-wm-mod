@@ -20,6 +20,12 @@
 #include "cMessageBox.h"
 #include "cChoiceMessage.h"
 #include "cBrothel.h"
+#include "cMovieStudio.h"
+#include "cArena.h"
+#include "cCentre.h"
+#include "cClinic.h"
+#include "cHouse.h"
+#include "cFarm.h"
 #include "GameFlags.h"
 #include "cGirls.h"
 #include "cInventory.h"
@@ -36,6 +42,12 @@ extern cWindowManager g_WinManager;
 extern cMessageQue g_MessageQue;
 extern cChoiceManager g_ChoiceManager;
 extern cBrothelManager g_Brothels;
+extern cMovieStudioManager  g_Studios;
+extern cArenaManager		g_Arena;
+extern cClinicManager		g_Clinic;
+extern cCentreManager		g_Centre;
+extern cHouseManager		g_House;
+extern cFarmManager			g_Farm;
 extern cGirls g_Girls;
 extern cInventory g_InvManager;
 extern cScreenBrothelManagement g_BrothelManagement;
@@ -133,6 +145,7 @@ sScript *cGameScript::Process(sScript *Script)
 	case 75: return Script_MagicTarget(Script);
 	case 76: return Script_SignTarget(Script);
 	case 77: return Script_PresentedTarget(Script);
+	case 78: return Script_GetRandomGirl(Script);
 
 		// `J` When modifying Image types, search for "J-Change-Image-Types"  :  found in >> cGameScript.cpp
 
@@ -1547,22 +1560,135 @@ sScript* cGameScript::Script_PresentedTarget(sScript* Script)
 }
 sScript* cGameScript::Script_AddTrait(sScript* Script)						// `J` new
 {
-	if (!g_Girls.HasTrait(m_GirlTarget, Script->m_Entries[0].m_Text))
-		g_Girls.AddTrait(m_GirlTarget, Script->m_Entries[0].m_Text);
+	if (m_GirlTarget && !g_Girls.HasTrait(m_GirlTarget, Script->m_Entries[0].m_Text))
+			g_Girls.AddTrait(m_GirlTarget, Script->m_Entries[0].m_Text);
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_RemoveTrait(sScript* Script)					// `J` new
 {
-	if (g_Girls.HasTrait(m_GirlTarget, Script->m_Entries[0].m_Text))
+	if (m_GirlTarget && g_Girls.HasTrait(m_GirlTarget, Script->m_Entries[0].m_Text))
 		g_Girls.RemoveTrait(m_GirlTarget, Script->m_Entries[0].m_Text);
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_AddTraitTemp(sScript* Script)						// `J` new
 {
-	if (!g_Girls.HasTrait(m_GirlTarget, Script->m_Entries[0].m_Text))
+	if (m_GirlTarget && !g_Girls.HasTrait(m_GirlTarget, Script->m_Entries[0].m_Text))
 		g_Girls.AddTrait(m_GirlTarget, Script->m_Entries[0].m_Text, Script->m_Entries[1].m_lValue);
 	return Script->m_Next;
 }
+
+sScript* cGameScript::Script_GetRandomGirl(sScript* Script)						// `J` new
+{
+	m_GirlTarget = 0;
+	sBrothel* brothel = 0;
+	switch (Script->m_Entries[0].m_Selection)
+	{
+	case 1:	// brothel
+		brothel = g_Brothels.GetBrothel(Script->m_Entries[1].m_Selection);
+		if (brothel)
+			m_GirlTarget = g_Brothels.GetGirl(brothel->m_id, g_Dice%brothel->m_NumGirls);
+		break;
+	case 2:	// studio
+		brothel = g_Studios.GetBrothel(0);
+		if (brothel)
+			m_GirlTarget = g_Studios.GetGirl(brothel->m_id, g_Dice%brothel->m_NumGirls);
+		break;
+	case 3:	// arena
+		brothel = g_Arena.GetBrothel(0);
+		if (brothel)
+			m_GirlTarget = g_Arena.GetGirl(brothel->m_id, g_Dice%brothel->m_NumGirls);
+		break;
+	case 4:	// center
+		brothel = g_Centre.GetBrothel(0);
+		if (brothel)
+			m_GirlTarget = g_Centre.GetGirl(brothel->m_id, g_Dice%brothel->m_NumGirls);
+		break;
+	case 5:	// clinic
+		brothel = g_Clinic.GetBrothel(0);
+		if (brothel)
+			m_GirlTarget = g_Clinic.GetGirl(brothel->m_id, g_Dice%brothel->m_NumGirls);
+		break;
+	case 6:	// farm
+		brothel = g_Farm.GetBrothel(0);
+		if (brothel)
+			m_GirlTarget = g_Farm.GetGirl(brothel->m_id, g_Dice%brothel->m_NumGirls);
+		break;
+	case 7:	// house
+		brothel = g_House.GetBrothel(0);
+		if (brothel)
+			m_GirlTarget = g_House.GetGirl(0, g_Dice%brothel->m_NumGirls);
+		break;
+	case 0:	// anywhere
+	default:
+	{
+		int totalgirls = 0;
+		for (int i = 0; i < g_Brothels.GetNumBrothels(); i++)
+			totalgirls += g_Brothels.GetBrothel(i)->m_NumGirls;
+		totalgirls += g_Studios.GetBrothel(0)->m_NumGirls;
+		totalgirls += g_Arena.GetBrothel(0)->m_NumGirls;
+		totalgirls += g_Centre.GetBrothel(0)->m_NumGirls;
+		totalgirls += g_Clinic.GetBrothel(0)->m_NumGirls;
+		totalgirls += g_Farm.GetBrothel(0)->m_NumGirls;
+		totalgirls += g_House.GetBrothel(0)->m_NumGirls;
+		int choosegirl = g_Dice%totalgirls;
+
+		for (int i = 0; i < g_Brothels.GetNumBrothels(); i++)
+		{
+			if (choosegirl < g_Brothels.GetBrothel(i)->m_NumGirls)
+			{
+				m_GirlTarget = g_Brothels.GetGirl(i, choosegirl);
+				return Script->m_Next;
+			}
+			else choosegirl -= g_Brothels.GetBrothel(i)->m_NumGirls;
+		}
+		if (choosegirl < g_Studios.GetBrothel(0)->m_NumGirls)
+		{
+			m_GirlTarget = g_Studios.GetGirl(0, choosegirl);
+			return Script->m_Next;
+		}
+		else choosegirl -= g_Studios.GetBrothel(0)->m_NumGirls;
+		if (choosegirl < g_Arena.GetBrothel(0)->m_NumGirls)
+		{
+			m_GirlTarget = g_Arena.GetGirl(0, choosegirl);
+			return Script->m_Next;
+		}
+		else choosegirl -= g_Arena.GetBrothel(0)->m_NumGirls;
+		if (choosegirl < g_Centre.GetBrothel(0)->m_NumGirls)
+		{
+			m_GirlTarget = g_Centre.GetGirl(0, choosegirl);
+			return Script->m_Next;
+		}
+		else choosegirl -= g_Centre.GetBrothel(0)->m_NumGirls;
+		if (choosegirl < g_Clinic.GetBrothel(0)->m_NumGirls)
+		{
+			m_GirlTarget = g_Clinic.GetGirl(0, choosegirl);
+			return Script->m_Next;
+		}
+		else choosegirl -= g_Clinic.GetBrothel(0)->m_NumGirls;
+		if (choosegirl < g_Farm.GetBrothel(0)->m_NumGirls)
+		{
+			m_GirlTarget = g_Farm.GetGirl(0, choosegirl);
+			return Script->m_Next;
+		}
+		else choosegirl -= g_Farm.GetBrothel(0)->m_NumGirls;
+		if (choosegirl < g_House.GetBrothel(0)->m_NumGirls)
+		{
+			m_GirlTarget = g_House.GetGirl(0, choosegirl);
+			return Script->m_Next;
+		}
+		else choosegirl -= g_House.GetBrothel(0)->m_NumGirls;
+	}
+		break;
+	}
+	if (m_GirlTarget == 0)
+	{
+		m_Active = false;
+		m_Leave = true;
+	}
+	return Script->m_Next;
+}
+
+
 
 //sScript* cGameScript::Script_GirlNameTarget(sScript* Script)
 //{
