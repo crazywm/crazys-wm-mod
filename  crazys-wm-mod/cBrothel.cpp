@@ -2519,17 +2519,7 @@ bool is_she_cleaning(sGirl *girl)
 }
 bool is_she_resting(sGirl *girl)
 {
-	if ((girl->m_DayJob == JOB_FILMFREETIME	&& girl->m_NightJob == JOB_FILMFREETIME) ||
-		(girl->m_DayJob == JOB_ARENAREST	&& girl->m_NightJob == JOB_ARENAREST) ||
-		(girl->m_DayJob == JOB_CENTREREST	&& girl->m_NightJob == JOB_CENTREREST) ||
-		(girl->m_DayJob == JOB_CLINICREST	&& girl->m_NightJob == JOB_CLINICREST) ||
-		(girl->m_DayJob == JOB_HOUSEREST	&& girl->m_NightJob == JOB_HOUSEREST) ||
-		(girl->m_DayJob == JOB_FARMREST		&& girl->m_NightJob == JOB_FARMREST) ||
-		(girl->m_DayJob == JOB_RESTING		&& girl->m_NightJob == JOB_RESTING))
-	{
-		return true;
-	}
-	return false;
+	return girl->is_resting();
 }
 bool is_she_stripping(sGirl *girl)
 {

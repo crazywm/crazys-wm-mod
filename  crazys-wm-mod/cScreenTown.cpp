@@ -42,6 +42,7 @@ extern int						g_CurrStudio;
 extern int						g_CurrArena;
 extern int						g_CurrCentre;
 extern int						g_CurrFarm;
+extern int						g_CurrHouse;
 extern cGold					g_Gold;
 extern cBrothelManager			g_Brothels;
 extern cClinicManager			g_Clinic;
@@ -275,7 +276,7 @@ void cScreenTown::process()
 	/* */if (g_InterfaceEvents.CheckButton(back_id))		{ g_InitWin = true;		g_WinManager.Pop();					return; }
 	else if (g_InterfaceEvents.CheckButton(slavemarket_id)) { g_InitWin = true;		g_WinManager.push("Slave Market");	return; }
 	else if (g_InterfaceEvents.CheckButton(prison_id))		{ g_InitWin = true;		g_WinManager.push("Prison");		return; }
-	else if (g_InterfaceEvents.CheckButton(house_id))		{ g_InitWin = true;		g_WinManager.push("Player House");	return; }
+	else if (g_InterfaceEvents.CheckButton(house_id))		{ g_Building = BUILDING_HOUSE;	g_CurrHouse = 0;	g_InitWin = true;	g_WinManager.push("Player House");	return; }
 	else if (g_InterfaceEvents.CheckButton(clinic_id))		{ check_clinic(0);		g_InitWin = true;			return; }
 	else if (g_InterfaceEvents.CheckButton(studio_id))		{ check_studio(0);		g_InitWin = true;			return; }
 	else if (g_InterfaceEvents.CheckButton(arena_id))		{ check_arena(0);		g_InitWin = true;			return; }
@@ -298,74 +299,22 @@ void cScreenTown::process()
 
 string cScreenTown::walk_no_luck()
 {
-	stringstream ss;
 	if (m_first_walk)
 	{
 		m_first_walk = false;
-		ss << gettext("Your father once called this 'talent spotting' - ")
-			<< gettext("wandering though town, looking for new girls. ")
-			<< gettext("'Willing, desperate or vulnerable' is how he put it. ")
-			<< gettext("Not that any of those qualities are in evidence ")
-			<< gettext("today, reminding you of another of your father's ")
-			<< gettext("sayings - the one about patience. It's probably the ")
-			<< gettext("only time he ever used the word 'virtue'.");
-		return	ss.str();
+		return	"Your father once called this \"talent spotting\" - wandering though town, looking for new girls. \"Willing, desperate or vulnerable\" is how he put it. Not that any of those qualities are in evidence today, reminding you of another of your father's sayings - the one about patience. It's probably the only time he ever used the word \"virtue\".";
 	}
 	switch (g_Dice % 8)
 	{
-	case 0:
-	case 1:
-	case 2: return
-		gettext("The city is quiet. The same old streets; the same old faces.");
-	case 3:
-		ss << gettext("Married. Married. Bodyguard. Already works for you. Married. ")
-			<< gettext("Hideous. Not a woman. Married. Escorted. Married... ")
-			<< gettext("Might as well go home, there's nothing happening out here.");
-		return ss.str();
-	case 4:
-		ss << gettext("It's not a bad life, if you can get paid for hanging around ")
-			<< gettext("on street corners and eyeing up the pretty girls. Not a ")
-			<< gettext("single decent prospect in the bunch of them, mind. ")
-			<< gettext("Every silver lining has a cloud...");
-		return ss.str();
-	case 5:
-		ss << gettext("You've walked and walked and walked, and the prettiest ")
-			<< gettext("thing you've seen all day turned out not to be female. ")
-			<< gettext("It's time to go home...");
-		return ss.str();
-
-	case 6:
-		ss << gettext("When the weather is bad, the hunting is good. Get them cold ")
-			<< gettext("and wet enough and girls too proud to spread their legs ")
-			<< gettext("suddenly can't get their knickers off fast enough, if the job ")
-			<< gettext("only comes with room and board. The down side is that you ")
-			<< gettext("spend far too much time walking in the rain when everyone ")
-			<< gettext("sane is warm inside. Time to head home for a mug of cocoa ")
-			<< gettext("and a nice hot trollop.");
-		return ss.str();
-	case 7:
-		ss << gettext("There's a bit of skirt over there with a lovely ")
-			<< gettext("figure, and had a face that was pretty, ninety ")
-			<< gettext("years ago. Over yonder, a sweet young thing frolicking ")
-			<< gettext("through the marketplace. She's being ever so daring, ")
-			<< gettext("spending her daddy's gold, and hasn't yet realised ")
-			<< gettext("that there's a dozen of her daddy's goons keeping ")
-			<< gettext("a discreet eye on her.  It's like that everywhere ")
-			<< gettext("today. Maybe tomorrow will be better.");
-		return ss.str();
+	case 1: return  "Married. Married. Bodyguard. Already works for you. Married. Hideous. Not a woman. Married. Escorted. Married... Might as well go home, there's nothing happening out here.";
+	case 2: return	"It's not a bad life, if you can get paid for hanging around on street corners and eyeing up the pretty girls. Not a single decent prospect in the bunch of them, mind. Every silver lining has a cloud...";
+	case 3: return	"You've walked and walked and walked, and the prettiest thing you've seen all day turned out not to be female. It's time to go home...";
+	case 4: return	"When the weather is bad, the hunting is good. Get them cold and wet enough and girls too proud to spread their legs suddenly can't get their knickers off fast enough, if the job only comes with room and board. The down side is that you spend far too much time walking in the rain when everyone sane is warm inside. Time to head home for a mug of cocoa and a nice hot trollop.";
+	case 5: return	"There's a bit of skirt over there with a lovely figure, and had a face that was pretty, ninety years ago. Over yonder, a sweet young thing frolicking through the marketplace. She's being ever so daring, spending her daddy's gold, and hasn't yet realised that there's a dozen of her daddy's goons keeping a discreet eye on her.  It's like that everywhere today. Maybe tomorrow will be better.";
+	default:return	"The city is quiet. The same old streets; the same old faces.";
 	}
 	// I don't think this should happen, hence the overly dramatic prose
-	ss << gettext("The sky is filled with thunder, and portals are opening all ")
-		<< gettext("over Crossgate. You've seen five rains of frogs so far and ")
-		<< gettext("three madmen speaking in tongues. In the marketplace a ")
-		<< gettext("mechanical contraption materialised which walked like a man ")
-		<< gettext("and declaimed alien poetry for half an hour before bursting ")
-		<< gettext("into flames and collapsing. And the only thing all day that ")
-		<< gettext("looked female and and attractive turned out to be some ")
-		<< gettext("otherwordly species of carnivorous plant, and had to be ")
-		<< gettext("destroyed by the town guard. The only good thing about this ")
-		<< gettext("day is that it's over. It's time to go home.");
-	return	ss.str();
+	return "The sky is filled with thunder, and portals are opening all over Crossgate. You've seen five rains of frogs so far and three madmen speaking in tongues. In the marketplace a mechanical contraption materialised which walked like a man and declaimed alien poetry for half an hour before bursting into flames and collapsing. And the only thing all day that looked female and and attractive turned out to be some otherwordly species of carnivorous plant, and had to be destroyed by the town guard. The only good thing about this day is that it's over. It's time to go home.";
 }
 
 void cScreenTown::do_walk()
@@ -394,19 +343,14 @@ void cScreenTown::do_walk()
 	{
 		if (girl)
 		{
-			bool Rand = true;
-
-			SetImage(girlimage_id, g_Girls.GetImageSurface(girl, IMGTYPE_PROFILE, Rand, ImageNum));
+			SetImage(girlimage_id, g_Girls.GetImageSurface(girl, IMGTYPE_PROFILE, true, ImageNum));
 
 			if (g_Girls.IsAnimatedSurface(girl, IMGTYPE_PROFILE, ImageNum))
 				SetImage(girlimage_id, g_Girls.GetAnimatedSurface(girl, IMGTYPE_PROFILE, ImageNum));
 
 			HideImage(girlimage_id, false);
 		}
-		else
-		{
-			HideImage(girlimage_id, true);
-		}
+		else HideImage(girlimage_id, true);
 	}
 
 	// I'd like to move this to the handler script - once scripts are stable
@@ -503,6 +447,7 @@ void cScreenTown::check_clinic(int ClinicNum)
 	}
 	else
 	{	// player owns this brothel... go to it
+		g_Building = BUILDING_CLINIC;
 		g_CurrClinic = ClinicNum;
 		g_WinManager.push("Clinic Screen");
 	}
@@ -539,6 +484,7 @@ void cScreenTown::check_centre(int CentreNum)
 	}
 	else
 	{	// player owns this brothel... go to it
+		g_Building = BUILDING_CENTRE;
 		g_CurrCentre = CentreNum;
 		g_WinManager.push("Centre Screen");
 	}
@@ -575,6 +521,7 @@ void cScreenTown::check_arena(int ArenaNum)
 	}
 	else
 	{	// player owns this brothel... go to it
+		g_Building = BUILDING_ARENA;
 		g_CurrArena = ArenaNum;
 		g_WinManager.push("Arena Screen");
 	}
@@ -611,6 +558,7 @@ void cScreenTown::check_studio(int StudioNum)
 	}
 	else
 	{	// player owns this brothel... go to it
+		g_Building = BUILDING_STUDIO;
 		g_CurrStudio = StudioNum;
 		g_WinManager.push("Movie Screen");
 	}
@@ -647,6 +595,7 @@ void cScreenTown::check_farm(int FarmNum)
 	}
 	else
 	{	// player owns this brothel... go to it
+		g_Building = BUILDING_FARM;
 		g_CurrFarm = FarmNum;
 		g_WinManager.push("Farm Screen");
 	}

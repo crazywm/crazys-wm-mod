@@ -42,6 +42,7 @@ extern	bool	eventrunning;
 extern string g_ReturnText;
 extern cGangManager g_Gangs;
 extern bool g_AllTogle;
+extern int g_CurrentScreen;
 extern int g_Building;
 extern bool g_TryCentre;
 
@@ -67,6 +68,9 @@ void cCentreScreen::set_ids()
 
 void cCentreScreen::init()
 {
+	g_CurrentScreen = SCREEN_ARENA;
+	g_Building = BUILDING_CENTRE;
+
 	// buttons enable/disable
 	DisableButton(walk_id, g_TryCentre);
 }

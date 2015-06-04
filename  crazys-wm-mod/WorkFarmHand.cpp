@@ -34,10 +34,10 @@ extern cFarmManager g_Farm;
 // `J` Job Farm - Staff - job_is_cleaning
 bool cJobManager::WorkFarmHand(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-	int actiontype = ACTION_WORKFARM;
+	int actiontype = ACTION_WORKFARM; int actiontype2 = ACTION_WORKCLEANING;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
-	if (roll_a <= 50 && (g_Girls.DisobeyCheck(girl, actiontype, brothel) || g_Girls.DisobeyCheck(girl, ACTION_WORKCLEANING, brothel)))
+	if (roll_a <= 50 && (g_Girls.DisobeyCheck(girl, actiontype, brothel) || g_Girls.DisobeyCheck(girl, actiontype2, brothel)))
 	{
 		ss << " refused to work on the farm.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
@@ -169,13 +169,13 @@ bool cJobManager::WorkFarmHand(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	g_Girls.UpdateStat(girl, STAT_STRENGTH, max(0, (g_Dice % skill) - 2));
 
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoyF);
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKCLEANING, enjoyC);
+	g_Girls.UpdateEnjoyment(girl, actiontype2, enjoyC);
 	// Gain Traits
 	if (g_Dice.percent(girl->service()))
-		g_Girls.PossiblyGainNewTrait(girl, "Maid", 90, ACTION_WORKCLEANING, girlName + " has cleaned enough that she could work professionally as a Maid anywhere.", Day0Night1);
+		g_Girls.PossiblyGainNewTrait(girl, "Maid", 90, actiontype2, girlName + " has cleaned enough that she could work professionally as a Maid anywhere.", Day0Night1);
 	// Lose Traits
 	if (g_Dice.percent(girl->service()))
-		g_Girls.PossiblyLoseExistingTrait(girl, "Clumsy", 30, ACTION_WORKCLEANING, "It took her spilling hundreds of buckets, and just as many reprimands, but " + girl->m_Realname + " has finally stopped being so Clumsy.", Day0Night1);
+		g_Girls.PossiblyLoseExistingTrait(girl, "Clumsy", 30, actiontype2, "It took her spilling hundreds of buckets, and just as many reprimands, but " + girl->m_Realname + " has finally stopped being so Clumsy.", Day0Night1);
 
 	return false;
 }

@@ -781,6 +781,17 @@ struct sGirl
 	bool is_isdaughter()	{ return (m_States & (1 << STATUS_ISDAUGHTER)) != 0; }
 	bool is_warrior()		{ return !is_arena(); }
 
+	bool is_resting()
+	{
+		return ((m_DayJob == JOB_FILMFREETIME	&& m_NightJob == JOB_FILMFREETIME) ||
+			(m_DayJob == JOB_ARENAREST		&& m_NightJob == JOB_ARENAREST) ||
+			(m_DayJob == JOB_CENTREREST		&& m_NightJob == JOB_CENTREREST) ||
+			(m_DayJob == JOB_CLINICREST		&& m_NightJob == JOB_CLINICREST) ||
+			(m_DayJob == JOB_HOUSEREST		&& m_NightJob == JOB_HOUSEREST) ||
+			(m_DayJob == JOB_FARMREST		&& m_NightJob == JOB_FARMREST) ||
+			(m_DayJob == JOB_RESTING		&& m_NightJob == JOB_RESTING));
+	}
+
 	void fight_own_gang(bool &girl_wins);
 	void win_vs_own_gang(vector<sGang*> &v, int max_goons, bool &girl_wins);
 	void lose_vs_own_gang(vector<sGang*> &v, int max_goons, int girl_stats, int gang_stats, bool &girl_wins);

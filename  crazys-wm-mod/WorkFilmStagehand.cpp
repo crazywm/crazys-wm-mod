@@ -46,11 +46,10 @@ extern cGold g_Gold;
 // `J` Job Movie Studio - Crew - job_is_cleaning
 bool cJobManager::WorkFilmStagehand(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-	int actiontype = ACTION_WORKMOVIE;
+	int actiontype = ACTION_WORKMOVIE; int actiontype2 = ACTION_WORKCLEANING;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
-
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
-	if (roll_a <= 50 && (g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel) || g_Girls.DisobeyCheck(girl, ACTION_WORKCLEANING, brothel)))
+	if (roll_a <= 50 && (g_Girls.DisobeyCheck(girl, actiontype, brothel) || g_Girls.DisobeyCheck(girl, actiontype2, brothel)))
 	{
 		ss << " refused to work as a stagehand today.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
@@ -213,13 +212,13 @@ bool cJobManager::WorkFilmStagehand(sGirl* girl, sBrothel* brothel, bool Day0Nig
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, (g_Dice % skill) + 2);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
-	if (filming) g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, enjoym);
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKCLEANING, enjoyc);
+	if (filming) g_Girls.UpdateEnjoyment(girl, actiontype, enjoym);
+	g_Girls.UpdateEnjoyment(girl, actiontype2, enjoyc);
 	// Gain Traits
 	if (g_Dice.percent(girl->service()))
-		g_Girls.PossiblyGainNewTrait(girl, "Maid", 90, ACTION_WORKCLEANING, girlName + " has cleaned enough that she could work professionally as a Maid anywhere.", Day0Night1);
+		g_Girls.PossiblyGainNewTrait(girl, "Maid", 90, actiontype2, girlName + " has cleaned enough that she could work professionally as a Maid anywhere.", Day0Night1);
 	//lose traits
-		g_Girls.PossiblyLoseExistingTrait(girl, "Clumsy", 30, ACTION_WORKCLEANING, "It took her spilling hundreds of buckets, and just as many reprimands, but " + girl->m_Realname + " has finally stopped being so Clumsy.", Day0Night1);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Clumsy", 30, actiontype2, "It took her spilling hundreds of buckets, and just as many reprimands, but " + girl->m_Realname + " has finally stopped being so Clumsy.", Day0Night1);
 
 	return false;
 }

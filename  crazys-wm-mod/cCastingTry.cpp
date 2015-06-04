@@ -212,7 +212,6 @@ void cCastingTry::do_walk()
 	}
 	eventrunning = true;
 	sm.Load(dp, girl);
-	//g_Building = BUILDING_BROTHEL;
 }
 
 

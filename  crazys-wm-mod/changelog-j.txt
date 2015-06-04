@@ -2145,8 +2145,12 @@ Added cGameScript::Script_GetRandomGirl to allow scripts to randomly choose a gi
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.01.21
 
-
-
+###  Changes 6/3
+Did a little cleaning to FarmHand and StageHand.
+Added previous job the girl was on before a matron sent her to free time
+ - Added JobQkNm[NUM_JOBS]; to be 3-4 character name for each job
+Added a few more places where the building that is active is set.
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
 
 
 

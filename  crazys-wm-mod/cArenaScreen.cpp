@@ -77,13 +77,7 @@ void cArenaScreen::init()
 
 void cArenaScreen::process()
 {
-	/*
-	*	we need to make sure the ID variables are set
-	*/
-	if (!ids_set) {
-		set_ids();
-	}
-
+	if (!ids_set) set_ids();	// we need to make sure the ID variables are set
 	init();
 
 	if (g_InitWin)
@@ -91,12 +85,7 @@ void cArenaScreen::process()
 		EditTextItem(g_Arena.GetBrothelString(0), arenadetails_id);
 		g_InitWin = false;
 	}
-	/*
-	*	no events means we can go home
-	*/
-	if (g_InterfaceEvents.GetNumEvents() == 0) {
-		return;
-	}
+	if (g_InterfaceEvents.GetNumEvents() == 0)	return;	// no events means we can go home
 
 	/*
 	*	otherwise, compare event IDs
@@ -104,7 +93,9 @@ void cArenaScreen::process()
 	*	if it's the back button, pop the window off the stack
 	*	and we're done
 	*/
-	if (g_InterfaceEvents.CheckButton(back_id)) {
+	if (g_InterfaceEvents.CheckButton(back_id))
+	{
+		g_CurrentScreen = SCREEN_TOWN;
 		g_InitWin = true;
 		g_WinManager.Pop();
 		return;

@@ -32,6 +32,7 @@ extern cWindowManager g_WinManager;
 extern cMessageQue g_MessageQue;
 
 extern int g_CurrentScreen;
+extern int g_Building;
 extern int g_CurrBrothel;
 extern unsigned long g_Day, g_Month, g_Year;
 extern bool g_InitWin;
@@ -81,6 +82,8 @@ void cScreenBrothelManagement::init()
 	if (g_InitWin)
 	{
 		Focused();
+		g_CurrentScreen = SCREEN_BROTHEL;
+		g_Building = BUILDING_BROTHEL;
 
 		stringstream ss;
 		ss << gettext("Day: ") << g_Day << gettext(" Month: ") << g_Month << gettext(" Year: ") << g_Year << gettext(" -- Brothel: ") << g_Brothels.GetName(g_CurrBrothel);

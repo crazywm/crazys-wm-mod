@@ -42,6 +42,7 @@ extern	bool	eventrunning;
 extern string g_ReturnText;
 extern cGangManager g_Gangs;
 extern bool g_AllTogle;
+extern int g_CurrentScreen;
 extern int g_Building;
 
 bool cMovieScreen::ids_set = false;
@@ -66,6 +67,8 @@ void cMovieScreen::set_ids()
 
 void cMovieScreen::init()
 {
+	g_CurrentScreen = SCREEN_STUDIO;
+	g_Building = BUILDING_STUDIO;
 
 	/*
 	*	buttons enable/disable
