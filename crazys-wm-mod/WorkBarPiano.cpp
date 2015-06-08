@@ -327,6 +327,8 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKMUSIC, work);
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
+	
+	//Money
 	int roll_max = (g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA));
 	roll_max /= 4;
 	wages += 10 + g_Dice%roll_max;
@@ -337,19 +339,18 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 	// Improve stats
 	int xp = 10, libido = 1, skill = 3;
-
 	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
 
-	g_Girls.UpdateStat(girl, STAT_FAME, 1);
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
+	int I_fame = 1;						g_Girls.UpdateStat(girl, STAT_FAME, I_Fame);
+	int I_xp = xp;						g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	if (g_Dice % 2 == 1)
-		g_Girls.UpdateStat(girl, STAT_CONFIDENCE, g_Dice%skill);
+		int I_confidence = g_Dice%skill			g_Girls.UpdateStat(girl, STAT_CONFIDENCE, g_Dice%skill);
 	else
-		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, g_Dice%skill);
-	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill + 1);
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
+		int I_intelligence = g_Dice%skill		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, g_Dice%skill);
+	int I_performance = g_Dice%skill + 1 			g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill + 1);
+	int I_libido = libido 					g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	//gain traits
 	g_Girls.PossiblyGainNewTrait(girl, "Elegant", 75, ACTION_WORKMUSIC, "Playing the piano has given " + girlName + " an Elegant nature.", Day0Night1);
@@ -357,6 +358,20 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	//lose traits
 	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 30, ACTION_WORKMUSIC, girlName + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", Day0Night1);
 
+	if (cfg.debug.log_show_numbers())
+	{
+		ss << "\n\nNumbers:"
+			<< "\n Job Performance = " << (int)jobperformance
+			<< "\n Wages = " << (int)wages
+			<< "\n Tips = " << (int)tips
+			<< "\n Xp = " << I_xp
+			<< "\n Libido = " << I_libido
+			<< "\n Fame = " << I_fame
+			<< "\n Confidence = " << I_confidence
+			<< "\n Intelligence = " << I_intelligence
+			<< "\n Enjoy " << girl->enjoy_jobs[actiontype] << " = " << enjoy
+			;
+	}
 	return false;
 }
 double cJobManager::JP_BarPiano(sGirl* girl, bool estimate)// not used
@@ -366,31 +381,31 @@ double cJobManager::JP_BarPiano(sGirl* girl, bool estimate)// not used
 		g_Girls.GetSkill(girl, SKILL_PERFORMANCE));
 
 	//good traits
-	if (g_Girls.HasTrait(girl, "Charismatic"))    jobperformance += 10;
-	if (g_Girls.HasTrait(girl, "Sexy Air"))		  jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Cool Person"))    jobperformance += 5;   //people love to be around her	
-	if (g_Girls.HasTrait(girl, "Cute"))			  jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Charming"))		  jobperformance += 5;   //people like charming people
-	if (g_Girls.HasTrait(girl, "Elegant"))		  jobperformance += 15;  //Elegant people usally know how to play the piano lol
-	if (g_Girls.HasTrait(girl, "Quick Learner"))  jobperformance += 5;   //people like charming people
-	if (g_Girls.HasTrait(girl, "Psychic"))		  jobperformance += 10;  //knows what people want to hear
-	if (g_Girls.HasTrait(girl, "Idol"))			  jobperformance += 10;
-	if (g_Girls.HasTrait(girl, "Long Legs"))	  jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Nerd"))			  jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Playful Tail"))	  jobperformance += 5;	// use it to help her play lol
-	if (g_Girls.HasTrait(girl, "Princess"))		  jobperformance += 10;	//usally taught to play
-	if (g_Girls.HasTrait(girl, "Queen"))		  jobperformance += 10;	//usally taught to play
-	if (g_Girls.HasTrait(girl, "Noble"))		  jobperformance += 10;	//usally taught to play
-	if (g_Girls.HasTrait(girl, "Singer"))		  jobperformance += 10;	//Would understand rythem
+	if (g_Girls.HasTrait(girl, "Charismatic"))	jobperformance += 10;
+	if (g_Girls.HasTrait(girl, "Sexy Air"))		jobperformance += 5;
+	if (g_Girls.HasTrait(girl, "Cool Person"))	jobperformance += 5;   //people love to be around her	
+	if (g_Girls.HasTrait(girl, "Cute"))		jobperformance += 5;
+	if (g_Girls.HasTrait(girl, "Charming"))		jobperformance += 5;   //people like charming people
+	if (g_Girls.HasTrait(girl, "Elegant"))		jobperformance += 15;  //Elegant people usally know how to play the piano lol
+	if (g_Girls.HasTrait(girl, "Quick Learner"))	jobperformance += 5;   //people like charming people
+	if (g_Girls.HasTrait(girl, "Psychic"))		jobperformance += 10;  //knows what people want to hear
+	if (g_Girls.HasTrait(girl, "Idol"))		jobperformance += 10;
+	if (g_Girls.HasTrait(girl, "Long Legs"))	jobperformance += 5;
+	if (g_Girls.HasTrait(girl, "Nerd"))		jobperformance += 5;
+	if (g_Girls.HasTrait(girl, "Playful Tail"))	jobperformance += 5;	// use it to help her play lol
+	if (g_Girls.HasTrait(girl, "Princess"))		jobperformance += 10;	//usally taught to play
+	if (g_Girls.HasTrait(girl, "Queen"))		jobperformance += 10;	//usally taught to play
+	if (g_Girls.HasTrait(girl, "Noble"))		jobperformance += 10;	//usally taught to play
+	if (g_Girls.HasTrait(girl, "Singer"))		jobperformance += 10;	//Would understand rythem
 
 
 	//bad traits
 	if (g_Girls.HasTrait(girl, "Dependant"))	jobperformance -= 50;  //needs others to do the job	
 	if (g_Girls.HasTrait(girl, "Aggressive"))	jobperformance -= 20;  //gets mad easy and may attack people
 	if (g_Girls.HasTrait(girl, "Nervous"))		jobperformance -= 30;  //don't like to be around people
-	if (g_Girls.HasTrait(girl, "Meek"))			jobperformance -= 20;
-	if (g_Girls.HasTrait(girl, "Broken Will"))  jobperformance -= 50;
-	if (g_Girls.HasTrait(girl, "Slow Learner")) jobperformance -= 10;
+	if (g_Girls.HasTrait(girl, "Meek"))		jobperformance -= 20;
+	if (g_Girls.HasTrait(girl, "Broken Will"))	jobperformance -= 50;
+	if (g_Girls.HasTrait(girl, "Slow Learner"))	jobperformance -= 10;
 	if (g_Girls.HasTrait(girl, "Tone Deaf"))	jobperformance -= 75; //should never get good at this job
 
 	if (g_Girls.HasTrait(girl, "One Arm"))		jobperformance -= 30;
@@ -399,18 +414,18 @@ double cJobManager::JP_BarPiano(sGirl* girl, bool estimate)// not used
 	if (g_Girls.HasTrait(girl, "No Feet"))		jobperformance -= 20;
 	if (g_Girls.HasTrait(girl, "No Hands"))		jobperformance -= 50;
 	if (g_Girls.HasTrait(girl, "No Legs"))		jobperformance -= 40;
-	if (g_Girls.HasTrait(girl, "Missing Finger"))jobperformance -= 5;
-	if (g_Girls.HasTrait(girl, "Missing Fingers"))jobperformance -= 15;
+	if (g_Girls.HasTrait(girl, "Missing Finger"))	jobperformance -= 5;
+	if (g_Girls.HasTrait(girl, "Missing Fingers"))	jobperformance -= 15;
 	if (g_Girls.HasTrait(girl, "Blind"))		jobperformance -= 10;
-	if (g_Girls.HasTrait(girl, "Deaf"))			jobperformance -= 20;
+	if (g_Girls.HasTrait(girl, "Deaf"))		jobperformance -= 20;
 	if (g_Girls.HasTrait(girl, "Retarded"))		jobperformance -= 60;
 	if (g_Girls.HasTrait(girl, "Smoker"))		jobperformance -= 10;//would need smoke breaks
 
-	if (g_Girls.HasTrait(girl, "Alcoholic"))			jobperformance -= 25;
+	if (g_Girls.HasTrait(girl, "Alcoholic"))		jobperformance -= 25;
 	if (g_Girls.HasTrait(girl, "Fairy Dust Addict"))	jobperformance -= 25;
 	if (g_Girls.HasTrait(girl, "Shroud Addict"))		jobperformance -= 25;
 	if (g_Girls.HasTrait(girl, "Viras Blood Addict"))	jobperformance -= 25;
-	if (g_Girls.HasTrait(girl, "Cum Addict"))			jobperformance -= 5;
+	if (g_Girls.HasTrait(girl, "Cum Addict"))		jobperformance -= 5;
 
 
 
