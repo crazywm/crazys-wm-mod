@@ -263,47 +263,25 @@ double cJobManager::JP_Advertising(sGirl* girl, bool estimate)
 		}
 
 	}
-
+	// positiv traits
 	if (girl->has_trait("Actress"))					jobperformance += 10;	// 
-	if (girl->has_trait("Aggressive"))				jobperformance -= 5;	// 
-	if (girl->has_trait("Blind"))					jobperformance -= 10;	// 
-	if (girl->has_trait("Broken Will"))				jobperformance -= 20;	// 
 	if (girl->has_trait("Charismatic"))				jobperformance += 10;	//
 	if (girl->has_trait("Charming"))				jobperformance += 10;	//
-	if (girl->has_trait("Clumsy"))					jobperformance -= 5;	//
 	if (girl->has_trait("Cool Person"))				jobperformance += 10;	//
-	if (girl->has_trait("Cute"))					jobperformance += 5;	// 
-	if (girl->has_trait("Deaf"))					jobperformance -= 10;	// 
-	if (girl->has_trait("Dependant"))				jobperformance -= 10;	// 
+	if (girl->has_trait("Cute"))					jobperformance += 5;	//
 	if (girl->has_trait("Director"))				jobperformance += 10;	// 
 	if (girl->has_trait("Dominatrix"))				jobperformance += 10;	// 
-	if (girl->has_trait("Elegant"))					jobperformance += 5;	// 
-	if (girl->has_trait("Emprisoned Customer"))		jobperformance -= 30;	// she may be warning the other customers
+	if (girl->has_trait("Elegant"))					jobperformance += 5;	//
 	if (girl->has_trait("Exhibitionist"))			jobperformance += 15;	// Advertising topless
 	if (girl->has_trait("Fake Orgasm Expert"))		jobperformance += 10;	// 
 	if (girl->has_trait("Fearless"))				jobperformance += 5;	// 
 	if (girl->has_trait("Flexible"))				jobperformance += 5;	// 
 	if (girl->has_trait("Former Official"))			jobperformance += 10;	// 
-	if (girl->has_trait("Horrific Scars"))			jobperformance -= 10;	// 
 	if (girl->has_trait("Idol"))					jobperformance += 20;	// 
 	if (girl->has_trait("Iron Will"))				jobperformance += 5;	// 
-	if (girl->has_trait("Kidnapped"))				jobperformance -= 40;	// she may try to run away or get help
-	if (girl->has_trait("Malformed"))				jobperformance -= 20;	//
-	if (girl->has_trait("Meek"))					jobperformance -= 20;	// 
-	if (girl->has_trait("Mind Fucked"))				jobperformance -= 50;	// 
-	if (girl->has_trait("Mute"))					jobperformance -= 10;	// 
 	if (girl->has_trait("Natural Pheromones"))		jobperformance += 10;	// 
-	if (girl->has_trait("Nervous"))					jobperformance -= 5;	//
-	if (girl->has_trait("No Arms"))					jobperformance -= 30;	// 
-	if (girl->has_trait("No Hands"))				jobperformance -= 20;	// 
-	if (girl->has_trait("No Legs"))					jobperformance -= 30;	// 
-	if (girl->has_trait("Nymphomaniac"))			jobperformance -= 5;	// free samples?
-	if (girl->has_trait("One Arm"))					jobperformance -= 10;	// 
-	if (girl->has_trait("One Hand"))				jobperformance -= 5;	// 
-	if (girl->has_trait("One Leg"))					jobperformance -= 10;	// 
 	if (girl->has_trait("Open Minded"))				jobperformance += 5;	// 
 	if (girl->has_trait("Optimist"))				jobperformance += 5;	// 
-	if (girl->has_trait("Pessimist"))				jobperformance -= 5;	// 
 	if (girl->has_trait("Playful Tail"))			jobperformance += 5;	// 
 	if (girl->has_trait("Porn Star"))				jobperformance += 20;	// 
 	if (girl->has_trait("Powerful Magic"))			jobperformance += 20;	// 
@@ -312,18 +290,42 @@ double cJobManager::JP_Advertising(sGirl* girl, bool estimate)
 	if (girl->has_trait("Princess"))				jobperformance += 5;	// 
 	if (girl->has_trait("Psychic"))					jobperformance += 10;	//
 	if (girl->has_trait("Queen"))					jobperformance += 10;	// 
-	if (girl->has_trait("Retarded"))				jobperformance -= 20;	//
 	if (girl->has_trait("Sexy Air"))				jobperformance += 10;	//
 	if (girl->has_trait("Shape Shifter"))			jobperformance += 20;	// she can show who is available
-	if (girl->has_trait("Shy"))						jobperformance -= 10;	// 
 	if (girl->has_trait("Singer"))					jobperformance += 10;	// 
-	if (girl->has_trait("Skeleton"))				jobperformance -= 50;	// 
 	if (girl->has_trait("Slut"))					jobperformance += 10;	// 
 	if (girl->has_trait("Strong Magic"))			jobperformance += 10;	// 
 	if (girl->has_trait("Strong"))					jobperformance += 5;	// 
 	if (girl->has_trait("Whore"))					jobperformance += 10;	// 
 	if (girl->has_trait("Your Daughter"))			jobperformance += 20;	// 
 	if (girl->has_trait("Your Wife"))				jobperformance += 20;	// 
+
+	// negativ traits
+	if (girl->has_trait("Aggressive"))				jobperformance -= 5;	// 
+	if (girl->has_trait("Blind"))					jobperformance -= 10;	// 
+	if (girl->has_trait("Broken Will"))				jobperformance -= 20;	// 
+	if (girl->has_trait("Clumsy"))					jobperformance -= 5;	// 
+	if (girl->has_trait("Deaf"))					jobperformance -= 10;	// 
+	if (girl->has_trait("Dependant"))				jobperformance -= 10;	//  
+	if (girl->has_trait("Emprisoned Customer"))		jobperformance -= 30;	// she may be warning the other customers
+	if (girl->has_trait("Horrific Scars"))			jobperformance -= 10;	// 
+	if (girl->has_trait("Kidnapped"))				jobperformance -= 40;	// she may try to run away or get help
+	if (girl->has_trait("Malformed"))				jobperformance -= 20;	//
+	if (girl->has_trait("Meek"))					jobperformance -= 20;	// 
+	if (girl->has_trait("Mind Fucked"))				jobperformance -= 50;	// 
+	if (girl->has_trait("Mute"))					jobperformance -= 10;	// 
+	if (girl->has_trait("Nervous"))					jobperformance -= 5;	//
+	if (girl->has_trait("No Arms"))					jobperformance -= 30;	// 
+	if (girl->has_trait("No Hands"))				jobperformance -= 20;	// 
+	if (girl->has_trait("No Legs"))					jobperformance -= 30;	// 
+	if (girl->has_trait("Nymphomaniac"))			jobperformance -= 5;	// free samples?
+	if (girl->has_trait("One Arm"))					jobperformance -= 10;	// 
+	if (girl->has_trait("One Hand"))				jobperformance -= 5;	// 
+	if (girl->has_trait("One Leg"))					jobperformance -= 10;	// 
+	if (girl->has_trait("Pessimist"))				jobperformance -= 5;	// 
+	if (girl->has_trait("Retarded"))				jobperformance -= 20;	//
+	if (girl->has_trait("Shy"))						jobperformance -= 10;	// 
+	if (girl->has_trait("Skeleton"))				jobperformance -= 50;	// 
 	if (girl->has_trait("Zombie"))					jobperformance -= 50;	// 
 
 	return jobperformance;
