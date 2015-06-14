@@ -4254,24 +4254,40 @@ TiXmlElement* sGirl::SaveGirlXML(TiXmlElement* pRoot)
 	pGirl->SetAttribute("SpecialJobGoal", m_SpecialJobGoal);	// `J` added
 
 	// `J` changeing jobs to save as quick codes in stead of numbers so if new jobs are added they don't shift jobs
+	if (!cfg.folders.backupsaves())
+	{
+		// save day/night jobs
+		if (m_DayJob < 0 || m_DayJob > NUM_JOBS) pGirl->SetAttribute("DayJob", "255");
+		else pGirl->SetAttribute("DayJob", g_Brothels.m_JobManager.JobQkNm[m_DayJob]);
+		if (m_NightJob < 0 || m_NightJob > NUM_JOBS) pGirl->SetAttribute("NightJob", "255");
+		else pGirl->SetAttribute("NightJob", g_Brothels.m_JobManager.JobQkNm[m_NightJob]);
 
-	// save day/night jobs
-	if (m_DayJob < 0 || m_DayJob > NUM_JOBS) pGirl->SetAttribute("DayJob", "255");
-	else pGirl->SetAttribute("DayJob", g_Brothels.m_JobManager.JobQkNm[m_DayJob]);
-	if (m_NightJob < 0 || m_NightJob > NUM_JOBS) pGirl->SetAttribute("NightJob", "255");
-	else pGirl->SetAttribute("NightJob", g_Brothels.m_JobManager.JobQkNm[m_NightJob]);
+		// save prev day/night jobs
+		if (m_PrevDayJob < 0 || m_PrevDayJob > NUM_JOBS) pGirl->SetAttribute("PrevDayJob", "255");
+		else pGirl->SetAttribute("PrevDayJob", g_Brothels.m_JobManager.JobQkNm[m_PrevDayJob]);
+		if (m_PrevNightJob < 0 || m_PrevNightJob > NUM_JOBS) pGirl->SetAttribute("PrevNightJob", "255");
+		else pGirl->SetAttribute("PrevNightJob", g_Brothels.m_JobManager.JobQkNm[m_PrevNightJob]);
 
-	// save prev day/night jobs
-	if (m_PrevDayJob < 0 || m_PrevDayJob > NUM_JOBS) pGirl->SetAttribute("PrevDayJob", "255");
-	else pGirl->SetAttribute("PrevDayJob", g_Brothels.m_JobManager.JobQkNm[m_PrevDayJob]);
-	if (m_PrevNightJob < 0 || m_PrevNightJob > NUM_JOBS) pGirl->SetAttribute("PrevNightJob", "255");
-	else pGirl->SetAttribute("PrevNightJob", g_Brothels.m_JobManager.JobQkNm[m_PrevNightJob]);
+		// save prev day/night jobs
+		if (m_YesterDayJob < 0 || m_YesterDayJob > NUM_JOBS) pGirl->SetAttribute("YesterDayJob", "255");
+		else pGirl->SetAttribute("YesterDayJob", g_Brothels.m_JobManager.JobQkNm[m_YesterDayJob]);
+		if (m_YesterNightJob < 0 || m_YesterNightJob > NUM_JOBS) pGirl->SetAttribute("YesterNightJob", "255");
+		else pGirl->SetAttribute("YesterNightJob", g_Brothels.m_JobManager.JobQkNm[m_YesterNightJob]);
+	}
+	else
+	{
+		// save day/night jobs
+		pGirl->SetAttribute("DayJob", m_DayJob);
+		pGirl->SetAttribute("NightJob", m_NightJob);
 
-	// save prev day/night jobs
-	if (m_YesterDayJob < 0 || m_YesterDayJob > NUM_JOBS) pGirl->SetAttribute("YesterDayJob", "255");
-	else pGirl->SetAttribute("YesterDayJob", g_Brothels.m_JobManager.JobQkNm[m_YesterDayJob]);
-	if (m_YesterNightJob < 0 || m_YesterNightJob > NUM_JOBS) pGirl->SetAttribute("YesterNightJob", "255");
-	else pGirl->SetAttribute("YesterNightJob", g_Brothels.m_JobManager.JobQkNm[m_YesterNightJob]);
+		// save prev day/night jobs
+		pGirl->SetAttribute("PrevDayJob", m_PrevDayJob);
+		pGirl->SetAttribute("PrevNightJob", m_PrevNightJob);
+
+		// save prev day/night jobs
+		if (m_YesterDayJob < 0)		m_YesterDayJob = 255;	pGirl->SetAttribute("YesterDayJob", m_YesterDayJob);
+		if (m_YesterNightJob < 0)	m_YesterNightJob = 255;	pGirl->SetAttribute("YesterNightJob", m_YesterNightJob);
+	}
 
 	pGirl->SetAttribute("RunAway", m_RunAway);					// save runnayway vale
 	pGirl->SetAttribute("Spotted", m_Spotted);					// save spotted
