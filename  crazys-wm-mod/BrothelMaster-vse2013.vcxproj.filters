@@ -600,7 +600,6 @@
     <ClCompile Include="WorkArenaJousting.cpp" />
     <ClCompile Include="cScreenPropertyManagement.cpp" />
     <ClCompile Include="cScreenNewGame.cpp" />
-    <ClCompile Include="cScreenGallery.cpp" />
     <ClCompile Include="WorkCentreAngerManagement.cpp" />
     <ClCompile Include="WorkCentreExTherapy.cpp" />
     <ClCompile Include="WorkCentreTherapy.cpp" />
@@ -611,6 +610,8 @@
     <ClCompile Include="WorkCobbler.cpp" />
     <ClCompile Include="WorkTailor.cpp" />
     <ClCompile Include="WorkJeweler.cpp" />
+    <ClCompile Include="cScreenGallery.cpp" />
+    <ClCompile Include="cScreenTurnSummary.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cButton.h">
@@ -1027,13 +1028,16 @@
     <ClInclude Include="cScreenNewGame.h">
       <Filter>Misc</Filter>
     </ClInclude>
-    <ClInclude Include="cScreenGallery.h">
-      <Filter>Misc</Filter>
-    </ClInclude>
     <ClInclude Include="cFarm.h">
       <Filter>Misc</Filter>
     </ClInclude>
     <ClInclude Include="SDL_anigif.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="cScreenGallery.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="cScreenTurnSummary.h">
       <Filter>Misc</Filter>
     </ClInclude>
   </ItemGroup>

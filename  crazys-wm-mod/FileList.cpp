@@ -150,6 +150,28 @@ FileList::FileList(DirPath dp, const char *pattern)
 	FindClose(hFind);
 }
 
+ void FileList::add(const char * pattern)
+ {
+	 WIN32_FIND_DATAA FindFileData;
+	 HANDLE hFind;
+	 DirPath loc = folder.c_str();
+	 loc << pattern;
+	 string base = folder.c_str();
+	 string filename;
+	 hFind = FindFirstFileA(loc.c_str(), &FindFileData);
+
+	 int i = 0;
+	 while (hFind != INVALID_HANDLE_VALUE) {
+		 filename = FindFileData.cFileName;
+		 FileListEntry tempfile(base, filename);
+		 files.push_back(tempfile);
+		 if (FindNextFileA(hFind, &FindFileData) == 0) {
+			 break;
+		 }
+	 }
+	 FindClose(hFind);
+ }
+
 #endif
 
 

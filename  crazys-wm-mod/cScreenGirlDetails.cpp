@@ -184,28 +184,18 @@ void cScreenGirlDetails::init()
 	{
 		if (lastsexact != -1)
 		{
-			SetImage(girlimage_id, g_Girls.GetImageSurface(selected_girl, lastsexact, true, ImageNum));
-			// `J` added check in case the girl has no images and the game is using defaults (no .ani defaults)
-			if (selected_girl->m_GirlImages->m_Images[lastsexact].m_NumImages > 0)
-			{
-				if (g_Girls.IsAnimatedSurface(selected_girl, lastsexact, ImageNum))
-					SetImage(girlimage_id, g_Girls.GetAnimatedSurface(selected_girl, lastsexact, ImageNum));
-			}
+			PrepareImage(girlimage_id, selected_girl, lastsexact, true, ImageNum);
 			lastsexact = -1;
 		}
 		else
 		{
 			if (selected_girl->m_newRandomFixed >= 0)
-				SetImage(girlimage_id, g_Girls.GetImageSurface(selected_girl, IMGTYPE_PROFILE, false, selected_girl->m_newRandomFixed));
+			{
+				PrepareImage(girlimage_id, selected_girl, IMGTYPE_PROFILE, false, selected_girl->m_newRandomFixed);
+			}
 			else
 			{
-				SetImage(girlimage_id, g_Girls.GetImageSurface(selected_girl, IMGTYPE_PROFILE, true, ImageNum));
-				// `J` added check in case the girl has no images and the game is using defaults (no .ani defaults)
-				if (selected_girl->m_GirlImages->m_Images[IMGTYPE_PROFILE].m_NumImages > 0)
-				{
-					if (g_Girls.IsAnimatedSurface(selected_girl, IMGTYPE_PROFILE, ImageNum))
-						SetImage(girlimage_id, g_Girls.GetAnimatedSurface(selected_girl, IMGTYPE_PROFILE, ImageNum));
-				}
+				PrepareImage(girlimage_id, selected_girl, IMGTYPE_PROFILE, true, ImageNum);
 			}
 		}
 	}
@@ -464,7 +454,7 @@ bool cScreenGirlDetails::check_keys()
 		if (g_SpaceKey)
 		{
 			g_SpaceKey = false;
-			g_WinManager.Push(Gallery, &g_Gallery);
+			g_WinManager.push("Gallery");
 			g_InitWin = true;
 			return true;
 		}
@@ -571,7 +561,7 @@ void cScreenGirlDetails::check_events()
 	}
 	if (g_InterfaceEvents.CheckButton(gallery_id))
 	{
-		g_WinManager.Push(Gallery, &g_Gallery);
+		g_WinManager.push("Gallery");
 		g_InitWin = true;
 		return;
 	}
@@ -807,10 +797,7 @@ void cScreenGirlDetails::check_events()
 				else
 				{
 					// yes, so use that instead
-					if (cfg.folders.configXMLch())
-						dp = DirPath() << cfg.folders.characters() << selected_girl->m_Name << trig->m_Script;
-					else
-						dp = DirPath() << "Resources" << "Characters" << selected_girl->m_Name << trig->m_Script;
+					dp = DirPath(cfg.folders.characters().c_str()) << selected_girl->m_Name << trig->m_Script;
 				}
 			}
 			else
@@ -824,10 +811,7 @@ void cScreenGirlDetails::check_events()
 				}
 				else
 				{
-					if (cfg.folders.configXMLch())
-						dp = DirPath() << cfg.folders.characters() << selected_girl->m_Name << trig->m_Script;
-					else
-						dp = DirPath() << "Resources" << "Characters" << selected_girl->m_Name << trig->m_Script;
+						dp = DirPath(cfg.folders.characters().c_str()) << selected_girl->m_Name << trig->m_Script;
 				}
 			}
 			cScriptManager script_manager;

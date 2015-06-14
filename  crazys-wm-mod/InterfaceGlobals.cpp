@@ -67,7 +67,7 @@
 #include "cScreenGallery.h"
 #include "sConfig.h"
 #include "XmlUtil.h"
-
+#include "cScreenTurnSummary.h"
 
 using namespace std;
 
@@ -111,16 +111,17 @@ cScreenItemManagement g_ItemManagement;
 cScreenPrison g_PrisonScreen;
 cBuildingManagement g_BuildingManagementScreen;
 cScreenPropertyManagement g_PropertyManagementScreen;	// `J` added
+cScreenTurnSummary g_TurnSummary;
 
 cScreenGetInput g_GetInput;
 
 cInterfaceWindow g_GetString;		// GetString.txt
 cInterfaceWindow g_LoadGame;		// LoadMenu.txt
 cInterfaceWindow g_TransferGirls;	// Hard coded
-cInterfaceWindow g_Gallery;			// Hard coded
-cInterfaceWindow g_Gallery2;		// Hard coded
+//cInterfaceWindow g_Gallery;			// Hard coded
+//cInterfaceWindow g_Gallery2;		// Hard coded
 cInterfaceWindow g_ChangeJobs;		// Hard coded
-cInterfaceWindow g_Turnsummary;		// Hard coded
+//cInterfaceWindow g_Turnsummary;		// Hard coded
 cInterfaceWindow g_Preparing;
 
 cMessageBox g_MessageBox;
@@ -187,11 +188,11 @@ void FreeInterface()
 	g_GangManagement.Free();
 	g_GirlDetails.Free();
 	g_ChangeJobs.Free();
-	g_Turnsummary.Free();
+//	g_Turnsummary.Free();
 	g_Dungeon.Free();
 	g_SlaveMarket.Free();
 	g_TownScreen.Free();
-	g_GalleryScreen.Free();
+//	g_GalleryScreen.Free();
 	g_ArenaTry.Free();
 	g_CentreScreen.Free();
 	g_ClinicScreen.Free();
@@ -202,8 +203,8 @@ void FreeInterface()
 	g_HouseScreen.Free();
 	g_FarmScreen.Free();
 	g_MovieScreen.Free();
-	g_Gallery.Free();
-	g_Gallery2.Free();
+//	g_Gallery.Free();
+//	g_Gallery2.Free();
 	g_BuildingSetupScreen.Free();
 	g_GetInput.Free();
 	g_MayorsOfficeScreen.Free();
@@ -234,11 +235,11 @@ void ResetInterface()
 	g_GangManagement.Reset();
 	g_GirlDetails.Reset();
 	g_ChangeJobs.Reset();
-	g_Turnsummary.Reset();
+//	g_Turnsummary.Reset();
 	g_Dungeon.Reset();
 	g_SlaveMarket.Reset();
 	g_TownScreen.Reset();
-	g_GalleryScreen.Reset();
+//	g_GalleryScreen.Reset();
 	g_ArenaTry.Reset();
 	g_CentreScreen.Reset();
 	g_ClinicScreen.Reset();
@@ -249,8 +250,8 @@ void ResetInterface()
 	g_HouseScreen.Reset();
 	g_FarmScreen.Reset();
 	g_MovieScreen.Reset();
-	g_Gallery.Reset();
-	g_Gallery2.Reset();
+//	g_Gallery.Reset();
+//	g_Gallery2.Reset();
 	g_BuildingSetupScreen.Reset();
 	g_GetInput.Reset();
 	g_MayorsOfficeScreen.Reset();
@@ -576,69 +577,6 @@ void LoadInterface()
 	g_ChangeJobs.AddTextItem(g_interfaceid.STATIC_STATIC, 152, 8, 128, 32, "Night Shift");
 
 
-	// Load TurnSummary screen
-	dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "TurnSummary.xml";
-	TiXmlDocument docTurnSummary(dp.c_str());
-	if (docTurnSummary.LoadFile())
-	{
-		g_LogFile.write("Loading TurnSummary.xml");
-		string m_filename = dp.c_str();
-		string file = "blank.png";
-		TiXmlElement *el, *root_el = docTurnSummary.RootElement();
-		
-		for (el = root_el->FirstChildElement(); el; el = el->NextSiblingElement())
-		{
-
-			XmlUtil xu(m_filename);	string name = "";
-			xu.get_att(el, "Name", name);
-			xu.get_att(el, "XPos", a); xu.get_att(el, "YPos", b); xu.get_att(el, "Width", c); xu.get_att(el, "Height", d); xu.get_att(el, "Border", e, true);
-			xu.get_att(el, "Image", image, true);
-			
-			xu.get_att(el, "File", file, true);
-			xu.get_att(el, "Transparency", Transparency, true); xu.get_att(el, "Scale", Scale, true);
-			xu.get_att(el, "Text", text, true); xu.get_att(el, "FontSize", fontsize, true);
-			DirPath dp = ImagePath(file);
-
-			if (name == "Turn Summary")		g_Turnsummary.CreateWindow(a, b, c, d, e);
-			if (name == "CurrentBrothel")	g_Turnsummary.AddTextItem(g_interfaceid.TEXT_CURRENTBROTHEL, a, b, c, d, text, fontsize);
-			if (name == "LabelCategory")	g_Turnsummary.AddTextItem(g_interfaceid.STATIC_STATIC, a, b, c, d, text, fontsize);
-			if (name == "LabelItem")		g_Turnsummary.AddTextItem(g_interfaceid.TEXT_LABELITEM, a, b, c, d, text, fontsize);
-			if (name == "LabelEvent")		g_Turnsummary.AddTextItem(g_interfaceid.STATIC_STATIC, a, b, c, d, text, fontsize);
-			if (name == "LabelDesc")		g_Turnsummary.AddTextItem(g_interfaceid.TEXT_TSEVENTDESC, a, b, c, d, text, fontsize);
-			if (name == "GoTo")				g_Turnsummary.AddButton(image, g_interfaceid.BUTTON_TSGOTO, a, b, c, d, Transparency, Scale);
-			if (name == "NextWeek")			g_Turnsummary.AddButton(image, g_interfaceid.BUTTON_TSNEWWEEK, a, b, c, d, Transparency, Scale);
-			if (name == "Back")				g_Turnsummary.AddButton(image, g_interfaceid.BUTTON_TSCLOSE, a, b, c, d, Transparency, Scale);
-			if (name == "Prev")				g_Turnsummary.AddButton(image, g_interfaceid.BUTTON_TSPREVBROTHEL, a, b, c, d, Transparency, Scale);
-			if (name == "Next")				g_Turnsummary.AddButton(image, g_interfaceid.BUTTON_TSNEXTBROTHEL, a, b, c, d, Transparency, Scale);
-			if (name == "Category")			g_Turnsummary.AddListBox(g_interfaceid.LIST_TSCATEGORY, a, b, c, d, e, true);
-			if (name == "Item")				g_Turnsummary.AddListBox(g_interfaceid.LIST_TSITEM, a, b, c, d, e, true);
-			if (name == "Event")			g_Turnsummary.AddListBox(g_interfaceid.LIST_TSEVENTS, a, b, c, d, e, true);
-			if (name == "Background")		g_Turnsummary.AddImage(g_interfaceid.IMAGE_TSIMAGE, dp, a, b, c, d);
-//														  AddImage(g_interfaceid.IMAGE_TSIMAGE, dp, full_x, full_y, xw.w, xw.h, xw.stat, xw.r, xw.g, xw.b);
-
-
-		}
-	}
-	else // because there never was a TurnSummary.txt, just do defaults if there is no xml
-	{
-		g_LogFile.write("Loading Default TurnSummary");
-		g_Turnsummary.CreateWindow(8, 8, 786, 584, 1);
-		g_Turnsummary.AddTextItem(g_interfaceid.TEXT_CURRENTBROTHEL, 0, 0, 900, 32, "", 10);
-		g_Turnsummary.AddTextItem(g_interfaceid.STATIC_STATIC, 8, 8, 120, 32, "Category", 15);
-		g_Turnsummary.AddTextItem(g_interfaceid.STATIC_STATIC, 8, 106, 120, 32, "Item", 15);
-		g_Turnsummary.AddTextItem(g_interfaceid.STATIC_STATIC, 8, 266, 120, 32, "Event", 15);
-		g_Turnsummary.AddTextItem(g_interfaceid.TEXT_TSEVENTDESC, 575, 8, 202, 406, "", 12);
-		g_Turnsummary.AddButton("GoTo", g_interfaceid.BUTTON_TSGOTO, 598, 462, 160, 32, true);
-		g_Turnsummary.AddButton("NextWeek", g_interfaceid.BUTTON_TSNEWWEEK, 598, 504, 160, 32, true);
-		g_Turnsummary.AddButton("Back", g_interfaceid.BUTTON_TSCLOSE, 598, 546, 160, 32, true);
-		g_Turnsummary.AddButton("Prev", g_interfaceid.BUTTON_TSPREVBROTHEL, 598, 422, 72, 32, true);
-		g_Turnsummary.AddButton("Next", g_interfaceid.BUTTON_TSNEXTBROTHEL, 686, 422, 72, 32, true);
-		g_Turnsummary.AddListBox(g_interfaceid.LIST_TSCATEGORY, 8, 40, 120, 66, 1, true);
-		g_Turnsummary.AddListBox(g_interfaceid.LIST_TSITEM, 8, 136, 120, 128, 1, true);
-		g_Turnsummary.AddListBox(g_interfaceid.LIST_TSEVENTS, 8, 296, 120, 282, 1, true);
-		g_Turnsummary.AddImage(g_interfaceid.IMAGE_TSIMAGE, "", 136, 8, 434, 570);
-	}
-
 	// Load TransferGirls screen
 	dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "TransferGirls.xml";
 	TiXmlDocument docTransferGirls(dp.c_str());
@@ -693,7 +631,7 @@ void LoadInterface()
 	g_Preparing.AddTextItem(g_interfaceid.STATIC_STATIC, 65, 110, 180, 30, "Please", 25, true, false);
 	g_Preparing.AddTextItem(g_interfaceid.STATIC_STATIC, 70, 155, 180, 30, "Wait", 25, true, false);
 
-
+#if 0
 	// gallery screen
 	g_LogFile.write("Loading Gallery Screen");
 	g_Gallery.CreateWindow(16, 16, 768, 576, 1);
@@ -734,7 +672,7 @@ void LoadInterface()
 	g_Gallery2.AddButton("Next", g_interfaceid.BUTTON_GALLERYNEXT, 688, 488, 72, 32, true);
 	g_Gallery2.AddImage(g_interfaceid.IMAGE_GALLERYIMAGE, "", 8, 8, 584, 560);
 	g_Gallery2.AddTextItem(g_interfaceid.TEXT_GALLERYTYPE, 600, 528, 160, 32, "", 16, true, false);
-
+#endif
 	// `J` Bookmark - Loading the screens
 
 	// Main Menu
@@ -807,6 +745,11 @@ void LoadInterface()
 	g_GangManagement.load();
 	g_WinManager.add_window("Gangs", &g_GangManagement);
 
+	// Gang Management
+	g_LogFile.write("Loading Turn Summary Screen");
+	g_TurnSummary.load();
+	g_WinManager.add_window("TurnSummary", &g_TurnSummary);
+
 	// Dungeon Screen
 	g_LogFile.write("Loading Dungeon Screen");
 	g_Dungeon.load();
@@ -818,7 +761,7 @@ void LoadInterface()
 	g_WinManager.add_window("Town", &g_TownScreen);
 
 	// Gallery screen
-	g_LogFile.write("Loading Test Gallery Screen");
+	g_LogFile.write("Loading Gallery Screen");
 	g_GalleryScreen.load();
 	g_WinManager.add_window("Gallery", &g_GalleryScreen);
 

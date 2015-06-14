@@ -478,6 +478,7 @@ sDungeonGirl* cDungeon::GetGirl(int i)
 
 sDungeonGirl* cDungeon::GetGirlByName(string name)
 {
+	if (name == "") return 0;
 	sDungeonGirl* currentGirl = m_Girls;
 	while (currentGirl)
 	{

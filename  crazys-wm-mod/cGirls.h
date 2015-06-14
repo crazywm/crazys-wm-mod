@@ -37,6 +37,7 @@
 //#include "cNameList.h"
 #include "cAnimatedSurface.h"
 #include "cFont.h"
+#include "cImageItem.h"
 
 extern cRng g_Dice;
 
@@ -71,7 +72,6 @@ public:
 	virtual void UpdateEnjoymentTemp(sGirl* girl, int stat, int amount) = 0;
 };
 extern cAbstractGirls *g_GirlsPtr;
-
 
 // structure to hold randomly generated girl information
 typedef struct sRandomGirl
@@ -193,64 +193,6 @@ typedef struct sRandomGirl
 	}
 }sRandomGirl;
 
-
-
-// Character image
-class cImage
-{
-public:
-	cImage();
-	~cImage();
-	cImage* m_Next;
-	CSurface* m_Surface;
-	cAnimatedSurface* m_AniSurface;
-};
-
-// Character image management class
-class cImageList
-{
-public:
-	cImageList();
-	~cImageList();
-	void Free();
-
-	bool AddImage(string filename, string path = "", string file = "");
-	int DrawImage(int x, int y, int width, int height, bool random, int img);
-	CSurface* GetImageSurface(bool random, int& img);
-	cAnimatedSurface* GetAnimatedSurface(int& img);
-	bool IsAnimatedSurface(int& img);
-	string GetName(int i);
-
-	int m_NumImages;
-	cImage* m_Images;
-	cImage* m_LastImages;
-};
-
-class cAImgList	// class that manages a set of images from a directory
-{
-public:
-	cAImgList();
-	~cAImgList();
-	string m_Name;	// name of the directory containing the images
-	cImageList m_Images[NUM_IMGTYPES];	// the images
-	cAImgList* m_Next;
-};
-
-
-class cImgageListManager	// manages all the girl images
-{
-public:
-	cImgageListManager();
-	~cImgageListManager();
-	void Free();
-	cAImgList* ListExists(string name);	// returns the list if the list is already loaded, returns 0 if it is not
-	cAImgList* LoadList(string name);	// loads a list if it doensn't already exist and returns a pointer to it. returns pointer to list if it does exist
-
-private:
-	cAImgList* m_First;
-	cAImgList* m_Last;
-};
-
 typedef struct sChild
 {
 	int m_MultiBirth;
@@ -322,7 +264,6 @@ public:
 	//sChild * GenerateUnbornChild();
 
 };
-
 
 // Represents a single girl
 struct sGirl
@@ -415,8 +356,6 @@ struct sGirl
 	int m_Pay;									// used to keep track of pay this turn
 	int m_Tips;									// used to keep track of tips this turn
 
-	cAImgList* m_GirlImages;					// Images to display
-
 	long m_FetishTypes;							// the types of fetishes this girl has
 
 	unsigned char m_Flags[NUM_GIRLFLAGS];		// flags used by scripts
@@ -475,6 +414,7 @@ struct sGirl
 	static const unsigned int	max_skills;
 	static const unsigned int	max_statuses;
 	static const unsigned int	max_enjoy;
+	static const unsigned int	max_jobs;
 	/*
 	*	we need to be able to go the other way, too:
 	*	from string to number. The maps map stat/skill names
@@ -486,12 +426,14 @@ struct sGirl
 	static map<string, unsigned int>	skill_lookup;
 	static map<string, unsigned int>	status_lookup;
 	static map<string, unsigned int>	enjoy_lookup;
+	static map<string, unsigned int>	jobs_lookup;
 	static void		setup_maps();
 
 	static int lookup_stat_code(string s);
 	static int lookup_skill_code(string s);
 	static int lookup_status_code(string s);
 	static int lookup_enjoy_code(string s);
+	static int lookup_jobs_code(string s);
 	/*
 	*	Strictly speaking, methods don't belong in structs.
 	*	I've always thought that more of a guideline than a hard and fast rule
@@ -816,7 +758,6 @@ public:
 
 	void Free();
 
-	void LoadDefaultImages();
 	/*
 	*	load the templated girls
 	*	(if loading a save game doesn't load from the global template,
@@ -910,9 +851,6 @@ public:
 	string AdjustTraitGroupBreastSize(sGirl* girl, int steps, bool showmessage = false, bool Day0Night1 = false);
 	string AdjustTraitGroupFertility(sGirl* girl, int steps, bool showmessage = false, bool Day0Night1 = false);
 
-
-
-	void LoadGirlImages(sGirl* girl);	// loads a girls images using her name to check that directory in the characters folder
 	int DrawGirl(sGirl* girl, int x, int y, int width, int height, int ImgType, bool random = true, int img = 0);	// draws a image of a girl
 	CSurface* GetImageSurface(sGirl* girl, int ImgType, bool random, int& img, bool gallery = false);	// draws a image of a girl
 	cAnimatedSurface* GetAnimatedSurface(sGirl* girl, int ImgType, int& img);
@@ -994,8 +932,6 @@ public:
 	bool RegainVirginity(sGirl* girl, int temptime = 0, bool removeitem = false, bool inrememberlist = false);
 	bool CheckVirginity(sGirl* girl);
 
-	cImgageListManager* GetImgManager() { return &m_ImgListManager; }
-
 	void CalculateAskPrice(sGirl* girl, bool vari);
 
 	void AddTiredness(sGirl* girl);
@@ -1022,8 +958,6 @@ public:
 	/*
 	*	while I'm on, a few funcs to factor out some common code in DrawImages
 	*/
-	int num_images(sGirl *girl, int image_type) { return girl->m_GirlImages->m_Images[image_type].m_NumImages; }
-	int get_modified_image_type(sGirl *girl, int image_type, int preg_type);
 	int draw_with_default(sGirl* girl, int x, int y, int width, int height, int ImgType, bool random, int img);
 	int calc_abnormal_pc(sGirl *mom, sGirl *sprog, bool is_players);
 
@@ -1069,11 +1003,6 @@ private:
 
 	sRandomGirl* m_RandomGirls;
 	sRandomGirl* m_LastRandomGirls;
-
-	// These are the default images used when a character is missing images for that particular purpose
-	cAImgList* m_DefImages;
-	cImgageListManager m_ImgListManager;
-
 
 	int test_child_name(string name);
 

@@ -205,10 +205,7 @@ void cCastingTry::do_walk()
 	}
 	else {
 		// trigger the girl-specific one
-		if (cfg.folders.configXMLch())
-			dp = DirPath() << cfg.folders.characters() << girl->m_Name << trig->m_Script;
-		else
-			dp = DirPath() << "Resources" << "Characters" << girl->m_Name << trig->m_Script;
+		dp = DirPath(cfg.folders.characters().c_str()) << girl->m_Name << trig->m_Script;
 	}
 	eventrunning = true;
 	sm.Load(dp, girl);

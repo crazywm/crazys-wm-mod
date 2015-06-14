@@ -32,6 +32,7 @@
 #include "cSlider.h"
 #include "cXmlWidget.h"
 #include "DirPath.h"
+#include "cGirls.h"
 #include <vector>
 #include <map>
 
@@ -90,6 +91,8 @@ public:
 	void SetImage(int id, CSurface* image);
 	void SetImage(int id, cAnimatedSurface* image);
 	
+	void PrepareImage(int girlimage_id, sGirl* selected_girl, int imagetype = IMGTYPE_PROFILE, bool rand = true, int ImageNum = -1, bool gallery = false, string ImageName = "");
+
 	void AddEditBox(int & ID, int x, int y, int width, int height, int BorderSize);
 	void HideEditBox(int id, bool hide);
 

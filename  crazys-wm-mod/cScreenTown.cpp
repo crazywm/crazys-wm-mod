@@ -343,11 +343,7 @@ void cScreenTown::do_walk()
 	{
 		if (girl)
 		{
-			SetImage(girlimage_id, g_Girls.GetImageSurface(girl, IMGTYPE_PROFILE, true, ImageNum));
-
-			if (g_Girls.IsAnimatedSurface(girl, IMGTYPE_PROFILE, ImageNum))
-				SetImage(girlimage_id, g_Girls.GetAnimatedSurface(girl, IMGTYPE_PROFILE, ImageNum));
-
+			PrepareImage(girlimage_id, girl, IMGTYPE_PROFILE, true, ImageNum);
 			HideImage(girlimage_id, false);
 		}
 		else HideImage(girlimage_id, true);
@@ -368,10 +364,7 @@ void cScreenTown::do_walk()
 	}
 	else
 	{
-		if (cfg.folders.configXMLch())
-			dp = DirPath() << cfg.folders.characters() << girl->m_Name << trig->m_Script;
-		else
-			dp = DirPath() << "Resources" << "Characters" << girl->m_Name << trig->m_Script;	// trigger the girl-specific one
+			dp = DirPath(cfg.folders.characters().c_str()) << girl->m_Name << trig->m_Script;
 	}
 	eventrunning = true;
 	sm.Load(dp, girl);

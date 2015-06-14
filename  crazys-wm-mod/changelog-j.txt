@@ -2152,10 +2152,38 @@ Added previous job the girl was on before a matron sent her to free time
 Added a few more places where the building that is active is set.
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 
+###  Changes 6/4-14
+Fixed bug - Girl Details Clinic surgery/Centre threapy throwing requires doctor error when there is one
+Updated WorkBarPiano.cpp
+Changed several sets of constants from individual to enum - by belroshir
+Fixed a couple of bugs in whore jobs.
+Added Image type "Dom" for Dominatrix
+Added bypass for autosave - hold ctrl when pressing next week will not autosave the game for faster play
+Jobs now save with JobQkNm codes so adding new jobs in the future will not shift jobs.
+
+Moved all image handling from cGirls.(h/cpp) to cImageItem.(h/cpp)
+ - Images load when needed instead of when the game is loaded.
+ - Removed all the old Image code.
+Moved TurnSummary to its own file cScreenTurnSummary.(h/cpp)
+ - Major cleanup and consolidating
+Moved Gallery to its own file cScreenGallery.(h/cpp)
+ - Changed the Gallery to use a list instead of buttons for how many images the girl has.
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.00
+
+
+
+
+
+
+
 
 
  
 $$$$ TO DO - SHORT TERM - (for this version) $$$$
+
+
 Config.xml: 
  > Debug > ShowNumbers
  > Folders > PreferDefaults

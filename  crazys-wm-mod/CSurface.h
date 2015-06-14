@@ -51,6 +51,7 @@ public:
 	bool m_Cached;
 	bool loaded;
 	bool m_SaveSurface;
+	string m_Message;		// `J` added for new gallery screen
 
 private:
 	SDL_Surface* m_Temp;	// a temporary surface for resizing

@@ -377,11 +377,7 @@ int cBrothelManager::TotalFame(sBrothel * brothel)
 bool cBrothelManager::CheckScripts()
 {
 	sBrothel* current = m_Parent;
-	DirPath base;
-	if (cfg.folders.configXMLch())
-		base = DirPath() << cfg.folders.characters() << "";
-	else
-		base = DirPath() << "Resources" << "Characters" << "";
+	DirPath base = DirPath(cfg.folders.characters().c_str()) << "";
 	while (current)
 	{
 		sGirl* girl;
@@ -4296,6 +4292,7 @@ int cBrothelManager::GetGirlPos(int brothelID, sGirl* girl)
 
 sGirl* cBrothelManager::GetGirlByName(int brothelID, string name)
 {
+	if (name == "") return 0;
 	// Get the proper brothel
 	sBrothel* current = m_Parent;
 	while (current)

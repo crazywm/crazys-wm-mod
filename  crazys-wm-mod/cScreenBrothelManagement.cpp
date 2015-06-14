@@ -154,16 +154,16 @@ void cScreenBrothelManagement::check_events()
 		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, id_week))
 		{
 			g_InitWin = true;
-			AutoSaveGame();
+			if (!g_CTRLDown) { g_CTRLDown = false; AutoSaveGame(); }
 			NextWeek();
-			g_WinManager.Push(Turnsummary, &g_Turnsummary);
+			g_WinManager.push("TurnSummary");
 			return;
 		}
 		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, id_turn))
 		{
 			g_InitWin = true;
 			g_CurrentScreen = SCREEN_TURNSUMMARY;
-			g_WinManager.Push(Turnsummary, &g_Turnsummary);
+			g_WinManager.push("TurnSummary");
 			return;
 		}
 		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, id_quit))

@@ -28,11 +28,13 @@ extern cConfig cfg;
 int cRng::random(int n)
 {
 	float scaling_factor = rand() / float(RAND_MAX);
+	if (scaling_factor == 1) scaling_factor = 0.9999f;
 	return  int(scaling_factor * n);
 }
 double cRng::randomd(double n)
 {
 	float scaling_factor = rand() / float(RAND_MAX);
+	if (scaling_factor == 1) scaling_factor = 0.9999f;
 	return  double(scaling_factor * n);
 }
 

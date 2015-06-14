@@ -168,13 +168,14 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		}
 		else if (!is_sex_type_allowed(Cust.m_SexPref, brothel)) // it their first sexpref is banned then switch to the second
 		{
-			Cust.m_SexPref = Cust.m_SexPrefB;
+			SexType = Cust.m_SexPref = Cust.m_SexPrefB;
 			Cust.m_Stats[STAT_HAPPINESS] = 32 + g_Dice % 9 + g_Dice % 9;	// `J` and they are less happy
 		}
 		else	// `J` otherwise they are happy with their first choice.
 		{
 			// WD:	Set the customers begining happiness/satisfaction
 			Cust.m_Stats[STAT_HAPPINESS] = 42 + g_Dice % 10 + g_Dice % 10; // WD: average 51 range 42 to 60
+			SexType = Cust.m_SexPref;
 		}
 
 		// WD:	Consolidate GROUP Sex Calcs here

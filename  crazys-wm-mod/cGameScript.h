@@ -113,7 +113,10 @@ private:
 	sScript* Script_SignTarget(sScript* Script);					// `J` new
 	sScript* Script_PresentedTarget(sScript* Script);				// `J` new
 	sScript* Script_GetRandomGirl(sScript* Script);					// `J` new
+	sScript* Script_DomTarget(sScript* Script);						// `J` new
 	//sScript* Script_GirlNameTarget(sScript* Script);
+
+	// `J` When modifying Image types, search for "J-Change-Image-Types"  :  found in >> cGameScript.h
 
 	// The overloaded process function
 	sScript *Process(sScript *Script);

@@ -151,14 +151,8 @@ void cScreenMovieMaker::update_image()
 {
 	if((selected_girl)) //&& !IsMultiSelected(girllist_id))
 	{
-		bool Rand = true;
-
-		SetImage(girlimage_id, g_Girls.GetImageSurface(selected_girl, IMGTYPE_PROFILE, Rand, ImageNum));
-
-		if(g_Girls.IsAnimatedSurface(selected_girl, IMGTYPE_PROFILE, ImageNum))
-			SetImage(girlimage_id, g_Girls.GetAnimatedSurface(selected_girl, IMGTYPE_PROFILE, ImageNum));
-
-		HideImage(girlimage_id, false); 
+		PrepareImage(girlimage_id, selected_girl, IMGTYPE_PROFILE, true, ImageNum);
+		HideImage(girlimage_id, false);
 	}
 	else
 	{		

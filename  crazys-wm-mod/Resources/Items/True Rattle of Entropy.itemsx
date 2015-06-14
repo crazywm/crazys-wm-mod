@@ -2,7 +2,7 @@
 <Items>
 <Item Name="True Rattle of Entropy"
       Desc="The head of this rattle is believed to be a sleeping Atropol - the undead foetus of a stillborn god. The full extent of its power is beyond the comprehension of mortal flesh. (S) (+90 Mag, +100 constitution, -90 Comb, adds Incorporeal and Quick Learner)"
-      Type="Weapon"
+      Type="Small Weapon"
       Badness="0"
       Special="None"
       Cost="15000"
@@ -16,7 +16,7 @@
 </Item>
 <Item Name="True Rattle of Entropy"
       Desc="The head of this rattle is believed to be a sleeping Atropol - the undead foetus of a stillborn god. The full extent of its power is beyond the comprehension of mortal flesh. (S) (+90 Mag, +100 constitution, -90 Comb, adds Incorporeal and Quick Learner)"
-      Type="Weapon"
+      Type="Small Weapon"
       Badness="0"
       Special="None"
       Cost="15000"

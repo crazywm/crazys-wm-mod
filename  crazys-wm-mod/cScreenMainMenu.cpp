@@ -67,14 +67,8 @@ void cScreenMainMenu::init()
 	{
 		Focused();
 		g_InitWin = false;
-		g_Girls.GetImgManager()->LoadList("Default");
-
 		
-		DirPath location;
-		if (cfg.folders.configXMLsa())
-			location = DirPath() << cfg.folders.saves();
-		else
-			location = DirPath() << "Saves";
+		DirPath location = DirPath(cfg.folders.saves().c_str());
 		const char *pattern = "autosave.gam";
 		FileList fl(location, pattern);
 		DisableButton(continue_id, fl.size() < 1);		// `J` disable continue button if autosave.gam is not found

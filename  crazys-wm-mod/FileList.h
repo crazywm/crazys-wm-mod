@@ -102,6 +102,7 @@ public:
  *	but using a different pattern
  */
 virtual	void	scan(const char *);
+virtual	void	add(const char *);		// `J` added
 /*
  *	I need to concatentate these babies...
  */

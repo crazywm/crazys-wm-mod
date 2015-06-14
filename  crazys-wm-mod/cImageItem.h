@@ -22,22 +22,31 @@
 #include "CSurface.h"
 #include "cAnimatedSurface.h"
 #include "cInterfaceObject.h"
+#include "sConfig.h"
+#include "Constants.h"
+
 
 class CSurface;
+
+
+// Character image
+class cImage
+{
+public:
+	cImage();
+	~cImage();
+	cImage* m_Next;
+	CSurface* m_Surface;
+	cAnimatedSurface* m_AniSurface;
+};
 
 class cImageItem : public cInterfaceObject
 {
 	bool m_Hidden;
 public:
-	cImageItem() {
-		m_Image 	= 0;
-		m_Next		= 0;
-		m_Surface	= 0;
-		m_AnimatedImage = 0;
-		m_loaded	= false;
-		m_Hidden	= false;
-	}
+	cImageItem();
 	~cImageItem();
+
 
 	bool CreateImage(int id, string filename, int x, int y, int width, int height, bool statImage = false, int R = 0, int G = 0, int B = 0);
 	bool CreateAnimatedImage(int id, string filename, string dataFilename, int x, int y, int width, int height);

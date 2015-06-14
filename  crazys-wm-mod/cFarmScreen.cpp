@@ -45,6 +45,8 @@ extern bool g_AllTogle;
 extern int g_CurrentScreen;
 extern int g_Building;
 
+extern	bool	g_CTRLDown;
+
 
 bool cFarmScreen::ids_set = false;
 
@@ -132,7 +134,7 @@ void cFarmScreen::process()
 	else if (g_InterfaceEvents.CheckButton(turns_id))
 	{
 		g_InitWin = true;
-		g_WinManager.Push(Turnsummary, &g_Turnsummary);
+		g_WinManager.push("TurnSummary");
 		return;
 	}
 	else if (g_InterfaceEvents.CheckButton(setup_id))
@@ -151,9 +153,9 @@ void cFarmScreen::process()
 	else if (g_InterfaceEvents.CheckButton(weeks_id))
 	{
 		g_InitWin = true;
-		AutoSaveGame();
+		if (!g_CTRLDown) { g_CTRLDown = false; AutoSaveGame(); }
 		NextWeek();
-		g_WinManager.Push(Turnsummary, &g_Turnsummary);
+		g_WinManager.push("TurnSummary");
 		return;
 	}
 	/*else if(g_InterfaceEvents.CheckButton(nextbrothel_id))

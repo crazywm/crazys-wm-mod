@@ -98,7 +98,6 @@ void cScreenNewGame::init()
 	{
 		Focused();
 		g_InitWin = false;
-		g_Girls.GetImgManager()->LoadList("Default");
 	}
 
 	if (!g_InitWin) return;

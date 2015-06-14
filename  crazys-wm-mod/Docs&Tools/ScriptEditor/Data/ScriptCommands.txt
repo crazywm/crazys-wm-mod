@@ -328,3 +328,4 @@ CHOICE 8
 "Farm"
 "House"
 INT 0 6
+"Have Dominatrix"

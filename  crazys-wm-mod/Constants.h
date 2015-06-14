@@ -35,290 +35,308 @@ enum {
 };
 
 // `J` added for .06.01.18 - not used for much yet 
-//                                              // P T V O //
-const unsigned int GENDER_FEMALE/*     */ = 0;	// 0 0 1 1 //	all female
-const unsigned int GENDER_FEMALENEUT/* */ = 1;	// 0 0 1 0 //	female with vagina but no ovaries
-const unsigned int GENDER_FUTA/*       */ = 2;	// 1 0 1 1 //	female with penis but no testes
-const unsigned int GENDER_FUTANEUT/*   */ = 3;	// 1 0 1 0 //	female with vagina and penis but no ovaries or testes
-const unsigned int GENDER_FUTAFULL/*   */ = 4;	// 1 1 1 1 //	female with penis and testes
-const unsigned int GENDER_NONEFEMALE/* */ = 5;	// 0 0 0 0 //	no gender but more female
-const unsigned int GENDER_NONE/*       */ = 6;	// 0 0 0 0 //	no gender at all
-const unsigned int GENDER_NONEMALE/*   */ = 7;	// 0 0 0 0 //	no gender but more male
-const unsigned int GENDER_HERMFULL/*   */ = 8;	// 1 1 1 1 //	male with vagina and ovaries
-const unsigned int GENDER_HERMNEUT/*   */ = 9;	// 1 0 1 0 //	male with penis and vagina but no testes or ovaries
-const unsigned int GENDER_HERM/*       */ = 10;	// 1 1 1 0 //	male with vagina but no ovaries
-const unsigned int GENDER_MALENEUT/*   */ = 11;	// 1 0 0 0 //	male with penis but no testes
-const unsigned int GENDER_MALE/*       */ = 12;	// 1 1 0 0 //	all male
 
+//GENDER enum					// P T V O //
+enum GENDER{
+	GENDER_FEMALE/*     */ = 0,	// 0 0 1 1 //	all female
+	GENDER_FEMALENEUT/* */,     // 0 0 1 0 //	female with vagina but no ovaries
+	GENDER_FUTA/*       */,     // 1 0 1 1 //	female with penis but no testes
+	GENDER_FUTANEUT/*   */,     // 1 0 1 0 //	female with vagina and penis but no ovaries or testes
+	GENDER_FUTAFULL/*   */,     // 1 1 1 1 //	female with penis and testes
+	GENDER_NONEFEMALE/* */,     // 0 0 0 0 //	no gender but more female
+	GENDER_NONE/*       */,     // 0 0 0 0 //	no gender at all
+	GENDER_NONEMALE/*   */,     // 0 0 0 0 //	no gender but more male
+	GENDER_HERMFULL/*   */,     // 1 1 1 1 //	male with vagina and ovaries
+	GENDER_HERMNEUT/*   */,     // 1 0 1 0 //	male with penis and vagina but no testes or ovaries
+	GENDER_HERM/*       */,	    // 1 1 1 0 //	male with vagina but no ovaries
+	GENDER_MALENEUT/*   */,	    // 1 0 0 0 //	male with penis but no testes
+	GENDER_MALE/*       */,	    // 1 1 0 0 //	all male
+	NUM_GENDERS/*       */      //         //   Number of different genders
+};//End GENDER enum
 
 // Editable Character Stats and skills (used for traits)
-const unsigned int STAT_CHARISMA		= 0;
-const unsigned int STAT_HAPPINESS		= 1;
-const unsigned int STAT_LIBIDO			= 2;
-const unsigned int STAT_CONSTITUTION	= 3;
-const unsigned int STAT_INTELLIGENCE	= 4;
-const unsigned int STAT_CONFIDENCE		= 5;
-const unsigned int STAT_MANA			= 6;
-const unsigned int STAT_AGILITY			= 7;
-const unsigned int STAT_FAME			= 8;
-const unsigned int STAT_LEVEL			= 9;
-const unsigned int STAT_ASKPRICE		= 10;
-const unsigned int STAT_HOUSE			= 11;
-const unsigned int STAT_EXP				= 12;
-const unsigned int STAT_AGE				= 13;
-const unsigned int STAT_OBEDIENCE		= 14;
-const unsigned int STAT_SPIRIT			= 15;
-const unsigned int STAT_BEAUTY			= 16;
-const unsigned int STAT_TIREDNESS		= 17;
-const unsigned int STAT_HEALTH			= 18;
-const unsigned int STAT_PCFEAR			= 19;
-const unsigned int STAT_PCLOVE			= 20;
-const unsigned int STAT_PCHATE			= 21;
-const unsigned int STAT_MORALITY		= 22;
-const unsigned int STAT_REFINEMENT		= 23;
-const unsigned int STAT_DIGNITY			= 24;
-const unsigned int STAT_LACTATION		= 25;
-const unsigned int STAT_STRENGTH		= 26;
-const unsigned int STAT_NPCLOVE			= 27;  //will be used for when a girl has a bf/gf to do different events
-const int					NUM_STATS	= 28;	// 1 more than the last stat
+//STATS enum
+enum STATS{
+	STAT_CHARISMA		= 0	,	//
+	STAT_HAPPINESS			,	//
+	STAT_LIBIDO				,	//
+	STAT_CONSTITUTION		,	//
+	STAT_INTELLIGENCE		,	//
+	STAT_CONFIDENCE			,	//
+	STAT_MANA				,	//
+	STAT_AGILITY			,	//
+	STAT_FAME				,	//
+	STAT_LEVEL				,	//
+	STAT_ASKPRICE			,	//
+	STAT_HOUSE				,	//
+	STAT_EXP				,	//
+	STAT_AGE				,	//
+	STAT_OBEDIENCE			,	//
+	STAT_SPIRIT				,	//
+	STAT_BEAUTY				,	//
+	STAT_TIREDNESS			,	//
+	STAT_HEALTH				,	//
+	STAT_PCFEAR				,	//
+	STAT_PCLOVE				,	//
+	STAT_PCHATE				,	//
+	STAT_MORALITY			,	//
+	STAT_REFINEMENT			,	//
+	STAT_DIGNITY			,	//
+	STAT_LACTATION			,	//
+	STAT_STRENGTH			,	//
+	STAT_NPCLOVE			,	// will be used for when a girl has a bf/gf to do different events
+	NUM_STATS					// 1 more than the last stat
+};//End STATS enum
 
 // `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in >> Constants.h
 
 // Skills
-const unsigned int SKILL_ANAL			= 0;
-const unsigned int SKILL_MAGIC			= 1;
-const unsigned int SKILL_BDSM			= 2;
-const unsigned int SKILL_NORMALSEX		= 3;
-const unsigned int SKILL_BEASTIALITY	= 4;
-const unsigned int SKILL_GROUP			= 5;
-const unsigned int SKILL_LESBIAN		= 6;
-const unsigned int SKILL_SERVICE		= 7;
-const unsigned int SKILL_STRIP			= 8;
-const unsigned int SKILL_COMBAT			= 9;
-const unsigned int SKILL_ORALSEX		= 10;
-const unsigned int SKILL_TITTYSEX		= 11;
-const unsigned int SKILL_MEDICINE		= 12;
-const unsigned int SKILL_PERFORMANCE	= 13;
-const unsigned int SKILL_HANDJOB		= 14;
-const unsigned int SKILL_CRAFTING		= 15;
-const unsigned int SKILL_HERBALISM		= 16;
-const unsigned int SKILL_FARMING		= 17;
-const unsigned int SKILL_BREWING		= 18;
-const unsigned int SKILL_ANIMALHANDLING	= 19;
-const unsigned int SKILL_FOOTJOB		= 20;
-const unsigned int SKILL_COOKING		= 21;
-const unsigned int NUM_SKILLS			= 22;	// 1 more than the last skill
+//SKILLS enum
+enum SKILLS{
+	SKILL_ANAL			= 0	,	//
+	SKILL_MAGIC				,	//
+	SKILL_BDSM				,	//
+	SKILL_NORMALSEX			,	//
+	SKILL_BEASTIALITY		,	//
+	SKILL_GROUP				,	//
+	SKILL_LESBIAN			,	//
+	SKILL_SERVICE			,	//
+	SKILL_STRIP				,	//
+	SKILL_COMBAT			,	//
+	SKILL_ORALSEX			,	//
+	SKILL_TITTYSEX			,	//
+	SKILL_MEDICINE			,	//
+	SKILL_PERFORMANCE		,	//
+	SKILL_HANDJOB			,	//
+	SKILL_CRAFTING			,	//
+	SKILL_HERBALISM			,	//
+	SKILL_FARMING			,	//
+	SKILL_BREWING			,	//
+	SKILL_ANIMALHANDLING	,	//
+	SKILL_FOOTJOB			,	//
+	SKILL_COOKING			,	//
+	NUM_SKILLS				,	// 1 more than the last skill
 //const unsigned int SKILL_MAST		= ;
+};//End SKILLS enum
 
 // STATUS
-const unsigned int NUM_STATUS					= 17;
-const unsigned int STATUS_NONE					= 0;
-const unsigned int STATUS_POISONED				= 1;
-const unsigned int STATUS_BADLY_POISONED		= 2;
-const unsigned int STATUS_PREGNANT				= 3;
-const unsigned int STATUS_PREGNANT_BY_PLAYER	= 4;
-const unsigned int STATUS_SLAVE					= 5;
-const unsigned int STATUS_HAS_DAUGHTER			= 6;
-const unsigned int STATUS_HAS_SON				= 7;
-const unsigned int STATUS_INSEMINATED			= 8;
-const unsigned int STATUS_CONTROLLED			= 9;
-const unsigned int STATUS_CATACOMBS				= 10;
-const unsigned int STATUS_ARENA					= 11;
-const unsigned int STATUS_YOURDAUGHTER			= 12;
-const unsigned int STATUS_ISDAUGHTER			= 13;
-const unsigned int STATUS_DATING_PERV			= 14;
-const unsigned int STATUS_DATING_MEAN			= 15;
-const unsigned int STATUS_DATING_NICE			= 16;
+//STATUS enum
+enum STATUS{
+	STATUS_NONE					= 0	,	//
+	STATUS_POISONED					,	//
+	STATUS_BADLY_POISONED			,	//
+	STATUS_PREGNANT					,	//
+	STATUS_PREGNANT_BY_PLAYER		,	//
+	STATUS_SLAVE					,	//
+	STATUS_HAS_DAUGHTER				,	//
+	STATUS_HAS_SON					,	//
+	STATUS_INSEMINATED				,	//
+	STATUS_CONTROLLED				,	//
+	STATUS_CATACOMBS				,	//
+	STATUS_ARENA					,	//
+	STATUS_YOURDAUGHTER				,	//
+	STATUS_ISDAUGHTER				,	//
+	STATUS_DATING_PERV				,	//
+	STATUS_DATING_MEAN				,	//
+	STATUS_DATING_NICE				,	//
+	NUM_STATUS						,	// 1 more than the last status
+};//End STATUS enum
 
 // Jobs
 // `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> Constants.h
 
-// `J` Job Brothel - General
-const unsigned int JOBFILTER_GENERAL	= 0;
-const unsigned int JOB_RESTING			= 0;	// relaxes and takes some time off
-const unsigned int JOB_TRAINING			= 1;	// trains skills at a basic level
-const unsigned int JOB_CLEANING			= 2;	// cleans the building
-const unsigned int JOB_SECURITY			= 3;	// Protects the building and its occupants
-const unsigned int JOB_ADVERTISING		= 4;	// Goes onto the streets to advertise the buildings services
-const unsigned int JOB_CUSTOMERSERVICE	= 5;	// looks after customers needs (customers are happier when people are doing this job)
-const unsigned int JOB_MATRON			= 6;	// looks after the needs of the girls (only 1 allowed)
-const unsigned int JOB_TORTURER			= 7;	// Tortures the people in the dungeons to help break their will (this is in addition to player torture) (only 1 allowed)
-const unsigned int JOB_EXPLORECATACOMBS	= 8;	// goes adventuring in the catacombs
-const unsigned int JOB_BEASTCARER		= 9;	// takes care of beasts that are housed in the brothel.
-// `J` Job Brothel - Bar
-const unsigned int JOBFILTER_BAR		= 1;
-const unsigned int JOB_BARMAID			= 10;	// serves at the bar
-const unsigned int JOB_WAITRESS			= 11;	// waits on the tables
-const unsigned int JOB_SINGER			= 12;	// sings in the bar
-const unsigned int JOB_PIANO			= 13;	// plays the piano for customers
-const unsigned int JOB_ESCORT			= 14;	// High lvl whore.  Sees less clients but needs higher skill high lvl items and the such to make them happy
-//const unsigned int JOB_WETTSHIRT		= ;
-// `J` Job Brothel - Hall
-const unsigned int JOBFILTER_GAMBHALL	= 2;
-const unsigned int JOB_DEALER			= 15;	// dealer for gambling tables (requires at least 3 for all jobs in this filter to work)
-const unsigned int JOB_ENTERTAINMENT	= 16;	// sings, dances and other shows for patrons
-const unsigned int JOB_XXXENTERTAINMENT	= 17;	// naughty shows for patrons
-const unsigned int JOB_WHOREGAMBHALL	= 18;	// looks after customers sexual needs
-//const unsigned int JOB_FOXYBOXING		= ;
-// `J` Job Brothel - Sleazy Bar
-const unsigned int JOBFILTER_SLEAZYBAR	= 3;
-const unsigned int JOB_SLEAZYBARMAID	= 19;
-const unsigned int JOB_SLEAZYWAITRESS	= 20;
-const unsigned int JOB_BARSTRIPPER		= 21;
-const unsigned int JOB_BARWHORE			= 22;
-// `J` Job Brothel - Brothel
-const unsigned int JOBFILTER_BROTHEL	= 4;
-const unsigned int JOB_MASSEUSE			= 23;	// gives massages to patrons and sometimes sex
-const unsigned int JOB_BROTHELSTRIPPER	= 24;	// strips for customers and sometimes sex
-const unsigned int JOB_PEEP				= 25;	// Peep show
-const unsigned int JOB_WHOREBROTHEL		= 26;	// whore herself inside the building
-const unsigned int JOB_WHORESTREETS		= 27;	// whore self on the city streets
+// Job Filter Enum
+enum JOBFILTER {
+  JOBFILTER_GENERAL = 0,
+  JOBFILTER_BAR,
+  JOBFILTER_GAMBHALL,
+  JOBFILTER_SLEAZYBAR,
+  JOBFILTER_BROTHEL,
+  JOBFILTER_MOVIESTUDIO,
+  JOBFILTER_STUDIOCREW,
+  JOBFILTER_ARENA,
+  JOBFILTER_ARENASTAFF,
+  JOBFILTER_COMMUNITYCENTRE,
+  JOBFILTER_COUNSELINGCENTRE,
+  JOBFILTER_CLINIC,	// teaches can train girls only up to their own skill level
+  JOBFILTER_CLINICSTAFF,
+  JOBFILTER_FARMSTAFF,
+  JOBFILTER_LABORERS,
+  JOBFILTER_PRODUCERS,
+  JOBFILTER_HOUSE,
+  JOBFILTER_NONE,
+  NUMJOBTYPES
+};// END JOBFILTER Enum
 
-// `J` Job Movie Studio - Actress
-const unsigned int JOBFILTER_MOVIESTUDIO = 5;
-const unsigned int JOB_FILMBEAST		= 28;	// films this sort of scene in the movie (uses beast resource)
-const unsigned int JOB_FILMSEX			= 29;	// films this sort of scene in the movie
-const unsigned int JOB_FILMANAL			= 30;	// films this sort of scene in the movie
-const unsigned int JOB_FILMLESBIAN		= 31;	// films this sort of scene in the movie. thinking about changing to Lesbian
-const unsigned int JOB_FILMBONDAGE		= 32;	// films this sort of scene in the movie
-const unsigned int JOB_FILMGROUP		= 33;	// films this sort of scene in the movie
-const unsigned int JOB_FILMORAL			= 34;	// films this type of scene CRAZY
-const unsigned int JOB_FILMMAST			= 35;	// films this type of scene CRAZY
-const unsigned int JOB_FILMTITTY		= 36;	// films this type of scene CRAZY
-const unsigned int JOB_FILMSTRIP		= 37;	// films this type of scene CRAZY
-const unsigned int JOB_FILMHANDJOB		= 38;	// films this type of scene CRAZY
-const unsigned int JOB_FILMFOOTJOB		= 39;	// films this type of scene CRAZY
-const unsigned int JOB_FILMRANDOM		= 40;	// Films a random sex scene ... it does NOT work like most jobs, see following note.
-		// *****IMPORTANT**** If you add more scene types, they must go somewhere between
-		// JOB_FILMBEAST and JOB_FILMRANDOM, or it will cause the random job to stop working..
-		// JOB_FILMBEAST must be the first film job, JOB_FILMRANDOM must be the last one. --PP
-// `J` Job Movie Studio - Crew
-const unsigned int JOBFILTER_STUDIOCREW	= 6;
-const unsigned int JOB_FILMFREETIME		= 41;	// Free time
-const unsigned int JOB_DIRECTOR			= 42;	// Does same work as matron plus adds quality to films.
-const unsigned int JOB_PROMOTER			= 43;	// Advertising -- This helps film sales after it is created.
-const unsigned int JOB_CAMERAMAGE		= 44;	// Uses magic to record the scenes to crystals (requires at least 1)
-const unsigned int JOB_CRYSTALPURIFIER	= 45;	// Post editing to get the best out of the film (requires at least 1)
-const unsigned int JOB_FLUFFER			= 46;	// Keeps the porn stars and animals aroused
-const unsigned int JOB_STAGEHAND		= 47;	// Currently does the same as a cleaner.
+// Jobs Enum
+enum JOBS {
+	// `J` Job Brothel - General
+	JOB_RESTING = 0,		// relaxes and takes some time off
+	JOB_TRAINING,			// trains skills at a basic level
+	JOB_CLEANING,			// cleans the building
+	JOB_SECURITY,			// Protects the building and its occupants
+	JOB_ADVERTISING,		// Goes onto the streets to advertise the buildings services
+	JOB_CUSTOMERSERVICE,	// looks after customers needs (customers are happier when people are doing this job)
+	JOB_MATRON,				// looks after the needs of the girls (only 1 allowed)
+	JOB_TORTURER,			// Tortures the people in the dungeons to help break their will (this is in addition to player torture) (only 1 allowed)
+	JOB_EXPLORECATACOMBS,	// goes adventuring in the catacombs
+	JOB_BEASTCARER,			// takes care of beasts that are housed in the brothel.
+	// `J` Job Brothel - Bar
+	JOB_BARMAID,			// serves at the bar
+	JOB_WAITRESS,			// waits on the tables
+	JOB_SINGER,				// sings in the bar
+	JOB_PIANO,				// plays the piano for customers
+	JOB_ESCORT,				// High lvl whore.  Sees less clients but needs higher skill high lvl items and the such to make them happy
+	//const unsigned int JOB_WETTSHIRT		= ;
+	// `J` Job Brothel - Hall
+	JOB_DEALER,				// dealer for gambling tables (requires at least 3 for all jobs in this filter to work)
+	JOB_ENTERTAINMENT,		// sings, dances and other shows for patrons
+	JOB_XXXENTERTAINMENT,	// naughty shows for patrons
+	JOB_WHOREGAMBHALL,		// looks after customers sexual needs
+	//const unsigned int JOB_FOXYBOXING		= ;
+	// `J` Job Brothel - Sleazy Bar
+	JOB_SLEAZYBARMAID,		//
+	JOB_SLEAZYWAITRESS,		//
+	JOB_BARSTRIPPER,		//
+	JOB_BARWHORE,			//
+	// `J` Job Brothel - Brothel
+	JOB_MASSEUSE,			// gives massages to patrons and sometimes sex
+	JOB_BROTHELSTRIPPER,	// strips for customers and sometimes sex
+	JOB_PEEP,				// Peep show
+	JOB_WHOREBROTHEL,		// whore herself inside the building
+	JOB_WHORESTREETS,		// whore self on the city streets
 
-// `J` Job Arena - Fighting
-const unsigned int JOBFILTER_ARENA		= 7;
-const unsigned int JOB_FIGHTBEASTS		= 48;	// customers come to place bets on who will win, girl may die (uses beasts resource)
-const unsigned int JOB_FIGHTARENAGIRLS	= 49;	
-const unsigned int JOB_FIGHTTRAIN		= 50;
-//const unsigned int JOB_JOUSTING		= ;
-//const unsigned int JOB_MAGICDUEL		= ;
-//const unsigned int JOB_ARMSDUEL		= ;
-//const unsigned int JOB_FIGHTBATTLE	= ;
-//const unsigned int JOB_ATHELETE		= ;
-//const unsigned int JOB_RACING			= ;
-// `J` Job Arena - Staff
-const unsigned int JOBFILTER_ARENASTAFF	= 8;
-const unsigned int JOB_ARENAREST		= 51;	//free time of arena
-const unsigned int JOB_DOCTORE			= 52;	//Matron of arena
-const unsigned int JOB_CITYGUARD		= 53;	
-const unsigned int JOB_BLACKSMITH		= 54;
-const unsigned int JOB_COBBLER			= 55;
-const unsigned int JOB_JEWELER			= 56;
-const unsigned int JOB_CLEANARENA		= 57;
-//const unsigned int JOB_BATTLEMASTER	= ;
-//const unsigned int JOB_ARENAPROMOTER	= ;
-//const unsigned int JOB_BEASTMASTER	= ;
-//const unsigned int JOB_VENDOR			= ;
-//const unsigned int JOB_BOOKIE			= ;
-//const unsigned int JOB_GROUNDSKEEPER	= ;
-//const unsigned int JOB_MINER			= ;
+	// `J` Job Movie Studio - Actress
+	JOB_FILMBEAST,			// films this sort of scene in the movie (uses beast resource)
+	JOB_FILMSEX,			// films this sort of scene in the movie
+	JOB_FILMANAL,			// films this sort of scene in the movie
+	JOB_FILMLESBIAN,		// films this sort of scene in the movie. thinking about changing to Lesbian
+	JOB_FILMBONDAGE,		// films this sort of scene in the movie
+	JOB_FILMGROUP,			// films this sort of scene in the movie
+	JOB_FILMORAL,			// films this type of scene CRAZY
+	JOB_FILMMAST,			// films this type of scene CRAZY
+	JOB_FILMTITTY,			// films this type of scene CRAZY
+	JOB_FILMSTRIP,			// films this type of scene CRAZY
+	JOB_FILMHANDJOB,		// films this type of scene CRAZY
+	JOB_FILMFOOTJOB,		// films this type of scene CRAZY
+	JOB_FILMRANDOM,			// Films a random sex scene ... it does NOT work like most jobs, see following note.
+	// *****IMPORTANT**** If you add more scene types, they must go somewhere between
+	// JOB_FILMBEAST and JOB_FILMRANDOM, or it will cause the random job to stop working..
+	// JOB_FILMBEAST must be the first film job, JOB_FILMRANDOM must be the last one. --PP
+	// `J` Job Movie Studio - Crew
+	JOB_FILMFREETIME,		// Free time
+	JOB_DIRECTOR,			// Does same work as matron plus adds quality to films.
+	JOB_PROMOTER,			// Advertising -- This helps film sales after it is created.
+	JOB_CAMERAMAGE,			// Uses magic to record the scenes to crystals (requires at least 1)
+	JOB_CRYSTALPURIFIER,	// Post editing to get the best out of the film (requires at least 1)
+	JOB_FLUFFER,			// Keeps the porn stars and animals aroused
+	JOB_STAGEHAND,			// Currently does the same as a cleaner.
 
-// `J` Job Centre - General
-const unsigned int JOBFILTER_COMMUNITYCENTRE = 9;
-const unsigned int JOB_CENTREREST		= 58;	// centres free time
-const unsigned int JOB_CENTREMANAGER	= 59;	// matron of centre	
-const unsigned int JOB_FEEDPOOR			= 60;	// work in a soup kitchen
-const unsigned int JOB_COMUNITYSERVICE	= 61;	// Goes around town helping where they can
-const unsigned int JOB_CLEANCENTRE		= 62;	// 	
-// TODO ideas:Run a charity, with an option for the player to steal from charity (with possible bad outcome). Run schools/orphanages.. this should give a boost to the stats of new random girls, and possibly be a place to recruit new uniques.
-// Homeless shelter... once again a possible place to find new girls.
-// `J` Job Centre - Rehab
-const unsigned int JOBFILTER_COUNSELINGCENTRE	= 10;
-const unsigned int JOB_COUNSELOR		= 63;	// 	
-const unsigned int JOB_REHAB			= 64;	// 	
-const unsigned int JOB_ANGER			= 65;	// 	
-const unsigned int JOB_EXTHERAPY		= 66;	// 	
-const unsigned int JOB_THERAPY			= 67;	// 		
+	// `J` Job Arena - Fighting
+	JOB_FIGHTBEASTS,		// customers come to place bets on who will win, girl may die (uses beasts resource)
+	JOB_FIGHTARENAGIRLS,
+	JOB_FIGHTTRAIN,
+	//const unsigned int JOB_JOUSTING		= ;
+	//const unsigned int JOB_MAGICDUEL		= ;
+	//const unsigned int JOB_ARMSDUEL		= ;
+	//const unsigned int JOB_FIGHTBATTLE	= ;
+	//const unsigned int JOB_ATHELETE		= ;
+	//const unsigned int JOB_RACING			= ;
+	// `J` Job Arena - Staff
+	JOB_ARENAREST,			//free time of arena
+	JOB_DOCTORE,			//Matron of arena
+	JOB_CITYGUARD,			//
+	JOB_BLACKSMITH,			//
+	JOB_COBBLER,			//
+    JOB_JEWELER,
+	JOB_CLEANARENA,			//
+	//const unsigned int JOB_BATTLEMASTER	= ;
+	//const unsigned int JOB_ARENAPROMOTER	= ;
+	//const unsigned int JOB_BEASTMASTER	= ;
+	//const unsigned int JOB_VENDOR			= ;
+	//const unsigned int JOB_BOOKIE			= ;
+	//const unsigned int JOB_GROUNDSKEEPER	= ;
+	//const unsigned int JOB_MINER			= ;
 
-// `J` Job Clinic - Surgery
-const unsigned int JOBFILTER_CLINIC		= 11;	// teaches can train girls only up to their own skill level
-const unsigned int JOB_GETHEALING		= 68;	// takes 1 days for each wound trait received.
-const unsigned int JOB_GETREPAIRS		= 69;	// construct girls can get repaired quickly
-const unsigned int JOB_GETABORT			= 70;	// gets an abortion (takes 2 days)
-const unsigned int JOB_PHYSICALSURGERY	= 71;	// magical plastic surgery (takes 5 days)
-const unsigned int JOB_LIPO				= 72;	// magical plastic surgery (takes 5 days)
-const unsigned int JOB_BREASTREDUCTION	= 73;	// magical plastic surgery (takes 5 days)
-const unsigned int JOB_BOOBJOB			= 74;	// magical plastic surgery (takes 5 days)
-const unsigned int JOB_VAGINAREJUV		= 75;	// magical plastic surgery (takes 5 days)
-const unsigned int JOB_FACELIFT			= 76;	// magical plastic surgery (takes 5 days)
-const unsigned int JOB_ASSJOB			= 77;	// magical plastic surgery (takes 5 days)
-const unsigned int JOB_TUBESTIED		= 78;	// magical plastic surgery (takes 5 days)
-const unsigned int JOB_FERTILITY		= 79;	// magical plastic surgery (takes 5 days)
+	// `J` Job Centre - General
+	JOB_CENTREREST,			// centres free time
+	JOB_CENTREMANAGER,		// matron of centre	
+	JOB_FEEDPOOR,			// work in a soup kitchen
+	JOB_COMUNITYSERVICE,	// Goes around town helping where they can
+	JOB_CLEANCENTRE,		// 	
+	// TODO ideas:Run a charity, with an option for the player to steal from charity (with possible bad outcome). Run schools/orphanages.. this should give a boost to the stats of new random girls, and possibly be a place to recruit new uniques.
+	// Homeless shelter... once again a possible place to find new girls.
+	// `J` Job Centre - Rehab
+	JOB_COUNSELOR,			// 	
+	JOB_REHAB,				// 	
+	JOB_ANGER,				// 	
+	JOB_EXTHERAPY,			// 	
+	JOB_THERAPY,			// 		
 
-// `J` Job Clinic - Staff
-const unsigned int JOBFILTER_CLINICSTAFF = 12;
-const unsigned int JOB_CLINICREST		= 80;	// Is clinics free time	
-const unsigned int JOB_CHAIRMAN			= 81;	// Matron of clinic	
-const unsigned int JOB_DOCTOR			= 82;	// becomes a doctor (requires 1) (will make some extra cash for treating locals)
-const unsigned int JOB_NURSE			= 83;	// helps girls recover from surgery on healing
-const unsigned int JOB_MECHANIC			= 84;	// construct girls can get repaired quickly
-const unsigned int JOB_INTERN			= 85;	// training for nurse job
-const unsigned int JOB_JANITOR			= 86;	// cleans clinic	
+	// `J` Job Clinic - Surgery
+	JOB_GETHEALING,			// takes 1 days for each wound trait received.
+	JOB_GETREPAIRS,			// construct girls can get repaired quickly
+	JOB_GETABORT,			// gets an abortion (takes 2 days)
+	JOB_PHYSICALSURGERY,	// magical plastic surgery (takes 5 days)
+	JOB_LIPO,				// magical plastic surgery (takes 5 days)
+	JOB_BREASTREDUCTION,	// magical plastic surgery (takes 5 days)
+	JOB_BOOBJOB,			// magical plastic surgery (takes 5 days)
+	JOB_VAGINAREJUV,		// magical plastic surgery (takes 5 days)
+	JOB_FACELIFT,			// magical plastic surgery (takes 5 days)
+	JOB_ASSJOB,				// magical plastic surgery (takes 5 days)
+	JOB_TUBESTIED,			// magical plastic surgery (takes 5 days)
+	JOB_FERTILITY,			// magical plastic surgery (takes 5 days)
 
-// `J` Job Farm - Staff
-const unsigned int JOBFILTER_FARMSTAFF	= 13;
-const unsigned int JOB_FARMREST			= 87;  //farm rest
-const unsigned int JOB_FARMMANGER		= 88;  //matron of farm
-const unsigned int JOB_VETERINARIAN		= 89;  //tends to the animals to keep them from dying - full time
-const unsigned int JOB_MARKETER			= 90;  // buys and sells food - full time
-const unsigned int JOB_RESEARCH			= 91;  // potions - unlock various types of potions and garden qualities - full time
-const unsigned int JOB_FARMHAND			= 92;  //cleaning of the farm
-// `J` Job Farm - Laborers
-const unsigned int JOBFILTER_LABORERS	= 14;
-const unsigned int JOB_FARMER			= 93;	//tends crops
-const unsigned int JOB_GARDENER			= 94;	// produces herbs and potion ingredients
-const unsigned int JOB_SHEPHERD			= 95;	//tends food animals - 100% food
-const unsigned int JOB_RANCHER			= 96;	// tends animals for food or beast - % food/beast based on skills
-const unsigned int JOB_CATACOMBRANCHER	= 97;	//tends strange beasts - 100% beast - dangerous
-const unsigned int JOB_BEASTCAPTURE		= 98;	//
-const unsigned int JOB_MILKER			= 99;	// produces milk from animals/beasts/girls - if food animals < beasts - can be dangerous
-const unsigned int JOB_MILK				= 100;	//milker not required but increases yield
-// `J` Job Farm - Producers
-const unsigned int JOBFILTER_PRODUCERS	= 15;
-const unsigned int JOB_BUTCHER			= 101;   // produces food from animals
-const unsigned int JOB_BAKER			= 102;   // produces food from crops
-const unsigned int JOB_BREWER			= 103;  // Produces beers and wines
-const unsigned int JOB_TAILOR			= 104;  // Produces beers and wines
-const unsigned int JOB_MAKEITEM			= 105;  // produce items for sale
-const unsigned int JOB_MAKEPOTIONS		= 106;  // create potions with items gained from the garden
+	// `J` Job Clinic - Staff
+	JOB_CLINICREST,			// Is clinics free time	
+	JOB_CHAIRMAN,			// Matron of clinic	
+	JOB_DOCTOR,				// becomes a doctor (requires 1) (will make some extra cash for treating locals)
+	JOB_NURSE,				// helps girls recover from surgery on healing
+	JOB_MECHANIC,			// construct girls can get repaired quickly
+	JOB_INTERN,				// training for nurse job
+	JOB_JANITOR,			// cleans clinic	
 
-// `J` Job House - General
-const unsigned int JOBFILTER_HOUSE		= 16;
-const unsigned int JOB_HOUSEREST		= 107;
-const unsigned int JOB_HEADGIRL			= 108;
-const unsigned int JOB_RECRUITER		= 109;
-const unsigned int JOB_PERSONALTRAINING	= 110;
-const unsigned int JOB_PERSONALBEDWARMER= 111;
-const unsigned int JOB_CLEANHOUSE		= 112;
-//const unsigned int JOB_HOUSECOOK		= ;    // cooks for the harem, (helps keep them happy, and increase job performance)
-//const unsigned int JOB_HOUSEDATE		= ;
-//const unsigned int JOB_HOUSEVAC		= ;
+	// `J` Job Farm - Staff
+	JOB_FARMREST,			//farm rest
+	JOB_FARMMANGER,			//matron of farm
+	JOB_VETERINARIAN,		//tends to the animals to keep them from dying - full time
+	JOB_MARKETER,			// buys and sells food - full time
+	JOB_RESEARCH,			// potions - unlock various types of potions and garden qualities - full time
+	JOB_FARMHAND,			//cleaning of the farm
+	// `J` Job Farm - Laborers
+	JOB_FARMER,				//tends crops
+	JOB_GARDENER,			// produces herbs and potion ingredients
+	JOB_SHEPHERD,			//tends food animals - 100% food
+	JOB_RANCHER,			// tends animals for food or beast - % food/beast based on skills
+	JOB_CATACOMBRANCHER,	//tends strange beasts - 100% beast - dangerous
+	JOB_BEASTCAPTURE,		//
+	JOB_MILKER,				// produces milk from animals/beasts/girls - if food animals < beasts - can be dangerous
+	JOB_MILK,				//milker not required but increases yield
+	// `J` Job Farm - Producers
+	JOB_BUTCHER,			// produces food from animals
+	JOB_BAKER,				// produces food from crops
+	JOB_BREWER,				// Produces beers and wines
+	JOB_TAILOR,				// Produces beers and wines
+	JOB_MAKEITEM,			// produce items for sale
+	JOB_MAKEPOTIONS,		// create potions with items gained from the garden
 
-// - extra unassignable
-const unsigned int JOBFILTER_NONE		= 17;
-const unsigned int JOB_INDUNGEON        = 113;
-const unsigned int JOB_RUNAWAY          = 114;
+	// `J` Job House - General
+	JOB_HOUSEREST,			//
+	JOB_HEADGIRL,			//
+	JOB_RECRUITER,			//
+	JOB_PERSONALTRAINING,	//
+	JOB_PERSONALBEDWARMER,	//
+	JOB_CLEANHOUSE,			//
+	//const unsigned int JOB_HOUSECOOK		= ;    // cooks for the harem, (helps keep them happy, and increase job performance)
+	//const unsigned int JOB_HOUSEDATE		= ;
+	//const unsigned int JOB_HOUSEVAC		= ;
 
-const unsigned int NUMJOBTYPES			= 18;
-const unsigned int NUM_JOBS				= 115;
+	// - extra unassignable
+	JOB_INDUNGEON,			//
+	JOB_RUNAWAY,			//
 
+	NUM_JOBS,				//Number of Jobs
+};// End JOBS enum
 #if 0
 // - Community Centre
 const unsigned int JOBFILTER_COMMUNITYCENTRE = ;
@@ -549,7 +567,8 @@ const int IMGTYPE_SHOP		= 33;
 const int IMGTYPE_MAGIC		= 34;
 const int IMGTYPE_SIGN		= 35;	// Going be used for advertising
 const int IMGTYPE_PRESENTED = 36;	// Going be used for Slave Market
-const int IMGTYPE_PREGNANT	= 37;	// IMGTYPE_PREGNANT needs to be the last of the nonpregnant image types.
+const int IMGTYPE_DOM		= 37;	// 
+const int IMGTYPE_PREGNANT	= 38;	// IMGTYPE_PREGNANT needs to be the last of the nonpregnant image types.
 
 /*
 *	`J` All image types can have a pregnant alternative now
@@ -558,44 +577,45 @@ const int IMGTYPE_PREGNANT	= 37;	// IMGTYPE_PREGNANT needs to be the last of the
 *	matter as they are based off the nonpregnant types.
 */
 const int PREG_OFFSET = IMGTYPE_PREGNANT + 1;
-const int IMGTYPE_PREGANAL	    = IMGTYPE_ANAL		+ PREG_OFFSET;
-const int IMGTYPE_PREGBDSM	    = IMGTYPE_BDSM		+ PREG_OFFSET;
-const int IMGTYPE_PREGSEX	    = IMGTYPE_SEX		+ PREG_OFFSET;
-const int IMGTYPE_PREGBEAST	    = IMGTYPE_BEAST		+ PREG_OFFSET;
-const int IMGTYPE_PREGGROUP	    = IMGTYPE_GROUP		+ PREG_OFFSET;
-const int IMGTYPE_PREGLESBIAN	= IMGTYPE_LESBIAN	+ PREG_OFFSET;
-const int IMGTYPE_PREGTORTURE	= IMGTYPE_TORTURE	+ PREG_OFFSET;
-const int IMGTYPE_PREGDEATH		= IMGTYPE_DEATH		+ PREG_OFFSET;
-const int IMGTYPE_PREGPROFILE	= IMGTYPE_PROFILE   + PREG_OFFSET; 
-const int IMGTYPE_PREGCOMBAT	= IMGTYPE_COMBAT    + PREG_OFFSET;
-const int IMGTYPE_PREGORAL		= IMGTYPE_ORAL		+ PREG_OFFSET; 
-const int IMGTYPE_PREGECCHI		= IMGTYPE_ECCHI     + PREG_OFFSET;
-const int IMGTYPE_PREGSTRIP		= IMGTYPE_STRIP     + PREG_OFFSET;
-const int IMGTYPE_PREGMAID		= IMGTYPE_MAID      + PREG_OFFSET;
-const int IMGTYPE_PREGSING		= IMGTYPE_SING      + PREG_OFFSET;
-const int IMGTYPE_PREGWAIT		= IMGTYPE_WAIT      + PREG_OFFSET;
-const int IMGTYPE_PREGCARD		= IMGTYPE_CARD      + PREG_OFFSET;
-const int IMGTYPE_PREGBUNNY		= IMGTYPE_BUNNY     + PREG_OFFSET;
-const int IMGTYPE_PREGNUDE		= IMGTYPE_NUDE      + PREG_OFFSET;
-const int IMGTYPE_PREGMAST		= IMGTYPE_MAST      + PREG_OFFSET;
-const int IMGTYPE_PREGTITTY		= IMGTYPE_TITTY     + PREG_OFFSET;
-const int IMGTYPE_PREGMILK		= IMGTYPE_MILK      + PREG_OFFSET;
-const int IMGTYPE_PREGHAND		= IMGTYPE_HAND      + PREG_OFFSET;
-const int IMGTYPE_PREGFOOT		= IMGTYPE_FOOT		+ PREG_OFFSET;
-const int IMGTYPE_PREGBED		= IMGTYPE_BED		+ PREG_OFFSET;
-const int IMGTYPE_PREGFARM		= IMGTYPE_FARM		+ PREG_OFFSET;
-const int IMGTYPE_PREGHERD		= IMGTYPE_HERD		+ PREG_OFFSET;
-const int IMGTYPE_PREGCOOK		= IMGTYPE_COOK		+ PREG_OFFSET;
-const int IMGTYPE_PREGCRAFT		= IMGTYPE_CRAFT		+ PREG_OFFSET;
-const int IMGTYPE_PREGSWIM		= IMGTYPE_SWIM		+ PREG_OFFSET;
-const int IMGTYPE_PREGBATH		= IMGTYPE_BATH		+ PREG_OFFSET;
-const int IMGTYPE_PREGNURSE		= IMGTYPE_NURSE		+ PREG_OFFSET;
-const int IMGTYPE_PREGFORMAL	= IMGTYPE_FORMAL	+ PREG_OFFSET;
-const int IMGTYPE_PREGSHOP		= IMGTYPE_SHOP		+ PREG_OFFSET;
-const int IMGTYPE_PREGMAGIC		= IMGTYPE_MAGIC		+ PREG_OFFSET;
-const int IMGTYPE_PREGSIGN		= IMGTYPE_SIGN		+ PREG_OFFSET;
-const int IMGTYPE_PREGPRESENTED = IMGTYPE_SIGN		+ PREG_OFFSET;
-const int NUM_IMGTYPES = IMGTYPE_PREGNANT + PREG_OFFSET; // `J` All image types can have a pregnant variation (except pregnant-pregnant)
+const int IMGTYPE_PREGANAL	    = IMGTYPE_ANAL			+ PREG_OFFSET;
+const int IMGTYPE_PREGBDSM	    = IMGTYPE_BDSM			+ PREG_OFFSET;
+const int IMGTYPE_PREGSEX	    = IMGTYPE_SEX			+ PREG_OFFSET;
+const int IMGTYPE_PREGBEAST	    = IMGTYPE_BEAST			+ PREG_OFFSET;
+const int IMGTYPE_PREGGROUP	    = IMGTYPE_GROUP			+ PREG_OFFSET;
+const int IMGTYPE_PREGLESBIAN	= IMGTYPE_LESBIAN		+ PREG_OFFSET;
+const int IMGTYPE_PREGTORTURE	= IMGTYPE_TORTURE		+ PREG_OFFSET;
+const int IMGTYPE_PREGDEATH		= IMGTYPE_DEATH			+ PREG_OFFSET;
+const int IMGTYPE_PREGPROFILE	= IMGTYPE_PROFILE		+ PREG_OFFSET; 
+const int IMGTYPE_PREGCOMBAT	= IMGTYPE_COMBAT		+ PREG_OFFSET;
+const int IMGTYPE_PREGORAL		= IMGTYPE_ORAL			+ PREG_OFFSET; 
+const int IMGTYPE_PREGECCHI		= IMGTYPE_ECCHI			+ PREG_OFFSET;
+const int IMGTYPE_PREGSTRIP		= IMGTYPE_STRIP			+ PREG_OFFSET;
+const int IMGTYPE_PREGMAID		= IMGTYPE_MAID			+ PREG_OFFSET;
+const int IMGTYPE_PREGSING		= IMGTYPE_SING			+ PREG_OFFSET;
+const int IMGTYPE_PREGWAIT		= IMGTYPE_WAIT			+ PREG_OFFSET;
+const int IMGTYPE_PREGCARD		= IMGTYPE_CARD			+ PREG_OFFSET;
+const int IMGTYPE_PREGBUNNY		= IMGTYPE_BUNNY			+ PREG_OFFSET;
+const int IMGTYPE_PREGNUDE		= IMGTYPE_NUDE			+ PREG_OFFSET;
+const int IMGTYPE_PREGMAST		= IMGTYPE_MAST			+ PREG_OFFSET;
+const int IMGTYPE_PREGTITTY		= IMGTYPE_TITTY			+ PREG_OFFSET;
+const int IMGTYPE_PREGMILK		= IMGTYPE_MILK			+ PREG_OFFSET;
+const int IMGTYPE_PREGHAND		= IMGTYPE_HAND			+ PREG_OFFSET;
+const int IMGTYPE_PREGFOOT		= IMGTYPE_FOOT			+ PREG_OFFSET;
+const int IMGTYPE_PREGBED		= IMGTYPE_BED			+ PREG_OFFSET;
+const int IMGTYPE_PREGFARM		= IMGTYPE_FARM			+ PREG_OFFSET;
+const int IMGTYPE_PREGHERD		= IMGTYPE_HERD			+ PREG_OFFSET;
+const int IMGTYPE_PREGCOOK		= IMGTYPE_COOK			+ PREG_OFFSET;
+const int IMGTYPE_PREGCRAFT		= IMGTYPE_CRAFT			+ PREG_OFFSET;
+const int IMGTYPE_PREGSWIM		= IMGTYPE_SWIM			+ PREG_OFFSET;
+const int IMGTYPE_PREGBATH		= IMGTYPE_BATH			+ PREG_OFFSET;
+const int IMGTYPE_PREGNURSE		= IMGTYPE_NURSE			+ PREG_OFFSET;
+const int IMGTYPE_PREGFORMAL	= IMGTYPE_FORMAL		+ PREG_OFFSET;
+const int IMGTYPE_PREGSHOP		= IMGTYPE_SHOP			+ PREG_OFFSET;
+const int IMGTYPE_PREGMAGIC		= IMGTYPE_MAGIC			+ PREG_OFFSET;
+const int IMGTYPE_PREGSIGN		= IMGTYPE_SIGN			+ PREG_OFFSET;
+const int IMGTYPE_PREGPRESENTED = IMGTYPE_PRESENTED		+ PREG_OFFSET;
+const int IMGTYPE_PREGDOM		= IMGTYPE_DOM			+ PREG_OFFSET;
+const int NUM_IMGTYPES			= IMGTYPE_PREGNANT		+ PREG_OFFSET; // `J` All image types can have a pregnant variation (except pregnant-pregnant)
 
 
 

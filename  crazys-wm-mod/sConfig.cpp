@@ -205,71 +205,99 @@ void sConfigData::get_att(TiXmlElement *el, const char *name, int *ipt)
 void sConfigData::get_folders_data(TiXmlElement *el)
 {
 	const char *pt;
-	folders.configXMLch = false; folders.configXMLsa = false; folders.backupsaves = false; folders.configXMLdi = false;
+	folders.configXMLch = false;
+	folders.configXMLsa = false; 
+	folders.configXMLdi = false;
+	
+	folders.backupsaves = false;
 	folders.preferdefault = false;
-
+	folders.characters		= (DirPath() << "Resources" << "Characters").c_str();
+	folders.defaultimageloc = (DirPath() << "Resources" << "DefaultImages").c_str();
+	folders.saves			= (DirPath() << "Saves").c_str();
+	
 	string testch = "", testsa = "", testdi = "";
 	if (pt = el->Attribute("Characters"))		get_att(el, "Characters", testch);
 	if (pt = el->Attribute("Saves"))			get_att(el, "Saves", testsa);
 	if (pt = el->Attribute("BackupSaves"))		get_att(el, "BackupSaves", folders.backupsaves);
 	if (pt = el->Attribute("DefaultImages"))	get_att(el, "DefaultImages", testdi);
 	if (pt = el->Attribute("PreferDefault"))	get_att(el, "PreferDefault", folders.preferdefault);
+
 	if (testch != "")
 	{
-		DirPath locationch = DirPath() << testch;
-		XMLFileList test(locationch, "*.*girlsx");
-		if (test.size() > 0)
+		DirPath abs_ch = DirPath(testch.c_str());
+		DirPath rel_ch = DirPath() << testch;
+		FileList abstest(abs_ch, "*.*girlsx");
+		FileList reltest(rel_ch, "*.*girlsx");
+		if (abstest.size() > 0)
 		{
-			folders.characters = testch;
-			l.ss() << "Success: config.xml: Loading Characters from: " << locationch << "\n"; l.ssend();
+			folders.characters = abs_ch.c_str();
 			folders.configXMLch = true;
+			l.ss() << "Success: config.xml: Loading Characters from absolute location: " << folders.characters; l.ssend();
+		}
+		else if (reltest.size() > 0)
+		{
+			folders.characters = rel_ch.c_str();
+			folders.configXMLch = true;
+			l.ss() << "Success: config.xml: Loading Characters from relative location: " << folders.characters; l.ssend();
 		}
 		else
 		{
-			l.ss() << "\n\nWarning: config.xml: Characters folder '" << locationch << "' does not exist or has no girls in it.\nDefaulting to ./Resources/Characters\n\n"; l.ssend();
+			l.ss() << "Warning: config.xml: Characters folder '" << testch << "' does not exist or has no girls in it.\nDefaulting to ./Resources/Characters"; l.ssend();
 		}
 	}
 	if (testsa != "")
 	{
-		DirPath locationsa = DirPath() << testsa;
+		DirPath abs_sa = DirPath(testsa.c_str());
+		DirPath rel_sa = DirPath() << testsa;
 		FILE *fp;
-		DirPath testloc = DirPath() << testsa << ".Whore Master Save Games folder";
-		if ((fp = fopen(testloc, "w")) != 0)
+		DirPath testloc = DirPath(abs_sa) << ".Whore Master Save Games folder";
+		if ((fp = fopen(testloc, "w")) != 0) fclose(fp);
+		DirPath testlocrel = DirPath(rel_sa) << ".Whore Master Save Games folder";
+		if ((fp = fopen(testlocrel, "w")) != 0) fclose(fp);
+		FileList abstest(abs_sa, "*.*");
+		FileList reltest(rel_sa, "*.*");
+
+		if (abstest.size() > 0)
 		{
-			fclose(fp);
-		}
-		XMLFileList test(locationsa, "*.*");
-		if (test.size() > 0)
-		{
-			folders.saves = testsa;
-			l.ss() << "Success: config.xml: Loading Saves from: " << locationsa << "\n"; l.ssend();
+			folders.saves = abs_sa.c_str();
 			folders.configXMLsa = true;
+			l.ss() << "Success: config.xml: Loading Saves from absolute location: " << folders.saves; l.ssend();
+		}
+		else if (reltest.size() > 0)
+		{
+			folders.saves = rel_sa.c_str();
+			folders.configXMLsa = true;
+			l.ss() << "Success: config.xml: Loading Saves from relative location: " << folders.saves; l.ssend();
 		}
 		else
 		{
-			l.ss() << "\n\nWarning: config.xml: Save game folder '" << locationsa << "' does not exist.\nDefaulting to ./Saves\n\n"; l.ssend();
+			l.ss() << "\n\nWarning: config.xml: Save game folder '" << testsa << "' does not exist.\nDefaulting to ./Saves"; l.ssend();
 		}
 	}
 	if (testdi != "")
 	{
-		DirPath locationdi = DirPath() << testdi;
-		XMLFileList testdig(locationdi, "*.*g");
-		XMLFileList testdia(locationdi, "*.ani");
-		if (testdig.size() > 0 || testdia.size() > 0)
+		DirPath abs_di = DirPath(testdi.c_str());
+		DirPath rel_di = DirPath() << testdi;
+		FileList abstest(abs_di, "*.*g"); abstest.add("*.ani"); abstest.add("*.gif");
+		FileList reltest(rel_di, "*.*g"); reltest.add("*.ani"); reltest.add("*.gif");
+
+		if (abstest.size() > 0)
 		{
-			folders.defaultimageloc = testdi;
-			l.ss() << "Success: config.xml: Loading Default Images from: " << locationdi; l.ssend();
+			folders.defaultimageloc = abs_di.c_str();
 			folders.configXMLdi = true;
+			l.ss() << "Success: config.xml: Loading Default Images from absolute location: " << folders.defaultimageloc; l.ssend();
+		}
+		else if (reltest.size() > 0)
+		{
+			folders.defaultimageloc = rel_di.c_str();
+			folders.configXMLdi = true;
+			l.ss() << "Success: config.xml: Loading Default Images from relative location: " << folders.defaultimageloc; l.ssend();
 		}
 		else
 		{
-			l.ss() << "\n\nWarning: config.xml: Default Images folder '" << locationdi << "' does not exist or has no images in it.\n\n"; l.ssend();
+			l.ss() << "\n\nWarning: config.xml: Default Images folder '" << testdi << "' does not exist or has no images in it.\n\n"; l.ssend();
 		}
 	}
-
-
-
-
 }
 
 void sConfigData::get_resolution_data(TiXmlElement *el)

@@ -727,10 +727,7 @@ void cScreenDungeon::talk()
 	}
 	else
 	{	// yes, so trigger the custom one
-		if (cfg.folders.configXMLch())
-			dp = DirPath() << cfg.folders.characters() << girl->m_Girl->m_Name << trig->m_Script << "DefaultInteractDungeon.script";
-		else
-			dp = DirPath() << "Resources" << "Characters" << girl->m_Girl->m_Name << trig->m_Script << "DefaultInteractDungeon.script";
+			dp = DirPath(cfg.folders.characters().c_str()) << girl->m_Girl->m_Name << trig->m_Script << "DefaultInteractDungeon.script";
 	}
 	cScriptManager script_manager;
 	script_manager.Load(dp, girl->m_Girl);
@@ -745,27 +742,7 @@ void cScreenDungeon::update_image()
 	}
 	else if ((selected_girl) && !IsMultiSelected(girllist_id))
 	{
-		bool Rand = true;
-		if (selected_girl->m_Tort)
-		{
-			SetImage(girlimage_id, g_Girls.GetImageSurface(selected_girl, IMGTYPE_TORTURE, Rand, ImageNum));
-			// `J` added check in case the girl has no images and the game is using defaults (no .ani defaults)
-			if (selected_girl->m_GirlImages->m_Images[IMGTYPE_TORTURE].m_NumImages > 0)
-			{
-				if (g_Girls.IsAnimatedSurface(selected_girl, IMGTYPE_TORTURE, ImageNum))
-					SetImage(girlimage_id, g_Girls.GetAnimatedSurface(selected_girl, IMGTYPE_TORTURE, ImageNum));
-			}
-		}
-		else
-		{
-			SetImage(girlimage_id, g_Girls.GetImageSurface(selected_girl, IMGTYPE_PROFILE, Rand, ImageNum));
-			// `J` added check in case the girl has no images and the game is using defaults (no .ani defaults)
-			if (selected_girl->m_GirlImages->m_Images[IMGTYPE_PROFILE].m_NumImages > 0)
-			{
-				if (g_Girls.IsAnimatedSurface(selected_girl, IMGTYPE_PROFILE, ImageNum))
-					SetImage(girlimage_id, g_Girls.GetAnimatedSurface(selected_girl, IMGTYPE_PROFILE, ImageNum));
-			}
-		}
+		PrepareImage(girlimage_id, selected_girl, selected_girl->m_Tort ? IMGTYPE_TORTURE : IMGTYPE_PROFILE, true, ImageNum);
 		HideImage(girlimage_id, false);
 	}
 	else

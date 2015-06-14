@@ -54,6 +54,8 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern	bool			g_InitWin;
 
+extern	bool	g_CTRLDown;
+
 static cDungeon* m_Dungeon = g_Brothels.GetDungeon();
 
 extern cPlayer* The_Player;
@@ -1242,6 +1244,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 {
 	bool MadeChanges = true;  // whether a special case applies to specified job or not
 	bool refresh = g_InitWin;
+	g_CTRLDown = false;
 
 	/*	`J` added to reset working days only if her job actually changes
 	 * m_WorkingDay is only used for full time jobs that take more than 1 day to complete
@@ -1284,7 +1287,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 // Special House Jobs
 	else if (u_int(JobID) == JOB_HEADGIRL)
 	{
-		if (g_House.GetNumGirlsOnJob(TargetBrothel, JOB_HEADGIRL, Day0Night1) > 0)
+		if (g_House.GetNumGirlsOnJob(0, JOB_HEADGIRL, Day0Night1) > 0)
 			g_MessageQue.AddToQue(gettext("There can be only one Head Girl!"), 0);
 		else if (Girl->is_slave())	g_MessageQue.AddToQue(gettext("The Head Girl cannot be a slave."), 0);
 		else						Girl->m_NightJob = Girl->m_DayJob = JOB_HEADGIRL;
@@ -1297,7 +1300,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	// Special Farm Jobs
 	else if (u_int(JobID) == JOB_FARMMANGER)
 	{
-		if (g_Farm.GetNumGirlsOnJob(TargetBrothel, JOB_FARMMANGER, Day0Night1) > 0)
+		if (g_Farm.GetNumGirlsOnJob(0, JOB_FARMMANGER, Day0Night1) > 0)
 			g_MessageQue.AddToQue(gettext("There can be only one Farm Manager!"), 0);
 		else if (Girl->is_slave())
 			g_MessageQue.AddToQue(gettext("The Farm Manager cannot be a slave."), 0);
@@ -1312,13 +1315,13 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		{
 			if (Day0Night1 == SHIFT_DAY || fulltime)
 			{
-				if (g_Farm.GetNumGirlsOnJob(TargetBrothel, JOB_MARKETER, SHIFT_DAY) > 0)
+				if (g_Farm.GetNumGirlsOnJob(0, JOB_MARKETER, SHIFT_DAY) > 0)
 					g_MessageQue.AddToQue(gettext("There can be only one Farm Marketer on each shift!"), 0);
 				else Girl->m_DayJob = JOB_MARKETER;
 			}
 			if (Day0Night1 == SHIFT_NIGHT || fulltime)
 			{
-				if (g_Farm.GetNumGirlsOnJob(TargetBrothel, JOB_MARKETER, SHIFT_NIGHT) > 0)
+				if (g_Farm.GetNumGirlsOnJob(0, JOB_MARKETER, SHIFT_NIGHT) > 0)
 					g_MessageQue.AddToQue(gettext("There can be only one Farm Marketer on each shift!"), 0);
 				else Girl->m_NightJob = JOB_MARKETER;
 			}
@@ -1328,7 +1331,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	// Special Arena Jobs
 	else if (u_int(JobID) == JOB_DOCTORE)
 	{
-		if (g_Arena.GetNumGirlsOnJob(TargetBrothel, JOB_DOCTORE, Day0Night1) > 0)
+		if (g_Arena.GetNumGirlsOnJob(0, JOB_DOCTORE, Day0Night1) > 0)
 			g_MessageQue.AddToQue(gettext("There can be only one Doctore!"), 0);
 		else if (Girl->is_slave())
 			g_MessageQue.AddToQue(gettext("The Doctore cannot be a slave."), 0);
@@ -1349,7 +1352,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 // Special Clinic Jobs
 	else if (u_int(JobID) == JOB_CHAIRMAN)
 	{
-		if (g_Clinic.GetNumGirlsOnJob(TargetBrothel, JOB_CHAIRMAN, Day0Night1)>0)
+		if (g_Clinic.GetNumGirlsOnJob(0, JOB_CHAIRMAN, Day0Night1)>0)
 			g_MessageQue.AddToQue(gettext("There can be only one Chairman!"), 0);
 		else if (Girl->is_slave())
 			g_MessageQue.AddToQue(gettext("The Chairman cannot be a slave."), 0);
@@ -1438,7 +1441,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		u_int(JobID) == JOB_FERTILITY)
 	{
 		bool jobgood = true;
-		if (g_Clinic.GetNumGirlsOnJob(TargetBrothel, JOB_DOCTOR, Day0Night1) == 0)
+		if (g_Clinic.GetNumGirlsOnJob(0, JOB_DOCTOR, Day0Night1) == 0)
 		{
 			Girl->m_DayJob = Girl->m_NightJob = JOB_CLINICREST;
 			g_MessageQue.AddToQue(gettext("You must have a Doctor on duty to perform surgery."), 0);
@@ -1525,7 +1528,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 // Special Centre Jobs
 	else if (u_int(JobID) == JOB_CENTREMANAGER)
 	{
-		if (g_Centre.GetNumGirlsOnJob(TargetBrothel, JOB_CENTREMANAGER, Day0Night1) >0)
+		if (g_Centre.GetNumGirlsOnJob(0, JOB_CENTREMANAGER, Day0Night1) >0)
 			g_MessageQue.AddToQue(gettext("There can be only one Centre Manager!"), 0);
 		else if (Girl->is_slave())
 			g_MessageQue.AddToQue(gettext("The Centre Manager cannot be a slave."), 0);
@@ -1541,7 +1544,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	}
 	else if (u_int(JobID) == JOB_REHAB)
 	{
-		if (g_Centre.GetNumGirlsOnJob(TargetBrothel, JOB_COUNSELOR, Day0Night1) < 1)
+		if (g_Centre.GetNumGirlsOnJob(0, JOB_COUNSELOR, Day0Night1) < 1)
 			g_MessageQue.AddToQue(gettext("You must have a counselor for rehab."), 0);
 		else if (!g_Girls.HasTrait(Girl, "Shroud Addict")
 			&& !g_Girls.HasTrait(Girl, "Smoker")
@@ -1555,7 +1558,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	}
 	else if (u_int(JobID) == JOB_ANGER)
 	{
-		if (g_Centre.GetNumGirlsOnJob(TargetBrothel, JOB_COUNSELOR, Day0Night1) < 1)
+		if (g_Centre.GetNumGirlsOnJob(0, JOB_COUNSELOR, Day0Night1) < 1)
 			g_MessageQue.AddToQue(gettext("You must have a counselor for anger management."), 0);
 		else if (!g_Girls.HasTrait(Girl, "Aggressive")
 			&& !g_Girls.HasTrait(Girl, "Tsundere")
@@ -1566,7 +1569,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	}
 	else if (u_int(JobID) == JOB_EXTHERAPY)
 	{
-		if (g_Centre.GetNumGirlsOnJob(TargetBrothel, JOB_COUNSELOR, Day0Night1) < 1)
+		if (g_Centre.GetNumGirlsOnJob(0, JOB_COUNSELOR, Day0Night1) < 1)
 			g_MessageQue.AddToQue(gettext("You must have a counselor for extreme therapy."), 0);
 		else if (!g_Girls.HasTrait(Girl, "Mind Fucked")
 			&& !g_Girls.HasTrait(Girl, "Broken Will"))
@@ -1576,7 +1579,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	}
 	else if (u_int(JobID) == JOB_THERAPY)
 	{
-		if (g_Centre.GetNumGirlsOnJob(TargetBrothel, JOB_COUNSELOR, Day0Night1) < 1)
+		if (g_Centre.GetNumGirlsOnJob(0, JOB_COUNSELOR, Day0Night1) < 1)
 			g_MessageQue.AddToQue(gettext("You must have a counselor for therapy."), 0);
 		else if (!g_Girls.HasTrait(Girl, "Nervous")
 			&& !g_Girls.HasTrait(Girl, "Dependant")
@@ -1586,7 +1589,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 			Girl->m_DayJob = Girl->m_NightJob = JOB_THERAPY;
 	}
 // Special Movie Studio Jobs
-	else if (u_int(JobID) == JOB_DIRECTOR && g_Studios.GetNumGirlsOnJob(TargetBrothel, JOB_DIRECTOR, SHIFT_NIGHT) >0)
+	else if (u_int(JobID) == JOB_DIRECTOR && g_Studios.GetNumGirlsOnJob(0, JOB_DIRECTOR, SHIFT_NIGHT) >0)
 	{
 		g_MessageQue.AddToQue(gettext("There can be only one Director!"), 0);
 	}
@@ -1594,7 +1597,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	{
 		g_MessageQue.AddToQue(gettext("The Director cannot be a slave."), 0);
 	}
-	else if (u_int(JobID) == JOB_PROMOTER && g_Studios.GetNumGirlsOnJob(TargetBrothel, JOB_PROMOTER, SHIFT_NIGHT) > 0)
+	else if (u_int(JobID) == JOB_PROMOTER && g_Studios.GetNumGirlsOnJob(0, JOB_PROMOTER, SHIFT_NIGHT) > 0)
 	{
 		g_MessageQue.AddToQue(gettext("There can be only one Promoter."), 0);
 	}

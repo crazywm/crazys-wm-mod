@@ -23,34 +23,40 @@
 #include "InterfaceGlobals.h"
 
 
-class cScreenGallery : public cInterfaceWindowXML 
+class cScreenTurnSummary : public cInterfaceWindowXML
 {
 public:
 
 private:
-	int BuyBrothel;
 	bool GetName;
 
 	static	bool		ids_set;
-/*
- *	interface/event IDs
- */
-	int		back_id;		// Back button
-	int		next_id;		// next button
-	int		prev_id;		// prev button
-	int		image_id;		// the image
-	int		imagename_id;	// image name
-	int		imagelist_id;	// image type list
+	/*
+	 *	interface/event IDs
+	 */
+	int brothel_id;
+	int category_id;
+	int labelitem_id;
+	int item_id;
+	int event_id;
+	int labeldesc_id;
+	int goto_id;
+	int nextweek_id;
+	int back_id;
+	int prev_id;
+	int next_id;
+	int image_id;
+
 	void set_ids();
 public:
-	cScreenGallery()
+	cScreenTurnSummary()
 	{
 		
 		DirPath dp = DirPath()
-			<< "Resources" << "Interface" << cfg.resolution.resolution() << "gallery_screen.xml";
+			<< "Resources" << "Interface" << cfg.resolution.resolution() << "TurnSummary.xml";
 		m_filename = dp.c_str();
 	}
-	~cScreenGallery() {}
+	~cScreenTurnSummary() {}
 
 	void init();
 	void process();
@@ -64,5 +70,21 @@ public:
 	sGirl* get_selected_girl();
 	void selection_change();
 	void update_image();
+
+	void Fill_Items_GIRLS();
+	void Fill_Items_GANGS();
+	void Fill_Items_BROTHELS();
+	void Fill_Items_DUNGEON();
+	void Fill_Items_STUDIO();
+	void Fill_Items_ARENA();
+	void Fill_Items_CENTRE();
+	void Fill_Items_CLINIC();
+	void Fill_Items_FARM();
+	void Fill_Items_HOUSE();
+
+
+	void Fill_Events(sGirl* girl);
+	void Fill_Events_GANGS();
+	void Fill_Events_BROTHELS();
 
 };

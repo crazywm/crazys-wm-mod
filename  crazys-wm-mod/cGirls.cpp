@@ -89,6 +89,7 @@ map<string, unsigned int> sGirl::stat_lookup;
 map<string, unsigned int> sGirl::skill_lookup;
 map<string, unsigned int> sGirl::status_lookup;
 map<string, unsigned int> sGirl::enjoy_lookup;
+map<string, unsigned int> sGirl::jobs_lookup;
 
 const char *sGirl::stat_names[] =
 {
@@ -166,23 +167,9 @@ const unsigned int sGirl::max_stats = (sizeof(sGirl::stat_names) / sizeof(sGirl:
 const unsigned int sGirl::max_skills = (sizeof(sGirl::skill_names) / sizeof(sGirl::skill_names[0]));
 const unsigned int sGirl::max_statuses = (sizeof(sGirl::status_names) / sizeof(sGirl::status_names[0]));
 const unsigned int sGirl::max_enjoy = (sizeof(sGirl::enjoy_names) / sizeof(sGirl::enjoy_names[0]));
+const unsigned int sGirl::max_jobs = (sizeof(g_Brothels.m_JobManager.JobQkNm) / sizeof(g_Brothels.m_JobManager.JobQkNm[0]));
 
-string pic_types[] =	// `J` moved this out to global and removed file extensions
-{
-	// `J` When modifying Image types, search for "J-Change-Image-Types"  :  found in >> cGirls
-	"anal*.", "bdsm*.", "sex*.", "beast*.", "group*.", "les*.", "torture*.",
-	"death*.", "profile*.", "combat*.", "oral*.", "ecchi*.", "strip*.", "maid*.", "sing*.",
-	"wait*.", "card*.", "bunny*.", "nude*.", "mast*.", "titty*.", "milk*.", "hand*.",
-	"foot*.", "bed*.", "farm*.", "herd*.", "cook*.", "craft*.", "swim*.", "bath*.",
-	"nurse*.", "formal*.", "shop*.", "magic*.", "sign*.", "presented*.",
-	// pregnant varients
-	"preg*.", "preganal*.", "pregbdsm*.", "pregsex*.", "pregbeast*.", "preggroup*.", "pregles*.",
-	"pregtorture*.", "pregdeath*.", "pregprofile*.", "pregcombat*.", "pregoral*.", "pregecchi*.",
-	"pregstrip*.", "pregmaid*.", "pregsing*.", "pregwait*.", "pregcard*.", "pregbunny*.", "pregnude*.",
-	"pregmast*.", "pregtitty*.", "pregmilk*.", "preghand*.", "pregfoot*.", "pregbed*.", "pregfarm*.",
-	"pregherd*.", "pregcook*.", "pregcraft*.", "pregswim*.", "pregbath*.", "pregnurse*.", "pregformal*.",
-	"pregshop*.", "pregmagic*.", "pregsign*.", "pregpresented*.",
-};
+
 
 
 sGirl::sGirl()				// constructor
@@ -248,7 +235,6 @@ sGirl::sGirl()				// constructor
 	for (int i = 0; i < NUM_GIRLFLAGS; i++)			{ m_Flags[i] = 0; }
 	m_States = m_BaseStates = 0;
 	m_FetishTypes = 0;
-	m_GirlImages = 0;
 
 	// Other things that I'm not sure how their defaults would be set 
 	//	cEvents m_Events;
@@ -274,7 +260,6 @@ sGirl::sGirl()				// constructor
 }
 sGirl::~sGirl()		// destructor
 {
-	m_GirlImages = 0;
 	//if (m_Name)		delete[] m_Name;
 	m_Name = "";
 	m_Events.Free();
@@ -399,6 +384,119 @@ void sGirl::setup_maps()
 	enjoy_lookup["GETTHERAPY"] = ACTION_WORKTHERAPY;
 	enjoy_lookup["GENERAL"] = ACTION_GENERAL;
 
+	jobs_lookup["Adv"] = JOB_ADVERTISING;
+	jobs_lookup["AMng"] = JOB_ANGER;
+	jobs_lookup["TOff"] = JOB_ARENAREST;
+	jobs_lookup["AssJ"] = JOB_ASSJOB;
+	jobs_lookup["Bkr"] = JOB_BAKER;
+	jobs_lookup["BrMd"] = JOB_BARMAID;
+	jobs_lookup["SSrp"] = JOB_BARSTRIPPER;
+	jobs_lookup["SWhr"] = JOB_BARWHORE;
+	jobs_lookup["BCpt"] = JOB_BEASTCAPTURE;
+	jobs_lookup["BstC"] = JOB_BEASTCARER;
+	jobs_lookup["Bksm"] = JOB_BLACKSMITH;
+	jobs_lookup["BbJb"] = JOB_BOOBJOB;
+	jobs_lookup["BRS"] = JOB_BREASTREDUCTION;
+	jobs_lookup["Brwr"] = JOB_BREWER;
+	jobs_lookup["BStp"] = JOB_BROTHELSTRIPPER;
+	jobs_lookup["Bchr"] = JOB_BUTCHER;
+	jobs_lookup["CM"] = JOB_CAMERAMAGE;
+	jobs_lookup["CRnc"] = JOB_CATACOMBRANCHER;
+	jobs_lookup["CMgr"] = JOB_CENTREMANAGER;
+	jobs_lookup["TOff"] = JOB_CENTREREST;
+	jobs_lookup["Crmn"] = JOB_CHAIRMAN;
+	jobs_lookup["CGrd"] = JOB_CITYGUARD;
+	jobs_lookup["GKpr"] = JOB_CLEANARENA;
+	jobs_lookup["ClnC"] = JOB_CLEANCENTRE;
+	jobs_lookup["ClnH"] = JOB_CLEANHOUSE;
+	jobs_lookup["Cln"] = JOB_CLEANING;
+	jobs_lookup["TOff"] = JOB_CLINICREST;
+	jobs_lookup["Cblr"] = JOB_COBBLER;
+	jobs_lookup["CmSr"] = JOB_COMUNITYSERVICE;
+	jobs_lookup["Cnsl"] = JOB_COUNSELOR;
+	jobs_lookup["CP"] = JOB_CRYSTALPURIFIER;
+	jobs_lookup["CS"] = JOB_CUSTOMERSERVICE;
+	jobs_lookup["Dlr"] = JOB_DEALER;
+	jobs_lookup["Dir"] = JOB_DIRECTOR;
+	jobs_lookup["Dtre"] = JOB_DOCTORE;
+	jobs_lookup["Doc"] = JOB_DOCTOR;
+	jobs_lookup["Entn"] = JOB_ENTERTAINMENT;
+	jobs_lookup["Scrt"] = JOB_ESCORT;
+	jobs_lookup["ExC"] = JOB_EXPLORECATACOMBS;
+	jobs_lookup["EThr"] = JOB_EXTHERAPY;
+	jobs_lookup["FLft"] = JOB_FACELIFT;
+	jobs_lookup["Frmr"] = JOB_FARMER;
+	jobs_lookup["FHnd"] = JOB_FARMHAND;
+	jobs_lookup["FMgr"] = JOB_FARMMANGER;
+	jobs_lookup["TOff"] = JOB_FARMREST;
+	jobs_lookup["Feed"] = JOB_FEEDPOOR;
+	jobs_lookup["FrtT"] = JOB_FERTILITY;
+	jobs_lookup["Cage"] = JOB_FIGHTARENAGIRLS;
+	jobs_lookup["FiBs"] = JOB_FIGHTBEASTS;
+	jobs_lookup["CT"] = JOB_FIGHTTRAIN;
+	jobs_lookup["FAnl"] = JOB_FILMANAL;
+	jobs_lookup["FBst"] = JOB_FILMBEAST;
+	jobs_lookup["FBnd"] = JOB_FILMBONDAGE;
+	jobs_lookup["FFJ"] = JOB_FILMFOOTJOB;
+	jobs_lookup["TOff"] = JOB_FILMFREETIME;
+	jobs_lookup["FGrp"] = JOB_FILMGROUP;
+	jobs_lookup["FHJ"] = JOB_FILMHANDJOB;
+	jobs_lookup["FLes"] = JOB_FILMLESBIAN;
+	jobs_lookup["FMst"] = JOB_FILMMAST;
+	jobs_lookup["FOrl"] = JOB_FILMORAL;
+	jobs_lookup["FRnd"] = JOB_FILMRANDOM;
+	jobs_lookup["FSex"] = JOB_FILMSEX;
+	jobs_lookup["FStp"] = JOB_FILMSTRIP;
+	jobs_lookup["FTit"] = JOB_FILMTITTY;
+	jobs_lookup["Fluf"] = JOB_FLUFFER;
+	jobs_lookup["Grdn"] = JOB_GARDENER;
+	jobs_lookup["Abrt"] = JOB_GETABORT;
+	jobs_lookup["Heal"] = JOB_GETHEALING;
+	jobs_lookup["Repr"] = JOB_GETREPAIRS;
+	jobs_lookup["HGrl"] = JOB_HEADGIRL;
+	jobs_lookup["TOff"] = JOB_HOUSEREST;
+	jobs_lookup["Ntrn"] = JOB_INTERN;
+	jobs_lookup["Jntr"] = JOB_JANITOR;
+	jobs_lookup["Jwlr"] = JOB_JEWELER;
+	jobs_lookup["Lipo"] = JOB_LIPO;
+	jobs_lookup["MkIt"] = JOB_MAKEITEM;
+	jobs_lookup["MkPt"] = JOB_MAKEPOTIONS;
+	jobs_lookup["Mrkt"] = JOB_MARKETER;
+	jobs_lookup["Msus"] = JOB_MASSEUSE;
+	jobs_lookup["Mtrn"] = JOB_MATRON;
+	jobs_lookup["Mech"] = JOB_MECHANIC;
+	jobs_lookup["Mlkr"] = JOB_MILKER;
+	jobs_lookup["Mlkd"] = JOB_MILK;
+	jobs_lookup["Nurs"] = JOB_NURSE;
+	jobs_lookup["Peep"] = JOB_PEEP;
+	jobs_lookup["BdWm"] = JOB_PERSONALBEDWARMER;
+	jobs_lookup["PTrn"] = JOB_PERSONALTRAINING;
+	jobs_lookup["CosS"] = JOB_PHYSICALSURGERY;
+	jobs_lookup["Pno"] = JOB_PIANO;
+	jobs_lookup["Prmt"] = JOB_PROMOTER;
+	jobs_lookup["Rncr"] = JOB_RANCHER;
+	jobs_lookup["Rcrt"] = JOB_RECRUITER;
+	jobs_lookup["Rehb"] = JOB_REHAB;
+	jobs_lookup["Rsrc"] = JOB_RESEARCH;
+	jobs_lookup["TOff"] = JOB_RESTING;
+	jobs_lookup["Sec"] = JOB_SECURITY;
+	jobs_lookup["SHrd"] = JOB_SHEPHERD;
+	jobs_lookup["Sngr"] = JOB_SINGER;
+	jobs_lookup["SBmd"] = JOB_SLEAZYBARMAID;
+	jobs_lookup["SWtr"] = JOB_SLEAZYWAITRESS;
+	jobs_lookup["StgH"] = JOB_STAGEHAND;
+	jobs_lookup["Talr"] = JOB_TAILOR;
+	jobs_lookup["Thrp"] = JOB_THERAPY;
+	jobs_lookup["Trtr"] = JOB_TORTURER;
+	jobs_lookup["Prtc"] = JOB_TRAINING;
+	jobs_lookup["TTid"] = JOB_TUBESTIED;
+	jobs_lookup["VagR"] = JOB_VAGINAREJUV;
+	jobs_lookup["Vet"] = JOB_VETERINARIAN;
+	jobs_lookup["Wtrs"] = JOB_WAITRESS;
+	jobs_lookup["BWhr"] = JOB_WHOREBROTHEL;
+	jobs_lookup["HWhr"] = JOB_WHOREGAMBHALL;
+	jobs_lookup["StWr"] = JOB_WHORESTREETS;
+	jobs_lookup["XXXE"] = JOB_XXXENTERTAINMENT;
 
 
 }
@@ -447,6 +545,17 @@ int sGirl::lookup_enjoy_code(string s)
 	return enjoy_lookup[s];
 }
 
+int sGirl::lookup_jobs_code(string s)
+{
+	// be useful to be able to log unrecognised type names here
+	if (jobs_lookup.find(s) == jobs_lookup.end())
+	{
+		g_LogFile.os() << "[sGirl::jobs_enjoy_code] Error: unknown Enjoy: " << s << endl;
+		return -1;
+	}
+	return jobs_lookup[s];
+}
+
 // END MOD
 
 class GirlPredicate_GRG : public GirlPredicate
@@ -479,7 +588,6 @@ public:
 
 cGirls::cGirls()
 {
-	m_DefImages = 0;
 	m_Parent = 0;
 	m_Last = 0;
 	m_NumRandomGirls = m_NumGirls =
@@ -495,7 +603,6 @@ cGirls::cGirls()
 cGirls::~cGirls()
 {
 	Free();
-	m_ImgListManager.Free();
 }
 
 void cGirls::Free()
@@ -514,7 +621,6 @@ void cGirls::Free()
 		m_NumHumanRandomYourDaughterGirls =
 		m_NumNonHumanRandomYourDaughterGirls = 0;
 
-	m_DefImages = 0;
 }
 
 // ----- Utility
@@ -1500,28 +1606,6 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 		newGirl->m_Stats[STAT_OBEDIENCE] = min(newGirl->m_Stats[STAT_OBEDIENCE] + 20, 100);
 	}
 
-	// Load any girl images if available
-	LoadGirlImages(newGirl);
-
-	if (current->m_newRandom && (newGirl->m_GirlImages->m_Images[IMGTYPE_PROFILE].m_NumImages > 0))
-	{
-		if (current->m_newRandomTable == 0)
-		{
-			current->m_newRandomTable = new bool[newGirl->m_GirlImages->m_Images[IMGTYPE_PROFILE].m_NumImages];
-			for (int i = 0; i < newGirl->m_GirlImages->m_Images[IMGTYPE_PROFILE].m_NumImages; i++)
-				current->m_newRandomTable[i] = false;
-		}
-		int j = 3;
-		do
-		{
-			newGirl->m_newRandomFixed = g_Dice % newGirl->m_GirlImages->m_Images[IMGTYPE_PROFILE].m_NumImages;
-			j--;
-		} while ((j > 0) && current->m_newRandomTable[newGirl->m_newRandomFixed]);
-		current->m_newRandomTable[newGirl->m_newRandomFixed] = true;
-	}
-	else	newGirl->m_newRandomFixed = -1;
-
-
 	g_Girls.MutuallyExclusiveTraits(newGirl, 1);	// make sure all the trait effects are applied
 	g_Girls.ApplyTraits(newGirl);
 	RemoveAllRememberedTraits(newGirl);	// WD: remove any rembered traits created from trait incompatibilities
@@ -1572,11 +1656,7 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 	newGirl->m_Surname = surname;
 	CreateRealName(newGirl);
 
-	DirPath dp;
-	if (cfg.folders.configXMLch())
-		dp = DirPath() << cfg.folders.characters() << newGirl->m_Name << "triggers.xml";
-	else
-		dp = DirPath() << "Resources" << "Characters" << newGirl->m_Name << "triggers.xml";
+	DirPath dp = DirPath(cfg.folders.characters().c_str()) << newGirl->m_Name << "triggers.xml";
 	newGirl->m_Triggers.LoadList(dp);
 	newGirl->m_Triggers.SetGirlTarget(newGirl);
 
@@ -3968,10 +4048,10 @@ bool sGirl::LoadGirlXML(TiXmlHandle hGirl)
 	m_Name = pGirl->Attribute("Name");		// the name the girl is based on, also the name of the image folder
 
 	// m_Realname = the name the girl is called in the game // `J` used to set to m_Name but now gets built from F+M+S names
-	m_Realname =	(pGirl->Attribute("Realname")	? pGirl->Attribute("Realname")		: "");	
-	m_FirstName =	(pGirl->Attribute("FirstName")	? pGirl->Attribute("FirstName")		: "");	// `J` New
-	m_MiddleName =	(pGirl->Attribute("MiddleName") ? pGirl->Attribute("MiddleName")	: "");	// `J` New
-	m_Surname =		(pGirl->Attribute("Surname")	? pGirl->Attribute("Surname")		: "");	// `J` New
+	m_Realname = (pGirl->Attribute("Realname") ? pGirl->Attribute("Realname") : "");
+	m_FirstName = (pGirl->Attribute("FirstName") ? pGirl->Attribute("FirstName") : "");	// `J` New
+	m_MiddleName = (pGirl->Attribute("MiddleName") ? pGirl->Attribute("MiddleName") : "");	// `J` New
+	m_Surname = (pGirl->Attribute("Surname") ? pGirl->Attribute("Surname") : "");	// `J` New
 	if (m_Realname == "" || (m_FirstName == "" && m_MiddleName == "" && m_Surname == "")) g_Girls.BuildName(this);
 
 	if (cfg.debug.log_girls()) g_LogFile.ss() << "Loading girl: '" << m_Realname; g_LogFile.ssend();
@@ -4031,19 +4111,26 @@ bool sGirl::LoadGirlXML(TiXmlHandle hGirl)
 
 	// load acom level
 	pGirl->QueryIntAttribute("AccLevel", &tempInt); m_AccLevel = tempInt; tempInt = 0;
+
+	// `J` changeing jobs to save as quick codes in stead of numbers so if new jobs are added they don't shift jobs
+	string tempst = pGirl->Attribute("DayJob");			m_DayJob = lookup_jobs_code(tempst);
+	tempst = pGirl->Attribute("NightJob");				m_NightJob = lookup_jobs_code(tempst);
+	tempst = pGirl->Attribute("PrevDayJob");			m_PrevDayJob = lookup_jobs_code(tempst);
+	tempst = pGirl->Attribute("PrevNightJob");			m_PrevNightJob = lookup_jobs_code(tempst);
+	tempst = pGirl->Attribute("YesterDayJob");			m_YesterDayJob = lookup_jobs_code(tempst);
+	tempst = pGirl->Attribute("YesterNightJob");		m_YesterNightJob = lookup_jobs_code(tempst);
+
+	// `J` now check if any of the jobs failed the lookup and see if they are numbers - aka use the old code
 	// load day/night jobs
-	pGirl->QueryIntAttribute("DayJob", &tempInt); m_DayJob = tempInt; tempInt = 0;
-	pGirl->QueryIntAttribute("NightJob", &tempInt); m_NightJob = tempInt; tempInt = 0;
+	if (m_DayJob < 0 || m_DayJob > 255)					{ pGirl->QueryIntAttribute("DayJob", &tempInt);			m_DayJob = tempInt; tempInt = 0; }
+	if (m_NightJob < 0 || m_NightJob >255)				{ pGirl->QueryIntAttribute("NightJob", &tempInt);		m_NightJob = tempInt; tempInt = 0; }
+	if (m_PrevDayJob < 0 || m_PrevDayJob >255)			{ pGirl->QueryIntAttribute("PrevDayJob", &tempInt);		m_PrevDayJob = tempInt; tempInt = 0; }
+	if (m_PrevNightJob < 0 || m_PrevNightJob >255)		{ pGirl->QueryIntAttribute("PrevNightJob", &tempInt);	m_PrevNightJob = tempInt; tempInt = 0; }
+	if (m_YesterDayJob < 0 || m_YesterDayJob >255)		{ pGirl->QueryIntAttribute("YesterDayJob", &tempInt);	m_YesterDayJob = tempInt; tempInt = 0; }
+	if (m_YesterNightJob < 0 || m_YesterNightJob >255)	{ pGirl->QueryIntAttribute("YesterNightJob", &tempInt);	m_YesterNightJob = tempInt; tempInt = 0; }
 
-	// load prev day/night jobs
-	pGirl->QueryIntAttribute("PrevDayJob", &tempInt); m_PrevDayJob = tempInt; tempInt = 0;
-	pGirl->QueryIntAttribute("PrevNightJob", &tempInt); m_PrevNightJob = tempInt; tempInt = 0;
-
-	// load yester day/night jobs
-	pGirl->QueryIntAttribute("YesterDayJob", &tempInt); m_YesterDayJob = tempInt; tempInt = 0;
-	pGirl->QueryIntAttribute("YesterNightJob", &tempInt); m_YesterNightJob = tempInt; tempInt = 0;
-	if (m_YesterDayJob < 0)m_YesterDayJob = 255;
-	if (m_YesterNightJob < 0)m_YesterNightJob = 255;
+	if (m_YesterDayJob < 0)		m_YesterDayJob = 255;
+	if (m_YesterNightJob < 0)	m_YesterNightJob = 255;
 
 	// load runnayway value
 	pGirl->QueryIntAttribute("RunAway", &tempInt); m_RunAway = tempInt; tempInt = 0;
@@ -4111,8 +4198,6 @@ bool sGirl::LoadGirlXML(TiXmlHandle hGirl)
 	g_Girls.ApplyTraits(this);
 	if (m_Stats[STAT_AGE] < 18) m_Stats[STAT_AGE] = 18;
 
-	// load their images
-	g_Girls.LoadGirlImages(this);
 	g_Girls.CalculateGirlType(this);
 
 	// get the number of daugher names
@@ -4168,17 +4253,25 @@ TiXmlElement* sGirl::SaveGirlXML(TiXmlElement* pRoot)
 	pGirl->SetAttribute("PrevWorkingDay", m_PrevWorkingDay);	// `J` added
 	pGirl->SetAttribute("SpecialJobGoal", m_SpecialJobGoal);	// `J` added
 
+	// `J` changeing jobs to save as quick codes in stead of numbers so if new jobs are added they don't shift jobs
+
 	// save day/night jobs
-	pGirl->SetAttribute("DayJob", m_DayJob);
-	pGirl->SetAttribute("NightJob", m_NightJob);
+	if (m_DayJob < 0 || m_DayJob > NUM_JOBS) pGirl->SetAttribute("DayJob", "255");
+	else pGirl->SetAttribute("DayJob", g_Brothels.m_JobManager.JobQkNm[m_DayJob]);
+	if (m_NightJob < 0 || m_NightJob > NUM_JOBS) pGirl->SetAttribute("NightJob", "255");
+	else pGirl->SetAttribute("NightJob", g_Brothels.m_JobManager.JobQkNm[m_NightJob]);
 
 	// save prev day/night jobs
-	pGirl->SetAttribute("PrevDayJob", m_PrevDayJob);
-	pGirl->SetAttribute("PrevNightJob", m_PrevNightJob);
+	if (m_PrevDayJob < 0 || m_PrevDayJob > NUM_JOBS) pGirl->SetAttribute("PrevDayJob", "255");
+	else pGirl->SetAttribute("PrevDayJob", g_Brothels.m_JobManager.JobQkNm[m_PrevDayJob]);
+	if (m_PrevNightJob < 0 || m_PrevNightJob > NUM_JOBS) pGirl->SetAttribute("PrevNightJob", "255");
+	else pGirl->SetAttribute("PrevNightJob", g_Brothels.m_JobManager.JobQkNm[m_PrevNightJob]);
 
 	// save prev day/night jobs
-	if (m_YesterDayJob < 0)		m_YesterDayJob = 255;	pGirl->SetAttribute("YesterDayJob", m_YesterDayJob);
-	if (m_YesterNightJob < 0)	m_YesterNightJob = 255;	pGirl->SetAttribute("YesterNightJob", m_YesterNightJob);
+	if (m_YesterDayJob < 0 || m_YesterDayJob > NUM_JOBS) pGirl->SetAttribute("YesterDayJob", "255");
+	else pGirl->SetAttribute("YesterDayJob", g_Brothels.m_JobManager.JobQkNm[m_YesterDayJob]);
+	if (m_YesterNightJob < 0 || m_YesterNightJob > NUM_JOBS) pGirl->SetAttribute("YesterNightJob", "255");
+	else pGirl->SetAttribute("YesterNightJob", g_Brothels.m_JobManager.JobQkNm[m_YesterNightJob]);
 
 	pGirl->SetAttribute("RunAway", m_RunAway);					// save runnayway vale
 	pGirl->SetAttribute("Spotted", m_Spotted);					// save spotted
@@ -4535,19 +4628,12 @@ void cGirls::LoadGirlsXML(string filename)
 		}
 		if (girl->m_Stats[STAT_AGE] < 18) girl->m_Stats[STAT_AGE] = 18;
 
-		g_Girls.LoadGirlImages(girl);		// Load Girl Images
-
-
 		MutuallyExclusiveTraits(girl, 1);	// make sure all the trait effects are applied
 		RemoveAllRememberedTraits(girl);	// WD: For new girls remove any remembered traits from trait incompatibilities
 		ApplyTraits(girl);
 
 		// load triggers if the girl has any
-		DirPath dp;
-		if (cfg.folders.configXMLch())
-			dp = DirPath() << cfg.folders.characters() << girl->m_Name << "triggers.xml";
-		else
-			dp = DirPath() << "Resources" << "Characters" << girl->m_Name << "triggers.xml";
+		DirPath dp = DirPath(cfg.folders.characters().c_str()) << girl->m_Name << "triggers.xml";
 		girl->m_Triggers.LoadList(dp);
 		girl->m_Triggers.SetGirlTarget(girl);
 		AddGirl(girl);						// add the girl to the list
@@ -8493,12 +8579,9 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		// the customer will be an average in all skills for the customers involved in the sex act
 		SexType = SKILL_GROUP;
 	}
-	else	// Any other sex acts
-		SexType = customer->m_SexPref;
 
 	// If the girls skill < 50 then it will be unsatisfying otherwise it will be satisfying
-	happymod = (GetSkill(girl, SexType) - 50) / 5;
-
+	happymod += (GetSkill(girl, SexType) - 50) / 5;
 	// If the girl is famous then he will be slightly happier
 	happymod += GetStat(girl, STAT_FAME) / 5;
 
@@ -14389,1103 +14472,6 @@ bool cGirls::InheritTrait(sTrait* trait)
 	}
 	return false;
 }
-
-// ----- Image
-
-void cGirls::LoadGirlImages(sGirl* girl)
-{
-	girl->m_GirlImages = g_Girls.GetImgManager()->LoadList(girl->m_Name);
-}
-
-cImage::cImage()
-{
-	m_Surface = 0;
-	m_Next = 0;
-	m_AniSurface = 0;
-}
-cImage::~cImage()
-{
-	if (m_Surface && !m_Surface->m_SaveSurface) delete m_Surface;
-	m_Surface = 0;
-	//if (m_AniSurface)		delete m_AniSurface;
-	m_AniSurface = 0;
-	m_Next = 0;
-}
-cImageList::cImageList() { m_NumImages = 0; m_LastImages = m_Images = 0; }
-cImageList::~cImageList() { Free(); }
-
-void cImageList::Free()
-{
-	if (m_Images) delete m_Images;
-	m_LastImages = m_Images = 0;
-	m_NumImages = 0;
-}
-cAImgList::cAImgList() { m_Next = 0; }
-cAImgList::~cAImgList()
-{
-	for (int i = 0; i<NUM_IMGTYPES; i++) m_Images[i].Free();
-	if (m_Next) delete m_Next;
-	m_Next = 0;
-}
-cImgageListManager::cImgageListManager() { m_First = m_Last = 0; }
-cImgageListManager::~cImgageListManager() { Free(); }
-void cImgageListManager::Free() { if (m_First)delete m_First; m_Last = m_First = 0; }
-
-
-bool cImageList::AddImage(string filename, string path, string file)
-{
-	// create image item
-	cImage* newImage = new cImage();
-
-	if (filename[filename.size() - 1] == 'i')
-	{
-		string name = path;
-		name += "\\ani\\";
-		name += file;
-		name.erase(name.size() - 4, 4);
-		name += ".jpg";
-		newImage->m_Surface = new CSurface();
-		newImage->m_Surface->LoadImage(name);
-		newImage->m_AniSurface = new cAnimatedSurface();
-		int numFrames, speed, aniwidth, aniheight;
-		ifstream input;
-		input.open(filename.c_str());
-		if (!input)
-		{
-			CLog l;
-			l.ss() << "Incorrect data file given for animation - " << filename;
-			l.ssend();
-			return false;
-		}
-		else
-			input >> numFrames >> speed >> aniwidth >> aniheight;
-		newImage->m_AniSurface->SetData(0, 0, numFrames, speed, aniwidth, aniheight, newImage->m_Surface);
-		input.close();
-		//newImage->m_Surface->FreeResources();  //this was causing lockup in CResourceManager::CullOld
-	}
-	else
-		newImage->m_Surface = new CSurface(filename);
-
-	// Store image item
-	if (m_Images)
-	{
-		m_LastImages->m_Next = newImage;
-		m_LastImages = newImage;
-	}
-	else
-		m_LastImages = m_Images = newImage;
-
-	return true;
-}
-
-CSurface* cImageList::GetImageSurface(bool random, int& img)
-{
-	int count = 0;
-	int ImageNum = -1;
-
-	if (!random)
-	{
-		if (img == -1) return 0;
-		ImageNum = img;
-		cImage* current = m_Images;
-		while (current)
-		{
-			if (count == ImageNum) break;
-			count++;
-			current = current->m_Next;
-		}
-		if (current)
-		{
-			img = ImageNum;
-			return current->m_Surface;
-		}
-	}
-	else
-	{
-		if (m_NumImages == 0) return 0;
-		else if (m_NumImages == 1)
-		{
-			img = 0;
-			return m_Images->m_Surface;
-		}
-		else
-		{
-			ImageNum = g_Dice%m_NumImages;
-			cImage* current = m_Images;
-			while (current)
-			{
-				if (count == ImageNum) break;
-				count++;
-				current = current->m_Next;
-			}
-			if (current)
-			{
-				img = ImageNum;
-				return current->m_Surface;
-			}
-			else
-			{
-				img = ImageNum;
-				return 0;
-			}
-		}
-	}
-	img = ImageNum;
-	return 0;
-}
-
-cAnimatedSurface* cImageList::GetAnimatedSurface(int& img)
-{
-	int count = 0;
-	int ImageNum = -1;
-	if (img == -1) return 0;
-	ImageNum = img;
-	cImage* current = m_Images;
-	while (current)
-	{
-		if (count == ImageNum) break;
-		count++;
-		current = current->m_Next;
-	}
-	if (current)
-	{
-		img = ImageNum;
-		if (current->m_AniSurface) return current->m_AniSurface;
-		else return 0;
-	}
-	return 0;
-}
-
-bool cImageList::IsAnimatedSurface(int& img)
-{
-	int count = 0;
-	int ImageNum = -1;
-	if (img == -1) return false;
-	ImageNum = img;
-	cImage* current = m_Images;
-	while (current)
-	{
-		if (count == ImageNum) break;
-		count++;
-		current = current->m_Next;
-	}
-	if (current)
-	{
-		img = ImageNum;
-		return (current->m_AniSurface) ? true : false;
-	}
-	return false;
-}
-
-int cImageList::DrawImage(int x, int y, int width, int height, bool random, int img)
-{
-	int count = 0;
-	SDL_Rect rect;
-	int ImageNum = -1;
-
-	rect.y = rect.x = 0;
-	rect.w = width;
-	rect.h = height;
-
-	if (!random)
-	{
-		if (img == -1) return -1;
-
-		if (img > m_NumImages)
-		{
-			ImageNum = (m_NumImages == 1 ? 0 : g_Dice%m_NumImages);
-		}
-		else ImageNum = img;
-
-		cImage* current = m_Images;
-		while (current)
-		{
-			if (count == ImageNum) break;
-			count++;
-			current = current->m_Next;
-		}
-
-		if (current)
-		{
-			if (current->m_AniSurface)
-				current->m_AniSurface->DrawFrame(x, y, rect.w, rect.h, g_Graphics.GetTicks());
-			else
-				current->m_Surface->DrawSurface(x, y, 0, &rect, true);
-		}
-	}
-	else
-	{
-		if (m_NumImages == 0) return -1;
-		else if (m_NumImages == 1)
-		{
-			m_Images->m_Surface->DrawSurface(x, y, 0, &rect, true);
-			return 0;
-		}
-		else
-		{
-			ImageNum = g_Dice%m_NumImages;
-			cImage* current = m_Images;
-			while (current)
-			{
-				if (count == ImageNum) break;
-				count++;
-				current = current->m_Next;
-			}
-
-			if (current)
-			{
-				if (current->m_AniSurface) 
-					current->m_AniSurface->DrawFrame(x, y, rect.w, rect.h, g_Graphics.GetTicks());
-				else
-					current->m_Surface->DrawSurface(x, y, 0, &rect, true);
-			}
-			else return -1;
-		}
-	}
-
-	return ImageNum;
-}
-
-string cImageList::GetName(int i)
-{
-	int count = 0;
-	cImage* current = m_Images;
-	while (current)
-	{
-		if (count == i) break;
-		count++;
-		current = current->m_Next;
-	}
-	if (current) return current->m_Surface->GetFilename();
-	return string("");
-}
-
-cAImgList* cImgageListManager::ListExists(string name)
-{
-	cAImgList* current = m_First;
-	while (current)
-	{
-		if (current->m_Name == name) break;
-		current = current->m_Next;
-	}
-	return current;
-}
-
-cAImgList* cImgageListManager::LoadList(string name)
-{
-	cAImgList* current = ListExists(name);
-	if (current) return current;
-
-	current = new cAImgList();
-	current->m_Name = name;
-	current->m_Next = 0;
-	/* mod
-	uses dir path and file list to construct the girl images
-	*/
-
-	DirPath imagedir;
-	DirPath anidir;
-	bool gfound = false, afound = false, ffound = false;
-
-	// first check if we are looking for default images
-	if (name == "Default" && cfg.folders.configXMLdi())
-	{
-		imagedir = DirPath() << cfg.folders.defaultimageloc();
-		anidir = DirPath() << cfg.folders.defaultimageloc() << "ani";
-		FileList testg(imagedir, "*.*g");
-		FileList testa1(imagedir, "*.ani");
-		FileList testa2(anidir, "*.*g");
-		FileList testf(imagedir, "*.gif");
-		if (testg.size() > 0)	gfound = true;
-		if (testa1.size() > 0 && testa2.size() > 0)	afound = true;
-		if (testf.size() > 0)	ffound = true;
-	}
-	if (!gfound && !afound && !ffound && name == "Default")
-	{
-		imagedir = DirPath() << "Resources" << "DefaultImages";
-		anidir = DirPath() << "Resources" << "DefaultImages" << "ani";
-		FileList testg(imagedir, "*.*g");
-		FileList testa1(imagedir, "*.ani");
-		FileList testa2(anidir, "*.*g");
-		FileList testf(imagedir, "*.gif");
-		if (testg.size() > 0)	gfound = true;
-		if (testa1.size() > 0 && testa2.size() > 0)	afound = true;
-		if (testf.size() > 0)	ffound = true;
-	}
-	// If not, check if the girl is in the config set folder
-	if (!gfound && !afound && !ffound && cfg.folders.configXMLch())
-	{	
-		imagedir = DirPath() << cfg.folders.characters() << name;
-		anidir = DirPath() << cfg.folders.characters() << name << "ani";
-		FileList testg(imagedir, "*.*g");
-		FileList testa1(imagedir, "*.ani");
-		FileList testa2(anidir, "*.*g");
-		FileList testf(imagedir, "*.gif");
-		if (testg.size() > 0)	gfound = true;
-		if (testa1.size() > 0 && testa2.size() > 0)	afound = true;
-		if (testf.size() > 0)	ffound = true;
-	}
-	// If not, check if the girl is in the ./Resources/Characters folder
-	if (!gfound && !afound && !ffound)
-	{
-		imagedir << "Resources" << "Characters" << name;
-		anidir << "Resources" << "Characters" << name << "ani";
-		FileList testg(imagedir, "*.*g");
-		FileList testa1(imagedir, "*.ani");
-		FileList testa2(anidir, "*.*g");
-		FileList testf(imagedir, "*.gif");
-		if (testg.size() > 0)	gfound = true;
-		if (testa1.size() > 0 && testa2.size() > 0)	afound = true;
-		if (testf.size() > 0)	ffound = true;
-	}
-	string numeric = "0123456789 ().,[]-";
-	if (gfound)
-	{
-		string ext = "*g";
-		int i = 0;
-		do {
-			bool to_add = true;
-			FileList the_files(imagedir, (pic_types[i] + ext).c_str());
-			for (int k = 0; k < the_files.size(); k++)
-			{
-				bool test = false;
-				/*
-				* `J` fixed this by changing
-				*		string numeric="123456789";
-				* to	string numeric="0123456789 ().,[]-";
-				* Check Preg*.*g filenames [leaf] and accept as non-subtype. ONLY those with number 1--9 in char 5
-				* (Allows filename like 'Preg22.jpg' BUT DOESN'T allow like 'Preg (2).jpg' or 'Preg09.jpg')
-				* MIGHT BE BETTER to just throw out sub-type filenames in this Preg*.*g section. */
-				if (i == IMGTYPE_PREGNANT)
-				{
-					char c = the_files[k].leaf()[4];
-					for (int j = 0; j < (int)numeric.size(); j++)
-					{
-						if (c == numeric[j])
-						{
-							test = true;
-							break;
-						}
-					}
-					if (!test)
-					{
-						k = the_files.size();
-						to_add = false;
-					}
-				}
-				if (to_add)
-				{
-					current->m_Images[i].AddImage(the_files[k].full());
-					current->m_Images[i].m_NumImages++;
-				}
-			}
-			i++;
-		} while (i < NUM_IMGTYPES);
-	}
-
-	if (afound)
-	{
-		string ext = "ani";
-		int i = 0;
-		do {
-			bool to_add = true;
-			FileList the_files(imagedir, (pic_types[i] + ext).c_str());
-			for (int k = 0; k < the_files.size(); k++)
-			{
-				bool test = false;
-				string aniname = the_files[k].leaf();
-				aniname = aniname.substr(0, aniname.length() - 3);
-				FileList IsItThere(anidir, (aniname + "jpg").c_str());
-				if (IsItThere.size() != 1)
-				{
-					to_add = false; 
-					continue;
-				}
-
-
-
-				/* Check Preg*.*g filenames [leaf] and accept as non-subtypew ONLY those with number 1--9 in char 5
-				* (Allows filename like 'Preg22.jpg' BUT DOESN'T allow like 'Preg (2).jpg' or 'Preg09.jpg')
-				* MIGHT BE BETTER to just throw out sub-type filenames in this Preg*.*g section. */
-				if (i == IMGTYPE_PREGNANT)
-				{
-					char c = the_files[k].leaf()[4];
-					for (int j = 0; j < (int)numeric.size(); j++)
-					{
-						if (c == numeric[j])
-						{
-							test = true;
-							break;
-						}
-					}
-					if (!test)
-					{
-						k = the_files.size();
-						to_add = false;
-					}
-				}
-				if (to_add)
-				{
-					current->m_Images[i].AddImage(the_files[k].full(), the_files[k].path(), the_files[k].leaf());
-					current->m_Images[i].m_NumImages++;
-				}
-			}
-			i++;
-		} while (i < NUM_IMGTYPES);
-	}
-
-	if (ffound)
-	{
-		string ext = "gif";
-		int i = 0;
-		do {
-			bool to_add = true;
-			FileList the_files(imagedir, (pic_types[i] + ext).c_str());
-			for (int k = 0; k < the_files.size(); k++)
-			{
-				bool test = false;
-				/* Check Preg*.*g filenames [leaf] and accept as non-subtypew ONLY those with number 1--9 in char 5
-				* (Allows filename like 'Preg22.jpg' BUT DOESN'T allow like 'Preg (2).jpg' or 'Preg09.jpg')
-				* MIGHT BE BETTER to just throw out sub-type filenames in this Preg*.*g section. */
-				if (i == IMGTYPE_PREGNANT)
-				{
-					char c = the_files[k].leaf()[4];
-					for (int j = 0; j < (int)numeric.size(); j++)
-					{
-						if (c == numeric[j])
-						{
-							test = true;
-							break;
-						}
-					}
-					if (!test)
-					{
-						k = the_files.size();
-						to_add = false;
-					}
-				}
-				if (to_add)
-				{
-					current->m_Images[i].AddImage(the_files[k].full(), the_files[k].path(), the_files[k].leaf());
-					current->m_Images[i].m_NumImages++;
-				}
-			}
-			i++;
-		} while (i < NUM_IMGTYPES);
-	}
-
-
-	if (m_Last)
-	{
-		m_Last->m_Next = current;
-		m_Last = current;
-	}
-	else
-		m_First = m_Last = current;
-
-	return current;
-}
-
-void cGirls::LoadDefaultImages()	// for now they are hard coded
-{
-	m_DefImages = m_ImgListManager.LoadList("Default");
-}
-
-bool cGirls::IsAnimatedSurface(sGirl* girl, int ImgType, int& img)
-{
-	//               Loop thru case stmt(s) for image types; if current imagetype has no images, 
-	//               substitute for next loop an image type that has/may have images.
-	//               Only substitute more-general image types or those with > 0 image count, 
-	//               ending with girl profile or default images, avoiding endless loop. 
-	//				 (Simplified 'if' logic by using success/failure 'case" statements, 4-5-2013.)
-
-	//				Also added capability to handle passed ImgType of pregnant subtypes
-
-	CLog l;
-
-	while (1)
-	{
-		/*
-		*		if you sell a girl from the dungeon, and then hotkey back to girl management
-		*		it crashes with girl->m_GirlImages == 0
-		*
-		*		so let's test for that here
-		*/
-		if (!girl || !girl->m_GirlImages) {
-			break;
-		}
-
-		switch (ImgType)
-		{
-			//				kept all cases to test for invalid Image Type.
-		case IMGTYPE_TORTURE:
-			if (girl->is_pregnant() && girl->m_GirlImages->m_Images[IMGTYPE_TORTURE + PREG_OFFSET].m_NumImages)
-				return girl->m_GirlImages->m_Images[IMGTYPE_TORTURE + PREG_OFFSET].IsAnimatedSurface(img);
-			if (girl->is_pregnant() && girl->m_GirlImages->m_Images[IMGTYPE_BDSM + PREG_OFFSET].m_NumImages)
-				return girl->m_GirlImages->m_Images[IMGTYPE_BDSM + PREG_OFFSET].IsAnimatedSurface(img);
-			else if (girl->m_GirlImages->m_Images[IMGTYPE_TORTURE].m_NumImages > 0)
-				return girl->m_GirlImages->m_Images[IMGTYPE_TORTURE].IsAnimatedSurface(img);
-			else if (girl->m_GirlImages->m_Images[IMGTYPE_BDSM].m_NumImages > 0)
-				return girl->m_GirlImages->m_Images[IMGTYPE_BDSM].IsAnimatedSurface(img);
-			else
-				ImgType = IMGTYPE_PROFILE;		// Try this next loop
-			break;
-
-		case IMGTYPE_ANAL:
-		case IMGTYPE_BDSM:
-		case IMGTYPE_BEAST:
-		case IMGTYPE_GROUP:
-		case IMGTYPE_LESBIAN:
-			//				Similar pregnant/non-pregnant 'success' condition and action; uses 'pregnancy offset'
-			if (girl->is_pregnant() && girl->m_GirlImages->m_Images[ImgType + PREG_OFFSET].m_NumImages)
-				return girl->m_GirlImages->m_Images[ImgType + PREG_OFFSET].IsAnimatedSurface(img);
-			else if (girl->m_GirlImages->m_Images[ImgType].m_NumImages > 0)
-				return girl->m_GirlImages->m_Images[ImgType].IsAnimatedSurface(img);
-			else
-				ImgType = IMGTYPE_SEX;		// Try this next loop
-			break;
-
-		case IMGTYPE_PROFILE:
-			if (girl->is_pregnant() && girl->m_GirlImages->m_Images[IMGTYPE_PREGNANT].m_NumImages)
-			{
-				//				if(girl->m_newRandomFixed >= 0)  // A simiar process had these 2 lines
-				//					random = true;
-				return girl->m_GirlImages->m_Images[IMGTYPE_PREGNANT].IsAnimatedSurface(img);
-			}
-			else if (girl->m_GirlImages->m_Images[IMGTYPE_PROFILE].m_NumImages > 0)
-				return girl->m_GirlImages->m_Images[IMGTYPE_PROFILE].IsAnimatedSurface(img);
-			else
-				//							Use default images, avoid endless loop
-				return m_DefImages->m_Images[IMGTYPE_PROFILE].IsAnimatedSurface(img);
-			break;
-
-		case IMGTYPE_PREGANAL:
-		case IMGTYPE_PREGBDSM:
-		case IMGTYPE_PREGBEAST:
-		case IMGTYPE_PREGGROUP:
-		case IMGTYPE_PREGLESBIAN:
-		case IMGTYPE_PREGSEX:
-			if (girl->m_GirlImages->m_Images[ImgType].m_NumImages > 0)
-				return girl->m_GirlImages->m_Images[ImgType].IsAnimatedSurface(img);
-			else
-				ImgType = IMGTYPE_SEX;		// Try this next loop
-			break;
-
-		case IMGTYPE_PREGNANT:
-		case IMGTYPE_DEATH:
-			if (girl->m_GirlImages->m_Images[ImgType].m_NumImages > 0)
-				return girl->m_GirlImages->m_Images[ImgType].IsAnimatedSurface(img);
-			else
-				return m_DefImages->m_Images[ImgType].IsAnimatedSurface(img);
-			break;
-
-		case IMGTYPE_SEX:
-			if (girl->is_pregnant() && girl->m_GirlImages->m_Images[IMGTYPE_PREGSEX].m_NumImages)
-				return m_DefImages->m_Images[IMGTYPE_SEX].IsAnimatedSurface(img);
-			else if (girl->m_GirlImages->m_Images[IMGTYPE_SEX].m_NumImages > 0)
-				return girl->m_GirlImages->m_Images[IMGTYPE_SEX].IsAnimatedSurface(img);
-			else
-				return m_DefImages->m_Images[IMGTYPE_SEX].IsAnimatedSurface(img);
-			break;
-
-		case IMGTYPE_COMBAT:
-		case IMGTYPE_MAID:
-		case IMGTYPE_SING:
-		case IMGTYPE_WAIT:
-		case IMGTYPE_CARD:
-		case IMGTYPE_BUNNY:
-		case IMGTYPE_MILK:
-			//				Similar'success' condition and action; 
-			if (girl->m_GirlImages->m_Images[ImgType].m_NumImages > 0)
-				return girl->m_GirlImages->m_Images[ImgType].IsAnimatedSurface(img);
-			else
-				ImgType = IMGTYPE_PROFILE;
-
-			break;
-
-		case IMGTYPE_ORAL:
-		case IMGTYPE_ECCHI:
-		case IMGTYPE_STRIP:
-		case IMGTYPE_NUDE:
-		case IMGTYPE_MAST:
-		case IMGTYPE_TITTY:
-		case IMGTYPE_HAND:
-			//				Similar'success' condition and action  (but no alternative ImgType set); 
-			if (girl->m_GirlImages->m_Images[ImgType].m_NumImages > 0)
-				return girl->m_GirlImages->m_Images[ImgType].IsAnimatedSurface(img);
-			break;
-
-		default:	// `J` return the ImgType if there are any otherwise send error and return 0
-			if (girl->m_GirlImages->m_Images[ImgType].m_NumImages > 0)
-				return girl->m_GirlImages->m_Images[ImgType].IsAnimatedSurface(img);
-
-			//error!
-			l.ss() << "cGirls::IsAnimatedSurface: " << "unexpected image type: " << ImgType;
-			l.ssend();
-			return 0;
-			break;
-
-			//				And many conditions return early
-		}
-
-		//		If not returned to calling module already, have failed to find ImgType images.
-		//              If have not already, test a substitute image type that has/may have images,
-		//					substitute ImgType and leave processing for nexp loop if simpler.
-		//			(First switch testing success, 2nd setting replacement ImgType replaces complicated 'if's.
-
-		switch (ImgType)
-		{
-		case IMGTYPE_ORAL:
-			ImgType = IMGTYPE_SEX;
-			break;
-
-		case IMGTYPE_ECCHI:
-			if (girl->m_GirlImages->m_Images[IMGTYPE_STRIP].m_NumImages > 0)
-				return girl->m_GirlImages->m_Images[IMGTYPE_STRIP].IsAnimatedSurface(img);
-			else if (girl->m_GirlImages->m_Images[IMGTYPE_NUDE].m_NumImages > 0)
-				return girl->m_GirlImages->m_Images[IMGTYPE_NUDE].IsAnimatedSurface(img);
-			else
-				ImgType = IMGTYPE_PROFILE;
-			break;
-
-		case IMGTYPE_STRIP:
-			if (girl->m_GirlImages->m_Images[IMGTYPE_ECCHI].m_NumImages > 0)
-				return girl->m_GirlImages->m_Images[IMGTYPE_ECCHI].IsAnimatedSurface(img);
-			else if (girl->m_GirlImages->m_Images[IMGTYPE_NUDE].m_NumImages > 0)
-				return girl->m_GirlImages->m_Images[IMGTYPE_NUDE].IsAnimatedSurface(img);
-			else
-				ImgType = IMGTYPE_PROFILE;
-			break;
-
-		case IMGTYPE_NUDE:
-			if (girl->m_GirlImages->m_Images[IMGTYPE_STRIP].m_NumImages > 0)
-				return girl->m_GirlImages->m_Images[IMGTYPE_STRIP].IsAnimatedSurface(img);
-			else if (girl->m_GirlImages->m_Images[IMGTYPE_ECCHI].m_NumImages > 0)
-				return girl->m_GirlImages->m_Images[IMGTYPE_ECCHI].IsAnimatedSurface(img);
-			else
-				ImgType = IMGTYPE_PROFILE;
-			break;
-
-		case IMGTYPE_MAST:
-			ImgType = IMGTYPE_NUDE;
-			break;
-
-		case IMGTYPE_TITTY:
-			ImgType = IMGTYPE_ORAL;
-			break;
-
-		case IMGTYPE_HAND:
-			ImgType = IMGTYPE_ORAL;
-			break;
-
-		default:	// `J` return the ImgType if there are any otherwise return 0
-			if (girl->m_GirlImages->m_Images[ImgType].m_NumImages > 0)
-				return girl->m_GirlImages->m_Images[ImgType].IsAnimatedSurface(img);
-			return 0;
-		}
-	}
-	return 0;
-}
-
-CSurface* cGirls::GetImageSurface(sGirl* girl, int ImgType, bool random, int& img, bool gallery)
-{
-	/*
-	*		if you sell a girl from the dungeon, and then hotkey back to girl management
-	*		it crashes with girl->m_GirlImages == 0
-	*		so let's test for that here
-	*	`J` hopefully this was fixed but leave the test in anyway
-	*/
-	if (!girl || !girl->m_GirlImages)	return 0;
-
-	// `J` If the image is for the gallery, just return the images
-	if (gallery) return girl->m_GirlImages->m_Images[ImgType].GetImageSurface(random, img);
-
-	// `J` check for pregnant images first
-	if (girl->is_pregnant())
-	{
-		if (ImgType == IMGTYPE_PREGNANT)
-			if (girl->m_GirlImages->m_Images[IMGTYPE_PREGNANT].m_NumImages)
-				return girl->m_GirlImages->m_Images[IMGTYPE_PREGNANT].GetImageSurface(random, img);
-		else if (ImgType == IMGTYPE_PROFILE)
-		{
-			if (girl->m_GirlImages->m_Images[IMGTYPE_PREGPROFILE].m_NumImages)
-				return girl->m_GirlImages->m_Images[IMGTYPE_PREGPROFILE].GetImageSurface(random, img);
-			if (girl->m_GirlImages->m_Images[IMGTYPE_PREGNANT].m_NumImages)
-				return girl->m_GirlImages->m_Images[IMGTYPE_PREGNANT].GetImageSurface(random, img);
-		}
-		// `J` check if there are any Preg images for the requested type
-		else if (ImgType < PREG_OFFSET && ImgType != IMGTYPE_PREGNANT &&
-			girl->m_GirlImages->m_Images[ImgType + PREG_OFFSET].m_NumImages)
-			return girl->m_GirlImages->m_Images[ImgType + PREG_OFFSET].GetImageSurface(random, img);
-	}
-
-
-	// `J` check if there are any images for the requested type
-	if (girl->m_GirlImages->m_Images[ImgType].m_NumImages)
-		return girl->m_GirlImages->m_Images[ImgType].GetImageSurface(random, img);
-
-	// `J` if image type is preg varitant, replace it with nonpreg value before checking alts
-	if (ImgType >= PREG_OFFSET && ImgType != IMGTYPE_PREGNANT)
-		ImgType -= PREG_OFFSET;
-
-	// `J` create list of alternates for testing and set null values as -1
-	int alttypes[] = { -1, -1, -1, -1, -1, -1, -1, -1, -1 };
-	switch (ImgType)
-	{
-		// `J` When modifying Image types, search for "J-Change-Image-Types"  :  found in >> GetImageSurface
-		// First do sex types
-	case IMGTYPE_ANAL:		alttypes[0] = IMGTYPE_SEX;		break;
-	case IMGTYPE_BDSM:		alttypes[0] = IMGTYPE_SEX;		break;
-	case IMGTYPE_SEX:		alttypes[0] = IMGTYPE_ANAL;		alttypes[1] = IMGTYPE_GROUP;	alttypes[2] = IMGTYPE_LESBIAN;
-		alttypes[3] = IMGTYPE_ORAL;		alttypes[4] = IMGTYPE_TITTY;	alttypes[5] = IMGTYPE_HAND;
-		alttypes[6] = IMGTYPE_FOOT;		break;
-	case IMGTYPE_BEAST:		alttypes[0] = IMGTYPE_SEX;		break;
-	case IMGTYPE_GROUP:		alttypes[0] = IMGTYPE_SEX;		break;
-	case IMGTYPE_LESBIAN:	alttypes[0] = IMGTYPE_NUDE;		alttypes[1] = IMGTYPE_SEX;		break;
-	case IMGTYPE_ORAL:		alttypes[0] = IMGTYPE_HAND;		alttypes[1] = IMGTYPE_TITTY;	alttypes[2] = IMGTYPE_FOOT;
-		alttypes[3] = IMGTYPE_SEX;		break;
-	case IMGTYPE_TITTY:		alttypes[0] = IMGTYPE_HAND;		alttypes[1] = IMGTYPE_ORAL;		alttypes[2] = IMGTYPE_SEX;		break;
-	case IMGTYPE_HAND:		alttypes[0] = IMGTYPE_ORAL;		alttypes[1] = IMGTYPE_TITTY;	alttypes[2] = IMGTYPE_FOOT;
-		alttypes[3] = IMGTYPE_SEX;		break;
-	case IMGTYPE_FOOT:		alttypes[0] = IMGTYPE_HAND;		alttypes[1] = IMGTYPE_ORAL;		alttypes[2] = IMGTYPE_TITTY;
-		alttypes[3] = IMGTYPE_SEX;		break;
-
-		// torture
-	case IMGTYPE_TORTURE:	alttypes[0] = IMGTYPE_BDSM;		alttypes[1] = IMGTYPE_DEATH;	break;
-
-		// single girl, non sex
-	case IMGTYPE_NUDE:		alttypes[0] = IMGTYPE_STRIP;	alttypes[1] = IMGTYPE_ECCHI;	break;
-	case IMGTYPE_MAST:		alttypes[0] = IMGTYPE_NUDE;		alttypes[1] = IMGTYPE_STRIP;	alttypes[2] = IMGTYPE_ECCHI;	break;
-	case IMGTYPE_ECCHI:		alttypes[0] = IMGTYPE_STRIP;	alttypes[1] = IMGTYPE_NUDE;		break;
-	case IMGTYPE_MILK:
-	case IMGTYPE_STRIP:
-	case IMGTYPE_BED:
-	case IMGTYPE_SWIM:
-	case IMGTYPE_BATH:
-		alttypes[0] = IMGTYPE_ECCHI;	alttypes[1] = IMGTYPE_NUDE;		break;
-
-		// types that alt to bunny and formal
-	case IMGTYPE_WAIT:
-	case IMGTYPE_MAID:
-	case IMGTYPE_SING:
-	case IMGTYPE_CARD:		alttypes[0] = IMGTYPE_BUNNY;	break;
-
-		// Farm types
-	case IMGTYPE_FARM:		alttypes[0] = -1;				break;
-	case IMGTYPE_COOK:		alttypes[0] = IMGTYPE_WAIT;		alttypes[1] = IMGTYPE_MAID;	break;
-	case IMGTYPE_HERD:		alttypes[0] = IMGTYPE_FARM;		break;
-	case IMGTYPE_CRAFT:		alttypes[0] = IMGTYPE_FARM;		break;
-
-	case IMGTYPE_COMBAT:	alttypes[0] = IMGTYPE_MAGIC;	break;
-
-	case IMGTYPE_PRESENTED:	alttypes[0] = IMGTYPE_PROFILE;	break;
-
-		// these image types have no alt types
-		//	case IMGTYPE_NURSE:
-		//	case IMGTYPE_FORMAL:
-	case IMGTYPE_MAGIC:
-	case IMGTYPE_BUNNY:
-	case IMGTYPE_DEATH:
-	case IMGTYPE_PREGNANT:
-	case IMGTYPE_PROFILE:
-	case IMGTYPE_SHOP:
-	case IMGTYPE_SIGN:
-	default:
-		alttypes[0] = -1;
-		break;
-
-	}
-	// `J` first check if there are preg varients
-	if (girl->is_pregnant() && ImgType != IMGTYPE_PREGNANT)
-	{
-		for (int i = 0; i < 10; i++)
-		{
-			if (alttypes[i] == -1) break;
-			if (girl->m_GirlImages->m_Images[alttypes[i] + PREG_OFFSET].m_NumImages)
-				return girl->m_GirlImages->m_Images[alttypes[i] + PREG_OFFSET].GetImageSurface(random, img);
-		}
-	}
-	// `J` then check varients
-	for (int i = 0; i < 10; i++)
-	{
-		if (alttypes[i] == -1) break;
-		if (girl->m_GirlImages->m_Images[alttypes[i]].m_NumImages)
-		{
-			return girl->m_GirlImages->m_Images[alttypes[i]].GetImageSurface(random, img);
-		}
-	}
-	// `J` if there are no alternate types found then try default images
-	if (girl->is_pregnant() && ImgType == IMGTYPE_PROFILE && m_DefImages->m_Images[IMGTYPE_PREGNANT].m_NumImages)
-	{
-		return m_DefImages->m_Images[IMGTYPE_PREGNANT].GetImageSurface(random, img);
-	}
-	if (girl->is_pregnant() && ImgType != IMGTYPE_PREGNANT && m_DefImages->m_Images[ImgType + PREG_OFFSET].m_NumImages)
-	{
-		return m_DefImages->m_Images[ImgType + PREG_OFFSET].GetImageSurface(random, img);
-	}
-	if (m_DefImages->m_Images[ImgType].m_NumImages)
-	{
-		return m_DefImages->m_Images[ImgType].GetImageSurface(random, img);
-	}
-	// `J` if there are no alternate or default types found then try profile
-	if (girl->m_GirlImages->m_Images[IMGTYPE_PROFILE].m_NumImages)
-	{
-		return girl->m_GirlImages->m_Images[IMGTYPE_PROFILE].GetImageSurface(random, img);
-	}
-	if (m_DefImages->m_Images[IMGTYPE_PROFILE].m_NumImages)
-	{
-		return m_DefImages->m_Images[IMGTYPE_PROFILE].GetImageSurface(random, img);
-	}
-
-	return 0;		// would be failure to find & put image on surface, but errcode not passed back
-}
-
-cAnimatedSurface* cGirls::GetAnimatedSurface(sGirl* girl, int ImgType, int& img)
-{
-	return girl->m_GirlImages->m_Images[ImgType].GetAnimatedSurface(img);
-}
-
-#if 0
-/*
-* takes a girl, and image type number, and the pregnant equivalent thereof.
-*
-* returns the pregnant number if A) girl is preggers and B) girl specific images
-* exist
-*
-* Otherwise returns the non-preggy number, if the girl has images for that action
-*
-* if not, returns -1 so the caller can sort it out
-*/
-// `J` This is not used anywhere so it is not getting updated at this time
-int cGirls::get_modified_image_type(sGirl *girl, int image_type, int preg_type)
-{
-	bool preg = girl->is_pregnant();
-	/*
-	*	if she's pregnant, and if there exist pregnant images for
-	*	whatever this action is - use them
-	*/
-	if (preg && girl->m_GirlImages->m_Images[preg_type].m_NumImages > 0) {
-		return preg_type;
-	}
-	/*
-	*	if not, pregnant or not, try and find a non pregnant image for this sex type
-	*	the alternative would be to use a pregnant vanilla sex image - but
-	*	we're keeping the sex type in preference to the pregnancy
-	*/
-	if (girl->m_GirlImages->m_Images[image_type].m_NumImages > 0) {
-		return image_type;
-	}
-	/*
-	*	rather than try for pregnant straight sex and straight sex
-	*	let's just return -1 here and let the caller re-try with
-	*	normal sex arguments
-	*/
-	return -1;
-}
-
-/*
-* Given an image type, this tries to draw the girls own version of that image if available.
-* If not, it takes one from the default set
-*/
-// `J` This is not used anywhere so it is not getting updated at this time
-int cGirls::draw_with_default(sGirl* girl, int x, int y, int width, int height, int ImgType, bool random, int img)
-{
-	cImageList *images;
-	/*
-	*	does the girl have her own pics for this image type
-	*	or do we need to use the default ones?
-	*/
-	if (girl->m_GirlImages->m_Images[ImgType].m_NumImages == 0) {
-		images = m_DefImages->m_Images + ImgType;
-	}
-	else {
-		images = girl->m_GirlImages->m_Images + ImgType;
-	}
-	/*
-	*	draw and return
-	*/
-	return images->DrawImage(x, y, width, height, random, img);
-}
-
-// `J` This is not used anywhere so it is not getting updated at this time
-int cGirls::DrawGirl(sGirl* girl, int x, int y, int width, int height, int ImgType, bool random, int img)
-{
-	bool preg = false;
-	if (girl->is_pregnant()) preg = true;
-	while (1)
-	{
-		//               Loop thru case stmt(s) for image types; if current imagetype has no images, 
-		//               substitute for next loop an image type that has/may have images.
-		//               Only substitute more-general image types or those with > 0 image count, 
-		//               ending with girl profile or default images, avoiding endless loop. 
-		//				 (Simplified 'if' logic by using success/failure 'case" statements, 4-5-2013.)
-
-		//				Also added capability to handle passed ImgType of pregnant subtypes
-
-		/*
-		*		if you sell a girl from the dungeon, and then hotkey back to girl management
-		*		it crashes with girl->m_GirlImages == 0
-		*
-		*		so let's test for that here
-		*/
-		if (!girl || !girl->m_GirlImages) break;
-
-		//			NOTE that this DrawGirl() section does not check if 'gallery' like 
-		//			     GetImageSurface() does.
-
-		switch (ImgType)
-		{
-			//				kept all cases to test for invalid Image Type.
-		case IMGTYPE_TORTURE:
-			if (preg && girl->m_GirlImages->m_Images[IMGTYPE_TORTURE + PREG_OFFSET].m_NumImages > 0)
-				return girl->m_GirlImages->m_Images[IMGTYPE_TORTURE + PREG_OFFSET].DrawImage(x, y, width, height, random, img);
-			else if (preg && girl->m_GirlImages->m_Images[IMGTYPE_BDSM + PREG_OFFSET].m_NumImages > 0)
-				return girl->m_GirlImages->m_Images[IMGTYPE_BDSM + PREG_OFFSET].DrawImage(x, y, width, height, random, img);
-			else if (girl->m_GirlImages->m_Images[IMGTYPE_TORTURE].m_NumImages > 0)
-				return girl->m_GirlImages->m_Images[IMGTYPE_TORTURE].DrawImage(x, y, width, height, random, img);
-			else if (girl->m_GirlImages->m_Images[IMGTYPE_BDSM].m_NumImages > 0)
-				return girl->m_GirlImages->m_Images[IMGTYPE_BDSM].DrawImage(x, y, width, height, random, img);
-			else
-				ImgType = IMGTYPE_PROFILE;		// Try this next loop
-			break;
-
-		case IMGTYPE_ANAL:
-		case IMGTYPE_BDSM:
-		case IMGTYPE_BEAST:
-		case IMGTYPE_GROUP:
-		case IMGTYPE_LESBIAN:
-			//				Similar pregnant/non-pregnant 'success' condition and action; uses 'pregnancy offset'
-			if (preg && girl->m_GirlImages->m_Images[ImgType + PREG_OFFSET].m_NumImages > 0)
-				return girl->m_GirlImages->m_Images[ImgType + PREG_OFFSET].DrawImage(x, y, width, height, random, img);
-			else if (girl->m_GirlImages->m_Images[ImgType].m_NumImages > 0)
-				return girl->m_GirlImages->m_Images[ImgType].DrawImage(x, y, width, height, random, img);
-			else
-				ImgType = IMGTYPE_SEX;		// Try this next loop
-			break;
-
-		case IMGTYPE_PROFILE:
-			if (preg && girl->m_GirlImages->m_Images[IMGTYPE_PREGNANT].m_NumImages)
-			{
-				if (girl->m_newRandomFixed >= 0)
-					random = true;
-				return girl->m_GirlImages->m_Images[IMGTYPE_PREGNANT].DrawImage(x, y, width, height, random, img);
-			}
-			else if (girl->m_GirlImages->m_Images[IMGTYPE_PROFILE].m_NumImages > 0)
-				return girl->m_GirlImages->m_Images[IMGTYPE_PROFILE].DrawImage(x, y, width, height, random, img);
-			else
-				//							Use default images, avoid endless loop
-				return m_DefImages->m_Images[IMGTYPE_PROFILE].DrawImage(x, y, width, height, random, img);
-			break;
-
-		case IMGTYPE_PREGNANT:
-		case IMGTYPE_DEATH:
-			if (girl->m_GirlImages->m_Images[ImgType].m_NumImages == 0)
-				return m_DefImages->m_Images[ImgType].DrawImage(x, y, width, height, random, img);
-			else
-				return girl->m_GirlImages->m_Images[ImgType].DrawImage(x, y, width, height, random, img);
-			break;
-
-		case IMGTYPE_SEX:
-			if (preg && girl->m_GirlImages->m_Images[IMGTYPE_PREGSEX].m_NumImages)
-				return girl->m_GirlImages->m_Images[IMGTYPE_PREGSEX].DrawImage(x, y, width, height, random, img);
-			else if (girl->m_GirlImages->m_Images[IMGTYPE_SEX].m_NumImages > 0)
-				return girl->m_GirlImages->m_Images[IMGTYPE_SEX].DrawImage(x, y, width, height, random, img);
-			else
-				return m_DefImages->m_Images[IMGTYPE_SEX].DrawImage(x, y, width, height, random, img);
-			break;
-
-		case IMGTYPE_COMBAT:
-		case IMGTYPE_MAID:
-		case IMGTYPE_SING:
-		case IMGTYPE_WAIT:
-		case IMGTYPE_CARD:
-		case IMGTYPE_BUNNY:
-		case IMGTYPE_MILK:
-			//				Similar'success' condition and action; 
-			if (girl->m_GirlImages->m_Images[ImgType].m_NumImages > 0)
-				return girl->m_GirlImages->m_Images[ImgType].DrawImage(x, y, width, height, random, img);
-			else
-				ImgType = IMGTYPE_PROFILE;
-			break;
-
-		case IMGTYPE_ORAL:
-		case IMGTYPE_ECCHI:
-		case IMGTYPE_STRIP:
-		case IMGTYPE_NUDE:
-		case IMGTYPE_MAST:
-		case IMGTYPE_TITTY:
-		case IMGTYPE_HAND:
-			//				Similar'success' condition and action  (but no alternative ImgType set); 
-			if (girl->m_GirlImages->m_Images[ImgType].m_NumImages > 0)
-				return girl->m_GirlImages->m_Images[ImgType].DrawImage(x, y, width, height, random, img);
-			break;
-
-		default:
-			//error!
-			break;
-
-			//				And many conditions return early
-		}
-
-		//		If not returned to calling module already, have failed to find ImgType images.
-		//              If have not already, test a substitute image type that has/may have images,
-		//					substitute ImgType and leave processing for nexp loop if simpler.
-		//			(First switch testing success, 2nd setting replacement ImgType replaces complicated 'if's.
-
-		switch (ImgType)
-		{
-		case IMGTYPE_ORAL:
-			ImgType = IMGTYPE_SEX;
-			break;
-
-		case IMGTYPE_ECCHI:
-			if (girl->m_GirlImages->m_Images[IMGTYPE_STRIP].m_NumImages > 0)
-				return girl->m_GirlImages->m_Images[IMGTYPE_STRIP].DrawImage(x, y, width, height, random, img);
-			else if (girl->m_GirlImages->m_Images[IMGTYPE_NUDE].m_NumImages > 0)
-				return girl->m_GirlImages->m_Images[IMGTYPE_NUDE].DrawImage(x, y, width, height, random, img);
-			else
-				ImgType = IMGTYPE_PROFILE;
-			break;
-
-		case IMGTYPE_STRIP:
-			if (girl->m_GirlImages->m_Images[IMGTYPE_ECCHI].m_NumImages > 0)
-				return girl->m_GirlImages->m_Images[IMGTYPE_ECCHI].DrawImage(x, y, width, height, random, img);
-			else if (girl->m_GirlImages->m_Images[IMGTYPE_NUDE].m_NumImages > 0)
-				return girl->m_GirlImages->m_Images[IMGTYPE_NUDE].DrawImage(x, y, width, height, random, img);
-			else
-				ImgType = IMGTYPE_PROFILE;
-			break;
-
-		case IMGTYPE_NUDE:
-			if (girl->m_GirlImages->m_Images[IMGTYPE_STRIP].m_NumImages > 0)
-				return girl->m_GirlImages->m_Images[IMGTYPE_STRIP].DrawImage(x, y, width, height, random, img);
-			else 			if (girl->m_GirlImages->m_Images[IMGTYPE_ECCHI].m_NumImages > 0)
-				return girl->m_GirlImages->m_Images[IMGTYPE_ECCHI].DrawImage(x, y, width, height, random, img);
-			else
-				ImgType = IMGTYPE_PROFILE;
-			break;
-
-		case IMGTYPE_MAST:
-			ImgType = IMGTYPE_NUDE;
-			break;
-
-		case IMGTYPE_TITTY:
-			ImgType = IMGTYPE_ORAL;
-			break;
-
-		case IMGTYPE_HAND:
-			ImgType = IMGTYPE_ORAL;
-			break;
-
-		default:
-			//		Not an error here, just that next ImgType should be already set
-			break;
-		}
-	}
-
-	return -1;		// failure to find & draw image
-}
-#endif
 
 void sGirl::OutputGirlRow(string* Data, const vector<string>& columnNames)
 {

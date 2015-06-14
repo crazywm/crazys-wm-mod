@@ -16,6 +16,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#pragma region //	Includes and Externs			//
 #include "InterfaceProcesses.h"
 #include "InterfaceGlobals.h"
 #include "GameFlags.h"
@@ -45,16 +46,36 @@ extern cScreenGirlDetails g_GirlDetails;
 extern cScreenBrothelManagement g_BrothelManagement;
 extern sInterfaceIDs g_interfaceid;
 extern void PreparingLoad();
+extern bool eventrunning;
+extern cRng g_Dice;
+
+extern int g_BrothelScreenImgX, g_BrothelScreenImgY, g_BrothelScreenImgW, g_BrothelScreenImgH;
 
 extern cPlayer* The_Player;
+
+extern bool g_LeftArrow;	extern bool g_RightArrow;	extern bool g_UpArrow;		extern bool g_DownArrow;
+extern bool g_EnterKey;		extern bool g_AltKeys;		extern bool g_SpaceKey;		extern bool g_EscapeKey;
+extern bool g_HomeKey;		extern bool g_EndKey;		extern bool g_PageUpKey;	extern bool g_PageDownKey;
+
+extern bool g_A_Key;		extern bool g_B_Key;		extern bool g_C_Key;		extern bool g_D_Key;
+extern bool g_E_Key;		extern bool g_F_Key;		extern bool g_G_Key;		extern bool g_H_Key;
+extern bool g_I_Key;		extern bool g_J_Key;		extern bool g_K_Key;		extern bool g_L_Key;
+extern bool g_M_Key;		extern bool g_N_Key;		extern bool g_O_Key;		extern bool g_P_Key;
+extern bool g_Q_Key;		extern bool g_R_Key;		extern bool g_S_Key;		extern bool g_T_Key;
+extern bool g_U_Key;		extern bool g_V_Key;		extern bool g_W_Key;		extern bool g_X_Key;
+extern bool g_Y_Key;		extern bool g_Z_Key;
+extern	bool	g_CTRLDown;
+
+extern int g_CurrentScreen;
+
+#pragma endregion
+#pragma region //	Local Variables			//
 
 // globals used for the interface
 string g_ReturnText = "";
 bool g_InitWin = true;
 bool g_AllTogle = false;	// used on screens when wishing to apply something to all items
 long g_IntReturn;
-extern bool eventrunning;
-extern cRng g_Dice;
 
 // for keeping track of weather have walked around town today
 bool g_WalkAround = false;
@@ -68,7 +89,6 @@ int g_TalkCount = 10;
 bool g_GenGirls = false;
 bool g_Cheats = false;
 
-extern int g_BrothelScreenImgX, g_BrothelScreenImgY, g_BrothelScreenImgW, g_BrothelScreenImgH;
 
 sGirl* selected_girl;  // global pointer for the currently selected girl
 vector<int> cycle_girls;  // globally available sorted list of girl IDs for Girl Details screen to cycle through
@@ -80,133 +100,10 @@ int MarketSlaveGirlsDel[20] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
 
 CSurface* g_BrothelImages[7] = { 0, 0, 0, 0, 0, 0, 0 };
 
-extern bool g_LeftArrow;	extern bool g_RightArrow;	extern bool g_UpArrow;		extern bool g_DownArrow;
-extern bool g_EnterKey;		extern bool g_AltKeys;		extern bool g_SpaceKey;		extern bool g_EscapeKey;
-extern bool g_HomeKey;		extern bool g_EndKey;		extern bool g_PageUpKey;	extern bool g_PageDownKey;
-
-extern bool g_A_Key;		extern bool g_B_Key;		extern bool g_C_Key;		extern bool g_D_Key;
-extern bool g_E_Key;		extern bool g_F_Key;		extern bool g_G_Key;		extern bool g_H_Key;
-extern bool g_I_Key;		extern bool g_J_Key;		extern bool g_K_Key;		extern bool g_L_Key;
-extern bool g_M_Key;		extern bool g_N_Key;		extern bool g_O_Key;		extern bool g_P_Key;
-extern bool g_Q_Key;		extern bool g_R_Key;		extern bool g_S_Key;		extern bool g_T_Key;
-extern bool g_U_Key;		extern bool g_V_Key;		extern bool g_W_Key;		extern bool g_X_Key;
-extern bool g_Y_Key;		extern bool g_Z_Key;
-
-extern int g_CurrentScreen;
+#pragma endregion
 
 //used to store what files we have loaded
 MasterFile loadedGirlsFiles;
-
-// `J` When modifying Image types, search for "J-Change-Image-Types"  :  found in >> InterfaceProcesses.cpp
-string galtxt[] = { "Anal", "BDSM", "Sex", "Beast", "Group", "Lesbian", "Torture", "Death", "Profile", "Combat",
-"Oral", "Ecchi", "Strip", "Maid", "Sing", "Wait", "Card", "Bunny", "Nude", "Mast", "Titty", "Milk", "Hand",
-"Foot", "Bed", "Farm", "Herd", "Cook", "Craft", "Swim", "Bath", "Nurse", "Formal", "Shop", "Magic", "Sign",
-"Presented", "Pregnant",
-// pregnant varients
-"Pregnant\nAnal", "Pregnant\nBDSM", "Pregnant\nSex", "Pregnant\nBeast", "Pregnant\nGroup",
-"Pregnant\nLesbian", "Pregnant\nTorture", "Pregnant\nDeath", "Pregnant\nProfile", "Pregnant\nCombat",
-"Pregnant\nOral", "Pregnant\nEcchi", "Pregnant\nStrip", "Pregnant\nMaid", "Pregnant\nSing", "Pregnant\nWait",
-"Pregnant\nCard", "Pregnant\nBunny", "Pregnant\nNude", "Pregnant\nMast", "Pregnant\nTitty", "Pregnant\nMilk",
-"Pregnant\nHand", "Pregnant\nFoot", "Pregnant\nBed", "Pregnant\nFarm", "Pregnant\nHerd", "Pregnant\nCook",
-"Pregnant\nCraft", "Pregnant\nSwim", "Pregnant\nBath", "Pregnant\nNurse", "Pregnant\nFormal", "Pregnant\nShop",
-"Pregnant\nMagic", "Pregnant\nSign", "Pregnant\nPresented" };
-
-
-
-void confirm_exit();
-
-void LoadGameScreen()
-{
-	
-	DirPath location;
-	if (cfg.folders.configXMLsa())
-		location = DirPath() << cfg.folders.saves();
-	else
-		location = DirPath() << "Saves";
-	const char *pattern = "*.gam";
-	FileList fl(location, pattern);
-
-	if (g_InitWin)
-	{
-		g_LoadGame.Focused();
-		/*
-		*		clear the list box with the save games
-		*/
-		g_LoadGame.ClearListBox(g_interfaceid.LIST_LOADGSAVES);
-		/*
-		*		loop through the files, adding them to the box
-		*/
-		for (int i = 0; i < fl.size(); i++)
-		{
-			g_LoadGame.AddToListBox(g_interfaceid.LIST_LOADGSAVES, i, fl[i].leaf());
-		}
-		g_InitWin = false;
-	}
-
-	/*
-	*	no events process means we can go home early
-	*/
-	if (g_InterfaceEvents.GetNumEvents() == 0 && !g_EscapeKey && !g_UpArrow && !g_DownArrow && !g_EnterKey)
-	{
-		return;
-	}
-
-	/*
-	*	the next simplest case is the "back" button
-	*/
-	if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_LOADGBACK)
-		|| g_EscapeKey)
-	{
-		g_EscapeKey = false;
-		g_InitWin = true;
-		g_WinManager.Pop();
-		return;
-	}
-
-	int selection;
-	if (g_UpArrow)
-	{
-		g_UpArrow = false;
-		selection = g_LoadGame.ArrowUpListBox(g_interfaceid.LIST_LOADGSAVES);
-	}
-	if (g_DownArrow)
-	{
-		g_DownArrow = false;
-		selection = g_LoadGame.ArrowDownListBox(g_interfaceid.LIST_LOADGSAVES);
-	}
-
-	/*
-	*	by this point, we're only interested if it's a click on the load game button or a double-click on a game in the list
-	*/
-	if (!g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_LOADGLOAD)
-		&& !g_LoadGame.ListDoubleClicked(g_interfaceid.LIST_LOADGSAVES) && !g_EnterKey)
-	{
-		return;
-	}
-	/*
-	*	OK: So from this point onwards, we're loading the game
-	*/
-	selection = g_LoadGame.GetLastSelectedItemFromList(g_interfaceid.LIST_LOADGSAVES);
-	/*
-	*	nothing selected means nothing more to do
-	*/
-	if (selection == -1)
-	{
-		return;
-	}
-	string temp = fl[selection].leaf();
-	g_ReturnText = temp;
-	/*
-	*	enable cheat mode for a cheat brothel
-	*/
-	g_Cheats = (temp == "Cheat.gam");
-
-
-	g_InitWin = true;
-	g_WinManager.Pop();
-	g_WinManager.Push(PreparingLoad, &g_Preparing);
-	return;
-}
 
 void NewGame()
 {
@@ -244,7 +141,6 @@ void NewGame()
 	loadedGirlsFiles.LoadXML(TiXmlHandle(0));
 	LoadGirlsFiles();
 
-	g_Girls.LoadDefaultImages();
 
 	g_GlobalTriggers.LoadList(DirPath() << "Resources" << "Scripts" << "GlobalTriggers.xml");
 
@@ -329,10 +225,96 @@ static string clobber_extension(string s)	// `J` debug logging
 	return base;
 }
 
-/*
-* interim loader to load XML files, and then non-xml ones
-* if there was no xml version.
-*/
+void LoadGameScreen()
+{
+
+	DirPath location = DirPath(cfg.folders.saves().c_str());
+	const char *pattern = "*.gam";
+	FileList fl(location, pattern);
+
+	if (g_InitWin)
+	{
+		g_LoadGame.Focused();
+		/*
+		*		clear the list box with the save games
+		*/
+		g_LoadGame.ClearListBox(g_interfaceid.LIST_LOADGSAVES);
+		/*
+		*		loop through the files, adding them to the box
+		*/
+		for (int i = 0; i < fl.size(); i++)
+		{
+			g_LoadGame.AddToListBox(g_interfaceid.LIST_LOADGSAVES, i, fl[i].leaf());
+		}
+		g_LoadGame.SetSelectedItemInList(g_interfaceid.LIST_LOADGSAVES, 0);
+		g_InitWin = false;
+	}
+
+	/*
+	*	no events process means we can go home early
+	*/
+	if (g_InterfaceEvents.GetNumEvents() == 0 && !g_EscapeKey && !g_UpArrow && !g_DownArrow && !g_EnterKey)
+	{
+		return;
+	}
+
+	/*
+	*	the next simplest case is the "back" button
+	*/
+	if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_LOADGBACK)
+		|| g_EscapeKey)
+	{
+		g_EscapeKey = false;
+		g_InitWin = true;
+		g_WinManager.Pop();
+		return;
+	}
+
+	int selection;
+	if (g_UpArrow)
+	{
+		g_UpArrow = false;
+		selection = g_LoadGame.ArrowUpListBox(g_interfaceid.LIST_LOADGSAVES);
+	}
+	if (g_DownArrow)
+	{
+		g_DownArrow = false;
+		selection = g_LoadGame.ArrowDownListBox(g_interfaceid.LIST_LOADGSAVES);
+	}
+
+	/*
+	*	by this point, we're only interested if it's a click on the load game button or a double-click on a game in the list
+	*/
+	if (!g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_LOADGLOAD)
+		&& !g_LoadGame.ListDoubleClicked(g_interfaceid.LIST_LOADGSAVES) && !g_EnterKey)
+	{
+		return;
+	}
+	/*
+	*	OK: So from this point onwards, we're loading the game
+	*/
+	selection = g_LoadGame.GetLastSelectedItemFromList(g_interfaceid.LIST_LOADGSAVES);
+	/*
+	*	nothing selected means nothing more to do
+	*/
+	if (selection == -1)
+	{
+		return;
+	}
+	string temp = fl[selection].leaf();
+	g_ReturnText = temp;
+	/*
+	*	enable cheat mode for a cheat brothel
+	*/
+	g_Cheats = (temp == "Cheat.gam");
+
+
+	g_InitWin = true;
+	g_WinManager.Pop();
+	g_WinManager.Push(PreparingLoad, &g_Preparing);
+	return;
+}
+// interim loader to load XML files, and then non-xml ones if there was no xml version.
 static void LoadXMLItems(FileList &fl)
 {
 	map<string, string> lookup;
@@ -404,7 +386,6 @@ static void LoadXMLItems(FileList &fl)
 		}
 	}
 }
-
 void LoadGameInfoFiles()
 {
 	stringstream ss;
@@ -470,7 +451,6 @@ void LoadGameInfoFiles()
 
 
 }
-
 void LoadGirlsFiles()
 {
 	/*
@@ -478,10 +458,7 @@ void LoadGirlsFiles()
 	*	start by building a path...
 	*/
 	DirPath location; 
-	if (cfg.folders.configXMLch())
-		location = DirPath() << cfg.folders.characters();
-	else
-		location = DirPath() << "Resources" << "Characters";
+		location = DirPath(cfg.folders.characters().c_str());
 	/*
 	*	now scan for matching files. The XMLFileList
 	*	will look for ".girls" and ".girlx" files
@@ -523,1885 +500,6 @@ void LoadGirlsFiles()
 	{
 		g_Girls.LoadRandomGirl(rgirlfiles[i].full());
 	}
-}
-
-// MYR: Reordered the listing of messages: Critical (red) first, then important (dark blue)
-//      then everything else.
-// WD:	Copy sort code to Dungeon Girls
-
-void Turnsummary()		// `J` Bookmark - starting the turn summary page
-{
-	static int ImageType = -1, lastNum = -1, ImageNum = -1, LastType = -1, category = 0, category_last = 0, Item = 0;
-	sGirl *girl;
-	g_CurrentScreen = SCREEN_TURNSUMMARY;
-
-	enum{
-		Summary_GIRLS,
-		Summary_GANGS,
-		Summary_BROTHELS,
-		Summary_DUNGEON,
-		Summary_STUDIO,
-		Summary_ARENA,
-		Summary_CENTRE,
-		Summary_CLINIC,
-		Summary_FARM,
-		Summary_HOUSE
-	};
-
-	// Start g_InitWin section
-#if 1
-	if (g_InitWin)
-	{
-		//	Start Initial setups
-#if 1
-		g_Turnsummary.Focused();
-		string brothel = gettext("Current Brothel: ");
-		brothel += g_Brothels.GetName(g_CurrBrothel);
-		g_Turnsummary.EditTextItem(brothel, g_interfaceid.TEXT_CURRENTBROTHEL);
-
-		if (category_last == category) Item = g_Turnsummary.GetSelectedItemFromList(g_interfaceid.LIST_TSITEM);
-		else { Item = 0; category_last = category; }
-
-		string sorttext = "ITEM";
-		if (summarysortorder == 1)
-		{
-			if (category == Summary_STUDIO)	{ sorttext += " (Jobs)"; }
-			if (category == Summary_CLINIC)	{ sorttext += " (Triage)"; }
-		}
-		g_Turnsummary.EditTextItem(sorttext, g_interfaceid.TEXT_LABELITEM);
-
-		// Clear the lists
-		g_Turnsummary.ClearListBox(g_interfaceid.LIST_TSCATEGORY);
-		g_Turnsummary.ClearListBox(g_interfaceid.LIST_TSITEM);
-		g_Turnsummary.ClearListBox(g_interfaceid.LIST_TSEVENTS);
-
-		/*
-		*		CATEGORY Listbox
-		*/
-		// list the categories of events
-		g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSCATEGORY, 0, gettext("GIRLS"));
-		g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSCATEGORY, 1, gettext("GANGS"));
-		g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSCATEGORY, 2, gettext("BROTHELS"));
-		g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSCATEGORY, 3, gettext("DUNGEON"));
-		if (g_Studios.GetNumBrothels() > 0)	g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSCATEGORY, 4, gettext("STUDIO"));
-		if (g_Arena.GetNumBrothels() > 0)	g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSCATEGORY, 5, gettext("ARENA"));
-		if (g_Centre.GetNumBrothels() > 0)	g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSCATEGORY, 6, gettext("CENTRE"));
-		if (g_Clinic.GetNumBrothels() > 0)	g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSCATEGORY, 7, gettext("CLINIC"));
-		if (g_Farm.GetNumBrothels() > 0)	g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSCATEGORY, 8, gettext("FARM"));
-		g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSCATEGORY, 9, gettext("HOUSE"));
-		g_Turnsummary.SetSelectedItemInList(g_interfaceid.LIST_TSCATEGORY, category, false);
-#endif		//	End Initial setups
-
-		/*
-		*		ITEM Listbox
-		*/
-
-		// 0. List girls
-#if 1
-		if (category == Summary_GIRLS)
-		{
-			int ID = 0, nNumGirls = g_Brothels.GetNumGirls(g_CurrBrothel);
-			vector<sGirl*> tmpSexGirls, tmpServiceGirls, tmpGoodNewsGirls, tmpDangerGirls, tmpWarningGirls;
-			tmpSexGirls.clear(); tmpServiceGirls.clear(); tmpGoodNewsGirls.clear(); tmpDangerGirls.clear(); tmpWarningGirls.clear();
-			sGirl* pTmpGirl;
-			bool sexjob = false;
-
-			// Major change in the way this is handled... want to be able to list sex related jobs together. 
-			// Disabled and replaced the enire section dealing with populating the listboxes here. --PP
-			// Find out which girls have sex type jobs.
-			for (int i = 0; i<nNumGirls; i++)
-			{
-				pTmpGirl = g_Brothels.GetGirl(g_CurrBrothel, i);
-				sexjob = false;
-				switch (pTmpGirl->m_DayJob)
-				{
-				case JOB_XXXENTERTAINMENT:
-				case JOB_PEEP:
-				case JOB_BARSTRIPPER:
-				case JOB_BROTHELSTRIPPER:
-				case JOB_MASSEUSE:
-				case JOB_BARWHORE:
-				case JOB_WHOREGAMBHALL:
-				case JOB_WHOREBROTHEL:
-				case JOB_WHORESTREETS:
-				case JOB_ESCORT:
-					sexjob = true;
-					break;
-				default:
-					break;
-				}
-				switch (pTmpGirl->m_NightJob)
-				{
-				case JOB_XXXENTERTAINMENT:
-				case JOB_PEEP:
-				case JOB_BARSTRIPPER:
-				case JOB_BROTHELSTRIPPER:
-				case JOB_MASSEUSE:
-				case JOB_BARWHORE:
-				case JOB_WHOREGAMBHALL:
-				case JOB_WHOREBROTHEL:
-				case JOB_WHORESTREETS:
-				case JOB_ESCORT:
-					sexjob = true;
-					break;
-				default:
-					break;
-				}
-				// Sort the girls into 4 catagories... sex jobs, service jobs, warning, and danger
-				// `J` added 5th catagory... goodnews
-				// If we want to we could add a seperate catagory for each job and order the list even further, but it will make this clunkier.
-				/* */if (!pTmpGirl->m_Events.HasUrgent() && sexjob)	tmpSexGirls.push_back(pTmpGirl);
-				else if (!pTmpGirl->m_Events.HasUrgent())			tmpServiceGirls.push_back(pTmpGirl);
-				else if (pTmpGirl->m_Events.HasDanger())			tmpDangerGirls.push_back(pTmpGirl);
-				else if (pTmpGirl->m_Events.HasGoodNews())			tmpGoodNewsGirls.push_back(pTmpGirl);
-				else /*                                 */			tmpWarningGirls.push_back(pTmpGirl);
-			}
-			// Put the catagories into the List Boxes... to change what order they are listed in, just swap these for-next loops. --PP
-			//Girls with Danger events
-			for (u_int i = 0; i < tmpDangerGirls.size(); i++)
-			{
-				string tname = tmpDangerGirls[i]->m_Realname;
-				g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, COLOR_RED);
-				if (selected_girl == tmpDangerGirls[i]) Item = ID;
-				ID++;
-			}
-			//Girls with GoodNews events
-			for (u_int i = 0; i < tmpGoodNewsGirls.size(); i++)
-			{
-				string tname = tmpGoodNewsGirls[i]->m_Realname;
-				g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, COLOR_GREEN);
-				if (selected_girl == tmpGoodNewsGirls[i]) Item = ID;
-				ID++;
-			}
-			//Girls wih Warnings
-			for (u_int i = 0; i < tmpWarningGirls.size(); i++)
-			{
-				string tname = tmpWarningGirls[i]->m_Realname;
-				g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, COLOR_DARKBLUE);
-				if (selected_girl == tmpWarningGirls[i]) Item = ID;
-				ID++;
-			}
-			//ServiceJob Girls
-			for (u_int i = 0; i < tmpServiceGirls.size(); i++)
-			{
-				string tname = tmpServiceGirls[i]->m_Realname;
-				g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname);
-				if (selected_girl == tmpServiceGirls[i]) Item = ID;
-				ID++;
-			}
-			//SexJob girls
-			for (u_int i = 0; i < tmpSexGirls.size(); i++)
-			{
-				string tname = tmpSexGirls[i]->m_Realname;
-				g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname);
-				if (selected_girl == tmpSexGirls[i]) Item = ID;
-				ID++;
-			}
-		}
-#endif
-		// 0. List girls
-
-		// 1. Gangs
-#if 1
-		else if (category == Summary_GANGS)
-		{
-			for (int i = 0; i<g_Gangs.GetNumGangs(); i++)
-				g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, i, g_Gangs.GetGang(i)->m_Name);
-		}
-#endif
-		// 1. Gangs
-
-		// 2. Brothels
-#if 1
-		else if (category == Summary_BROTHELS)
-		{
-			for (int i = 0; i<g_Brothels.GetNumBrothels(); i++)
-				g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, i, g_Brothels.GetBrothel(i)->m_Name);
-		}
-#endif
-		// 2. Brothels
-
-		// 3. Dungeon
-#if 1
-		else if (category == Summary_DUNGEON)
-		{
-			// Fill the list box
-			cDungeon* pDungeon = g_Brothels.GetDungeon();
-			int ID = 0, nNumGirls = pDungeon->GetNumGirls();
-			vector<sGirl*> tmpGoodNewsGirls, tmpDangerGirls, tmpWarningGirls, tmpOtherGirls;
-			tmpGoodNewsGirls.clear(); tmpDangerGirls.clear(); tmpWarningGirls.clear(); tmpOtherGirls.clear();
-			sGirl* pTmpGirl;
-
-			for (int i = 0; i < nNumGirls; i++)
-			{
-				pTmpGirl = pDungeon->GetGirl(i)->m_Girl;
-
-				/* */if (!pTmpGirl->m_Events.HasUrgent())	tmpOtherGirls.push_back(pTmpGirl);
-				else if (pTmpGirl->m_Events.HasDanger())	tmpDangerGirls.push_back(pTmpGirl);
-				else if (pTmpGirl->m_Events.HasGoodNews())	tmpGoodNewsGirls.push_back(pTmpGirl);
-				else /*                                */	tmpWarningGirls.push_back(pTmpGirl);
-			}
-
-			//Girls with Danger events
-			for (u_int i = 0; i < tmpDangerGirls.size(); i++)
-			{
-				string tname = tmpDangerGirls[i]->m_Realname;
-				g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, COLOR_RED);
-				if (selected_girl == tmpDangerGirls[i]) Item = ID;
-				ID++;
-			}
-			//Girls with GoodNews events
-			for (u_int i = 0; i < tmpGoodNewsGirls.size(); i++)
-			{
-				string tname = tmpGoodNewsGirls[i]->m_Realname;
-				g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, COLOR_GREEN);
-				if (selected_girl == tmpGoodNewsGirls[i]) Item = ID;
-				ID++;
-			}
-			//Girls wih Warnings
-			for (u_int i = 0; i < tmpWarningGirls.size(); i++)
-			{
-				string tname = tmpWarningGirls[i]->m_Realname;
-				g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, COLOR_DARKBLUE);
-				if (selected_girl == tmpWarningGirls[i]) Item = ID;
-				ID++;
-			}
-			//ServiceJob Girls
-			for (u_int i = 0; i < tmpOtherGirls.size(); i++)
-			{
-				string tname = tmpOtherGirls[i]->m_Realname;
-				g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname);
-				if (selected_girl == tmpOtherGirls[i]) Item = ID;
-				ID++;
-			}
-		}// End of New dungeon code
-#endif
-		// 3. Dungeon
-
-		// 4. Studio
-#if 1
-		else if (category == Summary_STUDIO)
-		{
-			if (summarysortorder == 1)	// Sort by Job
-			{
-				int nNumGirlsStudio = g_Studios.GetNumGirls(g_CurrStudio);
-				int ID = 0;
-				vector<sGirl*> tmpStudioDirector, tmpStudioCrew, tmpStudioStaff, tmpStudioActress, tmpStudioFree;
-				tmpStudioDirector.clear(); tmpStudioCrew.clear(); tmpStudioStaff.clear(); tmpStudioActress.clear(); tmpStudioFree.clear();
-				sGirl* pTmpGirl;
-				// Sort the girls by their job groups
-				for (int i = 0; i < nNumGirlsStudio; i++)
-				{
-					pTmpGirl = g_Studios.GetGirl(0, i);
-					switch (pTmpGirl->m_NightJob)
-					{
-					case JOB_DIRECTOR:
-						tmpStudioDirector.push_back(pTmpGirl);
-						break;
-					case JOB_CAMERAMAGE:
-					case JOB_CRYSTALPURIFIER:
-						tmpStudioCrew.push_back(pTmpGirl);
-						break;
-					case JOB_PROMOTER:
-					case JOB_FLUFFER:
-					case JOB_STAGEHAND:
-						tmpStudioStaff.push_back(pTmpGirl);
-						break;
-					case JOB_FILMBEAST:			case JOB_FILMSEX:			case JOB_FILMANAL:
-					case JOB_FILMLESBIAN:		case JOB_FILMBONDAGE:		case JOB_FILMGROUP:
-					case JOB_FILMORAL:			case JOB_FILMMAST:			case JOB_FILMTITTY:
-					case JOB_FILMSTRIP:			case JOB_FILMHANDJOB:		case JOB_FILMFOOTJOB:
-					case JOB_FILMRANDOM:
-						tmpStudioActress.push_back(pTmpGirl);
-						break;
-					case JOB_FILMFREETIME:
-					default:
-						tmpStudioFree.push_back(pTmpGirl);
-						break;
-					}
-				}
-
-				for (u_int i = 0; i < tmpStudioDirector.size(); i++)
-				{
-					string tname = tmpStudioDirector[i]->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, COLOR_RED);
-					if (selected_girl == tmpStudioDirector[i])
-						Item = ID;
-					ID++;
-				}
-				for (u_int i = 0; i < tmpStudioCrew.size(); i++)
-				{
-					string tname = tmpStudioCrew[i]->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, COLOR_DARKBLUE);
-					if (selected_girl == tmpStudioCrew[i])
-						Item = ID;
-					ID++;
-				}
-				for (u_int i = 0; i < tmpStudioStaff.size(); i++)
-				{
-					string tname = tmpStudioStaff[i]->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, COLOR_BLUE);
-					if (selected_girl == tmpStudioStaff[i])
-						Item = ID;
-					ID++;
-				}
-				for (u_int i = 0; i < tmpStudioActress.size(); i++)
-				{
-					string tname = tmpStudioActress[i]->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, COLOR_GREEN);
-					if (selected_girl == tmpStudioActress[i])
-						Item = ID;
-					ID++;
-				}
-				for (u_int i = 0; i < tmpStudioFree.size(); i++)
-				{
-					string tname = tmpStudioFree[i]->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, COLOR_RED);
-					if (selected_girl == tmpStudioFree[i])
-						Item = ID;
-					ID++;
-				}
-			}
-			else	// start normal sorting
-			{
-				int nNumGirlsStudio = g_Studios.GetNumGirls(g_CurrStudio);
-				int ID = 0;
-				vector<sGirl*> tmpSexGirls;
-				vector<sGirl*> tmpServiceGirls;
-				vector<sGirl*> tmpGoodNewsGirls;
-				vector<sGirl*> tmpDangerGirls;
-				vector<sGirl*> tmpWarningGirls;
-				tmpSexGirls.clear();
-				tmpServiceGirls.clear();
-				tmpGoodNewsGirls.clear();
-				tmpDangerGirls.clear();
-				tmpWarningGirls.clear();
-				sGirl* pTmpGirl;
-				bool sexjob = false;
-
-				// Major change in the way this is handled... want to be able to list sex related jobs together. 
-				// Disabled and replaced the enire section dealing with populating the listboxes here. --PP
-				// Find out which girls have sex type jobs.
-				for (int i = 0; i < nNumGirlsStudio; i++)
-				{
-					pTmpGirl = g_Studios.GetGirl(0, i); // `J` changed g_CurrBrothel to 0
-					sexjob = false;
-					switch (pTmpGirl->m_NightJob)
-					{
-					case JOB_FILMBEAST:
-					case JOB_FILMSEX:
-					case JOB_FILMANAL:
-					case JOB_FILMLESBIAN:
-					case JOB_FILMBONDAGE:
-					case JOB_FILMGROUP:
-					case JOB_FILMORAL:
-					case JOB_FILMMAST:
-					case JOB_FILMTITTY:
-					case JOB_FILMSTRIP:
-					case JOB_FILMRANDOM:
-					case JOB_FLUFFER:
-						sexjob = true;
-						break;
-					default:
-						break;
-					}
-					if (!pTmpGirl->m_Events.HasUrgent() && sexjob)	{ tmpSexGirls.push_back(pTmpGirl); }
-					else if (!pTmpGirl->m_Events.HasUrgent())		{ tmpServiceGirls.push_back(pTmpGirl); }
-					else if (pTmpGirl->m_Events.HasDanger())		{ tmpDangerGirls.push_back(pTmpGirl); }
-					else if (pTmpGirl->m_Events.HasGoodNews())		{ tmpGoodNewsGirls.push_back(pTmpGirl); }
-					else /*                                */		{ tmpWarningGirls.push_back(pTmpGirl); }
-				}
-				// Put the catagories into the List Boxes... to change what order they are listed in, just swap these for-next loops. --PP
-
-				//Girls with Danger events
-				for (u_int i = 0; i < tmpDangerGirls.size(); i++)
-				{
-					string tname = tmpDangerGirls[i]->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, COLOR_RED);
-					if (selected_girl == tmpDangerGirls[i])
-						Item = ID;
-					ID++;
-				}
-				//Girls with GoodNews events
-				for (u_int i = 0; i < tmpGoodNewsGirls.size(); i++)
-				{
-					string tname = tmpGoodNewsGirls[i]->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, COLOR_GREEN);
-					if (selected_girl == tmpGoodNewsGirls[i])
-						Item = ID;
-					ID++;
-				}
-				//Girls wih Warnings
-				for (u_int i = 0; i < tmpWarningGirls.size(); i++)
-				{
-					string tname = tmpWarningGirls[i]->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, COLOR_DARKBLUE);
-					if (selected_girl == tmpWarningGirls[i])
-						Item = ID;
-					ID++;
-				}
-				//ServiceJob Girls
-				for (u_int i = 0; i < tmpServiceGirls.size(); i++)
-				{
-					string tname = tmpServiceGirls[i]->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname);
-					if (selected_girl == tmpServiceGirls[i])
-						Item = ID;
-					ID++;
-				}
-				//SexJob girls
-				for (u_int i = 0; i < tmpSexGirls.size(); i++)
-				{
-					string tname = tmpSexGirls[i]->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname);
-					if (selected_girl == tmpSexGirls[i])
-						Item = ID;
-					ID++;
-				}
-			}
-		}
-#endif
-		// 4. Studio
-
-		// 5. arena
-#if 1
-		else if (category == Summary_ARENA)
-		{
-			int nNumGirlsArena = g_Arena.GetNumGirls(g_CurrArena);
-			int ID = 0;
-
-			// `J` Girls with GoodNews events first
-			for (int h = 0; h<nNumGirlsArena; h++)
-			{
-				sGirl* pTmpGirl = g_Arena.GetGirl(0, h);
-				if (pTmpGirl->m_Events.HasGoodNews())
-				{
-					string tname = pTmpGirl->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, COLOR_GREEN);
-					if (selected_girl == pTmpGirl)
-						Item = ID;
-					ID++;
-				}
-			}
-			// MYR: Girls with danger events first
-			for (int i = 0; i<nNumGirlsArena; i++)
-			{
-				sGirl* pTmpGirl = g_Arena.GetGirl(0, i);
-				if (pTmpGirl->m_Events.HasDanger() && !pTmpGirl->m_Events.HasGoodNews())
-				{
-					string tname = pTmpGirl->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, COLOR_RED);
-					if (selected_girl == pTmpGirl)
-						Item = ID;
-					ID++;
-				}
-			}
-
-			// Girls with warning events next
-			for (int j = 0; j<nNumGirlsArena; j++)
-			{
-				sGirl* pTmpGirl = g_Arena.GetGirl(0, j);
-				if (pTmpGirl->m_Events.HasWarning() && !pTmpGirl->m_Events.HasDanger() && !pTmpGirl->m_Events.HasGoodNews())
-				{
-					string temp = pTmpGirl->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, temp, COLOR_DARKBLUE);
-					if (selected_girl == pTmpGirl)
-						Item = ID;
-					ID++;
-				}
-			}
-
-			// Arena girl
-			for (int k = 0; k<nNumGirlsArena; k++)
-			{
-				sGirl* pTmpGirl = g_Arena.GetGirl(0, k);
-				if (!pTmpGirl->m_Events.HasUrgent())
-				{
-					string temp = pTmpGirl->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, temp);
-					if (selected_girl == pTmpGirl)
-						Item = ID;
-					ID++;
-				}
-			}
-		} // End of arena
-#endif
-		// 5. arena
-
-		// 6. centre
-#if 1
-		else if (category == Summary_CENTRE)
-		{
-			int nNumGirlsCentre = g_Centre.GetNumGirls(g_CurrCentre);
-			int ID = 0;
-
-			// MYR: Girls with danger events first
-			for (int i = 0; i<nNumGirlsCentre; i++)
-			{
-				sGirl* pTmpGirl = g_Centre.GetGirl(0, i);
-				if (pTmpGirl->m_Events.HasDanger())
-				{
-					string tname = pTmpGirl->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, COLOR_RED);
-					if (selected_girl == pTmpGirl)
-						Item = ID;
-					ID++;
-				}
-			}
-
-			// `J` Girls with GoodNews events first
-			for (int h = 0; h<nNumGirlsCentre; h++)
-			{
-				sGirl* pTmpGirl = g_Centre.GetGirl(0, h);
-				if (pTmpGirl->m_Events.HasGoodNews() && !pTmpGirl->m_Events.HasDanger())
-				{
-					string tname = pTmpGirl->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, COLOR_GREEN);
-					if (selected_girl == pTmpGirl)
-						Item = ID;
-					ID++;
-				}
-			}
-			// Girls with warning events next
-			for (int j = 0; j<nNumGirlsCentre; j++)
-			{
-				sGirl* pTmpGirl = g_Centre.GetGirl(0, j);
-				if (pTmpGirl->m_Events.HasWarning() && !pTmpGirl->m_Events.HasDanger() && !pTmpGirl->m_Events.HasGoodNews())
-				{
-					string temp = pTmpGirl->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, temp, COLOR_DARKBLUE);
-					if (selected_girl == pTmpGirl)
-						Item = ID;
-					ID++;
-				}
-			}
-
-			// Centre girl
-			for (int k = 0; k<nNumGirlsCentre; k++)
-			{
-				sGirl* pTmpGirl = g_Centre.GetGirl(0, k);
-				if (!pTmpGirl->m_Events.HasUrgent())
-				{
-					string temp = pTmpGirl->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, temp);
-					if (selected_girl == pTmpGirl)
-						Item = ID;
-					ID++;
-				}
-			}
-		} // End of Centre
-#endif
-		// 6. centre
-
-		// 7. Clinic
-#if 1
-		else if (category == Summary_CLINIC)
-		{
-			if (summarysortorder == 1)	//	Sort by Triage
-			{
-				// `J` because the clinic runs the girls differently, we sort the girls differently
-				int ID = 0;
-				int nNumGirlsClinic = g_Clinic.GetNumGirls(0);
-				vector<sGirl*> tmpTriage5, tmpTriage4, tmpTriage3, tmpTriage2, tmpTriage1, tmpTriage0, tmpDoctors, tmpNurses, tmpStaff;
-				tmpTriage5.clear(); tmpTriage4.clear(); tmpTriage3.clear(); tmpTriage2.clear(); tmpTriage1.clear(); tmpTriage0.clear(); tmpDoctors.clear();  tmpNurses.clear(); tmpStaff.clear();
-				sGirl* pTmpGirl;
-
-				for (int i = 0; i < nNumGirlsClinic; i++)
-				{
-					pTmpGirl = g_Clinic.GetGirl(0, i);
-
-					// `J` Doctors first
-					/* */if (pTmpGirl->m_DayJob == JOB_DOCTOR || pTmpGirl->m_NightJob == JOB_DOCTOR)
-						tmpDoctors.push_back(pTmpGirl);
-					// `J` Girls in surgery, the lower on the list, the longer she will be in surgery
-					else if ((g_Clinic.is_Surgery_Job(pTmpGirl->m_DayJob) || g_Clinic.is_Surgery_Job(pTmpGirl->m_NightJob))
-						&& pTmpGirl->m_WorkingDay >= 5)	tmpTriage5.push_back(pTmpGirl);
-					else if ((g_Clinic.is_Surgery_Job(pTmpGirl->m_DayJob) || g_Clinic.is_Surgery_Job(pTmpGirl->m_NightJob))
-						&& pTmpGirl->m_WorkingDay >= 4)	tmpTriage4.push_back(pTmpGirl);
-					else if ((g_Clinic.is_Surgery_Job(pTmpGirl->m_DayJob) || g_Clinic.is_Surgery_Job(pTmpGirl->m_NightJob))
-						&& pTmpGirl->m_WorkingDay >= 3)	tmpTriage3.push_back(pTmpGirl);
-					else if ((g_Clinic.is_Surgery_Job(pTmpGirl->m_DayJob) || g_Clinic.is_Surgery_Job(pTmpGirl->m_NightJob))
-						&& pTmpGirl->m_WorkingDay >= 2)	tmpTriage2.push_back(pTmpGirl);
-					else if ((g_Clinic.is_Surgery_Job(pTmpGirl->m_DayJob) || g_Clinic.is_Surgery_Job(pTmpGirl->m_NightJob))
-						&& pTmpGirl->m_WorkingDay >= 1)	tmpTriage1.push_back(pTmpGirl);
-					// `J` all other patients
-					else if (g_Clinic.is_Surgery_Job(pTmpGirl->m_DayJob) || g_Clinic.is_Surgery_Job(pTmpGirl->m_NightJob)
-						|| pTmpGirl->m_DayJob == JOB_GETHEALING || pTmpGirl->m_NightJob == JOB_GETHEALING
-						|| pTmpGirl->m_DayJob == JOB_GETREPAIRS || pTmpGirl->m_NightJob == JOB_GETREPAIRS)
-						tmpTriage0.push_back(pTmpGirl);
-					// `J` Nurses after patients
-					else if (pTmpGirl->m_DayJob == JOB_NURSE || pTmpGirl->m_NightJob == JOB_NURSE)
-						tmpNurses.push_back(pTmpGirl);
-					// `J` the rest of the Staff last
-					else tmpStaff.push_back(pTmpGirl);
-				}
-				for (u_int i = 0; i < tmpTriage5.size(); i++)
-				{
-					string tname = tmpTriage5[i]->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, COLOR_RED);
-					if (selected_girl == tmpTriage5[i]) Item = ID;
-					ID++;
-				}
-				for (u_int i = 0; i < tmpTriage4.size(); i++)
-				{
-					string tname = tmpTriage4[i]->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, COLOR_RED);
-					if (selected_girl == tmpTriage4[i]) Item = ID;
-					ID++;
-				}
-				for (u_int i = 0; i < tmpTriage3.size(); i++)
-				{
-					string tname = tmpTriage3[i]->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, COLOR_RED);
-					if (selected_girl == tmpTriage3[i]) Item = ID;
-					ID++;
-				}
-				for (u_int i = 0; i < tmpTriage2.size(); i++)
-				{
-					string tname = tmpTriage2[i]->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, COLOR_RED);
-					if (selected_girl == tmpTriage2[i]) Item = ID;
-					ID++;
-				}
-				for (u_int i = 0; i < tmpTriage1.size(); i++)
-				{
-					string tname = tmpTriage1[i]->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, COLOR_RED);
-					if (selected_girl == tmpTriage1[i]) Item = ID;
-					ID++;
-				}
-				for (u_int i = 0; i < tmpTriage0.size(); i++)
-				{
-					string tname = tmpTriage0[i]->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname);
-					if (selected_girl == tmpTriage0[i]) Item = ID;
-					ID++;
-				}
-				for (u_int i = 0; i < tmpDoctors.size(); i++)
-				{
-					string tname = tmpDoctors[i]->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname);
-					if (selected_girl == tmpDoctors[i]) Item = ID;
-					ID++;
-				}
-				for (u_int i = 0; i < tmpNurses.size(); i++)
-				{
-					string tname = tmpNurses[i]->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname);
-					if (selected_girl == tmpNurses[i]) Item = ID;
-					ID++;
-				}
-				for (u_int i = 0; i < tmpStaff.size(); i++)
-				{
-					string tname = tmpStaff[i]->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname);
-					if (selected_girl == tmpStaff[i]) Item = ID;
-					ID++;
-				}
-			}		// end triage sorting
-			else	// start normal sorting
-			{
-				int ID = 0, nNumGirlsClinic = g_Clinic.GetNumGirls(0);
-				vector<sGirl*> tmpServiceGirls, tmpGoodNewsGirls, tmpDangerGirls, tmpWarningGirls;
-				tmpServiceGirls.clear(); tmpGoodNewsGirls.clear(); tmpDangerGirls.clear(); tmpWarningGirls.clear();
-				sGirl* pTmpGirl;
-				for (int i = 0; i < nNumGirlsClinic; i++)
-				{
-					pTmpGirl = g_Clinic.GetGirl(0, i);
-					/* */if (!pTmpGirl->m_Events.HasUrgent())			tmpServiceGirls.push_back(pTmpGirl);
-					else if (pTmpGirl->m_Events.HasDanger())			tmpDangerGirls.push_back(pTmpGirl);
-					else if (pTmpGirl->m_Events.HasGoodNews())			tmpGoodNewsGirls.push_back(pTmpGirl);
-					else /*                                 */			tmpWarningGirls.push_back(pTmpGirl);
-				}
-				for (u_int i = 0; i < tmpDangerGirls.size(); i++)
-				{
-					string tname = tmpDangerGirls[i]->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, COLOR_RED);
-					if (selected_girl == tmpDangerGirls[i]) Item = ID;
-					ID++;
-				}
-				//Girls with GoodNews events
-				for (u_int i = 0; i < tmpGoodNewsGirls.size(); i++)
-				{
-					string tname = tmpGoodNewsGirls[i]->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, COLOR_GREEN);
-					if (selected_girl == tmpGoodNewsGirls[i]) Item = ID;
-					ID++;
-				}
-				//Girls wih Warnings
-				for (u_int i = 0; i < tmpWarningGirls.size(); i++)
-				{
-					string tname = tmpWarningGirls[i]->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, COLOR_DARKBLUE);
-					if (selected_girl == tmpWarningGirls[i]) Item = ID;
-					ID++;
-				}
-				//ServiceJob Girls
-				for (u_int i = 0; i < tmpServiceGirls.size(); i++)
-				{
-					string tname = tmpServiceGirls[i]->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname);
-					if (selected_girl == tmpServiceGirls[i]) Item = ID;
-					ID++;
-				}
-			}		// end normal sorting
-		} // End of clinic
-#endif
-		// 7. Clinic
-
-		// 8. farm
-#if 1
-		else if (category == Summary_FARM)
-		{
-			int nNumGirlsFarm = g_Farm.GetNumGirls(g_CurrFarm);
-			int ID = 0;
-
-			// MYR: Girls with danger events first
-			for (int i = 0; i<nNumGirlsFarm; i++)
-			{
-				sGirl* pTmpGirl = g_Farm.GetGirl(0, i);
-				if (pTmpGirl->m_Events.HasDanger())
-				{
-					string tname = pTmpGirl->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, COLOR_RED);
-					if (selected_girl == pTmpGirl)
-						Item = ID;
-					ID++;
-				}
-			}
-			// `J` Girls with GoodNews events first
-			for (int h = 0; h<nNumGirlsFarm; h++)
-			{
-				sGirl* pTmpGirl = g_Farm.GetGirl(0, h);
-				if (pTmpGirl->m_Events.HasGoodNews() && !pTmpGirl->m_Events.HasDanger())
-				{
-					string tname = pTmpGirl->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, COLOR_GREEN);
-					if (selected_girl == pTmpGirl)
-						Item = ID;
-					ID++;
-				}
-			}
-
-			// Girls with warning events next
-			for (int j = 0; j<nNumGirlsFarm; j++)
-			{
-				sGirl* pTmpGirl = g_Farm.GetGirl(0, j);
-				if (pTmpGirl->m_Events.HasWarning() && !pTmpGirl->m_Events.HasDanger() && !pTmpGirl->m_Events.HasGoodNews())
-				{
-					string temp = pTmpGirl->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, temp, COLOR_DARKBLUE);
-					if (selected_girl == pTmpGirl)
-						Item = ID;
-					ID++;
-				}
-			}
-
-			// Farm girl
-			for (int k = 0; k<nNumGirlsFarm; k++)
-			{
-				sGirl* pTmpGirl = g_Farm.GetGirl(0, k);
-				if (!pTmpGirl->m_Events.HasUrgent())
-				{
-					string temp = pTmpGirl->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, temp);
-					if (selected_girl == pTmpGirl)
-						Item = ID;
-					ID++;
-				}
-			}
-		} // End of Farm
-#endif
-		// 8. farm
-
-		// 9. house
-#if 1
-		else if (category == Summary_HOUSE)
-		{
-			int nNumGirlsHouse = g_House.GetNumGirls(g_CurrHouse);
-			int ID = 0;
-
-			// MYR: Girls with danger events first
-			for (int i = 0; i<nNumGirlsHouse; i++)
-			{
-				sGirl* pTmpGirl = g_House.GetGirl(0, i);
-				if (pTmpGirl->m_Events.HasDanger())
-				{
-					string tname = pTmpGirl->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, COLOR_RED);
-					if (selected_girl == pTmpGirl)
-						Item = ID;
-					ID++;
-				}
-			}
-			// `J` Girls with GoodNews events first
-			for (int h = 0; h<nNumGirlsHouse; h++)
-			{
-				sGirl* pTmpGirl = g_House.GetGirl(0, h);
-				if (pTmpGirl->m_Events.HasGoodNews() && !pTmpGirl->m_Events.HasDanger())
-				{
-					string tname = pTmpGirl->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, tname, COLOR_GREEN);
-					if (selected_girl == pTmpGirl)
-						Item = ID;
-					ID++;
-				}
-			}
-
-			// Girls with warning events next
-			for (int j = 0; j<nNumGirlsHouse; j++)
-			{
-				sGirl* pTmpGirl = g_House.GetGirl(0, j);
-				if (pTmpGirl->m_Events.HasWarning() && !pTmpGirl->m_Events.HasDanger() && !pTmpGirl->m_Events.HasGoodNews())
-				{
-					string temp = pTmpGirl->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, temp, COLOR_DARKBLUE);
-					if (selected_girl == pTmpGirl)
-						Item = ID;
-					ID++;
-				}
-			}
-
-			// House girl
-			for (int k = 0; k<nNumGirlsHouse; k++)
-			{
-				sGirl* pTmpGirl = g_House.GetGirl(0, k);
-				if (!pTmpGirl->m_Events.HasUrgent())
-				{
-					string temp = pTmpGirl->m_Realname;
-					g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSITEM, ID, temp);
-					if (selected_girl == pTmpGirl)
-						Item = ID;
-					ID++;
-				}
-			}
-		} // End of House
-#endif
-		// 9. house
-
-		// last stuff
-#if 1
-
-
-		// Sets default selected item
-		if (g_Turnsummary.GetListBoxSize(g_interfaceid.LIST_TSITEM) > 0)
-			g_Turnsummary.SetSelectedItemInList(g_interfaceid.LIST_TSITEM, 0, true);
-
-		if (g_Turnsummary.GetListBoxSize(g_interfaceid.LIST_TSITEM) >= Item)
-			g_Turnsummary.SetSelectedItemInList(g_interfaceid.LIST_TSITEM, Item, true);
-		else if (g_Turnsummary.GetListBoxSize(g_interfaceid.LIST_TSITEM) > 0)
-		{
-			Item = 0;
-			g_Turnsummary.SetSelectedItemInList(g_interfaceid.LIST_TSITEM, Item, true);
-		}
-
-		// Set the brothels name
-		g_Turnsummary.EditTextItem("", g_interfaceid.TEXT_TSEVENTDESC);
-
-		g_InitWin = false;
-		g_Turnsummary.DisableButton(g_interfaceid.BUTTON_TSGOTO, true);
-#endif
-		// last stuff
-
-	}  // End of if initwin
-#endif	// End g_InitWin section
-
-
-	// Start EVENTS Listbox
-#if 1
-	if (g_InterfaceEvents.GetNumEvents() != 0)
-	{
-		// Change category
-		if (g_InterfaceEvents.CheckEvent(EVENT_SELECTIONCHANGE, g_interfaceid.LIST_TSCATEGORY))
-		{
-			if ((category = g_Turnsummary.GetSelectedItemFromList(g_interfaceid.LIST_TSCATEGORY)) == -1)	// if a girl is selected then
-			{
-				category = 0;
-			}
-			else Item = 0;
-			g_InitWin = true;
-		}
-
-		// Change item
-		else if (g_InterfaceEvents.CheckEvent(EVENT_SELECTIONCHANGE, g_interfaceid.LIST_TSITEM))
-		{
-			int selected = g_Turnsummary.GetSelectedItemFromList(g_interfaceid.LIST_TSITEM);
-			if (selected == -1)
-				g_Turnsummary.DisableButton(g_interfaceid.BUTTON_TSGOTO, true);
-			else
-				g_Turnsummary.DisableButton(g_interfaceid.BUTTON_TSGOTO, false);
-
-			g_Turnsummary.ClearListBox(g_interfaceid.LIST_TSEVENTS);
-			g_Turnsummary.EditTextItem("", g_interfaceid.TEXT_TSEVENTDESC);
-
-			// ------------ Girl Event display
-			if (category == Summary_GIRLS)
-			{
-				if (selected != -1)
-				{
-					string selectedName = g_Turnsummary.GetSelectedTextFromList(g_interfaceid.LIST_TSITEM);
-					girl = selected_girl = g_Brothels.GetGirlByName(g_CurrBrothel, selectedName);
-
-					if (girl == 0) return;
-
-					// change the picture to profile (no event selected)
-					ImageType = IMGTYPE_PROFILE;
-
-					if (!girl->m_Events.IsEmpty())
-					{
-						girl->m_Events.DoSort();						// Sort Events to put Warnings & Dangers first.
-
-						for (int l = 0; l<girl->m_Events.GetNumEvents(); l++)
-						{
-							string			sTitle = girl->m_Events.GetMessage(l).TitleText();
-							unsigned int	uiListboxColour = girl->m_Events.GetMessage(l).ListboxColour();
-							g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSEVENTS, l, sTitle, uiListboxColour);
-						}
-					}
-					if (g_Turnsummary.GetListBoxSize(g_interfaceid.LIST_TSEVENTS) > 0)
-						g_Turnsummary.SetSelectedItemInList(g_interfaceid.LIST_TSEVENTS, 0, true);
-				}
-			}
-
-			// ------------ Gangs item display
-			else if (category == Summary_GANGS)
-			{
-				if (selected != -1)
-				{
-					// Get the gang
-					sGang* gang = g_Gangs.GetGang(selected);
-					if (gang == 0) return;
-					if (!gang->m_Events.IsEmpty())
-					{
-						gang->m_Events.DoSort();						// Sort Events to put Warnings & Dangers first.
-
-						for (int l = 0; l<gang->m_Events.GetNumEvents(); l++)
-						{
-							string			sTitle = gang->m_Events.GetMessage(l).TitleText();
-							unsigned int	uiListboxColour = gang->m_Events.GetMessage(l).ListboxColour();
-							g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSEVENTS, l, sTitle, uiListboxColour);
-						}
-					}
-					if (g_Turnsummary.GetListBoxSize(g_interfaceid.LIST_TSEVENTS) > 0)
-						g_Turnsummary.SetSelectedItemInList(g_interfaceid.LIST_TSEVENTS, 0, true);
-				}
-			}
-
-			// ------------- Brothels item display
-			else if (category == Summary_BROTHELS)
-			{
-				if (selected != -1)
-				{
-					sBrothel	*pSelectedBrothel = g_Brothels.GetBrothel(selected);
-					if (!pSelectedBrothel->m_Events.IsEmpty())
-					{
-						pSelectedBrothel->m_Events.DoSort();						// Sort Events to put Warnings & Dangers first.
-
-						for (int l = 0; l<g_Brothels.GetBrothel(selected)->m_Events.GetNumEvents(); l++)
-						{
-							string			sTitle = pSelectedBrothel->m_Events.GetMessage(l).TitleText();
-							unsigned int	uiListboxColour = pSelectedBrothel->m_Events.GetMessage(l).ListboxColour();
-							g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSEVENTS, l, sTitle, uiListboxColour);
-						}
-					}
-					if (g_Turnsummary.GetListBoxSize(g_interfaceid.LIST_TSEVENTS) > 0)
-						g_Turnsummary.SetSelectedItemInList(g_interfaceid.LIST_TSEVENTS, 0, true);
-				}
-			}
-
-			// -------- Dungeons item display
-			else if (category == Summary_DUNGEON)
-			{
-				if (selected != -1)
-				{
-					// list the events
-					// Get the girl
-					string selectedName = g_Turnsummary.GetSelectedTextFromList(g_interfaceid.LIST_TSITEM);
-					girl = selected_girl = g_Brothels.GetDungeon()->GetGirlByName(selectedName)->m_Girl;
-					if (girl == 0) return;
-					ImageType = IMGTYPE_PROFILE;			// change the picture to profile (no event selected)
-					if (!girl->m_Events.IsEmpty())
-					{
-						girl->m_Events.DoSort();			// Sort Events to put Warnings & Dangers first.
-
-						for (int l = 0; l<girl->m_Events.GetNumEvents(); l++)
-						{
-							string			sTitle = girl->m_Events.GetMessage(l).TitleText();
-							unsigned int	uiListboxColour = girl->m_Events.GetMessage(l).ListboxColour();
-							g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSEVENTS, l, sTitle, uiListboxColour);
-						}
-					}
-					if (g_Turnsummary.GetListBoxSize(g_interfaceid.LIST_TSEVENTS) > 0)
-						g_Turnsummary.SetSelectedItemInList(g_interfaceid.LIST_TSEVENTS, 0, true);
-				}
-			}
-
-			// ------------ Girl studio Event display
-			if (category == Summary_STUDIO)
-			{
-				if (selected != -1)
-				{
-					string selectedName = g_Turnsummary.GetSelectedTextFromList(g_interfaceid.LIST_TSITEM);
-					girl = selected_girl = g_Studios.GetGirlByName(0, selectedName);
-					if (girl == 0) return;
-					ImageType = IMGTYPE_PROFILE;			// change the picture to profile (no event selected)
-					if (!girl->m_Events.IsEmpty())
-					{
-						girl->m_Events.DoSort();			// Sort Events to put Warnings & Dangers first.
-
-						for (int l = 0; l<girl->m_Events.GetNumEvents(); l++)
-						{
-							string			sTitle = girl->m_Events.GetMessage(l).TitleText();
-							unsigned int	uiListboxColour = girl->m_Events.GetMessage(l).ListboxColour();
-							g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSEVENTS, l, sTitle, uiListboxColour);
-						}
-					}
-					if (g_Turnsummary.GetListBoxSize(g_interfaceid.LIST_TSEVENTS) > 0)
-						g_Turnsummary.SetSelectedItemInList(g_interfaceid.LIST_TSEVENTS, 0, true);
-				}
-			}
-
-			// ------------ Girl arena Event display
-			if (category == Summary_ARENA)
-			{
-				if (selected != -1)
-				{
-					string selectedName = g_Turnsummary.GetSelectedTextFromList(g_interfaceid.LIST_TSITEM);
-					girl = selected_girl = g_Arena.GetGirlByName(0, selectedName);
-					if (girl == 0) return;
-					ImageType = IMGTYPE_PROFILE;			// change the picture to profile (no event selected)
-					if (!girl->m_Events.IsEmpty())
-					{
-						girl->m_Events.DoSort();			// Sort Events to put Warnings & Dangers first.
-						for (int l = 0; l<girl->m_Events.GetNumEvents(); l++)
-						{
-							string			sTitle = girl->m_Events.GetMessage(l).TitleText();
-							unsigned int	uiListboxColour = girl->m_Events.GetMessage(l).ListboxColour();
-							g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSEVENTS, l, sTitle, uiListboxColour);
-						}
-					}
-					if (g_Turnsummary.GetListBoxSize(g_interfaceid.LIST_TSEVENTS) > 0)
-						g_Turnsummary.SetSelectedItemInList(g_interfaceid.LIST_TSEVENTS, 0, true);
-				}
-			}
-
-			// ------------ Girl Centre Event display
-			if (category == Summary_CENTRE)
-			{
-				if (selected != -1)
-				{
-					string selectedName = g_Turnsummary.GetSelectedTextFromList(g_interfaceid.LIST_TSITEM);
-					girl = selected_girl = g_Centre.GetGirlByName(0, selectedName);
-					if (girl == 0) return;
-					ImageType = IMGTYPE_PROFILE;			// change the picture to profile (no event selected)
-					if (!girl->m_Events.IsEmpty())
-					{
-						girl->m_Events.DoSort();			// Sort Events to put Warnings & Dangers first.
-						for (int l = 0; l<girl->m_Events.GetNumEvents(); l++)
-						{
-							string			sTitle = girl->m_Events.GetMessage(l).TitleText();
-							unsigned int	uiListboxColour = girl->m_Events.GetMessage(l).ListboxColour();
-							g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSEVENTS, l, sTitle, uiListboxColour);
-						}
-					}
-					if (g_Turnsummary.GetListBoxSize(g_interfaceid.LIST_TSEVENTS) > 0)
-						g_Turnsummary.SetSelectedItemInList(g_interfaceid.LIST_TSEVENTS, 0, true);
-				}
-			}
-
-			// ------------ Girl clinic Event display
-			if (category == Summary_CLINIC)
-			{
-				if (selected != -1)
-				{
-					string selectedName = g_Turnsummary.GetSelectedTextFromList(g_interfaceid.LIST_TSITEM);
-					girl = selected_girl = g_Clinic.GetGirlByName(0, selectedName);
-					if (girl == 0) return;
-					ImageType = IMGTYPE_PROFILE;			// change the picture to profile (no event selected)
-					if (!girl->m_Events.IsEmpty())
-					{
-						girl->m_Events.DoSort();			// Sort Events to put Warnings & Dangers first.
-
-						for (int l = 0; l<girl->m_Events.GetNumEvents(); l++)
-						{
-							string			sTitle = girl->m_Events.GetMessage(l).TitleText();
-							unsigned int	uiListboxColour = girl->m_Events.GetMessage(l).ListboxColour();
-							g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSEVENTS, l, sTitle, uiListboxColour);
-						}
-					}
-					if (g_Turnsummary.GetListBoxSize(g_interfaceid.LIST_TSEVENTS) > 0)
-						g_Turnsummary.SetSelectedItemInList(g_interfaceid.LIST_TSEVENTS, 0, true);
-				}
-			}
-
-			// ------------ Girl Farm Event display
-			if (category == Summary_FARM)
-			{
-				if (selected != -1)
-				{
-					string selectedName = g_Turnsummary.GetSelectedTextFromList(g_interfaceid.LIST_TSITEM);
-					girl = selected_girl = g_Farm.GetGirlByName(0, selectedName);
-					if (girl == 0) return;
-					ImageType = IMGTYPE_PROFILE;			// change the picture to profile (no event selected)
-					if (!girl->m_Events.IsEmpty())
-					{
-						girl->m_Events.DoSort();			// Sort Events to put Warnings & Dangers first.
-						for (int l = 0; l<girl->m_Events.GetNumEvents(); l++)
-						{
-							string			sTitle = girl->m_Events.GetMessage(l).TitleText();
-							unsigned int	uiListboxColour = girl->m_Events.GetMessage(l).ListboxColour();
-							g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSEVENTS, l, sTitle, uiListboxColour);
-						}
-					}
-					if (g_Turnsummary.GetListBoxSize(g_interfaceid.LIST_TSEVENTS) > 0)
-						g_Turnsummary.SetSelectedItemInList(g_interfaceid.LIST_TSEVENTS, 0, true);
-				}
-			}
-
-			// ------------ Girl House Event display
-			if (category == Summary_HOUSE)
-			{
-				if (selected != -1)
-				{
-					string selectedName = g_Turnsummary.GetSelectedTextFromList(g_interfaceid.LIST_TSITEM);
-					girl = selected_girl = g_House.GetGirlByName(0, selectedName);
-					if (girl == 0) return;
-					ImageType = IMGTYPE_PROFILE;			// change the picture to profile (no event selected)
-					if (!girl->m_Events.IsEmpty())
-					{
-						girl->m_Events.DoSort();			// Sort Events to put Warnings & Dangers first.
-						for (int l = 0; l<girl->m_Events.GetNumEvents(); l++)
-						{
-							string			sTitle = girl->m_Events.GetMessage(l).TitleText();
-							unsigned int	uiListboxColour = girl->m_Events.GetMessage(l).ListboxColour();
-							g_Turnsummary.AddToListBox(g_interfaceid.LIST_TSEVENTS, l, sTitle, uiListboxColour);
-						}
-					}
-					if (g_Turnsummary.GetListBoxSize(g_interfaceid.LIST_TSEVENTS) > 0)
-						g_Turnsummary.SetSelectedItemInList(g_interfaceid.LIST_TSEVENTS, 0, true);
-				}
-			}
-		}
-
-
-		// Girl event selection
-		else if (g_InterfaceEvents.CheckEvent(EVENT_SELECTIONCHANGE, g_interfaceid.LIST_TSEVENTS))
-		{
-			if (category == Summary_GIRLS)
-			{
-				int SelEvent = -1;
-				// ****************************
-				// When warnings and problems are displayed first, the ordering of events is messed up
-				// A warning is at ID 0 in the list, and is ID X in the message queue
-				// ****************************
-				//
-				//	WD: The message queue is now sorted in cEvents::DoSort()
-				//		so ID's will match
-				// ****************************
-				if ((SelEvent = g_Turnsummary.GetSelectedItemFromList(g_interfaceid.LIST_TSEVENTS)) != -1)
-				{
-					int SelGirl;
-					// if a girl is selected then
-					if ((SelGirl = g_Turnsummary.GetSelectedItemFromList(g_interfaceid.LIST_TSITEM)) != -1)
-					{
-						sGirl* girl = 0;
-
-						// MYR
-						string selectedName = g_Turnsummary.GetSelectedTextFromList(g_interfaceid.LIST_TSITEM);
-						girl = selected_girl = g_Brothels.GetGirlByName(g_CurrBrothel, selectedName);
-
-						// Set the event desc text
-						g_Turnsummary.EditTextItem(girl->m_Events.GetMessage(SelEvent).m_Message, g_interfaceid.TEXT_TSEVENTDESC);
-
-						// Change the picture
-						ImageType = girl->m_Events.GetMessage(SelEvent).m_MessageType;
-
-						lastNum = -1;
-					}
-				}
-			}
-
-			// Gang event selection
-			else if (category == Summary_GANGS)
-			{
-				int SelEvent = -1;
-				// if a event is selected then
-				if ((SelEvent = g_Turnsummary.GetSelectedItemFromList(g_interfaceid.LIST_TSEVENTS)) != -1)
-				{
-					int SelGang;
-					// if a gang is selected then
-					if ((SelGang = g_Turnsummary.GetSelectedItemFromList(g_interfaceid.LIST_TSITEM)) != -1)
-					{
-						sGang* gang = g_Gangs.GetGang(SelGang);
-
-						// Set the event desc text
-						g_Turnsummary.EditTextItem(gang->m_Events.GetMessage(SelEvent).m_Message, g_interfaceid.TEXT_TSEVENTDESC);
-
-						// Change the picture
-						ImageType = gang->m_Events.GetMessage(SelEvent).m_MessageType;
-
-						lastNum = -1;
-					}
-				}
-			}
-
-			// Brothel event selection
-			else if (category == Summary_BROTHELS)
-			{
-				int SelEvent = -1;
-				if ((SelEvent = g_Turnsummary.GetSelectedItemFromList(g_interfaceid.LIST_TSEVENTS)) != -1)	// if a event is selected then
-				{
-					int SelBrothel;
-					if ((SelBrothel = g_Turnsummary.GetSelectedItemFromList(g_interfaceid.LIST_TSITEM)) != -1)		// if a brothel is selected then
-					{
-						// Set the event desc text
-						g_Turnsummary.EditTextItem(g_Brothels.GetBrothel(SelBrothel)->m_Events.GetMessage(SelEvent).m_Message, g_interfaceid.TEXT_TSEVENTDESC);
-
-						// Change the picture
-						ImageType = g_Brothels.GetBrothel(SelBrothel)->m_Events.GetMessage(SelEvent).m_MessageType;
-
-						lastNum = -1;
-					}
-				}
-			}
-
-			// Dungeon event selection
-			else if (category == Summary_DUNGEON)
-			{
-				int SelEvent = -1;
-				if ((SelEvent = g_Turnsummary.GetSelectedItemFromList(g_interfaceid.LIST_TSEVENTS)) != -1)	// if a event is selected then
-				{
-					int SelGirl;
-					if ((SelGirl = g_Turnsummary.GetSelectedItemFromList(g_interfaceid.LIST_TSITEM)) != -1)	// if a dungeon is selected then
-					{
-						// WD	Get girl by name
-						string selectedName = g_Turnsummary.GetSelectedTextFromList(g_interfaceid.LIST_TSITEM);
-						sGirl* girl = g_Brothels.GetDungeon()->GetGirlByName(selectedName)->m_Girl;
-
-						if (girl == 0)
-							return;
-
-						// Set the event desc text
-						g_Turnsummary.EditTextItem(girl->m_Events.GetMessage(SelEvent).m_Message, g_interfaceid.TEXT_TSEVENTDESC);
-
-						// Change the picture
-						ImageType = girl->m_Events.GetMessage(SelEvent).m_MessageType;
-
-						lastNum = -1;
-					}
-				}
-			}
-
-			// Studio
-			else if (category == Summary_STUDIO)
-			{
-				int SelEvent = -1;
-				// ****************************
-				// When warnings and problems are displayed first, the ordering of events is messed up
-				// A warning is at ID 0 in the list, and is ID X in the message queue
-				// ****************************
-				//
-				//	WD: The message queue is now sorted in cEvents::DoSort()
-				//		so ID's will match
-				// ****************************
-				if ((SelEvent = g_Turnsummary.GetSelectedItemFromList(g_interfaceid.LIST_TSEVENTS)) != -1)
-				{
-					int SelGirl;
-					// if a girl is selected then
-					if ((SelGirl = g_Turnsummary.GetSelectedItemFromList(g_interfaceid.LIST_TSITEM)) != -1)
-					{
-						sGirl* girl = 0;
-
-						// MYR
-						string selectedName = g_Turnsummary.GetSelectedTextFromList(g_interfaceid.LIST_TSITEM);
-						girl = selected_girl = g_Studios.GetGirlByName(0, selectedName);
-
-						// Set the event desc text
-						g_Turnsummary.EditTextItem(girl->m_Events.GetMessage(SelEvent).m_Message, g_interfaceid.TEXT_TSEVENTDESC);
-
-						// Change the picture
-						ImageType = girl->m_Events.GetMessage(SelEvent).m_MessageType;
-
-						lastNum = -1;
-					}
-				}
-			}
-
-			// arena
-			else if (category == Summary_ARENA)
-			{
-				int SelEvent = -1;
-				// ****************************
-				// When warnings and problems are displayed first, the ordering of events is messed up
-				// A warning is at ID 0 in the list, and is ID X in the message queue
-				// ****************************
-				//
-				//	WD: The message queue is now sorted in cEvents::DoSort()
-				//		so ID's will match
-				// ****************************
-				if ((SelEvent = g_Turnsummary.GetSelectedItemFromList(g_interfaceid.LIST_TSEVENTS)) != -1)
-				{
-					int SelGirl;
-					// if a girl is selected then
-					if ((SelGirl = g_Turnsummary.GetSelectedItemFromList(g_interfaceid.LIST_TSITEM)) != -1)
-					{
-						sGirl* girl = 0;
-
-						// MYR
-						string selectedName = g_Turnsummary.GetSelectedTextFromList(g_interfaceid.LIST_TSITEM);
-						girl = selected_girl = g_Arena.GetGirlByName(0, selectedName);
-
-						// Set the event desc text
-						g_Turnsummary.EditTextItem(girl->m_Events.GetMessage(SelEvent).m_Message, g_interfaceid.TEXT_TSEVENTDESC);
-
-						// Change the picture
-						ImageType = girl->m_Events.GetMessage(SelEvent).m_MessageType;
-
-						lastNum = -1;
-					}
-				}
-			}
-
-			// Centre
-			else if (category == Summary_CENTRE)
-			{
-				int SelEvent = -1;
-				// ****************************
-				// When warnings and problems are displayed first, the ordering of events is messed up
-				// A warning is at ID 0 in the list, and is ID X in the message queue
-				// ****************************
-				//
-				//	WD: The message queue is now sorted in cEvents::DoSort()
-				//		so ID's will match
-				// ****************************
-				if ((SelEvent = g_Turnsummary.GetSelectedItemFromList(g_interfaceid.LIST_TSEVENTS)) != -1)
-				{
-					int SelGirl;
-					// if a girl is selected then
-					if ((SelGirl = g_Turnsummary.GetSelectedItemFromList(g_interfaceid.LIST_TSITEM)) != -1)
-					{
-						sGirl* girl = 0;
-
-						// MYR
-						string selectedName = g_Turnsummary.GetSelectedTextFromList(g_interfaceid.LIST_TSITEM);
-						girl = selected_girl = g_Centre.GetGirlByName(0, selectedName);
-
-						// Set the event desc text
-						g_Turnsummary.EditTextItem(girl->m_Events.GetMessage(SelEvent).m_Message, g_interfaceid.TEXT_TSEVENTDESC);
-
-						// Change the picture
-						ImageType = girl->m_Events.GetMessage(SelEvent).m_MessageType;
-
-						lastNum = -1;
-					}
-				}
-			}
-
-			// Clinic
-			else if (category == Summary_CLINIC)
-			{
-				int SelEvent = -1;
-				// ****************************
-				// When warnings and problems are displayed first, the ordering of events is messed up
-				// A warning is at ID 0 in the list, and is ID X in the message queue
-				// ****************************
-				//
-				//	WD: The message queue is now sorted in cEvents::DoSort()
-				//		so ID's will match
-				// ****************************
-				if ((SelEvent = g_Turnsummary.GetSelectedItemFromList(g_interfaceid.LIST_TSEVENTS)) != -1)
-				{
-					int SelGirl;
-					// if a girl is selected then
-					if ((SelGirl = g_Turnsummary.GetSelectedItemFromList(g_interfaceid.LIST_TSITEM)) != -1)
-					{
-						sGirl* girl = 0;
-
-						// MYR
-						string selectedName = g_Turnsummary.GetSelectedTextFromList(g_interfaceid.LIST_TSITEM);
-						girl = selected_girl = g_Clinic.GetGirlByName(0, selectedName);
-
-						// Set the event desc text
-						g_Turnsummary.EditTextItem(girl->m_Events.GetMessage(SelEvent).m_Message, g_interfaceid.TEXT_TSEVENTDESC);
-
-						// Change the picture
-						ImageType = girl->m_Events.GetMessage(SelEvent).m_MessageType;
-
-						lastNum = -1;
-					}
-				}
-			}
-
-			// Farm
-			else if (category == Summary_FARM)
-			{
-				int SelEvent = -1;
-				// ****************************
-				// When warnings and problems are displayed first, the ordering of events is messed up
-				// A warning is at ID 0 in the list, and is ID X in the message queue
-				// ****************************
-				//
-				//	WD: The message queue is now sorted in cEvents::DoSort()
-				//		so ID's will match
-				// ****************************
-				if ((SelEvent = g_Turnsummary.GetSelectedItemFromList(g_interfaceid.LIST_TSEVENTS)) != -1)
-				{
-					int SelGirl;
-					// if a girl is selected then
-					if ((SelGirl = g_Turnsummary.GetSelectedItemFromList(g_interfaceid.LIST_TSITEM)) != -1)
-					{
-						sGirl* girl = 0;
-
-						// MYR
-						string selectedName = g_Turnsummary.GetSelectedTextFromList(g_interfaceid.LIST_TSITEM);
-						girl = selected_girl = g_Farm.GetGirlByName(0, selectedName);
-
-						// Set the event desc text
-						g_Turnsummary.EditTextItem(girl->m_Events.GetMessage(SelEvent).m_Message, g_interfaceid.TEXT_TSEVENTDESC);
-
-						// Change the picture
-						ImageType = girl->m_Events.GetMessage(SelEvent).m_MessageType;
-
-						lastNum = -1;
-					}
-				}
-			}
-
-			// House
-			else if (category == Summary_HOUSE)
-			{
-				int SelEvent = -1;
-				// ****************************
-				// When warnings and problems are displayed first, the ordering of events is messed up
-				// A warning is at ID 0 in the list, and is ID X in the message queue
-				// ****************************
-				//
-				//	WD: The message queue is now sorted in cEvents::DoSort()
-				//		so ID's will match
-				// ****************************
-				if ((SelEvent = g_Turnsummary.GetSelectedItemFromList(g_interfaceid.LIST_TSEVENTS)) != -1)
-				{
-					int SelGirl;
-					// if a girl is selected then
-					if ((SelGirl = g_Turnsummary.GetSelectedItemFromList(g_interfaceid.LIST_TSITEM)) != -1)
-					{
-						sGirl* girl = 0;
-
-						// MYR
-						string selectedName = g_Turnsummary.GetSelectedTextFromList(g_interfaceid.LIST_TSITEM);
-						girl = selected_girl = g_House.GetGirlByName(0, selectedName);
-
-						// Set the event desc text
-						g_Turnsummary.EditTextItem(girl->m_Events.GetMessage(SelEvent).m_Message, g_interfaceid.TEXT_TSEVENTDESC);
-
-						// Change the picture
-						ImageType = girl->m_Events.GetMessage(SelEvent).m_MessageType;
-
-						lastNum = -1;
-					}
-				}
-			}
-		}
-
-		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_TSCLOSE))
-		{
-			g_WinManager.Pop();
-			g_InitWin = true;
-			return;
-		}
-
-		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_TSNEWWEEK))
-		{
-			g_InitWin = true;
-			AutoSaveGame();
-			NextWeek();
-			return;
-		}
-		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_TSNEXTBROTHEL))
-		{
-			g_CurrBrothel++;
-			if (g_CurrBrothel >= g_Brothels.GetNumBrothels())
-				g_CurrBrothel = 0;
-			g_InitWin = true;
-			return;
-		}
-		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_TSPREVBROTHEL))
-		{
-			g_CurrBrothel--;
-			if (g_CurrBrothel < 0)
-				g_CurrBrothel = g_Brothels.GetNumBrothels() - 1;
-			g_InitWin = true;
-			return;
-		}
-		/*
-		*	GOTO Selected Girl or Gang
-		*/
-		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_TSGOTO))
-		{
-			int selected = 0;
-			selected = g_Turnsummary.GetSelectedItemFromList(g_interfaceid.LIST_TSITEM);
-			if (selected != -1)
-			{
-				g_GirlDetails.lastsexact = -1;
-				if (category == Summary_GIRLS)
-				{
-					// MYR
-					string selectedName = g_Turnsummary.GetSelectedTextFromList(g_interfaceid.LIST_TSITEM);
-					girl = selected_girl = g_Brothels.GetGirlByName(g_CurrBrothel, selectedName);
-					g_CurrentScreen = SCREEN_GIRLDETAILS;
-					g_WinManager.push("Girl Details");
-				}
-				else if (category == Summary_GANGS)
-				{
-					g_CurrentScreen = SCREEN_GANGMANAGEMENT;
-					g_WinManager.push("Gangs");
-				}
-				else if (category == Summary_DUNGEON)		// Dungeon
-				{
-					// WD: Add Dungeon Girls Goto
-					string selectedName = g_Turnsummary.GetSelectedTextFromList(g_interfaceid.LIST_TSITEM);
-					selected_girl = girl = g_Brothels.GetDungeon()->GetGirlByName(selectedName)->m_Girl;
-					g_CurrentScreen = SCREEN_GIRLDETAILS;
-					g_WinManager.push("Girl Details");
-
-				}
-				else if (category == Summary_CLINIC)  //clinc
-				{
-					// MYR
-					string selectedName = g_Turnsummary.GetSelectedTextFromList(g_interfaceid.LIST_TSITEM);
-					girl = selected_girl = g_Clinic.GetGirlByName(0, selectedName);
-					g_CurrentScreen = SCREEN_GIRLDETAILS;
-					g_WinManager.push("Girl Details");
-				}
-				else if (category == Summary_STUDIO)  //studio
-				{
-					// MYR
-					string selectedName = g_Turnsummary.GetSelectedTextFromList(g_interfaceid.LIST_TSITEM);
-					girl = selected_girl = g_Studios.GetGirlByName(0, selectedName);
-					g_CurrentScreen = SCREEN_GIRLDETAILS;
-					g_WinManager.push("Girl Details");
-				}
-				else if (category == Summary_ARENA)  //arena
-				{
-					// MYR
-					string selectedName = g_Turnsummary.GetSelectedTextFromList(g_interfaceid.LIST_TSITEM);
-					girl = selected_girl = g_Arena.GetGirlByName(0, selectedName);
-					g_CurrentScreen = SCREEN_GIRLDETAILS;
-					g_WinManager.push("Girl Details");
-				}
-				else if (category == Summary_CENTRE)  //centre
-				{
-					// MYR
-					string selectedName = g_Turnsummary.GetSelectedTextFromList(g_interfaceid.LIST_TSITEM);
-					girl = selected_girl = g_Centre.GetGirlByName(0, selectedName);
-					g_CurrentScreen = SCREEN_GIRLDETAILS;
-					g_WinManager.push("Girl Details");
-				}
-				else if (category == Summary_HOUSE)  //House
-				{
-					// MYR
-					string selectedName = g_Turnsummary.GetSelectedTextFromList(g_interfaceid.LIST_TSITEM);
-					girl = selected_girl = g_House.GetGirlByName(0, selectedName);
-					g_CurrentScreen = SCREEN_GIRLDETAILS;
-					g_WinManager.push("Girl Details");
-				}
-				else if (category == Summary_FARM)  //Farm
-				{
-					// MYR
-					string selectedName = g_Turnsummary.GetSelectedTextFromList(g_interfaceid.LIST_TSITEM);
-					girl = selected_girl = g_Farm.GetGirlByName(0, selectedName);
-					g_CurrentScreen = SCREEN_GIRLDETAILS;
-					g_WinManager.push("Girl Details");
-				}
-				g_InitWin = true;
-			}
-			return;
-		}
-	}
-#endif	// End EVENTS Listbox
-
-
-	//	Start Keys
-#if 1
-	if (g_O_Key)
-	{
-		g_O_Key = false;
-		if (summarysortorder == 0) summarysortorder = 1;
-		else summarysortorder = 0;
-		g_InitWin = true;
-		return;
-	}
-
-	if (g_UpArrow)
-	{
-		Item = g_Turnsummary.ArrowUpListBox(g_interfaceid.LIST_TSITEM);
-		g_UpArrow = false;
-		selected_girl = 0;
-		g_InitWin = true;
-		return;
-	}
-	else if (g_DownArrow)
-	{
-		Item = g_Turnsummary.ArrowDownListBox(g_interfaceid.LIST_TSITEM);
-		g_DownArrow = false;
-		selected_girl = 0;
-		g_InitWin = true;
-		return;
-	}
-	// Left and right arrow keys now  scroll through events instead of Brothels. -PP
-	if (g_LeftArrow)
-	{
-		g_LeftArrow = false;
-		Item = g_Turnsummary.ArrowUpListBox(g_interfaceid.LIST_TSEVENTS);
-		return;
-	}
-	else if (g_RightArrow)
-	{
-		g_RightArrow = false;
-		Item = g_Turnsummary.ArrowDownListBox(g_interfaceid.LIST_TSEVENTS);
-		return;
-	}
-	if (g_AltKeys)
-	{		// A and D Scroll up and down the Girls list.
-		if (g_A_Key)
-		{
-			Item = g_Turnsummary.ArrowUpListBox(g_interfaceid.LIST_TSITEM);
-			g_A_Key = false;
-			selected_girl = 0;
-			g_InitWin = true;
-			return;
-		}
-		else if (g_D_Key)
-		{
-			Item = g_Turnsummary.ArrowDownListBox(g_interfaceid.LIST_TSITEM);
-			g_D_Key = false;
-			selected_girl = 0;
-			g_InitWin = true;
-			return;
-		}
-		if (g_W_Key)		// W and S scroll through the events list
-		{
-			g_W_Key = false;
-			Item = g_Turnsummary.ArrowUpListBox(g_interfaceid.LIST_TSEVENTS);
-			return;
-		}
-		else if (g_S_Key)
-		{
-			g_S_Key = false;
-			Item = g_Turnsummary.ArrowDownListBox(g_interfaceid.LIST_TSEVENTS);
-			return;
-		}
-		if (g_E_Key)		//Q and E scrolls through the Catagories list
-		{
-			g_E_Key = false;
-			category++;
-			if (category == Summary_STUDIO	&& g_Studios.GetNumBrothels() < 1)	category++;
-			if (category == Summary_ARENA	&& g_Arena.GetNumBrothels() < 1)	category++;
-			if (category == Summary_CENTRE	&& g_Centre.GetNumBrothels() < 1)	category++;
-			if (category == Summary_CLINIC	&& g_Clinic.GetNumBrothels() < 1)	category++;
-			if (category == Summary_FARM	&& g_Farm.GetNumBrothels() < 1)		category++;
-			if (category > 9) category = 0;
-			g_InitWin = true;
-		}
-		else if (g_Q_Key)
-		{
-			g_Q_Key = false;
-			category--;
-			if (category < 0) category = 9;
-			if (category == Summary_FARM	&& g_Farm.GetNumBrothels() < 1)		category--;
-			if (category == Summary_CLINIC	&& g_Clinic.GetNumBrothels() < 1)	category--;
-			if (category == Summary_CENTRE	&& g_Centre.GetNumBrothels() < 1)	category--;
-			if (category == Summary_ARENA	&& g_Arena.GetNumBrothels() < 1)	category--;
-			if (category == Summary_STUDIO	&& g_Studios.GetNumBrothels() < 1)	category--;
-			g_InitWin = true;
-		}
-		if (g_SpaceKey && category == Summary_GIRLS)			//Space key changes the current show picture to another in the same catagory.
-		{
-			g_SpaceKey = false;
-			int SelEvent = -1;
-			if ((SelEvent = g_Turnsummary.GetSelectedItemFromList(g_interfaceid.LIST_TSEVENTS)) != -1)
-			{
-				int SelGirl;
-				// if a girl is selected then
-				if ((SelGirl = g_Turnsummary.GetSelectedItemFromList(g_interfaceid.LIST_TSITEM)) != -1)
-				{
-					sGirl* girl = 0;
-
-					// MYR
-					string selectedName = g_Turnsummary.GetSelectedTextFromList(g_interfaceid.LIST_TSITEM);
-					girl = selected_girl = g_Brothels.GetGirlByName(g_CurrBrothel, selectedName);
-
-					// Set the event desc text
-					g_Turnsummary.EditTextItem(girl->m_Events.GetMessage(SelEvent).m_Message, g_interfaceid.TEXT_TSEVENTDESC);
-
-					// Change the picture
-					ImageType = girl->m_Events.GetMessage(SelEvent).m_MessageType;
-
-					lastNum = -1;
-				}
-			}
-		}
-		if (g_SpaceKey && category == Summary_STUDIO)			//Space key changes the current show picture to another in the same catagory. For Studio
-		{
-			g_SpaceKey = false;
-			int SelEvent = -1;
-			if ((SelEvent = g_Turnsummary.GetSelectedItemFromList(g_interfaceid.LIST_TSEVENTS)) != -1)
-			{
-				int SelGirl;
-				// if a girl is selected then
-				if ((SelGirl = g_Turnsummary.GetSelectedItemFromList(g_interfaceid.LIST_TSITEM)) != -1)
-				{
-					sGirl* girl = 0;
-
-					// MYR
-					string selectedName = g_Turnsummary.GetSelectedTextFromList(g_interfaceid.LIST_TSITEM);
-					girl = selected_girl = g_Studios.GetGirlByName(0, selectedName);
-
-					// Set the event desc text
-					g_Turnsummary.EditTextItem(girl->m_Events.GetMessage(SelEvent).m_Message, g_interfaceid.TEXT_TSEVENTDESC);
-
-					// Change the picture
-					ImageType = girl->m_Events.GetMessage(SelEvent).m_MessageType;
-
-					lastNum = -1;
-				}
-			}
-		}
-	}
-#endif	//	End Keys
-
-
-	//	Start Last
-#if 1
-	/*
-	*	Draw a girls picture and description when selected
-	*	Category 1 is easier, so let's get that out of the way first
-	*/
-	if (category == Summary_GANGS)
-	{
-		g_Turnsummary.SetImage(g_interfaceid.IMAGE_TSIMAGE, g_BrothelImages[g_CurrBrothel]);
-		return;
-	}
-	/*
-	*	make sure we don't trip over any other categories that were being
-	*	silently ignored
-	*/
-	if (category != 0 && category != 3 && category != 4 && category != 5 &&
-		category != 6 && category != 7 && category != 8 && category != 9)
-	{
-		return;
-	}
-	int GirlNum = g_Turnsummary.GetSelectedItemFromList(g_interfaceid.LIST_TSITEM);
-	if (GirlNum == -1) return;	// again, no selected item means "nothing to do" so let's do that first :)
-
-	/*
-	*	both cases need the selected girl data - so let's get that
-	*/
-	sGirl* selGirl = NULL;
-	if (category == Summary_GIRLS)
-	{
-		// MYR
-		string selectedName = g_Turnsummary.GetSelectedTextFromList(g_interfaceid.LIST_TSITEM);
-		selGirl = selected_girl = g_Brothels.GetGirlByName(g_CurrBrothel, selectedName);
-		//selGirl = g_Brothels.GetGirl(g_CurrBrothel, num);
-	}
-	else if (category == Summary_DUNGEON)
-	{
-		cDungeon* pDungeon = g_Brothels.GetDungeon();
-		if (pDungeon->GetNumGirls() > 0)
-		{
-			sDungeonGirl *selDGirl = pDungeon->GetGirl(GirlNum);
-			if (selDGirl != 0)
-				selGirl = selDGirl->m_Girl;
-			else
-				selGirl = 0;
-		}
-	}
-	else if (category == Summary_CLINIC)
-	{
-		// MYR
-		string selectedName = g_Turnsummary.GetSelectedTextFromList(g_interfaceid.LIST_TSITEM);
-		selGirl = selected_girl = g_Clinic.GetGirlByName(0, selectedName);
-		//selGirl = g_Brothels.GetGirl(g_CurrBrothel, num);
-	}
-	else if (category == Summary_STUDIO)
-	{
-		// MYR
-		string selectedName = g_Turnsummary.GetSelectedTextFromList(g_interfaceid.LIST_TSITEM);
-		selGirl = selected_girl = g_Studios.GetGirlByName(0, selectedName);
-		//selGirl = g_Brothels.GetGirl(g_CurrBrothel, num);
-	}
-	else if (category == Summary_ARENA)
-	{
-		// MYR
-		string selectedName = g_Turnsummary.GetSelectedTextFromList(g_interfaceid.LIST_TSITEM);
-		selGirl = selected_girl = g_Arena.GetGirlByName(0, selectedName);
-		//selGirl = g_Brothels.GetGirl(g_CurrBrothel, num);
-	}
-	else if (category == Summary_CENTRE)
-	{
-		// MYR
-		string selectedName = g_Turnsummary.GetSelectedTextFromList(g_interfaceid.LIST_TSITEM);
-		selGirl = selected_girl = g_Centre.GetGirlByName(0, selectedName);
-		//selGirl = g_Brothels.GetGirl(g_CurrBrothel, num);
-	}
-	else if (category == Summary_HOUSE)
-	{
-		// MYR
-		string selectedName = g_Turnsummary.GetSelectedTextFromList(g_interfaceid.LIST_TSITEM);
-		selGirl = selected_girl = g_House.GetGirlByName(0, selectedName);
-		//selGirl = g_Brothels.GetGirl(g_CurrBrothel, num);
-	}
-	else if (category == Summary_FARM)
-	{
-		// MYR
-		string selectedName = g_Turnsummary.GetSelectedTextFromList(g_interfaceid.LIST_TSITEM);
-		selGirl = selected_girl = g_Farm.GetGirlByName(0, selectedName);
-		//selGirl = g_Brothels.GetGirl(g_CurrBrothel, num);
-	}
-	/*
-	*	not really sure what's going on here. lastNum is static so
-	*	persists from one invocation to the next. Ditto lastType.
-	*
-	*	num is the selection in the list box
-	*
-	*	so we're saying "if this is a different girl, or if we didn't
-	*	display a girl last time - do this:"
-	*
-	*	let's set a flag with that
-	*/
-	bool image_changed = (lastNum != GirlNum || LastType != ImageType);
-	/*
-	*	now: the setImage happens regardless of whether the image changed or not
-	*	assuming selGirl is set, anyhow. The only difference is that the
-	*	random parameter passed is true if the "image_changed" is true:
-	*
-	*	that makes sense - this is a new girl, so go find a random image of her
-	*/
-	if (selGirl)
-	{
-		if ((selGirl->m_newRandomFixed >= 0) && (ImageType == IMGTYPE_PROFILE))
-			g_Turnsummary.SetImage(g_interfaceid.IMAGE_TSIMAGE, g_Girls.GetImageSurface(selGirl, ImageType, false, selGirl->m_newRandomFixed));
-		else
-		{
-			g_Turnsummary.SetImage(g_interfaceid.IMAGE_TSIMAGE, g_Girls.GetImageSurface(selGirl, ImageType, image_changed, ImageNum));
-			// `J` added check in case the girl has no images and the game is using defaults (no .ani defaults)
-			if (selGirl->m_GirlImages->m_Images[ImageType].m_NumImages > 0)
-			{
-				if (g_Girls.IsAnimatedSurface(selGirl, ImageType, ImageNum))
-					g_Turnsummary.SetImage(g_interfaceid.IMAGE_TSIMAGE, g_Girls.GetAnimatedSurface(selGirl, ImageType, ImageNum));
-			}
-		}
-	}
-	/*
-	*	now we need to update the "last" variables
-	*
-	*	this is cheap enough we can do it whether there's been a change
-	*	or not
-	*/
-	LastType = ImageType;
-	lastNum = GirlNum;
-#endif	// End Last
 }
 
 void NextWeek()
@@ -2484,6 +582,8 @@ void NextWeek()
 	g_GlobalTriggers.ProcessTriggers();
 
 	GameEvents();
+	g_CTRLDown = false;
+
 }
 
 void GameEvents()
@@ -2542,7 +642,6 @@ void GameEvents()
 	}
 }
 
-
 void PreparingNew()
 {
 	g_CurrentScreen = SCREEN_PREPARING;
@@ -2567,12 +666,7 @@ void PreparingLoad()
 	}
 	else
 	{
-		
-		DirPath location;
-		if (cfg.folders.configXMLsa())
-			location = DirPath() << cfg.folders.saves();
-		else
-			location = DirPath() << "Saves";
+		DirPath location = DirPath(cfg.folders.saves().c_str());
 		const char *pattern = "*.gam";
 		FileList fl(location, pattern);
 		if (LoadGame(location, g_ReturnText))
@@ -2586,504 +680,28 @@ void PreparingLoad()
 			g_InitWin = true;
 			g_WinManager.Pop();
 		}
-
-
-
-
-
-
-
 	}
-}
-
-
-void Gallery()
-{
-	static int Mode = IMGTYPE_ANAL;
-	static int Img = 0;	// what image currently drawing
-	sGirl *girl = selected_girl;
-
-	g_CurrentScreen = SCREEN_GALLERY;
-	if (g_InitWin)
-	{
-		if (girl == 0)
-		{
-			g_InitWin = true;
-			g_MessageQue.AddToQue("ERROR: No girl selected", 1);
-			g_WinManager.Pop();
-			return;
-		}
-		g_Gallery.Reset();
-		Mode = IMGTYPE_ANAL;
-		Img = 0;
-		g_Gallery.Focused();
-
-		g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYANAL, (girl->m_GirlImages->m_Images[IMGTYPE_ANAL].m_NumImages == 0));
-		g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYBDSM, (girl->m_GirlImages->m_Images[IMGTYPE_BDSM].m_NumImages == 0));
-		g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYSEX, (girl->m_GirlImages->m_Images[IMGTYPE_SEX].m_NumImages == 0));
-		g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYBEAST, (girl->m_GirlImages->m_Images[IMGTYPE_BEAST].m_NumImages == 0));
-		g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYGROUP, (girl->m_GirlImages->m_Images[IMGTYPE_GROUP].m_NumImages == 0));
-		g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYLESBIAN, (girl->m_GirlImages->m_Images[IMGTYPE_LESBIAN].m_NumImages == 0));
-		g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYPREGNANT, (girl->m_GirlImages->m_Images[IMGTYPE_PREGNANT].m_NumImages == 0));
-		g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYDEATH, (girl->m_GirlImages->m_Images[IMGTYPE_TORTURE].m_NumImages == 0));
-		g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYPROFILE, (girl->m_GirlImages->m_Images[IMGTYPE_PROFILE].m_NumImages == 0));
-		g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYCOMBAT, (girl->m_GirlImages->m_Images[IMGTYPE_COMBAT].m_NumImages == 0));
-		g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYORAL, (girl->m_GirlImages->m_Images[IMGTYPE_ORAL].m_NumImages == 0));
-
-		while (girl->m_GirlImages->m_Images[Mode].m_NumImages == 0 && Mode < NUM_IMGTYPES)
-		{
-			Mode++;
-		}
-
-		if (Img >= girl->m_GirlImages->m_Images[Mode].m_NumImages) Img = 0;
-		else if (Img < 0) Img = girl->m_GirlImages->m_Images[Mode].m_NumImages - 1;
-
-		g_InitWin = false;
-	}
-
-	if (g_InterfaceEvents.GetNumEvents() != 0)
-	{
-		if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYBACK))
-		{
-			g_WinManager.Pop();
-			g_InitWin = true;
-			return;
-		}
-		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYANAL))
-		{
-			Mode = IMGTYPE_ANAL;
-			Img = 0;
-			return;
-		}
-		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYBDSM))
-		{
-			Mode = IMGTYPE_BDSM;
-			Img = 0;
-			return;
-		}
-		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYSEX))
-		{
-			Mode = IMGTYPE_SEX;
-			Img = 0;
-			return;
-		}
-		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYBEAST))
-		{
-			Mode = IMGTYPE_BEAST;
-			Img = 0;
-			return;
-		}
-		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYGROUP))
-		{
-			Mode = IMGTYPE_GROUP;
-			Img = 0;
-			return;
-		}
-		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYLESBIAN))
-		{
-			Mode = IMGTYPE_LESBIAN;
-			Img = 0;
-			return;
-		}
-		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYPREGNANT))
-		{
-			Mode = IMGTYPE_PREGNANT;
-			Img = 0;
-			return;
-		}
-		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYDEATH))
-		{
-			Mode = IMGTYPE_DEATH;
-			Img = 0;
-			return;
-		}
-		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYPROFILE))
-		{
-			Mode = IMGTYPE_PROFILE;
-			Img = 0;
-			return;
-		}
-		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYCOMBAT))
-		{
-			Mode = IMGTYPE_COMBAT;
-			Img = 0;
-			return;
-		}
-		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYORAL))
-		{
-			Mode = IMGTYPE_ORAL;
-			Img = 0;
-			return;
-		}
-		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYPREV))
-		{
-			Img--;
-			if (Img < 0)
-				Img = girl->m_GirlImages->m_Images[Mode].m_NumImages - 1;
-			return;
-		}
-		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYNEXT))
-		{
-			Img++;
-			if (Img == girl->m_GirlImages->m_Images[Mode].m_NumImages)
-				Img = 0;
-			return;
-		}
-		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_NEXTGALLERY))
-		{
-			g_InitWin = true;
-			g_WinManager.Push(Gallery2, &g_Gallery2);
-			return;
-		}
-	}
-
-	if (g_LeftArrow || g_A_Key)
-	{
-		g_LeftArrow = g_A_Key = false;
-		Img--;
-		if (Img < 0)
-			Img = girl->m_GirlImages->m_Images[Mode].m_NumImages - 1;
-		return;
-	}
-	else if (g_RightArrow || g_D_Key)
-	{
-		g_RightArrow = g_D_Key = false;
-		Img++;
-		if (Img >= girl->m_GirlImages->m_Images[Mode].m_NumImages)
-			Img = 0;
-		return;
-	}
-	if (g_UpArrow || g_W_Key)
-	{
-		int i = 0;
-		while (i <= NUM_IMGTYPES)
-		{
-			g_UpArrow = g_W_Key = false;
-			Mode--; i++;
-			if (Mode < 0)
-				Mode = NUM_IMGTYPES - 1;
-			Img = 0;
-			if (girl->m_GirlImages->m_Images[Mode].m_NumImages > 0)   // This hack will only work as long as the Mode numbers are the same as the IMG type.
-				break;
-		}
-	}
-	else if (g_DownArrow || g_S_Key)
-	{
-		int i = 0;
-		while (i <= NUM_IMGTYPES)
-		{
-			g_DownArrow = g_S_Key = false;
-			Mode++; i++;
-			if (Mode >= NUM_IMGTYPES)
-				Mode = 0;
-			Img = 0;
-			if (girl->m_GirlImages->m_Images[Mode].m_NumImages > 0)   // This hack will only work as long as the Mode numbers are the same as the IMG type.
-				break;
-		}
-	}
-	if (Mode >= NUM_IMGTYPES)
-	{
-		//we've gone through all categories and could not find a single image!
-		return;
-	}
-
-	g_Gallery.EditTextItem(galtxt[Mode], g_interfaceid.TEXT_GALLERYTYPE);	// Set the text for gallery type
-
-	// Draw the image
-	if (girl)
-	{
-		g_Gallery.SetImage(g_interfaceid.IMAGE_TSIMAGE, g_Girls.GetImageSurface(girl, Mode, false, Img, true));
-		if (g_Girls.IsAnimatedSurface(girl, Mode, Img))
-			g_Gallery.SetImage(g_interfaceid.IMAGE_TSIMAGE, g_Girls.GetAnimatedSurface(girl, Mode, Img));
-	}
-}
-void Gallery2()
-{
-	static int Mode = IMGTYPE_ECCHI;
-	static int Img = 0;	// what image currently drawing
-	sGirl *girl = selected_girl;
-	g_CurrentScreen = SCREEN_GALLERY2;
-	if (g_InitWin)
-	{
-		if (girl == 0)
-		{
-			g_InitWin = true;
-			g_MessageQue.AddToQue("ERROR: No girl selected", 1);
-			g_WinManager.Pop();
-			return;
-		}
-		g_Gallery2.Focused();
-
-		g_Gallery2.DisableButton(g_interfaceid.BUTTON_GALLERYECCHI, (girl->m_GirlImages->m_Images[IMGTYPE_ECCHI].m_NumImages == 0));
-		g_Gallery2.DisableButton(g_interfaceid.BUTTON_GALLERYSTRIP, (girl->m_GirlImages->m_Images[IMGTYPE_STRIP].m_NumImages == 0));
-		g_Gallery2.DisableButton(g_interfaceid.BUTTON_GALLERYMAID, (girl->m_GirlImages->m_Images[IMGTYPE_MAID].m_NumImages == 0));
-		g_Gallery2.DisableButton(g_interfaceid.BUTTON_GALLERYSING, (girl->m_GirlImages->m_Images[IMGTYPE_SING].m_NumImages == 0));
-		g_Gallery2.DisableButton(g_interfaceid.BUTTON_GALLERYWAIT, (girl->m_GirlImages->m_Images[IMGTYPE_WAIT].m_NumImages == 0));
-		g_Gallery2.DisableButton(g_interfaceid.BUTTON_GALLERYCARD, (girl->m_GirlImages->m_Images[IMGTYPE_CARD].m_NumImages == 0));
-		g_Gallery2.DisableButton(g_interfaceid.BUTTON_GALLERYBUNNY, (girl->m_GirlImages->m_Images[IMGTYPE_BUNNY].m_NumImages == 0));
-		g_Gallery2.DisableButton(g_interfaceid.BUTTON_GALLERYNUDE, (girl->m_GirlImages->m_Images[IMGTYPE_NUDE].m_NumImages == 0));
-		g_Gallery2.DisableButton(g_interfaceid.BUTTON_GALLERYMAST, (girl->m_GirlImages->m_Images[IMGTYPE_MAST].m_NumImages == 0));
-		g_Gallery2.DisableButton(g_interfaceid.BUTTON_GALLERYTITTY, (girl->m_GirlImages->m_Images[IMGTYPE_TITTY].m_NumImages == 0));
-
-		while (girl->m_GirlImages->m_Images[Mode].m_NumImages == 0 && Mode < NUM_IMGTYPES)
-		{
-			Mode++;
-		}
-
-		if (Img >= girl->m_GirlImages->m_Images[Mode].m_NumImages)
-			Img = 0;
-		else if (Img < 0)
-			Img = girl->m_GirlImages->m_Images[Mode].m_NumImages - 1;
-
-		g_InitWin = false;
-	}
-
-	if (g_InterfaceEvents.GetNumEvents() != 0)
-	{
-		if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYBACK))
-		{
-			g_WinManager.Pop();
-			g_InitWin = true;
-			return;
-		}
-		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYECCHI))
-		{
-			Mode = IMGTYPE_ECCHI;
-			Img = 0;
-			return;
-		}
-		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYSTRIP))
-		{
-			Mode = IMGTYPE_STRIP;
-			Img = 0;
-			return;
-		}
-		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYMAID))
-		{
-			Mode = IMGTYPE_MAID;
-			Img = 0;
-			return;
-		}
-		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYSING))
-		{
-			Mode = IMGTYPE_SING;
-			Img = 0;
-			return;
-		}
-		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYWAIT))
-		{
-			Mode = IMGTYPE_WAIT;
-			Img = 0;
-			return;
-		}
-		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYCARD))
-		{
-			Mode = IMGTYPE_CARD;
-			Img = 0;
-			return;
-		}
-		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYBUNNY))
-		{
-			Mode = IMGTYPE_BUNNY;
-			Img = 0;
-			return;
-		}
-		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYNUDE))
-		{
-			Mode = IMGTYPE_NUDE;
-			Img = 0;
-			return;
-		}
-		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYMAST))
-		{
-			Mode = IMGTYPE_MAST;
-			Img = 0;
-			return;
-		}
-		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYTITTY))
-		{
-			Mode = IMGTYPE_TITTY;
-			Img = 0;
-			return;
-		}
-		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYPREV))
-		{
-			Img--;
-			if (Img < 0)
-				Img = girl->m_GirlImages->m_Images[Mode].m_NumImages - 1;
-			return;
-		}
-		else if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYNEXT))
-		{
-			Img++;
-			if (Img == girl->m_GirlImages->m_Images[Mode].m_NumImages)
-				Img = 0;
-			return;
-		}
-	}
-
-	if (g_LeftArrow || g_A_Key)
-	{
-		g_LeftArrow = g_A_Key = false;
-		Img--;
-		if (Img < 0)
-			Img = girl->m_GirlImages->m_Images[Mode].m_NumImages - 1;
-		return;
-	}
-	else if (g_RightArrow || g_D_Key)
-	{
-		g_RightArrow = g_D_Key = false;
-		Img++;
-		if (Img >= girl->m_GirlImages->m_Images[Mode].m_NumImages)
-			Img = 0;
-		return;
-	}
-	if (g_UpArrow || g_W_Key)
-	{
-		int i = 0;
-		while (i <= NUM_IMGTYPES)
-		{
-			g_UpArrow = g_W_Key = false;
-			Mode--; i++;
-			if (Mode < 0)
-				Mode = NUM_IMGTYPES - 1;
-			Img = 0;
-			if (girl->m_GirlImages->m_Images[Mode].m_NumImages > 0)   // This hack will only work as long as the Mode numbers are the same as the IMG type.
-				break;
-		}
-	}
-	else if (g_DownArrow || g_S_Key)
-	{
-		int i = 0;
-		while (i <= NUM_IMGTYPES)
-		{
-			g_DownArrow = g_S_Key = false;
-			Mode++; i++;
-			if (Mode >= NUM_IMGTYPES)
-				Mode = 0;
-			Img = 0;
-			if (girl->m_GirlImages->m_Images[Mode].m_NumImages > 0)   // This hack will only work as long as the Mode numbers are the same as the IMG type.
-				break;
-		}
-	}
-	if (Mode >= NUM_IMGTYPES)
-	{
-		//we've gone through all categories and could not find a single image!
-		return;
-	}
-	g_Gallery.EditTextItem(galtxt[Mode], g_interfaceid.TEXT_GALLERYTYPE);	// Set the text for gallery type
-
-
-	// Draw the image
-	if (girl)
-	{
-		g_Gallery2.SetImage(g_interfaceid.IMAGE_TSIMAGE, g_Girls.GetImageSurface(girl, Mode, false, Img, true));
-		if (g_Girls.IsAnimatedSurface(girl, Mode, Img))
-			g_Gallery2.SetImage(g_interfaceid.IMAGE_TSIMAGE, g_Girls.GetAnimatedSurface(girl, Mode, Img));
-	}
-}
-
-void SaveMasterFile(string filename)
-{
-	/*
-	*	I think this is outdated now. Which is to say
-	*	we re-write the masterfile after we finish loading
-	*	and I don't think we can pick up any new .girls files
-	*	in mid play. So this should already be up to date.
-	*
-	*	I'm just commenting it out in case I'm wrong
-	*	(Do we need this the first time we save?)
-	*
-	string savedFiles[400];
-	WIN32_FIND_DATAA FindFileData;
-	HANDLE hFind;
-	int numSaved = 0;
-
-	// first load the masterlist to see what has been loaded before
-	ifstream load;
-	string mastfile = ".\\Saves\\";
-	mastfile += filename;
-	mastfile += ".mast";
-	load.open(mastfile.c_str());
-
-	numSaved = 0;
-	if(load)
-	{
-	while(load.good())
-	{
-	load.getline(buffer, 1000, '\n');
-	savedFiles[numSaved] = buffer;
-	numSaved++;
-	}
-	}
-	load.close();
-
-	// Load Girls
-	DirPath location = DirPath() << "Resources" << "Characters\\*.girls";
-	hFind = FindFirstFileA(location.c_str(), &FindFileData);
-	do
-	{
-	if(hFind != INVALID_HANDLE_VALUE)
-	{
-	bool match = false;
-	for(int i=0; i<numSaved; i++)
-	{
-	if(savedFiles[i] == FindFileData.cFileName)
-	match = true;
-	}
-
-	if(!match)
-	{
-	savedFiles[numSaved] = FindFileData.cFileName;
-	numSaved++;
-	}
-	}
-	else
-	break;
-	}
-	while(FindNextFileA(hFind, &FindFileData) != 0);
-	FindClose(hFind);
-
-	ofstream save;
-	mastfile = filename;
-	mastfile += ".mast";
-	save.open(mastfile.c_str());
-	for(int j=0; j<numSaved; j++)
-	{
-	if(j==(numSaved-1))
-	save<<savedFiles[j].c_str();
-	else
-	save<<savedFiles[j].c_str()<<endl;
-	}
-	save.close();
-	*/
 }
 
 void AutoSaveGame()
 {
-	
-	string saveloc = (cfg.folders.configXMLsa() ? cfg.folders.saves() : "Saves");
-	SaveGameXML(DirPath() << saveloc << "autosave.gam");
+	SaveGameXML(DirPath(cfg.folders.saves().c_str()) << "autosave.gam");
 }
 void SaveGame(bool saveCSV)
 {
-	
+
 	string filename = g_Brothels.GetBrothel(0)->m_Name;
 	string filenamedotgam = filename + ".gam";
 	string filenamedotcsv = filename + ".csv";
 
-	if (cfg.folders.configXMLsa())
-	{
-		SaveGameXML(DirPath() << cfg.folders.saves() << filenamedotgam);
-		if (saveCSV) SaveGirlsCSV(DirPath() << cfg.folders.saves() << filenamedotcsv);
-	}
-	if (!cfg.folders.configXMLsa() || cfg.folders.backupsaves())
+	SaveGameXML(DirPath(cfg.folders.saves().c_str()) << filenamedotgam);
+	if (saveCSV) SaveGirlsCSV(DirPath(cfg.folders.saves().c_str()) << filenamedotcsv);
+	if (cfg.folders.backupsaves())
 	{
 		SaveGameXML(DirPath() << "Saves" << filenamedotgam);
 		if (saveCSV) SaveGirlsCSV(DirPath() << "Saves" << filenamedotcsv);
 	}
 }
-
 void SimpleSaveGameXML(string filename)	// `J` zzzzzz - incomplete code
 {
 	TiXmlDocument docq(filename + ".q");
@@ -3106,7 +724,6 @@ void SimpleSaveGameXML(string filename)	// `J` zzzzzz - incomplete code
 
 	docq.SaveFile();
 }
-
 void SaveGameXML(string filename)
 {
 	TiXmlDocument doc(filename);
@@ -3215,8 +832,8 @@ bool LoadGame(string directory, string filename)	// `J` Bookmark - Loading a gam
 	//load items database, traits info, etc
 	LoadGameInfoFiles();
 
-	DirPath thefile;
-	thefile << directory << filename;
+	DirPath thefile = directory.c_str();
+	thefile << filename;
 	TiXmlDocument doc(thefile.c_str());
 	if (doc.LoadFile() == false)
 	{
@@ -3232,7 +849,6 @@ bool LoadGame(string directory, string filename)	// `J` Bookmark - Loading a gam
 		return LoadGameXML(TiXmlHandle(&doc));
 	}
 }
-
 bool LoadGameXML(TiXmlHandle hDoc)
 {
 	TiXmlHandle hRoot = hDoc.FirstChildElement("Root");
@@ -3339,7 +955,6 @@ bool LoadGameXML(TiXmlHandle hDoc)
 	g_GlobalTriggers.LoadTriggersXML(hRoot.FirstChildElement("Triggers"));
 
 	g_LogFile.write("Loading default images");
-	g_Girls.LoadDefaultImages();
 
 	if (g_Cheats)
 	{
@@ -3832,7 +1447,6 @@ void TransferGirls()
 		}
 	}
 }
-
 void TransferGirlsLeftToRight(int rightBrothel, int leftBrothel)
 {
     sBrothel* brothel = nullptr;
@@ -3900,7 +1514,6 @@ void TransferGirlsLeftToRight(int rightBrothel, int leftBrothel)
 		g_TransferGirls.SetSelectedItemInList(g_interfaceid.LIST_TRANSGRIGHTBROTHEL, rightBrothel);
 	}
 }
-
 void TransferGirlsRightToLeft(int rightBrothel, int leftBrothel)
 {
     sBrothel* brothel = nullptr;
@@ -4032,7 +1645,6 @@ void SaveGirlsCSV(string filename)
 	}
 	GirlsCSV.close();
 }
-
 string Girl2CSV(sGirl* girl)
 {
 	cJobManager m_JobManager;
@@ -4096,7 +1708,6 @@ string Girl2CSV(sGirl* girl)
 
 	return ss.str();
 }
-
 std::string CSVifyString(string name)
 {
 	std::string newName(name);

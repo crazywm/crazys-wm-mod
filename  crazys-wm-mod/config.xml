@@ -14,10 +14,10 @@
 				before trying to find alternate images from the image tree.
 	-->
     <Folders
-        Characters="..\Characters"
+        Characters="C:\Program Files (x86)\WhoreMaster\Characters"
         Saves="..\Saves"
-        DefaultImages="..\DefaultImages"
-        BackupSaves="true"
+        DefaultImages="C:\Program Files (x86)\WhoreMaster\DefaultImages"
+        BackupSaves="false"
         PreferDefault="false" />
     <!--
 	Resolution     = the name of your interface folder

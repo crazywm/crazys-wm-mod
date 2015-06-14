@@ -45,6 +45,8 @@ extern cClinicManager			g_Clinic;
 extern cWindowManager			g_WinManager;
 extern cInterfaceEventManager	g_InterfaceEvents;
 
+extern	bool	g_CTRLDown;
+
 bool cClinicScreen::ids_set = false;
 
 void cClinicScreen::set_ids()
@@ -126,7 +128,7 @@ void cClinicScreen::process()
 	else if (g_InterfaceEvents.CheckButton(turns_id))
 	{
 		g_InitWin = true;
-		g_WinManager.Push(Turnsummary, &g_Turnsummary);
+		g_WinManager.push("TurnSummary");
 		return;
 	}
 	else if (g_InterfaceEvents.CheckButton(setup_id))
@@ -145,9 +147,9 @@ void cClinicScreen::process()
 	else if (g_InterfaceEvents.CheckButton(weeks_id))
 	{
 		g_InitWin = true;
-		AutoSaveGame();
+		if (!g_CTRLDown) { g_CTRLDown = false; AutoSaveGame(); }
 		NextWeek();
-		g_WinManager.Push(Turnsummary, &g_Turnsummary);
+		g_WinManager.push("TurnSummary");
 		return;
 	}
 }

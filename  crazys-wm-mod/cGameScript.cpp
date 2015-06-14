@@ -146,6 +146,7 @@ sScript *cGameScript::Process(sScript *Script)
 	case 76: return Script_SignTarget(Script);
 	case 77: return Script_PresentedTarget(Script);
 	case 78: return Script_GetRandomGirl(Script);
+	case 79: return Script_DomTarget(Script);
 
 		// `J` When modifying Image types, search for "J-Change-Image-Types"  :  found in >> cGameScript.cpp
 
@@ -1556,6 +1557,11 @@ sScript* cGameScript::Script_SignTarget(sScript* Script)
 sScript* cGameScript::Script_PresentedTarget(sScript* Script)
 {
 	g_GirlDetails.lastsexact = IMGTYPE_PRESENTED;
+	return Script->m_Next;
+}
+sScript* cGameScript::Script_DomTarget(sScript* Script)
+{
+	g_GirlDetails.lastsexact = IMGTYPE_DOM;
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_AddTrait(sScript* Script)						// `J` new

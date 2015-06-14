@@ -519,7 +519,7 @@ void handle_hotkeys()
 			g_WinManager.PopToWindow(&g_BrothelManagement);
 			g_CurrentScreen = SCREEN_TURNSUMMARY;
 			g_InitWin = true;
-			g_WinManager.Push(Turnsummary, &g_Turnsummary);
+			g_WinManager.push("TurnSummary");
 			break;
 
 		case SDLK_HOME:
@@ -1040,11 +1040,40 @@ int main(int ac, char* av[])	// `J` Bookmark - #1 - Entering the game
 #endif
 #endif
 
-#if 0
+#if 1
 	g_LogFile.ss() << "\n`J` DEBUG CODE - this section is used to debug a piece of code.\n"; g_LogFile.ssend();
 
 
 
+
+
+
+
+#if 0
+	// testing piano tips
+	double jobperformance = 300;
+	int beauty = 100;
+	int charisma = 100;
+	int perf = 100;
+	for (int i = 0; i < 100; i++)
+	{
+
+		double out = (jobperformance / 8) * ((g_Dice % (beauty + charisma) / 20.0) + (perf/5.0));
+
+		g_LogFile.ss() 
+			<< "\t|\tjp:\t" << jobperformance
+			<< "\t|\tbe:\t" << beauty
+			<< "\t|\tch:\t" << charisma
+			<< "\t|\tpf:\t" << perf
+			<< "\t|\tot:\t" << out
+			; g_LogFile.ssend();
+		jobperformance = g_Dice % 300;
+		beauty = g_Dice % 100;
+		charisma = g_Dice % 100;
+		perf = g_Dice % 100;
+
+	}
+#endif
 
 #if 0
 	// testing 		enemy_gang->m_Num = (max(1, g_Dice.bell(-5, 25) - 10));
@@ -1073,20 +1102,6 @@ int main(int ac, char* av[])	// `J` Bookmark - #1 - Entering the game
 	for (int i = 0; i < range; i++) { g_LogFile.ss() << a[i][0] << "     " << a[i][1];  g_LogFile.ssend(); }
 #endif
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #if 0
 	// testing g_Dice.bell
 	int low = -100;
@@ -1105,11 +1120,6 @@ int main(int ac, char* av[])	// `J` Bookmark - #1 - Entering the game
 
 	for (int i = 0; i < range; i++) g_LogFile.ss() << a[i][0] << "     "<< a[i][1]; g_LogFile.ssend();
 #endif
-
-
-
-
-
 
 #if 0
 	// testing disp modifier for gang recruiting

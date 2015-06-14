@@ -277,7 +277,7 @@ void cScreenCentreManagement::update_image()
 			lastNum = selection;
 		}
 
-		SetImage(girlimage_id, g_Girls.GetImageSurface(selected_girl, IMGTYPE_PROFILE, Rand, ImageNum));
+		PrepareImage(girlimage_id, selected_girl, IMGTYPE_PROFILE, Rand, lastNum);
 		HideImage(girlimage_id, false);
 	}
 	else

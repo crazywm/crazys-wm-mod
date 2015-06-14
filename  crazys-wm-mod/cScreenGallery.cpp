@@ -16,11 +16,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <iostream>
+#include <locale>
+#include <sstream>
 #include "cBrothel.h"
 #include "cClinic.h"
 #include "cMovieStudio.h"
 #include "cArena.h"
 #include "cCentre.h"
+#include "cFarm.h"
+#include "cHouse.h"
 #include "cScreenGallery.h"
 #include "cWindowManager.h"
 #include "cGold.h"
@@ -28,39 +33,44 @@
 #include "cGetStringScreenManager.h"
 #include "InterfaceProcesses.h"
 #include "cScriptManager.h"
-#include <iostream>
-#include <locale>
-#include <sstream>
 #include "cGangs.h"
 #include "libintl.h"
+#include "FileList.h"
 
-extern	bool			g_InitWin;
-extern	int			g_CurrBrothel;
-extern	int g_CurrClinic;
-extern	int g_CurrStudio;
-extern	int g_CurrArena;
-extern	int g_CurrCentre;
-extern	cGold			g_Gold;
-extern	cBrothelManager		g_Brothels;
-extern	cClinicManager		g_Clinic;
+extern	bool					g_InitWin;
+extern	int						g_CurrBrothel;
+extern	int						g_CurrClinic;
+extern	int						g_CurrStudio;
+extern	int						g_CurrArena;
+extern	int						g_CurrCentre;
+extern	int						g_CurrFarm;
+extern	int						g_CurrHouse;
+extern	int						g_CurrentScreen;
+extern	cGold					g_Gold;
+extern	cBrothelManager			g_Brothels;
+extern	cClinicManager			g_Clinic;
 extern	cMovieStudioManager		g_Studios;
-extern	cArenaManager		g_Arena;
-extern	cCentreManager		g_Centre;
-extern	cWindowManager		g_WinManager;
+extern	cArenaManager			g_Arena;
+extern	cCentreManager			g_Centre;
+extern	cFarmManager			g_Farm;
+extern	cHouseManager			g_House;
+extern	cWindowManager			g_WinManager;
 extern	cInterfaceEventManager	g_InterfaceEvents;
-//extern  cInterfaceWindow g_Gallery;
-extern bool g_Cheats;
-extern	bool	eventrunning;
-extern string g_ReturnText;
-extern bool g_AllTogle;
-extern	int		g_CurrentScreen;
-extern sInterfaceIDs g_interfaceid;
+//extern	cInterfaceWindow		g_Gallery;
+extern	bool					g_Cheats;
+extern	bool					eventrunning;
+extern	string					g_ReturnText;
+extern	bool					g_AllTogle;
+extern	sInterfaceIDs			g_interfaceid;
 
-extern void GetString();
-extern cInterfaceWindow g_GetString;
+extern	string					pic_types[];
+extern	string					galtxt[];
+extern	void					GetString();
+extern	cInterfaceWindow		g_GetString;
+extern	sGirl*					selected_girl;
+
 
 bool cScreenGallery::ids_set = false;
-extern sGirl *selected_girl;
 
 extern	bool	g_LeftArrow;
 extern	bool	g_RightArrow;
@@ -77,6 +87,12 @@ extern	bool	g_D_Key;
 extern	bool	g_Z_Key;
 extern	bool	g_X_Key;
 extern	bool	g_C_Key;
+extern	string	numeric;
+
+static int Mode = 0;
+static int Img = 0;	// what image currently drawing
+static int numimages[NUM_IMGTYPES][4];
+static bool changeimage = false;
 
 void cScreenGallery::set_ids()
 {
@@ -84,308 +100,165 @@ void cScreenGallery::set_ids()
 	back_id =		get_id("BackButton");
 	next_id =		get_id("NextButton");
 	prev_id =		get_id("PrevButton");
-	anal_id =		get_id("AnalButton");
-	bdsm_id =		get_id("BDSMButton");
-	sex_id =		get_id("SexButton");
-	beast_id =		get_id("BeastButton");
-	group_id =		get_id("GroupButton");
-	les_id =		get_id("LesButton");
-	preg_id =		get_id("PregButton");
-	death_id =		get_id("DeathButton");
-	pro_id =		get_id("ProfileButton");
-	combat_id =		get_id("CombatButton");
-	oral_id =		get_id("OralButton");
+	image_id =		get_id("Image");
+	imagename_id =	get_id("ImageName");
+	imagelist_id =	get_id("ImageList");
+
+	string ILColumns[] = { "ILName", "ILTotal", "ILjpg", "ILAni", "ILGif" };
+	SortColumns(imagelist_id, ILColumns, 5);
 }
 
 void cScreenGallery::process()
 {
-/*
- *	we need to make sure the ID variables are set
- */
-	if(!ids_set) {
-		set_ids();
-	}
-
-	//init();
-/* 
- *	no events means we can go home
- */
-	if(g_InterfaceEvents.GetNumEvents() == 0) {
+	if (selected_girl == 0)
+	{
+		g_InitWin = true;
+		g_MessageQue.AddToQue("ERROR: No girl selected", 1);
+		g_WinManager.Pop();
 		return;
 	}
+	if (!ids_set) set_ids();		// we need to make sure the ID variables are set
+	init();							// set up the window if needed
+	check_events();					// check to see if there's a button event needing handling
 
-/*
- *	otherwise, compare event IDs 
- *
- *	if it's the back button, pop the window off the stack
- *	and we're done
- */
-	sGirl *girl = selected_girl;
+	// Draw the image
+	if (selected_girl && changeimage)
+	{
+		changeimage = false;
+		PrepareImage(image_id, selected_girl, Mode, false, Img, true);
+		string t = m_Images[image_id]->m_Image->m_Message;
+		if (t == "") t = m_Images[image_id]->m_Image->GetFilename();
+		m_TextItems[imagename_id]->SetText(t);
+		SetSelectedItemInList(imagelist_id, Mode, false);
+	}
+}
+void cScreenGallery::init()
+{
+	g_CurrentScreen = SCREEN_GALLERY;
+	if (!g_InitWin) return;
+	Focused();
+	g_InitWin = false;
+	ClearListBox(imagelist_id);
 
-	if(g_InterfaceEvents.CheckButton(back_id)) 
+	int usefolder = 0;	// 0=none, 1=cfg, 2=original
+	int startmode = -1;
+	// start with what the config has set
+	DirPath imagedir = DirPath(cfg.folders.characters().c_str()) << selected_girl->m_Name;
+	FileList testall(imagedir, "*.*");
+	if (testall.size() > 0)		usefolder = 1;
+	else		// if config is not found, check for images in the original folder
+	{
+		imagedir = DirPath() << "Resources" << "Characters" << selected_girl->m_Name;
+		FileList testall(imagedir, "*.*");
+		if (testall.size() > 0) usefolder = 2;
+	}
+	if (usefolder == 0)
+	{
+		g_InitWin = true;
+		g_MessageQue.AddToQue("ERROR: " + selected_girl->m_Realname + " ( " + selected_girl->m_Name + " ) has no images.", 1);
+		g_WinManager.Pop();
+		return;
+	}
+	FileList readall(imagedir, "*.*");
+	int totalnum = readall.size();
+
+	for (int i = 0; i < NUM_IMGTYPES; i++)
+	{
+		if (i == IMGTYPE_PREGNANT)
+		{
+			string ext[3] = { "*g", "ani", "gif" };
+			for (u_int e = 0; e < 3; e++)
+			{
+				string t = ("preg." + ext[e]);
+				FileList testmode(imagedir, t.c_str());
+				for (u_int j = 0; j < numeric.size(); j++)
+				{
+					t = ("preg" + numeric.substr(j, 1) + "*." + ext[e]);
+					testmode.add(t.c_str());
+				}
+				numimages[i][e+1] = testmode.size();
+			}
+		}
+		else
+		{
+			FileList testmode1(imagedir, (pic_types[i] + "*g").c_str());	numimages[i][1] = testmode1.size();
+			FileList testmode2(imagedir, (pic_types[i] + "ani").c_str());	numimages[i][2] = testmode2.size();
+			FileList testmode3(imagedir, (pic_types[i] + "gif").c_str());	numimages[i][3] = testmode3.size();
+		}
+		numimages[i][0] = numimages[i][1] + numimages[i][2] + numimages[i][3];
+		if (numimages[i][0] > 0)
+		{
+			if (startmode == -1) startmode = i;
+			stringstream num0;	num0 << numimages[i][0];
+			stringstream num1;	num1 << numimages[i][1];
+			stringstream num2;	num2 << numimages[i][2];
+			stringstream num3;	num3 << numimages[i][3];
+
+			string dataP[] = { galtxt[i], num0.str(), num1.str(), num2.str(), num3.str() };
+			AddToListBox(imagelist_id, i, dataP, 5);
+		}
+	}
+	Mode = startmode;
+	Img = 0;
+	changeimage = true;
+}
+void cScreenGallery::check_events()
+{
+	if (g_LeftArrow || g_A_Key || g_RightArrow || g_D_Key || g_W_Key || g_UpArrow || g_S_Key || g_DownArrow){}
+	else if (g_InterfaceEvents.GetNumEvents() == 0)	return;		// no events means we can go home
+	// otherwise, compare event IDs 
+
+	if (g_InterfaceEvents.CheckButton(back_id))		// if it's the back button, pop the window off the stack and we're done
 	{
 		g_InitWin = true;
 		g_WinManager.Pop();
 		return;
 	}
-	if(g_InterfaceEvents.CheckButton(anal_id)) 
+
+	if (g_InterfaceEvents.CheckButton(prev_id) || g_LeftArrow || g_A_Key)
 	{
-		if(girl->m_GirlImages->m_Images[IMGTYPE_ANAL].m_NumImages == 0)
-			g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYANAL, true);
-		else
-			g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYANAL, false);
-	}
-
-	static int Mode = IMGTYPE_ANAL;
-	static int Img = 0;	// what image currently drawing
-	g_CurrentScreen = SCREEN_GALLERY;
-	if(g_InitWin)
-	{
-		if(girl == 0)
-		{
-			g_InitWin = true;
-			g_MessageQue.AddToQue("ERROR: No girl selected", 1);
-			g_WinManager.Pop();
-			return;
-		}
-		g_Gallery.Focused();
-
-		if(girl->m_GirlImages->m_Images[IMGTYPE_ANAL].m_NumImages == 0)
-			g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYANAL, true);
-		else
-			g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYANAL, false);
-		if(girl->m_GirlImages->m_Images[IMGTYPE_BDSM].m_NumImages == 0)
-			g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYBDSM, true);
-		else
-			g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYBDSM, false);
-		if(girl->m_GirlImages->m_Images[IMGTYPE_SEX].m_NumImages == 0)
-			g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYSEX, true);
-		else
-			g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYSEX, false);
-		if(girl->m_GirlImages->m_Images[IMGTYPE_BEAST].m_NumImages == 0)
-			g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYBEAST, true);
-		else
-			g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYBEAST, false);
-		if(girl->m_GirlImages->m_Images[IMGTYPE_GROUP].m_NumImages == 0)
-			g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYGROUP, true);
-		else
-			g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYGROUP, false);
-		if(girl->m_GirlImages->m_Images[IMGTYPE_LESBIAN].m_NumImages == 0)
-			g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYLESBIAN, true);
-		else
-			g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYLESBIAN, false);
-		if(girl->m_GirlImages->m_Images[IMGTYPE_PREGNANT].m_NumImages == 0)
-			g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYPREGNANT, true);
-		else
-			g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYPREGNANT, false);
-		if(girl->m_GirlImages->m_Images[IMGTYPE_DEATH].m_NumImages == 0)
-			g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYDEATH, true);
-		else
-			g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYDEATH, false);
-		if(girl->m_GirlImages->m_Images[IMGTYPE_PROFILE].m_NumImages == 0)
-			g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYPROFILE, true);
-		else
-			g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYPROFILE, false);
-		if(girl->m_GirlImages->m_Images[IMGTYPE_COMBAT].m_NumImages == 0)
-			g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYCOMBAT, true);
-		else
-			g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYCOMBAT, false);
-		if(girl->m_GirlImages->m_Images[IMGTYPE_ORAL].m_NumImages == 0)
-			g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYORAL, true);
-		else
-			g_Gallery.DisableButton(g_interfaceid.BUTTON_GALLERYORAL, false);
-
-		while(girl->m_GirlImages->m_Images[Mode].m_NumImages == 0 && Mode < NUM_IMGTYPES)
-		{
-			Mode++;
-		}
-
-		if(Img >= girl->m_GirlImages->m_Images[Mode].m_NumImages)
-			Img = 0;
-		else if(Img < 0)
-			Img = girl->m_GirlImages->m_Images[Mode].m_NumImages-1;
-
-		g_InitWin = false;
-	}
-
-	if(g_InterfaceEvents.GetNumEvents() != 0)
-	{
-		if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYBACK))
-		{
-			g_WinManager.Pop();
-			g_InitWin = true;
-			return;
-		}
-		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYANAL))
-		{
-			Mode=0;
-			Img=0;
-			return;
-		}
-		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYBDSM))
-		{
-			Mode=1;
-			Img=0;
-			return;
-		}
-		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYSEX))
-		{
-			Mode=2;
-			Img=0;
-			return;
-		}
-		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYBEAST))
-		{
-			Mode=3;
-			Img=0;
-			return;
-		}
-		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYGROUP))
-		{
-			Mode=4;
-			Img=0;
-			return;
-		}
-		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYLESBIAN))
-		{
-			Mode=5;
-			Img=0;
-			return;
-		}
-		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYPREGNANT))
-		{
-			Mode=6;
-			Img=0;
-			return;
-		}
-		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYDEATH))
-		{
-			Mode=7;
-			Img=0;
-			return;
-		}
-		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYPROFILE))
-		{
-			Mode=8;
-			Img=0;
-			return;
-		}
-		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYCOMBAT))
-		{
-			Mode=9;
-			Img=0;
-			return;
-		}
-		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYORAL))
-		{
-			Mode=10;
-			Img=0;
-			return;
-		}
-		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYPREV))
-		{
-			Img--;
-			if(Img < 0)
-				Img = girl->m_GirlImages->m_Images[Mode].m_NumImages-1;
-			return;
-		}
-		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_GALLERYNEXT))
-		{
-			Img++;
-			if(Img == girl->m_GirlImages->m_Images[Mode].m_NumImages)
-				Img = 0;
-			return;
-		}
-		else if(g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_NEXTGALLERY))
-		{
-			g_InitWin = true;
-		g_WinManager.Push(Gallery2, &g_Gallery2);
-			return;
-		}
-	}
-
-	if(g_LeftArrow)
-	{
-		g_LeftArrow = false;
+		g_A_Key = g_LeftArrow = false;
 		Img--;
-		if(Img < 0)
-			Img = girl->m_GirlImages->m_Images[Mode].m_NumImages-1;
+		if (Img < 0) Img = numimages[Mode][0] - 1;
+		changeimage = true;
 		return;
 	}
-	else if(g_RightArrow)
+	if (g_InterfaceEvents.CheckButton(next_id) || g_RightArrow || g_D_Key)
 	{
-		g_RightArrow = false;
+		g_D_Key = g_RightArrow = false;
 		Img++;
-		if(Img == girl->m_GirlImages->m_Images[Mode].m_NumImages)
-			Img = 0;
+		if (Img == numimages[Mode][0]) Img = 0;
+		changeimage = true;
 		return;
 	}
-	if(g_A_Key)
+	if (g_W_Key || g_UpArrow)
 	{
-		g_A_Key = false;
-		Img--;
-		if(Img < 0)
-			Img = girl->m_GirlImages->m_Images[Mode].m_NumImages-1;
-		return;
-	}
-	else if(g_D_Key)
-	{
-		g_D_Key = false;
-		Img++;
-		if(Img == girl->m_GirlImages->m_Images[Mode].m_NumImages)	
-			Img = 0;
-		return;
-	}
-	if(g_W_Key)
-	{
-		while(1)
+		g_UpArrow = g_W_Key = false;
+		while (1)
 		{
-			g_W_Key = false;
 			Mode --;
-			if(Mode < 0)
-				Mode = 10;
+			if (Mode < 0) Mode = NUM_IMGTYPES;
 			Img = 0;
-			if(girl->m_GirlImages->m_Images[Mode].m_NumImages > 0)   // This hack will only work as long as the Mode numbers are the same as the IMG type.
-				break;
+			if (numimages[Mode][0] > 0)
+			{
+				changeimage = true;
+				return;
+			}
 		}
 	}
-	else if(g_S_Key)
+	if (g_S_Key || g_DownArrow)
 	{
-		while(1)
+		g_DownArrow = g_S_Key = false;
+		while (1)
 		{
-			g_S_Key = false;
 			Mode ++;
-			if(Mode > 10)
-				Mode = 0;
+			if (Mode > NUM_IMGTYPES) Mode = 0;
 			Img = 0;
-			if(girl->m_GirlImages->m_Images[Mode].m_NumImages > 0)   // This hack will only work as long as the Mode numbers are the same as the IMG type.
-				break;
-		}
-	}
-		if(g_UpArrow)
-	{
-		while(1)
-		{
-			g_UpArrow = false;
-			Mode --;
-			if(Mode < 0)
-				Mode = 10;
-			Img = 0;
-			if(girl->m_GirlImages->m_Images[Mode].m_NumImages > 0)   // This hack will only work as long as the Mode numbers are the same as the IMG type.
-				break;
-		}
-	}
-	else if(g_DownArrow)
-	{
-		while(1)
-		{
-			g_DownArrow = false;
-			Mode ++;
-			if(Mode > 10)
-				Mode = 0;
-			Img = 0;
-			if(girl->m_GirlImages->m_Images[Mode].m_NumImages > 0)   // This hack will only work as long as the Mode numbers are the same as the IMG type.
-				break;
+			if (numimages[Mode][0] > 0)
+			{
+				changeimage = true;
+				return;
+			}
 		}
 	}
 	if (Mode == NUM_IMGTYPES)
@@ -393,64 +266,13 @@ void cScreenGallery::process()
 		//we've gone through all categories and could not find a single image!
 		return;
 	}
-	// Set the text for gallery type
-	string galtxt = "";
-	switch(Mode)
+
+	if (g_InterfaceEvents.CheckListbox(imagelist_id))
 	{
-	case 0:
-		galtxt = "Anal";
-		g_Gallery.EditTextItem(galtxt,g_interfaceid.TEXT_GALLERYTYPE);
-		break;
-	case 1:
-		galtxt = "BDSM";
-		g_Gallery.EditTextItem(galtxt,g_interfaceid.TEXT_GALLERYTYPE);
-		break;
-	case 2:
-		galtxt = "Sex";
-		g_Gallery.EditTextItem(galtxt,g_interfaceid.TEXT_GALLERYTYPE);
-		break;
-	case 3:
-		galtxt = "Beastiality";
-		g_Gallery.EditTextItem(galtxt,g_interfaceid.TEXT_GALLERYTYPE);
-		break;
-	case 4:
-		galtxt = "Group";
-		g_Gallery.EditTextItem(galtxt,g_interfaceid.TEXT_GALLERYTYPE);
-		break;
-	case 5:
-		galtxt = "Lesbian";
-		g_Gallery.EditTextItem(galtxt,g_interfaceid.TEXT_GALLERYTYPE);
-		break;
-	case 6:
-		galtxt = "Pregnant";
-		g_Gallery.EditTextItem(galtxt,g_interfaceid.TEXT_GALLERYTYPE);
-		break;
-	case 7:
-		galtxt = "Death";
-		g_Gallery.EditTextItem(galtxt,g_interfaceid.TEXT_GALLERYTYPE);
-		break;
-	case 8:
-		galtxt = "Profile";
-		g_Gallery.EditTextItem(galtxt,g_interfaceid.TEXT_GALLERYTYPE);
-		break;
-	case 9:
-		galtxt = "Combat";
-		g_Gallery.EditTextItem(galtxt,g_interfaceid.TEXT_GALLERYTYPE);
-		break;
-	case 10:
-		galtxt = "Oral";
-		g_Gallery.EditTextItem(galtxt,g_interfaceid.TEXT_GALLERYTYPE);
-		break;
-	default:
-		galtxt = "";
-		g_Gallery.EditTextItem(galtxt,g_interfaceid.TEXT_GALLERYTYPE);
-		break;
+		Mode = GetSelectedItemFromList(imagelist_id);
+		if (Img > numimages[Mode][0]) Img = 0;
+		changeimage = true;
+		return;
 	}
-	// Draw the image
-	if(girl)
-	{
-		g_Gallery.SetImage(g_interfaceid.IMAGE_TSIMAGE, g_Girls.GetImageSurface(girl, Mode, false, Img, true));
-		if(g_Girls.IsAnimatedSurface(girl, Mode, Img))
-			g_Gallery.SetImage(g_interfaceid.IMAGE_TSIMAGE, g_Girls.GetAnimatedSurface(girl, Mode, Img));
-	}
+
 }

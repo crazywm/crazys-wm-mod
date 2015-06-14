@@ -471,10 +471,12 @@ void cScreenGirlManagement::update_image()
 		}
 
 		if (selected_girl->m_newRandomFixed >= 0)
-			SetImage(girlimage_id, g_Girls.GetImageSurface(selected_girl, IMGTYPE_PROFILE, false, selected_girl->m_newRandomFixed));
+		{
+			PrepareImage(girlimage_id, selected_girl, IMGTYPE_PROFILE, false, selected_girl->m_newRandomFixed);
+		}
 		else
 		{
-			SetImage(girlimage_id, g_Girls.GetImageSurface(selected_girl, IMGTYPE_PROFILE, Rand, ImageNum));
+			PrepareImage(girlimage_id, selected_girl, IMGTYPE_PROFILE, Rand, lastNum);
 		}
 
 		HideImage(girlimage_id, false);
