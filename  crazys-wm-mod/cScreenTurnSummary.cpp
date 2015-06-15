@@ -150,7 +150,7 @@ void cScreenTurnSummary::process()
 {
 	if (!ids_set) set_ids();		// we need to make sure the ID variables are set
 	init();							// set up the window if needed
-	check_events();					// check to see if there's a button event needing handling
+	if (!check_events()) return;	// check to see if there's a button event needing handling
 
 	if (Category_Change)
 	{
@@ -166,7 +166,7 @@ void cScreenTurnSummary::process()
 		else if (Category == Summary_FARM)		Fill_Items_FARM();
 		else if (Category == Summary_HOUSE)		Fill_Items_HOUSE();
 		else { Category = Summary_GIRLS;		Fill_Items_GIRLS(); }
-		
+
 		SetSelectedItemInList(category_id, Category);
 		if (Item >= GetListBoxSize(item_id) || Item < 0)	Item = 0;
 		SetSelectedItemInList(item_id, Item);
@@ -179,9 +179,9 @@ void cScreenTurnSummary::process()
 		ClearListBox(event_id);
 		/* */if (Category == Summary_GANGS)		Fill_Events_GANGS();
 		else if (Category == Summary_BROTHELS)	Fill_Events_BROTHELS();
-		else
+		else if (selected_girl || GetSelectedTextFromList(item_id) != "")
 		{
-			if (selected_girl == 0 || selected_girl->m_Realname != GetSelectedTextFromList(item_id)
+			if (selected_girl->m_Realname != GetSelectedTextFromList(item_id)
 				|| (Category == Summary_DUNGEON	&& selected_girl->m_DayJob != JOB_INDUNGEON)
 				|| (Category == Summary_STUDIO	&& !selected_girl->m_InStudio)
 				|| (Category == Summary_ARENA	&& !selected_girl->m_InArena)
@@ -190,7 +190,11 @@ void cScreenTurnSummary::process()
 				|| (Category == Summary_FARM	&& !selected_girl->m_InFarm)
 				|| (Category == Summary_HOUSE	&& !selected_girl->m_InHouse))
 			{
-				/* */if (Category == Summary_DUNGEON)	selected_girl = g_Brothels.GetDungeon()->GetGirlByName(GetSelectedTextFromList(item_id))->m_Girl;
+				if (Category == Summary_DUNGEON)
+				{
+					if (g_Brothels.GetDungeon()->GetGirlByName(GetSelectedTextFromList(item_id)))
+					selected_girl = g_Brothels.GetDungeon()->GetGirlByName(GetSelectedTextFromList(item_id))->m_Girl;
+				}
 				else if (Category == Summary_STUDIO)	selected_girl = g_Studios.GetGirlByName(0, GetSelectedTextFromList(item_id));
 				else if (Category == Summary_ARENA)		selected_girl = g_Arena.GetGirlByName(0, GetSelectedTextFromList(item_id));
 				else if (Category == Summary_CENTRE)	selected_girl = g_Centre.GetGirlByName(0, GetSelectedTextFromList(item_id));
@@ -201,11 +205,11 @@ void cScreenTurnSummary::process()
 			}
 			Fill_Events(selected_girl);
 		}
-		
+
 		Event = 0;
 		SetSelectedItemInList(event_id, Event);
 		Item_Change = false;
-		Event_Change = true; 
+		Event_Change = true;
 		Image_Change = true;
 
 	}
@@ -225,21 +229,18 @@ void cScreenTurnSummary::process()
 		}
 		else if (Category == Summary_GANGS)
 		{
-			if (!g_Gangs.GetGang(Item)->m_Events.IsEmpty())
+			if (g_Gangs.GetGang(Item) && !g_Gangs.GetGang(Item)->m_Events.IsEmpty())
 				text = g_Gangs.GetGang(Item)->m_Events.GetMessage(Event).m_Message;
 		}
 		else if (Category == Summary_BROTHELS)
 		{
-			if (!g_Brothels.GetBrothel(Item)->m_Events.IsEmpty())
+			if (g_Brothels.GetBrothel(Item) && !g_Brothels.GetBrothel(Item)->m_Events.IsEmpty())
 				text = g_Brothels.GetBrothel(Item)->m_Events.GetMessage(Event).m_Message;
 		}
 		EditTextItem(text, labeldesc_id);
 		Item_Last = -1;
 		Event_Change = false;
 	}
-
-
-	DisableButton(goto_id, (Item == -1));
 
 	// Draw the image
 	if (Category == Summary_BROTHELS)
@@ -261,6 +262,7 @@ void cScreenTurnSummary::process()
 		}
 		PrepareImage(image_id, selected_girl, Image_Type, random, Image);
 	}
+
 }
 void cScreenTurnSummary::init()
 {
@@ -285,6 +287,7 @@ void cScreenTurnSummary::init()
 	brothel += g_Brothels.GetName(g_CurrBrothel);
 	EditTextItem(brothel, brothel_id);
 
+	if (Category < 0)	Category = 0;
 	if (Category_Last == Category) Item = GetSelectedItemFromList(item_id);
 	else { Item = 0; Category_Last = Category; }
 
@@ -301,7 +304,6 @@ void cScreenTurnSummary::init()
 	ClearListBox(item_id);
 	ClearListBox(event_id);
 	EditTextItem("", labeldesc_id);
-	DisableButton(goto_id, true);
 
 	AddToListBox(category_id, 0, gettext("GIRLS"));
 	AddToListBox(category_id, 1, gettext("GANGS"));
@@ -321,24 +323,25 @@ void cScreenTurnSummary::init()
 	SetSelectedItemInList(item_id, Item);
 
 }
-void cScreenTurnSummary::check_events()
+bool cScreenTurnSummary::check_events()
 {
 	if (g_Q_Key || g_W_Key || g_E_Key || g_A_Key || g_S_Key || g_D_Key || g_Z_Key || g_X_Key || g_C_Key || g_O_Key ||
-		g_LeftArrow || g_RightArrow || g_UpArrow || g_DownArrow || g_SpaceKey ){}	// if one of these keys is pressed then continue
-	else if (g_InterfaceEvents.GetNumEvents() == 0)	return;							// no events means we can go home
+		g_LeftArrow || g_RightArrow || g_UpArrow || g_DownArrow || g_SpaceKey){
+	}	// if one of these keys is pressed then continue
+	else if (g_InterfaceEvents.GetNumEvents() == 0)	return false;							// no events means we can go home
 
 	if (g_InterfaceEvents.CheckButton(back_id))		// if it's the back button, pop the window off the stack and we're done
 	{
 		g_InitWin = true;
 		g_WinManager.Pop();
-		return;
+		return false;
 	}
 	if (g_InterfaceEvents.CheckButton(nextweek_id))
 	{
 		g_InitWin = true;
 		if (!g_CTRLDown) { g_CTRLDown = false; AutoSaveGame(); }
 		NextWeek();
-		return;
+		return false;
 	}
 
 	// Change category
@@ -371,23 +374,23 @@ void cScreenTurnSummary::check_events()
 		{
 			Category = GetSelectedItemFromList(category_id);
 		}
-		if (Category >= 0 && Category == Category_Last)	return;	// no change
+		if (Category >= 0 && Category == Category_Last)	return true;	// no change
 		Category_Change = true;
-		return;
+		return true;
 	}
 	if (g_InterfaceEvents.CheckButton(next_id))
 	{
 		g_CurrBrothel++;
 		if (g_CurrBrothel >= g_Brothels.GetNumBrothels()) g_CurrBrothel = 0;
 		Item_Change = true;
-		return;
+		return true;
 	}
 	if (g_InterfaceEvents.CheckButton(prev_id))
 	{
 		g_CurrBrothel--;
 		if (g_CurrBrothel < 0) g_CurrBrothel = g_Brothels.GetNumBrothels() - 1;
 		Item_Change = true;
-		return;
+		return true;
 	}
 
 	// Change item
@@ -408,9 +411,9 @@ void cScreenTurnSummary::check_events()
 		{
 			Item = GetSelectedItemFromList(item_id);
 		}
-		if (Item >= 0 && Item == Item_Last)	return;	// no change
+		if (Item >= 0 && Item == Item_Last)	return true;	// no change
 		Item_Change = true;
-		return;
+		return true;
 	}
 
 	// change event
@@ -431,9 +434,9 @@ void cScreenTurnSummary::check_events()
 		{
 			Event = GetSelectedItemFromList(event_id);
 		}
-		if (Event >= 0 && Event == Event_Last)	return;	// no change
+		if (Event >= 0 && Event == Event_Last)	return true;	// no change
 		Event_Change = true;
-		return;
+		return true;
 	}
 
 	// change sort order
@@ -444,82 +447,151 @@ void cScreenTurnSummary::check_events()
 		else summarysortorder = 0;
 		Category_Last = -1;
 		Category_Change = true;
-		return;
+		return true;
 	}
 
 	// goto selected
 	if (g_InterfaceEvents.CheckButton(goto_id) || g_SpaceKey)
 	{
 		g_SpaceKey = false;
+		g_GirlDetails.lastsexact = -1;
 		string selectedName = GetSelectedTextFromList(item_id);
-		if (selectedName != "")
+		g_InitWin = true;
+		switch (Category)
 		{
-			g_GirlDetails.lastsexact = -1;
-			g_InitWin = true;
-			if (Category == Summary_GIRLS)
+		case Summary_GANGS:
+		{
+			g_CurrentScreen = SCREEN_GANGMANAGEMENT;
+			g_WinManager.push("Gangs");
+		}break;
+		case Summary_GIRLS:
+		{
+			selected_girl = g_Brothels.GetGirlByName(g_CurrBrothel, selectedName);
+			if (selected_girl)
 			{
-				selected_girl = g_Brothels.GetGirlByName(g_CurrBrothel, selectedName);
 				g_CurrentScreen = SCREEN_GIRLDETAILS;
 				g_WinManager.push("Girl Details");
 			}
-			else if (Category == Summary_GANGS)
-			{
-				g_CurrentScreen = SCREEN_GANGMANAGEMENT;
-				g_WinManager.push("Gangs");
-			}
-			else if (Category == Summary_BROTHELS)
+			else
 			{
 				g_Building = BUILDING_BROTHEL;
-				g_CurrBrothel = Item;
+				if (Item < 0 || Item > g_Brothels.GetNumBrothels()) g_CurrBrothel = 0;
+				else g_CurrBrothel = Item;
 				g_CurrentScreen = SCREEN_GIRLMANAGEMENT;
 				g_WinManager.PopToWindow(&g_BrothelManagement);
-				g_InitWin = true;
 			}
-			else if (Category == Summary_DUNGEON)		// Dungeon
+		}break;
+		case Summary_DUNGEON:
+		{
+			sDungeonGirl* dg = g_Brothels.GetDungeon()->GetGirlByName(selectedName);
+			if (dg) selected_girl = g_Brothels.GetDungeon()->GetGirlByName(selectedName)->m_Girl;
+			if (selected_girl)
 			{
-				selected_girl = g_Brothels.GetDungeon()->GetGirlByName(selectedName)->m_Girl;
 				g_CurrentScreen = SCREEN_GIRLDETAILS;
 				g_WinManager.push("Girl Details");
 			}
-			else if (Category == Summary_CLINIC)  //clinc
+			else
 			{
-				selected_girl = g_Clinic.GetGirlByName(0, selectedName);
+				g_CurrentScreen = SCREEN_DUNGEON;
+				g_WinManager.push("Dungeon");
+			}
+		}break;
+		case Summary_CLINIC:
+		{
+			selected_girl = g_Clinic.GetGirlByName(0, selectedName);
+			if (selected_girl)
+			{
 				g_CurrentScreen = SCREEN_GIRLDETAILS;
 				g_WinManager.push("Girl Details");
 			}
-			else if (Category == Summary_STUDIO)  //studio
+			else
 			{
-				selected_girl = g_Studios.GetGirlByName(0, selectedName);
+				g_CurrentScreen = SCREEN_CLINIC;
+				g_WinManager.push("Clinic Screen");
+			}
+		}break;
+		case Summary_STUDIO:
+		{
+			selected_girl = g_Studios.GetGirlByName(0, selectedName);
+			if (selected_girl)
+			{
 				g_CurrentScreen = SCREEN_GIRLDETAILS;
 				g_WinManager.push("Girl Details");
 			}
-			else if (Category == Summary_ARENA)  //arena
+			else
 			{
-				selected_girl = g_Arena.GetGirlByName(0, selectedName);
+				g_CurrentScreen = SCREEN_STUDIO;
+				g_WinManager.push("Movie Screen");
+			}
+		}break;
+		case Summary_ARENA:
+		{
+			selected_girl = g_Arena.GetGirlByName(0, selectedName);
+			if (selected_girl)
+			{
 				g_CurrentScreen = SCREEN_GIRLDETAILS;
 				g_WinManager.push("Girl Details");
 			}
-			else if (Category == Summary_CENTRE)  //centre
+			else
 			{
-				selected_girl = g_Centre.GetGirlByName(0, selectedName);
+				g_CurrentScreen = SCREEN_ARENA;
+				g_WinManager.push("Arena Screen");
+			}
+		}break;
+		case Summary_CENTRE:
+		{
+			selected_girl = g_Centre.GetGirlByName(0, selectedName);
+			if (selected_girl)
+			{
 				g_CurrentScreen = SCREEN_GIRLDETAILS;
 				g_WinManager.push("Girl Details");
 			}
-			else if (Category == Summary_HOUSE)  //House
+			else
 			{
-				selected_girl = g_House.GetGirlByName(0, selectedName);
+				g_CurrentScreen = SCREEN_CENTRE;
+				g_WinManager.push("Centre Screen");
+			}
+		}break;
+		case Summary_HOUSE:
+		{
+			selected_girl = g_House.GetGirlByName(0, selectedName);
+			if (selected_girl)
+			{
 				g_CurrentScreen = SCREEN_GIRLDETAILS;
 				g_WinManager.push("Girl Details");
 			}
-			else if (Category == Summary_FARM)  //Farm
+			else
 			{
-				selected_girl = g_Farm.GetGirlByName(0, selectedName);
+				g_CurrentScreen = SCREEN_HOUSE;
+				g_WinManager.push("Player House");
+			}
+		}break;
+		case Summary_FARM:
+		{
+			selected_girl = g_Farm.GetGirlByName(0, selectedName);
+			if (selected_girl)
+			{
 				g_CurrentScreen = SCREEN_GIRLDETAILS;
 				g_WinManager.push("Girl Details");
 			}
+			else
+			{
+				g_CurrentScreen = SCREEN_FARM;
+				g_WinManager.push("Farm Screen");
+			}
+		}break;
+		case Summary_BROTHELS:
+		default:
+		{
+			g_Building = BUILDING_BROTHEL;
+			if (Item < 0 || Item > g_Brothels.GetNumBrothels()) g_CurrBrothel = 0;
+			else g_CurrBrothel = Item;
+			g_CurrentScreen = SCREEN_GIRLMANAGEMENT;
+			g_WinManager.PopToWindow(&g_BrothelManagement);
+		}break;
 		}
-		return;
 	}
+	return false;
 }
 
 void cScreenTurnSummary::Fill_Items_GIRLS()

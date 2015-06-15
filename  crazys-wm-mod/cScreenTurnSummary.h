@@ -25,15 +25,8 @@
 
 class cScreenTurnSummary : public cInterfaceWindowXML
 {
-public:
-
 private:
-	bool GetName;
-
 	static	bool		ids_set;
-	/*
-	 *	interface/event IDs
-	 */
 	int brothel_id;
 	int category_id;
 	int labelitem_id;
@@ -51,25 +44,14 @@ private:
 public:
 	cScreenTurnSummary()
 	{
-		
-		DirPath dp = DirPath()
-			<< "Resources" << "Interface" << cfg.resolution.resolution() << "TurnSummary.xml";
+		DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "TurnSummary.xml";
 		m_filename = dp.c_str();
 	}
 	~cScreenTurnSummary() {}
 
 	void init();
 	void process();
-	void check_events();
-	bool check_keys();
-
-
-	void more_button();
-	void release_button();
-	void update_details();
-	sGirl* get_selected_girl();
-	void selection_change();
-	void update_image();
+	bool check_events();
 
 	void Fill_Items_GIRLS();
 	void Fill_Items_GANGS();

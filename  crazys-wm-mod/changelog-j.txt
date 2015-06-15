@@ -2170,7 +2170,15 @@ Moved Gallery to its own file cScreenGallery.(h/cpp)
  - Changed the Gallery to use a list instead of buttons for how many images the girl has.
 
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
+Fixed backwards compatibility for JobQkNm codes savegames
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.00
+
+###  Changes 6/15
+Rewrite turn summary goto button to fix problems if nothing is selected
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.01
+
 
 
 
