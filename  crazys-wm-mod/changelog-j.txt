@@ -2178,7 +2178,11 @@ Fixed backwards compatibility for JobQkNm codes savegames
 Rewrite turn summary goto button to fix problems if nothing is selected
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.01
-
+Fixed more Turn Summary bugs and hopefully finally fixed the previous bug.
+Fixed a bug making default images not work.
+Added Yellow as a color choice and used it for Level Up turn summary messages.
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.02
 
 
 

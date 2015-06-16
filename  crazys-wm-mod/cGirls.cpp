@@ -1806,7 +1806,7 @@ void cGirls::LevelUp(sGirl* girl)
 
 	stringstream ss;
 	ss << girl->m_Realname << " levelled up to " << girl->level() << ".";
-	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
+	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_LEVELUP);
 	ss.str("");
 
 	// add traits
@@ -5196,7 +5196,7 @@ void cGirls::UseItems(sGirl* girl)
 			{
 				stringstream cancer;
 				cancer << girl->m_Realname << " has died of cancer from smoking.";
-				girl->m_Events.AddMessage(cancer.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
+				girl->m_Events.AddMessage(cancer.str(), IMGTYPE_PROFILE, EVENT_WARNING);
 				return;
 			}
 		}

@@ -633,6 +633,7 @@ const unsigned int COLOR_BLUE		= 0;
 const unsigned int COLOR_RED		= 1;
 const unsigned int COLOR_DARKBLUE	= 2;
 const unsigned int COLOR_GREEN		= 3;
+const unsigned int COLOR_YELLOW		= 4;	// `J` added
 
 // Event constants oved from cEvents.h
 const int	EVENT_DAYSHIFT		= 0;
@@ -647,6 +648,7 @@ const int	EVENT_GANG			= 8;
 const int	EVENT_BROTHEL		= 9;
 const int	EVENT_NOWORK		= 10;
 const int	EVENT_BACKTOWORK	= 11;
+const int	EVENT_LEVELUP		= 12;	// `J` added
 const int	EVENT_DEBUG			= 99;
 
 

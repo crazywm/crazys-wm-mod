@@ -153,10 +153,12 @@ unsigned char g_ListBoxElementBackgroundR = 0, g_ListBoxElementBackgroundG = 0, 
 unsigned char g_ListBoxS1ElementBackgroundR = 0, g_ListBoxS1ElementBackgroundG = 0, g_ListBoxS1ElementBackgroundB = 0;
 unsigned char g_ListBoxS2ElementBackgroundR, g_ListBoxS2ElementBackgroundG, g_ListBoxS2ElementBackgroundB;
 unsigned char g_ListBoxS3ElementBackgroundR, g_ListBoxS3ElementBackgroundG, g_ListBoxS3ElementBackgroundB;
+unsigned char g_ListBoxS4ElementBackgroundR, g_ListBoxS4ElementBackgroundG, g_ListBoxS4ElementBackgroundB;
 unsigned char g_ListBoxSelectedElementR = 0, g_ListBoxSelectedElementG = 0, g_ListBoxSelectedElementB = 0;
 unsigned char g_ListBoxSelectedS1ElementR = 0, g_ListBoxSelectedS1ElementG = 0, g_ListBoxSelectedS1ElementB = 0;
 unsigned char g_ListBoxSelectedS2ElementR = 0, g_ListBoxSelectedS2ElementG = 0, g_ListBoxSelectedS2ElementB = 0;
 unsigned char g_ListBoxSelectedS3ElementR = 0, g_ListBoxSelectedS3ElementG = 0, g_ListBoxSelectedS3ElementB = 0;
+unsigned char g_ListBoxSelectedS4ElementR = 0, g_ListBoxSelectedS4ElementG = 0, g_ListBoxSelectedS4ElementB = 0;
 unsigned char g_ListBoxElementBorderR = 0, g_ListBoxElementBorderG = 0, g_ListBoxElementBorderB = 0;
 unsigned char g_ListBoxElementBorderHR = 0, g_ListBoxElementBorderHG = 0, g_ListBoxElementBorderHB = 0;
 unsigned char g_ListBoxTextR = 0, g_ListBoxTextG = 0, g_ListBoxTextB = 0;
@@ -171,6 +173,7 @@ unsigned char g_MessageBoxBackground0R = 0, g_MessageBoxBackground0G = 0, g_Mess
 unsigned char g_MessageBoxBackground1R = 0, g_MessageBoxBackground1G = 0, g_MessageBoxBackground1B = 0;
 unsigned char g_MessageBoxBackground2R = 0, g_MessageBoxBackground2G = 0, g_MessageBoxBackground2B = 0;
 unsigned char g_MessageBoxBackground3R = 0, g_MessageBoxBackground3G = 0, g_MessageBoxBackground3B = 0;
+unsigned char g_MessageBoxBackground4R = 0, g_MessageBoxBackground4G = 0, g_MessageBoxBackground4B = 0;
 unsigned char g_MessageBoxTextR = 0, g_MessageBoxTextG = 0, g_MessageBoxTextB = 0;
 
 void FreeInterface()
@@ -326,10 +329,12 @@ void LoadInterface()
 				else if (name == "ListBoxSpecialElement1")				{ g_ListBoxS1ElementBackgroundR = r; g_ListBoxS1ElementBackgroundG = g; g_ListBoxS1ElementBackgroundB = b; }
 				else if (name == "ListBoxSpecialElement2")				{ g_ListBoxS2ElementBackgroundR = r; g_ListBoxS2ElementBackgroundG = g; g_ListBoxS2ElementBackgroundB = b; }
 				else if (name == "ListBoxSpecialElement3")				{ g_ListBoxS3ElementBackgroundR = r; g_ListBoxS3ElementBackgroundG = g; g_ListBoxS3ElementBackgroundB = b; }
+				else if (name == "ListBoxSpecialElement4")				{ g_ListBoxS4ElementBackgroundR = r; g_ListBoxS4ElementBackgroundG = g; g_ListBoxS4ElementBackgroundB = b; }
 				else if (name == "ListBoxSelectedElement")				{ g_ListBoxSelectedElementR = r; g_ListBoxSelectedElementG = g; g_ListBoxSelectedElementB = b; }
 				else if (name == "ListBoxSelectedSpecialElement1")		{ g_ListBoxSelectedS1ElementR = r; g_ListBoxSelectedS1ElementG = g; g_ListBoxSelectedS1ElementB = b; }
 				else if (name == "ListBoxSelectedSpecialElement2")		{ g_ListBoxSelectedS2ElementR = r; g_ListBoxSelectedS2ElementG = g; g_ListBoxSelectedS2ElementB = b; }
 				else if (name == "ListBoxSelectedSpecialElement3")		{ g_ListBoxSelectedS3ElementR = r; g_ListBoxSelectedS3ElementG = g; g_ListBoxSelectedS3ElementB = b; }
+				else if (name == "ListBoxSelectedSpecialElement4")		{ g_ListBoxSelectedS4ElementR = r; g_ListBoxSelectedS4ElementG = g; g_ListBoxSelectedS4ElementB = b; }
 				else if (name == "ListBoxElementBorderTopLeft")			{ g_ListBoxElementBorderR = r; g_ListBoxElementBorderG = g; g_ListBoxElementBorderB = b; }
 				else if (name == "ListBoxElementBorderBottomRight")		{ g_ListBoxElementBorderHR = r; g_ListBoxElementBorderHG = g; g_ListBoxElementBorderHB = b; }
 				else if (name == "ListBoxFont")							{ g_ListBoxTextR = r; g_ListBoxTextG = g; g_ListBoxTextB = b; }
@@ -342,6 +347,7 @@ void LoadInterface()
 				else if (name == "MessageBoxBackground1")				{ g_MessageBoxBackground1R = r; g_MessageBoxBackground1G = g; g_MessageBoxBackground1B = b; }
 				else if (name == "MessageBoxBackground2")				{ g_MessageBoxBackground2R = r; g_MessageBoxBackground2G = g; g_MessageBoxBackground2B = b; }
 				else if (name == "MessageBoxBackground3")				{ g_MessageBoxBackground3R = r; g_MessageBoxBackground3G = g; g_MessageBoxBackground3B = b; }
+				else if (name == "MessageBoxBackground4")				{ g_MessageBoxBackground4R = r; g_MessageBoxBackground4G = g; g_MessageBoxBackground4B = b; }
 				else if (name == "MessageBoxText")						{ g_MessageBoxTextR = r; g_MessageBoxTextG = g; g_MessageBoxTextB = b; }
 				else if (name == "CheckboxBorder")						{ g_CheckBoxBorderR = r; g_CheckBoxBorderG = g; g_CheckBoxBorderB = b; }
 				else if (name == "CheckboxBackground")					{ g_CheckBoxBackgroundR = r; g_CheckBoxBackgroundG = g; g_CheckBoxBackgroundB = b; }
@@ -412,10 +418,12 @@ void LoadInterface()
 		g_ListBoxS1ElementBackgroundR = 200;  g_ListBoxS1ElementBackgroundG = 30;   g_ListBoxS1ElementBackgroundB = 30;
 		g_ListBoxS2ElementBackgroundR = 80;   g_ListBoxS2ElementBackgroundG = 80;   g_ListBoxS2ElementBackgroundB = 250;
 		g_ListBoxS3ElementBackgroundR = 30;   g_ListBoxS3ElementBackgroundG = 190;  g_ListBoxS3ElementBackgroundB = 30;
+		g_ListBoxS4ElementBackgroundR = 190;  g_ListBoxS4ElementBackgroundG = 190;  g_ListBoxS4ElementBackgroundB = 0;
 		g_ListBoxSelectedElementR = 187;      g_ListBoxSelectedElementG = 190;      g_ListBoxSelectedElementB = 224;
 		g_ListBoxSelectedS1ElementR = 255;    g_ListBoxSelectedS1ElementG = 167;    g_ListBoxSelectedS1ElementB = 180;
 		g_ListBoxSelectedS2ElementR = 187;    g_ListBoxSelectedS2ElementG = 190;    g_ListBoxSelectedS2ElementB = 224;
 		g_ListBoxSelectedS3ElementR = 0;      g_ListBoxSelectedS3ElementG = 250;    g_ListBoxSelectedS3ElementB = 0;
+		g_ListBoxSelectedS4ElementR = 250;    g_ListBoxSelectedS4ElementG = 250;    g_ListBoxSelectedS4ElementB = 250;
 		g_ListBoxElementBorderR = 79;         g_ListBoxElementBorderG = 79;         g_ListBoxElementBorderB = 111;
 		g_ListBoxElementBorderHR = 159;       g_ListBoxElementBorderHG = 175;       g_ListBoxElementBorderHB = 255;
 		g_ListBoxTextR = 0;                   g_ListBoxTextG = 0;                   g_ListBoxTextB = 0;
@@ -428,6 +436,7 @@ void LoadInterface()
 		g_MessageBoxBackground1R = 200;       g_MessageBoxBackground1G = 100;       g_MessageBoxBackground1B = 150;
 		g_MessageBoxBackground2R = 100;       g_MessageBoxBackground2G = 200;       g_MessageBoxBackground2B = 150;
 		g_MessageBoxBackground3R = 100;       g_MessageBoxBackground3G = 100;       g_MessageBoxBackground3B = 200;
+		g_MessageBoxBackground4R = 190;       g_MessageBoxBackground4G = 190;       g_MessageBoxBackground4B = 0;
 		g_MessageBoxTextR = 0;                g_MessageBoxTextG = 0;                g_MessageBoxTextB = 0;
 		g_CheckBoxBorderR = 0;                g_CheckBoxBorderG = 0;                g_CheckBoxBorderB = 0;
 		g_CheckBoxBackgroundR = 180;          g_CheckBoxBackgroundG = 180;          g_CheckBoxBackgroundB = 180;
@@ -631,48 +640,6 @@ void LoadInterface()
 	g_Preparing.AddTextItem(g_interfaceid.STATIC_STATIC, 65, 110, 180, 30, "Please", 25, true, false);
 	g_Preparing.AddTextItem(g_interfaceid.STATIC_STATIC, 70, 155, 180, 30, "Wait", 25, true, false);
 
-#if 0
-	// gallery screen
-	g_LogFile.write("Loading Gallery Screen");
-	g_Gallery.CreateWindow(16, 16, 768, 576, 1);
-	g_Gallery.AddButton("Anal", g_interfaceid.BUTTON_GALLERYANAL, 600, 8, 160, 32, true);
-	g_Gallery.AddButton("BDSM", g_interfaceid.BUTTON_GALLERYBDSM, 600, 48, 160, 32, true);
-	g_Gallery.AddButton("Sex", g_interfaceid.BUTTON_GALLERYSEX, 600, 88, 160, 32, true);
-	g_Gallery.AddButton("Beast", g_interfaceid.BUTTON_GALLERYBEAST, 600, 128, 160, 32, true);
-	g_Gallery.AddButton("Group", g_interfaceid.BUTTON_GALLERYGROUP, 600, 168, 160, 32, true);
-	g_Gallery.AddButton("Lesbian", g_interfaceid.BUTTON_GALLERYLESBIAN, 600, 208, 160, 32, true);
-	g_Gallery.AddButton("Pregnant", g_interfaceid.BUTTON_GALLERYPREGNANT, 600, 248, 160, 32, true);
-	g_Gallery.AddButton("Death", g_interfaceid.BUTTON_GALLERYDEATH, 600, 288, 160, 32, true);
-	g_Gallery.AddButton("Profile", g_interfaceid.BUTTON_GALLERYPROFILE, 600, 328, 160, 32, true);
-	g_Gallery.AddButton("Combat", g_interfaceid.BUTTON_GALLERYCOMBAT, 600, 368, 160, 32, true);
-	g_Gallery.AddButton("Oral", g_interfaceid.BUTTON_GALLERYORAL, 600, 408, 160, 32, true);
-	g_Gallery.AddButton("Back", g_interfaceid.BUTTON_GALLERYBACK, 600, 448, 160, 32, true);
-	g_Gallery.AddButton("Prev", g_interfaceid.BUTTON_GALLERYPREV, 600, 488, 72, 32, true);
-	g_Gallery.AddButton("Next", g_interfaceid.BUTTON_GALLERYNEXT, 688, 488, 72, 32, true);
-	g_Gallery.AddImage(g_interfaceid.IMAGE_GALLERYIMAGE, "", 8, 8, 584, 560);
-	g_Gallery.AddTextItem(g_interfaceid.TEXT_GALLERYTYPE, 600, 528, 160, 32, "", 16, true, false);
-	g_Gallery.AddButton("Next", g_interfaceid.BUTTON_NEXTGALLERY, 688, 528, 72, 32, true);
-
-	// gallery 2 screen
-	g_LogFile.write("Loading Gallery 2 Screen");
-	g_Gallery2.CreateWindow(16, 16, 768, 576, 1);
-	g_Gallery2.AddButton("Ecchi", g_interfaceid.BUTTON_GALLERYECCHI, 600, 8, 160, 32, true);
-	g_Gallery2.AddButton("Striptease", g_interfaceid.BUTTON_GALLERYSTRIP, 600, 48, 160, 32, true);
-	g_Gallery2.AddButton("Maid", g_interfaceid.BUTTON_GALLERYMAID, 600, 88, 160, 32, true);
-	g_Gallery2.AddButton("Singer", g_interfaceid.BUTTON_GALLERYSING, 600, 128, 160, 32, true);
-	g_Gallery2.AddButton("Waitress", g_interfaceid.BUTTON_GALLERYWAIT, 600, 168, 160, 32, true);
-	g_Gallery2.AddButton("Dealer", g_interfaceid.BUTTON_GALLERYCARD, 600, 208, 160, 32, true);
-	g_Gallery2.AddButton("Bunny", g_interfaceid.BUTTON_GALLERYBUNNY, 600, 248, 160, 32, true);
-	g_Gallery2.AddButton("Nude", g_interfaceid.BUTTON_GALLERYNUDE, 600, 288, 160, 32, true);
-	g_Gallery2.AddButton("Mast", g_interfaceid.BUTTON_GALLERYMAST, 600, 328, 160, 32, true);
-	g_Gallery2.AddButton("Titfuck", g_interfaceid.BUTTON_GALLERYTITTY, 600, 368, 160, 32, true);
-	g_Gallery2.AddButton("", g_interfaceid.BUTTON_WHAT, 600, 368, 160, 32, true);
-	g_Gallery2.AddButton("Back", g_interfaceid.BUTTON_GALLERYBACK, 600, 448, 160, 32, true);
-	g_Gallery2.AddButton("Prev", g_interfaceid.BUTTON_GALLERYPREV, 600, 488, 72, 32, true);
-	g_Gallery2.AddButton("Next", g_interfaceid.BUTTON_GALLERYNEXT, 688, 488, 72, 32, true);
-	g_Gallery2.AddImage(g_interfaceid.IMAGE_GALLERYIMAGE, "", 8, 8, 584, 560);
-	g_Gallery2.AddTextItem(g_interfaceid.TEXT_GALLERYTYPE, 600, 528, 160, 32, "", 16, true, false);
-#endif
 	// `J` Bookmark - Loading the screens
 
 	// Main Menu

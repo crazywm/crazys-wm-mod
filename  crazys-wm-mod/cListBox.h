@@ -167,11 +167,13 @@ public:
 	SDL_Surface* m_RedBackground;	// the background used for important things
 	SDL_Surface* m_GreenBackground;	// the background used for good news
 	SDL_Surface* m_DarkBlueBackground;	// the background used for important things
+	SDL_Surface* m_YellowBackground;	// the background used for level up
 	SDL_Surface* m_Border;
 
 	SDL_Surface* m_SelectedRedBackground;	// the background used for selected important things
 	SDL_Surface* m_SelectedDarkBlueBackground;	// the background used for selected important things
 	SDL_Surface* m_SelectedGreenBackground;	// `J` added green background used for good news
+	SDL_Surface* m_SelectedYellowBackground;	// `J` added green background used for good news
 
 	SDL_Surface* m_ElementBackground;	// the background and border for the list elements
 	SDL_Surface* m_ElementSelectedBackground;	// the background and border for the list elements

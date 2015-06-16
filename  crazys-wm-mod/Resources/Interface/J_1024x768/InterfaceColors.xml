@@ -16,10 +16,12 @@
 <Color Name = "ListBoxSpecialElement1"               R="200" G="30"  B="30"  OldTXT="LIST BOX SPECIAL ELEMENT 1 (RED) BACKGROUND" />
 <Color Name = "ListBoxSpecialElement2"               R="80"  G="80"  B="250" OldTXT="LIST BOX SPECIAL ELEMENT 2 (DARK BLUE) BACKGROUND" />
 <Color Name = "ListBoxSpecialElement3"               R="30"  G="190" B="30"  OldTXT="LIST BOX SPECIAL ELEMENT 3 (GREEN) BACKGROUND" />
+<Color Name = "ListBoxSpecialElement4"               R="190" G="190" B="0"   OldTXT="LIST BOX SPECIAL ELEMENT 4 (YELLOW) BACKGROUND" />
 <Color Name = "ListBoxSelectedElement"               R="187" G="190" B="224" OldTXT="LIST BOX SELECTED ELEMENT" />
 <Color Name = "ListBoxSelectedSpecialElement1"       R="255" G="167" B="180" OldTXT="LIST BOX SELECTED SPECIAL ELEMENT 1 (RED)" />
 <Color Name = "ListBoxSelectedSpecialElement2"       R="187" G="190" B="224" OldTXT="LIST BOX SELECTED SPECIAL ELEMENT 2 (DARK BLUE)" />
 <Color Name = "ListBoxSelectedSpecialElement3"       R="0"   G="250" B="0"   OldTXT="LIST BOX SELECTED SPECIAL ELEMENT 3 (GREEN)" />
+<Color Name = "ListBoxSelectedSpecialElement4"       R="250" G="250" B="0"   OldTXT="LIST BOX SELECTED SPECIAL ELEMENT 4 (YELLOW)" />
 <Color Name = "ListBoxElementBorderTopLeft"          R="79"  G="79"  B="111" OldTXT="LIST BOX ELEMENT BORDER: TOP & LEFT" />
 <Color Name = "ListBoxElementBorderBottomRight"      R="159" G="175" B="255" OldTXT="LIST BOX ELEMENT BORDER: BOTTOM & RIGHT" />
 <Color Name = "ListBoxFont"                          R="0"   G="0"   B="0"   OldTXT="LIST BOX FONT" />
@@ -32,6 +34,7 @@
 <Color Name = "MessageBoxBackground1"                R="200" G="30"  B="30"  OldTXT="MESSAGE BOX BACKGROUND 1 (RED) BACKGROUND" />
 <Color Name = "MessageBoxBackground2"                R="80"  G="80"  B="250" OldTXT="MESSAGE BOX BACKGROUND 2 (DARK BLUE) BACKGROUND" />
 <Color Name = "MessageBoxBackground3"                R="30"  G="190" B="30"  OldTXT="MESSAGE BOX BACKGROUND 3 (GREEN) BACKGROUND" />
+<Color Name = "MessageBoxBackground4"                R="190" G="190" B="0"   OldTXT="MESSAGE BOX BACKGROUND 4 (YELLOW) BACKGROUND" />
 <Color Name = "MessageBoxText"                       R="0"   G="0"   B="0"   OldTXT="MESSAGE BOX TEXT" />
 <Color Name = "CheckboxBorder"                       R="0"   G="0"   B="0"   OldTXT="CHECKBOX BORDER" />
 <Color Name = "CheckboxBackground"                   R="180" G="180" B="180" OldTXT="CHECKBOX BACKGROUND" />

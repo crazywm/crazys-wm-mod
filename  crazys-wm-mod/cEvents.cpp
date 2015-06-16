@@ -54,6 +54,9 @@ string CEvent::TitleText()
 	case EVENT_GOODNEWS:
 		return "!!!GOODNEWS!!!";
 		break;
+	case EVENT_LEVELUP:
+		return "!!!LEVEL UP!!!";
+		break;
 	case EVENT_SUMMARY:
 		return "Summary";
 		break;
@@ -109,6 +112,9 @@ unsigned int CEvent::ListboxColour()
 	case EVENT_GOODNEWS:
 		return COLOR_GREEN;
 		break;
+	case EVENT_LEVELUP:
+		return COLOR_YELLOW;
+		break;
 		//case EVENT_SUMMARY:
 	//	return COLOR_BLUE;
 	//	break;
@@ -138,14 +144,14 @@ unsigned int CEvent::ListboxColour()
 
 bool CEvent::IsGoodNews()
 {
-	if (m_Event == EVENT_GOODNEWS)
+	if (m_Event == EVENT_GOODNEWS || m_Event == EVENT_LEVELUP)
 		return true;
 	return false;
 }
 
  bool CEvent::IsUrgent()
 {
-	 if (m_Event == EVENT_DANGER || m_Event == EVENT_WARNING || m_Event == EVENT_NOWORK || m_Event == EVENT_GOODNEWS)
+	if (m_Event == EVENT_DANGER || m_Event == EVENT_WARNING || m_Event == EVENT_NOWORK || m_Event == EVENT_GOODNEWS || m_Event == EVENT_LEVELUP)
 		return true;
 	return false;
 }

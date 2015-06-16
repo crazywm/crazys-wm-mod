@@ -179,30 +179,25 @@ void cScreenTurnSummary::process()
 		ClearListBox(event_id);
 		/* */if (Category == Summary_GANGS)		Fill_Events_GANGS();
 		else if (Category == Summary_BROTHELS)	Fill_Events_BROTHELS();
-		else if (selected_girl || GetSelectedTextFromList(item_id) != "")
+		else if (GetSelectedTextFromList(item_id) == "") selected_girl = 0;
+		else
 		{
-			if (selected_girl->m_Realname != GetSelectedTextFromList(item_id)
-				|| (Category == Summary_DUNGEON	&& selected_girl->m_DayJob != JOB_INDUNGEON)
-				|| (Category == Summary_STUDIO	&& !selected_girl->m_InStudio)
-				|| (Category == Summary_ARENA	&& !selected_girl->m_InArena)
-				|| (Category == Summary_CENTRE	&& !selected_girl->m_InCentre)
-				|| (Category == Summary_CLINIC	&& !selected_girl->m_InClinic)
-				|| (Category == Summary_FARM	&& !selected_girl->m_InFarm)
-				|| (Category == Summary_HOUSE	&& !selected_girl->m_InHouse))
+			switch (Category)
 			{
-				if (Category == Summary_DUNGEON)
-				{
-					if (g_Brothels.GetDungeon()->GetGirlByName(GetSelectedTextFromList(item_id)))
+			case Summary_DUNGEON:
+				if (g_Brothels.GetDungeon()->GetGirlByName(GetSelectedTextFromList(item_id)))
 					selected_girl = g_Brothels.GetDungeon()->GetGirlByName(GetSelectedTextFromList(item_id))->m_Girl;
-				}
-				else if (Category == Summary_STUDIO)	selected_girl = g_Studios.GetGirlByName(0, GetSelectedTextFromList(item_id));
-				else if (Category == Summary_ARENA)		selected_girl = g_Arena.GetGirlByName(0, GetSelectedTextFromList(item_id));
-				else if (Category == Summary_CENTRE)	selected_girl = g_Centre.GetGirlByName(0, GetSelectedTextFromList(item_id));
-				else if (Category == Summary_CLINIC)	selected_girl = g_Clinic.GetGirlByName(0, GetSelectedTextFromList(item_id));
-				else if (Category == Summary_FARM)		selected_girl = g_Farm.GetGirlByName(0, GetSelectedTextFromList(item_id));
-				else if (Category == Summary_HOUSE)		selected_girl = g_House.GetGirlByName(0, GetSelectedTextFromList(item_id));
-				else { Category = Summary_GIRLS;		selected_girl = g_Brothels.GetGirlByName(g_CurrBrothel, GetSelectedTextFromList(item_id)); }
+				break;
+			case Summary_STUDIO:	selected_girl = g_Studios.GetGirlByName(0, GetSelectedTextFromList(item_id));				break;
+			case Summary_ARENA:		selected_girl = g_Arena.GetGirlByName(0, GetSelectedTextFromList(item_id));					break;
+			case Summary_CENTRE:	selected_girl = g_Centre.GetGirlByName(0, GetSelectedTextFromList(item_id));				break;
+			case Summary_CLINIC:	selected_girl = g_Clinic.GetGirlByName(0, GetSelectedTextFromList(item_id));				break;
+			case Summary_FARM:		selected_girl = g_Farm.GetGirlByName(0, GetSelectedTextFromList(item_id));					break;
+			case Summary_HOUSE:		selected_girl = g_House.GetGirlByName(0, GetSelectedTextFromList(item_id));					break;
+			case Summary_GIRLS:		selected_girl = g_Brothels.GetGirlByName(g_CurrBrothel, GetSelectedTextFromList(item_id));	break;
+			default:				selected_girl = 0;
 			}
+
 			Fill_Events(selected_girl);
 		}
 
@@ -242,6 +237,10 @@ void cScreenTurnSummary::process()
 		Event_Change = false;
 	}
 
+	string brothel = gettext("Current Brothel: ");
+	brothel += g_Brothels.GetName(g_CurrBrothel);
+	EditTextItem(brothel, brothel_id);
+
 	// Draw the image
 	if (Category == Summary_BROTHELS)
 	{
@@ -261,6 +260,12 @@ void cScreenTurnSummary::process()
 			Image = selected_girl->m_newRandomFixed;
 		}
 		PrepareImage(image_id, selected_girl, Image_Type, random, Image);
+	}
+	else if (Image_Change)
+	{
+		m_Images[image_id]->m_Image = new CSurface(ImagePath("blank.png"));
+		m_Images[image_id]->m_AnimatedImage = 0;
+		m_Images[image_id]->m_Image->m_Message = "";
 	}
 
 }
@@ -382,14 +387,14 @@ bool cScreenTurnSummary::check_events()
 	{
 		g_CurrBrothel++;
 		if (g_CurrBrothel >= g_Brothels.GetNumBrothels()) g_CurrBrothel = 0;
-		Item_Change = true;
+		Category_Change = true;
 		return true;
 	}
 	if (g_InterfaceEvents.CheckButton(prev_id))
 	{
 		g_CurrBrothel--;
 		if (g_CurrBrothel < 0) g_CurrBrothel = g_Brothels.GetNumBrothels() - 1;
-		Item_Change = true;
+		Category_Change = true;
 		return true;
 	}
 

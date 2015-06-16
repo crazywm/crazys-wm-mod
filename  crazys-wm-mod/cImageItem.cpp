@@ -610,11 +610,11 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 	if (!girl)	return;	// no girl, no images
 	string girlName = girl->m_Name;
 
-	DirPath imagedirCc = DirPath(cfg.folders.characters().c_str()) << girlName;
-	DirPath imagedirCo = DirPath() << "Resources" << "Characters" << girlName;
-	DirPath imagedirDc = DirPath(cfg.folders.defaultimageloc().c_str());
-	DirPath imagedirDo = DirPath() << "Resources" << "DefaultImages";
-	DirPath usedir = "";
+	int dir = 0; DirPath usedir = "";
+	DirPath imagedirCc = DirPath(cfg.folders.characters().c_str()) << girlName;	// usedir = 1
+	DirPath imagedirCo = DirPath() << "Resources" << "Characters" << girlName;	// usedir = 2
+	DirPath imagedirDc = DirPath(cfg.folders.defaultimageloc().c_str());		// usedir = -1
+	DirPath imagedirDo = DirPath() << "Resources" << "DefaultImages";			// usedir = -2
 	FileList tiCc(imagedirCc, "*.*");
 	FileList tiCo(imagedirCo, "*.*");
 	FileList tiDc(imagedirDc, "*.*");
@@ -649,13 +649,14 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 	string filename = "";
 	string ext = "";
 
+	
 	bool imagechosen = false;
 	do
 	{
 		int tryimagetype = TryImageType(imagetype, tries);
 
 		// choose an image folder
-		usedir = "";
+		dir = 0; usedir = "";
 		string checkfor = pic_types[tryimagetype] + "*";
 		if (tryimagetype == IMGTYPE_PREGNANT) checkfor = "pregnant*.*";
 
@@ -670,9 +671,13 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 					testall.add(t.c_str());
 				}
 			}
-			if (testall.size() > 0) usedir = imagedirCc;
+			if (testall.size() > 0)
+			{
+				usedir = imagedirCc;
+				dir = 1;
+			}
 		}
-		if (usedir == "" && totalimagesCo > 0)	// if config is not found, check for images in the original folder
+		if (dir == 0 && totalimagesCo > 0)	// if config is not found, check for images in the original folder
 		{
 			FileList testall(imagedirCo, checkfor.c_str());
 			if (tryimagetype == IMGTYPE_PREGNANT)
@@ -683,16 +688,20 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 					testall.add(t.c_str());
 				}
 			}
-			if (testall.size() > 0) usedir = imagedirCo;
+			if (testall.size() > 0)
+			{
+				usedir = imagedirCo;
+				dir = 2;
+			}
 		}
-		if (usedir == "" && gallery)	// gallery stops here if there are no images
+		if (dir == 0 && gallery)	// gallery stops here if there are no images
 		{
 			m_Images[id]->m_Image->m_Message = "No images found.";
 			break;
 		}
 
 		// if neither character folder has what we are looking for try the defaults
-		if (totalimagesDc > 0 && usedir == "" && tries < 10)
+		if (totalimagesDc > 0 && dir == 0 && tries < 10)
 		{
 			FileList testall(imagedirDc, checkfor.c_str());
 			if (tryimagetype == IMGTYPE_PREGNANT)
@@ -703,9 +712,13 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 					testall.add(t.c_str());
 				}
 			}
-			if (testall.size() > 0) usedir = imagedirDc;
+			if (testall.size() > 0)
+			{
+				usedir = imagedirDc;
+				dir = -1;
+			}
 		}
-		if (totalimagesDo > 0 && usedir == "" && tries < 10)
+		if (totalimagesDo > 0 && dir == 0 && tries < 10)
 		{
 			FileList testall(imagedirDo, checkfor.c_str());
 			if (tryimagetype == IMGTYPE_PREGNANT)
@@ -716,9 +729,13 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 					testall.add(t.c_str());
 				}
 			}
-			if (testall.size() > 0) usedir = imagedirDo;
+			if (testall.size() > 0)
+			{
+				usedir = imagedirDo;
+				dir = -2;
+			}
 		}
-		if (usedir == "")
+		if (dir == 0)
 		{
 			m_Images[id]->m_Image->m_Message = "No images found.";
 			continue;

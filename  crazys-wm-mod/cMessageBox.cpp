@@ -29,6 +29,7 @@ extern unsigned char g_MessageBoxBackground0R, g_MessageBoxBackground0G, g_Messa
 extern unsigned char g_MessageBoxBackground1R, g_MessageBoxBackground1G, g_MessageBoxBackground1B;
 extern unsigned char g_MessageBoxBackground2R, g_MessageBoxBackground2G, g_MessageBoxBackground2B;
 extern unsigned char g_MessageBoxBackground3R, g_MessageBoxBackground3G, g_MessageBoxBackground3B;
+extern unsigned char g_MessageBoxBackground4R, g_MessageBoxBackground4G, g_MessageBoxBackground4B;
 extern unsigned char g_MessageBoxTextR, g_MessageBoxTextG, g_MessageBoxTextB;
 
 cMessageBox::~cMessageBox()
@@ -87,6 +88,9 @@ void cMessageBox::CreateWindow(int x, int y, int width, int height, int BorderSi
 
 	m_Background[3] = SDL_CreateRGBSurface(SDL_SWSURFACE, width-(BorderSize*2), height-(BorderSize*2), 32, 0,0,0,0);
 	SDL_FillRect(m_Background[3],0,SDL_MapRGB(m_Background[3]->format,g_MessageBoxBackground3R,g_MessageBoxBackground3G,g_MessageBoxBackground3B));
+
+	m_Background[4] = SDL_CreateRGBSurface(SDL_SWSURFACE, width - (BorderSize * 2), height - (BorderSize * 2), 32, 0, 0, 0, 0);
+	SDL_FillRect(m_Background[4], 0, SDL_MapRGB(m_Background[4]->format, g_MessageBoxBackground4R, g_MessageBoxBackground4G, g_MessageBoxBackground4B));
 
 	ChangeFontSize(FontSize);
 }
