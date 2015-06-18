@@ -23,6 +23,7 @@
 #include <iostream>
 #include <fstream>
 using namespace std;
+#include "SDL_anigif.h"
 
 class CSurface;
 
@@ -37,9 +38,17 @@ public:
 
 	void Stop() {m_LastTime=0;}
 
-	bool DrawFrame(int x, int y, int width, int height, unsigned int currentTime);	// Updates animation according to speed, and then draws it on the screen
-	void SetData(int xPos, int yPos, int numFrames, int speed, int width, int height, CSurface* surface);
-	void UpdateSprite(SDL_Rect& rect, int width, int height);
+	bool DrawFrame(int x, int y, int width, int height, unsigned int currentTime);		// Updates animation according to speed, and then draws it on the screen
+	bool DrawGifFrame(int x, int y, int width, int height, unsigned int currentTime);	// Updates animation according to speed, and then draws it on the screen
+	void SetData(int xPos, int yPos, int numFrames, int speed, int width, int height, CSurface* surface, bool gif = false);
+	void SetGifData(int xPos, int yPos, int numFrames, AG_Frame* agf, CSurface* surface);
+	void UpdateSprite(SDL_Rect& rect, int width, int height, bool gif = false);
+	bool m_Gif;
+
+	AG_Frame* getAFrames()			{ return m_AFrames; }
+	void setAFrames(AG_Frame* af)	{ m_AFrames = af; }
+	int getCurrentFrame()			{ return m_CurrentFrame; }
+	void setCurrentFrame(int cf)	{ m_CurrentFrame = cf; }
 
 private:
 	bool m_FrameDone;
@@ -57,6 +66,8 @@ private:
 	CSurface* m_Surface;			// pointer to the image where all the sprites are kept
 	SDL_Surface* m_SpriteSurface;	// pointer to the image where the current sprite is kept
 	SDL_Rect m_Frames;				// Holds the data for ALL frames, since all frames have same width/height
+	AG_Frame* m_AFrames;			// gif frames
+
 };
 
 // Manages a file with multiple animations
@@ -68,9 +79,7 @@ public:
 
 	void Free();
 
-	bool LoadAnimations(string imgFilename, string animationData);
 	bool Draw(int x, int y, int width, int height, unsigned int currentTime);
-	void SetAnimation(int animation) {m_CurrAnimation = animation;}
 
 private:
 	int m_CurrAnimation;

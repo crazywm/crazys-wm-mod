@@ -21,11 +21,13 @@
 #include "CGraphics.h"
 #include "CResourceManager.h"
 #include <SDL_image.h>
+#include <algorithm>
 
 extern CLog g_LogFile;
 extern CGraphics g_Graphics;
 extern CResourceManager rmanager;
 //extern sCachedSurfaces cache;
+static SDL_Surface* gSaveSurface = NULL;
 
 CSurface::CSurface()
 {
@@ -184,6 +186,7 @@ bool CSurface::ResizeSprite(SDL_Surface* image, SDL_Rect* clip, bool maintainRat
 	double scaleX, scaleY;
 	if (m_SpriteImage) SDL_FreeSurface(m_SpriteImage);		// free old image
 	m_SpriteImage = 0;
+	
 
 	if (maintainRatio == true)
 	{
@@ -336,6 +339,53 @@ bool CSurface::DrawSurface(int x, int y, SDL_Surface* destination, SDL_Rect* cli
 		g_LogFile.ss() << "Error Blitting surface (" << m_Filename << ") - " << SDL_GetError(); g_LogFile.ssend();
 		return false;
 	}
+
+	return true;
+}
+
+bool CSurface::DrawGifSurface(int x, int y, AG_Frame* agframes, int currentframe, SDL_Surface* destination, SDL_Rect* clip, bool resize, bool maintainRatio)
+{
+	double scaleX = 0;	double scaleY = 0;
+
+	gSaveSurface = agframes[0].surface;
+	agframes->delay = agframes[currentframe].delay;
+
+	SDL_Rect u = { 
+		clip->x + agframes[currentframe].x,
+		clip->y + agframes[currentframe].y,
+		agframes[currentframe].surface->w, 
+		agframes[currentframe].surface->h };
+	SDL_Rect f = u;
+
+	// If GIF disposal mode requires background paint or if frame zero, do it.
+	if (agframes[currentframe].disposal >= AG_DISPOSE_RESTORE_BACKGROUND || currentframe == 0)
+	{
+		SDL_Rect l = { clip->x + agframes[currentframe].x, clip->y + agframes[currentframe].y, agframes[currentframe].surface->w, agframes[currentframe].surface->h };
+		if (agframes[currentframe].disposal == AG_DISPOSE_RESTORE_PREVIOUS && gSaveSurface)
+			SDL_BlitSurface(gSaveSurface, &l, destination, &l);
+		else
+			SDL_BlitSurface(m_Surface, &l, destination, &l);
+
+		// Set update rectangle to smallest rectangle that bounds both last and frame rectangles.
+
+		clip->x = min(l.x, f.x);
+		clip->w = max(l.x + l.w, f.x + f.w) - clip->x;
+		clip->y = min(l.y, f.y);
+		clip->h = max(l.y + l.h, f.y + f.h) - clip->y;
+	}
+	// Save current background in frame rectangle if GIF disposal mode 3.
+	if (agframes[currentframe].disposal == AG_DISPOSE_RESTORE_PREVIOUS && gSaveSurface)
+		SDL_BlitSurface(destination, &f, gSaveSurface, &f);
+
+	// Draw the current frame using the frame rectangle.
+	SDL_BlitSurface(agframes[currentframe].surface, NULL, destination, &f);
+
+	// Update the display using the update rectangle.
+	SDL_UpdateRects(destination, 1, &u);
+
+
+
+
 
 	return true;
 }

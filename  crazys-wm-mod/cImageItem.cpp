@@ -92,14 +92,10 @@ cImageItem::cImageItem()
 }
 cImageItem::~cImageItem()
 {
-	if (m_Next)		delete m_Next;
-	m_Next = 0;
-	if (m_Image)	delete m_Image;
-	m_Image = 0;
-	if (m_Surface)	SDL_FreeSurface(m_Surface);
-	m_Surface = 0;
-	if (m_AnimatedImage)	delete m_AnimatedImage;
-	m_AnimatedImage = 0;
+	if (m_Next)				delete m_Next;					m_Next = 0;
+	if (m_Image)			delete m_Image;					m_Image = 0;
+	if (m_Surface)			SDL_FreeSurface(m_Surface);		m_Surface = 0;
+	if (m_AnimatedImage)	delete m_AnimatedImage;			m_AnimatedImage = 0;
 }
 
 /* `J` image tree for each image type
@@ -808,9 +804,31 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 		}
 		else if (ext == "gif")
 		{
-			// temp code to just get it loaded
-			image = new CSurface(file);
-			imagechosen = true;
+ 			const char* n = file.c_str();
+			int frames = AG_LoadGIF(n, NULL, 0);
+			if (frames)
+			{
+				cImage* newImage = new cImage();
+				newImage->m_Surface = new CSurface();
+				newImage->m_Surface->LoadImage(file);
+				newImage->m_AniSurface = new cAnimatedSurface();
+
+				AG_Frame* gpAG = new AG_Frame[frames];
+				AG_LoadGIF(n, gpAG, frames);
+				AG_ConvertSurfacesToDisplayFormat(gpAG, frames);
+				aimage->SetGifData(0, 0, frames, gpAG, newImage->m_Surface);
+
+				m_Images[id]->m_Image = newImage->m_Surface;
+				m_Images[id]->m_Image->m_Message = file;
+				m_Images[id]->m_AnimatedImage = aimage;
+				imagechosen = true;
+
+			}
+			else	// if it does not read as a gif, just load it as a normal image
+			{
+				image = new CSurface(file);
+				imagechosen = true;
+			}
 		}
 		else
 		{
@@ -837,9 +855,7 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 	}
 	else if (ext == "gif")
 	{
-		// temp code to just get it loaded
-		m_Images[id]->m_Image = image;
-		m_Images[id]->m_AnimatedImage = 0;
+		
 	}
 	else
 	{
@@ -915,16 +931,18 @@ bool cImageItem::CreateAnimatedImage(int id, string filename, string dataFilenam
 
 void cImageItem::Draw()
 {
-	if (m_Hidden)
-		return;
-
-	if (m_AnimatedImage)
+	if (m_Hidden) return;
+	
+	if (m_AnimatedImage && m_AnimatedImage->m_Gif)
 	{
 		SDL_Rect rect;
 		rect.y = rect.x = 0;
 		rect.w = m_Width;
 		rect.h = m_Height;
-
+		m_AnimatedImage->DrawGifFrame(m_XPos, m_YPos, m_Width, m_Height, g_Graphics.GetTicks());
+	}
+	else if (m_AnimatedImage)
+	{
 		m_AnimatedImage->DrawFrame(m_XPos, m_YPos, m_Width, m_Height, g_Graphics.GetTicks());
 	}
 	else if (m_Image)
@@ -933,7 +951,6 @@ void cImageItem::Draw()
 		rect.y = rect.x = 0;
 		rect.w = m_Width;
 		rect.h = m_Height;
-
 		m_Image->DrawSurface(m_XPos, m_YPos, 0, &rect, true);
 	}
 	else if (m_Surface)

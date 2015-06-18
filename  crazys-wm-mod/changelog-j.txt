@@ -2184,8 +2184,12 @@ Added Yellow as a color choice and used it for Level Up turn summary messages.
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.02
 
-
-
+###  Changes 6/16-18
+Fixed a bug where girls with no traits crashes the game.
+Gifs load and animate now
+ - I still need to do some code cleaning and plug some memory leaks
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+ 
 
 
 

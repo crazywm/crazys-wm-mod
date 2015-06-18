@@ -24,6 +24,7 @@
 #include "cInterfaceObject.h"
 #include "sConfig.h"
 #include "Constants.h"
+#include "SDL_anigif.h"
 
 
 class CSurface;
