@@ -2189,7 +2189,12 @@ Fixed a bug where girls with no traits crashes the game.
 Gifs load and animate now
  - I still need to do some code cleaning and plug some memory leaks
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
- 
+Finished gif animation.
+ - Gifs load, animate and clear from memory
+Fixed resize images to take both image and display fram into account when resizing images.
+Fixed a few other image handling issues
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.03
 
 
 

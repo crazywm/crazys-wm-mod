@@ -27,7 +27,6 @@ extern CLog g_LogFile;
 extern CGraphics g_Graphics;
 extern CResourceManager rmanager;
 //extern sCachedSurfaces cache;
-static SDL_Surface* gSaveSurface = NULL;
 
 CSurface::CSurface()
 {
@@ -190,14 +189,12 @@ bool CSurface::ResizeSprite(SDL_Surface* image, SDL_Rect* clip, bool maintainRat
 
 	if (maintainRatio == true)
 	{
-		if (clip->w != image->w && clip->h != image->h)
-		{
-			if (image->w > image->h)	// if the width is larger, scale down based on the width but keep aspect ratio
-				scaleX = scaleY = ((double)clip->w / (double)image->w);
-			else	// assume the height is larger
-				scaleX = scaleY = ((double)clip->h / (double)image->h);
-			m_SpriteImage = zoomSurface(image, scaleX, scaleY, 1);
-		}
+
+		if (clip->w - image->w <= clip->h - image->h)
+			scaleX = scaleY = ((double)clip->w / (double)image->w);
+		else	// assume the height is larger
+			scaleX = scaleY = ((double)clip->h / (double)image->h);
+		m_SpriteImage = zoomSurface(image, scaleX, scaleY, 1);
 	}
 	else
 	{
@@ -347,7 +344,6 @@ bool CSurface::DrawGifSurface(int x, int y, AG_Frame* agframes, int currentframe
 {
 	double scaleX = 0;	double scaleY = 0;
 
-	gSaveSurface = agframes[0].surface;
 	agframes->delay = agframes[currentframe].delay;
 
 	SDL_Rect u = { 
@@ -358,11 +354,11 @@ bool CSurface::DrawGifSurface(int x, int y, AG_Frame* agframes, int currentframe
 	SDL_Rect f = u;
 
 	// If GIF disposal mode requires background paint or if frame zero, do it.
-	if (agframes[currentframe].disposal >= AG_DISPOSE_RESTORE_BACKGROUND || currentframe == 0)
+	if (agframes->disposal >= AG_DISPOSE_RESTORE_BACKGROUND || currentframe == 0)
 	{
 		SDL_Rect l = { clip->x + agframes[currentframe].x, clip->y + agframes[currentframe].y, agframes[currentframe].surface->w, agframes[currentframe].surface->h };
-		if (agframes[currentframe].disposal == AG_DISPOSE_RESTORE_PREVIOUS && gSaveSurface)
-			SDL_BlitSurface(gSaveSurface, &l, destination, &l);
+		if (agframes->disposal == AG_DISPOSE_RESTORE_PREVIOUS && agframes[0].surface)
+			SDL_BlitSurface(agframes[0].surface, &l, destination, &l);
 		else
 			SDL_BlitSurface(m_Surface, &l, destination, &l);
 
@@ -374,8 +370,8 @@ bool CSurface::DrawGifSurface(int x, int y, AG_Frame* agframes, int currentframe
 		clip->h = max(l.y + l.h, f.y + f.h) - clip->y;
 	}
 	// Save current background in frame rectangle if GIF disposal mode 3.
-	if (agframes[currentframe].disposal == AG_DISPOSE_RESTORE_PREVIOUS && gSaveSurface)
-		SDL_BlitSurface(destination, &f, gSaveSurface, &f);
+	if (agframes[currentframe].disposal == AG_DISPOSE_RESTORE_PREVIOUS)
+		SDL_BlitSurface(destination, &f, agframes[0].surface, &f);
 
 	// Draw the current frame using the frame rectangle.
 	SDL_BlitSurface(agframes[currentframe].surface, NULL, destination, &f);

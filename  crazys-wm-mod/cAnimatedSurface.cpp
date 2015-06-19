@@ -26,7 +26,19 @@ cAnimatedSurface::cAnimatedSurface()
 {
 	m_Surface = 0;
 	m_SpriteSurface = 0;
+	m_SaveSurface = 0;
+	m_AFrames = 0;
 	m_Gif = false;
+	m_FrameDone = false;
+	m_PlayOnce = false;
+	m_CurrentFrame = 0;
+	m_Speed = 0;
+	m_NumFrames = 0;
+	m_LastTime = 0;
+	m_Rows = 0;
+	m_Colums = 0;
+	m_CurrentRow = 0;
+	m_CurrentColumn = 0;
 }
 cAnimatedSurface::~cAnimatedSurface()
 {
@@ -34,6 +46,22 @@ cAnimatedSurface::~cAnimatedSurface()
 	if (m_SpriteSurface)
 		SDL_FreeSurface(m_SpriteSurface);
 	m_SpriteSurface = 0;
+	m_SaveSurface = 0;
+	m_AFrames = 0;
+
+	m_Gif = false;
+	m_FrameDone = false;
+	m_PlayOnce = false;
+	m_CurrentFrame = 0;
+	m_Speed = 0;
+	m_NumFrames = 0;
+	m_LastTime = 0;
+	m_Rows = 0;
+	m_Colums = 0;
+	m_CurrentRow = 0;
+	m_CurrentColumn = 0;
+
+
 }
 
 // Updates animation according to speed, and then draws it on the screen
@@ -54,7 +82,7 @@ bool cAnimatedSurface::DrawFrame(int x, int y, int width, int height, unsigned i
 
 		if(m_CurrentFrame>=m_NumFrames)
 		{
-			m_CurrentFrame = (m_PlayOnce) ? 0 : m_NumFrames - 1;
+			m_CurrentFrame = 0;
 			m_FrameDone = true;
 			m_CurrentColumn = m_CurrentRow = 0;
 		}
@@ -92,7 +120,7 @@ bool cAnimatedSurface::DrawGifFrame(int x, int y, int width, int height, unsigne
 
 		if (m_CurrentFrame >= m_NumFrames)
 		{
-			m_CurrentFrame = (m_PlayOnce) ? 0 : m_NumFrames - 1;
+			m_CurrentFrame = 0;
 			m_FrameDone = true;
 		}
 		UpdateSprite(temp, width, height, true);
@@ -106,18 +134,15 @@ void cAnimatedSurface::UpdateSprite(SDL_Rect& rect, int width, int height, bool 
 	temp.x = temp.y = 0;
 	temp.w = width;
 	temp.h = height;
-	if (gif)
-	{
-		m_Surface->DrawGifSurface(0, 0, getAFrames(), m_CurrentFrame, m_SpriteSurface, &rect,false,true);
-	}
-	else
-	m_Surface->DrawSurface(0, 0, m_SpriteSurface, &rect);
-	m_Surface->ResizeSprite(m_SpriteSurface,&temp);
+	if (gif)	m_Surface->DrawGifSurface(0, 0, getAFrames(), m_CurrentFrame, m_SpriteSurface, &rect,false,true);
+	else		m_Surface->DrawSurface(0, 0, m_SpriteSurface, &rect);
+	m_Surface->ResizeSprite(m_SpriteSurface,&temp,true);
 }
 
 void cAnimatedSurface::SetData(int xPos, int yPos, int numFrames, int speed, int width, int height, CSurface* surface, bool gif)
 {
 	m_CurrentColumn = m_CurrentRow = m_CurrentFrame = 0;
+	m_LastTime = 0;
 	m_Speed = speed;
 	if (m_Speed < 0) m_Speed = 0;
 	m_NumFrames = numFrames;
@@ -152,12 +177,12 @@ void cAnimatedSurface::SetData(int xPos, int yPos, int numFrames, int speed, int
 void cAnimatedSurface::SetGifData(int xPos, int yPos, int numFrames, AG_Frame* agf, CSurface* surface)
 {
 	m_Gif = true;
+	m_LastTime = 0;
 	m_NumFrames = numFrames;
-	m_CurrentFrame = numFrames;					// set it to the end so it starts with 0 when run
+	m_CurrentFrame = 0;					// set it to the end so it starts with 0 when run
+	m_SaveSurface = agf[0].surface;
 	m_AFrames = agf;
-	m_Speed = agf[m_CurrentFrame].delay;
-	if (m_Speed < 0) m_Speed = agf[0].delay;	// to correct for frames without their own delay
-	if (m_Speed < 0) m_Speed = 0;				// to correct bad delay values
+	m_Speed = 0;
 
 	m_Frames.x = xPos;
 	m_Frames.y = yPos;

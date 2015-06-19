@@ -49,6 +49,8 @@ public:
 	void setAFrames(AG_Frame* af)	{ m_AFrames = af; }
 	int getCurrentFrame()			{ return m_CurrentFrame; }
 	void setCurrentFrame(int cf)	{ m_CurrentFrame = cf; }
+	int getNumFrames()			{ return m_NumFrames; }
+	void setNumFrames(int nf)	{ m_NumFrames = nf; }
 
 private:
 	bool m_FrameDone;
@@ -67,7 +69,7 @@ private:
 	SDL_Surface* m_SpriteSurface;	// pointer to the image where the current sprite is kept
 	SDL_Rect m_Frames;				// Holds the data for ALL frames, since all frames have same width/height
 	AG_Frame* m_AFrames;			// gif frames
-
+	SDL_Surface* m_SaveSurface;
 };
 
 // Manages a file with multiple animations
