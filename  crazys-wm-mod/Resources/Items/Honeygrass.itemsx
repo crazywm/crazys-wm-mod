@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Items>
-    <Item Name="Honeygrass" Desc="It looks like normal grass, but it is very sweet, carrying a bit of magic. It's easy to find, but hard to tell from ordinary grass." 
+    <Item Name="Honeygrass" Desc="It looks like normal grass, but it is very sweet, carrying a bit of magic. It's easy to find, but hard to tell from ordinary grass. (+5 Health/Happy, +10 Mana)"
     Type="Food" Badness="0" Special="None" Cost="175" Rarity="Shop25" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
         <Effect What="Stat" Name="Health" Amount="5" />
         <Effect What="Stat" Name="Happiness" Amount="5" />
         <Effect What="Stat" Name="Mana" Amount="10" />
     </Item>
-    <Item Name="Honeygrass" Desc="It looks like normal grass, but it is very sweet, carrying a bit of magic. It's easy to find, but hard to tell from ordinary grass." 
+    <Item Name="Honeygrass" Desc="It looks like normal grass, but it is very sweet, carrying a bit of magic. It's easy to find, but hard to tell from ordinary grass. (+5 Health/Happy, +10 Mana)"
     Type="Food" Badness="0" Special="None" Cost="250" Rarity="Common" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
         <Effect What="Stat" Name="Health" Amount="5" />
         <Effect What="Stat" Name="Happiness" Amount="5" />

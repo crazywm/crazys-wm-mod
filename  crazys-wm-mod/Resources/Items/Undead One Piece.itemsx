@@ -2,16 +2,16 @@
 <Items>
 	<Item
 		Name="Undead One Piece"
-		Desc="This swimsuit would look good on a dead body ( or at least someone that looks dead)."
+		Desc="This swimsuit would look good on a dead body ( or at least someone that looks dead). (+25 exp/con, -25 bea, +15 strip, +10 str, +5 hap/cha/srv, adds Delicate and Weak Magic)"
 		Type="Swimsuit"	Badness="0"	Special="None"	Cost="3500"	Rarity="Shop05"	Infinite="false"	GirlBuyChance="0">
-		<Effect			What="Stat"			Name="Happiness"		Amount="5" />
-		<Effect			What="Stat"			Name="Charisma"			Amount="5" />
-		<Effect			What="Stat"			Name="Beauty"			Amount="-25" />
 		<Effect			What="Stat"			Name="Exp"				Amount="25" />
 		<Effect			What="Stat"			Name="Constitution"		Amount="25" />
-		<Effect			What="Stat"			Name="Strength"			Amount="10" />
-		<Effect			What="Skill"		Name="Service"			Amount="5" />
+		<Effect			What="Stat"			Name="Beauty"			Amount="-25" />
 		<Effect			What="Skill"		Name="Strip"			Amount="15" />
+		<Effect			What="Stat"			Name="Strength"			Amount="10" />
+		<Effect			What="Stat"			Name="Happiness"		Amount="5" />
+		<Effect			What="Stat"			Name="Charisma"			Amount="5" />
+		<Effect			What="Skill"		Name="Service"			Amount="5" />
 		<Effect			What="Trait"		Name="Delicate"			Amount="1" />
 		<Effect			What="Trait"		Name="Weak Magic"		Amount="1" />
 	</Item>

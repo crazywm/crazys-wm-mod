@@ -330,10 +330,11 @@ This means it loads it twice with the second one taking precidence. Leave anythi
     <value>True</value>
   </metadata>
   <data name="richTextBox3.Text" xml:space="preserve">
-    <value>You can set the location of certain folders relative to the game .EXE file.
-Currently only relative paths are allowed so "c:\Characters" would not work.
-Use "..\" to go up one folder. This section requires more knowledge of how 
-folder paths work so it was moved to the extras tab.</value>
+    <value>You can set the location of certain folders to preserve your settings between game versions.
+They can be either Relative to the game's .EXE file or Absolute folder paths.
+For Relative path, start it with ".\" or use "..\" to go up a folder.
+Absolute paths start with "c:\" (or whatever drive you have it on).
+This section requires more knowledge of how folder paths work so it was moved to the extras tab.</value>
   </data>
   <metadata name="Bad_Files.UserAddedColumn" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

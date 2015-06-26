@@ -105,6 +105,11 @@ cImageItem::~cImageItem()
 */
 int TryImageType(int imagetype, int tries)
 {
+	if (imagetype == IMGTYPE_PROFILE)
+	{
+		if (tries > 15) tries = 15;
+		return IMGTYPE_PROFILE;
+	}
 	int trytype = imagetype;
 	/*	the first 10 checks will always try for the asked for type
 	*	when tries == 10, it will try one last time for the asked for type
@@ -137,7 +142,7 @@ int TryImageType(int imagetype, int tries)
 	case	IMGTYPE_PREGGROUP:
 	{
 		if (tries == 8)	return trytype;					// try with defaults
-		if (tries > 20 || tries == 6 || tries == 7)		// try preg vars
+		if (tries > 22 || tries == 6 || tries == 7)		// try preg vars
 		{
 			if (t < 5)	return IMGTYPE_PREGECCHI;
 			if (t < 10)	return IMGTYPE_PREGSTRIP;
@@ -145,6 +150,10 @@ int TryImageType(int imagetype, int tries)
 			if (t < 30)	return IMGTYPE_PREGBDSM;
 			if (t < 50)	return IMGTYPE_PREGANAL;
 			return IMGTYPE_PREGSEX;
+		}
+		if (tries > 18 || tries == 5)	// try nonpreg base
+		{
+			return trytype - PREG_OFFSET;
 		}
 		if (tries > 14 || tries == 4 || tries == 5)	// try nonpreg vars
 		{
@@ -175,7 +184,7 @@ int TryImageType(int imagetype, int tries)
 	case	IMGTYPE_PREGSEX:
 	{
 		if (tries == 8)	return trytype;					// try with defaults
-		if (tries > 20 || tries == 6 || tries == 7)		// try preg vars
+		if (tries > 22 || tries == 6 || tries == 7)		// try preg vars
 		{
 			if (t < 5)	return IMGTYPE_PREGFOOT;
 			if (t < 10)	return IMGTYPE_PREGHAND;
@@ -186,7 +195,11 @@ int TryImageType(int imagetype, int tries)
 			if (t < 50)	return IMGTYPE_PREGNUDE;
 			return IMGTYPE_PREGANAL;
 		}
-		if (tries > 14 || tries == 4 || tries == 5)	// try nonpreg vars
+		if (tries > 18 || tries == 5)	// try nonpreg base
+		{
+			return trytype - PREG_OFFSET;
+		}
+		if (tries > 14 || tries == 4)	// try nonpreg vars
 		{
 			if (t < 5)	return IMGTYPE_FOOT;
 			if (t < 10)	return IMGTYPE_HAND;
@@ -205,13 +218,17 @@ int TryImageType(int imagetype, int tries)
 	case	IMGTYPE_PREGLESBIAN:
 	{
 		if (tries == 8)	return trytype;					// try with defaults
-		if (tries > 20 || tries == 6 || tries == 7)		// try preg vars
+		if (tries > 22 || tries == 6 || tries == 7)		// try preg vars
 		{
 			if (t < 20)	return IMGTYPE_PREGSTRIP;
 			if (t < 40)	return IMGTYPE_PREGECCHI;
 			return IMGTYPE_PREGNUDE;
 		}
-		if (tries > 14 || tries == 4 || tries == 5)	// try nonpreg vars
+		if (tries > 18 || tries == 5)	// try nonpreg base
+		{
+			return trytype - PREG_OFFSET;
+		}
+		if (tries > 14 || tries == 4)	// try nonpreg vars
 		{
 			if (t < 20)	return IMGTYPE_STRIP;
 			if (t < 40)	return IMGTYPE_ECCHI;
@@ -250,7 +267,7 @@ int TryImageType(int imagetype, int tries)
 	case	IMGTYPE_PREGFOOT:
 	{
 		if (tries == 8)	return trytype;					// try with defaults
-		if (tries > 20 || tries == 6 || tries == 7)		// try preg vars
+		if (tries > 22 || tries == 6 || tries == 7)		// try preg vars
 		{
 			if (t < 5)	return IMGTYPE_PREGFOOT;
 			if (t < 10)	return IMGTYPE_PREGHAND;
@@ -260,7 +277,11 @@ int TryImageType(int imagetype, int tries)
 			if (t < 70)	return IMGTYPE_PREGSTRIP;
 			return IMGTYPE_PREGNUDE;
 		}
-		if (tries > 14 || tries == 4 || tries == 5)	// try nonpreg vars
+		if (tries > 18 || tries == 5)	// try nonpreg base
+		{
+			return trytype - PREG_OFFSET;
+		}
+		if (tries > 14 || tries == 4)	// try nonpreg vars
 		{
 			if (t < 5)	return IMGTYPE_FOOT;
 			if (t < 10)	return IMGTYPE_HAND;
@@ -285,13 +306,17 @@ int TryImageType(int imagetype, int tries)
 	case	IMGTYPE_PREGMAST:
 	{
 		if (tries == 8)	return trytype;					// try with defaults
-		if (tries > 20 || tries == 6 || tries == 7)		// try preg vars
+		if (tries > 22 || tries == 6 || tries == 7)		// try preg vars
 		{
 			if (t < 30)	return IMGTYPE_PREGSTRIP;
 			if (t < 50)	return IMGTYPE_PREGECCHI;
 			return IMGTYPE_PREGNUDE;
 		}
-		if (tries > 14 || tries == 4 || tries == 5)	// try nonpreg vars
+		if (tries > 18 || tries == 5)	// try nonpreg base
+		{
+			return trytype - PREG_OFFSET;
+		}
+		if (tries > 14 || tries == 4)	// try nonpreg vars
 		{
 			if (t < 30)	return IMGTYPE_STRIP;
 			if (t < 50)	return IMGTYPE_ECCHI;
@@ -343,13 +368,17 @@ int TryImageType(int imagetype, int tries)
 	case	IMGTYPE_PREGMILK:
 	{
 		if (tries == 8)	return trytype;					// try with defaults
-		if (tries > 20 || tries == 6 || tries == 7)		// try preg vars
+		if (tries > 22 || tries == 6 || tries == 7)		// try preg vars
 		{
 			if (t < 20)	return IMGTYPE_PREGECCHI;
 			if (t < 50)	return IMGTYPE_PREGSTRIP;
 			return IMGTYPE_PREGNUDE;
 		}
-		if (tries > 14 || tries == 4 || tries == 5)	// try nonpreg vars
+		if (tries > 18 || tries == 5)	// try nonpreg base
+		{
+			return trytype - PREG_OFFSET;
+		}
+		if (tries > 14 || tries == 4)	// try nonpreg vars
 		{
 			if (t < 20)	return IMGTYPE_ECCHI;
 			if (t < 50)	return IMGTYPE_STRIP;
@@ -369,12 +398,16 @@ int TryImageType(int imagetype, int tries)
 	case	IMGTYPE_PREGTORTURE:
 	{
 		if (tries == 8)	return trytype;					// try with defaults
-		if (tries > 20 || tries == 6 || tries == 7)		// try preg vars
+		if (tries > 22 || tries == 6 || tries == 7)		// try preg vars
 		{
 			if (t < 20)	return IMGTYPE_PREGDEATH;
 			return IMGTYPE_PREGBDSM;
 		}
-		if (tries > 14 || tries == 4 || tries == 5)	// try nonpreg vars
+		if (tries > 18 || tries == 5)	// try nonpreg base
+		{
+			return trytype - PREG_OFFSET;
+		}
+		if (tries > 14 || tries == 4)	// try nonpreg vars
 		{
 			if (t < 20)	return IMGTYPE_DEATH;
 			return IMGTYPE_BDSM;
@@ -392,11 +425,15 @@ int TryImageType(int imagetype, int tries)
 	case	IMGTYPE_PREGCOMBAT:
 	{
 		if (tries == 8)	return trytype;					// try with defaults
-		if (tries > 20 || tries == 6 || tries == 7)		// try preg vars
+		if (tries > 22 || tries == 6 || tries == 7)		// try preg vars
 		{
 			return IMGTYPE_PREGMAGIC;
 		}
-		if (tries > 14 || tries == 4 || tries == 5)	// try nonpreg vars
+		if (tries > 18 || tries == 5)	// try nonpreg base
+		{
+			return trytype - PREG_OFFSET;
+		}
+		if (tries > 14 || tries == 4)	// try nonpreg vars
 		{
 			return IMGTYPE_MAGIC;
 		}
@@ -413,11 +450,15 @@ int TryImageType(int imagetype, int tries)
 	case	IMGTYPE_PREGSWIM:
 	{
 		if (tries == 8)	return trytype;					// try with defaults
-		if (tries > 20 || tries == 6 || tries == 7)		// try preg vars
+		if (tries > 22 || tries == 6 || tries == 7)		// try preg vars
 		{
 			return IMGTYPE_PREGECCHI;
 		}
-		if (tries > 14 || tries == 4 || tries == 5)	// try nonpreg vars
+		if (tries > 18 || tries == 5)	// try nonpreg base
+		{
+			return trytype - PREG_OFFSET;
+		}
+		if (tries > 14 || tries == 4)	// try nonpreg vars
 		{
 			return IMGTYPE_ECCHI;
 		}
@@ -440,11 +481,15 @@ int TryImageType(int imagetype, int tries)
 	case	IMGTYPE_PREGBUNNY:
 	{
 		if (tries == 8)	return trytype;					// try with defaults
-		if (tries > 20 || tries == 6 || tries == 7)		// try preg vars
+		if (tries > 22 || tries == 6 || tries == 7)		// try preg vars
 		{
 			return IMGTYPE_PREGFORMAL;
 		}
-		if (tries > 14 || tries == 4 || tries == 5)	// try nonpreg vars
+		if (tries > 18 || tries == 5)	// try nonpreg base
+		{
+			return trytype - PREG_OFFSET;
+		}
+		if (tries > 14 || tries == 4)	// try nonpreg vars
 		{
 			return IMGTYPE_FORMAL;
 		}
@@ -461,11 +506,15 @@ int TryImageType(int imagetype, int tries)
 	case	IMGTYPE_PREGMAID:
 	{
 		if (tries == 8)	return trytype;					// try with defaults
-		if (tries > 20 || tries == 6 || tries == 7)		// try preg vars
+		if (tries > 22 || tries == 6 || tries == 7)		// try preg vars
 		{
 			return IMGTYPE_PREGBUNNY;
 		}
-		if (tries > 14 || tries == 4 || tries == 5)	// try nonpreg vars
+		if (tries > 18 || tries == 5)	// try nonpreg base
+		{
+			return trytype - PREG_OFFSET;
+		}
+		if (tries > 14 || tries == 4)	// try nonpreg vars
 		{
 			return IMGTYPE_BUNNY;
 		}
@@ -483,12 +532,16 @@ int TryImageType(int imagetype, int tries)
 	case	IMGTYPE_PREGWAIT:
 	{
 		if (tries == 8)	return trytype;					// try with defaults
-		if (tries > 20 || tries == 6 || tries == 7)		// try preg vars
+		if (tries > 22 || tries == 6 || tries == 7)		// try preg vars
 		{
 			if (t < 50)	return IMGTYPE_PREGBUNNY;
 			return IMGTYPE_PREGFORMAL;
 		}
-		if (tries > 14 || tries == 4 || tries == 5)	// try nonpreg vars
+		if (tries > 18 || tries == 5)	// try nonpreg base
+		{
+			return trytype - PREG_OFFSET;
+		}
+		if (tries > 14 || tries == 4)	// try nonpreg vars
 		{
 			if (t < 50)	return IMGTYPE_BUNNY;
 			return IMGTYPE_FORMAL;
@@ -507,12 +560,16 @@ int TryImageType(int imagetype, int tries)
 	case	IMGTYPE_PREGCOOK:
 	{
 		if (tries == 8)	return trytype;					// try with defaults
-		if (tries > 20 || tries == 6 || tries == 7)		// try preg vars
+		if (tries > 22 || tries == 6 || tries == 7)		// try preg vars
 		{
 			if (t < 20)	return IMGTYPE_PREGWAIT;
 			return IMGTYPE_PREGMAID;
 		}
-		if (tries > 14 || tries == 4 || tries == 5)	// try nonpreg vars
+		if (tries > 18 || tries == 5)	// try nonpreg base
+		{
+			return trytype - PREG_OFFSET;
+		}
+		if (tries > 14 || tries == 4)	// try nonpreg vars
 		{
 			if (t < 20)	return IMGTYPE_WAIT;
 			return IMGTYPE_MAID;
@@ -532,11 +589,15 @@ int TryImageType(int imagetype, int tries)
 	case	IMGTYPE_PREGCRAFT:
 	{
 		if (tries == 8)	return trytype;					// try with defaults
-		if (tries > 20 || tries == 6 || tries == 7)		// try preg vars
+		if (tries > 22 || tries == 6 || tries == 7)		// try preg vars
 		{
 			return IMGTYPE_PREGFARM;
 		}
-		if (tries > 14 || tries == 4 || tries == 5)	// try nonpreg vars
+		if (tries > 18 || tries == 5)	// try nonpreg base
+		{
+			return trytype - PREG_OFFSET;
+		}
+		if (tries > 14 || tries == 4)	// try nonpreg vars
 		{
 			return IMGTYPE_FARM;
 		}
@@ -560,7 +621,10 @@ int TryImageType(int imagetype, int tries)
 
 
 
-
+	case IMGTYPE_PREGPROFILE:
+	{
+		return IMGTYPE_PREGNANT;
+	}break;
 
 	//	Pregnant versions of anything that only has profile as an alternative
 	case IMGTYPE_PREGFARM:
@@ -569,16 +633,19 @@ int TryImageType(int imagetype, int tries)
 	case IMGTYPE_PREGFORMAL:
 	case IMGTYPE_PREGMAGIC:
 	case IMGTYPE_PREGDEATH:
-	case IMGTYPE_PREGPROFILE:
 	case IMGTYPE_PREGSHOP:
 	case IMGTYPE_PREGSIGN:
 	{
-		/* */if (tries > 25)	return IMGTYPE_PREGPROFILE;
-		else if (tries > 20)	return IMGTYPE_PREGNANT;
-		else if (tries > 10)	return trytype - PREG_OFFSET;	// the nonpregnant version
-		else if (tries > 6)/**/	return IMGTYPE_PREGPROFILE;
-		else if (tries > 3)/**/	return IMGTYPE_PREGNANT;
-		else /*              */	return trytype - PREG_OFFSET;	// the nonpregnant version
+		if (tries > 25)	// try nonpreg base
+		{
+			return trytype - PREG_OFFSET;
+		}
+		if (tries > 21)	return IMGTYPE_PREGPROFILE;
+		if (tries > 14)	return IMGTYPE_PREGNANT;
+		if (tries > 8)	return trytype - PREG_OFFSET;	// the nonpregnant version
+		if (tries > 6)	return IMGTYPE_PREGPROFILE;
+		if (tries > 3)	return IMGTYPE_PREGNANT;
+		return trytype - PREG_OFFSET;	// the nonpregnant version
 	}break;
 
 	//	anything that only has profile as an alternative
@@ -588,7 +655,6 @@ int TryImageType(int imagetype, int tries)
 	case IMGTYPE_FORMAL:
 	case IMGTYPE_MAGIC:
 	case IMGTYPE_DEATH:
-	case IMGTYPE_PROFILE:
 	case IMGTYPE_SHOP:
 	case IMGTYPE_SIGN:
 	default:
@@ -807,7 +873,6 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 				m_Images[id]->m_Image->m_Message = file;
 			}
 			input.close();
-
 		}
 		else if (ext == "gif")
 		{
@@ -819,17 +884,13 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 				newImage->m_Surface = new CSurface();
 				newImage->m_Surface->LoadImage(file);
 				newImage->m_AniSurface = new cAnimatedSurface();
-
 				AG_Frame* gpAG = new AG_Frame[frames];
 				AG_LoadGIF(n, gpAG, frames);
-				AG_ConvertSurfacesToDisplayFormat(gpAG, frames);
-				
 				m_Images[id]->m_Image = newImage->m_Surface;
 				m_Images[id]->m_Image->m_Message = file;
 				m_Images[id]->m_AnimatedImage = new cAnimatedSurface();
 				m_Images[id]->m_AnimatedImage->SetGifData(0, 0, frames, gpAG, newImage->m_Surface);
 				imagechosen = true;
-
 			}
 			else	// if it does not read as a gif, just load it as a normal image
 			{

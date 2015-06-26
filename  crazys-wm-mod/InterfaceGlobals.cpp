@@ -634,11 +634,17 @@ void LoadInterface()
 
 
 	g_LogFile.write("Loading Preparing Game Screen");
-	g_Preparing.CreateWindow(300, 200, 200, 200, 1);
-	g_Preparing.AddTextItem(g_interfaceid.STATIC_STATIC, 50, 20, 180, 30, "Preparing", 25, true, false);
-	g_Preparing.AddTextItem(g_interfaceid.STATIC_STATIC, 65, 65, 180, 30, "Game", 25, true, false);
-	g_Preparing.AddTextItem(g_interfaceid.STATIC_STATIC, 65, 110, 180, 30, "Please", 25, true, false);
-	g_Preparing.AddTextItem(g_interfaceid.STATIC_STATIC, 70, 155, 180, 30, "Wait", 25, true, false);
+	int x = cfg.resolution.scalewidth() / 4;
+	int y = cfg.resolution.scaleheight() / 4;
+	int w = cfg.resolution.scalewidth() / 2;
+	int h = cfg.resolution.scaleheight() / 2;
+	int t = h / 14;
+	int u = w / 8;
+	g_Preparing.CreateWindow(x, y, w, h, 1);
+	g_Preparing.AddTextItem(g_interfaceid.STATIC_STATIC, u*1, t*2,  u*4, t*2, "Preparing", t, true, false);
+	g_Preparing.AddTextItem(g_interfaceid.STATIC_STATIC, u*2, t*5,  u*4, t*2, "Game", t, true, false);
+	g_Preparing.AddTextItem(g_interfaceid.STATIC_STATIC, u*4, t*8,  u*4, t*2, "Please", t, true, false);
+	g_Preparing.AddTextItem(g_interfaceid.STATIC_STATIC, u*5, t*11, u*4, t*2, "Wait", t, true, false);
 
 	// `J` Bookmark - Loading the screens
 

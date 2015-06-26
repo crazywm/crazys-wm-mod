@@ -208,16 +208,19 @@ void sConfigData::get_folders_data(TiXmlElement *el)
 	folders.configXMLch = false;
 	folders.configXMLsa = false; 
 	folders.configXMLdi = false;
-	
+	folders.configXMLil = false;
+
 	folders.backupsaves = false;
 	folders.preferdefault = false;
 	folders.characters		= (DirPath() << "Resources" << "Characters").c_str();
-	folders.defaultimageloc = (DirPath() << "Resources" << "DefaultImages").c_str();
 	folders.saves			= (DirPath() << "Saves").c_str();
-	
-	string testch = "", testsa = "", testdi = "";
+	folders.items			= (DirPath() << "Resources" << "Items").c_str();
+	folders.defaultimageloc	= (DirPath() << "Resources" << "DefaultImages").c_str();
+
+	string testch = "", testsa = "", testdi = "", testil = "";
 	if (pt = el->Attribute("Characters"))		get_att(el, "Characters", testch);
 	if (pt = el->Attribute("Saves"))			get_att(el, "Saves", testsa);
+	if (pt = el->Attribute("Items"))			get_att(el, "Items", testil);
 	if (pt = el->Attribute("BackupSaves"))		get_att(el, "BackupSaves", folders.backupsaves);
 	if (pt = el->Attribute("DefaultImages"))	get_att(el, "DefaultImages", testdi);
 	if (pt = el->Attribute("PreferDefault"))	get_att(el, "PreferDefault", folders.preferdefault);
@@ -272,6 +275,29 @@ void sConfigData::get_folders_data(TiXmlElement *el)
 		else
 		{
 			l.ss() << "\n\nWarning: config.xml: Save game folder '" << testsa << "' does not exist.\nDefaulting to ./Saves"; l.ssend();
+		}
+	}
+	if (testil != "")
+	{
+		DirPath abs_il = DirPath(testil.c_str());
+		DirPath rel_il = DirPath() << testil;
+		FileList abstest(abs_il, "*.itemsx");
+		FileList reltest(rel_il, "*.itemsx");
+		if (abstest.size() > 0)
+		{
+			folders.items = abs_il.c_str();
+			folders.configXMLil = true;
+			l.ss() << "Success: config.xml: Loading Items from absolute location: " << folders.items; l.ssend();
+		}
+		else if (reltest.size() > 0)
+		{
+			folders.items = rel_il.c_str();
+			folders.configXMLil = true;
+			l.ss() << "Success: config.xml: Loading Items from relative location: " << folders.items; l.ssend();
+		}
+		else
+		{
+			l.ss() << "Warning: config.xml: Items folder '" << testil << "' does not exist or has no Items in it.\nDefaulting to ./Resources/Items"; l.ssend();
 		}
 	}
 	if (testdi != "")
@@ -567,6 +593,8 @@ void sConfigData::set_defaults()
 	folders.configXMLch = false;			// `J` if character's location is set in config.xml
 	folders.saves = "";						// `J` where the saves folder is located 
 	folders.configXMLsa = false;			// `J` if saves's location is set in config.xml
+	folders.items = "";						// `J` where the items folder is located 
+	folders.configXMLil = false;			// `J` if items's location is set in config.xml
 	folders.backupsaves = false;			// `J` backup saves in the version folder incase moving to the next version breaks the save
 	folders.defaultimageloc = "";			// `J` where the default images folder is located 
 	folders.configXMLdi = false;			// `J` if default images location is set in config.xml

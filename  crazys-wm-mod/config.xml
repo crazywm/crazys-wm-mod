@@ -4,8 +4,12 @@
 	Characters     = The location of the Characters folder
 	Saves          = The location of the Saves folder
 	DefaultImages  = The location of the DefaultImages folder
-			Currently the folders are relative to the EXE file so to put the folder in the
-				parent folder of the game, use  '..\Characters'  and the like.
+	Items          = The location of the Items folder
+			The folders can be relative to the EXE file or an exact folder path.
+				Relative folders refers to its location to the parent folder of the game
+					Use  '..\Characters'  and the like.
+				Absolute folders is the full path name as defined by the operating system.
+					Use  'c:\WM\Characters'  and the like.
 	BackupSaves    = 'true' or 'false'
 			If set to true, the game will save in both the game's default
 				save folder as well as the folder set here.
@@ -17,6 +21,7 @@
         Characters="..\Characters"
         Saves="..\Saves"
         DefaultImages="..\DefaultImages"
+        Items="..\Items"
         BackupSaves="false"
         PreferDefault="false" />
     <!--

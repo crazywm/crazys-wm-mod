@@ -554,6 +554,7 @@ namespace WM_Girls_Generator
                             case "Characters": textBox_Config_Folders_Characters.Text = nv; break;
                             case "Saves": textBox_Config_Folders_Savegames.Text = nv; break;
                             case "DefaultImages": textBox_Config_Folders_Default_Images.Text = nv; break;
+                            case "Items": textBox_Config_Folders_Items.Text = nv; break;
                             case "BackupSaves": checkBox_Config_Folders_Backup_Saves.Checked = nvtf; break;
                             case "PreferDefault": checkBox_Config_Folders_Prefer_Default.Checked = nvtf; break;
                         }
@@ -900,7 +901,7 @@ namespace WM_Girls_Generator
             XmlElement xeFonts = xmldoc.CreateElement("Fonts");
             XmlElement xeDebug = xmldoc.CreateElement("Debug");
 
-            XmlComment xcFolders = xmldoc.CreateComment("\n\tCharacters     = The location of the Characters folder\n\tSaves          = The location of the Saves folder\n\tDefaultImages  = The location of the DefaultImages folder\n\t\t\tCurrently the folders are relative to the EXE file so to put the folder in the\n\t\t\t\tparent folder of the game, use  '..\\Characters'  and the like.\n\tBackupSaves    = 'true' or 'false'\n\t\t\tIf set to true, the game will save in both the game's default\n\t\t\t\tsave folder as well as the folder set here.\n\tPreferDefault    = 'true' or 'false'\n\t\t\tIf set to true, the game will try to use default images\n\t\t\t\tbefore trying to find alternate images from the image tree.\n\t");
+            XmlComment xcFolders = xmldoc.CreateComment("\n\tCharacters     = The location of the Characters folder\n\tSaves          = The location of the Saves folder\n\tDefaultImages  = The location of the DefaultImages folder\n\tItems          = The location of the Items folder\n\t\t\tThe folders can be relative to the EXE file or an exact folder path.\n\t\t\t\tRelative folders refers to its location to the parent folder of the game\n\t\t\t\t\tUse  '..\\Characters'  and the like.\n\t\t\t\tAbsolute folders is the full path name as defined by the operating system.\n\t\t\t\t\tUse  'c:\\WM\\Characters'  and the like.\n\tBackupSaves    = 'true' or 'false'\n\t\t\tIf set to true, the game will save in both the game's default\n\t\t\t\tsave folder as well as the folder set here.\n\tPreferDefault    = 'true' or 'false'\n\t\t\tIf set to true, the game will try to use default images\n\t\t\t\tbefore trying to find alternate images from the image tree.\n\t");
             XmlComment xcResolution = xmldoc.CreateComment("\n\tResolution     = the name of your interface folder\n\tWidth          = screen width\n\tHeight         = screen height\n\tScaleWidth     = screen scale width\n\tScaleHeight    = screen scale height\n\t\t\tThe old code of the game scaled all windows down to 800x600\n\t\t\tThis has been fixed but any old interfaces will not display correctly\n\t\t\t\tif the scale width and height are not set to 800x600.\n\tFullScreen     = 'true' or 'false'\n\tListScrollAmount = The number of lines to scroll in List boxes.\n\tTextScrollAmount = The number of lines to scroll in Text boxes.\n\t");
             XmlComment xcInitial = xmldoc.CreateComment("\n\tGold is how much gold you start the game with.\n\tGirlMeet is the %chance you'll meet a girl when walking around town.\n\tGirlsHousePerc and SlaveHousePerc is the default House Percentage for free girls and slave girls.\n\tGirlsKeepTips and GirlsKeepTips is whether they keep tips separate from house percent.\n\tSlavePayOutOfPocket is wether or not slave girls get paid by the player directly for certain jobs\n\t\tie. Cleaning, Advertising, Farming jobs, Film jobs, etc.\n\tAutoUseItems is whether or not the game will try to automatically use\n\t\tthe player's items intelligently on girls each week.\n\t\tThis feature needs more testing.\n\tAutoCombatEquip determines whether girls will automatically equip their best weapon and\n\t\tarmor for combat jobs and also automatically unequip weapon and armor for regular\n\t\tjobs where such gear would be considered inappropriate (i.e. whores-with-swords).\n\t\tSet to \"false\" to disable this feature.\n\n\tTortureTraitWeekMod affects multiplying the duration that they will\n\t\tkeep a temporary trait that they get from being tortured.\n\t\tIt is multiplied by the number of weeks in the dungeon.\n`J` added\t\tIf TortureTraitWeekMod is set to -1 then torture is harsher.\n\t\tThis doubles the chance of injuring the girls and doubles evil gain.\n\t\tDamage is increased by half. It also makes breaking the girls wills permanent.\n\t");
             XmlComment xcIncome = xmldoc.CreateComment("\n\tThese are the numbers that will multiply the money from various sources of income.\n\t\tSo setting \"GirlsWorkBrothel\" to \"0.5\" will reduce the cash your girls generate in the brothel by half.\n\t\tYou can also use numbers >1 to increase income if you are so inclined.\n\t");
@@ -921,6 +922,7 @@ namespace WM_Girls_Generator
             xeFolders.SetAttribute("Characters", textBox_Config_Folders_Characters.Text);
             xeFolders.SetAttribute("Saves", textBox_Config_Folders_Savegames.Text);
             xeFolders.SetAttribute("DefaultImages", textBox_Config_Folders_Default_Images.Text);
+            xeFolders.SetAttribute("Items", textBox_Config_Folders_Items.Text);
             if (checkBox_Config_Folders_Backup_Saves.Checked == true) xeFolders.SetAttribute("BackupSaves", "true");
             else xeFolders.SetAttribute("BackupSaves", "false");
             if (checkBox_Config_Folders_Prefer_Default.Checked == true) xeFolders.SetAttribute("PreferDefault", "true");
@@ -4774,7 +4776,7 @@ namespace WM_Girls_Generator
             //that's why array's are two dimensional, easy to access value linked with text
 
             int i = 0;
-            while (i < aTypes.Length)
+            while (i < 3)
             {
                 if (type == aTypes[i, 0])
                 {
@@ -5259,7 +5261,7 @@ namespace WM_Girls_Generator
                 {
                     values = test.Split(separator);
                     int j = 0;
-                    while (j < aTypes.Length)
+                    while (j < 3)
                     {
                         if (values[0] == aTypes[j, 1])
                         {
@@ -6094,5 +6096,6 @@ namespace WM_Girls_Generator
              * and can probably be removed
              */
         }
+
    }
 }

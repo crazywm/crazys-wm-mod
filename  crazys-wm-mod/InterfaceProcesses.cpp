@@ -195,7 +195,7 @@ void NewGame()
 	{
 		g_Gold.cheat();
 		g_InvManager.GivePlayerAllItems();
-		g_Gangs.NumBusinessExtorted(50);
+		g_Gangs.NumBusinessExtorted(500);
 	}
 
 	g_WinManager.push("Brothel Management");
@@ -438,7 +438,8 @@ void LoadGameInfoFiles()
 	}
 
 	// `J` Load .itemsx files
-	DirPath location_i = DirPath() << "Resources" << "Items"; // `J` moved items from Data to Items folder
+	// DirPath location_i = DirPath() << "Resources" << "Items"; // `J` moved items from Data to Items folder
+	DirPath location_i = DirPath(cfg.folders.items().c_str());
 	FileList fl_i(location_i, "*.itemsx");
 	if (cfg.debug.log_items())	g_LogFile.os() << "Found " << fl_i.size() << " itemsx files" << endl;
 	LoadXMLItems(fl_i);

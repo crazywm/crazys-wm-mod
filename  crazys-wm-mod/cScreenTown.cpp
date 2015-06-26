@@ -263,9 +263,9 @@ void cScreenTown::init()
 void cScreenTown::process()
 {
 	if (!ids_set)set_ids();								// we need to make sure the ID variables are set
+	if (girlimage_id != -1 && !eventrunning)	HideImage(girlimage_id, true);
 	init();
 	if (g_InterfaceEvents.GetNumEvents() == 0) return;	// no events means we can go home
-	if (girlimage_id != -1 && !eventrunning)	HideImage(girlimage_id, true);
 
 	/*
 	*	otherwise, compare event IDs

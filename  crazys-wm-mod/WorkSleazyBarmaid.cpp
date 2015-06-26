@@ -59,7 +59,7 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Nig
 	double wages = 15, tips = 0;
 	int work = 0;
 	int roll = g_Dice.d100();
-	int imagetype = IMGTYPE_WAIT;
+	int imagetype = IMGTYPE_ECCHI;
 
 	double jobperformance = JP_SleazyBarmaid(girl, false);
 

@@ -615,6 +615,7 @@
             this.textBox_Config_InitialSlaveHousePerc = new System.Windows.Forms.TextBox();
             this.textBox_Config_InitialGirlMeet = new System.Windows.Forms.TextBox();
             this.groupBox_Logging = new System.Windows.Forms.GroupBox();
+            this.checkBox_config_LogShowNumbers = new System.Windows.Forms.CheckBox();
             this.checkBox_config_LogDebug = new System.Windows.Forms.CheckBox();
             this.checkBox_config_LogExtraDetails = new System.Windows.Forms.CheckBox();
             this.checkBox_config_LogGirlFights = new System.Windows.Forms.CheckBox();
@@ -706,6 +707,8 @@
             this.button_Script_Load = new System.Windows.Forms.Button();
             this.tabPage7_FAQ = new System.Windows.Forms.TabPage();
             this.groupBox_Folders = new System.Windows.Forms.GroupBox();
+            this.label187 = new System.Windows.Forms.Label();
+            this.textBox_Config_Folders_Items = new System.Windows.Forms.TextBox();
             this.richTextBox3 = new System.Windows.Forms.RichTextBox();
             this.checkBox_Config_Folders_Backup_Saves = new System.Windows.Forms.CheckBox();
             this.checkBox_Config_Folders_Prefer_Default = new System.Windows.Forms.CheckBox();
@@ -733,7 +736,6 @@
             this.button24 = new System.Windows.Forms.Button();
             this.checkBox_ToggleTraitTooltips = new System.Windows.Forms.CheckBox();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.checkBox_config_LogShowNumbers = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage0_Info.SuspendLayout();
             this.tabPage1_Girls.SuspendLayout();
@@ -5641,7 +5643,7 @@
             this.comboBox_affects_01.Items.AddRange(new object[] {
             "Skill",
             "Stat",
-            "Girl Status"});
+            "GirlStatus"});
             this.comboBox_affects_01.Location = new System.Drawing.Point(130, 15);
             this.comboBox_affects_01.Name = "comboBox_affects_01";
             this.comboBox_affects_01.Size = new System.Drawing.Size(101, 21);
@@ -7734,6 +7736,17 @@
             this.groupBox_Logging.TabStop = false;
             this.groupBox_Logging.Text = "What to Log";
             // 
+            // checkBox_config_LogShowNumbers
+            // 
+            this.checkBox_config_LogShowNumbers.AutoSize = true;
+            this.checkBox_config_LogShowNumbers.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.checkBox_config_LogShowNumbers.Location = new System.Drawing.Point(5, 123);
+            this.checkBox_config_LogShowNumbers.Name = "checkBox_config_LogShowNumbers";
+            this.checkBox_config_LogShowNumbers.Size = new System.Drawing.Size(98, 17);
+            this.checkBox_config_LogShowNumbers.TabIndex = 9;
+            this.checkBox_config_LogShowNumbers.Text = "Show Numbers";
+            this.checkBox_config_LogShowNumbers.UseVisualStyleBackColor = true;
+            // 
             // checkBox_config_LogDebug
             // 
             this.checkBox_config_LogDebug.AutoSize = true;
@@ -8835,6 +8848,8 @@
             // 
             // groupBox_Folders
             // 
+            this.groupBox_Folders.Controls.Add(this.label187);
+            this.groupBox_Folders.Controls.Add(this.textBox_Config_Folders_Items);
             this.groupBox_Folders.Controls.Add(this.richTextBox3);
             this.groupBox_Folders.Controls.Add(this.checkBox_Config_Folders_Backup_Saves);
             this.groupBox_Folders.Controls.Add(this.checkBox_Config_Folders_Prefer_Default);
@@ -8845,22 +8860,41 @@
             this.groupBox_Folders.Controls.Add(this.textBox_Config_Folders_Characters);
             this.groupBox_Folders.Controls.Add(this.textBox_Config_Folders_Savegames);
             this.groupBox_Folders.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.groupBox_Folders.Location = new System.Drawing.Point(6, 111);
+            this.groupBox_Folders.Location = new System.Drawing.Point(6, 98);
             this.groupBox_Folders.Name = "groupBox_Folders";
-            this.groupBox_Folders.Size = new System.Drawing.Size(484, 185);
+            this.groupBox_Folders.Size = new System.Drawing.Size(596, 222);
             this.groupBox_Folders.TabIndex = 2;
             this.groupBox_Folders.TabStop = false;
             this.groupBox_Folders.Text = "Folders";
+            // 
+            // label187
+            // 
+            this.label187.AutoSize = true;
+            this.label187.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label187.Location = new System.Drawing.Point(6, 93);
+            this.label187.Name = "label187";
+            this.label187.Size = new System.Drawing.Size(32, 13);
+            this.label187.TabIndex = 8;
+            this.label187.Text = "Items";
+            // 
+            // textBox_Config_Folders_Items
+            // 
+            this.textBox_Config_Folders_Items.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.textBox_Config_Folders_Items.Location = new System.Drawing.Point(91, 89);
+            this.textBox_Config_Folders_Items.MaxLength = 30;
+            this.textBox_Config_Folders_Items.Name = "textBox_Config_Folders_Items";
+            this.textBox_Config_Folders_Items.Size = new System.Drawing.Size(499, 20);
+            this.textBox_Config_Folders_Items.TabIndex = 9;
             // 
             // richTextBox3
             // 
             this.richTextBox3.BackColor = System.Drawing.SystemColors.Window;
             this.richTextBox3.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.richTextBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.richTextBox3.Location = new System.Drawing.Point(9, 113);
+            this.richTextBox3.Location = new System.Drawing.Point(9, 134);
             this.richTextBox3.Name = "richTextBox3";
             this.richTextBox3.ReadOnly = true;
-            this.richTextBox3.Size = new System.Drawing.Size(469, 69);
+            this.richTextBox3.Size = new System.Drawing.Size(581, 81);
             this.richTextBox3.TabIndex = 7;
             this.richTextBox3.Text = resources.GetString("richTextBox3.Text");
             // 
@@ -8868,7 +8902,7 @@
             // 
             this.checkBox_Config_Folders_Backup_Saves.AutoSize = true;
             this.checkBox_Config_Folders_Backup_Saves.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.checkBox_Config_Folders_Backup_Saves.Location = new System.Drawing.Point(9, 90);
+            this.checkBox_Config_Folders_Backup_Saves.Location = new System.Drawing.Point(9, 115);
             this.checkBox_Config_Folders_Backup_Saves.Name = "checkBox_Config_Folders_Backup_Saves";
             this.checkBox_Config_Folders_Backup_Saves.Size = new System.Drawing.Size(96, 17);
             this.checkBox_Config_Folders_Backup_Saves.TabIndex = 6;
@@ -8879,7 +8913,7 @@
             // 
             this.checkBox_Config_Folders_Prefer_Default.AutoSize = true;
             this.checkBox_Config_Folders_Prefer_Default.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.checkBox_Config_Folders_Prefer_Default.Location = new System.Drawing.Point(124, 90);
+            this.checkBox_Config_Folders_Prefer_Default.Location = new System.Drawing.Point(124, 115);
             this.checkBox_Config_Folders_Prefer_Default.Name = "checkBox_Config_Folders_Prefer_Default";
             this.checkBox_Config_Folders_Prefer_Default.Size = new System.Drawing.Size(217, 17);
             this.checkBox_Config_Folders_Prefer_Default.TabIndex = 7;
@@ -8902,7 +8936,7 @@
             this.textBox_Config_Folders_Default_Images.Location = new System.Drawing.Point(91, 64);
             this.textBox_Config_Folders_Default_Images.MaxLength = 30;
             this.textBox_Config_Folders_Default_Images.Name = "textBox_Config_Folders_Default_Images";
-            this.textBox_Config_Folders_Default_Images.Size = new System.Drawing.Size(387, 20);
+            this.textBox_Config_Folders_Default_Images.Size = new System.Drawing.Size(499, 20);
             this.textBox_Config_Folders_Default_Images.TabIndex = 5;
             // 
             // label183
@@ -8931,7 +8965,7 @@
             this.textBox_Config_Folders_Characters.Location = new System.Drawing.Point(91, 14);
             this.textBox_Config_Folders_Characters.MaxLength = 30;
             this.textBox_Config_Folders_Characters.Name = "textBox_Config_Folders_Characters";
-            this.textBox_Config_Folders_Characters.Size = new System.Drawing.Size(387, 20);
+            this.textBox_Config_Folders_Characters.Size = new System.Drawing.Size(499, 20);
             this.textBox_Config_Folders_Characters.TabIndex = 1;
             // 
             // textBox_Config_Folders_Savegames
@@ -8940,7 +8974,7 @@
             this.textBox_Config_Folders_Savegames.Location = new System.Drawing.Point(91, 39);
             this.textBox_Config_Folders_Savegames.MaxLength = 30;
             this.textBox_Config_Folders_Savegames.Name = "textBox_Config_Folders_Savegames";
-            this.textBox_Config_Folders_Savegames.Size = new System.Drawing.Size(387, 20);
+            this.textBox_Config_Folders_Savegames.Size = new System.Drawing.Size(499, 20);
             this.textBox_Config_Folders_Savegames.TabIndex = 3;
             // 
             // dataGridView_Bad_Files
@@ -9108,17 +9142,6 @@
             this.checkBox_ToggleTraitTooltips.UseVisualStyleBackColor = true;
             this.checkBox_ToggleTraitTooltips.CheckedChanged += new System.EventHandler(this.checkBox_ToggleTraitTooltips_CheckedChanged);
             // 
-            // checkBox_config_LogShowNumbers
-            // 
-            this.checkBox_config_LogShowNumbers.AutoSize = true;
-            this.checkBox_config_LogShowNumbers.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.checkBox_config_LogShowNumbers.Location = new System.Drawing.Point(5, 123);
-            this.checkBox_config_LogShowNumbers.Name = "checkBox_config_LogShowNumbers";
-            this.checkBox_config_LogShowNumbers.Size = new System.Drawing.Size(98, 17);
-            this.checkBox_config_LogShowNumbers.TabIndex = 9;
-            this.checkBox_config_LogShowNumbers.Text = "Show Numbers";
-            this.checkBox_config_LogShowNumbers.UseVisualStyleBackColor = true;
-            // 
             // Form1
             // 
             this.AllowDrop = true;
@@ -9135,7 +9158,7 @@
             this.MaximumSize = new System.Drawing.Size(1000, 700);
             this.MinimumSize = new System.Drawing.Size(1000, 700);
             this.Name = "Form1";
-            this.Text = "Whore Master Editor 0.8.29";
+            this.Text = "Whore Master Editor 0.8.30";
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.App_FileDrop);
             this.DragEnter += new System.Windows.Forms.DragEventHandler(this.App_DragEnter);
             this.tabControl1.ResumeLayout(false);
@@ -9929,6 +9952,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Script_Var;
         private System.Windows.Forms.DataGridViewTextBoxColumn Script_Text;
         private System.Windows.Forms.CheckBox checkBox_config_LogShowNumbers;
+        private System.Windows.Forms.Label label187;
+        private System.Windows.Forms.TextBox textBox_Config_Folders_Items;
     }
 }
 

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Items>
-    <Item Name="Fuck Blossom" Desc="So called for its effects, this small bud is produced seemingly at random from simple Dandelions." 
-    Type="Food" Badness="0" Special="Temporary" Cost="950" Rarity="Common" Infinite="false" GirlBuyChance="30" ItemWeight="0.0">
+    <Item Name="Fuck Blossom" Desc="So called for its effects, this small bud is produced seemingly at random from simple Dandelions. (+20 sex/libido, -20 health, -40 mor, adds Nymphomaniac)" 
+    Type="Food" Badness="0" Special="Temporary" Cost="950" Rarity="Common" Infinite="false" GirlBuyChance="2" ItemWeight="0.0">
         <Effect What="Stat" Name="Libido" Amount="20" />
         <Effect What="Skill" Name="NormalSex" Amount="20" />
         <Effect What="Skill" Name="Anal" Amount="20" />

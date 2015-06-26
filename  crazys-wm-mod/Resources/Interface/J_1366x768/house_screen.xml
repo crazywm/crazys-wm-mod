@@ -1,0 +1,8 @@
+<Screen>
+<Window   Name="Player House Window"                      XPos="26"   YPos="26"  Width="1314" Height="716" Border="0" />
+<Button   Name="BackButton"         Image="Back"          XPos="1126" YPos="672" Width="180"  Height="36"  Transparency="true" Scale="true" />
+
+<Image    Name="HouseIcon"          File="House.png"      XPos="6"    YPos="6"   Width="32"   Height="32" />
+<Text     Name="ScreenHeader"       Text="Your House"     XPos="70"   YPos="8"   Width="1000" Height="32"  FontSize="20" />
+<Text     Name="HouseDetails"       Text=""               XPos="24"   YPos="56"  Width="1000" Height="500" FontSize="14" />
+</Screen>

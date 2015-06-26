@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Items>
 <Item Name="NO MORE SLEEP! Brand Sleeping Pills"
-      Desc="Famous sleeping pills from the Tales universe. You won't be tired when you take this stuff."
+      Desc="Famous sleeping pills from the Tales universe. You won't be tired when you take this stuff. (-100 tired, +5 health)"
       Type="Food"
       Badness="0"
       Special="None"

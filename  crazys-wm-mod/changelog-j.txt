@@ -73,10 +73,10 @@ Sidestep fix for the "Send to dungeon" bug
  - - (for a proper fix that allows sending girls to the dungeon from any building, much more coding will be required)
 Fixed movies to store their own runweeks - this fixes the 35 week crash bug
 Added more movie storage options:
-	<Movies>
-		<Movie Init_Qual="940" Qual="799" Promo_Qual="1412" Money_Made="1412" RunWeeks="1" />
-		<Movie Init_Qual="839" Qual="839" Promo_Qual="0" Money_Made="0" RunWeeks="0" />
-	</Movies>
+    <Movies>
+        <Movie Init_Qual="940" Qual="799" Promo_Qual="1412" Money_Made="1412" RunWeeks="1" />
+        <Movie Init_Qual="839" Qual="839" Promo_Qual="0" Money_Made="0" RunWeeks="0" />
+    </Movies>
 !!!!!!!!!!!!!!!!!!!! pushed version .05i.3
 (20minutes after I pushed version .05i.3 Crazy sent a bug fix to the SVN)
 The girl deatils screens now show the correct buildings jobs.
@@ -342,7 +342,7 @@ New Skill - Hand Job
 New Jobs - WorkFilmHandJob, GetFertility, GetTubesTied, Intern
 Modified Jobs - Cleaning, BarPiano, BarSinger, BarStripper, BarWhore, Milk, PeepShow,
                 BrothelMassusse, BrothelStripper, BrothelWhore, HallEntertainer, HallWhore
-New Actions - ACTION_WORKMUSIC, ACTION_WORKSTRIP, ACTION_WORKMILK, ACTION_WORKMASSUSSE	
+New Actions - ACTION_WORKMUSIC, ACTION_WORKSTRIP, ACTION_WORKMILK, ACTION_WORKMASSUSSE
 New Script Targets - HandJob, Ecchi, Bunny, Card, Milk, Wait, Sing
 
 'J'
@@ -2196,6 +2196,22 @@ Fixed a few other image handling issues
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.03
 
+###  Changes 6/19-25
+Removed unneeded gif conversion code that was just wasting memory.
+Fixed a bug in pregnant image selection where the nonpreg version was not checked.
+ - Also fixed a problem with pregprofile not working.
+Updated a few items
+Started adding 16:9 interface J_1366x768
+Added Items folder location to config.xml
+Fixed NightToggle button image size
+
+WME - Fixed a bug with items not working with Girl Status effects
+WME - Added custom Items folder to config.xml
+WME - Updated Folder text to explain relative and absolute folder paths a little.
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.29
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.04
 
 
 

@@ -60,6 +60,8 @@ struct sConfigData
 		bool	configXMLch;
 		string	saves;
 		bool	configXMLsa;
+		string	items;
+		bool	configXMLil;
 		bool	backupsaves;
 		string	defaultimageloc;
 		bool	configXMLdi;
@@ -394,6 +396,8 @@ public:
 		bool configXMLch()			{ return data->folders.configXMLch; }
 		string& saves()				{ return data->folders.saves; }
 		bool configXMLsa()			{ return data->folders.configXMLsa; }
+		string& items()				{ return data->folders.items; }
+		bool configXMLil()			{ return data->folders.configXMLil; }
 		bool backupsaves()			{ return data->folders.backupsaves; }
 		string& defaultimageloc()	{ return data->folders.defaultimageloc; }
 		bool configXMLdi()			{ return data->folders.configXMLdi; }
