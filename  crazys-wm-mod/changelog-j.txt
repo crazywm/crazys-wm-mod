@@ -2210,12 +2210,20 @@ WME - Added custom Items folder to config.xml
 WME - Updated Folder text to explain relative and absolute folder paths a little.
 
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
-!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.29
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.30
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.04
 
+Added more sex texts by GonDra
+Added Items by ChancellorPalpatine with a few changes
+Updated WorkRancher, WorkShepherd
+Fixed a bug in whore jobs that occasionally duplicates turn messages.
+Merged two of the whore customer number messages into one.
+Changed "fuckMessage" in whore jobs from string to stringstream and did some cleanup of it.
+Added special inheritance checks for Queen, Princess and Noble traits.
+Added  // `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live 
 
-
-
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.05
 
  
 $$$$ TO DO - SHORT TERM - (for this version) $$$$

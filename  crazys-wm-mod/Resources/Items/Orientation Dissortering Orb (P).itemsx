@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="Orientation Dissortering Orb (P)" Desc="This orb can dissort a girl's sexual orientation. Approved by Bruce Jenner. (May add or remove Lesbian, Bisexual or Straight, along with a boost/decrease on some skills)" Type="Food" Badness="5" Special="None" Cost="2500" Rarity="Catacomb05" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Skill" Name="Anal" Amount="-10" />
+        <Effect What="Skill" Name="NormalSex" Amount="-10" />
+        <Effect What="Skill" Name="Lesbian" Amount="30" />
+        <Effect What="Trait" Name="Bisexual" Amount="0" />
+        <Effect What="Trait" Name="Lesbian" Amount="1" />
+        <Effect What="Trait" Name="Straight" Amount="0" />
+    </Item>
+</Items>

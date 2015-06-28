@@ -1255,7 +1255,7 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 		for (int i = 0; i < NUM_STATS; i++)
 		{
 			int min = 0, max = 100;
-			/* */if (i == STAT_AGE) min = 18;
+			/* */if (i == STAT_AGE) min = 18;	// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live 
 			else if (i == STAT_EXP) max = 32000;
 			else if (i == STAT_LEVEL) max = 255;
 			else if (i == STAT_PCLOVE || i == STAT_PCFEAR || i == STAT_PCHATE || i == STAT_MORALITY ||
@@ -1555,7 +1555,7 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 		newGirl->m_Virgin = 0;
 		RemoveTrait(newGirl, "Virgin");
 	}
-	if (newGirl->m_Stats[STAT_AGE] < 18) newGirl->m_Stats[STAT_AGE] = 18;
+	if (newGirl->m_Stats[STAT_AGE] < 18) newGirl->m_Stats[STAT_AGE] = 18;	// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live 
 
 	if (g_Dice.percent(5))		AddTrait(newGirl, "Former Addict");
 	else
@@ -3569,7 +3569,7 @@ int cGirls::GetStat(sGirl* girl, int a_stat)
 	u_int stat = a_stat;
 	int value = 0, min = 0, max = 100;
 
-	/* */if (stat == STAT_AGE) min = 18;
+	/* */if (stat == STAT_AGE) min = 18;	// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live 
 	else if (stat == STAT_EXP) max = 32000;
 	else if (stat == STAT_LEVEL) max = 255;
 	else if (stat == STAT_HEALTH	&& g_Girls.HasTrait(girl, "Incorporeal"))	return 100;
@@ -3598,7 +3598,7 @@ void cGirls::SetStat(sGirl* girl, int a_stat, int amount)
 	case STAT_AGE:		// age is a special case so we start with that
 		if (girl->m_Stats[STAT_AGE] > 99)		girl->m_Stats[stat] = 100;
 		else if (girl->m_Stats[stat] > 80)		girl->m_Stats[stat] = 80;
-		else if (girl->m_Stats[stat] < 18)		girl->m_Stats[stat] = 18;
+		else if (girl->m_Stats[stat] < 18)		girl->m_Stats[stat] = 18;	// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live 
 		else									girl->m_Stats[stat] = amt;
 		return; break;	// and just return instead of going to the end
 	case STAT_HEALTH:
@@ -3653,7 +3653,7 @@ void cGirls::UpdateStat(sGirl* girl, int a_stat, int amount, bool usetraits)
 		{
 			value = girl->m_Stats[stat] + amount;
 			if (value > 80)			value = 80;
-			else if (value < 18)	value = 18;
+			else if (value < 18)	value = 18;	// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live 
 			girl->m_Stats[stat] = value;
 		}
 		return; break;
@@ -4196,7 +4196,7 @@ bool sGirl::LoadGirlXML(TiXmlHandle hGirl)
 
 
 	g_Girls.ApplyTraits(this);
-	if (m_Stats[STAT_AGE] < 18) m_Stats[STAT_AGE] = 18;
+	if (m_Stats[STAT_AGE] < 18) m_Stats[STAT_AGE] = 18;	// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live 
 
 	g_Girls.CalculateGirlType(this);
 
@@ -4642,7 +4642,7 @@ void cGirls::LoadGirlsXML(string filename)
 			girl->m_Virgin = 0;
 			RemoveTrait(girl, "Virgin");
 		}
-		if (girl->m_Stats[STAT_AGE] < 18) girl->m_Stats[STAT_AGE] = 18;
+		if (girl->m_Stats[STAT_AGE] < 18) girl->m_Stats[STAT_AGE] = 18;	// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live 
 
 		MutuallyExclusiveTraits(girl, 1);	// make sure all the trait effects are applied
 		RemoveAllRememberedTraits(girl);	// WD: For new girls remove any remembered traits from trait incompatibilities
@@ -8318,7 +8318,7 @@ bool cGirls::CheckVirginity(sGirl* girl)
 	}
 	else if (girl->m_Stats[STAT_AGE] < 18)	// `J` If she just turned 18 she should not legally have had sex yet
 	{
-		girl->m_Stats[STAT_AGE] = 18;
+		girl->m_Stats[STAT_AGE] = 18;	// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live 
 		girl->m_Virgin = 1;
 		AddTrait(girl, "Virgin");
 		RemoveTrait(girl, "MILF");
@@ -8779,7 +8779,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		}
 		else if (check < 60) //Gondra: the girl is reasonably skilled
 		{
-			if (HasTrait(girl, "Phat Booty") || HasTrait(girl, "Plump Tush") || HasTrait(girl, "Wide Bottom") && choice < 50) //Gondra: EXAMPLE Since I have two texts for the same Trait set I am reusing the choice variable here
+			if (HasTrait(girl, "Phat Booty") || HasTrait(girl, "Plump Tush") || HasTrait(girl, "Wide Bottom")) //Gondra: Trait messages 
 			{
 				sexMessage << girlName << "'s voluminous ass jiggles quite a bit as the customer goes at it.";
 			}
@@ -8794,7 +8794,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		}
 		else if (check < 80) //Gondra: the girl is VERY skilled
 		{
-			if (HasTrait(girl, "Phat Booty") || HasTrait(girl, "Plump Tush") || HasTrait(girl, "Wide Bottom")) //Gondra: Trait messages
+			if (HasTrait(girl, "Phat Booty") || HasTrait(girl, "Plump Tush") || HasTrait(girl, "Wide Bottom") && choice < 50) //Gondra: EXAMPLE Since I have two texts for the same Trait set I am reusing the choice variable here
 			{
 				sexMessage << girlName << " enjoyed showing of that she can hide the customers whole cock between her cheeks, before she lets him slip into her ass proper.";
 			}
@@ -8858,7 +8858,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			}
 			else
 			{
-				sexMessage << girlName << ", being unfamiliar with the tools of this part of the trade, had a questioning look on her face that made it hard for the customer to enjoy themselves.";
+				sexMessage << "Being unfamiliar with the tools of this part of the trade, " << girlName << " had a questioning look on her face that made it hard for the customer to enjoy themselves.";
 			}
 		}
 		else if (check < 40) //Gondra:  if the girl is slightly skilled
@@ -8946,17 +8946,17 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		{
 			if (HasTrait(girl, "Aggressive"))	//Gondra: Trait messages TODO Gondra: add positive Trait messages here?
 			{
-				sexMessage << girlName << " stares angrily at the customer as she tears the clothes off of her body. It makes the customer feel uncomfortable.";
+				sexMessage << girlName << " stared angrily at the customer as she tore the clothes off of her body. It made the customer feel uncomfortable.";
 				customer->m_Stats[STAT_HAPPINESS] -= 5;
 			}
 			else if (HasTrait(girl, "Nervous"))
 			{
-				sexMessage << girlName << " is clearly uncomfortable with the arrangement, and it makes the customer feel uncomfortable.\n";
+				sexMessage << girlName << " was clearly uncomfortable with the arrangement, and it made the customer feel uncomfortable.";
 				customer->m_Stats[STAT_HAPPINESS] -= 5;
 			}
 			else if (!HasTrait(girl, "Fake Orgasm Expert") && g_Dice.percent(10))
 			{
-				sexMessage << girlName << "'s robotic moans along with her tearful eyes ruins the customer's boner. He doesn't even manage to finish before angrily stomping out of the room.";
+				sexMessage << girlName << "'s robotic moans along with her tearful eyes ruined the customer's boner. He didn't even manage to finish before angrily stomping out of the room.";
 				customer->m_Stats[STAT_HAPPINESS] -= 15;
 			}
 
@@ -8967,24 +8967,22 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 
 			else if (choice < 40)
 			{
-				sexMessage << "The customer's inexperience combined with " << girlName << "'s inexperience leads to lots of painful grabbing of breasts, aggressive thrusts, and a quick finish. Everyone is clearly unhappy.";
+				sexMessage << "The customer's inexperience combined with " << girlName << "'s inexperience lead to lots of painful grabbing of breasts, aggressive thrusts, and a quick finish. Everyone was clearly unhappy.";
 				customer->m_Stats[STAT_HAPPINESS] -= 5;
 			}
 
 			else if (choice < 60)
 			{
-
-				sexMessage << "\"You get what you pay for.\" the customer grumbles as he throws a few wads of money on the jizz covered floor.";
+				sexMessage << "\"You get what you pay for.\" the customer grumbled as he threw a few wads of money on the jizz covered floor.";
 				customer->m_Stats[STAT_HAPPINESS] -= 5;
 			}
 			else if (choice < 80)
 			{
-				sexMessage << girlName << "'s forced smile and awkward demeanor makes the whole ordeal more awkward than necessary, but the deed gets done.";
+				sexMessage << girlName << "'s forced smile and awkward demeanor made the whole ordeal more awkward than necessary, but the deed gets done.";
 			}
 
 			else
 			{
-
 				sexMessage << girlName << " just laid back and let the customer fuck her.";
 			}
 		}
@@ -9006,8 +9004,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			}
 			else
 			{
-
-				sexMessage << girlName << " lets the customer push her down and paw at her breasts, allowing a few fake moans to escape.";
+				sexMessage << girlName << " let the customer push her down and paw at her breasts, allowing a few fake moans to escape.";
 			}
 		}
 		else if (check < 60) //Gondra: the girl is reasonably skilled
@@ -9015,8 +9012,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 
 			if (HasTrait(girl, "Slut")) //Gondra: Trait messages
 			{
-
-				sexMessage << girlName << " is on the customers cock quickly and surprises him with a few tricks while they fuck.";
+				sexMessage << girlName << " was on the customers cock quickly and surprised him with a few tricks while they fucked.";
 			}
 			else if (choice < 33)	//Gondra: Vanilla Messages TODO Gondra: Replace/supplement these Vanilla messages.
 			{
@@ -9028,8 +9024,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			}
 			else
 			{
-
-				sexMessage << girlName << " manages to keep the customer going until he finished, but forgot to fake her own orgasm. Despite that, the customer left pleased with the experience.";
+				sexMessage << girlName << " managed to keep the customer going until he finished, but forgot to fake her own orgasm. Despite that, the customer left pleased with the experience.";
 			}
 		}
 		else if (check < 80) //Gondra: the girl is very skilled
@@ -9037,13 +9032,11 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 
 			if (HasTrait(girl, "Fake Orgasm Expert") || HasTrait(girl, "Fast Orgasms")) //Gondra: Trait messages
 			{
-
-				sexMessage << girlName << "went at it hard with the customer, cumming shortly after he penetrated her, and then several times until she finished her performance with an especially loud one as the customer came.";
+				sexMessage << girlName << " went at it hard with the customer, cumming shortly after he penetrated her, and then several times until she finished her performance with an especially loud orgasm as the customer came.";
 			}
 			else if (HasTrait(girl, "Slow Orgasms"))
 			{
-
-				sexMessage << "Although she is known to be hard to please, " << girlName << " manages to cum through a combination of her considerable skill and an particularly observant customer that leaves with a smile afterwards.";
+				sexMessage << "Although she is known to be hard to please, " << girlName << " managed to cum through a combination of her considerable skill and an particularly observant customer that left with a smile on his face.";
 			}
 			else if (choice < 50)	//Gondra: Vanilla Messages TODO Gondra: Replace/supplement these Vanilla messages.
 			{
@@ -9051,8 +9044,6 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			}
 			else
 			{
-
-
 				sexMessage << girlName << " fucked like a wild animal, cumming several times and ending with her and the customer covered in sweat.";
 			}
 		}
@@ -9104,7 +9095,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		{
 			if (HasTrait(girl, "Cum Addict"))	//Gondra: Trait messages
 			{
-				sexMessage << "The smell coming from the customers cock in front of her awoke " << girlName << "'s hunger for cum, which made her work his shaft greedily but clumsy until the customer came with a pained expression, letting her swallow what she craved.";
+				sexMessage << "The smell that came from the customers cock in front of her awoke " << girlName << "'s hunger for cum, which made her work his shaft with considerable greed, forgetting to be careful with her teeth, until the customer came with a pained expression, letting her swallow what she craved.";
 			}
 			else if (HasTrait(girl, "Dick-Sucking Lips"))
 			{
@@ -9125,9 +9116,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		{
 			if (HasTrait(girl, "Cum Addict")) //Gondra: Trait messages
 			{
-				sexMessage << "Knowing about the reward that awaited her, "
-					<< girlName
-					<< " sucked on the customers length with a singular drive that made the customer come quickly. She continued sucking until she had swallowed the last drop of his cum";
+				sexMessage << "Knowing about the reward that awaited her, " << girlName << " sucked on the customers length with a singular drive that made the customer come quickly. She continued sucking until she had swallowed the last drop of his cum";
 			}
 			else if (choice < 50)	//Gondra: Vanilla Messages TODO Gondra: Replace/supplement these Vanilla messages.
 			{
@@ -9165,7 +9154,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			}
 			else if (HasTrait(girl, "Nimble Tongue"))
 			{
-				sexMessage << "Instead of a normal blowjob, " << girlName << " shows off just how nimble her tongue is, making him blow his load after keeping him on edge for several minutes just with the tip of her tongue.";
+				sexMessage << "Instead of a normal blowjob, " << girlName << " showed off just how nimble her tongue is, making him blow his load after keeping him on edge for several minutes just with the tip of her tongue.";
 			}
 			else if (choice < 50)	//Gondra: Vanilla Messages TODO Gondra: Replace/supplement these Vanilla messages.
 			{
@@ -9223,7 +9212,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		{
 			if (HasTrait(girl, "Cum Addict")) //Gondra: Trait messages
 			{
-				sexMessage << "After letting her customer use her tits, " << girlName << " manages to catch most of his load in her mouth as he cums, eagerly licking up the rest.";
+				sexMessage << "After letting her customer use her tits, " << girlName << " managed to catch most of his load in her mouth as he came, eagerly licking up the rest.";
 			}
 			else if (HasTrait(girl, "Flat Chest") || HasTrait(girl, "Petite Breasts") || HasTrait(girl, "Small Boobs"))
 			{
@@ -9246,11 +9235,11 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		{
 			if (HasTrait(girl, "Cum Addict")) //Gondra: Trait messages
 			{
-				sexMessage << "As she rubs spit onto her tits, " << girlName << " asks her customer to give her something nice and hot to drink when he is done. Smiling, the customer fulfilled her wish with a big load of cum sprayed directly into her mouth.";
+				sexMessage << "As she rubbed spit onto her tits, " << girlName << " asked her customer to give her something nice and hot to drink when he is done. Smiling, the customer fulfilled her wish with a big load of cum sprayed directly into her mouth.";
 			}
 			else if (HasTrait(girl, "Flat Chest") || HasTrait(girl, "Petite Breasts") || HasTrait(girl, "Small Boobs"))
 			{
-				sexMessage << "With her chest oiled up, " << girlName << " moans lightly as she rubs her whole upper body against her customer, letting a pleasant moan escape her lips as his hot cum splatters over her chest.";
+				sexMessage << "With her chest oiled up, " << girlName << " moaned lightly as she rubbed her whole upper body against her customer, letting a pleasant moan escape her lips as his hot cum splattered over her chest.";
 			}
 			else if (HasTrait(girl, "Busty Boobs") || HasTrait(girl, "Big Boobs") || HasTrait(girl, "Giant Juggs") || HasTrait(girl, "Massive Melons") || HasTrait(girl, "Abnormally Large Boobs") || HasTrait(girl, "Titanic Tits")) //Gondra: Catch all for large tits for now
 			{
@@ -9273,11 +9262,11 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			}
 			else if (HasTrait(girl, "Flat Chest") || HasTrait(girl, "Petite Breasts") || HasTrait(girl, "Small Boobs"))
 			{
-				sexMessage << "Although the customer seemed to have originally having wanted to pick on " << girlName << ", he is left breathless as she easily makes him cum with the small bosom, that he had wanted to mock.";
+				sexMessage << "Although the customer seemed to have originally having wanted to pick on " << girlName << ", he is left breathless as she easily makes him cum with her small bosom, that he had wanted to mock.";
 			}
 			else if (HasTrait(girl, "Busty Boobs") || HasTrait(girl, "Big Boobs") || HasTrait(girl, "Giant Juggs") || HasTrait(girl, "Massive Melons") || HasTrait(girl, "Abnormally Large Boobs") || HasTrait(girl, "Titanic Tits")) //Gondra: Catch all for large tits for now
 			{
-				sexMessage << "It doesn't take long before " << girlName << " has the first load of cum coat the flesh between her breasts, but she manages to add a second load onto her jiggling flesh, through a combination of breathless moans and expert handling of her large mammaries.";
+				sexMessage << "It didn't take long before " << girlName << " had the first load of cum coat the flesh between her breasts, but through a combination of breathless moans and expert handling of her large mammaries she managed to add a second load onto her jiggling flesh before the session ended.";
 			}
 			else if (choice < 50)	//Gondra: Vanilla Messages
 			{
@@ -9359,6 +9348,10 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			{
 				sexMessage << "Massaging her customers scepter and crown jewels intensly, " << girlName << " prevented him from cumming until with a small string of silken string wrapped around the base of his shaft until he begged her to let him cum, visibly enjoying as rope after rope of his hot cum landed in her mouth.";
 			}
+			else if (HasTrait(girl, "Prehensile Tail"))
+			{
+				sexMessage << girlName << "'s tail wrapped tightly around her customers cock jerking him off while both her hands ran over her body giving him quite the show, which he must have enjoyed judging by the mess he made when he came.";
+			}
 			else if (choice < 50)	//Gondra: Vanilla Messages TODO Gondra: Replace/supplement these Vanilla messages.
 			{
 				sexMessage << girlName << " was moaning lightly as strings of hot cum covered her body, but didn't stop moving her hands over his cock, squeezing another exited spurt from his balls before the customer left with quivering knees.";
@@ -9368,7 +9361,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				sexMessage << girlName << " loved using her hand on the customer's cock, and let him cum all over her.";
 			}
 		}
-		/*else //Gondra: the girl is EXTREMELY skilled
+		/*else //Gondra: the girl is EXTREMELY skilled //TODO Gondra: add extremely skilled texts.
 		{
 			//Gondra: 
 			sexMessage << GetRandomSexString();
@@ -9437,7 +9430,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		//TODO Gondra: rework this with the standard system I used in the prior Cases - although this will require a bit more work.
 		if (g_Brothels.GetNumBeasts() == 0)
 		{
-			sexMessage << girlName << " found that there were no beasts available, so some fake ones were used. This disapointed the customer somewhat.";
+			sexMessage << girlName << " found that there were no beasts available, so some fake ones were used. This disappointed the customer somewhat.";
 			customer->m_Stats[STAT_HAPPINESS] -= 10;
 		}
 		else
@@ -9445,7 +9438,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			int harmchance = -(GetSkill(girl, SKILL_BEASTIALITY) + GetSkill(girl, SKILL_ANIMALHANDLING) - 50);  // 50% chance at 0 skill, 1% chance at 49 skill
 			if (g_Dice.percent(harmchance))
 			{
-				sexMessage << girlName << " accidentally harmed some beasts during the act and she";
+				sexMessage << girlName << " accidentally harmed some beasts during the act.\n";
 				g_Brothels.add_to_beasts(-((g_Dice % 3) + 1));
 			}
 			else if (g_Dice.percent(1 +
@@ -9455,15 +9448,88 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				(HasTrait(girl, "Sadistic") ? 2 : 0) +
 				(HasTrait(girl, "Twisted") ? 1 : 0)))
 			{
-				sexMessage << girlName << " \"accidentally\" harmed a beast during the act and she";//Made it actually use quote marks CRAZY
+				sexMessage << girlName << " \"accidentally\" harmed a beast during the act.\n";//Made it actually use quote marks CRAZY
 				g_Brothels.add_to_beasts(-1);
 			}
-			else sexMessage << girlName;
-			/* */if (check < 20)	sexMessage << " was disgusted by the idea but still allowed the customer to watch as she was fucked by some animals.";
-			else if (check < 40)	sexMessage << " was a only little put off by the idea but still allowed the customer to watch and help as she was fucked by animals.";
-			else if (check < 60)	sexMessage << " took a large animal's cock deep inside her and enjoyed being fucked by it, her cries of pleasure being muffled by the customer's cock in her mouth.";
-			else if (check < 80)	sexMessage << " fucked some exotic beasts covered with massive cocks and tentacles, she came over and over alongside the customer.";
-			else /*           */	sexMessage << GetRandomBeastString();
+
+			if (check < 20)		//Gondra: if the girl is unskilled show one of these messages
+			{
+				if (HasTrait(girl, "Cow Girl"))	//Gondra: Trait messages
+				{
+					sexMessage << "Held down by the customer, " << girlName << " gritted her teeth as the beast penetrated her roughly, mooing with definite discomfort when the customer told her to do so.";
+				}
+				else if (choice < 40)	//Gondra: Vanilla Messages TODO Gondra: Replace/supplement these Vanilla messages.
+				{
+					sexMessage << "Initially the customers was amused as the beast pounced " << girlName << ", who was not able to handle the beast, but the panicked shrieks of the girl as the horny monster tried to force itself onto her killed his mood though.";
+				}
+				else
+				{
+					sexMessage << girlName << " was disgusted by the idea but still allowed the customer to watch as she was fucked by some animals.";
+				}
+			}
+
+			else if (check < 40) //Gondra:  if the girl is slightly skilled
+			{
+				if (HasTrait(girl, "Canine") || HasTrait(girl, "Cat Girl")) //Gondra: Trait messages
+				{
+					sexMessage << "The beast seemed to be a bit wary of " << girlName << " but came closer as the customer made her present herself, fucking her hard as the customer watched.";
+				}
+				else if (choice < 50)	//Gondra: Vanilla Messages TODO Gondra: Replace/supplement these Vanilla messages.
+				{
+					sexMessage << girlName << " was not very enthusiastic about this, but allowed the customer to direct the beast to mount her.";
+				}
+				else
+				{
+					sexMessage << girlName << " was a little put off by the idea, but still allowed the customer to watch and help as she was fucked by animals.";
+				}
+			}
+			else if (check <60) //Gondra: the girl is reasonably skilled
+			{
+				if (HasTrait(girl, "Prehensile Tail") || HasTrait(girl, "Playful Tail")) //Gondra: Trait messages
+				{
+					sexMessage << girlName << " playfully lifted her tail, presenting her wet cunt to the beast which eagerly filled her needy cunt as the customer stroked his length.";
+				}
+				else if (HasTrait(girl, "Fertile") || HasTrait(girl, "Broodmother"))
+				{
+					sexMessage << "The beast kept pumping its cum deep into " << girlName << "'s pussy, leaving her belly a bit distended with cum afterwards, making the customer remark that the monster seemed intent on making her carry its progeny.";
+				}
+				else if (choice < 50)	//Gondra: Vanilla Messages TODO Gondra: Replace/supplement these Vanilla messages.
+				{
+					sexMessage << "Tentacles wriggled themselves into " << girlName << "'s welcoming holes, making her cum while the customer leered at them.";
+				}
+				else
+				{
+					sexMessage << girlName << " took a large animal's cock deep inside her and enjoyed being fucked by it, her cries of pleasure being muffled by the customer's cock in her mouth.";
+				}
+			}
+			else if (check <80) //Gondra: the girl is very skilled
+			{
+				if (HasTrait(girl, "Cum Addict")) //Gondra: Trait messages
+				{
+					sexMessage << girlName << " eagerly swallowed every drop of cum she could squeeze from the many cocks of the beast while it fucked her, only pausing for a moment to receive the customers load.";
+				}
+				else if (HasTrait(girl, "Cat Girl") || HasTrait(girl, "Canine"))
+				{
+					sexMessage << girlName << " acted like she was in heat as she kept fucking the beasts, cumming too often to count, fully embracing her wild side until she had exhausted the monsters.";
+				}
+				else if (HasTrait(girl, "Cum Addict"))
+				{
+					sexMessage << girlName << " captivated the customer with her performance of a noble elf falling into depravity. Although she could not really hide that she was well experienced, she made it up to the customer by subtly making it so that he could see the beast fucking her from the best angle as she enjoyed herself getting railed by the monster.";
+				}
+				else if (choice < 50)	//Gondra: Vanilla Messages TODO Gondra: Replace/supplement these Vanilla messages.
+				{
+					sexMessage << girlName << " made sure that the customer could see the monsters many tentacles and cocks fucking her, as she came again and again.";
+				}
+				else
+				{
+					sexMessage << girlName << " fucked some exotic beasts covered with massive cocks and tentacles, she came over and over alongside the customer.";
+				}
+			}
+			else //Gondra: the girl is EXTREMELY skilled
+			{
+			//Gondra: random beast string
+			sexMessage << GetRandomBeastString();
+			}
 		}
 		message += sexMessage.str(); //Gondra: add our sexMessage to our message string
 #endif
@@ -9474,38 +9540,26 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 #if 1
 		if (z)
 		{
-			sexMessage << "The group of customers had fun chaseing, tackeling and gangbanging their zombie sex toy.\n";
+			sexMessage << "The group of customers had fun chasing, tackeling and gangbanging their zombie sex toy.\n";
 			break;
 		}
-
-
 		//Gondra: reworking this part with choice variable
 		if (check < 20)		//Gondra: the girl is unskilled
 		{
-
-
-
 			if (HasTrait(girl, "Slut") || HasTrait(girl, "Nymphomaniac"))	//Gondra: Trait messages
 			{
 				sexMessage << "At first " << girlName << " seemed to be in her element surrounded by so many \"wonderful\" cocks, but it quickly became apparent that she does not have the experience to satisfy them all.";
 			}
 			else if (choice < 33)	//Gondra: Vanilla Messages TODO Gondra: Replace/supplement these Vanilla messages.
 			{
-
-
 				sexMessage << girlName << " was overwhelmed by the group surrounding her, barely able to react to what was done to her.";
 			}
 			else if (choice < 66)
 			{
-
-
 				sexMessage << girlName << " was being used by the group more than her actively servicing them.";
 			}
-
 			else
 			{
-
-
 				sexMessage << girlName << " struggled to service everyone in the group that came to fuck her.";
 			}
 		}
@@ -9515,7 +9569,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			{
 				sexMessage << girlName << "'s jiggling body seemed to invite the cocks around her to prod her everywhere as she struggled to satisfy the demands of the group.";
 			}
-			else if (choice < 66)	//Gondra: Vanilla Messages
+			else if (choice < 50)	//Gondra: Vanilla Messages
 			{
 				sexMessage << girlName << " barely was able to service everyone, but managed to entertain her customers nonetheless.";
 			}
@@ -9563,7 +9617,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			}
 			else if (HasTrait(girl, "Phat Booty") || HasTrait(girl, "Plump Tush") || HasTrait(girl, "Wide Bottom") || HasTrait(girl, "Great Arse"))
 			{
-				sexMessage << "While it certainly isn't the only thing the group uses, " << girlName << "'s great arse sees near constant use, always a fresh one ready to make her backside ripple when the previous one is done filling her insides with creamy white cum.";
+				sexMessage << "While it certainly isn't the only thing the group uses, " << girlName << "'s great arse sees near constant use, always a fresh cock ready to make her backside ripple when the previous one is done filling her insides with creamy white cum.";
 			}
 			else if (choice < 50)	//Gondra: Vanilla Messages
 			{
@@ -9617,12 +9671,8 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				sexMessage << girlName << " licked her female customer's cunt until she came. She didn't want any herself.";
 			}
 		}
-
 		else if (check < 40) //Gondra:  if the girl is slightly skilled
 		{
-
-
-
 			if (HasTrait(girl, "Dick-Sucking Lips")) //Gondra: Trait messages
 			{
 				sexMessage << "The customer enjoyed feeling " << girlName << "'s lips run over her body, especially when they were sucking on her nipples or clit, elicting an orgasm from the customer after a few directions.";
@@ -9630,22 +9680,13 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			else if (choice < 20)	//Gondra: Vanilla Messages
 			{
 				sexMessage << girlName << " enjoyed herself a little bit as her hands and tongue made her customer cum.";
-
-
-
 			}
 			else if (choice < 40)
 			{
-
-
-
 				sexMessage << girlName << " didn't seem to mind her customers hands drifting over her body as she brought her to orgasm.";
 			}
 			else if (choice < 60)
 			{
-
-
-
 				sexMessage << girlName << " was a bit uncomfortable with herself being visibly aroused after servicing her customer.";
 			}
 			else if (choice < 80)
@@ -9697,7 +9738,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			}
 			else if (choice < 33)	//Gondra: Vanilla Messages
 			{
-				sexMessage << girlName << " seemingly had a blast with her customer as both their moans were quite audible.";
+				sexMessage << girlName << " seemingly had a blast with her customer as both their moans were quite loud.";
 			}
 			else if (choice < 66)
 			{
@@ -9713,10 +9754,6 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			//Gondra: again with the function
 			sexMessage << girlName << GetRandomLesString();
 		}
-
-
-
-
 		message += sexMessage.str();
 #endif
 	}break; //End of SKILL_LESBIAN Case
@@ -13626,7 +13663,16 @@ bool cGirls::child_is_grown(sGirl* mom, sChild *child, string& summary, bool Pla
 		{
 			if (mom->m_Traits[i])
 			{
-				if (mom->m_Traits[i]->m_InheritChance != -1)	// `J` new method for xml traits
+				if (mom->m_Traits[i]->m_Name == "Queen")
+				{
+					/* */if (g_Dice.percent(60))	g_Girls.AddTrait(sprog, "Princess");
+					else if (g_Dice.percent(60))	g_Girls.AddTrait(sprog, "Noble");
+				}
+				else if (mom->m_Traits[i]->m_Name == "Princess" || mom->m_Traits[i]->m_Name == "Noble")
+				{
+					if (g_Dice.percent(40))			g_Girls.AddTrait(sprog, "Noble");
+				}
+				else if (mom->m_Traits[i]->m_InheritChance != -1)	// `J` new method for xml traits
 				{
 					if (g_Dice.percent(mom->m_Traits[i]->m_InheritChance))
 					{
@@ -13660,7 +13706,7 @@ bool cGirls::child_is_grown(sGirl* mom, sChild *child, string& summary, bool Pla
 		}
 
 		// set age to 18, fix health
-		sprog->m_Stats[STAT_AGE] = 18;
+		sprog->m_Stats[STAT_AGE] = 18;	// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live 
 		sprog->m_Stats[STAT_HEALTH] = 100;
 		sprog->m_Stats[STAT_HAPPINESS] = 100;
 		sprog->m_Stats[STAT_TIREDNESS] = 0;
@@ -13837,7 +13883,16 @@ bool cGirls::child_is_grown(sGirl* mom, sChild *child, string& summary, bool Pla
 				{
 					if (mom->m_Traits[i])
 					{
-						if (mom->m_Traits[i]->m_InheritChance != -1)	// `J` new method for xml traits
+						if (mom->m_Traits[i]->m_Name == "Queen")
+						{
+							/* */if (g_Dice.percent(60))	g_Girls.AddTrait(sprog, "Princess");
+							else if (g_Dice.percent(60))	g_Girls.AddTrait(sprog, "Noble");
+						}
+						else if (mom->m_Traits[i]->m_Name == "Princess" || mom->m_Traits[i]->m_Name == "Noble")
+						{
+							if (g_Dice.percent(40))			g_Girls.AddTrait(sprog, "Noble");
+						}
+						else if (mom->m_Traits[i]->m_InheritChance != -1)	// `J` new method for xml traits
 						{
 							if (g_Dice.percent(mom->m_Traits[i]->m_InheritChance))
 							{
@@ -13871,7 +13926,7 @@ bool cGirls::child_is_grown(sGirl* mom, sChild *child, string& summary, bool Pla
 				}
 
 				// set age to 18, fix health
-				sprog->m_Stats[STAT_AGE] = 18;
+				sprog->m_Stats[STAT_AGE] = 18;	// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live 
 				sprog->m_Stats[STAT_HEALTH] = 100;
 				sprog->m_Stats[STAT_HAPPINESS] = 100;
 				sprog->m_Stats[STAT_TIREDNESS] = 0;

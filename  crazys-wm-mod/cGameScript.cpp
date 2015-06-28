@@ -590,7 +590,7 @@ sScript *cGameScript::Script_AddFamilyToDungeon(sScript *Script)
 	stringstream NGmsg3;
 	stringstream NGmsgM;
 
-	int oldest = 18;
+	int oldest = 18;	// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live 
 	if (value[0] > 0)
 	{
 		Daughter1 = g_Girls.CreateRandomGirl((g_Dice % 13) + 13, false, slave, false, allowNonHuman, kidnaped, arena);
@@ -620,7 +620,7 @@ sScript *cGameScript::Script_AddFamilyToDungeon(sScript *Script)
 
 	if (value[1])	// there is a mother
 	{
-		Mother = g_Girls.CreateRandomGirl((g_Dice % (50 - (oldest + 18))) + oldest + 18, false, slave, false, allowNonHuman, kidnaped, arena);
+		Mother = g_Girls.CreateRandomGirl((g_Dice % (50 - (oldest + 18))) + oldest + 18, false, slave, false, allowNonHuman, kidnaped, arena);	// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live 
 		Mother->m_Surname = surname;
 		g_Girls.CreateRealName(Mother);
 		if (!g_Dice.percent(Mother->age())) g_Girls.AddTrait(Mother, "MILF");	// the younger the mother the more likely she will be a MILF

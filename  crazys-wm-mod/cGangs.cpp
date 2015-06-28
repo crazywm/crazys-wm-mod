@@ -2503,7 +2503,7 @@ bool cGangManager::catacombs_mission(sGang* gang)
 			if (choice < m_Gang_Gets_Girls)					// get girl = 10 point
 			{
 				bool gotgirl = false;
-				sGirl* tempgirl = g_Girls.CreateRandomGirl(18, false, false, false, true);
+				sGirl* tempgirl = g_Girls.CreateRandomGirl(18, false, false, false, true);		// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live 
 				if (gang->net_limit() > 0)	// try to capture using net
 				{
 					int tries = 0;
@@ -2540,7 +2540,7 @@ bool cGangManager::catacombs_mission(sGang* gang)
 				bool gotitem = false;
 				if (g_Dice.percent(33))	// item is guarded
 				{
-					sGirl* tempgirl = g_Girls.CreateRandomGirl(18, false, false, false, true);
+					sGirl* tempgirl = g_Girls.CreateRandomGirl(18, false, false, false, true);	// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live 
 					if (!GangCombat(tempgirl, gang)) gotitem = true;
 					if (g_Dice.percent(20))		{ totalitems++; bringbacknum += 2; }
 					else if (g_Dice.percent(50))	gold += 1+ g_Dice % 200;

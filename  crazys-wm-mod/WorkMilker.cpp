@@ -99,7 +99,6 @@ bool cJobManager::WorkMilker(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 #pragma endregion
 #pragma region	//	Enjoyment and Tiredness		//
 
-
 	// Complications
 	if (roll_a <= 10)
 	{
@@ -228,7 +227,7 @@ bool cJobManager::WorkMilker(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 #pragma region	//	Finish the shift			//
 
 	ss << "\n" << girlName;
-	if (drinks > 0)
+	if ((int)drinks > 0)
 	{
 		g_Brothels.add_to_drinks((int)drinks);
 		ss << " brought in " << (int)drinks << " units of milk.";
@@ -237,7 +236,7 @@ bool cJobManager::WorkMilker(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 
 
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
-	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
+	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
 
 	// Money
 	if (wages < 0)	wages = 0;	girl->m_Pay = (int)wages;

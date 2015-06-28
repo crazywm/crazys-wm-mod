@@ -153,7 +153,7 @@ void cJobManager::Setup()
 	JobFilterIndex[JOBFILTER_GAMBHALL] = JOB_DEALER;
 	JobName[JOB_DEALER] = "Game Dealer";
 	JobQkNm[JOB_DEALER] = "Dlr";
-	JobDesc[JOB_DEALER] = "She will manage a game in the gambling hall. (requires 3)";
+	JobDesc[JOB_DEALER] = "She will manage a game in the gambling hall.";
 	JobFunc[JOB_DEALER] = &WorkHallDealer;
 	JobPerf[JOB_DEALER] = &JP_HallDealer;
 	JobName[JOB_ENTERTAINMENT] = "Entertainer";
@@ -315,12 +315,12 @@ void cJobManager::Setup()
 	JobPerf[JOB_PROMOTER] = &JP_FilmPromoter;
 	JobName[JOB_CAMERAMAGE] = gettext("Camera Mage");
 	JobQkNm[JOB_CAMERAMAGE] = "CM";
-	JobDesc[JOB_CAMERAMAGE] = gettext("She will film the scenes. (requires 1)");
+	JobDesc[JOB_CAMERAMAGE] = gettext("She will film the scenes. (requires at least 1 to create a scene)");
 	JobFunc[JOB_CAMERAMAGE] = &WorkCameraMage;
 	JobPerf[JOB_CAMERAMAGE] = &JP_CameraMage;
 	JobName[JOB_CRYSTALPURIFIER] = gettext("Crystal Purifier");
 	JobQkNm[JOB_CRYSTALPURIFIER] = "CP";
-	JobDesc[JOB_CRYSTALPURIFIER] = gettext("She will clean up the filmed scenes. (requires 1)");
+	JobDesc[JOB_CRYSTALPURIFIER] = gettext("She will clean up the filmed scenes. (requires at least 1 to create a scene)");
 	JobFunc[JOB_CRYSTALPURIFIER] = &WorkCrystalPurifier;
 	JobPerf[JOB_CRYSTALPURIFIER] = &JP_CrystalPurifier;
 	JobName[JOB_FLUFFER] = gettext("Fluffer");
@@ -536,7 +536,7 @@ void cJobManager::Setup()
 	JobPerf[JOB_CHAIRMAN] = &JP_ChairMan;
 	JobName[JOB_DOCTOR] = gettext("Doctor");
 	JobQkNm[JOB_DOCTOR] = "Doc";
-	JobDesc[JOB_DOCTOR] = gettext("She will become a doctor. Doctors earn extra cash from treating locals. (requires 1)");
+	JobDesc[JOB_DOCTOR] = gettext("She will become a doctor. Doctors earn extra cash from treating locals. (requires at least 1 to perform surgeries)");
 	JobFunc[JOB_DOCTOR] = &WorkDoctor;
 	JobPerf[JOB_DOCTOR] = &JP_Doctor;
 	JobName[JOB_NURSE] = gettext("Nurse");
@@ -1155,7 +1155,7 @@ bool cJobManager::is_job_Paid_Player(u_int Job)
 
 		// - Gambling Hall - Using WorkHall() or WorkWhore()
 		//Job ==	JOB_WHOREGAMBHALL		||	// looks after customers sexual needs
-		//Job ==	JOB_DEALER				||	// dealer for gambling tables (requires at least 3 for all jobs in this filter to work)
+		//Job ==	JOB_DEALER				||	// dealer for gambling tables
 		//Job ==	JOB_ENTERTAINMENT		||	// sings, dances and other shows for patrons
 		//Job ==	JOB_XXXENTERTAINMENT	||	// naughty shows for patrons
 
@@ -1937,7 +1937,7 @@ bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_n
 					stringstream CGmsg;
 
 					// `J` create the customer
-					sGirl* custgirl = g_Girls.CreateRandomGirl(g_Dice % 40 + 18, false, true, false, (g_Dice % 3 == 1));
+					sGirl* custgirl = g_Girls.CreateRandomGirl(g_Dice % 40 + 18, false, true, false, (g_Dice % 3 == 1));	// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live 
 
 					// `J` and adjust her stats
 					g_InvManager.Equip(custgirl, g_Girls.AddInv(custgirl, g_Brothels.m_Inventory[itemnum]), true);

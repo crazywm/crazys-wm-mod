@@ -65,7 +65,6 @@ bool cJobManager::WorkBrewer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	double jobperformance = JP_Brewer(girl, false);
 	double drinksproduced = jobperformance;
 
-
 	if (jobperformance >= 245)
 	{
 		ss << " She must be the perfect at this.";

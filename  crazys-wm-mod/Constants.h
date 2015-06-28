@@ -189,7 +189,7 @@ enum JOBS {
 	JOB_ESCORT,				// High lvl whore.  Sees less clients but needs higher skill high lvl items and the such to make them happy
 	//const unsigned int JOB_WETTSHIRT		= ;
 	// `J` Job Brothel - Hall
-	JOB_DEALER,				// dealer for gambling tables (requires at least 3 for all jobs in this filter to work)
+	JOB_DEALER,				// dealer for gambling tables
 	JOB_ENTERTAINMENT,		// sings, dances and other shows for patrons
 	JOB_XXXENTERTAINMENT,	// naughty shows for patrons
 	JOB_WHOREGAMBHALL,		// looks after customers sexual needs

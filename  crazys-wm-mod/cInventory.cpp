@@ -668,7 +668,7 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 		for (int i = 0; i < NUM_STATS; i++)		girl->m_Stats[i] = 0;
 		girl->m_Stats[STAT_HEALTH]		= 100;
 		girl->m_Stats[STAT_HAPPINESS]	= 100;
-		girl->m_Stats[STAT_AGE] = (age == 100 ? 100 : 18);	// keep ageless girls ageless
+		girl->m_Stats[STAT_AGE] = (age == 100 ? 100 : 18);	// keep ageless girls ageless	// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live 
 		girl->m_Stats[STAT_HOUSE] = girl->is_slave() ? cfg.initial.slave_house_perc() : cfg.initial.girls_house_perc();
 
 		girl->m_Inventory[num] = 0;

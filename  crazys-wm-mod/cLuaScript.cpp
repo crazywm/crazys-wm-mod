@@ -479,7 +479,7 @@ static int create_random_girl(lua_State *L)
 {
 	CLog log;
 
-	int age			= 17;		// if age is less than 18, virgin is set to true and age gets reset to 18
+	int age			= 17;		// if age is less than 18, virgin is set to true and age gets reset to 18	// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live 
 	bool global		= false;	// set to true to add her to the pool
 	bool slave		= false;	// set to true to create her as a slave
 	bool undead		= false;	// unused by CreateRandomGirl

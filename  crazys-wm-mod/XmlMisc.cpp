@@ -156,7 +156,7 @@ bool LoadStatsXML(TiXmlHandle hStats, int stats[], int statMods[], int tempStats
 			case STAT_AGE:
 				if (tempInt > 99)		tempInt = 100;
 				else if (tempInt > 80)		tempInt = 80;
-				else if (tempInt < 18)		tempInt = 18;
+				else if (tempInt < 18)		tempInt = 18;	// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live 
 				break;
 			case STAT_EXP:		max = 32000;	break;
 			case STAT_LEVEL:	max = 255;		break;

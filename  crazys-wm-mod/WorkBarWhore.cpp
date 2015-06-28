@@ -102,7 +102,7 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	*
 	*/
 
-	string fuckMessage = "";
+	stringstream fuckMessage;
 	string message = "";
 	string girlName = girl->m_Realname;
 	int iNum = 0;
@@ -143,6 +143,7 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 	for (int i = 0; i < LoopCount; i++)	// Go through all customers
 	{
+		fuckMessage.str("");
 		// WD:	Move exit test to top of loop
 		// if she has already slept with the max she can attact then stop processing her fucking routine
 		if (NumSleptWith >= NumCusts) break;
@@ -152,7 +153,6 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		SexType = 0;
 		group = false;
 		acceptsGirl = false;
-		fuckMessage = "";
 		// WD:	Create Customer
 		sCustomer Cust;
 		g_Customers.GetCustomer(Cust, brothel);
@@ -207,7 +207,7 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		// test for specific girls
 		if (girl->has_trait("Skeleton"))
 		{
-			fuckMessage = "The customer sees that you are offering up a Skeleton for sex and is scared, if you allow that kind of thing in your brothels, what else do you allow? They left in a hurry, afraid of what might happen if they stay.\n\n";
+			fuckMessage << "The customer sees that you are offering up a Skeleton for sex and is scared, if you allow that kind of thing in your brothels, what else do you allow? They left in a hurry, afraid of what might happen if they stay.\n\n";
 			brothel->m_Fame -= 5;
 			The_Player->customerfear(2);
 			acceptsGirl = false;
@@ -217,13 +217,13 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		{
 			if (Cust.m_ParticularGirl == g_Brothels.GetGirlPos(brothel->m_id, girl))
 			{
-				fuckMessage = "This is the customer's favorite girl.\n\n";
+				fuckMessage << "This is the customer's favorite girl.\n\n";
 				acceptsGirl = true;
 			}
 		}
 		else if (girl->has_trait("Zombie") && Cust.m_Fetish == FETISH_FREAKYGIRLS && g_Dice.percent(10))
 		{
-			fuckMessage = "This customer is intrigued to fuck a Zombie girl.\n\n";
+			fuckMessage << "This customer is intrigued to fuck a Zombie girl.\n\n";
 			acceptsGirl = true;
 		}
 		else
@@ -234,7 +234,7 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			// Check for fetish match
 			if (g_Girls.CheckGirlType(girl, Cust.m_Fetish))
 			{
-				fuckMessage = "The customer loves this type of girl.\n\n";
+				fuckMessage << "The customer loves this type of girl.\n\n";
 				acceptsGirl = true;
 			}
 		}
@@ -244,47 +244,53 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		{
 			if (girl->has_trait("Zombie"))
 			{
-				fuckMessage = "The customer sees that you are offering up a Zombie girl and is scared, if you allow that kind of thing in your brothels, what else do you allow? They left in a hurry, afraid of what might happen if they stay.\n\n";
+				fuckMessage << "The customer sees that you are offering up a Zombie girl and is scared, if you allow that kind of thing in your brothels, what else do you allow? They left in a hurry, afraid of what might happen if they stay.\n\n";
 				brothel->m_Fame -= 10;
 				The_Player->customerfear(5);
 				acceptsGirl = false;
 			}
 			else if (girl->has_trait("Lesbian") && Cust.m_IsWoman && g_Dice.percent(50))
 			{
-				fuckMessage = "The female customer chooses her because she is a Lesbian.\n\n";
+				fuckMessage << "The female customer chooses her because she is a Lesbian.\n\n";
 				acceptsGirl = true;
 			}
 			else if (girl->has_trait("Straight") && Cust.m_IsWoman && g_Dice.percent(10))
 			{
-				fuckMessage = girlName + " refuses to accept a female customer because she is Straight.\n\n";
+				fuckMessage << girlName << " refuses to accept a female customer because she is Straight.\n\n";
 				brothel->m_Fame -= 2;
 				acceptsGirl = false;
 			}
 			else if (girl->has_trait("Lesbian") && !Cust.m_IsWoman && g_Dice.percent(10))
 			{
-				fuckMessage = girlName + " refuses to accept a male customer because she is a Lesbian.\n\n";
+				fuckMessage << girlName << " refuses to accept a male customer because she is a Lesbian.\n\n";
+				brothel->m_Fame -= 5;
+				acceptsGirl = false;
+			}
+			else if (g_Girls.GetStat(girl, STAT_DIGNITY) >= 70 && Cust.m_SexPref == SKILL_BEASTIALITY && g_Dice.percent(20))	// 
+			{
+				fuckMessage << girlName << " refuses to sleep with a beast she has to much dignity for that.\n\n";
 				brothel->m_Fame -= 5;
 				acceptsGirl = false;
 			}
 			else if (Cust.m_Stats[STAT_LIBIDO] >= 80)
 			{
-				fuckMessage = "Customer chooses her because they are very horny.\n\n";
+				fuckMessage << "Customer chooses her because they are very horny.\n\n";
 				acceptsGirl = true;
 			}
 			else if (((g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA)) / 2) >= 90)	// if she is drop dead gorgeous
 			{
-				fuckMessage = "Customer chooses her because they are stunned by her beauty.\n\n";
+				fuckMessage << "Customer chooses her because they are stunned by her beauty.\n\n";
 				acceptsGirl = true;
 			}
 			else if (g_Girls.GetStat(girl, STAT_FAME) >= 80)	// if she is really famous
 			{
-				fuckMessage = "Customer chooses her because she is so famous.\n\n";
+				fuckMessage << "Customer chooses her because she is so famous.\n\n";
 				acceptsGirl = true;
 			}
 			// WD:	Use Magic only as last resort
 			else if (g_Girls.GetSkill(girl, SKILL_MAGIC) > 50 && g_Girls.GetStat(girl, STAT_MANA) >= 20)	// she can use magic to get him
 			{
-				fuckMessage = girlName + " uses magic to get the customer to choose her.\n\n";
+				fuckMessage << girlName << " uses magic to get the customer to choose her.\n\n";
 				g_Girls.UpdateStat(girl, STAT_MANA, -20);
 				acceptsGirl = true;
 			}
@@ -292,16 +298,18 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 		if (!acceptsGirl)	// if the customer will not sleep with her
 		{
-			if (fuckMessage != "")	// if there is a reason, include it in her messages.
+			if (fuckMessage.str().length() > 0)	// if there is a reason, include it in her messages.
 			{
-				girl->m_Events.AddMessage(fuckMessage, IMGTYPE_PROFILE, Day0Night1);
+				girl->m_Events.AddMessage(fuckMessage.str(), IMGTYPE_PROFILE, EVENT_WARNING);
 			}
 			continue;	// otherwise just move on
 		}
 
 		// Horizontal boogy
-		g_Girls.GirlFucks(girl, Day0Night1, &Cust, group, fuckMessage, SexType);
-		
+		string fm = "";
+		g_Girls.GirlFucks(girl, Day0Night1, &Cust, group, fm, SexType);
+		fuckMessage << fm;
+
 		/* */if (SexType == SKILL_ORALSEX)		oralcount += 5;
 		else if (SexType == SKILL_GROUP)		oralcount += 5;
 		else if (SexType == SKILL_BEASTIALITY)	oralcount += g_Dice % 3;
@@ -326,18 +334,18 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				if (g_Gangs.GetGangOnMission(MISS_GUARDING))
 				{
 					if (g_Dice.percent(50))
-						fuckMessage += " The customer couldn't pay and managed to elude your guards.";
+						fuckMessage << " The customer couldn't pay and managed to elude your guards.";
 
 					else
 					{
-						fuckMessage += " The customer couldn't pay and tried to run off. Your men caught him before he got out the door.";
+						fuckMessage << " The customer couldn't pay and tried to run off. Your men caught him before he got out the door.";
 						SetGameFlag(FLAG_CUSTNOPAY);
 						pay = (int)Cust.m_Money;	// WD: Take what customer has
 						Cust.m_Money = 0;	// WD: ??? not needed Cust record is not saved when this fn ends!  Leave for now just in case ???
 					}
 				}
 				else
-					fuckMessage += " The customer couldn't pay and ran off. There were no guards!";
+					fuckMessage << " The customer couldn't pay and ran off. There were no guards!";
 
 			}
 			else
@@ -346,11 +354,11 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				if (g_Dice.percent(g_Girls.GetStat(girl, STAT_INTELLIGENCE)))
 				{
 					// she turns him over to the goons
-					fuckMessage += " The customer couldn't pay the full amount, so your girl turned them over to your men.";
+					fuckMessage << " The customer couldn't pay the full amount, so your girl turned them over to your men.";
 					SetGameFlag(FLAG_CUSTNOPAY);
 				}
 				else
-					fuckMessage += " The customer couldn't pay the full amount.";
+					fuckMessage << " The customer couldn't pay the full amount.";
 
 				pay = (int)Cust.m_Money;
 				Cust.m_Money = 0;	// WD: ??? not needed Cust record is not saved when this fn ends!  Leave for now just in case ???
@@ -365,18 +373,18 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			{
 				if (g_Dice.percent(50))
 				{
-					fuckMessage += " The customer refused to pay and managed to elude your guards.";
+					fuckMessage << " The customer refused to pay and managed to elude your guards.";
 					pay = 0;
 				}
 				else
 				{
-					fuckMessage += " The customer refused to pay and tried to run off. Your men caught him before he got out the door and forced him to pay.";
+					fuckMessage << " The customer refused to pay and tried to run off. Your men caught him before he got out the door and forced him to pay.";
 					Cust.m_Money -= (unsigned)pay; // WD: ??? not needed Cust record is not saved when this fn ends!  Leave for now just in case ???
 				}
 			}
 			else
 			{
-				fuckMessage += " The customer refused to pay and ran off. There were no guards!";
+				fuckMessage << " The customer refused to pay and ran off. There were no guards!";
 				pay = 0;
 			}
 		}
@@ -423,17 +431,17 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				else
 					Cust.m_Money = 0;	// WD: ??? not needed Cust record is not saved when this fn ends!  Leave for now just in case ???
 
-				fuckMessage += ("\nShe received a tip of " + intstring(tip) + " gold");
+				fuckMessage << "\nShe received a tip of " << tip << " gold";
 
 				girl->m_Tips += tip;
 
-				fuckMessage += ".";
+				fuckMessage << ".";
 
 				// If the customer is a government official
 				if (Cust.m_Official == 1)
 				{
 					The_Player->suspicion(-5);
-					fuckMessage += " It turns out that the customer was a government official, which lowers your suspicion.";
+					fuckMessage << " It turns out that the customer was a government official, which lowers your suspicion.";
 				}
 			}
 		}
@@ -459,7 +467,7 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 		// WD:	Save gold earned
 		girl->m_Pay += pay;		// WD TRACE Save Pay {girl->m_Name} earns {pay} totaling {girl->m_Pay}
-		girl->m_Events.AddMessage(fuckMessage, imageType, Day0Night1);
+		girl->m_Events.AddMessage(fuckMessage.str(), imageType, Day0Night1);
 	}
 
 	// WD:	Reduce number of availabe customers for next whore
@@ -467,14 +475,11 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	if (iNum < NumSleptWith) g_Customers.AdjustNumCustomers(-iNum);
 	else g_Customers.AdjustNumCustomers(-NumSleptWith);
 
-	// WD:	End of shift messages
-	// doc: adding braces - gcc warns of ambiguous if nesting
-	if (g_Customers.GetNumCustomers() == 0)	{ girl->m_Events.AddMessage("No more customers.", IMGTYPE_PROFILE, Day0Night1); }
-	else if (NumSleptWith < NumCusts)		{ girl->m_Events.AddMessage(girlName + " ran out of customers who like her.", IMGTYPE_PROFILE, Day0Night1); }
-
-	// WD:	Summary messages
+	// End of shift messages
 	ss.str("");
 	ss << girlName << " saw " << NumSleptWith << " customers this shift.";
+	if (g_Customers.GetNumCustomers() == 0)	{ ss << "\n\nThere were no more customers left."; }
+	else if (NumSleptWith < NumCusts)		{ ss << "\n\nShe ran out of customers who like her."; }
 	summary += ss.str();
 
 	girl->m_Events.AddMessage(summary, IMGTYPE_PROFILE, Day0Night1);

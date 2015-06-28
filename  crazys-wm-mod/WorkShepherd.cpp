@@ -61,64 +61,90 @@ bool cJobManager::WorkShepherd(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 #pragma endregion
 #pragma region //	Job Performance			//
 
-
 	double jobperformance = JP_Shepherd(girl, false);
+
+	// brings in food and rarely beasts
+	double beasts = jobperformance / 100;
+	double food = jobperformance;
+
 	if (jobperformance >= 245)
 	{
-		ss << " She must be the perfect at this.";
-		wages += 155;
+		ss << "The animals come to " << girlName << " when they are ready for market.";
+		beasts *= 2.0; food *= 2.0; roll_a += 10; roll_b += 25;
 	}
 	else if (jobperformance >= 185)
 	{
-		ss << " She's unbelievable at this.";
-		wages += 95;
+		ss << girlName << " seems to know just when to choose the best animals to send to market.";
+		beasts *= 1.6; food *= 1.6; roll_a += 5; roll_b += 18;
 	}
 	else if (jobperformance >= 145)
 	{
-		ss << " She's good at this job.";
-		wages += 55;
+		ss << girlName << " has little trouble finding animals to send to market.";
+		beasts *= 1.2; food *= 1.2; roll_a += 2; roll_b += 10;
 	}
 	else if (jobperformance >= 100)
 	{
-		ss << " She made a few mistakes but overall she is okay at this.";
-		wages += 15;
+		ss << girlName << " usually sends the right animals to market.";
 	}
 	else if (jobperformance >= 70)
 	{
-		ss << " She was nervous and made a few mistakes. She isn't that good at this.";
-		wages -= 5;
+		ss << girlName << " doesn't know what animals to send to the market so she just guesses.";
+		beasts *= 0.8; food *= 0.8; roll_a -= 2; roll_b -= 5;
 	}
 	else
 	{
-		ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.";
-		wages -= 15;
+		ss << girlName << " has no idea what she is doing.";
+		beasts *= 0.5; food *= 0.5; wages -= 10; roll_a -= 5; roll_b -= 10;
 	}
 	ss << "\n\n";
 
 #pragma endregion
 #pragma region	//	Enjoyment and Tiredness		//
 
-
-
-	//enjoyed the work or not
-	int roll = g_Dice.d100();
-	if (roll <= 5)
+	// Complications
+	if (roll_a <= 10)
 	{
-		ss << "\nSome of the patrons abused her during the shift.";
-		enjoy -= 1;
+		enjoy -= g_Dice % 3 + 1;
+		ss << "The animals were uncooperative and some didn't even let her get near them.\n";
+		if (g_Dice.percent(20))
+		{
+			enjoy--;
+			ss << "Several animals got out and " << girlName << " had to chase them down.\n";
+			girl->happiness(-(1 + g_Dice % 5));
+			girl->tiredness(1 + g_Dice % 15);
+			beasts *= 0.8;
+			food *= 0.9;
+		}
+		if (g_Dice.percent(20))
+		{
+			enjoy--;
+			int healthmod = g_Dice % 10 + 1;
+			girl->health(-healthmod);
+			girl->happiness(-(healthmod + g_Dice % healthmod));
+			ss << "One of the animals kicked " << girlName << " and ";
+			if (girl->health() < 1)
+			{
+				ss << "killed her.\n";
+				g_MessageQue.AddToQue(girlName + " was killed when an animal she was milking kicked her in the head.", COLOR_RED);
+				return false;	// not refusing, she is dead
+			}
+			else ss << (healthmod > 5 ? "" : "nearly ") << "broke her arm.\n";
+			beasts *= 0.9;
+			food *= 0.8;
+		}
 	}
-	else if (roll <= 25)
+	else if (roll_a >= 90)
 	{
-		ss << "\nShe had a pleasant time working.";
-		enjoy += 3;
+		enjoy += g_Dice % 3 + 1;
+		ss << "The animals were pleasant and cooperative today.\n";
+		beasts *= 1.1;
+		food *= 1.1;
 	}
 	else
 	{
-		ss << "\nOtherwise, the shift passed uneventfully.";
-		enjoy += 1;
+		enjoy += g_Dice % 2;
+		ss << "She had an uneventful day tending the animals.\n";
 	}
-
-
 
 #pragma endregion
 #pragma region	//	Create Items				//
@@ -146,24 +172,49 @@ bool cJobManager::WorkShepherd(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 #pragma endregion
 #pragma region	//	Money					//
 
+	// slave girls not being paid for a job that normally you would pay directly for do less work
+	if ((girl->is_slave() && !cfg.initial.slave_pay_outofpocket()))
+	{
+		beasts *= 0.9;
+		food *= 0.9;
+		wages = 0;
+	}
+	else	// `J` Pay her based on how much she brought in
+	{
+		if ((int)food > 0)		wages += food / 100;
+		if ((int)beasts > 0)	wages += beasts;
+	}
 
 #pragma endregion
 #pragma region	//	Finish the shift			//
 
-
+	ss << "\n" << girlName;
+	if ((int)beasts > 0)
+	{
+		g_Brothels.add_to_beasts((int)beasts);
+		ss << " brought " << (int)beasts << " beasts to work in the brothels";
+	}
+	if ((int)beasts > 0 && (int)food > 0)
+	{
+		ss << " and";
+	}
+	if ((int)food > 0)
+	{
+		g_Brothels.add_to_food((int)food);
+		ss << " sent " << (int)food << " units of food worth of animals to slaughter";
+	}
+	if ((int)beasts <= 0 && (int)food <= 0)
+	{
+		ss << " did not bring in any animals";
+	}
+	ss << ".";
 
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
-	girl->m_Events.AddMessage(ss.str(), IMGTYPE_HERD, Day0Night1);
-
-
-	int roll_max = (g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA));
-	roll_max /= 4;
-	wages += 10 + g_Dice%roll_max;
+	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
 
 	// Money
 	if (wages < 0)	wages = 0;	girl->m_Pay = (int)wages;
 	if (tips < 0)	tips = 0;	girl->m_Tips = (int)tips;
-
 
 	// Improve stats
 	int xp = 5, libido = 1, skill = 3;
