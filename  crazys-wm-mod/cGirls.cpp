@@ -497,6 +497,9 @@ void sGirl::setup_maps()
 	jobs_lookup["HWhr"] = JOB_WHOREGAMBHALL;
 	jobs_lookup["StWr"] = JOB_WHORESTREETS;
 	jobs_lookup["XXXE"] = JOB_XXXENTERTAINMENT;
+	jobs_lookup["Dngn"] = JOB_INDUNGEON;
+	jobs_lookup["RunA"] = JOB_RUNAWAY;
+	jobs_lookup["255"] = 255;
 
 
 }
@@ -550,7 +553,7 @@ int sGirl::lookup_jobs_code(string s)
 	// be useful to be able to log unrecognised type names here
 	if (jobs_lookup.find(s) == jobs_lookup.end())
 	{
-		g_LogFile.os() << "[sGirl::jobs_enjoy_code] Error: unknown Enjoy: " << s << endl;
+		g_LogFile.os() << "[sGirl::jobs_enjoy_code] Error: unknown Job: " << s << endl;
 		return -1;
 	}
 	return jobs_lookup[s];

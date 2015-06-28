@@ -711,6 +711,14 @@ void cJobManager::Setup()
 	JobFilterName[JOBFILTER_NONE] = gettext("Non-Job");
 	JobFilterDesc[JOBFILTER_NONE] = gettext("These are NOT jobs. They are special cases.");
 	JobFilterIndex[JOBFILTER_NONE] = JOB_INDUNGEON;
+	JobName[JOB_INDUNGEON]	= gettext("In the Dungeon");
+	JobQkNm[JOB_INDUNGEON]	= "Dngn";
+	JobDesc[JOB_INDUNGEON]	= gettext("She is languish in the dungeon.");
+	JobName[JOB_RUNAWAY]	= gettext("Runaway");
+	JobQkNm[JOB_RUNAWAY]	= "RunA";
+	JobDesc[JOB_RUNAWAY]	= gettext("She has run away.");
+
+
 
 
 #if 0

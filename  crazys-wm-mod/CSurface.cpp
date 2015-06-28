@@ -22,6 +22,7 @@
 #include "CResourceManager.h"
 #include <SDL_image.h>
 #include <algorithm>
+#include "DirPath.h"
 
 extern CLog g_LogFile;
 extern CGraphics g_Graphics;
@@ -111,6 +112,7 @@ void CSurface::Register(bool loaded)
 bool CSurface::LoadImage(string filename, bool load)
 {
 	m_Filename = filename;
+	if (m_Filename == ButtonPath("").c_str()) return true;	// ignore disabled buttons
 	if (load == false)
 	{
 		Register(false);
@@ -242,6 +244,8 @@ bool CSurface::DrawSurface(int x, int y, SDL_Surface* destination, SDL_Rect* cli
 		m_Temp = 0;
 		if (!loaded)
 		{
+			if (m_Filename == ButtonPath("").c_str())	// fix disabled buttons
+				m_Filename = ImagePath("blank.png").c_str();
 			if (!LoadImage(m_Filename))
 			{
 				g_LogFile.ss() << "ERROR - Loading Image '" << m_Filename << "'"; g_LogFile.ssend();

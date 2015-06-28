@@ -18,7 +18,7 @@
 				before trying to find alternate images from the image tree.
 	-->
     <Folders
-        Characters="..\Characters"
+        Characters="C:\Program Files (x86)\WhoreMaster\Characters"
         Saves="..\Saves"
         DefaultImages="..\DefaultImages"
         Items="..\Items"

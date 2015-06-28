@@ -2225,6 +2225,16 @@ Added  // `J` Legal Note: 18 is the Legal Age of Majority for the USA where I li
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.05
 
+Removed an unneeded log error message caused by missing button disabled images.
+Fixed a bug - added job quick codes for Dungeon and Runaways.
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.06
+
+
+
+
+
  
 $$$$ TO DO - SHORT TERM - (for this version) $$$$
 
