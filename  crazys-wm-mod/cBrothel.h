@@ -197,6 +197,7 @@ public:
 	void UpdateBrothels();
 	void UpdateGirls(sBrothel* brothel, bool Day0Night1);
 
+
 	// MYR: Start of my automation functions
 	void UsePlayersItems(sGirl* cur);
 	bool AutomaticItemUse(sGirl * girl, int InvNum, string message);
@@ -322,8 +323,6 @@ public:
 	void check_druggy_girl(stringstream& ss);
 	void check_raid();
 	void do_tax();
-	void check_rivals();
-	string new_rival_text();
 	void do_daily_items(sBrothel* brothel, sGirl* girl);
 	void do_food_and_digs(sBrothel* brothel, sGirl* girl);	
 	string disposition_text();
@@ -331,7 +330,6 @@ public:
 	string suss_text();
 	string happiness_text(sBrothel* brothel);
 	double calc_pilfering(sGirl *girl);
-	void peace_breaks_out();
 
 	bool runaway_check(sBrothel *brothel, sGirl *girl);
 

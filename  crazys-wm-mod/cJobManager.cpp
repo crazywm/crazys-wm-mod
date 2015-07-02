@@ -931,11 +931,12 @@ void cJobManager::do_advertising(sBrothel* brothel, bool Day0Night1)
 	{
 		string summary = "";
 		bool refused = false;
-		if ((current->m_DayJob == JOB_ADVERTISING) && (Day0Night1 == SHIFT_DAY)) // Added test for current shift, was running each shift twice -PP
+		// Added test for current shift, was running each shift twice -PP
+		if ((current->m_DayJob == JOB_ADVERTISING) && (Day0Night1 == SHIFT_DAY))
 		{
 			current->m_Refused_To_Work_Day = WorkAdvertising(current, brothel, 0, summary);
 		}
-		if ((current->m_NightJob == JOB_ADVERTISING) && (Day0Night1 == SHIFT_NIGHT)) // Added test for current shift, was running each shift twice -PP
+		if ((current->m_NightJob == JOB_ADVERTISING) && (Day0Night1 == SHIFT_NIGHT))
 		{
 			current->m_Refused_To_Work_Night = WorkAdvertising(current, brothel, 1, summary);
 		}

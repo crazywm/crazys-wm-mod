@@ -68,10 +68,6 @@ extern cFarmManager			g_Farm;
 // `J` This will be moved to cPlayer.(h/cpp) eventually, just cleaning it up for now
 cPlayer* The_Player = g_Brothels.GetPlayer();	
 
-
-
-//extern CGraphics			g_Graphics;
-
 /*
 * mod - this is a bit big for an inline func
 * and we don't create so many of them that we
@@ -155,7 +151,6 @@ bool sBrothel::matron_on_shift(int shift, bool isClinic, bool isStudio, bool isA
 	else /*         */	{ if (g_Brothels.GetNumGirlsOnJob(BrothelID, JOB_MATRON, shift) > 0)	return true; }
 	return false;
 }
-
 
 //int sBrothel::matron_count
 int sBrothel::matron_count(bool isClinic, bool isStudio, bool isArena, bool isCentre, bool isHouse, bool isFarm, int BrothelID)
@@ -631,6 +626,21 @@ void cBrothelManager::RemoveGirl(int brothelID, sGirl* girl, bool deleteGirl)
 	}
 }
 
+void sBrothel::AddGirl(sGirl* pGirl)
+{
+	if (m_Girls)
+	{
+		pGirl->m_Prev = m_LastGirl;
+		m_LastGirl->m_Next = pGirl;
+		m_LastGirl = pGirl;
+	}
+	else
+	{
+		m_LastGirl = m_Girls = pGirl;
+	}
+	++m_NumGirls;
+}
+
 // ----- Load save create destroy
 bool cBrothelManager::LoadDataXML(TiXmlHandle hBrothelManager)
 {
@@ -810,21 +820,6 @@ bool sBrothel::LoadBrothelXML(TiXmlHandle hBrothel)
 		}
 	}
 	return true;
-}
-
-void sBrothel::AddGirl(sGirl* pGirl)
-{
-	if (m_Girls)
-	{
-		pGirl->m_Prev = m_LastGirl;
-		m_LastGirl->m_Next = pGirl;
-		m_LastGirl = pGirl;
-	}
-	else
-	{
-		m_LastGirl = m_Girls = pGirl;
-	}
-	++m_NumGirls;
 }
 
 TiXmlElement* cBrothelManager::SaveDataXML(TiXmlElement* pRoot)
@@ -1033,128 +1028,6 @@ void cBrothelManager::DestroyBrothel(int ID)
 	}
 }
 
-// ----- Rival
-void cBrothelManager::check_rivals()
-{
-	int num_rivals = m_Rivals.GetNumRivals();
-	static bool peace = false;
-	if (num_rivals > 5) return;					// a full set of rivals = nothing to do
-	if (num_rivals == 0 && !peace)				// if there are no rivals, and we were not at peace last turn, peace has broken out
-	{
-		peace = true;
-		peace_breaks_out();
-	}
-	if (The_Player->m_WinGame == false) return;	// we only create new rivals after the game has been won
-	if (g_Dice.percent(70)) return;				// create new random rival or not!
-	peace = false;								// flag the war as on again, (should be a field somewhere)
-	m_Rivals.CreateRandomRival();				// create a new rival and tell the player the good news
-	g_MessageQue.AddToQue(new_rival_text(), COLOR_RED);
-}
-
-string cBrothelManager::new_rival_text()
-{
-	stringstream ss;
-
-	enum {
-		Slaver = 0,
-		Gladiator = 1,
-		Goon = 2,
-		Slave = 3,
-		Mage = 4,
-		Demon = 5,
-		Priest = 6,
-		Noble = 7,
-		Technologist = 8,
-		Patriarch = 9,	// or Matriarch
-		MaxChallengers = 10
-	};
-
-	bool male = g_Dice.percent(75);
-	/*
-	*	let's put the gender specific terms in
-	*	variables. Might make the code cleaner
-	*/
-	string man, boy, He, he, him, his, sorcerer, gladiator, fellow, patriarch;
-	if (male)
-	{
-		He = "He";
-		he = "he";
-		him = "him";
-		his = "his";
-		man = "man";
-		boy = "boy";
-		sorcerer = "sorcerer";
-		gladiator = "gladiator";
-		fellow = "fellow";
-		patriarch = "patriarch ";
-	}
-	else
-	{
-		He = "She";
-		he = "she";
-		him = "her";
-		his = "her";
-		man = "woman";
-		boy = "girl";
-		sorcerer = "sorceress";
-		gladiator = "gladiatrix";
-		fellow = "wench";			// not sure what the feminine of "fellow" is I did wonder about "fellatrix"...
-		patriarch = "matriarch ";
-	}
-
-	switch (g_Dice.random(MaxChallengers))
-	{
-	case Slaver:
-		ss << "A lieutenant reports that one of the professional slavers, finding customers be scarce, has taken to whoring out " << his << " slavegirls to make ends meet. Your men arranged a meet with " << him << " in order to explain your position on the subject, but the discussion did not go well, ending with bared steel and threats of blood.\n\nIt would seem you have a challenger.";
-		break;
-	case Gladiator:
-		ss << "Ask any Crossgate sports fan who rules the Arenas of the city. Almost always, the answer will be the same. For five long years one " << gladiator << " has stood " << his << " ground on the bloody sands and defied all who came before " << him << ".\n\nLast week, the " << gladiator << " bought " << his << " freedom from the arena, and chose to celebrate the occasion at one of your brothels. Sadly, an overindulgence in wine led to harsh words and a rash vow to show you how a whorehouse SHOULD be run.\n\nWith anyone else, the matter would have ended when the morning brought sobriety. But this is a " << man << " who has never turned " << his << " back on any sort of challenge. With wealthy admirers supplying premises and finance, and with a handful of arena veterans to provide the core of " << his << " enforcers, this is a challenger you would be foolish to ignore.";
-		break;
-	case Goon:
-		ss << "The " << boy << " was just skin and bones; a dull eyed waif from gutters of Sleaze Street, a dozen like " << him << " on any street corner. But put a knife in " << his << " hands and the " << boy << " became an artist, painting effortless masterpieces in blood and greased lightning.\n\nQuickly recruited into one of the goon squads, it soon became apparent that behind that flat unblinking stare, there lurked a mind almost as keen as " << his << " blades. The " << boy << " rose quickly, coming to head " << his << " own squad before becoming one of your trusted lieutenants. If only " << his << " ambition had stopped there...\n\n" << "" << ((male) ? "His" : "Her") << " challenge was almost over before it began; for you that is. That you still live says more about the skill of your healers than any talent you might lay claim to. Your newest rival is not only a deadly fighter and a clever strategist, but one who knows your operation, inside and out.\n\nThis will not be easy.";
-		break;
-	case Slave:
-		ss << "There are ways to beat a slaver tattoo. It wouldn't do were that to become widely known, of course. Nevertheless there are ways around it. One such is to find an area of unstable spacetime. Do it right, and you can overload the tracking spell, and the enchantment just falls apart. This is, of course wildly dangerous, but many escapees nevertheless head straight for the Crossgate sewers, which on a bad day can give the catacombs a run for their money.\n\nOver time, a community of ecapees has grown up in the sewers, survivor types, grown hardy in the most hostile environment. And as long as they stay down there, no one much minds. If nothing else they keep the monster population down. But now they seem to be organising a crusade. Against slavery. Against exploitation. Against you.\n\nRumour has it that their leader is one of your offspring, conceived of rape, born into slavery. True or not, this new factions seems determined to bring about your downfall.\n\nThis time, as the bards would say, it is personal.";
-		break;
-	case Mage:
-		ss << "The " << sorcerer << " blew into town with a travelling entertainer show, promising exotic pleasures and the taste of forbidden fruit. But behind the showman's patter and the coloured smoke, the pleasures on offer were of a distinctly carnal nature, and no more exotic than those you yourself could offer.\n\nFor a travelling show, this need not be a problem. For a week, or even two, you can stand to see a little competition. However, the newcomer has been here a month now and shows no sign of moving on. On the contrary, he appears to be shopping for permanent premises.\n\nWith this in mind, you send some men to explain the situation. To everyone's surprise, it turns out that behind the glib charlatanry, there lies genuine magecraft, most likely tantric in nature.\n\nIn your organisation you have no shortage of mages. Any fighting force in Crossgate needs a battle mage or two. This newcomer however operates on a level far beyond what you are used to. And he seems determined to stay, and challenge you for control of the city.";
-		break;
-	case Priest:
-		break;
-	case Noble:
-		ss << "They say " << he << " is a noble, an exile from " << his << " native land. Certainly, " << he << " has the manners of a courtier and the amused weariness of the jaded dilettante.\n\nAnd yet it seems there is steel behind the foppery, as many a Crossgate duelist has learned. And a wit to match the blade as well. An admirable " << fellow << " this, one you would be pleased to call 'friend', if only ...\n\nEarlier this week, your men were explaining to a handful of freelance scrubbers how prostitution worked in this city. If only " << he << " had not chosen to take the women's side against your men. If only " << his << " rash defiance had not caught the imagination of the city's duellists.\n\nAlas, such was not to be.\n\nEn Garde!";
-		break;
-	case Technologist:
-		ss << "From the distant city of Abby's Crossing comes a new rival to challenge for your throne, wielding some strange non-magic " << he << " calls 'technology', an alien art of smoke and steam and noise and lighting; one they say functions strangely in Mundiga, when it chooses to work at all.\n\nBut the hollow metal men that make up " << his << " enforcers would seem to work with deadly efficicency and the strange collapsible maze " << he << " calls a 'tesseract' seems to share many properties with the catacombs under your headquarters. Then there are rumours of strange procedures that can break a slavegirl's will, far faster than the most skilled of Crossgate's torturers.\n\nIn short, far from unreliable, " << his << " arts seem deadly efficient to you. You have no idea what other surprises this otherworldly artisan may have up " << his << " sleeve, but one thing is for certain: this challenge may not go unanswered.";
-		break;
-	case Patriarch:
-		ss << "Outside the walls of Crossgate, there is a shanty-town maze of tumbledown hovels, teeming with the poorest and most desperate of the City's inhabitants. Polygamy and incest are rife here, and extended families can run into the hundreds\n\nOne such family is ruled by the iron will of a dreadful old " << patriarch << " with a well earned reputation for utter ruthlessness. For years " << he << " has sent " << his << " progeny to the city markets, to trade, to steal, to bring back money for the clan in any way they can.\n\nNow it seems they are expanding their operation to include organised prostitution. Bad move.\n\nSomething about the " << patriarch << "'s operation disturbs you. There is a coldness in the way " << he << " sends sons and grandsons out to die for " << him << "; the way " << he << "casually rapes and enslaves " << his << " own daughters and granddaughters before sending them off to whore for " << him << ". This " << man << " holds up a mirror to what you are - or perhaps to what you could easily become. The image it presents is far from flattering.\n\nPersonal feelings aside, this is a situation that can only get worse. The time to end this, is now.";
-		break;
-	case Demon:
-		ss << "Somewhere in Crossgate, a hand trembled inscribing a pentagram; a tongue stumbled over the nine syllables of the charm of binding. A magical being slipped his arcane bonds and slaughtered those mages foolish enough to dream they might command it.\n\nA demon lord now stalks the streets of the city.\n\nWhich, in itself, is not so big a deal. It is not of unheard that the aristocracy of Hell should find themselves stumbling dazed and confused through Crossgate market. They just tend to recover quickly and promptly open a portal home.\n\nBut not this one. This one chooses to briefly linger, to partake of Crossgate society and seek such amusements as the city can offer. Unfortunately, it seems the demon finds amusement trafficking in human misery and human sex. As do you, in the eyes of many.\n\nFor a demon, 'briefly' may be anything from a day to a thousand years. You cannot afford to wait until it grows bored. A demon lord is a formidable opponent, but to ignore this challenge will send entirely the wrong signal to the other would be whore-masters in the city.\n\nLike it or not, this means war.";
-		break;
-	}
-	return ss.str();
-}
-
-void cBrothelManager::peace_breaks_out()
-{
-	stringstream ss;
-	// if the PC already won, this is just an minor outbreak of peace in the day-to-day feuding in crossgate
-	if (The_Player->m_WinGame)
-	{
-		ss << "The last of your challengers has been overthrown. Your domination of Crossgate is absolute.\n\nUntil the next time that is...";
-		g_MessageQue.AddToQue(ss.str(), COLOR_GREEN);
-		return;
-	}
-	// otherwise, the player has just won flag it as such
-	The_Player->m_WinGame = true;
-	// let's have a bit of chat to mark the event
-	ss.str("");
-	ss << "The last of your father's killers has been brought before you for judgement. None remain who would dare to oppose you. For all intents and purposes, the city is yours.\n\nWhether or not your father will rest easier for your efforts, you cannot say, but now, with the city at your feet, you feel sure he would be proud of you at this moment.\n\nBut pride comes before a fall, and in Crossgate, complacency kills. The city's slums and slave markets and the fighting pits are full of hungry young bloods burning to make their mark on the world, and any one of them could rise to challenge you at any time.\n\nYou may have seized the city, but holding on to it is never going to be easy.";
-	g_MessageQue.AddToQue(ss.str(), COLOR_GREEN);
-	return;
-}
 
 // ----- Update & end of turn
 void cBrothelManager::UpdateBrothels()	// Start_Building_Process_A
@@ -1182,9 +1055,11 @@ void cBrothelManager::UpdateBrothels()	// Start_Building_Process_A
 
 		bool matron = (GetNumGirlsOnJob(current->m_id, matronjob, false) >= 1) ? true : false;
 
-		// `J` do all the things that the girls do at the start of the turn
+		
 		sGirl* cgirl = current->m_Girls;
-		while (cgirl)
+#pragma region //	Start of Turn Girl Setup	//
+
+		while (cgirl)	//	`J` do all the things that the girls do at the start of the turn
 		{
 			string girlName = cgirl->m_Realname;
 
@@ -1223,8 +1098,7 @@ void cBrothelManager::UpdateBrothels()	// Start_Building_Process_A
 				// set yesterday jobs for everyone
 				cgirl->m_YesterDayJob = cgirl->m_DayJob;
 				cgirl->m_YesterNightJob = cgirl->m_NightJob;
-				cgirl->m_Refused_To_Work_Day = false;
-				cgirl->m_Refused_To_Work_Night = false;
+				cgirl->m_Refused_To_Work_Day = cgirl->m_Refused_To_Work_Night = false;
 				string summary = "";
 
 				g_Girls.AddTiredness(cgirl);			// `J` moved all girls add tiredness to one place
@@ -1243,25 +1117,36 @@ void cBrothelManager::UpdateBrothels()	// Start_Building_Process_A
 					if (cgirl->m_NightJob != restjob)	cgirl->m_PrevNightJob = cgirl->m_NightJob;
 					cgirl->m_DayJob = cgirl->m_NightJob = restjob;
 				}
-
-
 				cgirl = cgirl->m_Next;
 			}
 		}
+
+#pragma endregion
+#pragma region //	Day Shift			//
 
 		// Moved to here so Security drops once per day instead of everytime a girl works security -PP
 		current->m_SecurityLevel -= 10;
 		current->m_SecurityLevel -= current->m_NumGirls;	//`J` m_SecurityLevel is extremely over powered. Reducing it's power a lot.
 		if (current->m_SecurityLevel <= 0) current->m_SecurityLevel = 0;	 // crazy added
 
-
 		// Generate customers for the brothel for the day shift and update girls
 		m_JobManager.do_advertising(current, 0);
 		g_Customers.GenerateCustomers(current, 0);
 		current->m_TotalCustomers += g_Customers.GetNumCustomers();
+
+#if 1
 		m_JobManager.do_whorejobs(current, 0);
 		m_JobManager.do_custjobs(current, 0);
 		UpdateGirls(current, 0);
+#else
+
+
+#endif
+
+
+
+#pragma endregion
+#pragma region //	Night Shift			//
 
 		// update the girls and satisfy the customers for this brothel during the night
 		m_JobManager.do_advertising(current, 1);
@@ -1270,6 +1155,9 @@ void cBrothelManager::UpdateBrothels()	// Start_Building_Process_A
 		m_JobManager.do_whorejobs(current, 1);
 		m_JobManager.do_custjobs(current, 1);
 		UpdateGirls(current, 1);
+
+#pragma endregion
+#pragma region //	Shift Summary			//
 
 		// get the misc customers
 		current->m_TotalCustomers += current->m_MiscCustomers;
@@ -1360,13 +1248,14 @@ void cBrothelManager::UpdateBrothels()	// Start_Building_Process_A
 			current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_BROTHEL);
 		}
 
-
-
 		// update the global cash
 		g_Gold.brothel_accounts(current->m_Finance, current->m_id);
 
 		if (current->m_Filthiness < 0) current->m_Filthiness = 0;
 		if (current->m_SecurityLevel < 0) current->m_SecurityLevel = 0;
+
+#pragma endregion
+#pragma region //	End of Shift Girl Shutdown	//
 
 		cgirl = current->m_Girls;
 		while (cgirl)
@@ -1376,6 +1265,7 @@ void cBrothelManager::UpdateBrothels()	// Start_Building_Process_A
 			cgirl = cgirl->m_Next;
 		}
 
+#pragma endregion
 		current = current->m_Next;		// goto the next brothel
 	}
 
@@ -1462,7 +1352,7 @@ void cBrothelManager::UpdateBrothels()	// Start_Building_Process_A
 	}
 
 	do_tax();
-	check_rivals();
+	m_Rivals.check_rivals();
 
 	ss.str("");
 	long totalProfit = g_Gold.total_profit();
@@ -4421,81 +4311,6 @@ int cBrothelManager::GetFreeRooms(int brothelnum)
 	return brothel->m_NumRooms - brothel->m_NumGirls;
 }
 
-#if 0	// `J` no longer used so commenting out
-string cBrothelManager::GetGirlString(int brothelID, int girlNum)
-{
-	string data = "";
-	sBrothel* current = m_Parent;
-
-	while (current)
-	{
-		if (current->m_id == brothelID) break;
-		current = current->m_Next;
-	}
-
-	if (current)
-	{
-		int count = 0;
-		sGirl* currentGirl = current->m_Girls;
-
-		while (currentGirl)
-		{
-			if (count == girlNum) break;
-			count++;
-			currentGirl = currentGirl->m_Next;
-		}
-		//need to change into string lookup
-		string dayjob = "Resting";
-		switch ((int)currentGirl->m_DayJob)
-		{
-		case JOB_WHORESTREETS:
-			dayjob = gettext("Streets");
-			break;
-
-		case JOB_WHOREBROTHEL:
-			dayjob = gettext("Indoors");
-			break;
-
-		case JOB_INDUNGEON:
-			dayjob = gettext("Dungeon");
-			break;
-
-		case JOB_TRAINING:
-			dayjob = gettext("Training");
-			break;
-		}
-
-		string nightjob = gettext("Resting");
-		switch ((int)currentGirl->m_NightJob)
-		{
-		case JOB_WHORESTREETS:
-			nightjob = gettext("Streets");
-			break;
-
-		case JOB_WHOREBROTHEL:
-			nightjob = gettext("Indoors");
-			break;
-
-		case JOB_INDUNGEON:
-			nightjob = gettext("Dungeon");
-			break;
-
-		case JOB_TRAINING:
-			nightjob = gettext("Training");
-			break;
-		}
-
-		if (g_Girls.GetStat(currentGirl, STAT_AGE) == 100)
-			sprintf(buffer, gettext("%s | Age: unknown | Health: %i | Happiness %i | Day Job: %s | Night Job: %s"), currentGirl->m_Realname.c_str(), (int)g_Girls.GetStat(currentGirl, STAT_HEALTH), (int)g_Girls.GetStat(currentGirl, STAT_HAPPINESS), dayjob.c_str(), nightjob.c_str());
-		else
-			sprintf(buffer, gettext("%s | Age: %i | Health: %i | Happiness %i | Day Job: %s | Night Job: %s"), currentGirl->m_Realname.c_str(), g_Girls.GetStat(currentGirl, STAT_AGE), (int)g_Girls.GetStat(currentGirl, STAT_HEALTH), (int)g_Girls.GetStat(currentGirl, STAT_HAPPINESS), dayjob.c_str(), nightjob.c_str());
-		data = buffer;
-	}
-
-	return data;
-}
-#endif
-
 string cBrothelManager::GetName(int brothelID)
 {
 	sBrothel* current = m_Parent;
@@ -4520,9 +4335,7 @@ string cBrothelManager::GetBrothelString(int brothelID)
 	*	the error is logged in GetBrothel,
 	*	so just return an empty string
 	*/
-	if (!brothel) {
-		return "";
-	}
+	if (!brothel) { return ""; }
 	/*
 	*	some shorthand variables for the simpler descriptions
 	*	Commented out since we may want to put these back in at some stage
@@ -4539,7 +4352,7 @@ string cBrothelManager::GetBrothelString(int brothelID)
 	*	format the summary into one big string, and return it
 	*/
 	ss << "Customer Happiness: " << happiness_text(brothel) << endl;
-	ss << "Fame: " << fame_text(brothel);
+	ss << "Fame: " << fame_text(brothel) << endl;
 	ss << "Rooms (available/current): " << (brothel->m_NumRooms - brothel->m_NumGirls) << " / " << brothel->m_NumRooms << endl;
 	//ss << "Strip Bar: "		<< has_bar		<< endl;
 	//ss << "Gambling Hall: "	<< has_hall		<< endl;
@@ -4674,58 +4487,61 @@ void cBrothelManager::SetName(int brothelID, string name)
 	sBrothel* current = m_Parent;
 	while (current)
 	{
-		if (current->m_id == brothelID)
-			break;
+		if (current->m_id == brothelID) break;
 		current = current->m_Next;
 	}
-
-	if (current)
-		current->m_Name = name;
-	else
-		current->m_Name = "cBrothelManager::GetName - Something went wrong";
+	current->m_Name = current ? name : "cBrothelManager::GetName - Something went wrong";
 }
 
 // ----- Status texts
 string cBrothelManager::disposition_text()
 {
-	if (The_Player->disposition() >= 100)	return gettext("Saint");
-	if (The_Player->disposition() >= 80)	return gettext("Benevolent");
-	if (The_Player->disposition() >= 50)	return gettext("Nice");
-	if (The_Player->disposition() >= 10)	return gettext("Pleasant");
-	if (The_Player->disposition() >= -10)	return gettext("Neutral");
-	if (The_Player->disposition() >= -50)	return gettext("Not nice");
-	if (The_Player->disposition() >= -80)	return gettext("Mean");
-	return gettext("Evil");
+	stringstream ss;
+	/* */if (The_Player->disposition() >= 100)	ss << gettext("Saint");
+	else if (The_Player->disposition() >= 80)	ss << gettext("Benevolent");
+	else if (The_Player->disposition() >= 50)	ss << gettext("Nice");
+	else if (The_Player->disposition() >= 10)	ss << gettext("Pleasant");
+	else if (The_Player->disposition() >= -10)	ss << gettext("Neutral");
+	else if (The_Player->disposition() >= -50)	ss << gettext("Not nice");
+	else if (The_Player->disposition() >= -80)	ss << gettext("Mean");
+	else ss << gettext("Evil");
+	if (cfg.debug.log_show_numbers()) ss << " (" << The_Player->disposition() << ")";
+	return ss.str();
 }
-
-string cBrothelManager::fame_text(sBrothel* brothel)
-{
-	if (brothel->m_Fame >= 90)	return	gettext("World Renowned\n");
-	if (brothel->m_Fame >= 80)	return	gettext("Famous\n");
-	if (brothel->m_Fame >= 70)	return	gettext("Well Known\n");
-	if (brothel->m_Fame >= 60)	return	gettext("Talk of the town\n");
-	if (brothel->m_Fame >= 50)	return	gettext("Somewhat known\n");
-	if (brothel->m_Fame >= 30)	return	gettext("Mostly unknown\n");
-	return	gettext("Unknown\n");
-}
-
 string cBrothelManager::suss_text()
 {
-	//WD:	Should be Susipicion not Disposition 
-	if (The_Player->suspicion() >= 80)	return gettext("Town Scum");
-	if (The_Player->suspicion() >= 50)	return gettext("Miscreant");
-	if (The_Player->suspicion() >= 10)	return gettext("Suspect");
-	if (The_Player->suspicion() >= -10)	return gettext("Unsuspected");
-	if (The_Player->suspicion() >= -50)	return gettext("Lawful");
-	if (The_Player->suspicion() >= -80) return gettext("Philanthropist");
-	return gettext("Town Hero");
+	stringstream ss;
+	/* */if (The_Player->suspicion() >= 80)		ss << gettext("Town Scum");
+	else if (The_Player->suspicion() >= 50)		ss << gettext("Miscreant");
+	else if (The_Player->suspicion() >= 10)		ss << gettext("Suspect");
+	else if (The_Player->suspicion() >= -10)	ss << gettext("Unsuspected");
+	else if (The_Player->suspicion() >= -50)	ss << gettext("Lawful");
+	else if (The_Player->suspicion() >= -80)	ss << gettext("Philanthropist");
+	else /*                               */	ss << gettext("Town Hero");
+	if (cfg.debug.log_show_numbers())			ss << " (" << The_Player->suspicion() << ")";
+	return ss.str();
 }
-
+string cBrothelManager::fame_text(sBrothel* brothel)
+{
+	stringstream ss;
+	/* */if (brothel->m_Fame >= 90)/*     */	ss << gettext("World Renowned");
+	else if (brothel->m_Fame >= 80)/*     */	ss << gettext("Famous");
+	else if (brothel->m_Fame >= 70)/*     */	ss << gettext("Well Known");
+	else if (brothel->m_Fame >= 60)/*     */	ss << gettext("Talk of the town");
+	else if (brothel->m_Fame >= 50)/*     */	ss << gettext("Somewhat known");
+	else if (brothel->m_Fame >= 30)/*     */	ss << gettext("Mostly unknown");
+	else/*                                */	ss << gettext("Unknown");
+	if (cfg.debug.log_show_numbers())/*   */	ss << " (" << brothel->m_Fame << ")";
+	return ss.str();
+}
 string cBrothelManager::happiness_text(sBrothel* brothel)
 {
-	if (brothel->m_Happiness >= 80)		return gettext("High");
-	if (brothel->m_Happiness < 40)		return gettext("Low");
-	else					return gettext("Medium");
+	stringstream ss;
+	/* */if (brothel->m_Happiness >= 80)/* */	ss << gettext("High");
+	else if (brothel->m_Happiness < 40)/*  */	ss << gettext("Low");
+	else /*                                */	ss << gettext("Medium");
+	if (cfg.debug.log_show_numbers())			ss << " (" << brothel->m_Happiness << ")";
+	return ss.str();
 }
 
 // ----- Combat
@@ -4874,14 +4690,67 @@ bool cBrothelManager::PlayerCombat(sGirl* girl)		//  ***************************
 
 bool cBrothelManager::FightsBack(sGirl* girl)
 {
-	if (g_Girls.GetStat(girl, STAT_HEALTH) < 10)	// she won't fight back in this state
-		return false;
+	// `J` When adding new traits, search for "J-Add-New-Traits"  :  found in >> cBrothel > cBrothelManager::FightsBack
+	if (girl->health() < 10 || girl->tiredness() > 90)/* */	return false;
+	if (girl->has_trait("Broken Will"))/*                */	return false;
+	if (girl->has_trait("Mind Fucked"))/*                */	return false;
 
-	if (g_Girls.HasTrait(girl, "Merciless") && (g_Dice.percent(20)))
-		return true;
+	if (g_Girls.DisobeyCheck(girl, ACTION_COMBAT))/*     */	return true;
+	int chance = 0;
+	if (girl->has_trait("Adventurer"))/*                 */	chance += 5;
+	if (girl->has_trait("Aggressive"))/*                 */	chance += 10;
+	if (girl->has_trait("Agile"))/*                      */	chance += 2;
+	if (girl->has_trait("Assassin"))/*                   */	chance += 10;
+	if (girl->has_trait("Audacity"))/*                   */	chance += 10;
+	if (girl->has_trait("Brawler"))/*                    */	chance += 5;
+	if (girl->has_trait("Canine"))/*                     */	chance += 2;
+	if (girl->has_trait("Cat Girl"))/*                   */	chance += 2;
+	if (girl->has_trait("Country Gal"))/*                */	chance += 2;
+	if (girl->has_trait("Demon"))/*                      */	chance += 5;
+	if (girl->has_trait("Dominatrix"))/*                 */	chance += 5;
+	if (girl->has_trait("Emprisoned Customer"))/*        */	chance += 10;
+	if (girl->has_trait("Fearless"))/*                   */	chance += 10;
+	if (girl->has_trait("Fleet of Foot"))/*              */	chance += 2;
+	if (girl->has_trait("Heroine"))/*                    */	chance += 5;
+	if (girl->has_trait("Hunter"))/*                     */	chance += 5;
+	if (girl->has_trait("Incorporeal"))/*                */	chance += 10;
+	if (girl->has_trait("Iron Will"))/*                  */	chance += 20;
+	if (girl->has_trait("Kidnapped"))/*                  */	chance += 15;
+	if (girl->has_trait("Manly"))/*                      */	chance += 5;
+	if (girl->has_trait("Merciless"))/*                  */	chance += 5;
+	if (girl->has_trait("Muscular"))/*                   */	chance += 5;
+	if (girl->has_trait("Open Minded"))/*                */	chance += 2;
+	if (girl->has_trait("Optimist"))/*                   */	chance += 2;
+	if (girl->has_trait("Pessimist"))/*                  */	chance += 2;
+	if (girl->has_trait("Powerful Magic"))/*             */	chance += 10;
+	if (girl->has_trait("Sadistic"))/*                   */	chance += 5;
+	if (girl->has_trait("Strong Magic"))/*               */	chance += 5;
+	if (girl->has_trait("Strong"))/*                     */	chance += 5;
+	if (girl->has_trait("Tomboy"))/*                     */	chance += 2;
+	if (girl->has_trait("Tough"))/*                      */	chance += 5;
+	if (girl->has_trait("Tsundere"))/*                   */	chance += 5;
+	if (girl->has_trait("Twisted"))/*                    */	chance += 5;
+	if (girl->has_trait("Yandere"))/*                    */	chance += 5;
 
-	if (g_Girls.DisobeyCheck(girl, ACTION_COMBAT))
-		return true;
+	if (girl->has_trait("Bad Eyesight"))/*               */	chance -= 2;
+	if (girl->has_trait("Bimbo"))/*                      */	chance -= 5;
+	if (girl->has_trait("Blind"))/*                      */	chance -= 5;
+	if (girl->has_trait("Bruises"))/*                    */	chance -= 2;
+	if (girl->has_trait("Clumsy"))/*                     */	chance -= 2;
+	if (girl->has_trait("Deaf"))/*                       */	chance -= 5;
+	if (girl->has_trait("Delicate"))/*                   */	chance -= 10;
+	if (girl->has_trait("Dependant"))/*                  */	chance -= 20;
+	if (girl->has_trait("Elegant"))/*                    */	chance -= 5;
+	if (girl->has_trait("Fragile"))/*                    */	chance -= 10;
+	if (girl->has_trait("Malformed"))/*                  */	chance -= 2;
+	if (girl->has_trait("Masochist"))/*                  */	chance -= 10;
+	if (girl->has_trait("Meek"))/*                       */	chance -= 20;
+	if (girl->has_trait("Nerd"))/*                       */	chance -= 5;
+	if (girl->has_trait("Nervous"))/*                    */	chance -= 5;
+	if (girl->has_trait("Retarded"))/*                   */	chance -= 10;
+	if (girl->has_trait("Shy"))/*                        */	chance -= 10;
+
+	if (g_Dice.percent(chance))		return true;
 
 	return false;
 }
@@ -5027,14 +4896,10 @@ sGirl* cBrothelManager::GetFirstRunaway()
 
 void cBrothelManager::RemoveGirlFromRunaways(sGirl* girl)
 {
-	if (girl->m_Next)
-		girl->m_Next->m_Prev = girl->m_Prev;
-	if (girl->m_Prev)
-		girl->m_Prev->m_Next = girl->m_Next;
-	if (girl == m_Runaways)
-		m_Runaways = girl->m_Next;
-	if (girl == m_LastRunaway)
-		m_LastRunaway = girl->m_Prev;
+	if (girl->m_Next)			girl->m_Next->m_Prev = girl->m_Prev;
+	if (girl->m_Prev)			girl->m_Prev->m_Next = girl->m_Next;
+	if (girl == m_Runaways)		m_Runaways = girl->m_Next;
+	if (girl == m_LastRunaway)	m_LastRunaway = girl->m_Prev;
 	girl->m_Next = girl->m_Prev = 0;
 	m_NumRunaways--;
 }
@@ -5233,15 +5098,10 @@ sGirl* cBrothelManager::GetDrugPossessor()
 // ----- Dungeon & torture
 void cBrothelManager::RemoveGirlFromPrison(sGirl* girl)
 {
-	if (girl->m_Next)
-		girl->m_Next->m_Prev = girl->m_Prev;
-	if (girl->m_Prev)
-		girl->m_Prev->m_Next = girl->m_Next;
-	if (girl == m_Prison)
-		m_Prison = girl->m_Next;
-	if (girl == m_LastPrison)
-		m_LastPrison = girl->m_Prev;
-
+	if (girl->m_Next)			girl->m_Next->m_Prev = girl->m_Prev;
+	if (girl->m_Prev)			girl->m_Prev->m_Next = girl->m_Next;
+	if (girl == m_Prison)		m_Prison = girl->m_Next;
+	if (girl == m_LastPrison)	m_LastPrison = girl->m_Prev;
 	girl->m_Next = girl->m_Prev = 0;
 	m_NumPrison--;
 }

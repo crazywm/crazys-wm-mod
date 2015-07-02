@@ -102,6 +102,9 @@ public:
 	void AddRival(cRival* rival);
 	void RemoveRival(cRival* rival);
 	void CreateRandomRival();
+	void check_rivals();		// `J` moved from cBrothel
+	string new_rival_text();	// `J` moved from cBrothel
+	void peace_breaks_out();	// `J` moved from cBrothel
 
 
 	// `J` New - rival inventory

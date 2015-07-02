@@ -2240,8 +2240,12 @@ Updated WorkBeastCare
 
 ###  Changes 7/2
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub before starting brothel rewrite
-
-
+Moved some Rival stuff from cBrothel to cRival
+Updated Brothel stats to include numbers if cfg.debug.log_show_numbers() is true
+Added traits to Girl Fights Back check
+Updated WorkAdvertising
+Started blocking out Brothel turn flow - No real changes yet
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
 
 
 
