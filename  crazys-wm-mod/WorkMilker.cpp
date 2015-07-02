@@ -235,7 +235,6 @@ bool cJobManager::WorkMilker(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	else { ss<< " was unable to collect any milk."; }
 
 
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
 
 	// Money
@@ -258,6 +257,9 @@ bool cJobManager::WorkMilker(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	g_Girls.UpdateSkill(girl, SKILL_HANDJOB, max(0, (g_Dice % skill) - 1));
 	g_Girls.UpdateSkill(girl, SKILL_FARMING, max(0, (g_Dice % skill) - 2));
 	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, max(0, (g_Dice % skill) - 2));
+
+	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
+
 
 #pragma endregion
 	return false;

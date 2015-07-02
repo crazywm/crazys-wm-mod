@@ -125,19 +125,19 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	//try and add randomness here
 	if (g_Girls.GetStat(girl, STAT_LIBIDO) > 80)
 	{
-		if (g_Girls.HasTrait(girl, "Lesbian") && g_Girls.HasTrait(girl, "Nymphomaniac"))
+		if (g_Girls.HasTrait(girl, "Lesbian") && (g_Girls.HasTrait(girl, "Nymphomaniac") || g_Girls.HasTrait(girl, "Succubus")))
 		{
-			ss << "\nShe was horny and she loves sex so she brought in another girl and had sex with her while the customers watched.";
+			ss << "\nShe was horny and she loves sex so she brought in another girl and had sex with her while the customers watched.\n";
 			sextype = SKILL_LESBIAN;
 			/* `J` g_Girls.GirlFucks handles skill gain from sex
 			g_Girls.UpdateSkill(girl, SKILL_LESBIAN, 1);
 			//*/
 		}
-		else if (g_Girls.HasTrait(girl, "Bisexual") && g_Girls.HasTrait(girl, "Nymphomaniac"))
+		else if (g_Girls.HasTrait(girl, "Bisexual") && (g_Girls.HasTrait(girl, "Nymphomaniac") || g_Girls.HasTrait(girl, "Succubus")))
 		{
 			if (roll <= 50)
 			{
-				ss << "\nShe was horny and she loves sex so she brought in another girl and had sex with her while the customers watched.";
+				ss << "\nShe was horny and she loves sex so she brought in another girl and had sex with her while the customers watched.\n";
 				sextype = SKILL_LESBIAN;
 				/* `J` g_Girls.GirlFucks handles skill gain from sex
 				g_Girls.UpdateSkill(girl, SKILL_LESBIAN, 1);
@@ -149,9 +149,9 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				sextype = SKILL_NORMALSEX;
 			}
 		}
-		else if (g_Girls.HasTrait(girl, "Straight") && g_Girls.HasTrait(girl, "Nymphomaniac"))
+		else if (g_Girls.HasTrait(girl, "Straight") && (g_Girls.HasTrait(girl, "Nymphomaniac") || g_Girls.HasTrait(girl, "Succubus")))
 		{
-			ss << "\nShe was horny and she loves sex so she brought in one of the customers and had sex with him while the others watched.";
+			ss << "\nShe was horny and she loves sex so she brought in one of the customers and had sex with him while the others watched.\n";
 			sextype = SKILL_NORMALSEX;
 		}
 		//New stuff
@@ -221,7 +221,15 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				}
 		else
 		{
+			//GirlFucks handles all the stuff for the other events but it isn't used here so everything has to be added manually
+			//It's is the same text as the XXX entertainer masturbation event, so I'll just copy the rest
 			ss << "\nShe was horny and ended up masturbating for the customers, making them very happy.";
+			sCustomer cust;
+			GetMiscCustomer(brothel, cust);
+			brothel->m_Happiness += 100;
+			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -30);
+			// work out the pay between the house and the girl
+			wages += g_Girls.GetStat(girl, STAT_ASKPRICE) + 60;
 			imagetype = IMGTYPE_MAST;
 		}
 	}
@@ -241,26 +249,23 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -10);
 				ss << "she doesn't understand the appeal of them, which turned her off.\n";
 			}
-			else if (!brothel->m_RestrictNormal && !g_Girls.HasTrait(girl, "Virgin") &&
-				g_Girls.HasTrait(girl, "Nymphomaniac") && g_Girls.GetStat(girl, STAT_LIBIDO) >= 80) //sex
+			else if (!brothel->m_RestrictNormal && !g_Girls.HasTrait(girl, "Virgin") && (g_Girls.HasTrait(girl, "Nymphomaniac") || g_Girls.HasTrait(girl, "Succubus")) && g_Girls.GetStat(girl, STAT_LIBIDO) >= 80) //sex
 			{
 				sextype = SKILL_NORMALSEX;
 				ss << "decided she needed to use it for her own entertainment.\n";
 			}
-			else if (!brothel->m_RestrictOral &&
-				g_Girls.HasTrait(girl, "Nymphomaniac") && g_Girls.GetStat(girl, STAT_LIBIDO) >= 60) //oral
+			else if (!brothel->m_RestrictOral && (g_Girls.HasTrait(girl, "Nymphomaniac") || g_Girls.HasTrait(girl, "Succubus") || g_Girls.HasTrait(girl, "Cum Addict")) && g_Girls.GetStat(girl, STAT_LIBIDO) >= 60) //oral
 			{
 				sextype = SKILL_ORALSEX;
 				ss << "decided she needed to taste it.\n";
 			}
-			else if (!brothel->m_RestrictFoot &&
-				g_Girls.HasTrait(girl, "Nymphomaniac") && g_Girls.GetStat(girl, STAT_LIBIDO) >= 40) //foot
+			else if (!brothel->m_RestrictFoot && (g_Girls.HasTrait(girl, "Nymphomaniac") || g_Girls.HasTrait(girl, "Succubus") || g_Girls.GetStat(girl, STAT_DIGNITY) < -30) && g_Girls.GetStat(girl, STAT_LIBIDO) >= 40) //foot
 			{
 				sextype = SKILL_FOOTJOB;
 				imagetype = IMGTYPE_FOOT;
 				ss << "decided she would give him a foot job for being so brave.\n";
 			}
-			else if (!brothel->m_RestrictHand)	//hand job
+			else if (!brothel->m_RestrictHand && (g_Girls.HasTrait(girl, "Nymphomaniac") || g_Girls.HasTrait(girl, "Succubus") || g_Girls.GetStat(girl, STAT_DIGNITY) < -30))	//hand job
 			{
 				sextype = SKILL_HANDJOB;
 				ss << "decided she would give him a hand job for being so brave.\n";

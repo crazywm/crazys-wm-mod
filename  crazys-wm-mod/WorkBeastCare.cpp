@@ -16,34 +16,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "cJobManager.h"
-#include "cBrothel.h"
-#include "cCustomers.h"
-#include "cRng.h"
-#include "cInventory.h"
-#include "sConfig.h"
-#include "cRival.h"
+#pragma region //	Includes and Externs			//
 #include <sstream>
+#include "cJobManager.h"
+#include "cRng.h"
 #include "CLog.h"
-#include "cTrainable.h"
-#include "cTariff.h"
-#include "cGold.h"
-#include "cGangs.h"
 #include "cMessageBox.h"
-#include "libintl.h"
+#include "cGold.h"
+#include "cBrothel.h"
+#include "cInventory.h"
 
-extern cRng g_Dice;
-extern CLog g_LogFile;
-extern cCustomers g_Customers;
-extern cInventory g_InvManager;
-extern cBrothelManager g_Brothels;
-extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
+extern CLog g_LogFile;
+extern cRng g_Dice;
 extern cGold g_Gold;
+extern cBrothelManager g_Brothels;
+extern cInventory g_InvManager;
+
+#pragma endregion
 
 // `J` Job Brothel - General
 bool cJobManager::WorkBeastCare(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
+#pragma region //	Job setup				//
 	int actiontype = ACTION_WORKCARING;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
@@ -57,28 +52,32 @@ bool cJobManager::WorkBeastCare(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 
 	if (g_Brothels.m_Beasts < 1)
 	{
-		ss << gettext("There were no beasts in the brothel to take care of.\n\n");
+		ss << "There were no beasts in the brothel to take care of.\n\n";
 	}
-
-	
 
 	g_Girls.UnequipCombat(girl);	// put that shit away
 
+	double wages = 20, tips = 0;
 	int enjoy = 0;
-	int wages = 50;
+	int imagetype = IMGTYPE_FARM;
+	int msgtype = Day0Night1;
+
+
+
+
+#pragma endregion
+#pragma region //	Job Performance			//
+
 	double jobperformance = JP_BeastCare(girl, false);
 
 	int numhandle = girl->animalhandling() * 2;	// `J` first we assume a girl can take care of 2 beasts per point of animalhandling
-	int addbeasts = 0;
-	bool doadd = false;
-
+	int addbeasts = -1;
 
 	// `J` if she has time to spare after taking care of the current beasts, she may try to get some new ones.
 	if (numhandle / 2 > g_Brothels.m_Beasts && g_Dice.percent(50))	// `J` these need more options
 	{
 		if (girl->magic() > 70 && girl->mana() >= 30)
 		{
-			doadd = true;
 			addbeasts = (g_Dice % ((girl->mana() / 30) + 1));
 			ss << girlName;
 			ss << (addbeasts > 0 ? " used" : " tried to use") << " her magic to summon ";
@@ -90,18 +89,27 @@ bool cJobManager::WorkBeastCare(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 		}
 		else if (girl->animalhandling() > 50 && girl->charisma() > 50)
 		{
-			doadd = true;
-			addbeasts = (g_Dice % ((girl->combat() / 50) + 1));
+			addbeasts = 
+				g_Dice.percent(girl->combat()) +
+				g_Dice.percent(girl->charisma()) +
+				g_Dice.percent(girl->animalhandling());
 			ss << girlName;
-			ss << (addbeasts > 0 ? " lured" : " tried to lure") << " in ";
-			if (addbeasts == 1) ss << "a stray beast";
-			else ss << addbeasts << " stray beasts";
-			ss << " for the brothel" << (addbeasts > 0 ? "." : " but failed.");
-			g_Girls.UpdateStat(girl, STAT_CONFIDENCE, addbeasts);
+			if (addbeasts <= 0)
+			{
+				addbeasts = 0;
+				ss << " tried to lure in some beasts for the brothel but failed.";
+			}
+			else
+			{
+				ss << " lured in ";
+				if (addbeasts == 1) ss << "a stray beast";
+				else ss << addbeasts << " stray beasts";
+				ss << " for the brothel.";
+				g_Girls.UpdateStat(girl, STAT_CONFIDENCE, addbeasts);
+			}
 		}
 		else if (girl->combat() > 50 && (g_Girls.HasTrait(girl, "Adventurer") || girl->confidence() > 70))
 		{
-			doadd = true;
 			addbeasts = (g_Dice % 2);
 			ss << girlName << " stood near the entrance to the catacombs, trying to lure out a beast by making noises of an injured animal.\n";
 			if (addbeasts > 0) ss << "After some time, a beast came out of the catacombs. " << girlName << " threw a net over it and wrestled it into submission.\n";
@@ -109,38 +117,55 @@ bool cJobManager::WorkBeastCare(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 			g_Girls.UpdateSkill(girl, SKILL_COMBAT, addbeasts);
 		}
 	}
+	if (addbeasts >= 0) ss << "\n\n";
 
-	if (doadd) ss << "\n\n";
+#pragma endregion
+#pragma region	//	Enjoyment and Tiredness		//
 	if (roll_a <= 10)
 	{
 		enjoy -= g_Dice % 3 + 1;
 		addbeasts--;
-		ss << gettext("The animals were restless and disobedient.");
+		ss << "The animals were restless and disobedient.";
 	}
 	else if (roll_a >= 90)
 	{
 		enjoy += g_Dice % 3 + 1;
 		addbeasts++;
-		ss << gettext("She enjoyed her time working with the animals today.");
+		ss << "She enjoyed her time working with the animals today.";
 	}
 	else
 	{
 		enjoy += g_Dice % 2;
-		ss << (doadd ? "Otherwise, the" : "The") << gettext(" shift passed uneventfully.\n\n");
+		ss << (addbeasts>=0 ? "Otherwise, the" : "The") << " shift passed uneventfully.\n\n";
 	}
 
-	g_Brothels.add_to_beasts(addbeasts);
-	wages += g_Brothels.m_Beasts;
+#pragma endregion
+#pragma region	//	Create Items				//
+
+#pragma endregion
+#pragma region	//	Money					//
+
+	if (addbeasts < 0)	addbeasts = 0;
 	// slave girls not being paid for a job that normally you would pay directly for do less work
 	if ((girl->is_slave() && !cfg.initial.slave_pay_outofpocket()))
 	{
 		wages = 0;
 	}
+	else
+	{
+		wages += g_Brothels.m_Beasts/5;
+		tips += addbeasts * 5;				// a little bonus for getting new beasts
+	}
 
+#pragma endregion
+#pragma region	//	Finish the shift			//
 
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
-	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
-	girl->m_Pay = wages;
+	g_Brothels.add_to_beasts(addbeasts);
+	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
+
+	// Money
+	if (wages < 0)	wages = 0;	girl->m_Pay = (int)wages;
+	if (tips < 0)	tips = 0;	girl->m_Tips = (int)tips;
 
 	// Improve girl
 	int xp = 5 + (g_Brothels.m_Beasts / 10), libido = 1, skill = 2 + (g_Brothels.m_Beasts / 20);
@@ -154,8 +179,10 @@ bool cJobManager::WorkBeastCare(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 	g_Girls.UpdateSkill(girl, SKILL_ANIMALHANDLING, max(1, (g_Dice % skill) + 1));
 
+	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 	g_Girls.PossiblyLoseExistingTrait(girl, "Elegant", 40, actiontype, " Working with dirty, smelly beasts has damaged " + girlName + "'s hair, skin and nails making her less Elegant.", Day0Night1);
 
+#pragma endregion
 	return false;
 }
 

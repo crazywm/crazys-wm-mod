@@ -2213,6 +2213,8 @@ WME - Updated Folder text to explain relative and absolute folder paths a little
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version 0.8.30
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.04
 
+###  Changes 6/26-27
+
 Added more sex texts by GonDra
 Added Items by ChancellorPalpatine with a few changes
 Updated WorkRancher, WorkShepherd
@@ -2225,11 +2227,20 @@ Added  // `J` Legal Note: 18 is the Legal Age of Majority for the USA where I li
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.05
 
+###  Changes 6/28
 Removed an unneeded log error message caused by missing button disabled images.
 Fixed a bug - added job quick codes for Dungeon and Runaways.
 
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.06
+
+###  Changes 6/29-7/1           Not much time for the game, work taking its toll.
+Added some WorkPeepShow updates by Hanzo
+Updated WorkBeastCare
+
+###  Changes 7/2
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub before starting brothel rewrite
+
 
 
 
